@@ -1,23 +1,18 @@
 import _ from 'lodash'
-import store from '../store'
-export function getOrderbook(orderbook) {
+import axios from 'axios'
+
+const baseURL = 'http://localhost:10010/api/v0'
+
+export function getOrderbook() {
 	return {
 		type: 'GET_ORDERBOOK',
-		payload: orderbook
+		payload: axios.get(`${baseURL}/orderbook`)
 	}
 }
 
-export function addTrades(allTrades, trade) {
-	let largestTrade = store.getState().orderbook.largestTrade
-	_.each(trade, t => {
-		if(t.size > largestTrade) {
-			largestTrade = t.size
-		}
-	})
-	allTrades.unshift(...trade.reverse())
+export function getTrades() {
 	return {
-		type: 'ADD_TRADE',
-		payload: allTrades,
-		largestTrade
+		type: 'GET_TRADES',
+		payload: axios.get(`${baseURL}/trade`)
 	}
 }

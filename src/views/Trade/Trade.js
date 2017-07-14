@@ -12,7 +12,7 @@ import Rectangle from 'react-rectangle';
 
 import { createOrder, updateOrder, cancelOrder, getOrders, addOrder, removeOrder } from '../../actions/orderAction'
 import { setLeverage, getPosition, updatePosition } from '../../actions/positionAction'
-import { getOrderbook, addTrades } from '../../actions/orderbookAction'
+import { getOrderbook, getTrades, addTrades } from '../../actions/orderbookAction'
 import { getMargin } from '../../actions/marginAction'
 import { getWallet } from '../../actions/userAction'
 
@@ -62,140 +62,18 @@ class Trade extends Component {
       this._handleNewPriceChange = this._handleNewPriceChange.bind(this);
       this._handleIdChange = this._handleIdChange.bind(this);
       this._handleLeverageChange = this._handleLeverageChange.bind(this);
-      this._toggleView = this._toggleView.bind(this);
       this._handleKeyboard = this._handleKeyboard.bind(this);
       this._handlePinChange = this._handlePinChange.bind(this);
    }
 
    componentWillMount () {
-      document.addEventListener("keydown", this._handleKeyboard, false);
       window.scrollTo(0, 0)
-
-      // this.props.dispatch(getAssets('bitmex'))
-      var verb = 'GET'
-      var path = '/realtime'
-      var expires = new Date().getTime() + (60 * 1000) // 1 min in the future
-      var signature = crypto.createHmac('sha256', apiSecret).update(verb + path + expires).digest('hex');
-      this.connection = new WebSocket(`wss://www.bitmex.com/realtime?api-nonce=${expires}&api-signature=${signature}&api-key=${apiKey}`)
-
-      this.connection.onmessage = evt => {
-         // console.log("yooooooo", evt)
-         let data = {}
-         data = JSON.parse(evt.data)
-
-         if(data.info) { // Initial setup
-            // ?subscribe=trade:XBTUSD,orderBook10:XBTUSD,order,wallet
-            this.connection.send(JSON.stringify({"op": "subscribe", "args": ["trade:XBTUSD", "orderBook10:XBTUSD", "order", "wallet", "margin", "position", "affiliate", "instrument:XBTUSD", "insurance"]}))
-         }
-
-   
-
-         switch(data.table) {
-            case 'trade':
-               this.props.dispatch(addTrades(this.props.orderbook.trades, data.data))
-               // let trades = this.state.trades
-               // trades.unshift(...data.data.reverse())
-               // this.setState({
-               //    trades
-               // })
-               break
-            case 'orderBook10':
-               let bids = data.data[0].bids
-               let asks = data.data[0].asks
-               if(this.state.simpleView) {
-                  this.props.dispatch(getOrderbook(data.data[0]))
-                  // this.setState({
-                  //    bids,
-                  //    asks
-                  // })
-               } else {
-                  this._fillEmptySlots(bids, 'bids')
-                  this._fillEmptySlots(asks, 'asks')
-                  // this._fillSpread(data.data[0].bids[0], data.data[0].asks[0])
-               }
-               
-               break
-            case 'order':
-               console.log(data.data)
-               if(this.state.isFirst.order) {
-                  this.props.dispatch(getOrders(data.data))
-                  this.state.isFirst.order = false
-                  this.setState({
-                     isFirst: this.state.isFirst
-                  })
-               } else {
-                  switch(data.data[0].ordStatus) {
-                     case "Canceled":
-                        this.props.dispatch(removeOrder(this.props.order.activeOrders, data.data[0]))
-                        break
-                     case "New":
-                        this.props.dispatch(addOrder(this.props.order.activeOrders, data.data[0]))
-                        break
-                     case "Filled":
-                        this.props.dispatch(removeOrder(this.props.order.activeOrders, data.data[0]))
-                        break
-                     case "Rejected":
-                        this.props.dispatch(removeOrder(this.props.order.activeOrders, data.data[0]))
-                        alert("rejected")
-                        break
-                     default:
-                        break
-                  }
-                  // adding/removing/updating orders
-               }
-               break
-            case 'margin':
-               // console.log('margin', data.data)
-               if(this.state.isFirst.margin) {
-                  this.props.dispatch(getMargin(data.data[0]))
-                  this.state.isFirst.margin = false
-                  this.setState({
-                     isFirst: this.state.isFirst
-                  })
-               } else {
-                  this.props.margin.margins.unrealisedPnl = data.data[0].unrealisedPnl
-                  this.props.dispatch(getMargin(this.props.margin.margins))
-               }
-               break
-             case 'affiliate':
-               console.log('affiliate', data.data)
-               break
-            case 'insurance': {
-               console.log('insurance', data.data)
-               break
-            }
-            case 'wallet':
-               this.props.dispatch(getWallet(data.data[0]))
-               break
-            case 'position':
-               if(this.state.isFirst.position) {
-                  this.props.dispatch(getPosition(data.data))
-                  this.state.isFirst.position = false
-                  this.setState({
-                     isFirst: this.state.isFirst
-                  })
-               } else {
-                  this.props.dispatch(updatePosition(this.props.position.positions, data.data))
-               }
-               break
-            case 'instrument':
-               if(!this.state.volume24h) {
-                  this.setState({
-                     volume24h: data.data[0].volume24h
-                  })
-               }
-               break
-            default:
-               // console.log(data)
-               
-               // this.connection.send(JSON.stringify({"op": "subscribe", "args": ["trade:XBTUSD", "orderBook10:XBTUSD", "connected"]}))
-         }
-      }
+      this.props.dispatch(getOrderbook())
+      this.props.dispatch(getTrades())
    }
 
    componentWillUnmount() {
-      window.removeEventListener("keydown", this._handleKeyboard);
-      this.connection.close()
+
    }
 
    _handleAmountChange(event) {
@@ -579,23 +457,23 @@ class Trade extends Component {
          )        
       }
       let priceIndicator = {}
-      if(this.props.orderbook.trades[0].side == 'Buy') {
+      // if(this.props.orderbook.trades[0].side == 'Buy') {
          priceIndicator.color = '#00e500'
-      } else {
+      // } else {
          priceIndicator.color = '#ff0000'
-      }
-      if(this.props.orderbook.trades[1]) {
-         if(this.props.orderbook.trades[0].price - this.props.orderbook.trades[1].price >= bigVolatilityUnit) {
-            priceIndicator.type = "ion-arrow-up-b"
-         } else if(this.props.orderbook.trades[1].price - this.props.orderbook.trades[0].price >= bigVolatilityUnit) {
-            priceIndicator.type = "ion-arrow-down-b"
-         }
-      }
+      // }
+      // if(this.props.orderbook.trades[1]) {
+      //    if(this.props.orderbook.trades[0].price - this.props.orderbook.trades[1].price >= bigVolatilityUnit) {
+      //       priceIndicator.type = "ion-arrow-up-b"
+      //    } else if(this.props.orderbook.trades[1].price - this.props.orderbook.trades[0].price >= bigVolatilityUnit) {
+      //       priceIndicator.type = "ion-arrow-down-b"
+      //    }
+      // }
       rows.push(
          <tr key="price" className="borderTop">
             <td className="col-ask-order"></td>
             <td></td>
-            <td style={{color: priceIndicator.color}}><Ionicon icon={priceIndicator.type} fontSize="1rem" color={priceIndicator.color}/>{(this.props.orderbook.trades.length> 0) ? this.props.orderbook.trades[0].price : null}</td>
+            <td></td>
             <td></td>
             <td className="col-bid-order"></td>
          </tr>
@@ -719,12 +597,6 @@ class Trade extends Component {
       return table;
    }
 
-   _toggleView(event) {
-      this.setState({
-         simpleView: event.target.checked
-      })
-   }
-
    render() {
       const currency = 'USD'
       let bidClass, askClass
@@ -802,29 +674,6 @@ class Trade extends Component {
                      </tbody>
                   </table>
                </div>
-            </div>
-            <div className="col-12">
-               <table className="text-center header-table">
-                 <thead>
-                     <tr>
-                           <td style={{display:'block', float:'left', width:'25%', border:'none', padding:'0'}}
-                                 onClick={() => this.setState({tab: 'position'})}>
-                                       POSITION
-                           </td>
-                           <td style={{display:'block', float:'left', width:'25%', border:'none', padding:'0'}} 
-                                 onClick={() => this.setState({tab: 'order'})}>
-                                       ORDER
-                           </td>
-                           <td style={{display:'block', float:'left', width:'25%', border:'none', padding:'0'}}>
-                                 <div  className="tab">UNFILLED</div>
-                           </td>
-                           <td style={{display:'block', float:'left', width:'25%', border:'none', padding:'0'}}>
-                                 <div  className="tab">UNFILLED</div>
-                           </td>
-                     </tr>  
-                  </thead>
-               </table>
-               {(this._drawTable())}
             </div>
          </div>
       )
