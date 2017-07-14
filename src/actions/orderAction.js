@@ -4,10 +4,16 @@ import _ from 'lodash'
 const baseURL = 'http://localhost:10010/api/v0';
 
 
-export function createOrder(symbol, side, ordType, orderQty, price) {
+export function createOrder(side, size, price) {
+	let body
+	if(price) {
+		price = Number(price)
+		body = {side, size, price}
+	}
+	body = {side, size, price}
 	return {
 		type: 'CREATE_ORDER',
-		payload: axios.post(`${baseURL}/order`, {symbol, side, price, ordType, orderQty})
+		payload: axios.post(`${baseURL}/order`, body)
 	}
 }
 

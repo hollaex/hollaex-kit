@@ -38,11 +38,12 @@ class Trade extends Component {
       }
       
       this.state = {
-         trades: [],
+         side: 'buy', // default buy
          position: [],
          orderType: 'bid',
          address: '',
          orders,
+         amount: 0,
          simpleView: true,
          deltaPosition: {
             x: 0, y: 0
@@ -64,6 +65,7 @@ class Trade extends Component {
       this._handleLeverageChange = this._handleLeverageChange.bind(this);
       this._handleKeyboard = this._handleKeyboard.bind(this);
       this._handlePinChange = this._handlePinChange.bind(this);
+      this._handleSideChange = this._handleSideChange.bind(this);
    }
 
    componentWillMount () {
@@ -77,11 +79,16 @@ class Trade extends Component {
    }
 
    _handleAmountChange(event) {
+      console.log(event.target.value)
       this.setState({amount: event.target.value});
    }
 
    _handlePriceChange(event) {
       this.setState({price: event.target.value});
+   }
+
+   _handleSideChange(event) {
+      this.setState({side: event.target.value});
    }
 
    _handleQuantityChange(event){
@@ -273,8 +280,8 @@ class Trade extends Component {
    _clickOrder2(type) {
       let amount = this.state.amount
       let price = this.state.price
-
-      var side = "" //better to assign type to this variable, however bitmex api is case sensitive. will have a look at it later
+      let side = this.state.side
+      
       var ordType = ""
       var orderQty = amount
       var cell = ""
@@ -309,7 +316,8 @@ class Trade extends Component {
                   orders: this.state.orders
             })
       }
-      this._createOrder(side, Number(price), ordType, Number(orderQty))
+
+      this.props.dispatch(createOrder(side, Number(amount), price))
    }
 
    _clickOrder(type, cell, i) {
@@ -567,36 +575,6 @@ class Trade extends Component {
       return rows
    }
 
-   _drawOrderTable() {
-      var rows = [];
-      for(let i=0; i<this.props.order.activeOrders.length; i++) {
-         let className = ""
-         rows.push(
-            <tr key={'order' + i}>
-               <td>{this.props.order.activeOrders[i].symbol}</td>
-               <td>{this.props.order.activeOrders[i].price}</td>
-               <td>{this.props.order.activeOrders[i].orderQty}</td>
-               <td>{this.props.order.activeOrders[i].side}</td>              
-            </tr>
-         )        
-      }
-      var table = 
-      <table className="text-center header-table">
-         <thead>
-            <tr>
-               <th className="text-center">SYMBOL</th>
-               <th className="text-center">PRICE</th>
-               <th className="text-center">SIZE</th>
-               <th className="text-center">TYPE</th>
-            </tr>
-         </thead> 
-         <tbody>
-            {rows}
-         </tbody>
-      </table>
-      return table;
-   }
-
    render() {
       const currency = 'USD'
       let bidClass, askClass
@@ -613,31 +591,15 @@ class Trade extends Component {
                <div className="col-12">
                   <table className="header-table">
                      <tr>
-                        <td>BitMEX: XBTUSD</td>
-                        <td>24 hour volume: {this.state.volume24h}</td>
-                     </tr>
-                  </table>
-                  <table className="header-table">
-                     <tr>
-                        <td>Funding Rate</td>
-                        <td>Predict Rate</td>
-                        <td><input type="password" id="text-input" name="text-input" className="" placeholder="PIN" onChange={this._handlePinChange}/></td>
-                     </tr>
-                  </table>
-                  <table className="header-table grey-table">
-                     <tr>
-                        <td>TL Bal:{(this.props.margin.margins)?(this.props.margin.margins.walletBalance / 100000000).toFixed(4) : null}</td>
-                        <td>AVG Entry: </td>                        
-                        <td>Unrealized P/L: {(this.props.margin.margins)?(this.props.margin.margins.unrealisedPnl / 100000000).toFixed(4) : null}</td>
-                        <td>Realized P/L: {(this.props.margin.margins)?(this.props.margin.margins.realisedPnl / 100000000).toFixed(4) : null}</td>
-                     </tr>
-                  </table>
-                  <table className="header-table grey-table">
-                     <tr>
-                        <td>Avl Bal:{(this.props.margin.margins)?(this.props.margin.margins.availableMargin / 100000000).toFixed(4) : null}</td>
-                        <td>Leverage:</td>
-                        <td style={{display:'block', float:'left', width:'50px'}}>0x</td>
-                        <td style={{display:'block', float:'left', width:'50px'}} onClick={() => this._setLeverage(1)}>1x</td>
+                        <td>
+                           <select onChange={this._handleSideChange}>
+                              <option value="buy">buy</option>
+                              <option value="sell">sell</option>
+                           </select>
+                        </td>
+                        <td><input type="text" placeholder="amount" onChange={this._handleAmountChange}/></td>
+                        <td><input type="text" placeholder="price" onChange={this._handlePriceChange}/></td>
+                        <td><button onClick={this._clickOrder2.bind(this)}>confirm</button></td>
                      </tr>
                   </table>
                </div>
@@ -646,11 +608,6 @@ class Trade extends Component {
                <div className="col-9">
                   <table className="text-center orderbook-table">
                      <tbody>
-                        <tr className="grey-table">
-                           <td className="text-center col-ask-order"onClick={() => this._clickOrder2('sell')}>SELL</td>
-                           <td colSpan="3"><input type="text" id="text-input" name="text-input" className="" placeholder={this.state.orderType + ' QTY'} value={this.state.amount} onChange={this._handleAmountChange}/></td>
-                           <td className="text-center"onClick={() => this._clickOrder2('buy')}>Buy</td>
-                        </tr>
                         {(this.props.orderbook.bids && this.props.orderbook.bids.length && this.props.orderbook.asks && this.props.orderbook.asks.length > 0)?
                         this._drawOrderbook():
                         null
@@ -660,12 +617,6 @@ class Trade extends Component {
                </div>
                <div className="col-3">
                   <table className="trade-table">
-                     <thead>
-                        <tr className="grey-table">
-                           <td colSpan="2"><input type="text" id="text-input" name="text-input" className="" placeholder="PRICE" value={this.state.price} value={this.state.price} onChange={this._handlePriceChange}/></td>
-                           <td colSpan="2">LIMIT</td>
-                        </tr>  
-                     </thead>
                      <tbody>
                         {(this.props.orderbook.trades && this.props.orderbook.trades.length > 0)?
                         this._drawTrades():
