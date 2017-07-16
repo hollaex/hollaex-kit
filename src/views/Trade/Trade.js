@@ -10,11 +10,8 @@ import Draggable, {DraggableCore} from 'react-draggable'; // Both at the same ti
 import moment from 'moment'
 import Rectangle from 'react-rectangle';
 
-import { createOrder, updateOrder, cancelOrder, getOrders, addOrder, removeOrder } from '../../actions/orderAction'
-import { setLeverage, getPosition, updatePosition } from '../../actions/positionAction'
-import { getOrderbook, getTrades, addTrades } from '../../actions/orderbookAction'
-import { getMargin } from '../../actions/marginAction'
-import { getWallet } from '../../actions/userAction'
+import { createOrder } from '../../actions/orderAction'
+import { getOrderbook, getTrades } from '../../actions/orderbookAction'
 
 
 
@@ -39,6 +36,7 @@ class Trade extends Component {
       
       this.state = {
          side: 'buy', // default buy
+         type: 'limit', // default
          position: [],
          orderType: 'bid',
          address: '',
@@ -66,6 +64,8 @@ class Trade extends Component {
       this._handleKeyboard = this._handleKeyboard.bind(this);
       this._handlePinChange = this._handlePinChange.bind(this);
       this._handleSideChange = this._handleSideChange.bind(this);
+      this._handleTypeChange = this._handleTypeChange.bind(this);
+
    }
 
    componentWillMount () {
@@ -89,6 +89,10 @@ class Trade extends Component {
 
    _handleSideChange(event) {
       this.setState({side: event.target.value});
+   }
+
+   _handleTypeChange(event) {
+      this.setState({type: event.target.value});
    }
 
    _handleQuantityChange(event){
@@ -269,55 +273,13 @@ class Trade extends Component {
       this.props.dispatch(createOrder(symbol, side, ordType, orderQty, price))
    }
 
-   _cancelOrder(ID) {
-      this.props.dispatch(cancelOrder(ID))
-   }
-
-   _updateOrder(orderID, orderQty, price) {
-      this.props.dispatch(updateOrder(orderID, orderQty, price))
-   }
-
-   _clickOrder2(type) {
+   _clickOrder2() {
       let amount = this.state.amount
       let price = this.state.price
       let side = this.state.side
-      
-      var ordType = ""
-      var orderQty = amount
-      var cell = ""
+      let type = this.state.type
 
-      if(type === "sell") {
-            // limit sell
-            cell = "asks"
-            side = "Sell"
-            ordType = "Limit"
-            this.state.orders[cell][price] = {id: 1, amount: amount}
-            this.setState({
-                  orders: this.state.orders
-            })
-      } else if(type === "sell") {
-            // market sell
-            side = "Sell"
-            ordType = "Limit"
-      } else if(type === "buy") {
-            // market buy
-            side = "Buy"
-            ordType = "Limit"
-      } else if(type === "buy") {
-            // limit buy
-            cell = "bids"
-            side = "Buy"
-            ordType = "Limit"
-
-            let order = {}
-            order[amount] = ""
-            this.state.orders[cell][price] = {id: 1, amount: amount}
-            this.setState({
-                  orders: this.state.orders
-            })
-      }
-
-      this.props.dispatch(createOrder(side, Number(amount), price))
+      this.props.dispatch(createOrder(side, type, Number(amount), price))
    }
 
    _clickOrder(type, cell, i) {
@@ -360,9 +322,6 @@ class Trade extends Component {
       this._createOrder(side, Number(price), ordType, Number(orderQty))
    }
 
-   _setLeverage(leverage){
-      this.props.dispatch(setLeverage(symbol, leverage))
-   }
 
    _handleDrag(e, ui, price) {
       if(ui.x > 40) {
@@ -591,6 +550,12 @@ class Trade extends Component {
                <div className="col-12">
                   <table className="header-table">
                      <tr>
+                        <td>
+                           <select onChange={this._handleTypeChange}>
+                              <option value="limit">limit</option>
+                              <option value="market">market</option>
+                           </select>
+                        </td>
                         <td>
                            <select onChange={this._handleSideChange}>
                               <option value="buy">buy</option>
