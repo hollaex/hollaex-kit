@@ -1,7 +1,7 @@
 import axios from 'axios'
 import _ from 'lodash'
 
-const baseURL = 'http://localhost:10010/api/v0';
+const baseURL = 'http://35.158.6.83/api/v0'
 
 
 export function createOrder(side, type, size, price) {
