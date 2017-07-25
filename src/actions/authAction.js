@@ -1,26 +1,19 @@
 import axios from 'axios';
 
-const baseURL = "http://holla-jan4-dev.ap-northeast-2.elasticbeanstalk.com/v0"
-
-export function signup(email, password, isTermsAndConditionsAccepted) {
+// const baseURL = "http://holla-jan4-dev.ap-northeast-2.elasticbeanstalk.com/v0"
+const baseURL = "http://35.158.6.83/api/v0"
+export function signup(data) {
 	return {
 		type: 'SIGNUP_USER',
-		payload: axios.post(`${baseURL}/signup`, {
-            "password": password,
-            "email": email,
-            "isTermsAndConditionsAccepted": isTermsAndConditionsAccepted
-		})
+		payload: axios.post(`${baseURL}/signup`, data)
 	}
 }
-export function login(email, password) {
+export function login(data) {
 	return ((dispatch) => {
 		dispatch({
 		    type: 'LOGIN_USER_PENDING'
 		});
-		axios.post(`${baseURL}/login/`, {
-			"email": email,
-            "password": password
-		})
+		axios.post(`${baseURL}/login/`, data)
 		.then( res => {
 			let token = res.data.authToken
 			// axios.defaults.headers.common['Authorization'] = token

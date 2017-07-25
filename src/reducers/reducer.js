@@ -5,6 +5,7 @@ import order from './orderReducer'
 import orderbook from './orderbookReducer'
 import margin from './marginReducer'
 import position from './positionReducer'
+import { reducer } from 'redux-form';
 
 const appReducer = combineReducers({
 	auth,
@@ -12,7 +13,8 @@ const appReducer = combineReducers({
 	user,
 	margin,
 	position,
-	orderbook
+	orderbook,
+	form: reducer
 })
 
 const rootReducer = (state, action) => {
