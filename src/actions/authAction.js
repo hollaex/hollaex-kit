@@ -1,11 +1,42 @@
 import axios from 'axios';
+import { browserHistory } from 'react-router'
 
 // const baseURL = "http://holla-jan4-dev.ap-northeast-2.elasticbeanstalk.com/v0"
 const baseURL = "http://35.158.6.83/api/v0"
+
 export function signup(data) {
+	return ((dispatch) => {
+		dispatch({
+		    type: 'SIGNUP_USER_PENDING'
+		});
+		axios.post(`${baseURL}/signup`, data)
+		.then(res => {
+			dispatch(getEmail(data.email));
+			dispatch({
+			    type: 'SIGNUP_USER_FULFILLED',
+			    payload: res
+			});
+			browserHistory.push('/verify');
+		})
+		.catch(err => {
+			dispatch({
+			    type: 'SIGNUP_USER_REJECTED',
+			    payload: err.response
+			});
+			browserHistory.push('/signup');
+		})	
+	})
+}
+export function getEmail(data) {
+	localStorage.setItem('email', data);
+	return ((dispatch) => {
+		dispatch({ type: 'USER_EMAIL', payload: data });
+	})
+}
+export function verify(data) {
 	return {
-		type: 'SIGNUP_USER',
-		payload: axios.post(`${baseURL}/signup`, data)
+		type: 'VERIFICATION',
+		payload: axios.post(`${baseURL}/verify`, data)
 	}
 }
 export function login(data) {
@@ -22,15 +53,20 @@ export function login(data) {
 			    type: 'LOGIN_USER_FULFILLED',
 			    payload: token
 			});
+			browserHistory.push('/home');
 		})
 		.catch( err => {
 			dispatch({
 			    type: 'LOGIN_USER_REJECTED',
-			    payload: err
+			    payload: err.response
 			});
 		})
 		
 	})
+}
+export const logout = () => dispatch => {
+    localStorage.removeItem('token');
+    browserHistory.push('/login');
 }
 
 export function resetPassword() {
