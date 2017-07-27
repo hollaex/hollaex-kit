@@ -15,19 +15,8 @@ import Rectangle from 'react-rectangle';
 import { createOrder } from '../../actions/orderAction'
 import { getOrderbook, getTrades, setOrderbook } from '../../actions/orderbookAction'
 
-
-
-const apiKey= "R64K6T7xXgkqLo6RR7DiEpHp"
-const apiSecret = "Fiz84qGUh07GMS9ZQpc-xmuE2YL09TloM5S_YZ8kJNwGnHv8"
-
 const symbol = "XBTUSD"
 const bigVolatilityUnit = 0.09 // indicates the volatility thats considered as a big price change
-
-// var apiKey = "uu_HrKMeBX46fHD_WYrDLawr"
-// var apiSecret = "e_vlkWgBJVh4idSDKYEjZvBO4RE2gNd-DnowgVhVqzKlEDfS";
-
-
-
 
 
 class Trade extends Component {
@@ -71,7 +60,6 @@ class Trade extends Component {
       this._handlePinChange = this._handlePinChange.bind(this);
       this._handleSideChange = this._handleSideChange.bind(this);
       this._handleTypeChange = this._handleTypeChange.bind(this);
-
    }
 
    componentWillMount () {
@@ -80,7 +68,7 @@ class Trade extends Component {
       this.props.dispatch(getTrades())
       const socket = io('http://35.158.6.83/realtime', {
          query: {
-            token: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhbGlAYWxpLmNvbSIsImlzcyI6ImJpdGhvbGxhLmNvbSIsImV4cGlyeSI6MTUwMTA4MDM4NzcwOCwiaWF0IjoxNTAxMDgwMzg3fQ.7aORI0an_Yym6WFAB261yky4WiQaKpx7888sIzid_Z4'
+            token: `Bearer ${this.props.token}`
          }
       })
 
@@ -613,11 +601,9 @@ class Trade extends Component {
 
 function mapStateToProps(store) {
    return {
-      exchange: store.exchange,
+      token: store.auth.token,
       user: store.user,
       order: store.order,
-      margin: store.margin,
-      position: store.position,
       orderbook: store.orderbook
    };
 }

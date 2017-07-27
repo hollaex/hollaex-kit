@@ -46,8 +46,8 @@ export function login(data) {
 		});
 		axios.post(`${baseURL}/login/`, data)
 		.then( res => {
-			let token = res.data.authToken
-			// axios.defaults.headers.common['Authorization'] = token
+			let token = res.data.token
+			axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 			localStorage.setItem('token', token);
 			dispatch({
 			    type: 'LOGIN_USER_FULFILLED',
@@ -63,6 +63,13 @@ export function login(data) {
 		})
 		
 	})
+}
+
+export function setToken(token) {
+	return {
+    	type: 'LOGIN_USER_FULFILLED',
+    	payload: token
+    }
 }
 export const logout = () => dispatch => {
     localStorage.removeItem('token');
