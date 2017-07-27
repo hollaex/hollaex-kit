@@ -5,9 +5,9 @@
 }
 
 input[type=text] {
-  background-color: transparent;
+  /*background-color: transparent;*/
   border: none;
-  color: white;
+ /* color: white;*/
   font-family: Roboto-Light;
   text-align: left;
   width: 100%;
@@ -19,9 +19,11 @@ input[type=text]:focus{
 }
 
 input[type=password] {
-  background-color: transparent;
+  /*background-color: transparent;*/
   border: none;
-  color: white;
+  /*color: white;*/
+  width: 100%;
+  padding-left: 1rem;
   font-family: Roboto-Light;
 }
 

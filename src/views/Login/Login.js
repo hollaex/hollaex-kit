@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
-import { Field, reduxForm } from 'redux-form';
 import { Link } from 'react-router'
+import { Field, reduxForm } from 'redux-form';
 
-import { signup,getEmail } from '../../actions/authAction'
+import { login } from '../../actions/authAction'
 
 const validate = formProps => {
   const errors = {}
@@ -35,33 +35,25 @@ const renderInput = ({ input, label, type, meta: {touched, invalid, error }}) =>
 );
 
 const mapStateToProps = (state, ownProps) => ({
-    err: state.auth.errMsg,
-    user: state.auth.user
+    errorMsg: state.auth.error,
 })
 const mapDispatchToProps = dispatch => ({
-    signup:bindActionCreators(signup, dispatch),
-    getEmail:bindActionCreators(getEmail, dispatch),
+    login: bindActionCreators(login, dispatch),
 })
-
-class SignUp extends Component {
-	 state={
-	 	email:''
-	 }
+class Login extends Component {
 	render() {
 		const { handleSubmit } = this.props;
 		const onSubmit = formProps => {
-			this.setState({email:formProps.email})
-            this.props.signup(formProps);
+            this.props.login(formProps);
         }
 		return (	
 			<div className='col-lg-4 offset-4'>
-				<form className=' pt-5'  onSubmit={ handleSubmit(onSubmit)}>
+				<form className='pt-5 ' onSubmit={ handleSubmit(onSubmit)}>
 					<div className='row'>
-						<div className='col-lg-6 text-right'><h1>SignUp/</h1></div>
-						<div><Link to='/login' style={{textDecoration:'none'}}><h5>Login</h5></Link></div>
+						<div className='col-lg-6 text-right'><h1> Login/ </h1></div>
+						<div><Link to='/signup' style={{textDecoration:'none'}}><h5>SignUp</h5></Link></div>
 					</div>
-					 
-					<div> 
+			        <div>
 				         <Field
 				            name="email"
 				            component={ renderInput }
@@ -78,28 +70,26 @@ class SignUp extends Component {
 				         />       
 			        </div>
 			        <div className='pt-3'> 
-			        	<button type="submit">SignUp</button>
-			        	{this.props.err?
-							<span style={{color:'red'}} className='pl-3'>{this.props.err.message}</span>
+			        	<button type="submit">Login</button>
+			        	{this.props.errorMsg?
+							<span style={{color:'red'}} className='pl-3'>{this.props.errorMsg}</span>
 						: null
 			        	}
 			        </div>
-				    		         
 			    </form>
-			</div>	
+			</div>
+			
 		);
 	}
 }
-SignUp.defaultProps = {
-     user:{},
-     err:{}
+Login.defaultProps = {
+     errorMsg:''
 };
-SignUp.propTypes = {
-     user:PropTypes.object,
-     err:PropTypes.object
+Login.propTypes = {
+     errorMsg:PropTypes.string
 };
 const form = reduxForm({
-  form: 'SignUp',
+  form: 'Login',
   validate
 });
-export default connect(mapStateToProps, mapDispatchToProps)(form(SignUp));
+export default connect(mapStateToProps, mapDispatchToProps)(form(Login));

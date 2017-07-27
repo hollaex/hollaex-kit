@@ -1,4 +1,4 @@
-import axios from 'axios'
+
 
 const initialState = {
 	token: null,
@@ -8,6 +8,7 @@ const initialState = {
 }
 
 export default function reducer(state=initialState, action) {
+
 	switch(action.type) {
 		//SIGNUP
 		case 'SIGNUP_USER_PENDING': {
@@ -16,11 +17,25 @@ export default function reducer(state=initialState, action) {
 		}
 		case 'SIGNUP_USER_REJECTED': {
 			alert('Choose a stronger password')
-			return {...state, fetching: false, error: action.payload.response.data.error}
+			return {...state, fetching: false, error: action.payload.data.error, errMsg: action.payload.data }
 			break;
 		}
 		case 'SIGNUP_USER_FULFILLED': {
 			return {...state, fetching: false, fetched: true, user: action.payload.data}
+			break;
+		}
+		//EMAIL
+		case 'USER_EMAIL': {
+				return {...state, fetching: false, fetched: true, userEmail: action.payload}
+				break;
+			}
+		//VERIFICATION
+		case 'VERIFICATION_REJECTED': {
+			return {...state, fetching: false, message: action.payload.response.data.message}
+			break;
+		}
+		case 'VERIFICATION_FULFILLED': {
+			return {...state, fetching: false, fetched: true, message: action.payload.data.message}
 			break;
 		}
 
@@ -30,7 +45,7 @@ export default function reducer(state=initialState, action) {
 			break;
 		}
 		case 'LOGIN_USER_REJECTED': {
-			return {...state, fetching: false, error: action.payload.response.data.message}
+			return {...state, fetching: false, error: action.payload.data.message}
 			break;
 		}
 		case 'LOGIN_USER_FULFILLED': {
