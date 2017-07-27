@@ -10,6 +10,13 @@ export function getOrderbook() {
 	}
 }
 
+export function setOrderbook(orderbook) {
+	return {
+		type: 'SET_ORDERBOOK',
+		payload: orderbook
+	}
+}
+
 export function getTrades() {
 	return {
 		type: 'GET_TRADES',

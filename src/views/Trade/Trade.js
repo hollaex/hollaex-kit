@@ -3,6 +3,8 @@ import { connect } from 'react-redux'
 import axios from 'axios'
 import crypto from 'crypto'
 import _ from 'lodash'
+import io from 'socket.io-client';
+
 import Ionicon from 'react-ionicons'
 
 import './trade.css'
@@ -11,7 +13,7 @@ import moment from 'moment'
 import Rectangle from 'react-rectangle';
 
 import { createOrder } from '../../actions/orderAction'
-import { getOrderbook, getTrades } from '../../actions/orderbookAction'
+import { getOrderbook, getTrades, setOrderbook } from '../../actions/orderbookAction'
 
 
 
@@ -23,6 +25,10 @@ const bigVolatilityUnit = 0.09 // indicates the volatility thats considered as a
 
 // var apiKey = "uu_HrKMeBX46fHD_WYrDLawr"
 // var apiSecret = "e_vlkWgBJVh4idSDKYEjZvBO4RE2gNd-DnowgVhVqzKlEDfS";
+
+
+
+
 
 class Trade extends Component {
 
@@ -70,8 +76,17 @@ class Trade extends Component {
 
    componentWillMount () {
       window.scrollTo(0, 0)
-      this.props.dispatch(getOrderbook())
+      // this.props.dispatch(getOrderbook())
       this.props.dispatch(getTrades())
+      const socket = io('http://35.158.6.83/realtime', {
+         query: {
+            token: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhbGlAYWxpLmNvbSIsImlzcyI6ImJpdGhvbGxhLmNvbSIsImV4cGlyeSI6MTUwMTA4MDM4NzcwOCwiaWF0IjoxNTAxMDgwMzg3fQ.7aORI0an_Yym6WFAB261yky4WiQaKpx7888sIzid_Z4'
+         }
+      })
+
+      socket.on('orderbook', (data) => {
+         this.props.dispatch(setOrderbook(data))
+      });
    }
 
    componentWillUnmount() {
