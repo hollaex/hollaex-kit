@@ -53,7 +53,7 @@ export function login(data) {
 			    type: 'LOGIN_USER_FULFILLED',
 			    payload: token
 			});
-			browserHistory.push('/home');
+			browserHistory.push('/dashboard');
 		})
 		.catch( err => {
 			dispatch({

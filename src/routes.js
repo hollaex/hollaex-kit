@@ -1,11 +1,12 @@
 import React from 'react';
 import { Router, Route, browserHistory } from 'react-router';
 import axios from 'axios';
+
 import Trade from './views/Trade/Trade'
 import Login from './views/Login/Login'
 import SignUp from './views/SignUp/SignUp'
 import Verification from './views/SignUp/Verification'
-import HomePage from './views/HomePage/HomePage'
+import Dashboard from './views/Dashboard/Dashboard'
 import store from './store'
 import { setToken } from './actions/authAction'
 
@@ -38,7 +39,7 @@ function requireAuth(nextState, replace) {
 function loggedIn(nextState, replace) {
   if (isLoggedIn()) {
     replace({
-      pathname: '/home'
+      pathname: '/dashboard'
     })
   }
 }
@@ -50,7 +51,7 @@ export default (
     <Route path="/verify" name="Verify" component={Verification} />
     <Route path="/verify/:code" name="verifyCode" component={Verification}></Route>
     <Route path="/login" name="Login" component={Login} onEnter={loggedIn}/>
-    <Route path="/home" name="HomePage" component={HomePage} onEnter={requireAuth} />
     <Route path="/trade" name="Trade" component={Trade} onEnter={requireAuth}/>
+    <Route path="/dashboard" name="Dashboard" component={Dashboard} onEnter={requireAuth}/>
 	</Router>
 )
