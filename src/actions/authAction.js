@@ -1,15 +1,12 @@
 import axios from 'axios';
 import { browserHistory } from 'react-router'
 
-// const baseURL = "http://holla-jan4-dev.ap-northeast-2.elasticbeanstalk.com/v0"
-const baseURL = "http://35.158.6.83/api/v0"
-
 export function signup(data) {
 	return ((dispatch) => {
 		dispatch({
 		    type: 'SIGNUP_USER_PENDING'
 		});
-		axios.post(`${baseURL}/signup`, data)
+		axios.post('/signup', data)
 		.then(res => {
 			dispatch(getEmail(data.email));
 			dispatch({
@@ -36,7 +33,7 @@ export function getEmail(data) {
 export function verify(data) {
 	return {
 		type: 'VERIFICATION',
-		payload: axios.post(`${baseURL}/verify`, data)
+		payload: axios.post('/verify', data)
 	}
 }
 export function login(data) {
@@ -44,7 +41,7 @@ export function login(data) {
 		dispatch({
 		    type: 'LOGIN_USER_PENDING'
 		});
-		axios.post(`${baseURL}/login/`, data)
+		axios.post('/login', data)
 		.then( res => {
 			let token = res.data.token
 			axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
@@ -79,14 +76,14 @@ export const logout = () => dispatch => {
 export function resetPassword() {
 	return {
 		type: 'RESET_PASSWORD',
-		payload: axios.put(`${baseURL}/login/reset-password`)
+		payload: axios.put('/login/reset-password')
 	}
 }
 
 export function requestResetPassword(email) {
 	return {
 		type: 'REQUEST_RESET_PASSWORD',
-		payload: axios.put(`${baseURL}/login/request-password-reset`, {
+		payload: axios.put('/login/request-password-reset', {
 			email
 		})
 	}

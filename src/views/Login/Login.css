@@ -1,13 +1,10 @@
-.alignCenter{
-	text-align: center;
-}
-.alignTop{
-	padding-top: 1rem;
-}
-#input input{
-	border: 2px solid grey;
-	width:20%;
-	color:black;
-}
+.alignCenter {
+  text-align: center; }
 
+.alignTop {
+  padding-top: 1rem; }
 
+#input input {
+  border: 2px solid grey;
+  width: 20%;
+  color: black; }

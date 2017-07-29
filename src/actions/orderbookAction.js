@@ -1,12 +1,10 @@
 import _ from 'lodash'
 import axios from 'axios'
 
-const baseURL = 'http://35.158.6.83/api/v0'
-
 export function getOrderbook() {
 	return {
 		type: 'GET_ORDERBOOK',
-		payload: axios.get(`${baseURL}/orderbook`)
+		payload: axios.get('/orderbook')
 	}
 }
 
@@ -20,6 +18,13 @@ export function setOrderbook(orderbook) {
 export function getTrades() {
 	return {
 		type: 'GET_TRADES',
-		payload: axios.get(`${baseURL}/trade`)
+		payload: axios.get('/trade')
+	}
+}
+
+export function setTrades(trades) {
+	return {
+		type: 'SET_TRADES',
+		payload: trades
 	}
 }

@@ -12,6 +12,8 @@ import { setToken } from './actions/authAction'
 
 // Initialize token
 axios.defaults.headers.post['Content-Type'] = 'application/json';
+axios.defaults.baseURL = 'http://35.158.6.83/api/v0';
+
 let token = localStorage.getItem('token')
 if(token) {
   store.dispatch(setToken(token))
@@ -46,8 +48,8 @@ function loggedIn(nextState, replace) {
 
 export default (
 	<Router history={browserHistory}>
-		<Route path="/" name="Home" component={SignUp} />
-    <Route path="/signup" name="signup" component={SignUp} />
+		<Route path="/" name="Home" component={Dashboard} onEnter={loggedIn} />
+    <Route path="/signup" name="signup" component={SignUp} onEnter={loggedIn} />
     <Route path="/verify" name="Verify" component={Verification} />
     <Route path="/verify/:code" name="verifyCode" component={Verification}></Route>
     <Route path="/login" name="Login" component={Login} onEnter={loggedIn}/>

@@ -66,9 +66,11 @@ export default function reducer(state={
 			return {...state, fetching: false, fetched: true, trades: action.payload.data}
 			break;
 		}
-		case 'ADD_TRADE': {
-			return {...state, trades: action.payload, largestTrade: action.largestTrade}
-			break
+
+		// setTrades
+		case 'SET_TRADES': {
+			return {...state, fetching: false, fetched: true, trades: action.payload}
+			break;
 		}
 	}
 	return state;
