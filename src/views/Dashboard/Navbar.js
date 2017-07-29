@@ -22,10 +22,10 @@ class Navbar extends Component {
 						</h3>
 					</div>
 					<div className='col-lg-3 offset-5 pt-2'>
-						<Link to='#' style={{textDecoration:'underline',color:'black'}}>
+						<Link to='/dashboard/quickbuy' style={{textDecoration:'underline',color:'black'}}>
 							QUICK BUY & SELL
 						</Link>
-						<Link to='/trade' style={{textDecoration:'none',color:'black'}} className='ml-4'>
+						<Link to='/dashboard/trade' style={{textDecoration:'none',color:'black'}} className='ml-4'>
 							TRADE
 						</Link>
 						<button className='ml-4' onClick={this.logout.bind(this)}>

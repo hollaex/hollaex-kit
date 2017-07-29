@@ -8,9 +8,9 @@ export function getMe() {
 	}
 }
 
-export function getWallet(wallet) {
+export function setMe(user) {
 	return {
-		type: 'GET_WALLET',
-		payload: wallet
+		type: 'SET_ME',
+		payload: user
 	}
 }

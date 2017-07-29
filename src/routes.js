@@ -1,12 +1,15 @@
 import React from 'react';
-import { Router, Route, browserHistory } from 'react-router';
+import { Router, Route, browserHistory, IndexRoute } from 'react-router';
 import axios from 'axios';
 
-import Trade from './views/Trade/Trade'
-import Login from './views/Login/Login'
-import SignUp from './views/SignUp/SignUp'
-import Verification from './views/SignUp/Verification'
-import Dashboard from './views/Dashboard/Dashboard'
+import Container from './container.js'
+import Home from './views/Home'
+import Dashboard from './views/Dashboard'
+import QuickBuy from './views/Dashboard/QuickBuy'
+import Trade from './views/Dashboard/Trade'
+import Login from './views/Auth/Login'
+import SignUp from './views/Auth/Signup'
+import Verification from './views/Auth/Verification'
 import store from './store'
 import { setToken } from './actions/authAction'
 
@@ -48,12 +51,17 @@ function loggedIn(nextState, replace) {
 
 export default (
 	<Router history={browserHistory}>
-		<Route path="/" name="Home" component={Dashboard} onEnter={loggedIn} />
-    <Route path="/signup" name="signup" component={SignUp} onEnter={loggedIn} />
-    <Route path="/verify" name="Verify" component={Verification} />
-    <Route path="/verify/:code" name="verifyCode" component={Verification}></Route>
-    <Route path="/login" name="Login" component={Login} onEnter={loggedIn}/>
-    <Route path="/trade" name="Trade" component={Trade} onEnter={requireAuth}/>
-    <Route path="/dashboard" name="Dashboard" component={Dashboard} onEnter={requireAuth}/>
+		<Route path="/" component={Container}>
+      <IndexRoute component={Home} />
+      <Route path="dashboard" name="Dashboard" component={Dashboard} onEnter={requireAuth}>
+        <IndexRoute component={QuickBuy}/>
+        <Route path="quickbuy" name="QuickBuy" component={QuickBuy}/>
+        <Route path="trade" name="Trade" component={Trade}/>
+      </Route>
+      <Route path="login" name="Login" component={Login} onEnter={loggedIn}/>
+      <Route path="signup" name="signup" component={SignUp} onEnter={loggedIn} />
+      <Route path="verify" name="Verify" component={Verification} />
+      <Route path="verify/:code" name="verifyCode" component={Verification}></Route>
+    </Route>
 	</Router>
 )

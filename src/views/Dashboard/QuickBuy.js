@@ -4,11 +4,10 @@ import { Link } from 'react-router'
 import BuyDetail from './BuyDetail'
 import Navbar from './Navbar'
 
-export default class Dashboard extends Component {
+export default class QuickBuy extends Component {
 	render() {
 		return (
-			<div className='col'>
-				<Navbar />
+			<div>
 				<div className='row col-lg-10 offset-1 mt-5' style={{top:'4rem'}}>
 					<div className='col-lg-6 text-right'>
 						<div>

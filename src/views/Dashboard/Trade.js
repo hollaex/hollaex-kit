@@ -3,19 +3,14 @@ import { connect } from 'react-redux'
 import axios from 'axios'
 import crypto from 'crypto'
 import _ from 'lodash'
-import io from 'socket.io-client';
 
 import Ionicon from 'react-ionicons'
-
-import './trade.css'
 
 import Draggable, {DraggableCore} from 'react-draggable'; // Both at the same time 
 import moment from 'moment'
 import Rectangle from 'react-rectangle';
 
 import { createOrder } from '../../actions/orderAction'
-import { getOrderbook, getTrades, setOrderbook, setTrades } from '../../actions/orderbookAction'
-import { getMe } from '../../actions/userAction'
 
 const symbol = "XBTUSD"
 const bigVolatilityUnit = 0.09 // indicates the volatility thats considered as a big price change
@@ -68,23 +63,7 @@ class Trade extends Component {
       window.scrollTo(0, 0)
       // this.props.dispatch(getOrderbook())
       // this.props.dispatch(getTrades())
-      this.props.dispatch(getMe())
-      const publicSocket = io('http://35.158.6.83/realtime')
-      // const privateSocket = io.connect('http://35.158.6.83/user', {
-      //    query: {
-      //       token: `Bearer ${this.props.token}`
-      //    }
-      // })
-
-      publicSocket.on('orderbook', (data) => {
-         this.props.dispatch(setOrderbook(data))
-      });
-      publicSocket.on('trades', (data) => {
-         this.props.dispatch(setTrades(data))
-      });
-      // privateSocket.on('user', (data) => {
-      //    console.log('uSEEEEEEEEEEEEER', data)
-      // });
+      // this.props.dispatch(getMe())
    }
 
    componentWillUnmount() {

@@ -23,6 +23,12 @@ export default function reducer(state={
 			break;
 		}
 
+		case 'SET_ME': {
+			var {id, email, balance, crypto_wallet} = action.payload
+			return {...state, fetching: false, fetched: true, id, email, balance, crypto_wallet}
+			break;
+		}
+
 	}
 	return state;
 }
