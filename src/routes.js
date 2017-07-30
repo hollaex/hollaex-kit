@@ -7,6 +7,8 @@ import Home from './views/Home'
 import Dashboard from './views/Dashboard'
 import QuickBuy from './views/Dashboard/QuickBuy'
 import Trade from './views/Dashboard/Trade'
+import Account from './views/Dashboard/Account'
+import Deposit from './views/Dashboard/Deposit'
 import Login from './views/Auth/Login'
 import SignUp from './views/Auth/Signup'
 import Verification from './views/Auth/Verification'
@@ -57,6 +59,8 @@ export default (
         <IndexRoute component={QuickBuy}/>
         <Route path="quickbuy" name="QuickBuy" component={QuickBuy}/>
         <Route path="trade" name="Trade" component={Trade}/>
+        <Route path="account" name="Account" component={Account}/>
+        <Route path="deposit" name="Deposit" component={Deposit}/>
       </Route>
       <Route path="login" name="Login" component={Login} onEnter={loggedIn}/>
       <Route path="signup" name="signup" component={SignUp} onEnter={loggedIn} />

@@ -241,3 +241,12 @@ $bg: #4c5b71;
   border: 1px solid #abaeb3;
   box-shadow: 0px 0px 0px 2px #d4d5d9;
 }
+
+.sidebar {
+  background-color: $bg;
+  color: white;
+  height: 100vh;
+  a {
+    color: white
+  }
+}

@@ -12,7 +12,6 @@ class Navbar extends Component {
 		this.props.logout();
 	}
 	render() {
-		var img = require('./user.png');
 		return (
 			<div>
 				<div className='row pt-3 pl-4'>
@@ -28,12 +27,6 @@ class Navbar extends Component {
 						<Link to='/dashboard/trade' style={{textDecoration:'none',color:'black'}} className='ml-4'>
 							TRADE
 						</Link>
-						<button className='ml-4' onClick={this.logout.bind(this)}>
-							LOGOUT
-						</button>
-					</div>
-					<div className='cpl-lg-1 offset-1 text-right'>
-						<img src={img} width="60" height="60" style={{borderRadius:'30px'}}/> 
 					</div>
 				</div>
 			</div>
