@@ -10,8 +10,8 @@ input[type=text] {
  /* color: white;*/
   font-family: Roboto-Light;
   text-align: left;
-  width: 100%;
-  padding-left: 1rem;
+  /*width: 100%;*/
+  /*padding-left: 1rem;*/
 }
 
 input[type=text]:focus{
@@ -22,8 +22,8 @@ input[type=password] {
   /*background-color: transparent;*/
   border: none;
   /*color: white;*/
-  width: 100%;
-  padding-left: 1rem;
+  /*width: 100%;*/
+  /*padding-left: 1rem;*/
   font-family: Roboto-Light;
 }
 
@@ -233,7 +233,7 @@ $bg: #4c5b71;
   width:24%;
 }
 .customButton{
-  width:20%;
+  width:30%;
   height:3rem !important;
   font-size:1.3rem;
   background:none;
@@ -248,5 +248,14 @@ $bg: #4c5b71;
   height: 100vh;
   a {
     color: white
+  }
+}
+.tradeBorder{
+  border: 1px solid #81868a;
+}
+.trade {
+  font-size: 0.65rem;
+  h5 {
+    color:$bg; 
   }
 }

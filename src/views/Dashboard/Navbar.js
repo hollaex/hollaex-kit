@@ -24,8 +24,8 @@ class Navbar extends Component {
 						<Link to='/dashboard/quickbuy' style={{textDecoration:'underline',color:'black'}}>
 							QUICK BUY & SELL
 						</Link>
-						<Link to='/dashboard/trade' style={{textDecoration:'none',color:'black'}} className='ml-4'>
-							TRADE
+						<Link to='/dashboard/newtrade' style={{textDecoration:'none',color:'black'}} className='ml-4'>
+							NEW TRADE
 						</Link>
 					</div>
 				</div>
