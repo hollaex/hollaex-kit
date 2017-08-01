@@ -1,18 +1,12 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router'
-
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import SaleHistory from './SaleHistory';
-import saleHistory from './BuyHistory';
 import DepositBitcoin from './DepositBitcoin'
 
-export default class Trade extends Component {
+class Trade extends Component {
 	render() {
-		var amount= saleHistory.map((item,index)=>(
-			  <div key={index}>{item.amount}</div>
-		))
-		var price= saleHistory.map((item,index)=>(
-			  <div key={index}>{item.price}</div>
-		))
 		var img = require('./images/trade.png');
 
 		return (
@@ -34,14 +28,29 @@ export default class Trade extends Component {
 							 		<p className="mt-1 ml-3">Deposit Dollars</p>
 							 	</div>
 							 	<div className="row">
-							 		<div className="col-lg-7 text-right">
-							 		 	<p>AMOUNT</p>
-							 		 	<div>{amount}</div>
-							 		</div>
-							 		<div className="col-lg-5">
-							 		 	<p>PRICE</p>
-							 		 	<div>{price}</div>
-							 		</div>
+							 		<div className="col-12">
+								 		<table className="table">
+											<thead>
+												<th>PRICE</th>
+												<th>AMOUNT</th>
+											</thead>
+											<tbody>
+											{(this.props.orderbook.bids)
+												?
+												(this.props.orderbook.bids.map((bid,i) => {
+													return(
+											            <tr key={i}>
+											               <td>{bid[0]}</td>
+											               <td>{bid[1]}</td>
+											            </tr>
+													)
+												}))
+												:
+												null
+											}
+											</tbody>
+										</table>
+									</div>
 							 	</div>
 							 </div>
 							<div className="ml-2 tradeBorder" style={{width:'49%'}}>	
@@ -50,14 +59,29 @@ export default class Trade extends Component {
 							 		<p className="mt-1 ml-3">Deposit BTC</p>
 							 	</div>
 							 	<div className="row">
-							 		<div className="col-lg-4 pl-4"> 	
-										<p>PRICE</p>
-							 		 	<div>{price}</div>
-							 		</div>
-							 		<div className="col-lg-8">
-							 		 	<p>AMOUNT</p>
-							 		 	<div>{amount}</div>
-							 		</div>
+							 		<div className="col-12">
+								 		<table className="table">
+											<thead>
+												<th>PRICE</th>
+												<th>AMOUNT</th>
+											</thead>
+											<tbody>
+											{(this.props.orderbook.asks)
+												?
+												(this.props.orderbook.asks.map((ask,i) => {
+													return(
+											            <tr key={i}>
+											               <td>{ask[0]}</td>
+											               <td>{ask[1]}</td>
+											            </tr>
+													)
+												}))
+												:
+												null
+											}
+											</tbody>
+										</table>
+									</div>
 							 	</div>
 							 </div>
 						 </div>
@@ -79,7 +103,7 @@ export default class Trade extends Component {
 						 		 		balance="0.04 BTC" 
 						 		 		totalAmount="26.53" 
 						 		 		total="Receive"
-						 		 		btc="CELL"/> 	
+						 		 		btc="SELL"/> 	
 						 		</div>
 						 	</div>
 							<div className="row mt-2" style={{height:'48%'}}>
@@ -97,3 +121,12 @@ export default class Trade extends Component {
 		);
 	}
 }
+
+const mapStateToProps = (store, ownProps) => ({
+    order: store.order,
+    orderbook: store.orderbook
+})
+const mapDispatchToProps = dispatch => ({
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Trade);

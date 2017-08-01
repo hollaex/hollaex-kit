@@ -1,38 +1,46 @@
 import React, { Component } from 'react';
-import saleHistory from './BuyHistory';
+import { connect } from 'react-redux';
+import moment from 'moment';
 
-export default class SaleHistory extends Component {
+class SaleHistory extends Component {
 	render() {
 		return (
 			<div>
 				<h5 className='pt-1'>SALE HISTORY</h5>
 				<div className="row" >
-					<div className="col-lg-3 offset-1">
-						<p>PRICE</p>
-						{
-							saleHistory.map((item,index)=>(
-								<div key={index}>{item.price}</div>
-							))
-						}
-					</div>
-					<div className="col-lg-3">
-						<p>AMOUNT</p>
-						{
-							saleHistory.map((item,index)=>(
-								<div key={index}>{item.amount}</div>
-							))
-						}
-					</div>
-					<div className="col-lg-5">
-						<p>TIME OF SALE</p>
-						{
-							saleHistory.map((item,index)=>(
-								<div key={index}>{item.time}</div>
-							))
-						}
+					<div className="col-12" >
+						<table className="table">
+							<thead>
+								<th>PRICE</th>
+								<th>AMOUNT</th>
+								<th>TIME OF SALE</th>
+							</thead>
+							<tbody>
+								{
+									(this.props.orderbook.trades.map((trade,i) => {
+										return(
+								            <tr key={i}>
+								               <td style={{width: "40%"}}>{trade.price}</td>
+								               <td style={{width: "25%"}}>{trade.size}</td>
+								               <td style={{width: "25%"}}>{moment(trade.timestamp).format('HH:mm:ss')}</td>               
+								            </tr>
+										)
+									}))
+								}
+								</tbody>
+						</table>
 					</div>
 				</div>
 			</div>
 		);
 	}
 }
+
+
+const mapStateToProps = (store, ownProps) => ({
+	orderbook: store.orderbook
+})
+const mapDispatchToProps = dispatch => ({
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(SaleHistory);
