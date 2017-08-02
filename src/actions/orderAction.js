@@ -7,9 +7,11 @@ export function createOrder(side, type, size, price) {
 	let body
 	if(price) {
 		price = Number(price)
-		body = {side, size, price}
+		body = {side, type, size, price}
 	}
-	body = {side, type, size, price}
+	else{
+		body = {side, type, size}
+	}
 	return {
 		type: 'CREATE_ORDER',
 		payload: axios.post(`${baseURL}/order`, body)

@@ -25,11 +25,14 @@ export default function reducer(state={
 			let allBids = 0 // accumulative bids amounts
 			let allAsks = 0 // accumulative asks amounts
 			for(let i=0; i<bids.length; i++) {
-				allBids += bids[i][1]
-				bids[i][2] = allBids
-				allAsks += asks[i][1]
-				asks[i][2] = allAsks
-
+				if(bids[i]){
+					allBids += bids[i][1]
+					bids[i][2] = allBids
+				}
+				if(asks[i]){
+					allAsks += asks[i][1]
+					asks[i][2] = allAsks
+				}
 			}
 			return {...state, fetching: false, fetched: true, bids, asks}
 			break;
@@ -42,11 +45,14 @@ export default function reducer(state={
 			let allBids = 0 // accumulative bids amounts
 			let allAsks = 0 // accumulative asks amounts
 			for(let i=0; i<bids.length; i++) {
-				allBids += bids[i][1]
-				bids[i][2] = allBids
-				allAsks += asks[i][1]
-				asks[i][2] = allAsks
-
+				if(bids[i]){
+					allBids += bids[i][1]
+					bids[i][2] = allBids
+				}
+				if(asks[i]){
+					allAsks += asks[i][1]
+					asks[i][2] = allAsks
+				}
 			}
 			return {...state, fetching: false, fetched: true, bids, asks}
 			break;

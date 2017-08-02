@@ -42,8 +42,12 @@ class DepositBitcoin extends Component {
 			var side=this.props.head=='BUY'?'buy':'sell'
 			var orderType=this.props.head=='BUY'?this.state.buyOrderType:this.state.sellOrderType
 			const onSubmit = formProps => {
-				let price=orderType=='market'?100:formProps.price
-	            this.props.createOrder(side,orderType,Number(formProps.amount),price);
+				if(orderType=='market'){
+	            	this.props.createOrder(side,orderType,Number(formProps.amount));
+				}
+				else{
+					this.props.createOrder(side,orderType,Number(formProps.amount),formProps.price);
+				}
 	        }
 		return (
 			<div>
@@ -58,7 +62,7 @@ class DepositBitcoin extends Component {
 	 		 			<div>Balance:</div>
 				 		<div className="mt-1">OrderType:</div>
 				 		<div className="mt-1">Amount:</div>
-				 		{orderType=='market'?null:
+				 		{ orderType=='market'?null:
 				 			<div className="mt-1">Price:</div>
 				 		}
 				 		<div className="mt-2">{`${this.props.total} total:`}</div>
@@ -70,15 +74,15 @@ class DepositBitcoin extends Component {
 				 			 <input 
 				 			 	type="button" 
 				 			 	value='Limit' style={{height:'1.2rem',width:'4rem'}} 
-				 			 	className={this.state.disable?`activeButton pb-3`:`normalButton`}
+				 			 	className={this.state.disable?`activeButton`:`normalButton`}
 				 			 	onClick={this.handleLimit} 
 				 			 	disabled={this.state.disable}/>
 				 			 <input type="button"
-				 			 		 value='Market'  
-				 			 		 style={{height:'1.2rem',width:'4rem'}}
-				 			 		 className={!this.state.disable?`activeButton`:`normalButton`}
-				 			 		 onClick={this.handleMarket} 
-				 			 		 disabled={!this.state.disable}/>
+			 			 		 value='Market'  
+			 			 		 style={{height:'1.2rem',width:'4rem'}}
+			 			 		 className={!this.state.disable?`activeButton`:`normalButton`}
+			 			 		 onClick={this.handleMarket} 
+			 			 		 disabled={!this.state.disable}/>
 				 		</div>
 				 		<div style={{position:'relative',top:'-0.4rem'}} className="mt-2">
 				 			<Field
@@ -89,7 +93,7 @@ class DepositBitcoin extends Component {
 					            placeholder="BTC"
 				         	/>   
 				 		</div>
-				 		{orderType=='market'?null:
+				 		{ orderType=='market'?null:
 				 			<div  style={{position:'relative',top:'-0.3rem'}} className="">
 					 			<Field
 						            name='price'
