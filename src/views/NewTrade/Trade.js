@@ -22,7 +22,7 @@ class Trade extends Component {
 				<div className="mt-2" >
 				 	<div className="row ">
 						 <div className="col-lg-4 row ">
-							 <div className="tradeBorder" style={{width:'48%'}}>	
+							 <div className="tradeBorder" style={{width:'48%',height:'18rem'}}>	
 							 	<div className="row">
 							 		<h5 className="ml-4 mt-1">BUY</h5>
 							 		<p className="mt-1 ml-3">Deposit Dollars</p>
@@ -89,7 +89,8 @@ class Trade extends Component {
 						 	<div className="row " style={{height:'48%'}}>
 						 		<div style={{width:'49%'}} className="tradeBorder">
 						 		 	<DepositBitcoin
-						 		 		head="BUY BITCOINS" 
+						 		 		form="BUY"
+						 		 		head="BUY" 
 						 		 		link="DOLLARS" 
 						 		 		balance="500" 
 						 		 		totalAmount="4,090.52"  
@@ -97,8 +98,9 @@ class Trade extends Component {
 						 		 		btc="BUY"/> 	 
 						 		</div>
 						 		<div className="ml-2 tradeBorder" style={{width:'49.5%'}}>
-						 		 	<DepositBitcoin 
-						 		 		head="SELL BITCOINS" 
+						 		 	<DepositBitcoin
+						 		 		form="SELL" 
+						 		 		head="SELL" 
 						 		 		link="BTC" 
 						 		 		balance="0.04 BTC" 
 						 		 		totalAmount="26.53" 

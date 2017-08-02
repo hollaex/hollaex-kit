@@ -8,7 +8,8 @@ import Dashboard from './views/Dashboard'
 import QuickBuy from './views/Dashboard/QuickBuy'
 // import Trade from './views/Dashboard/Trade'
 import Account from './views/Dashboard/Account'
-import Deposit from './views/Dashboard/Deposit'
+import Deposit from './views/Deposit/Deposit'
+import Withdraw from './views/Withdraw/Withdraw'
 import Login from './views/Auth/Login'
 import SignUp from './views/Auth/Signup'
 import Verification from './views/Auth/Verification'
@@ -61,6 +62,7 @@ export default (
         <Route path="quickbuy" name="QuickBuy" component={QuickBuy}/>
         <Route path="account" name="Account" component={Account}/>
         <Route path="deposit" name="Deposit" component={Deposit}/>
+        <Route path="withdraw" name="Withdraw" component={Withdraw}/>
         <Route path="newtrade" name="Trade" component={Trade} />
       </Route>
       <Route path="login" name="Login" component={Login} onEnter={loggedIn}/>

@@ -16,7 +16,6 @@ const mapDispatchToProps = dispatch => ({
 class Verification extends Component {
 
 	componentDidMount() {
-		console.log('user',this.props.user.verification_code);
 		var email=localStorage.getItem('email');
 		if(this.props.params.code){
 			 this.props.verify({

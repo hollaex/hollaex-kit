@@ -20,6 +20,7 @@ class Sidebar extends Component {
 				<ul>
 					<li><Link to='/dashboard/account'>Account</Link></li>
 					<li><Link to='/dashboard/deposit'>Deposit</Link></li>
+					<li><Link to='/dashboard/withdraw'>Withdraw</Link></li>
 					<li onClick={this._logout.bind(this)}>Logout</li>
 				</ul>
 			</div>

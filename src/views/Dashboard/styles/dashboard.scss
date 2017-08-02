@@ -259,3 +259,19 @@ $bg: #4c5b71;
     color:$bg; 
   }
 }
+.activeButton{
+  color: white;
+  background-color: $bg;
+  font-size: 0.9rem;
+  border:1px solid $bg ;
+  width: 10rem;
+  height:2.5rem;
+}
+.normalButton{
+  color:$bg;
+  background-color: #f1f1f2;
+  font-size: 0.9rem;
+  border:1px solid $bg ;
+  width: 10rem;
+  height:2.5rem;
+}
