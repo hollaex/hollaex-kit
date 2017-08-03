@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import QRCode from 'qrcode.react';
 import { getMe } from '../../actions/userAction'
 
 const mapDispatchToProps = dispatch => ({
@@ -38,8 +39,16 @@ class Deposit extends Component {
 							</div>
 						</div>
 						{this.state.isBitcoin?
-							<div className="mt-3">	
-								<img src={img} width="150" height="150" className="mt-3" />
+							<div className="mt-3">
+								{(this.props.user.crypto_wallet.bitcoin)
+									?
+									<QRCode 
+										value={this.props.user.crypto_wallet.bitcoin}
+										size={150}
+									/>
+									:
+									null
+								}
 								<div className="mt-4" style={{fontSize:'0.66rem'}}>DEPOSIT BITCOIN AT THIS ADDRESS BELOW:</div>
 								<div className="mt-2" style={{color:'rgb(50, 188, 235)'}}>
 									<p>{this.props.user.crypto_wallet.bitcoin}</p>
