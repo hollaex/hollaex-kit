@@ -15,7 +15,6 @@ export function setMe(user) {
 	}
 }
 export function processWithdraw(data) {
-	console.log('data',data);
 	return ((dispatch) => {
 		dispatch({
 		    type: 'PROCESS_WITHDRAW_PENDING'
@@ -30,6 +29,26 @@ export function processWithdraw(data) {
 		.catch(err => {
 			dispatch({
 			    type: 'PROCESS_WITHDRAW_REJECTED',
+			    payload:err.response
+			});
+		})	
+	})
+}
+export function userIdentity(data) {
+	return ((dispatch) => {
+		dispatch({
+		    type: 'USER_IDENTITY_PENDING'
+		});
+		axios.put('/user',data)
+		.then(res => {
+			dispatch({
+			    type: 'USER_IDENTITY_FULFILLED',
+			    payload:res
+			});
+		})
+		.catch(err => {
+			dispatch({
+			    type: 'USER_IDENTITY_REJECTED',
 			    payload:err.response
 			});
 		})	

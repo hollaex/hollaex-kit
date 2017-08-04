@@ -14,6 +14,8 @@ import Login from './views/Auth/Login'
 import SignUp from './views/Auth/Signup'
 import Verification from './views/Auth/Verification'
 import Trade from './views/NewTrade/Trade'
+import UserVerification from './views/UserVerification'
+import CustomerSupport from './views/UserVerification/CustomerSupport'
 import store from './store'
 import { setToken } from './actions/authAction'
 
@@ -54,8 +56,8 @@ function loggedIn(nextState, replace) {
 }
 
 export default (
-	<Router history={browserHistory}>
-		<Route path="/" component={Container}>
+  <Router history={browserHistory}>
+    <Route path="/" component={Container}>
       <IndexRoute component={Home} />
       <Route path="dashboard" name="Dashboard" component={Dashboard} onEnter={requireAuth}>
         <IndexRoute component={QuickBuy}/>
@@ -64,6 +66,8 @@ export default (
         <Route path="deposit" name="Deposit" component={Deposit}/>
         <Route path="withdraw" name="Withdraw" component={Withdraw}/>
         <Route path="newtrade" name="Trade" component={Trade} />
+        <Route path="verification" name="UserVerification" component={UserVerification} />
+        <Route path="support" name="support" component={CustomerSupport} />
       </Route>
       <Route path="login" name="Login" component={Login} onEnter={loggedIn}/>
       <Route path="signup" name="signup" component={SignUp} onEnter={loggedIn} />
@@ -71,5 +75,5 @@ export default (
       <Route path="verify/:code" name="verifyCode" component={Verification}></Route>
       
     </Route>
-	</Router>
+  </Router>
 )

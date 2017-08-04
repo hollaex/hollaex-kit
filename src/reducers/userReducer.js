@@ -38,8 +38,20 @@ export default function reducer(state={
 			break;
 		}
 		case 'PROCESS_WITHDRAW_FULFILLED': {
-			var {id, email, balance, crypto_wallet, bank_account_number, bank_name} = action.payload.data
 			return {...state, fetching: false, fetched: true, data:action.payload.data}
+			break;
+		}
+		// USER_IDENTITY
+		case 'USER_IDENTITY_PENDING': {
+			return {...state, fetching: true, fetched: false, error: null}
+			break;
+		}
+		case 'USER_IDENTITY_REJECTED': {
+			return {...state, fetching: false, error: action.payload}
+			break;
+		}
+		case 'USER_IDENTITY_FULFILLED': {
+			return {...state, fetching: false, fetched: true, userData:action.payload.data}
 			break;
 		}
 
