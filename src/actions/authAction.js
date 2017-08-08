@@ -43,12 +43,14 @@ export function login(data) {
 		});
 		axios.post('/login', data)
 		.then( res => {
+			let currentTime = new Date().getTime();
 			let token = res.data.token
 			axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 			localStorage.setItem('token', token);
+			localStorage.setItem('time', currentTime);
 			dispatch({
 			    type: 'LOGIN_USER_FULFILLED',
-			    payload: token
+			    payload: token,
 			});
 			browserHistory.push('/dashboard');
 		})
@@ -70,6 +72,7 @@ export function setToken(token) {
 }
 export const logout = () => dispatch => {
     localStorage.removeItem('token');
+    localStorage.clear();
     browserHistory.push('/login');
 }
 
