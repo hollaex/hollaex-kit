@@ -1,11 +1,11 @@
+.accountContainer{
+	height: 30rem;
+}
 .accountActive{
 	color: white;
 	background-color: #4c5b71;
 	font-size: 0.9rem;
 	border: 1px solid #4c5b71;
-}
-.td-width{
-	width: 25%;
 }
 .balance{
 	width: 0.8rem;
@@ -18,6 +18,40 @@
   background-color: #f1f1f2;
   font-size: 0.9rem;
   border: 1px solid #4c5b71;
-  width: 25.5rem;
+  width:99%;
   height:2rem;
+}
+.notActive{
+	background: transparent;
+	font-size: 0.9rem;
+	border: 1px solid #4c5b71;
+}
+.red{
+	color:red;
+}
+.errorImage{
+	width: 1rem;
+	height: 1rem;
+	border-radius: 1rem;
+	margin-top: 1px;
+}
+.successBorder{
+	border: 1px solid #d3d4d8;
+	box-shadow: 0px 0px 0px 2px #d3d4d8;
+}
+.errorBorder{
+	border: 1px solid #f85b5c;
+	box-shadow: 0px 0px 0px 2px #f2e0e0;
+}
+.errorHead{
+	background-color: #f2e0e0;
+	border: 1px solid #f85b5c;
+	border-bottom: 2px solid #f85b5c
+}
+.tableView{
+	width: 100%;
+    overflow-x: auto;
+    display: block;
+    margin: 0;
+    font-size: 0.7rem;
 }
