@@ -7,9 +7,11 @@ class Container extends Component {
 	componentWillMount() {
 		const publicSocket = io('http://35.158.6.83/realtime')
 		publicSocket.on('orderbook', (data) => {
+			console.log('orderbook', data)
 			this.props.dispatch(setOrderbook(data))
 		});
 		publicSocket.on('trades', (data) => {
+			console.log('trades', data)
 			this.props.dispatch(setTrades(data))
 		});	
 	}

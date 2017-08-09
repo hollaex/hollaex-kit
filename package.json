@@ -5,6 +5,7 @@
   "dependencies": {
     "axios": "^0.16.2",
     "crypto": "0.0.3",
+    "mathjs": "^3.16.0",
     "moment": "^2.18.1",
     "node-sass-chokidar": "0.0.3",
     "npm-run-all": "^4.0.2",
