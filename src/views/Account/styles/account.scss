@@ -29,6 +29,9 @@
 .red{
 	color:red;
 }
+.green{
+	color:#009a4f;
+}
 .errorImage{
 	width: 1rem;
 	height: 1rem;
@@ -54,4 +57,12 @@
     display: block;
     margin: 0;
     font-size: 0.7rem;
+}
+.time-td{
+	padding-top: 0 !important;
+	padding-bottom: 0 !important;
+	vertical-align: middle !important;
+}
+.timeColor{
+	color:#b3b3b3; 
 }

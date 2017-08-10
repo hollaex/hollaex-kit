@@ -21,7 +21,10 @@ class TradeOrders extends Component {
 						</tr>
 						<tr className="table-success" style={{borderTop:'3px solid #81868a'}}>
 							<td className="text-left">BUY</td>
-							<td>2017-07-06</td>
+							<td className="time-td">
+								<div>2017-07-06</div>
+								<div className='timeColor'>05:34:42</div>
+							</td>
 							<td>0.00994532</td>
 							<td>0.0</td>
 							<td>0.0</td>
@@ -31,7 +34,10 @@ class TradeOrders extends Component {
 						</tr>
 						<tr className="table-danger">
 							<td className="text-left">SELL</td>
-							<td>2017-07-06</td>
+							<td className="time-td">
+								<div>2017-07-06</div>
+								<div className='timeColor'>05:34:42</div>
+							</td>
 							<td>0.1000000</td>
 							<td>0.0</td>
 							<td>0.0</td>

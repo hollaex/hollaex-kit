@@ -20,7 +20,10 @@ class TradeHistory extends Component {
 						</tr>
 						<tr className="table-success " style={{borderTop:'3px solid #81868a'}}>
 							<td className="text-left">BUY</td>
-							<td>2017-07-06</td>
+							<td className="time-td">
+								<div>2017-07-06</div>
+								<div className='timeColor'>05:34:42</div>
+							</td>
 							<td>1.22594532</td>
 							<td>3,115</td>
 							<td>3,770</td>
@@ -29,7 +32,10 @@ class TradeHistory extends Component {
 						</tr>
 						<tr className="table-danger">
 							<td className="text-left">SELL</td>
-							<td>2017-07-06</td>
+							<td className="time-td">
+								<div>2017-07-06</div>
+								<div className='timeColor'>05:34:42</div>
+							</td>
 							<td>0.5</td>
 							<td>3,000</td>
 							<td>1,500</td>

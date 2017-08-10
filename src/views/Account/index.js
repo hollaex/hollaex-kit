@@ -6,6 +6,8 @@ import AccountSetup from './AccountSetup';
 import SecuritySetup from './SecuritySetup';
 import TradeOrders from './TradeOrders';
 import TradeHistory from './TradeHistory';
+import USDHistory from './USDHistory';
+import BTCHistory from './BTCHistory';
 import './styles/account.css'
 
  class AccountModify extends Component {
@@ -26,8 +28,8 @@ import './styles/account.css'
 			    <div className="mt-5  text-center">
 			    	<div><h3>My Account</h3></div>
 			    </div>
-			    <div className="tradeBorder mt-5 accountContainer" >
-					<div className="d-flex justify-content-center" style={{marginTop:'-1.8rem'}}>
+			    <div className="tradeBorder mt-5 accountContainer d-flex flex-column" >
+					<div className="row justify-content-center" style={{marginTop:'-1.8rem'}}>
 						<div className="p-2">
 					  		<button onClick={this.buttonOne} className={this.state.buttonOne?'accountActive':'notActive'}>
 					  		{this.state.buttonOne?
@@ -91,8 +93,8 @@ import './styles/account.css'
 					  		}
 					  		</button>
 						 </div>
-					</div>
 
+					</div>
 					<div className="col-lg-10 offset-lg-1 col-xs-12 mt-5 ">
 						{this.state.buttonOne? <AccountBalance />
 							: 
@@ -104,9 +106,9 @@ import './styles/account.css'
 							: 
 								this.state.buttonFive?<TradeHistory />
 							: 
-								this.state.buttonSix?'In progress'
+								this.state.buttonSix?<USDHistory />
 							:
-								this.state.buttonSeven?'In progress'
+								this.state.buttonSeven?<BTCHistory />
 							:null
 						}
 					</div>

@@ -275,7 +275,11 @@ $bg: #4c5b71;
   width: 12rem;
   height:2.5rem;
 }
-.scroll{
-  overflow-y: scroll;
+.scrollY{
+  overflow-y: auto;
   overflow-x: hidden;
+}
+.scrollXY{
+  overflow-y: auto;
+  overflow-x: auto;
 }

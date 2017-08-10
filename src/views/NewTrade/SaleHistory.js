@@ -8,7 +8,7 @@ class SaleHistory extends Component {
 			<div>
 				<h5 className='pt-1'>SALE HISTORY</h5>
 				<div className="row" >
-					<div className="col-12 scroll" style={{height:'15rem'}} >
+					<div className="col-12 scrollXY" style={{height:'15rem',width:'16rem'}} >
 						<table className="table">
 							<thead>
 								<th>PRICE</th>

@@ -15,6 +15,14 @@ const mapDispatchToProps = dispatch => ({
 })
 class Dashboard extends Component {
 	componentWillMount () {
+		this.resetTimer();
+		window.onload = this.resetTimer;
+	    document.onload = this.resetTimer;
+	    document.onkeypress = this.resetTimer;
+		document.onmousemove = this.resetTimer;
+		document.onmousedown = this.resetTimer;  
+		document.onclick = this.resetTimer; 
+		document.onscroll = this.resetTimer;
 		window.scrollTo(0, 0)
 		// this.props.dispatch(getOrderbook())
 		// this.props.dispatch(getTrades())
@@ -35,6 +43,7 @@ class Dashboard extends Component {
 			 } 
 			 // 86400000 miliseconds for 24 hours
 	}
+
 	render() {	
 		return (
 			<div className="row dashboard-container">
@@ -46,6 +55,21 @@ class Dashboard extends Component {
 			</div>
 		);
 	}
+	componentWillUnmount() {
+		clearTimeout(this.idleTime)
+	}
+	logout = () =>{
+        clearTimeout(this.idleTime);
+        this.props.logout();
+    }
+   	resetTimer=()=> {
+   		var token=localStorage.getItem('token');
+   		if(token){
+   			clearTimeout(this.idleTime);
+        	this.idleTime = setTimeout(this.logout,1800000)
+        	// 1800000 miliseconds for 30 minutes
+   		}
+    }
 }
 
 const mapStateToProps = (store, ownProps) => ({
@@ -53,4 +77,3 @@ const mapStateToProps = (store, ownProps) => ({
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);
- 

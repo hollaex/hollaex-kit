@@ -22,7 +22,7 @@ class Trade extends Component {
 				<div className="mt-2" >
 				 	<div className="row ">
 						 <div className="col-lg-4 row ">
-							 <div className="tradeBorder scroll" style={{width:'48%',height:'18rem'}}>	
+							 <div className="tradeBorder scrollY" style={{width:'48%',height:'18rem'}}>	
 							 	<div className="row">
 							 		<h5 className="ml-4 mt-1">BUY</h5>
 							 		<p className="mt-1 ml-3">Deposit Dollars</p>
@@ -53,7 +53,7 @@ class Trade extends Component {
 									</div>
 							 	</div>
 							 </div>
-							<div className="ml-2 tradeBorder scroll" style={{width:'49%',height:'18rem'}}>	
+							<div className="ml-2 tradeBorder scrollY" style={{width:'49%',height:'18rem'}}>	
 							 	<div className="row">
 							 		<h5 className="ml-4 mt-1">SELL</h5>
 							 		<p className="mt-1 ml-3">Deposit BTC</p>
