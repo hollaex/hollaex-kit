@@ -28,3 +28,10 @@ export function setTrades(trades) {
 		payload: trades
 	}
 }
+
+export function addTrades(trades, newTrades) {
+	return {
+		type: 'ADD_TRADES',
+		payload: { trades, newTrades }
+	}
+}

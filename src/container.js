@@ -1,9 +1,15 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import io from 'socket.io-client';
-import { setOrderbook, setTrades } from './actions/orderbookAction'
+import { setOrderbook, setTrades, addTrades } from './actions/orderbookAction'
 
 class Container extends Component {
+	constructor() {
+		super()
+		this.state = {
+			trades: true // first load for trades 
+		}
+	}
 	componentWillMount() {
 		const publicSocket = io('http://35.158.6.83/realtime')
 		publicSocket.on('orderbook', (data) => {
@@ -12,7 +18,15 @@ class Container extends Component {
 		});
 		publicSocket.on('trades', (data) => {
 			console.log('trades', data)
-			this.props.dispatch(setTrades(data))
+			if(this.state.trades) {
+				this.setState({
+					trades: false
+				})
+				this.props.dispatch(setTrades(data))
+			} else { // new updated trade which should be added to the list
+				this.props.dispatch(addTrades(this.props.orderbook.trades, data))
+			}
+			
 		});	
 	}
 	render() {
@@ -24,4 +38,8 @@ class Container extends Component {
 	}
 }
 
-export default connect()(Container);
+const mapStateToProps = (store, ownProps) => ({
+	orderbook: store.orderbook
+})
+
+export default connect(mapStateToProps)(Container);
