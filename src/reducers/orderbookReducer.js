@@ -78,6 +78,13 @@ export default function reducer(state={
 			return {...state, fetching: false, fetched: true, trades: action.payload}
 			break;
 		}
+
+		// addTrades
+		case 'ADD_TRADES': {
+			const updatedTrades = [...action.payload.newTrades, ...action.payload.trades]
+			return {...state, fetching: false, fetched: true, trades: updatedTrades}
+			break;
+		}
 	}
 	return state;
 }
