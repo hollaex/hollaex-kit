@@ -6,8 +6,7 @@ import AccountSetup from './AccountSetup';
 import SecuritySetup from './SecuritySetup';
 import TradeOrders from './TradeOrders';
 import TradeHistory from './TradeHistory';
-import USDHistory from './USDHistory';
-import BTCHistory from './BTCHistory';
+import TransferHistory from './TransferHistory';
 import './styles/account.css'
 
  class AccountModify extends Component {
@@ -106,9 +105,9 @@ import './styles/account.css'
 							: 
 								this.state.buttonFive?<TradeHistory />
 							: 
-								this.state.buttonSix?<USDHistory />
+								this.state.buttonSix?<TransferHistory transfer='USD'/>
 							:
-								this.state.buttonSeven?<BTCHistory />
+								this.state.buttonSeven?<TransferHistory transfer='BTC'/>
 							:null
 						}
 					</div>

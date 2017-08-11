@@ -54,3 +54,49 @@ export function userIdentity(data) {
 		})	
 	})
 }
+export function uploadFile(front) { 
+	console.log('front',front);
+	return ((dispatch) => {
+		dispatch({
+		    type: 'UPLOAD_FILE_PENDING'
+		});
+		axios.post('/user/verification',front)
+		.then(res => {
+			dispatch({
+			    type: 'UPLOAD_FILE_FULFILLED',
+			    payload:res
+			});
+		})
+		.catch(err => {
+			dispatch({
+			    type: 'UPLOAD_FILE_REJECTED',
+			    payload:err.response
+			});
+		})	
+	})
+}
+
+export function userOrders() {
+	return {
+		type: 'USER_ORDERS',
+		payload: axios.get('/user/orders'),
+	}
+}
+export function userTrades() {
+	return {
+		type: 'USER_TRADES',
+		payload: axios.get('/user/trades'),
+	}
+}
+export function userDeposits() {
+	return {
+		type: 'USER_DEPOSITS',
+		payload: axios.get('user/deposits'),
+	}
+}
+export function userWithdrawals() {
+	return {
+		type: 'USER_WITHDRAWALS',
+		payload: axios.get('user/withdrawals'),
+	}
+}
