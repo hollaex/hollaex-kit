@@ -71,6 +71,7 @@ export function setToken(token) {
     }
 }
 export const logout = () => dispatch => {
+	axios.defaults.headers.common['Authorization'] = null;
     localStorage.removeItem('token');
     localStorage.clear();
     browserHistory.push('/login');

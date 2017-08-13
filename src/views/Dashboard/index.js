@@ -9,21 +9,24 @@ import { getMe, setMe } from '../../actions/userAction'
 import { logout } from '../../actions/authAction'
 import './styles/dashboard.css'
 
+const sessionTime = 60 * 60 * 1000 // one hour
+
 const mapDispatchToProps = dispatch => ({
     setMe: bindActionCreators(setMe, dispatch),
     logout:bindActionCreators(logout, dispatch),
 })
+
 class Dashboard extends Component {
 	componentWillMount () {
-		this.resetTimer();
-		window.onload = this.resetTimer;
-	    document.onload = this.resetTimer;
-	    document.onkeypress = this.resetTimer;
-		document.onmousemove = this.resetTimer;
-		document.onmousedown = this.resetTimer;  
-		document.onclick = this.resetTimer; 
-		document.onscroll = this.resetTimer;
 		window.scrollTo(0, 0)
+		this._resetTimer();
+		window.addEventListener("keydown", this._handleKeyboard, false); // Trade Executions
+		window.addEventListener("scroll", this._resetTimer, false);
+		window.addEventListener("mousemove", this._resetTimer, false);
+		window.addEventListener("click", this._resetTimer, false);
+		window.addEventListener("keypress", this._resetTimer, false);
+		window.addEventListener("beforeunload", this._handleWindowClose, false); // before closing the window
+
 		// this.props.dispatch(getOrderbook())
 		// this.props.dispatch(getTrades())
 		// this.props.dispatch(getMe())
@@ -33,15 +36,15 @@ class Dashboard extends Component {
 			}
 		})
 		privateSocket.on('user', (data) => {
+			console.log('usersocket', data)
 			this.props.setMe(data)
 		});
-		var time_now  = (new Date()).getTime();
-		var loginTime=localStorage.getItem('time');
-		console.log('time_now',time_now);
-			if ((time_now - loginTime) >86400000) {
-			     this.props.logout();
-			 } 
-			 // 86400000 miliseconds for 24 hours
+		var time_now = (new Date()).getTime();
+		// Check to see when the user logged in
+		var loginTime = localStorage.getItem('time');
+		if ((time_now - loginTime) > sessionTime) {
+			this.props.logout();
+		}
 	}
 
 	render() {	
@@ -56,19 +59,21 @@ class Dashboard extends Component {
 		);
 	}
 	componentWillUnmount() {
+		window.removeEventListener('resize', this._handleResize);
+		window.removeEventListener("scroll", this._resetTimer);
+		window.removeEventListener("mousemove", this._resetTimer);
+		window.removeEventListener("click", this._resetTimer);
+		window.removeEventListener("keypress", this._resetTimer);
+		window.removeEventListener("beforeunload", this._handleWindowClose);
 		clearTimeout(this.idleTime)
 	}
-	logout = () =>{
+	_logout = () =>{
         clearTimeout(this.idleTime);
         this.props.logout();
     }
-   	resetTimer=()=> {
-   		var token=localStorage.getItem('token');
-   		if(token){
-   			clearTimeout(this.idleTime);
-        	this.idleTime = setTimeout(this.logout,1800000)
-        	// 1800000 miliseconds for 30 minutes
-   		}
+   	_resetTimer=()=> {
+		clearTimeout(this.idleTime);
+    	this.idleTime = setTimeout(this._logout, sessionTime) // no activity will log the user out automatically
     }
 }
 
