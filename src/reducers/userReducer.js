@@ -78,7 +78,7 @@ export default function reducer(state={
 			break;
 		}
 		case 'USER_ORDERS_FULFILLED': {
-		return {...state, fetching: false, orders: action.payload.response}
+		return {...state, fetching: false, orders: action.payload.data}
 			break;
 		}
 		// USER_TRADES
