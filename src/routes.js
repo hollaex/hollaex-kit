@@ -22,7 +22,7 @@ import { setToken } from './actions/authAction'
 
 // Initialize token
 axios.defaults.headers.post['Content-Type'] = 'application/json';
-axios.defaults.baseURL = 'http://35.158.6.83/api/v0';
+axios.defaults.baseURL = 'http://35.158.234.195/api/v0';
 
 let token = localStorage.getItem('token')
 if(token) {

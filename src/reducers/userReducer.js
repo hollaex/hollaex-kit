@@ -5,7 +5,8 @@ export default function reducer(state={
 	id: null,
 	email: null,
 	balance: {},
-	crypto_wallet: {}
+	crypto_wallet: {},
+	orders: []
 }, action) {
 	switch(action.type) {
 		// GETME user profile
@@ -118,6 +119,18 @@ export default function reducer(state={
 		}
 		case 'USER_WITHDRAWALS_FULFILLED': {
 			return {...state, fetching: false,  withdrawals: action.payload.data}
+			break;
+		}
+
+		//Webscoket redux manipulations on orders
+		case 'SET_USER_ORDERS': {
+			return {...state, orders: action.payload}
+			break;
+		}
+		case 'ADD_ORDER': {
+			let { orders, order } = action.payload
+			orders.push(order)
+			return {...state, orders}
 			break;
 		}
 
