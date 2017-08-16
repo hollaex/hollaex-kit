@@ -19,8 +19,8 @@ export default function reducer(state={
 			break;
 		}
 		case 'GET_ME_FULFILLED': {
-			var {id, email, balance, crypto_wallet, bank_account_number, bank_name} = action.payload.data
-			return {...state, fetching: false, fetched: true, id, email, balance, crypto_wallet, bank_account_number, bank_name}
+			var {id, email, balance, crypto_wallet, bank_account_number, bank_name, verification_level} = action.payload.data
+			return {...state, fetching: false, fetched: true, id, email, balance, crypto_wallet, bank_account_number, bank_name,verification_level}
 			break;
 		}
 

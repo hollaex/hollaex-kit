@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux'; 
 import PropTypes from 'prop-types';
+import moment from 'moment'
 import { userOrders } from '../../actions/userAction'
 class TradeOrders extends Component {
 	state={
@@ -19,14 +20,12 @@ class TradeOrders extends Component {
 		   	const indexOfFirstOrder = indexOfLastOrder - dataPerPage;
 		   	const currentData = this.props.orders.slice(indexOfFirstOrder, indexOfLastOrder);
 	 		var tradeOrders=currentData.map((data,index)=>{
-		 		let dateTime= data.created_at.split('T', 2)
-		 		let time=dateTime[1].split('.',1)
 	 			return(
 					<tr key={index} className={data.side=='buy'?`table-success`:data.side=='sell'?`table-danger`:null}>
 						<td className="text-left">{data.side=='sell'?'SELL':'BUY'}</td>
 						<td className="time-td">
-							<div>{dateTime[0]}</div>
-							<div className='timeColor'>{time}</div>
+							<div>{moment(data.created_at).format('YYYY-MM-DD')}</div>
+							<div className='timeColor'>{moment(data.created_at).format('HH:mm:ss')}</div>
 						</td>
 						<td>{data.size}</td>
 						<td>0.0</td>
@@ -57,7 +56,7 @@ class TradeOrders extends Component {
 	 	}
 	 	
 		return (
-			<div>
+			<div className='col-lg-10 offset-lg-1 '>
 				<div><h4>Open Trade Orders</h4></div>
 				<div className='tableView'>
 					<table className='table text-right'>
@@ -74,7 +73,8 @@ class TradeOrders extends Component {
 							</tr>
 						</thead>
 						<tbody>
-							{tradeOrders}
+							 
+							 {this.props.orders.length?tradeOrders:null}
 						</tbody>
 					</table>
 				</div>

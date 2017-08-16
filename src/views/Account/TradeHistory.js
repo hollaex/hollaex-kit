@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux'; 
 import PropTypes from 'prop-types';
+import moment from 'moment'
 import { userTrades } from '../../actions/userAction'
  
 class TradeHistory extends Component {
@@ -21,14 +22,12 @@ class TradeHistory extends Component {
 		   	const indexOfFirstData = indexOfLastData - dataPerPage;
 		   	const currentData = data.slice(indexOfFirstData, indexOfLastData);
 	 		var tradeHistory=currentData.map((data,index)=>{
-		 		let dateTime= data.timestamp.split('T', 2)
-		 		let time=dateTime[1].split('.',1)
 	 			return(
 	 				<tr key={index} className={data.side=='buy'?`table-success`:data.side=='sell'?`table-danger`:null}>
 						<td className="text-left">{data.side}</td>
 						<td className="time-td">
-							<div>{dateTime[0]}</div>
-							<div className='timeColor'>{time}</div>
+							<div>{moment(data.timestamp).format('YYYY-MM-DD')}</div>
+							<div className='timeColor'>{moment(data.timestamp).format('HH:mm:ss')}</div>
 						</td>
 						<td>{data.size}</td>
 						<td>{data.price}</td>
@@ -57,7 +56,7 @@ class TradeHistory extends Component {
 		    });
 	 	}
 		return (
-			<div>
+			<div className='col-lg-10 offset-lg-1 '>
 				<div><h4>Trade History</h4></div>
 				<div className='tableView'>
 					<table className='table text-right'>

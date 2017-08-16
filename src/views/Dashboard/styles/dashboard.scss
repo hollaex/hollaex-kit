@@ -283,3 +283,11 @@ $bg: #4c5b71;
   overflow-y: auto;
   overflow-x: auto;
 }
+.backgroundImg{
+    position: relative;
+    background: #fff url("../../TradeRes/images/trade.png") center center;/*slide.jpg =>you image*/    
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    overflow: hidden;
+}

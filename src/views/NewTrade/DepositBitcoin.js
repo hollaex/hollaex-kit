@@ -51,71 +51,77 @@ class DepositBitcoin extends Component {
 	        }
 		return (
 			<div>
-				<div className="row ml-2 mt-1">
-	 		 		<h5 className="mr-3">{`${this.props.head} BITCOINS`}</h5>
+				<div className="d-flex ml-2 mt-1">
+	 		 		<div><h5 className="mr-3">{`${this.props.head} BITCOINS`}</h5></div>
 	 		 		<div className="ml-5  pt-1">
 	 		 			<Link to="#">{`DEPOSIT ${this.props.link}`}</Link>
 	 		 		</div>
 	 		 	</div>
 	 		 	<div className="row">
 	 		 		<div className="ml-4">
-	 		 			<div>Balance:</div>
-				 		<div className="mt-1">OrderType:</div>
-				 		<div className="mt-1">Amount:</div>
-				 		{ orderType=='market'?null:
-				 			<div className="mt-1">Price:</div>
-				 		}
-				 		<div className="mt-2">{`${this.props.total} total:`}</div>
+		 		 		<form onSubmit={ handleSubmit(onSubmit)}>
+		 		 			<div className='d-flex'>
+		 		 				<div>Balance:</div>
+		 		 				<div className='ml-4 pl-2'>{this.props.balance}</div>
+		 		 			</div>
+		 		 			<div className='d-flex'>
+					 			<div className="">OrderType:</div>
+					 			<div className="row ml-4 " >
+						 			 <input 
+						 			 	type="button" 
+						 			 	value='Limit' style={{height:'1.2rem',width:'4rem'}} 
+						 			 	className={this.state.disable?`activeButton`:`normalButton`}
+						 			 	onClick={this.handleLimit} 
+						 			 	disabled={this.state.disable}/>
+						 			 <input type="button"
+					 			 		 value='Market'  
+					 			 		 style={{height:'1.2rem',width:'4rem'}}
+					 			 		 className={!this.state.disable?`activeButton`:`normalButton`}
+					 			 		 onClick={this.handleMarket} 
+					 			 		 disabled={!this.state.disable}/>
+					 			</div>
+		 		 			</div>
+		 		 			<div className='d-flex'>
+					 			<div className="mt-1">Amount:</div>
+			 		 			<div className="mt-1 ml-3 pl-3">
+						 			<Field
+							            name='amount'
+							            component={ renderInput }
+							            type="text"
+							            label="Spend All"
+							            placeholder="BTC"
+						         	/>   
+						 		</div>
+		 		 			</div>
+
+					 		{ orderType=='market'?null:
+					 			<div className='d-flex'>
+			 		 				<div>Price:</div>
+			 		 				<div className="ml-5">
+							 			<Field
+								            name='price'
+								            component={ renderInput }
+								            type="text"
+								            label="Best Sell Price"
+								            placeholder="AUD"
+								         />  
+						 			</div>
+			 		 			</div>
+					 		}
+					 		<div className='d-flex'>
+		 		 				<div className="mt-2">{`${this.props.total} total:`}</div>
+		 		 				<div className="row pt-2">
+						 			<div className="ml-3 mr-1" style={{fontWeight:'bold',fontSize:'0.75rem'}}>
+						 				{`$${this.props.totalAmount}`}
+						 			</div>
+						 			<span> inc 0.7% Fee (inc GST)</span>
+						 			<div>
+						 				<button className='boxButton ml-1'>{`${this.props.btc} BTC >`}</button>
+						 			</div>
+						 		</div>
+		 		 			</div>
+				 		</form> 
 	 		 		</div>	
-	 		 		<div>
-	 		 		<form onSubmit={ handleSubmit(onSubmit)}>
-				 		<div>{this.props.balance}</div>
-				 		<div className="mt-1 row ml-1 " >
-				 			 <input 
-				 			 	type="button" 
-				 			 	value='Limit' style={{height:'1.2rem',width:'4rem'}} 
-				 			 	className={this.state.disable?`activeButton`:`normalButton`}
-				 			 	onClick={this.handleLimit} 
-				 			 	disabled={this.state.disable}/>
-				 			 <input type="button"
-			 			 		 value='Market'  
-			 			 		 style={{height:'1.2rem',width:'4rem'}}
-			 			 		 className={!this.state.disable?`activeButton`:`normalButton`}
-			 			 		 onClick={this.handleMarket} 
-			 			 		 disabled={!this.state.disable}/>
-				 		</div>
-				 		<div style={{position:'relative',top:'-0.4rem'}} className="mt-2">
-				 			<Field
-					            name='amount'
-					            component={ renderInput }
-					            type="text"
-					            label="Spend All"
-					            placeholder="BTC"
-				         	/>   
-				 		</div>
-				 		{ orderType=='market'?null:
-				 			<div  style={{position:'relative',top:'-0.3rem'}} className="">
-					 			<Field
-						            name='price'
-						            component={ renderInput }
-						            type="text"
-						            label="Best Sell Price"
-						            placeholder="AUD"
-						         />  
-				 			</div>
-				 		}
-				 		
-					 	<div className="row mt-1">
-				 			<div className="ml-4 mr-1" style={{fontWeight:'bold',fontSize:'0.75rem'}}>
-				 				{`$${this.props.totalAmount}`}
-				 			</div>
-				 			<span> inc 0.7% Fee (inc GST)</span>
-				 			<div  style={{position:'relative',top:'-0.4rem'}}>
-				 				<button className='boxButton ml-2'>{`${this.props.btc} BTC >`}</button>
-				 			</div>
-				 		</div>
-				 	</form>
-				 	</div>
 	 		 	</div>
 			</div>
 		);
@@ -150,3 +156,51 @@ const form = reduxForm({
   validate
 });
 export default connect(mapStateToProps, mapDispatchToProps)(form(DepositBitcoin));
+
+// <form onSubmit={ handleSubmit(onSubmit)}>
+// 				 		<div>{this.props.balance}</div>
+// 				 		<div className="mt-1 row ml-1 " >
+// 				 			 <input 
+// 				 			 	type="button" 
+// 				 			 	value='Limit' style={{height:'1.2rem',width:'4rem'}} 
+// 				 			 	className={this.state.disable?`activeButton`:`normalButton`}
+// 				 			 	onClick={this.handleLimit} 
+// 				 			 	disabled={this.state.disable}/>
+// 				 			 <input type="button"
+// 			 			 		 value='Market'  
+// 			 			 		 style={{height:'1.2rem',width:'4rem'}}
+// 			 			 		 className={!this.state.disable?`activeButton`:`normalButton`}
+// 			 			 		 onClick={this.handleMarket} 
+// 			 			 		 disabled={!this.state.disable}/>
+// 				 		</div>
+// 				 		<div style={{position:'relative',top:'-0.4rem'}} className="mt-2">
+// 				 			<Field
+// 					            name='amount'
+// 					            component={ renderInput }
+// 					            type="text"
+// 					            label="Spend All"
+// 					            placeholder="BTC"
+// 				         	/>   
+// 				 		</div>
+// 				 		{ orderType=='market'?null:
+// 				 			<div  style={{position:'relative',top:'-0.3rem'}} className="">
+// 					 			<Field
+// 						            name='price'
+// 						            component={ renderInput }
+// 						            type="text"
+// 						            label="Best Sell Price"
+// 						            placeholder="AUD"
+// 						         />  
+// 				 			</div>
+// 				 		}
+				 		
+// 					 	<div className="row mt-1">
+// 				 			<div className="ml-4 mr-1" style={{fontWeight:'bold',fontSize:'0.75rem'}}>
+// 				 				{`$${this.props.totalAmount}`}
+// 				 			</div>
+// 				 			<span> inc 0.7% Fee (inc GST)</span>
+// 				 			<div  style={{position:'relative',top:'-0.4rem'}}>
+// 				 				<button className='boxButton ml-2'>{`${this.props.btc} BTC >`}</button>
+// 				 			</div>
+// 				 		</div>
+// 				 	</form>

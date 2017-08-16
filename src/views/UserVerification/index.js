@@ -11,6 +11,14 @@ export default class UserVerification extends Component {
 		buttonTwo:false,
 		buttonThree:false
 	}
+	componentDidMount() {
+		if(this.props.params.level==2){
+			 this.setState({buttonOne:false,buttonTwo:true,buttonThree:false})
+		}
+		else if(this.props.params.level==3){
+			 this.setState({buttonOne:false,buttonTwo:false,buttonThree:true})
+		}
+	}
 	render() {
 		return (
 			<div>

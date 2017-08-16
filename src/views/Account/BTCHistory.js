@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
+import moment from 'moment'
 import { userDeposits,userWithdrawals } from '../../actions/userAction'
 
 class BTCHistory extends Component {
@@ -33,7 +34,6 @@ class BTCHistory extends Component {
 		})
 		if(transHistory.length){
 			var btcHistory=[];
-			var fiatHistory=[];
 			transHistory.map(data=>{
 				if(data.currency=='btc'){
 					btcHistory.push(data);
@@ -43,13 +43,11 @@ class BTCHistory extends Component {
 		   	const indexOfFirstData = indexOfLastData - dataPerPage;
 		   	const currentData = btcHistory.slice(indexOfFirstData, indexOfLastData);
 			var transferHistory= currentData.map((data,index)=>{
-		 		let dateTime= data.created_at.split('T', 2)
-		 		let time=dateTime[1].split('.',1)
 	 			return(
 					<tr key={index} style={{borderBottom:'2px solid #81868a'}}>
 						<td className="text-left time-td">
-							<div>{dateTime[0]}</div>
-							<div className='timeColor'>{time}</div>
+							<div>{moment(data.created_at).format('YYYY-MM-DD')}</div>
+							<div className='timeColor'>{moment(data.created_at).format('HH:mm:ss')}</div>
 						</td>
 						<td>{data.type}</td>
 						<td>{data.status?'Complete':'Pending'}</td>
@@ -76,7 +74,7 @@ class BTCHistory extends Component {
 		    });
 		}
 		return (
-			<div>
+			<div className='col-lg-10 offset-lg-1 '>
 				<div><h4>BTC Transfer History</h4></div>
 				<div className='tableView'>
 					<table className='table text-right'>

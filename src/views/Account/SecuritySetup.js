@@ -10,7 +10,7 @@ class SecuritySetup extends Component {
 		var arrow = require('./images/arrow.png');
 		var shield = require('./images/shield.png');
 		return (
-			<div>
+			<div className='col-lg-10 offset-lg-1 '>
 				<div className='d-flex'>
 					<h4>Security setup 1 of 2 completed:</h4>
 					<div className='ml-3'>

@@ -79,7 +79,7 @@ class AccountBalance extends Component {
 
 	render() {
 		return (
-			<div>
+			<div className='col-lg-10 offset-lg-1'>
 				<div  className='mt-4'><h3>Account Balance</h3></div>
 				{(this.props.orderbook.trades.length > 0 && this.props.user.balance.btc_balance)
 				?

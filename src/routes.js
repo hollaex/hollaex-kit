@@ -14,7 +14,7 @@ import Withdraw from './views/Withdraw/Withdraw'
 import Login from './views/Auth/Login'
 import SignUp from './views/Auth/Signup'
 import Verification from './views/Auth/Verification'
-import Trade from './views/NewTrade/Trade'
+import NewTrade from './views/NewTrade'
 import UserVerification from './views/UserVerification'
 import CustomerSupport from './views/UserVerification/CustomerSupport'
 import store from './store'
@@ -66,9 +66,10 @@ export default (
         <Route path="account" name="Account" component={Account}/>
         <Route path="deposit" name="Deposit" component={Deposit}/>
         <Route path="withdraw" name="Withdraw" component={Withdraw}/>
-        <Route path="newtrade" name="Trade" component={Trade} />
+        <Route path="newtrade" name="Trade" component={NewTrade} />
         <Route path="verification" name="UserVerification" component={UserVerification} />
         <Route path="support" name="support" component={CustomerSupport} />
+         <Route path="verification/:level" name="verifyCode" component={UserVerification}></Route>
       </Route>
       <Route path="login" name="Login" component={Login} onEnter={loggedIn}/>
       <Route path="signup" name="signup" component={SignUp} onEnter={loggedIn} />

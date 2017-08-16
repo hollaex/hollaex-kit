@@ -95,7 +95,7 @@ import './styles/account.css'
 						 </div>
 
 					</div>
-					<div className="col-lg-10 offset-lg-1 col-xs-12 mt-5 ">
+					<div className="col-xs-12 mt-5 ">
 						{this.state.buttonOne? <AccountBalance />
 							: 
 								this.state.buttonTwo?<AccountSetup />
