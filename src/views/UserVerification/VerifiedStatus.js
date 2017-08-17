@@ -21,12 +21,12 @@ export default class VerifiedStatus extends Component {
 							<div className="mt-5" ><Link to='#'>PROCEED TO LEVEL 3 - BANK DETAILS VERIFICATION</Link></div>
 							<div className="mt-3">
 								Want to change identity details?
-								<a href='support'>Contact customer support.</a>
+								<Link to='/dashboard/support'>Contact customer support</Link>
 							</div>
 						</div>
 					:this.props.verify=='BANK DETAILS'?
 						<div className="mt-5">
-							<a href='support'>Contact customer support.</a>
+							<Link to='/dashboard/support'>Contact customer support</Link> 
 							if you want to change bank account details
 						</div>
 					:null

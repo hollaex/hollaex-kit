@@ -30,7 +30,7 @@ class AccountSetup extends Component {
 										Add a bank account to complete your bank verification
 									</Link>
 								:verification_level==3?
-									 <Link to='/dashboard/verification/2'>'Add a VIP account'</Link>
+									 <Link to='/dashboard/support'>'Add a VIP account'</Link>
 								:<div className='green'>Verification completed</div>
 							}
 						</span>
@@ -100,7 +100,7 @@ class AccountSetup extends Component {
 								</div>
 							</div>
 							<div className='p-2 pb-3'>
-								 <Link to='/dashboard/verification/2'>Go to VIP Account</Link>
+								 <Link to='/dashboard/support'>Click here to add VIP Account</Link>
 							</div>
 						</div>
 						:

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
 import { bindActionCreators } from 'redux';
-
+import { Link } from 'react-router'
 import { renderText, renderTextArea, renderSelect } from './ReduxFields';
 import country from './Country';
 import { userIdentity } from '../../actions/userAction'
@@ -155,7 +155,7 @@ export class Identity extends Component {
 								</div>
 							</div>
 							<div className="mt-3">
-								Are you a business? <a href='support'>Contact customer support</a> for a coporate account.
+								Are you a business? <Link to='/dashboard/support'>Contact customer support</Link> for a coporate account.
 							</div>
 						</div>
 						<div>

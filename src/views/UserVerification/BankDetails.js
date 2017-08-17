@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Field, reduxForm } from 'redux-form';
-
+import { Link } from 'react-router'
 import VerifiedStatus from './VerifiedStatus'
 import { renderText } from './ReduxFields';
 import { userIdentity } from '../../actions/userAction'
@@ -51,24 +51,28 @@ class BankDetails extends Component {
 				            component={ renderText }
 				            type="text"
 				            label="BANK NAME"
+				            style={{width:'35%'}}
 				        />
 						<Field
 				            name="accountOwner"
 				            component={ renderText }
 				            type="text"
 				            label="BANK ACCOUNT OWNER'S NAME"
+				            style={{width:'35%'}}
 				        />
 				        <Field
 				            name="accountNumber"
 				            component={ renderText }
 				            type="text"
 				            label="BANK ACCOUNT NUMBER"
+				            style={{width:'35%'}}
 				        />
 				        <Field
 				            name="bsb"
 				            component={ renderText }
 				            type="text"
 				            label="BSB"
+				            style={{width:'35%'}}
 				        />
 				        <div className="mt-5">
 				        	<button type="submit" className="activeButton" style={{width:'40%'}} >
@@ -77,7 +81,7 @@ class BankDetails extends Component {
 				        </div>
 				        <div className="mt-4">
 				        	Want to add an international bank account? 
-				        	<a href='support'>Contact customer support.</a>
+				        	<Link to='/dashboard/support'>Contact customer support.</Link>
 				        </div>
 				    </form>    
 				    :
