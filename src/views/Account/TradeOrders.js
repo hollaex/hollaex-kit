@@ -3,22 +3,22 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux'; 
 import PropTypes from 'prop-types';
 import moment from 'moment'
-import { userOrders, cancelOrder, cancelAllOrders } from '../../actions/userAction'
+import { getOrders, cancelOrder, cancelAllOrders } from '../../actions/orderAction'
 class TradeOrders extends Component {
 	state={
 		currentPage:1,
 		dataPerPage:10,
 	}
 	componentDidMount() {
-		this.props.userOrders();
+		// this.props.getOrders();
 	}
 	render() {
 		const { currentPage, dataPerPage } = this.state;
-	 	if(this.props.orders.length){
-	 		var TradeOrders=this.props.orders;
+	 	if(this.props.order.activeOrders.length){
+	 		var TradeOrders=this.props.order.activeOrders;
 		  	const indexOfLastOrder = currentPage * dataPerPage;
 		   	const indexOfFirstOrder = indexOfLastOrder - dataPerPage;
-		   	const currentData = this.props.orders.slice(indexOfFirstOrder, indexOfLastOrder);
+		   	const currentData = this.props.order.activeOrders.slice(indexOfFirstOrder, indexOfLastOrder);
 	 		var tradeOrders=currentData.map((data,index)=>{
 	 			return(
 					<tr key={index} className={data.side=='buy'?`table-success`:data.side=='sell'?`table-danger`:null}>
@@ -53,7 +53,7 @@ class TradeOrders extends Component {
 	 			}
 	 		})
 	 		var pageNumbers = [];
-		    for (let i = 1; i <= Math.ceil(this.props.orders.length/dataPerPage); i++) {
+		    for (let i = 1; i <= Math.ceil(this.props.order.activeOrders.length/dataPerPage); i++) {
 		      	pageNumbers.push(i);
 		    }
 		    var renderPageNumbers = pageNumbers.map(number => {
@@ -80,7 +80,7 @@ class TradeOrders extends Component {
 								 <Header cancelAll={this.props.cancelAll} />
 							</thead>
 							<tbody>
-								 {this.props.orders.length?topThreeOrders:null}
+								 {this.props.order.activeOrders.length?topThreeOrders:null}
 							</tbody>
 						</table>
 				</div>
@@ -93,12 +93,12 @@ class TradeOrders extends Component {
 								<Header cancelAll={this.props.cancelAll} />
 							</thead>
 							<tbody>
-								 {this.props.orders.length?tradeOrders:null}
+								 {this.props.order.activeOrders.length?tradeOrders:null}
 							</tbody>
 						</table>
 					</div>
 					<div id="page-numbers" className='d-flex justify-content-center mt-2'>
-				        {this.props.orders.length?renderPageNumbers:null}
+				        {this.props.order.activeOrders.length?renderPageNumbers:null}
 				    </div>
 				</div>
 			}
@@ -139,20 +139,12 @@ const Header=(props)=>{
 	)
 }
 const mapDispatchToProps = dispatch => ({
-    userOrders:bindActionCreators(userOrders, dispatch),
+    getOrders:bindActionCreators(getOrders, dispatch),
     cancelAll:bindActionCreators(cancelAllOrders, dispatch),
     cancelOrder:bindActionCreators(cancelOrder, dispatch),
 })
 const mapStateToProps = (state, ownProps) => ({
-	orders: state.user.userOrders,
-	cancelData: state.user.cancel
+	order: state.order,
 })
-TradeOrders.defaultProps = {
-     orders:[],
-     cancelData:{}
-};
-TradeOrders.propTypes = {
-     orders:PropTypes.array,
-     cancelData:PropTypes.object
-};
+
 export default connect(mapStateToProps, mapDispatchToProps)(TradeOrders);

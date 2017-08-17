@@ -48,21 +48,41 @@ class Dashboard extends Component {
 			console.log('update', data)
 			switch(data.type) {
 				case 'order_added':
-					this.props.addOrder(this.props.user.orders, data.data)
+					this.props.addOrder(this.props.order.activeOrders, data.data)
 					break;
 				case 'order_updated':
 					break;
 				case 'order_remove':
+					// "data": [
+				 //    {
+				 //      "id": "ac7717d4-04e9-4430-a21b-08d32b2c34cd"
+				 //    },
+				 //    {
+				 //      "id": "bc7717d4-04e9-4430-a21b-08d32b2c34cd"
+				 //    },
 					break;
 				case 'trade':
+				 // "data": [
+				 //    {
+				 //      "price": 999,
+				 //      "side": "sell",
+				 //      "size": 3,
+				 //      "fee": 0,
+				 //      "timestamp": "2017-07-26T13:20:40.464Z"          
+				 //    },
+				 //    ...
+				 //  ],
+				 //  "balance": {
+				 //    "fiat_balance": 0,
+				 //    "btc_balance": 300000,
+				 //    "updated_at": "2017-07-26T13:20:40.464Z"          
+				 //  }
 					break;
 				case 'deposit':
 					break;
 				case 'withdrawal':
-					break;
-					
+					break;					
 			}
-			this.props.setUserOrders(data)
 		});
 		var time_now = (new Date()).getTime();
 		// Check to see when the user logged in
@@ -104,7 +124,8 @@ class Dashboard extends Component {
 
 const mapStateToProps = (store, ownProps) => ({
 	token: store.auth.token,
-	user: store.user
+	user: store.user,
+	order: store.order
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);

@@ -18,30 +18,24 @@ export function createOrder(side, type, size, price) {
 	}
 }
 
-export function updateOrder(orderID, orderQty, price) {
+export function getOrders() {
 	return {
-		type: 'UPDATE_ORDER',
-		payload: axios.put('/order', {
-			orderID: orderID, 
-			orderQty: Number(orderQty),
-			price: Number(price)
-		})
-	}	
-}
-
-export function cancelOrder(ID) {
-	return {
-		type: 'CANCEL_ORDER',
-		payload: axios.delete('/order', {data: {orderID:ID, text:""}})
+		type: 'GET_ORDERS',
+		payload: axios.get('/user/orders'),
 	}
 }
 
+export function cancelOrder(orderid) {
+	return {
+		type: 'CANCEL_ORDER',
+		payload: axios.delete(`/user/orders/${orderid}`),
+	}
+}
 export function cancelAllOrders() {
 	return {
-		type: 'CANCEL_ORDER',
-		payload: axios.delete('/order/all')
+		type: 'CANCEL_ALL_ORDERS',
+		payload: axios.delete('/user/orders'),
 	}
-
 }
 
 // Set orders from websocket
@@ -52,9 +46,9 @@ export function setUserOrders(orders) {
 	}
 }
 
-export function addOrder(orders, order) {
+export function addOrder(activeOrders, order) {
 	return {
 		type: 'ADD_ORDER',
-		payload: {orders, order},
+		payload: {activeOrders, order},
 	}
 }
