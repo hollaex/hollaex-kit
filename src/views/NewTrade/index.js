@@ -3,6 +3,7 @@ import { Link } from 'react-router'
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import SaleHistory from './SaleHistory';
+import TradeOrders from '.././Account/TradeOrders';
 import DepositBitcoin from './DepositBitcoin'
 
 class NewTrade extends Component {
@@ -116,7 +117,10 @@ class NewTrade extends Component {
 						 	</div>
 						 	<div className='row' >
 							 	 <div  className="col-lg-6 mt-2 col-md-6">
-							 	 	<div className="tradeBorder" style={{height:'9rem'}}><h5>My Open Orders</h5></div>
+							 	 	<div className="tradeBorder scrollXY" style={{height:'9rem'}}>
+							 	 		<h5>My Open Orders</h5>
+							 	 		<TradeOrders view='trade'/>
+							 	 	</div>
 							 	 </div>
 						 		 <div className="col-lg-6 mt-2 col-md-6" style={{ }}>
 						 		 	<div className="tradeBorder" style={{height:'9rem'}}><h5>My Trading History</h5></div>

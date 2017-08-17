@@ -1,5 +1,6 @@
 import axios from 'axios'
 import _ from 'lodash'
+import _filter from 'lodash/filter';
 
 export default function reducer(state={
 	id: null,
@@ -75,11 +76,11 @@ export default function reducer(state={
 			break;
 		}
 		case 'USER_ORDERS_REJECTED': {
-			return {...state, fetching: false, error: action.payload.response}
+			return {...state, fetching: false, error: action.payload}
 			break;
 		}
 		case 'USER_ORDERS_FULFILLED': {
-		return {...state, fetching: false, orders: action.payload.data}
+		return {...state, fetching: false, userOrders: action.payload.data}
 			break;
 		}
 		// USER_TRADES
@@ -131,6 +132,38 @@ export default function reducer(state={
 			let { orders, order } = action.payload
 			orders.push(order)
 			return {...state, orders}
+			break;
+		}
+		// CANCEL_ORDER
+		case 'CANCEL_ORDER_PENDING': {
+			return {...state, fetching: true, fetched: false, error: null}
+			break;
+		}
+		case 'CANCEL_ORDER_REJECTED': {
+			return {...state, fetching: false,error: action.payload.data}
+			break;
+		}
+		case 'CANCEL_ORDER_FULFILLED': {
+			const id = action.payload.data.id;
+			const data = _filter(state.userOrders, user => {if(user.id!=id){return user;}})
+			return {
+				...state,
+				fetching: false,
+				userOrders:data ,
+			}
+			break;
+		}
+		// CANCEL_ALL_ORDERS
+		case 'CANCEL_ALL_ORDERS_PENDING': {
+			return {...state, fetching: true, fetched: false, error: null}
+			break;
+		}
+		case 'CANCEL_ALL_ORDERS_REJECTED': {
+			return {...state, fetching: false,error: action.payload.data}
+			break;
+		}
+		case 'CANCEL_ALL_ORDERS_FULFILLED': {
+			return {...state, fetching: false,userOrders:[]}
 			break;
 		}
 

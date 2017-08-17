@@ -82,6 +82,18 @@ export function userOrders() {
 		payload: axios.get('/user/orders'),
 	}
 }
+export function cancelOrder(orderid) {
+	return {
+		type: 'CANCEL_ORDER',
+		payload: axios.delete(`/user/orders/${orderid}`),
+	}
+}
+export function cancelAllOrders() {
+	return {
+		type: 'CANCEL_ALL_ORDERS',
+		payload: axios.delete('/user/orders'),
+	}
+}
 export function userTrades() {
 	return {
 		type: 'USER_TRADES',
