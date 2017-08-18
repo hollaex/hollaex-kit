@@ -85,12 +85,32 @@ export function userTrades() {
 export function userDeposits() {
 	return {
 		type: 'USER_DEPOSITS',
-		payload: axios.get('user/deposits'),
+		payload: axios.get('/user/deposits'),
 	}
 }
 export function userWithdrawals() {
 	return {
 		type: 'USER_WITHDRAWALS',
-		payload: axios.get('user/withdrawals'),
+		payload: axios.get('/user/withdrawals'),
 	}
 }
+
+export function requestOTP() {
+	return {
+		type: 'REQUEST_OTP',
+		payload: axios.get('/requestOTP'),
+	}
+}
+export function activateOTP(otp) {
+	return {
+		type: 'ACTIVATE_OTP',
+		payload: axios.post('/activateOTP',otp),
+	}
+}
+export function deactivateOTP() {
+	return {
+		type: 'DEACTIVATE_OTP',
+		payload: axios.get('/deactivateOTP'),
+	}
+}
+
