@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import math from 'mathjs';
+import { Link } from 'react-router'
 
 class AccountBalance extends Component {
 	_displayBalanceTable() {
@@ -89,10 +90,10 @@ class AccountBalance extends Component {
 				}
 				<div className="row mt-3">
 					<div className='col-lg-6 '>
-						 <button className='accountButton'>DEPOSIT FUNDS</button>
+						 <Link to="/dashboard/deposit"><button className='accountButton'>DEPOSIT FUNDS</button></Link>
 					</div>
 					<div className='col-lg-6  '>
-						  <button className='accountButton'>WITHDRAW FUNDS</button>
+						  <Link to="/dashboard/withdraw"><button className='accountButton'>WITHDRAW FUNDS</button></Link>
 					</div>
 				</div>
 			</div>

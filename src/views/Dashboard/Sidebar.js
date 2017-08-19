@@ -19,6 +19,7 @@ class Sidebar extends Component {
 				<img src={require('./images/user.png')} width="50" height="50" style={{borderRadius:'30px'}}/> 
 				<ul>
 					<li><Link to='/dashboard/account'>Account</Link></li>
+					<li><Link to='/dashboard/exchange'>Exchange</Link></li>
 					<li><Link to='/dashboard/deposit'>Deposit</Link></li>
 					<li><Link to='/dashboard/withdraw'>Withdraw</Link></li>
 					<li onClick={this._logout.bind(this)}>Logout</li>

@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Link } from 'react-router'
 
 import BuyDetail from './BuyDetail'
-import Navbar from './Navbar'
 
 export default class QuickBuy extends Component {
 	render() {

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import Navbar from './Navbar'
 import Sidebar from './Sidebar'
 import io from 'socket.io-client';
 import { getOrderbook, getTrades, setOrderbook, setTrades } from '../../actions/orderbookAction'
@@ -96,7 +95,6 @@ class Dashboard extends Component {
 		return (
 			<div className="row dashboard-container">
 				<div className='col-md-10'>
-					<Navbar />
 					{this.props.children}
 				</div>
 				<Sidebar />
