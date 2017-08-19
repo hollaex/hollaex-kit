@@ -80,7 +80,7 @@ class SecuritySetup extends Component {
 											<div>
 								          		<p>{this.props.user.otp.secret}</p>
 												<QRCode 
-													value={`otpauth://totp/EXIR ali@bitholla.com?secret=${this.props.user.otp.secret}`}
+													value={`otpauth://totp/EXIR ${this.props.user.email}?secret=${this.props.user.otp.secret}`}
 													size={150}
 												/>
 												<form onSubmit={ handleSubmit(onSubmit)}>
