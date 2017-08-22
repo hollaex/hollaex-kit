@@ -40,9 +40,13 @@ class Sidebar extends Component {
 				<div style={{borderBottom:'1px solid #7c8a96',fontSize:'0.7rem' }}>
 					{this.state.viewBitcoin?
 						<div className='pl-1 col-lg-11'>
-							<div className='pt-2'>{`Available for trading: ${btc_balance - btc_available}`}</div>
+							<div className='pt-2'>Available for trading: 
+								<span className='green'> {btc_balance - btc_available}</span>
+							</div>
 							<div className='pt-2'>You have 1 open order resulting in a hold of 0.04545 placed on your btc balace.</div>
-							<div className='pt-2'>{`Available for withdrawal: ${btc_available}`}</div>
+							<div className='pt-2'>Available for withdrawal:  
+								<span className='green'> {btc_available}</span>
+							</div>
 						</div>:null
 					}
 				</div>
@@ -60,9 +64,13 @@ class Sidebar extends Component {
 				<div style={{borderBottom:'1px solid #7c8a96',fontSize:'0.7rem' }}>
 					{this.state.viewFiat?
 						<div className='pl-1 col-lg-11'>
-							<div className='pt-2'>{`Available for trading: $${fiat_balance - fiat_available}`}</div>
+							<div className='pt-2'>Available for trading:  
+								<span className='green'> ${fiat_balance - fiat_available}</span>
+							</div>
 							<div className='pt-2'>You have 1 open order resulting in a hold of 0.04545 placed on your btc balace.</div>
-							<div className='pt-2'>{`Available for withdrawal: $${fiat_available}`}</div>
+							<div className='pt-2'>Available for withdrawal:
+								<span className='green'> ${fiat_available}</span>
+							</div>
 						</div>:null
 					}
 				</div>
@@ -82,8 +90,12 @@ class Sidebar extends Component {
 				<div style={{borderBottom:'1px solid #7c8a96',fontSize:'0.7rem' }}>
 					{this.state.viewAssets?
 						<div className='pl-1 col-lg-11'>
-							<div className='pt-2'>{`Total available for trading: ${math.chain(btc_available).multiply(price).add(fiat_available).done()}`}</div>
-							<div className='pt-2'>{`Total available for withdrawal: ${math.chain(btc_trade).multiply(price).add(fiat_trade).done()}`}</div>
+							<div className='pt-2'>Total available for trading: 
+								<span className='green'> ${math.chain(btc_available).multiply(price).add(fiat_available).done()}</span>
+							</div>
+							<div className='pt-2'>Total available for withdrawal: 
+								<span className='green'> ${math.chain(btc_trade).multiply(price).add(fiat_trade).done()}</span>
+							</div>
 						</div>:null
 					}
 				</div>
