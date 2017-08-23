@@ -20,10 +20,12 @@ import UserVerification from './views/UserVerification'
 import CustomerSupport from './views/UserVerification/CustomerSupport'
 import store from './store'
 import { setToken } from './actions/authAction'
+import constants from './config/constants'
 
 // Initialize token
 axios.defaults.headers.post['Content-Type'] = 'application/json';
-axios.defaults.baseURL = 'http://35.158.234.195/api/v0';
+axios.defaults.baseURL = constants.API_URL;
+
 
 let token = localStorage.getItem('token')
 if(token) {

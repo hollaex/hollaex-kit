@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import io from 'socket.io-client';
 import { setOrderbook, setTrades, addTrades } from './actions/orderbookAction'
+import constants from './config/constants'
 
 class Container extends Component {
 	constructor() {
@@ -11,7 +12,7 @@ class Container extends Component {
 		}
 	}
 	componentWillMount() {
-		const publicSocket = io('http://35.158.234.195/realtime')
+		const publicSocket = io(`${constants.WS_URL}/realtime`)
 		publicSocket.on('orderbook', (data) => {
 			console.log('orderbook', data)
 			this.props.dispatch(setOrderbook(data))

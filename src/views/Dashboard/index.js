@@ -3,10 +3,10 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import Sidebar from './Sidebar'
 import io from 'socket.io-client';
-import { getOrderbook, getTrades, setOrderbook, setTrades } from '../../actions/orderbookAction'
 import { getMe, setMe } from '../../actions/userAction'
 import { setUserOrders, addOrder } from '../../actions/orderAction'
 import { logout } from '../../actions/authAction'
+import constants from '../../config/constants'
 import './styles/dashboard.css'
 
 const sessionTime = 60 * 60 * 1000 // one hour
@@ -32,7 +32,7 @@ class Dashboard extends Component {
 		// this.props.dispatch(getOrderbook())
 		// this.props.dispatch(getTrades())
 		// this.props.dispatch(getMe())
-		const privateSocket = io.connect('http://35.158.234.195/user', {
+		const privateSocket = io.connect(`${constants.WS_URL}/user`, {
 			query: {
 				token: `Bearer ${this.props.token}`
 			}
