@@ -4,25 +4,36 @@ import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import moment from 'moment'
 import { userDeposits,userWithdrawals } from '../../actions/userAction'
+import Pagination from './Pagination'
 
 class USDHistory extends Component {
 	state={
 		currentPage:1,
-		dataPerPage:10
+		dataPerPage:5,
+		depositData:false,
+		withdrawData:false
 	}
 	componentDidMount() {
 		this.props.userDeposits();
 		this.props.userWithdrawals();
 	}
+	componentWillReceiveProps(nextProps) {
+		if(nextProps.deposits!=this.props.deposits && nextProps.deposits.data.length) {
+			this.setState({depositData:true})
+		}
+		if(nextProps.withdrawals!=this.props.withdrawals && nextProps.withdrawals.data.length){
+			this.setState({withdrawData:true})
+		}
+	}
 	render() {
 		const { currentPage, dataPerPage } = this.state;
 		var transHistory=[];
-		if(this.props.deposits.count){
+		if(this.state.depositData){
 			this.props.deposits.data.map(item=>{
 				transHistory.push(item);
 			})
 		}
-		if(this.props.withdrawals.count){
+		if(this.state.withdrawData){
 			this.props.withdrawals.data.map(item=>{
 				transHistory.push(item);
 			})
@@ -59,19 +70,6 @@ class USDHistory extends Component {
 		    for (let i = 1; i <= Math.ceil(fiatHistory.length/dataPerPage); i++) {
 		      	pageNumbers.push(i);
 		    }
-		    var renderPageNumbers = pageNumbers.map(number => {
-		      	return (
-				        <div
-				          	key={number}
-				          	id={number}
-				          	onClick={this.handleClick}
-				         	className={currentPage==number?`accountActive ml-1 pl-2 pr-2 `:`notActive ml-1  pl-2 pr-2`}
-				         	style={{cursor:'pointer'}}
-				        >
-				         	{number} 
-				        </div>
-			      );
-		    });
 		}
 		return (
 			<div className='col-lg-10 offset-lg-1 '>
@@ -89,16 +87,37 @@ class USDHistory extends Component {
 						</tbody>
 					</table>
 				</div>
-				<div id="page-numbers" className='d-flex justify-content-center mt-2'>
-			        {fiatHistory?renderPageNumbers:null}
-			    </div>
+			    {(this.state.depositData || this.state.withdrawData) ?
+			    	<Pagination
+				    	currentPage={ currentPage }
+				    	pageLength={ pageNumbers.length }
+				    	handleClick={this.handleClick}
+						handleNext={this.handleNext}
+						handlePrevious={this.handlePrevious}
+						handleFirst={this.handleFirst}
+						handleLast={this.handleLast}
+				    />
+				    :
+				    null
+			    }
+				    
 			</div>
 		);
 	}
-	handleClick=(event)=> {
-	    this.setState({
-	      currentPage: Number(event.target.id)
-	    });
+	handleClick=(id)=> {
+	    this.setState({ currentPage: id });
+	}
+	handleNext=()=> {
+	    this.setState({ currentPage: this.state.currentPage+1 });
+	}
+	handlePrevious=()=> {
+	    this.setState({ currentPage: this.state.currentPage-1 });
+	}
+	handleFirst=()=> {
+	    this.setState({ currentPage: 1 });
+	}
+	handleLast=(lastPage)=> {
+		this.setState({ currentPage: lastPage });
 	}
 }
 const mapDispatchToProps = dispatch => ({

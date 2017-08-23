@@ -4,20 +4,33 @@ import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import moment from 'moment'
 import { userTrades } from '../../actions/userAction'
+import Pagination from './Pagination'
  
 class TradeHistory extends Component {
 	state={
 		currentPage:1,
-		dataPerPage:10
+		dataPerPage:5,
+		data:false,
+		lastPage:null
 	}
 	componentDidMount() {
 		this.props.userTrades();
 	}
-	 
+	componentWillReceiveProps(nextProps) {
+	 	if(nextProps.trades.data.length){
+	 		let lastpage=Math.ceil(nextProps.trades.data.length/this.state.dataPerPage);
+	 		this.setState({lastPage:lastpage,data:true})
+	 	}
+	 }
 	render() {
-	 	const { count, data }=this.props.trades
-		const { currentPage, dataPerPage } = this.state;
-	 	if(count){
+		const { count, data }=this.props.trades
+		const { currentPage, dataPerPage, lastPage } = this.state;
+		if(this.state.data){
+			data.sort((a,b)=>{
+				a = new Date(a.timestamp);
+			    b = new Date(b.timestamp);
+			    return b-a;
+			})
 		  	const indexOfLastData = currentPage * dataPerPage;
 		   	const indexOfFirstData = indexOfLastData - dataPerPage;
 		   	const currentData = data.slice(indexOfFirstData, indexOfLastData);
@@ -37,24 +50,8 @@ class TradeHistory extends Component {
 					</tr>
 	 			)
 	 		})
-	 		var pageNumbers = [];
-		    for (let i = 1; i <= Math.ceil(data.length/dataPerPage); i++) {
-		      	pageNumbers.push(i);
-		    }
-		    var renderPageNumbers = pageNumbers.map(number => {
-		      	return (
-				        <div
-				          	key={number}
-				          	id={number}
-				          	onClick={this.handleClick}
-				         	className={currentPage==number?`accountActive ml-1 pl-2 pr-2 `:`notActive ml-1  pl-2 pr-2`}
-				         	style={{cursor:'pointer'}}
-				        >
-				         	{number} 
-				        </div>
-			      );
-		    });
 	 	}
+	 	console.log('state',currentPage);
 		return (
 			<div className='col-lg-10 offset-lg-1 '>
 				<div><h4>Trade History</h4></div>
@@ -76,23 +73,42 @@ class TradeHistory extends Component {
 						</tbody>
 					</table>
 				</div>
-				<div id="page-numbers" className='d-flex justify-content-center mt-2'>
-			        {count?renderPageNumbers:null}
-			    </div>
+				{this.state.data?
+					<Pagination
+				    	currentPage={ currentPage }
+				    	pageLength={ lastPage }
+				    	handleClick={this.handleClick}
+						handleNext={this.handleNext}
+						handlePrevious={this.handlePrevious}
+						handleFirst={this.handleFirst}
+						handleLast={this.handleLast}
+				    />
+				    :null
+				}
 			</div>
 		);
 	}
-	handleClick=(event)=> {
-	    this.setState({
-	      currentPage: Number(event.target.id)
-	    });
+	handleClick=(id)=> {
+	    this.setState({ currentPage: id });
+	}
+	handleNext=()=> {
+	    this.setState({ currentPage: this.state.currentPage+1 });
+	}
+	handlePrevious=()=> {
+	    this.setState({ currentPage: this.state.currentPage-1 });
+	}
+	handleFirst=()=> {
+	    this.setState({ currentPage: 1 });
+	}
+	handleLast=(lastPage)=> {
+		this.setState({ currentPage: lastPage });
 	}
 }
 const mapDispatchToProps = dispatch => ({
     userTrades:bindActionCreators(userTrades, dispatch),
 })
 const mapStateToProps = (state, ownProps) => ({
-	trades: state.user.trades
+	trades: state.user.trades, 
 })
 TradeHistory.defaultProps = {
      trades:{}
