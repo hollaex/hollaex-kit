@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux'; 
 import PropTypes from 'prop-types';
 import moment from 'moment'
+import Pagination from './Pagination'
 import { getOrders, cancelOrder, cancelAllOrders } from '../../actions/orderAction'
 class TradeOrders extends Component {
 	state={
@@ -15,6 +16,7 @@ class TradeOrders extends Component {
 	render() {
 		const { currentPage, dataPerPage } = this.state;
 	 	if(this.props.order.activeOrders.length){
+	 		console.log('this.props.order.activeOrders.length',this.props.order.activeOrders.length);
 	 		var TradeOrders=this.props.order.activeOrders;
 		  	const indexOfLastOrder = currentPage * dataPerPage;
 		   	const indexOfFirstOrder = indexOfLastOrder - dataPerPage;
@@ -56,20 +58,6 @@ class TradeOrders extends Component {
 		    for (let i = 1; i <= Math.ceil(this.props.order.activeOrders.length/dataPerPage); i++) {
 		      	pageNumbers.push(i);
 		    }
-		    var renderPageNumbers = pageNumbers.map(number => {
-		      	return (
-			        <div
-			          	key={number}
-			          	id={number}
-			          	onClick={this.handleClick}
-			         	className={currentPage==number?`accountActive ml-1 pl-2 pr-2 `:`notActive ml-1  pl-2 pr-2`}
-			         	style={{cursor:'pointer'}}
-			        >
-			         	{number} 
-			        </div>
-			     );
-		    });
-
 	 	}
 		return (
 			<div>
@@ -97,20 +85,38 @@ class TradeOrders extends Component {
 							</tbody>
 						</table>
 					</div>
-					<div id="page-numbers" className='d-flex justify-content-center mt-2'>
-				        {this.props.order.activeOrders.length?renderPageNumbers:null}
-				    </div>
+				    {this.props.order.activeOrders.length?
+						<Pagination
+					    	currentPage={ currentPage }
+					    	pageLength={ pageNumbers.length }
+					    	handleClick={this.handleClick}
+							handleNext={this.handleNext}
+							handlePrevious={this.handlePrevious}
+							handleFirst={this.handleFirst}
+							handleLast={this.handleLast}
+					    />
+				    	:null
+					}
 				</div>
 			}
 			</div>
 		);
 	}
-	handleClick = (event) => {
-	    this.setState({
-	      currentPage: Number(event.target.id)
-	    });
+	handleClick=(id)=> {
+	    this.setState({ currentPage: id });
 	}
-	 
+	handleNext=()=> {
+	    this.setState({ currentPage: this.state.currentPage+1 });
+	}
+	handlePrevious=()=> {
+	    this.setState({ currentPage: this.state.currentPage-1 });
+	}
+	handleFirst=()=> {
+	    this.setState({ currentPage: 1 });
+	}
+	handleLast=(lastPage)=> {
+		this.setState({ currentPage: lastPage });
+	}
 }
 const CancelOrder=(props)=>{
 	const deleteOrder = () => {

@@ -73,3 +73,20 @@
   font-size: 0.7rem;
   border-bottom: 3px solid #81868a;
 }
+.pagination a{
+  background-color: transparent;
+}
+.pagination a:hover{
+  background-color: rgba(39, 135, 187, 0.23);
+}
+.page-item.disabled .page-link{
+  background-color: transparent;
+}
+.page-item:first-child .page-link{
+     border-bottom-left-radius: 0; 
+     border-top-left-radius:0; 
+  }
+.page-item:last-child .page-link{
+   border-bottom-right-radius: 0; 
+   border-top-right-radius: 0; 
+}
