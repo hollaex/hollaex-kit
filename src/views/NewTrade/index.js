@@ -5,6 +5,9 @@ import { bindActionCreators } from 'redux';
 import SaleHistory from './SaleHistory';
 import TradeOrders from '.././Account/TradeOrders';
 import DepositBitcoin from './DepositBitcoin'
+import ChartComponent from './ChartComponent';
+
+const CHART_HEIGHT = 400;
 
 class NewTrade extends Component {
 	render() {
@@ -12,10 +15,11 @@ class NewTrade extends Component {
 
 		return (
 			<div className=' mr-4 mt-5 trade'>
+
 				<div className="row ml-3" >
-					<div className='col-lg-9  col-12 row mr-4 backgroundImg' style={{height:'18rem'}}>
-					  
-					</div>
+					<div className='col-lg-9  col-12 row mr-4' style={{ height: CHART_HEIGHT }}>
+						<ChartComponent height={CHART_HEIGHT} />
+ 					</div>
 					<div className='col-lg-3 row tradeBorder'>
 						<div className='col-12'><h5 className='pt-1'>SALE HISTORY</h5></div>
 					 	<SaleHistory />
@@ -24,7 +28,7 @@ class NewTrade extends Component {
 				<div className="" >
 				 	<div className="row">
 						<div className="col-lg-4 d-flex col-12 mt-2">
-							<div className="tradeBorder scrollY col-lg-6" style={{width:'50%',height:'18rem'}}>	
+							<div className="tradeBorder scrollY col-lg-6" style={{width:'50%',height:'18rem'}}>
 							 	<div className="row">
 							 		<h5 className="ml-4 mt-1">BUY</h5>
 							 		<p className="mt-1 ml-3">Deposit Dollars</p>
@@ -55,7 +59,7 @@ class NewTrade extends Component {
 									</div>
 							 	</div>
 							</div>
-							<div className="ml-2 tradeBorder scrollY col-lg-6" style={{width:'50%',height:'18rem'}}>	
+							<div className="ml-2 tradeBorder scrollY col-lg-6" style={{width:'50%',height:'18rem'}}>
 							 	<div className="row">
 							 		<h5 className="ml-4 mt-1">SELL</h5>
 							 		<p className="mt-1 ml-3">Deposit BTC</p>
@@ -93,25 +97,25 @@ class NewTrade extends Component {
 							 	 	<div className="tradeBorder" style={{maxheight:'13rem'}}>
 						 	 			<DepositBitcoin
 							 		 		form="BUY"
-							 		 		head="BUY" 
-							 		 		link="DOLLARS" 
-							 		 		balance="500" 
-							 		 		totalAmount="4,090.52"  
+							 		 		head="BUY"
+							 		 		link="DOLLARS"
+							 		 		balance="500"
+							 		 		totalAmount="4,090.52"
 							 		 		total="Spend"
-							 		 		btc="BUY"/> 
+							 		 		btc="BUY"/>
 							 	 	</div>
 
 							 	 </div>
 						 		 <div className="col-lg-6 mt-2 col-md-6" style={{ }}>
 						 		 	<div className="tradeBorder" style={{maxheight:'13rem'}}>
 						 	 			<DepositBitcoin
-							 		 		form="SELL" 
-							 		 		head="SELL" 
-							 		 		link="BTC" 
-							 		 		balance="0.04 BTC" 
-							 		 		totalAmount="26.53" 
+							 		 		form="SELL"
+							 		 		head="SELL"
+							 		 		link="BTC"
+							 		 		balance="0.04 BTC"
+							 		 		totalAmount="26.53"
 							 		 		total="Receive"
-							 		 		btc="SELL"/> 	
+							 		 		btc="SELL"/>
 							 	 	</div>
 						 		 </div>
 						 	</div>

@@ -11,23 +11,23 @@ class Container extends Component {
 		}
 	}
 	componentWillMount() {
-		const publicSocket = io('http://35.158.234.195/realtime')
-		publicSocket.on('orderbook', (data) => {
-			console.log('orderbook', data)
-			this.props.dispatch(setOrderbook(data))
-		});
-		publicSocket.on('trades', (data) => {
-			console.log('trades', data)
-			if(this.state.trades) {
-				this.setState({
-					trades: false
-				})
-				this.props.dispatch(setTrades(data))
-			} else { // new updated trade which should be added to the list
-				this.props.dispatch(addTrades(this.props.orderbook.trades, data))
-			}
-			
-		});	
+		// const publicSocket = io('http://35.158.234.195/realtime')
+		// publicSocket.on('orderbook', (data) => {
+		// 	console.log('orderbook', data)
+		// 	this.props.dispatch(setOrderbook(data))
+		// });
+		// publicSocket.on('trades', (data) => {
+		// 	console.log('trades', data)
+		// 	if(this.state.trades) {
+		// 		this.setState({
+		// 			trades: false
+		// 		})
+		// 		this.props.dispatch(setTrades(data))
+		// 	} else { // new updated trade which should be added to the list
+		// 		this.props.dispatch(addTrades(this.props.orderbook.trades, data))
+		// 	}
+		//
+		// });	
 	}
 	render() {
 		return (
