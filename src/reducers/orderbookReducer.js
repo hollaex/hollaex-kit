@@ -35,27 +35,25 @@ export default function reducer(state={
 				}
 			}
 			return {...state, fetching: false, fetched: true, bids, asks}
-			break;
 		}
 
 		// setOrderbook
 		case 'SET_ORDERBOOK': {
 			let bids = action.payload.bids
 			let asks = action.payload.asks
-			let allBids = 0 // accumulative bids amounts
-			let allAsks = 0 // accumulative asks amounts
-			for(let i=0; i<bids.length; i++) {
-				if(bids[i]){
-					allBids += bids[i][1]
-					bids[i][2] = allBids
-				}
-				if(asks[i]){
-					allAsks += asks[i][1]
-					asks[i][2] = allAsks
-				}
-			}
+			// let allBids = 0 // accumulative bids amounts
+			// let allAsks = 0 // accumulative asks amounts
+			// for(let i=0; i<bids.length; i++) {
+			// 	if(bids[i]){
+			// 		allBids += bids[i][1]
+			// 		bids[i][2] = allBids
+			// 	}
+			// 	if(asks[i]){
+			// 		allAsks += asks[i][1]
+			// 		asks[i][2] = allAsks
+			// 	}
+			// }
 			return {...state, fetching: false, fetched: true, bids, asks}
-			break;
 		}
 
 		// getTrades

@@ -7,10 +7,10 @@ export function createOrder(side, type, size, price) {
 	let body
 	if(price) {
 		price = Number(price)
-		body = {side, type, size, price}
+		body = {side, type, size, price, symbol: 'btc'}
 	}
 	else{
-		body = {side, type, size}
+		body = {side, type, size, symbol: 'btc'}
 	}
 	return {
 		type: 'CREATE_ORDER',

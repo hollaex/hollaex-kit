@@ -61,6 +61,7 @@ class Dashboard extends Component {
 				 //    },
 					break;
 				case 'trade':
+				 console.log('private trade', data.data)
 				 // "data": [
 				 //    {
 				 //      "price": 999,
