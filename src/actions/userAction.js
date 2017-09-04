@@ -14,6 +14,14 @@ export function setMe(user) {
 		payload: user
 	}
 }
+
+export function setBalance(balance) {
+	return {
+		type: 'SET_BALANCE',
+		payload: balance
+	}
+}
+
 export function processWithdraw(data) {
 	return ((dispatch) => {
 		dispatch({

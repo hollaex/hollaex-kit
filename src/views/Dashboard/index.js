@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import Sidebar from './Sidebar'
 import io from 'socket.io-client';
-import { getMe, setMe } from '../../actions/userAction'
+import { setMe, setBalance } from '../../actions/userAction'
 import { setUserOrders, addOrder } from '../../actions/orderAction'
 import { logout } from '../../actions/authAction'
 import constants from '../../config/constants'
@@ -13,6 +13,7 @@ const sessionTime = 60 * 60 * 1000 // one hour
 
 const mapDispatchToProps = dispatch => ({
     setMe: bindActionCreators(setMe, dispatch),
+    setBalance: bindActionCreators(setBalance, dispatch),
     logout:bindActionCreators(logout, dispatch),
     setUserOrders: bindActionCreators(setUserOrders, dispatch),
     addOrder: bindActionCreators(addOrder, dispatch)
@@ -42,6 +43,9 @@ class Dashboard extends Component {
 		});
 		privateSocket.on('orders', (data) => {
 			this.props.setUserOrders(data)
+		});
+		privateSocket.on('wallet', (data) => {
+			this.props.setBalance(data.balance)
 		});
 		privateSocket.on('update', (data) => {
 			console.log('update', data)

@@ -1,6 +1,3 @@
-import axios from 'axios'
-import _ from 'lodash'
-
 export default function reducer(state={
 	fetched: false,
 	fetching: false,

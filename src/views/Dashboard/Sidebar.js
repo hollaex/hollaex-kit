@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import numbro from 'numbro';
 import { bindActionCreators } from 'redux';
 import { Link } from 'react-router'
 import math from 'mathjs';
@@ -41,11 +42,11 @@ class Sidebar extends Component {
 					{this.state.viewBitcoin?
 						<div className='pl-1 col-lg-11'>
 							<div className='pt-2'>Available for trading: 
-								<span className='green'> {btc_balance - btc_available}</span>
+								<span className='green'> {numbro(btc_balance - btc_available).format('0,0.0000')}</span>
 							</div>
 							<div className='pt-2'>You have 1 open order resulting in a hold of 0.04545 placed on your btc balace.</div>
 							<div className='pt-2'>Available for withdrawal:  
-								<span className='green'> {btc_available}</span>
+								<span className='green'> {numbro(btc_available).format('0,0.0000')}</span>
 							</div>
 						</div>:null
 					}
@@ -59,17 +60,17 @@ class Sidebar extends Component {
 						}
 					</div>
 					<div className='col-lg-4'>Fiat:</div>
-					<div className='col-lg-6 text-right'>${fiat_balance}</div>
+					<div className='col-lg-6 text-right'>${numbro(fiat_balance).format('0,0.0')}</div>
 				</div>
 				<div style={{borderBottom:'1px solid #7c8a96',fontSize:'0.7rem' }}>
 					{this.state.viewFiat?
 						<div className='pl-1 col-lg-11'>
 							<div className='pt-2'>Available for trading:  
-								<span className='green'> ${fiat_balance - fiat_available}</span>
+								<span className='green'> ${numbro(fiat_balance - fiat_available).format('0,0.0')}</span>
 							</div>
 							<div className='pt-2'>You have 1 open order resulting in a hold of 0.04545 placed on your btc balace.</div>
 							<div className='pt-2'>Available for withdrawal:
-								<span className='green'> ${fiat_available}</span>
+								<span className='green'> ${numbro(fiat_available).format('0,0.0')}</span>
 							</div>
 						</div>:null
 					}
@@ -84,17 +85,17 @@ class Sidebar extends Component {
 					</div>
 					<div className='col-lg-4'>Total Assets:</div>
 					<div className='col-lg-6 text-right'>
-						{ math.chain(btc_balance).multiply(price).add(fiat_balance).done()}
+						{ numbro(math.chain(btc_balance).multiply(price).add(fiat_balance).done()).format('0,0.0')}
 					</div>
 				</div>
 				<div style={{borderBottom:'1px solid #7c8a96',fontSize:'0.7rem' }}>
 					{this.state.viewAssets?
 						<div className='pl-1 col-lg-11'>
 							<div className='pt-2'>Total available for trading: 
-								<span className='green'> ${math.chain(btc_available).multiply(price).add(fiat_available).done()}</span>
+								<span className='green'> ${numbro(math.chain(btc_available).multiply(price).add(fiat_available).done()).format('0,0.0')}</span>
 							</div>
 							<div className='pt-2'>Total available for withdrawal: 
-								<span className='green'> ${math.chain(btc_trade).multiply(price).add(fiat_trade).done()}</span>
+								<span className='green'> ${numbro(math.chain(btc_trade).multiply(price).add(fiat_trade).done()).format('0,0.0')}</span>
 							</div>
 						</div>:null
 					}

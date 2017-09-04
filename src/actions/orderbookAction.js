@@ -9,9 +9,11 @@ export function getOrderbook() {
 }
 
 export function setOrderbook(orderbook) {
-	return {
-		type: 'SET_ORDERBOOK',
-		payload: orderbook['btc'] // set only for btc at the moment
+	if(orderbook.hasOwnProperty('btc')) {
+		return {
+			type: 'SET_ORDERBOOK',
+			payload: orderbook['btc'] // set only for btc at the moment
+		}
 	}
 }
 

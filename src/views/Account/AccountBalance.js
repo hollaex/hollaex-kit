@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import numbro from 'numbro'
 import math from 'mathjs';
 import { Link } from 'react-router'
 
@@ -24,14 +25,14 @@ class AccountBalance extends Component {
 			               <td>Available balance:</td>
 			               <td>
 				               		<div style={{color:'#2aabe4'}} className='row'>
-				               			<div className='pl-3'>{`$${fiat_available}`}</div>
+				               			<div className='pl-3'>{numbro(fiat_available).format('0,0.0')}</div>
 				               			<div style={{backgroundColor:'#2aabe4'}} className='balance ml-1'></div>
 				               		</div>
 				               
 			               	</td>
 			               <td >
 				               		<div style={{color:'#f15a25'}} className='row'>
-				               			<div className='pl-3'>{`${btc_available}`}</div>
+				               			<div className='pl-3'>{numbro(btc_available).format('0,0.0000')}</div>
 				               			<div style={{backgroundColor:'#f15a25'}} className='balance ml-1'></div>
 				               		</div>
 				               
@@ -42,19 +43,19 @@ class AccountBalance extends Component {
 			               <td>Balance in trade:</td>
 			               <td >
 				               		<div style={{color:'#00a99e'}} className='row'>
-				               			<div className='pl-3'>{`$${fiat_balance - fiat_available}`}</div>
+				               			<div className='pl-3'>{numbro(fiat_trade).format('0,0.0')}</div>
 				               			<div style={{backgroundColor:'#00a99e'}} className='balance ml-1'></div>
 				               		</div>
 				               
 			               	</td>
 			               <td>
 				               		<div style={{color:'#fbb03b'}} className='row'>
-				               			<div className='pl-3'>{`${btc_balance - btc_available}`}</div>
+				               			<div className='pl-3'>{numbro(btc_trade).format('0,0.0000')}</div>
 				               			<div style={{backgroundColor:'#fbb03b'}} className='balance ml-1'></div>
 				               		</div>
 				               
 			               </td>    
-			               <td>Total in USD: {math.chain(btc_trade).multiply(price).add(fiat_trade).done()}</td>               
+			               <td>Total in USD: {numbro(math.chain(btc_trade).multiply(price).add(fiat_trade).done()).format('0,0.0')}</td>               
 			            </tr>
 			            <tr style={{backgroundColor:'#e1e2e6'}}>
 			            	<td></td>
@@ -68,7 +69,7 @@ class AccountBalance extends Component {
 			            	</td>
 			            	<td  className='accountActive '>
 			            		
-			            		<div>Total Asset in USD:${math.chain(btc_balance).multiply(price).add(fiat_balance).done()}</div>
+			            		<div>Total Asset in USD:${numbro(math.chain(btc_balance).multiply(price).add(fiat_balance).done()).format('0,0.0')}</div>
 			            			
 			            	</td>
 			            </tr>
