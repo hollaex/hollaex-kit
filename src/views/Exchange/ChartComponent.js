@@ -1,14 +1,7 @@
 import React, { Component } from 'react';
 import io from 'socket.io-client';
-import { TypeChooser } from "react-stockcharts/lib/helper";
 import CandleChart from "./Chart";
-
-const EMPTY_DATA = {
-  Open: 0,
-  Close: 0,
-  High: 0,
-  Low: 0,
-};
+import constants from '../../config/constants'
 
 class ChartComponent extends Component {
   state = {
@@ -16,16 +9,29 @@ class ChartComponent extends Component {
     tickers: {},
     timestamp: null,
     chartData: {},
+    chartSocket: undefined,
+    ready: false,
   }
 
   componentWillMount() {
-    const chartSocket =  io.connect('http://35.158.234.195/chart');
-    chartSocket.on('data', this.prepareChartData);
+    const chartSocket =  io.connect(`${constants.WS_URL}/chart`, {
+      query: {
+        symbol: 'btc'
+      }
+    });
+    this.setState({ chartSocket });
+    chartSocket.on('data', this.setChartData);
     chartSocket.on('ticker', this.setTickData);
   }
 
   componentDidMount() {
     this.setState({ width: this.wrapper.offsetWidth > 600 ? 600 : this.wrapper.offsetWidth })
+  }
+
+  componentWillUnmount() {
+    if (this.state.chartSocket) {
+      this.state.chartSocket.close();
+    }
   }
 
   getCurrentBlockTimestamp() {
@@ -38,7 +44,7 @@ class ChartComponent extends Component {
     return timestampString;
   }
 
-  prepareChartData = ({ data, timestamp }) => {
+  setChartData = ({ data, timestamp }) => {
     const { chartData } = this.state;
     Object.keys(data).forEach((symbol) => {
       if (!chartData[symbol]) {
@@ -59,7 +65,7 @@ class ChartComponent extends Component {
       }
     })
 
-    this.setState({ chartData, timestamp });
+    this.setState({ chartData, timestamp, ready: true });
   }
 
   setTickData = ({ data, timestamp }) => {
@@ -69,7 +75,8 @@ class ChartComponent extends Component {
         tickers[symbol] = 0;
       }
       tickers[symbol] = data[symbol];
-    })
+    });
+
     const keys = Object.keys(data);
     if (keys.length === 1) {
       const symbol = keys[0];
@@ -98,14 +105,21 @@ class ChartComponent extends Component {
 
   render() {
     const { height } = this.props;
-    const { chartData, tickers, timestamp, width } = this.state;
-
+    const { chartData, width, ready } = this.state;
+    console.log(chartData)
     return (
       <div
         ref={(el) => { this.wrapper = el; } }
-        style={{ width: '100%', height: '100%', border: '1px solid blue', position: 'relative'}}
+        style={{
+          width: '100%', height: '100%',
+          border: '1px solid blue',
+          position: 'relative',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
       >
-        {chartData.btc && chartData.btc.length > 0 ?
+        {ready && chartData.btc && chartData.btc.length > 0 ?
           <CandleChart
             serieName="BTC"
             type="hybrid"
@@ -113,7 +127,7 @@ class ChartComponent extends Component {
             width={width}
             height={height}
           /> :
-          <div>Loading</div>
+          <div>{ready ? 'No Data' : 'Loading'}</div>
         }
       </div>
     );

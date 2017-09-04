@@ -12,7 +12,11 @@ class Container extends Component {
 		}
 	}
 	componentWillMount() {
-		const publicSocket = io(`${constants.WS_URL}/realtime`)
+		const publicSocket = io(`${constants.WS_URL}/realtime`, {
+			query: {
+				symbol: 'btc'
+			}
+		})
 		publicSocket.on('orderbook', (data) => {
 			console.log('orderbook', data)
 			this.props.dispatch(setOrderbook(data))
