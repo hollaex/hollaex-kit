@@ -81,7 +81,7 @@ class ChartComponent extends Component {
     if (keys.length === 1) {
       const symbol = keys[0];
       const currentBlockTimestamp = this.getCurrentBlockTimestamp();
-      if (chartData[symbol][chartData[symbol].length - 1].date === currentBlockTimestamp) {
+      if (chartData[symbol].length > 0 && chartData[symbol][chartData[symbol].length - 1].date === currentBlockTimestamp) {
         const lastData = chartData[symbol][chartData[symbol].length - 1];
         if (lastData.low > tickers[symbol]) {
           lastData.low = tickers[symbol]
@@ -119,7 +119,7 @@ class ChartComponent extends Component {
           alignItems: 'center',
         }}
       >
-        {ready && chartData.btc && chartData.btc.length > 0 ?
+        {ready && chartData.btc && chartData.btc.length > 1 ?
           <CandleChart
             serieName="BTC"
             type="hybrid"
