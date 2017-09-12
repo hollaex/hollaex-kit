@@ -6,6 +6,11 @@ import { Link } from 'react-router'
 import { logout } from '../../actions/authAction'
 
 class Home extends Component {
+	componentWillMount() {
+		if (!this.props.token) {
+			this.props.router.replace('/login')
+		}
+	}
 	logout = (e) => {
 		this.props.logout();
 	}
@@ -33,7 +38,7 @@ class Home extends Component {
 
 const mapStateToProps = (store, ownProps) => ({
 	price: store.orderbook.price,
-	token: store.auth.token
+	token: store.auth.token,
 })
 
 const mapDispatchToProps = dispatch => ({
