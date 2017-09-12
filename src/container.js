@@ -8,31 +8,34 @@ class Container extends Component {
 	constructor() {
 		super()
 		this.state = {
-			trades: true // first load for trades 
+			trades: true // first load for trades
 		}
 	}
 	componentWillMount() {
+		const { symbol } = this.props;
+
 		const publicSocket = io(`${constants.WS_URL}/realtime`, {
 			query: {
-				symbol: 'btc'
+				symbol,
 			}
 		})
 		publicSocket.on('orderbook', (data) => {
 			console.log('orderbook', data)
-			this.props.dispatch(setOrderbook(data))
+			this.props.dispatch(setOrderbook(data[symbol]))
 		});
 		publicSocket.on('trades', (data) => {
-			console.log('trades', data)
+			console.log('trades', data[symbol])
 			if(this.state.trades) {
 				this.setState({
 					trades: false
 				})
-				this.props.dispatch(setTrades(data))
+				console.log('trades', data[symbol])
+				this.props.dispatch(setTrades(data[symbol]))
 			} else { // new updated trade which should be added to the list
-				this.props.dispatch(addTrades(this.props.orderbook.trades, data))
+				this.props.dispatch(addTrades(this.props.orderbook.trades, data[symbol]))
 			}
-			
-		});	
+
+		});
 	}
 	render() {
 		return (
@@ -44,7 +47,8 @@ class Container extends Component {
 }
 
 const mapStateToProps = (store, ownProps) => ({
-	orderbook: store.orderbook
+	orderbook: store.orderbook,
+  symbol: store.orderbook.symbol,
 })
 
 export default connect(mapStateToProps)(Container);
