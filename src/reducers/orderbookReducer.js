@@ -4,6 +4,7 @@ export default function reducer(state={
 	trades: [],
 	error: null,
 	symbol: 'btc',
+	price: -1,
 }, action) {
 	switch(action.type) {
 
@@ -71,14 +72,15 @@ export default function reducer(state={
 
 		// setTrades
 		case 'SET_TRADES': {
-			return {...state, fetching: false, fetched: true, trades: action.payload}
+			const price = action.payload.length > 0 ? action.payload[0].price : -1;
+			return {...state, fetching: false, fetched: true, trades: action.payload, price}
 			break;
 		}
 
 		// addTrades
 		case 'ADD_TRADES': {
 			const updatedTrades = [...action.payload.newTrades, ...action.payload.trades]
-			return {...state, fetching: false, fetched: true, trades: updatedTrades}
+			return {...state, fetching: false, fetched: true, trades: updatedTrades, price: action.payload.newTrades[0].price }
 			break;
 		}
 	}

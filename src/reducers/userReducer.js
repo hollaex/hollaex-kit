@@ -5,6 +5,7 @@ export default function reducer(state={
 	email: null,
 	balance: {},
 	crypto_wallet: {},
+	fee: 0,
 }, action) {
 	switch(action.type) {
 		// GETME user profile
