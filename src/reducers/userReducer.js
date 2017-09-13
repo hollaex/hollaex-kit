@@ -1,12 +1,33 @@
 import axios from 'axios'
-import { browserHistory } from 'react-router'
 
+const USER_DATA_KEYS = [
+	'first_name',
+	'last_name',
+	'gender',
+	'dob',
+	'nationality',
+	'address',
+	'phone_number',
+	'bank_name',
+	'bank_account_number',
+];
+
+const extractuserData = (data) => {
+	const userData = {}
+	USER_DATA_KEYS.forEach((key) => {
+		userData[key] = data[key];
+	})
+	return userData
+}
 export default function reducer(state={
 	id: null,
 	email: null,
 	balance: {},
 	crypto_wallet: {},
+	userData: {},
+	fetching: false,
 	fee: 0,
+	verification_level: 0
 }, action) {
 	switch(action.type) {
 		// GETME user profile
@@ -18,15 +39,14 @@ export default function reducer(state={
 		}
 		case 'GET_ME_FULFILLED': {
 			var {id, email, balance, crypto_wallet, bank_account_number, bank_name, verification_level} = action.payload.data
-			return {...state, fetching: false, fetched: true, id, email, balance, crypto_wallet, bank_account_number, bank_name,verification_level}
+			const userData = extractuserData(action.payload.data);
+			return {...state, fetching: false, fetched: true, id, email, balance, crypto_wallet, bank_account_number, bank_name, verification_level, userData}
 		}
 
 		case 'SET_ME': {
 			let {id, email, balance, crypto_wallet, verification_level} = action.payload
-			if (verification_level === 1) {
-				browserHistory.push('/dashboard/verification');
-			}
-			return {...state, fetching: false, fetched: true, id, email, balance, crypto_wallet}
+			const userData = extractuserData(action.payload)
+			return {...state, fetching: false, fetched: true, id, email, balance, crypto_wallet, userData, verification_level}
 		}
 
 		case 'SET_BALANCE': {

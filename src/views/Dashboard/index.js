@@ -96,11 +96,24 @@ class Dashboard extends Component {
 		}
 	}
 
-	render() {	
+  componentWillReceiveProps(nextProps) {
+    console.log(nextProps.user)
+    if (nextProps.user.verification_level !== 0 && nextProps.user.verification_level !== this.props.user.verification_level) {
+      if (nextProps.user.verification_level === 1) {
+        this.props.router.replace(`/dashboard/verification/${nextProps.user.verification_level}`)
+      }
+    }
+  }
+	render() {
+    const { user } = this.props;
+
 		return (
 			<div className="row dashboard-container">
 				<div className='col-md-10'>
-					{this.props.children}
+					{user.id
+            ? this.props.children
+            : <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>Loading</div>
+          }
 				</div>
 				<Sidebar />
 			</div>

@@ -62,13 +62,22 @@ export function userIdentity(data) {
 		})	
 	})
 }
-export function uploadFile(front) { 
-	console.log('front',front);
+export function uploadFile(data) {	
+	const formData = new FormData();
+	Object.keys(data).forEach((key) => {
+		formData.append(key, data[key]);
+	});
+
 	return ((dispatch) => {
 		dispatch({
 		    type: 'UPLOAD_FILE_PENDING'
 		});
-		axios.post('/user/verification',front)
+		axios({
+			headers: {'Content-Type': 'multipart/form-data'},
+			data: formData,
+			url: '/user/verification',
+			method: 'POST'
+		})
 		.then(res => {
 			dispatch({
 			    type: 'UPLOAD_FILE_FULFILLED',
