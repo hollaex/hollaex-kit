@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router'
 import VerifiedStatus from './VerifiedStatus'
 import Identity from './Identity'
 import BankDetails from './BankDetails'
@@ -24,6 +25,7 @@ export default class UserVerification extends Component {
 			<div>
 				<div className='text-center mt-5 pt-3 '><h3>VERIFICATION</h3></div>
 				 
+				<div><Link to='/dashboard' style={{ textDecoration: 'none' }}>skip</Link></div>
 				<div className=" ml-5 mr-5 mt-5 ">
 					<div className="tradeBorder">
 						<div className="row mt-4" style={{position:'relative',top:'-3rem'}}>

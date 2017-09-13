@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { browserHistory } from 'react-router'
 
 export default function reducer(state={
 	id: null,
@@ -21,7 +22,10 @@ export default function reducer(state={
 		}
 
 		case 'SET_ME': {
-			let {id, email, balance, crypto_wallet} = action.payload
+			let {id, email, balance, crypto_wallet, verification_level} = action.payload
+			if (verification_level === 1) {
+				browserHistory.push('/dashboard/verification');
+			}
 			return {...state, fetching: false, fetched: true, id, email, balance, crypto_wallet}
 		}
 

@@ -14,6 +14,11 @@ class AccountSetup extends Component {
 		var error = require('./images/error.jpg');
 		var success = require('./images/sucess.png');
 		var arrow = require('./images/arrow.png');
+
+		if (!verification_level) {
+			return <div>Loading</div>
+		}
+		
 		return (
 			<div>
 				<div className='d-flex col-lg-10 offset-lg-1'>
