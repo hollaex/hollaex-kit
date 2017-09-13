@@ -38,6 +38,16 @@ class Dashboard extends Component {
 				token: `Bearer ${this.props.token}`
 			}
 		})
+
+
+		privateSocket.on('error', (error) => {
+      if (error.indexOf('Access Denied') > -1) {
+        this.props.logout();
+      } else {
+        console.error(error)
+      }
+		});
+
 		privateSocket.on('user', (data) => {
 			this.props.setMe(data)
 		});
@@ -97,7 +107,6 @@ class Dashboard extends Component {
 	}
 
   componentWillReceiveProps(nextProps) {
-    console.log(nextProps.user)
     if (nextProps.user.verification_level !== 0 && nextProps.user.verification_level !== this.props.user.verification_level) {
       if (nextProps.user.verification_level === 1) {
         this.props.router.replace(`/dashboard/verification/${nextProps.user.verification_level}`)
