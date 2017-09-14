@@ -77,20 +77,40 @@ export const logout = () => dispatch => {
     browserHistory.push('/login');
 }
 
-export function resetPassword() {
-	return {
-		type: 'RESET_PASSWORD',
-		payload: axios.put('/login/reset-password')
-	}
+export function resetPassword(data) {
+	return ((dispatch) => {
+		dispatch({ type: 'RESET_PASSWORD_PENDING' });
+		axios.post('/reset-password', data)
+			.then((response) => {
+				dispatch({
+					type: 'RESET_PASSWORD_FULFILLED',
+				});
+			})
+			.catch((error) => {
+				dispatch({
+					type: 'RESET_PASSWORD_REJECTED',
+					payload: error.response.data
+				});
+			});
+	});
 }
 
 export function requestResetPassword(email) {
-	return {
-		type: 'REQUEST_RESET_PASSWORD',
-		payload: axios.put('/login/request-password-reset', {
-			email
-		})
-	}
+	return ((dispatch) => {
+		dispatch({ type: 'REQUEST_RESET_PASSWORD_PENDING' });
+		axios.get(`/reset-password?email=${email}`)
+			.then((response) => {
+				dispatch({
+					type: 'REQUEST_RESET_PASSWORD_FULFILLED',
+				});
+			})
+			.catch((error) => {
+				dispatch({
+					type: 'REQUEST_RESET_PASSWORD_REJECTED',
+					payload: error.response.data
+				});
+			});
+	});
 }
 
 export function loadToken() {

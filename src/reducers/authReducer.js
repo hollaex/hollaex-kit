@@ -5,6 +5,10 @@ const initialState = {
 	fetching: false,
 	fetched: false,
 	error: null,
+	requestResetPasswordPending: false,
+	requestResetPasswordComplete: false,
+	resetPasswordPending: false,
+	resetPasswordComplete: false,
 }
 
 export default function reducer(state=initialState, action) {
@@ -55,29 +59,29 @@ export default function reducer(state=initialState, action) {
 		
 		// RESET PASSWORD
 		case 'RESET_PASSWORD_PENDING': {
-			return {...state, fetching: true}
+			return {...state, resetPasswordPending: true, resetPasswordComplete: false}
 			break;
 		}
 		case 'RESET_PASSWORD_REJECTED': {
-			return {...state, fetching: false, error: action.payload.response.data.error}
+			return {...state, resetPasswordPending: false, error: action.payload.message}
 			break;
 		}
 		case 'RESET_PASSWORD_FULFILLED': {
-			return {...state, fetching: false, fetched: true}
+			return {...state, resetPasswordPending: false, resetPasswordComplete: true}
 			break;
 		}
 
 		// requestResetPassword
 		case 'REQUEST_RESET_PASSWORD_PENDING': {
-			return {...state, fetching: true}
+			return {...state, requestResetPasswordPending: true, requestResetPasswordComplete: false}
 			break;
 		}
 		case 'REQUEST_RESET_PASSWORD_REJECTED': {
-			return {...state, fetching: false, error: action.payload.response.data.error}
+			return {...state, requestResetPasswordPending: false, error: action.payload.message}
 			break;
 		}
 		case 'REQUEST_RESET_PASSWORD_FULFILLED': {
-			return {...state, fetching: false, fetched: true}
+			return {...state, requestResetPasswordPending: false, requestResetPasswordComplete: true}
 			break;
 		}
 

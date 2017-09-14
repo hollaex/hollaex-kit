@@ -18,7 +18,7 @@ const validate = formProps => {
   return errors
 }
 
-const renderInput = ({ input, label, type, meta: {touched, invalid, error }}) => (
+export const renderInput = ({ input, label, type, meta: {touched, invalid, error }}) => (
 	<div className='row'>
  		<div className='col-lg-3'>
  			<div><label className="pr-2 pt-3">{label}</label></div>
@@ -77,6 +77,7 @@ class Login extends Component {
 			        	}
 			        </div>
 			    </form>
+          <Link to='/reset-password'>Reset password</Link>
 			</div>
 			
 		);

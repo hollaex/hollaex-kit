@@ -14,6 +14,8 @@ import Withdraw from './views/Withdraw/Withdraw'
 import Login from './views/Auth/Login'
 import SignUp from './views/Auth/Signup'
 import Verification from './views/Auth/Verification'
+import ResetPassword from './views/Auth/ResetPassword'
+import ResetPasswordRequest from './views/Auth/ResetPasswordRequest'
 import Exchange from './views/Exchange'
 import Bitcoin from './views/Exchange/Bitcoin'
 import UserVerification from './views/UserVerification'
@@ -79,6 +81,8 @@ export default (
       </Route>
       <Route path="login" name="Login" component={Login} onEnter={loggedIn}/>
       <Route path="signup" name="signup" component={SignUp} onEnter={loggedIn} />
+      <Route path="reset-password" name="Reset Password Request" component={ResetPasswordRequest} onEnter={loggedIn}/>
+      <Route path="reset-password/:code" name="Reset Password" component={ResetPassword} onEnter={loggedIn}/>
       <Route path="verify" name="Verify" component={Verification} />
       <Route path="verify/:code" name="verifyCode" component={Verification}></Route>
       
