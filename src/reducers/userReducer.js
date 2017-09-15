@@ -12,13 +12,19 @@ const USER_DATA_KEYS = [
 	'bank_account_number',
 ];
 
+const INITIAL_API_OBJECT = {
+	data: [],
+	count: 0,
+};
+
 const extractuserData = (data) => {
 	const userData = {}
 	USER_DATA_KEYS.forEach((key) => {
 		userData[key] = data[key];
 	})
-	return userData
-}
+	return userData;
+};
+
 export default function reducer(state={
 	id: null,
 	email: null,
@@ -27,7 +33,8 @@ export default function reducer(state={
 	userData: {},
 	fetching: false,
 	fee: 0,
-	verification_level: 0
+	verification_level: 0,
+	trades: INITIAL_API_OBJECT,
 }, action) {
 	switch(action.type) {
 		// GETME user profile
@@ -87,13 +94,13 @@ export default function reducer(state={
 
 		// USER_TRADES
 		case 'USER_TRADES_PENDING': {
-			return {...state, fetching: true, fetched: false, error: null}
+			return {...state, fetching: true, fetched: false, error: null, trades: INITIAL_API_OBJECT}
 		}
 		case 'USER_TRADES_REJECTED': {
-			return {...state, fetching: false,error: action.payload.response}
+			return {...state, fetching: false, error: action.payload}
 		}
 		case 'USER_TRADES_FULFILLED': {
-			return {...state, fetching: false,trades:action.payload.data}
+			return {...state, fetching: false, trades: action.payload}
 		}
 		// USER_DEPOSITS
 		case 'USER_DEPOSITS_PENDING': {

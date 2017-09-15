@@ -39,7 +39,7 @@ export function processWithdraw(data) {
 			    type: 'PROCESS_WITHDRAW_REJECTED',
 			    payload:err.response
 			});
-		})	
+		})
 	})
 }
 export function userIdentity(data) {
@@ -59,10 +59,10 @@ export function userIdentity(data) {
 			    type: 'USER_IDENTITY_REJECTED',
 			    payload:err.response
 			});
-		})	
+		})
 	})
 }
-export function uploadFile(data) {	
+export function uploadFile(data) {
 	const formData = new FormData();
 	Object.keys(data).forEach((key) => {
 		formData.append(key, data[key]);
@@ -81,19 +81,35 @@ export function uploadFile(data) {
 		.then(res => {
 			dispatch({
 			    type: 'UPLOAD_FILE_FULFILLED',
-			    payload:res
+			    payload: res
 			});
 		})
 		.catch(err => {
 			dispatch({
 			    type: 'UPLOAD_FILE_REJECTED',
-			    payload:err.response
+			    payload: err.response
 			});
-		})	
+		})
 	})
 }
 
 export function userTrades() {
+	return ((dispatch) => {
+		dispatch({ type: 'USER_TRADES_PENDING' });
+		axios.get('/user/trades?symbol=btc')
+			.then((body) => {
+				dispatch({
+				    type: 'USER_TRADES_FULFILLED',
+				    payload: body.data,
+				});
+			})
+			.catch((err) => {
+				dispatch({
+				    type: 'USER_TRADES_REJECTED',
+				    payload: err.response
+				});
+			})
+	});
 	return {
 		type: 'USER_TRADES',
 		payload: axios.get('/user/trades'),
@@ -130,4 +146,3 @@ export function deactivateOTP() {
 		payload: axios.get('/deactivateOTP'),
 	}
 }
-

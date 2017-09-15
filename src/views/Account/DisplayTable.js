@@ -15,8 +15,8 @@ class DisplayTable extends Component {
 	}
 
 	componentWillReceiveProps(nextProps) {
-		if (nextProps.data.length !== this.props.data.length) {
-			this.setPages(nextProps.data.length, this.state.dataPerPage);
+		if (nextProps.count !== this.props.count) {
+			this.setPages(nextProps.count, this.state.dataPerPage);
 		}
 	}
 
@@ -31,7 +31,7 @@ class DisplayTable extends Component {
 	}
 
 	render() {
-		const { header, body, data } = this.props;
+		const { header, body, data, title } = this.props;
 		const { currentPage, dataPerPage, pages } = this.state;
 
 		const indexOfLastOrder = currentPage * dataPerPage;
@@ -45,7 +45,7 @@ class DisplayTable extends Component {
 
 		return (
 			<div className='col-lg-10 offset-lg-1 '>
-				<h4>Open Trade Orders</h4>
+				{title && <h4>{title}</h4>}
 				<div className='tableView'>
 					<table className='table text-right'>
 						{header}

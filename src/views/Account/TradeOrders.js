@@ -14,7 +14,7 @@ const Header = ({ cancelAll }) => (
 			<td>Unfilled amount</td>
 			<td>OrderPrice(USD)</td>
 			<td>Total order amount(USD)</td>
-			<td><div onClick={cancelAll}>Cancel All</div></td>
+			<td><div className="pointer" onClick={cancelAll}>Cancel All</div></td>
 		</tr>
 	</thead>
 );
@@ -34,7 +34,7 @@ const Body = ({ data = [], cancelOrder }) => {
 						<td>{formatBtcAmount(math.chain(item.size).subtract(item.filled).done())}</td>
 						<td>${formatFiatAmount(item.price)}</td>
 						<td>${formatFiatAmount(math.chain(item.price).multiply(item.size).done())}</td>
-						<td><div onClick={() => cancelOrder(item.id)}>Cancell</div></td>
+						<td><div className="pointer" onClick={() => cancelOrder(item.id)}>Cancell</div></td>
 					</tr>
 				)
 			})}
@@ -45,11 +45,18 @@ const Body = ({ data = [], cancelOrder }) => {
 const OpenOrders = ({ cancelAll, cancelOrder, orders }) => {
 	return (
 		<DisplayTable
+			title="Open Trade Orders"
 			data={orders}
 			header={<Header cancelAll={cancelAll} />}
 			body={<Body cancelOrder={cancelOrder} />}
+			count={orders.length}
 		/>
 	);
+}
+
+OpenOrders.defaultProps = {
+  orders: [],
+  count: 0,
 }
 
 const mapDispatchToProps = (dispatch) => ({
