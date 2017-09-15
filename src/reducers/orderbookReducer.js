@@ -4,7 +4,7 @@ export default function reducer(state={
 	trades: [],
 	error: null,
 	symbol: 'btc',
-	price: -1,
+	price: 0,
 }, action) {
 	switch(action.type) {
 
