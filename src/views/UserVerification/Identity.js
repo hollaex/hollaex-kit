@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
 import { bindActionCreators } from 'redux';
-import { Link } from 'react-router'
-import { renderText, renderTextArea, renderSelect } from './ReduxFields';
+import { renderText, renderSelect } from './ReduxFields';
 import country from './Country';
 import { userIdentity, uploadFile } from '../../actions/userAction'
 
@@ -26,22 +25,8 @@ export class Identity extends Component {
   }
 
 	render() {
-		const { handleSubmit, userData, fetching } = this.props;
+		const { fetching } = this.props;
 
-		// const onSubmit = formProps => {
-    //         var userRequest={
-    //         	first_name:formProps.first_name,
-		// 		last_name:formProps.last_name,
-		// 		gender: true,
-		// 		nationality:formProps.nationality,
-		// 		dob:  formProps.dob?formProps.dob+'T10:47:09.692Z':undefined,
-		// 		address:formProps.address,
-		// 		phone_number:formProps.phone_number,
-		// 		id_type:formProps.id_type,
-		// 		id_number: formProps.id_number,
-    //         }
-    //         this.props.userIdentity(userRequest)
-	  //   }
 		return (
 			<div>
 				{ false ? //this.props.userData?

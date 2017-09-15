@@ -1,9 +1,7 @@
 import React from 'react';
-import { Link } from 'react-router'
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form'
-import { renderText, renderTextArea, renderSelect } from './ReduxFields';
-import country from './Country';
+import { renderText } from './ReduxFields';
 
 const validate = (values) => {
   const errors = {};

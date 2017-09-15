@@ -1,4 +1,4 @@
-import React,{Component} from 'react'
+import React from 'react'
 
 export const renderText = ({ input, label, className, style, type, meta: {touched, invalid, error }}) => (
 	<div className="mt-3">

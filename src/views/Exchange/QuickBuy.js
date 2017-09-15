@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router'
 import math from 'mathjs';
 
 import { createOrder } from '../../actions/orderAction';
@@ -66,7 +65,7 @@ class QuickBuy extends Component {
 	}
 
 	render() {
-		const { price, symbol, fee, balance } = this.props;
+		const { symbol, fee, balance } = this.props;
 		return (
 			<div>
 				<div className='row col-lg-10 offset-1 mt-5' style={{top:'4rem'}}>

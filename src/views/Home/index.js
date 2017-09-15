@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 import { Link } from 'react-router'
 
 import { logout } from '../../actions/authAction'
@@ -42,7 +41,7 @@ const mapStateToProps = (store, ownProps) => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-    logout: dispatch(logout),
+    logout: () => dispatch(logout),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);

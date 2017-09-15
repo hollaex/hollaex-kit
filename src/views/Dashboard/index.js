@@ -82,20 +82,22 @@ class Dashboard extends Component {
 				 //      "side": "sell",
 				 //      "size": 3,
 				 //      "fee": 0,
-				 //      "timestamp": "2017-07-26T13:20:40.464Z"          
+				 //      "timestamp": "2017-07-26T13:20:40.464Z"
 				 //    },
 				 //    ...
 				 //  ],
 				 //  "balance": {
 				 //    "fiat_balance": 0,
 				 //    "btc_balance": 300000,
-				 //    "updated_at": "2017-07-26T13:20:40.464Z"          
+				 //    "updated_at": "2017-07-26T13:20:40.464Z"
 				 //  }
 					break;
 				case 'deposit':
 					break;
 				case 'withdrawal':
-					break;					
+					break;
+        default:
+        	break;
 			}
 		});
 		var time_now = (new Date()).getTime();
