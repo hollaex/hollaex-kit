@@ -4,22 +4,18 @@ import { bindActionCreators } from 'redux';
 import Sidebar from './Sidebar'
 import io from 'socket.io-client';
 import { setMe, setBalance } from '../../actions/userAction'
-import { setUserOrders, addOrder } from '../../actions/orderAction'
+import { setUserOrders, addOrder, updateOrder, removeOrder } from '../../actions/orderAction'
 import { logout } from '../../actions/authAction'
 import constants from '../../config/constants'
 import './styles/dashboard.css'
 
 const sessionTime = 60 * 60 * 1000 // one hour
 
-const mapDispatchToProps = dispatch => ({
-    setMe: bindActionCreators(setMe, dispatch),
-    setBalance: bindActionCreators(setBalance, dispatch),
-    logout:bindActionCreators(logout, dispatch),
-    setUserOrders: bindActionCreators(setUserOrders, dispatch),
-    addOrder: bindActionCreators(addOrder, dispatch)
-})
-
 class Dashboard extends Component {
+  state = {
+    privateSocket: null,
+  };
+
 	componentWillMount () {
 		window.scrollTo(0, 0)
 		this._resetTimer();
@@ -33,12 +29,47 @@ class Dashboard extends Component {
 		// this.props.dispatch(getOrderbook())
 		// this.props.dispatch(getTrades())
 		// this.props.dispatch(getMe())
+		var time_now = (new Date()).getTime();
+		// Check to see when the user logged in
+		var loginTime = localStorage.getItem('time');
+		if ((time_now - loginTime) > sessionTime) {
+			this.props.logout();
+		}
+
+    if (this.props.token) {
+      this.setUserSocket(this.props.token);
+    }
+	}
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.user.verification_level !== 0 && nextProps.user.verification_level !== this.props.user.verification_level) {
+      if (nextProps.user.verification_level === 1) {
+        this.props.router.replace(`/dashboard/verification/${nextProps.user.verification_level}`)
+      }
+    }
+  }
+
+	componentWillUnmount() {
+		window.removeEventListener('resize', this._handleResize);
+		window.removeEventListener("scroll", this._resetTimer);
+		window.removeEventListener("mousemove", this._resetTimer);
+		window.removeEventListener("click", this._resetTimer);
+		window.removeEventListener("keypress", this._resetTimer);
+		window.removeEventListener("beforeunload", this._handleWindowClose);
+		clearTimeout(this.idleTime)
+    if (this.state.privateSocket) {
+      this.state.privateSocket.close();
+    }
+	}
+
+  setUserSocket = (token) => {
 		const privateSocket = io.connect(`${constants.WS_URL}/user`, {
 			query: {
-				token: `Bearer ${this.props.token}`
+				token: `Bearer ${token}`
 			}
-		})
+		});
 
+    this.setState({ privateSocket });
 
 		privateSocket.on('error', (error) => {
       if (error.indexOf('Access Denied') > -1) {
@@ -51,31 +82,41 @@ class Dashboard extends Component {
 		privateSocket.on('user', (data) => {
 			this.props.setMe(data)
 		});
+
 		privateSocket.on('orders', (data) => {
 			this.props.setUserOrders(data)
 		});
+
 		privateSocket.on('wallet', (data) => {
 			this.props.setBalance(data.balance)
 		});
-		privateSocket.on('update', (data) => {
-			console.log('update', data)
-			switch(data.type) {
+
+		privateSocket.on('update', ({ type, data }) => {
+			console.log('update', type, data)
+			switch(type) {
+        case 'order_queued':
+          break;
+        case 'order_processed':
+          break;
 				case 'order_added':
-					this.props.addOrder(this.props.order.activeOrders, data.data)
+					this.props.addOrder(data);
 					break;
+        case 'order_partialy_filled':
+          alert(`order partially filled ${data.id}`);
+					this.props.updateOrder(data);
+  				break;
 				case 'order_updated':
+					this.props.updateOrder(data);
 					break;
-				case 'order_remove':
-					// "data": [
-				 //    {
-				 //      "id": "ac7717d4-04e9-4430-a21b-08d32b2c34cd"
-				 //    },
-				 //    {
-				 //      "id": "bc7717d4-04e9-4430-a21b-08d32b2c34cd"
-				 //    },
-					break;
+        case 'order_filled':
+          alert(`orders filled: ${data.length}`);
+          this.props.removeOrder(data);
+          break;
+				case 'order_removed':
+          this.props.removeOrder(data);
+          break;
 				case 'trade':
-				 console.log('private trade', data.data)
+				 console.log('private trade', data)
 				 // "data": [
 				 //    {
 				 //      "price": 999,
@@ -100,24 +141,20 @@ class Dashboard extends Component {
         	break;
 			}
 		});
-		var time_now = (new Date()).getTime();
-		// Check to see when the user logged in
-		var loginTime = localStorage.getItem('time');
-		if ((time_now - loginTime) > sessionTime) {
-			this.props.logout();
-		}
-	}
-
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.user.verification_level !== 0 && nextProps.user.verification_level !== this.props.user.verification_level) {
-      if (nextProps.user.verification_level === 1) {
-        this.props.router.replace(`/dashboard/verification/${nextProps.user.verification_level}`)
-      }
-    }
   }
+
+  _logout = () => {
+    clearTimeout(this.idleTime);
+    this.props.logout();
+  }
+
+  _resetTimer=()=> {
+	   clearTimeout(this.idleTime);
+     this.idleTime = setTimeout(this._logout, sessionTime) // no activity will log the user out automatically
+  }
+
 	render() {
     const { user } = this.props;
-
 		return (
 			<div className="row dashboard-container">
 				<div className='col-md-10'>
@@ -130,29 +167,22 @@ class Dashboard extends Component {
 			</div>
 		);
 	}
-	componentWillUnmount() {
-		window.removeEventListener('resize', this._handleResize);
-		window.removeEventListener("scroll", this._resetTimer);
-		window.removeEventListener("mousemove", this._resetTimer);
-		window.removeEventListener("click", this._resetTimer);
-		window.removeEventListener("keypress", this._resetTimer);
-		window.removeEventListener("beforeunload", this._handleWindowClose);
-		clearTimeout(this.idleTime)
-	}
-	_logout = () =>{
-        clearTimeout(this.idleTime);
-        this.props.logout();
-    }
-   	_resetTimer=()=> {
-		clearTimeout(this.idleTime);
-    	this.idleTime = setTimeout(this._logout, sessionTime) // no activity will log the user out automatically
-    }
 }
 
-const mapStateToProps = (store, ownProps) => ({
-	token: store.auth.token,
-	user: store.user,
-	order: store.order
-})
+
+const mapStateToProps = (store) => ({
+  token: store.auth.token,
+  user: store.user,
+});
+
+const mapDispatchToProps = dispatch => ({
+    setMe: bindActionCreators(setMe, dispatch),
+    setBalance: bindActionCreators(setBalance, dispatch),
+    logout:bindActionCreators(logout, dispatch),
+    setUserOrders: bindActionCreators(setUserOrders, dispatch),
+    addOrder: bindActionCreators(addOrder, dispatch),
+    updateOrder: bindActionCreators(updateOrder, dispatch),
+    removeOrder: bindActionCreators(removeOrder, dispatch),
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);

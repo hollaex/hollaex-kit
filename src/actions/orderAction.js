@@ -46,9 +46,23 @@ export function setUserOrders(orders) {
 	}
 }
 
-export function addOrder(activeOrders, order) {
+export function addOrder(order) {
 	return {
 		type: 'ADD_ORDER',
-		payload: {activeOrders, order},
+		payload: { order },
+	}
+}
+
+export function updateOrder(order) {
+	return {
+		type: 'UPDATE_ORDER',
+		payload: { order },
+	}
+}
+
+export function removeOrder(ids) {
+	return {
+		type: 'REMOVE_ORDER',
+		payload: { ids: ids.map((item) => item.id) },
 	}
 }
