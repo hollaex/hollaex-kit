@@ -22,11 +22,11 @@ import UserVerification from './views/UserVerification'
 import CustomerSupport from './views/UserVerification/CustomerSupport'
 import store from './store'
 import { setToken } from './actions/authAction'
-import constants from './config/constants'
+import { API_URL } from './config/constants'
 
 // Initialize token
 axios.defaults.headers.post['Content-Type'] = 'application/json';
-axios.defaults.baseURL = constants.API_URL;
+axios.defaults.baseURL = API_URL;
 
 
 let token = localStorage.getItem('token')
@@ -79,13 +79,13 @@ export default (
         <Route path="support" name="support" component={CustomerSupport} />
          <Route path="verification/:level" name="verifyCode" component={UserVerification}></Route>
       </Route>
-      <Route path="login" name="Login" component={Login} onEnter={loggedIn}/>
-      <Route path="signup" name="signup" component={SignUp} onEnter={loggedIn} />
-      <Route path="reset-password" name="Reset Password Request" component={ResetPasswordRequest} onEnter={loggedIn}/>
-      <Route path="reset-password/:code" name="Reset Password" component={ResetPassword} onEnter={loggedIn}/>
-      <Route path="verify" name="Verify" component={Verification} onEnter={loggedIn} />
-      <Route path="verify/:code" name="verifyCode" component={Verification}></Route>
-      
+
     </Route>
+    <Route path="login" name="Login" component={Login} onEnter={loggedIn}/>
+    <Route path="signup" name="signup" component={SignUp} onEnter={loggedIn} />
+    <Route path="reset-password" name="Reset Password Request" component={ResetPasswordRequest} onEnter={loggedIn}/>
+    <Route path="reset-password/:code" name="Reset Password" component={ResetPassword} onEnter={loggedIn}/>
+    <Route path="verify" name="Verify" component={Verification} onEnter={loggedIn} />
+    <Route path="verify/:code" name="verifyCode" component={Verification}></Route>
   </Router>
 )

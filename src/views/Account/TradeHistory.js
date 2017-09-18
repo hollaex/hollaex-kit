@@ -48,7 +48,9 @@ const Body = ({ data = [], cancelOrder }) => {
 
 class TradeHistory extends Component {
   componentWillMount() {
-    this.props.getTrades();
+    if (this.props.count === 0) {
+			this.props.getTrades();
+		}
   }
   // TODO add request more in pagination
   render() {
@@ -56,9 +58,7 @@ class TradeHistory extends Component {
     return (
       <DisplayTable
         title="Trade History"
-        data={trades.sort((a, b) => {
-          return new Date(a) <= new Date(b);
-        })}
+        data={trades}
         header={<Header />}
         body={<Body />}
         count={count}

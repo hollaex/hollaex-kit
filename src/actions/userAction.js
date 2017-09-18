@@ -94,6 +94,13 @@ export function uploadFile(data) {
 	})
 }
 
+export function addTrades(trades) {
+	return {
+		type: 'ADD_TRADES',
+		payload: trades,
+	}
+};
+
 export function userTrades(limit = 100, page = 1) {
 	const query = querystring.stringify({
 		symbol: 'btc',

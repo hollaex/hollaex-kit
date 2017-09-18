@@ -1,5 +1,3 @@
-import axios from 'axios'
-
 const USER_DATA_KEYS = [
 	'first_name',
 	'last_name',
@@ -24,6 +22,10 @@ const extractuserData = (data) => {
 	})
 	return userData;
 };
+
+const sortByDate = (a, b) => {
+	return new Date(a) <= new Date(b);
+}
 
 export default function reducer(state={
 	id: null,
@@ -94,13 +96,28 @@ export default function reducer(state={
 
 		// USER_TRADES
 		case 'USER_TRADES_PENDING': {
-			return {...state, fetching: true, fetched: false, error: null,}
+			return {...state, fetching: true, fetched: false, error: null, trades: INITIAL_API_OBJECT}
 		}
 		case 'USER_TRADES_REJECTED': {
 			return {...state, fetching: false, error: action.payload}
 		}
 		case 'USER_TRADES_FULFILLED': {
-			return {...state, fetching: false, trades: { count: action.payload.count, data: state.trades.data.concat(action.payload.data)}}
+			return {...state, fetching: false, trades: { count: action.payload.count, data: state.trades.data.concat(action.payload.data).sort(sortByDate)}}
+		}
+
+		case 'ADD_TRADES': {
+			// check if we have trades from DB
+			if (state.trades.count > 0) {
+				return {
+					...state,
+					trades: {
+						count: state.trades.count + action.payload.length,
+						data: state.trades.data.concat(action.payload).sort(sortByDate)
+					}
+				}
+			}
+
+			break;
 		}
 		// USER_DEPOSITS
 		case 'USER_DEPOSITS_PENDING': {

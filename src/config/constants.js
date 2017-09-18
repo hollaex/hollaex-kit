@@ -1,7 +1,8 @@
 import config from './index'
 
-const ENV = process.env.NODE_ENV || 'development'
-const NETWORK = process.env.REACT_APP_NETWORK || 'testnet'
-const { API_URL, WS_URL } = config[ENV][NETWORK]
+export const ENV = process.env.NODE_ENV || 'development'
+export const NETWORK = process.env.REACT_APP_NETWORK || 'testnet'
 
-export default {ENV, NETWORK, API_URL, WS_URL}
+export const SESSION_TIME = 60 * 60 * 1000; // 1 hour
+export const API_URL = config[ENV][NETWORK].API_URL;
+export const WS_URL = config[ENV][NETWORK].WS_URL;

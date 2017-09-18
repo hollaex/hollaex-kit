@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import io from 'socket.io-client';
 import CandleChart from "./Chart";
-import constants from '../../config/constants'
+import { WS_URL } from '../../config/constants'
 
 class ChartComponent extends Component {
   state = {
@@ -14,7 +14,7 @@ class ChartComponent extends Component {
   }
 
   componentWillMount() {
-    const chartSocket =  io.connect(`${constants.WS_URL}/chart`, {
+    const chartSocket =  io.connect(`${WS_URL}/chart`, {
       query: {
         symbol: 'btc'
       }

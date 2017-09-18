@@ -3,13 +3,11 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import Sidebar from './Sidebar'
 import io from 'socket.io-client';
-import { setMe, setBalance } from '../../actions/userAction'
+import { setMe, setBalance, addTrades } from '../../actions/userAction'
 import { setUserOrders, addOrder, updateOrder, removeOrder } from '../../actions/orderAction'
 import { logout } from '../../actions/authAction'
-import constants from '../../config/constants'
+import { SESSION_TIME, WS_URL } from '../../config/constants'
 import './styles/dashboard.css'
-
-const sessionTime = 60 * 60 * 1000 // one hour
 
 class Dashboard extends Component {
   state = {
@@ -29,12 +27,6 @@ class Dashboard extends Component {
 		// this.props.dispatch(getOrderbook())
 		// this.props.dispatch(getTrades())
 		// this.props.dispatch(getMe())
-		var time_now = (new Date()).getTime();
-		// Check to see when the user logged in
-		var loginTime = localStorage.getItem('time');
-		if ((time_now - loginTime) > sessionTime) {
-			this.props.logout();
-		}
 
     if (this.props.token) {
       this.setUserSocket(this.props.token);
@@ -63,7 +55,7 @@ class Dashboard extends Component {
 	}
 
   setUserSocket = (token) => {
-		const privateSocket = io.connect(`${constants.WS_URL}/user`, {
+		const privateSocket = io.connect(`${WS_URL}/user`, {
 			query: {
 				token: `Bearer ${token}`
 			}
@@ -132,6 +124,7 @@ class Dashboard extends Component {
 				 //    "btc_balance": 300000,
 				 //    "updated_at": "2017-07-26T13:20:40.464Z"
 				 //  }
+         this.props.addTrades(data);
 					break;
 				case 'deposit':
 					break;
@@ -150,7 +143,7 @@ class Dashboard extends Component {
 
   _resetTimer=()=> {
 	   clearTimeout(this.idleTime);
-     this.idleTime = setTimeout(this._logout, sessionTime) // no activity will log the user out automatically
+     this.idleTime = setTimeout(this._logout, SESSION_TIME) // no activity will log the user out automatically
   }
 
 	render() {
@@ -183,6 +176,7 @@ const mapDispatchToProps = dispatch => ({
     addOrder: bindActionCreators(addOrder, dispatch),
     updateOrder: bindActionCreators(updateOrder, dispatch),
     removeOrder: bindActionCreators(removeOrder, dispatch),
+    addTrades: bindActionCreators(addTrades, dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);
