@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { browserHistory } from 'react-router'
+import querystring from 'query-string';
 
 export function signup(data) {
 	return ((dispatch) => {
@@ -10,18 +11,15 @@ export function signup(data) {
 		.then(res => {
 			dispatch(getEmail(data.email));
 			dispatch({
-			    type: 'SIGNUP_USER_FULFILLED',
-			    payload: res
+			    type: 'SIGNUP_USER_FULFILLED'
 			});
-			browserHistory.push('/verify');
 		})
 		.catch(err => {
 			dispatch({
 			    type: 'SIGNUP_USER_REJECTED',
-			    payload: err.response
+			    payload: err.response.data
 			});
-			browserHistory.push('/signup');
-		})	
+		})
 	})
 }
 export function getEmail(data) {
@@ -36,6 +34,45 @@ export function verify(data) {
 		payload: axios.post('/verify', data)
 	}
 }
+
+export function checkVerificationCode(data) {
+		return ((dispatch) => {
+			dispatch({ type: 'CHECK_VERIFICATION_CODE_PENDING' });
+			axios.get(`/verify?${querystring.stringify(data)}`)
+				.then((response) => {
+					dispatch({
+						type: 'CHECK_VERIFICATION_CODE_FULFILLED',
+						payload: response.data,
+					});
+				})
+				.catch((error) => {
+					dispatch({
+						type: 'CHECK_VERIFICATION_CODE_REJECTED',
+						payload: error.response.data,
+					});
+				});
+		});
+}
+
+export function verifyVerificationCode(data) {
+		return ((dispatch) => {
+			dispatch({ type: 'VERIFY_VERIFICATION_CODE_PENDING' });
+			axios.post('/verify', data)
+				.then((response) => {
+					dispatch({
+						type: 'VERIFY_VERIFICATION_CODE_FULFILLED',
+						payload: response.data,
+					});
+				})
+				.catch((error) => {
+					dispatch({
+						type: 'VERIFY_VERIFICATION_CODE_REJECTED',
+						payload: error.response.data,
+					});
+				});
+		});
+}
+
 export function login(data) {
 	return ((dispatch) => {
 		dispatch({

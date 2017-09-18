@@ -83,7 +83,7 @@ export default (
       <Route path="signup" name="signup" component={SignUp} onEnter={loggedIn} />
       <Route path="reset-password" name="Reset Password Request" component={ResetPasswordRequest} onEnter={loggedIn}/>
       <Route path="reset-password/:code" name="Reset Password" component={ResetPassword} onEnter={loggedIn}/>
-      <Route path="verify" name="Verify" component={Verification} />
+      <Route path="verify" name="Verify" component={Verification} onEnter={loggedIn} />
       <Route path="verify/:code" name="verifyCode" component={Verification}></Route>
       
     </Route>

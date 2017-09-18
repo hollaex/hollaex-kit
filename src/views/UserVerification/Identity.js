@@ -11,12 +11,20 @@ import ProofOfIdentityForm from './ProofOfIdentityForm';
 
 export class Identity extends Component {
   submitUserInformation = (values) => {
+    const { userData } = this.props;
+    Object.keys(values).forEach((key) => {
+      if (values[key] === null || values[key] === userData[key]) {
+        delete values[key];
+      }
+    });
     if (values.gender === 'MALE') {
       values.gender = true;
     } else if (values.gender === 'FEMALE') {
       values.gender = false;
     }
-    values.dob = new Date(values.dob)
+    if (values.dob) {
+      values.dob = new Date(values.dob)
+    }
     this.props.updateUserInformation(values);
   }
 

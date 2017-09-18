@@ -34,72 +34,70 @@ const renderInput = ({ input, label, type, meta: {touched, invalid, error }}) =>
  	</div>
 );
 
-const mapStateToProps = (state, ownProps) => ({
-    err: state.auth.errMsg,
-    user: state.auth.user
-})
-const mapDispatchToProps = dispatch => ({
-    signup:bindActionCreators(signup, dispatch),
-    getEmail:bindActionCreators(getEmail, dispatch),
+const SignUpPage = ({ errorMessage, fetching, fetched, handleSubmit, pristine, signup }) => {
+  if (fetching) {
+    return <div>Loading</div>;
+  } else if (fetched && !errorMessage) {
+    return <div>Check your email to verify your account</div>;
+  }
+
+  return (
+    <div className='col-lg-4 offset-4'>
+      <form className=' pt-5'  onSubmit={handleSubmit(signup)}>
+        <div className='row'>
+          <div className='col-lg-6 text-right'><h1>SignUp/</h1></div>
+          <div><Link to='/login' style={{textDecoration:'none'}}><h5>Login</h5></Link></div>
+        </div>
+        <div>
+          <Field
+            name="email"
+            component={ renderInput }
+            type="text"
+            label="Email/Phone"
+          />
+        </div>
+        <div>
+          <Field
+            name="password"
+            component={ renderInput }
+            type="password"
+            label="Password"
+          />
+        </div>
+        <div className='pt-3'>
+          {errorMessage && <span style={{color:'red'}} className='pl-3'>{errorMessage}</span>}
+          <button type="submit" disabled={pristine || fetching}>SignUp</button>
+        </div>
+      </form>
+    </div>
+  )
+}
+
+const mapStateToProps = (state) => ({
+    errorMessage: state.auth.error,
+    fetching: state.auth.fetching,
+    fetched: state.auth.fetched,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+    signup: bindActionCreators(signup, dispatch),
 })
 
-class SignUp extends Component {
-	 state={
-	 	email:''
-	 }
-	render() {
-		const { handleSubmit } = this.props;
-		const onSubmit = formProps => {
-			this.setState({email:formProps.email})
-            this.props.signup(formProps);
-        }
-		return (	
-			<div className='col-lg-4 offset-4'>
-				<form className=' pt-5'  onSubmit={ handleSubmit(onSubmit)}>
-					<div className='row'>
-						<div className='col-lg-6 text-right'><h1>SignUp/</h1></div>
-						<div><Link to='/login' style={{textDecoration:'none'}}><h5>Login</h5></Link></div>
-					</div>
-					 
-					<div> 
-				         <Field
-				            name="email"
-				            component={ renderInput }
-				            type="text"
-				            label="Email/Phone"
-				         />       
-			        </div>
-			        <div>
-				        <Field
-				            name="password"
-				            component={ renderInput }
-				            type="password"
-				            label="Password"
-				         />       
-			        </div>
-			        <div className='pt-3'> 
-			        	<button type="submit">SignUp</button>
-			        	{this.props.err?
-							<span style={{color:'red'}} className='pl-3'>{this.props.err.message}</span>
-						: null
-			        	}
-			        </div>
-				    		         
-			    </form>
-			</div>	
-		);
-	}
-}
-SignUp.defaultProps = {
-     user:{},
-     err:{}
+SignUpPage.defaultProps = {
+    errorMessage: '',
+    fetching: false,
+    fetched: false,
 };
-SignUp.propTypes = {
-     user:PropTypes.object,
-     err:PropTypes.object
+
+SignUpPage.propTypes = {
+    errorMessage: PropTypes.string,
+    fetching: PropTypes.bool,
+    fetched: PropTypes.bool,
 };
-const form = reduxForm({
+
+const SignUpForm = reduxForm({
   form: 'SignUp',
   validate
-});
-export default connect(mapStateToProps, mapDispatchToProps)(form(SignUp));
+})(SignUpPage);
+
+export default connect(mapStateToProps, mapDispatchToProps)(SignUpForm);
