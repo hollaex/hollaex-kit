@@ -1,5 +1,6 @@
 import axios from 'axios';
 import _ from 'lodash'
+import querystring from 'query-string';
 
 export function getMe() {
 	return {
@@ -93,15 +94,24 @@ export function uploadFile(data) {
 	})
 }
 
-export function userTrades() {
+export function userTrades(limit = 100, page = 1) {
+	const query = querystring.stringify({
+		symbol: 'btc',
+		page,
+		limit,
+	});
+
 	return ((dispatch) => {
 		dispatch({ type: 'USER_TRADES_PENDING' });
-		axios.get('/user/trades?symbol=btc')
+		axios.get(`/user/trades?${query}`)
 			.then((body) => {
 				dispatch({
 				    type: 'USER_TRADES_FULFILLED',
 				    payload: body.data,
 				});
+				if (body.data.count > page * limit) {
+					dispatch(userTrades(limit, page + 1));
+				}
 			})
 			.catch((err) => {
 				dispatch({

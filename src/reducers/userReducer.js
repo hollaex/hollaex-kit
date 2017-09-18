@@ -94,13 +94,13 @@ export default function reducer(state={
 
 		// USER_TRADES
 		case 'USER_TRADES_PENDING': {
-			return {...state, fetching: true, fetched: false, error: null, trades: INITIAL_API_OBJECT}
+			return {...state, fetching: true, fetched: false, error: null,}
 		}
 		case 'USER_TRADES_REJECTED': {
 			return {...state, fetching: false, error: action.payload}
 		}
 		case 'USER_TRADES_FULFILLED': {
-			return {...state, fetching: false, trades: action.payload}
+			return {...state, fetching: false, trades: { count: action.payload.count, data: state.trades.data.concat(action.payload.data)}}
 		}
 		// USER_DEPOSITS
 		case 'USER_DEPOSITS_PENDING': {
