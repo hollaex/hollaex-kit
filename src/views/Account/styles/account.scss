@@ -29,6 +29,9 @@
 .red{
 	color:red;
 }
+.green{
+	color:#009a4f;
+}
 .errorImage{
 	width: 1rem;
 	height: 1rem;
@@ -54,4 +57,36 @@
     display: block;
     margin: 0;
     font-size: 0.7rem;
+    max-height: 19rem;
+    overflow-y: auto;
+}
+.time-td{
+	padding-top: 0 !important;
+	padding-bottom: 0 !important;
+	vertical-align: middle !important;
+}
+.timeColor{
+	color:#b3b3b3; 
+}
+.tableHead{
+  margin-bottom:0;
+  font-size: 0.7rem;
+  border-bottom: 3px solid #81868a;
+}
+.pagination a{
+  background-color: transparent;
+}
+.pagination a:hover{
+  background-color: rgba(39, 135, 187, 0.23);
+}
+.page-item.disabled .page-link{
+  background-color: transparent;
+}
+.page-item:first-child .page-link{
+     border-bottom-left-radius: 0; 
+     border-top-left-radius:0; 
+  }
+.page-item:last-child .page-link{
+   border-bottom-right-radius: 0; 
+   border-top-right-radius: 0; 
 }

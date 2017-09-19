@@ -1,4 +1,3 @@
-import axios from 'axios'
 import _ from 'lodash'
 
 export default function reducer(state={
@@ -8,67 +7,84 @@ export default function reducer(state={
 	activeOrders: []
 }, action) {
 	switch(action.type) {
-		
-		// cancelOrder
-		case 'CANCEL_ORDER_PENDING': {
-			return {...state, fetching: true, fetched: false, error: null}
-			break;
-		}
-		case 'CANCEL_ORDER_REJECTED': {
-			alert('Error: ' + action.payload)
-			return {...state, fetching: false, error: action.payload}
-			break;
-		}
-		case 'CANCEL_ORDER_FULFILLED': {
-			// alert('Order cancelled successfully')
-			return {...state, fetching: false, fetched: true}
-			break;
-		}
-
-		// getOrders
-		case 'GET_ORDERS': {
-			return {...state, activeOrders: action.payload}
-			break;
-		}
-
 		// createOrder
 		case 'CREATE_ORDER_PENDING': {
 			return {...state, fetching: true, fetched: false, error: null}
-			break;
 		}
 		case 'CREATE_ORDER_REJECTED': {
 			alert('Error: ' + action.payload.response.data.error)
 			return {...state, fetching: false, error: action.payload}
-			break;
 		}
 		case 'CREATE_ORDER_FULFILLED': {
 			// alert('Order created successfully')
 			return {...state, fetching: false, fetched: true}
-			break;
-		}
 
-		// updateOrder
-		case 'UPDATE_ORDER_PENDING': {
+		}
+		// getOrders
+		case 'GET_ORDERS_PENDING': {
 			return {...state, fetching: true, fetched: false, error: null}
-			break;
 		}
-		case 'UPDATE_ORDER_REJECTED': {
-			alert('Error: ' + action.payload.response.data.error)
-			return {...state, fetching: false, error: action.payload.response.data.error}
-			break;
+		case 'GET_ORDERS_REJECTED': {
+			return {...state, fetching: false, error: action.payload}
 		}
-		case 'UPDATE_ORDER_FULFILLED': {
-			alert('Order updated successfully')
-			return {...state, fetching: false, fetched: true}
-			break;
+		case 'GET_ORDERS_FULFILLED': {
+			return {...state, fetching: false, activeOrders: action.payload.data}
 		}
 
-		case 'UPDATE_ORDERS': {
+		//Webscoket redux manipulations on orders
+		case 'SET_USER_ORDERS': {
 			return {...state, activeOrders: action.payload}
+		}
+
+		case 'ADD_ORDER':
+			return {...state, activeOrders: state.activeOrders.concat(action.payload.order)}
+
+		case 'UPDATE_ORDER': {
+			let { order } = action.payload;
+			const indexOfOrder = state.activeOrders.findIndex((activeOrder) => activeOrder.id === order.id);
+			if (indexOfOrder > -1) {
+				let activeOrders = [].concat(...state.activeOrders)
+				activeOrders[indexOfOrder] = order;
+				return {...state, activeOrders }
+			}
+			// do nothing
 			break;
 		}
 
-		
+		case 'REMOVE_ORDER': {
+			let { ids } = action.payload;
+			const activeOrders = state.activeOrders.filter((order) => ids.indexOf(order.id) === -1);
+			return {...state, activeOrders }
+		}
+
+		// CANCEL_ORDER
+		case 'CANCEL_ORDER_PENDING': {
+			return {...state, fetching: true, fetched: false, error: null}
+		}
+		case 'CANCEL_ORDER_REJECTED': {
+			return {...state, fetching: false,error: action.payload.data}
+		}
+		case 'CANCEL_ORDER_FULFILLED': {
+			const id = action.payload.data.id;
+			const data = _.filter(state.activeOrders, user => {if(user.id!=id){return user;}})
+			return {
+				...state,
+				fetching: false,
+				activeOrders: data,
+			}
+		}
+		// CANCEL_ALL_ORDERS
+		case 'CANCEL_ALL_ORDERS_PENDING': {
+			return {...state, fetching: true, fetched: false, error: null}
+		}
+		case 'CANCEL_ALL_ORDERS_REJECTED': {
+			return {...state, fetching: false,error: action.payload.data}
+		}
+		case 'CANCEL_ALL_ORDERS_FULFILLED': {
+			return {...state, fetching: false,activeOrders:[]}
+		}
+		default:
+			return state;
 	}
 	return state;
 }

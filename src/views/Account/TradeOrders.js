@@ -1,54 +1,71 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux'; 
+import math from 'mathjs';
+import { formatBtcAmount, formatFiatAmount } from '../../utils/string';
+import DisplayTable from './DisplayTable';
+import { cancelOrder, cancelAllOrders } from '../../actions/orderAction'
 
-class TradeOrders extends Component {
-	render() {
-		return (
-			<div>
-				<div><h4>Open Trade Orders</h4></div>
-				<div className='tableView'>
-					<table className='table text-right'>
-						<tr>
-							<td className="text-left">Type</td>
-							<td>OrderTime</td>
-							<td>Amount</td>
-							<td>Filled(BTC)</td>
-							<td>Unfilled amount</td>
-							<td>OrderPrice(USD)</td>
-							<td>Total order amount(USD)</td>
-							<td><a href='#'>CancelAll</a></td>
-						</tr>
-						<tr className="table-success" style={{borderTop:'3px solid #81868a'}}>
-							<td className="text-left">BUY</td>
-							<td>2017-07-06</td>
-							<td>0.00994532</td>
-							<td>0.0</td>
-							<td>0.0</td>
-							<td>$3,106</td>
-							<td>$30.99</td>
-							<td><a href='#'>Cancel</a></td>
-						</tr>
-						<tr className="table-danger">
-							<td className="text-left">SELL</td>
-							<td>2017-07-06</td>
-							<td>0.1000000</td>
-							<td>0.0</td>
-							<td>0.0</td>
-							<td>$3,310.5</td>
-							<td>$33.05</td>
-							<td><a href='#'>Cancel</a></td>
-						</tr>
-					</table>
-				</div>
-			</div>
-		);
-	}
+const Header = ({ cancelAll }) => (
+	<thead>
+		<tr style={{borderBottom:'3px solid #81868a'}}>
+			<td className="text-left">Type</td>
+			<td>Amount(BTC)</td>
+			<td>Filled(BTC)</td>
+			<td>Unfilled amount</td>
+			<td>OrderPrice(USD)</td>
+			<td>Total order amount(USD)</td>
+			<td><div className="pointer" onClick={cancelAll}>Cancel All</div></td>
+		</tr>
+	</thead>
+);
+
+const Body = ({ data = [], cancelOrder }) => {
+	return (
+		<tbody>
+			{data.map((item, index) => {
+				return (
+					<tr
+						key={`data-row-${index}`}
+						className={item.side === 'buy' ? 'table-success' : 'table-danger'}
+					>
+						<td className="text-left">{item.side.toUpperCase()}</td>
+						<td>{formatBtcAmount(item.size)}</td>
+						<td>{formatBtcAmount(item.filled)}</td>
+						<td>{formatBtcAmount(math.chain(item.size).subtract(item.filled).done())}</td>
+						<td>${formatFiatAmount(item.price)}</td>
+						<td>${formatFiatAmount(math.chain(item.price).multiply(item.size).done())}</td>
+						<td><div className="pointer" onClick={() => cancelOrder(item.id)}>Cancell</div></td>
+					</tr>
+				)
+			})}
+		</tbody>
+	);
 }
-const mapDispatchToProps = dispatch => ({
-    
-})
-const mapStateToProps = (store, ownProps) => ({
-	user: store.user
-})
-export default connect(mapStateToProps, mapDispatchToProps)(TradeOrders);
+
+const OpenOrders = ({ cancelAll, cancelOrder, orders }) => {
+	return (
+		<DisplayTable
+			title="Open Trade Orders"
+			data={orders}
+			header={<Header cancelAll={cancelAll} />}
+			body={<Body cancelOrder={cancelOrder} />}
+			count={orders.length}
+		/>
+	);
+}
+
+OpenOrders.defaultProps = {
+  orders: [],
+  count: 0,
+}
+
+const mapDispatchToProps = (dispatch) => ({
+  cancelAll: () => dispatch(cancelAllOrders()),
+  cancelOrder: (id) => dispatch(cancelOrder(id)),
+});
+
+const mapStateToProps = (state) => ({
+	orders: state.order.activeOrders,
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(OpenOrders);

@@ -1,28 +1,31 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 import { Link } from 'react-router'
 
 import { logout } from '../../actions/authAction'
 
-const mapDispatchToProps = dispatch => ({
-    logout:bindActionCreators(logout, dispatch),
-})
 class Home extends Component {
-	logout(e){
+	componentWillMount() {
+		if (!this.props.token) {
+			this.props.router.replace('/login')
+		}
+	}
+	logout = (e) => {
 		this.props.logout();
 	}
+
 	render() {
+    const { token, price } = this.props;
 		return (
 			<div className='pt-5 '>
 				<h2 className='text-center'>This is Home page</h2>
-				<p>Last bitcoin price: {(this.props.trades.length > 0) ? this.props.trades[0].price : null}</p>
+				{price > 0 && <p>Last bitcoin price: {price}</p>}
 				<Link to='/dashboard' style={{textDecoration:'none',color:'black'}} className='ml-4'>
 					Go to dashboard
 				</Link>
 				<div className='text-right pr-5'>
-					{(this.props.token)
-						? <button onClick={this.logout.bind(this)}>Logout</button>
+					{(token)
+						? <button onClick={this.logout}>Logout</button>
 						: <button><Link to='/login'>Login</Link></button>
 					}
 				</div>
@@ -33,8 +36,12 @@ class Home extends Component {
 }
 
 const mapStateToProps = (store, ownProps) => ({
-	trades: store.orderbook.trades,
-	token: store.auth.token
+	price: store.orderbook.price,
+	token: store.auth.token,
+})
+
+const mapDispatchToProps = dispatch => ({
+    logout: () => dispatch(logout),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);

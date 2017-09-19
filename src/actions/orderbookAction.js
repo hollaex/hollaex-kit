@@ -4,14 +4,14 @@ import axios from 'axios'
 export function getOrderbook() {
 	return {
 		type: 'GET_ORDERBOOK',
-		payload: axios.get('/orderbook')
+		payload: axios.get('/orderbooks')
 	}
 }
 
 export function setOrderbook(orderbook) {
 	return {
 		type: 'SET_ORDERBOOK',
-		payload: orderbook
+		payload: orderbook // set only for btc at the moment
 	}
 }
 
@@ -25,6 +25,13 @@ export function getTrades() {
 export function setTrades(trades) {
 	return {
 		type: 'SET_TRADES',
-		payload: trades
+		payload: trades // set only for btc at the moment
+	}
+}
+
+export function addTrades(trades, newTrades) {
+	return {
+		type: 'ADD_TRADES',
+		payload: { trades, newTrades } // set only for btc at the moment
 	}
 }

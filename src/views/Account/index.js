@@ -1,159 +1,84 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux'; 
 import AccountBalance from './AccountBalance';
 import AccountSetup from './AccountSetup';
 import SecuritySetup from './SecuritySetup';
 import TradeOrders from './TradeOrders';
 import TradeHistory from './TradeHistory';
+import BTCHistory from './BTCHistory';
+import USDHistory from './USDHistory';
 import './styles/account.css'
 
- class AccountModify extends Component {
-	state={
-		buttonOne:true,
-		buttonTwo:false,
-		buttonThree:false,
-		buttonFour:false,
-		buttonFive:false,
-		buttonSix:false,
-		buttonSeven:false,
+const IMG_WIDTH = '40';
+const IMG_HEIGHT = '40';
+const IMG_USER = require('./images/user.png');
+const IMG_SUCCESS = require('./images/success.png');
+const TABS = [
+  { component: <AccountBalance /> },
+  { component: <AccountSetup /> },
+  { component: <SecuritySetup /> },
+  { component: <TradeOrders /> },
+  { component: <TradeHistory /> },
+  { component: <USDHistory /> },
+  { component: <BTCHistory /> },
+];
+
+class AccountModify extends Component {
+	state = {
+    activeTab: 0,
 	}
+
+  setActiveTab = (activeTab = 0) => {
+    this.setState({ activeTab });
+  }
+
+  renderActiveContent = (step) => {
+    return TABS[step].component;
+  }
+
 	render() {
-		var img = require('./images/user.png');
-		var img2 = require('./images/success.png');
+    const { activeTab } = this.state;
+
 		return (
 			<div className='mt-5'>
-			    <div className="mt-5  text-center">
-			    	<div><h3>My Account</h3></div>
-			    </div>
-			    <div className="tradeBorder mt-5 accountContainer" >
-					<div className="d-flex justify-content-center" style={{marginTop:'-1.8rem'}}>
-						<div className="p-2">
-					  		<button onClick={this.buttonOne} className={this.state.buttonOne?'accountActive':'notActive'}>
-					  		{this.state.buttonOne?
-					  			<img src={img2} width="40" height="40"/>
-					  			:
-					  			<img src={img} width="40" height="40" />
-					  		}
-					  		</button>
-					  	</div>
-						<div className="p-2">
-					  		<button onClick={this.buttonTwo} className={this.state.buttonTwo?'accountActive':'notActive'}>
-					  		{this.state.buttonTwo?
-					  			<img src={img2} width="40" height="40"/>
-					  			:
-					  			<img src={img} width="40" height="40" />
-					  		}
-					  		</button>
-					  	</div>
-					 	<div className="p-2">
-					  		<button onClick={this.buttonThree} className={this.state.buttonThree?'accountActive':'notActive'}>
-					  		{this.state.buttonThree?
-					  			<img src={img2} width="40" height="40"/>
-					  			:
-					  			<img src={img} width="40" height="40" />
-					  		}
-					  		</button>
-					  	</div>
-						<div className="p-2">
-					  		<button onClick={this.buttonFour} className={this.state.buttonFour?'accountActive':'notActive'}>
-					  		{this.state.buttonFour?
-					  			<img src={img2} width="40" height="40"/>
-					  			:
-					  			<img src={img} width="40" height="40" />
-					  		}
-					  		</button>
-						 </div>
-						 <div className="p-2">
-					  		<button onClick={this.buttonFive} className={this.state.buttonFive?'accountActive':'notActive'}>
-					  		{this.state.buttonFive?
-					  			<img src={img2} width="40" height="40"/>
-					  			:
-					  			<img src={img} width="40" height="40" />
-					  		}
-					  		</button>
-						 </div>
-						 <div className="p-2">
-					  		<button onClick={this.buttonSix} className={this.state.buttonSix?'accountActive':'notActive'}>
-					  		{this.state.buttonSix?
-					  			<img src={img2} width="40" height="40"/>
-					  			:
-					  			<img src={img} width="40" height="40" />
-					  		}
-					  		</button>
-						  </div>
-						<div className="p-2">
-					  		<button onClick={this.buttonSeven} className={this.state.buttonSeven?'accountActive':'notActive'}>
-					  		{this.state.buttonSeven?
-					  			<img src={img2} width="40" height="40"/>
-					  			:
-					  			<img src={img} width="40" height="40" />
-					  		}
-					  		</button>
-						 </div>
-					</div>
-
-					<div className="col-lg-10 offset-lg-1 col-xs-12 mt-5 ">
-						{this.state.buttonOne? <AccountBalance />
-							: 
-								this.state.buttonTwo?<AccountSetup />
-							:
-								this.state.buttonThree?<SecuritySetup />
-							: 
-								this.state.buttonFour?<TradeOrders />
-							: 
-								this.state.buttonFive?<TradeHistory />
-							: 
-								this.state.buttonSix?'In progress'
-							:
-								this.state.buttonSeven?'In progress'
-							:null
-						}
-					</div>
+		    <div className="mt-5  text-center">
+		    	<div><h3>My Account</h3></div>
+		    </div>
+		    <div className="tradeBorder mt-5 accountContainer d-flex flex-column" >
+          <div className="row justify-content-center" style={{marginTop:'-1.8rem'}}>
+            {TABS.map((tab, index) => {
+              return (
+                <div className="p-2" key={index}>
+                  <button
+                    onClick={() => this.setActiveTab(index)}
+                    className={activeTab === index ? 'accountActive' : 'notActive'}
+                  >
+                    <img
+                      src={activeTab === index ? IMG_SUCCESS : IMG_USER}
+                      width={IMG_WIDTH}
+                      height={IMG_HEIGHT}
+                      alt="tab icon"
+                    />
+                  </button>
+                </div>
+              )
+            })}
+          </div>
+          <div className="col-xs-12 mt-5 ">
+          {this.renderActiveContent(activeTab)}
+          </div>
 				</div>
 			</div>
 		);
 	}
-	buttonOne = () =>{
-		this.setState({
-		 	buttonOne:true,buttonTwo:false,buttonThree:false,buttonFour:false,buttonFive:false,buttonSix:false,buttonSeven:false
-		})
-	}
-	buttonTwo = () =>{
-		this.setState({
-		 	buttonOne:false,buttonTwo:true,buttonThree:false,buttonFour:false,buttonFive:false,buttonSix:false,buttonSeven:false
-		})
-	}
-	buttonThree = () =>{
-		this.setState({
-		 	buttonOne:false,buttonTwo:false,buttonThree:true,buttonFour:false,buttonFive:false,buttonSix:false,buttonSeven:false
-		})
-	}
-	buttonFour = () =>{
-		this.setState({
-		 	buttonOne:false,buttonTwo:false,buttonThree:false,buttonFour:true,buttonFive:false,buttonSix:false,buttonSeven:false
-		})
-	}
-	buttonFive = () =>{
-		this.setState({
-		 	buttonOne:false,buttonTwo:false,buttonThree:false,buttonFour:false,buttonFive:true,buttonSix:false,buttonSeven:false
-		})
-	}
-	buttonSix = () =>{
-		this.setState({
-		 	buttonOne:false,buttonTwo:false,buttonThree:false,buttonFour:false,buttonFive:false,buttonSix:true,buttonSeven:false
-		})
-	}
-	buttonSeven = () =>{
-		this.setState({
-		 	buttonOne:false,buttonTwo:false,buttonThree:false,buttonFour:false,buttonFive:false,buttonSix:false,buttonSeven:true
-		})
-	}
 }
+
 const mapDispatchToProps = dispatch => ({
-    
+
 })
+
 const mapStateToProps = (store, ownProps) => ({
 	user: store.user
 })
+
 export default connect(mapStateToProps, mapDispatchToProps)(AccountModify);

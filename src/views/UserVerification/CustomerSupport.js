@@ -41,18 +41,21 @@ class CustomerSupport extends Component {
 			            component={ renderText }
 			            type="text"
 			            label="YOUR EMAIL ADDRESS:"
+			            style={{width:'35%'}}
 			        />
 					<Field
 			            name="category"
 			            component={ renderText }
 			            type="text"
 			            label="CATEGORY"
+			            style={{width:'35%'}}
 			        />
 			        <Field
 			            name="subject"
 			            component={ renderText }
 			            type="text"
 			            label="SUBJECT"
+			            style={{width:'35%'}}
 			        />
 			        <Field
 			            name="descrption"

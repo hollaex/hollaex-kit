@@ -1,11 +1,10 @@
-import axios from 'axios'
-import _ from 'lodash'
-
 export default function reducer(state={
 	fetched: false,
 	fetching: false,
 	trades: [],
-	error: null
+	error: null,
+	symbol: 'btc',
+	price: 0,
 }, action) {
 	switch(action.type) {
 
@@ -35,27 +34,25 @@ export default function reducer(state={
 				}
 			}
 			return {...state, fetching: false, fetched: true, bids, asks}
-			break;
 		}
 
 		// setOrderbook
 		case 'SET_ORDERBOOK': {
 			let bids = action.payload.bids
 			let asks = action.payload.asks
-			let allBids = 0 // accumulative bids amounts
-			let allAsks = 0 // accumulative asks amounts
-			for(let i=0; i<bids.length; i++) {
-				if(bids[i]){
-					allBids += bids[i][1]
-					bids[i][2] = allBids
-				}
-				if(asks[i]){
-					allAsks += asks[i][1]
-					asks[i][2] = allAsks
-				}
-			}
+			// let allBids = 0 // accumulative bids amounts
+			// let allAsks = 0 // accumulative asks amounts
+			// for(let i=0; i<bids.length; i++) {
+			// 	if(bids[i]){
+			// 		allBids += bids[i][1]
+			// 		bids[i][2] = allBids
+			// 	}
+			// 	if(asks[i]){
+			// 		allAsks += asks[i][1]
+			// 		asks[i][2] = allAsks
+			// 	}
+			// }
 			return {...state, fetching: false, fetched: true, bids, asks}
-			break;
 		}
 
 		// getTrades
@@ -75,7 +72,15 @@ export default function reducer(state={
 
 		// setTrades
 		case 'SET_TRADES': {
-			return {...state, fetching: false, fetched: true, trades: action.payload}
+			const price = action.payload.length > 0 ? action.payload[0].price : -1;
+			return {...state, fetching: false, fetched: true, trades: action.payload, price}
+			break;
+		}
+
+		// addTrades
+		case 'ADD_TRADES': {
+			const updatedTrades = [...action.payload.newTrades, ...action.payload.trades]
+			return {...state, fetching: false, fetched: true, trades: updatedTrades, price: action.payload.newTrades[0].price }
 			break;
 		}
 	}

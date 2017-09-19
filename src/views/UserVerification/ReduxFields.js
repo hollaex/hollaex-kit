@@ -1,4 +1,4 @@
-import React,{Component} from 'react'
+import React from 'react'
 
 export const renderText = ({ input, label, className, style, type, meta: {touched, invalid, error }}) => (
 	<div className="mt-3">
@@ -41,3 +41,22 @@ export const renderSelect = ({input,label,options, className, style, meta: { tou
 	    </div>
 	);
 }
+
+
+export const renderInputFile = ({ input, label, className, style, type, meta: {touched, invalid, error } }) => (
+	<div className="mt-3">
+		<div>{label}</div>
+		<div className="mt-1">
+			<input
+				type="file"
+				style={style}
+				className={className}
+				multiple="false"
+				onChange={(ev) => input.onChange(ev.target.files[0])}
+			/>
+		</div>
+		<div style={{color: 'red'}}>
+					{ touched ? error : '' }
+		</div>
+	</div>
+);

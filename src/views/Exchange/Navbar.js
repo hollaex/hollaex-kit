@@ -16,16 +16,14 @@ class Navbar extends Component {
 			<div>
 				<div className='row pt-3 pl-4'>
 					<div className='col-lg-2'>
-						<h3>
-							<Link to='/' style={{textDecoration:'none',color:'black'}}>EXIR</Link>
-						</h3>
+						
 					</div>
 					<div className='col-lg-3 offset-5 pt-2'>
-						<Link to='/dashboard/quickbuy' style={{textDecoration:'underline',color:'black'}}>
+						<Link to='/dashboard/exchange/quickbuy' style={{textDecoration:'underline',color:'black'}}>
 							QUICK BUY & SELL
 						</Link>
-						<Link to='/dashboard/exchange' style={{textDecoration:'none',color:'black'}} className='ml-4'>
-							NEW TRADE
+						<Link to='/dashboard/exchange/btc' style={{textDecoration:'none',color:'black'}} className='ml-4'>
+							BITCOIN
 						</Link>
 					</div>
 				</div>

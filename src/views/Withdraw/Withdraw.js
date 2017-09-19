@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Field, reduxForm } from 'redux-form';
+import math from 'mathjs';
 import { getMe, processWithdraw } from '../../actions/userAction'
 
 const validate = formProps => {
@@ -12,7 +13,7 @@ const validate = formProps => {
   if (!formProps.amount) {
     errors.amount = 'Required'
   }
-  return errors
+  return errors;
 }
 const renderInput = ({ input, label, type, meta: {touched, invalid, error }}) => (
  	<div className="row mt-2">
@@ -27,10 +28,7 @@ const renderInput = ({ input, label, type, meta: {touched, invalid, error }}) =>
 		</div>
 	</div>
 );
-const mapDispatchToProps = dispatch => ({
-	getMe: bindActionCreators(getMe, dispatch),   
-	processWithdraw: bindActionCreators(processWithdraw, dispatch),   
-})
+
 class Withdraw extends Component {
 	state={
 		isBitcoin:true,
@@ -39,10 +37,22 @@ class Withdraw extends Component {
 		 this.props.getMe();
 	}
 	render() {
+		let { btc_balance, btc_available } = this.props.user.balance
 		const { handleSubmit } = this.props;
 		const onSubmit = formProps => {
-            this.props.processWithdraw({address:formProps.address,amount:parseInt(formProps.amount)});
-	     }
+			if(btc_available){
+				let maxAmount=math.chain(btc_available).subtract(0.0005).done()
+				if(parseFloat(formProps.amount)<=maxAmount){
+					this.props.processWithdraw({address:formProps.address,amount:parseInt(formProps.amount)});
+				}
+				else{
+					alert('Your balance not sufficient to withdraw this amount');
+				}
+			}
+			else{
+				alert('balance is 0');
+			}
+	    }
 		return (
 			<div>
 				<div className='text-center mt-5 pt-3'><h3>WITHDRAW</h3></div>			 
@@ -84,7 +94,7 @@ class Withdraw extends Component {
 									            label="amount to withdraw"
 									         />       
 								        </div>
-										<p style={{color:'rgb(154, 166, 176)'}}>transactions fee: 0.0001 ($0.10)</p>
+										<p style={{color:'rgb(154, 166, 176)'}}>transactions fee: 0.0005 ($0.10)</p>
 										<div>
 											<button className="boxButton mt-5" style={{height:'2rem'}}>
 												SUBMIT WITHDRAW REQUEST 
@@ -101,8 +111,8 @@ class Withdraw extends Component {
 									 	<div className="mb-3">With draw to this bank account:</div>
 									 	<div style={{color:'rgb(50, 188, 235)'}}>
 									 		<p>johonny cash</p>
-									 		<p>bank of iran</p>
-											<p>23193931913</p>
+									 		<p>{this.props.user.bank_name}</p>
+											<p>{this.props.user.bank_account_number}</p>
 											<p>3413-32</p>
 											<p>message code: 239321FF</p>
 									 	</div>
@@ -140,6 +150,10 @@ class Withdraw extends Component {
 		})
 	}
 }
+const mapDispatchToProps = dispatch => ({
+	getMe: bindActionCreators(getMe, dispatch),   
+	processWithdraw: bindActionCreators(processWithdraw, dispatch),   
+})
 const mapStateToProps = (store, ownProps) => ({
 	user: store.user
 })

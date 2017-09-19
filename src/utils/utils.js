@@ -1,3 +1,5 @@
+import { SESSION_TIME } from '../config/constants';
+
 const bitcoin = {
     COIN: 100000000,
     PRECISION: 8,
@@ -27,4 +29,10 @@ bitcoin.toBTC = (satoshi) => {
     return (satoshi / bitcoin.COIN).toFixed(bitcoin.PRECISION);
 };
 
-module.exports = bitcoin;
+export default bitcoin;
+
+export const checkUserSessionExpired = (loginTime) => {
+  const currentTime = Date.now();
+
+  return (currentTime - loginTime) > SESSION_TIME;
+}
