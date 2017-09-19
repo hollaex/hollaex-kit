@@ -22,16 +22,9 @@ export function getTrades() {
 	}
 }
 
-export function setTrades(trades) {
-	return {
-		type: 'SET_TRADES',
-		payload: trades // set only for btc at the moment
-	}
-}
-
-export function addTrades(trades, newTrades) {
+export function addTrades(trades) {
 	return {
 		type: 'ADD_TRADES',
-		payload: { trades, newTrades } // set only for btc at the moment
+		payload: trades // set only for btc at the moment
 	}
 }
