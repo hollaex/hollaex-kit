@@ -70,17 +70,9 @@ export default function reducer(state={
 			break;
 		}
 
-		// setTrades
-		case 'SET_TRADES': {
-			const price = action.payload.length > 0 ? action.payload[0].price : -1;
-			return {...state, fetching: false, fetched: true, trades: action.payload, price}
-			break;
-		}
-
 		// addTrades
 		case 'ADD_TRADES': {
-			const updatedTrades = [...action.payload.newTrades, ...action.payload.trades]
-			return {...state, fetching: false, fetched: true, trades: updatedTrades, price: action.payload.newTrades[0].price }
+			return {...state, fetching: false, fetched: true, trades: action.payload.concat(state.trades), price: action.payload[0].price }
 			break;
 		}
 	}

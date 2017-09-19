@@ -1,22 +1,22 @@
 const variables  = {
 	production: {
 		mainnet: {
-			API_URL: 'http://52.59.166.184/api/v0',
-			WS_URL: 'http://52.59.166.184'
+			API_URL: 'https://api.testnet.exir.tech/v0',
+			WS_URL: 'https://api.testnet.exir.tech'
 		},
 		testnet: {
-			API_URL: 'http://52.59.166.184/api/v0',
-			WS_URL: 'http://52.59.166.184'
+			API_URL: 'https://api.testnet.exir.tech/v0',
+			WS_URL: 'https://api.testnet.exir.tech'
 		}
 	},
 	development: {
 		mainnet: {
-			API_URL: 'http://35.158.234.195/api/v0',
-			WS_URL: 'http://35.158.234.195'
+			API_URL: 'https://api.testnet.exir.tech/v0',
+			WS_URL: 'https://api.testnet.exir.tech'
 		},
 		testnet: {
-			API_URL: 'http://35.158.234.195/api/v0',
-			WS_URL: 'http://35.158.234.195'
+			API_URL: 'https://api.testnet.exir.tech/v0',
+			WS_URL: 'https://api.testnet.exir.tech'
 		}
 	}
 }
