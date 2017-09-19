@@ -52,11 +52,11 @@ class ChartComponent extends Component {
       }
       if (Array.isArray(data[symbol])) {
         chartData[symbol] = data[symbol].map((item) => ({
-          date: item.date || item.Date,
-          open: item.open || item.Open,
-          close: item.close || item.Close,
-          high: item.high || item.High,
-          low: item.low || item.Low,
+          date: item.date,
+          open: item.open,
+          close: item.close,
+          high: item.high,
+          low: item.low,
         }));
       } else if (data[symbol].date && chartData[symbol].length > 0 && data[symbol].date === chartData[symbol][chartData[symbol].length -1].date) {
         chartData[symbol][chartData[symbol].length -1] = data[symbol];
@@ -91,6 +91,7 @@ class ChartComponent extends Component {
         lastData.close = tickers[symbol]
         chartData[symbol][chartData[symbol].length - 1] = lastData;
       } else {
+        const openValue = chartData[symbol].length > 0 ? chartData[symbol][chartData[symbol].length - 1].open : tickers[symbol];
         chartData[symbol].push({
           date: currentBlockTimestamp,
           high: tickers[symbol],
@@ -106,7 +107,6 @@ class ChartComponent extends Component {
   render() {
     const { height } = this.props;
     const { chartData, width, ready } = this.state;
-    console.log(chartData)
     return (
       <div
         ref={(el) => { this.wrapper = el; } }
