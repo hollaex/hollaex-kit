@@ -6,6 +6,8 @@ import { WS_URL } from './config/constants'
 import { checkUserSessionExpired } from './utils/utils';
 import { logout } from './actions/authAction';
 
+import { AppBar } from './components';
+
 class Container extends Component {
 
 	componentWillMount() {
@@ -37,9 +39,11 @@ class Container extends Component {
 		});
 	}
 
+	logout = () => this.props.logout();
 	render() {
 		return (
-			<div className='col'>
+			<div>
+				<AppBar user={this.props.user} logout={this.logout} />
 				{this.props.children}
 			</div>
 		);
@@ -49,6 +53,7 @@ class Container extends Component {
 const mapStateToProps = (store, ownProps) => ({
 	orderbook: store.orderbook,
   symbol: store.orderbook.symbol,
+	user: store.user,
 })
 
 const mapDispatchToProps = (dispatch) => ({

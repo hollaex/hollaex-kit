@@ -1,0 +1,17 @@
+.app_bar {
+  position: relative;
+  width: 100%;
+  height: 32px;
+  border-bottom: 1px solid black;
+  display: flex;
+  justify-content: space-between;
+
+  div {
+    display: flex;
+    align-items: center;
+
+    &:not(:last-child) {
+      border-right: 1px solid red;
+    }
+  }
+}

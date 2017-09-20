@@ -1,0 +1,22 @@
+.check_title-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  .check_title-label {
+    font-size: 16px;
+  }
+
+  .check_title-icon {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .check_title-img {
+    height: 32px;
+    width: 32px;
+  }
+
+}
