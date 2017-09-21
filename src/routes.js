@@ -2,7 +2,8 @@ import React from 'react';
 import { Router, Route, browserHistory, IndexRoute } from 'react-router';
 import axios from 'axios';
 
-import Container from './container.js'
+import { App as Container } from './containers';
+
 import Home from './views/Home'
 import Dashboard from './views/Dashboard'
 import QuickBuy from './views/Exchange/QuickBuy'
@@ -21,7 +22,7 @@ import Bitcoin from './views/Exchange/Bitcoin'
 import UserVerification from './views/UserVerification'
 import CustomerSupport from './views/UserVerification/CustomerSupport'
 import store from './store'
-import { setToken } from './actions/authAction'
+import { setToken, verifyToken } from './actions/authAction'
 import { API_URL } from './config/constants'
 
 // Initialize token
@@ -30,19 +31,13 @@ axios.defaults.baseURL = API_URL;
 
 
 let token = localStorage.getItem('token')
-if(token) {
-  store.dispatch(setToken(token))
-  axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+if (token) {
+  store.dispatch(verifyToken(token));
 }
 
 function isLoggedIn() {
   let token = localStorage.getItem('token')
-  if(token) {
-    return true
-  }
-  else {
-    return false
-  }
+  return !!token;
 }
 
 function requireAuth(nextState, replace) {
@@ -63,16 +58,16 @@ function loggedIn(nextState, replace) {
 
 export default (
   <Router history={browserHistory}>
-    <Route path="/" component={Container}>
+    <Route path="/" component={Container} onEnter={requireAuth}>
       <IndexRoute component={Home} />
-      <Route path="dashboard" name="Dashboard" component={Dashboard} onEnter={requireAuth}>
+      <Route path="account" name="Account" component={Account}/>
+      <Route path="dashboard" name="Dashboard" component={Dashboard}>
         <IndexRoute component={Account}/>
         <Route path="exchange" name="Exchange" component={Exchange}>
           <IndexRoute component={Bitcoin}/>
           <Route path="btc" name="Bitcoin" component={Bitcoin} />
           <Route path="quickbuy" name="QuickBuy" component={QuickBuy}/>
         </Route>
-        <Route path="account" name="Account" component={Account}/>
         <Route path="deposit" name="Deposit" component={Deposit}/>
         <Route path="withdraw" name="Withdraw" component={Withdraw}/>
         <Route path="verification" name="UserVerification" component={UserVerification} />

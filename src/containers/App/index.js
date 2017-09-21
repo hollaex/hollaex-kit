@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import io from 'socket.io-client';
-import { setOrderbook, addTrades } from './actions/orderbookAction'
-import { WS_URL } from './config/constants'
-import { checkUserSessionExpired } from './utils/utils';
-import { logout } from './actions/authAction';
+import { setOrderbook, addTrades } from '../../actions/orderbookAction'
+import { WS_URL } from '../../config/constants'
+import { checkUserSessionExpired } from '../../utils/utils';
+import { logout } from '../../actions/authAction';
 
-import { AppBar } from './components';
+import { AppBar, Sidebar } from '../../components';
 
 class Container extends Component {
 
@@ -17,6 +17,8 @@ class Container extends Component {
 			this.setPublicWS();
 		}
 	}
+
+  setActiveAccount
 
 	setPublicWS = () => {
 		const { symbol } = this.props;
@@ -39,21 +41,38 @@ class Container extends Component {
 		});
 	}
 
+  goToAccountPage = () => {
+    this.props.router.push('/account')
+  }
+
 	logout = () => this.props.logout();
+
 	render() {
+		if (this.props.fetchingAuth) {
+			return <div className="app_container"></div>;
+		}
 		return (
-			<div>
-				<AppBar user={this.props.user} logout={this.logout} />
-				{this.props.children}
+			<div className="app_container">
+				<AppBar user={this.props.user} goToAccountPage={this.goToAccountPage}/>
+        <div className="app_container-content">
+          <div className="app_container-main">
+            {/*this.props.children*/}
+            asdasd
+          </div>
+          <div className="app_container-sidebar">
+            <Sidebar logout={this.logout}  />
+          </div>
+        </div>
 			</div>
 		);
 	}
 }
 
-const mapStateToProps = (store, ownProps) => ({
+const mapStateToProps = (store) => ({
 	orderbook: store.orderbook,
   symbol: store.orderbook.symbol,
 	user: store.user,
+	fetchingAuth: store.auth.fetching
 })
 
 const mapDispatchToProps = (dispatch) => ({

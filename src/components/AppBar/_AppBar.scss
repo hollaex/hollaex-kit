@@ -1,0 +1,39 @@
+@import '../../variables';
+
+.app_bar {
+  position: relative;
+  width: 100%;
+  height: var(--navigation-bar-height);
+  border-bottom: 1px solid $border-color;
+  display: flex;
+  justify-content: space-between;
+
+  > div {
+    display: flex;
+    align-items: center;
+    padding: 0 8px;
+
+    &:not(:first-child) {
+      border-left: 1px solid $border-color;
+    }
+  }
+
+  .app_bar-icon, .app_bar-controllers {
+    flex: 0;
+  }
+
+  .app_bar-main {
+    flex-grow: 1;
+  }
+
+  .app_bar-controllers {
+    min-width: $sidebar-width;
+    max-width: $sidebar-width;
+    display: flex;
+    justify-content: space-between;
+
+    > div {
+      // padding: 0 8px;
+    }
+  }
+}

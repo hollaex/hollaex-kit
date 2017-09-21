@@ -1,0 +1,24 @@
+@import '../../variables';
+
+.sidebar-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
+  > div {
+    border-top: 1px solid $border-color;
+    padding: 4px;
+
+    &:first-child {
+      border-top: none;
+    }
+  }
+
+  .sidebar-wallet, .sidebar-logout {
+    flex: 0;
+  }
+
+  .sidebar-notifications {
+    flex: 1;
+  }
+}

@@ -76,7 +76,14 @@ export default function reducer(state=initialState, action) {
 			return {...state, fetching: false, fetched: true, token: action.payload}
 			break;
 		}
-		
+		// Verify token
+		case 'VERIFY_TOKEN_PENDING':
+			return { ...state, fetching: true };
+		case 'VERIFY_TOKEN_REJECTED':
+			return { ...state, fetching: false };
+		case 'VERIFY_TOKEN_FULFILLED':
+			return { ...state, fetching: false, fetched: true, token: action.payload };
+
 		// RESET PASSWORD
 		case 'RESET_PASSWORD_PENDING': {
 			return {...state, resetPasswordPending: true, resetPasswordComplete: false}

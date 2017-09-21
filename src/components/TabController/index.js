@@ -1,7 +1,5 @@
 import React from 'react';
 
-import './styles/index.css';
-
 const TabController = ({ tabs, activeTab, setActiveTab }) => {
   return (
     <div className="tab_controller">

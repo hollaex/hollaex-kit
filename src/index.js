@@ -6,9 +6,11 @@ import store from './store'
 import routes from './routes'
 // import registerServiceWorker from './registerServiceWorker'
 
+import './index.css';
+
 render(
 	<Provider store={store}>
 		<Router routes={routes} history={browserHistory} />
-  	</Provider>, document.getElementById('root')
+	</Provider>, document.getElementById('root')
 );
 // registerServiceWorker();
