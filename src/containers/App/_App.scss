@@ -15,11 +15,22 @@
       flex-direction: column;
       justify-content: space-between;
       width: 100%;
+      height: auto;
+      overflow-y: auto;
     }
+
     .app_container-sidebar {
       min-width: $sidebar-width;
       max-width: $sidebar-width;
       border-left: 1px solid red;
     }
   }
+}
+
+.presentation_container {
+  width: $content-display-width;
+  margin: $content-display-vertical-margin auto;
+  
+  border: 1px solid grey;
+  height: 100%;
 }

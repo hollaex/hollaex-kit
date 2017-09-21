@@ -1,15 +1,20 @@
 import React from 'react';
-import { Router, Route, browserHistory, IndexRoute } from 'react-router';
+import { Router, Route, browserHistory, IndexRoute, Redirect } from 'react-router';
 import axios from 'axios';
 
-import { App as Container } from './containers';
+import {
+  App as Container,
+  Dashboard,
+  Account,
+  Wallet,
+} from './containers';
 
 import Home from './views/Home'
-import Dashboard from './views/Dashboard'
+// import Dashboard from './views/Dashboard'
 import QuickBuy from './views/Exchange/QuickBuy'
 // import Trade from './views/Dashboard/Trade'
 // import Account from './views/Dashboard/Account'
-import Account from './views/Account'
+// import Account from './views/Account'
 import Deposit from './views/Deposit/Deposit'
 import Withdraw from './views/Withdraw/Withdraw'
 import Login from './views/Auth/Login'
@@ -59,22 +64,14 @@ function loggedIn(nextState, replace) {
 export default (
   <Router history={browserHistory}>
     <Route path="/" component={Container} onEnter={requireAuth}>
-      <IndexRoute component={Home} />
+      <IndexRoute component={Dashboard} />
       <Route path="account" name="Account" component={Account}/>
-      <Route path="dashboard" name="Dashboard" component={Dashboard}>
-        <IndexRoute component={Account}/>
-        <Route path="exchange" name="Exchange" component={Exchange}>
-          <IndexRoute component={Bitcoin}/>
-          <Route path="btc" name="Bitcoin" component={Bitcoin} />
-          <Route path="quickbuy" name="QuickBuy" component={QuickBuy}/>
-        </Route>
-        <Route path="deposit" name="Deposit" component={Deposit}/>
-        <Route path="withdraw" name="Withdraw" component={Withdraw}/>
-        <Route path="verification" name="UserVerification" component={UserVerification} />
-        <Route path="support" name="support" component={CustomerSupport} />
-         <Route path="verification/:level" name="verifyCode" component={UserVerification}></Route>
+      <Route path="wallet" name="Wallet" component={Wallet}/>
+      <Route path="trade" name="Exchange" component={Exchange}>
+        <IndexRoute component={Bitcoin}/>
+        <Route path="btc" name="Bitcoin" component={Bitcoin} />
+        <Route path="quickbuy" name="QuickBuy" component={QuickBuy}/>
       </Route>
-
     </Route>
     <Route path="login" name="Login" component={Login} onEnter={loggedIn}/>
     <Route path="signup" name="signup" component={SignUp} onEnter={loggedIn} />

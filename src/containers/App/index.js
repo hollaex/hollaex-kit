@@ -13,12 +13,14 @@ class Container extends Component {
 	componentWillMount() {
 		if (checkUserSessionExpired(localStorage.getItem('time'))) {
 			this.props.logout();
-		} else {
-			this.setPublicWS();
 		}
 	}
 
-  setActiveAccount
+	componentWillReceiveProps(nextProps) {
+		if (!nextProps.fetchingAuth && nextProps.fetchingAuth !== this.props.fetchingAuth) {
+			this.setPublicWS();
+		}
+	}
 
 	setPublicWS = () => {
 		const { symbol } = this.props;
@@ -41,9 +43,14 @@ class Container extends Component {
 		});
 	}
 
-  goToAccountPage = () => {
-    this.props.router.push('/account')
+	goToPage = (path) => {
+    this.props.router.push(path)
   }
+
+  goToAccountPage = () => this.goToPage('/account');
+	goToWalletPage = () => this.goToPage('/wallet');
+	goToTradePage = () => this.goToPage('/trade');
+  goToDashboard = () => this.goToPage('/');
 
 	logout = () => this.props.logout();
 
@@ -53,14 +60,22 @@ class Container extends Component {
 		}
 		return (
 			<div className="app_container">
-				<AppBar user={this.props.user} goToAccountPage={this.goToAccountPage}/>
+				<AppBar
+					title="exir exchange"
+					goToAccountPage={this.goToAccountPage}
+					goToDashboard={this.goToDashboard}
+				/>
         <div className="app_container-content">
           <div className="app_container-main">
-            {/*this.props.children*/}
-            asdasd
+            {this.props.children}
           </div>
           <div className="app_container-sidebar">
-            <Sidebar logout={this.logout}  />
+            <Sidebar
+							goToAccountPage={this.goToAccountPage}
+							goToWalletPage={this.goToWalletPage}
+							goToTradePage={this.goToTradePage}
+							logout={this.logout}
+						/>
           </div>
         </div>
 			</div>
@@ -71,7 +86,6 @@ class Container extends Component {
 const mapStateToProps = (store) => ({
 	orderbook: store.orderbook,
   symbol: store.orderbook.symbol,
-	user: store.user,
 	fetchingAuth: store.auth.fetching
 })
 

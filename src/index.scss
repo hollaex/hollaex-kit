@@ -4,6 +4,10 @@ body {
   --navigation-bar-height: 32px;
 }
 
+.pointer {
+  cursor: pointer;
+}
+
 @import './containers/App/App';
 
 @import './components/Sidebar/Sidebar';
@@ -11,3 +15,5 @@ body {
 @import './components/TabController/TabController';
 @import './components/AppBar/AppBar';
 @import './components/CheckTitle/CheckTitle';
+@import './components/Wallet/Wallet';
+@import './components/Notification/Notification';
