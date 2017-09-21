@@ -35,7 +35,7 @@ const Sidebar = ({ goToWalletPage, goToTradePage, active, logout }) => {
       <div className="sidebar-notifications">
         <NotificationsList notifications={NOTIFICATIONS} />
       </div>
-      <div onClick={logout} className="sidebar-logout">
+      <div className="sidebar-logout">
         <div onClick={logout} className="sidebar-logout-left pointer">logout</div>
         <div onClick={logout} className="sidebar-logout-right pointer">icon</div>
       </div>

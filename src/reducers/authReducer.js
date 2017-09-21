@@ -6,7 +6,7 @@ const VERIFICATION = {
 	error: ''
 }
 
-const initialState = {
+const INITIAL_STATE = {
 	token: null,
 	fetching: false,
 	fetched: false,
@@ -18,7 +18,7 @@ const initialState = {
 	verification: VERIFICATION,
 }
 
-export default function reducer(state=initialState, action) {
+export default function reducer(state = INITIAL_STATE, action) {
 
 	switch(action.type) {
 		//SIGNUP
@@ -116,6 +116,9 @@ export default function reducer(state=initialState, action) {
 			return {...state, token: action.payload}
 			break;
 		}
+
+		case 'LOGOUT':
+			return INITIAL_STATE;
 	}
 	return state;
 }

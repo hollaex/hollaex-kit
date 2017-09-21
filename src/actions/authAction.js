@@ -85,7 +85,7 @@ export function login(data) {
 			    type: 'LOGIN_USER_FULFILLED',
 			    payload: res.data.token,
 			});
-			browserHistory.push('/dashboard');
+			browserHistory.push('/');
 		})
 		.catch((err) => {
 			dispatch({
@@ -138,8 +138,11 @@ export function verifyToken(token) {
 	});
 }
 
-export const logout = () => dispatch => {
+export const logout = () => (dispatch) => {
 	cleatTokenInApp();
+	dispatch({
+		type: 'LOGOUT',
+	});
 	browserHistory.push('/login');
 }
 

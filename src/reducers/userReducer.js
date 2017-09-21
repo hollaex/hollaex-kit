@@ -27,7 +27,7 @@ const sortByDate = (a, b) => {
 	return new Date(a) <= new Date(b);
 }
 
-export default function reducer(state={
+const INITIAL_STATE = {
 	id: null,
 	email: null,
 	balance: {},
@@ -37,7 +37,9 @@ export default function reducer(state={
 	fee: 0,
 	verification_level: 0,
 	trades: INITIAL_API_OBJECT,
-}, action) {
+};
+
+export default function reducer(state = INITIAL_STATE, action) {
 	switch(action.type) {
 		// GETME user profile
 		case 'GET_ME_PENDING': {
@@ -170,6 +172,8 @@ export default function reducer(state={
 			return {...state, fetching: false,  deactivateOtp: action.payload.data}
 		}
 
+		case 'LOGOUT':
+			return INITIAL_STATE;
 	}
 	return state;
 }

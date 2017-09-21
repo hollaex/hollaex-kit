@@ -1,11 +1,13 @@
-export default function reducer(state={
+const INITIAL_STATE = {
 	fetched: false,
 	fetching: false,
 	trades: [],
 	error: null,
 	symbol: 'btc',
 	price: 0,
-}, action) {
+};
+
+export default function reducer(state = INITIAL_STATE, action) {
 	switch(action.type) {
 
 		// getOrderbook
@@ -75,6 +77,9 @@ export default function reducer(state={
 			return {...state, fetching: false, fetched: true, trades: action.payload.concat(state.trades), price: action.payload[0].price }
 			break;
 		}
+
+		case 'LOGOUT':
+			return INITIAL_STATE;
 	}
 	return state;
 }

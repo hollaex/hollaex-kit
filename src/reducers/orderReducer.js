@@ -1,11 +1,13 @@
 import _ from 'lodash'
 
-export default function reducer(state={
+const INITIAL_STATE = {
 	fetched: false,
 	fetching: false,
 	error: null,
 	activeOrders: []
-}, action) {
+};
+
+export default function reducer(state = INITIAL_STATE, action) {
 	switch(action.type) {
 		// createOrder
 		case 'CREATE_ORDER_PENDING': {
@@ -83,6 +85,10 @@ export default function reducer(state={
 		case 'CANCEL_ALL_ORDERS_FULFILLED': {
 			return {...state, fetching: false,activeOrders:[]}
 		}
+
+		case 'LOGOUT':
+			return INITIAL_STATE;
+
 		default:
 			return state;
 	}

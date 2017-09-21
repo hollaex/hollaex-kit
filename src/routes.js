@@ -1,6 +1,5 @@
 import React from 'react';
 import { Router, Route, browserHistory, IndexRoute, Redirect } from 'react-router';
-import axios from 'axios';
 
 import {
   App as Container,
@@ -27,13 +26,7 @@ import Bitcoin from './views/Exchange/Bitcoin'
 import UserVerification from './views/UserVerification'
 import CustomerSupport from './views/UserVerification/CustomerSupport'
 import store from './store'
-import { setToken, verifyToken } from './actions/authAction'
-import { API_URL } from './config/constants'
-
-// Initialize token
-axios.defaults.headers.post['Content-Type'] = 'application/json';
-axios.defaults.baseURL = API_URL;
-
+import { verifyToken } from './actions/authAction'
 
 let token = localStorage.getItem('token')
 if (token) {
