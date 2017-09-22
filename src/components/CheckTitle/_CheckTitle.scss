@@ -1,3 +1,6 @@
+$check-title-img-size: 48px;
+$notification-size: 16px;
+
 .check_title-container {
   display: flex;
   flex-direction: column;
@@ -12,11 +15,28 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    position: relative;
+    margin-top: 8px;
   }
 
   .check_title-img {
-    height: 32px;
-    width: 32px;
+    height: $check-title-img-size;
+    width: $check-title-img-size;
   }
 
+  .check_title-notification {
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: $notification-size;
+    width: $notification-size;
+    border-radius: $notification-size;
+    background-color: red;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 0.75rem;
+    font-weight: bold;
+  }
 }

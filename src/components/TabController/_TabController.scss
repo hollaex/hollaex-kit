@@ -1,22 +1,43 @@
 @import '../../variables';
 
-.tab_controller {
+$tab_controller-title-img-size: 64px;
+$tab_controller-title-margin: 16px;
+$tab_controller-item-min-width: 92px;
+
+.tab_controller-title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  margin: $tab_controller-title-margin;
+
+  .tab_controller-title-icon {
+    width: $tab_controller-title-img-size;
+    height: $tab_controller-title-img-size;
+  }
+
+  .tab_controller-title-text {
+    font-size: 2rem;
+  }
+}
+
+.tab_controller-tabs {
   width: 100%;
-  // height: 48px;
   display: flex;
   justify-content: space-between;
   align-content: center;
-  border-top: 1px solid $border-color;
-  margin: 4px;
+  border-top: 1px solid $tab-border-color;
 
   .tab_item {
-    border-top: 2px solid transparent;
-    padding: 2px 8px 4px;
+    border-top: $tab-selected-line-height solid transparent;
+    padding: $tab-text-padding;
     display: flex;
     align-items: center;
+    min-width: $tab_controller-item-min-width;
+    justify-content: center;
   }
   .tab_item-active {
-    border-top: 2px solid $border-color;
+    border-top: $tab-selected-line-height solid $tab-border-color;
     font-weight: bold;
   }
 }
