@@ -4,6 +4,20 @@
   display: flex;
   flex-direction: column;
 
+  &.btc {
+    $currency-color: $btc-color;
+
+    .app_bar .app_bar-controllers {
+      background-color: $currency-color;
+    }
+
+    &.wallet, &.trade {
+      .sidebar-container .sidebar-actions {
+        border-color: $currency-color;
+      }
+    }
+  }
+
   .app_container-content {
     display: flex;
     justify-content: space-between;
@@ -30,7 +44,7 @@
 .presentation_container {
   width: $content-display-width;
   margin: $content-display-vertical-margin auto;
-  
+
   border: 1px solid grey;
   height: 100%;
 }

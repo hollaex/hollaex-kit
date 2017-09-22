@@ -49,7 +49,7 @@ function requireAuth(nextState, replace) {
 function loggedIn(nextState, replace) {
   if (isLoggedIn()) {
     replace({
-      pathname: '/dashboard'
+      pathname: '/'
     })
   }
 }

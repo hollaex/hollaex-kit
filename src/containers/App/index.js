@@ -54,12 +54,28 @@ class Container extends Component {
 
 	logout = () => this.props.logout();
 
+	getClassForActivePath = (path) => {
+		switch (path) {
+			case '/wallet':
+				return 'wallet';
+			case '/account':
+				return 'account';
+			case '/trade':
+				return 'trade';
+			default:
+				return '';
+		}
+	}
+
 	render() {
+		const { fetchingAuth, symbol } = this.props;
+		
 		if (this.props.fetchingAuth) {
 			return <div className="app_container"></div>;
 		}
+
 		return (
-			<div className="app_container">
+			<div className={`app_container ${this.getClassForActivePath(this.props.location.pathname)} ${symbol}`}>
 				<AppBar
 					title="exir exchange"
 					goToAccountPage={this.goToAccountPage}
@@ -86,7 +102,7 @@ class Container extends Component {
 const mapStateToProps = (store) => ({
 	orderbook: store.orderbook,
   symbol: store.orderbook.symbol,
-	fetchingAuth: store.auth.fetching
+	fetchingAuth: store.auth.fetching,
 })
 
 const mapDispatchToProps = (dispatch) => ({

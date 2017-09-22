@@ -5,7 +5,7 @@ const InputField = ({ input, label, type, placeholder, meta: {touched, invalid, 
     <div className="input_field">
       <div>{label}</div>
       <div className="input_field-wrapper">
-        <input placeholder={placeholder} className="input_field-input" {...input} />
+        <input placeholder={placeholder} className="input_field-input" type={type} {...input} />
         <span className={`input_field-outline ${touched && error ? 'error' : ''}`}></span>
       </div>
       {touched && error && <div className="error">{error}</div>}
@@ -13,11 +13,5 @@ const InputField = ({ input, label, type, placeholder, meta: {touched, invalid, 
   );
 }
 
-InputField.defaultProps = {
-  label: 'Label',
-  error: 'Error',
-  placeholder: 'Placeholder',
-  type: 'text'
-}
 
 export default InputField;
