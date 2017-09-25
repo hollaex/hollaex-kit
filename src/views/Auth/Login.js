@@ -6,6 +6,7 @@ import { Link } from 'react-router'
 import { Field, reduxForm } from 'redux-form';
 
 import InputField from '../../components/FormFields/InputField';
+import { Button } from '../../components';
 
 import { login } from '../../actions/authAction'
 
@@ -74,7 +75,7 @@ class Login extends Component {
 				         />
 			        </div>
 			        <div className='pt-3'>
-			        	<button type="submit">Login</button>
+			        	<Button type="submit" label="Login" />
 			        	{this.props.errorMsg?
 							<span style={{color:'red'}} className='pl-3'>{this.props.errorMsg}</span>
 						: null
