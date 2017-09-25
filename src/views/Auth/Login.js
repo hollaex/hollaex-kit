@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router'
 import { Field, reduxForm } from 'redux-form';
 
-import InputField from '../../components/FormFields/InputField';
+import InputField from '../../components/Form/FormFields/InputField';
 import { Button } from '../../components';
 
 import { login } from '../../actions/authAction'

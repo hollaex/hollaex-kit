@@ -113,9 +113,8 @@ class Container extends Component {
 					isOpen={dialogIsOpen}
 					label="exir-modal"
 					onCloseDialog={this.onCloseDialog}
-					closeButton={this.onCloseDialog}
 				>
-					<ContactForm />
+					<ContactForm onSubmitSuccess={this.onCloseDialog} />
 				</Dialog>
 			</div>
 		);
