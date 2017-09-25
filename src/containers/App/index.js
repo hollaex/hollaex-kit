@@ -6,9 +6,13 @@ import { WS_URL } from '../../config/constants'
 import { checkUserSessionExpired } from '../../utils/utils';
 import { logout } from '../../actions/authAction';
 
-import { AppBar, Sidebar } from '../../components';
+import { AppBar, Sidebar, Dialog } from '../../components';
+import { ContactForm } from '../';
 
 class Container extends Component {
+	state = {
+		dialogIsOpen: false,
+	}
 
 	componentWillMount() {
 		if (checkUserSessionExpired(localStorage.getItem('time'))) {
@@ -54,6 +58,14 @@ class Container extends Component {
 
 	logout = () => this.props.logout();
 
+	onOpenDialog = () => {
+		this.setState({ dialogIsOpen: true });
+	}
+
+	onCloseDialog = () => {
+		this.setState({ dialogIsOpen: false });
+	}
+
 	getClassForActivePath = (path) => {
 		switch (path) {
 			case '/wallet':
@@ -69,7 +81,8 @@ class Container extends Component {
 
 	render() {
 		const { fetchingAuth, symbol } = this.props;
-		
+		const { dialogIsOpen } = this.state;
+
 		if (this.props.fetchingAuth) {
 			return <div className="app_container"></div>;
 		}
@@ -77,7 +90,9 @@ class Container extends Component {
 		return (
 			<div className={`app_container ${this.getClassForActivePath(this.props.location.pathname)} ${symbol}`}>
 				<AppBar
-					title="exir exchange"
+					title={
+						<div onClick={this.onOpenDialog}>exir-exchange</div>
+					}
 					goToAccountPage={this.goToAccountPage}
 					goToDashboard={this.goToDashboard}
 				/>
@@ -94,6 +109,14 @@ class Container extends Component {
 						/>
           </div>
         </div>
+				<Dialog
+					isOpen={dialogIsOpen}
+					label="exir-modal"
+					onCloseDialog={this.onCloseDialog}
+					closeButton={this.onCloseDialog}
+				>
+					<ContactForm />
+				</Dialog>
 			</div>
 		);
 	}
