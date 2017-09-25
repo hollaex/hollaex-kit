@@ -87,14 +87,16 @@ class Container extends Component {
 			return <div className="app_container"></div>;
 		}
 
+		const activePath = this.getClassForActivePath(this.props.location.pathname);
 		return (
-			<div className={`app_container ${this.getClassForActivePath(this.props.location.pathname)} ${symbol}`}>
+			<div className={`app_container ${activePath} ${symbol}`}>
 				<AppBar
 					title={
 						<div onClick={this.onOpenDialog}>exir-exchange</div>
 					}
 					goToAccountPage={this.goToAccountPage}
 					goToDashboard={this.goToDashboard}
+					acccountIsActive={activePath === 'account'}
 				/>
         <div className="app_container-content">
           <div className="app_container-main">

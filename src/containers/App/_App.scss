@@ -36,7 +36,7 @@
     .app_container-sidebar {
       min-width: $sidebar-width;
       max-width: $sidebar-width;
-      border-left: 1px solid red;
+      border-left: 1px solid $colors-deactivate-color2;
     }
   }
 }
@@ -45,7 +45,7 @@
   width: $content-display-width;
   margin: $content-display-vertical-margin auto;
 
-  border: 1px solid grey;
+  border: 1px solid $colors-deactivate-color2;
   height: 100%;
 
   .inner_container {

@@ -1,36 +1,54 @@
+
 $sidebar-width: 250px;
 $navigation_bar-height: 32px;
 $footer-height: 64px;
 
+$colors-main-black: #212121;
+$colors-deactivate-color1: #f2f2f3;
+$colors-deactivate-color2: #a7aaac;
+$colors-notification-red: #ed1c24;
+$colors-notifications-green: #00al51;
+$colors-notifications-blue: #00aeef;
+
+$colors-currencies-fiat: #00a651;
+$colors-currencies-btc: #f7941e;
+$colors-currencies-bch: #ec008c;
+$colors-currencies-eht: #2e3192;
+$colors-currencies-ltc: #58595b;
+
 $app-background-color: white;
 $app-background-color-on-modal: lightgrey;
-$border-color: green;
-$error-color: red;
+$border-color: $colors-deactivate-color2;
+$error-color: $colors-notification-red;
 
-$bitcoin-color-main: orange;
+$bitcoin-color-main: $colors-currencies-btc;
 
 $content-display-width: 768px;
 $content-display-vertical-margin: 16px;
 
-$font-size-text: 14px;
+$font-size-headline: 116px;
+$font-size-subhead1: 45px;
+$font-size-subhead2: 24px;
+$font-size-main: 14px;
+$font-size-subtext: 12px;
 
 // SIDEBAR
 
 $sidebar-sections-padding: 16px;
 
-$sidebar-borderbottom-color: grey;
-$sidebar-borderbottom-color-active: red;
+$sidebar-borderbottom-color: $colors-deactivate-color2;
+$sidebar-borderbottom-color-active: $colors-deactivate-color2;
 $sidebar-borderbottom-height: 4px;
 
-$wallet-bordertop-color: black;
+$wallet-bordertop-color: $colors-main-black;
 $wallet-bordertop-height: 4px;
 
-$btc-color: orange;
+$btc-color: $colors-currencies-btc;
 
 $currency-color: inherit;
 
 // TAB CONTROLLER
 
-$tab-border-color: black;
+$tab-border-color: $colors-main-black;
 $tab-text-padding: 4px 8px;
 $tab-selected-line-height: 2px;

@@ -7,6 +7,7 @@
   border-bottom: 1px solid $border-color;
   display: flex;
   justify-content: space-between;
+  font-size: $font-size-main;
 
   > div {
     display: flex;
@@ -22,8 +23,31 @@
     flex: 0;
   }
 
+  .app_bar-icon {
+    width: 100%;
+    color: white;
+    background: $colors-main-black;
+  }
+
   .app_bar-main {
     flex-grow: 1;
+  }
+
+  .app_bar-currency {
+    display: flex;
+    align-items: center;
+    width: 100%;
+  }
+
+  .app_bar-currency, .app_bar-user {
+    height: var(--navigation-bar-height);
+    > img {
+      height: 100%;
+      padding: 4px;
+      &.active {
+        background-color: $colors-main-black;
+      }
+    }
   }
 
   .app_bar-controllers {
@@ -31,6 +55,7 @@
     max-width: $sidebar-width;
     display: flex;
     justify-content: space-between;
+    padding-right: 0;
 
     > div {
       // padding: 0 8px;
