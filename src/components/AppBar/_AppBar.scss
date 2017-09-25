@@ -3,11 +3,11 @@
 .app_bar {
   position: relative;
   width: 100%;
-  height: var(--navigation-bar-height);
+  height: $navigation_bar-height;
   border-bottom: 1px solid $border-color;
   display: flex;
   justify-content: space-between;
-  font-size: $font-size-main;
+  font-size: 1rem;
 
   > div {
     display: flex;
@@ -40,7 +40,7 @@
   }
 
   .app_bar-currency, .app_bar-user {
-    height: var(--navigation-bar-height);
+    height: $navigation_bar-height;
     > img {
       height: 100%;
       padding: 4px;

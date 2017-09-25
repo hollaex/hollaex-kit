@@ -1,5 +1,5 @@
-$check-title-img-size: 48px;
-$notification-size: 16px;
+$check-title-img-size: 5rem;
+$notification-size: 1.5rem;
 
 .check_title-container {
   display: flex;
@@ -8,7 +8,7 @@ $notification-size: 16px;
   align-items: center;
 
   .check_title-label {
-    font-size: 16px;
+    font-size: $font-size-subhead1;
   }
 
   .check_title-icon {
@@ -16,7 +16,6 @@ $notification-size: 16px;
     justify-content: center;
     align-items: center;
     position: relative;
-    margin-top: 8px;
   }
 
   .check_title-img {
@@ -36,7 +35,8 @@ $notification-size: 16px;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 0.75rem;
+    font-size: 1rem;
+    line-height: 1;
     font-weight: bold;
   }
 }

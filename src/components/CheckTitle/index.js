@@ -1,6 +1,6 @@
 import React from 'react';
 
-const CheckTitle = ({ title, icon, notification }) => {
+const CheckTitle = ({ title, icon, notifications }) => {
   return (
     <div className="check_title-container">
       <div className="check_title-label">{title}</div>
@@ -12,8 +12,8 @@ const CheckTitle = ({ title, icon, notification }) => {
             className="check_title-img"
           />
         }
-        {notification &&
-          <div className="check_title-notification">!</div>
+        {!!notifications &&
+          <div className="check_title-notification">{notifications}</div>
         }
       </div>
     </div>
@@ -23,5 +23,7 @@ const CheckTitle = ({ title, icon, notification }) => {
 CheckTitle.defaultProps = {
   title: 'Title',
   status: '',
+  notifications: 0,
 }
+
 export default CheckTitle;

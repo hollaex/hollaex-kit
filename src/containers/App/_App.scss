@@ -21,8 +21,8 @@
   .app_container-content {
     display: flex;
     justify-content: space-between;
-    min-height: calc(100vh - var(--navigation-bar-height));
-    max-height: calc(100vh - var(--navigation-bar-height));
+    min-height: calc(100vh - #{$navigation_bar-height});
+    max-height: calc(100vh - #{$navigation_bar-height});
 
     .app_container-main {
       display: flex;
@@ -43,6 +43,7 @@
 
 .presentation_container {
   width: $content-display-width;
+  max-width: calc(100% - #{$content-display-vertical-margin * 2});
   margin: $content-display-vertical-margin auto;
 
   border: 1px solid $colors-deactivate-color2;

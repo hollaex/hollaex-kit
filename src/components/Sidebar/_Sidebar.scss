@@ -1,5 +1,8 @@
 @import '../../variables';
 
+$wallet-bordertop-color: $colors-main-black;
+$wallet-bordertop-height: 2px;
+
 .sidebar-container {
   display: flex;
   flex-direction: column;
@@ -59,7 +62,7 @@
     align-items: center;
 
     .sidebar_section-title-text {
-      font-size: 1.25rem;
+      font-size: $font-size-subhead2;
     }
   }
 }

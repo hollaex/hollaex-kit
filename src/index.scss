@@ -1,10 +1,30 @@
 @import 'variables';
+@import 'fonts';
+
+html {
+  font-size: 12px;
+}
+
+@media screen
+  and (min-device-width: 1200px)
+  and (max-device-width: 1600px) {
+  html {
+    font-size: 14px;
+  }
+}
+@media screen
+  and (max-device-width: 800px) {
+  html {
+    font-size: 7px;
+  }
+}
 
 body {
-  --navigation-bar-height: 32px;
+  --navigation-bar-height: $navigation_bar-height;
 
   background-color: $app-background-color !important;
   font-size: $font-size-main;
+  font-family: "Open Sans" !important;
 }
 
 .pointer {
@@ -14,6 +34,11 @@ body {
 .ReactModal__Body--open #root {
   filter: blur(5px);
   background: $app-background-color-on-modal;
+}
+
+@mixin size($width, $height) {
+  width: $width;
+  height: $height;
 }
 
 @import './containers/App/App';

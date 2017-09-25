@@ -7,8 +7,8 @@ const TABS = [
     title: (
       <CheckTitle
         title="Verification"
-        icon={`${process.env.PUBLIC_URL}/assets/icons/111-04.png`}
-        notification={true}
+        icon={`${process.env.PUBLIC_URL}/assets/acounts/account-icons-02.png`}
+        notifications={1}
       />
     ),
     content: (
@@ -19,7 +19,8 @@ const TABS = [
     title: (
       <CheckTitle
         title="Security"
-        icon={`${process.env.PUBLIC_URL}/assets/icons/111-05.png`}
+        icon={`${process.env.PUBLIC_URL}/assets/acounts/account-icons-03.png`}
+        notifications={1}
       />
     ),
     content: (
@@ -30,7 +31,8 @@ const TABS = [
     title: (
       <CheckTitle
         title="Notifications"
-        icon={`${process.env.PUBLIC_URL}/assets/icons/111-03.png`}
+        icon={`${process.env.PUBLIC_URL}/assets/acounts/account-icons-04.png`}
+        notifications={1}
       />
     ),
     content: (
@@ -61,7 +63,7 @@ class Account extends Component {
           setActiveTab={this.setActiveTab}
           tabs={tabs}
           title="Account"
-          titleIcon={`${process.env.PUBLIC_URL}/assets/icons/google.png`}
+          titleIcon={`${process.env.PUBLIC_URL}/assets/acounts/account-icons-01.png`}
         />
         <div className="inner_container">{this.renderContent(tabs, activeTab)}</div>
       </div>
