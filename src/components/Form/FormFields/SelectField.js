@@ -2,7 +2,7 @@ import React from 'react';
 
 export default ({input,label,options, className, style, meta: { touched, error, warning }}) => {
 	return(
-	    <div className="mt-3">
+	    <div className="input_field-wrapper">
 	    	<div>{label}</div>
 		    <div className="mt-1">
 		        <select {...input} style={style} className={className}>

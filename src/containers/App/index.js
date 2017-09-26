@@ -23,11 +23,21 @@ class Container extends Component {
 		}
 	}
 
+	componentDidMount() {
+		if (!this.props.fetchingAuth) {
+			this.initSocketConnections();
+		}
+	}
+
 	componentWillReceiveProps(nextProps) {
 		if (!nextProps.fetchingAuth && nextProps.fetchingAuth !== this.props.fetchingAuth) {
-			this.setPublicWS();
-			this.setUserSocket(localStorage.getItem('token'));
+			this.initSocketConnections();
 		}
+	}
+
+	initSocketConnections = () => {
+		this.setPublicWS();
+		this.setUserSocket(localStorage.getItem('token'));
 	}
 
 	setPublicWS = () => {

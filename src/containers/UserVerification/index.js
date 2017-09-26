@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { SubmissionError } from 'redux-form';
 
 import { updateUser } from '../../actions/userAction';
 import { Accordion } from '../../components';
@@ -32,7 +33,7 @@ class UserVerification extends Component {
     },
     {
       title: 'Identification',
-      content: <IdentificationForm onSubmit={this.props.updateUser} />,
+      content: <IdentificationForm onSubmit={this.onSubmit} initialValues={user.userData} />,
       isDisabled: !!user.userData.first_name,
     },
     {
@@ -42,6 +43,17 @@ class UserVerification extends Component {
     }];
 
     this.setState({ sections });
+  }
+
+  onSubmit = (values) => {
+    return updateUser(values)
+      .then((res) => {
+
+      }).catch((err) => {
+        console.log(err.data, err.message)
+        const _error = err.date ? err.data.message : err.message
+        throw new SubmissionError({ _error })
+      })
   }
 
   render() {
@@ -65,7 +77,6 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  updateUser: (userData) => dispatch(updateUser(userData)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(UserVerification);

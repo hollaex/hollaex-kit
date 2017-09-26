@@ -1,6 +1,7 @@
 import axios from 'axios';
 import _ from 'lodash'
 import querystring from 'query-string';
+import { all } from 'bluebird';
 
 export function getMe() {
 	return {
@@ -45,9 +46,29 @@ export function processWithdraw(data) {
 }
 
 const FILE_KEYS = ['front', 'back', 'proof_of_residence'];
-export const updateUser = (userData) => {
-	console.log(userData);
-	
+export const updateUser = (values) => {
+	const userData = {};
+	const userFiles = new FormData();
+
+	Object.entries(values).forEach(([key, value]) => {
+		if (FILE_KEYS.indexOf(key) > -1) {
+			console.log(key, value)
+			userFiles.append(key, value);
+		} else {
+			userData[key] = value;
+		}
+	});
+
+	console.log(userData)
+	console.log(userFiles.toString())
+	return all([
+		axios.put('/user', userData),
+		axios({
+			data: userFiles,
+			url: '/user/verification',
+			method: 'POST'
+		})
+	]);
 }
 
 export function userIdentity(data) {

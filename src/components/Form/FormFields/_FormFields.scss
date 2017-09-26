@@ -2,6 +2,7 @@
 
 .input_field-wrapper {
   position: relative;
+  max-width: $form-width-max;
 
   .input_field-input {
     width: 100%;
@@ -14,32 +15,51 @@
     &:focus {
       outline: none;
     }
+
+    &::placeholder {
+      color: $form-color-placeholder;
+    }
   }
 }
 
 .input_field-outline {
 
-  &.error::before {
-    background: $error-color;
-  }
-
   &:before {
     content:'';
     height:2px;
-    width:0;
+    width: 100%;
     bottom:0;
-    position:absolute;
-    transition:0.3s ease all;
-    background: black;
+    position: absolute;
+    transition: 0.3s ease all;
+    background: $form-color-underline;
+  }
+
+  &.error::before, &.error::after {
+    background: $error-color;
+  }
+
+  &:after {
+    content:'';
+    height:2px;
+    width: 0;
+    bottom:0;
+    position: absolute;
+    transition: 0.3s ease all;
+    background: $form-color-underline;
   }
 }
 
-input:focus ~ .input_field-outline:before {
+input:focus ~ .input_field-outline:after {
   width: 100%;
+  background: $form-color-underline-focus;
 }
 
 .input_field {
   .error {
     color: $error-color;
   }
+}
+
+.input_file {
+  display: none;
 }

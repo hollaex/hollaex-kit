@@ -16,7 +16,8 @@ const renderSection = (props) => {
 }
 
 const Form = (props) => {
-  const { handleSubmit, submitting, pristine, error, valid } = props;
+  const { handleSubmit, submitting, pristine, error, valid, initialValues } = props;
+  console.log(initialValues)
   return (
     <form onSubmit={handleSubmit} className="user_verification-form">
       <div className="warning_text">
@@ -36,6 +37,7 @@ const Form = (props) => {
           section={key}
         />
       ))}
+      {error && <div className="warning_text">{error}</div>}
       <Button
         label="Submit"
         disabled={pristine || submitting || !valid}

@@ -1,19 +1,48 @@
-import React from 'react';
+import React, { Component } from 'react';
+import InputField from './InputField';
 
-export default ({ input, label, className, style, type, meta: {touched, invalid, error } }) => (
-	<div className="mt-3">
-		<div>{label}</div>
-		<div className="mt-1">
-			<input
-				type="file"
-				style={style}
-				className={className}
-				multiple="false"
-				onChange={(ev) => input.onChange(ev.target.files[0])}
-			/>
-		</div>
-		<div style={{color: 'red'}}>
-					{ touched ? error : '' }
-		</div>
-	</div>
-);
+class FileField extends Component {
+
+	onClick = (ev) => {
+		console.log(this.fileInput)
+		this.fileInput.click();
+	}
+
+	onChange = (ev) => {
+		this.props.input.onChange(ev.target.files[0]);
+	}
+
+	setRef = (el) => {
+		this.fileInput = el;
+	}
+
+	render() {
+		const { input, ...rest } = this.props;
+
+		const myInput = {
+			value: input.value ? input.value.name : '',
+			onChange: () => {},
+			readOnly: true,
+		}
+		return (
+			<div>
+				<InputField
+					{...rest}
+					type="text"
+					input={myInput}
+					onClick={this.onClick}
+				/>
+				<input
+					type="file"
+					className="input_file"
+					multiple="false"
+					accept="image/*"
+					ref={this.setRef}
+					onChange={this.onChange}
+				/>
+			</div>
+		);
+	}
+}
+
+export default FileField;
