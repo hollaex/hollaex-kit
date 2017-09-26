@@ -1,6 +1,7 @@
 import React, { Component} from 'react';
 import { connect } from 'react-redux';
 import { TabController, CheckTitle } from '../../components';
+import { UserVerification } from '../'
 
 const TABS = [
   {
@@ -11,9 +12,7 @@ const TABS = [
         notifications={1}
       />
     ),
-    content: (
-      <div>Verification</div>
-    )
+    content: <UserVerification />
   },
   {
     title: (

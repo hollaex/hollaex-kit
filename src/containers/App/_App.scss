@@ -46,10 +46,10 @@
   max-width: calc(100% - #{$content-display-vertical-margin * 2});
   margin: $content-display-vertical-margin auto;
 
-  border: 1px solid $colors-deactivate-color2;
+  // border: 1px solid $colors-deactivate-color2;
   height: 100%;
 
   .inner_container {
-    margin-top: 8px;
+    margin: 1rem;
   }
 }

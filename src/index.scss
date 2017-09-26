@@ -1,5 +1,6 @@
 @import 'variables';
 @import 'fonts';
+@import 'mixins';
 
 html {
   font-size: 12px;
@@ -31,17 +32,16 @@ body {
   cursor: pointer;
 }
 
+.warning_text {
+  color: $colors-notification-red;
+}
+
 .ReactModal__Body--open #root {
   filter: blur(5px);
   background: $app-background-color-on-modal;
 }
-
-@mixin size($width, $height) {
-  width: $width;
-  height: $height;
-}
-
 @import './containers/App/App';
+@import './containers/UserVerification/UserVerification';
 
 @import './components/Sidebar/Sidebar';
 @import './components/Footer/Footer';
@@ -53,3 +53,4 @@ body {
 @import './components/Form/FormFields/FormFields';
 @import './components/Button/Button';
 @import './components/Dialog/Dialog';
+@import './components/Accordion/Accordion';

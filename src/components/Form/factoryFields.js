@@ -1,6 +1,8 @@
 import React from 'react';
 import { Field } from 'redux-form';
 import InputField from './FormFields/InputField';
+import SelectField from './FormFields/SelectField';
+import FileField from './FormFields/FileField';
 
 const renderFields = (fields) => {
   return (
@@ -8,6 +10,29 @@ const renderFields = (fields) => {
       {Object.keys(fields).map((key, index) => {
         const field = fields[key];
         switch (field.type) {
+          case 'file':
+            return (
+              <Field
+                key={key}
+                name={key}
+                component={ FileField }
+                type={field.type}
+                label={field.label}
+                validate={field.validate || []}
+              />
+            );
+          case 'select':
+            return (
+              <Field
+                key={key}
+                name={key}
+                component={ SelectField }
+                type={field.type}
+                label={field.label}
+                validate={field.validate || []}
+                options={field.options || []}
+              />
+            );
           case 'text':
           case 'password':
           case 'email':

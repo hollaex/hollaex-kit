@@ -43,6 +43,13 @@ export function processWithdraw(data) {
 		})
 	})
 }
+
+const FILE_KEYS = ['front', 'back', 'proof_of_residence'];
+export const updateUser = (userData) => {
+	console.log(userData);
+	
+}
+
 export function userIdentity(data) {
 	return ((dispatch) => {
 		dispatch({
