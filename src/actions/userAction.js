@@ -45,30 +45,23 @@ export function processWithdraw(data) {
 	})
 }
 
-const FILE_KEYS = ['front', 'back', 'proof_of_residence'];
-export const updateUser = (values) => {
-	const userData = {};
-	const userFiles = new FormData();
+export const updateUser = (values) => axios.put('/user', values);
 
-	Object.entries(values).forEach(([key, value]) => {
-		if (FILE_KEYS.indexOf(key) > -1) {
-			console.log(key, value)
-			userFiles.append(key, value);
-		} else {
-			userData[key] = value;
-		}
+export const updateDocuments = (values) => {
+	const formData = new FormData();
+
+	Object.entrie(values).forEach(([key, value]) => {
+		formData.append(key, value);
 	});
 
-	console.log(userData)
-	console.log(userFiles.toString())
-	return all([
-		axios.put('/user', userData),
-		axios({
-			data: userFiles,
-			url: '/user/verification',
-			method: 'POST'
-		})
-	]);
+	return axios({
+		headers: {
+			'Content-Type': 'multipart/form-data'
+		},
+		data: formData,
+		url: '/user/verification',
+		method: 'POST'
+	})
 }
 
 export function userIdentity(data) {
@@ -94,6 +87,7 @@ export function userIdentity(data) {
 export function uploadFile(data) {
 	const formData = new FormData();
 	Object.keys(data).forEach((key) => {
+		console.log(key, data)
 		formData.append(key, data[key]);
 	});
 

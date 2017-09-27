@@ -1,11 +1,18 @@
 import React from 'react';
+import { ActionNotification } from '../';
 
-const Section = ({ title, goToSection, children }) => {
+const Section = ({ title, goToSection, goToSectionText, active, children }) => {
+  console.log(active)
   return (
-    <div className="sidebar_section-container">
+    <div className={`sidebar_section-container ${active ? 'active' : ''}`}>
       <div className="sidebar_section-title">
         <div className="sidebar_section-title-text">{title}</div>
-        <div onClick={goToSection} className="sidebar_section-title-action pointer">go</div>
+        <ActionNotification
+          text={goToSectionText}
+          onClick={goToSection}
+          iconPath={`${process.env.PUBLIC_URL}/assets/acounts/account-icons-07.png`}
+          status="information"
+        />
       </div>
       {children}
     </div>
@@ -15,6 +22,8 @@ const Section = ({ title, goToSection, children }) => {
 Section.defaultProps = {
   title: 'section',
   goToSection: () => {},
+  goToSectionText: 'go',
+  active: false
 }
 
 export default Section;

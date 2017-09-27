@@ -9,3 +9,4 @@ export { default as Wallet } from './Wallet';
 export { default as Notification } from './Notification';
 export { default as NotificationsList } from './NotificationsList';
 export { default as Accordion } from './Accordion';
+export { default as ActionNotification } from './ActionNotification';

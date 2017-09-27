@@ -3,7 +3,7 @@ import { FieldArray, Field, reduxForm } from 'redux-form';
 
 import renderFields from '../../components/Form/factoryFields';
 import { Button } from '../../components';
-import FormValues, { information } from './IdentificationFormValues';
+import FormValues, { information } from './DocumentsFormValues';
 
 const renderSection = (props) => {
   const { fields, meta: { error, submitFailed }, section } = props
@@ -47,5 +47,5 @@ const Form = (props) => {
 }
 
 export default reduxForm({
-  form: 'IdentificationForm',
+  form: 'DocumentsForm',
 })(Form);

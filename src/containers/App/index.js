@@ -200,6 +200,7 @@ class Container extends Component {
           </div>
           <div className="app_container-sidebar">
             <Sidebar
+							activePath={activePath}
 							goToAccountPage={this.goToAccountPage}
 							goToWalletPage={this.goToWalletPage}
 							goToTradePage={this.goToTradePage}

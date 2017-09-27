@@ -24,7 +24,7 @@ body {
   --navigation-bar-height: $navigation_bar-height;
 
   background-color: $app-background-color !important;
-  font-size: $font-size-main;
+  font-size: $font-size-main !important;
   font-family: "Open Sans" !important;
 }
 
@@ -54,3 +54,4 @@ body {
 @import './components/Button/Button';
 @import './components/Dialog/Dialog';
 @import './components/Accordion/Accordion';
+@import './components/ActionNotification/ActionNotification';

@@ -1,0 +1,32 @@
+@import '../../variables';
+
+.action_notification-wrapper {
+  position: absolute;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .info {
+    color: $colors-notifications-blue;
+  }
+
+  .warning {
+    color: $colors-notification-red;
+  }
+
+  .success {
+    color: $colors-notifications-green;
+  }
+
+  .action_notification-text {
+    font-size: $font-size-subtext;
+    text-transform: uppercase;
+  }
+
+  .action_notification-image {
+    width: 1rem;
+    height: 1rem;
+    margin-left: 0.25rem;
+  }
+}

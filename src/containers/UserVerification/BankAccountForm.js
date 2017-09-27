@@ -3,21 +3,10 @@ import { FieldArray, Field, reduxForm } from 'redux-form';
 
 import renderFields from '../../components/Form/factoryFields';
 import { Button } from '../../components';
-import FormValues, { information } from './IdentificationFormValues';
-
-const renderSection = (props) => {
-  const { fields, meta: { error, submitFailed }, section } = props
-  return (
-    <div className="user_verification-form_section">
-      {information[section]}
-      {renderFields(fields)}
-    </div>
-  );
-}
+import FormValues from './BankAccountFormValues';
 
 const Form = (props) => {
   const { handleSubmit, submitting, pristine, error, valid, initialValues } = props;
-  console.log(initialValues)
   return (
     <form onSubmit={handleSubmit} className="user_verification-form">
       <div className="warning_text">
@@ -28,15 +17,7 @@ const Form = (props) => {
           <li>Lower fees</li>
         </ul>
       </div>
-      {Object.entries(FormValues).map(([key, value], index) => (
-        <FieldArray
-          key={key}
-          name={key}
-          component={renderSection}
-          fields={value}
-          section={key}
-        />
-      ))}
+      {renderFields(FormValues)}
       {error && <div className="warning_text">{error}</div>}
       <Button
         label="Submit Verification Request"
@@ -47,5 +28,5 @@ const Form = (props) => {
 }
 
 export default reduxForm({
-  form: 'IdentificationForm',
+  form: 'BankAccountForm',
 })(Form);

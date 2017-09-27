@@ -54,15 +54,32 @@ $wallet-bordertop-height: 2px;
 }
 
 .sidebar_section-container {
-  border-top: $wallet-bordertop-height solid $wallet-bordertop-color;
+  position: relative;
+
+  &:before {
+    content: '';
+    width: 100%;
+    height: 1px;
+    top: -1px;
+    background: $wallet-bordertop-color;
+    position: absolute;
+  }
+
+  &.active {
+    &:before {
+      height: 2px;
+      top: -2px;
+    }
+  }
 
   .sidebar_section-title {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    position: relative;
 
     .sidebar_section-title-text {
-      font-size: $font-size-subhead2;
+      font-size: $font-size-main;
     }
   }
 }

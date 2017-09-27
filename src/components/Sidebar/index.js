@@ -15,19 +15,23 @@ const NOTIFICATIONS = [
   { title: '53', text: 'text 1', timestamp: new Date().toString() },
 ];
 
-const Sidebar = ({ goToWalletPage, goToTradePage, active, logout }) => {
+const Sidebar = ({ goToWalletPage, goToTradePage, active, activePath, logout }) => {
   return (
     <div className="sidebar-container">
       <div className={`sidebar-actions ${active ? 'active' : ''}`}>
         <Section
           title="Wallet"
           goToSection={goToWalletPage}
+          goToSectionText="see details"
+          active={activePath === 'wallet'}
         >
           wallet content
         </Section>
         <Section
           title="Trading Mod"
           goToSection={goToTradePage}
+          goToSectionText="see details"
+          active={activePath === 'trade'}
         >
           Tradings content
         </Section>
@@ -45,6 +49,7 @@ const Sidebar = ({ goToWalletPage, goToTradePage, active, logout }) => {
 
 Sidebar.defaultProps = {
   active: false,
+  activePath: '',
 }
 
 export default Sidebar;

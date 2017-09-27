@@ -2,9 +2,11 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { SubmissionError } from 'redux-form';
 
-import { updateUser } from '../../actions/userAction';
+import { updateUser, updateDocuments, setMe } from '../../actions/userAction';
 import { Accordion } from '../../components';
 import IdentificationForm from './IdentificationForm';
+import DocumentsForm from './DocumentsForm';
+import BankAccountForm from './BankAccountForm';
 
 class UserVerification extends Component {
   state = {
@@ -24,37 +26,62 @@ class UserVerification extends Component {
   }
 
   calculateSections = (user) => {
-    const { verification_level, userData: { bank_name, bank_account_number }, email } = user;
+    let { verification_level, userData: { bank_name, bank_account_number }, email } = user;
 
     const sections = [{
       title: 'Email',
       content: <div>{email}</div>,
-      isDisabled: verification_level >= 1,
+      // disabled: verification_level >= 1,
     },
     {
       title: 'Identification',
-      content: <IdentificationForm onSubmit={this.onSubmit} initialValues={user.userData} />,
-      isDisabled: !!user.userData.first_name,
+      content: <IdentificationForm
+        onSubmit={this.onSubmitUserInformation}
+        initialValues={user.userData}
+      />,
+      // disabled: !!user.userData.first_name,
+    },
+    {
+      title: 'Documents',
+      content: <DocumentsForm
+        onSubmit={this.onSubmitUserDocuments}
+      />,
+      // disabled: verification_level >= 2,
     },
     {
       title: 'Bank Account',
-      content: <div>{JSON.stringify(user.userData)}</div>,
-      isDisabled: !!bank_name && !!bank_account_number,
+      content: <BankAccountForm
+        onSubmit={this.onSubmitBankAccount}
+        initialValues={user.userData}
+      />,
+      // disabled: !!bank_name && !!bank_account_number,
     }];
 
     this.setState({ sections });
   }
 
-  onSubmit = (values) => {
+  onSubmitUserInformation = (values) => {
     return updateUser(values)
+      .then((res) => {
+        this.props.setMe(res.data);
+      }).catch((err) => {
+        const _error = err.data ? err.data.message : err.message
+        throw new SubmissionError({ _error })
+      })
+  }
+
+  onSubmitUserDocuments = (values) => {
+    return updateDocuments
       .then((res) => {
 
       }).catch((err) => {
         console.log(err.data, err.message)
-        const _error = err.date ? err.data.message : err.message
+        const _error = err.data ? err.data.message : err.message
         throw new SubmissionError({ _error })
       })
   }
+
+  onSubmitBankAccount = this.onSubmitUserInformation;
 
   render() {
     if (this.props.user.verification_level === 0) {
@@ -77,6 +104,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
+  setMe: (data) => dispatch(setMe(data)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(UserVerification);
