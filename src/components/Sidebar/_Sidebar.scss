@@ -57,6 +57,7 @@ $wallet-bordertop-height: 2px;
 
 .sidebar_section-container {
   position: relative;
+  margin: 1rem;
 
   &:before {
     content: '';
@@ -71,6 +72,16 @@ $wallet-bordertop-height: 2px;
     &:before {
       height: 2px;
       top: -2px;
+    }
+
+    .sidebar_section-title:before {
+      content: '';
+      width: 0.5rem;
+      height: 0.5rem;
+      border-radius: 0.5rem;
+      background-color: $wallet-bordertop-color;
+      position: absolute;
+      left: -1rem;
     }
   }
 

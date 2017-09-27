@@ -45,7 +45,30 @@ export function processWithdraw(data) {
 	})
 }
 
-export const updateUser = (values) => axios.put('/user', values);
+export const updateUser = (values) => {
+	const userValues = values;
+
+	userValues.first_name = values.first_name;
+	userValues.last_name = values.last_name;
+	userValues.nationality = values.nationality;
+	userValues.phone_number = `${values.phone_country} ${values.phone_number}`;
+
+	if (values.dob) {
+		userValues.dob = new Date(values.dob);
+	}
+
+	if (values.gender) {
+		if (values.gender === 'Man') {
+			userValues.gender = false;
+		} else {
+			userValues.gender = true;
+		}
+	}
+
+	userValues.address = `${values.address} ${values.postal_code} ${values.city} ${values.country}`;
+
+	return axios.put('/user', userValues);
+};
 
 export const updateDocuments = (values) => {
 	const formData = new FormData();

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { SubmissionError } from 'redux-form';
 
+import { ICONS } from '../../config/constants';
 import { updateUser, updateDocuments, setMe } from '../../actions/userAction';
 import { Accordion } from '../../components';
 import IdentificationForm from './IdentificationForm';
@@ -25,13 +26,34 @@ class UserVerification extends Component {
     }
   }
 
+  activeStep = (verification_level, userData) => {
+    if (verification_level < 1) {
+      return 0;
+    } else if (!userData.first_name) {
+      return 1;
+    } else if (verification_level < 2) {
+      return 2;
+    } else if (!userData.bank_account_number) {
+      return 3
+    } else {
+      return 4;
+    }
+  }
+
   calculateSections = (user) => {
     let { verification_level, userData: { bank_name, bank_account_number }, email } = user;
+    const activeStep = this.activeStep(verification_level, user.userData);
 
     const sections = [{
       title: 'Email',
       content: <div>{email}</div>,
-      // disabled: verification_level >= 1,
+      disabled: activeStep !== 0,
+      notification: {
+        text: activeStep > 0 ? 'completed' : 'verify email',
+        status: activeStep > 0 ? 'success' : 'warning',
+        iconPath: activeStep > 0 ? ICONS.CHECK : ICONS.RED_ARROW,
+        allowClick: activeStep === 0
+      }
     },
     {
       title: 'Identification',
@@ -39,14 +61,26 @@ class UserVerification extends Component {
         onSubmit={this.onSubmitUserInformation}
         initialValues={user.userData}
       />,
-      // disabled: !!user.userData.first_name,
+      disabled: activeStep !== 1,
+      notification: {
+        text: activeStep > 1 ? 'completed' : 'verify user documentation',
+        status: activeStep > 1 ? 'success' : 'warning',
+        iconPath: activeStep > 1 ? ICONS.CHECK : ICONS.RED_ARROW,
+        allowClick: activeStep === 1
+      }
     },
     {
       title: 'Documents',
       content: <DocumentsForm
         onSubmit={this.onSubmitUserDocuments}
       />,
-      // disabled: verification_level >= 2,
+      disabled: activeStep !== 2,
+      notification: {
+        text: activeStep > 2 ? 'completed' : 'verify id documents',
+        status: activeStep > 2 ? 'success' : 'warning',
+        iconPath: activeStep > 2 ? ICONS.CHECK : ICONS.RED_ARROW,
+        allowClick: activeStep === 2
+      }
     },
     {
       title: 'Bank Account',
@@ -54,7 +88,13 @@ class UserVerification extends Component {
         onSubmit={this.onSubmitBankAccount}
         initialValues={user.userData}
       />,
-      // disabled: !!bank_name && !!bank_account_number,
+      disabled: activeStep !== 3,
+      notification: {
+        text: activeStep > 3 ? 'completed' : 'verify bank account',
+        status: activeStep > 3 ? 'success' : 'warning',
+        iconPath: activeStep > 3 ? ICONS.CHECK : ICONS.RED_ARROW,
+        allowClick: activeStep === 3
+      }
     }];
 
     this.setState({ sections });
@@ -64,6 +104,7 @@ class UserVerification extends Component {
     return updateUser(values)
       .then((res) => {
         this.props.setMe(res.data);
+        this.calculateSections(res.data);
       }).catch((err) => {
         const _error = err.data ? err.data.message : err.message
         throw new SubmissionError({ _error })
@@ -85,7 +126,7 @@ class UserVerification extends Component {
 
   render() {
     if (this.props.user.verification_level === 0) {
-      return <div>Loding</div>;
+      return <div>Loading</div>;
     }
     const { sections } = this.state;
 

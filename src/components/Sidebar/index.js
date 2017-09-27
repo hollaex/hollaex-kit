@@ -3,16 +3,16 @@ import Section from './Section';
 import { NotificationsList, Button } from '../';
 
 const NOTIFICATIONS = [
-  { title: '1', text: 'text 4', timestamp: new Date().toString() },
-  { title: '2', text: 'text 4', timestamp: new Date().toString() },
-  { title: '3', text: 'text2 3', timestamp: new Date().toString() },
-  { title: '4', text: 'text 2', timestamp: new Date().toString() },
-  { title: '5', text: 'text 1', timestamp: new Date().toString() },
-  { title: '61', text: 'text 4', timestamp: new Date().toString() },
-  { title: '22', text: 'text 4', timestamp: new Date().toString() },
-  { title: '31', text: 'text2 3', timestamp: new Date().toString() },
-  { title: '42', text: 'text 2', timestamp: new Date().toString() },
-  { title: '53', text: 'text 1', timestamp: new Date().toString() },
+  // { title: '1', text: 'text 4', timestamp: new Date().toString() },
+  // { title: '2', text: 'text 4', timestamp: new Date().toString() },
+  // { title: '3', text: 'text2 3', timestamp: new Date().toString() },
+  // { title: '4', text: 'text 2', timestamp: new Date().toString() },
+  // { title: '5', text: 'text 1', timestamp: new Date().toString() },
+  // { title: '61', text: 'text 4', timestamp: new Date().toString() },
+  // { title: '22', text: 'text 4', timestamp: new Date().toString() },
+  // { title: '31', text: 'text2 3', timestamp: new Date().toString() },
+  // { title: '42', text: 'text 2', timestamp: new Date().toString() },
+  // { title: '53', text: 'text 1', timestamp: new Date().toString() },
 ];
 
 const Sidebar = ({ goToWalletPage, goToTradePage, active, activePath, logout }) => {

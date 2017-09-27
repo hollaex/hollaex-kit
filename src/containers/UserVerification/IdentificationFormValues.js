@@ -21,37 +21,44 @@ const fields = {
       label: 'Gender',
       placeholder: 'Type what gender your are',
       options: ['Man', 'Woman'],
+      validate: [required],
     },
     nationality: {
       type: 'select',
       label: 'Nationality',
       placeholder: 'Type what nationality is on your identity document',
       options: countries,
+      validate: [required],
     },
     dob: {
       type: 'date',
       label: 'Date of birth',
+      validate: [required],
     },
     country: {
       type: 'select',
       label: 'Country you reside',
       placeholder: 'Select the country you reside in currently',
-      options: countries
+      options: countries,
+      validate: [required],
     },
     city: {
       type: 'text',
       label: 'City',
       placeholder: 'Type the city you live in',
+      validate: [required],
     },
     address: {
       type: 'text',
       label: 'Address',
       placeholder: 'Type the address you are currently living',
+      validate: [required],
     },
     postal_code: {
       type: 'text',
       label: 'Postal code',
       placeholder: 'Type your postal code',
+      validate: [required],
     },
   },
   phone: {
@@ -59,38 +66,18 @@ const fields = {
       type: 'select',
       label: 'Country',
       placeholder: 'Select the country your phone is connected to',
-      options: countries
+      options: countries,
     },
     phone_number: {
       type: 'text',
       label: 'Phone number',
       placeholder: 'Type your phone number',
+      validate: [required],
     },
     sms_code: {
       type: 'text',
       label: 'Country you reside',
       placeholder: 'Select the country you reside in currently',
-    },
-  },
-  id: {
-    front: {
-      type: 'file',
-      label: 'Photo ID Document',
-      placeholder: 'Add a copy of your photo ID document',
-      validate: [required],
-    },
-    back: {
-      type: 'file',
-      label: 'Back Side of Photo ID Document',
-      placeholder: 'Add a copy of the backside of your ID document',
-    },
-  },
-  proofOfResidence: {
-    proofOfResidency: {
-      type: 'file',
-      label: 'Document proving your address',
-      placeholder: 'Add a copy of a document that proves your address',
-      validate: [required],
     },
   },
 };
@@ -110,41 +97,6 @@ Are you a business? Contact customer support for a corporate account.</div>
     </InformationSection>
   ),
   phone: <InformationSection title="Phone" />,
-  id: (
-    <InformationSection title="Identity Document">
-      <div>
-        Please make sure that your submitted documents are:
-        <ul>
-          <li>HIGH QUALITY (colour images, 300dpi resolution or higher).</li>
-          <li>VISIBLE IN THEIR ENTIRETY (watermarks are permitted).</li>
-          <li>VALID, with the expiry date clearly visible.</li>
-        </ul>
-      </div>
-      <div>
-        <div className="warning_text">Please do not submit the identity document as your proof of residence.</div>
-        <div>Only a valid government-issued identification document; high quality photos or scanned images of these documents are acceptable:</div>
-      </div>
-    </InformationSection>
-  ),
-  proofOfResidence: (
-    <InformationSection title="Proof of residence">
-      <div>
-        To avoid delays when verifying your account, please make sure:
-        Your NAME, ADDRESS, ISSUE DATE and ISSUER are clearly visible.
-        The submitted proof of residence document is NOT OLDER THAN THREE MONTHS.
-        You submit color photographs or scanned images in HIGH QUALITY (at least 300 DPI)
-      </div>
-      <div>
-        AN ACCEPTABLE PROOF OF RESIDENCE IS:
-        <ul>
-          <li>A bank account statement.</li>
-          <li>A utility bill (electricity, water, internet, etc.).</li>
-          <li>A government-issued document (tax statement, certificate of residency, etc.).</li>
-        </ul>
-      </div>
-      <div className="warning_text">We cannot accept the address on your submitted identity document as a valid proof of residence.</div>
-    </InformationSection>
-  ),
 }
 
 export default fields;

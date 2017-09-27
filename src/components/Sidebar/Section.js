@@ -1,5 +1,6 @@
 import React from 'react';
 import { ActionNotification } from '../';
+import { ICONS } from '../../config/constants';
 
 const Section = ({ title, goToSection, goToSectionText, active, children }) => {
   console.log(active)
@@ -10,7 +11,7 @@ const Section = ({ title, goToSection, goToSectionText, active, children }) => {
         <ActionNotification
           text={goToSectionText}
           onClick={goToSection}
-          iconPath={`${process.env.PUBLIC_URL}/assets/acounts/account-icons-07.png`}
+          iconPath={ICONS.BLUE_PLUS}
           status="information"
         />
       </div>

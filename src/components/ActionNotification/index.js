@@ -14,24 +14,14 @@ const getClassNames = (status) => {
   }
 }
 
-const getIconPath = (status) => {
-  switch (status) {
-    case 'success':
-      return 'success';
-    case 'warning':
-      return 'warning';
-    case 'information':
-      return 'info';
-    default:
-      return '';
-  }
-}
 const ActionNotification = (props) => {
   const { text, status, onClick, iconPath } = props;
 
   return (
     <div
-      className="action_notification-wrapper pointer"
+      className={classnames('action_notification-wrapper', {
+        'pointer': !!onClick,
+      })}
       onClick={onClick}
     >
       <div className={classnames('action_notification-text', getClassNames(status))}>
@@ -46,6 +36,5 @@ ActionNotification.defaultProps = {
   text: '',
   status: '',
   iconPath: '',
-  onClick: () => {}
 }
 export default ActionNotification;

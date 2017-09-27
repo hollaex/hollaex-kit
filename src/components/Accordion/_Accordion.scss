@@ -4,6 +4,10 @@ $accordion-border: 1px solid $colors-main-black;
 $accordion_content-padding: 0;
 $accordion_arrow-size: 0.5rem;
 
+.accordion_section {
+  position: relative;
+}
+
 .accordion_wrapper .accordion_section{
   border-top: $accordion-border;
   font-size: $font-size-subhead2;

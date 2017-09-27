@@ -34,9 +34,20 @@
   }
 
   .app_bar-currency {
+    position: relative;
     display: flex;
     align-items: center;
     width: 100%;
+    padding: 0;
+
+    &:after {
+      content: '';
+      width: 1px;
+      height: calc(100% - 8px);
+      background-color: $colors-main-black;
+      right: -1px;
+      position: absolute;
+    }
   }
 
   .app_bar-currency, .app_bar-user {
@@ -55,7 +66,7 @@
     max-width: $sidebar-width;
     display: flex;
     justify-content: space-between;
-    padding-right: 0;
+    padding: 0;
 
     > div {
       // padding: 0 8px;
