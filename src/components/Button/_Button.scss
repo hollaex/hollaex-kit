@@ -1,4 +1,11 @@
+@import '../../variables';
+
 .exir-button {
   width: 100%;
-  
+  font-size: $font-size-subtext;
+  padding: 0 4px;
+
+  &.disabled {
+    background-color: $colors-deactivate-color1;
+  }
 }

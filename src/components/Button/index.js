@@ -1,5 +1,6 @@
 import React, { Component} from 'react';
 import PropTypes from 'prop-types';
+import classnames from 'classnames';
 
 import '@material/button/dist/mdc.button.css';
 
@@ -7,7 +8,14 @@ const Button = ({ label, onClick, type, disabled }) => (
   <button
     type={type}
     onClick={onClick}
-    className="exir-button mdc-button mdc-button--unelevated"
+    className={classnames(
+      'exir-button',
+      'mdc-button',
+      'mdc-button--unelevated',
+      {
+        disabled
+      }
+    )}
     disabled={disabled}
   >{label}</button>
 );

@@ -1,6 +1,6 @@
 import React from 'react';
 import Section from './Section';
-import { NotificationsList } from '../';
+import { NotificationsList, Button } from '../';
 
 const NOTIFICATIONS = [
   { title: '1', text: 'text 4', timestamp: new Date().toString() },
@@ -33,7 +33,17 @@ const Sidebar = ({ goToWalletPage, goToTradePage, active, activePath, logout }) 
           goToSectionText="see details"
           active={activePath === 'trade'}
         >
-          Tradings content
+          <div className="sidebar-container-trade d-flex">
+            <Button
+              label="Quick Trade"
+              disabled={true}
+            />
+            <div className="sidebar-container-trade-space"></div>
+            <Button
+              label="Pro Trade"
+              disabled={true}
+            />
+          </div>
         </Section>
       </div>
       <div className="sidebar-notifications">

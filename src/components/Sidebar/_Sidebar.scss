@@ -28,6 +28,8 @@ $wallet-bordertop-height: 2px;
 
   .sidebar-actions {
     border-bottom: $sidebar-borderbottom-height solid $sidebar-borderbottom-color;
+    // min-height: calc(100vh / 3);
+    // max-height: calc(100vh / 3);
 
     &.active {
       border-bottom-color: $sidebar-borderbottom-color-active;
@@ -72,14 +74,25 @@ $wallet-bordertop-height: 2px;
     }
   }
 
+  &.active .sidebar_section-title-text {
+    font-weight: bold;;
+  }
+
   .sidebar_section-title {
     display: flex;
     justify-content: space-between;
     align-items: center;
     position: relative;
+    margin-bottom: 0.75rem;
 
     .sidebar_section-title-text {
       font-size: $font-size-main;
+    }
+  }
+
+  .sidebar-container-trade {
+    .sidebar-container-trade-space {
+      width: 0.5rem;
     }
   }
 }
