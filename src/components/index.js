@@ -1,6 +1,7 @@
 export { default as AppBar } from './AppBar';
 export { default as Button } from './Button';
 export { default as Dialog } from './Dialog';
+export { default as SuccessDisplay } from './Dialog/SuccessDisplay';
 export { default as TabController } from './TabController';
 export { default as CheckTitle } from './CheckTitle';
 export { default as Footer } from './Footer';

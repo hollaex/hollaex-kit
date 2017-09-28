@@ -14,3 +14,24 @@
   max-height: calc(100% - 2rem);
   overflow: auto;
 }
+
+.success_display-wrapper {
+  min-width: 25rem;
+  min-height: 30rem;
+  > * {
+    flex: 0;
+  }
+}
+
+.success_display-content {
+  height: auto;
+  flex: 1;
+}
+
+.success_display-content-image {
+  width: 7.5rem;
+}
+
+.success_display-content-text {
+  margin: 1rem 0;
+}

@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import { Button, Dialog } from '../../components';
+import { Button, Dialog, IconTitle, SuccessDisplay } from '../../components';
 import QRCode from 'qrcode.react';
 import OTPForm from './OTPForm';
-import { IconTitle } from '../../components';
 import { ICONS } from '../../config/constants';
 
 class OTP extends Component {
@@ -20,7 +19,7 @@ class OTP extends Component {
     this.setState({ dialogIsOpen: false });
   }
 
-  renderOTPForm = (secret, activateOTP) => (
+  renderOTPForm = (secret, email, activateOTP) => (
     <div className="otp_form-wrapper">
       <IconTitle
         text="Activate Two-Factor Authentication"
@@ -35,7 +34,7 @@ class OTP extends Component {
         </div>
         <div className="d-flex justify-content-center otp_form-section-content">
           <QRCode
-            value={`otpauth://totp/exir?secret=${secret}`}
+            value={`otpauth://totp/EXIR ${email}?secret=${secret}`}
             size={150}
           />
         </div>
@@ -61,15 +60,8 @@ class OTP extends Component {
     </div>
   );
 
-  renderOTPSuccess = () => (
-    <div>
-      Success
-    </div>
-  )
-
   render() {
-    const { requestOTP, activateOTP, data } = this.props;
-
+    const { requestOTP, activateOTP, data, email } = this.props;
     return (
       <div className="user_security-wrapper">
         <div className="warning_text">
@@ -86,8 +78,8 @@ class OTP extends Component {
 					onCloseDialog={this.onCloseDialog}
 				>
           {data.activated ?
-            this.renderOTPSuccess() :
-            this.renderOTPForm(data.secret, activateOTP)
+            <SuccessDisplay onClick={this.onCloseDialog} text="You have successfully activated OTP" /> :
+            this.renderOTPForm(data.secret, email, activateOTP)
           }
 				</Dialog>
       </div>

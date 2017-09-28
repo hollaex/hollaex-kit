@@ -1,9 +1,6 @@
 import React from 'react';
 
 const InputField = (props) => {
-  console.log(props)
-  console.log(props.meta)
-
   const { input, label, type, placeholder, meta: {touched, invalid, error, active }, onClick} = props
   return (
     <div className="input_field" onClick={onClick}>

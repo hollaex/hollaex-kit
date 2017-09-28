@@ -12,13 +12,13 @@
   margin: 1rem;
 
   .otp_form-section-wrapper {
-    border-top: 1px solid red;
+    border-top: 1px solid $colors-main-black;
     padding-top: 0.5rem;
 
     > *:not(:last-child) {
       margin-bottom: 0.5rem;
     }
-    
+
     .otp_form-section-content {
       margin: 1rem 0;
     }

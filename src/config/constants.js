@@ -31,3 +31,21 @@ export const ICONS = {
   BALCK_CORNER_TRIANGLE: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-21.png`,
   KEYS: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-22.png`,
 }
+
+export const CURRENCIES = {
+  btc: {
+    symbol: 'btc',
+    name: 'bitcoins',
+    currencySymbol: 'B'
+  },
+  eth: {
+    symbol: 'eth',
+    name: 'Ethereun',
+    currencySymbol: 'E'
+  },
+  fiat: {
+    symbol: 'fiat',
+    name: 'Dollars',
+    currencySymbol: '$'
+  },
+}

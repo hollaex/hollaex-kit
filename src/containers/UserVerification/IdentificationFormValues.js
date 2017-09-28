@@ -74,11 +74,6 @@ const fields = {
       placeholder: 'Type your phone number',
       validate: [required],
     },
-    sms_code: {
-      type: 'text',
-      label: 'Country you reside',
-      placeholder: 'Select the country you reside in currently',
-    },
   },
 };
 

@@ -172,7 +172,8 @@ export default function reducer(state = INITIAL_STATE, action) {
 				otp: {
 					...state.otp,
 					activated: true,
-				}
+				},
+				otp_enabled: true,
 			}
 
 		// ACTIVATE_OTP

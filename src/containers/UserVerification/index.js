@@ -104,8 +104,9 @@ class UserVerification extends Component {
     return updateUser(values)
       .then((res) => {
         this.props.setMe(res.data);
-        this.calculateSections(res.data);
+        this.accordion.openNextSection();
       }).catch((err) => {
+        console.log()
         const _error = err.data ? err.data.message : err.message
         throw new SubmissionError({ _error })
       })
@@ -114,7 +115,7 @@ class UserVerification extends Component {
   onSubmitUserDocuments = (values) => {
     return updateDocuments
       .then((res) => {
-
+        this.accordion.openNextSection();
       }).catch((err) => {
         console.log(err.data, err.message)
         const _error = err.data ? err.data.message : err.message
@@ -123,6 +124,10 @@ class UserVerification extends Component {
   }
 
   onSubmitBankAccount = this.onSubmitUserInformation;
+
+  setRef = (el) => {
+    this.accordion = el;
+  }
 
   render() {
     if (this.props.user.verification_level === 0) {
@@ -134,6 +139,7 @@ class UserVerification extends Component {
       <div>
         <Accordion
           sections={sections}
+          ref={this.setRef}
         />
       </div>
     );

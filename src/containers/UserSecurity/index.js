@@ -18,14 +18,17 @@ class UserVerification extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.user.otp.requested !== this.props.user.otp.requested) {
+    if (
+      nextProps.user.otp.requested !== this.props.user.otp.requested ||
+      nextProps.user.otp.activated !== this.props.user.otp.activated
+    ) {
       this.calculateSections(nextProps.user);
     }
   }
 
 
   calculateSections = (user) => {
-    const { otp_enabled, otp } = user;
+    const { otp_enabled, otp, email } = user;
 
     const sections = [{
       title: 'Two-Factor Authentication',
@@ -34,6 +37,7 @@ class UserVerification extends Component {
           requestOTP={this.props.requestOTP}
           activateOTP={this.onSubmitActivateOtp}
           data={otp}
+          email={email}
         />
       ),
       disabled: otp_enabled,
@@ -62,7 +66,8 @@ class UserVerification extends Component {
   onSubmitActivateOtp = (values) => {
     return otpActivate(values)
       .then((res) => {
-        console.log(res)
+        this.props.otpSetActivated();
+        this.accordion.closeAll();
       })
       .catch((err) => {
         console.log(err.response.data)
@@ -74,16 +79,20 @@ class UserVerification extends Component {
   onSubmitChangePassword = (values) => {
     return resetPassword({
       old_password: values.old_password,
-      new_password: '12',
+      new_password: values.new_password,
     })
       .then((res) => {
-        console.log(res)
+        this.accordion.closeAll();
       })
       .catch((err) => {
         console.log(err.response.data)
         const _error = err.response.data ? err.response.data.message : err.message
         throw new SubmissionError({ _error })
       });
+  }
+
+  setRef = (el) => {
+    this.accordion = el;
   }
 
   render() {
@@ -96,6 +105,7 @@ class UserVerification extends Component {
       <div>
         <Accordion
           sections={sections}
+          ref={this.setRef}
         />
       </div>
     );

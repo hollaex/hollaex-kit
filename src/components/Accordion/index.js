@@ -30,6 +30,18 @@ class Accordion extends Component {
     this.setState({ openSections });
   }
 
+  openNextSection = () => {
+    if (!this.props.allowMultiOpen) {
+      const currentSection = this.state.openSections.length > 0 ? this.state.openSections[0] : -1;
+      this.openSection(currentSection + 1);
+    }
+  }
+
+  closeAll = () => {
+    console.log('close all')
+    this.setState({ openSections: [] });
+  }
+
   render() {
     const { sections } = this.props;
     return (
