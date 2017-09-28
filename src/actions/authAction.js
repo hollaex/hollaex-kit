@@ -73,6 +73,12 @@ export function verifyVerificationCode(data) {
 		});
 }
 
+export const performLogin = (values) => axios.post('/login', values)
+	.then((res) => {
+		setTokenInApp(res.data.token, true);
+		return res;
+	});
+
 export function login(data) {
 	return ((dispatch) => {
 		dispatch({

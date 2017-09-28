@@ -6,6 +6,7 @@ import {
   Dashboard,
   Account,
   Wallet,
+  Login,
 } from './containers';
 
 import Home from './views/Home'
@@ -16,7 +17,7 @@ import QuickBuy from './views/Exchange/QuickBuy'
 // import Account from './views/Account'
 import Deposit from './views/Deposit/Deposit'
 import Withdraw from './views/Withdraw/Withdraw'
-import Login from './views/Auth/Login'
+// import Login from './views/Auth/Login'
 import SignUp from './views/Auth/Signup'
 import Verification from './views/Auth/Verification'
 import ResetPassword from './views/Auth/ResetPassword'

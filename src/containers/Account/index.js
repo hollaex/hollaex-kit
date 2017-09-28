@@ -16,12 +16,25 @@ class Account extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.id !== this.props.id) {
-      this.updateTabs(this.props);
+    if (
+      nextProps.id !== this.props.id ||
+      nextProps.verification_level !== this.props.verification_level ||
+      nextProps.otp_enabled !== this.props.otp_enabled
+    ) {
+      this.updateTabs(nextProps);
     }
   }
 
-  updateTabs = ({ verification_level, otp_enabled }) => {
+  hasUserVerificationNotifications = (verification_level, bank_name) => {
+    if (verification_level >= 2) {
+      return false
+    } else if (bank_name) {
+      return false;
+    }
+    return true;
+  }
+  updateTabs = ({ verification_level, otp_enabled, bank_name }) => {
+    console.log(verification_level, otp_enabled)
     const activeTab = this.state.activeTab > -1 ? this.state.activeTab : 0;
     const tabs = [
       {
@@ -29,7 +42,7 @@ class Account extends Component {
           <CheckTitle
             title="Verification"
             icon={`${process.env.PUBLIC_URL}/assets/acounts/account-icons-02.png`}
-            notifications={verification_level < 3 ? '!' : ''}
+            notifications={this.hasUserVerificationNotifications(verification_level, bank_name) ? '!' : ''}
           />
         ),
         content: <UserVerification />
@@ -94,8 +107,9 @@ class Account extends Component {
 
 const mapStateToProps = (state) => ({
   verification_level: state.user.verification_level,
-  otp_enabled: state.user.userData.otp_enabled || false,
+  otp_enabled: state.user.otp_enabled || false,
   id: state.user.id,
+  bank_name: state.user.bank_name,
 });
 
 export default connect(mapStateToProps)(Account);
