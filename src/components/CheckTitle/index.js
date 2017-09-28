@@ -23,7 +23,7 @@ const CheckTitle = ({ title, icon, notifications }) => {
 CheckTitle.defaultProps = {
   title: 'Title',
   status: '',
-  notifications: 0,
+  notifications: '',
 }
 
 export default CheckTitle;

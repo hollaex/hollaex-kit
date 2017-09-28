@@ -87,6 +87,12 @@ export const updateDocuments = (values) => {
 	})
 }
 
+export const otpActivate = (values) => axios.post('/activateOTP',values);
+export const resetPassword = (values) => axios.post('/user/change-password',values);
+export const otpSetActivated = () => ({
+		type: 'ACTIVATE_OTP',
+	});
+
 export function userIdentity(data) {
 	return ((dispatch) => {
 		dispatch({
@@ -190,17 +196,23 @@ export function userWithdrawals() {
 	}
 }
 
-export function requestOTP() {
-	return {
-		type: 'REQUEST_OTP',
-		payload: axios.get('/requestOTP'),
-	}
-}
-export function activateOTP(otp) {
-	return {
-		type: 'ACTIVATE_OTP',
-		payload: axios.post('/activateOTP',otp),
-	}
+export function otpRequest() {
+	return ((dispatch) => {
+		dispatch({ type: 'REQUEST_OTP_PENDING' });
+		axios.get('/requestOTP')
+			.then((body) => {
+				dispatch({
+				    type: 'REQUEST_OTP_FULFILLED',
+				    payload: body.data,
+				});
+			})
+			.catch((err) => {
+				dispatch({
+				    type: 'REQUEST_OTP_REJECTED',
+				    payload: err.response
+				});
+			})
+	});
 }
 export function deactivateOTP() {
 	return {

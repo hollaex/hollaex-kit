@@ -6,8 +6,8 @@ import { Link } from 'react-router'
 import { Field, reduxForm } from 'redux-form';
 
 import InputField from '../../components/Form/FormFields/InputField';
+import { password } from '../../components/Form/validations';
 import { Button } from '../../components';
-
 import { login } from '../../actions/authAction'
 
 const validate = formProps => {
@@ -72,6 +72,7 @@ class Login extends Component {
 				            type="password"
 				            label="Password"
                     placeholder="Password"
+                    validate={[password]}
 				         />
 			        </div>
 			        <div className='pt-3'>

@@ -29,4 +29,5 @@ export const ICONS = {
   BLACK_CHECK: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-19.png`,
   WHITE_CHECK: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-20.png`,
   BALCK_CORNER_TRIANGLE: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-21.png`,
+  KEYS: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-22.png`,
 }

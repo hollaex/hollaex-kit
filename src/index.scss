@@ -42,6 +42,7 @@ body {
 }
 @import './containers/App/App';
 @import './containers/UserVerification/UserVerification';
+@import './containers/UserSecurity/UserSecurity';
 
 @import './components/Sidebar/Sidebar';
 @import './components/Footer/Footer';
@@ -55,3 +56,4 @@ body {
 @import './components/Dialog/Dialog';
 @import './components/Accordion/Accordion';
 @import './components/ActionNotification/ActionNotification';
+@import './components/IconTitle/IconTitle';

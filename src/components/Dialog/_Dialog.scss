@@ -5,10 +5,12 @@
 }
 
 .ReactModal__Content {
-  min-width: 400px;
   padding: 16px !important;
   top: auto !important;
   bottom: auto !important;
   left: auto !important;
   right: auto !important;
+  max-width: calc(100% - 2rem);
+  max-height: calc(100% - 2rem);
+  overflow: auto;
 }

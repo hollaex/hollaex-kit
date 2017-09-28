@@ -1,0 +1,17 @@
+@import '../../variables';
+@import '../../mixins';
+
+.icon_title-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  .icon_title-wrapper {
+    @include size(4rem);
+  }
+
+  .icon_title-text {
+    font-size: $font-size-subhead2;
+  }
+}
