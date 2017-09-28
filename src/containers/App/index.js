@@ -9,7 +9,7 @@ import { setUserOrders, addOrder, updateOrder, removeOrder } from '../../actions
 import { setOrderbook, addTrades } from '../../actions/orderbookAction';
 
 import { checkUserSessionExpired, getToken } from '../../utils/utils';
-import { AppBar, Sidebar, Dialog } from '../../components';
+import { AppBar, Sidebar, Dialog, Loader } from '../../components';
 import { ContactForm } from '../';
 
 class Container extends Component {
@@ -176,16 +176,13 @@ class Container extends Component {
 	}
 
 	render() {
-		const { fetchingAuth, symbol } = this.props;
+		const { fetchingAuth, symbol, children } = this.props;
 		const { dialogIsOpen } = this.state;
 
-		if (this.props.fetchingAuth) {
-			return <div className="app_container"></div>;
-		}
-
-		const activePath = this.getClassForActivePath(this.props.location.pathname);
+		const activePath = fetchingAuth ? '' : this.getClassForActivePath(this.props.location.pathname);
 		return (
 			<div className={`app_container ${activePath} ${symbol}`}>
+				{fetchingAuth && <Loader />}
 				<AppBar
 					title={
 						<div onClick={this.onOpenDialog}>exir-exchange</div>
@@ -196,7 +193,7 @@ class Container extends Component {
 				/>
         <div className="app_container-content">
           <div className="app_container-main">
-            {this.props.children}
+            {!fetchingAuth && children}
           </div>
           <div className="app_container-sidebar">
             <Sidebar
