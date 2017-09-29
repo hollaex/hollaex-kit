@@ -4,9 +4,9 @@ import { SubmissionError } from 'redux-form';
 
 import { ICONS } from '../../config/constants';
 import { resetPassword, otpRequest, otpActivate, otpSetActivated } from '../../actions/userAction';
-import { Accordion, Dialog, SuccessDisplay } from '../../components';
+import { Accordion, Dialog, SuccessDisplay, CheckboxButton } from '../../components';
 import ChangePasswordForm from './ChangePasswordForm';
-import OTP from './OTP';
+import { OTP, renderOTPForm } from './OTP';
 
 class UserVerification extends Component {
   state = {
@@ -22,27 +22,43 @@ class UserVerification extends Component {
   componentWillReceiveProps(nextProps) {
     if (
       nextProps.user.otp.requested !== this.props.user.otp.requested ||
-      nextProps.user.otp.activated !== this.props.user.otp.activated
+      nextProps.user.otp.activated !== this.props.user.otp.activated ||
+      nextProps.user.otp_enabled !== this.props.user.otp_enabled
     ) {
       this.calculateSections(nextProps.user);
+    }
+
+    if (nextProps.user.otp.requested !== this.props.user.otp.requested) {
+      this.setState({ dialogIsOpen: true, modalText: '' })
     }
   }
 
 
   calculateSections = (user) => {
     const { otp_enabled, otp, email } = user;
-
+    console.log('caaalllculate', otp_enabled, otp, email)
     const sections = [{
       title: 'Two-Factor Authentication',
       content: (
         <OTP
-          requestOTP={this.props.requestOTP}
-          activateOTP={this.onSubmitActivateOtp}
+          requestOTP={this.handleOTPCheckbox}
           data={otp}
-          email={email}
-        />
+          otp_enabled={otp_enabled}
+        >
+          {otp_enabled &&
+            <div className="d-flex flex-column">
+              <CheckboxButton
+                label="Require OTP when logging in"
+                checked={true}
+              />
+              <CheckboxButton
+                label="Require OTP when withdrawing funds"
+                checked={true}
+              />
+            </div>
+          }
+        </OTP>
       ),
-      disabled: otp_enabled,
       notification: {
         text: otp_enabled ? 'otp enabled' : 'PLEASE TURN ON 2FA',
         status: otp_enabled ? 'success' : 'warning',
@@ -65,6 +81,15 @@ class UserVerification extends Component {
     this.setState({ sections });
   }
 
+  handleOTPCheckbox = (checked = false) => {
+    if (checked) {
+      this.props.requestOTP();
+    } else {
+      // TODO cancel otp
+      console.log('caaaancel');
+    }
+  }
+
   onSubmitActivateOtp = (values) => {
     return otpActivate(values)
       .then((res) => {
@@ -75,7 +100,7 @@ class UserVerification extends Component {
       .catch((err) => {
         console.log(err.response.data)
         const _error = err.response.data ? err.response.data.message : err.message
-        throw new SubmissionError({ _error })
+        throw new SubmissionError({ code: _error })
       });
   }
 
@@ -113,7 +138,7 @@ class UserVerification extends Component {
       return <div>Loading</div>;
     }
     const { sections, dialogIsOpen, modalText } = this.state;
-
+    const { otp, email } = this.props.user;
     return (
       <div>
         <Accordion
@@ -125,7 +150,7 @@ class UserVerification extends Component {
 					label="security-modal"
 					onCloseDialog={this.onCloseDialog}
 				>
-          <SuccessDisplay onClick={this.onCloseDialog} text={modalText} />
+          {otp.requested && !otp.activated ? renderOTPForm(otp.secret, email, this.onSubmitActivateOtp) : <SuccessDisplay onClick={this.onCloseDialog} text={modalText} />}
         </Dialog>
       </div>
     );

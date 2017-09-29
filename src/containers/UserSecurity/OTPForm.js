@@ -10,6 +10,7 @@ const FormValues = {
     type: 'number',
     placeholder: 'Enter your OTP provided by Google Authenticator. Leave blank to keep your current setup.',
     validate: [required],
+    fullWidth: true,
   }
 };
 

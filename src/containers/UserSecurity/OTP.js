@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import { Button, IconTitle } from '../../components';
+import { CheckboxButton, IconTitle } from '../../components';
 import QRCode from 'qrcode.react';
 import OTPForm from './OTPForm';
 import { ICONS } from '../../config/constants';
 
-const renderOTPForm = (secret, email, activateOTP) => (
+export const renderOTPForm = (secret, email, activateOTP) => (
   <div className="otp_form-wrapper">
     <IconTitle
       text="Activate Two-Factor Authentication"
@@ -45,17 +45,19 @@ const renderOTPForm = (secret, email, activateOTP) => (
   </div>
 );
 
-const OTP = ({ requestOTP, activateOTP, data, email }) => (
+export const OTP = ({ requestOTP, data, otp_enabled, children }) => (
   <div className="user_security-wrapper">
     <div className="warning_text">
       We highly recommend you set up 2 factor authentication (2FA). Doing so will greatly increase the security of your funds.
     </div>
-    <Button
+    <CheckboxButton
       label="Enable Two-Factor Authentication"
       onClick={requestOTP}
       disabled={data.fetching}
-    />
+      loading={data.fetching}
+      checked={otp_enabled}
+    >
+      {children}
+    </CheckboxButton>
   </div>
 );
-
-export default OTP;

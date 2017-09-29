@@ -9,3 +9,22 @@
     background-color: $colors-deactivate-color1;
   }
 }
+
+.checkbutton-wrapper {
+  font-size: $font-size-main;
+  margin-top: 1rem;
+
+  .checkbutton-input-wrapper {
+    .checkbutton-input-wrapper--label {
+      margin: 0;
+      padding-left: 0.5rem;
+    }
+
+    .checkbutton-input-wrapper--image {
+      width: 2rem;
+    }
+  }
+  .checkbutton-content-wrapper {
+    margin-left: 2rem;
+  }
+}
