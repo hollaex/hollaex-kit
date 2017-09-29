@@ -8,17 +8,18 @@ const renderFields = (fields) => {
   return (
     <div>
       {Object.keys(fields).map((key, index) => {
-        const field = fields[key];
-        switch (field.type) {
+        const { type, label, validate = [], ...rest } = fields[key];
+        switch (type) {
           case 'file':
             return (
               <Field
                 key={key}
                 name={key}
                 component={ FileField }
-                type={field.type}
-                label={field.label}
-                validate={field.validate || []}
+                {...rest}
+                type={type}
+                label={label}
+                validate={validate}
               />
             );
           case 'select':
@@ -27,10 +28,10 @@ const renderFields = (fields) => {
                 key={key}
                 name={key}
                 component={ SelectField }
-                type={field.type}
-                label={field.label}
-                validate={field.validate || []}
-                options={field.options || []}
+                {...rest}
+                type={type}
+                label={label}
+                validate={validate || []}
               />
             );
           case 'text':
@@ -42,10 +43,10 @@ const renderFields = (fields) => {
                 key={key}
                 name={key}
                 component={ InputField }
-                type={field.type}
-                label={field.label}
-                placeholder={field.placeholder}
-                validate={field.validate || []}
+                {...rest}
+                type={type}
+                label={label}
+                validate={validate}
               />
             );
         }

@@ -11,6 +11,7 @@ const FormValues = {
     label: 'OTP Code',
     placeholder: 'Enter the authentication code',
     validate: [required],
+    fullWidth: true,
   },
 };
 

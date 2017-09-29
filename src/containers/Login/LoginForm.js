@@ -1,6 +1,6 @@
 import React from 'react';
 import { reduxForm } from 'redux-form';
-import { required, password } from '../../components/Form/validations';
+import { required, password, email } from '../../components/Form/validations';
 import renderFields from '../../components/Form/factoryFields';
 import { Button, IconTitle } from '../../components';
 import { ICONS } from '../../config/constants';
@@ -10,13 +10,15 @@ const FormValues = {
     type: 'email',
     label: 'Email',
     placeholder: 'Type your email',
-    validate: [required],
+    validate: [required, email],
+    fullWidth: true,
   },
   password: {
     type: 'password',
     label: 'Password',
     placeholder: 'Type ypur password',
     validate: [required, password],
+    fullWidth: true,
   }
 };
 

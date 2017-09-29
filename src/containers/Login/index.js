@@ -51,9 +51,9 @@ class Login extends Component {
 
   render() {
     const { otpDialogIsOpen } = this.state;
-    console.log('is open', otpDialogIsOpen)
+    
     return (
-      <div className="d-flex justify-content-center align-items-center flex-column col-lg-4 offset-4 login_wrapper">
+      <div className="d-flex justify-content-center align-items-center flex-column col-lg-4 offset-lg-4 col-md-6 offset-md-3 col-sm-8 offset-sm-2 login_wrapper">
         <div className="d-flex justify-content-center align-items-center">
           <div><h1>Login/</h1></div>
           <div><Link to='/signup' style={{textDecoration:'none'}}><h5>SignUp</h5></Link></div>

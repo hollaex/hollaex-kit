@@ -21,7 +21,7 @@ html {
 }
 
 body {
-  --navigation-bar-height: $navigation_bar-height;
+  // --navigation-bar-height: $navigation_bar-height;
 
   background-color: $app-background-color !important;
   font-size: $font-size-main !important;
@@ -43,6 +43,22 @@ body {
 
 .form {
   min-width: $dialog-min-width;
+}
+
+.error-icon {
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding-left: 2rem !important;
+
+  &:before {
+    content: '';
+    @include size(2rem, 100%);
+    position: absolute;
+    background-color: red;
+    left: 0;
+    top: calc(50% - 0.75rem);
+  }
 }
 
 @import './containers/App/App';

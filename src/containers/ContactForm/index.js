@@ -14,7 +14,7 @@ export default ({ onSubmitSuccess }) => {
       type: 'select',
       label: 'Category',
       placeholder: 'Select the category that best suits your issue',
-      values: [
+      options: [
         'Verify',
         'Bug'
       ],
