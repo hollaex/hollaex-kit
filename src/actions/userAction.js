@@ -87,10 +87,13 @@ export const updateDocuments = (values) => {
 	})
 }
 
-export const otpActivate = (values) => axios.post('/activateOTP',values);
-export const resetPassword = (values) => axios.post('/user/change-password',values);
-export const otpSetActivated = () => ({
+export const otpActivate = (values) => axios.post('/activateOTP', values);
+export const otpRevoke = (values) => axios.post('/revokeOTP', values);
+export const resetPassword = (values) => axios.post('/user/change-password', values);
+export const otpSetActivated = (active = true) => active ? ({
 		type: 'ACTIVATE_OTP',
+	}) : ({
+		type: 'REVOKE_OTP',
 	});
 
 export function userIdentity(data) {
@@ -209,7 +212,7 @@ export function otpRequest() {
 			.catch((err) => {
 				dispatch({
 				    type: 'REQUEST_OTP_REJECTED',
-				    payload: err.response
+				    payload: err.response.data
 				});
 			})
 	});

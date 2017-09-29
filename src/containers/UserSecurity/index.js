@@ -3,8 +3,9 @@ import { connect } from 'react-redux';
 import { SubmissionError } from 'redux-form';
 
 import { ICONS } from '../../config/constants';
-import { resetPassword, otpRequest, otpActivate, otpSetActivated } from '../../actions/userAction';
-import { Accordion, Dialog, SuccessDisplay, CheckboxButton } from '../../components';
+import { resetPassword, otpRequest, otpActivate, otpSetActivated, otpRevoke } from '../../actions/userAction';
+import { Accordion, Dialog, SuccessDisplay, CheckboxButton, OtpForm } from '../../components';
+import { errorHandler } from '../../components/OtpForm/utils';
 import ChangePasswordForm from './ChangePasswordForm';
 import { OTP, renderOTPForm } from './OTP';
 
@@ -22,21 +23,24 @@ class UserVerification extends Component {
   componentWillReceiveProps(nextProps) {
     if (
       nextProps.user.otp.requested !== this.props.user.otp.requested ||
+      nextProps.user.otp.requesting !== this.props.user.otp.requesting ||
       nextProps.user.otp.activated !== this.props.user.otp.activated ||
       nextProps.user.otp_enabled !== this.props.user.otp_enabled
     ) {
       this.calculateSections(nextProps.user);
     }
 
-    if (nextProps.user.otp.requested !== this.props.user.otp.requested) {
+    if (nextProps.user.otp.requested && nextProps.user.otp.requested !== this.props.user.otp.requested) {
       this.setState({ dialogIsOpen: true, modalText: '' })
+    } else if (nextProps.user.otp.error !== this.props.user.otp.error) {
+      this.setState({ dialogIsOpen: true, modalText: nextProps.user.otp.error })
     }
   }
 
 
   calculateSections = (user) => {
     const { otp_enabled, otp, email } = user;
-    console.log('caaalllculate', otp_enabled, otp, email)
+
     const sections = [{
       title: 'Two-Factor Authentication',
       content: (
@@ -87,13 +91,14 @@ class UserVerification extends Component {
     } else {
       // TODO cancel otp
       console.log('caaaancel');
+      this.setState({ dialogIsOpen: true, modalText: '' });
     }
   }
 
   onSubmitActivateOtp = (values) => {
     return otpActivate(values)
       .then((res) => {
-        this.props.otpSetActivated();
+        this.props.otpSetActivated(true);
         this.accordion.closeAll();
         this.setState({ dialogIsOpen: true, modalText: 'You have successfully activated the OTP' });
       })
@@ -120,6 +125,16 @@ class UserVerification extends Component {
       });
   }
 
+  onSubmitCancelOTP = (values) => {
+    return new Promise((resolve) => resolve())
+    // return otpRevoke(values)
+      .then(() => {
+        this.props.otpSetActivated(false);
+        this.setState({ dialogIsOpen: true, modalText: 'You have successfully revoked your OTP' });
+      })
+      .catch(errorHandler);
+  }
+
   setRef = (el) => {
     this.accordion = el;
   }
@@ -133,12 +148,29 @@ class UserVerification extends Component {
     this.setState({ dialogIsOpen: false });
   }
 
+  renderModalContent = ({ requested, activated, secret, error }, otp_enabled, email, modalText) => {
+    // if (error) {
+    //   console.log('-----------', 0)
+    //   return <SuccessDisplay onClick={this.onCloseDialog} text={error} success={false} />
+    // } else
+    if (otp_enabled) {
+      console.log('-----------', 1)
+      return <OtpForm onSubmit={this.onSubmitCancelOTP} />;
+    } else if (requested && !activated) {
+      console.log('-----------', 2)
+      return renderOTPForm(secret, email, this.onSubmitActivateOtp);
+    } else {
+      console.log('-----------', 3)
+      return <SuccessDisplay onClick={this.onCloseDialog} text={modalText} success={!error} />
+    }
+  }
+
   render() {
     if (this.props.user.verification_level === 0) {
       return <div>Loading</div>;
     }
     const { sections, dialogIsOpen, modalText } = this.state;
-    const { otp, email } = this.props.user;
+    const { otp, email, otp_enabled } = this.props.user;
     return (
       <div>
         <Accordion
@@ -146,11 +178,11 @@ class UserVerification extends Component {
           ref={this.setRef}
         />
         <Dialog
-					isOpen={dialogIsOpen}
+					isOpen={dialogIsOpen && !otp.requesting}
 					label="security-modal"
 					onCloseDialog={this.onCloseDialog}
 				>
-          {otp.requested && !otp.activated ? renderOTPForm(otp.secret, email, this.onSubmitActivateOtp) : <SuccessDisplay onClick={this.onCloseDialog} text={modalText} />}
+          {dialogIsOpen && !otp.requesting ? this.renderModalContent(otp, otp_enabled, email, modalText) : <div></div>}
         </Dialog>
       </div>
     );
@@ -163,7 +195,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   requestOTP: () => dispatch(otpRequest()),
-  otpSetActivated: () => dispatch(otpSetActivated()),
+  otpSetActivated: (active) => dispatch(otpSetActivated(active)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(UserVerification);

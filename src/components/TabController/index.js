@@ -1,4 +1,5 @@
 import React from 'react';
+import classnames from 'classnames';
 
 const renderTitleBlock = (title, icon) => (
   <div className="tab_controller-title">
@@ -19,7 +20,9 @@ const TabController = ({ tabs, activeTab, setActiveTab, title, titleIcon }) => (
         return (
           <div
             key={`tab_item-${index}`}
-            className={`tab_item ${index === activeTab ? 'tab_item-active' : ''}`}
+            className={classnames(
+              'tab_item', 'pointer', { 'tab_item-active': index === activeTab }
+            )}
             onClick={() => setActiveTab(index)}
           >{tab.title}</div>
         )

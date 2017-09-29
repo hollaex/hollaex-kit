@@ -176,6 +176,13 @@ export default function reducer(state = INITIAL_STATE, action) {
 				otp_enabled: true,
 			}
 
+		case 'REVOKE_OTP':
+			return {
+				...state,
+				otp: INITIAL_OTP_OBJECT,
+				otp_enabled: false,
+			}
+
 		// ACTIVATE_OTP
 		case 'ACTIVATE_OTP_PENDING': {
 			return {...state, fetching: true, fetched: false, error: null}

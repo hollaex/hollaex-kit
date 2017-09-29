@@ -53,8 +53,8 @@ export const OTP = ({ requestOTP, data, otp_enabled, children }) => (
     <CheckboxButton
       label="Enable Two-Factor Authentication"
       onClick={requestOTP}
-      disabled={data.fetching}
-      loading={data.fetching}
+      disabled={data.requesting}
+      loading={data.requesting}
       checked={otp_enabled}
     >
       {children}
