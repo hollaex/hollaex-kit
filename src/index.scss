@@ -40,6 +40,11 @@ body {
   filter: blur(5px);
   background: $app-background-color-on-modal;
 }
+
+.form {
+  min-width: $dialog-min-width;
+}
+
 @import './containers/App/App';
 @import './containers/UserVerification/UserVerification';
 @import './containers/UserSecurity/UserSecurity';

@@ -1,0 +1,69 @@
+@import '../../variables';
+
+$inner-section-margin: 0.5rem;
+$accordion_arrow-size: 0.3rem;
+
+.wallet_section-wrapper {
+  // border-top: 1px solid $colors-main-black;
+  font-size: $font-size-subtext;
+  padding: 0.25rem 0;
+
+  .wallet_section-content > * {
+    margin-bottom: $inner-section-margin;
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  > * {
+    margin: $inner-section-margin 0;
+  }
+}
+
+.wallet_section-title {
+  text-transform: uppercase;
+  color: $colors-deactivate-color2;
+  font-size: $font-size-subtext;
+  > * {
+    margin: $inner-section-margin;
+  }
+}
+
+.wallet_section-title-amount {
+  color: $colors-main-black;
+  font-size: $font-size-subtext;
+}
+
+.wallet_section-total_asset {
+  font-size: 1rem;
+
+  > span {
+    font-size: $font-size-subhead2;
+    line-height: 1;
+  }
+
+  &:first-child {
+    margin-bottom: 0;
+  }
+
+  &:last-child {
+    margin-top: 0;
+  }
+}
+
+.sidebar_section-container .wallet-wrapper .accordion_section_title .wallet_section-title {
+  &:after{
+    @include css-triangle($colors-deactivate-color2, 'right', $accordion_arrow-size);
+    right: -$accordion_arrow-size;
+    top: calc(50% - 0.22rem);
+  }
+}
+
+.sidebar_section-container .wallet-wrapper .accordion_section--open .accordion_section_title .wallet_section-title {
+  color: $colors-main-black;
+  &:after{
+    @include css-triangle($colors-main-black, 'right', $accordion_arrow-size);
+    right: -$accordion_arrow-size;
+    top: calc(50% - 0.22rem);
+  }
+}

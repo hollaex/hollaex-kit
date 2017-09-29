@@ -4,13 +4,15 @@ import { SubmissionError } from 'redux-form';
 
 import { ICONS } from '../../config/constants';
 import { resetPassword, otpRequest, otpActivate, otpSetActivated } from '../../actions/userAction';
-import { Accordion } from '../../components';
+import { Accordion, Dialog, SuccessDisplay } from '../../components';
 import ChangePasswordForm from './ChangePasswordForm';
 import OTP from './OTP';
 
 class UserVerification extends Component {
   state = {
     sections: [],
+    dialogIsOpen: false,
+    modalText: '',
   }
 
   componentDidMount() {
@@ -68,6 +70,7 @@ class UserVerification extends Component {
       .then((res) => {
         this.props.otpSetActivated();
         this.accordion.closeAll();
+        this.setState({ dialogIsOpen: true, modalText: 'You have successfully activated the OTP' });
       })
       .catch((err) => {
         console.log(err.response.data)
@@ -83,6 +86,7 @@ class UserVerification extends Component {
     })
       .then((res) => {
         this.accordion.closeAll();
+        this.setState({ dialogIsOpen: true, modalText: 'You have successfully changed your password' });
       })
       .catch((err) => {
         console.log(err.response.data)
@@ -95,11 +99,20 @@ class UserVerification extends Component {
     this.accordion = el;
   }
 
+  renderModalContent = () => {
+    const text = 'You have successfully activated OTP';
+    return <SuccessDisplay onClick={this.onCloseDialog} text={this.state.modalText} />
+  }
+
+  onCloseDialog = () => {
+    this.setState({ dialogIsOpen: false });
+  }
+
   render() {
     if (this.props.user.verification_level === 0) {
       return <div>Loading</div>;
     }
-    const { sections } = this.state;
+    const { sections, dialogIsOpen, modalText } = this.state;
 
     return (
       <div>
@@ -107,6 +120,13 @@ class UserVerification extends Component {
           sections={sections}
           ref={this.setRef}
         />
+        <Dialog
+					isOpen={dialogIsOpen}
+					label="security-modal"
+					onCloseDialog={this.onCloseDialog}
+				>
+          <SuccessDisplay onClick={this.onCloseDialog} text={modalText} />
+        </Dialog>
       </div>
     );
   }

@@ -16,8 +16,8 @@
 }
 
 .success_display-wrapper {
-  min-width: 25rem;
-  min-height: 30rem;
+  min-width: $dialog-min-width;
+  min-height: $dialog-min-height;
   > * {
     flex: 0;
   }

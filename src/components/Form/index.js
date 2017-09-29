@@ -5,7 +5,7 @@ import renderFields from './factoryFields';
 
 const createForm = (name, fields, onSubmit, buttonText) => {
   const Form = ({ handleSubmit, submitting, pristine, error, valid }) => (
-    <form className="">
+    <form className="form">
       {renderFields(fields)}
       {error && <div><strong>{error}</strong></div>}
       <Button

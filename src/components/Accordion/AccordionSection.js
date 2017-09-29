@@ -28,7 +28,9 @@ const AccordionSection = ({
     })}>
       <div
         onClick={onClick}
-        className="accordion_section_title d-flex justify-content-between"
+        className={classnames('accordion_section_title d-flex justify-content-between', {
+          'pointer': !disabled,
+        })}
       >
         <span className={classnames('accordion_section_content_text', titleClassName)}>
           {title}

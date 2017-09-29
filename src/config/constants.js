@@ -1,4 +1,5 @@
 import config from './index'
+import { formatBtcAmount, formatFiatAmount } from '../utils/string';
 
 export const ENV = process.env.NODE_ENV || 'development'
 export const NETWORK = process.env.REACT_APP_NETWORK || 'testnet'
@@ -36,16 +37,19 @@ export const CURRENCIES = {
   btc: {
     symbol: 'btc',
     name: 'bitcoins',
-    currencySymbol: 'B'
+    currencySymbol: 'B',
+    formatToCurrency: formatBtcAmount
   },
   eth: {
     symbol: 'eth',
     name: 'Ethereun',
-    currencySymbol: 'E'
+    currencySymbol: 'E',
+    formatToCurrency: formatBtcAmount
   },
   fiat: {
     symbol: 'fiat',
     name: 'Dollars',
-    currencySymbol: '$'
+    currencySymbol: '$',
+    formatToCurrency: formatFiatAmount
   },
 }
