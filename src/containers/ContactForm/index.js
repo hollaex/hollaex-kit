@@ -9,6 +9,7 @@ export default ({ onSubmitSuccess }) => {
       label: 'Email',
       placeholder: 'Type your Email addres',
       validate: [required, email],
+      fullWidth: true,
     },
     category: {
       type: 'select',
@@ -19,23 +20,27 @@ export default ({ onSubmitSuccess }) => {
         'Bug'
       ],
       validate: [required],
+      fullWidth: true,
     },
     subject: {
       type: 'text',
       label: 'Subject',
       placeholder: 'Type the subject of your issue',
       validate: [required],
+      fullWidth: true,
     },
     description: {
       type: 'text',
       label: 'Description',
       placeholder: 'Type in detail what the issue is',
       validate: [required],
+      fullWidth: true,
     },
     attachment: {
       type: 'file',
       label: 'Add an attachment',
       placeholder: 'Add a file to help communicate your issue. PDF, JPG, PNG and GIF files are accepted',
+      fullWidth: true,
     }
   };
 

@@ -1,24 +1,30 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import io from 'socket.io-client';
-import { WS_URL } from '../../config/constants';
+import { WS_URL, ICONS } from '../../config/constants';
 
 import { logout } from '../../actions/authAction';
 import { setMe, setBalance, addTrades as addUserTrades, updateUser } from '../../actions/userAction';
 import { setUserOrders, addOrder, updateOrder, removeOrder } from '../../actions/orderAction';
 import { setOrderbook, addTrades } from '../../actions/orderbookAction';
+import {
+	setNotification, closeNotification, openContactForm,
+	NOTIFICATIONS, CONTACT_FORM,
+} from '../../actions/appActions';
 
 import { checkUserSessionExpired, getToken } from '../../utils/utils';
-import { AppBar, Sidebar, Dialog, Loader } from '../../components';
+import { AppBar, Sidebar, Dialog, Loader, MessageDisplay } from '../../components';
 import { ContactForm } from '../';
 
 class Container extends Component {
 	state = {
+		appLoaded: false,
 		dialogIsOpen: false,
 	}
 
 	componentWillMount() {
 		if (checkUserSessionExpired(localStorage.getItem('time'))) {
+			this.setState({ appLoaded: false });
 			this.props.logout();
 		}
 	}
@@ -33,11 +39,19 @@ class Container extends Component {
 		if (!nextProps.fetchingAuth && nextProps.fetchingAuth !== this.props.fetchingAuth) {
 			this.initSocketConnections();
 		}
+		if (nextProps.activeNotification.timestamp !== this.props.activeNotification.timestamp) {
+			if (nextProps.activeNotification.type !== '') {
+				this.onOpenDialog();
+			// } else {
+			// 	this.onCloseDialog();
+			}
+		}
 	}
 
 	initSocketConnections = () => {
 		this.setPublicWS();
 		this.setUserSocket(localStorage.getItem('token'));
+		this.setState({ appLoaded: true });
 	}
 
 	setPublicWS = () => {
@@ -134,8 +148,16 @@ class Container extends Component {
          this.props.addUserTrades(data);
 					break;
 				case 'deposit':
+					this.props.setNotification(
+						NOTIFICATIONS.DEPOSIT,
+						`You have ${data.status ? 'received a' : 'a pending'} deposit of ${data.amount} ${data.currency}.`
+					);
 					break;
 				case 'withdrawal':
+					this.props.setNotification(
+						NOTIFICATIONS.WITHDRAWAL,
+						`You have performed a withdrawal of ${data.amount} ${data.currency}.`
+					);
 					break;
         default:
         	break;
@@ -160,6 +182,7 @@ class Container extends Component {
 
 	onCloseDialog = () => {
 		this.setState({ dialogIsOpen: false });
+		this.props.closeNotification();
 	}
 
 	getClassForActivePath = (path) => {
@@ -175,17 +198,34 @@ class Container extends Component {
 		}
 	}
 
-	render() {
-		const { fetchingAuth, symbol, children } = this.props;
-		const { dialogIsOpen } = this.state;
+	renderDialogContent = ({ type, message, data }) => {
+		switch (type) {
+			case NOTIFICATIONS.ORDERS:
+			case NOTIFICATIONS.DEPOSIT:
+			case NOTIFICATIONS.WITHDRAWAL:
+				return <MessageDisplay
+					iconPath={ICONS.BELL}
+					onClick={this.onCloseDialog}
+					text={message}
+				/>;
+			case CONTACT_FORM:
+				return <ContactForm onSubmitSuccess={this.onCloseDialog} />;
+			default:
+				return <div></div>
+		}
+	}
 
-		const activePath = fetchingAuth ? '' : this.getClassForActivePath(this.props.location.pathname);
+	render() {
+		const { symbol, children, activeNotification } = this.props;
+		const { dialogIsOpen, appLoaded } = this.state;
+
+		const activePath = !appLoaded ? '' : this.getClassForActivePath(this.props.location.pathname);
 		return (
 			<div className={`app_container ${activePath} ${symbol}`}>
-				{fetchingAuth && <Loader />}
+				{!appLoaded && <Loader />}
 				<AppBar
 					title={
-						<div onClick={this.onOpenDialog}>exir-exchange</div>
+						<div onClick={() => this.props.openContactForm()}>exir-exchange</div>
 					}
 					goToAccountPage={this.goToAccountPage}
 					goToDashboard={this.goToDashboard}
@@ -193,7 +233,7 @@ class Container extends Component {
 				/>
         <div className="app_container-content">
           <div className="app_container-main">
-            {!fetchingAuth && children}
+            {appLoaded && children}
           </div>
           <div className="app_container-sidebar">
             <Sidebar
@@ -205,13 +245,15 @@ class Container extends Component {
 						/>
           </div>
         </div>
-				<Dialog
-					isOpen={dialogIsOpen}
-					label="exir-modal"
-					onCloseDialog={this.onCloseDialog}
-				>
-					<ContactForm onSubmitSuccess={this.onCloseDialog} />
-				</Dialog>
+				{dialogIsOpen &&
+					<Dialog
+						isOpen={dialogIsOpen}
+						label="exir-modal"
+						onCloseDialog={this.onCloseDialog}
+					>
+						{this.renderDialogContent(activeNotification)}
+					</Dialog>
+				}
 			</div>
 		);
 	}
@@ -221,7 +263,8 @@ const mapStateToProps = (store) => ({
 	orderbook: store.orderbook,
   symbol: store.orderbook.symbol,
 	fetchingAuth: store.auth.fetching,
-})
+	activeNotification: store.app.activeNotification,
+});
 
 const mapDispatchToProps = (dispatch) => ({
     logout: () => dispatch(logout()),
@@ -235,6 +278,9 @@ const mapDispatchToProps = (dispatch) => ({
 		removeOrder: (order) => dispatch(removeOrder(order)),
 		addUserTrades: (trades) => dispatch(addUserTrades(trades)),
 		updateUser: (userData) => dispatch(updateUser(userData)),
+		closeNotification: () => dispatch(closeNotification()),
+		openContactForm: (data) => dispatch(openContactForm(data)),
+		setNotification: (type, message) => dispatch(setNotification(type, message)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Container);
