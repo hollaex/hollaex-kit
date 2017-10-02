@@ -126,8 +126,7 @@ class UserVerification extends Component {
   }
 
   onSubmitCancelOTP = (values) => {
-    return new Promise((resolve) => resolve())
-    // return otpRevoke(values)
+    return otpRevoke({ code: values.otp_code })
       .then(() => {
         this.props.otpSetActivated(false);
         this.setState({ dialogIsOpen: true, modalText: 'You have successfully revoked your OTP' });
@@ -149,11 +148,11 @@ class UserVerification extends Component {
   }
 
   renderModalContent = ({ requested, activated, secret, error }, otp_enabled, email, modalText) => {
-    // if (error) {
-    //   console.log('-----------', 0)
-    //   return <SuccessDisplay onClick={this.onCloseDialog} text={error} success={false} />
-    // } else
-    if (otp_enabled) {
+    console.log(requested, activated, secret, error, otp_enabled, email, modalText)
+    if (error) {
+      console.log('-----------', 0)
+      return <SuccessDisplay onClick={this.onCloseDialog} text={error} success={false} />
+    } else if (otp_enabled && !modalText) {
       console.log('-----------', 1)
       return <OtpForm onSubmit={this.onSubmitCancelOTP} />;
     } else if (requested && !activated) {

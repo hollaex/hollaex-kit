@@ -87,8 +87,8 @@ export const updateDocuments = (values) => {
 	})
 }
 
-export const otpActivate = (values) => axios.post('/activateOTP', values);
-export const otpRevoke = (values) => axios.post('/revokeOTP', values);
+export const otpActivate = (values) => axios.post('/user/activateOTP', values);
+export const otpRevoke = (values) => axios.post('/user/deactivateOTP', values);
 export const resetPassword = (values) => axios.post('/user/change-password', values);
 export const otpSetActivated = (active = true) => active ? ({
 		type: 'ACTIVATE_OTP',
@@ -202,7 +202,7 @@ export function userWithdrawals() {
 export function otpRequest() {
 	return ((dispatch) => {
 		dispatch({ type: 'REQUEST_OTP_PENDING' });
-		axios.get('/requestOTP')
+		axios.get('/user/requestOTP')
 			.then((body) => {
 				dispatch({
 				    type: 'REQUEST_OTP_FULFILLED',
