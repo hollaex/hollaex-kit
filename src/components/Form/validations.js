@@ -1,5 +1,6 @@
 import validator from 'validator';
 import WAValidator from 'wallet-address-validator';
+import math from 'mathjs';
 
 export const required = (value) => !value ? 'Required field' : undefined;
 
@@ -21,8 +22,14 @@ export const validAddress = (symbol = '', message) => {
 export const minValue = (minValue, message) => (value) => value < minValue ? (message || `Value must be ${minValue} or higher.`) : undefined;
 export const maxValue = (maxValue, message) => (value) => value > maxValue ? (message || `Value must be ${minValue} or lower.`) : undefined;
 
-export const checkBalance = (available, message, fee = 0) => (value) => {
-  const operation = value + value * fee;
+export const checkBalance = (available, message, fee = 0) => (value = 0) => {
+  const operation = fee > 0 ?
+    math.number(math.add(
+      math.fraction(value),
+      math.multiply(math.fraction(value), math.fraction(fee))
+    )) :
+    value;
+    
   if (operation > available) {
     const errorMessage = (message || `Insufficient balance available (${available}) to perform the operation (${operation}).`);
     return errorMessage;

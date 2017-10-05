@@ -23,6 +23,9 @@ const generateFields = (symbol = '', available, fee) => ({
     type: 'number',
     label: 'Bitcoin amount to send',
     placeholder: 'Type the amount',
+    step: 0.1,
+    min: MIN_VALUE_WITHDRAWAL,
+    max: MAX_VALUE_WITHDRAWAL,
     validate: [
       required,
       minValue(MIN_VALUE_WITHDRAWAL, MIN_VALUE_ERROR),

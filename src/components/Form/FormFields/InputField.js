@@ -17,9 +17,10 @@ const InputField = (props) => {
     label,
     type,
     placeholder,
-    meta: {touched, invalid, error, active },
+    meta: { touched, invalid, error, active },
     onClick,
-    fullWidth = false
+    fullWidth = false,
+    ...rest,
   } = props;
   const displayError = touched && error && !active;
   const displayCheck = !fullWidth && input.value && !displayError && !active;
@@ -32,6 +33,7 @@ const InputField = (props) => {
           className={classnames('input_field-input', { error: displayError })}
           type={type}
           {...input}
+          {...rest}
         />
         <span className={classnames('input_field-outline', { error: displayError })}></span>
         {displayCheck &&
