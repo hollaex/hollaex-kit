@@ -16,7 +16,7 @@ const FormValues = {
   password: {
     type: 'password',
     label: 'Password',
-    placeholder: 'Type ypur password',
+    placeholder: 'Type your password',
     validate: [required, password],
     fullWidth: true,
   }
