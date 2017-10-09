@@ -17,7 +17,6 @@ const renderSection = (props) => {
 
 const Form = (props) => {
   const { handleSubmit, submitting, pristine, error, valid, initialValues } = props;
-  console.log(initialValues)
   return (
     <form onSubmit={handleSubmit} className="user_verification-form">
       <div className="warning_text">

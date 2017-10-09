@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import io from 'socket.io-client';
-import { WS_URL, ICONS } from '../../config/constants';
+import { WS_URL, ICONS, SESSION_TIME } from '../../config/constants';
 
 import { logout } from '../../actions/authAction';
 import { setMe, setBalance, addTrades as addUserTrades, updateUser } from '../../actions/userAction';
@@ -21,12 +21,17 @@ class Container extends Component {
 	state = {
 		appLoaded: false,
 		dialogIsOpen: false,
+		publicSocket: undefined,
+		privateSocket: undefined,
+		idleTimer: undefined
 	}
 
 	componentWillMount() {
 		if (checkUserSessionExpired(localStorage.getItem('time'))) {
 			this.setState({ appLoaded: false });
 			this.props.logout();
+		} else {
+			this.addListeners();
 		}
 	}
 
@@ -49,6 +54,48 @@ class Container extends Component {
 		}
 	}
 
+	componentWillUnmount() {
+		this.removeListeners();
+
+		if (this.state.publicSocket) {
+			this.state.publicSocket.close();
+		}
+
+		if (this.state.privateSocket) {
+			this.state.privateSocket.close();
+		}
+
+		if (this.state.idleTimer) {
+			clearTimeout(this.state.idleTimer);
+		}
+	}
+
+	addListeners = () => {
+		window.addEventListener("keydown", this._handleKeyboard, false); // Trade Executions
+		window.addEventListener("scroll", this._resetTimer, false);
+		window.addEventListener("mousemove", this._resetTimer, false);
+		window.addEventListener("click", this._resetTimer, false);
+		window.addEventListener("keypress", this._resetTimer, false);
+		window.addEventListener("beforeunload", this._handleWindowClose, false); // before closing the window
+	}
+
+	removeListeners = () => {
+		window.removeEventListener('keydown', this._handleKeyboard);
+		window.removeEventListener("scroll", this._resetTimer);
+		window.removeEventListener("mousemove", this._resetTimer);
+		window.removeEventListener("click", this._resetTimer);
+		window.removeEventListener("keypress", this._resetTimer);
+		window.removeEventListener("beforeunload", this._handleWindowClose);
+	}
+
+	resetTimer = () => {
+		if (this.state.idleTimer) {
+			clearTimeout(this.idleTimer);
+		}
+		const idleTimer = setTimeout(this._logout, SESSION_TIME); // no activity will log the user out automatically
+		this.setState({ idleTimer });
+	}
+
 	initSocketConnections = () => {
 		this.setPublicWS();
 		this.setUserSocket(localStorage.getItem('token'));
@@ -63,6 +110,8 @@ class Container extends Component {
 			}
 		});
 
+		this.setState({ publicSocket });
+
 		publicSocket.on('orderbook', (data) => {
 			console.log('orderbook', data)
 			this.props.setOrderbook(data[symbol])
@@ -74,6 +123,7 @@ class Container extends Component {
 				this.props.addTrades(data[symbol]);
 			}
 		});
+
 	}
 
 	setUserSocket = (token) => {

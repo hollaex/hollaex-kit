@@ -1,4 +1,4 @@
-import { SESSION_TIME } from '../config/constants';
+import { TOKEN_TIME } from '../config/constants';
 
 const bitcoin = {
     COIN: 100000000,
@@ -34,5 +34,5 @@ export default bitcoin;
 export const checkUserSessionExpired = (loginTime) => {
   const currentTime = Date.now();
 
-  return (currentTime - loginTime) > SESSION_TIME;
+  return (currentTime - loginTime) > TOKEN_TIME;
 }
