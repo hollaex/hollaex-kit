@@ -33,12 +33,14 @@
     flex-grow: 1;
   }
 
-  .app_bar-currency {
+  .app_bar-currency_wrapper {
     position: relative;
     display: flex;
     align-items: center;
     width: 100%;
     padding: 0;
+    text-transform: uppercase;
+    max-height: $navigation_bar-height;
 
     &:after {
       content: '';
@@ -47,6 +49,26 @@
       background-color: $colors-main-black;
       right: -1px;
       position: absolute;
+    }
+
+    .app_bar-currency_display, .app_bar-currency_option {
+      width: 100%;
+      > img {
+        max-height: $navigation_bar-height;
+        padding: 4px;
+      }
+    }
+
+    .app_bar-currency_list {
+      position: absolute;
+      top: $navigation_bar-height;
+      left: 0;
+      width: 100%;
+      z-index: 100;
+      background: $app-background-color;
+      border: 1px solid $border-color;
+      border-left: none;
+      border-top: none;
     }
   }
 

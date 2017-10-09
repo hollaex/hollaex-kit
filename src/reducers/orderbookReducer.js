@@ -10,15 +10,18 @@ const INITIAL_STATE = {
 export default function reducer(state = INITIAL_STATE, action) {
 	switch(action.type) {
 
+		case 'CHANGE_SYMBOL':
+			return {
+				...state,
+				symbol: action.payload.symbol,
+			};
 		// getOrderbook
 		case 'GET_ORDERBOOK_PENDING': {
 			return {...state, fetching: true, fetched: false, error: null}
-			break;
 		}
 		case 'GET_ORDERBOOK_REJECTED': {
 			alert('Error: ' + action.payload)
 			return {...state, fetching: false, error: action.payload}
-			break;
 		}
 		case 'GET_ORDERBOOK_FULFILLED': {
 			let bids = action.payload.data.bids
@@ -60,26 +63,23 @@ export default function reducer(state = INITIAL_STATE, action) {
 		// getTrades
 		case 'GET_TRADES_PENDING': {
 			return {...state, fetching: true, fetched: false, error: null}
-			break;
 		}
 		case 'GET_TRADES_REJECTED': {
 			alert('Error: ' + action.payload)
 			return {...state, fetching: false, error: action.payload}
-			break;
 		}
 		case 'GET_TRADES_FULFILLED': {
 			return {...state, fetching: false, fetched: true, trades: action.payload.data}
-			break;
 		}
 
 		// addTrades
 		case 'ADD_TRADES': {
 			return {...state, fetching: false, fetched: true, trades: action.payload.concat(state.trades), price: action.payload[0].price }
-			break;
 		}
 
 		case 'LOGOUT':
 			return INITIAL_STATE;
+		default:
+			return state;
 	}
-	return state;
 }

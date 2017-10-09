@@ -38,3 +38,17 @@
         margin-left: -$size;
     }
 }
+
+@mixin currency-color($color) {
+  $currency-color: $color;
+
+  .app_bar .app_bar-controllers {
+    background-color: $currency-color;
+  }
+
+  &.wallet, &.trade {
+    .sidebar-container .sidebar-actions {
+      border-color: $currency-color;
+    }
+  }
+}

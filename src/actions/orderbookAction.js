@@ -1,4 +1,3 @@
-import _ from 'lodash'
 import axios from 'axios'
 
 export function getOrderbook() {
@@ -28,3 +27,10 @@ export function addTrades(trades) {
 		payload: trades // set only for btc at the moment
 	}
 }
+
+export const changeSymbol = (symbol) => ({
+	type: 'CHANGE_SYMBOL',
+	payload: {
+		symbol,
+	},
+});

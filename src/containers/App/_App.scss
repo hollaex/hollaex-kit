@@ -5,17 +5,23 @@
   flex-direction: column;
 
   &.btc {
-    $currency-color: $btc-color;
+    @include currency-color($btc-color);
+  }
 
-    .app_bar .app_bar-controllers {
-      background-color: $currency-color;
-    }
+  &.fiat {
+    @include currency-color($colors-currencies-fiat);
+  }
 
-    &.wallet, &.trade {
-      .sidebar-container .sidebar-actions {
-        border-color: $currency-color;
-      }
-    }
+  &.bch {
+    @include currency-color($colors-currencies-bch);
+  }
+
+  &.eth {
+    @include currency-color($colors-currencies-eth);
+  }
+
+  &.ltc {
+    @include currency-color($colors-currencies-ltc);
   }
 
   .app_container-content {

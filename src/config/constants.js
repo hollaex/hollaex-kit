@@ -36,20 +36,16 @@ export const ICONS = {
 export const CURRENCIES = {
   btc: {
     symbol: 'btc',
-    name: 'bitcoins',
+    name: 'Bitcoin',
     currencySymbol: 'B',
-    formatToCurrency: formatBtcAmount
-  },
-  eth: {
-    symbol: 'eth',
-    name: 'Ethereun',
-    currencySymbol: 'E',
-    formatToCurrency: formatBtcAmount
+    formatToCurrency: formatBtcAmount,
+    iconPath: '/assets/acounts/account-icons-14.png',
   },
   fiat: {
     symbol: 'fiat',
-    name: 'Dollars',
+    name: 'Dollar',
     currencySymbol: '$',
-    formatToCurrency: formatFiatAmount
+    formatToCurrency: formatFiatAmount,
+    iconPath: '/assets/acounts/account-icons-14.png',
   },
 }

@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import io from 'socket.io-client';
 import { WS_URL, ICONS } from '../../config/constants';
 
 import { logout } from '../../actions/authAction';
 import { setMe, setBalance, addTrades as addUserTrades, updateUser } from '../../actions/userAction';
 import { setUserOrders, addOrder, updateOrder, removeOrder } from '../../actions/orderAction';
-import { setOrderbook, addTrades } from '../../actions/orderbookAction';
+import { setOrderbook, addTrades, changeSymbol } from '../../actions/orderbookAction';
 import {
 	setNotification, closeNotification, openContactForm,
 	NOTIFICATIONS, CONTACT_FORM,
@@ -216,7 +217,7 @@ class Container extends Component {
 	}
 
 	render() {
-		const { symbol, children, activeNotification } = this.props;
+		const { symbol, children, activeNotification, changeSymbol } = this.props;
 		const { dialogIsOpen, appLoaded } = this.state;
 
 		const activePath = !appLoaded ? '' : this.getClassForActivePath(this.props.location.pathname);
@@ -230,6 +231,8 @@ class Container extends Component {
 					goToAccountPage={this.goToAccountPage}
 					goToDashboard={this.goToDashboard}
 					acccountIsActive={activePath === 'account'}
+					changeSymbol={changeSymbol}
+					activeSymbol={symbol}
 				/>
         <div className="app_container-content">
           <div className="app_container-main">
@@ -267,20 +270,21 @@ const mapStateToProps = (store) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-    logout: () => dispatch(logout()),
-		addTrades: (trades) => dispatch(addTrades(trades)),
-		setOrderbook: (orderbook) => dispatch(setOrderbook(orderbook)),
-		setMe: (user) => dispatch(setMe(user)),
-		setBalance: (balance) => dispatch(setBalance(balance)),
-		setUserOrders: (orders) => dispatch(setUserOrders(orders)),
-		addOrder: (order) => dispatch(addOrder(order)),
-		updateOrder: (order) => dispatch(updateOrder(order)),
-		removeOrder: (order) => dispatch(removeOrder(order)),
-		addUserTrades: (trades) => dispatch(addUserTrades(trades)),
-		updateUser: (userData) => dispatch(updateUser(userData)),
-		closeNotification: () => dispatch(closeNotification()),
-		openContactForm: (data) => dispatch(openContactForm(data)),
-		setNotification: (type, message) => dispatch(setNotification(type, message)),
+    logout: bindActionCreators(logout, dispatch),
+		addTrades: bindActionCreators(addTrades, dispatch),
+		setOrderbook: bindActionCreators(setOrderbook, dispatch),
+		setMe: bindActionCreators(setMe, dispatch),
+		setBalance: bindActionCreators(setBalance, dispatch),
+		setUserOrders: bindActionCreators(setUserOrders, dispatch),
+		addOrder: bindActionCreators(addOrder, dispatch),
+		updateOrder: bindActionCreators(updateOrder, dispatch),
+		removeOrder: bindActionCreators(removeOrder, dispatch),
+		addUserTrades: bindActionCreators(addUserTrades, dispatch),
+		updateUser: bindActionCreators(updateUser, dispatch),
+		closeNotification: bindActionCreators(closeNotification, dispatch),
+		openContactForm: bindActionCreators(openContactForm, dispatch),
+		setNotification: bindActionCreators(setNotification, dispatch),
+		changeSymbol: bindActionCreators(changeSymbol, dispatch)
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Container);
