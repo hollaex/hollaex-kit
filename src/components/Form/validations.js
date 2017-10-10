@@ -1,6 +1,7 @@
 import validator from 'validator';
 import WAValidator from 'wallet-address-validator';
 import math from 'mathjs';
+import { NETWORK } from '../../config/constants';
 
 export const required = (value) => !value ? 'Required field' : undefined;
 
@@ -14,7 +15,7 @@ export const password = (value) => !passwordRegEx.test(value) ? INVALID_PASSWORD
 export const validAddress = (symbol = '', message) => {
   const currency = symbol.toUpperCase();
   return (address) => {
-    const valid = WAValidator.validate(address, currency, 'both');
+    const valid = WAValidator.validate(address, currency, NETWORK);
     return !valid ? (message || `Invalid ${currency} address (${address})`) : undefined;
   }
 }
