@@ -66,7 +66,7 @@ class UserVerification extends Component {
       notification: {
         text: otp_enabled ? 'otp enabled' : 'PLEASE TURN ON 2FA',
         status: otp_enabled ? 'success' : 'warning',
-        iconPath: otp_enabled ? ICONS.CHECK : ICONS.RED_ARROW,
+        iconPath: otp_enabled ? ICONS.GREEN_CHECK : ICONS.RED_ARROW,
         allowClick: !otp_enabled
       }
     },
@@ -77,7 +77,7 @@ class UserVerification extends Component {
       notification: {
         text: 'active',
         status: 'success',
-        iconPath: ICONS.CHECK,
+        iconPath: ICONS.GREEN_CHECK,
         allowClick: true
       }
     }];

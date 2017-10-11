@@ -51,7 +51,7 @@ class UserVerification extends Component {
       notification: {
         text: activeStep > 0 ? 'completed' : 'verify email',
         status: activeStep > 0 ? 'success' : 'warning',
-        iconPath: activeStep > 0 ? ICONS.CHECK : ICONS.RED_ARROW,
+        iconPath: activeStep > 0 ? ICONS.GREEN_CHECK : ICONS.RED_ARROW,
         allowClick: activeStep === 0
       }
     },
@@ -65,7 +65,7 @@ class UserVerification extends Component {
       notification: {
         text: activeStep > 1 ? 'completed' : 'verify user documentation',
         status: activeStep > 1 ? 'success' : 'warning',
-        iconPath: activeStep > 1 ? ICONS.CHECK : ICONS.RED_ARROW,
+        iconPath: activeStep > 1 ? ICONS.GREEN_CHECK : ICONS.RED_ARROW,
         allowClick: activeStep === 1
       }
     },
@@ -78,7 +78,7 @@ class UserVerification extends Component {
       notification: {
         text: activeStep > 2 ? 'completed' : 'verify id documents',
         status: activeStep > 2 ? 'success' : 'warning',
-        iconPath: activeStep > 2 ? ICONS.CHECK : ICONS.RED_ARROW,
+        iconPath: activeStep > 2 ? ICONS.GREEN_CHECK : ICONS.RED_ARROW,
         allowClick: activeStep === 2
       }
     },
@@ -92,7 +92,7 @@ class UserVerification extends Component {
       notification: {
         text: activeStep > 3 ? 'completed' : 'verify bank account',
         status: activeStep > 3 ? 'success' : 'warning',
-        iconPath: activeStep > 3 ? ICONS.CHECK : ICONS.RED_ARROW,
+        iconPath: activeStep > 3 ? ICONS.GREEN_CHECK : ICONS.RED_ARROW,
         allowClick: activeStep === 3
       }
     }];

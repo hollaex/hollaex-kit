@@ -21,7 +21,7 @@ const Form = (props) => {
     <div className="otp_form-wrapper">
       <IconTitle
         text="Authenticator Code"
-        iconPath={ICONS.KEYS}
+        iconPath={ICONS.SQUARE_DOTS}
       />
       <div className="otp_form-title-wrapper">
         <span className="otp_form-title-text">Enter your authentication code to continue</span>

@@ -1,7 +1,7 @@
 import React from 'react';
 import Section from './Section';
 import { NotificationsList, Button, Wallet } from '../';
-
+import { ICONS } from '../../config/constants';
 const NOTIFICATIONS = [
   // { title: '1', text: 'text 4', timestamp: new Date().toString() },
   // { title: '2', text: 'text 4', timestamp: new Date().toString() },
@@ -52,8 +52,12 @@ const Sidebar = ({ goToWalletPage, goToTradePage, active, activePath, logout }) 
         <NotificationsList notifications={NOTIFICATIONS} />
       </div>
       <div className="sidebar-logout">
-        <div onClick={logout} className="sidebar-logout-left pointer">logout</div>
-        <div onClick={logout} className="sidebar-logout-right pointer">icon</div>
+        <div onClick={logout} className="sidebar-logout-left text-uppercase pointer">
+          logout
+        </div>
+        <div onClick={logout} className="sidebar-logout-right pointer">
+          <img src={ICONS.LOGOUT} />
+        </div>
       </div>
     </div>
   )
