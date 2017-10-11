@@ -4,6 +4,7 @@ import math from 'mathjs';
 import { NETWORK } from '../../config/constants';
 
 export const required = (value) => !value ? 'Required field' : undefined;
+export const requiredBoolean = (value) => value === undefined ? 'Required field' : undefined;
 
 export const email = (value) => !validator.isEmail(value) ? 'Invalid email' : undefined;
 
@@ -30,7 +31,7 @@ export const checkBalance = (available, message, fee = 0) => (value = 0) => {
       math.multiply(math.fraction(value), math.fraction(fee))
     )) :
     value;
-    
+
   if (operation > available) {
     const errorMessage = (message || `Insufficient balance available (${available}) to perform the operation (${operation}).`);
     return errorMessage;

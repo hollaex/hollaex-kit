@@ -1,6 +1,13 @@
 import React from 'react';
-import { required } from '../../components/Form/validations';
+import { required, requiredBoolean } from '../../components/Form/validations';
 import countries from '../../utils/countries';
+import { ICONS } from '../../config/constants';
+
+const COUNTRIES_OPTIONS = countries.map((country) => ({
+  label: country.name,
+  value: country.value,
+  icon: country.flag,
+}));
 
 const fields = {
   personalInformation: {
@@ -20,14 +27,17 @@ const fields = {
       type: 'select',
       label: 'Gender',
       placeholder: 'Type what gender your are',
-      options: ['Man', 'Woman'],
-      validate: [required],
+      options: [
+        { value: false, label: 'Man', icon: ICONS.GENDER_M },
+        { value: true, label: 'Woman', icon: ICONS.GENDER_F },
+      ],
+      validate: [requiredBoolean],
     },
     nationality: {
-      type: 'select',
+      type: 'autocomplete',
       label: 'Nationality',
       placeholder: 'Type what nationality is on your identity document',
-      options: countries,
+      options: COUNTRIES_OPTIONS,
       validate: [required],
     },
     dob: {
@@ -36,10 +46,10 @@ const fields = {
       validate: [required],
     },
     country: {
-      type: 'select',
+      type: 'autocomplete',
       label: 'Country you reside',
       placeholder: 'Select the country you reside in currently',
-      options: countries,
+      options: COUNTRIES_OPTIONS,
       validate: [required],
     },
     city: {
@@ -63,10 +73,10 @@ const fields = {
   },
   phone: {
     phone_country: {
-      type: 'select',
+      type: 'autocomplete',
       label: 'Country',
       placeholder: 'Select the country your phone is connected to',
-      options: countries,
+      options: COUNTRIES_OPTIONS,
     },
     phone_number: {
       type: 'text',

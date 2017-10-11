@@ -1,8 +1,8 @@
 import React from 'react';
 import { Field } from 'redux-form';
 import InputField from './FormFields/InputField';
-import SelectField from './FormFields/SelectField';
 import FileField from './FormFields/FileField';
+import DropdownField from './FormFields/DropdownField';
 
 const renderFields = (fields) => {
   return (
@@ -23,11 +23,12 @@ const renderFields = (fields) => {
               />
             );
           case 'select':
+          case 'autocomplete':
             return (
               <Field
                 key={key}
                 name={key}
-                component={ SelectField }
+                component={ DropdownField }
                 {...rest}
                 type={type}
                 label={label}

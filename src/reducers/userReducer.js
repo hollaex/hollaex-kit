@@ -26,11 +26,7 @@ const INITIAL_OTP_OBJECT = {
 const extractuserData = (data) => {
 	const userData = {}
 	USER_DATA_KEYS.forEach((key) => {
-		if (key === 'gender') {
-			userData[key] = data[key] ? 'Woman' : 'Man';
-		} else {
-			userData[key] = data[key];
-		}
+		userData[key] = data[key];
 	})
 	return userData;
 };

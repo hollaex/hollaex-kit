@@ -57,13 +57,13 @@ export const updateUser = (values) => {
 		userValues.dob = new Date(values.dob);
 	}
 
-	if (values.gender) {
-		if (values.gender === 'Man') {
-			userValues.gender = false;
-		} else {
-			userValues.gender = true;
-		}
-	}
+	// if (values.gender) {
+	// 	if (values.gender === 'man') {
+	// 		userValues.gender = false;
+	// 	} else {
+	// 		userValues.gender = true;
+	// 	}
+	// }
 
 	userValues.address = `${values.address} ${values.postal_code} ${values.city} ${values.country}`;
 

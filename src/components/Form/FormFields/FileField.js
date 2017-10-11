@@ -4,7 +4,6 @@ import InputField from './InputField';
 class FileField extends Component {
 
 	onClick = (ev) => {
-		console.log(this.fileInput)
 		this.fileInput.click();
 	}
 

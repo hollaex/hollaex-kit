@@ -47,4 +47,6 @@ const Form = (props) => {
 
 export default reduxForm({
   form: 'IdentificationForm',
+  touchOnChange: true,
+  touchOnBlur: true,
 })(Form);
