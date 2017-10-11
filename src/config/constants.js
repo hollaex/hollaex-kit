@@ -32,6 +32,11 @@ export const ICONS = {
   WHITE_CHECK: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-20.png`,
   BALCK_CORNER_TRIANGLE: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-21.png`,
   KEYS: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-22.png`,
+  GREEN_CHECK: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-23.png`,
+  LETTER: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-24.png`,
+  SQUARE_DOTS: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-25.png`,
+  COPY: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-26.png`,
+  LOGOUT: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-27.png`,
 }
 
 export const CURRENCIES = {
