@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
+import EventListener from 'react-event-listener';
 import classnames from 'classnames';
+import keycode from 'keycode';
 import FieldWrapper from './FieldWrapper';
 
 class DropdownField extends Component {
   state = {
     isOpen: false,
-    selectedItem: undefined
+    selectedItem: undefined,
+    filter: '',
   }
 
   componentWillMount() {
@@ -26,24 +29,39 @@ class DropdownField extends Component {
   onToogleOpen = (event) => {
     event.preventDefault();
     this.onChangeOpen(!this.state.isOpen);
+    if (this.input && this.props.autocomplete) {
+      setTimeout(() => {
+        this.input.focus();
+      }, 150);
+    }
   }
 
   onChangeOpen = (isOpen = false) => {
     this.setState({ isOpen });
   }
 
-  onSelectOption = (option) => () => {
-    this.setState({ selectedItem: option, isOpen: false });
-    this.props.input.onChange(option.value);
+  onSelectOption = (option, change = true) => () => {
+    this.setState({ selectedItem: option, isOpen: false, filter: '' });
+    if (change) {
+      this.props.input.onChange(option.value);
+    }
   }
 
   setValue = (value, change = false) => {
     const option = this.props.options.find((option) => option.value === value);
     if (option) {
-      this.setState({ selectedItem: option });
-      if (change) {
-        this.props.input.onChange(option.value);
-      }
+      this.onSelectOption(option, change)();
+    } else {
+      this.onChangeOpen(false);
+    }
+  }
+
+  setValueByLabel = (label) => {
+    const option = this.props.options.find(this.filterOption(label));
+    if (option) {
+      this.onSelectOption(option)();
+    } else {
+      this.onChangeOpen(false);
     }
   }
 
@@ -57,6 +75,7 @@ class DropdownField extends Component {
 
   renderOption = (option, index) => (
     <div
+      id={`${this.props.input.name}-${option.value}-${index}`}
       key={`${this.props.input.name}-${option.value}-${index}`}
       onClick={this.onSelectOption(option)}
       className={classnames('dropdown-option', 'pointer')}
@@ -68,26 +87,93 @@ class DropdownField extends Component {
 
   renderOptions = (options) => (
     <div className={classnames('dropdown-options-wrapper')}>
-      {options.map(this.renderOption)}
+      {options.length > 0 ?
+        options.map(this.renderOption) :
+        this.renderOption({ value: undefined, label: 'No options availables' }, 0)
+      }
     </div>
-  )
+  );
 
+  clickAwayListener = (event) => {
+    if (
+      this.state.isOpen &&
+      !event.target.id &&
+      event.target.className.indexOf('dropdown') === -1
+    ) {
+      this.onChangeOpen(false);
+    }
+  }
+
+  onChangeAutocomplete = (event) => {
+    const filter = event.target.value;
+    this.setState({ filter })
+  }
+
+  filterOption = (filter) => {
+    const filterLC = filter.toLowerCase();
+    return (option) => {
+      const label = option.label.toLowerCase();
+      return label.indexOf(filterLC) !== -1;
+    }
+  }
+
+  setRefInput = (el) => {
+    this.input = el;
+  }
+
+  onKeyDownHandler = (event) => {
+    switch (keycode(event)) {
+      case "esc":
+        this.onChangeOpen(false);
+        break;
+      case "enter":
+        this.setValueByLabel(this.state.filter);
+        break;
+      default:
+        break;
+    }
+  }
   render() {
-    const { options, placeholder } = this.props;
-    const { isOpen, selectedItem } = this.state;
+    const { options, placeholder, autocomplete } = this.props;
+    const { isOpen, selectedItem, filter } = this.state;
 
+    const filteredOptions = autocomplete ? options.filter(this.filterOption(filter)) : options;
     return (
       <FieldWrapper {...this.props} focused={isOpen}>
+        <EventListener
+          target="document"
+          onClick={this.clickAwayListener}
+        />
+        {autocomplete && isOpen &&
+          <EventListener
+            target="document"
+            onKeyDown={this.onKeyDownHandler}
+          />
+        }
         <div className="dropdown-content dropdown-triangle" onClick={this.onToogleOpen}>
+          {autocomplete &&
+            <input
+              id="input-autocomplete"
+              className={classnames('input_field-input', { hidden: !isOpen })}
+              type="text"
+              onChange={this.onChangeAutocomplete}
+              placeholder={placeholder}
+              ref={this.setRefInput}
+              value={filter}
+            />
+          }
           {selectedItem && !isOpen ?
-            this.renderOption(selectedItem):
-            <div className="placeholder">Select an option</div>
+            this.renderOption(selectedItem) :
+            <div className={classnames('dropdown-placeholder placeholder', { hidden: autocomplete && isOpen })}>{placeholder}</div>
           }
         </div>
-        {isOpen && this.renderOptions(options)}
+        {isOpen && this.renderOptions(filteredOptions)}
       </FieldWrapper>
     );
   }
 }
 
+DropdownField.defaultProps = {
+  autocomplete: false,
+}
 export default DropdownField;

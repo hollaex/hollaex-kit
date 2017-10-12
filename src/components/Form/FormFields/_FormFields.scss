@@ -17,3 +17,24 @@
     color: $form-color-placeholder;
   }
 }
+
+.dropdown-triangle:after {
+  content: '';
+  height: 0;
+  width: 0;
+  border-right: 0.25rem solid $colors-main-black;
+  border-bottom: 0.25rem solid $colors-main-black;
+  border-top: 0.25rem solid transparent;
+  border-left: 0.25rem solid transparent;
+  position: absolute;
+  right: 0px;
+  bottom: 0.35rem;
+}
+
+.datefield-wrapper {
+  position: relative;
+
+  .datefield-input {
+    // visibility: hidden;
+  }
+}
