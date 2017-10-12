@@ -10,9 +10,10 @@ class FieldWrapper extends Component {
       meta: { active = false, error, touched = false, invalid },
       focused = false,
       fullWidth = false,
+      visited = false,
     } = this.props;
-    
-    const displayError = !(active || focused) && touched && error;
+
+    const displayError = !(active || focused) && (visited || touched) && error;
     return (
       <div className={classnames('field-wrapper', { error: displayError, inline: !fullWidth })}>
         <div className={classnames('field-content')}>

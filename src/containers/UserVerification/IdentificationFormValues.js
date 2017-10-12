@@ -83,6 +83,7 @@ const fields = {
       label: 'Country',
       placeholder: 'Select the country your phone is connected to',
       options: PHONE_OPTIONS,
+      validate: [required],
     },
     phone_number: {
       type: 'text',
@@ -110,4 +111,16 @@ Are you a business? Contact customer support for a corporate account.</div>
   phone: <InformationSection title="Phone" />,
 }
 
+export const prepareInitialValues = ({ phone_number, ...rest }) => {
+  const phoneParts = phone_number ? phone_number.split(' ', 1) : ['', ''];
+  return {
+    personalInformation: {
+      ...rest,
+    },
+    phone: {
+      phone_country: phoneParts[0],
+      phone_number: phoneParts[1]
+    }
+  }
+}
 export default fields;

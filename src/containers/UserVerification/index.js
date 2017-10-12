@@ -6,6 +6,7 @@ import { ICONS } from '../../config/constants';
 import { updateUser, updateDocuments, setMe } from '../../actions/userAction';
 import { Accordion } from '../../components';
 import IdentificationForm from './IdentificationForm';
+import { prepareInitialValues } from './IdentificationFormValues';
 import DocumentsForm from './DocumentsForm';
 import BankAccountForm from './BankAccountForm';
 
@@ -86,7 +87,7 @@ class UserVerification extends Component {
       title: 'Bank Account',
       content: <BankAccountForm
         onSubmit={this.onSubmitBankAccount}
-        initialValues={user.userData}
+        initialValues={prepareInitialValues(user.userData)}
       />,
       disabled: activeStep !== 3,
       notification: {

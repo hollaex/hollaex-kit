@@ -7,6 +7,7 @@ import FieldWrapper from './FieldWrapper';
 class DropdownField extends Component {
   state = {
     isOpen: false,
+    visited: false,
     selectedItem: undefined,
     filter: '',
   }
@@ -37,7 +38,7 @@ class DropdownField extends Component {
   }
 
   onChangeOpen = (isOpen = false) => {
-    this.setState({ isOpen });
+    this.setState({ isOpen, visited: true });
   }
 
   onSelectOption = (option, change = true) => () => {
@@ -135,11 +136,11 @@ class DropdownField extends Component {
   }
   render() {
     const { options, placeholder, autocomplete } = this.props;
-    const { isOpen, selectedItem, filter } = this.state;
-
+    const { isOpen, selectedItem, filter, visited } = this.state;
+    console.log(visited)
     const filteredOptions = autocomplete ? options.filter(this.filterOption(filter)) : options;
     return (
-      <FieldWrapper {...this.props} focused={isOpen}>
+      <FieldWrapper {...this.props} focused={isOpen} visited={visited}>
         <EventListener
           target="document"
           onClick={this.clickAwayListener}
