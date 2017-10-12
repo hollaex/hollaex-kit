@@ -48,14 +48,16 @@ class DropdownField extends Component {
   }
 
   renderIcon = ({ icon = '', label = '' }) => {
-    if (icon.indexOf('.') > 0) {
-      return <img src={icon} alt={label} />
+    if (typeof icon === 'string') {
+      return <img className="icon" src={icon} alt={label} />
     }
-    return;
+
+    return icon;
   }
-  renderOption = (option) => (
+
+  renderOption = (option, index) => (
     <div
-      key={`${this.props.input.name}-${option.value}`}
+      key={`${this.props.input.name}-${option.value}-${index}`}
       onClick={this.onSelectOption(option)}
       className={classnames('dropdown-option', 'pointer')}
     >

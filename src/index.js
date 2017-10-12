@@ -8,6 +8,7 @@ import store from './store';
 import routes from './routes';
 import './index.css';
 
+import 'flag-icon-css/css/flag-icon.min.css';
 // import registerServiceWorker from './registerServiceWorker'
 
 render(

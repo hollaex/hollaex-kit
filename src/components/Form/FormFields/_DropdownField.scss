@@ -42,9 +42,9 @@ $dropdown-option--padding: 0.25rem;
   padding: $dropdown-option--padding;
   display: flex;
   align-items: center;
-  > img {
+  > .icon {
     height: $dropdown-option--height;
-    padding-right: $dropdown-option--padding;
+    margin-right: $dropdown-option--padding;
   }
 }
 

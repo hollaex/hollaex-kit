@@ -9,6 +9,12 @@ const COUNTRIES_OPTIONS = countries.map((country) => ({
   icon: country.flag,
 }));
 
+const PHONE_OPTIONS = countries.map((country) => ({
+  label: `${country.name} (${country.phoneCode})`,
+  value: country.phoneCode,
+  icon: country.flag,
+}));
+
 const fields = {
   personalInformation: {
     first_name: {
@@ -76,7 +82,7 @@ const fields = {
       type: 'autocomplete',
       label: 'Country',
       placeholder: 'Select the country your phone is connected to',
-      options: COUNTRIES_OPTIONS,
+      options: PHONE_OPTIONS,
     },
     phone_number: {
       type: 'text',
