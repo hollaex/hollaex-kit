@@ -73,10 +73,10 @@ export const updateUser = (values) => {
 export const updateDocuments = (values) => {
 	const formData = new FormData();
 
-	Object.entrie(values).forEach(([key, value]) => {
+	Object.entries(values).forEach(([key, value]) => {
 		formData.append(key, value);
 	});
-
+	
 	return axios({
 		headers: {
 			'Content-Type': 'multipart/form-data'

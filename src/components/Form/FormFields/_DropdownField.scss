@@ -3,20 +3,10 @@
 $dropdown-menu--max-height: 10rem;
 $dropdown-menu--border-radius: 0.25rem;
 
-$placeholder--padding: 0.25rem;
-$placeholder--font-size: $font-size-subtext;
-$placeholder--font-weight: bold;
-
 $dropdown-option--height: 1rem;
 $dropdown-option--padding: 0.25rem;
 
 .dropdown-content {
-  .placeholder {
-    font-size: $placeholder--font-size;
-    font-weight: $placeholder--font-weight;
-    color: $form-color-placeholder;
-  }
-
   .dropdown-option {
     padding: 0;
   }

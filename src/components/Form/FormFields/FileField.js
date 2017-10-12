@@ -1,14 +1,21 @@
 import React, { Component } from 'react';
-import InputField from './InputField';
+import classnames from 'classnames';
+import FieldWrapper from './FieldWrapper';
 
 class FileField extends Component {
-
+	state = {
+		filename: ''
+	}
 	onClick = (ev) => {
-		this.fileInput.click();
+		if (this.fileInput) {
+			this.fileInput.click();
+		}
 	}
 
 	onChange = (ev) => {
-		this.props.input.onChange(ev.target.files[0]);
+		const file = ev.target.files[0];
+		this.setState({ filename: file.name });
+		this.props.input.onChange(file);
 	}
 
 	setRef = (el) => {
@@ -16,30 +23,28 @@ class FileField extends Component {
 	}
 
 	render() {
-		const { input, ...rest } = this.props;
+		const { placeholder } = this.props;
+		const { filename } = this.state;
 
-		const myInput = {
-			value: input.value ? input.value.name : '',
-			onChange: () => {},
-			readOnly: true,
+		const input = {
+			onChange: this.onChange,
+			ref: this.setRef,
+			multiple: false,
+			accept: 'image/*',
+			style: { display: 'none' },
 		}
+
 		return (
-			<div>
-				<InputField
-					{...rest}
-					type="text"
-					input={myInput}
-					onClick={this.onClick}
-				/>
+			<FieldWrapper {...this.props} onClick={this.onClick}>
+				<div onClick={this.onClick} className={classnames('pointer', { placeholder: !filename})}>
+					{filename ? filename : placeholder}
+				</div>
 				<input
 					type="file"
 					className="input_file"
-					multiple="false"
-					accept="image/*"
-					ref={this.setRef}
-					onChange={this.onChange}
+					{...input}
 				/>
-			</div>
+			</FieldWrapper>
 		);
 	}
 }

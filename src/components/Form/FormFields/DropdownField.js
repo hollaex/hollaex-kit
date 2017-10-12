@@ -42,9 +42,13 @@ class DropdownField extends Component {
   }
 
   onSelectOption = (option, change = true) => () => {
-    this.setState({ selectedItem: option, isOpen: false, filter: '' });
-    if (change) {
-      this.props.input.onChange(option.value);
+    if (option.value === undefined) {
+      this.setState({ isOpen: false, filter: '' });
+    } else {
+      this.setState({ selectedItem: option, isOpen: false, filter: '' });
+      if (change) {
+        this.props.input.onChange(option.value);
+      }
     }
   }
 
@@ -67,10 +71,9 @@ class DropdownField extends Component {
   }
 
   renderIcon = ({ icon = '', label = '' }) => {
-    if (typeof icon === 'string') {
+    if (icon && typeof icon === 'string') {
       return <img className="icon" src={icon} alt={label} />
     }
-
     return icon;
   }
 
@@ -137,7 +140,7 @@ class DropdownField extends Component {
   render() {
     const { options, placeholder, autocomplete } = this.props;
     const { isOpen, selectedItem, filter, visited } = this.state;
-    console.log(visited)
+    
     const filteredOptions = autocomplete ? options.filter(this.filterOption(filter)) : options;
     return (
       <FieldWrapper {...this.props} focused={isOpen} visited={visited}>

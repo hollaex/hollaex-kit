@@ -7,6 +7,7 @@ class FieldWrapper extends Component {
     const {
       children,
       label,
+      input: { value },
       meta: { active = false, error, touched = false, invalid },
       focused = false,
       fullWidth = false,
@@ -14,13 +15,14 @@ class FieldWrapper extends Component {
     } = this.props;
 
     const displayError = !(active || focused) && (visited || touched) && error;
+    const hasValue = value || value === false;
     return (
       <div className={classnames('field-wrapper', { error: displayError, inline: !fullWidth })}>
         <div className={classnames('field-content')}>
           <div className="field-label">{label}</div>
           <div className={classnames('field-children', { valid: !invalid })}>
             {children}
-            {!invalid && <img src={ICONS.BLACK_CHECK} alt="valid" className="field-valid" />}
+            {!invalid && hasValue && <img src={ICONS.BLACK_CHECK} alt="valid" className="field-valid" />}
           </div>
           <span className={classnames('field-content-outline', {
             'focused': active || focused,

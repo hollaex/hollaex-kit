@@ -114,7 +114,7 @@ class UserVerification extends Component {
   }
 
   onSubmitUserDocuments = (values) => {
-    return updateDocuments
+    return updateDocuments(values)
       .then((res) => {
         this.accordion.openNextSection();
       }).catch((err) => {
