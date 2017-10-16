@@ -28,16 +28,14 @@ const extractuserData = (data) => {
 		timestamp: Date.now()
 	}
 	USER_DATA_KEYS.forEach((key) => {
-		if (key === 'address') {
-			Object.entries(data[key]).forEach(([subkey, value]) => {
-				userData[subkey] = value;
-			});
-		} else {
-			console.log(key, data[key])
-			userData[key] = data[key];
+		userData[key] = data[key];
+		if (key === 'phone_number') {
+			const phoneParts = data[key] ? data[key].split(' ', 2) : ['', ''];
+			userData.phone_country = phoneParts[0];
+			userData.phone_number = phoneParts[1];
 		}
 	})
-	console.log('...............................')
+
 	return userData;
 };
 

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import AccordionSection from './AccordionSection';
+import { findDOMNode } from 'react-dom';
 
 class Accordion extends Component {
   state = {
@@ -35,7 +36,7 @@ class Accordion extends Component {
     if (!this.props.allowMultiOpen) {
       const currentSection = this.state.openSections.length > 0 ? this.state.openSections[0] : -1;
       this.openSection(currentSection + 1);
-      this.scrollToTop(this.accordion.children[currentSection + 1].this.accordion.getBoundingClientRect().top);
+      this.scrollToTop();
     }
   }
 
@@ -44,19 +45,29 @@ class Accordion extends Component {
     this.scrollToTop();
   }
 
-  setRef = (el) => {
-    this.accordion = el;
+  setRef = (wrapperId) => {
+    if (wrapperId) {
+      const els = document.getElementsByClassName(wrapperId);
+      if (els.length > 0) {
+        this.wrapper = els[0];
+      }
+    }
+
+    return (el) => {
+      this.accordion = el;
+    }
   }
 
-  scrollToTop = (paramTop = 0) => {
-    const top = this.accordion ? this.accordion.getBoundingClientRect() : paramTop;
-    window.scrollTo(top, 0);
+  scrollToTop = (top = 0) => {
+    if (this.wrapper && this.wrapper.scrollTop !== 0) {
+      this.wrapper.scrollTop = 0;
+    }
   }
 
   render() {
-    const { sections } = this.props;
+    const { sections, wrapperId } = this.props;
     return (
-      <div className="accordion_wrapper" ref={this.setRef}>
+      <div className="accordion_wrapper" ref={this.setRef(wrapperId)}>
         {sections.map((section, index) => (
           <AccordionSection
             key={index}
@@ -73,7 +84,8 @@ class Accordion extends Component {
 }
 
 Accordion.defaultProps = {
-  allowMultiOpen: false
+  allowMultiOpen: false,
+  wrapperId: ''
 }
 
 export default Accordion;
