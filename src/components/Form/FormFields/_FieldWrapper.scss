@@ -56,6 +56,10 @@ $valid-icon-size: 2rem;
   padding: $children--padding 0;
   position: relative;
 
+  &.custom {
+    padding-bottom: 0;
+  }
+
   > *:first-child {
     padding-right: $valid-icon-size;
   }

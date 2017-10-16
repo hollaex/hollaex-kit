@@ -1,5 +1,5 @@
 import React from 'react';
-import { required, requiredBoolean } from '../../components/Form/validations';
+import { required, requiredBoolean, isBefore } from '../../components/Form/validations';
 import countries from '../../utils/countries';
 import { ICONS } from '../../config/constants';
 
@@ -49,7 +49,7 @@ const fields = {
     dob: {
       type: 'date',
       label: 'Date of birth',
-      validate: [required],
+      validate: [required, isBefore()],
     },
     country: {
       type: 'autocomplete',

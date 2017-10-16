@@ -41,6 +41,19 @@ $placeholder--font-weight: bold;
   .datefield-input {
     // visibility: hidden;
   }
+
+  .datefield-values-wrapper {
+    display: flex;
+    padding-right: $placeholder--padding !important;
+
+    > * {
+      flex: 1;
+
+      &:not(:last-child) {
+        margin-right: 1rem;
+      }
+    }
+  }
 }
 
 .input_file {

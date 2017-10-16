@@ -4,6 +4,8 @@ import math from 'mathjs';
 import { NETWORK } from '../../config/constants';
 
 const ERROR_MESSAGE_REQUIRED = 'Required field';
+const ERROR_MESSAGE_BEFORE_DATE = 'Invalid date';
+
 export const required = (value) => !value ? ERROR_MESSAGE_REQUIRED : undefined;
 export const requiredBoolean = (value) => value === undefined ? ERROR_MESSAGE_REQUIRED : undefined;
 export const requiredWithCustomMessage = (message) => (value) => !value ? message : undefined;
@@ -41,4 +43,14 @@ export const checkBalance = (available, message, fee = 0) => (value = 0) => {
     return errorMessage;
   }
   return undefined;
+}
+
+export const isBefore = (before = '', message = ERROR_MESSAGE_BEFORE_DATE) => {
+  const beforeDate = before ? new Date(before) : new Date();
+  const beforeValue = beforeDate.toString();
+  return (value = '') => {
+    const valueDate = new Date(value).toString();
+    const valid = validator.isBefore(valueDate, beforeValue);
+    return valid ? undefined : message;
+  }
 }
