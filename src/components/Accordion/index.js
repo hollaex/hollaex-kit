@@ -3,7 +3,7 @@ import AccordionSection from './AccordionSection';
 
 class Accordion extends Component {
   state = {
-    openSections: []
+    openSections: [],
   }
 
   componentWillMount() {
@@ -28,24 +28,35 @@ class Accordion extends Component {
       }
     }
     this.setState({ openSections });
+    this.scrollToTop();
   }
 
   openNextSection = () => {
     if (!this.props.allowMultiOpen) {
       const currentSection = this.state.openSections.length > 0 ? this.state.openSections[0] : -1;
       this.openSection(currentSection + 1);
+      this.scrollToTop(this.accordion.children[currentSection + 1].this.accordion.getBoundingClientRect().top);
     }
   }
 
   closeAll = () => {
-    console.log('close all')
     this.setState({ openSections: [] });
+    this.scrollToTop();
+  }
+
+  setRef = (el) => {
+    this.accordion = el;
+  }
+
+  scrollToTop = (paramTop = 0) => {
+    const top = this.accordion ? this.accordion.getBoundingClientRect() : paramTop;
+    window.scrollTo(top, 0);
   }
 
   render() {
     const { sections } = this.props;
     return (
-      <div className="accordion_wrapper">
+      <div className="accordion_wrapper" ref={this.setRef}>
         {sections.map((section, index) => (
           <AccordionSection
             key={index}

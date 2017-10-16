@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import FieldWrapper from './FieldWrapper';
+import { ActionNotification } from '../../';
+import { ICONS } from '../../../config/constants';
 
 class FileField extends Component {
 	state = {
@@ -36,14 +38,24 @@ class FileField extends Component {
 
 		return (
 			<FieldWrapper {...this.props} onClick={this.onClick}>
-				<div onClick={this.onClick} className={classnames('pointer', { placeholder: !filename})}>
-					{filename ? filename : placeholder}
+				<div onClick={this.onClick} className="pointer file_wrapper">
+					<div className={classnames('text_overflow', { placeholder: !filename})}>
+						{filename ? filename : placeholder}
+					</div>
+					{!filename &&
+						<ActionNotification
+							text="upload"
+							status="information"
+							iconPath={ICONS.BLUE_CLIP}
+							className="file_upload_icon"
+						/>
+					}
+					<input
+						type="file"
+						className="input_file"
+						{...input}
+					/>
 				</div>
-				<input
-					type="file"
-					className="input_file"
-					{...input}
-				/>
 			</FieldWrapper>
 		);
 	}

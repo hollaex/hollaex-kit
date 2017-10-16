@@ -33,6 +33,7 @@ const renderFields = (fields) => {
                 type={type}
                 label={label}
                 validate={validate || []}
+                autocomplete={type === 'autocomplete'}
               />
             );
           case 'text':

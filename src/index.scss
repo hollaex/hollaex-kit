@@ -51,6 +51,7 @@ body {
 
 .form {
   min-width: $dialog-min-width;
+  max-width: $dialog-min-width;
 }
 
 .error-icon {
@@ -67,6 +68,13 @@ body {
     left: 0;
     top: calc(50% - 0.75rem);
   }
+}
+
+.text_overflow {
+  width: auto;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 @import './containers/App/App';

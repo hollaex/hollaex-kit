@@ -52,4 +52,21 @@ $placeholder--font-weight: bold;
   font-size: $placeholder--font-size;
   font-weight: $placeholder--font-weight;
   color: $form-color-placeholder;
+  padding-right: $placeholder--padding * 2;
+}
+
+.file_upload_icon {
+  bottom: 0;
+}
+
+.file_wrapper {
+  display: flex;
+  justify-content: space-between;
+  padding-right: 0 !important;
+
+
+  > .action_notification-wrapper {
+    position: relative;
+    top: 0 !important;
+  }
 }
