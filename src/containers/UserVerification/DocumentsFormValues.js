@@ -1,13 +1,46 @@
 import React from 'react';
-import { required } from '../../components/Form/validations';
+import { requiredWithCustomMessage } from '../../components/Form/validations';
+
+const ERROR_MESSAGE_TYPE = 'Please select a type of identity document';
+const ERROR_MESSAGE_NUMBER = 'Please type your documents number';
+const ERROR_MESSAGE_ISSUED_DATE = 'Please select the date in which your document was issued';
+const ERROR_MESSAGE_EXPIRATION_DATE = 'Please select the date when your document will expire';
+const ERROR_MESSAGE_FRONT = 'Please upload a scan of your photo identity document';
+const ERROR_MESSAGE_PROOF_OF_RESIDENCY = 'Please upload a scan of document proving the address you current reside';
 
 const fields = {
   id: {
+    type: {
+      type: 'select',
+      label: 'ID Document type',
+      placeholder: 'Select Type of identity document',
+      options: [
+        { value: 'id', label: 'ID' },
+        { value: 'passport', label: 'Passport' },
+      ],
+      validate: [requiredWithCustomMessage(ERROR_MESSAGE_TYPE)],
+    },
+    number: {
+      type: 'text',
+      label: 'Photo ID Document',
+      placeholder: 'Type the documents number',
+      validate: [requiredWithCustomMessage(ERROR_MESSAGE_NUMBER)],
+    },
+    issued_date: {
+      type: 'date',
+      label: 'Photo ID Document',
+      validate: [requiredWithCustomMessage(ERROR_MESSAGE_ISSUED_DATE)],
+    },
+    expiration_date: {
+      type: 'date',
+      label: 'Photo ID Document',
+      validate: [requiredWithCustomMessage(ERROR_MESSAGE_EXPIRATION_DATE)],
+    },
     front: {
       type: 'file',
       label: 'Photo ID Document',
       placeholder: 'Add a copy of your photo ID document',
-      validate: [required],
+      validate: [requiredWithCustomMessage(ERROR_MESSAGE_FRONT)],
     },
     back: {
       type: 'file',
@@ -20,7 +53,7 @@ const fields = {
       type: 'file',
       label: 'Document proving your address',
       placeholder: 'Add a copy of a document that proves your address',
-      validate: [required],
+      validate: [requiredWithCustomMessage(ERROR_MESSAGE_PROOF_OF_RESIDENCY)],
     },
   },
 };

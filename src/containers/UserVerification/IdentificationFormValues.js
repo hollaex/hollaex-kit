@@ -111,11 +111,12 @@ Are you a business? Contact customer support for a corporate account.</div>
   phone: <InformationSection title="Phone" />,
 }
 
-export const prepareInitialValues = ({ phone_number, ...rest }) => {
+export const prepareInitialValues = ({ phone_number, ...rest, id_data, bank_account, address }) => {
   const phoneParts = phone_number ? phone_number.split(' ', 1) : ['', ''];
   return {
     personalInformation: {
       ...rest,
+      ...address,
     },
     phone: {
       phone_country: phoneParts[0],

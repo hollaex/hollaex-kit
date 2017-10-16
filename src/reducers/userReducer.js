@@ -6,8 +6,8 @@ const USER_DATA_KEYS = [
 	'nationality',
 	'address',
 	'phone_number',
-	'bank_name',
-	'bank_account_number',
+	'id_data',
+	'bank_account',
 ];
 
 const INITIAL_API_OBJECT = {
@@ -24,10 +24,20 @@ const INITIAL_OTP_OBJECT = {
 };
 
 const extractuserData = (data) => {
-	const userData = {}
+	const userData = {
+		timestamp: Date.now()
+	}
 	USER_DATA_KEYS.forEach((key) => {
-		userData[key] = data[key];
+		if (key === 'address') {
+			Object.entries(data[key]).forEach(([subkey, value]) => {
+				userData[subkey] = value;
+			});
+		} else {
+			console.log(key, data[key])
+			userData[key] = data[key];
+		}
 	})
+	console.log('...............................')
 	return userData;
 };
 
@@ -40,7 +50,9 @@ const INITIAL_STATE = {
 	email: null,
 	balance: {},
 	crypto_wallet: {},
-	userData: {},
+	userData: {
+		timestamp: Date.now()
+	},
 	fetching: false,
 	fee: 0,
 	verification_level: 0,
@@ -53,9 +65,9 @@ export default function reducer(state = INITIAL_STATE, action) {
 	switch(action.type) {
 
 		case 'SET_ME': {
-			const {id, email, balance, crypto_wallet, bank_account_number, bank_name, verification_level, otp_enabled} = action.payload;
+			const {id, email, balance, crypto_wallet, verification_level, otp_enabled} = action.payload;
 			const userData = extractuserData(action.payload);
-			return {...state, fetching: false, fetched: true, id, email, balance, crypto_wallet, bank_account_number, bank_name, verification_level, userData, otp_enabled}
+			return {...state, fetching: false, fetched: true, id, email, balance, crypto_wallet, verification_level, userData, otp_enabled}
 		}
 
 		case 'SET_BALANCE': {

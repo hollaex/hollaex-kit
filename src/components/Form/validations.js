@@ -3,8 +3,12 @@ import WAValidator from 'wallet-address-validator';
 import math from 'mathjs';
 import { NETWORK } from '../../config/constants';
 
-export const required = (value) => !value ? 'Required field' : undefined;
-export const requiredBoolean = (value) => value === undefined ? 'Required field' : undefined;
+const ERROR_MESSAGE_REQUIRED = 'Required field';
+export const required = (value) => !value ? ERROR_MESSAGE_REQUIRED : undefined;
+export const requiredBoolean = (value) => value === undefined ? ERROR_MESSAGE_REQUIRED : undefined;
+export const requiredWithCustomMessage = (message) => (value) => !value ? message : undefined;
+
+export const exactLength = (length, message) => (value = '') => value.length !== length ? message : undefined;
 
 export const email = (value) => !validator.isEmail(value) ? 'Invalid email' : undefined;
 

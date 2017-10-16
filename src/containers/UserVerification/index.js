@@ -16,34 +16,34 @@ class UserVerification extends Component {
   }
 
   componentDidMount() {
-    if (this.props.user.verification_level) {
-      this.calculateSections(this.props.user);
-    }
+    this.calculateSections(this.props.verification_level, this.props.email, this.props.userData);
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.user.verification_level !== this.props.user.verification_level) {
-      this.calculateSections(nextProps.user);
+    if (
+      nextProps.verification_level !== this.props.verification_level ||
+      nextProps.userData.timestamp !== this.props.userData.timestamp
+    ) {
+      this.calculateSections(nextProps.verification_level, nextProps.email, nextProps.userData);
     }
   }
 
-  activeStep = (verification_level, userData) => {
+  activeStep = (verification_level = 0, { first_name = '', id_data = {}, bank_account = {} }) => {
     if (verification_level < 1) {
       return 0;
-    } else if (!userData.first_name) {
+    } else if (!first_name) {
       return 1;
-    } else if (verification_level < 2) {
+    } else if (!id_data.type) {
       return 2;
-    } else if (!userData.bank_account_number) {
+    } else if (!bank_account.bank_name) {
       return 3
     } else {
       return 4;
     }
   }
 
-  calculateSections = (user) => {
-    let { verification_level, userData: { bank_name, bank_account_number }, email } = user;
-    const activeStep = this.activeStep(verification_level, user.userData);
+  calculateSections = (verification_level, email, userData) => {
+    const activeStep = this.activeStep(verification_level, userData);
 
     const sections = [{
       title: 'Email',
@@ -60,7 +60,7 @@ class UserVerification extends Component {
       title: 'Identification',
       content: <IdentificationForm
         onSubmit={this.onSubmitUserInformation}
-        initialValues={user.userData}
+        initialValues={prepareInitialValues(userData)}
       />,
       disabled: activeStep !== 1,
       notification: {
@@ -74,6 +74,7 @@ class UserVerification extends Component {
       title: 'Documents',
       content: <DocumentsForm
         onSubmit={this.onSubmitUserDocuments}
+        initialValues={userData.id_data}
       />,
       disabled: activeStep !== 2,
       notification: {
@@ -87,7 +88,7 @@ class UserVerification extends Component {
       title: 'Bank Account',
       content: <BankAccountForm
         onSubmit={this.onSubmitBankAccount}
-        initialValues={prepareInitialValues(user.userData)}
+        initialValues={userData.bank_account}
       />,
       disabled: activeStep !== 3,
       notification: {
@@ -107,7 +108,7 @@ class UserVerification extends Component {
         this.props.setMe(res.data);
         this.accordion.openNextSection();
       }).catch((err) => {
-        console.log()
+        console.log(err)
         const _error = err.data ? err.data.message : err.message
         throw new SubmissionError({ _error })
       })
@@ -124,14 +125,16 @@ class UserVerification extends Component {
       })
   }
 
-  onSubmitBankAccount = this.onSubmitUserInformation;
+  onSubmitBankAccount = (values) => {
+    this.onSubmitUserInformation({ bank_account: values });
+  };
 
   setRef = (el) => {
     this.accordion = el;
   }
 
   render() {
-    if (this.props.user.verification_level === 0) {
+    if (!this.props.id) {
       return <div>Loading</div>;
     }
     const { sections } = this.state;
@@ -148,7 +151,10 @@ class UserVerification extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  user: state.user,
+  id: state.user.id,
+  verification_level: state.user.verification_level,
+  userData: state.user.userData,
+  email: state.user.email,
 });
 
 const mapDispatchToProps = (dispatch) => ({
