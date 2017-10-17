@@ -7,9 +7,10 @@ import {
   Account,
   Wallet,
   Login,
+  Home,
 } from './containers';
 
-import Home from './views/Home'
+// import Home from './views/Home'
 // import Dashboard from './views/Dashboard'
 import QuickBuy from './views/Exchange/QuickBuy'
 // import Trade from './views/Dashboard/Trade'
@@ -50,14 +51,24 @@ function requireAuth(nextState, replace) {
 function loggedIn(nextState, replace) {
   if (isLoggedIn()) {
     replace({
-      pathname: '/'
+      pathname: '/account'
     })
   }
 }
 
+const NotFound = ({ router }) => {
+  router.replace('/');
+  return <div></div>;
+}
+
+const noAuthRoutesCommonProps = {
+  onEnter: loggedIn,
+};
+
 export default (
   <Router history={browserHistory}>
-    <Route path="/" component={Container} onEnter={requireAuth}>
+    <Route path="/" name="Home" component={Home} />
+    <Route component={Container} onEnter={requireAuth}>
       <IndexRoute component={Dashboard} />
       <Route path="account" name="Account" component={Account}/>
       <Route path="wallet" name="Wallet" component={Wallet}/>
@@ -67,11 +78,12 @@ export default (
         <Route path="quickbuy" name="QuickBuy" component={QuickBuy}/>
       </Route>
     </Route>
-    <Route path="login" name="Login" component={Login} onEnter={loggedIn}/>
-    <Route path="signup" name="signup" component={SignUp} onEnter={loggedIn} />
-    <Route path="reset-password" name="Reset Password Request" component={ResetPasswordRequest} onEnter={loggedIn}/>
-    <Route path="reset-password/:code" name="Reset Password" component={ResetPassword} onEnter={loggedIn}/>
-    <Route path="verify" name="Verify" component={Verification} onEnter={loggedIn} />
-    <Route path="verify/:code" name="verifyCode" component={Verification}></Route>
+    <Route path="login" name="Login" component={Login} {...noAuthRoutesCommonProps} />
+    <Route path="signup" name="signup" component={SignUp} {...noAuthRoutesCommonProps} />
+    <Route path="reset-password" name="Reset Password Request" component={ResetPasswordRequest} {...noAuthRoutesCommonProps} />
+    <Route path="reset-password/:code" name="Reset Password" component={ResetPassword} {...noAuthRoutesCommonProps} />
+    <Route path="verify" name="Verify" component={Verification} {...noAuthRoutesCommonProps} />
+    <Route path="verify/:code" name="verifyCode" component={Verification} {...noAuthRoutesCommonProps} />
+    <Route path="*" component={NotFound} />
   </Router>
 )

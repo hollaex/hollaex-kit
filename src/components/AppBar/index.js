@@ -55,22 +55,24 @@ class AppBar extends Component {
 
     return (
       <div className="app_bar">
-        <div className="app_bar-icon pointer" onClick={goToDashboard}>
+        <div className={classnames('app_bar-icon', { pointer: !!goToDashboard })} onClick={goToDashboard}>
           exir
         </div>
         <div className="app_bar-main">{title}</div>
-        <div className="app_bar-controllers">
-          {this.renderSymbolBlock(activeSymbol)}
-          <div className="app_bar-user pointer" onClick={goToAccountPage}>
-            <img
-              alt="account"
-              src={`${process.env.PUBLIC_URL}/assets/acounts/account-icons-${acccountIsActive ? '15' : '12'}.png`}
-              className={classnames('pointer', {
-                'active': acccountIsActive,
-              })}
-            />
+        {activeSymbol &&
+          <div className="app_bar-controllers">
+            {this.renderSymbolBlock(activeSymbol)}
+            <div className="app_bar-user pointer" onClick={goToAccountPage}>
+              <img
+                alt="account"
+                src={`${process.env.PUBLIC_URL}/assets/acounts/account-icons-${acccountIsActive ? '15' : '12'}.png`}
+                className={classnames('pointer', {
+                  'active': acccountIsActive,
+                })}
+              />
+            </div>
           </div>
-        </div>
+        }
       </div>
     );
   }
