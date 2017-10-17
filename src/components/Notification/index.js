@@ -3,16 +3,16 @@ import React from 'react';
 const Notification = ({ title, text, timestamp }) => {
   return (
     <div className="notification-container">
-      <div className="notification-title">{title}</div>
-      <div className="notification-text">{text}</div>
+      {title && <div className="notification-title">{title}</div>}
+      {text && <div className="notification-text">{text}</div>}
       {timestamp && <div className="notification-timestamp">{timestamp}</div>}
     </div>
   )
 }
 
 Notification.defaultProps = {
-  title: 'Title',
-  text: 'Text',
+  title: '',
+  text: '',
   timestamp: undefined
 }
 

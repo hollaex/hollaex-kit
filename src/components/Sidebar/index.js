@@ -2,20 +2,14 @@ import React from 'react';
 import Section from './Section';
 import { NotificationsList, Button, Wallet } from '../';
 import { ICONS } from '../../config/constants';
-const NOTIFICATIONS = [
-  // { title: '1', text: 'text 4', timestamp: new Date().toString() },
-  // { title: '2', text: 'text 4', timestamp: new Date().toString() },
-  // { title: '3', text: 'text2 3', timestamp: new Date().toString() },
-  // { title: '4', text: 'text 2', timestamp: new Date().toString() },
-  // { title: '5', text: 'text 1', timestamp: new Date().toString() },
-  // { title: '61', text: 'text 4', timestamp: new Date().toString() },
-  // { title: '22', text: 'text 4', timestamp: new Date().toString() },
-  // { title: '31', text: 'text2 3', timestamp: new Date().toString() },
-  // { title: '42', text: 'text 2', timestamp: new Date().toString() },
-  // { title: '53', text: 'text 1', timestamp: new Date().toString() },
-];
 
-const Sidebar = ({ goToWalletPage, goToTradePage, active, activePath, logout }) => {
+const prepareNotification = (notification) => ({
+  title: notification.type,
+  text: notification.message,
+  timestamp: new Date(notification.timestamp).toString(),
+});
+
+const Sidebar = ({ goToWalletPage, goToTradePage, active, activePath, logout, notifications }) => {
   return (
     <div className="sidebar-container">
       <div className={`sidebar-actions ${active ? 'active' : ''}`}>
@@ -49,7 +43,7 @@ const Sidebar = ({ goToWalletPage, goToTradePage, active, activePath, logout }) 
         </Section>
       </div>
       <div className="sidebar-notifications">
-        <NotificationsList notifications={NOTIFICATIONS} />
+        <NotificationsList notifications={notifications.map(prepareNotification)} />
       </div>
       <div className="sidebar-logout">
         <div onClick={logout} className="sidebar-logout-left text-uppercase pointer">
@@ -66,6 +60,7 @@ const Sidebar = ({ goToWalletPage, goToTradePage, active, activePath, logout }) 
 Sidebar.defaultProps = {
   active: false,
   activePath: '',
+  notifications: []
 }
 
 export default Sidebar;

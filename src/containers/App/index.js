@@ -43,14 +43,18 @@ class Container extends Component {
 
 	componentWillReceiveProps(nextProps) {
 		if (!nextProps.fetchingAuth && nextProps.fetchingAuth !== this.props.fetchingAuth) {
-			this.initSocketConnections();
+			if (!this.state.publicSocket) {
+				this.initSocketConnections();
+			}
 		}
 		if (nextProps.activeNotification.timestamp !== this.props.activeNotification.timestamp) {
 			if (nextProps.activeNotification.type !== '') {
 				this.onOpenDialog();
-			// } else {
-			// 	this.onCloseDialog();
+			} else {
+				this.onCloseDialog();
 			}
+		} else if (!nextProps.activeNotification.timestamp && this.state.dialogIsOpen) {
+			this.onCloseDialog();
 		}
 	}
 
@@ -267,7 +271,7 @@ class Container extends Component {
 	}
 
 	render() {
-		const { symbol, children, activeNotification, changeSymbol } = this.props;
+		const { symbol, children, activeNotification, changeSymbol, notifications } = this.props;
 		const { dialogIsOpen, appLoaded } = this.state;
 
 		const activePath = !appLoaded ? '' : this.getClassForActivePath(this.props.location.pathname);
@@ -295,18 +299,17 @@ class Container extends Component {
 							goToWalletPage={this.goToWalletPage}
 							goToTradePage={this.goToTradePage}
 							logout={this.logout}
+							notifications={notifications}
 						/>
           </div>
         </div>
-				{dialogIsOpen &&
-					<Dialog
-						isOpen={dialogIsOpen}
-						label="exir-modal"
-						onCloseDialog={this.onCloseDialog}
-					>
-						{this.renderDialogContent(activeNotification)}
-					</Dialog>
-				}
+				<Dialog
+					isOpen={dialogIsOpen}
+					label="exir-modal"
+					onCloseDialog={this.onCloseDialog}
+				>
+					{this.renderDialogContent(activeNotification)}
+				</Dialog>
 			</div>
 		);
 	}
@@ -317,6 +320,7 @@ const mapStateToProps = (store) => ({
   symbol: store.orderbook.symbol,
 	fetchingAuth: store.auth.fetching,
 	activeNotification: store.app.activeNotification,
+	notifications: store.app.notifications,
 });
 
 const mapDispatchToProps = (dispatch) => ({

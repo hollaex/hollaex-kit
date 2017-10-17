@@ -10,17 +10,20 @@ const EMPTY_NOTIFICATION = {
 }
 const INITIAL_STATE = {
   notifications: [],
+  notificationsQueue: [],
   activeNotification: EMPTY_NOTIFICATION,
 }
 
 const reducer = (state = INITIAL_STATE, { type, payload = {}}) => {
   switch (type) {
     case SET_NOTIFICATION: {
-      const notifications = [].concat(state.notifications);
+      const newNotification = payload.type.indexOf('NOTIFICATIONS') > -1 ? [payload] : [];
+      const notifications = newNotification.concat(state.notifications);
+      const notificationsQueue = [].concat(state.notificationsQueue);
       let activeNotification = { ...state.activeNotification };
 
       if (state.activeNotification.type !== '') {
-        notifications.push(payload);
+        notificationsQueue.push(payload);
       } else {
         activeNotification = { ...payload };
       }
@@ -28,18 +31,19 @@ const reducer = (state = INITIAL_STATE, { type, payload = {}}) => {
         ...state,
         notifications,
         activeNotification,
+        notificationsQueue,
       };
     }
 
     case CLOSE_NOTIFICATION:{
-      const notifications = [].concat(state.notifications);
-      const activeNotification = notifications.length > 0 ?
-        notifications.splice(0, 1)[0] :
+      const notificationsQueue = [].concat(state.notificationsQueue);
+      const activeNotification = notificationsQueue.length > 0 ?
+        notificationsQueue.splice(0, 1)[0] :
         { ...EMPTY_NOTIFICATION };
-      console.log(notifications, activeNotification)
+
       return {
         ...state,
-        notifications,
+        notificationsQueue,
         activeNotification,
       };
     }
