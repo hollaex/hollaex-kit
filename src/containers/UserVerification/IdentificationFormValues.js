@@ -2,6 +2,7 @@ import React from 'react';
 import { required, requiredBoolean, isBefore } from '../../components/Form/validations';
 import countries from '../../utils/countries';
 import { ICONS } from '../../config/constants';
+import { getFormattedDate } from '../../utils/string';
 
 const COUNTRIES_OPTIONS = countries.map((country) => ({
   label: country.name,
@@ -50,6 +51,8 @@ const fields = {
       type: 'date',
       label: 'Date of birth',
       validate: [required, isBefore()],
+      max: getFormattedDate(),
+      pattern: '[0-9]{4}-[0-9]{2}-[0-9]{2}'
     },
     country: {
       type: 'autocomplete',

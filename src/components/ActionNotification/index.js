@@ -33,5 +33,6 @@ ActionNotification.defaultProps = {
   status: '',
   iconPath: '',
   className: '',
+  onClick: () => {},
 }
 export default ActionNotification;

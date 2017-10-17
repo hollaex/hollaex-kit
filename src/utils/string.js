@@ -16,3 +16,9 @@ export const FIAT_FORMAT = '0,0.[00]';
 
 export const formatBtcAmount = (amount = 0) => numbro(math.number(amount)).format(BTC_FORMAT);
 export const formatFiatAmount = (amount = 0) => numbro(math.number(amount)).format(FIAT_FORMAT);
+
+export const getFormattedDate = (value) => {
+	const stringDate = (value ? new Date(value) : new Date()).toISOString();
+	const stringDateSplit = stringDate.split('T', 1);
+	return stringDateSplit[0];
+}

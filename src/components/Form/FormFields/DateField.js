@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import FieldWrapper, { FieldContent } from './FieldWrapper';
+import { getFormattedDate } from '../../../utils/string';
 
 class DateField extends Component {
   state = {
@@ -27,8 +28,7 @@ class DateField extends Component {
 
 
   calculateDisplay = (date = '') => {
-    const dateSplit = date.split('T', 1);
-    const splitedDate = dateSplit[0].split('-');
+    const splitedDate = date.split('-');
     return {
       year: splitedDate[0],
       month: splitedDate[1],
@@ -37,15 +37,15 @@ class DateField extends Component {
   }
 
   onChangeInput = (value) => {
-    const display = this.calculateDisplay(value);
+    const date = getFormattedDate(value);
+    const display = this.calculateDisplay(date);
     this.setState({ value, display });
   }
 
   onChange = (event) => {
     const { value } = event.target;
-    console.log('----------------', value)
     if (value) {
-      const date = new Date(value).toISOString();
+      const date = getFormattedDate(value);
       this.onChangeInput(date);
       this.props.input.onChange(date);
     }
@@ -59,8 +59,6 @@ class DateField extends Component {
   onChangeOpen = (isOpen = false) => {
     this.setState({ isOpen });
     if (isOpen && this.input) {
-      console.log(this.input)
-      // debugger
       this.input.focus();
     }
   }
@@ -96,9 +94,11 @@ class DateField extends Component {
   }
   render() {
     console.log(this.props)
-    const { isOpen, value, display } = this.state;
+    const { isOpen, value, display, min, max } = this.state;
     const {
-      meta: { active = false, error, touched = false, invalid }
+      input,
+      meta: { active = false, error, touched = false, invalid },
+      ...rest,
     } = this.props;
     const displayError = !active && touched && error;
 
@@ -112,9 +112,11 @@ class DateField extends Component {
           {this.renderValues(display, invalid)}
         </FieldWrapper>
         <input
+          {...rest}
           type="date"
           onChange={this.onChange}
           value={value}
+          id={`${input.name}-date`}
         />
       </div>
     )

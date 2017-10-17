@@ -41,7 +41,7 @@ const AccordionSection = ({
       {notification &&
         <ActionNotification
           {...notification}
-          onClick={notification.allowClick && onClick}
+          onClick={notification.allowClick ? onClick : undefined}
         />
       }
     </div>
