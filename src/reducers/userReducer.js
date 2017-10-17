@@ -28,11 +28,13 @@ const extractuserData = (data) => {
 		timestamp: Date.now()
 	}
 	USER_DATA_KEYS.forEach((key) => {
-		userData[key] = data[key];
-		if (key === 'phone_number') {
-			const phoneParts = data[key] ? data[key].split(' ', 2) : ['', ''];
-			userData.phone_country = phoneParts[0];
-			userData.phone_number = phoneParts[1];
+		if (data[key]) {
+			userData[key] = data[key];
+			if (key === 'phone_number') {
+				const phoneParts = data[key] ? data[key].split(' ', 2) : ['', ''];
+				userData.phone_country = phoneParts[0];
+				userData.phone_number = phoneParts[1];
+			}
 		}
 	})
 
@@ -68,6 +70,16 @@ export default function reducer(state = INITIAL_STATE, action) {
 			return {...state, fetching: false, fetched: true, id, email, balance, crypto_wallet, verification_level, userData, otp_enabled}
 		}
 
+		case 'SET_USER_DATA': {
+			const userData = extractuserData(action.payload);
+			return {
+				...state,
+				userData: {
+					...state.userData,
+					...userData,
+				}
+			}
+		}
 		case 'SET_BALANCE': {
 			let balance =  action.payload
 			return {...state, balance}

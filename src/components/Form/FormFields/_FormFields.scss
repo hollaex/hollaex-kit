@@ -54,6 +54,15 @@ $placeholder--font-weight: bold;
       }
     }
   }
+
+  .SingleDatePicker {
+    position: absolute;
+  }
+
+  .SingleDatePickerInput {
+    display: none;
+  }
+
 }
 
 .input_file {

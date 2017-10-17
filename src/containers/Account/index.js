@@ -19,22 +19,25 @@ class Account extends Component {
     if (
       nextProps.id !== this.props.id ||
       nextProps.verification_level !== this.props.verification_level ||
-      nextProps.otp_enabled !== this.props.otp_enabled
+      nextProps.otp_enabled !== this.props.otp_enabled ||
+      nextProps.bank_account.name !== this.props.bank_account.name ||
+      nextProps.id_data.type !== this.props.id_data.type
     ) {
       this.updateTabs(nextProps);
     }
   }
 
-  hasUserVerificationNotifications = (verification_level, bank_name) => {
+  hasUserVerificationNotifications = (verification_level, bank_account = {}, id_data = {}) => {
+    console.log('bank acc', bank_account)
+    console.log('id date', id_data)
     if (verification_level >= 2) {
-      return false
-    } else if (bank_name) {
+      return false;
+    } else if (bank_account.bank_name && id_data.type) {
       return false;
     }
     return true;
   }
-  updateTabs = ({ verification_level, otp_enabled, bank_name }) => {
-    console.log(verification_level, otp_enabled)
+  updateTabs = ({ verification_level, otp_enabled, bank_account, id_data }) => {
     const activeTab = this.state.activeTab > -1 ? this.state.activeTab : 0;
     const tabs = [
       {
@@ -42,7 +45,7 @@ class Account extends Component {
           <CheckTitle
             title="Verification"
             icon={`${process.env.PUBLIC_URL}/assets/acounts/account-icons-02.png`}
-            notifications={this.hasUserVerificationNotifications(verification_level, bank_name) ? '!' : ''}
+            notifications={this.hasUserVerificationNotifications(verification_level, bank_account, id_data) ? '!' : ''}
           />
         ),
         content: <UserVerification />
@@ -109,7 +112,8 @@ const mapStateToProps = (state) => ({
   verification_level: state.user.verification_level,
   otp_enabled: state.user.otp_enabled || false,
   id: state.user.id,
-  bank_name: state.user.bank_name,
+  bank_account: state.user.userData.bank_account,
+  id_data: state.user.userData.id_data,
 });
 
 export default connect(mapStateToProps)(Account);

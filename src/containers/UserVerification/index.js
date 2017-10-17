@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { SubmissionError } from 'redux-form';
 
 import { ICONS } from '../../config/constants';
-import { updateUser, updateDocuments, setMe } from '../../actions/userAction';
+import { updateUser, updateDocuments, setMe, setUserData } from '../../actions/userAction';
 import { Accordion } from '../../components';
 import IdentificationForm from './IdentificationForm';
 import { prepareInitialValues } from './IdentificationFormValues';
@@ -42,6 +42,16 @@ class UserVerification extends Component {
     }
   }
 
+  calculateNotification = (activeStep, step, verifyText, verified = false, value = '') => {
+    const notification = {
+      text: verified ? 'completed' : (activeStep > step ? 'pending verification' : verifyText),
+      status: verified ? 'success' : (activeStep > step ? 'information' : 'warning'),
+      iconPath: verified ? ICONS.GREEN_CHECK : (activeStep > step ? ICONS.BLUE_QUESTION : ICONS.RED_ARROW),
+      allowClick: activeStep === step
+    };
+    return notification;
+  }
+
   calculateSections = (verification_level, email, userData) => {
     const activeStep = this.activeStep(verification_level, userData);
 
@@ -49,12 +59,7 @@ class UserVerification extends Component {
       title: 'Email',
       content: <div>{email}</div>,
       disabled: activeStep !== 0,
-      notification: {
-        text: activeStep > 0 ? 'completed' : 'verify email',
-        status: activeStep > 0 ? 'success' : 'warning',
-        iconPath: activeStep > 0 ? ICONS.GREEN_CHECK : ICONS.RED_ARROW,
-        allowClick: activeStep === 0
-      }
+      notification: this.calculateNotification(activeStep, 0, 'verify email', true)
     },
     {
       title: 'Identification',
@@ -63,12 +68,7 @@ class UserVerification extends Component {
         initialValues={prepareInitialValues(userData)}
       />,
       disabled: activeStep !== 1,
-      notification: {
-        text: activeStep > 1 ? 'completed' : 'verify user documentation',
-        status: activeStep > 1 ? 'success' : 'warning',
-        iconPath: activeStep > 1 ? ICONS.GREEN_CHECK : ICONS.RED_ARROW,
-        allowClick: activeStep === 1
-      }
+      notification: this.calculateNotification(activeStep, 1, 'verify user documentation', verification_level >= 2, userData.first_name)
     },
     {
       title: 'Documents',
@@ -77,12 +77,7 @@ class UserVerification extends Component {
         initialValues={userData.id_data}
       />,
       disabled: activeStep !== 2,
-      notification: {
-        text: activeStep > 2 ? 'completed' : 'verify id documents',
-        status: activeStep > 2 ? 'success' : 'warning',
-        iconPath: activeStep > 2 ? ICONS.GREEN_CHECK : ICONS.RED_ARROW,
-        allowClick: activeStep === 2
-      }
+      notification: this.calculateNotification(activeStep, 2, 'verify id documents', userData.id_data.verified, userData.id_data.type)
     },
     {
       title: 'Bank Account',
@@ -91,12 +86,7 @@ class UserVerification extends Component {
         initialValues={userData.bank_account}
       />,
       disabled: activeStep !== 3,
-      notification: {
-        text: activeStep > 3 ? 'completed' : 'verify bank account',
-        status: activeStep > 3 ? 'success' : 'warning',
-        iconPath: activeStep > 3 ? ICONS.GREEN_CHECK : ICONS.RED_ARROW,
-        allowClick: activeStep === 3
-      }
+      notification: this.calculateNotification(activeStep, 3, 'verify bank account', userData.bank_account.verified, userData.bank_account.type)
     }];
 
     this.setState({ sections });
@@ -119,6 +109,7 @@ class UserVerification extends Component {
   onSubmitUserDocuments = (values) => {
     return updateDocuments(values)
       .then((res) => {
+        this.props.setUserData({ id_data: values });
         if (this.accordion) {
           this.accordion.openNextSection();
         }
@@ -164,6 +155,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   setMe: (data) => dispatch(setMe(data)),
+  setUserData: (data) => dispatch(setUserData(data)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(UserVerification);

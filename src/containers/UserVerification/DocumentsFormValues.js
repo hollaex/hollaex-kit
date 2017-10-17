@@ -12,7 +12,7 @@ const fields = {
   id: {
     type: {
       type: 'select',
-      label: 'ID Document type',
+      label: 'ID Document Type:',
       placeholder: 'Select Type of identity document',
       options: [
         { value: 'id', label: 'ID' },
@@ -22,18 +22,18 @@ const fields = {
     },
     number: {
       type: 'text',
-      label: 'Photo ID Document',
+      label: 'ID Document Number',
       placeholder: 'Type the documents number',
       validate: [requiredWithCustomMessage(ERROR_MESSAGE_NUMBER)],
     },
     issued_date: {
       type: 'date',
-      label: 'Photo ID Document',
+      label: 'ID Document Issue Date',
       validate: [requiredWithCustomMessage(ERROR_MESSAGE_ISSUED_DATE)],
     },
     expiration_date: {
       type: 'date',
-      label: 'Photo ID Document',
+      label: 'ID Document Expiration Date',
       validate: [requiredWithCustomMessage(ERROR_MESSAGE_EXPIRATION_DATE)],
     },
     front: {

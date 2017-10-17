@@ -2,11 +2,19 @@ import React, { Component } from 'react';
 import classnames from 'classnames';
 import FieldWrapper, { FieldContent } from './FieldWrapper';
 import { getFormattedDate } from '../../../utils/string';
+import { SingleDatePicker, isInclusivelyAfterDay, isInclusivelyBeforeDay } from 'react-dates';
+import moment from 'moment';
+
+const FIELDS = [
+  { key: 'year', label: 'Year' },
+  { key: 'month', label: 'Month' },
+  { key: 'day', label: 'Day' },
+];
 
 class DateField extends Component {
   state = {
-    isOpen: false,
-    value: undefined,
+    focused: false,
+    date: moment(),
     display: {
       year: '',
       month: '',
@@ -26,9 +34,8 @@ class DateField extends Component {
     }
   }
 
-
   calculateDisplay = (date = '') => {
-    const splitedDate = date.split('-');
+    const splitedDate =  getFormattedDate(date).split('-');
     return {
       year: splitedDate[0],
       month: splitedDate[1],
@@ -37,73 +44,60 @@ class DateField extends Component {
   }
 
   onChangeInput = (value) => {
-    const date = getFormattedDate(value);
+    const date = moment(value);
     const display = this.calculateDisplay(date);
-    this.setState({ value, display });
-  }
-
-  onChange = (event) => {
-    const { value } = event.target;
-    if (value) {
-      const date = getFormattedDate(value);
-      this.onChangeInput(date);
-      this.props.input.onChange(date);
-    }
+    this.setState({ date, display });
+    this.props.input.onChange(date.format());
   }
 
   onToogleOpen = (event) => {
-    event.preventDefault();
-    this.onChangeOpen(!this.state.isOpen);
+    this.onChangeOpen(!this.state.focused);
   }
 
-  onChangeOpen = (isOpen = false) => {
-    this.setState({ isOpen });
-    if (isOpen && this.input) {
-      this.input.focus();
-    }
+  onFocusChange = ({ focused }) => {
+    this.onChangeOpen(focused);
   }
 
-  clickAwayListener = (event) => {
-    if (
-      this.state.isOpen &&
-      !event.target.id &&
-      event.target.className.indexOf('dropdown') === -1
-    ) {
-      this.onChangeOpen(false);
-    }
-  }
-
-  setInputRef = (el) => {
-    this.input = el;
+  onChangeOpen = (focused = false) => {
+    this.setState({ focused });
   }
 
   renderValues = (display, valid) => {
     return (
       <div className="datefield-values-wrapper" onClick={this.onToogleOpen}>
-        <FieldContent contentClassName="pointer" valid={valid}>
-          {display.year || 'Year'}
-        </FieldContent>
-        <FieldContent contentClassName="pointer" valid={valid}>
-          {display.month || 'Month'}
-        </FieldContent>
-        <FieldContent contentClassName="pointer" valid={valid}>
-          {display.day || 'Day'}
-        </FieldContent>
+        {FIELDS.map(({ key, label }) => (
+          <FieldContent
+            contentClassName="pointer dropdown-triangle"
+            valid={valid}
+            key={key}
+          >
+            {display[key] || label}
+          </FieldContent>
+        ))}
       </div>
     );
   }
+
+  isOutsideRange = (startDate, endDate) => (day) => {
+    if (startDate && isInclusivelyBeforeDay(day, moment(startDate))) {
+      return true;
+    } else if (endDate && isInclusivelyAfterDay(day, moment(endDate))) {
+      return true;
+    }
+    return false;
+  }
+
   render() {
-    console.log(this.props)
-    const { isOpen, value, display, min, max } = this.state;
+    const { focused, date, display } = this.state;
     const {
-      input,
       meta: { active = false, error, touched = false, invalid },
-      ...rest,
+      startDate,
+      endDate,
     } = this.props;
     const displayError = !active && touched && error;
 
     return (
-      <div  className="datefield-wrapper">
+      <div className="datefield-wrapper">
         <FieldWrapper
           {...this.props}
           valid={!invalid}
@@ -111,12 +105,17 @@ class DateField extends Component {
         >
           {this.renderValues(display, invalid)}
         </FieldWrapper>
-        <input
-          {...rest}
-          type="date"
-          onChange={this.onChange}
-          value={value}
-          id={`${input.name}-date`}
+        <SingleDatePicker
+          date={date} // momentPropTypes.momentObj or null
+          onDateChange={this.onChangeInput} // PropTypes.func.isRequired
+          focused={focused} // PropTypes.bool
+          onFocusChange={this.onFocusChange} // PropTypes.func.isRequired
+          keepOpenOnDateSelect={false}
+          hideKeyboardShortcutsPanel={true}
+          withPortal={true}
+          numberOfMonths={1}
+          isOutsideRange={this.isOutsideRange(startDate, endDate)}
+          initialVisibleMonth={() => moment()}
         />
       </div>
     )

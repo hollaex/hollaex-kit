@@ -13,14 +13,16 @@
     "flag-icon-css": "^2.8.0",
     "keycode": "^2.1.9",
     "mathjs": "^3.16.0",
-    "moment": "^2.18.1",
+    "moment": "^2.19.1",
     "node-sass-chokidar": "0.0.3",
     "npm-run-all": "^4.0.2",
     "numbro": "^1.11.0",
     "qrcode.react": "^0.7.1",
     "query-string": "^5.0.0",
-    "react": "^15.6.1",
-    "react-dom": "^15.6.1",
+    "react": "^16.0.0",
+    "react-addons-shallow-compare": "^15.6.2",
+    "react-dates": "^13.0.6",
+    "react-dom": "^16.0.0",
     "react-draggable": "^2.2.6",
     "react-event-listener": "^0.5.1",
     "react-ionicons": "^1.5.7",
@@ -44,7 +46,7 @@
     "wallet-address-validator": "^0.1.1"
   },
   "devDependencies": {
-    "react-scripts": "1.0.7"
+    "react-scripts": "1.0.14"
   },
   "scripts": {
     "build-css": "node-sass-chokidar src/ -o src/",

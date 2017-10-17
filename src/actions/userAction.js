@@ -17,6 +17,11 @@ export function setMe(user) {
 	}
 }
 
+export const setUserData = (data) => ({
+	type: 'SET_USER_DATA',
+	payload: data,
+});
+
 export function setBalance(balance) {
 	return {
 		type: 'SET_BALANCE',
@@ -71,7 +76,7 @@ export const updateUser = (values) => {
 	if (values.verified) {
 		delete values.verified;
 	}
-	
+
 	return axios.put('/user', userValues);
 };
 
