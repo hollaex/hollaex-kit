@@ -8,6 +8,9 @@ import {
   Wallet,
   Login,
   Home,
+  Deposit,
+  Withdraw,
+  TransferHistory,
 } from './containers';
 
 // import Home from './views/Home'
@@ -16,8 +19,8 @@ import QuickBuy from './views/Exchange/QuickBuy'
 // import Trade from './views/Dashboard/Trade'
 // import Account from './views/Dashboard/Account'
 // import Account from './views/Account'
-import Deposit from './views/Deposit/Deposit'
-import Withdraw from './views/Withdraw/Withdraw'
+// import Deposit from './views/Deposit/Deposit'
+// import Withdraw from './views/Withdraw/Withdraw'
 // import Login from './views/Auth/Login'
 import SignUp from './views/Auth/Signup'
 import Verification from './views/Auth/Verification'
@@ -72,6 +75,9 @@ export default (
       <IndexRoute component={Dashboard} />
       <Route path="account" name="Account" component={Account}/>
       <Route path="wallet" name="Wallet" component={Wallet}/>
+      <Route path="withdraw" name="Withdraw" component={Withdraw}/>
+      <Route path="deposit" name="Deposit" component={Deposit}/>
+      <Route path="transfers" name="Transfers" component={TransferHistory}/>
       <Route path="trade" name="Exchange" component={Exchange}>
         <IndexRoute component={Bitcoin}/>
         <Route path="btc" name="Bitcoin" component={Bitcoin} />

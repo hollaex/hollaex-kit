@@ -16,3 +16,4 @@ export { default as ActionNotification } from './ActionNotification';
 export { default as IconTitle } from './IconTitle';
 export { default as OtpForm } from './OtpForm';
 export { default as Loader } from './Loader';
+export { default as CurrencyBall } from './CurrencyBall';
