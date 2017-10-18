@@ -1,5 +1,5 @@
 import React from 'react';
-import { Router, Route, browserHistory, IndexRoute, Redirect } from 'react-router';
+import { Router, Route, browserHistory, IndexRoute } from 'react-router';
 
 import {
   App as Container,
@@ -13,23 +13,13 @@ import {
   TransferHistory,
 } from './containers';
 
-// import Home from './views/Home'
-// import Dashboard from './views/Dashboard'
 import QuickBuy from './views/Exchange/QuickBuy'
-// import Trade from './views/Dashboard/Trade'
-// import Account from './views/Dashboard/Account'
-// import Account from './views/Account'
-// import Deposit from './views/Deposit/Deposit'
-// import Withdraw from './views/Withdraw/Withdraw'
-// import Login from './views/Auth/Login'
 import SignUp from './views/Auth/Signup'
 import Verification from './views/Auth/Verification'
 import ResetPassword from './views/Auth/ResetPassword'
 import ResetPasswordRequest from './views/Auth/ResetPasswordRequest'
 import Exchange from './views/Exchange'
 import Bitcoin from './views/Exchange/Bitcoin'
-import UserVerification from './views/UserVerification'
-import CustomerSupport from './views/UserVerification/CustomerSupport'
 import store from './store'
 import { verifyToken } from './actions/authAction'
 

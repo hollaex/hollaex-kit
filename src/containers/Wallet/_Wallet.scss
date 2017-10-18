@@ -6,7 +6,7 @@ $header-margin: 1.5rem;
 
 .wallet-container {
   border-top: $wrapper-border;
-  border-bottom: $wrapper-border;
+  // border-bottom: $wrapper-border;
 
   .wallet-header_block {
     > * {
@@ -27,6 +27,11 @@ $header-margin: 1.5rem;
       .wallet-header_block-amount-value {
         margin-left: 0.5rem;
       }
+      .wallet-header_block-amount-value-fiat {
+        color: $colors-deactivate-color2;
+        font-size: $font-size-subhead2;
+        line-height: $font-size-headline;
+      }
     }
   }
 
@@ -45,14 +50,14 @@ $header-margin: 1.5rem;
   }
 
   .wallet-assets_block {
-    border-top: $wrapper-border;
+    // border-top: $wrapper-border;
     .wallet-assets_block-table {
       width: 100%;
       font-size: $font-size-subtext;
 
       thead,tfoot {
         & tr{
-          height: 2.5rem;
+          height: 3.5rem;
           vertical-align: bottom;
         }
       }
@@ -97,4 +102,10 @@ $header-margin: 1.5rem;
   width: auto;
   left: 0;
   position: absolute;
+}
+
+.wallet-notification {
+  .action_notification-text {
+    font-size: $font-size-main !important;
+  }
 }

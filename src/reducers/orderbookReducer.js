@@ -5,6 +5,9 @@ const INITIAL_STATE = {
 	error: null,
 	symbol: 'btc',
 	price: 0,
+	prices: {
+		fiat: 1,
+	}
 };
 
 export default function reducer(state = INITIAL_STATE, action) {
@@ -74,7 +77,19 @@ export default function reducer(state = INITIAL_STATE, action) {
 
 		// addTrades
 		case 'ADD_TRADES': {
-			return {...state, fetching: false, fetched: true, trades: action.payload.concat(state.trades), price: action.payload[0].price }
+			const price = action.payload[0].price;
+			const symbol = action.payload[0].symbol;
+			const prices = { ...state.prices }
+			prices[state.symbol] = price;
+
+			return {
+				...state,
+				fetching: false,
+				fetched: true,
+				trades: action.payload.concat(state.trades),
+				price,
+				prices,
+			}
 		}
 
 		case 'LOGOUT':

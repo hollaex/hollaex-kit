@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import math from 'mathjs';
 import { Accordion } from '../';
 import { CURRENCIES } from '../../config/constants';
+import { calculateBalancePrice, formatFiatAmount } from '../../utils/currency';
 import WalletSection from './Section';
 
 class Wallet extends Component {
@@ -29,17 +30,6 @@ class Wallet extends Component {
     }
   }
 
-  calculateTotalAssets = (symbol = 'fiat', price = 0, balance = {}) => {
-    const totalAssets = math.add(
-      math.fraction(balance.fiat_balance || 0),
-      math.multiply(
-        math.fraction(price),
-        math.fraction(balance[`${symbol}_available`] || 0)
-      )
-    );
-    return CURRENCIES.fiat.formatToCurrency(totalAssets)
-  }
-
   generateSection = (symbol, price, balance, orders ) => {
     const { name, currencySymbol, formatToCurrency } = CURRENCIES[symbol];
     return ({
@@ -62,7 +52,7 @@ class Wallet extends Component {
     });
   }
 
-  calculateSections = ({ symbol, price, balance, orders }) => {
+  calculateSections = ({ symbol, price, balance, orders, prices }) => {
     const sections = [];
 
     if (symbol !== 'fiat') {
@@ -71,7 +61,7 @@ class Wallet extends Component {
 
     sections.push(this.generateSection('fiat', price, balance, orders));
 
-    const totalAssets = this.calculateTotalAssets(symbol, price, balance);
+    const totalAssets = formatFiatAmount(calculateBalancePrice(balance, prices));
     this.setState({ sections, totalAssets });
   }
 
@@ -101,6 +91,7 @@ class Wallet extends Component {
 
 const mapStateToProps = (state, ownProps) => ({
   balance: state.user.balance,
+  prices: state.orderbook.prices,
   symbol: state.orderbook.symbol,
   price: state.orderbook.price,
   orders: state.order.activeOrders,

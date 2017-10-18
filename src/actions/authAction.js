@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { browserHistory } from 'react-router'
 import querystring from 'query-string';
+import store from '../store'
 
 export function signup(data) {
 	return ((dispatch) => {
@@ -76,6 +77,10 @@ export function verifyVerificationCode(data) {
 export const performLogin = (values) => axios.post('/login', values)
 	.then((res) => {
 		setTokenInApp(res.data.token, true);
+		store.dispatch({
+			type: 'VERIFY_TOKEN_FULFILLED',
+			payload: res.data.token
+		});
 		return res;
 	});
 

@@ -30,6 +30,10 @@ class Accordion extends Component {
     }
     this.setState({ openSections });
     this.scrollToTop();
+
+    if (this.props.notifyOnOpen) {
+      this.props.notifyOnOpen(section, open);
+    }
   }
 
   openNextSection = () => {
