@@ -40,18 +40,24 @@ export const ICONS = {
 }
 
 export const CURRENCIES = {
-  btc: {
-    symbol: 'btc',
-    name: 'Bitcoin',
-    currencySymbol: 'B',
-    formatToCurrency: formatBtcAmount,
-    iconPath: '/assets/acounts/account-icons-14.png',
-  },
   fiat: {
     symbol: 'fiat',
     name: 'Dollar',
+    fullName: 'United States Dollar',
+    shortName: 'USD',
     currencySymbol: '$',
     formatToCurrency: formatFiatAmount,
     iconPath: '/assets/acounts/account-icons-14.png',
   },
+  btc: {
+    symbol: 'btc',
+    name: 'Bitcoin',
+    fullName: 'Bitcoin',
+    shortName: 'BTC',
+    currencySymbol: 'B',
+    formatToCurrency: formatBtcAmount,
+    iconPath: '/assets/acounts/account-icons-14.png',
+  },
 }
+
+export const FLEX_CENTER_CLASSES = ['d-flex', 'justify-content-center', 'align-items-center'];

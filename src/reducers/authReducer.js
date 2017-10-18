@@ -8,6 +8,7 @@ const VERIFICATION = {
 
 const INITIAL_STATE = {
 	token: null,
+	verifyingToken: false,
 	fetching: false,
 	fetched: false,
 	error: '',
@@ -78,11 +79,11 @@ export default function reducer(state = INITIAL_STATE, action) {
 		}
 		// Verify token
 		case 'VERIFY_TOKEN_PENDING':
-			return { ...state, fetching: true };
+			return { ...state, fetching: true, verifyingToken: true };
 		case 'VERIFY_TOKEN_REJECTED':
-			return { ...state, fetching: false };
+			return { ...state, fetching: false, verifyingToken: false };
 		case 'VERIFY_TOKEN_FULFILLED':
-			return { ...state, fetching: false, fetched: true, token: action.payload };
+			return { ...state, fetching: false, verifyingToken: false, fetched: true, token: action.payload };
 
 		// RESET PASSWORD
 		case 'RESET_PASSWORD_PENDING': {

@@ -21,14 +21,8 @@ html {
 }
 
 body {
-  // --navigation-bar-height: $navigation_bar-height;
-
   background-color: $app-background-color !important;
   font-size: $font-size-main !important;
-  font-family: "Open Sans" !important;
-}
-
-* {
   font-family: "Open Sans" !important;
 }
 
@@ -49,7 +43,7 @@ body {
   background: $app-background-color-on-modal;
 }
 
-.root {
+#root {
   height: 100%;
 }
 
@@ -86,6 +80,7 @@ body {
 @import './containers/UserSecurity/UserSecurity';
 @import './containers/Login/Login';
 @import './containers/Home/Home';
+@import './containers/Wallet/Wallet';
 
 @import './components/Sidebar/Sidebar';
 @import './components/Footer/Footer';
@@ -102,3 +97,4 @@ body {
 @import './components/IconTitle/IconTitle';
 @import './components/OtpForm/OtpForm';
 @import './components/Loader/Loader';
+@import './components/CurrencyBall/CurrencyBall';

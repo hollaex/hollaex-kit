@@ -1,20 +1,16 @@
 import React from 'react';
 import classnames from 'classnames';
-
-const renderTitleBlock = (title, icon) => (
-  <div className="tab_controller-title">
-    {icon &&
-      <img alt="titleIcon" src={icon} className="tab_controller-title-icon" />
-    }
-    {title &&
-      <div className="tab_controller-title-text">{title}</div>
-    }
-  </div>
-);
+import { IconTitle } from '../';
 
 const TabController = ({ tabs, activeTab, setActiveTab, title, titleIcon }) => (
   <div className="tab_controller-wrapper">
-    {(title || titleIcon) && renderTitleBlock(title, titleIcon)}
+    {(title || titleIcon) &&
+      <IconTitle
+        text={title}
+        iconPath={titleIcon}
+        textType="title"
+      />
+    }
     <div className="tab_controller-tabs">
       {tabs.map((tab, index) => {
         return (

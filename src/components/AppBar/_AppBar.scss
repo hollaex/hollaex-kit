@@ -3,6 +3,7 @@
 .app_bar {
   position: relative;
   width: 100%;
+  min-height: $navigation_bar-height;
   height: $navigation_bar-height;
   border-bottom: 1px solid $border-color;
   display: flex;
