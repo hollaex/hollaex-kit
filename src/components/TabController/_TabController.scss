@@ -1,5 +1,3 @@
-@import '../../variables';
-
 $tab_controller-title-img-size: 6rem;
 $tab_controller-title-margin: 16px;
 $tab_controller-item-min-width: 4rem;
@@ -11,8 +9,7 @@ $tab_controller-item-min-width: 4rem;
   flex-direction: column;
 
   .tab_controller-title-icon {
-    width: $tab_controller-title-img-size;
-    height: $tab_controller-title-img-size;
+    @include size($tab_controller-title-img-size);
   }
 
   .tab_controller-title-text {
@@ -26,6 +23,7 @@ $tab_controller-item-min-width: 4rem;
   justify-content: space-between;
   align-content: center;
   border-top: 1px solid $tab-border-color;
+  margin-bottom: 1rem;
 
   .tab_item {
     border-top: $tab-selected-line-height solid transparent;

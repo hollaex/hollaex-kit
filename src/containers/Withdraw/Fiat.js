@@ -9,7 +9,7 @@ import React from 'react';
 
 const Withdraw = () => (
   <div>
-    Withdraw
+    Withdraw fiat
   </div>
 );
 

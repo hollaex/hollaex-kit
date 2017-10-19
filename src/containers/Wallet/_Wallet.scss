@@ -1,5 +1,3 @@
-@import '../../variables';
-
 $wrapper-border: 1px solid $colors-main-black;
 $wrapper-button-margin: 2.5rem;
 $header-margin: 1.5rem;
@@ -30,7 +28,7 @@ $header-margin: 1.5rem;
       .wallet-header_block-amount-value-fiat {
         color: $colors-deactivate-color2;
         font-size: $font-size-subhead2;
-        line-height: $font-size-headline;
+        line-height: $font-size-subhead2;
       }
     }
   }
@@ -86,6 +84,9 @@ $header-margin: 1.5rem;
         white-space: nowrap;
       }
 
+      .td-name {
+        min-width: 15%;
+      }
       .table-icon {
         padding-right: 0.5rem;
         & > div {

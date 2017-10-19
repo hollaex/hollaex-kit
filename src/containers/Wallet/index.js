@@ -3,15 +3,14 @@ import classnames from 'classnames';
 import { connect } from 'react-redux';
 import { IconTitle, CurrencyBall, Button, ActionNotification, Accordion} from '../../components';
 import { ICONS, FLEX_CENTER_CLASSES, CURRENCIES } from '../../config/constants';
-import { calculatePrice, calculateBalancePrice } from '../../utils/currency';
+import { calculatePrice, calculateBalancePrice, generateWalletActionsText } from '../../utils/currency';
 
 const fiatName = CURRENCIES.fiat.name;
-const fiatSymbol = CURRENCIES.fiat.currencySymbol;
+const fiatSymbol = 'fiat';
+const fiatCurrencySymbol = CURRENCIES.fiat.currencySymbol;
 const fiatShortName = CURRENCIES.fiat.shortName;
 const fiatFormatToCurrency = CURRENCIES.fiat.formatToCurrency;
 
-const WALLET_BUTTON_DEPOSIT = `deposit ${fiatName}s`;
-const WALLET_BUTTON_WITHDRAW = 'withdraw';
 const WALLET_BALANCE = 'Balance';
 const WALLET_TRANSFER_HISTORY = 'transfer history';
 const WALLET_TABLE_CURRENCY = 'Currency';
@@ -36,7 +35,7 @@ class Wallet extends Component {
 
   calculateTotalAssets = (balance, prices) => {
     const total = calculateBalancePrice(balance, prices);
-    return `${fiatSymbol}${fiatFormatToCurrency(total)}`;
+    return `${fiatCurrencySymbol}${fiatFormatToCurrency(total)}`;
   }
 
   generateSections = (balance, prices, isOpen = false) => {
@@ -84,14 +83,14 @@ class Wallet extends Component {
         </div>
         <div className="wallet-header_block-amount d-flex">
           <CurrencyBall name={shortName} symbol={symbol} size="m" />
-          <span className="wallet-header_block-amount-value">
+          <div className="wallet-header_block-amount-value d-flex">
             {`${formatToCurrency(balanceValue)}`}
             {symbol !== 'fiat' &&
-              <span className="wallet-header_block-amount-value-fiat">
+              <div className="wallet-header_block-amount-value-fiat d-flex align-items-end">
                 {` ~ $${fiatFormatToCurrency(calculatePrice(balanceValue, price))}`}
-              </span>
+              </div>
             }
-          </span>
+          </div>
         </div>
       </div>
     );
@@ -119,10 +118,10 @@ class Wallet extends Component {
                     <td className="table-icon td-fit">
                       <CurrencyBall name={shortName} symbol={key} size="s" />
                     </td>
-                    <td>{fullName}</td>
+                    <td className="td-name td-fit">{fullName}</td>
                     <td>{`${shortName} ${formatToCurrency(balanceValue)}`}</td>
                     <td className="text-right show-equals">
-                      {`${fiatSymbol}${
+                      {`${fiatCurrencySymbol}${
                         key === fiatSymbol ?
                         fiatFormatToCurrency(balanceValue) :
                         fiatFormatToCurrency(calculatePrice(balanceValue, prices[key]))
@@ -148,6 +147,23 @@ class Wallet extends Component {
     );
   }
 
+  renderButtonsBlock = (symbol) => {
+    const { depositText, withdrawText } = generateWalletActionsText(symbol);
+
+    return (
+      <div className={classnames(...FLEX_CENTER_CLASSES, 'wallet-buttons_action')}>
+        <Button
+          label={depositText}
+          onClick={this.goToDeposit}
+        />
+        <Button
+          label={withdrawText}
+          onClick={this.goToWithdraw}
+        />
+      </div>
+    )
+  }
+
   render() {
     const { symbol, balance, price } = this.props;
     const { sections } = this.state;
@@ -161,16 +177,7 @@ class Wallet extends Component {
         />
         <div className={classnames('wallet-container')}>
           {this.renderWalletHeaderBlock(symbol, price, balance)}
-          <div className={classnames(...FLEX_CENTER_CLASSES, 'wallet-buttons_action')}>
-            <Button
-              label={WALLET_BUTTON_DEPOSIT}
-              onClick={this.goToDeposit}
-            />
-            <Button
-              label={WALLET_BUTTON_WITHDRAW}
-              onClick={this.goToWithdraw}
-            />
-          </div>
+          {this.renderButtonsBlock(symbol)}
           <Accordion
             sections={sections}
             notifyOnOpen={this.notifyOnOpen}

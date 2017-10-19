@@ -17,7 +17,8 @@ export default ({ onSubmitSuccess }) => {
       placeholder: 'Select the category that best suits your issue',
       options: [
         'Verify',
-        'Bug'
+        { value: 'verify', label: 'Verification' },
+        { value: 'bug', label: 'Bug' },
       ],
       validate: [required],
       fullWidth: true,

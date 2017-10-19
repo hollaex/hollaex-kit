@@ -279,9 +279,7 @@ class Container extends Component {
 			<div className={`app_container ${activePath} ${symbol}`}>
 				{!appLoaded && <Loader />}
 				<AppBar
-					title={
-						<div onClick={() => this.props.openContactForm()}>exir-exchange</div>
-					}
+					title="exir-exchange"
 					goToAccountPage={this.goToAccountPage}
 					goToDashboard={this.goToDashboard}
 					acccountIsActive={activePath === 'account'}
