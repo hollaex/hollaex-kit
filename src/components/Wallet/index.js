@@ -20,11 +20,13 @@ class Wallet extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    console.log(nextProps.balance.timestamp, this.props.balance.timestamp)
     if (
       nextProps.user_id !== this.props.user_id ||
       nextProps.price !== this.props.price ||
       nextProps.orders.length !== this.props.orders.length ||
-      nextProps.symbol !== this.props.symbol
+      nextProps.symbol !== this.props.symbol ||
+      nextProps.balance.timestamp !== this.props.balance.timestamp
     ) {
       this.calculateSections(nextProps);
     }

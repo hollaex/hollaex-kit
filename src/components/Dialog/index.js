@@ -1,7 +1,9 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import Modal from 'react-modal';
-import { Button } from '../';
+import { Button, ActionNotification } from '../';
+
+const CLOSE_TEXT = "CLOSE";
 
 class Dialog extends PureComponent {
 
@@ -20,14 +22,24 @@ class Dialog extends PureComponent {
   }
 
   render() {
-    const { isOpen, children, label, closeButton } = this.props;
+    const { isOpen, children, label, closeButton, shouldCloseOnOverlayClick, showCloseText, dialogId } = this.props;
 
     return (
       <Modal
+        id={dialogId}
         isOpen={isOpen}
         contentLabel={label}
         onRequestClose={this.onRequestClose}
+        shouldCloseOnOverlayClick={shouldCloseOnOverlayClick}
       >
+        {!shouldCloseOnOverlayClick && showCloseText &&
+          <ActionNotification
+            text={CLOSE_TEXT}
+            status="information"
+            onClick={this.onRequestClose}
+            className="close-button"
+          />
+        }
         {children}
         {closeButton &&
           <div>
@@ -37,6 +49,11 @@ class Dialog extends PureComponent {
       </Modal>
     );
   }
+}
+
+Dialog.defaultProps = {
+  shouldCloseOnOverlayClick: true,
+  showCloseText: false,
 }
 
 export default Dialog;

@@ -4,7 +4,7 @@ import classnames from 'classnames';
 
 import '@material/button/dist/mdc.button.css';
 
-const Button = ({ label, onClick, type, disabled }) => (
+const Button = ({ label, onClick, type, disabled, className }) => (
   <button
     type={type}
     onClick={onClick}
@@ -14,7 +14,8 @@ const Button = ({ label, onClick, type, disabled }) => (
       'mdc-button--unelevated',
       {
         disabled
-      }
+      },
+      className,
     )}
     disabled={disabled}
   >{label}</button>
@@ -22,6 +23,7 @@ const Button = ({ label, onClick, type, disabled }) => (
 
 Button.propTypes = {
   label: PropTypes.string.isRequired,
+  label: PropTypes.string,
   onClick: PropTypes.func,
   type: PropTypes.string,
   disabled: PropTypes.bool,
@@ -30,6 +32,7 @@ Button.propTypes = {
 Button.defaultProps = {
   type: 'submit',
   disabled: false,
+  className: '',
 }
 
 export default Button;

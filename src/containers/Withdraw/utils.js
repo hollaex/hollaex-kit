@@ -3,6 +3,9 @@ import { ActionNotification } from '../../components';
 import { ICONS, CURRENCIES } from '../../config/constants';
 import { generateWalletActionsText, fiatSymbol } from '../../utils/currency';
 
+const FIAT_SYMBOL = CURRENCIES[fiatSymbol].currencySymbol;
+const FIAT_FORMAT = CURRENCIES[fiatSymbol].formatToCurrency;
+
 const MESSAGE_AVAILABLE = 'Available';
 const MESSAGE_BALANCE = 'Balance';
 const NEED_HELP = 'need help';
@@ -10,6 +13,9 @@ const MESSAGE_1 = 'You can only withdraw to a bank account in a name that matche
 const MESSAGE_2 = 'Withdrawal min amount';
 const MESSAGE_3 = 'Daily withdrawal max amount';
 const MESSAGE_LIMIT = 'Increase your daily limit';
+
+const MESSAGE_FEE_TRANSACTION_1 = 'Transactions fee of';
+const MESSAGE_FEE_TRANSACTION_2 = 'included in withdrawal';
 
 const renderTitle = (symbol) => {
   const { withdrawText } = generateWalletActionsText(symbol, true);
@@ -61,4 +67,10 @@ export const renderInformation = (symbol, balance, openContactForm) => {
       />
     </div>
   );
+}
+
+export const generateFeeMessage = (fee, price, symbol) => {
+  const { shortName, formatToCurrency } = CURRENCIES[symbol];
+  const fiatFee = fee;
+  return `${MESSAGE_FEE_TRANSACTION_1} ${formatToCurrency(fee)} ${shortName} (${FIAT_SYMBOL} ${FIAT_FORMAT(fiatFee)}) ${MESSAGE_FEE_TRANSACTION_2}`;
 }

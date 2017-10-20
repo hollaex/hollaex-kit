@@ -48,7 +48,9 @@ const sortByDate = (a, b) => {
 const INITIAL_STATE = {
 	id: null,
 	email: null,
-	balance: {},
+	balance: {
+		timestamp: Date.now()
+	},
 	crypto_wallet: {},
 	userData: {
 		timestamp: Date.now()
@@ -67,7 +69,22 @@ export default function reducer(state = INITIAL_STATE, action) {
 		case 'SET_ME': {
 			const {id, email, balance, crypto_wallet, verification_level, otp_enabled} = action.payload;
 			const userData = extractuserData(action.payload);
-			return {...state, fetching: false, fetched: true, id, email, balance, crypto_wallet, verification_level, userData, otp_enabled}
+			return {
+				...state,
+				fetching: false,
+				fetched: true,
+				id,
+				email,
+				balance: {
+					...state.balance,
+					...balance,
+					timestamp: Date.now()
+				},
+				crypto_wallet,
+				verification_level,
+				userData,
+				otp_enabled
+			}
 		}
 
 		case 'SET_USER_DATA': {
@@ -80,10 +97,15 @@ export default function reducer(state = INITIAL_STATE, action) {
 				}
 			}
 		}
-		case 'SET_BALANCE': {
-			let balance =  action.payload
-			return {...state, balance}
-		}
+		case 'SET_BALANCE':
+			return {
+				...state,
+				balance: {
+					...state.balance,
+					...action.payload,
+					timestamp: Date.now()
+				}
+			};
 
 		// WITHDRAW
 		case 'PROCESS_WITHDRAW_PENDING': {

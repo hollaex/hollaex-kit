@@ -16,7 +16,7 @@ const FormValues = {
 };
 
 const Form = (props) => {
-  const { handleSubmit, submitting, pristine, error, valid, children } = props;
+  const { handleSubmit, submitting, pristine, error, valid, children, onClickHelp } = props;
   return (
     <div className="otp_form-wrapper">
       <IconTitle
@@ -25,12 +25,14 @@ const Form = (props) => {
       />
       <div className="otp_form-title-wrapper">
         <span className="otp_form-title-text">Enter your authentication code to continue</span>
-        <ActionNotification
-          text="Help"
-          onClick={() => { console.log('I need help')}}
-          iconPath={ICONS.BLUE_QUESTION}
-          status="information"
-        />
+        {onClickHelp &&
+          <ActionNotification
+            text="Help"
+            onClick={onClickHelp}
+            iconPath={ICONS.BLUE_QUESTION}
+            status="information"
+          />
+        }
       </div>
       <form onSubmit={handleSubmit} className="w-100">
         <div className="w-100 otp_form-fields">

@@ -263,6 +263,12 @@ class Container extends Component {
 					onClick={this.onCloseDialog}
 					text={message}
 				/>;
+			case NOTIFICATIONS.ERROR:
+				return <MessageDisplay
+					iconPath={ICONS.RED_WARNING}
+					onClick={this.onCloseDialog}
+					text={message}
+				/>;
 			case CONTACT_FORM:
 				return <ContactForm onSubmitSuccess={this.onCloseDialog} />;
 			default:
@@ -274,6 +280,7 @@ class Container extends Component {
 		const { symbol, children, activeNotification, changeSymbol, notifications } = this.props;
 		const { dialogIsOpen, appLoaded } = this.state;
 
+		const shouldCloseOnOverlayClick = activeNotification.type !== CONTACT_FORM;
 		const activePath = !appLoaded ? '' : this.getClassForActivePath(this.props.location.pathname);
 		return (
 			<div className={`app_container ${activePath} ${symbol}`}>
@@ -305,6 +312,9 @@ class Container extends Component {
 					isOpen={dialogIsOpen}
 					label="exir-modal"
 					onCloseDialog={this.onCloseDialog}
+					shouldCloseOnOverlayClick={shouldCloseOnOverlayClick}
+					showCloseText={!shouldCloseOnOverlayClick}
+					style={{ 'z-index': 100 }}
 				>
 					{this.renderDialogContent(activeNotification)}
 				</Dialog>
