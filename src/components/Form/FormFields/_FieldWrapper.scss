@@ -30,6 +30,10 @@ $valid-icon-size: 2rem;
       }
     }
 
+    .valid > *:not(:last-child) {
+      padding-right: 0;
+    }
+
     input {
       padding-right: 0;
     }

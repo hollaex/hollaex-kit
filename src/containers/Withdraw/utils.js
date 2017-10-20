@@ -1,7 +1,8 @@
 import React from 'react';
-import { ActionNotification } from '../../components';
+import { ActionNotification, Accordion } from '../../components';
 import { ICONS, CURRENCIES } from '../../config/constants';
 import { generateWalletActionsText, fiatSymbol } from '../../utils/currency';
+import DumbField from '../../components/Form/FormFields/DumbField';
 
 const FIAT_SYMBOL = CURRENCIES[fiatSymbol].currencySymbol;
 const FIAT_FORMAT = CURRENCIES[fiatSymbol].formatToCurrency;
@@ -51,6 +52,12 @@ const generateFiatInformation = (currency, limits = {}) => {
   );
 }
 
+export const generateFeeMessage = (fee, price, symbol) => {
+  const { shortName, formatToCurrency } = CURRENCIES[symbol];
+  const fiatFee = fee;
+  return `${MESSAGE_FEE_TRANSACTION_1} ${formatToCurrency(fee)} ${shortName} (${FIAT_SYMBOL} ${FIAT_FORMAT(fiatFee)}) ${MESSAGE_FEE_TRANSACTION_2}`;
+}
+
 export const renderInformation = (symbol, balance, openContactForm) => {
   return (
     <div className="information_block">
@@ -69,8 +76,39 @@ export const renderInformation = (symbol, balance, openContactForm) => {
   );
 }
 
-export const generateFeeMessage = (fee, price, symbol) => {
-  const { shortName, formatToCurrency } = CURRENCIES[symbol];
-  const fiatFee = fee;
-  return `${MESSAGE_FEE_TRANSACTION_1} ${formatToCurrency(fee)} ${shortName} (${FIAT_SYMBOL} ${FIAT_FORMAT(fiatFee)}) ${MESSAGE_FEE_TRANSACTION_2}`;
+const renderBankInformation = ({ bank_name, account_number, account_owner }) => {
+  return (
+    <div className="bank_account-data-wrapper">
+      <DumbField
+        label="Bank Name"
+        value={bank_name}
+      />
+      <DumbField
+        label="Bank Account Owner’s Name"
+        value={account_owner}
+      />
+      <DumbField
+        label="Bank Account Number"
+        value={account_number}
+      />
+    </div>
+  )
 }
+export const renderExtraInformation = (symbol, bank_account) => symbol === fiatSymbol && (
+  <div className="bank_account-information-wrapper">
+    <Accordion
+      sections={[
+        {
+          title: 'Bank to Withdraw to:',
+          content: renderBankInformation(bank_account),
+          notification: {
+            text: 'need help',
+            status: 'information',
+            iconPath: ICONS.BLUE_QUESTION,
+            allowClick: true,
+          }
+        }
+      ]}
+    />
+  </div>
+);

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { reduxForm, formValueSelector, submit, setSubmitFailed, setSubmitSucceeded } from 'redux-form';
+import { reduxForm, formValueSelector, reset } from 'redux-form';
 import math from 'mathjs';
 import { Button, Dialog, OtpForm } from '../../components';
 import renderFields from '../../components/Form/factoryFields';
@@ -17,22 +17,30 @@ import {
 } from './constants';
 import ReviewModalContent from './ReviewModalContent';
 import { performWithdraw } from '../../actions/walletActions';
+import { CURRENCIES } from '../../config/constants';
+import { fiatSymbol } from '../../utils/currency';
 
 const FORM_NAME = 'WithdrawCryptocurrencyForm';
 
 const selector = formValueSelector(FORM_NAME)
 
-const generateFormValues = (symbol, available = 0, fee = 0, minAmount = MIN_VALUE_WITHDRAWAL, maxAmount = MAX_VALUE_WITHDRAWAL) => ({
-  address: {
-    type: 'text',
-    label: 'Destination address:',
-    placeholder: 'Type the address',
-    validate: [required, validAddress(symbol, INVALID_ADDRESS)],
-  },
-  amount: {
+const generateFormValues = (symbol, available = 0, fee = 0, minAmount = MIN_VALUE_WITHDRAWAL, maxAmount = MAX_VALUE_WITHDRAWAL) => {
+  const { name } = CURRENCIES[symbol];
+  const fields = {};
+
+  if (symbol !== fiatSymbol) {
+    fields.address = {
+      type: 'text',
+      label: 'Destination address:',
+      placeholder: 'Type the address',
+      validate: [required, validAddress(symbol, INVALID_ADDRESS)],
+    }
+  }
+
+  fields.amount = {
     type: 'number',
-    label: 'Dollar amount to withdraw',
-    placeholder: 'Type the amount of Dollars you wish to withdraw',
+    label: `${name} amount to withdraw`,
+    placeholder: `Type the amount of ${name} you wish to withdraw`,
     information: fee ? generateFeeMessage(fee) : '',
     min: minAmount,
     max: maxAmount,
@@ -43,16 +51,21 @@ const generateFormValues = (symbol, available = 0, fee = 0, minAmount = MIN_VALU
       maxValue(maxAmount, MAX_VALUE_ERROR),
       checkBalance(available, LOWER_BALANCE, fee)
     ],
-  },
-  otp_code: {
-    type: 'hide',
   }
-});
+
+  return fields;
+};
 
 class Form extends Component {
   state = {
     dialogIsOpen: false,
     dialogOtpOpen: false,
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.symbol !== this.props.symbol) {
+      nextProps.dispatch(reset(FORM_NAME));
+    }
   }
 
   onOpenDialog = (ev) => {
@@ -113,7 +126,7 @@ class Form extends Component {
       data,
       openContactForm
     } = this.props;
-    console.log(this.props)
+
     const { dialogIsOpen, dialogOtpOpen } = this.state;
 
     return (
@@ -163,18 +176,17 @@ const Withdraw = ({
   onSubmit, minAmount, maxAmount, balanceAvailable, fee, symbol, otp_enabled, openContactForm
 }) => {
   const formValues = generateFormValues(symbol, balanceAvailable, fee, minAmount, maxAmount);
-  const initialValues = {
-    amount: minAmount,
+  const formProps = {
+    onSubmit,
+    formValues,
+    symbol,
+    openContactForm,
+    checkOtp: otp_enabled,
   };
 
   return (
     <WithdrawFormWithValues
-      onSubmit={onSubmit}
-      initialValues={initialValues}
-      formValues={formValues}
-      symbol={symbol}
-      checkOtp={otp_enabled}
-      openContactForm={openContactForm}
+      {...formProps}
     />
   );
 }

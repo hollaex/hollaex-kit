@@ -14,21 +14,8 @@ import {
 } from '../../actions/appActions';
 
 import ReviewModalContent from './ReviewModalContent';
-import WithdrawFiat from './Fiat';
-import WithdrawCryptocurrency from './Cryptocurrency';
-import { renderInformation } from './utils';
-
-const renderContent = ({ symbol, ...rest }) => {
-  console.log(rest)
-  return symbol === fiatSymbol ?
-    <WithdrawFiat
-      {...rest}
-    /> :
-    <WithdrawCryptocurrency
-      symbol={symbol}
-      {...rest}
-    />;
-};
+import WithdrawCryptocurrency from './form';
+import { renderInformation, renderExtraInformation } from './utils';
 
 const renderVerificationLevel = () => {
   return (
@@ -49,7 +36,6 @@ class Withdraw extends Component {
   }
 
   onSubmitWithdraw = (values) => {
-    console.log('heeeerssssssssse', values)
     return performWithdraw({
         ...values,
         amount: math.eval(values.amount),
@@ -58,7 +44,7 @@ class Withdraw extends Component {
   }
 
   render() {
-    const { symbol, balance, fee, verification_level = 0, otp_enabled } = this.props;
+    const { symbol, balance, fee, verification_level = 0, otp_enabled, bank_account } = this.props;
     const { dialogIsOpen, dialogData } = this.state;
 
     const balanceAvailable = balance[`${symbol}_available`];
@@ -92,7 +78,10 @@ class Withdraw extends Component {
         />
         <div className={classnames('inner_container', 'with_border_top')}>
           {renderInformation(symbol, balance, this.openContactForm)}
-          {renderContent(formProps)}
+          <WithdrawCryptocurrency
+            {...formProps}
+          />
+          {renderExtraInformation(symbol, bank_account)}
         </div>
       </div>
     );
@@ -106,6 +95,7 @@ const mapStateToProps = (store) => ({
   fee: store.user.fee,
   verification_level: store.user.verification_level,
   otp_enabled: store.user.otp_enabled,
+  bank_account: store.user.userData.bank_account,
 });
 
 const mapDispatchToProps = (dispatch) => ({

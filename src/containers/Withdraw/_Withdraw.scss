@@ -1,6 +1,8 @@
 $crypto-address--padding: 0.25rem;
 $arrow-size: 4px;
 $arrow-color: $colors-main-black;
+$content--margin: 2rem;
+
 .review-wrapper {
 
   .review-icon {
@@ -9,7 +11,7 @@ $arrow-color: $colors-main-black;
   }
 
   .review-info_container {
-    margin: 2rem;
+    margin: $content--margin;
   }
 
   .review-crypto-amount {
@@ -45,4 +47,8 @@ $arrow-color: $colors-main-black;
     padding: 0.5rem;
     font-size: $font-size-subtext;
   }
+}
+
+.bank_account-information-wrapper {
+  margin: $content--margin 0;
 }

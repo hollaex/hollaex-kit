@@ -2,7 +2,15 @@ import React, { Component } from 'react';
 import classnames from 'classnames';
 import { ICONS } from '../../../config/constants';
 
-export const FieldContent = ({ label, valid, hasValue, focused, children, hideUnderline, contentClassName = '' }) => {
+export const FieldContent = ({
+  label = '',
+  valid = false,
+  hasValue = false,
+  focused = false,
+  children,
+  hideUnderline = false,
+  contentClassName = ''
+}) => {
   return (
     <div className={classnames('field-content')}>
       {label && <div className="field-label">{label}</div>}
@@ -35,7 +43,7 @@ class FieldWrapper extends Component {
       customChildren = false,
       label,
       input: { value },
-      meta: { active = false, error, touched = false, invalid },
+      meta: { active = false, error = '', touched = false, invalid = false },
       focused = false,
       fullWidth = false,
       visited = false,
@@ -61,6 +69,13 @@ class FieldWrapper extends Component {
         />
       </div>
     );
+  }
+}
+
+FieldWrapper.defaultProps = {
+  meta: {},
+  input: {
+    value: '',
   }
 }
 
