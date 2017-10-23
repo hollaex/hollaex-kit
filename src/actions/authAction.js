@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { browserHistory } from 'react-router'
 import querystring from 'query-string';
+import { normalizeEmail } from 'validator';
 import store from '../store'
 
 export function signup(data) {
@@ -176,9 +177,10 @@ export function resetPassword(data) {
 }
 
 export function requestResetPassword(email) {
+	const qs = querystring.stringify({ email });
 	return ((dispatch) => {
 		dispatch({ type: 'REQUEST_RESET_PASSWORD_PENDING' });
-		axios.get(`/reset-password?email=${email}`)
+		axios.get(`/reset-password?${qs}`)
 			.then((response) => {
 				dispatch({
 					type: 'REQUEST_RESET_PASSWORD_FULFILLED',
