@@ -48,12 +48,13 @@ class FieldWrapper extends Component {
       fullWidth = false,
       visited = false,
       hideUnderline = false,
+      className = '',
     } = this.props;
 
     const displayError = !(active || focused) && (visited || touched) && error;
     const hasValue = value || value === false;
     return (
-      <div className={classnames('field-wrapper', { error: displayError, inline: !fullWidth })}>
+      <div className={classnames('field-wrapper', { error: displayError, inline: !fullWidth }, className)}>
         <FieldContent
           label={label}
           valid={!invalid}

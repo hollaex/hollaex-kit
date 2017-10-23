@@ -47,6 +47,7 @@ $valid-icon-size: 2rem;
 .field-label {
   margin-bottom: 0.25rem;
   color: $colors-main-black;
+  font-weight: normal;
 }
 
 .field-content {
@@ -128,4 +129,14 @@ $valid-icon-size: 2rem;
 
 .field-error-text {
   padding-left: 0.25rem;
+}
+
+.dumb-field-wrapper {
+  > .field-content > .field-children {
+    padding-left: 0.25rem;
+  }
+
+  .field-children {
+    padding-bottom: 0;
+  }
 }

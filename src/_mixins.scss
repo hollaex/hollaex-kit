@@ -3,6 +3,11 @@
   height: $height;
 }
 
+@mixin size-important($width, $height: $width) {
+  width: $width !important;
+  height: $height !important;
+}
+
 @mixin pseudo($display: block, $pos: absolute, $content: ''){
     content: $content;
     display: $display;

@@ -3,7 +3,8 @@ import classnames from 'classnames';
 import math from 'mathjs';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { IconTitle, Dialog } from '../../components';
+
+import { Dialog } from '../../components';
 import { ICONS, FLEX_CENTER_CLASSES, CURRENCIES } from '../../config/constants';
 import { generateWalletActionsText, fiatSymbol } from '../../utils/currency';
 import { performWithdraw } from '../../actions/walletActions';
@@ -15,24 +16,19 @@ import {
 
 import ReviewModalContent from './ReviewModalContent';
 import WithdrawCryptocurrency from './form';
-import { renderInformation, renderExtraInformation } from './utils';
+import { generateFiatInformation, renderExtraInformation } from './utils';
 
-const renderVerificationLevel = () => {
-  return (
-    <div className="warning_text">
-      You have to provided your data to withdraw money
-    </div>
-  );
-}
+import {
+  renderInformation,
+  renderTitleSection,
+} from '../Wallet/components';
+
+const renderChildren = (formProps) => <WithdrawCryptocurrency {...formProps} />;
 
 class Withdraw extends Component {
   state = {
     dialogIsOpen: false,
     dialogData: {},
-  }
-
-  openContactForm = () => {
-    this.props.openContactForm();
   }
 
   onSubmitWithdraw = (values) => {
@@ -44,7 +40,7 @@ class Withdraw extends Component {
   }
 
   render() {
-    const { symbol, balance, fee, verification_level = 0, otp_enabled, bank_account } = this.props;
+    const { symbol, balance, fee, verification_level = 0, otp_enabled, bank_account, openContactForm } = this.props;
     const { dialogIsOpen, dialogData } = this.state;
 
     const balanceAvailable = balance[`${symbol}_available`];
@@ -53,34 +49,25 @@ class Withdraw extends Component {
       return <div></div>
     };
 
-    const { withdrawText } = generateWalletActionsText(symbol);
-
     const formProps = {
       symbol,
       minAmount: 2,
       maxAmount: 10000,
-      // balanceAvailable: balance[`${symbol}_available`],
       balanceAvailable,
       fee,
       onSubmit: this.onSubmitWithdraw,
       verification_level,
       onOpenDialog: this.onOpenDialog,
       otp_enabled,
-      openContactForm: this.openContactForm
+      openContactForm,
     };
 
     return (
       <div className="presentation_container">
-        <IconTitle
-          text={withdrawText}
-          iconPath={ICONS.LETTER}
-          textType="title"
-        />
+        {renderTitleSection(symbol, 'withdraw', ICONS.LETTER)}
         <div className={classnames('inner_container', 'with_border_top')}>
-          {renderInformation(symbol, balance, this.openContactForm)}
-          <WithdrawCryptocurrency
-            {...formProps}
-          />
+          {renderInformation(symbol, balance, openContactForm, generateFiatInformation)}
+          {renderChildren(formProps)}
           {renderExtraInformation(symbol, bank_account)}
         </div>
       </div>
@@ -100,7 +87,6 @@ const mapStateToProps = (store) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   openContactForm: bindActionCreators(openContactForm, dispatch),
-
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Withdraw);
