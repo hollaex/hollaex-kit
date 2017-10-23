@@ -7,6 +7,7 @@ import { CURRENCIES } from '../../config/constants';
 import {
   renderBankInformation,
   renderDumbField,
+  renderCopy,
 } from '../Wallet/components';
 
 import {
@@ -32,7 +33,7 @@ export const generateFiatInformation = () => (
 const renderBTCContent = (label = '', address = '') => address ? (
   <div className="deposit_info-wrapper d-flex align-items-center">
     <div className="deposit_info-crypto-wrapper">
-      {renderDumbField({ label, value: address, fullWidth: true })}
+      {renderDumbField({ label, value: address, fullWidth: true, allowCopy: true })}
     </div>
     <div className="deposit_info-qr-wrapper d-flex align-items-center justify-content-center">
       <div className="qr_code-wrapper d-flex flex-column">

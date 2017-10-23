@@ -21,6 +21,7 @@
     "query-string": "^5.0.0",
     "react": "^16.0.0",
     "react-addons-shallow-compare": "^15.6.2",
+    "react-copy-to-clipboard": "^5.0.1",
     "react-dates": "^13.0.6",
     "react-dom": "^16.0.0",
     "react-draggable": "^2.2.6",

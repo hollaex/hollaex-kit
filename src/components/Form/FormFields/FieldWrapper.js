@@ -9,7 +9,7 @@ export const FieldContent = ({
   focused = false,
   children,
   hideUnderline = false,
-  contentClassName = ''
+  contentClassName = '',
 }) => {
   return (
     <div className={classnames('field-content')}>

@@ -17,9 +17,9 @@ export const renderDumbField = (data) => <DumbField {...data} />;
 
 export const renderBankInformation = ({ bank_name, account_number, account_owner }) => {
   const fields = [
-    { label: TEXT_BANK_NAME, value: bank_name },
-    { label: TEXT_ACCOUNT_OWNER, value: account_number },
-    { label: TEXT_ACCOUNT_NUMBER, value: account_owner },
+    { label: TEXT_BANK_NAME, value: bank_name, key: 'bank_name', allowCopy: true },
+    { label: TEXT_ACCOUNT_OWNER, value: account_owner, key: 'account_owner', allowCopy: true },
+    { label: TEXT_ACCOUNT_NUMBER, value: account_number, key: 'account_number', allowCopy: true },
   ];
 
   return (
