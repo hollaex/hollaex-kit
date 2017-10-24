@@ -95,6 +95,9 @@ class Table extends Component{
     const { headers } = this.props;
     const { data, page, pageSize } = this.state;
     const count = this.props.count || this.props.data.length;
+    if (count === 0) {
+      return <div className="d-flex justify-content-center align-items-center">NO DATA</div>;
+    }
     return (
       <div className="table_container">
         <table className={classnames('table-wrapper')}>

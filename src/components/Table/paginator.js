@@ -7,7 +7,9 @@ const TEXT_PREVIOUS_PAGE = 'previous page';
 const TEXT_NEXT_PAGE = 'next page';
 
 const renderPageCount = (currentPage, totalPages) => {
-  return <div>{currentPage} / {totalPages}</div>;
+  if (totalPages > 0) {
+    return <div>{currentPage} / {totalPages}</div>;
+  }
 }
 
 const Paginator = ({ goToPreviousPage, goToNextPage, currentPage, count, pageSize }) => {

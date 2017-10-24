@@ -34,6 +34,9 @@ class TransactionsHistory extends Component {
   generateHeaders(symbol) {
     this.props.getUserTrades(symbol);
     this.setState({ headers: generateHeaders(symbol) });
+    this.setState({ headers: {
+      trades: generateHeaders(symbol),
+    }});
   }
 
   renderContent = ({ data, count, loading }, headers) => {
@@ -50,6 +53,34 @@ class TransactionsHistory extends Component {
       />
     );
   }
+
+  renderExportToCsv = (headers, data, filename) => {
+    return (
+      <CsvDownload
+        data={data}
+        headers={headers}
+        filename={filename}
+      >
+        <ActionNotification
+          text={TEXT_DOWNLOAD}
+          iconPath={ICONS.LETTER}
+        />
+      </CsvDownload>
+    );
+  }
+
+  renderBlock = (symbol, title, headers, data) => (
+    <div>
+      <div className="title text-capitalize">
+        {title}
+        {data.count > 0 && this.renderExportToCsv(headers, data.data, `${symbol}-transactions_history`)}
+      </div>
+      {symbol === fiatSymbol ?
+        <div>No trades for {fiatSymbol}</div> :
+        this.renderContent(data, headers)
+      }
+    </div>
+  )
 
   render() {
     const { id, trades, symbol } = this.props;
@@ -69,23 +100,7 @@ class TransactionsHistory extends Component {
           textType="title"
         />
         <div className={classnames('inner_container', 'with_border_top')}>
-          <div className="title text-capitalize">
-            {`${name} ${TITLE}`}
-            <CsvDownload
-              data={trades.data}
-              headers={headers}
-              filename={`${symbol}-transactions_history`}
-            >
-              <ActionNotification
-                text={TEXT_DOWNLOAD}
-                iconPath={ICONS.LETTER}
-              />
-            </CsvDownload>
-          </div>
-          {symbol === fiatSymbol ?
-            <div>No trades for {fiatSymbol}</div> :
-            this.renderContent(trades, headers)
-          }
+          {this.renderBlock(symbol, `${name} ${TITLE}`, headers.trades, trades)}
         </div>
       </div>
     )
