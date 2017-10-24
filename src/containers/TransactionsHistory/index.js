@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { getUserTrades } from '../../actions/walletActions';
 import { fiatSymbol } from '../../utils/currency';
 
-import { ActionNotification, IconTitle, Table } from '../../components';
+import { ActionNotification, IconTitle, Table, CsvDownload } from '../../components';
 import { ICONS, FLEX_CENTER_CLASSES, CURRENCIES } from '../../config/constants';
 
 import {
@@ -71,10 +71,16 @@ class TransactionsHistory extends Component {
         <div className={classnames('inner_container', 'with_border_top')}>
           <div className="title text-capitalize">
             {`${name} ${TITLE}`}
-            <ActionNotification
-              text={TEXT_DOWNLOAD}
-              iconPath={ICONS.LETTER}
-            />
+            <CsvDownload
+              data={trades.data}
+              headers={headers}
+              filename={`${symbol}-transactions_history`}
+            >
+              <ActionNotification
+                text={TEXT_DOWNLOAD}
+                iconPath={ICONS.LETTER}
+              />
+            </CsvDownload>
           </div>
           {symbol === fiatSymbol ?
             <div>No trades for {fiatSymbol}</div> :

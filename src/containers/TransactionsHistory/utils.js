@@ -31,6 +31,8 @@ export const generateHeaders = (symbol) => {
     {
       label: 'SIDE',
       key: 'side',
+      exportToCsv: true,
+      exportToCsv: (value) => value,
       renderCell: ({ side = '' }, key, index) => {
         return (
           <td key={index} className={classnames('cell_box-type')}>
@@ -42,6 +44,7 @@ export const generateHeaders = (symbol) => {
     {
       label: 'SIZE',
       key: 'size',
+      exportToCsv: (size) => `${formatToCurrency(size)} ${shortName}`,
       renderCell: ({ size = 0 }, key, index) => {
         return (
           <td key={index}>{`${formatToCurrency(size)} ${shortName}`}</td>
@@ -51,6 +54,7 @@ export const generateHeaders = (symbol) => {
     {
       label: 'PRICE',
       key: 'price',
+      exportToCsv: (price) => `${fiatCurrencySymbol} ${fiatFormatToCurrency(price)}`,
       renderCell: ({ price = 0 }, key, index) => {
         return <td key={index}>{`${fiatCurrencySymbol} ${fiatFormatToCurrency(price)}`}</td>
       },
@@ -58,6 +62,7 @@ export const generateHeaders = (symbol) => {
     {
       label: 'Fee',
       key: 'fee',
+      exportToCsv: (value) => value,
       renderCell: ({ fee = 0 }, key, index) => {
         return <td key={index}>{fee}</td>
       },
@@ -65,6 +70,7 @@ export const generateHeaders = (symbol) => {
     {
       label: 'Time',
       key: 'timestamp',
+      exportToCsv: (value) => value,
       renderCell: ({ timestamp = '' }, key, index) => {
         return <td key={index}>{formatTimestamp(timestamp)}</td>;
       },
