@@ -24,12 +24,12 @@ export const generateHeaders = (symbol) => {
       ),
     },
     {
-      label: 'CURRENCY',
+      label: 'Currency',
       key: 'currency',
       renderCell: (data, key, index) => <td key={index}>{fullName}</td>,
     },
     {
-      label: 'SIDE',
+      label: 'Type',
       key: 'side',
       exportToCsv: true,
       exportToCsv: (value) => value,
@@ -42,7 +42,7 @@ export const generateHeaders = (symbol) => {
       },
     },
     {
-      label: 'SIZE',
+      label: 'Size',
       key: 'size',
       exportToCsv: (size) => `${formatToCurrency(size)} ${shortName}`,
       renderCell: ({ size = 0 }, key, index) => {
@@ -52,7 +52,7 @@ export const generateHeaders = (symbol) => {
       },
     },
     {
-      label: 'PRICE',
+      label: 'Price',
       key: 'price',
       exportToCsv: (price) => `${fiatCurrencySymbol} ${fiatFormatToCurrency(price)}`,
       renderCell: ({ price = 0 }, key, index) => {

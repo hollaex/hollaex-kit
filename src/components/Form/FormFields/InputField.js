@@ -13,6 +13,7 @@ const InputField = (props) => {
     meta: { touched, invalid, error, active },
     onClick,
     fullWidth = false,
+    information,
     ...rest,
   } = props;
   const displayError = touched && error && !active;

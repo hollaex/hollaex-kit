@@ -1,3 +1,5 @@
+import { ACTION_KEYS } from '../actions/walletActions';
+
 const INITIAL_API_OBJECT = {
 	data: [],
 	count: 0,
@@ -22,7 +24,7 @@ const INITIAL_STATE = {
 export default function reducer(state = INITIAL_STATE, { type, payload }) {
 	switch(type) {
 		// USER_TRADES
-		case 'USER_TRADES_PENDING': {
+		case ACTION_KEYS.USER_TRADES_PENDING: {
       const { page = 1 } = payload;
       const data = page > 1 ? state.trades.data : INITIAL_API_OBJECT.data;
 			return {
@@ -34,7 +36,7 @@ export default function reducer(state = INITIAL_STATE, { type, payload }) {
         },
       }
     }
-		case 'USER_TRADES_REJECTED':
+		case ACTION_KEYS.USER_TRADES_REJECTED:
       return {
         ...state,
         trades: {
@@ -44,7 +46,7 @@ export default function reducer(state = INITIAL_STATE, { type, payload }) {
           error: payload,
         },
       }
-		case 'USER_TRADES_FULFILLED':
+		case ACTION_KEYS.USER_TRADES_FULFILLED:
       return {
         ...state,
         trades: {
@@ -56,7 +58,7 @@ export default function reducer(state = INITIAL_STATE, { type, payload }) {
         },
       }
 
-		case 'ADD_USER_TRADES': {
+		case ACTION_KEYS.ADD_USER_TRADES: {
 			// check if we have trades from DB
 			if (state.trades.count > 0) {
 				return {
@@ -67,8 +69,6 @@ export default function reducer(state = INITIAL_STATE, { type, payload }) {
 					}
 				}
 			}
-
-			break;
 		}
 		// // USER_DEPOSITS
 		// case 'USER_DEPOSITS_PENDING': {

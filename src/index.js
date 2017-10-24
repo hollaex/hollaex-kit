@@ -1,6 +1,7 @@
 import React from 'react';
 import { Provider } from 'react-redux';
-import { render } from 'react-snapshot';
+import { render } from 'react-dom';
+// import { render } from 'react-snapshot';
 import { Router, browserHistory } from 'react-router';
 import './config/initialize';
 

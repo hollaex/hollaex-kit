@@ -49,8 +49,9 @@ class FieldWrapper extends Component {
       visited = false,
       hideUnderline = false,
       className = '',
+      information,
     } = this.props;
-
+    
     const displayError = !(active || focused) && (visited || touched) && error;
     const hasValue = value || value === false;
     return (

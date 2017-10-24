@@ -12,7 +12,7 @@ const fiatShortName = CURRENCIES.fiat.shortName;
 const fiatFormatToCurrency = CURRENCIES.fiat.formatToCurrency;
 
 const WALLET_BALANCE = 'Balance';
-const WALLET_TRANSFER_HISTORY = 'transactions history';
+const WALLET_TRANSACTIONS_HISTORY = 'transactions history';
 const WALLET_TABLE_CURRENCY = 'Currency';
 const WALLET_TABLE_AMOUNT = 'Amount';
 const WALLET_TABLE_AMOUNT_IN_USD = `Amount in ${fiatShortName}`;
@@ -61,7 +61,7 @@ class Wallet extends Component {
   }
   goToDeposit = () => this.goToPage('deposit');
   goToWithdraw = () => this.goToPage('withdraw');
-  goToTransferHistory = () => this.goToPage('transfers');
+  goToTransactionsHistory = () => this.goToPage('transactions');
 
   notifyOnOpen = (index, isOpen) => {
     this.generateSections(this.props.balance, this.props.prices, isOpen);
@@ -75,10 +75,10 @@ class Wallet extends Component {
         <div className="wallet-header_block-currency_title">
           {`${fullName} ${WALLET_BALANCE}:`}
           <ActionNotification
-            text={WALLET_TRANSFER_HISTORY}
+            text={WALLET_TRANSACTIONS_HISTORY}
             status="information"
             iconPath={ICONS.BLUE_CLIP}
-            onClick={this.goToTransferHistory}
+            onClick={this.goToTransactionsHistory}
           />
         </div>
         <div className="wallet-header_block-amount d-flex">
