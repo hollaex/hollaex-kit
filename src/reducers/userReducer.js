@@ -10,11 +10,6 @@ const USER_DATA_KEYS = [
 	'bank_account',
 ];
 
-const INITIAL_API_OBJECT = {
-	data: [],
-	count: 0,
-};
-
 const INITIAL_OTP_OBJECT = {
 	requesting: false,
 	requested: false,
@@ -59,7 +54,6 @@ const INITIAL_STATE = {
 	fee: 0,
 	verification_level: 0,
 	otp_enabled: false,
-	trades: INITIAL_API_OBJECT,
 	otp: INITIAL_OTP_OBJECT
 };
 
@@ -138,51 +132,6 @@ export default function reducer(state = INITIAL_STATE, action) {
 			return {...state, fetching: false, fetched: true, userData:action.payload.data}
 		}
 
-		// USER_TRADES
-		case 'USER_TRADES_PENDING': {
-			return {...state, fetching: true, fetched: false, error: null, trades: INITIAL_API_OBJECT}
-		}
-		case 'USER_TRADES_REJECTED': {
-			return {...state, fetching: false, error: action.payload}
-		}
-		case 'USER_TRADES_FULFILLED': {
-			return {...state, fetching: false, trades: { count: action.payload.count, data: state.trades.data.concat(action.payload.data).sort(sortByDate)}}
-		}
-
-		case 'ADD_TRADES': {
-			// check if we have trades from DB
-			if (state.trades.count > 0) {
-				return {
-					...state,
-					trades: {
-						count: state.trades.count + action.payload.length,
-						data: state.trades.data.concat(action.payload).sort(sortByDate)
-					}
-				}
-			}
-
-			break;
-		}
-		// USER_DEPOSITS
-		case 'USER_DEPOSITS_PENDING': {
-			return {...state, fetching: true, fetched: false, error: null}
-		}
-		case 'USER_DEPOSITS_REJECTED': {
-			return {...state, fetching: false,error: action.payload.response}
-		}
-		case 'USER_DEPOSITS_FULFILLED': {
-			return {...state, fetching: false,deposits: action.payload.data}
-		}
-		// USER_WITHDRAWALS
-		case 'USER_WITHDRAWALS_PENDING': {
-			return {...state, fetching: true, fetched: false, error: null}
-		}
-		case 'USER_WITHDRAWALS_REJECTED': {
-			return {...state, fetching: false,error: action.payload.response}
-		}
-		case 'USER_WITHDRAWALS_FULFILLED': {
-			return {...state, fetching: false,  withdrawals: action.payload.data}
-		}
 		// REQUEST_OTP
 		case 'REQUEST_OTP_PENDING':
 			return {

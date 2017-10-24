@@ -5,7 +5,8 @@ import io from 'socket.io-client';
 import { WS_URL, ICONS, SESSION_TIME } from '../../config/constants';
 
 import { logout } from '../../actions/authAction';
-import { setMe, setBalance, addTrades as addUserTrades, updateUser } from '../../actions/userAction';
+import { setMe, setBalance, updateUser } from '../../actions/userAction';
+import { addUserTrades } from '../../actions/walletActions';
 import { setUserOrders, addOrder, updateOrder, removeOrder } from '../../actions/orderAction';
 import { setOrderbook, addTrades, changeSymbol } from '../../actions/orderbookAction';
 import {

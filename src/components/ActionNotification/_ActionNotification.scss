@@ -2,10 +2,9 @@
 
 .action_notification-wrapper {
   position: absolute;
-  right: 0;
   top: 0.25rem;
   display: flex;
-  justify-content: center;
+  // justify-content: center;
   align-items: center;
 
   .info {
@@ -13,7 +12,7 @@
   }
 
   .warning {
-    color: $colors-notification-red;
+    color: $colors-notifications-red;
   }
 
   .success {
@@ -28,6 +27,32 @@
   .action_notification-image {
     width: 1rem;
     height: 1rem;
-    margin-left: 0.25rem;
+
+    &.reverse {
+      transform: rotate(180deg);
+    }
+  }
+
+  &.left {
+    left: 0;
+  }
+  &.right {
+    right: 0;
+  }
+
+  &.icon_on-right {
+    flex-direction: row;
+    .action_notification-image {
+      margin-left: 0.25rem;
+      margin-right: 0;
+    }
+  }
+
+  &.icon_on-left {
+    flex-direction: row-reverse;
+    .action_notification-image {
+      margin-right: 0.25rem;
+      margin-left: 0;
+    }
   }
 }

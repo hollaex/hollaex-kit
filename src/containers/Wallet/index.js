@@ -12,7 +12,7 @@ const fiatShortName = CURRENCIES.fiat.shortName;
 const fiatFormatToCurrency = CURRENCIES.fiat.formatToCurrency;
 
 const WALLET_BALANCE = 'Balance';
-const WALLET_TRANSFER_HISTORY = 'transfer history';
+const WALLET_TRANSFER_HISTORY = 'transactions history';
 const WALLET_TABLE_CURRENCY = 'Currency';
 const WALLET_TABLE_AMOUNT = 'Amount';
 const WALLET_TABLE_AMOUNT_IN_USD = `Amount in ${fiatShortName}`;

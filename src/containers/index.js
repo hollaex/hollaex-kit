@@ -7,6 +7,6 @@ export { default as Account } from './Account';
 export { default as Wallet } from './Wallet';
 export { default as Deposit } from './Deposit';
 export { default as Withdraw } from './Withdraw';
-export { default as TransferHistory } from './TransferHistory';
+export { default as TransactionsHistory } from './TransactionsHistory';
 export { default as Login } from './Login';
 export { default as Home } from './Home';

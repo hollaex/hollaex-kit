@@ -66,6 +66,8 @@ class Login extends Component {
           isOpen={otpDialogIsOpen}
           label="otp-modal"
           onCloseDialog={this.onCloseDialog}
+          shouldCloseOnOverlayClick={false}
+          showCloseText={true}
         >
           <OtpForm onSubmit={this.onSubmitLoginOtp} />
         </Dialog>

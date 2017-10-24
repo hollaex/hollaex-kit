@@ -158,44 +158,6 @@ export function uploadFile(data) {
 	})
 }
 
-export function addTrades(trades) {
-	return {
-		type: 'ADD_TRADES',
-		payload: trades,
-	}
-};
-
-export function userTrades(limit = 100, page = 1) {
-	const query = querystring.stringify({
-		symbol: 'btc',
-		page,
-		limit,
-	});
-
-	return ((dispatch) => {
-		dispatch({ type: 'USER_TRADES_PENDING' });
-		axios.get(`/user/trades?${query}`)
-			.then((body) => {
-				dispatch({
-				    type: 'USER_TRADES_FULFILLED',
-				    payload: body.data,
-				});
-				if (body.data.count > page * limit) {
-					dispatch(userTrades(limit, page + 1));
-				}
-			})
-			.catch((err) => {
-				dispatch({
-				    type: 'USER_TRADES_REJECTED',
-				    payload: err.response
-				});
-			})
-	});
-	return {
-		type: 'USER_TRADES',
-		payload: axios.get('/user/trades'),
-	}
-}
 export function userDeposits() {
 	return {
 		type: 'USER_DEPOSITS',

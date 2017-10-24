@@ -1,0 +1,35 @@
+.icon-cell {
+  width: 3rem;
+
+  > div {
+    margin: auto;
+  }
+}
+
+.cell_box-type {
+  color: white;
+  text-transform: capitalize;
+  
+  > div {
+    padding: 0.15rem 0.25rem;
+    margin-right: 0.5rem;
+  }
+
+  .withdraw, .sell {
+    background-color: $colors-notifications-red;
+  }
+
+  .deposit, .buy {
+    background-color: $colors-notifications-green;
+  }
+}
+
+.amount_text {
+  .positive {
+    color: $colors-notifications-green;
+
+  }
+  .negative {
+    color: $colors-notifications-red;
+  }
+}

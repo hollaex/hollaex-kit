@@ -35,7 +35,7 @@ body {
 }
 
 .warning_text {
-  color: $colors-notification-red;
+  color: $colors-notifications-red;
 }
 
 .ReactModal__Body--open #root {
@@ -83,6 +83,7 @@ body {
 @import './containers/Wallet/Wallet';
 @import './containers/Withdraw/Withdraw';
 @import './containers/Deposit/Deposit';
+@import './containers/TransactionsHistory/TransactionsHistory';
 
 @import './components/Sidebar/Sidebar';
 @import './components/Footer/Footer';
@@ -100,3 +101,4 @@ body {
 @import './components/OtpForm/OtpForm';
 @import './components/Loader/Loader';
 @import './components/CurrencyBall/CurrencyBall';
+@import './components/Table/Table';
