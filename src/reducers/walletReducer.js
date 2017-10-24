@@ -70,26 +70,77 @@ export default function reducer(state = INITIAL_STATE, { type, payload }) {
 				}
 			}
 		}
-		// // USER_DEPOSITS
-		// case 'USER_DEPOSITS_PENDING': {
-		// 	return {...state, fetching: true, fetched: false, error: null}
-		// }
-		// case 'USER_DEPOSITS_REJECTED': {
-		// 	return {...state, fetching: false,error: action.payload.response}
-		// }
-		// case 'USER_DEPOSITS_FULFILLED': {
-		// 	return {...state, fetching: false,deposits: action.payload.data}
-		// }
-		// // USER_WITHDRAWALS
-		// case 'USER_WITHDRAWALS_PENDING': {
-		// 	return {...state, fetching: true, fetched: false, error: null}
-		// }
-		// case 'USER_WITHDRAWALS_REJECTED': {
-		// 	return {...state, fetching: false,error: action.payload.response}
-		// }
-		// case 'USER_WITHDRAWALS_FULFILLED': {
-		// 	return {...state, fetching: false,  withdrawals: action.payload.data}
-		// }
+
+
+		// USER_TRADES
+		case ACTION_KEYS.USER_DEPOSITS_PENDING: {
+	    const { page = 1 } = payload;
+	    const data = page > 1 ? state.deposits.data : INITIAL_API_OBJECT.data;
+			return {
+	      ...state,
+	      deposits: {
+	        ...INITIAL_API_OBJECT,
+	        loading: true,
+	        data,
+	      },
+	    }
+	  }
+		case ACTION_KEYS.USER_DEPOSITS_REJECTED:
+	    return {
+	      ...state,
+	      deposits: {
+	        ...INITIAL_API_OBJECT,
+	        loading: false,
+	        fetched: true,
+	        error: payload,
+	      },
+	    }
+		case ACTION_KEYS.USER_DEPOSITS_FULFILLED:
+	    return {
+	      ...state,
+	      deposits: {
+	        ...INITIAL_API_OBJECT,
+	        loading: false,
+	        fetched: true,
+	        count: payload.count,
+	        data: joinData(state.deposits.data, payload.data)
+	      },
+	    }
+
+		// USER_TRADES
+		case ACTION_KEYS.USER_WITHDRAWALS_PENDING: {
+	    const { page = 1 } = payload;
+	    const data = page > 1 ? state.withdrawals.data : INITIAL_API_OBJECT.data;
+			return {
+	      ...state,
+	      withdrawals: {
+	        ...INITIAL_API_OBJECT,
+	        loading: true,
+	        data,
+	      },
+	    }
+	  }
+		case ACTION_KEYS.USER_WITHDRAWALS_REJECTED:
+	    return {
+	      ...state,
+	      withdrawals: {
+	        ...INITIAL_API_OBJECT,
+	        loading: false,
+	        fetched: true,
+	        error: payload,
+	      },
+	    }
+		case ACTION_KEYS.USER_WITHDRAWALS_FULFILLED:
+	    return {
+	      ...state,
+	      withdrawals: {
+	        ...INITIAL_API_OBJECT,
+	        loading: false,
+	        fetched: true,
+	        count: payload.count,
+	        data: joinData(state.withdrawals.data, payload.data)
+	      },
+	    }
 
 		case 'LOGOUT':
 			return INITIAL_STATE;

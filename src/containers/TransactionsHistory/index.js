@@ -2,17 +2,18 @@ import React, { Component } from 'react';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
 
-import { getUserTrades } from '../../actions/walletActions';
+import { getUserTrades, getUserDeposits, getUserWithdrawals } from '../../actions/walletActions';
 import { fiatSymbol } from '../../utils/currency';
 
 import { ActionNotification, IconTitle, Table, CsvDownload } from '../../components';
 import { ICONS, FLEX_CENTER_CLASSES, CURRENCIES } from '../../config/constants';
 
 import {
-  TITLE, TEXT_DOWNLOAD
+  TITLE, TEXT_DOWNLOAD,
+  TITLE_TRADES, TITLE_DEPOSITS, TITLE_WITHDRAWAlS,
 } from './constants';
 
-import { generateHeaders } from './utils';
+import { generateTradeHeaders, generateDepositsHeaders, generateWithdrawalsHeaders } from './utils';
 
 class TransactionsHistory extends Component {
   state = {
@@ -33,9 +34,12 @@ class TransactionsHistory extends Component {
 
   generateHeaders(symbol) {
     this.props.getUserTrades(symbol);
-    this.setState({ headers: generateHeaders(symbol) });
+    this.props.getUserDeposits(symbol);
+    this.props.getUserWithdrawals(symbol);
     this.setState({ headers: {
-      trades: generateHeaders(symbol),
+      trades: generateTradeHeaders(symbol),
+      deposits: generateDepositsHeaders(symbol),
+      withdrawals: generateWithdrawalsHeaders(symbol),
     }});
   }
 
@@ -83,7 +87,7 @@ class TransactionsHistory extends Component {
   )
 
   render() {
-    const { id, trades, symbol } = this.props;
+    const { id, trades, deposits, withdrawals, symbol } = this.props;
     const { headers } = this.state;
 
     if (!id) {
@@ -100,7 +104,9 @@ class TransactionsHistory extends Component {
           textType="title"
         />
         <div className={classnames('inner_container', 'with_border_top')}>
-          {this.renderBlock(symbol, `${name} ${TITLE}`, headers.trades, trades)}
+          {this.renderBlock(symbol, `${name} ${TITLE_TRADES}`, headers.trades, trades)}
+          {this.renderBlock(symbol, TITLE_DEPOSITS, headers.deposits, deposits)}
+          {this.renderBlock(symbol, TITLE_WITHDRAWAlS, headers.withdrawals, withdrawals)}
         </div>
       </div>
     )
@@ -110,11 +116,15 @@ class TransactionsHistory extends Component {
 const mapStateToProps = (store) => ({
   id: store.user.id,
   trades: store.wallet.trades,
+  deposits: store.wallet.deposits,
+  withdrawals: store.wallet.withdrawals,
   symbol: store.orderbook.symbol,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   getUserTrades: (symbol) => dispatch(getUserTrades({ symbol })),
+  getUserDeposits: (symbol) => dispatch(getUserDeposits({ symbol })),
+  getUserWithdrawals: (symbol) => dispatch(getUserWithdrawals({ symbol })),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(TransactionsHistory);

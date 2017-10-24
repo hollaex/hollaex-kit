@@ -62,3 +62,56 @@ export const getUserTrades = ({ symbol = 'btc', limit = 100, page = 1, ...rest }
 	});
 }
 
+export const getUserDeposits = ({ limit = 100, page = 1, ...rest }) => {
+	const query = querystring.stringify({
+		page,
+		limit,
+	});
+
+  return ((dispatch) => {
+		dispatch({ type: ACTION_KEYS.USER_DEPOSITS_PENDING, payload: { page } });
+		axios.get(`${ENDPOINTS.DEPOSITS}?${query}`)
+			.then((body) => {
+				dispatch({
+				    type: ACTION_KEYS.USER_DEPOSITS_FULFILLED,
+				    payload: body.data,
+				});
+				if (body.data.count > page * limit) {
+					dispatch(getUserDeposits({ limit, page: page + 1 }));
+				}
+			})
+			.catch((err) => {
+				dispatch({
+				    type: ACTION_KEYS.USER_DEPOSITS_REJECTED,
+				    payload: err.response
+				});
+			})
+	});
+}
+
+export const getUserWithdrawals = ({ limit = 100, page = 1, ...rest }) => {
+	const query = querystring.stringify({
+		page,
+		limit,
+	});
+
+  return ((dispatch) => {
+		dispatch({ type: ACTION_KEYS.USER_WITHDRAWALS_PENDING, payload: { page } });
+		axios.get(`${ENDPOINTS.WITHDRAWALS}?${query}`)
+			.then((body) => {
+				dispatch({
+				    type: ACTION_KEYS.USER_WITHDRAWALS_FULFILLED,
+				    payload: body.data,
+				});
+				if (body.data.count > page * limit) {
+					dispatch(getUserWithdrawals({ limit, page: page + 1 }));
+				}
+			})
+			.catch((err) => {
+				dispatch({
+				    type: ACTION_KEYS.USER_WITHDRAWALS_REJECTED,
+				    payload: err.response
+				});
+			})
+	});
+}
