@@ -26,13 +26,14 @@ export const generateTradeHeaders = (symbol) => {
     {
       label: 'Currency',
       key: 'currency',
+      exportToCsv: () => fullName,
       renderCell: (data, key, index) => <td key={index}>{fullName}</td>,
     },
     {
       label: 'Type',
       key: 'side',
       exportToCsv: true,
-      exportToCsv: (value) => value,
+      exportToCsv: ({ side = '' }) => side,
       renderCell: ({ side = '' }, key, index) => {
         return (
           <td key={index} className={classnames('cell_box-type')}>
@@ -44,7 +45,7 @@ export const generateTradeHeaders = (symbol) => {
     {
       label: 'Size',
       key: 'size',
-      exportToCsv: (size) => `${formatToCurrency(size)} ${shortName}`,
+      exportToCsv: ({ size = 0 }) => `${formatToCurrency(size)} ${shortName}`,
       renderCell: ({ size = 0 }, key, index) => {
         return (
           <td key={index}>{`${formatToCurrency(size)} ${shortName}`}</td>
@@ -54,7 +55,7 @@ export const generateTradeHeaders = (symbol) => {
     {
       label: 'Price',
       key: 'price',
-      exportToCsv: (price) => `${fiatCurrencySymbol} ${fiatFormatToCurrency(price)}`,
+      exportToCsv: ({ price = 0}) => `${fiatCurrencySymbol} ${fiatFormatToCurrency(price)}`,
       renderCell: ({ price = 0 }, key, index) => {
         return <td key={index}>{`${fiatCurrencySymbol} ${fiatFormatToCurrency(price)}`}</td>
       },
@@ -62,7 +63,7 @@ export const generateTradeHeaders = (symbol) => {
     {
       label: 'Fee',
       key: 'fee',
-      exportToCsv: (value) => value,
+      exportToCsv: ({ fee = 0 }) => fee,
       renderCell: ({ fee = 0 }, key, index) => {
         return <td key={index}>{fee}</td>
       },
@@ -70,7 +71,7 @@ export const generateTradeHeaders = (symbol) => {
     {
       label: 'Time',
       key: 'timestamp',
-      exportToCsv: (value) => value,
+      exportToCsv: ({ timestamp = '' }) => timestamp,
       renderCell: ({ timestamp = '' }, key, index) => {
         return <td key={index}>{formatTimestamp(timestamp)}</td>;
       },
@@ -96,7 +97,7 @@ export const generateWithdrawalsHeaders = (symbol) => {
     {
       label: 'Currency',
       key: 'currency',
-      exportToCsv: (value) => value,
+      exportToCsv: ({ currency }) => CURRENCIES[currency].fullName,
       renderCell: ({ currency }, key, index) => {
         const fullName = CURRENCIES[currency].fullName;
         return <td key={index}>{fullName}</td>;
@@ -105,11 +106,10 @@ export const generateWithdrawalsHeaders = (symbol) => {
     {
       label: 'Amount',
       key: 'amount',
-      // exportToCsv: (amount) => {
-      //   const { formatToCurrency, currencySymbol } = CURRENCIES[currency];
-      //   return `${currencySymbol} ${formatToCurrency(amount)}`
-      // },
-      exportToCsv: (value) => value,
+      exportToCsv: ({ amount = 0, currency }) => {
+        const { formatToCurrency, shortName } = CURRENCIES[currency];
+        return `${formatToCurrency(amount)} ${shortName}`;
+      },
       renderCell: ({ amount = 0, currency }, key, index) => {
         const { formatToCurrency, shortName } = CURRENCIES[currency];
         return <td key={index}>{`${formatToCurrency(amount)} ${shortName}`}</td>;
@@ -118,7 +118,7 @@ export const generateWithdrawalsHeaders = (symbol) => {
     {
       label: 'Fee',
       key: 'fee',
-      exportToCsv: (value) => value,
+      exportToCsv: ({ fee = 0 }) => fee,
       renderCell: ({ fee = 0 }, key, index) => {
         return <td key={index}>{fee}</td>
       },
@@ -126,7 +126,7 @@ export const generateWithdrawalsHeaders = (symbol) => {
     {
       label: 'Time',
       key: 'created_at',
-      exportToCsv: (value) => value,
+      exportToCsv: ({ created_at = '' }) => created_at,
       renderCell: ({ created_at = '' }, key, index) => {
         return <td key={index}>{formatTimestamp(created_at)}</td>;
       },

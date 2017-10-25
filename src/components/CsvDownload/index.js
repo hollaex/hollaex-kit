@@ -22,7 +22,7 @@ const processHeaders = (headers) => headers
 const processData = (headers, data) =>
   data.map((item) => headers
     .filter(({ exportToCsv }) => exportToCsv)
-    .map(({ key, exportToCsv }) => exportToCsv(item[key])
+    .map(({ key, exportToCsv }) => exportToCsv(item)
   )
 );
 
