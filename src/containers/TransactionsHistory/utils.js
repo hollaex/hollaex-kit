@@ -104,6 +104,14 @@ export const generateWithdrawalsHeaders = (symbol) => {
       },
     },
     {
+      label: 'Status',
+      key: 'status',
+      exportToCsv: ({ status = false }) => status ? 'Complete' : 'Pending',
+      renderCell: ({ status = false }, key, index) => {
+        return <td key={index}>{status ? 'Complete' : 'Pending'}</td>;
+      },
+    },
+    {
       label: 'Amount',
       key: 'amount',
       exportToCsv: ({ amount = 0, currency }) => {
