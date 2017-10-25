@@ -40,4 +40,4 @@ export const checkUserSessionExpired = (loginTime) => {
 
 
 
-export const formatTimestamp = (date, format = TIMESTAMP_FORMAT) => moment(date).format(TIMESTAMP_FORMAT);
+export const formatTimestamp = (date, format = TIMESTAMP_FORMAT) => moment(date).format(format);

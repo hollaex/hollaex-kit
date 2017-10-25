@@ -11,6 +11,7 @@ import {
   Deposit,
   Withdraw,
   TransactionsHistory,
+  Trade,
 } from './containers';
 
 import QuickBuy from './views/Exchange/QuickBuy'
@@ -68,6 +69,7 @@ export default (
       <Route path="withdraw" name="Withdraw" component={Withdraw}/>
       <Route path="deposit" name="Deposit" component={Deposit}/>
       <Route path="transactions" name="Transactions" component={TransactionsHistory}/>
+      <Route path="tradev2" name="Trade" component={Trade}/>
       <Route path="trade" name="Exchange" component={Exchange}>
         <IndexRoute component={Bitcoin}/>
         <Route path="btc" name="Bitcoin" component={Bitcoin} />

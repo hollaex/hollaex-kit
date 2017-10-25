@@ -1,0 +1,55 @@
+$trade-bids-color-main: blue;
+$trade-bids-color-font: blue;
+$trade-bids-color-disabled: blue;
+$trade-asks-color-main: orange;
+$trade-asks-color-font: orange;
+$trade-asks-color-disabled: orange;
+
+$trade_title-border--color: black;
+$trade_title-border--size: 0.2rem;
+
+$trade-font-size: $font-size-subtext;
+
+.trade-container {
+  flex: 1;
+
+  .trade-col_1_wrapper, .trade-col_2_wrapper {
+    flex: 0;
+    min-width: 15rem;
+  }
+
+  .trade-col_3_wrapper {
+    flex: auto;
+  }
+}
+
+.trade_block-wrapper {
+  padding: 1rem;
+  flex: auto;
+
+  .trade_block-title {
+    border-top: $trade_title-border--size solid $trade_title-border--color;
+    text-transform: uppercase;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    flex: none;
+  }
+
+  .trade_block-content {
+    flex: auto;
+    font-size: $trade-font-size;
+    overflow-y: auto;
+  }
+
+  .ask, .buy {
+    color: $trade-asks-color-font;
+  }
+
+  .bid, .sell {
+    color: $trade-bids-color-font;
+  }
+}
+
+.trade-col_2_wrapper > div {
+  flex: 1;
+}
