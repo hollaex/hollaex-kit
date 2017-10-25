@@ -5,21 +5,18 @@ import { connect } from 'react-redux';
 import { getUserTrades, getUserDeposits, getUserWithdrawals } from '../../actions/walletActions';
 import { fiatSymbol } from '../../utils/currency';
 
-import { ActionNotification, IconTitle, Table, CsvDownload } from '../../components';
+import { ActionNotification, IconTitle, Table, CsvDownload, TabController } from '../../components';
 import { ICONS, FLEX_CENTER_CLASSES, CURRENCIES } from '../../config/constants';
 
-import {
-  TITLE, TEXT_DOWNLOAD,
-  TITLE_TRADES, TITLE_DEPOSITS, TITLE_WITHDRAWAlS,
-} from './constants';
+import { TITLE, TITLE_TRADES, TITLE_DEPOSITS, TITLE_WITHDRAWAlS } from './constants';
 
 import { generateTradeHeaders, generateDepositsHeaders, generateWithdrawalsHeaders } from './utils';
+import HistoryDisplay from './HistoryDisplay';
 
 class TransactionsHistory extends Component {
   state = {
     headers: [],
-    page: 0,
-    pageSize: 25,
+    activeTab: 0,
   }
 
   componentDidMount() {
@@ -43,58 +40,53 @@ class TransactionsHistory extends Component {
     }});
   }
 
-  renderContent = ({ data, count, loading }, headers) => {
-    if (loading) {
-      return <div>LOADING</div>
+  setActiveTab = (activeTab = 0) => {
+    this.setState({ activeTab });
+  }
+
+  renderActiveTab = () => {
+    const { trades, deposits, withdrawals, symbol } = this.props;
+    const { headers, activeTab } = this.state;
+    const { name } = CURRENCIES[symbol];
+
+    const props = {
+      symbol,
+    };
+
+    switch (activeTab) {
+
+      case 0:
+        props.title = `${name} ${TITLE_TRADES}`;
+        props.headers = headers.trades;
+        props.data = trades;
+        props.filename = `${symbol}-transfers_history`;
+        break
+      case 1:
+        props.title = TITLE_DEPOSITS;
+        props.headers = headers.deposits;
+        props.data = deposits;
+        props.filename = `${symbol}-deposits_history`;
+        break;
+      case 2:
+        props.title = TITLE_WITHDRAWAlS;
+        props.headers = headers.withdrawals;
+        props.data = withdrawals;
+        props.filename = `${symbol}-withdrawals_history`;
+        break;
+      default:
+        return <div></div>
     }
 
-    return (
-      <Table
-        data={data}
-        count={count}
-        headers={headers}
-        withIcon={true}
-      />
-    );
+    return <HistoryDisplay{...props} />;
   }
-
-  renderExportToCsv = (headers, data, filename) => {
-    return (
-      <CsvDownload
-        data={data}
-        headers={headers}
-        filename={filename}
-      >
-        <ActionNotification
-          text={TEXT_DOWNLOAD}
-          iconPath={ICONS.LETTER}
-        />
-      </CsvDownload>
-    );
-  }
-
-  renderBlock = (symbol, title, headers, data) => (
-    <div>
-      <div className="title text-capitalize">
-        {title}
-        {data.count > 0 && this.renderExportToCsv(headers, data.data, `${symbol}-transactions_history`)}
-      </div>
-      {symbol === fiatSymbol ?
-        <div>No trades for {fiatSymbol}</div> :
-        this.renderContent(data, headers)
-      }
-    </div>
-  )
 
   render() {
-    const { id, trades, deposits, withdrawals, symbol } = this.props;
-    const { headers } = this.state;
+    const { id } = this.props;
+    const { activeTab } = this.state;
 
     if (!id) {
       return <div></div>;
     }
-
-    const { name } = CURRENCIES[symbol];
 
     return (
       <div className="presentation_container">
@@ -103,10 +95,17 @@ class TransactionsHistory extends Component {
           iconPath={ICONS.LETTER}
           textType="title"
         />
+        <TabController
+          tabs={[
+            { title: 'Trades' },
+            { title: 'Deposits' },
+            { title: 'Withdrawals' },
+          ]}
+          activeTab={activeTab}
+          setActiveTab={this.setActiveTab}
+        />
         <div className={classnames('inner_container', 'with_border_top')}>
-          {this.renderBlock(symbol, `${name} ${TITLE_TRADES}`, headers.trades, trades)}
-          {this.renderBlock(symbol, TITLE_DEPOSITS, headers.deposits, deposits)}
-          {this.renderBlock(symbol, TITLE_WITHDRAWAlS, headers.withdrawals, withdrawals)}
+          {this.renderActiveTab()}
         </div>
       </div>
     )

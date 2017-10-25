@@ -9,7 +9,7 @@
 .cell_box-type {
   color: white;
   text-transform: capitalize;
-  
+
   > div {
     padding: 0.15rem 0.25rem;
     margin-right: 0.5rem;
@@ -32,4 +32,9 @@
   .negative {
     color: $colors-notifications-red;
   }
+}
+
+
+.history_block-wrapper {
+  position: relative;
 }

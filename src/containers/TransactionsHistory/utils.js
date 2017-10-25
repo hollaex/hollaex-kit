@@ -96,6 +96,7 @@ export const generateWithdrawalsHeaders = (symbol) => {
     {
       label: 'Currency',
       key: 'currency',
+      exportToCsv: (value) => value,
       renderCell: ({ currency }, key, index) => {
         const fullName = CURRENCIES[currency].fullName;
         return <td key={index}>{fullName}</td>;
@@ -108,6 +109,7 @@ export const generateWithdrawalsHeaders = (symbol) => {
       //   const { formatToCurrency, currencySymbol } = CURRENCIES[currency];
       //   return `${currencySymbol} ${formatToCurrency(amount)}`
       // },
+      exportToCsv: (value) => value,
       renderCell: ({ amount = 0, currency }, key, index) => {
         const { formatToCurrency, shortName } = CURRENCIES[currency];
         return <td key={index}>{`${formatToCurrency(amount)} ${shortName}`}</td>;
