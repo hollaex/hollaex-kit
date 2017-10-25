@@ -1,6 +1,7 @@
 $row--border-color: $colors-main-black;
 $row--border: 1px solid $row--border-color;
 
+$table-cell_box-background: grey;
 $table--margin: 2rem;
 $controllers--color-active: $colors-notifications-blue;
 $controllers--color-disabled: $colors-deactivate-color2;
@@ -32,6 +33,16 @@ $controllers--color-disabled: $colors-deactivate-color2;
     tr.table_body-row td {
       border-top: $row--border;
       border-bottom: $row--border;
+    }
+  }
+
+  .cell_box-type {
+    color: white;
+    text-transform: capitalize;
+
+    > div {
+      padding: 0.15rem 0.25rem;
+      margin-right: 0.5rem;
     }
   }
 }

@@ -77,7 +77,7 @@ class TransactionsHistory extends Component {
         return <div></div>
     }
 
-    return <HistoryDisplay{...props} />;
+    return <HistoryDisplay {...props} />;
   }
 
   render() {

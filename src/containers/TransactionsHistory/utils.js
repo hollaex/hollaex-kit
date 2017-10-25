@@ -32,7 +32,6 @@ export const generateTradeHeaders = (symbol) => {
     {
       label: 'Type',
       key: 'side',
-      exportToCsv: true,
       exportToCsv: ({ side = '' }) => side,
       renderCell: ({ side = '' }, key, index) => {
         return (

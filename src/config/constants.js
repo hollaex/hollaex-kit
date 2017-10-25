@@ -62,4 +62,5 @@ export const CURRENCIES = {
 
 export const FLEX_CENTER_CLASSES = ['d-flex', 'justify-content-center', 'align-items-center'];
 
-export const TIMESTAMP_FORMAT = 'YYYY MM DD HH:mm:ss A';
+export const TIMESTAMP_FORMAT = 'YYYY/MM/DD HH:mm:ss A';
+export const HOUR_FORMAT = 'HH:mm:ss A';

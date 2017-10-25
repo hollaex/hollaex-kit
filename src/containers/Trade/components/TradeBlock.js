@@ -6,7 +6,7 @@ const TradeBlock = ({ children, title }) => {
       <div className="trade_block-title d">
         {title}
       </div>
-      <div className="trade_block-content d">
+      <div className="trade_block-content d-flex d">
         {children}
       </div>
     </div>

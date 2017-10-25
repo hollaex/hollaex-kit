@@ -9,18 +9,24 @@ import { TITLES } from './constants';
 import TradeBlock from './components/TradeBlock';
 import Orderbook from './components/Orderbook';
 import OrderEntry from './components/OrderEntry';
+import ActiveOrders from './components/ActiveOrders';
 import TradeHistory from './components/TradeHistory';
 
 class Trade extends Component {
 
   render() {
-    const { tradeHistory } = this.props;
-    
+    const { tradeHistory, asks, bids, marketPrice, symbol, activeOrders } = this.props;
+
     return (
       <div className={classnames('trade-container', 'd-flex')}>
         <div className={classnames('trade-col_1_wrapper', 'flex-column', 'd-flex', 'b')}>
           <TradeBlock title={TITLES.ORDERBOOK}>
-            <Orderbook />
+            <Orderbook
+              symbol={symbol}
+              asks={asks}
+              bids={bids}
+              marketPrice={marketPrice}
+            />
           </TradeBlock>
         </div>
         <div className={classnames('trade-col_2_wrapper', 'flex-column', 'd-flex', 'b')}>
@@ -35,6 +41,7 @@ class Trade extends Component {
           <TradeBlock title={TITLES.CHART}>
           </TradeBlock>
           <TradeBlock title={TITLES.ORDERS}>
+            <ActiveOrders orders={activeOrders} />
           </TradeBlock>
           <TradeBlock title={TITLES.TRADES}>
           </TradeBlock>
@@ -51,6 +58,10 @@ Trade.defaultProps = {
 const mapStateToProps = (store) => ({
   symbol: store.orderbook.symbol,
   tradeHistory: store.orderbook.trades,
+  asks: store.orderbook.asks,
+  bids: store.orderbook.bids,
+  marketPrice: store.orderbook.price,
+  activeOrders: store.order.activeOrders,
 });
 
 const mapDispatchToProps = (dispatch) => ({

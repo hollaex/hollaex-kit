@@ -9,21 +9,21 @@ const HEADERS = [
     key: 'price',
     label: 'Price',
     renderCell: ({ side, price = 0 }, index) => {
-      return <td className={classnames(side)}>{price}</td>
+      return <td className={classnames(side)} key={`time-${index}`}>{price}</td>
     }
   },
   {
     key: 'size',
     label: 'Amount',
     renderCell: ({ size = 0 }, index) => {
-      return <td>{size}</td>
+      return <td key={`time-${index}`}>{size}</td>
     }
   },
   {
     key: 'timestamp',
     label: 'Time',
     renderCell: ({ timestamp }, index) => {
-      return <td>{formatTimestamp(timestamp, HOUR_FORMAT)}</td>
+      return <td key={`time-${index}`}>{formatTimestamp(timestamp, HOUR_FORMAT)}</td>
     }
   },
 ]

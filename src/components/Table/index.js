@@ -41,12 +41,14 @@ class Table extends Component{
 
   goToPage = (page = 0, allData = [], count = 0) => {
     const { pageSize } = this.state;
+    const { showAll } = this.props;
     const initItem = page * pageSize;
-    if (initItem < count) {
+    if (showAll) {
+      this.setState({ page: 1, data: allData });
+    } else if (initItem < count) {
       const data = allData.slice(initItem, initItem + pageSize);
       this.setState({ page, data });
     }
-
   }
 
   render() {
@@ -56,7 +58,7 @@ class Table extends Component{
       return <div className="d-flex justify-content-center align-items-center">NO DATA</div>;
     }
 
-    const { headers, withIcon } = this.props;
+    const { headers, withIcon, displayPaginator } = this.props;
     const { data, page, pageSize } = this.state;
 
     return (
@@ -65,13 +67,15 @@ class Table extends Component{
           <TableHeader headers={headers} />
           <TableBody headers={headers} data={data} withIcon={withIcon} />
         </table>
-        <Paginator
-          currentPage={page + 1}
-          pageSize={pageSize}
-          count={count}
-          goToPreviousPage={this.goToPreviousPage}
-          goToNextPage={this.goToNextPage}
-        />
+        {displayPaginator &&
+          <Paginator
+            currentPage={page + 1}
+            pageSize={pageSize}
+            count={count}
+            goToPreviousPage={this.goToPreviousPage}
+            goToNextPage={this.goToNextPage}
+          />
+        }
       </div>
     );
   }
@@ -82,6 +86,8 @@ Table.defaultProps = {
   headers: [],
   withIcon: false,
   pageSize: 10,
+  displayPaginator: false,
+  showAll: false,
 };
 
 export default Table;
