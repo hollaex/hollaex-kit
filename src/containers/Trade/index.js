@@ -13,8 +13,12 @@ import Orderbook from './components/Orderbook';
 import OrderEntry from './components/OrderEntry';
 import ActiveOrders from './components/ActiveOrders';
 import TradeHistory from './components/TradeHistory';
+import PriceChart from './components/PriceChart';
 
 class Trade extends Component {
+  state = {
+    chartHeight: 0,
+  }
 
   onSubmitOrder = (values) => {
     return submitOrder(values)
@@ -25,6 +29,13 @@ class Trade extends Component {
         console.log('error', error)
       });
   }
+
+  setChartRef = (el) => {
+    if (el) {
+      this.chartBlock = el;
+      this.setState({ chartHeight: this.chartBlock.offsetHeight || 0 })
+    }
+  }
   render() {
     const {
       tradeHistory,
@@ -34,7 +45,7 @@ class Trade extends Component {
       symbol,
       activeOrders,
     } = this.props;
-
+    const { chartHeight } = this.state
     return (
       <div className={classnames('trade-container', 'd-flex')}>
         <div className={classnames('trade-col_side_wrapper', 'flex-column', 'd-flex')}>
@@ -56,7 +67,12 @@ class Trade extends Component {
                 />
               </TradeBlock>
             </div>
-            <TradeBlock title={TITLES.CHART}>
+            <TradeBlock title={TITLES.CHART} setRef={this.setChartRef}>
+              {chartHeight > 0 &&
+                <PriceChart
+                  height={chartHeight}
+                />
+              }
             </TradeBlock>
           </div>
           <div className={classnames('trade-tabs_content', 'd-flex', 'flex-column')}>
