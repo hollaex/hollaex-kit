@@ -16,6 +16,9 @@ export const FIAT_FORMAT = '0,0.[00]';
 
 export const formatBtcAmount = (amount = 0) => numbro(math.number(amount)).format(BTC_FORMAT);
 export const formatFiatAmount = (amount = 0) => numbro(math.number(amount)).format(FIAT_FORMAT);
+export const formatNumber = (number, round = 0) => {
+	return math.round(number, round);
+}
 
 export const calculatePrice = (value = 0, price = 1) => math.number(
   math.multiply(

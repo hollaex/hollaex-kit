@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
+import { bindActionCreators } from 'redux';
 
 import { FLEX_CENTER_CLASSES } from '../../config/constants';
+import { submitOrder } from '../../actions/orderAction';
 
 import { TITLES } from './constants';
 
@@ -14,12 +16,28 @@ import TradeHistory from './components/TradeHistory';
 
 class Trade extends Component {
 
+  onSubmitOrder = (values) => {
+    return submitOrder(values)
+      .then((body) => {
+        console.log('sucess', body)
+      })
+      .then((error) => {
+        console.log('error', error)
+      });
+  }
   render() {
-    const { tradeHistory, asks, bids, marketPrice, symbol, activeOrders } = this.props;
+    const {
+      tradeHistory,
+      asks,
+      bids,
+      marketPrice,
+      symbol,
+      activeOrders,
+    } = this.props;
 
     return (
       <div className={classnames('trade-container', 'd-flex')}>
-        <div className={classnames('trade-col_1_wrapper', 'flex-column', 'd-flex', 'b')}>
+        <div className={classnames('trade-col_side_wrapper', 'flex-column', 'd-flex')}>
           <TradeBlock title={TITLES.ORDERBOOK}>
             <Orderbook
               symbol={symbol}
@@ -29,21 +47,29 @@ class Trade extends Component {
             />
           </TradeBlock>
         </div>
-        <div className={classnames('trade-col_2_wrapper', 'flex-column', 'd-flex', 'b')}>
-          <TradeBlock title={TITLES.ORDER_ENTRY}>
-            <OrderEntry />
-          </TradeBlock>
+        <div className={classnames('trade-col_main_wrapper', 'flex-column', 'd-flex', 'flex-auto')}>
+          <div className={classnames('trade-main_content', 'flex-auto', 'd-flex')}>
+            <div className={classnames('trade-col_side_wrapper', 'flex-column', 'd-flex')}>
+              <TradeBlock title={TITLES.ORDER_ENTRY}>
+                <OrderEntry
+                  submitOrder={this.onSubmitOrder}
+                />
+              </TradeBlock>
+            </div>
+            <TradeBlock title={TITLES.CHART}>
+            </TradeBlock>
+          </div>
+          <div className={classnames('trade-tabs_content', 'd-flex', 'flex-column')}>
+            <TradeBlock title={TITLES.ORDERS}>
+              <ActiveOrders orders={activeOrders} />
+            </TradeBlock>
+            <TradeBlock title={TITLES.TRADES}>
+            </TradeBlock>
+          </div>
+        </div>
+        <div className={classnames('trade-col_side_wrapper', 'flex-column', 'd-flex')}>
           <TradeBlock title={TITLES.TRADE_HISTORY}>
             <TradeHistory data={tradeHistory} />
-          </TradeBlock>
-        </div>
-        <div className={classnames('trade-col_3_wrapper', 'flex-column', 'd-flex', 'b')}>
-          <TradeBlock title={TITLES.CHART}>
-          </TradeBlock>
-          <TradeBlock title={TITLES.ORDERS}>
-            <ActiveOrders orders={activeOrders} />
-          </TradeBlock>
-          <TradeBlock title={TITLES.TRADES}>
           </TradeBlock>
         </div>
       </div>
@@ -65,7 +91,7 @@ const mapStateToProps = (store) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-
+  // submitOrder: bindActionCreators(submitOrder, dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Trade);

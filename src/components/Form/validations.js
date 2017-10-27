@@ -54,3 +54,5 @@ export const isBefore = (before = '', message = ERROR_MESSAGE_BEFORE_DATE) => {
     return valid ? undefined : message;
   }
 }
+
+export const normalizeInt = (value) => validator.toInt(value) || 0;

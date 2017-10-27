@@ -1,0 +1,18 @@
+.trade_block-wrapper {
+  padding: 1rem;
+  flex: auto;
+
+  .trade_block-title {
+    border-top: $trade_title-border--size solid $trade_title-border--color;
+    text-transform: uppercase;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    flex: none;
+  }
+
+  .trade_block-content {
+    flex: auto;
+    font-size: $trade-font-size;
+    overflow-y: auto;
+  }
+}

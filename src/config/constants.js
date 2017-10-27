@@ -64,3 +64,14 @@ export const FLEX_CENTER_CLASSES = ['d-flex', 'justify-content-center', 'align-i
 
 export const TIMESTAMP_FORMAT = 'YYYY/MM/DD HH:mm:ss A';
 export const HOUR_FORMAT = 'HH:mm:ss A';
+
+export const LIMIT_VALUES = {
+  PRICE: {
+    MIN: 100,
+    MAX: 10000,
+  },
+  SIZE: {
+    MIN: 0.0001,
+    MAX: 21000000,
+  }
+};

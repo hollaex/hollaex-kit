@@ -1,9 +1,15 @@
 $trade-bids-color-main: blue;
 $trade-bids-color-font: blue;
 $trade-bids-color-disabled: blue;
-$trade-asks-color-main: orange;
-$trade-asks-color-font: orange;
-$trade-asks-color-disabled: orange;
+$trade-asks-color-main: $colors-currencies-btc;
+$trade-asks-color-font: $colors-currencies-btc;
+$trade-asks-color-disabled: $colors-currencies-btc;
+
+$font-color--disabled: grey;
+$font-color--acitve: black;
+
+$trade-section-border--color: black;
+$trade-section-border-disabled--color: grey;
 
 $trade_title-border--color: black;
 $trade_title-border--size: 0.2rem;
@@ -11,57 +17,20 @@ $trade_title-border--size: 0.2rem;
 $trade-fullfilled-background-color: grey;
 $trade-font-size: $font-size-subtext;
 
-.trade-container {
-  flex: 1;
+$side-column--width: 15rem;
 
-  .trade-col_1_wrapper, .trade-col_2_wrapper {
-    flex: 0;
-    min-width: 15rem;
-  }
+@import './_TradeContainer.scss';
+@import './components/_TradeBlock.scss';
+@import './components/_OrderEntry.scss';
 
-  .trade-col_3_wrapper {
-    flex: auto;
-
-    .trade_block-wrapper:not(:first-child) {
-      max-height: 25%;
-    }
-  }
-
-  .table-wrapper {
-    margin: 0
-  }
+.ask, .buy {
+  color: $trade-asks-color-font;
 }
 
-.trade_block-wrapper {
-  padding: 1rem;
-  flex: auto;
-
-  .trade_block-title {
-    border-top: $trade_title-border--size solid $trade_title-border--color;
-    text-transform: uppercase;
-    font-weight: bold;
-    margin-bottom: 1rem;
-    flex: none;
-  }
-
-  .trade_block-content {
-    flex: auto;
-    font-size: $trade-font-size;
-    overflow-y: auto;
-  }
-
-  .ask, .buy {
-    color: $trade-asks-color-font;
-  }
-
-  .bid, .sell {
-    color: $trade-bids-color-font;
-  }
+.bid, .sell {
+  color: $trade-bids-color-font;
 }
 
-.trade-col_2_wrapper > div {
-  flex: 1;
-}
 
 .trade_orderbook-wrapper {
   flex: 1;
@@ -118,5 +87,4 @@ $trade-font-size: $font-size-subtext;
       }
     }
   }
-
 }

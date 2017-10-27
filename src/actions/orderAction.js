@@ -18,6 +18,7 @@ export function createOrder(side, type, size, price) {
 	}
 }
 
+
 export function getOrders() {
 	return {
 		type: 'GET_ORDERS',
@@ -66,3 +67,5 @@ export function removeOrder(ids) {
 		payload: { ids: ids.map((item) => item.id) },
 	}
 }
+
+export const submitOrder = (order) => axios.post('/order', order);

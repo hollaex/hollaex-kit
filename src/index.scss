@@ -95,6 +95,7 @@ body {
 @import './components/Notification/Notification';
 @import './components/NotificationsList/NotificationsList';
 @import './components/Form/FormFields/FormFields';
+@import './components/Form/TradeFormFields/TradeFormFields';
 @import './components/Button/Button';
 @import './components/Dialog/Dialog';
 @import './components/Accordion/Accordion';
@@ -113,4 +114,14 @@ body {
 }
 .d {
   border: 1px solid blue;
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.flex-auto {
+  flex: auto;
 }
