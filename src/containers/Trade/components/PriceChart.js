@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import io from 'socket.io-client';
-import { Chart } from "../../../components";
+import { AreaChart as Chart } from "../../../components";
 import { WS_URL } from '../../../config/constants'
 
 class ChartComponent extends Component {
