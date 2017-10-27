@@ -6,18 +6,8 @@ html {
   font-size: 12px;
 }
 
-@media screen
-  and (min-device-width: 1200px)
-  and (max-device-width: 1600px) {
-  html {
-    font-size: 14px;
-  }
-}
-@media screen
-  and (max-device-width: 800px) {
-  html {
-    font-size: 7px;
-  }
+#root {
+  height: 100%;
 }
 
 body {
@@ -41,10 +31,6 @@ body {
 .ReactModal__Body--open #root {
   filter: blur(5px);
   background: $app-background-color-on-modal;
-}
-
-#root {
-  height: 100%;
 }
 
 .form {
@@ -75,36 +61,8 @@ body {
   text-overflow: ellipsis;
 }
 
-@import './containers/App/App';
-@import './containers/UserVerification/UserVerification';
-@import './containers/UserSecurity/UserSecurity';
-@import './containers/Login/Login';
-@import './containers/Home/Home';
-@import './containers/Wallet/Wallet';
-@import './containers/Withdraw/Withdraw';
-@import './containers/Deposit/Deposit';
-@import './containers/TransactionsHistory/TransactionsHistory';
-@import './containers/Trade/Trade';
-
-@import './components/Sidebar/Sidebar';
-@import './components/Footer/Footer';
-@import './components/TabController/TabController';
-@import './components/AppBar/AppBar';
-@import './components/CheckTitle/CheckTitle';
-@import './components/Wallet/Wallet';
-@import './components/Notification/Notification';
-@import './components/NotificationsList/NotificationsList';
-@import './components/Form/FormFields/FormFields';
-@import './components/Form/TradeFormFields/TradeFormFields';
-@import './components/Button/Button';
-@import './components/Dialog/Dialog';
-@import './components/Accordion/Accordion';
-@import './components/ActionNotification/ActionNotification';
-@import './components/IconTitle/IconTitle';
-@import './components/OtpForm/OtpForm';
-@import './components/Loader/Loader';
-@import './components/CurrencyBall/CurrencyBall';
-@import './components/Table/Table';
+@import './containers/containers';
+@import './components/components';
 
 .b {
   border: 1px solid red;
@@ -116,12 +74,32 @@ body {
   border: 1px solid blue;
 }
 
+input[type="number"] {
+    -moz-appearance: textfield;
+    appearance: textfield;
+}
+
 input[type=number]::-webkit-inner-spin-button,
 input[type=number]::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
 
+::-webkit-scrollbar {
+    display: none;
+}
+
 .flex-auto {
   flex: auto;
+}
+
+.overflow-y {
+  overflow-y: auto;
+}
+
+@media screen
+  and (max-device-width: 800px) {
+  html {
+    font-size: 7px;
+  }
 }

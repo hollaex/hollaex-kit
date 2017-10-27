@@ -69,8 +69,8 @@ export default (
       <Route path="withdraw" name="Withdraw" component={Withdraw}/>
       <Route path="deposit" name="Deposit" component={Deposit}/>
       <Route path="transactions" name="Transactions" component={TransactionsHistory}/>
-      <Route path="tradev2" name="Trade" component={Trade}/>
-      <Route path="trade" name="Exchange" component={Exchange}>
+      <Route path="trade" name="Trade" component={Trade}/>
+      <Route path="trade-old" name="Exchange" component={Exchange}>
         <IndexRoute component={Bitcoin}/>
         <Route path="btc" name="Bitcoin" component={Bitcoin} />
         <Route path="quickbuy" name="QuickBuy" component={QuickBuy}/>

@@ -23,15 +23,15 @@ const HEADERS = [
       );
     },
   },
-  {
-    label: 'Type',
-    key: 'type',
-    renderCell: ({ type = '' }, key, index) => {
-      return (
-        <td key={index} className="text-capitalize">{type || 'market'}</td>
-      );
-    },
-  },
+  // {
+  //   label: 'Type',
+  //   key: 'type',
+  //   renderCell: ({ type = '' }, key, index) => {
+  //     return (
+  //       <td key={index} className="text-capitalize">{type || 'market'}</td>
+  //     );
+  //   },
+  // },
   {
     label: 'Time',
     key: 'created_At',
@@ -90,7 +90,7 @@ const HEADERS = [
 ];
 
 const ActiveOrders = ({ orders }) => {
-  
+
   return (
     <div className="trade_active_orders-wrapper">
       <Table

@@ -17,7 +17,8 @@ $trade_title-border--size: 0.2rem;
 $trade-fullfilled-background-color: grey;
 $trade-font-size: $font-size-subtext;
 
-$side-column--width: 15rem;
+$side-column--width: 17.5rem;
+$order_entry-column--width: 15rem;
 
 @import './_TradeContainer.scss';
 @import './components/_TradeBlock.scss';

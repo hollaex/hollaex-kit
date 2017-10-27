@@ -49,7 +49,7 @@ class Trade extends Component {
         </div>
         <div className={classnames('trade-col_main_wrapper', 'flex-column', 'd-flex', 'flex-auto')}>
           <div className={classnames('trade-main_content', 'flex-auto', 'd-flex')}>
-            <div className={classnames('trade-col_side_wrapper', 'flex-column', 'd-flex')}>
+            <div className={classnames('trade-col_action_wrapper', 'flex-column', 'd-flex')}>
               <TradeBlock title={TITLES.ORDER_ENTRY}>
                 <OrderEntry
                   submitOrder={this.onSubmitOrder}

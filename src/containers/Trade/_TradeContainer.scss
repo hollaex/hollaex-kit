@@ -5,6 +5,7 @@
     .trade-main_content {
       flex: 6;
     }
+
     .trade-tabs_content {
       flex: 4;
 
@@ -22,6 +23,12 @@
     > div {
       flex: 1;
     }
+  }
+
+  .trade-col_action_wrapper {
+    flex: 0;
+    min-width: $order_entry-column--width;
+    max-width: $order_entry-column--width;
   }
 
   .table-wrapper {
