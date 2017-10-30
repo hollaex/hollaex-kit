@@ -23,6 +23,7 @@ $order_entry-column--width: 15rem;
 @import './_TradeContainer.scss';
 @import './components/_TradeBlock.scss';
 @import './components/_OrderEntry.scss';
+@import './components/Orderbook.scss';
 
 .ask, .buy {
   color: $trade-asks-color-font;
@@ -30,19 +31,6 @@ $order_entry-column--width: 15rem;
 
 .bid, .sell {
   color: $trade-bids-color-font;
-}
-
-
-.trade_orderbook-wrapper {
-  flex: 1;
-
-  .trade_orderbook-market_price {
-    flex: 0;
-  }
-
-  .trade_orderbook-asks, .trade_orderbook-bids {
-    flex: 1;
-  }
 }
 
 .trade_active_orders-wrapper {

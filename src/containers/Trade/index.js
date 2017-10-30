@@ -113,6 +113,7 @@ class Trade extends Component {
           <TradeBlock title={TITLES.ORDERBOOK}>
             <Orderbook
               symbol={symbol}
+              fiatSymbol="USD"
               asks={asks}
               bids={bids}
               marketPrice={marketPrice}
