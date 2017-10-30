@@ -1,19 +1,24 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import EventListener from 'react-event-listener';
 import classnames from 'classnames';
 import { bindActionCreators } from 'redux';
 
-import { FLEX_CENTER_CLASSES } from '../../config/constants';
+import { FLEX_CENTER_CLASSES, ICONS } from '../../config/constants';
 import { submitOrder } from '../../actions/orderAction';
 
-import { TITLES } from './constants';
+import { TITLES, TEXTS } from './constants';
 
 import TradeBlock from './components/TradeBlock';
+import TradeBlockTabs from './components/TradeBlockTabs';
 import Orderbook from './components/Orderbook';
 import OrderEntry from './components/OrderEntry';
 import ActiveOrders from './components/ActiveOrders';
+import UserTrades from './components/UserTrades';
 import TradeHistory from './components/TradeHistory';
 import PriceChart from './components/PriceChart';
+
+import { ActionNotification } from '../../components';
 
 class Trade extends Component {
   state = {
@@ -34,12 +39,27 @@ class Trade extends Component {
   setChartRef = (el) => {
     if (el) {
       this.chartBlock = el;
+      this.onResize();
+    }
+  }
+
+  goToTransactionsHistory = () => {
+    this.props.router.push('transactions');
+  }
+
+  cancelAll = () => {
+
+  }
+
+  onResize = () => {
+    if (this.chartBlock) {
       this.setState({
         chartHeight: this.chartBlock.offsetHeight || 0,
         chartWidth: this.chartBlock.offsetWidth || 0,
       });
     }
   }
+
   render() {
     const {
       tradeHistory,
@@ -48,10 +68,42 @@ class Trade extends Component {
       marketPrice,
       symbol,
       activeOrders,
+      userTrades,
     } = this.props;
     const { chartHeight, chartWidth } = this.state
+    const USER_TABS = [
+      {
+        title: TITLES.ORDERS,
+        children: <ActiveOrders orders={activeOrders} />,
+        titleAction: (
+          <ActionNotification
+            text={TEXTS.CANCEL_ALL}
+            status="information"
+            iconPath={ICONS.CHECK}
+            onClick={this.cancelAll}
+          />
+        ),
+      },
+      {
+        title: TITLES.TRADES,
+        children: <UserTrades trades={userTrades} symbol={symbol} />,
+        titleAction: (
+          <ActionNotification
+            text={TEXTS.TRADE_HISTORY}
+            status="information"
+            iconPath={ICONS.RED_ARROW}
+            onClick={this.goToTransactionsHistory}
+          />
+        ),
+      },
+    ]
+
     return (
       <div className={classnames('trade-container', 'd-flex')}>
+        <EventListener
+          target="window"
+          onResize={this.onResize}
+        />
         <div className={classnames('trade-col_side_wrapper', 'flex-column', 'd-flex')}>
           <TradeBlock title={TITLES.ORDERBOOK}>
             <Orderbook
@@ -81,11 +133,7 @@ class Trade extends Component {
             </TradeBlock>
           </div>
           <div className={classnames('trade-tabs_content', 'd-flex', 'flex-column')}>
-            <TradeBlock title={TITLES.ORDERS}>
-              <ActiveOrders orders={activeOrders} />
-            </TradeBlock>
-            <TradeBlock title={TITLES.TRADES}>
-            </TradeBlock>
+            <TradeBlockTabs content={USER_TABS} />
           </div>
         </div>
         <div className={classnames('trade-col_side_wrapper', 'flex-column', 'd-flex')}>
@@ -109,6 +157,7 @@ const mapStateToProps = (store) => ({
   bids: store.orderbook.bids,
   marketPrice: store.orderbook.price,
   activeOrders: store.order.activeOrders,
+  userTrades: store.wallet.trades.data,
 });
 
 const mapDispatchToProps = (dispatch) => ({

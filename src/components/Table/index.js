@@ -12,13 +12,13 @@ const RENDER_CELL = (row, key) => <td key={key}>{row[key]}</td>;
 class Table extends Component{
   state = {
     page: 0,
-    pageSize: 25,
+    // pageSize: 10,
     data: []
   }
 
   componentDidMount() {
+    // this.setPageSize(this.props.pageSize);
     this.goToPage(0, this.props.data, this.props.count);
-    this.setPageSize(this.props.pageSize);
   }
 
   componentWillReceiveProps(nextProps, nextState) {
@@ -27,9 +27,10 @@ class Table extends Component{
     }
   }
 
-  setPageSize = (pageSize = 10) => {
-    this.setState({ pageSize });
-  }
+  // setPageSize = (pageSize = 10) => {
+  //   console.log('SET PAGE SIZE', pageSize)
+  //   this.setState({ pageSize });
+  // }
 
   goToPreviousPage = () => {
     this.goToPage(this.state.page - 1, this.props.data, this.props.count);
@@ -40,8 +41,7 @@ class Table extends Component{
   }
 
   goToPage = (page = 0, allData = [], count = 0) => {
-    const { pageSize } = this.state;
-    const { showAll } = this.props;
+    const { showAll, pageSize } = this.props;
     const initItem = page * pageSize;
     if (showAll) {
       this.setState({ page: 1, data: allData });
@@ -58,8 +58,8 @@ class Table extends Component{
       return <div className="d-flex justify-content-center align-items-center">NO DATA</div>;
     }
 
-    const { headers, withIcon, displayPaginator } = this.props;
-    const { data, page, pageSize } = this.state;
+    const { headers, withIcon, displayPaginator, pageSize } = this.props;
+    const { data, page } = this.state;
 
     return (
       <div className="table_container">

@@ -6,3 +6,9 @@ export const TITLES = {
   ORDERS: 'my active orders',
   TRADES: 'my trade history',
 }
+
+export const TEXTS = {
+  CANCEL: 'cancel',
+  CANCEL_ALL: 'cancel all',
+  TRADE_HISTORY: 'go to trade history',
+}
