@@ -2,16 +2,19 @@ import React from 'react';
 import classnames from 'classnames';
 import math from 'mathjs';
 
-import { Table } from '../../../components';
+import { ICONS } from '../../../config/constants';
+import { Table, ActionNotification } from '../../../components';
 import { formatTimestamp } from '../../../utils/utils';
 import { formatFiatAmount, formatBtcAmount } from '../../../utils/currency';
+
+import { TEXTS } from '../constants';
 
 const substract = (a = 0, b = 0) => {
   const remaining = math.chain(a).subtract(b).done();
   return remaining;
 }
 
-const HEADERS = [
+const generateHeaders = (onCancel) => ([
   {
     label: 'Side',
     key: 'side',
@@ -87,14 +90,32 @@ const HEADERS = [
       );
     },
   },
-];
+  {
+    label: 'Cancel',
+    key: 'cancel',
+    renderCell: ({ size = 0, filled = 0, id }, key, index) => {
+      return (
+        <td key={index} style={{ position: 'relative' }}>
+          <ActionNotification
+            text={TEXTS.CANCEL}
+            iconPath={ICONS.CHECK}
+            onClick={() => onCancel(id)}
+            className="relative"
+            status=""
+            textPosition="left"
+          />
+        </td>
+      );
+    },
+  },
+]);
 
-const ActiveOrders = ({ orders }) => {
+const ActiveOrders = ({ orders, onCancel }) => {
 
   return (
     <div className="trade_active_orders-wrapper">
       <Table
-        headers={HEADERS}
+        headers={generateHeaders(onCancel)}
         data={orders}
         count={orders.length}
         showAll={true}
@@ -105,6 +126,7 @@ const ActiveOrders = ({ orders }) => {
 }
 
 ActiveOrders.defaultProps = {
-  orders: []
+  orders: [],
+  onCancel: () => {},
 }
 export default ActiveOrders;

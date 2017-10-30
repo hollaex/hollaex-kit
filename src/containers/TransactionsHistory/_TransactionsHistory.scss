@@ -7,6 +7,10 @@
 }
 
 .cell_box-type {
+  > div {
+    color: white;
+  }
+  
   .withdraw, .sell {
     background-color: $colors-notifications-red;
   }

@@ -3,24 +3,7 @@ import classnames from 'classnames';
 
 const DisplayTable = (props) => {
   const { headers, data } = props;
-  // return (
-  //   <table className={classnames('table-fixed_headers')}>
-  //     <thead>
-  //       <tr>
-  //         {headers.map(({ label }, index) => <th key={index}>{label}</th>)}
-  //       </tr>
-  //     </thead>
-  //     <tbody>
-  //       {data.map((row, rowIndex) => {
-  //         return (
-  //           <tr key={rowIndex}>
-  //             {headers.map(({ key, renderCell }, cellIndex) => renderCell(row, `${rowIndex}-${cellIndex}`))}
-  //           </tr>
-  //         );
-  //       })}
-  //     </tbody>
-  //   </table>
-  // );
+
   return (
     <div className={classnames('display_table-wrapper', 'd-flex', 'flex-column', 'f-1')}>
       <div className={classnames('display_table-header', 'd-flex')}>

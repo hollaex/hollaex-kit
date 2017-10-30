@@ -5,7 +5,8 @@ import classnames from 'classnames';
 import { bindActionCreators } from 'redux';
 
 import { FLEX_CENTER_CLASSES, ICONS } from '../../config/constants';
-import { submitOrder } from '../../actions/orderAction';
+import { submitOrder, cancelOrder, cancelAllOrders } from '../../actions/orderAction';
+import { getUserTrades } from '../../actions/walletActions';
 
 import { TITLES, TEXTS } from './constants';
 
@@ -24,6 +25,12 @@ class Trade extends Component {
   state = {
     chartHeight: 0,
     chartWidth: 0,
+  }
+
+  componentDidMount() {
+    if (!this.props.userTrades.fetched) {
+      this.props.getUserTrades(this.props.symbol);
+    }
   }
 
   onSubmitOrder = (values) => {
@@ -47,10 +54,6 @@ class Trade extends Component {
     this.props.router.push('transactions');
   }
 
-  cancelAll = () => {
-
-  }
-
   onResize = () => {
     if (this.chartBlock) {
       this.setState({
@@ -69,18 +72,20 @@ class Trade extends Component {
       symbol,
       activeOrders,
       userTrades,
+      cancelOrder,
+      cancelAllOrders,
     } = this.props;
     const { chartHeight, chartWidth } = this.state
     const USER_TABS = [
       {
         title: TITLES.ORDERS,
-        children: <ActiveOrders orders={activeOrders} />,
-        titleAction: (
+        children: <ActiveOrders orders={activeOrders} onCancel={cancelOrder} />,
+        titleAction: activeOrders.length > 0  && (
           <ActionNotification
             text={TEXTS.CANCEL_ALL}
-            status="information"
             iconPath={ICONS.CHECK}
-            onClick={this.cancelAll}
+            onClick={cancelAllOrders}
+            status=""
           />
         ),
       },
@@ -151,7 +156,7 @@ Trade.defaultProps = {
 }
 
 const mapStateToProps = (store) => ({
-  symbol: store.orderbook.symbol,
+  symbol: 'btc',
   tradeHistory: store.orderbook.trades,
   asks: store.orderbook.asks,
   bids: store.orderbook.bids,
@@ -161,7 +166,9 @@ const mapStateToProps = (store) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  // submitOrder: bindActionCreators(submitOrder, dispatch),
+  getUserTrades: (symbol) => dispatch(getUserTrades({ symbol })),
+  cancelOrder: bindActionCreators(cancelOrder, dispatch),
+  cancelAllOrders: bindActionCreators(cancelAllOrders, dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Trade);

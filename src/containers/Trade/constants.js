@@ -12,3 +12,9 @@ export const TEXTS = {
   CANCEL_ALL: 'cancel all',
   TRADE_HISTORY: 'go to trade history',
 }
+
+export const TRADE_TEXTS = {
+  PRICE: 'Price',
+  SIZE: 'Amount',
+  TIME: 'Time',
+}

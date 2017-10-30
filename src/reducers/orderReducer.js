@@ -39,7 +39,11 @@ export default function reducer(state = INITIAL_STATE, action) {
 		}
 
 		case 'ADD_ORDER':
-			return {...state, activeOrders: state.activeOrders.concat(action.payload.order)}
+			const newOrder = { ...action.payload.order };
+			if (!newOrder.created_at) {
+				newOrder.created_at = new Date();
+			}
+			return {...state, activeOrders: state.activeOrders.concat(newOrder)}
 
 		case 'UPDATE_ORDER': {
 			let { order } = action.payload;

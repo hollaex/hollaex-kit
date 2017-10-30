@@ -53,7 +53,7 @@ class TradeBlockTabs extends Component {
           {this.renderTitles(activeTab, content)}
           <div
             className={classnames(
-              'trade_block-content', 'd-flex', 'd', {
+              'trade_block-content', 'd-flex', {
                 'overflow-y': overflowY,
               }
             )}

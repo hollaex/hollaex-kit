@@ -86,7 +86,7 @@ Table.defaultProps = {
   headers: [],
   withIcon: false,
   pageSize: 10,
-  displayPaginator: false,
+  displayPaginator: true,
   showAll: false,
 };
 

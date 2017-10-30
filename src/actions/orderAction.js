@@ -26,19 +26,6 @@ export function getOrders() {
 	}
 }
 
-export function cancelOrder(orderid) {
-	return {
-		type: 'CANCEL_ORDER',
-		payload: axios.delete(`/user/orders/${orderid}`),
-	}
-}
-export function cancelAllOrders() {
-	return {
-		type: 'CANCEL_ALL_ORDERS',
-		payload: axios.delete('/user/orders'),
-	}
-}
-
 // Set orders from websocket
 export function setUserOrders(orders) {
 	return {
@@ -69,3 +56,12 @@ export function removeOrder(ids) {
 }
 
 export const submitOrder = (order) => axios.post('/order', order);
+export const cancelOrder = (orderId) => ({
+	type: 'CANCEL_ORDER',
+	payload: axios.delete(`/user/orders/${orderId}`)
+});
+
+export const cancelAllOrders = () => ({
+	type: 'CANCEL_ALL_ORDERS',
+	payload: axios.delete('/user/orders'),
+});

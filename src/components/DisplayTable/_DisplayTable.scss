@@ -8,6 +8,7 @@ $cell-height: 1.5rem;
     // flex: 0;
     // height: $cell-height;
     font-weight: bold;
+    border-bottom: 1px solid $colors-main-black;
 
     .display_table-cell {
     }
