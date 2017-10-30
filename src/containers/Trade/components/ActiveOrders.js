@@ -8,11 +8,7 @@ import { formatTimestamp } from '../../../utils/utils';
 import { formatFiatAmount, formatBtcAmount } from '../../../utils/currency';
 
 import { TEXTS } from '../constants';
-
-const substract = (a = 0, b = 0) => {
-  const remaining = math.chain(a).subtract(b).done();
-  return remaining;
-}
+import { subtract } from '../utils';
 
 const generateHeaders = (onCancel) => ([
   {
@@ -68,7 +64,7 @@ const generateHeaders = (onCancel) => ([
     key: 'remaining',
     renderCell: ({ size = 0, filled = 0 }, key, index) => {
       return (
-        <td key={index}>{formatBtcAmount(substract(size, filled))}</td>
+        <td key={index}>{formatBtcAmount(subtract(size, filled))}</td>
       );
     },
   },
@@ -76,7 +72,7 @@ const generateHeaders = (onCancel) => ([
     label: 'Status',
     key: 'status',
     renderCell: ({ size = 0, filled = 0 }, key, index) => {
-      const remaining = substract(size, filled);
+      const remaining = subtract(size, filled);
       const fullfilled = formatFiatAmount(math.chain(filled).divide(size).multiply(100).done());
       return (
         <td key={index} className={classnames('cell_box-type', 'fullfilled')}>

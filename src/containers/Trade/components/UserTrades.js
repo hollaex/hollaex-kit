@@ -1,6 +1,5 @@
 import React from 'react';
 import classnames from 'classnames';
-import math from 'mathjs';
 
 import { Table } from '../../../components';
 import { formatTimestamp } from '../../../utils/utils';

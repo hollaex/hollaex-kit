@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
-import math from 'mathjs';
 
 import { reduxForm, Field } from 'redux-form';
 

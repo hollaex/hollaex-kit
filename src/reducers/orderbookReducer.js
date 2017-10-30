@@ -7,7 +7,10 @@ const INITIAL_STATE = {
 	price: 0,
 	prices: {
 		fiat: 1,
-	}
+	},
+	asks: [],
+	bids: [],
+	orderbookReady: false,
 };
 
 export default function reducer(state = INITIAL_STATE, action) {
@@ -46,21 +49,15 @@ export default function reducer(state = INITIAL_STATE, action) {
 
 		// setOrderbook
 		case 'SET_ORDERBOOK': {
-			let bids = action.payload.bids
-			let asks = action.payload.asks
-			// let allBids = 0 // accumulative bids amounts
-			// let allAsks = 0 // accumulative asks amounts
-			// for(let i=0; i<bids.length; i++) {
-			// 	if(bids[i]){
-			// 		allBids += bids[i][1]
-			// 		bids[i][2] = allBids
-			// 	}
-			// 	if(asks[i]){
-			// 		allAsks += asks[i][1]
-			// 		asks[i][2] = allAsks
-			// 	}
-			// }
-			return {...state, fetching: false, fetched: true, bids, asks}
+			const { bids, asks } = action.payload;
+			return {
+				...state,
+				fetching: false,
+				fetched: true,
+				bids,
+				asks,
+				orderbookReady: true
+			}
 		}
 
 		// getTrades

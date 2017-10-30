@@ -1,5 +1,6 @@
 import React from 'react';
 import classnames from 'classnames';
+import math from 'mathjs';
 
 import { CurrencyBall } from '../../components';
 import { CURRENCIES, FLEX_CENTER_CLASSES } from '../../config/constants';
@@ -49,4 +50,9 @@ export const generateHeaders = (symbol) => {
       renderCell: ({ timestamp = '' }) => <td>{formatTimestamp(timestamp)}</td>,
     },
   ];
+}
+
+export const subtract = (a = 0, b = 0) => {
+  const remaining = math.chain(a).subtract(b).done();
+  return remaining;
 }

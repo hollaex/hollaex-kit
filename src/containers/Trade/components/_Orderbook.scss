@@ -1,5 +1,8 @@
 .trade_orderbook-wrapper {
 
+  .trade_orderbook-cell {
+    padding: 0 0.25rem;
+  }
   .trade_orderbook-headers {
     font-weight: bold;
     border-bottom: 1px solid $colors-main-black;
@@ -9,14 +12,14 @@
 
   .trade_orderbook-content {
 
-    .trade_orderbook-market_price {
+    .trade_orderbook-spread {
       flex: 0;
-      min-height: 2.5rem;
+      min-height: 2rem;
       color: $colors-deactivate-color2;
-      font-size: $font-size-main;
+      // font-size: $font-size-main;
       padding: 0 0.25rem;
 
-      .trade_orderbook-market_price-text {
+      .trade_orderbook-spread-text {
         font-weight: bold;
         color: $colors-main-black;
         margin-right: 0.25rem;
@@ -24,7 +27,6 @@
     }
 
     .trade_orderbook-asks, .trade_orderbook-bids {
-      flex: 1;
       .value-row {
         min-height: 1.5rem;
       }

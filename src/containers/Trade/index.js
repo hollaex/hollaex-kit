@@ -66,6 +66,7 @@ class Trade extends Component {
   render() {
     const {
       tradeHistory,
+      orderbookReady,
       asks,
       bids,
       marketPrice,
@@ -103,6 +104,15 @@ class Trade extends Component {
       },
     ]
 
+    const orderbookProps = {
+      symbol,
+      fiatSymbol: 'USD',
+      // asks: asks.concat(asks, asks, asks),
+      // bids: bids.concat(asks, asks, asks),
+      asks,
+      bids,
+    }
+
     return (
       <div className={classnames('trade-container', 'd-flex')}>
         <EventListener
@@ -111,13 +121,7 @@ class Trade extends Component {
         />
         <div className={classnames('trade-col_side_wrapper', 'flex-column', 'd-flex')}>
           <TradeBlock title={TITLES.ORDERBOOK}>
-            <Orderbook
-              symbol={symbol}
-              fiatSymbol="USD"
-              asks={asks}
-              bids={bids}
-              marketPrice={marketPrice}
-            />
+            {orderbookReady && <Orderbook {...orderbookProps} />}
           </TradeBlock>
         </div>
         <div className={classnames('trade-col_main_wrapper', 'flex-column', 'd-flex', 'flex-auto')}>
@@ -159,6 +163,7 @@ Trade.defaultProps = {
 const mapStateToProps = (store) => ({
   symbol: 'btc',
   tradeHistory: store.orderbook.trades,
+  orderbookReady: store.orderbook.orderbookReady,
   asks: store.orderbook.asks,
   bids: store.orderbook.bids,
   marketPrice: store.orderbook.price,
