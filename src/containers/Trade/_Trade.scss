@@ -1,0 +1,79 @@
+$trade-bids-color-main: blue;
+$trade-bids-color-font: blue;
+$trade-bids-color-disabled: blue;
+$trade-asks-color-main: $colors-currencies-btc;
+$trade-asks-color-font: $colors-currencies-btc;
+$trade-asks-color-disabled: rgba(247, 148, 30, 0.4);
+
+$font-color--disabled: grey;
+$font-color--acitve: black;
+
+$trade-section-border--color: black;
+$trade-section-border-disabled--color: grey;
+
+$trade_title-border--color: black;
+$trade_title-border--size: 0.2rem;
+
+$trade-fullfilled-background-color: grey;
+$trade-font-size: $font-size-subtext;
+
+$side-column--width: 17.5rem;
+$order_entry-column--width: 15rem;
+
+@import './_TradeContainer.scss';
+@import './components/_TradeBlock.scss';
+@import './components/_OrderEntry.scss';
+@import './components/Orderbook.scss';
+
+.ask, .buy {
+  color: $trade-asks-color-font;
+}
+
+.bid, .sell {
+  color: $trade-bids-color-font;
+}
+
+.trade_active_orders-wrapper {
+  overflow-y: auto;
+  flex: 1;
+
+  .cell_box-type {
+    padding: 0.1rem;
+    padding-left: 0;
+
+    > div {
+      color: white !important;
+      margin: 0;
+    }
+    .buy {
+      background-color: $trade-asks-color-font;
+    }
+    .sell {
+      background-color: $trade-bids-color-font;
+    }
+
+    &.fullfilled .cell-wrapper {
+      border: 1px solid $trade-fullfilled-background-color;
+      margin: 0;
+      padding: 1px;
+      min-width: 5rem;
+      max-width: 7rem;
+
+      > .cell_value-wrapper {
+        padding: 0 0.15rem;
+        position: relative;
+        width: 100%;
+        color: $colors-main-black;
+
+        .cell_value-bar {
+          position: absolute;
+          left: 0;
+          top: 0;
+          bottom: 0;
+          background-color: $trade-fullfilled-background-color;
+          z-index: -1;
+        }
+      }
+    }
+  }
+}

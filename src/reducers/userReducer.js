@@ -6,20 +6,33 @@ const USER_DATA_KEYS = [
 	'nationality',
 	'address',
 	'phone_number',
-	'bank_name',
-	'bank_account_number',
+	'id_data',
+	'bank_account',
 ];
 
-const INITIAL_API_OBJECT = {
-	data: [],
-	count: 0,
+const INITIAL_OTP_OBJECT = {
+	requesting: false,
+	requested: false,
+	error: '',
+	secret: '',
+	activated: false,
 };
 
 const extractuserData = (data) => {
-	const userData = {}
+	const userData = {
+		timestamp: Date.now()
+	}
 	USER_DATA_KEYS.forEach((key) => {
-		userData[key] = data[key];
+		if (data[key]) {
+			userData[key] = data[key];
+			if (key === 'phone_number') {
+				const phoneParts = data[key] ? data[key].split(' ', 2) : ['', ''];
+				userData.phone_country = phoneParts[0];
+				userData.phone_number = phoneParts[1];
+			}
+		}
 	})
+
 	return userData;
 };
 
@@ -27,41 +40,66 @@ const sortByDate = (a, b) => {
 	return new Date(a) <= new Date(b);
 }
 
-export default function reducer(state={
+const INITIAL_STATE = {
 	id: null,
 	email: null,
-	balance: {},
+	balance: {
+		timestamp: Date.now()
+	},
 	crypto_wallet: {},
-	userData: {},
+	userData: {
+		timestamp: Date.now()
+	},
 	fetching: false,
 	fee: 0,
 	verification_level: 0,
-	trades: INITIAL_API_OBJECT,
-}, action) {
+	otp_enabled: false,
+	otp: INITIAL_OTP_OBJECT
+};
+
+export default function reducer(state = INITIAL_STATE, action) {
 	switch(action.type) {
-		// GETME user profile
-		case 'GET_ME_PENDING': {
-			return {...state, fetching: true, fetched: false, error: null}
-		}
-		case 'GET_ME_REJECTED': {
-			return {...state, fetching: false, error: action.payload.response.data.error}
-		}
-		case 'GET_ME_FULFILLED': {
-			var {id, email, balance, crypto_wallet, bank_account_number, bank_name, verification_level} = action.payload.data
-			const userData = extractuserData(action.payload.data);
-			return {...state, fetching: false, fetched: true, id, email, balance, crypto_wallet, bank_account_number, bank_name, verification_level, userData}
-		}
 
 		case 'SET_ME': {
-			let {id, email, balance, crypto_wallet, verification_level} = action.payload
-			const userData = extractuserData(action.payload)
-			return {...state, fetching: false, fetched: true, id, email, balance, crypto_wallet, userData, verification_level}
+			const {id, email, balance, crypto_wallet, verification_level, otp_enabled} = action.payload;
+			const userData = extractuserData(action.payload);
+			return {
+				...state,
+				fetching: false,
+				fetched: true,
+				id,
+				email,
+				balance: {
+					...state.balance,
+					...balance,
+					timestamp: Date.now()
+				},
+				crypto_wallet,
+				verification_level,
+				userData,
+				otp_enabled
+			}
 		}
 
-		case 'SET_BALANCE': {
-			let balance =  action.payload
-			return {...state, balance}
+		case 'SET_USER_DATA': {
+			const userData = extractuserData(action.payload);
+			return {
+				...state,
+				userData: {
+					...state.userData,
+					...userData,
+				}
+			}
 		}
+		case 'SET_BALANCE':
+			return {
+				...state,
+				balance: {
+					...state.balance,
+					...action.payload,
+					timestamp: Date.now()
+				}
+			};
 
 		// WITHDRAW
 		case 'PROCESS_WITHDRAW_PENDING': {
@@ -94,61 +132,50 @@ export default function reducer(state={
 			return {...state, fetching: false, fetched: true, userData:action.payload.data}
 		}
 
-		// USER_TRADES
-		case 'USER_TRADES_PENDING': {
-			return {...state, fetching: true, fetched: false, error: null, trades: INITIAL_API_OBJECT}
-		}
-		case 'USER_TRADES_REJECTED': {
-			return {...state, fetching: false, error: action.payload}
-		}
-		case 'USER_TRADES_FULFILLED': {
-			return {...state, fetching: false, trades: { count: action.payload.count, data: state.trades.data.concat(action.payload.data).sort(sortByDate)}}
-		}
-
-		case 'ADD_TRADES': {
-			// check if we have trades from DB
-			if (state.trades.count > 0) {
-				return {
-					...state,
-					trades: {
-						count: state.trades.count + action.payload.length,
-						data: state.trades.data.concat(action.payload).sort(sortByDate)
-					}
+		// REQUEST_OTP
+		case 'REQUEST_OTP_PENDING':
+			return {
+				...state,
+				otp: {
+					...INITIAL_OTP_OBJECT,
+					requesting: true,
+				}
+			}
+		case 'REQUEST_OTP_REJECTED':
+			return {
+				...state,
+				otp: {
+					...INITIAL_OTP_OBJECT,
+					error: action.payload.message
+				}
+			}
+		case 'REQUEST_OTP_FULFILLED':
+			return {
+				...state,
+				otp: {
+					...INITIAL_OTP_OBJECT,
+					requested: true,
+					secret: action.payload.secret
 				}
 			}
 
-			break;
-		}
-		// USER_DEPOSITS
-		case 'USER_DEPOSITS_PENDING': {
-			return {...state, fetching: true, fetched: false, error: null}
-		}
-		case 'USER_DEPOSITS_REJECTED': {
-			return {...state, fetching: false,error: action.payload.response}
-		}
-		case 'USER_DEPOSITS_FULFILLED': {
-			return {...state, fetching: false,deposits: action.payload.data}
-		}
-		// USER_WITHDRAWALS
-		case 'USER_WITHDRAWALS_PENDING': {
-			return {...state, fetching: true, fetched: false, error: null}
-		}
-		case 'USER_WITHDRAWALS_REJECTED': {
-			return {...state, fetching: false,error: action.payload.response}
-		}
-		case 'USER_WITHDRAWALS_FULFILLED': {
-			return {...state, fetching: false,  withdrawals: action.payload.data}
-		}
-		// REQUEST_OTP
-		case 'REQUEST_OTP_PENDING': {
-			return {...state, fetching: true, fetched: false, error: null}
-		}
-		case 'REQUEST_OTP_REJECTED': {
-			return {...state, fetching: false,error: action.payload.response}
-		}
-		case 'REQUEST_OTP_FULFILLED': {
-			return {...state, fetching: false,otp: action.payload.data}
-		}
+		case 'ACTIVATE_OTP':
+			return {
+				...state,
+				otp: {
+					...state.otp,
+					activated: true,
+				},
+				otp_enabled: true,
+			}
+
+		case 'REVOKE_OTP':
+			return {
+				...state,
+				otp: INITIAL_OTP_OBJECT,
+				otp_enabled: false,
+			}
+
 		// ACTIVATE_OTP
 		case 'ACTIVATE_OTP_PENDING': {
 			return {...state, fetching: true, fetched: false, error: null}
@@ -170,6 +197,8 @@ export default function reducer(state={
 			return {...state, fetching: false,  deactivateOtp: action.payload.data}
 		}
 
+		case 'LOGOUT':
+			return INITIAL_STATE;
 	}
 	return state;
 }

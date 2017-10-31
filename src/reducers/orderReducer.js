@@ -1,18 +1,20 @@
 import _ from 'lodash'
 
-export default function reducer(state={
+const INITIAL_STATE = {
 	fetched: false,
 	fetching: false,
 	error: null,
 	activeOrders: []
-}, action) {
+};
+
+export default function reducer(state = INITIAL_STATE, action) {
 	switch(action.type) {
 		// createOrder
 		case 'CREATE_ORDER_PENDING': {
 			return {...state, fetching: true, fetched: false, error: null}
 		}
 		case 'CREATE_ORDER_REJECTED': {
-			alert('Error: ' + action.payload.response.data.error)
+			// alert('Error: ' + action.payload.response.data.error)
 			return {...state, fetching: false, error: action.payload}
 		}
 		case 'CREATE_ORDER_FULFILLED': {
@@ -37,7 +39,11 @@ export default function reducer(state={
 		}
 
 		case 'ADD_ORDER':
-			return {...state, activeOrders: state.activeOrders.concat(action.payload.order)}
+			const newOrder = { ...action.payload.order };
+			if (!newOrder.created_at) {
+				newOrder.created_at = new Date();
+			}
+			return {...state, activeOrders: state.activeOrders.concat(newOrder)}
 
 		case 'UPDATE_ORDER': {
 			let { order } = action.payload;
@@ -83,6 +89,10 @@ export default function reducer(state={
 		case 'CANCEL_ALL_ORDERS_FULFILLED': {
 			return {...state, fetching: false,activeOrders:[]}
 		}
+
+		case 'LOGOUT':
+			return INITIAL_STATE;
+
 		default:
 			return state;
 	}

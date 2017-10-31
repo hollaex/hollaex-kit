@@ -1,0 +1,36 @@
+.icon-cell {
+  width: 3rem;
+
+  > div {
+    margin: auto;
+  }
+}
+
+.cell_box-type {
+  > div {
+    color: white;
+  }
+  
+  .withdraw, .sell {
+    background-color: $colors-notifications-red;
+  }
+
+  .deposit, .buy {
+    background-color: $colors-notifications-green;
+  }
+}
+
+.amount_text {
+  .positive {
+    color: $colors-notifications-green;
+
+  }
+  .negative {
+    color: $colors-notifications-red;
+  }
+}
+
+
+.history_block-wrapper {
+  position: relative;
+}

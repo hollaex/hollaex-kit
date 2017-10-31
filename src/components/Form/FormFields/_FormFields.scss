@@ -1,0 +1,94 @@
+@import '../../../variables';
+@import "./DropdownField.scss";
+@import "./FieldWrapper.scss";
+
+$placeholder--padding: 0.25rem;
+$placeholder--font-size: $font-size-subtext;
+$placeholder--font-weight: bold;
+
+.input_field-input {
+  width: 100%;
+  position: relative;
+  background: transparent;
+  border: none !important;
+  line-height: 1rem;
+
+  &:focus {
+    outline: none;
+  }
+
+  &::placeholder {
+    color: $form-color-placeholder;
+  }
+}
+
+.dropdown-triangle:after {
+  content: '';
+  height: 0;
+  width: 0;
+  border-right: 0.25rem solid $colors-main-black;
+  border-bottom: 0.25rem solid $colors-main-black;
+  border-top: 0.25rem solid transparent;
+  border-left: 0.25rem solid transparent;
+  position: absolute;
+  right: 0px;
+  bottom: 0.35rem;
+}
+
+.datefield-wrapper {
+  position: relative;
+
+  .datefield-input {
+    // visibility: hidden;
+  }
+
+  .datefield-values-wrapper {
+    display: flex;
+    padding-right: $placeholder--padding !important;
+
+    > * {
+      flex: 1;
+
+      &:not(:last-child) {
+        margin-right: 1rem;
+      }
+    }
+  }
+
+  .SingleDatePicker {
+    position: absolute;
+  }
+
+  .SingleDatePickerInput {
+    display: none;
+  }
+
+}
+
+.input_file {
+
+}
+
+
+.placeholder {
+  font-size: $placeholder--font-size;
+  font-weight: $placeholder--font-weight;
+  color: $form-color-placeholder;
+  padding-right: $placeholder--padding * 2;
+}
+
+.file_upload_icon {
+  bottom: 0;
+}
+
+.file_wrapper {
+  display: flex;
+  justify-content: space-between;
+  padding-right: 0 !important;
+
+
+  > .action_notification-wrapper {
+    position: relative;
+    top: 0 !important;
+  }
+}

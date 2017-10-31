@@ -6,8 +6,9 @@ const VERIFICATION = {
 	error: ''
 }
 
-const initialState = {
+const INITIAL_STATE = {
 	token: null,
+	verifyingToken: false,
 	fetching: false,
 	fetched: false,
 	error: '',
@@ -18,7 +19,7 @@ const initialState = {
 	verification: VERIFICATION,
 }
 
-export default function reducer(state=initialState, action) {
+export default function reducer(state = INITIAL_STATE, action) {
 
 	switch(action.type) {
 		//SIGNUP
@@ -76,7 +77,14 @@ export default function reducer(state=initialState, action) {
 			return {...state, fetching: false, fetched: true, token: action.payload}
 			break;
 		}
-		
+		// Verify token
+		case 'VERIFY_TOKEN_PENDING':
+			return { ...state, fetching: true, verifyingToken: true };
+		case 'VERIFY_TOKEN_REJECTED':
+			return { ...state, fetching: false, verifyingToken: false };
+		case 'VERIFY_TOKEN_FULFILLED':
+			return { ...state, fetching: false, verifyingToken: false, fetched: true, token: action.payload };
+
 		// RESET PASSWORD
 		case 'RESET_PASSWORD_PENDING': {
 			return {...state, resetPasswordPending: true, resetPasswordComplete: false}
@@ -109,6 +117,9 @@ export default function reducer(state=initialState, action) {
 			return {...state, token: action.payload}
 			break;
 		}
+
+		case 'LOGOUT':
+			return INITIAL_STATE;
 	}
 	return state;
 }

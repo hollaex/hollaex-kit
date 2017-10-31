@@ -18,23 +18,11 @@ export function createOrder(side, type, size, price) {
 	}
 }
 
+
 export function getOrders() {
 	return {
 		type: 'GET_ORDERS',
 		payload: axios.get('/user/orders'),
-	}
-}
-
-export function cancelOrder(orderid) {
-	return {
-		type: 'CANCEL_ORDER',
-		payload: axios.delete(`/user/orders/${orderid}`),
-	}
-}
-export function cancelAllOrders() {
-	return {
-		type: 'CANCEL_ALL_ORDERS',
-		payload: axios.delete('/user/orders'),
 	}
 }
 
@@ -66,3 +54,14 @@ export function removeOrder(ids) {
 		payload: { ids: ids.map((item) => item.id) },
 	}
 }
+
+export const submitOrder = (order) => axios.post('/order', order);
+export const cancelOrder = (orderId) => ({
+	type: 'CANCEL_ORDER',
+	payload: axios.delete(`/user/orders/${orderId}`)
+});
+
+export const cancelAllOrders = () => ({
+	type: 'CANCEL_ALL_ORDERS',
+	payload: axios.delete('/user/orders'),
+});

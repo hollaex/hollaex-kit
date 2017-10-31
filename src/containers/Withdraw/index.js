@@ -1,0 +1,92 @@
+import React, { Component } from 'react';
+import classnames from 'classnames';
+import math from 'mathjs';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+
+import { Dialog } from '../../components';
+import { ICONS, FLEX_CENTER_CLASSES, CURRENCIES } from '../../config/constants';
+import { generateWalletActionsText, fiatSymbol } from '../../utils/currency';
+import { performWithdraw } from '../../actions/walletActions';
+import { errorHandler } from '../../components/OtpForm/utils';
+
+import {
+  openContactForm,
+} from '../../actions/appActions';
+
+import ReviewModalContent from './ReviewModalContent';
+import WithdrawCryptocurrency from './form';
+import { generateFiatInformation, renderExtraInformation } from './utils';
+
+import {
+  renderInformation,
+  renderTitleSection,
+} from '../Wallet/components';
+
+const renderChildren = (formProps) => <WithdrawCryptocurrency {...formProps} />;
+
+class Withdraw extends Component {
+  state = {
+    dialogIsOpen: false,
+    dialogData: {},
+  }
+
+  onSubmitWithdraw = (values) => {
+    return performWithdraw({
+        ...values,
+        amount: math.eval(values.amount),
+      })
+      .catch(errorHandler);
+  }
+
+  render() {
+    const { symbol, balance, fee, verification_level = 0, otp_enabled, bank_account, openContactForm } = this.props;
+    const { dialogIsOpen, dialogData } = this.state;
+
+    const balanceAvailable = balance[`${symbol}_available`];
+
+    if (balanceAvailable === undefined) {
+      return <div></div>
+    };
+
+    const formProps = {
+      symbol,
+      minAmount: 2,
+      maxAmount: 10000,
+      balanceAvailable,
+      fee,
+      onSubmit: this.onSubmitWithdraw,
+      verification_level,
+      onOpenDialog: this.onOpenDialog,
+      otp_enabled,
+      openContactForm,
+    };
+
+    return (
+      <div className="presentation_container">
+        {renderTitleSection(symbol, 'withdraw', ICONS.LETTER)}
+        <div className={classnames('inner_container', 'with_border_top')}>
+          {renderInformation(symbol, balance, openContactForm, generateFiatInformation)}
+          {renderChildren(formProps)}
+          {renderExtraInformation(symbol, bank_account)}
+        </div>
+      </div>
+    );
+  }
+}
+
+const mapStateToProps = (store) => ({
+  symbol: store.orderbook.symbol,
+  prices: store.orderbook.prices,
+  balance: store.user.balance,
+  fee: store.user.fee,
+  verification_level: store.user.verification_level,
+  otp_enabled: store.user.otp_enabled,
+  bank_account: store.user.userData.bank_account,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  openContactForm: bindActionCreators(openContactForm, dispatch),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Withdraw);

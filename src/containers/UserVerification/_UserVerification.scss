@@ -1,0 +1,18 @@
+.information_section {
+  border-top: 1px solid $colors-main-black;
+  font-size: $font-size-subtext;
+  color: $colors-deactivate-color2;
+  padding: 8px 0;
+
+  .information_section_title {
+    font-size: $font-size-main;
+    color: $colors-main-black;
+  }
+}
+
+.user_verification-form {
+  padding-bottom: 16px;
+}
+.user_verification-form_section {
+  padding-bottom: 16px;
+}

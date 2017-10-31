@@ -1,0 +1,44 @@
+@import '../../variables';
+
+.exir-button {
+  width: 100%;
+  font-size: $font-size-subtext;
+  padding: 0 4px;
+
+  &.button-success {
+    background-color: $colors-notifications-green;
+  }
+
+  &.button-fail {
+    background-color: $colors-notifications-red;
+  }
+
+  &.disabled {
+    background-color: $colors-deactivate-color1 !important;
+  }
+}
+
+.checkbutton-wrapper {
+  font-size: $font-size-main;
+  margin-top: 1rem;
+
+  .checkbutton-input-wrapper {
+    .checkbutton-input-wrapper--label {
+      margin: 0;
+      padding-left: 0.5rem;
+    }
+
+    .checkbutton-input-wrapper--image {
+      width: 2rem;
+    }
+  }
+  .checkbutton-content-wrapper {
+    margin-left: 2rem;
+  }
+}
+
+.buttons-row {
+  > *:not(:last-child) {
+    margin-right: 1rem;
+  }
+}

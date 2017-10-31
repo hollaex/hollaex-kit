@@ -33,7 +33,7 @@ const renderBalanceTable = (balance, price) => {
 								<div style={{backgroundColor:'#f15a25'}} className='balance ml-1'></div>
 							</div>
 						</td>
-					 	<td >Total in USD: {math.chain(btc_available).multiply(price).add(fiat_available).done()}</td>
+					 	<td >Total in USD: {formatFiatAmount(math.chain(btc_available).multiply(price).add(fiat_available).done())}</td>
 					</tr>
 					<tr style={{borderTop:'2px solid #81868a'}}>
 					 	<td>Balance in trade:</td>

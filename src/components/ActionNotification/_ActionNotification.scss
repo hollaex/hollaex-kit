@@ -1,0 +1,62 @@
+@import '../../variables';
+
+.action_notification-wrapper {
+  position: absolute;
+  top: 0.25rem;
+  display: flex;
+  // justify-content: center;
+  align-items: center;
+
+  .info {
+    color: $colors-notifications-blue;
+  }
+
+  .warning {
+    color: $colors-notifications-red;
+  }
+
+  .success {
+    color: $colors-notifications-green;
+  }
+
+  .relative {
+    position: relative;
+  }
+  
+  .action_notification-text {
+    font-size: $font-size-subtext;
+    text-transform: uppercase;
+  }
+
+  .action_notification-image {
+    width: 1rem;
+    height: 1rem;
+
+    &.reverse {
+      transform: rotate(180deg);
+    }
+  }
+
+  &.left {
+    left: 0;
+  }
+  &.right {
+    right: 0;
+  }
+
+  &.icon_on-right {
+    flex-direction: row;
+    .action_notification-image {
+      margin-left: 0.25rem;
+      margin-right: 0;
+    }
+  }
+
+  &.icon_on-left {
+    flex-direction: row-reverse;
+    .action_notification-image {
+      margin-right: 0.25rem;
+      margin-left: 0;
+    }
+  }
+}

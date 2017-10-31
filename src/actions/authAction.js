@@ -1,6 +1,8 @@
 import axios from 'axios';
 import { browserHistory } from 'react-router'
 import querystring from 'query-string';
+import { normalizeEmail } from 'validator';
+import store from '../store'
 
 export function signup(data) {
 	return ((dispatch) => {
@@ -73,45 +75,87 @@ export function verifyVerificationCode(data) {
 		});
 }
 
+export const performLogin = (values) => axios.post('/login', values)
+	.then((res) => {
+		setTokenInApp(res.data.token, true);
+		store.dispatch({
+			type: 'VERIFY_TOKEN_FULFILLED',
+			payload: res.data.token
+		});
+		return res;
+	});
+
 export function login(data) {
 	return ((dispatch) => {
 		dispatch({
 		    type: 'LOGIN_USER_PENDING'
 		});
 		axios.post('/login', data)
-		.then( res => {
-			let currentTime = new Date().getTime();
-			let token = res.data.token
-			axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-			localStorage.setItem('token', token);
-			localStorage.setItem('time', currentTime);
+		.then((res) => {
+			setTokenInApp(res.data.token, true)
 			dispatch({
 			    type: 'LOGIN_USER_FULFILLED',
-			    payload: token,
+			    payload: res.data.token,
 			});
-			browserHistory.push('/dashboard');
+			browserHistory.push('/');
 		})
-		.catch( err => {
+		.catch((err) => {
 			dispatch({
 			    type: 'LOGIN_USER_REJECTED',
 			    payload: err.response
 			});
 		})
-		
+
 	})
 }
 
-export function setToken(token) {
-	return {
-    	type: 'LOGIN_USER_FULFILLED',
-    	payload: token
-    }
+const setTokenInApp = (token, setInStore = false) => {
+	axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+	if (setInStore) {
+		localStorage.setItem('token', token);
+		localStorage.setItem('time', new Date().getTime());
+	}
 }
-export const logout = () => dispatch => {
+
+const cleatTokenInApp = () => {
 	axios.defaults.headers.common['Authorization'] = null;
-    localStorage.removeItem('token');
-    localStorage.clear();
-    browserHistory.push('/login');
+	localStorage.removeItem('token');
+	localStorage.clear();
+}
+
+export function verifyToken(token) {
+	return ((dispatch) => {
+		dispatch({ type: 'VERIFY_TOKEN_PENDING' });
+		axios({
+	    method: 'GET',
+	    url: '/verify_token',
+	    headers: {
+	      'Authorization': `Bearer ${token}`,
+	    }
+	  })
+			.then((response) => {
+				setTokenInApp(token);
+				dispatch({
+					type: 'VERIFY_TOKEN_FULFILLED',
+					payload: token
+				});
+			})
+			.catch((error) => {
+				dispatch({
+					type: 'VERIFY_TOKEN_REJECTED',
+				});
+				cleatTokenInApp();
+				browserHistory.push('/login');
+			});
+	});
+}
+
+export const logout = () => (dispatch) => {
+	cleatTokenInApp();
+	dispatch({
+		type: 'LOGOUT',
+	});
+	browserHistory.push('/login');
 }
 
 export function resetPassword(data) {
@@ -133,9 +177,10 @@ export function resetPassword(data) {
 }
 
 export function requestResetPassword(email) {
+	const qs = querystring.stringify({ email });
 	return ((dispatch) => {
 		dispatch({ type: 'REQUEST_RESET_PASSWORD_PENDING' });
-		axios.get(`/reset-password?email=${email}`)
+		axios.get(`/reset-password?${qs}`)
 			.then((response) => {
 				dispatch({
 					type: 'REQUEST_RESET_PASSWORD_FULFILLED',

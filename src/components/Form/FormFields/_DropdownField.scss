@@ -1,0 +1,39 @@
+@import '../../../variables';
+
+$dropdown-menu--max-height: 10rem;
+$dropdown-menu--border-radius: 0.25rem;
+
+$dropdown-option--height: 1rem;
+$dropdown-option--padding: 0.25rem;
+
+.dropdown-content {
+  .dropdown-option {
+    padding: 0;
+  }
+}
+
+.dropdown-options-wrapper {
+  max-height: 10rem;
+  position: absolute;
+  left: 0;
+  top: 100%;
+  width: 100%;
+  background: white;
+  z-index: 10000;
+  max-height: $dropdown-menu--max-height;
+  overflow-y: auto;
+  border: 1px solid grey;
+  border-bottom-right-radius: $dropdown-menu--border-radius;
+  border-bottom-left-radius: $dropdown-menu--border-radius;
+  border-top: 0;
+}
+
+.dropdown-option {
+  padding: $dropdown-option--padding;
+  display: flex;
+  align-items: center;
+  > .icon {
+    height: $dropdown-option--height;
+    margin-right: $dropdown-option--padding;
+  }
+}

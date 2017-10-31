@@ -1,0 +1,47 @@
+$input--height: 2.5rem;
+$input--background-color: $colors-deactivate-color1;
+$input--border-color: $colors-main-black;
+$input--color: $colors-deactivate-color2;
+
+$padding: 0.25rem;
+
+.trade_input-wrapper {
+  display: flex;
+  flex-direction: column;
+  > * {
+    flex: 1;
+    position: relative;
+  }
+
+  .trade_input-label {
+    padding-bottom: 0.25rem;
+  }
+
+  .trade_input-input-wrapper {
+    position: relative;
+    > input {
+      padding: $padding;
+      padding-right: $input--height;
+      position: relative;
+      width: 100%;
+      height: $input--height;
+      background: $input--background-color;
+      border: 1px solid $input--border-color;
+      border-radius: 2px;
+      color: $input--color;
+
+      &:focus {
+        outline: none;
+      }
+    }
+  }
+
+  .trade_input-input-currency {
+    @include size($input--height);
+    position: absolute;
+    right: 0;
+    top: 0;
+    font-weight: bold;
+    color: $input--border-color;
+  }
+}

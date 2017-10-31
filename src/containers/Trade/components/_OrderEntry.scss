@@ -1,0 +1,88 @@
+.trade_order_entry-wrapper {
+  flex: 1;
+  $theme-color: $trade-asks-color-main;
+  $row-height: 2.5rem;
+  color: $font-color--disabled;
+
+  > div:not(:last-child) {
+    margin-bottom: 0.5rem;
+  }
+
+  .trade_order_entry-selector {
+    position: relative;
+
+    > div {
+      line-height: 2rem;
+    }
+
+    &:after {
+      content: '';
+      position: absolute;
+      top: 1px;
+      background: $trade-section-border--color;
+      left: 0;
+      width: 100%;
+      height: 1px
+    }
+
+    .active {
+      position: relative;
+      color: $font-color--acitve;
+      font-weight: bold;
+
+      &:after {
+        content: '';
+        position: absolute;
+        top: 0;
+        background: $trade-section-border--color;
+        left: 0;
+        width: 100%;
+        height: 3px;
+      }
+    }
+  }
+
+  .trade_order_entry-action_selector {
+    border: 1px solid $theme-color;
+    .active {
+      background-color: $theme-color;
+      color: white;
+      font-weight: bold;
+    }
+  }
+
+  .trade_order_entry-review {
+    border-top: 1px solid $trade-section-border-disabled--color;
+    line-height: 1.5rem;
+    .text-price {
+      color: $font-color--acitve;
+    }
+  }
+
+  .trade_order_entry-action_selector, .trade_order_entry-form-action {
+    height: $row-height;
+  }
+
+  .trade_order_entry-form-action:disabled  {
+    background-color: $trade-asks-color-disabled !important;
+  }
+
+  .trade_order_entry-selector, .trade_order_entry-action_selector, .trade_order_entry-form {
+    > * {
+      flex: 1;
+    }
+  }
+
+  .trade_order_entry-form_inputs-wrapper {
+    .trade_input-wrapper {
+      margin-bottom: 0.5rem;
+    }
+
+    .trade_order_entry-form-action {
+      margin-top: 0.5rem;
+      background-color: $theme-color;
+      color: white;
+      font-weight: bold;
+    }
+  }
+}

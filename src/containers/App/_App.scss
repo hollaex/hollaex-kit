@@ -1,0 +1,96 @@
+@import '../../variables';
+$inner_container-border: 1px solid $colors-main-black;
+
+.app_container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
+  &.btc {
+    @include currency-color($btc-color);
+  }
+
+  &.fiat {
+    @include currency-color($colors-currencies-fiat);
+  }
+
+  &.bch {
+    @include currency-color($colors-currencies-bch);
+  }
+
+  &.eth {
+    @include currency-color($colors-currencies-eth);
+  }
+
+  &.ltc {
+    @include currency-color($colors-currencies-ltc);
+  }
+
+  .app_container-content {
+    display: flex;
+    justify-content: space-between;
+    min-height: calc(100vh - #{$navigation_bar-height});
+    max-height: calc(100vh - #{$navigation_bar-height});
+
+    .app_container-main {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      width: 100%;
+      height: auto;
+      overflow-y: auto;
+    }
+
+    .app_container-sidebar {
+      min-width: $sidebar-width;
+      max-width: $sidebar-width;
+      border-left: 1px solid $colors-deactivate-color2;
+    }
+  }
+}
+
+.presentation_container {
+  width: $content-display-width;
+  max-width: calc(100% - #{$content-display-vertical-margin * 2});
+  margin: $content-display-vertical-margin auto;
+
+  // border: 1px solid $colors-deactivate-color2;
+  height: 100%;
+
+  .inner_container {
+    // padding: 1rem 0;
+    position: relative;
+
+    &.with_border_top {
+      border-top: $inner_container-border;
+    }
+    &.with_border_bottom {
+      border-bottom: $inner_container-border;
+    }
+
+    .information_block {
+      position: relative;
+      margin-bottom: 1rem;
+
+      .information_block-text_wrapper {
+        .title {
+          font-size: $font-size-main;
+        }
+        .text {
+          font-size: $font-size-subtext;
+          color: $colors-deactivate-color2;
+          > p {
+            margin: 0.5rem 0;
+          }
+        }
+      }
+    }
+  }
+}
+
+
+@media only screen and (max-width: 991px) {
+  .app_container-sidebar {
+    display: none;
+  }
+}

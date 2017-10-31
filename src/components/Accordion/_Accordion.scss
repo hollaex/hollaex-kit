@@ -1,0 +1,43 @@
+@import '../../variables';
+
+$accordion-border: 1px solid $colors-main-black;
+$accordion_content-padding: 0;
+$accordion_arrow-size: 0.5rem;
+
+.accordion_section {
+  position: relative;
+}
+
+.accordion_wrapper .accordion_section{
+  border-top: $accordion-border;
+  font-size: $font-size-subhead2;
+  padding:$accordion_content-padding;
+  .accordion_section_content_text {
+    position: relative;
+    &:after{
+      @include css-triangle($colors-main-black, 'right', $accordion_arrow-size);
+      right: -$accordion_arrow-size;
+      top: calc(50% - 0.3rem);
+    }
+  }
+
+  &.accordion_section--open .accordion_section_content_text:after {
+    transform: rotate(90deg);
+  }
+
+  &.disabled {
+    color: $colors-deactivate-color2;
+    &  .accordion_section_content_text:after {
+      @include css-triangle($colors-deactivate-color2, 'right', $accordion_arrow-size);
+    }
+  }
+
+  &:last-child {
+    border-bottom: $accordion-border;
+  }
+
+  .accordion_section_content {
+    font-size: $font-size-subtext;
+    padding: $accordion_content-padding;
+  }
+}

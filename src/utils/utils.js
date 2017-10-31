@@ -1,4 +1,5 @@
-import { SESSION_TIME } from '../config/constants';
+import moment from 'moment';
+import { TOKEN_TIME, TIMESTAMP_FORMAT } from '../config/constants';
 
 const bitcoin = {
     COIN: 100000000,
@@ -34,5 +35,9 @@ export default bitcoin;
 export const checkUserSessionExpired = (loginTime) => {
   const currentTime = Date.now();
 
-  return (currentTime - loginTime) > SESSION_TIME;
+  return (currentTime - loginTime) > TOKEN_TIME;
 }
+
+
+
+export const formatTimestamp = (date, format = TIMESTAMP_FORMAT) => moment(date).format(format);

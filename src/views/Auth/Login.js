@@ -5,6 +5,9 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router'
 import { Field, reduxForm } from 'redux-form';
 
+import InputField from '../../components/Form/FormFields/InputField';
+import { password } from '../../components/Form/validations';
+import { Button } from '../../components';
 import { login } from '../../actions/authAction'
 
 const validate = formProps => {
@@ -46,7 +49,7 @@ class Login extends Component {
 		const onSubmit = formProps => {
             this.props.login(formProps);
         }
-		return (	
+		return (
 			<div className='col-lg-4 offset-4'>
 				<form className='pt-5 ' onSubmit={ handleSubmit(onSubmit)}>
 					<div className='row'>
@@ -56,21 +59,24 @@ class Login extends Component {
 			        <div>
 				         <Field
 				            name="email"
-				            component={ renderInput }
+				            component={ InputField }
 				            type="text"
-				            label="Email/Phone"
-				         />       
+				            label="Email"
+                    placeholder="Type your email"
+				         />
 			        </div>
 			        <div>
 				        <Field
 				            name="password"
-				            component={ renderInput }
+				            component={ InputField }
 				            type="password"
 				            label="Password"
-				         />       
+                    placeholder="Password"
+                    validate={[password]}
+				         />
 			        </div>
-			        <div className='pt-3'> 
-			        	<button type="submit">Login</button>
+			        <div className='pt-3'>
+			        	<Button type="submit" label="Login" />
 			        	{this.props.errorMsg?
 							<span style={{color:'red'}} className='pl-3'>{this.props.errorMsg}</span>
 						: null
@@ -79,7 +85,7 @@ class Login extends Component {
 			    </form>
           <Link to='/reset-password'>Reset password</Link>
 			</div>
-			
+
 		);
 	}
 }

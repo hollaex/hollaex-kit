@@ -1,0 +1,114 @@
+@import '../../variables';
+
+$wallet-bordertop-color: $colors-main-black;
+$wallet-bordertop-height: 2px;
+
+.sidebar-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
+  > div {
+    padding: $sidebar-sections-padding;
+
+    &:first-child {
+      border-top: none;
+    }
+  }
+
+  .sidebar-actions, .sidebar-logout {
+    flex: 0;
+  }
+
+  .sidebar-notifications {
+    flex: 1;
+    height: auto;
+    overflow-y: auto;
+  }
+
+  .sidebar-actions {
+    border-bottom: $sidebar-borderbottom-height solid $sidebar-borderbottom-color;
+    // min-height: calc(100vh / 3);
+    // max-height: calc(100vh / 3);
+
+    &.active {
+      border-bottom-color: $sidebar-borderbottom-color-active;
+    }
+  }
+
+  .sidebar-logout {
+    border-top: 1px solid $border-color;
+    padding-top: $sidebar-sections-padding / 2;
+    padding-bottom: $sidebar-sections-padding / 2;
+
+    .sidebar-logout-right {
+      float: right;
+    }
+
+    .sidebar-logout-left {
+      float: left;
+    }
+  }
+}
+
+.sidebar_section-container:not(:last-child) {
+  margin-bottom: $sidebar-sections-padding;
+}
+
+.sidebar_section-container {
+  position: relative;
+  margin: 1rem;
+
+  &:before {
+    content: '';
+    width: 100%;
+    height: 1px;
+    top: -1px;
+    background: $wallet-bordertop-color;
+    position: absolute;
+  }
+
+  &.active {
+    &:before {
+      height: 2px;
+      top: -2px;
+    }
+
+    .sidebar_section-title:before {
+      content: '';
+      width: 0.5rem;
+      height: 0.5rem;
+      border-radius: 0.5rem;
+      background-color: $wallet-bordertop-color;
+      position: absolute;
+      left: -1rem;
+    }
+  }
+
+  &.active .sidebar_section-title-text {
+    font-weight: bold;;
+  }
+
+  .sidebar_section-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    margin-bottom: 0.75rem;
+    text-transform: uppercase;
+
+    .sidebar_section-title-text {
+      font-size: $font-size-main;
+    }
+  }
+
+  .sidebar-container-trade {
+    > *:not(:last-child) {
+      margin-right: 0.5rem;
+    }
+  }
+}
+
+.sidebar-notifications-wrapper {
+  overflow-y: scroll;
+}

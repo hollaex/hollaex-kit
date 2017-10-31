@@ -1,0 +1,105 @@
+@import 'variables';
+@import 'fonts';
+@import 'mixins';
+
+html {
+  font-size: 12px;
+}
+
+#root {
+  height: 100%;
+}
+
+body {
+  background-color: $app-background-color !important;
+  font-size: $font-size-main !important;
+  font-family: "Open Sans" !important;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.warning_text {
+  color: $colors-notifications-red;
+}
+
+.ReactModal__Body--open #root {
+  filter: blur(5px);
+  background: $app-background-color-on-modal;
+}
+
+.form {
+  min-width: $dialog-min-width;
+  max-width: $dialog-min-width;
+}
+
+.error-icon {
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding-left: 2rem !important;
+
+  &:before {
+    content: '';
+    @include size(2rem, 100%);
+    position: absolute;
+    background-color: red;
+    left: 0;
+    top: calc(50% - 0.75rem);
+  }
+}
+
+.text_overflow {
+  width: auto;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+@import './containers/containers';
+@import './components/components';
+
+.b {
+  border: 1px solid red;
+}
+.c {
+  border: 1px solid green;
+}
+.d {
+  border: 1px solid blue;
+}
+
+input[type="number"] {
+    -moz-appearance: textfield;
+    appearance: textfield;
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+::-webkit-scrollbar {
+    display: none;
+}
+
+.flex-auto {
+  flex: auto;
+}
+
+.overflow-y {
+  overflow-y: auto;
+}
+
+@media screen
+  and (max-device-width: 800px) {
+  html {
+    font-size: 7px;
+  }
+}

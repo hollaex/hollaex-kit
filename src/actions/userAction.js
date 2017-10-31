@@ -1,6 +1,7 @@
 import axios from 'axios';
 import _ from 'lodash'
 import querystring from 'query-string';
+import { all } from 'bluebird';
 
 export function getMe() {
 	return {
@@ -15,6 +16,11 @@ export function setMe(user) {
 		payload: user
 	}
 }
+
+export const setUserData = (data) => ({
+	type: 'SET_USER_DATA',
+	payload: data,
+});
 
 export function setBalance(balance) {
 	return {
@@ -43,6 +49,63 @@ export function processWithdraw(data) {
 		})
 	})
 }
+
+export const updateUser = (values) => {
+	const userValues = values;
+
+	userValues.first_name = values.first_name;
+	userValues.last_name = values.last_name;
+	userValues.nationality = values.nationality;
+	if (values.phone_number) {
+		userValues.phone_number = `${values.phone_country} ${values.phone_number}`;
+	}
+
+	if (values.dob) {
+		userValues.dob = new Date(values.dob);
+	}
+
+	if (values.address) {
+		userValues.address = {
+			address: values.address,
+			city: values.city,
+			country: values.country,
+			postal_code: values.postal_code,
+		};
+	}
+
+	if (values.verified) {
+		delete values.verified;
+	}
+
+	return axios.put('/user', userValues);
+};
+
+export const updateDocuments = (values) => {
+	const formData = new FormData();
+
+	Object.entries(values).forEach(([key, value]) => {
+		formData.append(key, value);
+	});
+
+	return axios({
+		headers: {
+			'Content-Type': 'multipart/form-data'
+		},
+		data: formData,
+		url: '/user/verification',
+		method: 'POST'
+	})
+}
+
+export const otpActivate = (values) => axios.post('/user/activateOTP', values);
+export const otpRevoke = (values) => axios.post('/user/deactivateOTP', values);
+export const resetPassword = (values) => axios.post('/user/change-password', values);
+export const otpSetActivated = (active = true) => active ? ({
+		type: 'ACTIVATE_OTP',
+	}) : ({
+		type: 'REVOKE_OTP',
+	});
+
 export function userIdentity(data) {
 	return ((dispatch) => {
 		dispatch({
@@ -66,6 +129,7 @@ export function userIdentity(data) {
 export function uploadFile(data) {
 	const formData = new FormData();
 	Object.keys(data).forEach((key) => {
+		console.log(key, data)
 		formData.append(key, data[key]);
 	});
 
@@ -94,44 +158,6 @@ export function uploadFile(data) {
 	})
 }
 
-export function addTrades(trades) {
-	return {
-		type: 'ADD_TRADES',
-		payload: trades,
-	}
-};
-
-export function userTrades(limit = 100, page = 1) {
-	const query = querystring.stringify({
-		symbol: 'btc',
-		page,
-		limit,
-	});
-
-	return ((dispatch) => {
-		dispatch({ type: 'USER_TRADES_PENDING' });
-		axios.get(`/user/trades?${query}`)
-			.then((body) => {
-				dispatch({
-				    type: 'USER_TRADES_FULFILLED',
-				    payload: body.data,
-				});
-				if (body.data.count > page * limit) {
-					dispatch(userTrades(limit, page + 1));
-				}
-			})
-			.catch((err) => {
-				dispatch({
-				    type: 'USER_TRADES_REJECTED',
-				    payload: err.response
-				});
-			})
-	});
-	return {
-		type: 'USER_TRADES',
-		payload: axios.get('/user/trades'),
-	}
-}
 export function userDeposits() {
 	return {
 		type: 'USER_DEPOSITS',
@@ -145,17 +171,23 @@ export function userWithdrawals() {
 	}
 }
 
-export function requestOTP() {
-	return {
-		type: 'REQUEST_OTP',
-		payload: axios.get('/requestOTP'),
-	}
-}
-export function activateOTP(otp) {
-	return {
-		type: 'ACTIVATE_OTP',
-		payload: axios.post('/activateOTP',otp),
-	}
+export function otpRequest() {
+	return ((dispatch) => {
+		dispatch({ type: 'REQUEST_OTP_PENDING' });
+		axios.get('/user/requestOTP')
+			.then((body) => {
+				dispatch({
+				    type: 'REQUEST_OTP_FULFILLED',
+				    payload: body.data,
+				});
+			})
+			.catch((err) => {
+				dispatch({
+				    type: 'REQUEST_OTP_REJECTED',
+				    payload: err.response.data
+				});
+			})
+	});
 }
 export function deactivateOTP() {
 	return {

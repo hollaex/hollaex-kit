@@ -1,0 +1,59 @@
+
+$sidebar-width: 20rem;
+$dialog-min-width: 25rem;
+$dialog-min-height: 30rem;
+$navigation_bar-height: 32px;
+$footer-height: 64px;
+
+$colors-main-black: #212121;
+$colors-deactivate-color1: #f2f2f3;
+$colors-deactivate-color2: #a7aaac;
+$colors-notifications-red: #ed1c24;
+$colors-notifications-blue: #00aeef;
+$colors-notifications-green: #00a651;
+
+$colors-currencies-fiat: #00a651;
+$colors-currencies-btc: #f7941e;
+$colors-currencies-bch: #ec008c;
+$colors-currencies-eth: #2e3192;
+$colors-currencies-ltc: #58595b;
+
+$app-background-color: white;
+$app-background-color-on-modal: lightgrey;
+$border-color: $colors-deactivate-color2;
+$error-color: $colors-notifications-red;
+
+$bitcoin-color-main: $colors-currencies-btc;
+
+$content-display-width: 100rem;
+$content-display-vertical-margin: 16px;
+
+$font-size-headline: 5rem;
+$font-size-subhead1: 2.5rem;
+$font-size-subhead2: 1.75rem;
+$font-size-main: 1rem;
+$font-size-subtext: 0.8rem;
+
+$form-color-underline-focus: $colors-main-black;
+$form-color-underline: $colors-deactivate-color2;
+$form-color-placeholder: $colors-deactivate-color2;
+$form-width-max: $content-display-width / 2;
+
+
+// SIDEBAR
+
+$sidebar-sections-padding: 1rem;
+
+$sidebar-borderbottom-color: $colors-deactivate-color2;
+$sidebar-borderbottom-color-active: $colors-deactivate-color2;
+$sidebar-borderbottom-height: 4px;
+
+$btc-color: $colors-currencies-btc;
+
+$currency-color: inherit;
+
+// TAB CONTROLLER
+
+$tab-border-color: $colors-main-black;
+$tab-text-padding: 0 8px 8px;
+$tab-selected-line-height: 2px;

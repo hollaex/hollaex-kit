@@ -149,7 +149,7 @@ class Dashboard extends Component {
 	render() {
     const { user } = this.props;
 		return (
-			<div className="row dashboard-container">
+			<div className="dashboard-container">
 				<div className='col-md-10'>
 					{user.id
             ? this.props.children
