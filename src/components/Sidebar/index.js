@@ -2,8 +2,11 @@ import React from 'react';
 import Section from './Section';
 import { NotificationsList, Button, Wallet } from '../';
 import { ICONS } from '../../config/constants';
+import { fiatSymbol } from '../../utils/currency'
 
-const Sidebar = ({ goToWalletPage, goToTradePage, active, activePath, logout, notifications }) => {
+const Sidebar = ({
+  goToWalletPage, goToTradePage, active, activePath, logout, notifications, symbol
+}) => {
   return (
     <div className="sidebar-container">
       <div className={`sidebar-actions ${active ? 'active' : ''}`}>
@@ -17,24 +20,25 @@ const Sidebar = ({ goToWalletPage, goToTradePage, active, activePath, logout, no
 
           />
         </Section>
-        <Section
-          title="Trading Mod"
-          goToSection={goToTradePage}
-          goToSectionText="see details"
-          active={activePath === 'trade'}
-        >
-          <div className="sidebar-container-trade d-flex">
-            <Button
-              label="Quick Trade"
-              disabled={true}
-            />
-            <div className="sidebar-container-trade-space"></div>
-            <Button
-              label="Pro Trade"
-              disabled={true}
-            />
-          </div>
-        </Section>
+        {symbol !== fiatSymbol &&
+          <Section
+            title="Trading Mod"
+            goToSection={goToTradePage}
+            goToSectionText="see details"
+            active={activePath === 'trade'}
+          >
+            <div className="sidebar-container-trade d-flex">
+              <Button
+                label="Quick Trade"
+                disabled={true}
+              />
+              <Button
+                label="Pro Trade"
+                disabled={true}
+              />
+            </div>
+          </Section>
+        }
       </div>
       <div className="sidebar-notifications">
         <NotificationsList notifications={notifications} />

@@ -336,6 +336,7 @@ class Container extends Component {
 							goToTradePage={this.goToTradePage}
 							logout={this.logout}
 							notifications={notifications}
+							symbol={symbol}
 						/>
           </div>
         </div>

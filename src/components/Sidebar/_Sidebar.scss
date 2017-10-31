@@ -103,8 +103,8 @@ $wallet-bordertop-height: 2px;
   }
 
   .sidebar-container-trade {
-    .sidebar-container-trade-space {
-      width: 0.5rem;
+    > *:not(:last-child) {
+      margin-right: 0.5rem;
     }
   }
 }
