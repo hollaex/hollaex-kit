@@ -14,6 +14,11 @@ import routes from './routes';
 import './index.css';
 
 // import registerServiceWorker from './registerServiceWorker'
+import { version, name } from '../package.json';
+console.log({
+	name,
+	version,
+});
 
 render(
 	<Provider store={store}>
