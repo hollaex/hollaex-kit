@@ -28,10 +28,26 @@ class Trade extends Component {
     chartWidth: 0,
   }
 
+  componentWillMount() {
+    if (this.props.symbol === 'fiat') {
+      this.redirectInFiat();
+    }
+  }
+
   componentDidMount() {
     if (!this.props.userTrades.fetched) {
       this.props.getUserTrades(this.props.symbol);
     }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.symbol === 'fiat') {
+      this.redirectInFiat();
+    }
+  }
+
+  redirectInFiat = () => {
+    this.props.router.replace('wallet');
   }
 
   onSubmitOrder = (values) => {
@@ -164,7 +180,7 @@ Trade.defaultProps = {
 }
 
 const mapStateToProps = (store) => ({
-  symbol: 'btc',
+  symbol: store.orderbook.symbol,
   tradeHistory: store.orderbook.trades,
   orderbookReady: store.orderbook.orderbookReady,
   asks: store.orderbook.asks,
