@@ -94,6 +94,7 @@ class Trade extends Component {
       userTrades,
       cancelOrder,
       cancelAllOrders,
+      balance,
     } = this.props;
     const { chartHeight, chartWidth } = this.state
     const USER_TABS = [
@@ -149,6 +150,8 @@ class Trade extends Component {
               <TradeBlock title={TITLES.ORDER_ENTRY}>
                 <OrderEntry
                   submitOrder={this.onSubmitOrder}
+                  symbol={symbol}
+                  balance={balance}
                 />
               </TradeBlock>
             </div>
@@ -181,6 +184,7 @@ Trade.defaultProps = {
 
 const mapStateToProps = (store) => ({
   symbol: store.orderbook.symbol,
+  balance: store.user.balance,
   tradeHistory: store.orderbook.trades,
   orderbookReady: store.orderbook.orderbookReady,
   asks: store.orderbook.asks,

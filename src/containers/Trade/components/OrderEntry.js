@@ -3,6 +3,7 @@ import classnames from 'classnames';
 import Review from './OrderEntryReview';
 import Form from './OrderEntryForm';
 import { formatNumber } from '../../../utils/currency';
+import { evaluateOrder } from '../../../components/Form/validations';
 
 const TYPES = [
   'market',
@@ -31,22 +32,35 @@ class OrderEntry extends Component {
     this.setState({ activeAction });
   }
 
+  evaluateOrder = (values) => {
+    const side = this.state.activeAction;
+    const type = this.state.activeTab;
+    const { symbol, balance } = this.props;
+
+    if (!balance[`${symbol}_balance`]) {
+      return 'No balance';
+    }
+
+    return evaluateOrder(symbol, balance, values, type, side);
+  }
+
   onSubmit = (values) => {
     const order = {
       side: this.state.activeAction,
       type: this.state.activeTab,
       size: formatNumber(values.size, 4),
-      symbol: 'btc'
+      symbol: this.props.symbol,
     }
+
     if (values.price) {
       order.price = formatNumber(values.price);
     }
 
-    return this.props.submitOrder(order)
+    return this.props.submitOrder(order);
   }
 
   render() {
-    const { currencyName, onSubmitOrder } = this.props
+    const { currencyName, onSubmitOrder, balance, symbol } = this.props
     const { activeTab, activeAction } = this.state;
 
     return (
@@ -75,15 +89,18 @@ class OrderEntry extends Component {
             >{action}</div>
           )}
         </div>
-        <Form
-          type={activeTab}
-          buttonLabel={`${activeAction} ${currencyName}`}
-          onSubmit={this.onSubmit}
-        >
-          <Review
-            currency={FIAT_NAME}
-          />
-        </Form>
+        {balance[`${symbol}_balance`] &&
+          <Form
+            type={activeTab}
+            buttonLabel={`${activeAction} ${currencyName}`}
+            evaluateOrder={this.evaluateOrder}
+            onSubmit={this.onSubmit}
+          >
+            <Review
+              currency={FIAT_NAME}
+            />
+          </Form>
+        }
       </div>
     );
   }

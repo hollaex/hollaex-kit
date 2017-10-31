@@ -2,6 +2,7 @@ import validator from 'validator';
 import WAValidator from 'wallet-address-validator';
 import math from 'mathjs';
 import { NETWORK } from '../../config/constants';
+import { calculatePrice, fiatSymbol } from '../../utils/currency';
 
 const ERROR_MESSAGE_REQUIRED = 'Required field';
 const ERROR_MESSAGE_BEFORE_DATE = 'Invalid date';
@@ -43,6 +44,30 @@ export const checkBalance = (available, message, fee = 0) => (value = 0) => {
     return errorMessage;
   }
   return undefined;
+}
+
+
+export const evaluateOrder = (symbol = '', balance = {}, order = {}, orderType = '', side = '') => {
+
+  if (orderType === 'market') {
+    // TODO calculate with server
+    return '';
+  } else {
+    let orderPrice = 0;
+    let available = 0;
+    if (side === 'sell') {
+      available = balance[`${symbol}_available`];
+      orderPrice = order.size;
+    } else if (side === 'buy') {
+      available = balance[`${fiatSymbol}_available`];
+      orderPrice = math.multiply(math.fraction(order.size || 0), math.fraction(order.price || 0));
+    }
+    if (available < orderPrice) {
+      return 'Insufficient balance';
+    }
+  }
+
+  return '';
 }
 
 export const isBefore = (before = '', message = ERROR_MESSAGE_BEFORE_DATE) => {

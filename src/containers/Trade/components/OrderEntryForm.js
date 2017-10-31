@@ -15,6 +15,13 @@ const renderFormField = ([key, values], index) => {
   return <Field key={key} component={InputField} {...values} />
 };
 
+const validate = (values, props) => {
+  const { evaluateOrder } = props;
+  const error = {};
+  error._error = evaluateOrder(values);
+  return error;
+}
+
 class Form extends Component {
   state = {
     formValues: {},
@@ -93,5 +100,6 @@ Form.defaultProps = {
 
 export default reduxForm({
   form: FORM_NAME,
+  validate,
   onSubmitSuccess: (result, dispatch) => dispatch(reset(FORM_NAME)),
 })(Form);
