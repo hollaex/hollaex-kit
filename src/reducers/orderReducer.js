@@ -14,7 +14,7 @@ export default function reducer(state = INITIAL_STATE, action) {
 			return {...state, fetching: true, fetched: false, error: null}
 		}
 		case 'CREATE_ORDER_REJECTED': {
-			alert('Error: ' + action.payload.response.data.error)
+			// alert('Error: ' + action.payload.response.data.error)
 			return {...state, fetching: false, error: action.payload}
 		}
 		case 'CREATE_ORDER_FULFILLED': {

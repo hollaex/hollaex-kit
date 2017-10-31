@@ -3,12 +3,6 @@ import Section from './Section';
 import { NotificationsList, Button, Wallet } from '../';
 import { ICONS } from '../../config/constants';
 
-const prepareNotification = (notification) => ({
-  title: notification.type,
-  text: notification.message,
-  timestamp: new Date(notification.timestamp).toString(),
-});
-
 const Sidebar = ({ goToWalletPage, goToTradePage, active, activePath, logout, notifications }) => {
   return (
     <div className="sidebar-container">
@@ -43,7 +37,7 @@ const Sidebar = ({ goToWalletPage, goToTradePage, active, activePath, logout, no
         </Section>
       </div>
       <div className="sidebar-notifications">
-        <NotificationsList notifications={notifications.map(prepareNotification)} />
+        <NotificationsList notifications={notifications} />
       </div>
       <div className="sidebar-logout">
         <div onClick={logout} className="sidebar-logout-left text-uppercase pointer">

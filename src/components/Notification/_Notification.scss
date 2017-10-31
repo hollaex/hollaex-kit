@@ -1,0 +1,50 @@
+.notification-wrapper {
+  min-width: 30rem;
+  max-width: 30rem;
+
+  .notification-title-wrapper {
+    height: 15rem;
+    padding: 0.5rem;
+    border-bottom: 1px solid $colors-main-black;
+
+    .notification-title-icon {
+    }
+
+    .notification-title-text {
+      flex: 0;
+      text-align: center;
+    }
+  }
+  .notification-content-wrapper {
+    position: relative;
+    font-size: 0.8rem;
+
+    .notification-content-header {
+      position: relative;
+    }
+
+    .notification-content-block_amount {
+      margin: 2rem 0;
+      font-size: $font-size-headline;
+      line-height: $font-size-headline;
+
+      .notification-content-block_amount-value {
+        margin-left: 0.5rem;
+
+      }
+      .notification-content-block_amount-value-fiat {
+        color: $colors-deactivate-color2;
+        font-size: $font-size-subhead2;
+        line-height: $font-size-subhead2;
+      }
+    }
+  }
+  .notification-buttons-wrapper {
+    > *:not(:last-child) {
+      margin-right: 1rem;
+    }
+    .button-fiat {
+      background-color: $colors-currencies-fiat;
+    }
+  }
+}

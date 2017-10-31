@@ -9,11 +9,10 @@ export const NOTIFICATIONS = {
 };
 export const CONTACT_FORM = 'CONTACT_FORM';
 
-export const setNotification = (type = '', message = '', data = {}) => ({
+export const setNotification = (type = '', data = {}) => ({
   type: SET_NOTIFICATION,
   payload: {
     type,
-    message,
     data,
     timestamp: Date.now(),
   }

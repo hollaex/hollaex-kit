@@ -26,7 +26,7 @@ export default function reducer(state = INITIAL_STATE, action) {
 			return {...state, fetching: true, fetched: false, error: null}
 		}
 		case 'GET_ORDERBOOK_REJECTED': {
-			alert('Error: ' + action.payload)
+			// alert('Error: ' + action.payload)
 			return {...state, fetching: false, error: action.payload}
 		}
 		case 'GET_ORDERBOOK_FULFILLED': {
@@ -65,7 +65,7 @@ export default function reducer(state = INITIAL_STATE, action) {
 			return {...state, fetching: true, fetched: false, error: null}
 		}
 		case 'GET_TRADES_REJECTED': {
-			alert('Error: ' + action.payload)
+			// alert('Error: ' + action.payload)
 			return {...state, fetching: false, error: action.payload}
 		}
 		case 'GET_TRADES_FULFILLED': {

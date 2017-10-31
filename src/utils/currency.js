@@ -3,7 +3,9 @@ import numbro from 'numbro';
 import { CURRENCIES } from '../config/constants';
 
 export const fiatSymbol = 'fiat';
-const fiatName = CURRENCIES[fiatSymbol].name;
+export const fiatName = CURRENCIES[fiatSymbol].name;
+export const fiatShortName = CURRENCIES[fiatSymbol].shortName;
+export const fiatFormatToCurrency = CURRENCIES[fiatSymbol].formatToCurrency;
 
 const WALLET_BUTTON_FIAT_DEPOSIT = 'deposit';
 const WALLET_BUTTON_FIAT_WITHDRAW = 'withdraw';

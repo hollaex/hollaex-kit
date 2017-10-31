@@ -15,7 +15,7 @@ import {
 } from '../../actions/appActions';
 
 import { checkUserSessionExpired, getToken } from '../../utils/utils';
-import { AppBar, Sidebar, Dialog, Loader, MessageDisplay } from '../../components';
+import { AppBar, Sidebar, Dialog, Loader, Notification, MessageDisplay } from '../../components';
 import { ContactForm } from '../';
 
 class Container extends Component {
@@ -169,20 +169,40 @@ class Container extends Component {
           break;
 				case 'order_added':
 					this.props.addOrder(data);
+					this.props.setNotification(
+						NOTIFICATIONS.ORDERS,
+						data
+					);
 					break;
         case 'order_partialy_filled':
-          alert(`order partially filled ${data.id}`);
+          // alert(`order partially filled ${data.id}`);
 					this.props.updateOrder(data);
+					this.props.setNotification(
+						NOTIFICATIONS.ORDERS,
+						data
+					);
   				break;
 				case 'order_updated':
 					this.props.updateOrder(data);
+					this.props.setNotification(
+						NOTIFICATIONS.ORDERS,
+						data
+					);
 					break;
         case 'order_filled':
-          alert(`orders filled: ${data.length}`);
+          // alert(`orders filled: ${data.length}`);
           this.props.removeOrder(data);
+					this.props.setNotification(
+						NOTIFICATIONS.ORDERS,
+						data
+					);
           break;
 				case 'order_removed':
           this.props.removeOrder(data);
+					this.props.setNotification(
+						NOTIFICATIONS.ORDERS,
+						data
+					);
           break;
 				case 'trade':
 				 console.log('private trade', data)
@@ -201,18 +221,22 @@ class Container extends Component {
 				 //    "btc_balance": 300000,
 				 //    "updated_at": "2017-07-26T13:20:40.464Z"
 				 //  }
+				 this.props.setNotification(
+					 NOTIFICATIONS.TRADES,
+					 data
+				 );
          this.props.addUserTrades(data);
 					break;
 				case 'deposit':
 					this.props.setNotification(
 						NOTIFICATIONS.DEPOSIT,
-						`You have ${data.status ? 'received a' : 'a pending'} deposit of ${data.amount} ${data.currency}.`
+						data
 					);
 					break;
 				case 'withdrawal':
 					this.props.setNotification(
 						NOTIFICATIONS.WITHDRAWAL,
-						`You have performed a withdrawal of ${data.amount} ${data.currency}.`
+						data
 					);
 					break;
         default:
@@ -254,21 +278,27 @@ class Container extends Component {
 		}
 	}
 
-	renderDialogContent = ({ type, message, data }) => {
+	renderDialogContent = ({ type, data }, prices) => {
 		switch (type) {
 			case NOTIFICATIONS.ORDERS:
-			case NOTIFICATIONS.DEPOSIT:
+			case NOTIFICATIONS.TRADES:
 			case NOTIFICATIONS.WITHDRAWAL:
-				return <MessageDisplay
-					iconPath={ICONS.BELL}
-					onClick={this.onCloseDialog}
-					text={message}
+				return <Notification type={type} data={data} />;
+			case NOTIFICATIONS.DEPOSIT:
+				return <Notification
+					type={type}
+					data={{
+						...data,
+						 price: prices[data.currency],
+					}}
+					onClose={this.onCloseDialog}
+					goToPage={this.goToPage}
 				/>;
 			case NOTIFICATIONS.ERROR:
 				return <MessageDisplay
 					iconPath={ICONS.RED_WARNING}
 					onClick={this.onCloseDialog}
-					text={message}
+					text={`error`}
 				/>;
 			case CONTACT_FORM:
 				return <ContactForm onSubmitSuccess={this.onCloseDialog} />;
@@ -278,7 +308,7 @@ class Container extends Component {
 	}
 
 	render() {
-		const { symbol, children, activeNotification, changeSymbol, notifications } = this.props;
+		const { symbol, children, activeNotification, changeSymbol, notifications, prices } = this.props;
 		const { dialogIsOpen, appLoaded } = this.state;
 
 		const shouldCloseOnOverlayClick = activeNotification.type !== CONTACT_FORM;
@@ -317,7 +347,7 @@ class Container extends Component {
 					showCloseText={!shouldCloseOnOverlayClick}
 					style={{ 'z-index': 100 }}
 				>
-					{this.renderDialogContent(activeNotification)}
+					{this.renderDialogContent(activeNotification, prices)}
 				</Dialog>
 			</div>
 		);
@@ -326,7 +356,8 @@ class Container extends Component {
 
 const mapStateToProps = (store) => ({
 	orderbook: store.orderbook,
-  symbol: store.orderbook.symbol,
+	symbol: store.orderbook.symbol,
+  prices: store.orderbook.prices,
 	fetchingAuth: store.auth.fetching,
 	activeNotification: store.app.activeNotification,
 	notifications: store.app.notifications,
