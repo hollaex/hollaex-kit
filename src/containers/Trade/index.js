@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import EventListener from 'react-event-listener';
 import classnames from 'classnames';
 import { bindActionCreators } from 'redux';
+import { SubmissionError } from 'redux-form';
 
 import { FLEX_CENTER_CLASSES, ICONS } from '../../config/constants';
 import { submitOrder, cancelOrder, cancelAllOrders } from '../../actions/orderAction';
@@ -36,10 +37,12 @@ class Trade extends Component {
   onSubmitOrder = (values) => {
     return submitOrder(values)
       .then((body) => {
-        console.log('sucess', body)
+        // console.log('sucess', body)
       })
-      .then((error) => {
-        console.log('error', error)
+      .catch((err) => {
+        console.log('error', err)
+        const _error = err.response.data ? err.response.data.message : err.message;
+        throw new SubmissionError({ _error });
       });
   }
 

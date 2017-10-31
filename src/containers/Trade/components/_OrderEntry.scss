@@ -63,6 +63,10 @@
     height: $row-height;
   }
 
+  .trade_order_entry-form-action:disabled  {
+    background-color: $trade-asks-color-disabled !important;
+  }
+
   .trade_order_entry-selector, .trade_order_entry-action_selector, .trade_order_entry-form {
     > * {
       flex: 1;
