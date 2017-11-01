@@ -38,9 +38,6 @@ class OrderEntry extends Component {
     const type = this.state.activeTab;
     const { symbol, balance } = this.props;
 
-    if (!balance[`${symbol}_balance`]) {
-      return 'No balance';
-    }
 
     return evaluateOrder(symbol, balance, values, type, side);
   }
