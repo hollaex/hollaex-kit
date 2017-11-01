@@ -49,24 +49,25 @@ export const checkBalance = (available, message, fee = 0) => (value = 0) => {
 
 export const evaluateOrder = (symbol = '', balance = {}, order = {}, orderType = '', side = '') => {
 
-  if (orderType === 'market') {
-    // TODO calculate with server
-    return '';
+  let orderPrice = 0;
+  let available = 0;
+
+  if (side === 'sell') {
+    available = balance[`${symbol}_available`];
+    orderPrice = order.size;
   } else {
-    let orderPrice = 0;
-    let available = 0;
-    if (side === 'sell') {
-      available = balance[`${symbol}_available`];
-      orderPrice = order.size;
-    } else if (side === 'buy') {
-      available = balance[`${fiatSymbol}_available`];
+    available = balance[`${fiatSymbol}_available`];
+
+    if (orderType === 'market') {
+      return ''
+    } else {
       orderPrice = math.multiply(math.fraction(order.size || 0), math.fraction(order.price || 0));
     }
-    if (available < orderPrice) {
-      return 'Insufficient balance';
-    }
   }
-
+  
+  if (available === 0 || available < orderPrice) {
+    return 'Insufficient balance';
+  }
   return '';
 }
 
