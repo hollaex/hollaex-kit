@@ -54,20 +54,16 @@
     "watch-css": "npm run build-css && node-sass-chokidar src/ -o src/ --watch --recursive",
     "start-js": "react-scripts start",
     "start": "npm-run-all -p watch-css start-js",
-    "build": "npm run build-css && react-scripts build && react-snapshot",
+    "build": "npm run build-css && react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   },
-  "description": "trading platfrom",
+  "description": "Cryptocurrency trading platfrom",
   "main": "index.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/bitholla/exir.git"
   },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/bitholla/exir/issues"
-  },
-  "homepage": "https://github.com/bitholla/exir#readme"
+  "author": "bitHolla Inc",
+  "license": "All rights reserved to bitHolla Inc."
 }
