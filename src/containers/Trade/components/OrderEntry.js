@@ -4,6 +4,7 @@ import Review from './OrderEntryReview';
 import Form from './OrderEntryForm';
 import { formatNumber } from '../../../utils/currency';
 import { evaluateOrder } from '../../../components/Form/validations';
+import { Loader } from '../../../components';
 
 const TYPES = [
   'market',
@@ -62,6 +63,9 @@ class OrderEntry extends Component {
   render() {
     const { currencyName, onSubmitOrder, balance, symbol } = this.props
     const { activeTab, activeAction } = this.state;
+    if (!balance.hasOwnProperty(`${symbol}_balance`)) {
+      return <Loader relative={true} background={false} />;
+    }
 
     return (
       <div className={classnames('trade_order_entry-wrapper', activeTab, 'd-flex', 'flex-column')}>
@@ -89,18 +93,16 @@ class OrderEntry extends Component {
             >{action}</div>
           )}
         </div>
-        {balance[`${symbol}_balance`] &&
-          <Form
-            type={activeTab}
-            buttonLabel={`${activeAction} ${currencyName}`}
-            evaluateOrder={this.evaluateOrder}
-            onSubmit={this.onSubmit}
-          >
-            <Review
-              currency={FIAT_NAME}
-            />
-          </Form>
-        }
+        <Form
+          type={activeTab}
+          buttonLabel={`${activeAction} ${currencyName}`}
+          evaluateOrder={this.evaluateOrder}
+          onSubmit={this.onSubmit}
+        >
+          <Review
+            currency={FIAT_NAME}
+          />
+        </Form>
       </div>
     );
   }

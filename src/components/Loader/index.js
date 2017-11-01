@@ -1,14 +1,26 @@
 import React from 'react';
+import classnames from 'classnames';
 
-const Loader = () => {
-  return (
-    <div className="loader_wrapper d-flex justify-content-center align-items-center">
-      <div className="loader_background">
-      </div>
-      <div className="loader">
-      </div>
+const Loader = ({ relative, className, background }) => (
+  <div className={classnames(
+    'd-flex', 'justify-content-center', 'align-items-center',
+    {
+      'loader_wrapper': !relative,
+      'loader_wrapper_relative': relative,
+    },
+    className
+  )}>
+    <div className={classnames({ 'loader_background': background })}>
     </div>
-  );
+    <div className="loader">
+    </div>
+  </div>
+);
+
+Loader.defaultProps = {
+  relative: false,
+  background: true,
+  className: '',
 }
 
 export default Loader;
