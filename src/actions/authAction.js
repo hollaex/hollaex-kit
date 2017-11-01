@@ -3,6 +3,7 @@ import { browserHistory } from 'react-router'
 import querystring from 'query-string';
 import { normalizeEmail } from 'validator';
 import store from '../store'
+import { setToken, removeToken, getToken } from '../utils/token';
 
 export function signup(data) {
 	return ((dispatch) => {
@@ -112,15 +113,13 @@ export function login(data) {
 const setTokenInApp = (token, setInStore = false) => {
 	axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 	if (setInStore) {
-		localStorage.setItem('token', token);
-		localStorage.setItem('time', new Date().getTime());
+		setToken(token);
 	}
 }
 
 const cleatTokenInApp = () => {
 	axios.defaults.headers.common['Authorization'] = null;
-	localStorage.removeItem('token');
-	localStorage.clear();
+	removeToken();
 }
 
 export function verifyToken(token) {
@@ -196,7 +195,7 @@ export function requestResetPassword(email) {
 }
 
 export function loadToken() {
-	let token = localStorage.getItem('token')
+	let token = getToken();
 	return {
 		type: 'LOAD_TOKEN',
 		payload: token

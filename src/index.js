@@ -15,9 +15,13 @@ import './index.css';
 
 // import registerServiceWorker from './registerServiceWorker'
 import { version, name } from '../package.json';
+import { ENV, NETWORK } from './config/constants';
+
 console.log({
 	name,
 	version,
+	env: ENV,
+	network: NETWORK,
 });
 
 render(

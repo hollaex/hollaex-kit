@@ -14,7 +14,8 @@ import {
 	NOTIFICATIONS, CONTACT_FORM,
 } from '../../actions/appActions';
 
-import { checkUserSessionExpired, getToken } from '../../utils/utils';
+import { checkUserSessionExpired } from '../../utils/utils';
+import { getToken } from '../../utils/token';
 import { AppBar, Sidebar, Dialog, Loader, Notification, MessageDisplay } from '../../components';
 import { ContactForm } from '../';
 
@@ -103,7 +104,7 @@ class Container extends Component {
 
 	initSocketConnections = () => {
 		this.setPublicWS();
-		this.setUserSocket(localStorage.getItem('token'));
+		this.setUserSocket(getToken());
 		this.setState({ appLoaded: true });
 	}
 

@@ -24,13 +24,15 @@ import Bitcoin from './views/Exchange/Bitcoin'
 import store from './store'
 import { verifyToken } from './actions/authAction'
 
-let token = localStorage.getItem('token')
+import { getToken, removeToken } from './utils/token';
+
+let token = getToken();
 if (token) {
   store.dispatch(verifyToken(token));
 }
 
 function isLoggedIn() {
-  let token = localStorage.getItem('token')
+  let token = getToken();
   return !!token;
 }
 
@@ -50,6 +52,12 @@ function loggedIn(nextState, replace) {
   }
 }
 
+const logOutUser = () => {
+  if (getToken()) {
+    removeToken();
+  }
+}
+
 const NotFound = ({ router }) => {
   router.replace('/');
   return <div></div>;
@@ -58,6 +66,10 @@ const NotFound = ({ router }) => {
 const noAuthRoutesCommonProps = {
   onEnter: loggedIn,
 };
+
+const noLoggedUserCommonProps = {
+  onEnter: logOutUser,
+}
 
 export default (
   <Router history={browserHistory}>
@@ -78,10 +90,10 @@ export default (
     </Route>
     <Route path="login" name="Login" component={Login} {...noAuthRoutesCommonProps} />
     <Route path="signup" name="signup" component={SignUp} {...noAuthRoutesCommonProps} />
-    <Route path="reset-password" name="Reset Password Request" component={ResetPasswordRequest} {...noAuthRoutesCommonProps} />
-    <Route path="reset-password/:code" name="Reset Password" component={ResetPassword} {...noAuthRoutesCommonProps} />
-    <Route path="verify" name="Verify" component={Verification} {...noAuthRoutesCommonProps} />
-    <Route path="verify/:code" name="verifyCode" component={Verification} {...noAuthRoutesCommonProps} />
+    <Route path="reset-password" name="Reset Password Request" component={ResetPasswordRequest} {...noLoggedUserCommonProps} />
+    <Route path="reset-password/:code" name="Reset Password" component={ResetPassword} {...noLoggedUserCommonProps} />
+    <Route path="verify" name="Verify" component={Verification} {...noLoggedUserCommonProps} />
+    <Route path="verify/:code" name="verifyCode" component={Verification} {...noLoggedUserCommonProps} />
     <Route path="*" component={NotFound} />
   </Router>
 )
