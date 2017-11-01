@@ -3,8 +3,9 @@ import classnames from 'classnames';
 import Review from './OrderEntryReview';
 import Form from './OrderEntryForm';
 import { formatNumber } from '../../../utils/currency';
-import { evaluateOrder } from '../../../components/Form/validations';
+import { evaluateOrder, required, minValue, maxValue, normalizeInt } from '../../../components/Form/validations';
 import { Loader } from '../../../components';
+import { LIMIT_VALUES } from '../../../config/constants';
 
 const TYPES = [
   'market',
@@ -23,9 +24,15 @@ class OrderEntry extends Component {
   state = {
     activeTab: TYPES[0],
     activeAction: ACTIONS[0],
+    formValues: {},
+  }
+
+  componentDidMount() {
+    this.generateFormValues(this.state.activeTab);
   }
 
   changeTab = (activeTab) => () => {
+    this.generateFormValues(activeTab);
     this.setState({ activeTab });
   }
 
@@ -57,9 +64,37 @@ class OrderEntry extends Component {
     return this.props.submitOrder(order);
   }
 
+  generateFormValues = (type) => {
+    const formValues = {
+      size: {
+        name: 'size',
+        label: 'Amount',
+        type: 'number',
+        placeholder: '0.00',
+        step: 0.0001,
+        validate: [required, minValue(LIMIT_VALUES.SIZE.MIN), maxValue(LIMIT_VALUES.SIZE.MAX)],
+        currency: 'BTC',
+      },
+    };
+
+    if (type === 'limit') {
+      formValues.price = {
+        name: 'price',
+        label: 'Price',
+        type: 'number',
+        placeholder: '0',
+        validate: [required, minValue(LIMIT_VALUES.PRICE.MIN), maxValue(LIMIT_VALUES.PRICE.MAX)],
+        normalize: normalizeInt,
+        currency: 'USD',
+      };
+    }
+    this.setState({ formValues });
+  }
+
   render() {
     const { currencyName, onSubmitOrder, balance, symbol } = this.props
-    const { activeTab, activeAction } = this.state;
+    const { activeTab, activeAction, formValues } = this.state;
+
     if (!balance.hasOwnProperty(`${symbol}_balance`)) {
       return <Loader relative={true} background={false} />;
     }
@@ -95,6 +130,12 @@ class OrderEntry extends Component {
           buttonLabel={`${activeAction} ${currencyName}`}
           evaluateOrder={this.evaluateOrder}
           onSubmit={this.onSubmit}
+          formValues={formValues}
+          initialValues={{
+            price: 0,
+            size: 0,
+            side: activeAction,
+          }}
         >
           <Review
             currency={FIAT_NAME}
