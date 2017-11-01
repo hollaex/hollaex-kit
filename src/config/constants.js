@@ -75,3 +75,5 @@ export const LIMIT_VALUES = {
     MAX: 21000000,
   }
 };
+
+export const TOKEN_KEY = `${ENV}_${NETWORK}_TOKEN`;
