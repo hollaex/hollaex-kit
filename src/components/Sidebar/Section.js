@@ -1,9 +1,18 @@
 import React from 'react';
+import classnames from 'classnames';
 
-const Section = ({ title, goToSection, goToSectionText, active, children }) => {
+const Section = ({ title, goToSection, active, children }) => {
   return (
-    <div className={`sidebar_section-container ${active ? 'active' : ''}`}>
-      <div className="sidebar_section-title pointer" onClick={goToSection}>
+    <div className={classnames('sidebar_section-container', { active })}>
+      <div
+        className={classnames(
+          'sidebar_section-title',
+          {
+            pointer: goToSection
+          }
+        )}
+        onClick={goToSection}
+      >
         <div className="sidebar_section-title-text">{title}</div>
       </div>
       {children}
@@ -13,8 +22,6 @@ const Section = ({ title, goToSection, goToSectionText, active, children }) => {
 
 Section.defaultProps = {
   title: 'section',
-  goToSection: () => {},
-  goToSectionText: 'go',
   active: false
 }
 

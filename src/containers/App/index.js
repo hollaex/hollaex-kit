@@ -58,6 +58,13 @@ class Container extends Component {
 		} else if (!nextProps.activeNotification.timestamp && this.state.dialogIsOpen) {
 			this.onCloseDialog();
 		}
+		if (
+			!this.props.verification_level &&
+			nextProps.verification_level !== this.props.verification_level &&
+			nextProps.verification_level === 1
+		) {
+			this.goToAccountPage();
+		}
 	}
 
 	componentWillUnmount() {
@@ -247,7 +254,9 @@ class Container extends Component {
   }
 
 	goToPage = (path) => {
-    this.props.router.push(path)
+		if (this.props.location.pathname !== path) {
+			this.props.router.push(path);
+		}
   }
 
   goToAccountPage = () => this.goToPage('/account');
@@ -309,7 +318,9 @@ class Container extends Component {
 	}
 
 	render() {
-		const { symbol, children, activeNotification, changeSymbol, notifications, prices } = this.props;
+		const {
+			symbol, children, activeNotification, changeSymbol, notifications, prices, verification_level
+		} = this.props;
 		const { dialogIsOpen, appLoaded } = this.state;
 
 		const shouldCloseOnOverlayClick = activeNotification.type !== CONTACT_FORM;
@@ -327,7 +338,7 @@ class Container extends Component {
 				/>
         <div className="app_container-content">
           <div className="app_container-main">
-            {appLoaded && children}
+            {appLoaded && verification_level && children}
           </div>
           <div className="app_container-sidebar">
             <Sidebar
@@ -363,6 +374,7 @@ const mapStateToProps = (store) => ({
 	fetchingAuth: store.auth.fetching,
 	activeNotification: store.app.activeNotification,
 	notifications: store.app.notifications,
+	verification_level: store.user.verification_level,
 });
 
 const mapDispatchToProps = (dispatch) => ({
