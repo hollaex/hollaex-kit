@@ -7,7 +7,7 @@ import { reduxForm, Field, reset, formValueSelector } from 'redux-form';
 import { Button } from '../../../components';
 import renderFields from '../../../components/Form/factoryTradeFields';
 
-const FORM_NAME = 'OrderEntryForm';
+export const FORM_NAME = 'OrderEntryForm';
 
 const validate = (values, props) => {
   const { evaluateOrder } = props;

@@ -152,6 +152,8 @@ class Trade extends Component {
                   submitOrder={this.onSubmitOrder}
                   symbol={symbol}
                   balance={balance}
+                  asks={asks}
+                  bids={bids}
                 />
               </TradeBlock>
             </div>

@@ -47,7 +47,7 @@ export const checkBalance = (available, message, fee = 0) => (value = 0) => {
 }
 
 
-export const evaluateOrder = (symbol = '', balance = {}, order = {}, orderType = '', side = '') => {
+export const evaluateOrder = (symbol = '', balance = {}, order = {}, orderType = '', side = '', marketPrice = 0) => {
 
   let orderPrice = 0;
   let available = 0;
@@ -59,16 +59,41 @@ export const evaluateOrder = (symbol = '', balance = {}, order = {}, orderType =
     available = balance[`${fiatSymbol}_available`];
 
     if (orderType === 'market') {
+      orderPrice = marketPrice;
       return ''
     } else {
       orderPrice = math.multiply(math.fraction(order.size || 0), math.fraction(order.price || 0));
     }
   }
-  
+
   if (available === 0 || available < orderPrice) {
     return 'Insufficient balance';
   }
   return '';
+}
+
+export const checkMarketPrice = (size, orders = [], type, side,  orderPrice) => {
+  let accumulated = 0;
+  let remaining = size;
+  
+  orders.some(([price, amount], index) => {
+    if (type === 'limit') {
+      if (side === 'buy' && orderPrice < price) {
+        return true;
+      } else if (side === 'sell' && orderPrice > price) {
+        return true;
+      }
+    }
+    const orderSizeTaken = remaining >= amount ? amount : remaining;
+    const takenPrice = price * orderSizeTaken;
+
+    remaining = remaining - orderSizeTaken;
+    accumulated = accumulated + takenPrice;
+
+    return remaining <= 0;
+  });
+
+  return accumulated;
 }
 
 export const isBefore = (before = '', message = ERROR_MESSAGE_BEFORE_DATE) => {

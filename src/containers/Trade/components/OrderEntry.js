@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
+import { connect } from 'react-redux';
+import { formValueSelector } from 'redux-form';
 
 import Review from './OrderEntryReview';
-import Form from './OrderEntryForm';
-import { formatNumber } from '../../../utils/currency';
-import { evaluateOrder, required, minValue, maxValue, normalizeInt } from '../../../components/Form/validations';
+import Form, { FORM_NAME } from './OrderEntryForm';
+import { formatNumber, formatFiatAmount } from '../../../utils/currency';
+import { evaluateOrder, required, minValue, maxValue, normalizeInt, checkMarketPrice } from '../../../components/Form/validations';
 import { Loader } from '../../../components';
-import { LIMIT_VALUES } from '../../../config/constants';
+import { LIMIT_VALUES, CURRENCIES } from '../../../config/constants';
 
 const TYPES = [
   'market',
@@ -19,7 +21,7 @@ const SIDES = [
   'sell',
 ];
 
-const FIAT_NAME = 'USD';
+const FIAT_NAME = CURRENCIES.fiat.shortName;
 
 class OrderEntry extends Component {
   state = {
@@ -28,11 +30,39 @@ class OrderEntry extends Component {
       side: SIDES[0],
       type: TYPES[0],
     },
-    marketPrice: 0,
+    orderPrice: 0,
   }
 
   componentDidMount() {
     this.generateFormValues(this.state.activeTab);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (
+      nextProps.size !== this.props.size ||
+      nextProps.side !== this.props.side ||
+      nextProps.price !== this.props.price ||
+      nextProps.type !== this.props.type
+    ) {
+      this.calculateOrderPrice(nextProps);
+    }
+  }
+
+  calculateOrderPrice = (props) => {
+    const { type, side } = props;
+    const size = parseFloat(props.size || 0);
+    const price = parseFloat(props.price || 0);
+
+    let orderPrice = 0;
+    if (props.side === 'sell') {
+      const { bids } = props;
+      orderPrice = checkMarketPrice(size, bids, type, side, price);
+    } else {
+      const { asks } = props;
+      orderPrice = checkMarketPrice(size, asks, type, side, price);
+    }
+
+    this.setState({ orderPrice });
   }
 
   evaluateOrder = (values) => {
@@ -89,13 +119,13 @@ class OrderEntry extends Component {
         currency: 'USD',
       }
     };
-    
+
     this.setState({ formValues });
   }
 
   render() {
-    const { currencyName, onSubmitOrder, balance, symbol } = this.props
-    const { initialValues, formValues, marketPrice } = this.state;
+    const { currencyName, onSubmitOrder, balance, symbol, type } = this.props
+    const { initialValues, formValues, orderPrice } = this.state;
 
     const fees = 0;
 
@@ -113,10 +143,11 @@ class OrderEntry extends Component {
           initialValues={initialValues}
         >
           <Review
+            type={type}
             currency={FIAT_NAME}
-            marketPrice={marketPrice}
+            orderPrice={orderPrice}
             fees={fees}
-            orderTotal={marketPrice + fees}
+            formatToCurrency={formatFiatAmount}
           />
         </Form>
       </div>
@@ -128,4 +159,8 @@ OrderEntry.defaultProps = {
   currencyName: 'Bitcoins',
 }
 
-export default OrderEntry;
+const selector = formValueSelector(FORM_NAME);
+
+const mapStateToProps = (state) => selector(state, 'price', 'size', 'side', 'type');
+
+export default connect(mapStateToProps)(OrderEntry);
