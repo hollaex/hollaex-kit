@@ -2,11 +2,10 @@ import React from 'react';
 import classnames from 'classnames';
 
 import { CurrencyBall } from '../../components';
-import { CURRENCIES, FLEX_CENTER_CLASSES } from '../../config/constants';
+import { CURRENCIES } from '../../config/constants';
 import { fiatSymbol } from '../../utils/currency';
 import { formatTimestamp } from '../../utils/utils';
 
-const fiatShortName = CURRENCIES[fiatSymbol].shortName;
 const fiatFormatToCurrency = CURRENCIES[fiatSymbol].formatToCurrency;
 const fiatCurrencySymbol = CURRENCIES.fiat.currencySymbol;
 
@@ -79,7 +78,6 @@ export const generateTradeHeaders = (symbol) => {
 };
 
 export const generateWithdrawalsHeaders = (symbol) => {
-  const { shortName, fullName, formatToCurrency } = CURRENCIES[symbol];
   return [
     {
       label: '',

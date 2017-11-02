@@ -90,7 +90,6 @@ class UserVerification extends Component {
       this.props.requestOTP();
     } else {
       // TODO cancel otp
-      console.log('caaaancel');
       this.setState({ dialogIsOpen: true, modalText: '' });
     }
   }
@@ -148,18 +147,14 @@ class UserVerification extends Component {
   }
 
   renderModalContent = ({ requested, activated, secret, error }, otp_enabled, email, modalText) => {
-    console.log(requested, activated, secret, error, otp_enabled, email, modalText)
+    // console.log(requested, activated, secret, error, otp_enabled, email, modalText)
     if (error) {
-      console.log('-----------', 0)
       return <SuccessDisplay onClick={this.onCloseDialog} text={error} success={false} />
     } else if (otp_enabled && !modalText) {
-      console.log('-----------', 1)
       return <OtpForm onSubmit={this.onSubmitCancelOTP} />;
     } else if (requested && !activated) {
-      console.log('-----------', 2)
       return renderOTPForm(secret, email, this.onSubmitActivateOtp);
     } else {
-      console.log('-----------', 3)
       return <SuccessDisplay onClick={this.onCloseDialog} text={modalText} success={!error} />
     }
   }

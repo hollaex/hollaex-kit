@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import AccordionSection from './AccordionSection';
-import { findDOMNode } from 'react-dom';
 
 class Accordion extends Component {
   state = {

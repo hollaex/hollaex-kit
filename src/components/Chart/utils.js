@@ -38,11 +38,10 @@ const LabelData = ({ label, value = '-' }) => (
 
 export const OHLCChildren = (props, moreProps, itemsToDisplay) => {
   const {
-    displayTexts: { o, h, l, c, },
+    displayTexts: { o, h, l, c },
     className,
-    textClassName,
   } = props;
-  const { open, high, low, close, volume, x, y} = itemsToDisplay;
+  const { open, high, low, close, x, y } = itemsToDisplay;
   return (
     <g
       className={classnames(className)}

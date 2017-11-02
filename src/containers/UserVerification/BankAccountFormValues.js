@@ -1,7 +1,5 @@
-import React from 'react';
 import { required, requiredWithCustomMessage, exactLength } from '../../components/Form/validations';
 
-const ERROR_MESSAGE_BANK_NAME = '';
 const ERROR_MESSAGE_ACCOUNT_NAME = 'Please type your first and last name as associated with your bank account';
 const ERROR_MESSAGE_ACCOUNT_NUMBER_LENGTH = 'Your bank account number should be 24 digits';
 

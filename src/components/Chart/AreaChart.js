@@ -2,12 +2,10 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 
 import { format } from "d3-format";
-import { timeFormat } from "d3-time-format";
 
 import { ChartCanvas, Chart } from "react-stockcharts";
 
 import {
-	BarSeries,
 	AreaSeries,
 } from "react-stockcharts/lib/series";
 
@@ -21,7 +19,6 @@ import {
 } from "react-stockcharts/lib/coordinates";
 import { OHLCTooltip } from "react-stockcharts/lib/tooltip";
 
-import { SingleValueTooltip } from "react-stockcharts/lib/tooltip";
 import { fitWidth } from "react-stockcharts/lib/helper";
 
 import {
@@ -29,8 +26,6 @@ import {
 	margins,
 	yExtents,
   generateXExtents,
-	Y_GAP,
-	X_GAP,
 	FORMAT_DATE_X_TICK,
 } from './utils';
 
@@ -59,8 +54,6 @@ class AreaChartWithEdge extends Component {
 		} = xScaleProvider(initialData);
 
 		const xExtents = generateXExtents(xAccessor, data);
-		const xTicks = Math.floor(width / 60);
-		const yTicks = Math.floor(height / 50);
 
 		return (
 			<ChartCanvas

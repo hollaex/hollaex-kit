@@ -1,13 +1,10 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
-import { IconTitle } from '../';
 
 import TableHeader from './TableHeader';
 import TableBody from './TableBody';
 // import TableFooter from './TableFooter';
 import Paginator from './paginator';
-
-const RENDER_CELL = (row, key) => <td key={key}>{row[key]}</td>;
 
 class Table extends Component{
   state = {

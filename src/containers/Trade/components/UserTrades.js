@@ -2,9 +2,6 @@ import React from 'react';
 import classnames from 'classnames';
 
 import { Table } from '../../../components';
-import { formatTimestamp } from '../../../utils/utils';
-import { formatFiatAmount, formatBtcAmount } from '../../../utils/currency';
-
 import { generateTradeHeaders } from '../../TransactionsHistory/utils';
 
 const ActiveOrders = ({ trades, symbol }) => {

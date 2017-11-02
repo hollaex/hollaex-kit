@@ -1,5 +1,4 @@
 import { timeFormat } from "d3-time-format";
-import { format } from "d3-format";
 
 import {
   yAccessor,

@@ -2,7 +2,6 @@ import React from "react";
 import PropTypes from "prop-types";
 
 import { format } from "d3-format";
-import { timeFormat } from "d3-time-format";
 
 import { ChartCanvas, Chart } from "react-stockcharts";
 import { CandlestickSeries } from "react-stockcharts/lib/series";
@@ -10,7 +9,6 @@ import { CandlestickSeries } from "react-stockcharts/lib/series";
 import { XAxis, YAxis } from "react-stockcharts/lib/axes";
 import {
 	CrossHairCursor,
-	MouseCoordinateX,
 	MouseCoordinateY,
   EdgeIndicator,
 } from "react-stockcharts/lib/coordinates";
@@ -23,8 +21,6 @@ import {
 	margins,
 	yExtents,
 	generateXExtents,
-	Y_GAP,
-	X_GAP,
 } from './utils';
 
 import {

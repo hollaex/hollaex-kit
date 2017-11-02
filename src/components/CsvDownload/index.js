@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { CSVLink as ReactCsvDownaload } from 'react-csv';
 
 const SEPARATOR = ';';

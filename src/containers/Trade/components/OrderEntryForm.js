@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
+import React from 'react';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
-import { reduxForm, Field, reset, formValueSelector } from 'redux-form';
+import { reduxForm, reset, formValueSelector } from 'redux-form';
 
 
 import { Button } from '../../../components';

@@ -135,7 +135,7 @@ class OrderEntry extends Component {
   }
 
   render() {
-    const { currencyName, onSubmitOrder, balance, symbol, type } = this.props
+    const { currencyName, balance, symbol, type } = this.props
     const { initialValues, formValues, orderPrice, outsideFormError } = this.state;
 
     const fees = 0;

@@ -1,6 +1,6 @@
 import React from 'react';
 import { reduxForm } from 'redux-form';
-import { required, password } from '../../components/Form/validations';
+import { required } from '../../components/Form/validations';
 import renderFields from '../../components/Form/factoryFields';
 import { Button, IconTitle, ActionNotification } from '../';
 import { ICONS } from '../../config/constants';
@@ -16,7 +16,7 @@ const FormValues = {
 };
 
 const Form = (props) => {
-  const { handleSubmit, submitting, pristine, error, valid, children, onClickHelp } = props;
+  const { handleSubmit, submitting, pristine, error, valid, onClickHelp } = props;
   return (
     <div className="otp_form-wrapper">
       <IconTitle

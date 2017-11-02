@@ -87,7 +87,7 @@ class ChartComponent extends Component {
         lastData.close = tickers[symbol]
         chartData[symbol][chartData[symbol].length - 1] = lastData;
       } else {
-        const openValue = chartData[symbol].length > 0 ? chartData[symbol][chartData[symbol].length - 1].open : tickers[symbol];
+        // const openValue = chartData[symbol].length > 0 ? chartData[symbol][chartData[symbol].length - 1].open : tickers[symbol];
         chartData[symbol].push({
           date: currentBlockTimestamp,
           high: tickers[symbol],
@@ -103,7 +103,6 @@ class ChartComponent extends Component {
   render() {
     const { height, width } = this.props;
     const { chartData, ready } = this.state;
-    console.log(height, width)
     return (
       <div
         style={{

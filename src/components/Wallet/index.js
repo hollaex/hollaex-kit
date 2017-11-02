@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import math from 'mathjs';
 import { Accordion } from '../';
 import { CURRENCIES } from '../../config/constants';
 import { calculateBalancePrice, formatFiatAmount } from '../../utils/currency';

@@ -46,7 +46,7 @@ const Sidebar = ({
           logout
         </div>
         <div onClick={logout} className="sidebar-logout-right pointer">
-          <img src={ICONS.LOGOUT} />
+          <img src={ICONS.LOGOUT} alt="logout" />
         </div>
       </div>
     </div>
