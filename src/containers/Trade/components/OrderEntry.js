@@ -31,6 +31,7 @@ class OrderEntry extends Component {
       type: TYPES[0],
     },
     orderPrice: 0,
+    outsideFormError: '',
   }
 
   componentDidMount() {
@@ -62,7 +63,17 @@ class OrderEntry extends Component {
       orderPrice = checkMarketPrice(size, asks, type, side, price);
     }
 
-    this.setState({ orderPrice });
+    let outsideFormError = '';
+
+    if (type === 'market' && side === 'buy') {
+      const values = {
+        size, side, type, price,
+      }
+      const { symbol, balance } = props;
+
+      outsideFormError = evaluateOrder(symbol, balance, values, type, side, orderPrice);
+    }
+    this.setState({ orderPrice, outsideFormError });
   }
 
   evaluateOrder = (values) => {
@@ -125,7 +136,7 @@ class OrderEntry extends Component {
 
   render() {
     const { currencyName, onSubmitOrder, balance, symbol, type } = this.props
-    const { initialValues, formValues, orderPrice } = this.state;
+    const { initialValues, formValues, orderPrice, outsideFormError } = this.state;
 
     const fees = 0;
 
@@ -141,6 +152,7 @@ class OrderEntry extends Component {
           onSubmit={this.onSubmit}
           formValues={formValues}
           initialValues={initialValues}
+          outsideFormError={outsideFormError}
         >
           <Review
             type={type}

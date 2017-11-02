@@ -28,9 +28,11 @@ const getFields = (formValues = {}, type = '') => {
 const Form = ({
   children, buttonLabel, handleSubmit,
   submitting, pristine, error, valid, formValues,
-  side, type, currencyName
+  side, type, currencyName, outsideFormError
 }) => {
   const fields = getFields(formValues, type);
+  const errorText = error || outsideFormError;
+
   return (
     <div className="trade_order_entry-form d-flex">
       <form
@@ -39,12 +41,12 @@ const Form = ({
       >
         <div className="trade_order_entry-form_fields-wrapper">
           {Object.entries(fields).map(renderFields)}
-          {error && <div className="form-error warning_text font-weight-bold">{error}</div>}
+          {errorText && <div className="form-error warning_text font-weight-bold">{errorText}</div>}
         </div>
         {children}
         <Button
           label={`${side} ${currencyName}`}
-          disabled={pristine || submitting || !valid}
+          disabled={pristine || submitting || !valid || errorText}
           className={classnames(
             'trade_order_entry-form-action'
           )}

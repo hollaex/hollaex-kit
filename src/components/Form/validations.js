@@ -60,7 +60,6 @@ export const evaluateOrder = (symbol = '', balance = {}, order = {}, orderType =
 
     if (orderType === 'market') {
       orderPrice = marketPrice;
-      return ''
     } else {
       orderPrice = math.multiply(math.fraction(order.size || 0), math.fraction(order.price || 0));
     }
@@ -75,7 +74,7 @@ export const evaluateOrder = (symbol = '', balance = {}, order = {}, orderType =
 export const checkMarketPrice = (size, orders = [], type, side,  orderPrice) => {
   let accumulated = 0;
   let remaining = size;
-  
+
   orders.some(([price, amount], index) => {
     if (type === 'limit') {
       if (side === 'buy' && orderPrice < price) {
