@@ -1,9 +1,14 @@
 import React from 'react';
 import classnames from 'classnames';
 
-const TradeBlock = ({ children, title, overflowY = false, setRef }) => {
+const TradeBlock = ({ children, title, overflowY = false, setRef, className = '' }) => {
   return (
-    <div className="trade_block-wrapper d-flex flex-column">
+    <div
+      className={classnames(
+        'trade_block-wrapper', 'd-flex', 'flex-column',
+        className
+      )}
+    >
       <div className="trade_block-title">
         {title}
       </div>

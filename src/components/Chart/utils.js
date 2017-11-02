@@ -12,7 +12,7 @@ export const inputDateAccessor = (({ date }) => new Date(date));
 export const xScaleProvider = discontinuousTimeScaleProvider
   .inputDateAccessor(inputDateAccessor);
 
-export const margins = { left: 25, right: 75, top: 30, bottom: 30 };
+export const margins = { left: 0, right: 75, top: 30, bottom: 30 };
 
 export const yExtents = (data) => {
   return [

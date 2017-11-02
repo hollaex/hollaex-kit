@@ -97,6 +97,10 @@ input[type=number]::-webkit-outer-spin-button {
   overflow-y: auto;
 }
 
+.overflow-x {
+  overflow-x: auto;
+}
+
 @media screen
   and (max-device-width: 800px) {
   html {

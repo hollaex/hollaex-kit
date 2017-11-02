@@ -11,7 +11,7 @@ import {
 	AreaSeries,
 } from "react-stockcharts/lib/series";
 
-import { XAxis, YAxis } from "react-stockcharts/lib/axes";
+import { XAxis, YAxis } from'./axis';
 
 import {
 	CrossHairCursor,
@@ -59,6 +59,8 @@ class AreaChartWithEdge extends Component {
 		} = xScaleProvider(initialData);
 
 		const xExtents = generateXExtents(xAccessor, data);
+		const xTicks = Math.floor(width / 60);
+		const yTicks = Math.floor(height / 50);
 
 		return (
 			<ChartCanvas
@@ -77,8 +79,8 @@ class AreaChartWithEdge extends Component {
 				xExtents={xExtents}
       >
 				<Chart id={1} yExtents={yExtents}>
-					<XAxis axisAt="bottom" orient="bottom" />
-					<YAxis axisAt="right" orient="right" ticks={10} />
+					<XAxis width={width} />
+					<YAxis height={height} />
 
 					<MouseCoordinateX
 						at="bottom"
@@ -102,6 +104,7 @@ class AreaChartWithEdge extends Component {
 AreaChartWithEdge.propTypes = {
 	data: PropTypes.array.isRequired,
 	width: PropTypes.number.isRequired,
+	height: PropTypes.number.isRequired,
 	ratio: PropTypes.number.isRequired,
 	type: PropTypes.oneOf(["svg", "hybrid"]).isRequired,
 };
