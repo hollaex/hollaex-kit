@@ -11,7 +11,7 @@ import {
 	AreaSeries,
 } from "react-stockcharts/lib/series";
 
-import { XAxis, YAxis } from'./axis';
+import { XAxis, YAxis, TXAxis } from'./axis';
 
 import {
 	CrossHairCursor,
@@ -31,7 +31,7 @@ import {
   generateXExtents,
 	Y_GAP,
 	X_GAP,
-  tickFormat,
+	FORMAT_DATE_X_TICK,
 } from './utils';
 
 import {
@@ -81,15 +81,18 @@ class AreaChartWithEdge extends Component {
 				<Chart id={1} yExtents={yExtents}>
 					<XAxis width={width} />
 					<YAxis height={height} />
+					<TXAxis width={width} />
 
 					<MouseCoordinateX
-						at="bottom"
-						orient="bottom"
-						displayFormat={tickFormat} />
+						at="top"
+						orient="top"
+						displayFormat={FORMAT_DATE_X_TICK}
+					/>
 					<MouseCoordinateY
 						at="right"
 						orient="right"
-						displayFormat={format(".2f")} />
+						displayFormat={format(".2f")}
+					/>
 
 					<AreaSeries {...areaProps} />
           <OHLCTooltip {...OHLCProps} />

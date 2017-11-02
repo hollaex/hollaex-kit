@@ -33,7 +33,7 @@ export const edgeIndicatorProps = {
 }
 
 export const OHLCProps = {
-  origin: [0, -20],
+  origin: [0, -25],
   xDisplayFormat: timeFormat("%Y-%m-%d %H:%M:%S"),
   ohlcFormat: (value) => value,
   displayTexts: {

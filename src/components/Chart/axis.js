@@ -7,13 +7,13 @@ import {
 
 export const YAxis = ({ height, ...rest }) => {
   const ticks = Math.floor(height / 50);
-  console.log('YTicks', ticks, rest)
-  return (
-    <BaseYAxis
-      {...rest}
-      ticks={ticks}
-    />
-  );
+  const props = {
+    ticks,
+    stroke: 'transparent',
+    ...rest,
+  }
+
+  return <BaseYAxis {...props} />;
 }
 
 YAxis.defaultProps = {
@@ -24,16 +24,28 @@ YAxis.defaultProps = {
 
 export const XAxis = ({ width, ...rest }) => {
   const ticks = Math.floor(width / 50);
-  console.log('XTicks', ticks, rest)
-  return (
-    <BaseXAxis
-      {...rest}
-      ticks={ticks}
-    />
-  );
+  const props = {
+    ticks,
+    stroke: 'transparent',
+    ...rest,
+  }
+
+  return <BaseXAxis {...props} />;
 }
 
 XAxis.defaultProps = {
   axisAt: 'bottom',
   orient: 'bottom',
 };
+
+export const TXAxis = ({ ...rest }) => {
+  const props = {
+    ...rest,
+    showTicks: false,
+    stroke: 'black',
+    axisAt: 'top',
+    orient: 'top',
+  }
+
+  return <XAxis {...props} />;
+}

@@ -1,6 +1,7 @@
 import React from 'react';
 import classnames from 'classnames';
 import { timeFormat } from "d3-time-format";
+import moment from 'moment';
 import { discontinuousTimeScaleProvider } from "react-stockcharts/lib/scale";
 import { last } from "react-stockcharts/lib/utils";
 
@@ -12,7 +13,7 @@ export const inputDateAccessor = (({ date }) => new Date(date));
 export const xScaleProvider = discontinuousTimeScaleProvider
   .inputDateAccessor(inputDateAccessor);
 
-export const margins = { left: 0, right: 75, top: 30, bottom: 30 };
+export const margins = { left: 0, right: 75, top: 35, bottom: 30 };
 
 export const yExtents = (data) => {
   return [
@@ -27,6 +28,13 @@ export const generateXExtents = (xAccessor, data) => {
   const xExtents = [start, end];
   return xExtents;
 }
+
+const LabelData = ({ label, value = '-' }) => (
+  <tspan className={classnames('ohlc_data_wrapper')}>
+    <tspan className={classnames('ohlc_label')}>{label}: </tspan>
+    <tspan className={classnames('ohlc_value')}>{value} </tspan>
+  </tspan>
+);
 
 export const OHLCChildren = (props, moreProps, itemsToDisplay) => {
   const {
@@ -43,26 +51,20 @@ export const OHLCChildren = (props, moreProps, itemsToDisplay) => {
       <text
         className={classnames('ohlc_wrapper')}
       >
-        <tspan className={classnames('ohlc_data_wrapper')}>
-          <tspan className={classnames('ohlc_label')}>{o}</tspan>
-          <tspan className={classnames('ohlc_value')}>{open}</tspan>
-        </tspan>
-        <tspan className={classnames('ohlc_data_wrapper')}>
-          <tspan className={classnames('ohlc_label')}>{h}</tspan>
-          <tspan className={classnames('ohlc_value')}>{high}</tspan>
-        </tspan>
-        <tspan className={classnames('ohlc_data_wrapper')}>
-          <tspan className={classnames('ohlc_label')}>{l}</tspan>
-          <tspan className={classnames('ohlc_value')}>{low}</tspan>
-        </tspan>
-        <tspan className={classnames('ohlc_data_wrapper')}>
-          <tspan className={classnames('ohlc_label')}>{c}</tspan>
-          <tspan className={classnames('ohlc_value')}>{close}</tspan>
-        </tspan>
+        <LabelData label={o} value={open} />
+        <LabelData label={h} value={high} />
+        <LabelData label={l} value={low} />
+        <LabelData label={c} value={close} />
       </text>
     </g>
   )
 }
 
 export const tickFormat = timeFormat("%b %e");
+
+export const FORMAT_DATE_X_TICK = timeFormat("%m/%d %H:%m %p");
+export const XAxisTickFormat = (date) => {
+  const endPeriod = moment(date).add(5, 'm').toDate();
+  return `${FORMAT_DATE_X_TICK(date)} - ${FORMAT_DATE_X_TICK(endPeriod)}`;
+};
 export const yAccessor = ({ close }) => close;
