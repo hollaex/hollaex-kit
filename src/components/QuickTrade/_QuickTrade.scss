@@ -1,0 +1,94 @@
+$toogle-size: 15px;
+$toogle-border: 2px;
+$toogle-margin: 1px;
+
+$currency-text-size: 4rem;
+
+.quick_trade-wrapper {
+  min-width: 40rem;
+  padding: 2.5rem;
+  background-color: white;
+
+  .title {
+    font-size: $font-size-headline;
+  }
+
+  > .quick_trade-section_wrapper {
+    width: 100%;
+    position: relative;
+  }
+
+  .toogle_button-wrapper {
+    width: 100%;
+    margin: 1rem auto;
+    .toogle-content {
+      padding: 0 1rem;
+      text-transform: uppercase;
+      padding: 0 0.5rem;
+      font-size: $font-size-subtext;
+      color: $colors-deactivate-color2;
+      height: $toogle-size + $toogle-border * 2 + $toogle-margin * 2;
+
+      .selected {
+        font-weight: bold;
+        color: $colors-main-black;
+      }
+
+      .toogle-action_button {
+        border: $toogle-border solid $colors-main-black;
+        height: 100%;
+        width: $toogle-size * 3;
+        border-radius: $toogle-size;
+        margin: 0 0.5rem;
+        display: flex;
+        align-items: center;
+        position: relative;
+
+        &.left .toogle-action_button-display {
+          $right-pos: $toogle-size + $toogle-margin * 2;
+          right: calc(100% - #{$right-pos});
+        }
+        &.right .toogle-action_button-display {
+          right: 0;
+        }
+
+        .toogle-action_button-display {
+          position: absolute;
+          transition: .5s;
+          background: $colors-main-black;
+          height: $toogle-size;
+          width: $toogle-size;
+          border-radius: 50%;
+          margin: $toogle-margin;
+          top: 0;
+        }
+      }
+    }
+
+    .toogle-side_line {
+      position: relative;
+      &::after {
+        content: '';
+        height: 1px;
+        width: 100%;
+        position: absolute;
+        background-color: $colors-main-black;
+        left: 0;
+        right: 0;
+        top: 50%;
+      }
+    }
+  }
+
+  .review-block-wrapper {
+    margin: 2rem;
+    .currency-wrapper {
+      margin: .5rem auto;
+      font-size: $currency-text-size;
+      line-height: $currency-text-size;
+      .currency_ball-wrapper {
+        margin-top: .25rem;
+      }
+    }
+  }
+}

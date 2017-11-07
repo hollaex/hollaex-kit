@@ -1,4 +1,8 @@
+$quick-trade--background: #ccf9fb;
+
 .home_container {
-  height: 100%;
-  
+
+  .quick_trade-section {
+    background-color: $quick-trade--background;
+  }
 }

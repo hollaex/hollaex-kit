@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import EventListener from 'react-event-listener';
 
-import { AppBar, Footer } from '../../components';
+import { AppBar, QuickTrade, Footer } from '../../components';
 
 import {
   APP_TITLE, FLEX_CENTER_CLASSES,
@@ -71,6 +71,14 @@ class Home extends Component {
     }
   }
 
+  onReviewQuickTrade = () => {
+    if (this.props.token) {
+      this.props.router.push('account');
+    } else {
+      this.props.router.push('signup');
+    }
+  }
+
   render() {
     const { token, verifyToken, ...otherProps } = this.props;
     const { style } = this.state;
@@ -82,7 +90,7 @@ class Home extends Component {
     };
 
     return (
-      <div className={classnames('app_container')}>
+      <div className={classnames('app_container', 'home_container')}>
         <EventListener
           target="window"
           onResize={this.onResize}
@@ -96,13 +104,15 @@ class Home extends Component {
           )}
           ref={this.setContainerRef}
         >
-          {renderSection1Contante(GROUP_CLASSES, style, this.onClickScrollTo)}
           <div
-            className={classnames(...GROUP_CLASSES)}
+            className={classnames(...GROUP_CLASSES, 'quick_trade-section')}
             style={style}
           >
-            quick buy
+            <QuickTrade
+              onReviewQuickTrade={this.onReviewQuickTrade}
+            />
           </div>
+          {renderSection1Contante(GROUP_CLASSES, style, this.onClickScrollTo)}
           <div
             className={classnames(...GROUP_CLASSES)}
             style={style}
