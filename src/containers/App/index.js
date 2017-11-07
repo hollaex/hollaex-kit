@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 import io from 'socket.io-client';
 import EventListener from 'react-event-listener';
 import { debounce } from 'lodash';
-import { WS_URL, ICONS, SESSION_TIME } from '../../config/constants';
+import { WS_URL, ICONS, SESSION_TIME, APP_TITLE } from '../../config/constants';
 
 import { logout } from '../../actions/authAction';
 import { setMe, setBalance, updateUser } from '../../actions/userAction';
@@ -320,7 +320,7 @@ class Container extends Component {
 				/>
 				{!appLoaded && <Loader />}
 				<AppBar
-					title="exir-exchange"
+					title={APP_TITLE}
 					goToAccountPage={this.goToAccountPage}
 					goToDashboard={this.goToDashboard}
 					acccountIsActive={activePath === 'account'}

@@ -101,6 +101,20 @@ input[type=number]::-webkit-outer-spin-button {
   overflow-x: auto;
 }
 
+.contrast {
+  color: white;
+  background: $colors-main-black;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+  &:hover, &:visited {
+    color: inherit;
+    text-decoration: none;
+  }
+}
+
 @media screen
   and (max-device-width: 800px) {
   html {

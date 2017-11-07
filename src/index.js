@@ -15,9 +15,10 @@ import './index.css';
 
 // import registerServiceWorker from './registerServiceWorker'
 import { version, name } from '../package.json';
-import { ENV, NETWORK } from './config/constants';
+import { ENV, NETWORK, APP_TITLE } from './config/constants';
 
 console.log({
+	app: APP_TITLE,
 	name,
 	version,
 	env: ENV,

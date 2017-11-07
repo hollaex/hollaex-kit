@@ -4,6 +4,8 @@ import { formatBtcAmount, formatFiatAmount } from '../utils/string';
 export const ENV = process.env.NODE_ENV || 'development'
 export const NETWORK = process.env.REACT_APP_NETWORK || 'testnet'
 
+export const APP_TITLE = process.env.APP_TITLE || 'exir-exchange';
+
 export const TOKEN_TIME = 24 * 60 * 60 * 1000; // 1 hour
 export const SESSION_TIME = 60 * 60 * 1000; // 1 hour
 export const API_URL = config[ENV][NETWORK].API_URL;
