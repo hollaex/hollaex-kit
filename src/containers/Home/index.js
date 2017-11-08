@@ -21,7 +21,10 @@ const renderAppBar = (props) => {
   return <AppBar {...props} />
 }
 
-const renderSection1Contante = (classes = [], style = {}, onClickScrollTo = () => {}) => {
+const QUICK_TRADE_INDEX = 1;
+const INFORMATION_INDEX = 2;
+
+const renderSection1Content = (classes = [], style = {}, onClickScrollTo = () => {}) => {
   const { SECTION_1 } = TEXTS;
   return (
     <div className={classnames(...classes, 'flex-column')} style={style}>
@@ -40,6 +43,20 @@ const renderSection1Contante = (classes = [], style = {}, onClickScrollTo = () =
     </div>
   );
 }
+
+const renderQuickTradeSection = (style, onReviewQuickTrade, onRequestMarketValue, symbol, quickTradeData) => (
+  <div
+    className={classnames(...GROUP_CLASSES, 'quick_trade-section')}
+    style={style}
+  >
+    <QuickTrade
+      onReviewQuickTrade={onReviewQuickTrade}
+      onRequestMarketValue={onRequestMarketValue}
+      symbol={symbol}
+      quickTradeData={quickTradeData}
+    />
+  </div>
+);
 
 class Home extends Component {
   state = {
@@ -66,11 +83,14 @@ class Home extends Component {
     }
   }
 
-  onClickScrollTo = () => {
-    if (this.container) {
-      this.container.children[2].scrollIntoView({
-        behavior: 'smooth'
-      });
+  onClickScrollTo = (children = 0) => () => {
+    if (this.container && typeof children === 'number') {
+      const sections = this.container.children;
+      if (children < sections.length) {
+        sections[children].scrollIntoView({
+          behavior: 'smooth'
+        });
+      }
     }
   }
 
@@ -95,6 +115,7 @@ class Home extends Component {
       noBorders: true,
       token,
       verifyToken,
+      goToQuickTrade: this.onClickScrollTo(QUICK_TRADE_INDEX),
     };
 
     return (
@@ -112,18 +133,8 @@ class Home extends Component {
           )}
           ref={this.setContainerRef}
         >
-          <div
-            className={classnames(...GROUP_CLASSES, 'quick_trade-section')}
-            style={style}
-          >
-            <QuickTrade
-              onReviewQuickTrade={this.onReviewQuickTrade}
-              onRequestMarketValue={this.onRequestMarketValue}
-              symbol={symbol}
-              quickTradeData={quickTradeData}
-            />
-          </div>
-          {renderSection1Contante(GROUP_CLASSES, style, this.onClickScrollTo)}
+          {renderSection1Content(GROUP_CLASSES, style, this.onClickScrollTo(QUICK_TRADE_INDEX))}
+          {renderQuickTradeSection(style, this.onReviewQuickTrade, this.onRequestMarketValue, symbol, quickTradeData)}
           <div
             className={classnames(...GROUP_CLASSES)}
             style={style}

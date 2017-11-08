@@ -68,11 +68,11 @@ class AppBar extends Component {
     );
   }
 
-  renderSplashActions = (token, verifyingToken) => {
+  renderSplashActions = (token, verifyingToken, goToQuickTrade) => {
     if (verifyingToken) {
       return <div></div>
     }
-    const COMMON_CLASSES = ['text-uppercase', 'action_button', ...FLEX_CENTER_CLASSES];
+    const COMMON_CLASSES = ['text-uppercase', 'action_button', 'pointer', ...FLEX_CENTER_CLASSES];
     const WRAPPER_CLASSES = ['app_bar-controllers-splash', 'd-flex'];
     return token ? (
       <div className={classnames(...WRAPPER_CLASSES)}>
@@ -82,6 +82,9 @@ class AppBar extends Component {
       </div>
     ) : (
       <div className={classnames(...WRAPPER_CLASSES)}>
+        <div className={classnames(...COMMON_CLASSES)} onClick={goToQuickTrade}>
+          quick trade
+        </div>
         <div className={classnames(...COMMON_CLASSES)}>
           <Link to='/login'>Login</Link>
         </div>
@@ -93,7 +96,7 @@ class AppBar extends Component {
   }
 
   render() {
-    const { title, goToAccountPage, goToDashboard, acccountIsActive, activeSymbol, noBorders, token, verifyingToken } = this.props;
+    const { title, goToAccountPage, goToDashboard, acccountIsActive, activeSymbol, noBorders, token, verifyingToken, goToQuickTrade } = this.props;
 
     return (
       <div className={classnames('app_bar', { 'no-borders': noBorders })}>
@@ -103,7 +106,7 @@ class AppBar extends Component {
         <div className="app_bar-main">{title}</div>
         {activeSymbol ?
           this.renderAppActions(activeSymbol, acccountIsActive, goToAccountPage) :
-          this.renderSplashActions(token, verifyingToken)
+          this.renderSplashActions(token, verifyingToken, goToQuickTrade)
         }
       </div>
     );

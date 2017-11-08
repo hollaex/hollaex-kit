@@ -96,19 +96,19 @@ class QuickTrade extends Component {
     const { data, fetching, error } = quickTradeData;
     const { name } = CURRENCIES[symbol];
     return (
-      <div className={classnames('quick_trade-wrapper', ...GROUP_CLASSES, 'b')}>
-        <div className={classnames('quick_trade-section_wrapper', ...GROUP_CLASSES, 'c')}>
+      <div className={classnames('quick_trade-wrapper', ...GROUP_CLASSES)}>
+        <div className={classnames('quick_trade-section_wrapper', ...GROUP_CLASSES)}>
           <img src={ICONS.CHECK} alt="" />
           <div className="title">{`${TEXTS.TITLE} ${side}`}</div>
         </div>
-        <div className={classnames('quick_trade-section_wrapper', ...GROUP_CLASSES, 'c')}>
+        <div className={classnames('quick_trade-section_wrapper', ...GROUP_CLASSES)}>
           <ToogleButton
             values={SIDES}
             onToogle={this.onToogleSide}
             selected={side}
           />
         </div>
-        <div className={classnames('quick_trade-section_wrapper', ...GROUP_CLASSES, 'c')}>
+        <div className={classnames('quick_trade-section_wrapper', ...GROUP_CLASSES)}>
           <InputBlock
             onChange={this.onChangeValue}
             value={value}
@@ -118,13 +118,13 @@ class QuickTrade extends Component {
             format={this.format}
           />
         </div>
-        <div className={classnames('quick_trade-section_wrapper', ...GROUP_CLASSES, 'c')}>
+        <div className={classnames('quick_trade-section_wrapper', ...GROUP_CLASSES)}>
           <ReviewBlock
             text={TEXTS.TOTAL_COST}
             value={data.fetching ? '-' : data.price}
           />
         </div>
-        <div className={classnames('quick_trade-section_wrapper', ...GROUP_CLASSES, 'c')}>
+        <div className={classnames('quick_trade-section_wrapper', ...GROUP_CLASSES)}>
           <Button
             label={`${TEXTS.REVIEW} ${side} ${TEXTS.ORDER}`}
             onClick={onReviewQuickTrade}
