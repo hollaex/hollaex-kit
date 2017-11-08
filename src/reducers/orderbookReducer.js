@@ -1,3 +1,10 @@
+import { ORDERBOOK_CONSTANTS } from '../actions/orderbookAction';
+
+const INITIAL_QUICK_TRADE = {
+	fetching: false,
+	data: {},
+	error: '',
+}
 const INITIAL_STATE = {
 	fetched: false,
 	fetching: false,
@@ -11,6 +18,7 @@ const INITIAL_STATE = {
 	asks: [],
 	bids: [],
 	orderbookReady: false,
+	quickTrade: INITIAL_QUICK_TRADE,
 };
 
 export default function reducer(state = INITIAL_STATE, action) {
@@ -88,6 +96,33 @@ export default function reducer(state = INITIAL_STATE, action) {
 				prices,
 			}
 		}
+
+		case ORDERBOOK_CONSTANTS.QUICK_TRADE_PENDING:
+			return {
+				...state,
+				quickTrade: {
+					...INITIAL_QUICK_TRADE,
+					fetching: true,
+				}
+			};
+		case ORDERBOOK_CONSTANTS.QUICK_TRADE_FULFILLED:
+			return {
+				...state,
+				quickTrade: {
+					...INITIAL_QUICK_TRADE,
+					fetching: false,
+					data: action.payload,
+				}
+			};
+		case ORDERBOOK_CONSTANTS.QUICK_TRADE_REJECTED:
+			return {
+				...state,
+				quickTrade: {
+					...INITIAL_QUICK_TRADE,
+					fetching: false,
+					error: action.payload,
+				}
+			};
 
 		case 'LOGOUT':
 			return INITIAL_STATE;

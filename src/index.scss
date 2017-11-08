@@ -74,9 +74,14 @@ body {
   border: 1px solid blue;
 }
 
+input, input:focus {
+  outline: none;
+  border: none;
+}
+
 input[type="number"] {
-    -moz-appearance: textfield;
-    appearance: textfield;
+  -moz-appearance: textfield;
+  appearance: textfield;
 }
 
 input[type=number]::-webkit-inner-spin-button,

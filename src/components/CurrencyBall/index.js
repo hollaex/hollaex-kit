@@ -19,8 +19,8 @@ const getSizeClass = (size) => {
   }
 }
 
-const CurrencyBall = ({ name, symbol, size }) => (
-  <div className={classnames(...FLEX_CENTER_CLASSES, 'currency_ball-wrapper', symbol, getSizeClass(size))}>
+const CurrencyBall = ({ name, symbol, size, className }) => (
+  <div className={classnames(...FLEX_CENTER_CLASSES, 'currency_ball-wrapper', symbol, getSizeClass(size), className)}>
     {name}
   </div>
 );

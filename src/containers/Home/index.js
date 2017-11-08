@@ -3,12 +3,15 @@ import classnames from 'classnames';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import EventListener from 'react-event-listener';
+import { bindActionCreators } from 'redux';
 
 import { AppBar, QuickTrade, Footer } from '../../components';
 
 import {
   APP_TITLE, FLEX_CENTER_CLASSES,
 } from '../../config/constants';
+
+import { requestQuickTrade } from '../../actions/orderbookAction';
 
 import { TEXTS } from './constants';
 
@@ -79,8 +82,13 @@ class Home extends Component {
     }
   }
 
+  onRequestMarketValue = (values) => {
+    console.log('requestValue', values)
+    this.props.requestQuickTrade(values);
+  }
+
   render() {
-    const { token, verifyToken, ...otherProps } = this.props;
+    const { token, verifyToken, estimatedValue, symbol, quickTradeData, ...otherProps } = this.props;
     const { style } = this.state;
     const appBarProps = {
       title: APP_TITLE,
@@ -110,6 +118,9 @@ class Home extends Component {
           >
             <QuickTrade
               onReviewQuickTrade={this.onReviewQuickTrade}
+              onRequestMarketValue={this.onRequestMarketValue}
+              symbol={symbol}
+              quickTradeData={quickTradeData}
             />
           </div>
           {renderSection1Contante(GROUP_CLASSES, style, this.onClickScrollTo)}
@@ -129,9 +140,13 @@ class Home extends Component {
 const mapStateToProps = (store) => ({
 	token: store.auth.token,
   verifyToken: store.auth.verifyToken,
+  estimatedValue: 100,
+  symbol: store.orderbook.symbol,
+  quickTradeData: store.orderbook.quickTrade,
 });
 
 const mapDispatchToProps = (dispatch) => ({
+  requestQuickTrade: bindActionCreators(requestQuickTrade, dispatch)
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);

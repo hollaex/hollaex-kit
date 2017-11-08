@@ -19,8 +19,6 @@ $currency-text-size: 4rem;
   }
 
   .toogle_button-wrapper {
-    width: 100%;
-    margin: 1rem auto;
     .toogle-content {
       padding: 0 1rem;
       text-transform: uppercase;
@@ -81,14 +79,45 @@ $currency-text-size: 4rem;
   }
 
   .review-block-wrapper {
-    margin: 2rem;
     .currency-wrapper {
       margin: .5rem auto;
       font-size: $currency-text-size;
       line-height: $currency-text-size;
       .currency_ball-wrapper {
         margin-top: .25rem;
+        margin-right: 0.5rem;
       }
     }
+  }
+
+  .input_block-wrapper {
+    border-bottom: 2px solid $colors-main-black;
+    .input_block-input-wrapper {
+      // width: 100%;
+      width: auto;
+      position: relative;
+      .input_block-inputbox {
+        // width: 100%;
+        font-size: $font-size-subhead2;
+        text-align: center;
+        margin: .5rem 1.5rem;
+
+        border: none !important;
+        border-radius: 0 !important;
+        padding: 0 !important;
+      }
+      .input_block-currency_ball {
+        position: absolute;
+        left: -0.5rem;
+      }
+      .react-numeric-input > b {
+        visibility: hidden;
+      }
+    }
+  }
+
+  .review-block-wrapper, .input_block-wrapper, .toogle_button-wrapper {
+    margin: 1rem;
+    width: 100%;
   }
 }
