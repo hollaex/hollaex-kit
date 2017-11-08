@@ -2,11 +2,16 @@ $toogle-size: 15px;
 $toogle-border: 2px;
 $toogle-margin: 1px;
 
+$wrapper--min-width: 30rem;
+$wrapper--max-width: 40rem;
+$wrapper--padding: 2.5rem;
+
 $currency-text-size: 4rem;
 
 .quick_trade-wrapper {
-  min-width: 40rem;
-  padding: 2.5rem;
+  min-width: $wrapper--min-width;
+  max-width: $wrapper--max-width;
+  padding: $wrapper--padding;
   background-color: white;
 
   .title {
