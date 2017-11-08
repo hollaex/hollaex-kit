@@ -3,7 +3,7 @@
 @import 'mixins';
 
 html {
-  font-size: 12px;
+  font-size: 12px !important;
 }
 
 #root {
@@ -14,6 +14,7 @@ body {
   background-color: $app-background-color !important;
   font-size: $font-size-main !important;
   font-family: "Open Sans" !important;
+  min-width: $bp-xs;
 }
 
 .pointer {
@@ -124,9 +125,8 @@ a {
   }
 }
 
-@media screen
-  and (max-device-width: 800px) {
+@media screen and (max-device-width: $bp-sm) {
   html {
-    font-size: 7px;
+    font-size: 7px !important;
   }
 }

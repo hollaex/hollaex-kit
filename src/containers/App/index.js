@@ -327,8 +327,8 @@ class Container extends Component {
 					changeSymbol={changeSymbol}
 					activeSymbol={symbol}
 				/>
-        <div className="app_container-content">
-          <div className="app_container-main">
+        <div className="app_container-content d-flex justify-content-between">
+          <div className="app_container-main d-flex flex-column justify-content-between overflow-y">
             {appLoaded && verification_level && children}
           </div>
           <div className="app_container-sidebar">
