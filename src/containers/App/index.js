@@ -329,7 +329,7 @@ class Container extends Component {
 				/>
         <div className="app_container-content d-flex justify-content-between">
           <div className="app_container-main d-flex flex-column justify-content-between overflow-y">
-            {appLoaded && verification_level && children}
+            {appLoaded && verification_level > 0 ? children : <Loader />}
           </div>
           <div className="app_container-sidebar">
             <Sidebar
