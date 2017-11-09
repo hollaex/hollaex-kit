@@ -21,4 +21,5 @@ export { default as Table } from './Table';
 export { default as CsvDownload } from './CsvDownload';
 export { default as DisplayTable } from './DisplayTable';
 export { default as QuickTrade } from './QuickTrade';
+export { default as Legal } from './Legal';
 export { CandleChart, AreaChart } from './Chart';

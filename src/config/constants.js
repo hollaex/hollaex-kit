@@ -48,6 +48,8 @@ export const SOCIAL_ICONS = {
   GOOGLE: `${process.env.PUBLIC_URL}/assets/icons/google.png`,
 };
 
+export const EXIR_LOGO = `${process.env.PUBLIC_URL}/assets/logo/logo-default.png`;
+
 export const CURRENCIES = {
   fiat: {
     symbol: 'fiat',

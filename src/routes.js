@@ -12,15 +12,14 @@ import {
   Withdraw,
   TransactionsHistory,
   Trade,
+  Legal,
 } from './containers';
 
-import QuickBuy from './views/Exchange/QuickBuy'
 import SignUp from './views/Auth/Signup'
 import Verification from './views/Auth/Verification'
 import ResetPassword from './views/Auth/ResetPassword'
 import ResetPasswordRequest from './views/Auth/ResetPasswordRequest'
-import Exchange from './views/Exchange'
-import Bitcoin from './views/Exchange/Bitcoin'
+
 import store from './store'
 import { verifyToken } from './actions/authAction'
 
@@ -82,11 +81,6 @@ export default (
       <Route path="deposit" name="Deposit" component={Deposit}/>
       <Route path="transactions" name="Transactions" component={TransactionsHistory}/>
       <Route path="trade" name="Trade" component={Trade}/>
-      <Route path="trade-old" name="Exchange" component={Exchange}>
-        <IndexRoute component={Bitcoin}/>
-        <Route path="btc" name="Bitcoin" component={Bitcoin} />
-        <Route path="quickbuy" name="QuickBuy" component={QuickBuy}/>
-      </Route>
     </Route>
     <Route path="login" name="Login" component={Login} {...noAuthRoutesCommonProps} />
     <Route path="signup" name="signup" component={SignUp} {...noAuthRoutesCommonProps} />
@@ -94,6 +88,8 @@ export default (
     <Route path="reset-password/:code" name="Reset Password" component={ResetPassword} {...noLoggedUserCommonProps} />
     <Route path="verify" name="Verify" component={Verification} {...noLoggedUserCommonProps} />
     <Route path="verify/:code" name="verifyCode" component={Verification} {...noLoggedUserCommonProps} />
+    <Route path="privacy-policy" component={Legal} content="legal" />
+    <Route path="general-terms" component={Legal} content="terms" />
     <Route path="*" component={NotFound} />
   </Router>
 )

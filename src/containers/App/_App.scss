@@ -27,8 +27,8 @@ $inner_container-border: 1px solid $colors-main-black;
   }
 
   .app_container-content {
-    min-height: calc(100vh - #{$navigation_bar-height});
-    max-height: calc(100vh - #{$navigation_bar-height});
+    min-height: $max-content-height;
+    max-height: $max-content-height;
 
     .app_container-main {
       width: 100%;
