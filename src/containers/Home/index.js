@@ -25,10 +25,14 @@ const renderAppBar = (props) => {
 
 const QUICK_TRADE_INDEX = 1;
 const INFORMATION_INDEX = 2;
+const MIN_HEIGHT = 450;
 
 class Home extends Component {
   state = {
-    contentHeight: 0
+    height: 0,
+    style: {
+      minHeight: MIN_HEIGHT,
+    }
   }
 
   setContainerRef = (el) => {
@@ -48,7 +52,7 @@ class Home extends Component {
         },
         height,
       });
-      this.onClickScrollTo(0)();
+      // this.onClickScrollTo(0)();
     }
   }
 
@@ -103,7 +107,7 @@ class Home extends Component {
           ref={this.setContainerRef}
         >
           <Section1
-            style={style}
+            style={{ minHeight: style.minHeight > MIN_HEIGHT ? style.minHeight : MIN_HEIGHT}}
             onClickScrollTo={this.onClickScrollTo(INFORMATION_INDEX)}
             onClickRegister={this.goTo('signup')}
             token={token}
