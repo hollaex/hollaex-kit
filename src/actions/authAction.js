@@ -118,7 +118,7 @@ const setTokenInApp = (token, setInStore = false) => {
 }
 
 const cleatTokenInApp = () => {
-	axios.defaults.headers.common['Authorization'] = null;
+	axios.defaults.headers.common['Authorization'] = {};
 	removeToken();
 }
 

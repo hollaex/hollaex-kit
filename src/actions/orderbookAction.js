@@ -54,10 +54,10 @@ export const requestQuickTrade = (data = {}) => {
 				    payload: body.data
 				});
 			})
-			.catch(err => {
+			.catch((err) => {
 				dispatch({
 				    type: ORDERBOOK_CONSTANTS.QUICK_TRADE_REJECTED,
-				    payload: err.response.data
+				    payload: err.response ? err.response.data : err.message
 				});
 			})
 	});
