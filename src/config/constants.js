@@ -41,6 +41,13 @@ export const ICONS = {
   LOGOUT: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-27.png`,
 }
 
+export const SOCIAL_ICONS = {
+  FACEBOOK: `${process.env.PUBLIC_URL}/assets/icons/facebook.png`,
+  LINKEDIN: `${process.env.PUBLIC_URL}/assets/icons/linkedin.png`,
+  TWIITER: `${process.env.PUBLIC_URL}/assets/icons/twitter.png`,
+  GOOGLE: `${process.env.PUBLIC_URL}/assets/icons/google.png`,
+};
+
 export const CURRENCIES = {
   fiat: {
     symbol: 'fiat',
