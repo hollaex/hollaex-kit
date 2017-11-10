@@ -1,4 +1,5 @@
-import { APP_TITLE } from '../../config/constants';
+import { APP_TITLE, ICONS } from '../../config/constants';
+
 export const TEXTS = {
   TITLE: 'sign up',
   SIGNUP_TO: `Sign up to ${APP_TITLE}`,
@@ -18,7 +19,10 @@ export const TEXTS = {
         placeholder: 'Retype your password',
       },
       terms: {
-        label: 'I have read and agree to the Terms of Use and Privacy Policy',
+        label: 'I have read and agree to the',
+        generalTerms: 'General Terms',
+        and: ' and ',
+        privacyPolicy: 'Privacy Policy',
       }
     },
     BUTTON: 'Sign up',
@@ -30,4 +34,19 @@ export const TEXTS = {
       INVALID_EMAIL: 'Invalid email address',
     },
   },
+}
+
+export const VERIFICATION_TEXTS = {
+  TITLE: 'verification sent',
+  TEXT_1: 'Check your email and click the link to verifiy yourself.',
+  TEXT_2: 'If you have not receieved any email verification and you have checked your junk mail then you can try clicking resend below.',
+  BUTTON: 'resend',
+  ICON: ICONS.LETTER,
+}
+
+export const VERIFICATION_RESEND_TEXTS = {
+  TITLE: 'Verification resent',
+  TEXT_1: 'If after a few minutes you still have not receieved an email verification then please contact us below.',
+  BUTTON: 'CONTACT US',
+  ICON: ICONS.LETTER,
 }

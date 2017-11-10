@@ -7,7 +7,7 @@ import { TEXTS } from './constants';
 
 const { FIELDS, BUTTON, VALIDATIONS } = TEXTS.FORM;
 
-const FormValues = {
+export const generateFormFields = (termsLabel = '') => ({
   email: {
     type: 'email',
     validate: [requiredWithCustomMessage(VALIDATIONS.TYPE_EMAIL), email],
@@ -30,26 +30,27 @@ const FormValues = {
     type: 'checkbox',
     fullWidth: true,
     validate: [requiredWithCustomMessage(VALIDATIONS.ACCEPT_TERMS)],
-    ...FIELDS.terms,
+    label: termsLabel,
   }
-};
+});
 
 const validate = (values) => {
   const { password, password_repeat } = values;
   const errors = {};
 
-  if (password && password_repeat && password !== password) {
-    errors.password_reset = VALIDATIONS.PASSWORDS_DONT_MATCH;
+  if (password && password_repeat && password !== password_repeat) {
+    errors.password_repeat = VALIDATIONS.PASSWORDS_DONT_MATCH;
   }
 
   return errors;
 }
+
 const Form = (props) => {
-  const { handleSubmit, submitting, pristine, error, valid } = props;
+  const { handleSubmit, submitting, pristine, error, valid, formFields } = props;
   return (
     <form onSubmit={handleSubmit} className="w-100">
       <div className="w-100">
-        {renderFields(FormValues)}
+        {renderFields(formFields)}
         {error && <div className="warning_text">{error}</div>}
       </div>
       <Button

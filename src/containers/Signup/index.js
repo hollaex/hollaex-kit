@@ -2,21 +2,45 @@ import React, { Component } from 'react';
 import classnames from 'classnames';
 import { SubmissionError } from 'redux-form';
 import { performSignup } from '../../actions/authAction';
-import SignupForm from './SignupForm';
-import { IconTitle } from '../../components';
+import SignupForm, { generateFormFields } from './SignupForm';
+import SignupSuccess from './SignupSuccess';
+import { IconTitle, Dialog } from '../../components';
 import { EXIR_LOGO, FLEX_CENTER_CLASSES, ICONS } from '../../config/constants';
 import { TEXTS } from './constants';
 
+const TERM_LABELS_TEXT = TEXTS.FORM.FIELDS.terms;
+
 class Signup extends Component {
   state = {
-    values: {},
-    otpDialogIsOpen: false,
+    success: false,
+    dialogIsOpen: false,
+    dialogContent: '',
+    formFields: {},
+  }
+  componentWillMount() {
+    this.generateFormFields();
   }
 
-  onSubmitSignup = (values) => {
+  generateFormFields = () => {
+    const termsLabel = (
+      <div className={classnames('d-flex', 'terms_label-wrapper')}>
+        {TERM_LABELS_TEXT.label}
+        <div className="dialog-link pointer" onClick={this.onOpenDialog('terms')}>{TERM_LABELS_TEXT.generalTerms}</div>
+        {TERM_LABELS_TEXT.and}
+        <div className="dialog-link pointer" onClick={this.onOpenDialog('policy')}>{TERM_LABELS_TEXT.privacyPolicy}</div>
+      </div>
+    );
+    this.setState({ formFields: generateFormFields(termsLabel) });
+  }
+
+  onSubmitSignup = (formValues) => {
+    const values = {
+      email: formValues.email,
+      password: formValues.password,
+    }
     return performSignup(values)
       .then((res) => {
-        this.redirectToHome();
+        this.setState({ success: true })
       })
       .catch((error) => {
         const errors = {};
@@ -31,12 +55,20 @@ class Signup extends Component {
       });
   }
 
+  onOpenDialog = (content = '') => () => {
+    this.setState({ dialogIsOpen: true, dialogContent: content });
+  }
+
   onCloseDialog = () => {
-    this.setState({ otpDialogIsOpen: false });
+    this.setState({ dialogIsOpen: false, dialogContent: '' });
   }
 
   render() {
-    const { otpDialogIsOpen } = this.state;
+    const { success, formFields, dialogIsOpen, dialogContent } = this.state;
+
+    if (success) {
+      return <SignupSuccess />
+    }
 
     return (
       <div className={classnames(...FLEX_CENTER_CLASSES, 'flex-column', 'f-1', 'login_container')}>
@@ -55,9 +87,20 @@ class Signup extends Component {
             }}
           />
           <div className={classnames(...FLEX_CENTER_CLASSES, 'flex-column', 'login_form-wrapper', 'auth_form-wrapper', 'w-100')}>
-            <SignupForm onSubmit={this.onSubmitSignup} />
+            <SignupForm onSubmit={this.onSubmitSignup} formFields={formFields} />
           </div>
         </div>
+        <Dialog
+          isOpen={dialogIsOpen}
+          label="sigunp-modal"
+          onCloseDialog={this.onCloseDialog}
+          shouldCloseOnOverlayClick={false}
+          showCloseText={true}
+        >
+          <div className="signup-modal-wrapper">
+            {dialogContent}
+          </div>
+        </Dialog>
       </div>
     );
   }

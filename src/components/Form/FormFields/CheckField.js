@@ -7,9 +7,10 @@ const InputField = (props) => {
   const {
     input,
     label,
+    type,
     ...rest
   } = props;
-  console.log('REST', props)
+
   return (
     <FieldWrapper
       hideUnderline={true}
@@ -18,17 +19,17 @@ const InputField = (props) => {
         'd-flex',
         'flex-column',
       )}
+      type={type}
       {...rest}
     >
       <div
         className={classnames(
           'checkfield-input-wrapper',
           'd-flex',
-          'align-items-center',
         )}
       >
         <input
-          {...rest}
+          type={type}
           {...input}
           className="checkfield-input"
         />
