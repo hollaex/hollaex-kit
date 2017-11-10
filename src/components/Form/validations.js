@@ -6,6 +6,10 @@ import { calculatePrice, fiatSymbol } from '../../utils/currency';
 
 const ERROR_MESSAGE_REQUIRED = 'Required field';
 const ERROR_MESSAGE_BEFORE_DATE = 'Invalid date';
+const ERROR_INVALID_EMAIL = 'Invalid email address';
+const INVALID_PASSWORD = 'Invalid password. It has to contain at least 8 characters, a digit in the password and a special character.';
+const passwordRegEx = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#\$%\^\&*\)\(+=._-]).{8,}$/;
+
 
 export const required = (value) => !value ? ERROR_MESSAGE_REQUIRED : undefined;
 export const requiredBoolean = (value) => value === undefined ? ERROR_MESSAGE_REQUIRED : undefined;
@@ -13,10 +17,7 @@ export const requiredWithCustomMessage = (message) => (value) => !value ? messag
 
 export const exactLength = (length, message) => (value = '') => value.length !== length ? message : undefined;
 
-export const email = (value) => !validator.isEmail(value) ? 'Invalid email' : undefined;
-
-const passwordRegEx = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#\$%\^\&*\)\(+=._-]).{8,}$/;
-const INVALID_PASSWORD = 'Invalid password. It has to contain at least 8 characters, a digit in the password and a special character.';
+export const email = (value = '') => !validator.isEmail(value) ? ERROR_INVALID_EMAIL : undefined;
 
 export const password = (value) => !passwordRegEx.test(value) ? INVALID_PASSWORD : undefined
 

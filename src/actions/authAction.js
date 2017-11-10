@@ -86,6 +86,8 @@ export const performLogin = (values) => axios.post('/login', values)
 		return res;
 	});
 
+export const performSignup = (values) => axios.post('/signup', values);
+
 export function login(data) {
 	return ((dispatch) => {
 		dispatch({

@@ -7,14 +7,7 @@ import LoginForm from './LoginForm';
 import { Dialog, OtpForm, IconTitle } from '../../components';
 import { errorHandler } from '../../components/OtpForm/utils';
 import { EXIR_LOGO, FLEX_CENTER_CLASSES, APP_TITLE, ICONS } from '../../config/constants';
-
-const TEXTS = {
-  TITLE: 'login',
-  LOGIN_TO: `Login to ${APP_TITLE}`,
-  CANT_LOGIN: 'Can\'t login?',
-  NO_ACCOUNT: 'Don\'t have an account?',
-  CREATE_ACCOUNT: 'Create one here',
-}
+import { TEXTS } from './constants';
 
 class Login extends Component {
   state = {
@@ -42,7 +35,7 @@ class Login extends Component {
 
         if (_error.toLowerCase().indexOf('otp') > -1) {
           this.setState({ values, otpDialogIsOpen: true });
-          error._error = 'Provide OTP code to login';
+          error._error = TEXTS.FORM.VALIDATIONS.OTP_LOGIN;
         } else {
           error.password = _error;
           throw new SubmissionError(error);

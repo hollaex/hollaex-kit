@@ -7,6 +7,7 @@ import {
   Account,
   Wallet,
   Login,
+  Signup,
   Home,
   Deposit,
   Withdraw,
@@ -16,7 +17,6 @@ import {
   AuthContainer,
 } from './containers';
 
-import SignUp from './views/Auth/Signup'
 import Verification from './views/Auth/Verification'
 import ResetPassword from './views/Auth/ResetPassword'
 import ResetPasswordRequest from './views/Auth/ResetPasswordRequest'
@@ -85,7 +85,7 @@ export default (
     </Route>
     <Route component={AuthContainer}>
       <Route path="login" name="Login" component={Login} {...noAuthRoutesCommonProps} />
-      <Route path="signup" name="signup" component={SignUp} {...noAuthRoutesCommonProps} />
+      <Route path="signup" name="signup" component={Signup} {...noAuthRoutesCommonProps} />
       <Route path="reset-password" name="Reset Password Request" component={ResetPasswordRequest} {...noLoggedUserCommonProps} />
       <Route path="reset-password/:code" name="Reset Password" component={ResetPassword} {...noLoggedUserCommonProps} />
       <Route path="verify" name="Verify" component={Verification} {...noLoggedUserCommonProps} />
