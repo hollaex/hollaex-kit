@@ -30,7 +30,7 @@ const Section = ({
     style={style}
   >
     <div className="text-center features-title">{SECTION_3.TITLE}</div>
-    <div className="features-card_container d-flex flex-wrap justify-content-around">
+    <div className="features-card_container d-flex flex-wrap justify-content-center">
       {SECTION_3.CARDS.map((card, index) => <Card {...card} key={index} />)}
     </div>
     <div className={classnames('buttons-section', ...FLEX_CENTER_CLASSES)}>

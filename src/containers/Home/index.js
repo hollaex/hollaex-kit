@@ -86,7 +86,7 @@ class Home extends Component {
     const { style } = this.state;
 
     return (
-      <div className={classnames('app_container', 'home_container')}>
+      <div className={classnames('app_container', 'home_container', 'app_background')}>
         <EventListener
           target="window"
           onResize={this.onResize}

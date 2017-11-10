@@ -1,5 +1,8 @@
 @import '../../variables';
 
-.login_wrapper {
-  height: 100vh;
+.login_container {
+  .login_wrapper {
+    .login_form-wrapper {
+    }
+  }
 }

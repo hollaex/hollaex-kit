@@ -3,6 +3,7 @@ $features-icon--size: 4rem;
 $features-card--width: 17.5rem;
 $features-card--margin: 3rem;
 $features-container--width: 75rem;
+$features-container--sm--width: 45rem;
 
 .home_container {
   .home_container-content {
@@ -22,7 +23,7 @@ $features-container--width: 75rem;
   .section_1-content {
     position: relative;
     min-height: 500px;
-    
+
     .scroll-button {
       $arrow-size: 16px;
       bottom: 1rem;
@@ -84,11 +85,16 @@ $features-container--width: 75rem;
   }
 }
 
-@media (max-width: $bp-xs) {
+@media (max-width: $bp-sm) {
   .home_container {
     .home-card-container {
-      margin: 1rem;
-      margin-top: 0;
+      margin: 0 2rem 3rem;
+    }
+
+    .features-container {
+      .features-card_container {
+        max-width: $features-container--sm--width;
+      }
     }
   }
 }

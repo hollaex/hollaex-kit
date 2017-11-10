@@ -1,4 +1,5 @@
 export { default as App } from './App';
+export { default as AuthContainer } from './AuthContainer';
 export { default as UserVerification } from './UserVerification';
 export { default as UserSecurity } from './UserSecurity';
 export { default as Dashboard } from './Dashboard';

@@ -1,6 +1,10 @@
 @import 'variables';
 @import 'fonts';
 @import 'mixins';
+@import "common";
+
+@import './containers/containers';
+@import './components/components';
 
 html {
   font-size: 12px !important;
@@ -10,19 +14,15 @@ html {
   height: 100%;
 }
 
+.app_background {
+  background-color: #d5f5f5;
+}
+
 body {
   background-color: $app-background-color !important;
   font-size: $font-size-main !important;
   font-family: "Open Sans" !important;
   min-width: $bp-xs;
-}
-
-.pointer {
-  cursor: pointer;
-}
-
-.hidden {
-  display: none !important;
 }
 
 .warning_text {
@@ -55,25 +55,6 @@ body {
   }
 }
 
-.text_overflow {
-  width: auto;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-}
-
-@import './containers/containers';
-@import './components/components';
-
-.b {
-  border: 1px solid red;
-}
-.c {
-  border: 1px solid green;
-}
-.d {
-  border: 1px solid blue;
-}
 
 input, input:focus {
   outline: none;
@@ -95,27 +76,6 @@ input[type=number]::-webkit-outer-spin-button {
     display: none;
 }
 
-.flex-auto {
-  flex: auto;
-}
-
-.f-0 {
-  flex: 0;
-}
-
-.overflow-y {
-  overflow-y: auto;
-}
-
-.overflow-x {
-  overflow-x: auto;
-}
-
-.contrast {
-  color: white;
-  background: $colors-main-black;
-}
-
 a {
   text-decoration: none;
   color: inherit;
@@ -127,6 +87,6 @@ a {
 
 @media screen and (max-width: $bp-sm) {
   html {
-    font-size: 7px !important;
+    font-size: 8px !important;
   }
 }

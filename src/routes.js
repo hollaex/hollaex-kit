@@ -13,6 +13,7 @@ import {
   TransactionsHistory,
   Trade,
   Legal,
+  AuthContainer,
 } from './containers';
 
 import SignUp from './views/Auth/Signup'
@@ -82,12 +83,14 @@ export default (
       <Route path="transactions" name="Transactions" component={TransactionsHistory}/>
       <Route path="trade" name="Trade" component={Trade}/>
     </Route>
-    <Route path="login" name="Login" component={Login} {...noAuthRoutesCommonProps} />
-    <Route path="signup" name="signup" component={SignUp} {...noAuthRoutesCommonProps} />
-    <Route path="reset-password" name="Reset Password Request" component={ResetPasswordRequest} {...noLoggedUserCommonProps} />
-    <Route path="reset-password/:code" name="Reset Password" component={ResetPassword} {...noLoggedUserCommonProps} />
-    <Route path="verify" name="Verify" component={Verification} {...noLoggedUserCommonProps} />
-    <Route path="verify/:code" name="verifyCode" component={Verification} {...noLoggedUserCommonProps} />
+    <Route component={AuthContainer}>
+      <Route path="login" name="Login" component={Login} {...noAuthRoutesCommonProps} />
+      <Route path="signup" name="signup" component={SignUp} {...noAuthRoutesCommonProps} />
+      <Route path="reset-password" name="Reset Password Request" component={ResetPasswordRequest} {...noLoggedUserCommonProps} />
+      <Route path="reset-password/:code" name="Reset Password" component={ResetPassword} {...noLoggedUserCommonProps} />
+      <Route path="verify" name="Verify" component={Verification} {...noLoggedUserCommonProps} />
+      <Route path="verify/:code" name="verifyCode" component={Verification} {...noLoggedUserCommonProps} />
+    </Route>
     <Route path="privacy-policy" component={Legal} content="legal" />
     <Route path="general-terms" component={Legal} content="terms" />
     <Route path="*" component={NotFound} />

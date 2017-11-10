@@ -15,7 +15,7 @@ import './index.css';
 
 // import registerServiceWorker from './registerServiceWorker'
 import { version, name } from '../package.json';
-import { ENV, NETWORK, APP_TITLE } from './config/constants';
+import { ENV, NETWORK, APP_TITLE, API_URL } from './config/constants';
 
 console.log({
 	app: APP_TITLE,
@@ -23,6 +23,7 @@ console.log({
 	version,
 	env: ENV,
 	network: NETWORK,
+	endpoint: API_URL,
 });
 
 render(
