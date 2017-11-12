@@ -1,9 +1,8 @@
 import React from 'react';
 import { reduxForm } from 'redux-form';
 import { email, requiredWithCustomMessage } from '../../components/Form/validations';
-import renderFields from '../../components/Form/factoryFields';
-import { Button } from '../../components';
 import { TEXTS } from './constants';
+import { AuthForm } from '../../components';
 
 const { FIELDS, BUTTON, VALIDATIONS } = TEXTS.FORM;
 
@@ -16,21 +15,13 @@ export const FormFields = ({
   },
 })
 
-const Form = (props) => {
-  const { handleSubmit, submitting, pristine, error, valid, formFields } = props;
-  return (
-    <form onSubmit={handleSubmit} className="w-100">
-      <div className="w-100">
-        {renderFields(formFields)}
-        {error && <div className="warning_text error_text">{error}</div>}
-      </div>
-      <Button
-        label={BUTTON}
-        disabled={pristine || submitting || !valid}
-      />
-    </form>
-  );
-}
+const Form = (props) => (
+  <AuthForm
+    {...props}
+    formFields={FormFields}
+    buttonLabel={BUTTON}
+  />
+);
 
 export default reduxForm({
   form: 'EmailRequestForm',
