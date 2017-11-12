@@ -7,6 +7,8 @@ $wrapper--max-width: 40rem;
 $wrapper--padding: 2.5rem;
 
 $currency-text-size: 4rem;
+$input-bottom_line--height: 2px;
+$input-bottom_line--animation--width: 100px;
 
 .quick_trade-wrapper {
   min-width: $wrapper--min-width;
@@ -22,7 +24,7 @@ $currency-text-size: 4rem;
     &.fetching {
       color: $colors-deactivate-color2;
     }
-    
+
     width: 100%;
     position: relative;
   }
@@ -100,7 +102,7 @@ $currency-text-size: 4rem;
   }
 
   .input_block-wrapper {
-    border-bottom: 2px solid $colors-main-black;
+    border-bottom: $input-bottom_line--height solid $colors-main-black;
     .input_block-input-wrapper {
       // width: 100%;
       width: auto;
@@ -123,10 +125,62 @@ $currency-text-size: 4rem;
         visibility: hidden;
       }
     }
+
+    &.loading {
+      position: relative;
+      border-bottom-color: $colors-deactivate-color2;
+      &:after {
+        content: '';
+        display: block;
+        animation: linear_loading 2s linear infinite;
+        height: $input-bottom_line--height;
+        width: $input-bottom_line--animation--width;
+        position: absolute;
+        background-color: $colors-currencies-fiat;
+        bottom: -$input-bottom_line--height;
+        left: 0;
+        right: 0;
+      }
+    }
+
+    &.loading.btc::after {
+      background-color: $colors-currencies-btc;
+    }
+
+    &.loading.bch::after {
+      background-color: $colors-currencies-bch;
+    }
+
+    &.loading.eth::after {
+      background-color: $colors-currencies-eth;
+    }
+
+    &.loading.ltc::after {
+      background-color: $colors-currencies-ltc;
+    }
   }
 
   .review-block-wrapper, .input_block-wrapper, .toogle_button-wrapper {
     margin: 1rem;
     width: 100%;
   }
+}
+
+@keyframes linear_loading {
+    0% {
+      left: 0;
+      width: 0;
+    }
+    15% {
+      left: 0;
+      width: $input-bottom_line--animation--width;
+    }
+    85% {
+      width: $input-bottom_line--animation--width;
+      left: calc(100% - #{$input-bottom_line--animation--width});
+    }
+    100% {
+      width: 0;
+      left: 100%;
+    }
 }

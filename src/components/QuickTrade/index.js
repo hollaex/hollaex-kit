@@ -120,6 +120,7 @@ class QuickTrade extends Component {
             symbol={symbol}
             inputStyle={inputStyle}
             format={this.format}
+            className={classnames({ loading: fetching })}
           />
         </div>
         <div className={classnames('quick_trade-section_wrapper', ...GROUP_CLASSES, { fetching })}>
