@@ -2,7 +2,9 @@ import { ORDERBOOK_CONSTANTS } from '../actions/orderbookAction';
 
 const INITIAL_QUICK_TRADE = {
 	fetching: false,
-	data: {},
+	data: {
+		price: 0,
+	},
 	error: '',
 }
 const INITIAL_STATE = {
@@ -103,6 +105,9 @@ export default function reducer(state = INITIAL_STATE, action) {
 				quickTrade: {
 					...INITIAL_QUICK_TRADE,
 					fetching: true,
+					data: {
+						price: state.quickTrade.data.price,
+					},
 				}
 			};
 		case ORDERBOOK_CONSTANTS.QUICK_TRADE_FULFILLED:

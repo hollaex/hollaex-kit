@@ -16,6 +16,7 @@ import {
   TEXTS,
   SIDES,
   DECIMALS,
+  DEFAULT_SYMBOL,
 } from './constants';
 
 const generateStyle = (value) => ({
@@ -28,17 +29,21 @@ class QuickTrade extends Component {
   state = {
     side: SIDES[0],
     value: 1,
-    symbol: 'btc',
+    symbol: DEFAULT_SYMBOL,
     inputStyle: generateStyle(2),
   }
 
   componentDidMount() {
-    this.onChangeSymbol(this.props.symbol);
+    if (this.props.symbol !== fiatSymbol) {
+      this.onChangeSymbol(this.props.symbol);
+    } else {
+      this.onChangeSymbol(DEFAULT_SYMBOL);
+    }
   }
 
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.symbol !== this.props.symbol) {
+    if (nextProps.symbol !== fiatSymbol && nextProps.symbol !== this.props.symbol) {
       this.onChangeSymbol(nextProps.symbol);
     }
   }
@@ -117,10 +122,10 @@ class QuickTrade extends Component {
             format={this.format}
           />
         </div>
-        <div className={classnames('quick_trade-section_wrapper', ...GROUP_CLASSES)}>
+        <div className={classnames('quick_trade-section_wrapper', ...GROUP_CLASSES, { fetching })}>
           <ReviewBlock
             text={TEXTS.TOTAL_COST}
-            value={data.fetching ? '-' : data.price}
+            value={data.price || 0}
           />
         </div>
         <div className={classnames('quick_trade-section_wrapper', ...GROUP_CLASSES)}>

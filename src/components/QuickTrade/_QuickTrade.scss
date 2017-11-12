@@ -19,6 +19,10 @@ $currency-text-size: 4rem;
   }
 
   > .quick_trade-section_wrapper {
+    &.fetching {
+      color: $colors-deactivate-color2;
+    }
+    
     width: 100%;
     position: relative;
   }
