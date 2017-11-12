@@ -79,7 +79,8 @@ input[type=number]::-webkit-outer-spin-button {
 a {
   text-decoration: none;
   color: inherit;
-  &:hover, &:visited {
+  
+  &:hover, &:visited, &:link, &:active {
     color: inherit;
     text-decoration: none;
   }

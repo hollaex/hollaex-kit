@@ -7,7 +7,7 @@ const BasicIconTitle = ({ text, iconPath, textType, underline, className }) => (
     {iconPath &&
       <img src={iconPath} alt={text} className="icon_title-image" />
     }
-    <div className={classnames('icon_title-text', textType)}>
+    <div className={classnames('icon_title-text', 'text-center', textType)}>
       {text}
     </div>
   </div>

@@ -51,7 +51,7 @@ const Form = (props) => {
     <form onSubmit={handleSubmit} className="w-100">
       <div className="w-100">
         {renderFields(formFields)}
-        {error && <div className="warning_text">{error}</div>}
+        {error && <div className="warning_text error_text">{error}</div>}
       </div>
       <Button
         label={BUTTON}

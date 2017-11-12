@@ -4,6 +4,8 @@ export const TEXTS = {
   TITLE: 'sign up',
   SIGNUP_TO: `Sign up to ${APP_TITLE}`,
   HELP: 'help',
+  NO_EMAIL: 'Haven\'t receieved the email?',
+  REQUEST_EMAIL: 'Request another one here',
   FORM: {
     FIELDS: {
       email: {

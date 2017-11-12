@@ -60,8 +60,8 @@ class Login extends Component {
     const { otpDialogIsOpen } = this.state;
 
     return (
-      <div className={classnames(...FLEX_CENTER_CLASSES, 'flex-column', 'f-1', 'login_container')}>
-        <div className={classnames(...FLEX_CENTER_CLASSES, 'flex-column', 'login_wrapper', 'auth_wrapper', 'w-100')}>
+      <div className={classnames(...FLEX_CENTER_CLASSES, 'flex-column', 'f-1')}>
+        <div className={classnames(...FLEX_CENTER_CLASSES, 'flex-column', 'auth_wrapper', 'w-100')}>
           <IconTitle
             iconPath={EXIR_LOGO}
             text={TEXTS.TITLE}
@@ -75,7 +75,7 @@ class Login extends Component {
               onClick: this.redirectToResetPassword,
             }}
           />
-          <div className={classnames(...FLEX_CENTER_CLASSES, 'flex-column', 'login_form-wrapper', 'auth_form-wrapper', 'w-100')}>
+          <div className={classnames(...FLEX_CENTER_CLASSES, 'flex-column', 'auth_form-wrapper', 'w-100')}>
             <LoginForm onSubmit={this.onSubmitLogin} />
           </div>
         </div>

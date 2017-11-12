@@ -6,7 +6,7 @@ $content-wrapper--max-width: $bp-xs;
 
     .auth_wrapper {
       background-color: white;
-      padding: 5rem;
+      padding: 4rem;
     }
 
     .auth_form-wrapper {
@@ -18,10 +18,12 @@ $content-wrapper--max-width: $bp-xs;
 
   .link_wrapper {
     margin: 1rem;
-
-    .blue-link {
-      color: blue;
-      padding-left: 0.25rem;
-    }
+  }
+  .blue-link {
+    color: blue;
+    padding-left: 0.25rem;
+  }
+  .error_text {
+    padding-bottom: 0.5rem;
   }
 }

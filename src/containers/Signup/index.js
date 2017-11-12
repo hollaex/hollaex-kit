@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
+import { Link } from 'react-router';
 import { SubmissionError } from 'redux-form';
 import { performSignup } from '../../actions/authAction';
 import SignupForm, { generateFormFields } from './SignupForm';
 import SignupSuccess from './SignupSuccess';
-import { IconTitle, Dialog } from '../../components';
+import { IconTitle } from '../../components';
 import { EXIR_LOGO, FLEX_CENTER_CLASSES, ICONS } from '../../config/constants';
 import { TEXTS } from './constants';
 
@@ -13,10 +14,9 @@ const TERM_LABELS_TEXT = TEXTS.FORM.FIELDS.terms;
 class Signup extends Component {
   state = {
     success: false,
-    dialogIsOpen: false,
-    dialogContent: '',
     formFields: {},
   }
+
   componentWillMount() {
     this.generateFormFields();
   }
@@ -25,9 +25,9 @@ class Signup extends Component {
     const termsLabel = (
       <div className={classnames('d-flex', 'terms_label-wrapper')}>
         {TERM_LABELS_TEXT.label}
-        <div className="dialog-link pointer" onClick={this.onOpenDialog('terms')}>{TERM_LABELS_TEXT.generalTerms}</div>
+        <Link to='/general-terms' target="_blank" className={classnames('blue-link', 'dialog-link', 'pointer')}>{TERM_LABELS_TEXT.generalTerms}</Link>
         {TERM_LABELS_TEXT.and}
-        <div className="dialog-link pointer" onClick={this.onOpenDialog('policy')}>{TERM_LABELS_TEXT.privacyPolicy}</div>
+        <Link to='/privacy-policy' target="_blank" className={classnames('blue-link', 'dialog-link', 'pointer')}>{TERM_LABELS_TEXT.privacyPolicy}</Link>
       </div>
     );
     this.setState({ formFields: generateFormFields(termsLabel) });
@@ -47,7 +47,13 @@ class Signup extends Component {
         if (error.response.status === 409) {
           errors.email = TEXTS.VALIDATIONS.USER_EXIST;
         } else if (error.response) {
-          errors._error = error.response.body.message;
+          const { message = '' } = error.response.data;
+          if (message.toLowerCase().indexOf('password') > -1) {
+            // TODO set error in constants for language
+            errors.password = message;
+          } else {
+            errors._error = message || error.message;
+          }
         } else {
           errors._error = error.message;
         }
@@ -55,24 +61,16 @@ class Signup extends Component {
       });
   }
 
-  onOpenDialog = (content = '') => () => {
-    this.setState({ dialogIsOpen: true, dialogContent: content });
-  }
-
-  onCloseDialog = () => {
-    this.setState({ dialogIsOpen: false, dialogContent: '' });
-  }
-
   render() {
-    const { success, formFields, dialogIsOpen, dialogContent } = this.state;
+    const { success, formFields } = this.state;
 
     if (success) {
       return <SignupSuccess />
     }
 
     return (
-      <div className={classnames(...FLEX_CENTER_CLASSES, 'flex-column', 'f-1', 'login_container')}>
-        <div className={classnames(...FLEX_CENTER_CLASSES, 'flex-column', 'login_wrapper', 'auth_wrapper', 'w-100')}>
+      <div className={classnames(...FLEX_CENTER_CLASSES, 'flex-column', 'f-1')}>
+        <div className={classnames(...FLEX_CENTER_CLASSES, 'flex-column', 'auth_wrapper', 'w-100')}>
           <IconTitle
             iconPath={EXIR_LOGO}
             text={TEXTS.TITLE}
@@ -86,21 +84,13 @@ class Signup extends Component {
               onClick: this.redirectToResetPassword,
             }}
           />
-          <div className={classnames(...FLEX_CENTER_CLASSES, 'flex-column', 'login_form-wrapper', 'auth_form-wrapper', 'w-100')}>
+          <div className={classnames(...FLEX_CENTER_CLASSES, 'flex-column', 'auth_form-wrapper', 'w-100')}>
             <SignupForm onSubmit={this.onSubmitSignup} formFields={formFields} />
           </div>
         </div>
-        <Dialog
-          isOpen={dialogIsOpen}
-          label="sigunp-modal"
-          onCloseDialog={this.onCloseDialog}
-          shouldCloseOnOverlayClick={false}
-          showCloseText={true}
-        >
-          <div className="signup-modal-wrapper">
-            {dialogContent}
-          </div>
-        </Dialog>
+        <div className={classnames('f-1', 'link_wrapper')}>
+          {TEXTS.NO_EMAIL}<Link to='/verify' className={classnames('blue-link')}>{TEXTS.REQUEST_EMAIL}</Link>
+        </div>
       </div>
     );
   }
