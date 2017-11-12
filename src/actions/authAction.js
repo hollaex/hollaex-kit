@@ -159,24 +159,6 @@ export const logout = () => (dispatch) => {
 	browserHistory.push('/login');
 }
 
-export function resetPassword(data) {
-	return ((dispatch) => {
-		dispatch({ type: 'RESET_PASSWORD_PENDING' });
-		axios.post('/reset-password', data)
-			.then((response) => {
-				dispatch({
-					type: 'RESET_PASSWORD_FULFILLED',
-				});
-			})
-			.catch((error) => {
-				dispatch({
-					type: 'RESET_PASSWORD_REJECTED',
-					payload: error.response.data
-				});
-			});
-	});
-}
-
 export function loadToken() {
 	let token = getToken();
 	return {
@@ -190,3 +172,5 @@ export const requestResetPassword = (values) => {
 	const qs = querystring.stringify(values);
 	return axios.get(`/reset-password?${qs}`);
 }
+
+export const resetPassword = (data) => axios.post('/reset-password', data);

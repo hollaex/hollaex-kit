@@ -18,10 +18,8 @@ import {
   Legal,
   AuthContainer,
   RequestResetPassword,
+  ResetPassword,
 } from './containers';
-
-import ResetPassword from './views/Auth/ResetPassword'
-import ResetPasswordRequest from './views/Auth/ResetPasswordRequest'
 
 import store from './store'
 import { verifyToken } from './actions/authAction'
