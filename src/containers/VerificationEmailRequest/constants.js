@@ -18,8 +18,8 @@ export const TEXTS = {
 }
 
 export const VERIFICATION_RESEND_TEXTS = {
-  TITLE: 'Verification resentsend',
+  TITLE: 'Verification reset send',
   TEXT_1: 'If after a few minutes you still have not receieved an email verification then please contact us below.',
   BUTTON: 'CONTACT US',
-  ICON: ICONS.LETTER,
+  ICON: ICONS.CHECK,
 }

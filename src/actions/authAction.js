@@ -177,25 +177,6 @@ export function resetPassword(data) {
 	});
 }
 
-export function requestResetPassword(email) {
-	const qs = querystring.stringify({ email });
-	return ((dispatch) => {
-		dispatch({ type: 'REQUEST_RESET_PASSWORD_PENDING' });
-		axios.get(`/reset-password?${qs}`)
-			.then((response) => {
-				dispatch({
-					type: 'REQUEST_RESET_PASSWORD_FULFILLED',
-				});
-			})
-			.catch((error) => {
-				dispatch({
-					type: 'REQUEST_RESET_PASSWORD_REJECTED',
-					payload: error.response.data
-				});
-			});
-	});
-}
-
 export function loadToken() {
 	let token = getToken();
 	return {
@@ -205,3 +186,7 @@ export function loadToken() {
 }
 
 export const requestVerificationEmail = (data) => axios.get(`/verify?${querystring.stringify(data)}`)
+export const requestResetPassword = (values) => {
+	const qs = querystring.stringify(values);
+	return axios.get(`/reset-password?${qs}`);
+}

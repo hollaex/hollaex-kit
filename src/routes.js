@@ -17,6 +17,7 @@ import {
   Trade,
   Legal,
   AuthContainer,
+  RequestResetPassword,
 } from './containers';
 
 import ResetPassword from './views/Auth/ResetPassword'
@@ -87,7 +88,7 @@ export default (
     <Route component={AuthContainer}>
       <Route path="login" name="Login" component={Login} {...noAuthRoutesCommonProps} />
       <Route path="signup" name="signup" component={Signup} {...noAuthRoutesCommonProps} />
-      <Route path="reset-password" name="Reset Password Request" component={ResetPasswordRequest} {...noLoggedUserCommonProps} />
+      <Route path="reset-password" name="Reset Password Request" component={RequestResetPassword} {...noLoggedUserCommonProps} />
       <Route path="reset-password/:code" name="Reset Password" component={ResetPassword} {...noLoggedUserCommonProps} />
       <Route path="verify" name="Verify" component={VerificationEmailRequest} {...noLoggedUserCommonProps} />
       <Route path="verify/:code" name="verifyCode" component={VerificationEmailCode} {...noLoggedUserCommonProps} />

@@ -42,13 +42,5 @@ export const VERIFICATION_TEXTS = {
   TITLE: 'verification sent',
   TEXT_1: 'Check your email and click the link to verifiy yourself.',
   TEXT_2: 'If you have not receieved any email verification and you have checked your junk mail then you can try clicking resend below.',
-  BUTTON: 'resend',
-  ICON: ICONS.LETTER,
-}
-
-export const VERIFICATION_RESEND_TEXTS = {
-  TITLE: 'Verification resent',
-  TEXT_1: 'If after a few minutes you still have not receieved an email verification then please contact us below.',
-  BUTTON: 'CONTACT US',
-  ICON: ICONS.LETTER,
+  ICON: ICONS.CHECK,
 }

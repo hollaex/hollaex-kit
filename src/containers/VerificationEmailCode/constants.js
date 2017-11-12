@@ -5,7 +5,7 @@ export const TEXTS = {
     TITLE: 'Success',
     TEXT_1: 'You\'ve successfully verified your email.',
     TEXT_2: 'You can now proceed to login',
-    ICON: ICONS.LETTER,
+    ICON: ICONS.CHECK,
     BUTTON: 'Login',
   },
   ERROR: {
