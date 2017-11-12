@@ -203,3 +203,5 @@ export function loadToken() {
 		payload: token
 	}
 }
+
+export const requestVerificationEmail = (data) => axios.get(`/verify?${querystring.stringify(data)}`)

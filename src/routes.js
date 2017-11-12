@@ -8,6 +8,7 @@ import {
   Wallet,
   Login,
   Signup,
+  VerificationEmailRequest,
   Home,
   Deposit,
   Withdraw,
@@ -88,7 +89,7 @@ export default (
       <Route path="signup" name="signup" component={Signup} {...noAuthRoutesCommonProps} />
       <Route path="reset-password" name="Reset Password Request" component={ResetPasswordRequest} {...noLoggedUserCommonProps} />
       <Route path="reset-password/:code" name="Reset Password" component={ResetPassword} {...noLoggedUserCommonProps} />
-      <Route path="verify" name="Verify" component={Verification} {...noLoggedUserCommonProps} />
+      <Route path="verify" name="Verify" component={VerificationEmailRequest} {...noLoggedUserCommonProps} />
       <Route path="verify/:code" name="verifyCode" component={Verification} {...noLoggedUserCommonProps} />
     </Route>
     <Route path="privacy-policy" component={Legal} content="legal" />
