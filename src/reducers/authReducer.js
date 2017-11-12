@@ -51,18 +51,59 @@ export default function reducer(state = INITIAL_STATE, action) {
 		}
 
 		case 'CHECK_VERIFICATION_CODE_PENDING':
-			return {...state, verification: { ...VERIFICATION, fetching: true }};
+			return {
+				...state,
+				verification: {
+					...VERIFICATION,
+					fetching: true,
+				},
+			};
 		case 'CHECK_VERIFICATION_CODE_FULFILLED':
-			return {...state, verification: { ...VERIFICATION, fetching: true, fetched: true, data: action.payload, hasValidData: true }};
+			return {
+				...state,
+				verification: {
+					...VERIFICATION,
+					fetching: true,
+					fetched: true,
+					data: action.payload,
+					hasValidData: true,
+				},
+			};
 		case 'CHECK_VERIFICATION_CODE_REJECTED':
-		return {...state, verification: { ...VERIFICATION, fetching: false, error: action.payload.message }};
-
+			return {
+				...state,
+				verification: {
+					...VERIFICATION,
+					fetching: false,
+					fetched: true,
+					error: action.payload.message,
+				},
+			};
 		case 'VERIFY_VERIFICATION_CODE_PENDING':
-			return {...state, verification: { ...VERIFICATION, fetching: true }};
+			return {
+				...state,
+				verification: {
+					...VERIFICATION,
+					fetching: true,
+				},
+			};
 		case 'VERIFY_VERIFICATION_CODE_FULFILLED':
-			return {...state, verification: { ...VERIFICATION, fetched: true }};
+			return {
+				...state,
+				 verification: {
+					 ...VERIFICATION,
+					 fetched: true,
+				 },
+			 };
 		case 'VERIFY_VERIFICATION_CODE_REJECTED':
-			return {...state, verification: { ...VERIFICATION, error: action.payload.message }};
+			return {
+				...state,
+				verification: {
+					...VERIFICATION,
+					fetched: true,
+					error: action.payload.message,
+				},
+			};
 
 		//LOGIN
 		case 'LOGIN_USER_PENDING': {

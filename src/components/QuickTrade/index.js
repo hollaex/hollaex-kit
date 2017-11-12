@@ -44,7 +44,6 @@ class QuickTrade extends Component {
   }
 
   onChangeSymbol = (symbol) => {
-    console.log('here')
     this.setState({ symbol });
     this.requestValue({
       size: this.state.value,

@@ -12,6 +12,7 @@ export { default as TransactionsHistory } from './TransactionsHistory';
 export { default as Login } from './Login';
 export { default as Signup } from './Signup';
 export { default as VerificationEmailRequest } from './VerificationEmailRequest';
+export { default as VerificationEmailCode } from './VerificationEmailCode';
 export { default as Home } from './Home';
 export { default as Trade } from './Trade';
 export { default as Legal } from './Legal';

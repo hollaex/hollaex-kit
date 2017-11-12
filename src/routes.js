@@ -9,6 +9,7 @@ import {
   Login,
   Signup,
   VerificationEmailRequest,
+  VerificationEmailCode,
   Home,
   Deposit,
   Withdraw,
@@ -18,7 +19,6 @@ import {
   AuthContainer,
 } from './containers';
 
-import Verification from './views/Auth/Verification'
 import ResetPassword from './views/Auth/ResetPassword'
 import ResetPasswordRequest from './views/Auth/ResetPasswordRequest'
 
@@ -90,7 +90,7 @@ export default (
       <Route path="reset-password" name="Reset Password Request" component={ResetPasswordRequest} {...noLoggedUserCommonProps} />
       <Route path="reset-password/:code" name="Reset Password" component={ResetPassword} {...noLoggedUserCommonProps} />
       <Route path="verify" name="Verify" component={VerificationEmailRequest} {...noLoggedUserCommonProps} />
-      <Route path="verify/:code" name="verifyCode" component={Verification} {...noLoggedUserCommonProps} />
+      <Route path="verify/:code" name="verifyCode" component={VerificationEmailCode} {...noLoggedUserCommonProps} />
     </Route>
     <Route path="privacy-policy" component={Legal} content="legal" />
     <Route path="general-terms" component={Legal} content="terms" />
