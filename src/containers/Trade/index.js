@@ -144,7 +144,7 @@ class Trade extends Component {
             {orderbookReady && <Orderbook {...orderbookProps} />}
           </TradeBlock>
         </div>
-        <div className={classnames('trade-col_main_wrapper', 'flex-column', 'd-flex', 'flex-auto')}>
+        <div className={classnames('trade-col_main_wrapper', 'flex-column', 'd-flex', 'f-1', 'overflow-x')}>
           <div className={classnames('trade-main_content', 'flex-auto', 'd-flex')}>
             <div className={classnames('trade-col_action_wrapper', 'flex-column', 'd-flex')}>
               <TradeBlock title={TITLES.ORDER_ENTRY}>
@@ -152,10 +152,12 @@ class Trade extends Component {
                   submitOrder={this.onSubmitOrder}
                   symbol={symbol}
                   balance={balance}
+                  asks={asks}
+                  bids={bids}
                 />
               </TradeBlock>
             </div>
-            <TradeBlock title={TITLES.CHART} setRef={this.setChartRef}>
+            <TradeBlock title={TITLES.CHART} setRef={this.setChartRef} className="f-1 overflow-x">
               {chartHeight > 0 &&
                 <PriceChart
                   height={chartHeight}

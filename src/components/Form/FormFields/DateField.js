@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import classnames from 'classnames';
 import FieldWrapper, { FieldContent } from './FieldWrapper';
 import { getFormattedDate } from '../../../utils/string';
 import { SingleDatePicker, isInclusivelyAfterDay, isInclusivelyBeforeDay } from 'react-dates';
@@ -90,11 +89,17 @@ class DateField extends Component {
   render() {
     const { focused, date, display } = this.state;
     const {
-      meta: { active = false, error, touched = false, invalid },
+      meta: {
+        // active = false,
+        // error,
+        // touched = false,
+        invalid
+      },
       startDate,
       endDate,
     } = this.props;
-    const displayError = !active && touched && error;
+
+    // const displayError = !active && touched && error;
 
     return (
       <div className="datefield-wrapper">

@@ -1,11 +1,10 @@
 import React from 'react';
-import classnames from 'classnames';
 
 const InputField = (props) => {
   const {
     input,
     label,
-    meta: { touched, invalid, error, active },
+    meta: { touched, error, active },
     currency,
     ...rest,
   } = props;

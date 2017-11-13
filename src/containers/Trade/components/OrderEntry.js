@@ -1,10 +1,14 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
+import { connect } from 'react-redux';
+import { formValueSelector } from 'redux-form';
+
 import Review from './OrderEntryReview';
-import Form from './OrderEntryForm';
-import { formatNumber } from '../../../utils/currency';
-import { evaluateOrder } from '../../../components/Form/validations';
+import Form, { FORM_NAME } from './OrderEntryForm';
+import { formatNumber, formatFiatAmount } from '../../../utils/currency';
+import { evaluateOrder, required, minValue, maxValue, normalizeInt, checkMarketPrice } from '../../../components/Form/validations';
 import { Loader } from '../../../components';
+import { LIMIT_VALUES, CURRENCIES } from '../../../config/constants';
 
 const TYPES = [
   'market',
@@ -12,43 +16,76 @@ const TYPES = [
   // 'stop',
 ];
 
-const ACTIONS = [
+const SIDES = [
   'buy',
   'sell',
 ];
 
-const FIAT_NAME = 'USD';
+const FIAT_NAME = CURRENCIES.fiat.shortName;
 
 class OrderEntry extends Component {
   state = {
-    activeTab: TYPES[0],
-    activeAction: ACTIONS[0],
+    formValues: {},
+    initialValues: {
+      side: SIDES[0],
+      type: TYPES[0],
+    },
+    orderPrice: 0,
+    outsideFormError: '',
   }
 
-  changeTab = (activeTab) => () => {
-    this.setState({ activeTab });
+  componentDidMount() {
+    this.generateFormValues(this.state.activeTab);
   }
 
-  changeAction = (activeAction) => () => {
-    this.setState({ activeAction });
+  componentWillReceiveProps(nextProps) {
+    if (
+      nextProps.size !== this.props.size ||
+      nextProps.side !== this.props.side ||
+      nextProps.price !== this.props.price ||
+      nextProps.type !== this.props.type
+    ) {
+      this.calculateOrderPrice(nextProps);
+    }
+  }
+
+  calculateOrderPrice = (props) => {
+    const { type, side } = props;
+    const size = parseFloat(props.size || 0);
+    const price = parseFloat(props.price || 0);
+
+    let orderPrice = 0;
+    if (props.side === 'sell') {
+      const { bids } = props;
+      orderPrice = checkMarketPrice(size, bids, type, side, price);
+    } else {
+      const { asks } = props;
+      orderPrice = checkMarketPrice(size, asks, type, side, price);
+    }
+
+    let outsideFormError = '';
+
+    if (type === 'market' && side === 'buy') {
+      const values = {
+        size, side, type, price,
+      }
+      const { symbol, balance } = props;
+
+      outsideFormError = evaluateOrder(symbol, balance, values, type, side, orderPrice);
+    }
+    this.setState({ orderPrice, outsideFormError });
   }
 
   evaluateOrder = (values) => {
-    const side = this.state.activeAction;
-    const type = this.state.activeTab;
+    const { side, type } = values;
     const { symbol, balance } = this.props;
-
-    if (!balance[`${symbol}_balance`]) {
-      return 'No balance';
-    }
 
     return evaluateOrder(symbol, balance, values, type, side);
   }
 
   onSubmit = (values) => {
     const order = {
-      side: this.state.activeAction,
-      type: this.state.activeTab,
+      ...values,
       size: formatNumber(values.size, 4),
       symbol: this.props.symbol,
     }
@@ -60,47 +97,69 @@ class OrderEntry extends Component {
     return this.props.submitOrder(order);
   }
 
+  generateFormValues = (type) => {
+    const formValues = {
+      type: {
+        name: 'type',
+        type: 'tab',
+        options: TYPES,
+        validate: [required],
+      },
+      side: {
+        name: 'side',
+        type: 'select',
+        options: SIDES,
+        validate: [required]
+      },
+      size: {
+        name: 'size',
+        label: 'Amount',
+        type: 'number',
+        placeholder: '0.00',
+        step: 0.0001,
+        validate: [required, minValue(LIMIT_VALUES.SIZE.MIN), maxValue(LIMIT_VALUES.SIZE.MAX)],
+        currency: 'BTC',
+      },
+      price: {
+        name: 'price',
+        label: 'Price',
+        type: 'number',
+        placeholder: '0',
+        validate: [required, minValue(LIMIT_VALUES.PRICE.MIN), maxValue(LIMIT_VALUES.PRICE.MAX)],
+        normalize: normalizeInt,
+        currency: 'USD',
+      }
+    };
+
+    this.setState({ formValues });
+  }
+
   render() {
-    const { currencyName, onSubmitOrder, balance, symbol } = this.props
-    const { activeTab, activeAction } = this.state;
+    const { currencyName, balance, symbol, type } = this.props
+    const { initialValues, formValues, orderPrice, outsideFormError } = this.state;
+
+    const fees = 0;
+
     if (!balance.hasOwnProperty(`${symbol}_balance`)) {
       return <Loader relative={true} background={false} />;
     }
 
     return (
-      <div className={classnames('trade_order_entry-wrapper', activeTab, 'd-flex', 'flex-column')}>
-        <div className="trade_order_entry-selector d-flex">
-          {TYPES.map((tab, index) =>
-            <div
-              key={`type-${index}`}
-              className={classnames(
-                'text-uppercase', 'text-center', 'pointer',
-                { active: activeTab === tab }
-              )}
-              onClick={this.changeTab(tab)}
-            >{tab}</div>
-          )}
-        </div>
-        <div className="trade_order_entry-action_selector d-flex">
-          {ACTIONS.map((action, index) =>
-            <div
-              key={`action-${index}`}
-              className={classnames(
-                'text-uppercase', 'd-flex', 'justify-content-center', 'align-items-center', 'pointer',
-                { active: activeAction === action }
-              )}
-              onClick={this.changeAction(action)}
-            >{action}</div>
-          )}
-        </div>
+      <div className={classnames('trade_order_entry-wrapper', 'd-flex', 'flex-column')}>
         <Form
-          type={activeTab}
-          buttonLabel={`${activeAction} ${currencyName}`}
+          currencyName={currencyName}
           evaluateOrder={this.evaluateOrder}
           onSubmit={this.onSubmit}
+          formValues={formValues}
+          initialValues={initialValues}
+          outsideFormError={outsideFormError}
         >
           <Review
+            type={type}
             currency={FIAT_NAME}
+            orderPrice={orderPrice}
+            fees={fees}
+            formatToCurrency={formatFiatAmount}
           />
         </Form>
       </div>
@@ -112,4 +171,8 @@ OrderEntry.defaultProps = {
   currencyName: 'Bitcoins',
 }
 
-export default OrderEntry;
+const selector = formValueSelector(FORM_NAME);
+
+const mapStateToProps = (state) => selector(state, 'price', 'size', 'side', 'type');
+
+export default connect(mapStateToProps)(OrderEntry);

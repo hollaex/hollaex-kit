@@ -2,16 +2,14 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 
 import { format } from "d3-format";
-import { timeFormat } from "d3-time-format";
 
 import { ChartCanvas, Chart } from "react-stockcharts";
 
 import {
-	BarSeries,
 	AreaSeries,
 } from "react-stockcharts/lib/series";
 
-import { XAxis, YAxis } from "react-stockcharts/lib/axes";
+import { XAxis, YAxis, TXAxis } from'./axis';
 
 import {
 	CrossHairCursor,
@@ -21,7 +19,6 @@ import {
 } from "react-stockcharts/lib/coordinates";
 import { OHLCTooltip } from "react-stockcharts/lib/tooltip";
 
-import { SingleValueTooltip } from "react-stockcharts/lib/tooltip";
 import { fitWidth } from "react-stockcharts/lib/helper";
 
 import {
@@ -29,9 +26,7 @@ import {
 	margins,
 	yExtents,
   generateXExtents,
-	Y_GAP,
-	X_GAP,
-  tickFormat,
+	FORMAT_DATE_X_TICK,
 } from './utils';
 
 import {
@@ -77,17 +72,20 @@ class AreaChartWithEdge extends Component {
 				xExtents={xExtents}
       >
 				<Chart id={1} yExtents={yExtents}>
-					<XAxis axisAt="bottom" orient="bottom" />
-					<YAxis axisAt="right" orient="right" ticks={10} />
+					<XAxis width={width} />
+					<YAxis height={height} />
+					<TXAxis width={width} />
 
 					<MouseCoordinateX
-						at="bottom"
-						orient="bottom"
-						displayFormat={tickFormat} />
+						at="top"
+						orient="top"
+						displayFormat={FORMAT_DATE_X_TICK}
+					/>
 					<MouseCoordinateY
 						at="right"
 						orient="right"
-						displayFormat={format(".2f")} />
+						displayFormat={format(".2f")}
+					/>
 
 					<AreaSeries {...areaProps} />
           <OHLCTooltip {...OHLCProps} />
@@ -102,6 +100,7 @@ class AreaChartWithEdge extends Component {
 AreaChartWithEdge.propTypes = {
 	data: PropTypes.array.isRequired,
 	width: PropTypes.number.isRequired,
+	height: PropTypes.number.isRequired,
 	ratio: PropTypes.number.isRequired,
 	type: PropTypes.oneOf(["svg", "hybrid"]).isRequired,
 };

@@ -4,6 +4,8 @@ import { formatBtcAmount, formatFiatAmount } from '../utils/string';
 export const ENV = process.env.NODE_ENV || 'development'
 export const NETWORK = process.env.REACT_APP_NETWORK || 'testnet'
 
+export const APP_TITLE = process.env.APP_TITLE || 'exir-exchange';
+
 export const TOKEN_TIME = 24 * 60 * 60 * 1000; // 1 hour
 export const SESSION_TIME = 60 * 60 * 1000; // 1 hour
 export const API_URL = config[ENV][NETWORK].API_URL;
@@ -38,6 +40,15 @@ export const ICONS = {
   COPY: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-26.png`,
   LOGOUT: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-27.png`,
 }
+
+export const SOCIAL_ICONS = {
+  FACEBOOK: `${process.env.PUBLIC_URL}/assets/icons/facebook.png`,
+  LINKEDIN: `${process.env.PUBLIC_URL}/assets/icons/linkedin.png`,
+  TWIITER: `${process.env.PUBLIC_URL}/assets/icons/twitter.png`,
+  GOOGLE: `${process.env.PUBLIC_URL}/assets/icons/google.png`,
+};
+
+export const EXIR_LOGO = `${process.env.PUBLIC_URL}/assets/logo/logo-default.png`;
 
 export const CURRENCIES = {
   fiat: {

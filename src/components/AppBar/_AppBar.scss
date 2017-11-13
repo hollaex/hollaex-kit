@@ -6,7 +6,15 @@
   border-bottom: 1px solid $border-color;
   display: flex;
   justify-content: space-between;
-  font-size: 1rem;
+  font-size: $navigation_bar-font_size;
+  font-weight: bold;
+
+  &.no-borders {
+    border-bottom: none;
+    > div:not(:first-child) {
+      border-left: none;
+    }
+  }
 
   > div {
     display: flex;
@@ -24,8 +32,6 @@
 
   .app_bar-icon {
     width: 100%;
-    color: white;
-    background: $colors-main-black;
   }
 
   .app_bar-main {
@@ -91,6 +97,16 @@
 
     > div {
       // padding: 0 8px;
+    }
+  }
+
+  .app_bar-controllers-splash {
+    padding: 0;
+
+    .action_button {
+      min-width: $navigation_bar-action_button;
+      height: 100%;
+      padding: 0 0.5rem;
     }
   }
 }

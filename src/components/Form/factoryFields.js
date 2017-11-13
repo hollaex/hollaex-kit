@@ -4,6 +4,7 @@ import InputField from './FormFields/InputField';
 import FileField from './FormFields/FileField';
 import DropdownField from './FormFields/DropdownField';
 import DateField from './FormFields/DateField';
+import CheckField from './FormFields/CheckField';
 
 const renderFields = (fields) => {
   return (
@@ -39,6 +40,13 @@ const renderFields = (fields) => {
             return (
               <Field
                 component={ DateField }
+                {...commonProps}
+              />
+            );
+          case 'checkbox':
+            return (
+              <Field
+                component={ CheckField }
                 {...commonProps}
               />
             );

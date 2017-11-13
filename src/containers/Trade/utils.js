@@ -3,11 +3,10 @@ import classnames from 'classnames';
 import math from 'mathjs';
 
 import { CurrencyBall } from '../../components';
-import { CURRENCIES, FLEX_CENTER_CLASSES } from '../../config/constants';
+import { CURRENCIES } from '../../config/constants';
 import { fiatSymbol } from '../../utils/currency';
 import { formatTimestamp } from '../../utils/utils';
 
-const fiatShortName = CURRENCIES[fiatSymbol].shortName;
 const fiatFormatToCurrency = CURRENCIES[fiatSymbol].formatToCurrency;
 const fiatCurrencySymbol = CURRENCIES.fiat.currencySymbol;
 

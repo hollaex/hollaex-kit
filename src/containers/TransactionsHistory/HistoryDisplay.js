@@ -1,12 +1,11 @@
-import React, { Component } from 'react';
-import classnames from 'classnames';
+import React from 'react';
 
 import { TEXT_DOWNLOAD, TABLE_PAGE_SIZE } from './constants';
 import { ICONS, } from '../../config/constants';
 import { ActionNotification, Table, CsvDownload, Loader } from '../../components';
 
 const HistoryDisplay = (props) => {
-  const { symbol, title, headers, data: { data, count, loading }, filename} = props;
+  const { title, headers, data: { data, count, loading }, filename} = props;
 
   return (
     <div className="history_block-wrapper">

@@ -6,6 +6,10 @@ import { calculatePrice, fiatSymbol } from '../../utils/currency';
 
 const ERROR_MESSAGE_REQUIRED = 'Required field';
 const ERROR_MESSAGE_BEFORE_DATE = 'Invalid date';
+const ERROR_INVALID_EMAIL = 'Invalid email address';
+const INVALID_PASSWORD = 'Invalid password. It has to contain at least 8 characters, a digit in the password and a special character.';
+const passwordRegEx = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#\$%\^\&*\)\(+=._-]).{8,}$/;
+
 
 export const required = (value) => !value ? ERROR_MESSAGE_REQUIRED : undefined;
 export const requiredBoolean = (value) => value === undefined ? ERROR_MESSAGE_REQUIRED : undefined;
@@ -13,10 +17,7 @@ export const requiredWithCustomMessage = (message) => (value) => !value ? messag
 
 export const exactLength = (length, message) => (value = '') => value.length !== length ? message : undefined;
 
-export const email = (value) => !validator.isEmail(value) ? 'Invalid email' : undefined;
-
-const passwordRegEx = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#\$%\^\&*\)\(+=._-]).{8,}$/;
-const INVALID_PASSWORD = 'Invalid password. It has to contain at least 8 characters, a digit in the password and a special character.';
+export const email = (value = '') => !validator.isEmail(value) ? ERROR_INVALID_EMAIL : undefined;
 
 export const password = (value) => !passwordRegEx.test(value) ? INVALID_PASSWORD : undefined
 
@@ -47,27 +48,52 @@ export const checkBalance = (available, message, fee = 0) => (value = 0) => {
 }
 
 
-export const evaluateOrder = (symbol = '', balance = {}, order = {}, orderType = '', side = '') => {
+export const evaluateOrder = (symbol = '', balance = {}, order = {}, orderType = '', side = '', marketPrice = 0) => {
 
-  if (orderType === 'market') {
-    // TODO calculate with server
-    return '';
+  let orderPrice = 0;
+  let available = 0;
+
+  if (side === 'sell') {
+    available = balance[`${symbol}_available`];
+    orderPrice = order.size;
   } else {
-    let orderPrice = 0;
-    let available = 0;
-    if (side === 'sell') {
-      available = balance[`${symbol}_available`];
-      orderPrice = order.size;
-    } else if (side === 'buy') {
-      available = balance[`${fiatSymbol}_available`];
+    available = balance[`${fiatSymbol}_available`];
+
+    if (orderType === 'market') {
+      orderPrice = marketPrice;
+    } else {
       orderPrice = math.multiply(math.fraction(order.size || 0), math.fraction(order.price || 0));
-    }
-    if (available < orderPrice) {
-      return 'Insufficient balance';
     }
   }
 
+  if (available === 0 || available < orderPrice) {
+    return 'Insufficient balance';
+  }
   return '';
+}
+
+export const checkMarketPrice = (size, orders = [], type, side,  orderPrice) => {
+  let accumulated = 0;
+  let remaining = size;
+
+  orders.some(([price, amount], index) => {
+    if (type === 'limit') {
+      if (side === 'buy' && orderPrice < price) {
+        return true;
+      } else if (side === 'sell' && orderPrice > price) {
+        return true;
+      }
+    }
+    const orderSizeTaken = remaining >= amount ? amount : remaining;
+    const takenPrice = price * orderSizeTaken;
+
+    remaining = remaining - orderSizeTaken;
+    accumulated = accumulated + takenPrice;
+
+    return remaining <= 0;
+  });
+
+  return accumulated;
 }
 
 export const isBefore = (before = '', message = ERROR_MESSAGE_BEFORE_DATE) => {

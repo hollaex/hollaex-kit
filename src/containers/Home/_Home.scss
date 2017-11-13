@@ -1,4 +1,100 @@
+$quick-trade--background: #ccf9fb;
+$features-icon--size: 4rem;
+$features-card--width: 17.5rem;
+$features-card--margin: 3rem;
+$features-container--width: 75rem;
+$features-container--sm--width: 45rem;
+
 .home_container {
-  height: 100%;
-  
+  .home_container-content {
+
+  }
+  .quick_trade-section {
+    background-color: $quick-trade--background;
+    > .quick_trade-wrapper {
+      flex: 1;
+    }
+  }
+
+  .quick_trade-section, .features-container {
+    padding: 2rem;
+  }
+
+  .section_1-content {
+    position: relative;
+    min-height: 500px;
+
+    .scroll-button {
+      $arrow-size: 16px;
+      bottom: 1rem;
+      left: calc(50% - #{$arrow-size});
+      @include css-triangle($colors-main-black, down, $arrow-size, absolute, true);
+    }
+  }
+
+  .features-container {
+    .features-card_container {
+      max-width: $features-container--width;
+    }
+  }
+
+  .home-card-container {
+    border-top: 1px solid $colors-main-black;
+    width: $features-card--width;
+    margin: $features-card--margin;
+    margin-top: 0;
+
+    .home-card-icon {
+      @include size($features-icon--size);
+    }
+
+    .home-card-text-container {
+      margin-left: 1rem;
+      font-size: $font-size-subtext;
+
+      .home-card-title {
+        margin: 0.5rem 0 0.25rem;
+        font-weight: bold;
+        text-transform: uppercase;
+      }
+      .home-card-text {
+
+      }
+    }
+  }
+
+  .home-title, .features-title {
+    font-size: $font-size-headline;
+    margin-bottom: 1rem;
+    text-align: center;
+  }
+
+  .text-section, .buttons-section {
+    margin: 1rem;
+  }
+
+  .buttons-section--button {
+    width: $navigation_bar-action_button;
+    height: $navigation_bar-height;
+    font-size: $navigation_bar-font_size;
+    border: 1px solid $colors-main-black;
+    margin: 0 1rem;
+    text-align: center;
+    text-transform: uppercase;
+    font-weight: bold;
+  }
+}
+
+@media (max-width: $bp-sm) {
+  .home_container {
+    .home-card-container {
+      margin: 0 2rem 3rem;
+    }
+
+    .features-container {
+      .features-card_container {
+        max-width: $features-container--sm--width;
+      }
+    }
+  }
 }

@@ -1,6 +1,6 @@
 import React from 'react';
 import classnames from 'classnames';
-import { IconTitle, Button, CurrencyBall, ActionNotification } from '../';
+import { Button, CurrencyBall, ActionNotification } from '../';
 import { NOTIFICATIONS } from '../../actions/appActions';
 import { ICONS, CURRENCIES } from '../../config/constants';
 import { getDepositTexts, NEED_HELP, BUTTON_TEXTS } from './constants';
@@ -82,7 +82,8 @@ const generateNotificationContent = ({ type, data, onClose, goToPage }) => {
             }}
           />
         </div>
-      )
+      );
+      break;
     case NOTIFICATIONS.ORDERS:
     case NOTIFICATIONS.TRADES:
     case NOTIFICATIONS.WITHDRAWAL:

@@ -24,10 +24,6 @@ class ChartComponent extends Component {
     chartSocket.on('ticker', this.setTickData);
   }
 
-  componentDidMount() {
-    this.setState({ width: this.wrapper.offsetWidth > 600 ? 600 : this.wrapper.offsetWidth })
-  }
-
   componentWillUnmount() {
     if (this.state.chartSocket) {
       this.state.chartSocket.close();
@@ -91,7 +87,7 @@ class ChartComponent extends Component {
         lastData.close = tickers[symbol]
         chartData[symbol][chartData[symbol].length - 1] = lastData;
       } else {
-        const openValue = chartData[symbol].length > 0 ? chartData[symbol][chartData[symbol].length - 1].open : tickers[symbol];
+        // const openValue = chartData[symbol].length > 0 ? chartData[symbol][chartData[symbol].length - 1].open : tickers[symbol];
         chartData[symbol].push({
           date: currentBlockTimestamp,
           high: tickers[symbol],
@@ -105,11 +101,10 @@ class ChartComponent extends Component {
   }
 
   render() {
-    const { height } = this.props;
-    const { chartData, width, ready } = this.state;
+    const { height, width } = this.props;
+    const { chartData, ready } = this.state;
     return (
       <div
-        ref={(el) => { this.wrapper = el; } }
         style={{
           width: '100%', height: '100%',
           position: 'relative',

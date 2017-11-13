@@ -1,0 +1,59 @@
+.pointer {
+  cursor: pointer;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.flex-auto {
+  flex: auto;
+}
+
+.f-0 {
+  flex: 0;
+}
+
+.overflow-y {
+  overflow-y: auto;
+}
+
+.overflow-x {
+  overflow-x: auto;
+}
+
+.p-relative {
+  position: relative;
+}
+
+.text_overflow {
+  width: auto;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.contrast {
+  color: white;
+  background: $colors-main-black;
+}
+
+// FONT SIZES
+.font-small {
+  font-size: $font-size-subtext;
+}
+
+// BORDERS
+.b {
+  border: 1px solid red;
+}
+.c {
+  border: 1px solid green;
+}
+.d {
+  border: 1px solid blue;
+}
+
+.separator {
+  width: 2rem;
+}

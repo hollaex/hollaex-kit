@@ -13,7 +13,6 @@ const Sidebar = ({
         <Section
           title="Wallet"
           goToSection={goToWalletPage}
-          goToSectionText="see details"
           active={activePath === 'wallet'}
         >
           <Wallet
@@ -23,8 +22,6 @@ const Sidebar = ({
         {symbol !== fiatSymbol &&
           <Section
             title="Trading Mod"
-            goToSection={goToTradePage}
-            goToSectionText="see details"
             active={activePath === 'trade'}
           >
             <div className="sidebar-container-trade d-flex">
@@ -34,7 +31,8 @@ const Sidebar = ({
               />
               <Button
                 label="Pro Trade"
-                disabled={true}
+                onClick={goToTradePage}
+                disabled={!goToTradePage}
               />
             </div>
           </Section>
@@ -48,7 +46,7 @@ const Sidebar = ({
           logout
         </div>
         <div onClick={logout} className="sidebar-logout-right pointer">
-          <img src={ICONS.LOGOUT} />
+          <img src={ICONS.LOGOUT} alt="logout" />
         </div>
       </div>
     </div>

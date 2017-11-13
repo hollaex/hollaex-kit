@@ -72,7 +72,6 @@ const generateHeaders = (onCancel) => ([
     label: 'Status',
     key: 'status',
     renderCell: ({ size = 0, filled = 0 }, key, index) => {
-      const remaining = subtract(size, filled);
       const fullfilled = formatFiatAmount(math.chain(filled).divide(size).multiply(100).done());
       return (
         <td key={index} className={classnames('cell_box-type', 'fullfilled')}>

@@ -4,13 +4,14 @@
   width: 100%;
   font-size: $font-size-subtext;
   padding: 0 4px;
+  background-color: $colors-main-black !important;
 
   &.button-success {
-    background-color: $colors-notifications-green;
+    background-color: $colors-notifications-green !important;
   }
 
   &.button-fail {
-    background-color: $colors-notifications-red;
+    background-color: $colors-notifications-red !important;
   }
 
   &.disabled {

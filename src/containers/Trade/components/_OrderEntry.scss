@@ -74,7 +74,7 @@
   }
 
   .trade_order_entry-form_inputs-wrapper {
-    .trade_input-wrapper {
+    .trade_order_entry-form_fields-wrapper > div:not(:last-child) {
       margin-bottom: 0.5rem;
     }
 
@@ -84,5 +84,17 @@
       color: white;
       font-weight: bold;
     }
+
+    .warning_text {
+      margin-top: 0.25rem;
+    }
+
+    .form-error {
+      margin: 0.5 0;
+    }
+  }
+
+  .trade_order_entry-form_fields-wrapper {
+    margin-bottom: 0.5rem !important;
   }
 }

@@ -1,27 +1,28 @@
 @import 'variables';
 @import 'fonts';
 @import 'mixins';
+@import "common";
+
+@import './containers/containers';
+@import './components/components';
 
 html {
-  font-size: 12px;
+  font-size: 12px !important;
 }
 
 #root {
   height: 100%;
 }
 
+.app_background {
+  // background-color: #d5f5f5;
+}
+
 body {
   background-color: $app-background-color !important;
   font-size: $font-size-main !important;
   font-family: "Open Sans" !important;
-}
-
-.pointer {
-  cursor: pointer;
-}
-
-.hidden {
-  display: none !important;
+  min-width: $bp-xs;
 }
 
 .warning_text {
@@ -54,29 +55,15 @@ body {
   }
 }
 
-.text_overflow {
-  width: auto;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-}
 
-@import './containers/containers';
-@import './components/components';
-
-.b {
-  border: 1px solid red;
-}
-.c {
-  border: 1px solid green;
-}
-.d {
-  border: 1px solid blue;
+input, input:focus {
+  outline: none;
+  border: none;
 }
 
 input[type="number"] {
-    -moz-appearance: textfield;
-    appearance: textfield;
+  -moz-appearance: textfield;
+  appearance: textfield;
 }
 
 input[type=number]::-webkit-inner-spin-button,
@@ -89,17 +76,18 @@ input[type=number]::-webkit-outer-spin-button {
     display: none;
 }
 
-.flex-auto {
-  flex: auto;
+a {
+  text-decoration: none;
+  color: inherit;
+
+  &:hover, &:visited, &:link, &:active {
+    color: inherit;
+    text-decoration: none;
+  }
 }
 
-.overflow-y {
-  overflow-y: auto;
-}
-
-@media screen
-  and (max-device-width: 800px) {
+@media screen and (max-width: $bp-sm) {
   html {
-    font-size: 7px;
+    font-size: 8px !important;
   }
 }

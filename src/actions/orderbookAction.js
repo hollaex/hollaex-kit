@@ -1,5 +1,12 @@
 import axios from 'axios'
 
+const QUICK_TRADE = 'QUICK_TRADE';
+
+export const ORDERBOOK_CONSTANTS = {
+	QUICK_TRADE_PENDING: `${QUICK_TRADE}_PENDING`,
+	QUICK_TRADE_FULFILLED: `${QUICK_TRADE}_FULFILLED`,
+	QUICK_TRADE_REJECTED: `${QUICK_TRADE}_REJECTED`,
+}
 export function getOrderbook() {
 	return {
 		type: 'GET_ORDERBOOK',
@@ -34,3 +41,24 @@ export const changeSymbol = (symbol) => ({
 		symbol,
 	},
 });
+
+export const requestQuickTrade = (data = {}) => {
+	return ((dispatch) => {
+		dispatch({
+		    type: ORDERBOOK_CONSTANTS.QUICK_TRADE_PENDING
+		});
+		axios.post('/quick-trade', data)
+			.then((body) => {
+				dispatch({
+				    type: ORDERBOOK_CONSTANTS.QUICK_TRADE_FULFILLED,
+				    payload: body.data
+				});
+			})
+			.catch((err) => {
+				dispatch({
+				    type: ORDERBOOK_CONSTANTS.QUICK_TRADE_REJECTED,
+				    payload: err.response ? err.response.data : err.message
+				});
+			})
+	});
+}

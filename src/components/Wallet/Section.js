@@ -3,8 +3,15 @@ import math from 'mathjs';
 
 import { CURRENCIES } from '../../config/constants';
 
+const TEXT_AVAILABLE_TRADING = 'Available for trading';
+const TEXT_AVAILABLE_WITHDRAWAL = 'Available for withdrawal';
+const TEXT_HOLD_ORDERS = (ordersOfSymbol, currencySymbol, hold) =>
+  `You have ${ordersOfSymbol} open order${ordersOfSymbol > 1 ? 's' : ''},
+  resulting in a hold of ${currencySymbol}${hold} placed on your `;
+const TEXT_BALANCE = ' balance.';
+
 const Section = ({ symbol = 'fiat', balance, orders, price }) => {
-  const { name, currencySymbol, formatToCurrency } = CURRENCIES[symbol];
+  const { currencySymbol, formatToCurrency } = CURRENCIES[symbol];
   const ordersOfSymbol = orders.filter((order) => {
     if (symbol === 'fiat') {
       return order.side === 'buy';
@@ -21,14 +28,17 @@ const Section = ({ symbol = 'fiat', balance, orders, price }) => {
     <div className="wallet_section-content-wrapper">
       <div className="wallet_section-content d-flex flex-column">
         <div className="d-flex flex-column">
-          <div>Available for trading:</div>
-          <div>{`${currencySymbol}${formatToCurrency(total)}`}</div>
+          <div>{TEXT_AVAILABLE_TRADING}:</div>
+          <div>{`${currencySymbol}${formatToCurrency(available)}`}</div>
         </div>
         {ordersOfSymbol > 0 &&
-          <div>You have {ordersOfSymbol} open order{ordersOfSymbol > 1 ? 's' : ''}, resulting in a hold of {currencySymbol}{formatToCurrency(hold)} placed on your <span className="text-uppercase">{symbol}</span> balance.</div>
+          <div>
+            {TEXT_HOLD_ORDERS(ordersOfSymbol, currencySymbol, formatToCurrency(hold))}
+            <span className="text-uppercase">{symbol}</span>{TEXT_BALANCE}
+          </div>
         }
         <div className="d-flex flex-column">
-          <div>Available for withdrawal:</div>
+          <div>{TEXT_AVAILABLE_WITHDRAWAL}:</div>
           <div>{`${currencySymbol}${formatToCurrency(available)}`}</div>
         </div>
       </div>

@@ -2,8 +2,7 @@ import React from 'react';
 import { reduxForm } from 'redux-form';
 import { required } from '../../components/Form/validations';
 import renderFields from '../../components/Form/factoryFields';
-import { Button, IconTitle } from '../../components';
-import { ICONS } from '../../config/constants';
+import { Button } from '../../components';
 
 const FormValues = {
   code: {
@@ -15,7 +14,7 @@ const FormValues = {
 };
 
 const Form = (props) => {
-  const { handleSubmit, submitting, pristine, error, valid, children } = props;
+  const { handleSubmit, submitting, pristine, error, valid } = props;
   return (
     <form onSubmit={handleSubmit}>
       <div className="otp_form-fields-wrapper">

@@ -92,3 +92,10 @@ $placeholder--font-weight: bold;
     top: 0 !important;
   }
 }
+
+.checkfield-wrapper {
+  margin: 1rem 0;
+  .checkfield-label {
+    padding: 0 0.25rem;
+  }
+}

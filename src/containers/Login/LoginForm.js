@@ -1,42 +1,33 @@
 import React from 'react';
 import { reduxForm } from 'redux-form';
 import { required, password, email } from '../../components/Form/validations';
-import renderFields from '../../components/Form/factoryFields';
-import { Button, IconTitle } from '../../components';
-import { ICONS } from '../../config/constants';
+import { TEXTS } from './constants';
+import { AuthForm } from '../../components';
 
-const FormValues = {
+const { FIELDS, BUTTON } = TEXTS.FORM;
+
+const FormFields = {
   email: {
     type: 'email',
-    label: 'Email',
-    placeholder: 'Type your email',
     validate: [required, email],
     fullWidth: true,
+    ...FIELDS.email,
   },
   password: {
     type: 'password',
-    label: 'Password',
-    placeholder: 'Type your password',
     validate: [required, password],
     fullWidth: true,
+    ...FIELDS.password,
   }
 };
 
-const Form = (props) => {
-  const { handleSubmit, submitting, pristine, error, valid, children } = props;
-  return (
-    <form onSubmit={handleSubmit} className="w-100">
-      <div className="w-100">
-        {renderFields(FormValues)}
-        {error && <div className="warning_text">{error}</div>}
-      </div>
-      <Button
-        label="Login"
-        disabled={pristine || submitting || !valid}
-      />
-    </form>
-  );
-}
+const Form = (props) => (
+  <AuthForm
+    {...props}
+    formFields={FormFields}
+    buttonLabel={BUTTON}
+  />
+);
 
 export default reduxForm({
   form: 'LoginForm',

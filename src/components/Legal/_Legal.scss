@@ -1,0 +1,43 @@
+$legal-wrapper--max-width: $max-width-content;
+$legal-sections--margin: 1.5rem;
+
+.legal-wrapper {
+  width: 100%;
+  margin: $legal-sections--margin;
+}
+
+.legal-content-wrapper {
+  max-width: $legal-wrapper--max-width;
+
+  .legal-logo-wrapper {
+    margin: $legal-sections--margin;
+    .legal-logo {
+      height: 3rem;
+    }
+  }
+
+  .legal-title {
+    font-size: $font-size-headline;
+    line-height: $font-size-headline;
+    text-align: center;
+  }
+
+  .legal-logo-wrapper, .legal-title, .legal-subtitle, .legal-content {
+    margin: $legal-sections--margin auto;
+    flex: 1;
+  }
+
+  .legal-subtitle {
+    border-top: 2px solid $colors-main-black;
+    font-weight: bold;
+    width: 100%;
+  }
+
+  .legal-content {
+
+  }
+
+  .legal-subtitle, .legal-content {
+    font-size: $font-size-subtext;
+  }
+}

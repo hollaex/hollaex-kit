@@ -40,9 +40,8 @@ class Orderbook extends Component {
 
       if (needScroll && askDif > 0) {
         this.wrapper.scrollTop = askDif;
-      } else {
-        this.setState({ dataBlockHeight });
       }
+      this.setState({ dataBlockHeight });
     }
   }
 

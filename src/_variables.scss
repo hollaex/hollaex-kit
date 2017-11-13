@@ -1,9 +1,7 @@
-
-$sidebar-width: 20rem;
-$dialog-min-width: 25rem;
-$dialog-min-height: 30rem;
-$navigation_bar-height: 32px;
-$footer-height: 64px;
+$bp-xs: 575px;
+$bp-sm: 767px;
+$bp-md: 991px;
+$bp-lg: 1199px;
 
 $colors-main-black: #212121;
 $colors-deactivate-color1: #f2f2f3;
@@ -40,8 +38,20 @@ $form-color-placeholder: $colors-deactivate-color2;
 $form-width-max: $content-display-width / 2;
 
 
-// SIDEBAR
+// DIALOG
+$dialog-min-width: 25rem;
+$dialog-min-height: 30rem;
 
+// APP BAR
+$navigation_bar-height: 32px;
+$navigation_bar-action_button: 7.5rem;
+$navigation_bar-font_size: $font-size-subtext;
+
+// FOOTER
+$footer-height: 64px;
+
+// SIDEBAR
+$sidebar-width: 20rem;
 $sidebar-sections-padding: 1rem;
 
 $sidebar-borderbottom-color: $colors-deactivate-color2;
@@ -57,3 +67,7 @@ $currency-color: inherit;
 $tab-border-color: $colors-main-black;
 $tab-text-padding: 0 8px 8px;
 $tab-selected-line-height: 2px;
+
+// CONTAINERS
+$max-content-height: calc(100vh - #{$navigation_bar-height});
+$max-width-content: 50rem;

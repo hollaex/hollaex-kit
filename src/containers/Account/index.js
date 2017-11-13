@@ -28,8 +28,6 @@ class Account extends Component {
   }
 
   hasUserVerificationNotifications = (verification_level, bank_account = {}, id_data = {}) => {
-    console.log('bank acc', bank_account)
-    console.log('id date', id_data)
     if (verification_level >= 2) {
       return false;
     } else if (bank_account.bank_name && id_data.type) {

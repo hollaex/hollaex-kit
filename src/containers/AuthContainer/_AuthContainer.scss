@@ -1,0 +1,32 @@
+$content-wrapper--max-width: $bp-xs;
+
+.auth-wrapper {
+  .auth-container {
+    max-width: $content-wrapper--max-width;
+
+    .auth_wrapper {
+      background-color: white;
+      padding: 4rem;
+    }
+
+    .auth_form-wrapper {
+      margin-top: 2rem;
+      position: relative;
+    }
+  }
+
+
+  .link_wrapper {
+    margin: 1rem;
+  }
+  .blue-link {
+    color: blue;
+    padding-left: 0.25rem;
+  }
+  .error_text {
+    padding-bottom: 0.5rem;
+  }
+  .button-margin {
+    margin-top: 2rem;
+  }
+}

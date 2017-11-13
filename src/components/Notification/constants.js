@@ -30,7 +30,6 @@ export const getDepositTexts = (currency, status = false) => {
   if (currency === fiatSymbol) {
     texts = DEPOSITS[fiatSymbol];
   } else {
-    const { name } = CURRENCIES[currency];
     texts = DEPOSITS[currency](status);
   }
   return {

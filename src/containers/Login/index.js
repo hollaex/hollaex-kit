@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
+import classnames from 'classnames';
 import { SubmissionError } from 'redux-form';
 import { Link } from 'react-router';
 import { performLogin } from '../../actions/authAction';
 import LoginForm from './LoginForm';
-import { Dialog, OtpForm } from '../../components';
+import { Dialog, OtpForm, IconTitle } from '../../components';
 import { errorHandler } from '../../components/OtpForm/utils';
+import { EXIR_LOGO, FLEX_CENTER_CLASSES, APP_TITLE, ICONS } from '../../config/constants';
+import { TEXTS } from './constants';
 
 class Login extends Component {
   state = {
@@ -13,7 +16,11 @@ class Login extends Component {
   }
 
   redirectToHome = () => {
-    this.props.router.replace('/');
+    this.props.router.replace('/account');
+  }
+
+  redirectToResetPassword = () => {
+    this.props.router.replace('/reset-password');
   }
 
   onSubmitLogin = (values) => {
@@ -28,7 +35,7 @@ class Login extends Component {
 
         if (_error.toLowerCase().indexOf('otp') > -1) {
           this.setState({ values, otpDialogIsOpen: true });
-          error._error = 'Provide OTP code to login';
+          error._error = TEXTS.FORM.VALIDATIONS.OTP_LOGIN;
         } else {
           error.password = _error;
           throw new SubmissionError(error);
@@ -51,17 +58,30 @@ class Login extends Component {
 
   render() {
     const { otpDialogIsOpen } = this.state;
-    
+
     return (
-      <div className="d-flex justify-content-center align-items-center flex-column col-lg-4 offset-lg-4 col-md-6 offset-md-3 col-sm-8 offset-sm-2 login_wrapper">
-        <div className="d-flex justify-content-center align-items-center">
-          <div><h1>Login/</h1></div>
-          <div><Link to='/signup' style={{textDecoration:'none'}}><h5>SignUp</h5></Link></div>
+      <div className={classnames(...FLEX_CENTER_CLASSES, 'flex-column', 'f-1')}>
+        <div className={classnames(...FLEX_CENTER_CLASSES, 'flex-column', 'auth_wrapper', 'w-100')}>
+          <IconTitle
+            iconPath={EXIR_LOGO}
+            text={TEXTS.TITLE}
+            textType="title"
+            underline={true}
+            className="w-100"
+            subtitle={TEXTS.LOGIN_TO}
+            actionProps={{
+              text: TEXTS.CANT_LOGIN,
+              iconPath: ICONS.RED_ARROW,
+              onClick: this.redirectToResetPassword,
+            }}
+          />
+          <div className={classnames(...FLEX_CENTER_CLASSES, 'flex-column', 'auth_form-wrapper', 'w-100')}>
+            <LoginForm onSubmit={this.onSubmitLogin} />
+          </div>
         </div>
-        <div className="d-flex justify-content-center align-items-center w-100">
-          <LoginForm onSubmit={this.onSubmitLogin} />
+        <div className={classnames('f-1', 'link_wrapper')}>
+          {TEXTS.NO_ACCOUNT}<Link to='/signup' className={classnames('blue-link')}>{TEXTS.CREATE_ACCOUNT}</Link>
         </div>
-        <Link to='/reset-password'>Reset password</Link>
         <Dialog
           isOpen={otpDialogIsOpen}
           label="otp-modal"

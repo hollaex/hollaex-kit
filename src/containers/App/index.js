@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import io from 'socket.io-client';
-import { WS_URL, ICONS, SESSION_TIME } from '../../config/constants';
+import EventListener from 'react-event-listener';
+import { debounce } from 'lodash';
+import { WS_URL, ICONS, SESSION_TIME, APP_TITLE } from '../../config/constants';
 
 import { logout } from '../../actions/authAction';
 import { setMe, setBalance, updateUser } from '../../actions/userAction';
@@ -32,8 +34,6 @@ class Container extends Component {
 		if (checkUserSessionExpired(localStorage.getItem('time'))) {
 			this.setState({ appLoaded: false });
 			this.props.logout();
-		} else {
-			this.addListeners();
 		}
 	}
 
@@ -41,6 +41,7 @@ class Container extends Component {
 		if (!this.props.fetchingAuth) {
 			this.initSocketConnections();
 		}
+		this._resetTimer();
 	}
 
 	componentWillReceiveProps(nextProps) {
@@ -58,11 +59,16 @@ class Container extends Component {
 		} else if (!nextProps.activeNotification.timestamp && this.state.dialogIsOpen) {
 			this.onCloseDialog();
 		}
+		if (
+			!this.props.verification_level &&
+			nextProps.verification_level !== this.props.verification_level &&
+			nextProps.verification_level === 1
+		) {
+			this.goToAccountPage();
+		}
 	}
 
 	componentWillUnmount() {
-		this.removeListeners();
-
 		if (this.state.publicSocket) {
 			this.state.publicSocket.close();
 		}
@@ -76,31 +82,15 @@ class Container extends Component {
 		}
 	}
 
-	addListeners = () => {
-		window.addEventListener("keydown", this._handleKeyboard, false); // Trade Executions
-		window.addEventListener("scroll", this._resetTimer, false);
-		window.addEventListener("mousemove", this._resetTimer, false);
-		window.addEventListener("click", this._resetTimer, false);
-		window.addEventListener("keypress", this._resetTimer, false);
-		window.addEventListener("beforeunload", this._handleWindowClose, false); // before closing the window
-	}
-
-	removeListeners = () => {
-		window.removeEventListener('keydown', this._handleKeyboard);
-		window.removeEventListener("scroll", this._resetTimer);
-		window.removeEventListener("mousemove", this._resetTimer);
-		window.removeEventListener("click", this._resetTimer);
-		window.removeEventListener("keypress", this._resetTimer);
-		window.removeEventListener("beforeunload", this._handleWindowClose);
-	}
-
-	resetTimer = () => {
+	_resetTimer = () => {
 		if (this.state.idleTimer) {
 			clearTimeout(this.idleTimer);
 		}
 		const idleTimer = setTimeout(this._logout, SESSION_TIME); // no activity will log the user out automatically
 		this.setState({ idleTimer });
 	}
+
+	resetTimer = debounce(this._resetTimer, 250);
 
 	initSocketConnections = () => {
 		this.setPublicWS();
@@ -247,7 +237,9 @@ class Container extends Component {
   }
 
 	goToPage = (path) => {
-    this.props.router.push(path)
+		if (this.props.location.pathname !== path) {
+			this.props.router.push(path);
+		}
   }
 
   goToAccountPage = () => this.goToPage('/account');
@@ -309,25 +301,35 @@ class Container extends Component {
 	}
 
 	render() {
-		const { symbol, children, activeNotification, changeSymbol, notifications, prices } = this.props;
+		const {
+			symbol, children, activeNotification, changeSymbol, notifications, prices, verification_level
+		} = this.props;
 		const { dialogIsOpen, appLoaded } = this.state;
 
 		const shouldCloseOnOverlayClick = activeNotification.type !== CONTACT_FORM;
 		const activePath = !appLoaded ? '' : this.getClassForActivePath(this.props.location.pathname);
 		return (
 			<div className={`app_container ${activePath} ${symbol}`}>
+				<EventListener
+					target="window"
+					onResize={this.resetTimer}
+					onScroll={this.resetTimer}
+					onMouseMove={this.resetTimer}
+					onClick={this.resetTimer}
+					onKeyPress={this.resetTimer}
+				/>
 				{!appLoaded && <Loader />}
 				<AppBar
-					title="exir-exchange"
+					title={APP_TITLE}
 					goToAccountPage={this.goToAccountPage}
 					goToDashboard={this.goToDashboard}
 					acccountIsActive={activePath === 'account'}
 					changeSymbol={changeSymbol}
 					activeSymbol={symbol}
 				/>
-        <div className="app_container-content">
-          <div className="app_container-main">
-            {appLoaded && children}
+        <div className="app_container-content d-flex justify-content-between">
+          <div className="app_container-main d-flex flex-column justify-content-between overflow-y">
+            {appLoaded && verification_level > 0 ? children : <Loader />}
           </div>
           <div className="app_container-sidebar">
             <Sidebar
@@ -363,6 +365,7 @@ const mapStateToProps = (store) => ({
 	fetchingAuth: store.auth.fetching,
 	activeNotification: store.app.activeNotification,
 	notifications: store.app.notifications,
+	verification_level: store.user.verification_level,
 });
 
 const mapDispatchToProps = (dispatch) => ({

@@ -27,18 +27,12 @@ $inner_container-border: 1px solid $colors-main-black;
   }
 
   .app_container-content {
-    display: flex;
-    justify-content: space-between;
-    min-height: calc(100vh - #{$navigation_bar-height});
-    max-height: calc(100vh - #{$navigation_bar-height});
+    min-height: $max-content-height;
+    max-height: $max-content-height;
 
     .app_container-main {
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
       width: 100%;
       height: auto;
-      overflow-y: auto;
     }
 
     .app_container-sidebar {
