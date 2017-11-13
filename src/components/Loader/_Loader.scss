@@ -4,10 +4,10 @@ $loader-relative--height: 10rem;
 .loader_wrapper {
   position: absolute;
   width: 100%;
-  height: loader-absolute--height;
+  height: $loader-absolute--height;
   z-index: 99999;
   .loader_background {
-    height: loader-absolute--height;
+    height: $loader-absolute--height;
   }
 }
 
