@@ -22,9 +22,18 @@ import {
 } from './containers';
 
 import store from './store'
-import { verifyToken } from './actions/authAction'
+import { verifyToken } from './actions/authAction';
+import { setLanguage } from './actions/appActions';
 
 import { getToken, removeToken } from './utils/token';
+import { getLanguage, getInterfaceLanguage } from './utils/string';
+
+let lang = getLanguage();
+if (!lang) {
+  lang = getInterfaceLanguage();
+}
+store.dispatch(setLanguage(lang));
+
 
 let token = getToken();
 if (token) {

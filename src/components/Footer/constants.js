@@ -1,58 +1,62 @@
 import { SOCIAL_ICONS } from '../../config/constants';
+import STRINGS from '../../config/localizedStrings';
+
+const {
+  FOOTER_LEGAL,
+  FOOTER_COPYRIGHT,
+  FOOTER_LANGUAGE_TEXT,
+  FOOTER_LANGUAGE_LANGUAGES,
+  SECTIONS,
+} = STRINGS.FOOTER;
 
 export const TEXTS = {
   SECTIONS: [
     {
-      TITLE: 'SERVICES',
+      TITLE: SECTIONS.SECTION_1_TITLE,
       LINKS: [
-        { text: 'Buy Bitcoins', link: '' },
-        { text: 'Buy Ethereum', link: '' },
-        { text: 'Sell Bitcoins', link: '' },
-        { text: 'Bitcoin Trading', link: '' },
-        { text: 'Margin Trading', link: '' },
+        { text: SECTIONS.SECTION_1_LINK_1, link: '' },
+        { text: SECTIONS.SECTION_1_LINK_2, link: '' },
+        { text: SECTIONS.SECTION_1_LINK_3, link: '' },
+        { text: SECTIONS.SECTION_1_LINK_4, link: '' },
+        { text: SECTIONS.SECTION_1_LINK_5, link: '' },
       ]
     },
     {
-      TITLE: 'INFORMATION',
+      TITLE: SECTIONS.SECTION_2_TITLE,
       LINKS: [
-        { text: 'Payment Options', link: '' },
-        { text: 'Fee Schedule', link: '' },
-        { text: 'Getting Started', link: '' },
-        { text: 'Identity Verification Guide', link: '' },
-        { text: 'Card Verification Guide', link: '' },
+        { text: SECTIONS.SECTION_2_LINK_1, link: '' },
+        { text: SECTIONS.SECTION_2_LINK_2, link: '' },
+        { text: SECTIONS.SECTION_2_LINK_3, link: '' },
+        { text: SECTIONS.SECTION_2_LINK_4, link: '' },
+        { text: SECTIONS.SECTION_2_LINK_5, link: '' },
       ]
     },
     {
-      TITLE: 'TOOLS',
+      TITLE: SECTIONS.SECTION_3_TITLE,
       LINKS: [
-        { text: 'API', link: '' },
-        { text: 'Bitcoin Calculator', link: '' },
-        { text: 'Bitcoin Price Widget', link: '' },
-        { text: 'Mobile App', link: '' },
-        { text: 'Affiliate Program', link: '' },
-        { text: 'Donations', link: '' },
+        { text: SECTIONS.SECTION_3_LINK_1, link: '' },
+        { text: SECTIONS.SECTION_3_LINK_2, link: '' },
+        { text: SECTIONS.SECTION_3_LINK_3, link: '' },
+        { text: SECTIONS.SECTION_3_LINK_4, link: '' },
+        { text: SECTIONS.SECTION_3_LINK_5, link: '' },
+        { text: SECTIONS.SECTION_3_LINK_6, link: '' },
       ]
     },
     {
-      TITLE: 'ABOUT',
+      TITLE: SECTIONS.SECTION_4_TITLE,
       LINKS: [
-        { text: 'About Us', link: '' },
-        { text: 'Legal & Security', link: '' },
-        { text: 'Terms of Use', link: '' },
-        { text: 'Refund Policy', link: '' },
-        { text: 'Press', link: '' },
-        { text: 'Blog', link: '' },
-        { text: 'Help Centre', link: '' },
+        { text: SECTIONS.SECTION_4_LINK_1, link: '' },
+        { text: SECTIONS.SECTION_4_LINK_2, link: '' },
+        { text: SECTIONS.SECTION_4_LINK_3, link: '' },
+        { text: SECTIONS.SECTION_4_LINK_4, link: '' },
+        { text: SECTIONS.SECTION_4_LINK_5, link: '' },
+        { text: SECTIONS.SECTION_4_LINK_6, link: '' },
+        { text: SECTIONS.SECTION_4_LINK_7, link: '' },
       ]
     },
   ],
   PUBLIC: {
-    TEXTS: [
-      'Registration on or use of this site constitutes acceptance of our',
-      'Terms of Service and Privacy Policy.',
-      'Disclaimer Commerce Policy Made in NYC',
-      'Stock quotes by finanzen.net',
-    ],
+    TEXTS: FOOTER_LEGAL,
     LINKS: [
       { icon: SOCIAL_ICONS.FACEBOOK, link: '', type: 'facebook' },
       { icon: SOCIAL_ICONS.TWIITER, link: '', type: 'twitter' },
@@ -60,10 +64,8 @@ export const TEXTS = {
     ]
   },
   LANGUAGE: {
-    TEXT: 'LANGUAGE',
-    LANGUAGES: [
-      'ENGLISH',
-    ]
+    TEXT: FOOTER_LANGUAGE_TEXT,
+    LANGUAGES: FOOTER_LANGUAGE_LANGUAGES,
   },
-  COPYRIGHT: 'COPYRIGHT 2017'
+  COPYRIGHT: FOOTER_COPYRIGHT,
 }

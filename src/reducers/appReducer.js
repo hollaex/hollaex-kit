@@ -1,17 +1,22 @@
 import {
   SET_NOTIFICATION,
   CLOSE_NOTIFICATION,
+  CHANGE_LANGUAGE,
 } from '../actions/appActions';
+
+import { getLanguage } from '../utils/string';
 
 const EMPTY_NOTIFICATION = {
   type: '',
   message: '',
   timestamp: undefined,
 }
+
 const INITIAL_STATE = {
   notifications: [],
   notificationsQueue: [],
   activeNotification: EMPTY_NOTIFICATION,
+  language: getLanguage() || 'en',
 }
 
 const reducer = (state = INITIAL_STATE, { type, payload = {}}) => {
@@ -47,6 +52,11 @@ const reducer = (state = INITIAL_STATE, { type, payload = {}}) => {
         activeNotification,
       };
     }
+    case CHANGE_LANGUAGE:
+      return {
+        ...state,
+        language: payload.language,
+      }
     default:
       return state;
   }

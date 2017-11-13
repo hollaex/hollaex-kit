@@ -56,6 +56,12 @@ $footer-social-icon--dimension: 2rem;
   }
 
   .footer-row-bottom {
+    .footer-row-language {
+      padding-left: 0.25rem;
+      &.active {
+        font-weight: bold;
+      }
+    }
   }
 }
 

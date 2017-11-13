@@ -7,11 +7,8 @@ import { bindActionCreators } from 'redux';
 
 import { AppBar, Footer } from '../../components';
 
-import {
-  APP_TITLE,
-} from '../../config/constants';
-
 import { requestQuickTrade } from '../../actions/orderbookAction';
+import { setLanguage } from '../../actions/appActions';
 
 import { TEXTS } from './constants';
 
@@ -79,9 +76,13 @@ class Home extends Component {
     }
   }
 
+  onChangeLanguage = (language) => () => {
+    return this.props.changeLanguage(language);
+  }
+
   render() {
     const {
-      token, verifyToken, estimatedValue, symbol, quickTradeData, requestQuickTrade, ...otherProps
+      token, verifyToken, estimatedValue, symbol, quickTradeData, requestQuickTrade, activeLanguage, ...otherProps
     } = this.props;
     const { style } = this.state;
 
@@ -92,7 +93,6 @@ class Home extends Component {
           onResize={this.onResize}
         />
         <AppBar
-          title={APP_TITLE}
           noBorders={true}
           token={token}
           verifyToken={verifyToken}
@@ -124,7 +124,10 @@ class Home extends Component {
             onClickRegister={this.goTo('signup')}
             token={token}
           />
-          <Footer />
+          <Footer
+            onChangeLanguage={this.onChangeLanguage}
+            activeLanguage={activeLanguage}
+          />
         </div>
       </div>
     );
@@ -137,10 +140,12 @@ const mapStateToProps = (store) => ({
   estimatedValue: 100,
   symbol: store.orderbook.symbol,
   quickTradeData: store.orderbook.quickTrade,
+  activeLanguage: store.app.language,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  requestQuickTrade: bindActionCreators(requestQuickTrade, dispatch)
+  requestQuickTrade: bindActionCreators(requestQuickTrade, dispatch),
+  changeLanguage: bindActionCreators(setLanguage, dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);

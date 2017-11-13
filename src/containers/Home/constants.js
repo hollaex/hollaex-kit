@@ -1,49 +1,72 @@
 import { ICONS, FLEX_CENTER_CLASSES } from '../../config/constants';
+import STRINGS from '../../config/localizedStrings';
+
+const {
+  SECTION_1_TITLE,
+  SECTION_1_TEXT_1,
+  SECTION_1_TEXT_2,
+  SECTION_1_BUTTON_1,
+  SECTION_3_TITLE,
+  SECTION_3_CARD_1_TITLE,
+  SECTION_3_CARD_1_TEXT,
+  SECTION_3_CARD_2_TITLE,
+  SECTION_3_CARD_2_TEXT,
+  SECTION_3_CARD_3_TITLE,
+  SECTION_3_CARD_3_TEXT,
+  SECTION_3_CARD_4_TITLE,
+  SECTION_3_CARD_4_TEXT,
+  SECTION_3_CARD_5_TITLE,
+  SECTION_3_CARD_5_TEXT,
+  SECTION_3_CARD_6_TITLE,
+  SECTION_3_CARD_6_TEXT,
+  SECTION_3_BUTTON_1,
+} = STRINGS.HOME;
+const { REGISTER } = STRINGS;
 
 export const TEXTS = {
   SECTION_1: {
-    TITLE: 'Buy & sell cryptocurrencies',
-    TEXT_1: 'EXIR is a cryptocurrency exchange where you can buy and sell bitcoins and other digital currencies.',
-    TEXT_2: 'We strive to bring the digital enconomy forward through afforable and simple access to future currencies.',
-    BUTTON_1: 'learn more',
-    BUTTON_2: 'register',
+    TITLE: SECTION_1_TITLE,
+    TEXT_1: SECTION_1_TEXT_1,
+    TEXT_2: SECTION_1_TEXT_2,
+    BUTTON_1: SECTION_1_BUTTON_1,
+    BUTTON_2: REGISTER,
   },
   SECTION_3 : {
-    TITLE: 'Features',
+    TITLE: SECTION_3_TITLE,
     CARDS: [
       {
         icon: ICONS.CHECK,
-        title: 'PAYMENT OPTIONS',
-        text: 'Most popular methods: Visa, MasterCard, bank transfer (SWIFT, SEPA), cryptocurrency',
+        title: SECTION_3_CARD_1_TITLE,
+        text: SECTION_3_CARD_1_TEXT,
       },
       {
         icon: ICONS.CHECK,
-        title: 'ADVANCED REPORTING',
-        text: 'Downloadable reports, real-time balance, transaction history with transparent fees',
+        title: SECTION_3_CARD_2_TITLE,
+        text: SECTION_3_CARD_2_TEXT,
       },
       {
         icon: ICONS.CHECK,
-        title: 'STRONG SECURITY',
-        text: 'Protection against DDoS attacks, full data encryption, compliant with PCI DSS standar',
+        title: SECTION_3_CARD_3_TITLE,
+        text: SECTION_3_CARD_3_TEXT,
       },
       {
         icon: ICONS.CHECK,
-        title: 'MARGIN TRADING',
-        text: '1:2 and 1:3 leverages, automatic funds borrowing, no extra accounts needed, negative balance protection.',
+        title: SECTION_3_CARD_4_TITLE,
+        text: SECTION_3_CARD_4_TEXT,
       },
       {
         icon: ICONS.CHECK,
-        title: 'HIGH LIQUIDITY',
-        text: 'Fast order execution, low spread, access to high liquidity orderbook for top currency pairs',
+        title: SECTION_3_CARD_5_TITLE,
+        text: SECTION_3_CARD_5_TEXT,
       },
       {
         icon: ICONS.CHECK,
-        title: 'LEGAL COMPLIANCE',
-        text: 'Registration in UK, MSB status in FinCEN, essential licenses and strong relations with banks',
+        title: SECTION_3_CARD_6_TITLE,
+        text: SECTION_3_CARD_6_TEXT,
       },
     ],
-    BUTTON_1: 'view demo',
-    BUTTON_2: 'register',
+    BUTTON_1: SECTION_3_BUTTON_1,
+    BUTTON_2: REGISTER,
   }
 }
 

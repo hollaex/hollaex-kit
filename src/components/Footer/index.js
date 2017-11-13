@@ -1,10 +1,10 @@
 import React from 'react';
 import classnames from 'classnames';
 import { Link } from 'react-router';
-
 import { TEXTS } from './constants';
 
-const Footer = ({ title, status, className }) => {
+const Footer = ({ title, status, className, onChangeLanguage, activeLanguage }) => {
+  console.log(activeLanguage);
   return (
     <div className={classnames('footer-container', 'd-flex', 'flex-column', className)}>
       <div className={classnames('d-flex', 'justify-content-around', 'footer-row-content')}>
@@ -35,9 +35,17 @@ const Footer = ({ title, status, className }) => {
         </div>
       </div>
       <div className={classnames('d-flex', 'justify-content-between', 'footer-row-bottom', 'f-1')}>
-        <div>
+        <div className="d-flex">
           <span className="text-weight-bold">{TEXTS.LANGUAGE.TEXT}:</span>
-          {TEXTS.LANGUAGE.LANGUAGES.join(' ')}
+          {TEXTS.LANGUAGE.LANGUAGES.map(({key, label}, index) => (
+            <div
+              key={key}
+              onClick={onChangeLanguage(key)}
+              className={classnames('footer-row-language', 'pointer', { active: key === activeLanguage})}
+            >
+              {label}
+            </div>
+          ))}
         </div>
         <div>{TEXTS.COPYRIGHT}</div>
       </div>
@@ -47,6 +55,8 @@ const Footer = ({ title, status, className }) => {
 
 Footer.defaultProps = {
   className: '',
+  onChangeLanguage: () => () => {},
+  activeLanguage: '',
 };
 
 export default Footer;

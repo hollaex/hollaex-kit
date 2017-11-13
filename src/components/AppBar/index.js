@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import classnames from 'classnames';
 import { Link } from 'react-router';
 import { CURRENCIES, FLEX_CENTER_CLASSES } from '../../config/constants';
+import STRINGS from '../../config/localizedStrings';
 
 class AppBar extends Component {
   state = {
@@ -101,9 +102,9 @@ class AppBar extends Component {
     return (
       <div className={classnames('app_bar', { 'no-borders': noBorders })}>
         <div className={classnames('app_bar-icon', 'text-uppercase', 'contrast', { pointer: !!goToDashboard })} onClick={goToDashboard}>
-          exir
+          {STRINGS.APP_NAME}
         </div>
-        <div className="app_bar-main">{title}</div>
+        <div className="app_bar-main">{STRINGS.APP_TITLE}</div>
         {activeSymbol ?
           this.renderAppActions(activeSymbol, acccountIsActive, goToAccountPage) :
           this.renderSplashActions(token, verifyingToken, goToQuickTrade)

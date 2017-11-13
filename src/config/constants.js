@@ -1,10 +1,12 @@
 import config from './index'
 import { formatBtcAmount, formatFiatAmount } from '../utils/string';
 
+import STRINGS from './localizedStrings';
+
 export const ENV = process.env.NODE_ENV || 'development'
 export const NETWORK = process.env.REACT_APP_NETWORK || 'testnet'
 
-export const APP_TITLE = process.env.APP_TITLE || 'exir-exchange';
+export const APP_TITLE = STRINGS.APP_TITLE;
 
 export const TOKEN_TIME = 24 * 60 * 60 * 1000; // 1 hour
 export const SESSION_TIME = 60 * 60 * 1000; // 1 hour
@@ -53,18 +55,18 @@ export const EXIR_LOGO = `${process.env.PUBLIC_URL}/assets/logo/logo-default.png
 export const CURRENCIES = {
   fiat: {
     symbol: 'fiat',
-    name: 'Dollar',
-    fullName: 'United States Dollar',
-    shortName: 'USD',
-    currencySymbol: '$',
+    name: STRINGS.FIAT_NAME,
+    fullName: STRINGS.FIAT_FULLNAME,
+    shortName: STRINGS.FIAT_SHORTNAME,
+    currencySymbol: STRINGS.FIAT_CURRENCY_SYMBOL,
     formatToCurrency: formatFiatAmount,
     iconPath: '/assets/acounts/account-icons-14.png',
   },
   btc: {
     symbol: 'btc',
-    name: 'Bitcoin',
-    fullName: 'Bitcoin',
-    shortName: 'BTC',
+    name: STRINGS.BTC_NAME,
+    fullName: STRINGS.BTC_FULLNAME,
+    shortName: STRINGS.BTC_SHORTNAME,
     currencySymbol: 'B',
     formatToCurrency: formatBtcAmount,
     iconPath: '/assets/acounts/account-icons-14.png',
@@ -73,8 +75,8 @@ export const CURRENCIES = {
 
 export const FLEX_CENTER_CLASSES = ['d-flex', 'justify-content-center', 'align-items-center'];
 
-export const TIMESTAMP_FORMAT = 'YYYY/MM/DD HH:mm:ss A';
-export const HOUR_FORMAT = 'HH:mm:ss A';
+export const TIMESTAMP_FORMAT = STRINGS.TIMESTAMP_FORMAT;
+export const HOUR_FORMAT = STRINGS.HOUR_FORMAT;
 
 export const LIMIT_VALUES = {
   PRICE: {
@@ -88,3 +90,4 @@ export const LIMIT_VALUES = {
 };
 
 export const TOKEN_KEY = `${ENV}_${NETWORK}_TOKEN`;
+export const LANGUAGE_KEY = `${ENV}_${NETWORK}_LANGUAGE`;
