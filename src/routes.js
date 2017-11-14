@@ -3,7 +3,6 @@ import { Router, Route, browserHistory, IndexRoute } from 'react-router';
 
 import {
   App as Container,
-  Dashboard,
   Account,
   Wallet,
   Login,
@@ -84,7 +83,6 @@ export default (
   <Router history={browserHistory}>
     <Route path="/" name="Home" component={Home} />
     <Route component={Container} onEnter={requireAuth}>
-      <IndexRoute component={Dashboard} />
       <Route path="account" name="Account" component={Account}/>
       <Route path="wallet" name="Wallet" component={Wallet}/>
       <Route path="withdraw" name="Withdraw" component={Withdraw}/>
