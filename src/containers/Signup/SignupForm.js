@@ -6,7 +6,7 @@ import { TEXTS } from './constants';
 
 const { FIELDS, BUTTON, VALIDATIONS } = TEXTS.FORM;
 
-export const generateFormFields = (termsLabel = '') => ({
+const FormFields = {
   email: {
     type: 'email',
     validate: [requiredWithCustomMessage(VALIDATIONS.TYPE_EMAIL), email],
@@ -29,9 +29,9 @@ export const generateFormFields = (termsLabel = '') => ({
     type: 'checkbox',
     fullWidth: true,
     validate: [requiredWithCustomMessage(VALIDATIONS.ACCEPT_TERMS)],
-    label: termsLabel,
+    ...FIELDS.terms,
   }
-});
+};
 
 const validate = (values) => {
   const { password, password_repeat } = values;
@@ -47,6 +47,7 @@ const validate = (values) => {
 const Form = (props) => (
   <AuthForm
     {...props}
+    formFields={FormFields}
     buttonLabel={BUTTON}
   />
 );

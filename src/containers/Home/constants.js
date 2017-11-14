@@ -21,7 +21,7 @@ const {
   SECTION_3_CARD_6_TEXT,
   SECTION_3_BUTTON_1,
 } = STRINGS.HOME;
-const { REGISTER } = STRINGS;
+const { REGISTER_TEXT } = STRINGS;
 
 export const TEXTS = {
   SECTION_1: {
@@ -29,7 +29,7 @@ export const TEXTS = {
     TEXT_1: SECTION_1_TEXT_1,
     TEXT_2: SECTION_1_TEXT_2,
     BUTTON_1: SECTION_1_BUTTON_1,
-    BUTTON_2: REGISTER,
+    BUTTON_2: REGISTER_TEXT,
   },
   SECTION_3 : {
     TITLE: SECTION_3_TITLE,
@@ -66,7 +66,7 @@ export const TEXTS = {
       },
     ],
     BUTTON_1: SECTION_3_BUTTON_1,
-    BUTTON_2: REGISTER,
+    BUTTON_2: REGISTER_TEXT,
   }
 }
 

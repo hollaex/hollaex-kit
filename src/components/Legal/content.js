@@ -1,7 +1,7 @@
-import terms from './content_terms';
-import legal from './content_legal';
+import STRINGS from '../../config/localizedStrings';
+const { LEGAL } = STRINGS;
 
 export default {
-  terms,
-  legal,
+  terms: LEGAL.GENERAL_TERMS,
+  legal: LEGAL.PRIVACY_POLICY,
 }

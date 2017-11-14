@@ -3,11 +3,15 @@ import WAValidator from 'wallet-address-validator';
 import math from 'mathjs';
 import { NETWORK } from '../../config/constants';
 import { calculatePrice, fiatSymbol } from '../../utils/currency';
+import STRINGS from '../../config/localizedStrings';
 
-const ERROR_MESSAGE_REQUIRED = 'Required field';
-const ERROR_MESSAGE_BEFORE_DATE = 'Invalid date';
-const ERROR_INVALID_EMAIL = 'Invalid email address';
-const INVALID_PASSWORD = 'Invalid password. It has to contain at least 8 characters, a digit in the password and a special character.';
+const { VALIDATIONS } = STRINGS;
+
+const ERROR_MESSAGE_REQUIRED = VALIDATIONS.REQUIRED;
+const ERROR_MESSAGE_BEFORE_DATE = VALIDATIONS.INVALID_DATE;
+const ERROR_INVALID_EMAIL = VALIDATIONS.INVALID_EMAIL;
+const INVALID_PASSWORD = VALIDATIONS.INVALID_PASSWORD;
+
 const passwordRegEx = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#\$%\^\&*\)\(+=._-]).{8,}$/;
 
 
@@ -25,12 +29,12 @@ export const validAddress = (symbol = '', message) => {
   const currency = symbol.toUpperCase();
   return (address) => {
     const valid = WAValidator.validate(address, currency, NETWORK);
-    return !valid ? (message || `Invalid ${currency} address (${address})`) : undefined;
+    return !valid ? (message || STRINGS.formatString(VALIDATIONS.INVALID_CURRENCY, currency, address)) : undefined;
   }
 }
 
-export const minValue = (minValue, message) => (value) => value < minValue ? (message || `Value must be ${minValue} or higher.`) : undefined;
-export const maxValue = (maxValue, message) => (value) => value > maxValue ? (message || `Value must be ${minValue} or lower.`) : undefined;
+export const minValue = (minValue, message) => (value) => value < minValue ? (message || STRINGS.formatString(VALIDATIONS.MIN_VALUE, minValue)) : undefined;
+export const maxValue = (maxValue, message) => (value) => value > maxValue ? (message || STRINGS.formatString(VALIDATIONS.MAX_VALUE, maxValue)) : undefined;
 
 export const checkBalance = (available, message, fee = 0) => (value = 0) => {
   const operation = fee > 0 ?
@@ -41,7 +45,7 @@ export const checkBalance = (available, message, fee = 0) => (value = 0) => {
     value;
 
   if (operation > available) {
-    const errorMessage = (message || `Insufficient balance available (${available}) to perform the operation (${operation}).`);
+    const errorMessage = (message || STRINGS.formatString(VALIDATIONS.INVALID_BALANCE, available, operation));
     return errorMessage;
   }
   return undefined;
@@ -67,7 +71,7 @@ export const evaluateOrder = (symbol = '', balance = {}, order = {}, orderType =
   }
 
   if (available === 0 || available < orderPrice) {
-    return 'Insufficient balance';
+    return VALIDATIONS.INSUFFICIENT_BALANCE;
   }
   return '';
 }

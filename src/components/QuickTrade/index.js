@@ -116,7 +116,7 @@ class QuickTrade extends Component {
           <InputBlock
             onChange={this.onChangeValue}
             value={value}
-            text={`${name}s ${TEXTS.TO} ${side}`}
+            text={TEXTS.INPUT(name, side)}
             symbol={symbol}
             inputStyle={inputStyle}
             format={this.format}
@@ -131,7 +131,7 @@ class QuickTrade extends Component {
         </div>
         <div className={classnames('quick_trade-section_wrapper', ...GROUP_CLASSES)}>
           <Button
-            label={`${TEXTS.REVIEW} ${side} ${TEXTS.ORDER}`}
+            label={TEXTS.BUTTON(side)}
             onClick={onReviewQuickTrade}
             disabled={!onReviewQuickTrade}
           />

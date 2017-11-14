@@ -3,7 +3,7 @@ import classnames from 'classnames';
 import { Link } from 'react-router';
 import { SubmissionError } from 'redux-form';
 import { performSignup } from '../../actions/authAction';
-import SignupForm, { generateFormFields } from './SignupForm';
+import SignupForm from './SignupForm';
 import SignupSuccess from './SignupSuccess';
 import { IconTitle } from '../../components';
 import { EXIR_LOGO, FLEX_CENTER_CLASSES, ICONS } from '../../config/constants';
@@ -14,23 +14,6 @@ const TERM_LABELS_TEXT = TEXTS.FORM.FIELDS.terms;
 class Signup extends Component {
   state = {
     success: false,
-    formFields: {},
-  }
-
-  componentWillMount() {
-    this.generateFormFields();
-  }
-
-  generateFormFields = () => {
-    const termsLabel = (
-      <div className={classnames('d-flex', 'terms_label-wrapper')}>
-        {TERM_LABELS_TEXT.label}
-        <Link to='/general-terms' target="_blank" className={classnames('blue-link', 'dialog-link', 'pointer')}>{TERM_LABELS_TEXT.generalTerms}</Link>
-        {TERM_LABELS_TEXT.and}
-        <Link to='/privacy-policy' target="_blank" className={classnames('blue-link', 'dialog-link', 'pointer')}>{TERM_LABELS_TEXT.privacyPolicy}</Link>
-      </div>
-    );
-    this.setState({ formFields: generateFormFields(termsLabel) });
   }
 
   onSubmitSignup = (formValues) => {
@@ -50,7 +33,7 @@ class Signup extends Component {
           const { message = '' } = error.response.data;
           if (message.toLowerCase().indexOf('password') > -1) {
             // TODO set error in constants for language
-            errors.password = message;
+            errors.password = TEXTS.VALIDATIONS.INVALID_PASSWORD;
           } else {
             errors._error = message || error.message;
           }
@@ -62,7 +45,7 @@ class Signup extends Component {
   }
 
   render() {
-    const { success, formFields } = this.state;
+    const { success } = this.state;
 
     if (success) {
       return <SignupSuccess />
@@ -85,7 +68,7 @@ class Signup extends Component {
             }}
           />
           <div className={classnames(...FLEX_CENTER_CLASSES, 'flex-column', 'auth_form-wrapper', 'w-100')}>
-            <SignupForm onSubmit={this.onSubmitSignup} formFields={formFields} />
+            <SignupForm onSubmit={this.onSubmitSignup} />
           </div>
         </div>
         <div className={classnames('f-1', 'link_wrapper')}>

@@ -4,6 +4,7 @@ import { Accordion } from '../';
 import { CURRENCIES } from '../../config/constants';
 import { calculateBalancePrice, formatFiatAmount } from '../../utils/currency';
 import WalletSection from './Section';
+import { TEXTS } from './constants';
 
 class Wallet extends Component {
   state = {
@@ -19,7 +20,6 @@ class Wallet extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log(nextProps.balance.timestamp, this.props.balance.timestamp)
     if (
       nextProps.user_id !== this.props.user_id ||
       nextProps.price !== this.props.price ||
@@ -80,7 +80,7 @@ class Wallet extends Component {
           allowMultiOpen={true}
         />
         <div className="wallet_section-wrapper wallet_section-total_asset d-flex flex-column">
-          <div className="wallet_section-title">total assets</div>
+          <div className="wallet_section-title">{TEXTS.TOTAL_ASSETS}</div>
           <div className="wallet_section-total_asset d-flex justify-content-end">
             $<span>{totalAssets}</span>
           </div>

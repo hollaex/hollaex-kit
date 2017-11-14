@@ -1,32 +1,32 @@
+import STRINGS from '../../config/localizedStrings';
 import { ICONS } from '../../config/constants';
 
+const { FORM_FIELDS, RESET_PASSWORD, VALIDATIONS, HELP_TEXT, LOGIN_TEXT, SUCCESS_TEXT } = STRINGS;
+
 export const TEXTS = {
-  TITLE: 'Set new password',
-  SUBTITLE: `SSet new password`,
-  HELP: 'help',
+  ...RESET_PASSWORD,
+  HELP: HELP_TEXT,
   ICON: ICONS.LETTER,
   FORM: {
     FIELDS: {
       password: {
-        label: 'Password',
-        placeholder: 'Type your password',
+        label: FORM_FIELDS.PASSWORD_LABEL,
+        placeholder: FORM_FIELDS.PASSWORD_PLACEHOLDER,
       },
       password_repeat: {
-        label: 'Retype your password',
-        placeholder: 'Retype your password',
+        label: FORM_FIELDS.PASSWORD_REPEAT_LABEL,
+        placeholder: FORM_FIELDS.PASSWORD_REPEAT_PLACEHOLDER,
       },
     },
-    BUTTON: 'Set new password',
     VALIDATIONS: {
-      PASSWORDS_DONT_MATCH: 'Password don\'t match',
+      PASSWORDS_DONT_MATCH: VALIDATIONS.PASSWORDS_DONT_MATCH,
     },
   },
 }
 
 export const RESET_PASSWORD_SUCCESS = {
-  TITLE: 'Success',
-  TEXT_1: 'You’ve successfully set up a new password.',
-  TEXT_2: 'Click login below to proceed.',
+  TITLE: SUCCESS_TEXT,
   ICON: ICONS.CHECK,
-  BUTTON: 'login'
+  BUTTON: LOGIN_TEXT,
+  ...STRINGS.RESET_PASSWORD_SUCCESS,
 }

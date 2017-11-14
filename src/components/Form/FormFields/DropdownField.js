@@ -3,6 +3,7 @@ import EventListener from 'react-event-listener';
 import classnames from 'classnames';
 import keycode from 'keycode';
 import FieldWrapper from './FieldWrapper';
+import STRINGS from '../../../config/localizedStrings';
 
 class DropdownField extends Component {
   state = {
@@ -93,7 +94,7 @@ class DropdownField extends Component {
     <div className={classnames('dropdown-options-wrapper')}>
       {options.length > 0 ?
         options.map(this.renderOption) :
-        this.renderOption({ value: undefined, label: 'No options availables' }, 0)
+        this.renderOption({ value: undefined, label: STRINGS.NO_OPTIONS }, 0)
       }
     </div>
   );
@@ -140,7 +141,7 @@ class DropdownField extends Component {
   render() {
     const { options, placeholder, autocomplete } = this.props;
     const { isOpen, selectedItem, filter, visited } = this.state;
-    
+
     const filteredOptions = autocomplete ? options.filter(this.filterOption(filter)) : options;
     return (
       <FieldWrapper {...this.props} focused={isOpen} visited={visited}>

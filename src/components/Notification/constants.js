@@ -1,24 +1,27 @@
 import { fiatSymbol } from '../../utils/currency';
 import { CURRENCIES } from '../../config/constants';
+import STRINGS from '../../config/localizedStrings';
 
+const { NOTIFICATIONS, NEED_HELP_TEXT } = STRINGS;
+const { FIAT, BTC } = NOTIFICATIONS.DEPOSITS;
 
-export const NEED_HELP = 'NEED HELP';
+export const NEED_HELP = NEED_HELP_TEXT;
 
 export const DEPOSITS = {
   fiat: {
-    TITLE: `${CURRENCIES.fiat.shortName} Deposit receieved`,
-    SUBTITLE: `You’ve receieved your ${CURRENCIES.fiat.fullName} deposit`,
+    TITLE: STRINGS.formatString(FIAT.TITLE, CURRENCIES.fiat.shortName),
+    SUBTITLE: STRINGS.formatString(FIAT.SUBTITLE, CURRENCIES.fiat.fullName),
     INFORMATION_PENDING: [],
     INFORMATION_COMPLETE: [],
   },
   btc: (status) => {
     const { shortName, name, fullName } = CURRENCIES.btc;
     return {
-      TITLE: status ? `${shortName} Deposit receieved` : `Incoming ${fullName}`,
-      SUBTITLE: status ? `You’ve receieved your ${fullName} deposit` : `You have incoming ${fullName}`,
+      TITLE: status ? STRINGS.formatString(BTC.TITLE_RECEIVED, shortName) : STRINGS.formatString(BTC.TITLE_INCOMING, fullName),
+      SUBTITLE: STRINGS.formatString(status ? BTC.SUBTITLE_RECEIVED : BTC.SUBTITLE_INCOMING, fullName),
       INFORMATION_PENDING: [
-        `Your ${name} require 3 confirmations before you can begin trading.`,
-        `This may take 20-40 minutes. We will send an email once your ${name} have completed Confirming.`
+        STRINGS.formatString(BTC.INFORMATION_PENDING_1, name),
+        STRINGS.formatString(BTC.INFORMATION_PENDING_2, name),
       ],
       INFORMATION_COMPLETE: [],
     }
@@ -40,8 +43,4 @@ export const getDepositTexts = (currency, status = false) => {
 }
 
 
-export const BUTTON_TEXTS = {
-  OKAY: 'okay',
-  START_TRADING: 'start trading',
-  SEE_HISTORY: 'see history',
-}
+export const BUTTON_TEXTS = NOTIFICATIONS.BUTTONS;

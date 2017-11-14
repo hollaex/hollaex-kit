@@ -1,27 +1,30 @@
-import { APP_TITLE } from '../../config/constants';
+import STRINGS from '../../config/localizedStrings';
+
+const { LOGIN, APP_TITLE, LOGIN_TEXT, FORM_FIELDS, VALIDATIONS } = STRINGS;
+
 export const TEXTS = {
-  TITLE: 'login',
-  LOGIN_TO: `Login to ${APP_TITLE}`,
-  CANT_LOGIN: 'Can\'t login?',
-  NO_ACCOUNT: 'Don\'t have an account?',
-  CREATE_ACCOUNT: 'Create one here',
-  HELP: 'help',
+  TITLE: LOGIN_TEXT,
+  LOGIN_TO: STRINGS.formatString(LOGIN.LOGIN_TO, APP_TITLE),
+  CANT_LOGIN: LOGIN.CANT_LOGIN,
+  NO_ACCOUNT: LOGIN.NO_ACCOUNT,
+  CREATE_ACCOUNT: LOGIN.CREATE_ACCOUNT,
+  HELP: LOGIN.HELP,
   FORM: {
     FIELDS: {
       email: {
-        label: 'Email',
-        placeholder: 'Type your email',
+        label: FORM_FIELDS.EMAIL_LABEL,
+        placeholder: FORM_FIELDS.EMAIL_PLACEHOLDER,
       },
       password: {
-        label: 'Password',
-        placeholder: 'Type your password',
+        label: FORM_FIELDS.PASSWORD_LABEL,
+        placeholder: FORM_FIELDS.PASSWORD_PLACEHOLDER,
       },
     },
-    BUTTON: 'Login',
+    BUTTON: LOGIN_TEXT,
     VALIDATIONS: {
-      OTP_LOGIN: 'Provide OTP code to login',
-      INVALID_EMAIL: 'Invalid email address',
-      TYPE_EMAIL: 'Type your E-mail',
+      OTP_LOGIN: VALIDATIONS.OTP_LOGIN,
+      INVALID_EMAIL: VALIDATIONS.INVALID_EMAIL,
+      TYPE_EMAIL: VALIDATIONS.TYPE_EMAIL,
     },
   },
 }

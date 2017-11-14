@@ -35,7 +35,7 @@ export const renderTitle = (symbol, type = 'withdraw') => {
   const { withdrawText, depositText } = generateWalletActionsText(symbol, true);
   return (
     <div className="title text-capitalize">
-      {type === 'withdrawText' ? withdrawText : depositText}
+      {type === 'withdraw' ? withdrawText : depositText}
     </div>
   )
 }

@@ -3,6 +3,7 @@ import classnames from 'classnames';
 import FieldWrapper from './FieldWrapper';
 import { ActionNotification } from '../../';
 import { ICONS } from '../../../config/constants';
+import STRINGS from '../../../config/localizedStrings';
 
 class FileField extends Component {
 	state = {
@@ -44,7 +45,7 @@ class FileField extends Component {
 					</div>
 					{!filename &&
 						<ActionNotification
-							text="upload"
+							text={STRINGS.UPLOAD_TEXT}
 							status="information"
 							iconPath={ICONS.BLUE_CLIP}
 							className="file_upload_icon"

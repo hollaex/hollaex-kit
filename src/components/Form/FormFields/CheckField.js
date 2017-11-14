@@ -33,10 +33,7 @@ const InputField = (props) => {
           {...input}
           className="checkfield-input"
         />
-        {typeof label === 'string' ?
-          <div className="checkfield-label field-label">{label}</div> :
-          label
-        }
+        <div className="checkfield-label field-label">{label}</div>
       </div>
     </FieldWrapper>
   );

@@ -3,13 +3,13 @@ import { reduxForm } from 'redux-form';
 import { required } from '../../components/Form/validations';
 import renderFields from '../../components/Form/factoryFields';
 import { Button, IconTitle, ActionNotification } from '../';
-import { ICONS } from '../../config/constants';
+import { TEXTS } from './constants';
 
 const FormValues = {
   otp_code: {
     type: 'number',
-    label: 'OTP Code',
-    placeholder: 'Enter the authentication code',
+    label: TEXTS.OTP_LABEL,
+    placeholder: TEXTS.OTP_PLACEHOLDER,
     validate: [required],
     fullWidth: true,
   },
@@ -20,16 +20,16 @@ const Form = (props) => {
   return (
     <div className="otp_form-wrapper">
       <IconTitle
-        text="Authenticator Code"
-        iconPath={ICONS.SQUARE_DOTS}
+        text={TEXTS.OTP_TITLE}
+        iconPath={TEXTS.OTP_TITLE_ICON}
       />
       <div className="otp_form-title-wrapper">
         <span className="otp_form-title-text">Enter your authentication code to continue</span>
         {onClickHelp &&
           <ActionNotification
-            text="Help"
+            text={TEXTS.OTP_HELP}
             onClick={onClickHelp}
-            iconPath={ICONS.BLUE_QUESTION}
+            iconPath={TEXTS.OTP_HELP_ICON}
             status="information"
           />
         }
@@ -40,7 +40,7 @@ const Form = (props) => {
           {error && <div className="warning_text">{error}</div>}
         </div>
         <Button
-          label="Submit"
+          label={TEXTS.OTP_BUTTON}
           disabled={pristine || submitting || !valid}
         />
       </form>

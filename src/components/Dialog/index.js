@@ -2,8 +2,9 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import Modal from 'react-modal';
 import { Button, ActionNotification } from '../';
+import STRINGS from '../../config/localizedStrings';
 
-const CLOSE_TEXT = "CLOSE";
+const { CLOSE_TEXT } = STRINGS;
 
 class Dialog extends PureComponent {
 
@@ -43,7 +44,7 @@ class Dialog extends PureComponent {
         {children}
         {closeButton &&
           <div>
-            {closeButton && <Button onClick={closeButton} label="Close" />}
+            {closeButton && <Button onClick={closeButton} label={CLOSE_TEXT} />}
           </div>
         }
       </Modal>

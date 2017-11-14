@@ -2,6 +2,7 @@ import React, { Component} from 'react';
 import { connect } from 'react-redux';
 import { TabController, CheckTitle } from '../../components';
 import { UserVerification, UserSecurity } from '../';
+import { TEXTS } from './constants';
 
 class Account extends Component {
   state = {
@@ -41,7 +42,7 @@ class Account extends Component {
       {
         title: (
           <CheckTitle
-            title="Verification"
+            title={TEXTS.TAB_VERIFICATION}
             icon={`${process.env.PUBLIC_URL}/assets/acounts/account-icons-02.png`}
             notifications={this.hasUserVerificationNotifications(verification_level, bank_account, id_data) ? '!' : ''}
           />
@@ -51,7 +52,7 @@ class Account extends Component {
       {
         title: (
           <CheckTitle
-            title="Security"
+            title={TEXTS.TAB_SECURITY}
             icon={`${process.env.PUBLIC_URL}/assets/acounts/account-icons-03.png`}
             notifications={!otp_enabled ? '!' : ''}
           />
@@ -63,7 +64,7 @@ class Account extends Component {
       {
         title: (
           <CheckTitle
-            title="Notifications"
+            title={TEXTS.TAB_NOTIFICATIONS}
             icon={`${process.env.PUBLIC_URL}/assets/acounts/account-icons-04.png`}
           />
         ),
@@ -97,7 +98,7 @@ class Account extends Component {
           activeTab={activeTab}
           setActiveTab={this.setActiveTab}
           tabs={tabs}
-          title="Account"
+          title={TEXTS.TAB_TITLE}
           titleIcon={`${process.env.PUBLIC_URL}/assets/acounts/account-icons-01.png`}
         />
         <div className="inner_container">{activeTab > -1 && this.renderContent(tabs, activeTab)}</div>

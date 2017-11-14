@@ -1,0 +1,9 @@
+import STRINGS from '../../config/localizedStrings';
+
+const { CONTACT_FORM, FORM_FIELDS } = STRINGS;
+
+export const TEXTS = {
+  ...CONTACT_FORM,
+  EMAIL_LABEL: FORM_FIELDS.EMAIL_LABEL,
+  EMAIL_PLACEHOLDER: FORM_FIELDS.EMAIL_PLACEHOLDER,
+};

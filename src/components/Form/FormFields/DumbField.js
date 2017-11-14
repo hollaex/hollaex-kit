@@ -3,13 +3,14 @@ import { CopyToClipboard } from 'react-copy-to-clipboard';
 import FieldWrapper, { FieldContent } from './FieldWrapper';
 import { ActionNotification } from '../../';
 import { ICONS } from '../../../config/constants';
+import STRINGS from '../../../config/localizedStrings';
 
 export const renderCopy = (text, component) => {
   return (
     <CopyToClipboard text={text}>
       <ActionNotification
         status="information"
-        text="copy"
+        text={STRINGS.COPY_TEXT}
         iconPath={ICONS.COPY}
         className="copy-wrapper"
       />

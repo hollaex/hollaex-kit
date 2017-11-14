@@ -2,7 +2,15 @@ import React, { Component } from 'react';
 import classnames from 'classnames';
 import { Link } from 'react-router';
 import { CURRENCIES, FLEX_CENTER_CLASSES } from '../../config/constants';
-import STRINGS from '../../config/localizedStrings';
+import { TEXTS } from './constants';
+
+const {
+  APP_TITLE,
+  APP_NAME,
+  LOGIN,
+  SIGNUP,
+  ACCOUNT,
+} = TEXTS;
 
 class AppBar extends Component {
   state = {
@@ -78,7 +86,7 @@ class AppBar extends Component {
     return token ? (
       <div className={classnames(...WRAPPER_CLASSES)}>
         <div className={classnames(...COMMON_CLASSES, 'contrast')}>
-          <Link to='/account'>account</Link>
+          <Link to='/account'>{ACCOUNT}</Link>
         </div>
       </div>
     ) : (
@@ -87,10 +95,10 @@ class AppBar extends Component {
           quick trade
         </div>
         <div className={classnames(...COMMON_CLASSES)}>
-          <Link to='/login'>Login</Link>
+          <Link to='/login'>{LOGIN}</Link>
         </div>
         <div className={classnames(...COMMON_CLASSES, 'contrast')}>
-          <Link to='/signup'>Sign Up</Link>
+          <Link to='/signup'>{SIGNUP}</Link>
         </div>
       </div>
     );
@@ -102,9 +110,9 @@ class AppBar extends Component {
     return (
       <div className={classnames('app_bar', { 'no-borders': noBorders })}>
         <div className={classnames('app_bar-icon', 'text-uppercase', 'contrast', { pointer: !!goToDashboard })} onClick={goToDashboard}>
-          {STRINGS.APP_NAME}
+          {APP_NAME}
         </div>
-        <div className="app_bar-main">{STRINGS.APP_TITLE}</div>
+        <div className="app_bar-main">{APP_TITLE}</div>
         {activeSymbol ?
           this.renderAppActions(activeSymbol, acccountIsActive, goToAccountPage) :
           this.renderSplashActions(token, verifyingToken, goToQuickTrade)
