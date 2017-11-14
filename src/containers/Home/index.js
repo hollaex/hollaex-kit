@@ -72,7 +72,7 @@ class Home extends Component {
     if (this.props.token) {
       this.goTo('account')();
     } else {
-      this.goTo('signup')();
+      this.goTo('login')();
     }
   }
 
