@@ -17,3 +17,12 @@ You need to have nodejs and npm installed
 
 ## Production
 You can build the project by running `npm run build` and the projects builds the entire client in `/build` folder
+
+## Properties to set
+- Build variables:
+  - NODE_ENV `['production', 'development']`
+  - REACT_APP_NETWORK `['mainnet', 'testnet']`
+- Bank data for deposits
+  - BANK_NAME
+  - ACCOUNT_OWNER
+  - ACCOUNT_NUMBER

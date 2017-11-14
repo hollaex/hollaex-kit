@@ -1,9 +1,5 @@
-export const BANK_INFORMATION = {
-  bank_name: 'Exir Trade',
-  account_owner: 'Bank Melli',
-  account_number: '2313-0631-2313-3121',
-};
 import STRINGS from '../../config/localizedStrings';
+export { BANK_INFORMATION } from '../../config/constants';
 
 const { DEPOSIT } = STRINGS;
 

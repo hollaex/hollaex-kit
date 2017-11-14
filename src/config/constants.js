@@ -91,3 +91,9 @@ export const LIMIT_VALUES = {
 
 export const TOKEN_KEY = `${ENV}_${NETWORK}_TOKEN`;
 export const LANGUAGE_KEY = `${ENV}_${NETWORK}_LANGUAGE`;
+
+export const BANK_INFORMATION = {
+  bank_name: process.env.BANK_NAME || 'Exir Trade',
+  account_owner: process.env.ACCOUNT_OWNER || 'Bank Melli',
+  account_number: process.env.ACCOUNT_NUMBER || '2313-0631-2313-3121',
+};
