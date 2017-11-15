@@ -1,26 +1,27 @@
+import { TEXTS } from './constants';
 import { required, requiredWithCustomMessage, exactLength } from '../../components/Form/validations';
 
-const ERROR_MESSAGE_ACCOUNT_NAME = 'Please type your first and last name as associated with your bank account';
-const ERROR_MESSAGE_ACCOUNT_NUMBER_LENGTH = 'Your bank account number should be 24 digits';
+const { BANK_ACCOUNT_FORM } = TEXTS;
+const { VALIDATIONS, FORM_FIELDS } = BANK_ACCOUNT_FORM;
 
 const fields = {
   bank_name: {
     type: 'text',
-    label: 'Bank Name',
-    placeholder: 'Type the name of your bank',
+    label: FORM_FIELDS.BANK_NAME_LABEL,
+    placeholder: FORM_FIELDS.BANK_NAME_PLACEHOLDER,
     validate: [required]
   },
   account_owner: {
     type: 'text',
-    label: 'Bank Account Owner’s Name',
-    placeholder: 'Type the name as on your bank account',
-    validate: [requiredWithCustomMessage(ERROR_MESSAGE_ACCOUNT_NAME)]
+    label: FORM_FIELDS.ACCOUNT_OWNER_LABEL,
+    placeholder: FORM_FIELDS.ACCOUNT_OWNER_PLACEHOLDER,
+    validate: [requiredWithCustomMessage(VALIDATIONS.ACCOUNT_OWNER)]
   },
   account_number: {
     type: 'text',
-    label: 'Bank Account Number',
-    placeholder: 'Type your bank account number',
-    validate: [exactLength(24, ERROR_MESSAGE_ACCOUNT_NUMBER_LENGTH)],
+    label: FORM_FIELDS.ACCOUNT_NUMBER_LABEL,
+    placeholder: FORM_FIELDS.ACCOUNT_NUMBER_PLACEHOLDER,
+    validate: [exactLength(24, VALIDATIONS.ACCOUNT_NUMBER)],
   },
 };
 

@@ -4,11 +4,13 @@ import { SubmissionError } from 'redux-form';
 
 import { ICONS } from '../../config/constants';
 import { updateUser, updateDocuments, setMe, setUserData } from '../../actions/userAction';
-import { Accordion } from '../../components';
+import { Accordion, Loader } from '../../components';
 import IdentificationForm from './IdentificationForm';
 import { prepareInitialValues } from './IdentificationFormValues';
 import DocumentsForm from './DocumentsForm';
 import BankAccountForm from './BankAccountForm';
+
+import { TEXTS } from './constants';
 
 class UserVerification extends Component {
   state = {
@@ -44,7 +46,7 @@ class UserVerification extends Component {
 
   calculateNotification = (activeStep, step, verifyText, verified = false, value = '') => {
     const notification = {
-      text: verified ? 'completed' : (activeStep > step ? 'pending verification' : verifyText),
+      text: verified ? TEXTS.COMPLETED : (activeStep > step ? TEXTS.PENDING_VERIFICATION : verifyText),
       status: verified ? 'success' : (activeStep > step ? 'information' : 'warning'),
       iconPath: verified ? ICONS.GREEN_CHECK : (activeStep > step ? ICONS.BLUE_QUESTION : ICONS.RED_ARROW),
       allowClick: activeStep === step
@@ -56,37 +58,37 @@ class UserVerification extends Component {
     const activeStep = this.activeStep(verification_level, userData);
 
     const sections = [{
-      title: 'Email',
+      title: TEXTS.TITLE_EMAIL,
       content: <div>{email}</div>,
       disabled: activeStep !== 0,
-      notification: this.calculateNotification(activeStep, 0, 'verify email', true)
+      notification: this.calculateNotification(activeStep, 0, TEXTS.VERIFY_EMAIL, true)
     },
     {
-      title: 'Identification',
+      title: TEXTS.TITLE_USER_DOCUMENTATION,
       content: <IdentificationForm
         onSubmit={this.onSubmitUserInformation}
         initialValues={prepareInitialValues(userData)}
       />,
       disabled: activeStep !== 1,
-      notification: this.calculateNotification(activeStep, 1, 'verify user documentation', verification_level >= 2, userData.first_name)
+      notification: this.calculateNotification(activeStep, 1, TEXTS.VERIFY_USER_DOCUMENTATION, verification_level >= 2, userData.first_name)
     },
     {
-      title: 'Documents',
+      title: TEXTS.TITLE_ID_DOCUMENTS,
       content: <DocumentsForm
         onSubmit={this.onSubmitUserDocuments}
         initialValues={userData.id_data}
       />,
       disabled: activeStep !== 2,
-      notification: this.calculateNotification(activeStep, 2, 'verify id documents', userData.id_data.verified, userData.id_data.type)
+      notification: this.calculateNotification(activeStep, 2, TEXTS.VERIFY_ID_DOCUMENTS, userData.id_data.verified, userData.id_data.type)
     },
     {
-      title: 'Bank Account',
+      title: TEXTS.TITLE_BANK_ACCOUNT,
       content: <BankAccountForm
         onSubmit={this.onSubmitBankAccount}
         initialValues={userData.bank_account}
       />,
       disabled: activeStep !== 3,
-      notification: this.calculateNotification(activeStep, 3, 'verify bank account', userData.bank_account.verified, userData.bank_account.type)
+      notification: this.calculateNotification(activeStep, 3, TEXTS.VERIFY_BANK_ACCOUNT, userData.bank_account.verified, userData.bank_account.type)
     }];
 
     this.setState({ sections });
@@ -130,7 +132,7 @@ class UserVerification extends Component {
 
   render() {
     if (!this.props.id) {
-      return <div>Loading</div>;
+      return <Loader />;
     }
     const { sections } = this.state;
 

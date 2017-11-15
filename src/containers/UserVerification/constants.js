@@ -1,0 +1,20 @@
+import STRINGS from '../../config/localizedStrings';
+
+const { USER_VERIFICATION } = STRINGS;
+const { USER_DOCUMENTATION_FORM, ID_DOCUMENTS_FORM, BANK_ACCOUNT_FORM, BUTTON, ...REST } = USER_VERIFICATION;
+
+export const TEXTS = {
+  USER_DOCUMENTATION_FORM: {
+    ...USER_DOCUMENTATION_FORM,
+    BUTTON,
+  },
+  ID_DOCUMENTS_FORM: {
+    ...ID_DOCUMENTS_FORM,
+    BUTTON,
+  },
+  BANK_ACCOUNT_FORM: {
+    ...BANK_ACCOUNT_FORM,
+    BUTTON,
+  },
+  ...REST,
+};
