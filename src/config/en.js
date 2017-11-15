@@ -502,4 +502,9 @@ export default {
     { key: 'en', label: 'English' },
     { key: 'fa', label: 'فارسی' },
   ],
+  QUICK_TRADE: 'Quick trade',
+  PRO_TRADE: 'Pro trade',
+  WALLET_TITLE: 'Wallet',
+  TRADING_MODE_TITLE: 'Trading Mode',
+  LOGOUT: 'Logout',
 };

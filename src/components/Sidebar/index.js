@@ -2,8 +2,8 @@ import React from 'react';
 import Section from './Section';
 import { NotificationsList, Button, Wallet } from '../';
 import { ICONS } from '../../config/constants';
-import { fiatSymbol } from '../../utils/currency'
-import { TEXTS } from './constants';
+import STRINGS from '../../config/localizedStrings';
+import { fiatSymbol } from '../../utils/currency';
 
 const Sidebar = ({
   goToWalletPage, goToTradePage, active, activePath, logout, notifications, symbol
@@ -12,7 +12,7 @@ const Sidebar = ({
     <div className="sidebar-container">
       <div className={`sidebar-actions ${active ? 'active' : ''}`}>
         <Section
-          title={TEXTS.WALLET_TITLE}
+          title={STRINGS.WALLET_TITLE}
           goToSection={goToWalletPage}
           active={activePath === 'wallet'}
         >
@@ -22,16 +22,16 @@ const Sidebar = ({
         </Section>
         {symbol !== fiatSymbol &&
           <Section
-            title={TEXTS.TRADING_MODE_TITLE}
+            title={STRINGS.TRADING_MODE_TITLE}
             active={activePath === 'trade'}
           >
             <div className="sidebar-container-trade d-flex">
               <Button
-                label={TEXTS.QUICK_TRADE_BUTTON}
+                label={STRINGS.QUICK_TRADE}
                 disabled={true}
               />
               <Button
-                label={TEXTS.PRO_TRADE_BUTTON}
+                label={STRINGS.PRO_TRADE}
                 onClick={goToTradePage}
                 disabled={!goToTradePage}
               />
@@ -44,10 +44,10 @@ const Sidebar = ({
       </div>
       <div className="sidebar-logout">
         <div onClick={logout} className="sidebar-logout-left text-uppercase pointer">
-          {TEXTS.LOGOUT}
+          {STRINGS.LOGOUT}
         </div>
         <div onClick={logout} className="sidebar-logout-right pointer">
-          <img src={TEXTS.LOGOUT_ICON} alt="logout" />
+          <img src={ICONS.LOGOUT} alt="logout" />
         </div>
       </div>
     </div>
