@@ -16,13 +16,38 @@ export const getFormattedDate = (value) => {
 	return stringDateSplit[0];
 }
 
-
-export const getLanguage = () => {
-  return localStorage.getItem(LANGUAGE_KEY);
+export const getLanguageFromString = (value = '') => {
+  const index = value.indexOf('-');
+  if (index > 0) {
+    return value.substring(0, index);
+  }
+  return value;
 }
 
-export const setLanguage = (token) => {
-  localStorage.setItem(LANGUAGE_KEY, token);
+const AVAILABLE_LENGUAGES = STRINGS.getAvailableLanguages();
+
+const getValidLanguage = (lang) => {
+	const language = getLanguageFromString(lang);
+	if (AVAILABLE_LENGUAGES.indexOf(language) > -1) {
+		return language;
+	}
+	return AVAILABLE_LENGUAGES[0];
+}
+
+const DEFAULT_LANGUAGE = getValidLanguage(STRINGS.getInterfaceLanguage());
+
+export const getLanguage = () => {
+  const lang = localStorage.getItem(LANGUAGE_KEY);
+	const language = getValidLanguage(lang);
+	STRINGS.setLanguage(language);
+	return language;
+}
+
+export const setLanguage = (lang) => {
+	const language = getValidLanguage(lang);
+	STRINGS.setLanguage(language);
+  localStorage.setItem(LANGUAGE_KEY, language);
+	return language;
 }
 
 export const removeLanguage = () => {

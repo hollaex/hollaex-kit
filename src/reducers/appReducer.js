@@ -16,7 +16,7 @@ const INITIAL_STATE = {
   notifications: [],
   notificationsQueue: [],
   activeNotification: EMPTY_NOTIFICATION,
-  language: getLanguage() || 'en',
+  language: getLanguage(),
 }
 
 const reducer = (state = INITIAL_STATE, { type, payload = {}}) => {
