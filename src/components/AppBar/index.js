@@ -2,15 +2,23 @@ import React, { Component } from 'react';
 import classnames from 'classnames';
 import { Link } from 'react-router';
 import { CURRENCIES, FLEX_CENTER_CLASSES } from '../../config/constants';
-import { TEXTS } from './constants';
 
-const {
-  APP_TITLE,
-  APP_NAME,
-  LOGIN,
-  SIGNUP,
-  ACCOUNT,
-} = TEXTS;
+import STRINGS from '../../config/localizedStrings';
+
+const LanguageSelector = ({ changeLanguage, languages, activeLanguage = '' }) => (
+  <div className="d-flex">
+    {languages.map(({ key, label }, index) => (
+      <div
+        style={{ padding: 8 }}
+        key={key}
+        onClick={changeLanguage(key)}
+        className="pointer"
+      >
+        {label}
+      </div>
+    ))}
+  </div>
+);
 
 class AppBar extends Component {
   state = {
@@ -86,7 +94,7 @@ class AppBar extends Component {
     return token ? (
       <div className={classnames(...WRAPPER_CLASSES)}>
         <div className={classnames(...COMMON_CLASSES, 'contrast')}>
-          <Link to='/account'>{ACCOUNT}</Link>
+          <Link to='/account'>{STRINGS.ACCOUNT_TEXT}</Link>
         </div>
       </div>
     ) : (
@@ -95,24 +103,35 @@ class AppBar extends Component {
           quick trade
         </div>
         <div className={classnames(...COMMON_CLASSES)}>
-          <Link to='/login'>{LOGIN}</Link>
+          <Link to='/login'>{STRINGS.LOGIN_TEXT}</Link>
         </div>
         <div className={classnames(...COMMON_CLASSES, 'contrast')}>
-          <Link to='/signup'>{SIGNUP}</Link>
+          <Link to='/signup'>{STRINGS.IGNUP_TEXT}</Link>
         </div>
       </div>
     );
   }
 
   render() {
-    const { title, goToAccountPage, goToDashboard, acccountIsActive, activeSymbol, noBorders, token, verifyingToken, goToQuickTrade } = this.props;
-
+    const {
+      title, goToAccountPage, goToDashboard, acccountIsActive, activeSymbol, noBorders, token, verifyingToken, goToQuickTrade, changeLanguage, activeLanguage,
+    } = this.props;
+    
     return (
       <div className={classnames('app_bar', { 'no-borders': noBorders })}>
         <div className={classnames('app_bar-icon', 'text-uppercase', 'contrast', { pointer: !!goToDashboard })} onClick={goToDashboard}>
-          {APP_NAME}
+          {STRINGS.APP_NAME}
         </div>
-        <div className="app_bar-main">{APP_TITLE}</div>
+        <div className="app_bar-main d-flex justify-content-between">
+          <div>{STRINGS.APP_TITLE}</div>
+          {changeLanguage &&
+            <LanguageSelector
+              changeLanguage={changeLanguage}
+              languages={STRINGS.LANGUAGES}
+              activeLanguage={activeLanguage}
+            />
+          }
+        </div>
         {activeSymbol ?
           this.renderAppActions(activeSymbol, acccountIsActive, goToAccountPage) :
           this.renderSplashActions(token, verifyingToken, goToQuickTrade)

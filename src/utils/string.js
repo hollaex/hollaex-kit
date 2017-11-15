@@ -34,8 +34,6 @@ const getValidLanguage = (lang) => {
 	return AVAILABLE_LENGUAGES[0];
 }
 
-const DEFAULT_LANGUAGE = getValidLanguage(STRINGS.getInterfaceLanguage());
-
 export const getLanguage = () => {
   const lang = localStorage.getItem(LANGUAGE_KEY);
 	const language = getValidLanguage(lang);

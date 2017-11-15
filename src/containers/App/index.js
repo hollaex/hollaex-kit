@@ -21,6 +21,8 @@ import { getToken } from '../../utils/token';
 import { AppBar, Sidebar, Dialog, Loader, Notification, MessageDisplay } from '../../components';
 import { ContactForm } from '../';
 
+import { setLanguage } from '../../actions/appActions';
+
 class Container extends Component {
 	state = {
 		appLoaded: false,
@@ -109,12 +111,12 @@ class Container extends Component {
 		this.setState({ publicSocket });
 
 		publicSocket.on('orderbook', (data) => {
-			console.log('orderbook', data)
+			// console.log('orderbook', data)
 			this.props.setOrderbook(data[symbol])
 		});
 
 		publicSocket.on('trades', (data) => {
-			console.log('trades', data[symbol])
+			// console.log('trades', data[symbol])
 			if (data[symbol].length > 0) {
 				this.props.addTrades(data[symbol]);
 			}
@@ -152,7 +154,7 @@ class Container extends Component {
 		});
 
 		privateSocket.on('update', ({ type, data }) => {
-			console.log('update', type, data)
+			// console.log('update', type, data)
 			switch(type) {
         case 'order_queued':
           break;
@@ -300,9 +302,13 @@ class Container extends Component {
 		}
 	}
 
+	onChangeLanguage = (language) => () => {
+    return this.props.changeLanguage(language);
+  }
+
 	render() {
 		const {
-			symbol, children, activeNotification, changeSymbol, notifications, prices, verification_level
+			symbol, children, activeNotification, changeSymbol, notifications, prices, verification_level, activeLanguage,
 		} = this.props;
 		const { dialogIsOpen, appLoaded } = this.state;
 
@@ -326,6 +332,8 @@ class Container extends Component {
 					acccountIsActive={activePath === 'account'}
 					changeSymbol={changeSymbol}
 					activeSymbol={symbol}
+					changeLanguage={this.onChangeLanguage}
+					activeLanguage={activeLanguage}
 				/>
         <div className="app_container-content d-flex justify-content-between">
           <div className="app_container-main d-flex flex-column justify-content-between overflow-y">
@@ -366,6 +374,7 @@ const mapStateToProps = (store) => ({
 	activeNotification: store.app.activeNotification,
 	notifications: store.app.notifications,
 	verification_level: store.user.verification_level,
+  activeLanguage: store.app.language,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -383,7 +392,8 @@ const mapDispatchToProps = (dispatch) => ({
 		closeNotification: bindActionCreators(closeNotification, dispatch),
 		openContactForm: bindActionCreators(openContactForm, dispatch),
 		setNotification: bindActionCreators(setNotification, dispatch),
-		changeSymbol: bindActionCreators(changeSymbol, dispatch)
+		changeSymbol: bindActionCreators(changeSymbol, dispatch),
+		changeLanguage: bindActionCreators(setLanguage, dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Container);
