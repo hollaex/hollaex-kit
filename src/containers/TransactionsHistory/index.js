@@ -8,10 +8,10 @@ import { fiatSymbol } from '../../utils/currency';
 import { ActionNotification, IconTitle, Table, CsvDownload, TabController } from '../../components';
 import { ICONS, FLEX_CENTER_CLASSES, CURRENCIES } from '../../config/constants';
 
-import { TITLE, TITLE_TRADES, TITLE_DEPOSITS, TITLE_WITHDRAWAlS } from './constants';
-
 import { generateTradeHeaders, generateDepositsHeaders, generateWithdrawalsHeaders } from './utils';
 import HistoryDisplay from './HistoryDisplay';
+
+import STRINGS from '../../config/localizedStrings';
 
 class TransactionsHistory extends Component {
   state = {
@@ -56,19 +56,19 @@ class TransactionsHistory extends Component {
     switch (activeTab) {
 
       case 0:
-        props.title = `${name} ${TITLE_TRADES}`;
+        props.title = `${name} ${STRINGS.TRANSACTION_HISTORY.TITLE_TRADES}`;
         props.headers = headers.trades;
         props.data = trades;
         props.filename = `${symbol}-transfers_history`;
         break
       case 1:
-        props.title = TITLE_DEPOSITS;
+        props.title = STRINGS.TRANSACTION_HISTORY.TITLE_DEPOSITS;
         props.headers = headers.deposits;
         props.data = deposits;
         props.filename = `${symbol}-deposits_history`;
         break;
       case 2:
-        props.title = TITLE_WITHDRAWAlS;
+        props.title = STRINGS.TRANSACTION_HISTORY.TITLE_WITHDRAWAlS;
         props.headers = headers.withdrawals;
         props.data = withdrawals;
         props.filename = `${symbol}-withdrawals_history`;
@@ -91,15 +91,15 @@ class TransactionsHistory extends Component {
     return (
       <div className="presentation_container">
         <IconTitle
-          text={TITLE}
+          text={STRINGS.TRANSACTION_HISTORY.TITLE}
           iconPath={ICONS.LETTER}
           textType="title"
         />
         <TabController
           tabs={[
-            { title: 'Trades' },
-            { title: 'Deposits' },
-            { title: 'Withdrawals' },
+            { title: STRINGS.TRANSACTION_HISTORY.TRADES },
+            { title: STRINGS.TRANSACTION_HISTORY.DEPOSITS },
+            { title: STRINGS.TRANSACTION_HISTORY.WITHDRAWALS },
           ]}
           activeTab={activeTab}
           setActiveTab={this.setActiveTab}
