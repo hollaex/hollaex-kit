@@ -4,18 +4,20 @@ import QRCode from 'qrcode.react';
 import OTPForm from './OTPForm';
 import { ICONS } from '../../config/constants';
 
+import STRINGS from '../../config/localizedStrings';
+
 export const renderOTPForm = (secret, email, activateOTP) => (
   <div className="otp_form-wrapper">
     <IconTitle
-      text="Activate Two-Factor Authentication"
+      text={STRINGS.ACCOUNT_SECURITY.OTP.CONTENT.TITLE}
       iconPath={ICONS.KEYS}
     />
     <div className="otp_form-section-wrapper">
       <div className="otp_form-section-title">
-        <span>Setup your two-factor authenticator</span>
+        <span>{STRINGS.ACCOUNT_SECURITY.OTP.CONTENT.MESSAGE_1}</span>
       </div>
       <div className="otp_form-section-text">
-        Scan the image below to automatically setuo otwo-factor authentication in your device.
+        {STRINGS.ACCOUNT_SECURITY.OTP.CONTENT.MESSAGE_2}
       </div>
       <div className="d-flex justify-content-center otp_form-section-content">
         <QRCode
@@ -26,17 +28,17 @@ export const renderOTPForm = (secret, email, activateOTP) => (
     </div>
     <div className="otp_form-section-wrapper">
       <div className="otp_form-section-title">
-        <span>Setup your two-factor authenticator</span>
+        <span>{STRINGS.ACCOUNT_SECURITY.OTP.CONTENT.MESSAGE_1}</span>
       </div>
       <div className="otp_form-section-text">
-        Use this key to manualy setup two-factor authentication on your device.<br />
-        You can store this code to recover your 2FA. Do not store this key.
+        {STRINGS.ACCOUNT_SECURITY.OTP.CONTENT.MESSAGE_3}<br />
+        {STRINGS.ACCOUNT_SECURITY.OTP.CONTENT.MESSAGE_4}
       </div>
       <div className=" otp_form-section-content otp_secret">{secret}</div>
     </div>
     <div className="otp_form-section-wrapper">
       <div className="otp_form-section-title">
-        <span>Enter One-Time Password (OTP)</span>
+        <span>{STRINGS.ACCOUNT_SECURITY.OTP.CONTENT.INPUT}</span>
       </div>
       <OTPForm
         onSubmit={activateOTP}
@@ -48,10 +50,10 @@ export const renderOTPForm = (secret, email, activateOTP) => (
 export const OTP = ({ requestOTP, data, otp_enabled, children }) => (
   <div className="user_security-wrapper">
     <div className="warning_text">
-      We highly recommend you set up 2 factor authentication (2FA). Doing so will greatly increase the security of your funds.
+     {STRINGS.ACCOUNT_SECURITY.OTP.CONTENT.WARNING}
     </div>
     <CheckboxButton
-      label="Enable Two-Factor Authentication"
+      label={STRINGS.ACCOUNT_SECURITY.OTP.CONTENT.ENABLE}
       onClick={requestOTP}
       disabled={data.requesting}
       loading={data.requesting}
