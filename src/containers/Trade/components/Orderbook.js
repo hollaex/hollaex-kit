@@ -3,6 +3,7 @@ import classnames from 'classnames';
 import EventListener from 'react-event-listener';
 import { subtract } from '../utils';
 import { formatFiatAmount } from '../../../utils/currency';
+import STRINGS from '../../../config/localizedStrings';
 
 const calculateSpread = (asks, bids) => {
   const lowerAsk = asks.length > 0 ? asks[0][0]: 0;
@@ -60,8 +61,8 @@ class Orderbook extends Component {
           onResize={this.scrollTop}
         />
         <div className="trade_orderbook-headers d-flex">
-          <div className="f-1 trade_orderbook-cell">PRICE ({fiatSymbol})</div>
-          <div className="f-1 trade_orderbook-cell">AMOUNT ({symbol})</div>
+          <div className="f-1 trade_orderbook-cell">{STRINGS.formatString(STRINGS.PRICE_CURRENCY, fiatSymbol)}</div>
+          <div className="f-1 trade_orderbook-cell">{STRINGS.formatString(STRINGS.AMOUNT_SYMBOL, symbol)}</div>
         </div>
         <div
           ref={this.setRefs('wrapper')}

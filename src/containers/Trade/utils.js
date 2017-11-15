@@ -2,6 +2,8 @@ import React from 'react';
 import classnames from 'classnames';
 import math from 'mathjs';
 
+import STRINGS from '../../config/localizedStrings';
+
 import { CurrencyBall } from '../../components';
 import { CURRENCIES } from '../../config/constants';
 import { fiatSymbol } from '../../utils/currency';
@@ -24,27 +26,27 @@ export const generateHeaders = (symbol) => {
       ),
     },
     {
-      label: 'CURRENCY',
+      label: STRINGS.CURRENCY,
       key: 'currency',
       renderCell: () => <td>{fullName}</td>,
     },
     {
-      label: 'SIZE',
+      label: STRINGS.SIZE,
       key: 'size',
       renderCell: ({ size = '' }) => <td>{`${formatToCurrency(size)} ${shortName}`}</td>,
     },
     {
-      label: 'SIDE',
+      label: STRINGS.SIDE,
       key: 'side',
       renderCell: ({ side = '' }) => <td>{side}</td>,
     },
     {
-      label: 'PRICE',
+      label: STRINGS.PRICE,
       key: 'price',
       renderCell: ({ price = 0 }) => <td>{`${fiatCurrencySymbol} ${fiatFormatToCurrency(price)}`}</td>,
     },
     {
-      label: 'TIMESTAMP',
+      label: STRINGS.TIMESTAMP,
       key: 'timestamp',
       renderCell: ({ timestamp = '' }) => <td>{formatTimestamp(timestamp)}</td>,
     },

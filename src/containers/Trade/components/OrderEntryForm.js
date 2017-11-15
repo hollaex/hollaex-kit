@@ -46,7 +46,7 @@ const Form = ({
         {children}
         <Button
           label={`${side} ${currencyName}`}
-          disabled={pristine || submitting || !valid || errorText}
+          disabled={pristine || submitting || !valid || !!errorText}
           className={classnames(
             'trade_order_entry-form-action'
           )}

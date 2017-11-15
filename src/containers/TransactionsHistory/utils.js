@@ -25,13 +25,13 @@ export const generateTradeHeaders = (symbol) => {
       ),
     },
     {
-      label: STRINGS.TRANSACTION_HISTORY.CURRENCY,
+      label: STRINGS.CURRENCY,
       key: 'currency',
       exportToCsv: () => fullName,
       renderCell: (data, key, index) => <td key={index}>{fullName}</td>,
     },
     {
-      label: STRINGS.TRANSACTION_HISTORY.SIDE,
+      label: STRINGS.TYPE,
       key: 'side',
       exportToCsv: ({ side = '' }) => side,
       renderCell: ({ side = '' }, key, index) => {
@@ -43,7 +43,7 @@ export const generateTradeHeaders = (symbol) => {
       },
     },
     {
-      label: STRINGS.TRANSACTION_HISTORY.SIZE,
+      label: STRINGS.SIZE,
       key: 'size',
       exportToCsv: ({ size = 0 }) => `${formatToCurrency(size)} ${shortName}`,
       renderCell: ({ size = 0 }, key, index) => {
@@ -53,7 +53,7 @@ export const generateTradeHeaders = (symbol) => {
       },
     },
     {
-      label: STRINGS.TRANSACTION_HISTORY.PRICE,
+      label: STRINGS.PRICE,
       key: 'price',
       exportToCsv: ({ price = 0}) => `${fiatCurrencySymbol} ${fiatFormatToCurrency(price)}`,
       renderCell: ({ price = 0 }, key, index) => {
@@ -61,7 +61,7 @@ export const generateTradeHeaders = (symbol) => {
       },
     },
     {
-      label: STRINGS.TRANSACTION_HISTORY.FEE,
+      label: STRINGS.FEE,
       key: 'fee',
       exportToCsv: ({ fee = 0 }) => fee,
       renderCell: ({ fee = 0 }, key, index) => {
@@ -69,7 +69,7 @@ export const generateTradeHeaders = (symbol) => {
       },
     },
     {
-      label: STRINGS.TRANSACTION_HISTORY.TIME,
+      label: STRINGS.TIME,
       key: 'timestamp',
       exportToCsv: ({ timestamp = '' }) => timestamp,
       renderCell: ({ timestamp = '' }, key, index) => {
@@ -94,7 +94,7 @@ export const generateWithdrawalsHeaders = (symbol) => {
       },
     },
     {
-      label: STRINGS.TRANSACTION_HISTORY.CURRENCY,
+      label: STRINGS.CURRENCY,
       key: 'currency',
       exportToCsv: ({ currency }) => CURRENCIES[currency].fullName,
       renderCell: ({ currency }, key, index) => {
@@ -103,7 +103,7 @@ export const generateWithdrawalsHeaders = (symbol) => {
       },
     },
     {
-      label: STRINGS.TRANSACTION_HISTORY.STATUS,
+      label: STRINGS.STATUS,
       key: 'status',
       exportToCsv: ({ status = false }) => status ? 'Complete' : 'Pending',
       renderCell: ({ status = false }, key, index) => {
@@ -111,7 +111,7 @@ export const generateWithdrawalsHeaders = (symbol) => {
       },
     },
     {
-      label: STRINGS.TRANSACTION_HISTORY.AMOUNT,
+      label: STRINGS.AMOUNT,
       key: 'amount',
       exportToCsv: ({ amount = 0, currency }) => {
         const { formatToCurrency, shortName } = CURRENCIES[currency];
@@ -123,7 +123,7 @@ export const generateWithdrawalsHeaders = (symbol) => {
       },
     },
     {
-      label: STRINGS.TRANSACTION_HISTORY.FEE,
+      label: STRINGS.FEE,
       key: 'fee',
       exportToCsv: ({ fee = 0 }) => fee,
       renderCell: ({ fee = 0 }, key, index) => {
@@ -131,7 +131,7 @@ export const generateWithdrawalsHeaders = (symbol) => {
       },
     },
     {
-      label: STRINGS.TRANSACTION_HISTORY.TIME,
+      label: STRINGS.TIME,
       key: 'created_at',
       exportToCsv: ({ created_at = '' }) => created_at,
       renderCell: ({ created_at = '' }, key, index) => {
