@@ -5,36 +5,29 @@ import { NETWORK } from '../../config/constants';
 import { calculatePrice, fiatSymbol } from '../../utils/currency';
 import STRINGS from '../../config/localizedStrings';
 
-const { VALIDATIONS } = STRINGS;
-
-const ERROR_MESSAGE_REQUIRED = VALIDATIONS.REQUIRED;
-const ERROR_MESSAGE_BEFORE_DATE = VALIDATIONS.INVALID_DATE;
-const ERROR_INVALID_EMAIL = VALIDATIONS.INVALID_EMAIL;
-const INVALID_PASSWORD = VALIDATIONS.INVALID_PASSWORD;
-
 const passwordRegEx = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#\$%\^\&*\)\(+=._-]).{8,}$/;
 
 
-export const required = (value) => !value ? ERROR_MESSAGE_REQUIRED : undefined;
-export const requiredBoolean = (value) => value === undefined ? ERROR_MESSAGE_REQUIRED : undefined;
+export const required = (value) => !value ? STRINGS.VALIDATIONS.REQUIRED : undefined;
+export const requiredBoolean = (value) => value === undefined ? STRINGS.VALIDATIONS.REQUIRED : undefined;
 export const requiredWithCustomMessage = (message) => (value) => !value ? message : undefined;
 
 export const exactLength = (length, message) => (value = '') => value.length !== length ? message : undefined;
 
-export const email = (value = '') => !validator.isEmail(value) ? ERROR_INVALID_EMAIL : undefined;
+export const email = (value = '') => !validator.isEmail(value) ? STRINGS.VALIDATIONS.INVALID_EMAIL : undefined;
 
-export const password = (value) => !passwordRegEx.test(value) ? INVALID_PASSWORD : undefined
+export const password = (value) => !passwordRegEx.test(value) ? STRINGS.VALIDATIONS.INVALID_PASSWORD : undefined
 
 export const validAddress = (symbol = '', message) => {
   const currency = symbol.toUpperCase();
   return (address) => {
     const valid = WAValidator.validate(address, currency, NETWORK);
-    return !valid ? (message || STRINGS.formatString(VALIDATIONS.INVALID_CURRENCY, currency, address)) : undefined;
+    return !valid ? (message || STRINGS.formatString(STRINGS.VALIDATIONS.INVALID_CURRENCY, currency, address)) : undefined;
   }
 }
 
-export const minValue = (minValue, message) => (value) => value < minValue ? (message || STRINGS.formatString(VALIDATIONS.MIN_VALUE, minValue)) : undefined;
-export const maxValue = (maxValue, message) => (value) => value > maxValue ? (message || STRINGS.formatString(VALIDATIONS.MAX_VALUE, maxValue)) : undefined;
+export const minValue = (minValue, message) => (value) => value < minValue ? (message || STRINGS.formatString(STRINGS.VALIDATIONS.MIN_VALUE, minValue)) : undefined;
+export const maxValue = (maxValue, message) => (value) => value > maxValue ? (message || STRINGS.formatString(STRINGS.VALIDATIONS.MAX_VALUE, maxValue)) : undefined;
 
 export const checkBalance = (available, message, fee = 0) => (value = 0) => {
   const operation = fee > 0 ?
@@ -45,7 +38,7 @@ export const checkBalance = (available, message, fee = 0) => (value = 0) => {
     value;
 
   if (operation > available) {
-    const errorMessage = (message || STRINGS.formatString(VALIDATIONS.INVALID_BALANCE, available, operation));
+    const errorMessage = (message || STRINGS.formatString(STRINGS.VALIDATIONS.INVALID_BALANCE, available, operation));
     return errorMessage;
   }
   return undefined;
@@ -70,8 +63,8 @@ export const evaluateOrder = (symbol = '', balance = {}, order = {}, orderType =
     }
   }
 
-  if (available === 0 || available < orderPrice) {
-    return VALIDATIONS.INSUFFICIENT_BALANCE;
+  if (available === 0 && orderPrice > 0 || available < orderPrice) {
+    return STRINGS.VALIDATIONS.INSUFFICIENT_BALANCE;
   }
   return '';
 }
@@ -100,7 +93,7 @@ export const checkMarketPrice = (size, orders = [], type, side,  orderPrice) => 
   return accumulated;
 }
 
-export const isBefore = (before = '', message = ERROR_MESSAGE_BEFORE_DATE) => {
+export const isBefore = (before = '', message = STRINGS.VALIDATIONS.INVALID_DATE) => {
   const beforeDate = before ? new Date(before) : new Date();
   const beforeValue = beforeDate.toString();
   return (value = '') => {

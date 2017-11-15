@@ -35,13 +35,5 @@ export const OHLCProps = {
   origin: [0, -25],
   xDisplayFormat: timeFormat("%Y-%m-%d %H:%M:%S"),
   ohlcFormat: (value) => value,
-  displayTexts: {
-    d: 'Date',
-    o: 'Open',
-    h: 'High',
-    l: 'Low',
-    c: 'Close',
-    v: 'Volume',
-  },
   children: OHLCChildren,
 }
