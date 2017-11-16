@@ -221,9 +221,11 @@ class Container extends Component {
          this.props.addUserTrades(data);
 					break;
 				case 'deposit':
+					const show = data.status || data.currency !== 'fiat';
 					this.props.setNotification(
 						NOTIFICATIONS.DEPOSIT,
-						data
+						data,
+						show
 					);
 					break;
 				case 'withdrawal':

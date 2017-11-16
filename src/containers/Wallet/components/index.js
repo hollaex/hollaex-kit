@@ -15,11 +15,12 @@ const TEXT_NEED_HELP = 'need help';
 
 export const renderDumbField = (data) => <DumbField {...data} />;
 
-export const renderBankInformation = ({ bank_name, account_number, account_owner }) => {
+export const renderBankInformation = ({ bank_name, account_number, account_owner }, fullWidth = false) => {
+  const allowCopy = true;
   const fields = [
-    { label: TEXT_BANK_NAME, value: bank_name, key: 'bank_name', allowCopy: true },
-    { label: TEXT_ACCOUNT_OWNER, value: account_owner, key: 'account_owner', allowCopy: true },
-    { label: TEXT_ACCOUNT_NUMBER, value: account_number, key: 'account_number', allowCopy: true },
+    { label: TEXT_BANK_NAME, value: bank_name, key: 'bank_name', allowCopy, fullWidth },
+    { label: TEXT_ACCOUNT_OWNER, value: account_owner, key: 'account_owner', allowCopy, fullWidth },
+    { label: TEXT_ACCOUNT_NUMBER, value: account_number, key: 'account_number', allowCopy, fullWidth },
   ];
 
   return (
@@ -68,7 +69,6 @@ export const renderInformation = (symbol, balance, openContactForm, generateFiat
       <div className="information_block-text_wrapper">
         {renderTitle(symbol, 'withdraw')}
         {renderAvailableBalanceText(symbol, balance)}
-        {symbol === fiatSymbol && generateFiatInformation(CURRENCIES[fiatSymbol])}
       </div>
       {openContactForm && renderNeedHelpAction(openContactForm)}
     </div>

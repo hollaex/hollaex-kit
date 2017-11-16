@@ -19,6 +19,7 @@ const ENDPOINTS = {
   TRADES: '/user/trades',
   DEPOSITS: '/user/deposits',
   WITHDRAWALS: '/user/withdrawals',
+  DEPOSIT_BANK: '/user/deposit/bank',
 }
 
 export const performDeposit = (values) => {
@@ -27,6 +28,10 @@ export const performDeposit = (values) => {
 
 export const performWithdraw = (values) => {
   return axios.post('/withdraw', values);
+}
+
+export const requestFiatDeposit = (amount) => {
+  return axios.get(`${ENDPOINTS.DEPOSIT_BANK}?amount=${amount}`);
 }
 
 export const addUserTrades = (trades) => ({

@@ -27,11 +27,14 @@ const reducer = (state = INITIAL_STATE, { type, payload = {}}) => {
       const notificationsQueue = [].concat(state.notificationsQueue);
       let activeNotification = { ...state.activeNotification };
 
-      if (state.activeNotification.type !== '') {
-        notificationsQueue.push(payload);
-      } else {
-        activeNotification = { ...payload };
+      if (payload.show) {
+        if (state.activeNotification.type !== '') {
+          notificationsQueue.push(payload);
+        } else {
+          activeNotification = { ...payload };
+        }
       }
+      
       return {
         ...state,
         notifications,

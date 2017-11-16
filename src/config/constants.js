@@ -89,6 +89,14 @@ export const LIMIT_VALUES = {
   }
 };
 
+export const DEPOSIT_LIMITS = {
+  fiat: {
+    DAILY: 100000,
+    MIN: 1000,
+    MAX: 100000,
+  }
+};
+
 export const TOKEN_KEY = `${ENV}_${NETWORK}_TOKEN`;
 export const LANGUAGE_KEY = `${ENV}_${NETWORK}_LANGUAGE`;
 
@@ -97,3 +105,5 @@ export const BANK_INFORMATION = {
   account_owner: process.env.ACCOUNT_OWNER || 'Bank Melli',
   account_number: process.env.ACCOUNT_NUMBER || '2313-0631-2313-3121',
 };
+
+export const BANK_PAYMENT_LINK = 'https://api.moneyar.com/IPG/default.aspx?uid=';

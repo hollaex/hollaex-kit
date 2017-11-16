@@ -13,11 +13,12 @@ export const NOTIFICATIONS = {
 export const CONTACT_FORM = 'CONTACT_FORM';
 export const CHANGE_LANGUAGE = 'CHANGE_LANGUAGE';
 
-export const setNotification = (type = '', data = {}) => ({
+export const setNotification = (type = '', data = {}, show = true) => ({
   type: SET_NOTIFICATION,
   payload: {
     type,
     data,
+    show,
     timestamp: Date.now(),
   }
 });
