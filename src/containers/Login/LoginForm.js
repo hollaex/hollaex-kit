@@ -1,34 +1,36 @@
 import React from 'react';
 import { reduxForm } from 'redux-form';
 import { required, password, email } from '../../components/Form/validations';
-import { TEXTS } from './constants';
 import { AuthForm } from '../../components';
 
-const { FIELDS, BUTTON } = TEXTS.FORM;
+import STRINGS from '../../config/localizedStrings';
 
-const FormFields = {
-  email: {
-    type: 'email',
-    validate: [required, email],
-    fullWidth: true,
-    ...FIELDS.email,
-  },
-  password: {
-    type: 'password',
-    validate: [required, password],
-    fullWidth: true,
-    ...FIELDS.password,
-  }
-};
+const Form = (props) => {
+  const FormFields = {
+    email: {
+      type: 'email',
+      validate: [required, email],
+      fullWidth: true,
+      label: STRINGS.FORM_FIELDS.EMAIL_LABEL,
+      placeholder: STRINGS.FORM_FIELDS.EMAIL_PLACEHOLDER,
+    },
+    password: {
+      type: 'password',
+      validate: [required, password],
+      fullWidth: true,
+      label: STRINGS.FORM_FIELDS.PASSWORD_LABEL,
+      placeholder: STRINGS.FORM_FIELDS.PASSWORD_PLACEHOLDER,
+    }
+  };
 
-const Form = (props) => (
-  <AuthForm
-    {...props}
-    formFields={FormFields}
-    buttonLabel={BUTTON}
-  />
-);
-
+  return (
+    <AuthForm
+      {...props}
+      formFields={FormFields}
+      buttonLabel={STRINGS.LOGIN_TEXT}
+    />
+  );
+}
 export default reduxForm({
   form: 'LoginForm',
 })(Form);
