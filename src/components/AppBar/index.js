@@ -106,7 +106,7 @@ class AppBar extends Component {
           <Link to='/login'>{STRINGS.LOGIN_TEXT}</Link>
         </div>
         <div className={classnames(...COMMON_CLASSES, 'contrast')}>
-          <Link to='/signup'>{STRINGS.IGNUP_TEXT}</Link>
+          <Link to='/signup'>{STRINGS.SIGNUP_TEXT}</Link>
         </div>
       </div>
     );
@@ -116,7 +116,7 @@ class AppBar extends Component {
     const {
       title, goToAccountPage, goToDashboard, acccountIsActive, activeSymbol, noBorders, token, verifyingToken, goToQuickTrade, changeLanguage, activeLanguage,
     } = this.props;
-    
+
     return (
       <div className={classnames('app_bar', { 'no-borders': noBorders })}>
         <div className={classnames('app_bar-icon', 'text-uppercase', 'contrast', { pointer: !!goToDashboard })} onClick={goToDashboard}>

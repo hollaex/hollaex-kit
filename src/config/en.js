@@ -208,7 +208,7 @@ export default {
    OTP_HELP: 'help',
    OTP_BUTTON: 'submit',
  },
- QUICK_TRADE: {
+ QUICK_TRADE_COMPONENT: {
    TITLE: 'Quick',
    TOTAL_COST: 'Total cost',
    BUTTON: 'Review {0} order',
