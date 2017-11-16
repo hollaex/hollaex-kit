@@ -13,6 +13,9 @@ export const ACTION_KEYS = {
   USER_WITHDRAWALS_PENDING: 'USER_WITHDRAWALS_PENDING',
   USER_WITHDRAWALS_FULFILLED: 'USER_WITHDRAWALS_FULFILLED',
   USER_WITHDRAWALS_REJECTED: 'USER_WITHDRAWALS_REJECTED',
+  DEPOSIT_VERIFICATION_PENDING: 'DEPOSIT_VERIFICATION_PENDING',
+  DEPOSIT_VERIFICATION_FULFILLED: 'DEPOSIT_VERIFICATION_FULFILLED',
+  DEPOSIT_VERIFICATION_REJECTED: 'DEPOSIT_VERIFICATION_REJECTED',
 }
 
 const ENDPOINTS = {
@@ -32,6 +35,26 @@ export const performWithdraw = (values) => {
 
 export const requestFiatDeposit = (amount) => {
   return axios.get(`${ENDPOINTS.DEPOSIT_BANK}?amount=${amount}`);
+}
+
+export const verifyFiatDeposit = (deposit_id, status) => {
+  return ((dispatch) => {
+		dispatch({ type: ACTION_KEYS.DEPOSIT_VERIFICATION_PENDING });
+		axios.get(`${ENDPOINTS.DEPOSIT_BANK}/${deposit_id}?status=${status}`)
+			.then((body) => {
+				dispatch({
+				    type: ACTION_KEYS.DEPOSIT_VERIFICATION_FULFILLED,
+				    payload: body.data,
+				});
+			})
+			.catch((err) => {
+        const payload = err.response.data || { message: err.message };
+				dispatch({
+				    type: ACTION_KEYS.DEPOSIT_VERIFICATION_REJECTED,
+				    payload
+				});
+			})
+	});
 }
 
 export const addUserTrades = (trades) => ({

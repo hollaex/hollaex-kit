@@ -8,10 +8,12 @@ const INITIAL_API_OBJECT = {
   error: '',
 };
 
-
-const sortByDate = (a, b) => {
-	return new Date(a) <= new Date(b);
-}
+const INITIAL_VERIFICATION_OBJECT = {
+	loading: false,
+	ready: false,
+	message: '',
+	error: '',
+};
 
 const joinData = (stateData = [], payloadData = []) => stateData.concat(payloadData);
 
@@ -19,6 +21,7 @@ const INITIAL_STATE = {
   trades: INITIAL_API_OBJECT,
   deposits: INITIAL_API_OBJECT,
 	withdrawals: INITIAL_API_OBJECT,
+	depositVerification: INITIAL_VERIFICATION_OBJECT,
 };
 
 export default function reducer(state = INITIAL_STATE, { type, payload }) {
@@ -71,7 +74,32 @@ export default function reducer(state = INITIAL_STATE, { type, payload }) {
 			}
 		}
 
-
+		// DEPOSIT VERIFICATION
+		case ACTION_KEYS.DEPOSIT_VERIFICATION_PENDING:
+			return {
+				...state,
+				depositVerification: {
+					...INITIAL_VERIFICATION_OBJECT,
+					loading: true,
+				},
+			};
+		case ACTION_KEYS.DEPOSIT_VERIFICATION_FULFILLED:
+			return {
+				...state,
+				depositVerification: {
+					...INITIAL_VERIFICATION_OBJECT,
+					ready: true,
+					message: payload.message,
+				},
+			};
+		case ACTION_KEYS.DEPOSIT_VERIFICATION_REJECTED:
+			return {
+				...state,
+				depositVerification: {
+					...INITIAL_VERIFICATION_OBJECT,
+					error: payload.message,
+				},
+			};
 		// USER_TRADES
 		case ACTION_KEYS.USER_DEPOSITS_PENDING: {
 	    const { page = 1 } = payload;

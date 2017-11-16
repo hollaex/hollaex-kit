@@ -525,5 +525,12 @@ export default {
   DEPOSIT_METHOD_DIRECT_PAYMENT: 'Credit card',
   DEPOSIT_METHOD_DIRECT_PAYMENT_MESSAGE_1: 'Proceed to the credit card payment method.',
   DEPOSIT_METHOD_DIRECT_PAYMENT_MESSAGE_2: 'You will leave the platform to perform the payment.',
-  DEPOSIT_METHOD_MANUAL_TRANSFER: 'Bank Transfer'
+  DEPOSIT_VERIFICATION_WAITING_TITLE: 'Verifiying the payment',
+  DEPOSIT_VERIFICATION_WAITING_MESSAGE: 'Please do not close the application while the paymen is being verified',
+  DEPOSIT_VERIFICATION_WARNING_MESSAGE: 'If something went wrong in the verification, please contact us.',
+  DEPOSIT_VERIFICATION_WARNING_INFORMATION: 'This is the ID of the operation: "{0}", please provide us this ID to help you.',
+  DEPOSIT_VERIFICATION_SUCCESS: 'Payment verified',
+  DEPOSIT_VERIFICATION_ERROR: 'There has been an error verifying the deposit.',
+  DEPOSIT_VERIFICATION_ERROR_VERIFIED: 'The deposit has been already verified',
+  DEPOSIT_VERIFICATION_ERROR_STATUS: 'Invalid status',
 };

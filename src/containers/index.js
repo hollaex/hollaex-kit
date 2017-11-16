@@ -6,6 +6,7 @@ export { default as ContactForm } from './ContactForm';
 export { default as Account } from './Account';
 export { default as Wallet } from './Wallet';
 export { default as Deposit } from './Deposit';
+export { default as DepositVerification } from './Deposit/Verification';
 export { default as Withdraw } from './Withdraw';
 export { default as TransactionsHistory } from './TransactionsHistory';
 export { default as Login } from './Login';
