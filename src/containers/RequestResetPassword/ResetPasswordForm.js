@@ -19,7 +19,7 @@ const Form = (props) => (
   <AuthForm
     {...props}
     formFields={FormFields}
-    buttonLabel={BUTTON}
+    buttonLabel={TEXTS.BUTTON}
   />
 );
 

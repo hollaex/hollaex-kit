@@ -97,5 +97,10 @@ $placeholder--font-weight: bold;
   margin: 1rem 0;
   .checkfield-label {
     padding: 0 0.25rem;
+    margin-bottom: 0;
+    vertical-align: middle;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 }
