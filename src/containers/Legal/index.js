@@ -4,7 +4,7 @@ import { Legal } from '../../components';
 
 const LegalPage = ({ route: { content = '' } }) => {
   return (
-    <div style={{ width: '100%' }}>
+    <div className="legal-container">
       {content && <Legal type={content} />}
     </div>
   );
