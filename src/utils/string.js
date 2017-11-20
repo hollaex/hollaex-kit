@@ -24,25 +24,18 @@ export const getLanguageFromString = (value = '') => {
   return value;
 }
 
-const AVAILABLE_LENGUAGES = STRINGS.getAvailableLanguages();
-
-const getValidLanguage = (lang) => {
-	const language = getLanguageFromString(lang);
-	if (AVAILABLE_LENGUAGES.indexOf(language) > -1) {
-		return language;
-	}
-	return AVAILABLE_LENGUAGES[0];
-}
+const AVAILABLE_LENGUAGES = STRINGS.getAvailableLanguages().map(getLanguageFromString);
 
 export const getLanguage = () => {
-  const lang = localStorage.getItem(LANGUAGE_KEY);
-	const language = getValidLanguage(lang);
-	STRINGS.setLanguage(language);
+  const language = localStorage.getItem(LANGUAGE_KEY);
+
+	if (!language) {
+		return AVAILABLE_LENGUAGES[0];
+	}
 	return language;
 }
 
-export const setLanguage = (lang) => {
-	const language = getValidLanguage(lang);
+export const setLanguage = (language) => {
 	STRINGS.setLanguage(language);
   localStorage.setItem(LANGUAGE_KEY, language);
 	return language;
