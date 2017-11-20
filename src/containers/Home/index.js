@@ -10,8 +10,6 @@ import { AppBar, Footer } from '../../components';
 import { requestQuickTrade } from '../../actions/orderbookAction';
 import { setLanguage } from '../../actions/appActions';
 
-import { TEXTS } from './constants';
-
 import Section1 from './Section1';
 import Section2 from './Section2';
 import Section3 from './Section3';
@@ -87,7 +85,7 @@ class Home extends Component {
     const { style } = this.state;
 
     return (
-      <div className={classnames('app_container', 'home_container', 'app_background')}>
+      <div className={classnames('app_container', 'home_container', 'app_background', { 'language_rtl': activeLanguage })}>
         <EventListener
           target="window"
           onResize={this.onResize}

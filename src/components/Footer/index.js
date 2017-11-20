@@ -1,7 +1,64 @@
 import React from 'react';
 import classnames from 'classnames';
 import { Link } from 'react-router';
-import { TEXTS } from './constants';
+
+import { SOCIAL_ICONS } from '../../config/constants';
+import STRINGS from '../../config/localizedStrings';
+
+const LINKS = [
+  { icon: SOCIAL_ICONS.FACEBOOK, link: '', type: 'facebook' },
+  { icon: SOCIAL_ICONS.TWIITER, link: '', type: 'twitter' },
+  { icon: SOCIAL_ICONS.LINKEDIN, link: '', type: 'linkedin' },
+];
+
+const generateSectionsText = (strings) => {
+  const { SECTIONS } = strings.FOOTER;
+  return [
+    {
+      TITLE: SECTIONS.SECTION_1_TITLE,
+      LINKS: [
+        { text: SECTIONS.SECTION_1_LINK_1, link: '' },
+        { text: SECTIONS.SECTION_1_LINK_2, link: '' },
+        { text: SECTIONS.SECTION_1_LINK_3, link: '' },
+        { text: SECTIONS.SECTION_1_LINK_4, link: '' },
+        { text: SECTIONS.SECTION_1_LINK_5, link: '' },
+      ],
+    },
+    {
+      TITLE: SECTIONS.SECTION_2_TITLE,
+      LINKS: [
+        { text: SECTIONS.SECTION_2_LINK_1, link: '' },
+        { text: SECTIONS.SECTION_2_LINK_2, link: '' },
+        { text: SECTIONS.SECTION_2_LINK_3, link: '' },
+        { text: SECTIONS.SECTION_2_LINK_4, link: '' },
+        { text: SECTIONS.SECTION_2_LINK_5, link: '' },
+      ],
+    },
+    {
+      TITLE: SECTIONS.SECTION_3_TITLE,
+      LINKS: [
+        { text: SECTIONS.SECTION_3_LINK_1, link: '' },
+        { text: SECTIONS.SECTION_3_LINK_2, link: '' },
+        { text: SECTIONS.SECTION_3_LINK_3, link: '' },
+        { text: SECTIONS.SECTION_3_LINK_4, link: '' },
+        { text: SECTIONS.SECTION_3_LINK_5, link: '' },
+        { text: SECTIONS.SECTION_3_LINK_6, link: '' },
+      ],
+    },
+    {
+      TITLE: SECTIONS.SECTION_4_TITLE,
+      LINKS: [
+        { text: SECTIONS.SECTION_4_LINK_1, link: '' },
+        { text: SECTIONS.SECTION_4_LINK_2, link: '' },
+        { text: SECTIONS.SECTION_4_LINK_3, link: '' },
+        { text: SECTIONS.SECTION_4_LINK_4, link: '' },
+        { text: SECTIONS.SECTION_4_LINK_5, link: '' },
+        { text: SECTIONS.SECTION_4_LINK_6, link: '' },
+        { text: SECTIONS.SECTION_4_LINK_7, link: '' },
+      ],
+    },
+  ];
+}
 
 const Footer = ({ title, status, className, onChangeLanguage, activeLanguage }) => {
   console.log(activeLanguage);
@@ -9,7 +66,7 @@ const Footer = ({ title, status, className, onChangeLanguage, activeLanguage }) 
     <div className={classnames('footer-container', 'd-flex', 'flex-column', className)}>
       <div className={classnames('d-flex', 'justify-content-around', 'footer-row-content')}>
         <div className={classnames('d-flex', 'justify-content-center', 'align-items-start', 'footer-links-section')}>
-          {TEXTS.SECTIONS.map(({ TITLE, LINKS }, index) => (
+          {generateSectionsText(STRINGS).map(({ TITLE, LINKS }, index) => (
             <div key={index} className={classnames('d-flex', 'flex-column', 'footer-links-group')}>
               <div className="footer-links-section--title">{TITLE}</div>
               <div className={classnames('d-flex', 'flex-column', 'footer-links-section--list')}>
@@ -21,12 +78,12 @@ const Footer = ({ title, status, className, onChangeLanguage, activeLanguage }) 
 
         <div className={classnames('d-flex', 'justify-content-center', 'footer-public-section', 'flex-column')}>
           <div className="footer-public-texts">
-            {TEXTS.PUBLIC.TEXTS.map((text, index) => (
+            {STRINGS.FOOTER.FOOTER_LEGAL.map((text, index) => (
               <div key={index} className="footer-public-texts-text">{text}</div>
             ))}
           </div>
           <div className="footer-public-links d-flex">
-            {TEXTS.PUBLIC.LINKS.map(({ icon, link, type }, index) => (
+            {LINKS.map(({ icon, link, type }, index) => (
               <Link to={link || '#'} key={index}>
                 <img src={icon} alt={type} className="footer-public-links-icon" />
               </Link>
@@ -36,8 +93,8 @@ const Footer = ({ title, status, className, onChangeLanguage, activeLanguage }) 
       </div>
       <div className={classnames('d-flex', 'justify-content-between', 'footer-row-bottom', 'f-1')}>
         <div className="d-flex">
-          <span className="text-weight-bold">{TEXTS.LANGUAGE.TEXT}:</span>
-          {TEXTS.LANGUAGE.LANGUAGES.map(({key, label}, index) => (
+          <span className="text-weight-bold">{STRINGS.FOOTER.FOOTER_LANGUAGE_TEXT}:</span>
+          {STRINGS.FOOTER.FOOTER_LANGUAGE_LANGUAGES.map(({key, label}, index) => (
             <div
               key={key}
               onClick={onChangeLanguage(key)}
@@ -47,7 +104,7 @@ const Footer = ({ title, status, className, onChangeLanguage, activeLanguage }) 
             </div>
           ))}
         </div>
-        <div>{TEXTS.COPYRIGHT}</div>
+        <div>{STRINGS.FOOTER.FOOTER_COPYRIGHT}</div>
       </div>
     </div>
   )

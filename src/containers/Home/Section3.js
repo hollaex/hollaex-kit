@@ -1,13 +1,47 @@
 import React from 'react';
 import classnames from 'classnames';
+import STRINGS from '../../config/localizedStrings';
 
 import {
-  FLEX_CENTER_CLASSES,
+  FLEX_CENTER_CLASSES, ICONS, 
 } from '../../config/constants';
 
-import { TEXTS, BUTTONS_CLASSES } from './constants';
+const BUTTONS_CLASSES = ['buttons-section--button', ...FLEX_CENTER_CLASSES];
 
-const { SECTION_3 } = TEXTS;
+const generateCardsContentFromStrings = (strings) => {
+  return [
+    {
+      icon: ICONS.CHECK,
+      title: STRINGS.HOME.SECTION_3_CARD_1_TITLE,
+      text: STRINGS.HOME.SECTION_3_CARD_1_TEXT,
+    },
+    {
+      icon: ICONS.CHECK,
+      title: STRINGS.HOME.SECTION_3_CARD_2_TITLE,
+      text: STRINGS.HOME.SECTION_3_CARD_2_TEXT,
+    },
+    {
+      icon: ICONS.CHECK,
+      title: STRINGS.HOME.SECTION_3_CARD_3_TITLE,
+      text: STRINGS.HOME.SECTION_3_CARD_3_TEXT,
+    },
+    {
+      icon: ICONS.CHECK,
+      title: STRINGS.HOME.SECTION_3_CARD_4_TITLE,
+      text: STRINGS.HOME.SECTION_3_CARD_4_TEXT,
+    },
+    {
+      icon: ICONS.CHECK,
+      title: STRINGS.HOME.SECTION_3_CARD_5_TITLE,
+      text: STRINGS.HOME.SECTION_3_CARD_5_TEXT,
+    },
+    {
+      icon: ICONS.CHECK,
+      title: STRINGS.HOME.SECTION_3_CARD_6_TITLE,
+      text: STRINGS.HOME.SECTION_3_CARD_6_TEXT,
+    },
+  ];
+}
 
 const Card = ({ icon, title, text }) => (
   <div className={classnames(...FLEX_CENTER_CLASSES, 'home-card-container')}>
@@ -29,22 +63,22 @@ const Section = ({
     className={classnames(...FLEX_CENTER_CLASSES, 'flex-column', 'features-container')}
     style={style}
   >
-    <div className="text-center features-title">{SECTION_3.TITLE}</div>
+    <div className="text-center features-title">{STRINGS.HOME.SECTION_3_TITLE}</div>
     <div className="features-card_container d-flex flex-wrap justify-content-center">
-      {SECTION_3.CARDS.map((card, index) => <Card {...card} key={index} />)}
+      {generateCardsContentFromStrings(STRINGS).map((card, index) => <Card {...card} key={index} />)}
     </div>
     <div className={classnames('buttons-section', ...FLEX_CENTER_CLASSES)}>
       <div
         className={classnames(...BUTTONS_CLASSES, { pointer: onClickDemo })}
         onClick={onClickDemo}
       >
-        {SECTION_3.BUTTON_1}
+        {STRINGS.HOME.SECTION_3_BUTTON_1}
       </div>
       {!token && <div
         className={classnames(...BUTTONS_CLASSES, 'contrast', { pointer: onClickRegister })}
         onClick={onClickRegister}
       >
-        {SECTION_3.BUTTON_2}
+        {STRINGS.REGISTER_TEXT}
       </div>}
     </div>
   </div>

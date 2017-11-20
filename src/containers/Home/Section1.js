@@ -1,36 +1,35 @@
 import React from 'react';
 import classnames from 'classnames';
+import STRINGS from '../../config/localizedStrings';
 
 import {
   FLEX_CENTER_CLASSES,
 } from '../../config/constants';
 
-import { TEXTS, BUTTONS_CLASSES } from './constants';
-
-const { SECTION_1 } = TEXTS;
+const BUTTONS_CLASSES = ['buttons-section--button', ...FLEX_CENTER_CLASSES];
 
 const Section1 = ({
   style = {}, onClickScrollTo = () => {}, onClickRegister, onClickLearnMore, token
 }) => (
   <div className={classnames(...FLEX_CENTER_CLASSES, 'flex-column', 'section_1-content')} style={style}>
     <div className={classnames('f-1', ...FLEX_CENTER_CLASSES, 'flex-column')}>
-      <div className="home-title">{SECTION_1.TITLE}</div>
+      <div className="home-title">{STRINGS.HOME.SECTION_1_TITLE}</div>
       <div className="text-section text-center">
-        <div>{SECTION_1.TEXT_1}</div>
-        <div>{SECTION_1.TEXT_2}</div>
+        <div>{STRINGS.HOME.SECTION_1_TEXT_1}</div>
+        <div>{STRINGS.HOME.SECTION_1_TEXT_2}</div>
       </div>
       <div className={classnames('buttons-section', ...FLEX_CENTER_CLASSES)}>
         <div
           className={classnames(...BUTTONS_CLASSES, { pointer: onClickLearnMore })}
           onClick={onClickLearnMore}
         >
-          {SECTION_1.BUTTON_1}
+          {STRINGS.HOME.SECTION_1_BUTTON_1}
         </div>
         {!token && <div
           className={classnames(...BUTTONS_CLASSES, 'contrast', { pointer: onClickRegister })}
           onClick={onClickRegister}
         >
-          {SECTION_1.BUTTON_2}
+          {STRINGS.REGISTER_TEXT}
         </div>}
       </div>
     </div>
