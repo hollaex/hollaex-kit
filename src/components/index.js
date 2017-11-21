@@ -23,4 +23,5 @@ export { default as DisplayTable } from './DisplayTable';
 export { default as QuickTrade } from './QuickTrade';
 export { default as Legal } from './Legal';
 export { default as AuthForm } from './Form/AuthForm';
+export { default as HocForm } from './Form/HocForm';
 export { CandleChart, AreaChart } from './Chart';

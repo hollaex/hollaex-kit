@@ -1,61 +1,70 @@
-import React from 'react';
-import createForm from '../../components/Form';
+import React, { Component } from 'react';
+import { SubmissionError } from 'redux-form';
+import { HocForm } from '../../components';
 import { email, required } from '../../components/Form/validations';
+import STRINGS from '../../config/localizedStrings';
+import { sendSupportMail } from '../../actions/appActions';
 
-import { TEXTS } from './constants';
+const FORM_NAME = 'ContactForm';
+
+const ContactForm = HocForm(FORM_NAME);
 
 export default ({ onSubmitSuccess }) => {
-  const fields = {
+  const formFields = {
     email: {
       type: 'email',
-      label: TEXTS.EMAIL_LABEL,
-      placeholder: TEXTS.EMAIL_PLACEHOLDER,
+      label: STRINGS.FORM_FIELDS.EMAIL_LABEL,
+      placeholder: STRINGS.FORM_FIELDS.EMAIL_PLACEHOLDER,
       validate: [required, email],
       fullWidth: true,
     },
     category: {
       type: 'select',
-      label: TEXTS.CATEGORY_LABEL,
-      placeholder: TEXTS.CATEGORY_PLACEHOLDER,
+      label: STRINGS.CONTACT_FORM.CATEGORY_LABEL,
+      placeholder: STRINGS.CONTACT_FORM.CATEGORY_PLACEHOLDER,
       options: [
-        { value: 'verify', label: TEXTS.CATEGORY_OPTIONS.OPTION_VERIFY },
-        { value: 'bug', label: TEXTS.CATEGORY_OPTIONS.OPTION_BUG },
+        { value: 'verify', label: STRINGS.CONTACT_FORM.CATEGORY_OPTIONS.OPTION_VERIFY },
+        { value: 'bug', label: STRINGS.CONTACT_FORM.CATEGORY_OPTIONS.OPTION_BUG },
       ],
       validate: [required],
       fullWidth: true,
     },
     subject: {
       type: 'text',
-      label: TEXTS.SUBJECT_LABEL,
-      placeholder: TEXTS.SUBJECT_PLACEHOLDER,
+      label: STRINGS.CONTACT_FORM.SUBJECT_LABEL,
+      placeholder: STRINGS.CONTACT_FORM.SUBJECT_PLACEHOLDER,
       validate: [required],
       fullWidth: true,
     },
     description: {
       type: 'text',
-      label: TEXTS.SUBJECT_LABEL,
-      placeholder: TEXTS.SUBJECT_PLACEHOLDER,
+      label: STRINGS.CONTACT_FORM.DESCRIPTION_LABEL,
+      placeholder: STRINGS.CONTACT_FORM.DESCRIPTION_PLACEHOLDER,
       validate: [required],
       fullWidth: true,
     },
     attachment: {
       type: 'file',
-      label: TEXTS.ATTACHMENT_LABEL,
-      placeholder: TEXTS.ATTACHMENT_PLACEHOLDER,
+      label: STRINGS.CONTACT_FORM.ATTACHMENT_LABEL,
+      placeholder: STRINGS.CONTACT_FORM.ATTACHMENT_PLACEHOLDER,
       fullWidth: true,
     }
   };
 
   const onSubmit = (values) => {
-    // TODO
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        onSubmitSuccess();
-        resolve();
-      }, 2500)
-    })
+    return sendSupportMail(values)
+      .then((data) => {
+        onSubmitSuccess(data)
+      })
+      .catch((err) => {
+        const _error = err.response.data ? err.response.data.message : err.message;
+        throw new SubmissionError({ _error });
+      });
   }
 
-  const Form = createForm('ContactForm', fields, onSubmit, 'Submit');
-  return <Form />
+  return <ContactForm
+    onSubmit={onSubmit}
+    formFields={formFields}
+    buttonLabel={STRINGS.CONTACT_US_TEXT}
+  />
 }

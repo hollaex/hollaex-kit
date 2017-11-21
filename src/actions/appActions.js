@@ -1,5 +1,6 @@
 import STRINGS from '../config/localizedStrings';
 import { setLanguage as storeLanguageInBrowser, getLanguageFromString } from '../utils/string';
+import axios from 'axios';
 
 export const SET_NOTIFICATION = 'SET_NOTIFICATION';
 export const CLOSE_NOTIFICATION = 'CLOSE_NOTIFICATION';
@@ -40,4 +41,8 @@ export const setLanguage = (value = 'en') => {
       language,
     }
   }
+}
+
+export const sendSupportMail = (values = {}) => {
+  return axios.post('/support', values);
 }
