@@ -85,7 +85,7 @@ class Home extends Component {
     const { style } = this.state;
 
     return (
-      <div className={classnames('app_container', 'home_container', 'app_background', { 'language_rtl': activeLanguage })}>
+      <div className={classnames('app_container', 'home_container', 'app_background', { 'language_rtl': activeLanguage === 'fa' })}>
         <EventListener
           target="window"
           onResize={this.onResize}

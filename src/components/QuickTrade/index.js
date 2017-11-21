@@ -4,7 +4,8 @@ import math from 'mathjs';
 import { debounce } from 'lodash';
 import { Button } from '../../components';
 
-import { ICONS, CURRENCIES, LIMIT_VALUES } from '../../config/constants';
+import STRINGS from '../../config/localizedStrings';
+import { ICONS, CURRENCIES, LIMIT_VALUES, FLEX_CENTER_CLASSES } from '../../config/constants';
 import { fiatShortName, fiatFormatToCurrency, fiatSymbol } from '../../utils/currency';
 
 import ToogleButton from './ToogleButton';
@@ -12,12 +13,11 @@ import ReviewBlock from './ReviewBlock';
 import InputBlock from './InputBlock';
 
 import {
-  GROUP_CLASSES,
-  TEXTS,
-  SIDES,
   DECIMALS,
   DEFAULT_SYMBOL,
 } from './constants';
+
+const GROUP_CLASSES = [...FLEX_CENTER_CLASSES, 'flex-column'];
 
 const generateStyle = (value) => ({
   input:{
@@ -27,7 +27,7 @@ const generateStyle = (value) => ({
 
 class QuickTrade extends Component {
   state = {
-    side: SIDES[0],
+    side: STRINGS.QUICK_TRADE_COMPONENT.SIDES[0],
     value: 1,
     symbol: DEFAULT_SYMBOL,
     inputStyle: generateStyle(2),
@@ -58,6 +58,8 @@ class QuickTrade extends Component {
   }
 
   onToogleSide = () => {
+    const SIDES = STRINGS.QUICK_TRADE_COMPONENT.SIDES;
+
     const side = this.state.side === SIDES[0] ? SIDES[1] : SIDES[0];
     this.setState({ side });
     this.requestValue({
@@ -103,11 +105,11 @@ class QuickTrade extends Component {
       <div className={classnames('quick_trade-wrapper', ...GROUP_CLASSES)}>
         <div className={classnames('quick_trade-section_wrapper', ...GROUP_CLASSES)}>
           <img src={ICONS.CHECK} alt="" />
-          <div className="title">{`${TEXTS.TITLE} ${side}`}</div>
+          <div className="title">{`${STRINGS.QUICK_TRADE_COMPONENT.TITLE} ${side}`}</div>
         </div>
         <div className={classnames('quick_trade-section_wrapper', ...GROUP_CLASSES)}>
           <ToogleButton
-            values={SIDES}
+            values={STRINGS.QUICK_TRADE_COMPONENT.SIDES}
             onToogle={this.onToogleSide}
             selected={side}
           />
@@ -116,7 +118,7 @@ class QuickTrade extends Component {
           <InputBlock
             onChange={this.onChangeValue}
             value={value}
-            text={TEXTS.INPUT(name, side)}
+            text={STRINGS.formatString(STRINGS.QUICK_TRADE_COMPONENT.INPUT, name, side)}
             symbol={symbol}
             inputStyle={inputStyle}
             format={this.format}
@@ -125,13 +127,13 @@ class QuickTrade extends Component {
         </div>
         <div className={classnames('quick_trade-section_wrapper', ...GROUP_CLASSES, { fetching })}>
           <ReviewBlock
-            text={TEXTS.TOTAL_COST}
+            text={STRINGS.QUICK_TRADE_COMPONENT.TOTAL_COST}
             value={data.price || 0}
           />
         </div>
         <div className={classnames('quick_trade-section_wrapper', ...GROUP_CLASSES)}>
           <Button
-            label={TEXTS.BUTTON(side)}
+            label={STRINGS.formatString(STRINGS.QUICK_TRADE_COMPONENT.BUTTON, side).join(' ')}
             onClick={onReviewQuickTrade}
             disabled={!onReviewQuickTrade}
           />
