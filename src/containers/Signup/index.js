@@ -3,17 +3,18 @@ import classnames from 'classnames';
 import { Link } from 'react-router';
 import { SubmissionError } from 'redux-form';
 import { performSignup } from '../../actions/authAction';
-import SignupForm from './SignupForm';
+import SignupForm, { generateFormFields } from './SignupForm';
 import SignupSuccess from './SignupSuccess';
-import { IconTitle } from '../../components';
+import { ContactForm } from '../';
+import { IconTitle, Dialog } from '../../components';
 import { EXIR_LOGO, FLEX_CENTER_CLASSES, ICONS } from '../../config/constants';
-import { TEXTS } from './constants';
+import STRINGS from '../../config/localizedStrings';
 
-const TERM_LABELS_TEXT = TEXTS.FORM.FIELDS.terms;
 
 class Signup extends Component {
   state = {
     success: false,
+    showContactForm: false,
   }
 
   onSubmitSignup = (formValues) => {
@@ -28,12 +29,12 @@ class Signup extends Component {
       .catch((error) => {
         const errors = {};
         if (error.response.status === 409) {
-          errors.email = TEXTS.VALIDATIONS.USER_EXIST;
+          errors.email = STRINGS.VALIDATIONS.USER_EXIST;
         } else if (error.response) {
           const { message = '' } = error.response.data;
           if (message.toLowerCase().indexOf('password') > -1) {
             // TODO set error in constants for language
-            errors.password = TEXTS.VALIDATIONS.INVALID_PASSWORD;
+            errors.password = STRINGS.VALIDATIONS.INVALID_PASSWORD;
           } else {
             errors._error = message || error.message;
           }
@@ -44,36 +45,56 @@ class Signup extends Component {
       });
   }
 
+  onOpenDialog = () => {
+    this.setState({ showContactForm: true });
+  }
+
+  onCloseDialog = () => {
+    this.setState({ showContactForm: false });
+  }
+
   render() {
-    const { success } = this.state;
+    const { success, showContactForm } = this.state;
 
     if (success) {
       return <SignupSuccess />
     }
+
+    const formFields = generateFormFields(STRINGS);
 
     return (
       <div className={classnames(...FLEX_CENTER_CLASSES, 'flex-column', 'f-1')}>
         <div className={classnames(...FLEX_CENTER_CLASSES, 'flex-column', 'auth_wrapper', 'w-100')}>
           <IconTitle
             iconPath={EXIR_LOGO}
-            text={TEXTS.TITLE}
+            text={STRINGS.SIGNUP_TEXT}
             textType="title"
             underline={true}
             className="w-100"
-            subtitle={TEXTS.SIGNUP_TO}
+            subtitle={STRINGS.formatString(STRINGS.SIGN_UP.SIGNUP_TO, STRINGS.APP_TITLE)}
             actionProps={{
-              text: TEXTS.HELP,
+              text: STRINGS.HELP_TEXT,
               iconPath: ICONS.RED_ARROW,
-              onClick: this.redirectToResetPassword,
+              onClick: this.onOpenDialog,
             }}
           />
           <div className={classnames(...FLEX_CENTER_CLASSES, 'flex-column', 'auth_form-wrapper', 'w-100')}>
-            <SignupForm onSubmit={this.onSubmitSignup} />
+            <SignupForm onSubmit={this.onSubmitSignup} formFields={formFields} />
           </div>
         </div>
         <div className={classnames('f-1', 'link_wrapper')}>
-          {TEXTS.NO_EMAIL}<Link to='/verify' className={classnames('blue-link')}>{TEXTS.REQUEST_EMAIL}</Link>
+          {STRINGS.SIGN_UP.NO_EMAIL}<Link to='/verify' className={classnames('blue-link')}>{STRINGS.SIGN_UP.REQUEST_EMAIL}</Link>
         </div>
+        <Dialog
+          isOpen={showContactForm}
+          label="contact-modal"
+          onCloseDialog={this.onCloseDialog}
+          shouldCloseOnOverlayClick={false}
+          showCloseText={true}
+          style={{ 'z-index': 100 }}
+        >
+          <ContactForm onSubmitSuccess={this.onCloseDialog} />
+        </Dialog>
       </div>
     );
   }
