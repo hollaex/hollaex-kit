@@ -46,10 +46,10 @@ $order_entry-column--width: 15rem;
       margin: 0;
     }
     .buy {
-      background-color: $trade-asks-color-font;
+      background-color: $trade-bids-color-font;
     }
     .sell {
-      background-color: $trade-bids-color-font;
+      background-color: $trade-asks-color-font;
     }
 
     &.fullfilled .cell-wrapper {
