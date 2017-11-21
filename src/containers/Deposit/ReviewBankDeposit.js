@@ -22,7 +22,6 @@ const ReviewBankDeposit = ({ data, onClickPay }) => {
         <div className="d-flex justify-content-center">
           <a
             href={`${BANK_PAYMENT_LINK}${deposit_id}`}
-            target="_blank"
             className="review-link"
           >
             <Button

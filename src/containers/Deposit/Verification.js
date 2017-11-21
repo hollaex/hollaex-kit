@@ -9,8 +9,9 @@ import { verifyFiatDeposit } from '../../actions/walletActions';
 
 import { Loader } from '../../components';
 
-const ERROR_VERIFIED = 'Error confirming the payment';
+const ERROR_VERIFIED = 'Deposit already confirmed';
 const ERROR_STATUS = 'Invalid status';
+const ERROR_CONFIRMATION = 'Error confirming the payment';
 
 class Verification extends Component {
   state = {
@@ -52,6 +53,7 @@ class Verification extends Component {
       case ERROR_STATUS:
         error = STRINGS.DEPOSIT_VERIFICATION_ERROR_STATUS;
         break;
+      case ERROR_CONFIRMATION:
       default:
         error = STRINGS.DEPOSIT_VERIFICATION_ERROR;
         break;
