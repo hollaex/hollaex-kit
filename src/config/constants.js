@@ -80,8 +80,8 @@ export const HOUR_FORMAT = STRINGS.HOUR_FORMAT;
 
 export const LIMIT_VALUES = {
   PRICE: {
-    MIN: 100,
-    MAX: 10000,
+    MIN: 500000,
+    MAX: 100000000,
   },
   SIZE: {
     MIN: 0.0001,
@@ -91,9 +91,9 @@ export const LIMIT_VALUES = {
 
 export const DEPOSIT_LIMITS = {
   fiat: {
-    DAILY: 100000,
-    MIN: 1000,
-    MAX: 100000,
+    DAILY: 50000000,
+    MIN: 100,
+    MAX: 50000000,
   }
 };
 
