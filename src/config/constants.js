@@ -82,10 +82,12 @@ export const LIMIT_VALUES = {
   PRICE: {
     MIN: 500000,
     MAX: 100000000,
+    STEP: 5000,
   },
   SIZE: {
     MIN: 0.0001,
     MAX: 21000000,
+    STEP: 0.0001,
   }
 };
 

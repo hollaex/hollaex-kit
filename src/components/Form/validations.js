@@ -28,7 +28,7 @@ export const validAddress = (symbol = '', message) => {
 
 export const minValue = (minValue, message) => (value) => value < minValue ? (message || STRINGS.formatString(STRINGS.VALIDATIONS.MIN_VALUE, minValue)) : undefined;
 export const maxValue = (maxValue, message) => (value) => value > maxValue ? (message || STRINGS.formatString(STRINGS.VALIDATIONS.MAX_VALUE, maxValue)) : undefined;
-
+export const step = (step, message) => (value = 0) => value % step > 0 ? (message || STRINGS.formatString(STRINGS.VALIDATIONS.STEP, step)) : undefined;
 export const checkBalance = (available, message, fee = 0) => (value = 0) => {
   const operation = fee > 0 ?
     math.number(math.add(

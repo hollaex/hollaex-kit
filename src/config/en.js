@@ -151,6 +151,7 @@ export default {
    PASSWORDS_DONT_MATCH: 'Password don\'t match',
    USER_EXIST: 'Email has already been registered',
    ACCEPT_TERMS: 'You have not agreed to the Terms of use and Privacy Policy',
+   STEP: 'Invalid value, step is {0}',
  },
  LEGAL: {
    PRIVACY_POLICY: {

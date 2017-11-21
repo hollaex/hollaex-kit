@@ -6,7 +6,7 @@ import { formValueSelector } from 'redux-form';
 import Review from './OrderEntryReview';
 import Form, { FORM_NAME } from './OrderEntryForm';
 import { formatNumber, formatFiatAmount } from '../../../utils/currency';
-import { evaluateOrder, required, minValue, maxValue, normalizeInt, checkMarketPrice } from '../../../components/Form/validations';
+import { evaluateOrder, required, minValue, maxValue, normalizeInt, checkMarketPrice, step } from '../../../components/Form/validations';
 import { Loader } from '../../../components';
 import { LIMIT_VALUES, CURRENCIES } from '../../../config/constants';
 
@@ -110,7 +110,9 @@ class OrderEntry extends Component {
         label: STRINGS.SIZE,
         type: 'number',
         placeholder: '0.00',
-        step: 0.0001,
+        step: LIMIT_VALUES.SIZE.STEP,
+        min: LIMIT_VALUES.SIZE.MIN,
+        max: LIMIT_VALUES.SIZE.MAX,
         validate: [required, minValue(LIMIT_VALUES.SIZE.MIN), maxValue(LIMIT_VALUES.SIZE.MAX)],
         currency: STRINGS.BTC_SHORTNAME,
       },
@@ -119,7 +121,10 @@ class OrderEntry extends Component {
         label: STRINGS.PRICE,
         type: 'number',
         placeholder: '0',
-        validate: [required, minValue(LIMIT_VALUES.PRICE.MIN), maxValue(LIMIT_VALUES.PRICE.MAX)],
+        step: LIMIT_VALUES.PRICE.STEP,
+        min: LIMIT_VALUES.PRICE.MIN,
+        max: LIMIT_VALUES.PRICE.MAX,
+        validate: [required, minValue(LIMIT_VALUES.PRICE.MIN), maxValue(LIMIT_VALUES.PRICE.MAX), step(LIMIT_VALUES.PRICE.STEP)],
         normalize: normalizeInt,
         currency: STRINGS.FIAT_SHORTNAME,
       }
