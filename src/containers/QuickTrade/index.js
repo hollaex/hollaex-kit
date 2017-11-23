@@ -27,6 +27,9 @@ class QuickTradeContainer extends Component {
   componentWillReceiveProps(nextProps) {
     const nextExp = nextProps.quoteData.data.exp;
     const thisExp = this.props.quoteData.data.exp;
+    if (nextProps.quoteData.error && nextProps.quoteData.error !== this.props.quoteData.error) {
+      this.onClearQuoteInterval();
+    }
     if (nextExp !== thisExp) {
       const interval = setInterval(() => {
         this.onRequestQuote();
@@ -41,17 +44,19 @@ class QuickTradeContainer extends Component {
   }
 
   onOpenDialog = () => {
+    this.onClearQuoteInterval();
     this.setState({ showQuickTradeModal: true });
   }
 
   onCloseDialog = () => {
     this.setState({ showQuickTradeModal: false });
     if (this.state.quote) {
-      this.props.requestQuote();
+      this.props.requestQuote(this.state.quote);
     }
   }
 
   onReviewQuickTrade = () => {
+    this.onClearQuoteInterval();
     this.onOpenDialog();
   }
 

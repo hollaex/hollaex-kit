@@ -50,7 +50,6 @@ const INITIAL_STATE = {
 };
 
 export default function reducer(state = INITIAL_STATE, { payload, type }) {
-	console.log(type, payload)
 	switch(type) {
 
 		case 'CHANGE_SYMBOL':
@@ -221,6 +220,7 @@ export default function reducer(state = INITIAL_STATE, { payload, type }) {
 					...state.quoteData,
 					order: {
 						fetching: false,
+						completed: true,
 						error: payload,
 					}
 				}
