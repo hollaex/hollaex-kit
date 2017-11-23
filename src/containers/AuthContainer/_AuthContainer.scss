@@ -6,7 +6,7 @@ $content-wrapper--max-width: $bp-xs;
 
     .auth_wrapper {
       background-color: white;
-      padding: 4rem;
+      padding: 2rem;
     }
 
     .auth_form-wrapper {
@@ -18,6 +18,17 @@ $content-wrapper--max-width: $bp-xs;
 
   .link_wrapper {
     margin: 1rem;
+    margin-top: 0;
+
+    &.multi_links {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      > div:not(:last-child) {
+        padding-bottom: 0.5rem;
+      }
+    }
   }
   .blue-link {
     color: blue;

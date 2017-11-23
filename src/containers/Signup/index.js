@@ -82,8 +82,9 @@ class Signup extends Component {
             <SignupForm onSubmit={this.onSubmitSignup} formFields={formFields} />
           </div>
         </div>
-        <div className={classnames('f-1', 'link_wrapper')}>
-          {STRINGS.SIGN_UP.NO_EMAIL}<Link to='/verify' className={classnames('blue-link')}>{STRINGS.SIGN_UP.REQUEST_EMAIL}</Link>
+        <div className={classnames('f-1', 'link_wrapper', 'multi_links')}>
+          <div>{STRINGS.SIGN_UP.HAVE_ACCOUNT}<Link to='/login' className={classnames('blue-link')}>{STRINGS.SIGN_UP.GOTO_LOGIN}</Link></div>
+          <div>{STRINGS.SIGN_UP.NO_EMAIL}<Link to='/verify' className={classnames('blue-link')}>{STRINGS.SIGN_UP.REQUEST_EMAIL}</Link></div>
         </div>
         <Dialog
           isOpen={showContactForm}

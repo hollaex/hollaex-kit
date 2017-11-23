@@ -253,6 +253,8 @@ export default {
    SIGNUP_TO: 'Sign up to {0}',
    NO_EMAIL: 'Haven\'t receieved the email?',
    REQUEST_EMAIL: 'Request another one here',
+   HAVE_ACCOUNT: 'Already have an account?',
+   GOTO_LOGIN: 'Go to the login page',
    TERMS: {
      terms: 'General Terms',
      policy: 'Privacy Policy',
