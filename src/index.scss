@@ -28,6 +28,19 @@ body {
   font-family: "YEKAN" !important;
 }
 
+.direction_rtl {
+  &.apply_rtl {
+    direction: rtl;
+  }
+  .apply_rtl {
+    direction: rtl;
+  }
+}
+
+.direction_ltr {
+  direction: ltr;
+}
+
 .warning_text {
   color: $colors-notifications-red;
 }

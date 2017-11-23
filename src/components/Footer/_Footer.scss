@@ -3,6 +3,7 @@ $footer-wrapper--margin: 1rem;
 $footer-wrapper--margin-bottom: $footer-wrapper--margin * 2;
 $footer-wrapper--border-color: $colors-deactivate-color2;
 $footer-social-icon--dimension: 2rem;
+$footer-icons--side-margin: 0.5rem;
 
 .footer-container {
   padding: $footer-wrapper--margin-top $footer-wrapper--margin $footer-wrapper--margin;
@@ -29,7 +30,6 @@ $footer-social-icon--dimension: 2rem;
     }
 
     .footer-public-texts {
-      text-align: right;
       .footer-public-texts-text {
         line-height: $font-size-subtext * 2;
         font-weight: bold;
@@ -42,15 +42,7 @@ $footer-social-icon--dimension: 2rem;
 
       .footer-public-links-icon {
         @include size($footer-social-icon--dimension);
-        margin: 0 0.5rem;
-      }
-
-      &:first-child .footer-public-links-icon {
-        margin-left: 0;
-      }
-
-      &:last-child .footer-public-links-icon {
-        margin-right: 0;
+        margin: 0 $footer-icons--side-margin;
       }
     }
   }
@@ -65,6 +57,46 @@ $footer-social-icon--dimension: 2rem;
   }
 }
 
+.direction_ltr {
+  .footer-container {
+    .footer-row-content {
+      .footer-public-texts {
+        text-align: left;
+      }
+
+      .footer-public-links {
+        &:first-child .footer-public-links-icon {
+          margin-right: 0;
+        }
+
+        &:last-child .footer-public-links-icon {
+          margin-left: 0;
+        }
+      }
+    }
+  }
+}
+
+.direction_rtl {
+  .footer-container {
+    .footer-row-content {
+      .footer-public-texts {
+        text-align: left;
+      }
+
+      .footer-public-links {
+        &:first-child .footer-public-links-icon {
+          margin-right: 0;
+        }
+
+        &:last-child .footer-public-links-icon {
+          margin-left: 0;
+        }
+      }
+    }
+  }
+}
+
 @media screen and (max-width: $bp-md) {
   .footer-container {
     .footer-row-content {
@@ -74,10 +106,13 @@ $footer-social-icon--dimension: 2rem;
       }
 
       .footer-public-texts {
-        text-align: center;
+        text-align: center !important;
       }
       .footer-public-links {
         justify-content: center;
+        .footer-public-links-icon {
+          margin: 0 $footer-icons--side-margin !important;
+        }
       }
     }
   }

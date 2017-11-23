@@ -22,7 +22,7 @@
   .relative {
     position: relative;
   }
-  
+
   .action_notification-text {
     font-size: $font-size-subtext;
     text-transform: uppercase;
@@ -36,27 +36,58 @@
       transform: rotate(180deg);
     }
   }
-
-  &.left {
-    left: 0;
-  }
-  &.right {
-    right: 0;
-  }
-
   &.icon_on-right {
     flex-direction: row;
-    .action_notification-image {
-      margin-left: 0.25rem;
-      margin-right: 0;
-    }
   }
 
   &.icon_on-left {
     flex-direction: row-reverse;
-    .action_notification-image {
-      margin-right: 0.25rem;
-      margin-left: 0;
+  }
+}
+
+.direction_ltr {
+  .action_notification-wrapper {
+    &.left {
+      left: 0;
+    }
+    &.right {
+      right: 0;
+    }
+
+    &.icon_on-right {
+      .action_notification-image {
+        margin-left: 0.25rem;
+      }
+    }
+
+    &.icon_on-left {
+      .action_notification-image {
+        margin-right: 0.25rem;
+      }
+    }
+  }
+}
+
+.direction_rtl {
+  .action_notification-wrapper {
+    &.left {
+      right: 0;
+    }
+
+    &.right {
+      left: 0;
+    }
+
+    &.icon_on-right {
+      .action_notification-image {
+        margin-right: 0.25rem;
+      }
+    }
+
+    &.icon_on-left {
+      .action_notification-image {
+        margin-left: 0.25rem;
+      }
     }
   }
 }

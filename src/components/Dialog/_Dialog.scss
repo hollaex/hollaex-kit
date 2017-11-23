@@ -41,3 +41,19 @@ $dialog--padding: 2rem;
 .success_display-content-text {
   margin: 1rem 0;
 }
+
+.direction_ltr {
+  .ReactModal__Content {
+    .action_notification-wrapper.close-button {
+      margin-right: 1rem;
+    }
+  }
+}
+
+.direction_rtl {
+  .ReactModal__Content {
+    .action_notification-wrapper.close-button {
+      margin-left: 1rem;
+    }
+  }
+}

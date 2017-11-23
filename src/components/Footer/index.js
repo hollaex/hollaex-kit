@@ -91,7 +91,7 @@ const Footer = ({ title, status, className, onChangeLanguage, activeLanguage }) 
           </div>
         </div>
       </div>
-      <div className={classnames('d-flex', 'justify-content-between', 'footer-row-bottom', 'f-1')}>
+      <div className={classnames('d-flex', 'justify-content-between', 'footer-row-bottom', 'f-1', 'direction_ltr')}>
         <div className="d-flex">
           <span className="text-weight-bold">{STRINGS.FOOTER.FOOTER_LANGUAGE_TEXT}:</span>
           {STRINGS.FOOTER.FOOTER_LANGUAGE_LANGUAGES.map(({key, label}, index) => (

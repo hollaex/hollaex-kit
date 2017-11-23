@@ -54,6 +54,7 @@ class Signup extends Component {
   }
 
   render() {
+    const { languageClasses } = this.props;
     const { success, showContactForm } = this.state;
 
     if (success) {
@@ -93,6 +94,7 @@ class Signup extends Component {
           shouldCloseOnOverlayClick={false}
           showCloseText={true}
           style={{ 'z-index': 100 }}
+          className={classnames(languageClasses)}
         >
           <ContactForm onSubmitSuccess={this.onCloseDialog} />
         </Dialog>

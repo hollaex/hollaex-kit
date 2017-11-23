@@ -9,6 +9,7 @@ import { AppBar, Footer } from '../../components';
 
 import { requestQuickTrade } from '../../actions/orderbookAction';
 import { setLanguage } from '../../actions/appActions';
+import { getClasesForLanguage } from '../../utils/string';
 
 import Section1 from './Section1';
 import Section2 from './Section2';
@@ -83,9 +84,8 @@ class Home extends Component {
       token, verifyToken, estimatedValue, symbol, quickTradeData, requestQuickTrade, activeLanguage, ...otherProps
     } = this.props;
     const { style } = this.state;
-
     return (
-      <div className={classnames('app_container', 'home_container', 'app_background', { 'language_rtl': activeLanguage === 'fa' })}>
+      <div className={classnames('app_container', 'home_container', 'app_background', getClasesForLanguage(activeLanguage))}>
         <EventListener
           target="window"
           onResize={this.onResize}
@@ -100,7 +100,7 @@ class Home extends Component {
           className={classnames(
             'app_container-content',
             'flex-column',
-            'overflow-y'
+            'overflow-y',
           )}
           ref={this.setContainerRef}
         >

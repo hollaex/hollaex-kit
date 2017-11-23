@@ -24,13 +24,17 @@ class VerifyEmailRequest extends Component {
         this.setState({ success: true })
       })
       .catch((error) => {
-        const errors = {};
-        if (error.response) {
-          errors._error = error.response.data.message;
+        if (error.response && error.response.status === 404) {
+          this.setState({ success: true });
         } else {
-          errors._error = error.message;
+          const errors = {};
+          if (error.response) {
+            errors._error = error.response.data.message;
+          } else {
+            errors._error = error.message;
+          }
+          throw new SubmissionError(errors);
         }
-        throw new SubmissionError(errors);
       });
   }
 
@@ -44,6 +48,7 @@ class VerifyEmailRequest extends Component {
   }
 
   render() {
+    const { languageClasses } = this.props;
     const { success, showContactForm } = this.state;
 
     if (success) {
@@ -57,6 +62,7 @@ class VerifyEmailRequest extends Component {
   					shouldCloseOnOverlayClick={false}
   					showCloseText={true}
   					style={{ 'z-index': 100 }}
+            className={classnames(languageClasses)}
   				>
             <ContactForm onSubmitSuccess={this.onCloseDialog} />
           </Dialog>

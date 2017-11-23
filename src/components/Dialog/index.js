@@ -23,7 +23,7 @@ class Dialog extends PureComponent {
   }
 
   render() {
-    const { isOpen, children, label, closeButton, shouldCloseOnOverlayClick, showCloseText, dialogId } = this.props;
+    const { isOpen, children, label, closeButton, shouldCloseOnOverlayClick, showCloseText, dialogId, className } = this.props;
 
     return (
       <Modal
@@ -32,6 +32,7 @@ class Dialog extends PureComponent {
         contentLabel={label}
         onRequestClose={this.onRequestClose}
         shouldCloseOnOverlayClick={shouldCloseOnOverlayClick}
+        portalClassName={className}
       >
         {!shouldCloseOnOverlayClick && showCloseText &&
           <ActionNotification
@@ -55,6 +56,7 @@ class Dialog extends PureComponent {
 Dialog.defaultProps = {
   shouldCloseOnOverlayClick: true,
   showCloseText: false,
+  className: '',
 }
 
 export default Dialog;
