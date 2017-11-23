@@ -25,9 +25,9 @@ export const FieldContent = ({
   )
 }
 
-export const FieldError = ({ error, displayError }) => (
+export const FieldError = ({ error, displayError, className }) => (
   <div
-    className={classnames('field-error-content', {
+    className={classnames('field-error-content', className, {
       'field-error-hidden': !displayError,
     })}
   >

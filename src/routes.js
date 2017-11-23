@@ -19,6 +19,7 @@ import {
   AuthContainer,
   RequestResetPassword,
   ResetPassword,
+  QuickTrade,
 } from './containers';
 
 import store from './store'
@@ -91,6 +92,7 @@ export default (
       <Route path="deposit/verification" name="Deposit Verification" component={DepositVerification} />
       <Route path="transactions" name="Transactions" component={TransactionsHistory}/>
       <Route path="trade" name="Trade" component={Trade}/>
+      <Route path="quick-trade" name="Quick Trade" component={QuickTrade}/>
     </Route>
     <Route component={AuthContainer}>
       <Route path="login" name="Login" component={Login} {...noAuthRoutesCommonProps} />

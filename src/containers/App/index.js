@@ -249,6 +249,7 @@ class Container extends Component {
   goToAccountPage = () => this.goToPage('/account');
 	goToWalletPage = () => this.goToPage('/wallet');
 	goToTradePage = () => this.goToPage('/trade');
+	goToQuickTradePage = () => this.goToPage('/quick-trade');
   goToDashboard = () => this.goToPage('/');
 
 	logout = () => this.props.logout();
@@ -347,6 +348,7 @@ class Container extends Component {
 							goToAccountPage={this.goToAccountPage}
 							goToWalletPage={this.goToWalletPage}
 							goToTradePage={this.goToTradePage}
+							goToQuickTradePage={this.goToQuickTradePage}
 							logout={this.logout}
 							notifications={notifications}
 							symbol={symbol}

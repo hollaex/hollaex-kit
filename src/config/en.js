@@ -1,10 +1,10 @@
 export default {
   APP_TITLE: 'exir-exchange',
   APP_NAME: 'exir',
-  FIAT_NAME: 'Dollar',
-  FIAT_FULLNAME: 'United States Dollar',
-  FIAT_SHORTNAME: 'USD',
-  FIAT_CURRENCY_SYMBOL: '$',
+  FIAT_NAME: 'Toman',
+  FIAT_FULLNAME: 'Toman',
+  FIAT_SHORTNAME: 'T',
+  FIAT_CURRENCY_SYMBOL: 'T',
   BTC_NAME: 'Bitcoin',
   BTC_FULLNAME: 'Bitcoin',
   BTC_SHORTNAME: 'BTC',
@@ -454,11 +454,19 @@ export default {
   },
   CURRENCY: 'Currency',
   TYPE: 'Type',
+  TYPES_VALUES: {
+    market: 'market',
+    limit: 'limit',
+  },
   TYPES: [
     { value: 'market', label: 'market' },
     { value: 'limit', label: 'limit' },
   ],
   SIDE: 'Side',
+  SIDES_VALUES: {
+    buy: 'buy',
+    sell: 'sell',
+  },
   SIDES: [
     { value: 'buy', label: 'buy' },
     { value: 'sell', label: 'sell' },
@@ -534,4 +542,12 @@ export default {
   DEPOSIT_VERIFICATION_ERROR: 'There has been an error verifying the deposit.',
   DEPOSIT_VERIFICATION_ERROR_VERIFIED: 'The deposit has been already verified',
   DEPOSIT_VERIFICATION_ERROR_STATUS: 'Invalid status',
+  QUOTE_MESSAGE: 'You are going to {0} {1} {2} for {3} {4}',
+  QUOTE_BUTTON: 'Accept',
+  QUOTE_REVIEW: 'Review',
+  QUOTE_COUNTDOWN_MESSAGE: 'You have {0} seconds to perform the trade',
+  QUOTE_EXPIRED_TOKEN: 'The quote token has expired.',
+  QUOTE_SUCCESS_REVIEW_TITLE: 'Quick Trade',
+  QUOTE_SUCCESS_REVIEW_MESSAGE: 'You have successfully {0} {1} {0} for {3} {4}',
+  COUNTDOWN_ERROR_MESSAGE: 'Countdown is finished',
 };

@@ -101,8 +101,18 @@ $input-bottom_line--animation--width: 100px;
     }
   }
 
-  .input_block-wrapper {
+  .input_block-error-wrapper {
+    color: red;
+    margin-top: 0.5rem;
+  }
+  
+  .input_block-content {
     border-bottom: $input-bottom_line--height solid $colors-main-black;
+    width: 100%;
+    &.has_error {
+      border-bottom-color: $error-color;
+    }
+
     .input_block-input-wrapper {
       // width: 100%;
       width: auto;

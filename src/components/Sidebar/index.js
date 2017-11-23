@@ -6,7 +6,7 @@ import STRINGS from '../../config/localizedStrings';
 import { fiatSymbol } from '../../utils/currency';
 
 const Sidebar = ({
-  goToWalletPage, goToTradePage, active, activePath, logout, notifications, symbol
+  goToWalletPage, goToTradePage, active, activePath, logout, notifications, symbol, goToQuickTradePage,
 }) => {
   return (
     <div className="sidebar-container">
@@ -28,7 +28,8 @@ const Sidebar = ({
             <div className="sidebar-container-trade d-flex">
               <Button
                 label={STRINGS.QUICK_TRADE}
-                disabled={true}
+                onClick={goToQuickTradePage}
+                disabled={!goToQuickTradePage}
               />
               <Button
                 label={STRINGS.PRO_TRADE}

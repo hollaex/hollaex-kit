@@ -39,6 +39,9 @@ class QuickTrade extends Component {
     } else {
       this.onChangeSymbol(DEFAULT_SYMBOL);
     }
+    if (this.props.onChangeSide) {
+      this.props.onChangeSide(this.state.side);
+    }
   }
 
 
@@ -67,6 +70,9 @@ class QuickTrade extends Component {
       symbol: this.state.symbol,
       side: side,
     });
+    if (this.props.onChangeSide) {
+      this.props.onChangeSide(side);
+    }
   }
 
   onChangeValue = (newValue) => {
@@ -97,7 +103,7 @@ class QuickTrade extends Component {
   requestValue = debounce(this.props.onRequestMarketValue, 250);
 
   render() {
-    const { onReviewQuickTrade, quickTradeData } = this.props;
+    const { onReviewQuickTrade, quickTradeData, disabled } = this.props;
     const { side, value, symbol, inputStyle } = this.state;
     const { data, fetching, error } = quickTradeData;
     const { name } = CURRENCIES[symbol];
@@ -123,6 +129,7 @@ class QuickTrade extends Component {
             inputStyle={inputStyle}
             format={this.format}
             className={classnames({ loading: fetching })}
+            error={error}
           />
         </div>
         <div className={classnames('quick_trade-section_wrapper', ...GROUP_CLASSES, { fetching })}>
@@ -135,7 +142,8 @@ class QuickTrade extends Component {
           <Button
             label={STRINGS.formatString(STRINGS.QUICK_TRADE_COMPONENT.BUTTON, side).join(' ')}
             onClick={onReviewQuickTrade}
-            disabled={!onReviewQuickTrade}
+            disabled={disabled || !onReviewQuickTrade || !!error || fetching}
+            type="button"
           />
         </div>
       </div>
@@ -147,6 +155,7 @@ QuickTrade.defaultProps = {
   onRequestMarketValue: () => {},
   onReviewQuickTrade: () => {},
   estimatedValue: 0,
+  disabled: false
 };
 
 export default QuickTrade;
