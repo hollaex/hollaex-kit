@@ -107,6 +107,7 @@ export default {
     DESCRIPTION_PLACEHOLDER: 'Type in detail what the issue is',
     ATTACHMENT_LABEL: 'Add an attachment',
     ATTACHMENT_PLACEHOLDER: 'Add a file to help communicate your issue. PDF, JPG, PNG and GIF files are accepted',
+    SUCCESS_MESSAGE: 'The email has been seent to our support',
   },
   DEPOSIT: {
     CRYPTO_LABELS: {

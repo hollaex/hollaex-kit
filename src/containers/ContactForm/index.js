@@ -7,10 +7,29 @@ import { sendSupportMail } from '../../actions/appActions';
 
 const FORM_NAME = 'ContactForm';
 
-const ContactForm = HocForm(FORM_NAME);
+const Form = HocForm(FORM_NAME);
 
-export default ({ onSubmitSuccess }) => {
-  const formFields = {
+class ContactForm extends Component {
+  state = {
+    submiited: false,
+  }
+
+  onSubmit = (values) => {
+    return sendSupportMail(values)
+      .then((data) => {
+        this.setState({ submiited: true });
+
+        // if (this.props.onSubmitSuccess) {
+        //   this.props.onSubmitSuccess(data);
+        // }
+      })
+      .catch((err) => {
+        const _error = err.response.data ? err.response.data.message : err.message;
+        throw new SubmissionError({ _error });
+      });
+  }
+
+  generateFormFields = () => ({
     email: {
       type: 'email',
       label: STRINGS.FORM_FIELDS.EMAIL_LABEL,
@@ -49,22 +68,25 @@ export default ({ onSubmitSuccess }) => {
       placeholder: STRINGS.CONTACT_FORM.ATTACHMENT_PLACEHOLDER,
       fullWidth: true,
     }
-  };
+  })
 
-  const onSubmit = (values) => {
-    return sendSupportMail(values)
-      .then((data) => {
-        onSubmitSuccess(data)
-      })
-      .catch((err) => {
-        const _error = err.response.data ? err.response.data.message : err.message;
-        throw new SubmissionError({ _error });
-      });
+  render() {
+    const { submiited } = this.state;
+
+    if (submiited) {
+      return <div>{STRINGS.CONTACT_FORM.SUCCESS_MESSAGE}</div>;
+    }
+
+    const formFields = this.generateFormFields();
+
+    return (
+      <Form
+        onSubmit={this.onSubmit}
+        formFields={formFields}
+        buttonLabel={STRINGS.CONTACT_US_TEXT}
+      />
+    );
   }
-
-  return <ContactForm
-    onSubmit={onSubmit}
-    formFields={formFields}
-    buttonLabel={STRINGS.CONTACT_US_TEXT}
-  />
 }
+
+export default ContactForm;
