@@ -15,11 +15,11 @@ const getClassNames = (status) => {
 }
 
 const ActionNotification = ({
-  text, status, onClick, iconPath, className, reverseImage, textPosition, iconPosition,
+  text, status, onClick, iconPath, className, reverseImage, textPosition, iconPosition, showPointer,
 }) => (
   <div
     className={classnames('action_notification-wrapper', {
-      pointer: !!onClick,
+      pointer: showPointer,
       left: textPosition === 'left',
       right: textPosition === 'right',
       'icon_on-right': iconPosition === 'right',
@@ -53,5 +53,6 @@ ActionNotification.defaultProps = {
   reverseImage: false,
   textPosition: 'right',
   iconPosition: 'right',
+  showPointer: true
 }
 export default ActionNotification;
