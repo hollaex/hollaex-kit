@@ -65,16 +65,11 @@ $valid-icon-size: 2rem;
     padding: 0;
   }
 
-  &.valid > *:not(:last-child) {
-    padding-right: $valid-icon-size;
-  }
-
   .field-valid {
     position: absolute;
     height: $valid-icon-size;
     width: $valid-icon-size;
 
-    right: 0;
     bottom: 0;
   }
 }
@@ -127,9 +122,7 @@ $valid-icon-size: 2rem;
   width: $error-icon-size;
 }
 
-.field-error-text {
-  padding-left: 0.25rem;
-}
+
 
 .dumb-field-wrapper {
   > .field-content > .field-children {
@@ -142,5 +135,38 @@ $valid-icon-size: 2rem;
 
   .copy-wrapper {
     top: 0;
+  }
+}
+
+
+.direction_ltr {
+  .field-error-text {
+    padding-left: 0.25rem;
+  }
+
+  .field-children {
+    &.valid > *:not(:last-child) {
+      padding-right: $valid-icon-size;
+    }
+
+    .field-valid {
+      right: 0;
+    }
+  }
+}
+
+.direction_rtl {
+  .field-error-text {
+    padding-right: 0.25rem;
+  }
+
+  .field-children {
+    &.valid > *:not(:last-child) {
+      padding-left: $valid-icon-size;
+    }
+
+    .field-valid {
+      left: 0;
+    }
   }
 }

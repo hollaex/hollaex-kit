@@ -26,12 +26,9 @@ $placeholder--font-weight: bold;
   content: '';
   height: 0;
   width: 0;
-  border-right: 0.25rem solid $colors-main-black;
   border-bottom: 0.25rem solid $colors-main-black;
   border-top: 0.25rem solid transparent;
-  border-left: 0.25rem solid transparent;
   position: absolute;
-  right: 0px;
   bottom: 0.35rem;
 }
 
@@ -74,7 +71,6 @@ $placeholder--font-weight: bold;
   font-size: $placeholder--font-size;
   font-weight: $placeholder--font-weight;
   color: $form-color-placeholder;
-  padding-right: $placeholder--padding * 2;
 }
 
 .file_upload_icon {
@@ -102,5 +98,29 @@ $placeholder--font-weight: bold;
     display: flex;
     justify-content: center;
     align-items: center;
+  }
+}
+
+.direction_ltr {
+  .dropdown-triangle:after {
+    border-right: 0.25rem solid $colors-main-black;
+    border-left: 0.25rem solid transparent;
+    right: 0px;
+  }
+
+  .placeholder {
+    padding-right: $placeholder--padding * 2;
+  }
+}
+
+.direction_rtl {
+  .dropdown-triangle:after {
+    border-right: 0.25rem solid transparent;
+    border-left: 0.25rem solid $colors-main-black;
+    left: 0px;
+  }
+
+  .placeholder {
+    padding-left: $placeholder--padding * 2;
   }
 }
