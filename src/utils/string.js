@@ -47,16 +47,21 @@ export const removeLanguage = () => {
 
 export const getInterfaceLanguage = () => STRINGS.getInterfaceLanguage();
 
-export const RTL_CLASSES_ARRAY = ['display_rtl', 'apply_rtl'];
+const LANGUAGE_RTL = 'language_rtl';
+const DIRECTION_RTL = 'direction_rtl';
+const APPLY_RTL = 'apply_rtl';
+const DIRECTION_LTR = 'direction_ltr';
+
+export const RTL_CLASSES_ARRAY = [DIRECTION_RTL, APPLY_RTL];
 export const RTL_CLASSES_OBJECT = {
-	'language_rtl': true,
-	'direction_rtl': true,
-	'apply_rtl': true,
+	[LANGUAGE_RTL]: true,
+	[DIRECTION_RTL]: true,
+	[APPLY_RTL]: true,
 };
 
-export const LTR_CLASSES_ARRAY = ['display_ltr'];
+export const LTR_CLASSES_ARRAY = [DIRECTION_LTR];
 export const LTR_CLASSES_OBJECT = {
-	'direction_ltr': true
+	[DIRECTION_LTR]: true
 };
 
 export const getClasesForLanguage = (language = '', type = 'object') => {
@@ -65,5 +70,14 @@ export const getClasesForLanguage = (language = '', type = 'object') => {
 			return type === 'object' ? RTL_CLASSES_OBJECT : RTL_CLASSES_ARRAY;
 		default:
 			return type === 'object' ? LTR_CLASSES_OBJECT : LTR_CLASSES_ARRAY;
+	}
+}
+
+export const getFontClassForLanguage = (language = '') => {
+	switch (language) {
+		case 'fa':
+			return LANGUAGE_RTL;
+		default:
+			return '';
 	}
 }

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import classnames from 'classnames';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import io from 'socket.io-client';
@@ -22,6 +23,7 @@ import { AppBar, Sidebar, Dialog, Loader, Notification, MessageDisplay } from '.
 import { ContactForm } from '../';
 
 import { setLanguage } from '../../actions/appActions';
+import { getClasesForLanguage, getFontClassForLanguage } from '../../utils/string';
 
 class Container extends Component {
 	state = {
@@ -269,6 +271,7 @@ class Container extends Component {
 				return 'wallet';
 			case '/account':
 				return 'account';
+			case '/quick-trade':
 			case '/trade':
 				return 'trade';
 			default:
@@ -314,11 +317,13 @@ class Container extends Component {
 			symbol, children, activeNotification, changeSymbol, notifications, prices, verification_level, activeLanguage,
 		} = this.props;
 		const { dialogIsOpen, appLoaded } = this.state;
+		const languageClasses = getClasesForLanguage(activeLanguage, 'array');
+		const fontClass = getFontClassForLanguage(activeLanguage);
 
 		const shouldCloseOnOverlayClick = activeNotification.type !== CONTACT_FORM;
 		const activePath = !appLoaded ? '' : this.getClassForActivePath(this.props.location.pathname);
 		return (
-			<div className={`app_container ${activePath} ${symbol}`}>
+			<div className={classnames('app_container', activePath, symbol, fontClass, languageClasses[0])}>
 				<EventListener
 					target="window"
 					onResize={this.resetTimer}
@@ -339,7 +344,10 @@ class Container extends Component {
 					activeLanguage={activeLanguage}
 				/>
         <div className="app_container-content d-flex justify-content-between">
-          <div className="app_container-main d-flex flex-column justify-content-between overflow-y">
+          <div className={classnames(
+						'app_container-main', 'd-flex', 'flex-column', 'justify-content-between', 'overflow-y',
+						...languageClasses,
+					)}>
             {appLoaded && verification_level > 0 ? children : <Loader />}
           </div>
           <div className="app_container-sidebar">

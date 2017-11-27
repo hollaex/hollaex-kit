@@ -9,7 +9,7 @@ const Sidebar = ({
   goToWalletPage, goToTradePage, active, activePath, logout, notifications, symbol, goToQuickTradePage,
 }) => {
   return (
-    <div className="sidebar-container">
+    <div className="sidebar-container apply_rtl">
       <div className={`sidebar-actions ${active ? 'active' : ''}`}>
         <Section
           title={STRINGS.WALLET_TITLE}
@@ -31,6 +31,7 @@ const Sidebar = ({
                 onClick={goToQuickTradePage}
                 disabled={!goToQuickTradePage}
               />
+              <div className="separator" />
               <Button
                 label={STRINGS.PRO_TRADE}
                 onClick={goToTradePage}
