@@ -15,7 +15,7 @@ const getClassNames = (status) => {
 }
 
 const ActionNotification = ({
-  text, status, onClick, iconPath, className, reverseImage, textPosition, iconPosition, showPointer,
+  text, status, onClick, iconPath, className, reverseImage, textPosition, iconPosition, showPointer, rotate, rotateIfLtr, rotateIfRtl,
 }) => (
   <div
     className={classnames('action_notification-wrapper', {
@@ -37,7 +37,12 @@ const ActionNotification = ({
         className={
           classnames(
             'action_notification-image',
-            { reverse: reverseImage }
+            {
+              rotate_ltr: rotateIfLtr,
+              rotate_rtl: rotateIfRtl,
+              rotate,
+              reverse: reverseImage,
+            }
           )
         }
       />
@@ -53,6 +58,9 @@ ActionNotification.defaultProps = {
   reverseImage: false,
   textPosition: 'right',
   iconPosition: 'right',
-  showPointer: true
+  showPointer: true,
+  rotate: false,
+  rotateIfRtl: false,
+  rotateIfLtr: false,
 }
 export default ActionNotification;

@@ -9,7 +9,7 @@ const TEXT_NEXT_PAGE = STRINGS.NEXT_PAGE;
 
 const renderPageCount = (currentPage, totalPages) => {
   if (totalPages > 0) {
-    return <div>{currentPage} / {totalPages}</div>;
+    return <div>{STRINGS.formatString(STRINGS.PAGINATOR_FORMAT, currentPage, totalPages)}</div>;
   }
 }
 
@@ -29,7 +29,7 @@ const Paginator = ({ goToPreviousPage, goToNextPage, currentPage, count, pageSiz
           iconPath={ICONS.RED_ARROW}
           textPosition="left"
           iconPosition="left"
-          reverseImage={true}
+          rotateIfLtr={true}
         />
       </div>
       {renderPageCount(currentPage, totalPages)}
@@ -41,6 +41,7 @@ const Paginator = ({ goToPreviousPage, goToNextPage, currentPage, count, pageSiz
           text={TEXT_NEXT_PAGE}
           status="information"
           iconPath={ICONS.RED_ARROW}
+          rotateIfRtl={true}
         />
       </div>
     </div>

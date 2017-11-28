@@ -576,4 +576,5 @@ export default {
   WALLET_TABLE_TOTAL: 'Grand Total',
   WALLET_ALL_ASSETS: 'All Assets',
   HIDE_TEXT: 'Hide',
+  PAGINATOR_FORMAT: '{0} / {1}'
 };

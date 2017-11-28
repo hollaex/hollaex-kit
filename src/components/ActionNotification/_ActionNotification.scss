@@ -31,10 +31,6 @@
   .action_notification-image {
     width: 1rem;
     height: 1rem;
-
-    &.reverse {
-      transform: rotate(180deg);
-    }
   }
   &.icon_on-right {
     flex-direction: row;
@@ -52,6 +48,12 @@
     }
     &.right {
       right: 0;
+    }
+
+    .action_notification-image {
+      &.rotate,  &.reverse, &.rotate_ltr {
+        transform: rotate(180deg);
+      }
     }
 
     &.icon_on-right {
@@ -76,6 +78,12 @@
 
     &.right {
       left: 0;
+    }
+
+    .action_notification-image {
+      &.rotate, &.reverse, &.rotate_rtl {
+        transform: rotate(180deg);
+      }
     }
 
     &.icon_on-right {
