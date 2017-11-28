@@ -6,6 +6,7 @@ export const setWithdrawNotificationSuccess = (data, dispatch) => {
     <div className="text-center">
       <h2>Success!</h2>
       <p>Your bitcoins have been sent</p>
+      <div>{JSON.stringify(data)}</div>
     </div>
   );
 
@@ -13,5 +14,6 @@ export const setWithdrawNotificationSuccess = (data, dispatch) => {
 }
 
 export const setWithdrawNotificationError = (error, dispatch) => {
-  dispatch(setNotification(NOTIFICATIONS.ERROR, JSON.stringify(error)));
+  const message = error._error || JSON.stringify(error);
+  dispatch(setNotification(NOTIFICATIONS.ERROR, message));
 }

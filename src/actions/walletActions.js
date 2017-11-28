@@ -23,6 +23,7 @@ const ENDPOINTS = {
   DEPOSITS: '/user/deposits',
   WITHDRAWALS: '/user/withdrawals',
   DEPOSIT_BANK: '/user/deposit/bank',
+  WITHDRAW_BANK: '/user/withdraw/bank',
 }
 
 export const performDeposit = (values) => {
@@ -35,6 +36,10 @@ export const performWithdraw = (values) => {
 
 export const requestFiatDeposit = (amount) => {
   return axios.get(`${ENDPOINTS.DEPOSIT_BANK}?amount=${amount}`);
+}
+
+export const requestFiatWithdraw = (values) => {
+  return axios.post(ENDPOINTS.WITHDRAW_BANK, values);
 }
 
 export const verifyFiatDeposit = (deposit_id, status) => {

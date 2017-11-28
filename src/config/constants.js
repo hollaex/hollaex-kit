@@ -99,6 +99,17 @@ export const DEPOSIT_LIMITS = {
   }
 };
 
+export const WITHDRAW_LIMITS = {
+  fiat: {
+    MIN: 1000,
+    STEP: 1,
+  },
+  btc: {
+    MIN: 1,
+    MAX: 10,
+    STEP: 0.0001,
+  }
+}
 export const TOKEN_KEY = `${ENV}_${NETWORK}_TOKEN`;
 export const LANGUAGE_KEY = `${ENV}_${NETWORK}_LANGUAGE`;
 

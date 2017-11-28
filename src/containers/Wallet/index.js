@@ -156,6 +156,7 @@ class Wallet extends Component {
           label={depositText}
           onClick={this.goToDeposit}
         />
+        <div className="separator" />
         <Button
           label={withdrawText}
           onClick={this.goToWithdraw}

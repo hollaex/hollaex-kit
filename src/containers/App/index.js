@@ -299,7 +299,7 @@ class Container extends Component {
 				return <MessageDisplay
 					iconPath={ICONS.RED_WARNING}
 					onClick={this.onCloseDialog}
-					text={`error`}
+					text={data}
 				/>;
 			case CONTACT_FORM:
 				return <ContactForm onSubmitSuccess={this.onCloseDialog} />;

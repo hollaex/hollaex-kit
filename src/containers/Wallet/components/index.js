@@ -3,24 +3,16 @@ import { ActionNotification, IconTitle } from '../../../components';
 import DumbField from '../../../components/Form/FormFields/DumbField';
 import { generateWalletActionsText, fiatSymbol } from '../../../utils/currency';
 import { ICONS, CURRENCIES } from '../../../config/constants';
-
-const TEXT_BANK_NAME = 'Bank Name';
-const TEXT_ACCOUNT_OWNER = 'Bank Account Owner’s Name';
-const TEXT_ACCOUNT_NUMBER = 'Bank Account Number';
-
-const TEXT_AVAILABLE = 'Available';
-const TEXT_BALANCE = 'Balance';
-
-const TEXT_NEED_HELP = 'need help';
+import STRINGS from '../../../config/localizedStrings';
 
 export const renderDumbField = (data) => <DumbField {...data} />;
 
 export const renderBankInformation = ({ bank_name, account_number, account_owner }, fullWidth = false) => {
   const allowCopy = true;
   const fields = [
-    { label: TEXT_BANK_NAME, value: bank_name, key: 'bank_name', allowCopy, fullWidth },
-    { label: TEXT_ACCOUNT_OWNER, value: account_owner, key: 'account_owner', allowCopy, fullWidth },
-    { label: TEXT_ACCOUNT_NUMBER, value: account_number, key: 'account_number', allowCopy, fullWidth },
+    { label: STRINGS.USER_VERIFICATION.BANK_ACCOUNT_FORM.FORM_FIELDS.BANK_NAME_LABEL, value: bank_name, key: 'bank_name', allowCopy, fullWidth },
+    { label: STRINGS.USER_VERIFICATION.BANK_ACCOUNT_FORM.FORM_FIELDS.ACCOUNT_OWNER_LABEL, value: account_owner, key: 'account_owner', allowCopy, fullWidth },
+    { label: STRINGS.USER_VERIFICATION.BANK_ACCOUNT_FORM.FORM_FIELDS.ACCOUNT_NUMBER_LABEL, value: account_number, key: 'account_number', allowCopy, fullWidth },
   ];
 
   return (
@@ -48,7 +40,7 @@ export const renderAvailableBalanceText = (symbol, balance) => {
   return (
     <div className="text">
       <p>
-        {`${TEXT_AVAILABLE} ${fullName} ${TEXT_BALANCE}: ${available} ${shortName}`}
+        {`${STRINGS.AVAILABLE_TEXT} ${fullName} ${STRINGS.BALANCE_TEXT}: ${available} ${shortName}`}
       </p>
     </div>
   );
@@ -56,7 +48,7 @@ export const renderAvailableBalanceText = (symbol, balance) => {
 
 export const renderNeedHelpAction = (openContactForm) => (
   <ActionNotification
-    text={TEXT_NEED_HELP}
+    text={STRINGS.NEED_HELP_TEXT}
     status="information"
     iconPath={ICONS.BLUE_QUESTION}
     onClick={openContactForm}

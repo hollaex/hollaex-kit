@@ -12,20 +12,23 @@ import {
   MIN_VALUE_ERROR, MAX_VALUE_ERROR,
   MIN_VALUE_WITHDRAWAL, MAX_VALUE_WITHDRAWAL,
   LOWER_BALANCE, INVALID_ADDRESS,
-  BUTTON_TEXT, STEP,
+  BUTTON_TEXT,
 
 } from './constants';
+
 import ReviewModalContent from './ReviewModalContent';
 import { performWithdraw } from '../../actions/walletActions';
-import { CURRENCIES } from '../../config/constants';
+import { CURRENCIES, WITHDRAW_LIMITS } from '../../config/constants';
 import { fiatSymbol } from '../../utils/currency';
 
 const FORM_NAME = 'WithdrawCryptocurrencyForm';
 
 const selector = formValueSelector(FORM_NAME)
 
-const generateFormValues = (symbol, available = 0, fee = 0, minAmount = MIN_VALUE_WITHDRAWAL, maxAmount = MAX_VALUE_WITHDRAWAL) => {
+export const generateFormValues = (symbol, available = 0, fee = 0) => {
   const { name } = CURRENCIES[symbol];
+  const { MIN, MAX, STEP = 1 } = WITHDRAW_LIMITS[symbol];
+
   const fields = {};
 
   if (symbol !== fiatSymbol) {
@@ -37,20 +40,24 @@ const generateFormValues = (symbol, available = 0, fee = 0, minAmount = MIN_VALU
     }
   }
 
+  const amountValidate = [ required ];
+  if (MIN) {
+    amountValidate.push(minValue(MIN, MIN_VALUE_ERROR));
+  }
+  if (MAX) {
+    amountValidate.push(maxValue(MAX, MAX_VALUE_ERROR));
+  }
+  amountValidate.push(checkBalance(available, LOWER_BALANCE, fee));
+
   fields.amount = {
     type: 'number',
     label: `${name} amount to withdraw`,
     placeholder: `Type the amount of ${name} you wish to withdraw`,
     information: fee ? generateFeeMessage(fee) : '',
-    min: minAmount,
-    max: maxAmount,
+    min: MIN,
+    max: MAX,
     step: STEP,
-    validate: [
-      required,
-      minValue(minAmount, MIN_VALUE_ERROR),
-      maxValue(maxAmount, MAX_VALUE_ERROR),
-      checkBalance(available, LOWER_BALANCE, fee)
-    ],
+    validate: amountValidate,
   }
 
   return fields;
@@ -93,22 +100,22 @@ class Form extends Component {
 
   onSubmitOtp = ({ otp_code = '' }) => {
     const values = this.props.data;
-
-    return performWithdraw({
+    return this.props.onSubmit({
         ...values,
         amount: math.eval(values.amount),
         otp_code,
       })
-      .then((data) => {
+      .then(({ data }) => {
         this.onCloseDialog();
-        setWithdrawNotificationSuccess({}, this.props.dispatch);
+        this.props.dispatch(reset(FORM_NAME));
       })
-      .catch(errorHandler)
       .catch((error) => {
         if (error.errors && !error.errors.otp_code) {
           setWithdrawNotificationError(error.errors, this.props.dispatch);
+          this.onCloseDialog();
         }
-        this.onCloseDialog();
+        console.log(error.errors)
+        // this.onCloseDialog();
         throw error;
       });
   }
@@ -121,10 +128,10 @@ class Form extends Component {
       error,
       valid,
       initialValues,
-      formValues,
       symbol,
       data,
-      openContactForm
+      openContactForm,
+      formValues,
     } = this.props;
 
     const { dialogIsOpen, dialogOtpOpen } = this.state;
@@ -139,23 +146,23 @@ class Form extends Component {
             disabled={pristine || submitting || !valid}
             onClick={this.onOpenDialog}
           />
+          <Dialog
+            isOpen={dialogIsOpen}
+            label="withdraw-modal"
+            onCloseDialog={this.onCloseDialog}
+            shouldCloseOnOverlayClick={dialogOtpOpen}
+          >
+            {dialogOtpOpen ?
+              <OtpForm onSubmit={this.onSubmitOtp} onClickHelp={openContactForm} /> :
+              <ReviewModalContent
+                symbol={symbol}
+                data={data}
+                onClickAccept={this.onAcceptDialog}
+                onClickCancel={this.onCloseDialog}
+              />
+            }
+          </Dialog>
         </form>
-        <Dialog
-          isOpen={dialogIsOpen}
-          label="withdraw-modal"
-          onCloseDialog={this.onCloseDialog}
-          shouldCloseOnOverlayClick={dialogOtpOpen}
-        >
-          {dialogOtpOpen ?
-            <OtpForm onSubmit={this.onSubmitOtp} onClickHelp={openContactForm} /> :
-            <ReviewModalContent
-              symbol={symbol}
-              data={data}
-              onClickAccept={this.onAcceptDialog}
-              onClickCancel={this.onCloseDialog}
-            />
-          }
-        </Dialog>
       </div>
 
     );
@@ -165,17 +172,18 @@ class Form extends Component {
 const WithdrawForm = reduxForm({
   form: FORM_NAME,
   onSubmitFail: setWithdrawNotificationError,
-  onSubmitSuccess: setWithdrawNotificationSuccess,
+  onSubmitSuccess: (result, dispatch) => dispatch(reset(FORM_NAME)),
 })(Form);
 
-const mapStateToForm = (state) => ({ data: selector(state, 'address', 'amount') });
+const mapStateToForm = (state) => ({
+  data: selector(state, 'address', 'amount'),
+});
 
 const WithdrawFormWithValues = connect(mapStateToForm)(WithdrawForm);
 
 const Withdraw = ({
-  onSubmit, minAmount, maxAmount, balanceAvailable, fee, symbol, otp_enabled, openContactForm
+  onSubmit, otp_enabled, openContactForm, formValues, symbol,
 }) => {
-  const formValues = generateFormValues(symbol, balanceAvailable, fee, minAmount, maxAmount);
   const formProps = {
     onSubmit,
     formValues,
