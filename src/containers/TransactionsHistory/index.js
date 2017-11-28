@@ -68,7 +68,7 @@ class TransactionsHistory extends Component {
         props.filename = `${symbol}-deposits_history`;
         break;
       case 2:
-        props.title = STRINGS.TRANSACTION_HISTORY.TITLE_WITHDRAWAlS;
+        props.title = STRINGS.TRANSACTION_HISTORY.TITLE_WITHDRAWALS;
         props.headers = headers.withdrawals;
         props.data = withdrawals;
         props.filename = `${symbol}-withdrawals_history`;

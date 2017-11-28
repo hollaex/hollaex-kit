@@ -399,7 +399,7 @@ export default {
     TITLE: 'Transactions  History',
     TITLE_TRADES: 'Trades  History',
     TITLE_DEPOSITS: 'Deposits  History',
-    TITLE_WITHDRAWAlS: 'Withdrawals  History',
+    TITLE_WITHDRAWALS: 'Withdrawals  History',
     TEXT_DOWNLOAD: 'DOWNLOAD HISTORY',
     TRADES: 'Trades',
     DEPOSITS: 'Deposits',
