@@ -2,38 +2,36 @@ import { fiatSymbol } from '../../utils/currency';
 import { CURRENCIES } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 
-const { NOTIFICATIONS, NEED_HELP_TEXT } = STRINGS;
-const { FIAT, BTC } = NOTIFICATIONS.DEPOSITS;
+const generateFiatDepositTexts = (strings) => ({
+  TITLE: strings.formatString(strings.NOTIFICATIONS.DEPOSITS.FIAT.TITLE, CURRENCIES.fiat.shortName),
+  SUBTITLE: strings.formatString(strings.NOTIFICATIONS.DEPOSITS.FIAT.SUBTITLE, CURRENCIES.fiat.fullName),
+  INFORMATION_PENDING: [],
+  INFORMATION_COMPLETE: [],
+})
 
-export const NEED_HELP = NEED_HELP_TEXT;
-
-export const DEPOSITS = {
-  fiat: {
-    TITLE: STRINGS.formatString(FIAT.TITLE, CURRENCIES.fiat.shortName),
-    SUBTITLE: STRINGS.formatString(FIAT.SUBTITLE, CURRENCIES.fiat.fullName),
-    INFORMATION_PENDING: [],
+const generateBtcDepositTexts = (strings, status) => {
+  const { shortName, name, fullName } = CURRENCIES.btc;
+  return {
+    TITLE: status ?
+      strings.formatString(strings.NOTIFICATIONS.DEPOSITS.BTC.TITLE_RECEIVED, shortName) :
+      strings.formatString(strings.NOTIFICATIONS.DEPOSITS.BTC.TITLE_INCOMING, fullName),
+    SUBTITLE:
+      strings.formatString(status ? strings.NOTIFICATIONS.DEPOSITS.BTC.SUBTITLE_RECEIVED :
+      strings.NOTIFICATIONS.DEPOSITS.BTC.SUBTITLE_INCOMING, fullName),
+    INFORMATION_PENDING: [
+      strings.formatString(strings.NOTIFICATIONS.DEPOSITS.BTC.INFORMATION_PENDING_1, name),
+      strings.formatString(strings.NOTIFICATIONS.DEPOSITS.BTC.INFORMATION_PENDING_2, name),
+    ],
     INFORMATION_COMPLETE: [],
-  },
-  btc: (status) => {
-    const { shortName, name, fullName } = CURRENCIES.btc;
-    return {
-      TITLE: status ? STRINGS.formatString(BTC.TITLE_RECEIVED, shortName) : STRINGS.formatString(BTC.TITLE_INCOMING, fullName),
-      SUBTITLE: STRINGS.formatString(status ? BTC.SUBTITLE_RECEIVED : BTC.SUBTITLE_INCOMING, fullName),
-      INFORMATION_PENDING: [
-        STRINGS.formatString(BTC.INFORMATION_PENDING_1, name),
-        STRINGS.formatString(BTC.INFORMATION_PENDING_2, name),
-      ],
-      INFORMATION_COMPLETE: [],
-    }
   }
 }
 
 export const getDepositTexts = (currency, status = false) => {
   let texts = {};
   if (currency === fiatSymbol) {
-    texts = DEPOSITS[fiatSymbol];
+    texts = generateFiatDepositTexts(STRINGS)
   } else {
-    texts = DEPOSITS[currency](status);
+    texts = generateBtcDepositTexts(STRINGS, status);
   }
   return {
     title: texts.TITLE,
@@ -41,6 +39,3 @@ export const getDepositTexts = (currency, status = false) => {
     information: status ? texts.INFORMATION_COMPLETE : texts.INFORMATION_PENDING,
   }
 }
-
-
-export const BUTTON_TEXTS = NOTIFICATIONS.BUTTONS;

@@ -63,3 +63,15 @@ $large-modifier: 2.25;
     line-height: $font-size-subhead2;
   }
 }
+
+.direction_ltr {
+  .with_price-block_amount {
+    justify-content: flex-start;
+  }
+}
+
+.direction_rtl {
+  .with_price-block_amount {
+    justify-content: flex-end;
+  }
+}

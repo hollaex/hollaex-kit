@@ -5,14 +5,14 @@ import {
   calculatePrice, fiatFormatToCurrency, fiatShortName, fiatSymbol,
 } from '../../utils/currency';
 
-const CurrencyBallWithPrice = ({ symbol, amount, price }) => {
+const CurrencyBallWithPrice = ({ symbol, amount, price, size = 'm' }) => {
   const { shortName, formatToCurrency } = CURRENCIES[symbol];
   return (
     <div className="with_price-block_amount d-flex direction_ltr">
-      <CurrencyBall name={shortName} symbol={symbol} size="m" />
+      <CurrencyBall name={shortName} symbol={symbol} size={size} />
       <div className="with_price-block_amount-value d-flex">
         {`${formatToCurrency(amount)}`}
-        {symbol !== 'fiat' &&
+        {symbol !== fiatSymbol &&
           <div className="with_price-block_amount-value-fiat d-flex align-items-end">
             {` ~ ${fiatFormatToCurrency(calculatePrice(amount, price))} ${fiatShortName}`}
           </div>
