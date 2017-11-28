@@ -1,10 +1,10 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import classnames from 'classnames';
 import Modal from 'react-modal';
 import { Button, ActionNotification } from '../';
 import STRINGS from '../../config/localizedStrings';
-
-const { CLOSE_TEXT } = STRINGS;
+import { getClasesForLanguage, getLanguage } from '../../utils/string';
 
 class Dialog extends PureComponent {
 
@@ -23,6 +23,7 @@ class Dialog extends PureComponent {
   }
 
   render() {
+    const languageClasses = getClasesForLanguage(getLanguage());
     const { isOpen, children, label, closeButton, shouldCloseOnOverlayClick, showCloseText, dialogId, className } = this.props;
 
     return (
@@ -32,11 +33,11 @@ class Dialog extends PureComponent {
         contentLabel={label}
         onRequestClose={this.onRequestClose}
         shouldCloseOnOverlayClick={shouldCloseOnOverlayClick}
-        portalClassName={className}
+        portalClassName={classnames(className, languageClasses)}
       >
         {!shouldCloseOnOverlayClick && showCloseText &&
           <ActionNotification
-            text={CLOSE_TEXT}
+            text={STRINGS.CLOSE_TEXT}
             status="information"
             onClick={this.onRequestClose}
             className="close-button"
@@ -45,7 +46,7 @@ class Dialog extends PureComponent {
         {children}
         {closeButton &&
           <div>
-            {closeButton && <Button onClick={closeButton} label={CLOSE_TEXT} />}
+            {closeButton && <Button onClick={closeButton} label={STRINGS.CLOSE_TEXT} />}
           </div>
         }
       </Modal>
