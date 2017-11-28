@@ -151,6 +151,10 @@ class Container extends Component {
 			this.props.setUserOrders(data)
 		});
 
+		privateSocket.on('trades', (data) => {
+			this.props.addUserTrades(data)
+		});
+
 		privateSocket.on('wallet', (data) => {
 			this.props.setBalance(data.balance)
 		});
@@ -333,7 +337,6 @@ class Container extends Component {
 					onClick={this.resetTimer}
 					onKeyPress={this.resetTimer}
 				/>
-				{!appLoaded && <Loader />}
 				<AppBar
 					title={APP_TITLE}
 					goToAccountPage={this.goToAccountPage}

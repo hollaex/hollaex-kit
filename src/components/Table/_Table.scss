@@ -42,7 +42,6 @@ $controllers--color-disabled: $colors-deactivate-color2;
 
     > div {
       padding: 0.15rem 0.25rem;
-      margin-right: 0.5rem;
     }
   }
 }
@@ -56,5 +55,21 @@ $controllers--color-disabled: $colors-deactivate-color2;
   .disabled {
     cursor: default;
     pointer-events: none;
+  }
+}
+
+.direction_ltr {
+  .cell_box-type {
+    > div {
+      margin-right: 0.5rem;
+    }
+  }
+}
+
+.direction_rtl {
+  .cell_box-type {
+    > div {
+      margin-left: 0.5rem;
+    }
   }
 }

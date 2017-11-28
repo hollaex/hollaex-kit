@@ -32,7 +32,7 @@ const generateHeaders = (onCancel) => ([
   //   },
   // },
   {
-    label: STRINGS.SIDE,
+    label: STRINGS.TIME,
     key: 'created_At',
     renderCell: ({ created_at = '' }, key, index) => {
       return (

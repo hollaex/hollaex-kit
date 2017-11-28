@@ -5,13 +5,21 @@ import { connect } from 'react-redux';
 import { getUserTrades, getUserDeposits, getUserWithdrawals } from '../../actions/walletActions';
 import { fiatSymbol } from '../../utils/currency';
 
-import { ActionNotification, IconTitle, Table, CsvDownload, TabController } from '../../components';
+import { ActionNotification, IconTitle, Table, CsvDownload, TabController, Loader } from '../../components';
 import { ICONS, FLEX_CENTER_CLASSES, CURRENCIES } from '../../config/constants';
 
 import { generateTradeHeaders, generateDepositsHeaders, generateWithdrawalsHeaders } from './utils';
 import HistoryDisplay from './HistoryDisplay';
 
 import STRINGS from '../../config/localizedStrings';
+
+const filterData = (symbol, { count = 0, data = [] }) => {
+  const filteredData = data.filter((item) => item.symbol === symbol);
+  return {
+    count: filteredData.length,
+    data: filteredData,
+  }
+}
 
 class TransactionsHistory extends Component {
   state = {
@@ -30,7 +38,7 @@ class TransactionsHistory extends Component {
   }
 
   generateHeaders(symbol) {
-    this.props.getUserTrades(symbol);
+    // this.props.getUserTrades(symbol);
     this.props.getUserDeposits(symbol);
     this.props.getUserWithdrawals(symbol);
     this.setState({ headers: {
@@ -58,7 +66,7 @@ class TransactionsHistory extends Component {
       case 0:
         props.title = `${name} ${STRINGS.TRANSACTION_HISTORY.TITLE_TRADES}`;
         props.headers = headers.trades;
-        props.data = trades;
+        props.data = filterData(symbol, trades);
         props.filename = `${symbol}-transfers_history`;
         break
       case 1:
@@ -85,7 +93,7 @@ class TransactionsHistory extends Component {
     const { activeTab } = this.state;
 
     if (!id) {
-      return <div></div>;
+      return <Loader />;
     }
 
     return (

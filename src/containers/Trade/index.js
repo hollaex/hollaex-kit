@@ -193,7 +193,7 @@ const mapStateToProps = (store) => ({
   bids: store.orderbook.bids,
   marketPrice: store.orderbook.price,
   activeOrders: store.order.activeOrders,
-  userTrades: store.wallet.trades.data,
+  userTrades: store.wallet.latestUserTrades,
 });
 
 const mapDispatchToProps = (dispatch) => ({
