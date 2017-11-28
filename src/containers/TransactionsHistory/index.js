@@ -97,7 +97,7 @@ class TransactionsHistory extends Component {
     }
 
     return (
-      <div className="presentation_container">
+      <div className="presentation_container apply_rtl">
         <IconTitle
           text={STRINGS.TRANSACTION_HISTORY.TITLE}
           iconPath={ICONS.LETTER}

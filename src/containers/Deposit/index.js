@@ -39,7 +39,7 @@ class Deposit extends Component {
     const max =  DEPOSIT_LIMITS[symbol] ? DEPOSIT_LIMITS[symbol].MAX : 0;
 
     return (
-      <div className="presentation_container">
+      <div className="presentation_container  apply_rtl">
         {renderTitleSection(symbol, 'deposit', ICONS.LETTER)}
         <div className={classnames('inner_container', 'with_border_top', 'with_border_bottom')}>
           {renderInformation(symbol, balance, openContactForm, generateFiatInformation)}

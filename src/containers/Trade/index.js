@@ -139,14 +139,14 @@ class Trade extends Component {
           target="window"
           onResize={this.onResize}
         />
-        <div className={classnames('trade-col_side_wrapper', 'flex-column', 'd-flex')}>
+        <div className={classnames('trade-col_side_wrapper', 'flex-column', 'd-flex', 'apply_rtl')}>
           <TradeBlock title={STRINGS.ORDERBOOK}>
             {orderbookReady && <Orderbook {...orderbookProps} />}
           </TradeBlock>
         </div>
         <div className={classnames('trade-col_main_wrapper', 'flex-column', 'd-flex', 'f-1', 'overflow-x')}>
           <div className={classnames('trade-main_content', 'flex-auto', 'd-flex')}>
-            <div className={classnames('trade-col_action_wrapper', 'flex-column', 'd-flex')}>
+            <div className={classnames('trade-col_action_wrapper', 'flex-column', 'd-flex', 'apply_rtl')}>
               <TradeBlock title={STRINGS.ORDER_ENTRY}>
                 <OrderEntry
                   submitOrder={this.onSubmitOrder}
@@ -166,11 +166,11 @@ class Trade extends Component {
               }
             </TradeBlock>
           </div>
-          <div className={classnames('trade-tabs_content', 'd-flex', 'flex-column')}>
+          <div className={classnames('trade-tabs_content', 'd-flex', 'flex-column', 'apply_rtl')}>
             <TradeBlockTabs content={USER_TABS} />
           </div>
         </div>
-        <div className={classnames('trade-col_side_wrapper', 'flex-column', 'd-flex')}>
+        <div className={classnames('trade-col_side_wrapper', 'flex-column', 'd-flex', 'apply_rtl')}>
           <TradeBlock title={STRINGS.TRADE_HISTORY}>
             <TradeHistory data={tradeHistory} />
           </TradeBlock>

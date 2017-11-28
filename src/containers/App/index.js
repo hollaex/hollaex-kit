@@ -350,7 +350,6 @@ class Container extends Component {
         <div className="app_container-content d-flex justify-content-between">
           <div className={classnames(
 						'app_container-main', 'd-flex', 'flex-column', 'justify-content-between', 'overflow-y',
-						...languageClasses,
 					)}>
             {appLoaded && verification_level > 0 ? children : <Loader />}
           </div>

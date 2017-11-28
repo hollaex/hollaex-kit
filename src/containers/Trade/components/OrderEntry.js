@@ -167,7 +167,7 @@ class OrderEntry extends Component {
 }
 
 OrderEntry.defaultProps = {
-  currencyName: 'Bitcoins',
+  currencyName: 'Bitcoin',
 }
 
 const selector = formValueSelector(FORM_NAME);

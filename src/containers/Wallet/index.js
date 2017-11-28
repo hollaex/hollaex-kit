@@ -158,7 +158,7 @@ class Wallet extends Component {
     const { sections } = this.state;
 
     return (
-      <div className="presentation_container">
+      <div className="presentation_container apply_rtl">
         <IconTitle
           text={STRINGS.WALLET_TITLE}
           iconPath={ICONS.LETTER}

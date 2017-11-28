@@ -6,7 +6,7 @@ const TradeBlock = ({ children, title, overflowY = false, setRef, className = ''
     <div
       className={classnames(
         'trade_block-wrapper', 'd-flex', 'flex-column',
-        className
+        className, 'apply_rtl'
       )}
     >
       <div className="trade_block-title">

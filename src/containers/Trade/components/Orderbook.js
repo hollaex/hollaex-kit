@@ -55,7 +55,7 @@ class Orderbook extends Component {
     } : {};
 
     return (
-      <div className="trade_orderbook-wrapper d-flex flex-column f-1">
+      <div className="trade_orderbook-wrapper d-flex flex-column f-1 apply_rtl">
         <EventListener
           target="window"
           onResize={this.scrollTop}

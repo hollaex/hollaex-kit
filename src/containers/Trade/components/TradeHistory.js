@@ -28,7 +28,7 @@ const HEADERS = [
 
 const TradeHistory = ({ data }) => {
   return (
-    <div className="flex-auto d-flex">
+    <div className="flex-auto d-flex apply_rtl">
       <DisplayTable
         headers={HEADERS}
         data={data}

@@ -38,13 +38,29 @@
         position: absolute;
       }
     }
-
-    > div:not(:last-child) {
-      margin-right: 0.5rem;
-    }
   }
 }
 
 .trade_block-column-wrapper > div{
   flex: 1 !important;
+}
+
+.direction_ltr {
+  .trade_block_tabs-wrapper .trade_block-title {
+    .trade_block-title-items {
+      > div:not(:last-child) {
+        margin-right: 0.5rem;
+      }
+    }
+  }
+}
+
+.direction_rtl {
+  .trade_block_tabs-wrapper .trade_block-title {
+    .trade_block-title-items {
+      > div:not(:last-child) {
+        margin-left: 0.5rem;
+      }
+    }
+  }
 }

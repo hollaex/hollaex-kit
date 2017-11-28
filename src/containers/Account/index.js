@@ -93,7 +93,7 @@ class Account extends Component {
     const { activeTab, tabs } = this.state;
 
     return (
-      <div className="presentation_container">
+      <div className="presentation_container apply_rtl">
         <TabController
           activeTab={activeTab}
           setActiveTab={this.setActiveTab}

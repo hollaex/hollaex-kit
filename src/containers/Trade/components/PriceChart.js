@@ -113,6 +113,7 @@ class ChartComponent extends Component {
           justifyContent: 'center',
           alignItems: 'center',
         }}
+        className="direction_ltr"
       >
         {ready && chartData.btc && chartData.btc.length > 1 ?
           <Chart
