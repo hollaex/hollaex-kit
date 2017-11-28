@@ -571,4 +571,9 @@ export default {
   WALLET_BUTTON_CRYPTOCURRENCY_WITHDRAW: 'send',
   AVAILABLE_TEXT: 'Available',
   BALANCE_TEXT: 'Balance',
+  CURRENCY_BALANCE_TEXT: '{0} Balance',
+  WALLET_TABLE_AMOUNT_IN: `Amount in {0}`,
+  WALLET_TABLE_TOTAL: 'Grand Total',
+  WALLET_ALL_ASSETS: 'All Assets',
+  HIDE_TEXT: 'Hide',
 };
