@@ -21,25 +21,13 @@ $valid-icon-size: 2rem;
   &.inline {
     display: flex;
     align-items: flex-end;
+
     > div {
       flex: 1;
 
       &.field-error-content {
         padding-bottom: $wrapper-margin;
-        margin-left: $wrapper-margin;
       }
-    }
-
-    .valid > *:not(:last-child) {
-      padding-right: 0;
-    }
-
-    input {
-      padding-right: 0;
-    }
-
-    .field-valid {
-      left: 100%;
     }
   }
 }
@@ -153,6 +141,22 @@ $valid-icon-size: 2rem;
       right: 0;
     }
   }
+
+  .field-wrapper {
+    &.inline {
+      .field-error-content {
+        margin-left: $wrapper-margin;
+      }
+
+      input {
+        padding-right: 0;
+      }
+
+      .field-valid {
+        right: 0;
+      }
+    }
+  }
 }
 
 .direction_rtl {
@@ -167,6 +171,21 @@ $valid-icon-size: 2rem;
 
     .field-valid {
       left: 0;
+    }
+  }
+  .field-wrapper {
+    &.inline {
+      .field-error-content {
+        margin-right: $wrapper-margin;
+      }
+
+      input {
+        padding-left: 0;
+      }
+
+      .field-valid {
+        left: -$valid-icon-size;
+      }
     }
   }
 }

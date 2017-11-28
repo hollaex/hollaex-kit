@@ -104,3 +104,11 @@ export const isBefore = (before = '', message = STRINGS.VALIDATIONS.INVALID_DATE
 }
 
 export const normalizeInt = (value) => validator.toInt(value) || 0;
+
+export const validateOtp = (message = STRINGS.OTP_FORM.ERROR_INVALID) => (value = '') => {
+  let error = undefined;
+  if (value.length !== 6 || !validator.isNumeric(value)) {
+    error = message;
+  }
+  return error;
+}

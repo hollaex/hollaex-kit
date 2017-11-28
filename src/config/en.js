@@ -209,6 +209,7 @@ export default {
    OTP_TITLE: 'Authenticator Code',
    OTP_HELP: 'help',
    OTP_BUTTON: 'submit',
+   ERROR_INVALID: 'Invalid OTP Code',
  },
  QUICK_TRADE_COMPONENT: {
    TITLE: 'Quick',
