@@ -23,7 +23,7 @@ const extractuserData = (data) => {
 		timestamp: Date.now()
 	}
 	USER_DATA_KEYS.forEach((key) => {
-		if (data[key]) {
+		if (data.hasOwnProperty(key)) {
 			userData[key] = data[key];
 			if (key === 'phone_number') {
 				const phoneParts = data[key] ? data[key].split(' ', 2) : ['', ''];

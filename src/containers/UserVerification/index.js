@@ -6,7 +6,7 @@ import { ICONS } from '../../config/constants';
 import { updateUser, updateDocuments, setMe, setUserData } from '../../actions/userAction';
 import { Accordion, Loader } from '../../components';
 import IdentificationForm from './IdentificationForm';
-import { prepareInitialValues } from './IdentificationFormValues';
+import { prepareInitialValues, generateFormValues } from './IdentificationFormValues';
 import DocumentsForm from './DocumentsForm';
 import BankAccountForm from './BankAccountForm';
 
@@ -18,15 +18,16 @@ class UserVerification extends Component {
   }
 
   componentDidMount() {
-    this.calculateSections(this.props.verification_level, this.props.email, this.props.userData);
+    this.calculateSections(this.props.verification_level, this.props.email, this.props.userData, this.props.activeLanguage);
   }
 
   componentWillReceiveProps(nextProps) {
     if (
       nextProps.verification_level !== this.props.verification_level ||
-      nextProps.userData.timestamp !== this.props.userData.timestamp
+      nextProps.userData.timestamp !== this.props.userData.timestamp ||
+      nextProps.activeLanguage !== this.props.activeLanguage
     ) {
-      this.calculateSections(nextProps.verification_level, nextProps.email, nextProps.userData);
+      this.calculateSections(nextProps.verification_level, nextProps.email, nextProps.userData, nextProps.activeLanguage);
     }
   }
 
@@ -54,8 +55,9 @@ class UserVerification extends Component {
     return notification;
   }
 
-  calculateSections = (verification_level, email, userData) => {
+  calculateSections = (verification_level, email, userData, language) => {
     const activeStep = this.activeStep(verification_level, userData);
+    const formValues = generateFormValues(language);
 
     const sections = [{
       title: TEXTS.TITLE_EMAIL,
@@ -68,6 +70,7 @@ class UserVerification extends Component {
       content: <IdentificationForm
         onSubmit={this.onSubmitUserInformation}
         initialValues={prepareInitialValues(userData)}
+        formValues={formValues}
       />,
       disabled: activeStep !== 1,
       notification: this.calculateNotification(activeStep, 1, TEXTS.VERIFY_USER_DOCUMENTATION, verification_level >= 2, userData.first_name)
@@ -153,6 +156,7 @@ const mapStateToProps = (state) => ({
   verification_level: state.user.verification_level,
   userData: state.user.userData,
   email: state.user.email,
+  activeLanguage: state.app.language,
 });
 
 const mapDispatchToProps = (dispatch) => ({

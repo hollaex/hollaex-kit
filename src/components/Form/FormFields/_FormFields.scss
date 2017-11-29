@@ -53,6 +53,11 @@ $placeholder--font-weight: bold;
     display: none;
   }
 
+  .datefield-farsi_picker {
+    #farsiDatePicker {
+      display: none;
+    }
+  }
 }
 
 .direction_ltr {

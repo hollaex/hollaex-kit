@@ -3,7 +3,7 @@ import { FieldArray, Field, reduxForm } from 'redux-form';
 
 import renderFields from '../../components/Form/factoryFields';
 import { Button } from '../../components';
-import FormValues, { information } from './IdentificationFormValues';
+import { information } from './IdentificationFormValues';
 import UpgradeWarning from './UpgradeWarning';
 
 import { TEXTS } from './constants';
@@ -19,11 +19,11 @@ const renderSection = (props) => {
 }
 
 const Form = (props) => {
-  const { handleSubmit, submitting, pristine, error, valid, initialValues } = props;
+  const { handleSubmit, submitting, pristine, error, valid, initialValue, formValues } = props;
   return (
     <form onSubmit={handleSubmit} className="user_verification-form">
       <UpgradeWarning />
-      {Object.entries(FormValues).map(([key, value], index) => (
+      {Object.entries(formValues).map(([key, value], index) => (
         <FieldArray
           key={key}
           name={key}

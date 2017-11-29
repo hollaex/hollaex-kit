@@ -1,5 +1,6 @@
 import math from 'mathjs';
 import numbro from 'numbro';
+import moment from 'moment';
 
 import { LANGUAGE_KEY } from '../config/constants';
 import STRINGS from '../config/localizedStrings';
@@ -38,6 +39,7 @@ export const getLanguage = () => {
 export const setLanguage = (language) => {
 	STRINGS.setLanguage(language);
   localStorage.setItem(LANGUAGE_KEY, language);
+	moment.locale('en')
 	return language;
 }
 

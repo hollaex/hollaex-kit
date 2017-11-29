@@ -48,6 +48,7 @@ class FieldWrapper extends Component {
       visited = false,
       hideUnderline = false,
       className = '',
+      onClick = () => {}
     } = this.props;
 
     const displayError = !(active || focused) && (visited || touched) && error;
@@ -60,6 +61,7 @@ class FieldWrapper extends Component {
           hasValue={hasValue}
           focused={active || focused}
           hideUnderline={hideUnderline}
+          onClick={onClick}
         >
           {children}
         </FieldContent>

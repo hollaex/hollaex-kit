@@ -22,6 +22,7 @@
     "query-string": "^5.0.0",
     "react": "^15.4.0",
     "react-addons-shallow-compare": "^15.6.2",
+    "react-advance-jalaali-datepicker": "^0.1.0",
     "react-copy-to-clipboard": "^5.0.1",
     "react-csv": "^1.0.8",
     "react-dates": "^13.0.6",
