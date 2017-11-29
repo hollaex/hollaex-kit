@@ -13,7 +13,6 @@ $dropdown-option--padding: 0.25rem;
 .dropdown-options-wrapper {
   max-height: 10rem;
   position: absolute;
-  left: 0;
   top: 100%;
   width: 100%;
   background: white;
@@ -32,6 +31,28 @@ $dropdown-option--padding: 0.25rem;
   align-items: center;
   > .icon {
     height: $dropdown-option--height;
-    margin-right: $dropdown-option--padding;
+  }
+}
+
+.direction_ltr {
+  .dropdown-options-wrapper {
+    left: 0;
+  }
+
+  .dropdown-option {
+    > .icon {
+      margin-right: $dropdown-option--padding;
+    }
+  }
+}
+.direction_rtl {
+  .dropdown-options-wrapper {
+    right: 0;
+  }
+
+  .dropdown-option {
+    > .icon {
+      margin-left: $dropdown-option--padding;
+    }
   }
 }
