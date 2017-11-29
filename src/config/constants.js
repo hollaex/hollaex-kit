@@ -77,6 +77,7 @@ export const FLEX_CENTER_CLASSES = ['d-flex', 'justify-content-center', 'align-i
 
 export const TIMESTAMP_FORMAT = STRINGS.TIMESTAMP_FORMAT;
 export const HOUR_FORMAT = STRINGS.HOUR_FORMAT;
+export const TIMESTAMP_FORMAT_FA = STRINGS.TIMESTAMP_FORMAT.split('/').map((s) => `j${s}`).join('/');
 
 export const LIMIT_VALUES = {
   PRICE: {

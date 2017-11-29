@@ -28,23 +28,31 @@ class TransactionsHistory extends Component {
   }
 
   componentDidMount() {
+    this.requestData(this.props.symbol);
     this.generateHeaders(this.props.symbol);
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.symbol !== this.props.symbol) {
-      this.generateHeaders(nextProps.symbol);
+      this.requestData(nextProps.symbol);
+      this.generateHeaders(nextProps.symbol, nextProps.activeLanguage);
+    // } else if (nextProps.activeLanguage !== this.props.activeLanguage) {
+    //   this.generateHeaders(nextProps.symbol, nextProps.activeLanguage);
     }
+
   }
 
-  generateHeaders(symbol) {
+  requestData = (symbol) => {
     // this.props.getUserTrades(symbol);
     this.props.getUserDeposits(symbol);
     this.props.getUserWithdrawals(symbol);
+  }
+
+  generateHeaders(symbol, language) {
     this.setState({ headers: {
-      trades: generateTradeHeaders(symbol),
-      deposits: generateDepositsHeaders(symbol),
-      withdrawals: generateWithdrawalsHeaders(symbol),
+      trades: generateTradeHeaders(symbol, language),
+      deposits: generateDepositsHeaders(symbol, language),
+      withdrawals: generateWithdrawalsHeaders(symbol, language),
     }});
   }
 
@@ -126,6 +134,7 @@ const mapStateToProps = (store) => ({
   deposits: store.wallet.deposits,
   withdrawals: store.wallet.withdrawals,
   symbol: store.orderbook.symbol,
+  activeLanguage: store.app.language,
 });
 
 const mapDispatchToProps = (dispatch) => ({
