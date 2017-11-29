@@ -1,4 +1,3 @@
-@import '../../../variables';
 @import "./DropdownField.scss";
 @import "./FieldWrapper.scss";
 
@@ -41,14 +40,8 @@ $placeholder--font-weight: bold;
 
   .datefield-values-wrapper {
     display: flex;
-    padding-right: $placeholder--padding !important;
-
     > * {
       flex: 1;
-
-      &:not(:last-child) {
-        margin-right: 1rem;
-      }
     }
   }
 
@@ -60,6 +53,34 @@ $placeholder--font-weight: bold;
     display: none;
   }
 
+}
+
+.direction_ltr {
+  .datefield-wrapper {
+    .datefield-values-wrapper {
+      padding-right: $placeholder--padding !important;
+
+      > * {
+        &:not(:last-child) {
+          margin-right: 1rem;
+        }
+      }
+    }
+  }
+}
+
+.direction_rtl {
+  .datefield-wrapper {
+    .datefield-values-wrapper {
+      padding-left: $placeholder--padding !important;
+
+      > * {
+        &:not(:last-child) {
+          margin-left: 1rem;
+        }
+      }
+    }
+  }
 }
 
 .input_file {
