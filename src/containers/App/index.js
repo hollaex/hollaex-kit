@@ -90,8 +90,10 @@ class Container extends Component {
 		if (this.state.idleTimer) {
 			clearTimeout(this.idleTimer);
 		}
-		const idleTimer = setTimeout(this._logout, SESSION_TIME); // no activity will log the user out automatically
-		this.setState({ idleTimer });
+		if (this.state.appLoaded) {
+			const idleTimer = setTimeout(this._logout, SESSION_TIME); // no activity will log the user out automatically
+			this.setState({ idleTimer });
+		}
 	}
 
 	resetTimer = debounce(this._resetTimer, 250);
@@ -258,7 +260,11 @@ class Container extends Component {
 	goToQuickTradePage = () => this.goToPage('/quick-trade');
   goToDashboard = () => this.goToPage('/');
 
-	logout = () => this.props.logout();
+	logout = () => {
+		this.setState({ appLoaded: false }, () => {
+			this.props.logout();
+		})
+	}
 
 	onOpenDialog = () => {
 		this.setState({ dialogIsOpen: true });
