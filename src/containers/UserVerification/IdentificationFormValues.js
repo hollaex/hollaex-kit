@@ -54,7 +54,7 @@ export const generateFormValues = (language) => {
         validate: [required],
       },
       dob: {
-        type: 'date',
+        type: 'date-dropdown',
         language,
         label: FORM_FIELDS.DOB_LABEL,
         validate: [required, isBefore()],

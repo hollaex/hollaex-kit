@@ -6,8 +6,9 @@ import { ICONS } from '../../config/constants';
 import { updateUser, updateDocuments, setMe, setUserData } from '../../actions/userAction';
 import { Accordion, Loader } from '../../components';
 import IdentificationForm from './IdentificationForm';
-import { prepareInitialValues, generateFormValues } from './IdentificationFormValues';
+import { prepareInitialValues, generateFormValues as generateDataFormValues } from './IdentificationFormValues';
 import DocumentsForm from './DocumentsForm';
+import { generateFormValues as generateIdFormValues } from './DocumentsFormValues';
 import BankAccountForm from './BankAccountForm';
 
 import { TEXTS } from './constants';
@@ -15,19 +16,22 @@ import { TEXTS } from './constants';
 class UserVerification extends Component {
   state = {
     sections: [],
+    dataFormValues: {},
+    idFormValues: {},
   }
 
   componentDidMount() {
-    this.calculateSections(this.props.verification_level, this.props.email, this.props.userData, this.props.activeLanguage);
+    this.calculateFormValues(this.props.activeLanguage, this.props.verification_level, this.props.email, this.props.userData);
   }
 
   componentWillReceiveProps(nextProps) {
-    if (
+    if (nextProps.activeLanguage !== this.props.activeLanguage) {
+      this.calculateFormValues(nextProps.activeLanguage, nextProps.verification_level, nextProps.email, nextProps.userData);
+    } else if (
       nextProps.verification_level !== this.props.verification_level ||
-      nextProps.userData.timestamp !== this.props.userData.timestamp ||
-      nextProps.activeLanguage !== this.props.activeLanguage
+      nextProps.userData.timestamp !== this.props.userData.timestamp
     ) {
-      this.calculateSections(nextProps.verification_level, nextProps.email, nextProps.userData, nextProps.activeLanguage);
+      this.calculateSections(nextProps.verification_level, nextProps.email, nextProps.userData);
     }
   }
 
@@ -55,14 +59,23 @@ class UserVerification extends Component {
     return notification;
   }
 
-  calculateSections = (verification_level, email, userData, language) => {
+  calculateFormValues = (language, verification_level, email, userData) => {
+    const dataFormValues = generateDataFormValues(language);
+    const idFormValues = generateIdFormValues(language);
+    this.setState({ dataFormValues, idFormValues }, () => {
+      this.calculateSections(verification_level, email, userData);
+    });
+  }
+
+  calculateSections = (verification_level, email, userData) => {
+    const { dataFormValues, idFormValues } = this.state;
     const activeStep = this.activeStep(verification_level, userData);
-    const formValues = generateFormValues(language);
 
     const sections = [{
       title: TEXTS.TITLE_EMAIL,
       content: <div>{email}</div>,
       disabled: activeStep !== 0,
+      disabled: false,
       notification: this.calculateNotification(activeStep, 0, TEXTS.VERIFY_EMAIL, true)
     },
     {
@@ -70,9 +83,10 @@ class UserVerification extends Component {
       content: <IdentificationForm
         onSubmit={this.onSubmitUserInformation}
         initialValues={prepareInitialValues(userData)}
-        formValues={formValues}
+        formValues={dataFormValues}
       />,
       disabled: activeStep !== 1,
+      disabled: false,
       notification: this.calculateNotification(activeStep, 1, TEXTS.VERIFY_USER_DOCUMENTATION, verification_level >= 2, userData.first_name)
     },
     {
@@ -80,8 +94,10 @@ class UserVerification extends Component {
       content: <DocumentsForm
         onSubmit={this.onSubmitUserDocuments}
         initialValues={userData.id_data}
+        formValues={idFormValues}
       />,
       disabled: activeStep !== 2,
+      disabled: false,
       notification: this.calculateNotification(activeStep, 2, TEXTS.VERIFY_ID_DOCUMENTS, userData.id_data.verified, userData.id_data.type)
     },
     {
@@ -91,6 +107,7 @@ class UserVerification extends Component {
         initialValues={userData.bank_account}
       />,
       disabled: activeStep !== 3,
+      disabled: false,
       notification: this.calculateNotification(activeStep, 3, TEXTS.VERIFY_BANK_ACCOUNT, userData.bank_account.verified, userData.bank_account.type)
     }];
 

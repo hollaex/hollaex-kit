@@ -151,7 +151,7 @@ $valid-icon-size: 2rem;
       }
 
       .field-valid {
-        right: 0;
+        right: -$valid-icon-size;
       }
     }
   }

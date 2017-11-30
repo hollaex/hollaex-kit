@@ -1,6 +1,7 @@
 import React from 'react';
+import moment from 'moment';
 import { TEXTS } from './constants';
-import { requiredWithCustomMessage } from '../../components/Form/validations';
+import { requiredWithCustomMessage, isBefore } from '../../components/Form/validations';
 
 const { ID_DOCUMENTS_FORM } = TEXTS;
 const { FORM_FIELDS, VALIDATIONS, INFORMATION } = ID_DOCUMENTS_FORM;
@@ -12,7 +13,7 @@ const ERROR_MESSAGE_EXPIRATION_DATE = VALIDATIONS.EXPIRATION_DATE;
 const ERROR_MESSAGE_FRONT = VALIDATIONS.FRONT;
 const ERROR_MESSAGE_PROOF_OF_RESIDENCY = VALIDATIONS.PROOF_OF_RESIDENCY;
 
-const fields = {
+export const generateFormValues = (language) => ({
   id: {
     type: {
       type: 'select',
@@ -31,14 +32,18 @@ const fields = {
       validate: [requiredWithCustomMessage(ERROR_MESSAGE_NUMBER)],
     },
     issued_date: {
-      type: 'date',
+      type: 'date-dropdown',
       label: FORM_FIELDS.ISSUED_DATE_LABEL,
-      validate: [requiredWithCustomMessage(ERROR_MESSAGE_ISSUED_DATE)],
+      validate: [requiredWithCustomMessage(ERROR_MESSAGE_ISSUED_DATE), isBefore()],
+      endDate: moment().add(1, 'days'),
+      language,
     },
     expiration_date: {
-      type: 'date',
+      type: 'date-dropdown',
       label: FORM_FIELDS.EXPIRATION_DATE_PLACEHOLDER,
-      validate: [requiredWithCustomMessage(ERROR_MESSAGE_EXPIRATION_DATE)],
+      validate: [requiredWithCustomMessage(ERROR_MESSAGE_EXPIRATION_DATE), isBefore()],
+      endDate: moment().add(1, 'days'),
+      language,
     },
     front: {
       type: 'file',
@@ -60,7 +65,7 @@ const fields = {
       validate: [requiredWithCustomMessage(ERROR_MESSAGE_PROOF_OF_RESIDENCY)],
     },
   },
-};
+})
 
 const InformationSection = ({ title, children}) => (
   <div className="information_section">
@@ -107,5 +112,3 @@ export const information = {
     </InformationSection>
   ),
 }
-
-export default fields;
