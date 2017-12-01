@@ -27,7 +27,7 @@ const generateStyle = (value) => ({
 
 class QuickTrade extends Component {
   state = {
-    side: STRINGS.QUICK_TRADE_COMPONENT.SIDES[0],
+    side: STRINGS.SIDES[0].value,
     value: 1,
     symbol: DEFAULT_SYMBOL,
     inputStyle: generateStyle(2),
@@ -61,9 +61,9 @@ class QuickTrade extends Component {
   }
 
   onToogleSide = () => {
-    const SIDES = STRINGS.QUICK_TRADE_COMPONENT.SIDES;
+    const SIDES = STRINGS.SIDES;
 
-    const side = this.state.side === SIDES[0] ? SIDES[1] : SIDES[0];
+    const side = this.state.side === SIDES[0].value ? SIDES[1].value : SIDES[0].value;
     this.setState({ side });
     this.requestValue({
       size: this.state.value,
@@ -107,15 +107,16 @@ class QuickTrade extends Component {
     const { side, value, symbol, inputStyle } = this.state;
     const { data, fetching, error } = quickTradeData;
     const { name } = CURRENCIES[symbol];
+    console.log(side, '-------')
     return (
       <div className={classnames('quick_trade-wrapper', ...GROUP_CLASSES)}>
         <div className={classnames('quick_trade-section_wrapper', ...GROUP_CLASSES)}>
           <img src={ICONS.CHECK} alt="" />
-          <div className="title">{`${STRINGS.QUICK_TRADE_COMPONENT.TITLE} ${side}`}</div>
+          <div className="title">{`${STRINGS.QUICK_TRADE_COMPONENT.TITLE} ${STRINGS.SIDES_VALUES[side]}`}</div>
         </div>
         <div className={classnames('quick_trade-section_wrapper', ...GROUP_CLASSES)}>
           <ToogleButton
-            values={STRINGS.QUICK_TRADE_COMPONENT.SIDES}
+            values={STRINGS.SIDES}
             onToogle={this.onToogleSide}
             selected={side}
           />

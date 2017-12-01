@@ -1,4 +1,4 @@
-$quick-trade--background: #ccf9fb;
+$quick-trade--background: transparent;
 $features-icon--size: 4rem;
 $features-card--width: 17.5rem;
 $features-card--margin: 3rem;
@@ -11,6 +11,7 @@ $features-container--sm--width: 45rem;
   }
   .quick_trade-section {
     background-color: $quick-trade--background;
+    border: 1px solid $colors-deactivate-color1;
     > .quick_trade-wrapper {
       flex: 1;
     }

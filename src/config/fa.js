@@ -461,8 +461,8 @@ export default {
     limit: 'limit',
   },
   TYPES: [
-    { value: 'بازار', label: 'بازار' },
-    { value: 'حد', label: 'حد' },
+    { value: 'market', label: 'بازار' },
+    { value: 'limit', label: 'حد' },
   ],
   SIDE: 'طرف',
   SIDES_VALUES: {
@@ -470,8 +470,8 @@ export default {
     sell: 'فروش',
   },
   SIDES: [
-    { value: 'خرید', label: 'خرید' },
-    { value: 'فروش', label: 'فروش' },
+    { value: 'buy', label: 'خرید' },
+    { value: 'sell', label: 'فروش' },
   ],
   SIZE: 'اندازه',
   PRICE: 'قیمت',

@@ -4,11 +4,13 @@ $footer-wrapper--margin-bottom: $footer-wrapper--margin * 2;
 $footer-wrapper--border-color: $colors-deactivate-color2;
 $footer-social-icon--dimension: 2rem;
 $footer-icons--side-margin: 0.5rem;
+$footer--background-color: white;
 
 .footer-container {
   padding: $footer-wrapper--margin-top $footer-wrapper--margin $footer-wrapper--margin;
   border-top: 1px solid $footer-wrapper--border-color;
   font-size: $font-size-subtext;
+  background: $footer--background-color;
 
   .footer-row-content {
     margin-bottom: $footer-wrapper--margin-bottom;
