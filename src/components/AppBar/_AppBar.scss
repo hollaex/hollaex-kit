@@ -1,3 +1,5 @@
+$language-selector-arrow--size: 0.4rem;
+
 .app_bar {
   position: relative;
   width: 100%;
@@ -54,6 +56,30 @@
       background-color: $colors-main-black;
       right: -1px;
       position: absolute;
+    }
+
+    .app_bar-currency_display-selector {
+      position: relative;
+    }
+    .app_bar-currency_display {
+      &.is_open {
+        .app_bar-currency_display-selector {
+          &:after {
+            @include css-triangle($colors-main-black, 'down', $language-selector-arrow--size);
+            right: -$language-selector-arrow--size * 2.5;
+            top: calc(50% - #{$language-selector-arrow--size / 2});
+          }
+        }
+      }
+      &.is_close {
+        .app_bar-currency_display-selector {
+          &:after {
+            @include css-triangle($colors-main-black, 'right', $language-selector-arrow--size);
+            right: -$language-selector-arrow--size * 0.5;
+            top: calc(50% - #{$language-selector-arrow--size});
+          }
+        }
+      }
     }
 
     .app_bar-currency_display, .app_bar-currency_option {

@@ -47,16 +47,18 @@ class AppBar extends Component {
 
   renderSymbolBlock = (symbol) => {
     const { name, iconPath } = CURRENCIES[symbol];
+    const { symbolSelectorIsOpen } = this.state;
+
     return (
       <div className="app_bar-currency_wrapper pointer">
-        <div className="app_bar-currency_display" onClick={this.toogleSymbolSelector}>
+        <div className={classnames('app_bar-currency_display', 'd-flex', { 'is_open': symbolSelectorIsOpen, 'is_close': !symbolSelectorIsOpen })} onClick={this.toogleSymbolSelector}>
           <img
             alt={symbol}
             src={`${process.env.PUBLIC_URL}${iconPath}`}
           />
-          <span>{name}</span>
+          <div className="app_bar-currency_display-selector d-flex align-items-center">{name}</div>
         </div>
-        {this.state.symbolSelectorIsOpen &&
+        {symbolSelectorIsOpen &&
           <div className="app_bar-currency_list">
             {Object.entries(CURRENCIES)
               .filter(([key, currency]) => currency.symbol !== symbol)

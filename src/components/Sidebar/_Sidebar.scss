@@ -5,6 +5,7 @@ $wallet-bordertop-height: 2px;
 $sidebar-selected-ball--width: 0.75rem;
 $sidebar-selected-ball--space: $sidebar-selected-ball--width + 0.5rem;
 $sidebar-selected-ball--top: 2px;
+$title-text--active: 1.25rem;
 
 .sidebar-container {
   display: flex;
@@ -37,6 +38,19 @@ $sidebar-selected-ball--top: 2px;
     &.active {
       border-bottom-color: $sidebar-borderbottom-color-active;
     }
+
+    .sidebar-container-trade {
+      .sidebar-trade-button {
+        &.not-active {
+          background: $colors-white !important;
+          color: $colors-deactivate-color2 !important;
+          border: 1px solid $colors-deactivate-color2;
+        }
+        &.active {
+          background: $colors-currencies-btc !important;
+        }
+      }
+    }
   }
 
   .sidebar-logout {
@@ -67,6 +81,16 @@ $sidebar-selected-ball--top: 2px;
     position: absolute;
   }
 
+  .sidebar_section-title:before {
+    content: '';
+    width: $sidebar-selected-ball--width;
+    height: $sidebar-selected-ball--width;
+    border: 1px solid $colors-deactivate-color2;
+    border-radius: $sidebar-selected-ball--width;
+    position: absolute;
+    // top: $sidebar-selected-ball--top * 2;
+  }
+
   &.active {
     &:before {
       height: $sidebar-selected-ball--top;
@@ -75,17 +99,14 @@ $sidebar-selected-ball--top: 2px;
 
     .sidebar_section-title:before {
       content: '';
-      width: $sidebar-selected-ball--width;
-      height: $sidebar-selected-ball--width;
-      border-radius: $sidebar-selected-ball--width;
       background-color: $wallet-bordertop-color;
-      position: absolute;
-      top: $sidebar-selected-ball--top * 2;
+      border-color: $wallet-bordertop-color;
     }
   }
 
-  &.active .sidebar_section-title-text {
-    font-weight: bold;;
+  &.active .sidebar_section-title .sidebar_section-title-text {
+    font-weight: bold;
+    font-size: $title-text--active;
   }
 
   .sidebar_section-title {
@@ -97,7 +118,12 @@ $sidebar-selected-ball--top: 2px;
     text-transform: uppercase;
 
     .sidebar_section-title-text {
-      font-size: $font-size-main;
+      font-size:$title-text--active;
+      line-height: 2rem;
+      &:hover {
+        font-size: $title-text--active;
+        font-weight: bold;
+      }
     }
   }
 }
@@ -108,20 +134,16 @@ $sidebar-selected-ball--top: 2px;
 
 .direction_ltr {
   .sidebar_section-container {
-    &.active {
-      .sidebar_section-title:before {
-        left: -$sidebar-selected-ball--space;
-      }
+    .sidebar_section-title:before {
+      left: -$sidebar-selected-ball--space;
     }
   }
 }
 
 .direction_rtl {
   .sidebar_section-container {
-    &.active {
-      .sidebar_section-title:before {
-        right: -$sidebar-selected-ball--space;
-      }
+    .sidebar_section-title:before {
+      right: -$sidebar-selected-ball--space;
     }
   }
 

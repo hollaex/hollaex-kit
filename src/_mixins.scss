@@ -51,7 +51,7 @@
     background-color: $currency-color;
   }
 
-  &.wallet, &.trade {
+  &.wallet, &.trade, &.quick-trade {
     .sidebar-container .sidebar-actions {
       border-color: $currency-color;
     }
