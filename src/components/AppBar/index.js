@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import { Link } from 'react-router';
-import { CURRENCIES, FLEX_CENTER_CLASSES } from '../../config/constants';
+import { CURRENCIES, FLEX_CENTER_CLASSES, EXIR_BLUE_LOGO } from '../../config/constants';
 
 import STRINGS from '../../config/localizedStrings';
 
@@ -116,16 +116,19 @@ class AppBar extends Component {
 
   render() {
     const {
-      title, goToAccountPage, goToDashboard, acccountIsActive, activeSymbol, noBorders, token, verifyingToken, goToQuickTrade, changeLanguage, activeLanguage,
+      title, goToAccountPage, goToDashboard, acccountIsActive, activeSymbol, noBorders, token, verifyingToken, goToQuickTrade, changeLanguage, activeLanguage, isHome
     } = this.props;
 
     return (
       <div className={classnames('app_bar', { 'no-borders': noBorders })}>
-        <div className={classnames('app_bar-icon', 'text-uppercase', 'contrast', { pointer: !!goToDashboard })} onClick={goToDashboard}>
-          {STRINGS.APP_NAME}
+        <div className={classnames('app_bar-icon', 'text-uppercase', { contrast: !isHome, pointer: !!goToDashboard })} onClick={goToDashboard}>
+          {isHome ?
+            <img src={EXIR_BLUE_LOGO} alt={STRINGS.APP_NAME} className="app_bar-icon-logo" /> :
+            STRINGS.APP_NAME
+          }
         </div>
         <div className="app_bar-main d-flex justify-content-between">
-          <div>{STRINGS.APP_TITLE}</div>
+          {!isHome && <div>{STRINGS.APP_TITLE}</div>}
           {changeLanguage &&
             <LanguageSelector
               changeLanguage={changeLanguage}
@@ -145,6 +148,7 @@ class AppBar extends Component {
 }
 
 AppBar.defaultProps = {
-  noBorders: false
+  noBorders: false,
+  isHome: false,
 }
 export default AppBar;

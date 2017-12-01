@@ -1,4 +1,5 @@
 $language-selector-arrow--size: 0.4rem;
+$app-bar--background: transparent;
 
 .app_bar {
   position: relative;
@@ -10,6 +11,7 @@ $language-selector-arrow--size: 0.4rem;
   justify-content: space-between;
   font-size: $navigation_bar-font_size;
   font-weight: bold;
+  background-color: $app-bar--background;
 
   &.no-borders {
     border-bottom: none;
@@ -26,6 +28,10 @@ $language-selector-arrow--size: 0.4rem;
     &:not(:first-child) {
       border-left: 1px solid $border-color;
     }
+  }
+
+  .app_bar-icon-logo {
+    width: 4rem;;
   }
 
   .app_bar-icon, .app_bar-controllers {

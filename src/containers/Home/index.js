@@ -92,6 +92,7 @@ class Home extends Component {
         />
         <AppBar
           noBorders={true}
+          isHome={true}
           token={token}
           verifyToken={verifyToken}
           goToQuickTrade={this.onClickScrollTo(QUICK_TRADE_INDEX)}

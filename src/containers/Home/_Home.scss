@@ -82,6 +82,10 @@ $features-container--sm--width: 45rem;
     text-align: center;
     text-transform: uppercase;
     font-weight: bold;
+    background-color: white;
+    &.contrast {
+      background-color: $colors-main-black;
+    }
   }
 }
 

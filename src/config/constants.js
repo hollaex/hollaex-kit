@@ -51,6 +51,7 @@ export const SOCIAL_ICONS = {
 };
 
 export const EXIR_LOGO = `${process.env.PUBLIC_URL}/assets/logo/logo-default.png`;
+export const EXIR_BLUE_LOGO = `${process.env.PUBLIC_URL}/assets/logo-blue-exir.svg`;
 
 export const CURRENCIES = {
   fiat: {
