@@ -82,10 +82,3 @@ $inner_container-border: 1px solid $colors-main-black;
     }
   }
 }
-
-
-@media only screen and (max-width: 991px) {
-  .app_container-sidebar {
-    display: none;
-  }
-}

@@ -148,3 +148,17 @@ $title-text--active: 1.25rem;
   }
 
 }
+
+
+@media only screen and (max-width: 991px) {
+  .app_container-sidebar {
+    // display: none;
+    .sidebar-container-trade {
+      flex-direction: column;
+      .separator {
+        height: 1rem;
+        width: 100%;
+      }
+    }
+  }
+}
