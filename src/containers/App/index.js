@@ -14,6 +14,7 @@ import { setUserOrders, addOrder, updateOrder, removeOrder } from '../../actions
 import { setOrderbook, addTrades, changeSymbol } from '../../actions/orderbookAction';
 import {
 	setNotification, closeNotification, openContactForm,
+	setLanguage, closeAllNotification,
 	NOTIFICATIONS, CONTACT_FORM,
 } from '../../actions/appActions';
 
@@ -22,7 +23,6 @@ import { getToken } from '../../utils/token';
 import { AppBar, Sidebar, Dialog, Loader, Notification, MessageDisplay } from '../../components';
 import { ContactForm } from '../';
 
-import { setLanguage } from '../../actions/appActions';
 import { getClasesForLanguage, getFontClassForLanguage } from '../../utils/string';
 
 class Container extends Component {
@@ -412,6 +412,7 @@ const mapDispatchToProps = (dispatch) => ({
 		addUserTrades: bindActionCreators(addUserTrades, dispatch),
 		updateUser: bindActionCreators(updateUser, dispatch),
 		closeNotification: bindActionCreators(closeNotification, dispatch),
+		closeAllNotification: bindActionCreators(closeAllNotification, dispatch),
 		openContactForm: bindActionCreators(openContactForm, dispatch),
 		setNotification: bindActionCreators(setNotification, dispatch),
 		changeSymbol: bindActionCreators(changeSymbol, dispatch),

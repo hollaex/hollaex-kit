@@ -1,6 +1,7 @@
 import {
   SET_NOTIFICATION,
   CLOSE_NOTIFICATION,
+  CLOSE_ALL_NOTIFICATION,
   CHANGE_LANGUAGE,
 } from '../actions/appActions';
 
@@ -43,11 +44,11 @@ const reducer = (state = INITIAL_STATE, { type, payload = {}}) => {
       };
     }
 
-    case CLOSE_NOTIFICATION:{
+    case CLOSE_NOTIFICATION: {
       const notificationsQueue = [].concat(state.notificationsQueue);
       const activeNotification = notificationsQueue.length > 0 ?
         notificationsQueue.splice(0, 1)[0] :
-        { ...EMPTY_NOTIFICATION };
+        EMPTY_NOTIFICATION;
 
       return {
         ...state,
@@ -55,6 +56,14 @@ const reducer = (state = INITIAL_STATE, { type, payload = {}}) => {
         activeNotification,
       };
     }
+
+    case CLOSE_ALL_NOTIFICATION:
+      return {
+        ...state,
+        notificationsQueue: [],
+        activeNotification: EMPTY_NOTIFICATION,
+      };
+      
     case CHANGE_LANGUAGE:
       return {
         ...state,
