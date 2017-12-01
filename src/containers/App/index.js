@@ -138,7 +138,7 @@ class Container extends Component {
     this.setState({ privateSocket });
 
 		privateSocket.on('error', (error) => {
-      if (error.indexOf('Access Denied') > -1) {
+      if (error && typeof error === 'string' && error.indexOf('Access Denied') > -1) {
         this.props.logout();
       } else {
         console.error(error)
@@ -282,6 +282,7 @@ class Container extends Component {
 			case '/account':
 				return 'account';
 			case '/quick-trade':
+				return 'quick-trade';
 			case '/trade':
 				return 'trade';
 			default:
