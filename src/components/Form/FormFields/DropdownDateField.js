@@ -75,7 +75,7 @@ class DropdownDateField extends Component {
 
   setDisplay = (limits, dateString = '', language = 'en') => {
     const display = {};
-    let dateUnixtime = moment(dateString).valueOf();
+    let dateUnixtime = moment(dateString || new Date()).valueOf();
     moment.locale(language)
     const date = momentJ(dateUnixtime);
     moment.locale('en')
