@@ -47,8 +47,7 @@ export default {
     FOOTER_LEGAL: [
       'Registration on or use of this site constitutes acceptance of our',
       'Terms of Service and Privacy Policy.',
-      'Disclaimer Commerce Policy Made in NYC',
-      'Stock quotes by finanzen.net',
+      'Disclaimer Commerce Policy Made in Iran',
     ],
     FOOTER_LANGUAGE_TEXT: 'LANGUAGE',
     FOOTER_LANGUAGE_LANGUAGES: [
