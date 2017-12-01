@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { SubmissionError } from 'redux-form';
-import { HocForm } from '../../components';
+import { HocForm, IconTitle } from '../../components';
 import { email, required } from '../../components/Form/validations';
 import STRINGS from '../../config/localizedStrings';
+import { ICONS } from '../../config/constants';
 import { sendSupportMail } from '../../actions/appActions';
 
 const FORM_NAME = 'ContactForm';
@@ -62,12 +63,12 @@ class ContactForm extends Component {
       validate: [required],
       fullWidth: true,
     },
-    attachment: {
-      type: 'file',
-      label: STRINGS.CONTACT_FORM.ATTACHMENT_LABEL,
-      placeholder: STRINGS.CONTACT_FORM.ATTACHMENT_PLACEHOLDER,
-      fullWidth: true,
-    }
+    // attachment: {
+    //   type: 'file',
+    //   label: STRINGS.CONTACT_FORM.ATTACHMENT_LABEL,
+    //   placeholder: STRINGS.CONTACT_FORM.ATTACHMENT_PLACEHOLDER,
+    //   fullWidth: true,
+    // }
   })
 
   render() {
@@ -80,11 +81,20 @@ class ContactForm extends Component {
     const formFields = this.generateFormFields();
 
     return (
-      <Form
-        onSubmit={this.onSubmit}
-        formFields={formFields}
-        buttonLabel={STRINGS.CONTACT_US_TEXT}
-      />
+      <div>
+        <IconTitle
+          iconPath={ICONS.LIFESAVER}
+          text={STRINGS.CONTACT_US_TEXT}
+          textType="title"
+          underline={true}
+          className="w-100"
+        />
+        <Form
+          onSubmit={this.onSubmit}
+          formFields={formFields}
+          buttonLabel={STRINGS.CONTACT_US_TEXT}
+        />
+      </div>
     );
   }
 }
