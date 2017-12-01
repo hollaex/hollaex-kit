@@ -92,7 +92,6 @@ export default {
     TAB_SECURITY: 'Security',
     TAB_NOTIFICATIONS: 'Notifications',
     TAB_SETTINGS: 'Settings',
-
   },
   CONTACT_FORM: {
     CATEGORY_LABEL: 'Category',

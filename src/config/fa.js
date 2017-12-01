@@ -106,6 +106,7 @@ export default {
     DESCRIPTION_PLACEHOLDER: 'جزئیات مشکل را تایپ کنید',
     ATTACHMENT_LABEL: 'پیوست اضافه کنید',
     ATTACHMENT_PLACEHOLDER: 'یک فایل برای کمک به شرح مشکل اضافه کنید. فایل های PDF، JPG، PNG و GIF پذیرفته می شوند',
+    SUCCESS_MESSAGE: 'The email has been seent to our support', // TODO
   },
   DEPOSIT: {
     CRYPTO_LABELS: {
@@ -121,7 +122,7 @@ export default {
     NO_DATA: 'اطلاعاتی در دسترس نیست',
   },
   LOGIN: {
-    LOGIN_TO: 'ورود به {0}',
+    LOGIN_TO: 'ورود به {0}', // FIX
     CANT_LOGIN: 'نمیتوانید ورود کنید؟',
     NO_ACCOUNT: 'حساب کاربری ندارید؟',
     CREATE_ACCOUNT: 'ایجاد حساب کاربری ',
@@ -142,14 +143,15 @@ export default {
    REQUIRED: 'اجباری',
    INVALID_DATE: 'تاریخ نامعتبر است',
    INVALID_PASSWORD: 'رمزعبور نامعتبر است. باید حاوی حداقل 8 کاراکتر، یک رقم و یک کاراکتر خاص باشد.',
-   INVALID_CURRENCY: 'نا معتبر {0} آدرس  ({1})',
-   INVALID_BALANCE: 'موجودی کافی نیست ({0}) برای انجام عملیات ({1}).',
+   INVALID_CURRENCY: 'نا معتبر {0} آدرس  ({1})', // FIX
+   INVALID_BALANCE: 'موجودی کافی نیست ({0}) برای انجام عملیات ({1}).', // FIX
    MIN_VALUE: 'ارزش باید  {0} یا بیشتر باشد',
    MAX_VALUE: 'ارزش باید  {0} یا کمتر باشد',
    INSUFFICIENT_BALANCE: 'موجودی نا کافی',
    PASSWORDS_DONT_MATCH: 'رمز عبور مطابقت ندارد',
    USER_EXIST: 'ایمیل قبلا ثبت شده است',
    ACCEPT_TERMS: 'شما با شرایط استفاده و رازداری موافقت نکردید',
+   STEP: 'Invalid value, step is {0}', // TODO step for numbers input
  },
  LEGAL: {
    PRIVACY_POLICY: {
@@ -192,9 +194,9 @@ export default {
      },
      BTC: {
        TITLE_RECEIVED: '{0} سپرده دریافت شد',
-       TITLE_INCOMING: 'ورودی {0}',
+       TITLE_INCOMING: 'ورودی {0}', // FIX
        SUBTITLE_RECEIVED: 'دریافت کردید {0} سپرده',
-       SUBTITLE_INCOMING: 'ورودی {0}',
+       SUBTITLE_INCOMING: 'ورودی {0}', // FIX
        INFORMATION_PENDING_1: 'شما {0} قبل از شروع ترید، 3 تایید نیاز دارد.',
        INFORMATION_PENDING_2: 'این ممکن است 20-40 دقیقه طول بکشد. به محض تایید شما یک ایمیل دریافت میکنید',
      }
@@ -206,6 +208,7 @@ export default {
    OTP_TITLE: 'کد تأیید',
    OTP_HELP: 'کمک',
    OTP_BUTTON: 'ارسال',
+   ERROR_INVALID: 'Invalid OTP Code', // TODO
  },
  QUICK_TRADE_COMPONENT: {
    TITLE: 'سریع',
@@ -250,6 +253,8 @@ export default {
    SIGNUP_TO: 'ثبت نام کنید {0}',
    NO_EMAIL: 'ایمیل دریافت نکرده اید؟',
    REQUEST_EMAIL: 'یکی دیگر از اینجا درخواست کنید',
+   HAVE_ACCOUNT: 'Already have an account?', // TODO
+   GOTO_LOGIN: 'Go to the login page', // TODO
    TERMS: {
      terms: 'شرایط عمومی',
      policy: 'سیاست حفظ حریم خصوصی',
@@ -393,7 +398,7 @@ export default {
     TITLE: 'تاریخ معاملات',
     TITLE_TRADES: 'تاریخ ترید ',
     TITLE_DEPOSITS: ' تاریخ سپرده',
-    TITLE_WITHDRAWAlS: 'تاریخ برداشت',
+    TITLE_WITHDRAWALS: 'تاریخ برداشت',
     TEXT_DOWNLOAD: 'تاریخچه دانلود',
     TRADES: 'تریدرها',
     DEPOSITS: 'سپرده ها',
@@ -452,11 +457,19 @@ export default {
   },
   CURRENCY: 'واحد پول',
   TYPE: 'نوع',
+  TYPES_VALUES: {
+    market: 'market',
+    limit: 'limit',
+  },
   TYPES: [
     { value: 'بازار', label: 'بازار' },
     { value: 'حد', label: 'حد' },
   ],
   SIDE: 'طرف',
+  SIDES_VALUES: { // TODO
+    buy: 'buy',
+    sell: 'sell',
+  },
   SIDES: [
     { value: 'خرید', label: 'خرید' },
     { value: 'فروش', label: 'فروش' },
@@ -520,7 +533,7 @@ export default {
   DEPOSITS_BUTTON_TEXT: 'مرور سپرده',
   DEPOSIT_PROCEED_PAYMENT: 'پرداخت',
   DEPOSIT_BANK_REFERENCE: 'برای شناسایی سپرده، این کد "{0}" را به تراکنش بانکی اضافه کنید',
-  DEPOSIT_METHOD: 'روش پرداخت {0}',
+  DEPOSIT_METHOD: 'روش پرداخت {0}', // FIX
   DEPOSIT_METHOD_DIRECT_PAYMENT: 'کارت اعتباری',
   DEPOSIT_METHOD_DIRECT_PAYMENT_MESSAGE_1: 'به روش پرداخت کارت اعتباری بروید.',
   DEPOSIT_METHOD_DIRECT_PAYMENT_MESSAGE_2: 'شما پلت فرم را برای پرداخت ترک میکنید.',
@@ -532,4 +545,35 @@ export default {
   DEPOSIT_VERIFICATION_ERROR: 'خطایی در تأیید سپرده وجود دارد.',
   DEPOSIT_VERIFICATION_ERROR_VERIFIED: 'سپرده قبلا تأیید شده است',
   DEPOSIT_VERIFICATION_ERROR_STATUS: 'وضعیت نامعتبر',
+  QUOTE_MESSAGE: 'You are going to {0} {1} {2} for {3} {4}', // TODO
+  QUOTE_BUTTON: 'Accept',
+  QUOTE_REVIEW: 'Review',
+  QUOTE_COUNTDOWN_MESSAGE: 'You have {0} seconds to perform the trade',
+  QUOTE_EXPIRED_TOKEN: 'The quote token has expired.',
+  QUOTE_SUCCESS_REVIEW_TITLE: 'Quick Trade',
+  QUOTE_SUCCESS_REVIEW_MESSAGE: 'You have successfully {0} {1} {0} for {3} {4}',
+  COUNTDOWN_ERROR_MESSAGE: 'Countdown is finished',
+  WITHDRAW_PAGE: {
+    BANK_TO_WITHDRAW: 'Bank to Withdraw to',
+    MESSAGE_ABOUT_SEND: 'You are about to send',
+    MESSAGE_BTC_WARNING: 'Please ensure the accuracy of this address since {0} transfers are irreversible',
+    MESSAGE_ABOUT_WITHDRAW: 'You are about to transfer to your bank account',
+    MESSAGE_FEE: 'Transactions fee of {0}({1})included in withdrawal',
+    FIAT_MESSAGE_1: 'You can only withdraw to a bank account in a name that matches the name registered with your EXIR account.',
+    FIAT_MESSAGE_2: 'Withdrawal min amount',
+    FIAT_MESSAGE_3: 'Daily withdrawal max amount',
+    FIAT_INCREASE_LIMIT: 'Increase your daily limit',
+  },
+  WALLET_BUTTON_FIAT_DEPOSIT: 'deposit',
+  WALLET_BUTTON_FIAT_WITHDRAW: 'withdraw',
+  WALLET_BUTTON_CRYPTOCURRENCY_DEPOSIT: 'receive',
+  WALLET_BUTTON_CRYPTOCURRENCY_WITHDRAW: 'send',
+  AVAILABLE_TEXT: 'Available',
+  BALANCE_TEXT: 'Balance',
+  CURRENCY_BALANCE_TEXT: '{0} Balance',
+  WALLET_TABLE_AMOUNT_IN: `Amount in {0}`,
+  WALLET_TABLE_TOTAL: 'Grand Total',
+  WALLET_ALL_ASSETS: 'All Assets',
+  HIDE_TEXT: 'Hide',
+  PAGINATOR_FORMAT: '{0} / {1}'
 };

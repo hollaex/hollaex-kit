@@ -8,13 +8,8 @@ import { required, minValue, maxValue, checkBalance, validAddress } from '../../
 import { errorHandler } from '../../components/OtpForm/utils';
 import { setWithdrawNotificationSuccess, setWithdrawNotificationError } from './notifications';
 import { generateFeeMessage } from './utils';
-import {
-  MIN_VALUE_ERROR, MAX_VALUE_ERROR,
-  MIN_VALUE_WITHDRAWAL, MAX_VALUE_WITHDRAWAL,
-  LOWER_BALANCE, INVALID_ADDRESS,
-  BUTTON_TEXT,
 
-} from './constants';
+import STRINGS from '../../config/localizedStrings';
 
 import ReviewModalContent from './ReviewModalContent';
 import { performWithdraw } from '../../actions/walletActions';
@@ -36,23 +31,23 @@ export const generateFormValues = (symbol, available = 0, fee = 0) => {
       type: 'text',
       label: 'Destination address:',
       placeholder: 'Type the address',
-      validate: [required, validAddress(symbol, INVALID_ADDRESS)],
+      validate: [required, validAddress(symbol, STRINGS.WITHDRAWALS_INVALID_ADDRESS)],
     }
   }
 
   const amountValidate = [ required ];
   if (MIN) {
-    amountValidate.push(minValue(MIN, MIN_VALUE_ERROR));
+    amountValidate.push(minValue(MIN, STRINGS.WITHDRAWALS_MIN_VALUE_ERROR));
   }
   if (MAX) {
-    amountValidate.push(maxValue(MAX, MAX_VALUE_ERROR));
+    amountValidate.push(maxValue(MAX, STRINGS.WITHDRAWALS_MAX_VALUE_ERROR));
   }
-  amountValidate.push(checkBalance(available, LOWER_BALANCE, fee));
+  amountValidate.push(checkBalance(available, STRINGS.formatString(STRINGS.WITHDRAWALS_LOWER_BALANCE, name), fee));
 
   fields.amount = {
     type: 'number',
-    label: `${name} amount to withdraw`,
-    placeholder: `Type the amount of ${name} you wish to withdraw`,
+    label: STRINGS.formatString(STRINGS.WITHDRAWALS_FORM_AMOUNT_LABEL, name),
+    placeholder: STRINGS.formatString(STRINGS.DEPOSITS_FORM_AMOUNT_PLACEHOLDER, name),
     information: fee ? generateFeeMessage(fee) : '',
     min: MIN,
     max: MAX,
@@ -142,7 +137,7 @@ class Form extends Component {
           {renderFields(formValues)}
           {error && <div className="warning_text">{error}</div>}
           <Button
-            label={BUTTON_TEXT}
+            label={STRINGS.DEPOSITS_BUTTON_TEXT}
             disabled={pristine || submitting || !valid}
             onClick={this.onOpenDialog}
           />
