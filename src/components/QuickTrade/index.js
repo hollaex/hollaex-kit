@@ -112,7 +112,7 @@ class QuickTrade extends Component {
       <div className={classnames('quick_trade-wrapper', ...GROUP_CLASSES)}>
         <div className={classnames('quick_trade-section_wrapper', ...GROUP_CLASSES)}>
           <img src={ICONS.CHECK} alt="" />
-          <div className="title">{`${STRINGS.QUICK_TRADE_COMPONENT.TITLE} ${STRINGS.SIDES_VALUES[side]}`}</div>
+          <div className="title">{STRINGS.formatString(STRINGS.QUICK_TRADE_COMPONENT.TRADE_TITLE, STRINGS.QUICK_TRADE_COMPONENT.TITLE, STRINGS.SIDES_VALUES[side])}</div>
         </div>
         <div className={classnames('quick_trade-section_wrapper', ...GROUP_CLASSES)}>
           <ToogleButton
@@ -125,7 +125,7 @@ class QuickTrade extends Component {
           <InputBlock
             onChange={this.onChangeValue}
             value={value}
-            text={STRINGS.formatString(STRINGS.QUICK_TRADE_COMPONENT.INPUT, name, side)}
+            text={STRINGS.formatString(STRINGS.QUICK_TRADE_COMPONENT.INPUT, name, STRINGS.SIDES_VALUES[side])}
             symbol={symbol}
             inputStyle={inputStyle}
             format={this.format}
@@ -141,7 +141,7 @@ class QuickTrade extends Component {
         </div>
         <div className={classnames('quick_trade-section_wrapper', ...GROUP_CLASSES)}>
           <Button
-            label={STRINGS.formatString(STRINGS.QUICK_TRADE_COMPONENT.BUTTON, side).join(' ')}
+            label={STRINGS.formatString(STRINGS.QUICK_TRADE_COMPONENT.BUTTON, STRINGS.SIDES_VALUES[side]).join(' ')}
             onClick={onReviewQuickTrade}
             disabled={disabled || !onReviewQuickTrade || !!error || fetching}
             type="button"

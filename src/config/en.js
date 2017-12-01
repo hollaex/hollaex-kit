@@ -213,11 +213,8 @@ export default {
    TITLE: 'Quick',
    TOTAL_COST: 'Total cost',
    BUTTON: 'Review {0} order',
-   INPUT: '{0}s to {1}',
-   SIDES: [
-     'buy',
-     'sell',
-   ],
+   INPUT: '{0} to {1}',
+   TRADE_TITLE: '{0} {1}', // quick buy
  },
  PREVIOUS_PAGE: 'previous page',
  NEXT_PAGE: 'next page',

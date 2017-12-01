@@ -213,11 +213,8 @@ export default {
    TITLE: 'سریع',
    TOTAL_COST: 'هزینه کل',
    BUTTON: 'مرور کردن {0} سفارش',
-   INPUT: '{0}s to {1}',
-   SIDES: [
-     'خرید',
-     'فروش',
-   ],
+   INPUT: '{0} to {1}', // bitcoin to buy // TODO fix
+   TRADE_TITLE: '{0} {1}', // {0} = title {1} = side -> quick buy
  },
  PREVIOUS_PAGE: 'صفحه قبلی',
  NEXT_PAGE: 'صفحه بعدی',
