@@ -1,4 +1,5 @@
 import React from 'react';
+import { ICONS } from '../../config/constants';
 
 import { IconTitle, Button } from '../../components';
 
@@ -7,7 +8,7 @@ import { REQUEST_RESET_PASSWORD_SUCCESS } from './constants';
 const RequestResetPasswordSuccess = ({ onLoginClick, onContactUs }) => (
   <div className="auth_wrapper">
     <IconTitle
-      iconPath={REQUEST_RESET_PASSWORD_SUCCESS.ICON}
+      iconPath={ICONS.PASSWORD_RESET}
       text={REQUEST_RESET_PASSWORD_SUCCESS.TITLE}
       textType="title"
       className="w-100"

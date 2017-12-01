@@ -9,7 +9,7 @@ const AuthContainer = ({ activeLanguage, children }) => {
   const childWithLanguageClasses = React.Children.map(children, (child) =>
       React.cloneElement(child, { activeLanguage, languageClasses }));
   return (
-    <div className={classnames('auth-wrapper', 'w-100', 'h-100', ...FLEX_CENTER_CLASSES, 'app_background')}>
+    <div className={classnames('auth-wrapper', 'w-100', 'h-100', ...FLEX_CENTER_CLASSES)}>
       <div className={classnames('auth-container', 'f-1', languageClasses)}>
         {childWithLanguageClasses}
       </div>

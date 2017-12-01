@@ -68,7 +68,7 @@ class ResetPassword extends Component {
       <div className={classnames(...FLEX_CENTER_CLASSES, 'flex-column', 'f-1')}>
         <div className={classnames(...FLEX_CENTER_CLASSES, 'flex-column', 'auth_wrapper', 'w-100')}>
           <IconTitle
-            iconPath={TEXTS.ICON}
+            iconPath={ICONS.SET_NEW_PASSWORD}
             text={TEXTS.TITLE}
             textType="title"
             underline={true}

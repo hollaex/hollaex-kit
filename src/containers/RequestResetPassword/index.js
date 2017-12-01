@@ -62,7 +62,7 @@ class RequestResetPassword extends Component {
         ) : (
           <div className={classnames(...FLEX_CENTER_CLASSES, 'flex-column', 'auth_wrapper', 'w-100')}>
             <IconTitle
-              iconPath={TEXTS.ICON}
+              iconPath={ICONS.ACCOUNT_RECOVERY}
               text={TEXTS.TITLE}
               textType="title"
               underline={true}

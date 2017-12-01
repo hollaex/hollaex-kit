@@ -75,6 +75,7 @@ class UserVerification extends Component {
       title: TEXTS.TITLE_EMAIL,
       content: <div>{email}</div>,
       disabled: activeStep !== 0,
+      disabled: false,
       notification: this.calculateNotification(activeStep, 0, TEXTS.VERIFY_EMAIL, true)
     },
     {
@@ -85,6 +86,7 @@ class UserVerification extends Component {
         formValues={dataFormValues}
       />,
       disabled: activeStep !== 1,
+      disabled: false,
       notification: this.calculateNotification(activeStep, 1, TEXTS.VERIFY_USER_DOCUMENTATION, verification_level >= 2, userData.first_name)
     },
     {
@@ -95,6 +97,7 @@ class UserVerification extends Component {
         formValues={idFormValues}
       />,
       disabled: activeStep !== 2,
+      disabled: false,
       notification: this.calculateNotification(activeStep, 2, TEXTS.VERIFY_ID_DOCUMENTS, userData.id_data.verified, userData.id_data.type)
     },
     {
@@ -104,6 +107,7 @@ class UserVerification extends Component {
         initialValues={userData.bank_account}
       />,
       disabled: activeStep !== 3,
+      disabled: false,
       notification: this.calculateNotification(activeStep, 3, TEXTS.VERIFY_BANK_ACCOUNT, userData.bank_account.verified, userData.bank_account.type)
     }];
 
