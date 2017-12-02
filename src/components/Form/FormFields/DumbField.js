@@ -11,7 +11,7 @@ export const renderCopy = (text, component) => {
       <ActionNotification
         status="information"
         text={STRINGS.COPY_TEXT}
-        iconPath={ICONS.COPY}
+        iconPath={ICONS.COPY_NEW}
         className="copy-wrapper"
       />
     </CopyToClipboard>

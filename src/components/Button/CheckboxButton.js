@@ -4,7 +4,7 @@ import { ICONS } from '../../config/constants';
 
 const renderCheckboxImage = (checked, disabled) => (
   <img
-    src={checked ? ICONS.CHECK : ICONS.LIFESAVER}
+    src={checked ? ICONS.SUCCESS_BLACK : ICONS.SECURE}
     alt={checked ? 'checked' : 'unchecked'}
     className={classnames('checkbutton-input-wrapper--image')}
   />

@@ -40,7 +40,7 @@ class Deposit extends Component {
 
     return (
       <div className="presentation_container  apply_rtl">
-        {renderTitleSection(symbol, 'deposit', ICONS.LETTER)}
+        {renderTitleSection(symbol, 'deposit', symbol === fiatSymbol ?  ICONS.DEPOSIT_FIAT : ICONS.DEPOSIT_BITCOIN)}
         <div className={classnames('inner_container', 'with_border_top', 'with_border_bottom')}>
           {renderInformation(symbol, balance, openContactForm, generateFiatInformation)}
           {symbol === fiatSymbol ?

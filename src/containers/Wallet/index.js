@@ -161,7 +161,7 @@ class Wallet extends Component {
       <div className="presentation_container apply_rtl">
         <IconTitle
           text={STRINGS.WALLET_TITLE}
-          iconPath={ICONS.LETTER}
+          iconPath={symbol === fiatSymbol ? ICONS.FIAT_WALLET : ICONS.BITCOIN_WALLET}
           textType="title"
         />
         <div className={classnames('wallet-container')}>

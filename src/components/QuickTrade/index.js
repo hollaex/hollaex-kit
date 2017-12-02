@@ -111,7 +111,7 @@ class QuickTrade extends Component {
     return (
       <div className={classnames('quick_trade-wrapper', ...GROUP_CLASSES)}>
         <div className={classnames('quick_trade-section_wrapper', ...GROUP_CLASSES)}>
-          <img src={ICONS.CHECK} alt="" />
+          <img src={ICONS.QUICK_TRADE} alt="" className="quick_trade-icon"/>
           <div className="title">{STRINGS.formatString(STRINGS.QUICK_TRADE_COMPONENT.TRADE_TITLE, STRINGS.QUICK_TRADE_COMPONENT.TITLE, STRINGS.SIDES_VALUES[side])}</div>
         </div>
         <div className={classnames('quick_trade-section_wrapper', ...GROUP_CLASSES)}>
