@@ -1,6 +1,7 @@
 import React, { Component} from 'react';
 import { connect } from 'react-redux';
 import { TabController, CheckTitle } from '../../components';
+import { ICONS } from '../../config/constants';
 import { UserVerification, UserSecurity } from '../';
 import { TEXTS } from './constants';
 
@@ -43,7 +44,7 @@ class Account extends Component {
         title: (
           <CheckTitle
             title={TEXTS.TAB_VERIFICATION}
-            icon={`${process.env.PUBLIC_URL}/assets/acounts/account-icons-02.png`}
+            icon={ICONS.ID_GREY}
             notifications={this.hasUserVerificationNotifications(verification_level, bank_account, id_data) ? '!' : ''}
           />
         ),
@@ -53,7 +54,7 @@ class Account extends Component {
         title: (
           <CheckTitle
             title={TEXTS.TAB_SECURITY}
-            icon={`${process.env.PUBLIC_URL}/assets/acounts/account-icons-03.png`}
+            icon={ICONS.SECURITY_GREY}
             notifications={!otp_enabled ? '!' : ''}
           />
         ),
@@ -64,12 +65,12 @@ class Account extends Component {
       {
         title: (
           <CheckTitle
-            title={TEXTS.TAB_NOTIFICATIONS}
-            icon={`${process.env.PUBLIC_URL}/assets/acounts/account-icons-04.png`}
+            title={TEXTS.TAB_SETTINGS}
+            icon={ICONS.GEAR_GREY}
           />
         ),
         content: (
-          <div>Notifications</div>
+          <div className="d-flex justify-content-center align-items-center f-1">{TEXTS.TAB_SETTINGS}</div>
         )
       },
     ];

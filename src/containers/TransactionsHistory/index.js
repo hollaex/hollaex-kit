@@ -108,7 +108,7 @@ class TransactionsHistory extends Component {
       <div className="presentation_container apply_rtl">
         <IconTitle
           text={STRINGS.TRANSACTION_HISTORY.TITLE}
-          iconPath={ICONS.LETTER}
+          iconPath={ICONS.TRANSACTION_HISTORY}
           textType="title"
         />
         <TabController

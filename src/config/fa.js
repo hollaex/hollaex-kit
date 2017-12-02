@@ -524,7 +524,7 @@ export default {
   WITHDRAWALS_FORM_ADDRESS_PLACEHOLDER: 'آدرس را تایپ کنید',
   WITHDRAWALS_FORM_AMOUNT_LABEL: '{0} مقدار برداشت',
   WITHDRAWALS_FORM_AMOUNT_PLACEHOLDER: 'مقدار {0} را که می خواهید برداشت کنید تایپ کنید',
-  DEPOSITS_FORM_AMOUNT_LABEL: '{0} مقدار برداشت',
+  DEPOSITS_FORM_AMOUNT_LABEL: '{0} مقدار برداشت', // FIX
   DEPOSITS_FORM_AMOUNT_PLACEHOLDER: 'مقدار {0} را که می خواهید برداشت کنید تایپ کنید',
   DEPOSITS_BUTTON_TEXT: 'مرور سپرده',
   DEPOSIT_PROCEED_PAYMENT: 'پرداخت',

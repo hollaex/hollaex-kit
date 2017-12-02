@@ -13,7 +13,7 @@ const generateBtcDepositTexts = (strings, status) => {
   const { shortName, name, fullName } = CURRENCIES.btc;
   return {
     TITLE: status ?
-      strings.formatString(strings.NOTIFICATIONS.DEPOSITS.BTC.TITLE_RECEIVED, shortName) :
+      strings.formatString(strings.NOTIFICATIONS.DEPOSITS.BTC.TITLE_RECEIVED, name) :
       strings.formatString(strings.NOTIFICATIONS.DEPOSITS.BTC.TITLE_INCOMING, fullName),
     SUBTITLE:
       strings.formatString(status ? strings.NOTIFICATIONS.DEPOSITS.BTC.SUBTITLE_RECEIVED :

@@ -6,16 +6,17 @@ import { CURRENCIES, ICONS } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 
 const ButtonSection = ({ onClickAccept, onClickCancel }) => {
+  // TODO SET CORRECT TEXTS
   return (
     <div className="d-flex">
       <Button
-        label="X"
+        label={STRINGS.CANCEL}
         onClick={onClickCancel}
         className="button-fail"
       />
       <div className="button-separator" />
       <Button
-        label="V"
+        label={STRINGS.NOTIFICATIONS.BUTTON.OK}
         onClick={onClickAccept}
         className="button-success"
       />
@@ -27,7 +28,7 @@ const ReviewModalContent = ({ symbol, data, onClickAccept, onClickCancel }) => {
   const { shortName, name, formatToCurrency } = CURRENCIES[symbol];
   return (
     <div className="d-flex flex-column review-wrapper">
-      <img src={ICONS.SQUARE_DOTS} alt="review" className="review-icon" />
+      <img src={ICONS.CHECK_SENDING_BITCOIN} alt="review" className="review-icon" />
       {symbol === fiatSymbol ?
         (
           <div className="d-flex flex-column align-items-center review-info_container">

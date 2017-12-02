@@ -21,7 +21,7 @@ const HistoryDisplay = (props) => {
           >
             <ActionNotification
               text={STRINGS.TRANSACTION_HISTORY.TEXT_DOWNLOAD}
-              iconPath={ICONS.LETTER}
+              iconPath={ICONS.DATA}
             />
           </CsvDownload>
         }

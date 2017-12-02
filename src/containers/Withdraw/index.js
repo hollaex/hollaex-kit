@@ -83,7 +83,7 @@ class Withdraw extends Component {
 
     return (
       <div className="presentation_container apply_rtl">
-        {renderTitleSection(symbol, 'withdraw', ICONS.LETTER)}
+        {renderTitleSection(symbol, 'withdraw', ICONS.WITHDRAW)}
         <div className={classnames('inner_container', 'with_border_top')}>
           {renderInformation(symbol, balance, openContactForm, generateFiatInformation)}
           {renderChildren(formProps)}
