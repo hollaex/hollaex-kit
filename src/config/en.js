@@ -524,7 +524,7 @@ export default {
   WITHDRAWALS_FORM_ADDRESS_PLACEHOLDER: 'Type the address',
   WITHDRAWALS_FORM_AMOUNT_LABEL: '{0} amount to withdraw',
   WITHDRAWALS_FORM_AMOUNT_PLACEHOLDER: 'Type the amount of {0} you wish to withdraw',
-  DEPOSITS_FORM_AMOUNT_LABEL: '{0} amount to withdraw',
+  DEPOSITS_FORM_AMOUNT_LABEL: '{0} amount to deposit',
   DEPOSITS_FORM_AMOUNT_PLACEHOLDER: 'Type the amount of {0} you wish to withdraw',
   DEPOSITS_BUTTON_TEXT: 'review deposit',
   DEPOSIT_PROCEED_PAYMENT: 'Pay',

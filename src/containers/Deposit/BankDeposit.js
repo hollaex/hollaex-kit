@@ -45,7 +45,7 @@ class BankDeposit extends Component {
           required,
           minValue(minAmount, STRINGS.WITHDRAWALS_MIN_VALUE_ERROR),
           maxValue(maxAmount, STRINGS.WITHDRAWALS_MAX_VALUE_ERROR),
-          checkBalance(available, STRINGS.formatString(STRINGS.WITHDRAWALS_LOWER_BALANCE, currencyName), fee),
+          // checkBalance(available, STRINGS.formatString(STRINGS.WITHDRAWALS_LOWER_BALANCE, currencyName), fee),
         ],
         label: STRINGS.formatString(STRINGS.DEPOSITS_FORM_AMOUNT_LABEL, currencyName),
         placeholder: STRINGS.formatString(STRINGS.DEPOSITS_FORM_AMOUNT_PLACEHOLDER, currencyName),
