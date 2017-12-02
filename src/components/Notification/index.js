@@ -22,13 +22,15 @@ const generateNotificationContent = ({ type, data, onClose, goToPage, openContac
 
         content.header = {
           text: depositTexts.title,
-          icon: ICONS.RED_WARNING,
+          icon: data.currency === 'fiat' ?
+            ICONS.DEPOSIT_FIAT_COMPLETE:
+            ICONS.DEPOSIT_RECEIVED_BITCOIN,
         }
         const childrenProps = {
           symbol: data.currency,
           amount: data.amount,
           information: depositTexts.subtitle,
-          price: data.price,
+          price: data.price || 1,
           content: (
             <div>
               {depositTexts.information && depositTexts.information.join('\n')}
