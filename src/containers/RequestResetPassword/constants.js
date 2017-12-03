@@ -1,28 +1,27 @@
+import STRINGS from '../../config/localizedStrings';
 import { ICONS } from '../../config/constants';
 
+const { FORM_FIELDS, REQUEST_RESET_PASSWORD, VALIDATIONS, LOGIN_TEXT, CONTACT_US_TEXT } = STRINGS;
+
 export const TEXTS = {
-  TITLE: 'Account Recovery',
-  SUBTITLE: `Recover your account below`,
-  SUPPORT: 'Contact Support',
+  ...REQUEST_RESET_PASSWORD,
   FORM: {
     FIELDS: {
       email: {
-        label: 'Email',
-        placeholder: 'Type your email',
+        label: FORM_FIELDS.EMAIL_LABEL,
+        placeholder: FORM_FIELDS.EMAIL_PLACEHOLDER,
       },
     },
-    BUTTON: 'Send recovery link',
     VALIDATIONS: {
-      TYPE_EMAIL: 'Type your E-mail',
+      TYPE_EMAIL: VALIDATIONS.TYPE_EMAIL,
     },
   },
   ICON: ICONS.LETTER,
 }
 
 export const REQUEST_RESET_PASSWORD_SUCCESS = {
-  TITLE: 'Password reset sent',
+  ...STRINGS.REQUEST_RESET_PASSWORD_SUCCESS,
   ICON: ICONS.LETTER,
-  BUTTON_1: 'login',
-  BUTTON_2: 'contact us',
-  TEXT: 'If an account exists for the email address, an email has been sent to it with reset instructions. Please check your email and click the link to complete your password reset.',
+  BUTTON_1: LOGIN_TEXT,
+  BUTTON_2: CONTACT_US_TEXT,
 }

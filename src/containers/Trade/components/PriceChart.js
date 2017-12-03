@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import io from 'socket.io-client';
 import { AreaChart as Chart } from "../../../components";
 import { WS_URL } from '../../../config/constants'
+import STRINGS from '../../../config/localizedStrings';
 
 class ChartComponent extends Component {
   state = {
@@ -112,6 +113,7 @@ class ChartComponent extends Component {
           justifyContent: 'center',
           alignItems: 'center',
         }}
+        className="direction_ltr"
       >
         {ready && chartData.btc && chartData.btc.length > 1 ?
           <Chart
@@ -121,7 +123,7 @@ class ChartComponent extends Component {
             width={width}
             height={height}
           /> :
-          <div>{ready ? 'No Data' : 'Loading'}</div>
+          <div>{ready ? STRINGS.NO_DATA : STRINGS.LOADING}</div>
         }
       </div>
     );

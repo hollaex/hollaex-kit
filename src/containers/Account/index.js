@@ -1,7 +1,9 @@
 import React, { Component} from 'react';
 import { connect } from 'react-redux';
 import { TabController, CheckTitle } from '../../components';
+import { ICONS } from '../../config/constants';
 import { UserVerification, UserSecurity } from '../';
+import { TEXTS } from './constants';
 
 class Account extends Component {
   state = {
@@ -41,8 +43,8 @@ class Account extends Component {
       {
         title: (
           <CheckTitle
-            title="Verification"
-            icon={`${process.env.PUBLIC_URL}/assets/acounts/account-icons-02.png`}
+            title={TEXTS.TAB_VERIFICATION}
+            icon={ICONS.ID_GREY}
             notifications={this.hasUserVerificationNotifications(verification_level, bank_account, id_data) ? '!' : ''}
           />
         ),
@@ -51,8 +53,8 @@ class Account extends Component {
       {
         title: (
           <CheckTitle
-            title="Security"
-            icon={`${process.env.PUBLIC_URL}/assets/acounts/account-icons-03.png`}
+            title={TEXTS.TAB_SECURITY}
+            icon={ICONS.SECURITY_GREY}
             notifications={!otp_enabled ? '!' : ''}
           />
         ),
@@ -63,12 +65,12 @@ class Account extends Component {
       {
         title: (
           <CheckTitle
-            title="Notifications"
-            icon={`${process.env.PUBLIC_URL}/assets/acounts/account-icons-04.png`}
+            title={TEXTS.TAB_SETTINGS}
+            icon={ICONS.GEAR_GREY}
           />
         ),
         content: (
-          <div>Notifications</div>
+          <div className="d-flex justify-content-center align-items-center f-1">{TEXTS.TAB_SETTINGS}</div>
         )
       },
     ];
@@ -92,12 +94,12 @@ class Account extends Component {
     const { activeTab, tabs } = this.state;
 
     return (
-      <div className="presentation_container">
+      <div className="presentation_container apply_rtl">
         <TabController
           activeTab={activeTab}
           setActiveTab={this.setActiveTab}
           tabs={tabs}
-          title="Account"
+          title={TEXTS.TAB_TITLE}
           titleIcon={`${process.env.PUBLIC_URL}/assets/acounts/account-icons-01.png`}
         />
         <div className="inner_container">{activeTab > -1 && this.renderContent(tabs, activeTab)}</div>

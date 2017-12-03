@@ -3,7 +3,7 @@ import React from 'react';
 const CheckTitle = ({ title, icon, notifications }) => {
   return (
     <div className="check_title-container">
-      <div className="check_title-label">{title}</div>
+      {title && <div className="check_title-label">{title}</div>}
       <div className="check_title-icon">
         {icon &&
           <img
@@ -21,7 +21,7 @@ const CheckTitle = ({ title, icon, notifications }) => {
 }
 
 CheckTitle.defaultProps = {
-  title: 'Title',
+  title: '',
   status: '',
   notifications: '',
 }

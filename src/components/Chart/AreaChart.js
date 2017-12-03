@@ -35,6 +35,8 @@ import {
   edgeIndicatorProps,
 } from './props';
 
+import STRINGS from '../../config/localizedStrings';
+
 class AreaChartWithEdge extends Component {
 	render() {
 		const {
@@ -88,7 +90,7 @@ class AreaChartWithEdge extends Component {
 					/>
 
 					<AreaSeries {...areaProps} />
-          <OHLCTooltip {...OHLCProps} />
+          <OHLCTooltip {...OHLCProps} displayTexts={STRINGS.CHART_TEXTS} />
           <EdgeIndicator  {...edgeIndicatorProps} />
 				</Chart>
 				<CrossHairCursor />

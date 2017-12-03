@@ -14,22 +14,10 @@ $accordion_arrow-size: 0.5rem;
   padding:$accordion_content-padding;
   .accordion_section_content_text {
     position: relative;
-    &:after{
-      @include css-triangle($colors-main-black, 'right', $accordion_arrow-size);
-      right: -$accordion_arrow-size;
-      top: calc(50% - 0.3rem);
-    }
-  }
-
-  &.accordion_section--open .accordion_section_content_text:after {
-    transform: rotate(90deg);
   }
 
   &.disabled {
     color: $colors-deactivate-color2;
-    &  .accordion_section_content_text:after {
-      @include css-triangle($colors-deactivate-color2, 'right', $accordion_arrow-size);
-    }
   }
 
   &:last-child {
@@ -39,5 +27,49 @@ $accordion_arrow-size: 0.5rem;
   .accordion_section_content {
     font-size: $font-size-subtext;
     padding: $accordion_content-padding;
+  }
+}
+
+.direction_ltr {
+  .accordion_wrapper .accordion_section {
+    .accordion_section_content_text {
+      &:after{
+        @include css-triangle($colors-main-black, 'right', $accordion_arrow-size);
+        right: -$accordion_arrow-size;
+        top: calc(50% - 0.5rem);
+      }
+    }
+
+    &.accordion_section--open .accordion_section_content_text:after {
+      transform: rotate(90deg);
+    }
+
+    &.disabled {
+      .accordion_section_content_text:after {
+        border-left-color: $colors-deactivate-color2
+      }
+    }
+  }
+}
+
+.direction_rtl {
+  .accordion_wrapper .accordion_section {
+    .accordion_section_content_text {
+      &:after{
+        @include css-triangle($colors-main-black, 'left', $accordion_arrow-size);
+        left: -$accordion_arrow-size;
+        top: calc(50% - 0.6rem);
+      }
+    }
+
+    &.accordion_section--open .accordion_section_content_text:after {
+      transform: rotate(-90deg);
+    }
+
+    &.disabled {
+      .accordion_section_content_text:after {
+        border-right-color: $colors-deactivate-color2
+      }
+    }
   }
 }

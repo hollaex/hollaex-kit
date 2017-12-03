@@ -1,107 +1,114 @@
 import React from 'react';
-import { requiredWithCustomMessage } from '../../components/Form/validations';
+import moment from 'moment';
+import { TEXTS } from './constants';
+import { requiredWithCustomMessage, isBefore } from '../../components/Form/validations';
 
-const ERROR_MESSAGE_TYPE = 'Please select a type of identity document';
-const ERROR_MESSAGE_NUMBER = 'Please type your documents number';
-const ERROR_MESSAGE_ISSUED_DATE = 'Please select the date in which your document was issued';
-const ERROR_MESSAGE_EXPIRATION_DATE = 'Please select the date when your document will expire';
-const ERROR_MESSAGE_FRONT = 'Please upload a scan of your photo identity document';
-const ERROR_MESSAGE_PROOF_OF_RESIDENCY = 'Please upload a scan of document proving the address you current reside';
+const { ID_DOCUMENTS_FORM } = TEXTS;
+const { FORM_FIELDS, VALIDATIONS, INFORMATION } = ID_DOCUMENTS_FORM;
 
-const fields = {
+const ERROR_MESSAGE_TYPE = VALIDATIONS.ID_TYPE;
+const ERROR_MESSAGE_NUMBER = VALIDATIONS.ID_NUMBER;
+const ERROR_MESSAGE_ISSUED_DATE = VALIDATIONS.ISSUED_DATE;
+const ERROR_MESSAGE_EXPIRATION_DATE = VALIDATIONS.EXPIRATION_DATE;
+const ERROR_MESSAGE_FRONT = VALIDATIONS.FRONT;
+const ERROR_MESSAGE_PROOF_OF_RESIDENCY = VALIDATIONS.PROOF_OF_RESIDENCY;
+
+export const generateFormValues = (language) => ({
   id: {
     type: {
       type: 'select',
-      label: 'ID Document Type:',
-      placeholder: 'Select Type of identity document',
+      label: FORM_FIELDS.TYPE_LABEL,
+      placeholder: FORM_FIELDS.TYPE_PLACEHOLDER,
       options: [
-        { value: 'id', label: 'ID' },
-        { value: 'passport', label: 'Passport' },
+        { value: 'id', label: FORM_FIELDS.TYPE_OPTIONS.ID },
+        { value: 'passport', label: FORM_FIELDS.TYPE_OPTIONS.OPTIONS },
       ],
       validate: [requiredWithCustomMessage(ERROR_MESSAGE_TYPE)],
     },
     number: {
       type: 'text',
-      label: 'ID Document Number',
-      placeholder: 'Type the documents number',
+      label: FORM_FIELDS.ID_NUMBER_LABEL,
+      placeholder: FORM_FIELDS.ID_NUMBER_PLACEHOLDER,
       validate: [requiredWithCustomMessage(ERROR_MESSAGE_NUMBER)],
     },
     issued_date: {
-      type: 'date',
-      label: 'ID Document Issue Date',
-      validate: [requiredWithCustomMessage(ERROR_MESSAGE_ISSUED_DATE)],
+      type: 'date-dropdown',
+      label: FORM_FIELDS.ISSUED_DATE_LABEL,
+      validate: [requiredWithCustomMessage(ERROR_MESSAGE_ISSUED_DATE), isBefore()],
+      endDate: moment().add(1, 'days'),
+      language,
     },
     expiration_date: {
-      type: 'date',
-      label: 'ID Document Expiration Date',
-      validate: [requiredWithCustomMessage(ERROR_MESSAGE_EXPIRATION_DATE)],
+      type: 'date-dropdown',
+      label: FORM_FIELDS.EXPIRATION_DATE_PLACEHOLDER,
+      validate: [requiredWithCustomMessage(ERROR_MESSAGE_EXPIRATION_DATE), isBefore()],
+      endDate: moment().add(1, 'days'),
+      language,
     },
     front: {
       type: 'file',
-      label: 'Photo ID Document',
-      placeholder: 'Add a copy of your photo ID document',
+      label: FORM_FIELDS.FRONT_LABEL,
+      placeholder: FORM_FIELDS.FRONT_PLACEHOLDER,
       validate: [requiredWithCustomMessage(ERROR_MESSAGE_FRONT)],
     },
     back: {
       type: 'file',
-      label: 'Back Side of Photo ID Document',
-      placeholder: 'Add a copy of the backside of your ID document',
+      label: FORM_FIELDS.BACK_LABEL,
+      placeholder: FORM_FIELDS.BACK_PLACEHOLDER,
     },
   },
   proofOfResidence: {
     proofOfResidency: {
       type: 'file',
-      label: 'Document proving your address',
-      placeholder: 'Add a copy of a document that proves your address',
+      label: FORM_FIELDS.POR_LABEL,
+      placeholder: FORM_FIELDS.POR_PLACEHOLDER,
       validate: [requiredWithCustomMessage(ERROR_MESSAGE_PROOF_OF_RESIDENCY)],
     },
   },
-};
+})
 
 const InformationSection = ({ title, children}) => (
   <div className="information_section">
     <span className="information_section_title">{title}</span>
     {children}
   </div>
-)
+);
 
 export const information = {
   phone: <InformationSection title="Phone" />,
   id: (
     <InformationSection title="Identity Document">
       <div>
-        Please make sure that your submitted documents are:
+        {INFORMATION.ID_SECTION.TITLE}
         <ul>
-          <li>HIGH QUALITY (colour images, 300dpi resolution or higher).</li>
-          <li>VISIBLE IN THEIR ENTIRETY (watermarks are permitted).</li>
-          <li>VALID, with the expiry date clearly visible.</li>
+          <li>{INFORMATION.ID_SECTION.LIST_ITEM_1}</li>
+          <li>{INFORMATION.ID_SECTION.LIST_ITEM_2}</li>
+          <li>{INFORMATION.ID_SECTION.LIST_ITEM_3}</li>
         </ul>
       </div>
       <div>
-        <div className="warning_text">Please do not submit the identity document as your proof of residence.</div>
-        <div>Only a valid government-issued identification document; high quality photos or scanned images of these documents are acceptable:</div>
+        <div className="warning_text">{INFORMATION.ID_SECTION.WARNING_1}</div>
+        <div>{INFORMATION.ID_SECTION.WARNING_2}</div>
       </div>
     </InformationSection>
   ),
   proofOfResidence: (
     <InformationSection title="Proof of residence">
       <div>
-        To avoid delays when verifying your account, please make sure:
-        Your NAME, ADDRESS, ISSUE DATE and ISSUER are clearly visible.
-        The submitted proof of residence document is NOT OLDER THAN THREE MONTHS.
-        You submit color photographs or scanned images in HIGH QUALITY (at least 300 DPI)
+        {INFORMATION.POR.SECTION_1_TEXT_1}<br />
+        {INFORMATION.POR.SECTION_1_TEXT_2}<br />
+        {INFORMATION.POR.SECTION_1_TEXT_3}<br />
+        {INFORMATION.POR.SECTION_1_TEXT_4}
       </div>
       <div>
-        AN ACCEPTABLE PROOF OF RESIDENCE IS:
+        {INFORMATION.POR.SECTION_2_TITLE}
         <ul>
-          <li>A bank account statement.</li>
-          <li>A utility bill (electricity, water, internet, etc.).</li>
-          <li>A government-issued document (tax statement, certificate of residency, etc.).</li>
+          <li>{INFORMATION.POR.SECTION_2_LIST_ITEM_1}</li>
+          <li>{INFORMATION.POR.SECTION_2_LIST_ITEM_2}</li>
+          <li>{INFORMATION.POR.SECTION_2_LIST_ITEM_3}</li>
         </ul>
       </div>
-      <div className="warning_text">We cannot accept the address on your submitted identity document as a valid proof of residence.</div>
+      <div className="warning_text">{INFORMATION.POR.WARNING}</div>
     </InformationSection>
   ),
 }
-
-export default fields;

@@ -51,19 +51,36 @@ $accordion_arrow-size: 0.3rem;
   }
 }
 
-.sidebar_section-container .wallet-wrapper .accordion_section_title .wallet_section-title {
-  &:after{
-    @include css-triangle($colors-deactivate-color2, 'right', $accordion_arrow-size);
-    right: -$accordion_arrow-size;
-    top: calc(50% - 0.22rem);
+.direction_ltr {
+  .sidebar_section-container .wallet-wrapper .accordion_section_title .wallet_section-title {
+    &:after{
+      @include css-triangle($colors-deactivate-color2, 'right', $accordion_arrow-size);
+      right: -$accordion_arrow-size;
+      top: calc(50% - #{$accordion_arrow-size});
+    }
+  }
+
+  .sidebar_section-container .wallet-wrapper .accordion_section--open .accordion_section_title .wallet_section-title {
+    color: $colors-main-black;
+    &:after {
+      border-left-color: $colors-main-black;
+    }
   }
 }
 
-.sidebar_section-container .wallet-wrapper .accordion_section--open .accordion_section_title .wallet_section-title {
-  color: $colors-main-black;
-  &:after{
-    @include css-triangle($colors-main-black, 'right', $accordion_arrow-size);
-    right: -$accordion_arrow-size;
-    top: calc(50% - 0.22rem);
+.direction_rtl {
+  .sidebar_section-container .wallet-wrapper .accordion_section_title .wallet_section-title {
+    &:after{
+      @include css-triangle($colors-deactivate-color2, 'left', $accordion_arrow-size);
+      left: -$accordion_arrow-size;
+      top: calc(50% - #{$accordion_arrow-size});
+    }
+  }
+
+  .sidebar_section-container .wallet-wrapper .accordion_section--open .accordion_section_title .wallet_section-title {
+    color: $colors-main-black;
+    &:after {
+      border-right-color: $colors-main-black;
+    }
   }
 }

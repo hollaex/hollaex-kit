@@ -42,6 +42,7 @@ const AccordionSection = ({
         <ActionNotification
           {...notification}
           onClick={notification.allowClick ? onClick : openSection}
+          showPointer={notification.allowClick}
         />
       }
     </div>

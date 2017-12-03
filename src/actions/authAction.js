@@ -119,9 +119,10 @@ const setTokenInApp = (token, setInStore = false) => {
 	}
 }
 
-const cleatTokenInApp = () => {
+const cleatTokenInApp = (router) => {
 	axios.defaults.headers.common['Authorization'] = {};
 	removeToken();
+	router.push('/');
 }
 
 export function verifyToken(token) {
@@ -145,18 +146,16 @@ export function verifyToken(token) {
 				dispatch({
 					type: 'VERIFY_TOKEN_REJECTED',
 				});
-				cleatTokenInApp();
-				browserHistory.push('/login');
+				cleatTokenInApp(browserHistory);
 			});
 	});
 }
 
 export const logout = () => (dispatch) => {
-	cleatTokenInApp();
 	dispatch({
 		type: 'LOGOUT',
 	});
-	browserHistory.push('/login');
+	cleatTokenInApp(browserHistory);
 }
 
 export function loadToken() {
@@ -167,7 +166,7 @@ export function loadToken() {
 	}
 }
 
-export const requestVerificationEmail = (data) => axios.get(`/verify?${querystring.stringify(data)}`)
+export const requestVerificationEmail = (data) => axios.get(`/verify?${querystring.stringify({ ...data, resend: true })}`)
 export const requestResetPassword = (values) => {
 	const qs = querystring.stringify(values);
 	return axios.get(`/reset-password?${qs}`);

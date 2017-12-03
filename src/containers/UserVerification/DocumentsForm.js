@@ -3,7 +3,9 @@ import { FieldArray, Field, reduxForm } from 'redux-form';
 
 import renderFields from '../../components/Form/factoryFields';
 import { Button } from '../../components';
-import FormValues, { information } from './DocumentsFormValues';
+import { information } from './DocumentsFormValues';
+import UpgradeWarning from './UpgradeWarning';
+import { TEXTS } from './constants';
 
 const renderSection = (props) => {
   const { fields, meta: { error, submitFailed }, section } = props
@@ -16,19 +18,12 @@ const renderSection = (props) => {
 }
 
 const Form = (props) => {
-  const { handleSubmit, submitting, pristine, error, valid, initialValues } = props;
+  const { handleSubmit, submitting, pristine, error, valid, initialValues, formValues } = props;
 
   return (
     <form onSubmit={handleSubmit} className="user_verification-form">
-      <div className="warning_text">
-        <div>By verifing your identity you can obtain the following:</div>
-        <ul>
-          <li>Increased withdrawal limits</li>
-          <li>Increased deposits limits</li>
-          <li>Lower fees</li>
-        </ul>
-      </div>
-      {Object.entries(FormValues).map(([key, value], index) => (
+      <UpgradeWarning />
+      {Object.entries(formValues).map(([key, value], index) => (
         <FieldArray
           key={key}
           name={key}
@@ -39,7 +34,7 @@ const Form = (props) => {
       ))}
       {error && <div className="warning_text">{error}</div>}
       <Button
-        label="Submit Verification Request"
+        label={TEXTS.ID_DOCUMENTS_FORM.BUTTON}
         disabled={pristine || submitting || !valid}
       />
     </form>

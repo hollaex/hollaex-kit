@@ -3,7 +3,6 @@ import { Router, Route, browserHistory, IndexRoute } from 'react-router';
 
 import {
   App as Container,
-  Dashboard,
   Account,
   Wallet,
   Login,
@@ -12,6 +11,7 @@ import {
   VerificationEmailCode,
   Home,
   Deposit,
+  DepositVerification,
   Withdraw,
   TransactionsHistory,
   Trade,
@@ -19,12 +19,22 @@ import {
   AuthContainer,
   RequestResetPassword,
   ResetPassword,
+  QuickTrade,
 } from './containers';
 
 import store from './store'
-import { verifyToken } from './actions/authAction'
+import { verifyToken } from './actions/authAction';
+import { setLanguage } from './actions/appActions';
 
 import { getToken, removeToken } from './utils/token';
+import { getLanguage, getInterfaceLanguage } from './utils/string';
+
+let lang = getLanguage();
+if (!lang) {
+  lang = getInterfaceLanguage();
+}
+store.dispatch(setLanguage(lang));
+
 
 let token = getToken();
 if (token) {
@@ -75,13 +85,14 @@ export default (
   <Router history={browserHistory}>
     <Route path="/" name="Home" component={Home} />
     <Route component={Container} onEnter={requireAuth}>
-      <IndexRoute component={Dashboard} />
       <Route path="account" name="Account" component={Account}/>
       <Route path="wallet" name="Wallet" component={Wallet}/>
       <Route path="withdraw" name="Withdraw" component={Withdraw}/>
       <Route path="deposit" name="Deposit" component={Deposit}/>
+      <Route path="deposit/verification" name="Deposit Verification" component={DepositVerification} />
       <Route path="transactions" name="Transactions" component={TransactionsHistory}/>
       <Route path="trade" name="Trade" component={Trade}/>
+      <Route path="quick-trade" name="Quick Trade" component={QuickTrade}/>
     </Route>
     <Route component={AuthContainer}>
       <Route path="login" name="Login" component={Login} {...noAuthRoutesCommonProps} />

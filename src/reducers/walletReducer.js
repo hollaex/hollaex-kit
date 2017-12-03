@@ -8,17 +8,21 @@ const INITIAL_API_OBJECT = {
   error: '',
 };
 
+const INITIAL_VERIFICATION_OBJECT = {
+	loading: false,
+	ready: false,
+	message: '',
+	error: '',
+};
 
-const sortByDate = (a, b) => {
-	return new Date(a) <= new Date(b);
-}
-
-const joinData = (stateData = [], payloadData = []) => stateData.concat(payloadData);
+const joinData = (stateData = [], payloadData = []) => payloadData.concat(stateData);
 
 const INITIAL_STATE = {
   trades: INITIAL_API_OBJECT,
+	latestUserTrades: [],
   deposits: INITIAL_API_OBJECT,
 	withdrawals: INITIAL_API_OBJECT,
+	depositVerification: INITIAL_VERIFICATION_OBJECT,
 };
 
 export default function reducer(state = INITIAL_STATE, { type, payload }) {
@@ -60,18 +64,43 @@ export default function reducer(state = INITIAL_STATE, { type, payload }) {
 
 		case ACTION_KEYS.ADD_USER_TRADES: {
 			// check if we have trades from DB
-			if (state.trades.count > 0) {
-				return {
-					...state,
-					trades: {
-						count: state.trades.count + payload.length,
-						data: joinData(state.trades.data, payload.data)
-					}
-				}
+			const tradesData = joinData(state.trades.data, payload.reverse())
+			return {
+				...state,
+				trades: {
+					count: tradesData.length,
+					data: tradesData,
+				},
+				latestUserTrades: tradesData.slice(0, 10),
 			}
 		}
 
-
+		// DEPOSIT VERIFICATION
+		case ACTION_KEYS.DEPOSIT_VERIFICATION_PENDING:
+			return {
+				...state,
+				depositVerification: {
+					...INITIAL_VERIFICATION_OBJECT,
+					loading: true,
+				},
+			};
+		case ACTION_KEYS.DEPOSIT_VERIFICATION_FULFILLED:
+			return {
+				...state,
+				depositVerification: {
+					...INITIAL_VERIFICATION_OBJECT,
+					ready: true,
+					message: payload.message,
+				},
+			};
+		case ACTION_KEYS.DEPOSIT_VERIFICATION_REJECTED:
+			return {
+				...state,
+				depositVerification: {
+					...INITIAL_VERIFICATION_OBJECT,
+					error: payload.message,
+				},
+			};
 		// USER_TRADES
 		case ACTION_KEYS.USER_DEPOSITS_PENDING: {
 	    const { page = 1 } = payload;

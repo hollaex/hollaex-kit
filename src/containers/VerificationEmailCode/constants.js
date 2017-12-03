@@ -1,16 +1,18 @@
+import STRINGS from '../../config/localizedStrings';
 import { ICONS } from '../../config/constants';
 
+const { SUCCESS_TEXT, ERROR_TEXT, LOGIN_TEXT, VERIFICATION_EMAIL } = STRINGS;
 export const TEXTS = {
   SUCCESS: {
-    TITLE: 'Success',
-    TEXT_1: 'You\'ve successfully verified your email.',
-    TEXT_2: 'You can now proceed to login',
-    ICON: ICONS.CHECK,
-    BUTTON: 'Login',
+    TITLE: SUCCESS_TEXT,
+    TEXT_1: VERIFICATION_EMAIL.TEXT_1,
+    TEXT_2: VERIFICATION_EMAIL.TEXT_2,
+    ICON: ICONS.SUCCESS_BLACK,
+    BUTTON: LOGIN_TEXT,
   },
   ERROR: {
-    TITLE: 'ERROR',
+    TITLE: ERROR_TEXT,
     ICON: ICONS.LETTER,
   },
-  ERROR_UUID: 'Invalid code',
+  ERROR_UUID: VERIFICATION_EMAIL.INVALID_UUID,
 }

@@ -14,6 +14,7 @@ $loader-relative--height: 10rem;
 .loader_wrapper_relative {
   position: relative;
   width: 100%;
+  min-width: $loader-relative--height;
   height: $loader-relative--height;
 }
 

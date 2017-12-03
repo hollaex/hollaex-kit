@@ -1,0 +1,25 @@
+$quick-trade--background: #ccf9fb;
+
+.quote-container {
+  background-color: $quick-trade--background;
+}
+
+.quote-review-wrapper {
+  margin: 1rem 0;
+}
+
+.quote-countdown-wrapper {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+
+  .counter {
+    font-size: $font-size-subhead1;
+  }
+}
+
+.quote-success-review-text {
+  margin: 1rem 0 2rem;
+  font-size: $font-size-main;
+}

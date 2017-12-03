@@ -1,59 +1,102 @@
-import React from 'react';
-import createForm from '../../components/Form';
+import React, { Component } from 'react';
+import { SubmissionError } from 'redux-form';
+import { HocForm, IconTitle } from '../../components';
 import { email, required } from '../../components/Form/validations';
+import STRINGS from '../../config/localizedStrings';
+import { ICONS } from '../../config/constants';
+import { sendSupportMail } from '../../actions/appActions';
 
-export default ({ onSubmitSuccess }) => {
-  const fields = {
+const FORM_NAME = 'ContactForm';
+
+const Form = HocForm(FORM_NAME);
+
+class ContactForm extends Component {
+  state = {
+    submiited: false,
+  }
+
+  onSubmit = (values) => {
+    return sendSupportMail(values)
+      .then((data) => {
+        this.setState({ submiited: true });
+
+        // if (this.props.onSubmitSuccess) {
+        //   this.props.onSubmitSuccess(data);
+        // }
+      })
+      .catch((err) => {
+        const _error = err.response.data ? err.response.data.message : err.message;
+        throw new SubmissionError({ _error });
+      });
+  }
+
+  generateFormFields = () => ({
     email: {
       type: 'email',
-      label: 'Email',
-      placeholder: 'Type your Email addres',
+      label: STRINGS.FORM_FIELDS.EMAIL_LABEL,
+      placeholder: STRINGS.FORM_FIELDS.EMAIL_PLACEHOLDER,
       validate: [required, email],
       fullWidth: true,
     },
     category: {
       type: 'select',
-      label: 'Category',
-      placeholder: 'Select the category that best suits your issue',
+      label: STRINGS.CONTACT_FORM.CATEGORY_LABEL,
+      placeholder: STRINGS.CONTACT_FORM.CATEGORY_PLACEHOLDER,
       options: [
-        'Verify',
-        { value: 'verify', label: 'Verification' },
-        { value: 'bug', label: 'Bug' },
+        { value: 'verify', label: STRINGS.CONTACT_FORM.CATEGORY_OPTIONS.OPTION_VERIFY },
+        { value: 'bug', label: STRINGS.CONTACT_FORM.CATEGORY_OPTIONS.OPTION_BUG },
       ],
       validate: [required],
       fullWidth: true,
     },
     subject: {
       type: 'text',
-      label: 'Subject',
-      placeholder: 'Type the subject of your issue',
+      label: STRINGS.CONTACT_FORM.SUBJECT_LABEL,
+      placeholder: STRINGS.CONTACT_FORM.SUBJECT_PLACEHOLDER,
       validate: [required],
       fullWidth: true,
     },
     description: {
       type: 'text',
-      label: 'Description',
-      placeholder: 'Type in detail what the issue is',
+      label: STRINGS.CONTACT_FORM.DESCRIPTION_LABEL,
+      placeholder: STRINGS.CONTACT_FORM.DESCRIPTION_PLACEHOLDER,
       validate: [required],
       fullWidth: true,
     },
-    attachment: {
-      type: 'file',
-      label: 'Add an attachment',
-      placeholder: 'Add a file to help communicate your issue. PDF, JPG, PNG and GIF files are accepted',
-      fullWidth: true,
+    // attachment: {
+    //   type: 'file',
+    //   label: STRINGS.CONTACT_FORM.ATTACHMENT_LABEL,
+    //   placeholder: STRINGS.CONTACT_FORM.ATTACHMENT_PLACEHOLDER,
+    //   fullWidth: true,
+    // }
+  })
+
+  render() {
+    const { submiited } = this.state;
+
+    if (submiited) {
+      return <div>{STRINGS.CONTACT_FORM.SUCCESS_MESSAGE}</div>;
     }
-  };
 
-  const onSubmit = (values) => {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        onSubmitSuccess();
-        resolve();
-      }, 2500)
-    })
+    const formFields = this.generateFormFields();
+
+    return (
+      <div>
+        <IconTitle
+          iconPath={ICONS.LIFESAVER}
+          text={STRINGS.CONTACT_US_TEXT}
+          textType="title"
+          underline={true}
+          className="w-100"
+        />
+        <Form
+          onSubmit={this.onSubmit}
+          formFields={formFields}
+          buttonLabel={STRINGS.CONTACT_US_TEXT}
+        />
+      </div>
+    );
   }
-
-  const Form = createForm('ContactForm', fields, onSubmit, 'Submit');
-  return <Form />
 }
+
+export default ContactForm;

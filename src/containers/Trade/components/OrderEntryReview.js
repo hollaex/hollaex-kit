@@ -2,10 +2,7 @@ import React from 'react';
 import classnames from 'classnames';
 import math from 'mathjs';
 
-const TEXT_MARKET_PRICE = 'Market Price';
-const TEXT_ORDER_PRICE = 'Order Price';
-const TEXT_FEES = 'Fees';
-const TEXT_ORDER_TOTAL = 'Order Total';
+import STRINGS from '../../../config/localizedStrings';
 
 const ROW_CLASSNAMES = ['d-flex', 'justify-content-between'];
 
@@ -19,15 +16,15 @@ const Review = ({ orderPrice = 0, fees = 0, currency, formatToCurrency, type }) 
   return (
     <div className="trade_order_entry-review d-flex flex-column">
       <div className={classnames(...ROW_CLASSNAMES)}>
-        <div>{type === 'market' ? TEXT_MARKET_PRICE : TEXT_ORDER_PRICE}:</div>
+        <div>{type === 'market' ? STRINGS.MARKET_PRICE : STRINGS.ORDER_PRICE}:</div>
         <div className="text-price">{renderAmount(formatToCurrency(orderPrice), currency)}</div>
       </div>
       <div className={classnames(...ROW_CLASSNAMES)}>
-        <div>{TEXT_FEES}:</div>
+        <div>{STRINGS.FEES}:</div>
         <div className="text-price">{renderAmount(formatToCurrency(fees), currency)}</div>
       </div>
       <div className={classnames(...ROW_CLASSNAMES)}>
-        <div>{TEXT_ORDER_TOTAL}:</div>
+        <div>{STRINGS.TOTAL_ORDER}:</div>
         <div className="text-price">{renderAmount(formatToCurrency(orderTotal), currency)}</div>
       </div>
     </div>

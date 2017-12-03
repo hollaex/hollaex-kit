@@ -4,6 +4,7 @@ import InputField from './FormFields/InputField';
 import FileField from './FormFields/FileField';
 import DropdownField from './FormFields/DropdownField';
 import DateField from './FormFields/DateField';
+import DropdownDateField from './FormFields/DropdownDateField';
 import CheckField from './FormFields/CheckField';
 
 const renderFields = (fields) => {
@@ -33,6 +34,13 @@ const renderFields = (fields) => {
               <Field
                 component={ DropdownField }
                 autocomplete={type === 'autocomplete'}
+                {...commonProps}
+              />
+            );
+          case 'date-dropdown':
+            return (
+              <Field
+                component={ DropdownDateField }
                 {...commonProps}
               />
             );

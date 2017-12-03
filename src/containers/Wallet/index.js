@@ -1,22 +1,16 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
-import { IconTitle, CurrencyBall, Button, ActionNotification, Accordion} from '../../components';
+import { IconTitle, CurrencyBall, CurrencyBallWithPrice, Button, ActionNotification, Accordion } from '../../components';
 import { ICONS, FLEX_CENTER_CLASSES, CURRENCIES } from '../../config/constants';
 import { calculatePrice, calculateBalancePrice, generateWalletActionsText } from '../../utils/currency';
+import STRINGS from '../../config/localizedStrings';
 
 const fiatName = CURRENCIES.fiat.name;
 const fiatSymbol = 'fiat';
 const fiatCurrencySymbol = CURRENCIES.fiat.currencySymbol;
 const fiatShortName = CURRENCIES.fiat.shortName;
 const fiatFormatToCurrency = CURRENCIES.fiat.formatToCurrency;
-
-const WALLET_BALANCE = 'Balance';
-const WALLET_TRANSACTIONS_HISTORY = 'transactions history';
-const WALLET_TABLE_CURRENCY = 'Currency';
-const WALLET_TABLE_AMOUNT = 'Amount';
-const WALLET_TABLE_AMOUNT_IN_USD = `Amount in ${fiatShortName}`;
-const WALLET_TABLE_TOTAL = 'Grand Total';
 
 class Wallet extends Component {
   state = {
@@ -42,10 +36,10 @@ class Wallet extends Component {
     const totalAssets = this.calculateTotalAssets(balance, prices);
     const sections = [
       {
-        title: 'All Assets',
+        title: STRINGS.WALLET_ALL_ASSETS,
         content: this.renderAssetsBlock(balance, prices),
         notification: {
-          text: isOpen ? 'hide' : totalAssets,
+          text: isOpen ? STRINGS.HIDE_TEXT : totalAssets,
           status: 'information',
           iconPath: isOpen ? ICONS.BLUE_PLUS : ICONS.BLUE_CLIP,
           allowClick: true,
@@ -73,25 +67,19 @@ class Wallet extends Component {
     return (
       <div className="wallet-header_block">
         <div className="wallet-header_block-currency_title">
-          {`${fullName} ${WALLET_BALANCE}:`}
+          {STRINGS.formatString(STRINGS.CURRENCY_BALANCE_TEXT, fullName)}
           <ActionNotification
-            text={WALLET_TRANSACTIONS_HISTORY}
+            text={STRINGS.TRADE_HISTORY}
             status="information"
             iconPath={ICONS.BLUE_CLIP}
             onClick={this.goToTransactionsHistory}
           />
         </div>
-        <div className="wallet-header_block-amount d-flex">
-          <CurrencyBall name={shortName} symbol={symbol} size="m" />
-          <div className="wallet-header_block-amount-value d-flex">
-            {`${formatToCurrency(balanceValue)}`}
-            {symbol !== 'fiat' &&
-              <div className="wallet-header_block-amount-value-fiat d-flex align-items-end">
-                {` ~ $${fiatFormatToCurrency(calculatePrice(balanceValue, price))}`}
-              </div>
-            }
-          </div>
-        </div>
+        <CurrencyBallWithPrice
+          symbol={symbol}
+          amount={balanceValue}
+          price={price}
+        />
       </div>
     );
   }
@@ -103,9 +91,9 @@ class Wallet extends Component {
           <thead>
             <tr className="table-bottom-border">
               <th></th>
-              <th>{WALLET_TABLE_CURRENCY}</th>
-              <th>{WALLET_TABLE_AMOUNT}</th>
-              <th className="text-right">{WALLET_TABLE_AMOUNT_IN_USD}</th>
+              <th>{STRINGS.CURRENCY}</th>
+              <th>{STRINGS.AMOUNT}</th>
+              <th className="align-opposite">{STRINGS.formatString(STRINGS.WALLET_TABLE_AMOUNT_IN, fiatName)}</th>
             </tr>
           </thead>
           <tbody>
@@ -120,7 +108,7 @@ class Wallet extends Component {
                     </td>
                     <td className="td-name td-fit">{fullName}</td>
                     <td>{`${shortName} ${formatToCurrency(balanceValue)}`}</td>
-                    <td className="text-right show-equals">
+                    <td className="align-opposite show-equals">
                       {`${fiatCurrencySymbol}${
                         key === fiatSymbol ?
                         fiatFormatToCurrency(balanceValue) :
@@ -135,9 +123,9 @@ class Wallet extends Component {
           <tfoot>
             <tr>
               <td></td>
-              <td>{WALLET_TABLE_TOTAL}</td>
+              <td>{STRINGS.WALLET_TABLE_TOTAL}</td>
               <td></td>
-              <td className="text-right">
+              <td className="align-opposite">
                 {this.state.totalAssets}
               </td>
             </tr>
@@ -156,6 +144,7 @@ class Wallet extends Component {
           label={depositText}
           onClick={this.goToDeposit}
         />
+        <div className="separator" />
         <Button
           label={withdrawText}
           onClick={this.goToWithdraw}
@@ -169,10 +158,10 @@ class Wallet extends Component {
     const { sections } = this.state;
 
     return (
-      <div className="presentation_container">
+      <div className="presentation_container apply_rtl">
         <IconTitle
-          text="Wallet"
-          iconPath={ICONS.LETTER}
+          text={STRINGS.WALLET_TITLE}
+          iconPath={symbol === fiatSymbol ? ICONS.FIAT_WALLET : ICONS.BITCOIN_WALLET}
           textType="title"
         />
         <div className={classnames('wallet-container')}>

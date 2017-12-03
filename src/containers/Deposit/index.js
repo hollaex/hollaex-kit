@@ -3,7 +3,7 @@ import classnames from 'classnames';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-import { ICONS } from '../../config/constants';
+import { ICONS, CURRENCIES, DEPOSIT_LIMITS } from '../../config/constants';
 import { fiatSymbol } from '../../utils/currency';
 
 import {
@@ -21,7 +21,7 @@ import {
   renderExtraInformation,
 } from './utils';
 
-import { DEPOSIT_LIMITS } from './constants';
+import BankDeposit from './BankDeposit';
 
 class Deposit extends Component {
 
@@ -31,15 +31,27 @@ class Deposit extends Component {
     if (!id) {
       return <div></div>;
     }
+    const { name } = CURRENCIES[symbol];
+    const balanceAvailable = balance[`${symbol}_available`];
 
     const limit = DEPOSIT_LIMITS[symbol] ? DEPOSIT_LIMITS[symbol].DAILY : 0;
+    const min =  DEPOSIT_LIMITS[symbol] ? DEPOSIT_LIMITS[symbol].MIN : 0;
+    const max =  DEPOSIT_LIMITS[symbol] ? DEPOSIT_LIMITS[symbol].MAX : 0;
 
     return (
-      <div className="presentation_container">
-        {renderTitleSection(symbol, 'deposit', ICONS.LETTER)}
+      <div className="presentation_container  apply_rtl">
+        {renderTitleSection(symbol, 'deposit', symbol === fiatSymbol ?  ICONS.DEPOSIT_FIAT : ICONS.DEPOSIT_BITCOIN)}
         <div className={classnames('inner_container', 'with_border_top', 'with_border_bottom')}>
           {renderInformation(symbol, balance, openContactForm, generateFiatInformation)}
-          {renderContent(symbol, crypto_wallet)}
+          {symbol === fiatSymbol ?
+            <BankDeposit
+              available={balanceAvailable}
+              minAmount={min}
+              maxAmount={max}
+              currencyName={name}
+            /> :
+            renderContent(symbol, crypto_wallet)
+          }
           {renderExtraInformation(limit)}
         </div>
       </div>

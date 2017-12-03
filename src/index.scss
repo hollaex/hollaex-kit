@@ -14,15 +14,27 @@ html {
   height: 100%;
 }
 
-.app_background {
-  // background-color: #d5f5f5;
-}
-
 body {
   background-color: $app-background-color !important;
   font-size: $font-size-main !important;
   font-family: "Open Sans" !important;
-  min-width: $bp-xs;
+}
+
+.language_rtl {
+  font-family: "YEKAN" !important;
+}
+
+.direction_rtl {
+  &.apply_rtl {
+    direction: rtl;
+  }
+  .apply_rtl {
+    direction: rtl;
+  }
+}
+
+.direction_ltr {
+  direction: ltr;
 }
 
 .warning_text {

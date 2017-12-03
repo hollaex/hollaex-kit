@@ -5,7 +5,8 @@ import { SubmissionError } from 'redux-form';
 import { resetPassword } from '../../actions/authAction';
 import ResetPasswordForm from './ResetPasswordForm';
 import ResetPasswordSuccess from './ResetPasswordSuccess';
-import { IconTitle } from '../../components';
+import { IconTitle, Dialog } from '../../components';
+import { ContactForm } from '../';
 import { FLEX_CENTER_CLASSES, ICONS } from '../../config/constants';
 import { TEXTS } from './constants';
 
@@ -56,7 +57,8 @@ class ResetPassword extends Component {
   }
 
   render() {
-    const { success } = this.state;
+    const { languageClasses } = this.props;
+    const { success, showContactForm } = this.state;
 
     if (success) {
       return <ResetPasswordSuccess onClick={this.onClickLogin} />
@@ -66,7 +68,7 @@ class ResetPassword extends Component {
       <div className={classnames(...FLEX_CENTER_CLASSES, 'flex-column', 'f-1')}>
         <div className={classnames(...FLEX_CENTER_CLASSES, 'flex-column', 'auth_wrapper', 'w-100')}>
           <IconTitle
-            iconPath={TEXTS.ICON}
+            iconPath={ICONS.SET_NEW_PASSWORD}
             text={TEXTS.TITLE}
             textType="title"
             underline={true}
@@ -75,7 +77,7 @@ class ResetPassword extends Component {
             actionProps={{
               text: TEXTS.HELP,
               iconPath: ICONS.RED_ARROW,
-              onClick: this.redirectToResetPassword,
+              onClick: this.onOpenDialog,
             }}
           />
           <div className={classnames(...FLEX_CENTER_CLASSES, 'flex-column', 'auth_form-wrapper', 'w-100')}>
@@ -85,6 +87,17 @@ class ResetPassword extends Component {
         <div className={classnames('f-1', 'link_wrapper')}>
           {TEXTS.NO_EMAIL}<Link to='/verify' className={classnames('blue-link')}>{TEXTS.REQUEST_EMAIL}</Link>
         </div>
+        <Dialog
+          isOpen={showContactForm}
+          label="contact-modal"
+          onCloseDialog={this.onCloseDialog}
+          shouldCloseOnOverlayClick={false}
+          showCloseText={true}
+          style={{ 'z-index': 100 }}
+          className={classnames(languageClasses)}
+        >
+          <ContactForm onSubmitSuccess={this.onCloseDialog} />
+        </Dialog>
       </div>
     );
   }

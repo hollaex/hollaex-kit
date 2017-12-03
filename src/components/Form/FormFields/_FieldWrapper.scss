@@ -1,5 +1,3 @@
-@import '../../../variables';
-
 $wrapper-margin: 0.5rem;
 $underline-margin-bottom: 0.25rem;
 $children--padding: 0.5rem;
@@ -21,25 +19,13 @@ $valid-icon-size: 2rem;
   &.inline {
     display: flex;
     align-items: flex-end;
+
     > div {
       flex: 1;
 
       &.field-error-content {
         padding-bottom: $wrapper-margin;
-        margin-left: $wrapper-margin;
       }
-    }
-
-    .valid > *:not(:last-child) {
-      padding-right: 0;
-    }
-
-    input {
-      padding-right: 0;
-    }
-
-    .field-valid {
-      left: 100%;
     }
   }
 }
@@ -65,16 +51,11 @@ $valid-icon-size: 2rem;
     padding: 0;
   }
 
-  &.valid > *:not(:last-child) {
-    padding-right: $valid-icon-size;
-  }
-
   .field-valid {
     position: absolute;
     height: $valid-icon-size;
     width: $valid-icon-size;
 
-    right: 0;
     bottom: 0;
   }
 }
@@ -127,9 +108,7 @@ $valid-icon-size: 2rem;
   width: $error-icon-size;
 }
 
-.field-error-text {
-  padding-left: 0.25rem;
-}
+
 
 .dumb-field-wrapper {
   > .field-content > .field-children {
@@ -142,5 +121,69 @@ $valid-icon-size: 2rem;
 
   .copy-wrapper {
     top: 0;
+  }
+}
+
+
+.direction_ltr {
+  .field-error-text {
+    padding-left: 0.25rem;
+  }
+
+  .field-children {
+    &.valid > *:not(:last-child) {
+      padding-right: $valid-icon-size;
+    }
+
+    .field-valid {
+      right: 0;
+    }
+  }
+
+  .field-wrapper {
+    &.inline {
+      .field-error-content {
+        margin-left: $wrapper-margin;
+      }
+
+      input {
+        padding-right: 0;
+      }
+
+      .field-valid {
+        right: -$valid-icon-size;
+      }
+    }
+  }
+}
+
+.direction_rtl {
+  .field-error-text {
+    padding-right: 0.25rem;
+  }
+
+  .field-children {
+    &.valid > *:not(:last-child) {
+      padding-left: $valid-icon-size;
+    }
+
+    .field-valid {
+      left: 0;
+    }
+  }
+  .field-wrapper {
+    &.inline {
+      .field-error-content {
+        margin-right: $wrapper-margin;
+      }
+
+      input {
+        padding-left: 0;
+      }
+
+      .field-valid {
+        left: -$valid-icon-size;
+      }
+    }
   }
 }

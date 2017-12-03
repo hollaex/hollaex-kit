@@ -10,12 +10,17 @@ $currency-text-size: 4rem;
 $input-bottom_line--height: 2px;
 $input-bottom_line--animation--width: 100px;
 
+$title-icon--height: 10rem;
+
 .quick_trade-wrapper {
   min-width: $wrapper--min-width;
   max-width: $wrapper--max-width;
   padding: $wrapper--padding;
   background-color: white;
 
+  .quick_trade-icon {
+    max-height: $title-icon--height;
+  }
   .title {
     font-size: $font-size-headline;
   }
@@ -101,8 +106,18 @@ $input-bottom_line--animation--width: 100px;
     }
   }
 
-  .input_block-wrapper {
+  .input_block-error-wrapper {
+    color: red;
+    margin-top: 0.5rem;
+  }
+  
+  .input_block-content {
     border-bottom: $input-bottom_line--height solid $colors-main-black;
+    width: 100%;
+    &.has_error {
+      border-bottom-color: $error-color;
+    }
+
     .input_block-input-wrapper {
       // width: 100%;
       width: auto;

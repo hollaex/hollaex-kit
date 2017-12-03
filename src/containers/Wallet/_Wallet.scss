@@ -18,19 +18,6 @@ $header-margin: 1.5rem;
     .wallet-header_block {
 
     }
-
-    .wallet-header_block-amount {
-      font-size: $font-size-headline;
-      line-height: $font-size-headline;
-      .wallet-header_block-amount-value {
-        margin-left: 0.5rem;
-      }
-      .wallet-header_block-amount-value-fiat {
-        color: $colors-deactivate-color2;
-        font-size: $font-size-subhead2;
-        line-height: $font-size-subhead2;
-      }
-    }
   }
 
   .wallet-buttons_action {
@@ -42,8 +29,8 @@ $header-margin: 1.5rem;
     & > *:last-child {
       flex: 1;
     }
-    & > *:not(:last-child) {
-      margin-right: 1rem;
+    .separator {
+      width: 1rem;
     }
   }
 
@@ -54,7 +41,7 @@ $header-margin: 1.5rem;
       font-size: $font-size-subtext;
 
       thead,tfoot {
-        & tr{
+        & tr {
           height: 3.5rem;
           vertical-align: bottom;
         }
@@ -62,6 +49,9 @@ $header-margin: 1.5rem;
 
       tfoot {
         font-size: $font-size-main;
+        td {
+          white-space: nowrap;
+        }
       }
 
       .table-row {
@@ -88,7 +78,6 @@ $header-margin: 1.5rem;
         min-width: 15%;
       }
       .table-icon {
-        padding-right: 0.5rem;
         & > div {
           vertical-align: middle;
           margin: auto;
@@ -101,12 +90,54 @@ $header-margin: 1.5rem;
 .show-equals:after {
   content: '=';
   width: auto;
-  left: 0;
   position: absolute;
 }
 
 .wallet-notification {
   .action_notification-text {
     font-size: $font-size-main !important;
+  }
+}
+
+
+.direction_ltr {
+  .wallet-container{
+    .wallet-assets_block {
+      .wallet-assets_block-table {
+        th, td {
+          text-align: left;
+        }
+        .align-opposite {
+          text-align: right;
+        }
+        .table-icon {
+          padding-right: 0.5rem;
+        }
+      }
+    }
+  }
+  .show-equals:after {
+    left: 0;
+  }
+}
+
+.direction_rtl {
+  .wallet-container{
+    .wallet-assets_block {
+      .wallet-assets_block-table {
+        th, td {
+          text-align: right;
+        }
+        .align-opposite {
+          text-align: left;
+        }
+        .table-icon {
+          padding-left: 0.5rem;
+        }
+      }
+    }
+  }
+  .show-equals:after {
+    right: 0;
   }
 }

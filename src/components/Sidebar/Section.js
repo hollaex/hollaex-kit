@@ -21,7 +21,7 @@ const Section = ({ title, goToSection, active, children }) => {
 }
 
 Section.defaultProps = {
-  title: 'section',
+  title: '',
   active: false
 }
 

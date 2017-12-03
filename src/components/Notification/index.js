@@ -1,93 +1,87 @@
 import React from 'react';
 import classnames from 'classnames';
-import { Button, CurrencyBall, ActionNotification } from '../';
+import { Button } from '../';
 import { NOTIFICATIONS } from '../../actions/appActions';
-import { ICONS, CURRENCIES } from '../../config/constants';
-import { getDepositTexts, NEED_HELP, BUTTON_TEXTS } from './constants';
+import { ICONS } from '../../config/constants';
+import { getDepositTexts } from './constants';
 import {
-  calculatePrice, fiatFormatToCurrency, fiatShortName, fiatSymbol,
+  fiatSymbol,
 } from '../../utils/currency';
 
-const Header = ({ icon, text }) => (
-  <div className="notification-title-wrapper d-flex flex-column">
-    <div className="notification-title-icon f-1 d-flex justify-content-center align-items-center">
-      <img src={icon} alt="" className=""/>
-    </div>
-    <div className="notification-title-text">{text}</div>
-  </div>
-);
+import STRINGS from '../../config/localizedStrings';
 
-const DepositContent = ({ information, content, amount, symbol, price }) => {
-  const { shortName, formatToCurrency } = CURRENCIES[symbol];
-  return (
-    <div className="notification-content-wrapper">
-      <div className="notification-content-header">
-        {information}
-        <ActionNotification
-          text={NEED_HELP}
-          status="information"
-          iconPath={ICONS.BLUE_QUESTION}
-        />
-      </div>
-      {content}
-      <div className="notification-content-block_amount d-flex">
-        <CurrencyBall name={shortName} symbol={symbol} size="m" />
-        <div className="notification-content-block_amount-value d-flex">
-          {`${formatToCurrency(amount)}`}
-          {symbol !== 'fiat' &&
-            <div className="notification-content-block_amount-value-fiat d-flex align-items-end">
-              {` ~ ${fiatFormatToCurrency(calculatePrice(amount, price))} ${fiatShortName}`}
-            </div>
-          }
-        </div>
-      </div>
-    </div>
-  );
-}
+import Header from './Header';
+import DepositContent from './Deposit';
+import WithdrawContent from './Withdraw';
 
-const generateNotificationContent = ({ type, data, onClose, goToPage }) => {
+const generateNotificationContent = ({ type, data, onClose, goToPage, openContactForm }) => {
   const content = {};
   switch (type) {
-    case NOTIFICATIONS.DEPOSIT:
-      const depositTexts = getDepositTexts(data.currency, data.status);
+    case NOTIFICATIONS.DEPOSIT: {
+        const depositTexts = getDepositTexts(data.currency, data.status);
 
-      content.header = {
-        text: depositTexts.title,
-        icon: ICONS.RED_WARNING,
-      }
+        content.header = {
+          text: depositTexts.title,
+          icon: data.currency === 'fiat' ?
+            ICONS.DEPOSIT_FIAT_COMPLETE:
+            ICONS.DEPOSIT_RECEIVED_BITCOIN,
+        }
+        const childrenProps = {
+          symbol: data.currency,
+          amount: data.amount,
+          information: depositTexts.subtitle,
+          price: data.price || 1,
+          content: (
+            <div>
+              {depositTexts.information && depositTexts.information.join('\n')}
+            </div>
+          ),
+          openContactForm: () => {
+            onClose();
+            openContactForm()
+          },
+        };
+        content.children = <DepositContent {...childrenProps} />;
+        content.buttons = (
+          <div className="notification-buttons-wrapper d-flex">
+            <Button
+              label={STRINGS.NOTIFICATIONS.BUTTONS.OKAY}
+              onClick={onClose}
+            />
+            <div className="separator" />
+            <Button
+              className={classnames(`button-${data.currency}`)}
+              label={data.currency === fiatSymbol ? STRINGS.NOTIFICATIONS.BUTTONS.START_TRADING : STRINGS.NOTIFICATIONS.BUTTONS.SEE_HISTORY }
+              onClick={() => {
+                goToPage(data.currency === fiatSymbol ? 'trade' : 'transactions');
+                onClose();
+              }}
+            />
+          </div>
+        );
+        break;
+    }
+    case NOTIFICATIONS.WITHDRAWAL: {
       const childrenProps = {
-        symbol: data.currency,
-        amount: data.amount,
-        information: depositTexts.subtitle,
-        price: data.price,
         content: (
           <div>
-            {depositTexts.information && depositTexts.information.join('\n')}
+            <h3>{type}</h3>
+            <div>{JSON.stringify(data, null, 2)}</div>
           </div>
-        )
-      };
-      content.children = <DepositContent {...childrenProps} />;
-      content.buttons = (
-        <div className="notification-buttons-wrapper d-flex">
-          <Button
-            label={BUTTON_TEXTS.OKAY}
-            onClick={onClose}
-          />
-          <Button
-            className={classnames(`button-${data.currency}`)}
-            label={data.currency === fiatSymbol ? BUTTON_TEXTS.START_TRADING : BUTTON_TEXTS.SEE_HISTORY }
-            onClick={() => {
-              goToPage(data.currency === fiatSymbol ? 'trade' : 'transactions');
-              onClose();
-            }}
-          />
-        </div>
-      );
+        ),
+      }
+      content.children = <WithdrawContent {...childrenProps} />;
       break;
+    }
     case NOTIFICATIONS.ORDERS:
     case NOTIFICATIONS.TRADES:
-    case NOTIFICATIONS.WITHDRAWAL:
     default:
+      content.children = (
+        <div>
+          <h3>{type}</h3>
+          <div>{JSON.stringify(data, null, 2)}</div>
+        </div>
+      )
       break;
   }
 

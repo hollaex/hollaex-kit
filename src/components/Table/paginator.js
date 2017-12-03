@@ -2,13 +2,14 @@ import React from 'react';
 import classnames from 'classnames';
 import { ActionNotification } from '../';
 import { ICONS } from '../../config/constants';
+import STRINGS from '../../config/localizedStrings';
 
-const TEXT_PREVIOUS_PAGE = 'previous page';
-const TEXT_NEXT_PAGE = 'next page';
+const TEXT_PREVIOUS_PAGE = STRINGS.PREVIOUS_PAGE;
+const TEXT_NEXT_PAGE = STRINGS.NEXT_PAGE;
 
 const renderPageCount = (currentPage, totalPages) => {
   if (totalPages > 0) {
-    return <div>{currentPage} / {totalPages}</div>;
+    return <div>{STRINGS.formatString(STRINGS.PAGINATOR_FORMAT, currentPage, totalPages)}</div>;
   }
 }
 
@@ -28,7 +29,7 @@ const Paginator = ({ goToPreviousPage, goToNextPage, currentPage, count, pageSiz
           iconPath={ICONS.RED_ARROW}
           textPosition="left"
           iconPosition="left"
-          reverseImage={true}
+          rotateIfLtr={true}
         />
       </div>
       {renderPageCount(currentPage, totalPages)}
@@ -40,6 +41,7 @@ const Paginator = ({ goToPreviousPage, goToNextPage, currentPage, count, pageSiz
           text={TEXT_NEXT_PAGE}
           status="information"
           iconPath={ICONS.RED_ARROW}
+          rotateIfRtl={true}
         />
       </div>
     </div>

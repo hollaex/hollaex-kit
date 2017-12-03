@@ -1,6 +1,14 @@
 $legal-wrapper--max-width: $max-width-content;
 $legal-sections--margin: 1.5rem;
 
+.legal-container {
+  width: 100%;
+
+  .legal-wrapper {
+    margin: 0;
+  }
+}
+
 .legal-wrapper {
   width: 100%;
   margin: $legal-sections--margin;
@@ -39,5 +47,12 @@ $legal-sections--margin: 1.5rem;
 
   .legal-subtitle, .legal-content {
     font-size: $font-size-subtext;
+  }
+}
+
+
+@media screen and (max-width: $bp-sm) {
+  .legal-container .legal-content-wrapper {
+    padding: 1rem;
   }
 }

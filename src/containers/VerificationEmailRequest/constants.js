@@ -1,25 +1,28 @@
+import STRINGS from '../../config/localizedStrings';
 import { ICONS } from '../../config/constants';
 
+const { FORM_FIELDS, VALIDATIONS, CONTACT_US_TEXT, VERIFICATION_EMAIL_REQUEST, VERIFICATION_EMAIL_REQUEST_SUCCESS } = STRINGS;
+
 export const TEXTS = {
-  TITLE: 'Activation Email Request',
+  TITLE: VERIFICATION_EMAIL_REQUEST.TITLE,
+  ...VERIFICATION_EMAIL_REQUEST,
   FORM: {
     FIELDS: {
       email: {
-        label: 'Email',
-        placeholder: 'Type your email',
+        label: FORM_FIELDS.EMAIL_LABEL,
+        placeholder: FORM_FIELDS.EMAIL_PLACEHOLDER,
       },
     },
-    BUTTON: 'Request Email',
+    BUTTON: VERIFICATION_EMAIL_REQUEST.BUTTON,
     VALIDATIONS: {
-      TYPE_EMAIL: 'Type your E-mail',
-      INVALID_EMAIL: 'Invalid email address',
+      INVALID_EMAIL: VALIDATIONS.INVALID_EMAIL,
+      TYPE_EMAIL: VALIDATIONS.TYPE_EMAIL,
     },
   },
 }
 
 export const VERIFICATION_RESEND_TEXTS = {
-  TITLE: 'Verification reset send',
-  TEXT_1: 'If after a few minutes you still have not receieved an email verification then please contact us below.',
-  BUTTON: 'CONTACT US',
-  ICON: ICONS.CHECK,
+  ...VERIFICATION_EMAIL_REQUEST_SUCCESS,
+  BUTTON: CONTACT_US_TEXT,
+  ICON: ICONS.VERIFICATION_SENT,
 }

@@ -1,9 +1,13 @@
 import React from 'react';
+import moment from 'moment';
 import { required, requiredBoolean, isBefore } from '../../components/Form/validations';
 import countries from '../../utils/countries';
 import { ICONS } from '../../config/constants';
 import { getFormattedDate } from '../../utils/string';
-import moment from 'moment';
+import { TEXTS } from './constants';
+
+const { USER_DOCUMENTATION_FORM } = TEXTS;
+const { FORM_FIELDS, INFORMATION } = USER_DOCUMENTATION_FORM;
 
 const COUNTRIES_OPTIONS = countries.map((country) => ({
   label: country.name,
@@ -17,86 +21,89 @@ const PHONE_OPTIONS = countries.map((country) => ({
   icon: country.flag,
 }));
 
-const fields = {
-  personalInformation: {
-    first_name: {
-      type: 'text',
-      label: 'First name',
-      placeholder: 'Type your first name as it appears on your identity document',
-      validate: [required],
+export const generateFormValues = (language) => {
+  return {
+    personalInformation: {
+      first_name: {
+        type: 'text',
+        label: FORM_FIELDS.FIRST_NAME_LABEL,
+        placeholder: FORM_FIELDS.FIRST_NAME_PLACEHOLDER,
+        validate: [required],
+      },
+      last_name: {
+        type: 'text',
+        label: FORM_FIELDS.LAST_NAME_LABEL,
+        placeholder: FORM_FIELDS.LAST_NAME_PLACEHOLDER,
+        validate: [required],
+      },
+      gender: {
+        type: 'select',
+        label: FORM_FIELDS.GENDER_LABEL,
+        placeholder: FORM_FIELDS.GENDER_PLACEHOLDER,
+        options: [
+          { value: false, label: FORM_FIELDS.GENDER_OPTIONS.MAN, icon: ICONS.GENDER_M },
+          { value: true, label: FORM_FIELDS.GENDER_OPTIONS.WOMAN, icon: ICONS.GENDER_F },
+        ],
+        validate: [requiredBoolean],
+      },
+      nationality: {
+        type: 'autocomplete',
+        label: FORM_FIELDS.NATIONALITY_LABEL,
+        placeholder: FORM_FIELDS.NATIONALITY_PLACEHOLDER,
+        options: COUNTRIES_OPTIONS,
+        validate: [required],
+      },
+      dob: {
+        type: 'date-dropdown',
+        language,
+        label: FORM_FIELDS.DOB_LABEL,
+        validate: [required, isBefore()],
+        endDate: moment().add(1, 'days'),
+        pattern: '[0-9]{4}-[0-9]{2}-[0-9]{2}'
+      },
+      country: {
+        type: 'autocomplete',
+        label: FORM_FIELDS.COUNTRY_LABEL,
+        placeholder: FORM_FIELDS.COUNTRY_PLACEHOLDER,
+        options: COUNTRIES_OPTIONS,
+        validate: [required],
+      },
+      city: {
+        type: 'text',
+        label: FORM_FIELDS.CITY_LABEL,
+        placeholder: FORM_FIELDS.CITY_PLACEHOLDER,
+        validate: [required],
+      },
+      address: {
+        type: 'text',
+        label: FORM_FIELDS.ADDRESS_LABEL,
+        placeholder: FORM_FIELDS.ADDRESS_PLACEHOLDER,
+        validate: [required],
+      },
+      postal_code: {
+        type: 'text',
+        label: FORM_FIELDS.POSTAL_CODE_LABEL,
+        placeholder: FORM_FIELDS.POSTAL_CODE_PLACEHOLDER,
+        validate: [required],
+      },
     },
-    last_name: {
-      type: 'text',
-      label: 'Last name',
-      placeholder: 'Type your last name as it appears on your identity document',
-      validate: [required],
+    phone: {
+      phone_country: {
+        type: 'autocomplete',
+        label: FORM_FIELDS.PHONE_NUMBER_LABEL,
+        placeholder: FORM_FIELDS.PHONE_CODE_PLACEHOLDER,
+        options: PHONE_OPTIONS,
+        validate: [required],
+      },
+      phone_number: {
+        type: 'text',
+        label: FORM_FIELDS.PHONE_NUMBER_LABEL,
+        placeholder: FORM_FIELDS.PHONE_NUMBER_PLACEHOLDER,
+        validate: [required],
+      },
     },
-    gender: {
-      type: 'select',
-      label: 'Gender',
-      placeholder: 'Type what gender your are',
-      options: [
-        { value: false, label: 'Man', icon: ICONS.GENDER_M },
-        { value: true, label: 'Woman', icon: ICONS.GENDER_F },
-      ],
-      validate: [requiredBoolean],
-    },
-    nationality: {
-      type: 'autocomplete',
-      label: 'Nationality',
-      placeholder: 'Type what nationality is on your identity document',
-      options: COUNTRIES_OPTIONS,
-      validate: [required],
-    },
-    dob: {
-      type: 'date',
-      label: 'Date of birth',
-      validate: [required, isBefore()],
-      endDate: moment().add(1, 'days'),
-      pattern: '[0-9]{4}-[0-9]{2}-[0-9]{2}'
-    },
-    country: {
-      type: 'autocomplete',
-      label: 'Country you reside',
-      placeholder: 'Select the country you reside in currently',
-      options: COUNTRIES_OPTIONS,
-      validate: [required],
-    },
-    city: {
-      type: 'text',
-      label: 'City',
-      placeholder: 'Type the city you live in',
-      validate: [required],
-    },
-    address: {
-      type: 'text',
-      label: 'Address',
-      placeholder: 'Type the address you are currently living',
-      validate: [required],
-    },
-    postal_code: {
-      type: 'text',
-      label: 'Postal code',
-      placeholder: 'Type your postal code',
-      validate: [required],
-    },
-  },
-  phone: {
-    phone_country: {
-      type: 'autocomplete',
-      label: 'Country',
-      placeholder: 'Select the country your phone is connected to',
-      options: PHONE_OPTIONS,
-      validate: [required],
-    },
-    phone_number: {
-      type: 'text',
-      label: 'Phone number',
-      placeholder: 'Type your phone number',
-      validate: [required],
-    },
-  },
-};
+  };
+}
 
 const InformationSection = ({ title, children}) => (
   <div className="information_section">
@@ -108,8 +115,7 @@ const InformationSection = ({ title, children}) => (
 export const information = {
   personalInformation: (
     <InformationSection title="Personal Information">
-      <div>IMPORTANT: Enter your name into the fields exactly as it appears on your identity document (full first name, any middle names/initials and full last name(s))
-Are you a business? Contact customer support for a corporate account.</div>
+      <div>{INFORMATION.TEXT}</div>
     </InformationSection>
   ),
   phone: <InformationSection title="Phone" />,
@@ -122,5 +128,3 @@ export const prepareInitialValues = ({ id_data, bank_account, address, ...rest, 
   };
   return initialValues;
 }
-
-export default fields;

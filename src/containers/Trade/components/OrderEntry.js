@@ -6,20 +6,11 @@ import { formValueSelector } from 'redux-form';
 import Review from './OrderEntryReview';
 import Form, { FORM_NAME } from './OrderEntryForm';
 import { formatNumber, formatFiatAmount } from '../../../utils/currency';
-import { evaluateOrder, required, minValue, maxValue, normalizeInt, checkMarketPrice } from '../../../components/Form/validations';
+import { evaluateOrder, required, minValue, maxValue, normalizeInt, checkMarketPrice, step } from '../../../components/Form/validations';
 import { Loader } from '../../../components';
 import { LIMIT_VALUES, CURRENCIES } from '../../../config/constants';
 
-const TYPES = [
-  'market',
-  'limit',
-  // 'stop',
-];
-
-const SIDES = [
-  'buy',
-  'sell',
-];
+import STRINGS from '../../../config/localizedStrings';
 
 const FIAT_NAME = CURRENCIES.fiat.shortName;
 
@@ -27,15 +18,15 @@ class OrderEntry extends Component {
   state = {
     formValues: {},
     initialValues: {
-      side: SIDES[0],
-      type: TYPES[0],
+      side: STRINGS.SIDES[0].value,
+      type: STRINGS.TYPES[0].value,
     },
     orderPrice: 0,
     outsideFormError: '',
   }
 
   componentDidMount() {
-    this.generateFormValues(this.state.activeTab);
+    this.generateFormValues();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -46,6 +37,9 @@ class OrderEntry extends Component {
       nextProps.type !== this.props.type
     ) {
       this.calculateOrderPrice(nextProps);
+    }
+    if (nextProps.activeLanguage !== this.props.activeLanguage) {
+      this.generateFormValues()
     }
   }
 
@@ -97,37 +91,42 @@ class OrderEntry extends Component {
     return this.props.submitOrder(order);
   }
 
-  generateFormValues = (type) => {
+  generateFormValues = () => {
     const formValues = {
       type: {
         name: 'type',
         type: 'tab',
-        options: TYPES,
+        options: STRINGS.TYPES,
         validate: [required],
       },
       side: {
         name: 'side',
         type: 'select',
-        options: SIDES,
+        options: STRINGS.SIDES,
         validate: [required]
       },
       size: {
         name: 'size',
-        label: 'Amount',
+        label: STRINGS.SIZE,
         type: 'number',
         placeholder: '0.00',
-        step: 0.0001,
+        step: LIMIT_VALUES.SIZE.STEP,
+        min: LIMIT_VALUES.SIZE.MIN,
+        max: LIMIT_VALUES.SIZE.MAX,
         validate: [required, minValue(LIMIT_VALUES.SIZE.MIN), maxValue(LIMIT_VALUES.SIZE.MAX)],
-        currency: 'BTC',
+        currency: STRINGS.BTC_SHORTNAME,
       },
       price: {
         name: 'price',
-        label: 'Price',
+        label: STRINGS.PRICE,
         type: 'number',
         placeholder: '0',
-        validate: [required, minValue(LIMIT_VALUES.PRICE.MIN), maxValue(LIMIT_VALUES.PRICE.MAX)],
+        step: LIMIT_VALUES.PRICE.STEP,
+        min: LIMIT_VALUES.PRICE.MIN,
+        max: LIMIT_VALUES.PRICE.MAX,
+        validate: [required, minValue(LIMIT_VALUES.PRICE.MIN), maxValue(LIMIT_VALUES.PRICE.MAX), step(LIMIT_VALUES.PRICE.STEP)],
         normalize: normalizeInt,
-        currency: 'USD',
+        currency: STRINGS.FIAT_SHORTNAME,
       }
     };
 
@@ -168,11 +167,17 @@ class OrderEntry extends Component {
 }
 
 OrderEntry.defaultProps = {
-  currencyName: 'Bitcoins',
+  currencyName: 'Bitcoin',
 }
 
 const selector = formValueSelector(FORM_NAME);
 
-const mapStateToProps = (state) => selector(state, 'price', 'size', 'side', 'type');
+const mapStateToProps = (state) => {
+  const formValues = selector(state, 'price', 'size', 'side', 'type');
+  return {
+    ...formValues,
+    activeLanguage: state.app.language,
+  }
+};
 
 export default connect(mapStateToProps)(OrderEntry);

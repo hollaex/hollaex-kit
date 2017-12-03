@@ -1,12 +1,21 @@
 import axios from 'axios'
 
 const QUICK_TRADE = 'QUICK_TRADE';
+const TRADE_QUOTE_REQUEST = 'TRADE_QUOTE_REQUEST';
+const TRADE_QUOTE_PERFORM = 'TRADE_QUOTE_PERFORM';
 
 export const ORDERBOOK_CONSTANTS = {
 	QUICK_TRADE_PENDING: `${QUICK_TRADE}_PENDING`,
 	QUICK_TRADE_FULFILLED: `${QUICK_TRADE}_FULFILLED`,
 	QUICK_TRADE_REJECTED: `${QUICK_TRADE}_REJECTED`,
+	TRADE_QUOTE_REQUEST_PENDING: `${TRADE_QUOTE_REQUEST}_PENDING`,
+	TRADE_QUOTE_REQUEST_FULFILLED: `${TRADE_QUOTE_REQUEST}_FULFILLED`,
+	TRADE_QUOTE_REQUEST_REJECTED: `${TRADE_QUOTE_REQUEST}_REJECTED`,
+	TRADE_QUOTE_PERFORM_PENDING: `${TRADE_QUOTE_PERFORM}_PENDING`,
+	TRADE_QUOTE_PERFORM_FULFILLED: `${TRADE_QUOTE_PERFORM}_FULFILLED`,
+	TRADE_QUOTE_PERFORM_REJECTED: `${TRADE_QUOTE_PERFORM}_REJECTED`,
 }
+
 export function getOrderbook() {
 	return {
 		type: 'GET_ORDERBOOK',
@@ -57,6 +66,50 @@ export const requestQuickTrade = (data = {}) => {
 			.catch((err) => {
 				dispatch({
 				    type: ORDERBOOK_CONSTANTS.QUICK_TRADE_REJECTED,
+				    payload: err.response ? err.response.data : err.message
+				});
+			})
+	});
+}
+
+export const requestQuote = (data = {}) => {
+	return ((dispatch) => {
+		dispatch({
+		    type: ORDERBOOK_CONSTANTS.TRADE_QUOTE_REQUEST_PENDING
+		});
+		axios.post('/order/quote', data)
+			.then((body) => {
+				dispatch({
+				    type: ORDERBOOK_CONSTANTS.TRADE_QUOTE_REQUEST_FULFILLED,
+				    payload: body.data
+				});
+			})
+			.catch((err) => {
+				dispatch({
+				    type: ORDERBOOK_CONSTANTS.TRADE_QUOTE_REQUEST_REJECTED,
+				    payload: err.response ? err.response.data.message : err.message
+				});
+			})
+	});
+}
+
+export const executeQuote = (token) => {
+	return ((dispatch) => {
+		dispatch({
+		    type: ORDERBOOK_CONSTANTS.TRADE_QUOTE_PERFORM_PENDING
+		});
+		axios.post(`/order/quote/${token}`, {})
+			.then((body) => {
+				console.log('---', body)
+				dispatch({
+				    type: ORDERBOOK_CONSTANTS.TRADE_QUOTE_PERFORM_FULFILLED,
+				    payload: body.data
+				});
+			})
+			.catch((err) => {
+				console.log('---', err)
+				dispatch({
+				    type: ORDERBOOK_CONSTANTS.TRADE_QUOTE_PERFORM_REJECTED,
 				    payload: err.response ? err.response.data : err.message
 				});
 			})

@@ -2,6 +2,10 @@
 
 $wallet-bordertop-color: $colors-main-black;
 $wallet-bordertop-height: 2px;
+$sidebar-selected-ball--width: 0.75rem;
+$sidebar-selected-ball--space: $sidebar-selected-ball--width + 0.5rem;
+$sidebar-selected-ball--top: 2px;
+$title-text--active: 1.25rem;
 
 .sidebar-container {
   display: flex;
@@ -34,20 +38,29 @@ $wallet-bordertop-height: 2px;
     &.active {
       border-bottom-color: $sidebar-borderbottom-color-active;
     }
+
+    .sidebar-container-trade {
+      .sidebar-trade-button {
+        &.not-active {
+          background: $colors-white !important;
+          color: $colors-deactivate-color2 !important;
+          border: 1px solid $colors-deactivate-color2;
+        }
+        &.active {
+          background: $colors-currencies-btc !important;
+        }
+      }
+    }
   }
 
   .sidebar-logout {
     border-top: 1px solid $border-color;
     padding-top: $sidebar-sections-padding / 2;
     padding-bottom: $sidebar-sections-padding / 2;
-
-    .sidebar-logout-right {
-      float: right;
-    }
-
-    .sidebar-logout-left {
-      float: left;
-    }
+    min-height: 3rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
 }
 
@@ -68,25 +81,32 @@ $wallet-bordertop-height: 2px;
     position: absolute;
   }
 
+  .sidebar_section-title:before {
+    content: '';
+    width: $sidebar-selected-ball--width;
+    height: $sidebar-selected-ball--width;
+    border: 1px solid $colors-deactivate-color2;
+    border-radius: $sidebar-selected-ball--width;
+    position: absolute;
+    // top: $sidebar-selected-ball--top * 2;
+  }
+
   &.active {
     &:before {
-      height: 2px;
-      top: -2px;
+      height: $sidebar-selected-ball--top;
+      top: -$sidebar-selected-ball--top;
     }
 
     .sidebar_section-title:before {
       content: '';
-      width: 0.5rem;
-      height: 0.5rem;
-      border-radius: 0.5rem;
       background-color: $wallet-bordertop-color;
-      position: absolute;
-      left: -1rem;
+      border-color: $wallet-bordertop-color;
     }
   }
 
-  &.active .sidebar_section-title-text {
-    font-weight: bold;;
+  &.active .sidebar_section-title .sidebar_section-title-text {
+    font-weight: bold;
+    font-size: $title-text--active;
   }
 
   .sidebar_section-title {
@@ -98,17 +118,47 @@ $wallet-bordertop-height: 2px;
     text-transform: uppercase;
 
     .sidebar_section-title-text {
-      font-size: $font-size-main;
-    }
-  }
-
-  .sidebar-container-trade {
-    > *:not(:last-child) {
-      margin-right: 0.5rem;
+      font-size:$title-text--active;
+      line-height: 2rem;
+      &:hover {
+        font-size: $title-text--active;
+        font-weight: bold;
+      }
     }
   }
 }
 
 .sidebar-notifications-wrapper {
   overflow-y: scroll;
+}
+
+.direction_ltr {
+  .sidebar_section-container {
+    .sidebar_section-title:before {
+      left: -$sidebar-selected-ball--space;
+    }
+  }
+}
+
+.direction_rtl {
+  .sidebar_section-container {
+    .sidebar_section-title:before {
+      right: -$sidebar-selected-ball--space;
+    }
+  }
+
+}
+
+
+@media only screen and (max-width: 991px) {
+  .app_container-sidebar {
+    // display: none;
+    .sidebar-container-trade {
+      flex-direction: column;
+      .separator {
+        height: 1rem;
+        width: 100%;
+      }
+    }
+  }
 }

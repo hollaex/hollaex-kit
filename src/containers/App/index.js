@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import classnames from 'classnames';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import io from 'socket.io-client';
@@ -13,6 +14,7 @@ import { setUserOrders, addOrder, updateOrder, removeOrder } from '../../actions
 import { setOrderbook, addTrades, changeSymbol } from '../../actions/orderbookAction';
 import {
 	setNotification, closeNotification, openContactForm,
+	setLanguage, closeAllNotification,
 	NOTIFICATIONS, CONTACT_FORM,
 } from '../../actions/appActions';
 
@@ -20,6 +22,8 @@ import { checkUserSessionExpired } from '../../utils/utils';
 import { getToken } from '../../utils/token';
 import { AppBar, Sidebar, Dialog, Loader, Notification, MessageDisplay } from '../../components';
 import { ContactForm } from '../';
+
+import { getClasesForLanguage, getFontClassForLanguage } from '../../utils/string';
 
 class Container extends Component {
 	state = {
@@ -86,8 +90,10 @@ class Container extends Component {
 		if (this.state.idleTimer) {
 			clearTimeout(this.idleTimer);
 		}
-		const idleTimer = setTimeout(this._logout, SESSION_TIME); // no activity will log the user out automatically
-		this.setState({ idleTimer });
+		if (this.state.appLoaded) {
+			const idleTimer = setTimeout(this._logout, SESSION_TIME); // no activity will log the user out automatically
+			this.setState({ idleTimer });
+		}
 	}
 
 	resetTimer = debounce(this._resetTimer, 250);
@@ -109,12 +115,12 @@ class Container extends Component {
 		this.setState({ publicSocket });
 
 		publicSocket.on('orderbook', (data) => {
-			console.log('orderbook', data)
+			// console.log('orderbook', data)
 			this.props.setOrderbook(data[symbol])
 		});
 
 		publicSocket.on('trades', (data) => {
-			console.log('trades', data[symbol])
+			// console.log('trades', data[symbol])
 			if (data[symbol].length > 0) {
 				this.props.addTrades(data[symbol]);
 			}
@@ -132,7 +138,7 @@ class Container extends Component {
     this.setState({ privateSocket });
 
 		privateSocket.on('error', (error) => {
-      if (error.indexOf('Access Denied') > -1) {
+      if (error && typeof error === 'string' && error.indexOf('Access Denied') > -1) {
         this.props.logout();
       } else {
         console.error(error)
@@ -147,12 +153,16 @@ class Container extends Component {
 			this.props.setUserOrders(data)
 		});
 
+		privateSocket.on('trades', (data) => {
+			this.props.addUserTrades(data)
+		});
+
 		privateSocket.on('wallet', (data) => {
 			this.props.setBalance(data.balance)
 		});
 
 		privateSocket.on('update', ({ type, data }) => {
-			console.log('update', type, data)
+			// console.log('update', type, data)
 			switch(type) {
         case 'order_queued':
           break;
@@ -219,9 +229,11 @@ class Container extends Component {
          this.props.addUserTrades(data);
 					break;
 				case 'deposit':
+					const show = data.status || data.currency !== 'fiat';
 					this.props.setNotification(
 						NOTIFICATIONS.DEPOSIT,
-						data
+						data,
+						show
 					);
 					break;
 				case 'withdrawal':
@@ -245,9 +257,14 @@ class Container extends Component {
   goToAccountPage = () => this.goToPage('/account');
 	goToWalletPage = () => this.goToPage('/wallet');
 	goToTradePage = () => this.goToPage('/trade');
+	goToQuickTradePage = () => this.goToPage('/quick-trade');
   goToDashboard = () => this.goToPage('/');
 
-	logout = () => this.props.logout();
+	logout = () => {
+		this.setState({ appLoaded: false }, () => {
+			this.props.logout();
+		})
+	}
 
 	onOpenDialog = () => {
 		this.setState({ dialogIsOpen: true });
@@ -264,6 +281,8 @@ class Container extends Component {
 				return 'wallet';
 			case '/account':
 				return 'account';
+			case '/quick-trade':
+				return 'quick-trade';
 			case '/trade':
 				return 'trade';
 			default:
@@ -276,7 +295,7 @@ class Container extends Component {
 			case NOTIFICATIONS.ORDERS:
 			case NOTIFICATIONS.TRADES:
 			case NOTIFICATIONS.WITHDRAWAL:
-				return <Notification type={type} data={data} />;
+				return <Notification type={type} data={data} openContactForm={this.props.openContactForm} />;
 			case NOTIFICATIONS.DEPOSIT:
 				return <Notification
 					type={type}
@@ -286,12 +305,13 @@ class Container extends Component {
 					}}
 					onClose={this.onCloseDialog}
 					goToPage={this.goToPage}
+					openContactForm={this.props.openContactForm}
 				/>;
 			case NOTIFICATIONS.ERROR:
 				return <MessageDisplay
 					iconPath={ICONS.RED_WARNING}
 					onClick={this.onCloseDialog}
-					text={`error`}
+					text={data}
 				/>;
 			case CONTACT_FORM:
 				return <ContactForm onSubmitSuccess={this.onCloseDialog} />;
@@ -300,16 +320,22 @@ class Container extends Component {
 		}
 	}
 
+	onChangeLanguage = (language) => () => {
+    return this.props.changeLanguage(language);
+  }
+
 	render() {
 		const {
-			symbol, children, activeNotification, changeSymbol, notifications, prices, verification_level
+			symbol, children, activeNotification, changeSymbol, notifications, prices, verification_level, activeLanguage,
 		} = this.props;
 		const { dialogIsOpen, appLoaded } = this.state;
+		const languageClasses = getClasesForLanguage(activeLanguage, 'array');
+		const fontClass = getFontClassForLanguage(activeLanguage);
 
 		const shouldCloseOnOverlayClick = activeNotification.type !== CONTACT_FORM;
 		const activePath = !appLoaded ? '' : this.getClassForActivePath(this.props.location.pathname);
 		return (
-			<div className={`app_container ${activePath} ${symbol}`}>
+			<div className={classnames('app_container', activePath, symbol, fontClass, languageClasses[0])}>
 				<EventListener
 					target="window"
 					onResize={this.resetTimer}
@@ -318,7 +344,6 @@ class Container extends Component {
 					onClick={this.resetTimer}
 					onKeyPress={this.resetTimer}
 				/>
-				{!appLoaded && <Loader />}
 				<AppBar
 					title={APP_TITLE}
 					goToAccountPage={this.goToAccountPage}
@@ -326,9 +351,13 @@ class Container extends Component {
 					acccountIsActive={activePath === 'account'}
 					changeSymbol={changeSymbol}
 					activeSymbol={symbol}
+					changeLanguage={this.onChangeLanguage}
+					activeLanguage={activeLanguage}
 				/>
         <div className="app_container-content d-flex justify-content-between">
-          <div className="app_container-main d-flex flex-column justify-content-between overflow-y">
+          <div className={classnames(
+						'app_container-main', 'd-flex', 'flex-column', 'justify-content-between', 'overflow-y',
+					)}>
             {appLoaded && verification_level > 0 ? children : <Loader />}
           </div>
           <div className="app_container-sidebar">
@@ -337,6 +366,7 @@ class Container extends Component {
 							goToAccountPage={this.goToAccountPage}
 							goToWalletPage={this.goToWalletPage}
 							goToTradePage={this.goToTradePage}
+							goToQuickTradePage={this.goToQuickTradePage}
 							logout={this.logout}
 							notifications={notifications}
 							symbol={symbol}
@@ -366,6 +396,7 @@ const mapStateToProps = (store) => ({
 	activeNotification: store.app.activeNotification,
 	notifications: store.app.notifications,
 	verification_level: store.user.verification_level,
+  activeLanguage: store.app.language,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -381,9 +412,11 @@ const mapDispatchToProps = (dispatch) => ({
 		addUserTrades: bindActionCreators(addUserTrades, dispatch),
 		updateUser: bindActionCreators(updateUser, dispatch),
 		closeNotification: bindActionCreators(closeNotification, dispatch),
+		closeAllNotification: bindActionCreators(closeAllNotification, dispatch),
 		openContactForm: bindActionCreators(openContactForm, dispatch),
 		setNotification: bindActionCreators(setNotification, dispatch),
-		changeSymbol: bindActionCreators(changeSymbol, dispatch)
+		changeSymbol: bindActionCreators(changeSymbol, dispatch),
+		changeLanguage: bindActionCreators(setLanguage, dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Container);

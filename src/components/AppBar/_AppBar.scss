@@ -1,3 +1,6 @@
+$language-selector-arrow--size: 0.4rem;
+$app-bar--background: white;
+
 .app_bar {
   position: relative;
   width: 100%;
@@ -8,6 +11,7 @@
   justify-content: space-between;
   font-size: $navigation_bar-font_size;
   font-weight: bold;
+  background-color: $app-bar--background;
 
   &.no-borders {
     border-bottom: none;
@@ -24,6 +28,10 @@
     &:not(:first-child) {
       border-left: 1px solid $border-color;
     }
+  }
+
+  .app_bar-icon-logo {
+    width: 4rem;;
   }
 
   .app_bar-icon, .app_bar-controllers {
@@ -54,6 +62,30 @@
       background-color: $colors-main-black;
       right: -1px;
       position: absolute;
+    }
+
+    .app_bar-currency_display-selector {
+      position: relative;
+    }
+    .app_bar-currency_display {
+      &.is_open {
+        .app_bar-currency_display-selector {
+          &:after {
+            @include css-triangle($colors-main-black, 'down', $language-selector-arrow--size);
+            right: -$language-selector-arrow--size * 2.5;
+            top: calc(50% - #{$language-selector-arrow--size / 2});
+          }
+        }
+      }
+      &.is_close {
+        .app_bar-currency_display-selector {
+          &:after {
+            @include css-triangle($colors-main-black, 'right', $language-selector-arrow--size);
+            right: -$language-selector-arrow--size * 0.5;
+            top: calc(50% - #{$language-selector-arrow--size});
+          }
+        }
+      }
     }
 
     .app_bar-currency_display, .app_bar-currency_option {

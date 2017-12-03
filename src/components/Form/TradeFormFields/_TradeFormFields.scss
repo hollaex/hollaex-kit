@@ -21,7 +21,6 @@ $padding: 0.25rem;
     position: relative;
     > input {
       padding: $padding;
-      padding-right: $input--height;
       position: relative;
       width: 100%;
       height: $input--height;
@@ -39,9 +38,32 @@ $padding: 0.25rem;
   .trade_input-input-currency {
     @include size($input--height);
     position: absolute;
-    right: 0;
     top: 0;
     font-weight: bold;
     color: $input--border-color;
+  }
+}
+
+.direction_ltr {
+  .trade_input-input-wrapper {
+    > input {
+      padding-right: $input--height;
+    }
+  }
+
+  .trade_input-input-currency {
+    right: 0;
+  }
+}
+
+.direction_rtl {
+  .trade_input-input-wrapper {
+    > input {
+      padding-left: $input--height;
+    }
+  }
+
+  .trade_input-input-currency {
+    left: 0;
   }
 }

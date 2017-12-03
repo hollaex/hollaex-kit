@@ -9,6 +9,8 @@ import { errorHandler } from '../../components/OtpForm/utils';
 import ChangePasswordForm from './ChangePasswordForm';
 import { OTP, renderOTPForm } from './OTP';
 
+import STRINGS from '../../config/localizedStrings';
+
 class UserVerification extends Component {
   state = {
     sections: [],
@@ -42,7 +44,7 @@ class UserVerification extends Component {
     const { otp_enabled, otp, email } = user;
 
     const sections = [{
-      title: 'Two-Factor Authentication',
+      title: STRINGS.ACCOUNT_SECURITY.OTP.TITLE,
       content: (
         <OTP
           requestOTP={this.handleOTPCheckbox}
@@ -52,11 +54,11 @@ class UserVerification extends Component {
           {otp_enabled &&
             <div className="d-flex flex-column">
               <CheckboxButton
-                label="Require OTP when logging in"
+                label={STRINGS.ACCOUNT_SECURITY.OTP.ENABLED_TEXTS.TEXT_1}
                 checked={true}
               />
               <CheckboxButton
-                label="Require OTP when withdrawing funds"
+                label={STRINGS.ACCOUNT_SECURITY.OTP.ENABLED_TEXTS.TEXT_2}
                 checked={true}
               />
             </div>
@@ -64,18 +66,18 @@ class UserVerification extends Component {
         </OTP>
       ),
       notification: {
-        text: otp_enabled ? 'otp enabled' : 'PLEASE TURN ON 2FA',
+        text: otp_enabled ? STRINGS.ACCOUNT_SECURITY.OTP.OTP_ENABLED : STRINGS.ACCOUNT_SECURITY.OTP.OTP_DISABLED,
         status: otp_enabled ? 'success' : 'warning',
         iconPath: otp_enabled ? ICONS.GREEN_CHECK : ICONS.RED_ARROW,
         allowClick: !otp_enabled
       }
     },
     {
-      title: 'Change Password',
+      title: STRINGS.ACCOUNT_SECURITY.CHANGE_PASSWORD.TITLE,
       content: <ChangePasswordForm onSubmit={this.onSubmitChangePassword} />,
       disabled: false,
       notification: {
-        text: 'active',
+        text: STRINGS.ACCOUNT_SECURITY.CHANGE_PASSWORD.ACTIVE,
         status: 'success',
         iconPath: ICONS.GREEN_CHECK,
         allowClick: true
@@ -99,7 +101,7 @@ class UserVerification extends Component {
       .then((res) => {
         this.props.otpSetActivated(true);
         this.accordion.closeAll();
-        this.setState({ dialogIsOpen: true, modalText: 'You have successfully activated the OTP' });
+        this.setState({ dialogIsOpen: true, modalText: STRINGS.ACCOUNT_SECURITY.OTP.DIALOG.SUCCESS });
       })
       .catch((err) => {
         console.log(err.response.data)
@@ -115,7 +117,7 @@ class UserVerification extends Component {
     })
       .then((res) => {
         this.accordion.closeAll();
-        this.setState({ dialogIsOpen: true, modalText: 'You have successfully changed your password' });
+        this.setState({ dialogIsOpen: true, modalText: STRINGS.ACCOUNT_SECURITY.CHANGE_PASSWORD.DIALOG.SUCCESS });
       })
       .catch((err) => {
         console.log(err.response.data)
@@ -128,7 +130,7 @@ class UserVerification extends Component {
     return otpRevoke({ code: values.otp_code })
       .then(() => {
         this.props.otpSetActivated(false);
-        this.setState({ dialogIsOpen: true, modalText: 'You have successfully revoked your OTP' });
+        this.setState({ dialogIsOpen: true, modalText: STRINGS.ACCOUNT_SECURITY.OTP.DIALOG.REVOKE });
       })
       .catch(errorHandler);
   }
@@ -138,7 +140,7 @@ class UserVerification extends Component {
   }
 
   renderModalContent = () => {
-    const text = 'You have successfully activated OTP';
+    const text = STRINGS.ACCOUNT_SECURITY.CHANGE_PASSWORD.DIALOG.SUCCESS;
     return <SuccessDisplay onClick={this.onCloseDialog} text={this.state.modalText} />
   }
 

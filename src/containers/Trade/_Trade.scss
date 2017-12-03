@@ -39,17 +39,16 @@ $order_entry-column--width: 15rem;
 
   .cell_box-type {
     padding: 0.1rem;
-    padding-left: 0;
 
     > div {
       color: white !important;
       margin: 0;
     }
     .buy {
-      background-color: $trade-asks-color-font;
+      background-color: $trade-bids-color-font;
     }
     .sell {
-      background-color: $trade-bids-color-font;
+      background-color: $trade-asks-color-font;
     }
 
     &.fullfilled .cell-wrapper {
@@ -72,6 +71,36 @@ $order_entry-column--width: 15rem;
           bottom: 0;
           background-color: $trade-fullfilled-background-color;
           z-index: -1;
+        }
+      }
+    }
+  }
+}
+
+.direction_ltr {
+  .trade_active_orders-wrapper {
+    .cell_box-type {
+      padding-left: 0;
+      &.fullfilled .cell-wrapper {
+        > .cell_value-wrapper {
+          .cell_value-bar {
+            left: 0;
+          }
+        }
+      }
+    }
+  }
+}
+
+.direction_rtl {
+  .trade_active_orders-wrapper {
+    .cell_box-type {
+      padding-right: 0;
+      &.fullfilled .cell-wrapper {
+        > .cell_value-wrapper {
+          .cell_value-bar {
+            right: 0;
+          }
         }
       }
     }

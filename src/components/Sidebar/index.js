@@ -1,17 +1,19 @@
 import React from 'react';
+import classnames from 'classnames';
 import Section from './Section';
 import { NotificationsList, Button, Wallet } from '../';
 import { ICONS } from '../../config/constants';
-import { fiatSymbol } from '../../utils/currency'
+import STRINGS from '../../config/localizedStrings';
+import { fiatSymbol } from '../../utils/currency';
 
 const Sidebar = ({
-  goToWalletPage, goToTradePage, active, activePath, logout, notifications, symbol
+  goToWalletPage, goToTradePage, active, activePath, logout, notifications, symbol, goToQuickTradePage,
 }) => {
   return (
-    <div className="sidebar-container">
+    <div className="sidebar-container apply_rtl">
       <div className={`sidebar-actions ${active ? 'active' : ''}`}>
         <Section
-          title="Wallet"
+          title={STRINGS.WALLET_TITLE}
           goToSection={goToWalletPage}
           active={activePath === 'wallet'}
         >
@@ -21,18 +23,35 @@ const Sidebar = ({
         </Section>
         {symbol !== fiatSymbol &&
           <Section
-            title="Trading Mod"
-            active={activePath === 'trade'}
+            title={STRINGS.TRADING_MODE_TITLE}
+            goToSection={goToTradePage}
+            active={activePath === 'trade' || activePath === 'quick-trade'}
           >
             <div className="sidebar-container-trade d-flex">
               <Button
-                label="Quick Trade"
-                disabled={true}
-              />
-              <Button
-                label="Pro Trade"
+                label={STRINGS.PRO_TRADE}
                 onClick={goToTradePage}
                 disabled={!goToTradePage}
+                className={classnames(
+                  'sidebar-trade-button',
+                  {
+                    active: activePath === 'trade',
+                    'not-active': activePath !== 'trade'
+                  }
+                )}
+              />
+              <div className="separator" />
+              <Button
+                label={STRINGS.QUICK_TRADE}
+                onClick={goToQuickTradePage}
+                disabled={!goToQuickTradePage}
+                className={classnames(
+                  'sidebar-trade-button',
+                  {
+                    active: activePath === 'quick-trade',
+                    'not-active': activePath !== 'quick-trade'
+                  }
+                )}
               />
             </div>
           </Section>
@@ -43,7 +62,7 @@ const Sidebar = ({
       </div>
       <div className="sidebar-logout">
         <div onClick={logout} className="sidebar-logout-left text-uppercase pointer">
-          logout
+          {STRINGS.LOGOUT}
         </div>
         <div onClick={logout} className="sidebar-logout-right pointer">
           <img src={ICONS.LOGOUT} alt="logout" />

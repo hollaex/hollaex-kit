@@ -47,3 +47,31 @@ $large-modifier: 2.25;
     @include size($small-size * $large-modifier);
   }
 }
+
+.with_price-block_amount {
+  margin: 2rem 0;
+  font-size: $font-size-headline;
+  line-height: $font-size-headline;
+
+  .with_price-block_amount-value {
+    margin-left: 0.5rem;
+
+  }
+  .with_price-block_amount-value-fiat {
+    color: $colors-deactivate-color2;
+    font-size: $font-size-subhead2;
+    line-height: $font-size-subhead2;
+  }
+}
+
+.direction_ltr {
+  .with_price-block_amount {
+    justify-content: flex-start;
+  }
+}
+
+.direction_rtl {
+  .with_price-block_amount {
+    justify-content: flex-end;
+  }
+}

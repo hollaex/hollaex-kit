@@ -4,6 +4,8 @@ import { TEXT_DOWNLOAD, TABLE_PAGE_SIZE } from './constants';
 import { ICONS, } from '../../config/constants';
 import { ActionNotification, Table, CsvDownload, Loader } from '../../components';
 
+import STRINGS from '../../config/localizedStrings';
+
 const HistoryDisplay = (props) => {
   const { title, headers, data: { data, count, loading }, filename} = props;
 
@@ -18,8 +20,8 @@ const HistoryDisplay = (props) => {
             filename={filename}
           >
             <ActionNotification
-              text={TEXT_DOWNLOAD}
-              iconPath={ICONS.LETTER}
+              text={STRINGS.TRANSACTION_HISTORY.TEXT_DOWNLOAD}
+              iconPath={ICONS.DATA}
             />
           </CsvDownload>
         }

@@ -1,7 +1,24 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import { Link } from 'react-router';
-import { CURRENCIES, FLEX_CENTER_CLASSES } from '../../config/constants';
+import { CURRENCIES, FLEX_CENTER_CLASSES, EXIR_BLUE_LOGO } from '../../config/constants';
+
+import STRINGS from '../../config/localizedStrings';
+
+const LanguageSelector = ({ changeLanguage, languages, activeLanguage = '' }) => (
+  <div className="d-flex">
+    {languages.map(({ key, label }, index) => (
+      <div
+        style={{ padding: 8 }}
+        key={key}
+        onClick={changeLanguage(key)}
+        className="pointer"
+      >
+        {label}
+      </div>
+    ))}
+  </div>
+);
 
 class AppBar extends Component {
   state = {
@@ -30,16 +47,18 @@ class AppBar extends Component {
 
   renderSymbolBlock = (symbol) => {
     const { name, iconPath } = CURRENCIES[symbol];
+    const { symbolSelectorIsOpen } = this.state;
+
     return (
       <div className="app_bar-currency_wrapper pointer">
-        <div className="app_bar-currency_display" onClick={this.toogleSymbolSelector}>
+        <div className={classnames('app_bar-currency_display', 'd-flex', { 'is_open': symbolSelectorIsOpen, 'is_close': !symbolSelectorIsOpen })} onClick={this.toogleSymbolSelector}>
           <img
             alt={symbol}
             src={`${process.env.PUBLIC_URL}${iconPath}`}
           />
-          <span>{name}</span>
+          <div className="app_bar-currency_display-selector d-flex align-items-center">{name}</div>
         </div>
-        {this.state.symbolSelectorIsOpen &&
+        {symbolSelectorIsOpen &&
           <div className="app_bar-currency_list">
             {Object.entries(CURRENCIES)
               .filter(([key, currency]) => currency.symbol !== symbol)
@@ -77,7 +96,7 @@ class AppBar extends Component {
     return token ? (
       <div className={classnames(...WRAPPER_CLASSES)}>
         <div className={classnames(...COMMON_CLASSES, 'contrast')}>
-          <Link to='/account'>account</Link>
+          <Link to='/account'>{STRINGS.ACCOUNT_TEXT}</Link>
         </div>
       </div>
     ) : (
@@ -86,24 +105,38 @@ class AppBar extends Component {
           quick trade
         </div>
         <div className={classnames(...COMMON_CLASSES)}>
-          <Link to='/login'>Login</Link>
+          <Link to='/login'>{STRINGS.LOGIN_TEXT}</Link>
         </div>
         <div className={classnames(...COMMON_CLASSES, 'contrast')}>
-          <Link to='/signup'>Sign Up</Link>
+          <Link to='/signup'>{STRINGS.SIGNUP_TEXT}</Link>
         </div>
       </div>
     );
   }
 
   render() {
-    const { title, goToAccountPage, goToDashboard, acccountIsActive, activeSymbol, noBorders, token, verifyingToken, goToQuickTrade } = this.props;
+    const {
+      title, goToAccountPage, goToDashboard, acccountIsActive, activeSymbol, noBorders, token, verifyingToken, goToQuickTrade, changeLanguage, activeLanguage, isHome
+    } = this.props;
 
     return (
       <div className={classnames('app_bar', { 'no-borders': noBorders })}>
-        <div className={classnames('app_bar-icon', 'text-uppercase', 'contrast', { pointer: !!goToDashboard })} onClick={goToDashboard}>
-          exir
+        <div className={classnames('app_bar-icon', 'text-uppercase', { contrast: !isHome, pointer: !!goToDashboard })} onClick={goToDashboard}>
+          {isHome ?
+            <img src={EXIR_BLUE_LOGO} alt={STRINGS.APP_NAME} className="app_bar-icon-logo" /> :
+            STRINGS.APP_NAME
+          }
         </div>
-        <div className="app_bar-main">{title}</div>
+        <div className="app_bar-main d-flex justify-content-between">
+          {!isHome && <div>{STRINGS.APP_TITLE}</div>}
+          {changeLanguage &&
+            <LanguageSelector
+              changeLanguage={changeLanguage}
+              languages={STRINGS.LANGUAGES}
+              activeLanguage={activeLanguage}
+            />
+          }
+        </div>
         {activeSymbol ?
           this.renderAppActions(activeSymbol, acccountIsActive, goToAccountPage) :
           this.renderSplashActions(token, verifyingToken, goToQuickTrade)
@@ -115,6 +148,7 @@ class AppBar extends Component {
 }
 
 AppBar.defaultProps = {
-  noBorders: false
+  noBorders: false,
+  isHome: false,
 }
 export default AppBar;

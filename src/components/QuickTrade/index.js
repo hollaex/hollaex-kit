@@ -4,7 +4,8 @@ import math from 'mathjs';
 import { debounce } from 'lodash';
 import { Button } from '../../components';
 
-import { ICONS, CURRENCIES, LIMIT_VALUES } from '../../config/constants';
+import STRINGS from '../../config/localizedStrings';
+import { ICONS, CURRENCIES, LIMIT_VALUES, FLEX_CENTER_CLASSES } from '../../config/constants';
 import { fiatShortName, fiatFormatToCurrency, fiatSymbol } from '../../utils/currency';
 
 import ToogleButton from './ToogleButton';
@@ -12,12 +13,11 @@ import ReviewBlock from './ReviewBlock';
 import InputBlock from './InputBlock';
 
 import {
-  GROUP_CLASSES,
-  TEXTS,
-  SIDES,
   DECIMALS,
   DEFAULT_SYMBOL,
 } from './constants';
+
+const GROUP_CLASSES = [...FLEX_CENTER_CLASSES, 'flex-column'];
 
 const generateStyle = (value) => ({
   input:{
@@ -27,7 +27,7 @@ const generateStyle = (value) => ({
 
 class QuickTrade extends Component {
   state = {
-    side: SIDES[0],
+    side: STRINGS.SIDES[0].value,
     value: 1,
     symbol: DEFAULT_SYMBOL,
     inputStyle: generateStyle(2),
@@ -38,6 +38,9 @@ class QuickTrade extends Component {
       this.onChangeSymbol(this.props.symbol);
     } else {
       this.onChangeSymbol(DEFAULT_SYMBOL);
+    }
+    if (this.props.onChangeSide) {
+      this.props.onChangeSide(this.state.side);
     }
   }
 
@@ -58,13 +61,18 @@ class QuickTrade extends Component {
   }
 
   onToogleSide = () => {
-    const side = this.state.side === SIDES[0] ? SIDES[1] : SIDES[0];
+    const SIDES = STRINGS.SIDES;
+
+    const side = this.state.side === SIDES[0].value ? SIDES[1].value : SIDES[0].value;
     this.setState({ side });
     this.requestValue({
       size: this.state.value,
       symbol: this.state.symbol,
       side: side,
     });
+    if (this.props.onChangeSide) {
+      this.props.onChangeSide(side);
+    }
   }
 
   onChangeValue = (newValue) => {
@@ -95,19 +103,20 @@ class QuickTrade extends Component {
   requestValue = debounce(this.props.onRequestMarketValue, 250);
 
   render() {
-    const { onReviewQuickTrade, quickTradeData } = this.props;
+    const { onReviewQuickTrade, quickTradeData, disabled } = this.props;
     const { side, value, symbol, inputStyle } = this.state;
     const { data, fetching, error } = quickTradeData;
     const { name } = CURRENCIES[symbol];
+    console.log(side, '-------')
     return (
       <div className={classnames('quick_trade-wrapper', ...GROUP_CLASSES)}>
         <div className={classnames('quick_trade-section_wrapper', ...GROUP_CLASSES)}>
-          <img src={ICONS.CHECK} alt="" />
-          <div className="title">{`${TEXTS.TITLE} ${side}`}</div>
+          <img src={ICONS.QUICK_TRADE} alt="" className="quick_trade-icon"/>
+          <div className="title">{STRINGS.formatString(STRINGS.QUICK_TRADE_COMPONENT.TRADE_TITLE, STRINGS.QUICK_TRADE_COMPONENT.TITLE, STRINGS.SIDES_VALUES[side])}</div>
         </div>
         <div className={classnames('quick_trade-section_wrapper', ...GROUP_CLASSES)}>
           <ToogleButton
-            values={SIDES}
+            values={STRINGS.SIDES}
             onToogle={this.onToogleSide}
             selected={side}
           />
@@ -116,24 +125,26 @@ class QuickTrade extends Component {
           <InputBlock
             onChange={this.onChangeValue}
             value={value}
-            text={`${name}s ${TEXTS.TO} ${side}`}
+            text={STRINGS.formatString(STRINGS.QUICK_TRADE_COMPONENT.INPUT, name, STRINGS.SIDES_VALUES[side])}
             symbol={symbol}
             inputStyle={inputStyle}
             format={this.format}
             className={classnames({ loading: fetching })}
+            error={error}
           />
         </div>
         <div className={classnames('quick_trade-section_wrapper', ...GROUP_CLASSES, { fetching })}>
           <ReviewBlock
-            text={TEXTS.TOTAL_COST}
+            text={STRINGS.QUICK_TRADE_COMPONENT.TOTAL_COST}
             value={data.price || 0}
           />
         </div>
         <div className={classnames('quick_trade-section_wrapper', ...GROUP_CLASSES)}>
           <Button
-            label={`${TEXTS.REVIEW} ${side} ${TEXTS.ORDER}`}
+            label={STRINGS.formatString(STRINGS.QUICK_TRADE_COMPONENT.BUTTON, STRINGS.SIDES_VALUES[side]).join(' ')}
             onClick={onReviewQuickTrade}
-            disabled={!onReviewQuickTrade}
+            disabled={disabled || !onReviewQuickTrade || !!error || fetching}
+            type="button"
           />
         </div>
       </div>
@@ -145,6 +156,7 @@ QuickTrade.defaultProps = {
   onRequestMarketValue: () => {},
   onReviewQuickTrade: () => {},
   estimatedValue: 0,
+  disabled: false
 };
 
 export default QuickTrade;

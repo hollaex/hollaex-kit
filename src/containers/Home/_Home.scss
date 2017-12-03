@@ -1,4 +1,4 @@
-$quick-trade--background: #ccf9fb;
+$quick-trade--background: #EBF3F1;
 $features-icon--size: 4rem;
 $features-card--width: 17.5rem;
 $features-card--margin: 3rem;
@@ -11,6 +11,7 @@ $features-container--sm--width: 45rem;
   }
   .quick_trade-section {
     background-color: $quick-trade--background;
+    border: 1px solid $colors-deactivate-color1;
     > .quick_trade-wrapper {
       flex: 1;
     }
@@ -33,6 +34,7 @@ $features-container--sm--width: 45rem;
   }
 
   .features-container {
+    background: white;
     .features-card_container {
       max-width: $features-container--width;
     }
@@ -82,6 +84,10 @@ $features-container--sm--width: 45rem;
     text-align: center;
     text-transform: uppercase;
     font-weight: bold;
+    background-color: white;
+    &.contrast {
+      background-color: $colors-main-black;
+    }
   }
 }
 

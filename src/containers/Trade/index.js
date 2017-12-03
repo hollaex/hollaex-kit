@@ -9,8 +9,6 @@ import { FLEX_CENTER_CLASSES, ICONS } from '../../config/constants';
 import { submitOrder, cancelOrder, cancelAllOrders } from '../../actions/orderAction';
 import { getUserTrades } from '../../actions/walletActions';
 
-import { TITLES, TEXTS } from './constants';
-
 import TradeBlock from './components/TradeBlock';
 import TradeBlockTabs from './components/TradeBlockTabs';
 import Orderbook from './components/Orderbook';
@@ -21,6 +19,8 @@ import TradeHistory from './components/TradeHistory';
 import PriceChart from './components/PriceChart';
 
 import { ActionNotification } from '../../components';
+
+import STRINGS from '../../config/localizedStrings';
 
 class Trade extends Component {
   state = {
@@ -35,9 +35,9 @@ class Trade extends Component {
   }
 
   componentDidMount() {
-    if (!this.props.userTrades.fetched) {
-      this.props.getUserTrades(this.props.symbol);
-    }
+    // if (!this.props.userTrades.fetched) {
+    //   this.props.getUserTrades(this.props.symbol);
+    // }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -99,11 +99,11 @@ class Trade extends Component {
     const { chartHeight, chartWidth } = this.state
     const USER_TABS = [
       {
-        title: TITLES.ORDERS,
+        title: STRINGS.ORDERS,
         children: <ActiveOrders orders={activeOrders} onCancel={cancelOrder} />,
         titleAction: activeOrders.length > 0  && (
           <ActionNotification
-            text={TEXTS.CANCEL_ALL}
+            text={STRINGS.CANCEL_ALL}
             iconPath={ICONS.CHECK}
             onClick={cancelAllOrders}
             status=""
@@ -111,11 +111,11 @@ class Trade extends Component {
         ),
       },
       {
-        title: TITLES.TRADES,
+        title: STRINGS.TRADES,
         children: <UserTrades trades={userTrades} symbol={symbol} />,
         titleAction: (
           <ActionNotification
-            text={TEXTS.TRADE_HISTORY}
+            text={STRINGS.TRADE_HISTORY}
             status="information"
             iconPath={ICONS.RED_ARROW}
             onClick={this.goToTransactionsHistory}
@@ -139,15 +139,15 @@ class Trade extends Component {
           target="window"
           onResize={this.onResize}
         />
-        <div className={classnames('trade-col_side_wrapper', 'flex-column', 'd-flex')}>
-          <TradeBlock title={TITLES.ORDERBOOK}>
+        <div className={classnames('trade-col_side_wrapper', 'flex-column', 'd-flex', 'apply_rtl')}>
+          <TradeBlock title={STRINGS.ORDERBOOK}>
             {orderbookReady && <Orderbook {...orderbookProps} />}
           </TradeBlock>
         </div>
         <div className={classnames('trade-col_main_wrapper', 'flex-column', 'd-flex', 'f-1', 'overflow-x')}>
           <div className={classnames('trade-main_content', 'flex-auto', 'd-flex')}>
-            <div className={classnames('trade-col_action_wrapper', 'flex-column', 'd-flex')}>
-              <TradeBlock title={TITLES.ORDER_ENTRY}>
+            <div className={classnames('trade-col_action_wrapper', 'flex-column', 'd-flex', 'apply_rtl')}>
+              <TradeBlock title={STRINGS.ORDER_ENTRY}>
                 <OrderEntry
                   submitOrder={this.onSubmitOrder}
                   symbol={symbol}
@@ -157,7 +157,7 @@ class Trade extends Component {
                 />
               </TradeBlock>
             </div>
-            <TradeBlock title={TITLES.CHART} setRef={this.setChartRef} className="f-1 overflow-x">
+            <TradeBlock title={STRINGS.CHART} setRef={this.setChartRef} className="f-1 overflow-x">
               {chartHeight > 0 &&
                 <PriceChart
                   height={chartHeight}
@@ -166,12 +166,12 @@ class Trade extends Component {
               }
             </TradeBlock>
           </div>
-          <div className={classnames('trade-tabs_content', 'd-flex', 'flex-column')}>
+          <div className={classnames('trade-tabs_content', 'd-flex', 'flex-column', 'apply_rtl')}>
             <TradeBlockTabs content={USER_TABS} />
           </div>
         </div>
-        <div className={classnames('trade-col_side_wrapper', 'flex-column', 'd-flex')}>
-          <TradeBlock title={TITLES.TRADE_HISTORY}>
+        <div className={classnames('trade-col_side_wrapper', 'flex-column', 'd-flex', 'apply_rtl')}>
+          <TradeBlock title={STRINGS.TRADE_HISTORY}>
             <TradeHistory data={tradeHistory} />
           </TradeBlock>
         </div>
@@ -193,7 +193,8 @@ const mapStateToProps = (store) => ({
   bids: store.orderbook.bids,
   marketPrice: store.orderbook.price,
   activeOrders: store.order.activeOrders,
-  userTrades: store.wallet.trades.data,
+  userTrades: store.wallet.latestUserTrades,
+  activeLanguage: store.app.language,
 });
 
 const mapDispatchToProps = (dispatch) => ({

@@ -1,47 +1,41 @@
 import { fiatSymbol } from '../../utils/currency';
 import { CURRENCIES } from '../../config/constants';
+import STRINGS from '../../config/localizedStrings';
 
+const generateFiatDepositTexts = (strings) => ({
+  TITLE: strings.formatString(strings.NOTIFICATIONS.DEPOSITS.FIAT.TITLE, CURRENCIES.fiat.shortName),
+  SUBTITLE: strings.formatString(strings.NOTIFICATIONS.DEPOSITS.FIAT.SUBTITLE, CURRENCIES.fiat.fullName),
+  INFORMATION_PENDING: [],
+  INFORMATION_COMPLETE: [],
+})
 
-export const NEED_HELP = 'NEED HELP';
-
-export const DEPOSITS = {
-  fiat: {
-    TITLE: `${CURRENCIES.fiat.shortName} Deposit receieved`,
-    SUBTITLE: `You’ve receieved your ${CURRENCIES.fiat.fullName} deposit`,
-    INFORMATION_PENDING: [],
+const generateBtcDepositTexts = (strings, status) => {
+  const { shortName, name, fullName } = CURRENCIES.btc;
+  return {
+    TITLE: status ?
+      strings.formatString(strings.NOTIFICATIONS.DEPOSITS.BTC.TITLE_RECEIVED, name) :
+      strings.formatString(strings.NOTIFICATIONS.DEPOSITS.BTC.TITLE_INCOMING, fullName),
+    SUBTITLE:
+      strings.formatString(status ? strings.NOTIFICATIONS.DEPOSITS.BTC.SUBTITLE_RECEIVED :
+      strings.NOTIFICATIONS.DEPOSITS.BTC.SUBTITLE_INCOMING, fullName),
+    INFORMATION_PENDING: [
+      strings.formatString(strings.NOTIFICATIONS.DEPOSITS.BTC.INFORMATION_PENDING_1, name),
+      strings.formatString(strings.NOTIFICATIONS.DEPOSITS.BTC.INFORMATION_PENDING_2, name),
+    ],
     INFORMATION_COMPLETE: [],
-  },
-  btc: (status) => {
-    const { shortName, name, fullName } = CURRENCIES.btc;
-    return {
-      TITLE: status ? `${shortName} Deposit receieved` : `Incoming ${fullName}`,
-      SUBTITLE: status ? `You’ve receieved your ${fullName} deposit` : `You have incoming ${fullName}`,
-      INFORMATION_PENDING: [
-        `Your ${name} require 3 confirmations before you can begin trading.`,
-        `This may take 20-40 minutes. We will send an email once your ${name} have completed Confirming.`
-      ],
-      INFORMATION_COMPLETE: [],
-    }
   }
 }
 
 export const getDepositTexts = (currency, status = false) => {
   let texts = {};
   if (currency === fiatSymbol) {
-    texts = DEPOSITS[fiatSymbol];
+    texts = generateFiatDepositTexts(STRINGS)
   } else {
-    texts = DEPOSITS[currency](status);
+    texts = generateBtcDepositTexts(STRINGS, status);
   }
   return {
     title: texts.TITLE,
     subtitle: texts.SUBTITLE,
     information: status ? texts.INFORMATION_COMPLETE : texts.INFORMATION_PENDING,
   }
-}
-
-
-export const BUTTON_TEXTS = {
-  OKAY: 'okay',
-  START_TRADING: 'start trading',
-  SEE_HISTORY: 'see history',
 }

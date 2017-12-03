@@ -1,14 +1,23 @@
 import React from 'react';
-import classnames from 'classnames';
 import { EXIR_LOGO } from '../../config/constants';
+import STRINGS from '../../config/localizedStrings';
 
-import CONTENT from './content';
+const getContent = (strings, type) => {
+  switch (type) {
+    case 'terms':
+      return strings.LEGAL.GENERAL_TERMS;
+    case 'legal':
+      return strings.LEGAL.GENERAL_TERMS;
+    default:
+      return {};
+  }
+}
 
 const Legal = ({ type }) => {
-  const { TITLE, SUBTITLE, TEXTS } = CONTENT[type];
+  const { TITLE, SUBTITLE, TEXTS } = getContent(STRINGS, type);
   return (
-    <div className={classnames('d-flex', 'legal-wrapper', 'justify-content-center')}>
-      <div className={classnames('d-flex', 'flex-column', 'legal-content-wrapper')}>
+    <div className="d-flex legal-wrapper justify-content-center">
+      <div className="d-flex flex-column legal-content-wrapper">
         <div className="legal-logo-wrapper">
           <img src={EXIR_LOGO} alt="exir" className="legal-logo" />
         </div>

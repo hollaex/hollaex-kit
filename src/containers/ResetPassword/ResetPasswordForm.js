@@ -3,6 +3,7 @@ import { reduxForm } from 'redux-form';
 import { required, password } from '../../components/Form/validations';
 import { AuthForm } from '../../components';
 import { TEXTS } from './constants';
+import STRINGS from '../../config/localizedStrings';
 
 const { FIELDS, BUTTON, VALIDATIONS } = TEXTS.FORM;
 
@@ -36,7 +37,7 @@ const Form = (props) => (
   <AuthForm
     {...props}
     formFields={FormFields}
-    buttonLabel={BUTTON}
+    buttonLabel={STRINGS.RESET_PASSWORD.BUTTON}
   />
 );
 

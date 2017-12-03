@@ -38,3 +38,40 @@ $qr-code--size: 12rem;
     }
   }
 }
+
+.review-wrapper {
+  min-width: $bp-xs;
+
+  .review-section {
+    font-size: $font-size-subtext;
+  }
+
+  .review-title {
+    font-size: $font-size-subhead2;
+    margin-bottom: 0.5rem;
+  }
+
+  .review-link {
+
+  }
+
+  .separator {
+    margin: 1rem 0;
+    height: 2px;
+    width: 100%;
+    background-color: $colors-deactivate-color2;
+  }
+}
+
+.verification-wrapper {
+  .verification-content-wrapper {
+    position: relative;
+
+  }
+  .error {
+    font-size: $font-size-subhead2;
+  }
+  .block-wrapper {
+    margin: 1rem;
+  }
+}

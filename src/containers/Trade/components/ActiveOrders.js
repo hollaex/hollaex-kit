@@ -7,12 +7,12 @@ import { Table, ActionNotification } from '../../../components';
 import { formatTimestamp } from '../../../utils/utils';
 import { formatFiatAmount, formatBtcAmount } from '../../../utils/currency';
 
-import { TEXTS } from '../constants';
 import { subtract } from '../utils';
+import STRINGS from '../../../config/localizedStrings';
 
 const generateHeaders = (onCancel) => ([
   {
-    label: 'Side',
+    label: STRINGS.SIDE,
     key: 'side',
     renderCell: ({ side = '' }, key, index) => {
       return (
@@ -32,7 +32,7 @@ const generateHeaders = (onCancel) => ([
   //   },
   // },
   {
-    label: 'Time',
+    label: STRINGS.TIME,
     key: 'created_At',
     renderCell: ({ created_at = '' }, key, index) => {
       return (
@@ -41,7 +41,7 @@ const generateHeaders = (onCancel) => ([
     },
   },
   {
-    label: 'Price',
+    label: STRINGS.PRICE,
     key: 'price',
     renderCell: ({ price = 0 }, key, index) => {
       return (
@@ -50,7 +50,7 @@ const generateHeaders = (onCancel) => ([
     },
   },
   {
-    label: 'Amount',
+    label: STRINGS.AMOUNT,
     key: 'size',
     exportToCsv: ({ size = 0 }) => size,
     renderCell: ({ size = 0 }, key, index) => {
@@ -60,7 +60,7 @@ const generateHeaders = (onCancel) => ([
     },
   },
   {
-    label: 'Remaining',
+    label: STRINGS.REMAINING,
     key: 'remaining',
     renderCell: ({ size = 0, filled = 0 }, key, index) => {
       return (
@@ -69,7 +69,7 @@ const generateHeaders = (onCancel) => ([
     },
   },
   {
-    label: 'Status',
+    label: STRINGS.STATUS,
     key: 'status',
     renderCell: ({ size = 0, filled = 0 }, key, index) => {
       const fullfilled = formatFiatAmount(math.chain(filled).divide(size).multiply(100).done());
@@ -77,7 +77,7 @@ const generateHeaders = (onCancel) => ([
         <td key={index} className={classnames('cell_box-type', 'fullfilled')}>
           <div className="cell-wrapper">
             <div className="cell_value-wrapper text_overflow">
-              {`${fullfilled} % Fullfilled`}
+              {STRINGS.formatString(STRINGS.FULLFILLED, fullfilled)}
               <span className="cell_value-bar" style={{ width: `${fullfilled}%`}}></span>
             </div>
           </div>
@@ -86,13 +86,13 @@ const generateHeaders = (onCancel) => ([
     },
   },
   {
-    label: 'Cancel',
+    label: STRINGS.CANCEL,
     key: 'cancel',
     renderCell: ({ size = 0, filled = 0, id }, key, index) => {
       return (
         <td key={index} style={{ position: 'relative' }}>
           <ActionNotification
-            text={TEXTS.CANCEL}
+            text={STRINGS.CANCEL}
             iconPath={ICONS.CHECK}
             onClick={() => onCancel(id)}
             className="relative"

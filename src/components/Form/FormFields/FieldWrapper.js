@@ -25,9 +25,9 @@ export const FieldContent = ({
   )
 }
 
-export const FieldError = ({ error, displayError }) => (
+export const FieldError = ({ error, displayError, className }) => (
   <div
-    className={classnames('field-error-content', {
+    className={classnames('field-error-content', className, {
       'field-error-hidden': !displayError,
     })}
   >
@@ -48,6 +48,7 @@ class FieldWrapper extends Component {
       visited = false,
       hideUnderline = false,
       className = '',
+      onClick = () => {}
     } = this.props;
 
     const displayError = !(active || focused) && (visited || touched) && error;
@@ -60,6 +61,7 @@ class FieldWrapper extends Component {
           hasValue={hasValue}
           focused={active || focused}
           hideUnderline={hideUnderline}
+          onClick={onClick}
         >
           {children}
         </FieldContent>

@@ -6,8 +6,9 @@ import { performLogin } from '../../actions/authAction';
 import LoginForm from './LoginForm';
 import { Dialog, OtpForm, IconTitle } from '../../components';
 import { errorHandler } from '../../components/OtpForm/utils';
-import { EXIR_LOGO, FLEX_CENTER_CLASSES, APP_TITLE, ICONS } from '../../config/constants';
-import { TEXTS } from './constants';
+import { EXIR_LOGO, FLEX_CENTER_CLASSES, ICONS } from '../../config/constants';
+
+import STRINGS from '../../config/localizedStrings';
 
 class Login extends Component {
   state = {
@@ -35,7 +36,7 @@ class Login extends Component {
 
         if (_error.toLowerCase().indexOf('otp') > -1) {
           this.setState({ values, otpDialogIsOpen: true });
-          error._error = TEXTS.FORM.VALIDATIONS.OTP_LOGIN;
+          error._error = STRINGS.VALIDATIONS.OTP_LOGIN;
         } else {
           error.password = _error;
           throw new SubmissionError(error);
@@ -64,13 +65,13 @@ class Login extends Component {
         <div className={classnames(...FLEX_CENTER_CLASSES, 'flex-column', 'auth_wrapper', 'w-100')}>
           <IconTitle
             iconPath={EXIR_LOGO}
-            text={TEXTS.TITLE}
+            text={STRINGS.LOGIN_TEXT}
             textType="title"
             underline={true}
             className="w-100"
-            subtitle={TEXTS.LOGIN_TO}
+            subtitle={STRINGS.formatString(STRINGS.LOGIN.LOGIN_TO, STRINGS.APP_TITLE)}
             actionProps={{
-              text: TEXTS.CANT_LOGIN,
+              text: STRINGS.LOGIN.CANT_LOGIN,
               iconPath: ICONS.RED_ARROW,
               onClick: this.redirectToResetPassword,
             }}
@@ -80,7 +81,7 @@ class Login extends Component {
           </div>
         </div>
         <div className={classnames('f-1', 'link_wrapper')}>
-          {TEXTS.NO_ACCOUNT}<Link to='/signup' className={classnames('blue-link')}>{TEXTS.CREATE_ACCOUNT}</Link>
+          {STRINGS.LOGIN.NO_ACCOUNT}<Link to='/signup' className={classnames('blue-link')}>{STRINGS.LOGIN.CREATE_ACCOUNT}</Link>
         </div>
         <Dialog
           isOpen={otpDialogIsOpen}

@@ -3,26 +3,26 @@ import { reduxForm } from 'redux-form';
 import { required } from '../../components/Form/validations';
 import renderFields from '../../components/Form/factoryFields';
 import { Button } from '../../components';
+import STRINGS from '../../config/localizedStrings';
 
-const FormValues = {
-  code: {
-    type: 'number',
-    placeholder: 'Enter your OTP provided by Google Authenticator. Leave blank to keep your current setup.',
-    validate: [required],
-    fullWidth: true,
-  }
-};
+const Form = ({ handleSubmit, submitting, pristine, error, valid }) => {
+  const formFields = {
+    code: {
+      type: 'number',
+      placeholder: STRINGS.ACCOUNT_SECURITY.OTP.FORM.PLACEHOLDER,
+      validate: [required],
+      fullWidth: true,
+    }
+  };
 
-const Form = (props) => {
-  const { handleSubmit, submitting, pristine, error, valid } = props;
   return (
     <form onSubmit={handleSubmit}>
       <div className="otp_form-fields-wrapper">
-        {renderFields(FormValues)}
+        {renderFields(formFields)}
         {error && <div className="warning_text">{error}</div>}
       </div>
       <Button
-        label="Enable 2FA"
+        label={STRINGS.ACCOUNT_SECURITY.OTP.FORM.BUTTON}
         disabled={pristine || submitting || !valid}
       />
     </form>
@@ -30,5 +30,5 @@ const Form = (props) => {
 }
 
 export default reduxForm({
-  form: 'BankAccountForm',
+  form: 'OTPActivationForm',
 })(Form);

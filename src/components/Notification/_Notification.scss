@@ -8,6 +8,7 @@
     border-bottom: 1px solid $colors-main-black;
 
     .notification-title-icon {
+      max-height: 10rem;
     }
 
     .notification-title-text {
@@ -22,27 +23,8 @@
     .notification-content-header {
       position: relative;
     }
-
-    .notification-content-block_amount {
-      margin: 2rem 0;
-      font-size: $font-size-headline;
-      line-height: $font-size-headline;
-
-      .notification-content-block_amount-value {
-        margin-left: 0.5rem;
-
-      }
-      .notification-content-block_amount-value-fiat {
-        color: $colors-deactivate-color2;
-        font-size: $font-size-subhead2;
-        line-height: $font-size-subhead2;
-      }
-    }
   }
   .notification-buttons-wrapper {
-    > *:not(:last-child) {
-      margin-right: 1rem;
-    }
     .button-fiat {
       background-color: $colors-currencies-fiat;
     }
