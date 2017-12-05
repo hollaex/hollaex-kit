@@ -1,14 +1,22 @@
 import React from 'react';
 import math from 'mathjs';
-
-import { TEXTS } from './constants';
+import STRINGS from '../../config/localizedStrings';
 import { CURRENCIES } from '../../config/constants';
 
-const {
-  TEXT_AVAILABLE_WITHDRAWAL,
-  TEXT_AVAILABLE_TRADING,
-  TEXT_HOLD_ORDERS,
-} = TEXTS;
+const TextHolders = ({ ordersOfSymbol, currencySymbol, hold, name }) => {
+  const ordersText = ordersOfSymbol > 1 ?
+    STRINGS.WALLET.ORDERS_PLURAL :
+    STRINGS.WALLET.ORDERS_SINGULAR;
+  const symbolComponent = <span className="text-uppercase">{name}</span>;
+  return (
+    <div>
+      {STRINGS.formatString(STRINGS.WALLET.HOLD_ORDERS,
+        ordersOfSymbol, ordersText,
+        currencySymbol, hold, symbolComponent
+      )}
+    </div>
+  );
+}
 
 const Section = ({ symbol = 'fiat', balance, orders, price }) => {
   const { currencySymbol, shortName, formatToCurrency } = CURRENCIES[symbol];
@@ -23,21 +31,24 @@ const Section = ({ symbol = 'fiat', balance, orders, price }) => {
   const total = balance[`${symbol}_balance`];
   const available = balance[`${symbol}_available`];
   const hold = math.subtract(math.fraction(total),math.fraction(available));
-  console.log('symbol', symbol, shortName, total, available, hold)
+  
   return (
     <div className="wallet_section-content-wrapper">
       <div className="wallet_section-content d-flex flex-column">
         <div className="d-flex flex-column">
-          <div>{TEXT_AVAILABLE_TRADING}:</div>
+          <div>{STRINGS.WALLET.TOTAL_ASSETS}:</div>
           <div>{`${currencySymbol}${formatToCurrency(available)}`}</div>
         </div>
         {ordersOfSymbol > 0 &&
-          <div>
-            {TEXT_HOLD_ORDERS(ordersOfSymbol, currencySymbol, formatToCurrency(hold), shortName)}
-          </div>
+          <TextHolders
+            ordersOfSymbol={ordersOfSymbol}
+            currencySymbol={currencySymbol}
+            hold={formatToCurrency(hold)}
+            name={shortName}
+          />
         }
         <div className="d-flex flex-column">
-          <div>{TEXT_AVAILABLE_WITHDRAWAL}:</div>
+          <div>{STRINGS.WALLET.AVAILABLE_WITHDRAWAL}:</div>
           <div>{`${currencySymbol}${formatToCurrency(available)}`}</div>
         </div>
       </div>
