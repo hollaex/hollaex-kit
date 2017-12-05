@@ -16,7 +16,7 @@ const ButtonSection = ({ onClickAccept, onClickCancel }) => {
       />
       <div className="button-separator" />
       <Button
-        label={STRINGS.NOTIFICATIONS.BUTTON.OK}
+        label={STRINGS.NOTIFICATIONS.BUTTONS.OKAY}
         onClick={onClickAccept}
         className="button-success"
       />

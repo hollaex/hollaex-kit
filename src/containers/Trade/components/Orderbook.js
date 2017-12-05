@@ -2,8 +2,22 @@ import React, { Component } from 'react';
 import classnames from 'classnames';
 import EventListener from 'react-event-listener';
 import { subtract } from '../utils';
-import { formatFiatAmount } from '../../../utils/currency';
+import { formatFiatAmount, formatBtcAmount } from '../../../utils/currency';
 import STRINGS from '../../../config/localizedStrings';
+
+const PriceRow = (side) => ([price, amount], index) => (
+  <div
+    key={`${side}-${index}`}
+    className="d-flex value-row align-items-center"
+  >
+    <div className={`f-1 trade_orderbook-cell trade_orderbook-cell-price ${side}`}>
+      {formatFiatAmount(price)}
+    </div>
+    <div className="f-1 trade_orderbook-cell trade_orderbook-cell-amount">
+      {formatBtcAmount(amount)}
+    </div>
+  </div>
+);
 
 const calculateSpread = (asks, bids) => {
   const lowerAsk = asks.length > 0 ? asks[0][0]: 0;
@@ -61,7 +75,7 @@ class Orderbook extends Component {
           onResize={this.scrollTop}
         />
         <div className="trade_orderbook-headers d-flex">
-          <div className="f-1 trade_orderbook-cell">{STRINGS.formatString(STRINGS.PRICE_CURRENCY, fiatSymbol)}</div>
+          <div className="f-1 trade_orderbook-cell">{STRINGS.formatString(STRINGS.PRICE_CURRENCY, STRINGS.FIAT_CURRENCY_SYMBOL)}</div>
           <div className="f-1 trade_orderbook-cell">{STRINGS.formatString(STRINGS.AMOUNT_SYMBOL, symbol)}</div>
         </div>
         <div
@@ -81,21 +95,17 @@ class Orderbook extends Component {
             style={blockStyle}
             ref={this.setRefs('asksWrapper')}
           >
-            {asks.map(([price, amount], index) => (
-              <div
-                key={`ask-${index}`}
-                className={classnames('d-flex', 'value-row', 'align-items-center')}
-              >
-                <div className="f-1 trade_orderbook-cell trade_orderbook-cell-price ask">{price}</div>
-                <div className="f-1 trade_orderbook-cell trade_orderbook-cell-amount">{amount}</div>
-              </div>
-            ))}
+            {asks.map(PriceRow('ask'))}
           </div>
           <div
             className="trade_orderbook-spread d-flex align-items-center"
             ref={this.setRefs('spreadWrapper')}
           >
-            <div className="trade_orderbook-spread-text">{`${calculateSpread(asks, bids)} ${fiatSymbol} `}</div>spread.
+            {STRINGS.formatString(STRINGS.ORDERBOOK_SPREAD,
+              <div className="trade_orderbook-spread-text">
+                {STRINGS.formatString(STRINGS.ORDERBOOK_SPREAD_PRICE, calculateSpread(asks, bids), STRINGS.FIAT_CURRENCY_SYMBOL)}
+              </div>
+            )}
           </div>
           <div
             className={classnames(
@@ -106,15 +116,7 @@ class Orderbook extends Component {
             ref={this.setRefs('bidsWrapper')}
             style={blockStyle}
           >
-            {bids.map(([price, amount], index) => (
-              <div
-                key={`bid-${index}`}
-                className={classnames('d-flex', 'value-row', 'align-items-center')}
-              >
-                <div className="f-1 trade_orderbook-cell trade_orderbook-cell-price bid">{price}</div>
-                <div className="f-1 trade_orderbook-cell trade_orderbook-cell-amount">{amount}</div>
-              </div>
-            ))}
+            {bids.map(PriceRow('bids'))}
           </div>
         </div>
       </div>

@@ -126,9 +126,7 @@ class Trade extends Component {
 
     const orderbookProps = {
       symbol,
-      fiatSymbol: 'USD',
-      // asks: asks.concat(asks, asks, asks),
-      // bids: bids.concat(asks, asks, asks),
+      fiatSymbol: STRINGS.FIAT_SHORTNAME,
       asks,
       bids,
     }

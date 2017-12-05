@@ -5,6 +5,7 @@ import { DisplayTable } from '../../../components';
 
 import { HOUR_FORMAT } from '../../../config/constants';
 import { formatTimestamp } from '../../../utils/utils';
+import { formatFiatAmount, formatBtcAmount } from '../../../utils/currency';
 
 import STRINGS from '../../../config/localizedStrings';
 
@@ -12,12 +13,15 @@ const HEADERS = [
   {
     key: 'price',
     label: STRINGS.PRICE,
-    renderCell: ({ side, price = 0 }, index) => <div className={classnames(side)} key={`time-${index}`}>{price}</div>
+    renderCell: ({ side, price = 0 }, index) =>
+      <div className={classnames(side)} key={`time-${index}`}>
+        {formatFiatAmount(price)}
+      </div>
   },
   {
     key: 'size',
     label: STRINGS.SIZE,
-    renderCell: ({ size = 0 }, index) => size
+    renderCell: ({ size = 0 }, index) => formatBtcAmount(size)
   },
   {
     key: 'timestamp',
