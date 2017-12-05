@@ -16,36 +16,36 @@ const validate = (values) => {
   return errors;
 }
 
-const Form = ({ handleSubmit, submitting, pristine, error, valid, initialValues }) => {
-  const formFields = {
-    old_password: {
-      type: 'password',
-      validate: [required, password],
-      ...STRINGS.ACCOUNT_SECURITY.CHANGE_PASSWORD.FORM.CURRENT_PASSWORD,
-    },
-    new_password: {
-      type: 'password',
-      validate: [required, password],
-      ...STRINGS.ACCOUNT_SECURITY.CHANGE_PASSWORD.FORM.NEW_PASSWORD,
-    },
-    new_password_confirm: {
-      type: 'password',
-      validate: [required],
-      ...STRINGS.ACCOUNT_SECURITY.CHANGE_PASSWORD.FORM.NEW_PASSWORD_REPEAT,
-    },
-  };
+export const generateFormValues = () => ({
+  old_password: {
+    type: 'password',
+    validate: [required, password],
+    ...STRINGS.ACCOUNT_SECURITY.CHANGE_PASSWORD.FORM.CURRENT_PASSWORD,
+  },
+  new_password: {
+    type: 'password',
+    validate: [required, password],
+    ...STRINGS.ACCOUNT_SECURITY.CHANGE_PASSWORD.FORM.NEW_PASSWORD,
+  },
+  new_password_confirm: {
+    type: 'password',
+    validate: [required],
+    ...STRINGS.ACCOUNT_SECURITY.CHANGE_PASSWORD.FORM.NEW_PASSWORD_REPEAT,
+  },
+});
 
-  return (
-    <form onSubmit={handleSubmit}>
-      {renderFields(formFields)}
-      {error && <div className="warning_text">{error}</div>}
-      <Button
-        label={STRINGS.ACCOUNT_SECURITY.CHANGE_PASSWORD.FORM.BUTTON}
-        disabled={pristine || submitting || !valid}
-      />
-    </form>
-  );
-}
+const Form = ({
+  handleSubmit, submitting, pristine, error, valid, initialValues, formFields
+}) => (
+  <form onSubmit={handleSubmit}>
+    {renderFields(formFields)}
+    {error && <div className="warning_text">{error}</div>}
+    <Button
+      label={STRINGS.ACCOUNT_SECURITY.CHANGE_PASSWORD.FORM.BUTTON}
+      disabled={pristine || submitting || !valid}
+    />
+  </form>
+);
 
 export default reduxForm({
   form: 'ChangePasswordForm',
