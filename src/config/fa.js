@@ -224,7 +224,8 @@ export default {
    AVAILABLE_TRADING: 'برای برداشت قابل استفاده است',
    ORDERS_PLURAL: 'سفارشات',
    ORDERS_SINGULAR: 'سفارشات',
-   HOLD_ORDERS: 'You have {0} open {1}, resulting in a hold of {2}{3} placed on your {4} balance',
+   HOLD_ORDERS: 'You have {0} open {1}, resulting in a hold of {2}{3} placed on your {4} balance', // TODO
+   // you have 3 open orders, resulting in a hold of B 0.2226 places on your BTC balance
  },
  REQUEST_RESET_PASSWORD: {
    TITLE: 'بازیابی حساب',
@@ -313,11 +314,14 @@ export default {
        POSTAL_CODE_PLACEHOLDER: 'کد پستی خود را تایپ کنید',
        PHONE_CODE_LABEL: 'کشور',
        PHONE_CODE_PLACEHOLDER: 'کشوری که شماره تلفن شما متصل است را تایپ کنید',
+       PHONE_CODE_DISPLAY: '({0}) {1}', //TODO 0 -> (+21)  1 -> Iran
        PHONE_NUMBER_LABEL: 'شماره تلفن',
        PHONE_NUMBER_PLACEHOLDER: 'شماره تلفن خود را تایپ کنید',
      },
      INFORMATION: {
-       TEXT: 'مهم: نام خود را به فیلدهای دقیقا همانطور که در سند هویت شما نشان داده شده است (نام کامل، نام و نام خانوادگی و نام خانوادگی و نام خانوادگی کامل) وارد کنید. آیا شما یک کسب و کار هستید؟ با پشتیبانی از یک حساب شرکتی تماس بگیرید'
+       TEXT: 'مهم: نام خود را به فیلدهای دقیقا همانطور که در سند هویت شما نشان داده شده است (نام کامل، نام و نام خانوادگی و نام خانوادگی و نام خانوادگی کامل) وارد کنید. آیا شما یک کسب و کار هستید؟ با پشتیبانی از یک حساب شرکتی تماس بگیرید',
+       TITLE_PERSONAL_INFORMATION: 'Personal Information', // TODO
+       TITLE_PHONE: 'Phone', // TODO
      }
    },
    ID_DOCUMENTS_FORM: {
@@ -348,6 +352,8 @@ export default {
        POR_PLACEHOLDER: 'یک کپی از یک سند که نشانی شما را ثابت می کند، اضافه کنید',
      },
      INFORMATION: {
+       IDENTITY_DOCUMENT: 'Identity Document', // TODO
+       PROOF_OF_RESIDENCY: 'Proof of residence', // TODO
        ID_SECTION: {
          TITLE: 'لطفا از اسناد ارائه شده اطمینان حاصل کنید  :',
          LIST_ITEM_1: 'کیفیت بالا (تصاویر رنگی، رزولوشن 300dpi یا بالاتر).',
@@ -545,18 +551,18 @@ export default {
   QUOTE_BUTTON: 'قبول',
   QUOTE_REVIEW: 'بازبینی',
   QUOTE_COUNTDOWN_MESSAGE: 'شما {0} ثانیه برای این تراکنش وقت دارید',
-  QUOTE_EXPIRED_TOKEN: 'The quote token has expired.',
+  QUOTE_EXPIRED_TOKEN: 'The quote token has expired.', // TODO
   QUOTE_SUCCESS_REVIEW_TITLE: 'خرید آسان',
   QUOTE_SUCCESS_REVIEW_MESSAGE: 'شما با موفقیت {0} {1} {0} برای {3} {4}',
-  COUNTDOWN_ERROR_MESSAGE: 'Countdown is finished',
+  COUNTDOWN_ERROR_MESSAGE: 'Countdown is finished', // TODO
   WITHDRAW_PAGE: {
     BANK_TO_WITHDRAW: 'نام بانک دریافت کننده',
     MESSAGE_ABOUT_SEND: 'شما در آستانه ارسال',
     MESSAGE_BTC_WARNING: 'لطفا از درست بودن آدرس خود اطمینان حاصل کنید {0} تراکنش ها غیر قابل بازگشت هستند.',
-    MESSAGE_ABOUT_WITHDRAW: 'You are about to transfer to your bank account',
-    MESSAGE_FEE: 'Transactions fee of {0}({1})included in withdrawal',
+    MESSAGE_ABOUT_WITHDRAW: 'You are about to transfer to your bank account', // TODO
+    MESSAGE_FEE: 'Transactions fee of {0}({1})included in withdrawal', // TODO
     FIAT_MESSAGE_1: 'شما تنها می توانید به حساب بانک پول خود را ارسال کنید که با نام شما در اکسیر مطابقت داشته باشد',
-    FIAT_MESSAGE_2: 'Withdrawal min amount',
+    FIAT_MESSAGE_2: 'Withdrawal min amount', // TODO
     FIAT_MESSAGE_3: 'محدودیت برداشت روزانه',
     FIAT_INCREASE_LIMIT: 'افزایش برداشت محدودیت روزانه',
   },
@@ -564,12 +570,16 @@ export default {
   WALLET_BUTTON_FIAT_WITHDRAW: 'ارسال',
   WALLET_BUTTON_CRYPTOCURRENCY_DEPOSIT: 'دریافت',
   WALLET_BUTTON_CRYPTOCURRENCY_WITHDRAW: 'ارسال',
-  AVAILABLE_TEXT: 'Available',
-  BALANCE_TEXT: 'Balance',
+  AVAILABLE_TEXT: 'Available', // TODO
+  BALANCE_TEXT: 'Balance', // TODO
   CURRENCY_BALANCE_TEXT: '{0} موجودی',
   WALLET_TABLE_AMOUNT_IN: `مقدار به {0}`,
   WALLET_TABLE_TOTAL: 'جمع کل',
   WALLET_ALL_ASSETS: 'همه دارایی ها',
-  HIDE_TEXT: 'Hide',
-  PAGINATOR_FORMAT: '{0} / {1}'
+  HIDE_TEXT: 'Hide', // TODO
+  PAGINATOR_FORMAT: '{0} / {1}',
+  ORDERBOOK_SPREAD: '{0} spread', // 0 -> 660,000 T
+  ORDERBOOK_SPREAD_PRICE: '{0} {1}', //// 0-> amount  1 -> symbol  600,000 T
+  FIAT_PRICE_FORMAT: '{0} {1}', // 0-> amount  1 -> symbol  600,000 T
+  BTC_PRICE_FORMAT: '{0} {1}', // 0-> amount  1 -> symbol  6.00245 BTC
 };

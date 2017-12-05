@@ -5,7 +5,7 @@ import renderFields from '../../components/Form/factoryFields';
 import { Button } from '../../components';
 import { information } from './DocumentsFormValues';
 import UpgradeWarning from './UpgradeWarning';
-import { TEXTS } from './constants';
+import STRINGS from '../../config/localizedStrings';
 
 const renderSection = (props) => {
   const { fields, meta: { error, submitFailed }, section } = props
@@ -34,7 +34,7 @@ const Form = (props) => {
       ))}
       {error && <div className="warning_text">{error}</div>}
       <Button
-        label={TEXTS.ID_DOCUMENTS_FORM.BUTTON}
+        label={STRINGS.USER_VERIFICATION.BUTTON}
         disabled={pristine || submitting || !valid}
       />
     </form>

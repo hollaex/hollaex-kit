@@ -313,11 +313,14 @@ export default {
        POSTAL_CODE_PLACEHOLDER: 'Type your postal code',
        PHONE_CODE_LABEL: 'Country',
        PHONE_CODE_PLACEHOLDER: 'Select the country your phone is connected to',
+       PHONE_CODE_DISPLAY: '({0}) {1}', // 0 -> (+21)  1 -> Iran
        PHONE_NUMBER_LABEL: 'Phone number',
        PHONE_NUMBER_PLACEHOLDER: 'Type your phone number',
      },
      INFORMATION: {
-       TEXT: 'IMPORTANT: Enter your name into the fields exactly as it appears on your identity document (full first name, any middle names/initials and full last name(s)). Are you a business? Contact customer support for a corporate account.'
+       TEXT: 'IMPORTANT: Enter your name into the fields exactly as it appears on your identity document (full first name, any middle names/initials and full last name(s)). Are you a business? Contact customer support for a corporate account.',
+       TITLE_PERSONAL_INFORMATION: 'Personal Information',
+       TITLE_PHONE: 'Phone',
      }
    },
    ID_DOCUMENTS_FORM: {
@@ -348,6 +351,8 @@ export default {
        POR_PLACEHOLDER: 'Add a copy of a document that proves your address',
      },
      INFORMATION: {
+       IDENTITY_DOCUMENT: 'Identity Document',
+       PROOF_OF_RESIDENCY: 'Proof of residence',
        ID_SECTION: {
          TITLE: 'Please make sure that your submitted documents are:',
          LIST_ITEM_1: 'HIGH QUALITY (colour images, 300dpi resolution or higher).',

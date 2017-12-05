@@ -3,7 +3,7 @@ import React from 'react';
 import classnames from 'classnames';
 import { countries } from 'country-data';
 
-const convertCountry = (value) => {
+const convertCountry = (value = {}) => {
 	return {
 		value: value.alpha2,
 		name: value.name,
@@ -15,4 +15,5 @@ const convertCountry = (value) => {
 
 const filterCountries = (country) => (country.status === 'assigned' && country.alpha2);
 
+export const initialCountry = convertCountry(countries.IR);
 export default countries.all.filter(filterCountries).map(convertCountry);

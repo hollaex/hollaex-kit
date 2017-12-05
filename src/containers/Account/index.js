@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { TabController, CheckTitle } from '../../components';
 import { ICONS } from '../../config/constants';
 import { UserVerification, UserSecurity } from '../';
-import { TEXTS } from './constants';
+import STRINGS from '../../config/localizedStrings';
 
 class Account extends Component {
   state = {
@@ -23,7 +23,8 @@ class Account extends Component {
       nextProps.verification_level !== this.props.verification_level ||
       nextProps.otp_enabled !== this.props.otp_enabled ||
       nextProps.bank_account.name !== this.props.bank_account.name ||
-      nextProps.id_data.type !== this.props.id_data.type
+      nextProps.id_data.type !== this.props.id_data.type ||
+      nextProps.activeLanguage !== this.props.activeLanguage
     ) {
       this.updateTabs(nextProps);
     }
@@ -37,13 +38,14 @@ class Account extends Component {
     }
     return true;
   }
+
   updateTabs = ({ verification_level, otp_enabled, bank_account, id_data }) => {
     const activeTab = this.state.activeTab > -1 ? this.state.activeTab : 0;
     const tabs = [
       {
         title: (
           <CheckTitle
-            title={TEXTS.TAB_VERIFICATION}
+            title={STRINGS.ACCOUNTS.TAB_VERIFICATION}
             icon={ICONS.ID_GREY}
             notifications={this.hasUserVerificationNotifications(verification_level, bank_account, id_data) ? '!' : ''}
           />
@@ -53,7 +55,7 @@ class Account extends Component {
       {
         title: (
           <CheckTitle
-            title={TEXTS.TAB_SECURITY}
+            title={STRINGS.ACCOUNTS.TAB_SECURITY}
             icon={ICONS.SECURITY_GREY}
             notifications={!otp_enabled ? '!' : ''}
           />
@@ -65,12 +67,12 @@ class Account extends Component {
       {
         title: (
           <CheckTitle
-            title={TEXTS.TAB_SETTINGS}
+            title={STRINGS.ACCOUNTS.TAB_SETTINGS}
             icon={ICONS.GEAR_GREY}
           />
         ),
         content: (
-          <div className="d-flex justify-content-center align-items-center f-1">{TEXTS.TAB_SETTINGS}</div>
+          <div className="d-flex justify-content-center align-items-center f-1">{STRINGS.ACCOUNTS.TAB_SETTINGS}</div>
         )
       },
     ];
@@ -99,7 +101,7 @@ class Account extends Component {
           activeTab={activeTab}
           setActiveTab={this.setActiveTab}
           tabs={tabs}
-          title={TEXTS.TAB_TITLE}
+          title={STRINGS.ACCOUNTS.TITLE}
           titleIcon={`${process.env.PUBLIC_URL}/assets/acounts/account-icons-01.png`}
         />
         <div className="inner_container">{activeTab > -1 && this.renderContent(tabs, activeTab)}</div>
@@ -114,6 +116,7 @@ const mapStateToProps = (state) => ({
   id: state.user.id,
   bank_account: state.user.userData.bank_account,
   id_data: state.user.userData.id_data,
+  activeLanguage: state.app.language,
 });
 
 export default connect(mapStateToProps)(Account);

@@ -27,7 +27,8 @@ class UserVerification extends Component {
       nextProps.user.otp.requested !== this.props.user.otp.requested ||
       nextProps.user.otp.requesting !== this.props.user.otp.requesting ||
       nextProps.user.otp.activated !== this.props.user.otp.activated ||
-      nextProps.user.otp_enabled !== this.props.user.otp_enabled
+      nextProps.user.otp_enabled !== this.props.user.otp_enabled ||
+      nextProps.activeLanguage !== this.props.activeLanguage
     ) {
       this.calculateSections(nextProps.user);
     }
@@ -187,6 +188,7 @@ class UserVerification extends Component {
 
 const mapStateToProps = (state) => ({
   user: state.user,
+  activeLanguage: state.app.language,
 });
 
 const mapDispatchToProps = (dispatch) => ({
