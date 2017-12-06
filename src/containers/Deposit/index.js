@@ -64,6 +64,7 @@ const mapStateToProps = (store) => ({
   symbol: store.orderbook.symbol,
   crypto_wallet: store.user.crypto_wallet,
   balance: store.user.balance,
+  activeLanguage: store.app.language,
 });
 
 const mapDispatchToProps = (dispatch) => ({

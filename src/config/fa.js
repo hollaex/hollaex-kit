@@ -119,6 +119,7 @@ export default {
     INCREASE_LIMIT: 'میخواهید محدودیت روزانه خود را افزایش دهید؟',
     QR_CODE: 'توسط فردی که می خواهد بیت کوین به شما ارسال، اسکن شود',
     NO_DATA: 'اطلاعاتی در دسترس نیست',
+    FULL_MESSAGE_LIMIT: '{0}: {1} {2} {3}', //  0 -> {Daily deposit max amount}:  1 -> {50,000,000} 2 -> {T} 3 -> {(Want to increase your daily limit?)}
   },
   LOGIN: {
     LOGIN_TO: 'ورود به {0}', // FIX
