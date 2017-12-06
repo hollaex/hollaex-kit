@@ -26,28 +26,21 @@ class Trade extends Component {
   state = {
     chartHeight: 0,
     chartWidth: 0,
+    symbol: 'btc',
   }
 
   componentWillMount() {
-    if (this.props.symbol === 'fiat') {
-      this.redirectInFiat();
-    }
-  }
-
-  componentDidMount() {
-    // if (!this.props.userTrades.fetched) {
-    //   this.props.getUserTrades(this.props.symbol);
-    // }
+    this.setSymbol(this.props.symbol === 'fiat' ? 'btc' : this.props.symbol);
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.symbol === 'fiat') {
-      this.redirectInFiat();
+    if (nextProps.symbol !== this.props.symbol) {
+      this.setSymbol(nextProps.symbol === 'fiat' ? 'btc' : nextProps.symbol);
     }
   }
 
-  redirectInFiat = () => {
-    this.props.router.replace('wallet');
+  setSymbol = (symbol = 'btc') => {
+    this.setState({ symbol });
   }
 
   onSubmitOrder = (values) => {
@@ -89,14 +82,13 @@ class Trade extends Component {
       asks,
       bids,
       marketPrice,
-      symbol,
       activeOrders,
       userTrades,
       cancelOrder,
       cancelAllOrders,
       balance,
     } = this.props;
-    const { chartHeight, chartWidth } = this.state
+    const { chartHeight, chartWidth, symbol } = this.state
     const USER_TABS = [
       {
         title: STRINGS.ORDERS,

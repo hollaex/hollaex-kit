@@ -17,6 +17,10 @@
   &.disabled {
     background-color: $colors-deactivate-color1 !important;
   }
+  &:active, &:focus {
+    outline: none;
+    border: none;
+  }
 }
 
 .checkbutton-wrapper {

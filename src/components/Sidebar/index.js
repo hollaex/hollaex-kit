@@ -21,41 +21,39 @@ const Sidebar = ({
 
           />
         </Section>
-        {symbol !== fiatSymbol &&
-          <Section
-            title={STRINGS.TRADING_MODE_TITLE}
-            goToSection={goToTradePage}
-            active={activePath === 'trade' || activePath === 'quick-trade'}
-          >
-            <div className="sidebar-container-trade d-flex">
-              <Button
-                label={STRINGS.PRO_TRADE}
-                onClick={goToTradePage}
-                disabled={!goToTradePage}
-                className={classnames(
-                  'sidebar-trade-button',
-                  {
-                    active: activePath === 'trade',
-                    'not-active': activePath !== 'trade'
-                  }
-                )}
-              />
-              <div className="separator" />
-              <Button
-                label={STRINGS.QUICK_TRADE}
-                onClick={goToQuickTradePage}
-                disabled={!goToQuickTradePage}
-                className={classnames(
-                  'sidebar-trade-button',
-                  {
-                    active: activePath === 'quick-trade',
-                    'not-active': activePath !== 'quick-trade'
-                  }
-                )}
-              />
-            </div>
-          </Section>
-        }
+        <Section
+          title={STRINGS.TRADING_MODE_TITLE}
+          goToSection={goToTradePage}
+          active={activePath === 'trade' || activePath === 'quick-trade'}
+        >
+          <div className="sidebar-container-trade d-flex">
+            <Button
+              label={STRINGS.PRO_TRADE}
+              onClick={goToTradePage}
+              disabled={!goToTradePage}
+              className={classnames(
+                'sidebar-trade-button',
+                {
+                  active: activePath === 'trade',
+                  'not-active': activePath !== 'trade'
+                }
+              )}
+            />
+            <div className="separator" />
+            <Button
+              label={STRINGS.QUICK_TRADE}
+              onClick={goToQuickTradePage}
+              disabled={!goToQuickTradePage}
+              className={classnames(
+                'sidebar-trade-button',
+                {
+                  active: activePath === 'quick-trade',
+                  'not-active': activePath !== 'quick-trade'
+                }
+              )}
+            />
+          </div>
+        </Section>
       </div>
       <div className="sidebar-notifications">
         <NotificationsList notifications={notifications} />
