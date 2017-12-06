@@ -40,7 +40,12 @@ export const renderAvailableBalanceText = (symbol, balance) => {
   return (
     <div className="text">
       <p>
-        {`${STRINGS.AVAILABLE_TEXT} ${fullName} ${STRINGS.BALANCE_TEXT}: ${available} ${shortName}`}
+        {STRINGS.formatString(
+          STRINGS.AVAILABLE_BALANCE_TEXT,
+          fullName,
+          available,
+          shortName
+        )}
       </p>
     </div>
   );

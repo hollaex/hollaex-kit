@@ -155,7 +155,7 @@ export const WITHDRAW_LIMITS = {
     STEP: 1,
   },
   btc: {
-    MIN: 1,
+    MIN: 0.0001,
     MAX: 10,
     STEP: 0.0001,
   }

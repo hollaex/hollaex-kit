@@ -570,6 +570,7 @@ export default {
   WALLET_BUTTON_CRYPTOCURRENCY_DEPOSIT: 'receive',
   WALLET_BUTTON_CRYPTOCURRENCY_WITHDRAW: 'send',
   AVAILABLE_TEXT: 'Available',
+  AVAILABLE_BALANCE_TEXT: 'Available {0} Balance: {1} {2}', // Available Bitcoin Balance: 2.6 BTC
   BALANCE_TEXT: 'Balance',
   CURRENCY_BALANCE_TEXT: '{0} Balance',
   WALLET_TABLE_AMOUNT_IN: `Amount in {0}`,
@@ -581,4 +582,6 @@ export default {
   ORDERBOOK_SPREAD_PRICE: '{0} {1}', //// 0-> amount  1 -> symbol  600,000 T
   FIAT_PRICE_FORMAT: '{0} {1}', // 0-> amount  1 -> symbol  600,000 T
   BTC_PRICE_FORMAT: '{0} {1}', // 0-> amount  1 -> symbol  6.00245 BTC
+  WITHDRAWALS_BTC_ADDRESS_LABEL: 'Destination address',
+  WITHDRAWALS_BTC_ADDRESS_PLACEHOLDER: 'Type the address',
 };

@@ -571,15 +571,18 @@ export default {
   WALLET_BUTTON_CRYPTOCURRENCY_DEPOSIT: 'دریافت',
   WALLET_BUTTON_CRYPTOCURRENCY_WITHDRAW: 'ارسال',
   AVAILABLE_TEXT: 'Available', // TODO
+  AVAILABLE_BALANCE_TEXT: 'AVAILABLE {0} BALANCE: {1} {2}', // TODO Available Bitcoin Balance: 2.6 BTC
   BALANCE_TEXT: 'Balance', // TODO
   CURRENCY_BALANCE_TEXT: '{0} موجودی',
   WALLET_TABLE_AMOUNT_IN: `مقدار به {0}`,
   WALLET_TABLE_TOTAL: 'جمع کل',
   WALLET_ALL_ASSETS: 'همه دارایی ها',
   HIDE_TEXT: 'Hide', // TODO
-  PAGINATOR_FORMAT: '{0} / {1}',
-  ORDERBOOK_SPREAD: '{0} spread', // 0 -> 660,000 T
-  ORDERBOOK_SPREAD_PRICE: '{0} {1}', //// 0-> amount  1 -> symbol  600,000 T
-  FIAT_PRICE_FORMAT: '{0} {1}', // 0-> amount  1 -> symbol  600,000 T
-  BTC_PRICE_FORMAT: '{0} {1}', // 0-> amount  1 -> symbol  6.00245 BTC
+  PAGINATOR_FORMAT: '{0} / {1}', // TODO
+  ORDERBOOK_SPREAD: '{0} SPREAD', // TODO 0 -> 660,000 T
+  ORDERBOOK_SPREAD_PRICE: '{0} {1}', // TODO 0-> amount  1 -> symbol  600,000 T
+  FIAT_PRICE_FORMAT: '{0} {1}', // TODO 0-> amount  1 -> symbol  600,000 T
+  BTC_PRICE_FORMAT: '{0} {1}', // TODO 0-> amount  1 -> symbol  6.00245 BTC
+  WITHDRAWALS_BTC_ADDRESS_LABEL: 'DESTINATION ADDRESS', // TODO
+  WITHDRAWALS_BTC_ADDRESS_PLACEHOLDER: 'TYPE THE ADDRESS', // TODO
 };

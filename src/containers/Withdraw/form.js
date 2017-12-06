@@ -29,8 +29,8 @@ export const generateFormValues = (symbol, available = 0, fee = 0) => {
   if (symbol !== fiatSymbol) {
     fields.address = {
       type: 'text',
-      label: 'Destination address:',
-      placeholder: 'Type the address',
+      label: STRINGS.WITHDRAWALS_BTC_ADDRESS_LABEL,
+      placeholder: STRINGS.WITHDRAWALS_BTC_ADDRESS_PLACEHOLDER,
       validate: [required, validAddress(symbol, STRINGS.WITHDRAWALS_INVALID_ADDRESS)],
     }
   }
