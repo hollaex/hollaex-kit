@@ -24,14 +24,11 @@ const ENDPOINTS = {
   WITHDRAWALS: '/user/withdrawals',
   DEPOSIT_BANK: '/user/deposit/bank',
   WITHDRAW_BANK: '/user/withdraw/bank',
+  WITHDRAW_BTC: '/user/withdraw/btc',
 }
 
-export const performDeposit = (values) => {
-  return axios.post('/deposit', values);
-}
-
-export const performWithdraw = (values) => {
-  return axios.post('/withdraw', values);
+export const performBtcWithdraw = (values) => {
+  return axios.post(ENDPOINTS.WITHDRAW_BTC, values);
 }
 
 export const requestFiatDeposit = (amount) => {

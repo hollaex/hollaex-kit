@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { reduxForm, formValueSelector, reset } from 'redux-form';
 import math from 'mathjs';
-import { Button, Dialog, OtpForm } from '../../components';
+import { Button, Dialog, OtpForm, Loader } from '../../components';
 import renderFields from '../../components/Form/factoryFields';
 import { required, minValue, maxValue, checkBalance, validAddress } from '../../components/Form/validations';
 import { errorHandler } from '../../components/OtpForm/utils';
@@ -12,7 +12,6 @@ import { generateFeeMessage } from './utils';
 import STRINGS from '../../config/localizedStrings';
 
 import ReviewModalContent from './ReviewModalContent';
-import { performWithdraw } from '../../actions/walletActions';
 import { CURRENCIES, WITHDRAW_LIMITS } from '../../config/constants';
 import { fiatSymbol } from '../../utils/currency';
 
@@ -88,7 +87,7 @@ class Form extends Component {
     if (this.props.checkOtp) {
       this.setState({ dialogOtpOpen: true })
     } else {
-      this.onCloseDialog();
+      // this.onCloseDialog();
       this.props.submit();
     }
   }
@@ -110,7 +109,7 @@ class Form extends Component {
           this.onCloseDialog();
         }
         console.log(error.errors)
-        // this.onCloseDialog();
+        this.onCloseDialog();
         throw error;
       });
   }
@@ -149,12 +148,15 @@ class Form extends Component {
           >
             {dialogOtpOpen ?
               <OtpForm onSubmit={this.onSubmitOtp} onClickHelp={openContactForm} /> :
-              <ReviewModalContent
-                symbol={symbol}
-                data={data}
-                onClickAccept={this.onAcceptDialog}
-                onClickCancel={this.onCloseDialog}
-              />
+              (submitting ?
+                <ReviewModalContent
+                  symbol={symbol}
+                  data={data}
+                  onClickAccept={this.onAcceptDialog}
+                  onClickCancel={this.onCloseDialog}
+                /> :
+                <Loader relative={true} background={false} />
+              )
             }
           </Dialog>
         </form>

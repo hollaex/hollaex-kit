@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import { Dialog } from '../../components';
 import { ICONS, FLEX_CENTER_CLASSES, CURRENCIES } from '../../config/constants';
 import { generateWalletActionsText, fiatSymbol } from '../../utils/currency';
-import { performWithdraw, requestFiatWithdraw } from '../../actions/walletActions';
+import { performBtcWithdraw, requestFiatWithdraw } from '../../actions/walletActions';
 import { errorHandler } from '../../components/OtpForm/utils';
 
 import {
@@ -52,7 +52,7 @@ class Withdraw extends Component {
   onSubmitWithdraw = (values) => {
     const withdrawAction = this.props.symbol === fiatSymbol ?
       requestFiatWithdraw :
-      performWithdraw;
+      performBtcWithdraw;
 
     return withdrawAction({
         ...values,
