@@ -15,6 +15,15 @@ const INITIAL_VERIFICATION_OBJECT = {
 	error: '',
 };
 
+const INITIAL_BTC_WHITDRAWALS_FEE = {
+	loading: false,
+	ready: false,
+	error: '',
+	min: 0.0001,
+	max: 0.1,
+	optimal: 0.0001,
+};
+
 const joinData = (stateData = [], payloadData = []) => payloadData.concat(stateData);
 
 const INITIAL_STATE = {
@@ -23,6 +32,7 @@ const INITIAL_STATE = {
   deposits: INITIAL_API_OBJECT,
 	withdrawals: INITIAL_API_OBJECT,
 	depositVerification: INITIAL_VERIFICATION_OBJECT,
+	btcFee: INITIAL_BTC_WHITDRAWALS_FEE
 };
 
 export default function reducer(state = INITIAL_STATE, { type, payload }) {
@@ -170,7 +180,33 @@ export default function reducer(state = INITIAL_STATE, { type, payload }) {
 	        data: joinData(state.withdrawals.data, payload.data)
 	      },
 	    }
+		case ACTION_KEYS.USER_WITHDRAWALS_BTC_FEE_PENDING:
+			return {
+				...state,
+				btcFee: {
+					...INITIAL_BTC_WHITDRAWALS_FEE,
+					loading: true,
+				}
+			}
+		case ACTION_KEYS.USER_WITHDRAWALS_BTC_FEE_FULFILLED:
+			return {
+				...state,
+				btcFee: {
+					...INITIAL_BTC_WHITDRAWALS_FEE,
+					loading: false,
+					ready: true,
+					...payload,
+				}
+			}
+		case ACTION_KEYS.USER_WITHDRAWALS_BTC_FEE_FULFILLED:
+			return {
+				...state,
+				btcFee: {
+					...INITIAL_BTC_WHITDRAWALS_FEE,
+					loading: false,
 
+				}
+			}
 		case 'LOGOUT':
 			return INITIAL_STATE;
 	}

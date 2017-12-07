@@ -531,6 +531,9 @@ export default {
   WITHDRAWALS_FORM_ADDRESS_PLACEHOLDER: 'آدرس را تایپ کنید',
   WITHDRAWALS_FORM_AMOUNT_LABEL: '{0} مقدار برداشت',
   WITHDRAWALS_FORM_AMOUNT_PLACEHOLDER: 'مقدار {0} را که می خواهید برداشت کنید تایپ کنید',
+  WITHDRAWALS_FORM_FEE_LABEL: '{0} TRANSACTION FEE', // TODO
+  WITHDRAWALS_FORM_FEE_PLACEHOLDER: 'TYPE the amount of {0} you wish to use in the fee of the transaction', // TODO
+  WITHDRAWALS_FORM_FEE_OPTIMAL_VALUE: 'OPTIMAL FEE: {0} {1}', // TODO {0} -> amount {1} -> currency name
   DEPOSITS_FORM_AMOUNT_LABEL: '{0} مقدار برداشت', // FIX
   DEPOSITS_FORM_AMOUNT_PLACEHOLDER: 'مقدار {0} را که می خواهید برداشت کنید تایپ کنید',
   DEPOSITS_BUTTON_TEXT: 'مرور سپرده',
@@ -584,6 +587,4 @@ export default {
   ORDERBOOK_SPREAD_PRICE: '{0} {1}', // TODO 0-> amount  1 -> symbol  600,000 T
   FIAT_PRICE_FORMAT: '{0} {1}', // TODO 0-> amount  1 -> symbol  600,000 T
   BTC_PRICE_FORMAT: '{0} {1}', // TODO 0-> amount  1 -> symbol  6.00245 BTC
-  WITHDRAWALS_BTC_ADDRESS_LABEL: 'DESTINATION ADDRESS', // TODO
-  WITHDRAWALS_BTC_ADDRESS_PLACEHOLDER: 'TYPE THE ADDRESS', // TODO
 };

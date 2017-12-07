@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import { Dialog } from '../../components';
 import { ICONS, FLEX_CENTER_CLASSES, CURRENCIES } from '../../config/constants';
 import { generateWalletActionsText, fiatSymbol } from '../../utils/currency';
-import { performBtcWithdraw, requestFiatWithdraw } from '../../actions/walletActions';
+import { performBtcWithdraw, requestFiatWithdraw, requestBtcWithdrawFee } from '../../actions/walletActions';
 import { errorHandler } from '../../components/OtpForm/utils';
 
 import {
@@ -15,7 +15,8 @@ import {
 } from '../../actions/appActions';
 
 import ReviewModalContent from './ReviewModalContent';
-import WithdrawCryptocurrency, { generateFormValues } from './form';
+import WithdrawCryptocurrency from './form';
+import { generateFormValues, generateInitialValues } from './formUtils';
 import { generateFiatInformation, renderExtraInformation } from './utils';
 
 import {
@@ -30,23 +31,30 @@ class Withdraw extends Component {
     dialogIsOpen: false,
     dialogData: {},
     formValues: {},
+    initialValues: {},
   }
 
   componentWillMount() {
-    this.generateFormValues(this.props.symbol, this.props.balance, this.props.fee);
+    this.generateFormValues(this.props.symbol, this.props.balance, this.props.btcFee);
+    this.props.requestBtcWithdrawFee();
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.symbol !== this.props.symbol || nextProps.activeLanguage !== this.props.activeLanguage) {
-      this.generateFormValues(nextProps.symbol, nextProps.balance, nextProps.fee);
+    if (
+      nextProps.symbol !== this.props.symbol ||
+      nextProps.activeLanguage !== this.props.activeLanguage ||
+      nextProps.btcFee.ready !== this.props.btcFee.ready
+    ) {
+      this.generateFormValues(nextProps.symbol, nextProps.balance, nextProps.btcFee);
     }
   }
 
-  generateFormValues = (symbol, balance, fee) => {
+  generateFormValues = (symbol, balance, fees) => {
     const balanceAvailable = balance[`${symbol}_available`];
-    const formValues = generateFormValues(symbol, balanceAvailable, fee);
+    const formValues = generateFormValues(symbol, balanceAvailable, fees);
+    const initialValues = generateInitialValues(symbol, fees);
 
-    this.setState({ formValues });
+    this.setState({ formValues, initialValues });
   }
 
   onSubmitWithdraw = (values) => {
@@ -57,13 +65,14 @@ class Withdraw extends Component {
     return withdrawAction({
         ...values,
         amount: math.eval(values.amount),
+        fee: values.fee ? math.eval(values.fee) : 0,
       })
       .catch(errorHandler);
   }
 
   render() {
     const { symbol, balance, fee, verification_level = 0, otp_enabled, bank_account, openContactForm, activeLanguage } = this.props;
-    const { dialogIsOpen, dialogData, formValues } = this.state;
+    const { dialogIsOpen, dialogData, formValues, initialValues } = this.state;
 
     const balanceAvailable = balance[`${symbol}_available`];
 
@@ -78,7 +87,9 @@ class Withdraw extends Component {
       otp_enabled,
       openContactForm,
       formValues,
-      activeLanguage
+      initialValues,
+      activeLanguage,
+      balanceAvailable,
     };
 
     return (
@@ -103,10 +114,12 @@ const mapStateToProps = (store) => ({
   otp_enabled: store.user.otp_enabled,
   bank_account: store.user.userData.bank_account,
   activeLanguage: store.app.language,
+  btcFee: store.wallet.btcFee,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   openContactForm: bindActionCreators(openContactForm, dispatch),
+  requestBtcWithdrawFee: bindActionCreators(requestBtcWithdrawFee, dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Withdraw);

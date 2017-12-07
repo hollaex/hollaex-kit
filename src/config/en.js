@@ -530,6 +530,9 @@ export default {
   WITHDRAWALS_FORM_ADDRESS_PLACEHOLDER: 'Type the address',
   WITHDRAWALS_FORM_AMOUNT_LABEL: '{0} amount to withdraw',
   WITHDRAWALS_FORM_AMOUNT_PLACEHOLDER: 'Type the amount of {0} you wish to withdraw',
+  WITHDRAWALS_FORM_FEE_LABEL: '{0} transaction fee',
+  WITHDRAWALS_FORM_FEE_PLACEHOLDER: 'Type the amount of {0} you wish to use in the fee of the transaction',
+  WITHDRAWALS_FORM_FEE_OPTIMAL_VALUE: 'Optimal fee: {0} {1}', // TODO {0} -> amount {1} -> currency name
   DEPOSITS_FORM_AMOUNT_LABEL: '{0} amount to deposit',
   DEPOSITS_FORM_AMOUNT_PLACEHOLDER: 'Type the amount of {0} you wish to withdraw',
   DEPOSITS_BUTTON_TEXT: 'review deposit',
@@ -583,6 +586,4 @@ export default {
   ORDERBOOK_SPREAD_PRICE: '{0} {1}', //// 0-> amount  1 -> symbol  600,000 T
   FIAT_PRICE_FORMAT: '{0} {1}', // 0-> amount  1 -> symbol  600,000 T
   BTC_PRICE_FORMAT: '{0} {1}', // 0-> amount  1 -> symbol  6.00245 BTC
-  WITHDRAWALS_BTC_ADDRESS_LABEL: 'Destination address',
-  WITHDRAWALS_BTC_ADDRESS_PLACEHOLDER: 'Type the address',
 };

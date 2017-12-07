@@ -4,7 +4,6 @@ import { reduxForm, formValueSelector, reset } from 'redux-form';
 import math from 'mathjs';
 import { Button, Dialog, OtpForm, Loader } from '../../components';
 import renderFields from '../../components/Form/factoryFields';
-import { required, minValue, maxValue, checkBalance, validAddress } from '../../components/Form/validations';
 import { errorHandler } from '../../components/OtpForm/utils';
 import { setWithdrawNotificationSuccess, setWithdrawNotificationError } from './notifications';
 import { generateFeeMessage } from './utils';
@@ -12,51 +11,32 @@ import { generateFeeMessage } from './utils';
 import STRINGS from '../../config/localizedStrings';
 
 import ReviewModalContent from './ReviewModalContent';
-import { CURRENCIES, WITHDRAW_LIMITS } from '../../config/constants';
-import { fiatSymbol } from '../../utils/currency';
 
 const FORM_NAME = 'WithdrawCryptocurrencyForm';
 
 const selector = formValueSelector(FORM_NAME)
 
-export const generateFormValues = (symbol, available = 0, fee = 0) => {
-  const { name } = CURRENCIES[symbol];
-  const { MIN, MAX, STEP = 1 } = WITHDRAW_LIMITS[symbol];
+const validate = (values, props) => {
+  const errors = {};
+  const amount = math.fraction(values.amount || 0);
+  const fee = math.fraction(values.fee || 0);
+  const balance = math.fraction(props.balanceAvailable || 0);
 
-  const fields = {};
-
-  if (symbol !== fiatSymbol) {
-    fields.address = {
-      type: 'text',
-      label: STRINGS.WITHDRAWALS_BTC_ADDRESS_LABEL,
-      placeholder: STRINGS.WITHDRAWALS_BTC_ADDRESS_PLACEHOLDER,
-      validate: [required, validAddress(symbol, STRINGS.WITHDRAWALS_INVALID_ADDRESS)],
+  if (
+    math.larger(fee, 0) &&
+    math.larger(amount, 0)
+  ) {
+    const rate = math.divide(fee, amount);
+    if (math.largerEq(rate, 0.2)) {
+      errors.fee = 'Fee is larger than 20% of the transaction';
     }
   }
 
-  const amountValidate = [ required ];
-  if (MIN) {
-    amountValidate.push(minValue(MIN, STRINGS.WITHDRAWALS_MIN_VALUE_ERROR));
+  if (math.larger(math.add(fee, amount), balance)) {
+    errors.amount = 'Transaction is larger than balance';
   }
-  if (MAX) {
-    amountValidate.push(maxValue(MAX, STRINGS.WITHDRAWALS_MAX_VALUE_ERROR));
-  }
-  amountValidate.push(checkBalance(available, STRINGS.formatString(STRINGS.WITHDRAWALS_LOWER_BALANCE, name), fee));
-
-  fields.amount = {
-    type: 'number',
-    label: STRINGS.formatString(STRINGS.WITHDRAWALS_FORM_AMOUNT_LABEL, name),
-    placeholder: STRINGS.formatString(STRINGS.DEPOSITS_FORM_AMOUNT_PLACEHOLDER, name),
-    information: fee ? generateFeeMessage(fee) : '',
-    min: MIN,
-    max: MAX,
-    step: STEP,
-    validate: amountValidate,
-  }
-
-  return fields;
-};
-
+  return errors;
+}
 class Form extends Component {
   state = {
     dialogIsOpen: false,
@@ -66,6 +46,9 @@ class Form extends Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.symbol !== this.props.symbol) {
       nextProps.dispatch(reset(FORM_NAME));
+    }
+    if (!nextProps.submitting && nextProps.submitting !== this.props.submitting) {
+      this.onCloseDialog();
     }
   }
 
@@ -97,6 +80,7 @@ class Form extends Component {
     return this.props.onSubmit({
         ...values,
         amount: math.eval(values.amount),
+        fee: values.fee ? math.eval(values.fee) : 0,
         otp_code,
       })
       .then(({ data }) => {
@@ -148,7 +132,7 @@ class Form extends Component {
           >
             {dialogOtpOpen ?
               <OtpForm onSubmit={this.onSubmitOtp} onClickHelp={openContactForm} /> :
-              (submitting ?
+              (!submitting ?
                 <ReviewModalContent
                   symbol={symbol}
                   data={data}
@@ -170,23 +154,27 @@ const WithdrawForm = reduxForm({
   form: FORM_NAME,
   onSubmitFail: setWithdrawNotificationError,
   onSubmitSuccess: (result, dispatch) => dispatch(reset(FORM_NAME)),
+  enableReinitialize: true,
+  validate,
 })(Form);
 
 const mapStateToForm = (state) => ({
-  data: selector(state, 'address', 'amount'),
+  data: selector(state, 'address', 'amount', 'fee'),
 });
 
 const WithdrawFormWithValues = connect(mapStateToForm)(WithdrawForm);
 
 const Withdraw = ({
-  onSubmit, otp_enabled, openContactForm, formValues, symbol,
+  onSubmit, otp_enabled, openContactForm, formValues, symbol, initialValues, balanceAvailable,
 }) => {
   const formProps = {
     onSubmit,
     formValues,
+    initialValues,
     symbol,
     openContactForm,
     checkOtp: otp_enabled,
+    balanceAvailable,
   };
 
   return (

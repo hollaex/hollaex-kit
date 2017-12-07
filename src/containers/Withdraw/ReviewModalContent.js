@@ -1,4 +1,5 @@
 import React from 'react';
+import math from 'mathjs';
 import { Button } from '../../components';
 import { fiatSymbol } from '../../utils/currency';
 import { CURRENCIES, ICONS } from '../../config/constants';
@@ -26,6 +27,8 @@ const ButtonSection = ({ onClickAccept, onClickCancel }) => {
 
 const ReviewModalContent = ({ symbol, data, onClickAccept, onClickCancel }) => {
   const { shortName, name, formatToCurrency } = CURRENCIES[symbol];
+  const totalTransaction = math.number(math.add(math.fraction(data.amount), math.fraction(data.fee || 0)));
+  const cryptoAmountText = STRINGS.formatString(STRINGS.BTC_PRICE_FORMAT, formatToCurrency(totalTransaction), shortName);
   return (
     <div className="d-flex flex-column review-wrapper">
       <img src={ICONS.CHECK_SENDING_BITCOIN} alt="review" className="review-icon" />
@@ -33,12 +36,12 @@ const ReviewModalContent = ({ symbol, data, onClickAccept, onClickCancel }) => {
         (
           <div className="d-flex flex-column align-items-center review-info_container">
             <div className="review-info_message">{STRINGS.WITHDRAW_PAGE.MESSAGE_ABOUT_WITHDRAW}</div>
-            <div className="review-crypto-amount">{`${formatToCurrency(data.amount)} ${shortName}`}</div>
+            <div className="review-crypto-amount">{cryptoAmountText}</div>
           </div>
         ) : (
           <div className="d-flex flex-column align-items-center review-info_container">
             <div className="review-info_message">{STRINGS.WITHDRAW_PAGE.MESSAGE_ABOUT_SEND}</div>
-            <div className="review-crypto-amount">{`${formatToCurrency(data.amount)} ${shortName}`}</div>
+            <div className="review-crypto-amount">{cryptoAmountText}</div>
             <div className="review-warning_arrow"></div>
             <div className="review-crypto-address">{data.address}</div>
             <div className="warning_text review-info_message">{STRINGS.formatString(STRINGS.WITHDRAW_PAGE.MESSAGE_BTC_WARNING, name)}</div>
