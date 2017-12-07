@@ -32,7 +32,7 @@ const generateNotificationContent = ({ type, data, onClose, goToPage, openContac
           information: depositTexts.subtitle,
           price: data.price || 1,
           content: (
-            <div>
+            <div className={classnames({ 'notification-information': !!depositTexts.information })}>
               {depositTexts.information && depositTexts.information.join('\n')}
             </div>
           ),
