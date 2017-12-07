@@ -49,12 +49,14 @@ class OrderEntry extends Component {
     const price = parseFloat(props.price || 0);
 
     let orderPrice = 0;
-    if (props.side === 'sell') {
-      const { bids } = props;
-      orderPrice = checkMarketPrice(size, bids, type, side, price);
-    } else {
-      const { asks } = props;
-      orderPrice = checkMarketPrice(size, asks, type, side, price);
+    if (size > 0 && !(type === 'limit' && price === 0)) {
+      if (props.side === 'sell') {
+        const { bids } = props;
+        orderPrice = checkMarketPrice(size, bids, type, side, price);
+      } else {
+        const { asks } = props;
+        orderPrice = checkMarketPrice(size, asks, type, side, price);
+      }
     }
 
     let outsideFormError = '';
