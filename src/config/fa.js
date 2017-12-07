@@ -525,6 +525,7 @@ export default {
   WITHDRAWALS_MIN_VALUE_ERROR: 'تراکنش برای ارسال بسیار کوچک است. مقدار بیشتری را امتحان کنید',
   WITHDRAWALS_MAX_VALUE_ERROR: 'تراکنش برای ارسال بسیار بزرگ است. مقدار کمتری  را امتحان کنید.',
   WITHDRAWALS_LOWER_BALANCE: 'شما برای انجام این معامله مبلغ {0} کافی ندارید',
+  WITHDRAWALS_FEE_TOO_LARGE: 'FEE IS larger than {0}% of the transaction', // TODO
   WITHDRAWALS_INVALID_ADDRESS: 'آدرس بیت کوین نامعتبر است لطفا با دقت و دوباره وارد شوید',
   WITHDRAWALS_BUTTON_TEXT: 'مرور برداشت',
   WITHDRAWALS_FORM_ADDRESS_LABEL: 'آدرس مقصد',
@@ -563,8 +564,8 @@ export default {
     BANK_TO_WITHDRAW: 'نام بانک دریافت کننده',
     MESSAGE_ABOUT_SEND: 'شما در آستانه ارسال',
     MESSAGE_BTC_WARNING: 'لطفا از درست بودن آدرس خود اطمینان حاصل کنید {0} تراکنش ها غیر قابل بازگشت هستند.',
-    MESSAGE_ABOUT_WITHDRAW: 'You are about to transfer to your bank account', // TODO
-    MESSAGE_FEE: 'Transactions fee of {0}({1})included in withdrawal', // TODO
+    MESSAGE_ABOUT_WITHDRAW: 'You are about to TRANSFER to your bank account', // TODO
+    MESSAGE_FEE: 'Transactions FEE OF {0} ({1}) included', // TODO
     FIAT_MESSAGE_1: 'شما تنها می توانید به حساب بانک پول خود را ارسال کنید که با نام شما در اکسیر مطابقت داشته باشد',
     FIAT_MESSAGE_2: 'Withdrawal min amount', // TODO
     FIAT_MESSAGE_3: 'محدودیت برداشت روزانه',

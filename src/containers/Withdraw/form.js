@@ -6,7 +6,6 @@ import { Button, Dialog, OtpForm, Loader } from '../../components';
 import renderFields from '../../components/Form/factoryFields';
 import { errorHandler } from '../../components/OtpForm/utils';
 import { setWithdrawNotificationSuccess, setWithdrawNotificationError } from './notifications';
-import { generateFeeMessage } from './utils';
 
 import STRINGS from '../../config/localizedStrings';
 
@@ -16,6 +15,7 @@ const FORM_NAME = 'WithdrawCryptocurrencyForm';
 
 const selector = formValueSelector(FORM_NAME)
 
+const FEE_PERCENTAGE_LIMIT = 20;
 const validate = (values, props) => {
   const errors = {};
   const amount = math.fraction(values.amount || 0);
@@ -27,16 +27,19 @@ const validate = (values, props) => {
     math.larger(amount, 0)
   ) {
     const rate = math.divide(fee, amount);
-    if (math.largerEq(rate, 0.2)) {
-      errors.fee = 'Fee is larger than 20% of the transaction';
+    if (math.larger(rate, math.divide(FEE_PERCENTAGE_LIMIT, 100))) {
+      errors.fee = STRINGS.formatString(STRINGS.WITHDRAWALS_FEE_TOO_LARGE , FEE_PERCENTAGE_LIMIT);
     }
   }
 
-  if (math.larger(math.add(fee, amount), balance)) {
-    errors.amount = 'Transaction is larger than balance';
+  const totalTransaction = math.add(fee, amount);
+  if (math.larger(totalTransaction, balance)) {
+    errors.amount = STRINGS.formatString(STRINGS.WITHDRAWALS_LOWER_BALANCE, math.number(totalTransaction));
   }
+
   return errors;
 }
+
 class Form extends Component {
   state = {
     dialogIsOpen: false,
@@ -67,7 +70,7 @@ class Form extends Component {
   }
 
   onAcceptDialog = () => {
-    if (this.props.checkOtp) {
+    if (this.props.otp_enabled) {
       this.setState({ dialogOtpOpen: true })
     } else {
       // this.onCloseDialog();
@@ -110,6 +113,7 @@ class Form extends Component {
       data,
       openContactForm,
       formValues,
+      currentPrice,
     } = this.props;
 
     const { dialogIsOpen, dialogOtpOpen } = this.state;
@@ -136,6 +140,7 @@ class Form extends Component {
                 <ReviewModalContent
                   symbol={symbol}
                   data={data}
+                  price={currentPrice}
                   onClickAccept={this.onAcceptDialog}
                   onClickCancel={this.onCloseDialog}
                 /> :
@@ -164,24 +169,4 @@ const mapStateToForm = (state) => ({
 
 const WithdrawFormWithValues = connect(mapStateToForm)(WithdrawForm);
 
-const Withdraw = ({
-  onSubmit, otp_enabled, openContactForm, formValues, symbol, initialValues, balanceAvailable,
-}) => {
-  const formProps = {
-    onSubmit,
-    formValues,
-    initialValues,
-    symbol,
-    openContactForm,
-    checkOtp: otp_enabled,
-    balanceAvailable,
-  };
-
-  return (
-    <WithdrawFormWithValues
-      {...formProps}
-    />
-  );
-}
-
-export default Withdraw;
+export default WithdrawFormWithValues;

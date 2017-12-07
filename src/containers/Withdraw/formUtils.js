@@ -45,7 +45,6 @@ export const generateFormValues = (symbol, available = 0, fees = {}) => {
     type: 'number',
     label: STRINGS.formatString(STRINGS.WITHDRAWALS_FORM_AMOUNT_LABEL, name),
     placeholder: STRINGS.formatString(STRINGS.WITHDRAWALS_FORM_AMOUNT_PLACEHOLDER, name).join(''),
-    // information: fee ? generateFeeMessage(fee) : '',
     min: MIN,
     max: MAX,
     step: STEP,

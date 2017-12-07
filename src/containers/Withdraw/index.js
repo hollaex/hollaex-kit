@@ -24,8 +24,6 @@ import {
   renderTitleSection,
 } from '../Wallet/components';
 
-const renderChildren = (formProps) => <WithdrawCryptocurrency {...formProps} />;
-
 class Withdraw extends Component {
   state = {
     dialogIsOpen: false,
@@ -71,7 +69,10 @@ class Withdraw extends Component {
   }
 
   render() {
-    const { symbol, balance, fee, verification_level = 0, otp_enabled, bank_account, openContactForm, activeLanguage } = this.props;
+    const {
+      symbol, balance, fee, verification_level, prices,
+      otp_enabled, bank_account, openContactForm, activeLanguage
+    } = this.props;
     const { dialogIsOpen, dialogData, formValues, initialValues } = this.state;
 
     const balanceAvailable = balance[`${symbol}_available`];
@@ -90,6 +91,7 @@ class Withdraw extends Component {
       initialValues,
       activeLanguage,
       balanceAvailable,
+      currentPrice: prices[symbol],
     };
 
     return (
@@ -97,7 +99,9 @@ class Withdraw extends Component {
         {renderTitleSection(symbol, 'withdraw', ICONS.WITHDRAW)}
         <div className={classnames('inner_container', 'with_border_top')}>
           {renderInformation(symbol, balance, openContactForm, generateFiatInformation)}
-          {renderChildren(formProps)}
+          <WithdrawCryptocurrency
+            {...formProps}
+          />
           {renderExtraInformation(symbol, bank_account)}
         </div>
       </div>
