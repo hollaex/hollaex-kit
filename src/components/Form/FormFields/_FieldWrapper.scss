@@ -1,4 +1,5 @@
-$wrapper-margin: 0.5rem;
+$wrapper-margin: 1.5rem;
+$error-margin: 0.5rem;
 $underline-margin-bottom: 0.25rem;
 $children--padding: 0.5rem;
 $error-icon-size: 1.25rem;
@@ -24,7 +25,7 @@ $valid-icon-size: 2rem;
       flex: 1;
 
       &.field-error-content {
-        padding-bottom: $wrapper-margin;
+        padding-bottom: $error-margin;
       }
     }
   }
@@ -143,7 +144,7 @@ $valid-icon-size: 2rem;
   .field-wrapper {
     &.inline {
       .field-error-content {
-        margin-left: $wrapper-margin;
+        margin-left: $error-margin;
       }
 
       input {
@@ -174,7 +175,7 @@ $valid-icon-size: 2rem;
   .field-wrapper {
     &.inline {
       .field-error-content {
-        margin-right: $wrapper-margin;
+        margin-right: $error-margin;
       }
 
       input {
