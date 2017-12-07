@@ -72,7 +72,7 @@ class Login extends Component {
             subtitle={STRINGS.formatString(STRINGS.LOGIN.LOGIN_TO, STRINGS.APP_TITLE)}
             actionProps={{
               text: STRINGS.LOGIN.CANT_LOGIN,
-              iconPath: ICONS.RED_ARROW,
+              iconPath: ICONS.BLUE_ARROW_RIGHT,
               onClick: this.redirectToResetPassword,
             }}
           />

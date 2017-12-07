@@ -76,7 +76,7 @@ class ResetPassword extends Component {
             subtitle={TEXTS.SUBTITLE}
             actionProps={{
               text: TEXTS.HELP,
-              iconPath: ICONS.RED_ARROW,
+              iconPath: ICONS.HELP_ICON,
               onClick: this.onOpenDialog,
             }}
           />

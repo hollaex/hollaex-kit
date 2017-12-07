@@ -75,7 +75,7 @@ class Signup extends Component {
             subtitle={STRINGS.formatString(STRINGS.SIGN_UP.SIGNUP_TO, STRINGS.APP_TITLE)}
             actionProps={{
               text: STRINGS.HELP_TEXT,
-              iconPath: ICONS.RED_ARROW,
+              iconPath: ICONS.HELP_ICON,
               onClick: this.onOpenDialog,
             }}
           />

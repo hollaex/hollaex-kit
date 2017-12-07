@@ -70,7 +70,7 @@ class RequestResetPassword extends Component {
               subtitle={TEXTS.SUBTITLE}
               actionProps={{
                 text: TEXTS.SUPPORT,
-                iconPath: ICONS.RED_ARROW,
+                iconPath: ICONS.HELP_ICON,
                 onClick: this.onOpenDialog,
               }}
             />

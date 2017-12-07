@@ -89,6 +89,9 @@ export const ICONS = {
   WITHDRAW: `${process.env.PUBLIC_URL}/assets/images/withdraw.svg`,
   WITHDRAW_HISTORY: `${process.env.PUBLIC_URL}/assets/images/withdraw-history.svg`,
   WITHDRAW_HISTORY_GREY: `${process.env.PUBLIC_URL}/assets/images/withdraw-history-grey.svg`,
+  BLUE_ARROW_LEFT: `${process.env.PUBLIC_URL}/assets/images/blue-arrow-left.svg`,
+  BLUE_ARROW_RIGHT: `${process.env.PUBLIC_URL}/assets/images/blue-arrow-right.svg`,
+  SESSION_TIMED_OUT: `${process.env.PUBLIC_URL}/assets/images/session-timed-out.svg`,
 }
 
 export const SOCIAL_ICONS = {
