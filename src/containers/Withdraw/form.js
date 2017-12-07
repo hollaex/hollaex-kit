@@ -119,38 +119,35 @@ class Form extends Component {
     const { dialogIsOpen, dialogOtpOpen } = this.state;
 
     return (
-      <div>
-        <form onSubmit={handleSubmit}>
-          {renderFields(formValues)}
-          {error && <div className="warning_text">{error}</div>}
-          <Button
-            label={STRINGS.DEPOSITS_BUTTON_TEXT}
-            disabled={pristine || submitting || !valid}
-            onClick={this.onOpenDialog}
-          />
-          <Dialog
-            isOpen={dialogIsOpen}
-            label="withdraw-modal"
-            onCloseDialog={this.onCloseDialog}
-            shouldCloseOnOverlayClick={dialogOtpOpen}
-          >
-            {dialogOtpOpen ?
-              <OtpForm onSubmit={this.onSubmitOtp} onClickHelp={openContactForm} /> :
-              (!submitting ?
-                <ReviewModalContent
-                  symbol={symbol}
-                  data={data}
-                  price={currentPrice}
-                  onClickAccept={this.onAcceptDialog}
-                  onClickCancel={this.onCloseDialog}
-                /> :
-                <Loader relative={true} background={false} />
-              )
-            }
-          </Dialog>
-        </form>
-      </div>
-
+      <form onSubmit={handleSubmit}>
+        {renderFields(formValues)}
+        {error && <div className="warning_text">{error}</div>}
+        <Button
+          label={STRINGS.DEPOSITS_BUTTON_TEXT}
+          disabled={pristine || submitting || !valid}
+          onClick={this.onOpenDialog}
+        />
+        <Dialog
+          isOpen={dialogIsOpen}
+          label="withdraw-modal"
+          onCloseDialog={this.onCloseDialog}
+          shouldCloseOnOverlayClick={dialogOtpOpen}
+        >
+          {dialogOtpOpen ?
+            <OtpForm onSubmit={this.onSubmitOtp} onClickHelp={openContactForm} /> :
+            (!submitting ?
+              <ReviewModalContent
+                symbol={symbol}
+                data={data}
+                price={currentPrice}
+                onClickAccept={this.onAcceptDialog}
+                onClickCancel={this.onCloseDialog}
+              /> :
+              <Loader relative={true} background={false} />
+            )
+          }
+        </Dialog>
+      </form>
     );
   }
 }

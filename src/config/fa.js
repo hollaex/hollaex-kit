@@ -22,6 +22,7 @@ export default {
   HELP_TEXT: 'کمک',
   SUCCESS_TEXT: 'موفقیت',
   ERROR_TEXT: 'خطا',
+  EDIT_TEXT: 'Edit', // TODO
   NO_OPTIONS: 'هیچ گزینه ای وجود ندارد',
   HOME: {
     SECTION_1_TITLE: 'خرید و فروش بیت کوین',

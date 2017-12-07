@@ -53,7 +53,8 @@ export const generateFormValues = (symbol, available = 0, fees = {}) => {
 
   if (symbol !== fiatSymbol) {
     fields.fee = {
-      type: 'number',
+      type: 'editable',
+      inputType: 'number',
       label: STRINGS.formatString(STRINGS.WITHDRAWALS_FORM_FEE_LABEL, name),
       placeholder: STRINGS.formatString(STRINGS.WITHDRAWALS_FORM_FEE_PLACEHOLDER, name).join(''),
       min: fees.min || MIN,

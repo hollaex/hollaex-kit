@@ -22,6 +22,7 @@ export default {
   HELP_TEXT: 'help',
   SUCCESS_TEXT: 'Success',
   ERROR_TEXT: 'Error',
+  EDIT_TEXT: 'Edit',
   NO_OPTIONS: 'No options availables',
   HOME: {
     SECTION_1_TITLE: 'Buy & sell cryptocurrencies',

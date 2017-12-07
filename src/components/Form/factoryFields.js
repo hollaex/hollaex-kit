@@ -6,6 +6,7 @@ import DropdownField from './FormFields/DropdownField';
 import DateField from './FormFields/DateField';
 import DropdownDateField from './FormFields/DropdownDateField';
 import CheckField from './FormFields/CheckField';
+import EditableInputField from './FormFields/EditableInputField';
 
 const renderFields = (fields) => {
   return (
@@ -55,6 +56,13 @@ const renderFields = (fields) => {
             return (
               <Field
                 component={ CheckField }
+                {...commonProps}
+              />
+            );
+          case 'editable':
+            return (
+              <Field
+                component={ EditableInputField }
                 {...commonProps}
               />
             );
