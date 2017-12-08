@@ -3,8 +3,9 @@ import classnames from 'classnames';
 import math from 'mathjs';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import { formValueSelector } from 'redux-form';
 
-import { Dialog } from '../../components';
+import { Dialog, Loader } from '../../components';
 import { ICONS, FLEX_CENTER_CLASSES, CURRENCIES } from '../../config/constants';
 import { generateWalletActionsText, fiatSymbol } from '../../utils/currency';
 import { performBtcWithdraw, requestFiatWithdraw, requestBtcWithdrawFee } from '../../actions/walletActions';
@@ -24,6 +25,8 @@ import {
   renderTitleSection,
 } from '../Wallet/components';
 
+import { FORM_NAME } from './form';
+
 class Withdraw extends Component {
   state = {
     dialogIsOpen: false,
@@ -33,23 +36,30 @@ class Withdraw extends Component {
   }
 
   componentWillMount() {
-    this.generateFormValues(this.props.symbol, this.props.balance, this.props.btcFee);
     this.props.requestBtcWithdrawFee();
+    this.generateFormValues(
+      this.props.symbol, this.props.balance, this.props.btcFee,
+      this.props.dispatch, this.props.selectedFee
+    );
   }
 
   componentWillReceiveProps(nextProps) {
     if (
       nextProps.symbol !== this.props.symbol ||
       nextProps.activeLanguage !== this.props.activeLanguage ||
-      nextProps.btcFee.ready !== this.props.btcFee.ready
+      nextProps.btcFee.ready !== this.props.btcFee.ready ||
+      nextProps.selectedFee !== this.props.selectedFee
     ) {
-      this.generateFormValues(nextProps.symbol, nextProps.balance, nextProps.btcFee);
+      this.generateFormValues(
+        nextProps.symbol, nextProps.balance, nextProps.btcFee,
+        nextProps.dispatch, nextProps.selectedFee
+      );
     }
   }
 
-  generateFormValues = (symbol, balance, fees) => {
+  generateFormValues = (symbol, balance, fees, dispatch, selectedFee = 0) => {
     const balanceAvailable = balance[`${symbol}_available`];
-    const formValues = generateFormValues(symbol, balanceAvailable, fees);
+    const formValues = generateFormValues(symbol, balanceAvailable, fees, dispatch, selectedFee);
     const initialValues = generateInitialValues(symbol, fees);
 
     this.setState({ formValues, initialValues });
@@ -71,14 +81,15 @@ class Withdraw extends Component {
   render() {
     const {
       symbol, balance, fee, verification_level, prices,
-      otp_enabled, bank_account, openContactForm, activeLanguage
+      otp_enabled, bank_account, openContactForm, activeLanguage,
+      btcFee,
     } = this.props;
     const { dialogIsOpen, dialogData, formValues, initialValues } = this.state;
 
     const balanceAvailable = balance[`${symbol}_available`];
 
-    if (balanceAvailable === undefined) {
-      return <div></div>
+    if (balanceAvailable === undefined && btcFee.loading) {
+      return <Loader />
     };
 
     const formProps = {
@@ -119,11 +130,13 @@ const mapStateToProps = (store) => ({
   bank_account: store.user.userData.bank_account,
   activeLanguage: store.app.language,
   btcFee: store.wallet.btcFee,
+  selectedFee: formValueSelector(FORM_NAME)(store, 'fee'),
 });
 
 const mapDispatchToProps = (dispatch) => ({
   openContactForm: bindActionCreators(openContactForm, dispatch),
   requestBtcWithdrawFee: bindActionCreators(requestBtcWithdrawFee, dispatch),
+  dispatch,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Withdraw);

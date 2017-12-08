@@ -589,4 +589,5 @@ export default {
   ORDERBOOK_SPREAD_PRICE: '{0} {1}', // TODO 0-> amount  1 -> symbol  600,000 T
   FIAT_PRICE_FORMAT: '{0} {1}', // TODO 0-> amount  1 -> symbol  600,000 T
   BTC_PRICE_FORMAT: '{0} {1}', // TODO 0-> amount  1 -> symbol  6.00245 BTC
+  CALCULATE_MAX: 'تاریخ شمسی‌',
 };

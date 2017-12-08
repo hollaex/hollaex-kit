@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import { ICONS } from '../../../config/constants';
+import { ActionNotification } from '../../';
 
 export const FieldContent = ({
   label = '',
@@ -48,7 +49,8 @@ class FieldWrapper extends Component {
       visited = false,
       hideUnderline = false,
       className = '',
-      onClick = () => {}
+      onClick = () => {},
+      notification,
     } = this.props;
 
     const displayError = !(active || focused) && (visited || touched) && error;
@@ -64,6 +66,12 @@ class FieldWrapper extends Component {
           onClick={onClick}
         >
           {children}
+          {notification && typeof notification === 'object' &&
+            <ActionNotification
+              {...notification}
+              className="pr-0 pl-0 no_bottom"
+            />
+          }
         </FieldContent>
         <FieldError
           displayError={displayError}

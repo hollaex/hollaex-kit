@@ -93,6 +93,7 @@ export const ICONS = {
   BLUE_ARROW_RIGHT: `${process.env.PUBLIC_URL}/assets/images/blue-arrow-right.svg`,
   SESSION_TIMED_OUT: `${process.env.PUBLIC_URL}/assets/images/session-timed-out.svg`,
   BLUE_EDIT: `${process.env.PUBLIC_URL}/assets/images/blue-edit-exir-icon.svg`,
+  BLUE_PLUS: `${process.env.PUBLIC_URL}/assets/images/max-plus-blue-icon.svg`,
 }
 
 export const SOCIAL_ICONS = {

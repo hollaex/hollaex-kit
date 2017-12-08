@@ -11,7 +11,7 @@ import STRINGS from '../../config/localizedStrings';
 
 import ReviewModalContent from './ReviewModalContent';
 
-const FORM_NAME = 'WithdrawCryptocurrencyForm';
+export const FORM_NAME = 'WithdrawCryptocurrencyForm';
 
 const selector = formValueSelector(FORM_NAME)
 

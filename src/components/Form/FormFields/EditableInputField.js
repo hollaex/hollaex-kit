@@ -61,7 +61,7 @@ class EditableInputField extends Component {
           text={STRINGS.EDIT_TEXT}
           status="information"
           iconPath={ICONS.BLUE_EDIT}
-          className="file_upload_icon"
+          className="no_bottom pr-0 pl-0"
           onClick={this.toogleEditable}
         />
       </FieldWrapper>
