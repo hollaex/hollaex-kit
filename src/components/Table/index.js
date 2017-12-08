@@ -18,9 +18,11 @@ class Table extends Component{
     this.goToPage(0, this.props.data, this.props.count);
   }
 
-  componentWillReceiveProps(nextProps, nextState) {
+  componentWillReceiveProps(nextProps) {
     if (nextProps.data.length !== this.props.data.length) {
-      this.goToPage(nextState.page, nextProps.data, nextProps.count);
+      this.goToPage(this.state.page, nextProps.data, nextProps.count);
+    } else {
+      this.goToPage(0, nextProps.data, nextProps.count);
     }
   }
 
