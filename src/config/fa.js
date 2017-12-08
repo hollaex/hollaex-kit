@@ -590,4 +590,6 @@ export default {
   FIAT_PRICE_FORMAT: '{0} {1}', // TODO 0-> amount  1 -> symbol  600,000 T
   BTC_PRICE_FORMAT: '{0} {1}', // TODO 0-> amount  1 -> symbol  6.00245 BTC
   CALCULATE_MAX: 'تاریخ شمسی‌',
+  DATEFIELD_TOOGLE_DATE_PE: 'تاریخ شمسی‌',
+  DATEFIELD_TOOGLE_DATE_GR: 'Gregorian calendar',
 };
