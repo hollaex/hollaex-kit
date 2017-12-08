@@ -34,7 +34,7 @@ export const renderOTPForm = (secret, email, activateOTP) => (
         {STRINGS.ACCOUNT_SECURITY.OTP.CONTENT.MESSAGE_3}<br />
         {STRINGS.ACCOUNT_SECURITY.OTP.CONTENT.MESSAGE_4}
       </div>
-      <div className=" otp_form-section-content otp_secret">{secret}</div>
+      <div className="otp_form-section-content otp_secret">{secret}</div>
     </div>
     <div className="otp_form-section-wrapper">
       <div className="otp_form-section-title">
