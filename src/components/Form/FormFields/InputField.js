@@ -11,6 +11,7 @@ const InputField = (props) => {
     onClick,
     fullWidth = false,
     information,
+    notification,
     ...rest,
   } = props;
   const displayError = touched && error && !active;

@@ -3,7 +3,7 @@ import classnames from 'classnames';
 import math from 'mathjs';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { formValueSelector } from 'redux-form';
+import { formValueSelector, change } from 'redux-form';
 
 import { Dialog, Loader } from '../../components';
 import { ICONS, FLEX_CENTER_CLASSES, CURRENCIES } from '../../config/constants';
@@ -38,8 +38,7 @@ class Withdraw extends Component {
   componentWillMount() {
     this.props.requestBtcWithdrawFee();
     this.generateFormValues(
-      this.props.symbol, this.props.balance, this.props.btcFee,
-      this.props.dispatch, this.props.selectedFee
+      this.props.symbol, this.props.balance, this.props.btcFee
     );
   }
 
@@ -47,19 +46,17 @@ class Withdraw extends Component {
     if (
       nextProps.symbol !== this.props.symbol ||
       nextProps.activeLanguage !== this.props.activeLanguage ||
-      nextProps.btcFee.ready !== this.props.btcFee.ready ||
-      nextProps.selectedFee !== this.props.selectedFee
+      nextProps.btcFee.ready !== this.props.btcFee.ready
     ) {
       this.generateFormValues(
-        nextProps.symbol, nextProps.balance, nextProps.btcFee,
-        nextProps.dispatch, nextProps.selectedFee
+        nextProps.symbol, nextProps.balance, nextProps.btcFee
       );
     }
   }
 
-  generateFormValues = (symbol, balance, fees, dispatch, selectedFee = 0) => {
+  generateFormValues = (symbol, balance, fees) => {
     const balanceAvailable = balance[`${symbol}_available`];
-    const formValues = generateFormValues(symbol, balanceAvailable, fees, dispatch, selectedFee);
+    const formValues = generateFormValues(symbol, balanceAvailable, fees, this.onCalculateMax);
     const initialValues = generateInitialValues(symbol, fees);
 
     this.setState({ formValues, initialValues });
@@ -78,6 +75,13 @@ class Withdraw extends Component {
       .catch(errorHandler);
   }
 
+  onCalculateMax = () => {
+    const { balance, symbol, selectedFee = 0, dispatch } = this.props;
+    const balanceAvailable = balance[`${symbol}_available`];
+    const amount = math.number(math.subtract(math.fraction(balanceAvailable), math.fraction(selectedFee)));
+    dispatch(change(FORM_NAME, 'amount', math.round(amount, 4)));
+  }
+
   render() {
     const {
       symbol, balance, fee, verification_level, prices,
@@ -88,7 +92,7 @@ class Withdraw extends Component {
 
     const balanceAvailable = balance[`${symbol}_available`];
 
-    if (balanceAvailable === undefined && btcFee.loading) {
+    if (balanceAvailable === undefined || btcFee.loading || !btcFee.ready) {
       return <Loader />
     };
 

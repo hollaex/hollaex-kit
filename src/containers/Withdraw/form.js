@@ -22,16 +22,6 @@ const validate = (values, props) => {
   const fee = math.fraction(values.fee || 0);
   const balance = math.fraction(props.balanceAvailable || 0);
 
-  if (
-    math.larger(fee, 0) &&
-    math.larger(amount, 0)
-  ) {
-    const rate = math.divide(fee, amount);
-    if (math.larger(rate, math.divide(FEE_PERCENTAGE_LIMIT, 100))) {
-      errors.fee = STRINGS.formatString(STRINGS.WITHDRAWALS_FEE_TOO_LARGE , FEE_PERCENTAGE_LIMIT);
-    }
-  }
-
   const totalTransaction = math.add(fee, amount);
   if (math.larger(totalTransaction, balance)) {
     errors.amount = STRINGS.formatString(STRINGS.WITHDRAWALS_LOWER_BALANCE, math.number(totalTransaction));
