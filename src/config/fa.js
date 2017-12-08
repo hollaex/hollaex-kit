@@ -226,7 +226,7 @@ export default {
    AVAILABLE_TRADING: 'برای برداشت قابل استفاده است',
    ORDERS_PLURAL: 'سفارشات',
    ORDERS_SINGULAR: 'سفارشات',
-   HOLD_ORDERS: 'You have {0} open {1}, resulting in a hold of {2}{3} placed on your {4} balance', // TODO
+   HOLD_ORDERS: 'You have {0} open {1}, resulting in a hold of {2} {3} placed on your {4} balance', // TODO
    // you have 3 open orders, resulting in a hold of B 0.2226 places on your BTC balance
  },
  REQUEST_RESET_PASSWORD: {
@@ -570,7 +570,7 @@ export default {
     FIAT_MESSAGE_1: 'شما تنها می توانید به حساب بانک پول خود را ارسال کنید که با نام شما در اکسیر مطابقت داشته باشد',
     FIAT_MESSAGE_2: 'حداقل مقدار برداشت', // TODO
     FIAT_MESSAGE_3: 'محدودیت برداشت روزانه',
-    FIAT_INCREASE_LIMIT: 'افزایش برداشت محدودیت روزانه',  
+    FIAT_INCREASE_LIMIT: 'افزایش برداشت محدودیت روزانه',
   },
     WALLET_BUTTON_FIAT_DEPOSIT: 'دریافت',
   WALLET_BUTTON_FIAT_WITHDRAW: 'ارسال',

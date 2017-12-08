@@ -25,14 +25,16 @@ class Wallet extends Component {
       nextProps.price !== this.props.price ||
       nextProps.orders.length !== this.props.orders.length ||
       nextProps.symbol !== this.props.symbol ||
-      nextProps.balance.timestamp !== this.props.balance.timestamp
+      nextProps.balance.timestamp !== this.props.balance.timestamp ||
+      nextProps.activeLanguage !== this.props.activeLanguage
     ) {
       this.calculateSections(nextProps);
     }
   }
 
   generateSection = (symbol, price, balance, orders ) => {
-    const { name, currencySymbol, formatToCurrency } = CURRENCIES[symbol];
+    const { currencySymbol, formatToCurrency } = CURRENCIES[symbol];
+    const name = STRINGS[`${symbol.toUpperCase()}_NAME`];
     return ({
       accordionClassName: 'wallet_section-wrapper',
       title: name,

@@ -226,7 +226,7 @@ export default {
    AVAILABLE_TRADING: 'Available for withdrawal',
    ORDERS_PLURAL: 'orders',
    ORDERS_SINGULAR: 'order',
-   HOLD_ORDERS: 'You have {0} open {1}, resulting in a hold of {2}{3} placed on your {4} balance',
+   HOLD_ORDERS: 'You have {0} open {1}, resulting in a hold of {2} {3} placed on your {4} balance',
  },
  REQUEST_RESET_PASSWORD: {
    TITLE: 'Account Recovery',

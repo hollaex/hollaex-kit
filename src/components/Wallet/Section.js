@@ -13,7 +13,7 @@ const TextHolders = ({ ordersOfSymbol, currencySymbol, hold, name }) => {
     <div>
       {STRINGS.formatString(STRINGS.WALLET.HOLD_ORDERS,
         ordersOfSymbol, ordersText,
-        currencySymbol, hold, symbolComponent
+        hold, currencySymbol, symbolComponent
       )}
     </div>
   );
