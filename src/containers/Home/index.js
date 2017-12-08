@@ -108,6 +108,7 @@ class Home extends Component {
           <Section1
             style={{ minHeight: style.minHeight > MIN_HEIGHT ? style.minHeight : MIN_HEIGHT}}
             onClickScrollTo={this.onClickScrollTo(INFORMATION_INDEX)}
+            onClickLearnMore={this.onClickScrollTo(INFORMATION_INDEX)}
             onClickRegister={this.goTo('signup')}
             token={token}
           />
