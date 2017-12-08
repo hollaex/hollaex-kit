@@ -165,8 +165,9 @@ class Container extends Component {
 			// console.log('update', type, data)
 			switch(type) {
         case 'order_queued':
-          break;
-        case 'order_processed':
+				case 'order_processed':
+        case 'order_canceled':
+					console.log(type, data)
           break;
 				case 'order_added':
 					this.props.addOrder(data);

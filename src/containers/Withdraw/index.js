@@ -5,8 +5,8 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { formValueSelector, change } from 'redux-form';
 
-import { Dialog, Loader } from '../../components';
-import { ICONS, FLEX_CENTER_CLASSES, CURRENCIES } from '../../config/constants';
+import { Dialog, Loader, WarningVerification } from '../../components';
+import { ICONS, FLEX_CENTER_CLASSES, CURRENCIES, MIN_VERIFICATION_LEVEL_TO_WITHDRAW } from '../../config/constants';
 import { generateWalletActionsText, fiatSymbol } from '../../utils/currency';
 import { performBtcWithdraw, requestFiatWithdraw, requestBtcWithdrawFee } from '../../actions/walletActions';
 import { errorHandler } from '../../components/OtpForm/utils';
@@ -36,21 +36,28 @@ class Withdraw extends Component {
   }
 
   componentWillMount() {
-    this.props.requestBtcWithdrawFee();
-    this.generateFormValues(
-      this.props.symbol, this.props.balance, this.props.btcFee
-    );
+    if (this.props.verification_level >= MIN_VERIFICATION_LEVEL_TO_WITHDRAW) {
+      this.props.requestBtcWithdrawFee();
+      this.generateFormValues(
+        this.props.symbol, this.props.balance, this.props.btcFee
+      );
+    }
   }
 
   componentWillReceiveProps(nextProps) {
     if (
-      nextProps.symbol !== this.props.symbol ||
-      nextProps.activeLanguage !== this.props.activeLanguage ||
-      nextProps.btcFee.ready !== this.props.btcFee.ready
+      nextProps.verification_level >= MIN_VERIFICATION_LEVEL_TO_WITHDRAW && (
+        nextProps.symbol !== this.props.symbol ||
+        nextProps.activeLanguage !== this.props.activeLanguage ||
+        nextProps.btcFee.ready !== this.props.btcFee.ready
+      )
     ) {
       this.generateFormValues(
         nextProps.symbol, nextProps.balance, nextProps.btcFee
       );
+      if (!nextProps.btcFee.ready && !nextProps.btcFee.loading) {
+        this.props.requestBtcWithdrawFee();
+      }
     }
   }
 
@@ -92,9 +99,10 @@ class Withdraw extends Component {
 
     const balanceAvailable = balance[`${symbol}_available`];
 
-    if (balanceAvailable === undefined || btcFee.loading || !btcFee.ready) {
+    if (verification_level >= MIN_VERIFICATION_LEVEL_TO_WITHDRAW && (balanceAvailable === undefined || btcFee.loading || !btcFee.ready)) {
       return <Loader />
     };
+
 
     const formProps = {
       symbol,
@@ -112,13 +120,20 @@ class Withdraw extends Component {
     return (
       <div className="presentation_container apply_rtl">
         {renderTitleSection(symbol, 'withdraw', ICONS.WITHDRAW)}
-        <div className={classnames('inner_container', 'with_border_top')}>
-          {renderInformation(symbol, balance, openContactForm, generateFiatInformation)}
-          <WithdrawCryptocurrency
-            {...formProps}
-          />
-          {renderExtraInformation(symbol, bank_account)}
-        </div>
+          {verification_level >= MIN_VERIFICATION_LEVEL_TO_WITHDRAW ? (
+            <div className={classnames('inner_container', 'with_border_top')}>
+              {renderInformation(symbol, balance, openContactForm, generateFiatInformation)}
+              <WithdrawCryptocurrency
+                {...formProps}
+              />
+              {renderExtraInformation(symbol, bank_account)}
+            </div>
+          ) : (
+            <div className={classnames('inner_container', 'with_border_top')}>
+              <WarningVerification />
+            </div>
+          )}
+
       </div>
     );
   }

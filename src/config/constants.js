@@ -176,3 +176,4 @@ export const BANK_INFORMATION = {
 };
 
 export const BANK_PAYMENT_LINK = 'https://api.moneyar.com/IPG/default.aspx?uid=';
+export const MIN_VERIFICATION_LEVEL_TO_WITHDRAW = 2;

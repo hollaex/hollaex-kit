@@ -591,4 +591,6 @@ export default {
   CALCULATE_MAX: 'Max',
   DATEFIELD_TOOGLE_DATE_PE: 'تاریخ شمسی‌',
   DATEFIELD_TOOGLE_DATE_GR: 'Gregorian calendar',
+  VERIFICATION_WARNING_TITLE: 'Verification required',
+  VERIFICATION_WARNING_MESSAGE: 'Go to {0} to verify you data',
 };
