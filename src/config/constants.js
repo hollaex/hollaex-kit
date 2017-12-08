@@ -94,6 +94,7 @@ export const ICONS = {
   SESSION_TIMED_OUT: `${process.env.PUBLIC_URL}/assets/images/session-timed-out.svg`,
   BLUE_EDIT: `${process.env.PUBLIC_URL}/assets/images/blue-edit-exir-icon.svg`,
   BLUE_PLUS: `${process.env.PUBLIC_URL}/assets/images/max-plus-blue-icon.svg`,
+  TOMAN_T_ICON: `${process.env.PUBLIC_URL}/assets/images/toman-t-icon.svg`,
 }
 
 export const SOCIAL_ICONS = {
@@ -114,7 +115,7 @@ export const CURRENCIES = {
     shortName: STRINGS.FIAT_SHORTNAME,
     currencySymbol: STRINGS.FIAT_CURRENCY_SYMBOL,
     formatToCurrency: formatFiatAmount,
-    iconPath: '/assets/acounts/account-icons-14.png',
+    iconPath: ICONS.TOMAN_T_ICON,
   },
   btc: {
     symbol: 'btc',
@@ -123,7 +124,7 @@ export const CURRENCIES = {
     shortName: STRINGS.BTC_SHORTNAME,
     currencySymbol: 'B',
     formatToCurrency: formatBtcAmount,
-    iconPath: '/assets/acounts/account-icons-14.png',
+    iconPath: ICONS.BITCOIN_DARK,
   },
 }
 

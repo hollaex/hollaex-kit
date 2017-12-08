@@ -69,7 +69,7 @@ class Home extends Component {
 
   onReviewQuickTrade = () => {
     if (this.props.token) {
-      this.goTo('account')();
+      this.goTo('quick-trade')();
     } else {
       this.goTo('login')();
     }

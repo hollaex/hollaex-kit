@@ -107,7 +107,7 @@ class QuickTrade extends Component {
     const { side, value, symbol, inputStyle } = this.state;
     const { data, fetching, error } = quickTradeData;
     const { name } = CURRENCIES[symbol];
-    console.log(side, '-------')
+    
     return (
       <div className={classnames('quick_trade-wrapper', ...GROUP_CLASSES)}>
         <div className={classnames('quick_trade-section_wrapper', ...GROUP_CLASSES)}>
