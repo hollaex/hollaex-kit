@@ -88,7 +88,7 @@ export default {
   },
   ACCOUNTS: {
     TITLE: 'حساب',
-    TAB_VERIFICATION: 'تایید',
+    TAB_VERIFICATION: 'احراز هویت',
     TAB_SECURITY: 'امنیت',
     TAB_NOTIFICATIONS: 'اطلاعیه',
     TAB_SETTINGS: 'تنظیمات',
@@ -518,24 +518,24 @@ export default {
     { key: 'en', label: 'English' },
     { key: 'fa', label: 'فارسی' },
   ],
-  QUICK_TRADE: 'ترید سریع',
-  PRO_TRADE: 'pro ترید',
+  QUICK_TRADE: 'آسان',
+  PRO_TRADE: 'پیشرفته',
   WALLET_TITLE: 'کیف پول',
-  TRADING_MODE_TITLE: 'حالت ترید',
-  LOGOUT: 'Logout',
+  TRADING_MODE_TITLE: 'خرید و فروش',
+  LOGOUT: 'خروج',
   WITHDRAWALS_MIN_VALUE_ERROR: 'تراکنش برای ارسال بسیار کوچک است. مقدار بیشتری را امتحان کنید',
   WITHDRAWALS_MAX_VALUE_ERROR: 'تراکنش برای ارسال بسیار بزرگ است. مقدار کمتری  را امتحان کنید.',
   WITHDRAWALS_LOWER_BALANCE: 'شما برای انجام این معامله مبلغ {0} کافی ندارید',
-  WITHDRAWALS_FEE_TOO_LARGE: 'FEE IS larger than {0}% of the transaction', // TODO
+  WITHDRAWALS_FEE_TOO_LARGE: 'کارمزد بزرگتر از {0}% از این تراکنش است. ', // TODO
   WITHDRAWALS_INVALID_ADDRESS: 'آدرس بیت کوین نامعتبر است لطفا با دقت و دوباره وارد شوید',
   WITHDRAWALS_BUTTON_TEXT: 'مرور برداشت',
   WITHDRAWALS_FORM_ADDRESS_LABEL: 'آدرس مقصد',
   WITHDRAWALS_FORM_ADDRESS_PLACEHOLDER: 'آدرس را تایپ کنید',
   WITHDRAWALS_FORM_AMOUNT_LABEL: '{0} مقدار برداشت',
   WITHDRAWALS_FORM_AMOUNT_PLACEHOLDER: 'مقدار {0} را که می خواهید برداشت کنید تایپ کنید',
-  WITHDRAWALS_FORM_FEE_LABEL: '{0} TRANSACTION FEE', // TODO
-  WITHDRAWALS_FORM_FEE_PLACEHOLDER: 'TYPE the amount of {0} you wish to use in the fee of the transaction', // TODO
-  WITHDRAWALS_FORM_FEE_OPTIMAL_VALUE: 'OPTIMAL FEE: {0} {1}', // TODO {0} -> amount {1} -> currency name
+  WITHDRAWALS_FORM_FEE_LABEL: '{0}% کارمزد', // TODO
+  WITHDRAWALS_FORM_FEE_PLACEHOLDER: 'مقدار {0} که میخواهیید در این تراکنش استفاده کنید را وارد کنید ', // TODO
+  WITHDRAWALS_FORM_FEE_OPTIMAL_VALUE: 'کارمزد مطلوب: {0} {1}', // TODO {0} -> amount {1} -> currency name
   DEPOSITS_FORM_AMOUNT_LABEL: '{0} مقدار برداشت', // FIX
   DEPOSITS_FORM_AMOUNT_PLACEHOLDER: 'مقدار {0} را که می خواهید برداشت کنید تایپ کنید',
   DEPOSITS_BUTTON_TEXT: 'مرور سپرده',
@@ -557,37 +557,37 @@ export default {
   QUOTE_BUTTON: 'قبول',
   QUOTE_REVIEW: 'بازبینی',
   QUOTE_COUNTDOWN_MESSAGE: 'شما {0} ثانیه برای این تراکنش وقت دارید',
-  QUOTE_EXPIRED_TOKEN: 'The quote token has expired.', // TODO
+  QUOTE_EXPIRED_TOKEN: 'نماد منقضی شده', // TODO
   QUOTE_SUCCESS_REVIEW_TITLE: 'خرید آسان',
   QUOTE_SUCCESS_REVIEW_MESSAGE: 'شما با موفقیت {0} {1} {0} برای {3} {4}',
-  COUNTDOWN_ERROR_MESSAGE: 'Countdown is finished', // TODO
+  COUNTDOWN_ERROR_MESSAGE: 'شمارش معکوس به اتمام رسید.', // TODO
   WITHDRAW_PAGE: {
     BANK_TO_WITHDRAW: 'نام بانک دریافت کننده',
     MESSAGE_ABOUT_SEND: 'شما در آستانه ارسال',
     MESSAGE_BTC_WARNING: 'لطفا از درست بودن آدرس خود اطمینان حاصل کنید {0} تراکنش ها غیر قابل بازگشت هستند.',
-    MESSAGE_ABOUT_WITHDRAW: 'You are about to TRANSFER to your bank account', // TODO
-    MESSAGE_FEE: 'Transactions FEE OF {0} ({1}) included', // TODO
+    MESSAGE_ABOUT_WITHDRAW: 'شما در حال انجام انتقال به حساب بانکی خود هستید.', // TODO
+    MESSAGE_FEE: 'شامل کارمزد {0} ({1})', // TODO
     FIAT_MESSAGE_1: 'شما تنها می توانید به حساب بانک پول خود را ارسال کنید که با نام شما در اکسیر مطابقت داشته باشد',
-    FIAT_MESSAGE_2: 'Withdrawal min amount', // TODO
+    FIAT_MESSAGE_2: 'حداقل مقدار برداشت', // TODO
     FIAT_MESSAGE_3: 'محدودیت برداشت روزانه',
-    FIAT_INCREASE_LIMIT: 'افزایش برداشت محدودیت روزانه',
+    FIAT_INCREASE_LIMIT: 'افزایش برداشت محدودیت روزانه',  
   },
-  WALLET_BUTTON_FIAT_DEPOSIT: 'دریافت',
+    WALLET_BUTTON_FIAT_DEPOSIT: 'دریافت',
   WALLET_BUTTON_FIAT_WITHDRAW: 'ارسال',
   WALLET_BUTTON_CRYPTOCURRENCY_DEPOSIT: 'دریافت',
   WALLET_BUTTON_CRYPTOCURRENCY_WITHDRAW: 'ارسال',
-  AVAILABLE_TEXT: 'Available', // TODO
-  AVAILABLE_BALANCE_TEXT: 'AVAILABLE {0} BALANCE: {1} {2}', // TODO Available Bitcoin Balance: 2.6 BTC
-  BALANCE_TEXT: 'Balance', // TODO
+  AVAILABLE_TEXT: 'قابل استفاده',
+  AVAILABLE_BALANCE_TEXT: 'مقدار {0} قابل استفاده: {1} {2}', // TODO موجودی قابل استفاده بیتکوین: BTC 2.6
+  BALANCE_TEXT: 'موجودی',
   CURRENCY_BALANCE_TEXT: '{0} موجودی',
-  WALLET_TABLE_AMOUNT_IN: `مقدار به {0}`,
+  WALLET_TABLE_AMOUNT_IN: 'مقدار به {0}',
   WALLET_TABLE_TOTAL: 'جمع کل',
   WALLET_ALL_ASSETS: 'همه دارایی ها',
-  HIDE_TEXT: 'Hide', // TODO
-  PAGINATOR_FORMAT: '{0} / {1}', // TODO
-  ORDERBOOK_SPREAD: '{0} SPREAD', // TODO 0 -> 660,000 T
-  ORDERBOOK_SPREAD_PRICE: '{0} {1}', // TODO 0-> amount  1 -> symbol  600,000 T
-  FIAT_PRICE_FORMAT: '{0} {1}', // TODO 0-> amount  1 -> symbol  600,000 T
-  BTC_PRICE_FORMAT: '{0} {1}', // TODO 0-> amount  1 -> symbol  6.00245 BTC
-  CALCULATE_MAX: 'تاریخ شمسی‌',
+  HIDE_TEXT: 'پنهان کردن',
+  PAGINATOR_FORMAT: '{0} / {1}',
+  ORDERBOOK_SPREAD: 'اسپرد {0}', // 0 -> 660,000 T
+  ORDERBOOK_SPREAD_PRICE: '{0} {1}', // 0-> amount  1 -> symbol  600,000 T
+  FIAT_PRICE_FORMAT: '{0} {1}', // 0-> amount  1 -> symbol  600,000 T
+  BTC_PRICE_FORMAT: '{0} {1}', // 0-> amount  1 -> symbol  6.00245 BTC
+  CALCULATE_MAX: 'ماکسیمم',
 };
