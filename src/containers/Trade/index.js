@@ -46,7 +46,6 @@ class Trade extends Component {
   onSubmitOrder = (values) => {
     return submitOrder(values)
       .then((body) => {
-        // console.log('sucess', body)
       })
       .catch((err) => {
         console.log('error', err)

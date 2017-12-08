@@ -61,7 +61,6 @@ class BankDeposit extends Component {
   onSubmitDeposit = ({ amount }) => {
     return requestFiatDeposit(amount)
       .then(({ data }) => {
-        console.log(data)
         this.setState({ data });
         this.onOpenDialog();
       })

@@ -25,7 +25,6 @@ class Table extends Component{
   }
 
   // setPageSize = (pageSize = 10) => {
-  //   console.log('SET PAGE SIZE', pageSize)
   //   this.setState({ pageSize });
   // }
 

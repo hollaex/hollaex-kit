@@ -79,7 +79,6 @@ class UserVerification extends Component {
       title: STRINGS.USER_VERIFICATION.TITLE_EMAIL,
       content: <div>{email}</div>,
       disabled: activeStep !== 0,
-      disabled: false,
       notification: this.calculateNotification(activeStep, 0, STRINGS.USER_VERIFICATION.VERIFY_EMAIL, true)
     },
     {
@@ -90,7 +89,6 @@ class UserVerification extends Component {
         formValues={dataFormValues}
       />,
       disabled: activeStep !== 1,
-      disabled: false,
       notification: this.calculateNotification(activeStep, 1, STRINGS.USER_VERIFICATION.VERIFY_USER_DOCUMENTATION, verification_level >= 2, userData.first_name)
     },
     {
@@ -101,7 +99,6 @@ class UserVerification extends Component {
         formValues={idFormValues}
       />,
       disabled: activeStep !== 2,
-      disabled: false,
       notification: this.calculateNotification(activeStep, 2, STRINGS.USER_VERIFICATION.VERIFY_ID_DOCUMENTS, userData.id_data.verified, userData.id_data.type)
     },
     {
@@ -112,11 +109,14 @@ class UserVerification extends Component {
         formValues={bankFormValues}
       />,
       disabled: activeStep !== 3,
-      disabled: false,
       notification: this.calculateNotification(activeStep, 3, STRINGS.USER_VERIFICATION.VERIFY_BANK_ACCOUNT, userData.bank_account.verified, userData.bank_account.type)
     }];
 
-    this.setState({ sections });
+    this.setState({ sections }, () => {
+      if (this.accordion && activeStep <= 3) {
+        this.accordion.openSection(activeStep);
+      }
+    });
   }
 
   onSubmitUserInformation = (values) => {

@@ -19,7 +19,6 @@ class EditableInputField extends Component {
   toogleFocus = () => {
     if (this.inputElement) {
       if (this.state.isEditable) {
-        console.log('focus');
         this.inputElement.focus();
       }
     }

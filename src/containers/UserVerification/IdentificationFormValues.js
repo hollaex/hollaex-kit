@@ -7,8 +7,6 @@ import { getFormattedDate } from '../../utils/string';
 import STRINGS from '../../config/localizedStrings';
 import { InformationSection } from './InformationSection';
 
-console.log(countries)
-
 const COUNTRIES_OPTIONS = countries.map((country) => ({
   label: country.name,
   value: country.value,
