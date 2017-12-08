@@ -95,6 +95,14 @@ export const ICONS = {
   BLUE_EDIT: `${process.env.PUBLIC_URL}/assets/images/blue-edit-exir-icon.svg`,
   BLUE_PLUS: `${process.env.PUBLIC_URL}/assets/images/max-plus-blue-icon.svg`,
   TOMAN_T_ICON: `${process.env.PUBLIC_URL}/assets/images/toman-t-icon.svg`,
+  NOTIFICATION_ORDER_LIMIT_BUY_FILLED: `${process.env.PUBLIC_URL}/assets/images/limit-buy-order-filled-01.svg`,
+  NOTIFICATION_ORDER_LIMIT_BUY_CREATED: `${process.env.PUBLIC_URL}/assets/images/limit-buy-order-icon-01.svg`,
+  NOTIFICATION_ORDER_LIMIT_BUY_FILLED_PART: `${process.env.PUBLIC_URL}/assets/images/limit-buy-order-part-filled-01.svg`,
+  NOTIFICATION_ORDER_LIMIT_SELL_FILLED: `${process.env.PUBLIC_URL}/assets/images/limit-sell-order-filled-01.svg`,
+  NOTIFICATION_ORDER_LIMIT_SELL_CREATED: `${process.env.PUBLIC_URL}/assets/images/limit-sell-order-icon-01.svg`,
+  NOTIFICATION_ORDER_LIMIT_SELL_FILLED_PART: `${process.env.PUBLIC_URL}/assets/images/limit-sell-order-part-filled-01.svg`,
+  NOTIFICATION_ORDER_MARKET_BUY_FILLED: `${process.env.PUBLIC_URL}/assets/images/market-buy-01.svg`,
+  NOTIFICATION_ORDER_MARKET_SELL_FILLED: `${process.env.PUBLIC_URL}/assets/images/market-sell-01.svg`,
 }
 
 export const SOCIAL_ICONS = {

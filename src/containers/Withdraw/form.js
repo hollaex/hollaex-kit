@@ -145,7 +145,10 @@ class Form extends Component {
 const WithdrawForm = reduxForm({
   form: FORM_NAME,
   onSubmitFail: setWithdrawNotificationError,
-  onSubmitSuccess: (result, dispatch) => dispatch(reset(FORM_NAME)),
+  onSubmitSuccess: (result, dispatch) => {
+    dispatch(reset(FORM_NAME));
+    dispatch(setWithdrawNotificationSuccess(result, dispatch))
+  },
   enableReinitialize: true,
   validate,
 })(Form);

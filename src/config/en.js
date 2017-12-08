@@ -593,4 +593,13 @@ export default {
   DATEFIELD_TOOGLE_DATE_GR: 'Gregorian calendar',
   VERIFICATION_WARNING_TITLE: 'Verification required',
   VERIFICATION_WARNING_MESSAGE: 'Go to {0} to verify you data',
+  ORDER_SPENT: 'Spent',
+  ORDER_RECEIVED: 'Received',
+  ORDER_SOLD: 'Sold',
+  ORDER_BOUGHT: 'Bought',
+  ORDER_AVERAGE_PRICE: 'Average price',
+  ORDER_TITLE_CREATED: 'Successfully created a limit {0}', // 0 -> buy / sell
+  ORDER_TITLE_FULLY_FILLED: '{0} order successfully filled', // 0 -> buy / sell
+  ORDER_TITLE_PARTIALLY_FILLED: '{0} order partially filled', // 0 -> buy / sell
+  ORDER_TITLE_TRADE_COMPLETE: '{0} {1} order was successful', // 0 -> buy / sell
 };
