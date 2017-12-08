@@ -11,9 +11,23 @@ class EditableInputField extends Component {
   }
 
   toogleEditable = () => {
-    this.setState({ isEditable: !this.state.isEditable });
+    this.setState({ isEditable: !this.state.isEditable }, () => {
+      this.toogleFocus();
+    });
   }
 
+  toogleFocus = () => {
+    if (this.inputElement) {
+      if (this.state.isEditable) {
+        console.log('focus');
+        this.inputElement.focus();
+      }
+    }
+  }
+
+  setInputRef = (el) => {
+    this.inputElement = el;
+  }
   render() {
     const { isEditable } = this.state;
     const {
@@ -24,6 +38,7 @@ class EditableInputField extends Component {
       onClick,
       fullWidth = false,
       inputType,
+      information,
       ...rest,
     } = this.props;
     const displayError = touched && error && !active;
@@ -40,11 +55,12 @@ class EditableInputField extends Component {
           {...input}
           {...rest}
           disabled={!isEditable}
+          ref={this.setInputRef}
         />
         <ActionNotification
           text={STRINGS.EDIT_TEXT}
           status="information"
-          iconPath={ICONS.BLUE_CLIP}
+          iconPath={ICONS.BLUE_EDIT}
           className="file_upload_icon"
           onClick={this.toogleEditable}
         />
