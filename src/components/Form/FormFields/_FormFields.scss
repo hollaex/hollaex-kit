@@ -43,6 +43,15 @@ $placeholder--font-weight: bold;
     > * {
       flex: 1;
     }
+    .datefield-toogle {
+      &.en {
+        min-width: 10rem;
+      }
+      &.fa {
+        flex: 0;
+        min-width: 4rem;
+      }
+    }
   }
 
   .SingleDatePicker {
@@ -99,7 +108,7 @@ $placeholder--font-weight: bold;
   color: $form-color-placeholder;
 }
 
-.file_upload_icon {
+.no_bottom {
   bottom: 0;
 }
 

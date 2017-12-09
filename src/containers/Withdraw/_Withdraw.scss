@@ -17,6 +17,10 @@ $content--margin: 2rem;
   .review-crypto-amount {
     font-size: $font-size-subhead2;
     border-bottom: 1px solid $colors-main-black;
+    text-align: center;
+    .review-fee_message {
+      font-size: $font-size-main;
+    }
   }
 
   .review-warning_arrow {
@@ -46,6 +50,7 @@ $content--margin: 2rem;
   .review-info_message {
     padding: 0.5rem;
     font-size: $font-size-subtext;
+    font-weight: bold;
   }
 
   .button-separator {

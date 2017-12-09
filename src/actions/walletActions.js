@@ -13,6 +13,9 @@ export const ACTION_KEYS = {
   USER_WITHDRAWALS_PENDING: 'USER_WITHDRAWALS_PENDING',
   USER_WITHDRAWALS_FULFILLED: 'USER_WITHDRAWALS_FULFILLED',
   USER_WITHDRAWALS_REJECTED: 'USER_WITHDRAWALS_REJECTED',
+  USER_WITHDRAWALS_BTC_FEE_PENDING: 'USER_WITHDRAWALS_BTC_FEE_PENDING',
+  USER_WITHDRAWALS_BTC_FEE_FULFILLED: 'USER_WITHDRAWALS_BTC_FEE_FULFILLED',
+  USER_WITHDRAWALS_BTC_FEE_REJECTED: 'USER_WITHDRAWALS_BTC_FEE_REJECTED',
   DEPOSIT_VERIFICATION_PENDING: 'DEPOSIT_VERIFICATION_PENDING',
   DEPOSIT_VERIFICATION_FULFILLED: 'DEPOSIT_VERIFICATION_FULFILLED',
   DEPOSIT_VERIFICATION_REJECTED: 'DEPOSIT_VERIFICATION_REJECTED',
@@ -24,14 +27,32 @@ const ENDPOINTS = {
   WITHDRAWALS: '/user/withdrawals',
   DEPOSIT_BANK: '/user/deposit/bank',
   WITHDRAW_BANK: '/user/withdraw/bank',
+  WITHDRAW_BTC: '/user/withdraw/btc',
+  WITHDRAW_BTC_FEE: '/user/withdraw/btc/fee',
 }
 
-export const performDeposit = (values) => {
-  return axios.post('/deposit', values);
+export const performBtcWithdraw = (values) => {
+  return axios.post(ENDPOINTS.WITHDRAW_BTC, values);
 }
 
-export const performWithdraw = (values) => {
-  return axios.post('/withdraw', values);
+export const requestBtcWithdrawFee = () => {
+  return ((dispatch) => {
+		dispatch({ type: ACTION_KEYS.USER_WITHDRAWALS_BTC_FEE_PENDING });
+		axios.get(ENDPOINTS.WITHDRAW_BTC_FEE)
+			.then((body) => {
+				dispatch({
+				    type: ACTION_KEYS.USER_WITHDRAWALS_BTC_FEE_FULFILLED,
+				    payload: body.data,
+				});
+			})
+			.catch((err) => {
+        const payload = err.response.data || { message: err.message };
+				dispatch({
+				    type: ACTION_KEYS.USER_WITHDRAWALS_BTC_FEE_REJECTED,
+				    payload
+				});
+			})
+	});
 }
 
 export const requestFiatDeposit = (amount) => {

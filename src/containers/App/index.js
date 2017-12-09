@@ -31,7 +31,8 @@ class Container extends Component {
 		dialogIsOpen: false,
 		publicSocket: undefined,
 		privateSocket: undefined,
-		idleTimer: undefined
+		idleTimer: undefined,
+		ordersQueued: []
 	}
 
 	componentWillMount() {
@@ -165,70 +166,102 @@ class Container extends Component {
 			// console.log('update', type, data)
 			switch(type) {
         case 'order_queued':
-          break;
-        case 'order_processed':
-          break;
-				case 'order_added':
+					// TODO add queued orders to the store
+					this.setState({ ordersQueued: this.state.ordersQueued.concat(data) })
+					break;
+				case 'order_processed':
+        case 'order_canceled': {
+					const ordersQueued = [].concat(this.state.ordersQueued);
+					const indexOfOrder = ordersQueued.findIndex((order) => order.id === data.id);
+					if (indexOfOrder > -1) {
+						ordersQueued.splice(indexOfOrder, 1);
+					}
+					this.setState({ ordersQueued })
+					break;
+				}
+				case 'order_added':{
+					const { ordersQueued } = this.state;
+					const indexOfOrder = ordersQueued.findIndex(({ id }) => id === data.id);
+					if (indexOfOrder > -1) {
+						ordersQueued.splice(indexOfOrder, 1);
+						this.setState({ ordersQueued });
+					}
 					this.props.addOrder(data);
 					this.props.setNotification(
 						NOTIFICATIONS.ORDERS,
-						data
+						{ type, data }
 					);
 					break;
-        case 'order_partialy_filled':
-          // alert(`order partially filled ${data.id}`);
+				}
+        case 'order_partialy_filled': {
 					this.props.updateOrder(data);
 					this.props.setNotification(
 						NOTIFICATIONS.ORDERS,
-						data
+						{ type, data },
+						false
 					);
   				break;
+				}
 				case 'order_updated':
 					this.props.updateOrder(data);
 					this.props.setNotification(
 						NOTIFICATIONS.ORDERS,
-						data
+						{ type, data },
+						false
 					);
 					break;
-        case 'order_filled':
-          // alert(`orders filled: ${data.length}`);
-          this.props.removeOrder(data);
-					this.props.setNotification(
-						NOTIFICATIONS.ORDERS,
-						data
-					);
+        case 'order_filled': {
+					const ordersDeleted = this.props.orders.filter(
+						(order, index) => {
+							return data.findIndex((deletedOrder) => deletedOrder.id === order.id) > -1
+						}
+					)
+					this.props.removeOrder(data);
+					ordersDeleted.forEach((orderDeleted) => {
+						this.props.setNotification(
+							NOTIFICATIONS.ORDERS,
+							{
+								type,
+								data: {
+									...orderDeleted,
+									filled: orderDeleted.size,
+								}
+							}
+						);
+					});
           break;
+				}
 				case 'order_removed':
           this.props.removeOrder(data);
 					this.props.setNotification(
 						NOTIFICATIONS.ORDERS,
-						data
+						{ type, data },
+						false
 					);
           break;
-				case 'trade':
-				 console.log('private trade', data)
-				 // "data": [
-				 //    {
-				 //      "price": 999,
-				 //      "side": "sell",
-				 //      "size": 3,
-				 //      "fee": 0,
-				 //      "timestamp": "2017-07-26T13:20:40.464Z"
-				 //    },
-				 //    ...
-				 //  ],
-				 //  "balance": {
-				 //    "fiat_balance": 0,
-				 //    "btc_balance": 300000,
-				 //    "updated_at": "2017-07-26T13:20:40.464Z"
-				 //  }
-				 this.props.setNotification(
-					 NOTIFICATIONS.TRADES,
-					 data
-				 );
-         this.props.addUserTrades(data);
-					break;
-				case 'deposit':
+				case 'trade': {
+					this.props.addUserTrades(data);
+					const tradeOrdersIds = new Set();
+ 				 	data.forEach((trade) => {
+ 						tradeOrdersIds.add(trade.order);
+ 				 	});
+					if (tradeOrdersIds.size === 1) {
+						const orderIdFromTrade = Array.from(tradeOrdersIds)[0];
+						const { ordersQueued } = this.state;
+						const order = ordersQueued.find(({ id }) => id === orderIdFromTrade);
+						if (order) {
+							this.props.setNotification(
+								NOTIFICATIONS.TRADES,
+								{
+									data,
+									order,
+								},
+							);
+						}
+					}
+ 					break;
+				}
+				case 'deposit': {
 					const show = data.status || data.currency !== 'fiat';
 					this.props.setNotification(
 						NOTIFICATIONS.DEPOSIT,
@@ -236,12 +269,18 @@ class Container extends Component {
 						show
 					);
 					break;
-				case 'withdrawal':
+				}
+				case 'withdrawal': {
+					// TODO FIX when notification is defined
+					console.log(data, !data.amount)
+					const show = data.amount;
 					this.props.setNotification(
 						NOTIFICATIONS.WITHDRAWAL,
-						data
+						data,
+						!show
 					);
 					break;
+				}
         default:
         	break;
 			}
@@ -397,6 +436,7 @@ const mapStateToProps = (store) => ({
 	notifications: store.app.notifications,
 	verification_level: store.user.verification_level,
   activeLanguage: store.app.language,
+	orders: store.order.activeOrders,
 });
 
 const mapDispatchToProps = (dispatch) => ({

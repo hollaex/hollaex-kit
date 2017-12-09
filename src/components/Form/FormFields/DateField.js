@@ -130,7 +130,6 @@ class DateField extends Component {
       endDate,
       language,
     } = this.props;
-    console.log(language, 'IN DOB')
     // const displayError = !active && touched && error;
 
     return (

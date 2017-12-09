@@ -182,6 +182,7 @@ const mapStateToProps = (store) => ({
   price: store.orderbook.price,
   prices: store.orderbook.prices,
   balance: store.user.balance,
+  activeLanguage: store.app.language,
 });
 
 const mapDispatchToProps = (dispatch) => ({

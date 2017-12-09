@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
-import { Link } from 'react-router';
 import EventListener from 'react-event-listener';
 import { bindActionCreators } from 'redux';
 
@@ -69,7 +68,7 @@ class Home extends Component {
 
   onReviewQuickTrade = () => {
     if (this.props.token) {
-      this.goTo('account')();
+      this.goTo('quick-trade')();
     } else {
       this.goTo('login')();
     }
@@ -108,6 +107,7 @@ class Home extends Component {
           <Section1
             style={{ minHeight: style.minHeight > MIN_HEIGHT ? style.minHeight : MIN_HEIGHT}}
             onClickScrollTo={this.onClickScrollTo(INFORMATION_INDEX)}
+            onClickLearnMore={this.onClickScrollTo(INFORMATION_INDEX)}
             onClickRegister={this.goTo('signup')}
             token={token}
           />

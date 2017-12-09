@@ -16,11 +16,13 @@ const generateBtcDepositTexts = (strings, status) => {
       strings.formatString(strings.NOTIFICATIONS.DEPOSITS.BTC.TITLE_RECEIVED, name) :
       strings.formatString(strings.NOTIFICATIONS.DEPOSITS.BTC.TITLE_INCOMING, fullName),
     SUBTITLE:
-      strings.formatString(status ? strings.NOTIFICATIONS.DEPOSITS.BTC.SUBTITLE_RECEIVED :
-      strings.NOTIFICATIONS.DEPOSITS.BTC.SUBTITLE_INCOMING, fullName),
+      strings.formatString(status ?
+        strings.NOTIFICATIONS.DEPOSITS.BTC.SUBTITLE_RECEIVED :
+        strings.NOTIFICATIONS.DEPOSITS.BTC.SUBTITLE_INCOMING
+      , fullName),
     INFORMATION_PENDING: [
-      strings.formatString(strings.NOTIFICATIONS.DEPOSITS.BTC.INFORMATION_PENDING_1, name),
-      strings.formatString(strings.NOTIFICATIONS.DEPOSITS.BTC.INFORMATION_PENDING_2, name),
+      strings.formatString(strings.NOTIFICATIONS.DEPOSITS.BTC.INFORMATION_PENDING_1, name).join(''),
+      strings.formatString(strings.NOTIFICATIONS.DEPOSITS.BTC.INFORMATION_PENDING_2, name).join(''),
     ],
     INFORMATION_COMPLETE: [],
   }

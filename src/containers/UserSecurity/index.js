@@ -6,7 +6,7 @@ import { ICONS } from '../../config/constants';
 import { resetPassword, otpRequest, otpActivate, otpSetActivated, otpRevoke } from '../../actions/userAction';
 import { Accordion, Dialog, SuccessDisplay, CheckboxButton, OtpForm } from '../../components';
 import { errorHandler } from '../../components/OtpForm/utils';
-import ChangePasswordForm from './ChangePasswordForm';
+import ChangePasswordForm, { generateFormValues } from './ChangePasswordForm';
 import { OTP, renderOTPForm } from './OTP';
 
 import STRINGS from '../../config/localizedStrings';
@@ -27,7 +27,8 @@ class UserVerification extends Component {
       nextProps.user.otp.requested !== this.props.user.otp.requested ||
       nextProps.user.otp.requesting !== this.props.user.otp.requesting ||
       nextProps.user.otp.activated !== this.props.user.otp.activated ||
-      nextProps.user.otp_enabled !== this.props.user.otp_enabled
+      nextProps.user.otp_enabled !== this.props.user.otp_enabled ||
+      nextProps.activeLanguage !== this.props.activeLanguage
     ) {
       this.calculateSections(nextProps.user);
     }
@@ -41,6 +42,7 @@ class UserVerification extends Component {
 
 
   calculateSections = (user) => {
+    const formValues = generateFormValues();
     const { otp_enabled, otp, email } = user;
 
     const sections = [{
@@ -74,7 +76,10 @@ class UserVerification extends Component {
     },
     {
       title: STRINGS.ACCOUNT_SECURITY.CHANGE_PASSWORD.TITLE,
-      content: <ChangePasswordForm onSubmit={this.onSubmitChangePassword} />,
+      content: <ChangePasswordForm
+        onSubmit={this.onSubmitChangePassword}
+        formFields={formValues}
+      />,
       disabled: false,
       notification: {
         text: STRINGS.ACCOUNT_SECURITY.CHANGE_PASSWORD.ACTIVE,
@@ -187,6 +192,7 @@ class UserVerification extends Component {
 
 const mapStateToProps = (state) => ({
   user: state.user,
+  activeLanguage: state.app.language,
 });
 
 const mapDispatchToProps = (dispatch) => ({

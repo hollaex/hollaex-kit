@@ -48,7 +48,7 @@ class FileField extends Component {
 							text={STRINGS.UPLOAD_TEXT}
 							status="information"
 							iconPath={ICONS.BLUE_CLIP}
-							className="file_upload_icon"
+							className="no_bottom pr-0 pl-0"
 						/>
 					}
 					<input

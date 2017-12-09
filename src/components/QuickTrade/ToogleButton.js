@@ -8,7 +8,7 @@ const ToogleButton = ({ onToogle, values, selected }) => (
   <div className={classnames('toogle_button-wrapper', 'd-flex')}>
     <div className="toogle-side_line f-1"></div>
     <div className={classnames(
-      'toogle-content', 'f-0', ...FLEX_CENTER_CLASSES,
+      'toogle-content', 'f-0', ...FLEX_CENTER_CLASSES, 'direction_ltr'
     )}>
       <div className={classnames({ selected: values[0].value === selected })}>{values[0].label}</div>
       <div

@@ -4,12 +4,12 @@ import { ICONS } from '../../config/constants';
 
 import STRINGS from '../../config/localizedStrings';
 
-const WithdrawContent = ({ information, content, amount, symbol, price, openContactForm }) => {
+const WithdrawNotification = ({ type, data }) => {
   return (
     <div className="notification-content-wrapper">
-      {content}
+      {data}
     </div>
   );
 }
 
-export default WithdrawContent;
+export default WithdrawNotification;

@@ -50,7 +50,10 @@ export default function reducer(state = INITIAL_STATE, action) {
 			const indexOfOrder = state.activeOrders.findIndex((activeOrder) => activeOrder.id === order.id);
 			if (indexOfOrder > -1) {
 				let activeOrders = [].concat(...state.activeOrders)
-				activeOrders[indexOfOrder] = order;
+				activeOrders[indexOfOrder] = {
+					...activeOrders[indexOfOrder],
+					...order,
+				};
 				return {...state, activeOrders }
 			}
 			// do nothing

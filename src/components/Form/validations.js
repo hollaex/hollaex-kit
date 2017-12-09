@@ -2,7 +2,7 @@ import validator from 'validator';
 import WAValidator from 'wallet-address-validator';
 import math from 'mathjs';
 import { NETWORK } from '../../config/constants';
-import { calculatePrice, fiatSymbol } from '../../utils/currency';
+import { calculatePrice, fiatSymbol, roundNumber } from '../../utils/currency';
 import STRINGS from '../../config/localizedStrings';
 
 const passwordRegEx = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#\$%\^\&*\)\(+=._-]).{8,}$/;
@@ -69,28 +69,37 @@ export const evaluateOrder = (symbol = '', balance = {}, order = {}, orderType =
   return '';
 }
 
-export const checkMarketPrice = (size, orders = [], type, side,  orderPrice) => {
-  let accumulated = 0;
-  let remaining = size;
+export const checkMarketPrice = (size, orders = [], type, side,  orderPriceParam) => {
+  let accumulated = math.fraction(0);
+  let remaining = math.fraction(size);
+  const orderPrice = math.fraction(orderPriceParam);
 
-  orders.some(([price, amount], index) => {
+  orders.some(([priceParam, amountParam], index) => {
+    const price = math.fraction(priceParam);
+    const amount = math.fraction(amountParam);
+
     if (type === 'limit') {
-      if (side === 'buy' && orderPrice < price) {
+      if (side === 'buy' && math.smaller(orderPrice, price)) {
         return true;
-      } else if (side === 'sell' && orderPrice > price) {
+      } else if (side === 'sell' && math.larger(orderPrice, price)) {
         return true;
       }
     }
-    const orderSizeTaken = remaining >= amount ? amount : remaining;
-    const takenPrice = price * orderSizeTaken;
+    const orderSizeTaken = math.largerEq(remaining, amount) ? amount : remaining;
+    const takenPrice = math.multiply(price, orderSizeTaken);
 
-    remaining = remaining - orderSizeTaken;
-    accumulated = accumulated + takenPrice;
+    remaining = math.subtract(remaining, orderSizeTaken);
+    accumulated = math.add(accumulated, takenPrice);
 
-    return remaining <= 0;
+    return math.smallerEq(remaining, 0);
   });
 
-  return accumulated;
+  if (type === 'limit' && math.larger(remaining, 0)) {
+    accumulated = math.add(accumulated,
+      math.multiply(remaining, orderPrice)
+    );
+  }
+  return roundNumber(accumulated);
 }
 
 export const isBefore = (before = '', message = STRINGS.VALIDATIONS.INVALID_DATE) => {

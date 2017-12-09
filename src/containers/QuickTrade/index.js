@@ -110,7 +110,6 @@ class QuickTradeContainer extends Component {
     const { name } = CURRENCIES[symbol];
     const { data, order } = quoteData;
     const end = quoteData.data.exp;
-    console.log(order)
     return (
       <div
         className={classnames(...FLEX_CENTER_CLASSES, 'f-1', 'quote-container')}

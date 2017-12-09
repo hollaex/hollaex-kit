@@ -1,8 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 
-import { format } from "d3-format";
-
 import { ChartCanvas, Chart } from "react-stockcharts";
 
 import {
@@ -27,6 +25,7 @@ import {
 	yExtents,
   generateXExtents,
 	FORMAT_DATE_X_TICK,
+	FORMAT_Y_TICK,
 } from './utils';
 
 import {
@@ -86,7 +85,7 @@ class AreaChartWithEdge extends Component {
 					<MouseCoordinateY
 						at="right"
 						orient="right"
-						displayFormat={format(".2f")}
+						displayFormat={FORMAT_Y_TICK}
 					/>
 
 					<AreaSeries {...areaProps} />

@@ -129,7 +129,6 @@ export function userIdentity(data) {
 export function uploadFile(data) {
 	const formData = new FormData();
 	Object.keys(data).forEach((key) => {
-		console.log(key, data)
 		formData.append(key, data[key]);
 	});
 

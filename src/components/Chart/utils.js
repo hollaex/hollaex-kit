@@ -1,6 +1,7 @@
 import React from 'react';
 import classnames from 'classnames';
 import { timeFormat } from "d3-time-format";
+import { format } from "d3-format";
 import moment from 'moment';
 import { discontinuousTimeScaleProvider } from "react-stockcharts/lib/scale";
 import { last } from "react-stockcharts/lib/utils";
@@ -62,6 +63,8 @@ export const OHLCChildren = (props, moreProps, itemsToDisplay) => {
 export const tickFormat = timeFormat("%b %e");
 
 export const FORMAT_DATE_X_TICK = timeFormat("%m/%d %H:%m %p");
+export const FORMAT_Y_TICK = format(",.0d");
+
 export const XAxisTickFormat = (date) => {
   const endPeriod = moment(date).add(5, 'm').toDate();
   return `${FORMAT_DATE_X_TICK(date)} - ${FORMAT_DATE_X_TICK(endPeriod)}`;
