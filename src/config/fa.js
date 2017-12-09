@@ -1,7 +1,7 @@
 export default {
   APP_TITLE: 'اکسچنج اکسیر',
   APP_NAME: 'اکسیر',
-  FIAT_NAME: 'دلار',
+  FIAT_NAME: 'تومان',
   FIAT_FULLNAME: 'ایران تومان',
   FIAT_SHORTNAME: 'تومان',
   FIAT_CURRENCY_SYMBOL: 'T',
@@ -22,12 +22,12 @@ export default {
   HELP_TEXT: 'کمک',
   SUCCESS_TEXT: 'موفقیت',
   ERROR_TEXT: 'خطا',
-  EDIT_TEXT: 'Edit', // TODO
+  EDIT_TEXT: 'ویرایش',
   NO_OPTIONS: 'هیچ گزینه ای وجود ندارد',
   HOME: {
     SECTION_1_TITLE: 'خرید و فروش بیت کوین',
-    SECTION_1_TEXT_1: 'اکسیر یک اکسچنج است که شما می توانید بیت کوین و دیگر ارزهای دیجیتال را خرید و فروش کنید.',
-    SECTION_1_TEXT_2: 'تلاش ما برای بیشبرد اقتصاد دیجیتالی از طریق دسترسی آسان و اقتصادی به ارزهای رمزنگاری شده است',
+    SECTION_1_TEXT_1: 'اکسیر یک اکسچنج است که شما می توانید بیت کوین و دیگر ارزهای دیجیتالی را خرید و فروش کنید.',
+    SECTION_1_TEXT_2: 'تلاش ما برای پیشبرد تکنولوژی از طریق دسترسی آسان و اقتصادی به ارزهای رمزنگاری شده است.',
     SECTION_1_BUTTON_1: 'بیشتر بدانید',
     SECTION_3_TITLE: 'قابلیت ها',
     SECTION_3_CARD_1_TITLE: 'ترید پیشرفته',
@@ -198,8 +198,8 @@ export default {
        TITLE_INCOMING: 'ورودی {0}', // FIX
        SUBTITLE_RECEIVED: 'دریافت کردید {0} سپرده',
        SUBTITLE_INCOMING: 'ورودی {0}', // FIX
-       INFORMATION_PENDING_1: 'شما {0} قبل از شروع ترید، 3 تایید نیاز دارد.',
-       INFORMATION_PENDING_2: 'این ممکن است 20-40 دقیقه طول بکشد. به محض تایید شما یک ایمیل دریافت میکنید',
+       INFORMATION_PENDING_1: 'شما {0} قبل از شروع ترید، 1 تایید نیاز دارد.',
+       INFORMATION_PENDING_2: 'این ممکن است 10-30 دقیقه طول بکشد. به محض تایید شما یک ایمیل دریافت میکنید',
      }
    },
  },
@@ -508,10 +508,10 @@ export default {
   LOADING: 'بارگذاری',
   CHART_TEXTS: {
     d: 'تاریخ',
-    o: 'باز کن',
+    o: 'شروع',
     h: 'بالا',
-    l: 'کم',
-    c: 'بستن',
+    l: 'پایین',
+    c: 'پایان',
     v: 'حجم',
   },
   LANGUAGES: [
