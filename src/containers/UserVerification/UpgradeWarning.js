@@ -1,13 +1,13 @@
 import React from 'react';
-import { TEXTS } from './constants';
+import STRINGS from '../../config/localizedStrings';
 
 const UpgradeWarning = () => (
   <div className="warning_text">
-    <div>{TEXTS.WARNING.TEXT_1}</div>
+    <div>{STRINGS.USER_VERIFICATION.WARNING.TEXT_1}</div>
     <ul>
-      <li>{TEXTS.WARNING.LIST_ITEM_1}</li>
-      <li>{TEXTS.WARNING.LIST_ITEM_2}</li>
-      <li>{TEXTS.WARNING.LIST_ITEM_3}</li>
+      <li>{STRINGS.USER_VERIFICATION.WARNING.LIST_ITEM_1}</li>
+      <li>{STRINGS.USER_VERIFICATION.WARNING.LIST_ITEM_2}</li>
+      <li>{STRINGS.USER_VERIFICATION.WARNING.LIST_ITEM_3}</li>
     </ul>
   </div>
 );

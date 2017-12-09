@@ -55,6 +55,12 @@ $app-bar--background: white;
     text-transform: uppercase;
     max-height: $navigation_bar-height;
 
+    .app_bar-currency_display-icon {
+      max-width: $navigation_bar-height;
+      max-height: $navigation_bar-height;
+      padding: 0.5rem;
+    }
+
     &:after {
       content: '';
       width: 1px;

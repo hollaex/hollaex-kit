@@ -61,7 +61,6 @@ const generateSectionsText = (strings) => {
 }
 
 const Footer = ({ title, status, className, onChangeLanguage, activeLanguage }) => {
-  console.log(activeLanguage);
   return (
     <div className={classnames('footer-container', 'd-flex', 'flex-column', className)}>
       <div className={classnames('d-flex', 'justify-content-around', 'footer-row-content')}>

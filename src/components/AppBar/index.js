@@ -38,7 +38,8 @@ class AppBar extends Component {
     <div key={index} className="app_bar-currency_option" onClick={() => this.onChangeSymbol(symbol)}>
       <img
         alt={symbol}
-        src={`${process.env.PUBLIC_URL}${iconPath}`}
+        src={iconPath}
+        className="app_bar-currency_display-icon"
       />
       <span>{name}</span>
     </div>
@@ -54,7 +55,8 @@ class AppBar extends Component {
         <div className={classnames('app_bar-currency_display', 'd-flex', { 'is_open': symbolSelectorIsOpen, 'is_close': !symbolSelectorIsOpen })} onClick={this.toogleSymbolSelector}>
           <img
             alt={symbol}
-            src={`${process.env.PUBLIC_URL}${iconPath}`}
+            src={iconPath}
+            className="app_bar-currency_display-icon"
           />
           <div className="app_bar-currency_display-selector d-flex align-items-center">{name}</div>
         </div>
@@ -102,7 +104,7 @@ class AppBar extends Component {
     ) : (
       <div className={classnames(...WRAPPER_CLASSES)}>
         <div className={classnames(...COMMON_CLASSES)} onClick={goToQuickTrade}>
-          quick trade
+          {STRINGS.QUICK_TRADE}
         </div>
         <div className={classnames(...COMMON_CLASSES)}>
           <Link to='/login'>{STRINGS.LOGIN_TEXT}</Link>

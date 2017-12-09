@@ -40,7 +40,12 @@ export const renderAvailableBalanceText = (symbol, balance) => {
   return (
     <div className="text">
       <p>
-        {`${STRINGS.AVAILABLE_TEXT} ${fullName} ${STRINGS.BALANCE_TEXT}: ${available} ${shortName}`}
+        {STRINGS.formatString(
+          STRINGS.AVAILABLE_BALANCE_TEXT,
+          fullName,
+          available,
+          shortName
+        )}
       </p>
     </div>
   );
@@ -55,11 +60,11 @@ export const renderNeedHelpAction = (openContactForm) => (
   />
 );
 
-export const renderInformation = (symbol, balance, openContactForm, generateFiatInformation) => {
+export const renderInformation = (symbol, balance, openContactForm, generateFiatInformation, type = 'withdraw') => {
   return (
     <div className="information_block">
       <div className="information_block-text_wrapper">
-        {renderTitle(symbol, 'withdraw')}
+        {renderTitle(symbol, type)}
         {renderAvailableBalanceText(symbol, balance)}
       </div>
       {openContactForm && renderNeedHelpAction(openContactForm)}

@@ -100,14 +100,12 @@ export const executeQuote = (token) => {
 		});
 		axios.post(`/order/quote/${token}`, {})
 			.then((body) => {
-				console.log('---', body)
 				dispatch({
 				    type: ORDERBOOK_CONSTANTS.TRADE_QUOTE_PERFORM_FULFILLED,
 				    payload: body.data
 				});
 			})
 			.catch((err) => {
-				console.log('---', err)
 				dispatch({
 				    type: ORDERBOOK_CONSTANTS.TRADE_QUOTE_PERFORM_REJECTED,
 				    payload: err.response ? err.response.data : err.message

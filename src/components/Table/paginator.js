@@ -26,7 +26,7 @@ const Paginator = ({ goToPreviousPage, goToNextPage, currentPage, count, pageSiz
         <ActionNotification
           text={TEXT_PREVIOUS_PAGE}
           status="information"
-          iconPath={ICONS.RED_ARROW}
+          iconPath={ICONS.BLUE_ARROW_RIGHT}
           textPosition="left"
           iconPosition="left"
           rotateIfLtr={true}
@@ -40,7 +40,7 @@ const Paginator = ({ goToPreviousPage, goToNextPage, currentPage, count, pageSiz
         <ActionNotification
           text={TEXT_NEXT_PAGE}
           status="information"
-          iconPath={ICONS.RED_ARROW}
+          iconPath={ICONS.BLUE_ARROW_RIGHT}
           rotateIfRtl={true}
         />
       </div>

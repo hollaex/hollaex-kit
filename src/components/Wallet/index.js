@@ -4,7 +4,7 @@ import { Accordion } from '../';
 import { CURRENCIES } from '../../config/constants';
 import { calculateBalancePrice, formatFiatAmount } from '../../utils/currency';
 import WalletSection from './Section';
-import { TEXTS } from './constants';
+import STRINGS from '../../config/localizedStrings';
 
 class Wallet extends Component {
   state = {
@@ -25,14 +25,16 @@ class Wallet extends Component {
       nextProps.price !== this.props.price ||
       nextProps.orders.length !== this.props.orders.length ||
       nextProps.symbol !== this.props.symbol ||
-      nextProps.balance.timestamp !== this.props.balance.timestamp
+      nextProps.balance.timestamp !== this.props.balance.timestamp ||
+      nextProps.activeLanguage !== this.props.activeLanguage
     ) {
       this.calculateSections(nextProps);
     }
   }
 
   generateSection = (symbol, price, balance, orders ) => {
-    const { name, currencySymbol, formatToCurrency } = CURRENCIES[symbol];
+    const { currencySymbol, formatToCurrency } = CURRENCIES[symbol];
+    const name = STRINGS[`${symbol.toUpperCase()}_NAME`];
     return ({
       accordionClassName: 'wallet_section-wrapper',
       title: name,
@@ -80,9 +82,9 @@ class Wallet extends Component {
           allowMultiOpen={true}
         />
         <div className="wallet_section-wrapper wallet_section-total_asset d-flex flex-column">
-          <div className="wallet_section-title">{TEXTS.TOTAL_ASSETS}</div>
+          <div className="wallet_section-title">{STRINGS.WALLET.TOTAL_ASSETS}</div>
           <div className="wallet_section-total_asset d-flex justify-content-end">
-            $<span>{totalAssets}</span>
+            {STRINGS.FIAT_CURRENCY_SYMBOL}<span>{totalAssets}</span>
           </div>
         </div>
       </div>
@@ -97,6 +99,7 @@ const mapStateToProps = (state, ownProps) => ({
   price: state.orderbook.price,
   orders: state.order.activeOrders,
   user_id: state.user.id,
+  activeLanguage: state.app.language
 });
 
 export default connect(mapStateToProps)(Wallet);

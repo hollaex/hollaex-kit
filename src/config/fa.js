@@ -22,6 +22,7 @@ export default {
   HELP_TEXT: 'کمک',
   SUCCESS_TEXT: 'موفقیت',
   ERROR_TEXT: 'خطا',
+  EDIT_TEXT: 'Edit', // TODO
   NO_OPTIONS: 'هیچ گزینه ای وجود ندارد',
   HOME: {
     SECTION_1_TITLE: 'خرید و فروش بیت کوین',
@@ -87,7 +88,7 @@ export default {
   },
   ACCOUNTS: {
     TITLE: 'حساب',
-    TAB_VERIFICATION: 'تایید',
+    TAB_VERIFICATION: 'احراز هویت',
     TAB_SECURITY: 'امنیت',
     TAB_NOTIFICATIONS: 'اطلاعیه',
     TAB_SETTINGS: 'تنظیمات',
@@ -119,6 +120,7 @@ export default {
     INCREASE_LIMIT: 'میخواهید محدودیت روزانه خود را افزایش دهید؟',
     QR_CODE: 'توسط فردی که می خواهد بیت کوین به شما ارسال، اسکن شود',
     NO_DATA: 'اطلاعاتی در دسترس نیست',
+    FULL_MESSAGE_LIMIT: '{0}: {1} {2} {3}', //  0 -> {Daily deposit max amount}:  1 -> {50,000,000} 2 -> {T} 3 -> {(Want to increase your daily limit?)}
   },
   LOGIN: {
     LOGIN_TO: 'ورود به {0}', // FIX
@@ -224,7 +226,8 @@ export default {
    AVAILABLE_TRADING: 'برای برداشت قابل استفاده است',
    ORDERS_PLURAL: 'سفارشات',
    ORDERS_SINGULAR: 'سفارشات',
-   HOLD_ORDERS: 'You have {0} open {1}, resulting in a hold of {2}{3} placed on your {4} balance',
+   HOLD_ORDERS: 'You have {0} open {1}, resulting in a hold of {2} {3} placed on your {4} balance', // TODO
+   // you have 3 open orders, resulting in a hold of B 0.2226 places on your BTC balance
  },
  REQUEST_RESET_PASSWORD: {
    TITLE: 'بازیابی حساب',
@@ -313,11 +316,14 @@ export default {
        POSTAL_CODE_PLACEHOLDER: 'کد پستی خود را تایپ کنید',
        PHONE_CODE_LABEL: 'کشور',
        PHONE_CODE_PLACEHOLDER: 'کشوری که شماره تلفن شما متصل است را تایپ کنید',
+       PHONE_CODE_DISPLAY: '({0}) {1}', //TODO 0 -> (+21)  1 -> Iran
        PHONE_NUMBER_LABEL: 'شماره تلفن',
        PHONE_NUMBER_PLACEHOLDER: 'شماره تلفن خود را تایپ کنید',
      },
      INFORMATION: {
-       TEXT: 'مهم: نام خود را به فیلدهای دقیقا همانطور که در سند هویت شما نشان داده شده است (نام کامل، نام و نام خانوادگی و نام خانوادگی و نام خانوادگی کامل) وارد کنید. آیا شما یک کسب و کار هستید؟ با پشتیبانی از یک حساب شرکتی تماس بگیرید'
+       TEXT: 'مهم: نام خود را به فیلدهای دقیقا همانطور که در سند هویت شما نشان داده شده است (نام کامل، نام و نام خانوادگی و نام خانوادگی و نام خانوادگی کامل) وارد کنید. آیا شما یک کسب و کار هستید؟ با پشتیبانی از یک حساب شرکتی تماس بگیرید',
+       TITLE_PERSONAL_INFORMATION: 'Personal Information', // TODO
+       TITLE_PHONE: 'Phone', // TODO
      }
    },
    ID_DOCUMENTS_FORM: {
@@ -348,6 +354,8 @@ export default {
        POR_PLACEHOLDER: 'یک کپی از یک سند که نشانی شما را ثابت می کند، اضافه کنید',
      },
      INFORMATION: {
+       IDENTITY_DOCUMENT: 'Identity Document', // TODO
+       PROOF_OF_RESIDENCY: 'Proof of residence', // TODO
        ID_SECTION: {
          TITLE: 'لطفا از اسناد ارائه شده اطمینان حاصل کنید  :',
          LIST_ITEM_1: 'کیفیت بالا (تصاویر رنگی، رزولوشن 300dpi یا بالاتر).',
@@ -510,20 +518,24 @@ export default {
     { key: 'en', label: 'English' },
     { key: 'fa', label: 'فارسی' },
   ],
-  QUICK_TRADE: 'ترید سریع',
-  PRO_TRADE: 'pro ترید',
+  QUICK_TRADE: 'آسان',
+  PRO_TRADE: 'پیشرفته',
   WALLET_TITLE: 'کیف پول',
-  TRADING_MODE_TITLE: 'حالت ترید',
-  LOGOUT: 'Logout',
+  TRADING_MODE_TITLE: 'خرید و فروش',
+  LOGOUT: 'خروج',
   WITHDRAWALS_MIN_VALUE_ERROR: 'تراکنش برای ارسال بسیار کوچک است. مقدار بیشتری را امتحان کنید',
   WITHDRAWALS_MAX_VALUE_ERROR: 'تراکنش برای ارسال بسیار بزرگ است. مقدار کمتری  را امتحان کنید.',
   WITHDRAWALS_LOWER_BALANCE: 'شما برای انجام این معامله مبلغ {0} کافی ندارید',
+  WITHDRAWALS_FEE_TOO_LARGE: 'کارمزد بزرگتر از {0}% از این تراکنش است. ', // TODO
   WITHDRAWALS_INVALID_ADDRESS: 'آدرس بیت کوین نامعتبر است لطفا با دقت و دوباره وارد شوید',
   WITHDRAWALS_BUTTON_TEXT: 'مرور برداشت',
   WITHDRAWALS_FORM_ADDRESS_LABEL: 'آدرس مقصد',
   WITHDRAWALS_FORM_ADDRESS_PLACEHOLDER: 'آدرس را تایپ کنید',
   WITHDRAWALS_FORM_AMOUNT_LABEL: '{0} مقدار برداشت',
   WITHDRAWALS_FORM_AMOUNT_PLACEHOLDER: 'مقدار {0} را که می خواهید برداشت کنید تایپ کنید',
+  WITHDRAWALS_FORM_FEE_LABEL: '{0}% کارمزد', // TODO
+  WITHDRAWALS_FORM_FEE_PLACEHOLDER: 'مقدار {0} که میخواهیید در این تراکنش استفاده کنید را وارد کنید ', // TODO
+  WITHDRAWALS_FORM_FEE_OPTIMAL_VALUE: 'کارمزد مطلوب: {0} {1}', // TODO {0} -> amount {1} -> currency name
   DEPOSITS_FORM_AMOUNT_LABEL: '{0} مقدار برداشت', // FIX
   DEPOSITS_FORM_AMOUNT_PLACEHOLDER: 'مقدار {0} را که می خواهید برداشت کنید تایپ کنید',
   DEPOSITS_BUTTON_TEXT: 'مرور سپرده',
@@ -545,31 +557,50 @@ export default {
   QUOTE_BUTTON: 'قبول',
   QUOTE_REVIEW: 'بازبینی',
   QUOTE_COUNTDOWN_MESSAGE: 'شما {0} ثانیه برای این تراکنش وقت دارید',
-  QUOTE_EXPIRED_TOKEN: 'The quote token has expired.',
+  QUOTE_EXPIRED_TOKEN: 'نماد منقضی شده', // TODO
   QUOTE_SUCCESS_REVIEW_TITLE: 'خرید آسان',
   QUOTE_SUCCESS_REVIEW_MESSAGE: 'شما با موفقیت {0} {1} {0} برای {3} {4}',
-  COUNTDOWN_ERROR_MESSAGE: 'Countdown is finished',
+  COUNTDOWN_ERROR_MESSAGE: 'شمارش معکوس به اتمام رسید.', // TODO
   WITHDRAW_PAGE: {
     BANK_TO_WITHDRAW: 'نام بانک دریافت کننده',
     MESSAGE_ABOUT_SEND: 'شما در آستانه ارسال',
     MESSAGE_BTC_WARNING: 'لطفا از درست بودن آدرس خود اطمینان حاصل کنید {0} تراکنش ها غیر قابل بازگشت هستند.',
-    MESSAGE_ABOUT_WITHDRAW: 'You are about to transfer to your bank account',
-    MESSAGE_FEE: 'Transactions fee of {0}({1})included in withdrawal',
+    MESSAGE_ABOUT_WITHDRAW: 'شما در حال انجام انتقال به حساب بانکی خود هستید.', // TODO
+    MESSAGE_FEE: 'شامل کارمزد {0} ({1})', // TODO
     FIAT_MESSAGE_1: 'شما تنها می توانید به حساب بانک پول خود را ارسال کنید که با نام شما در اکسیر مطابقت داشته باشد',
-    FIAT_MESSAGE_2: 'Withdrawal min amount',
+    FIAT_MESSAGE_2: 'حداقل مقدار برداشت', // TODO
     FIAT_MESSAGE_3: 'محدودیت برداشت روزانه',
     FIAT_INCREASE_LIMIT: 'افزایش برداشت محدودیت روزانه',
   },
-  WALLET_BUTTON_FIAT_DEPOSIT: 'دریافت',
+    WALLET_BUTTON_FIAT_DEPOSIT: 'دریافت',
   WALLET_BUTTON_FIAT_WITHDRAW: 'ارسال',
   WALLET_BUTTON_CRYPTOCURRENCY_DEPOSIT: 'دریافت',
   WALLET_BUTTON_CRYPTOCURRENCY_WITHDRAW: 'ارسال',
-  AVAILABLE_TEXT: 'Available',
-  BALANCE_TEXT: 'Balance',
+  AVAILABLE_TEXT: 'قابل استفاده',
+  AVAILABLE_BALANCE_TEXT: 'مقدار {0} قابل استفاده: {1} {2}', // TODO موجودی قابل استفاده بیتکوین: BTC 2.6
+  BALANCE_TEXT: 'موجودی',
   CURRENCY_BALANCE_TEXT: '{0} موجودی',
-  WALLET_TABLE_AMOUNT_IN: `مقدار به {0}`,
+  WALLET_TABLE_AMOUNT_IN: 'مقدار به {0}',
   WALLET_TABLE_TOTAL: 'جمع کل',
   WALLET_ALL_ASSETS: 'همه دارایی ها',
-  HIDE_TEXT: 'Hide',
-  PAGINATOR_FORMAT: '{0} / {1}'
+  HIDE_TEXT: 'پنهان کردن',
+  PAGINATOR_FORMAT: '{0} / {1}',
+  ORDERBOOK_SPREAD: 'اسپرد {0}', // 0 -> 660,000 T
+  ORDERBOOK_SPREAD_PRICE: '{0} {1}', // 0-> amount  1 -> symbol  600,000 T
+  FIAT_PRICE_FORMAT: '{0} {1}', // 0-> amount  1 -> symbol  600,000 T
+  BTC_PRICE_FORMAT: '{0} {1}', // 0-> amount  1 -> symbol  6.00245 BTC
+  CALCULATE_MAX: 'ماکسیمم',
+  DATEFIELD_TOOGLE_DATE_PE: 'تاریخ شمسی‌',
+  DATEFIELD_TOOGLE_DATE_GR: 'Gregorian calendar',
+  VERIFICATION_WARNING_TITLE: 'Verification required', // TODO
+  VERIFICATION_WARNING_MESSAGE: 'Go to {0} to verify you data', // TODO
+  ORDER_SPENT: 'Spent', // TODO
+  ORDER_RECEIVED: 'Received', // TODO
+  ORDER_SOLD: 'Sold', // TODO
+  ORDER_BOUGHT: 'Bought', // TODO
+  ORDER_AVERAGE_PRICE: 'Average price', // TODO
+  ORDER_TITLE_CREATED: 'Successfully created a limit {0}', // TODO 0 -> buy / sell
+  ORDER_TITLE_FULLY_FILLED: '{0} order successfully filled', // TODO 0 -> buy / sell
+  ORDER_TITLE_PARTIALLY_FILLED: '{0} order partially filled', // TODO 0 -> buy / sell
+  ORDER_TITLE_TRADE_COMPLETE: '{0} {1} order was successful', // TODO 0 -> buy / sell
 };

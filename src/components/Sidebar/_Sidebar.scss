@@ -6,6 +6,8 @@ $sidebar-selected-ball--width: 0.75rem;
 $sidebar-selected-ball--space: $sidebar-selected-ball--width + 0.5rem;
 $sidebar-selected-ball--top: 2px;
 $title-text--active: 1.25rem;
+$trade-button--color: $colors-main-black;
+$trade-button--border: $colors-main-black;
 
 .sidebar-container {
   display: flex;
@@ -43,11 +45,12 @@ $title-text--active: 1.25rem;
       .sidebar-trade-button {
         &.not-active {
           background: $colors-white !important;
-          color: $colors-deactivate-color2 !important;
-          border: 1px solid $colors-deactivate-color2;
+          color: $trade-button--color !important;
+          border: 1px solid $trade-button--border;
         }
         &.active {
-          background: $colors-currencies-btc !important;
+          // background: $colors-currencies-btc !important;
+          background: $trade-button--color !important;
         }
       }
     }

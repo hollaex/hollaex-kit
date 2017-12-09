@@ -27,12 +27,6 @@ export const generateFiatInformation = (currency, limits = {}) => {
   );
 }
 
-export const generateFeeMessage = (fee, price, symbol) => {
-  const { shortName, formatToCurrency } = CURRENCIES[symbol];
-  const fiatFee = fee;
-  return STRINGS.formatString(STRINGS.WITHDRAW_PAGE.MESSAGE_FEE, `${formatToCurrency(fee)} ${shortName}`, `${FIAT_SYMBOL} ${FIAT_FORMAT(fiatFee)}`)
-}
-
 export const renderExtraInformation = (symbol, bank_account) => symbol === fiatSymbol && (
   <div className="bank_account-information-wrapper">
     <Accordion

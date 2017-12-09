@@ -6,7 +6,7 @@ const renderCheckboxImage = (checked, disabled) => (
   <img
     src={checked ? ICONS.SUCCESS_BLACK : ICONS.SECURE}
     alt={checked ? 'checked' : 'unchecked'}
-    className={classnames('checkbutton-input-wrapper--image')}
+    className="checkbutton-input-wrapper--image"
   />
 )
 
@@ -25,7 +25,7 @@ const CheckboxButton = ({
   loading = false,
   children
 }) => (
-  <div className={classnames('checkbutton-wrapper')}>
+  <div className="checkbutton-wrapper">
     <div
       className={classnames(
         'checkbutton-input-wrapper',
@@ -36,10 +36,10 @@ const CheckboxButton = ({
       onClick={onCheck(disabled, onClick, checked)}
     >
       {loading ?
-        <div className={classnames('checkbutton-input-wrapper--loader')}>loading</div> :
+        <div className="checkbutton-input-wrapper--loader"></div> :
         renderCheckboxImage(checked, disabled)
       }
-      <span className={classnames('checkbutton-input-wrapper--label')}>{label}</span>
+      <span className="checkbutton-input-wrapper--label">{label}</span>
     </div>
     {children && <div className="checkbutton-content-wrapper">{children}</div>}
   </div>

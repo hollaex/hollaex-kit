@@ -17,6 +17,10 @@
   &.disabled {
     background-color: $colors-deactivate-color1 !important;
   }
+  &:active, &:focus {
+    outline: none;
+    border: none;
+  }
 }
 
 .checkbutton-wrapper {
@@ -29,7 +33,7 @@
       padding-left: 0.5rem;
     }
 
-    .checkbutton-input-wrapper--image {
+    .checkbutton-input-wrapper--image, .checkbutton-input-wrapper--loader {
       width: 2rem;
     }
   }

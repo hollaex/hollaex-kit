@@ -22,6 +22,7 @@ export default {
   HELP_TEXT: 'help',
   SUCCESS_TEXT: 'Success',
   ERROR_TEXT: 'Error',
+  EDIT_TEXT: 'Edit',
   NO_OPTIONS: 'No options availables',
   HOME: {
     SECTION_1_TITLE: 'Buy & sell cryptocurrencies',
@@ -119,6 +120,7 @@ export default {
     INCREASE_LIMIT: 'Want to increase your daily limit?',
     QR_CODE: 'This QR Code can be scanned by the person who wants to send you Bitcoins',
     NO_DATA: 'No information available',
+    FULL_MESSAGE_LIMIT: '{0}: {1} {2} {3}', //  0 -> {Daily deposit max amount}:  1 -> {50,000,000} 2 -> {T} 3 -> {(Want to increase your daily limit?)}
   },
   LOGIN: {
     LOGIN_TO: 'Login to {0}',
@@ -224,7 +226,7 @@ export default {
    AVAILABLE_TRADING: 'Available for withdrawal',
    ORDERS_PLURAL: 'orders',
    ORDERS_SINGULAR: 'order',
-   HOLD_ORDERS: 'You have {0} open {1}, resulting in a hold of {2}{3} placed on your {4} balance',
+   HOLD_ORDERS: 'You have {0} open {1}, resulting in a hold of {2} {3} placed on your {4} balance',
  },
  REQUEST_RESET_PASSWORD: {
    TITLE: 'Account Recovery',
@@ -313,11 +315,14 @@ export default {
        POSTAL_CODE_PLACEHOLDER: 'Type your postal code',
        PHONE_CODE_LABEL: 'Country',
        PHONE_CODE_PLACEHOLDER: 'Select the country your phone is connected to',
+       PHONE_CODE_DISPLAY: '({0}) {1}', // 0 -> (+21)  1 -> Iran
        PHONE_NUMBER_LABEL: 'Phone number',
        PHONE_NUMBER_PLACEHOLDER: 'Type your phone number',
      },
      INFORMATION: {
-       TEXT: 'IMPORTANT: Enter your name into the fields exactly as it appears on your identity document (full first name, any middle names/initials and full last name(s)). Are you a business? Contact customer support for a corporate account.'
+       TEXT: 'IMPORTANT: Enter your name into the fields exactly as it appears on your identity document (full first name, any middle names/initials and full last name(s)). Are you a business? Contact customer support for a corporate account.',
+       TITLE_PERSONAL_INFORMATION: 'Personal Information',
+       TITLE_PHONE: 'Phone',
      }
    },
    ID_DOCUMENTS_FORM: {
@@ -348,6 +353,8 @@ export default {
        POR_PLACEHOLDER: 'Add a copy of a document that proves your address',
      },
      INFORMATION: {
+       IDENTITY_DOCUMENT: 'Identity Document',
+       PROOF_OF_RESIDENCY: 'Proof of residence',
        ID_SECTION: {
          TITLE: 'Please make sure that your submitted documents are:',
          LIST_ITEM_1: 'HIGH QUALITY (colour images, 300dpi resolution or higher).',
@@ -518,12 +525,16 @@ export default {
   WITHDRAWALS_MIN_VALUE_ERROR: 'The transaction is too small to send. Try a larger amount.',
   WITHDRAWALS_MAX_VALUE_ERROR: 'The transaction is too big to send. Try a smaller amount.',
   WITHDRAWALS_LOWER_BALANCE: 'You don’t have enough {0} in your balance to send that transaction',
+  WITHDRAWALS_FEE_TOO_LARGE: 'The fee is more than {0}% of your total transaction',
   WITHDRAWALS_INVALID_ADDRESS: 'The Bitcoin address is invalid. Please check carefully and input again',
   WITHDRAWALS_BUTTON_TEXT: 'review withdrawal',
   WITHDRAWALS_FORM_ADDRESS_LABEL: 'Destination address',
   WITHDRAWALS_FORM_ADDRESS_PLACEHOLDER: 'Type the address',
   WITHDRAWALS_FORM_AMOUNT_LABEL: '{0} amount to withdraw',
   WITHDRAWALS_FORM_AMOUNT_PLACEHOLDER: 'Type the amount of {0} you wish to withdraw',
+  WITHDRAWALS_FORM_FEE_LABEL: '{0} transaction fee',
+  WITHDRAWALS_FORM_FEE_PLACEHOLDER: 'Type the amount of {0} you wish to use in the fee of the transaction',
+  WITHDRAWALS_FORM_FEE_OPTIMAL_VALUE: 'Optimal fee: {0} {1}', // TODO {0} -> amount {1} -> currency name
   DEPOSITS_FORM_AMOUNT_LABEL: '{0} amount to deposit',
   DEPOSITS_FORM_AMOUNT_PLACEHOLDER: 'Type the amount of {0} you wish to withdraw',
   DEPOSITS_BUTTON_TEXT: 'review deposit',
@@ -554,7 +565,7 @@ export default {
     MESSAGE_ABOUT_SEND: 'You are about to send',
     MESSAGE_BTC_WARNING: 'Please ensure the accuracy of this address since {0} transfers are irreversible',
     MESSAGE_ABOUT_WITHDRAW: 'You are about to transfer to your bank account',
-    MESSAGE_FEE: 'Transactions fee of {0}({1})included in withdrawal',
+    MESSAGE_FEE: 'Transactions fee of {0} ({1}) included',
     FIAT_MESSAGE_1: 'You can only withdraw to a bank account in a name that matches the name registered with your EXIR account.',
     FIAT_MESSAGE_2: 'Withdrawal min amount',
     FIAT_MESSAGE_3: 'Daily withdrawal max amount',
@@ -565,11 +576,30 @@ export default {
   WALLET_BUTTON_CRYPTOCURRENCY_DEPOSIT: 'receive',
   WALLET_BUTTON_CRYPTOCURRENCY_WITHDRAW: 'send',
   AVAILABLE_TEXT: 'Available',
+  AVAILABLE_BALANCE_TEXT: 'Available {0} Balance: {1} {2}', // Available Bitcoin Balance: 2.6 BTC
   BALANCE_TEXT: 'Balance',
   CURRENCY_BALANCE_TEXT: '{0} Balance',
   WALLET_TABLE_AMOUNT_IN: `Amount in {0}`,
   WALLET_TABLE_TOTAL: 'Grand Total',
   WALLET_ALL_ASSETS: 'All Assets',
   HIDE_TEXT: 'Hide',
-  PAGINATOR_FORMAT: '{0} / {1}'
+  PAGINATOR_FORMAT: '{0} / {1}',
+  ORDERBOOK_SPREAD: '{0} spread', // 0 -> 660,000 T
+  ORDERBOOK_SPREAD_PRICE: '{0} {1}', //// 0-> amount  1 -> symbol  600,000 T
+  FIAT_PRICE_FORMAT: '{0} {1}', // 0-> amount  1 -> symbol  600,000 T
+  BTC_PRICE_FORMAT: '{0} {1}', // 0-> amount  1 -> symbol  6.00245 BTC
+  CALCULATE_MAX: 'Max',
+  DATEFIELD_TOOGLE_DATE_PE: 'تاریخ شمسی‌',
+  DATEFIELD_TOOGLE_DATE_GR: 'Gregorian calendar',
+  VERIFICATION_WARNING_TITLE: 'Verification required',
+  VERIFICATION_WARNING_MESSAGE: 'Go to {0} to verify you data',
+  ORDER_SPENT: 'Spent',
+  ORDER_RECEIVED: 'Received',
+  ORDER_SOLD: 'Sold',
+  ORDER_BOUGHT: 'Bought',
+  ORDER_AVERAGE_PRICE: 'Average price',
+  ORDER_TITLE_CREATED: 'Successfully created a limit {0}', // 0 -> buy / sell
+  ORDER_TITLE_FULLY_FILLED: '{0} order successfully filled', // 0 -> buy / sell
+  ORDER_TITLE_PARTIALLY_FILLED: '{0} order partially filled', // 0 -> buy / sell
+  ORDER_TITLE_TRADE_COMPLETE: '{0} {1} order was successful', // 0 -> buy / sell
 };

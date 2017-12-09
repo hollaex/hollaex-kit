@@ -89,6 +89,20 @@ export const ICONS = {
   WITHDRAW: `${process.env.PUBLIC_URL}/assets/images/withdraw.svg`,
   WITHDRAW_HISTORY: `${process.env.PUBLIC_URL}/assets/images/withdraw-history.svg`,
   WITHDRAW_HISTORY_GREY: `${process.env.PUBLIC_URL}/assets/images/withdraw-history-grey.svg`,
+  BLUE_ARROW_LEFT: `${process.env.PUBLIC_URL}/assets/images/blue-arrow-left.svg`,
+  BLUE_ARROW_RIGHT: `${process.env.PUBLIC_URL}/assets/images/blue-arrow-right.svg`,
+  SESSION_TIMED_OUT: `${process.env.PUBLIC_URL}/assets/images/session-timed-out.svg`,
+  BLUE_EDIT: `${process.env.PUBLIC_URL}/assets/images/blue-edit-exir-icon.svg`,
+  BLUE_PLUS: `${process.env.PUBLIC_URL}/assets/images/max-plus-blue-icon.svg`,
+  TOMAN_T_ICON: `${process.env.PUBLIC_URL}/assets/images/toman-t-icon.svg`,
+  NOTIFICATION_ORDER_LIMIT_BUY_FILLED: `${process.env.PUBLIC_URL}/assets/images/limit-buy-order-filled-01.svg`,
+  NOTIFICATION_ORDER_LIMIT_BUY_CREATED: `${process.env.PUBLIC_URL}/assets/images/limit-buy-order-icon-01.svg`,
+  NOTIFICATION_ORDER_LIMIT_BUY_FILLED_PART: `${process.env.PUBLIC_URL}/assets/images/limit-buy-order-part-filled-01.svg`,
+  NOTIFICATION_ORDER_LIMIT_SELL_FILLED: `${process.env.PUBLIC_URL}/assets/images/limit-sell-order-filled-01.svg`,
+  NOTIFICATION_ORDER_LIMIT_SELL_CREATED: `${process.env.PUBLIC_URL}/assets/images/limit-sell-order-icon-01.svg`,
+  NOTIFICATION_ORDER_LIMIT_SELL_FILLED_PART: `${process.env.PUBLIC_URL}/assets/images/limit-sell-order-part-filled-01.svg`,
+  NOTIFICATION_ORDER_MARKET_BUY_FILLED: `${process.env.PUBLIC_URL}/assets/images/market-buy-01.svg`,
+  NOTIFICATION_ORDER_MARKET_SELL_FILLED: `${process.env.PUBLIC_URL}/assets/images/market-sell-01.svg`,
 }
 
 export const SOCIAL_ICONS = {
@@ -109,7 +123,7 @@ export const CURRENCIES = {
     shortName: STRINGS.FIAT_SHORTNAME,
     currencySymbol: STRINGS.FIAT_CURRENCY_SYMBOL,
     formatToCurrency: formatFiatAmount,
-    iconPath: '/assets/acounts/account-icons-14.png',
+    iconPath: ICONS.TOMAN_T_ICON,
   },
   btc: {
     symbol: 'btc',
@@ -118,7 +132,7 @@ export const CURRENCIES = {
     shortName: STRINGS.BTC_SHORTNAME,
     currencySymbol: 'B',
     formatToCurrency: formatBtcAmount,
-    iconPath: '/assets/acounts/account-icons-14.png',
+    iconPath: ICONS.BITCOIN_DARK,
   },
 }
 
@@ -155,7 +169,7 @@ export const WITHDRAW_LIMITS = {
     STEP: 1,
   },
   btc: {
-    MIN: 1,
+    MIN: 0.0001,
     MAX: 10,
     STEP: 0.0001,
   }
@@ -170,3 +184,4 @@ export const BANK_INFORMATION = {
 };
 
 export const BANK_PAYMENT_LINK = 'https://api.moneyar.com/IPG/default.aspx?uid=';
+export const MIN_VERIFICATION_LEVEL_TO_WITHDRAW = 2;
