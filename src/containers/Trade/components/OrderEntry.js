@@ -127,7 +127,7 @@ class OrderEntry extends Component {
         min: LIMIT_VALUES.PRICE.MIN,
         max: LIMIT_VALUES.PRICE.MAX,
         validate: [required, minValue(LIMIT_VALUES.PRICE.MIN), maxValue(LIMIT_VALUES.PRICE.MAX), step(LIMIT_VALUES.PRICE.STEP)],
-        normalize: normalizeInt,
+        // normalize: normalizeInt,
         currency: STRINGS.FIAT_SHORTNAME,
       }
     };
