@@ -17,39 +17,20 @@ const INITIAL_STATE = {
 	resetPasswordPending: false,
 	resetPasswordComplete: false,
 	verification: VERIFICATION,
+	logoutMessage: '',
 }
 
-export default function reducer(state = INITIAL_STATE, action) {
+export default function reducer(state = INITIAL_STATE, { type, payload }) {
 
-	switch(action.type) {
-		//SIGNUP
-		case 'SIGNUP_USER_PENDING': {
-			return {...state, fetching: true}
-			break;
-		}
-		case 'SIGNUP_USER_REJECTED': {
-			return {...state, fetching: false, error: action.payload.message }
-			break;
-		}
-		case 'SIGNUP_USER_FULFILLED': {
-			return {...state, fetching: false, fetched: true}
-			break;
-		}
+	switch(type) {
 		//EMAIL
-		case 'USER_EMAIL': {
-				return {...state, fetching: false, fetched: true, userEmail: action.payload}
-				break;
+		case 'USER_EMAIL':
+			return {
+				...state,
+				fetching: false,
+				fetched: true,
+				userEmail: payload
 			}
-		//VERIFICATION
-		case 'VERIFICATION_REJECTED': {
-			return {...state, fetching: false, message: action.payload.response.data.message}
-			break;
-		}
-		case 'VERIFICATION_FULFILLED': {
-			return {...state, fetching: false, fetched: true, message: action.payload.data.message}
-			break;
-		}
-
 		case 'CHECK_VERIFICATION_CODE_PENDING':
 			return {
 				...state,
@@ -65,7 +46,7 @@ export default function reducer(state = INITIAL_STATE, action) {
 					...VERIFICATION,
 					fetching: true,
 					fetched: true,
-					data: action.payload,
+					data: payload,
 					hasValidData: true,
 				},
 			};
@@ -76,7 +57,7 @@ export default function reducer(state = INITIAL_STATE, action) {
 					...VERIFICATION,
 					fetching: false,
 					fetched: true,
-					error: action.payload.message,
+					error: payload.message,
 				},
 			};
 		case 'VERIFY_VERIFICATION_CODE_PENDING':
@@ -101,66 +82,47 @@ export default function reducer(state = INITIAL_STATE, action) {
 				verification: {
 					...VERIFICATION,
 					fetched: true,
-					error: action.payload.message,
+					error: payload.message,
 				},
 			};
 
-		//LOGIN
-		case 'LOGIN_USER_PENDING': {
-			return {...state, fetching: true}
-			break;
-		}
-		case 'LOGIN_USER_REJECTED': {
-			return {...state, fetching: false, error: action.payload.data.message}
-			break;
-		}
-		case 'LOGIN_USER_FULFILLED': {
-			return {...state, fetching: false, fetched: true, token: action.payload}
-			break;
-		}
 		// Verify token
 		case 'VERIFY_TOKEN_PENDING':
-			return { ...state, fetching: true, verifyingToken: true };
+			return {
+				...state,
+				fetching: true,
+				verifyingToken: true
+			};
 		case 'VERIFY_TOKEN_REJECTED':
-			return { ...state, fetching: false, verifyingToken: false };
+			return {
+				...state,
+				fetching: false,
+				verifyingToken: false
+			};
 		case 'VERIFY_TOKEN_FULFILLED':
-			return { ...state, fetching: false, verifyingToken: false, fetched: true, token: action.payload };
+			return {
+				...state,
+				fetching: false,
+				verifyingToken: false,
+				fetched: true,
+				token: payload
+			};
+		case 'LOAD_TOKEN':
+			return {
+				...state,
+				token: payload
+			};
 
-		// RESET PASSWORD
-		case 'RESET_PASSWORD_PENDING': {
-			return {...state, resetPasswordPending: true, resetPasswordComplete: false}
-			break;
-		}
-		case 'RESET_PASSWORD_REJECTED': {
-			return {...state, resetPasswordPending: false, error: action.payload.message}
-			break;
-		}
-		case 'RESET_PASSWORD_FULFILLED': {
-			return {...state, resetPasswordPending: false, resetPasswordComplete: true}
-			break;
-		}
-
-		// requestResetPassword
-		case 'REQUEST_RESET_PASSWORD_PENDING': {
-			return {...state, requestResetPasswordPending: true, requestResetPasswordComplete: false}
-			break;
-		}
-		case 'REQUEST_RESET_PASSWORD_REJECTED': {
-			return {...state, requestResetPasswordPending: false, error: action.payload.message}
-			break;
-		}
-		case 'REQUEST_RESET_PASSWORD_FULFILLED': {
-			return {...state, requestResetPasswordPending: false, requestResetPasswordComplete: true}
-			break;
-		}
-
-		case 'LOAD_TOKEN': {
-			return {...state, token: action.payload}
-			break;
-		}
-
+		case 'SET_LOGOUT_MESSAGE':
+			return {
+				...state,
+				logoutMessage: payload.message,
+			}
 		case 'LOGOUT':
-			return INITIAL_STATE;
+			return {
+				...INITIAL_STATE,
+				logoutMessage: payload.message,
+			};
 	}
 	return state;
 }

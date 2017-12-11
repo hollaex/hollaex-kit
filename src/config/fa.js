@@ -603,4 +603,9 @@ export default {
   ORDER_TITLE_FULLY_FILLED: '{0} order successfully filled', // TODO 0 -> buy / sell
   ORDER_TITLE_PARTIALLY_FILLED: '{0} order partially filled', // TODO 0 -> buy / sell
   ORDER_TITLE_TRADE_COMPLETE: '{0} {1} order was successful', // TODO 0 -> buy / sell
+  LOGOUT_TITLE: 'YOU have been logged out', // TODO
+  LOGOUT_ERROR_TOKEN_EXPIRED: 'TOKEN is expired', // TODO
+  LOGOUT_ERROR_LOGIN_AGAIN: 'LOGIN again', // TODO ip doesnt match
+  LOGOUT_ERROR_INVALID_TOKEN: 'INVALID token', // TODO
+  LOGOUT_ERROR_INACTIVE: 'YOU have been logged out because you have been inactive', // TODO
 };

@@ -591,8 +591,8 @@ export default {
   CALCULATE_MAX: 'Max',
   DATEFIELD_TOOGLE_DATE_PE: 'تاریخ شمسی‌',
   DATEFIELD_TOOGLE_DATE_GR: 'Gregorian calendar',
-  VERIFICATION_WARNING_TITLE: 'Verification required',
-  VERIFICATION_WARNING_MESSAGE: 'Go to {0} to verify you data',
+  VERIFICATION_WARNING_TITLE: 'Verification you bank details',
+  VERIFICATION_WARNING_MESSAGE: 'Before you withdraw, you need to verify your bank details.',
   ORDER_SPENT: 'Spent',
   ORDER_RECEIVED: 'Received',
   ORDER_SOLD: 'Sold',
@@ -602,4 +602,9 @@ export default {
   ORDER_TITLE_FULLY_FILLED: '{0} order successfully filled', // 0 -> buy / sell
   ORDER_TITLE_PARTIALLY_FILLED: '{0} order partially filled', // 0 -> buy / sell
   ORDER_TITLE_TRADE_COMPLETE: '{0} {1} order was successful', // 0 -> buy / sell
+  LOGOUT_TITLE: 'You have been logged out',
+  LOGOUT_ERROR_TOKEN_EXPIRED: 'Token is expired',
+  LOGOUT_ERROR_LOGIN_AGAIN: 'Login again', // ip doesnt match
+  LOGOUT_ERROR_INVALID_TOKEN: 'Invalid token',
+  LOGOUT_ERROR_INACTIVE: 'You have been logged out because you have been inactive',
 };

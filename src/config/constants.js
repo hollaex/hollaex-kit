@@ -103,6 +103,7 @@ export const ICONS = {
   NOTIFICATION_ORDER_LIMIT_SELL_FILLED_PART: `${process.env.PUBLIC_URL}/assets/images/limit-sell-order-part-filled-01.svg`,
   NOTIFICATION_ORDER_MARKET_BUY_FILLED: `${process.env.PUBLIC_URL}/assets/images/market-buy-01.svg`,
   NOTIFICATION_ORDER_MARKET_SELL_FILLED: `${process.env.PUBLIC_URL}/assets/images/market-sell-01.svg`,
+  NOTIFICATION_VERIFICATION_WARNING: `${process.env.PUBLIC_URL}/assets/images/verification.svg`,
 }
 
 export const SOCIAL_ICONS = {

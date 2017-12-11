@@ -4,8 +4,7 @@ import { Button, ActionNotification } from '../';
 import { ICONS } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 import { formatBtcAmount, formatFiatAmount } from '../../utils/currency';
-import { NotificationWraper, NotificationContent } from './Notification';
-import InformationRow from './InformationRow';
+import { NotificationWraper, NotificationContent, InformationRow } from './Notification';
 
 const SIDE_BUY = 'buy';
 const SIDE_SELL = 'sell';
