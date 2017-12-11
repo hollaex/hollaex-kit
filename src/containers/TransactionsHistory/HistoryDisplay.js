@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { TEXT_DOWNLOAD, TABLE_PAGE_SIZE } from './constants';
+import { TABLE_PAGE_SIZE } from './constants';
 import { ICONS, } from '../../config/constants';
 import { ActionNotification, Table, CsvDownload, Loader } from '../../components';
 
