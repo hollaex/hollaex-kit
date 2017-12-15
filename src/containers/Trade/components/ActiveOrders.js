@@ -17,7 +17,7 @@ const generateHeaders = (onCancel) => ([
     renderCell: ({ side = '' }, key, index) => {
       return (
         <td key={index} className={classnames('cell_box-type')}>
-          <div className={classnames(side)}>{side}</div>
+          <div className={classnames(side)}>{STRINGS.SIDES_VALUES[side]}</div>
         </td>
       );
     },
