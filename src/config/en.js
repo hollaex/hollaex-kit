@@ -8,6 +8,7 @@ export default {
   BTC_NAME: 'Bitcoin',
   BTC_FULLNAME: 'Bitcoin',
   BTC_SHORTNAME: 'BTC',
+  BTC_CURRENCY_SYMBOL: 'BTC',
   TIMESTAMP_FORMAT: 'YYYY/MM/DD HH:mm:ss A',
   HOUR_FORMAT: 'HH:mm:ss A',
   LOGIN_TEXT: 'Login',
