@@ -41,15 +41,15 @@ class AppBar extends Component {
         src={iconPath}
         className="app_bar-currency_display-icon"
       />
-      <span>{name}</span>
+      <span>{STRINGS[`${symbol.toUpperCase()}_NAME`]}</span>
     </div>
   );
 
 
   renderSymbolBlock = (symbol) => {
-    const { name, iconPath } = CURRENCIES[symbol];
+    const { iconPath } = CURRENCIES[symbol];
+    const name = STRINGS[`${symbol.toUpperCase()}_NAME`]
     const { symbolSelectorIsOpen } = this.state;
-
     return (
       <div className="app_bar-currency_wrapper pointer">
         <div className={classnames('app_bar-currency_display', 'd-flex', { 'is_open': symbolSelectorIsOpen, 'is_close': !symbolSelectorIsOpen })} onClick={this.toogleSymbolSelector}>
