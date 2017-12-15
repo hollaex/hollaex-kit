@@ -68,12 +68,12 @@ const Section = ({
       {generateCardsContentFromStrings(STRINGS).map((card, index) => <Card {...card} key={index} />)}
     </div>
     <div className={classnames('buttons-section', ...FLEX_CENTER_CLASSES)}>
-      <div
+      {/*<div
         className={classnames(...BUTTONS_CLASSES, { pointer: onClickDemo })}
         onClick={onClickDemo}
       >
         {STRINGS.HOME.SECTION_3_BUTTON_1}
-      </div>
+      </div>*/}
       {!token && <div
         className={classnames(...BUTTONS_CLASSES, 'contrast', { pointer: onClickRegister })}
         onClick={onClickRegister}

@@ -302,7 +302,7 @@ class Container extends Component {
 
 	logout = (message = '') => {
 		this.setState({ appLoaded: false }, () => {
-			this.props.logout(message);
+			this.props.logout(typeof message === 'string' ? message: '');
 		})
 	}
 
