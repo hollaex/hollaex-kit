@@ -151,8 +151,8 @@ class DropdownDateField extends Component {
           <div className={classnames('datefield-toogle', languageState)}>
             <ActionNotification
               text={languageState === DEFAULT_LANGUAGE ?
-                STRINGS.DATEFIELD_TOOGLE_DATE_GR :
-                STRINGS.DATEFIELD_TOOGLE_DATE_PE
+                STRINGS.DATEFIELD_TOOGLE_DATE_PE :
+                STRINGS.DATEFIELD_TOOGLE_DATE_GR
               }
               status="information"
               iconPath={ICONS.COPY_NEW}
