@@ -15,3 +15,7 @@ export const removeToken = () => {
   localStorage.removeItem(TOKEN_KEY);
 	localStorage.removeItem(TOKEN_TIME_KEY);
 }
+
+export const getTokenTimestamp = () => {
+  return localStorage.getItem(TOKEN_TIME_KEY);
+}

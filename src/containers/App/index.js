@@ -19,7 +19,7 @@ import {
 } from '../../actions/appActions';
 
 import { checkUserSessionExpired } from '../../utils/utils';
-import { getToken } from '../../utils/token';
+import { getToken, getTokenTimestamp } from '../../utils/token';
 import { AppBar, Sidebar, Dialog, Loader, Notification, MessageDisplay } from '../../components';
 import { ContactForm } from '../';
 
@@ -36,7 +36,7 @@ class Container extends Component {
 	}
 
 	componentWillMount() {
-		if (checkUserSessionExpired(localStorage.getItem('time'))) {
+		if (checkUserSessionExpired(getTokenTimestamp())) {
 			this.logout('Token is expired');
 		}
 	}
