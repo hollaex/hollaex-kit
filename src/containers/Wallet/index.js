@@ -38,6 +38,7 @@ class Wallet extends Component {
       {
         title: STRINGS.WALLET_ALL_ASSETS,
         content: this.renderAssetsBlock(balance, prices),
+        isOpen: true,
         notification: {
           text: isOpen ? STRINGS.HIDE_TEXT : totalAssets,
           status: 'information',

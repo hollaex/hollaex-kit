@@ -4,10 +4,18 @@ import AccordionSection from './AccordionSection';
 class Accordion extends Component {
   state = {
     openSections: [],
+    ready: false
   }
 
-  componentWillMount() {
+  componentWillReceiveProps(nextProps) {
+    if (!this.state.ready) {
+      const openSections = nextProps.sections
+        .map(({ isOpen }, index) => ({ isOpen, index }))
+        .filter(({ isOpen }) => isOpen)
+        .map(({ index }) => index);
 
+      this.setState({ openSections, ready: true });
+    }
   }
 
   openSection = (section, open = true) => {
@@ -76,8 +84,8 @@ class Accordion extends Component {
             key={index}
             index={index}
             openSection={this.openSection}
-            isOpen={this.state.openSections.indexOf(index) > -1}
             {...section}
+            isOpen={this.state.openSections.indexOf(index) > -1}
           />
         ))}
       </div>
