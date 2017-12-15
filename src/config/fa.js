@@ -609,4 +609,5 @@ export default {
   LOGOUT_ERROR_LOGIN_AGAIN: 'LOGIN again', // TODO ip doesnt match
   LOGOUT_ERROR_INVALID_TOKEN: 'INVALID token', // TODO
   LOGOUT_ERROR_INACTIVE: 'YOU have been logged out because you have been inactive', // TODO
+  ORDER_ENTRY_BUTTON: '{0} {1}', // TODO CHECK  0 -> buy/sell 1 -> btc/..
 };

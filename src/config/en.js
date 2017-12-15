@@ -608,4 +608,5 @@ export default {
   LOGOUT_ERROR_LOGIN_AGAIN: 'Login again', // ip doesnt match
   LOGOUT_ERROR_INVALID_TOKEN: 'Invalid token',
   LOGOUT_ERROR_INACTIVE: 'You have been logged out because you have been inactive',
+  ORDER_ENTRY_BUTTON: '{0} {1}', // 0 -> buy/sell 1 -> btc/..
 };

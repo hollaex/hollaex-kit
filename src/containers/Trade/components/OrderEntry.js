@@ -136,8 +136,9 @@ class OrderEntry extends Component {
   }
 
   render() {
-    const { currencyName, balance, symbol, type } = this.props
+    const { balance, symbol, type } = this.props
     const { initialValues, formValues, orderPrice, outsideFormError } = this.state;
+    const currencyName = STRINGS[`${symbol.toUpperCase()}_NAME`];
 
     const fees = 0;
 
@@ -166,10 +167,6 @@ class OrderEntry extends Component {
       </div>
     );
   }
-}
-
-OrderEntry.defaultProps = {
-  currencyName: 'Bitcoin',
 }
 
 const selector = formValueSelector(FORM_NAME);
