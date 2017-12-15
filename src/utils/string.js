@@ -26,13 +26,24 @@ export const getLanguageFromString = (value = '') => {
 }
 
 const AVAILABLE_LENGUAGES = STRINGS.getAvailableLanguages().map(getLanguageFromString);
+const DEFAULT_LANGUAGE = 'fa';
 
 export const getLanguage = () => {
-  const language = localStorage.getItem(LANGUAGE_KEY);
+  let language = localStorage.getItem(LANGUAGE_KEY);
 
 	if (!language) {
-		return AVAILABLE_LENGUAGES[0];
+		const interfaceLanguage = getLanguageFromString(getInterfaceLanguage());
+		const indexOfInterfaceLanguage = AVAILABLE_LENGUAGES.indexOf(interfaceLanguage);
+		const indexOfFa = AVAILABLE_LENGUAGES.indexOf(DEFAULT_LANGUAGE);
+		if (indexOfInterfaceLanguage > -1) {
+			language = AVAILABLE_LENGUAGES[indexOfInterfaceLanguage];
+		} else if (indexOfFa > -1) {
+			language = AVAILABLE_LENGUAGES[indexOfFa];
+		} else {
+			language = AVAILABLE_LENGUAGES[0];
+		}
 	}
+
 	return language;
 }
 
