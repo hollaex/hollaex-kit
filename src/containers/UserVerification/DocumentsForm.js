@@ -4,7 +4,6 @@ import { FieldArray, Field, reduxForm } from 'redux-form';
 import renderFields from '../../components/Form/factoryFields';
 import { Button } from '../../components';
 import { information } from './DocumentsFormValues';
-import UpgradeWarning from './UpgradeWarning';
 import STRINGS from '../../config/localizedStrings';
 
 const renderSection = (props) => {
@@ -22,7 +21,6 @@ const Form = (props) => {
 
   return (
     <form onSubmit={handleSubmit} className="user_verification-form">
-      <UpgradeWarning />
       {Object.entries(formValues).map(([key, value], index) => (
         <FieldArray
           key={key}
