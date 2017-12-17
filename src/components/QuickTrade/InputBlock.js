@@ -8,8 +8,12 @@ import { FieldError } from '../../components/Form/FormFields/FieldWrapper';
 import { FLEX_CENTER_CLASSES, CURRENCIES, LIMIT_VALUES } from '../../config/constants';
 import { fiatShortName, fiatFormatToCurrency, fiatSymbol } from '../../utils/currency';
 
+import STRINGS from '../../config/localizedStrings';
+
+import { translateError } from './utils';
+
 const InputBlock = ({ value, onChange, text, symbol, inputStyle, format, className, error }) => {
-  const { shortName } = CURRENCIES[symbol];
+  const shortName = STRINGS[`${symbol.toUpperCase()}_SHORTNAME`];
   return (
     <div
       className={classnames(
@@ -46,7 +50,7 @@ const InputBlock = ({ value, onChange, text, symbol, inputStyle, format, classNa
           />
         </div>
       </div>
-      {error && <FieldError error={error} displayError={true} className="input_block-error-wrapper" />}
+      {error && <FieldError error={translateError(error)} displayError={true} className="input_block-error-wrapper" />}
     </div>
   )
 }

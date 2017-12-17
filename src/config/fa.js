@@ -610,4 +610,11 @@ export default {
   LOGOUT_ERROR_INVALID_TOKEN: 'INVALID token', // TODO
   LOGOUT_ERROR_INACTIVE: 'YOU have been logged out because you have been inactive', // TODO
   ORDER_ENTRY_BUTTON: '{0} {1}', // TODO CHECK  0 -> buy/sell 1 -> btc/..
+  QUICK_TRADE_OUT_OF_LIMITS: 'ORDER size is out of the limits', // TODO
+  QUICK_TRADE_TOKEN_USED: 'TOKEN has been used', // TODO
+  QUICK_TRADE_QUOTE_EXPIRED: 'QUOTE has expired', // TODO
+  QUICK_TRADE_QUOTE_INVALID: 'INVALID quote', // TODO
+  QUICK_TRADE_QUOTE_CALCULATING_ERROR: 'ERROR calculating the quote', // TODO
+  QUICK_TRADE_ORDER_CAN_NOT_BE_FILLED: 'THE order with the current size can not be filled', // TODO
+  QUICK_TRADE_ORDER_NOT_FILLED: 'ORDER is not filled', // TODO
 };
