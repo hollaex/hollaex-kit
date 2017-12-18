@@ -1,13 +1,14 @@
 export default {
   APP_TITLE: 'اکسچنج اکسیر',
   APP_NAME: 'اکسیر',
-  FIAT_NAME: 'دلار',
+  FIAT_NAME: 'تومان',
   FIAT_FULLNAME: 'ایران تومان',
   FIAT_SHORTNAME: 'تومان',
   FIAT_CURRENCY_SYMBOL: 'T',
   BTC_NAME: 'بیتکوین',
   BTC_FULLNAME: 'بیتکوین',
   BTC_SHORTNAME: 'BTC',
+  BTC_CURRENCY_SYMBOL: 'BTC',
   TIMESTAMP_FORMAT: 'YYYY/MM/DD HH:mm:ss A',
   HOUR_FORMAT: 'HH:mm:ss A',
   LOGIN_TEXT: 'ورود',
@@ -22,12 +23,12 @@ export default {
   HELP_TEXT: 'کمک',
   SUCCESS_TEXT: 'موفقیت',
   ERROR_TEXT: 'خطا',
-  EDIT_TEXT: 'Edit', // TODO
+  EDIT_TEXT: 'ویرایش',
   NO_OPTIONS: 'هیچ گزینه ای وجود ندارد',
   HOME: {
     SECTION_1_TITLE: 'خرید و فروش بیت کوین',
-    SECTION_1_TEXT_1: 'اکسیر یک اکسچنج است که شما می توانید بیت کوین و دیگر ارزهای دیجیتال را خرید و فروش کنید.',
-    SECTION_1_TEXT_2: 'تلاش ما برای بیشبرد اقتصاد دیجیتالی از طریق دسترسی آسان و اقتصادی به ارزهای رمزنگاری شده است',
+    SECTION_1_TEXT_1: 'اکسیر یک اکسچنج است که شما می توانید بیت کوین و دیگر ارزهای دیجیتالی را خرید و فروش کنید.',
+    SECTION_1_TEXT_2: 'تلاش ما برای پیشبرد تکنولوژی از طریق دسترسی آسان و اقتصادی به ارزهای رمزنگاری شده است.',
     SECTION_1_BUTTON_1: 'بیشتر بدانید',
     SECTION_3_TITLE: 'قابلیت ها',
     SECTION_3_CARD_1_TITLE: 'ترید پیشرفته',
@@ -198,8 +199,8 @@ export default {
        TITLE_INCOMING: 'ورودی {0}', // FIX
        SUBTITLE_RECEIVED: 'دریافت کردید {0} سپرده',
        SUBTITLE_INCOMING: 'ورودی {0}', // FIX
-       INFORMATION_PENDING_1: 'شما {0} قبل از شروع ترید، 3 تایید نیاز دارد.',
-       INFORMATION_PENDING_2: 'این ممکن است 20-40 دقیقه طول بکشد. به محض تایید شما یک ایمیل دریافت میکنید',
+       INFORMATION_PENDING_1: 'شما {0} قبل از شروع ترید، 1 تایید نیاز دارد.',
+       INFORMATION_PENDING_2: 'این ممکن است 10-30 دقیقه طول بکشد. به محض تایید شما یک ایمیل دریافت میکنید',
      }
    },
  },
@@ -508,10 +509,10 @@ export default {
   LOADING: 'بارگذاری',
   CHART_TEXTS: {
     d: 'تاریخ',
-    o: 'باز کن',
+    o: 'شروع',
     h: 'بالا',
-    l: 'کم',
-    c: 'بستن',
+    l: 'پایین',
+    c: 'پایان',
     v: 'حجم',
   },
   LANGUAGES: [
@@ -603,4 +604,18 @@ export default {
   ORDER_TITLE_FULLY_FILLED: '{0} order successfully filled', // TODO 0 -> buy / sell
   ORDER_TITLE_PARTIALLY_FILLED: '{0} order partially filled', // TODO 0 -> buy / sell
   ORDER_TITLE_TRADE_COMPLETE: '{0} {1} order was successful', // TODO 0 -> buy / sell
+  LOGOUT_TITLE: 'YOU have been logged out', // TODO
+  LOGOUT_ERROR_TOKEN_EXPIRED: 'TOKEN is expired', // TODO
+  LOGOUT_ERROR_LOGIN_AGAIN: 'LOGIN again', // TODO ip doesnt match
+  LOGOUT_ERROR_INVALID_TOKEN: 'INVALID token', // TODO
+  LOGOUT_ERROR_INACTIVE: 'YOU have been logged out because you have been inactive', // TODO
+  ORDER_ENTRY_BUTTON: '{0} {1}', // TODO CHECK  0 -> buy/sell 1 -> btc/..
+  QUICK_TRADE_OUT_OF_LIMITS: 'ORDER size is out of the limits', // TODO
+  QUICK_TRADE_TOKEN_USED: 'TOKEN has been used', // TODO
+  QUICK_TRADE_QUOTE_EXPIRED: 'QUOTE has expired', // TODO
+  QUICK_TRADE_QUOTE_INVALID: 'INVALID quote', // TODO
+  QUICK_TRADE_QUOTE_CALCULATING_ERROR: 'ERROR calculating the quote', // TODO
+  QUICK_TRADE_ORDER_CAN_NOT_BE_FILLED: 'THE order with the current size can not be filled', // TODO
+  QUICK_TRADE_ORDER_NOT_FILLED: 'ORDER is not filled', // TODO
+  QUICK_TRADE_NO_BALANCE: 'INSUFFICIENT balance to perform the order', // TODO
 };

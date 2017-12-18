@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import classnames from 'classnames';
 
 import { DisplayTable } from '../../../components';
@@ -9,7 +9,7 @@ import { formatFiatAmount, formatBtcAmount } from '../../../utils/currency';
 
 import STRINGS from '../../../config/localizedStrings';
 
-const HEADERS = [
+const generateHeaders = () => ([
   {
     key: 'price',
     label: STRINGS.PRICE,
@@ -28,17 +28,40 @@ const HEADERS = [
     label: STRINGS.TIME,
     renderCell: ({ timestamp }, index) => formatTimestamp(timestamp, STRINGS.HOUR_FORMAT)
   },
-];
+]);
 
-const TradeHistory = ({ data }) => {
-  return (
-    <div className="flex-auto d-flex apply_rtl">
-      <DisplayTable
-        headers={HEADERS}
-        data={data}
-      />
-    </div>
-  );
+class TradeHistory extends Component {
+  state = {
+    headers: [],
+  }
+
+  componentWillMount() {
+    this.calculateHeaders();
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.language !== this.props.language) {
+      this.calculateHeaders();
+    }
+  }
+
+  calculateHeaders = () => {
+    const headers = generateHeaders();
+    this.setState({ headers });
+  }
+
+  render() {
+    const { data } = this.props;
+    const { headers } = this.state;
+    return (
+      <div className="flex-auto d-flex apply_rtl">
+        <DisplayTable
+          headers={headers}
+          data={data}
+        />
+      </div>
+    );
+  }
 }
 
 TradeHistory.defaultProps = {

@@ -78,7 +78,7 @@ class Form extends Component {
       })
       .then(({ data }) => {
         this.onCloseDialog();
-        this.props.dispatch(reset(FORM_NAME));
+        return { data };
       })
       .catch((error) => {
         if (error.errors && !error.errors.otp_code) {
@@ -145,9 +145,9 @@ class Form extends Component {
 const WithdrawForm = reduxForm({
   form: FORM_NAME,
   onSubmitFail: setWithdrawNotificationError,
-  onSubmitSuccess: (result, dispatch) => {
+  onSubmitSuccess: ({ data }, dispatch) => {
     dispatch(reset(FORM_NAME));
-    dispatch(setWithdrawNotificationSuccess(result, dispatch))
+    dispatch(setWithdrawNotificationSuccess(data, dispatch))
   },
   enableReinitialize: true,
   validate,

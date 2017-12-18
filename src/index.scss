@@ -17,11 +17,11 @@ html {
 body {
   background-color: $app-background-color !important;
   font-size: $font-size-main !important;
-  font-family: "Open Sans" !important;
+  font-family: $en--font-family !important;
 }
 
 .language_rtl {
-  font-family: "YEKAN" !important;
+  font-family: $fa--font-family !important;
 }
 
 .direction_rtl {

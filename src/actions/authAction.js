@@ -5,37 +5,11 @@ import { normalizeEmail } from 'validator';
 import store from '../store'
 import { setToken, removeToken, getToken } from '../utils/token';
 
-export function signup(data) {
-	return ((dispatch) => {
-		dispatch({
-		    type: 'SIGNUP_USER_PENDING'
-		});
-		axios.post('/signup', data)
-		.then(res => {
-			dispatch(getEmail(data.email));
-			dispatch({
-			    type: 'SIGNUP_USER_FULFILLED'
-			});
-		})
-		.catch(err => {
-			dispatch({
-			    type: 'SIGNUP_USER_REJECTED',
-			    payload: err.response.data
-			});
-		})
-	})
-}
 export function getEmail(data) {
 	localStorage.setItem('email', data);
 	return ((dispatch) => {
 		dispatch({ type: 'USER_EMAIL', payload: data });
 	})
-}
-export function verify(data) {
-	return {
-		type: 'VERIFICATION',
-		payload: axios.post('/verify', data)
-	}
 }
 
 export function checkVerificationCode(data) {
@@ -88,30 +62,6 @@ export const performLogin = (values) => axios.post('/login', values)
 
 export const performSignup = (values) => axios.post('/signup', values);
 
-export function login(data) {
-	return ((dispatch) => {
-		dispatch({
-		    type: 'LOGIN_USER_PENDING'
-		});
-		axios.post('/login', data)
-		.then((res) => {
-			setTokenInApp(res.data.token, true)
-			dispatch({
-			    type: 'LOGIN_USER_FULFILLED',
-			    payload: res.data.token,
-			});
-			browserHistory.push('/');
-		})
-		.catch((err) => {
-			dispatch({
-			    type: 'LOGIN_USER_REJECTED',
-			    payload: err.response
-			});
-		})
-
-	})
-}
-
 const setTokenInApp = (token, setInStore = false) => {
 	axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 	if (setInStore) {
@@ -119,10 +69,10 @@ const setTokenInApp = (token, setInStore = false) => {
 	}
 }
 
-const cleatTokenInApp = (router) => {
+const cleatTokenInApp = (router, path = '/') => {
 	axios.defaults.headers.common['Authorization'] = {};
 	removeToken();
-	router.push('/');
+	router.push(path);
 }
 
 export function verifyToken(token) {
@@ -143,20 +93,32 @@ export function verifyToken(token) {
 				});
 			})
 			.catch((error) => {
+				const message = error.response.data.message || 'Invalid token';
+				logout(message)(dispatch);
 				dispatch({
 					type: 'VERIFY_TOKEN_REJECTED',
 				});
-				cleatTokenInApp(browserHistory);
+				cleatTokenInApp(browserHistory, '/login');
 			});
 	});
 }
 
-export const logout = () => (dispatch) => {
+export const logout = (message = '') => (dispatch) => {
 	dispatch({
 		type: 'LOGOUT',
+		payload: {
+			message,
+		}
 	});
-	cleatTokenInApp(browserHistory);
+	cleatTokenInApp(browserHistory, message ? '/login' : '/');
 }
+
+export const setLogoutMessage = (message = '') => ({
+	type: 'SET_LOGOUT_MESSAGE',
+	payload: {
+		message,
+	},
+});
 
 export function loadToken() {
 	let token = getToken();

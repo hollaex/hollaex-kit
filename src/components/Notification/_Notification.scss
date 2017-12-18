@@ -1,7 +1,7 @@
 $notification--width: 30rem;
 $image--margin: 1rem;
 $image--wdith: 10rem;
-
+$logout--size-difference: 3rem;
 
 .notification-wrapper {
   min-width: $notification--width;
@@ -28,6 +28,19 @@ $image--wdith: 10rem;
     flex-direction: column;
     flex: 1;
 
+    &.logout-notification {
+      text-align: center;
+
+      .notification-content-icon {
+        width: $image--wdith - $logout--size-difference;
+        margin: $image--margin + $logout--size-difference auto;
+      }
+
+      .notification-content-information {
+        margin: 3rem auto;
+      }
+    }
+    
     .notification-content-icon {
       width: $image--wdith;
       margin: $image--margin auto;

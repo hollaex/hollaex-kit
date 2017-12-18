@@ -48,7 +48,8 @@ export const calculateBalancePrice = (balance, prices) => {
 }
 
 export const generateWalletActionsText = (symbol, useFullName = false) => {
-  const { name, fullName } = CURRENCIES[symbol];
+	const name = STRINGS[`${symbol.toUpperCase()}_NAME`];
+	const fullName = STRINGS[`${symbol.toUpperCase()}_FULLNAME`];
 
   const nameToDisplay = useFullName ? fullName : name;
 

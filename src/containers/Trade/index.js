@@ -86,6 +86,7 @@ class Trade extends Component {
       cancelOrder,
       cancelAllOrders,
       balance,
+      activeLanguage,
     } = this.props;
     const { chartHeight, chartWidth, symbol } = this.state
     const USER_TABS = [
@@ -161,7 +162,7 @@ class Trade extends Component {
         </div>
         <div className={classnames('trade-col_side_wrapper', 'flex-column', 'd-flex', 'apply_rtl')}>
           <TradeBlock title={STRINGS.TRADE_HISTORY}>
-            <TradeHistory data={tradeHistory} />
+            <TradeHistory data={tradeHistory} language={activeLanguage} />
           </TradeBlock>
         </div>
       </div>

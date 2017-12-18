@@ -19,7 +19,7 @@ import {
 } from '../../actions/appActions';
 
 import { checkUserSessionExpired } from '../../utils/utils';
-import { getToken } from '../../utils/token';
+import { getToken, getTokenTimestamp } from '../../utils/token';
 import { AppBar, Sidebar, Dialog, Loader, Notification, MessageDisplay } from '../../components';
 import { ContactForm } from '../';
 
@@ -36,9 +36,8 @@ class Container extends Component {
 	}
 
 	componentWillMount() {
-		if (checkUserSessionExpired(localStorage.getItem('time'))) {
-			this.setState({ appLoaded: false });
-			this.props.logout();
+		if (checkUserSessionExpired(getTokenTimestamp())) {
+			this.logout('Token is expired');
 		}
 	}
 
@@ -92,7 +91,7 @@ class Container extends Component {
 			clearTimeout(this.idleTimer);
 		}
 		if (this.state.appLoaded) {
-			const idleTimer = setTimeout(this._logout, SESSION_TIME); // no activity will log the user out automatically
+			const idleTimer = setTimeout(() => this.logout('Inactive'), SESSION_TIME); // no activity will log the user out automatically
 			this.setState({ idleTimer });
 		}
 	}
@@ -102,7 +101,9 @@ class Container extends Component {
 	initSocketConnections = () => {
 		this.setPublicWS();
 		this.setUserSocket(getToken());
-		this.setState({ appLoaded: true });
+		this.setState({ appLoaded: true }, () => {
+			this._resetTimer();
+		});
 	}
 
 	setPublicWS = () => {
@@ -140,7 +141,7 @@ class Container extends Component {
 
 		privateSocket.on('error', (error) => {
       if (error && typeof error === 'string' && error.indexOf('Access Denied') > -1) {
-        this.props.logout();
+        this.logout('Token is expired');
       } else {
         console.error(error)
       }
@@ -299,9 +300,9 @@ class Container extends Component {
 	goToQuickTradePage = () => this.goToPage('/quick-trade');
   goToDashboard = () => this.goToPage('/');
 
-	logout = () => {
+	logout = (message = '') => {
 		this.setState({ appLoaded: false }, () => {
-			this.props.logout();
+			this.props.logout(typeof message === 'string' ? message: '');
 		})
 	}
 

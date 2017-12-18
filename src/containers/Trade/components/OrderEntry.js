@@ -127,7 +127,7 @@ class OrderEntry extends Component {
         min: LIMIT_VALUES.PRICE.MIN,
         max: LIMIT_VALUES.PRICE.MAX,
         validate: [required, minValue(LIMIT_VALUES.PRICE.MIN), maxValue(LIMIT_VALUES.PRICE.MAX), step(LIMIT_VALUES.PRICE.STEP)],
-        normalize: normalizeInt,
+        // normalize: normalizeInt,
         currency: STRINGS.FIAT_SHORTNAME,
       }
     };
@@ -136,8 +136,9 @@ class OrderEntry extends Component {
   }
 
   render() {
-    const { currencyName, balance, symbol, type } = this.props
+    const { balance, symbol, type } = this.props
     const { initialValues, formValues, orderPrice, outsideFormError } = this.state;
+    const currencyName = STRINGS[`${symbol.toUpperCase()}_NAME`];
 
     const fees = 0;
 
@@ -166,10 +167,6 @@ class OrderEntry extends Component {
       </div>
     );
   }
-}
-
-OrderEntry.defaultProps = {
-  currencyName: 'Bitcoin',
 }
 
 const selector = formValueSelector(FORM_NAME);

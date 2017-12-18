@@ -12,8 +12,9 @@ const fiatFormatToCurrency = CURRENCIES[fiatSymbol].formatToCurrency;
 const fiatCurrencySymbol = CURRENCIES.fiat.currencySymbol;
 
 export const generateTradeHeaders = (symbol) => {
-  const { shortName, fullName, formatToCurrency } = CURRENCIES[symbol];
-
+  const { formatToCurrency } = CURRENCIES[symbol];
+  const shortName = STRINGS[`${symbol.toUpperCase()}_SHORTNAME`];
+  const fullName = STRINGS[`${symbol.toUpperCase()}_FULLNAME`];
   return [
     {
       label: '',
@@ -37,7 +38,7 @@ export const generateTradeHeaders = (symbol) => {
       renderCell: ({ side = '' }, key, index) => {
         return (
           <td key={index} className={classnames('cell_box-type')}>
-            <div className={classnames(side)}>{side}</div>
+            <div className={classnames(side)}>{STRINGS.SIDES_VALUES[side]}</div>
           </td>
         );
       },
@@ -45,19 +46,19 @@ export const generateTradeHeaders = (symbol) => {
     {
       label: STRINGS.SIZE,
       key: 'size',
-      exportToCsv: ({ size = 0 }) => `${formatToCurrency(size)} ${shortName}`,
+      exportToCsv: ({ size = 0 }) => STRINGS.formatString(STRINGS.BTC_PRICE_FORMAT, formatToCurrency(size), shortName),
       renderCell: ({ size = 0 }, key, index) => {
         return (
-          <td key={index}>{`${formatToCurrency(size)} ${shortName}`}</td>
+          <td key={index}>{STRINGS.formatString(STRINGS.BTC_PRICE_FORMAT, formatToCurrency(size), shortName)}</td>
         )
       },
     },
     {
       label: STRINGS.PRICE,
       key: 'price',
-      exportToCsv: ({ price = 0}) => `${fiatCurrencySymbol} ${fiatFormatToCurrency(price)}`,
+      exportToCsv: ({ price = 0}) => STRINGS.formatString(STRINGS.FIAT_PRICE_FORMAT, fiatFormatToCurrency(price), fiatCurrencySymbol),
       renderCell: ({ price = 0 }, key, index) => {
-        return <td key={index}>{`${fiatCurrencySymbol} ${fiatFormatToCurrency(price)}`}</td>
+        return <td key={index}>{STRINGS.formatString(STRINGS.FIAT_PRICE_FORMAT, fiatFormatToCurrency(price), fiatCurrencySymbol)}</td>
       },
     },
     {
