@@ -7,6 +7,7 @@ const QUICK_TRADE_QUOTE_INVALID = 'Invalid quote';
 const QUICK_TRADE_QUOTE_CALCULATING_ERROR = 'Error calculating the quote';
 const QUICK_TRADE_ORDER_CAN_NOT_BE_FILLED = 'The order with the current size can not be filled';
 const QUICK_TRADE_ORDER_NOT_FILLED = 'Order is not filled';
+const QUICK_TRADE_NO_BALANCE = 'Insufficient balance to perform the order';
 
 export const translateError = (error) => {
   switch (error) {
@@ -24,6 +25,8 @@ export const translateError = (error) => {
       return STRINGS.QUICK_TRADE_ORDER_CAN_NOT_BE_FILLED;
     case QUICK_TRADE_ORDER_NOT_FILLED:
       return STRINGS.QUICK_TRADE_ORDER_NOT_FILLED;
+    case QUICK_TRADE_NO_BALANCE:
+      return STRINGS.QUICK_TRADE_NO_BALANCE;
     default:
       return error;
   }

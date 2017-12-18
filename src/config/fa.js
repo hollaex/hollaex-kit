@@ -617,4 +617,5 @@ export default {
   QUICK_TRADE_QUOTE_CALCULATING_ERROR: 'ERROR calculating the quote', // TODO
   QUICK_TRADE_ORDER_CAN_NOT_BE_FILLED: 'THE order with the current size can not be filled', // TODO
   QUICK_TRADE_ORDER_NOT_FILLED: 'ORDER is not filled', // TODO
+  QUICK_TRADE_NO_BALANCE: 'INSUFFICIENT balance to perform the order', // TODO
 };
