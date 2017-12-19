@@ -147,9 +147,9 @@ export const TIMESTAMP_FORMAT_FA = STRINGS.TIMESTAMP_FORMAT.split('/').map((s) =
 
 export const LIMIT_VALUES = {
   PRICE: {
-    MIN: 500000,
-    MAX: 100000000,
-    STEP: 5000,
+    MIN: process.env.MIN_PRICE || 1000000,
+    MAX: process.env.MAX_PRICE || 200000000,
+    STEP: process.env.PRICE_STEP || 5000,
   },
   SIZE: {
     MIN: 0.0001,
