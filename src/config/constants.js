@@ -104,6 +104,8 @@ export const ICONS = {
   NOTIFICATION_ORDER_MARKET_BUY_FILLED: `${process.env.PUBLIC_URL}/assets/images/market-buy-01.svg`,
   NOTIFICATION_ORDER_MARKET_SELL_FILLED: `${process.env.PUBLIC_URL}/assets/images/market-sell-01.svg`,
   NOTIFICATION_VERIFICATION_WARNING: `${process.env.PUBLIC_URL}/assets/images/verification.svg`,
+  LOGOUT_ARROW: `${process.env.PUBLIC_URL}/assets/images/logout-arrow-active.svg`,
+  LOGOUT_ARROW_GREY: `${process.env.PUBLIC_URL}/assets/images/logout-arrow.svg`,
 }
 
 export const SOCIAL_ICONS = {

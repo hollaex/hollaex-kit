@@ -39,6 +39,7 @@
     "react-router-redux": "^4.0.8",
     "react-snapshot": "^1.1.0",
     "react-stockcharts": "^0.7.0-beta.19",
+    "react-svg": "^2.2.5",
     "redux": "^3.7.0",
     "redux-form": "^7.0.3",
     "redux-logger": "^3.0.6",

@@ -1,5 +1,7 @@
 import React from 'react';
 import classnames from 'classnames';
+import ReactSVG from 'react-svg';
+
 import Section from './Section';
 import { NotificationsList, Button, Wallet } from '../';
 import { ICONS } from '../../config/constants';
@@ -63,7 +65,8 @@ const Sidebar = ({
           {STRINGS.LOGOUT}
         </div>
         <div onClick={logout} className="sidebar-logout-right pointer">
-          <img src={ICONS.LOGOUT} alt="logout" />
+          <ReactSVG path={ICONS.LOGOUT_ARROW} wrapperClassName="sidebar-logout-right-icon"/>
+          {/* <img src={ICONS.LOGOUT} alt="logout" /> */}
         </div>
       </div>
     </div>
