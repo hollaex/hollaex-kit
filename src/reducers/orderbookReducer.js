@@ -184,7 +184,12 @@ export default function reducer(state = INITIAL_STATE, { payload, type }) {
 				quoteData: {
 					...INITIAL_QUOTE,
 					fetching: false,
-					error: payload,
+					...payload,
+					data: {
+						...INITIAL_QUOTE.data,
+						...payload.data,
+					},
+					error: payload.message,
 				}
 			};
 

@@ -87,7 +87,12 @@ export const requestQuote = (data = {}) => {
 			.catch((err) => {
 				dispatch({
 				    type: ORDERBOOK_CONSTANTS.TRADE_QUOTE_REQUEST_REJECTED,
-				    payload: err.response ? err.response.data.message : err.message
+				    payload: {
+							data: err.response ? err.response.data.data : {},
+							message: err.response && err.response.data ?
+								err.response.data.message :
+								err.message,
+						}
 				});
 			})
 	});
@@ -108,7 +113,7 @@ export const executeQuote = (token) => {
 			.catch((err) => {
 				dispatch({
 				    type: ORDERBOOK_CONSTANTS.TRADE_QUOTE_PERFORM_REJECTED,
-				    payload: err.response ? err.response.data : err.message
+				    payload: err.response ? err.response.data.message : err.message
 				});
 			})
 	});
