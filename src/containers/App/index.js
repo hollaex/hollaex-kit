@@ -148,7 +148,10 @@ class Container extends Component {
 		});
 
 		privateSocket.on('user', (data) => {
-			this.props.setMe(data)
+			this.props.setMe(data);
+			if (data.settings && data.settings.language !== this.props.activeLanguage) {
+				this.props.changeLanguage(data.settings.language);
+			}
 		});
 
 		privateSocket.on('orders', (data) => {
