@@ -423,16 +423,17 @@ export default {
       },
       CONTENT: {
         TITLE: 'Activate Two-Factor Authentication',
-        MESSAGE_1: 'Setup your two-factor authenticator',
-        MESSAGE_2: 'Scan the image below to automatically setuo otwo-factor authentication in your device.',
-        MESSAGE_3: 'Use this key to manualy setup two-factor authentication on your device.',
-        MESSAGE_4: 'You can store this code to recover your 2FA. Do not store this key.',
+        MESSAGE_1: 'Scan',
+        MESSAGE_2: 'Scan the qrcode below with Google Authenticator or Authy to automatically setup two-factor authentication in your device.',
+        MESSAGE_3: 'If you have problems scanning this, you can manually enter the code below',
+        MESSAGE_4: 'You can store this code securely to recover your 2FA in case you change or lose your mobile phone in future.',
+        MESSAGE_5: "Manual",
         INPUT: 'Enter One-Time Password (OTP)',
         WARNING: 'We highly recommend you set up 2 factor authentication (2FA). Doing so will greatly increase the security of your funds.',
         ENABLE: 'Enable Two-Factor Authentication',
       },
       FORM: {
-        PLACEHOLDER: 'Enter your OTP provided by Google Authenticator. Leave blank to keep your current setup.',
+        PLACEHOLDER: 'Enter your OTP provided by Google Authenticator.',
         BUTTON: 'Enable 2FA',
       }
     },
