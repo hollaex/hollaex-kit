@@ -68,7 +68,7 @@ class Container extends Component {
 			nextProps.verification_level !== this.props.verification_level &&
 			nextProps.verification_level === 1
 		) {
-			this.goToAccountPage();
+			// this.goToAccountPage();
 		}
 	}
 
@@ -148,6 +148,9 @@ class Container extends Component {
 		});
 
 		privateSocket.on('user', (data) => {
+			if (!data.phone_number) {
+				return this.goToVerificationPage();
+			}
 			this.props.setMe(data);
 			if (data.settings && data.settings.language !== this.props.activeLanguage) {
 				this.props.changeLanguage(data.settings.language);
@@ -297,7 +300,8 @@ class Container extends Component {
 		}
   }
 
-  goToAccountPage = () => this.goToPage('/account');
+	goToAccountPage = () => this.goToPage('/account');
+  goToVerificationPage = () => this.goToPage('/verification');
 	goToWalletPage = () => this.goToPage('/wallet');
 	goToTradePage = () => this.goToPage('/trade');
 	goToQuickTradePage = () => this.goToPage('/quick-trade');
@@ -441,6 +445,7 @@ const mapStateToProps = (store) => ({
 	verification_level: store.user.verification_level,
   activeLanguage: store.app.language,
 	orders: store.order.activeOrders,
+	user: store.user.userData,
 });
 
 const mapDispatchToProps = (dispatch) => ({

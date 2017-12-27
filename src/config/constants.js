@@ -106,6 +106,18 @@ export const ICONS = {
   NOTIFICATION_VERIFICATION_WARNING: `${process.env.PUBLIC_URL}/assets/images/verification.svg`,
   LOGOUT_ARROW: `${process.env.PUBLIC_URL}/assets/images/logout-arrow-active.svg`,
   LOGOUT_ARROW_GREY: `${process.env.PUBLIC_URL}/assets/images/logout-arrow.svg`,
+  VERIFICATION_WARNING: `${process.env.PUBLIC_URL}/assets/images/astrics.svg`,
+  VERIFICATION_SUCCESS: `${process.env.PUBLIC_URL}/assets/images/success-check-box.svg`,
+  VERIFICATION_DOC: `${process.env.PUBLIC_URL}/assets/images/doc.svg`,
+  VERIFICATION_DOC_INACTIVE: `${process.env.PUBLIC_URL}/assets/images/doc-inactive.svg`,
+  VERIFICATION_EMAIL: `${process.env.PUBLIC_URL}/assets/images/email_2.svg`,
+  VERIFICATION_EMAIL_INACTIVE: `${process.env.PUBLIC_URL}/assets/images/email-inactive.svg`,
+  VERIFICATION_MOBILE: `${process.env.PUBLIC_URL}/assets/images/mobile.svg`,
+  VERIFICATION_MOBILE_INACTIVE: `${process.env.PUBLIC_URL}/assets/images/mobile-inactive.svg`,
+  VERIFICATION_BANK: `${process.env.PUBLIC_URL}/assets/images/bank.svg`,
+  VERIFICATION_BANK_INACTIVE: `${process.env.PUBLIC_URL}/assets/images/bank-inactive.svg`,
+  VERIFICATION_ID: `${process.env.PUBLIC_URL}/assets/images/id_2.svg`,
+  VERIFICATION_ID_INACTIVE: `${process.env.PUBLIC_URL}/assets/images/id_2-inactive.svg`,
 }
 
 export const SOCIAL_ICONS = {

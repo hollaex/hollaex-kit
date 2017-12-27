@@ -154,6 +154,7 @@ export default {
    USER_EXIST: 'ایمیل قبلا ثبت شده است',
    ACCEPT_TERMS: 'شما با شرایط استفاده و رازداری موافقت نکردید',
    STEP: 'ورودی اشتباه, مرحله {0}', // CHECK
+   ONLY_NUMBERS: 'Value can contain only numbers', // TODO
  },
  LEGAL: {
    PRIVACY_POLICY: {
@@ -290,13 +291,20 @@ export default {
    VERIFY_ID_DOCUMENTS: 'اسناد شناسایی را تأیید کنید',
    VERIFY_BANK_ACCOUNT: 'تأیید حساب بانکی',
    BUTTON: 'درخواست تأیید ارسال کنید',
+   TITLE_IDENTITY: 'Identity', // TODO
+   TITLE_MOBILE: 'Mobile', // TODO
+   TITLE_MOBILE_HEADER: 'Mobile Phone Number', // TODO
+   TITLE_BANK: 'Bank', // TODO
+   TITLE_BANK_HEADER: 'Bank Details', // TODO
 
   USER_DOCUMENTATION_FORM: {
-     FORM_FIELDS: {
+    FORM_FIELDS: {
        FIRST_NAME_LABEL: 'نام',
        FIRST_NAME_PLACEHOLDER: 'نام خود را دقیقا مطابق کارت ملی خود تایپ کنید',
        LAST_NAME_LABEL: 'نام خانوادگی',
        LAST_NAME_PLACEHOLDER: 'نام خانوادگی خود را دقیقا مطابق کارت ملی خود تایپ کنید',
+       FULL_NAME_LABEL: 'Your Full Name', // TODO
+       FULL_NAME_PLACEHOLDER: 'Type your full name as it appears on your identity document', // TODO
        GENDER_LABEL: 'جنسيت',
        GENDER_PLACEHOLDER: 'نوع جنسیت خود را تایپ کنید',
        GENDER_OPTIONS: {
@@ -319,6 +327,9 @@ export default {
        PHONE_CODE_DISPLAY: '({0}) {1}', //TODO 0 -> (+21)  1 -> Iran
        PHONE_NUMBER_LABEL: 'شماره تلفن',
        PHONE_NUMBER_PLACEHOLDER: 'شماره تلفن خود را تایپ کنید',
+       SMS_SEND: 'Send SMS', // TODO
+       SMS_CODE_LABEL: 'SMS Code', // TODO
+       SMS_CODE_PLACEHOLDER: 'Input your SMS code', // TODO
      },
      INFORMATION: {
        TEXT: 'مهم: نام خود را دقیقا همانطور که در کد ملی شما نشان داده شده است (نام و نام خانوادگی کامل) وارد کنید. اگر شرکت هستید به پشتیبانی support@exir.tech با عنوان \"حساب شرکتی\" ایمیل بفرستید.',
@@ -381,14 +392,18 @@ export default {
      VALIDATIONS: {
        ACCOUNT_OWNER: 'لطفا نام و نام خانوادگی خود را با حساب بانکی خود وارد کنید',
        ACCOUNT_NUMBER: 'شماره حساب بانکی شما باید 24 رقمی باشد',
+       CARD_NUMBER: 'Your card number should be 16 digits', // TODO
      },
      FORM_FIELDS: {
+       IRANIAN_ACCOUNT_LABEL: 'Do you have an Iranian Bank Account?', // TODO
        BANK_NAME_LABEL: 'نام بانک',
        BANK_NAME_PLACEHOLDER: 'نام بانک خود را تایپ کنید',
        ACCOUNT_NUMBER_LABEL: 'شماره حساب بانکی',
        ACCOUNT_NUMBER_PLACEHOLDER: 'شماره حساب بانکی خود را تایپ کنید',
        ACCOUNT_OWNER_LABEL: 'نام صاحب حساب بانکی',
        ACCOUNT_OWNER_PLACEHOLDER: 'نام را مطابق حساب بانکی خود وارد کنید',
+       CARD_NUMBER_LABEL: 'Bank Card Number', // TODO
+       CARD_NUMBER_PLACEHOLDER: 'Type the number that is on the front of your bank card', // TODO
      },
    },
    WARNING: {
@@ -601,7 +616,7 @@ export default {
   ORDER_BOUGHT: 'خرید', // TODO
   ORDER_AVERAGE_PRICE: 'قیمت میانگین',
   ORDER_TITLE_CREATED: 'سفارش {0} با موفقیت انجام شد',
-  ORDER_TITLE_FULLY_FILLED: 'سفارش {0} تکمیل شد', 
+  ORDER_TITLE_FULLY_FILLED: 'سفارش {0} تکمیل شد',
   ORDER_TITLE_PARTIALLY_FILLED: 'قسمتی از سفارش {0} تکمیل شد',
   ORDER_TITLE_TRADE_COMPLETE: 'سفارش {0} {1} با موفقیت انجام شد',
   LOGOUT_TITLE: 'شمی از حساب خارج شده اید',
@@ -618,4 +633,17 @@ export default {
   QUICK_TRADE_ORDER_CAN_NOT_BE_FILLED: 'سفارش با این مقدار تکمیل نخواهد شد',
   QUICK_TRADE_ORDER_NOT_FILLED: 'موجودی سایت کافی نیست',
   QUICK_TRADE_NO_BALANCE: 'موجودی شما برای انجام این سفارش کافی نیست',
+  YES: 'Yes', // TODO
+  NO: 'No', // TODO
+  NEXT: 'Next', // TODO
+  SKIP_FOR_NOW: 'Skip for now', // TODO
+  SUBMIT: 'ارسال',
+  VERIFICATION_NOTIFICATION_SKIP_TITLE: 'Missing Documents!', // TODO
+  VERIFICATION_NOTIFICATION_SKIP_TEXT: 'To get full access to withdrawal and deposit functions on EXIR you must submit your identity documents in your account page.', // TODO
+  VERIFICATION_NOTIFICATION_SUCCESS_TITLE: 'Success!', // TODO
+  VERIFICATION_NOTIFICATION_SUCCESS_TEXT: 'You will receive an email notification and SMS when your information has been processed. Processing can typically take 1-3 days.', // TODO
+  VERIFICATION_NOTIFICATION_BUTTON: 'PROCEED TO EXIR', // TODO
+  ERROR_USER_ALREADY_VERIFIED: 'User already verified', // TODO
+  ERROR_INVALID_CARD_USER: 'Card Number has no linked name', // TODO
+  ERROR_INVALID_CARD_NUMBER: 'Invalid Card number', // TODO
 };

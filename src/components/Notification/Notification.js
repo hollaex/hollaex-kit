@@ -4,7 +4,7 @@ import classnames from 'classnames';
 export const NotificationWraper = ({ icon, title, children, className = '' }) => (
   <div className={classnames('notification-content-wrapper', className)}>
     {icon && <img src={icon} alt="" className="notification-content-icon" />}
-    <div className="font-weight-bold">{title}</div>
+    <div className="font-weight-bold notification-content-title">{title}</div>
     {children}
   </div>
 );
