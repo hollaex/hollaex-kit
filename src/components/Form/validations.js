@@ -13,7 +13,7 @@ export const requiredBoolean = (value) => value === undefined ? STRINGS.VALIDATI
 export const requiredWithCustomMessage = (message) => (value) => !value ? message : undefined;
 
 export const exactLength = (length, message) => (value = '') => value.length !== length ? message : undefined;
-
+export const onlyNumbers = (value = '') => validator.isNumeric(value) ? undefined : STRINGS.VALIDATIONS.ONLY_NUMBERS;
 export const email = (value = '') => !validator.isEmail(value) ? STRINGS.VALIDATIONS.INVALID_EMAIL : undefined;
 
 export const password = (value) => !passwordRegEx.test(value) ? STRINGS.VALIDATIONS.INVALID_PASSWORD : undefined

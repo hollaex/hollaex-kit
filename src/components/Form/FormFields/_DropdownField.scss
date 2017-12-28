@@ -8,6 +8,9 @@ $dropdown-option--padding: 0.25rem;
   .dropdown-option {
     padding: 0;
   }
+  &.disabled {
+    cursor: not-allowed;
+  }
 }
 
 .dropdown-options-wrapper {

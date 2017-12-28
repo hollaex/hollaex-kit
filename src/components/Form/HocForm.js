@@ -9,7 +9,7 @@ const createForm = (formName, otherProps = {}) => {
     ...otherProps,
   };
 
-  const Form = ({ handleSubmit, submitting, pristine, error, valid, formFields, buttonLabel }) => (
+  const Form = ({ handleSubmit, submitting, pristine, error, valid, formFields = {}, buttonLabel }) => (
     <form onSubmit={handleSubmit} className="w-100">
       <div className="w-100">
         {renderFields(formFields)}

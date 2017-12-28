@@ -19,6 +19,9 @@ $placeholder--font-weight: bold;
   &::placeholder {
     color: $form-color-placeholder;
   }
+  &:disabled {
+    cursor: not-allowed;
+  }
 }
 
 .dropdown-triangle:after {

@@ -154,6 +154,7 @@ export default {
    USER_EXIST: 'Email has already been registered',
    ACCEPT_TERMS: 'You have not agreed to the Terms of use and Privacy Policy',
    STEP: 'Invalid value, step is {0}',
+   ONLY_NUMBERS: 'Value can contain only numbers',
  },
  LEGAL: {
    PRIVACY_POLICY: {

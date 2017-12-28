@@ -19,6 +19,8 @@ class DropdownField extends Component {
       this.props.input.value === false
     ) {
       this.setValue(this.props.input.value);
+    } else if (this.props.defaultValue || this.props.defaultValue === false) {
+      this.setValue(this.props.defaultValue, true);
     }
   }
 
@@ -30,11 +32,13 @@ class DropdownField extends Component {
 
   onToogleOpen = (event) => {
     event.preventDefault();
-    this.onChangeOpen(!this.state.isOpen);
-    if (this.input && this.props.autocomplete) {
-      setTimeout(() => {
-        this.input.focus();
-      }, 150);
+    if (!this.props.disabled) {
+      this.onChangeOpen(!this.state.isOpen);
+      if (this.input && this.props.autocomplete) {
+        setTimeout(() => {
+          this.input.focus();
+        }, 150);
+      }
     }
   }
 
@@ -83,7 +87,7 @@ class DropdownField extends Component {
       id={`${this.props.input.name}-${option.value}-${index}`}
       key={`${this.props.input.name}-${option.value}-${index}`}
       onClick={this.onSelectOption(option)}
-      className={classnames('dropdown-option', 'pointer')}
+      className={classnames('dropdown-option', { pointer: !this.props.disabled })}
     >
       {this.renderIcon(option)}
       {option.label}
@@ -139,7 +143,7 @@ class DropdownField extends Component {
     }
   }
   render() {
-    const { options, placeholder, autocomplete } = this.props;
+    const { options, placeholder, autocomplete, disabled } = this.props;
     const { isOpen, selectedItem, filter, visited } = this.state;
 
     const filteredOptions = autocomplete ? options.filter(this.filterOption(filter)) : options;
@@ -155,7 +159,7 @@ class DropdownField extends Component {
             onKeyDown={this.onKeyDownHandler}
           />
         }
-        <div className="dropdown-content dropdown-triangle" onClick={this.onToogleOpen}>
+        <div className={classnames('dropdown-content', { 'dropdown-triangle': !disabled, disabled})} onClick={this.onToogleOpen}>
           {autocomplete &&
             <input
               id="input-autocomplete"
