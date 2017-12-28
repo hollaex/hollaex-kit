@@ -118,7 +118,7 @@ class AppBar extends Component {
 
   render() {
     const {
-      title, goToAccountPage, goToDashboard, acccountIsActive, activeSymbol, noBorders, token, verifyingToken, goToQuickTrade, changeLanguage, activeLanguage, isHome
+      title, goToAccountPage, goToDashboard, acccountIsActive, activeSymbol, noBorders, token, verifyingToken, goToQuickTrade, changeLanguage, activeLanguage, isHome, rightChildren,
     } = this.props;
 
     return (
@@ -139,9 +139,12 @@ class AppBar extends Component {
             />
           }
         </div>
-        {activeSymbol ?
-          this.renderAppActions(activeSymbol, acccountIsActive, goToAccountPage) :
-          this.renderSplashActions(token, verifyingToken, goToQuickTrade)
+        {rightChildren ?
+          rightChildren :
+          (activeSymbol ?
+            this.renderAppActions(activeSymbol, acccountIsActive, goToAccountPage) :
+            this.renderSplashActions(token, verifyingToken, goToQuickTrade)
+          )
         }
       </div>
     );

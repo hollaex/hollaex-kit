@@ -26,5 +26,6 @@ export { default as Legal } from './Legal';
 export { default as AuthForm } from './Form/AuthForm';
 export { default as HocForm } from './Form/HocForm';
 export { default as Countdown } from './Countdown';
+export { default as Logout } from './Logout';
 export { default as WarningVerification } from './WarningVerification';
 export { CandleChart, AreaChart } from './Chart';
