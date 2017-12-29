@@ -146,6 +146,7 @@ export default {
    REQUIRED: 'اجباری',
    INVALID_DATE: 'تاریخ نامعتبر است',
    INVALID_PASSWORD: 'رمزعبور نامعتبر است. باید حاوی حداقل 8 کاراکتر، یک رقم و یک کاراکتر خاص باشد.',
+   INVALID_PASSWORD_2: 'Invalid password. It has to contain at least 8 characters, at least one digit and one character', // TODO
    INVALID_CURRENCY: 'آدرس {0} ({1}) نا معتبر است',
    INVALID_BALANCE: 'موجودی ({0}) کافی نیست برای انجام عملیات ({1}).', // CHECK
    MIN_VALUE: 'ارزش باید  {0} یا بیشتر باشد',

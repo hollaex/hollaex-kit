@@ -146,6 +146,7 @@ export default {
    REQUIRED: 'Required field',
    INVALID_DATE: 'Invalid date',
    INVALID_PASSWORD: 'Invalid password. It has to contain at least 8 characters, a digit in the password and a special character.',
+   INVALID_PASSWORD_2: 'Invalid password. It has to contain at least 8 characters, at least one digit and one character.',
    INVALID_CURRENCY: 'Invalid {0} address ({1})',
    INVALID_BALANCE: 'Insufficient balance available ({0}) to perform the operation ({1}).',
    MIN_VALUE: 'Value must be {0} or higher.',
