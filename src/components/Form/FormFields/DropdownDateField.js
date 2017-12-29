@@ -131,7 +131,7 @@ class DropdownDateField extends Component {
     input.onChange(date.format());
   }
 
-  renderFields = (date, options, valid = false, formats, languageProps, languageState) => {
+  renderFields = (date, options, valid = false, formats, languageProps, languageState, disabled) => {
     return (
       <div className="datefield-values-wrapper" >
         {FIELDS.map(({ key, format }, index) => {
@@ -144,6 +144,7 @@ class DropdownDateField extends Component {
               key={key}
               options={options[key]}
               onChange={this.onChangeOption(key)}
+              disabled={disabled}
             />
           )
         })}
@@ -182,6 +183,7 @@ class DropdownDateField extends Component {
       meta: {
         invalid
       },
+      disabled = false,
     } = this.props;
     const languageProps = this.props.language;
     return (
@@ -192,7 +194,7 @@ class DropdownDateField extends Component {
         className="datefield-wrapper"
       >
         {display[language] &&
-          this.renderFields(date, display[language], !invalid, FORMATS[language], languageProps, language)
+          this.renderFields(date, display[language], !invalid, FORMATS[language], languageProps, language, disabled)
         }
       </FieldWrapper>
     )
