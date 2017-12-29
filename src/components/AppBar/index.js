@@ -75,7 +75,7 @@ class AppBar extends Component {
     );
   }
 
-  renderSplashActions = (token, verifyingToken, goToQuickTrade) => {
+  renderSplashActions = (token, verifyingToken) => {
     if (verifyingToken) {
       return <div></div>
     }
@@ -89,9 +89,6 @@ class AppBar extends Component {
       </div>
     ) : (
       <div className={classnames(...WRAPPER_CLASSES)}>
-        <div className={classnames(...COMMON_CLASSES)} onClick={goToQuickTrade}>
-          {STRINGS.QUICK_TRADE}
-        </div>
         <div className={classnames(...COMMON_CLASSES)}>
           <Link to='/login'>{STRINGS.LOGIN_TEXT}</Link>
         </div>
@@ -104,7 +101,7 @@ class AppBar extends Component {
 
   render() {
     const {
-      title, goToAccountPage, goToDashboard, acccountIsActive, activeSymbol, noBorders, token, verifyingToken, goToQuickTrade, changeLanguage, activeLanguage, isHome, rightChildren,
+      goToAccountPage, goToDashboard, acccountIsActive, activeSymbol, noBorders, token, verifyingToken, isHome, rightChildren,
     } = this.props;
 
     return (
@@ -123,7 +120,7 @@ class AppBar extends Component {
           rightChildren :
           (activeSymbol ?
             this.renderAppActions(activeSymbol, acccountIsActive, goToAccountPage) :
-            this.renderSplashActions(token, verifyingToken, goToQuickTrade)
+            this.renderSplashActions(token, verifyingToken)
           )
         }
       </div>

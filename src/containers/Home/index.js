@@ -14,7 +14,6 @@ import Section1 from './Section1';
 import Section2 from './Section2';
 import Section3 from './Section3';
 
-const QUICK_TRADE_INDEX = 1;
 const INFORMATION_INDEX = 2;
 const MIN_HEIGHT = 450;
 
@@ -90,7 +89,6 @@ class Home extends Component {
           isHome={true}
           token={token}
           verifyToken={verifyToken}
-          goToQuickTrade={this.onClickScrollTo(QUICK_TRADE_INDEX)}
         />
         <div
           className={classnames(
