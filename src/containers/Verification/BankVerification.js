@@ -77,7 +77,7 @@ class BankVerification extends Component {
       return verifyBankData(rest)
         .then(({ data }) => {
           console.log(data)
-          this.props.moveToNextStep('bank_data', { bank_data: rest, full_name: data.name });
+          this.props.moveToNextStep('bank', { bank_data: rest, full_name: data.name });
         })
         .catch((err) => {
           const error = { _error: err.message };
