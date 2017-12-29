@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import classnames from 'classnames';
 import { ICONS } from '../../../config/constants';
 import { ActionNotification } from '../../';
-
+import { getErrorLocalized } from '../../../utils/errors';
 export const FieldContent = ({
   label = '',
   valid = false,
@@ -33,7 +33,7 @@ export const FieldError = ({ error, displayError, className }) => (
     })}
   >
     <img src={ICONS.RED_WARNING} className="field-error-icon" alt="error" />
-    <span className="field-error-text">{error}</span>
+    <span className="field-error-text">{getErrorLocalized(error)}</span>
   </div>
 );
 

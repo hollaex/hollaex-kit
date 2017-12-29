@@ -2,12 +2,13 @@ import React from 'react';
 import { reduxForm, reset } from 'redux-form';
 import { Button } from '../';
 import renderFields from './factoryFields';
+import { getErrorLocalized } from '../../utils/errors';
 
 const createForm = (name, fields, onSubmit, buttonText) => {
   const Form = ({ handleSubmit, submitting, pristine, error, valid }) => (
     <form className="form">
       {renderFields(fields)}
-      {error && <div><strong>{error}</strong></div>}
+      {error && <div><strong>{getErrorLocalized(error)}</strong></div>}
       <Button
         onClick={handleSubmit(onSubmit)}
         disabled={pristine || submitting || !valid}

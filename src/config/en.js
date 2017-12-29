@@ -654,4 +654,7 @@ export default {
   ERROR_USER_ALREADY_VERIFIED: 'User already verified',
   ERROR_INVALID_CARD_USER: 'Card Number has no linked name',
   ERROR_INVALID_CARD_NUMBER: 'Invalid Card number',
+  ERROR_LOGIN_USER_NOT_VERIFIED: 'User is not verified',
+  ERROR_LOGIN_USER_NOT_ACTIVATED: 'User is not activated',
+  ERROR_LOGIN_INVALID_CREDENTIALS: 'Credentials incorrect',
 };

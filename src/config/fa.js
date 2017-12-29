@@ -654,4 +654,7 @@ export default {
   ERROR_USER_ALREADY_VERIFIED: 'User already verified', // TODO
   ERROR_INVALID_CARD_USER: 'Card Number has no linked name', // TODO
   ERROR_INVALID_CARD_NUMBER: 'Invalid Card number', // TODO
+  ERROR_LOGIN_USER_NOT_VERIFIED: 'User is not verified', // TODO
+  ERROR_LOGIN_USER_NOT_ACTIVATED: 'User is not activated', // TODO
+  ERROR_LOGIN_INVALID_CREDENTIALS: 'CREDENTIALS INCORRECT', // TODO
 };
