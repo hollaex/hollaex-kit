@@ -89,12 +89,16 @@ class AppBar extends Component {
       </div>
     ) : (
       <div className={classnames(...WRAPPER_CLASSES)}>
-        <div className={classnames(...COMMON_CLASSES)}>
-          <Link to='/login'>{STRINGS.LOGIN_TEXT}</Link>
-        </div>
-        <div className={classnames(...COMMON_CLASSES, 'contrast')}>
-          <Link to='/signup'>{STRINGS.SIGNUP_TEXT}</Link>
-        </div>
+        <Link to='/login' className="d-flex f-1 h-100">
+          <div className={classnames(...COMMON_CLASSES)}>
+            {STRINGS.LOGIN_TEXT}
+          </div>
+        </Link>
+        <Link to='/signup' className="d-flex f-1 h-100">
+          <div className={classnames(...COMMON_CLASSES, 'contrast')}>
+            {STRINGS.SIGNUP_TEXT}
+          </div>
+        </Link>
       </div>
     );
   }
