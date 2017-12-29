@@ -4,6 +4,8 @@ $accordion-border: 1px solid $colors-main-black;
 $accordion_content-padding: 0;
 $accordion_arrow-size: 0.5rem;
 
+$main-text--color: $colors-deactivate-color2;
+
 .accordion_section {
   position: relative;
 }
@@ -11,9 +13,14 @@ $accordion_arrow-size: 0.5rem;
 .accordion_wrapper .accordion_section{
   border-top: $accordion-border;
   font-size: $font-size-subhead2;
-  padding:$accordion_content-padding;
+  padding: $accordion_content-padding;
   .accordion_section_content_text {
     position: relative;
+    color: $main-text--color;
+
+    .accordion_section_content_text-subtitle {
+      color: $colors-deactivate-color1;
+    }
   }
 
   &.disabled {
@@ -34,7 +41,7 @@ $accordion_arrow-size: 0.5rem;
   .accordion_wrapper .accordion_section {
     .accordion_section_content_text {
       &:after{
-        @include css-triangle($colors-main-black, 'right', $accordion_arrow-size);
+        @include css-triangle($main-text--color, 'right', $accordion_arrow-size);
         right: -$accordion_arrow-size;
         top: calc(50% - 0.5rem);
       }

@@ -70,7 +70,7 @@ class Accordion extends Component {
   }
 
   scrollToTop = (top = 0) => {
-    if (this.wrapper && this.wrapper.scrollTop !== 0) {
+    if (this.props.doScroll && this.wrapper && this.wrapper.scrollTop !== 0) {
       this.wrapper.scrollTop = 0;
     }
   }
@@ -96,7 +96,8 @@ class Accordion extends Component {
 
 Accordion.defaultProps = {
   allowMultiOpen: false,
-  wrapperId: ''
+  wrapperId: '',
+  doScroll: true,
 }
 
 export default Accordion;

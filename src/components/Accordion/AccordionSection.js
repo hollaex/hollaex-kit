@@ -13,7 +13,7 @@ const AccordionSection = ({
   isOpen = false,
   disabled = false,
   notification,
-
+  subtitle = '',
 }) => {
   const onClick = () => {
     if (!disabled) {
@@ -33,7 +33,7 @@ const AccordionSection = ({
         })}
       >
         <span className={classnames('accordion_section_content_text', titleClassName)}>
-          {title}
+          {title} {subtitle && <span className="accordion_section_content_text-subtitle">{subtitle}</span>}
         </span>
         {titleInformation}
       </div>
