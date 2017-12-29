@@ -32,7 +32,7 @@ const AccordionSection = ({
           'pointer': !disabled,
         })}
       >
-        <span className={classnames('accordion_section_content_text', titleClassName)}>
+        <span className={classnames('accordion_section_content_text', titleClassName, { 'with_arrow': !disabled })}>
           {title} {subtitle && <span className="accordion_section_content_text-subtitle">{subtitle}</span>}
         </span>
         {titleInformation}
