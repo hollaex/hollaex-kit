@@ -1,25 +1,10 @@
 import React from 'react';
 import moment from 'moment';
 import { required, requiredBoolean, isBefore } from '../../components/Form/validations';
-import countries, { initialCountry } from '../../utils/countries';
+import { COUNTRIES_OPTIONS, PHONE_OPTIONS, initialCountry } from '../../utils/countries';
 import { ICONS } from '../../config/constants';
 import { getFormattedDate } from '../../utils/string';
 import STRINGS from '../../config/localizedStrings';
-
-const COUNTRIES_OPTIONS = countries.map((country) => ({
-  label: country.name,
-  value: country.value,
-  icon: country.flag,
-}));
-
-const PHONE_OPTIONS = countries.map((country) => ({
-  label: STRINGS.formatString(
-    STRINGS.USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.PHONE_CODE_DISPLAY,
-   country.phoneCode, country.name
- ).join(''),
-  value: country.phoneCode,
-  icon: country.flag,
-}));
 
 export const generateFormValues = (language) => {
   return {
