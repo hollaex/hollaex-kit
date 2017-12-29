@@ -94,6 +94,8 @@ export const ICONS = {
   SESSION_TIMED_OUT: `${process.env.PUBLIC_URL}/assets/images/session-timed-out.svg`,
   BLUE_EDIT: `${process.env.PUBLIC_URL}/assets/images/blue-edit-exir-icon.svg`,
   BLUE_PLUS: `${process.env.PUBLIC_URL}/assets/images/max-plus-blue-icon.svg`,
+  BLUE_TIMER: `${process.env.PUBLIC_URL}/assets/images/timer-icon.svg`,
+  DROPDOWN_ARROW: `${process.env.PUBLIC_URL}/assets/images/down-arrow-home.svg`,
   TOMAN_T_ICON: `${process.env.PUBLIC_URL}/assets/images/toman-t-icon.svg`,
   NOTIFICATION_ORDER_LIMIT_BUY_FILLED: `${process.env.PUBLIC_URL}/assets/images/limit-buy-order-filled-01.svg`,
   NOTIFICATION_ORDER_LIMIT_BUY_CREATED: `${process.env.PUBLIC_URL}/assets/images/limit-buy-order-icon-01.svg`,
@@ -121,12 +123,20 @@ export const ICONS = {
 }
 
 export const SOCIAL_ICONS = {
-  FACEBOOK: `${process.env.PUBLIC_URL}/assets/icons/facebook.png`,
-  LINKEDIN: `${process.env.PUBLIC_URL}/assets/icons/linkedin.png`,
-  TWIITER: `${process.env.PUBLIC_URL}/assets/icons/twitter.png`,
+  FACEBOOK: `${process.env.PUBLIC_URL}/assets/icons/social-grey-icons.svg`,
+  LINKEDIN: `${process.env.PUBLIC_URL}/assets/icons/social-grey-icons03.svg`,
+  TWIITER: `${process.env.PUBLIC_URL}/assets/icons/social-grey-icons02.svg`,
   GOOGLE: `${process.env.PUBLIC_URL}/assets/icons/google.png`,
 };
 
+export const FEATURES_ICONS = {
+  PRO_TRADING: `${process.env.PUBLIC_URL}/assets/images/features-pro-trade-icons.svg`,
+  PAYMENT: `${process.env.PUBLIC_URL}/assets/images/features-pro-trade-icons.svg`,
+  SECURITY: `${process.env.PUBLIC_URL}/assets/images/features-lock-icons.svg`,
+  REPORTING: `${process.env.PUBLIC_URL}/assets/images/features-data-icons.svg`,
+  SUPPORT: `${process.env.PUBLIC_URL}/assets/images/features-support-icons.svg`,
+  LEGAL: `${process.env.PUBLIC_URL}/assets/images/features-legal-icons.svg`,
+}
 export const EXIR_LOGO = `${process.env.PUBLIC_URL}/assets/images/EXIR-grey-login.svg`;
 export const EXIR_BLUE_LOGO = `${process.env.PUBLIC_URL}/assets/logo-blue-exir.svg`;
 

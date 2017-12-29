@@ -45,7 +45,7 @@ class UserVerification extends Component {
     return ({
       text: verified ? STRINGS.USER_VERIFICATION.COMPLETED : (provided ? STRINGS.USER_VERIFICATION.PENDING_VERIFICATION : verifyText),
       status: verified ? 'success' : (provided ? 'information' : 'warning'),
-      iconPath: verified ? ICONS.GREEN_CHECK : (provided ? ICONS.BLUE_QUESTION : ICONS.RED_ARROW),
+      iconPath: verified ? ICONS.GREEN_CHECK : (provided ? ICONS.BLUE_TIMER : ICONS.RED_ARROW),
       allowClick: false
     })
   }
