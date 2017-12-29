@@ -4,11 +4,17 @@ $features-card--margin: 3rem;
 $features-container--width: 75rem;
 $features-container--sm--width: 45rem;
 $card-text--margin: .75rem;
+$no-background--color: white;
+$background-patter--size: 30rem;
 
 .home_container {
-  .home_container-content {
+  background: url(/assets/EXIR-pattern-grey.jpg);
+  background-repeat: repeat;
+  background-size: $background-patter--size;
 
+  .home_container-content {
   }
+
   .quick_trade-section {
     background-color: $quick-trade--background;
     border: 1px solid $colors-deactivate-color1;
@@ -22,6 +28,8 @@ $card-text--margin: .75rem;
   }
 
   .section_1-content {
+    background: linear-gradient(to bottom, transparent, $no-background--color);
+
     position: relative;
     min-height: 500px;
 
@@ -34,7 +42,7 @@ $card-text--margin: .75rem;
   }
 
   .features-container {
-    background: white;
+    background: $no-background--color;
     .features-card_container {
       max-width: $features-container--width;
     }

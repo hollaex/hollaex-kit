@@ -93,6 +93,7 @@ class Home extends Component {
         <div
           className={classnames(
             'app_container-content',
+            'home_container-content',
             'flex-column',
             'overflow-y',
           )}
