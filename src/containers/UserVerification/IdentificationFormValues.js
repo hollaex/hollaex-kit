@@ -24,84 +24,70 @@ const PHONE_OPTIONS = countries.map((country) => ({
 
 export const generateFormValues = (language) => {
   return {
-    personalInformation: {
-      first_name: {
-        type: 'text',
-        label: STRINGS.USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.FIRST_NAME_LABEL,
-        placeholder: STRINGS.USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.FIRST_NAME_PLACEHOLDER,
-        validate: [required],
-      },
-      last_name: {
-        type: 'text',
-        label: STRINGS.USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.LAST_NAME_LABEL,
-        placeholder: STRINGS.USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.LAST_NAME_PLACEHOLDER,
-        validate: [required],
-      },
-      gender: {
-        type: 'select',
-        label: STRINGS.USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.GENDER_LABEL,
-        placeholder: STRINGS.USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.GENDER_PLACEHOLDER,
-        options: [
-          { value: false, label: STRINGS.USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.GENDER_OPTIONS.MAN, icon: ICONS.GENDER_M },
-          { value: true, label: STRINGS.USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.GENDER_OPTIONS.WOMAN, icon: ICONS.GENDER_F },
-        ],
-        validate: [requiredBoolean],
-      },
-      nationality: {
-        type: 'autocomplete',
-        label: STRINGS.USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.NATIONALITY_LABEL,
-        placeholder: STRINGS.USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.NATIONALITY_PLACEHOLDER,
-        options: COUNTRIES_OPTIONS,
-        validate: [required],
-      },
-      dob: {
-        type: 'date-dropdown',
-        language,
-        label: STRINGS.USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.DOB_LABEL,
-        validate: [required, isBefore()],
-        endDate: moment().add(1, 'days'),
-        pattern: '[0-9]{4}-[0-9]{2}-[0-9]{2}'
-      },
-      country: {
-        type: 'autocomplete',
-        label: STRINGS.USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.COUNTRY_LABEL,
-        placeholder: STRINGS.USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.COUNTRY_PLACEHOLDER,
-        options: COUNTRIES_OPTIONS,
-        validate: [required],
-      },
-      city: {
-        type: 'text',
-        label: STRINGS.USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.CITY_LABEL,
-        placeholder: STRINGS.USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.CITY_PLACEHOLDER,
-        validate: [required],
-      },
-      address: {
-        type: 'text',
-        label: STRINGS.USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.ADDRESS_LABEL,
-        placeholder: STRINGS.USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.ADDRESS_PLACEHOLDER,
-        validate: [required],
-      },
-      postal_code: {
-        type: 'text',
-        label: STRINGS.USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.POSTAL_CODE_LABEL,
-        placeholder: STRINGS.USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.POSTAL_CODE_PLACEHOLDER,
-        validate: [required],
-      },
+    full_name: {
+      type: 'text',
+      label: STRINGS.USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.FULL_NAME_LABEL,
+      disabled: true,
     },
-    phone: {
-      phone_country: {
-        type: 'autocomplete',
-        label: STRINGS.USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.PHONE_NUMBER_LABEL,
-        placeholder: STRINGS.USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.PHONE_CODE_PLACEHOLDER,
-        options: PHONE_OPTIONS,
-        validate: [required],
-      },
-      phone_number: {
-        type: 'text',
-        label: STRINGS.USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.PHONE_NUMBER_LABEL,
-        placeholder: STRINGS.USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.PHONE_NUMBER_PLACEHOLDER,
-        validate: [required],
-      },
+    gender: {
+      type: 'select',
+      label: STRINGS.USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.GENDER_LABEL,
+      options: [
+        { value: false, label: STRINGS.USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.GENDER_OPTIONS.MAN, icon: ICONS.GENDER_M },
+        { value: true, label: STRINGS.USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.GENDER_OPTIONS.WOMAN, icon: ICONS.GENDER_F },
+      ],
+      disabled: true,
+    },
+    dob: {
+      type: 'date-dropdown',
+      language,
+      label: STRINGS.USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.DOB_LABEL,
+      disabled: true,
+    },
+    nationality: {
+      type: 'autocomplete',
+      label: STRINGS.USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.NATIONALITY_LABEL,
+      options: COUNTRIES_OPTIONS,
+      disabled: true,
+    },
+    id_number: {
+      type: 'text',
+      label: STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS.ID_NUMBER_LABEL,
+      placeholder: STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS.ID_NUMBER_PLACEHOLDER,
+      disabled: true,
+    },
+    id_issued_date: {
+      type: 'date-dropdown',
+      label: STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS.ISSUED_DATE_LABEL,
+      disabled: true,
+      language,
+    },
+    id_expiration_date: {
+      type: 'date-dropdown',
+      label: STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS.EXPIRATION_DATE_PLACEHOLDER,
+      disabled: true,
+      language,
+    },
+    country: {
+      type: 'autocomplete',
+      label: STRINGS.USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.COUNTRY_LABEL,
+      options: COUNTRIES_OPTIONS,
+      disabled: true,
+    },
+    city: {
+      type: 'text',
+      label: STRINGS.USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.CITY_LABEL,
+      disabled: true,
+    },
+    address: {
+      type: 'text',
+      label: STRINGS.USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.ADDRESS_LABEL,
+      disabled: true,
+    },
+    postal_code: {
+      type: 'text',
+      label: STRINGS.USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.POSTAL_CODE_LABEL,
+      disabled: true,
     },
   };
 }
@@ -123,9 +109,9 @@ export const prepareInitialValues = ({ id_data, bank_account, address, ...rest, 
   const initialValues = {
     ...rest,
     ...address,
-    country: address.country || initialCountry.value,
-    nationality: rest.nationality || initialCountry.value,
-    phone_country: rest.phone_country || initialCountry.phoneCode,
+    id_number: id_data.number,
+    id_issued_date: id_data.issued_date,
+    id_expiration_date: id_data.expiration_date,
   };
   return initialValues;
 }

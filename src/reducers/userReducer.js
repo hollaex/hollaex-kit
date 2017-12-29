@@ -1,6 +1,7 @@
+import PhoneNumber from 'awesome-phonenumber';
+
 const USER_DATA_KEYS = [
-	'first_name',
-	'last_name',
+	'full_name',
 	'gender',
 	'dob',
 	'nationality',
@@ -26,9 +27,9 @@ const extractuserData = (data) => {
 		if (data.hasOwnProperty(key)) {
 			userData[key] = data[key];
 			if (key === 'phone_number') {
-				const phoneParts = data[key] ? data[key].split(' ', 2) : ['', ''];
-				userData.phone_country = phoneParts[0];
-				userData.phone_number = phoneParts[1];
+				const number = PhoneNumber(data[key]);
+				userData.phone_country = `+${PhoneNumber.getCountryCodeForRegionCode(number.getRegionCode())}`;
+				userData.phone_number = number.getNumber('significant');
 			}
 		}
 	})

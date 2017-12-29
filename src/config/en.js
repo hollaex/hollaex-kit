@@ -93,6 +93,7 @@ export default {
     TAB_SECURITY: 'Security',
     TAB_NOTIFICATIONS: 'Notifications',
     TAB_SETTINGS: 'Settings',
+    TAB_PROFILE: 'Profile',
   },
   CONTACT_FORM: {
     CATEGORY_LABEL: 'Category',
@@ -286,6 +287,8 @@ export default {
    TITLE_USER_DOCUMENTATION: 'Identification',
    TITLE_ID_DOCUMENTS: 'Documents',
    TITLE_BANK_ACCOUNT: 'Bank Account',
+   TITLE_MOBILE_PHONE: 'Mobile Phone',
+   TITLE_PERSONAL_INFORMATION: 'Personal Information',
    VERIFY_EMAIL: 'Verify email',
    VERIFY_USER_DOCUMENTATION: 'Verify user documentation',
    VERIFY_ID_DOCUMENTS: 'Verify id documents',

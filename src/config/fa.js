@@ -93,6 +93,7 @@ export default {
     TAB_SECURITY: 'امنیت',
     TAB_NOTIFICATIONS: 'اطلاعیه',
     TAB_SETTINGS: 'تنظیمات',
+    TAB_PROFILE: 'Profile', // TODO
   },
   CONTACT_FORM: {
     CATEGORY_LABEL: 'دسته بندی',
@@ -286,6 +287,8 @@ export default {
    TITLE_USER_DOCUMENTATION: 'شناسایی',
    TITLE_ID_DOCUMENTS: 'اسناد',
    TITLE_BANK_ACCOUNT: 'حساب بانکی',
+   TITLE_MOBILE_PHONE: 'Mobile Phone', // TODO
+   TITLE_PERSONAL_INFORMATION: 'اطلاعات شخصی',
    VERIFY_EMAIL: 'تأیید ایمیل',
    VERIFY_USER_DOCUMENTATION: 'اسناد کاربر را تأیید کنید',
    VERIFY_ID_DOCUMENTS: 'اسناد شناسایی را تأیید کنید',

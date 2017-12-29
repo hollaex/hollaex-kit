@@ -45,8 +45,8 @@ class Account extends Component {
       {
         title: (
           <CheckTitle
-            title={STRINGS.ACCOUNTS.TAB_VERIFICATION}
-            icon={ICONS.ID_GREY}
+            title={STRINGS.ACCOUNTS.TAB_PROFILE}
+            icon={ICONS.VERIFICATION_ID_INACTIVE}
             notifications={this.hasUserVerificationNotifications(verification_level, bank_account, id_data) ? '!' : ''}
           />
         ),
