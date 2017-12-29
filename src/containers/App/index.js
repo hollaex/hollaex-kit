@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux';
 import io from 'socket.io-client';
 import EventListener from 'react-event-listener';
 import { debounce } from 'lodash';
-import { WS_URL, ICONS, SESSION_TIME, APP_TITLE } from '../../config/constants';
+import { WS_URL, ICONS, SESSION_TIME } from '../../config/constants';
 
 import { logout } from '../../actions/authAction';
 import { setMe, setBalance, updateUser } from '../../actions/userAction';
@@ -392,14 +392,11 @@ class Container extends Component {
 					onKeyPress={this.resetTimer}
 				/>
 				<AppBar
-					title={APP_TITLE}
 					goToAccountPage={this.goToAccountPage}
 					goToDashboard={this.goToDashboard}
 					acccountIsActive={activePath === 'account'}
 					changeSymbol={changeSymbol}
 					activeSymbol={symbol}
-					changeLanguage={this.onChangeLanguage}
-					activeLanguage={activeLanguage}
 				/>
         <div className="app_container-content d-flex justify-content-between">
           <div className={classnames(
