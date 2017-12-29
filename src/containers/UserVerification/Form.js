@@ -7,9 +7,10 @@ import STRINGS from '../../config/localizedStrings';
 
 const DumbForm = (formName) => {
   const Form = (props) => {
-    const { handleSubmit, formValues = {} } = props;
+    const { handleSubmit, formValues = {}, children } = props;
     return (
       <form onSubmit={handleSubmit} className="user_verification-form">
+        {children}
         {renderFields(formValues)}
       </form>
     );

@@ -299,7 +299,11 @@ export default {
    TITLE_MOBILE_HEADER: 'Mobile Phone Number', // TODO
    TITLE_BANK: 'Bank', // TODO
    TITLE_BANK_HEADER: 'Bank Details', // TODO
-
+   CHANGE_VALUE: 'Change value', // TODO
+   PENDING_VERIFICATION_PERSONAL_INFORMATION: 'Your personal information is being processed', //TODO
+   PENDING_VERIFICATION_BANK: 'Your bank details are being verified', //TODO
+   PENDING_VERIFICATION_DOCUMENTS: 'Your documents are being verified', //TODO
+   GOTO_VERIFICATION: 'Go to verification', //TODO
   USER_DOCUMENTATION_FORM: {
     FORM_FIELDS: {
        FIRST_NAME_LABEL: 'نام',

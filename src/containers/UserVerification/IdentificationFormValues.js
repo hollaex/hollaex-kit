@@ -5,7 +5,6 @@ import countries, { initialCountry } from '../../utils/countries';
 import { ICONS } from '../../config/constants';
 import { getFormattedDate } from '../../utils/string';
 import STRINGS from '../../config/localizedStrings';
-import { InformationSection } from './InformationSection';
 
 const COUNTRIES_OPTIONS = countries.map((country) => ({
   label: country.name,
@@ -90,19 +89,6 @@ export const generateFormValues = (language) => {
       disabled: true,
     },
   };
-}
-
-const PersonalInformationSection = () => (
-  <InformationSection title={STRINGS.USER_VERIFICATION.USER_DOCUMENTATION_FORM.INFORMATION.TITLE_PERSONAL_INFORMATION}>
-    <div>{STRINGS.USER_VERIFICATION.USER_DOCUMENTATION_FORM.INFORMATION.TEXT}</div>
-  </InformationSection>
-);
-
-const PhoneSection = () => <InformationSection title={STRINGS.USER_VERIFICATION.USER_DOCUMENTATION_FORM.INFORMATION.TITLE_PHONE} />;
-
-export const information = {
-  personalInformation: <PersonalInformationSection />,
-  phone: <PhoneSection />,
 }
 
 export const prepareInitialValues = ({ id_data, bank_account, address, ...rest, timestamp }) => {

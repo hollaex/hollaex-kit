@@ -299,7 +299,11 @@ export default {
    TITLE_MOBILE_HEADER: 'Mobile Phone Number',
    TITLE_BANK: 'Bank',
    TITLE_BANK_HEADER: 'Bank Details',
-
+   CHANGE_VALUE: 'Change value',
+   PENDING_VERIFICATION_PERSONAL_INFORMATION: 'Your personal information is being processed',
+   PENDING_VERIFICATION_BANK: 'Your bank details are being verified',
+   PENDING_VERIFICATION_DOCUMENTS: 'Your documents are being verified',
+   GOTO_VERIFICATION: 'Go to verification',
    USER_DOCUMENTATION_FORM: {
      FORM_FIELDS: {
        FIRST_NAME_LABEL: 'First name',
