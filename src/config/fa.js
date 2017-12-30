@@ -93,7 +93,7 @@ export default {
     TAB_SECURITY: 'امنیت',
     TAB_NOTIFICATIONS: 'اطلاعیه',
     TAB_SETTINGS: 'تنظیمات',
-    TAB_PROFILE: 'Profile', // TODO
+    TAB_PROFILE: 'پروفایل',
   },
   CONTACT_FORM: {
     CATEGORY_LABEL: 'دسته بندی',
@@ -146,7 +146,7 @@ export default {
    REQUIRED: 'اجباری',
    INVALID_DATE: 'تاریخ نامعتبر است',
    INVALID_PASSWORD: 'رمزعبور نامعتبر است. باید حاوی حداقل 8 کاراکتر، یک رقم و یک کاراکتر خاص باشد.',
-   INVALID_PASSWORD_2: 'Invalid password. It has to contain at least 8 characters, at least one digit and one character', // TODO
+   INVALID_PASSWORD_2: 'رمز عبور باید حداقل 8 کاراکت ترکیبی از عدد و حروف باشد',
    INVALID_CURRENCY: 'آدرس {0} ({1}) نا معتبر است',
    INVALID_BALANCE: 'موجودی ({0}) کافی نیست برای انجام عملیات ({1}).', // CHECK
    MIN_VALUE: 'ارزش باید  {0} یا بیشتر باشد',
@@ -156,7 +156,7 @@ export default {
    USER_EXIST: 'ایمیل قبلا ثبت شده است',
    ACCEPT_TERMS: 'شما با شرایط استفاده و رازداری موافقت نکردید',
    STEP: 'ورودی اشتباه, مرحله {0}', // CHECK
-   ONLY_NUMBERS: 'Value can contain only numbers', // TODO
+   ONLY_NUMBERS: 'فقط عدد می توانید وارد کنید',
  },
  LEGAL: {
    PRIVACY_POLICY: {
@@ -288,33 +288,33 @@ export default {
    TITLE_USER_DOCUMENTATION: 'شناسایی',
    TITLE_ID_DOCUMENTS: 'اسناد',
    TITLE_BANK_ACCOUNT: 'حساب بانکی',
-   TITLE_MOBILE_PHONE: 'Mobile Phone', // TODO
+   TITLE_MOBILE_PHONE: 'شماره تلفن همراه',
    TITLE_PERSONAL_INFORMATION: 'اطلاعات شخصی',
    VERIFY_EMAIL: 'تأیید ایمیل',
    VERIFY_USER_DOCUMENTATION: 'اسناد کاربر را تأیید کنید',
    VERIFY_ID_DOCUMENTS: 'اسناد شناسایی را تأیید کنید',
    VERIFY_BANK_ACCOUNT: 'تأیید حساب بانکی',
    BUTTON: 'درخواست تأیید ارسال کنید',
-   TITLE_IDENTITY: 'Identity', // TODO
-   TITLE_MOBILE: 'Mobile', // TODO
-   TITLE_MOBILE_HEADER: 'Mobile Phone Number', // TODO
-   TITLE_BANK: 'Bank', // TODO
-   TITLE_BANK_HEADER: 'Bank Details', // TODO
-   CHANGE_VALUE: 'Change value', // TODO
-   PENDING_VERIFICATION_PERSONAL_INFORMATION: 'Your personal information is being processed', //TODO
-   PENDING_VERIFICATION_BANK: 'Your bank details are being verified', //TODO
-   PENDING_VERIFICATION_DOCUMENTS: 'Your documents are being verified', //TODO
-   GOTO_VERIFICATION: 'Go to verification', //TODO
+   TITLE_IDENTITY: 'اطلاعات شخصی',
+   TITLE_MOBILE: 'موبایل',
+   TITLE_MOBILE_HEADER: 'شماره تلفن همراه',
+   TITLE_BANK: 'بانک',
+   TITLE_BANK_HEADER: 'اطلاعات بانک',
+   CHANGE_VALUE: 'تغییر مقدار',
+   PENDING_VERIFICATION_PERSONAL_INFORMATION: 'اطلاعات شخصی شما در حال بررسی است',
+   PENDING_VERIFICATION_BANK: 'اطلاعات بانکی شما در حال بررسی است',
+   PENDING_VERIFICATION_DOCUMENTS: 'اطلاعات آپلود شده شما در حال بررسی است',
+   GOTO_VERIFICATION: 'به احراز هوییت بروید',
   USER_DOCUMENTATION_FORM: {
     FORM_FIELDS: {
        FIRST_NAME_LABEL: 'نام',
        FIRST_NAME_PLACEHOLDER: 'نام خود را دقیقا مطابق کارت ملی خود تایپ کنید',
        LAST_NAME_LABEL: 'نام خانوادگی',
        LAST_NAME_PLACEHOLDER: 'نام خانوادگی خود را دقیقا مطابق کارت ملی خود تایپ کنید',
-       FULL_NAME_LABEL: 'Your Full Name', // TODO
-       FULL_NAME_PLACEHOLDER: 'Type your full name as it appears on your identity document', // TODO
+       FULL_NAME_LABEL: 'نام و نام خانوادگی',
+       FULL_NAME_PLACEHOLDER: 'نام کامل خود را به دقت وارد کنید',
        GENDER_LABEL: 'جنسيت',
-       GENDER_PLACEHOLDER: 'نوع جنسیت خود را تایپ کنید',
+       GENDER_PLACEHOLDER: 'نوع جنسیت خود را انتخاب کنید',
        GENDER_OPTIONS: {
          MAN: 'مرد',
          WOMAN: 'زن',
@@ -325,19 +325,19 @@ export default {
        COUNTRY_LABEL: 'کشوری که اقامت دارید',
        COUNTRY_PLACEHOLDER: 'کشور خود را که در حال حاضر اقامت دارید را انتخاب کنید',
        CITY_LABEL: 'شهر',
-       CITY_PLACEHOLDER: 'شهر را که در آن زندگی میکنید تایپ کنید',
+       CITY_PLACEHOLDER: 'شهری را که در آن زندگی میکنید تایپ کنید',
        ADDRESS_LABEL: 'نشانی',
        ADDRESS_PLACEHOLDER: 'آدرس فعلی که در حال حاضر زندگی می کنید را تایپ کنید',
        POSTAL_CODE_LABEL: 'کد پستی',
        POSTAL_CODE_PLACEHOLDER: 'کد پستی خود را تایپ کنید',
        PHONE_CODE_LABEL: 'کشور',
        PHONE_CODE_PLACEHOLDER: 'کشوری که شماره تلفن شما متصل است را تایپ کنید',
-       PHONE_CODE_DISPLAY: '({0}) {1}', //TODO 0 -> (+21)  1 -> Iran
+       PHONE_CODE_DISPLAY: '{1} ({0})', //TODO 0 -> (+21)  1 -> Iran
        PHONE_NUMBER_LABEL: 'شماره تلفن',
        PHONE_NUMBER_PLACEHOLDER: 'شماره تلفن خود را تایپ کنید',
-       SMS_SEND: 'Send SMS', // TODO
-       SMS_CODE_LABEL: 'SMS Code', // TODO
-       SMS_CODE_PLACEHOLDER: 'Input your SMS code', // TODO
+       SMS_SEND: 'ارسال پیامک',
+       SMS_CODE_LABEL: 'کد پیامکی',
+       SMS_CODE_PLACEHOLDER: 'کد پیامک شده را وارد نمایید',
      },
      INFORMATION: {
        TEXT: 'مهم: نام خود را دقیقا همانطور که در کد ملی شما نشان داده شده است (نام و نام خانوادگی کامل) وارد کنید. اگر شرکت هستید به پشتیبانی support@exir.tech با عنوان \"حساب شرکتی\" ایمیل بفرستید.',
@@ -400,18 +400,18 @@ export default {
      VALIDATIONS: {
        ACCOUNT_OWNER: 'لطفا نام و نام خانوادگی خود را با حساب بانکی خود وارد کنید',
        ACCOUNT_NUMBER: 'شماره حساب بانکی شما باید 24 رقمی باشد',
-       CARD_NUMBER: 'Your card number should be 16 digits', // TODO
+       CARD_NUMBER: 'شماره کارت باید حتما 16 رقمی باشد', // TODO
      },
      FORM_FIELDS: {
-       IRANIAN_ACCOUNT_LABEL: 'Do you have an Iranian Bank Account?', // TODO
+       IRANIAN_ACCOUNT_LABEL: 'آیا حساب بانکی در ایران دارید؟',
        BANK_NAME_LABEL: 'نام بانک',
        BANK_NAME_PLACEHOLDER: 'نام بانک خود را تایپ کنید',
        ACCOUNT_NUMBER_LABEL: 'شماره حساب بانکی',
        ACCOUNT_NUMBER_PLACEHOLDER: 'شماره حساب بانکی خود را تایپ کنید',
        ACCOUNT_OWNER_LABEL: 'نام صاحب حساب بانکی',
        ACCOUNT_OWNER_PLACEHOLDER: 'نام را مطابق حساب بانکی خود وارد کنید',
-       CARD_NUMBER_LABEL: 'Bank Card Number', // TODO
-       CARD_NUMBER_PLACEHOLDER: 'Type the number that is on the front of your bank card', // TODO
+       CARD_NUMBER_LABEL: 'کارت بانکی',
+       CARD_NUMBER_PLACEHOLDER: 'شماره 16 رقمی بر روی کارت خود را وارد کنید',
      },
    },
    WARNING: {
@@ -618,10 +618,10 @@ export default {
   DATEFIELD_TOOGLE_DATE_GR: 'Gregorian calendar',
   VERIFICATION_WARNING_TITLE: 'نیاز به احراز هویت',
   VERIFICATION_WARNING_MESSAGE: 'برای احراز هویت به {0} خود بروید',
-  ORDER_SPENT: 'خارج شده', // TODO
+  ORDER_SPENT: 'خرج شده',
   ORDER_RECEIVED: 'دریافت شده',
-  ORDER_SOLD: 'فروش', // TODO
-  ORDER_BOUGHT: 'خرید', // TODO
+  ORDER_SOLD: 'فروش',
+  ORDER_BOUGHT: 'خرید',
   ORDER_AVERAGE_PRICE: 'قیمت میانگین',
   ORDER_TITLE_CREATED: 'سفارش {0} با موفقیت انجام شد',
   ORDER_TITLE_FULLY_FILLED: 'سفارش {0} تکمیل شد',
@@ -641,20 +641,20 @@ export default {
   QUICK_TRADE_ORDER_CAN_NOT_BE_FILLED: 'سفارش با این مقدار تکمیل نخواهد شد',
   QUICK_TRADE_ORDER_NOT_FILLED: 'موجودی سایت کافی نیست',
   QUICK_TRADE_NO_BALANCE: 'موجودی شما برای انجام این سفارش کافی نیست',
-  YES: 'Yes', // TODO
-  NO: 'No', // TODO
-  NEXT: 'Next', // TODO
-  SKIP_FOR_NOW: 'Skip for now', // TODO
+  YES: 'بله',
+  NO: 'خیر',
+  NEXT: 'بعدی',
+  SKIP_FOR_NOW: 'بعدا وارد می کنم',
   SUBMIT: 'ارسال',
   VERIFICATION_NOTIFICATION_SKIP_TITLE: 'Missing Documents!', // TODO
-  VERIFICATION_NOTIFICATION_SKIP_TEXT: 'To get full access to withdrawal and deposit functions on EXIR you must submit your identity documents in your account page.', // TODO
-  VERIFICATION_NOTIFICATION_SUCCESS_TITLE: 'Success!', // TODO
-  VERIFICATION_NOTIFICATION_SUCCESS_TEXT: 'You will receive an email notification and SMS when your information has been processed. Processing can typically take 1-3 days.', // TODO
-  VERIFICATION_NOTIFICATION_BUTTON: 'PROCEED TO EXIR', // TODO
-  ERROR_USER_ALREADY_VERIFIED: 'User already verified', // TODO
-  ERROR_INVALID_CARD_USER: 'Card Number has no linked name', // TODO
-  ERROR_INVALID_CARD_NUMBER: 'Invalid Card number', // TODO
-  ERROR_LOGIN_USER_NOT_VERIFIED: 'User is not verified', // TODO
-  ERROR_LOGIN_USER_NOT_ACTIVATED: 'User is not activated', // TODO
-  ERROR_LOGIN_INVALID_CREDENTIALS: 'CREDENTIALS INCORRECT', // TODO
+  VERIFICATION_NOTIFICATION_SKIP_TEXT: 'برای انجام برداشت از حساب نیاز به بارگذاری اطلاعات برای احراز هویت می باشد. لطفا به حساب کاربری خود رفته و مدارک مورد نیاز را وارد نمایید.',
+  VERIFICATION_NOTIFICATION_SUCCESS_TITLE: 'موفقیت!',
+  VERIFICATION_NOTIFICATION_SUCCESS_TEXT: 'هنگامی که اطلاعات شما بررسی گردید، از طریق ایمیل به شما اطلاع می دهیم.',
+  VERIFICATION_NOTIFICATION_BUTTON: 'ورود به اکسیر',
+  ERROR_USER_ALREADY_VERIFIED: 'کاربر قبلا احراز هویت شده است',
+  ERROR_INVALID_CARD_USER: 'مقادیر وارد شده نادرس است',
+  ERROR_INVALID_CARD_NUMBER: 'شماره کارت نادرس است',
+  ERROR_LOGIN_USER_NOT_VERIFIED: 'کاربر احراز هویت نشده است',
+  ERROR_LOGIN_USER_NOT_ACTIVATED: 'حسای کاربری فعال نشده است',
+  ERROR_LOGIN_INVALID_CREDENTIALS: 'ایمیل یا رمز عبور اشتباه است',
 };
