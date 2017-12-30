@@ -595,8 +595,8 @@ export default {
   DATEFIELD_TOOGLE_DATE_GR: 'Gregorian calendar',
   VERIFICATION_WARNING_TITLE: 'نیاز به احراز هویت',
   VERIFICATION_WARNING_MESSAGE: 'برای احراز هویت به {0} خود بروید',
-  ORDER_SPENT: 'Spent', // TODO
-  ORDER_RECEIVED: 'Received', // TODO
+  ORDER_SPENT: 'خارج شده', // TODO
+  ORDER_RECEIVED: 'دریافت شده',
   ORDER_SOLD: 'فروش', // TODO
   ORDER_BOUGHT: 'خرید', // TODO
   ORDER_AVERAGE_PRICE: 'قیمت میانگین',
@@ -604,7 +604,7 @@ export default {
   ORDER_TITLE_FULLY_FILLED: 'سفارش {0} تکمیل شد', 
   ORDER_TITLE_PARTIALLY_FILLED: 'قسمتی از سفارش {0} تکمیل شد',
   ORDER_TITLE_TRADE_COMPLETE: 'سفارش {0} {1} با موفقیت انجام شد',
-  LOGOUT_TITLE: 'شمی از حساب خارج شده اید',
+  LOGOUT_TITLE: 'شما از حساب خارج شده اید',
   LOGOUT_ERROR_TOKEN_EXPIRED: 'توکن قیمت دیگر اعتبار ندارد',
   LOGOUT_ERROR_LOGIN_AGAIN: 'لطفا مجدد وارد شوید',
   LOGOUT_ERROR_INVALID_TOKEN: 'توکن اشتباه',
