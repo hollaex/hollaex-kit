@@ -2,17 +2,18 @@ import React, { Component } from 'react';
 import classnames from 'classnames';
 import { SubmissionError } from 'redux-form';
 import { requestResetPassword } from '../../actions/authAction';
-import ResetPasswordForm from './ResetPasswordForm';
+import ResetPasswordForm, { generateFormFields } from './ResetPasswordForm';
 import { IconTitle, Dialog } from '../../components';
 import { ContactForm } from '../';
 import { FLEX_CENTER_CLASSES, ICONS } from '../../config/constants';
-import { TEXTS } from './constants';
+import STRINGS from '../../config/localizedStrings';
 import RequestResetPasswordSuccess from './RequestResetPasswordSuccess';
 
 class RequestResetPassword extends Component {
   state = {
     success: false,
     showContactForm: false,
+    formFields: generateFormFields(),
   }
 
   onSubmitRequestResetPassword = (values) => {
@@ -50,7 +51,7 @@ class RequestResetPassword extends Component {
 
   render() {
     const { languageClasses } = this.props;
-    const { success, showContactForm } = this.state;
+    const { success, showContactForm, formFields } = this.state;
 
     return (
       <div className={classnames(...FLEX_CENTER_CLASSES, 'flex-column', 'f-1')}>
@@ -63,19 +64,19 @@ class RequestResetPassword extends Component {
           <div className={classnames(...FLEX_CENTER_CLASSES, 'flex-column', 'auth_wrapper', 'w-100')}>
             <IconTitle
               iconPath={ICONS.ACCOUNT_RECOVERY}
-              text={TEXTS.TITLE}
+              text={STRINGS.REQUEST_RESET_PASSWORD.TITLE}
               textType="title"
               underline={true}
               className="w-100"
-              subtitle={TEXTS.SUBTITLE}
+              subtitle={STRINGS.REQUEST_RESET_PASSWORD.SUBTITLE}
               actionProps={{
-                text: TEXTS.SUPPORT,
+                text: STRINGS.REQUEST_RESET_PASSWORD.SUPPORT,
                 iconPath: ICONS.HELP_ICON,
                 onClick: this.onOpenDialog,
               }}
             />
             <div className={classnames(...FLEX_CENTER_CLASSES, 'flex-column', 'auth_form-wrapper', 'w-100')}>
-              <ResetPasswordForm onSubmit={this.onSubmitRequestResetPassword} />
+              <ResetPasswordForm onSubmit={this.onSubmitRequestResetPassword} formFields={formFields} />
             </div>
           </div>
         )}

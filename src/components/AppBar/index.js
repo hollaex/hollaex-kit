@@ -2,23 +2,9 @@ import React, { Component } from 'react';
 import classnames from 'classnames';
 import { Link } from 'react-router';
 import { CURRENCIES, FLEX_CENTER_CLASSES, EXIR_BLUE_LOGO } from '../../config/constants';
+import { LanguageSelector } from '../';
 
 import STRINGS from '../../config/localizedStrings';
-
-const LanguageSelector = ({ changeLanguage, languages, activeLanguage = '' }) => (
-  <div className="d-flex">
-    {languages.map(({ key, label }, index) => (
-      <div
-        style={{ padding: 8 }}
-        key={key}
-        onClick={changeLanguage(key)}
-        className="pointer"
-      >
-        {label}
-      </div>
-    ))}
-  </div>
-);
 
 class AppBar extends Component {
   state = {
@@ -89,7 +75,7 @@ class AppBar extends Component {
     );
   }
 
-  renderSplashActions = (token, verifyingToken, goToQuickTrade) => {
+  renderSplashActions = (token, verifyingToken) => {
     if (verifyingToken) {
       return <div></div>
     }
@@ -103,22 +89,23 @@ class AppBar extends Component {
       </div>
     ) : (
       <div className={classnames(...WRAPPER_CLASSES)}>
-        <div className={classnames(...COMMON_CLASSES)} onClick={goToQuickTrade}>
-          {STRINGS.QUICK_TRADE}
-        </div>
-        <div className={classnames(...COMMON_CLASSES)}>
-          <Link to='/login'>{STRINGS.LOGIN_TEXT}</Link>
-        </div>
-        <div className={classnames(...COMMON_CLASSES, 'contrast')}>
-          <Link to='/signup'>{STRINGS.SIGNUP_TEXT}</Link>
-        </div>
+        <Link to='/login' className="d-flex f-1 h-100">
+          <div className={classnames(...COMMON_CLASSES)}>
+            {STRINGS.LOGIN_TEXT}
+          </div>
+        </Link>
+        <Link to='/signup' className="d-flex f-1 h-100">
+          <div className={classnames(...COMMON_CLASSES, 'contrast')}>
+            {STRINGS.SIGNUP_TEXT}
+          </div>
+        </Link>
       </div>
     );
   }
 
   render() {
     const {
-      title, goToAccountPage, goToDashboard, acccountIsActive, activeSymbol, noBorders, token, verifyingToken, goToQuickTrade, changeLanguage, activeLanguage, isHome
+      goToAccountPage, goToDashboard, acccountIsActive, activeSymbol, noBorders, token, verifyingToken, isHome, rightChildren,
     } = this.props;
 
     return (
@@ -130,18 +117,15 @@ class AppBar extends Component {
           }
         </div>
         <div className="app_bar-main d-flex justify-content-between">
-          {!isHome && <div>{STRINGS.APP_TITLE}</div>}
-          {changeLanguage &&
-            <LanguageSelector
-              changeLanguage={changeLanguage}
-              languages={STRINGS.LANGUAGES}
-              activeLanguage={activeLanguage}
-            />
-          }
+          <div>{!isHome && STRINGS.APP_TITLE}</div>
+          <LanguageSelector />
         </div>
-        {activeSymbol ?
-          this.renderAppActions(activeSymbol, acccountIsActive, goToAccountPage) :
-          this.renderSplashActions(token, verifyingToken, goToQuickTrade)
+        {rightChildren ?
+          rightChildren :
+          (activeSymbol ?
+            this.renderAppActions(activeSymbol, acccountIsActive, goToAccountPage) :
+            this.renderSplashActions(token, verifyingToken)
+          )
         }
       </div>
     );

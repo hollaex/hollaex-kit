@@ -6,9 +6,11 @@ import Deposit from './Deposit';
 import Withdraw from './Withdraw';
 import Order from './Order';
 import Trade from './Trade';
+import Verification from './Verification';
 import Logout from './Logout';
 
 const generateNotificationContent = ({ type, data, ...rest }) => {
+  console.log(type, data)
   switch (type) {
     case NOTIFICATIONS.DEPOSIT:
       return <Deposit data={data} {...rest} />;
@@ -20,6 +22,8 @@ const generateNotificationContent = ({ type, data, ...rest }) => {
       return <Trade data={data} />
     case NOTIFICATIONS.LOGOUT:
       return <Logout data={data} {...rest} />
+    case NOTIFICATIONS.VERIFICATION:
+      return <Verification data={data} />
     default:
       break;
   }

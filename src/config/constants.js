@@ -94,6 +94,8 @@ export const ICONS = {
   SESSION_TIMED_OUT: `${process.env.PUBLIC_URL}/assets/images/session-timed-out.svg`,
   BLUE_EDIT: `${process.env.PUBLIC_URL}/assets/images/blue-edit-exir-icon.svg`,
   BLUE_PLUS: `${process.env.PUBLIC_URL}/assets/images/max-plus-blue-icon.svg`,
+  BLUE_TIMER: `${process.env.PUBLIC_URL}/assets/images/timer-icon.svg`,
+  DROPDOWN_ARROW: `${process.env.PUBLIC_URL}/assets/images/down-arrow-home.svg`,
   TOMAN_T_ICON: `${process.env.PUBLIC_URL}/assets/images/toman-t-icon.svg`,
   NOTIFICATION_ORDER_LIMIT_BUY_FILLED: `${process.env.PUBLIC_URL}/assets/images/limit-buy-order-filled-01.svg`,
   NOTIFICATION_ORDER_LIMIT_BUY_CREATED: `${process.env.PUBLIC_URL}/assets/images/limit-buy-order-icon-01.svg`,
@@ -106,15 +108,35 @@ export const ICONS = {
   NOTIFICATION_VERIFICATION_WARNING: `${process.env.PUBLIC_URL}/assets/images/verification.svg`,
   LOGOUT_ARROW: `${process.env.PUBLIC_URL}/assets/images/logout-arrow-active.svg`,
   LOGOUT_ARROW_GREY: `${process.env.PUBLIC_URL}/assets/images/logout-arrow.svg`,
+  VERIFICATION_WARNING: `${process.env.PUBLIC_URL}/assets/images/astrics.svg`,
+  VERIFICATION_SUCCESS: `${process.env.PUBLIC_URL}/assets/images/success-check-box.svg`,
+  VERIFICATION_DOC: `${process.env.PUBLIC_URL}/assets/images/doc.svg`,
+  VERIFICATION_DOC_INACTIVE: `${process.env.PUBLIC_URL}/assets/images/doc-inactive.svg`,
+  VERIFICATION_EMAIL: `${process.env.PUBLIC_URL}/assets/images/email_2.svg`,
+  VERIFICATION_EMAIL_INACTIVE: `${process.env.PUBLIC_URL}/assets/images/email-inactive.svg`,
+  VERIFICATION_MOBILE: `${process.env.PUBLIC_URL}/assets/images/mobile.svg`,
+  VERIFICATION_MOBILE_INACTIVE: `${process.env.PUBLIC_URL}/assets/images/mobile-inactive.svg`,
+  VERIFICATION_BANK: `${process.env.PUBLIC_URL}/assets/images/bank.svg`,
+  VERIFICATION_BANK_INACTIVE: `${process.env.PUBLIC_URL}/assets/images/bank-inactive.svg`,
+  VERIFICATION_ID: `${process.env.PUBLIC_URL}/assets/images/id_2.svg`,
+  VERIFICATION_ID_INACTIVE: `${process.env.PUBLIC_URL}/assets/images/id_2-inactive.svg`,
 }
 
 export const SOCIAL_ICONS = {
-  FACEBOOK: `${process.env.PUBLIC_URL}/assets/icons/facebook.png`,
-  LINKEDIN: `${process.env.PUBLIC_URL}/assets/icons/linkedin.png`,
-  TWIITER: `${process.env.PUBLIC_URL}/assets/icons/twitter.png`,
+  FACEBOOK: `${process.env.PUBLIC_URL}/assets/icons/social-grey-icons.svg`,
+  LINKEDIN: `${process.env.PUBLIC_URL}/assets/icons/social-grey-icons03.svg`,
+  TWIITER: `${process.env.PUBLIC_URL}/assets/icons/social-grey-icons02.svg`,
   GOOGLE: `${process.env.PUBLIC_URL}/assets/icons/google.png`,
 };
 
+export const FEATURES_ICONS = {
+  PRO_TRADING: `${process.env.PUBLIC_URL}/assets/images/features-pro-trade-icons.svg`,
+  PAYMENT: `${process.env.PUBLIC_URL}/assets/images/features-pro-trade-icons.svg`,
+  SECURITY: `${process.env.PUBLIC_URL}/assets/images/features-lock-icons.svg`,
+  REPORTING: `${process.env.PUBLIC_URL}/assets/images/features-data-icons.svg`,
+  SUPPORT: `${process.env.PUBLIC_URL}/assets/images/features-support-icons.svg`,
+  LEGAL: `${process.env.PUBLIC_URL}/assets/images/features-legal-icons.svg`,
+}
 export const EXIR_LOGO = `${process.env.PUBLIC_URL}/assets/images/EXIR-grey-login.svg`;
 export const EXIR_BLUE_LOGO = `${process.env.PUBLIC_URL}/assets/logo-blue-exir.svg`;
 

@@ -1,10 +1,13 @@
 import React, { Component} from 'react';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import { TabController, CheckTitle } from '../../components';
 import { ICONS } from '../../config/constants';
 import { UserVerification, UserSecurity } from '../';
 import STRINGS from '../../config/localizedStrings';
-
+import {
+  openContactForm,
+} from '../../actions/appActions';
 class Account extends Component {
   state = {
     activeTab: -1,
@@ -22,8 +25,6 @@ class Account extends Component {
       nextProps.id !== this.props.id ||
       nextProps.verification_level !== this.props.verification_level ||
       nextProps.otp_enabled !== this.props.otp_enabled ||
-      nextProps.bank_account.name !== this.props.bank_account.name ||
-      nextProps.id_data.type !== this.props.id_data.type ||
       nextProps.activeLanguage !== this.props.activeLanguage
     ) {
       this.updateTabs(nextProps);
@@ -31,9 +32,7 @@ class Account extends Component {
   }
 
   hasUserVerificationNotifications = (verification_level, bank_account = {}, id_data = {}) => {
-    if (verification_level >= 2) {
-      return false;
-    } else if (bank_account.bank_name && id_data.type) {
+    if (verification_level >= 2 && bank_account.verified && id_data.verified) {
       return false;
     }
     return true;
@@ -45,12 +44,12 @@ class Account extends Component {
       {
         title: (
           <CheckTitle
-            title={STRINGS.ACCOUNTS.TAB_VERIFICATION}
-            icon={ICONS.ID_GREY}
+            title={STRINGS.ACCOUNTS.TAB_PROFILE}
+            icon={ICONS.VERIFICATION_ID_INACTIVE}
             notifications={this.hasUserVerificationNotifications(verification_level, bank_account, id_data) ? '!' : ''}
           />
         ),
-        content: <UserVerification />
+        content: <UserVerification goToVerification={this.goToVerification} openContactForm={this.openContactForm}/>
       },
       {
         title: (
@@ -86,6 +85,12 @@ class Account extends Component {
 
   renderContent = (tabs, activeTab) => tabs[activeTab].content;
 
+  openContactForm = () => {
+    console.log('here')
+    this.props.openContactForm();
+  }
+  goToVerification = () => this.props.router.push('/verification');
+
   render() {
     const { id } = this.props;
 
@@ -119,4 +124,8 @@ const mapStateToProps = (state) => ({
   activeLanguage: state.app.language,
 });
 
-export default connect(mapStateToProps)(Account);
+const mapDispatchToProps = (dispatch) => ({
+	openContactForm: bindActionCreators(openContactForm, dispatch),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Account);

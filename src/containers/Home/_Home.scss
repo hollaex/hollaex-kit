@@ -3,11 +3,18 @@ $features-card--width: 17.5rem;
 $features-card--margin: 3rem;
 $features-container--width: 75rem;
 $features-container--sm--width: 45rem;
+$card-text--margin: .75rem;
+$no-background--color: white;
+$background-patter--size: 30rem;
 
 .home_container {
-  .home_container-content {
+  background: url(/assets/EXIR-pattern-grey.jpg);
+  background-repeat: repeat;
+  background-size: $background-patter--size;
 
+  .home_container-content {
   }
+
   .quick_trade-section {
     background-color: $quick-trade--background;
     border: 1px solid $colors-deactivate-color1;
@@ -21,6 +28,8 @@ $features-container--sm--width: 45rem;
   }
 
   .section_1-content {
+    background: linear-gradient(to bottom, transparent, $no-background--color);
+
     position: relative;
     min-height: 500px;
 
@@ -33,7 +42,7 @@ $features-container--sm--width: 45rem;
   }
 
   .features-container {
-    background: white;
+    background: $no-background--color;
     .features-card_container {
       max-width: $features-container--width;
     }
@@ -45,12 +54,23 @@ $features-container--sm--width: 45rem;
     margin: $features-card--margin;
     margin-top: 0;
 
+    .home-card-icon-wrapper {
+      > div {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        .home-card-icon {
+          fill: $colors-main-black;
+        }
+      }
+    }
+
     .home-card-icon {
       @include size($features-icon--size);
     }
 
     .home-card-text-container {
-      margin-left: 1rem;
       font-size: $font-size-subtext;
 
       .home-card-title {
@@ -75,7 +95,7 @@ $features-container--sm--width: 45rem;
   }
 
   .buttons-section--button {
-    width: $navigation_bar-action_button;
+    width: $navigation_bar-action_button * 2;
     height: $navigation_bar-height;
     font-size: $navigation_bar-font_size;
     border: 1px solid $colors-main-black;
@@ -87,6 +107,18 @@ $features-container--sm--width: 45rem;
     &.contrast {
       background-color: $colors-main-black;
     }
+  }
+}
+
+.direction_ltr {
+  .home-card-text-container {
+    margin-left: $card-text--margin;
+  }
+}
+
+.direction_rtl {
+  .home-card-text-container {
+    margin-right: $card-text--margin;
   }
 }
 

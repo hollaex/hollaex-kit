@@ -28,6 +28,16 @@ $logout--size-difference: 3rem;
     flex-direction: column;
     flex: 1;
 
+    &.notification_verification {
+      text-align: center;
+      .notification-content-title {
+        text-transform: capitalize;
+      }
+      .notification-content-information {
+        padding: 1rem;
+      }
+    }
+
     &.logout-notification {
       text-align: center;
 
@@ -40,7 +50,7 @@ $logout--size-difference: 3rem;
         margin: 3rem auto;
       }
     }
-    
+
     .notification-content-icon {
       width: $image--wdith;
       margin: $image--margin auto;
