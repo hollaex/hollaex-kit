@@ -22,6 +22,13 @@ const renderFields = (fields = {}) => {
         };
 
         switch (type) {
+          case 'hidden':
+            return (
+              <Field
+                component={() => <div className="hidden"></div> }
+                {...commonProps}
+              />
+            );
           case 'file':
             return (
               <Field

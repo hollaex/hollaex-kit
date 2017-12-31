@@ -17,6 +17,8 @@ const convertCountry = (value = {}) => {
 const filterCountries = (country) => (country.status === 'assigned' && country.alpha2);
 
 export const initialCountry = convertCountry(countries.IR);
+export const NATIONAL_COUNTRY_VALUE = initialCountry.value;
+
 export const COUNTRIES = countries.all.filter(filterCountries).map(convertCountry);
 
 export default COUNTRIES;

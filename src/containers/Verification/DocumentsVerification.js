@@ -7,6 +7,7 @@ import STRINGS from '../../config/localizedStrings';
 import HeaderSection, { IdentificationFormSection, PORSection } from './HeaderSection';
 import { getErrorLocalized } from '../../utils/errors';
 import { updateDocuments } from '../../actions/userAction';
+import { NATIONAL_COUNTRY_VALUE } from '../../utils/countries';
 
 const FORM_NAME = 'DocumentsVerification';
 
@@ -25,47 +26,40 @@ class DocumentsVerification extends Component {
     }
   }
 
-  generateFormFields = (nationality) => {
+  generateFormFields = (nationality = NATIONAL_COUNTRY_VALUE) => {
+    const FRONT_TYPE = nationality === NATIONAL_COUNTRY_VALUE ? 'FRONT' : 'PASSPORT';
     const formFields = {
       id: {
         type: {
-          type: 'select',
-          label: STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS.TYPE_LABEL,
-          placeholder: STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS.TYPE_PLACEHOLDER,
-          disabled: true,
-          options: [
-            { value: 'id', label: STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS.TYPE_OPTIONS.ID },
-            { value: 'passport', label: STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS.TYPE_OPTIONS.PASSPORT },
-          ],
-          validate: [requiredWithCustomMessage(STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.VALIDATIONS.ID_TYPE)],
+          type: 'hidden',
         },
         front: {
           type: 'file',
-          label: STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS.FRONT_LABEL,
-          placeholder: STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS.FRONT_PLACEHOLDER,
+          label: STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS[`${FRONT_TYPE}_LABEL`],
+          placeholder: STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS[`${FRONT_TYPE}_PLACEHOLDER`],
           validate: [requiredWithCustomMessage(STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.VALIDATIONS.FRONT)],
         },
       },
-      proofOfResidence: {
+    };
+
+    if (nationality === NATIONAL_COUNTRY_VALUE) {
+      formFields.id.back = {
+        type: 'file',
+        label: STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS.BACK_LABEL,
+        placeholder: STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS.BACK_PLACEHOLDER,
+        validate: [requiredWithCustomMessage(STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.VALIDATIONS.FRONT)],
+      }
+    } else { // nationality !== NATIONAL_COUNTRY_VALUE
+      formFields.proofOfResidence = {
         proofOfResidency: {
           type: 'file',
           label: STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS.POR_LABEL,
           placeholder: STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS.POR_PLACEHOLDER,
           validate: [requiredWithCustomMessage(STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.VALIDATIONS.PROOF_OF_RESIDENCY)],
         },
-      },
-    };
-
-    if (nationality === 'IR') {
-      formFields.id.back = {
-        back: {
-          type: 'file',
-          label: STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS.BACK_LABEL,
-          placeholder: STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS.BACK_PLACEHOLDER,
-          validate: [requiredWithCustomMessage(STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.VALIDATIONS.FRONT)],
-        },
       }
     }
+
     this.setState({ formFields });
   }
 
@@ -97,14 +91,19 @@ class DocumentsVerification extends Component {
         >
           <IdentificationFormSection />
         </HeaderSection>
-        {formFields.id && renderFields(formFields.id)}
-        <HeaderSection
-          title={STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.INFORMATION.PROOF_OF_RESIDENCY}
-          openContactForm={openContactForm}
-        >
-          <PORSection />
-        </HeaderSection>
-        {formFields.proofOfResidence && renderFields(formFields.proofOfResidence)}
+        {renderFields(formFields.id)}
+
+        {formFields.proofOfResidence && (
+          <div>
+            <HeaderSection
+              title={STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.INFORMATION.PROOF_OF_RESIDENCY}
+              openContactForm={openContactForm}
+            >
+              <PORSection />
+            </HeaderSection>
+            {renderFields(formFields.proofOfResidence)}
+          </div>
+        )}
         {error && <div className="warning_text">{getErrorLocalized(error)}</div>}
 
         <div className="d-flex verification-buttons-wrapper">

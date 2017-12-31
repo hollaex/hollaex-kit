@@ -8,14 +8,13 @@ $information--color: $colors-deactivate-color2;
   .information_svg {
     fill: $information--color;
   }
-  .information_text-text {
-    margin-left: .5rem;
-  }
   .information_change {
     color: $colors-notifications-blue;
+    width: fit-content;
   }
+
   > div:not(:first-child) {
-    padding-top: .75rem;
+    margin-top: .75rem;
   }
 }
 
@@ -24,4 +23,20 @@ $information--color: $colors-deactivate-color2;
 }
 .user_verification-form_section {
   padding-bottom: 1rem;
+}
+
+.direction_ltr {
+  .information_section {
+    .information_text-text {
+      margin-left: .5rem;
+    }
+  }
+}
+
+.direction_rtl {
+  .information_section {
+    .information_text-text {
+      margin-right: .5rem;
+    }
+  }
 }

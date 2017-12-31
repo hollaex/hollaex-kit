@@ -5,7 +5,7 @@ import { required } from '../../components/Form/validations';
 import renderFields from '../../components/Form/factoryFields';
 import { Button } from '../../components';
 import STRINGS from '../../config/localizedStrings';
-import { PHONE_OPTIONS } from './utils';
+import { PHONE_OPTIONS } from '../../utils/countries';
 import { ICONS } from '../../config/constants';
 import { getErrorLocalized } from '../../utils/errors';
 import { verifySmsCode, requestSmsCode } from '../../actions/verificationActions';

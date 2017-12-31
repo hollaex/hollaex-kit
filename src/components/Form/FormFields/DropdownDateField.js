@@ -33,18 +33,18 @@ const FORMATS = {
   },
 }
 
-const generateDateLimits = (limit = LIMIT_YEARS) => {
+const generateDateLimits = (yearsBack = LIMIT_YEARS, yearsForward = 0) => {
   const nowMoment = momentJ();
   return {
     en: {
-      maxYears: nowMoment.year(),
-      minYears: nowMoment.year() - LIMIT_YEARS,
-      year: range(nowMoment.year() - LIMIT_YEARS, nowMoment.year() + 1).reverse(),
+      maxYears: nowMoment.year() + yearsForward,
+      minYears: nowMoment.year() - yearsBack,
+      year: range(nowMoment.year() - yearsBack, nowMoment.year() + (yearsForward || 1)).reverse(),
     },
     fa: {
-      maxYears: nowMoment.jYear(),
-      minYears: nowMoment.jYear() - LIMIT_YEARS,
-      year: range(nowMoment.jYear() - LIMIT_YEARS, nowMoment.jYear() + 1).reverse(),
+      maxYears: nowMoment.jYear() + yearsForward,
+      minYears: nowMoment.jYear() - yearsBack,
+      year: range(nowMoment.jYear() - yearsBack, nowMoment.jYear() + (yearsForward || 1)).reverse(),
     }
   }
 }
@@ -64,7 +64,13 @@ class DropdownDateField extends Component {
   }
 
   componentWillMount() {
-    const limits = generateDateLimits();
+    let limits = {};
+
+    if (this.props.addYears) {
+      limits = generateDateLimits(this.props.yearsBefore, this.props.addYears);
+    } else {
+      limits = generateDateLimits();
+    }
     this.setLimits(limits);
     this.setDisplay(limits, this.props.input.value, this.props.language)
   }

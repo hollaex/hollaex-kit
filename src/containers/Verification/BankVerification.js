@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { reduxForm, formValueSelector, SubmissionError } from 'redux-form';
-import { required, requiredBoolean, exactLength, onlyNumbers } from '../../components/Form/validations';
+import { required, requiredBoolean, exactLength, onlyNumbers, maxLength } from '../../components/Form/validations';
 import renderFields from '../../components/Form/factoryFields';
 import { Button } from '../../components';
 import STRINGS from '../../config/localizedStrings';
@@ -56,8 +56,8 @@ class BankVerification extends Component {
         type: 'text',
         label: STRINGS.USER_VERIFICATION.BANK_ACCOUNT_FORM.FORM_FIELDS.ACCOUNT_NUMBER_LABEL,
         placeholder: STRINGS.USER_VERIFICATION.BANK_ACCOUNT_FORM.FORM_FIELDS.ACCOUNT_NUMBER_PLACEHOLDER,
-        validate: [required, exactLength(24, STRINGS.USER_VERIFICATION.BANK_ACCOUNT_FORM.VALIDATIONS.ACCOUNT_NUMBER)],
-        maxLength: 24,
+        validate: [required, maxLength(50, STRINGS.USER_VERIFICATION.BANK_ACCOUNT_FORM.VALIDATIONS.ACCOUNT_NUMBER_MAX_LENGTH)],
+        maxLength: 50,
       };
       formFields.card_number = {
         type: 'text',

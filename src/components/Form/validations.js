@@ -12,6 +12,7 @@ export const required = (value) => !value ? STRINGS.VALIDATIONS.REQUIRED : undef
 export const requiredBoolean = (value) => value === undefined ? STRINGS.VALIDATIONS.REQUIRED : undefined;
 export const requiredWithCustomMessage = (message) => (value) => !value ? message : undefined;
 
+export const maxLength = (length, message) => (value = '') => value.length > length ? message : undefined;
 export const exactLength = (length, message) => (value = '') => value.length !== length ? message : undefined;
 export const onlyNumbers = (value = '') => validator.isNumeric(value) ? undefined : STRINGS.VALIDATIONS.ONLY_NUMBERS;
 export const email = (value = '') => !validator.isEmail(value) ? STRINGS.VALIDATIONS.INVALID_EMAIL : undefined;

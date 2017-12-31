@@ -51,7 +51,7 @@ class UserVerification extends Component {
   }
 
   calculateFormValues = (language, verification_level, email, userData) => {
-    const dataFormValues = generateDataFormValues(language);
+    const dataFormValues = generateDataFormValues(language, userData.nationality);
     const bankFormValues = generateBankFormValues();
     const mobileFormValues = generateMobileFormValues();
     const emailFormValues = generateEmailFormValues();

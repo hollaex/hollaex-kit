@@ -1,7 +1,5 @@
 import { initialCountry } from '../../utils/countries';
 
-export { PHONE_OPTIONS, COUNTRIES_OPTIONS } from '../../utils/countries';
-
 export const mobileInitialValues = ({
   phone_country: initialCountry.phoneCode,
 })

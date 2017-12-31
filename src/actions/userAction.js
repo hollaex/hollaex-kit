@@ -68,7 +68,7 @@ export const updateUser = (values) => {
 	};
 
 	userValues.id_data = {
-		type: values.nationality === 'IR' ? 'id' : 'passport',
+		// type: values.nationality === 'IR' ? 'id' : 'passport',
 		number: values.id_number,
 		issued_date: values.id_issued_date,
 		expiration_date: values.id_expiration_date,

@@ -1,13 +1,14 @@
 import React from 'react';
 import moment from 'moment';
 import { required, requiredBoolean, isBefore } from '../../components/Form/validations';
-import { COUNTRIES_OPTIONS, PHONE_OPTIONS, initialCountry } from '../../utils/countries';
+import { COUNTRIES_OPTIONS, PHONE_OPTIONS, initialCountry, NATIONAL_COUNTRY_VALUE } from '../../utils/countries';
 import { ICONS } from '../../config/constants';
 import { getFormattedDate } from '../../utils/string';
 import STRINGS from '../../config/localizedStrings';
 
-export const generateFormValues = (language) => {
-  return {
+export const generateFormValues = (language, nationality = NATIONAL_COUNTRY_VALUE) => {
+  const ID_NUMBER_TYPE = nationality === NATIONAL_COUNTRY_VALUE ? 'NATIONAL' : 'PASSPORT';
+  const formValues = {
     full_name: {
       type: 'text',
       label: STRINGS.USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.FULL_NAME_LABEL,
@@ -36,8 +37,8 @@ export const generateFormValues = (language) => {
     },
     id_number: {
       type: 'text',
-      label: STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS.ID_NUMBER_LABEL,
-      placeholder: STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS.ID_NUMBER_PLACEHOLDER,
+      label: STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS[`ID_${ID_NUMBER_TYPE}_NUMBER_LABEL`],
+      placeholder: STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS[`ID_${ID_NUMBER_TYPE}_NUMBER_PLACEHOLDER`],
       disabled: true,
     },
     id_issued_date: {
@@ -48,7 +49,7 @@ export const generateFormValues = (language) => {
     },
     id_expiration_date: {
       type: 'date-dropdown',
-      label: STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS.EXPIRATION_DATE_PLACEHOLDER,
+      label: STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS.EXPIRATION_DATE_LABEL,
       disabled: true,
       language,
     },
@@ -74,6 +75,11 @@ export const generateFormValues = (language) => {
       disabled: true,
     },
   };
+
+  if (nationality === NATIONAL_COUNTRY_VALUE) {
+    delete formValues.id_issued_date;
+  }
+  return formValues;
 }
 
 export const prepareInitialValues = ({ id_data, bank_account, address, ...rest, timestamp }) => {

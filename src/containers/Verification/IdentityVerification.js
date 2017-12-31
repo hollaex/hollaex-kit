@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import moment from 'moment';
-import { reduxForm, SubmissionError } from 'redux-form';
+import { connect } from 'react-redux';
+import { reduxForm, formValueSelector, SubmissionError } from 'redux-form';
 import { required, requiredBoolean, isBefore, requiredWithCustomMessage } from '../../components/Form/validations';
 import renderFields from '../../components/Form/factoryFields';
 import { Button } from '../../components';
 import STRINGS from '../../config/localizedStrings';
-import { COUNTRIES_OPTIONS } from './utils';
+import { COUNTRIES_OPTIONS, NATIONAL_COUNTRY_VALUE } from '../../utils/countries';
+
 import { ICONS } from '../../config/constants';
 import { getErrorLocalized } from '../../utils/errors';
 import { updateUser } from '../../actions/userAction';
@@ -23,12 +25,16 @@ class IdentityVerification extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.activeLanguage !== this.props.activeLanguage) {
-      this.generateFormFields(nextProps.activeLanguage, nextProps.fullName);
+    if (
+      nextProps.activeLanguage !== this.props.activeLanguage ||
+      nextProps.nationality !== this.props.nationality
+    ) {
+      this.generateFormFields(nextProps.activeLanguage, nextProps.fullName, nextProps.nationality);
     }
   }
 
-  generateFormFields = (language, fullName = '') => {
+  generateFormFields = (language, fullName = '', nationality = NATIONAL_COUNTRY_VALUE) => {
+    const ID_NUMBER_TYPE = nationality === NATIONAL_COUNTRY_VALUE ? 'NATIONAL' : 'PASSPORT';
     const formFields = {
       full_name: {
         type: 'text',
@@ -62,11 +68,10 @@ class IdentityVerification extends Component {
         options: COUNTRIES_OPTIONS,
         validate: [required],
       },
-      // TODO according to nationality
       id_number: {
         type: 'text',
-        label: STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS.ID_NUMBER_LABEL,
-        placeholder: STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS.ID_NUMBER_PLACEHOLDER,
+        label: STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS[`ID_${ID_NUMBER_TYPE}_NUMBER_LABEL`],
+        placeholder: STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS[`ID_${ID_NUMBER_TYPE}_NUMBER_PLACEHOLDER`],
         validate: [requiredWithCustomMessage(STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.VALIDATIONS.ID_NUMBER)],
       },
       id_issued_date: {
@@ -79,8 +84,10 @@ class IdentityVerification extends Component {
       id_expiration_date: {
         type: 'date-dropdown',
         label: STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS.EXPIRATION_DATE_LABEL,
-        validate: [requiredWithCustomMessage(STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.VALIDATIONS.EXPIRATION_DATE), isBefore()],
-        endDate: moment().add(1, 'days'),
+        validate: [requiredWithCustomMessage(STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.VALIDATIONS.EXPIRATION_DATE), isBefore(moment().add(15, 'years'))],
+        endDate: moment().add(15, 'years'),
+        addYears: 15,
+        yearsBefore: 5,
         language,
       },
       country: {
@@ -109,6 +116,10 @@ class IdentityVerification extends Component {
         validate: [required],
       },
     };
+
+    if (nationality === NATIONAL_COUNTRY_VALUE) {
+      delete formFields.id_issued_date;
+    }
 
     this.setState({ formFields });
   }
@@ -158,4 +169,11 @@ const IdentityVerificationForm = reduxForm({
   form: FORM_NAME,
 })(IdentityVerification);
 
-export default IdentityVerificationForm;
+
+const selector = formValueSelector(FORM_NAME);
+
+const mapStateToProps = (state) => ({
+  nationality: selector(state, 'nationality'),
+});
+
+export default connect(mapStateToProps)(IdentityVerificationForm);

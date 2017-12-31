@@ -363,6 +363,10 @@ export default {
        },
        ID_NUMBER_LABEL: 'شماره سند هویت',
        ID_NUMBER_PLACEHOLDER: 'شماره سند را تایپ کنید',
+       ID_NATIONAL_NUMBER_LABEL: 'National Iranian Id', // TODO
+       ID_NATIONAL_NUMBER_PLACEHOLDER: 'Type your National Iranian Id number', // TODO
+       ID_PASSPORT_NUMBER_LABEL: 'Passport Number', // TODO
+       ID_PASSPORT_NUMBER_PLACEHOLDER: 'Type your passport number', // TODO
        ISSUED_DATE_LABEL: 'تاریخ صدور سند هویت',
        EXPIRATION_DATE_LABEL: 'تاریخ انقضا سند هویت',
        FRONT_LABEL: 'عکس سند هویت',
@@ -371,6 +375,8 @@ export default {
        BACK_PLACEHOLDER: 'یک نسخه از پشت سند هویت خود را اضافه کنید',
        POR_LABEL: 'سند اثبات آدرس شما',
        POR_PLACEHOLDER: 'یک کپی از یک سند که نشانی شما را ثابت می کند، اضافه کنید',
+       PASSPORT_LABEL: 'Passport Document', // TODO
+       PASSPORT_PLACEHOLDER: 'Add a copy of your Passport document', // TODO
      },
      INFORMATION: {
        IDENTITY_DOCUMENT: 'مدارک احراز هویت',
@@ -400,6 +406,7 @@ export default {
      VALIDATIONS: {
        ACCOUNT_OWNER: 'لطفا نام و نام خانوادگی خود را با حساب بانکی خود وارد کنید',
        ACCOUNT_NUMBER: 'شماره حساب بانکی شما باید 24 رقمی باشد',
+       ACCOUNT_NUMBER_MAX_LENGTH: 'Your bank account number has a limit of 50 characters', // TODO
        CARD_NUMBER: 'شماره کارت باید حتما 16 رقمی باشد', // TODO
      },
      FORM_FIELDS: {
