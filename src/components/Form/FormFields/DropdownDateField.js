@@ -98,9 +98,10 @@ class DropdownDateField extends Component {
     }
 
     momentJ.locale(FARSI_LANGUAGE)
+    const faMoment = momentJ.localeData(FARSI_LANGUAGE);
     display.fa = {
       ...limits.fa,
-      month: momentJ.months(),
+      month: faMoment._jMonths,
       day: range(1, momentJ.jDaysInMonth(date.jYear(), date.jMonth()) + 1),
     }
 
@@ -109,8 +110,8 @@ class DropdownDateField extends Component {
   }
 
   onChangeOption = (key) => (index, value) => {
-    const { language, input } = this.props;
-    const { unixtime, limits } = this.state;
+    const { input } = this.props;
+    const { unixtime, limits, language } = this.state;
 
     const date = momentJ(unixtime);
     if (key === 'year') {
