@@ -5,6 +5,7 @@ const TRADE_QUOTE_REQUEST = 'TRADE_QUOTE_REQUEST';
 const TRADE_QUOTE_PERFORM = 'TRADE_QUOTE_PERFORM';
 
 export const ORDERBOOK_CONSTANTS = {
+	QUICK_TRADE_CANCEL: `${QUICK_TRADE}_CANCEL`,
 	QUICK_TRADE_PENDING: `${QUICK_TRADE}_PENDING`,
 	QUICK_TRADE_FULFILLED: `${QUICK_TRADE}_FULFILLED`,
 	QUICK_TRADE_REJECTED: `${QUICK_TRADE}_REJECTED`,
@@ -53,6 +54,11 @@ export const changeSymbol = (symbol) => ({
 });
 
 export const requestQuickTrade = (data = {}) => {
+	if (!data.size) {
+		return {
+			type: ORDERBOOK_CONSTANTS.QUICK_TRADE_CANCEL,
+		};
+	}
 	return ((dispatch) => {
 		dispatch({
 		    type: ORDERBOOK_CONSTANTS.QUICK_TRADE_PENDING
