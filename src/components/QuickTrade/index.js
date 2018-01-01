@@ -76,20 +76,30 @@ class QuickTrade extends Component {
   }
 
   onChangeValue = (newValue) => {
-    const inputValue = this.format(newValue)
-    if (inputValue <= LIMIT_VALUES.SIZE.MAX && inputValue !== this.state.value) {
-      const value = math.round(inputValue, DECIMALS);
-      const inputStyle = generateStyle(`${value}`.length);
-      this.setState({ value, inputStyle });
+    let value;
+    if (!newValue) {
+      value = '';
+    } else {
+      let inputValue = this.format(newValue)
+      if (inputValue > LIMIT_VALUES.SIZE.MIN && inputValue < LIMIT_VALUES.SIZE.MAX) {
+        value = math.round(inputValue, DECIMALS);
+      } else {
+        value = inputValue;
+      }
+    }
+    const inputStyle = generateStyle(`${value || 0}`.length);
+
+    if (value !== this.state.value) {
       this.requestValue({
-        size: value,
+        size: value || 0,
         symbol: this.state.symbol,
         side: this.state.side,
       });
     }
+    this.setState({ value, inputStyle });
   }
 
-  format = (value = LIMIT_VALUES.SIZE.MIN) => {
+  format = (value) => {
     let nextValue = math.round(value, DECIMALS);
     if (value > LIMIT_VALUES.SIZE.MAX) {
       nextValue = LIMIT_VALUES.SIZE.MAX;
@@ -101,6 +111,12 @@ class QuickTrade extends Component {
   }
 
   requestValue = debounce(this.props.onRequestMarketValue, 250);
+
+  onLostFocus = () => {
+    if (!this.state.value) {
+      this.onChangeValue(LIMIT_VALUES.SIZE.MIN);
+    }
+  }
 
   render() {
     const { onReviewQuickTrade, quickTradeData, disabled } = this.props;
@@ -131,6 +147,7 @@ class QuickTrade extends Component {
             format={this.format}
             className={classnames({ loading: fetching })}
             error={error}
+            onBlur={this.onLostFocus}
           />
         </div>
         <div className={classnames('quick_trade-section_wrapper', ...GROUP_CLASSES, { fetching })}>

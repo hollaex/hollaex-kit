@@ -193,6 +193,11 @@ export default function reducer(state = INITIAL_STATE, { payload, type }) {
 				}
 			};
 
+		case ORDERBOOK_CONSTANTS.TRADE_QUOTE_REQUEST_CANCEL:
+			return {
+				...state,
+				quoteData: INITIAL_QUOTE,
+			}
 		case ORDERBOOK_CONSTANTS.TRADE_QUOTE_PERFORM_PENDING:
 			return {
 				...state,

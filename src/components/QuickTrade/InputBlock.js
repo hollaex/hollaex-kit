@@ -12,7 +12,7 @@ import STRINGS from '../../config/localizedStrings';
 
 import { translateError } from './utils';
 
-const InputBlock = ({ value, onChange, text, symbol, inputStyle, format, className, error }) => {
+const InputBlock = ({ value, onChange, text, symbol, inputStyle, format, className, error, onBlur }) => {
   const shortName = STRINGS[`${symbol.toUpperCase()}_SHORTNAME`];
   return (
     <div
@@ -47,6 +47,7 @@ const InputBlock = ({ value, onChange, text, symbol, inputStyle, format, classNa
             style={inputStyle}
             format={format}
             snap
+            onBlur={onBlur}
           />
         </div>
       </div>
