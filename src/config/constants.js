@@ -131,7 +131,7 @@ export const SOCIAL_ICONS = {
 
 export const FEATURES_ICONS = {
   PRO_TRADING: `${process.env.PUBLIC_URL}/assets/images/features-pro-trade-icons.svg`,
-  PAYMENT: `${process.env.PUBLIC_URL}/assets/images/features-pro-trade-icons.svg`,
+  PAYMENT: `${process.env.PUBLIC_URL}/assets/images/features-payment-card-icons.svg`,
   SECURITY: `${process.env.PUBLIC_URL}/assets/images/features-lock-icons.svg`,
   REPORTING: `${process.env.PUBLIC_URL}/assets/images/features-data-icons.svg`,
   SUPPORT: `${process.env.PUBLIC_URL}/assets/images/features-support-icons.svg`,
