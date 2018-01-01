@@ -1,9 +1,8 @@
-@import '../../variables';
-
 $accordion-border: 1px solid $colors-main-black;
 $accordion_content-padding: 0;
-$accordion_arrow-size: 0.5rem;
-
+$accordion_arrow-size: .5rem;
+$title--padding: .25rem;
+$title--font-size: $font-size-subhead3;
 $main-text--color: $colors-deactivate-color2;
 
 .accordion_section {
@@ -12,8 +11,12 @@ $main-text--color: $colors-deactivate-color2;
 
 .accordion_wrapper .accordion_section{
   border-top: $accordion-border;
-  font-size: $font-size-subhead2;
+  font-size: $title--font-size;
   padding: $accordion_content-padding;
+
+  .accordion_section_title {
+    padding: $title--padding;
+  }
   .accordion_section_content_text {
     position: relative;
     color: $main-text--color;
@@ -34,6 +37,11 @@ $main-text--color: $colors-deactivate-color2;
   .accordion_section_content {
     font-size: $font-size-subtext;
     padding: $accordion_content-padding;
+  }
+
+  .action_notification-wrapper {
+    top: calc(50% - #{$title--font-size / 2});
+    margin: 0 $title--padding;
   }
 }
 
