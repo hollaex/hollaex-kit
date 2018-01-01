@@ -13,6 +13,12 @@ $input-bottom_line--animation--width: 100px;
 
 $title-icon--height: 10rem;
 
+.direction_ltr {
+  .quick_trade-wrapper {
+    font-family: $raleway--font-family;
+  }
+}
+
 .quick_trade-wrapper {
   min-width: $wrapper--min-width;
   max-width: $wrapper--max-width;
@@ -47,8 +53,10 @@ $title-icon--height: 10rem;
       font-size: $font-size-subtext;
       color: $colors-deactivate-color2;
       height: $toogle-size + $toogle-border * 2 + $toogle-margin * 2;
+      font-family: $raleway-medium--font-family;
 
       .selected {
+        font-family: $raleway-extrabold--font-family;
         font-weight: bold;
         color: $colors-main-black;
       }
@@ -118,7 +126,12 @@ $title-icon--height: 10rem;
     color: red;
     margin-top: 0.5rem;
   }
-  
+
+  .input_block-title {
+    font-size: $font-size-subhead3;
+    font-family: $raleway-medium--font-family;
+  }
+
   .input_block-content {
     border-bottom: $input-bottom_line--height solid $colors-main-black;
     width: 100%;

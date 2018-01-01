@@ -5,7 +5,7 @@ import { CurrencyBallWithPrice } from '../../components';
 
 const ReviewBlock = ({ text,  value }) => (
   <div className={classnames('review-block-wrapper', 'd-flex', 'flex-column')}>
-    <div className="font-weight-bold text-center">{text}</div>
+    <div className="input_block-title text-center">{text}</div>
     <div className="d-flex currency-wrapper">
       <CurrencyBallWithPrice
         symbol={fiatSymbol}
