@@ -146,12 +146,14 @@ $title-icon--height: 10rem;
       .input_block-inputbox {
         // width: 100%;
         font-size: $font-size-subhead2;
-        text-align: center;
+        // text-align: center;
         margin: .5rem 1.5rem;
 
         border: none !important;
         border-radius: 0 !important;
         padding: 0 !important;
+        text-align: left;
+        margin-left: 2rem;
       }
       .input_block-currency_ball {
         position: absolute;

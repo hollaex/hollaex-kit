@@ -1,6 +1,6 @@
 import React from 'react';
 import classnames from 'classnames';
-import { fiatShortName, fiatFormatToCurrency, fiatSymbol } from '../../utils/currency';
+import { fiatSymbol } from '../../utils/currency';
 import { CurrencyBallWithPrice } from '../../components';
 
 const ReviewBlock = ({ text,  value }) => (

@@ -1,23 +1,81 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import NumericInput from 'react-numeric-input';
+import math from 'mathjs';
 
+import { DECIMALS } from './constants';
 import { CurrencyBall } from '../../components';
 
 import { FieldError } from '../../components/Form/FormFields/FieldWrapper';
-import { FLEX_CENTER_CLASSES, CURRENCIES, LIMIT_VALUES } from '../../config/constants';
-import { fiatShortName, fiatFormatToCurrency, fiatSymbol } from '../../utils/currency';
+import { FLEX_CENTER_CLASSES, LIMIT_VALUES } from '../../config/constants';
 
 import STRINGS from '../../config/localizedStrings';
 
 import { translateError } from './utils';
 
-class InputBlock extends Component {
+const MIN_VALUE = LIMIT_VALUES.SIZE.MIN;
+const MAX_VALUE = LIMIT_VALUES.SIZE.MAX;
+const STEP = LIMIT_VALUES.SIZE.STEP;
+const PLACEHOLDER = '0.00';
 
+const generateStyle = (value) => {
+  const length = typeof value === 'number' ? `${value}`.length : value.length;
+  const style = {
+    input:{
+      width: `${length}rem`,
+    },
+  }
+  return style;
+};
+
+class InputBlock extends Component {
+  state = {
+    value: '',
+  }
+
+  componentDidMount() {
+    if (this.props.initialValue) {
+      this.setState({ value: this.props.initialValue });
+    }
+  }
+
+  onChange = (newValue) => {
+    if (typeof newValue === 'number') {
+      const value = this.format(newValue);
+      this.props.onChange(value);
+      this.setState({ value });
+    } else if (!newValue) {
+      this.props.onChange(0);
+      this.setState({ value: newValue });
+    }
+  }
+
+  format = (value = '') => {
+    if ((value && typeof value !== 'number') || value === 0) {
+      return value;
+    } else if (value < 0) {
+      return MIN_VALUE;
+    } else if (value > MAX_VALUE) {
+      return MAX_VALUE;
+    } else {
+      const formatedValue = math.round(value, DECIMALS);
+      if (formatedValue === 0) {
+        return this.state.value;
+      }
+      return formatedValue;
+    }
+  }
+
+  onLostFocus = () => {
+    if (!this.state.value) {
+      this.setState({ value: MIN_VALUE });
+    }
+  }
 
   render() {
-    const { value, onChange, text, symbol, inputStyle, format, className, error, onBlur } = this.props;
+    const { text, symbol, className, error } = this.props;
     const shortName = STRINGS[`${symbol.toUpperCase()}_SHORTNAME`];
+    const { value } = this.state;
     return (
       <div
         className={classnames(
@@ -41,17 +99,16 @@ class InputBlock extends Component {
             />
             <NumericInput
               className="input_block-inputbox"
-              onChange={onChange}
-              placeholder="0.00"
+              onChange={this.onChange}
+              placeholder={PLACEHOLDER}
+              step={STEP}
               type="number"
-              step={0.0001}
               value={value}
-              min={LIMIT_VALUES.SIZE.MIN}
-              max={LIMIT_VALUES.SIZE.MAX}
-              style={inputStyle}
-              format={format}
-              snap
-              onBlur={onBlur}
+              min={MIN_VALUE}
+              max={MAX_VALUE}
+              style={generateStyle(value || PLACEHOLDER)}
+              onBlur={this.onLostFocus}
+              format={this.format}
             />
           </div>
         </div>

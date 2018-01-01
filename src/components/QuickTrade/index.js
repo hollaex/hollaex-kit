@@ -19,18 +19,12 @@ import {
 
 const GROUP_CLASSES = [...FLEX_CENTER_CLASSES, 'flex-column'];
 
-const generateStyle = (value) => ({
-  input:{
-    width: `${value + 1}rem`,
-  },
-});
 
 class QuickTrade extends Component {
   state = {
     side: STRINGS.SIDES[0].value,
     value: 1,
     symbol: DEFAULT_SYMBOL,
-    inputStyle: generateStyle(2),
   }
 
   componentDidMount() {
@@ -75,20 +69,7 @@ class QuickTrade extends Component {
     }
   }
 
-  onChangeValue = (newValue) => {
-    let value;
-    if (!newValue) {
-      value = '';
-    } else {
-      let inputValue = this.format(newValue)
-      if (inputValue > LIMIT_VALUES.SIZE.MIN && inputValue < LIMIT_VALUES.SIZE.MAX) {
-        value = math.round(inputValue, DECIMALS);
-      } else {
-        value = inputValue;
-      }
-    }
-    const inputStyle = generateStyle(`${value || 0}`.length);
-
+  onChangeValue = (value) => {
     if (value !== this.state.value) {
       this.requestValue({
         size: value || 0,
@@ -96,31 +77,14 @@ class QuickTrade extends Component {
         side: this.state.side,
       });
     }
-    this.setState({ value, inputStyle });
-  }
-
-  format = (value) => {
-    let nextValue = math.round(value, DECIMALS);
-    if (value > LIMIT_VALUES.SIZE.MAX) {
-      nextValue = LIMIT_VALUES.SIZE.MAX;
-    } else if (value < LIMIT_VALUES.SIZE.MIN) {
-      nextValue = LIMIT_VALUES.SIZE.MIN;
-    }
-
-    return nextValue;
+    this.setState({ value });
   }
 
   requestValue = debounce(this.props.onRequestMarketValue, 250);
 
-  onLostFocus = () => {
-    if (!this.state.value) {
-      this.onChangeValue(LIMIT_VALUES.SIZE.MIN);
-    }
-  }
-
   render() {
     const { onReviewQuickTrade, quickTradeData, disabled } = this.props;
-    const { side, value, symbol, inputStyle } = this.state;
+    const { side, value, symbol } = this.state;
     const { data, fetching, error } = quickTradeData;
     const { name } = CURRENCIES[symbol];
 
@@ -140,14 +104,11 @@ class QuickTrade extends Component {
         <div className={classnames('quick_trade-section_wrapper', 'quick_trade-bottom-padded', ...GROUP_CLASSES)}>
           <InputBlock
             onChange={this.onChangeValue}
-            value={value}
+            initialValue={value}
             text={STRINGS.formatString(STRINGS.QUICK_TRADE_COMPONENT.INPUT, name, STRINGS.SIDES_VALUES[side])}
             symbol={symbol}
-            inputStyle={inputStyle}
-            format={this.format}
             className={classnames({ loading: fetching })}
             error={error}
-            onBlur={this.onLostFocus}
           />
         </div>
         <div className={classnames('quick_trade-section_wrapper', 'quick_trade-bottom-padded', ...GROUP_CLASSES, { fetching })}>
