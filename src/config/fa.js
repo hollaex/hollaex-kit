@@ -664,4 +664,6 @@ export default {
   ERROR_LOGIN_USER_NOT_VERIFIED: 'کاربر احراز هویت نشده است',
   ERROR_LOGIN_USER_NOT_ACTIVATED: 'حسای کاربری فعال نشده است',
   ERROR_LOGIN_INVALID_CREDENTIALS: 'ایمیل یا رمز عبور اشتباه است',
+  SMS_SENT_TO: 'SMS sent to {0}', // TODO
+  SMS_ERROR_SENT_TO: 'Error sending the SMS to {0}. Please refresh the page and try again.', // TODO
 };

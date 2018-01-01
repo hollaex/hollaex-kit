@@ -90,11 +90,16 @@ class MobileVerification extends Component {
   handleSendSmsCode = () => {
     const { phone_number, phone_country } = this.props;
     if (phone_country && phone_number) {
-      requestSmsCode(`${phone_country} ${phone_number}`)
+      const phone = `${phone_country} ${phone_number}`;
+      requestSmsCode(phone)
         .then(({ data }) => {
+          alert(STRINGS.formatString(STRINGS.SMS_SENT_TO, phone).join(''));
           this.setState({ codeRequested: true }, () => {
             this.generateFormFields(true);
           })
+        })
+        .catch((err) => {
+          alert(STRINGS.formatString(STRINGS.SMS_ERROR_SENT_TO, phone).join(''));
         });
     }
   }
