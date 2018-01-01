@@ -1,11 +1,12 @@
-$notification--width: 30rem;
+$notification--min-width: 30rem;
+$notification--max-width: 40rem;
 $image--margin: 1rem;
 $image--wdith: 10rem;
 $logout--size-difference: 3rem;
 
 .notification-wrapper {
-  min-width: $notification--width;
-  max-width: $notification--width;
+  min-width: $notification--min-width;
+  max-width: $notification--max-width;
 
   .notification-title-wrapper {
     height: 15rem;
@@ -76,5 +77,19 @@ $logout--size-difference: 3rem;
   }
   .notification-information {
     padding: 1rem 0;
+  }
+}
+
+
+.notification-wrapper {
+  .notification-content-wrapper.notification-withdrawal {
+
+    .notification-content-icon {
+      width: 80% !important;
+    }
+
+    .notification-link-wrapper {
+      font-size: $font-size-subtext;
+    }
   }
 }

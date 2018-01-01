@@ -20,7 +20,7 @@ export const ICONS = {
   BELL: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-04.png`,
   LIFESAVER: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-05.png`,
   CHECK: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-06.png`,
-  BLUE_PLUS: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-07.png`,
+  // BLUE_PLUS: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-07.png`,
   BLUE_QUESTION: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-08.png`,
   RED_WARNING: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-09.png`,
   GENDER_F: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-10.png`,
@@ -120,6 +120,8 @@ export const ICONS = {
   VERIFICATION_BANK_INACTIVE: `${process.env.PUBLIC_URL}/assets/images/bank-inactive.svg`,
   VERIFICATION_ID: `${process.env.PUBLIC_URL}/assets/images/id_2.svg`,
   VERIFICATION_ID_INACTIVE: `${process.env.PUBLIC_URL}/assets/images/id_2-inactive.svg`,
+  COIN_WITHDRAW_BTC: `${process.env.PUBLIC_URL}/assets/images/coin-withdraw-btc.svg`,
+  COIN_WITHDRAW_TOMAN: `${process.env.PUBLIC_URL}/assets/images/coin-withdraw-tom.svg`,
 }
 
 export const SOCIAL_ICONS = {

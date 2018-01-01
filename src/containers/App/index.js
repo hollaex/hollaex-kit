@@ -342,7 +342,7 @@ class Container extends Component {
 			case NOTIFICATIONS.ORDERS:
 			case NOTIFICATIONS.TRADES:
 			case NOTIFICATIONS.WITHDRAWAL:
-				return <Notification type={type} data={data} openContactForm={this.props.openContactForm} />;
+				return <Notification type={type} data={data} openContactForm={this.props.openContactForm} onClose={this.onCloseDialog} />;
 			case NOTIFICATIONS.DEPOSIT:
 				return <Notification
 					type={type}

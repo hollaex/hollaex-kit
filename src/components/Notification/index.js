@@ -15,7 +15,7 @@ const generateNotificationContent = ({ type, data, ...rest }) => {
     case NOTIFICATIONS.DEPOSIT:
       return <Deposit data={data} {...rest} />;
     case NOTIFICATIONS.WITHDRAWAL:
-      return <Withdraw data={data} type={type} />
+      return <Withdraw data={data} type={type} {...rest} />
     case NOTIFICATIONS.ORDERS:
       return <Order {...data} />
     case NOTIFICATIONS.TRADES:

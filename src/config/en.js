@@ -661,4 +661,5 @@ export default {
   ERROR_LOGIN_INVALID_CREDENTIALS: 'Credentials incorrect',
   SMS_SENT_TO: 'SMS sent to {0}', // TODO check msg
   SMS_ERROR_SENT_TO: 'Error sending the SMS to {0}. Please refresh the page and try again.', // TODO check msg
+  WITHDRAW_NOTIFICATION_TRANSACTION_ID: 'Transaction ID:', // TODO check msg
 };
