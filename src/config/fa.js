@@ -47,8 +47,9 @@ export default {
   },
   FOOTER: {
     FOOTER_LEGAL: [
-      'ثبت نام در یا استفاده از این سایت به منزله پذیرش شرایط خدمات ما و سیاست حفظ حریم است',
-      'مطابق قوانین جمهوری اسلامی ایران',
+      'ثبت نام یا استفاده از این سایت به منزله پذیرش شرایط ارایه خدمات و سیاست حفظ حریم خصوصی',
+      'مطابق با قوانین جمهوری اسلامی ایران می باشد.',
+      'آدرس: تهران، خيابان بخارست، برج ٣٨، طبقه ٣، واحد ١٦',
       'اکسیر تک 2017',
     ],
     FOOTER_LANGUAGE_TEXT: 'LANGUAGE',
@@ -60,10 +61,8 @@ export default {
     SECTIONS: {
       SECTION_1_TITLE: 'سرویسها',
       SECTION_1_LINK_1: 'خرید بیتکوین',
-      SECTION_1_LINK_2: 'خرید اتریوم',
       SECTION_1_LINK_3: ' فروش بیتکوین',
       SECTION_1_LINK_4: 'معامله بیتکوین',
-      SECTION_1_LINK_5: 'معامله مارجین',
       SECTION_2_TITLE: 'اطلاعات',
       SECTION_2_LINK_1: 'روشهای پرداخت',
       SECTION_2_LINK_2: 'کارمزدها',
@@ -129,7 +128,7 @@ export default {
     CANT_LOGIN: 'نمیتوانید ورود کنید؟',
     NO_ACCOUNT: 'حساب کاربری ندارید؟',
     CREATE_ACCOUNT: 'ایجاد حساب کاربری ',
-    HELP: 'کمک',
+    HELP: 'راهنما',
   },
   FORM_FIELDS: {
     EMAIL_LABEL: 'ایمیل',
@@ -252,7 +251,7 @@ export default {
    TEXT_2: 'برای ادامه اینجا کلیک کنید.',
  },
  SIGN_UP: {
-   SIGNUP_TO: 'ثبت نام کنید {0}',
+   SIGNUP_TO: 'در {0} ثبت نام کنید',
    NO_EMAIL: 'ایمیل دریافت نکرده اید؟',
    REQUEST_EMAIL: 'یکی دیگر از اینجا درخواست کنید',
    HAVE_ACCOUNT: 'ثبت نام کرده اید؟',
@@ -363,31 +362,31 @@ export default {
        },
        ID_NUMBER_LABEL: 'شماره سند هویت',
        ID_NUMBER_PLACEHOLDER: 'شماره سند را تایپ کنید',
-       ID_NATIONAL_NUMBER_LABEL: 'National Iranian Id', // TODO
-       ID_NATIONAL_NUMBER_PLACEHOLDER: 'Type your National Iranian Id number', // TODO
-       ID_PASSPORT_NUMBER_LABEL: 'Passport Number', // TODO
-       ID_PASSPORT_NUMBER_PLACEHOLDER: 'Type your passport number', // TODO
+       ID_NATIONAL_NUMBER_LABEL: 'کارت ملی',
+       ID_NATIONAL_NUMBER_PLACEHOLDER: 'شماره کارت ملی خود را وارد نمایید',
+       ID_PASSPORT_NUMBER_LABEL: 'شماره گذرنامه',
+       ID_PASSPORT_NUMBER_PLACEHOLDER: 'شماره گذرنامه خود را وارد نمایید',
        ISSUED_DATE_LABEL: 'تاریخ صدور سند هویت',
        EXPIRATION_DATE_LABEL: 'تاریخ انقضا سند هویت',
-       FRONT_LABEL: 'عکس سند هویت',
-       FRONT_PLACEHOLDER: 'یک کپی از سند شناسه عکس خود را اضافه کنید',
-       BACK_LABEL: 'عکس پشت سند هویت',
-       BACK_PLACEHOLDER: 'یک نسخه از پشت سند هویت خود را اضافه کنید',
+       FRONT_LABEL: 'عکس کارت ملی',
+       FRONT_PLACEHOLDER: 'اسکن کارت ملی خود را انتخاب و بارگذاری کنید',
+       BACK_LABEL: 'عکس پشت کارت ملی',
+       BACK_PLACEHOLDER: 'اسکن پشت کارت ملی خود را انتخاب و بارگذاری کنید',
        POR_LABEL: 'سند اثبات آدرس شما',
        POR_PLACEHOLDER: 'یک کپی از یک سند که نشانی شما را ثابت می کند، اضافه کنید',
-       PASSPORT_LABEL: 'Passport Document', // TODO
-       PASSPORT_PLACEHOLDER: 'Add a copy of your Passport document', // TODO
+       PASSPORT_LABEL: 'گذرنامه',
+       PASSPORT_PLACEHOLDER: 'اسکن صفحه اول گذرنامه خود را بارگذاری کنید',
      },
      INFORMATION: {
        IDENTITY_DOCUMENT: 'مدارک احراز هویت',
        PROOF_OF_RESIDENCY: 'مدارک اثبات آدرس',
        ID_SECTION: {
-         TITLE: 'لطفا از اسناد ارائه شده اطمینان حاصل کنید  :',
-         LIST_ITEM_1: 'کیفیت بالا (تصاویر رنگی، رزولوشن 300dpi یا بالاتر).',
-         LIST_ITEM_2: 'واضح.',
-         LIST_ITEM_3: 'VALID, تاریخ انقضا کاملا واضح است.',
-         WARNING_1: 'لطفا سند هویتی را به عنوان مدرک اقامت خود ارائه ندهید.',
-         WARNING_2: 'تنها سند شناسایی معتبر صادر شده توسط دولت؛ عکس های با کیفیت بالا یا تصاویر اسکن شده از این اسناد قابل قبول هستند.',
+         TITLE: 'لطفا در بارگذاری اسکن مدارک خود به نکات زیر دقت کنید:',
+         LIST_ITEM_1: 'کیفیت بالا باشد(تصاویر رنگی، رزولوشن 300dpi یا بالاتر).',
+         LIST_ITEM_2: 'نوشته ها خوانا و واضح باشد.',
+         LIST_ITEM_3: 'مدرک اعتبار داشته باشد',
+         WARNING_1: 'تنها کارت ملی معتبر برای احراز هویت مورد قبول است.',
+         WARNING_2: 'هرگونه سوء استفاده و ارسال اطلاعات نادرست پیگرد قانونی دارد و باعث بسته شدن حساب شما خواهد شد.',
        },
        POR: {
          SECTION_1_TEXT_1: 'برای جلوگیری از تاخیر در تأیید حساب خود لطفا مطمئن شوید:',
@@ -653,8 +652,8 @@ export default {
   NEXT: 'بعدی',
   SKIP_FOR_NOW: 'بعدا وارد می کنم',
   SUBMIT: 'ارسال',
-  VERIFICATION_NOTIFICATION_SKIP_TITLE: 'Missing Documents!', // TODO
-  VERIFICATION_NOTIFICATION_SKIP_TEXT: 'برای انجام برداشت از حساب نیاز به بارگذاری اطلاعات برای احراز هویت می باشد. لطفا به حساب کاربری خود رفته و مدارک مورد نیاز را وارد نمایید.',
+  VERIFICATION_NOTIFICATION_SKIP_TITLE: 'محدودیت دسترسی',
+  VERIFICATION_NOTIFICATION_SKIP_TEXT: 'لطفا در نظر داشته باشید که حساب شما تا زمانی که مدارک بارگذاری مدارک انجام و تایید نشده است، با محدودیت همراه خواهد بود. شما می توانید به حساب کاربری خود رفته و اطلاعات مربوط به احراز هویت خود را در آنجا بارگذاری کنید.',
   VERIFICATION_NOTIFICATION_SUCCESS_TITLE: 'موفقیت!',
   VERIFICATION_NOTIFICATION_SUCCESS_TEXT: 'هنگامی که اطلاعات شما بررسی گردید، از طریق ایمیل به شما اطلاع می دهیم.',
   VERIFICATION_NOTIFICATION_BUTTON: 'ورود به اکسیر',

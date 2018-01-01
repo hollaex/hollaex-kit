@@ -6,9 +6,9 @@ import { SOCIAL_ICONS } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 
 const LINKS = [
-  { icon: SOCIAL_ICONS.FACEBOOK, link: '', type: 'facebook' },
+  // { icon: SOCIAL_ICONS.FACEBOOK, link: '', type: 'facebook' },
   { icon: SOCIAL_ICONS.TWIITER, link: 'https://twitter.com/exir6', type: 'twitter' },
-  { icon: SOCIAL_ICONS.LINKEDIN, link: '', type: 'linkedin' },
+  // { icon: SOCIAL_ICONS.LINKEDIN, link: '', type: 'linkedin' },
 ];
 
 const generateSectionsText = (strings) => {
