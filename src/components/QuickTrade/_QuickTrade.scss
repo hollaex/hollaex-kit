@@ -4,7 +4,8 @@ $toogle-margin: 1px;
 
 $wrapper--min-width: 45rem;
 $wrapper--max-width: 50rem;
-$wrapper--padding: 2.5rem;
+$wrapper--padding: 3.5rem;
+$section--margin-bottom: 2rem;
 
 $currency-text-size: 4rem;
 $input-bottom_line--height: 2px;
@@ -17,6 +18,10 @@ $title-icon--height: 10rem;
   max-width: $wrapper--max-width;
   padding: $wrapper--padding;
   background-color: white;
+
+  .quick_trade-bottom-padded {
+    margin-bottom: $section--margin-bottom;
+  }
 
   .quick_trade-icon {
     max-height: $title-icon--height;

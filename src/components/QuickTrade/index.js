@@ -123,10 +123,10 @@ class QuickTrade extends Component {
     const { side, value, symbol, inputStyle } = this.state;
     const { data, fetching, error } = quickTradeData;
     const { name } = CURRENCIES[symbol];
-    
+
     return (
       <div className={classnames('quick_trade-wrapper', ...GROUP_CLASSES)}>
-        <div className={classnames('quick_trade-section_wrapper', ...GROUP_CLASSES)}>
+        <div className={classnames('quick_trade-section_wrapper', 'quick_trade-bottom-padded', ...GROUP_CLASSES)}>
           <img src={ICONS.QUICK_TRADE} alt="" className="quick_trade-icon"/>
           <div className="title">{STRINGS.formatString(STRINGS.QUICK_TRADE_COMPONENT.TRADE_TITLE, STRINGS.QUICK_TRADE_COMPONENT.TITLE, STRINGS.SIDES_VALUES[side])}</div>
         </div>
@@ -137,7 +137,7 @@ class QuickTrade extends Component {
             selected={side}
           />
         </div>
-        <div className={classnames('quick_trade-section_wrapper', ...GROUP_CLASSES)}>
+        <div className={classnames('quick_trade-section_wrapper', 'quick_trade-bottom-padded', ...GROUP_CLASSES)}>
           <InputBlock
             onChange={this.onChangeValue}
             value={value}
@@ -150,7 +150,7 @@ class QuickTrade extends Component {
             onBlur={this.onLostFocus}
           />
         </div>
-        <div className={classnames('quick_trade-section_wrapper', ...GROUP_CLASSES, { fetching })}>
+        <div className={classnames('quick_trade-section_wrapper', 'quick_trade-bottom-padded', ...GROUP_CLASSES, { fetching })}>
           <ReviewBlock
             text={STRINGS.QUICK_TRADE_COMPONENT.TOTAL_COST}
             value={data.price || 0}
