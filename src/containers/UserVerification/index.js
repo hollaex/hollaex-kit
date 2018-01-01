@@ -124,13 +124,13 @@ class UserVerification extends Component {
             />
           </BankForm>
         ),
-        notification: this.generateNotification(bank_account.verified, !!bank_account.card_number, STRINGS.USER_VERIFICATION.VERIFY_BANK_ACCOUNT)
+        notification: this.generateNotification(bank_account.verified, bank_account.provided, STRINGS.USER_VERIFICATION.VERIFY_BANK_ACCOUNT)
       },
       {
         title: STRINGS.USER_VERIFICATION.TITLE_ID_DOCUMENTS,
         content: (
           <div>
-            {id_data.type ? (
+            {id_data.provided ? (
               <InformationSection
                 text={id_data.type ? '' : STRINGS.USER_VERIFICATION.PENDING_VERIFICATION_DOCUMENTS}
                 onChangeValue={this.onOpenContactForm}
@@ -144,7 +144,7 @@ class UserVerification extends Component {
           </div>
         ),
         disabled: id_data.verified,
-        notification: this.generateNotification(id_data.verified, !!id_data.type, STRINGS.USER_VERIFICATION.VERIFY_ID_DOCUMENTS)
+        notification: this.generateNotification(id_data.verified, id_data.provided, STRINGS.USER_VERIFICATION.VERIFY_ID_DOCUMENTS)
       },
     ];
 

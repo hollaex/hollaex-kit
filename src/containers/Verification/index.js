@@ -70,7 +70,7 @@ class Verification extends Component {
       return 1;
     } else if (!phone_number) {
       return 2
-    } else if (!id_data.type) {
+    } else if (!id_data.provided) {
       return 3;
     }
     return 4;
