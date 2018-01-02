@@ -406,6 +406,7 @@ export default {
        ACCOUNT_OWNER: 'لطفا نام و نام خانوادگی خود را با حساب بانکی خود وارد کنید',
        ACCOUNT_NUMBER: 'شماره حساب بانکی شما باید 24 رقمی باشد',
        ACCOUNT_NUMBER_MAX_LENGTH: 'شماره حساب حداکثر 50 عدد می باشد',
+       SHABA_NUMBER_MAX_LENGTH: 'شماره شبا حداکثر 50 عدد می باشد',
        CARD_NUMBER: 'شماره کارت باید حتما 16 رقمی باشد',
      },
      FORM_FIELDS: {
@@ -414,6 +415,8 @@ export default {
        BANK_NAME_PLACEHOLDER: 'نام بانک خود را تایپ کنید',
        ACCOUNT_NUMBER_LABEL: 'شماره حساب بانکی',
        ACCOUNT_NUMBER_PLACEHOLDER: 'شماره حساب بانکی خود را تایپ کنید',
+       SHABA_NUMBER_LABEL: 'شماره شبا',
+       SHABA_NUMBER_PLACEHOLDER: 'لطفا شماره بانکی شبای خود را وارد نمایید',
        ACCOUNT_OWNER_LABEL: 'نام صاحب حساب بانکی',
        ACCOUNT_OWNER_PLACEHOLDER: 'نام را مطابق حساب بانکی خود وارد کنید',
        CARD_NUMBER_LABEL: 'کارت بانکی',

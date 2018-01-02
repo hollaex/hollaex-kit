@@ -402,6 +402,7 @@ export default {
        ACCOUNT_OWNER: 'Please type your first and last name as associated with your bank account',
        ACCOUNT_NUMBER: 'Your bank account number should be 24 digits',
        ACCOUNT_NUMBER_MAX_LENGTH: 'Your bank account number has a limit of 50 characters',
+       SHABA_NUMBER_MAX_LENGTH: 'Your shaba number has a limit of 50 characters',
        CARD_NUMBER: 'Your card number should be 16 digits',
      },
      FORM_FIELDS: {
@@ -410,6 +411,8 @@ export default {
        BANK_NAME_PLACEHOLDER: 'Type the name of your bank',
        ACCOUNT_NUMBER_LABEL: 'Bank Account Number',
        ACCOUNT_NUMBER_PLACEHOLDER: 'Type your bank account number',
+       SHABA_NUMBER_LABEL: 'Shaba Number',
+       SHABA_NUMBER_PLACEHOLDER: 'Type your Shaba number',
        ACCOUNT_OWNER_LABEL: 'Bank Account Owner’s Name',
        ACCOUNT_OWNER_PLACEHOLDER: 'Type the name as on your bank account',
        CARD_NUMBER_LABEL: 'Bank Card Number',

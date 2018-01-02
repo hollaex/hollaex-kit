@@ -59,6 +59,13 @@ class BankVerification extends Component {
         validate: [required, maxLength(50, STRINGS.USER_VERIFICATION.BANK_ACCOUNT_FORM.VALIDATIONS.ACCOUNT_NUMBER_MAX_LENGTH)],
         maxLength: 50,
       };
+      formFields.shaba_number = {
+        type: 'text',
+        label: STRINGS.USER_VERIFICATION.BANK_ACCOUNT_FORM.FORM_FIELDS.SHABA_NUMBER_LABEL,
+        placeholder: STRINGS.USER_VERIFICATION.BANK_ACCOUNT_FORM.FORM_FIELDS.SHABA_NUMBER_PLACEHOLDER,
+        validate: [required, maxLength(50, STRINGS.USER_VERIFICATION.BANK_ACCOUNT_FORM.VALIDATIONS.SHABA_NUMBER_MAX_LENGTH)],
+        maxLength: 50,
+      };
       formFields.card_number = {
         type: 'text',
         label: STRINGS.USER_VERIFICATION.BANK_ACCOUNT_FORM.FORM_FIELDS.CARD_NUMBER_LABEL,

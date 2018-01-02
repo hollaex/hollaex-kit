@@ -14,6 +14,12 @@ export const generateFormValues = () => ({
     placeholder: STRINGS.USER_VERIFICATION.BANK_ACCOUNT_FORM.FORM_FIELDS.ACCOUNT_NUMBER_PLACEHOLDER,
     disabled: true,
   },
+  shaba_number: {
+    type: 'text',
+    label: STRINGS.USER_VERIFICATION.BANK_ACCOUNT_FORM.FORM_FIELDS.SHABA_NUMBER_LABEL,
+    placeholder: STRINGS.USER_VERIFICATION.BANK_ACCOUNT_FORM.FORM_FIELDS.SHABA_NUMBER_PLACEHOLDER,
+    disabled: true,
+  },
   card_number: {
     type: 'text',
     label: STRINGS.USER_VERIFICATION.BANK_ACCOUNT_FORM.FORM_FIELDS.CARD_NUMBER_LABEL,
