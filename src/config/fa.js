@@ -495,8 +495,8 @@ export default {
   CURRENCY: 'واحد پول',
   TYPE: 'نوع',
   TYPES_VALUES: {
-    market: 'market',
-    limit: 'limit',
+    market: 'بازار',
+    limit: 'حد',
   },
   TYPES: [
     { value: 'market', label: 'بازار' },
