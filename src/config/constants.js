@@ -126,8 +126,9 @@ export const ICONS = {
 
 export const SOCIAL_ICONS = {
   FACEBOOK: `${process.env.PUBLIC_URL}/assets/icons/social-grey-icons.svg`,
-  LINKEDIN: `${process.env.PUBLIC_URL}/assets/icons/social-grey-icons03.svg`,
   TWIITER: `${process.env.PUBLIC_URL}/assets/icons/social-grey-icons02.svg`,
+  INSTAGRAM: `${process.env.PUBLIC_URL}/assets/icons/social-grey-icons03.svg`,
+  TELEGRAM: `${process.env.PUBLIC_URL}/assets/icons/social-grey-icons04.svg`,
   GOOGLE: `${process.env.PUBLIC_URL}/assets/icons/google.png`,
 };
 
