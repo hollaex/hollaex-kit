@@ -405,8 +405,8 @@ export default {
      VALIDATIONS: {
        ACCOUNT_OWNER: 'لطفا نام و نام خانوادگی خود را با حساب بانکی خود وارد کنید',
        ACCOUNT_NUMBER: 'شماره حساب بانکی شما باید 24 رقمی باشد',
-       ACCOUNT_NUMBER_MAX_LENGTH: 'Your bank account number has a limit of 50 characters', // TODO
-       CARD_NUMBER: 'شماره کارت باید حتما 16 رقمی باشد', // TODO
+       ACCOUNT_NUMBER_MAX_LENGTH: 'شماره حساب حداکثر 50 عدد می باشد',
+       CARD_NUMBER: 'شماره کارت باید حتما 16 رقمی باشد',
      },
      FORM_FIELDS: {
        IRANIAN_ACCOUNT_LABEL: 'آیا حساب بانکی در ایران دارید؟',
@@ -663,7 +663,7 @@ export default {
   ERROR_LOGIN_USER_NOT_VERIFIED: 'کاربر احراز هویت نشده است',
   ERROR_LOGIN_USER_NOT_ACTIVATED: 'حسای کاربری فعال نشده است',
   ERROR_LOGIN_INVALID_CREDENTIALS: 'ایمیل یا رمز عبور اشتباه است',
-  SMS_SENT_TO: 'SMS sent to {0}', // TODO
-  SMS_ERROR_SENT_TO: 'Error sending the SMS to {0}. Please refresh the page and try again.', // TODO
-  WITHDRAW_NOTIFICATION_TRANSACTION_ID: 'Transaction ID:', // TODO check msg
+  SMS_SENT_TO: 'به {0} ارسال شد',
+  SMS_ERROR_SENT_TO: 'خطا در ارسال به {0}. لطفا صفحه را دوباره بارگذاری کنید و مجددا امتحان کنید.',
+  WITHDRAW_NOTIFICATION_TRANSACTION_ID: 'شناسه تراکنش:',
 };
