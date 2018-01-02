@@ -57,7 +57,7 @@ class Login extends Component {
           this.setState({ values, otpDialogIsOpen: true });
           error._error = STRINGS.VALIDATIONS.OTP_LOGIN;
         } else {
-          error.password = _error;
+          error._error = _error;
           throw new SubmissionError(error);
         }
       });

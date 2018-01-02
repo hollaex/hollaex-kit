@@ -58,12 +58,6 @@ $trade-button--border: $colors-main-black;
 
   .sidebar-logout {
     border-top: 1px solid $border-color;
-    padding-top: $sidebar-sections-padding / 2;
-    padding-bottom: $sidebar-sections-padding / 2;
-    min-height: 3rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
   }
 }
 

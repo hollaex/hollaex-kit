@@ -5,18 +5,19 @@ import { NETWORK } from '../../config/constants';
 import { calculatePrice, fiatSymbol, roundNumber } from '../../utils/currency';
 import STRINGS from '../../config/localizedStrings';
 
-const passwordRegEx = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#\$%\^\&*\)\(+=._-]).{8,}$/;
+const passwordRegEx = /^(?=.*[a-zA-Z])(?=.*\d).{8,}$/;
 
 
 export const required = (value) => !value ? STRINGS.VALIDATIONS.REQUIRED : undefined;
 export const requiredBoolean = (value) => value === undefined ? STRINGS.VALIDATIONS.REQUIRED : undefined;
 export const requiredWithCustomMessage = (message) => (value) => !value ? message : undefined;
 
+export const maxLength = (length, message) => (value = '') => value.length > length ? message : undefined;
 export const exactLength = (length, message) => (value = '') => value.length !== length ? message : undefined;
-
+export const onlyNumbers = (value = '') => validator.isNumeric(value) ? undefined : STRINGS.VALIDATIONS.ONLY_NUMBERS;
 export const email = (value = '') => !validator.isEmail(value) ? STRINGS.VALIDATIONS.INVALID_EMAIL : undefined;
 
-export const password = (value) => !passwordRegEx.test(value) ? STRINGS.VALIDATIONS.INVALID_PASSWORD : undefined
+export const password = (value) => !passwordRegEx.test(value) ? STRINGS.VALIDATIONS.INVALID_PASSWORD_2 : undefined
 
 export const validAddress = (symbol = '', message) => {
   const currency = symbol.toUpperCase();

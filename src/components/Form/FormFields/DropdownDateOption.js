@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import EventListener from 'react-event-listener';
+import classnames from 'classnames';
 import { FieldContent } from './FieldWrapper';
 
 class DropdownDateOption extends Component {
@@ -8,7 +9,9 @@ class DropdownDateOption extends Component {
   }
 
   toogleOpen = () => {
-    this.setState({ isOpen: !this.state.isOpen });
+    if (!this.props.disabled) {
+      this.setState({ isOpen: !this.state.isOpen });
+    }
   }
 
   onClickItem = (index) => () => {
@@ -34,7 +37,7 @@ class DropdownDateOption extends Component {
   }
 
   render() {
-    const { date, id, valid, format, options } = this.props;
+    const { date, id, valid, format, options, disabled = false } = this.props;
     const { isOpen } = this.state;
 
     return (
@@ -46,7 +49,7 @@ class DropdownDateOption extends Component {
           />
         }
         <FieldContent
-          contentClassName="pointer dropdown-triangle"
+          contentClassName={classnames('dropdown-triangle', { pointer: !disabled, 'not_allowed_cursor': disabled })}
           valid={valid}
         >
           {date.format(format) || id}

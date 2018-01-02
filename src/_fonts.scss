@@ -74,3 +74,36 @@
 	font-style: italic;
 	font-weight: bold;
 }
+
+@font-face {
+	font-family: 'Raleway';
+	src: url('/assets/fonts/raleway/Raleway-Bold.ttf');
+	font-weight: bold;
+}
+
+@font-face {
+	font-family: 'Raleway';
+	src: url('/assets/fonts/raleway/Raleway-Regular.ttf');
+}
+
+@font-face {
+	font-family: 'Raleway Extrabold';
+	src: url('/assets/fonts/raleway/Raleway-ExtraBold.ttf');
+	font-weight: bold;
+}
+
+@font-face {
+	font-family: 'Raleway Medium';
+	src: url('/assets/fonts/raleway/Raleway-Medium.ttf');
+}
+
+@font-face {
+	font-family: 'Raleway Medium';
+	src: url('/assets/fonts/raleway/Raleway-MediumItalic.ttf');
+	font-style: italic;
+}
+
+@font-face {
+	font-family: 'Raleway Medium';
+	src: url('/assets/fonts/raleway/Raleway-Medium.ttf');
+}

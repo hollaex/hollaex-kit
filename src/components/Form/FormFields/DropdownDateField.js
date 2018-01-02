@@ -33,18 +33,18 @@ const FORMATS = {
   },
 }
 
-const generateDateLimits = (limit = LIMIT_YEARS) => {
+const generateDateLimits = (yearsBack = LIMIT_YEARS, yearsForward = 0) => {
   const nowMoment = momentJ();
   return {
     en: {
-      maxYears: nowMoment.year(),
-      minYears: nowMoment.year() - LIMIT_YEARS,
-      year: range(nowMoment.year() - LIMIT_YEARS, nowMoment.year() + 1).reverse(),
+      maxYears: nowMoment.year() + yearsForward,
+      minYears: nowMoment.year() - yearsBack,
+      year: range(nowMoment.year() - yearsBack, nowMoment.year() + (yearsForward || 1)).reverse(),
     },
     fa: {
-      maxYears: nowMoment.jYear(),
-      minYears: nowMoment.jYear() - LIMIT_YEARS,
-      year: range(nowMoment.jYear() - LIMIT_YEARS, nowMoment.jYear() + 1).reverse(),
+      maxYears: nowMoment.jYear() + yearsForward,
+      minYears: nowMoment.jYear() - yearsBack,
+      year: range(nowMoment.jYear() - yearsBack, nowMoment.jYear() + (yearsForward || 1)).reverse(),
     }
   }
 }
@@ -64,7 +64,13 @@ class DropdownDateField extends Component {
   }
 
   componentWillMount() {
-    const limits = generateDateLimits();
+    let limits = {};
+
+    if (this.props.addYears) {
+      limits = generateDateLimits(this.props.yearsBefore, this.props.addYears);
+    } else {
+      limits = generateDateLimits();
+    }
     this.setLimits(limits);
     this.setDisplay(limits, this.props.input.value, this.props.language)
   }
@@ -92,9 +98,10 @@ class DropdownDateField extends Component {
     }
 
     momentJ.locale(FARSI_LANGUAGE)
+    const faMoment = momentJ.localeData(FARSI_LANGUAGE);
     display.fa = {
       ...limits.fa,
-      month: momentJ.months(),
+      month: faMoment._jMonths,
       day: range(1, momentJ.jDaysInMonth(date.jYear(), date.jMonth()) + 1),
     }
 
@@ -103,8 +110,8 @@ class DropdownDateField extends Component {
   }
 
   onChangeOption = (key) => (index, value) => {
-    const { language, input } = this.props;
-    const { unixtime, limits } = this.state;
+    const { input } = this.props;
+    const { unixtime, limits, language } = this.state;
 
     const date = momentJ(unixtime);
     if (key === 'year') {
@@ -131,7 +138,7 @@ class DropdownDateField extends Component {
     input.onChange(date.format());
   }
 
-  renderFields = (date, options, valid = false, formats, languageProps, languageState) => {
+  renderFields = (date, options, valid = false, formats, languageProps, languageState, disabled) => {
     return (
       <div className="datefield-values-wrapper" >
         {FIELDS.map(({ key, format }, index) => {
@@ -144,6 +151,7 @@ class DropdownDateField extends Component {
               key={key}
               options={options[key]}
               onChange={this.onChangeOption(key)}
+              disabled={disabled}
             />
           )
         })}
@@ -182,6 +190,7 @@ class DropdownDateField extends Component {
       meta: {
         invalid
       },
+      disabled = false,
     } = this.props;
     const languageProps = this.props.language;
     return (
@@ -192,7 +201,7 @@ class DropdownDateField extends Component {
         className="datefield-wrapper"
       >
         {display[language] &&
-          this.renderFields(date, display[language], !invalid, FORMATS[language], languageProps, language)
+          this.renderFields(date, display[language], !invalid, FORMATS[language], languageProps, language, disabled)
         }
       </FieldWrapper>
     )

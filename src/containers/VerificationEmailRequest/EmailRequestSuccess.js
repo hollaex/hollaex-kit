@@ -1,22 +1,21 @@
 import React from 'react';
 import { IconTitle, Button } from '../../components';
-import { VERIFICATION_RESEND_TEXTS } from './constants';
-
-const { TITLE, TEXT_1, BUTTON, ICON } = VERIFICATION_RESEND_TEXTS;
+import STRINGS from '../../config/localizedStrings';
+import { ICONS } from '../../config/constants';
 
 const EmailRequestSuccess = ({ onClick, ...rest }) => {
   return (
     <div className="signup_success-wrapper auth_wrapper">
       <IconTitle
-        iconPath={ICON}
-        text={TITLE}
+        iconPath={ICONS.VERIFICATION_SENT}
+        text={STRINGS.VERIFICATION_EMAIL_REQUEST_SUCCESS.TITLE}
         textType="title"
         className="w-100"
       />
       <div className="signup_success-content">
-        <p>{TEXT_1}</p>
+        <p>{STRINGS.VERIFICATION_EMAIL_REQUEST_SUCCESS.TEXT_1}</p>
       </div>
-      <Button label={BUTTON} onClick={onClick} />
+      <Button label={STRINGS.CONTACT_US_TEXT} onClick={onClick} />
     </div>
   )
 }

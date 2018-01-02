@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux';
 import io from 'socket.io-client';
 import EventListener from 'react-event-listener';
 import { debounce } from 'lodash';
-import { WS_URL, ICONS, SESSION_TIME, APP_TITLE } from '../../config/constants';
+import { WS_URL, ICONS, SESSION_TIME } from '../../config/constants';
 
 import { logout } from '../../actions/authAction';
 import { setMe, setBalance, updateUser } from '../../actions/userAction';
@@ -68,7 +68,7 @@ class Container extends Component {
 			nextProps.verification_level !== this.props.verification_level &&
 			nextProps.verification_level === 1
 		) {
-			this.goToAccountPage();
+			// this.goToAccountPage();
 		}
 	}
 
@@ -148,7 +148,13 @@ class Container extends Component {
 		});
 
 		privateSocket.on('user', (data) => {
-			this.props.setMe(data)
+			if (!data.phone_number) {
+				return this.goToVerificationPage();
+			}
+			this.props.setMe(data);
+			// if (data.settings && data.settings.language !== this.props.activeLanguage) {
+			// 	this.props.changeLanguage(data.settings.language);
+			// }
 		});
 
 		privateSocket.on('orders', (data) => {
@@ -294,7 +300,8 @@ class Container extends Component {
 		}
   }
 
-  goToAccountPage = () => this.goToPage('/account');
+	goToAccountPage = () => this.goToPage('/account');
+  goToVerificationPage = () => this.goToPage('/verification');
 	goToWalletPage = () => this.goToPage('/wallet');
 	goToTradePage = () => this.goToPage('/trade');
 	goToQuickTradePage = () => this.goToPage('/quick-trade');
@@ -335,7 +342,7 @@ class Container extends Component {
 			case NOTIFICATIONS.ORDERS:
 			case NOTIFICATIONS.TRADES:
 			case NOTIFICATIONS.WITHDRAWAL:
-				return <Notification type={type} data={data} openContactForm={this.props.openContactForm} />;
+				return <Notification type={type} data={data} openContactForm={this.props.openContactForm} onClose={this.onCloseDialog} />;
 			case NOTIFICATIONS.DEPOSIT:
 				return <Notification
 					type={type}
@@ -385,14 +392,11 @@ class Container extends Component {
 					onKeyPress={this.resetTimer}
 				/>
 				<AppBar
-					title={APP_TITLE}
 					goToAccountPage={this.goToAccountPage}
 					goToDashboard={this.goToDashboard}
 					acccountIsActive={activePath === 'account'}
 					changeSymbol={changeSymbol}
 					activeSymbol={symbol}
-					changeLanguage={this.onChangeLanguage}
-					activeLanguage={activeLanguage}
 				/>
         <div className="app_container-content d-flex justify-content-between">
           <div className={classnames(
@@ -438,6 +442,7 @@ const mapStateToProps = (store) => ({
 	verification_level: store.user.verification_level,
   activeLanguage: store.app.language,
 	orders: store.order.activeOrders,
+	user: store.user.userData,
 });
 
 const mapDispatchToProps = (dispatch) => ({

@@ -93,7 +93,7 @@ export function verifyToken(token) {
 				});
 			})
 			.catch((error) => {
-				const message = error.response.data.message || 'Invalid token';
+				const message = error.response ? error.response.data.message : 'Invalid token';
 				logout(message)(dispatch);
 				dispatch({
 					type: 'VERIFY_TOKEN_REJECTED',

@@ -2,6 +2,10 @@
   cursor: pointer;
 }
 
+.not_allowed_cursor {
+  cursor: not-allowed;
+}
+
 .hidden {
   display: none !important;
 }

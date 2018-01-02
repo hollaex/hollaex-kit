@@ -59,7 +59,7 @@ const Form = ({
 const EntryOrderForm = reduxForm({
   form: FORM_NAME,
   validate,
-  onSubmitSuccess: (result, dispatch) => dispatch(reset(FORM_NAME)),
+  // onSubmitSuccess: (result, dispatch) => dispatch(reset(FORM_NAME)),
 })(Form);
 
 const selector = formValueSelector(FORM_NAME);

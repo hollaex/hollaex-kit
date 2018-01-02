@@ -13,15 +13,20 @@ const TabController = ({ tabs, activeTab, setActiveTab, title, titleIcon }) => (
     }
     <div className="tab_controller-tabs">
       {tabs.map((tab, index) => {
-        return (
-          <div
-            key={`tab_item-${index}`}
-            className={classnames(
-              'tab_item', 'pointer', { 'tab_item-active': index === activeTab }
-            )}
-            onClick={() => setActiveTab(index)}
-          >{tab.title}</div>
-        )
+        const tabProps = {
+          key: `tab_item-${index}`,
+          className: classnames(
+            'tab_item', {
+              'tab_item-active': index === activeTab,
+              'pointer': setActiveTab,
+            }
+          ),
+        }
+        if (setActiveTab) {
+          tabProps.onClick = () => setActiveTab(index);
+        }
+
+        return <div {...tabProps}>{tab.title}</div>;
       })}
     </div>
   </div>

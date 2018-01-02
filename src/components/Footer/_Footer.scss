@@ -3,7 +3,7 @@ $footer-wrapper--margin: 1rem;
 $footer-wrapper--margin-bottom: $footer-wrapper--margin * 2;
 $footer-wrapper--border-color: $colors-deactivate-color2;
 $footer-social-icon--dimension: 2rem;
-$footer-icons--side-margin: 0.5rem;
+$footer-icons--side-margin: 1.5rem;
 $footer--background-color: white;
 
 .footer-container {
@@ -63,16 +63,16 @@ $footer--background-color: white;
   .footer-container {
     .footer-row-content {
       .footer-public-texts {
-        text-align: left;
+        text-align: right;
       }
 
       .footer-public-links {
         &:first-child .footer-public-links-icon {
-          margin-right: 0;
+          margin-left: 0;
         }
 
         &:last-child .footer-public-links-icon {
-          margin-left: 0;
+          margin-right: 0;
         }
       }
     }

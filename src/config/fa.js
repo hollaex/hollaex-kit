@@ -2,7 +2,7 @@ export default {
   APP_TITLE: 'اکسچنج اکسیر',
   APP_NAME: 'اکسیر',
   FIAT_NAME: 'تومان',
-  FIAT_FULLNAME: 'ایران تومان',
+  FIAT_FULLNAME: 'تومان ایران',
   FIAT_SHORTNAME: 'تومان',
   FIAT_CURRENCY_SYMBOL: 'T',
   BTC_NAME: 'بیتکوین',
@@ -16,7 +16,7 @@ export default {
   REGISTER_TEXT: 'ثبت نام',
   ACCOUNT_TEXT: 'حساب',
   CLOSE_TEXT: 'بستن',
-  COPY_TEXT: 'کپی کردن',
+  COPY_TEXT: 'کپی',
   UPLOAD_TEXT: 'بارگذاری',
   CONTACT_US_TEXT: 'تماس با ما',
   NEED_HELP_TEXT: 'کمک ',
@@ -26,13 +26,13 @@ export default {
   EDIT_TEXT: 'ویرایش',
   NO_OPTIONS: 'هیچ گزینه ای وجود ندارد',
   HOME: {
-    SECTION_1_TITLE: 'خرید و فروش بیت کوین',
-    SECTION_1_TEXT_1: 'اکسیر یک اکسچنج است که شما می توانید بیت کوین و دیگر ارزهای دیجیتالی را خرید و فروش کنید.',
+    SECTION_1_TITLE: 'خرید و فروش بیتکوین',
+    SECTION_1_TEXT_1: 'اکسیر، اکسچنجی که شما می توانید بیتکوین و دیگر ارزهای دیجیتالی را خرید و فروش کنید.',
     SECTION_1_TEXT_2: 'تلاش ما برای پیشبرد تکنولوژی از طریق دسترسی آسان و اقتصادی به ارزهای رمزنگاری شده است.',
     SECTION_1_BUTTON_1: 'بیشتر بدانید',
     SECTION_3_TITLE: 'قابلیت ها',
-    SECTION_3_CARD_1_TITLE: 'ترید پیشرفته',
-    SECTION_3_CARD_1_TEXT: 'ترید پیشرفته بیتکوین به صورت لحظه ای',
+    SECTION_3_CARD_1_TITLE: 'خرید و فروش آسان و پیشرفته',
+    SECTION_3_CARD_1_TEXT: 'خرید و فروش آسان و ترید پیشرفته بیتکوین به صورت لحظه ای',
     SECTION_3_CARD_2_TITLE: 'راه های پرداخت',
     SECTION_3_CARD_2_TEXT: 'پرداخت از طریق کارت و یا انتقال بانکی',
     SECTION_3_CARD_3_TITLE: 'امنیت بالا',
@@ -47,8 +47,9 @@ export default {
   },
   FOOTER: {
     FOOTER_LEGAL: [
-      'ثبت نام در یا استفاده از این سایت به منزله پذیرش شرایط خدمات ما و سیاست حفظ حریم است',
-      'مطابق قوانین جمهوری اسلامی ایران',
+      'ثبت نام یا استفاده از این سایت به منزله پذیرش شرایط ارایه خدمات و سیاست حفظ حریم خصوصی',
+      'مطابق با قوانین جمهوری اسلامی ایران می باشد.',
+      'آدرس: تهران، خيابان بخارست، برج ٣٨، طبقه ٣، واحد ١٦',
       'اکسیر تک 2017',
     ],
     FOOTER_LANGUAGE_TEXT: 'LANGUAGE',
@@ -60,10 +61,8 @@ export default {
     SECTIONS: {
       SECTION_1_TITLE: 'سرویسها',
       SECTION_1_LINK_1: 'خرید بیتکوین',
-      SECTION_1_LINK_2: 'خرید اتریوم',
       SECTION_1_LINK_3: ' فروش بیتکوین',
       SECTION_1_LINK_4: 'معامله بیتکوین',
-      SECTION_1_LINK_5: 'معامله مارجین',
       SECTION_2_TITLE: 'اطلاعات',
       SECTION_2_LINK_1: 'روشهای پرداخت',
       SECTION_2_LINK_2: 'کارمزدها',
@@ -93,6 +92,7 @@ export default {
     TAB_SECURITY: 'امنیت',
     TAB_NOTIFICATIONS: 'اطلاعیه',
     TAB_SETTINGS: 'تنظیمات',
+    TAB_PROFILE: 'پروفایل',
   },
   CONTACT_FORM: {
     CATEGORY_LABEL: 'دسته بندی',
@@ -119,7 +119,7 @@ export default {
     ],
     LIMIT_MESSAGE: 'حداکثر مبلغ سپرده روزانه',
     INCREASE_LIMIT: 'میخواهید محدودیت روزانه خود را افزایش دهید؟',
-    QR_CODE: 'توسط فردی که می خواهد بیت کوین به شما ارسال، اسکن شود',
+    QR_CODE: 'توسط فردی که می خواهد بیتکوین به شما ارسال، اسکن شود',
     NO_DATA: 'اطلاعاتی در دسترس نیست',
     FULL_MESSAGE_LIMIT: '{0}: {1} {2} {3}', //  0 -> {Daily deposit max amount}:  1 -> {50,000,000} 2 -> {T} 3 -> {(Want to increase your daily limit?)}
   },
@@ -128,7 +128,7 @@ export default {
     CANT_LOGIN: 'نمیتوانید ورود کنید؟',
     NO_ACCOUNT: 'حساب کاربری ندارید؟',
     CREATE_ACCOUNT: 'ایجاد حساب کاربری ',
-    HELP: 'کمک',
+    HELP: 'راهنما',
   },
   FORM_FIELDS: {
     EMAIL_LABEL: 'ایمیل',
@@ -145,15 +145,17 @@ export default {
    REQUIRED: 'اجباری',
    INVALID_DATE: 'تاریخ نامعتبر است',
    INVALID_PASSWORD: 'رمزعبور نامعتبر است. باید حاوی حداقل 8 کاراکتر، یک رقم و یک کاراکتر خاص باشد.',
-   INVALID_CURRENCY: 'نا معتبر {0} آدرس  ({1})', // FIX
-   INVALID_BALANCE: 'موجودی کافی نیست ({0}) برای انجام عملیات ({1}).', // FIX
+   INVALID_PASSWORD_2: 'رمز عبور باید حداقل 8 کاراکت ترکیبی از عدد و حروف باشد',
+   INVALID_CURRENCY: 'آدرس {0} ({1}) نا معتبر است',
+   INVALID_BALANCE: 'موجودی ({0}) کافی نیست برای انجام عملیات ({1}).', // CHECK
    MIN_VALUE: 'ارزش باید  {0} یا بیشتر باشد',
    MAX_VALUE: 'ارزش باید  {0} یا کمتر باشد',
    INSUFFICIENT_BALANCE: 'موجودی نا کافی',
    PASSWORDS_DONT_MATCH: 'رمز عبور مطابقت ندارد',
    USER_EXIST: 'ایمیل قبلا ثبت شده است',
    ACCEPT_TERMS: 'شما با شرایط استفاده و رازداری موافقت نکردید',
-   STEP: 'ورودی اشتباه, مرحله {0}', //
+   STEP: 'ورودی اشتباه, مرحله {0}', // CHECK
+   ONLY_NUMBERS: 'فقط عدد می توانید وارد کنید',
  },
  LEGAL: {
    PRIVACY_POLICY: {
@@ -196,9 +198,9 @@ export default {
      },
      BTC: {
        TITLE_RECEIVED: '{0} سپرده دریافت شد',
-       TITLE_INCOMING: 'ورودی {0}', // FIX
+       TITLE_INCOMING: 'ورودی {0}', // CHECK
        SUBTITLE_RECEIVED: 'دریافت کردید {0} سپرده',
-       SUBTITLE_INCOMING: 'ورودی {0}', // FIX
+       SUBTITLE_INCOMING: 'ورودی {0}', // CHECK
        INFORMATION_PENDING_1: 'شما {0} قبل از شروع ترید، 1 تایید نیاز دارد.',
        INFORMATION_PENDING_2: 'این ممکن است 10-30 دقیقه طول بکشد. به محض تایید شما یک ایمیل دریافت میکنید',
      }
@@ -213,22 +215,21 @@ export default {
    ERROR_INVALID: 'کد OTP اشتباه',
  },
  QUICK_TRADE_COMPONENT: {
-   TITLE: 'سریع',
+   TITLE: 'آسان',
    TOTAL_COST: 'هزینه کل',
-   BUTTON: 'مرور کردن {0} سفارش',
-   INPUT: '{0} to {1}', // bitcoin to buy // TODO fix
-   TRADE_TITLE: '{0} {1}', // {0} = title {1} = side -> quick buy
+   BUTTON: 'سفارش {0}',
+   INPUT: 'مقدار بیتکوین برای {1}',
+   TRADE_TITLE: '{1} {0}',
  },
  PREVIOUS_PAGE: 'صفحه قبلی',
  NEXT_PAGE: 'صفحه بعدی',
  WALLET: {
    TOTAL_ASSETS: 'کل دارایی',
-   AVAILABLE_WITHDRAWAL: 'برای ترید قابل استفاده است',
+   AVAILABLE_WITHDRAWAL: 'قابل استفاده برای خرید و فروش',
    AVAILABLE_TRADING: 'برای برداشت قابل استفاده است',
    ORDERS_PLURAL: 'سفارشات',
    ORDERS_SINGULAR: 'سفارشات',
-   HOLD_ORDERS: 'You have {0} open {1}, resulting in a hold of {2} {3} placed on your {4} balance', // TODO
-   // you have 3 open orders, resulting in a hold of B 0.2226 places on your BTC balance
+   HOLD_ORDERS: 'شما {0} سفارش {1} تکمیل نشده دارید, که منجر به کسر {2} {3} از دارایی {4} شما شده است',
  },
  REQUEST_RESET_PASSWORD: {
    TITLE: 'بازیابی حساب',
@@ -250,7 +251,7 @@ export default {
    TEXT_2: 'برای ادامه اینجا کلیک کنید.',
  },
  SIGN_UP: {
-   SIGNUP_TO: 'ثبت نام کنید {0}',
+   SIGNUP_TO: 'در {0} ثبت نام کنید',
    NO_EMAIL: 'ایمیل دریافت نکرده اید؟',
    REQUEST_EMAIL: 'یکی دیگر از اینجا درخواست کنید',
    HAVE_ACCOUNT: 'ثبت نام کرده اید؟',
@@ -286,23 +287,36 @@ export default {
    TITLE_USER_DOCUMENTATION: 'شناسایی',
    TITLE_ID_DOCUMENTS: 'اسناد',
    TITLE_BANK_ACCOUNT: 'حساب بانکی',
+   TITLE_MOBILE_PHONE: 'شماره تلفن همراه',
+   TITLE_PERSONAL_INFORMATION: 'اطلاعات شخصی',
    VERIFY_EMAIL: 'تأیید ایمیل',
    VERIFY_USER_DOCUMENTATION: 'اسناد کاربر را تأیید کنید',
    VERIFY_ID_DOCUMENTS: 'اسناد شناسایی را تأیید کنید',
    VERIFY_BANK_ACCOUNT: 'تأیید حساب بانکی',
    BUTTON: 'درخواست تأیید ارسال کنید',
-
+   TITLE_IDENTITY: 'اطلاعات شخصی',
+   TITLE_MOBILE: 'موبایل',
+   TITLE_MOBILE_HEADER: 'شماره تلفن همراه',
+   TITLE_BANK: 'بانک',
+   TITLE_BANK_HEADER: 'اطلاعات بانک',
+   CHANGE_VALUE: 'تغییر مقدار',
+   PENDING_VERIFICATION_PERSONAL_INFORMATION: 'اطلاعات شخصی شما در حال بررسی است',
+   PENDING_VERIFICATION_BANK: 'اطلاعات بانکی شما در حال بررسی است',
+   PENDING_VERIFICATION_DOCUMENTS: 'اطلاعات آپلود شده شما در حال بررسی است',
+   GOTO_VERIFICATION: 'به احراز هوییت بروید',
   USER_DOCUMENTATION_FORM: {
-     FORM_FIELDS: {
+    FORM_FIELDS: {
        FIRST_NAME_LABEL: 'نام',
-       FIRST_NAME_PLACEHOLDER: 'نام خود را همانطور که در سند هویت شما نشان داده می شود، تایپ کنید',
+       FIRST_NAME_PLACEHOLDER: 'نام خود را دقیقا مطابق کارت ملی خود تایپ کنید',
        LAST_NAME_LABEL: 'نام خانوادگی',
-       LAST_NAME_PLACEHOLDER: 'نام خانوادگی خود را همانطور که در سند هویت شما نشان داده می شود، تایپ کنید',
+       LAST_NAME_PLACEHOLDER: 'نام خانوادگی خود را دقیقا مطابق کارت ملی خود تایپ کنید',
+       FULL_NAME_LABEL: 'نام و نام خانوادگی',
+       FULL_NAME_PLACEHOLDER: 'نام کامل خود را به دقت وارد کنید',
        GENDER_LABEL: 'جنسيت',
-       GENDER_PLACEHOLDER: 'نوع جنسیت خود را تایپ کنید',
+       GENDER_PLACEHOLDER: 'نوع جنسیت خود را انتخاب کنید',
        GENDER_OPTIONS: {
-         MAN: 'مذکر',
-         WOMAN: 'مؤنث',
+         MAN: 'مرد',
+         WOMAN: 'زن',
        },
        NATIONALITY_LABEL: 'ملیت',
        NATIONALITY_PLACEHOLDER: 'ملیت خود را تایپ کنید',
@@ -310,21 +324,24 @@ export default {
        COUNTRY_LABEL: 'کشوری که اقامت دارید',
        COUNTRY_PLACEHOLDER: 'کشور خود را که در حال حاضر اقامت دارید را انتخاب کنید',
        CITY_LABEL: 'شهر',
-       CITY_PLACEHOLDER: 'شهر را که در آن زندگی میکنید تایپ کنید',
+       CITY_PLACEHOLDER: 'شهری را که در آن زندگی میکنید تایپ کنید',
        ADDRESS_LABEL: 'نشانی',
        ADDRESS_PLACEHOLDER: 'آدرس فعلی که در حال حاضر زندگی می کنید را تایپ کنید',
        POSTAL_CODE_LABEL: 'کد پستی',
        POSTAL_CODE_PLACEHOLDER: 'کد پستی خود را تایپ کنید',
        PHONE_CODE_LABEL: 'کشور',
        PHONE_CODE_PLACEHOLDER: 'کشوری که شماره تلفن شما متصل است را تایپ کنید',
-       PHONE_CODE_DISPLAY: '({0}) {1}', //TODO 0 -> (+21)  1 -> Iran
+       PHONE_CODE_DISPLAY: '{1} ({0})', //TODO 0 -> (+21)  1 -> Iran
        PHONE_NUMBER_LABEL: 'شماره تلفن',
        PHONE_NUMBER_PLACEHOLDER: 'شماره تلفن خود را تایپ کنید',
+       SMS_SEND: 'ارسال پیامک',
+       SMS_CODE_LABEL: 'کد پیامکی',
+       SMS_CODE_PLACEHOLDER: 'کد پیامک شده را وارد نمایید',
      },
      INFORMATION: {
-       TEXT: 'مهم: نام خود را به فیلدهای دقیقا همانطور که در سند هویت شما نشان داده شده است (نام کامل، نام و نام خانوادگی و نام خانوادگی و نام خانوادگی کامل) وارد کنید. آیا شما یک کسب و کار هستید؟ با پشتیبانی از یک حساب شرکتی تماس بگیرید',
-       TITLE_PERSONAL_INFORMATION: 'Personal Information', // TODO
-       TITLE_PHONE: 'Phone', // TODO
+       TEXT: 'مهم: نام خود را دقیقا همانطور که در کد ملی شما نشان داده شده است (نام و نام خانوادگی کامل) وارد کنید. اگر شرکت هستید به پشتیبانی support@exir.tech با عنوان \"حساب شرکتی\" ایمیل بفرستید.',
+       TITLE_PERSONAL_INFORMATION: 'اطلاعات شخصی',
+       TITLE_PHONE: 'شماره تلفن',
      }
    },
    ID_DOCUMENTS_FORM: {
@@ -345,25 +362,31 @@ export default {
        },
        ID_NUMBER_LABEL: 'شماره سند هویت',
        ID_NUMBER_PLACEHOLDER: 'شماره سند را تایپ کنید',
+       ID_NATIONAL_NUMBER_LABEL: 'کارت ملی',
+       ID_NATIONAL_NUMBER_PLACEHOLDER: 'شماره کارت ملی خود را وارد نمایید',
+       ID_PASSPORT_NUMBER_LABEL: 'شماره گذرنامه',
+       ID_PASSPORT_NUMBER_PLACEHOLDER: 'شماره گذرنامه خود را وارد نمایید',
        ISSUED_DATE_LABEL: 'تاریخ صدور سند هویت',
        EXPIRATION_DATE_LABEL: 'تاریخ انقضا سند هویت',
-       FRONT_LABEL: 'عکس سند هویت',
-       FRONT_PLACEHOLDER: 'یک کپی از سند شناسه عکس خود را اضافه کنید',
-       BACK_LABEL: 'عکس پشت سند هویت',
-       BACK_PLACEHOLDER: 'یک نسخه از پشت سند هویت خود را اضافه کنید',
+       FRONT_LABEL: 'عکس کارت ملی',
+       FRONT_PLACEHOLDER: 'اسکن کارت ملی خود را انتخاب و بارگذاری کنید',
+       BACK_LABEL: 'عکس پشت کارت ملی',
+       BACK_PLACEHOLDER: 'اسکن پشت کارت ملی خود را انتخاب و بارگذاری کنید',
        POR_LABEL: 'سند اثبات آدرس شما',
        POR_PLACEHOLDER: 'یک کپی از یک سند که نشانی شما را ثابت می کند، اضافه کنید',
+       PASSPORT_LABEL: 'گذرنامه',
+       PASSPORT_PLACEHOLDER: 'اسکن صفحه اول گذرنامه خود را بارگذاری کنید',
      },
      INFORMATION: {
-       IDENTITY_DOCUMENT: 'Identity Document', // TODO
-       PROOF_OF_RESIDENCY: 'Proof of residence', // TODO
+       IDENTITY_DOCUMENT: 'مدارک احراز هویت',
+       PROOF_OF_RESIDENCY: 'مدارک اثبات آدرس',
        ID_SECTION: {
-         TITLE: 'لطفا از اسناد ارائه شده اطمینان حاصل کنید  :',
-         LIST_ITEM_1: 'کیفیت بالا (تصاویر رنگی، رزولوشن 300dpi یا بالاتر).',
-         LIST_ITEM_2: 'واضح.',
-         LIST_ITEM_3: 'VALID, تاریخ انقضا کاملا واضح است.',
-         WARNING_1: 'لطفا سند هویتی را به عنوان مدرک اقامت خود ارائه ندهید.',
-         WARNING_2: 'تنها سند شناسایی معتبر صادر شده توسط دولت؛ عکس های با کیفیت بالا یا تصاویر اسکن شده از این اسناد قابل قبول هستند.',
+         TITLE: 'لطفا در بارگذاری اسکن مدارک خود به نکات زیر دقت کنید:',
+         LIST_ITEM_1: 'کیفیت بالا باشد(تصاویر رنگی، رزولوشن 300dpi یا بالاتر).',
+         LIST_ITEM_2: 'نوشته ها خوانا و واضح باشد.',
+         LIST_ITEM_3: 'مدرک اعتبار داشته باشد',
+         WARNING_1: 'تنها کارت ملی معتبر برای احراز هویت مورد قبول است.',
+         WARNING_2: 'هرگونه سوء استفاده و ارسال اطلاعات نادرست پیگرد قانونی دارد و باعث بسته شدن حساب شما خواهد شد.',
        },
        POR: {
          SECTION_1_TEXT_1: 'برای جلوگیری از تاخیر در تأیید حساب خود لطفا مطمئن شوید:',
@@ -382,14 +405,22 @@ export default {
      VALIDATIONS: {
        ACCOUNT_OWNER: 'لطفا نام و نام خانوادگی خود را با حساب بانکی خود وارد کنید',
        ACCOUNT_NUMBER: 'شماره حساب بانکی شما باید 24 رقمی باشد',
+       ACCOUNT_NUMBER_MAX_LENGTH: 'شماره حساب حداکثر 50 عدد می باشد',
+       SHABA_NUMBER_MAX_LENGTH: 'شماره شبا حداکثر 50 عدد می باشد',
+       CARD_NUMBER: 'شماره کارت باید حتما 16 رقمی باشد',
      },
      FORM_FIELDS: {
+       IRANIAN_ACCOUNT_LABEL: 'آیا حساب بانکی در ایران دارید؟',
        BANK_NAME_LABEL: 'نام بانک',
        BANK_NAME_PLACEHOLDER: 'نام بانک خود را تایپ کنید',
        ACCOUNT_NUMBER_LABEL: 'شماره حساب بانکی',
        ACCOUNT_NUMBER_PLACEHOLDER: 'شماره حساب بانکی خود را تایپ کنید',
+       SHABA_NUMBER_LABEL: 'شماره شبا',
+       SHABA_NUMBER_PLACEHOLDER: 'لطفا شماره بانکی شبای خود را وارد نمایید',
        ACCOUNT_OWNER_LABEL: 'نام صاحب حساب بانکی',
        ACCOUNT_OWNER_PLACEHOLDER: 'نام را مطابق حساب بانکی خود وارد کنید',
+       CARD_NUMBER_LABEL: 'کارت بانکی',
+       CARD_NUMBER_PLACEHOLDER: 'شماره 16 رقمی بر روی کارت خود را وارد کنید',
      },
    },
    WARNING: {
@@ -401,7 +432,7 @@ export default {
   },
   TRANSACTION_HISTORY: {
     TITLE: 'تاریخ معاملات',
-    TITLE_TRADES: 'تاریخ ترید ',
+    TITLE_TRADES: 'مشاهده مبادلات گذشته',
     TITLE_DEPOSITS: ' تاریخ سپرده',
     TITLE_WITHDRAWALS: 'تاریخ برداشت',
     TEXT_DOWNLOAD: 'تاریخچه دانلود',
@@ -411,9 +442,9 @@ export default {
   },
   ACCOUNT_SECURITY: {
     OTP: {
-      TITLE: 'تأیید اعتبار دو عامل',
+      TITLE: 'دسترسی دو مرحله ای',
       OTP_ENABLED: 'OTP فعال',
-      OTP_DISABLED: 'لطفا تأیید اعتبار دو عامل را فعال کنید',
+      OTP_DISABLED: 'لطفا دسترسی دو مرحله ای را فعال کنید',
       ENABLED_TEXTS: {
         TEXT_1: 'هنگام ورود به OTP نیاز است',
         TEXT_2: 'هنگام اخذ وجوه، OTP مورد نیاز است',
@@ -423,18 +454,19 @@ export default {
         REVOKE: 'شما OTP خود را با موفقیت لغو کرده اید',
       },
       CONTENT: {
-        TITLE: 'تأیید اعتبار دو عامل را فعال کنید',
-        MESSAGE_1: 'تأیید هویت دو عامل خود را تنظیم کنید',
-        MESSAGE_2: 'اسکن تصویر زیر را به طور خودکار احراز هویت دو عامل در دستگاه خود تنظیم کنید.',
-        MESSAGE_3: 'با استفاده از این کلید به صورت دستی احراز هویت دو عامل در دستگاهتان تنظیم کنید.',
-        MESSAGE_4: 'شما می توانید این کد را برای تأیید اعتبار دو عامل خود ذخیره کنید. این کلید را ذخیره نکنید',
+        TITLE: 'دسترسی دو مرحله ای را فعال کنید',
+        MESSAGE_1: 'اسکن',
+        MESSAGE_2: 'لطفا کیوآر کد زیر را توسط برنامه Google Authenticator یا Authy اسکن کنید.',
+        MESSAGE_3: 'اگر نمی توانید اسکن کنید، این کد را دستی در Google Authenticator یا Authy وارد کنید.',
+        MESSAGE_4: 'شما می توانید این کد را در جایی امن ذخیره نموده و در صورت گم کردن گوشی همراه خود در گوشی جدید وارد کنید',
+        MESSAGE_5: "دستی",
         INPUT: 'رمز یک بار ورود را وارد کنید',
-        WARNING: 'ما به شدت به شما توصیه می کنیم تا تأیید اعتبار 2 عامل را تنظیم کنید. انجام این کار به میزان قابل توجهی امنیت وجوه شما را افزایش خواهد داد.',
-        ENABLE: 'تأیید اعتبار دو عامل را فعال کنید',
+        WARNING: 'ما به شدت به شما توصیه می کنیم تا دسترسی دو مرحله ای را تنظیم کنید. انجام این کار به میزان قابل توجهی امنیت وجوه شما را افزایش خواهد داد.',
+        ENABLE: 'دسترسی دو مرحله ای را فعال کنید',
       },
       FORM: {
-        PLACEHOLDER: 'OTP ارائه شده توسط Google Authenticator را وارد کنید خالی بگذارید تا تنظیمات فعلی خود را حفظ کنید.',
-        BUTTON: "فعال کردن تأیید اعتبار دو عامل",
+        PLACEHOLDER: 'OTP ارائه شده توسط Google Authenticator را وارد کنید',
+        BUTTON: "فعال کردن دسترسی دو مرحله ای",
       }
     },
     CHANGE_PASSWORD: {
@@ -479,8 +511,8 @@ export default {
     { value: 'buy', label: 'خرید' },
     { value: 'sell', label: 'فروش' },
   ],
-  SIZE: 'اندازه',
-  PRICE: 'قیمت',
+  SIZE: 'مقدار',
+  PRICE: 'قیمت واحد',
   FEE: 'کارمزد',
   FEES: 'کارمزد',
   TIME: 'زمان',
@@ -494,7 +526,7 @@ export default {
   CANCEL_ALL: 'لغو همه',
   GO_TRADE_HISTORY: 'به تاریخچه ترید بروید',
   ORDER_ENTRY: 'ورودی سفارش',
-  TRADE_HISTORY: 'تاریخ ترید',
+  TRADE_HISTORY: 'مشاهده مبادلات من',
   CHART: 'نمودار قیمت',
   ORDERS: 'سفارش های فعال من',
   TRADES: 'تاریخ ترید من',
@@ -503,7 +535,7 @@ export default {
   PRICE_CURRENCY: 'قیمت ({0})',
   AMOUNT_SYMBOL: 'میزان ({0})',
   MARKET_PRICE: 'قیمت بازار',
-  ORDER_PRICE: 'سفارش قیمت',
+  ORDER_PRICE: 'مبلغ سفارش',
   TOTAL_ORDER: 'سفارش کل',
   NO_DATA: 'اطلاعاتی وجود ندارد',
   LOADING: 'بارگذاری',
@@ -519,7 +551,7 @@ export default {
     { key: 'en', label: 'English' },
     { key: 'fa', label: 'فارسی' },
   ],
-  QUICK_TRADE: 'آسان',
+  QUICK_TRADE: 'خرید آسان',
   PRO_TRADE: 'پیشرفته',
   WALLET_TITLE: 'کیف پول',
   TRADING_MODE_TITLE: 'خرید و فروش',
@@ -527,22 +559,22 @@ export default {
   WITHDRAWALS_MIN_VALUE_ERROR: 'تراکنش برای ارسال بسیار کوچک است. مقدار بیشتری را امتحان کنید',
   WITHDRAWALS_MAX_VALUE_ERROR: 'تراکنش برای ارسال بسیار بزرگ است. مقدار کمتری  را امتحان کنید.',
   WITHDRAWALS_LOWER_BALANCE: 'شما برای انجام این معامله مبلغ {0} کافی ندارید',
-  WITHDRAWALS_FEE_TOO_LARGE: 'کارمزد بزرگتر از {0}% از این تراکنش است. ', // TODO
-  WITHDRAWALS_INVALID_ADDRESS: 'آدرس بیت کوین نامعتبر است لطفا با دقت و دوباره وارد شوید',
+  WITHDRAWALS_FEE_TOO_LARGE: 'کارمزد بزرگتر از {0}% از این تراکنش است. ',
+  WITHDRAWALS_INVALID_ADDRESS: 'آدرس بیتکوین نامعتبر است لطفا با دقت و دوباره وارد شوید',
   WITHDRAWALS_BUTTON_TEXT: 'مرور برداشت',
   WITHDRAWALS_FORM_ADDRESS_LABEL: 'آدرس مقصد',
   WITHDRAWALS_FORM_ADDRESS_PLACEHOLDER: 'آدرس را تایپ کنید',
   WITHDRAWALS_FORM_AMOUNT_LABEL: '{0} مقدار برداشت',
   WITHDRAWALS_FORM_AMOUNT_PLACEHOLDER: 'مقدار {0} را که می خواهید برداشت کنید تایپ کنید',
-  WITHDRAWALS_FORM_FEE_LABEL: '{0}% کارمزد', // TODO
-  WITHDRAWALS_FORM_FEE_PLACEHOLDER: 'مقدار {0} که میخواهیید در این تراکنش استفاده کنید را وارد کنید ', // TODO
-  WITHDRAWALS_FORM_FEE_OPTIMAL_VALUE: 'کارمزد مطلوب: {0} {1}', // TODO {0} -> amount {1} -> currency name
-  DEPOSITS_FORM_AMOUNT_LABEL: '{0} مقدار برداشت', // FIX
+  WITHDRAWALS_FORM_FEE_LABEL: '{0}% کارمزد',
+  WITHDRAWALS_FORM_FEE_PLACEHOLDER: 'مقدار {0} که میخواهیید در این تراکنش استفاده کنید را وارد کنید ',
+  WITHDRAWALS_FORM_FEE_OPTIMAL_VALUE: 'کارمزد مطلوب: {0} {1}',
+  DEPOSITS_FORM_AMOUNT_LABEL: '{0} مقدار برداشت',
   DEPOSITS_FORM_AMOUNT_PLACEHOLDER: 'مقدار {0} را که می خواهید برداشت کنید تایپ کنید',
   DEPOSITS_BUTTON_TEXT: 'مرور سپرده',
   DEPOSIT_PROCEED_PAYMENT: 'پرداخت',
   DEPOSIT_BANK_REFERENCE: 'برای شناسایی سپرده، این کد "{0}" را به تراکنش بانکی اضافه کنید',
-  DEPOSIT_METHOD: 'روش پرداخت {0}', // FIX
+  DEPOSIT_METHOD: 'روش پرداخت {0}',
   DEPOSIT_METHOD_DIRECT_PAYMENT: 'کارت اعتباری',
   DEPOSIT_METHOD_DIRECT_PAYMENT_MESSAGE_1: 'به روش پرداخت کارت اعتباری بروید.',
   DEPOSIT_METHOD_DIRECT_PAYMENT_MESSAGE_2: 'شما پلت فرم را برای پرداخت ترک میکنید.',
@@ -558,64 +590,83 @@ export default {
   QUOTE_BUTTON: 'قبول',
   QUOTE_REVIEW: 'بازبینی',
   QUOTE_COUNTDOWN_MESSAGE: 'شما {0} ثانیه برای این تراکنش وقت دارید',
-  QUOTE_EXPIRED_TOKEN: 'نماد منقضی شده', // TODO
+  QUOTE_EXPIRED_TOKEN: 'اعتبار قیمت داده شده منقضی شده',
   QUOTE_SUCCESS_REVIEW_TITLE: 'خرید آسان',
   QUOTE_SUCCESS_REVIEW_MESSAGE: 'شما با موفقیت {0} {1} {0} برای {3} {4}',
-  COUNTDOWN_ERROR_MESSAGE: 'شمارش معکوس به اتمام رسید.', // TODO
+  COUNTDOWN_ERROR_MESSAGE: 'شمارش معکوس به اتمام رسید.',
   WITHDRAW_PAGE: {
     BANK_TO_WITHDRAW: 'نام بانک دریافت کننده',
     MESSAGE_ABOUT_SEND: 'شما در آستانه ارسال',
     MESSAGE_BTC_WARNING: 'لطفا از درست بودن آدرس خود اطمینان حاصل کنید {0} تراکنش ها غیر قابل بازگشت هستند.',
-    MESSAGE_ABOUT_WITHDRAW: 'شما در حال انجام انتقال به حساب بانکی خود هستید.', // TODO
-    MESSAGE_FEE: 'شامل کارمزد {0} ({1})', // TODO
+    MESSAGE_ABOUT_WITHDRAW: 'شما در حال انجام انتقال به حساب بانکی خود هستید.',
+    MESSAGE_FEE: 'شامل کارمزد {0} ({1})',
     FIAT_MESSAGE_1: 'شما تنها می توانید به حساب بانک پول خود را ارسال کنید که با نام شما در اکسیر مطابقت داشته باشد',
-    FIAT_MESSAGE_2: 'حداقل مقدار برداشت', // TODO
+    FIAT_MESSAGE_2: 'حداقل مقدار برداشت',
     FIAT_MESSAGE_3: 'محدودیت برداشت روزانه',
     FIAT_INCREASE_LIMIT: 'افزایش برداشت محدودیت روزانه',
   },
-    WALLET_BUTTON_FIAT_DEPOSIT: 'دریافت',
-  WALLET_BUTTON_FIAT_WITHDRAW: 'ارسال',
+  WALLET_BUTTON_FIAT_DEPOSIT: 'واریز',
+  WALLET_BUTTON_FIAT_WITHDRAW: 'برداشت',
   WALLET_BUTTON_CRYPTOCURRENCY_DEPOSIT: 'دریافت',
   WALLET_BUTTON_CRYPTOCURRENCY_WITHDRAW: 'ارسال',
   AVAILABLE_TEXT: 'قابل استفاده',
-  AVAILABLE_BALANCE_TEXT: 'مقدار {0} قابل استفاده: {1} {2}', // TODO موجودی قابل استفاده بیتکوین: BTC 2.6
+  AVAILABLE_BALANCE_TEXT: 'مقدار {0} قابل استفاده: {1} {2}',
   BALANCE_TEXT: 'موجودی',
-  CURRENCY_BALANCE_TEXT: '{0} موجودی',
+  CURRENCY_BALANCE_TEXT: 'موجودی {0}',
   WALLET_TABLE_AMOUNT_IN: 'مقدار به {0}',
   WALLET_TABLE_TOTAL: 'جمع کل',
   WALLET_ALL_ASSETS: 'همه دارایی ها',
-  HIDE_TEXT: 'پنهان کردن',
+  HIDE_TEXT: 'پنهان',
   PAGINATOR_FORMAT: '{0} / {1}',
-  ORDERBOOK_SPREAD: 'اسپرد {0}', // 0 -> 660,000 T
+  ORDERBOOK_SPREAD: 'شکاف قیمت {0}', // 0 -> 660,000 T
   ORDERBOOK_SPREAD_PRICE: '{0} {1}', // 0-> amount  1 -> symbol  600,000 T
   FIAT_PRICE_FORMAT: '{0} {1}', // 0-> amount  1 -> symbol  600,000 T
   BTC_PRICE_FORMAT: '{0} {1}', // 0-> amount  1 -> symbol  6.00245 BTC
   CALCULATE_MAX: 'ماکسیمم',
   DATEFIELD_TOOGLE_DATE_PE: 'تاریخ شمسی‌',
   DATEFIELD_TOOGLE_DATE_GR: 'Gregorian calendar',
-  VERIFICATION_WARNING_TITLE: 'Verification required', // TODO
-  VERIFICATION_WARNING_MESSAGE: 'Go to {0} to verify you data', // TODO
-  ORDER_SPENT: 'Spent', // TODO
-  ORDER_RECEIVED: 'Received', // TODO
-  ORDER_SOLD: 'Sold', // TODO
-  ORDER_BOUGHT: 'Bought', // TODO
-  ORDER_AVERAGE_PRICE: 'Average price', // TODO
-  ORDER_TITLE_CREATED: 'Successfully created a limit {0}', // TODO 0 -> buy / sell
-  ORDER_TITLE_FULLY_FILLED: '{0} order successfully filled', // TODO 0 -> buy / sell
-  ORDER_TITLE_PARTIALLY_FILLED: '{0} order partially filled', // TODO 0 -> buy / sell
-  ORDER_TITLE_TRADE_COMPLETE: '{0} {1} order was successful', // TODO 0 -> buy / sell
-  LOGOUT_TITLE: 'YOU have been logged out', // TODO
-  LOGOUT_ERROR_TOKEN_EXPIRED: 'TOKEN is expired', // TODO
-  LOGOUT_ERROR_LOGIN_AGAIN: 'LOGIN again', // TODO ip doesnt match
-  LOGOUT_ERROR_INVALID_TOKEN: 'INVALID token', // TODO
-  LOGOUT_ERROR_INACTIVE: 'YOU have been logged out because you have been inactive', // TODO
+  VERIFICATION_WARNING_TITLE: 'نیاز به احراز هویت',
+  VERIFICATION_WARNING_MESSAGE: 'برای احراز هویت به {0} خود بروید',
+  ORDER_SPENT: 'خرج شده',
+  ORDER_RECEIVED: 'دریافت شده',
+  ORDER_SOLD: 'فروش',
+  ORDER_BOUGHT: 'خرید',
+  ORDER_AVERAGE_PRICE: 'قیمت میانگین',
+  ORDER_TITLE_CREATED: 'سفارش {0} با موفقیت انجام شد',
+  ORDER_TITLE_FULLY_FILLED: 'سفارش {0} تکمیل شد',
+  ORDER_TITLE_PARTIALLY_FILLED: 'قسمتی از سفارش {0} تکمیل شد',
+  ORDER_TITLE_TRADE_COMPLETE: 'سفارش {0} {1} با موفقیت انجام شد',
+  LOGOUT_TITLE: 'شما از حساب خارج شده اید',
+  LOGOUT_ERROR_TOKEN_EXPIRED: 'توکن قیمت دیگر اعتبار ندارد',
+  LOGOUT_ERROR_LOGIN_AGAIN: 'لطفا مجدد وارد شوید',
+  LOGOUT_ERROR_INVALID_TOKEN: 'توکن اشتباه',
+  LOGOUT_ERROR_INACTIVE: 'لطفا مجدد وارد شوید',
   ORDER_ENTRY_BUTTON: '{0} {1}', // TODO CHECK  0 -> buy/sell 1 -> btc/..
-  QUICK_TRADE_OUT_OF_LIMITS: 'ORDER size is out of the limits', // TODO
-  QUICK_TRADE_TOKEN_USED: 'TOKEN has been used', // TODO
-  QUICK_TRADE_QUOTE_EXPIRED: 'QUOTE has expired', // TODO
-  QUICK_TRADE_QUOTE_INVALID: 'INVALID quote', // TODO
-  QUICK_TRADE_QUOTE_CALCULATING_ERROR: 'ERROR calculating the quote', // TODO
-  QUICK_TRADE_ORDER_CAN_NOT_BE_FILLED: 'THE order with the current size can not be filled', // TODO
-  QUICK_TRADE_ORDER_NOT_FILLED: 'ORDER is not filled', // TODO
-  QUICK_TRADE_NO_BALANCE: 'INSUFFICIENT balance to perform the order', // TODO
+  QUICK_TRADE_OUT_OF_LIMITS: 'سفارش شما خارج از محدوده است.',
+  QUICK_TRADE_TOKEN_USED: 'توکن معتبر نیست',
+  QUICK_TRADE_QUOTE_EXPIRED: 'اعتبار قیمت اعلام شده تمام شده. دوباره امتحان کنید.',
+  QUICK_TRADE_QUOTE_INVALID: 'قیمت اعلام شده اعتبار ندارد',
+  QUICK_TRADE_QUOTE_CALCULATING_ERROR: 'اشتبا در محاسبه قیمت',
+  QUICK_TRADE_ORDER_CAN_NOT_BE_FILLED: 'سفارش با این مقدار تکمیل نخواهد شد',
+  QUICK_TRADE_ORDER_NOT_FILLED: 'موجودی سایت کافی نیست',
+  QUICK_TRADE_NO_BALANCE: 'موجودی شما برای انجام این سفارش کافی نیست',
+  YES: 'بله',
+  NO: 'خیر',
+  NEXT: 'بعدی',
+  SKIP_FOR_NOW: 'بعدا وارد می کنم',
+  SUBMIT: 'ارسال',
+  VERIFICATION_NOTIFICATION_SKIP_TITLE: 'محدودیت دسترسی',
+  VERIFICATION_NOTIFICATION_SKIP_TEXT: 'لطفا در نظر داشته باشید که حساب شما تا زمانی که مدارک بارگذاری مدارک انجام و تایید نشده است، با محدودیت همراه خواهد بود. شما می توانید به حساب کاربری خود رفته و اطلاعات مربوط به احراز هویت خود را در آنجا بارگذاری کنید.',
+  VERIFICATION_NOTIFICATION_SUCCESS_TITLE: 'موفقیت!',
+  VERIFICATION_NOTIFICATION_SUCCESS_TEXT: 'هنگامی که اطلاعات شما بررسی گردید، از طریق ایمیل به شما اطلاع می دهیم.',
+  VERIFICATION_NOTIFICATION_BUTTON: 'ورود به اکسیر',
+  ERROR_USER_ALREADY_VERIFIED: 'کاربر قبلا احراز هویت شده است',
+  ERROR_INVALID_CARD_USER: 'مقادیر وارد شده نادرس است',
+  ERROR_INVALID_CARD_NUMBER: 'شماره کارت نادرس است',
+  ERROR_LOGIN_USER_NOT_VERIFIED: 'کاربر احراز هویت نشده است',
+  ERROR_LOGIN_USER_NOT_ACTIVATED: 'حسای کاربری فعال نشده است',
+  ERROR_LOGIN_INVALID_CREDENTIALS: 'ایمیل یا رمز عبور اشتباه است',
+  SMS_SENT_TO: 'به {0} ارسال شد',
+  SMS_ERROR_SENT_TO: 'خطا در ارسال به {0}. لطفا صفحه را دوباره بارگذاری کنید و مجددا امتحان کنید.',
+  WITHDRAW_NOTIFICATION_TRANSACTION_ID: 'شناسه تراکنش:',
 };

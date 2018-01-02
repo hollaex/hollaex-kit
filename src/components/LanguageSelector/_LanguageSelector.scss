@@ -1,0 +1,36 @@
+@mixin flag($url) {
+  background: url($url);
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+.language_selector-wrapper {
+  .flag-separator {
+    width: .5rem;
+  }
+
+  .language_selector-flag {
+    width: 2.5rem;
+    height: $navigation_bar-height;
+  }
+
+  .flag-en {
+    @include flag('/assets/flags/inactive-en.png');
+    &.selected {
+      @include flag('/assets/flags/selected-en.png');
+    }
+    &:hover {
+      @include flag('/assets/flags/rollover-en.png');
+    }
+  }
+
+  .flag-ir {
+    @include flag('/assets/flags/inactive-ir.png');
+    &.selected {
+      @include flag('/assets/flags/selected-ir.png');
+    }
+    &:hover {
+      @include flag('/assets/flags/rollover-ir.png');
+    }
+  }
+}

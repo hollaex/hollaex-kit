@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import classnames from 'classnames';
 
 import { FLEX_CENTER_CLASSES } from '../../config/constants';

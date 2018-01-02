@@ -2,6 +2,7 @@
 import React from 'react';
 import classnames from 'classnames';
 import { countries } from 'country-data';
+import STRINGS from '../config/localizedStrings';
 
 const convertCountry = (value = {}) => {
 	return {
@@ -16,4 +17,23 @@ const convertCountry = (value = {}) => {
 const filterCountries = (country) => (country.status === 'assigned' && country.alpha2);
 
 export const initialCountry = convertCountry(countries.IR);
-export default countries.all.filter(filterCountries).map(convertCountry);
+export const NATIONAL_COUNTRY_VALUE = initialCountry.value;
+
+export const COUNTRIES = countries.all.filter(filterCountries).map(convertCountry);
+
+export default COUNTRIES;
+
+export const COUNTRIES_OPTIONS = COUNTRIES.map((country) => ({
+  label: country.name,
+  value: country.value,
+  icon: country.flag,
+}));
+
+export const PHONE_OPTIONS = COUNTRIES.map((country) => ({
+  label: STRINGS.formatString(
+    STRINGS.USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.PHONE_CODE_DISPLAY,
+   country.phoneCode, country.name
+ ).join(''),
+  value: country.phoneCode,
+  icon: country.flag,
+}));

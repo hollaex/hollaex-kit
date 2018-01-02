@@ -1,11 +1,12 @@
-$notification--width: 30rem;
+$notification--min-width: 30rem;
+$notification--max-width: 40rem;
 $image--margin: 1rem;
 $image--wdith: 10rem;
 $logout--size-difference: 3rem;
 
 .notification-wrapper {
-  min-width: $notification--width;
-  max-width: $notification--width;
+  min-width: $notification--min-width;
+  max-width: $notification--max-width;
 
   .notification-title-wrapper {
     height: 15rem;
@@ -28,6 +29,16 @@ $logout--size-difference: 3rem;
     flex-direction: column;
     flex: 1;
 
+    &.notification_verification {
+      text-align: center;
+      .notification-content-title {
+        text-transform: capitalize;
+      }
+      .notification-content-information {
+        padding: 1rem;
+      }
+    }
+
     &.logout-notification {
       text-align: center;
 
@@ -40,7 +51,7 @@ $logout--size-difference: 3rem;
         margin: 3rem auto;
       }
     }
-    
+
     .notification-content-icon {
       width: $image--wdith;
       margin: $image--margin auto;
@@ -66,5 +77,19 @@ $logout--size-difference: 3rem;
   }
   .notification-information {
     padding: 1rem 0;
+  }
+}
+
+
+.notification-wrapper {
+  .notification-content-wrapper.notification-withdrawal {
+
+    .notification-content-icon {
+      width: 80% !important;
+    }
+
+    .notification-link-wrapper {
+      font-size: $font-size-subtext;
+    }
   }
 }

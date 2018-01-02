@@ -8,7 +8,7 @@ import DropdownDateField from './FormFields/DropdownDateField';
 import CheckField from './FormFields/CheckField';
 import EditableInputField from './FormFields/EditableInputField';
 
-const renderFields = (fields) => {
+const renderFields = (fields = {}) => {
   return (
     <div>
       {Object.keys(fields).map((key, index) => {
@@ -22,6 +22,13 @@ const renderFields = (fields) => {
         };
 
         switch (type) {
+          case 'hidden':
+            return (
+              <Field
+                component={() => <div className="hidden"></div> }
+                {...commonProps}
+              />
+            );
           case 'file':
             return (
               <Field

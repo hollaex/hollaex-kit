@@ -10,7 +10,19 @@ const QuoteResult = ({ name, onClose, ...props }) => {
   if (fetching) {
     return <Loader relative={true} background={false} />;
   } else if (error) {
-    return <div>{error}</div>;
+    return (
+      <div>
+        <div className="quote-success-review-text">
+          {error}
+        </div>
+        {onClose &&
+          <Button
+            label={STRINGS.CLOSE_TEXT}
+            onClick={onClose}
+          />
+        }
+      </div>
+    );
   } else {
     return (
       <div>
