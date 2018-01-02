@@ -64,7 +64,7 @@ class Verification extends Component {
   }
 
   calculateActiveTab = ({ bank_account, address, phone_number, id_data, full_name }) => {
-    if (!bank_account.provided) {
+    if (!bank_account.provided && !full_name) {
       return 0;
     } else if (!address.country) {
       return 1;
