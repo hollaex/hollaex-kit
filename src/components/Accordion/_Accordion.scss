@@ -16,6 +16,7 @@ $main-text--color: $colors-deactivate-color2;
 
   .accordion_section_title {
     padding: $title--padding;
+    position: relative;
   }
   .accordion_section_content_text {
     position: relative;

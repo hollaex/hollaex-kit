@@ -36,15 +36,16 @@ const AccordionSection = ({
           {title} {subtitle && <span className="accordion_section_content_text-subtitle">{subtitle}</span>}
         </span>
         {titleInformation}
+        {notification &&
+          <ActionNotification
+            {...notification}
+            onClick={notification.allowClick ? onClick : openSection}
+            showPointer={notification.allowClick}
+          />
+        }
       </div>
       {isOpen && <div className="accordion_section_content">{content}</div>}
-      {notification &&
-        <ActionNotification
-          {...notification}
-          onClick={notification.allowClick ? onClick : openSection}
-          showPointer={notification.allowClick}
-        />
-      }
+
     </div>
   );
 }
