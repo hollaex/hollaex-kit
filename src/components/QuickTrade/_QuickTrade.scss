@@ -14,211 +14,213 @@ $input-bottom_line--animation--width: 100px;
 $title-icon--height: 10rem;
 
 .direction_ltr {
-  .quick_trade-wrapper {
-    font-family: $raleway--font-family;
-  }
+	.quick_trade-wrapper {
+		font-family: $raleway--font-family;
+	}
 }
 
 .quick_trade-wrapper {
-  min-width: $wrapper--min-width;
-  max-width: $wrapper--max-width;
-  padding: $wrapper--padding;
-  background-color: white;
+	min-width: $wrapper--min-width;
+	max-width: $wrapper--max-width;
+	padding: $wrapper--padding;
+	background-color: white;
 
-  .quick_trade-bottom-padded {
-    margin-bottom: $section--margin-bottom;
-  }
+	.quick_trade-bottom-padded {
+		margin-bottom: $section--margin-bottom;
+	}
 
-  .quick_trade-icon {
-    max-height: $title-icon--height;
-  }
-  .title {
-    font-size: $font-size-headline;
-  }
+	.quick_trade-icon {
+		max-height: $title-icon--height;
+	}
+	.title {
+		font-size: $font-size-headline;
+	}
 
-  > .quick_trade-section_wrapper {
-    &.fetching {
-      color: $colors-deactivate-color2;
-    }
+	> .quick_trade-section_wrapper {
+		&.fetching {
+			color: $colors-deactivate-color2;
+		}
 
-    width: 100%;
-    position: relative;
-  }
+		width: 100%;
+		position: relative;
+	}
 
-  .toogle_button-wrapper {
-    .toogle-content {
-      padding: 0 1rem;
-      text-transform: uppercase;
-      padding: 0 0.5rem;
-      font-size: $font-size-subtext;
-      color: $colors-deactivate-color2;
-      height: $toogle-size + $toogle-border * 2 + $toogle-margin * 2;
-      font-family: $raleway-medium--font-family;
+	.toogle_button-wrapper {
+		.toogle-content {
+			padding: 0 1rem;
+			text-transform: uppercase;
+			padding: 0 0.5rem;
+			font-size: $font-size-subtext;
+			color: $colors-deactivate-color2;
+			height: $toogle-size + $toogle-border * 2 + $toogle-margin * 2;
+			font-family: $raleway-medium--font-family;
 
-      .selected {
-        font-family: $raleway-extrabold--font-family;
-        font-weight: bold;
-        color: $colors-main-black;
-      }
+			.selected {
+				font-family: $raleway-extrabold--font-family;
+				font-weight: bold;
+				color: $colors-main-black;
+			}
 
-      .toogle-action_button {
-        border: $toogle-border solid $colors-main-black;
-        height: 100%;
-        width: $toogle-size * 3;
-        border-radius: $toogle-size;
-        margin: 0 0.5rem;
-        display: flex;
-        align-items: center;
-        position: relative;
+			.toogle-action_button {
+				border: $toogle-border solid $colors-main-black;
+				height: 100%;
+				width: $toogle-size * 3;
+				border-radius: $toogle-size;
+				margin: 0 0.5rem;
+				display: flex;
+				align-items: center;
+				position: relative;
 
-        &.left .toogle-action_button-display {
-          $right-pos: $toogle-size + $toogle-margin * 2;
-          right: calc(100% - #{$right-pos});
-        }
-        &.right .toogle-action_button-display {
-          right: 0;
-        }
+				&.left .toogle-action_button-display {
+					$right-pos: $toogle-size + $toogle-margin * 2;
+					right: calc(100% - #{$right-pos});
+				}
+				&.right .toogle-action_button-display {
+					right: 0;
+				}
 
-        .toogle-action_button-display {
-          position: absolute;
-          transition: .5s;
-          background: $colors-main-black;
-          height: $toogle-size;
-          width: $toogle-size;
-          border-radius: 50%;
-          margin: $toogle-margin;
-          top: 0;
-        }
-      }
-    }
+				.toogle-action_button-display {
+					position: absolute;
+					transition: 0.5s;
+					background: $colors-main-black;
+					height: $toogle-size;
+					width: $toogle-size;
+					border-radius: 50%;
+					margin: $toogle-margin;
+					top: 0;
+				}
+			}
+		}
 
-    .toogle-side_line {
-      position: relative;
-      &::after {
-        content: '';
-        height: 1px;
-        width: 100%;
-        position: absolute;
-        background-color: $colors-main-black;
-        left: 0;
-        right: 0;
-        top: 50%;
-      }
-    }
-  }
+		.toogle-side_line {
+			position: relative;
+			&::after {
+				content: '';
+				height: 1px;
+				width: 100%;
+				position: absolute;
+				background-color: $colors-main-black;
+				left: 0;
+				right: 0;
+				top: 50%;
+			}
+		}
+	}
 
-  .review-block-wrapper {
-    .currency-wrapper {
-      margin: .5rem auto;
-      font-size: $currency-text-size;
-      line-height: $currency-text-size;
-      .currency_ball-wrapper {
-        margin-top: .25rem;
-        margin-right: 0.5rem;
-      }
-    }
-    .with_price-block_amount {
-      margin: 0;
-    }
-  }
+	.review-block-wrapper {
+		.currency-wrapper {
+			margin: 0.5rem auto;
+			font-size: $currency-text-size;
+			line-height: $currency-text-size;
+			.currency_ball-wrapper {
+				margin-top: 0.25rem;
+				margin-right: 0.5rem;
+			}
+		}
+		.with_price-block_amount {
+			margin: 0;
+		}
+	}
 
-  .input_block-error-wrapper {
-    color: red;
-    margin-top: 0.5rem;
-  }
+	.input_block-error-wrapper {
+		color: red;
+		margin-top: 0.5rem;
+	}
 
-  .input_block-title {
-    font-size: $font-size-subhead3;
-    font-family: $raleway-medium--font-family;
-  }
+	.input_block-title {
+		font-size: $font-size-subhead3;
+		font-family: $raleway-medium--font-family;
+	}
 
-  .input_block-content {
-    border-bottom: $input-bottom_line--height solid $colors-main-black;
-    width: 100%;
-    &.has_error {
-      border-bottom-color: $error-color;
-    }
+	.input_block-content {
+		border-bottom: $input-bottom_line--height solid $colors-main-black;
+		width: 100%;
+		&.has_error {
+			border-bottom-color: $error-color;
+		}
 
-    .input_block-input-wrapper {
-      // width: 100%;
-      width: auto;
-      position: relative;
-      .input_block-inputbox {
-        // width: 100%;
-        font-size: $font-size-subhead2;
-        // text-align: center;
-        margin: .5rem 1.5rem;
+		.input_block-input-wrapper {
+			// width: 100%;
+			width: auto;
+			position: relative;
+			.input_block-inputbox {
+				// width: 100%;
+				font-size: $font-size-subhead2;
+				// text-align: center;
+				margin: 0.5rem 1.5rem;
 
-        border: none !important;
-        border-radius: 0 !important;
-        padding: 0 !important;
-        text-align: left;
-        margin-left: 2rem;
-      }
-      .input_block-currency_ball {
-        position: absolute;
-        left: -0.5rem;
-      }
-      .react-numeric-input > b {
-        visibility: hidden;
-      }
-    }
+				border: none !important;
+				border-radius: 0 !important;
+				padding: 0 !important;
+				text-align: left;
+				margin-left: 2rem;
+			}
+			.input_block-currency_ball {
+				position: absolute;
+				left: -0.5rem;
+			}
+			.react-numeric-input > b {
+				visibility: hidden;
+			}
+		}
 
-    &.loading {
-      position: relative;
-      border-bottom-color: $colors-deactivate-color2;
-      &:after {
-        content: '';
-        display: block;
-        animation: linear_loading 2s linear infinite;
-        height: $input-bottom_line--height;
-        width: $input-bottom_line--animation--width;
-        position: absolute;
-        background-color: $colors-currencies-fiat;
-        bottom: -$input-bottom_line--height;
-        left: 0;
-        right: 0;
-      }
-    }
+		&.loading {
+			position: relative;
+			border-bottom-color: $colors-deactivate-color2;
+			&:after {
+				content: '';
+				display: block;
+				animation: linear_loading 2s linear infinite;
+				height: $input-bottom_line--height;
+				width: $input-bottom_line--animation--width;
+				position: absolute;
+				background-color: $colors-currencies-fiat;
+				bottom: -$input-bottom_line--height;
+				left: 0;
+				right: 0;
+			}
+		}
 
-    &.loading.btc::after {
-      background-color: $colors-currencies-btc;
-    }
+		&.loading.btc::after {
+			background-color: $colors-currencies-btc;
+		}
 
-    &.loading.bch::after {
-      background-color: $colors-currencies-bch;
-    }
+		&.loading.bch::after {
+			background-color: $colors-currencies-bch;
+		}
 
-    &.loading.eth::after {
-      background-color: $colors-currencies-eth;
-    }
+		&.loading.eth::after {
+			background-color: $colors-currencies-eth;
+		}
 
-    &.loading.ltc::after {
-      background-color: $colors-currencies-ltc;
-    }
-  }
+		&.loading.ltc::after {
+			background-color: $colors-currencies-ltc;
+		}
+	}
 
-  .review-block-wrapper, .input_block-wrapper, .toogle_button-wrapper {
-    margin: 1rem;
-    width: 100%;
-  }
+	.review-block-wrapper,
+	.input_block-wrapper,
+	.toogle_button-wrapper {
+		margin: 1rem;
+		width: 100%;
+	}
 }
 
 @keyframes linear_loading {
-    0% {
-      left: 0;
-      width: 0;
-    }
-    15% {
-      left: 0;
-      width: $input-bottom_line--animation--width;
-    }
-    85% {
-      width: $input-bottom_line--animation--width;
-      left: calc(100% - #{$input-bottom_line--animation--width});
-    }
-    100% {
-      width: 0;
-      left: 100%;
-    }
+	0% {
+		left: 0;
+		width: 0;
+	}
+	15% {
+		left: 0;
+		width: $input-bottom_line--animation--width;
+	}
+	85% {
+		width: $input-bottom_line--animation--width;
+		left: calc(100% - #{$input-bottom_line--animation--width});
+	}
+	100% {
+		width: 0;
+		left: 100%;
+	}
 }

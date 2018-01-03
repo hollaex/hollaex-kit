@@ -7,10 +7,10 @@ const INITIAL_QUICK_TRADE = {
 		price: 0,
 		side: '',
 		size: 0,
-		filled: false,
+		filled: false
 	},
-	error: '',
-}
+	error: ''
+};
 
 const INITIAL_QUOTE = {
 	fetching: false,
@@ -20,7 +20,7 @@ const INITIAL_QUOTE = {
 		symbol: '',
 		price: 0,
 		side: '',
-		size: 0,
+		size: 0
 	},
 	token: '',
 	error: '',
@@ -28,9 +28,9 @@ const INITIAL_QUOTE = {
 		fetching: false,
 		completed: false,
 		error: '',
-		data: {},
+		data: {}
 	}
-}
+};
 
 const INITIAL_STATE = {
 	fetched: false,
@@ -40,47 +40,46 @@ const INITIAL_STATE = {
 	symbol: 'btc',
 	price: 0,
 	prices: {
-		fiat: 1,
+		fiat: 1
 	},
 	asks: [],
 	bids: [],
 	orderbookReady: false,
 	quickTrade: INITIAL_QUICK_TRADE,
-	quoteData: INITIAL_QUOTE,
+	quoteData: INITIAL_QUOTE
 };
 
 export default function reducer(state = INITIAL_STATE, { payload, type }) {
-	switch(type) {
-
+	switch (type) {
 		case 'CHANGE_SYMBOL':
 			return {
 				...state,
-				symbol: payload.symbol,
+				symbol: payload.symbol
 			};
 		// getOrderbook
 		case 'GET_ORDERBOOK_PENDING': {
-			return {...state, fetching: true, fetched: false, error: null}
+			return { ...state, fetching: true, fetched: false, error: null };
 		}
 		case 'GET_ORDERBOOK_REJECTED': {
 			// alert('Error: ' + payload)
-			return {...state, fetching: false, error: payload}
+			return { ...state, fetching: false, error: payload };
 		}
 		case 'GET_ORDERBOOK_FULFILLED': {
-			let bids = payload.data.bids
-			let asks = payload.data.asks
-			let allBids = 0 // accumulative bids amounts
-			let allAsks = 0 // accumulative asks amounts
-			for(let i=0; i<bids.length; i++) {
-				if(bids[i]){
-					allBids += bids[i][1]
-					bids[i][2] = allBids
+			let bids = payload.data.bids;
+			let asks = payload.data.asks;
+			let allBids = 0; // accumulative bids amounts
+			let allAsks = 0; // accumulative asks amounts
+			for (let i = 0; i < bids.length; i++) {
+				if (bids[i]) {
+					allBids += bids[i][1];
+					bids[i][2] = allBids;
 				}
-				if(asks[i]){
-					allAsks += asks[i][1]
-					asks[i][2] = allAsks
+				if (asks[i]) {
+					allAsks += asks[i][1];
+					asks[i][2] = allAsks;
 				}
 			}
-			return {...state, fetching: false, fetched: true, bids, asks}
+			return { ...state, fetching: false, fetched: true, bids, asks };
 		}
 
 		// setOrderbook
@@ -93,26 +92,26 @@ export default function reducer(state = INITIAL_STATE, { payload, type }) {
 				bids,
 				asks,
 				orderbookReady: true
-			}
+			};
 		}
 
 		// getTrades
 		case 'GET_TRADES_PENDING': {
-			return {...state, fetching: true, fetched: false, error: null}
+			return { ...state, fetching: true, fetched: false, error: null };
 		}
 		case 'GET_TRADES_REJECTED': {
 			// alert('Error: ' + payload)
-			return {...state, fetching: false, error: payload}
+			return { ...state, fetching: false, error: payload };
 		}
 		case 'GET_TRADES_FULFILLED': {
-			return {...state, fetching: false, fetched: true, trades: payload.data}
+			return { ...state, fetching: false, fetched: true, trades: payload.data };
 		}
 
 		// addTrades
 		case 'ADD_TRADES': {
 			const price = payload[0].price;
 			const symbol = payload[0].symbol;
-			const prices = { ...state.prices }
+			const prices = { ...state.prices };
 			prices[state.symbol] = price;
 
 			return {
@@ -121,15 +120,15 @@ export default function reducer(state = INITIAL_STATE, { payload, type }) {
 				fetched: true,
 				trades: payload.concat(state.trades),
 				price,
-				prices,
-			}
+				prices
+			};
 		}
 
 		case ORDERBOOK_CONSTANTS.QUICK_TRADE_CANCEL:
 			return {
 				...state,
-				quickTrade: INITIAL_QUICK_TRADE,
-			}
+				quickTrade: INITIAL_QUICK_TRADE
+			};
 		case ORDERBOOK_CONSTANTS.QUICK_TRADE_PENDING:
 			return {
 				...state,
@@ -137,8 +136,8 @@ export default function reducer(state = INITIAL_STATE, { payload, type }) {
 					...INITIAL_QUICK_TRADE,
 					fetching: true,
 					data: {
-						price: state.quickTrade.data.price,
-					},
+						price: state.quickTrade.data.price
+					}
 				}
 			};
 		case ORDERBOOK_CONSTANTS.QUICK_TRADE_FULFILLED:
@@ -148,7 +147,7 @@ export default function reducer(state = INITIAL_STATE, { payload, type }) {
 					...INITIAL_QUICK_TRADE,
 					fetching: false,
 					data: payload,
-					error: payload.filled ? '' : 'Order is not filled',
+					error: payload.filled ? '' : 'Order is not filled'
 				}
 			};
 		case ORDERBOOK_CONSTANTS.QUICK_TRADE_REJECTED:
@@ -157,7 +156,7 @@ export default function reducer(state = INITIAL_STATE, { payload, type }) {
 				quickTrade: {
 					...INITIAL_QUICK_TRADE,
 					fetching: false,
-					error: payload,
+					error: payload
 				}
 			};
 
@@ -169,8 +168,8 @@ export default function reducer(state = INITIAL_STATE, { payload, type }) {
 					fetching: true,
 					data: {
 						...INITIAL_QUOTE.data,
-						price: state.quoteData.data.price,
-					},
+						price: state.quoteData.data.price
+					}
 				}
 			};
 		case ORDERBOOK_CONSTANTS.TRADE_QUOTE_REQUEST_FULFILLED:
@@ -180,7 +179,7 @@ export default function reducer(state = INITIAL_STATE, { payload, type }) {
 					...INITIAL_QUOTE,
 					fetching: false,
 					data: payload.data,
-					token: payload.token,
+					token: payload.token
 				}
 			};
 		case ORDERBOOK_CONSTANTS.TRADE_QUOTE_REQUEST_REJECTED:
@@ -192,17 +191,17 @@ export default function reducer(state = INITIAL_STATE, { payload, type }) {
 					...payload,
 					data: {
 						...INITIAL_QUOTE.data,
-						...payload.data,
+						...payload.data
 					},
-					error: payload.message,
+					error: payload.message
 				}
 			};
 
 		case ORDERBOOK_CONSTANTS.TRADE_QUOTE_REQUEST_CANCEL:
 			return {
 				...state,
-				quoteData: INITIAL_QUOTE,
-			}
+				quoteData: INITIAL_QUOTE
+			};
 		case ORDERBOOK_CONSTANTS.TRADE_QUOTE_PERFORM_PENDING:
 			return {
 				...state,
@@ -212,7 +211,7 @@ export default function reducer(state = INITIAL_STATE, { payload, type }) {
 						fetching: true,
 						completed: false,
 						error: '',
-						data: {},
+						data: {}
 					}
 				}
 			};
@@ -224,7 +223,7 @@ export default function reducer(state = INITIAL_STATE, { payload, type }) {
 					order: {
 						fetching: false,
 						completed: true,
-						data: payload,
+						data: payload
 					}
 				}
 			};
@@ -236,7 +235,7 @@ export default function reducer(state = INITIAL_STATE, { payload, type }) {
 					order: {
 						fetching: false,
 						completed: true,
-						error: payload,
+						error: payload
 					}
 				}
 			};

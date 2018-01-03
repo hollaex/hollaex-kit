@@ -1,47 +1,46 @@
 @import '../../variables';
 
 .user_security-wrapper {
-  > * {
-    margin-bottom: 2rem;
-  }
+	> * {
+		margin-bottom: 2rem;
+	}
 }
 
 .otp_form-wrapper {
-  display: flex;
-  flex-direction: column;
-  margin: 1rem;
+	display: flex;
+	flex-direction: column;
+	margin: 1rem;
 
-  .otp_form-section-wrapper {
-    border-top: 1px solid $colors-main-black;
-    padding-top: 0.5rem;
+	.otp_form-section-wrapper {
+		border-top: 1px solid $colors-main-black;
+		padding-top: 0.5rem;
 
-    > *:not(:last-child) {
-      margin-bottom: 0.5rem;
-    }
+		> *:not(:last-child) {
+			margin-bottom: 0.5rem;
+		}
 
-    .otp_form-section-content {
-      margin: 1rem 0;
-    }
+		.otp_form-section-content {
+			margin: 1rem 0;
+		}
 
-    .otp_form-section-title {
-      font-size: $font-size-main;
-      font-weight: bold;
-      margin-bottom: 0.5rem;
-    }
+		.otp_form-section-title {
+			font-size: $font-size-main;
+			font-weight: bold;
+			margin-bottom: 0.5rem;
+		}
 
-    .otp_form-section-text {
-      font-size: $font-size-subtext;
-    }
+		.otp_form-section-text {
+			font-size: $font-size-subtext;
+		}
 
-    .otp_secret {
-      font-size: $font-size-subtext;
-      background-color: $colors-deactivate-color1;
-      padding: 0.25rem 0.5rem;
-    }
-  }
+		.otp_secret {
+			font-size: $font-size-subtext;
+			background-color: $colors-deactivate-color1;
+			padding: 0.25rem 0.5rem;
+		}
+	}
 
-  .otp_form-fields-wrapper {
-    margin-bottom: 1rem;
-  }
-
+	.otp_form-fields-wrapper {
+		margin-bottom: 1rem;
+	}
 }

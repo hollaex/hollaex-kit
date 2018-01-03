@@ -1,77 +1,66 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
-import { ChartCanvas, Chart } from "react-stockcharts";
+import { ChartCanvas, Chart } from 'react-stockcharts';
 
-import {
-	AreaSeries,
-} from "react-stockcharts/lib/series";
+import { AreaSeries } from 'react-stockcharts/lib/series';
 
-import { XAxis, YAxis, TXAxis } from'./axis';
+import { XAxis, YAxis, TXAxis } from './axis';
 
 import {
 	CrossHairCursor,
 	MouseCoordinateX,
 	MouseCoordinateY,
-  EdgeIndicator,
-} from "react-stockcharts/lib/coordinates";
-import { OHLCTooltip } from "react-stockcharts/lib/tooltip";
+	EdgeIndicator
+} from 'react-stockcharts/lib/coordinates';
+import { OHLCTooltip } from 'react-stockcharts/lib/tooltip';
 
-import { fitWidth } from "react-stockcharts/lib/helper";
+import { fitWidth } from 'react-stockcharts/lib/helper';
 
 import {
 	xScaleProvider,
 	margins,
 	yExtents,
-  generateXExtents,
+	generateXExtents,
 	FORMAT_DATE_X_TICK,
-	FORMAT_Y_TICK,
+	FORMAT_Y_TICK
 } from './utils';
 
-import {
-  OHLCProps,
-  areaProps,
-  edgeIndicatorProps,
-} from './props';
+import { OHLCProps, areaProps, edgeIndicatorProps } from './props';
 
 import STRINGS from '../../config/localizedStrings';
 
 class AreaChartWithEdge extends Component {
 	render() {
 		const {
-      type,
-      data: initialData,
-      width,
-      height,
-      ratio,
-      seriesName,
-    } = this.props;
+			type,
+			data: initialData,
+			width,
+			height,
+			ratio,
+			seriesName
+		} = this.props;
 
-		const {
-			data,
-			xScale,
-			xAccessor,
-			displayXAccessor,
-		} = xScaleProvider(initialData);
+		const { data, xScale, xAccessor, displayXAccessor } = xScaleProvider(
+			initialData
+		);
 
 		const xExtents = generateXExtents(xAccessor, data);
 
 		return (
 			<ChartCanvas
-        height={height}
+				height={height}
 				ratio={ratio}
 				width={width}
-
 				margin={margins}
 				type={type}
 				seriesName={seriesName}
-
 				data={data}
 				xScale={xScale}
 				xAccessor={xAccessor}
 				displayXAccessor={displayXAccessor}
 				xExtents={xExtents}
-      >
+			>
 				<Chart id={1} yExtents={yExtents}>
 					<XAxis width={width} />
 					<YAxis height={height} />
@@ -89,8 +78,8 @@ class AreaChartWithEdge extends Component {
 					/>
 
 					<AreaSeries {...areaProps} />
-          <OHLCTooltip {...OHLCProps} displayTexts={STRINGS.CHART_TEXTS} />
-          <EdgeIndicator  {...edgeIndicatorProps} />
+					<OHLCTooltip {...OHLCProps} displayTexts={STRINGS.CHART_TEXTS} />
+					<EdgeIndicator {...edgeIndicatorProps} />
 				</Chart>
 				<CrossHairCursor />
 			</ChartCanvas>
@@ -103,12 +92,12 @@ AreaChartWithEdge.propTypes = {
 	width: PropTypes.number.isRequired,
 	height: PropTypes.number.isRequired,
 	ratio: PropTypes.number.isRequired,
-	type: PropTypes.oneOf(["svg", "hybrid"]).isRequired,
+	type: PropTypes.oneOf(['svg', 'hybrid']).isRequired
 };
 
 AreaChartWithEdge.defaultProps = {
-	type: "svg",
-  seriesName: 'AreaChart'
+	type: 'svg',
+	seriesName: 'AreaChart'
 };
 AreaChartWithEdge = fitWidth(AreaChartWithEdge);
 

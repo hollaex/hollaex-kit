@@ -25,84 +25,86 @@ $order_entry-column--width: 15rem;
 @import './components/_OrderEntry.scss';
 @import './components/Orderbook.scss';
 
-.ask, .buy {
-  color: $trade-asks-color-font;
+.ask,
+.buy {
+	color: $trade-asks-color-font;
 }
 
-.bid, .sell {
-  color: $trade-bids-color-font;
+.bid,
+.sell {
+	color: $trade-bids-color-font;
 }
 
 .trade_active_orders-wrapper {
-  overflow-y: auto;
-  flex: 1;
+	overflow-y: auto;
+	flex: 1;
 
-  .cell_box-type {
-    padding: 0.1rem;
+	.cell_box-type {
+		padding: 0.1rem;
 
-    > div {
-      color: white !important;
-      margin: 0;
-    }
-    .buy {
-      background-color: $trade-bids-color-font;
-    }
-    .sell {
-      background-color: $trade-asks-color-font;
-    }
+		> div {
+			color: white !important;
+			margin: 0;
+		}
+		.buy {
+			background-color: $trade-bids-color-font;
+		}
+		.sell {
+			background-color: $trade-asks-color-font;
+		}
 
-    &.fullfilled .cell-wrapper {
-      border: 1px solid $trade-fullfilled-background-color;
-      margin: 0;
-      padding: 1px;
-      min-width: 5rem;
-      max-width: 7rem;
+		&.fullfilled .cell-wrapper {
+			border: 1px solid $trade-fullfilled-background-color;
+			margin: 0;
+			padding: 1px;
+			min-width: 5rem;
+			max-width: 7rem;
 
-      > .cell_value-wrapper {
-        padding: 0 0.15rem;
-        position: relative;
-        width: 100%;
-        color: $colors-main-black;
+			> .cell_value-wrapper {
+				padding: 0 0.15rem;
+				position: relative;
+				width: 100%;
+				color: $colors-main-black;
 
-        .cell_value-bar {
-          position: absolute;
-          left: 0;
-          top: 0;
-          bottom: 0;
-          background-color: $trade-fullfilled-background-color;
-          z-index: -1;
-        }
-      }
-    }
-  }
+				.cell_value-bar {
+					position: absolute;
+					left: 0;
+					top: 0;
+					bottom: 0;
+					background-color: $trade-fullfilled-background-color;
+					z-index: -1;
+				}
+			}
+		}
+	}
 }
 
 .direction_ltr {
-  .trade_active_orders-wrapper {
-    .cell_box-type {
-      padding-left: 0;
-      &.fullfilled .cell-wrapper {
-        > .cell_value-wrapper {
-          .cell_value-bar {
-            left: 0;
-          }
-        }
-      }
-    }
-  }
+	.trade_active_orders-wrapper {
+		.cell_box-type {
+			padding-left: 0;
+			&.fullfilled .cell-wrapper {
+				> .cell_value-wrapper {
+					.cell_value-bar {
+						left: 0;
+					}
+				}
+			}
+		}
+	}
 }
 
 .direction_rtl {
-  .trade_active_orders-wrapper {
-    .cell_box-type {
-      padding-right: 0;
-      &.fullfilled .cell-wrapper {
-        > .cell_value-wrapper {
-          .cell_value-bar {
-            right: 0;
-          }
-        }
-      }
-    }
-  }
+	.trade_active_orders-wrapper {
+		.cell_box-type {
+			padding-right: 0;
+			&.fullfilled .cell-wrapper {
+				> .cell_value-wrapper {
+					.cell_value-bar {
+						right: 0;
+					}
+				}
+			}
+		}
+	}
 }

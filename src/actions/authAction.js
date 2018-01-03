@@ -1,57 +1,59 @@
 import axios from 'axios';
-import { browserHistory } from 'react-router'
+import { browserHistory } from 'react-router';
 import querystring from 'query-string';
 import { normalizeEmail } from 'validator';
-import store from '../store'
+import store from '../store';
 import { setToken, removeToken, getToken } from '../utils/token';
 
 export function getEmail(data) {
 	localStorage.setItem('email', data);
-	return ((dispatch) => {
+	return (dispatch) => {
 		dispatch({ type: 'USER_EMAIL', payload: data });
-	})
+	};
 }
 
 export function checkVerificationCode(data) {
-		return ((dispatch) => {
-			dispatch({ type: 'CHECK_VERIFICATION_CODE_PENDING' });
-			axios.get(`/verify?${querystring.stringify(data)}`)
-				.then((response) => {
-					dispatch({
-						type: 'CHECK_VERIFICATION_CODE_FULFILLED',
-						payload: response.data,
-					});
-				})
-				.catch((error) => {
-					dispatch({
-						type: 'CHECK_VERIFICATION_CODE_REJECTED',
-						payload: error.response.data,
-					});
+	return (dispatch) => {
+		dispatch({ type: 'CHECK_VERIFICATION_CODE_PENDING' });
+		axios
+			.get(`/verify?${querystring.stringify(data)}`)
+			.then((response) => {
+				dispatch({
+					type: 'CHECK_VERIFICATION_CODE_FULFILLED',
+					payload: response.data
 				});
-		});
+			})
+			.catch((error) => {
+				dispatch({
+					type: 'CHECK_VERIFICATION_CODE_REJECTED',
+					payload: error.response.data
+				});
+			});
+	};
 }
 
 export function verifyVerificationCode(data) {
-		return ((dispatch) => {
-			dispatch({ type: 'VERIFY_VERIFICATION_CODE_PENDING' });
-			axios.post('/verify', data)
-				.then((response) => {
-					dispatch({
-						type: 'VERIFY_VERIFICATION_CODE_FULFILLED',
-						payload: response.data,
-					});
-				})
-				.catch((error) => {
-					dispatch({
-						type: 'VERIFY_VERIFICATION_CODE_REJECTED',
-						payload: error.response.data,
-					});
+	return (dispatch) => {
+		dispatch({ type: 'VERIFY_VERIFICATION_CODE_PENDING' });
+		axios
+			.post('/verify', data)
+			.then((response) => {
+				dispatch({
+					type: 'VERIFY_VERIFICATION_CODE_FULFILLED',
+					payload: response.data
 				});
-		});
+			})
+			.catch((error) => {
+				dispatch({
+					type: 'VERIFY_VERIFICATION_CODE_REJECTED',
+					payload: error.response.data
+				});
+			});
+	};
 }
 
-export const performLogin = (values) => axios.post('/login', values)
-	.then((res) => {
+export const performLogin = (values) =>
+	axios.post('/login', values).then((res) => {
 		setTokenInApp(res.data.token, true);
 		store.dispatch({
 			type: 'VERIFY_TOKEN_FULFILLED',
@@ -67,24 +69,24 @@ const setTokenInApp = (token, setInStore = false) => {
 	if (setInStore) {
 		setToken(token);
 	}
-}
+};
 
 const cleatTokenInApp = (router, path = '/') => {
 	axios.defaults.headers.common['Authorization'] = {};
 	removeToken();
 	router.push(path);
-}
+};
 
 export function verifyToken(token) {
-	return ((dispatch) => {
+	return (dispatch) => {
 		dispatch({ type: 'VERIFY_TOKEN_PENDING' });
 		axios({
-	    method: 'GET',
-	    url: '/verify_token',
-	    headers: {
-	      'Authorization': `Bearer ${token}`,
-	    }
-	  })
+			method: 'GET',
+			url: '/verify_token',
+			headers: {
+				Authorization: `Bearer ${token}`
+			}
+		})
 			.then((response) => {
 				setTokenInApp(token);
 				dispatch({
@@ -93,31 +95,33 @@ export function verifyToken(token) {
 				});
 			})
 			.catch((error) => {
-				const message = error.response ? error.response.data.message : 'Invalid token';
+				const message = error.response
+					? error.response.data.message
+					: 'Invalid token';
 				logout(message)(dispatch);
 				dispatch({
-					type: 'VERIFY_TOKEN_REJECTED',
+					type: 'VERIFY_TOKEN_REJECTED'
 				});
 				cleatTokenInApp(browserHistory, '/login');
 			});
-	});
+	};
 }
 
 export const logout = (message = '') => (dispatch) => {
 	dispatch({
 		type: 'LOGOUT',
 		payload: {
-			message,
+			message
 		}
 	});
 	cleatTokenInApp(browserHistory, message ? '/login' : '/');
-}
+};
 
 export const setLogoutMessage = (message = '') => ({
 	type: 'SET_LOGOUT_MESSAGE',
 	payload: {
-		message,
-	},
+		message
+	}
 });
 
 export function loadToken() {
@@ -125,13 +129,14 @@ export function loadToken() {
 	return {
 		type: 'LOAD_TOKEN',
 		payload: token
-	}
+	};
 }
 
-export const requestVerificationEmail = (data) => axios.get(`/verify?${querystring.stringify({ ...data, resend: true })}`)
+export const requestVerificationEmail = (data) =>
+	axios.get(`/verify?${querystring.stringify({ ...data, resend: true })}`);
 export const requestResetPassword = (values) => {
 	const qs = querystring.stringify(values);
 	return axios.get(`/reset-password?${qs}`);
-}
+};
 
 export const resetPassword = (data) => axios.post('/reset-password', data);

@@ -5,186 +5,182 @@ $children--padding: 0.5rem;
 $error-icon-size: 1.25rem;
 $valid-icon-size: 2rem;
 
-
 .field-wrapper {
-  position: relative;
-  width: 100%;
-  font-size: $font-size-subtext;
-  font-weight: bold;
-  margin: $wrapper-margin 0;
+	position: relative;
+	width: 100%;
+	font-size: $font-size-subtext;
+	font-weight: bold;
+	margin: $wrapper-margin 0;
 
-  &.error {
-    color: $error-color;
-  }
+	&.error {
+		color: $error-color;
+	}
 
-  &.inline {
-    display: flex;
-    align-items: flex-end;
+	&.inline {
+		display: flex;
+		align-items: flex-end;
 
-    > div {
-      flex: 1;
+		> div {
+			flex: 1;
 
-      &.field-error-content {
-        padding-bottom: $error-margin;
-      }
-    }
-  }
+			&.field-error-content {
+				padding-bottom: $error-margin;
+			}
+		}
+	}
 }
 
 .field-label {
-  margin-bottom: 0.25rem;
-  color: $colors-main-black;
-  font-weight: normal;
+	margin-bottom: 0.25rem;
+	color: $colors-main-black;
+	font-weight: normal;
 }
 
 .field-content {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  margin-bottom: $underline-margin-bottom;
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	margin-bottom: $underline-margin-bottom;
 }
 
 .field-children {
-  padding: $children--padding 0;
-  position: relative;
+	padding: $children--padding 0;
+	position: relative;
 
-  &.custom {
-    padding: 0;
-  }
+	&.custom {
+		padding: 0;
+	}
 
-  .field-valid {
-    position: absolute;
-    height: $valid-icon-size;
-    width: $valid-icon-size;
+	.field-valid {
+		position: absolute;
+		height: $valid-icon-size;
+		width: $valid-icon-size;
 
-    bottom: 0;
-  }
+		bottom: 0;
+	}
 }
 
 .field-content-outline {
-  &:before {
-    content:'';
-    height: 2px;
-    width: 100%;
-    bottom :0;
-    position: absolute;
-    transition: 0.3s ease all;
-    background: $form-color-underline;
-  }
+	&:before {
+		content: '';
+		height: 2px;
+		width: 100%;
+		bottom: 0;
+		position: absolute;
+		transition: 0.3s ease all;
+		background: $form-color-underline;
+	}
 
-  &:after {
-    content:'';
-    height: 2px;
-    width: 0;
-    bottom:0;
-    position: absolute;
-    transition: 0.3s ease all;
-    background: $form-color-underline;
-  }
+	&:after {
+		content: '';
+		height: 2px;
+		width: 0;
+		bottom: 0;
+		position: absolute;
+		transition: 0.3s ease all;
+		background: $form-color-underline;
+	}
 
-  &.focused:after {
-    width: 100%;
-    background: $form-color-underline-focus;
-  }
+	&.focused:after {
+		width: 100%;
+		background: $form-color-underline-focus;
+	}
 }
 
 .field-wrapper.error .field-content-outline {
-  &:before {
-    background: $error-color;
-  }
+	&:before {
+		background: $error-color;
+	}
 }
 
 .field-error-content {
-  position: relative;
-  display: flex;
-  align-items: center;
+	position: relative;
+	display: flex;
+	align-items: center;
 
-  &.field-error-hidden {
-    visibility: hidden;
-  }
+	&.field-error-hidden {
+		visibility: hidden;
+	}
 }
 
 .field-error-icon {
-  height: $error-icon-size;
-  width: $error-icon-size;
+	height: $error-icon-size;
+	width: $error-icon-size;
 }
-
-
 
 .dumb-field-wrapper {
-  > .field-content > .field-children {
-    padding-left: 0.25rem;
-  }
+	> .field-content > .field-children {
+		padding-left: 0.25rem;
+	}
 
-  .field-children {
-    padding-bottom: 0;
-  }
+	.field-children {
+		padding-bottom: 0;
+	}
 
-  .copy-wrapper {
-    top: 0;
-  }
+	.copy-wrapper {
+		top: 0;
+	}
 }
 
-
 .direction_ltr {
-  .field-error-text {
-    padding-left: 0.25rem;
-  }
+	.field-error-text {
+		padding-left: 0.25rem;
+	}
 
-  .field-children {
-    &.valid > *:not(:last-child) {
-      padding-right: $valid-icon-size;
-    }
+	.field-children {
+		&.valid > *:not(:last-child) {
+			padding-right: $valid-icon-size;
+		}
 
-    .field-valid {
-      right: 0;
-    }
-  }
+		.field-valid {
+			right: 0;
+		}
+	}
 
-  .field-wrapper {
-    &.inline {
-      .field-error-content {
-        margin-left: $error-margin;
-      }
+	.field-wrapper {
+		&.inline {
+			.field-error-content {
+				margin-left: $error-margin;
+			}
 
-      input {
-        padding-right: 0;
-      }
+			input {
+				padding-right: 0;
+			}
 
-      .field-valid {
-        right: -$valid-icon-size;
-      }
-    }
-  }
+			.field-valid {
+				right: -$valid-icon-size;
+			}
+		}
+	}
 }
 
 .direction_rtl {
-  .field-error-text {
-    padding-right: 0.25rem;
-  }
+	.field-error-text {
+		padding-right: 0.25rem;
+	}
 
-  .field-children {
-    &.valid > *:not(:last-child) {
-      padding-left: $valid-icon-size;
-    }
+	.field-children {
+		&.valid > *:not(:last-child) {
+			padding-left: $valid-icon-size;
+		}
 
-    .field-valid {
-      left: 0;
-    }
-  }
-  .field-wrapper {
-    &.inline {
-      .field-error-content {
-        margin-right: $error-margin;
-      }
+		.field-valid {
+			left: 0;
+		}
+	}
+	.field-wrapper {
+		&.inline {
+			.field-error-content {
+				margin-right: $error-margin;
+			}
 
-      input {
-        padding-left: 0;
-      }
+			input {
+				padding-left: 0;
+			}
 
-      .field-valid {
-        left: -$valid-icon-size;
-      }
-    }
-  }
+			.field-valid {
+				left: -$valid-icon-size;
+			}
+		}
+	}
 }

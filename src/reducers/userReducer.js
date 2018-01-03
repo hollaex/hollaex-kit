@@ -8,7 +8,7 @@ const USER_DATA_KEYS = [
 	'address',
 	'phone_number',
 	'id_data',
-	'bank_account',
+	'bank_account'
 ];
 
 const INITIAL_OTP_OBJECT = {
@@ -16,30 +16,32 @@ const INITIAL_OTP_OBJECT = {
 	requested: false,
 	error: '',
 	secret: '',
-	activated: false,
+	activated: false
 };
 
 const extractuserData = (data) => {
 	const userData = {
 		timestamp: Date.now()
-	}
+	};
 	USER_DATA_KEYS.forEach((key) => {
 		if (data.hasOwnProperty(key)) {
 			userData[key] = data[key];
 			if (key === 'phone_number') {
 				const number = PhoneNumber(data[key]);
-				userData.phone_country = `+${PhoneNumber.getCountryCodeForRegionCode(number.getRegionCode())}`;
+				userData.phone_country = `+${PhoneNumber.getCountryCodeForRegionCode(
+					number.getRegionCode()
+				)}`;
 				userData.phone_number = number.getNumber('significant');
 			}
 		}
-	})
+	});
 
 	return userData;
 };
 
 const sortByDate = (a, b) => {
 	return new Date(a) <= new Date(b);
-}
+};
 
 const INITIAL_STATE = {
 	id: null,
@@ -59,10 +61,16 @@ const INITIAL_STATE = {
 };
 
 export default function reducer(state = INITIAL_STATE, action) {
-	switch(action.type) {
-
+	switch (action.type) {
 		case 'SET_ME': {
-			const {id, email, balance, crypto_wallet, verification_level, otp_enabled} = action.payload;
+			const {
+				id,
+				email,
+				balance,
+				crypto_wallet,
+				verification_level,
+				otp_enabled
+			} = action.payload;
 			const userData = extractuserData(action.payload);
 			return {
 				...state,
@@ -79,7 +87,7 @@ export default function reducer(state = INITIAL_STATE, action) {
 				verification_level,
 				userData,
 				otp_enabled
-			}
+			};
 		}
 
 		case 'SET_USER_DATA': {
@@ -88,9 +96,9 @@ export default function reducer(state = INITIAL_STATE, action) {
 				...state,
 				userData: {
 					...state.userData,
-					...userData,
+					...userData
 				}
-			}
+			};
 		}
 		case 'SET_BALANCE':
 			return {
@@ -104,33 +112,48 @@ export default function reducer(state = INITIAL_STATE, action) {
 
 		// WITHDRAW
 		case 'PROCESS_WITHDRAW_PENDING': {
-			return {...state, fetching: true, fetched: false, error: null}
+			return { ...state, fetching: true, fetched: false, error: null };
 		}
 		case 'PROCESS_WITHDRAW_REJECTED': {
-			return {...state, fetching: false, error: action.payload}
+			return { ...state, fetching: false, error: action.payload };
 		}
 		case 'PROCESS_WITHDRAW_FULFILLED': {
-			return {...state, fetching: false, fetched: true, data:action.payload.data}
+			return {
+				...state,
+				fetching: false,
+				fetched: true,
+				data: action.payload.data
+			};
 		}
 		// USER_IDENTITY
 		case 'USER_IDENTITY_PENDING': {
-			return {...state, fetching: true, fetched: false, error: null}
+			return { ...state, fetching: true, fetched: false, error: null };
 		}
 		case 'USER_IDENTITY_REJECTED': {
-			return {...state, fetching: false, error: action.payload}
+			return { ...state, fetching: false, error: action.payload };
 		}
 		case 'USER_IDENTITY_FULFILLED': {
-			return {...state, fetching: false, fetched: true, userData:action.payload.data}
+			return {
+				...state,
+				fetching: false,
+				fetched: true,
+				userData: action.payload.data
+			};
 		}
 		// UPLOAD_FILE
 		case 'UPLOAD_FILE_PENDING': {
-			return {...state, fetching: true, fetched: false, error: null}
+			return { ...state, fetching: true, fetched: false, error: null };
 		}
 		case 'UPLOAD_FILE_REJECTED': {
-			return {...state, fetching: false, error: action.payload}
+			return { ...state, fetching: false, error: action.payload };
 		}
 		case 'UPLOAD_FILE_FULFILLED': {
-			return {...state, fetching: false, fetched: true, userData:action.payload.data}
+			return {
+				...state,
+				fetching: false,
+				fetched: true,
+				userData: action.payload.data
+			};
 		}
 
 		// REQUEST_OTP
@@ -139,9 +162,9 @@ export default function reducer(state = INITIAL_STATE, action) {
 				...state,
 				otp: {
 					...INITIAL_OTP_OBJECT,
-					requesting: true,
+					requesting: true
 				}
-			}
+			};
 		case 'REQUEST_OTP_REJECTED':
 			return {
 				...state,
@@ -149,7 +172,7 @@ export default function reducer(state = INITIAL_STATE, action) {
 					...INITIAL_OTP_OBJECT,
 					error: action.payload.message
 				}
-			}
+			};
 		case 'REQUEST_OTP_FULFILLED':
 			return {
 				...state,
@@ -158,44 +181,48 @@ export default function reducer(state = INITIAL_STATE, action) {
 					requested: true,
 					secret: action.payload.secret
 				}
-			}
+			};
 
 		case 'ACTIVATE_OTP':
 			return {
 				...state,
 				otp: {
 					...state.otp,
-					activated: true,
+					activated: true
 				},
-				otp_enabled: true,
-			}
+				otp_enabled: true
+			};
 
 		case 'REVOKE_OTP':
 			return {
 				...state,
 				otp: INITIAL_OTP_OBJECT,
-				otp_enabled: false,
-			}
+				otp_enabled: false
+			};
 
 		// ACTIVATE_OTP
 		case 'ACTIVATE_OTP_PENDING': {
-			return {...state, fetching: true, fetched: false, error: null}
+			return { ...state, fetching: true, fetched: false, error: null };
 		}
 		case 'ACTIVATE_OTP_REJECTED': {
-			return {...state, fetching: false,otpError: action.payload.response.data.message}
+			return {
+				...state,
+				fetching: false,
+				otpError: action.payload.response.data.message
+			};
 		}
 		case 'ACTIVATE_OTP_FULFILLED': {
-			return {...state, fetching: false,  activateOtp: action.payload.data}
+			return { ...state, fetching: false, activateOtp: action.payload.data };
 		}
 		// DEACTIVATE_OTP
 		case 'DEACTIVATE_OTP_PENDING': {
-			return {...state, fetching: true, fetched: false, error: null}
+			return { ...state, fetching: true, fetched: false, error: null };
 		}
 		case 'DEACTIVATE_OTP_REJECTED': {
-			return {...state, fetching: false,error: action.payload.response}
+			return { ...state, fetching: false, error: action.payload.response };
 		}
 		case 'DEACTIVATE_OTP_FULFILLED': {
-			return {...state, fetching: false,  deactivateOtp: action.payload.data}
+			return { ...state, fetching: false, deactivateOtp: action.payload.data };
 		}
 
 		case 'LOGOUT':
