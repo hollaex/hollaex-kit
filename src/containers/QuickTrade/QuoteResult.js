@@ -1,5 +1,6 @@
 import React from 'react';
 import { Loader, IconTitle, Button } from '../../components';
+import { formatBtcAmount, formatFiatAmount } from '../../utils/currency';
 
 import STRINGS from '../../config/localizedStrings';
 import { CURRENCIES, ICONS } from '../../config/constants';
@@ -36,9 +37,9 @@ const QuoteResult = ({ name, onClose, ...props }) => {
           {STRINGS.formatString(
             STRINGS.QUOTE_SUCCESS_REVIEW_MESSAGE,
             STRINGS.SIDES_VALUES[data.side],
-            data.size,
+            formatBtcAmount(data.size),
             name,
-            data.price,
+            formatFiatAmount(data.price),
             STRINGS.FIAT_NAME,
           )}
         </div>

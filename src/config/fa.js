@@ -495,8 +495,8 @@ export default {
   CURRENCY: 'واحد پول',
   TYPE: 'نوع',
   TYPES_VALUES: {
-    market: 'market',
-    limit: 'limit',
+    market: 'بازار',
+    limit: 'حد',
   },
   TYPES: [
     { value: 'market', label: 'بازار' },
@@ -592,7 +592,7 @@ export default {
   QUOTE_COUNTDOWN_MESSAGE: 'شما {0} ثانیه برای این تراکنش وقت دارید',
   QUOTE_EXPIRED_TOKEN: 'اعتبار قیمت داده شده منقضی شده',
   QUOTE_SUCCESS_REVIEW_TITLE: 'خرید آسان',
-  QUOTE_SUCCESS_REVIEW_MESSAGE: 'شما با موفقیت {0} {1} {0} برای {3} {4}',
+  QUOTE_SUCCESS_REVIEW_MESSAGE: 'شما با موفقیت {0} {1} {2} برای {3} {4}', // TODO You have successfully {0} {1} {2} for {3} {4}', you have successfully buy 1 btc from x toman
   COUNTDOWN_ERROR_MESSAGE: 'شمارش معکوس به اتمام رسید.',
   WITHDRAW_PAGE: {
     BANK_TO_WITHDRAW: 'نام بانک دریافت کننده',

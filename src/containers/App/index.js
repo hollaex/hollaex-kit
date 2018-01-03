@@ -170,7 +170,7 @@ class Container extends Component {
 		});
 
 		privateSocket.on('update', ({ type, data }) => {
-			// console.log('update', type, data)
+			console.log('update', type, data)
 			switch(type) {
         case 'order_queued':
 					// TODO add queued orders to the store
@@ -249,20 +249,23 @@ class Container extends Component {
 				case 'trade': {
 					this.props.addUserTrades(data);
 					const tradeOrdersIds = new Set();
- 				 	data.forEach((trade) => {
- 						tradeOrdersIds.add(trade.order);
- 				 	});
+					data.forEach((trade) => {
+						if (trade.order) {
+							tradeOrdersIds.add(trade.order.id);
+						}
+					});
 					if (tradeOrdersIds.size === 1) {
 						const orderIdFromTrade = Array.from(tradeOrdersIds)[0];
 						const { ordersQueued } = this.state;
-						const order = ordersQueued.find(({ id }) => id === orderIdFromTrade);
+						let order = ordersQueued.find(({ id }) => id === orderIdFromTrade);
+						if (!order) {
+							const { orders } = this.props;
+							order = orders.find(({ id }) => id === orderIdFromTrade);
+						}
 						if (order) {
 							this.props.setNotification(
 								NOTIFICATIONS.TRADES,
-								{
-									data,
-									order,
-								},
+								{ data, order },
 							);
 						}
 					}

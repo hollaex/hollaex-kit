@@ -588,7 +588,7 @@ export default {
   QUOTE_COUNTDOWN_MESSAGE: 'You have {0} seconds to perform the trade',
   QUOTE_EXPIRED_TOKEN: 'The quote token has expired.',
   QUOTE_SUCCESS_REVIEW_TITLE: 'Quick Trade',
-  QUOTE_SUCCESS_REVIEW_MESSAGE: 'You have successfully {0} {1} {0} for {3} {4}',
+  QUOTE_SUCCESS_REVIEW_MESSAGE: 'You have successfully {0} {1} {2} for {3} {4}', // you have successfully buy 1 btc from x toman
   COUNTDOWN_ERROR_MESSAGE: 'Countdown is finished',
   WITHDRAW_PAGE: {
     BANK_TO_WITHDRAW: 'Bank to Withdraw to',
