@@ -35,7 +35,7 @@ class EditableInputField extends Component {
 			placeholder,
 			meta: { touched, error, active },
 			onClick,
-			fullWidth = false,
+			fullWidth = false, // eslint-disable-line
 			inputType,
 			information,
 			...rest

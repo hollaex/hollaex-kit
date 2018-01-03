@@ -7,17 +7,9 @@ import {
 	getUserDeposits,
 	getUserWithdrawals
 } from '../../actions/walletActions';
-import { fiatSymbol } from '../../utils/currency';
 
-import {
-	ActionNotification,
-	IconTitle,
-	Table,
-	CsvDownload,
-	TabController,
-	Loader
-} from '../../components';
-import { ICONS, FLEX_CENTER_CLASSES, CURRENCIES } from '../../config/constants';
+import { IconTitle, TabController, Loader } from '../../components';
+import { ICONS, CURRENCIES } from '../../config/constants';
 
 import {
 	generateTradeHeaders,

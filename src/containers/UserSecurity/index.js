@@ -60,7 +60,7 @@ class UserVerification extends Component {
 
 	calculateSections = (user) => {
 		const formValues = generateFormValues();
-		const { otp_enabled, otp, email } = user;
+		const { otp_enabled, otp } = user;
 
 		const sections = [
 			{
@@ -181,7 +181,6 @@ class UserVerification extends Component {
 	};
 
 	renderModalContent = () => {
-		const text = STRINGS.ACCOUNT_SECURITY.CHANGE_PASSWORD.DIALOG.SUCCESS;
 		return (
 			<SuccessDisplay
 				onClick={this.onCloseDialog}

@@ -1,7 +1,4 @@
 import axios from 'axios';
-import _ from 'lodash';
-import querystring from 'query-string';
-import { all } from 'bluebird';
 
 export function getMe() {
 	return {

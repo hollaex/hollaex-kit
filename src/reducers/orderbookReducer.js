@@ -57,13 +57,10 @@ export default function reducer(state = INITIAL_STATE, { payload, type }) {
 				symbol: payload.symbol
 			};
 		// getOrderbook
-		case 'GET_ORDERBOOK_PENDING': {
+		case 'GET_ORDERBOOK_PENDING':
 			return { ...state, fetching: true, fetched: false, error: null };
-		}
-		case 'GET_ORDERBOOK_REJECTED': {
-			// alert('Error: ' + payload)
+		case 'GET_ORDERBOOK_REJECTED':
 			return { ...state, fetching: false, error: payload };
-		}
 		case 'GET_ORDERBOOK_FULFILLED': {
 			let bids = payload.data.bids;
 			let asks = payload.data.asks;
@@ -96,21 +93,16 @@ export default function reducer(state = INITIAL_STATE, { payload, type }) {
 		}
 
 		// getTrades
-		case 'GET_TRADES_PENDING': {
+		case 'GET_TRADES_PENDING':
 			return { ...state, fetching: true, fetched: false, error: null };
-		}
-		case 'GET_TRADES_REJECTED': {
-			// alert('Error: ' + payload)
+		case 'GET_TRADES_REJECTED':
 			return { ...state, fetching: false, error: payload };
-		}
-		case 'GET_TRADES_FULFILLED': {
+		case 'GET_TRADES_FULFILLED':
 			return { ...state, fetching: false, fetched: true, trades: payload.data };
-		}
-
 		// addTrades
 		case 'ADD_TRADES': {
 			const price = payload[0].price;
-			const symbol = payload[0].symbol;
+			// const symbol = payload[0].symbol;
 			const prices = { ...state.prices };
 			prices[state.symbol] = price;
 

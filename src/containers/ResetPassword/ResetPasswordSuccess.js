@@ -3,7 +3,7 @@ import { IconTitle, Button } from '../../components';
 import { RESET_PASSWORD_SUCCESS } from './constants';
 import { ICONS } from '../../config/constants';
 
-const { TITLE, TEXT_1, TEXT_2, BUTTON, ICON } = RESET_PASSWORD_SUCCESS;
+const { TITLE, TEXT_1, TEXT_2, BUTTON } = RESET_PASSWORD_SUCCESS;
 
 const ResetPasswordSuccess = ({ onClick, ...rest }) => {
 	return (

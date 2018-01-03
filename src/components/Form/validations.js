@@ -2,7 +2,7 @@ import validator from 'validator';
 import WAValidator from 'wallet-address-validator';
 import math from 'mathjs';
 import { NETWORK } from '../../config/constants';
-import { calculatePrice, fiatSymbol, roundNumber } from '../../utils/currency';
+import { fiatSymbol, roundNumber } from '../../utils/currency';
 import STRINGS from '../../config/localizedStrings';
 
 const passwordRegEx = /^(?=.*[a-zA-Z])(?=.*\d).{8,}$/;

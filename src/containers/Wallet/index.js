@@ -3,7 +3,6 @@ import classnames from 'classnames';
 import { connect } from 'react-redux';
 import {
 	IconTitle,
-	CurrencyBall,
 	CurrencyBallWithPrice,
 	Button,
 	ActionNotification,
@@ -11,17 +10,14 @@ import {
 } from '../../components';
 import { ICONS, FLEX_CENTER_CLASSES, CURRENCIES } from '../../config/constants';
 import {
-	calculatePrice,
 	calculateBalancePrice,
 	generateWalletActionsText
 } from '../../utils/currency';
 import STRINGS from '../../config/localizedStrings';
 
 import { AssetsBlock } from './AssetsBlock';
-const fiatName = CURRENCIES.fiat.name;
 const fiatSymbol = 'fiat';
 const fiatCurrencySymbol = CURRENCIES.fiat.currencySymbol;
-const fiatShortName = CURRENCIES.fiat.shortName;
 const fiatFormatToCurrency = CURRENCIES.fiat.formatToCurrency;
 
 class Wallet extends Component {

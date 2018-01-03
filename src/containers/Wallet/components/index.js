@@ -1,7 +1,7 @@
 import React from 'react';
 import { ActionNotification, IconTitle } from '../../../components';
 import DumbField from '../../../components/Form/FormFields/DumbField';
-import { generateWalletActionsText, fiatSymbol } from '../../../utils/currency';
+import { generateWalletActionsText } from '../../../utils/currency';
 import { ICONS, CURRENCIES } from '../../../config/constants';
 import STRINGS from '../../../config/localizedStrings';
 

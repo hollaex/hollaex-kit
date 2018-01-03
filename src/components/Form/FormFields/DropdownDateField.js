@@ -2,13 +2,8 @@ import React, { Component } from 'react';
 import classnames from 'classnames';
 import moment from 'moment';
 import momentJ from 'moment-jalaali';
-import EventListener from 'react-event-listener';
 import { range } from 'lodash';
-import FieldWrapper, { FieldContent } from './FieldWrapper';
-import {
-	TIMESTAMP_FORMAT,
-	TIMESTAMP_FORMAT_FA
-} from '../../../config/constants';
+import FieldWrapper from './FieldWrapper';
 import { ActionNotification } from '../../';
 import DropdownDateOption from './DropdownDateOption';
 import { ICONS } from '../../../config/constants';
@@ -213,11 +208,7 @@ class DropdownDateField extends Component {
 
 	render() {
 		const { display, date, language } = this.state;
-		const {
-			input: { value },
-			meta: { invalid },
-			disabled = false
-		} = this.props;
+		const { meta: { invalid }, disabled = false } = this.props;
 		const languageProps = this.props.language;
 		return (
 			<FieldWrapper

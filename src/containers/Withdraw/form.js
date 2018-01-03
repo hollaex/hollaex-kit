@@ -4,7 +4,6 @@ import { reduxForm, formValueSelector, reset } from 'redux-form';
 import math from 'mathjs';
 import { Button, Dialog, OtpForm, Loader } from '../../components';
 import renderFields from '../../components/Form/factoryFields';
-import { errorHandler } from '../../components/OtpForm/utils';
 import {
 	setWithdrawNotificationSuccess,
 	setWithdrawNotificationError
@@ -18,7 +17,6 @@ export const FORM_NAME = 'WithdrawCryptocurrencyForm';
 
 const selector = formValueSelector(FORM_NAME);
 
-const FEE_PERCENTAGE_LIMIT = 20;
 const validate = (values, props) => {
 	const errors = {};
 	const amount = math.fraction(values.amount || 0);
@@ -108,7 +106,7 @@ class Form extends Component {
 			pristine,
 			error,
 			valid,
-			initialValues,
+			initialValues, // eslint-disable-line
 			symbol,
 			data,
 			openContactForm,

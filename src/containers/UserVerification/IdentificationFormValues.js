@@ -1,18 +1,8 @@
-import React from 'react';
-import moment from 'moment';
-import {
-	required,
-	requiredBoolean,
-	isBefore
-} from '../../components/Form/validations';
 import {
 	COUNTRIES_OPTIONS,
-	PHONE_OPTIONS,
-	initialCountry,
 	NATIONAL_COUNTRY_VALUE
 } from '../../utils/countries';
 import { ICONS } from '../../config/constants';
-import { getFormattedDate } from '../../utils/string';
 import STRINGS from '../../config/localizedStrings';
 
 export const generateFormValues = (

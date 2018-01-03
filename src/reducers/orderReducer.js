@@ -10,33 +10,23 @@ const INITIAL_STATE = {
 export default function reducer(state = INITIAL_STATE, action) {
 	switch (action.type) {
 		// createOrder
-		case 'CREATE_ORDER_PENDING': {
+		case 'CREATE_ORDER_PENDING':
 			return { ...state, fetching: true, fetched: false, error: null };
-		}
-		case 'CREATE_ORDER_REJECTED': {
-			// alert('Error: ' + action.payload.response.data.error)
+		case 'CREATE_ORDER_REJECTED':
 			return { ...state, fetching: false, error: action.payload };
-		}
-		case 'CREATE_ORDER_FULFILLED': {
-			// alert('Order created successfully')
+		case 'CREATE_ORDER_FULFILLED':
 			return { ...state, fetching: false, fetched: true };
-		}
 		// getOrders
-		case 'GET_ORDERS_PENDING': {
+		case 'GET_ORDERS_PENDING':
 			return { ...state, fetching: true, fetched: false, error: null };
-		}
-		case 'GET_ORDERS_REJECTED': {
+		case 'GET_ORDERS_REJECTED':
 			return { ...state, fetching: false, error: action.payload };
-		}
-		case 'GET_ORDERS_FULFILLED': {
+		case 'GET_ORDERS_FULFILLED':
 			return { ...state, fetching: false, activeOrders: action.payload.data };
-		}
 
 		//Webscoket redux manipulations on orders
-		case 'SET_USER_ORDERS': {
+		case 'SET_USER_ORDERS':
 			return { ...state, activeOrders: action.payload };
-		}
-
 		case 'ADD_ORDER':
 			const newOrder = { ...action.payload.order };
 			if (!newOrder.created_at) {
@@ -70,16 +60,14 @@ export default function reducer(state = INITIAL_STATE, action) {
 		}
 
 		// CANCEL_ORDER
-		case 'CANCEL_ORDER_PENDING': {
+		case 'CANCEL_ORDER_PENDING':
 			return { ...state, fetching: true, fetched: false, error: null };
-		}
-		case 'CANCEL_ORDER_REJECTED': {
+		case 'CANCEL_ORDER_REJECTED':
 			return { ...state, fetching: false, error: action.payload.data };
-		}
 		case 'CANCEL_ORDER_FULFILLED': {
 			const id = action.payload.data.id;
 			const data = _.filter(state.activeOrders, (user) => {
-				if (user.id != id) {
+				if (user.id !== id) {
 					return user;
 				}
 			});
@@ -90,19 +78,14 @@ export default function reducer(state = INITIAL_STATE, action) {
 			};
 		}
 		// CANCEL_ALL_ORDERS
-		case 'CANCEL_ALL_ORDERS_PENDING': {
+		case 'CANCEL_ALL_ORDERS_PENDING':
 			return { ...state, fetching: true, fetched: false, error: null };
-		}
-		case 'CANCEL_ALL_ORDERS_REJECTED': {
+		case 'CANCEL_ALL_ORDERS_REJECTED':
 			return { ...state, fetching: false, error: action.payload.data };
-		}
-		case 'CANCEL_ALL_ORDERS_FULFILLED': {
+		case 'CANCEL_ALL_ORDERS_FULFILLED':
 			return { ...state, fetching: false, activeOrders: [] };
-		}
-
 		case 'LOGOUT':
 			return INITIAL_STATE;
-
 		default:
 			return state;
 	}

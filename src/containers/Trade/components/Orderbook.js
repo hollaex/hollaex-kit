@@ -62,7 +62,7 @@ class Orderbook extends Component {
 	};
 
 	render() {
-		const { asks, bids, symbol, fiatSymbol } = this.props;
+		const { asks, bids, symbol } = this.props;
 		const { dataBlockHeight } = this.state;
 		const blockStyle =
 			dataBlockHeight > 0

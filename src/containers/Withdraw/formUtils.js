@@ -1,4 +1,3 @@
-import math from 'mathjs';
 import {
 	required,
 	minValue,

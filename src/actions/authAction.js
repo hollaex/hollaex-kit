@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { browserHistory } from 'react-router';
 import querystring from 'query-string';
-import { normalizeEmail } from 'validator';
 import store from '../store';
 import { setToken, removeToken, getToken } from '../utils/token';
 

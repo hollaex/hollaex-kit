@@ -199,7 +199,7 @@ export default function reducer(state = INITIAL_STATE, { type, payload }) {
 					...payload
 				}
 			};
-		case ACTION_KEYS.USER_WITHDRAWALS_BTC_FEE_FULFILLED:
+		case ACTION_KEYS.USER_WITHDRAWALS_BTC_FEE_REJECTED:
 			return {
 				...state,
 				btcFee: {
@@ -209,6 +209,7 @@ export default function reducer(state = INITIAL_STATE, { type, payload }) {
 			};
 		case 'LOGOUT':
 			return INITIAL_STATE;
+		default:
+			return state;
 	}
-	return state;
 }

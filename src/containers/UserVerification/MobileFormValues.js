@@ -1,4 +1,3 @@
-import React from 'react';
 import { PHONE_OPTIONS } from '../../utils/countries';
 import STRINGS from '../../config/localizedStrings';
 

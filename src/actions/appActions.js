@@ -1,8 +1,4 @@
-import STRINGS from '../config/localizedStrings';
-import {
-	setLanguage as storeLanguageInBrowser,
-	getLanguageFromString
-} from '../utils/string';
+import { setLanguage as storeLanguageInBrowser } from '../utils/string';
 import axios from 'axios';
 
 export const SET_NOTIFICATION = 'SET_NOTIFICATION';

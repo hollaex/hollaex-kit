@@ -1,27 +1,17 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
-import math from 'mathjs';
 import { debounce } from 'lodash';
 import { Button } from '../../components';
 
 import STRINGS from '../../config/localizedStrings';
-import {
-	ICONS,
-	CURRENCIES,
-	LIMIT_VALUES,
-	FLEX_CENTER_CLASSES
-} from '../../config/constants';
-import {
-	fiatShortName,
-	fiatFormatToCurrency,
-	fiatSymbol
-} from '../../utils/currency';
+import { ICONS, CURRENCIES, FLEX_CENTER_CLASSES } from '../../config/constants';
+import { fiatSymbol } from '../../utils/currency';
 
 import ToogleButton from './ToogleButton';
 import ReviewBlock from './ReviewBlock';
 import InputBlock from './InputBlock';
 
-import { DECIMALS, DEFAULT_SYMBOL } from './constants';
+import { DEFAULT_SYMBOL } from './constants';
 
 const GROUP_CLASSES = [...FLEX_CENTER_CLASSES, 'flex-column'];
 

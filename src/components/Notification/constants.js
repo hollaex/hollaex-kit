@@ -16,7 +16,7 @@ const generateFiatDepositTexts = (strings) => ({
 });
 
 const generateBtcDepositTexts = (strings, status) => {
-	const { shortName, name, fullName } = CURRENCIES.btc;
+	const { name, fullName } = CURRENCIES.btc;
 	return {
 		TITLE: status
 			? strings.formatString(

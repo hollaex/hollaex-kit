@@ -39,10 +39,6 @@ const extractuserData = (data) => {
 	return userData;
 };
 
-const sortByDate = (a, b) => {
-	return new Date(a) <= new Date(b);
-};
-
 const INITIAL_STATE = {
 	id: null,
 	email: null,
@@ -89,7 +85,6 @@ export default function reducer(state = INITIAL_STATE, action) {
 				otp_enabled
 			};
 		}
-
 		case 'SET_USER_DATA': {
 			const userData = extractuserData(action.payload);
 			return {
@@ -111,50 +106,41 @@ export default function reducer(state = INITIAL_STATE, action) {
 			};
 
 		// WITHDRAW
-		case 'PROCESS_WITHDRAW_PENDING': {
+		case 'PROCESS_WITHDRAW_PENDING':
 			return { ...state, fetching: true, fetched: false, error: null };
-		}
-		case 'PROCESS_WITHDRAW_REJECTED': {
+		case 'PROCESS_WITHDRAW_REJECTED':
 			return { ...state, fetching: false, error: action.payload };
-		}
-		case 'PROCESS_WITHDRAW_FULFILLED': {
+		case 'PROCESS_WITHDRAW_FULFILLED':
 			return {
 				...state,
 				fetching: false,
 				fetched: true,
 				data: action.payload.data
 			};
-		}
 		// USER_IDENTITY
-		case 'USER_IDENTITY_PENDING': {
+		case 'USER_IDENTITY_PENDING':
 			return { ...state, fetching: true, fetched: false, error: null };
-		}
-		case 'USER_IDENTITY_REJECTED': {
+		case 'USER_IDENTITY_REJECTED':
 			return { ...state, fetching: false, error: action.payload };
-		}
-		case 'USER_IDENTITY_FULFILLED': {
+		case 'USER_IDENTITY_FULFILLED':
 			return {
 				...state,
 				fetching: false,
 				fetched: true,
 				userData: action.payload.data
 			};
-		}
 		// UPLOAD_FILE
-		case 'UPLOAD_FILE_PENDING': {
+		case 'UPLOAD_FILE_PENDING':
 			return { ...state, fetching: true, fetched: false, error: null };
-		}
-		case 'UPLOAD_FILE_REJECTED': {
+		case 'UPLOAD_FILE_REJECTED':
 			return { ...state, fetching: false, error: action.payload };
-		}
-		case 'UPLOAD_FILE_FULFILLED': {
+		case 'UPLOAD_FILE_FULFILLED':
 			return {
 				...state,
 				fetching: false,
 				fetched: true,
 				userData: action.payload.data
 			};
-		}
 
 		// REQUEST_OTP
 		case 'REQUEST_OTP_PENDING':
@@ -201,32 +187,26 @@ export default function reducer(state = INITIAL_STATE, action) {
 			};
 
 		// ACTIVATE_OTP
-		case 'ACTIVATE_OTP_PENDING': {
+		case 'ACTIVATE_OTP_PENDING':
 			return { ...state, fetching: true, fetched: false, error: null };
-		}
-		case 'ACTIVATE_OTP_REJECTED': {
+		case 'ACTIVATE_OTP_REJECTED':
 			return {
 				...state,
 				fetching: false,
 				otpError: action.payload.response.data.message
 			};
-		}
-		case 'ACTIVATE_OTP_FULFILLED': {
+		case 'ACTIVATE_OTP_FULFILLED':
 			return { ...state, fetching: false, activateOtp: action.payload.data };
-		}
 		// DEACTIVATE_OTP
-		case 'DEACTIVATE_OTP_PENDING': {
+		case 'DEACTIVATE_OTP_PENDING':
 			return { ...state, fetching: true, fetched: false, error: null };
-		}
-		case 'DEACTIVATE_OTP_REJECTED': {
+		case 'DEACTIVATE_OTP_REJECTED':
 			return { ...state, fetching: false, error: action.payload.response };
-		}
-		case 'DEACTIVATE_OTP_FULFILLED': {
+		case 'DEACTIVATE_OTP_FULFILLED':
 			return { ...state, fetching: false, deactivateOtp: action.payload.data };
-		}
-
 		case 'LOGOUT':
 			return INITIAL_STATE;
+		default:
+			return state;
 	}
-	return state;
 }

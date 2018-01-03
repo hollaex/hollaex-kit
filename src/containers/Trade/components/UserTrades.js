@@ -1,5 +1,4 @@
 import React from 'react';
-import classnames from 'classnames';
 
 import { Table } from '../../../components';
 import { generateTradeHeaders } from '../../TransactionsHistory/utils';

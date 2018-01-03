@@ -5,7 +5,7 @@ import classnames from 'classnames';
 import { bindActionCreators } from 'redux';
 import { SubmissionError } from 'redux-form';
 
-import { FLEX_CENTER_CLASSES, ICONS } from '../../config/constants';
+import { ICONS } from '../../config/constants';
 import {
 	submitOrder,
 	cancelOrder,
@@ -85,7 +85,6 @@ class Trade extends Component {
 			orderbookReady,
 			asks,
 			bids,
-			marketPrice,
 			activeOrders,
 			userTrades,
 			cancelOrder,

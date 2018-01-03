@@ -7,7 +7,7 @@ import EmailRequestForm from './EmailRequestForm';
 import EmailRequestSuccess from './EmailRequestSuccess';
 import { IconTitle, Dialog } from '../../components';
 import { ContactForm } from '../';
-import { EXIR_LOGO, FLEX_CENTER_CLASSES, ICONS } from '../../config/constants';
+import { EXIR_LOGO, FLEX_CENTER_CLASSES } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 
 class VerifyEmailRequest extends Component {

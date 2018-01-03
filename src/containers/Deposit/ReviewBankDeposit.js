@@ -1,13 +1,9 @@
 import React from 'react';
-import classnames from 'classnames';
 import { Button } from '../../components';
 
 import STRINGS from '../../config/localizedStrings';
 
-import { generateFiatInformation } from './utils';
-import { renderBankInformation } from '../Wallet/components';
-
-import { BANK_INFORMATION, BANK_PAYMENT_LINK } from '../../config/constants';
+import { BANK_PAYMENT_LINK } from '../../config/constants';
 
 const ReviewBankDeposit = ({ data, onClickPay }) => {
 	const { deposit_id } = data;
@@ -29,14 +25,6 @@ const ReviewBankDeposit = ({ data, onClickPay }) => {
 					</a>
 				</div>
 			</div>
-			{/*
-        <div className="separator" />
-        <div className="review-section">
-          <div className="review-title">{STRINGS.formatString(STRINGS.DEPOSIT_METHOD, 2)}: {STRINGS.DEPOSIT_METHOD_MANUAL_TRANSFER}</div>
-          {generateFiatInformation(deposit_id)}
-          {renderBankInformation(BANK_INFORMATION, true)}
-        </div>
-        */}
 		</div>
 	);
 };

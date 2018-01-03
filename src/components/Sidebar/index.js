@@ -1,12 +1,9 @@
 import React from 'react';
 import classnames from 'classnames';
-import ReactSVG from 'react-svg';
 
 import Section from './Section';
 import { NotificationsList, Button, Wallet, Logout } from '../';
-import { ICONS } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
-import { fiatSymbol } from '../../utils/currency';
 
 const Sidebar = ({
 	goToWalletPage,

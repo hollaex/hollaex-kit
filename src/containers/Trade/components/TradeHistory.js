@@ -3,7 +3,6 @@ import classnames from 'classnames';
 
 import { DisplayTable } from '../../../components';
 
-import { HOUR_FORMAT } from '../../../config/constants';
 import { formatTimestamp } from '../../../utils/utils';
 import { formatFiatAmount, formatBtcAmount } from '../../../utils/currency';
 

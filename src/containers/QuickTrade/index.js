@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
-import { SubmissionError } from 'redux-form';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import STRINGS from '../../config/localizedStrings';
-import { CURRENCIES, ICONS } from '../../config/constants';
+import { ICONS } from '../../config/constants';
 
 import { QuickTrade, Dialog, Countdown, IconTitle } from '../../components';
 import { requestQuote, executeQuote } from '../../actions/orderbookAction';
@@ -104,7 +103,7 @@ class QuickTradeContainer extends Component {
 	);
 
 	render() {
-		const { requestQuote, executeQuote, quoteData, symbol } = this.props;
+		const { quoteData, symbol } = this.props;
 		const { showQuickTradeModal, side } = this.state;
 
 		const name = STRINGS[`${symbol.toUpperCase()}_NAME`];

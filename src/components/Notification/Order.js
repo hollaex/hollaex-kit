@@ -1,6 +1,5 @@
 import React from 'react';
 import math from 'mathjs';
-import { Button, ActionNotification } from '../';
 import { ICONS } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 import { formatBtcAmount, formatFiatAmount } from '../../utils/currency';
@@ -11,7 +10,6 @@ import {
 } from './Notification';
 
 const SIDE_BUY = 'buy';
-const SIDE_SELL = 'sell';
 
 const getTitleAndIcon = (type, { side, filled }) => {
 	const data = {

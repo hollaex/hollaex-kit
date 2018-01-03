@@ -1,17 +1,12 @@
 import React from 'react';
 import math from 'mathjs';
 import { Button } from '../../components';
-import {
-	fiatSymbol,
-	fiatShortName,
-	fiatFormatToCurrency
-} from '../../utils/currency';
+import { fiatSymbol, fiatFormatToCurrency } from '../../utils/currency';
 import { CURRENCIES, ICONS } from '../../config/constants';
 
 import STRINGS from '../../config/localizedStrings';
 
 const ButtonSection = ({ onClickAccept, onClickCancel }) => {
-	// TODO SET CORRECT TEXTS
 	return (
 		<div className="d-flex">
 			<Button

@@ -3,10 +3,10 @@ import { Loader, IconTitle, Button } from '../../components';
 import { formatBtcAmount, formatFiatAmount } from '../../utils/currency';
 
 import STRINGS from '../../config/localizedStrings';
-import { CURRENCIES, ICONS } from '../../config/constants';
+import { ICONS } from '../../config/constants';
 
 const QuoteResult = ({ name, onClose, ...props }) => {
-	const { fetching, completed, error, data } = props.data;
+	const { fetching, error, data } = props.data;
 
 	if (fetching) {
 		return <Loader relative={true} background={false} />;

@@ -1,9 +1,5 @@
 import React from 'react';
-import {
-	NotificationWraper,
-	NotificationContent,
-	InformationRow
-} from './Notification';
+import { NotificationWraper, NotificationContent } from './Notification';
 import { ICONS, BLOCKTRAIL_ENDPOINT } from '../../config/constants';
 import { Button } from '../';
 

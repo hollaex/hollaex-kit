@@ -1,6 +1,5 @@
 import React from 'react';
 import math from 'mathjs';
-import { Button, ActionNotification } from '../';
 import { ICONS } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 import { formatBtcAmount, formatFiatAmount } from '../../utils/currency';
@@ -41,7 +40,6 @@ const getTitleAndIcon = (side, type) => {
 const calculateValues = (data = []) => {
 	let btcAccumulated = math.fraction(0);
 	let fiatAccumulated = math.fraction(0);
-	let averageAccumulated = math.fraction(0);
 	const averages = [];
 	data.forEach(({ size, price }) => {
 		btcAccumulated = math.add(btcAccumulated, math.fraction(size));
@@ -100,7 +98,6 @@ const TradeNotification = ({ data: { order, data } }) => {
 	return (
 		<NotificationWraper {...notificationProps}>
 			<TradeDisplay side={side} data={data} />
-			{/*<Button label="Go back to trade" />*/}
 		</NotificationWraper>
 	);
 };

@@ -11,7 +11,6 @@ import {
 	required,
 	minValue,
 	maxValue,
-	normalizeInt,
 	checkMarketPrice,
 	step
 } from '../../../components/Form/validations';

@@ -1,7 +1,6 @@
 import React from 'react';
 import { NOTIFICATIONS } from '../../actions/appActions';
 
-import Header from './Header';
 import Deposit from './Deposit';
 import Withdraw from './Withdraw';
 import Order from './Order';

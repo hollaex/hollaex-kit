@@ -9,7 +9,7 @@ const InputField = (props) => {
 		placeholder,
 		meta: { touched, error, active },
 		onClick,
-		fullWidth = false,
+		fullWidth = false, // eslint-disable-line
 		information,
 		notification,
 		...rest

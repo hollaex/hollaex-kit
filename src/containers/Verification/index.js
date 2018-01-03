@@ -105,7 +105,7 @@ class Verification extends Component {
 		if (activeTab === -1) {
 			return;
 		}
-		const { phone_number, full_name } = user;
+		const { full_name } = user;
 		const tabs = [
 			{
 				title: (

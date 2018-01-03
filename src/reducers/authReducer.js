@@ -122,6 +122,7 @@ export default function reducer(state = INITIAL_STATE, { type, payload }) {
 				...INITIAL_STATE,
 				logoutMessage: payload.message
 			};
+		default:
+			return state;
 	}
-	return state;
 }

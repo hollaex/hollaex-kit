@@ -1,9 +1,4 @@
 import STRINGS from '../../config/localizedStrings';
-import {
-	required,
-	requiredWithCustomMessage,
-	exactLength
-} from '../../components/Form/validations';
 
 export const generateFormValues = () => ({
 	bank_name: {

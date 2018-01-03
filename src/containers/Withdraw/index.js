@@ -5,14 +5,12 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { formValueSelector, change } from 'redux-form';
 
-import { Dialog, Loader, WarningVerification } from '../../components';
+import { Loader, WarningVerification } from '../../components';
 import {
 	ICONS,
-	FLEX_CENTER_CLASSES,
-	CURRENCIES,
 	MIN_VERIFICATION_LEVEL_TO_WITHDRAW
 } from '../../config/constants';
-import { generateWalletActionsText, fiatSymbol } from '../../utils/currency';
+import { fiatSymbol } from '../../utils/currency';
 import {
 	performBtcWithdraw,
 	requestFiatWithdraw,
@@ -22,7 +20,6 @@ import { errorHandler } from '../../components/OtpForm/utils';
 
 import { openContactForm } from '../../actions/appActions';
 
-import ReviewModalContent from './ReviewModalContent';
 import WithdrawCryptocurrency from './form';
 import { generateFormValues, generateInitialValues } from './formUtils';
 import { generateFiatInformation, renderExtraInformation } from './utils';
@@ -33,8 +30,6 @@ import { FORM_NAME } from './form';
 
 class Withdraw extends Component {
 	state = {
-		dialogIsOpen: false,
-		dialogData: {},
 		formValues: {},
 		initialValues: {}
 	};
@@ -107,7 +102,6 @@ class Withdraw extends Component {
 		const {
 			symbol,
 			balance,
-			fee,
 			verification_level,
 			prices,
 			otp_enabled,
@@ -116,7 +110,7 @@ class Withdraw extends Component {
 			activeLanguage,
 			btcFee
 		} = this.props;
-		const { dialogIsOpen, dialogData, formValues, initialValues } = this.state;
+		const { formValues, initialValues } = this.state;
 
 		const balanceAvailable = balance[`${symbol}_available`];
 

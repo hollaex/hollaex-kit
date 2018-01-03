@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { CheckboxButton, IconTitle } from '../../components';
 import QRCode from 'qrcode.react';
 import OTPForm from './OTPForm';

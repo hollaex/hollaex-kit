@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-import classnames from 'classnames';
-import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { SubmissionError } from 'redux-form';
 
@@ -10,7 +8,7 @@ import {
 	required,
 	minValue,
 	maxValue,
-	checkBalance
+	checkBalance // eslint-disable-line
 } from '../../components/Form/validations';
 import { requestFiatDeposit } from '../../actions/walletActions';
 import { Dialog } from '../../components';
@@ -138,6 +136,4 @@ const mapStateToProps = (store) => ({
 	activeLanguage: store.app.language
 });
 
-const mapDispatchToProps = (dispatch) => ({});
-
-export default connect(mapStateToProps, mapDispatchToProps)(BankDeposit);
+export default connect(mapStateToProps)(BankDeposit);

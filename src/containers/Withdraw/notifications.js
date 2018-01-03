@@ -1,6 +1,4 @@
-import React from 'react';
 import { setNotification, NOTIFICATIONS } from '../../actions/appActions';
-import { BLOCKTRAIL_ENDPOINT } from '../../config/constants';
 
 export const setWithdrawNotificationSuccess = (data, dispatch) => {
 	dispatch(

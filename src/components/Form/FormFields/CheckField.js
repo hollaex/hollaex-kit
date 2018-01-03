@@ -1,7 +1,6 @@
 import React from 'react';
 import classnames from 'classnames';
 import FieldWrapper from './FieldWrapper';
-import { FieldError } from './FieldWrapper';
 
 const InputField = (props) => {
 	const { input, label, type, ...rest } = props;

@@ -6,18 +6,9 @@ import {
 	isInclusivelyAfterDay,
 	isInclusivelyBeforeDay
 } from 'react-dates';
-import {
-	DatePicker,
-	DateTimePicker,
-	DateRangePicker,
-	DateTimeRangePicker
-} from 'react-advance-jalaali-datepicker';
+import { DatePicker } from 'react-advance-jalaali-datepicker';
 import FieldWrapper, { FieldContent } from './FieldWrapper';
-import { getFormattedDate } from '../../../utils/string';
-import {
-	TIMESTAMP_FORMAT,
-	TIMESTAMP_FORMAT_FA
-} from '../../../config/constants';
+import { TIMESTAMP_FORMAT_FA } from '../../../config/constants';
 
 const FIELDS = [
 	{ key: 'year', label: 'Year' },

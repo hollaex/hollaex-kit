@@ -1,5 +1,5 @@
 import React from 'react';
-import { reduxForm, reset } from 'redux-form';
+import { reduxForm } from 'redux-form';
 import { Button } from '../';
 import renderFields from './factoryFields';
 import { getErrorLocalized } from '../../utils/errors';

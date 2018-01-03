@@ -77,7 +77,6 @@ class Home extends Component {
 		const {
 			token,
 			verifyToken,
-			estimatedValue,
 			symbol,
 			quickTradeData,
 			requestQuickTrade,

@@ -1,9 +1,7 @@
 import React from 'react';
-import { FieldArray, Field, reduxForm } from 'redux-form';
+import { reduxForm } from 'redux-form';
 
 import renderFields from '../../components/Form/factoryFields';
-import { Button } from '../../components';
-import STRINGS from '../../config/localizedStrings';
 
 const DumbForm = (formName) => {
 	const Form = (props) => {

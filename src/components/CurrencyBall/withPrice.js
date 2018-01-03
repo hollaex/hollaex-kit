@@ -1,5 +1,5 @@
 import React from 'react';
-import { CurrencyBall, ActionNotification } from '../';
+import { CurrencyBall } from '../';
 import { CURRENCIES } from '../../config/constants';
 import {
 	calculatePrice,

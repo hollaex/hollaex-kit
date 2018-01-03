@@ -5,7 +5,7 @@ import { AuthForm } from '../../components';
 import { TEXTS } from './constants';
 import STRINGS from '../../config/localizedStrings';
 
-const { FIELDS, BUTTON, VALIDATIONS } = TEXTS.FORM;
+const { FIELDS, VALIDATIONS } = TEXTS.FORM;
 
 export const FormFields = {
 	password: {
