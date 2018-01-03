@@ -8,7 +8,7 @@ import {
 } from '../../utils/currency';
 import STRINGS from '../../config/localizedStrings';
 
-export const AssetsBlock = ({ balance, prices, totalAssets }) => (
+export const AssetsBlock = ({ balance, prices, totalAssets, changeSymbol }) => (
 	<div className="wallet-assets_block">
 		<table className="wallet-assets_block-table">
 			<thead>
@@ -34,9 +34,15 @@ export const AssetsBlock = ({ balance, prices, totalAssets }) => (
 						return (
 							<tr className="table-row table-bottom-border" key={key}>
 								<td className="table-icon td-fit">
-									<CurrencyBall name={shortName} symbol={key} size="s" />
+									<div className="pointer" onClick={() => changeSymbol(key)}>
+										<CurrencyBall name={shortName} symbol={key} size="s" />
+									</div>
 								</td>
-								<td className="td-name td-fit">{fullName}</td>
+								<td className="td-name td-fit">
+									<div className="pointer" onClick={() => changeSymbol(key)}>
+										{fullName}
+									</div>
+								</td>
 								<td>{`${shortName} ${formatToCurrency(balanceValue)}`}</td>
 								<td className="align-opposite show-equals">
 									{`${STRINGS.FIAT_CURRENCY_SYMBOL}${

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import {
 	IconTitle,
 	CurrencyBallWithPrice,
@@ -8,6 +9,7 @@ import {
 	ActionNotification,
 	Accordion
 } from '../../components';
+import { changeSymbol } from '../../actions/orderbookAction';
 import { ICONS, FLEX_CENTER_CLASSES, CURRENCIES } from '../../config/constants';
 import {
 	calculateBalancePrice,
@@ -29,6 +31,7 @@ class Wallet extends Component {
 
 	componentDidMount() {
 		this.generateSections(
+			this.props.changeSymbol,
 			this.props.balance,
 			this.props.prices,
 			this.state.isOpen
@@ -37,6 +40,7 @@ class Wallet extends Component {
 
 	componentWillReceiveProps(nextProps) {
 		this.generateSections(
+			nextProps.changeSymbol,
 			nextProps.balance,
 			nextProps.prices,
 			this.state.isOpen
@@ -48,7 +52,7 @@ class Wallet extends Component {
 		return `${fiatCurrencySymbol}${fiatFormatToCurrency(total)}`;
 	};
 
-	generateSections = (balance, prices, isOpen = false) => {
+	generateSections = (changeSymbol, balance, prices, isOpen = false) => {
 		const totalAssets = this.calculateTotalAssets(balance, prices);
 
 		const sections = [
@@ -59,6 +63,7 @@ class Wallet extends Component {
 						balance={balance}
 						prices={prices}
 						totalAssets={totalAssets}
+						changeSymbol={changeSymbol}
 					/>
 				),
 				isOpen: true,
@@ -82,7 +87,12 @@ class Wallet extends Component {
 	goToTransactionsHistory = () => this.goToPage('transactions');
 
 	notifyOnOpen = (index, isOpen) => {
-		this.generateSections(this.props.balance, this.props.prices, isOpen);
+		this.generateSections(
+			this.props.changeSymbol,
+			this.props.balance,
+			this.props.prices,
+			isOpen
+		);
 	};
 
 	renderWalletHeaderBlock = (symbol, price, balance) => {
@@ -155,6 +165,8 @@ const mapStateToProps = (store) => ({
 	activeLanguage: store.app.language
 });
 
-const mapDispatchToProps = (dispatch) => ({});
+const mapDispatchToProps = (dispatch) => ({
+	changeSymbol: bindActionCreators(changeSymbol, dispatch)
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(Wallet);
