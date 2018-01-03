@@ -331,7 +331,7 @@ export default {
        POSTAL_CODE_PLACEHOLDER: 'کد پستی خود را تایپ کنید',
        PHONE_CODE_LABEL: 'کشور',
        PHONE_CODE_PLACEHOLDER: 'کشوری که شماره تلفن شما متصل است را تایپ کنید',
-       PHONE_CODE_DISPLAY: '{1} ({0})', //TODO 0 -> (+21)  1 -> Iran
+       PHONE_CODE_DISPLAY: '({0}) {1}', //TODO 0 -> (+21)  1 -> Iran
        PHONE_NUMBER_LABEL: 'شماره تلفن',
        PHONE_NUMBER_PLACEHOLDER: 'شماره تلفن خود را تایپ کنید',
        SMS_SEND: 'ارسال پیامک',
@@ -586,13 +586,13 @@ export default {
   DEPOSIT_VERIFICATION_ERROR: 'خطایی در تأیید سپرده وجود دارد.',
   DEPOSIT_VERIFICATION_ERROR_VERIFIED: 'سپرده قبلا تأیید شده است',
   DEPOSIT_VERIFICATION_ERROR_STATUS: 'وضعیت نامعتبر',
-  QUOTE_MESSAGE: 'شما به {0} {1} {2} برای {3} {4}',
+  QUOTE_MESSAGE: '{0} {1} {2} در ازای {3} {4}',
   QUOTE_BUTTON: 'قبول',
   QUOTE_REVIEW: 'بازبینی',
-  QUOTE_COUNTDOWN_MESSAGE: 'شما {0} ثانیه برای این تراکنش وقت دارید',
+  QUOTE_COUNTDOWN_MESSAGE: '{0} ثانیه برای این تراکنش وقت دارید',
   QUOTE_EXPIRED_TOKEN: 'اعتبار قیمت داده شده منقضی شده',
   QUOTE_SUCCESS_REVIEW_TITLE: 'خرید آسان',
-  QUOTE_SUCCESS_REVIEW_MESSAGE: 'شما با موفقیت {0} {1} {2} برای {3} {4}', // TODO You have successfully {0} {1} {2} for {3} {4}', you have successfully buy 1 btc from x toman
+  QUOTE_SUCCESS_REVIEW_MESSAGE: '{0} {1} در ازای {3} {4} با موفقیت انجام شد.',
   COUNTDOWN_ERROR_MESSAGE: 'شمارش معکوس به اتمام رسید.',
   WITHDRAW_PAGE: {
     BANK_TO_WITHDRAW: 'نام بانک دریافت کننده',
