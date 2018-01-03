@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
-import { Link } from 'react-router';
 import { SubmissionError } from 'redux-form';
 import { resetPassword } from '../../actions/authAction';
 import ResetPasswordForm from './ResetPasswordForm';
@@ -8,7 +7,7 @@ import ResetPasswordSuccess from './ResetPasswordSuccess';
 import { IconTitle, Dialog } from '../../components';
 import { ContactForm } from '../';
 import { FLEX_CENTER_CLASSES, ICONS } from '../../config/constants';
-import { TEXTS } from './constants';
+import STRINGS from '../../config/localizedStrings';
 
 class ResetPassword extends Component {
 	state = {
@@ -75,13 +74,13 @@ class ResetPassword extends Component {
 				>
 					<IconTitle
 						iconPath={ICONS.SET_NEW_PASSWORD}
-						text={TEXTS.TITLE}
+						text={STRINGS.RESET_PASSWORD.TITLE}
 						textType="title"
 						underline={true}
 						className="w-100"
-						subtitle={TEXTS.SUBTITLE}
+						subtitle={STRINGS.RESET_PASSWORD.SUBTITLE}
 						actionProps={{
-							text: TEXTS.HELP,
+							text: STRINGS.HELP_TEXT,
 							iconPath: ICONS.HELP_ICON,
 							onClick: this.onOpenDialog
 						}}
@@ -96,12 +95,6 @@ class ResetPassword extends Component {
 					>
 						<ResetPasswordForm onSubmit={this.onSubmitResetPassword} />
 					</div>
-				</div>
-				<div className={classnames('f-1', 'link_wrapper')}>
-					{TEXTS.NO_EMAIL}
-					<Link to="/verify" className={classnames('blue-link')}>
-						{TEXTS.REQUEST_EMAIL}
-					</Link>
 				</div>
 				<Dialog
 					isOpen={showContactForm}

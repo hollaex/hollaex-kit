@@ -2,32 +2,31 @@ import React from 'react';
 import { reduxForm } from 'redux-form';
 import { required, password } from '../../components/Form/validations';
 import { AuthForm } from '../../components';
-import { TEXTS } from './constants';
 import STRINGS from '../../config/localizedStrings';
 
-const { FIELDS, VALIDATIONS } = TEXTS.FORM;
-
-export const FormFields = {
+export const generateFormFields = () => ({
 	password: {
 		type: 'password',
 		validate: [required, password],
 		fullWidth: true,
-		...FIELDS.password
+		label: STRINGS.FORM_FIELDS.PASSWORD_LABEL,
+		placeholder: STRINGS.FORM_FIELDS.PASSWORD_PLACEHOLDER
 	},
 	password_repeat: {
 		type: 'password',
 		validate: [required],
 		fullWidth: true,
-		...FIELDS.password_repeat
+		label: STRINGS.FORM_FIELDS.PASSWORD_REPEAT_LABEL,
+		placeholder: STRINGS.FORM_FIELDS.PASSWORD_REPEAT_PLACEHOLDER
 	}
-};
+});
 
 const validate = (values) => {
 	const { password, password_repeat } = values;
 	const errors = {};
 
 	if (password && password_repeat && password !== password_repeat) {
-		errors.password_repeat = VALIDATIONS.PASSWORDS_DONT_MATCH;
+		errors.password_repeat = STRINGS.VALIDATIONS.PASSWORDS_DONT_MATCH;
 	}
 
 	return errors;
@@ -36,7 +35,7 @@ const validate = (values) => {
 const Form = (props) => (
 	<AuthForm
 		{...props}
-		formFields={FormFields}
+		formFields={generateFormFields()}
 		buttonLabel={STRINGS.RESET_PASSWORD.BUTTON}
 	/>
 );
