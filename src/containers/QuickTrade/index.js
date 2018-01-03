@@ -9,6 +9,7 @@ import { CURRENCIES, ICONS } from '../../config/constants';
 
 import { QuickTrade, Dialog, Countdown, IconTitle } from '../../components';
 import { requestQuote, executeQuote } from '../../actions/orderbookAction';
+import { formatBtcAmount, formatFiatAmount } from '../../utils/currency';
 
 import {
   FLEX_CENTER_CLASSES,
@@ -19,7 +20,7 @@ import QuoteResult from './QuoteResult';
 class QuickTradeContainer extends Component {
   state = {
     showQuickTradeModal: false,
-    side: '',
+    side: 'buy',
     quote: {},
     interval: undefined,
   }
@@ -107,7 +108,7 @@ class QuickTradeContainer extends Component {
     const { requestQuote, executeQuote, quoteData, symbol } = this.props;
     const { showQuickTradeModal, side } = this.state;
 
-    const { name } = CURRENCIES[symbol];
+    const name = STRINGS[`${symbol.toUpperCase()}_NAME`];
     const { data, order } = quoteData;
     const end = quoteData.data.exp;
     return (
@@ -145,7 +146,14 @@ class QuickTradeContainer extends Component {
                 className="w-100"
               />
               <div className="quote-review-wrapper">
-                {STRINGS.formatString(STRINGS.QUOTE_MESSAGE, side, data.size, name, data.price, STRINGS.FIAT_NAME)}
+                {STRINGS.formatString(
+                  STRINGS.QUOTE_MESSAGE,
+                  STRINGS.SIDES_VALUES[side],
+                  formatBtcAmount(data.size),
+                  name,
+                  formatFiatAmount(data.price),
+                  STRINGS.FIAT_NAME
+                )}
               </div>
             </Countdown>
           ) : (

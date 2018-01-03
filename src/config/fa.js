@@ -331,7 +331,7 @@ export default {
        POSTAL_CODE_PLACEHOLDER: 'کد پستی خود را تایپ کنید',
        PHONE_CODE_LABEL: 'کشور',
        PHONE_CODE_PLACEHOLDER: 'کشوری که شماره تلفن شما متصل است را تایپ کنید',
-       PHONE_CODE_DISPLAY: '{1} ({0})', //TODO 0 -> (+21)  1 -> Iran
+       PHONE_CODE_DISPLAY: '({0}) {1}', //TODO 0 -> (+21)  1 -> Iran
        PHONE_NUMBER_LABEL: 'شماره تلفن',
        PHONE_NUMBER_PLACEHOLDER: 'شماره تلفن خود را تایپ کنید',
        SMS_SEND: 'ارسال پیامک',
@@ -495,8 +495,8 @@ export default {
   CURRENCY: 'واحد پول',
   TYPE: 'نوع',
   TYPES_VALUES: {
-    market: 'market',
-    limit: 'limit',
+    market: 'بازار',
+    limit: 'حد',
   },
   TYPES: [
     { value: 'market', label: 'بازار' },
