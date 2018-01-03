@@ -51,30 +51,27 @@ export function processWithdraw(data) {
 }
 
 export const updateUser = (values) => {
-	const userValues = values;
-
-	userValues.first_name = values.first_name;
-	userValues.last_name = values.last_name;
-	userValues.nationality = values.nationality;
-	if (values.phone_number) {
-		userValues.phone_number = `${values.phone_country} ${values.phone_number}`;
+	const userValues = {};
+	if (values.full_name) {
+		userValues.full_name = values.full_name;
 	}
-
+	userValues.gender = values.gender;
 	if (values.dob) {
 		userValues.dob = new Date(values.dob);
 	}
+	userValues.nationality = values.nationality;
+	userValues.address = {
+		address: values.address,
+		city: values.city,
+		country: values.country,
+		postal_code: values.postal_code,
+	};
 
-	if (values.address) {
-		userValues.address = {
-			address: values.address,
-			city: values.city,
-			country: values.country,
-			postal_code: values.postal_code,
-		};
-	}
-
-	if (values.verified) {
-		delete values.verified;
+	userValues.id_data = {
+		// type: values.nationality === 'IR' ? 'id' : 'passport',
+		number: values.id_number,
+		issued_date: values.id_issued_date,
+		expiration_date: values.id_expiration_date,
 	}
 
 	return axios.put('/user', userValues);

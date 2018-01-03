@@ -31,12 +31,14 @@ const ReviewBankDeposit = ({ data, onClickPay }) => {
           </a>
         </div>
       </div>
-      <div className="separator" />
-      <div className="review-section">
-        <div className="review-title">{STRINGS.formatString(STRINGS.DEPOSIT_METHOD, 2)}: {STRINGS.DEPOSIT_METHOD_MANUAL_TRANSFER}</div>
-        {generateFiatInformation(deposit_id)}
-        {renderBankInformation(BANK_INFORMATION, true)}
-      </div>
+      {/*
+        <div className="separator" />
+        <div className="review-section">
+          <div className="review-title">{STRINGS.formatString(STRINGS.DEPOSIT_METHOD, 2)}: {STRINGS.DEPOSIT_METHOD_MANUAL_TRANSFER}</div>
+          {generateFiatInformation(deposit_id)}
+          {renderBankInformation(BANK_INFORMATION, true)}
+        </div>
+        */}
     </div>
   );
 }

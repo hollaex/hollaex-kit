@@ -1,7 +1,9 @@
 import React from 'react';
 import classnames from 'classnames';
+import ReactSVG from 'react-svg';
+
 import Section from './Section';
-import { NotificationsList, Button, Wallet } from '../';
+import { NotificationsList, Button, Wallet, Logout } from '../';
 import { ICONS } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 import { fiatSymbol } from '../../utils/currency';
@@ -58,14 +60,7 @@ const Sidebar = ({
       <div className="sidebar-notifications">
         <NotificationsList notifications={notifications} />
       </div>
-      <div className="sidebar-logout">
-        <div onClick={logout} className="sidebar-logout-left text-uppercase pointer">
-          {STRINGS.LOGOUT}
-        </div>
-        <div onClick={logout} className="sidebar-logout-right pointer">
-          <img src={ICONS.LOGOUT} alt="logout" />
-        </div>
-      </div>
+      <Logout className="sidebar-logout" onLogout={logout} />
     </div>
   )
 }

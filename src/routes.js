@@ -20,14 +20,16 @@ import {
   RequestResetPassword,
   ResetPassword,
   QuickTrade,
+  Verification,
 } from './containers';
 
 import store from './store'
 import { verifyToken } from './actions/authAction';
 import { setLanguage } from './actions/appActions';
 
-import { getToken, removeToken } from './utils/token';
+import { getToken, removeToken, getTokenTimestamp } from './utils/token';
 import { getLanguage, getInterfaceLanguage } from './utils/string';
+import { checkUserSessionExpired } from './utils/utils';
 
 let lang = getLanguage();
 if (!lang) {
@@ -37,8 +39,14 @@ store.dispatch(setLanguage(lang));
 
 
 let token = getToken();
+
 if (token) {
-  store.dispatch(verifyToken(token));
+  // check if the token has expired, in that case, remove token
+  if (checkUserSessionExpired(getTokenTimestamp())) {
+    removeToken();
+  } else {
+    store.dispatch(verifyToken(token));
+  }
 }
 
 function isLoggedIn() {
@@ -94,6 +102,7 @@ export default (
       <Route path="trade" name="Trade" component={Trade}/>
       <Route path="quick-trade" name="Quick Trade" component={QuickTrade}/>
     </Route>
+    <Route path='verification' name="Verification" component={Verification}  onEnter={requireAuth}/>
     <Route component={AuthContainer}>
       <Route path="login" name="Login" component={Login} {...noAuthRoutesCommonProps} />
       <Route path="signup" name="signup" component={Signup} {...noAuthRoutesCommonProps} />

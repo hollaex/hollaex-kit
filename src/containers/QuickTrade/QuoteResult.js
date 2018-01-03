@@ -1,5 +1,6 @@
 import React from 'react';
 import { Loader, IconTitle, Button } from '../../components';
+import { formatBtcAmount, formatFiatAmount } from '../../utils/currency';
 
 import STRINGS from '../../config/localizedStrings';
 import { CURRENCIES, ICONS } from '../../config/constants';
@@ -10,7 +11,19 @@ const QuoteResult = ({ name, onClose, ...props }) => {
   if (fetching) {
     return <Loader relative={true} background={false} />;
   } else if (error) {
-    return <div>{error}</div>;
+    return (
+      <div>
+        <div className="quote-success-review-text">
+          {error}
+        </div>
+        {onClose &&
+          <Button
+            label={STRINGS.CLOSE_TEXT}
+            onClick={onClose}
+          />
+        }
+      </div>
+    );
   } else {
     return (
       <div>
@@ -24,9 +37,9 @@ const QuoteResult = ({ name, onClose, ...props }) => {
           {STRINGS.formatString(
             STRINGS.QUOTE_SUCCESS_REVIEW_MESSAGE,
             STRINGS.SIDES_VALUES[data.side],
-            data.size,
+            formatBtcAmount(data.size),
             name,
-            data.price,
+            formatFiatAmount(data.price),
             STRINGS.FIAT_NAME,
           )}
         </div>

@@ -7,8 +7,9 @@ import STRINGS from '../../config/localizedStrings';
 
 const LINKS = [
   { icon: SOCIAL_ICONS.FACEBOOK, link: '', type: 'facebook' },
-  { icon: SOCIAL_ICONS.TWIITER, link: 'https://twitter.com/exir6', type: 'twitter' },
-  { icon: SOCIAL_ICONS.LINKEDIN, link: '', type: 'linkedin' },
+  { icon: SOCIAL_ICONS.TWIITER, link: 'https://twitter.com/ExchangeIran', type: 'twitter' },
+  { icon: SOCIAL_ICONS.INSTAGRAM, link: '', type: 'instagram' },
+  { icon: SOCIAL_ICONS.TELEGRAM, link: 'https://t.me/exir_official', type: 'telegram' },
 ];
 
 const generateSectionsText = (strings) => {
@@ -83,9 +84,9 @@ const Footer = ({ title, status, className, onChangeLanguage, activeLanguage }) 
           </div>
           <div className="footer-public-links d-flex">
             {LINKS.map(({ icon, link, type }, index) => (
-              <Link to={link || '#'} key={index}>
+              <a href={link || '#'} key={index}>
                 <img src={icon} alt={type} className="footer-public-links-icon" />
-              </Link>
+              </a>
             ))}
           </div>
         </div>

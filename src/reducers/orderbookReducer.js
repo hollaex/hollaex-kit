@@ -125,6 +125,11 @@ export default function reducer(state = INITIAL_STATE, { payload, type }) {
 			}
 		}
 
+		case ORDERBOOK_CONSTANTS.QUICK_TRADE_CANCEL:
+			return {
+				...state,
+				quickTrade: INITIAL_QUICK_TRADE,
+			}
 		case ORDERBOOK_CONSTANTS.QUICK_TRADE_PENDING:
 			return {
 				...state,
@@ -184,10 +189,20 @@ export default function reducer(state = INITIAL_STATE, { payload, type }) {
 				quoteData: {
 					...INITIAL_QUOTE,
 					fetching: false,
-					error: payload,
+					...payload,
+					data: {
+						...INITIAL_QUOTE.data,
+						...payload.data,
+					},
+					error: payload.message,
 				}
 			};
 
+		case ORDERBOOK_CONSTANTS.TRADE_QUOTE_REQUEST_CANCEL:
+			return {
+				...state,
+				quoteData: INITIAL_QUOTE,
+			}
 		case ORDERBOOK_CONSTANTS.TRADE_QUOTE_PERFORM_PENDING:
 			return {
 				...state,

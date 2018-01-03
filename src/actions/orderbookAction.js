@@ -5,9 +5,11 @@ const TRADE_QUOTE_REQUEST = 'TRADE_QUOTE_REQUEST';
 const TRADE_QUOTE_PERFORM = 'TRADE_QUOTE_PERFORM';
 
 export const ORDERBOOK_CONSTANTS = {
+	QUICK_TRADE_CANCEL: `${QUICK_TRADE}_CANCEL`,
 	QUICK_TRADE_PENDING: `${QUICK_TRADE}_PENDING`,
 	QUICK_TRADE_FULFILLED: `${QUICK_TRADE}_FULFILLED`,
 	QUICK_TRADE_REJECTED: `${QUICK_TRADE}_REJECTED`,
+	TRADE_QUOTE_REQUEST_CANCEL: `${TRADE_QUOTE_REQUEST}_CANCEL`,
 	TRADE_QUOTE_REQUEST_PENDING: `${TRADE_QUOTE_REQUEST}_PENDING`,
 	TRADE_QUOTE_REQUEST_FULFILLED: `${TRADE_QUOTE_REQUEST}_FULFILLED`,
 	TRADE_QUOTE_REQUEST_REJECTED: `${TRADE_QUOTE_REQUEST}_REJECTED`,
@@ -52,6 +54,11 @@ export const changeSymbol = (symbol) => ({
 });
 
 export const requestQuickTrade = (data = {}) => {
+	if (!data.size) {
+		return {
+			type: ORDERBOOK_CONSTANTS.QUICK_TRADE_CANCEL,
+		};
+	}
 	return ((dispatch) => {
 		dispatch({
 		    type: ORDERBOOK_CONSTANTS.QUICK_TRADE_PENDING
@@ -73,6 +80,11 @@ export const requestQuickTrade = (data = {}) => {
 }
 
 export const requestQuote = (data = {}) => {
+	if (!data.size) {
+		return {
+			type: ORDERBOOK_CONSTANTS.TRADE_QUOTE_REQUEST_CANCEL,
+		};
+	}
 	return ((dispatch) => {
 		dispatch({
 		    type: ORDERBOOK_CONSTANTS.TRADE_QUOTE_REQUEST_PENDING
@@ -87,7 +99,12 @@ export const requestQuote = (data = {}) => {
 			.catch((err) => {
 				dispatch({
 				    type: ORDERBOOK_CONSTANTS.TRADE_QUOTE_REQUEST_REJECTED,
-				    payload: err.response ? err.response.data.message : err.message
+				    payload: {
+							data: err.response ? err.response.data.data : {},
+							message: err.response && err.response.data ?
+								err.response.data.message :
+								err.message,
+						}
 				});
 			})
 	});
@@ -108,7 +125,7 @@ export const executeQuote = (token) => {
 			.catch((err) => {
 				dispatch({
 				    type: ORDERBOOK_CONSTANTS.TRADE_QUOTE_PERFORM_REJECTED,
-				    payload: err.response ? err.response.data : err.message
+				    payload: err.response ? err.response.data.message : err.message
 				});
 			})
 	});

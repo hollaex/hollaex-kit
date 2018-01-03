@@ -5,6 +5,7 @@
   font-size: $font-size-subtext;
   padding: 0 4px;
   background-color: $colors-main-black !important;
+  font-family: inherit !important;
 
   &.button-success {
     background-color: $colors-notifications-green !important;

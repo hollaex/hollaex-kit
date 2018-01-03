@@ -6,6 +6,7 @@ import { ICONS, FLEX_CENTER_CLASSES, CURRENCIES } from '../../config/constants';
 import { calculatePrice, calculateBalancePrice, generateWalletActionsText } from '../../utils/currency';
 import STRINGS from '../../config/localizedStrings';
 
+import { AssetsBlock } from './AssetsBlock';
 const fiatName = CURRENCIES.fiat.name;
 const fiatSymbol = 'fiat';
 const fiatCurrencySymbol = CURRENCIES.fiat.currencySymbol;
@@ -15,16 +16,16 @@ const fiatFormatToCurrency = CURRENCIES.fiat.formatToCurrency;
 class Wallet extends Component {
   state = {
     sections: [],
-    isOpen: false,
+    isOpen: true,
     totalAssets: 0,
   };
 
-  componentWillMount() {
+  componentDidMount() {
     this.generateSections(this.props.balance, this.props.prices, this.state.isOpen);
   }
 
-  componentWillReceiveProps(nextProps, nextState) {
-    this.generateSections(nextProps.balance, nextProps.prices, nextState.isOpen);
+  componentWillReceiveProps(nextProps) {
+    this.generateSections(nextProps.balance, nextProps.prices, this.state.isOpen);
   }
 
   calculateTotalAssets = (balance, prices) => {
@@ -34,10 +35,12 @@ class Wallet extends Component {
 
   generateSections = (balance, prices, isOpen = false) => {
     const totalAssets = this.calculateTotalAssets(balance, prices);
+
     const sections = [
       {
         title: STRINGS.WALLET_ALL_ASSETS,
-        content: this.renderAssetsBlock(balance, prices),
+        content: <AssetsBlock balance={balance} prices={prices} totalAssets={totalAssets} />,
+        isOpen: true,
         notification: {
           text: isOpen ? STRINGS.HIDE_TEXT : totalAssets,
           status: 'information',
@@ -62,12 +65,11 @@ class Wallet extends Component {
   }
 
   renderWalletHeaderBlock = (symbol, price, balance) => {
-    const { fullName, shortName, formatToCurrency } = CURRENCIES[symbol];
     const balanceValue = balance[`${symbol}_balance`] || 0;
     return (
       <div className="wallet-header_block">
         <div className="wallet-header_block-currency_title">
-          {STRINGS.formatString(STRINGS.CURRENCY_BALANCE_TEXT, fullName)}
+          {STRINGS.formatString(STRINGS.CURRENCY_BALANCE_TEXT, STRINGS[`${symbol.toUpperCase()}_FULLNAME`])}
           <ActionNotification
             text={STRINGS.TRADE_HISTORY}
             status="information"
@@ -80,57 +82,6 @@ class Wallet extends Component {
           amount={balanceValue}
           price={price}
         />
-      </div>
-    );
-  }
-
-  renderAssetsBlock = (balance, prices) => {
-    return (
-      <div className="wallet-assets_block">
-        <table className="wallet-assets_block-table">
-          <thead>
-            <tr className="table-bottom-border">
-              <th></th>
-              <th>{STRINGS.CURRENCY}</th>
-              <th>{STRINGS.AMOUNT}</th>
-              <th className="align-opposite">{STRINGS.formatString(STRINGS.WALLET_TABLE_AMOUNT_IN, fiatName)}</th>
-            </tr>
-          </thead>
-          <tbody>
-            {Object.entries(CURRENCIES)
-              .filter(([key]) => balance.hasOwnProperty(`${key}_balance`))
-              .map(([key, { shortName, fullName, formatToCurrency}]) => {
-                const balanceValue = balance[`${key}_balance`];
-                return (
-                  <tr className="table-row table-bottom-border" key={key}>
-                    <td className="table-icon td-fit">
-                      <CurrencyBall name={shortName} symbol={key} size="s" />
-                    </td>
-                    <td className="td-name td-fit">{fullName}</td>
-                    <td>{`${shortName} ${formatToCurrency(balanceValue)}`}</td>
-                    <td className="align-opposite show-equals">
-                      {`${fiatCurrencySymbol}${
-                        key === fiatSymbol ?
-                        fiatFormatToCurrency(balanceValue) :
-                        fiatFormatToCurrency(calculatePrice(balanceValue, prices[key]))
-                      }`}
-                    </td>
-                  </tr>
-                )
-              })
-            }
-          </tbody>
-          <tfoot>
-            <tr>
-              <td></td>
-              <td>{STRINGS.WALLET_TABLE_TOTAL}</td>
-              <td></td>
-              <td className="align-opposite">
-                {this.state.totalAssets}
-              </td>
-            </tr>
-          </tfoot>
-        </table>
       </div>
     );
   }

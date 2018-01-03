@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
+import { connect } from 'react-redux';
 import { SubmissionError } from 'redux-form';
+import { bindActionCreators } from 'redux';
 import { Link } from 'react-router';
-import { performLogin } from '../../actions/authAction';
+import { performLogin, setLogoutMessage } from '../../actions/authAction';
 import LoginForm from './LoginForm';
-import { Dialog, OtpForm, IconTitle } from '../../components';
+import { Dialog, OtpForm, IconTitle, Notification } from '../../components';
+import { NOTIFICATIONS } from '../../actions/appActions';
 import { errorHandler } from '../../components/OtpForm/utils';
 import { EXIR_LOGO, FLEX_CENTER_CLASSES, ICONS } from '../../config/constants';
 
@@ -14,6 +17,22 @@ class Login extends Component {
   state = {
     values: {},
     otpDialogIsOpen: false,
+    logoutDialogIsOpen: false
+  }
+
+  componentDidMount() {
+    if (this.props.logoutMessage) {
+      this.setState({ logoutDialogIsOpen: true });
+    }
+  }
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.logoutMessage && nextProps.logoutMessage !== this.props.logoutMessage) {
+      this.setState({ logoutDialogIsOpen: true });
+    }
+  }
+
+  componentWillUnmount() {
+    this.props.setLogoutMessage();
   }
 
   redirectToHome = () => {
@@ -38,7 +57,7 @@ class Login extends Component {
           this.setState({ values, otpDialogIsOpen: true });
           error._error = STRINGS.VALIDATIONS.OTP_LOGIN;
         } else {
-          error.password = _error;
+          error._error = _error;
           throw new SubmissionError(error);
         }
       });
@@ -57,8 +76,14 @@ class Login extends Component {
     this.setState({ otpDialogIsOpen: false });
   }
 
+  onCloseLogoutDialog = () => {
+    this.props.setLogoutMessage();
+    this.setState({ logoutDialogIsOpen: false });
+  }
+
   render() {
-    const { otpDialogIsOpen } = this.state;
+    const { logoutMessage } = this.props;
+    const { otpDialogIsOpen, logoutDialogIsOpen } = this.state;
 
     return (
       <div className={classnames(...FLEX_CENTER_CLASSES, 'flex-column', 'f-1')}>
@@ -84,17 +109,32 @@ class Login extends Component {
           {STRINGS.LOGIN.NO_ACCOUNT}<Link to='/signup' className={classnames('blue-link')}>{STRINGS.LOGIN.CREATE_ACCOUNT}</Link>
         </div>
         <Dialog
-          isOpen={otpDialogIsOpen}
+          isOpen={otpDialogIsOpen || logoutDialogIsOpen}
           label="otp-modal"
           onCloseDialog={this.onCloseDialog}
-          shouldCloseOnOverlayClick={false}
-          showCloseText={true}
+          shouldCloseOnOverlayClick={otpDialogIsOpen ? false : true}
+          showCloseText={otpDialogIsOpen ? true : false}
         >
-          <OtpForm onSubmit={this.onSubmitLoginOtp} />
+          {otpDialogIsOpen && <OtpForm onSubmit={this.onSubmitLoginOtp} />}
+          {logoutDialogIsOpen &&
+            <Notification
+              type={NOTIFICATIONS.LOGOUT}
+              onClose={this.onCloseLogoutDialog}
+              data={{ message: logoutMessage }}
+            />
+          }
         </Dialog>
       </div>
     );
   }
 }
 
-export default Login;
+const mapStateToProps = (store) => ({
+  logoutMessage: store.auth.logoutMessage,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  setLogoutMessage: bindActionCreators(setLogoutMessage, dispatch),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

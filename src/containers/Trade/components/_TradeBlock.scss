@@ -1,3 +1,5 @@
+$tabs-title--margin: 2rem;
+
 .trade_block-wrapper {
   padding: 1rem;
   flex: auto;
@@ -49,7 +51,7 @@
   .trade_block_tabs-wrapper .trade_block-title {
     .trade_block-title-items {
       > div:not(:last-child) {
-        margin-right: 0.5rem;
+        margin-right: $tabs-title--margin;
       }
     }
   }
@@ -59,7 +61,7 @@
   .trade_block_tabs-wrapper .trade_block-title {
     .trade_block-title-items {
       > div:not(:last-child) {
-        margin-left: 0.5rem;
+        margin-left: $tabs-title--margin;
       }
     }
   }

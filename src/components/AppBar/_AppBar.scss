@@ -147,4 +147,9 @@ $app-bar--background: white;
       padding: 0 0.5rem;
     }
   }
+
+  .bar-logout {
+    max-height: $navigation_bar-height;
+    min-height: $navigation_bar-height;
+  }
 }

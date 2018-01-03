@@ -2,9 +2,10 @@ $toogle-size: 15px;
 $toogle-border: 2px;
 $toogle-margin: 1px;
 
-$wrapper--min-width: 30rem;
-$wrapper--max-width: 40rem;
-$wrapper--padding: 2.5rem;
+$wrapper--min-width: 45rem;
+$wrapper--max-width: 50rem;
+$wrapper--padding: 3.5rem;
+$section--margin-bottom: 2rem;
 
 $currency-text-size: 4rem;
 $input-bottom_line--height: 2px;
@@ -12,11 +13,21 @@ $input-bottom_line--animation--width: 100px;
 
 $title-icon--height: 10rem;
 
+.direction_ltr {
+  .quick_trade-wrapper {
+    font-family: $raleway--font-family;
+  }
+}
+
 .quick_trade-wrapper {
   min-width: $wrapper--min-width;
   max-width: $wrapper--max-width;
   padding: $wrapper--padding;
   background-color: white;
+
+  .quick_trade-bottom-padded {
+    margin-bottom: $section--margin-bottom;
+  }
 
   .quick_trade-icon {
     max-height: $title-icon--height;
@@ -42,8 +53,10 @@ $title-icon--height: 10rem;
       font-size: $font-size-subtext;
       color: $colors-deactivate-color2;
       height: $toogle-size + $toogle-border * 2 + $toogle-margin * 2;
+      font-family: $raleway-medium--font-family;
 
       .selected {
+        font-family: $raleway-extrabold--font-family;
         font-weight: bold;
         color: $colors-main-black;
       }
@@ -113,7 +126,12 @@ $title-icon--height: 10rem;
     color: red;
     margin-top: 0.5rem;
   }
-  
+
+  .input_block-title {
+    font-size: $font-size-subhead3;
+    font-family: $raleway-medium--font-family;
+  }
+
   .input_block-content {
     border-bottom: $input-bottom_line--height solid $colors-main-black;
     width: 100%;
@@ -128,12 +146,14 @@ $title-icon--height: 10rem;
       .input_block-inputbox {
         // width: 100%;
         font-size: $font-size-subhead2;
-        text-align: center;
+        // text-align: center;
         margin: .5rem 1.5rem;
 
         border: none !important;
         border-radius: 0 !important;
         padding: 0 !important;
+        text-align: left;
+        margin-left: 2rem;
       }
       .input_block-currency_ball {
         position: absolute;

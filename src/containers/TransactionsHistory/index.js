@@ -36,8 +36,8 @@ class TransactionsHistory extends Component {
     if (nextProps.symbol !== this.props.symbol) {
       this.requestData(nextProps.symbol);
       this.generateHeaders(nextProps.symbol, nextProps.activeLanguage);
-    // } else if (nextProps.activeLanguage !== this.props.activeLanguage) {
-    //   this.generateHeaders(nextProps.symbol, nextProps.activeLanguage);
+    } else if (nextProps.activeLanguage !== this.props.activeLanguage) {
+      this.generateHeaders(nextProps.symbol, nextProps.activeLanguage);
     }
 
   }

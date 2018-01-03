@@ -1,15 +1,9 @@
 import React from 'react';
 import { setNotification, NOTIFICATIONS } from '../../actions/appActions';
+import { BLOCKTRAIL_ENDPOINT } from '../../config/constants';
 
 export const setWithdrawNotificationSuccess = (data, dispatch) => {
-  const message = (
-    <div className="text-center">
-      <h2>Success!</h2>
-      <p>Your bitcoins have been sent</p>
-    </div>
-  );
-
-  dispatch(setNotification(NOTIFICATIONS.WITHDRAWAL, message));
+  dispatch(setNotification(NOTIFICATIONS.WITHDRAWAL, { ...data, currency: 'btc' }));
 }
 
 export const setWithdrawNotificationError = (error, dispatch) => {

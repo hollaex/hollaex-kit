@@ -19,3 +19,4 @@ export { default as Legal } from './Legal';
 export { default as RequestResetPassword } from './RequestResetPassword';
 export { default as ResetPassword } from './ResetPassword';
 export { default as QuickTrade } from './QuickTrade';
+export { default as Verification } from './Verification';

@@ -3,14 +3,12 @@ import classnames from 'classnames';
 import { Link } from 'react-router';
 import { SubmissionError } from 'redux-form';
 import { requestVerificationEmail } from '../../actions/authAction';
-import EmailRequestForm, { FormFields } from './EmailRequestForm';
+import EmailRequestForm from './EmailRequestForm';
 import EmailRequestSuccess from './EmailRequestSuccess';
 import { IconTitle, Dialog } from '../../components';
 import { ContactForm } from '../';
 import { EXIR_LOGO, FLEX_CENTER_CLASSES, ICONS } from '../../config/constants';
-import { TEXTS } from './constants';
-
-const TERM_LABELS_TEXT = TEXTS.FORM.FIELDS.terms;
+import STRINGS from '../../config/localizedStrings';
 
 class VerifyEmailRequest extends Component {
   state = {
@@ -75,17 +73,20 @@ class VerifyEmailRequest extends Component {
         <div className={classnames(...FLEX_CENTER_CLASSES, 'flex-column', 'login_wrapper', 'auth_wrapper', 'w-100')}>
           <IconTitle
             iconPath={EXIR_LOGO}
-            text={TEXTS.TITLE}
+            text={STRINGS.VERIFICATION_EMAIL_REQUEST.TITLE}
             textType="title"
             underline={true}
             className="w-100"
           />
           <div className={classnames(...FLEX_CENTER_CLASSES, 'flex-column', 'login_form-wrapper', 'auth_form-wrapper', 'w-100')}>
-            <EmailRequestForm onSubmit={this.onSubmitEmailRequest} formFields={FormFields} />
+            <EmailRequestForm onSubmit={this.onSubmitEmailRequest} />
           </div>
         </div>
         <div className={classnames('f-1', 'link_wrapper')}>
-          {TEXTS.NO_EMAIL}<Link to='/verify' className={classnames('blue-link')}>{TEXTS.REQUEST_EMAIL}</Link>
+          {STRINGS.VERIFICATION_EMAIL_REQUEST.NO_EMAIL}
+          <Link to='/verify' className={classnames('blue-link')}>
+            {STRINGS.VERIFICATION_EMAIL_REQUEST.REQUEST_EMAIL}
+          </Link>
         </div>
       </div>
     );

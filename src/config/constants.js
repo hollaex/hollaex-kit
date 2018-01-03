@@ -20,7 +20,7 @@ export const ICONS = {
   BELL: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-04.png`,
   LIFESAVER: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-05.png`,
   CHECK: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-06.png`,
-  BLUE_PLUS: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-07.png`,
+  // BLUE_PLUS: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-07.png`,
   BLUE_QUESTION: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-08.png`,
   RED_WARNING: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-09.png`,
   GENDER_F: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-10.png`,
@@ -94,6 +94,8 @@ export const ICONS = {
   SESSION_TIMED_OUT: `${process.env.PUBLIC_URL}/assets/images/session-timed-out.svg`,
   BLUE_EDIT: `${process.env.PUBLIC_URL}/assets/images/blue-edit-exir-icon.svg`,
   BLUE_PLUS: `${process.env.PUBLIC_URL}/assets/images/max-plus-blue-icon.svg`,
+  BLUE_TIMER: `${process.env.PUBLIC_URL}/assets/images/timer-icon.svg`,
+  DROPDOWN_ARROW: `${process.env.PUBLIC_URL}/assets/images/down-arrow-home.svg`,
   TOMAN_T_ICON: `${process.env.PUBLIC_URL}/assets/images/toman-t-icon.svg`,
   NOTIFICATION_ORDER_LIMIT_BUY_FILLED: `${process.env.PUBLIC_URL}/assets/images/limit-buy-order-filled-01.svg`,
   NOTIFICATION_ORDER_LIMIT_BUY_CREATED: `${process.env.PUBLIC_URL}/assets/images/limit-buy-order-icon-01.svg`,
@@ -103,15 +105,41 @@ export const ICONS = {
   NOTIFICATION_ORDER_LIMIT_SELL_FILLED_PART: `${process.env.PUBLIC_URL}/assets/images/limit-sell-order-part-filled-01.svg`,
   NOTIFICATION_ORDER_MARKET_BUY_FILLED: `${process.env.PUBLIC_URL}/assets/images/market-buy-01.svg`,
   NOTIFICATION_ORDER_MARKET_SELL_FILLED: `${process.env.PUBLIC_URL}/assets/images/market-sell-01.svg`,
+  NOTIFICATION_VERIFICATION_WARNING: `${process.env.PUBLIC_URL}/assets/images/verification.svg`,
+  LOGOUT_ARROW: `${process.env.PUBLIC_URL}/assets/images/logout-arrow-active.svg`,
+  LOGOUT_ARROW_GREY: `${process.env.PUBLIC_URL}/assets/images/logout-arrow.svg`,
+  VERIFICATION_WARNING: `${process.env.PUBLIC_URL}/assets/images/astrics.svg`,
+  VERIFICATION_SUCCESS: `${process.env.PUBLIC_URL}/assets/images/success-check-box.svg`,
+  VERIFICATION_DOC: `${process.env.PUBLIC_URL}/assets/images/doc.svg`,
+  VERIFICATION_DOC_INACTIVE: `${process.env.PUBLIC_URL}/assets/images/doc-inactive.svg`,
+  VERIFICATION_EMAIL: `${process.env.PUBLIC_URL}/assets/images/email_2.svg`,
+  VERIFICATION_EMAIL_INACTIVE: `${process.env.PUBLIC_URL}/assets/images/email-inactive.svg`,
+  VERIFICATION_MOBILE: `${process.env.PUBLIC_URL}/assets/images/mobile.svg`,
+  VERIFICATION_MOBILE_INACTIVE: `${process.env.PUBLIC_URL}/assets/images/mobile-inactive.svg`,
+  VERIFICATION_BANK: `${process.env.PUBLIC_URL}/assets/images/bank.svg`,
+  VERIFICATION_BANK_INACTIVE: `${process.env.PUBLIC_URL}/assets/images/bank-inactive.svg`,
+  VERIFICATION_ID: `${process.env.PUBLIC_URL}/assets/images/id_2.svg`,
+  VERIFICATION_ID_INACTIVE: `${process.env.PUBLIC_URL}/assets/images/id_2-inactive.svg`,
+  COIN_WITHDRAW_BTC: `${process.env.PUBLIC_URL}/assets/images/coin-withdraw-btc.svg`,
+  COIN_WITHDRAW_TOMAN: `${process.env.PUBLIC_URL}/assets/images/coin-withdraw-tom.svg`,
 }
 
 export const SOCIAL_ICONS = {
-  FACEBOOK: `${process.env.PUBLIC_URL}/assets/icons/facebook.png`,
-  LINKEDIN: `${process.env.PUBLIC_URL}/assets/icons/linkedin.png`,
-  TWIITER: `${process.env.PUBLIC_URL}/assets/icons/twitter.png`,
+  FACEBOOK: `${process.env.PUBLIC_URL}/assets/icons/social-grey-icons.svg`,
+  TWIITER: `${process.env.PUBLIC_URL}/assets/icons/social-grey-icons02.svg`,
+  INSTAGRAM: `${process.env.PUBLIC_URL}/assets/icons/social-grey-icons03.svg`,
+  TELEGRAM: `${process.env.PUBLIC_URL}/assets/icons/social-grey-icons04.svg`,
   GOOGLE: `${process.env.PUBLIC_URL}/assets/icons/google.png`,
 };
 
+export const FEATURES_ICONS = {
+  PRO_TRADING: `${process.env.PUBLIC_URL}/assets/images/features-pro-trade-icons.svg`,
+  PAYMENT: `${process.env.PUBLIC_URL}/assets/images/features-payment-card-icons.svg`,
+  SECURITY: `${process.env.PUBLIC_URL}/assets/images/features-lock-icons.svg`,
+  REPORTING: `${process.env.PUBLIC_URL}/assets/images/features-data-icons.svg`,
+  SUPPORT: `${process.env.PUBLIC_URL}/assets/images/features-support-icons.svg`,
+  LEGAL: `${process.env.PUBLIC_URL}/assets/images/features-legal-icons.svg`,
+}
 export const EXIR_LOGO = `${process.env.PUBLIC_URL}/assets/images/EXIR-grey-login.svg`;
 export const EXIR_BLUE_LOGO = `${process.env.PUBLIC_URL}/assets/logo-blue-exir.svg`;
 
@@ -144,9 +172,9 @@ export const TIMESTAMP_FORMAT_FA = STRINGS.TIMESTAMP_FORMAT.split('/').map((s) =
 
 export const LIMIT_VALUES = {
   PRICE: {
-    MIN: 500000,
-    MAX: 100000000,
-    STEP: 5000,
+    MIN: process.env.MIN_PRICE || 1000000,
+    MAX: process.env.MAX_PRICE || 200000000,
+    STEP: process.env.PRICE_STEP || 5000,
   },
   SIZE: {
     MIN: 0.0001,
@@ -185,3 +213,5 @@ export const BANK_INFORMATION = {
 
 export const BANK_PAYMENT_LINK = 'https://api.moneyar.com/IPG/default.aspx?uid=';
 export const MIN_VERIFICATION_LEVEL_TO_WITHDRAW = 2;
+
+export const BLOCKTRAIL_ENDPOINT = `https://www.blocktrail.com/${NETWORK === 'testnet' ? 't' : ''}BTC/tx/`;

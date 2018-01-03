@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux';
 import io from 'socket.io-client';
 import EventListener from 'react-event-listener';
 import { debounce } from 'lodash';
-import { WS_URL, ICONS, SESSION_TIME, APP_TITLE } from '../../config/constants';
+import { WS_URL, ICONS, SESSION_TIME } from '../../config/constants';
 
 import { logout } from '../../actions/authAction';
 import { setMe, setBalance, updateUser } from '../../actions/userAction';
@@ -19,7 +19,7 @@ import {
 } from '../../actions/appActions';
 
 import { checkUserSessionExpired } from '../../utils/utils';
-import { getToken } from '../../utils/token';
+import { getToken, getTokenTimestamp } from '../../utils/token';
 import { AppBar, Sidebar, Dialog, Loader, Notification, MessageDisplay } from '../../components';
 import { ContactForm } from '../';
 
@@ -36,9 +36,8 @@ class Container extends Component {
 	}
 
 	componentWillMount() {
-		if (checkUserSessionExpired(localStorage.getItem('time'))) {
-			this.setState({ appLoaded: false });
-			this.props.logout();
+		if (checkUserSessionExpired(getTokenTimestamp())) {
+			this.logout('Token is expired');
 		}
 	}
 
@@ -69,7 +68,7 @@ class Container extends Component {
 			nextProps.verification_level !== this.props.verification_level &&
 			nextProps.verification_level === 1
 		) {
-			this.goToAccountPage();
+			// this.goToAccountPage();
 		}
 	}
 
@@ -92,7 +91,7 @@ class Container extends Component {
 			clearTimeout(this.idleTimer);
 		}
 		if (this.state.appLoaded) {
-			const idleTimer = setTimeout(this._logout, SESSION_TIME); // no activity will log the user out automatically
+			const idleTimer = setTimeout(() => this.logout('Inactive'), SESSION_TIME); // no activity will log the user out automatically
 			this.setState({ idleTimer });
 		}
 	}
@@ -102,7 +101,9 @@ class Container extends Component {
 	initSocketConnections = () => {
 		this.setPublicWS();
 		this.setUserSocket(getToken());
-		this.setState({ appLoaded: true });
+		this.setState({ appLoaded: true }, () => {
+			this._resetTimer();
+		});
 	}
 
 	setPublicWS = () => {
@@ -140,14 +141,20 @@ class Container extends Component {
 
 		privateSocket.on('error', (error) => {
       if (error && typeof error === 'string' && error.indexOf('Access Denied') > -1) {
-        this.props.logout();
+        this.logout('Token is expired');
       } else {
         console.error(error)
       }
 		});
 
 		privateSocket.on('user', (data) => {
-			this.props.setMe(data)
+			if (!data.phone_number) {
+				return this.goToVerificationPage();
+			}
+			this.props.setMe(data);
+			// if (data.settings && data.settings.language !== this.props.activeLanguage) {
+			// 	this.props.changeLanguage(data.settings.language);
+			// }
 		});
 
 		privateSocket.on('orders', (data) => {
@@ -163,7 +170,7 @@ class Container extends Component {
 		});
 
 		privateSocket.on('update', ({ type, data }) => {
-			// console.log('update', type, data)
+			console.log('update', type, data)
 			switch(type) {
         case 'order_queued':
 					// TODO add queued orders to the store
@@ -242,20 +249,23 @@ class Container extends Component {
 				case 'trade': {
 					this.props.addUserTrades(data);
 					const tradeOrdersIds = new Set();
- 				 	data.forEach((trade) => {
- 						tradeOrdersIds.add(trade.order);
- 				 	});
+					data.forEach((trade) => {
+						if (trade.order) {
+							tradeOrdersIds.add(trade.order.id);
+						}
+					});
 					if (tradeOrdersIds.size === 1) {
 						const orderIdFromTrade = Array.from(tradeOrdersIds)[0];
 						const { ordersQueued } = this.state;
-						const order = ordersQueued.find(({ id }) => id === orderIdFromTrade);
+						let order = ordersQueued.find(({ id }) => id === orderIdFromTrade);
+						if (!order) {
+							const { orders } = this.props;
+							order = orders.find(({ id }) => id === orderIdFromTrade);
+						}
 						if (order) {
 							this.props.setNotification(
 								NOTIFICATIONS.TRADES,
-								{
-									data,
-									order,
-								},
+								{ data, order },
 							);
 						}
 					}
@@ -293,15 +303,16 @@ class Container extends Component {
 		}
   }
 
-  goToAccountPage = () => this.goToPage('/account');
+	goToAccountPage = () => this.goToPage('/account');
+  goToVerificationPage = () => this.goToPage('/verification');
 	goToWalletPage = () => this.goToPage('/wallet');
 	goToTradePage = () => this.goToPage('/trade');
 	goToQuickTradePage = () => this.goToPage('/quick-trade');
   goToDashboard = () => this.goToPage('/');
 
-	logout = () => {
+	logout = (message = '') => {
 		this.setState({ appLoaded: false }, () => {
-			this.props.logout();
+			this.props.logout(typeof message === 'string' ? message: '');
 		})
 	}
 
@@ -334,7 +345,7 @@ class Container extends Component {
 			case NOTIFICATIONS.ORDERS:
 			case NOTIFICATIONS.TRADES:
 			case NOTIFICATIONS.WITHDRAWAL:
-				return <Notification type={type} data={data} openContactForm={this.props.openContactForm} />;
+				return <Notification type={type} data={data} openContactForm={this.props.openContactForm} onClose={this.onCloseDialog} />;
 			case NOTIFICATIONS.DEPOSIT:
 				return <Notification
 					type={type}
@@ -384,14 +395,11 @@ class Container extends Component {
 					onKeyPress={this.resetTimer}
 				/>
 				<AppBar
-					title={APP_TITLE}
 					goToAccountPage={this.goToAccountPage}
 					goToDashboard={this.goToDashboard}
 					acccountIsActive={activePath === 'account'}
 					changeSymbol={changeSymbol}
 					activeSymbol={symbol}
-					changeLanguage={this.onChangeLanguage}
-					activeLanguage={activeLanguage}
 				/>
         <div className="app_container-content d-flex justify-content-between">
           <div className={classnames(
@@ -437,6 +445,7 @@ const mapStateToProps = (store) => ({
 	verification_level: store.user.verification_level,
   activeLanguage: store.app.language,
 	orders: store.order.activeOrders,
+	user: store.user.userData,
 });
 
 const mapDispatchToProps = (dispatch) => ({

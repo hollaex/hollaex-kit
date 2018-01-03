@@ -1,25 +1,28 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { SubmissionError } from 'redux-form';
 
 import { ICONS } from '../../config/constants';
-import { updateUser, updateDocuments, setMe, setUserData } from '../../actions/userAction';
 import { Accordion, Loader } from '../../components';
-import IdentificationForm from './IdentificationForm';
+import Form from './Form';
+import { generateFormValues as generateMobileFormValues, generateEmailFormValues } from './MobileFormValues';
 import { prepareInitialValues, generateFormValues as generateDataFormValues } from './IdentificationFormValues';
-import DocumentsForm from './DocumentsForm';
-import { generateFormValues as generateIdFormValues } from './DocumentsFormValues';
-import BankAccountForm from './BankAccountForm';
 import { generateFormValues as generateBankFormValues } from './BankAccountFormValues';
+import { InformationSection } from './InformationSection';
 
 import STRINGS from '../../config/localizedStrings';
+
+const EmailForm = Form('EmailForm');
+const MobileForm = Form('MobileForm');
+const InformationForm = Form('InformationForm');
+const BankForm = Form('BankForm');
 
 class UserVerification extends Component {
   state = {
     sections: [],
     dataFormValues: {},
-    idFormValues: {},
+    mobileFormValues: {},
     bankFormValues: {},
+    emailFormValues: {},
   }
 
   componentDidMount() {
@@ -38,121 +41,126 @@ class UserVerification extends Component {
     }
   }
 
-  activeStep = (verification_level = 0, { first_name = '', id_data = {}, bank_account = {} }) => {
-    if (verification_level < 1) {
-      return 0;
-    } else if (!first_name) {
-      return 1;
-    } else if (!id_data.type) {
-      return 2;
-    } else if (!bank_account.bank_name) {
-      return 3
-    } else {
-      return 4;
-    }
-  }
-
-  calculateNotification = (activeStep, step, verifyText, verified = false, value = '') => {
-    const notification = {
-      text: verified ? STRINGS.USER_VERIFICATION.COMPLETED : (activeStep > step ? STRINGS.USER_VERIFICATION.PENDING_VERIFICATION : verifyText),
-      status: verified ? 'success' : (activeStep > step ? 'information' : 'warning'),
-      iconPath: verified ? ICONS.GREEN_CHECK : (activeStep > step ? ICONS.BLUE_QUESTION : ICONS.RED_ARROW),
-      allowClick: activeStep === step
-    };
-    return notification;
+  generateNotification = (verified = false, provided = false, verifyText = '') => {
+    return ({
+      text: verified ? STRINGS.USER_VERIFICATION.COMPLETED : (provided ? STRINGS.USER_VERIFICATION.PENDING_VERIFICATION : verifyText),
+      status: verified ? 'success' : (provided ? 'information' : 'warning'),
+      iconPath: verified ? ICONS.GREEN_CHECK : (provided ? ICONS.BLUE_TIMER : ICONS.RED_ARROW),
+      allowClick: false
+    })
   }
 
   calculateFormValues = (language, verification_level, email, userData) => {
-    const dataFormValues = generateDataFormValues(language);
-    const idFormValues = generateIdFormValues(language);
+    const dataFormValues = generateDataFormValues(language, userData.nationality);
     const bankFormValues = generateBankFormValues();
-    this.setState({ dataFormValues, idFormValues, bankFormValues }, () => {
+    const mobileFormValues = generateMobileFormValues();
+    const emailFormValues = generateEmailFormValues();
+    this.setState({ dataFormValues, mobileFormValues, bankFormValues, emailFormValues }, () => {
       this.calculateSections(verification_level, email, userData);
     });
   }
 
   calculateSections = (verification_level, email, userData) => {
-    const { dataFormValues, idFormValues, bankFormValues } = this.state;
-    const activeStep = this.activeStep(verification_level, userData);
+    const { dataFormValues, mobileFormValues, bankFormValues, emailFormValues } = this.state;
+    const { phone_number, full_name, bank_account = {}, id_data = {} } = userData
+    const sections = [
+      {
+        title: STRINGS.USER_VERIFICATION.TITLE_EMAIL,
+        subtitle: email,
+        content: (
+          <EmailForm
+            initialValues={{ email }}
+            formValues={emailFormValues}
+          >
+            <InformationSection
+              onChangeValue={this.onOpenContactForm}
+            />
+          </EmailForm>
+        ),
+        notification: this.generateNotification(true, true, STRINGS.USER_VERIFICATION.VERIFY_EMAIL)
+      },
+      {
+        title: STRINGS.USER_VERIFICATION.TITLE_MOBILE_PHONE,
+        subtitle: phone_number,
+        content: (
+          <MobileForm
+            initialValues={userData}
+            formValues={mobileFormValues}
+          >
+            <InformationSection
+              onChangeValue={this.onOpenContactForm}
+            />
+          </MobileForm>
+        ),
+        notification: this.generateNotification(!!phone_number, !!phone_number, STRINGS.USER_VERIFICATION.VERIFY_EMAIL)
+      },
+      {
+        title: STRINGS.USER_VERIFICATION.TITLE_PERSONAL_INFORMATION,
+        subtitle: full_name,
+        content: (
+          <InformationForm
+            initialValues={prepareInitialValues(userData)}
+            formValues={dataFormValues}
+          >
+            <InformationSection
+              text={verification_level === 1 ? STRINGS.USER_VERIFICATION.PENDING_VERIFICATION_PERSONAL_INFORMATION : ''}
+              onChangeValue={this.onOpenContactForm}
+            />
+          </InformationForm>
+        ),
+        notification: this.generateNotification(verification_level > 1, !!full_name, STRINGS.USER_VERIFICATION.VERIFY_USER_DOCUMENTATION)
+      },
+      {
+        title: STRINGS.USER_VERIFICATION.TITLE_BANK_ACCOUNT,
+        subtitle: bank_account.card_number,
+        content: (
+          <BankForm
+            initialValues={bank_account}
+            formValues={bankFormValues}
+          >
+            <InformationSection
+              text={bank_account.verified ? '' : STRINGS.USER_VERIFICATION.PENDING_VERIFICATION_BANK}
+              onChangeValue={this.onOpenContactForm}
+            />
+          </BankForm>
+        ),
+        notification: this.generateNotification(bank_account.verified, bank_account.provided, STRINGS.USER_VERIFICATION.VERIFY_BANK_ACCOUNT)
+      },
+      {
+        title: STRINGS.USER_VERIFICATION.TITLE_ID_DOCUMENTS,
+        content: (
+          <div>
+            {id_data.provided ? (
+              <InformationSection
+                text={id_data.type ? '' : STRINGS.USER_VERIFICATION.PENDING_VERIFICATION_DOCUMENTS}
+                onChangeValue={this.onOpenContactForm}
+              />
+            ) : (
+              <InformationSection
+                onChangeText={STRINGS.USER_VERIFICATION.GOTO_VERIFICATION}
+                onChangeValue={this.goToVerification}
+              />
+            )}
+          </div>
+        ),
+        disabled: id_data.verified,
+        notification: this.generateNotification(id_data.verified, id_data.provided, STRINGS.USER_VERIFICATION.VERIFY_ID_DOCUMENTS)
+      },
+    ];
 
-    const sections = [{
-      title: STRINGS.USER_VERIFICATION.TITLE_EMAIL,
-      content: <div>{email}</div>,
-      disabled: activeStep !== 0,
-      notification: this.calculateNotification(activeStep, 0, STRINGS.USER_VERIFICATION.VERIFY_EMAIL, true)
-    },
-    {
-      title: STRINGS.USER_VERIFICATION.TITLE_USER_DOCUMENTATION,
-      content: <IdentificationForm
-        onSubmit={this.onSubmitUserInformation}
-        initialValues={prepareInitialValues(userData)}
-        formValues={dataFormValues}
-      />,
-      disabled: activeStep !== 1,
-      notification: this.calculateNotification(activeStep, 1, STRINGS.USER_VERIFICATION.VERIFY_USER_DOCUMENTATION, verification_level >= 2, userData.first_name)
-    },
-    {
-      title: STRINGS.USER_VERIFICATION.TITLE_ID_DOCUMENTS,
-      content: <DocumentsForm
-        onSubmit={this.onSubmitUserDocuments}
-        initialValues={userData.id_data}
-        formValues={idFormValues}
-      />,
-      disabled: activeStep !== 2,
-      notification: this.calculateNotification(activeStep, 2, STRINGS.USER_VERIFICATION.VERIFY_ID_DOCUMENTS, userData.id_data.verified, userData.id_data.type)
-    },
-    {
-      title: STRINGS.USER_VERIFICATION.TITLE_BANK_ACCOUNT,
-      content: <BankAccountForm
-        onSubmit={this.onSubmitBankAccount}
-        initialValues={userData.bank_account}
-        formValues={bankFormValues}
-      />,
-      disabled: activeStep !== 3,
-      notification: this.calculateNotification(activeStep, 3, STRINGS.USER_VERIFICATION.VERIFY_BANK_ACCOUNT, userData.bank_account.verified, userData.bank_account.type)
-    }];
-
-    this.setState({ sections }, () => {
-      if (this.accordion && activeStep <= 3) {
-        this.accordion.openSection(activeStep);
-      }
-    });
+    this.setState({ sections });
   }
 
-  onSubmitUserInformation = (values) => {
-    return updateUser(values)
-      .then((res) => {
-        this.props.setMe(res.data);
-        if (this.accordion) {
-          this.accordion.openNextSection();
-        }
-      }).catch((err) => {
-        console.log(err)
-        const _error = err.data ? err.data.message : err.message
-        throw new SubmissionError({ _error })
-      })
+  goToVerification = () => {
+    if (this.props.goToVerification) {
+      this.props.goToVerification();
+    }
   }
 
-  onSubmitUserDocuments = (values) => {
-    return updateDocuments(values)
-      .then((res) => {
-        this.props.setUserData({ id_data: values });
-        if (this.accordion) {
-          this.accordion.openNextSection();
-        }
-      }).catch((err) => {
-        console.log(err.data, err.message)
-        const _error = err.data ? err.data.message : err.message
-        throw new SubmissionError({ _error })
-      })
-  }
-
-  onSubmitBankAccount = (values) => {
-    this.onSubmitUserInformation({ bank_account: values });
-  };
-
-  setRef = (el) => {
-    this.accordion = el;
+  onOpenContactForm = () => {
+    if (this.props.openContactForm) {
+      this.props.openContactForm();
+    }
   }
 
   render() {
@@ -165,8 +173,9 @@ class UserVerification extends Component {
       <div>
         <Accordion
           sections={sections}
-          ref={this.setRef}
+          allowMultiOpen={true}
           wrapperId="app_container-main"
+          doScroll={false}
         />
       </div>
     );
@@ -181,9 +190,4 @@ const mapStateToProps = (state) => ({
   activeLanguage: state.app.language,
 });
 
-const mapDispatchToProps = (dispatch) => ({
-  setMe: (data) => dispatch(setMe(data)),
-  setUserData: (data) => dispatch(setUserData(data)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(UserVerification);
+export default connect(mapStateToProps)(UserVerification);

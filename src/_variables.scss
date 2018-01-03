@@ -4,8 +4,10 @@ $bp-md: 991px;
 $bp-lg: 1199px;
 
 $colors-main-black: #212121;
-$colors-deactivate-color1: #f2f2f3;
-$colors-deactivate-color2: #a7aaac;
+$colors-deactivate-color1: #cccbcb;
+$colors-deactivate-color2: #777677;
+$colors-deactivate-color3: #f2f2f3;
+$colors-deactivate-color4: #a7aaac;
 $colors-notifications-red: #ed1c24;
 $colors-notifications-blue: #00aeef;
 $colors-notifications-green: #00a651;
@@ -31,6 +33,7 @@ $content-display-vertical-margin: 16px;
 $font-size-headline: 5rem;
 $font-size-subhead1: 2.5rem;
 $font-size-subhead2: 1.75rem;
+$font-size-subhead3: 1.25rem;
 $font-size-main: 1rem;
 $font-size-subtext: 0.8rem;
 
@@ -39,6 +42,12 @@ $form-color-underline: $colors-deactivate-color2;
 $form-color-placeholder: $colors-deactivate-color2;
 $form-width-max: $content-display-width / 2;
 
+$fa--font-family: "YEKAN";
+$en--font-family: "Open Sans";
+$title--font-family: "Raleway";
+$raleway--font-family: "Raleway";
+$raleway-extrabold--font-family: "Raleway Extrabold";
+$raleway-medium--font-family: "Raleway Medium";
 
 // DIALOG
 $dialog-min-width: 25rem;

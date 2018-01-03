@@ -1,9 +1,10 @@
 import React from 'react';
+import classnames from 'classnames';
 
-const CheckTitle = ({ title, icon, notifications }) => {
+const CheckTitle = ({ title, icon, notifications, className, titleClassName }) => {
   return (
-    <div className="check_title-container">
-      {title && <div className="check_title-label">{title}</div>}
+    <div className={classnames('check_title-container', className)}>
+      {title && <div className={classnames('check_title-label', titleClassName)}>{title}</div>}
       <div className="check_title-icon">
         {icon &&
           <img
@@ -24,6 +25,8 @@ CheckTitle.defaultProps = {
   title: '',
   status: '',
   notifications: '',
+  className: '',
+  titleClassName: '',
 }
 
 export default CheckTitle;

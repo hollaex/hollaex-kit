@@ -19,6 +19,9 @@ $placeholder--font-weight: bold;
   &::placeholder {
     color: $form-color-placeholder;
   }
+  &:disabled {
+    cursor: not-allowed;
+  }
 }
 
 .dropdown-triangle:after {
@@ -44,10 +47,10 @@ $placeholder--font-weight: bold;
       flex: 1;
     }
     .datefield-toogle {
-      &.en {
+      &.fa {
         min-width: 10rem;
       }
-      &.fa {
+      &.en {
         flex: 0;
         min-width: 4rem;
       }

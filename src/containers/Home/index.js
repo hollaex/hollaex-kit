@@ -14,11 +14,6 @@ import Section1 from './Section1';
 import Section2 from './Section2';
 import Section3 from './Section3';
 
-const renderAppBar = (props) => {
-  return <AppBar {...props} />
-}
-
-const QUICK_TRADE_INDEX = 1;
 const INFORMATION_INDEX = 2;
 const MIN_HEIGHT = 450;
 
@@ -80,7 +75,7 @@ class Home extends Component {
 
   render() {
     const {
-      token, verifyToken, estimatedValue, symbol, quickTradeData, requestQuickTrade, activeLanguage, ...otherProps
+      token, verifyToken, estimatedValue, symbol, quickTradeData, requestQuickTrade, activeLanguage,
     } = this.props;
     const { style } = this.state;
     return (
@@ -94,11 +89,11 @@ class Home extends Component {
           isHome={true}
           token={token}
           verifyToken={verifyToken}
-          goToQuickTrade={this.onClickScrollTo(QUICK_TRADE_INDEX)}
         />
         <div
           className={classnames(
             'app_container-content',
+            'home_container-content',
             'flex-column',
             'overflow-y',
           )}
