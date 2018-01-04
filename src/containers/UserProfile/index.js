@@ -22,7 +22,7 @@ const MobileForm = Form('MobileForm');
 const InformationForm = Form('InformationForm');
 const BankForm = Form('BankForm');
 
-class UserVerification extends Component {
+class UserProfile extends Component {
 	state = {
 		sections: [],
 		dataFormValues: {},
@@ -118,9 +118,7 @@ class UserVerification extends Component {
 				title: STRINGS.USER_VERIFICATION.TITLE_EMAIL,
 				subtitle: email,
 				content: (
-					<EmailForm initialValues={{ email }} formValues={emailFormValues}>
-						<InformationSection onChangeValue={this.onOpenContactForm} />
-					</EmailForm>
+					<EmailForm initialValues={{ email }} formValues={emailFormValues} />
 				),
 				notification: this.generateNotification(
 					true,
@@ -260,4 +258,4 @@ const mapStateToProps = (state) => ({
 	activeLanguage: state.app.language
 });
 
-export default connect(mapStateToProps)(UserVerification);
+export default connect(mapStateToProps)(UserProfile);

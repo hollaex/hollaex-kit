@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { TabController, CheckTitle } from '../../components';
 import { ICONS } from '../../config/constants';
-import { UserVerification, UserSecurity } from '../';
+import { UserProfile, UserSecurity } from '../';
 import STRINGS from '../../config/localizedStrings';
 import { openContactForm } from '../../actions/appActions';
 class Account extends Component {
@@ -60,7 +60,7 @@ class Account extends Component {
 					/>
 				),
 				content: (
-					<UserVerification
+					<UserProfile
 						goToVerification={this.goToVerification}
 						openContactForm={this.openContactForm}
 					/>
