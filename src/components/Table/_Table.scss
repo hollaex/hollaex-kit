@@ -7,69 +7,69 @@ $controllers--color-active: $colors-notifications-blue;
 $controllers--color-disabled: $colors-deactivate-color2;
 
 .table-wrapper {
-  width: 100%;
-  margin: $table--margin 0 $table--margin;
+	width: 100%;
+	margin: $table--margin 0 $table--margin;
 
-  tr {
-    height: 2rem;
-  }
+	tr {
+		height: 2rem;
+	}
 
-  th, td {
-    padding: 0.25rem;
-  }
+	th,
+	td {
+		padding: 0.25rem;
+	}
 
-  th {
-    font-weight: bold;
-  }
+	th {
+		font-weight: bold;
+	}
 
-  .table_body-wrapper {
+	.table_body-wrapper {
+		font-size: $font-size-subtext;
 
-    font-size: $font-size-subtext;
+		&.with_icon tr td:first-child {
+			border: none !important;
+		}
 
-    &.with_icon tr td:first-child {
-      border: none !important;
-    }
+		tr.table_body-row td {
+			border-top: $row--border;
+			border-bottom: $row--border;
+		}
+	}
 
-    tr.table_body-row td {
-      border-top: $row--border;
-      border-bottom: $row--border;
-    }
-  }
+	.cell_box-type {
+		color: white;
+		text-transform: capitalize;
 
-  .cell_box-type {
-    color: white;
-    text-transform: capitalize;
-
-    > div {
-      padding: 0.15rem 0.25rem;
-    }
-  }
+		> div {
+			padding: 0.15rem 0.25rem;
+		}
+	}
 }
 
 .table_controllers-wrapper {
-  margin: 2rem 0;
-  color: $colors-main-black;
-  border-top: 2px solid $row--border-color;
-  position: relative;
+	margin: 2rem 0;
+	color: $colors-main-black;
+	border-top: 2px solid $row--border-color;
+	position: relative;
 
-  .disabled {
-    cursor: default;
-    pointer-events: none;
-  }
+	.disabled {
+		cursor: default;
+		pointer-events: none;
+	}
 }
 
 .direction_ltr {
-  .cell_box-type {
-    > div {
-      margin-right: 0.5rem;
-    }
-  }
+	.cell_box-type {
+		> div {
+			margin-right: 0.5rem;
+		}
+	}
 }
 
 .direction_rtl {
-  .cell_box-type {
-    > div {
-      margin-left: 0.5rem;
-    }
-  }
+	.cell_box-type {
+		> div {
+			margin-left: 0.5rem;
+		}
+	}
 }

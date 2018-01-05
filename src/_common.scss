@@ -1,75 +1,75 @@
 .pointer {
-  cursor: pointer;
+	cursor: pointer;
 }
 
 .not_allowed_cursor {
-  cursor: not-allowed;
+	cursor: not-allowed;
 }
 
 .hidden {
-  display: none !important;
+	display: none !important;
 }
 
 .flex-auto {
-  flex: auto;
+	flex: auto;
 }
 
 .f-0 {
-  flex: 0;
+	flex: 0;
 }
 
 .overflow-y {
-  overflow-y: auto;
+	overflow-y: auto;
 }
 
 .overflow-x {
-  overflow-x: auto;
+	overflow-x: auto;
 }
 
 .p-relative {
-  position: relative;
+	position: relative;
 }
 
 .text_overflow {
-  width: auto;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
+	width: auto;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
 }
 
 .contrast {
-  color: white;
-  background: $colors-main-black;
+	color: white;
+	background: $colors-main-black;
 }
 
 // FONT SIZES
 .font-small {
-  font-size: $font-size-subtext;
+	font-size: $font-size-subtext;
 }
 
 .font-title {
-  font-size: $font-size-subhead2;
+	font-size: $font-size-subhead2;
 }
 
 // BORDERS
 .b {
-  border: 1px solid red;
+	border: 1px solid red;
 }
 .c {
-  border: 1px solid green;
+	border: 1px solid green;
 }
 .d {
-  border: 1px solid blue;
+	border: 1px solid blue;
 }
 
 .separator {
-  width: 2rem;
+	width: 2rem;
 }
 
 table th {
-  text-align: inherit;
+	text-align: inherit;
 }
 
 .cursor_disabled {
-  cursor: not-allowed;
+	cursor: not-allowed;
 }

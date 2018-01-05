@@ -7,99 +7,102 @@ import WalletSection from './Section';
 import STRINGS from '../../config/localizedStrings';
 
 class Wallet extends Component {
-  state = {
-    sections: [],
-    totalAssets: 0,
-  }
+	state = {
+		sections: [],
+		totalAssets: 0
+	};
 
-  componentDidMount() {
-    const { user_id, symbol, price } = this.props;
-    if (user_id && symbol && price) {
-      this.calculateSections(this.props);
-    }
-  }
+	componentDidMount() {
+		const { user_id, symbol, price } = this.props;
+		if (user_id && symbol && price) {
+			this.calculateSections(this.props);
+		}
+	}
 
-  componentWillReceiveProps(nextProps) {
-    if (
-      nextProps.user_id !== this.props.user_id ||
-      nextProps.price !== this.props.price ||
-      nextProps.orders.length !== this.props.orders.length ||
-      nextProps.symbol !== this.props.symbol ||
-      nextProps.balance.timestamp !== this.props.balance.timestamp ||
-      nextProps.activeLanguage !== this.props.activeLanguage
-    ) {
-      this.calculateSections(nextProps);
-    }
-  }
+	componentWillReceiveProps(nextProps) {
+		if (
+			nextProps.user_id !== this.props.user_id ||
+			nextProps.price !== this.props.price ||
+			nextProps.orders.length !== this.props.orders.length ||
+			nextProps.symbol !== this.props.symbol ||
+			nextProps.balance.timestamp !== this.props.balance.timestamp ||
+			nextProps.activeLanguage !== this.props.activeLanguage
+		) {
+			this.calculateSections(nextProps);
+		}
+	}
 
-  generateSection = (symbol, price, balance, orders ) => {
-    const { currencySymbol, formatToCurrency } = CURRENCIES[symbol];
-    const name = STRINGS[`${symbol.toUpperCase()}_NAME`];
-    return ({
-      accordionClassName: 'wallet_section-wrapper',
-      title: name,
-      titleClassName: 'wallet_section-title',
-      titleInformation: (
-        <div className="wallet_section-title-amount">
-          <span>{currencySymbol}</span>{formatToCurrency(balance[`${symbol}_balance`])}
-        </div>
-      ),
-      content: (
-        <WalletSection
-          symbol={symbol}
-          balance={balance}
-          orders={orders}
-          price={price}
-        />
-      ),
-    });
-  }
+	generateSection = (symbol, price, balance, orders) => {
+		const { currencySymbol, formatToCurrency } = CURRENCIES[symbol];
+		const name = STRINGS[`${symbol.toUpperCase()}_NAME`];
+		return {
+			accordionClassName: 'wallet_section-wrapper',
+			title: name,
+			titleClassName: 'wallet_section-title',
+			titleInformation: (
+				<div className="wallet_section-title-amount">
+					<span>{currencySymbol}</span>
+					{formatToCurrency(balance[`${symbol}_balance`])}
+				</div>
+			),
+			content: (
+				<WalletSection
+					symbol={symbol}
+					balance={balance}
+					orders={orders}
+					price={price}
+				/>
+			)
+		};
+	};
 
-  calculateSections = ({ symbol, price, balance, orders, prices }) => {
-    const sections = [];
+	calculateSections = ({ symbol, price, balance, orders, prices }) => {
+		const sections = [];
 
-    if (symbol !== 'fiat') {
-      sections.push(this.generateSection(symbol, price, balance, orders));
-    }
+		if (symbol !== 'fiat') {
+			sections.push(this.generateSection(symbol, price, balance, orders));
+		}
 
-    sections.push(this.generateSection('fiat', price, balance, orders));
+		sections.push(this.generateSection('fiat', price, balance, orders));
 
-    const totalAssets = formatFiatAmount(calculateBalancePrice(balance, prices));
-    this.setState({ sections, totalAssets });
-  }
+		const totalAssets = formatFiatAmount(
+			calculateBalancePrice(balance, prices)
+		);
+		this.setState({ sections, totalAssets });
+	};
 
-  render() {
-    const { sections, totalAssets } = this.state;
+	render() {
+		const { sections, totalAssets } = this.state;
 
-    if (Object.keys(this.props.balance).length === 0) {
-      return <div></div>
-    }
+		if (Object.keys(this.props.balance).length === 0) {
+			return <div />;
+		}
 
-    return (
-      <div className="wallet-wrapper">
-        <Accordion
-          sections={sections}
-          allowMultiOpen={true}
-        />
-        <div className="wallet_section-wrapper wallet_section-total_asset d-flex flex-column">
-          <div className="wallet_section-title">{STRINGS.WALLET.TOTAL_ASSETS}</div>
-          <div className="wallet_section-total_asset d-flex justify-content-end">
-            {STRINGS.FIAT_CURRENCY_SYMBOL}<span>{totalAssets}</span>
-          </div>
-        </div>
-      </div>
-    );
-  }
+		return (
+			<div className="wallet-wrapper">
+				<Accordion sections={sections} allowMultiOpen={true} />
+				<div className="wallet_section-wrapper wallet_section-total_asset d-flex flex-column">
+					<div className="wallet_section-title">
+						{STRINGS.WALLET.TOTAL_ASSETS}
+					</div>
+					<div className="wallet_section-total_asset d-flex justify-content-end">
+						{STRINGS.FIAT_CURRENCY_SYMBOL}
+						<span>{totalAssets}</span>
+					</div>
+				</div>
+			</div>
+		);
+	}
 }
 
 const mapStateToProps = (state, ownProps) => ({
-  balance: state.user.balance,
-  prices: state.orderbook.prices,
-  symbol: state.orderbook.symbol,
-  price: state.orderbook.price,
-  orders: state.order.activeOrders,
-  user_id: state.user.id,
-  activeLanguage: state.app.language
+	balance: state.user.balance,
+	prices: state.orderbook.prices,
+	symbol: state.orderbook.symbol,
+	price: state.orderbook.price,
+	orders: state.order.activeOrders,
+	user_id: state.user.id,
+	activeLanguage: state.app.language
 });
 
 export default connect(mapStateToProps)(Wallet);

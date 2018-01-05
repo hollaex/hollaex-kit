@@ -10,20 +10,43 @@ import { WS_URL, ICONS, SESSION_TIME } from '../../config/constants';
 import { logout } from '../../actions/authAction';
 import { setMe, setBalance, updateUser } from '../../actions/userAction';
 import { addUserTrades } from '../../actions/walletActions';
-import { setUserOrders, addOrder, updateOrder, removeOrder } from '../../actions/orderAction';
-import { setOrderbook, addTrades, changeSymbol } from '../../actions/orderbookAction';
 import {
-	setNotification, closeNotification, openContactForm,
-	setLanguage, closeAllNotification,
-	NOTIFICATIONS, CONTACT_FORM,
+	setUserOrders,
+	addOrder,
+	updateOrder,
+	removeOrder
+} from '../../actions/orderAction';
+import {
+	setOrderbook,
+	addTrades,
+	changeSymbol
+} from '../../actions/orderbookAction';
+import {
+	setNotification,
+	closeNotification,
+	openContactForm,
+	setLanguage,
+	closeAllNotification,
+	NOTIFICATIONS,
+	CONTACT_FORM
 } from '../../actions/appActions';
 
 import { checkUserSessionExpired } from '../../utils/utils';
 import { getToken, getTokenTimestamp } from '../../utils/token';
-import { AppBar, Sidebar, Dialog, Loader, Notification, MessageDisplay } from '../../components';
+import {
+	AppBar,
+	Sidebar,
+	Dialog,
+	Loader,
+	Notification,
+	MessageDisplay
+} from '../../components';
 import { ContactForm } from '../';
 
-import { getClasesForLanguage, getFontClassForLanguage } from '../../utils/string';
+import {
+	getClasesForLanguage,
+	getFontClassForLanguage
+} from '../../utils/string';
 
 class Container extends Component {
 	state = {
@@ -33,7 +56,7 @@ class Container extends Component {
 		privateSocket: undefined,
 		idleTimer: undefined,
 		ordersQueued: []
-	}
+	};
 
 	componentWillMount() {
 		if (checkUserSessionExpired(getTokenTimestamp())) {
@@ -49,18 +72,27 @@ class Container extends Component {
 	}
 
 	componentWillReceiveProps(nextProps) {
-		if (!nextProps.fetchingAuth && nextProps.fetchingAuth !== this.props.fetchingAuth) {
+		if (
+			!nextProps.fetchingAuth &&
+			nextProps.fetchingAuth !== this.props.fetchingAuth
+		) {
 			if (!this.state.publicSocket) {
 				this.initSocketConnections();
 			}
 		}
-		if (nextProps.activeNotification.timestamp !== this.props.activeNotification.timestamp) {
+		if (
+			nextProps.activeNotification.timestamp !==
+			this.props.activeNotification.timestamp
+		) {
 			if (nextProps.activeNotification.type !== '') {
 				this.onOpenDialog();
 			} else {
 				this.onCloseDialog();
 			}
-		} else if (!nextProps.activeNotification.timestamp && this.state.dialogIsOpen) {
+		} else if (
+			!nextProps.activeNotification.timestamp &&
+			this.state.dialogIsOpen
+		) {
 			this.onCloseDialog();
 		}
 		if (
@@ -94,7 +126,7 @@ class Container extends Component {
 			const idleTimer = setTimeout(() => this.logout('Inactive'), SESSION_TIME); // no activity will log the user out automatically
 			this.setState({ idleTimer });
 		}
-	}
+	};
 
 	resetTimer = debounce(this._resetTimer, 250);
 
@@ -104,13 +136,13 @@ class Container extends Component {
 		this.setState({ appLoaded: true }, () => {
 			this._resetTimer();
 		});
-	}
+	};
 
 	setPublicWS = () => {
 		const { symbol } = this.props;
 		const publicSocket = io(`${WS_URL}/realtime`, {
 			query: {
-				symbol,
+				symbol
 			}
 		});
 
@@ -118,17 +150,16 @@ class Container extends Component {
 
 		publicSocket.on('orderbook', (data) => {
 			// console.log('orderbook', data)
-			this.props.setOrderbook(data[symbol])
+			this.props.setOrderbook(data[symbol]);
 		});
 
 		publicSocket.on('trades', (data) => {
-			// console.log('trades', data[symbol])
+			console.log('trades', data);
 			if (data[symbol].length > 0) {
 				this.props.addTrades(data[symbol]);
 			}
 		});
-
-	}
+	};
 
 	setUserSocket = (token) => {
 		const privateSocket = io.connect(`${WS_URL}/user`, {
@@ -137,14 +168,18 @@ class Container extends Component {
 			}
 		});
 
-    this.setState({ privateSocket });
+		this.setState({ privateSocket });
 
 		privateSocket.on('error', (error) => {
-      if (error && typeof error === 'string' && error.indexOf('Access Denied') > -1) {
-        this.logout('Token is expired');
-      } else {
-        console.error(error)
-      }
+			if (
+				error &&
+				typeof error === 'string' &&
+				error.indexOf('Access Denied') > -1
+			) {
+				this.logout('Token is expired');
+			} else {
+				console.error(error);
+			}
 		});
 
 		privateSocket.on('user', (data) => {
@@ -158,56 +193,57 @@ class Container extends Component {
 		});
 
 		privateSocket.on('orders', (data) => {
-			this.props.setUserOrders(data)
+			this.props.setUserOrders(data);
 		});
 
 		privateSocket.on('trades', (data) => {
-			this.props.addUserTrades(data)
+			this.props.addUserTrades(data);
 		});
 
 		privateSocket.on('wallet', (data) => {
-			this.props.setBalance(data.balance)
+			this.props.setBalance(data.balance);
 		});
 
 		privateSocket.on('update', ({ type, data }) => {
-			console.log('update', type, data)
-			switch(type) {
-        case 'order_queued':
+			console.log('update', type, data);
+			switch (type) {
+				case 'order_queued':
 					// TODO add queued orders to the store
-					this.setState({ ordersQueued: this.state.ordersQueued.concat(data) })
+					this.setState({ ordersQueued: this.state.ordersQueued.concat(data) });
 					break;
 				case 'order_processed':
-        case 'order_canceled': {
+				case 'order_canceled': {
 					const ordersQueued = [].concat(this.state.ordersQueued);
-					const indexOfOrder = ordersQueued.findIndex((order) => order.id === data.id);
+					const indexOfOrder = ordersQueued.findIndex(
+						(order) => order.id === data.id
+					);
 					if (indexOfOrder > -1) {
 						ordersQueued.splice(indexOfOrder, 1);
 					}
-					this.setState({ ordersQueued })
+					this.setState({ ordersQueued });
 					break;
 				}
-				case 'order_added':{
+				case 'order_added': {
 					const { ordersQueued } = this.state;
-					const indexOfOrder = ordersQueued.findIndex(({ id }) => id === data.id);
+					const indexOfOrder = ordersQueued.findIndex(
+						({ id }) => id === data.id
+					);
 					if (indexOfOrder > -1) {
 						ordersQueued.splice(indexOfOrder, 1);
 						this.setState({ ordersQueued });
 					}
 					this.props.addOrder(data);
-					this.props.setNotification(
-						NOTIFICATIONS.ORDERS,
-						{ type, data }
-					);
+					this.props.setNotification(NOTIFICATIONS.ORDERS, { type, data });
 					break;
 				}
-        case 'order_partialy_filled': {
+				case 'order_partialy_filled': {
 					this.props.updateOrder(data);
 					this.props.setNotification(
 						NOTIFICATIONS.ORDERS,
 						{ type, data },
 						false
 					);
-  				break;
+					break;
 				}
 				case 'order_updated':
 					this.props.updateOrder(data);
@@ -217,35 +253,33 @@ class Container extends Component {
 						false
 					);
 					break;
-        case 'order_filled': {
-					const ordersDeleted = this.props.orders.filter(
-						(order, index) => {
-							return data.findIndex((deletedOrder) => deletedOrder.id === order.id) > -1
-						}
-					)
-					this.props.removeOrder(data);
-					ordersDeleted.forEach((orderDeleted) => {
-						this.props.setNotification(
-							NOTIFICATIONS.ORDERS,
-							{
-								type,
-								data: {
-									...orderDeleted,
-									filled: orderDeleted.size,
-								}
-							}
+				case 'order_filled': {
+					const ordersDeleted = this.props.orders.filter((order, index) => {
+						return (
+							data.findIndex((deletedOrder) => deletedOrder.id === order.id) >
+							-1
 						);
 					});
-          break;
+					this.props.removeOrder(data);
+					ordersDeleted.forEach((orderDeleted) => {
+						this.props.setNotification(NOTIFICATIONS.ORDERS, {
+							type,
+							data: {
+								...orderDeleted,
+								filled: orderDeleted.size
+							}
+						});
+					});
+					break;
 				}
 				case 'order_removed':
-          this.props.removeOrder(data);
+					this.props.removeOrder(data);
 					this.props.setNotification(
 						NOTIFICATIONS.ORDERS,
 						{ type, data },
 						false
 					);
-          break;
+					break;
 				case 'trade': {
 					this.props.addUserTrades(data);
 					const tradeOrdersIds = new Set();
@@ -263,67 +297,56 @@ class Container extends Component {
 							order = orders.find(({ id }) => id === orderIdFromTrade);
 						}
 						if (order) {
-							this.props.setNotification(
-								NOTIFICATIONS.TRADES,
-								{ data, order },
-							);
+							this.props.setNotification(NOTIFICATIONS.TRADES, { data, order });
 						}
 					}
- 					break;
+					break;
 				}
 				case 'deposit': {
 					const show = data.status || data.currency !== 'fiat';
-					this.props.setNotification(
-						NOTIFICATIONS.DEPOSIT,
-						data,
-						show
-					);
+					this.props.setNotification(NOTIFICATIONS.DEPOSIT, data, show);
 					break;
 				}
 				case 'withdrawal': {
 					// TODO FIX when notification is defined
-					console.log(data, !data.amount)
+					console.log(data, !data.amount);
 					const show = data.amount;
-					this.props.setNotification(
-						NOTIFICATIONS.WITHDRAWAL,
-						data,
-						!show
-					);
+					this.props.setNotification(NOTIFICATIONS.WITHDRAWAL, data, !show);
 					break;
 				}
-        default:
-        	break;
+				default:
+					break;
 			}
 		});
-  }
+	};
 
 	goToPage = (path) => {
 		if (this.props.location.pathname !== path) {
 			this.props.router.push(path);
 		}
-  }
+	};
 
 	goToAccountPage = () => this.goToPage('/account');
-  goToVerificationPage = () => this.goToPage('/verification');
+	goToVerificationPage = () => this.goToPage('/verification');
 	goToWalletPage = () => this.goToPage('/wallet');
 	goToTradePage = () => this.goToPage('/trade');
 	goToQuickTradePage = () => this.goToPage('/quick-trade');
-  goToDashboard = () => this.goToPage('/');
+	goToDashboard = () => this.goToPage('/');
 
 	logout = (message = '') => {
 		this.setState({ appLoaded: false }, () => {
-			this.props.logout(typeof message === 'string' ? message: '');
-		})
-	}
+			this.props.logout(typeof message === 'string' ? message : '');
+		});
+	};
 
 	onOpenDialog = () => {
 		this.setState({ dialogIsOpen: true });
-	}
+	};
 
 	onCloseDialog = () => {
 		this.setState({ dialogIsOpen: false });
 		this.props.closeNotification();
-	}
+	};
 
 	getClassForActivePath = (path) => {
 		switch (path) {
@@ -338,54 +361,82 @@ class Container extends Component {
 			default:
 				return '';
 		}
-	}
+	};
 
 	renderDialogContent = ({ type, data }, prices) => {
 		switch (type) {
 			case NOTIFICATIONS.ORDERS:
 			case NOTIFICATIONS.TRADES:
 			case NOTIFICATIONS.WITHDRAWAL:
-				return <Notification type={type} data={data} openContactForm={this.props.openContactForm} onClose={this.onCloseDialog} />;
+				return (
+					<Notification
+						type={type}
+						data={data}
+						openContactForm={this.props.openContactForm}
+						onClose={this.onCloseDialog}
+					/>
+				);
 			case NOTIFICATIONS.DEPOSIT:
-				return <Notification
-					type={type}
-					data={{
-						...data,
-						 price: prices[data.currency],
-					}}
-					onClose={this.onCloseDialog}
-					goToPage={this.goToPage}
-					openContactForm={this.props.openContactForm}
-				/>;
+				return (
+					<Notification
+						type={type}
+						data={{
+							...data,
+							price: prices[data.currency]
+						}}
+						onClose={this.onCloseDialog}
+						goToPage={this.goToPage}
+						openContactForm={this.props.openContactForm}
+					/>
+				);
 			case NOTIFICATIONS.ERROR:
-				return <MessageDisplay
-					iconPath={ICONS.RED_WARNING}
-					onClick={this.onCloseDialog}
-					text={data}
-				/>;
+				return (
+					<MessageDisplay
+						iconPath={ICONS.RED_WARNING}
+						onClick={this.onCloseDialog}
+						text={data}
+					/>
+				);
 			case CONTACT_FORM:
 				return <ContactForm onSubmitSuccess={this.onCloseDialog} />;
 			default:
-				return <div></div>
+				return <div />;
 		}
-	}
+	};
 
 	onChangeLanguage = (language) => () => {
-    return this.props.changeLanguage(language);
-  }
+		return this.props.changeLanguage(language);
+	};
 
 	render() {
 		const {
-			symbol, children, activeNotification, changeSymbol, notifications, prices, verification_level, activeLanguage,
+			symbol,
+			children,
+			activeNotification,
+			changeSymbol,
+			notifications,
+			prices,
+			verification_level,
+			activeLanguage
 		} = this.props;
 		const { dialogIsOpen, appLoaded } = this.state;
 		const languageClasses = getClasesForLanguage(activeLanguage, 'array');
 		const fontClass = getFontClassForLanguage(activeLanguage);
 
 		const shouldCloseOnOverlayClick = activeNotification.type !== CONTACT_FORM;
-		const activePath = !appLoaded ? '' : this.getClassForActivePath(this.props.location.pathname);
+		const activePath = !appLoaded
+			? ''
+			: this.getClassForActivePath(this.props.location.pathname);
 		return (
-			<div className={classnames('app_container', activePath, symbol, fontClass, languageClasses[0])}>
+			<div
+				className={classnames(
+					'app_container',
+					activePath,
+					symbol,
+					fontClass,
+					languageClasses[0]
+				)}
+			>
 				<EventListener
 					target="window"
 					onResize={this.resetTimer}
@@ -401,14 +452,20 @@ class Container extends Component {
 					changeSymbol={changeSymbol}
 					activeSymbol={symbol}
 				/>
-        <div className="app_container-content d-flex justify-content-between">
-          <div className={classnames(
-						'app_container-main', 'd-flex', 'flex-column', 'justify-content-between', 'overflow-y',
-					)}>
-            {appLoaded && verification_level > 0 ? children : <Loader />}
-          </div>
-          <div className="app_container-sidebar">
-            <Sidebar
+				<div className="app_container-content d-flex justify-content-between">
+					<div
+						className={classnames(
+							'app_container-main',
+							'd-flex',
+							'flex-column',
+							'justify-content-between',
+							'overflow-y'
+						)}
+					>
+						{appLoaded && verification_level > 0 ? children : <Loader />}
+					</div>
+					<div className="app_container-sidebar">
+						<Sidebar
 							activePath={activePath}
 							goToAccountPage={this.goToAccountPage}
 							goToWalletPage={this.goToWalletPage}
@@ -418,8 +475,8 @@ class Container extends Component {
 							notifications={notifications}
 							symbol={symbol}
 						/>
-          </div>
-        </div>
+					</div>
+				</div>
 				<Dialog
 					isOpen={dialogIsOpen}
 					label="exir-modal"
@@ -438,34 +495,34 @@ class Container extends Component {
 const mapStateToProps = (store) => ({
 	orderbook: store.orderbook,
 	symbol: store.orderbook.symbol,
-  prices: store.orderbook.prices,
+	prices: store.orderbook.prices,
 	fetchingAuth: store.auth.fetching,
 	activeNotification: store.app.activeNotification,
 	notifications: store.app.notifications,
 	verification_level: store.user.verification_level,
-  activeLanguage: store.app.language,
+	activeLanguage: store.app.language,
 	orders: store.order.activeOrders,
-	user: store.user.userData,
+	user: store.user.userData
 });
 
 const mapDispatchToProps = (dispatch) => ({
-    logout: bindActionCreators(logout, dispatch),
-		addTrades: bindActionCreators(addTrades, dispatch),
-		setOrderbook: bindActionCreators(setOrderbook, dispatch),
-		setMe: bindActionCreators(setMe, dispatch),
-		setBalance: bindActionCreators(setBalance, dispatch),
-		setUserOrders: bindActionCreators(setUserOrders, dispatch),
-		addOrder: bindActionCreators(addOrder, dispatch),
-		updateOrder: bindActionCreators(updateOrder, dispatch),
-		removeOrder: bindActionCreators(removeOrder, dispatch),
-		addUserTrades: bindActionCreators(addUserTrades, dispatch),
-		updateUser: bindActionCreators(updateUser, dispatch),
-		closeNotification: bindActionCreators(closeNotification, dispatch),
-		closeAllNotification: bindActionCreators(closeAllNotification, dispatch),
-		openContactForm: bindActionCreators(openContactForm, dispatch),
-		setNotification: bindActionCreators(setNotification, dispatch),
-		changeSymbol: bindActionCreators(changeSymbol, dispatch),
-		changeLanguage: bindActionCreators(setLanguage, dispatch),
+	logout: bindActionCreators(logout, dispatch),
+	addTrades: bindActionCreators(addTrades, dispatch),
+	setOrderbook: bindActionCreators(setOrderbook, dispatch),
+	setMe: bindActionCreators(setMe, dispatch),
+	setBalance: bindActionCreators(setBalance, dispatch),
+	setUserOrders: bindActionCreators(setUserOrders, dispatch),
+	addOrder: bindActionCreators(addOrder, dispatch),
+	updateOrder: bindActionCreators(updateOrder, dispatch),
+	removeOrder: bindActionCreators(removeOrder, dispatch),
+	addUserTrades: bindActionCreators(addUserTrades, dispatch),
+	updateUser: bindActionCreators(updateUser, dispatch),
+	closeNotification: bindActionCreators(closeNotification, dispatch),
+	closeAllNotification: bindActionCreators(closeAllNotification, dispatch),
+	openContactForm: bindActionCreators(openContactForm, dispatch),
+	setNotification: bindActionCreators(setNotification, dispatch),
+	changeSymbol: bindActionCreators(changeSymbol, dispatch),
+	changeLanguage: bindActionCreators(setLanguage, dispatch)
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Container);

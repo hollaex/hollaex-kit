@@ -3,38 +3,38 @@ $tab_controller-title-margin: 16px;
 $tab_controller-item-min-width: 4rem;
 
 .tab_controller-title {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
 
-  .tab_controller-title-icon {
-    @include size($tab_controller-title-img-size);
-  }
+	.tab_controller-title-icon {
+		@include size($tab_controller-title-img-size);
+	}
 
-  .tab_controller-title-text {
-    font-size: $font-size-headline;
-  }
+	.tab_controller-title-text {
+		font-size: $font-size-headline;
+	}
 }
 
 .tab_controller-tabs {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-content: center;
-  border-top: 1px solid $tab-border-color;
-  margin-bottom: 1rem;
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+	align-content: center;
+	border-top: 1px solid $tab-border-color;
+	margin-bottom: 1rem;
 
-  .tab_item {
-    border-top: $tab-selected-line-height solid transparent;
-    padding: $tab-text-padding;
-    display: flex;
-    align-items: center;
-    min-width: $tab_controller-item-min-width;
-    justify-content: center;
-  }
-  .tab_item-active {
-    border-top: $tab-selected-line-height solid $tab-border-color;
-    font-weight: bold;
-  }
+	.tab_item {
+		border-top: $tab-selected-line-height solid transparent;
+		padding: $tab-text-padding;
+		display: flex;
+		align-items: center;
+		min-width: $tab_controller-item-min-width;
+		justify-content: center;
+	}
+	.tab_item-active {
+		border-top: $tab-selected-line-height solid $tab-border-color;
+		font-weight: bold;
+	}
 }

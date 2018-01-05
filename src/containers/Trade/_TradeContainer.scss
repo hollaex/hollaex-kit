@@ -1,37 +1,37 @@
 .trade-container {
-  flex: 1;
+	flex: 1;
 
-  .trade-col_main_wrapper {
-    .trade-main_content {
-      flex: 6;
-    }
+	.trade-col_main_wrapper {
+		.trade-main_content {
+			flex: 6;
+		}
 
-    .trade-tabs_content {
-      flex: 3;
+		.trade-tabs_content {
+			flex: 3;
 
-      > * {
-        flex: 1 !important;
-      }
-    }
-  }
+			> * {
+				flex: 1 !important;
+			}
+		}
+	}
 
-  .trade-col_side_wrapper {
-    flex: 0;
-    min-width: $side-column--width;
-    max-width: $side-column--width;
+	.trade-col_side_wrapper {
+		flex: 0;
+		min-width: $side-column--width;
+		max-width: $side-column--width;
 
-    > div {
-      flex: 1;
-    }
-  }
+		> div {
+			flex: 1;
+		}
+	}
 
-  .trade-col_action_wrapper {
-    flex: 0;
-    min-width: $order_entry-column--width;
-    max-width: $order_entry-column--width;
-  }
+	.trade-col_action_wrapper {
+		flex: 0;
+		min-width: $order_entry-column--width;
+		max-width: $order_entry-column--width;
+	}
 
-  .table-wrapper {
-    margin: 0
-  }
+	.table-wrapper {
+		margin: 0;
+	}
 }
