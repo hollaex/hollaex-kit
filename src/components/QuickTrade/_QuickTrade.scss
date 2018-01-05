@@ -13,6 +13,23 @@ $input-bottom_line--animation--width: 100px;
 
 $title-icon--height: 10rem;
 
+.language_rtl {
+	.quick_trade-wrapper {
+		font-family: inherit;
+		.input_block-title {
+			font-family: inherit;
+		}
+		.toogle_button-wrapper {
+			.toogle-content {
+				font-family: inherit;
+				.selected {
+					font-family: inherit;
+				}
+			}
+		}
+	}
+}
+
 .direction_ltr {
 	.quick_trade-wrapper {
 		font-family: $raleway--font-family;
