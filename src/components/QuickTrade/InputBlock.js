@@ -86,6 +86,7 @@ class InputBlock extends Component {
 				className={classnames(
 					'input_block-wrapper',
 					'flex-column',
+					'direction_ltr',
 					...FLEX_CENTER_CLASSES,
 					className,
 					symbol,
@@ -132,7 +133,7 @@ class InputBlock extends Component {
 				<FieldError
 					error={translateError(errorMessage)}
 					displayError={true}
-					className="input_block-error-wrapper"
+					className="input_block-error-wrapper apply_rtl"
 				/>
 			</div>
 		);
