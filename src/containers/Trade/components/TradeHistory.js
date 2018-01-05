@@ -13,7 +13,7 @@ const generateHeaders = () => [
 		key: 'price',
 		label: STRINGS.PRICE,
 		renderCell: ({ side, price = 0 }, index) => (
-			<div className={classnames(side)} key={`time-${index}`}>
+			<div className={classnames('trade_history-row', side)} key={`time-${index}`}>
 				{formatFiatAmount(price)}
 			</div>
 		)

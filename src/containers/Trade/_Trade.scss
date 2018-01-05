@@ -35,6 +35,16 @@ $order_entry-column--width: 15rem;
 	color: $trade-bids-color-font;
 }
 
+.trade_history-row {
+	&.sell {
+		color: $trade-asks-color-font;
+	}
+
+	&.buy {
+		color: $trade-bids-color-font;
+	}
+}
+
 .trade_active_orders-wrapper {
 	overflow-y: auto;
 	flex: 1;
