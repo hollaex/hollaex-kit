@@ -94,7 +94,7 @@ const generateHeaders = (onCancel) => [
 				<td key={index} style={{ position: 'relative' }}>
 					<ActionNotification
 						text={STRINGS.CANCEL}
-						iconPath={ICONS.CHECK}
+						iconPath={ICONS.CANCEL_CROSS_ACTIVE}
 						onClick={() => onCancel(id)}
 						className="relative"
 						status=""

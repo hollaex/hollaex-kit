@@ -101,7 +101,7 @@ class Trade extends Component {
 				titleAction: activeOrders.length > 0 && (
 					<ActionNotification
 						text={STRINGS.CANCEL_ALL}
-						iconPath={ICONS.CHECK}
+						iconPath={ICONS.CANCEL_CROSS_ACTIVE}
 						onClick={cancelAllOrders}
 						status=""
 					/>

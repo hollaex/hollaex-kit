@@ -214,6 +214,12 @@ export const ICONS = {
 	LOGOUT_DOOR_INACTIVE: `${
 		process.env.PUBLIC_URL
 	}/assets/images/logout-door-inactive.svg`,
+	CANCEL_CROSS_ACTIVE: `${
+		process.env.PUBLIC_URL
+	}/assets/images/cancel-cross-active.svg`,
+	CANCEL_CROSS_INACTIVE: `${
+		process.env.PUBLIC_URL
+	}/assets/images/cancel-cross-inactive.svg`
 };
 
 export const SOCIAL_ICONS = {

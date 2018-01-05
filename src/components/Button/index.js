@@ -12,6 +12,7 @@ const Button = ({ label, onClick, type, disabled, className }) => (
 			'exir-button',
 			'mdc-button',
 			'mdc-button--unelevated',
+			'exir-button-font',
 			{
 				disabled
 			},

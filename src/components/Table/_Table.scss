@@ -64,6 +64,9 @@ $controllers--color-disabled: $colors-deactivate-color2;
 			margin-right: 0.5rem;
 		}
 	}
+	.table_header-wrapper {
+		font-family: $title--font-family;
+	}
 }
 
 .direction_rtl {
