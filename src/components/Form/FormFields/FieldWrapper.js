@@ -45,8 +45,12 @@ export const FieldError = ({ error, displayError, className }) => (
 			'field-error-hidden': !displayError
 		})}
 	>
-		<img src={ICONS.RED_WARNING} className="field-error-icon" alt="error" />
-		<span className="field-error-text">{getErrorLocalized(error)}</span>
+		{error && (
+			<img src={ICONS.RED_WARNING} className="field-error-icon" alt="error" />
+		)}
+		{error && (
+			<span className="field-error-text">{getErrorLocalized(error)}</span>
+		)}
 	</div>
 );
 

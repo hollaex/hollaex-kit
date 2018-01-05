@@ -97,6 +97,7 @@ $valid-icon-size: 2rem;
 	position: relative;
 	display: flex;
 	align-items: center;
+	height: $error-icon-size;
 
 	&.field-error-hidden {
 		visibility: hidden;

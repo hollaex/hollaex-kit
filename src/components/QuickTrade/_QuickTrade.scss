@@ -25,6 +25,13 @@ $title-icon--height: 10rem;
 	padding: $wrapper--padding;
 	background-color: white;
 
+	.review-block-wrapper,
+	.input_block-wrapper,
+	.toogle_button-wrapper {
+		margin: 1rem;
+		width: 100%;
+	}
+
 	.quick_trade-bottom-padded {
 		margin-bottom: $section--margin-bottom;
 	}
@@ -127,6 +134,9 @@ $title-icon--height: 10rem;
 		margin-top: 0.5rem;
 	}
 
+	.input_block-wrapper {
+		margin-bottom: 0;
+	}
 	.input_block-title {
 		font-size: $font-size-subhead3;
 		font-family: $raleway-medium--font-family;
@@ -196,13 +206,6 @@ $title-icon--height: 10rem;
 		&.loading.ltc::after {
 			background-color: $colors-currencies-ltc;
 		}
-	}
-
-	.review-block-wrapper,
-	.input_block-wrapper,
-	.toogle_button-wrapper {
-		margin: 1rem;
-		width: 100%;
 	}
 }
 

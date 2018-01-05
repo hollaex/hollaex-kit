@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
-import NumericInput from 'react-numeric-input';
 import math from 'mathjs';
+import { isNumeric, isFloat } from 'validator';
 
 import { DECIMALS } from './constants';
 import { CurrencyBall } from '../../components';
 
+import { minValue, maxValue } from '../../components/Form/validations';
 import { FieldError } from '../../components/Form/FormFields/FieldWrapper';
 import { FLEX_CENTER_CLASSES, LIMIT_VALUES } from '../../config/constants';
 
@@ -19,12 +20,8 @@ const STEP = LIMIT_VALUES.SIZE.STEP;
 const PLACEHOLDER = '0.00';
 
 const generateStyle = (value) => {
-	const length = typeof value === 'number' ? `${value}`.length : value.length;
-	const style = {
-		input: {
-			width: `${length}rem`
-		}
-	};
+	const length = `${value}`.length;
+	const style = { width: `${length}rem`, minWidth: '2rem' };
 	return style;
 };
 
@@ -39,43 +36,51 @@ class InputBlock extends Component {
 		}
 	}
 
-	onChange = (newValue) => {
-		if (typeof newValue === 'number') {
-			const value = this.format(newValue);
-			this.props.onChange(value);
-			this.setState({ value });
-		} else if (!newValue) {
-			this.props.onChange(0);
-			this.setState({ value: newValue });
-		}
+	onChangeEvent = (event) => {
+		this.onChange(event.target.value);
 	};
 
-	format = (value = '') => {
-		if ((value && typeof value !== 'number') || value === 0) {
-			return value;
-		} else if (value < 0) {
-			return MIN_VALUE;
-		} else if (value > MAX_VALUE) {
-			return MAX_VALUE;
-		} else {
-			const formatedValue = math.round(value, DECIMALS);
-			if (formatedValue === 0) {
-				return this.state.value;
+	onChange = (newValue) => {
+		if (isNumeric(newValue) || isFloat(newValue)) {
+			const value = math.round(newValue, DECIMALS);
+			if (value) {
+				this.props.onChange(value);
+			} else {
+				this.props.onChange(0);
 			}
-			return formatedValue;
+			this.setState({ value: newValue, errorValue: value });
+		} else {
+			this.setState({ value: newValue, errorValue: newValue });
+			this.props.onChange(0);
 		}
 	};
 
 	onLostFocus = () => {
-		if (!this.state.value) {
+		const { value } = this.state;
+		if (!value || value < MIN_VALUE) {
 			this.setState({ value: MIN_VALUE });
+		} else if (value > MAX_VALUE) {
+			this.setState({ value: MAX_VALUE });
+		} else {
+			this.setState({ value: math.round(value, DECIMALS) });
 		}
+	};
+
+	renderErrorMessage = (value) => {
+		let error = '';
+		if (!value) {
+			error = '';
+		} else {
+			error = minValue(MIN_VALUE)(value) || maxValue(MAX_VALUE)(value);
+		}
+		return error;
 	};
 
 	render() {
 		const { text, symbol, className, error } = this.props;
 		const shortName = STRINGS[`${symbol.toUpperCase()}_SHORTNAME`];
-		const { value } = this.state;
+		const { value, errorValue } = this.state;
+		const errorMessage = this.renderErrorMessage(errorValue) || error;
 		return (
 			<div
 				className={classnames(
@@ -84,7 +89,7 @@ class InputBlock extends Component {
 					...FLEX_CENTER_CLASSES,
 					className,
 					symbol,
-					{ has_error: error }
+					{ has_error: errorMessage }
 				)}
 			>
 				<div
@@ -94,7 +99,7 @@ class InputBlock extends Component {
 						...FLEX_CENTER_CLASSES,
 						className,
 						symbol,
-						{ has_error: error }
+						{ has_error: errorMessage }
 					)}
 				>
 					{text && <div className="input_block-title">{text}</div>}
@@ -110,28 +115,25 @@ class InputBlock extends Component {
 							size="s"
 							className="input_block-currency_ball"
 						/>
-						<NumericInput
+						<input
+							type="number"
 							className="input_block-inputbox"
-							onChange={this.onChange}
+							onChange={this.onChangeEvent}
 							placeholder={PLACEHOLDER}
 							step={STEP}
-							type="number"
 							value={value}
 							min={MIN_VALUE}
 							max={MAX_VALUE}
 							style={generateStyle(value || PLACEHOLDER)}
 							onBlur={this.onLostFocus}
-							format={this.format}
 						/>
 					</div>
 				</div>
-				{error && (
-					<FieldError
-						error={translateError(error)}
-						displayError={true}
-						className="input_block-error-wrapper"
-					/>
-				)}
+				<FieldError
+					error={translateError(errorMessage)}
+					displayError={true}
+					className="input_block-error-wrapper"
+				/>
 			</div>
 		);
 	}
