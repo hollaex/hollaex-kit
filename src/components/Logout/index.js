@@ -20,7 +20,7 @@ const Logout = ({ className, onLogout }) => (
 		</div>
 		<div onClick={onLogout} className="logout-right pointer">
 			<ReactSVG
-				path={ICONS.LOGOUT_ARROW}
+				path={ICONS.LOGOUT_DOOR_INACTIVE}
 				wrapperClassName="logout-right-icon"
 			/>
 		</div>

@@ -59,3 +59,14 @@
 		}
 	}
 }
+
+@mixin hover-icon($active-color, $inactive-color) {
+	&:hover {
+		svg path {
+			fill: $active-color;
+		}
+	}
+	svg path {
+		fill: $inactive-color;
+	}
+}

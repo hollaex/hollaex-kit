@@ -207,7 +207,13 @@ export const ICONS = {
 	}/assets/images/coin-withdraw-btc.svg`,
 	COIN_WITHDRAW_TOMAN: `${
 		process.env.PUBLIC_URL
-	}/assets/images/coin-withdraw-tom.svg`
+	}/assets/images/coin-withdraw-tom.svg`,
+	LOGOUT_DOOR_ACTIVE: `${
+		process.env.PUBLIC_URL
+	}/assets/images/logout-door-active.svg`,
+	LOGOUT_DOOR_INACTIVE: `${
+		process.env.PUBLIC_URL
+	}/assets/images/logout-door-inactive.svg`,
 };
 
 export const SOCIAL_ICONS = {
