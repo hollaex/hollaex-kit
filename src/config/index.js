@@ -1,6 +1,8 @@
 const PRODUCTION_ENDPOINT = 'https://api.exir.tech';
 const TESTNET_ENDPOINT = 'https://api.testnet.exir.tech';
 const DEVELOPMENT_ENDPOINT = 'http://35.158.234.195';
+// const LOCALHOST_ENDPOINT = 'https://api.testnet.exir.tech';
+// const LOCALHOST_ENDPOINT = 'http://35.158.234.195';
 const LOCALHOST_ENDPOINT = 'http://localhost';
 
 const API_PATH_V0 = '/v0';

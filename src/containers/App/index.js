@@ -431,6 +431,7 @@ class Container extends Component {
 			<div
 				className={classnames(
 					'app_container',
+					'd-flex',
 					activePath,
 					symbol,
 					fontClass,
@@ -445,37 +446,34 @@ class Container extends Component {
 					onClick={this.resetTimer}
 					onKeyPress={this.resetTimer}
 				/>
-				<AppBar
-					goToAccountPage={this.goToAccountPage}
-					goToDashboard={this.goToDashboard}
-					acccountIsActive={activePath === 'account'}
-					changeSymbol={changeSymbol}
-					activeSymbol={symbol}
-				/>
-				<div className="app_container-content d-flex justify-content-between">
-					<div
-						className={classnames(
-							'app_container-main',
-							'd-flex',
-							'flex-column',
-							'justify-content-between',
-							'overflow-y'
-						)}
-					>
-						{appLoaded && verification_level > 0 ? children : <Loader />}
+				<div className="d-flex flex-column f-1">
+					<AppBar goToDashboard={this.goToDashboard} />
+					<div className="app_container-content d-flex justify-content-between">
+						<div
+							className={classnames(
+								'app_container-main',
+								'd-flex',
+								'flex-column',
+								'justify-content-between',
+								'overflow-y'
+							)}
+						>
+							{appLoaded && verification_level > 0 ? children : <Loader />}
+						</div>
 					</div>
-					<div className="app_container-sidebar">
-						<Sidebar
-							activePath={activePath}
-							goToAccountPage={this.goToAccountPage}
-							goToWalletPage={this.goToWalletPage}
-							goToTradePage={this.goToTradePage}
-							goToQuickTradePage={this.goToQuickTradePage}
-							logout={this.logout}
-							notifications={notifications}
-							symbol={symbol}
-						/>
-					</div>
+				</div>
+				<div className="app_container-sidebar">
+					<Sidebar
+						activePath={activePath}
+						goToAccountPage={this.goToAccountPage}
+						goToWalletPage={this.goToWalletPage}
+						goToTradePage={this.goToTradePage}
+						goToQuickTradePage={this.goToQuickTradePage}
+						logout={this.logout}
+						notifications={notifications}
+						changeSymbol={changeSymbol}
+						symbol={symbol}
+					/>
 				</div>
 				<Dialog
 					isOpen={dialogIsOpen}

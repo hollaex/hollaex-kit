@@ -63,10 +63,12 @@
 @mixin hover-icon($active-color, $inactive-color) {
 	&:hover {
 		svg path {
-			fill: $active-color;
+			fill: $active-color !important;
+			stroke: $active-color !important;
 		}
 	}
 	svg path {
-		fill: $inactive-color;
+		fill: $inactive-color !important;
+		stroke: $inactive-color !important;
 	}
 }

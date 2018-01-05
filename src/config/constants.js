@@ -219,7 +219,25 @@ export const ICONS = {
 	}/assets/images/cancel-cross-active.svg`,
 	CANCEL_CROSS_INACTIVE: `${
 		process.env.PUBLIC_URL
-	}/assets/images/cancel-cross-inactive.svg`
+	}/assets/images/cancel-cross-inactive.svg`,
+	SIDEBAR_WALLET_ACTIVE: `${
+		process.env.PUBLIC_URL
+	}/assets/images/wallet-active.svg`,
+	SIDEBAR_WALLET_INACTIVE: `${
+		process.env.PUBLIC_URL
+	}/assets/images/wallet-inactive.svg`,
+	SIDEBAR_ACCOUNT_ACTIVE: `${
+		process.env.PUBLIC_URL
+	}/assets/images/account_2-active.svg`,
+	SIDEBAR_ACCOUNT_INACTIVE: `${
+		process.env.PUBLIC_URL
+	}/assets/images/account_2-inactive.svg`,
+	SIDEBAR_TRADING_ACTIVE: `${
+		process.env.PUBLIC_URL
+	}/assets/images/trade-active.svg`,
+	SIDEBAR_TRADING_INACTIVE: `${
+		process.env.PUBLIC_URL
+	}/assets/images/trade-inactive.svg`
 };
 
 export const SOCIAL_ICONS = {

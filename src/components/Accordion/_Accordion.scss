@@ -72,7 +72,7 @@ $main-text--color: $colors-deactivate-color2;
 	.accordion_wrapper .accordion_section {
 		.accordion_section_content_text {
 			&.with_arrow:after {
-				@include css-triangle($colors-main-black, 'left', $accordion_arrow-size);
+				@include css-triangle($main-text--color, 'left', $accordion_arrow-size);
 				left: -$accordion_arrow-size;
 				top: calc(50% - 0.6rem);
 			}

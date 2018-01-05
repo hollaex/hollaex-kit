@@ -592,6 +592,7 @@ export default {
 	PRO_TRADE: 'Pro trade',
 	WALLET_TITLE: 'Wallet',
 	TRADING_MODE_TITLE: 'Trading Mode',
+	TRADING_TITLE: 'Trading',
 	LOGOUT: 'Logout',
 	WITHDRAWALS_MIN_VALUE_ERROR:
 		'The transaction is too small to send. Try a larger amount.',

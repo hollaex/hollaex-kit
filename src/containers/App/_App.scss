@@ -2,8 +2,6 @@
 $inner_container-border: 1px solid $colors-main-black;
 
 .app_container {
-	display: flex;
-	flex-direction: column;
 	// height: 100%;
 
 	&.btc {
@@ -34,13 +32,17 @@ $inner_container-border: 1px solid $colors-main-black;
 			width: 100%;
 			height: auto;
 			position: relative;
+			.presentation_container {
+				width: $app-content-display-width;
+				// width: inherit;
+			}
 		}
+	}
 
-		.app_container-sidebar {
-			min-width: $sidebar-width;
-			max-width: $sidebar-width;
-			border-left: 1px solid $colors-deactivate-color2;
-		}
+	.app_container-sidebar {
+		min-width: $sidebar-width;
+		max-width: $sidebar-width;
+		border-left: 1px solid $colors-deactivate-color2;
 	}
 }
 

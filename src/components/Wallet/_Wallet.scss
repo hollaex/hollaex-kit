@@ -1,7 +1,6 @@
-@import '../../variables';
-
 $inner-section-margin: 0.5rem;
 $accordion_arrow-size: 0.3rem;
+$sections-font--color: $colors-deactivate-color2;
 
 .wallet_section-wrapper {
 	// border-top: 1px solid $colors-main-black;
@@ -22,7 +21,7 @@ $accordion_arrow-size: 0.3rem;
 
 .wallet_section-title {
 	text-transform: uppercase;
-	color: $colors-deactivate-color2;
+	color: $sections-font--color;
 	font-size: $font-size-subtext;
 	> * {
 		margin: $inner-section-margin;
@@ -30,12 +29,13 @@ $accordion_arrow-size: 0.3rem;
 }
 
 .wallet_section-title-amount {
-	color: $colors-main-black;
+	color: $sections-font--color;
 	font-size: $font-size-subtext;
 }
 
 .wallet_section-total_asset {
 	font-size: 1rem;
+	color: $sections-font--color;
 
 	> span {
 		font-size: $font-size-subhead2;

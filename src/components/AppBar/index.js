@@ -1,11 +1,7 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import { Link } from 'react-router';
-import {
-	CURRENCIES,
-	FLEX_CENTER_CLASSES,
-	EXIR_BLUE_LOGO
-} from '../../config/constants';
+import { FLEX_CENTER_CLASSES, EXIR_BLUE_LOGO } from '../../config/constants';
 import { LanguageSelector } from '../';
 
 import STRINGS from '../../config/localizedStrings';
@@ -38,60 +34,6 @@ class AppBar extends Component {
 			<span>{STRINGS[`${symbol.toUpperCase()}_NAME`]}</span>
 		</div>
 	);
-
-	renderSymbolBlock = (symbol) => {
-		const { iconPath } = CURRENCIES[symbol];
-		const name = STRINGS[`${symbol.toUpperCase()}_NAME`];
-		const { symbolSelectorIsOpen } = this.state;
-		return (
-			<div className="app_bar-currency_wrapper pointer">
-				<div
-					className={classnames('app_bar-currency_display', 'd-flex', {
-						is_open: symbolSelectorIsOpen,
-						is_close: !symbolSelectorIsOpen
-					})}
-					onClick={this.toogleSymbolSelector}
-				>
-					<img
-						alt={symbol}
-						src={iconPath}
-						className="app_bar-currency_display-icon"
-					/>
-					<div className="app_bar-currency_display-selector d-flex align-items-center">
-						{name}
-					</div>
-				</div>
-				{symbolSelectorIsOpen && (
-					<div className="app_bar-currency_list">
-						{Object.entries(CURRENCIES)
-							.filter(([key, currency]) => currency.symbol !== symbol)
-							.map(([key, currency], index) =>
-								this.renderSymbolOption(currency, index)
-							)}
-					</div>
-				)}
-			</div>
-		);
-	};
-
-	renderAppActions = (activeSymbol, acccountIsActive, goToAccountPage) => {
-		return (
-			<div className="app_bar-controllers">
-				{this.renderSymbolBlock(activeSymbol)}
-				<div className="app_bar-user pointer" onClick={goToAccountPage}>
-					<img
-						alt="account"
-						src={`${process.env.PUBLIC_URL}/assets/acounts/account-icons-${
-							acccountIsActive ? '15' : '12'
-						}.png`}
-						className={classnames('pointer', {
-							active: acccountIsActive
-						})}
-					/>
-				</div>
-			</div>
-		);
-	};
 
 	renderSplashActions = (token, verifyingToken) => {
 		if (verifyingToken) {
@@ -128,10 +70,7 @@ class AppBar extends Component {
 
 	render() {
 		const {
-			goToAccountPage,
 			goToDashboard,
-			acccountIsActive,
-			activeSymbol,
 			noBorders,
 			token,
 			verifyingToken,
@@ -164,13 +103,7 @@ class AppBar extends Component {
 				</div>
 				{rightChildren
 					? rightChildren
-					: activeSymbol
-						? this.renderAppActions(
-								activeSymbol,
-								acccountIsActive,
-								goToAccountPage
-							)
-						: this.renderSplashActions(token, verifyingToken)}
+					: isHome && this.renderSplashActions(token, verifyingToken)}
 			</div>
 		);
 	}

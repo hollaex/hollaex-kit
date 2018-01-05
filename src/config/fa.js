@@ -581,6 +581,7 @@ export default {
 	PRO_TRADE: 'پیشرفته',
 	WALLET_TITLE: 'کیف پول',
 	TRADING_MODE_TITLE: 'خرید و فروش',
+	TRADING_TITLE: 'Trading', // TODO
 	LOGOUT: 'خروج',
 	WITHDRAWALS_MIN_VALUE_ERROR:
 		'تراکنش برای ارسال بسیار کوچک است. مقدار بیشتری را امتحان کنید',

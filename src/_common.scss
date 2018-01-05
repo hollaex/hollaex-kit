@@ -73,3 +73,9 @@ table th {
 .cursor_disabled {
 	cursor: not-allowed;
 }
+
+.direction_ltr {
+	.title-font {
+		font-family: $raleway--font-family;
+	}
+}
