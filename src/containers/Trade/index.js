@@ -90,6 +90,7 @@ class Trade extends Component {
 			cancelOrder,
 			cancelAllOrders,
 			balance,
+			marketPrice,
 			activeLanguage
 		} = this.props;
 		const { chartHeight, chartWidth, symbol } = this.state;
@@ -169,6 +170,7 @@ class Trade extends Component {
 									balance={balance}
 									asks={asks}
 									bids={bids}
+									marketPrice={marketPrice}
 								/>
 							</TradeBlock>
 						</div>
