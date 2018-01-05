@@ -657,6 +657,8 @@ export default {
 	WALLET_ALL_ASSETS: 'همه دارایی ها',
 	HIDE_TEXT: 'پنهان',
 	PAGINATOR_FORMAT: '{0} / {1}',
+	ORDERBOOK_SELLERS: 'Sellers', // TODO
+	ORDERBOOK_BUYERS: 'Buyers', // TODO
 	ORDERBOOK_SPREAD: 'شکاف قیمت {0}', // 0 -> 660,000 T
 	ORDERBOOK_SPREAD_PRICE: '{0} {1}', // 0-> amount  1 -> symbol  600,000 T
 	FIAT_PRICE_FORMAT: '{0} {1}', // 0-> amount  1 -> symbol  600,000 T

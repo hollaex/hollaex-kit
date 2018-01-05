@@ -671,6 +671,8 @@ export default {
 	WALLET_ALL_ASSETS: 'All Assets',
 	HIDE_TEXT: 'Hide',
 	PAGINATOR_FORMAT: '{0} / {1}',
+	ORDERBOOK_SELLERS: 'Sellers',
+	ORDERBOOK_BUYERS: 'Buyers',
 	ORDERBOOK_SPREAD: '{0} spread', // 0 -> 660,000 T
 	ORDERBOOK_SPREAD_PRICE: '{0} {1}', //// 0-> amount  1 -> symbol  600,000 T
 	FIAT_PRICE_FORMAT: '{0} {1}', // 0-> amount  1 -> symbol  600,000 T
