@@ -162,7 +162,7 @@ class OrderEntry extends Component {
 	};
 
 	render() {
-		const { balance, symbol, type } = this.props;
+		const { balance, symbol, type, side } = this.props;
 		const {
 			initialValues,
 			formValues,
@@ -182,7 +182,8 @@ class OrderEntry extends Component {
 				className={classnames(
 					'trade_order_entry-wrapper',
 					'd-flex',
-					'flex-column'
+					'flex-column',
+					`order_side-selector-${side}`
 				)}
 			>
 				<Form
