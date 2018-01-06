@@ -90,6 +90,7 @@ class Trade extends Component {
 			cancelOrder,
 			cancelAllOrders,
 			balance,
+			marketPrice,
 			activeLanguage
 		} = this.props;
 		const { chartHeight, chartWidth, symbol } = this.state;
@@ -100,7 +101,7 @@ class Trade extends Component {
 				titleAction: activeOrders.length > 0 && (
 					<ActionNotification
 						text={STRINGS.CANCEL_ALL}
-						iconPath={ICONS.CHECK}
+						iconPath={ICONS.CANCEL_CROSS_ACTIVE}
 						onClick={cancelAllOrders}
 						status=""
 					/>
@@ -169,6 +170,7 @@ class Trade extends Component {
 									balance={balance}
 									asks={asks}
 									bids={bids}
+									marketPrice={marketPrice}
 								/>
 							</TradeBlock>
 						</div>

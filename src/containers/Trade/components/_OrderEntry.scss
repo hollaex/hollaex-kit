@@ -1,6 +1,5 @@
-.trade_order_entry-wrapper {
+@mixin entry_form($theme-color, $theme-color-disabled) {
 	flex: 1;
-	$theme-color: $trade-asks-color-main;
 	$row-height: 2.5rem;
 	color: $font-color--disabled;
 
@@ -84,7 +83,7 @@
 			font-weight: bold;
 
 			&:disabled {
-				background-color: $trade-asks-color-disabled !important;
+				background-color: $theme-color-disabled !important;
 			}
 		}
 
@@ -99,5 +98,14 @@
 
 	.trade_order_entry-form_fields-wrapper {
 		margin-bottom: 0.5rem !important;
+	}
+}
+
+.trade_order_entry-wrapper {
+	&.order_side-selector-sell {
+		@include entry_form($trade-asks-color-main, $trade-asks-color-disabled);
+	}
+	&.order_side-selector-buy {
+		@include entry_form($trade-bids-color-main, $trade-bids-color-disabled);
 	}
 }

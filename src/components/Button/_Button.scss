@@ -5,7 +5,6 @@
 	font-size: $font-size-subtext;
 	padding: 0 4px;
 	background-color: $colors-main-black !important;
-	font-family: inherit !important;
 
 	&.button-success {
 		background-color: $colors-notifications-green !important;
@@ -48,5 +47,17 @@
 .buttons-row {
 	> *:not(:last-child) {
 		margin-right: 1rem;
+	}
+}
+
+.direction_ltr {
+	.exir-button-font {
+		font-family: $raleway--font-family;
+	}
+}
+
+.direction_rtl {
+	.exir-button-font {
+		font-family: inherit !important;
 	}
 }

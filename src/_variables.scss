@@ -44,10 +44,10 @@ $form-width-max: $content-display-width / 2;
 
 $fa--font-family: 'YEKAN';
 $en--font-family: 'Open Sans';
-$title--font-family: 'Raleway';
 $raleway--font-family: 'Raleway';
 $raleway-extrabold--font-family: 'Raleway Extrabold';
 $raleway-medium--font-family: 'Raleway Medium';
+$title--font-family: $raleway-extrabold--font-family;
 
 // DIALOG
 $dialog-min-width: 25rem;

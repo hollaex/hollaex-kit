@@ -8,11 +8,6 @@ $logout--height: 3rem;
 
 	.logout-right-icon {
 		width: calc(#{$logout--height} - #{$sidebar-sections-padding});
-		svg {
-			fill: $colors-deactivate-color2;
-			&:hover {
-				fill: $colors-main-black;
-			}
-		}
+		@include hover-icon($colors-main-black, $colors-deactivate-color2);
 	}
 }

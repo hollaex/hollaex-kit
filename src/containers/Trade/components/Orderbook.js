@@ -27,6 +27,13 @@ const calculateSpread = (asks, bids) => {
 	return '-';
 };
 
+const LimitBar = ({ text }) => (
+	<div className="d-flex align-items-center orderbook-limit_bar-wrapper">
+		<div className="f-1 orderbook-limit_bar-line" />
+		<span className="orderbook-limit_bar-text font-weight-bold">{text}</span>
+	</div>
+);
+
 class Orderbook extends Component {
 	state = {
 		dataBlockHeight: 0
@@ -100,6 +107,7 @@ class Orderbook extends Component {
 						ref={this.setRefs('asksWrapper')}
 					>
 						{asks.map(PriceRow('ask'))}
+						<LimitBar text={STRINGS.ORDERBOOK_SELLERS} />
 					</div>
 					<div
 						className="trade_orderbook-spread d-flex align-items-center"
@@ -126,6 +134,7 @@ class Orderbook extends Component {
 						style={blockStyle}
 					>
 						{bids.map(PriceRow('bids'))}
+						<LimitBar text={STRINGS.ORDERBOOK_BUYERS} />
 					</div>
 				</div>
 			</div>

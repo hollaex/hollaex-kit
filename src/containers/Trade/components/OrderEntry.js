@@ -26,7 +26,7 @@ class OrderEntry extends Component {
 		formValues: {},
 		initialValues: {
 			side: STRINGS.SIDES[0].value,
-			type: STRINGS.TYPES[0].value
+			type: STRINGS.TYPES[1].value
 		},
 		orderPrice: 0,
 		outsideFormError: ''
@@ -47,6 +47,14 @@ class OrderEntry extends Component {
 		}
 		if (nextProps.activeLanguage !== this.props.activeLanguage) {
 			this.generateFormValues();
+		}
+		if (nextProps.marketPrice && !this.state.initialValues.price) {
+			this.setState({
+				initialValues: {
+					...this.state.initialValues,
+					price: this.props.marketPrice
+				}
+			});
 		}
 	}
 
@@ -162,7 +170,7 @@ class OrderEntry extends Component {
 	};
 
 	render() {
-		const { balance, symbol, type } = this.props;
+		const { balance, symbol, type, side } = this.props;
 		const {
 			initialValues,
 			formValues,
@@ -182,7 +190,8 @@ class OrderEntry extends Component {
 				className={classnames(
 					'trade_order_entry-wrapper',
 					'd-flex',
-					'flex-column'
+					'flex-column',
+					`order_side-selector-${side}`
 				)}
 			>
 				<Form
