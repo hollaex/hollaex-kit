@@ -15,7 +15,7 @@ const LINKS = [
 	{ icon: SOCIAL_ICONS.INSTAGRAM, link: '', type: 'instagram' },
 	{
 		icon: SOCIAL_ICONS.TELEGRAM,
-		link: 'https://t.me/exir_official',
+		link: 'https://t.me/joinchat/A7EgbUODnpLn1lpTrtkNFg',
 		type: 'telegram'
 	}
 ];

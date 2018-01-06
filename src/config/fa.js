@@ -14,13 +14,13 @@ export default {
 	LOGIN_TEXT: 'ورود',
 	SIGNUP_TEXT: 'ثبت نام',
 	REGISTER_TEXT: 'ثبت نام',
-	ACCOUNT_TEXT: 'حساب',
+	ACCOUNT_TEXT: 'حساب من',
 	CLOSE_TEXT: 'بستن',
 	COPY_TEXT: 'کپی',
 	UPLOAD_TEXT: 'بارگذاری',
 	CONTACT_US_TEXT: 'تماس با ما',
-	NEED_HELP_TEXT: 'کمک ',
-	HELP_TEXT: 'کمک',
+	NEED_HELP_TEXT: 'اهنما ',
+	HELP_TEXT: 'راهنما',
 	SUCCESS_TEXT: 'موفقیت',
 	ERROR_TEXT: 'خطا',
 	EDIT_TEXT: 'ویرایش',
@@ -32,22 +32,21 @@ export default {
 		SECTION_1_TEXT_2:
 			'تلاش ما برای پیشبرد تکنولوژی از طریق دسترسی آسان و اقتصادی به ارزهای رمزنگاری شده است.',
 		SECTION_1_BUTTON_1: 'بیشتر بدانید',
-		SECTION_3_TITLE: 'قابلیت ها',
+		SECTION_3_TITLE: 'ویژگی ها',
 		SECTION_3_CARD_1_TITLE: 'خرید و فروش آسان و پیشرفته',
 		SECTION_3_CARD_1_TEXT:
-			'خرید و فروش آسان و ترید پیشرفته بیتکوین به صورت لحظه ای',
+			'خرید و فروش آسان و ترید پیشرفته بیتکوین به صورت آنی',
 		SECTION_3_CARD_2_TITLE: 'راه های پرداخت',
 		SECTION_3_CARD_2_TEXT: 'پرداخت از طریق کارت و یا انتقال بانکی',
 		SECTION_3_CARD_3_TITLE: 'امنیت بالا',
 		SECTION_3_CARD_3_TEXT:
 			'حفاظت در برابر حملات DDoS، رمزگذاری کامل داده، مطابق با استاندارد PCI DSS',
 		SECTION_3_CARD_4_TITLE: 'گزارشات پیشرفته',
-		SECTION_3_CARD_4_TEXT:
-			'گزارش های قابل دانلود، موجودی لحظه ای، تاریخ تراکنش با کارمزدهای شفاف',
+		SECTION_3_CARD_4_TEXT:'مشاهده موجودی بصورت لحظه ای. تاریخچه گردش حساب بصورت کاملا شفاف',
 		SECTION_3_CARD_5_TITLE: 'پشتیبانی',
-		SECTION_3_CARD_5_TEXT: 'خدمات سریع به همراه پشتیبانی در روزهای کاری',
-		SECTION_3_CARD_6_TITLE: 'الزامات قانونی',
-		SECTION_3_CARD_6_TEXT: 'مطابق با قوانین داخلی به همراه شفافیت کامل قانونی',
+		SECTION_3_CARD_5_TEXT: 'پشتیبانی سریع و قابل اطمینان ',
+		SECTION_3_CARD_6_TITLE: 'قانون مداری',
+		SECTION_3_CARD_6_TEXT: 'تمامی فعالیت های اکسیر بر اساس قوانین جمهوری اسلامی ایران می باشد و تراکنش ها با حد اکثر شفافیت انجام می شود',
 		SECTION_3_BUTTON_1: 'مشاهده دمو'
 	},
 	FOOTER: {
@@ -92,7 +91,7 @@ export default {
 		}
 	},
 	ACCOUNTS: {
-		TITLE: 'حساب',
+		TITLE: 'حساب من',
 		TAB_VERIFICATION: 'احراز هویت',
 		TAB_SECURITY: 'امنیت',
 		TAB_NOTIFICATIONS: 'اطلاعیه',
@@ -244,8 +243,8 @@ export default {
 			'شما {0} سفارش {1} تکمیل نشده دارید, که منجر به کسر {2} {3} از دارایی {4} شما شده است'
 	},
 	REQUEST_RESET_PASSWORD: {
-		TITLE: 'بازیابی حساب',
-		SUBTITLE: 'حساب خود را در زیر بازیابی کنید',
+		TITLE: 'بازیابی رمز عبور',
+		SUBTITLE: 'حساب کاربری خود را بازیابی کنید',
 		SUPPORT: 'تماس با پشتیبانی',
 		BUTTON: 'ارسال لینک بازیابی'
 	},
@@ -462,12 +461,12 @@ export default {
 		}
 	},
 	TRANSACTION_HISTORY: {
-		TITLE: 'تاریخ معاملات',
-		TITLE_TRADES: 'مشاهده مبادلات گذشته',
+		TITLE: 'تاریخچه معاملات',
+		TITLE_TRADES: 'تاریخچه مبادلات',
 		TITLE_DEPOSITS: ' تاریخ سپرده',
 		TITLE_WITHDRAWALS: 'تاریخ برداشت',
 		TEXT_DOWNLOAD: 'تاریخچه دانلود',
-		TRADES: 'تریدرها',
+		TRADES: 'معاملات',
 		DEPOSITS: 'سپرده ها',
 		WITHDRAWALS: 'برداشتها'
 	},
@@ -554,7 +553,7 @@ export default {
 	CANCEL: 'لغو',
 	CANCEL_ALL: 'لغو همه',
 	GO_TRADE_HISTORY: 'به تاریخچه ترید بروید',
-	ORDER_ENTRY: 'ورودی سفارش',
+	ORDER_ENTRY: 'ثبت سفارش',
 	TRADE_HISTORY: 'مشاهده مبادلات من',
 	CHART: 'نمودار قیمت',
 	ORDERS: 'سفارش های فعال من',
@@ -565,7 +564,7 @@ export default {
 	AMOUNT_SYMBOL: 'میزان ({0})',
 	MARKET_PRICE: 'قیمت بازار',
 	ORDER_PRICE: 'مبلغ سفارش',
-	TOTAL_ORDER: 'سفارش کل',
+	TOTAL_ORDER: 'کل سفارش',
 	NO_DATA: 'اطلاعاتی وجود ندارد',
 	LOADING: 'بارگذاری',
 	CHART_TEXTS: {
@@ -578,7 +577,7 @@ export default {
 	},
 	LANGUAGES: [{ key: 'en', label: 'English' }, { key: 'fa', label: 'فارسی' }],
 	QUICK_TRADE: 'خرید آسان',
-	PRO_TRADE: 'پیشرفته',
+	PRO_TRADE: 'حرفه ای',
 	WALLET_TITLE: 'کیف پول',
 	TRADING_MODE_TITLE: 'خرید و فروش',
 	LOGOUT: 'خروج',
@@ -603,7 +602,7 @@ export default {
 	DEPOSITS_FORM_AMOUNT_LABEL: '{0} مقدار برداشت',
 	DEPOSITS_FORM_AMOUNT_PLACEHOLDER:
 		'مقدار {0} را که می خواهید برداشت کنید تایپ کنید',
-	DEPOSITS_BUTTON_TEXT: 'مرور سپرده',
+	DEPOSITS_BUTTON_TEXT: 'تایید',
 	DEPOSIT_PROCEED_PAYMENT: 'پرداخت',
 	DEPOSIT_BANK_REFERENCE:
 		'برای شناسایی سپرده، این کد "{0}" را به تراکنش بانکی اضافه کنید',
@@ -654,8 +653,8 @@ export default {
 	CURRENCY_BALANCE_TEXT: 'موجودی {0}',
 	WALLET_TABLE_AMOUNT_IN: 'مقدار به {0}',
 	WALLET_TABLE_TOTAL: 'جمع کل',
-	WALLET_ALL_ASSETS: 'همه دارایی ها',
-	HIDE_TEXT: 'پنهان',
+	WALLET_ALL_ASSETS: 'کل دارایی',
+	HIDE_TEXT: 'پنهان کردن',
 	PAGINATOR_FORMAT: '{0} / {1}',
 	ORDERBOOK_SELLERS: 'Sellers', // TODO
 	ORDERBOOK_BUYERS: 'Buyers', // TODO
@@ -680,7 +679,7 @@ export default {
 	LOGOUT_TITLE: 'شما از حساب خارج شده اید',
 	LOGOUT_ERROR_TOKEN_EXPIRED: 'توکن قیمت دیگر اعتبار ندارد',
 	LOGOUT_ERROR_LOGIN_AGAIN: 'لطفا مجدد وارد شوید',
-	LOGOUT_ERROR_INVALID_TOKEN: 'توکن اشتباه',
+	LOGOUT_ERROR_INVALID_TOKEN: 'لطفا دوباره وارد شوید',
 	LOGOUT_ERROR_INACTIVE: 'لطفا مجدد وارد شوید',
 	ORDER_ENTRY_BUTTON: '{0} {1}', // TODO CHECK  0 -> buy/sell 1 -> btc/..
 	QUICK_TRADE_OUT_OF_LIMITS: 'سفارش شما خارج از محدوده است.',
@@ -699,7 +698,7 @@ export default {
 	SUBMIT: 'ارسال',
 	VERIFICATION_NOTIFICATION_SKIP_TITLE: 'محدودیت دسترسی',
 	VERIFICATION_NOTIFICATION_SKIP_TEXT:
-		'لطفا در نظر داشته باشید که حساب شما تا زمانی که مدارک بارگذاری مدارک انجام و تایید نشده است، با محدودیت همراه خواهد بود. شما می توانید به حساب کاربری خود رفته و اطلاعات مربوط به احراز هویت خود را در آنجا بارگذاری کنید.',
+		'لطفا در نظر داشته باشید که حساب کاربری شما تا زمانی که بارگذاری مدارک انجام و تایید نشده باشد با محدودیت همراه خواهد بود. شما می توانید به حساب کاربری خود رفته و اطلاعات مربوط به احراز هویت خود را در آنجا بارگذاری کنید.',
 	VERIFICATION_NOTIFICATION_SUCCESS_TITLE: 'موفقیت!',
 	VERIFICATION_NOTIFICATION_SUCCESS_TEXT:
 		'هنگامی که اطلاعات شما بررسی گردید، از طریق ایمیل به شما اطلاع می دهیم.',
