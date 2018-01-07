@@ -237,7 +237,13 @@ export const ICONS = {
 	}/assets/images/trade-active.svg`,
 	SIDEBAR_TRADING_INACTIVE: `${
 		process.env.PUBLIC_URL
-	}/assets/images/trade-inactive.svg`
+	}/assets/images/trade-inactive.svg`,
+	ARROW_TRANSFER_HISTORY_ACTIVE: `${
+		process.env.PUBLIC_URL
+	}/assets/images/arrow-trans-history-active.svg`,
+	ARROW_TRANSFER_HISTORY_INACTIVE: `${
+		process.env.PUBLIC_URL
+	}/assets/images/arrow-trans-history.svg`
 };
 
 export const SOCIAL_ICONS = {

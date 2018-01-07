@@ -113,9 +113,9 @@ class Trade extends Component {
 				titleAction: (
 					<ActionNotification
 						text={STRINGS.TRADE_HISTORY}
-						status="information"
-						iconPath={ICONS.RED_ARROW}
+						iconPath={ICONS.ARROW_TRANSFER_HISTORY_ACTIVE}
 						onClick={this.goToTransactionsHistory}
+						status=""
 					/>
 				)
 			}
