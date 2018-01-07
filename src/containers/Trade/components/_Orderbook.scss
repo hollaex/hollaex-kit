@@ -31,14 +31,14 @@
 			}
 		}
 
-		.trade_orderbook-asks > div:first-child {
+		.trade_orderbook-asks > .value-row:first-child {
 			background-color: $trade-asks-color-main;
 			> div {
 				color: white;
 			}
 		}
 
-		.trade_orderbook-bids > div:first-child {
+		.trade_orderbook-bids > .value-row:first-child {
 			background-color: $trade-bids-color-main;
 			> div {
 				color: white;
