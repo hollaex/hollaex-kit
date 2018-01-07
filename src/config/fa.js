@@ -580,7 +580,7 @@ export default {
 	PRO_TRADE: 'حرفه ای',
 	WALLET_TITLE: 'کیف پول',
 	TRADING_MODE_TITLE: 'خرید و فروش',
-	TRADING_TITLE: 'Trading', // TODO
+	TRADING_TITLE: 'خرید و فروش',
 	LOGOUT: 'خروج',
 	WITHDRAWALS_MIN_VALUE_ERROR:
 		'تراکنش برای ارسال بسیار کوچک است. مقدار بیشتری را امتحان کنید',
@@ -629,7 +629,7 @@ export default {
 	QUOTE_COUNTDOWN_MESSAGE: 'شما {0} ثانیه برای این تراکنش وقت دارید',
 	QUOTE_EXPIRED_TOKEN: 'اعتبار قیمت داده شده منقضی شده',
 	QUOTE_SUCCESS_REVIEW_TITLE: 'خرید آسان',
-	QUOTE_SUCCESS_REVIEW_MESSAGE: 'شما با موفقیت {0} {1} {2} برای {3} {4}', // TODO You have successfully {0} {1} {2} for {3} {4}', you have successfully buy 1 btc from x toman
+	QUOTE_SUCCESS_REVIEW_MESSAGE: 'شما با موفقیت {0} {1} {2} برای {3} {4}',
 	COUNTDOWN_ERROR_MESSAGE: 'شمارش معکوس به اتمام رسید.',
 	WITHDRAW_PAGE: {
 		BANK_TO_WITHDRAW: 'نام بانک دریافت کننده',
@@ -657,8 +657,8 @@ export default {
 	WALLET_ALL_ASSETS: 'کل دارایی',
 	HIDE_TEXT: 'پنهان کردن',
 	PAGINATOR_FORMAT: '{0} / {1}',
-	ORDERBOOK_SELLERS: 'Sellers', // TODO
-	ORDERBOOK_BUYERS: 'Buyers', // TODO
+	ORDERBOOK_SELLERS: 'فروشنده ها',
+	ORDERBOOK_BUYERS: 'خریدارها',
 	ORDERBOOK_SPREAD: 'شکاف قیمت {0}', // 0 -> 660,000 T
 	ORDERBOOK_SPREAD_PRICE: '{0} {1}', // 0-> amount  1 -> symbol  600,000 T
 	FIAT_PRICE_FORMAT: '{0} {1}', // 0-> amount  1 -> symbol  600,000 T
@@ -667,7 +667,7 @@ export default {
 	DATEFIELD_TOOGLE_DATE_PE: 'تاریخ شمسی‌',
 	DATEFIELD_TOOGLE_DATE_GR: 'Gregorian calendar',
 	VERIFICATION_WARNING_TITLE: 'نیاز به احراز هویت',
-	VERIFICATION_WARNING_MESSAGE: 'برای احراز هویت به {0} خود بروید',
+	VERIFICATION_WARNING_MESSAGE: 'برای احراز هویت به {0} بروید',
 	ORDER_SPENT: 'خرج شده',
 	ORDER_RECEIVED: 'دریافت شده',
 	ORDER_SOLD: 'فروش',
