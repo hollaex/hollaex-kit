@@ -39,10 +39,13 @@ export function getTrades() {
 	};
 }
 
-export function addTrades(trades) {
+export function addTrades(symbol, trades) {
 	return {
 		type: 'ADD_TRADES',
-		payload: trades // set only for btc at the moment
+		payload: {
+			symbol,
+			trades
+		}
 	};
 }
 

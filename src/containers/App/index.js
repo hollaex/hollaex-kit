@@ -156,7 +156,7 @@ class Container extends Component {
 		publicSocket.on('trades', (data) => {
 			console.log('trades', data);
 			if (data[symbol].length > 0) {
-				this.props.addTrades(data[symbol]);
+				this.props.addTrades(symbol, data[symbol]);
 			}
 		});
 	};

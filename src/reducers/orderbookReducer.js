@@ -101,16 +101,16 @@ export default function reducer(state = INITIAL_STATE, { payload, type }) {
 			return { ...state, fetching: false, fetched: true, trades: payload.data };
 		// addTrades
 		case 'ADD_TRADES': {
-			const price = payload[0].price;
-			// const symbol = payload[0].symbol;
+			const { trades, symbol } = payload;
+			const price = trades[0].price;
 			const prices = { ...state.prices };
-			prices[state.symbol] = price;
+			prices[symbol] = price;
 
 			return {
 				...state,
 				fetching: false,
 				fetched: true,
-				trades: payload.concat(state.trades),
+				trades: trades.concat(state.trades), // TODO store trades by currency
 				price,
 				prices
 			};
