@@ -77,7 +77,8 @@ class Signup extends Component {
 						text={STRINGS.SIGNUP_TEXT}
 						textType="title"
 						underline={true}
-						className="w-100"
+						useSvg={true}
+						className="w-100 exir-logo"
 						subtitle={STRINGS.formatString(
 							STRINGS.SIGN_UP.SIGNUP_TO,
 							STRINGS.APP_TITLE

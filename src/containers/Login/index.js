@@ -107,7 +107,8 @@ class Login extends Component {
 						text={STRINGS.LOGIN_TEXT}
 						textType="title"
 						underline={true}
-						className="w-100"
+						useSvg={true}
+						className="w-100 exir-logo"
 						subtitle={STRINGS.formatString(
 							STRINGS.LOGIN.LOGIN_TO,
 							STRINGS.APP_TITLE

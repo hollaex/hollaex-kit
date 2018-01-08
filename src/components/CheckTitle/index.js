@@ -17,14 +17,12 @@ const CheckTitle = ({
 				</div>
 			)}
 			<div className="check_title-icon">
-				{icon && (
-					icon.indexOf('.svg') > 0 ?
-					<ReactSVG
-						path={icon}
-						wrapperClassName="check_title-svg"
-					/> :
-					<img alt={icon} src={icon} className="check_title-img" />
-				)}
+				{icon &&
+					(icon.indexOf('.svg') > 0 ? (
+						<ReactSVG path={icon} wrapperClassName="check_title-svg" />
+					) : (
+						<img alt={icon} src={icon} className="check_title-img" />
+					))}
 				{!!notifications && (
 					<div className="check_title-notification">{notifications}</div>
 				)}

@@ -10,7 +10,7 @@ $notification-size: 1.5rem;
 	.check_title-label {
 		font-size: $font-size-subhead2;
 		line-height: $font-size-subhead2;
-		padding: .25rem 0;
+		padding: 0.25rem 0;
 	}
 
 	.check_title-icon {
@@ -33,7 +33,9 @@ $notification-size: 1.5rem;
 			height: $check-title-img-size;
 			width: $check-title-img-size;
 		}
-		.st0, .g1_4, .g1_2 {
+		.st0,
+		.g1_4,
+		.g1_2 {
 			stroke: $colors-deactivate;
 		}
 		.st0 {

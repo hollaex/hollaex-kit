@@ -115,8 +115,7 @@ class BankVerification extends Component {
 					onlyNumbers,
 					exactLength(
 						16,
-						STRINGS.USER_VERIFICATION.BANK_ACCOUNT_FORM.VALIDATIONS
-							.CARD_NUMBER
+						STRINGS.USER_VERIFICATION.BANK_ACCOUNT_FORM.VALIDATIONS.CARD_NUMBER
 					)
 				],
 				maxLength: 16

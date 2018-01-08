@@ -90,7 +90,8 @@ class VerifyEmailRequest extends Component {
 						text={STRINGS.VERIFICATION_EMAIL_REQUEST.TITLE}
 						textType="title"
 						underline={true}
-						className="w-100"
+						useSvg={true}
+						className="w-100 exir-logo"
 					/>
 					<div
 						className={classnames(

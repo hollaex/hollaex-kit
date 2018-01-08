@@ -37,7 +37,9 @@ $tab_controller-item-min-width: 12rem;
 	.tab_item-active {
 		border-top: $tab-selected-line-height solid $tab-border-color;
 		color: $colors-main-black;
-		.st0, .g1_4, .g1_2 {
+		.st0,
+		.g1_4,
+		.g1_2 {
 			fill: $colors-main-black !important;
 		}
 		.st0 {
