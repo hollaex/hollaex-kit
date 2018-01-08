@@ -65,7 +65,7 @@ class ContactForm extends Component {
 			fullWidth: true
 		},
 		description: {
-			type: 'text',
+			type: 'textarea',
 			label: STRINGS.CONTACT_FORM.DESCRIPTION_LABEL,
 			placeholder: STRINGS.CONTACT_FORM.DESCRIPTION_PLACEHOLDER,
 			validate: [required],

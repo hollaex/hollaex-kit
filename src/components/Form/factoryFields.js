@@ -1,6 +1,7 @@
 import React from 'react';
 import { Field } from 'redux-form';
 import InputField from './FormFields/InputField';
+import TextAreaField from './FormFields/TextAreaField';
 import FileField from './FormFields/FileField';
 import DropdownField from './FormFields/DropdownField';
 import DateField from './FormFields/DateField';
@@ -48,6 +49,8 @@ const renderFields = (fields = {}) => {
 						return <Field component={CheckField} {...commonProps} />;
 					case 'editable':
 						return <Field component={EditableInputField} {...commonProps} />;
+					case 'textarea':
+						return <Field component={TextAreaField} {...commonProps} />;
 					case 'text':
 					case 'password':
 					case 'email':
