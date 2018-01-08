@@ -10,6 +10,16 @@ $dropdown-option--padding: 0.25rem;
 	}
 	&.disabled {
 		cursor: not-allowed;
+		color: $colors-deactivate;
+	}
+}
+
+.disabled {
+	.field-children {
+		color: $colors-deactivate;
+		.dropdown-triangle:after {
+			border: none;
+		}
 	}
 }
 
@@ -33,7 +43,7 @@ $dropdown-option--padding: 0.25rem;
 	display: flex;
 	align-items: center;
 	> .icon {
-		height: $dropdown-option--height;
+		max-height: $dropdown-option--height;
 	}
 }
 

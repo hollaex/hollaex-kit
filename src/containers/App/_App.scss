@@ -34,6 +34,7 @@ $inner_container-border: 1px solid $colors-main-black;
 			position: relative;
 			.presentation_container {
 				width: $app-content-display-width;
+				height: inherit;
 				// width: inherit;
 			}
 		}

@@ -91,3 +91,9 @@ $logout--size-difference: 3rem;
 		}
 	}
 }
+
+.direction_ltr {
+	.notification-title-text, .notification-withdrawal .notification-content-title {
+		font-family: $raleway-medium--font-family;
+	}
+}

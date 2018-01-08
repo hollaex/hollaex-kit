@@ -43,6 +43,8 @@
 
 .direction_ltr {
 	.action_notification-wrapper {
+		font-family: $raleway-medium--font-family !important;
+		
 		&.left {
 			left: 0;
 		}

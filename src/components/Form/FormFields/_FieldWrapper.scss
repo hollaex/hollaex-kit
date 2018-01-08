@@ -1,9 +1,10 @@
-$wrapper-margin: 1.5rem;
+$wrapper-margin: 2rem;
 $error-margin: 0.5rem;
 $underline-margin-bottom: 0.25rem;
-$children--padding: 0.5rem;
+$children--padding: .4rem;
 $error-icon-size: 1.25rem;
 $valid-icon-size: 2rem;
+$outline-height: 1.5px;
 
 .field-wrapper {
 	position: relative;
@@ -32,7 +33,7 @@ $valid-icon-size: 2rem;
 
 .field-label {
 	margin-bottom: 0.25rem;
-	color: $colors-main-black;
+	color: $colors-deactivate-color2;
 	font-weight: normal;
 }
 
@@ -44,7 +45,7 @@ $valid-icon-size: 2rem;
 }
 
 .field-children {
-	padding: $children--padding 0;
+	padding: $children--padding 0 $children--padding/2;
 	position: relative;
 
 	&.custom {
@@ -63,7 +64,7 @@ $valid-icon-size: 2rem;
 .field-content-outline {
 	&:before {
 		content: '';
-		height: 2px;
+		height: $outline-height;
 		width: 100%;
 		bottom: 0;
 		position: absolute;
@@ -73,7 +74,7 @@ $valid-icon-size: 2rem;
 
 	&:after {
 		content: '';
-		height: 2px;
+		height: $outline-height;
 		width: 0;
 		bottom: 0;
 		position: absolute;

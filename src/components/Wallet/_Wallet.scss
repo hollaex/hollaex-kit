@@ -14,7 +14,7 @@ $sections-font--color: $colors-deactivate-color2;
 		}
 	}
 
-	> * {
+	&.wallet_section-total_asset > * {
 		margin: $inner-section-margin 0;
 	}
 }

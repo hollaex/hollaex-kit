@@ -17,7 +17,7 @@ $placeholder--font-weight: bold;
 	}
 
 	&::placeholder {
-		color: $form-color-placeholder;
+		color: $form-color-placeholder !important;
 	}
 	&:disabled {
 		cursor: not-allowed;

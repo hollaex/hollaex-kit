@@ -1,11 +1,13 @@
 @import '../../variables';
 @import '../../mixins';
 
-$tab_controller-title-img-size: 6rem;
+$tab_controller-title-img-size: 5rem;
 $tab_controller-title-margin: 16px;
 $tab_controller-item-min-width: 4rem;
+$title--margin: 1rem;
 
 .icon_title-wrapper {
+	margin-top: $title--margin * 2.5;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
@@ -26,11 +28,17 @@ $tab_controller-item-min-width: 4rem;
 		@include size($tab_controller-title-img-size);
 	}
 	.icon_title-text {
-		font-size: $font-size-subhead2;
-
+		font-size: $font-size-subhead3;
+		margin: $title--margin;
 		&.title {
-			font-size: $font-size-headline;
+			font-size: $font-size-headline2;
 			text-transform: uppercase;
 		}
+	}
+}
+
+.direction_ltr {
+	.icon_title-wrapper {
+		font-family: $raleway--font-family;
 	}
 }

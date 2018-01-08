@@ -215,7 +215,7 @@ class DropdownDateField extends Component {
 				{...this.props}
 				valid={!invalid}
 				hideUnderline={true}
-				className="datefield-wrapper"
+				className={classnames('datefield-wrapper', { disabled })}
 			>
 				{display[language] &&
 					this.renderFields(

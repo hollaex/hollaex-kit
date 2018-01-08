@@ -1,6 +1,6 @@
 $tab_controller-title-img-size: 6rem;
 $tab_controller-title-margin: 16px;
-$tab_controller-item-min-width: 4rem;
+$tab_controller-item-min-width: 12rem;
 
 .tab_controller-title {
 	display: flex;
@@ -32,9 +32,16 @@ $tab_controller-item-min-width: 4rem;
 		align-items: center;
 		min-width: $tab_controller-item-min-width;
 		justify-content: center;
+		color: $colors-deactivate;
 	}
 	.tab_item-active {
 		border-top: $tab-selected-line-height solid $tab-border-color;
-		font-weight: bold;
+		color: $colors-main-black;
+		.st0, .g1_4, .g1_2 {
+			fill: $colors-main-black !important;
+		}
+		.st0 {
+			stroke: $colors-main-black !important;
+		}
 	}
 }

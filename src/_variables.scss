@@ -37,9 +37,10 @@ $bitcoin-color-main: $colors-currencies-btc;
 
 $content-display-width: 100rem;
 $app-content-display-width: 75rem;
-$content-display-vertical-margin: 16px;
+$content-display-vertical-margin: 1rem;
 
 $font-size-headline: 5rem;
+$font-size-headline2: 3.5rem;
 $font-size-subhead1: 2.5rem;
 $font-size-subhead2: 1.75rem;
 $font-size-subhead3: 1.25rem;
@@ -47,8 +48,8 @@ $font-size-main: 1rem;
 $font-size-subtext: 0.8rem;
 
 $form-color-underline-focus: $colors-main-black;
-$form-color-underline: $colors-deactivate-color2;
-$form-color-placeholder: $colors-deactivate-color2;
+$form-color-underline: $colors-deactivate-color1;
+$form-color-placeholder: $colors-deactivate-color1;
 $form-width-max: $content-display-width / 2;
 
 $fa--font-family: 'YEKAN';

@@ -1,6 +1,6 @@
 $wrapper-border: 1px solid $colors-main-black;
 $wrapper-button-margin: 2.5rem;
-$header-margin: 1.5rem;
+$header-margin: 2rem;
 
 .wallet-container {
 	border-top: $wrapper-border;
@@ -11,7 +11,7 @@ $header-margin: 1.5rem;
 			margin-bottom: $header-margin;
 		}
 		.wallet-header_block-currency_title {
-			font-size: $font-size-subhead2;
+			font-size: $font-size-subhead3;
 			position: relative;
 		}
 
@@ -20,7 +20,7 @@ $header-margin: 1.5rem;
 	}
 
 	.wallet-buttons_action {
-		margin: $wrapper-button-margin 0;
+		margin: $wrapper-button-margin 0 $wrapper-button-margin * 1.5;
 
 		& > *:first-child {
 			flex: 2;
@@ -33,12 +33,25 @@ $header-margin: 1.5rem;
 		}
 	}
 
+	.accordion_wrapper {
+		.accordion_section_content_text {
+			color: $colors-main-black !important;
+			&:after {
+				border-left-color: $colors-main-black !important;
+			}
+		}
+	}
+
 	.wallet-assets_block {
 		// border-top: $wrapper-border;
 		.wallet-assets_block-table {
 			width: 100%;
 			font-size: $font-size-subtext;
 
+			th {
+				font-family: $raleway--font-family;
+			}
+			
 			thead,
 			tfoot {
 				& tr {
@@ -104,6 +117,10 @@ $header-margin: 1.5rem;
 
 .direction_ltr {
 	.wallet-container {
+		.wallet-header_block {
+			font-family: $raleway--font-family;
+		}
+
 		.wallet-assets_block {
 			.wallet-assets_block-table {
 				th,
