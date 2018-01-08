@@ -1,4 +1,5 @@
-$dialog--padding: 2rem;
+$dialog--padding: 2.5rem;
+$close-button--margin: 1.5rem;
 
 .ReactModal__Overlay {
 	display: flex;
@@ -15,9 +16,10 @@ $dialog--padding: 2rem;
 	max-width: calc(100% - #{$dialog--padding});
 	max-height: calc(100% - #{$dialog--padding});
 	overflow: auto;
+	border: none !important;
 
 	.action_notification-wrapper.close-button {
-		margin-right: 1rem;
+		margin-top: $close-button--margin;
 	}
 }
 
@@ -45,7 +47,7 @@ $dialog--padding: 2rem;
 .direction_ltr {
 	.ReactModal__Content {
 		.action_notification-wrapper.close-button {
-			margin-right: 1rem;
+			margin-right: $close-button--margin;
 		}
 	}
 }
@@ -53,7 +55,7 @@ $dialog--padding: 2rem;
 .direction_rtl {
 	.ReactModal__Content {
 		.action_notification-wrapper.close-button {
-			margin-left: 1rem;
+			margin-left: $close-button--margin;
 		}
 	}
 }

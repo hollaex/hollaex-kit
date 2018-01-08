@@ -89,7 +89,7 @@ class ContactForm extends Component {
 		const formFields = this.generateFormFields();
 
 		return (
-			<div>
+			<div className="contact_form-wrapper">
 				<IconTitle
 					iconPath={ICONS.LIFESAVER}
 					text={STRINGS.CONTACT_US_TEXT}
@@ -100,7 +100,7 @@ class ContactForm extends Component {
 				<Form
 					onSubmit={this.onSubmit}
 					formFields={formFields}
-					buttonLabel={STRINGS.CONTACT_US_TEXT}
+					buttonLabel={STRINGS.SUBMIT}
 				/>
 			</div>
 		);
