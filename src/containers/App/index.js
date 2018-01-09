@@ -139,7 +139,10 @@ class Container extends Component {
 	};
 
 	setPublicWS = () => {
-		const { symbol } = this.props;
+		// TODO change when added more cryptocurrencies
+		// const { symbol } = this.props;
+		const symbol = 'btc';
+
 		const publicSocket = io(`${WS_URL}/realtime`, {
 			query: {
 				symbol
@@ -154,7 +157,7 @@ class Container extends Component {
 		});
 
 		publicSocket.on('trades', (data) => {
-			console.log('trades', data);
+			// console.log('trades', data);
 			if (data[symbol].length > 0) {
 				this.props.addTrades(symbol, data[symbol]);
 			}
