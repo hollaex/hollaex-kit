@@ -8,65 +8,73 @@ import STRINGS from '../../config/localizedStrings';
 import { ICONS } from '../../config/constants';
 
 class Form extends Component {
-  state = {
-    formValues: {}
-  }
+	state = {
+		formValues: {}
+	};
 
-  componentWillMount() {
-    this.setFormValues();
-  }
+	componentWillMount() {
+		this.setFormValues();
+	}
 
-  setFormValues = () => {
-    const formValues = {
-      otp_code: {
-        type: 'number',
-        label: STRINGS.OTP_FORM.OTP_LABEL,
-        placeholder: STRINGS.OTP_FORM.OTP_PLACEHOLDER,
-        validate: [required, validateOtp(STRINGS.OTP_FORM.ERROR_INVALID)],
-        fullWidth: true,
-      },
-    };
+	setFormValues = () => {
+		const formValues = {
+			otp_code: {
+				type: 'number',
+				label: STRINGS.OTP_FORM.OTP_LABEL,
+				placeholder: STRINGS.OTP_FORM.OTP_PLACEHOLDER,
+				validate: [required, validateOtp(STRINGS.OTP_FORM.ERROR_INVALID)],
+				fullWidth: true
+			}
+		};
 
-    this.setState({ formValues });
-  }
+		this.setState({ formValues });
+	};
 
-  render() {
-    const { handleSubmit, submitting, pristine, error, valid, onClickHelp } = this.props;
-    const { formValues } = this.state;
+	render() {
+		const {
+			handleSubmit,
+			submitting,
+			pristine,
+			error,
+			valid,
+			onClickHelp
+		} = this.props;
+		const { formValues } = this.state;
 
-    return (
-      <div className="otp_form-wrapper">
-        <IconTitle
-          text={STRINGS.OTP_FORM.OTP_TITLE}
-          iconPath={ICONS.SQUARE_DOTS}
-        />
-        <div className="otp_form-title-wrapper">
-          <span className="otp_form-title-text">Enter your authentication code to continue</span>
-          {onClickHelp &&
-            <ActionNotification
-              text={STRINGS.NEED_HELP_TEXT}
-              onClick={onClickHelp}
-              iconPath={ICONS.BLUE_QUESTION}
-              status="information"
-            />
-          }
-        </div>
-        <form onSubmit={handleSubmit} className="w-100">
-          <div className="w-100 otp_form-fields">
-            {renderFields(formValues)}
-            {error && <div className="warning_text">{error}</div>}
-          </div>
-          <Button
-            label={STRINGS.OTP_FORM.OTP_BUTTON}
-            disabled={pristine || submitting || !valid}
-          />
-        </form>
-      </div>
-    );
-  }
-
+		return (
+			<div className="otp_form-wrapper">
+				<IconTitle
+					text={STRINGS.OTP_FORM.OTP_TITLE}
+					iconPath={ICONS.SQUARE_DOTS}
+				/>
+				<div className="otp_form-title-wrapper">
+					<span className="otp_form-title-text">
+						Enter your authentication code to continue
+					</span>
+					{onClickHelp && (
+						<ActionNotification
+							text={STRINGS.NEED_HELP_TEXT}
+							onClick={onClickHelp}
+							iconPath={ICONS.BLUE_QUESTION}
+							status="information"
+						/>
+					)}
+				</div>
+				<form onSubmit={handleSubmit} className="w-100">
+					<div className="w-100 otp_form-fields">
+						{renderFields(formValues)}
+						{error && <div className="warning_text">{error}</div>}
+					</div>
+					<Button
+						label={STRINGS.OTP_FORM.OTP_BUTTON}
+						disabled={pristine || submitting || !valid}
+					/>
+				</form>
+			</div>
+		);
+	}
 }
 
 export default reduxForm({
-  form: 'OtpForm',
+	form: 'OtpForm'
 })(Form);

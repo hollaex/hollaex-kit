@@ -4,7 +4,7 @@ const VERIFICATION = {
 	fetched: false,
 	hasValidData: false,
 	error: ''
-}
+};
 
 const INITIAL_STATE = {
 	token: null,
@@ -17,12 +17,11 @@ const INITIAL_STATE = {
 	resetPasswordPending: false,
 	resetPasswordComplete: false,
 	verification: VERIFICATION,
-	logoutMessage: '',
-}
+	logoutMessage: ''
+};
 
 export default function reducer(state = INITIAL_STATE, { type, payload }) {
-
-	switch(type) {
+	switch (type) {
 		//EMAIL
 		case 'USER_EMAIL':
 			return {
@@ -30,14 +29,14 @@ export default function reducer(state = INITIAL_STATE, { type, payload }) {
 				fetching: false,
 				fetched: true,
 				userEmail: payload
-			}
+			};
 		case 'CHECK_VERIFICATION_CODE_PENDING':
 			return {
 				...state,
 				verification: {
 					...VERIFICATION,
-					fetching: true,
-				},
+					fetching: true
+				}
 			};
 		case 'CHECK_VERIFICATION_CODE_FULFILLED':
 			return {
@@ -47,8 +46,8 @@ export default function reducer(state = INITIAL_STATE, { type, payload }) {
 					fetching: true,
 					fetched: true,
 					data: payload,
-					hasValidData: true,
-				},
+					hasValidData: true
+				}
 			};
 		case 'CHECK_VERIFICATION_CODE_REJECTED':
 			return {
@@ -57,33 +56,33 @@ export default function reducer(state = INITIAL_STATE, { type, payload }) {
 					...VERIFICATION,
 					fetching: false,
 					fetched: true,
-					error: payload.message,
-				},
+					error: payload.message
+				}
 			};
 		case 'VERIFY_VERIFICATION_CODE_PENDING':
 			return {
 				...state,
 				verification: {
 					...VERIFICATION,
-					fetching: true,
-				},
+					fetching: true
+				}
 			};
 		case 'VERIFY_VERIFICATION_CODE_FULFILLED':
 			return {
 				...state,
-				 verification: {
-					 ...VERIFICATION,
-					 fetched: true,
-				 },
-			 };
+				verification: {
+					...VERIFICATION,
+					fetched: true
+				}
+			};
 		case 'VERIFY_VERIFICATION_CODE_REJECTED':
 			return {
 				...state,
 				verification: {
 					...VERIFICATION,
 					fetched: true,
-					error: payload.message,
-				},
+					error: payload.message
+				}
 			};
 
 		// Verify token
@@ -116,13 +115,14 @@ export default function reducer(state = INITIAL_STATE, { type, payload }) {
 		case 'SET_LOGOUT_MESSAGE':
 			return {
 				...state,
-				logoutMessage: payload.message,
-			}
+				logoutMessage: payload.message
+			};
 		case 'LOGOUT':
 			return {
 				...INITIAL_STATE,
-				logoutMessage: payload.message,
+				logoutMessage: payload.message
 			};
+		default:
+			return state;
 	}
-	return state;
 }

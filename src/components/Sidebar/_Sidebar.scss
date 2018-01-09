@@ -1,161 +1,31 @@
-@import '../../variables';
-
-$wallet-bordertop-color: $colors-main-black;
-$wallet-bordertop-height: 2px;
-$sidebar-selected-ball--width: 0.75rem;
-$sidebar-selected-ball--space: $sidebar-selected-ball--width + 0.5rem;
-$sidebar-selected-ball--top: 2px;
-$title-text--active: 1.25rem;
-$trade-button--color: $colors-main-black;
-$trade-button--border: $colors-main-black;
-
 .sidebar-container {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
+	display: flex;
+	flex-direction: column;
+	height: 100%;
 
-  > div {
-    padding: $sidebar-sections-padding;
+	> div:last-child {
+		padding: $sidebar-sections-padding;
 
-    &:first-child {
-      border-top: none;
-    }
-  }
+		&:first-child {
+			border-top: none;
+		}
+	}
 
-  .sidebar-actions, .sidebar-logout {
-    flex: 0;
-  }
+	.sidebar-logout {
+		flex: 0;
+	}
 
-  .sidebar-notifications {
-    flex: 1;
-    height: auto;
-    overflow-y: auto;
-  }
+	.sidebar-notifications {
+		flex: 1;
+		height: auto;
+		overflow-y: auto;
+	}
 
-  .sidebar-actions {
-    border-bottom: $sidebar-borderbottom-height solid $sidebar-borderbottom-color;
-    // min-height: calc(100vh / 3);
-    // max-height: calc(100vh / 3);
-
-    &.active {
-      border-bottom-color: $sidebar-borderbottom-color-active;
-    }
-
-    .sidebar-container-trade {
-      .sidebar-trade-button {
-        &.not-active {
-          background: $colors-white !important;
-          color: $trade-button--color !important;
-          border: 1px solid $trade-button--border;
-        }
-        &.active {
-          // background: $colors-currencies-btc !important;
-          background: $trade-button--color !important;
-        }
-      }
-    }
-  }
-
-  .sidebar-logout {
-    border-top: 1px solid $border-color;
-  }
-}
-
-.sidebar_section-container:not(:last-child) {
-  margin-bottom: $sidebar-sections-padding;
-}
-
-.sidebar_section-container {
-  position: relative;
-  margin: 1rem;
-
-  &:before {
-    content: '';
-    width: 100%;
-    height: 1px;
-    top: -1px;
-    background: $wallet-bordertop-color;
-    position: absolute;
-  }
-
-  .sidebar_section-title:before {
-    content: '';
-    width: $sidebar-selected-ball--width;
-    height: $sidebar-selected-ball--width;
-    border: 1px solid $colors-deactivate-color2;
-    border-radius: $sidebar-selected-ball--width;
-    position: absolute;
-    // top: $sidebar-selected-ball--top * 2;
-  }
-
-  &.active {
-    &:before {
-      height: $sidebar-selected-ball--top;
-      top: -$sidebar-selected-ball--top;
-    }
-
-    .sidebar_section-title:before {
-      content: '';
-      background-color: $wallet-bordertop-color;
-      border-color: $wallet-bordertop-color;
-    }
-  }
-
-  &.active .sidebar_section-title .sidebar_section-title-text {
-    font-weight: bold;
-    font-size: $title-text--active;
-  }
-
-  .sidebar_section-title {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    position: relative;
-    margin-bottom: 0.75rem;
-    text-transform: uppercase;
-
-    .sidebar_section-title-text {
-      font-size:$title-text--active;
-      line-height: 2rem;
-      &:hover {
-        font-size: $title-text--active;
-        font-weight: bold;
-      }
-    }
-  }
+	.sidebar-logout {
+		border-top: 1px solid $sidebar-border--color;
+	}
 }
 
 .sidebar-notifications-wrapper {
-  overflow-y: scroll;
-}
-
-.direction_ltr {
-  .sidebar_section-container {
-    .sidebar_section-title:before {
-      left: -$sidebar-selected-ball--space;
-    }
-  }
-}
-
-.direction_rtl {
-  .sidebar_section-container {
-    .sidebar_section-title:before {
-      right: -$sidebar-selected-ball--space;
-    }
-  }
-
-}
-
-
-@media only screen and (max-width: 991px) {
-  .app_container-sidebar {
-    // display: none;
-    .sidebar-container-trade {
-      flex-direction: column;
-      .separator {
-        height: 1rem;
-        width: 100%;
-      }
-    }
-  }
+	overflow-y: scroll;
 }

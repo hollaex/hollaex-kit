@@ -4,74 +4,72 @@ $qr-text--pading: 0.25rem;
 $qr-code--size: 12rem;
 
 .extra_information-wrapper {
-  margin-top: 1rem;
-  padding: 0.5rem;
-  font-size: $font-size-subtext;
+	margin-top: 1rem;
+	padding: 0.5rem;
+	font-size: $font-size-subtext;
 
-  .link {
-    color: $colors-notifications-blue;
-    padding: 0 $qr-text--pading;
-  }
+	.link {
+		color: $colors-notifications-blue;
+		padding: 0 $qr-text--pading;
+	}
 }
 
 .deposit_info-wrapper > div {
-  flex: 1;
+	flex: 1;
 }
 
 .qr_code-wrapper {
-  margin: 2rem;
+	margin: 2rem;
 
-  width: $qr-code--size;
-  max-width: $qr-code--size;
-  > *:first-child {
-    @include size-important($qr-code--size);
-  }
+	width: $qr-code--size;
+	max-width: $qr-code--size;
+	> *:first-child {
+		@include size-important($qr-code--size);
+	}
 
-  .qr-text {
-    display: flex;
-    font-size: $font-size-subtext;
-    padding-top: $qr-text--pading;
-    &:before {
-      padding-top: $qr-text--pading;
-      @include css-triangle($qr-code--arrow-color, 'up', $qr-code--arrow-size, relative);
-      border-bottom: $qr-code--arrow-size * 1.5 solid $qr-code--arrow-color;
-    }
-  }
+	.qr-text {
+		display: flex;
+		font-size: $font-size-subtext;
+		padding-top: $qr-text--pading;
+		&:before {
+			padding-top: $qr-text--pading;
+			@include css-triangle($qr-code--arrow-color, 'up', $qr-code--arrow-size, relative);
+			border-bottom: $qr-code--arrow-size * 1.5 solid $qr-code--arrow-color;
+		}
+	}
 }
 
 .review-wrapper {
-  min-width: $bp-xs;
+	min-width: $bp-xs;
 
-  .review-section {
-    font-size: $font-size-subtext;
-  }
+	.review-section {
+		font-size: $font-size-subtext;
+	}
 
-  .review-title {
-    font-size: $font-size-subhead2;
-    margin-bottom: 0.5rem;
-  }
+	.review-title {
+		font-size: $font-size-subhead2;
+		margin-bottom: 0.5rem;
+	}
 
-  .review-link {
+	.review-link {
+	}
 
-  }
-
-  .separator {
-    margin: 1rem 0;
-    height: 2px;
-    width: 100%;
-    background-color: $colors-deactivate-color2;
-  }
+	.separator {
+		margin: 1rem 0;
+		height: 2px;
+		width: 100%;
+		background-color: $colors-deactivate-color2;
+	}
 }
 
 .verification-wrapper {
-  .verification-content-wrapper {
-    position: relative;
-
-  }
-  .error {
-    font-size: $font-size-subhead2;
-  }
-  .block-wrapper {
-    margin: 1rem;
-  }
+	.verification-content-wrapper {
+		position: relative;
+	}
+	.error {
+		font-size: $font-size-subhead2;
+	}
+	.block-wrapper {
+		margin: 1rem;
+	}
 }

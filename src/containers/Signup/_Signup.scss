@@ -3,23 +3,23 @@ $signup_succes--margin: 2rem;
 $terms_label--padding: 0.25rem;
 
 .signup_success-wrapper {
-  text-align: center;
+	text-align: center;
 
-  .signup_success-content {
-    margin: $signup_succes--margin 0 $signup_succes--margin*2;
-  }
+	.signup_success-content {
+		margin: $signup_succes--margin 0 $signup_succes--margin*2;
+	}
 }
 
 .terms_label-wrapper {
-  padding: 0 $terms_label--padding;
+	padding: 0 $terms_label--padding;
 }
 
 .dialog-link {
-  color: $colors-notifications-blue;
-  padding: 0 $terms_label--padding;
+	color: $colors-notifications-blue;
+	padding: 0 $terms_label--padding;
 }
 
 .signup-modal-wrapper {
-  max-width: $bp-sm;
-  max-height: 100%;
+	max-width: $bp-sm;
+	max-height: 100%;
 }

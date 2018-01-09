@@ -1,0 +1,23 @@
+$contact-form--icon-size: 6rem;
+
+.contact_form-wrapper {
+	min-width: 30rem;
+
+	.icon_title-wrapper {
+		.icon_title-text.title {
+			text-transform: capitalize;
+			margin: 1.5rem auto;
+		}
+
+		.icon_title-image {
+			height: $contact-form--icon-size;
+			width: $contact-form--icon-size;
+		}
+	}
+	.field-wrapper {
+		margin: 1rem 0;
+	}
+	.exir-button {
+		margin-top: 1.5rem;
+	}
+}

@@ -2,154 +2,62 @@ $language-selector-arrow--size: 0.4rem;
 $app-bar--background: white;
 
 .app_bar {
-  position: relative;
-  width: 100%;
-  min-height: $navigation_bar-height;
-  height: $navigation_bar-height;
-  border-bottom: 1px solid $border-color;
-  display: flex;
-  justify-content: space-between;
-  font-size: $navigation_bar-font_size;
-  font-weight: bold;
-  background-color: $app-bar--background;
+	position: relative;
+	width: 100%;
+	min-height: $navigation_bar-height;
+	height: $navigation_bar-height;
+	border-bottom: 1px solid $app_bar-border--color;
+	display: flex;
+	justify-content: space-between;
+	font-size: $navigation_bar-font_size;
+	font-weight: bold;
+	background-color: $app-bar--background;
 
-  &.no-borders {
-    border-bottom: none;
-    > div:not(:first-child) {
-      border-left: none;
-    }
-  }
+	&.no-borders {
+		border-bottom: none;
+		> div:not(:first-child) {
+			border-left: none;
+		}
+	}
 
-  > div {
-    display: flex;
-    align-items: center;
-    padding: 0 8px;
+	> div {
+		display: flex;
+		align-items: center;
+		padding: 0 8px;
 
-    &:not(:first-child) {
-      border-left: 1px solid $border-color;
-    }
-  }
+		&:not(:first-child) {
+			border-left: 1px solid $app_bar-border--color;
+		}
+	}
 
-  .app_bar-icon-logo {
-    width: 4rem;;
-  }
+	.app_bar-icon-logo {
+		width: 4rem;
+	}
 
-  .app_bar-icon, .app_bar-controllers {
-    flex: 0;
-  }
+	.app_bar-icon {
+		flex: 0;
+	}
 
-  .app_bar-icon {
-    width: 100%;
-  }
+	.app_bar-icon {
+		width: 100%;
+	}
 
-  .app_bar-main {
-    flex-grow: 1;
-  }
+	.app_bar-main {
+		flex-grow: 1;
+	}
 
-  .app_bar-currency_wrapper {
-    position: relative;
-    display: flex;
-    align-items: center;
-    width: 100%;
-    padding: 0;
-    text-transform: uppercase;
-    max-height: $navigation_bar-height;
+	.app_bar-controllers-splash {
+		padding: 0;
 
-    .app_bar-currency_display-icon {
-      max-width: $navigation_bar-height;
-      max-height: $navigation_bar-height;
-      padding: 0.5rem;
-    }
+		.action_button {
+			min-width: $navigation_bar-action_button;
+			height: 100%;
+			padding: 0 0.5rem;
+		}
+	}
 
-    &:after {
-      content: '';
-      width: 1px;
-      height: calc(100% - 8px);
-      background-color: $colors-main-black;
-      right: -1px;
-      position: absolute;
-    }
-
-    .app_bar-currency_display-selector {
-      position: relative;
-    }
-    .app_bar-currency_display {
-      &.is_open {
-        .app_bar-currency_display-selector {
-          &:after {
-            @include css-triangle($colors-main-black, 'down', $language-selector-arrow--size);
-            right: -$language-selector-arrow--size * 2.5;
-            top: calc(50% - #{$language-selector-arrow--size / 2});
-          }
-        }
-      }
-      &.is_close {
-        .app_bar-currency_display-selector {
-          &:after {
-            @include css-triangle($colors-main-black, 'right', $language-selector-arrow--size);
-            right: -$language-selector-arrow--size * 0.5;
-            top: calc(50% - #{$language-selector-arrow--size});
-          }
-        }
-      }
-    }
-
-    .app_bar-currency_display, .app_bar-currency_option {
-      width: 100%;
-      > img {
-        max-height: $navigation_bar-height;
-        padding: 4px;
-      }
-    }
-
-    .app_bar-currency_list {
-      position: absolute;
-      top: $navigation_bar-height;
-      left: 0;
-      width: 100%;
-      z-index: 100;
-      background: $app-background-color;
-      border: 1px solid $border-color;
-      border-left: none;
-      border-top: none;
-    }
-  }
-
-  .app_bar-currency, .app_bar-user {
-    height: $navigation_bar-height;
-    > img {
-      height: 100%;
-      padding: 4px;
-      &.active {
-        background-color: $colors-main-black;
-      }
-    }
-  }
-
-  .app_bar-controllers {
-    min-width: $sidebar-width;
-    max-width: $sidebar-width;
-    display: flex;
-    justify-content: space-between;
-    padding: 0;
-
-    > div {
-      // padding: 0 8px;
-    }
-  }
-
-  .app_bar-controllers-splash {
-    padding: 0;
-
-    .action_button {
-      min-width: $navigation_bar-action_button;
-      height: 100%;
-      padding: 0 0.5rem;
-    }
-  }
-
-  .bar-logout {
-    max-height: $navigation_bar-height;
-    min-height: $navigation_bar-height;
-  }
+	.bar-logout {
+		max-height: $navigation_bar-height;
+		min-height: $navigation_bar-height;
+	}
 }
