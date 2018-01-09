@@ -532,7 +532,7 @@ export default {
 	TYPE: 'نوع',
 	TYPES_VALUES: {
 		market: 'بازار',
-		limit: 'حد'
+		limit: 'محدود'
 	},
 	TYPES: [{ value: 'market', label: 'بازار' }, { value: 'limit', label: 'حد' }],
 	SIDE: 'طرف',
@@ -578,7 +578,7 @@ export default {
 		v: 'حجم'
 	},
 	LANGUAGES: [{ key: 'en', label: 'English' }, { key: 'fa', label: 'فارسی' }],
-	QUICK_TRADE: 'خرید آسان',
+	QUICK_TRADE: 'آسان',
 	PRO_TRADE: 'حرفه ای',
 	WALLET_TITLE: 'کیف پول',
 	TRADING_MODE_TITLE: 'خرید و فروش',
@@ -630,7 +630,7 @@ export default {
 	QUOTE_REVIEW: 'بازبینی',
 	QUOTE_COUNTDOWN_MESSAGE: 'شما {0} ثانیه برای این تراکنش وقت دارید',
 	QUOTE_EXPIRED_TOKEN: 'اعتبار قیمت داده شده منقضی شده',
-	QUOTE_SUCCESS_REVIEW_TITLE: 'خرید آسان',
+	QUOTE_SUCCESS_REVIEW_TITLE: 'خرید و فروش آسان',
 	QUOTE_SUCCESS_REVIEW_MESSAGE: 'شما با موفقیت {0} {1} {2} برای {3} {4}',
 	COUNTDOWN_ERROR_MESSAGE: 'شمارش معکوس به اتمام رسید.',
 	WITHDRAW_PAGE: {
