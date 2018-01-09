@@ -12,13 +12,13 @@ const Logout = ({ className, onLogout }) => (
 			'd-flex',
 			'justify-content-between',
 			'align-items-center',
-			'logout-wrapper'
+			'logout-wrapper',
+			'pointer'
 		)}
+		onClick={onLogout}
 	>
-		<div onClick={onLogout} className="logout-left text-uppercase pointer">
-			{STRINGS.LOGOUT}
-		</div>
-		<div onClick={onLogout} className="logout-right pointer">
+		<div className="logout-left text-uppercase">{STRINGS.LOGOUT}</div>
+		<div className="logout-right">
 			<ReactSVG
 				path={ICONS.LOGOUT_DOOR_INACTIVE}
 				wrapperClassName="logout-right-icon"

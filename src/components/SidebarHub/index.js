@@ -53,6 +53,7 @@ class SidebarHub extends Component {
 					<Section
 						title={STRINGS.TRADING_TITLE}
 						icon={ICONS.SIDEBAR_TRADING_ACTIVE}
+						onClickHeader={goToTradePage}
 						childrenClassName="d-flex sidebar_hub-trade"
 						active={activePath === 'trade' || activePath === 'quick-trade'}
 					>

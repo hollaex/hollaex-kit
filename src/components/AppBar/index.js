@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
-import { Link } from 'react-router';
-import { FLEX_CENTER_CLASSES, EXIR_BLUE_LOGO } from '../../config/constants';
+import { EXIR_BLUE_LOGO } from '../../config/constants';
+import { LinkButton } from './LinkButton';
 import { LanguageSelector } from '../';
 
 import STRINGS from '../../config/localizedStrings';
@@ -39,31 +39,24 @@ class AppBar extends Component {
 		if (verifyingToken) {
 			return <div />;
 		}
-		const COMMON_CLASSES = [
-			'text-uppercase',
-			'action_button',
-			'pointer',
-			...FLEX_CENTER_CLASSES
-		];
+
 		const WRAPPER_CLASSES = ['app_bar-controllers-splash', 'd-flex'];
 		return token ? (
 			<div className={classnames(...WRAPPER_CLASSES)}>
-				<div className={classnames(...COMMON_CLASSES, 'contrast')}>
-					<Link to="/account">{STRINGS.ACCOUNT_TEXT}</Link>
-				</div>
+				<LinkButton
+					path="/account"
+					text={STRINGS.ACCOUNT_TEXT}
+					buttonClassName="contrast"
+				/>
 			</div>
 		) : (
 			<div className={classnames(...WRAPPER_CLASSES)}>
-				<Link to="/login" className="d-flex f-1 h-100">
-					<div className={classnames(...COMMON_CLASSES)}>
-						{STRINGS.LOGIN_TEXT}
-					</div>
-				</Link>
-				<Link to="/signup" className="d-flex f-1 h-100">
-					<div className={classnames(...COMMON_CLASSES, 'contrast')}>
-						{STRINGS.SIGNUP_TEXT}
-					</div>
-				</Link>
+				<LinkButton path="/account" text={STRINGS.LOGIN_TEXT} />
+				<LinkButton
+					path="/signup"
+					text={STRINGS.SIGNUP_TEXT}
+					buttonClassName="contrast"
+				/>
 			</div>
 		);
 	};
