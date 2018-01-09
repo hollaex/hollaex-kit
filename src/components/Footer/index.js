@@ -6,13 +6,21 @@ import { SOCIAL_ICONS } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 
 const LINKS = [
-	{ icon: SOCIAL_ICONS.FACEBOOK, link: '', type: 'facebook' },
+	{
+		icon: SOCIAL_ICONS.FACEBOOK,
+		link: '',
+		type: 'facebook'
+	},
 	{
 		icon: SOCIAL_ICONS.TWIITER,
 		link: 'https://twitter.com/ExchangeIran',
 		type: 'twitter'
 	},
-	{ icon: SOCIAL_ICONS.INSTAGRAM, link: '', type: 'instagram' },
+	{
+		icon: SOCIAL_ICONS.INSTAGRAM,
+		link: 'https://www.instagram.com/exir_official',
+		type: 'instagram'
+	},
 	{
 		icon: SOCIAL_ICONS.TELEGRAM,
 		link: 'https://t.me/joinchat/A7EgbUODnpLn1lpTrtkNFg',
