@@ -76,6 +76,7 @@
 		"type": "git",
 		"url": "git+https://github.com/bitholla/exir.git"
 	},
+	"homepage": "https://exir.tech",
 	"prettier": {
 		"tabWidth": 2,
 		"useTabs": true,
