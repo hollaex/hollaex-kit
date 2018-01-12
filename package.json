@@ -68,7 +68,9 @@
 		"start": "npm-run-all -p watch-css start-js",
 		"build": "npm run build-css && react-scripts build",
 		"test": "react-scripts test --env=jsdom",
-		"eject": "react-scripts eject"
+		"eject": "react-scripts eject",
+		"deploy-test": "set REACT_APP_NETWORK=testnet npm run build && aws s3 sync build/ s3://testnet.exir.tech",
+		"deploy-main": "set REACT_APP_NETWORK=mainnet && npm run build && aws s3 sync build/ s3://exir.tech"
 	},
 	"description": "Cryptocurrency trading platfrom",
 	"main": "index.js",
@@ -76,6 +78,7 @@
 		"type": "git",
 		"url": "git+https://github.com/bitholla/exir.git"
 	},
+	"homepage": "https://exir.tech",
 	"prettier": {
 		"tabWidth": 2,
 		"useTabs": true,
