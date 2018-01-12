@@ -347,6 +347,10 @@ export const BANK_INFORMATION = {
 	account_number: process.env.ACCOUNT_NUMBER || '2313-0631-2313-3121'
 };
 
+export const BANK_WITHDRAWAL_BASE_FEE = process.env.REACT_APP_BANK_WITHDRAWAL_BASE_FEE || 500;
+export const BANK_WITHDRAWAL_DYNAMIC_FEE_RATE = process.env.REACT_APP_BANK_WITHDRAWAL_DYNAMIC_FEE_RATE || 0.5;
+export const BANK_WITHDRAWAL_MAX_DYNAMIC_FEE = process.env.REACT_APP_BANK_WITHDRAWAL_MAX_DYNAMIC_FEE || 50000;
+
 export const BANK_PAYMENT_LINK =
 	'https://api.moneyar.com/IPG/default.aspx?uid=';
 export const MIN_VERIFICATION_LEVEL_TO_WITHDRAW = 2;
