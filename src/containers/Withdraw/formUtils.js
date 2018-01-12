@@ -15,6 +15,8 @@ export const generateInitialValues = (symbol, fees = {}) => {
 
 	if (symbol !== fiatSymbol) {
 		initialValues.fee = fees.optimal || fees.min;
+	} else {
+		initialValues.fee = fees.value || 0;
 	}
 
 	if (MIN) {
@@ -28,7 +30,7 @@ export const generateFormValues = (
 	fees = {},
 	calculateMax
 ) => {
-	const { name } = CURRENCIES[symbol];
+	const name = STRINGS[`${symbol.toUpperCase()}_NAME`];
 	const { MIN, MAX, STEP = 1 } = WITHDRAW_LIMITS[symbol];
 	const fields = {};
 
@@ -93,8 +95,17 @@ export const generateFormValues = (
 			min: fees.min || MIN,
 			max: fees.max || MAX,
 			step: STEP,
-			// information: fees.optimal ? STRINGS.formatString(STRINGS.WITHDRAWALS_FORM_FEE_OPTIMAL_VALUE, fees.optimal, name).join('') : '',
 			validate: [required, minValue(fees.min), maxValue(fees.max)]
+		};
+	} else {
+		fields.fee = {
+			type: 'number',
+			label: STRINGS.formatString(STRINGS.WITHDRAWALS_FORM_FEE_LABEL, name),
+			placeholder: STRINGS.formatString(
+				STRINGS.WITHDRAWALS_FORM_FEE_PLACEHOLDER,
+				name
+			).join(''),
+			disabled: true
 		};
 	}
 

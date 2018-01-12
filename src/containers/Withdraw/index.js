@@ -22,7 +22,11 @@ import { openContactForm } from '../../actions/appActions';
 
 import WithdrawCryptocurrency from './form';
 import { generateFormValues, generateInitialValues } from './formUtils';
-import { generateFiatInformation, renderExtraInformation } from './utils';
+import {
+	generateFiatInformation,
+	renderExtraInformation,
+	calculateFiatFee
+} from './utils';
 
 import { renderInformation, renderTitleSection } from '../Wallet/components';
 
@@ -92,10 +96,21 @@ class Withdraw extends Component {
 	onCalculateMax = () => {
 		const { balance, symbol, selectedFee = 0, dispatch } = this.props;
 		const balanceAvailable = balance[`${symbol}_available`];
-		const amount = math.number(
-			math.subtract(math.fraction(balanceAvailable), math.fraction(selectedFee))
-		);
-		dispatch(change(FORM_NAME, 'amount', math.round(amount, 4)));
+		if (symbol === fiatSymbol) {
+			const fee = calculateFiatFee(balanceAvailable);
+			const amount = math.number(
+				math.subtract(math.fraction(balanceAvailable), math.fraction(fee))
+			);
+			dispatch(change(FORM_NAME, 'amount', math.floor(amount)));
+		} else {
+			const amount = math.number(
+				math.subtract(
+					math.fraction(balanceAvailable),
+					math.fraction(selectedFee)
+				)
+			);
+			dispatch(change(FORM_NAME, 'amount', math.round(amount, 4)));
+		}
 	};
 
 	render() {

@@ -8,6 +8,8 @@ import {
 	setWithdrawNotificationSuccess,
 	setWithdrawNotificationError
 } from './notifications';
+import { fiatSymbol } from '../../utils/currency';
+import { calculateFiatFee } from './utils';
 
 import STRINGS from '../../config/localizedStrings';
 
@@ -49,6 +51,18 @@ class Form extends Component {
 			nextProps.submitting !== this.props.submitting
 		) {
 			this.onCloseDialog();
+		}
+
+		if (
+			nextProps.symbol === fiatSymbol &&
+			(nextProps.data.amount !== this.props.data.amount ||
+				(nextProps.symbol === fiatSymbol &&
+					nextProps.amount !== this.props.symbol))
+		) {
+			const fee = calculateFiatFee(nextProps.data.amount);
+			if (fee !== nextProps.data.fee) {
+				nextProps.change('fee', fee);
+			}
 		}
 	}
 

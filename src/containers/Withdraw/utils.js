@@ -1,4 +1,5 @@
 import React from 'react';
+import mathjs from 'mathjs';
 import { Accordion } from '../../components';
 import { ICONS } from '../../config/constants';
 import { fiatSymbol } from '../../utils/currency';
@@ -43,3 +44,27 @@ export const renderExtraInformation = (symbol, bank_account) =>
 			/>
 		</div>
 	);
+
+const BANK_WITHDRAWAL_BASE_FEE = 500;
+const BANK_WITHDRAWAL_DYNAMIC_FEE_RATE = 0.5;
+const BANK_WITHDRAWAL_MAX_DYNAMIC_FEE = 50000;
+
+export const calculateFiatFee = (amount = 0) => {
+	if (amount < 0) {
+		return 0;
+	}
+
+	let withdrawalFee = mathjs.chain(BANK_WITHDRAWAL_BASE_FEE);
+	const dinamicFee = mathjs
+		.chain(amount)
+		.multiply(BANK_WITHDRAWAL_DYNAMIC_FEE_RATE)
+		.divide(100)
+		.done();
+	if (mathjs.larger(dinamicFee, BANK_WITHDRAWAL_MAX_DYNAMIC_FEE)) {
+		withdrawalFee = withdrawalFee.add(BANK_WITHDRAWAL_MAX_DYNAMIC_FEE);
+	} else {
+		withdrawalFee = withdrawalFee.add(dinamicFee);
+	}
+	const fee = mathjs.ceil(withdrawalFee.done());
+	return fee;
+};
