@@ -308,9 +308,9 @@ export const TIMESTAMP_FORMAT_FA = STRINGS.TIMESTAMP_FORMAT.split('/')
 
 export const LIMIT_VALUES = {
 	PRICE: {
-		MIN: process.env.MIN_PRICE || 1000000,
-		MAX: process.env.MAX_PRICE || 200000000,
-		STEP: process.env.PRICE_STEP || 5000
+		MIN: process.env.REACT_APP_MIN_PRICE || 1000000,
+		MAX: process.env.REACT_APP_MAX_PRICE || 200000000,
+		STEP: process.env.REACT_APP_PRICE_STEP || 5000
 	},
 	SIZE: {
 		MIN: 0.0001,
@@ -342,9 +342,9 @@ export const TOKEN_KEY = `${ENV}_${NETWORK}_TOKEN`;
 export const LANGUAGE_KEY = `${ENV}_${NETWORK}_LANGUAGE`;
 
 export const BANK_INFORMATION = {
-	bank_name: process.env.BANK_NAME || 'Exir Trade',
-	account_owner: process.env.ACCOUNT_OWNER || 'Bank Melli',
-	account_number: process.env.ACCOUNT_NUMBER || '2313-0631-2313-3121'
+	bank_name: process.env.REACT_APP_BANK_NAME || 'Exir Trade',
+	account_owner: process.env.REACT_APP_ACCOUNT_OWNER || 'Bank Melli',
+	account_number: process.env.REACT_APP_ACCOUNT_NUMBER || '2313-0631-2313-3121'
 };
 
 export const BANK_WITHDRAWAL_BASE_FEE = process.env.REACT_APP_BANK_WITHDRAWAL_BASE_FEE || 500;
