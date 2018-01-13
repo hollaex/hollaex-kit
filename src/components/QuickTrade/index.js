@@ -18,7 +18,7 @@ const GROUP_CLASSES = [...FLEX_CENTER_CLASSES, 'flex-column'];
 class QuickTrade extends Component {
 	state = {
 		side: STRINGS.SIDES[0].value,
-		value: 1,
+		value: 0.1,
 		symbol: DEFAULT_SYMBOL
 	};
 
