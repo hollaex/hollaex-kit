@@ -653,6 +653,7 @@ export default {
 			'Please ensure the accuracy of this address since {0} transfers are irreversible',
 		MESSAGE_ABOUT_WITHDRAW: 'You are about to transfer to your bank account',
 		MESSAGE_FEE: 'Transactions fee of {0} ({1}) included',
+		MESSAGE_FEE_FIAT: 'Transactions fee of {0} included',
 		FIAT_MESSAGE_1:
 			'You can only withdraw to a bank account in a name that matches the name registered with your EXIR account.',
 		FIAT_MESSAGE_2: 'Withdrawal min amount',

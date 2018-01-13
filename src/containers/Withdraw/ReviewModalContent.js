@@ -31,16 +31,22 @@ const ReviewModalContent = ({
 	onClickAccept,
 	onClickCancel
 }) => {
-	const { shortName, name, formatToCurrency } = CURRENCIES[symbol];
+	const { formatToCurrency } = CURRENCIES[symbol];
+	const shortName = STRINGS[`${symbol.toUpperCase()}_SHORTNAME`];
+	const name = STRINGS[`${symbol.toUpperCase()}_NAME`];
+
 	const totalTransaction = math.number(
 		math.add(math.fraction(data.amount), math.fraction(data.fee || 0))
 	);
+
 	const cryptoAmountText = STRINGS.formatString(
 		STRINGS.BTC_PRICE_FORMAT,
 		formatToCurrency(totalTransaction),
 		shortName
 	);
+
 	const feePrice = data.fee ? math.number(math.multiply(data.fee, price)) : 0;
+
 	return (
 		<div className="d-flex flex-column review-wrapper">
 			<img
@@ -53,7 +59,19 @@ const ReviewModalContent = ({
 					<div className="review-info_message">
 						{STRINGS.WITHDRAW_PAGE.MESSAGE_ABOUT_WITHDRAW}
 					</div>
-					<div className="review-crypto-amount">{cryptoAmountText}</div>
+					<div className="review-crypto-amount review-crypto-address">
+						<div>{cryptoAmountText}</div>
+						<div className="review-fee_message">
+							{STRINGS.formatString(
+								STRINGS.WITHDRAW_PAGE.MESSAGE_FEE_FIAT,
+								STRINGS.formatString(
+									STRINGS.FIAT_PRICE_FORMAT,
+									fiatFormatToCurrency(data.fee),
+									STRINGS.FIAT_SHORTNAME
+								)
+							)}
+						</div>
+					</div>
 				</div>
 			) : (
 				<div className="d-flex flex-column align-items-center review-info_container">
