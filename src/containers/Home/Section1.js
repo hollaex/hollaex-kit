@@ -22,7 +22,7 @@ const Section1 = ({
 		style={style}
 	>
 		<div className={classnames('f-1', ...FLEX_CENTER_CLASSES, 'flex-column')}>
-			<div className="home-title">{STRINGS.HOME.SECTION_1_TITLE}</div>
+			<div className="home-title text-capitalize">{STRINGS.HOME.SECTION_1_TITLE}</div>
 			<div className="text-section text-center">
 				<div>{STRINGS.HOME.SECTION_1_TEXT_1}</div>
 				<div>{STRINGS.HOME.SECTION_1_TEXT_2}</div>
