@@ -181,7 +181,7 @@ class Container extends Component {
 			) {
 				this.logout('Token is expired');
 			} else {
-				console.error(error);
+				// console.error(error);
 			}
 		});
 
@@ -312,7 +312,7 @@ class Container extends Component {
 				}
 				case 'withdrawal': {
 					// TODO FIX when notification is defined
-					console.log(data, !data.amount);
+					// console.log(data, !data.amount);
 					const show = data.amount;
 					this.props.setNotification(NOTIFICATIONS.WITHDRAWAL, data, !show);
 					break;
@@ -401,7 +401,12 @@ class Container extends Component {
 					/>
 				);
 			case CONTACT_FORM:
-				return <ContactForm onSubmitSuccess={this.onCloseDialog} />;
+				return (
+					<ContactForm
+						onSubmitSuccess={this.onCloseDialog}
+						onClose={this.onCloseDialog}
+					/>
+				);
 			default:
 				return <div />;
 		}
@@ -483,7 +488,6 @@ class Container extends Component {
 					label="exir-modal"
 					onCloseDialog={this.onCloseDialog}
 					shouldCloseOnOverlayClick={shouldCloseOnOverlayClick}
-					showCloseText={!shouldCloseOnOverlayClick}
 					style={{ 'z-index': 100 }}
 				>
 					{this.renderDialogContent(activeNotification, prices)}

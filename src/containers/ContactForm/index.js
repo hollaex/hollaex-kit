@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { SubmissionError } from 'redux-form';
-import { HocForm, IconTitle } from '../../components';
+import { HocForm, IconTitle, Notification } from '../../components';
 import { email, required } from '../../components/Form/validations';
 import STRINGS from '../../config/localizedStrings';
 import { ICONS } from '../../config/constants';
-import { sendSupportMail } from '../../actions/appActions';
+import { sendSupportMail, NOTIFICATIONS } from '../../actions/appActions';
 
 const FORM_NAME = 'ContactForm';
 
@@ -12,13 +12,13 @@ const Form = HocForm(FORM_NAME);
 
 class ContactForm extends Component {
 	state = {
-		submiited: false
+		submited: false
 	};
 
 	onSubmit = (values) => {
 		return sendSupportMail(values)
 			.then((data) => {
-				this.setState({ submiited: true });
+				this.setState({ submited: true });
 
 				// if (this.props.onSubmitSuccess) {
 				//   this.props.onSubmitSuccess(data);
@@ -80,10 +80,13 @@ class ContactForm extends Component {
 	});
 
 	render() {
-		const { submiited } = this.state;
+		const { onClose } = this.props;
+		const { submited } = this.state;
 
-		if (submiited) {
-			return <div>{STRINGS.CONTACT_FORM.SUCCESS_MESSAGE}</div>;
+		if (submited) {
+			return (
+				<Notification type={NOTIFICATIONS.CONTACT_FORM} onClose={onClose} />
+			);
 		}
 
 		const formFields = this.generateFormFields();
@@ -101,6 +104,8 @@ class ContactForm extends Component {
 					onSubmit={this.onSubmit}
 					formFields={formFields}
 					buttonLabel={STRINGS.SUBMIT}
+					extraButtonLabel={STRINGS.BACK_TEXT}
+					extraButtonOnClick={onClose}
 				/>
 			</div>
 		);

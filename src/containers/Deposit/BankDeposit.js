@@ -86,7 +86,7 @@ class BankDeposit extends Component {
 				this.onOpenDialog();
 			})
 			.catch((err) => {
-				console.log(err);
+				// console.log(err);
 				const _error = err.response.data
 					? err.response.data.message
 					: err.message;

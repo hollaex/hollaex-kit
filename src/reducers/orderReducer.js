@@ -9,21 +9,6 @@ const INITIAL_STATE = {
 
 export default function reducer(state = INITIAL_STATE, action) {
 	switch (action.type) {
-		// createOrder
-		case 'CREATE_ORDER_PENDING':
-			return { ...state, fetching: true, fetched: false, error: null };
-		case 'CREATE_ORDER_REJECTED':
-			return { ...state, fetching: false, error: action.payload };
-		case 'CREATE_ORDER_FULFILLED':
-			return { ...state, fetching: false, fetched: true };
-		// getOrders
-		case 'GET_ORDERS_PENDING':
-			return { ...state, fetching: true, fetched: false, error: null };
-		case 'GET_ORDERS_REJECTED':
-			return { ...state, fetching: false, error: action.payload };
-		case 'GET_ORDERS_FULFILLED':
-			return { ...state, fetching: false, activeOrders: action.payload.data };
-
 		//Webscoket redux manipulations on orders
 		case 'SET_USER_ORDERS':
 			return { ...state, activeOrders: action.payload };

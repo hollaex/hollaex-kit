@@ -6,7 +6,7 @@ import {
 	validAddress
 } from '../../components/Form/validations';
 import STRINGS from '../../config/localizedStrings';
-import { CURRENCIES, WITHDRAW_LIMITS, ICONS } from '../../config/constants';
+import { WITHDRAW_LIMITS, ICONS } from '../../config/constants';
 import { fiatSymbol } from '../../utils/currency';
 
 export const generateInitialValues = (symbol, fees = {}) => {

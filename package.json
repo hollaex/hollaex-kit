@@ -1,6 +1,6 @@
 {
 	"name": "exir",
-	"version": "0.5.1",
+	"version": "0.6.0",
 	"private": true,
 	"dependencies": {
 		"@material/button": "^0.7.0",
@@ -21,7 +21,6 @@
 		"node-sass-chokidar": "0.0.3",
 		"npm-run-all": "^4.0.2",
 		"numbro": "^1.11.0",
-		"prettier": "^1.9.2",
 		"qrcode.react": "^0.7.1",
 		"query-string": "^5.0.0",
 		"react": "^15.4.0",
@@ -56,11 +55,12 @@
 		"wallet-address-validator": "^0.1.1"
 	},
 	"devDependencies": {
+		"prettier": "1.10.2",
 		"react-scripts": "1.0.14"
 	},
 	"scripts": {
 		"prettier-commit": "lint-staged",
-		"prettier": "./node_modules/prettier/bin/prettier.js --write \"src/**/*.{js,json,css,scss,md}\"",
+		"prettier": "./node_modules/prettier/bin-prettier.js --write \"src/**/*.{js,json,css,scss,md}\"",
 		"build-css": "node-sass-chokidar src/ -o src/",
 		"watch-css": "npm run build-css && node-sass-chokidar src/ -o src/ --watch --recursive",
 		"start-js": "react-scripts start",

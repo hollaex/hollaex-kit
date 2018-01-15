@@ -51,7 +51,7 @@ class Trade extends Component {
 		return submitOrder(values)
 			.then((body) => {})
 			.catch((err) => {
-				console.log('error', err);
+				// console.log('error', err);
 				const _error = err.response.data
 					? err.response.data.message
 					: err.message;

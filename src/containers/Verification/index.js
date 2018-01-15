@@ -262,7 +262,12 @@ class Verification extends Component {
 				};
 				return <Notification type={NOTIFICATIONS.VERIFICATION} data={data} />;
 			case 'contact':
-				return <ContactForm onSubmitSuccess={this.onCloseDialog} />;
+				return (
+					<ContactForm
+						onSubmitSuccess={this.onCloseDialog}
+						onClose={this.onCloseDialog}
+					/>
+				);
 			default:
 				return <div />;
 		}

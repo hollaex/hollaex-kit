@@ -34,7 +34,7 @@ $no-background--color: white;
 		min-height: 500px;
 
 		.scroll-button {
-			$arrow-size: 16px;
+			$arrow-size: 11px;
 			bottom: 1rem;
 			left: calc(50% - #{$arrow-size});
 			@include css-triangle($colors-main-black, down, $arrow-size, absolute, true);
@@ -88,6 +88,10 @@ $no-background--color: white;
 		font-size: $font-size-headline;
 		margin-bottom: 1rem;
 		text-align: center;
+	}
+
+	.home-title {
+		margin-bottom: 0.5rem;
 	}
 
 	.text-section,

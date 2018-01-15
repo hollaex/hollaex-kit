@@ -1,7 +1,12 @@
 import React from 'react';
 import mathjs from 'mathjs';
 import { Accordion } from '../../components';
-import { ICONS, BANK_WITHDRAWAL_BASE_FEE, BANK_WITHDRAWAL_DYNAMIC_FEE_RATE, BANK_WITHDRAWAL_MAX_DYNAMIC_FEE } from '../../config/constants';
+import {
+	ICONS,
+	BANK_WITHDRAWAL_BASE_FEE,
+	BANK_WITHDRAWAL_DYNAMIC_FEE_RATE,
+	BANK_WITHDRAWAL_MAX_DYNAMIC_FEE
+} from '../../config/constants';
 import { fiatSymbol } from '../../utils/currency';
 import STRINGS from '../../config/localizedStrings';
 

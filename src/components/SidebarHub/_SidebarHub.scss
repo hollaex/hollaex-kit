@@ -153,11 +153,11 @@ $deactive-tab-border: $boder--width solid $border--color;
 	}
 
 	&.active_currency-fiat {
-		@include bottom-border($color-currency-fiat--main, $bottom_line-height);
+		@include bottom-border($color-currency-fiat--secondary, $bottom_line-height);
 	}
 
 	&.active_currency-btc {
-		@include bottom-border($color-currency-btc--main, $bottom_line-height);
+		@include bottom-border($color-currency-btc--secondary, $bottom_line-height);
 	}
 
 	.sidebar_hub-trade {
