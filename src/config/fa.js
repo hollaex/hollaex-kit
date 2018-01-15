@@ -534,7 +534,7 @@ export default {
 		market: 'بازار',
 		limit: 'محدود'
 	},
-	TYPES: [{ value: 'market', label: 'بازار' }, { value: 'limit', label: 'حد' }],
+	TYPES: [{ value: 'market', label: 'بازار' }, { value: 'limit', label: 'محدود' }],
 	SIDE: 'طرف',
 	SIDES_VALUES: {
 		buy: 'خرید',
