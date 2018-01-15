@@ -111,11 +111,15 @@ class OrderEntry extends Component {
 			symbol: this.props.symbol
 		};
 
-		if (values.price) {
+		if (values.type === 'market') {
+			delete order.price;
+		} else if (values.price) {
 			order.price = formatNumber(values.price);
 		}
 
-		return this.props.submitOrder(order);
+		return this.props.submitOrder(order).then(() => {
+			this.setState({ initialValues: values });
+		});
 	};
 
 	generateFormValues = () => {

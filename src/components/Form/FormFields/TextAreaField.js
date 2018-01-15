@@ -19,7 +19,7 @@ const TextAreaField = (props) => {
 	return (
 		<FieldWrapper {...props}>
 			<textarea
-				rows="4"
+				rows="1"
 				placeholder={placeholder}
 				className={classnames('input_field-input', {
 					error: displayError

@@ -13,6 +13,7 @@ const TabController = ({ tabs, activeTab, setActiveTab, title, titleIcon }) => (
 					key: `tab_item-${index}`,
 					className: classnames('tab_item', {
 						'tab_item-active': index === activeTab,
+						'tab_item-deactive': index !== activeTab,
 						pointer: setActiveTab
 					})
 				};

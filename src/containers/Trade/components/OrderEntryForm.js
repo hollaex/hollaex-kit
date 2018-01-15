@@ -63,7 +63,7 @@ const Form = ({
 						STRINGS.SIDES_VALUES[side] || '',
 						currencyName
 					).join(' ')}
-					disabled={pristine || submitting || !valid || !!errorText}
+					disabled={submitting || !valid || !!errorText}
 					className={classnames('trade_order_entry-form-action')}
 				/>
 			</form>

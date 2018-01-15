@@ -31,7 +31,7 @@ $title--margin: 1rem;
 		margin: $title--margin;
 		&.title {
 			font-size: $font-size-headline2;
-			text-transform: uppercase;
+			text-transform: capitalize;
 		}
 	}
 }

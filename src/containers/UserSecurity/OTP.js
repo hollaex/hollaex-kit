@@ -11,6 +11,8 @@ export const renderOTPForm = (secret, email, activateOTP) => (
 		<IconTitle
 			text={STRINGS.ACCOUNT_SECURITY.OTP.CONTENT.TITLE}
 			iconPath={ICONS.KEYS}
+			className="w-100"
+			textType="title"
 		/>
 		<div className="otp_form-section-wrapper">
 			<div className="otp_form-section-title">

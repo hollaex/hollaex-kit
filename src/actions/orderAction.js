@@ -1,26 +1,5 @@
 import axios from 'axios';
 
-export function createOrder(side, type, size, price) {
-	let body;
-	if (price) {
-		price = Number(price);
-		body = { side, type, size, price, symbol: 'btc' };
-	} else {
-		body = { side, type, size, symbol: 'btc' };
-	}
-	return {
-		type: 'CREATE_ORDER',
-		payload: axios.post('/order', body)
-	};
-}
-
-export function getOrders() {
-	return {
-		type: 'GET_ORDERS',
-		payload: axios.get('/user/orders')
-	};
-}
-
 // Set orders from websocket
 export function setUserOrders(orders) {
 	return {

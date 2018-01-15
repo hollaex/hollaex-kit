@@ -130,7 +130,7 @@ class BankVerification extends Component {
 		} else {
 			return verifyBankData(rest)
 				.then(({ data }) => {
-					console.log(data);
+					// console.log(data);
 					this.props.moveToNextStep('bank', {
 						bank_data: rest,
 						full_name: data.name

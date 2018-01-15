@@ -97,6 +97,8 @@ export const ICONS = {
 	INCOMING_BITCOIN: `${
 		process.env.PUBLIC_URL
 	}/assets/images/Incoming-bitcoin.svg`,
+	INCOMING_BTC: `${process.env.PUBLIC_URL}/assets/images/incoming-btc.svg`,
+	INCOMING_TOMAN: `${process.env.PUBLIC_URL}/assets/images/incoming-toman.svg`,
 	LICENSE: `${process.env.PUBLIC_URL}/assets/images/licence.svg`,
 	LIQUID: `${process.env.PUBLIC_URL}/assets/images/liquid.svg`,
 	MARGIN: `${process.env.PUBLIC_URL}/assets/images/margin.svg`,
@@ -112,10 +114,11 @@ export const ICONS = {
 		process.env.PUBLIC_URL
 	}/assets/images/set-new-password.svg`,
 	SUCCESS_BLACK: `${process.env.PUBLIC_URL}/assets/images/success-black.svg`,
+	TRADE_HISTORY: `${process.env.PUBLIC_URL}/assets/images/trade-history.svg`,
 	TRADE_HISTORY_GREY: `${
 		process.env.PUBLIC_URL
 	}/assets/images/trade-history-grey.svg`,
-	TRADES_ICON: `${process.env.PUBLIC_URL}/assets/images/Trades.svg`,
+	TRADES_ICON: `${process.env.PUBLIC_URL}/assets/images/trade-history.svg`,
 	TRADE_SUCCESS: `${process.env.PUBLIC_URL}/assets/images/trade-success.svg`,
 	TRANSACTION_HISTORY: `${
 		process.env.PUBLIC_URL
@@ -220,12 +223,16 @@ export const ICONS = {
 	CANCEL_CROSS_INACTIVE: `${
 		process.env.PUBLIC_URL
 	}/assets/images/cancel-cross-inactive.svg`,
-	SIDEBAR_WALLET_ACTIVE: `${
+	SIDEBAR_WALLET_ACTIVE_1: `${
 		process.env.PUBLIC_URL
 	}/assets/images/wallet-active.svg`,
-	SIDEBAR_WALLET_INACTIVE: `${
+	SIDEBAR_WALLET_INACTIVE_1: `${
 		process.env.PUBLIC_URL
 	}/assets/images/wallet-inactive.svg`,
+	SIDEBAR_WALLET_ACTIVE: `${
+		process.env.PUBLIC_URL
+	}/assets/images/wallet-selected.svg`,
+	SIDEBAR_WALLET_INACTIVE: `${process.env.PUBLIC_URL}/assets/images/wallet.svg`,
 	SIDEBAR_ACCOUNT_ACTIVE: `${
 		process.env.PUBLIC_URL
 	}/assets/images/account_2-active.svg`,
@@ -243,7 +250,8 @@ export const ICONS = {
 	}/assets/images/arrow-trans-history-active.svg`,
 	ARROW_TRANSFER_HISTORY_INACTIVE: `${
 		process.env.PUBLIC_URL
-	}/assets/images/arrow-trans-history.svg`
+	}/assets/images/arrow-trans-history.svg`,
+	CHECK_ORDER: `${process.env.PUBLIC_URL}/assets/images/check-order.svg`
 };
 
 export const SOCIAL_ICONS = {
@@ -308,9 +316,9 @@ export const TIMESTAMP_FORMAT_FA = STRINGS.TIMESTAMP_FORMAT.split('/')
 
 export const LIMIT_VALUES = {
 	PRICE: {
-		MIN: process.env.MIN_PRICE || 1000000,
-		MAX: process.env.MAX_PRICE || 200000000,
-		STEP: process.env.PRICE_STEP || 5000
+		MIN: process.env.REACT_APP_MIN_PRICE || 1000000,
+		MAX: process.env.REACT_APP_MAX_PRICE || 200000000,
+		STEP: process.env.REACT_APP_PRICE_STEP || 5000
 	},
 	SIZE: {
 		MIN: 0.0001,
@@ -342,10 +350,17 @@ export const TOKEN_KEY = `${ENV}_${NETWORK}_TOKEN`;
 export const LANGUAGE_KEY = `${ENV}_${NETWORK}_LANGUAGE`;
 
 export const BANK_INFORMATION = {
-	bank_name: process.env.BANK_NAME || 'Exir Trade',
-	account_owner: process.env.ACCOUNT_OWNER || 'Bank Melli',
-	account_number: process.env.ACCOUNT_NUMBER || '2313-0631-2313-3121'
+	bank_name: process.env.REACT_APP_BANK_NAME || 'Exir Trade',
+	account_owner: process.env.REACT_APP_ACCOUNT_OWNER || 'Bank Melli',
+	account_number: process.env.REACT_APP_ACCOUNT_NUMBER || '2313-0631-2313-3121'
 };
+
+export const BANK_WITHDRAWAL_BASE_FEE =
+	process.env.REACT_APP_BANK_WITHDRAWAL_BASE_FEE || 500;
+export const BANK_WITHDRAWAL_DYNAMIC_FEE_RATE =
+	process.env.REACT_APP_BANK_WITHDRAWAL_DYNAMIC_FEE_RATE || 0.5;
+export const BANK_WITHDRAWAL_MAX_DYNAMIC_FEE =
+	process.env.REACT_APP_BANK_WITHDRAWAL_MAX_DYNAMIC_FEE || 50000;
 
 export const BANK_PAYMENT_LINK =
 	'https://api.moneyar.com/IPG/default.aspx?uid=';

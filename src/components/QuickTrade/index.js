@@ -18,7 +18,7 @@ const GROUP_CLASSES = [...FLEX_CENTER_CLASSES, 'flex-column'];
 class QuickTrade extends Component {
 	state = {
 		side: STRINGS.SIDES[0].value,
-		value: 1,
+		value: 0.1,
 		symbol: DEFAULT_SYMBOL
 	};
 
@@ -96,7 +96,7 @@ class QuickTrade extends Component {
 					)}
 				>
 					<img src={ICONS.QUICK_TRADE} alt="" className="quick_trade-icon" />
-					<div className="title">
+					<div className="title text-capitalize">
 						{STRINGS.formatString(
 							STRINGS.QUICK_TRADE_COMPONENT.TRADE_TITLE,
 							STRINGS.QUICK_TRADE_COMPONENT.TITLE,

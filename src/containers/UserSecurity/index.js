@@ -135,7 +135,7 @@ class UserVerification extends Component {
 				});
 			})
 			.catch((err) => {
-				console.log(err.response.data);
+				// console.log(err.response.data);
 				const _error = err.response.data
 					? err.response.data.message
 					: err.message;
@@ -156,7 +156,7 @@ class UserVerification extends Component {
 				});
 			})
 			.catch((err) => {
-				console.log(err.response.data);
+				// console.log(err.response.data);
 				const _error = err.response.data
 					? err.response.data.message
 					: err.message;

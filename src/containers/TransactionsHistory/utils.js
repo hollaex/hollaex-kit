@@ -1,5 +1,6 @@
 import React from 'react';
 import classnames from 'classnames';
+import mathjs from 'mathjs';
 
 import STRINGS from '../../config/localizedStrings';
 
@@ -10,6 +11,28 @@ import { formatTimestamp } from '../../utils/utils';
 
 const fiatFormatToCurrency = CURRENCIES[fiatSymbol].formatToCurrency;
 const fiatCurrencySymbol = CURRENCIES.fiat.currencySymbol;
+
+const calculateAmount = (isQuick = false, price, size) => {
+	if (isQuick) {
+		return price;
+	}
+	const amount = mathjs
+		.chain(price)
+		.multiply(size)
+		.done();
+	return amount;
+};
+
+const calculatePrice = (isQuick = false, price, size) => {
+	if (isQuick) {
+		const amount = mathjs
+			.chain(price)
+			.divide(size)
+			.done();
+		return amount;
+	}
+	return price;
+};
 
 export const generateTradeHeaders = (symbol) => {
 	const { formatToCurrency } = CURRENCIES[symbol];
@@ -67,18 +90,39 @@ export const generateTradeHeaders = (symbol) => {
 		{
 			label: STRINGS.PRICE,
 			key: 'price',
-			exportToCsv: ({ price = 0 }) =>
+			exportToCsv: ({ price = 0, size = 0, quick }) =>
 				STRINGS.formatString(
 					STRINGS.FIAT_PRICE_FORMAT,
-					fiatFormatToCurrency(price),
+					fiatFormatToCurrency(calculatePrice(quick, price, size)),
 					fiatCurrencySymbol
 				),
-			renderCell: ({ price = 0 }, key, index) => {
+			renderCell: ({ price = 0, size = 0, quick }, key, index) => {
 				return (
 					<td key={index}>
 						{STRINGS.formatString(
 							STRINGS.FIAT_PRICE_FORMAT,
-							fiatFormatToCurrency(price),
+							fiatFormatToCurrency(calculatePrice(quick, price, size)),
+							fiatCurrencySymbol
+						)}
+					</td>
+				);
+			}
+		},
+		{
+			label: STRINGS.AMOUNT,
+			key: 'amount',
+			exportToCsv: ({ price = 0, size = 0, quick }) =>
+				STRINGS.formatString(
+					STRINGS.FIAT_PRICE_FORMAT,
+					fiatFormatToCurrency(calculateAmount(quick, price, size)),
+					fiatCurrencySymbol
+				),
+			renderCell: ({ price = 0, size = 0, quick }, key, index) => {
+				return (
+					<td key={index}>
+						{STRINGS.formatString(
+							STRINGS.FIAT_PRICE_FORMAT,
+							fiatFormatToCurrency(calculateAmount(quick, price, size)),
 							fiatCurrencySymbol
 						)}
 					</td>

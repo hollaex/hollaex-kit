@@ -24,6 +24,7 @@ export default {
 	SUCCESS_TEXT: 'Success',
 	ERROR_TEXT: 'Error',
 	EDIT_TEXT: 'Edit',
+	BACK_TEXT: 'Back',
 	NO_OPTIONS: 'No options availables',
 	HOME: {
 		SECTION_1_TITLE: 'Buy & sell Bitcoin',
@@ -112,7 +113,10 @@ export default {
 		ATTACHMENT_LABEL: 'Add an attachment',
 		ATTACHMENT_PLACEHOLDER:
 			'Add a file to help communicate your issue. PDF, JPG, PNG and GIF files are accepted',
-		SUCCESS_MESSAGE: 'The email has been seent to our support'
+		SUCCESS_MESSAGE: 'The email has been seent to our support',
+		SUCCESS_TITLE: 'Message Sent',
+		SUCCESS_MESSAGE_1: 'Your issue has been sent to customer support.',
+		SUCCESS_MESSAGE_2: 'You can expect a reply in 1-3 days.'
 	},
 	DEPOSIT: {
 		CRYPTO_LABELS: {
@@ -653,6 +657,7 @@ export default {
 			'Please ensure the accuracy of this address since {0} transfers are irreversible',
 		MESSAGE_ABOUT_WITHDRAW: 'You are about to transfer to your bank account',
 		MESSAGE_FEE: 'Transactions fee of {0} ({1}) included',
+		MESSAGE_FEE_FIAT: 'Transactions fee of {0} included',
 		FIAT_MESSAGE_1:
 			'You can only withdraw to a bank account in a name that matches the name registered with your EXIR account.',
 		FIAT_MESSAGE_2: 'Withdrawal min amount',
