@@ -8,7 +8,7 @@ import {
 	getUserWithdrawals
 } from '../../actions/walletActions';
 
-import { IconTitle, TabController, Loader } from '../../components';
+import { IconTitle, TabController, Loader, CheckTitle } from '../../components';
 import { ICONS, CURRENCIES } from '../../config/constants';
 
 import {
@@ -112,7 +112,7 @@ class TransactionsHistory extends Component {
 		}
 
 		return (
-			<div className="presentation_container apply_rtl">
+			<div className="presentation_container apply_rtl transaction-history-wrapper">
 				<IconTitle
 					text={STRINGS.TRANSACTION_HISTORY.TITLE}
 					iconPath={ICONS.TRANSACTION_HISTORY}
@@ -120,9 +120,27 @@ class TransactionsHistory extends Component {
 				/>
 				<TabController
 					tabs={[
-						{ title: STRINGS.TRANSACTION_HISTORY.TRADES },
-						{ title: STRINGS.TRANSACTION_HISTORY.DEPOSITS },
-						{ title: STRINGS.TRANSACTION_HISTORY.WITHDRAWALS }
+						{ title: (
+								<CheckTitle
+									title={STRINGS.TRANSACTION_HISTORY.TRADES}
+									icon={ICONS.TRADE_HISTORY}
+								/>
+							)
+						},
+						{ title: (
+								<CheckTitle
+									title={STRINGS.TRANSACTION_HISTORY.DEPOSITS}
+									icon={ICONS.DEPOSIT_HISTORY}
+								/>
+							)
+						},
+						{ title: (
+								<CheckTitle
+									title={STRINGS.TRANSACTION_HISTORY.WITHDRAWALS}
+									icon={ICONS.WITHDRAW_HISTORY}
+								/>
+							)
+						},
 					]}
 					activeTab={activeTab}
 					setActiveTab={this.setActiveTab}
