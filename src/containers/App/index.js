@@ -401,7 +401,12 @@ class Container extends Component {
 					/>
 				);
 			case CONTACT_FORM:
-				return <ContactForm onSubmitSuccess={this.onCloseDialog} />;
+				return (
+					<ContactForm
+						onSubmitSuccess={this.onCloseDialog}
+						onClose={this.onCloseDialog}
+					/>
+				);
 			default:
 				return <div />;
 		}
@@ -483,7 +488,6 @@ class Container extends Component {
 					label="exir-modal"
 					onCloseDialog={this.onCloseDialog}
 					shouldCloseOnOverlayClick={shouldCloseOnOverlayClick}
-					showCloseText={!shouldCloseOnOverlayClick}
 					style={{ 'z-index': 100 }}
 				>
 					{this.renderDialogContent(activeNotification, prices)}

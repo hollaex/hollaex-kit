@@ -7,6 +7,7 @@ import Order from './Order';
 import Trade from './Trade';
 import Verification from './Verification';
 import Logout from './Logout';
+import ContactForm from './ContactForm';
 
 const generateNotificationContent = ({ type, data, ...rest }) => {
 	console.log(type, data);
@@ -23,6 +24,8 @@ const generateNotificationContent = ({ type, data, ...rest }) => {
 			return <Logout data={data} {...rest} />;
 		case NOTIFICATIONS.VERIFICATION:
 			return <Verification data={data} />;
+		case NOTIFICATIONS.CONTACT_FORM:
+			return <ContactForm {...rest} />;
 		default:
 			break;
 	}

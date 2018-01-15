@@ -20,6 +20,7 @@ $logout--size-difference: 3rem;
 		.notification-title-text {
 			flex: 0;
 			text-align: center;
+			font-family: $raleway-medium--font-family;
 		}
 	}
 	.notification-content-wrapper {
@@ -39,16 +40,27 @@ $logout--size-difference: 3rem;
 			}
 		}
 
-		&.logout-notification {
+		&.logout-notification,
+		&.contact-form-notification {
 			text-align: center;
 
+			.notification-content-information {
+				margin: 3rem auto;
+			}
+		}
+
+		&.logout-notification {
 			.notification-content-icon {
 				width: $image--wdith - $logout--size-difference;
 				margin: $image--margin + $logout--size-difference auto;
 			}
+		}
 
-			.notification-content-information {
-				margin: 3rem auto;
+		&.contact-form-notification {
+			.notification-content-title {
+				font-size: $font-size-headline2;
+				text-transform: uppercase;
+				font-weight: normal;
 			}
 		}
 

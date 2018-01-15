@@ -24,6 +24,7 @@ export default {
 	SUCCESS_TEXT: 'موفقیت',
 	ERROR_TEXT: 'خطا',
 	EDIT_TEXT: 'ویرایش',
+	BACK_TEXT: 'Back', // TODO
 	NO_OPTIONS: 'هیچ گزینه ای وجود ندارد',
 	HOME: {
 		SECTION_1_TITLE: 'خرید و فروش بیتکوین',
@@ -114,7 +115,10 @@ export default {
 		ATTACHMENT_LABEL: 'پیوست اضافه کنید',
 		ATTACHMENT_PLACEHOLDER:
 			'یک فایل برای کمک به شرح مشکل اضافه کنید. فایل های PDF، JPG، PNG و GIF پذیرفته می شوند',
-		SUCCESS_MESSAGE: 'ایمیل به تیم پشتیبانی ارسال، شد.'
+		SUCCESS_MESSAGE: 'ایمیل به تیم پشتیبانی ارسال، شد.',
+		SUCCESS_TITLE: 'Message Sent', // TODO
+		SUCCESS_MESSAGE_1: 'Your issue has been sent to customer support.', // TODO
+		SUCCESS_MESSAGE_2: 'You can expect a reply in 1-3 days.' // TODO
 	},
 	DEPOSIT: {
 		CRYPTO_LABELS: {

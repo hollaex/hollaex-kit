@@ -101,11 +101,13 @@ class ResetPassword extends Component {
 					label="contact-modal"
 					onCloseDialog={this.onCloseDialog}
 					shouldCloseOnOverlayClick={false}
-					showCloseText={true}
 					style={{ 'z-index': 100 }}
 					className={classnames(languageClasses)}
 				>
-					<ContactForm onSubmitSuccess={this.onCloseDialog} />
+					<ContactForm
+						onSubmitSuccess={this.onCloseDialog}
+						onClose={this.onCloseDialog}
+					/>
 				</Dialog>
 			</div>
 		);

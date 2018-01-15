@@ -17,7 +17,9 @@ const createForm = (formName, otherProps = {}) => {
 		error,
 		valid,
 		formFields = {},
-		buttonLabel
+		buttonLabel,
+		extraButtonLabel = '',
+		extraButtonOnClick = ''
 	}) => (
 		<form onSubmit={handleSubmit} className="w-100">
 			<div className="w-100">
@@ -28,7 +30,22 @@ const createForm = (formName, otherProps = {}) => {
 					</div>
 				)}
 			</div>
-			<Button label={buttonLabel} disabled={pristine || submitting || !valid} />
+			<div className="w-100 buttons-wrapper d-flex">
+				{extraButtonLabel &&
+					extraButtonOnClick && (
+						<Button
+							label={extraButtonLabel}
+							onClick={extraButtonOnClick}
+							type="html"
+						/>
+					)}
+				{extraButtonLabel &&
+					extraButtonOnClick && <div className="separator" />}
+				<Button
+					label={buttonLabel}
+					disabled={pristine || submitting || !valid}
+				/>
+			</div>
 		</form>
 	);
 
