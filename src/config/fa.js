@@ -2,7 +2,7 @@ export default {
 	APP_TITLE: 'اکسچنج اکسیر',
 	APP_NAME: 'اکسیر',
 	FIAT_NAME: 'تومان',
-	FIAT_FULLNAME: 'تومان ایران',
+	FIAT_FULLNAME: 'تومان',
 	FIAT_SHORTNAME: 'تومان',
 	FIAT_CURRENCY_SYMBOL: 'T',
 	BTC_NAME: 'بیتکوین',
@@ -19,7 +19,7 @@ export default {
 	COPY_TEXT: 'کپی',
 	UPLOAD_TEXT: 'بارگذاری',
 	CONTACT_US_TEXT: 'تماس با ما',
-	NEED_HELP_TEXT: 'اهنما ',
+	NEED_HELP_TEXT: 'راهنما ',
 	HELP_TEXT: 'راهنما',
 	SUCCESS_TEXT: 'موفقیت',
 	ERROR_TEXT: 'خطا',
@@ -130,13 +130,13 @@ export default {
 		],
 		LIMIT_MESSAGE: 'حداکثر مبلغ سپرده روزانه',
 		INCREASE_LIMIT: 'میخواهید محدودیت روزانه خود را افزایش دهید؟',
-		QR_CODE: 'توسط فردی که می خواهد بیتکوین به شما ارسال، اسکن شود',
+		QR_CODE: 'توسط فردی که می خواهد بیتکوین به شما ارسال کند، اسکن شود',
 		NO_DATA: 'اطلاعاتی در دسترس نیست',
 		FULL_MESSAGE_LIMIT: '{0}: {1} {2} {3}' //  0 -> {Daily deposit max amount}:  1 -> {50,000,000} 2 -> {T} 3 -> {(Want to increase your daily limit?)}
 	},
 	LOGIN: {
 		LOGIN_TO: 'ورود به {0}', // FIX
-		CANT_LOGIN: 'نمیتوانید ورود کنید؟',
+		CANT_LOGIN: 'نمیتوانید وارد شوید؟',
 		NO_ACCOUNT: 'حساب کاربری ندارید؟',
 		CREATE_ACCOUNT: 'ایجاد حساب کاربری ',
 		HELP: 'راهنما'
@@ -202,14 +202,14 @@ export default {
 	},
 	NOTIFICATIONS: {
 		BUTTONS: {
-			OKAY: 'Okay',
+			OKAY: 'تایید',
 			START_TRADING: 'شروع ترید',
 			SEE_HISTORY: 'معاملات قبلی'
 		},
 		DEPOSITS: {
 			FIAT: {
-				TITLE: '{0}سپرده دریافت شد',
-				SUBTITLE: 'دریافت کردید {0} سپرده'
+				TITLE: 'سپرده {0} دریافت شد',
+				SUBTITLE: 'سپرده {0} دریافت گردید '
 			},
 			BTC: {
 				TITLE_RECEIVED: '{0} سپرده دریافت شد',
@@ -271,13 +271,13 @@ export default {
 	SIGN_UP: {
 		SIGNUP_TO: 'در {0} ثبت نام کنید',
 		NO_EMAIL: 'ایمیل دریافت نکرده اید؟',
-		REQUEST_EMAIL: 'یکی دیگر از اینجا درخواست کنید',
+		REQUEST_EMAIL: 'مجددا درخواست کنید',
 		HAVE_ACCOUNT: 'ثبت نام کرده اید؟',
 		GOTO_LOGIN: 'به صفحه ورود بروید',
 		TERMS: {
 			terms: 'شرایط عمومی',
 			policy: 'سیاست حفظ حریم خصوصی',
-			text: 'من {0} و {1} را خوانده ام و موافقم.'
+			text: 'من {0} و {1} را خوانده ام و با آن موافقم.'
 		}
 	},
 	VERIFICATION_TEXTS: {
@@ -320,7 +320,7 @@ export default {
 		TITLE_MOBILE_HEADER: 'شماره تلفن همراه',
 		TITLE_BANK: 'بانک',
 		TITLE_BANK_HEADER: 'اطلاعات بانک',
-		CHANGE_VALUE: 'تغییر مقدار',
+		CHANGE_VALUE: 'درخواست تغییر مقادیر',
 		PENDING_VERIFICATION_PERSONAL_INFORMATION:
 			'اطلاعات شخصی شما در حال بررسی است',
 		PENDING_VERIFICATION_BANK: 'اطلاعات بانکی شما در حال بررسی است',
@@ -455,7 +455,7 @@ export default {
 				SHABA_NUMBER_PLACEHOLDER: 'لطفا شماره بانکی شبای خود را وارد نمایید',
 				ACCOUNT_OWNER_LABEL: 'نام صاحب حساب بانکی',
 				ACCOUNT_OWNER_PLACEHOLDER: 'نام را مطابق حساب بانکی خود وارد کنید',
-				CARD_NUMBER_LABEL: 'کارت بانکی',
+				CARD_NUMBER_LABEL: 'شماره کارت',
 				CARD_NUMBER_PLACEHOLDER: 'شماره 16 رقمی بر روی کارت خود را وارد کنید'
 			}
 		},
