@@ -114,9 +114,7 @@ export const ICONS = {
 		process.env.PUBLIC_URL
 	}/assets/images/set-new-password.svg`,
 	SUCCESS_BLACK: `${process.env.PUBLIC_URL}/assets/images/success-black.svg`,
-	TRADE_HISTORY: `${
-		process.env.PUBLIC_URL
-	}/assets/images/trade-history.svg`,
+	TRADE_HISTORY: `${process.env.PUBLIC_URL}/assets/images/trade-history.svg`,
 	TRADE_HISTORY_GREY: `${
 		process.env.PUBLIC_URL
 	}/assets/images/trade-history-grey.svg`,

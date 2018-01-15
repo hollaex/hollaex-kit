@@ -38,7 +38,9 @@
 .transaction-history-wrapper {
 	.tab_item-deactive .check_title-container .check_title-svg svg {
 		@for $i from 26 through 27 {
-			.g1_#{$i}, .g2_#{$i}, .g4_#{$i} {
+			.g1_#{$i},
+			.g2_#{$i},
+			.g4_#{$i} {
 				stroke: $colors-deactivate;
 			}
 
@@ -50,7 +52,10 @@
 			}
 		}
 
-		.g1_29, .g2_29, .g3_29, .g4_29 {
+		.g1_29,
+		.g2_29,
+		.g3_29,
+		.g4_29 {
 			fill: $colors-deactivate;
 			stroke: $colors-deactivate;
 		}

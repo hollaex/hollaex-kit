@@ -16,17 +16,23 @@ const calculateAmount = (isQuick = false, price, size) => {
 	if (isQuick) {
 		return price;
 	}
-	const amount = mathjs.chain(price).multiply(size).done();
+	const amount = mathjs
+		.chain(price)
+		.multiply(size)
+		.done();
 	return amount;
-}
+};
 
 const calculatePrice = (isQuick = false, price, size) => {
 	if (isQuick) {
-		const amount = mathjs.chain(price).divide(size).done();
+		const amount = mathjs
+			.chain(price)
+			.divide(size)
+			.done();
 		return amount;
 	}
 	return price;
-}
+};
 
 export const generateTradeHeaders = (symbol) => {
 	const { formatToCurrency } = CURRENCIES[symbol];

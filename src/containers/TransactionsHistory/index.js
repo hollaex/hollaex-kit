@@ -120,27 +120,30 @@ class TransactionsHistory extends Component {
 				/>
 				<TabController
 					tabs={[
-						{ title: (
+						{
+							title: (
 								<CheckTitle
 									title={STRINGS.TRANSACTION_HISTORY.TRADES}
 									icon={ICONS.TRADE_HISTORY}
 								/>
 							)
 						},
-						{ title: (
+						{
+							title: (
 								<CheckTitle
 									title={STRINGS.TRANSACTION_HISTORY.DEPOSITS}
 									icon={ICONS.DEPOSIT_HISTORY}
 								/>
 							)
 						},
-						{ title: (
+						{
+							title: (
 								<CheckTitle
 									title={STRINGS.TRANSACTION_HISTORY.WITHDRAWALS}
 									icon={ICONS.WITHDRAW_HISTORY}
 								/>
 							)
-						},
+						}
 					]}
 					activeTab={activeTab}
 					setActiveTab={this.setActiveTab}
