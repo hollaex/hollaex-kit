@@ -24,7 +24,7 @@ const getTitleAndIcon = (type) => {
 
 const VerificationNotification = ({ data: { type, onClick } }) => {
 	const notificationProps = getTitleAndIcon(type);
-	console.log(notificationProps, type);
+	// console.log(notificationProps, type);
 	return (
 		<NotificationWraper
 			{...notificationProps}

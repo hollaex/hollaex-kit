@@ -96,7 +96,7 @@ class QuickTrade extends Component {
 					)}
 				>
 					<img src={ICONS.QUICK_TRADE} alt="" className="quick_trade-icon" />
-					<div className="title">
+					<div className="title text-capitalize">
 						{STRINGS.formatString(
 							STRINGS.QUICK_TRADE_COMPONENT.TRADE_TITLE,
 							STRINGS.QUICK_TRADE_COMPONENT.TITLE,

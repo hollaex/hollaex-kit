@@ -23,6 +23,7 @@ $logout--size-difference: 3rem;
 			font-family: $raleway-medium--font-family;
 		}
 	}
+
 	.notification-content-wrapper {
 		position: relative;
 		font-size: $font-size-main;
@@ -89,6 +90,14 @@ $logout--size-difference: 3rem;
 	}
 	.notification-information {
 		padding: 1rem 0;
+	}
+
+	.trade-notification,
+	.order-notification {
+		.notification-content-icon {
+			margin-top: 0;
+			margin-bottom: 2.5rem;
+		}
 	}
 }
 

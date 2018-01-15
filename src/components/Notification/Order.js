@@ -132,7 +132,7 @@ const OrderNotification = ({ type, data }) => {
 	const rows = generateRows(type, data);
 
 	return (
-		<NotificationWraper {...notificationProps}>
+		<NotificationWraper {...notificationProps} className="order-notification">
 			<OrderDisplay rows={rows} />
 			{/*<Button label="Go back to trade" />*/}
 		</NotificationWraper>

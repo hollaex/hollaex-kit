@@ -181,7 +181,7 @@ class Container extends Component {
 			) {
 				this.logout('Token is expired');
 			} else {
-				console.error(error);
+				// console.error(error);
 			}
 		});
 
@@ -312,7 +312,7 @@ class Container extends Component {
 				}
 				case 'withdrawal': {
 					// TODO FIX when notification is defined
-					console.log(data, !data.amount);
+					// console.log(data, !data.amount);
 					const show = data.amount;
 					this.props.setNotification(NOTIFICATIONS.WITHDRAWAL, data, !show);
 					break;

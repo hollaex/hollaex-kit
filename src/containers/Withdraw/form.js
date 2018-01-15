@@ -107,7 +107,7 @@ class Form extends Component {
 					setWithdrawNotificationError(error.errors, this.props.dispatch);
 					this.onCloseDialog();
 				}
-				console.log(error.errors);
+				// console.log(error.errors);
 				this.onCloseDialog();
 				throw error;
 			});

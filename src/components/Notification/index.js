@@ -10,7 +10,7 @@ import Logout from './Logout';
 import ContactForm from './ContactForm';
 
 const generateNotificationContent = ({ type, data, ...rest }) => {
-	console.log(type, data);
+	// console.log(type, data);
 	switch (type) {
 		case NOTIFICATIONS.DEPOSIT:
 			return <Deposit data={data} {...rest} />;
