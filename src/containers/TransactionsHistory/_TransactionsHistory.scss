@@ -1,36 +1,69 @@
 .icon-cell {
-  width: 3rem;
+	width: 3rem;
 
-  > div {
-    margin: auto;
-  }
+	> div {
+		margin: auto;
+	}
 }
 
 .cell_box-type {
-  > div {
-    color: white;
-  }
-  
-  .withdraw, .sell {
-    background-color: $colors-notifications-red;
-  }
+	> div {
+		color: white;
+	}
 
-  .deposit, .buy {
-    background-color: $colors-notifications-green;
-  }
+	.withdraw,
+	.sell {
+		background-color: $colors-notifications-red;
+	}
+
+	.deposit,
+	.buy {
+		background-color: $colors-notifications-green;
+	}
 }
 
 .amount_text {
-  .positive {
-    color: $colors-notifications-green;
-
-  }
-  .negative {
-    color: $colors-notifications-red;
-  }
+	.positive {
+		color: $colors-notifications-green;
+	}
+	.negative {
+		color: $colors-notifications-red;
+	}
 }
 
-
 .history_block-wrapper {
-  position: relative;
+	position: relative;
+}
+
+.transaction-history-wrapper {
+	.tab_item-deactive .check_title-container .check_title-svg svg {
+		@for $i from 26 through 27 {
+			.g1_#{$i},
+			.g2_#{$i},
+			.g4_#{$i} {
+				stroke: $colors-deactivate;
+			}
+
+			.g1_#{$i} {
+				fill: $colors-deactivate;
+			}
+			.g3_#{$i} {
+				fill: transparent;
+			}
+		}
+
+		.g1_29,
+		.g2_29,
+		.g3_29,
+		.g4_29 {
+			fill: $colors-deactivate;
+			stroke: $colors-deactivate;
+		}
+		.g5_29 {
+			stroke: transparent;
+		}
+		.g1_29:not(:first-child) {
+			fill: transparent;
+		}
+	}
 }

@@ -6,23 +6,23 @@ import ChoiceSelector from './TradeFormFields/ChoiceSelector';
 import TabSelector from './TradeFormFields/TabSelector';
 
 const renderFields = ([key, values], index) => {
-  const props = {
-    ...values,
-  }
+	const props = {
+		...values
+	};
 
-  switch (values.type) {
-    case 'select':
-      props.component = ChoiceSelector;
-      break;
-    case 'tab':
-      props.component = TabSelector;
-      break;
-    default:
-      props.component = InputField;;
-      break;
-  }
+	switch (values.type) {
+		case 'select':
+			props.component = ChoiceSelector;
+			break;
+		case 'tab':
+			props.component = TabSelector;
+			break;
+		default:
+			props.component = InputField;
+			break;
+	}
 
-  return <Field {...props} key={index} />
+	return <Field {...props} key={index} />;
 };
 
 export default renderFields;

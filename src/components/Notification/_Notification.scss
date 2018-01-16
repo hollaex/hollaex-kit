@@ -5,91 +5,117 @@ $image--wdith: 10rem;
 $logout--size-difference: 3rem;
 
 .notification-wrapper {
-  min-width: $notification--min-width;
-  max-width: $notification--max-width;
+	min-width: $notification--min-width;
+	max-width: $notification--max-width;
 
-  .notification-title-wrapper {
-    height: 15rem;
-    padding: 0.5rem;
-    border-bottom: 1px solid $colors-main-black;
+	.notification-title-wrapper {
+		height: 15rem;
+		padding: 0.5rem;
+		border-bottom: 1px solid $colors-main-black;
 
-    .notification-title-icon {
-      max-height: 10rem;
-    }
+		.notification-title-icon {
+			max-height: 10rem;
+		}
 
-    .notification-title-text {
-      flex: 0;
-      text-align: center;
-    }
-  }
-  .notification-content-wrapper {
-    position: relative;
-    font-size: $font-size-main;
-    display: flex;
-    flex-direction: column;
-    flex: 1;
+		.notification-title-text {
+			flex: 0;
+			text-align: center;
+			font-family: $raleway-medium--font-family;
+		}
+	}
 
-    &.notification_verification {
-      text-align: center;
-      .notification-content-title {
-        text-transform: capitalize;
-      }
-      .notification-content-information {
-        padding: 1rem;
-      }
-    }
+	.notification-content-wrapper {
+		position: relative;
+		font-size: $font-size-main;
+		display: flex;
+		flex-direction: column;
+		flex: 1;
 
-    &.logout-notification {
-      text-align: center;
+		&.notification_verification {
+			text-align: center;
+			.notification-content-title {
+				text-transform: capitalize;
+			}
+			.notification-content-information {
+				padding: 1rem;
+			}
+		}
 
-      .notification-content-icon {
-        width: $image--wdith - $logout--size-difference;
-        margin: $image--margin + $logout--size-difference auto;
-      }
+		&.logout-notification,
+		&.contact-form-notification {
+			text-align: center;
 
-      .notification-content-information {
-        margin: 3rem auto;
-      }
-    }
+			.notification-content-information {
+				margin: 3rem auto;
+			}
+		}
 
-    .notification-content-icon {
-      width: $image--wdith;
-      margin: $image--margin auto;
-    }
+		&.logout-notification {
+			.notification-content-icon {
+				width: $image--wdith - $logout--size-difference;
+				margin: $image--margin + $logout--size-difference auto;
+			}
+		}
 
-    .notification-content-information {
-      width: 100%;
-      margin: 1rem 0;
-      font-weight: bold;
-      .text_disabled {
-        color: $colors-deactivate-color2;
-      }
-    }
+		&.contact-form-notification {
+			.notification-content-title {
+				font-size: $font-size-headline2;
+				text-transform: uppercase;
+				font-weight: normal;
+			}
+		}
 
-    .notification-content-header {
-      position: relative;
-    }
-  }
-  .notification-buttons-wrapper {
-    .button-fiat {
-      background-color: $colors-currencies-fiat;
-    }
-  }
-  .notification-information {
-    padding: 1rem 0;
-  }
+		.notification-content-icon {
+			width: $image--wdith;
+			margin: $image--margin auto;
+		}
+
+		.notification-content-information {
+			width: 100%;
+			margin: 1rem 0;
+			font-weight: bold;
+			.text_disabled {
+				color: $colors-deactivate-color2;
+			}
+		}
+
+		.notification-content-header {
+			position: relative;
+		}
+	}
+	.notification-buttons-wrapper {
+		.button-fiat {
+			background-color: $colors-currencies-fiat;
+		}
+	}
+	.notification-information {
+		padding: 1rem 0;
+	}
+
+	.trade-notification,
+	.order-notification {
+		.notification-content-icon {
+			margin-top: 0;
+			margin-bottom: 2.5rem;
+		}
+	}
 }
 
-
 .notification-wrapper {
-  .notification-content-wrapper.notification-withdrawal {
+	.notification-content-wrapper.notification-withdrawal {
+		.notification-content-icon {
+			width: 80% !important;
+		}
 
-    .notification-content-icon {
-      width: 80% !important;
-    }
+		.notification-link-wrapper {
+			font-size: $font-size-subtext;
+		}
+	}
+}
 
-    .notification-link-wrapper {
-      font-size: $font-size-subtext;
-    }
-  }
+.direction_ltr {
+	.notification-title-text,
+	.notification-withdrawal .notification-content-title {
+		font-family: $raleway-medium--font-family;
+	}
 }

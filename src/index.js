@@ -23,13 +23,14 @@ console.log({
 	version,
 	env: ENV,
 	network: NETWORK,
-	endpoint: API_URL,
+	endpoint: API_URL
 });
 
 render(
 	<Provider store={store}>
 		<Router routes={routes} history={browserHistory} />
-	</Provider>, document.getElementById('root')
+	</Provider>,
+	document.getElementById('root')
 );
 
 // registerServiceWorker();

@@ -5,57 +5,67 @@ $dropdown-option--height: 1rem;
 $dropdown-option--padding: 0.25rem;
 
 .dropdown-content {
-  .dropdown-option {
-    padding: 0;
-  }
-  &.disabled {
-    cursor: not-allowed;
-  }
+	.dropdown-option {
+		padding: 0;
+	}
+	&.disabled {
+		cursor: not-allowed;
+		color: $colors-deactivate;
+	}
+}
+
+.disabled {
+	.field-children {
+		color: $colors-deactivate;
+		.dropdown-triangle:after {
+			border: none;
+		}
+	}
 }
 
 .dropdown-options-wrapper {
-  max-height: 10rem;
-  position: absolute;
-  top: 100%;
-  width: 100%;
-  background: white;
-  z-index: 10000;
-  max-height: $dropdown-menu--max-height;
-  overflow-y: auto;
-  border: 1px solid grey;
-  border-bottom-right-radius: $dropdown-menu--border-radius;
-  border-bottom-left-radius: $dropdown-menu--border-radius;
-  border-top: 0;
+	max-height: 10rem;
+	position: absolute;
+	top: 100%;
+	width: 100%;
+	background: white;
+	z-index: 10000;
+	max-height: $dropdown-menu--max-height;
+	overflow-y: auto;
+	border: 1px solid grey;
+	border-bottom-right-radius: $dropdown-menu--border-radius;
+	border-bottom-left-radius: $dropdown-menu--border-radius;
+	border-top: 0;
 }
 
 .dropdown-option {
-  padding: $dropdown-option--padding;
-  display: flex;
-  align-items: center;
-  > .icon {
-    height: $dropdown-option--height;
-  }
+	padding: $dropdown-option--padding;
+	display: flex;
+	align-items: center;
+	> .icon {
+		max-height: $dropdown-option--height;
+	}
 }
 
 .direction_ltr {
-  .dropdown-options-wrapper {
-    left: 0;
-  }
+	.dropdown-options-wrapper {
+		left: 0;
+	}
 
-  .dropdown-option {
-    > .icon {
-      margin-right: $dropdown-option--padding;
-    }
-  }
+	.dropdown-option {
+		> .icon {
+			margin-right: $dropdown-option--padding;
+		}
+	}
 }
 .direction_rtl {
-  .dropdown-options-wrapper {
-    right: 0;
-  }
+	.dropdown-options-wrapper {
+		right: 0;
+	}
 
-  .dropdown-option {
-    > .icon {
-      margin-left: $dropdown-option--padding;
-    }
-  }
+	.dropdown-option {
+		> .icon {
+			margin-left: $dropdown-option--padding;
+		}
+	}
 }

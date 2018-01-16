@@ -1,50 +1,63 @@
 @import '../../variables';
 
 .exir-button {
-  width: 100%;
-  font-size: $font-size-subtext;
-  padding: 0 4px;
-  background-color: $colors-main-black !important;
-  font-family: inherit !important;
+	width: 100%;
+	font-size: $font-size-subtext;
+	padding: 0 4px;
+	background-color: $colors-main-black !important;
 
-  &.button-success {
-    background-color: $colors-notifications-green !important;
-  }
+	&.button-success {
+		background-color: $colors-notifications-green !important;
+	}
 
-  &.button-fail {
-    background-color: $colors-notifications-red !important;
-  }
+	&.button-fail {
+		background-color: $colors-notifications-red !important;
+	}
 
-  &.disabled {
-    background-color: $colors-deactivate-color1 !important;
-  }
-  &:active, &:focus {
-    outline: none;
-    border: none;
-  }
+	&.disabled {
+		background-color: $colors-deactivate-color4 !important;
+	}
+	&:active,
+	&:focus {
+		outline: none;
+		border: none;
+	}
 }
 
 .checkbutton-wrapper {
-  font-size: $font-size-main;
-  margin-top: 1rem;
+	font-size: $font-size-main;
+	margin-top: 1rem;
 
-  .checkbutton-input-wrapper {
-    .checkbutton-input-wrapper--label {
-      margin: 0;
-      padding-left: 0.5rem;
-    }
+	.checkbutton-input-wrapper {
+		.checkbutton-input-wrapper--label {
+			margin: 0;
+			padding-left: 0.5rem;
+		}
 
-    .checkbutton-input-wrapper--image, .checkbutton-input-wrapper--loader {
-      width: 2rem;
-    }
-  }
-  .checkbutton-content-wrapper {
-    margin-left: 2rem;
-  }
+		.checkbutton-input-wrapper--image,
+		.checkbutton-input-wrapper--loader {
+			width: 2rem;
+		}
+	}
+	.checkbutton-content-wrapper {
+		margin-left: 2rem;
+	}
 }
 
 .buttons-row {
-  > *:not(:last-child) {
-    margin-right: 1rem;
-  }
+	> *:not(:last-child) {
+		margin-right: 1rem;
+	}
+}
+
+.direction_ltr {
+	.exir-button-font {
+		font-family: $raleway--font-family;
+	}
+}
+
+.direction_rtl {
+	.exir-button-font {
+		font-family: inherit !important;
+	}
 }

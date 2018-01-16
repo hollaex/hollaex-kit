@@ -1,46 +1,38 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React from 'react';
+import PropTypes from 'prop-types';
 
-import { format } from "d3-format";
+import { format } from 'd3-format';
 
-import { ChartCanvas, Chart } from "react-stockcharts";
-import { CandlestickSeries } from "react-stockcharts/lib/series";
+import { ChartCanvas, Chart } from 'react-stockcharts';
+import { CandlestickSeries } from 'react-stockcharts/lib/series';
 
-import { XAxis, YAxis } from "react-stockcharts/lib/axes";
+import { XAxis, YAxis } from 'react-stockcharts/lib/axes';
 import {
 	CrossHairCursor,
 	MouseCoordinateY,
-  EdgeIndicator,
-} from "react-stockcharts/lib/coordinates";
+	EdgeIndicator
+} from 'react-stockcharts/lib/coordinates';
 
-import { OHLCTooltip } from "react-stockcharts/lib/tooltip";
-import { fitWidth } from "react-stockcharts/lib/helper";
+import { OHLCTooltip } from 'react-stockcharts/lib/tooltip';
+import { fitWidth } from 'react-stockcharts/lib/helper';
 
-import {
-	xScaleProvider,
-	margins,
-	yExtents,
-	generateXExtents,
-} from './utils';
+import { xScaleProvider, margins, yExtents, generateXExtents } from './utils';
 
-import {
-  OHLCProps,
-  edgeIndicatorProps,
-} from './props';
+import { OHLCProps, edgeIndicatorProps } from './props';
 
 class CandleChart extends React.Component {
-
 	saveNode = (node) => {
 		this.node = node;
-	}
+	};
 
 	resetYDomain = () => {
 		this.node.resetYDomain();
-	}
+	};
 
 	render() {
 		const {
-			type, data: initialData,
+			type,
+			data: initialData,
 			width,
 			height,
 			ratio,
@@ -48,15 +40,12 @@ class CandleChart extends React.Component {
 			clamp,
 			mouseMoveEvent,
 			panEvent,
-			zoomEvent,
+			zoomEvent
 		} = this.props;
 
-		const {
-			data,
-			xScale,
-			xAccessor,
-			displayXAccessor,
-		} = xScaleProvider(initialData);
+		const { data, xScale, xAccessor, displayXAccessor } = xScaleProvider(
+			initialData
+		);
 
 		const xExtents = generateXExtents(xAccessor, data);
 
@@ -64,20 +53,24 @@ class CandleChart extends React.Component {
 		const gridWidth = width - margins.left - margins.right;
 
 		const showGrid = true;
-		const yGrid = showGrid ? { innerTickSize: -1 * gridWidth, tickStrokeOpacity: 0.2 } : {};
-		const xGrid = showGrid ? { innerTickSize: -1 * gridHeight, tickStrokeOpacity: 0.2 } : {};
+		const yGrid = showGrid
+			? { innerTickSize: -1 * gridWidth, tickStrokeOpacity: 0.2 }
+			: {};
+		const xGrid = showGrid
+			? { innerTickSize: -1 * gridHeight, tickStrokeOpacity: 0.2 }
+			: {};
 
 		return (
-			<ChartCanvas ref={this.saveNode} height={height}
+			<ChartCanvas
+				ref={this.saveNode}
+				height={height}
 				ratio={ratio}
 				width={width}
 				margins={margins}
-
 				mouseMoveEvent={mouseMoveEvent}
 				panEvent={panEvent}
 				zoomEvent={zoomEvent}
 				clamp={clamp}
-
 				type={type}
 				seriesName={serieName}
 				data={data}
@@ -85,21 +78,23 @@ class CandleChart extends React.Component {
 				xExtents={xExtents}
 				xAccessor={xAccessor}
 				displayXAccessor={displayXAccessor}
-      >
-				<Chart id={1}	yExtents={[yExtents]}>
-					<XAxis axisAt="bottom"
+			>
+				<Chart id={1} yExtents={[yExtents]}>
+					<XAxis
+						axisAt="bottom"
 						orient="bottom"
 						zoomEnabled={!zoomEvent}
 						{...xGrid}
-          />
-					<YAxis axisAt="right"
+					/>
+					<YAxis
+						axisAt="right"
 						orient="right"
 						ticks={5}
 						zoomEnabled={!zoomEvent}
 						{...yGrid}
 					/>
 
-          {/*}<MouseCoordinateX
+					{/*}<MouseCoordinateX
 						at="bottom"
 						orient="bottom"
 						displayFormat={timeFormat("%H:%M:%S")}
@@ -107,12 +102,12 @@ class CandleChart extends React.Component {
 					<MouseCoordinateY
 						at="right"
 						orient="right"
-						displayFormat={format(".2f")}
-          />
+						displayFormat={format('.2f')}
+					/>
 
 					<CandlestickSeries />
 					<OHLCTooltip {...OHLCProps} />
-          <EdgeIndicator {...edgeIndicatorProps} />
+					<EdgeIndicator {...edgeIndicatorProps} />
 				</Chart>
 				<CrossHairCursor />
 			</ChartCanvas>
@@ -126,17 +121,17 @@ CandleChart.propTypes = {
 	width: PropTypes.number.isRequired,
 	height: PropTypes.number,
 	ratio: PropTypes.number,
-	type: PropTypes.oneOf(["svg", "hybrid"]).isRequired,
+	type: PropTypes.oneOf(['svg', 'hybrid']).isRequired
 };
 
 CandleChart.defaultProps = {
-	type: "svg",
+	type: 'svg',
 	mouseMoveEvent: true,
 	panEvent: true,
 	zoomEvent: true,
 	clamp: false,
-  ratio: 1,
-	height: 400,
+	ratio: 1,
+	height: 400
 };
 
 CandleChart = fitWidth(CandleChart);

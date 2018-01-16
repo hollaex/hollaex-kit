@@ -1,68 +1,72 @@
 $tabs-title--margin: 2rem;
 
 .trade_block-wrapper {
-  padding: 1rem;
-  flex: auto;
+	padding: 1rem;
+	flex: auto;
 
-  .trade_block-title {
-    border-top: $trade_title-border--size solid $trade_title-border--color;
-    text-transform: uppercase;
-    font-weight: bold;
-    margin-bottom: 1rem;
-    flex: none;
-  }
+	.trade_block-title {
+		border-top: $trade_title-border--size solid $trade_title-border--color;
+		text-transform: uppercase;
+		font-weight: bold;
+		margin-bottom: 1rem;
+		flex: none;
+	}
 
-  .trade_block-content {
-    flex: auto;
-    font-size: $trade-font-size;
-  }
+	.trade_block-content {
+		flex: auto;
+		font-size: $trade-font-size;
+	}
 }
 
 .trade_block_tabs-wrapper .trade_block-title {
-  position: relative;
+	position: relative;
 
-  .trade_block-title-items {
-    display: flex;
-    font-weight: normal;
+	.trade_block-title-items {
+		display: flex;
+		font-weight: normal;
 
-    .active {
-      font-weight: bold;
-      position: relative;
+		.active {
+			font-weight: bold;
+			position: relative;
 
-      &:after {
-        content: '';
-        height: 1px;
-        width: 100%;
-        background-color: $trade_title-border--color;
-        top: -1px;
-        left: 0;
-        right: 0;
-        position: absolute;
-      }
-    }
-  }
+			&:after {
+				content: '';
+				height: 1px;
+				width: 100%;
+				background-color: $trade_title-border--color;
+				top: -1px;
+				left: 0;
+				right: 0;
+				position: absolute;
+			}
+		}
+	}
 }
 
-.trade_block-column-wrapper > div{
-  flex: 1 !important;
+.trade_block-column-wrapper > div {
+	flex: 1 !important;
 }
 
 .direction_ltr {
-  .trade_block_tabs-wrapper .trade_block-title {
-    .trade_block-title-items {
-      > div:not(:last-child) {
-        margin-right: $tabs-title--margin;
-      }
-    }
-  }
+	.trade_block-title {
+		font-family: $title--font-family;
+	}
+
+	.trade_block_tabs-wrapper .trade_block-title {
+		.trade_block-title-items {
+			> div:not(:last-child) {
+				margin-right: $tabs-title--margin;
+			}
+		}
+	}
 }
 
 .direction_rtl {
-  .trade_block_tabs-wrapper .trade_block-title {
-    .trade_block-title-items {
-      > div:not(:last-child) {
-        margin-left: $tabs-title--margin;
-      }
-    }
-  }
+	.trade_block_tabs-wrapper .trade_block-title {
+		.trade_block-title-items {
+			> div:not(:last-child) {
+				margin-left: $tabs-title--margin;
+			}
+		}
+	}
 }

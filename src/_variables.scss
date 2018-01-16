@@ -4,33 +4,44 @@ $bp-md: 991px;
 $bp-lg: 1199px;
 
 $colors-main-black: #212121;
+$colors-deactivate: #797779;
 $colors-deactivate-color1: #cccbcb;
 $colors-deactivate-color2: #777677;
 $colors-deactivate-color3: #f2f2f3;
-$colors-deactivate-color4: #a7aaac;
+$colors-deactivate-color4: #f1f2f2;
 $colors-notifications-red: #ed1c24;
 $colors-notifications-blue: #00aeef;
 $colors-notifications-green: #00a651;
 $colors-white: white;
 
-$colors-currencies-fiat: #00a651;
-$colors-currencies-btc: #f7941e;
+$color-currency-fiat--main: #00a651;
+$color-currency-fiat--secondary: #52c2b8;
+$color-currency-btc--main: #f15a29;
+$color-currency-btc--secondary: #f7941e;
+
+$colors-currencies-fiat: $color-currency-fiat--main;
+$colors-currencies-btc: $color-currency-btc--secondary;
 $colors-currencies-bch: #ec008c;
 $colors-currencies-eth: #2e3192;
 $colors-currencies-ltc: #58595b;
 
 $app-background-color: white;
 $app-background-color-on-modal: lightgrey;
-$quick-trade--background: #EBF3F1;
+$app_bar-border--color: $colors-deactivate;
+$sidebar-border--color: $colors-deactivate;
+$quick-trade--background: #ebf3f1;
 $border-color: $colors-deactivate-color2;
 $error-color: $colors-notifications-red;
 
 $bitcoin-color-main: $colors-currencies-btc;
 
 $content-display-width: 100rem;
-$content-display-vertical-margin: 16px;
+$app-content-display-width: 75rem;
+$content-display-vertical-margin: 1rem;
+$background-patter--size: 30rem;
 
 $font-size-headline: 5rem;
+$font-size-headline2: 3.5rem;
 $font-size-subhead1: 2.5rem;
 $font-size-subhead2: 1.75rem;
 $font-size-subhead3: 1.25rem;
@@ -38,23 +49,23 @@ $font-size-main: 1rem;
 $font-size-subtext: 0.8rem;
 
 $form-color-underline-focus: $colors-main-black;
-$form-color-underline: $colors-deactivate-color2;
-$form-color-placeholder: $colors-deactivate-color2;
+$form-color-underline: $colors-deactivate-color1;
+$form-color-placeholder: $colors-deactivate-color1;
 $form-width-max: $content-display-width / 2;
 
-$fa--font-family: "YEKAN";
-$en--font-family: "Open Sans";
-$title--font-family: "Raleway";
-$raleway--font-family: "Raleway";
-$raleway-extrabold--font-family: "Raleway Extrabold";
-$raleway-medium--font-family: "Raleway Medium";
+$fa--font-family: 'YEKAN';
+$en--font-family: 'Open Sans';
+$raleway--font-family: 'Raleway';
+$raleway-extrabold--font-family: 'Raleway Extrabold';
+$raleway-medium--font-family: 'Raleway Medium';
+$title--font-family: $raleway-extrabold--font-family;
 
 // DIALOG
 $dialog-min-width: 25rem;
 $dialog-min-height: 30rem;
 
 // APP BAR
-$navigation_bar-height: 32px;
+$navigation_bar-height: 36px;
 $navigation_bar-action_button: 7.5rem;
 $navigation_bar-font_size: $font-size-subtext;
 

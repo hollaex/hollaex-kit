@@ -1,47 +1,71 @@
 import React from 'react';
+import mathjs from 'mathjs';
 import { Accordion } from '../../components';
-import { ICONS, CURRENCIES } from '../../config/constants';
-import { generateWalletActionsText, fiatSymbol } from '../../utils/currency';
-import DumbField from '../../components/Form/FormFields/DumbField';
+import {
+	ICONS,
+	BANK_WITHDRAWAL_BASE_FEE,
+	BANK_WITHDRAWAL_DYNAMIC_FEE_RATE,
+	BANK_WITHDRAWAL_MAX_DYNAMIC_FEE
+} from '../../config/constants';
+import { fiatSymbol } from '../../utils/currency';
 import STRINGS from '../../config/localizedStrings';
 
-import {
-  renderBankInformation,
-  renderTitle,
-  renderAvailableBalanceText,
-  renderNeedHelpAction,
-} from '../Wallet/components';
-
-const FIAT_SYMBOL = CURRENCIES[fiatSymbol].currencySymbol;
-const FIAT_FORMAT = CURRENCIES[fiatSymbol].formatToCurrency;
+import { renderBankInformation } from '../Wallet/components';
 
 export const generateFiatInformation = (currency, limits = {}) => {
-  const { minAmount = 2, maxAmount = 10000 } = limits;
-  const { currencySymbol, shortName, formatToCurrency } = currency;
-  return (
-    <div className="text">
-      <p>{STRINGS.WITHDRAW_PAGE.FIAT_MESSAGE_1}</p>
-      <p>{`${STRINGS.WITHDRAW_PAGE.FIAT_MESSAGE_2}: ${currencySymbol}${formatToCurrency(minAmount)} ${shortName}`}</p>
-      <p>{`${STRINGS.WITHDRAW_PAGE.FIAT_MESSAGE_3}: ${currencySymbol}${formatToCurrency(maxAmount)} ${shortName} (${STRINGS.WITHDRAW_PAGE.MESSAGE_LIMIT})`}</p>
-    </div>
-  );
-}
+	const { minAmount = 2, maxAmount = 10000 } = limits;
+	const { currencySymbol, shortName, formatToCurrency } = currency;
+	return (
+		<div className="text">
+			<p>{STRINGS.WITHDRAW_PAGE.FIAT_MESSAGE_1}</p>
+			<p>{`${
+				STRINGS.WITHDRAW_PAGE.FIAT_MESSAGE_2
+			}: ${currencySymbol}${formatToCurrency(minAmount)} ${shortName}`}</p>
+			<p>{`${
+				STRINGS.WITHDRAW_PAGE.FIAT_MESSAGE_3
+			}: ${currencySymbol}${formatToCurrency(maxAmount)} ${shortName} (${
+				STRINGS.WITHDRAW_PAGE.MESSAGE_LIMIT
+			})`}</p>
+		</div>
+	);
+};
 
-export const renderExtraInformation = (symbol, bank_account) => symbol === fiatSymbol && (
-  <div className="bank_account-information-wrapper">
-    <Accordion
-      sections={[
-        {
-          title: STRINGS.WITHDRAW_PAGE.BANK_TO_WITHDRAW,
-          content: renderBankInformation(bank_account),
-          notification: {
-            text: STRINGS.NEED_HELP_TEXT,
-            status: 'information',
-            iconPath: ICONS.BLUE_QUESTION,
-            allowClick: true,
-          }
-        }
-      ]}
-    />
-  </div>
-);
+export const renderExtraInformation = (symbol, bank_account) =>
+	symbol === fiatSymbol && (
+		<div className="bank_account-information-wrapper">
+			<Accordion
+				sections={[
+					{
+						title: STRINGS.WITHDRAW_PAGE.BANK_TO_WITHDRAW,
+						content: renderBankInformation(bank_account),
+						notification: {
+							text: STRINGS.NEED_HELP_TEXT,
+							status: 'information',
+							iconPath: ICONS.BLUE_QUESTION,
+							allowClick: true
+						}
+					}
+				]}
+			/>
+		</div>
+	);
+
+export const calculateFiatFee = (amount = 0) => {
+	if (amount < 0) {
+		return 0;
+	}
+
+	let withdrawalFee = mathjs.chain(BANK_WITHDRAWAL_BASE_FEE);
+	const dinamicFee = mathjs
+		.chain(amount)
+		.multiply(BANK_WITHDRAWAL_DYNAMIC_FEE_RATE)
+		.divide(100)
+		.done();
+	if (mathjs.larger(dinamicFee, BANK_WITHDRAWAL_MAX_DYNAMIC_FEE)) {
+		withdrawalFee = withdrawalFee.add(BANK_WITHDRAWAL_MAX_DYNAMIC_FEE);
+	} else {
+		withdrawalFee = withdrawalFee.add(dinamicFee);
+	}
+	const fee = mathjs.ceil(withdrawalFee.done());
+	return fee;
+};

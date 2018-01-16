@@ -1,36 +1,43 @@
-@import '../../variables';
-@import '../../mixins';
-
-$tab_controller-title-img-size: 6rem;
+$tab_controller-title-img-size: 5rem;
 $tab_controller-title-margin: 16px;
 $tab_controller-item-min-width: 4rem;
+$title--margin: 1rem;
 
 .icon_title-wrapper {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  position: relative;
+	margin-top: $title--margin * 2.5;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	position: relative;
 
-  &.underline:after {
-    content: '';
-    width: 100%;
-    height: 1px;
-    background: $colors-main-black;
-    position: absolute;
-    bottom: 0;
-    left: 0;
-  }
+	&.underline:after {
+		content: '';
+		width: 100%;
+		height: 1px;
+		background: $colors-main-black;
+		position: absolute;
+		bottom: 0;
+		left: 0;
+	}
 
-  .icon_title-image {
-    @include size($tab_controller-title-img-size);
-  }
-  .icon_title-text {
-    font-size: $font-size-subhead2;
+	.icon_title-image,
+	.icon_title-svg {
+		@include size($tab_controller-title-img-size);
+	}
 
-    &.title {
-      font-size: $font-size-headline;
-      text-transform: uppercase;
-    }
-  }
+	.icon_title-text {
+		font-size: $font-size-subhead3;
+		margin: $title--margin;
+		&.title {
+			font-size: $font-size-headline2;
+			text-transform: capitalize;
+		}
+	}
+}
+
+.direction_ltr {
+	.icon_title-wrapper {
+		font-family: $raleway--font-family;
+	}
 }
