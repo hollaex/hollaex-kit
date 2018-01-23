@@ -720,5 +720,8 @@ export default {
 	SMS_SENT_TO: 'به {0} ارسال شد',
 	SMS_ERROR_SENT_TO:
 		'خطا در ارسال به {0}. لطفا صفحه را دوباره بارگذاری کنید و مجددا امتحان کنید.',
-	WITHDRAW_NOTIFICATION_TRANSACTION_ID: 'شناسه تراکنش:'
+	WITHDRAW_NOTIFICATION_TRANSACTION_ID: 'شناسه تراکنش:',
+	CHECK_ORDER: 'Check and confirm your order', // TODO
+	CHECK_ORDER_TYPE: '{1} {0}', // 0 -> maker/limit  1 -> sell/buy
+	CONFIRM_TEXT: 'Confirm', // TODO
 };

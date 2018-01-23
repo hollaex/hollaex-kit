@@ -67,6 +67,7 @@ $logout--size-difference: 3rem;
 
 		.notification-content-icon {
 			width: $image--wdith;
+			max-height: $image--wdith;
 			margin: $image--margin auto;
 		}
 
@@ -93,12 +94,21 @@ $logout--size-difference: 3rem;
 	}
 
 	.trade-notification,
+	.new-order-notification,
 	.order-notification {
 		.notification-content-icon {
 			margin-top: 0;
 			margin-bottom: 2.5rem;
 		}
+		.notification-content-title {
+			margin: 1rem 0;
+		}
 	}
+
+
+	// .new-order-notification.notification-content-wrapper {
+	// 	font-size: $font-size-subhead3;
+	// }
 }
 
 .notification-wrapper {
