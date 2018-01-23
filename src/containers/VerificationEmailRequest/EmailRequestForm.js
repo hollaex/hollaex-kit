@@ -1,8 +1,8 @@
 import React from 'react';
 import { reduxForm } from 'redux-form';
 import {
-	email,
-	requiredWithCustomMessage
+	requiredWithCustomMessage,
+	email
 } from '../../components/Form/validations';
 import { AuthForm } from '../../components';
 import STRINGS from '../../config/localizedStrings';
@@ -21,11 +21,7 @@ export const generateFormFields = () => ({
 });
 
 const Form = (props) => (
-	<AuthForm
-		{...props}
-		formFields={generateFormFields()}
-		buttonLabel={STRINGS.VERIFICATION_EMAIL_REQUEST.BUTTON}
-	/>
+	<AuthForm {...props} buttonLabel={STRINGS.VERIFICATION_EMAIL_REQUEST.BUTTON} />
 );
 
 export default reduxForm({
