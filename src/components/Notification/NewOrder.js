@@ -1,5 +1,5 @@
 import React from 'react';
-import mathjs from 'mathjs';
+import EventListener from 'react-event-listener';
 import { ICONS } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 import { formatBtcAmount, formatBtcFullAmount, formatFiatAmount } from '../../utils/currency';
@@ -50,7 +50,7 @@ const generateRows = ({ order }) => {
 		label: STRINGS.FEE,
 		value: STRINGS.formatString(
 			STRINGS.BTC_PRICE_FORMAT,
-			formatBtcFullAmount(orderFees),
+			formatFiatAmount(orderFees),
 			STRINGS.BTC_CURRENCY_SYMBOL
 		)
 	});
@@ -81,8 +81,16 @@ const NewOrderNotification = ({ type, data, onBack, onConfirm }) => {
 		onConfirm();
 		onBack();
 	}
+
+	const onKeydown = ({ key }) => {
+		if (key === 'Enter') {
+			onConfirmClick();
+		}
+	}
+
 	return (
 		<NotificationWraper title={STRINGS.CHECK_ORDER} icon={ICONS.CHECK_ORDER} className="new-order-notification">
+			<EventListener target="document" onKeydown={onKeydown} />
 			<OrderDisplay rows={rows} />
 			<div className="d-flex">
 				<Button label={STRINGS.BACK_TEXT} onClick={onBack} />
