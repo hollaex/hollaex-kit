@@ -135,7 +135,7 @@ class Form extends Component {
 				{renderFields(formValues)}
 				{error && <div className="warning_text">{error}</div>}
 				<Button
-					label={STRINGS.DEPOSITS_BUTTON_TEXT}
+					label={STRINGS.WITHDRAWALS_BUTTON_TEXT}
 					disabled={pristine || submitting || !valid}
 					onClick={this.onOpenDialog}
 				/>
