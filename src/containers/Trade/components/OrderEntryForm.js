@@ -37,7 +37,8 @@ const Form = ({
 	side,
 	type,
 	currencyName,
-	outsideFormError
+	outsideFormError,
+	onReview
 }) => {
 	const fields = getFields(formValues, type);
 	const errorText = error || outsideFormError;
@@ -58,6 +59,8 @@ const Form = ({
 				</div>
 				{children}
 				<Button
+					type="button"
+					onClick={onReview}
 					label={STRINGS.formatString(
 						STRINGS.ORDER_ENTRY_BUTTON,
 						STRINGS.SIDES_VALUES[side] || '',

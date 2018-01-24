@@ -3,7 +3,7 @@ import classnames from 'classnames';
 import { Link } from 'react-router';
 import { SubmissionError } from 'redux-form';
 import { requestVerificationEmail } from '../../actions/authAction';
-import EmailRequestForm from './EmailRequestForm';
+import EmailRequestForm, { generateFormFields } from './EmailRequestForm';
 import EmailRequestSuccess from './EmailRequestSuccess';
 import { IconTitle, Dialog } from '../../components';
 import { ContactForm } from '../';
@@ -13,7 +13,8 @@ import STRINGS from '../../config/localizedStrings';
 class VerifyEmailRequest extends Component {
 	state = {
 		success: false,
-		showContactForm: false
+		showContactForm: false,
+		formFields: generateFormFields()
 	};
 
 	onSubmitEmailRequest = (values) => {
@@ -46,7 +47,7 @@ class VerifyEmailRequest extends Component {
 
 	render() {
 		const { languageClasses } = this.props;
-		const { success, showContactForm } = this.state;
+		const { success, showContactForm, formFields } = this.state;
 
 		if (success) {
 			return (
@@ -104,7 +105,10 @@ class VerifyEmailRequest extends Component {
 							'w-100'
 						)}
 					>
-						<EmailRequestForm onSubmit={this.onSubmitEmailRequest} />
+						<EmailRequestForm
+							onSubmit={this.onSubmitEmailRequest}
+							formFields={formFields}
+						/>
 					</div>
 				</div>
 				<div className={classnames('f-1', 'link_wrapper')}>
