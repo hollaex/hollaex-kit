@@ -1,5 +1,6 @@
-$accordion-border: 0.15rem solid $colors-main-black;
+$accordion-border: 1px solid $colors-main-black;
 $accordion_content-padding: 0;
+$accordion_content-margin-bottom: 1.5rem;
 $accordion_arrow-size: 0.5rem;
 $title--padding: 0.5rem;
 $title--font-size: $font-size-subhead3;
@@ -24,6 +25,20 @@ $main-text--color: $colors-deactivate-color2;
 
 		.accordion_section_content_text-subtitle {
 			color: $colors-deactivate-color1;
+		}
+	}
+
+	&.accordion_section--open {
+		.accordion_section_content {
+			margin-bottom: $accordion_content-margin-bottom;
+		}
+
+		.accordion_section_content_text {
+			color: $colors-main-black;
+			&.with_arrow:after {
+				border-left-color: $colors-main-black !important;
+				border-right-color: $colors-main-black !important;
+			}
 		}
 	}
 
