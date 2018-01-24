@@ -712,7 +712,7 @@ export default {
 		'هنگامی که اطلاعات شما بررسی گردید، از طریق ایمیل به شما اطلاع می دهیم.',
 	VERIFICATION_NOTIFICATION_BUTTON: 'ورود به اکسیر',
 	ERROR_USER_ALREADY_VERIFIED: 'کاربر قبلا احراز هویت شده است',
-	ERROR_INVALID_CARD_USER: 'مقادیر وارد شده نادرس است',
+	ERROR_INVALID_CARD_USER: 'مقادیر وارد شده نادرست است',
 	ERROR_INVALID_CARD_NUMBER: 'شماره کارت نادرس است',
 	ERROR_LOGIN_USER_NOT_VERIFIED: 'کاربر احراز هویت نشده است',
 	ERROR_LOGIN_USER_NOT_ACTIVATED: 'حسای کاربری فعال نشده است',
