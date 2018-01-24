@@ -724,4 +724,5 @@ export default {
 	CHECK_ORDER: 'Check and confirm your order', // TODO
 	CHECK_ORDER_TYPE: '{1} {0}', // 0 -> maker/limit  1 -> sell/buy
 	CONFIRM_TEXT: 'Confirm', // TODO
+	INVALID_CAPTCHA: 'Invalid captcha' // TODO
 };

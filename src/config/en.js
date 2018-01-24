@@ -738,5 +738,6 @@ export default {
 	WITHDRAW_NOTIFICATION_TRANSACTION_ID: 'Transaction ID:', // TODO check msg
 	CHECK_ORDER: 'Check and confirm your order',
 	CHECK_ORDER_TYPE: '{0} {1}', // 0 -> maker/limit  1 -> sell/buy
-	CONFIRM_TEXT: 'Confirm'
+	CONFIRM_TEXT: 'Confirm',
+	INVALID_CAPTCHA: 'Invalid captcha'
 };

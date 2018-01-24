@@ -55,6 +55,10 @@ export const generateFormFields = (strings) => ({
 			<BlueLink to="/general-terms" text={strings.SIGN_UP.TERMS.terms} />,
 			<BlueLink to="/privacy-policy" text={strings.SIGN_UP.TERMS.policy} />
 		)
+	},
+	captcha: {
+		type: 'captcha',
+		validate: [required]
 	}
 });
 
