@@ -10,6 +10,7 @@ import { Dialog, OtpForm, IconTitle, Notification } from '../../components';
 import { NOTIFICATIONS } from '../../actions/appActions';
 import { errorHandler } from '../../components/OtpForm/utils';
 import { EXIR_LOGO, FLEX_CENTER_CLASSES, ICONS } from '../../config/constants';
+import Recaptcha from 'react-recaptcha';
 
 import STRINGS from '../../config/localizedStrings';
 
@@ -128,6 +129,9 @@ class Login extends Component {
 						)}
 					>
 						<LoginForm onSubmit={this.onSubmitLogin} />
+						<Recaptcha
+							sitekey="6LcSOUIUAAAAAEbu2RXTpm-hdvQnTcTy12qG2y86"
+						/>
 					</div>
 				</div>
 				<div className={classnames('f-1', 'link_wrapper')}>
