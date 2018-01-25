@@ -16,11 +16,7 @@ class Signup extends Component {
 		showContactForm: false
 	};
 
-	onSubmitSignup = (formValues) => {
-		const values = {
-			email: formValues.email,
-			password: formValues.password
-		};
+	onSubmitSignup = (values) => {
 		return performSignup(values)
 			.then((res) => {
 				this.setState({ success: true });

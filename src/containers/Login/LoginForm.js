@@ -20,6 +20,10 @@ const Form = (props) => {
 			fullWidth: true,
 			label: STRINGS.FORM_FIELDS.PASSWORD_LABEL,
 			placeholder: STRINGS.FORM_FIELDS.PASSWORD_PLACEHOLDER
+		},
+		captcha: {
+			type: 'captcha',
+			validate: [required]
 		}
 	};
 
