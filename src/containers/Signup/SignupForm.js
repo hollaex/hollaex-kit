@@ -11,6 +11,7 @@ import {
 import { AuthForm } from '../../components';
 import STRINGS from '../../config/localizedStrings';
 
+export const FORM_NAME = 'SignForm';
 const BlueLink = ({ text, ...rest }) => (
 	<Link
 		{...rest}
@@ -78,6 +79,6 @@ const Form = (props) => (
 );
 
 export default reduxForm({
-	form: 'SignForm',
+	form: FORM_NAME,
 	validate
 })(Form);

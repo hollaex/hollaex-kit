@@ -3,31 +3,40 @@ import Recaptcha from 'react-recaptcha';
 import { CAPTCHA_SITEKEY } from '../../../config/constants';
 
 class CaptchaField extends PureComponent {
-  setRef = (el) => {
-    this.captcha = el;
-  }
+	componentWillReceiveProps(nextProps) {
+		if (
+			(nextProps.input.value === '' &&
+				nextProps.input.value !== this.props.input.value)
+		) {
+			this.captcha.reset();
+		}
+	}
 
-  onVerifyCallback = (data) => {
-    this.props.input.onChange(data);
-  }
+	setRef = (el) => {
+		this.captcha = el;
+	};
 
-  onExpiredCallback = () => {
-    this.props.input.onChange('');
-    this.captcha.reset();
-  }
+	onVerifyCallback = (data) => {
+		this.props.input.onChange(data);
+	};
 
-  render() {
-    return (
-      <div className="field-wrapper">
-        <Recaptcha
-          ref={this.setRef}
-          sitekey={CAPTCHA_SITEKEY}
-          verifyCallback={this.onVerifyCallback}
-          expiredCallback={this.onExpiredCallback}
-        />
-      </div>
-    );
-  }
-};
+	onExpiredCallback = () => {
+		this.props.input.onChange('');
+		this.captcha.reset();
+	};
+
+	render() {
+		return (
+			<div className="field-wrapper">
+				<Recaptcha
+					ref={this.setRef}
+					sitekey={CAPTCHA_SITEKEY}
+					verifyCallback={this.onVerifyCallback}
+					expiredCallback={this.onExpiredCallback}
+				/>
+			</div>
+		);
+	}
+}
 
 export default CaptchaField;

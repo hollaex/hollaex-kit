@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import { Link } from 'react-router';
-import { SubmissionError } from 'redux-form';
+import { connect } from 'react-redux';
+import { SubmissionError, change } from 'redux-form';
+import { bindActionCreators } from 'redux';
 import { performSignup } from '../../actions/authAction';
-import SignupForm, { generateFormFields } from './SignupForm';
+import SignupForm, { generateFormFields, FORM_NAME } from './SignupForm';
 import SignupSuccess from './SignupSuccess';
 import { ContactForm } from '../';
 import { IconTitle, Dialog } from '../../components';
@@ -23,6 +25,7 @@ class Signup extends Component {
 			})
 			.catch((error) => {
 				const errors = {};
+				this.props.change(FORM_NAME, 'captcha', '');
 				if (error.response.status === 409) {
 					errors.email = STRINGS.VALIDATIONS.USER_EXIST;
 				} else if (error.response) {
@@ -131,4 +134,8 @@ class Signup extends Component {
 	}
 }
 
-export default Signup;
+const mapDispatchToProps = (dispatch) => ({
+	change: bindActionCreators(change, dispatch)
+});
+
+export default connect(null, mapDispatchToProps)(Signup);
