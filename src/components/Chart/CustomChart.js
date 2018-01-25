@@ -3,8 +3,6 @@ import PropTypes from 'prop-types';
 
 import { ChartCanvas, Chart } from 'react-stockcharts';
 
-import { CandlestickSeries } from 'react-stockcharts/lib/series';
-
 import { XAxis, YAxis, TXAxis } from './axis';
 
 import {
@@ -18,60 +16,29 @@ import { OHLCTooltip } from 'react-stockcharts/lib/tooltip';
 import { fitWidth } from 'react-stockcharts/lib/helper';
 
 import {
-	CandlesProps,
-	edgeIndicatorProps,
-	OHLCProps
-} from './props';
-
-import {
+	xScaleProvider,
 	margins,
 	yExtents,
 	generateXExtents,
-	xScaleProvider,
 	FORMAT_DATE_X_TICK,
 	FORMAT_Y_TICK
 } from './utils';
+
+import { OHLCProps, edgeIndicatorProps } from './props';
+
 import STRINGS from '../../config/localizedStrings';
 
-class CandleChart extends Component {
-	state = {
-		gridX: {},
-		gridY: {}
-	};
-
-	componentDidMount() {
-		this.calculateGrid(this.props.width, this.props.height);
-	}
-
-	componentWillReceiveProps(nextProps) {
-		if (
-			nextProps.width !== this.props.width ||
-			nextProps.height !== this.props.height
-		) {
-			this.calculateGrid(nextProps.width, nextProps.height);
-		}
-	}
-
-	calculateGrid = (width, height) => {
-		const gridHeight = height - margins.top - margins.bottom;
-		const gridWidth = width - margins.left - margins.right;
-
-		const gridY = { innerTickSize: -1 * gridWidth, tickStrokeOpacity: 0.2 };
-		const gridX = { innerTickSize: -1 * gridHeight, tickStrokeOpacity: 0.2 };
-
-		this.setState({ gridY, gridX });
-	};
-
+class CustomChart extends Component {
 	render() {
 		const {
-			width,
-			data: initialData,
-			ratio,
-			height,
 			type,
-			seriesName
+			data: initialData,
+			width,
+			height,
+			ratio,
+			seriesName,
+      children
 		} = this.props;
-		// const { gridY, gridX } = this.state;
 
 		const { data, xScale, xAccessor, displayXAccessor } = xScaleProvider(
 			initialData
@@ -110,9 +77,9 @@ class CandleChart extends Component {
 						displayFormat={FORMAT_Y_TICK}
 					/>
 
-					<CandlestickSeries {...CandlesProps} />
-					<EdgeIndicator {...edgeIndicatorProps} />
+					{children}
 					<OHLCTooltip {...OHLCProps} displayTexts={STRINGS.CHART_TEXTS} />
+					<EdgeIndicator {...edgeIndicatorProps} />
 				</Chart>
 				<CrossHairCursor />
 			</ChartCanvas>
@@ -120,19 +87,20 @@ class CandleChart extends Component {
 	}
 }
 
-CandleChart.propTypes = {
+CustomChart.propTypes = {
 	data: PropTypes.array.isRequired,
 	width: PropTypes.number.isRequired,
+	height: PropTypes.number.isRequired,
 	ratio: PropTypes.number.isRequired,
 	type: PropTypes.oneOf(['svg', 'hybrid']).isRequired,
 	dataCount: PropTypes.number,
-	seriesName: PropTypes.string
+	children: PropTypes.node.isRequired
 };
 
-CandleChart.defaultProps = {
+CustomChart.defaultProps = {
 	type: 'svg',
-	seriesName: 'CandleChart',
+	seriesName: 'Chart',
 	dataCount: 0
 };
 
-export default fitWidth(CandleChart);
+export default fitWidth(CustomChart);

@@ -45,7 +45,7 @@ class AreaChartWithEdge extends Component {
 			initialData
 		);
 
-		const dataCount = this.props.dataCount || Math.floor(width / 5);
+		const dataCount = Math.max(this.props.dataCount || Math.floor(width / 10));
 		const xExtents = generateXExtents(xAccessor, data, dataCount);
 
 		return (
@@ -99,8 +99,10 @@ AreaChartWithEdge.propTypes = {
 
 AreaChartWithEdge.defaultProps = {
 	type: 'svg',
-	seriesName: 'AreaChart'
+	seriesName: 'AreaChart',
+	dataCount: 0
 };
+
 AreaChartWithEdge = fitWidth(AreaChartWithEdge);
 
 export default AreaChartWithEdge;
