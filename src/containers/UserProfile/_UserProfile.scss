@@ -3,7 +3,7 @@ $information--color: $colors-deactivate-color2;
 .information_section {
 	font-size: $font-size-subtext;
 	color: $information--color;
-	padding: 0.5rem 0;
+	padding: 0 0 0.5rem;
 
 	.information_svg {
 		fill: $information--color;
@@ -19,8 +19,9 @@ $information--color: $colors-deactivate-color2;
 }
 
 .user_verification-form {
-	padding-bottom: 1rem;
+	// padding-bottom: 1rem;
 }
+
 .user_verification-form_section {
 	padding-bottom: 1rem;
 }

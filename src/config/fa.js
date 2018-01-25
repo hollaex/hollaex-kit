@@ -24,7 +24,7 @@ export default {
 	SUCCESS_TEXT: 'موفقیت',
 	ERROR_TEXT: 'خطا',
 	EDIT_TEXT: 'ویرایش',
-	BACK_TEXT: 'Back', // TODO
+	BACK_TEXT: 'قبل',
 	NO_OPTIONS: 'هیچ گزینه ای وجود ندارد',
 	HOME: {
 		SECTION_1_TITLE: 'خرید و فروش بیتکوین',
@@ -116,13 +116,13 @@ export default {
 		ATTACHMENT_PLACEHOLDER:
 			'یک فایل برای کمک به شرح مشکل اضافه کنید. فایل های PDF، JPG، PNG و GIF پذیرفته می شوند',
 		SUCCESS_MESSAGE: 'ایمیل به تیم پشتیبانی ارسال، شد.',
-		SUCCESS_TITLE: 'Message Sent', // TODO
-		SUCCESS_MESSAGE_1: 'Your issue has been sent to customer support.', // TODO
-		SUCCESS_MESSAGE_2: 'You can expect a reply in 1-3 days.' // TODO
+		SUCCESS_TITLE: 'ارسال، با موفقیت',
+		SUCCESS_MESSAGE_1: 'مورد شما به تیم پشتیبانی ارسال، گردید.',
+		SUCCESS_MESSAGE_2: 'منتظر جواب ما تا حداکثر 3 روز کاری باشید.'
 	},
 	DEPOSIT: {
 		CRYPTO_LABELS: {
-			BTC: 'آدرس دریافت بیتکوین'
+			BTC: 'آدرس بیتکوین من'
 		},
 		INFORMATION_MESSAGES: [
 			'از جزئیات بانکی زیر استفاده کنید تا ریال را به حساب خود منتقل کنید. نقل و انتقال می تواند تا یک روز به طول بیانجامد',
@@ -176,12 +176,12 @@ export default {
 			SUBTITLE:
 				'Last updated April 1, 2017. Replaces the prior version in its entirety.',
 			TEXTS: [
-				'BitMEX (website: https://www.BitMEX.com) is a Bitcoin-based virtual trading platform that is wholly owned by HDR Global Trading Limited. HDR Global Trading Limited (hereinafter referred to as BitMEX) was incorporated under the International Business Companies Act of 1994 of the Republic of Seychelles with a company number of 148707.',
-				'Use of this BitMEX website (“Website”) and the service offered on the Website (“Service”) are governed by the terms contained on this Terms and Conditions page (“Terms”). This agreement entirely constitutes the agreement between the parties. All other information provided on the Website or oral/written statements made are excluded from this agreement; the exchange policy is provided for guidance only and does not constitute a legal agreement between the parties.',
-				'By accessing, viewing or downloading information from the Website and using the Service provided by BitMEX you acknowledge that you have read, understand, and unconditionally agree to be bound by these Terms. BitMEX may at any time, without notice, amend the Terms. You agree to continue to be bound by any amended terms and conditions and that BitMEX has no obligation to notify you of such amendments. You acknowledge that it is your responsibility to check these Terms periodically for changes and that your continued use of the Website and Services offered by BitMEX following the posting of any changes to the Terms indicates your acceptance of any such changes.',
-				'The Website and the copyright in all text, graphics, images, software and any other materials on the Website is owned by BitMEX including all trademarks and other intellectual property rights in respect of materials and Service on the Website. Materials on this Website may only be used for personal use and non-commercial purposes.',
-				'You may display on a computer screen or print extracts from the Website for the above-stated purpose only provided that you retain any copyright and other proprietary notices or any BitMEX trademarks or logos, as shown on the initial printout or download without alteration, addition or deletion. Except as expressly stated herein, you may not without BitMEX’s prior written permission alter, modify, reproduce, distribute or use in any other commercial context any materials from the Website.',
-				'You acknowledge that ‘BitMEX’ and the BitMEX logo are trademarks of HDR Global Trading Limited. You may reproduce such trademarks without alteration on material downloaded from this Website to the extent authorised above, but you may not otherwise use, copy, adapt or erase them.',
+				'EXIR (website: https://www.exir.tech) is a Bitcoin-based virtual trading platform that is wholly owned by EXIR TECH Limited. HDR Global Trading Limited (hereinafter referred to as EXIR) was incorporated under the International Business Companies Act of 1994 of the Republic of Seychelles with a company number of 148707.',
+				'Use of this EXIR website (“Website”) and the service offered on the Website (“Service”) are governed by the terms contained on this Terms and Conditions page (“Terms”). This agreement entirely constitutes the agreement between the parties. All other information provided on the Website or oral/written statements made are excluded from this agreement; the exchange policy is provided for guidance only and does not constitute a legal agreement between the parties.',
+				'By accessing, viewing or downloading information from the Website and using the Service provided by EXIR you acknowledge that you have read, understand, and unconditionally agree to be bound by these Terms. EXIR may at any time, without notice, amend the Terms. You agree to continue to be bound by any amended terms and conditions and that EXIR has no obligation to notify you of such amendments. You acknowledge that it is your responsibility to check these Terms periodically for changes and that your continued use of the Website and Services offered by EXIR following the posting of any changes to the Terms indicates your acceptance of any such changes.',
+				'The Website and the copyright in all text, graphics, images, software and any other materials on the Website is owned by EXIR including all trademarks and other intellectual property rights in respect of materials and Service on the Website. Materials on this Website may only be used for personal use and non-commercial purposes.',
+				'You may display on a computer screen or print extracts from the Website for the above-stated purpose only provided that you retain any copyright and other proprietary notices or any EXIR trademarks or logos, as shown on the initial printout or download without alteration, addition or deletion. Except as expressly stated herein, you may not without EXIR’s prior written permission alter, modify, reproduce, distribute or use in any other commercial context any materials from the Website.',
+				'You acknowledge that ‘EXIR’ and the EXIR logo are trademarks of HDR Global Trading Limited. You may reproduce such trademarks without alteration on material downloaded from this Website to the extent authorised above, but you may not otherwise use, copy, adapt or erase them.',
 				'You shall not in any circumstances obtain any rights over or in respect of the Website (other than rights to use the Website pursuant to these Terms and any other terms and conditions governing a particular service or section of the Website) or hold yourself out as having any such rights over or in respect of the Website.'
 			]
 		},
@@ -190,12 +190,12 @@ export default {
 			SUBTITLE:
 				'Last updated April 1, 2017. Replaces the prior version in its entirety.',
 			TEXTS: [
-				'BitMEX (website: https://www.BitMEX.com) is a Bitcoin-based virtual trading platform that is wholly owned by HDR Global Trading Limited. HDR Global Trading Limited (hereinafter referred to as BitMEX) was incorporated under the International Business Companies Act of 1994 of the Republic of Seychelles with a company number of 148707.',
-				'Use of this BitMEX website (“Website”) and the service offered on the Website (“Service”) are governed by the terms contained on this Terms and Conditions page (“Terms”). This agreement entirely constitutes the agreement between the parties. All other information provided on the Website or oral/written statements made are excluded from this agreement; the exchange policy is provided for guidance only and does not constitute a legal agreement between the parties.',
-				'By accessing, viewing or downloading information from the Website and using the Service provided by BitMEX you acknowledge that you have read, understand, and unconditionally agree to be bound by these Terms. BitMEX may at any time, without notice, amend the Terms. You agree to continue to be bound by any amended terms and conditions and that BitMEX has no obligation to notify you of such amendments. You acknowledge that it is your responsibility to check these Terms periodically for changes and that your continued use of the Website and Services offered by BitMEX following the posting of any changes to the Terms indicates your acceptance of any such changes.',
-				'The Website and the copyright in all text, graphics, images, software and any other materials on the Website is owned by BitMEX including all trademarks and other intellectual property rights in respect of materials and Service on the Website. Materials on this Website may only be used for personal use and non-commercial purposes.',
-				'You may display on a computer screen or print extracts from the Website for the above-stated purpose only provided that you retain any copyright and other proprietary notices or any BitMEX trademarks or logos, as shown on the initial printout or download without alteration, addition or deletion. Except as expressly stated herein, you may not without BitMEX’s prior written permission alter, modify, reproduce, distribute or use in any other commercial context any materials from the Website.',
-				'You acknowledge that ‘BitMEX’ and the BitMEX logo are trademarks of HDR Global Trading Limited. You may reproduce such trademarks without alteration on material downloaded from this Website to the extent authorised above, but you may not otherwise use, copy, adapt or erase them.',
+				'EXIR (website: https://www.EXIR.com) is a Bitcoin-based virtual trading platform that is wholly owned by HDR Global Trading Limited. HDR Global Trading Limited (hereinafter referred to as EXIR) was incorporated under the International Business Companies Act of 1994 of the Republic of Seychelles with a company number of 148707.',
+				'Use of this EXIR website (“Website”) and the service offered on the Website (“Service”) are governed by the terms contained on this Terms and Conditions page (“Terms”). This agreement entirely constitutes the agreement between the parties. All other information provided on the Website or oral/written statements made are excluded from this agreement; the exchange policy is provided for guidance only and does not constitute a legal agreement between the parties.',
+				'By accessing, viewing or downloading information from the Website and using the Service provided by EXIR you acknowledge that you have read, understand, and unconditionally agree to be bound by these Terms. EXIR may at any time, without notice, amend the Terms. You agree to continue to be bound by any amended terms and conditions and that EXIR has no obligation to notify you of such amendments. You acknowledge that it is your responsibility to check these Terms periodically for changes and that your continued use of the Website and Services offered by EXIR following the posting of any changes to the Terms indicates your acceptance of any such changes.',
+				'The Website and the copyright in all text, graphics, images, software and any other materials on the Website is owned by EXIR including all trademarks and other intellectual property rights in respect of materials and Service on the Website. Materials on this Website may only be used for personal use and non-commercial purposes.',
+				'You may display on a computer screen or print extracts from the Website for the above-stated purpose only provided that you retain any copyright and other proprietary notices or any EXIR trademarks or logos, as shown on the initial printout or download without alteration, addition or deletion. Except as expressly stated herein, you may not without EXIR’s prior written permission alter, modify, reproduce, distribute or use in any other commercial context any materials from the Website.',
+				'You acknowledge that ‘EXIR’ and the EXIR logo are trademarks of HDR Global Trading Limited. You may reproduce such trademarks without alteration on material downloaded from this Website to the extent authorised above, but you may not otherwise use, copy, adapt or erase them.',
 				'You shall not in any circumstances obtain any rights over or in respect of the Website (other than rights to use the Website pursuant to these Terms and any other terms and conditions governing a particular service or section of the Website) or hold yourself out as having any such rights over or in respect of the Website.'
 			]
 		}
@@ -204,7 +204,7 @@ export default {
 		BUTTONS: {
 			OKAY: 'تایید',
 			START_TRADING: 'شروع ترید',
-			SEE_HISTORY: 'معاملات قبلی'
+			SEE_HISTORY: 'مبادلات قبلی'
 		},
 		DEPOSITS: {
 			FIAT: {
@@ -246,7 +246,7 @@ export default {
 		ORDERS_PLURAL: 'سفارشات',
 		ORDERS_SINGULAR: 'سفارشات',
 		HOLD_ORDERS:
-			'شما {0} سفارش {1} تکمیل نشده دارید, که منجر به کسر {2} {3} از دارایی {4} شما شده است'
+			'شما {0} سفارش تکمیل نشده دارید, که منجر به کسر {2} {3} از دارایی {4} شما شده است'
 	},
 	REQUEST_RESET_PASSWORD: {
 		TITLE: 'بازیابی رمز عبور',
@@ -411,7 +411,7 @@ export default {
 				ID_SECTION: {
 					TITLE: 'لطفا در بارگذاری اسکن مدارک خود به نکات زیر دقت کنید:',
 					LIST_ITEM_1:
-						'کیفیت بالا باشد(تصاویر رنگی، رزولوشن 300dpi یا بالاتر).',
+						'کیفیت بالا باشد(تصاویر رنگی، زیر 300KB).',
 					LIST_ITEM_2: 'نوشته ها خوانا و واضح باشد.',
 					LIST_ITEM_3: 'مدرک اعتبار داشته باشد',
 					WARNING_1: 'تنها کارت ملی معتبر برای احراز هویت مورد قبول است.',
@@ -467,20 +467,20 @@ export default {
 		}
 	},
 	TRANSACTION_HISTORY: {
-		TITLE: 'تاریخچه معاملات',
+		TITLE: 'تاریخچه مبادلات',
 		TITLE_TRADES: 'تاریخچه مبادلات',
 		TITLE_DEPOSITS: ' تاریخ سپرده',
 		TITLE_WITHDRAWALS: 'تاریخ برداشت',
-		TEXT_DOWNLOAD: 'تاریخچه دانلود',
-		TRADES: 'معاملات',
-		DEPOSITS: 'سپرده ها',
+		TEXT_DOWNLOAD: 'دانلود تاریخچه',
+		TRADES: 'مبادلات',
+		DEPOSITS: 'واریزی ها',
 		WITHDRAWALS: 'برداشتها'
 	},
 	ACCOUNT_SECURITY: {
 		OTP: {
-			TITLE: 'دسترسی دو مرحله ای',
+			TITLE: 'احراز هویت دو عامل',
 			OTP_ENABLED: 'OTP فعال',
-			OTP_DISABLED: 'لطفا دسترسی دو مرحله ای را فعال کنید',
+			OTP_DISABLED: 'لطفا احراز هویت دو عاملی را فعال کنید',
 			ENABLED_TEXTS: {
 				TEXT_1: 'هنگام ورود به OTP نیاز است',
 				TEXT_2: 'هنگام اخذ وجوه، OTP مورد نیاز است'
@@ -490,7 +490,7 @@ export default {
 				REVOKE: 'شما OTP خود را با موفقیت لغو کرده اید'
 			},
 			CONTENT: {
-				TITLE: 'دسترسی دو مرحله ای را فعال کنید',
+				TITLE: 'احراز هویت دو عاملی را فعال کنید',
 				MESSAGE_1: 'اسکن',
 				MESSAGE_2:
 					'لطفا کیوآر کد زیر را توسط برنامه Google Authenticator یا Authy اسکن کنید.',
@@ -501,12 +501,12 @@ export default {
 				MESSAGE_5: 'دستی',
 				INPUT: 'رمز یک بار ورود را وارد کنید',
 				WARNING:
-					'ما به شدت به شما توصیه می کنیم تا دسترسی دو مرحله ای را تنظیم کنید. انجام این کار به میزان قابل توجهی امنیت وجوه شما را افزایش خواهد داد.',
-				ENABLE: 'دسترسی دو مرحله ای را فعال کنید'
+					'ما اکیدا توصیه می کنیم که احراز هویت دو عاملی را فعال کنید. این کار امنیت حساب شما را به طور قابل توجهی افزایش می دهد.',
+				ENABLE: 'احراز هویت دو عاملی را فعال کنید'
 			},
 			FORM: {
 				PLACEHOLDER: 'OTP ارائه شده توسط Google Authenticator را وارد کنید',
-				BUTTON: 'فعال کردن دسترسی دو مرحله ای'
+				BUTTON: 'فعال کردن احراز هویت دو عاملی'
 			}
 		},
 		CHANGE_PASSWORD: {
@@ -538,7 +538,7 @@ export default {
 		market: 'بازار',
 		limit: 'محدود'
 	},
-	TYPES: [{ value: 'market', label: 'بازار' }, { value: 'limit', label: 'حد' }],
+	TYPES: [{ value: 'market', label: 'بازار' }, { value: 'limit', label: 'محدود' }],
 	SIDE: 'طرف',
 	SIDES_VALUES: {
 		buy: 'خرید',
@@ -560,10 +560,10 @@ export default {
 	CANCEL_ALL: 'لغو همه',
 	GO_TRADE_HISTORY: 'به تاریخچه ترید بروید',
 	ORDER_ENTRY: 'ثبت سفارش',
-	TRADE_HISTORY: 'مشاهده مبادلات من',
+	TRADE_HISTORY: 'همه مبادلات',
 	CHART: 'نمودار قیمت',
 	ORDERS: 'سفارش های فعال من',
-	TRADES: 'تاریخ ترید من',
+	TRADES: 'مبادلات گذشته من',
 	REMAINING: 'باقی مانده',
 	FULLFILLED: '{0} % تکمیل شده',
 	PRICE_CURRENCY: 'قیمت ({0})',
@@ -597,12 +597,12 @@ export default {
 	WITHDRAWALS_INVALID_ADDRESS:
 		'آدرس بیتکوین نامعتبر است لطفا با دقت و دوباره وارد شوید',
 	WITHDRAWALS_BUTTON_TEXT: 'مرور برداشت',
-	WITHDRAWALS_FORM_ADDRESS_LABEL: 'آدرس مقصد',
-	WITHDRAWALS_FORM_ADDRESS_PLACEHOLDER: 'آدرس را تایپ کنید',
-	WITHDRAWALS_FORM_AMOUNT_LABEL: '{0} مقدار برداشت',
+	WITHDRAWALS_FORM_ADDRESS_LABEL: 'آدرس گیرنده',
+	WITHDRAWALS_FORM_ADDRESS_PLACEHOLDER: 'آدرس را وارد کنید',
+	WITHDRAWALS_FORM_AMOUNT_LABEL: 'مقدار',
 	WITHDRAWALS_FORM_AMOUNT_PLACEHOLDER:
 		'مقدار {0} را که می خواهید برداشت کنید تایپ کنید',
-	WITHDRAWALS_FORM_FEE_LABEL: '{0}% کارمزد',
+	WITHDRAWALS_FORM_FEE_LABEL: 'کارمزد',
 	WITHDRAWALS_FORM_FEE_PLACEHOLDER:
 		'مقدار {0} که میخواهیید در این تراکنش استفاده کنید را وارد کنید ',
 	WITHDRAWALS_FORM_FEE_OPTIMAL_VALUE: 'کارمزد مطلوب: {0} {1}',
@@ -712,7 +712,7 @@ export default {
 		'هنگامی که اطلاعات شما بررسی گردید، از طریق ایمیل به شما اطلاع می دهیم.',
 	VERIFICATION_NOTIFICATION_BUTTON: 'ورود به اکسیر',
 	ERROR_USER_ALREADY_VERIFIED: 'کاربر قبلا احراز هویت شده است',
-	ERROR_INVALID_CARD_USER: 'مقادیر وارد شده نادرس است',
+	ERROR_INVALID_CARD_USER: 'مقادیر وارد شده نادرست است',
 	ERROR_INVALID_CARD_NUMBER: 'شماره کارت نادرس است',
 	ERROR_LOGIN_USER_NOT_VERIFIED: 'کاربر احراز هویت نشده است',
 	ERROR_LOGIN_USER_NOT_ACTIVATED: 'حسای کاربری فعال نشده است',
@@ -720,5 +720,9 @@ export default {
 	SMS_SENT_TO: 'به {0} ارسال شد',
 	SMS_ERROR_SENT_TO:
 		'خطا در ارسال به {0}. لطفا صفحه را دوباره بارگذاری کنید و مجددا امتحان کنید.',
-	WITHDRAW_NOTIFICATION_TRANSACTION_ID: 'شناسه تراکنش:'
+	WITHDRAW_NOTIFICATION_TRANSACTION_ID: 'شناسه تراکنش:',
+	CHECK_ORDER: 'Check and confirm your order', // TODO
+	CHECK_ORDER_TYPE: '{1} {0}', // 0 -> maker/limit  1 -> sell/buy
+	CONFIRM_TEXT: 'Confirm', // TODO
+	INVALID_CAPTCHA: 'Invalid captcha' // TODO
 };

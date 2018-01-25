@@ -12,6 +12,7 @@ import {
 	cancelAllOrders
 } from '../../actions/orderAction';
 import { getUserTrades } from '../../actions/walletActions';
+import { setNotification, NOTIFICATIONS } from '../../actions/appActions';
 
 import TradeBlock from './components/TradeBlock';
 import TradeBlockTabs from './components/TradeBlockTabs';
@@ -78,6 +79,11 @@ class Trade extends Component {
 			});
 		}
 	};
+
+	openCheckOrder = (order, onConfirm) => {
+		const { setNotification, fees } = this.props;
+		setNotification(NOTIFICATIONS.NEW_ORDER, { order, onConfirm, fees });
+	}
 
 	render() {
 		const {
@@ -166,6 +172,7 @@ class Trade extends Component {
 							<TradeBlock title={STRINGS.ORDER_ENTRY}>
 								<OrderEntry
 									submitOrder={this.onSubmitOrder}
+									openCheckOrder={this.openCheckOrder}
 									symbol={symbol}
 									balance={balance}
 									asks={asks}
@@ -224,13 +231,15 @@ const mapStateToProps = (store) => ({
 	marketPrice: store.orderbook.price,
 	activeOrders: store.order.activeOrders,
 	userTrades: store.wallet.latestUserTrades,
-	activeLanguage: store.app.language
+	activeLanguage: store.app.language,
+	fees: store.user.fees
 });
 
 const mapDispatchToProps = (dispatch) => ({
 	getUserTrades: (symbol) => dispatch(getUserTrades({ symbol })),
 	cancelOrder: bindActionCreators(cancelOrder, dispatch),
-	cancelAllOrders: bindActionCreators(cancelAllOrders, dispatch)
+	cancelAllOrders: bindActionCreators(cancelAllOrders, dispatch),
+	setNotification: bindActionCreators(setNotification, dispatch)
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Trade);

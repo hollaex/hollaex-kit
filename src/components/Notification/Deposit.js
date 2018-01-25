@@ -15,14 +15,13 @@ const DepositNotification = ({ data, onClose, goToPage, openContactForm }) => {
 		text: depositTexts.title,
 		icon:
 			data.currency === fiatSymbol
-				? ICONS.DEPOSIT_FIAT_COMPLETE
-				: ICONS.DEPOSIT_RECEIVED_BITCOIN
+				? data.status ? ICONS.DEPOSIT_FIAT_COMPLETE : ICONS.INCOMING_TOMAN
+				: data.status ? ICONS.DEPOSIT_RECEIVED_BITCOIN : ICONS.INCOMING_BTC
 	};
 	const onClick = () => {
 		onClose();
 		openContactForm();
 	};
-
 	return (
 		<div className="notification-content-wrapper">
 			<Header {...headerProps} />
@@ -35,15 +34,15 @@ const DepositNotification = ({ data, onClose, goToPage, openContactForm }) => {
 					onClick={onClick}
 				/>
 			</div>
-			{
+			{depositTexts.information.length > 0 && (
 				<div
 					className={classnames({
 						'notification-information': !!depositTexts.information
 					})}
 				>
-					{depositTexts.information && depositTexts.information.join('\n')}
+					{depositTexts.information.join('\n')}
 				</div>
-			}
+			)}
 			<div className="notification-content-block_amount d-flex justify-content-center">
 				<CurrencyBallWithPrice
 					symbol={data.currency}
@@ -55,7 +54,10 @@ const DepositNotification = ({ data, onClose, goToPage, openContactForm }) => {
 				<Button label={STRINGS.NOTIFICATIONS.BUTTONS.OKAY} onClick={onClose} />
 				<div className="separator" />
 				<Button
-					className={classnames(`button-${data.currency}`)}
+					className={classnames(
+						`button-${data.currency}`,
+						'deposit-button-notification'
+					)}
 					label={
 						data.currency === fiatSymbol
 							? STRINGS.NOTIFICATIONS.BUTTONS.START_TRADING

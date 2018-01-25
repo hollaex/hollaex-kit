@@ -9,6 +9,7 @@ export const fiatShortName = CURRENCIES[fiatSymbol].shortName;
 export const fiatFormatToCurrency = CURRENCIES[fiatSymbol].formatToCurrency;
 
 export const BTC_FORMAT = '0,0.[0000]';
+export const BTC_FULL_FORMAT = '0,0.[00000000]';
 export const FIAT_FORMAT = '0,0.[00]';
 
 export const roundNumber = (number, decimals = 4) => {
@@ -20,6 +21,8 @@ export const roundNumber = (number, decimals = 4) => {
 
 export const formatBtcAmount = (amount = 0) =>
 	numbro(math.number(amount)).format(BTC_FORMAT);
+export const formatBtcFullAmount = (amount = 0) =>
+	numbro(math.number(amount)).format(BTC_FULL_FORMAT);
 export const formatFiatAmount = (amount = 0) =>
 	numbro(math.number(amount)).format(FIAT_FORMAT);
 export const formatNumber = (number, round = 0) => {

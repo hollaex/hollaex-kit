@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
-import { formValueSelector } from 'redux-form';
+import { bindActionCreators } from 'redux';
+import { formValueSelector, submit } from 'redux-form';
+import mathjs from 'mathjs';
 
 import Review from './OrderEntryReview';
 import Form, { FORM_NAME } from './OrderEntryForm';
@@ -29,6 +31,7 @@ class OrderEntry extends Component {
 			type: STRINGS.TYPES[1].value
 		},
 		orderPrice: 0,
+		orderFees: 0,
 		outsideFormError: ''
 	};
 
@@ -41,7 +44,8 @@ class OrderEntry extends Component {
 			nextProps.size !== this.props.size ||
 			nextProps.side !== this.props.side ||
 			nextProps.price !== this.props.price ||
-			nextProps.type !== this.props.type
+			nextProps.type !== this.props.type ||
+			nextProps.activeLanguage !== this.props.activeLanguage
 		) {
 			this.calculateOrderPrice(nextProps);
 		}
@@ -59,7 +63,7 @@ class OrderEntry extends Component {
 	}
 
 	calculateOrderPrice = (props) => {
-		const { type, side } = props;
+		const { type, side, fees, marketPrice } = props;
 		const size = parseFloat(props.size || 0);
 		const price = parseFloat(props.price || 0);
 
@@ -74,9 +78,17 @@ class OrderEntry extends Component {
 			}
 		}
 
+		let orderFees = 0;
+		if (side === 'buy') {
+			orderFees = mathjs.chain(size).multiply(fees.taker_fee).divide(100).multiply(marketPrice).done(); 
+		} else {
+			orderFees = mathjs.chain(orderPrice).multiply(fees.taker_fee).divide(100).done();
+		}
 		let outsideFormError = '';
 
-		if (type === 'market' && side === 'buy') {
+		if (type === 'market' && orderPrice === 0) {
+			outsideFormError = STRINGS.QUICK_TRADE_ORDER_NOT_FILLED;
+		} else if (type === 'market' && side === 'buy') {
 			const values = {
 				size,
 				side,
@@ -94,7 +106,8 @@ class OrderEntry extends Component {
 				orderPrice
 			);
 		}
-		this.setState({ orderPrice, outsideFormError });
+
+		this.setState({ orderPrice, orderFees, outsideFormError });
 	};
 
 	evaluateOrder = (values) => {
@@ -121,6 +134,28 @@ class OrderEntry extends Component {
 			this.setState({ initialValues: values });
 		});
 	};
+
+	onReview = () => {
+		const order = {
+			type: this.props.type,
+			side: this.props.side,
+			price: this.props.price,
+			size: formatNumber(this.props.size, 4),
+			symbol: this.props.symbol,
+			orderPrice: this.state.orderPrice,
+			orderFees: this.state.orderFees,
+		};
+
+		if (order.type === 'market') {
+			delete order.price;
+		} else if (order.price) {
+			order.price = formatNumber(order.price);
+		}
+		console.log('here', order, this.props)
+		this.props.openCheckOrder(order, () => {
+			this.props.submit(FORM_NAME)
+		})
+	}
 
 	generateFormValues = () => {
 		const formValues = {
@@ -179,11 +214,10 @@ class OrderEntry extends Component {
 			initialValues,
 			formValues,
 			orderPrice,
+			orderFees,
 			outsideFormError
 		} = this.state;
 		const currencyName = STRINGS[`${symbol.toUpperCase()}_NAME`];
-
-		const fees = 0;
 
 		if (!balance.hasOwnProperty(`${symbol}_balance`)) {
 			return <Loader relative={true} background={false} />;
@@ -202,6 +236,7 @@ class OrderEntry extends Component {
 					currencyName={currencyName}
 					evaluateOrder={this.evaluateOrder}
 					onSubmit={this.onSubmit}
+					onReview={this.onReview}
 					formValues={formValues}
 					initialValues={initialValues}
 					outsideFormError={outsideFormError}
@@ -210,7 +245,7 @@ class OrderEntry extends Component {
 						type={type}
 						currency={FIAT_NAME}
 						orderPrice={orderPrice}
-						fees={fees}
+						fees={orderFees}
 						formatToCurrency={formatFiatAmount}
 					/>
 				</Form>
@@ -225,8 +260,13 @@ const mapStateToProps = (state) => {
 	const formValues = selector(state, 'price', 'size', 'side', 'type');
 	return {
 		...formValues,
-		activeLanguage: state.app.language
+		activeLanguage: state.app.language,
+		fees: state.user.fees
 	};
 };
 
-export default connect(mapStateToProps)(OrderEntry);
+const mapDispatchToProps = (dispatch) => ({
+	submit: bindActionCreators(submit, dispatch)
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(OrderEntry);

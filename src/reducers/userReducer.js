@@ -53,7 +53,11 @@ const INITIAL_STATE = {
 	fee: 0,
 	verification_level: 0,
 	otp_enabled: false,
-	otp: INITIAL_OTP_OBJECT
+	otp: INITIAL_OTP_OBJECT,
+	fees: {
+		maker_fee: 0,
+		taker_fee: 0,
+	}
 };
 
 export default function reducer(state = INITIAL_STATE, action) {
@@ -68,6 +72,7 @@ export default function reducer(state = INITIAL_STATE, action) {
 				otp_enabled
 			} = action.payload;
 			const userData = extractuserData(action.payload);
+			const fees = action.payload.fees || state.fees;
 			return {
 				...state,
 				fetching: false,
@@ -82,17 +87,20 @@ export default function reducer(state = INITIAL_STATE, action) {
 				crypto_wallet,
 				verification_level,
 				userData,
-				otp_enabled
+				otp_enabled,
+				fees,
 			};
 		}
 		case 'SET_USER_DATA': {
 			const userData = extractuserData(action.payload);
+			const fees = action.payload.fees || state.fees;
 			return {
 				...state,
 				userData: {
 					...state.userData,
 					...userData
-				}
+				},
+				fees
 			};
 		}
 		case 'SET_BALANCE':

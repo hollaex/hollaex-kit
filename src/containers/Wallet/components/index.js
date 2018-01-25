@@ -58,7 +58,9 @@ export const renderTitle = (symbol, type = 'withdraw') => {
 };
 
 export const renderAvailableBalanceText = (symbol, balance) => {
-	const { shortName, fullName, formatToCurrency } = CURRENCIES[symbol];
+	const { formatToCurrency } = CURRENCIES[symbol];
+	const shortName = STRINGS[`${symbol.toUpperCase()}_SHORTNAME`];
+	const fullName = STRINGS[`${symbol.toUpperCase()}_FULLNAME`];
 	const available = formatToCurrency(balance[`${symbol}_available`]);
 
 	return (

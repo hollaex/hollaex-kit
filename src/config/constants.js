@@ -369,3 +369,7 @@ export const MIN_VERIFICATION_LEVEL_TO_WITHDRAW = 2;
 export const BLOCKTRAIL_ENDPOINT = `https://www.blocktrail.com/${
 	NETWORK === 'testnet' ? 't' : ''
 }BTC/tx/`;
+
+export const BALANCE_ERROR = 'Insufficient balance to perform the order';
+
+export const CAPTCHA_SITEKEY = process.env.REACT_APP_CAPTCHA_SITE_KEY || '6LcSOUIUAAAAAEbu2RXTpm-hdvQnTcTy12qG2y86';
