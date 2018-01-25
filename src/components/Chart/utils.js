@@ -21,9 +21,9 @@ export const yExtents = (data) => {
 	return [data.high + Y_GAP, data.low - Y_GAP];
 };
 
-export const generateXExtents = (xAccessor, data) => {
+export const generateXExtents = (xAccessor, data, limit = 50) => {
 	const start = xAccessor(last(data));
-	const end = xAccessor(data[Math.max(0, data.length - 150)]);
+	const end = xAccessor(data[Math.max(0, data.length - limit)]);
 	const xExtents = [start, end];
 	return xExtents;
 };

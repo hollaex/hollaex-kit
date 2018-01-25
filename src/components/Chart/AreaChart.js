@@ -45,7 +45,8 @@ class AreaChartWithEdge extends Component {
 			initialData
 		);
 
-		const xExtents = generateXExtents(xAccessor, data);
+		const dataCount = this.props.dataCount || Math.floor(width / 5);
+		const xExtents = generateXExtents(xAccessor, data, dataCount);
 
 		return (
 			<ChartCanvas
@@ -92,6 +93,7 @@ AreaChartWithEdge.propTypes = {
 	width: PropTypes.number.isRequired,
 	height: PropTypes.number.isRequired,
 	ratio: PropTypes.number.isRequired,
+	dataCount: PropTypes.number,
 	type: PropTypes.oneOf(['svg', 'hybrid']).isRequired
 };
 
