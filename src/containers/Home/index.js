@@ -6,15 +6,15 @@ import { bindActionCreators } from 'redux';
 
 import { AppBar, Footer } from '../../components';
 
-import { requestQuickTrade } from '../../actions/orderbookAction';
+// import { requestQuickTrade } from '../../actions/orderbookAction';
 import { setLanguage } from '../../actions/appActions';
 import { getClasesForLanguage } from '../../utils/string';
 
 import Section1 from './Section1';
-import Section2 from './Section2';
+// import Section2 from './Section2';
 import Section3 from './Section3';
 
-const INFORMATION_INDEX = 2;
+const INFORMATION_INDEX = 1;
 const MIN_HEIGHT = 450;
 
 class Home extends Component {
@@ -61,13 +61,13 @@ class Home extends Component {
 		this.props.router.push(path);
 	};
 
-	onReviewQuickTrade = () => {
-		if (this.props.token) {
-			this.goTo('quick-trade')();
-		} else {
-			this.goTo('login')();
-		}
-	};
+	// onReviewQuickTrade = () => {
+	// 	if (this.props.token) {
+	// 		this.goTo('quick-trade')();
+	// 	} else {
+	// 		this.goTo('login')();
+	// 	}
+	// };
 
 	onChangeLanguage = (language) => () => {
 		return this.props.changeLanguage(language);
@@ -77,9 +77,9 @@ class Home extends Component {
 		const {
 			token,
 			verifyToken,
-			symbol,
-			quickTradeData,
-			requestQuickTrade,
+			// symbol,
+			// quickTradeData,
+			// requestQuickTrade,
 			activeLanguage
 		} = this.props;
 		const { style } = this.state;
@@ -118,17 +118,18 @@ class Home extends Component {
 						onClickRegister={this.goTo('signup')}
 						token={token}
 					/>
-					<Section2
+					{/*<Section2
 						style={style}
 						onReviewQuickTrade={this.onReviewQuickTrade}
 						onRequestMarketValue={requestQuickTrade}
 						symbol={symbol}
 						quickTradeData={quickTradeData}
-					/>
+					/>*/}
 					<Section3
 						style={style}
 						onClickRegister={this.goTo('signup')}
 						token={token}
+						onClickDemo={this.goTo('login')}
 					/>
 					<Footer
 						onChangeLanguage={this.onChangeLanguage}
@@ -144,13 +145,13 @@ const mapStateToProps = (store) => ({
 	token: store.auth.token,
 	verifyToken: store.auth.verifyToken,
 	estimatedValue: 100,
-	symbol: store.orderbook.symbol,
-	quickTradeData: store.orderbook.quickTrade,
+	// symbol: store.orderbook.symbol,
+	// quickTradeData: store.orderbook.quickTrade,
 	activeLanguage: store.app.language
 });
 
 const mapDispatchToProps = (dispatch) => ({
-	requestQuickTrade: bindActionCreators(requestQuickTrade, dispatch),
+	// requestQuickTrade: bindActionCreators(requestQuickTrade, dispatch),
 	changeLanguage: bindActionCreators(setLanguage, dispatch)
 });
 

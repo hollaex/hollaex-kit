@@ -34,10 +34,19 @@ $no-background--color: white;
 		min-height: 500px;
 
 		.scroll-button {
-			$arrow-size: 11px;
+			$arrow-size: 2rem;
+			position: absolute;
 			bottom: 1rem;
-			left: calc(50% - #{$arrow-size});
-			@include css-triangle($colors-main-black, down, $arrow-size, absolute, true);
+			@include size($arrow-size);
+			& svg {
+				@include size($arrow-size);
+				.st0 {
+					stroke: #4d4d4d;
+					stroke-width: 2;
+				}
+			}
+			// left: calc(50% - #{$arrow-size});
+			// @include css-triangle($colors-main-black, down, $arrow-size, absolute, true);
 		}
 	}
 

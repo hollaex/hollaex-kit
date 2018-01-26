@@ -1,8 +1,9 @@
 import React from 'react';
 import classnames from 'classnames';
+import ReactSVG from 'react-svg';
 import STRINGS from '../../config/localizedStrings';
 
-import { FLEX_CENTER_CLASSES } from '../../config/constants';
+import { FLEX_CENTER_CLASSES, ICONS } from '../../config/constants';
 
 const BUTTONS_CLASSES = ['buttons-section--button', ...FLEX_CENTER_CLASSES];
 
@@ -38,7 +39,7 @@ const Section1 = ({
 				>
 					{STRINGS.HOME.SECTION_1_BUTTON_1}
 				</div>
-				{!token && (
+				{/*!token && (
 					<div
 						className={classnames(...BUTTONS_CLASSES, 'contrast', {
 							pointer: onClickRegister
@@ -47,13 +48,15 @@ const Section1 = ({
 					>
 						{STRINGS.REGISTER_TEXT}
 					</div>
-				)}
+				)*/}
 			</div>
 		</div>
 		<div
 			className={classnames('pointer', 'flex-0', 'scroll-button')}
 			onClick={onClickScrollTo}
-		/>
+		>
+			<ReactSVG path={ICONS.ARROW_DOWN} />
+		</div>
 	</div>
 );
 

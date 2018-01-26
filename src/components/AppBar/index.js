@@ -50,10 +50,9 @@ class AppBar extends Component {
 			</div>
 		) : (
 			<div className={classnames(...WRAPPER_CLASSES)}>
-				<LinkButton path="/account" text={STRINGS.LOGIN_TEXT} />
 				<LinkButton
-					path="/signup"
-					text={STRINGS.SIGNUP_TEXT}
+					path="/login"
+					text={STRINGS.LOGIN_TEXT}
 					buttonClassName="contrast"
 				/>
 			</div>

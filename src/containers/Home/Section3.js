@@ -81,13 +81,15 @@ const Section = ({ style, onClickDemo, onClickRegister, token }) => (
 			))}
 		</div>
 		<div className={classnames('buttons-section', ...FLEX_CENTER_CLASSES)}>
-			{/*<div
-        className={classnames(...BUTTONS_CLASSES, { pointer: onClickDemo })}
-        onClick={onClickDemo}
-      >
-        {STRINGS.HOME.SECTION_3_BUTTON_1}
-      </div>*/}
-			{!token && (
+			{
+				<div
+					className={classnames(...BUTTONS_CLASSES, { pointer: onClickDemo })}
+					onClick={onClickDemo}
+				>
+					{STRINGS.HOME.SECTION_3_BUTTON_1}
+				</div>
+			}
+			{/*!token && (
 				<div
 					className={classnames(...BUTTONS_CLASSES, 'contrast', {
 						pointer: onClickRegister
@@ -96,7 +98,7 @@ const Section = ({ style, onClickDemo, onClickRegister, token }) => (
 				>
 					{STRINGS.REGISTER_TEXT}
 				</div>
-			)}
+			)*/}
 		</div>
 	</div>
 );
