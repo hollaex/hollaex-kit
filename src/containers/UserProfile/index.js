@@ -20,7 +20,7 @@ import STRINGS from '../../config/localizedStrings';
 const EmailForm = Form('EmailForm');
 const MobileForm = Form('MobileForm');
 const InformationForm = Form('InformationForm');
-const BankForm = Form('BankForm');
+// const BankForm = Form('BankForm');
 
 class UserProfile extends Component {
 	state = {
@@ -104,13 +104,13 @@ class UserProfile extends Component {
 		const {
 			dataFormValues,
 			mobileFormValues,
-			bankFormValues,
+			// bankFormValues,
 			emailFormValues
 		} = this.state;
 		const {
 			phone_number,
 			full_name,
-			bank_account = {},
+			// bank_account = {},
 			id_data = {}
 		} = userData;
 		const sections = [
@@ -165,27 +165,27 @@ class UserProfile extends Component {
 					STRINGS.USER_VERIFICATION.VERIFY_USER_DOCUMENTATION
 				)
 			},
-			{
-				title: STRINGS.USER_VERIFICATION.TITLE_BANK_ACCOUNT,
-				subtitle: bank_account.card_number,
-				content: (
-					<BankForm initialValues={bank_account} formValues={bankFormValues}>
-						<InformationSection
-							text={
-								bank_account.verified
-									? ''
-									: STRINGS.USER_VERIFICATION.PENDING_VERIFICATION_BANK
-							}
-							onChangeValue={this.onOpenContactForm}
-						/>
-					</BankForm>
-				),
-				notification: this.generateNotification(
-					bank_account.verified,
-					bank_account.provided,
-					STRINGS.USER_VERIFICATION.VERIFY_BANK_ACCOUNT
-				)
-			},
+			// {
+			// 	title: STRINGS.USER_VERIFICATION.TITLE_BANK_ACCOUNT,
+			// 	subtitle: bank_account.card_number,
+			// 	content: (
+			// 		<BankForm initialValues={bank_account} formValues={bankFormValues}>
+			// 			<InformationSection
+			// 				text={
+			// 					bank_account.verified
+			// 						? ''
+			// 						: STRINGS.USER_VERIFICATION.PENDING_VERIFICATION_BANK
+			// 				}
+			// 				onChangeValue={this.onOpenContactForm}
+			// 			/>
+			// 		</BankForm>
+			// 	),
+			// 	notification: this.generateNotification(
+			// 		bank_account.verified,
+			// 		bank_account.provided,
+			// 		STRINGS.USER_VERIFICATION.VERIFY_BANK_ACCOUNT
+			// 	)
+			// },
 			{
 				title: STRINGS.USER_VERIFICATION.TITLE_ID_DOCUMENTS,
 				content: (

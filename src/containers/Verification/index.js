@@ -21,7 +21,7 @@ import {
 } from '../../actions/verificationActions';
 import { logout } from '../../actions/authAction';
 
-import BankVerification from './BankVerification';
+// import BankVerification from './BankVerification';
 import IdentityVerification from './IdentityVerification';
 import MobileVerification from './MobileVerification';
 import DocumentsVerification from './DocumentsVerification';
@@ -70,7 +70,7 @@ class Verification extends Component {
 
 	setUserData = (user = {}) => {
 		const activeTab = this.calculateActiveTab(user);
-		if (activeTab === 4) {
+		if (activeTab > 3) {
 			this.goToAccountPage();
 		} else {
 			this.updateTabs(user, this.props.activeLanguage, activeTab);
@@ -85,16 +85,14 @@ class Verification extends Component {
 		id_data,
 		full_name
 	}) => {
-		if (!bank_account.provided && !full_name) {
+		if (!address.country) {
 			return 0;
-		} else if (!address.country) {
-			return 1;
 		} else if (!phone_number) {
-			return 2;
+			return 1;
 		} else if (!id_data.provided) {
-			return 3;
+			return 2;
 		}
-		return 4;
+		return 3;
 	};
 
 	updateTabs = (
@@ -110,38 +108,16 @@ class Verification extends Component {
 			{
 				title: (
 					<CheckTitle
-						title={STRINGS.USER_VERIFICATION.TITLE_BANK}
+						title={STRINGS.USER_VERIFICATION.TITLE_IDENTITY}
 						titleClassName={activeTab !== 0 ? 'title-inactive' : ''}
 						icon={
 							activeTab === 0
-								? ICONS.VERIFICATION_BANK
-								: ICONS.VERIFICATION_BANK_INACTIVE
-						}
-					/>
-				),
-				content: activeTab === 0 && (
-					<div className={CONTENT_CLASS}>
-						<BankVerification
-							moveToNextStep={this.goNextTab}
-							activeLanguage={activeLanguage}
-							openContactForm={this.openContactForm}
-						/>
-					</div>
-				)
-			},
-			{
-				title: (
-					<CheckTitle
-						title={STRINGS.USER_VERIFICATION.TITLE_IDENTITY}
-						titleClassName={activeTab !== 1 ? 'title-inactive' : ''}
-						icon={
-							activeTab === 1
 								? ICONS.VERIFICATION_ID
 								: ICONS.VERIFICATION_ID_INACTIVE
 						}
 					/>
 				),
-				content: activeTab === 1 && (
+				content: activeTab === 0 && (
 					<div className={CONTENT_CLASS}>
 						<IdentityVerification
 							fullName={full_name}
@@ -157,15 +133,15 @@ class Verification extends Component {
 				title: (
 					<CheckTitle
 						title={STRINGS.USER_VERIFICATION.TITLE_MOBILE}
-						titleClassName={activeTab !== 2 ? 'title-inactive' : ''}
+						titleClassName={activeTab !== 1 ? 'title-inactive' : ''}
 						icon={
-							activeTab === 2
+							activeTab === 1
 								? ICONS.VERIFICATION_MOBILE
 								: ICONS.VERIFICATION_MOBILE_INACTIVE
 						}
 					/>
 				),
-				content: activeTab === 2 && (
+				content: activeTab === 1 && (
 					<div className={CONTENT_CLASS}>
 						<MobileVerification
 							initialValues={mobileInitialValues}
@@ -180,15 +156,15 @@ class Verification extends Component {
 				title: (
 					<CheckTitle
 						title={STRINGS.USER_VERIFICATION.TITLE_ID_DOCUMENTS}
-						titleClassName={activeTab !== 3 ? 'title-inactive' : ''}
+						titleClassName={activeTab !== 2 ? 'title-inactive' : ''}
 						icon={
-							activeTab === 3
+							activeTab === 2
 								? ICONS.VERIFICATION_DOC
 								: ICONS.VERIFICATION_DOC_INACTIVE
 						}
 					/>
 				),
-				content: activeTab === 3 && (
+				content: activeTab === 2 && (
 					<div className={CONTENT_CLASS}>
 						<DocumentsVerification
 							nationality={user.nationality}

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import moment from 'moment';
-import { connect } from 'react-redux';
-import { reduxForm, formValueSelector, SubmissionError } from 'redux-form';
+import { reduxForm, SubmissionError } from 'redux-form';
 import {
 	required,
 	requiredBoolean,
@@ -11,10 +10,7 @@ import {
 import renderFields from '../../components/Form/factoryFields';
 import { Button } from '../../components';
 import STRINGS from '../../config/localizedStrings';
-import {
-	COUNTRIES_OPTIONS,
-	NATIONAL_COUNTRY_VALUE
-} from '../../utils/countries';
+import { COUNTRIES_OPTIONS } from '../../utils/countries';
 
 import { ICONS } from '../../config/constants';
 import { getErrorLocalized } from '../../utils/errors';
@@ -33,25 +29,13 @@ class IdentityVerification extends Component {
 	}
 
 	componentWillReceiveProps(nextProps) {
-		if (
-			nextProps.activeLanguage !== this.props.activeLanguage ||
-			nextProps.nationality !== this.props.nationality
-		) {
-			this.generateFormFields(
-				nextProps.activeLanguage,
-				nextProps.fullName,
-				nextProps.nationality
-			);
+		if (nextProps.activeLanguage !== this.props.activeLanguage) {
+			this.generateFormFields(nextProps.activeLanguage, nextProps.fullName);
 		}
 	}
 
-	generateFormFields = (
-		language,
-		fullName = '',
-		nationality = NATIONAL_COUNTRY_VALUE
-	) => {
-		const ID_NUMBER_TYPE =
-			nationality === NATIONAL_COUNTRY_VALUE ? 'NATIONAL' : 'PASSPORT';
+	generateFormFields = (language, fullName = '') => {
+		const ID_NUMBER_TYPE = 'PASSPORT';
 		const formFields = {
 			full_name: {
 				type: 'text',
@@ -201,10 +185,6 @@ class IdentityVerification extends Component {
 			}
 		};
 
-		if (nationality === NATIONAL_COUNTRY_VALUE) {
-			delete formFields.id_issued_date;
-		}
-
 		this.setState({ formFields });
 	};
 
@@ -263,10 +243,4 @@ const IdentityVerificationForm = reduxForm({
 	form: FORM_NAME
 })(IdentityVerification);
 
-const selector = formValueSelector(FORM_NAME);
-
-const mapStateToProps = (state) => ({
-	nationality: selector(state, 'nationality')
-});
-
-export default connect(mapStateToProps)(IdentityVerificationForm);
+export default IdentityVerificationForm;

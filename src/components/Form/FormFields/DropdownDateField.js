@@ -4,10 +4,7 @@ import moment from 'moment';
 import momentJ from 'moment-jalaali';
 import { range } from 'lodash';
 import FieldWrapper from './FieldWrapper';
-import { ActionNotification } from '../../';
 import DropdownDateOption from './DropdownDateOption';
-import { ICONS } from '../../../config/constants';
-import STRINGS from '../../../config/localizedStrings';
 
 const FIELDS = [
 	{ key: 'year', label: 'Year' },
@@ -16,7 +13,6 @@ const FIELDS = [
 ];
 const LIMIT_YEARS = 100;
 const DEFAULT_LANGUAGE = 'en';
-const FARSI_LANGUAGE = 'fa';
 
 const FORMATS = {
 	en: {
@@ -40,14 +36,6 @@ const generateDateLimits = (yearsBack = LIMIT_YEARS, yearsForward = 0) => {
 			year: range(
 				nowMoment.year() - yearsBack,
 				nowMoment.year() + (yearsForward || 1)
-			).reverse()
-		},
-		fa: {
-			maxYears: nowMoment.jYear() + yearsForward,
-			minYears: nowMoment.jYear() - yearsBack,
-			year: range(
-				nowMoment.jYear() - yearsBack,
-				nowMoment.jYear() + (yearsForward || 1)
 			).reverse()
 		}
 	};
@@ -105,14 +93,6 @@ class DropdownDateField extends Component {
 			day: range(1, date.daysInMonth() + 1)
 		};
 
-		momentJ.locale(FARSI_LANGUAGE);
-		const faMoment = momentJ.localeData(FARSI_LANGUAGE);
-		display.fa = {
-			...limits.fa,
-			month: faMoment._jMonths,
-			day: range(1, momentJ.jDaysInMonth(date.jYear(), date.jMonth()) + 1)
-		};
-
 		moment.locale(language);
 		this.setState({ display, date, unixtime: date.valueOf(), language });
 	};
@@ -123,38 +103,18 @@ class DropdownDateField extends Component {
 
 		const date = momentJ(unixtime);
 		if (key === 'year') {
-			if (language === FARSI_LANGUAGE) {
-				date.jYear(value);
-			} else {
-				date.year(value);
-			}
+			date.year(value);
 		} else if (key === 'month') {
-			if (language === FARSI_LANGUAGE) {
-				date.jMonth(index);
-			} else {
-				date.month(index);
-			}
+			date.month(index);
 		} else if (key === 'day') {
-			if (language === FARSI_LANGUAGE) {
-				date.jDate(value);
-			} else {
-				date.date(value);
-			}
+			date.date(value);
 		}
 
 		this.setDisplay(limits, date.format(), language);
 		input.onChange(date.format());
 	};
 
-	renderFields = (
-		date,
-		options,
-		valid = false,
-		formats,
-		languageProps,
-		languageState,
-		disabled
-	) => {
+	renderFields = (date, options, valid = false, formats, disabled) => {
 		return (
 			<div className="datefield-values-wrapper">
 				{FIELDS.map(({ key, format }, index) => {
@@ -171,45 +131,13 @@ class DropdownDateField extends Component {
 						/>
 					);
 				})}
-				{languageProps === DEFAULT_LANGUAGE && (
-					<div className={classnames('datefield-toogle', languageState)}>
-						<ActionNotification
-							text={
-								languageState === DEFAULT_LANGUAGE
-									? STRINGS.DATEFIELD_TOOGLE_DATE_PE
-									: STRINGS.DATEFIELD_TOOGLE_DATE_GR
-							}
-							status="information"
-							iconPath={ICONS.COPY_NEW}
-							className="no_bottom pr-0 pl-0"
-							onClick={this.toogleLanguage}
-						/>
-					</div>
-				)}
 			</div>
 		);
-	};
-
-	toogleLanguage = () => {
-		if (this.state.language === DEFAULT_LANGUAGE) {
-			this.setDisplay(
-				this.state.limits,
-				this.props.input.value,
-				FARSI_LANGUAGE
-			);
-		} else {
-			this.setDisplay(
-				this.state.limits,
-				this.props.input.value,
-				this.props.language
-			);
-		}
 	};
 
 	render() {
 		const { display, date, language } = this.state;
 		const { meta: { invalid }, disabled = false } = this.props;
-		const languageProps = this.props.language;
 		return (
 			<FieldWrapper
 				{...this.props}
@@ -223,8 +151,6 @@ class DropdownDateField extends Component {
 						display[language],
 						!invalid,
 						FORMATS[language],
-						languageProps,
-						language,
 						disabled
 					)}
 			</FieldWrapper>

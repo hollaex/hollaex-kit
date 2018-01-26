@@ -10,7 +10,6 @@ import HeaderSection, {
 } from './HeaderSection';
 import { getErrorLocalized } from '../../utils/errors';
 import { updateDocuments } from '../../actions/userAction';
-import { NATIONAL_COUNTRY_VALUE } from '../../utils/countries';
 
 const FORM_NAME = 'DocumentsVerification';
 
@@ -20,18 +19,17 @@ class DocumentsVerification extends Component {
 	};
 
 	componentDidMount() {
-		this.generateFormFields(this.props.nationality);
+		this.generateFormFields();
 	}
 
 	componentWillReceiveProps(nextProps) {
 		if (nextProps.activeLanguage !== this.props.activeLanguage) {
-			this.generateFormFields(nextProps.nationality);
+			this.generateFormFields();
 		}
 	}
 
-	generateFormFields = (nationality = NATIONAL_COUNTRY_VALUE) => {
-		const FRONT_TYPE =
-			nationality === NATIONAL_COUNTRY_VALUE ? 'FRONT' : 'PASSPORT';
+	generateFormFields = () => {
+		const FRONT_TYPE = 'PASSPORT';
 		const formFields = {
 			id: {
 				type: {
@@ -53,26 +51,8 @@ class DocumentsVerification extends Component {
 						)
 					]
 				}
-			}
-		};
-
-		if (nationality === NATIONAL_COUNTRY_VALUE) {
-			formFields.id.back = {
-				type: 'file',
-				label:
-					STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS.BACK_LABEL,
-				placeholder:
-					STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS
-						.BACK_PLACEHOLDER,
-				validate: [
-					requiredWithCustomMessage(
-						STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.VALIDATIONS.FRONT
-					)
-				]
-			};
-		} else {
-			// nationality !== NATIONAL_COUNTRY_VALUE
-			formFields.proofOfResidence = {
+			},
+			proofOfResidence: {
 				proofOfResidency: {
 					type: 'file',
 					label:
@@ -87,8 +67,8 @@ class DocumentsVerification extends Component {
 						)
 					]
 				}
-			};
-		}
+			}
+		};
 
 		this.setState({ formFields });
 	};
