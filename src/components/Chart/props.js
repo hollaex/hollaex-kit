@@ -21,7 +21,6 @@ export const fillIndicator = ({ close, open }) =>
 const CandleColor = ({ open, close }) =>
 	close > open ? COLORS.BUY_CANDLE : COLORS.SELL_CANDLE;
 
-
 export const areaProps = {
 	stroke: COLORS.STROKE,
 	strokeWidth: 2,

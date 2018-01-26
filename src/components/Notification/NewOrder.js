@@ -2,7 +2,11 @@ import React from 'react';
 import EventListener from 'react-event-listener';
 import { ICONS } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
-import { formatBtcAmount, formatBtcFullAmount, formatFiatAmount } from '../../utils/currency';
+import {
+	formatBtcAmount,
+	formatBtcFullAmount,
+	formatFiatAmount
+} from '../../utils/currency';
 import {
 	NotificationWraper,
 	NotificationContent,
@@ -80,22 +84,26 @@ const NewOrderNotification = ({ type, data, onBack, onConfirm }) => {
 	const onConfirmClick = () => {
 		onConfirm();
 		onBack();
-	}
+	};
 
 	const onKeydown = ({ key }) => {
 		if (key === 'Enter') {
 			onConfirmClick();
 		}
-	}
+	};
 
 	return (
-		<NotificationWraper title={STRINGS.CHECK_ORDER} icon={ICONS.CHECK_ORDER} className="new-order-notification">
+		<NotificationWraper
+			title={STRINGS.CHECK_ORDER}
+			icon={ICONS.CHECK_ORDER}
+			className="new-order-notification"
+		>
 			<EventListener target="document" onKeydown={onKeydown} />
 			<OrderDisplay rows={rows} />
 			<div className="d-flex">
 				<Button label={STRINGS.BACK_TEXT} onClick={onBack} />
 				<div className="separator" />
-				<Button label={STRINGS.CONFIRM_TEXT} onClick={onConfirmClick}/>
+				<Button label={STRINGS.CONFIRM_TEXT} onClick={onConfirmClick} />
 			</div>
 		</NotificationWraper>
 	);

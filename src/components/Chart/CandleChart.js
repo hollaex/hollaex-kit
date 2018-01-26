@@ -17,11 +17,7 @@ import { OHLCTooltip } from 'react-stockcharts/lib/tooltip';
 
 import { fitWidth } from 'react-stockcharts/lib/helper';
 
-import {
-	CandlesProps,
-	edgeIndicatorProps,
-	OHLCProps
-} from './props';
+import { CandlesProps, edgeIndicatorProps, OHLCProps } from './props';
 
 import {
 	margins,

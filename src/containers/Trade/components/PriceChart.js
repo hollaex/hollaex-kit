@@ -12,7 +12,7 @@ class ChartComponent extends Component {
 		chartData: {},
 		chartSocket: undefined,
 		ready: false,
-		chartType: CHART_TYPES.CANDLE,
+		chartType: CHART_TYPES.CANDLE
 		// chartType: CHART_TYPES.AREA
 	};
 

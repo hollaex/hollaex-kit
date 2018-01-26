@@ -37,7 +37,7 @@ class CustomChart extends Component {
 			height,
 			ratio,
 			seriesName,
-      children
+			children
 		} = this.props;
 
 		const { data, xScale, xAccessor, displayXAccessor } = xScaleProvider(

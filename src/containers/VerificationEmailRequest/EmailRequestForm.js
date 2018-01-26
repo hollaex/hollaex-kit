@@ -21,7 +21,10 @@ export const generateFormFields = () => ({
 });
 
 const Form = (props) => (
-	<AuthForm {...props} buttonLabel={STRINGS.VERIFICATION_EMAIL_REQUEST.BUTTON} />
+	<AuthForm
+		{...props}
+		buttonLabel={STRINGS.VERIFICATION_EMAIL_REQUEST.BUTTON}
+	/>
 );
 
 export default reduxForm({

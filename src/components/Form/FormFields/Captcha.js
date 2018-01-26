@@ -5,8 +5,8 @@ import { CAPTCHA_SITEKEY } from '../../../config/constants';
 class CaptchaField extends PureComponent {
 	componentWillReceiveProps(nextProps) {
 		if (
-			(nextProps.input.value === '' &&
-				nextProps.input.value !== this.props.input.value)
+			nextProps.input.value === '' &&
+			nextProps.input.value !== this.props.input.value
 		) {
 			this.captcha.reset();
 		}

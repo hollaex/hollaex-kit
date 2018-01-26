@@ -25,12 +25,7 @@ const renderFields = (fields = {}) => {
 
 				switch (type) {
 					case 'captcha':
-						return (
-							<Field
-								component={CaptchaField}
-								{...commonProps}
-							/>
-						);
+						return <Field component={CaptchaField} {...commonProps} />;
 					case 'hidden':
 						return (
 							<Field

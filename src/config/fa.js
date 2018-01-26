@@ -410,8 +410,7 @@ export default {
 				PROOF_OF_RESIDENCY: 'مدارک اثبات آدرس',
 				ID_SECTION: {
 					TITLE: 'لطفا در بارگذاری اسکن مدارک خود به نکات زیر دقت کنید:',
-					LIST_ITEM_1:
-						'کیفیت بالا باشد(تصاویر رنگی، زیر 300KB).',
+					LIST_ITEM_1: 'کیفیت بالا باشد(تصاویر رنگی، زیر 300KB).',
 					LIST_ITEM_2: 'نوشته ها خوانا و واضح باشد.',
 					LIST_ITEM_3: 'مدرک اعتبار داشته باشد',
 					WARNING_1: 'تنها کارت ملی معتبر برای احراز هویت مورد قبول است.',
@@ -538,7 +537,10 @@ export default {
 		market: 'بازار',
 		limit: 'محدود'
 	},
-	TYPES: [{ value: 'market', label: 'بازار' }, { value: 'limit', label: 'محدود' }],
+	TYPES: [
+		{ value: 'market', label: 'بازار' },
+		{ value: 'limit', label: 'محدود' }
+	],
 	SIDE: 'طرف',
 	SIDES_VALUES: {
 		buy: 'خرید',
