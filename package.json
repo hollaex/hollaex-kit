@@ -1,6 +1,6 @@
 {
-	"name": "exir",
-	"version": "0.6.2",
+	"name": "hollaex",
+	"version": "0.1.0",
 	"private": true,
 	"dependencies": {
 		"@material/button": "^0.7.0",
@@ -69,16 +69,15 @@
 		"build": "npm run build-css && react-scripts build",
 		"test": "react-scripts test --env=jsdom",
 		"eject": "react-scripts eject",
-		"deploy-test": "npm run build && aws s3 sync build/ s3://testnet.exir.tech",
-		"deploy-main": "npm run build && aws s3 sync build/ s3://exir.tech"
+		"deploy-main": "npm run build && aws s3 sync build/ s3://hollaex.com"
 	},
-	"description": "Cryptocurrency trading platfrom",
+	"description": "Cryptocurrency exchange platfrom",
 	"main": "index.js",
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/bitholla/exir.git"
+		"url": "git+https://github.com/bitholla/hollaex.git"
 	},
-	"homepage": "https://exir.tech",
+	"homepage": "https://hollaex.com",
 	"prettier": {
 		"tabWidth": 2,
 		"useTabs": true,

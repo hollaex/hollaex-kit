@@ -1,5 +1,5 @@
 import React from 'react';
-import { EXIR_LOGO } from '../../config/constants';
+import { HOLLAEX_LOGO } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 
 const getContent = (strings, type) => {
@@ -19,7 +19,11 @@ const Legal = ({ type }) => {
 		<div className="d-flex legal-wrapper justify-content-center">
 			<div className="d-flex flex-column legal-content-wrapper">
 				<div className="legal-logo-wrapper">
-					<img src={EXIR_LOGO} alt="exir" className="legal-logo" />
+					<img
+						src={HOLLAEX_LOGO}
+						alt={STRINGS.APP_NAME}
+						className="legal-logo"
+					/>
 				</div>
 				<div className="legal-title">{TITLE}</div>
 				<div className="legal-subtitle">{SUBTITLE}</div>

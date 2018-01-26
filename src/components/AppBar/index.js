@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
-import { EXIR_BLUE_LOGO } from '../../config/constants';
+import { HOLLAEX_LOGO_BLACK } from '../../config/constants';
 import { LinkButton } from './LinkButton';
-import { LanguageSelector } from '../';
 
 import STRINGS from '../../config/localizedStrings';
 
@@ -82,7 +81,7 @@ class AppBar extends Component {
 				>
 					{isHome ? (
 						<img
-							src={EXIR_BLUE_LOGO}
+							src={HOLLAEX_LOGO_BLACK}
 							alt={STRINGS.APP_NAME}
 							className="app_bar-icon-logo"
 						/>
@@ -92,7 +91,6 @@ class AppBar extends Component {
 				</div>
 				<div className="app_bar-main d-flex justify-content-between">
 					<div>{!isHome && STRINGS.APP_TITLE}</div>
-					<LanguageSelector />
 				</div>
 				{rightChildren
 					? rightChildren

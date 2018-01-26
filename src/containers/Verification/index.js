@@ -325,7 +325,7 @@ class Verification extends Component {
 				)}
 				<Dialog
 					isOpen={dialogIsOpen}
-					label="exir--verification-modal"
+					label="hollaex--verification-modal"
 					onCloseDialog={this.onCloseDialog}
 					shouldCloseOnOverlayClick={dialogType !== 'complete'}
 				>

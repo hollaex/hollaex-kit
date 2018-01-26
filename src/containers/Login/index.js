@@ -9,7 +9,11 @@ import LoginForm, { FORM_NAME } from './LoginForm';
 import { Dialog, OtpForm, IconTitle, Notification } from '../../components';
 import { NOTIFICATIONS } from '../../actions/appActions';
 import { errorHandler } from '../../components/OtpForm/utils';
-import { EXIR_LOGO, FLEX_CENTER_CLASSES, ICONS } from '../../config/constants';
+import {
+	HOLLAEX_LOGO,
+	FLEX_CENTER_CLASSES,
+	ICONS
+} from '../../config/constants';
 
 import STRINGS from '../../config/localizedStrings';
 
@@ -104,7 +108,7 @@ class Login extends Component {
 					)}
 				>
 					<IconTitle
-						iconPath={EXIR_LOGO}
+						iconPath={HOLLAEX_LOGO}
 						text={STRINGS.LOGIN_TEXT}
 						textType="title"
 						underline={true}

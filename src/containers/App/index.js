@@ -208,7 +208,7 @@ class Container extends Component {
 		});
 
 		privateSocket.on('update', ({ type, data }) => {
-			console.log('update', type, data);
+			// console.log('update', type, data);
 			switch (type) {
 				case 'order_queued':
 					// TODO add queued orders to the store
@@ -496,7 +496,7 @@ class Container extends Component {
 				</div>
 				<Dialog
 					isOpen={dialogIsOpen}
-					label="exir-modal"
+					label="hollaex-modal"
 					onCloseDialog={this.onCloseDialog}
 					shouldCloseOnOverlayClick={shouldCloseOnOverlayClick}
 					style={{ 'z-index': 100 }}

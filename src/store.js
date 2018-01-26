@@ -6,7 +6,15 @@ import { autoRehydrate } from 'redux-persist';
 
 import reducer from './reducers/reducer';
 
-const middleware = applyMiddleware(promise(), thunk, logger);
+import { ENV } from './config/constants';
+
+const middlewares = [promise(), thunk];
+
+if (ENV === 'development') {
+	middlewares.push(logger);
+}
+
+const middleware = applyMiddleware(...middlewares);
 
 export default createStore(
 	reducer,

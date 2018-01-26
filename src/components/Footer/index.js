@@ -13,17 +13,17 @@ const LINKS = [
 	},
 	{
 		icon: SOCIAL_ICONS.TWIITER,
-		link: 'https://twitter.com/ExchangeIran',
+		link: '', // TODO
 		type: 'twitter'
 	},
 	{
 		icon: SOCIAL_ICONS.INSTAGRAM,
-		link: 'https://www.instagram.com/exir_official',
+		link: '', // TODO
 		type: 'instagram'
 	},
 	{
 		icon: SOCIAL_ICONS.TELEGRAM,
-		link: 'https://t.me/joinchat/A7EgbUODnpLn1lpTrtkNFg',
+		link: '', // TODO
 		type: 'telegram'
 	}
 ];
@@ -172,24 +172,7 @@ const Footer = ({
 					'direction_ltr'
 				)}
 			>
-				<div className="d-flex">
-					<span className="text-weight-bold">
-						{STRINGS.FOOTER.FOOTER_LANGUAGE_TEXT}:
-					</span>
-					{STRINGS.FOOTER.FOOTER_LANGUAGE_LANGUAGES.map(
-						({ key, label }, index) => (
-							<div
-								key={key}
-								onClick={onChangeLanguage(key)}
-								className={classnames('footer-row-language', 'pointer', {
-									active: key === activeLanguage
-								})}
-							>
-								{label}
-							</div>
-						)
-					)}
-				</div>
+				<div className="d-flex" />
 				<div>{STRINGS.FOOTER.FOOTER_COPYRIGHT}</div>
 			</div>
 		</div>

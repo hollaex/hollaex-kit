@@ -2,7 +2,7 @@ $content-wrapper--max-width: $bp-xs;
 $container--padding: 4rem;
 
 .auth-wrapper {
-	background: url(/assets/EXIR-pattern-grey.jpg);
+	background: url(/assets/pattern-grey.jpg);
 	background-repeat: repeat;
 	background-size: $background-patter--size;
 	position: relative;
@@ -83,7 +83,7 @@ $container--padding: 4rem;
 				height: inherit;
 				svg {
 					width: inherit;
-					height: 2rem;
+					height: 4rem;
 				}
 			}
 		}

@@ -9,7 +9,11 @@ import SignupForm, { generateFormFields, FORM_NAME } from './SignupForm';
 import SignupSuccess from './SignupSuccess';
 import { ContactForm } from '../';
 import { IconTitle, Dialog } from '../../components';
-import { EXIR_LOGO, FLEX_CENTER_CLASSES, ICONS } from '../../config/constants';
+import {
+	HOLLAEX_LOGO,
+	FLEX_CENTER_CLASSES,
+	ICONS
+} from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 
 class Signup extends Component {
@@ -72,7 +76,7 @@ class Signup extends Component {
 					)}
 				>
 					<IconTitle
-						iconPath={EXIR_LOGO}
+						iconPath={HOLLAEX_LOGO}
 						text={STRINGS.SIGNUP_TEXT}
 						textType="title"
 						underline={true}

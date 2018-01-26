@@ -23,7 +23,7 @@ export const renderOTPForm = (secret, email, activateOTP) => (
 			</div>
 			<div className="d-flex justify-content-center otp_form-section-content">
 				<QRCode
-					value={`otpauth://totp/EXIR-${email}?secret=${secret}`}
+					value={`otpauth://totp/HOLLAEX-${email}?secret=${secret}`}
 					size={150}
 				/>
 			</div>

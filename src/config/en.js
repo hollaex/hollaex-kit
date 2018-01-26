@@ -1,10 +1,10 @@
 export default {
-	APP_TITLE: 'exir-exchange',
-	APP_NAME: 'exir',
-	FIAT_NAME: 'Toman',
-	FIAT_FULLNAME: 'Toman',
-	FIAT_SHORTNAME: 'T',
-	FIAT_CURRENCY_SYMBOL: 'T',
+	APP_TITLE: 'Hollaex',
+	APP_NAME: 'hollaex',
+	FIAT_NAME: 'EURO',
+	FIAT_FULLNAME: 'Euro',
+	FIAT_SHORTNAME: 'EUR',
+	FIAT_CURRENCY_SYMBOL: '€',
 	BTC_NAME: 'Bitcoin',
 	BTC_FULLNAME: 'Bitcoin',
 	BTC_SHORTNAME: 'BTC',
@@ -29,7 +29,7 @@ export default {
 	HOME: {
 		SECTION_1_TITLE: 'Buy & sell Bitcoin',
 		SECTION_1_TEXT_1:
-			'EXIR is a cryptocurrency exchange where you can buy and sell bitcoins and other digital currencies in Iran.',
+			'HOLLAEX is a cryptocurrency exchange where you can buy and sell bitcoins and other digital currencies.',
 		SECTION_1_TEXT_2:
 			'We strive to bring the financial technology forward through afforable and simple access to Bitcoin and cryptocurrencies.',
 		SECTION_1_BUTTON_1: 'Learn more',
@@ -61,10 +61,7 @@ export default {
 			'Disclaimer Commerce Policy Made in Iran'
 		],
 		FOOTER_LANGUAGE_TEXT: 'LANGUAGE',
-		FOOTER_LANGUAGE_LANGUAGES: [
-			{ key: 'en', label: 'English' },
-			{ key: 'fa', label: 'فارسی' }
-		],
+		FOOTER_LANGUAGE_LANGUAGES: [{ key: 'en', label: 'English' }],
 		FOOTER_COPYRIGHT: 'COPYRIGHT 2017',
 		SECTIONS: {
 			SECTION_1_TITLE: 'SERVICES',
@@ -124,7 +121,7 @@ export default {
 		},
 		INFORMATION_MESSAGES: [
 			'Use the bank details below to deposit USD in to your account. Transfers usally take up to 1-2 business day.',
-			'Deposits will only be accepeted from a bank account in a name that matches the name registered with your Exir account.'
+			'Deposits will only be accepeted from a bank account in a name that matches the name registered with your HOLLAEX account.'
 		],
 		LIMIT_MESSAGE: 'Daily deposit max amount',
 		INCREASE_LIMIT: 'Want to increase your daily limit?',
@@ -591,7 +588,7 @@ export default {
 		c: 'Close',
 		v: 'Volume'
 	},
-	LANGUAGES: [{ key: 'en', label: 'English' }, { key: 'fa', label: 'فارسی' }],
+	LANGUAGES: [{ key: 'en', label: 'English' }],
 	QUICK_TRADE: 'Quick trade',
 	PRO_TRADE: 'Pro trade',
 	WALLET_TITLE: 'Wallet',
@@ -659,7 +656,7 @@ export default {
 		MESSAGE_FEE: 'Transactions fee of {0} ({1}) included',
 		MESSAGE_FEE_FIAT: 'Transactions fee of {0} included',
 		FIAT_MESSAGE_1:
-			'You can only withdraw to a bank account in a name that matches the name registered with your EXIR account.',
+			'You can only withdraw to a bank account in a name that matches the name registered with your HOLLAEX account.',
 		FIAT_MESSAGE_2: 'Withdrawal min amount',
 		FIAT_MESSAGE_3: 'Daily withdrawal max amount',
 		FIAT_INCREASE_LIMIT: 'Increase your daily limit'
@@ -721,11 +718,11 @@ export default {
 	SUBMIT: 'submit',
 	VERIFICATION_NOTIFICATION_SKIP_TITLE: 'Missing Documents!',
 	VERIFICATION_NOTIFICATION_SKIP_TEXT:
-		'To get full access to withdrawal and deposit functions on EXIR you must submit your identity documents in your account page.',
+		'To get full access to withdrawal and deposit functions on HOLLAEX you must submit your identity documents in your account page.',
 	VERIFICATION_NOTIFICATION_SUCCESS_TITLE: 'Success!',
 	VERIFICATION_NOTIFICATION_SUCCESS_TEXT:
 		'You will receive an email notification when your information has been processed. Processing can typically take 1-3 days.',
-	VERIFICATION_NOTIFICATION_BUTTON: 'PROCEED TO EXIR',
+	VERIFICATION_NOTIFICATION_BUTTON: 'PROCEED TO HOLLAEX',
 	ERROR_USER_ALREADY_VERIFIED: 'User already verified',
 	ERROR_INVALID_CARD_USER: 'Bank or card information provided is incorrect',
 	ERROR_INVALID_CARD_NUMBER: 'Invalid Card number',

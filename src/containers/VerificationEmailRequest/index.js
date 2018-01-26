@@ -7,7 +7,7 @@ import EmailRequestForm, { generateFormFields } from './EmailRequestForm';
 import EmailRequestSuccess from './EmailRequestSuccess';
 import { IconTitle, Dialog } from '../../components';
 import { ContactForm } from '../';
-import { EXIR_LOGO, FLEX_CENTER_CLASSES } from '../../config/constants';
+import { HOLLAEX_LOGO, FLEX_CENTER_CLASSES } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 
 class VerifyEmailRequest extends Component {
@@ -89,7 +89,7 @@ class VerifyEmailRequest extends Component {
 					)}
 				>
 					<IconTitle
-						iconPath={EXIR_LOGO}
+						iconPath={HOLLAEX_LOGO}
 						text={STRINGS.VERIFICATION_EMAIL_REQUEST.TITLE}
 						textType="title"
 						underline={true}

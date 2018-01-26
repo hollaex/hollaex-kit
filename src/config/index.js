@@ -1,8 +1,5 @@
-const PRODUCTION_ENDPOINT = 'https://api.exir.tech';
-const TESTNET_ENDPOINT = 'https://api.testnet.exir.tech';
-const DEVELOPMENT_ENDPOINT = 'http://35.158.234.195';
-// const LOCALHOST_ENDPOINT = 'https://api.testnet.exir.tech';
-// const LOCALHOST_ENDPOINT = 'http://35.158.234.195';
+const PRODUCTION_ENDPOINT =
+	process.env.REACT_APP_SERVER_ENDPOINT || 'https://api.hollaex.com';
 const LOCALHOST_ENDPOINT = 'http://localhost';
 
 const API_PATH_V0 = '/v0';
@@ -14,10 +11,10 @@ const generateEndpoint = (endpoint, path) => ({
 const VARIABLES = {
 	production: {
 		mainnet: generateEndpoint(PRODUCTION_ENDPOINT, API_PATH_V0),
-		testnet: generateEndpoint(TESTNET_ENDPOINT, API_PATH_V0)
+		testnet: generateEndpoint(PRODUCTION_ENDPOINT, API_PATH_V0)
 	},
 	development: {
-		mainnet: generateEndpoint(DEVELOPMENT_ENDPOINT, API_PATH_V0),
+		mainnet: generateEndpoint(PRODUCTION_ENDPOINT, API_PATH_V0),
 		testnet: generateEndpoint(LOCALHOST_ENDPOINT, API_PATH_V0)
 	}
 };

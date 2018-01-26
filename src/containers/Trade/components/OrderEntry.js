@@ -160,7 +160,7 @@ class OrderEntry extends Component {
 		} else if (order.price) {
 			order.price = formatNumber(order.price);
 		}
-		console.log('here', order, this.props);
+		// console.log('here', order, this.props);
 		this.props.openCheckOrder(order, () => {
 			this.props.submit(FORM_NAME);
 		});

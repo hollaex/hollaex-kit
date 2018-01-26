@@ -50,14 +50,6 @@ export const ICONS = {
 	COPY_NEW: `${process.env.PUBLIC_URL}/assets/images/copy.svg`,
 	COPY: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-26.png`,
 	LOGOUT: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-27.png`,
-	LOGO_BLUE: `${process.env.PUBLIC_URL}/assets/logo-blue-exir.svg`,
-	LOGO_GREY: `${process.env.PUBLIC_URL}/assets/images/EXIR-grey-login.svg`,
-	BACKGROUND_LARGE: `${
-		process.env.PUBLIC_URL
-	}/assets/background-site-large.jpg`,
-	BACKGROUND_SMALL: `${
-		process.env.PUBLIC_URL
-	}/assets/background-site-smaller.jpg`,
 	ACCOUNT_LINE: `${process.env.PUBLIC_URL}/assets/images/account.svg`,
 	ACCOUNT_RECOVERY: `${
 		process.env.PUBLIC_URL
@@ -251,7 +243,8 @@ export const ICONS = {
 	ARROW_TRANSFER_HISTORY_INACTIVE: `${
 		process.env.PUBLIC_URL
 	}/assets/images/arrow-trans-history.svg`,
-	CHECK_ORDER: `${process.env.PUBLIC_URL}/assets/images/check-order.svg`
+	CHECK_ORDER: `${process.env.PUBLIC_URL}/assets/images/check-order.svg`,
+	ARROW_DOWN: `${process.env.PUBLIC_URL}/assets/images/arrow-down.svg`
 };
 
 export const SOCIAL_ICONS = {
@@ -274,12 +267,12 @@ export const FEATURES_ICONS = {
 	SUPPORT: `${process.env.PUBLIC_URL}/assets/images/features-support-icons.svg`,
 	LEGAL: `${process.env.PUBLIC_URL}/assets/images/features-legal-icons.svg`
 };
-export const EXIR_LOGO = `${
+export const HOLLAEX_LOGO = `${
 	process.env.PUBLIC_URL
-}/assets/images/EXIR-grey-login.svg`;
-export const EXIR_BLUE_LOGO = `${
+}/assets/hollaEx_logo-grey.svg`;
+export const HOLLAEX_LOGO_BLACK = `${
 	process.env.PUBLIC_URL
-}/assets/logo-blue-exir.svg`;
+}/assets/hollaEx_logo-blk.svg`;
 
 export const CURRENCIES = {
 	fiat: {
@@ -350,8 +343,8 @@ export const TOKEN_KEY = `${ENV}_${NETWORK}_TOKEN`;
 export const LANGUAGE_KEY = `${ENV}_${NETWORK}_LANGUAGE`;
 
 export const BANK_INFORMATION = {
-	bank_name: process.env.REACT_APP_BANK_NAME || 'Exir Trade',
-	account_owner: process.env.REACT_APP_ACCOUNT_OWNER || 'Bank Melli',
+	bank_name: process.env.REACT_APP_BANK_NAME || 'Hollaex',
+	account_owner: process.env.REACT_APP_ACCOUNT_OWNER || 'Exchange',
 	account_number: process.env.REACT_APP_ACCOUNT_NUMBER || '2313-0631-2313-3121'
 };
 
@@ -362,8 +355,7 @@ export const BANK_WITHDRAWAL_DYNAMIC_FEE_RATE =
 export const BANK_WITHDRAWAL_MAX_DYNAMIC_FEE =
 	process.env.REACT_APP_BANK_WITHDRAWAL_MAX_DYNAMIC_FEE || 50000;
 
-export const BANK_PAYMENT_LINK =
-	'https://api.moneyar.com/IPG/default.aspx?uid=';
+export const BANK_PAYMENT_LINK = '';
 export const MIN_VERIFICATION_LEVEL_TO_WITHDRAW = 2;
 
 export const BLOCKTRAIL_ENDPOINT = `https://www.blocktrail.com/${
