@@ -100,6 +100,13 @@ class UserProfile extends Component {
 		);
 	};
 
+	renderGoToVerification = () => (
+		<InformationSection
+			onChangeText={STRINGS.USER_VERIFICATION.GOTO_VERIFICATION}
+			onChangeValue={this.goToVerification}
+		/>
+	);
+
 	calculateSections = (verification_level, email, userData) => {
 		const {
 			dataFormValues,
@@ -113,6 +120,7 @@ class UserProfile extends Component {
 			// bank_account = {},
 			id_data = {}
 		} = userData;
+
 		const sections = [
 			{
 				title: STRINGS.USER_VERIFICATION.TITLE_EMAIL,
@@ -129,10 +137,12 @@ class UserProfile extends Component {
 			{
 				title: STRINGS.USER_VERIFICATION.TITLE_MOBILE_PHONE,
 				subtitle: phone_number,
-				content: (
+				content: phone_number ? (
 					<MobileForm initialValues={userData} formValues={mobileFormValues}>
 						<InformationSection onChangeValue={this.onOpenContactForm} />
 					</MobileForm>
+				) : (
+					this.renderGoToVerification()
 				),
 				notification: this.generateNotification(
 					!!phone_number,
@@ -143,7 +153,7 @@ class UserProfile extends Component {
 			{
 				title: STRINGS.USER_VERIFICATION.TITLE_PERSONAL_INFORMATION,
 				subtitle: full_name,
-				content: (
+				content: full_name ? (
 					<InformationForm
 						initialValues={prepareInitialValues(userData)}
 						formValues={dataFormValues}
@@ -158,6 +168,8 @@ class UserProfile extends Component {
 							onChangeValue={this.onOpenContactForm}
 						/>
 					</InformationForm>
+				) : (
+					this.renderGoToVerification()
 				),
 				notification: this.generateNotification(
 					verification_level > 1,
@@ -200,10 +212,7 @@ class UserProfile extends Component {
 								onChangeValue={this.onOpenContactForm}
 							/>
 						) : (
-							<InformationSection
-								onChangeText={STRINGS.USER_VERIFICATION.GOTO_VERIFICATION}
-								onChangeValue={this.goToVerification}
-							/>
+							this.renderGoToVerification()
 						)}
 					</div>
 				),

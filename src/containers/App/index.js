@@ -186,9 +186,9 @@ class Container extends Component {
 		});
 
 		privateSocket.on('user', (data) => {
-			if (!data.phone_number) {
-				return this.goToVerificationPage();
-			}
+			// if (!data.phone_number) {
+			// 	return this.goToVerificationPage();
+			// }
 			this.props.setMe(data);
 			// if (data.settings && data.settings.language !== this.props.activeLanguage) {
 			// 	this.props.changeLanguage(data.settings.language);
