@@ -1,5 +1,4 @@
 # hollaex
-
 Hollaex is a Bitcoin exchange. It's using reactjs framework as the front-end javascript frametwork and uses Hollaex server.
 
 ## Development
