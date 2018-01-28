@@ -1,5 +1,4 @@
 import { fiatSymbol } from '../../utils/currency';
-import { CURRENCIES } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 
 const generateFiatDepositTexts = (strings) => ({
