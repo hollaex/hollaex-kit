@@ -2,9 +2,12 @@ $content-wrapper--max-width: $bp-xs;
 $container--padding: 4rem;
 
 .auth-wrapper {
-	background: url(/assets/pattern-grey.jpg);
-	background-repeat: repeat;
-	background-size: $background-patter--size;
+	background: url($background-image);
+
+	background-repeat:no-repeat;
+	background-size:cover;
+	// background-repeat: repeat;
+	// background-size: $background-patter--size;
 	position: relative;
 	&:before {
 		position: absolute;
