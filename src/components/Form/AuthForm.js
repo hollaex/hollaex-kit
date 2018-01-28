@@ -7,7 +7,7 @@ const Form = (props) => {
 	const {
 		handleSubmit,
 		submitting,
-		pristine,
+		// pristine,
 		error,
 		valid,
 		formFields,

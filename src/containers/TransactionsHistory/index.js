@@ -9,7 +9,7 @@ import {
 } from '../../actions/walletActions';
 
 import { IconTitle, TabController, Loader, CheckTitle } from '../../components';
-import { ICONS, CURRENCIES } from '../../config/constants';
+import { ICONS } from '../../config/constants';
 
 import {
 	generateTradeHeaders,
