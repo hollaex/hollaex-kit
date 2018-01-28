@@ -27,31 +27,31 @@ export default {
 	BACK_TEXT: 'Back',
 	NO_OPTIONS: 'No options availables',
 	HOME: {
-		SECTION_1_TITLE: 'Create your own Bitcoin exchange',
+		SECTION_1_TITLE: 'Build your own Bitcoin exchange',
 		SECTION_1_TEXT_1:
 			'Build your own scalable Bitcoin exchange with HollaEx and be part of the future finance.',
 		SECTION_1_TEXT_2:
 			'We strive to bring the financial technology forward through afforable and simple access to Bitcoin and cryptocurrencies.',
 		SECTION_1_BUTTON_1: 'Learn more',
 		SECTION_3_TITLE: 'Features',
-		SECTION_3_CARD_1_TITLE: 'PROFESSIONAL TRADING',
+		SECTION_3_CARD_1_TITLE: 'SCALABLE MATCHING ENGINE',
 		SECTION_3_CARD_1_TEXT:
-			'Professional Bitcoin trading in real-time with advance tools',
-		SECTION_3_CARD_2_TITLE: 'PAYMENT OPTIONS',
+			'High performance and scalable order matching engine using the most efficient algorithms',
+		SECTION_3_CARD_2_TITLE: 'BANK INTEGRATION',
 		SECTION_3_CARD_2_TEXT:
-			'Payment throguh conventional methods like cards or bank transfer',
+			'Plugins with customizable modules available for bank integration. We know the traditional finace and can help you to make your exchange local',
 		SECTION_3_CARD_3_TITLE: 'STRONG SECURITY',
 		SECTION_3_CARD_3_TEXT:
-			'Protection against DDoS attacks, full data encryption, compliant with PCI DSS standard',
+			'HollaEx uses the best security practices and the most secure and reliable algorithms for keeping the funds secure. It is our top priority and we took a very special extra care of it.',
 		SECTION_3_CARD_4_TITLE: 'ADVANCED REPORTING',
 		SECTION_3_CARD_4_TEXT:
-			'Downloadable reports, real-time balance, transaction history with transparent fees',
+			'Admin panel with customizable email and reports for notifying support and administrator about the status of the system and transactions.',
 		SECTION_3_CARD_5_TITLE: 'SUPPORT',
 		SECTION_3_CARD_5_TEXT:
-			'Fast and reliable support with quick resposne during working hours',
+			'We can take an extra care for your needs and have an online professional to help with your issues and inquiries.',
 		SECTION_3_CARD_6_TITLE: 'KYC INTEGRATION',
 		SECTION_3_CARD_6_TEXT:
-			'Flexible and integratable for adjustment with different KYC and user verification methods in diffrente jurisdiction.',
+			'Flexible and integratable modules to apply KYC and user verification methods in diffrente jurisdiction.',
 		SECTION_3_BUTTON_1: 'View Demo'
 	},
 	FOOTER: {
@@ -63,28 +63,16 @@ export default {
 		FOOTER_LANGUAGE_LANGUAGES: [{ key: 'en', label: 'English' }],
 		FOOTER_COPYRIGHT: 'COPYRIGHT 2018',
 		SECTIONS: {
-			SECTION_1_TITLE: 'SERVICES',
-			SECTION_1_LINK_1: 'Buy Bitcoins',
-			SECTION_1_LINK_3: 'Sell Bitcoins',
-			SECTION_1_LINK_4: 'Bitcoin Trading',
+			SECTION_1_TITLE: 'ABOUT',
+			SECTION_1_LINK_1: 'About Us',
+			SECTION_1_LINK_2: 'Compliance',
+			SECTION_1_LINK_3: 'Privacy Policy',
 			SECTION_2_TITLE: 'INFORMATION',
-			SECTION_2_LINK_1: 'Payment Options',
-			SECTION_2_LINK_2: 'Fee Schedule',
-			SECTION_2_LINK_3: 'Getting Started',
-			SECTION_2_LINK_4: 'Identity Verification Guide',
-			SECTION_2_LINK_5: 'Card Verification Guide',
-			SECTION_3_TITLE: 'TOOLS',
-			SECTION_3_LINK_1: 'API',
-			SECTION_3_LINK_2: 'Bitcoin Calculator',
-			SECTION_3_LINK_6: 'Donations',
-			SECTION_4_TITLE: 'ABOUT',
-			SECTION_4_LINK_1: 'About Us',
-			SECTION_4_LINK_2: 'Legal & Security',
-			SECTION_4_LINK_3: 'Terms of Use',
-			SECTION_4_LINK_4: 'Refund Policy',
-			SECTION_4_LINK_5: 'Press',
-			SECTION_4_LINK_6: 'Blog',
-			SECTION_4_LINK_7: 'Help Center'
+			SECTION_2_LINK_1: 'Blog',
+			SECTION_2_LINK_2: 'Contact Us',
+			SECTION_2_LINK_3: 'Career',
+			SECTION_3_TITLE: 'DEVELOPERS',
+			SECTION_3_LINK_1: 'API Explorer'
 		}
 	},
 	ACCOUNTS: {
