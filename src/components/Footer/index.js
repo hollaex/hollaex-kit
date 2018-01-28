@@ -8,23 +8,13 @@ import STRINGS from '../../config/localizedStrings';
 const LINKS = [
 	{
 		icon: SOCIAL_ICONS.FACEBOOK,
-		link: '',
+		link: 'https://facebook.com/bitholla',
 		type: 'facebook'
 	},
 	{
 		icon: SOCIAL_ICONS.TWIITER,
-		link: '', // TODO
+		link: 'https://twitter.com/bitholla',
 		type: 'twitter'
-	},
-	{
-		icon: SOCIAL_ICONS.INSTAGRAM,
-		link: '', // TODO
-		type: 'instagram'
-	},
-	{
-		icon: SOCIAL_ICONS.TELEGRAM,
-		link: '', // TODO
-		type: 'telegram'
 	}
 ];
 

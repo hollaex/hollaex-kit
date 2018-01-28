@@ -27,9 +27,9 @@ export default {
 	BACK_TEXT: 'Back',
 	NO_OPTIONS: 'No options availables',
 	HOME: {
-		SECTION_1_TITLE: 'Buy & sell Bitcoin',
+		SECTION_1_TITLE: 'Create your own Bitcoin exchange',
 		SECTION_1_TEXT_1:
-			'HOLLAEX is a cryptocurrency exchange where you can buy and sell bitcoins and other digital currencies.',
+			'Build your own scalable Bitcoin exchange with HollaEx and be part of the future finance.',
 		SECTION_1_TEXT_2:
 			'We strive to bring the financial technology forward through afforable and simple access to Bitcoin and cryptocurrencies.',
 		SECTION_1_BUTTON_1: 'Learn more',
@@ -49,20 +49,19 @@ export default {
 		SECTION_3_CARD_5_TITLE: 'SUPPORT',
 		SECTION_3_CARD_5_TEXT:
 			'Fast and reliable support with quick resposne during working hours',
-		SECTION_3_CARD_6_TITLE: 'LEGAL COMPLIANCE',
+		SECTION_3_CARD_6_TITLE: 'KYC INTEGRATION',
 		SECTION_3_CARD_6_TEXT:
-			'Legal compliant in Iran with full trasparency and strong relationship with banks',
+			'Flexible and integratable for adjustment with different KYC and user verification methods in diffrente jurisdiction.',
 		SECTION_3_BUTTON_1: 'View Demo'
 	},
 	FOOTER: {
 		FOOTER_LEGAL: [
-			'Registration on or use of this site constitutes acceptance of our',
-			'Terms of Service and Privacy Policy.',
-			'Disclaimer Commerce Policy Made in Iran'
+			'Proudly made in Seoul, South Korea',
+			'bitHolla Inc.'
 		],
 		FOOTER_LANGUAGE_TEXT: 'LANGUAGE',
 		FOOTER_LANGUAGE_LANGUAGES: [{ key: 'en', label: 'English' }],
-		FOOTER_COPYRIGHT: 'COPYRIGHT 2017',
+		FOOTER_COPYRIGHT: 'COPYRIGHT 2018',
 		SECTIONS: {
 			SECTION_1_TITLE: 'SERVICES',
 			SECTION_1_LINK_1: 'Buy Bitcoins',
@@ -173,8 +172,8 @@ export default {
 			SUBTITLE:
 				'Last updated April 1, 2017. Replaces the prior version in its entirety.',
 			TEXTS: [
-				'BitMEX (website: https://www.BitMEX.com) is a Bitcoin-based virtual trading platform that is wholly owned by HDR Global Trading Limited. HDR Global Trading Limited (hereinafter referred to as BitMEX) was incorporated under the International Business Companies Act of 1994 of the Republic of Seychelles with a company number of 148707.',
-				'Use of this BitMEX website (“Website”) and the service offered on the Website (“Service”) are governed by the terms contained on this Terms and Conditions page (“Terms”). This agreement entirely constitutes the agreement between the parties. All other information provided on the Website or oral/written statements made are excluded from this agreement; the exchange policy is provided for guidance only and does not constitute a legal agreement between the parties.',
+				'HollaEx (website: https://www.HollaEx.com) is a Bitcoin-based virtual trading platform that is wholly owned by bitHolla Inc. bitHolla Inc (hereinafter referred to as bitHolla) was incorporated in Seoul South Korea.',
+				'Use of this HollaEx website (“Website”) and the service offered on the Website (“Service”) are governed by the terms contained on this Terms and Conditions page (“Terms”). This agreement entirely constitutes the agreement between the parties. All other information provided on the Website or oral/written statements made are excluded from this agreement; the exchange policy is provided for guidance only and does not constitute a legal agreement between the parties.',
 				'By accessing, viewing or downloading information from the Website and using the Service provided by BitMEX you acknowledge that you have read, understand, and unconditionally agree to be bound by these Terms. BitMEX may at any time, without notice, amend the Terms. You agree to continue to be bound by any amended terms and conditions and that BitMEX has no obligation to notify you of such amendments. You acknowledge that it is your responsibility to check these Terms periodically for changes and that your continued use of the Website and Services offered by BitMEX following the posting of any changes to the Terms indicates your acceptance of any such changes.',
 				'The Website and the copyright in all text, graphics, images, software and any other materials on the Website is owned by BitMEX including all trademarks and other intellectual property rights in respect of materials and Service on the Website. Materials on this Website may only be used for personal use and non-commercial purposes.',
 				'You may display on a computer screen or print extracts from the Website for the above-stated purpose only provided that you retain any copyright and other proprietary notices or any BitMEX trademarks or logos, as shown on the initial printout or download without alteration, addition or deletion. Except as expressly stated herein, you may not without BitMEX’s prior written permission alter, modify, reproduce, distribute or use in any other commercial context any materials from the Website.',
@@ -187,7 +186,7 @@ export default {
 			SUBTITLE:
 				'Last updated April 1, 2017. Replaces the prior version in its entirety.',
 			TEXTS: [
-				'BitMEX (website: https://www.BitMEX.com) is a Bitcoin-based virtual trading platform that is wholly owned by HDR Global Trading Limited. HDR Global Trading Limited (hereinafter referred to as BitMEX) was incorporated under the International Business Companies Act of 1994 of the Republic of Seychelles with a company number of 148707.',
+				'HollaEx (website: https://www.hollaex.com) is a Bitcoin-based virtual trading platform that is wholly owned by HDR Global Trading Limited. HDR Global Trading Limited (hereinafter referred to as BitMEX) was incorporated under the International Business Companies Act of 1994 of the Republic of Seychelles with a company number of 148707.',
 				'Use of this BitMEX website (“Website”) and the service offered on the Website (“Service”) are governed by the terms contained on this Terms and Conditions page (“Terms”). This agreement entirely constitutes the agreement between the parties. All other information provided on the Website or oral/written statements made are excluded from this agreement; the exchange policy is provided for guidance only and does not constitute a legal agreement between the parties.',
 				'By accessing, viewing or downloading information from the Website and using the Service provided by BitMEX you acknowledge that you have read, understand, and unconditionally agree to be bound by these Terms. BitMEX may at any time, without notice, amend the Terms. You agree to continue to be bound by any amended terms and conditions and that BitMEX has no obligation to notify you of such amendments. You acknowledge that it is your responsibility to check these Terms periodically for changes and that your continued use of the Website and Services offered by BitMEX following the posting of any changes to the Terms indicates your acceptance of any such changes.',
 				'The Website and the copyright in all text, graphics, images, software and any other materials on the Website is owned by BitMEX including all trademarks and other intellectual property rights in respect of materials and Service on the Website. Materials on this Website may only be used for personal use and non-commercial purposes.',
