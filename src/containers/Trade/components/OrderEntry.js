@@ -80,9 +80,18 @@ class OrderEntry extends Component {
 
 		let orderFees = 0;
 		if (side === 'buy') {
-			orderFees = mathjs.chain(size).multiply(fees.taker_fee).divide(100).multiply(marketPrice).done(); 
+			orderFees = mathjs
+				.chain(size)
+				.multiply(fees.taker_fee)
+				.divide(100)
+				.multiply(marketPrice)
+				.done();
 		} else {
-			orderFees = mathjs.chain(orderPrice).multiply(fees.taker_fee).divide(100).done();
+			orderFees = mathjs
+				.chain(orderPrice)
+				.multiply(fees.taker_fee)
+				.divide(100)
+				.done();
 		}
 		let outsideFormError = '';
 
@@ -143,7 +152,7 @@ class OrderEntry extends Component {
 			size: formatNumber(this.props.size, 4),
 			symbol: this.props.symbol,
 			orderPrice: this.state.orderPrice,
-			orderFees: this.state.orderFees,
+			orderFees: this.state.orderFees
 		};
 
 		if (order.type === 'market') {
@@ -151,11 +160,11 @@ class OrderEntry extends Component {
 		} else if (order.price) {
 			order.price = formatNumber(order.price);
 		}
-		console.log('here', order, this.props)
+		console.log('here', order, this.props);
 		this.props.openCheckOrder(order, () => {
-			this.props.submit(FORM_NAME)
-		})
-	}
+			this.props.submit(FORM_NAME);
+		});
+	};
 
 	generateFormValues = () => {
 		const formValues = {
@@ -267,6 +276,6 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => ({
 	submit: bindActionCreators(submit, dispatch)
-})
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(OrderEntry);

@@ -408,7 +408,7 @@ class Container extends Component {
 					/>
 				);
 			case NOTIFICATIONS.NEW_ORDER: {
-				const { onConfirm, ...rest} = data;
+				const { onConfirm, ...rest } = data;
 				return (
 					<Notification
 						type={type}

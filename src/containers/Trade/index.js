@@ -83,7 +83,7 @@ class Trade extends Component {
 	openCheckOrder = (order, onConfirm) => {
 		const { setNotification, fees } = this.props;
 		setNotification(NOTIFICATIONS.NEW_ORDER, { order, onConfirm, fees });
-	}
+	};
 
 	render() {
 		const {

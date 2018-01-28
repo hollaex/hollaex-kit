@@ -34,7 +34,7 @@ $tab_controller-item-min-width: 12rem;
 		justify-content: center;
 		color: $colors-deactivate;
 		& svg path {
-			opacity: .7;
+			opacity: 0.7;
 		}
 	}
 	.tab_item-active {
@@ -43,7 +43,7 @@ $tab_controller-item-min-width: 12rem;
 		& svg path {
 			opacity: 1;
 		}
-		
+
 		.st0,
 		.g1_4,
 		.g1_2 {

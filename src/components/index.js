@@ -30,4 +30,4 @@ export { default as Countdown } from './Countdown';
 export { default as Logout } from './Logout';
 export { default as LanguageSelector } from './LanguageSelector';
 export { default as WarningVerification } from './WarningVerification';
-export { CandleChart, AreaChart } from './Chart';
+export { CandleChart, AreaChart, FactoryChart, CHART_TYPES } from './Chart';

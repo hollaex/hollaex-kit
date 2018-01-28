@@ -3,7 +3,12 @@ import classnames from 'classnames';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-import { ICONS, CURRENCIES, DEPOSIT_LIMITS, BALANCE_ERROR } from '../../config/constants';
+import {
+	ICONS,
+	CURRENCIES,
+	DEPOSIT_LIMITS,
+	BALANCE_ERROR
+} from '../../config/constants';
 import { fiatSymbol } from '../../utils/currency';
 
 import { openContactForm } from '../../actions/appActions';
@@ -21,7 +26,7 @@ import BankDeposit from './BankDeposit';
 class Deposit extends Component {
 	state = {
 		depositPrice: 0
-	}
+	};
 
 	componentWillMount() {
 		if (this.props.quoteData.error === BALANCE_ERROR) {
@@ -88,7 +93,7 @@ const mapStateToProps = (store) => ({
 	crypto_wallet: store.user.crypto_wallet,
 	balance: store.user.balance,
 	activeLanguage: store.app.language,
-	quoteData: store.orderbook.quoteData,
+	quoteData: store.orderbook.quoteData
 });
 
 const mapDispatchToProps = (dispatch) => ({

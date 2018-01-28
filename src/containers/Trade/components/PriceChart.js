@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import io from 'socket.io-client';
-import { AreaChart as Chart } from '../../../components';
+import { FactoryChart as Chart, CHART_TYPES } from '../../../components';
 import { WS_URL } from '../../../config/constants';
 import STRINGS from '../../../config/localizedStrings';
 
@@ -11,7 +11,8 @@ class ChartComponent extends Component {
 		timestamp: null,
 		chartData: {},
 		chartSocket: undefined,
-		ready: false
+		ready: false,
+		chartType: CHART_TYPES.AREA
 	};
 
 	componentWillMount() {
@@ -117,7 +118,7 @@ class ChartComponent extends Component {
 
 	render() {
 		const { height, width } = this.props;
-		const { chartData, ready } = this.state;
+		const { chartData, ready, chartType } = this.state;
 		return (
 			<div
 				style={{
@@ -132,6 +133,7 @@ class ChartComponent extends Component {
 			>
 				{ready && chartData.btc && chartData.btc.length > 1 ? (
 					<Chart
+						chartType={chartType}
 						serieName="BTC"
 						type="hybrid"
 						data={chartData.btc}

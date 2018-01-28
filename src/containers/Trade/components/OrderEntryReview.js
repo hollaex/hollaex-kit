@@ -16,7 +16,10 @@ const Review = ({
 	formatToCurrency,
 	type
 }) => {
-	const orderAmountReceived = math.subtract(math.fraction(orderPrice), math.fraction(fees));
+	const orderAmountReceived = math.subtract(
+		math.fraction(orderPrice),
+		math.fraction(fees)
+	);
 	return (
 		<div className="trade_order_entry-review d-flex flex-column">
 			<div className={classnames(...ROW_CLASSNAMES)}>

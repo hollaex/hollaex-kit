@@ -10,19 +10,20 @@ class Table extends Component {
 	state = {
 		page: 0,
 		// pageSize: 10,
-		data: []
+		data: [],
+		headers: []
 	};
 
 	componentDidMount() {
 		// this.setPageSize(this.props.pageSize);
-		this.goToPage(0, this.props.data, this.props.count);
+		this.goToPage(0, this.props.data, this.props.headers, this.props.count);
 	}
 
 	componentWillReceiveProps(nextProps) {
-		if (nextProps.data.length !== this.props.data.length) {
-			this.goToPage(this.state.page, nextProps.data, nextProps.count);
+		if (nextProps.title === this.props.title && nextProps.data.length !== this.props.data.length) {
+			this.goToPage(this.state.page, nextProps.data, nextProps.headers, nextProps.count);
 		} else {
-			this.goToPage(0, nextProps.data, nextProps.count);
+			this.goToPage(0, nextProps.data, nextProps.headers, nextProps.count);
 		}
 	}
 
@@ -31,21 +32,21 @@ class Table extends Component {
 	// }
 
 	goToPreviousPage = () => {
-		this.goToPage(this.state.page - 1, this.props.data, this.props.count);
+		this.goToPage(this.state.page - 1, this.props.data, this.props.headers, this.props.count);
 	};
 
 	goToNextPage = () => {
-		this.goToPage(this.state.page + 1, this.props.data, this.props.count);
+		this.goToPage(this.state.page + 1, this.props.data, this.props.headers, this.props.count);
 	};
 
-	goToPage = (page = 0, allData = [], count = 0) => {
+	goToPage = (page = 0, allData = [], headers = [], count = 0) => {
 		const { showAll, pageSize } = this.props;
 		const initItem = page * pageSize;
 		if (showAll) {
-			this.setState({ page: 1, data: allData });
+			this.setState({ page: 1, data: allData, headers });
 		} else if (initItem < count) {
 			const data = allData.slice(initItem, initItem + pageSize);
-			this.setState({ page, data });
+			this.setState({ page, data, headers });
 		}
 	};
 
@@ -60,8 +61,8 @@ class Table extends Component {
 			);
 		}
 
-		const { headers, withIcon, displayPaginator, pageSize } = this.props;
-		const { data, page } = this.state;
+		const { withIcon, displayPaginator, pageSize } = this.props;
+		const { data, page, headers } = this.state;
 
 		return (
 			<div className="table_container">
@@ -89,7 +90,8 @@ Table.defaultProps = {
 	withIcon: false,
 	pageSize: 10,
 	displayPaginator: true,
-	showAll: false
+	showAll: false,
+	title: ''
 };
 
 export default Table;
