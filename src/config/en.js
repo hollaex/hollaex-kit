@@ -739,5 +739,6 @@ export default {
 	CHECK_ORDER: 'Check and confirm your order',
 	CHECK_ORDER_TYPE: '{0} {1}', // 0 -> maker/limit  1 -> sell/buy
 	CONFIRM_TEXT: 'Confirm',
-	INVALID_CAPTCHA: 'Invalid captcha'
+	INVALID_CAPTCHA: 'Invalid captcha',
+	NO_FEE: 'N/A'
 };
