@@ -295,6 +295,7 @@ export default {
 		TITLE_MOBILE_PHONE: 'Mobile Phone',
 		TITLE_PERSONAL_INFORMATION: 'Personal Information',
 		VERIFY_EMAIL: 'Verify email',
+		VERIFY_MOBILE_PHONE: 'Verify mobile phone',
 		VERIFY_USER_DOCUMENTATION: 'Verify user documentation',
 		VERIFY_ID_DOCUMENTS: 'Verify id documents',
 		VERIFY_BANK_ACCOUNT: 'Verify bank account',

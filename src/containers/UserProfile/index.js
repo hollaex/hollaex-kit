@@ -147,7 +147,7 @@ class UserProfile extends Component {
 				notification: this.generateNotification(
 					!!phone_number,
 					!!phone_number,
-					STRINGS.USER_VERIFICATION.VERIFY_EMAIL
+					STRINGS.USER_VERIFICATION.VERIFY_MOBILE_PHONE
 				)
 			},
 			{
