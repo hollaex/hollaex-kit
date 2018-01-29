@@ -12,12 +12,19 @@ import { formatTimestamp } from '../../utils/utils';
 const fiatFormatToCurrency = CURRENCIES[fiatSymbol].formatToCurrency;
 const fiatCurrencySymbol = CURRENCIES.fiat.currencySymbol;
 
-const renderFee = (fee = 0) => {
+const calculateFeeAmount = (fee = 0, quick = false, price = 0, size = 0) => {
 	if (!fee || fee <= 0) {
 		return STRINGS.NO_FEE;
 	}
-	return fee;
-}
+	const amount = calculateAmount(quick, price, size);
+	const feeAmount = mathjs
+		.chain(amount)
+		.multiply(fee)
+		.divide(100)
+		.done();
+	console.log(amount, fee, feeAmount);
+	return feeAmount;
+};
 
 const calculateAmount = (isQuick = false, price, size) => {
 	if (isQuick) {
@@ -40,6 +47,24 @@ const calculatePrice = (isQuick = false, price, size) => {
 	}
 	return price;
 };
+
+const renderCellFee = ({ fee = 0, price = 0, size = 0, quick }, key, index) => {
+	if (fee === 0) {
+		return <td key={index}> {calculateFeeAmount(fee)}</td>;
+	}
+	return (
+		<td key={index}>
+			{STRINGS.formatString(
+				STRINGS.FIAT_PRICE_FORMAT,
+				fiatFormatToCurrency(calculateFeeAmount(fee, quick, price, size)),
+				fiatCurrencySymbol
+			)}
+		</td>
+	);
+};
+
+const exportFeeData = ({ fee = 0, price = 0, size = 0, quick }) =>
+	calculateFeeAmount(fee, quick, price, size);
 
 export const generateTradeHeaders = (symbol) => {
 	const { formatToCurrency } = CURRENCIES[symbol];
@@ -139,10 +164,8 @@ export const generateTradeHeaders = (symbol) => {
 		{
 			label: STRINGS.FEE,
 			key: 'fee',
-			exportToCsv: ({ fee = 0 }) => renderFee(fee),
-			renderCell: ({ fee = 0 }, key, index) => {
-				return <td key={index}>{renderFee(fee)}</td>;
-			}
+			exportToCsv: exportFeeData,
+			renderCell: renderCellFee
 		},
 		{
 			label: STRINGS.TIME,
@@ -203,10 +226,8 @@ export const generateWithdrawalsHeaders = (symbol) => {
 		{
 			label: STRINGS.FEE,
 			key: 'fee',
-			exportToCsv: ({ fee = 0 }) => renderFee(fee),
-			renderCell: ({ fee = 0 }, key, index) => {
-				return <td key={index}>{renderFee(fee)}</td>;
-			}
+			exportToCsv: exportFeeData,
+			renderCell: renderCellFee
 		},
 		{
 			label: STRINGS.TIME,
