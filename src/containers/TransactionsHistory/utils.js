@@ -12,6 +12,13 @@ import { formatTimestamp } from '../../utils/utils';
 const fiatFormatToCurrency = CURRENCIES[fiatSymbol].formatToCurrency;
 const fiatCurrencySymbol = CURRENCIES.fiat.currencySymbol;
 
+const renderFee = (fee = 0) => {
+	if (!fee || fee <= 0) {
+		return STRINGS.NO_FEE;
+	}
+	return fee;
+}
+
 const calculateAmount = (isQuick = false, price, size) => {
 	if (isQuick) {
 		return price;
@@ -132,9 +139,9 @@ export const generateTradeHeaders = (symbol) => {
 		{
 			label: STRINGS.FEE,
 			key: 'fee',
-			exportToCsv: ({ fee = 0 }) => fee,
+			exportToCsv: ({ fee = 0 }) => renderFee(fee),
 			renderCell: ({ fee = 0 }, key, index) => {
-				return <td key={index}>{fee}</td>;
+				return <td key={index}>{renderFee(fee)}</td>;
 			}
 		},
 		{
@@ -196,9 +203,9 @@ export const generateWithdrawalsHeaders = (symbol) => {
 		{
 			label: STRINGS.FEE,
 			key: 'fee',
-			exportToCsv: ({ fee = 0 }) => fee,
+			exportToCsv: ({ fee = 0 }) => renderFee(fee),
 			renderCell: ({ fee = 0 }, key, index) => {
-				return <td key={index}>{fee}</td>;
+				return <td key={index}>{renderFee(fee)}</td>;
 			}
 		},
 		{

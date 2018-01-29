@@ -4,7 +4,7 @@ import { ICONS } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 import {
 	formatBtcAmount,
-	formatBtcFullAmount,
+	// formatBtcFullAmount,
 	formatFiatAmount
 } from '../../utils/currency';
 import {

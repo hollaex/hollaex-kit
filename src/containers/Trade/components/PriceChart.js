@@ -139,6 +139,7 @@ class ChartComponent extends Component {
 						data={chartData.btc}
 						width={width}
 						height={height}
+						ratio={1}
 					/>
 				) : (
 					<div>{ready ? STRINGS.NO_DATA : STRINGS.LOADING}</div>
