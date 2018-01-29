@@ -17,8 +17,8 @@ export const xScaleProvider = discontinuousTimeScaleProvider.inputDateAccessor(
 
 export const margins = { left: 0, right: 75, top: 35, bottom: 30 };
 
-export const yExtents = (data) => {
-	return [data.high + Y_GAP, data.low - Y_GAP];
+export const yExtents = (modifier = 1) => (data) => {
+	return [data.high + Y_GAP * modifier, data.low - Y_GAP * modifier];
 };
 
 export const generateXExtents = (xAccessor, data, limit = 50) => {

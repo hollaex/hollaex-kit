@@ -37,6 +37,7 @@ class CustomChart extends Component {
 			height,
 			ratio,
 			seriesName,
+			modifier,
 			children
 		} = this.props;
 
@@ -61,7 +62,7 @@ class CustomChart extends Component {
 				displayXAccessor={displayXAccessor}
 				xExtents={xExtents}
 			>
-				<Chart id={1} yExtents={yExtents}>
+				<Chart id={1} yExtents={yExtents(modifier)}>
 					<XAxis width={width} />
 					<YAxis height={height} />
 					<TXAxis width={width} />
