@@ -1,0 +1,111 @@
+@import 'variables';
+@import 'fonts';
+@import 'mixins';
+@import 'common';
+
+@import './containers/containers';
+@import './components/components';
+
+html {
+	font-size: 12px !important;
+	height: 100%;
+}
+
+#root {
+	height: 100%;
+}
+
+body {
+	height: 100%;
+	background-color: $app-background-color !important;
+	font-size: $font-size-main !important;
+	font-family: $en--font-family !important;
+	height: 100%;
+}
+
+.language_rtl {
+	font-family: $fa--font-family !important;
+}
+
+.direction_rtl {
+	&.apply_rtl {
+		direction: rtl;
+	}
+	.apply_rtl {
+		direction: rtl;
+	}
+}
+
+.direction_ltr {
+	direction: ltr;
+}
+
+.warning_text {
+	color: $colors-notifications-red;
+}
+
+.ReactModal__Body--open #root {
+	filter: blur(5px);
+	background: $app-background-color-on-modal;
+}
+
+.form {
+	min-width: $dialog-min-width;
+	max-width: $dialog-min-width;
+}
+
+.error-icon {
+	position: relative;
+	display: flex;
+	align-items: center;
+	padding-left: 2rem !important;
+
+	&:before {
+		content: '';
+		@include size(2rem, 100%);
+		position: absolute;
+		background-color: red;
+		left: 0;
+		top: calc(50% - 0.75rem);
+	}
+}
+
+input,
+input:focus {
+	outline: none;
+	border: none;
+}
+
+input[type='number'] {
+	-moz-appearance: textfield;
+	appearance: textfield;
+}
+
+input[type='number']::-webkit-inner-spin-button,
+input[type='number']::-webkit-outer-spin-button {
+	-webkit-appearance: none;
+	margin: 0;
+}
+
+::-webkit-scrollbar {
+	display: none;
+}
+
+a {
+	text-decoration: none;
+	color: inherit;
+
+	&:hover,
+	&:visited,
+	&:link,
+	&:active {
+		color: inherit;
+		text-decoration: none;
+	}
+}
+
+@media screen and (max-width: $bp-sm) {
+	html {
+		font-size: 8px !important;
+	}
+}

@@ -1,0 +1,164 @@
+$wrapper-border: 1px solid $colors-main-black;
+$wrapper-button-margin: 2.5rem;
+$header-margin: 2rem;
+
+.wallet-container {
+	border-top: $wrapper-border;
+	// border-bottom: $wrapper-border;
+
+	.wallet-header_block {
+		> * {
+			margin-bottom: $header-margin;
+		}
+		.wallet-header_block-currency_title {
+			font-size: $font-size-subhead3;
+			position: relative;
+		}
+
+		.wallet-header_block {
+		}
+	}
+
+	.wallet-buttons_action {
+		margin: $wrapper-button-margin 0 $wrapper-button-margin * 1.5;
+
+		& > *:first-child {
+			flex: 2;
+		}
+		& > *:last-child {
+			flex: 1;
+		}
+		.separator {
+			width: 1rem;
+		}
+	}
+
+	.accordion_wrapper {
+		.accordion_section_content_text {
+			color: $colors-main-black !important;
+			&:after {
+				border-left-color: $colors-main-black !important;
+			}
+		}
+	}
+
+	.wallet-assets_block {
+		// border-top: $wrapper-border;
+		.wallet-assets_block-table {
+			width: 100%;
+			font-size: $font-size-subtext;
+
+			th {
+				font-family: $raleway--font-family;
+			}
+
+			thead,
+			tfoot {
+				& tr {
+					height: 3.5rem;
+					vertical-align: bottom;
+				}
+			}
+
+			tfoot {
+				font-size: $font-size-main;
+				td {
+					white-space: nowrap;
+				}
+			}
+
+			.table-row {
+				height: 2.5rem;
+			}
+
+			.table-bottom-border td,
+			th {
+				position: relative;
+				&:not(:first-child) {
+					border-bottom: 1px solid $colors-main-black;
+					padding: 0 0.25rem;
+					min-width: 25%;
+				}
+			}
+
+			.td-fit {
+				width: 1%;
+				white-space: nowrap;
+			}
+
+			.td-name {
+				min-width: 15%;
+			}
+			.table-icon {
+				& > div {
+					vertical-align: middle;
+					margin: auto;
+				}
+			}
+		}
+	}
+
+	.accordion_wrapper .action_notification-wrapper {
+		position: relative;
+	}
+}
+
+.show-equals:after {
+	content: '=';
+	width: auto;
+	position: absolute;
+}
+
+.wallet-notification {
+	.action_notification-text {
+		font-size: $font-size-main !important;
+	}
+}
+
+.direction_ltr {
+	.wallet-container {
+		.wallet-header_block {
+			font-family: $raleway--font-family;
+		}
+
+		.wallet-assets_block {
+			.wallet-assets_block-table {
+				th,
+				td {
+					text-align: left;
+				}
+				.align-opposite {
+					text-align: right;
+				}
+				.table-icon {
+					padding-right: 0.5rem;
+				}
+			}
+		}
+	}
+	.show-equals:after {
+		left: 0;
+	}
+}
+
+.direction_rtl {
+	.wallet-container {
+		.wallet-assets_block {
+			.wallet-assets_block-table {
+				th,
+				td {
+					text-align: right;
+				}
+				.align-opposite {
+					text-align: left;
+				}
+				.table-icon {
+					padding-left: 0.5rem;
+				}
+			}
+		}
+	}
+	.show-equals:after {
+		right: 0;
+	}
+}

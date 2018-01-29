@@ -1,0 +1,100 @@
+$content-wrapper--max-width: $bp-xs;
+$container--padding: 4rem;
+
+.auth-wrapper {
+	background: url($background-image);
+
+	background-repeat:no-repeat;
+	background-size:cover;
+	// background-repeat: repeat;
+	// background-size: $background-patter--size;
+	position: relative;
+	&:before {
+		position: absolute;
+		content: '';
+		width: 100%;
+		height: 100%;
+		background-color: rgba(241, 242, 242, 0.6);
+	}
+	.auth-container {
+		max-width: $content-wrapper--max-width;
+		z-index: 1;
+
+		.auth_wrapper {
+			background-color: white;
+			padding: $container--padding $container--padding $container--padding * 1.5;
+		}
+
+		.auth_form-wrapper {
+			margin-top: 2rem;
+			position: relative;
+		}
+	}
+
+	.link_wrapper {
+		margin: 1rem;
+		margin-top: 0;
+
+		&.multi_links {
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+			> div:not(:last-child) {
+				padding-bottom: 0.5rem;
+			}
+		}
+	}
+	.blue-link {
+		color: blue;
+		padding-left: 0.25rem;
+	}
+	.error_text {
+		padding-bottom: 0.5rem;
+	}
+	.button-margin {
+		margin-top: 1.5rem;
+	}
+
+	.icon_title-wrapper {
+		margin-top: 0;
+		&.underline:after {
+			height: 0.15rem;
+		}
+
+		.icon_title-text {
+			margin: 1.5rem auto;
+
+			&.title {
+				text-transform: capitalize;
+				font-size: 3rem;
+			}
+		}
+
+		.icon_title-svg {
+			width: 100%;
+			display: flex;
+			justify-content: center;
+			svg {
+				width: 6rem;
+				height: 6rem;
+			}
+		}
+
+		&.exir-logo {
+			.icon_title-svg {
+				height: inherit;
+				svg {
+					width: inherit;
+					height: 4rem;
+				}
+			}
+		}
+	}
+	.exir-button {
+		margin-top: 1rem;
+	}
+	.link_wrapper {
+		margin: 1.5rem 0 0;
+	}
+}

@@ -1,0 +1,16 @@
+.ohlc_wrapper {
+	x: 0;
+	y: 0;
+
+	.ohlc_data_wrapper {
+		.ohlc_label {
+			font-size: $font-size-subtext;
+		}
+
+		.ohlc_value {
+			font-size: $font-size-subtext;
+			font-weight: bold;
+			padding-left: 0.25rem;
+		}
+	}
+}

@@ -1,0 +1,13 @@
+$logout--height: 3rem;
+
+.logout-wrapper {
+	padding-top: $sidebar-sections-padding / 2;
+	padding-bottom: $sidebar-sections-padding / 2;
+	min-height: $logout--height;
+	min-width: 10rem;
+
+	.logout-right-icon {
+		width: calc(#{$logout--height} - #{$sidebar-sections-padding});
+		@include hover-icon($colors-main-black, $colors-deactivate-color2);
+	}
+}

@@ -1,0 +1,31 @@
+.sidebar-container {
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+
+	> div:last-child {
+		padding: $sidebar-sections-padding;
+
+		&:first-child {
+			border-top: none;
+		}
+	}
+
+	.sidebar-logout {
+		flex: 0;
+	}
+
+	.sidebar-notifications {
+		flex: 1;
+		height: auto;
+		overflow-y: auto;
+	}
+
+	.sidebar-logout {
+		border-top: 1px solid $sidebar-border--color;
+	}
+}
+
+.sidebar-notifications-wrapper {
+	overflow-y: scroll;
+}
