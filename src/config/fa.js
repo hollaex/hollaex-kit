@@ -311,6 +311,7 @@ export default {
 		TITLE_MOBILE_PHONE: 'شماره تلفن همراه',
 		TITLE_PERSONAL_INFORMATION: 'اطلاعات شخصی',
 		VERIFY_EMAIL: 'تأیید ایمیل',
+		VERIFY_MOBILE_PHONE: 'Verify mobile phone', // TODO
 		VERIFY_USER_DOCUMENTATION: 'اسناد کاربر را تأیید کنید',
 		VERIFY_ID_DOCUMENTS: 'اسناد شناسایی را تأیید کنید',
 		VERIFY_BANK_ACCOUNT: 'تأیید حساب بانکی',
