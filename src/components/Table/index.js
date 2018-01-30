@@ -20,8 +20,16 @@ class Table extends Component {
 	}
 
 	componentWillReceiveProps(nextProps) {
-		if (nextProps.title === this.props.title && nextProps.data.length !== this.props.data.length) {
-			this.goToPage(this.state.page, nextProps.data, nextProps.headers, nextProps.count);
+		if (
+			nextProps.title === this.props.title &&
+			nextProps.data.length !== this.props.data.length
+		) {
+			this.goToPage(
+				this.state.page,
+				nextProps.data,
+				nextProps.headers,
+				nextProps.count
+			);
 		} else {
 			this.goToPage(0, nextProps.data, nextProps.headers, nextProps.count);
 		}
@@ -32,11 +40,21 @@ class Table extends Component {
 	// }
 
 	goToPreviousPage = () => {
-		this.goToPage(this.state.page - 1, this.props.data, this.props.headers, this.props.count);
+		this.goToPage(
+			this.state.page - 1,
+			this.props.data,
+			this.props.headers,
+			this.props.count
+		);
 	};
 
 	goToNextPage = () => {
-		this.goToPage(this.state.page + 1, this.props.data, this.props.headers, this.props.count);
+		this.goToPage(
+			this.state.page + 1,
+			this.props.data,
+			this.props.headers,
+			this.props.count
+		);
 	};
 
 	goToPage = (page = 0, allData = [], headers = [], count = 0) => {
