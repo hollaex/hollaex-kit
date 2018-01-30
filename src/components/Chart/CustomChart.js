@@ -3,8 +3,6 @@ import PropTypes from 'prop-types';
 
 import { ChartCanvas, Chart } from 'react-stockcharts';
 
-import { AreaSeries } from 'react-stockcharts/lib/series';
-
 import { XAxis, YAxis, TXAxis } from './axis';
 
 import {
@@ -26,11 +24,11 @@ import {
 	FORMAT_Y_TICK
 } from './utils';
 
-import { OHLCProps, areaProps, edgeIndicatorProps } from './props';
+import { OHLCProps, edgeIndicatorProps } from './props';
 
 import STRINGS from '../../config/localizedStrings';
 
-class AreaChartWithEdge extends Component {
+class CustomChart extends Component {
 	render() {
 		const {
 			type,
@@ -38,7 +36,9 @@ class AreaChartWithEdge extends Component {
 			width,
 			height,
 			ratio,
-			seriesName
+			seriesName,
+			modifier,
+			children
 		} = this.props;
 
 		const { data, xScale, xAccessor, displayXAccessor } = xScaleProvider(
@@ -62,7 +62,7 @@ class AreaChartWithEdge extends Component {
 				displayXAccessor={displayXAccessor}
 				xExtents={xExtents}
 			>
-				<Chart id={1} yExtents={yExtents}>
+				<Chart id={1} yExtents={yExtents(modifier)}>
 					<XAxis width={width} />
 					<YAxis height={height} />
 					<TXAxis width={width} />
@@ -78,7 +78,7 @@ class AreaChartWithEdge extends Component {
 						displayFormat={FORMAT_Y_TICK}
 					/>
 
-					<AreaSeries {...areaProps} />
+					{children}
 					<OHLCTooltip {...OHLCProps} displayTexts={STRINGS.CHART_TEXTS} />
 					<EdgeIndicator {...edgeIndicatorProps} />
 				</Chart>
@@ -88,21 +88,20 @@ class AreaChartWithEdge extends Component {
 	}
 }
 
-AreaChartWithEdge.propTypes = {
+CustomChart.propTypes = {
 	data: PropTypes.array.isRequired,
 	width: PropTypes.number.isRequired,
 	height: PropTypes.number.isRequired,
 	ratio: PropTypes.number.isRequired,
+	type: PropTypes.oneOf(['svg', 'hybrid']).isRequired,
 	dataCount: PropTypes.number,
-	type: PropTypes.oneOf(['svg', 'hybrid']).isRequired
+	children: PropTypes.node.isRequired
 };
 
-AreaChartWithEdge.defaultProps = {
+CustomChart.defaultProps = {
 	type: 'svg',
-	seriesName: 'AreaChart',
+	seriesName: 'Chart',
 	dataCount: 0
 };
 
-AreaChartWithEdge = fitWidth(AreaChartWithEdge);
-
-export default AreaChartWithEdge;
+export default fitWidth(CustomChart);

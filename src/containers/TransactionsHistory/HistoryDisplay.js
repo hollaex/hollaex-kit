@@ -36,6 +36,7 @@ const HistoryDisplay = (props) => {
 					headers={headers}
 					withIcon={true}
 					pageSize={TABLE_PAGE_SIZE}
+					title={title}
 				/>
 			)}
 		</div>

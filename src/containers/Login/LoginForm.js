@@ -5,6 +5,8 @@ import { AuthForm } from '../../components';
 
 import STRINGS from '../../config/localizedStrings';
 
+export const FORM_NAME = 'LoginForm';
+
 const Form = (props) => {
 	const FormFields = {
 		email: {
@@ -20,6 +22,10 @@ const Form = (props) => {
 			fullWidth: true,
 			label: STRINGS.FORM_FIELDS.PASSWORD_LABEL,
 			placeholder: STRINGS.FORM_FIELDS.PASSWORD_PLACEHOLDER
+		},
+		captcha: {
+			type: 'captcha',
+			validate: [required]
 		}
 	};
 
@@ -32,5 +38,5 @@ const Form = (props) => {
 	);
 };
 export default reduxForm({
-	form: 'LoginForm'
+	form: FORM_NAME
 })(Form);

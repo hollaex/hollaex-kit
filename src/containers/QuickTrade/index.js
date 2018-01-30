@@ -4,10 +4,14 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import STRINGS from '../../config/localizedStrings';
-import { ICONS } from '../../config/constants';
+import { ICONS, BALANCE_ERROR } from '../../config/constants';
 
 import { QuickTrade, Dialog, Countdown, IconTitle } from '../../components';
-import { requestQuote, executeQuote } from '../../actions/orderbookAction';
+import {
+	requestQuote,
+	executeQuote,
+	changeSymbol
+} from '../../actions/orderbookAction';
 import { formatBtcAmount, formatFiatAmount } from '../../utils/currency';
 
 import { FLEX_CENTER_CLASSES } from '../../config/constants';
@@ -57,8 +61,13 @@ class QuickTradeContainer extends Component {
 	};
 
 	onReviewQuickTrade = () => {
-		this.onClearQuoteInterval();
-		this.onOpenDialog();
+		if (this.props.quoteData.error === BALANCE_ERROR) {
+			this.props.changeSymbol(this.state.side === 'sell' ? 'btc' : 'fiat');
+			this.props.router.push('deposit');
+		} else {
+			this.onClearQuoteInterval();
+			this.onOpenDialog();
+		}
 	};
 
 	onChangeSide = (side = '') => {
@@ -119,7 +128,9 @@ class QuickTradeContainer extends Component {
 					symbol={symbol}
 					quickTradeData={quoteData}
 					onChangeSide={this.onChangeSide}
-					disabled={!quoteData.token}
+					disabled={
+						quoteData.error === BALANCE_ERROR ? false : !quoteData.token
+					}
 				/>
 				<Dialog
 					isOpen={!!end && showQuickTradeModal}
@@ -175,7 +186,8 @@ const mapStateToProps = (store) => ({
 
 const mapDispatchToProps = (dispatch) => ({
 	requestQuote: bindActionCreators(requestQuote, dispatch),
-	executeQuote: bindActionCreators(executeQuote, dispatch)
+	executeQuote: bindActionCreators(executeQuote, dispatch),
+	changeSymbol: bindActionCreators(changeSymbol, dispatch)
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(

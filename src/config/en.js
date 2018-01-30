@@ -208,13 +208,13 @@ export default {
 		},
 		DEPOSITS: {
 			FIAT: {
-				TITLE: '{0} Deposit receieved',
-				SUBTITLE: 'You’ve receieved your {0} deposit'
+				TITLE: '{0} Deposit received',
+				SUBTITLE: 'You’ve received your {0} deposit'
 			},
 			BTC: {
-				TITLE_RECEIVED: '{0} Deposit receieved',
+				TITLE_RECEIVED: '{0} Deposit received',
 				TITLE_INCOMING: 'Incoming {0}',
-				SUBTITLE_RECEIVED: 'You’ve receieved your {0} deposit',
+				SUBTITLE_RECEIVED: 'You’ve received your {0} deposit',
 				SUBTITLE_INCOMING: 'You have incoming {0}',
 				INFORMATION_PENDING_1:
 					'Your {0} require 1 confirmations before you can begin trading.',
@@ -271,7 +271,7 @@ export default {
 	},
 	SIGN_UP: {
 		SIGNUP_TO: 'Sign up to {0}',
-		NO_EMAIL: "Haven't receieved the email?",
+		NO_EMAIL: "Haven't received the email?",
 		REQUEST_EMAIL: 'Request another one here',
 		HAVE_ACCOUNT: 'Already have an account?',
 		GOTO_LOGIN: 'Go to the login page',
@@ -285,7 +285,7 @@ export default {
 		TITLE: 'verification sent',
 		TEXT_1: 'Check your email and click the link to verifiy yourself.',
 		TEXT_2:
-			'If you have not receieved any email verification and you have checked your junk mail then you can try clicking resend below.'
+			'If you have not received any email verification and you have checked your junk mail then you can try clicking resend below.'
 	},
 	VERIFICATION_EMAIL_REQUEST: {
 		TITLE: 'Activation Email Request',
@@ -294,7 +294,7 @@ export default {
 	VERIFICATION_EMAIL_REQUEST_SUCCESS: {
 		TITLE: 'Verification reset send',
 		TEXT_1:
-			'If after a few minutes you still have not receieved an email verification then please contact us below.'
+			'If after a few minutes you still have not received an email verification then please contact us below.'
 	},
 	VERIFICATION_EMAIL: {
 		INVALID_UUID: 'Invalid code',
@@ -311,6 +311,7 @@ export default {
 		TITLE_MOBILE_PHONE: 'Mobile Phone',
 		TITLE_PERSONAL_INFORMATION: 'Personal Information',
 		VERIFY_EMAIL: 'Verify email',
+		VERIFY_MOBILE_PHONE: 'Verify mobile phone',
 		VERIFY_USER_DOCUMENTATION: 'Verify user documentation',
 		VERIFY_ID_DOCUMENTS: 'Verify id documents',
 		VERIFY_BANK_ACCOUNT: 'Verify bank account',
@@ -735,5 +736,10 @@ export default {
 	SMS_SENT_TO: 'SMS sent to {0}', // TODO check msg
 	SMS_ERROR_SENT_TO:
 		'Error sending the SMS to {0}. Please refresh the page and try again.', // TODO check msg
-	WITHDRAW_NOTIFICATION_TRANSACTION_ID: 'Transaction ID:' // TODO check msg
+	WITHDRAW_NOTIFICATION_TRANSACTION_ID: 'Transaction ID:', // TODO check msg
+	CHECK_ORDER: 'Check and confirm your order',
+	CHECK_ORDER_TYPE: '{0} {1}', // 0 -> maker/limit  1 -> sell/buy
+	CONFIRM_TEXT: 'Confirm',
+	INVALID_CAPTCHA: 'Invalid captcha',
+	NO_FEE: 'N/A'
 };

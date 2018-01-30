@@ -1,5 +1,5 @@
 .user_security-wrapper {
-	> * {
+	> *:not(:last-child) {
 		margin-bottom: 2rem;
 	}
 }

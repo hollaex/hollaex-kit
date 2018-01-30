@@ -1,113 +1,114 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import { format } from 'd3-format';
-
 import { ChartCanvas, Chart } from 'react-stockcharts';
+
 import { CandlestickSeries } from 'react-stockcharts/lib/series';
 
-import { XAxis, YAxis } from 'react-stockcharts/lib/axes';
+import { XAxis, YAxis, TXAxis } from './axis';
+
 import {
 	CrossHairCursor,
+	MouseCoordinateX,
 	MouseCoordinateY,
 	EdgeIndicator
 } from 'react-stockcharts/lib/coordinates';
-
 import { OHLCTooltip } from 'react-stockcharts/lib/tooltip';
+
 import { fitWidth } from 'react-stockcharts/lib/helper';
 
-import { xScaleProvider, margins, yExtents, generateXExtents } from './utils';
+import { CandlesProps, edgeIndicatorProps, OHLCProps } from './props';
 
-import { OHLCProps, edgeIndicatorProps } from './props';
+import {
+	margins,
+	yExtents,
+	generateXExtents,
+	xScaleProvider,
+	FORMAT_DATE_X_TICK,
+	FORMAT_Y_TICK
+} from './utils';
+import STRINGS from '../../config/localizedStrings';
 
-class CandleChart extends React.Component {
-	saveNode = (node) => {
-		this.node = node;
+class CandleChart extends Component {
+	state = {
+		gridX: {},
+		gridY: {}
 	};
 
-	resetYDomain = () => {
-		this.node.resetYDomain();
+	componentDidMount() {
+		this.calculateGrid(this.props.width, this.props.height);
+	}
+
+	componentWillReceiveProps(nextProps) {
+		if (
+			nextProps.width !== this.props.width ||
+			nextProps.height !== this.props.height
+		) {
+			this.calculateGrid(nextProps.width, nextProps.height);
+		}
+	}
+
+	calculateGrid = (width, height) => {
+		const gridHeight = height - margins.top - margins.bottom;
+		const gridWidth = width - margins.left - margins.right;
+
+		const gridY = { innerTickSize: -1 * gridWidth, tickStrokeOpacity: 0.2 };
+		const gridX = { innerTickSize: -1 * gridHeight, tickStrokeOpacity: 0.2 };
+
+		this.setState({ gridY, gridX });
 	};
 
 	render() {
 		const {
-			type,
-			data: initialData,
 			width,
-			height,
+			data: initialData,
 			ratio,
-			serieName,
-			clamp,
-			mouseMoveEvent,
-			panEvent,
-			zoomEvent
+			height,
+			type,
+			seriesName
 		} = this.props;
+		// const { gridY, gridX } = this.state;
 
 		const { data, xScale, xAccessor, displayXAccessor } = xScaleProvider(
 			initialData
 		);
 
-		const xExtents = generateXExtents(xAccessor, data);
-
-		const gridHeight = height - margins.top - margins.bottom;
-		const gridWidth = width - margins.left - margins.right;
-
-		const showGrid = true;
-		const yGrid = showGrid
-			? { innerTickSize: -1 * gridWidth, tickStrokeOpacity: 0.2 }
-			: {};
-		const xGrid = showGrid
-			? { innerTickSize: -1 * gridHeight, tickStrokeOpacity: 0.2 }
-			: {};
+		const dataCount = Math.max(this.props.dataCount || Math.floor(width / 10));
+		const xExtents = generateXExtents(xAccessor, data, dataCount);
 
 		return (
 			<ChartCanvas
-				ref={this.saveNode}
 				height={height}
 				ratio={ratio}
 				width={width}
-				margins={margins}
-				mouseMoveEvent={mouseMoveEvent}
-				panEvent={panEvent}
-				zoomEvent={zoomEvent}
-				clamp={clamp}
+				margin={margins}
 				type={type}
-				seriesName={serieName}
+				seriesName={seriesName}
 				data={data}
 				xScale={xScale}
-				xExtents={xExtents}
 				xAccessor={xAccessor}
 				displayXAccessor={displayXAccessor}
+				xExtents={xExtents}
 			>
-				<Chart id={1} yExtents={[yExtents]}>
-					<XAxis
-						axisAt="bottom"
-						orient="bottom"
-						zoomEnabled={!zoomEvent}
-						{...xGrid}
-					/>
-					<YAxis
-						axisAt="right"
-						orient="right"
-						ticks={5}
-						zoomEnabled={!zoomEvent}
-						{...yGrid}
-					/>
+				<Chart id={1} yExtents={yExtents}>
+					<XAxis width={width} />
+					<YAxis height={height} />
+					<TXAxis width={width} />
 
-					{/*}<MouseCoordinateX
-						at="bottom"
-						orient="bottom"
-						displayFormat={timeFormat("%H:%M:%S")}
-          />*/}
+					<MouseCoordinateX
+						at="top"
+						orient="top"
+						displayFormat={FORMAT_DATE_X_TICK}
+					/>
 					<MouseCoordinateY
 						at="right"
 						orient="right"
-						displayFormat={format('.2f')}
+						displayFormat={FORMAT_Y_TICK}
 					/>
 
-					<CandlestickSeries />
-					<OHLCTooltip {...OHLCProps} />
+					<CandlestickSeries {...CandlesProps} />
 					<EdgeIndicator {...edgeIndicatorProps} />
+					<OHLCTooltip {...OHLCProps} displayTexts={STRINGS.CHART_TEXTS} />
 				</Chart>
 				<CrossHairCursor />
 			</ChartCanvas>
@@ -116,24 +117,18 @@ class CandleChart extends React.Component {
 }
 
 CandleChart.propTypes = {
-	serieName: PropTypes.string.isRequired,
 	data: PropTypes.array.isRequired,
 	width: PropTypes.number.isRequired,
-	height: PropTypes.number,
-	ratio: PropTypes.number,
-	type: PropTypes.oneOf(['svg', 'hybrid']).isRequired
+	ratio: PropTypes.number.isRequired,
+	type: PropTypes.oneOf(['svg', 'hybrid']).isRequired,
+	dataCount: PropTypes.number,
+	seriesName: PropTypes.string
 };
 
 CandleChart.defaultProps = {
 	type: 'svg',
-	mouseMoveEvent: true,
-	panEvent: true,
-	zoomEvent: true,
-	clamp: false,
-	ratio: 1,
-	height: 400
+	seriesName: 'CandleChart',
+	dataCount: 0
 };
 
-CandleChart = fitWidth(CandleChart);
-
-export default CandleChart;
+export default fitWidth(CandleChart);

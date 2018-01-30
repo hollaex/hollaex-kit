@@ -8,6 +8,7 @@ import DateField from './FormFields/DateField';
 import DropdownDateField from './FormFields/DropdownDateField';
 import CheckField from './FormFields/CheckField';
 import EditableInputField from './FormFields/EditableInputField';
+import CaptchaField from './FormFields/Captcha';
 
 const renderFields = (fields = {}) => {
 	return (
@@ -23,6 +24,8 @@ const renderFields = (fields = {}) => {
 				};
 
 				switch (type) {
+					case 'captcha':
+						return <Field component={CaptchaField} {...commonProps} />;
 					case 'hidden':
 						return (
 							<Field

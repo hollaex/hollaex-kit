@@ -6,6 +6,7 @@ const ERROR_INVALID_CARD_NUMBER = 'Invalid Card number';
 const ERROR_LOGIN_USER_NOT_VERIFIED = 'User is not verified';
 const ERROR_LOGIN_USER_NOT_ACTIVATED = 'User is not activated';
 const ERROR_LOGIN_INVALID_CREDENTIALS = 'Credentials incorrect';
+const ERROR_INVALID_CAPTCHA = 'Invalid captcha';
 
 export const getErrorLocalized = (error = '') => {
 	switch (error) {
@@ -21,6 +22,8 @@ export const getErrorLocalized = (error = '') => {
 			return STRINGS.ERROR_LOGIN_USER_NOT_ACTIVATED;
 		case ERROR_LOGIN_INVALID_CREDENTIALS:
 			return STRINGS.ERROR_LOGIN_INVALID_CREDENTIALS;
+		case ERROR_INVALID_CAPTCHA:
+			return STRINGS.INVALID_CAPTCHA;
 		default:
 			return error;
 	}

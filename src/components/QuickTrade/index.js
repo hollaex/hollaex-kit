@@ -4,7 +4,12 @@ import { debounce } from 'lodash';
 import { Button } from '../../components';
 
 import STRINGS from '../../config/localizedStrings';
-import { ICONS, CURRENCIES, FLEX_CENTER_CLASSES } from '../../config/constants';
+import {
+	ICONS,
+	CURRENCIES,
+	FLEX_CENTER_CLASSES,
+	BALANCE_ERROR
+} from '../../config/constants';
 import { fiatSymbol } from '../../utils/currency';
 
 import ToogleButton from './ToogleButton';
@@ -85,7 +90,6 @@ class QuickTrade extends Component {
 		const { side, value, symbol } = this.state;
 		const { data, fetching, error } = quickTradeData;
 		const { name } = CURRENCIES[symbol];
-
 		return (
 			<div className={classnames('quick_trade-wrapper', ...GROUP_CLASSES)}>
 				<div
@@ -161,7 +165,12 @@ class QuickTrade extends Component {
 							STRINGS.SIDES_VALUES[side]
 						).join(' ')}
 						onClick={onReviewQuickTrade}
-						disabled={disabled || !onReviewQuickTrade || !!error || fetching}
+						disabled={
+							disabled ||
+							!onReviewQuickTrade ||
+							(!!error && error !== BALANCE_ERROR) ||
+							fetching
+						}
 						type="button"
 					/>
 				</div>

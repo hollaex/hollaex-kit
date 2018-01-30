@@ -27,19 +27,41 @@ class BankDeposit extends Component {
 	};
 
 	componentDidMount() {
-		const { minAmount, maxAmount, available, fee, currencyName } = this.props;
-		this.generateFormFields(available, fee, minAmount, maxAmount, currencyName);
+		const {
+			minAmount,
+			maxAmount,
+			available,
+			fee,
+			currencyName,
+			depositPrice
+		} = this.props;
+		this.generateFormFields(
+			available,
+			fee,
+			minAmount,
+			maxAmount,
+			currencyName,
+			depositPrice
+		);
 	}
 
 	componentWillReceiveProps(nextProps) {
 		if (nextProps.activeLanguage !== this.props.activeLanguage) {
-			const { minAmount, maxAmount, available, fee, currencyName } = nextProps;
+			const {
+				minAmount,
+				maxAmount,
+				available,
+				fee,
+				currencyName,
+				depositPrice
+			} = nextProps;
 			this.generateFormFields(
 				available,
 				fee,
 				minAmount,
 				maxAmount,
-				currencyName
+				currencyName,
+				depositPrice
 			);
 		}
 	}
@@ -49,7 +71,8 @@ class BankDeposit extends Component {
 		fee = 0,
 		minAmount,
 		maxAmount,
-		currencyName
+		currencyName,
+		depositPrice = 0
 	) => {
 		const formFields = {
 			amount: {
@@ -74,7 +97,7 @@ class BankDeposit extends Component {
 		};
 
 		const initialValues = {
-			amount: minAmount
+			amount: depositPrice > minAmount ? depositPrice : minAmount
 		};
 		this.setState({ formFields, initialValues, ready: true });
 	};

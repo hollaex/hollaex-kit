@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
-import { SubmissionError } from 'redux-form';
+import { SubmissionError, change } from 'redux-form';
 import { bindActionCreators } from 'redux';
 import { Link } from 'react-router';
 import { performLogin, setLogoutMessage } from '../../actions/authAction';
-import LoginForm from './LoginForm';
+import LoginForm, { FORM_NAME } from './LoginForm';
 import { Dialog, OtpForm, IconTitle, Notification } from '../../components';
 import { NOTIFICATIONS } from '../../actions/appActions';
 import { errorHandler } from '../../components/OtpForm/utils';
@@ -57,6 +57,7 @@ class Login extends Component {
 					: err.message;
 
 				let error = {};
+				this.props.change(FORM_NAME, 'captcha', '');
 
 				if (_error.toLowerCase().indexOf('otp') > -1) {
 					this.setState({ values, otpDialogIsOpen: true });
@@ -162,7 +163,8 @@ const mapStateToProps = (store) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-	setLogoutMessage: bindActionCreators(setLogoutMessage, dispatch)
+	setLogoutMessage: bindActionCreators(setLogoutMessage, dispatch),
+	change: bindActionCreators(change, dispatch)
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);

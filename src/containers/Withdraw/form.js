@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { reduxForm, formValueSelector, reset } from 'redux-form';
+import { reduxForm, formValueSelector, reset, SubmissionError, stopSubmit } from 'redux-form';
 import math from 'mathjs';
 import { Button, Dialog, OtpForm, Loader } from '../../components';
 import renderFields from '../../components/Form/factoryFields';
@@ -98,18 +98,27 @@ class Form extends Component {
 				fee: values.fee ? math.eval(values.fee) : 0,
 				otp_code
 			})
-			.then(({ data }) => {
+			.then((response) => {
 				this.onCloseDialog();
-				return { data };
+				this.props.onSubmitSuccess(response, this.props.dispatch);
+				return response;
 			})
-			.catch((error) => {
-				if (error.errors && !error.errors.otp_code) {
-					setWithdrawNotificationError(error.errors, this.props.dispatch);
+			.catch((err) => {
+				if (err instanceof SubmissionError) {
+					if (err.errors && !err.errors.otp_code) {
+						const error = { _error: err.message, ...err.errors };
+						this.props.onSubmitFail(err.errors, this.props.dispatch);
+						this.onCloseDialog();
+						this.props.dispatch(stopSubmit(FORM_NAME, error))
+					}
+					throw err;
+				} else {
+					const error = { _error: err.message };
+					this.props.onSubmitFail(error, this.props.dispatch);
 					this.onCloseDialog();
+					this.props.dispatch(stopSubmit(FORM_NAME, error))
+					throw new SubmissionError(error)
 				}
-				// console.log(error.errors);
-				this.onCloseDialog();
-				throw error;
 			});
 	};
 
@@ -135,7 +144,7 @@ class Form extends Component {
 				{renderFields(formValues)}
 				{error && <div className="warning_text">{error}</div>}
 				<Button
-					label={STRINGS.DEPOSITS_BUTTON_TEXT}
+					label={STRINGS.WITHDRAWALS_BUTTON_TEXT}
 					disabled={pristine || submitting || !valid}
 					onClick={this.onOpenDialog}
 				/>

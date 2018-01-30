@@ -25,7 +25,7 @@ const INITIAL_BTC_WHITDRAWALS_FEE = {
 };
 
 const joinData = (stateData = [], payloadData = []) =>
-	payloadData.concat(stateData);
+	stateData.concat(payloadData);
 
 const INITIAL_STATE = {
 	trades: INITIAL_API_OBJECT,
@@ -75,7 +75,7 @@ export default function reducer(state = INITIAL_STATE, { type, payload }) {
 
 		case ACTION_KEYS.ADD_USER_TRADES: {
 			// check if we have trades from DB
-			const tradesData = joinData(state.trades.data, payload.reverse());
+			const tradesData = joinData(payload.reverse(), state.trades.data);
 			return {
 				...state,
 				trades: {

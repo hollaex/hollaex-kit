@@ -3,7 +3,12 @@ import classnames from 'classnames';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-import { ICONS, CURRENCIES, DEPOSIT_LIMITS } from '../../config/constants';
+import {
+	ICONS,
+	CURRENCIES,
+	DEPOSIT_LIMITS,
+	BALANCE_ERROR
+} from '../../config/constants';
 import { fiatSymbol } from '../../utils/currency';
 
 import { openContactForm } from '../../actions/appActions';
@@ -19,12 +24,23 @@ import {
 import BankDeposit from './BankDeposit';
 
 class Deposit extends Component {
+	state = {
+		depositPrice: 0
+	};
+
+	componentWillMount() {
+		if (this.props.quoteData.error === BALANCE_ERROR) {
+			this.setState({ depositPrice: this.props.quoteData.data.price });
+		}
+	}
 	render() {
 		const { id, crypto_wallet, symbol, openContactForm, balance } = this.props;
+		const { depositPrice } = this.state;
 
 		if (!id) {
 			return <div />;
 		}
+
 		const { name } = CURRENCIES[symbol];
 		const balanceAvailable = balance[`${symbol}_available`];
 
@@ -59,6 +75,7 @@ class Deposit extends Component {
 							minAmount={min}
 							maxAmount={max}
 							currencyName={name}
+							depositPrice={depositPrice}
 						/>
 					) : (
 						renderContent(symbol, crypto_wallet)
@@ -75,7 +92,8 @@ const mapStateToProps = (store) => ({
 	symbol: store.orderbook.symbol,
 	crypto_wallet: store.user.crypto_wallet,
 	balance: store.user.balance,
-	activeLanguage: store.app.language
+	activeLanguage: store.app.language,
+	quoteData: store.orderbook.quoteData
 });
 
 const mapDispatchToProps = (dispatch) => ({

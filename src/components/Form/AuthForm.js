@@ -7,7 +7,7 @@ const Form = (props) => {
 	const {
 		handleSubmit,
 		submitting,
-		pristine,
+		// pristine,
 		error,
 		valid,
 		formFields,
@@ -23,7 +23,7 @@ const Form = (props) => {
 					</div>
 				)}
 			</div>
-			<Button label={buttonLabel} disabled={pristine || submitting || !valid} />
+			<Button label={buttonLabel} disabled={!!error || submitting || !valid} />
 		</form>
 	);
 };

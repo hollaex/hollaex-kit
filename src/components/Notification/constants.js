@@ -1,22 +1,22 @@
 import { fiatSymbol } from '../../utils/currency';
-import { CURRENCIES } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 
 const generateFiatDepositTexts = (strings) => ({
 	TITLE: strings.formatString(
 		strings.NOTIFICATIONS.DEPOSITS.FIAT.TITLE,
-		CURRENCIES.fiat.shortName
+		strings.FIAT_NAME
 	),
 	SUBTITLE: strings.formatString(
 		strings.NOTIFICATIONS.DEPOSITS.FIAT.SUBTITLE,
-		CURRENCIES.fiat.fullName
+		strings.FIAT_FULLNAME
 	),
 	INFORMATION_PENDING: [],
 	INFORMATION_COMPLETE: []
 });
 
 const generateBtcDepositTexts = (strings, status) => {
-	const { name, fullName } = CURRENCIES.btc;
+	const name = strings.BTC_NAME;
+	const fullName = strings.BTC_FULLNAME;
 	return {
 		TITLE: status
 			? strings.formatString(
