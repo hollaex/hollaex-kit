@@ -145,25 +145,30 @@ class OrderEntry extends Component {
 	};
 
 	onReview = () => {
+		const { showPopup, type, side, price, size, symbol, openCheckOrder, submit } = this.props;
 		const order = {
-			type: this.props.type,
-			side: this.props.side,
-			price: this.props.price,
-			size: formatNumber(this.props.size, 4),
-			symbol: this.props.symbol,
+			type,
+			side,
+			price,
+			size: formatNumber(size, 4),
+			symbol,
 			orderPrice: this.state.orderPrice,
 			orderFees: this.state.orderFees
 		};
 
-		if (order.type === 'market') {
+		if (type === 'market') {
 			delete order.price;
-		} else if (order.price) {
-			order.price = formatNumber(order.price);
+		} else if (price) {
+			order.price = formatNumber(price);
 		}
-		console.log('here', order, this.props);
-		this.props.openCheckOrder(order, () => {
-			this.props.submit(FORM_NAME);
-		});
+
+		if (showPopup) {
+			openCheckOrder(order, () => {
+				submit(FORM_NAME);
+			});
+		} else {
+			submit(FORM_NAME);
+		}
 	};
 
 	generateFormValues = () => {
@@ -218,7 +223,7 @@ class OrderEntry extends Component {
 	};
 
 	render() {
-		const { balance, symbol, type, side } = this.props;
+		const { balance, symbol, type, side, showPopup } = this.props;
 		const {
 			initialValues,
 			formValues,

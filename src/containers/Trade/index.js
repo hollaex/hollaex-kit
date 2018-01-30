@@ -97,7 +97,8 @@ class Trade extends Component {
 			cancelAllOrders,
 			balance,
 			marketPrice,
-			activeLanguage
+			activeLanguage,
+			settings
 		} = this.props;
 		const { chartHeight, chartWidth, symbol } = this.state;
 		const USER_TABS = [
@@ -178,6 +179,7 @@ class Trade extends Component {
 									asks={asks}
 									bids={bids}
 									marketPrice={marketPrice}
+									showPopup={settings.orderConfirmationPopup}
 								/>
 							</TradeBlock>
 						</div>
@@ -232,7 +234,8 @@ const mapStateToProps = (store) => ({
 	activeOrders: store.order.activeOrders,
 	userTrades: store.wallet.latestUserTrades,
 	activeLanguage: store.app.language,
-	fees: store.user.fees
+	fees: store.user.fees,
+	settings: store.user.settings
 });
 
 const mapDispatchToProps = (dispatch) => ({
