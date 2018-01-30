@@ -728,5 +728,16 @@ export default {
 	CHECK_ORDER_TYPE: '{1} {0}', // 0 -> maker/limit  1 -> sell/buy
 	CONFIRM_TEXT: 'Confirm', // TODO
 	INVALID_CAPTCHA: 'Invalid captcha', // TODO
-	NO_FEE: 'N/A'
+	NO_FEE: 'N/A', // TODO
+	SETTINGS_LANGUAGE_LABEL: 'Emails language', // TODO
+	SETTINGS_LANGUAGE_OPTIONS: [
+		{ value: 'en', label: 'English' },
+		{ value: 'fa', label: 'فارسی' }
+	],
+	SETTINGS_ORDERPOPUP_LABEL: 'Order Confirmation Popup', // TODO
+	SETTINGS_ORDERPOPUP_OPTIONS: [
+		{ value: false, label: 'NO' }, // TODO
+		{ value: true, label: 'YES' } // TODO
+	],
+	SETTING_BUTTON: 'save' // TODO
 };
