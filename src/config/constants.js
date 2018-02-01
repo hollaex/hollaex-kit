@@ -375,5 +375,4 @@ export const BLOCKTRAIL_ENDPOINT = `https://www.blocktrail.com/${
 export const BALANCE_ERROR = 'Insufficient balance to perform the order';
 
 export const CAPTCHA_SITEKEY =
-	process.env.REACT_APP_CAPTCHA_SITE_KEY ||
-	'6LcSOUIUAAAAAEbu2RXTpm-hdvQnTcTy12qG2y86';
+	process.env.REACT_APP_CAPTCHA_SITE_KEY;
