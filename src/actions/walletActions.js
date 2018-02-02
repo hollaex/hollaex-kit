@@ -87,7 +87,9 @@ export const verifyFiatDeposit = (deposit_id, status) => {
 
 export const addUserTrades = (trades) => ({
 	type: ACTION_KEYS.ADD_USER_TRADES,
-	payload: trades
+	payload: {
+		trades
+	}
 });
 
 export const getUserTrades = ({

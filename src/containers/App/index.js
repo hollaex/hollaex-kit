@@ -284,7 +284,7 @@ class Container extends Component {
 					);
 					break;
 				case 'trade': {
-					this.props.addUserTrades(data);
+					this.props.addUserTrades(data.reverse());
 					const tradeOrdersIds = new Set();
 					data.forEach((trade) => {
 						if (trade.order) {
