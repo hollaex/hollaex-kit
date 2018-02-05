@@ -176,3 +176,5 @@ export const validateOtp = (message = STRINGS.OTP_FORM.ERROR_INVALID) => (
 	}
 	return error;
 };
+
+export const normalizeEmail = (value = '') => value.toLowerCase();

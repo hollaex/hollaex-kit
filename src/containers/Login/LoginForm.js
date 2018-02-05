@@ -1,6 +1,6 @@
 import React from 'react';
 import { reduxForm } from 'redux-form';
-import { required, password, email } from '../../components/Form/validations';
+import { required, password, email, normalizeEmail } from '../../components/Form/validations';
 import { AuthForm } from '../../components';
 
 import STRINGS from '../../config/localizedStrings';
@@ -13,6 +13,7 @@ const Form = (props) => {
 			type: 'email',
 			validate: [required, email],
 			fullWidth: true,
+			normalize: normalizeEmail,
 			label: STRINGS.FORM_FIELDS.EMAIL_LABEL,
 			placeholder: STRINGS.FORM_FIELDS.EMAIL_PLACEHOLDER
 		},

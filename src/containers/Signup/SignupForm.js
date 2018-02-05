@@ -6,7 +6,8 @@ import {
 	required,
 	password,
 	email,
-	requiredWithCustomMessage
+	requiredWithCustomMessage,
+	normalizeEmail
 } from '../../components/Form/validations';
 import { AuthForm } from '../../components';
 import STRINGS from '../../config/localizedStrings';
@@ -29,6 +30,7 @@ export const generateFormFields = (strings) => ({
 			requiredWithCustomMessage(strings.VALIDATIONS.TYPE_EMAIL),
 			email
 		],
+		normalize: normalizeEmail,
 		fullWidth: true,
 		label: strings.FORM_FIELDS.EMAIL_LABEL,
 		placeholder: strings.FORM_FIELDS.EMAIL_PLACEHOLDER
