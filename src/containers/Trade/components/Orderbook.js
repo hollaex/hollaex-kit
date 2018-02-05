@@ -5,14 +5,21 @@ import { subtract } from '../utils';
 import { formatFiatAmount, formatBtcAmount } from '../../../utils/currency';
 import STRINGS from '../../../config/localizedStrings';
 
-const PriceRow = (side) => ([price, amount], index) => (
-	<div key={`${side}-${index}`} className="d-flex value-row align-items-center">
+const PriceRow = (side, onPriceClick, onAmountClick) => (
+	[price, amount],
+	index
+) => (
+	<div key={`${side}-${price}`} className="d-flex value-row align-items-center">
 		<div
-			className={`f-1 trade_orderbook-cell trade_orderbook-cell-price ${side}`}
+			className={`f-1 trade_orderbook-cell trade_orderbook-cell-price ${side} pointer`}
+			onClick={onPriceClick(price)}
 		>
 			{formatFiatAmount(price)}
 		</div>
-		<div className="f-1 trade_orderbook-cell trade_orderbook-cell-amount">
+		<div
+			className="f-1 trade_orderbook-cell trade_orderbook-cell-amount pointer"
+			onClick={onAmountClick(amount)}
+		>
 			{formatBtcAmount(amount)}
 		</div>
 	</div>
@@ -68,6 +75,14 @@ class Orderbook extends Component {
 		}
 	};
 
+	onPriceClick = (price) => () => {
+		this.props.onPriceClick(price);
+	};
+
+	onAmountClick = (price) => () => {
+		this.props.onAmountClick(price);
+	};
+
 	render() {
 		const { asks, bids, symbol } = this.props;
 		const { dataBlockHeight } = this.state;
@@ -106,7 +121,7 @@ class Orderbook extends Component {
 						style={blockStyle}
 						ref={this.setRefs('asksWrapper')}
 					>
-						{asks.map(PriceRow('ask'))}
+						{asks.map(PriceRow('ask', this.onPriceClick, this.onAmountClick))}
 						<LimitBar text={STRINGS.ORDERBOOK_SELLERS} />
 					</div>
 					<div
@@ -133,7 +148,7 @@ class Orderbook extends Component {
 						ref={this.setRefs('bidsWrapper')}
 						style={blockStyle}
 					>
-						{bids.map(PriceRow('bids'))}
+						{bids.map(PriceRow('bids', this.onPriceClick, this.onAmountClick))}
 						<LimitBar text={STRINGS.ORDERBOOK_BUYERS} />
 					</div>
 				</div>
@@ -145,7 +160,9 @@ class Orderbook extends Component {
 Orderbook.defaultProps = {
 	asks: [],
 	bids: [],
-	ready: false
+	ready: false,
+	onPriceClick: () => {},
+	onAmountClick: () => {}
 };
 
 export default Orderbook;

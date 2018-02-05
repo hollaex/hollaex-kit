@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import EventListener from 'react-event-listener';
 import classnames from 'classnames';
 import { bindActionCreators } from 'redux';
-import { SubmissionError } from 'redux-form';
+import { SubmissionError, change } from 'redux-form';
 
 import { ICONS } from '../../config/constants';
 import {
@@ -18,6 +18,7 @@ import TradeBlock from './components/TradeBlock';
 import TradeBlockTabs from './components/TradeBlockTabs';
 import Orderbook from './components/Orderbook';
 import OrderEntry from './components/OrderEntry';
+import { FORM_NAME } from './components/OrderEntryForm';
 import ActiveOrders from './components/ActiveOrders';
 import UserTrades from './components/UserTrades';
 import TradeHistory from './components/TradeHistory';
@@ -85,6 +86,14 @@ class Trade extends Component {
 		setNotification(NOTIFICATIONS.NEW_ORDER, { order, onConfirm, fees });
 	};
 
+	onPriceClick = (price) => {
+		this.props.change(FORM_NAME, 'price', price);
+	}
+
+	onAmountClick = (size) => {
+		this.props.change(FORM_NAME, 'size', size);
+	}
+
 	render() {
 		const {
 			tradeHistory,
@@ -132,7 +141,9 @@ class Trade extends Component {
 			symbol,
 			fiatSymbol: STRINGS.FIAT_SHORTNAME,
 			asks,
-			bids
+			bids,
+			onPriceClick: this.onPriceClick,
+			onAmountClick: this.onAmountClick,
 		};
 
 		return (
@@ -242,7 +253,8 @@ const mapDispatchToProps = (dispatch) => ({
 	getUserTrades: (symbol) => dispatch(getUserTrades({ symbol })),
 	cancelOrder: bindActionCreators(cancelOrder, dispatch),
 	cancelAllOrders: bindActionCreators(cancelAllOrders, dispatch),
-	setNotification: bindActionCreators(setNotification, dispatch)
+	setNotification: bindActionCreators(setNotification, dispatch),
+	change: bindActionCreators(change, dispatch)
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Trade);
