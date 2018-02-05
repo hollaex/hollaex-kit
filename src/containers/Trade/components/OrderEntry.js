@@ -14,7 +14,9 @@ import {
 	minValue,
 	maxValue,
 	checkMarketPrice,
-	step
+	step,
+	normalizeInt,
+	normalizeFloat
 } from '../../../components/Form/validations';
 import { Loader } from '../../../components';
 import { LIMIT_VALUES, CURRENCIES } from '../../../config/constants';
@@ -63,7 +65,7 @@ class OrderEntry extends Component {
 	}
 
 	calculateOrderPrice = (props) => {
-		const { type, side, fees, marketPrice } = props;
+		const { type, side, fees } = props;
 		const size = parseFloat(props.size || 0);
 		const price = parseFloat(props.price || 0);
 
@@ -78,21 +80,11 @@ class OrderEntry extends Component {
 			}
 		}
 
-		let orderFees = 0;
-		if (side === 'buy') {
-			orderFees = mathjs
-				.chain(size)
-				.multiply(fees.taker_fee)
-				.divide(100)
-				.multiply(marketPrice)
-				.done();
-		} else {
-			orderFees = mathjs
-				.chain(orderPrice)
-				.multiply(fees.taker_fee)
-				.divide(100)
-				.done();
-		}
+		let orderFees = mathjs
+			.chain(orderPrice)
+			.multiply(fees.taker_fee)
+			.divide(100)
+			.done();
 		let outsideFormError = '';
 
 		if (type === 'market' && orderPrice === 0) {
@@ -190,6 +182,7 @@ class OrderEntry extends Component {
 				label: STRINGS.SIZE,
 				type: 'number',
 				placeholder: '0.00',
+				normalize: normalizeFloat,
 				step: LIMIT_VALUES.SIZE.STEP,
 				min: LIMIT_VALUES.SIZE.MIN,
 				max: LIMIT_VALUES.SIZE.MAX,
@@ -205,6 +198,7 @@ class OrderEntry extends Component {
 				label: STRINGS.PRICE,
 				type: 'number',
 				placeholder: '0',
+				normalize: normalizeInt,
 				step: LIMIT_VALUES.PRICE.STEP,
 				min: LIMIT_VALUES.PRICE.MIN,
 				max: LIMIT_VALUES.PRICE.MAX,
@@ -223,7 +217,7 @@ class OrderEntry extends Component {
 	};
 
 	render() {
-		const { balance, symbol, type, side, showPopup } = this.props;
+		const { balance, symbol, type, side } = this.props;
 		const {
 			initialValues,
 			formValues,

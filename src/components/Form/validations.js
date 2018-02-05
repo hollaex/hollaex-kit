@@ -165,6 +165,7 @@ export const isBefore = (
 };
 
 export const normalizeInt = (value) => validator.toInt(value) || 0;
+export const normalizeFloat = (value) => validator.toFloat(value) || 0;
 
 export const validateOtp = (message = STRINGS.OTP_FORM.ERROR_INVALID) => (
 	value = ''
