@@ -4,7 +4,7 @@ import { formatBtcAmount, formatFiatAmount } from '../utils/string';
 import STRINGS from './localizedStrings';
 
 export const ENV = process.env.NODE_ENV || 'development';
-export const NETWORK = process.env.REACT_APP_NETWORK || 'testnet';
+export const NETWORK = process.env.REACT_APP_NETWORK || 'mainnet';
 
 export const APP_TITLE = STRINGS.APP_TITLE;
 
