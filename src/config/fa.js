@@ -24,7 +24,7 @@ export default {
 	SUCCESS_TEXT: 'موفقیت',
 	ERROR_TEXT: 'خطا',
 	EDIT_TEXT: 'ویرایش',
-	BACK_TEXT: 'قبل',
+	BACK_TEXT: 'بازگشت',
 	NO_OPTIONS: 'هیچ گزینه ای وجود ندارد',
 	HOME: {
 		SECTION_1_TITLE: 'خرید و فروش بیتکوین',
@@ -311,7 +311,7 @@ export default {
 		TITLE_MOBILE_PHONE: 'شماره تلفن همراه',
 		TITLE_PERSONAL_INFORMATION: 'اطلاعات شخصی',
 		VERIFY_EMAIL: 'تأیید ایمیل',
-		VERIFY_MOBILE_PHONE: 'Verify mobile phone', // TODO
+		VERIFY_MOBILE_PHONE: 'شماره تلفن خود را تایید کنید',
 		VERIFY_USER_DOCUMENTATION: 'اسناد کاربر را تأیید کنید',
 		VERIFY_ID_DOCUMENTS: 'اسناد شناسایی را تأیید کنید',
 		VERIFY_BANK_ACCOUNT: 'تأیید حساب بانکی',
@@ -724,9 +724,9 @@ export default {
 	SMS_ERROR_SENT_TO:
 		'خطا در ارسال به {0}. لطفا صفحه را دوباره بارگذاری کنید و مجددا امتحان کنید.',
 	WITHDRAW_NOTIFICATION_TRANSACTION_ID: 'شناسه تراکنش:',
-	CHECK_ORDER: 'Check and confirm your order', // TODO
+	CHECK_ORDER: 'سفارش خود را تایید کنید',
 	CHECK_ORDER_TYPE: '{1} {0}', // 0 -> maker/limit  1 -> sell/buy
-	CONFIRM_TEXT: 'Confirm', // TODO
-	INVALID_CAPTCHA: 'Invalid captcha', // TODO
+	CONFIRM_TEXT: 'تایید',
+	INVALID_CAPTCHA: 'کپچا نادرس است',
 	NO_FEE: 'N/A'
 };

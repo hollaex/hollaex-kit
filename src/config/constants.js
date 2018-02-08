@@ -4,7 +4,7 @@ import { formatBtcAmount, formatFiatAmount } from '../utils/string';
 import STRINGS from './localizedStrings';
 
 export const ENV = process.env.NODE_ENV || 'development';
-export const NETWORK = process.env.REACT_APP_NETWORK || 'testnet';
+export const NETWORK = process.env.REACT_APP_NETWORK || 'mainnet';
 
 export const APP_TITLE = STRINGS.APP_TITLE;
 
@@ -376,4 +376,4 @@ export const BALANCE_ERROR = 'Insufficient balance to perform the order';
 
 export const CAPTCHA_SITEKEY =
 	process.env.REACT_APP_CAPTCHA_SITE_KEY ||
-	'6LcSOUIUAAAAAEbu2RXTpm-hdvQnTcTy12qG2y86';
+	'6LevvkAUAAAAAI4V975bIhqT3emHnqaW_BoMYpAr';
