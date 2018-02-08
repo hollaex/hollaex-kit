@@ -14,7 +14,9 @@ import {
 	minValue,
 	maxValue,
 	checkMarketPrice,
-	step
+	step,
+	normalizeInt,
+	normalizeFloat
 } from '../../../components/Form/validations';
 import { Loader } from '../../../components';
 import { LIMIT_VALUES, CURRENCIES } from '../../../config/constants';
@@ -63,7 +65,7 @@ class OrderEntry extends Component {
 	}
 
 	calculateOrderPrice = (props) => {
-		const { type, side, fees, marketPrice } = props;
+		const { type, side, fees } = props;
 		const size = parseFloat(props.size || 0);
 		const price = parseFloat(props.price || 0);
 
@@ -78,21 +80,11 @@ class OrderEntry extends Component {
 			}
 		}
 
-		let orderFees = 0;
-		if (side === 'buy') {
-			orderFees = mathjs
-				.chain(size)
-				.multiply(fees.taker_fee)
-				.divide(100)
-				.multiply(marketPrice)
-				.done();
-		} else {
-			orderFees = mathjs
-				.chain(orderPrice)
-				.multiply(fees.taker_fee)
-				.divide(100)
-				.done();
-		}
+		let orderFees = mathjs
+			.chain(orderPrice)
+			.multiply(fees.taker_fee)
+			.divide(100)
+			.done();
 		let outsideFormError = '';
 
 		if (type === 'market' && orderPrice === 0) {
@@ -145,25 +137,30 @@ class OrderEntry extends Component {
 	};
 
 	onReview = () => {
+		const { showPopup, type, side, price, size, symbol, openCheckOrder, submit } = this.props;
 		const order = {
-			type: this.props.type,
-			side: this.props.side,
-			price: this.props.price,
-			size: formatNumber(this.props.size, 4),
-			symbol: this.props.symbol,
+			type,
+			side,
+			price,
+			size: formatNumber(size, 4),
+			symbol,
 			orderPrice: this.state.orderPrice,
 			orderFees: this.state.orderFees
 		};
 
-		if (order.type === 'market') {
+		if (type === 'market') {
 			delete order.price;
-		} else if (order.price) {
-			order.price = formatNumber(order.price);
+		} else if (price) {
+			order.price = formatNumber(price);
 		}
-		console.log('here', order, this.props);
-		this.props.openCheckOrder(order, () => {
-			this.props.submit(FORM_NAME);
-		});
+
+		if (showPopup) {
+			openCheckOrder(order, () => {
+				submit(FORM_NAME);
+			});
+		} else {
+			submit(FORM_NAME);
+		}
 	};
 
 	generateFormValues = () => {
@@ -185,6 +182,7 @@ class OrderEntry extends Component {
 				label: STRINGS.SIZE,
 				type: 'number',
 				placeholder: '0.00',
+				normalize: normalizeFloat,
 				step: LIMIT_VALUES.SIZE.STEP,
 				min: LIMIT_VALUES.SIZE.MIN,
 				max: LIMIT_VALUES.SIZE.MAX,
@@ -200,6 +198,7 @@ class OrderEntry extends Component {
 				label: STRINGS.PRICE,
 				type: 'number',
 				placeholder: '0',
+				normalize: normalizeInt,
 				step: LIMIT_VALUES.PRICE.STEP,
 				min: LIMIT_VALUES.PRICE.MIN,
 				max: LIMIT_VALUES.PRICE.MAX,
