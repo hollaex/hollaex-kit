@@ -47,7 +47,9 @@ const calculatePrice = (isQuick = false, price, size) => {
 	return price;
 };
 
-export const generateTradeHeaders = (symbol) => {
+// export const generateTradeHeaders = (symbol) => {
+export const generateTradeHeaders = () => {
+	const symbol = 'btc';
 	const { formatToCurrency } = CURRENCIES[symbol];
 	const shortName = STRINGS[`${symbol.toUpperCase()}_SHORTNAME`];
 	const fullName = STRINGS[`${symbol.toUpperCase()}_FULLNAME`];
@@ -248,3 +250,11 @@ export const generateWithdrawalsHeaders = (symbol) => {
 };
 
 export const generateDepositsHeaders = generateWithdrawalsHeaders;
+
+export const filterData = (symbol, { count = 0, data = [] }) => {
+	const filteredData = data.filter((item) => item.symbol === symbol);
+	return {
+		count: filteredData.length,
+		data: filteredData
+	};
+};
