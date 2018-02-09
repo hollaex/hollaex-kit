@@ -50,6 +50,14 @@ class ContactForm extends Component {
 					label: STRINGS.CONTACT_FORM.CATEGORY_OPTIONS.OPTION_VERIFY
 				},
 				{
+					value: 'level',
+					label: STRINGS.CONTACT_FORM.CATEGORY_OPTIONS.OPTION_LEVEL
+				},
+				{
+					value: 'deposit',
+					label: STRINGS.CONTACT_FORM.CATEGORY_OPTIONS.OPTION_DEPOSIT
+				},
+				{
 					value: 'bug',
 					label: STRINGS.CONTACT_FORM.CATEGORY_OPTIONS.OPTION_BUG
 				}

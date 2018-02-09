@@ -105,8 +105,10 @@ export default {
 		CATEGORY_LABEL: 'دسته بندی',
 		CATEGORY_PLACEHOLDER: 'دسته ای را انتخاب کنید که برای موضوع شما مناسب باشد',
 		CATEGORY_OPTIONS: {
-			OPTION_VERIFY: 'تایید',
-			OPTION_BUG: 'اشکال'
+			OPTION_VERIFY: 'تایید مدارک',
+			OPTION_LEVEL: 'افزایش سطح و محدودیت کاربر',
+			OPTION_DEPOSIT: 'واریز و برداشت',
+			OPTION_BUG: 'گزارش اشکال در سایت'
 		},
 		SUBJECT_LABEL: 'موضوع',
 		SUBJECT_PLACEHOLDER: 'موضوع را تایپ کنید',
@@ -129,7 +131,7 @@ export default {
 			'سپرده ها تنها از کارت اعتباری کاربر یا انتقال مستقیم از حساب بانکی کاربر که با نام دارنده حساب اکسیر شما منطبق است، پذیرفته می شود.'
 		],
 		LIMIT_MESSAGE: 'حداکثر مبلغ سپرده روزانه',
-		INCREASE_LIMIT: 'میخواهید محدودیت روزانه خود را افزایش دهید؟',
+		INCREASE_LIMIT: 'برای افزایش محدودیت روزانه خود به پشتیبانی ایمیل بزنید',
 		QR_CODE: 'توسط فردی که می خواهد بیتکوین به شما ارسال کند، اسکن شود',
 		NO_DATA: 'اطلاعاتی در دسترس نیست',
 		FULL_MESSAGE_LIMIT: '{0}: {1} {2} {3}' //  0 -> {Daily deposit max amount}:  1 -> {50,000,000} 2 -> {T} 3 -> {(Want to increase your daily limit?)}

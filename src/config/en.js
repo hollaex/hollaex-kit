@@ -103,8 +103,10 @@ export default {
 		CATEGORY_LABEL: 'Category',
 		CATEGORY_PLACEHOLDER: 'Select the category that best suits your issue',
 		CATEGORY_OPTIONS: {
-			OPTION_VERIFY: 'Verification',
-			OPTION_BUG: 'Bug'
+			OPTION_VERIFY: 'User verification',
+			OPTION_LEVEL: 'Increase user level',
+			OPTION_DEPOSIT: 'Deposit & Withdrawal',
+			OPTION_BUG: 'Report bug'
 		},
 		SUBJECT_LABEL: 'Subject',
 		SUBJECT_PLACEHOLDER: 'Type the subject of your issue',
