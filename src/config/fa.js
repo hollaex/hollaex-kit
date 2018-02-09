@@ -741,5 +741,6 @@ export default {
 		{ value: false, label: 'خیر' },
 		{ value: true, label: 'بله' }
 	],
-	SETTING_BUTTON: 'ذخیره'
+	SETTING_BUTTON: 'ذخیره',
+	STRING_WITH_PARENTHESIS: '{0} ({1})'
 };

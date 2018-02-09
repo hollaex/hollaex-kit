@@ -754,5 +754,6 @@ export default {
 		{ value: false, label: 'NO' },
 		{ value: true, label: 'YES' }
 	],
-	SETTING_BUTTON: 'save'
+	SETTING_BUTTON: 'save',
+	STRING_WITH_PARENTHESIS: '{0} ({1})'
 };
