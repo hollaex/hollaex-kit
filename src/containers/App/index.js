@@ -236,7 +236,7 @@ class Container extends Component {
 						this.setState({ ordersQueued });
 					}
 					this.props.addOrder(data);
-					this.props.setNotification(NOTIFICATIONS.ORDERS, { type, data });
+					// this.props.setNotification(NOTIFICATIONS.ORDERS, { type, data });
 					break;
 				}
 				case 'order_partialy_filled': {
