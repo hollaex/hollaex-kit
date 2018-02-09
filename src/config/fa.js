@@ -728,16 +728,16 @@ export default {
 	CHECK_ORDER_TYPE: '{1} {0}', // 0 -> maker/limit  1 -> sell/buy
 	CONFIRM_TEXT: 'تایید',
 	INVALID_CAPTCHA: 'کپچا نادرست است',
-	NO_FEE: 'N/A'
-	SETTINGS_LANGUAGE_LABEL: 'Emails language', // TODO
+	NO_FEE: 'N/A',
+	SETTINGS_LANGUAGE_LABEL: 'انتخاب زبان ایمیل',
 	SETTINGS_LANGUAGE_OPTIONS: [
 		{ value: 'en', label: 'English' },
 		{ value: 'fa', label: 'فارسی' }
 	],
-	SETTINGS_ORDERPOPUP_LABEL: 'Order Confirmation Popup', // TODO
+	SETTINGS_ORDERPOPUP_LABEL: 'مشاهده منوی تلیید سفارش',
 	SETTINGS_ORDERPOPUP_OPTIONS: [
-		{ value: false, label: 'NO' }, // TODO
-		{ value: true, label: 'YES' } // TODO
+		{ value: false, label: 'خیر' },
+		{ value: true, label: 'بله' }
 	],
-	SETTING_BUTTON: 'save' // TODO
+	SETTING_BUTTON: 'ذخیره'
 };

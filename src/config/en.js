@@ -742,12 +742,12 @@ export default {
 	CONFIRM_TEXT: 'Confirm',
 	INVALID_CAPTCHA: 'Invalid captcha',
 	NO_FEE: 'N/A',
-	SETTINGS_LANGUAGE_LABEL: 'Emails language', // TODO
+	SETTINGS_LANGUAGE_LABEL: 'Language of Emails',
 	SETTINGS_LANGUAGE_OPTIONS: [
 		{ value: 'en', label: 'English' },
 		{ value: 'fa', label: 'فارسی' }
 	],
-	SETTINGS_ORDERPOPUP_LABEL: 'Order Confirmation Popup', // TODO
+	SETTINGS_ORDERPOPUP_LABEL: 'Display order confirmation popup',
 	SETTINGS_ORDERPOPUP_OPTIONS: [
 		{ value: false, label: 'NO' },
 		{ value: true, label: 'YES' }
