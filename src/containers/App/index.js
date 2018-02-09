@@ -499,6 +499,13 @@ class Container extends Component {
 					label="exir-modal"
 					onCloseDialog={this.onCloseDialog}
 					shouldCloseOnOverlayClick={shouldCloseOnOverlayClick}
+					showCloseText={
+						!(
+							activeNotification.type === CONTACT_FORM ||
+							activeNotification.type === NOTIFICATIONS.NEW_ORDER ||
+							activeNotification.type === NOTIFICATIONS.ERROR
+						)
+					}
 					style={{ 'z-index': 100 }}
 				>
 					{this.renderDialogContent(activeNotification, prices)}

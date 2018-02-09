@@ -23,6 +23,15 @@ $close-button--margin: 1.5rem;
 	}
 }
 
+.close-button {
+	&.action_notification-wrapper {
+		.action_notification-image {
+			@include size(2rem);
+			fill: $colors-main-black;
+		}
+	}
+}
+
 .success_display-wrapper {
 	min-width: $dialog-min-width;
 	min-height: $dialog-min-height;

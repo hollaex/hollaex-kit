@@ -159,6 +159,7 @@ class Form extends Component {
 					label="withdraw-modal"
 					onCloseDialog={this.onCloseDialog}
 					shouldCloseOnOverlayClick={dialogOtpOpen}
+					showCloseText={false}
 				>
 					{dialogOtpOpen ? (
 						<OtpForm

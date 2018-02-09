@@ -328,6 +328,7 @@ class Verification extends Component {
 					label="exir--verification-modal"
 					onCloseDialog={this.onCloseDialog}
 					shouldCloseOnOverlayClick={dialogType !== 'complete'}
+					showCloseText={false}
 				>
 					{this.renderDialogContent(dialogType)}
 				</Dialog>
