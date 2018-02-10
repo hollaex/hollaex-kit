@@ -2,7 +2,7 @@ import React from 'react';
 import { Router, Route, browserHistory } from 'react-router';
 import ReactGA from 'react-ga';
 
-import { NETWORK } from './config/constants';
+import { NETWORK,IS_PRO_VERSION, PRO_VERSION_REDIRECT, DEFAULT_VERSION_REDIRECT } from './config/constants';
 
 import {
 	App as Container,
@@ -88,7 +88,7 @@ const logOutUser = () => {
 };
 
 const NotFound = ({ router }) => {
-	router.replace('/');
+	router.replace(IS_PRO_VERSION ? PRO_VERSION_REDIRECT : DEFAULT_VERSION_REDIRECT);
 	return <div />;
 };
 
@@ -102,7 +102,41 @@ const noLoggedUserCommonProps = {
 
 export default (
 	<Router history={browserHistory}>
-		<Route path="/" name="Home" component={Home} />
+		{!IS_PRO_VERSION && <Route path="/" name="Home" component={Home} />}
+		<Route component={AuthContainer} {...noAuthRoutesCommonProps}>
+			<Route
+				path="login"
+				name="Login"
+				component={Login}
+			/>
+			<Route
+				path="signup"
+				name="signup"
+				component={Signup}
+			/>
+		</Route>
+		<Route component={AuthContainer} {...noLoggedUserCommonProps}>
+			<Route
+				path="reset-password"
+				name="Reset Password Request"
+				component={RequestResetPassword}
+			/>
+			<Route
+				path="reset-password/:code"
+				name="Reset Password"
+				component={ResetPassword}
+			/>
+			<Route
+				path="verify"
+				name="Verify"
+				component={VerificationEmailRequest}
+			/>
+			<Route
+				path="verify/:code"
+				name="verifyCode"
+				component={VerificationEmailCode}
+			/>
+		</Route>
 		<Route component={Container} onEnter={requireAuth}>
 			<Route path="account" name="Account" component={Account} />
 			<Route path="wallet" name="Wallet" component={Wallet} />
@@ -127,44 +161,6 @@ export default (
 			component={Verification}
 			onEnter={requireAuth}
 		/>
-		<Route component={AuthContainer}>
-			<Route
-				path="login"
-				name="Login"
-				component={Login}
-				{...noAuthRoutesCommonProps}
-			/>
-			<Route
-				path="signup"
-				name="signup"
-				component={Signup}
-				{...noAuthRoutesCommonProps}
-			/>
-			<Route
-				path="reset-password"
-				name="Reset Password Request"
-				component={RequestResetPassword}
-				{...noLoggedUserCommonProps}
-			/>
-			<Route
-				path="reset-password/:code"
-				name="Reset Password"
-				component={ResetPassword}
-				{...noLoggedUserCommonProps}
-			/>
-			<Route
-				path="verify"
-				name="Verify"
-				component={VerificationEmailRequest}
-				{...noLoggedUserCommonProps}
-			/>
-			<Route
-				path="verify/:code"
-				name="verifyCode"
-				component={VerificationEmailCode}
-				{...noLoggedUserCommonProps}
-			/>
-		</Route>
 		<Route path="privacy-policy" component={Legal} content="legal" />
 		<Route path="general-terms" component={Legal} content="terms" />
 		<Route path="*" component={NotFound} />
