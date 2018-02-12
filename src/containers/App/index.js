@@ -436,7 +436,8 @@ class Container extends Component {
 			notifications,
 			prices,
 			verification_level,
-			activeLanguage
+			activeLanguage,
+			openContactForm
 		} = this.props;
 		const { dialogIsOpen, appLoaded } = this.state;
 		const languageClasses = getClasesForLanguage(activeLanguage, 'array');
@@ -492,6 +493,7 @@ class Container extends Component {
 						notifications={notifications}
 						changeSymbol={changeSymbol}
 						symbol={symbol}
+						help={openContactForm}
 					/>
 				</div>
 				<Dialog
