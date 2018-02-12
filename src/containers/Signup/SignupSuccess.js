@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router';
 import { IconTitle } from '../../components';
 import STRINGS from '../../config/localizedStrings';
 import { ICONS } from '../../config/constants';
@@ -15,6 +16,12 @@ const SignupSuccess = ({ ...rest }) => {
 			<div className="signup_success-content">
 				<p>{STRINGS.VERIFICATION_TEXTS.TEXT_1}</p>
 				<p>{STRINGS.VERIFICATION_TEXTS.TEXT_2}</p>
+			</div>
+			<div>
+				{STRINGS.SIGN_UP.NO_EMAIL}
+				<Link to="/verify" className="blue-link">
+					{STRINGS.SIGN_UP.REQUEST_EMAIL}
+				</Link>
 			</div>
 		</div>
 	);
