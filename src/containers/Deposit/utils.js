@@ -68,13 +68,7 @@ export const renderExtraInformation = (limit = 0) => {
 
 	return (
 		<div className="extra_information-wrapper d-flex">
-			{STRINGS.formatString(
-				STRINGS.DEPOSIT.FULL_MESSAGE_LIMIT,
-				STRINGS.DEPOSIT.LIMIT_MESSAGE,
-				FIAT_FORMAT(limit),
-				FIAT_SHORT_NAME,
-				<div className="link">({STRINGS.DEPOSIT.INCREASE_LIMIT})</div>
-			)}
+			{STRINGS.DEPOSIT.LIMIT_MESSAGE}
 		</div>
 	);
 };

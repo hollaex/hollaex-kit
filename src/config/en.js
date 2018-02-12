@@ -128,7 +128,7 @@ export default {
 			'Use the bank details below to deposit USD in to your account. Transfers usally take up to 1-2 business day.',
 			'Deposits will only be accepeted from a bank account in a name that matches the name registered with your Exir account.'
 		],
-		LIMIT_MESSAGE: 'Daily deposit max amount',
+		LIMIT_MESSAGE: 'Use your registered card and bank for deposit otherwise you may face issues and your funds might get blocked.',
 		INCREASE_LIMIT: 'Want to increase your daily limit?',
 		QR_CODE:
 			'This QR Code can be scanned by the person who wants to send you Bitcoins',
@@ -456,7 +456,7 @@ export default {
 			},
 			FORM_FIELDS: {
 				IRANIAN_ACCOUNT_LABEL: 'Do you have an Iranian Bank Account?',
-				BANK_NAME_LABEL: 'Bank Name',
+				BANK_NAME_LABEL: 'Bank Name (We reccomend you to use Pasargad Bank for instant withdrawals. Otherwise your withdrawals will have 1 to 2 days delay.',
 				BANK_NAME_PLACEHOLDER: 'Type the name of your bank',
 				ACCOUNT_NUMBER_LABEL: 'Bank Account Number',
 				ACCOUNT_NUMBER_PLACEHOLDER: 'Type your bank account number',
