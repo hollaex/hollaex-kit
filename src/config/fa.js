@@ -607,7 +607,8 @@ export default {
 	WITHDRAWALS_FORM_AMOUNT_LABEL: 'مقدار',
 	WITHDRAWALS_FORM_AMOUNT_PLACEHOLDER:
 		'مقدار {0} را که می خواهید برداشت کنید تایپ کنید',
-	WITHDRAWALS_FORM_FEE_LABEL: 'کارمزد (این کارمزد مربوط به کارمزد استخراج بیتکوین است. در صورت کاهش کارمزد امکان دارد تراکنش شما با تاخیر در شبکه بیتکوین تأیید شود.)',
+	WITHDRAWALS_FORM_FEE_BTC_LABEL: 'کارمزد (این کارمزد مربوط به کارمزد استخراج بیتکوین است. در صورت کاهش دادن کارمزد امکان دارد تراکنش شما با تاخیر در شبکه بیتکوین تأیید شود و در این صورت اکسیر مسئولیتی نمی پذیرد.)',
+	WITHDRAWALS_FORM_FEE_FIAT_LABEL: 'کارمزد برداشت بانک',
 	WITHDRAWALS_FORM_FEE_PLACEHOLDER:
 		'مقدار {0} که میخواهیید در این تراکنش استفاده کنید را وارد کنید ',
 	WITHDRAWALS_FORM_FEE_OPTIMAL_VALUE: 'کارمزد مطلوب: {0} {1}',
