@@ -2,13 +2,9 @@ import React from 'react';
 import QRCode from 'qrcode.react';
 
 import { fiatSymbol } from '../../utils/currency';
-import { CURRENCIES } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 
 import { renderBankInformation, renderDumbField } from '../Wallet/components'; // eslint-disable-line
-
-const FIAT_FORMAT = CURRENCIES[fiatSymbol].formatToCurrency;
-const FIAT_SHORT_NAME = CURRENCIES[fiatSymbol].shortName;
 
 export const generateFiatInformation = (id = '') => (
 	<div className="text">
