@@ -210,7 +210,7 @@ class OrderEntry extends Component {
 						{STRINGS.formatString(
 							STRINGS.STRING_WITH_PARENTHESIS,
 							STRINGS.SIZE,
-							<div className="pointer text-uppercase" onClick={this.setMax}>
+							<div className="pointer text-uppercase blue-link" onClick={this.setMax}>
 								{STRINGS.CALCULATE_MAX}
 							</div>
 						)}
