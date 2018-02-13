@@ -4,7 +4,7 @@ import { formatBtcAmount, formatFiatAmount } from '../utils/string';
 import STRINGS from './localizedStrings';
 
 export const ENV = process.env.NODE_ENV || 'development';
-export const NETWORK = process.env.REACT_APP_NETWORK || 'mainnet';
+export const NETWORK = process.env.REACT_APP_NETWORK || 'testnet';
 
 export const APP_TITLE = STRINGS.APP_TITLE;
 
@@ -376,3 +376,8 @@ export const BALANCE_ERROR = 'Insufficient balance to perform the order';
 
 export const CAPTCHA_SITEKEY =
 	process.env.REACT_APP_CAPTCHA_SITE_KEY;
+
+export const IS_PRO_VERSION = process.env.REACT_APP_IS_PRO_VERSION && process.env.REACT_APP_IS_PRO_VERSION === 'true';
+export const PRO_VERSION_REDIRECT = process.env.REACT_APP_PRO_VERSION_REDIRECT || '/account';
+export const DEFAULT_VERSION_REDIRECT = process.env.REACT_APP_DEFAULT_VERSION_REDIRECT || '/';
+export const PRO_URL = process.env.REACT_APP_PRO_URL || 'https://exir.io';

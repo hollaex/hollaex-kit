@@ -159,6 +159,7 @@ class Form extends Component {
 					label="withdraw-modal"
 					onCloseDialog={this.onCloseDialog}
 					shouldCloseOnOverlayClick={dialogOtpOpen}
+					showCloseText={false}
 				>
 					{dialogOtpOpen ? (
 						<OtpForm
@@ -187,7 +188,7 @@ const WithdrawForm = reduxForm({
 	onSubmitFail: setWithdrawNotificationError,
 	onSubmitSuccess: ({ data }, dispatch) => {
 		dispatch(reset(FORM_NAME));
-		dispatch(setWithdrawNotificationSuccess(data, dispatch));
+		setWithdrawNotificationSuccess(data, dispatch);
 	},
 	enableReinitialize: true,
 	validate

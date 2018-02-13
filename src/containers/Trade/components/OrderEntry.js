@@ -2,12 +2,16 @@ import React, { Component } from 'react';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { formValueSelector, submit } from 'redux-form';
+import { formValueSelector, submit, change } from 'redux-form';
 import mathjs from 'mathjs';
 
 import Review from './OrderEntryReview';
 import Form, { FORM_NAME } from './OrderEntryForm';
-import { formatNumber, formatFiatAmount } from '../../../utils/currency';
+import {
+	formatNumber,
+	formatFiatAmount,
+	roundNumber
+} from '../../../utils/currency';
 import {
 	evaluateOrder,
 	required,
@@ -63,6 +67,19 @@ class OrderEntry extends Component {
 			});
 		}
 	}
+
+	setMax = () => {
+		const { side, balance, symbol } = this.props;
+		const size = parseFloat(this.props.size || 0);
+		const price = parseFloat(this.props.price || 0);
+		let maxSize = balance[`${symbol}_available`];
+		if (side === 'buy') {
+			maxSize = mathjs.divide(balance[`fiat_available`], price) ;
+		}
+		if (maxSize !== size) {
+			this.props.change(FORM_NAME, 'size', roundNumber(maxSize, 4));
+		}
+	};
 
 	calculateOrderPrice = (props) => {
 		const { type, side, fees } = props;
@@ -137,7 +154,16 @@ class OrderEntry extends Component {
 	};
 
 	onReview = () => {
-		const { showPopup, type, side, price, size, symbol, openCheckOrder, submit } = this.props;
+		const {
+			showPopup,
+			type,
+			side,
+			price,
+			size,
+			symbol,
+			openCheckOrder,
+			submit
+		} = this.props;
 		const order = {
 			type,
 			side,
@@ -179,7 +205,17 @@ class OrderEntry extends Component {
 			},
 			size: {
 				name: 'size',
-				label: STRINGS.SIZE,
+				label: (
+					<div style={{ display: 'flex' }}>
+						{STRINGS.formatString(
+							STRINGS.STRING_WITH_PARENTHESIS,
+							STRINGS.SIZE,
+							<div className="pointer text-uppercase blue-link" onClick={this.setMax}>
+								{STRINGS.CALCULATE_MAX}
+							</div>
+						)}
+					</div>
+				),
 				type: 'number',
 				placeholder: '0.00',
 				normalize: normalizeFloat,
@@ -274,7 +310,8 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-	submit: bindActionCreators(submit, dispatch)
+	submit: bindActionCreators(submit, dispatch),
+	change: bindActionCreators(change, dispatch)
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(OrderEntry);

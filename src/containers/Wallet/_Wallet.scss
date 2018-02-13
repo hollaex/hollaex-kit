@@ -48,10 +48,6 @@ $header-margin: 2rem;
 			width: 100%;
 			font-size: $font-size-subtext;
 
-			th {
-				font-family: $raleway--font-family;
-			}
-
 			thead,
 			tfoot {
 				& tr {
@@ -87,13 +83,16 @@ $header-margin: 2rem;
 			}
 
 			.td-name {
-				min-width: 15%;
+				min-width: 75px !important;
 			}
 			.table-icon {
 				& > div {
 					vertical-align: middle;
 					margin: auto;
 				}
+			}
+			.td-amount {
+				direction: ltr;
 			}
 		}
 	}
@@ -123,6 +122,9 @@ $header-margin: 2rem;
 
 		.wallet-assets_block {
 			.wallet-assets_block-table {
+				th {
+					font-family: $raleway--font-family;
+				}
 				th,
 				td {
 					text-align: left;

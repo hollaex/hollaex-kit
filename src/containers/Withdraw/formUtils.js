@@ -87,7 +87,7 @@ export const generateFormValues = (
 		fields.fee = {
 			type: 'editable',
 			inputType: 'number',
-			label: STRINGS.formatString(STRINGS.WITHDRAWALS_FORM_FEE_LABEL, name),
+			label: STRINGS[`WITHDRAWALS_FORM_FEE_${symbol.toUpperCase()}_LABEL`],
 			placeholder: STRINGS.formatString(
 				STRINGS.WITHDRAWALS_FORM_FEE_PLACEHOLDER,
 				name
@@ -100,7 +100,7 @@ export const generateFormValues = (
 	} else {
 		fields.fee = {
 			type: 'number',
-			label: STRINGS.formatString(STRINGS.WITHDRAWALS_FORM_FEE_LABEL, name),
+			label: STRINGS[`WITHDRAWALS_FORM_FEE_FIAT_LABEL`],
 			placeholder: STRINGS.formatString(
 				STRINGS.WITHDRAWALS_FORM_FEE_PLACEHOLDER,
 				name
