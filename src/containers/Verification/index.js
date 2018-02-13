@@ -298,7 +298,7 @@ class Verification extends Component {
 					isHome={true}
 					token={token}
 					rightChildren={
-						<Logout className="bar-logout" onLogout={this.onLogout} />
+						<Logout className="sidebar-row bar-logout" onLogout={this.onLogout} />
 					}
 				/>
 				{activeTab < tabs.length ? (
