@@ -236,6 +236,7 @@ class UserVerification extends Component {
 					isOpen={dialogIsOpen && !otp.requesting}
 					label="security-modal"
 					onCloseDialog={this.onCloseDialog}
+					showCloseText={!(otp.error || modalText)}
 				>
 					{dialogIsOpen && !otp.requesting ? (
 						this.renderModalContent(otp, otp_enabled, email, modalText)

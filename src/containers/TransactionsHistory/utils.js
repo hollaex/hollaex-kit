@@ -12,7 +12,7 @@ import { formatTimestamp } from '../../utils/utils';
 const fiatFormatToCurrency = CURRENCIES[fiatSymbol].formatToCurrency;
 const fiatCurrencySymbol = CURRENCIES.fiat.currencySymbol;
 
-const calculateFeeAmount = (fee = 0, quick = false, price = 0, size = 0) => {
+const calculateFeeAmount = (fee = 0, quick = false, price = 1, size = 0) => {
 	if (!fee || fee <= 0) {
 		return STRINGS.NO_FEE;
 	}
@@ -22,7 +22,6 @@ const calculateFeeAmount = (fee = 0, quick = false, price = 0, size = 0) => {
 		.multiply(fee)
 		.divide(100)
 		.done();
-	console.log(amount, fee, feeAmount);
 	return feeAmount;
 };
 
@@ -48,25 +47,9 @@ const calculatePrice = (isQuick = false, price, size) => {
 	return price;
 };
 
-const renderCellFee = ({ fee = 0, price = 0, size = 0, quick }, key, index) => {
-	if (fee === 0) {
-		return <td key={index}> {calculateFeeAmount(fee)}</td>;
-	}
-	return (
-		<td key={index}>
-			{STRINGS.formatString(
-				STRINGS.FIAT_PRICE_FORMAT,
-				fiatFormatToCurrency(calculateFeeAmount(fee, quick, price, size)),
-				fiatCurrencySymbol
-			)}
-		</td>
-	);
-};
-
-const exportFeeData = ({ fee = 0, price = 0, size = 0, quick }) =>
-	calculateFeeAmount(fee, quick, price, size);
-
-export const generateTradeHeaders = (symbol) => {
+// export const generateTradeHeaders = (symbol) => {
+export const generateTradeHeaders = () => {
+	const symbol = 'btc';
 	const { formatToCurrency } = CURRENCIES[symbol];
 	const shortName = STRINGS[`${symbol.toUpperCase()}_SHORTNAME`];
 	const fullName = STRINGS[`${symbol.toUpperCase()}_FULLNAME`];
@@ -164,8 +147,22 @@ export const generateTradeHeaders = (symbol) => {
 		{
 			label: STRINGS.FEE,
 			key: 'fee',
-			exportToCsv: exportFeeData,
-			renderCell: renderCellFee
+			exportToCsv: ({ fee = 0, price = 0, size = 0, quick }) =>
+				calculateFeeAmount(fee, quick, price, size),
+			renderCell: ({ fee, price, size, quick }, key, index) => {
+				if (fee === 0) {
+					return <td key={index}> {calculateFeeAmount(fee)}</td>;
+				}
+				return (
+					<td key={index}>
+						{STRINGS.formatString(
+							STRINGS.FIAT_PRICE_FORMAT,
+							fiatFormatToCurrency(calculateFeeAmount(fee, quick, price, size)),
+							fiatCurrencySymbol
+						)}
+					</td>
+				);
+			}
 		},
 		{
 			label: STRINGS.TIME,
@@ -195,39 +192,51 @@ export const generateWithdrawalsHeaders = (symbol) => {
 		{
 			label: STRINGS.CURRENCY,
 			key: 'currency',
-			exportToCsv: ({ currency }) => CURRENCIES[currency].fullName,
-			renderCell: ({ currency }, key, index) => {
-				const fullName = CURRENCIES[currency].fullName;
-				return <td key={index}>{fullName}</td>;
-			}
+			exportToCsv: ({ currency }) => STRINGS[`${currency.toUpperCase()}_FULLNAME`],
+			renderCell: ({ currency }, key, index) => <td key={index}>{STRINGS[`${currency.toUpperCase()}_FULLNAME`]}</td>
 		},
 		{
 			label: STRINGS.STATUS,
 			key: 'status',
-			exportToCsv: ({ status = false }) => (status ? 'Complete' : 'Pending'),
+			exportToCsv: ({ status = false }) => (status ? STRINGS.COMPLETE : STRINGS.PENDING),
 			renderCell: ({ status = false }, key, index) => {
-				return <td key={index}>{status ? 'Complete' : 'Pending'}</td>;
+				return <td key={index}>{status ? STRINGS.COMPLETE : STRINGS.PENDING}</td>;
 			}
 		},
 		{
 			label: STRINGS.AMOUNT,
 			key: 'amount',
-			exportToCsv: ({ amount = 0, currency }) => {
-				const { formatToCurrency, shortName } = CURRENCIES[currency];
-				return `${formatToCurrency(amount)} ${shortName}`;
+			exportToCsv: ({ amount = 0, fee = 0, currency }) => {
+				const { formatToCurrency } = CURRENCIES[currency];
+				const currencySymbol = STRINGS[`${currency.toUpperCase()}_CURRENCY_SYMBOL`];
+				return `${formatToCurrency(amount - fee)} ${currencySymbol}`;
 			},
-			renderCell: ({ amount = 0, currency }, key, index) => {
-				const { formatToCurrency, shortName } = CURRENCIES[currency];
+			renderCell: ({ amount = 0, fee = 0, currency }, key, index) => {
+				const { formatToCurrency } = CURRENCIES[currency];
+				const currencySymbol = STRINGS[`${currency.toUpperCase()}_CURRENCY_SYMBOL`];
 				return (
-					<td key={index}>{`${formatToCurrency(amount)} ${shortName}`}</td>
+					<td key={index}>{`${formatToCurrency(amount - fee)} ${currencySymbol}`}</td>
 				);
 			}
 		},
 		{
 			label: STRINGS.FEE,
 			key: 'fee',
-			exportToCsv: exportFeeData,
-			renderCell: renderCellFee
+			exportToCsv: ({ fee = 0 }) => fee,
+			renderCell: ({ fee, price, size, quick }, key, index) => {
+				if (fee === 0) {
+					return <td key={index}>{calculateFeeAmount(fee)}</td>;
+				}
+				return (
+					<td key={index}>
+						{STRINGS.formatString(
+							STRINGS.FIAT_PRICE_FORMAT,
+							fee,
+							fiatCurrencySymbol
+						)}
+					</td>
+				);
+			}
 		},
 		{
 			label: STRINGS.TIME,
@@ -241,3 +250,11 @@ export const generateWithdrawalsHeaders = (symbol) => {
 };
 
 export const generateDepositsHeaders = generateWithdrawalsHeaders;
+
+export const filterData = (symbol, { count = 0, data = [] }) => {
+	const filteredData = data.filter((item) => item.symbol === symbol);
+	return {
+		count: filteredData.length,
+		data: filteredData
+	};
+};

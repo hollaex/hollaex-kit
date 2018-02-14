@@ -1,7 +1,7 @@
 import React from 'react';
 import { formatTimestamp } from '../../utils/utils';
 
-const NotificationItem = (props) => {
+export const NotificationItem = (props) => {
 	const { type, data, timestamp } = props;
 	return (
 		<div className="notifications_list-itme-container">

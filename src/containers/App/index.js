@@ -236,7 +236,7 @@ class Container extends Component {
 						this.setState({ ordersQueued });
 					}
 					this.props.addOrder(data);
-					this.props.setNotification(NOTIFICATIONS.ORDERS, { type, data });
+					// this.props.setNotification(NOTIFICATIONS.ORDERS, { type, data });
 					break;
 				}
 				case 'order_partialy_filled': {
@@ -284,7 +284,7 @@ class Container extends Component {
 					);
 					break;
 				case 'trade': {
-					this.props.addUserTrades(data);
+					this.props.addUserTrades(data.reverse());
 					const tradeOrdersIds = new Set();
 					data.forEach((trade) => {
 						if (trade.order) {
@@ -436,7 +436,8 @@ class Container extends Component {
 			notifications,
 			prices,
 			verification_level,
-			activeLanguage
+			activeLanguage,
+			openContactForm
 		} = this.props;
 		const { dialogIsOpen, appLoaded } = this.state;
 		const languageClasses = getClasesForLanguage(activeLanguage, 'array');
@@ -492,6 +493,7 @@ class Container extends Component {
 						notifications={notifications}
 						changeSymbol={changeSymbol}
 						symbol={symbol}
+						help={openContactForm}
 					/>
 				</div>
 				<Dialog
@@ -499,6 +501,13 @@ class Container extends Component {
 					label="exir-modal"
 					onCloseDialog={this.onCloseDialog}
 					shouldCloseOnOverlayClick={shouldCloseOnOverlayClick}
+					showCloseText={
+						!(
+							activeNotification.type === CONTACT_FORM ||
+							activeNotification.type === NOTIFICATIONS.NEW_ORDER ||
+							activeNotification.type === NOTIFICATIONS.ERROR
+						)
+					}
 					style={{ 'z-index': 100 }}
 				>
 					{this.renderDialogContent(activeNotification, prices)}

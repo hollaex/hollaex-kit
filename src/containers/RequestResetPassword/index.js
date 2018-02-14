@@ -104,6 +104,7 @@ class RequestResetPassword extends Component {
 					shouldCloseOnOverlayClick={false}
 					style={{ 'z-index': 100 }}
 					className={classnames(languageClasses)}
+					showCloseText={false}
 				>
 					<ContactForm
 						onSubmitSuccess={this.onCloseDialog}

@@ -2,7 +2,8 @@ import React from 'react';
 import { reduxForm } from 'redux-form';
 import {
 	requiredWithCustomMessage,
-	email
+	email,
+	normalizeEmail
 } from '../../components/Form/validations';
 import { AuthForm } from '../../components';
 import STRINGS from '../../config/localizedStrings';
@@ -14,6 +15,7 @@ export const generateFormFields = () => ({
 			requiredWithCustomMessage(STRINGS.VALIDATIONS.TYPE_EMAIL),
 			email
 		],
+		normalize: normalizeEmail,
 		fullWidth: true,
 		label: STRINGS.FORM_FIELDS.EMAIL_LABEL,
 		placeholder: STRINGS.FORM_FIELDS.EMAIL_PLACEHOLDER

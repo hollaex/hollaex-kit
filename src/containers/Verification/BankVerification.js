@@ -15,6 +15,7 @@ import { verifyBankData } from '../../actions/verificationActions';
 import { getErrorLocalized } from '../../utils/errors';
 import HeaderSection from './HeaderSection';
 
+const SHABA_PREFIX = 'IR';
 const FORM_NAME = 'BankVerification';
 const SELECT_FIELDS = ['isIranianAccount'];
 
@@ -66,6 +67,24 @@ class BankVerification extends Component {
 						.BANK_NAME_PLACEHOLDER,
 				validate: [required]
 			};
+			formFields.card_number = {
+				type: 'text',
+				label:
+					STRINGS.USER_VERIFICATION.BANK_ACCOUNT_FORM.FORM_FIELDS
+						.CARD_NUMBER_LABEL,
+				placeholder:
+					STRINGS.USER_VERIFICATION.BANK_ACCOUNT_FORM.FORM_FIELDS
+						.CARD_NUMBER_PLACEHOLDER,
+				validate: [
+					required,
+					onlyNumbers,
+					exactLength(
+						16,
+						STRINGS.USER_VERIFICATION.BANK_ACCOUNT_FORM.VALIDATIONS.CARD_NUMBER
+					)
+				],
+				maxLength: 16
+			};
 			formFields.account_number = {
 				type: 'text',
 				label:
@@ -100,25 +119,17 @@ class BankVerification extends Component {
 							.SHABA_NUMBER_MAX_LENGTH
 					)
 				],
+				format: (value = '') => {
+					if (value.indexOf(SHABA_PREFIX) === -1) {
+						if (value.length < 2) {
+							return SHABA_PREFIX;
+						} else {
+							return `${SHABA_PREFIX}${value}`;
+						}
+					}
+					return value;
+				},
 				maxLength: 50
-			};
-			formFields.card_number = {
-				type: 'text',
-				label:
-					STRINGS.USER_VERIFICATION.BANK_ACCOUNT_FORM.FORM_FIELDS
-						.CARD_NUMBER_LABEL,
-				placeholder:
-					STRINGS.USER_VERIFICATION.BANK_ACCOUNT_FORM.FORM_FIELDS
-						.CARD_NUMBER_PLACEHOLDER,
-				validate: [
-					required,
-					onlyNumbers,
-					exactLength(
-						16,
-						STRINGS.USER_VERIFICATION.BANK_ACCOUNT_FORM.VALIDATIONS.CARD_NUMBER
-					)
-				],
-				maxLength: 16
 			};
 		}
 		this.setState({ formFields });

@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import Modal from 'react-modal';
+import Ionicon from 'react-ionicons';
 import { Button, ActionNotification } from '../';
 import STRINGS from '../../config/localizedStrings';
 import { getClasesForLanguage, getLanguage } from '../../utils/string';
@@ -43,11 +44,16 @@ class Dialog extends PureComponent {
 				shouldCloseOnOverlayClick={shouldCloseOnOverlayClick}
 				portalClassName={classnames(className, languageClasses)}
 			>
-				{!shouldCloseOnOverlayClick &&
-					showCloseText && (
+				{showCloseText &&
+					!closeButton && (
 						<ActionNotification
-							text={STRINGS.CLOSE_TEXT}
-							status="information"
+							text={
+								<Ionicon
+									icon="md-close"
+									fontSize="24px"
+									className="action_notification-image"
+								/>
+							}
 							onClick={this.onRequestClose}
 							className="close-button"
 						/>
@@ -55,9 +61,7 @@ class Dialog extends PureComponent {
 				{children}
 				{closeButton && (
 					<div>
-						{closeButton && (
-							<Button onClick={closeButton} label={STRINGS.CLOSE_TEXT} />
-						)}
+						<Button onClick={closeButton} label={STRINGS.CLOSE_TEXT} />
 					</div>
 				)}
 			</Modal>
@@ -67,7 +71,7 @@ class Dialog extends PureComponent {
 
 Dialog.defaultProps = {
 	shouldCloseOnOverlayClick: true,
-	showCloseText: false,
+	showCloseText: true,
 	className: ''
 };
 

@@ -375,5 +375,9 @@ export const BLOCKTRAIL_ENDPOINT = `https://www.blocktrail.com/${
 export const BALANCE_ERROR = 'Insufficient balance to perform the order';
 
 export const CAPTCHA_SITEKEY =
-	process.env.REACT_APP_CAPTCHA_SITE_KEY ||
-	'6LcSOUIUAAAAAEbu2RXTpm-hdvQnTcTy12qG2y86';
+	process.env.REACT_APP_CAPTCHA_SITE_KEY;
+
+export const IS_PRO_VERSION = process.env.REACT_APP_IS_PRO_VERSION && process.env.REACT_APP_IS_PRO_VERSION === 'true';
+export const PRO_VERSION_REDIRECT = process.env.REACT_APP_PRO_VERSION_REDIRECT || '/account';
+export const DEFAULT_VERSION_REDIRECT = process.env.REACT_APP_DEFAULT_VERSION_REDIRECT || '/';
+export const PRO_URL = process.env.REACT_APP_PRO_URL || 'https://exir.io';

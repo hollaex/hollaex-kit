@@ -24,7 +24,7 @@ export default {
 	SUCCESS_TEXT: 'موفقیت',
 	ERROR_TEXT: 'خطا',
 	EDIT_TEXT: 'ویرایش',
-	BACK_TEXT: 'قبل',
+	BACK_TEXT: 'بازگشت',
 	NO_OPTIONS: 'هیچ گزینه ای وجود ندارد',
 	HOME: {
 		SECTION_1_TITLE: 'خرید و فروش بیتکوین',
@@ -105,8 +105,10 @@ export default {
 		CATEGORY_LABEL: 'دسته بندی',
 		CATEGORY_PLACEHOLDER: 'دسته ای را انتخاب کنید که برای موضوع شما مناسب باشد',
 		CATEGORY_OPTIONS: {
-			OPTION_VERIFY: 'تایید',
-			OPTION_BUG: 'اشکال'
+			OPTION_VERIFY: 'تایید مدارک',
+			OPTION_LEVEL: 'افزایش سطح و محدودیت کاربر',
+			OPTION_DEPOSIT: 'واریز و برداشت',
+			OPTION_BUG: 'گزارش اشکال در سایت'
 		},
 		SUBJECT_LABEL: 'موضوع',
 		SUBJECT_PLACEHOLDER: 'موضوع را تایپ کنید',
@@ -128,8 +130,8 @@ export default {
 			'از جزئیات بانکی زیر استفاده کنید تا ریال را به حساب خود منتقل کنید. نقل و انتقال می تواند تا یک روز به طول بیانجامد',
 			'سپرده ها تنها از کارت اعتباری کاربر یا انتقال مستقیم از حساب بانکی کاربر که با نام دارنده حساب اکسیر شما منطبق است، پذیرفته می شود.'
 		],
-		LIMIT_MESSAGE: 'حداکثر مبلغ سپرده روزانه',
-		INCREASE_LIMIT: 'میخواهید محدودیت روزانه خود را افزایش دهید؟',
+		LIMIT_MESSAGE: 'حتما از کارت و یا بانک ثبت شده خود در سیستم برای واریز پول خود در اکسیر استفاده کنید. در غیر این صورت امکان ردّ و مسدود شدن پول واریزی وجود دارد!',
+		INCREASE_LIMIT: 'برای افزایش محدودیت روزانه خود به پشتیبانی ایمیل بزنید',
 		QR_CODE: 'توسط فردی که می خواهد بیتکوین به شما ارسال کند، اسکن شود',
 		NO_DATA: 'اطلاعاتی در دسترس نیست',
 		FULL_MESSAGE_LIMIT: '{0}: {1} {2} {3}' //  0 -> {Daily deposit max amount}:  1 -> {50,000,000} 2 -> {T} 3 -> {(Want to increase your daily limit?)}
@@ -283,9 +285,9 @@ export default {
 	VERIFICATION_TEXTS: {
 		TITLE: 'تأیید ارسال شد',
 		TEXT_1:
-			'ایمیل خود را بررسی کنید و روی لینک کلیک کنید تا خودتان را تأیید کنید',
+			'ایمیل خود را بررسی کنید و بر روی لینک داخل ایمیل برای تأیید ایمیل خود کلیک کنید',
 		TEXT_2:
-			'اگر هیچ تأیید ایمیل دریافت نکرده اید و ایمیل های ناخواسته خود را بررسی کرده اید، می توانید روی ارسال مجدد کلیک کنید.'
+			'اگر هیچ تأیید ایمیلی دریافت نکرده اید، ایمیل های ناخواسته خود را بررسی کرده و در صورت پیدا نشدن ایمیا، می توانید روی ارسال مجدد کلیک کنید.'
 	},
 	VERIFICATION_EMAIL_REQUEST: {
 		TITLE: 'درخواست ایمیل فعال سازی',
@@ -311,7 +313,7 @@ export default {
 		TITLE_MOBILE_PHONE: 'شماره تلفن همراه',
 		TITLE_PERSONAL_INFORMATION: 'اطلاعات شخصی',
 		VERIFY_EMAIL: 'تأیید ایمیل',
-		VERIFY_MOBILE_PHONE: 'Verify mobile phone', // TODO
+		VERIFY_MOBILE_PHONE: 'شماره تلفن خود را تایید کنید',
 		VERIFY_USER_DOCUMENTATION: 'اسناد کاربر را تأیید کنید',
 		VERIFY_ID_DOCUMENTS: 'اسناد شناسایی را تأیید کنید',
 		VERIFY_BANK_ACCOUNT: 'تأیید حساب بانکی',
@@ -440,14 +442,14 @@ export default {
 			VALIDATIONS: {
 				ACCOUNT_OWNER:
 					'لطفا نام و نام خانوادگی خود را با حساب بانکی خود وارد کنید',
-				ACCOUNT_NUMBER: 'شماره حساب بانکی شما باید 24 رقمی باشد',
+				ACCOUNT_NUMBER: 'شماره حساب بانکی شما باید حداکثر 24 رقمی باشد',
 				ACCOUNT_NUMBER_MAX_LENGTH: 'شماره حساب حداکثر 50 عدد می باشد',
 				SHABA_NUMBER_MAX_LENGTH: 'شماره شبا حداکثر 50 عدد می باشد',
 				CARD_NUMBER: 'شماره کارت باید حتما 16 رقمی باشد'
 			},
 			FORM_FIELDS: {
 				IRANIAN_ACCOUNT_LABEL: 'آیا حساب بانکی در ایران دارید؟',
-				BANK_NAME_LABEL: 'نام بانک',
+				BANK_NAME_LABEL: 'نام بانک (توصیه می‌کنیم، در صورت امکان از بانک پاسارگاد استفاده نمائید. در غیر این صورت تراکنشهای برداشتی شما با شبکه شبا تاخیر ۱-۲ روزه خواهند داشت.)',
 				BANK_NAME_PLACEHOLDER: 'نام بانک خود را تایپ کنید',
 				ACCOUNT_NUMBER_LABEL: 'شماره حساب بانکی',
 				ACCOUNT_NUMBER_PLACEHOLDER: 'شماره حساب بانکی خود را تایپ کنید',
@@ -605,22 +607,23 @@ export default {
 	WITHDRAWALS_FORM_AMOUNT_LABEL: 'مقدار',
 	WITHDRAWALS_FORM_AMOUNT_PLACEHOLDER:
 		'مقدار {0} را که می خواهید برداشت کنید تایپ کنید',
-	WITHDRAWALS_FORM_FEE_LABEL: 'کارمزد',
+	WITHDRAWALS_FORM_FEE_BTC_LABEL: 'کارمزد (این کارمزد مربوط به کارمزد استخراج بیتکوین است. در صورت کاهش دادن کارمزد امکان دارد تراکنش شما با تاخیر در شبکه بیتکوین تأیید شود و در این صورت اکسیر مسئولیتی نمی پذیرد.)',
+	WITHDRAWALS_FORM_FEE_FIAT_LABEL: 'کارمزد برداشت بانک',
 	WITHDRAWALS_FORM_FEE_PLACEHOLDER:
 		'مقدار {0} که میخواهیید در این تراکنش استفاده کنید را وارد کنید ',
 	WITHDRAWALS_FORM_FEE_OPTIMAL_VALUE: 'کارمزد مطلوب: {0} {1}',
-	DEPOSITS_FORM_AMOUNT_LABEL: '{0} مقدار برداشت',
+	DEPOSITS_FORM_AMOUNT_LABEL: 'مقدار برداشت',
 	DEPOSITS_FORM_AMOUNT_PLACEHOLDER:
 		'مقدار {0} را که می خواهید برداشت کنید تایپ کنید',
 	DEPOSITS_BUTTON_TEXT: 'تایید',
 	DEPOSIT_PROCEED_PAYMENT: 'پرداخت',
 	DEPOSIT_BANK_REFERENCE:
 		'برای شناسایی سپرده، این کد "{0}" را به تراکنش بانکی اضافه کنید',
-	DEPOSIT_METHOD: 'روش پرداخت {0}',
-	DEPOSIT_METHOD_DIRECT_PAYMENT: 'کارت اعتباری',
-	DEPOSIT_METHOD_DIRECT_PAYMENT_MESSAGE_1: 'به روش پرداخت کارت اعتباری بروید.',
+	DEPOSIT_METHOD: 'روش پرداخت',
+	DEPOSIT_METHOD_DIRECT_PAYMENT: 'کارت بانکی',
+	DEPOSIT_METHOD_DIRECT_PAYMENT_MESSAGE_1: 'به درگاه پرداخت کارت بانکی بروید.',
 	DEPOSIT_METHOD_DIRECT_PAYMENT_MESSAGE_2:
-		'شما پلت فرم را برای پرداخت ترک میکنید.',
+		'برای پرداخت شما اکسیر را ترک میکنید و پس از انجام تراکنش مجددا به اکسیر باز خواهی گشت.',
 	DEPOSIT_VERIFICATION_WAITING_TITLE: 'تأیید پرداخت',
 	DEPOSIT_VERIFICATION_WAITING_MESSAGE:
 		'لطفا هنگامی که پرداخت در حال تأیید شدن است، برنامه را نبندید',
@@ -724,9 +727,21 @@ export default {
 	SMS_ERROR_SENT_TO:
 		'خطا در ارسال به {0}. لطفا صفحه را دوباره بارگذاری کنید و مجددا امتحان کنید.',
 	WITHDRAW_NOTIFICATION_TRANSACTION_ID: 'شناسه تراکنش:',
-	CHECK_ORDER: 'Check and confirm your order', // TODO
+	CHECK_ORDER: 'سفارش خود را تایید کنید',
 	CHECK_ORDER_TYPE: '{1} {0}', // 0 -> maker/limit  1 -> sell/buy
-	CONFIRM_TEXT: 'Confirm', // TODO
-	INVALID_CAPTCHA: 'Invalid captcha', // TODO
-	NO_FEE: 'N/A'
+	CONFIRM_TEXT: 'تایید',
+	INVALID_CAPTCHA: 'کپچا نادرست است',
+	NO_FEE: 'N/A',
+	SETTINGS_LANGUAGE_LABEL: 'انتخاب زبان ایمیل',
+	SETTINGS_LANGUAGE_OPTIONS: [
+		{ value: 'en', label: 'English' },
+		{ value: 'fa', label: 'فارسی' }
+	],
+	SETTINGS_ORDERPOPUP_LABEL: 'مشاهده منوی تایید سفارش',
+	SETTINGS_ORDERPOPUP_OPTIONS: [
+		{ value: false, label: 'خیر' },
+		{ value: true, label: 'بله' }
+	],
+	SETTING_BUTTON: 'ذخیره',
+	STRING_WITH_PARENTHESIS: '{0} ({1})'
 };
