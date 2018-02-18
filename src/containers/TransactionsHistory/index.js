@@ -72,7 +72,7 @@ class TransactionsHistory extends Component {
 
 		switch (activeTab) {
 			case 0:
-				props.title = `${name} ${STRINGS.TRANSACTION_HISTORY.TITLE_TRADES}`;
+				props.title = `${STRINGS.TRANSACTION_HISTORY.TITLE_TRADES}`;
 				props.headers = headers.trades;
 				props.data = trades;
 				props.filename = `${symbol}-transfers_history`;

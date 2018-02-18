@@ -612,7 +612,7 @@ export default {
 	WITHDRAWALS_FORM_FEE_PLACEHOLDER:
 		'مقدار {0} که میخواهیید در این تراکنش استفاده کنید را وارد کنید ',
 	WITHDRAWALS_FORM_FEE_OPTIMAL_VALUE: 'کارمزد مطلوب: {0} {1}',
-	DEPOSITS_FORM_AMOUNT_LABEL: 'مقدار برداشت',
+	DEPOSITS_FORM_AMOUNT_LABEL: 'مبلغ',
 	DEPOSITS_FORM_AMOUNT_PLACEHOLDER:
 		'مقدار {0} را که می خواهید برداشت کنید تایپ کنید',
 	DEPOSITS_BUTTON_TEXT: 'تایید',
