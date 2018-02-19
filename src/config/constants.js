@@ -348,6 +348,7 @@ export const WITHDRAW_LIMITS = {
 };
 export const TOKEN_KEY = `${ENV}_${NETWORK}_TOKEN`;
 export const LANGUAGE_KEY = `${ENV}_${NETWORK}_LANGUAGE`;
+export const DEFAULT_LANGUAGE = 'fa';
 
 export const BANK_INFORMATION = {
 	bank_name: process.env.REACT_APP_BANK_NAME || 'Exir Trade',
