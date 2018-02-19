@@ -1,6 +1,6 @@
 {
 	"name": "exir",
-	"version": "1.1.0",
+	"version": "1.1.1",
 	"private": true,
 	"dependencies": {
 		"@material/button": "^0.7.0",
