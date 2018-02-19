@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { SubmissionError } from 'redux-form';
+import { connect } from 'react-redux';
 import { HocForm, IconTitle, Notification } from '../../components';
-import { email, required } from '../../components/Form/validations';
+import { email as isEmail, required } from '../../components/Form/validations';
 import STRINGS from '../../config/localizedStrings';
 import { ICONS } from '../../config/constants';
 import { sendSupportMail, NOTIFICATIONS } from '../../actions/appActions';
@@ -32,13 +33,14 @@ class ContactForm extends Component {
 			});
 	};
 
-	generateFormFields = () => ({
+	generateFormFields = (email) => ({
 		email: {
 			type: 'email',
 			label: STRINGS.FORM_FIELDS.EMAIL_LABEL,
 			placeholder: STRINGS.FORM_FIELDS.EMAIL_PLACEHOLDER,
-			validate: [required, email],
-			fullWidth: true
+			validate: [required, isEmail],
+			fullWidth: true,
+			disabled: !!email
 		},
 		category: {
 			type: 'select',
@@ -88,7 +90,7 @@ class ContactForm extends Component {
 	});
 
 	render() {
-		const { onClose } = this.props;
+		const { onClose, email } = this.props;
 		const { submited } = this.state;
 
 		if (submited) {
@@ -97,7 +99,7 @@ class ContactForm extends Component {
 			);
 		}
 
-		const formFields = this.generateFormFields();
+		const formFields = this.generateFormFields(email);
 
 		return (
 			<div className="contact_form-wrapper">
@@ -111,6 +113,7 @@ class ContactForm extends Component {
 				<Form
 					onSubmit={this.onSubmit}
 					formFields={formFields}
+					initialValues={{ email }}
 					buttonLabel={STRINGS.SUBMIT}
 					extraButtonLabel={STRINGS.BACK_TEXT}
 					extraButtonOnClick={onClose}
@@ -120,4 +123,8 @@ class ContactForm extends Component {
 	}
 }
 
-export default ContactForm;
+const mapStateToProps = (store) => ({
+	email: store.user.email,
+});
+
+export default connect(mapStateToProps)(ContactForm);
