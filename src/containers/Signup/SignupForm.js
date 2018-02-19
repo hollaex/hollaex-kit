@@ -1,7 +1,6 @@
 import React from 'react';
 import classnames from 'classnames';
 import { reduxForm } from 'redux-form';
-import { Link } from 'react-router';
 import {
 	required,
 	password,
@@ -55,8 +54,14 @@ export const generateFormFields = (strings) => ({
 		validate: [requiredWithCustomMessage(strings.VALIDATIONS.ACCEPT_TERMS)],
 		label: strings.formatString(
 			strings.SIGN_UP.TERMS.text,
-			<BlueLink href="https://www.exir.io/terms_privacy/" text={strings.SIGN_UP.TERMS.terms} />,
-			<BlueLink href="https://www.exir.io/terms_privacy/" text={strings.SIGN_UP.TERMS.policy} />
+			<BlueLink
+				href="https://www.exir.io/terms_privacy/"
+				text={strings.SIGN_UP.TERMS.terms}
+			/>,
+			<BlueLink
+				href="https://www.exir.io/terms_privacy/"
+				text={strings.SIGN_UP.TERMS.policy}
+			/>
 		)
 	},
 	captcha: {

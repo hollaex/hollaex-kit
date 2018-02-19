@@ -64,7 +64,7 @@ class TransactionsHistory extends Component {
 	renderActiveTab = () => {
 		const { trades, deposits, withdrawals, symbol } = this.props;
 		const { headers, activeTab } = this.state;
-		const name = STRINGS[`${symbol.toUpperCase()}_NAME`];
+		// const name = STRINGS[`${symbol.toUpperCase()}_NAME`];
 
 		const props = {
 			symbol
