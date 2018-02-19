@@ -26,6 +26,7 @@ class CaptchaField extends PureComponent {
 	};
 
 	render() {
+		const { language } = this.props;
 		return (
 			<div className="field-wrapper">
 				<Recaptcha
@@ -33,6 +34,7 @@ class CaptchaField extends PureComponent {
 					sitekey={CAPTCHA_SITEKEY}
 					verifyCallback={this.onVerifyCallback}
 					expiredCallback={this.onExpiredCallback}
+					hl={language}
 				/>
 			</div>
 		);
