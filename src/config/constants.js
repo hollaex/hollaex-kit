@@ -335,15 +335,20 @@ export const DEPOSIT_LIMITS = {
 	}
 };
 
+console.log(process.env.REACT_APP_WITHDRAWAL_FIAT_MIN, typeof process.env.REACT_APP_WITHDRAWAL_FIAT_MIN)
+console.log(process.env.REACT_APP_WITHDRAWAL_FIAT_STEP, typeof process.env.REACT_APP_WITHDRAWAL_FIAT_STEP)
+console.log(process.env.REACT_APP_WITHDRAWAL_BTC_MIN, typeof process.env.REACT_APP_WITHDRAWAL_BTC_MIN)
+console.log(process.env.REACT_APP_WITHDRAWAL_BTC_MAX, typeof process.env.REACT_APP_WITHDRAWAL_BTC_MAX)
+console.log(process.env.REACT_APP_WITHDRAWAL_BTC_STEP, typeof process.env.REACT_APP_WITHDRAWAL_BTC_STEP)
 export const WITHDRAW_LIMITS = {
 	fiat: {
-		MIN: 1000,
-		STEP: 1
+		MIN: process.env.REACT_APP_WITHDRAWAL_FIAT_MIN || 20000,
+		STEP: process.env.REACT_APP_WITHDRAWAL_FIAT_STEP || 1
 	},
 	btc: {
-		MIN: 0.0001,
-		MAX: 10,
-		STEP: 0.0001
+		MIN: process.env.REACT_APP_WITHDRAWAL_BTC_MIN || 0.0001,
+		MAX: process.env.REACT_APP_WITHDRAWAL_BTC_MAX || 10,
+		STEP: process.env.REACT_APP_WITHDRAWAL_BTC_STEP || 0.0001
 	}
 };
 export const TOKEN_KEY = `${ENV}_${NETWORK}_TOKEN`;
