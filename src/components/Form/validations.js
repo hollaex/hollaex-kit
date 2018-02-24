@@ -23,7 +23,7 @@ export const onlyNumbers = (value = '') =>
 export const email = (value = '') =>
 	!validator.isEmail(value) ? STRINGS.VALIDATIONS.INVALID_EMAIL : undefined;
 
-export const password = (value) =>
+export const password = (value = '') =>
 	!passwordRegEx.test(value)
 		? STRINGS.VALIDATIONS.INVALID_PASSWORD_2
 		: undefined;
@@ -43,11 +43,11 @@ export const validAddress = (symbol = '', message) => {
 	};
 };
 
-export const minValue = (minValue, message) => (value) =>
+export const minValue = (minValue, message) => (value = 0) =>
 	value < minValue
 		? message || STRINGS.formatString(STRINGS.VALIDATIONS.MIN_VALUE, minValue)
 		: undefined;
-export const maxValue = (maxValue, message) => (value) =>
+export const maxValue = (maxValue, message) => (value = 0) =>
 	value > maxValue
 		? message || STRINGS.formatString(STRINGS.VALIDATIONS.MAX_VALUE, maxValue)
 		: undefined;
@@ -164,8 +164,9 @@ export const isBefore = (
 	};
 };
 
-export const normalizeInt = (value) => validator.toInt(value) || 0;
-export const normalizeFloat = (value) => validator.toFloat(value) || 0;
+export const normalizeInt = (value = 0) => validator.toInt(value) || 0;
+export const normalizeFloat = (value = 0) => validator.toFloat(value) || 0;
+export const normalizeBTC = (value = 0) => (value ? roundNumber(value, 8) : '');
 
 export const validateOtp = (message = STRINGS.OTP_FORM.ERROR_INVALID) => (
 	value = ''
