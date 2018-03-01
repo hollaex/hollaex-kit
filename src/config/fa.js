@@ -743,5 +743,8 @@ export default {
 		{ value: true, label: 'بله' }
 	],
 	SETTING_BUTTON: 'ذخیره',
-	STRING_WITH_PARENTHESIS: '{0} ({1})'
+	STRING_WITH_PARENTHESIS: '{0} ({1})',
+	VERIFICATION_NO_WITHDRAW_TITLE: 'Withdrawals disabled', // TODO
+	VERIFICATION_NO_WITHDRAW_MESSAGE:
+		'Your account is disabled for withdrawals' // TODO
 };

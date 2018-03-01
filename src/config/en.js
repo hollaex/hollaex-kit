@@ -756,5 +756,8 @@ export default {
 		{ value: true, label: 'YES' }
 	],
 	SETTING_BUTTON: 'save',
-	STRING_WITH_PARENTHESIS: '{0} ({1})'
+	STRING_WITH_PARENTHESIS: '{0} ({1})',
+	VERIFICATION_NO_WITHDRAW_TITLE: 'Withdrawals disabled',
+	VERIFICATION_NO_WITHDRAW_MESSAGE:
+		'Your account is disabled for withdrawals'
 };
