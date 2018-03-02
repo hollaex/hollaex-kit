@@ -1,8 +1,18 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
+import classnames from 'classnames';
 import Recaptcha from 'react-recaptcha';
-import { CAPTCHA_SITEKEY } from '../../../config/constants';
+import { CAPTCHA_SITEKEY, CAPTCHA_TIMEOUT, DEFAULT_LANGUAGE } from '../../../config/constants';
 
-class CaptchaField extends PureComponent {
+class CaptchaField extends Component {
+	state = {
+		active: false,
+		ready: false
+	};
+	componentDidMount() {
+		setTimeout(() => {
+			this.setState({ active: true });
+		}, CAPTCHA_TIMEOUT);
+	}
 	componentWillReceiveProps(nextProps) {
 		if (
 			nextProps.input.value === '' &&
@@ -16,6 +26,10 @@ class CaptchaField extends PureComponent {
 		this.captcha = el;
 	};
 
+	onLoadCallback = () => {
+		this.setState({ ready: true });
+	};
+
 	onVerifyCallback = (data) => {
 		this.props.input.onChange(data);
 	};
@@ -27,16 +41,22 @@ class CaptchaField extends PureComponent {
 
 	render() {
 		const { language } = this.props;
+		const { ready, active } = this.state;
 		return (
-			<div className="field-wrapper">
-				<Recaptcha
-					ref={this.setRef}
-					sitekey={CAPTCHA_SITEKEY}
-					verifyCallback={this.onVerifyCallback}
-					expiredCallback={this.onExpiredCallback}
-					hl={language}
-				/>
-			</div>
+			active && (
+				<div
+					className={classnames('field-wrapper', { hidden: !ready })}
+				>
+					<Recaptcha
+						ref={this.setRef}
+						sitekey={CAPTCHA_SITEKEY}
+						verifyCallback={this.onVerifyCallback}
+						expiredCallback={this.onExpiredCallback}
+						onloadCallback={this.onLoadCallback}
+						hl={language || DEFAULT_LANGUAGE}
+					/>
+				</div>
+			)
 		);
 	}
 }

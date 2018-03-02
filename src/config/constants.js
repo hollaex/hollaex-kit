@@ -383,6 +383,7 @@ export const BALANCE_ERROR = 'Insufficient balance to perform the order';
 
 export const CAPTCHA_SITEKEY =
 	process.env.REACT_APP_CAPTCHA_SITE_KEY;
+export const CAPTCHA_TIMEOUT = process.env.REACT_APP_CAPTCHA_TIMEOUT ? parseInt(process.env.REACT_APP_CAPTCHA_TIMEOUT, 10) : 2000;
 
 export const IS_PRO_VERSION = process.env.REACT_APP_IS_PRO_VERSION && process.env.REACT_APP_IS_PRO_VERSION === 'true';
 export const PRO_VERSION_REDIRECT = process.env.REACT_APP_PRO_VERSION_REDIRECT || '/account';
