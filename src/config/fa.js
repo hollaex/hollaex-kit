@@ -4,7 +4,7 @@ export default {
 	FIAT_NAME: 'تومان',
 	FIAT_FULLNAME: 'تومان',
 	FIAT_SHORTNAME: 'تومان',
-	FIAT_CURRENCY_SYMBOL: 'T',
+	FIAT_CURRENCY_SYMBOL: 'تومان',
 	BTC_NAME: 'بیتکوین',
 	BTC_FULLNAME: 'بیتکوین',
 	BTC_SHORTNAME: 'BTC',
@@ -559,8 +559,8 @@ export default {
 	STATUS: 'وضعیت',
 	AMOUNT: 'میزان',
 	COMPLETE: 'تکمیل',
-	PENDING: 'Pending',
-	ORDERBOOK: 'کتاب سفارش',
+	PENDING: 'در حال انتظار',
+	ORDERBOOK: 'بازار اکسیر',
 	CANCEL: 'لغو',
 	CANCEL_ALL: 'لغو همه',
 	GO_TRADE_HISTORY: 'به تاریخچه ترید بروید',
@@ -612,7 +612,7 @@ export default {
 	WITHDRAWALS_FORM_FEE_PLACEHOLDER:
 		'مقدار {0} که میخواهیید در این تراکنش استفاده کنید را وارد کنید ',
 	WITHDRAWALS_FORM_FEE_OPTIMAL_VALUE: 'کارمزد مطلوب: {0} {1}',
-	DEPOSITS_FORM_AMOUNT_LABEL: 'مقدار برداشت',
+	DEPOSITS_FORM_AMOUNT_LABEL: 'مبلغ',
 	DEPOSITS_FORM_AMOUNT_PLACEHOLDER:
 		'مقدار {0} را که می خواهید برداشت کنید تایپ کنید',
 	DEPOSITS_BUTTON_TEXT: 'تایید',
@@ -743,5 +743,8 @@ export default {
 		{ value: true, label: 'بله' }
 	],
 	SETTING_BUTTON: 'ذخیره',
-	STRING_WITH_PARENTHESIS: '{0} ({1})'
+	STRING_WITH_PARENTHESIS: '{0} ({1})',
+	VERIFICATION_NO_WITHDRAW_TITLE: 'Withdrawals disabled', // TODO
+	VERIFICATION_NO_WITHDRAW_MESSAGE:
+		'Your account is disabled for withdrawals' // TODO
 };

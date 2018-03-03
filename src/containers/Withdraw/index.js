@@ -8,7 +8,8 @@ import { formValueSelector, change } from 'redux-form';
 import { Loader, WarningVerification } from '../../components';
 import {
 	ICONS,
-	MIN_VERIFICATION_LEVEL_TO_WITHDRAW
+	MIN_VERIFICATION_LEVEL_TO_WITHDRAW,
+	MAX_VERIFICATION_LEVEL_TO_WITHDRAW
 } from '../../config/constants';
 import { fiatSymbol } from '../../utils/currency';
 import {
@@ -39,7 +40,10 @@ class Withdraw extends Component {
 	};
 
 	componentWillMount() {
-		if (this.props.verification_level >= MIN_VERIFICATION_LEVEL_TO_WITHDRAW) {
+		if (
+			this.props.verification_level >= MIN_VERIFICATION_LEVEL_TO_WITHDRAW &&
+			this.props.verification_level <= MAX_VERIFICATION_LEVEL_TO_WITHDRAW
+		) {
 			this.props.requestBtcWithdrawFee();
 			this.generateFormValues(
 				this.props.symbol,
@@ -52,6 +56,7 @@ class Withdraw extends Component {
 	componentWillReceiveProps(nextProps) {
 		if (
 			nextProps.verification_level >= MIN_VERIFICATION_LEVEL_TO_WITHDRAW &&
+			nextProps.verification_level <= MAX_VERIFICATION_LEVEL_TO_WITHDRAW &&
 			(nextProps.symbol !== this.props.symbol ||
 				nextProps.activeLanguage !== this.props.activeLanguage ||
 				nextProps.btcFee.ready !== this.props.btcFee.ready)
@@ -131,6 +136,7 @@ class Withdraw extends Component {
 
 		if (
 			verification_level >= MIN_VERIFICATION_LEVEL_TO_WITHDRAW &&
+			verification_level <= MAX_VERIFICATION_LEVEL_TO_WITHDRAW &&
 			(balanceAvailable === undefined || btcFee.loading || !btcFee.ready)
 		) {
 			return <Loader />;
@@ -152,7 +158,7 @@ class Withdraw extends Component {
 		return (
 			<div className="presentation_container apply_rtl">
 				{renderTitleSection(symbol, 'withdraw', ICONS.WITHDRAW)}
-				{verification_level >= MIN_VERIFICATION_LEVEL_TO_WITHDRAW ? (
+				{verification_level >= MIN_VERIFICATION_LEVEL_TO_WITHDRAW && verification_level <= MAX_VERIFICATION_LEVEL_TO_WITHDRAW ? (
 					<div className={classnames('inner_container', 'with_border_top')}>
 						{renderInformation(
 							symbol,
@@ -165,7 +171,7 @@ class Withdraw extends Component {
 					</div>
 				) : (
 					<div className={classnames('inner_container', 'with_border_top')}>
-						<WarningVerification />
+						<WarningVerification level={verification_level} />
 					</div>
 				)}
 			</div>

@@ -2,6 +2,7 @@ import React from 'react';
 import { reduxForm } from 'redux-form';
 import { required, password, email, normalizeEmail } from '../../components/Form/validations';
 import { AuthForm } from '../../components';
+import { getLanguage } from '../../utils/string';
 
 import STRINGS from '../../config/localizedStrings';
 
@@ -26,6 +27,7 @@ const Form = (props) => {
 		},
 		captcha: {
 			type: 'captcha',
+			language: getLanguage(),
 			validate: [required]
 		}
 	};

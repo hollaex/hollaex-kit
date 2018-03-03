@@ -1,7 +1,6 @@
 import React from 'react';
 import classnames from 'classnames';
 import { reduxForm } from 'redux-form';
-import { Link } from 'react-router';
 import {
 	required,
 	password,
@@ -14,13 +13,13 @@ import STRINGS from '../../config/localizedStrings';
 
 export const FORM_NAME = 'SignForm';
 const BlueLink = ({ text, ...rest }) => (
-	<Link
+	<a
 		{...rest}
 		target="_blank"
 		className={classnames('blue-link', 'dialog-link', 'pointer')}
 	>
 		{text}
-	</Link>
+	</a>
 );
 
 export const generateFormFields = (strings) => ({
@@ -55,8 +54,14 @@ export const generateFormFields = (strings) => ({
 		validate: [requiredWithCustomMessage(strings.VALIDATIONS.ACCEPT_TERMS)],
 		label: strings.formatString(
 			strings.SIGN_UP.TERMS.text,
-			<BlueLink to="/general-terms" text={strings.SIGN_UP.TERMS.terms} />,
-			<BlueLink to="/privacy-policy" text={strings.SIGN_UP.TERMS.policy} />
+			<BlueLink
+				href="https://www.exir.io/terms_privacy/"
+				text={strings.SIGN_UP.TERMS.terms}
+			/>,
+			<BlueLink
+				href="https://www.exir.io/terms_privacy/"
+				text={strings.SIGN_UP.TERMS.policy}
+			/>
 		)
 	},
 	captcha: {
