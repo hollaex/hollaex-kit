@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import io from 'socket.io-client';
+import moment from 'moment';
 import { FactoryChart as Chart, CHART_TYPES } from '../../../components';
 import { WS_URL } from '../../../config/constants';
 import STRINGS from '../../../config/localizedStrings';
@@ -33,18 +34,8 @@ class ChartComponent extends Component {
 	}
 
 	getCurrentBlockTimestamp() {
-		const timestamp = new Date().toString();
-		const timestampRoundedToMinutes = timestamp.substring(
-			0,
-			timestamp.lastIndexOf(':')
-		);
-		const timestampDate = new Date(timestampRoundedToMinutes);
-		// To group every 5 minutes gap
-		timestampDate.setMinutes(
-			timestampDate.getMinutes() - timestampDate.getMinutes() % 5 + 5
-		);
-		const timestampString = timestampDate.toISOString();
-		return timestampString;
+		const timestamp = moment().add({ hour: 1}).set({ minutes: 0, seconds: 0 });
+		return timestamp.format();
 	}
 
 	setChartData = ({ data, timestamp }) => {
@@ -55,7 +46,7 @@ class ChartComponent extends Component {
 			}
 			if (Array.isArray(data[symbol])) {
 				chartData[symbol] = data[symbol].map((item) => ({
-					date: item.date,
+					date: moment(item.date).format(),
 					open: item.open,
 					close: item.close,
 					high: item.high,
