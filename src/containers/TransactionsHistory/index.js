@@ -20,14 +20,6 @@ import HistoryDisplay from './HistoryDisplay';
 
 import STRINGS from '../../config/localizedStrings';
 
-const filterData = (symbol, { count = 0, data = [] }) => {
-	const filteredData = data.filter((item) => item.symbol === symbol);
-	return {
-		count: filteredData.length,
-		data: filteredData
-	};
-};
-
 class TransactionsHistory extends Component {
 	state = {
 		headers: [],
@@ -40,11 +32,12 @@ class TransactionsHistory extends Component {
 	}
 
 	componentWillReceiveProps(nextProps) {
-		if (nextProps.symbol !== this.props.symbol) {
-			this.requestData(nextProps.symbol);
-			this.generateHeaders(nextProps.symbol, nextProps.activeLanguage);
-		} else if (nextProps.activeLanguage !== this.props.activeLanguage) {
-			this.generateHeaders(nextProps.symbol, nextProps.activeLanguage);
+		// if (nextProps.symbol !== this.props.symbol) {
+			// this.requestData(nextProps.symbol);
+			// this.generateHeaders(nextProps.symbol, nextProps.activeLanguage);
+		// } else if (nextProps.activeLanguage !== this.props.activeLanguage) {
+		if (nextProps.activeLanguage !== this.props.activeLanguage) {
+			this.generateHeaders(nextProps.symbol);
 		}
 	}
 
@@ -54,12 +47,12 @@ class TransactionsHistory extends Component {
 		this.props.getUserWithdrawals(symbol);
 	};
 
-	generateHeaders(symbol, language) {
+	generateHeaders(symbol) {
 		this.setState({
 			headers: {
-				trades: generateTradeHeaders(symbol, language),
-				deposits: generateDepositsHeaders(symbol, language),
-				withdrawals: generateWithdrawalsHeaders(symbol, language)
+				trades: generateTradeHeaders(symbol),
+				deposits: generateDepositsHeaders(symbol),
+				withdrawals: generateWithdrawalsHeaders(symbol)
 			}
 		});
 	}
@@ -71,7 +64,7 @@ class TransactionsHistory extends Component {
 	renderActiveTab = () => {
 		const { trades, deposits, withdrawals, symbol } = this.props;
 		const { headers, activeTab } = this.state;
-		const name = STRINGS[`${symbol.toUpperCase()}_NAME`];
+		// const name = STRINGS[`${symbol.toUpperCase()}_NAME`];
 
 		const props = {
 			symbol
@@ -79,9 +72,9 @@ class TransactionsHistory extends Component {
 
 		switch (activeTab) {
 			case 0:
-				props.title = `${name} ${STRINGS.TRANSACTION_HISTORY.TITLE_TRADES}`;
+				props.title = `${STRINGS.TRANSACTION_HISTORY.TITLE_TRADES}`;
 				props.headers = headers.trades;
-				props.data = filterData(symbol, trades);
+				props.data = trades;
 				props.filename = `${symbol}-transfers_history`;
 				break;
 			case 1:

@@ -3,7 +3,8 @@ import {
 	minValue,
 	maxValue,
 	checkBalance,
-	validAddress
+	validAddress,
+	normalizeBTC
 } from '../../components/Form/validations';
 import STRINGS from '../../config/localizedStrings';
 import { WITHDRAW_LIMITS, ICONS } from '../../config/constants';
@@ -74,6 +75,7 @@ export const generateFormValues = (
 		max: MAX,
 		step: STEP,
 		validate: amountValidate,
+		normalize: normalizeBTC,
 		notification: {
 			text: STRINGS.CALCULATE_MAX,
 			status: 'information',
@@ -87,7 +89,7 @@ export const generateFormValues = (
 		fields.fee = {
 			type: 'editable',
 			inputType: 'number',
-			label: STRINGS.formatString(STRINGS.WITHDRAWALS_FORM_FEE_LABEL, name),
+			label: STRINGS[`WITHDRAWALS_FORM_FEE_${symbol.toUpperCase()}_LABEL`],
 			placeholder: STRINGS.formatString(
 				STRINGS.WITHDRAWALS_FORM_FEE_PLACEHOLDER,
 				name
@@ -95,12 +97,13 @@ export const generateFormValues = (
 			min: fees.min || MIN,
 			max: fees.max || MAX,
 			step: STEP,
-			validate: [required, minValue(fees.min), maxValue(fees.max)]
+			validate: [required, minValue(fees.min), maxValue(fees.max)],
+			normalize: normalizeBTC
 		};
 	} else {
 		fields.fee = {
 			type: 'number',
-			label: STRINGS.formatString(STRINGS.WITHDRAWALS_FORM_FEE_LABEL, name),
+			label: STRINGS[`WITHDRAWALS_FORM_FEE_FIAT_LABEL`],
 			placeholder: STRINGS.formatString(
 				STRINGS.WITHDRAWALS_FORM_FEE_PLACEHOLDER,
 				name

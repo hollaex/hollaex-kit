@@ -8,8 +8,8 @@ export const NETWORK = process.env.REACT_APP_NETWORK || 'testnet';
 
 export const APP_TITLE = STRINGS.APP_TITLE;
 
-export const TOKEN_TIME = 24 * 60 * 60 * 1000; // 1 hour
-export const SESSION_TIME = 60 * 60 * 1000; // 1 hour
+export const TOKEN_TIME = 24 * 60 * 60 * 1000; // 1 day
+export const SESSION_TIME = 6 * 60 * 60 * 1000; // 6 hour
 export const API_URL = config[ENV][NETWORK].API_URL;
 export const WS_URL = config[ENV][NETWORK].WS_URL;
 
@@ -328,19 +328,25 @@ export const DEPOSIT_LIMITS = {
 	}
 };
 
+console.log(process.env.REACT_APP_WITHDRAWAL_FIAT_MIN, typeof process.env.REACT_APP_WITHDRAWAL_FIAT_MIN)
+console.log(process.env.REACT_APP_WITHDRAWAL_FIAT_STEP, typeof process.env.REACT_APP_WITHDRAWAL_FIAT_STEP)
+console.log(process.env.REACT_APP_WITHDRAWAL_BTC_MIN, typeof process.env.REACT_APP_WITHDRAWAL_BTC_MIN)
+console.log(process.env.REACT_APP_WITHDRAWAL_BTC_MAX, typeof process.env.REACT_APP_WITHDRAWAL_BTC_MAX)
+console.log(process.env.REACT_APP_WITHDRAWAL_BTC_STEP, typeof process.env.REACT_APP_WITHDRAWAL_BTC_STEP)
 export const WITHDRAW_LIMITS = {
 	fiat: {
-		MIN: 1000,
-		STEP: 1
+		MIN: process.env.REACT_APP_WITHDRAWAL_FIAT_MIN || 20000,
+		STEP: process.env.REACT_APP_WITHDRAWAL_FIAT_STEP || 1
 	},
 	btc: {
-		MIN: 0.0001,
-		MAX: 10,
-		STEP: 0.0001
+		MIN: process.env.REACT_APP_WITHDRAWAL_BTC_MIN || 0.0001,
+		MAX: process.env.REACT_APP_WITHDRAWAL_BTC_MAX || 10,
+		STEP: process.env.REACT_APP_WITHDRAWAL_BTC_STEP || 0.0001
 	}
 };
 export const TOKEN_KEY = `${ENV}_${NETWORK}_TOKEN`;
 export const LANGUAGE_KEY = `${ENV}_${NETWORK}_LANGUAGE`;
+export const DEFAULT_LANGUAGE = 'en';
 
 export const BANK_INFORMATION = {
 	bank_name: process.env.REACT_APP_BANK_NAME || 'Hollaex',
@@ -354,9 +360,12 @@ export const BANK_WITHDRAWAL_DYNAMIC_FEE_RATE =
 	process.env.REACT_APP_BANK_WITHDRAWAL_DYNAMIC_FEE_RATE || 0.5;
 export const BANK_WITHDRAWAL_MAX_DYNAMIC_FEE =
 	process.env.REACT_APP_BANK_WITHDRAWAL_MAX_DYNAMIC_FEE || 50;
+export const BANK_WITHDRAWAL_MAX_AMOUNT_FOR_BASE_FEE =
+	process.env.REACT_APP_BANK_WITHDRAWAL_MAX_AMOUNT_FOR_BASE_FEE || 0;
 
 export const BANK_PAYMENT_LINK = '';
 export const MIN_VERIFICATION_LEVEL_TO_WITHDRAW = 2;
+export const MAX_VERIFICATION_LEVEL_TO_WITHDRAW = 5;
 
 export const BLOCKTRAIL_ENDPOINT = `https://www.blocktrail.com/${
 	NETWORK === 'testnet' ? 't' : ''
@@ -365,5 +374,10 @@ export const BLOCKTRAIL_ENDPOINT = `https://www.blocktrail.com/${
 export const BALANCE_ERROR = 'Insufficient balance to perform the order';
 
 export const CAPTCHA_SITEKEY =
-	process.env.REACT_APP_CAPTCHA_SITE_KEY ||
-	'6LcSOUIUAAAAAEbu2RXTpm-hdvQnTcTy12qG2y86';
+	process.env.REACT_APP_CAPTCHA_SITE_KEY;
+export const CAPTCHA_TIMEOUT = process.env.REACT_APP_CAPTCHA_TIMEOUT ? parseInt(process.env.REACT_APP_CAPTCHA_TIMEOUT, 10) : 2000;
+
+export const IS_PRO_VERSION = process.env.REACT_APP_IS_PRO_VERSION && process.env.REACT_APP_IS_PRO_VERSION === 'true';
+export const PRO_VERSION_REDIRECT = process.env.REACT_APP_PRO_VERSION_REDIRECT || '/account';
+export const DEFAULT_VERSION_REDIRECT = process.env.REACT_APP_DEFAULT_VERSION_REDIRECT || '/';
+export const PRO_URL = process.env.REACT_APP_PRO_URL || 'https://exir.io';

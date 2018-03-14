@@ -28,30 +28,42 @@ export const AssetsBlock = ({ balance, prices, totalAssets, changeSymbol }) => (
 				{Object.entries(CURRENCIES)
 					.filter(([key]) => balance.hasOwnProperty(`${key}_balance`))
 					.map(([key, { formatToCurrency }]) => {
-						const shortName = STRINGS[`${key.toUpperCase()}_CURRENCY_SYMBOL`];
-						const fullName = STRINGS[`${key.toUpperCase()}_FULLNAME`];
 						const balanceValue = balance[`${key}_balance`];
+						const balanceText =
+							key === fiatSymbol
+								? fiatFormatToCurrency(balanceValue)
+								: fiatFormatToCurrency(
+										calculatePrice(balanceValue, prices[key])
+									);
 						return (
 							<tr className="table-row table-bottom-border" key={key}>
 								<td className="table-icon td-fit">
 									<div className="pointer" onClick={() => changeSymbol(key)}>
-										<CurrencyBall name={shortName} symbol={key} size="s" />
+										<CurrencyBall
+											name={CURRENCIES[key].shortName}
+											symbol={key}
+											size="s"
+										/>
 									</div>
 								</td>
 								<td className="td-name td-fit">
 									<div className="pointer" onClick={() => changeSymbol(key)}>
-										{fullName}
+										{STRINGS[`${key.toUpperCase()}_FULLNAME`]}
 									</div>
 								</td>
-								<td>{`${shortName} ${formatToCurrency(balanceValue)}`}</td>
-								<td className="align-opposite show-equals">
-									{`${STRINGS.FIAT_CURRENCY_SYMBOL}${
-										key === fiatSymbol
-											? fiatFormatToCurrency(balanceValue)
-											: fiatFormatToCurrency(
-													calculatePrice(balanceValue, prices[key])
-												)
-									}`}
+								<td className="td-amount">
+									{STRINGS.formatString(
+										STRINGS[`${key.toUpperCase()}_PRICE_FORMAT`],
+										formatToCurrency(balanceValue),
+										STRINGS[`${key.toUpperCase()}_CURRENCY_SYMBOL`]
+									)}
+								</td>
+								<td className="align-opposite show-equals td-amount">
+									{STRINGS.formatString(
+										STRINGS.FIAT_PRICE_FORMAT,
+										balanceText,
+										STRINGS.FIAT_CURRENCY_SYMBOL
+									)}
 								</td>
 							</tr>
 						);
@@ -62,7 +74,7 @@ export const AssetsBlock = ({ balance, prices, totalAssets, changeSymbol }) => (
 					<td />
 					<td>{STRINGS.WALLET_TABLE_TOTAL}</td>
 					<td />
-					<td className="align-opposite">{totalAssets}</td>
+					<td className="align-opposite td-amount">{totalAssets}</td>
 				</tr>
 			</tfoot>
 		</table>

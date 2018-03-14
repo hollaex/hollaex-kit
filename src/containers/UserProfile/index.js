@@ -180,17 +180,24 @@ class UserProfile extends Component {
 			// {
 			// 	title: STRINGS.USER_VERIFICATION.TITLE_BANK_ACCOUNT,
 			// 	subtitle: bank_account.card_number,
-			// 	content: (
+			// 	content: bank_account.provided ? (
 			// 		<BankForm initialValues={bank_account} formValues={bankFormValues}>
 			// 			<InformationSection
 			// 				text={
-			// 					bank_account.verified
-			// 						? ''
-			// 						: STRINGS.USER_VERIFICATION.PENDING_VERIFICATION_BANK
+			// 					!bank_account.verified && bank_account.provided
+			// 						? STRINGS.USER_VERIFICATION.PENDING_VERIFICATION_BANK
+			// 						: ''
 			// 				}
 			// 				onChangeValue={this.onOpenContactForm}
 			// 			/>
 			// 		</BankForm>
+			// 	) : (
+			// 		<div>
+			// 			<InformationSection
+			// 				text=""
+			// 				onChangeValue={this.onOpenContactForm}
+			// 			/>
+			// 		</div>
 			// 	),
 			// 	notification: this.generateNotification(
 			// 		bank_account.verified,

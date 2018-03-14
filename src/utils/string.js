@@ -2,7 +2,7 @@ import math from 'mathjs';
 import numbro from 'numbro';
 import moment from 'moment';
 
-import { LANGUAGE_KEY } from '../config/constants';
+import { LANGUAGE_KEY, DEFAULT_LANGUAGE } from '../config/constants';
 import STRINGS from '../config/localizedStrings';
 
 export const BTC_FORMAT = '0,0.[0000]';
@@ -27,33 +27,18 @@ export const getLanguageFromString = (value = '') => {
 	return value;
 };
 
-const AVAILABLE_LENGUAGES = STRINGS.getAvailableLanguages().map(
-	getLanguageFromString
-);
-const DEFAULT_LANGUAGE = 'fa';
-
 export const getLanguage = () => {
 	let language = localStorage.getItem(LANGUAGE_KEY);
 
 	if (!language) {
-		const interfaceLanguage = getLanguageFromString(getInterfaceLanguage());
-		const indexOfInterfaceLanguage = AVAILABLE_LENGUAGES.indexOf(
-			interfaceLanguage
-		);
-		const indexOfFa = AVAILABLE_LENGUAGES.indexOf(DEFAULT_LANGUAGE);
-		if (indexOfInterfaceLanguage > -1) {
-			language = AVAILABLE_LENGUAGES[indexOfInterfaceLanguage];
-		} else if (indexOfFa > -1) {
-			language = AVAILABLE_LENGUAGES[indexOfFa];
-		} else {
-			language = AVAILABLE_LENGUAGES[0];
-		}
+		language = DEFAULT_LANGUAGE;
 	}
 
 	return language;
 };
 
-export const setLanguage = (language) => {
+export const setLanguage = (languageParam = DEFAULT_LANGUAGE) => {
+	const language = languageParam.toLowerCase();
 	STRINGS.setLanguage(language);
 	localStorage.setItem(LANGUAGE_KEY, language);
 	moment.locale('en');

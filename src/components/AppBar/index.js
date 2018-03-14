@@ -1,6 +1,12 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
-import { HOLLAEX_LOGO_BLACK } from '../../config/constants';
+import { Link } from 'react-router';
+import {
+	HOLLAEX_LOGO_BLACK,
+	IS_PRO_VERSION,
+	PRO_URL,
+	DEFAULT_VERSION_REDIRECT
+} from '../../config/constants';
 import { LinkButton } from './LinkButton';
 
 import STRINGS from '../../config/localizedStrings';
@@ -59,9 +65,29 @@ class AppBar extends Component {
 		);
 	};
 
+	renderIcon = (isHome) => {
+		return (
+			<div
+				className={classnames('app_bar-icon', 'text-uppercase', {
+					contrast: !isHome
+				})}
+			>
+				{isHome ? (
+					<img
+						src={HOLLAEX_LOGO_BLACK}
+						alt={STRINGS.APP_NAME}
+						className="app_bar-icon-logo"
+					/>
+				) : (
+					<Link href={IS_PRO_VERSION ? PRO_URL : DEFAULT_VERSION_REDIRECT}>
+						{STRINGS.APP_NAME}
+					</Link>
+				)}
+			</div>
+		);
+	};
 	render() {
 		const {
-			goToDashboard,
 			noBorders,
 			token,
 			verifyingToken,
@@ -71,23 +97,7 @@ class AppBar extends Component {
 
 		return (
 			<div className={classnames('app_bar', { 'no-borders': noBorders })}>
-				<div
-					className={classnames('app_bar-icon', 'text-uppercase', {
-						contrast: !isHome,
-						pointer: !!goToDashboard
-					})}
-					onClick={goToDashboard}
-				>
-					{isHome ? (
-						<img
-							src={HOLLAEX_LOGO_BLACK}
-							alt={STRINGS.APP_NAME}
-							className="app_bar-icon-logo"
-						/>
-					) : (
-						STRINGS.APP_NAME
-					)}
-				</div>
+				{this.renderIcon(isHome)}
 				<div className="app_bar-main d-flex justify-content-between">
 					<div>{!isHome && STRINGS.APP_TITLE}</div>
 				</div>

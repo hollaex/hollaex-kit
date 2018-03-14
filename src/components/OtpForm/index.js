@@ -30,6 +30,12 @@ class Form extends Component {
 		this.setState({ formValues });
 	};
 
+	setFormRef = (el) => {
+		if (el) {
+			el.getElementsByTagName('input')[0].focus()
+		}
+	}
+
 	render() {
 		const {
 			handleSubmit,
@@ -60,7 +66,7 @@ class Form extends Component {
 						/>
 					)}
 				</div>
-				<form onSubmit={handleSubmit} className="w-100">
+				<form onSubmit={handleSubmit} className="w-100" ref={this.setFormRef}>
 					<div className="w-100 otp_form-fields">
 						{renderFields(formValues)}
 						{error && <div className="warning_text">{error}</div>}

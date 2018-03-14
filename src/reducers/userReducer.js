@@ -57,6 +57,9 @@ const INITIAL_STATE = {
 	fees: {
 		maker_fee: 0,
 		taker_fee: 0
+	},
+	settings: {
+		orderConfirmationPopup: true
 	}
 };
 
@@ -73,6 +76,10 @@ export default function reducer(state = INITIAL_STATE, action) {
 			} = action.payload;
 			const userData = extractuserData(action.payload);
 			const fees = action.payload.fees || state.fees;
+			const settings = {
+				...state.settings,
+				...action.payload.settings
+			};
 			return {
 				...state,
 				fetching: false,
@@ -88,19 +95,25 @@ export default function reducer(state = INITIAL_STATE, action) {
 				verification_level,
 				userData,
 				otp_enabled,
-				fees
+				fees,
+				settings
 			};
 		}
 		case 'SET_USER_DATA': {
 			const userData = extractuserData(action.payload);
 			const fees = action.payload.fees || state.fees;
+			const settings = {
+				...state.settings,
+				...action.payload.settings
+			};
 			return {
 				...state,
 				userData: {
 					...state.userData,
 					...userData
 				},
-				fees
+				fees,
+				settings
 			};
 		}
 		case 'SET_BALANCE':

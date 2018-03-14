@@ -1,6 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { reduxForm, formValueSelector, reset, SubmissionError, stopSubmit } from 'redux-form';
+import {
+	reduxForm,
+	formValueSelector,
+	reset,
+	SubmissionError,
+	stopSubmit
+} from 'redux-form';
 import math from 'mathjs';
 import { Button, Dialog, OtpForm, Loader } from '../../components';
 import renderFields from '../../components/Form/factoryFields';
@@ -109,15 +115,15 @@ class Form extends Component {
 						const error = { _error: err.message, ...err.errors };
 						this.props.onSubmitFail(err.errors, this.props.dispatch);
 						this.onCloseDialog();
-						this.props.dispatch(stopSubmit(FORM_NAME, error))
+						this.props.dispatch(stopSubmit(FORM_NAME, error));
 					}
 					throw err;
 				} else {
 					const error = { _error: err.message };
 					this.props.onSubmitFail(error, this.props.dispatch);
 					this.onCloseDialog();
-					this.props.dispatch(stopSubmit(FORM_NAME, error))
-					throw new SubmissionError(error)
+					this.props.dispatch(stopSubmit(FORM_NAME, error));
+					throw new SubmissionError(error);
 				}
 			});
 	};
@@ -153,6 +159,7 @@ class Form extends Component {
 					label="withdraw-modal"
 					onCloseDialog={this.onCloseDialog}
 					shouldCloseOnOverlayClick={dialogOtpOpen}
+					showCloseText={false}
 				>
 					{dialogOtpOpen ? (
 						<OtpForm
@@ -181,7 +188,7 @@ const WithdrawForm = reduxForm({
 	onSubmitFail: setWithdrawNotificationError,
 	onSubmitSuccess: ({ data }, dispatch) => {
 		dispatch(reset(FORM_NAME));
-		dispatch(setWithdrawNotificationSuccess(data, dispatch));
+		setWithdrawNotificationSuccess(data, dispatch);
 	},
 	enableReinitialize: true,
 	validate

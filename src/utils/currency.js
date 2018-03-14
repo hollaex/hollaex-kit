@@ -12,11 +12,22 @@ export const BTC_FORMAT = '0,0.[0000]';
 export const BTC_FULL_FORMAT = '0,0.[00000000]';
 export const FIAT_FORMAT = '0,0.[00]';
 
-export const roundNumber = (number, decimals = 4) => {
-	const fractionNumber = math.fraction(number);
-	const numberParsed = math.number(fractionNumber);
-	const roundedNumber = math.round(numberParsed, decimals);
-	return roundedNumber;
+export const roundNumber = (number = 0, decimals = 4) => {
+	if (number === 0) {
+		return 0;
+	} else if (decimals > 0) {
+		const multipliedNumber = math.multiply(
+			math.fraction(number),
+			math.pow(10, decimals)
+		);
+		const dividedNumber = math.divide(
+			math.floor(multipliedNumber),
+			math.pow(10, decimals)
+		);
+		return math.number(dividedNumber);
+	} else {
+		return math.floor(number);
+	}
 };
 
 export const formatBtcAmount = (amount = 0) =>
