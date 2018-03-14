@@ -55,7 +55,7 @@ const generateRows = ({ order }) => {
 		value: STRINGS.formatString(
 			STRINGS.BTC_PRICE_FORMAT,
 			formatFiatAmount(orderFees),
-			STRINGS.BTC_CURRENCY_SYMBOL
+			STRINGS.FIAT_CURRENCY_SYMBOL
 		)
 	});
 

@@ -5,7 +5,8 @@ import {
 	ICONS,
 	BANK_WITHDRAWAL_BASE_FEE,
 	BANK_WITHDRAWAL_DYNAMIC_FEE_RATE,
-	BANK_WITHDRAWAL_MAX_DYNAMIC_FEE
+	BANK_WITHDRAWAL_MAX_DYNAMIC_FEE,
+	BANK_WITHDRAWAL_MAX_AMOUNT_FOR_BASE_FEE
 } from '../../config/constants';
 import { fiatSymbol } from '../../utils/currency';
 import STRINGS from '../../config/localizedStrings';
@@ -55,7 +56,11 @@ export const calculateFiatFee = (amount = 0) => {
 		return 0;
 	}
 
-	let withdrawalFee = mathjs.chain(BANK_WITHDRAWAL_BASE_FEE);
+	let withdrawalFee = mathjs.chain(
+		mathjs.largerEq(amount, BANK_WITHDRAWAL_MAX_AMOUNT_FOR_BASE_FEE)
+			? 0
+			: BANK_WITHDRAWAL_BASE_FEE
+	);
 	const dinamicFee = mathjs
 		.chain(amount)
 		.multiply(BANK_WITHDRAWAL_DYNAMIC_FEE_RATE)

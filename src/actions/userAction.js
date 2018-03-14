@@ -58,19 +58,28 @@ export const updateUser = (values) => {
 		userValues.dob = new Date(values.dob);
 	}
 	userValues.nationality = values.nationality;
-	userValues.address = {
-		address: values.address,
-		city: values.city,
-		country: values.country,
-		postal_code: values.postal_code
-	};
 
-	userValues.id_data = {
-		// type: values.nationality === 'IR' ? 'id' : 'passport',
-		number: values.id_number,
-		issued_date: values.id_issued_date,
-		expiration_date: values.id_expiration_date
-	};
+	if (values.address) {
+		userValues.address = {
+			address: values.address,
+			city: values.city,
+			country: values.country,
+			postal_code: values.postal_code
+		};
+	}
+
+	if (values.id_number) {
+		userValues.id_data = {
+			// type: values.nationality === 'IR' ? 'id' : 'passport',
+			number: values.id_number,
+			issued_date: values.id_issued_date,
+			expiration_date: values.id_expiration_date
+		};
+	}
+
+	if (values.settings) {
+		userValues.settings = values.settings;
+	}
 
 	return axios.put('/user', userValues);
 };

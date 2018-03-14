@@ -146,7 +146,6 @@ class BankDeposit extends Component {
 					label="deposit-modal"
 					onCloseDialog={this.onCloseDialog}
 					shouldCloseOnOverlayClick={false}
-					showCloseText={true}
 				>
 					<ReviewBankDeposit data={data} onClickPay={this.onCloseDialog} />
 				</Dialog>

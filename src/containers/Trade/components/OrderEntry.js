@@ -2,19 +2,25 @@ import React, { Component } from 'react';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { formValueSelector, submit } from 'redux-form';
+import { formValueSelector, submit, change } from 'redux-form';
 import mathjs from 'mathjs';
 
 import Review from './OrderEntryReview';
 import Form, { FORM_NAME } from './OrderEntryForm';
-import { formatNumber, formatFiatAmount } from '../../../utils/currency';
+import {
+	formatNumber,
+	formatFiatAmount,
+	roundNumber
+} from '../../../utils/currency';
 import {
 	evaluateOrder,
 	required,
 	minValue,
 	maxValue,
 	checkMarketPrice,
-	step
+	step,
+	normalizeInt,
+	normalizeFloat
 } from '../../../components/Form/validations';
 import { Loader } from '../../../components';
 import { LIMIT_VALUES, CURRENCIES } from '../../../config/constants';
@@ -62,8 +68,21 @@ class OrderEntry extends Component {
 		}
 	}
 
+	setMax = () => {
+		const { side, balance, symbol } = this.props;
+		const size = parseFloat(this.props.size || 0);
+		const price = parseFloat(this.props.price || 0);
+		let maxSize = balance[`${symbol}_available`];
+		if (side === 'buy') {
+			maxSize = mathjs.divide(balance[`fiat_available`], price) ;
+		}
+		if (maxSize !== size) {
+			this.props.change(FORM_NAME, 'size', roundNumber(maxSize, 4));
+		}
+	};
+
 	calculateOrderPrice = (props) => {
-		const { type, side, fees, marketPrice } = props;
+		const { type, side, fees } = props;
 		const size = parseFloat(props.size || 0);
 		const price = parseFloat(props.price || 0);
 
@@ -78,21 +97,11 @@ class OrderEntry extends Component {
 			}
 		}
 
-		let orderFees = 0;
-		if (side === 'buy') {
-			orderFees = mathjs
-				.chain(size)
-				.multiply(fees.taker_fee)
-				.divide(100)
-				.multiply(marketPrice)
-				.done();
-		} else {
-			orderFees = mathjs
-				.chain(orderPrice)
-				.multiply(fees.taker_fee)
-				.divide(100)
-				.done();
-		}
+		let orderFees = mathjs
+			.chain(orderPrice)
+			.multiply(fees.taker_fee)
+			.divide(100)
+			.done();
 		let outsideFormError = '';
 
 		if (type === 'market' && orderPrice === 0) {
@@ -145,25 +154,39 @@ class OrderEntry extends Component {
 	};
 
 	onReview = () => {
+		const {
+			showPopup,
+			type,
+			side,
+			price,
+			size,
+			symbol,
+			openCheckOrder,
+			submit
+		} = this.props;
 		const order = {
-			type: this.props.type,
-			side: this.props.side,
-			price: this.props.price,
-			size: formatNumber(this.props.size, 4),
-			symbol: this.props.symbol,
+			type,
+			side,
+			price,
+			size: formatNumber(size, 4),
+			symbol,
 			orderPrice: this.state.orderPrice,
 			orderFees: this.state.orderFees
 		};
 
-		if (order.type === 'market') {
+		if (type === 'market') {
 			delete order.price;
-		} else if (order.price) {
-			order.price = formatNumber(order.price);
+		} else if (price) {
+			order.price = formatNumber(price);
 		}
-		// console.log('here', order, this.props);
-		this.props.openCheckOrder(order, () => {
-			this.props.submit(FORM_NAME);
-		});
+
+		if (showPopup) {
+			openCheckOrder(order, () => {
+				submit(FORM_NAME);
+			});
+		} else {
+			submit(FORM_NAME);
+		}
 	};
 
 	generateFormValues = () => {
@@ -182,9 +205,20 @@ class OrderEntry extends Component {
 			},
 			size: {
 				name: 'size',
-				label: STRINGS.SIZE,
+				label: (
+					<div style={{ display: 'flex' }}>
+						{STRINGS.formatString(
+							STRINGS.STRING_WITH_PARENTHESIS,
+							STRINGS.SIZE,
+							<div className="pointer text-uppercase blue-link" onClick={this.setMax}>
+								{STRINGS.CALCULATE_MAX}
+							</div>
+						)}
+					</div>
+				),
 				type: 'number',
 				placeholder: '0.00',
+				normalize: normalizeFloat,
 				step: LIMIT_VALUES.SIZE.STEP,
 				min: LIMIT_VALUES.SIZE.MIN,
 				max: LIMIT_VALUES.SIZE.MAX,
@@ -200,6 +234,7 @@ class OrderEntry extends Component {
 				label: STRINGS.PRICE,
 				type: 'number',
 				placeholder: '0',
+				normalize: normalizeInt,
 				step: LIMIT_VALUES.PRICE.STEP,
 				min: LIMIT_VALUES.PRICE.MIN,
 				max: LIMIT_VALUES.PRICE.MAX,
@@ -275,7 +310,8 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-	submit: bindActionCreators(submit, dispatch)
+	submit: bindActionCreators(submit, dispatch),
+	change: bindActionCreators(change, dispatch)
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(OrderEntry);

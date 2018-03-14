@@ -109,13 +109,13 @@ class Signup extends Component {
 				<div className={classnames('f-1', 'link_wrapper', 'multi_links')}>
 					<div>
 						{STRINGS.SIGN_UP.HAVE_ACCOUNT}
-						<Link to="/login" className={classnames('blue-link')}>
+						<Link to="/login" className="blue-link">
 							{STRINGS.SIGN_UP.GOTO_LOGIN}
 						</Link>
 					</div>
 					<div>
 						{STRINGS.SIGN_UP.NO_EMAIL}
-						<Link to="/verify" className={classnames('blue-link')}>
+						<Link to="/verify" className="blue-link">
 							{STRINGS.SIGN_UP.REQUEST_EMAIL}
 						</Link>
 					</div>
@@ -127,6 +127,7 @@ class Signup extends Component {
 					shouldCloseOnOverlayClick={false}
 					style={{ 'z-index': 100 }}
 					className={classnames(languageClasses)}
+					showCloseText={false}
 				>
 					<ContactForm
 						onSubmitSuccess={this.onCloseDialog}

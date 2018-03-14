@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { TabController, CheckTitle } from '../../components';
 import { ICONS } from '../../config/constants';
-import { UserProfile, UserSecurity } from '../';
+import { UserProfile, UserSecurity, UserSettings } from '../';
 import STRINGS from '../../config/localizedStrings';
 import { openContactForm } from '../../actions/appActions';
 class Account extends Component {
@@ -83,11 +83,7 @@ class Account extends Component {
 						icon={ICONS.GEAR_GREY}
 					/>
 				),
-				content: (
-					<div className="d-flex justify-content-center align-items-center f-1">
-						{STRINGS.ACCOUNTS.TAB_SETTINGS}
-					</div>
-				)
+				content: <UserSettings />
 			}
 		];
 

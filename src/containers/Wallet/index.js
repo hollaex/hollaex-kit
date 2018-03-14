@@ -19,14 +19,13 @@ import STRINGS from '../../config/localizedStrings';
 
 import { AssetsBlock } from './AssetsBlock';
 const fiatSymbol = 'fiat';
-const fiatCurrencySymbol = CURRENCIES.fiat.currencySymbol;
 const fiatFormatToCurrency = CURRENCIES.fiat.formatToCurrency;
 
 class Wallet extends Component {
 	state = {
 		sections: [],
 		isOpen: true,
-		totalAssets: 0
+		totalAssets: ''
 	};
 
 	componentDidMount() {
@@ -49,7 +48,11 @@ class Wallet extends Component {
 
 	calculateTotalAssets = (balance, prices) => {
 		const total = calculateBalancePrice(balance, prices);
-		return `${fiatCurrencySymbol}${fiatFormatToCurrency(total)}`;
+		return STRINGS.formatString(
+			STRINGS.FIAT_PRICE_FORMAT,
+			fiatFormatToCurrency(total),
+			STRINGS.FIAT_CURRENCY_SYMBOL
+		);
 	};
 
 	generateSections = (changeSymbol, balance, prices, isOpen = false) => {

@@ -1,6 +1,7 @@
 import React from 'react';
 
-import { NotificationsList, Logout, SidebarHub } from '../';
+import { NotificationsList, SidebarHub } from '../';
+import { Logout, Help } from './rows';
 
 const Sidebar = ({
 	goToWalletPage,
@@ -8,6 +9,7 @@ const Sidebar = ({
 	active,
 	activePath,
 	logout,
+	help,
 	notifications,
 	symbol,
 	changeSymbol,
@@ -29,7 +31,8 @@ const Sidebar = ({
 			<div className="sidebar-notifications">
 				<NotificationsList notifications={notifications} />
 			</div>
-			<Logout className="sidebar-logout" onLogout={logout} />
+			<Help className="sidebar-row" onHelp={help} />
+			<Logout className="sidebar-row" onLogout={logout} />
 		</div>
 	);
 };

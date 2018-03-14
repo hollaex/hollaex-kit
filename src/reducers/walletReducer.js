@@ -75,7 +75,7 @@ export default function reducer(state = INITIAL_STATE, { type, payload }) {
 
 		case ACTION_KEYS.ADD_USER_TRADES: {
 			// check if we have trades from DB
-			const tradesData = joinData(payload.reverse(), state.trades.data);
+			const tradesData = joinData(payload.trades, state.trades.data);
 			return {
 				...state,
 				trades: {

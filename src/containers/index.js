@@ -2,6 +2,7 @@ export { default as App } from './App';
 export { default as AuthContainer } from './AuthContainer';
 export { default as UserProfile } from './UserProfile';
 export { default as UserSecurity } from './UserSecurity';
+export { default as UserSettings } from './UserSettings';
 export { default as ContactForm } from './ContactForm';
 export { default as Account } from './Account';
 export { default as Wallet } from './Wallet';

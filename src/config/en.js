@@ -87,8 +87,10 @@ export default {
 		CATEGORY_LABEL: 'Category',
 		CATEGORY_PLACEHOLDER: 'Select the category that best suits your issue',
 		CATEGORY_OPTIONS: {
-			OPTION_VERIFY: 'Verification',
-			OPTION_BUG: 'Bug'
+			OPTION_VERIFY: 'User verification',
+			OPTION_LEVEL: 'Increase user level',
+			OPTION_DEPOSIT: 'Deposit & Withdrawal',
+			OPTION_BUG: 'Report bug'
 		},
 		SUBJECT_LABEL: 'Subject',
 		SUBJECT_PLACEHOLDER: 'Type the subject of your issue',
@@ -110,7 +112,7 @@ export default {
 			'Use the bank details below to deposit USD in to your account. Transfers usally take up to 1-2 business day.',
 			'Deposits will only be accepeted from a bank account in a name that matches the name registered with your HOLLAEX account.'
 		],
-		LIMIT_MESSAGE: 'Daily deposit max amount',
+		LIMIT_MESSAGE: 'Use your registered card and bank for deposit otherwise you may face issues and your funds might get blocked.',
 		INCREASE_LIMIT: 'Want to increase your daily limit?',
 		QR_CODE:
 			'This QR Code can be scanned by the person who wants to send you Bitcoins',
@@ -438,7 +440,7 @@ export default {
 			},
 			FORM_FIELDS: {
 				IRANIAN_ACCOUNT_LABEL: 'Do you have an Iranian Bank Account?',
-				BANK_NAME_LABEL: 'Bank Name',
+				BANK_NAME_LABEL: 'Bank Name (We reccomend you to use Pasargad Bank for instant withdrawals. Otherwise your withdrawals will have 1 to 2 days delay.',
 				BANK_NAME_PLACEHOLDER: 'Type the name of your bank',
 				ACCOUNT_NUMBER_LABEL: 'Bank Account Number',
 				ACCOUNT_NUMBER_PLACEHOLDER: 'Type your bank account number',
@@ -599,7 +601,8 @@ export default {
 	WITHDRAWALS_FORM_AMOUNT_LABEL: '{0} amount to withdraw',
 	WITHDRAWALS_FORM_AMOUNT_PLACEHOLDER:
 		'Type the amount of {0} you wish to withdraw',
-	WITHDRAWALS_FORM_FEE_LABEL: '{0} transaction fee',
+	WITHDRAWALS_FORM_FEE_BTC_LABEL: 'Bitcoin transaction fee (This is Bitcoin mining fee. If you lower that amount there is chance your transaction takes significant time to get confirmed.)',
+	WITHDRAWALS_FORM_FEE_FIAT_LABEL: 'Bank withdrawal fee',
 	WITHDRAWALS_FORM_FEE_PLACEHOLDER:
 		'Type the amount of {0} you wish to use in the fee of the transaction',
 	WITHDRAWALS_FORM_FEE_OPTIMAL_VALUE: 'Optimal fee: {0} {1}', // TODO {0} -> amount {1} -> currency name
@@ -725,5 +728,19 @@ export default {
 	CHECK_ORDER_TYPE: '{0} {1}', // 0 -> maker/limit  1 -> sell/buy
 	CONFIRM_TEXT: 'Confirm',
 	INVALID_CAPTCHA: 'Invalid captcha',
-	NO_FEE: 'N/A'
+	NO_FEE: 'N/A',
+	SETTINGS_LANGUAGE_LABEL: 'Language of Emails',
+	SETTINGS_LANGUAGE_OPTIONS: [
+		{ value: 'en', label: 'English' },
+	],
+	SETTINGS_ORDERPOPUP_LABEL: 'Display order confirmation popup',
+	SETTINGS_ORDERPOPUP_OPTIONS: [
+		{ value: false, label: 'NO' },
+		{ value: true, label: 'YES' }
+	],
+	SETTING_BUTTON: 'save',
+	STRING_WITH_PARENTHESIS: '{0} ({1})',
+	VERIFICATION_NO_WITHDRAW_TITLE: 'Withdrawals disabled',
+	VERIFICATION_NO_WITHDRAW_MESSAGE:
+		'Your account is disabled for withdrawals'
 };
