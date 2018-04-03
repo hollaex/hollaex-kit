@@ -47,3 +47,49 @@
 		}
 	}
 }
+
+
+
+.tokens-name, .tokens-tokenkey {
+	min-width: 10rem;
+  word-break: break-word;
+	padding-left: 0.5rem !important;
+	padding-right: 0.5rem !important;
+}
+
+.tokens-name {
+	max-width: 15rem;
+}
+
+.tokens-date {
+	min-width: 11rem;
+	max-width: 11rem;
+}
+
+.tokens-icon,
+.tokens-revoke {
+	min-width: 4rem;
+	max-width: 4rem;
+}
+
+.tokens-icon {
+	& > div {
+		display: flex;
+		justify-content: center;
+	}
+	svg {
+		@include size(2.5rem);
+	}
+}
+
+.popup_info-wrapper {
+	color: $colors-main-black;
+	.popup_info-title {
+		font-family: $raleway--font-family;
+		font-size: $font-size-subhead3;
+		border-bottom: 1px solid $colors-main-black;
+	}
+	.popup_info-text {
+		font-size: $font-size-subtext;
+	}
+}

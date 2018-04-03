@@ -759,5 +759,31 @@ export default {
 	STRING_WITH_PARENTHESIS: '{0} ({1})',
 	VERIFICATION_NO_WITHDRAW_TITLE: 'Withdrawals disabled',
 	VERIFICATION_NO_WITHDRAW_MESSAGE:
-		'Your account is disabled for withdrawals'
+		'Your account is disabled for withdrawals',
+	DEVELOPER_SECTION: {
+		TITLE: 'API Key',
+		INFORMATION_TEXT: 'The API provides functionality such as getting wallet balances, managing buy/sell orders, requesting withdrawals as well as market data such as recent trades, order book and ticker.',
+		ERROR_INACTIVE_OTP: 'To generate an API key it is a requirement that you enable 2-factor authentication.',
+		ENABLE_2FA: 'Enable 2FA',
+		WARNING_TEXT: 'Do not share your API key with others.',
+		GENERATE_KEY: 'Generate API Key',
+		ACTIVE: 'Active',
+		INACTIVE: 'Inactive',
+		INVALID_LEVEL: 'You need to upgrade your verification level to have access this feature' // TODO
+	},
+	DEVELOPERS_TOKENS_POPUP: {
+		GENERATE_TITLE: 'Generate API Key',
+		GENERATE_TEXT: 'Please name your API key and once you’ve generated you key please keep it private',
+		GENERATE: 'Generate',
+		DELETE_TITLE: 'Delete API Key',
+		DELETE_TEXT: 'Deleting your API key is ireversalable although you can generate a new API key at anytime. Do you want to delete your API key?',
+		DELETE: 'DELETE'
+	},
+	DEVELOPERS_TOKENS_TABLE: {
+		NAME: 'Name',
+		API_KEY: 'API Key',
+		CREATED: 'Date Generated',
+		REVOKE: 'Revoke',
+		REVOKED: 'Revoked'
+	}
 };

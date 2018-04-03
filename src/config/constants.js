@@ -251,6 +251,12 @@ export const ICONS = {
 	ARROW_TRANSFER_HISTORY_INACTIVE: `${
 		process.env.PUBLIC_URL
 	}/assets/images/arrow-trans-history.svg`,
+	TOKENS_INACTIVE: `${process.env.PUBLIC_URL}/assets/images/dev-icon.svg`,
+	TOKENS_ACTIVE: `${process.env.PUBLIC_URL}/assets/images/dev-icon.svg`,
+	TOKEN_REVOKED: `${process.env.PUBLIC_URL}/assets/images/api-key-revoked.svg`,
+	TOKEN_ACTIVE: `${process.env.PUBLIC_URL}/assets/images/api-key-active.svg`,
+	TOKEN_TRASHED: `${process.env.PUBLIC_URL}/assets/images/api-key-trashed.svg`,
+	TOKEN_GENERATE: `${process.env.PUBLIC_URL}/assets/images/api-key-generate.svg`,
 	CHECK_ORDER: `${process.env.PUBLIC_URL}/assets/images/check-order.svg`
 };
 
@@ -335,11 +341,6 @@ export const DEPOSIT_LIMITS = {
 	}
 };
 
-console.log(process.env.REACT_APP_WITHDRAWAL_FIAT_MIN, typeof process.env.REACT_APP_WITHDRAWAL_FIAT_MIN)
-console.log(process.env.REACT_APP_WITHDRAWAL_FIAT_STEP, typeof process.env.REACT_APP_WITHDRAWAL_FIAT_STEP)
-console.log(process.env.REACT_APP_WITHDRAWAL_BTC_MIN, typeof process.env.REACT_APP_WITHDRAWAL_BTC_MIN)
-console.log(process.env.REACT_APP_WITHDRAWAL_BTC_MAX, typeof process.env.REACT_APP_WITHDRAWAL_BTC_MAX)
-console.log(process.env.REACT_APP_WITHDRAWAL_BTC_STEP, typeof process.env.REACT_APP_WITHDRAWAL_BTC_STEP)
 export const WITHDRAW_LIMITS = {
 	fiat: {
 		MIN: process.env.REACT_APP_WITHDRAWAL_FIAT_MIN || 20000,
@@ -389,3 +390,5 @@ export const IS_PRO_VERSION = process.env.REACT_APP_IS_PRO_VERSION && process.en
 export const PRO_VERSION_REDIRECT = process.env.REACT_APP_PRO_VERSION_REDIRECT || '/account';
 export const DEFAULT_VERSION_REDIRECT = process.env.REACT_APP_DEFAULT_VERSION_REDIRECT || '/';
 export const PRO_URL = process.env.REACT_APP_PRO_URL || 'https://exir.io';
+
+export const MIN_LEVEL_FOR_TOKENS = parseInt(process.env.REACT_APP_MIN_LEVEL_FOR_TOKENS || 2, 10)

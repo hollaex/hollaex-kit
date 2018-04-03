@@ -58,6 +58,7 @@ const INITIAL_STATE = {
 		maker_fee: 0,
 		taker_fee: 0
 	},
+	tokens: [],
 	settings: {
 		orderConfirmationPopup: true
 	}
@@ -225,6 +226,26 @@ export default function reducer(state = INITIAL_STATE, action) {
 			return { ...state, fetching: false, error: action.payload.response };
 		case 'DEACTIVATE_OTP_FULFILLED':
 			return { ...state, fetching: false, deactivateOtp: action.payload.data };
+		case 'REQUEST_TOKENS_PENDING':
+			return { ...state, fetching: true, error: null, tokens: [] };
+		case 'REQUEST_TOKENS_REJECTED':
+			return { ...state, fetching: false, error: action.payload.response };
+		case 'REQUEST_TOKENS_FULFILLED':
+			return { ...state, fetching: false, tokens: action.payload.data };
+		case 'TOKEN_REVOKED': {
+			const tokens = [].concat(state.tokens);
+			const { token } = action.payload;
+			const tokenIndex = tokens.findIndex(({ id }) => id === token.id);
+			if (tokenIndex > -1) {
+				tokens.splice(tokenIndex, 1, token);
+			}
+			return { ...state, tokens };
+		}
+		case 'TOKEN_GENERATED':
+			return {
+				...state,
+				tokens: [action.payload.token].concat(state.tokens)
+			};
 		case 'LOGOUT':
 			return INITIAL_STATE;
 		default:

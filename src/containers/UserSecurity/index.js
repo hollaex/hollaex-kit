@@ -20,6 +20,7 @@ import {
 import { errorHandler } from '../../components/OtpForm/utils';
 import ChangePasswordForm, { generateFormValues } from './ChangePasswordForm';
 import { OTP, renderOTPForm } from './OTP';
+import { DeveloperSection } from './DeveloperSection';
 
 import STRINGS from '../../config/localizedStrings';
 
@@ -60,7 +61,7 @@ class UserVerification extends Component {
 
 	calculateSections = (user) => {
 		const formValues = generateFormValues();
-		const { otp_enabled, otp } = user;
+		const { otp_enabled, otp, verification_level } = user;
 
 		const sections = [
 			{
@@ -107,6 +108,23 @@ class UserVerification extends Component {
 					text: STRINGS.ACCOUNT_SECURITY.CHANGE_PASSWORD.ACTIVE,
 					status: 'success',
 					iconPath: ICONS.GREEN_CHECK,
+					allowClick: true
+				}
+			},
+			{
+				title: STRINGS.DEVELOPER_SECTION.TITLE,
+				content: (
+					<DeveloperSection
+						otp_enabled={otp_enabled}
+						openOtp={this.openOtp}
+						verification_level={verification_level}
+					/>
+				),
+				disabled: false,
+				notification: {
+					// text: STRINGS.DEVELOPER_SECTION[otp_enabled ? 'ACTIVE' : 'INACTIVE'],
+					status: otp_enabled ? 'success' : 'disabled',
+					iconPath: otp_enabled ? ICONS.TOKENS_ACTIVE : ICONS.TOKENS_INACTIVE, // TODO check
 					allowClick: true
 				}
 			}
@@ -178,6 +196,13 @@ class UserVerification extends Component {
 
 	setRef = (el) => {
 		this.accordion = el;
+	};
+
+	openOtp = () => {
+		this.accordion.openSection(2, false);
+		setTimeout(() => {
+			this.accordion.openSection(0);
+		}, 250);
 	};
 
 	renderModalContent = () => {
