@@ -48,37 +48,50 @@
 	}
 }
 
-
-
-.tokens-name, .tokens-tokenkey {
-	min-width: 10rem;
-  word-break: break-word;
+.tokens-name,
+.tokens-tokenkey {
+	word-break: break-word;
 	padding-left: 0.5rem !important;
 	padding-right: 0.5rem !important;
 }
 
-.tokens-name {
-	max-width: 15rem;
+.tokens-tokenkey {
+	max-width: 5rem;
+}
+
+.tokens-tokenkey {
+	min-width: 15rem;
+	// max-width: 15rem;
 }
 
 .tokens-date {
-	min-width: 11rem;
-	max-width: 11rem;
+	min-width: 5rem;
+	max-width: 5rem;
 }
 
 .tokens-icon,
 .tokens-revoke {
-	min-width: 4rem;
-	max-width: 4rem;
+	min-width: 3rem;
+	max-width: 3rem;
 }
+
+$svg--size: 2.5rem;
+$svg-small--size: 1.85rem;
+$svg--padding: $svg--size - $svg-small--size;
 
 .tokens-icon {
 	& > div {
 		display: flex;
 		justify-content: center;
+		align-items: center;
 	}
 	svg {
-		@include size(2.5rem);
+		@include size($svg--size);
+	}
+	&.small-icon {
+		svg {
+			padding: $svg--padding / 2 0;
+		}
 	}
 }
 
