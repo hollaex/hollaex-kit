@@ -69,13 +69,6 @@ class ChartComponent extends Component {
 
 	setTickData = ({ data, timestamp }) => {
 		const { tickers, chartData } = this.state;
-		Object.keys(data).forEach((symbol) => {
-			if (!tickers[symbol]) {
-				tickers[symbol] = 0;
-			}
-			tickers[symbol] = data[symbol];
-		});
-
 		const keys = Object.keys(data);
 		if (keys.length === 1) {
 			const symbol = keys[0];
@@ -86,24 +79,32 @@ class ChartComponent extends Component {
 					currentBlockTimestamp
 			) {
 				const lastData = chartData[symbol][chartData[symbol].length - 1];
-				if (lastData.low > tickers[symbol]) {
-					lastData.low = tickers[symbol];
-				} else if (lastData.high < tickers[symbol]) {
-					lastData.high = tickers[symbol];
+				const newClosePrice = data[symbol]
+				if (lastData.low > newClosePrice) {
+					lastData.low = newClosePrice;
+				} else if (lastData.high < newClosePrice) {
+					lastData.high = newClosePrice;
 				}
-				lastData.close = tickers[symbol];
+				lastData.close = newClosePrice;
 				chartData[symbol][chartData[symbol].length - 1] = lastData;
 			} else {
-				// const openValue = chartData[symbol].length > 0 ? chartData[symbol][chartData[symbol].length - 1].open : tickers[symbol];
 				chartData[symbol].push({
 					date: currentBlockTimestamp,
-					high: tickers[symbol],
-					low: tickers[symbol],
+					high: data[symbol],
+					low: data[symbol],
 					open: tickers[symbol],
-					close: tickers[symbol]
+					close: data[symbol]
 				});
 			}
 		}
+
+		Object.keys(data).forEach((symbol) => {
+			if (!tickers[symbol]) {
+				tickers[symbol] = 0;
+			}
+			tickers[symbol] = data[symbol];
+		});
+
 		this.setState({ tickers, chartData, timestamp });
 	};
 
