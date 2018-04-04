@@ -764,7 +764,9 @@ export default {
 		GENERATE: 'Generate',
 		DELETE_TITLE: 'Delete API Key',
 		DELETE_TEXT: 'Deleting your API key is ireversalable although you can generate a new API key at anytime. Do you want to delete your API key?',
-		DELETE: 'DELETE'
+		DELETE: 'DELETE',
+		FORM_NAME_LABEL: 'Name',
+		FORM_LABLE_PLACEHOLDER: 'Name for the Api Key'
 	},
 	DEVELOPERS_TOKENS_TABLE: { // TODO
 		NAME: 'Name',

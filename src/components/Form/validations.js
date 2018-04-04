@@ -179,3 +179,5 @@ export const validateOtp = (message = STRINGS.OTP_FORM.ERROR_INVALID) => (
 };
 
 export const normalizeEmail = (value = '') => value.toLowerCase();
+
+export const tokenKeyValidation = required;

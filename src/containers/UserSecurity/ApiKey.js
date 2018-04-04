@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import STRINGS from '../../config/localizedStrings';
 import {
 	requestTokens,
 	revokeToken,
@@ -9,9 +8,9 @@ import {
 	tokenGenerated,
 	tokenRevoked
 } from '../../actions/userAction';
-import { Table, OtpForm, Dialog, Loader } from '../../components';
+import { Table, Dialog, Loader } from '../../components';
 import { generateHeaders } from './ApiKeyHeaders';
-import { ApiKeyModal, TYPE_GENERATE, TYPE_REVOKE } from './ApiKeyModal';
+import ApiKeyModal, { TYPE_GENERATE, TYPE_REVOKE } from './ApiKeyModal';
 import { openContactForm } from '../../actions/appActions';
 import { errorHandler } from '../../components/OtpForm/utils';
 import { NoOtpEnabled, OtpEnabled } from './DeveloperSection';
@@ -63,8 +62,8 @@ class ApiKey extends Component {
 			.catch(errorHandler);
 	};
 
-	onGenerateToken = (otp_code) => {
-		return generateToken({ otp_code, name: 'test_token' })
+	onGenerateToken = (otp_code, name) => {
+		return generateToken({ otp_code, name })
 			.then(({ data }) => {
 				this.props.tokenGenerated(data);
 				this.onCloseDialog();
@@ -75,8 +74,6 @@ class ApiKey extends Component {
 	render() {
 		const {
 			tokens,
-			generateKey,
-			submitting,
 			openContactForm,
 			fetching,
 			otp_enabled,
@@ -102,8 +99,8 @@ class ApiKey extends Component {
 								count={tokens.length}
 							/>
 						)
-					) : otp_enabled && (
-						<Loader relative={true} background={false} />
+					) : (
+						otp_enabled && <Loader relative={true} background={false} />
 					)}
 				</div>
 				<Dialog

@@ -51,7 +51,7 @@ export const DeveloperSection = ({ verification_level, ...rest }) => {
 	if (verification_level < MIN_LEVEL_FOR_TOKENS) {
 		content = <NoLevel />;
 	} else {
-		content = <ApiKeyContainer {...rest} otp_enabled={true} />;
+		content = <ApiKeyContainer {...rest} />;
 	}
 	return <div className="mt-4 mb-4 apply_rtl">{content}</div>;
 };
