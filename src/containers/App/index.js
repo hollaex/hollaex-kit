@@ -495,6 +495,7 @@ class Container extends Component {
 				<Dialog
 					isOpen={dialogIsOpen}
 					label="exir-modal"
+					className="app-dialog"
 					onCloseDialog={this.onCloseDialog}
 					shouldCloseOnOverlayClick={shouldCloseOnOverlayClick}
 					showCloseText={
