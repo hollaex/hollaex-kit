@@ -1,7 +1,8 @@
 import React from 'react';
 import classnames from 'classnames';
-import STRINGS from '../../config/localizedStrings';
 import ReactSVG from 'react-svg';
+import { Link } from 'react-router';
+import STRINGS from '../../config/localizedStrings';
 
 import { FLEX_CENTER_CLASSES, FEATURES_ICONS } from '../../config/constants';
 
@@ -63,7 +64,7 @@ const Card = ({ icon, title, text }) => (
 	</div>
 );
 
-const Section = ({ style, onClickDemo, onClickRegister, token }) => (
+const Section = ({ style, onClickDemo, token }) => (
 	<div
 		className={classnames(
 			...FLEX_CENTER_CLASSES,
@@ -88,14 +89,11 @@ const Section = ({ style, onClickDemo, onClickRegister, token }) => (
         {STRINGS.HOME.SECTION_3_BUTTON_1}
       </div>*/}
 			{!token && (
-				<div
-					className={classnames(...BUTTONS_CLASSES, 'contrast', {
-						pointer: onClickRegister
-					})}
-					onClick={onClickRegister}
-				>
-					{STRINGS.REGISTER_TEXT}
-				</div>
+				<Link to="signup">
+					<div className={classnames(...BUTTONS_CLASSES, 'contrast')}>
+						{STRINGS.REGISTER_TEXT}
+					</div>
+				</Link>
 			)}
 		</div>
 	</div>

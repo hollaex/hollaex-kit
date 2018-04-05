@@ -1,5 +1,6 @@
 import React from 'react';
 import classnames from 'classnames';
+import { Link } from 'react-router';
 import STRINGS from '../../config/localizedStrings';
 
 import { FLEX_CENTER_CLASSES } from '../../config/constants';
@@ -9,7 +10,6 @@ const BUTTONS_CLASSES = ['buttons-section--button', ...FLEX_CENTER_CLASSES];
 const Section1 = ({
 	style = {},
 	onClickScrollTo = () => {},
-	onClickRegister,
 	onClickLearnMore,
 	token
 }) => (
@@ -39,14 +39,11 @@ const Section1 = ({
 					{STRINGS.HOME.SECTION_1_BUTTON_1}
 				</div>
 				{!token && (
-					<div
-						className={classnames(...BUTTONS_CLASSES, 'contrast', {
-							pointer: onClickRegister
-						})}
-						onClick={onClickRegister}
-					>
-						{STRINGS.REGISTER_TEXT}
-					</div>
+					<Link to="signup">
+						<div className={classnames(...BUTTONS_CLASSES, 'contrast')}>
+							{STRINGS.REGISTER_TEXT}
+						</div>
+					</Link>
 				)}
 			</div>
 		</div>
