@@ -1,9 +1,10 @@
 import React from 'react';
+import ReactSVG from 'react-svg';
+import classnames from 'classnames';
 import STRINGS from '../../config/localizedStrings';
 import { ICONS } from '../../config/constants';
 import { formatTimestamp } from '../../utils/utils';
-import ReactSVG from 'react-svg';
-import classnames from 'classnames';
+import { Tooltip } from '../../components';
 
 const NOT_REVOKED = 'pointer blue-link';
 
@@ -71,9 +72,18 @@ export const generateHeaders = (revokeToken, otp_enabled) => {
 					)}
 					onClick={!revoked && otp_enabled ? () => revokeToken(id) : () => {}}
 				>
-					{revoked
-						? STRINGS.DEVELOPERS_TOKENS_TABLE.REVOKED
-						: STRINGS.DEVELOPERS_TOKENS_TABLE.REVOKE}
+					{revoked ? (
+						STRINGS.DEVELOPERS_TOKENS_TABLE.REVOKED
+					) : otp_enabled ? (
+						STRINGS.DEVELOPERS_TOKENS_TABLE.REVOKE
+					) : (
+						<Tooltip
+							text={STRINGS.DEVELOPERS_TOKENS_TABLE.REVOKE_TOOLTIP}
+							className="light-theme"
+						>
+							<div>{STRINGS.DEVELOPERS_TOKENS_TABLE.REVOKE}</div>
+						</Tooltip>
+					)}
 				</td>
 			)
 		}

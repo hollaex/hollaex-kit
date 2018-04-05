@@ -787,6 +787,7 @@ export default {
 		API_KEY: 'API Key',
 		CREATED: 'Date Generated',
 		REVOKE: 'Revoke',
-		REVOKED: 'Revoked'
+		REVOKED: 'Revoked',
+		REVOKE_TOOLTIP: 'You have to enable 2FA to revoke the token' // TODO
 	}
 };
