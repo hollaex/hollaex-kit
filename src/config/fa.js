@@ -747,6 +747,7 @@ export default {
 	VERIFICATION_NO_WITHDRAW_TITLE: 'Withdrawals disabled', // TODO
 	VERIFICATION_NO_WITHDRAW_MESSAGE:
 		'Your account is disabled for withdrawals',  // TODO
+	UP_TO_MARKET: 'Up to market', // TODO
 	DEVELOPER_SECTION: { // TODO
 		TITLE: 'API Key',
 		INFORMATION_TEXT: 'The API provides functionality such as getting wallet balances, managing buy/sell orders, requesting withdrawals as well as market data such as recent trades, order book and ticker.',

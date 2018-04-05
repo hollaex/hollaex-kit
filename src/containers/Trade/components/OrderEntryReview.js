@@ -20,6 +20,7 @@ const Review = ({
 		math.fraction(orderPrice),
 		math.fraction(fees)
 	);
+	const upToMarket = !math.smaller(orderPrice, 0);
 	return (
 		<div className="trade_order_entry-review d-flex flex-column">
 			<div className={classnames(...ROW_CLASSNAMES)}>
@@ -27,19 +28,25 @@ const Review = ({
 					{type === 'market' ? STRINGS.MARKET_PRICE : STRINGS.ORDER_PRICE}:
 				</div>
 				<div className="text-price">
-					{renderAmount(formatToCurrency(orderAmountReceived), currency)}
+					{upToMarket
+						? renderAmount(formatToCurrency(orderAmountReceived), currency)
+						: STRINGS.UP_TO_MARKET}
 				</div>
 			</div>
 			<div className={classnames(...ROW_CLASSNAMES)}>
 				<div>{STRINGS.FEES}:</div>
 				<div className="text-price">
-					{renderAmount(formatToCurrency(fees), currency)}
+					{upToMarket
+						? renderAmount(formatToCurrency(fees), currency)
+						: STRINGS.UP_TO_MARKET}
 				</div>
 			</div>
 			<div className={classnames(...ROW_CLASSNAMES)}>
 				<div>{STRINGS.TOTAL_ORDER}:</div>
 				<div className="text-price">
-					{renderAmount(formatToCurrency(orderPrice), currency)}
+					{upToMarket
+						? renderAmount(formatToCurrency(orderPrice), currency)
+						: STRINGS.UP_TO_MARKET}
 				</div>
 			</div>
 		</div>

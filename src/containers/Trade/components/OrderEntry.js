@@ -87,7 +87,7 @@ class OrderEntry extends Component {
 		const price = parseFloat(props.price || 0);
 
 		let orderPrice = 0;
-		if (size > 0 && !(type === 'limit' && price === 0)) {
+		if (size >= LIMIT_VALUES.SIZE.MIN && !(type === 'limit' && price === 0)) {
 			if (props.side === 'sell') {
 				const { bids } = props;
 				orderPrice = checkMarketPrice(size, bids, type, side, price);
@@ -104,7 +104,7 @@ class OrderEntry extends Component {
 			.done();
 		let outsideFormError = '';
 
-		if (type === 'market' && orderPrice === 0) {
+		if (type === 'market' && orderPrice === 0 && size >= LIMIT_VALUES.SIZE.MIN) {
 			outsideFormError = STRINGS.QUICK_TRADE_ORDER_NOT_FILLED;
 		} else if (type === 'market' && side === 'buy') {
 			const values = {
