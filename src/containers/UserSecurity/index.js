@@ -33,6 +33,9 @@ class UserVerification extends Component {
 
 	componentDidMount() {
 		this.calculateSections(this.props.user);
+		if (this.props.openApiKey) {
+			this.openDevelopers();
+		}
 	}
 
 	componentWillReceiveProps(nextProps) {
@@ -202,6 +205,12 @@ class UserVerification extends Component {
 		this.accordion.openSection(2, false);
 		setTimeout(() => {
 			this.accordion.openSection(0);
+		}, 250);
+	};
+
+	openDevelopers = () => {
+		setTimeout(() => {
+			this.accordion.openSection(2);
 		}, 250);
 	};
 

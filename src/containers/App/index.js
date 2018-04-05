@@ -353,6 +353,9 @@ class Container extends Component {
 			case '/wallet':
 				return 'wallet';
 			case '/account':
+			case '/developers':
+			case '/security':
+			case '/settings':
 				return 'account';
 			case '/quick-trade':
 				return 'quick-trade';
