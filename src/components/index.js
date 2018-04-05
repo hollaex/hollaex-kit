@@ -1,5 +1,6 @@
 export { default as AppBar } from './AppBar';
 export { default as Button } from './Button';
+export { default as ButtonLink } from './Button/ButtonLink';
 export { default as CheckboxButton } from './Button/CheckboxButton';
 export { default as Dialog } from './Dialog';
 export { default as MessageDisplay } from './Dialog/MessageDisplay';

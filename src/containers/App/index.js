@@ -331,9 +331,6 @@ class Container extends Component {
 
 	goToAccountPage = () => this.goToPage('/account');
 	goToVerificationPage = () => this.goToPage('/verification');
-	goToWalletPage = () => this.goToPage('/wallet');
-	goToTradePage = () => this.goToPage('/trade');
-	goToQuickTradePage = () => this.goToPage('/quick-trade');
 	goToDashboard = () => this.goToPage('/');
 
 	logout = (message = '') => {
@@ -485,10 +482,6 @@ class Container extends Component {
 				<div className="app_container-sidebar">
 					<Sidebar
 						activePath={activePath}
-						goToAccountPage={this.goToAccountPage}
-						goToWalletPage={this.goToWalletPage}
-						goToTradePage={this.goToTradePage}
-						goToQuickTradePage={this.goToQuickTradePage}
 						logout={this.logout}
 						notifications={notifications}
 						changeSymbol={changeSymbol}

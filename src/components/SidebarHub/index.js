@@ -3,7 +3,7 @@ import classnames from 'classnames';
 import { ICONS } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 
-import { Button, Wallet } from '../';
+import { ButtonLink, Wallet } from '../';
 import { Section } from './Section';
 import { CurrencySelector } from './CurrencySelector';
 
@@ -15,14 +15,7 @@ class SidebarHub extends Component {
 	};
 
 	render() {
-		const {
-			goToWalletPage,
-			goToAccountPage,
-			goToQuickTradePage,
-			goToTradePage,
-			activePath,
-			currency
-		} = this.props;
+		const { activePath, currency } = this.props;
 		return (
 			<div
 				className={classnames(
@@ -39,40 +32,40 @@ class SidebarHub extends Component {
 					<Section
 						title={STRINGS.ACCOUNT_TEXT}
 						icon={ICONS.SIDEBAR_ACCOUNT_ACTIVE}
-						onClickHeader={goToAccountPage}
 						active={activePath === 'account'}
+						path="/account"
 					/>
 					<Section
 						title={STRINGS.WALLET_TITLE}
 						icon={ICONS.SIDEBAR_WALLET_ACTIVE}
-						onClickHeader={goToWalletPage}
 						active={activePath === 'wallet'}
+						path="/wallet"
 					>
 						<Wallet />
 					</Section>
 					<Section
 						title={STRINGS.TRADING_TITLE}
 						icon={ICONS.SIDEBAR_TRADING_ACTIVE}
-						onClickHeader={goToTradePage}
 						childrenClassName="d-flex sidebar_hub-trade"
 						active={activePath === 'trade' || activePath === 'quick-trade'}
+						path="/trade"
 					>
-						<Button
+						<ButtonLink
 							label={STRINGS.PRO_TRADE}
 							className={classnames('sidebar_hub-button f-1', {
 								active: activePath === 'trade',
 								'not-active': activePath !== 'trade'
 							})}
-							onClick={goToTradePage}
+							link="/trade"
 						/>
 						<div className="separator" />
-						<Button
+						<ButtonLink
 							label={STRINGS.QUICK_TRADE}
 							className={classnames('sidebar_hub-button f-1', {
 								active: activePath === 'quick-trade',
 								'not-active': activePath !== 'quick-trade'
 							})}
-							onClick={goToQuickTradePage}
+							link="/quick-trade"
 						/>
 					</Section>
 				</div>
