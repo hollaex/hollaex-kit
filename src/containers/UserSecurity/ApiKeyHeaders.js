@@ -5,7 +5,7 @@ import { formatTimestamp } from '../../utils/utils';
 import ReactSVG from 'react-svg';
 import classnames from 'classnames';
 
-const NOT_REVOKED = 'pointer blue-link text-uppercase';
+const NOT_REVOKED = 'pointer blue-link';
 
 export const generateHeaders = (revokeToken, otp_enabled) => {
 	return [
@@ -63,13 +63,17 @@ export const generateHeaders = (revokeToken, otp_enabled) => {
 					key={`${key}-${id}-revoked`}
 					className={classnames(
 						'text-center',
-						revoked || !otp_enabled ? '' : NOT_REVOKED
+						revoked || !otp_enabled ? '' : NOT_REVOKED,
+						{
+							'text-uppercase': !revoked,
+							'token-no-otp': !revoked && !otp_enabled
+						}
 					)}
 					onClick={!revoked && otp_enabled ? () => revokeToken(id) : () => {}}
 				>
 					{revoked
 						? STRINGS.DEVELOPERS_TOKENS_TABLE.REVOKED
-						: otp_enabled ? STRINGS.DEVELOPERS_TOKENS_TABLE.REVOKE : ''}
+						: STRINGS.DEVELOPERS_TOKENS_TABLE.REVOKE}
 				</td>
 			)
 		}

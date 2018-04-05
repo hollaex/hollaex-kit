@@ -106,3 +106,8 @@ $svg--padding: $svg--size - $svg-small--size;
 		font-size: $font-size-subtext;
 	}
 }
+
+.token-no-otp {
+	color: $colors-deactivate-color1;
+	cursor: not-allowed !important;
+}
