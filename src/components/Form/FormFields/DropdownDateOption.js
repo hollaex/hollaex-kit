@@ -21,7 +21,7 @@ class DropdownDateOption extends Component {
 	};
 
 	renderOptions = (options) => (
-		<div className="dropdown-options-wrapper">
+		<div className="dropdown-options-wrapper dropdown-date show-scroll">
 			{options.map((option, index) => (
 				<div
 					key={index}
