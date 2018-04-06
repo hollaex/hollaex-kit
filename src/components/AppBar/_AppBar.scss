@@ -1,0 +1,63 @@
+$language-selector-arrow--size: 0.4rem;
+$app-bar--background: white;
+
+.app_bar {
+	position: relative;
+	width: 100%;
+	min-height: $navigation_bar-height;
+	height: $navigation_bar-height;
+	border-bottom: 1px solid $app_bar-border--color;
+	display: flex;
+	justify-content: space-between;
+	font-size: $navigation_bar-font_size;
+	font-weight: bold;
+	background-color: $app-bar--background;
+
+	&.no-borders {
+		border-bottom: none;
+		> div:not(:first-child) {
+			border-left: none;
+		}
+	}
+
+	> div {
+		display: flex;
+		align-items: center;
+		padding: 0 8px;
+
+		&:not(:first-child) {
+			border-left: 1px solid $app_bar-border--color;
+		}
+	}
+
+	.app_bar-icon-logo {
+		width: 4rem;
+	}
+
+	.app_bar-icon {
+		flex: 0;
+	}
+
+	.app_bar-icon {
+		width: 100%;
+	}
+
+	.app_bar-main {
+		flex-grow: 1;
+	}
+
+	.app_bar-controllers-splash {
+		padding: 0;
+
+		.action_button {
+			min-width: $navigation_bar-action_button;
+			height: 100%;
+			padding: 0 0.5rem;
+		}
+	}
+
+	.bar-logout {
+		max-height: $navigation_bar-height;
+		min-height: $navigation_bar-height;
+	}
+}

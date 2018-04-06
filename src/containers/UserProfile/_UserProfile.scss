@@ -1,0 +1,43 @@
+$information--color: $colors-deactivate-color2;
+
+.information_section {
+	font-size: $font-size-subtext;
+	color: $information--color;
+	padding: 0 0 0.5rem;
+
+	.information_svg {
+		fill: $information--color;
+	}
+	.information_change {
+		color: $colors-notifications-blue;
+		width: fit-content;
+	}
+
+	> div:not(:first-child) {
+		margin-top: 0.75rem;
+	}
+}
+
+.user_verification-form {
+	// padding-bottom: 1rem;
+}
+
+.user_verification-form_section {
+	padding-bottom: 1rem;
+}
+
+.direction_ltr {
+	.information_section {
+		.information_text-text {
+			margin-left: 0.5rem;
+		}
+	}
+}
+
+.direction_rtl {
+	.information_section {
+		.information_text-text {
+			margin-right: 0.5rem;
+		}
+	}
+}

@@ -1,0 +1,147 @@
+$notification--min-width: 30rem;
+$notification--max-width: 40rem;
+$image--margin: 1rem;
+$image--width: 10rem;
+$logout--size-difference: 3rem;
+
+.notification-wrapper {
+	min-width: $notification--min-width;
+	max-width: $notification--max-width;
+
+	.notification-title-wrapper {
+		height: 15rem;
+		padding: 0.5rem;
+		border-bottom: 1px solid $colors-main-black;
+
+		.notification-title-icon {
+			max-height: 8rem;
+			margin: 2rem 0;
+		}
+
+		.notification-title-text {
+			flex: 0;
+			text-align: center;
+			font-family: $raleway-medium--font-family;
+			font-size: $font-size-subhead3;
+		}
+	}
+
+	.notification-content-wrapper {
+		position: relative;
+		font-size: $font-size-main;
+		display: flex;
+		flex-direction: column;
+		flex: 1;
+
+		&.notification_verification {
+			text-align: center;
+			.notification-content-title {
+				text-transform: capitalize;
+				font-family: $raleway-medium--font-family;
+			}
+			.notification-content-information {
+				padding: 1rem;
+			}
+		}
+
+		&.logout-notification,
+		&.contact-form-notification {
+			text-align: center;
+
+			.notification-content-information {
+				margin: 3rem auto;
+			}
+		}
+
+		&.logout-notification {
+			.notification-content-icon {
+				width: $image--width - $logout--size-difference;
+				margin: $image--margin + $logout--size-difference auto;
+			}
+		}
+
+		&.contact-form-notification {
+			.notification-content-title {
+				font-size: $font-size-headline2;
+				text-transform: uppercase;
+				font-weight: normal;
+			}
+		}
+
+		.notification-content-icon {
+			width: $image--width;
+			max-height: $image--width;
+			margin: $image--margin auto;
+		}
+
+		.notification-content-information {
+			width: 100%;
+			margin: 1rem 0;
+			font-weight: bold;
+			.text_disabled {
+				color: $colors-deactivate-color2;
+			}
+		}
+
+		.notification-content-header {
+			position: relative;
+			font-size: $font-size-subtext;
+			font-family: $raleway-medium--font-family;
+		}
+	}
+	.notification-buttons-wrapper {
+		.button-fiat {
+			background-color: $colors-currencies-fiat;
+		}
+	}
+	.notification-information {
+		padding: 1rem 0;
+		font-size: $font-size-subtext;
+	}
+
+	.trade-notification,
+	.new-order-notification,
+	.order-notification {
+		margin: 1rem;
+		.notification-content-icon {
+			margin-top: 0;
+			margin-bottom: 2.5rem;
+		}
+		.notification-content-title {
+			margin: 1rem 0;
+		}
+	}
+
+	.notification-buttons-wrapper .exir-button {
+		font-size: $font-size-main;
+		font-weight: bold;
+	}
+
+	.with_price-block_amount {
+		font-family: $raleway-medium--font-family;
+		margin: 3rem 0 4rem;
+		line-height: 3.5rem;
+	}
+	// .new-order-notification.notification-content-wrapper {
+	// 	font-size: $font-size-subhead3;
+	// }
+}
+
+.notification-wrapper {
+	.notification-content-wrapper.notification-withdrawal {
+		.notification-content-icon {
+			width: 80% !important;
+		}
+
+		.notification-link-wrapper {
+			font-size: $font-size-subtext;
+		}
+	}
+}
+
+.direction_ltr {
+	.notification-title-text,
+	.notification-withdrawal .notification-content-title {
+		font-family: $raleway-medium--font-family;
+	}
+}

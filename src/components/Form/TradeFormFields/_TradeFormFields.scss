@@ -1,0 +1,69 @@
+$input--height: 2.5rem;
+$input--background-color: $colors-deactivate-color1;
+$input--border-color: $colors-main-black;
+$input--color: $colors-main-black;
+
+$padding: 0.25rem;
+
+.trade_input-wrapper {
+	display: flex;
+	flex-direction: column;
+	> * {
+		flex: 1;
+		position: relative;
+	}
+
+	.trade_input-label {
+		padding-bottom: 0.25rem;
+	}
+
+	.trade_input-input-wrapper {
+		position: relative;
+		> input {
+			padding: $padding;
+			position: relative;
+			width: 100%;
+			height: $input--height;
+			background: $input--background-color;
+			border: 1px solid $input--border-color;
+			border-radius: 2px;
+			color: $input--color;
+
+			&:focus {
+				outline: none;
+			}
+		}
+	}
+
+	.trade_input-input-currency {
+		@include size($input--height);
+		position: absolute;
+		top: 0;
+		font-weight: bold;
+		color: $input--border-color;
+	}
+}
+
+.direction_ltr {
+	.trade_input-input-wrapper {
+		> input {
+			padding-right: $input--height;
+		}
+	}
+
+	.trade_input-input-currency {
+		right: 0;
+	}
+}
+
+.direction_rtl {
+	.trade_input-input-wrapper {
+		> input {
+			padding-left: $input--height;
+		}
+	}
+
+	.trade_input-input-currency {
+		left: 0;
+	}
+}

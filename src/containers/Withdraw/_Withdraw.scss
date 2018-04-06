@@ -1,0 +1,62 @@
+$crypto-address--padding: 0.25rem;
+$arrow-size: 4px;
+$arrow-color: $colors-main-black;
+$content--margin: 2rem;
+
+.review-wrapper {
+	.review-icon {
+		@include size(8rem);
+		margin: 0 auto;
+	}
+
+	.review-info_container {
+		margin: $content--margin;
+	}
+
+	.review-crypto-amount {
+		font-size: $font-size-subhead2;
+		border-bottom: 1px solid $colors-main-black;
+		text-align: center;
+		.review-fee_message {
+			font-size: $font-size-main;
+		}
+	}
+
+	.review-warning_arrow {
+		position: relative;
+		width: 1px;
+		height: 3rem;
+		background-color: $arrow-color;
+		&:after {
+			content: '';
+			position: absolute;
+			height: 0;
+			width: 0;
+			bottom: 0;
+			left: calc(50% - #{$arrow-size});
+			border-left: $arrow-size solid transparent;
+			border-right: $arrow-size solid transparent;
+			border-top: $arrow-size * 2 solid $arrow-color;
+		}
+	}
+
+	.review-crypto-address {
+		font-size: $font-size-subhead2;
+		border: 1px solid $colors-deactivate-color2;
+		padding: $crypto-address--padding $crypto-address--padding * 4;
+	}
+
+	.review-info_message {
+		padding: 0.5rem;
+		font-size: $font-size-subtext;
+		font-weight: bold;
+	}
+
+	.button-separator {
+		width: 2rem;
+	}
+}
+
+.bank_account-information-wrapper {
+	margin: $content--margin 0;
+}

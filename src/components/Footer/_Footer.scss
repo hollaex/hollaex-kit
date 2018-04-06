@@ -1,0 +1,121 @@
+$footer-wrapper--margin-top: 4rem;
+$footer-wrapper--margin: 1rem;
+$footer-wrapper--margin-bottom: $footer-wrapper--margin * 2;
+$footer-wrapper--border-color: $colors-deactivate-color2;
+$footer-social-icon--dimension: 2rem;
+$footer-icons--side-margin: 1.5rem;
+$footer--background-color: white;
+
+.footer-container {
+	padding: $footer-wrapper--margin-top $footer-wrapper--margin
+		$footer-wrapper--margin;
+	border-top: 1px solid $footer-wrapper--border-color;
+	font-size: $font-size-subtext;
+	background: $footer--background-color;
+
+	.footer-row-content {
+		margin-bottom: $footer-wrapper--margin-bottom;
+
+		.footer-links-section {
+			.footer-links-group {
+				margin: 0 $footer-wrapper--margin;
+
+				.footer-links-section--title {
+					font-weight: bold;
+					margin-bottom: 0.25rem;
+					text-transform: uppercase;
+				}
+
+				.footer-links-section--list {
+				}
+			}
+		}
+
+		.footer-public-texts {
+			.footer-public-texts-text {
+				line-height: $font-size-subtext * 2;
+				font-weight: bold;
+			}
+		}
+		.footer-public-links {
+			justify-content: flex-end;
+			align-items: center;
+			margin-top: $footer-wrapper--margin;
+
+			.footer-public-links-icon {
+				@include size($footer-social-icon--dimension);
+				margin: 0 $footer-icons--side-margin;
+			}
+		}
+	}
+
+	.footer-row-bottom {
+		.footer-row-language {
+			padding-left: 0.25rem;
+			&.active {
+				font-weight: bold;
+			}
+		}
+	}
+}
+
+.direction_ltr {
+	.footer-container {
+		.footer-row-content {
+			.footer-public-texts {
+				text-align: right;
+			}
+
+			.footer-public-links {
+				&:first-child .footer-public-links-icon {
+					margin-left: 0;
+				}
+
+				&:last-child .footer-public-links-icon {
+					margin-right: 0;
+				}
+			}
+		}
+	}
+}
+
+.direction_rtl {
+	.footer-container {
+		.footer-row-content {
+			.footer-public-texts {
+				text-align: left;
+			}
+
+			.footer-public-links {
+				&:first-child .footer-public-links-icon {
+					margin-right: 0;
+				}
+
+				&:last-child .footer-public-links-icon {
+					margin-left: 0;
+				}
+			}
+		}
+	}
+}
+
+@media screen and (max-width: $bp-md) {
+	.footer-container {
+		.footer-row-content {
+			flex-direction: column;
+			> div:not(:last-child) {
+				margin-bottom: $footer-wrapper--margin-bottom;
+			}
+
+			.footer-public-texts {
+				text-align: center !important;
+			}
+			.footer-public-links {
+				justify-content: center;
+				.footer-public-links-icon {
+					margin: 0 $footer-icons--side-margin !important;
+				}
+			}
+		}
+	}
+}

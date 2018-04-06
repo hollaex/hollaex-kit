@@ -1,0 +1,70 @@
+$dialog--padding: 2.5rem;
+$close-button--margin: 1.5rem;
+
+.ReactModal__Overlay {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.ReactModal__Content {
+	padding: $dialog--padding !important;
+	top: auto !important;
+	bottom: auto !important;
+	left: auto !important;
+	right: auto !important;
+	max-width: calc(100% - #{$dialog--padding});
+	max-height: calc(100% - #{$dialog--padding});
+	overflow: auto;
+	border: none !important;
+
+	.action_notification-wrapper.close-button {
+		margin-top: $close-button--margin;
+	}
+}
+
+.close-button {
+	&.action_notification-wrapper {
+		.action_notification-image {
+			@include size(2rem);
+			fill: $colors-main-black;
+		}
+	}
+}
+
+.success_display-wrapper {
+	min-width: $dialog-min-width;
+	min-height: $dialog-min-height;
+	> * {
+		flex: 0;
+	}
+}
+
+.success_display-content {
+	height: auto;
+	flex: 1;
+}
+
+.success_display-content-image {
+	width: 7.5rem;
+}
+
+.success_display-content-text {
+	margin: 1rem 0;
+}
+
+.direction_ltr {
+	.ReactModal__Content {
+		.action_notification-wrapper.close-button {
+			margin-right: $close-button--margin;
+		}
+	}
+}
+
+.direction_rtl {
+	.ReactModal__Content {
+		.action_notification-wrapper.close-button {
+			margin-left: $close-button--margin;
+		}
+	}
+}
