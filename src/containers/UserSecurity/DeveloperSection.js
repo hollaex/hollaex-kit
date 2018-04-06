@@ -3,6 +3,7 @@ import { MIN_LEVEL_FOR_TOKENS } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 import { FieldError } from '../../components/Form/FormFields/FieldWrapper';
 import ApiKeyContainer from './ApiKey';
+import DumbField from '../../components/Form/FormFields/DumbField';
 
 const NoLevel = () => (
 	<div className="mt-4 mb-4 apply_rtl">
@@ -41,11 +42,41 @@ export const OtpEnabled = ({ fetching, openDialog }) => (
 export const PopupInfo = ({ type }) => {
 	return (
 		<div className="popup_info-wrapper mb-4">
-			<div className="popup_info-title pb-1">{STRINGS.DEVELOPERS_TOKENS_POPUP[`${type.toUpperCase()}_TITLE`]}</div>
-			<div className="popup_info-text mt-2">{STRINGS.DEVELOPERS_TOKENS_POPUP[`${type.toUpperCase()}_TEXT`]}</div>
+			<div className="popup_info-title pb-1">
+				{STRINGS.DEVELOPERS_TOKENS_POPUP[`${type.toUpperCase()}_TITLE`]}
+			</div>
+			<div className="popup_info-text mt-2">
+				{STRINGS.DEVELOPERS_TOKENS_POPUP[`${type.toUpperCase()}_TEXT`]}
+			</div>
 		</div>
-	)
-}
+	);
+};
+
+export const TokenCreatedInfo = ({ token }) => {
+	const props = {
+		label: STRINGS.DEVELOPERS_TOKENS_POPUP.API_KEY_LABEL,
+		className: 'token-value-input',
+		value: token,
+		fullWidth: true,
+		allowCopy: true
+	};
+	return (
+		<div className="popup_info-wrapper mb-4">
+			<div className="popup_info-title pb-1">
+				{STRINGS.DEVELOPERS_TOKENS_POPUP.CREATED_TITLE}
+			</div>
+			<div className="popup_info-text mt-2">
+				{STRINGS.DEVELOPERS_TOKENS_POPUP.CREATED_TEXT_1}
+				<br />
+				{STRINGS.DEVELOPERS_TOKENS_POPUP.CREATED_TEXT_2}
+			</div>
+			<div className="mt-4">
+				<DumbField {...props} />
+			</div>
+		</div>
+	);
+};
+
 export const DeveloperSection = ({ verification_level, ...rest }) => {
 	let content;
 	if (verification_level < MIN_LEVEL_FOR_TOKENS) {

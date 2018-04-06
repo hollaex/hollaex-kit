@@ -111,3 +111,14 @@ $svg--padding: $svg--size - $svg-small--size;
 	color: $colors-deactivate-color1;
 	cursor: not-allowed !important;
 }
+
+.dumb-field-wrapper.token-value-input {
+	.copy-wrapper {
+		top: calc(50% - 0.5rem);
+	}
+
+	.custom {
+		word-break: break-all;
+		padding-right: 4rem;
+	}
+}

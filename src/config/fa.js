@@ -767,7 +767,11 @@ export default {
 		DELETE_TEXT: 'Deleting your API key is ireversalable although you can generate a new API key at anytime. Do you want to delete your API key?',
 		DELETE: 'DELETE',
 		FORM_NAME_LABEL: 'Name',
-		FORM_LABLE_PLACEHOLDER: 'Name for the Api Key'
+		FORM_LABLE_PLACEHOLDER: 'Name for the Api Key',
+		API_KEY_LABEL: 'API Key',
+		CREATED_TITLE: 'Copy your API Key',
+		CREATED_TEXT_1: 'Please copy your API key as it will be unattainable in the future.',
+		CREATED_TEXT_2: 'Keep your key private.'
 	},
 	DEVELOPERS_TOKENS_TABLE: { // TODO
 		NAME: 'Name',

@@ -9,7 +9,7 @@ import Verification from './Verification';
 import Logout from './Logout';
 import ContactForm from './ContactForm';
 import NewOrder from './NewOrder';
-import GenerateApiKey from './GenerateApiKey';
+import { GenerateApiKey, CreatedApiKey } from './GenerateApiKey';
 
 const generateNotificationContent = ({ type, data, ...rest }) => {
 	// console.log(type, data);
@@ -32,6 +32,8 @@ const generateNotificationContent = ({ type, data, ...rest }) => {
 			return <NewOrder data={data} {...rest} />;
 		case NOTIFICATIONS.GENERATE_API_KEY:
 			return <GenerateApiKey data={data} {...rest} />;
+		case NOTIFICATIONS.CREATED_API_KEY:
+			return <CreatedApiKey data={data} {...rest} />;
 		default:
 			break;
 	}

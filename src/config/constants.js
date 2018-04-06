@@ -257,6 +257,7 @@ export const ICONS = {
 	TOKEN_ACTIVE: `${process.env.PUBLIC_URL}/assets/images/api-key-active.svg`,
 	TOKEN_TRASHED: `${process.env.PUBLIC_URL}/assets/images/api-key-trashed.svg`,
 	TOKEN_GENERATE: `${process.env.PUBLIC_URL}/assets/images/api-key-generate.svg`,
+	TOKEN_CREATED: `${process.env.PUBLIC_URL}/assets/images/api-key-created.svg`,
 	CHECK_ORDER: `${process.env.PUBLIC_URL}/assets/images/check-order.svg`
 };
 

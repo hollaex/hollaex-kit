@@ -4,7 +4,7 @@ import { OtpForm, Loader, Notification } from '../../components';
 import { NOTIFICATIONS } from '../../actions/appActions';
 import STRINGS from '../../config/localizedStrings';
 import { ICONS } from '../../config/constants';
-import { PopupInfo } from './DeveloperSection';
+import { PopupInfo, TokenCreatedInfo } from './DeveloperSection';
 import { formValueSelector } from 'redux-form';
 import { TokenForm, generateFormValues, FORM_NAME } from './ApiKeyForm';
 import { tokenKeyValidation } from '../../components/Form/validations';
@@ -16,7 +16,8 @@ class ApiKeyModal extends Component {
 	state = {
 		dialogOtpOpen: false,
 		loading: false,
-		tokenName: ''
+		tokenName: '',
+		tokenKey: ''
 	};
 
 	componentWillReceiveProps(nextProps) {
@@ -28,6 +29,9 @@ class ApiKeyModal extends Component {
 		}
 	}
 
+	setTokenKey = (tokenKey) => {
+		this.setState({ tokenKey });
+	};
 	setTokenName = (tokenName) => {
 		this.setState({ tokenName });
 	};
@@ -43,20 +47,33 @@ class ApiKeyModal extends Component {
 			this.props.notificationType === TYPE_REVOKE
 				? this.props.onRevoke
 				: this.props.onGenerate;
-		return submit(otp_code, tokenName);
+		return submit(otp_code, tokenName).then((tokenKey) => {
+			this.setState({ tokenKey, dialogOtpOpen: false, loading: false });
+		});
 	};
 
 	onCloseDialog = () => {
 		this.props.onCloseDialog();
 	};
+
 	render() {
-		const { dialogOtpOpen, loading, tokenName } = this.state;
+		const { dialogOtpOpen, loading, tokenName, tokenKey } = this.state;
 		const { notificationType, openContactForm } = this.props;
-		console.log(tokenName, this.props);
+
 		if (dialogOtpOpen) {
 			return <OtpForm onSubmit={this.onSubmit} onClickHelp={openContactForm} />;
 		} else if (loading) {
 			return <Loader relative={true} background={false} />;
+		} else if (tokenKey) {
+			return (
+				<Notification
+					icon={ICONS.TOKEN_CREATED}
+					onClose={this.onCloseDialog}
+					type={NOTIFICATIONS.CREATED_API_KEY}
+				>
+					<TokenCreatedInfo token={tokenKey} />
+				</Notification>
+			);
 		} else {
 			const icon =
 				notificationType === TYPE_REVOKE

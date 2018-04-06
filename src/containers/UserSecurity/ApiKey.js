@@ -66,7 +66,7 @@ class ApiKey extends Component {
 		return generateToken({ otp_code, name })
 			.then(({ data }) => {
 				this.props.tokenGenerated(data);
-				this.onCloseDialog();
+				return data.token;
 			})
 			.catch(errorHandler);
 	};
