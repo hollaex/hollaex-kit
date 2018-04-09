@@ -119,6 +119,21 @@ $svg--padding: $svg--size - $svg-small--size;
 
 	.custom {
 		word-break: break-all;
-		padding-right: 4rem;
+	}
+}
+
+$padding-input: 4rem;
+.direction_ltr {
+	.dumb-field-wrapper.token-value-input {
+		.custom {
+			padding-right: $padding-input;
+		}
+	}
+}
+.direction_rtl {
+	.dumb-field-wrapper.token-value-input {
+		.custom {
+			padding-left: $padding-input;
+		}
 	}
 }
