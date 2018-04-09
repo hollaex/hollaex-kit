@@ -55,7 +55,7 @@ class Form extends Component {
 				/>
 				<div className="otp_form-title-wrapper">
 					<span className="otp_form-title-text">
-						Enter your authentication code to continue
+						{STRINGS.OTP_FORM.OTP_FORM_TITLE}
 					</span>
 					{onClickHelp && (
 						<ActionNotification

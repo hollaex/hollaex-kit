@@ -226,6 +226,7 @@ export default {
 		}
 	},
 	OTP_FORM: {
+		OTP_FORM_TITLE: 'Enter your authentication code to continue',
 		OTP_LABEL: 'OTP Code',
 		OTP_PLACEHOLDER: 'Enter the authentication code',
 		OTP_TITLE: 'Authenticator Code',

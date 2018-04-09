@@ -225,6 +225,7 @@ export default {
 		}
 	},
 	OTP_FORM: {
+		OTP_FORM_TITLE: 'لطفا کد احراز هویت دو عامل خود را وارد کنید',
 		OTP_LABEL: 'کد OTP',
 		OTP_PLACEHOLDER: 'کد تأیید را وارد کنید',
 		OTP_TITLE: 'کد تأیید',
@@ -769,7 +770,7 @@ export default {
 		FORM_NAME_LABEL: 'نام',
 		FORM_LABLE_PLACEHOLDER: 'نام کلید',
 		API_KEY_LABEL: 'کاید API',
-		CREATED_TITLE: 'رونوشت',
+		CREATED_TITLE: 'کپی کلید API',
 		CREATED_TEXT_1: 'لطفا کلید خود را در جایی امن نگه داری کنید زیرا کلید در آینده قابل دسترس نخواهد بود.',
 		CREATED_TEXT_2: 'کلید خود را در جایی امن نگه داری کنید.'
 	},
