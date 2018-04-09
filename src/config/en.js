@@ -764,7 +764,7 @@ export default {
 	DEVELOPER_SECTION: {
 		TITLE: 'API Key',
 		INFORMATION_TEXT: 'The API provides functionality such as getting wallet balances, managing buy/sell orders, requesting withdrawals as well as market data such as recent trades, order book and ticker.',
-		ERROR_INACTIVE_OTP: 'To generate an API key it is a requirement that you enable 2-factor authentication.',
+		ERROR_INACTIVE_OTP: 'To generate an API key you need to enable 2-factor authentication.',
 		ENABLE_2FA: 'Enable 2FA',
 		WARNING_TEXT: 'Do not share your API key with others.',
 		GENERATE_KEY: 'Generate API Key',
@@ -774,7 +774,7 @@ export default {
 	},
 	DEVELOPERS_TOKENS_POPUP: {
 		GENERATE_TITLE: 'Generate API Key',
-		GENERATE_TEXT: 'Please name your API key and once you’ve generated you key please keep it private',
+		GENERATE_TEXT: 'Please name your API key and keep it in private after its generated. You wont be able to retrieve it again later.',
 		GENERATE: 'Generate',
 		DELETE_TITLE: 'Delete API Key',
 		DELETE_TEXT: 'Deleting your API key is ireversalable although you can generate a new API key at anytime. Do you want to delete your API key?',
