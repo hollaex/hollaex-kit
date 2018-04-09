@@ -4,23 +4,15 @@ import { NotificationsList, SidebarHub } from '../';
 import { Logout, Help } from './rows';
 
 const Sidebar = ({
-	goToWalletPage,
-	goToTradePage,
 	active,
 	activePath,
 	logout,
 	help,
 	notifications,
 	symbol,
-	changeSymbol,
-	goToAccountPage,
-	goToQuickTradePage
+	changeSymbol
 }) => {
 	const sidebarHubProps = {
-		goToQuickTradePage,
-		goToWalletPage,
-		goToTradePage,
-		goToAccountPage,
 		activePath,
 		currency: symbol,
 		changeCurrency: changeSymbol

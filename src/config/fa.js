@@ -225,6 +225,7 @@ export default {
 		}
 	},
 	OTP_FORM: {
+		OTP_FORM_TITLE: 'لطفا کد احراز هویت دو عامل خود را وارد کنید',
 		OTP_LABEL: 'کد OTP',
 		OTP_PLACEHOLDER: 'کد تأیید را وارد کنید',
 		OTP_TITLE: 'کد تأیید',
@@ -744,7 +745,41 @@ export default {
 	],
 	SETTING_BUTTON: 'ذخیره',
 	STRING_WITH_PARENTHESIS: '{0} ({1})',
-	VERIFICATION_NO_WITHDRAW_TITLE: 'Withdrawals disabled', // TODO
+	VERIFICATION_NO_WITHDRAW_TITLE: 'برداشت فعال نیست',
 	VERIFICATION_NO_WITHDRAW_MESSAGE:
-		'Your account is disabled for withdrawals' // TODO
+		'برداشت از حساب شما امکان پذیر نیست.',
+	UP_TO_MARKET: 'مطابق بازار',
+	DEVELOPER_SECTION: {
+		TITLE: 'برنامه نویسان',
+		INFORMATION_TEXT: 'API امکاناتی از قبیل دسترسی به کیف پول و موجودی، مدیریت سفارشات و خرید و فروش ها، درخواست برداشت و همچنین اطلاعات بازار از جمله آخرین مبدلات، بازار و قیمت لحظه‌ای را فراهم می‌کند',
+		ERROR_INACTIVE_OTP: 'برای ساختن کلید API شما باید هویت دو عامل را فعال کنید.',
+		ENABLE_2FA: 'فعال سازی احراز هویت دو عامل',
+		WARNING_TEXT: 'کلید خود را با دیگران به اشتراک نگذارید',
+		GENERATE_KEY: 'کلید API خود را بسازید',
+		ACTIVE: 'فعال',
+		INACTIVE: 'غیر فعال',
+		INVALID_LEVEL: 'شما نیاز به داشتن سطح کاربری بالاتر برای دسترسی به این سرویس دارید.'
+	},
+	DEVELOPERS_TOKENS_POPUP: {
+		GENERATE_TITLE: 'ساخت کلید',
+		GENERATE_TEXT: 'لطفا نام کلید API خود را تعیین کنید و پس از ایجاد آن ، در حفظ و نگهداری آن کوشا باشید و آن را در اختیار کسی قرار ندهید. در نظر داشته باشید شما نمی توانید کلید API خود را بازیابی نمایید.',
+		GENERATE: 'ساخت',
+		DELETE_TITLE: 'حذف کلید',
+		DELETE_TEXT: 'آیا مطمئن هستید که میخواهید کلید API خود را پاک کنید؟ (توجه داشته باشید اگر کلید API خود را پاک نمایید ، غیر قابل بازیابی خواهد بود . گرچه هر زمان که بخواهید می توانید یک کلید جدیدایجاد کنید.)',
+		DELETE: 'حذف',
+		FORM_NAME_LABEL: 'نام',
+		FORM_LABLE_PLACEHOLDER: 'نام کلید',
+		API_KEY_LABEL: 'کاید API',
+		CREATED_TITLE: 'کپی کلید API',
+		CREATED_TEXT_1: 'لطفا کلید خود را در جایی امن نگه داری کنید زیرا کلید در آینده قابل دسترس نخواهد بود.',
+		CREATED_TEXT_2: 'کلید خود را در جایی امن نگه داری کنید.'
+	},
+	DEVELOPERS_TOKENS_TABLE: {
+		NAME: 'نام',
+		API_KEY: 'کاید API',
+		CREATED: 'تاریخ ساخت',
+		REVOKE: 'لغو کردن',
+		REVOKED: 'لغو شده',
+		REVOKE_TOOLTIP: 'شما باید احراز هویت دو عامل خود را برای لغو کلید فعال کنید.'
+	}
 };

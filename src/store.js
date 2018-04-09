@@ -3,7 +3,7 @@ import logger from 'redux-logger';
 import thunk from 'redux-thunk';
 import promise from 'redux-promise-middleware';
 import { autoRehydrate } from 'redux-persist';
-
+import { ENV } from './config/constants';
 import reducer from './reducers/reducer';
 
 import { ENV } from './config/constants';

@@ -2,7 +2,12 @@ import React from 'react';
 import { Router, Route, browserHistory } from 'react-router';
 import ReactGA from 'react-ga';
 
-import { NETWORK,IS_PRO_VERSION, PRO_VERSION_REDIRECT, DEFAULT_VERSION_REDIRECT } from './config/constants';
+import {
+	NETWORK,
+	IS_PRO_VERSION,
+	PRO_VERSION_REDIRECT,
+	DEFAULT_VERSION_REDIRECT
+} from './config/constants';
 
 import {
 	App as Container,
@@ -88,7 +93,9 @@ const logOutUser = () => {
 };
 
 const NotFound = ({ router }) => {
-	router.replace(IS_PRO_VERSION ? PRO_VERSION_REDIRECT : DEFAULT_VERSION_REDIRECT);
+	router.replace(
+		IS_PRO_VERSION ? PRO_VERSION_REDIRECT : DEFAULT_VERSION_REDIRECT
+	);
 	return <div />;
 };
 
@@ -104,16 +111,8 @@ export default (
 	<Router history={browserHistory}>
 		{!IS_PRO_VERSION && <Route path="/" name="Home" component={Home} />}
 		<Route component={AuthContainer} {...noAuthRoutesCommonProps}>
-			<Route
-				path="login"
-				name="Login"
-				component={Login}
-			/>
-			<Route
-				path="signup"
-				name="signup"
-				component={Signup}
-			/>
+			<Route path="login" name="Login" component={Login} />
+			<Route path="signup" name="signup" component={Signup} />
 		</Route>
 		<Route component={AuthContainer} {...noLoggedUserCommonProps}>
 			<Route
@@ -126,11 +125,7 @@ export default (
 				name="Reset Password"
 				component={ResetPassword}
 			/>
-			<Route
-				path="verify"
-				name="Verify"
-				component={VerificationEmailRequest}
-			/>
+			<Route path="verify" name="Verify" component={VerificationEmailRequest} />
 			<Route
 				path="verify/:code"
 				name="verifyCode"
@@ -139,6 +134,9 @@ export default (
 		</Route>
 		<Route component={Container} onEnter={requireAuth}>
 			<Route path="account" name="Account" component={Account} />
+			<Route path="security" name="Security" component={Account} />
+			<Route path="developers" name="Developers" component={Account} />
+			<Route path="settings" name="Settings" component={Account} />
 			<Route path="wallet" name="Wallet" component={Wallet} />
 			<Route path="withdraw" name="Withdraw" component={Withdraw} />
 			<Route path="deposit" name="Deposit" component={Deposit} />

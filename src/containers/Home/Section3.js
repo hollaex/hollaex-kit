@@ -1,7 +1,8 @@
 import React from 'react';
 import classnames from 'classnames';
-import STRINGS from '../../config/localizedStrings';
 import ReactSVG from 'react-svg';
+import { Link } from 'react-router';
+import STRINGS from '../../config/localizedStrings';
 
 import { FLEX_CENTER_CLASSES, FEATURES_ICONS } from '../../config/constants';
 
@@ -63,7 +64,7 @@ const Card = ({ icon, title, text }) => (
 	</div>
 );
 
-const Section = ({ style, onClickDemo, onClickRegister, token }) => (
+const Section = ({ style, onClickDemo, token }) => (
 	<div
 		className={classnames(
 			...FLEX_CENTER_CLASSES,

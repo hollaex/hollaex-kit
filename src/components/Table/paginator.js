@@ -4,9 +4,6 @@ import { ActionNotification } from '../';
 import { ICONS } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 
-const TEXT_PREVIOUS_PAGE = STRINGS.PREVIOUS_PAGE;
-const TEXT_NEXT_PAGE = STRINGS.NEXT_PAGE;
-
 const renderPageCount = (currentPage, totalPages) => {
 	if (totalPages > 0) {
 		return (
@@ -41,7 +38,7 @@ const Paginator = ({
 				})}
 			>
 				<ActionNotification
-					text={TEXT_PREVIOUS_PAGE}
+					text={STRINGS.PREVIOUS_PAGE}
 					status="information"
 					iconPath={ICONS.BLUE_ARROW_RIGHT}
 					textPosition="left"
@@ -58,7 +55,7 @@ const Paginator = ({
 				})}
 			>
 				<ActionNotification
-					text={TEXT_NEXT_PAGE}
+					text={STRINGS.NEXT_PAGE}
 					status="information"
 					iconPath={ICONS.BLUE_ARROW_RIGHT}
 					rotateIfRtl={true}

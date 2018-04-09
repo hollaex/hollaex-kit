@@ -2,7 +2,7 @@ import React from 'react';
 import classnames from 'classnames';
 
 const DisplayTable = (props) => {
-	const { headers, data } = props;
+	const { headers, data, rowClassName } = props;
 
 	return (
 		<div
@@ -14,8 +14,8 @@ const DisplayTable = (props) => {
 			)}
 		>
 			<div className={classnames('display_table-header', 'd-flex')}>
-				{headers.map(({ label }, index) => (
-					<div key={index} className="display_table-cell f-1">
+				{headers.map(({ label, className = '' }, index) => (
+					<div key={index} className={classnames('display_table-cell f-1', className)}>
 						{label}
 					</div>
 				))}
@@ -30,11 +30,11 @@ const DisplayTable = (props) => {
 			>
 				{data.map((row, rowIndex) => {
 					return (
-						<div key={rowIndex} className="display_table-cell d-flex">
-							{headers.map(({ key, renderCell }, cellIndex) => (
+						<div key={rowIndex} className={classnames('display_table-cell d-flex', rowClassName)}>
+							{headers.map(({ key, renderCell, className }, cellIndex) => (
 								<div
 									key={`${rowIndex}-${cellIndex}`}
-									className="f-1 text_overflow"
+									className={classnames('f-1 text_overflow', className)}
 								>
 									{renderCell(row, `${rowIndex}-${cellIndex}`)}
 								</div>

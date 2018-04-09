@@ -5,6 +5,8 @@ $close-button--margin: 1.5rem;
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	z-index: 100 !important;
+	background-color: rgba(221, 221, 221, 0.75) !important;
 }
 
 .ReactModal__Content {
@@ -66,5 +68,11 @@ $close-button--margin: 1.5rem;
 		.action_notification-wrapper.close-button {
 			margin-left: $close-button--margin;
 		}
+	}
+}
+
+.app-dialog {
+	.ReactModal__Overlay {
+		z-index: 110 !important;
 	}
 }

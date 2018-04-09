@@ -115,7 +115,6 @@ class Home extends Component {
 						}}
 						onClickScrollTo={this.onClickScrollTo(INFORMATION_INDEX)}
 						onClickLearnMore={this.onClickScrollTo(INFORMATION_INDEX)}
-						onClickRegister={this.goTo('signup')}
 						token={token}
 					/>
 					{/*<Section2
@@ -127,7 +126,6 @@ class Home extends Component {
 					/>*/}
 					<Section3
 						style={style}
-						onClickRegister={this.goTo('signup')}
 						token={token}
 						onClickDemo={this.goTo('login')}
 					/>

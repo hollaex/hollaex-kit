@@ -10,7 +10,6 @@ const BUTTONS_CLASSES = ['buttons-section--button', ...FLEX_CENTER_CLASSES];
 const Section1 = ({
 	style = {},
 	onClickScrollTo = () => {},
-	onClickRegister,
 	onClickLearnMore,
 	token
 }) => (

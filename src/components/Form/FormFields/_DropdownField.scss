@@ -1,4 +1,5 @@
 $dropdown-menu--max-height: 10rem;
+$dropdown-menu-date--max-height: 15rem;
 $dropdown-menu--border-radius: 0.25rem;
 
 $dropdown-option--height: 1rem;
@@ -24,7 +25,6 @@ $dropdown-option--padding: 0.25rem;
 }
 
 .dropdown-options-wrapper {
-	max-height: 10rem;
 	position: absolute;
 	top: 100%;
 	width: 100%;
@@ -36,6 +36,9 @@ $dropdown-option--padding: 0.25rem;
 	border-bottom-right-radius: $dropdown-menu--border-radius;
 	border-bottom-left-radius: $dropdown-menu--border-radius;
 	border-top: 0;
+	&.dropdown-date {
+		max-height: $dropdown-menu-date--max-height;
+	}
 }
 
 .dropdown-option {

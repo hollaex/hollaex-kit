@@ -331,9 +331,6 @@ class Container extends Component {
 
 	goToAccountPage = () => this.goToPage('/account');
 	goToVerificationPage = () => this.goToPage('/verification');
-	goToWalletPage = () => this.goToPage('/wallet');
-	goToTradePage = () => this.goToPage('/trade');
-	goToQuickTradePage = () => this.goToPage('/quick-trade');
 	goToDashboard = () => this.goToPage('/');
 
 	logout = (message = '') => {
@@ -356,6 +353,9 @@ class Container extends Component {
 			case '/wallet':
 				return 'wallet';
 			case '/account':
+			case '/developers':
+			case '/security':
+			case '/settings':
 				return 'account';
 			case '/quick-trade':
 				return 'quick-trade';
@@ -485,10 +485,6 @@ class Container extends Component {
 				<div className="app_container-sidebar">
 					<Sidebar
 						activePath={activePath}
-						goToAccountPage={this.goToAccountPage}
-						goToWalletPage={this.goToWalletPage}
-						goToTradePage={this.goToTradePage}
-						goToQuickTradePage={this.goToQuickTradePage}
 						logout={this.logout}
 						notifications={notifications}
 						changeSymbol={changeSymbol}
@@ -499,6 +495,7 @@ class Container extends Component {
 				<Dialog
 					isOpen={dialogIsOpen}
 					label="hollaex-modal"
+					className="app-dialog"
 					onCloseDialog={this.onCloseDialog}
 					shouldCloseOnOverlayClick={shouldCloseOnOverlayClick}
 					showCloseText={

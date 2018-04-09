@@ -7,16 +7,20 @@
 	// justify-content: center;
 	align-items: center;
 
-	.info {
+	.notification-info {
 		color: $colors-notifications-blue;
 	}
 
-	.warning {
+	.notification-warning {
 		color: $colors-notifications-red;
 	}
 
-	.success {
+	.notification-success {
 		color: $colors-notifications-green;
+	}
+
+	.notification-disabled {
+		color: $colors-deactivate;
 	}
 
 	.relative {

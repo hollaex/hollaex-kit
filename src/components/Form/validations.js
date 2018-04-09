@@ -106,7 +106,7 @@ export const evaluateOrder = (
 		}
 	}
 
-	if ((available === 0 && orderPrice > 0) || available < orderPrice) {
+	if (available < orderPrice) {
 		return STRINGS.VALIDATIONS.INSUFFICIENT_BALANCE;
 	}
 	return '';
@@ -147,6 +147,8 @@ export const checkMarketPrice = (
 
 	if (type === 'limit' && math.larger(remaining, 0)) {
 		accumulated = math.add(accumulated, math.multiply(remaining, orderPrice));
+	} if (type === 'market' && math.larger(remaining, 0)) {
+		return -roundNumber(accumulated)
 	}
 	return roundNumber(accumulated);
 };
@@ -179,3 +181,5 @@ export const validateOtp = (message = STRINGS.OTP_FORM.ERROR_INVALID) => (
 };
 
 export const normalizeEmail = (value = '') => value.toLowerCase();
+
+export const tokenKeyValidation = required;

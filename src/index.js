@@ -12,6 +12,7 @@ import 'react-dates/lib/css/_datepicker.css';
 import store from './store';
 import routes from './routes';
 import './index.css';
+import '../node_modules/rc-tooltip/assets/bootstrap_white.css'; // eslint-disable-line
 
 // import registerServiceWorker from './registerServiceWorker'
 import { version, name } from '../package.json';

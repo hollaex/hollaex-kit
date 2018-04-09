@@ -150,7 +150,7 @@ export const generateTradeHeaders = () => {
 			exportToCsv: ({ fee = 0, price = 0, size = 0, quick }) =>
 				calculateFeeAmount(fee, quick, price, size),
 			renderCell: ({ fee, price, size, quick }, key, index) => {
-				if (fee === 0) {
+				if (!fee) {
 					return <td key={index}> {calculateFeeAmount(fee)}</td>;
 				}
 				return (
