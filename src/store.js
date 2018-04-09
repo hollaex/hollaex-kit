@@ -6,8 +6,6 @@ import { autoRehydrate } from 'redux-persist';
 import { ENV } from './config/constants';
 import reducer from './reducers/reducer';
 
-import { ENV } from './config/constants';
-
 const middlewares = [promise(), thunk];
 
 if (ENV === 'development') {

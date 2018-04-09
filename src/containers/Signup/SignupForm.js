@@ -55,11 +55,11 @@ export const generateFormFields = (strings) => ({
 		label: strings.formatString(
 			strings.SIGN_UP.TERMS.text,
 			<BlueLink
-				href="https://www.exir.io/terms_privacy/"
+				href="https://www.hollaex.com/terms_privacy/"
 				text={strings.SIGN_UP.TERMS.terms}
 			/>,
 			<BlueLink
-				href="https://www.exir.io/terms_privacy/"
+				href="https://www.hollaex.com/terms_privacy/"
 				text={strings.SIGN_UP.TERMS.policy}
 			/>
 		)

@@ -382,6 +382,6 @@ export const CAPTCHA_TIMEOUT = process.env.REACT_APP_CAPTCHA_TIMEOUT ? parseInt(
 export const IS_PRO_VERSION = process.env.REACT_APP_IS_PRO_VERSION && process.env.REACT_APP_IS_PRO_VERSION === 'true';
 export const PRO_VERSION_REDIRECT = process.env.REACT_APP_PRO_VERSION_REDIRECT || '/account';
 export const DEFAULT_VERSION_REDIRECT = process.env.REACT_APP_DEFAULT_VERSION_REDIRECT || '/';
-export const PRO_URL = process.env.REACT_APP_PRO_URL || 'https://exir.io';
+export const PRO_URL = process.env.REACT_APP_PRO_URL || 'https://hollaex.com';
 
 export const MIN_LEVEL_FOR_TOKENS = parseInt(process.env.REACT_APP_MIN_LEVEL_FOR_TOKENS || 2, 10)
