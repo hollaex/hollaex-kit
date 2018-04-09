@@ -4,11 +4,13 @@ import classnames from 'classnames';
 const getClassNames = (status) => {
 	switch (status) {
 		case 'success':
-			return 'success';
+			return 'notification-success';
 		case 'warning':
-			return 'warning';
+			return 'notification-warning';
 		case 'information':
-			return 'info';
+			return 'notification-info';
+		case 'disabled':
+			return 'notification-disabled';
 		default:
 			return '';
 	}

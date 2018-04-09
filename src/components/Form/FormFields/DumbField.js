@@ -1,4 +1,5 @@
 import React from 'react';
+import classnames from 'classnames';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import FieldWrapper, { FieldContent } from './FieldWrapper';
 import { ActionNotification } from '../../';
@@ -18,14 +19,23 @@ export const renderCopy = (text, component) => {
 	);
 };
 
-const DumbField = ({ label, value, allowCopy = false, ...rest }) => {
+const DumbField = ({
+	label,
+	value,
+	className = '',
+	allowCopy = false,
+	...rest
+}) => {
 	const props = {
 		label,
 		hideUnderline: true
 	};
 
 	return (
-		<FieldWrapper className="dumb-field-wrapper" {...rest}>
+		<FieldWrapper
+			className={classnames('dumb-field-wrapper', className)}
+			{...rest}
+		>
 			<FieldContent {...props}>
 				{value}
 				{value && allowCopy && renderCopy(value)}

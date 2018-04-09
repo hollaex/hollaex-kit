@@ -6,6 +6,27 @@ import { ICONS } from '../../config/constants';
 import { UserProfile, UserSecurity, UserSettings } from '../';
 import STRINGS from '../../config/localizedStrings';
 import { openContactForm } from '../../actions/appActions';
+
+const getInitialTab = ({ name, path }) => {
+	let activeTab = -1;
+	let activeDevelopers = false;
+	if (path === 'account') {
+		activeTab = 0;
+	} else if (path === 'security') {
+		activeTab = 1;
+	} else if (path === 'developers') {
+		activeTab = 1;
+		activeDevelopers = true;
+	} else if (path === 'settings') {
+		activeTab = 2;
+		activeDevelopers = true;
+	}
+	return {
+		activeTab,
+		activeDevelopers
+	};
+};
+
 class Account extends Component {
 	state = {
 		activeTab: -1,
@@ -25,7 +46,9 @@ class Account extends Component {
 			nextProps.otp_enabled !== this.props.otp_enabled ||
 			nextProps.activeLanguage !== this.props.activeLanguage
 		) {
-			this.updateTabs(nextProps);
+			this.updateTabs(nextProps, false);
+		} else if (nextProps.route.path !== this.props.route.path) {
+			this.updateTabs(nextProps, true);
 		}
 	}
 
@@ -40,8 +63,19 @@ class Account extends Component {
 		return true;
 	};
 
-	updateTabs = ({ verification_level, otp_enabled, bank_account, id_data }) => {
-		const activeTab = this.state.activeTab > -1 ? this.state.activeTab : 0;
+	updateTabs = (
+		{ verification_level, otp_enabled, bank_account, id_data, route },
+		updateActiveTab = false
+	) => {
+		let activeTab = this.state.activeTab > -1 ? this.state.activeTab : 0;
+		let activeDevelopers = false;
+
+		if (updateActiveTab || this.state.activeTab === -1) {
+			const initialValues = getInitialTab(route);
+			activeTab = initialValues.activeTab;
+			activeDevelopers = initialValues.activeDevelopers;
+		}
+
 		const tabs = [
 			{
 				title: (
@@ -74,7 +108,7 @@ class Account extends Component {
 						notifications={!otp_enabled ? '!' : ''}
 					/>
 				),
-				content: <UserSecurity />
+				content: <UserSecurity openApiKey={activeDevelopers} />
 			},
 			{
 				title: (
@@ -104,12 +138,11 @@ class Account extends Component {
 
 	render() {
 		const { id } = this.props;
+		const { activeTab, tabs } = this.state;
 
-		if (!id) {
+		if (!id || activeTab === -1) {
 			return <div>Loading</div>;
 		}
-
-		const { activeTab, tabs } = this.state;
 
 		return (
 			<div className="presentation_container apply_rtl">

@@ -85,3 +85,7 @@ export const getFontClassForLanguage = (language = '') => {
 			return '';
 	}
 };
+
+export const maskToken = (token = '') => {
+	return token.substr(0, 5) + '**********' + token.substr(-5);
+};
