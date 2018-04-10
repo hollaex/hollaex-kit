@@ -636,6 +636,7 @@ export default {
 	DEPOSIT_VERIFICATION_ERROR: 'خطایی در تأیید سپرده وجود دارد.',
 	DEPOSIT_VERIFICATION_ERROR_VERIFIED: 'سپرده قبلا تأیید شده است',
 	DEPOSIT_VERIFICATION_ERROR_STATUS: 'وضعیت نامعتبر',
+	DEPOSIT_VERIFICATION_ERROR_USER_MATCH: 'کاربر گرامی ، از آنجاییکه  شما از کارت بانکی غیر از کارتی که در پروفایل خود ثبت کرده اید ، اقدام به واریز وجه نقد نموده اید ، مبلغ مورد نظر  تایید نگردیده و  به کیف پول ریالی شما اضافه نشده است. چنانچه مبلغ از حساب بانکی شما کسر  گردیده است ، ظرف مدت یک ساعت  توسط بانک به حساب شما عودت داده خواهد شد.',
 	QUOTE_MESSAGE: 'شما به {0} {1} {2} برای {3} {4}',
 	QUOTE_BUTTON: 'قبول',
 	QUOTE_REVIEW: 'بازبینی',

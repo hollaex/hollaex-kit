@@ -647,6 +647,7 @@ export default {
 	DEPOSIT_VERIFICATION_ERROR: 'There has been an error verifying the deposit.',
 	DEPOSIT_VERIFICATION_ERROR_VERIFIED: 'The deposit has been already verified',
 	DEPOSIT_VERIFICATION_ERROR_STATUS: 'Invalid status',
+	DEPOSIT_VERIFICATION_ERROR_USER_MATCH: 'The card you made the deposit is not the same as your registered card. Therefore your deposit is rejected and your funds will be refunded in less than an hour.',
 	QUOTE_MESSAGE: 'You are going to {0} {1} {2} for {3} {4}',
 	QUOTE_BUTTON: 'Accept',
 	QUOTE_REVIEW: 'Review',

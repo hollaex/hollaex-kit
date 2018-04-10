@@ -11,12 +11,14 @@ import { Loader } from '../../components';
 const ERROR_VERIFIED = 'Deposit already confirmed';
 const ERROR_STATUS = 'Invalid status';
 const ERROR_CONFIRMATION = 'Error confirming the payment';
+const ERROR_USER_MATCH = 'Card used for payment does not match the user card';
 
 class Verification extends Component {
 	state = {
 		error: '',
 		ready: true,
-		deposit_id: ''
+		deposit_id: '',
+		matchCardError: false
 	};
 
 	componentWillMount() {
@@ -45,6 +47,7 @@ class Verification extends Component {
 
 	setErrorMessage = (message) => {
 		let error = '';
+		let matchCardError = false;
 		switch (message) {
 			case ERROR_VERIFIED:
 				error = STRINGS.DEPOSIT_VERIFICATION_ERROR_VERIFIED;
@@ -52,17 +55,21 @@ class Verification extends Component {
 			case ERROR_STATUS:
 				error = STRINGS.DEPOSIT_VERIFICATION_ERROR_STATUS;
 				break;
+			case ERROR_USER_MATCH:
+				matchCardError = true;
+				error = STRINGS.DEPOSIT_VERIFICATION_ERROR;
+				break;
 			case ERROR_CONFIRMATION:
 			default:
 				error = STRINGS.DEPOSIT_VERIFICATION_ERROR;
 				break;
 		}
-		this.setState({ error });
+		this.setState({ error, matchCardError });
 	};
 
 	render() {
 		const { data } = this.props;
-		const { error, ready, deposit_id } = this.state;
+		const { error, ready, deposit_id, matchCardError } = this.state;
 
 		const displayLoader = ready && data.loading && !error;
 
@@ -84,15 +91,19 @@ class Verification extends Component {
 						)}
 					{error && (
 						<div className="verification-message-wrapper text-center">
-							<div className="warning_text error">{error}</div>
+							<div className="warning_text error pl-4 pr-4">{error}</div>
 							{deposit_id && (
-								<div className="block-wrapper">
-									<div>{STRINGS.DEPOSIT_VERIFICATION_WARNING_MESSAGE}</div>
+								<div className="block-wrapper pl-4 pr-4">
+									{!matchCardError && (
+										<div>{STRINGS.DEPOSIT_VERIFICATION_WARNING_MESSAGE}</div>
+									)}
 									<div>
-										{STRINGS.formatString(
-											STRINGS.DEPOSIT_VERIFICATION_WARNING_INFORMATION,
-											deposit_id
-										)}
+										{matchCardError
+											? STRINGS.DEPOSIT_VERIFICATION_ERROR_USER_MATCH
+											: STRINGS.formatString(
+													STRINGS.DEPOSIT_VERIFICATION_WARNING_INFORMATION,
+													deposit_id
+												)}
 									</div>
 								</div>
 							)}
