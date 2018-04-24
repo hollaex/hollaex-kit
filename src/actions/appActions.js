@@ -19,6 +19,8 @@ export const NOTIFICATIONS = {
 };
 export const CONTACT_FORM = 'CONTACT_FORM';
 export const CHANGE_LANGUAGE = 'CHANGE_LANGUAGE';
+export const SET_ANNOUNCEMENT = 'SET_ANNOUNCEMENT';
+export const SET_UNREAD = 'SET_UNREAD';
 
 export const setNotification = (type = '', data = {}, show = true) => ({
 	type: SET_NOTIFICATION,
@@ -56,3 +58,17 @@ export const setLanguage = (value = 'en') => {
 export const sendSupportMail = (values = {}) => {
 	return axios.post('/support', values);
 };
+
+export const setAnnouncements = (announcements) => ({
+	type: SET_ANNOUNCEMENT,
+	payload: {
+		announcements
+	}
+})
+
+export const setChatUnreadMessages = (chatUnreadMessages = 0) => ({
+	type: SET_UNREAD,
+	payload: {
+		chatUnreadMessages
+	}
+})

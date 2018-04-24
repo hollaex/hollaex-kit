@@ -782,5 +782,9 @@ export default {
 		REVOKE: 'لغو کردن',
 		REVOKED: 'لغو شده',
 		REVOKE_TOOLTIP: 'شما باید احراز هویت دو عامل خود را برای لغو کلید فعال کنید.'
+	},
+	CHAT: {
+		CHAT_TEXT: 'chat',
+		CHAT_UNREAD: '{0} ({1})' // 0 -> CHAT_TEXT, 1 -> number
 	}
 };

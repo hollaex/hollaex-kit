@@ -4,7 +4,7 @@
 	height: 100%;
 
 	.sidebar-row {
-		padding: $sidebar-sections-padding;
+		// padding: $sidebar-sections-padding;
 		border-top: 1px solid $sidebar-border--color;
 		flex: 0;
 	}
@@ -24,11 +24,19 @@ $row--height: 3rem;
 $row--size: calc(#{$row--height} - #{$sidebar-sections-padding});
 
 .sidebar-row {
-	padding-top: $sidebar-sections-padding / 2;
-	padding-bottom: $sidebar-sections-padding / 2;
+	// padding-top: $sidebar-sections-padding / 2;
+	// padding-bottom: $sidebar-sections-padding / 2;
 	min-height: $row--height;
 	min-width: 10rem;
 
+	.cell-wrapper {
+		padding-left: $sidebar-sections-padding;
+		padding-right: $sidebar-sections-padding;
+
+		&:not(:last-child) {
+			border-right: 1px solid $sidebar-border--color;
+		}
+	}
 	.sidebar-row--right-icon {
 		@include size($row--size);
 		&.icon--help {
@@ -47,4 +55,8 @@ $row--size: calc(#{$row--height} - #{$sidebar-sections-padding});
 			@include size($row--size);
 		}
 	}
+}
+
+.cell-wrapper {
+
 }

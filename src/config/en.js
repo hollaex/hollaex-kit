@@ -795,5 +795,9 @@ export default {
 		REVOKE: 'Revoke',
 		REVOKED: 'Revoked',
 		REVOKE_TOOLTIP: 'You have to enable 2FA to revoke the token' // TODO
+	},
+	CHAT: {
+		CHAT_TEXT: 'chat',
+		CHAT_UNREAD: '{0} ({1})' // 0 -> CHAT_TEXT, 1 -> number
 	}
 };

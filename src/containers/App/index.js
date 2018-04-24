@@ -433,11 +433,11 @@ class Container extends Component {
 			children,
 			activeNotification,
 			changeSymbol,
-			notifications,
 			prices,
 			verification_level,
 			activeLanguage,
-			openContactForm
+			openContactForm,
+			unreadMessages
 		} = this.props;
 		const { dialogIsOpen, appLoaded } = this.state;
 		const languageClasses = getClasesForLanguage(activeLanguage, 'array');
@@ -486,10 +486,10 @@ class Container extends Component {
 					<Sidebar
 						activePath={activePath}
 						logout={this.logout}
-						notifications={notifications}
 						changeSymbol={changeSymbol}
 						symbol={symbol}
 						help={openContactForm}
+						unreadMessages={unreadMessages}
 					/>
 				</div>
 				<Dialog
@@ -520,11 +520,11 @@ const mapStateToProps = (store) => ({
 	prices: store.orderbook.prices,
 	fetchingAuth: store.auth.fetching,
 	activeNotification: store.app.activeNotification,
-	notifications: store.app.notifications,
 	verification_level: store.user.verification_level,
 	activeLanguage: store.app.language,
 	orders: store.order.activeOrders,
-	user: store.user.userData
+	user: store.user.userData,
+	unreadMessages: store.app.chatUnreadMessages
 });
 
 const mapDispatchToProps = (dispatch) => ({

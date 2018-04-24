@@ -2,7 +2,9 @@ import {
 	SET_NOTIFICATION,
 	CLOSE_NOTIFICATION,
 	CLOSE_ALL_NOTIFICATION,
-	CHANGE_LANGUAGE
+	CHANGE_LANGUAGE,
+	SET_ANNOUNCEMENT,
+	SET_UNREAD
 } from '../actions/appActions';
 
 import { getLanguage } from '../utils/string';
@@ -14,8 +16,10 @@ const EMPTY_NOTIFICATION = {
 };
 
 const INITIAL_STATE = {
+	announcements: [],
 	notifications: [],
 	notificationsQueue: [],
+	chatUnreadMessages: 0,
 	activeNotification: EMPTY_NOTIFICATION,
 	language: getLanguage()
 };
@@ -58,6 +62,21 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 				activeNotification
 			};
 		}
+
+		case SET_UNREAD:
+			return {
+				...state,
+				chatUnreadMessages: payload.chatUnreadMessages
+			};
+
+		case SET_ANNOUNCEMENT:
+			const announcements = state.announcements.concat(
+				payload.announcements
+			);
+			return {
+				...state,
+				announcements
+			};
 
 		case CLOSE_ALL_NOTIFICATION:
 			return {
