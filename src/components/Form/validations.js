@@ -175,6 +175,7 @@ export const isBefore = (
 export const normalizeInt = (value = 0) => validator.toInt(value) || 0;
 export const normalizeFloat = (value = 0) => validator.toFloat(value) || 0;
 export const normalizeBTC = (value = 0) => (value ? roundNumber(value, 8) : '');
+export const normalizeBTCFee = (value = 0) => (value ? roundNumber(value, 4) : '');
 
 export const validateOtp = (message = STRINGS.OTP_FORM.ERROR_INVALID) => (
 	value = ''
