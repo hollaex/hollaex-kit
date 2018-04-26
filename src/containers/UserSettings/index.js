@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { SubmissionError } from 'redux-form';
-
+import { setLanguage } from '../../actions/appActions';
 import { updateUser, setUserData, setUsername, setUsernameStore } from '../../actions/userAction';
 import { Accordion } from '../../components';
 import SettingsForm, { generateFormValues } from './SettingsForm';
@@ -61,6 +61,7 @@ class UserSettings extends Component {
 		return updateUser({ settings })
 			.then(({ data }) => {
 				this.props.setUserData(data);
+				this.props.changeLanguage(data.settings.language);
 			})
 			.catch((err) => {
 				// console.log(err.response.data);
@@ -104,7 +105,8 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
 	setUsernameStore: bindActionCreators(setUsernameStore, dispatch),
-	setUserData: bindActionCreators(setUserData, dispatch)
+	setUserData: bindActionCreators(setUserData, dispatch),
+	changeLanguage: bindActionCreators(setLanguage, dispatch)
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(UserSettings);

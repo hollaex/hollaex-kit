@@ -8,7 +8,7 @@ import {
 	DEFAULT_VERSION_REDIRECT
 } from '../../config/constants';
 import { LinkButton } from './LinkButton';
-import { LanguageSelector } from '../';
+// import { LanguageSelector } from '../';
 
 import STRINGS from '../../config/localizedStrings';
 
@@ -102,7 +102,7 @@ class AppBar extends Component {
 				{this.renderIcon(isHome)}
 				<div className="app_bar-main d-flex justify-content-between">
 					<div>{!isHome && STRINGS.APP_TITLE}</div>
-					<LanguageSelector />
+					{/*<LanguageSelector />*/}
 				</div>
 				{rightChildren
 					? rightChildren

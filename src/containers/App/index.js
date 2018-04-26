@@ -190,9 +190,9 @@ class Container extends Component {
 				return this.goToVerificationPage();
 			}
 			this.props.setMe(data);
-			// if (data.settings && data.settings.language !== this.props.activeLanguage) {
-			// 	this.props.changeLanguage(data.settings.language);
-			// }
+			if (data.settings && data.settings.language !== this.props.activeLanguage) {
+				this.props.changeLanguage(data.settings.language);
+			}
 		});
 
 		privateSocket.on('orders', (data) => {
