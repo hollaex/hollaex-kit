@@ -803,7 +803,13 @@ export default {
 	},
 	CHAT: {
 		CHAT_TEXT: 'chat',
-		CHAT_UNREAD: '{0} ({1})' // 0 -> CHAT_TEXT, 1 -> number
+		CHAT_UNREAD: '{0} ({1})', // 0 -> CHAT_TEXT, 1 -> number
+		READ_MORE: 'Read More',
+		SHOW_IMAGE: 'Show Image',
+		HIDE_IMAGE: 'Hide Image',
+		CHAT_MESSAGE_BOX_PLACEHOLDER: 'Message',
+		SIGN_UP_CHAT: 'Sign Up To Chat',
+		JOIN_CHAT: 'Set Username To Chat'
 	},
 	INVALID_USERNAME: 'Username must be between 3 and 15 characters long. Only contains lowercase, numbers and underscore',
 	USERNAME_TAKEN: 'This username has already been taken. Please try another.',

@@ -23,6 +23,18 @@ export const SET_ANNOUNCEMENT = 'SET_ANNOUNCEMENT';
 export const SET_UNREAD = 'SET_UNREAD';
 export const CHANGE_THEME = 'CHANGE_THEME';
 
+export const USER_TYPES = {
+	USER_TYPE_NORMAL: 'normal',
+	USER_TYPE_ADMIN: 'admin'
+};
+
+export const MESSAGE_TYPES = {
+	MESSAGE_TYPE_NORMAL: 'normal',
+	MESSAGE_TYPE_REPLY: 'reply',
+	MESSAGE_TYPE_ANNOUNCEMENT: 'announcement',
+	MESSAGE_TYPE_IMAGE: 'image'
+};
+
 export const setNotification = (type = '', data = {}, show = true) => ({
 	type: SET_NOTIFICATION,
 	payload: {

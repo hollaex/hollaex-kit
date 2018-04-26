@@ -1,0 +1,251 @@
+$chat-header-light--background-color: white;
+$chat-message-box-light--background-color: #f0f1f1;
+$chat-wrapper-light--background-color: white;
+$chat-message-light--font-color: #999999;
+$chat-wrapper--border-color: #282829;
+$chat-own-message--color: yellow;
+$chat-other-message--color: white;
+$chat-element-action--color: #2798c7;
+$unread-messages-border--color: #b9b500;
+
+.chat-wrapper {
+	position: fixed;
+	background-color: $chat-wrapper-light--background-color;
+	height: 50rem;
+	right: 0.5rem;
+	bottom: 1rem;
+	color: $chat-message-light--font-color;
+	z-index: 100;
+	-webkit-box-shadow: 1px 0px 3px 0px rgba(0, 0, 0, 0.29);
+	-moz-box-shadow: 1px 0px 3px 0px rgba(0, 0, 0, 0.29);
+	box-shadow: 1px 0px 3px 0px rgba(0, 0, 0, 0.29);
+	font-family: 'Roboto-Light';
+
+	&.unread-messages {
+		border-color: $unread-messages-border--color;
+		color: $unread-messages-border--color;
+
+		&:hover {
+			border-color: $chat-own-message--color;
+			color: $chat-own-message--color;
+
+			&::before {
+				border-top-color: $chat-own-message--color;
+			}
+		}
+
+		&::before {
+			border-top-color: $unread-messages-border--color;
+		}
+	}
+
+	&.minimized {
+		right: 0.5rem !important;
+		bottom: 1rem !important;
+		transform: unset !important;
+		height: 2.5rem;
+
+		cursor: pointer;
+
+		> .chat-header {
+			background-color: transparent;
+		}
+
+		> .chat-footer,
+		.chat-message-list {
+			display: none !important;
+		}
+	}
+
+	.minimize-button {
+		height: 1.5rem;
+		width: 1.5rem;
+		padding: 0.2rem;
+		cursor: pointer;
+
+		.minimize-button-content {
+			width: 100%;
+			height: 100%;
+			border-bottom: solid $chat-message-light--font-color;
+		}
+
+		&:hover {
+			background-color: #4f4f4f;
+		}
+	}
+
+	.loader_wrapper {
+		height: 100%;
+		.loader_background {
+			background: $chat-wrapper-light--background-color;
+		}
+		.loader-img {
+			width: 5rem !important;
+		}
+	}
+	> div {
+		padding: 0.5rem 1rem;
+	}
+
+	.chat-header {
+		background-color: $chat-header-light--background-color;
+		padding-top: 0.75rem;
+		padding-bottom: 0.75rem;
+		font-weight: bold;
+	}
+
+	.chat-message-list {
+		width: 20rem !important;
+		flex: 1;
+
+		> div {
+			&:first-child {
+				padding: 0.5rem 1rem;
+			}
+			padding: 0.5rem 0;
+		}
+		.chat-message {
+			font-size: 0.7rem;
+			font-weight: bold;
+			color: $chat-other-message--color;
+			margin-bottom: 0.5rem;
+			word-break: break-all;
+			.message-content {
+				margin-left: 1.5rem;
+				.message {
+					color: $chat-message-light--font-color;
+					word-break: break-all;
+					line-height: 1.1rem;
+					font-size: 0.65rem;
+					line > span {
+						> span {
+							display: inline;
+						}
+					}
+				}
+			}
+
+			&::before {
+				content: '\00b0';
+				position: absolute;
+				color: $chat-message-light--font-color;
+				font-size: 1.5rem;
+				font-weight: normal;
+				display: inline-block;
+				margin-top: -0.2rem;
+				height: 1rem;
+			}
+
+			&.user {
+				color: $chat-own-message--color;
+				&::before {
+					content: '\2022';
+					color: $chat-own-message--color;
+					font-weight: bold;
+					margin-top: -0.5rem;
+				}
+			}
+
+			.message-content {
+				span {
+					&.toggle-content {
+						position: relative;
+						cursor: pointer;
+						color: $chat-element-action--color;
+
+						&::before {
+							display: inline-block;
+							content: '\00bb';
+							height: 1rem;
+							margin: 0 0.25rem;
+						}
+
+						&::after {
+							position: absolute;
+							content: '';
+							bottom: 0;
+							left: 0.2rem;
+							border-bottom: 1px dotted $chat-element-action--color;
+							width: 100%;
+						}
+					}
+				}
+				.show {
+					.toggle-content {
+						&::before {
+							-webkit-transform: rotate(90deg);
+							transform: rotate(90deg);
+						}
+					}
+				}
+				&.image {
+					img.image {
+						margin: 0.5rem 0;
+						max-width: 100%;
+					}
+				}
+			}
+			.username {
+				font-weight: bold;
+			}
+
+			.item-options {
+				position: relative;
+				margin-left: 0.25rem;
+				cursor: pointer;
+				.item-options-icon-wrapper {
+					width: 1rem;
+					height: 1rem;
+					.item-options-icon {
+						width: 100%;
+						height: 100%;
+						& > * {
+							fill: $chat-message-light--font-color;
+						}
+					}
+				}
+				.item-options-wrapper {
+					position: absolute;
+					right: 0;
+					top: 1rem;
+					min-width: 4rem;
+					font-size: 0.6rem;
+					.item-option {
+						width: 100%;
+						padding: 0 0.25rem;
+						background-color: $chat-header-light--background-color;
+						border-bottom: 1px solid #464545;
+						color: $chat-message-light--font-color;
+						&:hover {
+							background-color: #535353;
+							color: white;
+						}
+					}
+				}
+			}
+		}
+	}
+
+	.chat-footer {
+		min-height: 3rem;
+		margin-bottom: 0.5rem;
+		margin-top: 0.5rem;
+		width: 100%;
+		button {
+			width: 100%;
+		}
+		.chat-message-box {
+			outline: none !important;
+			background-color: $chat-message-box-light--background-color;
+			width: 100%;
+			min-height: 2rem;
+			padding: 0.5rem;
+			color: $chat-message-light--font-color;
+			font-size: 0.7rem;
+			border-radius: 0.1rem !important;
+			border: 1px solid $chat-wrapper--border-color !important;
+			resize: none;
+			overflow: hidden;
+		}
+	}
+}

@@ -1,3 +1,4 @@
+import jwtDecode  from 'jwt-decode';
 import { TOKEN_KEY } from '../config/constants';
 
 const TOKEN_TIME_KEY = 'time';
@@ -19,3 +20,10 @@ export const removeToken = () => {
 export const getTokenTimestamp = () => {
 	return localStorage.getItem(TOKEN_TIME_KEY);
 };
+
+export const isLoggedIn = () => {
+	let token = getToken();
+	return !!token;
+}
+
+export const decodeToken = (token) => jwtDecode(token);

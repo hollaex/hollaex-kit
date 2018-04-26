@@ -38,6 +38,7 @@ class Dialog extends PureComponent {
 		return (
 			<Modal
 				id={dialogId}
+				animationType="fade"
 				isOpen={isOpen}
 				contentLabel={label}
 				onRequestClose={this.onRequestClose}

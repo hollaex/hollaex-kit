@@ -258,7 +258,8 @@ export const ICONS = {
 	TOKEN_TRASHED: `${process.env.PUBLIC_URL}/assets/images/api-key-trashed.svg`,
 	TOKEN_GENERATE: `${process.env.PUBLIC_URL}/assets/images/api-key-generate.svg`,
 	TOKEN_CREATED: `${process.env.PUBLIC_URL}/assets/images/api-key-created.svg`,
-	CHECK_ORDER: `${process.env.PUBLIC_URL}/assets/images/check-order.svg`
+	CHECK_ORDER: `${process.env.PUBLIC_URL}/assets/images/check-order.svg`,
+	ITEM_OPTIONS : `${process.env.PUBLIC_URL}/assets/images/item-options.svg`
 };
 
 export const SOCIAL_ICONS = {
