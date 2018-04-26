@@ -26,11 +26,13 @@ import {
 	closeNotification,
 	openContactForm,
 	setLanguage,
+	changeTheme,
 	closeAllNotification,
 	NOTIFICATIONS,
 	CONTACT_FORM
 } from '../../actions/appActions';
 
+import { getThemeClass } from '../../utils/theme';
 import { checkUserSessionExpired } from '../../utils/utils';
 import { getToken, getTokenTimestamp } from '../../utils/token';
 import {
@@ -192,6 +194,9 @@ class Container extends Component {
 			this.props.setMe(data);
 			if (data.settings && data.settings.language !== this.props.activeLanguage) {
 				this.props.changeLanguage(data.settings.language);
+			}
+			if (data.settings && data.settings.theme !== this.props.activeTheme) {
+				this.props.changeTheme(data.settings.theme);
 			}
 		});
 
@@ -437,6 +442,7 @@ class Container extends Component {
 			verification_level,
 			activeLanguage,
 			openContactForm,
+			activeTheme,
 			unreadMessages
 		} = this.props;
 		const { dialogIsOpen, appLoaded } = this.state;
@@ -452,6 +458,7 @@ class Container extends Component {
 				className={classnames(
 					'app_container',
 					'd-flex',
+					getThemeClass(activeTheme),
 					activePath,
 					symbol,
 					fontClass,
@@ -522,6 +529,7 @@ const mapStateToProps = (store) => ({
 	activeNotification: store.app.activeNotification,
 	verification_level: store.user.verification_level,
 	activeLanguage: store.app.language,
+	activeTheme: store.app.theme,
 	orders: store.order.activeOrders,
 	user: store.user.userData,
 	unreadMessages: store.app.chatUnreadMessages
@@ -544,7 +552,8 @@ const mapDispatchToProps = (dispatch) => ({
 	openContactForm: bindActionCreators(openContactForm, dispatch),
 	setNotification: bindActionCreators(setNotification, dispatch),
 	changeSymbol: bindActionCreators(changeSymbol, dispatch),
-	changeLanguage: bindActionCreators(setLanguage, dispatch)
+	changeLanguage: bindActionCreators(setLanguage, dispatch),
+	changeTheme: bindActionCreators(changeTheme, dispatch)
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Container);

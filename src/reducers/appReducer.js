@@ -4,10 +4,12 @@ import {
 	CLOSE_ALL_NOTIFICATION,
 	CHANGE_LANGUAGE,
 	SET_ANNOUNCEMENT,
+	CHANGE_THEME,
 	SET_UNREAD
 } from '../actions/appActions';
-
+import { THEME_DEFAULT } from '../config/constants';
 import { getLanguage } from '../utils/string';
+import { getTheme } from '../utils/theme';
 
 const EMPTY_NOTIFICATION = {
 	type: '',
@@ -21,6 +23,7 @@ const INITIAL_STATE = {
 	notificationsQueue: [],
 	chatUnreadMessages: 0,
 	activeNotification: EMPTY_NOTIFICATION,
+	theme: THEME_DEFAULT,
 	language: getLanguage()
 };
 
@@ -70,9 +73,7 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 			};
 
 		case SET_ANNOUNCEMENT:
-			const announcements = state.announcements.concat(
-				payload.announcements
-			);
+			const announcements = state.announcements.concat(payload.announcements);
 			return {
 				...state,
 				announcements
@@ -89,6 +90,12 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 			return {
 				...state,
 				language: payload.language
+			};
+
+		case CHANGE_THEME:
+			return {
+				...state,
+				theme: getTheme(payload.theme)
 			};
 		default:
 			return state;

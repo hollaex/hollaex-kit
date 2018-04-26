@@ -21,6 +21,7 @@ export const CONTACT_FORM = 'CONTACT_FORM';
 export const CHANGE_LANGUAGE = 'CHANGE_LANGUAGE';
 export const SET_ANNOUNCEMENT = 'SET_ANNOUNCEMENT';
 export const SET_UNREAD = 'SET_UNREAD';
+export const CHANGE_THEME = 'CHANGE_THEME';
 
 export const setNotification = (type = '', data = {}, show = true) => ({
 	type: SET_NOTIFICATION,
@@ -64,11 +65,18 @@ export const setAnnouncements = (announcements) => ({
 	payload: {
 		announcements
 	}
-})
+});
 
 export const setChatUnreadMessages = (chatUnreadMessages = 0) => ({
 	type: SET_UNREAD,
 	payload: {
 		chatUnreadMessages
 	}
-})
+});
+
+export const changeTheme = (theme = '') => ({
+	type: CHANGE_THEME,
+	payload: {
+		theme
+	}
+});
