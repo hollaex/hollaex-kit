@@ -747,15 +747,20 @@ export default {
 	CONFIRM_TEXT: 'Confirm',
 	INVALID_CAPTCHA: 'Invalid captcha',
 	NO_FEE: 'N/A',
-	SETTINGS_LANGUAGE_LABEL: 'Language of Emails',
+	SETTINGS_LANGUAGE_LABEL: 'Language preferences (Includes Emails)',
 	SETTINGS_LANGUAGE_OPTIONS: [
-		{ value: 'en', label: 'English' },
-		{ value: 'fa', label: 'فارسی' }
+		{ value: 'en', label: 'English', icon: `${process.env.PUBLIC_URL}/assets/flags/selected-en.png` },
+		{ value: 'fa', label: 'فارسی', icon: `${process.env.PUBLIC_URL}/assets/flags/selected-ir.png` }
 	],
 	SETTINGS_ORDERPOPUP_LABEL: 'Display order confirmation popup',
 	SETTINGS_ORDERPOPUP_OPTIONS: [
 		{ value: false, label: 'NO' },
 		{ value: true, label: 'YES' }
+	],
+	SETTINGS_THEME_LABEL: 'Theme', // TODO set right labels
+	SETTINGS_THEME_OPTIONS: [
+		{ value: 'white', label: 'White' },
+		{ value: 'dark', label: 'Dark' }
 	],
 	SETTING_BUTTON: 'save',
 	STRING_WITH_PARENTHESIS: '{0} ({1})',

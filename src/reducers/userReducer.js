@@ -1,4 +1,5 @@
 import PhoneNumber from 'awesome-phonenumber';
+import { DEFAULT_LANGUAGE } from '../config/constants';
 
 const USER_DATA_KEYS = [
 	'full_name',
@@ -60,7 +61,9 @@ const INITIAL_STATE = {
 	},
 	tokens: [],
 	settings: {
-		orderConfirmationPopup: true
+		orderConfirmationPopup: true,
+		theme: 'white',
+		language: DEFAULT_LANGUAGE
 	}
 };
 
@@ -103,6 +106,7 @@ export default function reducer(state = INITIAL_STATE, action) {
 		case 'SET_USER_DATA': {
 			const userData = extractuserData(action.payload);
 			const fees = action.payload.fees || state.fees;
+			console.log(action.payload.settings)
 			const settings = {
 				...state.settings,
 				...action.payload.settings
@@ -246,6 +250,14 @@ export default function reducer(state = INITIAL_STATE, action) {
 				...state,
 				tokens: [action.payload.token].concat(state.tokens)
 			};
+		case 'UPDATE_SETTINGS':
+			return {
+				...state,
+				settings: {
+					...state.settings,
+					...action.payload.settings
+				}
+			}
 		case 'LOGOUT':
 			return INITIAL_STATE;
 		default:

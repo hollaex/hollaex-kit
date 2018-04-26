@@ -734,15 +734,20 @@ export default {
 	CONFIRM_TEXT: 'تایید',
 	INVALID_CAPTCHA: 'کپچا نادرست است',
 	NO_FEE: 'N/A',
-	SETTINGS_LANGUAGE_LABEL: 'انتخاب زبان ایمیل',
+	SETTINGS_LANGUAGE_LABEL: 'انتخاب زبان ایمیل', // TODO change 'Language preferences (Includes Emails)''
 	SETTINGS_LANGUAGE_OPTIONS: [
-		{ value: 'en', label: 'English' },
-		{ value: 'fa', label: 'فارسی' }
+		{ value: 'en', label: 'English', icon: `${process.env.PUBLIC_URL}/assets/flags/selected-en.png` },
+		{ value: 'fa', label: 'فارسی', icon: `${process.env.PUBLIC_URL}/assets/flags/selected-ir.png` }
 	],
 	SETTINGS_ORDERPOPUP_LABEL: 'مشاهده منوی تایید سفارش',
 	SETTINGS_ORDERPOPUP_OPTIONS: [
 		{ value: false, label: 'خیر' },
 		{ value: true, label: 'بله' }
+	],
+	SETTINGS_THEME_LABEL: 'Theme', // TODO
+	SETTINGS_THEME_OPTIONS: [
+		{ value: 'white', label: 'White' }, // TODO
+		{ value: 'dark', label: 'Dark' } // TODO
 	],
 	SETTING_BUTTON: 'ذخیره',
 	STRING_WITH_PARENTHESIS: '{0} ({1})',
