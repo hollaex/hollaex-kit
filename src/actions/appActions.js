@@ -44,7 +44,7 @@ export const closeAllNotification = () => ({
 });
 
 export const openContactForm = (data = {}) =>
-	setNotification(CONTACT_FORM, 'Contact Form', data);
+	setNotification(CONTACT_FORM, data, true);
 
 export const setLanguage = (value = 'en') => {
 	const language = storeLanguageInBrowser(value);

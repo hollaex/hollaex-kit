@@ -798,5 +798,6 @@ export default {
 	USERNAME_PLACEHOLDER: 'USERNAME', // TODO
 	TAB_USERNAME: 'USERNAME', // TODO
 	USERNAME_WARNING: 'Your USERNAME can only be changed once. Please assure your username is desirable.', // TODO
-	USERNAME_CANNOT_BE_CHANGED: 'USERNAME can not be changed' // TODO
+	USERNAME_CANNOT_BE_CHANGED: 'USERNAME can not be changed', // TODO
+	UPGRADE_LEVEL: 'Upgrade account level' // TODO
 };

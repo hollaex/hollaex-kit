@@ -410,6 +410,7 @@ class Container extends Component {
 					<ContactForm
 						onSubmitSuccess={this.onCloseDialog}
 						onClose={this.onCloseDialog}
+						data={data}
 					/>
 				);
 			case NOTIFICATIONS.NEW_ORDER: {

@@ -811,5 +811,6 @@ export default {
 	USERNAME_PLACEHOLDER: 'Username',
 	TAB_USERNAME: 'Username',
 	USERNAME_WARNING: 'Your username can only be changed once. Please assure your username is desirable.',
-	USERNAME_CANNOT_BE_CHANGED: 'Username can not be changed'
+	USERNAME_CANNOT_BE_CHANGED: 'Username can not be changed',
+	UPGRADE_LEVEL: 'Upgrade account level'
 };

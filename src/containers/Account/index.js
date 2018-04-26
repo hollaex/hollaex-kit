@@ -130,9 +130,9 @@ class Account extends Component {
 
 	renderContent = (tabs, activeTab) => tabs[activeTab].content;
 
-	openContactForm = () => {
+	openContactForm = (data) => {
 		// console.log('here');
-		this.props.openContactForm();
+		this.props.openContactForm(data);
 	};
 	goToVerification = () => this.props.router.push('/verification');
 

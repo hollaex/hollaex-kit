@@ -9,12 +9,24 @@ import { sendSupportMail, NOTIFICATIONS } from '../../actions/appActions';
 
 const FORM_NAME = 'ContactForm';
 
-const Form = HocForm(FORM_NAME);
+const Form = HocForm(FORM_NAME, { enableReinitialize: true });
 
 class ContactForm extends Component {
 	state = {
-		submited: false
+		submited: false,
+		initialValues: {}
 	};
+
+	componentDidMount() {
+		if (this.props.email) {
+			const initialValues = { email: this.props.email, ...this.props.contactFormData };
+			this.setInitialValues(initialValues);
+		}
+	}
+
+	setInitialValues = (initialValues = {}) => {
+		this.setState({ initialValues })
+	}
 
 	onSubmit = (values) => {
 		return sendSupportMail(values)
@@ -91,7 +103,7 @@ class ContactForm extends Component {
 
 	render() {
 		const { onClose, email } = this.props;
-		const { submited } = this.state;
+		const { submited, initialValues } = this.state;
 
 		if (submited) {
 			return (
@@ -100,7 +112,6 @@ class ContactForm extends Component {
 		}
 
 		const formFields = this.generateFormFields(email);
-
 		return (
 			<div className="contact_form-wrapper">
 				<IconTitle
@@ -113,7 +124,7 @@ class ContactForm extends Component {
 				<Form
 					onSubmit={this.onSubmit}
 					formFields={formFields}
-					initialValues={{ email }}
+					initialValues={initialValues}
 					buttonLabel={STRINGS.SUBMIT}
 					extraButtonLabel={STRINGS.BACK_TEXT}
 					extraButtonOnClick={onClose}
@@ -125,6 +136,7 @@ class ContactForm extends Component {
 
 const mapStateToProps = (store) => ({
 	email: store.user.email,
+	contactFormData: store.app.contactFormData
 });
 
 export default connect(mapStateToProps)(ContactForm);

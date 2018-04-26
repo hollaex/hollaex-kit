@@ -18,11 +18,3 @@ export const generateFormValues = () => ({
 		disabled: true
 	}
 });
-
-export const generateEmailFormValues = () => ({
-	email: {
-		type: 'text',
-		label: STRINGS.FORM_FIELDS.EMAIL_LABEL,
-		disabled: true
-	}
-});

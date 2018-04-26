@@ -5,8 +5,7 @@ import { ICONS } from '../../config/constants';
 import { Accordion, Loader } from '../../components';
 import Form from './Form';
 import {
-	generateFormValues as generateMobileFormValues,
-	generateEmailFormValues
+	generateFormValues as generateMobileFormValues
 } from './MobileFormValues';
 import {
 	prepareInitialValues,
@@ -14,6 +13,7 @@ import {
 } from './IdentificationFormValues';
 import { generateFormValues as generateBankFormValues } from './BankAccountFormValues';
 import { InformationSection } from './InformationSection';
+import { LevelSection } from './LevelSection';
 
 import STRINGS from '../../config/localizedStrings';
 
@@ -27,8 +27,7 @@ class UserProfile extends Component {
 		sections: [],
 		dataFormValues: {},
 		mobileFormValues: {},
-		bankFormValues: {},
-		emailFormValues: {}
+		bankFormValues: {}
 	};
 
 	componentDidMount() {
@@ -91,9 +90,8 @@ class UserProfile extends Component {
 		);
 		const bankFormValues = generateBankFormValues();
 		const mobileFormValues = generateMobileFormValues();
-		const emailFormValues = generateEmailFormValues();
 		this.setState(
-			{ dataFormValues, mobileFormValues, bankFormValues, emailFormValues },
+			{ dataFormValues, mobileFormValues, bankFormValues },
 			() => {
 				this.calculateSections(verification_level, email, userData);
 			}
@@ -104,8 +102,7 @@ class UserProfile extends Component {
 		const {
 			dataFormValues,
 			mobileFormValues,
-			bankFormValues,
-			emailFormValues
+			bankFormValues
 		} = this.state;
 		const {
 			phone_number,
@@ -118,7 +115,9 @@ class UserProfile extends Component {
 				title: STRINGS.USER_VERIFICATION.TITLE_EMAIL,
 				subtitle: email,
 				content: (
-					<EmailForm initialValues={{ email }} formValues={emailFormValues} />
+					<LevelSection>
+						<InformationSection onChangeValue={this.onOpenContactFormSelected('category', 'level')} onChangeText={STRINGS.UPGRADE_LEVEL} />
+					</LevelSection>
 				),
 				notification: this.generateNotification(
 					true,
@@ -235,6 +234,12 @@ class UserProfile extends Component {
 	onOpenContactForm = () => {
 		if (this.props.openContactForm) {
 			this.props.openContactForm();
+		}
+	};
+
+	onOpenContactFormSelected = (key = '', value = '') => () => {
+		if (this.props.openContactForm) {
+			this.props.openContactForm({ [key]: value });
 		}
 	};
 
