@@ -789,7 +789,14 @@ export default {
 		REVOKE_TOOLTIP: 'شما باید احراز هویت دو عامل خود را برای لغو کلید فعال کنید.'
 	},
 	CHAT: {
-		CHAT_TEXT: 'chat',
+		CHAT_TEXT: 'chat', // TODO
 		CHAT_UNREAD: '{0} ({1})' // 0 -> CHAT_TEXT, 1 -> number
-	}
+	},
+	INVALID_USERNAME: 'USERNAME must be between 3 and 15 characters long. Only contains lowercase, numbers and underscore', // TODO
+	USERNAME_TAKEN: 'This USERNAME has already been taken. Please try another.', // TODO
+	USERNAME_LABEL: 'USERNAME (used for chat)', // TODO
+	USERNAME_PLACEHOLDER: 'USERNAME', // TODO
+	TAB_USERNAME: 'USERNAME', // TODO
+	USERNAME_WARNING: 'Your USERNAME can only be changed once. Please assure your username is desirable.', // TODO
+	USERNAME_CANNOT_BE_CHANGED: 'USERNAME can not be changed' // TODO
 };

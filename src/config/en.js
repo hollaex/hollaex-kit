@@ -804,5 +804,12 @@ export default {
 	CHAT: {
 		CHAT_TEXT: 'chat',
 		CHAT_UNREAD: '{0} ({1})' // 0 -> CHAT_TEXT, 1 -> number
-	}
+	},
+	INVALID_USERNAME: 'Username must be between 3 and 15 characters long. Only contains lowercase, numbers and underscore',
+	USERNAME_TAKEN: 'This username has already been taken. Please try another.',
+	USERNAME_LABEL: 'Username (used for chat)',
+	USERNAME_PLACEHOLDER: 'Username',
+	TAB_USERNAME: 'Username',
+	USERNAME_WARNING: 'Your username can only be changed once. Please assure your username is desirable.',
+	USERNAME_CANNOT_BE_CHANGED: 'Username can not be changed'
 };

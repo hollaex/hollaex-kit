@@ -6,6 +6,7 @@ import { fiatSymbol, roundNumber } from '../../utils/currency';
 import STRINGS from '../../config/localizedStrings';
 
 const passwordRegEx = /^(?=.*[a-zA-Z])(?=.*\d).{8,}$/;
+const usernameRegEx = /^[a-z0-9_]{3,15}$/;
 
 export const required = (value) =>
 	!value ? STRINGS.VALIDATIONS.REQUIRED : undefined;
@@ -26,6 +27,11 @@ export const email = (value = '') =>
 export const password = (value = '') =>
 	!passwordRegEx.test(value)
 		? STRINGS.VALIDATIONS.INVALID_PASSWORD_2
+		: undefined;
+
+export const username = (value = '') =>
+	!usernameRegEx.test(value)
+		? STRINGS.INVALID_USERNAME
 		: undefined;
 
 export const validAddress = (symbol = '', message) => {

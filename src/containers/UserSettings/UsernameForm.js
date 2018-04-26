@@ -2,28 +2,19 @@ import React from 'react';
 import { reduxForm } from 'redux-form';
 
 import renderFields from '../../components/Form/factoryFields';
+import { FieldError } from '../../components/Form/FormFields/FieldWrapper';
 import { Button } from '../../components';
-import { required, requiredBoolean } from '../../components/Form/validations';
+import { required, username } from '../../components/Form/validations';
 import { getErrorLocalized } from '../../utils/errors';
 import STRINGS from '../../config/localizedStrings';
 
-export const generateFormValues = () => ({
-	language: {
-		type: 'select',
-		validate: [required],
-		label: STRINGS.SETTINGS_LANGUAGE_LABEL,
-		options: STRINGS.SETTINGS_LANGUAGE_OPTIONS
-	},
-	orderConfirmationPopup: {
-		type: 'select',
-		validate: [requiredBoolean],
-		label: STRINGS.SETTINGS_ORDERPOPUP_LABEL,
-		options: STRINGS.SETTINGS_ORDERPOPUP_OPTIONS
-	},
-	theme: {
-		type: 'select',
-		label: STRINGS.SETTINGS_THEME_LABEL,
-		options: STRINGS.SETTINGS_THEME_OPTIONS
+export const generateUsernameFormValues = (disabled = false) => ({
+	username: {
+		type: 'text',
+		validate: [required, username],
+		label: STRINGS.USERNAME_LABEL,
+		placeholder: STRINGS.USERNAME_PLACEHOLDER,
+    disabled
 	}
 });
 
@@ -39,6 +30,7 @@ const Form = ({
 	<form onSubmit={handleSubmit}>
 		{renderFields(formFields)}
 		{error && <div className="warning_text">{getErrorLocalized(error)}</div>}
+		{!formFields.username.disabled && <FieldError className="warning_text mb-4" displayError={true} error={STRINGS.USERNAME_WARNING} />}
 		<Button
 			label={STRINGS.SETTING_BUTTON}
 			disabled={pristine || submitting || !valid}

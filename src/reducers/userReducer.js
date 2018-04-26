@@ -60,7 +60,9 @@ const INITIAL_STATE = {
 		taker_fee: 0
 	},
 	tokens: [],
+	username: '',
 	settings: {
+		usernameIsSet: false,
 		orderConfirmationPopup: true,
 		theme: 'white',
 		language: DEFAULT_LANGUAGE
@@ -76,7 +78,8 @@ export default function reducer(state = INITIAL_STATE, action) {
 				balance,
 				crypto_wallet,
 				verification_level,
-				otp_enabled
+				otp_enabled,
+				username
 			} = action.payload;
 			const userData = extractuserData(action.payload);
 			const fees = action.payload.fees || state.fees;
@@ -100,13 +103,13 @@ export default function reducer(state = INITIAL_STATE, action) {
 				userData,
 				otp_enabled,
 				fees,
-				settings
+				settings,
+				username,
 			};
 		}
 		case 'SET_USER_DATA': {
 			const userData = extractuserData(action.payload);
 			const fees = action.payload.fees || state.fees;
-			console.log(action.payload.settings)
 			const settings = {
 				...state.settings,
 				...action.payload.settings
@@ -250,12 +253,13 @@ export default function reducer(state = INITIAL_STATE, action) {
 				...state,
 				tokens: [action.payload.token].concat(state.tokens)
 			};
-		case 'UPDATE_SETTINGS':
+		case 'SET_USERNAME':
 			return {
 				...state,
+				username: action.payload.username,
 				settings: {
 					...state.settings,
-					...action.payload.settings
+					usernameIsSet: true
 				}
 			}
 		case 'LOGOUT':
