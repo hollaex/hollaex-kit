@@ -30,10 +30,8 @@ class Chat extends Component {
 	}
 
 	componentWillReceiveProps(nextProps) {
-		if (nextProps.username && !this.props.username) {
-			this.state.chatWs.emit('set_username', {
-				username: nextProps.username
-			});
+		if (nextProps.username_set) {
+			this.state.chatWs.emit('changeUsername');
 		}
 	}
 
@@ -201,6 +199,7 @@ class Chat extends Component {
 
 const mapStateToProps = (store) => ({
 	username: store.user.username,
+	username_set: store.user.username_set,
 	userType: store.auth.userType,
 	userInitialized: store.user.fetched,
 	unreadMessages: store.app.chatUnreadMessages
