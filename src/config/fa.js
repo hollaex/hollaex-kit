@@ -799,5 +799,19 @@ export default {
 	TAB_USERNAME: 'USERNAME', // TODO
 	USERNAME_WARNING: 'Your USERNAME can only be changed once. Please assure your username is desirable.', // TODO
 	USERNAME_CANNOT_BE_CHANGED: 'USERNAME can not be changed', // TODO
-	UPGRADE_LEVEL: 'Upgrade account level' // TODO
+	UPGRADE_LEVEL: 'Upgrade account level', // TODO
+	LEVELS: {
+		LABEL_LEVEL: 'Level', // TODO
+		LABEL_LEVEL_1: 'One', // TODO
+		LABEL_LEVEL_2: 'Two', // TODO
+		LABEL_LEVEL_3: 'Three', // TODO
+		LABEL_MAKER_FEE: 'Maker Fee', // TODO
+		LABEL_TAKER_FEE: 'Taker Fee', // TODO
+		LABEL_FIAT_DEPOSIT: 'Daily Rial Deposit', // TODO
+		LABEL_FIAT_WITHDRAWAL: 'Daily Rial Withdrawal', // TODO
+		LABEL_BTC_DEPOSIT: 'Daily Bitcoin Deposit', // TODO
+		LABEL_BTC_WITHDRAWAL: 'Daily Bitcoin Withdrawal', // TODO
+		UNLIMITED: 'Unlimited', // TODO
+		BLOCKED: '0' // TODO
+	}
 };

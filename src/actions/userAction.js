@@ -240,3 +240,8 @@ export const setUsernameStore = (username) => ({
 		username
 	}
 })
+
+export const requestLimits = () => ({
+	type: 'REQUEST_LIMITS',
+	payload: axios.get('/limits')
+});

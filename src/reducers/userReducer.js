@@ -40,6 +40,13 @@ const extractuserData = (data) => {
 	return userData;
 };
 
+const INITIAL_LIMIT_OBJECT = {
+	data: [],
+	fetching: false,
+	fetched: false,
+	error: ''
+};
+
 const INITIAL_STATE = {
 	id: null,
 	email: null,
@@ -66,7 +73,8 @@ const INITIAL_STATE = {
 		orderConfirmationPopup: true,
 		theme: 'white',
 		language: DEFAULT_LANGUAGE
-	}
+	},
+	limits: INITIAL_LIMIT_OBJECT
 };
 
 export default function reducer(state = INITIAL_STATE, action) {
@@ -104,7 +112,7 @@ export default function reducer(state = INITIAL_STATE, action) {
 				otp_enabled,
 				fees,
 				settings,
-				username,
+				username
 			};
 		}
 		case 'SET_USER_DATA': {
@@ -261,7 +269,32 @@ export default function reducer(state = INITIAL_STATE, action) {
 					...state.settings,
 					usernameIsSet: true
 				}
-			}
+			};
+		case 'REQUEST_LIMITS_PENDING':
+			return {
+				...state,
+				limits: {
+					...INITIAL_LIMIT_OBJECT,
+					fetching: true
+				}
+			};
+		case 'REQUEST_LIMITS_FULFILLED':
+			return {
+				...state,
+				limits: {
+					...INITIAL_LIMIT_OBJECT,
+					fetched: true,
+					data: action.payload.data.data
+				}
+			};
+		case 'REQUEST_LIMITS_REJECTED':
+			return {
+				...state,
+				limits: {
+					...INITIAL_LIMIT_OBJECT,
+					error: action.payload.response
+				}
+			};
 		case 'LOGOUT':
 			return INITIAL_STATE;
 		default:

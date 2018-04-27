@@ -17,7 +17,6 @@ import { LevelSection } from './LevelSection';
 
 import STRINGS from '../../config/localizedStrings';
 
-const EmailForm = Form('EmailForm');
 const MobileForm = Form('MobileForm');
 const InformationForm = Form('InformationForm');
 const BankForm = Form('BankForm');
@@ -35,7 +34,8 @@ class UserProfile extends Component {
 			this.props.activeLanguage,
 			this.props.verification_level,
 			this.props.email,
-			this.props.userData
+			this.props.userData,
+			this.props.limits
 		);
 	}
 
@@ -45,21 +45,25 @@ class UserProfile extends Component {
 				nextProps.activeLanguage,
 				nextProps.verification_level,
 				nextProps.email,
-				nextProps.userData
+				nextProps.userData,
+				nextProps.limits
 			);
 			this.calculateSections(
 				nextProps.verification_level,
 				nextProps.email,
-				nextProps.userData
+				nextProps.userData,
+				nextProps.limits
 			);
 		} else if (
 			nextProps.verification_level !== this.props.verification_level ||
-			nextProps.userData.timestamp !== this.props.userData.timestamp
+			nextProps.userData.timestamp !== this.props.userData.timestamp ||
+			nextProps.limits.fetched !== this.props.limits.fetched
 		) {
 			this.calculateSections(
 				nextProps.verification_level,
 				nextProps.email,
-				nextProps.userData
+				nextProps.userData,
+				nextProps.limits
 			);
 		}
 	}
@@ -83,7 +87,7 @@ class UserProfile extends Component {
 		};
 	};
 
-	calculateFormValues = (language, verification_level, email, userData) => {
+	calculateFormValues = (language, verification_level, email, userData, limits) => {
 		const dataFormValues = generateDataFormValues(
 			language,
 			userData.nationality
@@ -93,12 +97,12 @@ class UserProfile extends Component {
 		this.setState(
 			{ dataFormValues, mobileFormValues, bankFormValues },
 			() => {
-				this.calculateSections(verification_level, email, userData);
+				this.calculateSections(verification_level, email, userData, limits);
 			}
 		);
 	};
 
-	calculateSections = (verification_level, email, userData) => {
+	calculateSections = (verification_level, email, userData, limits) => {
 		const {
 			dataFormValues,
 			mobileFormValues,
@@ -115,10 +119,11 @@ class UserProfile extends Component {
 				title: STRINGS.USER_VERIFICATION.TITLE_EMAIL,
 				subtitle: email,
 				content: (
-					<LevelSection>
+					<LevelSection limits={limits} verification_level={verification_level}>
 						<InformationSection onChangeValue={this.onOpenContactFormSelected('category', 'level')} onChangeText={STRINGS.UPGRADE_LEVEL} />
 					</LevelSection>
 				),
+				isOpen: true,
 				notification: this.generateNotification(
 					true,
 					true,
@@ -267,6 +272,7 @@ const mapStateToProps = (state) => ({
 	verification_level: state.user.verification_level,
 	userData: state.user.userData,
 	email: state.user.email,
+	limits: state.user.limits,
 	activeLanguage: state.app.language
 });
 
