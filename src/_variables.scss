@@ -25,6 +25,17 @@ $colors-currencies-bch: #ec008c;
 $colors-currencies-eth: #2e3192;
 $colors-currencies-ltc: #58595b;
 
+// dark theme colors
+$dark-app-background-color: #20212a;
+$dark-font-main-text-color: #b7b7ce;
+$dark-font-sub-text-color: #a5a3cc;
+$dark-button-active: #444162;
+$dark-disabled-main: #353740;
+$dark-disabled-secondary: #2e2f37;
+$dark-link: #fa507b;
+$dark-buy: #29abe2;
+$dark-sell: #f69321;
+
 $app-background-color: white;
 $app-background-color-on-modal: lightgrey;
 $app_bar-border--color: $colors-deactivate;

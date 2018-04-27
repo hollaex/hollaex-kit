@@ -1,6 +1,12 @@
 $language-selector-arrow--size: 0.4rem;
 $app-bar--background: white;
 
+.dark-theme {
+	.app_bar {
+		background: $dark-app-background-color !important;
+	}
+}
+
 .app_bar {
 	position: relative;
 	width: 100%;

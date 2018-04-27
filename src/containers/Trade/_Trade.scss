@@ -118,3 +118,25 @@ $order_entry-column--width: 15rem;
 		}
 	}
 }
+
+
+.dark-theme {
+	.ask,
+	.buy {
+		color: $dark-buy;
+	}
+	.bid,
+	.sell {
+		color: $dark-sell;
+	}
+
+	.trade_history-row {
+		&.sell {
+			color: $dark-buy;
+		}
+
+		&.buy {
+			color: $dark-sell;
+		}
+	}
+}

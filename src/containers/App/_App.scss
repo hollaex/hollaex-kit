@@ -4,6 +4,10 @@ $inner_container-border: 1px solid $colors-main-black;
 .app_container {
 	// height: 100%;
 
+	&.dark-theme {
+		background: $dark-app-background-color !important;
+	}
+	
 	&.btc {
 		@include currency-color($btc-color);
 	}
