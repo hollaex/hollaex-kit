@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux';
 import io from 'socket.io-client';
 import EventListener from 'react-event-listener';
 import { debounce } from 'lodash';
-import { WS_URL, ICONS, SESSION_TIME } from '../../config/constants';
+import { WS_URL, ICONS, SESSION_TIME, FLEX_CENTER_CLASSES } from '../../config/constants';
 
 import { logout } from '../../actions/authAction';
 import { setMe, setBalance, updateUser } from '../../actions/userAction';
@@ -28,6 +28,7 @@ import {
 	setLanguage,
 	changeTheme,
 	closeAllNotification,
+	setChatUnreadMessages,
 	NOTIFICATIONS,
 	CONTACT_FORM
 } from '../../actions/appActions';
@@ -43,7 +44,7 @@ import {
 	Notification,
 	MessageDisplay
 } from '../../components';
-import { ContactForm } from '../';
+import { ContactForm, Chat as ChatComponent } from '../';
 
 import {
 	getClasesForLanguage,
@@ -54,6 +55,7 @@ class Container extends Component {
 	state = {
 		appLoaded: false,
 		dialogIsOpen: false,
+		chatIsClosed: false,
 		publicSocket: undefined,
 		privateSocket: undefined,
 		idleTimer: undefined,
@@ -192,7 +194,10 @@ class Container extends Component {
 				return this.goToVerificationPage();
 			}
 			this.props.setMe(data);
-			if (data.settings && data.settings.language !== this.props.activeLanguage) {
+			if (
+				data.settings &&
+				data.settings.language !== this.props.activeLanguage
+			) {
 				this.props.changeLanguage(data.settings.language);
 			}
 			if (data.settings && data.settings.theme !== this.props.activeTheme) {
@@ -353,6 +358,14 @@ class Container extends Component {
 		this.props.closeNotification();
 	};
 
+	minimizeChat = () => {
+		const chatIsClosed = !this.state.chatIsClosed;
+		if (chatIsClosed === false){
+			this.props.setChatUnreadMessages();
+		}
+		this.setState({ chatIsClosed });
+	};
+
 	getClassForActivePath = (path) => {
 		switch (path) {
 			case '/wallet':
@@ -445,7 +458,7 @@ class Container extends Component {
 			activeTheme,
 			unreadMessages
 		} = this.props;
-		const { dialogIsOpen, appLoaded } = this.state;
+		const { dialogIsOpen, appLoaded, chatIsClosed } = this.state;
 		const languageClasses = getClasesForLanguage(activeLanguage, 'array');
 		const fontClass = getFontClassForLanguage(activeLanguage);
 
@@ -493,6 +506,8 @@ class Container extends Component {
 					<Sidebar
 						activePath={activePath}
 						logout={this.logout}
+						minimizeChat={this.minimizeChat}
+						chatIsClosed={chatIsClosed}
 						changeSymbol={changeSymbol}
 						symbol={symbol}
 						help={openContactForm}
@@ -516,6 +531,7 @@ class Container extends Component {
 				>
 					{this.renderDialogContent(activeNotification, prices)}
 				</Dialog>
+				<ChatComponent minimized={chatIsClosed} onMinimize={this.minimizeChat} />
 			</div>
 		);
 	}
@@ -553,7 +569,8 @@ const mapDispatchToProps = (dispatch) => ({
 	setNotification: bindActionCreators(setNotification, dispatch),
 	changeSymbol: bindActionCreators(changeSymbol, dispatch),
 	changeLanguage: bindActionCreators(setLanguage, dispatch),
-	changeTheme: bindActionCreators(changeTheme, dispatch)
+	changeTheme: bindActionCreators(changeTheme, dispatch),
+	setChatUnreadMessages: bindActionCreators(setChatUnreadMessages, dispatch)
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Container);

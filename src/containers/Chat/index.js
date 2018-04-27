@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import io from 'socket.io-client';
+import { browserHistory } from 'react-router';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { ChatWrapper, Button } from '../../components';
 import { WS_URL } from '../../config/constants';
 import {
 	setAnnouncements,
+	setChatUnreadMessages,
 	USER_TYPES,
 	MESSAGE_TYPES
 } from '../../actions/appActions';
@@ -19,11 +21,8 @@ class Chat extends Component {
 		chatWs: null,
 		chatSocketInitialized: false,
 		chatSocketInitializing: false,
-		chatSocket: undefined,
 		to: '',
-		messages: [],
-		minimized: false,
-		unreadMessages: 0
+		messages: []
 	};
 
 	componentWillMount() {
@@ -32,7 +31,7 @@ class Chat extends Component {
 
 	componentWillReceiveProps(nextProps) {
 		if (nextProps.username && !this.props.username) {
-			this.state.chatSocket.emit('set_username', {
+			this.state.chatWs.emit('set_username', {
 				username: nextProps.username
 			});
 		}
@@ -44,12 +43,11 @@ class Chat extends Component {
 
 	initializeChatWs = (token = '') => {
 		this.isInitializing(true);
-		const chatWs = io(`${WS_URL}/chat`, {
+		const chatWs = io.connect(`${WS_URL}/chat`, {
 			query: {
-				token: `Bearer ${token}`
+				token: token ? `Bearer ${token}` : ''
 			}
 		});
-		this.setState({ chatWs });
 
 		chatWs.on('init', ({ messages = [], announcements = [] }) => {
 			this.setState({
@@ -67,11 +65,12 @@ class Chat extends Component {
 
 		chatWs.on('message', (message) => {
 			const messages = this.state.messages.concat(message);
-			const unreadMessages = this.state.minimized
-				? this.state.unreadMessages +
+			const unreadMessages = this.props.minimized
+				? this.props.unreadMessages +
 					(messages.length - this.state.messages.length)
 				: 0;
-			this.setState({ messages, unreadMessages });
+			this.props.setChatUnreadMessages(unreadMessages)
+			this.setState({ messages });
 		});
 
 		chatWs.on('announcement', (announcement) => {
@@ -88,11 +87,15 @@ class Chat extends Component {
 				this.setState({ messages });
 			}
 		});
+
+		
+
+		this.setState({ chatWs });
 	};
 
 	closeChatSocket = () => {
-		if (this.state.chatSocket) {
-			this.state.chatSocket.close();
+		if (this.state.chatWs) {
+			this.state.chatWs.close();
 		}
 	};
 
@@ -117,28 +120,23 @@ class Chat extends Component {
 					type: MESSAGE_TYPES.MESSAGE_TYPE_NORMAL
 				};
 
-				this.state.chatSocket.emit('message', chatMessage);
+				this.state.chatWs.emit('message', chatMessage);
 
 				this.chatMessageBox.value = '';
-				this.chatMessageBox.style.height = '24px';
+				this.chatMessageBox.style.height = '36px';
 			}
 		}
 	};
 
-	// navigateToUsernameSetting = () => {
-	// 	this.props.changeModalRoute(PATHS.SETTINGS, { tab: 'username' });
-	// };
+	navigateToUsernameSetting = () => {
+		browserHistory.push({
+			pathname: 'account',
+			state: { section: 'settings', content: 'username' }
+		});
+	};
 
 	isInitializing = (condition) => {
 		this.setState({ chatSocketInitializing: condition });
-	};
-
-	minimizeChat = () => {
-		const minimized = !this.state.minimized;
-		if (minimized === false) {
-			this.resetUnreadMessages();
-		}
-		this.setState({ minimized });
 	};
 
 	resetUnreadMessages = () => {
@@ -146,16 +144,22 @@ class Chat extends Component {
 	};
 
 	removeMessage = (id) => {
-		this.state.chatSocket.emit('deleteMessage', id);
+		this.state.chatWs.emit('deleteMessage', id);
 	};
 
 	render() {
-		const { username, userType, userInitialized, children } = this.props;
+		const {
+			username,
+			userType,
+			userInitialized,
+			children,
+			onMinimize,
+			minimized
+		} = this.props;
 		const {
 			messages,
 			chatSocketInitialized,
 			chatSocketInitializing,
-			minimized,
 			unreadMessages
 		} = this.state;
 
@@ -178,7 +182,7 @@ class Chat extends Component {
 				sendMessage={this.sendMessage}
 				userInitialized={userInitialized}
 				minimized={minimized}
-				minimizeChat={this.minimizeChat}
+				minimizeChat={onMinimize}
 				removeMessage={this.removeMessage}
 			>
 				{!userInitialized && !username ? (
@@ -197,13 +201,14 @@ class Chat extends Component {
 
 const mapStateToProps = (store) => ({
 	username: store.user.username,
-	userType: store.user.userType,
-	userInitialized: store.user.fetched
+	userType: store.auth.userType,
+	userInitialized: store.user.fetched,
+	unreadMessages: store.app.chatUnreadMessages
 });
 
 const mapDispatchToProps = (dispatch) => ({
 	setAnnouncements: bindActionCreators(setAnnouncements, dispatch),
-	//changeModalRoute: bindActionCreators(changeModalRoute, dispatch),
+	setChatUnreadMessages: bindActionCreators(setChatUnreadMessages, dispatch),
 	dispatch
 });
 

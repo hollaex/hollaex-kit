@@ -33,6 +33,17 @@ class Account extends Component {
 		tabs: []
 	};
 
+	componentWillMount() {
+		if (
+			this.props.location &&
+			this.props.location.state &&
+			this.props.location.state.section === 'settings'
+		) {
+			this.setActiveTab(2);
+			this.updateTabs({route: {path: this.props.location.state.section}})
+		}
+	}
+
 	componentDidMount() {
 		if (this.props.id) {
 			this.updateTabs(this.props);
@@ -75,7 +86,7 @@ class Account extends Component {
 			activeTab = initialValues.activeTab;
 			activeDevelopers = initialValues.activeDevelopers;
 		}
-
+		console.log(activeTab)
 		const tabs = [
 			{
 				title: (

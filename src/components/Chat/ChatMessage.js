@@ -35,10 +35,10 @@ class ChatMessageWithText extends Component {
 		const { maxLines } = this.state;
 		return (
 			<div>
-				<div className="d-inline mr-1">{`${username}:`}</div>
-				{to && <div className="d-inline mr-1">{`${to}:`}</div>}
+				<div className="mr-1 own-message username">{`${username}:`}</div>
+				{to && <div className="mr-1">{`${to}:`}</div>}
 				{ownMessage ? (
-					<div className="d-inline message">{messageContent}</div>
+					<div className="message">{messageContent}</div>
 				) : (
 					<TruncateMarkup
 						className="d-inline message"
@@ -70,7 +70,7 @@ class ChatMessageWithImage extends Component {
 			<div>
 				<div className="d-flex flex-row">
 					<div>
-						<div className="d-inline">{`${username}:`}</div>
+						<div className="d-inline username">{`${username}:`}</div>
 						{to && <div className="d-inline mr-1">{`${to}:`}</div>}
 					</div>
 					<div
@@ -120,6 +120,7 @@ export class ChatMessage extends Component {
 		} = this.props;
 		const { showOptions } = this.state;
 		const imageType = messageType === 'image';
+
 		return (
 			<div
 				className={classnames(
@@ -147,7 +148,7 @@ export class ChatMessage extends Component {
 						/>
 					)}
 				</div>
-				{userType === USER_TYPES.ADMIN && (
+				{userType === USER_TYPES.USER_TYPE_ADMIN && (
 					<div className="d-flex item-options" onClick={this.toggleOptions}>
 						<ReactSVG
 							path={ICONS.ITEM_OPTIONS}

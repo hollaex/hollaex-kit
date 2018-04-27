@@ -11,7 +11,7 @@ export const ChatMessageBox = ({
 	sendMessage,
 	setChatBoxRef
 }) => (
-	<div className={classnames('d-flex', 'flex-1')}>
+	<div className={classnames('d-flex')} style={{flex:1}}>
 		<Textarea
 			ref={setChatBoxRef}
 			rows="1"
