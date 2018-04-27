@@ -27,7 +27,7 @@ class UserSettings extends Component {
 		}
 	}
 
-	calculateSections = ({ username = 'XX', settings = {}}) => {
+	calculateSections = ({ username = '', settings = {}}) => {
 		const formValues = generateFormValues();
 		const usernameFormValues = generateUsernameFormValues(settings.usernameIsSet);
 
