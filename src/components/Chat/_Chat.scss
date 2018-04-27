@@ -53,6 +53,7 @@ $unread-messages-border--color: #b9b500;
 		height: 1.5rem;
 		width: 1.5rem;
 		padding: 0.2rem;
+		margin-left: 1rem;
 		cursor: pointer;
 
 		.minimize-button-content {
@@ -89,7 +90,10 @@ $unread-messages-border--color: #b9b500;
 
 		.chat-header-icon {
 			flex: 1;
-			padding-right: 1rem;
+			background-image: url("/assets/images/dotted-grip-chat-repeat-pattern.svg");
+			background-repeat: repeat-x;
+			background-size: 0.75rem;
+			height: 1.2rem;
 		}
 	}
 

@@ -21,7 +21,7 @@ export const ChatHeader = ({
 			'chat-header'
 		)}
 	>
-		<div className="d-flex chat-header-icon">{title}</div>
+		<div className="d-flex chat-header-icon" />
 		{!minimized && <MinimalizeChat onClick={minimizeChat} />}
 	</div>
 );
