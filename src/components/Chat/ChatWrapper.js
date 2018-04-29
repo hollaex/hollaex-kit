@@ -12,7 +12,6 @@ export const ChatWrapper = ({
 	sendMessage,
 	setChatBoxRef,
 	userInitialized = false,
-	children,
 	minimizeChat,
 	minimized,
 	unreadMessages,
@@ -53,9 +52,7 @@ export const ChatWrapper = ({
 					chatWrapperInitialized={chatWrapperInitialized}
 					sendMessage={sendMessage}
 					setChatBoxRef={setChatBoxRef}
-				>
-					{children}
-				</ChatFooter>
+				/>
 			</div>
 		</Draggable>
 	);

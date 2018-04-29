@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import io from 'socket.io-client';
-import { browserHistory } from 'react-router';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { ChatWrapper, Button } from '../../components';
+import { ChatWrapper } from '../../components';
 import { WS_URL } from '../../config/constants';
 import {
 	setAnnouncements,
@@ -12,7 +11,6 @@ import {
 	MESSAGE_TYPES
 } from '../../actions/appActions';
 import { getToken } from '../../utils/token';
-import STRINGS from '../../config/localizedStrings';
 
 const ENTER_KEY = 'Enter';
 
@@ -126,13 +124,6 @@ class Chat extends Component {
 		}
 	};
 
-	navigateToUsernameSetting = () => {
-		browserHistory.push({
-			pathname: 'account',
-			state: { section: 'settings', content: 'username' }
-		});
-	};
-
 	isInitializing = (condition) => {
 		this.setState({ chatSocketInitializing: condition });
 	};
@@ -150,7 +141,6 @@ class Chat extends Component {
 			username,
 			userType,
 			userInitialized,
-			children,
 			onMinimize,
 			minimized
 		} = this.props;
@@ -160,12 +150,6 @@ class Chat extends Component {
 			chatSocketInitializing,
 			unreadMessages
 		} = this.state;
-
-		const childWithProps = React.Children.map(children, (child) =>
-			React.cloneElement(child, {
-				disabled: userInitialized || !chatSocketInitialized
-			})
-		);
 
 		return (
 			<ChatWrapper
@@ -182,17 +166,8 @@ class Chat extends Component {
 				minimized={minimized}
 				minimizeChat={onMinimize}
 				removeMessage={this.removeMessage}
-			>
-				{!userInitialized && !username ? (
-					childWithProps
-				) : (
-					<Button
-						label={STRINGS.CHAT.JOIN_CHAT}
-						onClick={this.navigateToUsernameSetting}
-						disabled={!userInitialized || !chatSocketInitialized}
-					/>
-				)}
-			</ChatWrapper>
+			
+			/>
 		);
 	}
 }
