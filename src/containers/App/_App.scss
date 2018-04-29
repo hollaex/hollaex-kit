@@ -6,8 +6,9 @@ $inner_container-border: 1px solid $colors-main-black;
 
 	&.dark-theme {
 		background: $dark-app-background-color !important;
+		min-height: 100vh;
 	}
-	
+
 	&.btc {
 		@include currency-color($btc-color);
 	}

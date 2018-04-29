@@ -33,21 +33,6 @@ $deactive-tab-border: $boder--width solid $border--color;
 	border-bottom: $height solid $color;
 }
 
-.dark-theme {
-	.sidebar_hub-wrapper {
-		.currency-selector {
-			.tab-action {
-				&.tab-active {
-					background: $dark-app-background-color !important;
-				}
-				&.not-active {
-					background: $dark-disabled-main !important;
-				}
-			}
-		}
-	}
-}
-
 .sidebar_hub-wrapper {
 	.currency-selector {
 		.tab-action {
@@ -219,6 +204,23 @@ $deactive-tab-border: $boder--width solid $border--color;
 			.separator {
 				height: 1rem;
 				width: 100%;
+			}
+		}
+	}
+}
+
+.dark-theme {
+	.sidebar_hub-wrapper {
+		.currency-selector {
+			.tab-action {
+				&.tab-active {
+					background: $dark-app-background-color !important;
+					color: $dark-font-main-text-color;
+				}
+				&.not-active {
+					background: $dark-disabled-main !important;
+					color: $dark-font-main-text-color;
+				}
 			}
 		}
 	}

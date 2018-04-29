@@ -4,6 +4,13 @@ $app-bar--background: white;
 .dark-theme {
 	.app_bar {
 		background: $dark-app-background-color !important;
+		border-bottom-color: $dark-border-main !important;
+
+		> div {
+			&:not(:first-child) {
+				border-left-color: $dark-border-main !important;
+			}
+		}
 	}
 }
 

@@ -5,7 +5,7 @@ import { IconTitle } from '../';
 const TabController = ({ tabs, activeTab, setActiveTab, title, titleIcon }) => (
 	<div className="tab_controller-wrapper">
 		{(title || titleIcon) && (
-			<IconTitle text={title} iconPath={titleIcon} textType="title" />
+			<IconTitle text={title} iconPath={titleIcon} textType="title" useSvg={titleIcon.indexOf('.svg') > 0} />
 		)}
 		<div className="tab_controller-tabs">
 			{tabs.map((tab, index) => {

@@ -186,3 +186,24 @@ $outline-height: 1.5px;
 		}
 	}
 }
+
+
+.dark-theme {
+	.field-label {
+		color: $dark-form-label !important;
+	}
+
+	.field-content-outline {
+		&:before {
+			background: $dark-form-color-underline;
+		}
+
+		&:after {
+			background: $dark-form-color-underline;
+		}
+
+		&.focused:after {
+			background: $dark-form-color-underline-focus;
+		}
+	}
+}

@@ -42,15 +42,43 @@ $tab_controller-item-min-width: 12rem;
 		color: $colors-main-black;
 		& svg path {
 			opacity: 1;
+			.st0,
+			.g1_4,
+			.g1_2 {
+				fill: $colors-main-black !important;
+			}
+			.st0 {
+				stroke: $colors-main-black !important;
+			}
 		}
+	}
+}
 
-		.st0,
-		.g1_4,
-		.g1_2 {
-			fill: $colors-main-black !important;
-		}
-		.st0 {
-			stroke: $colors-main-black !important;
+.dark-theme {
+	$disabled-color: $dark-tab-inactive !important;
+	$active-color: $dark-tab-active !important;
+	.tab_controller-tabs {
+		border-top-color: $dark-border-main !important;
+		.tab_item {
+			color: $disabled-color;
+
+			.st0,
+			.g1_4,
+			.g1_2 {
+				fill: $disabled-color;
+			}
+			.st0 {
+				stroke: $disabled-color;
+			}
+
+			&.tab_item-active {
+				border-top-color: $dark-border-main !important;
+				color: $active-color;
+				& svg {
+					fill: $active-color;
+					stroke: $disabled-color;
+				}
+			}
 		}
 	}
 }

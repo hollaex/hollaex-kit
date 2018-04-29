@@ -26,6 +26,10 @@ $title--margin: 1rem;
 		@include size($tab_controller-title-img-size);
 	}
 
+	.icon_title-svg svg {
+		@include size($tab_controller-title-img-size);
+	}
+
 	.icon_title-text {
 		font-size: $font-size-subhead3;
 		margin: $title--margin;
@@ -39,5 +43,16 @@ $title--margin: 1rem;
 .direction_ltr {
 	.icon_title-wrapper {
 		font-family: $raleway--font-family;
+	}
+}
+
+.dark-theme {
+	.icon_title-wrapper {
+		color: $dark-font-main-text-color !important;
+		.icon_title-svg svg {
+			.g1_3 {
+				fill: $dark-icon-hover;
+			}
+		}
 	}
 }
