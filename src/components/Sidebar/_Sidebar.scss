@@ -32,10 +32,6 @@ $row--size: calc(#{$row--height} - #{$sidebar-sections-padding});
 	.cell-wrapper {
 		padding-left: $sidebar-sections-padding;
 		padding-right: $sidebar-sections-padding;
-
-		&:not(:last-child) {
-			border-right: 1px solid $sidebar-border--color;
-		}
 	}
 	.sidebar-row--right-icon {
 		@include size($row--size);
@@ -57,6 +53,31 @@ $row--size: calc(#{$row--height} - #{$sidebar-sections-padding});
 	}
 }
 
+.app_bar {
+	.sidebar-row {
+		min-width: 3rem;
+	}
+}
 .cell-wrapper {
 
+}
+
+.direction_ltr {
+	.sidebar-row {
+		.cell-wrapper {
+			&:not(:last-child) {
+				border-right: 1px solid $sidebar-border--color;
+			}
+		}
+	}
+}
+
+.direction_rtl {
+	.sidebar-row {
+		.cell-wrapper {
+			&:not(:last-child) {
+				border-left: 1px solid $sidebar-border--color;
+			}
+		}
+	}
 }
