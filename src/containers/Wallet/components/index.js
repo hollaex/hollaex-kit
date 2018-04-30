@@ -108,5 +108,5 @@ export const renderTitleSection = (symbol, type, icon) => {
 	const { withdrawText, depositText } = generateWalletActionsText(symbol);
 	const text = type === 'withdraw' ? withdrawText : depositText;
 
-	return <IconTitle text={text} iconPath={icon} textType="title" />;
+	return <IconTitle text={text} iconPath={icon} textType="title" useSvg={true} />;
 };

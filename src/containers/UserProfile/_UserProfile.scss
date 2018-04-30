@@ -204,3 +204,15 @@ $dark-information--color: $dark-link;
 		}
 	}
 }
+
+.dark-theme {
+	.information_section {
+		color: $dark-link;
+		.information_svg {
+			fill: $dark-link;
+		}
+		.information_change {
+			color: $dark-link;
+		}
+	}
+}

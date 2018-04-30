@@ -54,5 +54,8 @@ $title--margin: 1rem;
 				fill: $dark-icon-hover;
 			}
 		}
+		&.underline:after {
+			background: $dark-border-main;
+		}
 	}
 }

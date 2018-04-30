@@ -66,16 +66,9 @@
 	.exir-button {
 		color: $dark-font-main-text-color;
 		background-color: $dark-button-active !important;
-		&.button-success {
-			background-color: $colors-notifications-green !important;
-		}
-
-		&.button-fail {
-			background-color: $colors-notifications-red !important;
-		}
 
 		&.disabled {
-			$dark-button-disabled: $colors-deactivate-color4 !important;
+			background-color: $dark-disabled-secondary !important;
 		}
 	}
 }

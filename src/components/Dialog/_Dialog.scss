@@ -76,3 +76,12 @@ $close-button--margin: 1.5rem;
 		z-index: 110 !important;
 	}
 }
+
+.dark-theme {
+	.ReactModal__Content {
+		background-color: $dark-app-background-color !important;
+	}
+	.ReactModal__Overlay {
+		background-color: rgba(46, 47, 55, 0.75) !important;
+	}
+}

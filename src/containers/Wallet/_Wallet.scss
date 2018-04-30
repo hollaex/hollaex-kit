@@ -164,3 +164,14 @@ $header-margin: 2rem;
 		right: 0;
 	}
 }
+
+.dark-theme {
+	svg {
+		.wallet-coins-1 {
+			stroke: $dark-button-active;
+		}
+		.wallet-coins-2 {
+			fill: $dark-font-main-text-color;
+		}
+	}
+}

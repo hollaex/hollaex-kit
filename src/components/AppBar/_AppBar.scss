@@ -5,7 +5,7 @@ $app-bar--background: white;
 	.app_bar {
 		background: $dark-app-background-color !important;
 		border-bottom-color: $dark-border-main !important;
-
+		color: $dark-font-main-text-color  !important;
 		> div {
 			&:not(:first-child) {
 				border-left-color: $dark-border-main !important;

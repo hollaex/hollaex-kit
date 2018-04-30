@@ -62,21 +62,17 @@ $tab_controller-item-min-width: 12rem;
 		.tab_item {
 			color: $disabled-color;
 
-			.st0,
-			.g1_4,
-			.g1_2 {
+			svg path {
 				fill: $disabled-color;
-			}
-			.st0 {
 				stroke: $disabled-color;
 			}
 
 			&.tab_item-active {
 				border-top-color: $dark-border-main !important;
 				color: $active-color;
-				& svg {
+				svg path {
 					fill: $active-color;
-					stroke: $disabled-color;
+					stroke: $active-color;
 				}
 			}
 		}

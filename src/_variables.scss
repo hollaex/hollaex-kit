@@ -45,11 +45,14 @@ $dark-form-text: $dark-font-sub-text-color;
 $dark-form-text-disabled: $dark-disabled-main;
 $dark-form-label: $dark-font-main-text-color;
 $dark-tab-active: $dark-font-main-text-color;
-$dark-tab-inactive: $dark-disabled-main;
+$dark-tab-notification: $dark-link;
+$dark-tab-inactive: $dark-button-active;
 $dark-icon-hover: $dark-font-main-text-color;
 $dark-icon-unhover: $dark-font-sub-text-color;
 $dark-accordion-arrow-active: $dark-font-main-text-color;
 $dark-accordion-arrow-inactive: $dark-font-sub-text-color;
+$dark-sidebar-color: $dark-font-sub-text-color;
+$dark-sidebar-color-active: $dark-font-main-text-color;
 
 $app-background-color: white;
 $app-background-color-on-modal: lightgrey;

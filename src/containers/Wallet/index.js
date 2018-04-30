@@ -148,6 +148,7 @@ class Wallet extends Component {
 					iconPath={
 						symbol === fiatSymbol ? ICONS.FIAT_WALLET : ICONS.BITCOIN_WALLET
 					}
+					useSvg={true}
 					textType="title"
 				/>
 				<div className={classnames('wallet-container')}>

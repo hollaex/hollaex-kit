@@ -60,3 +60,14 @@ $content--margin: 2rem;
 .bank_account-information-wrapper {
 	margin: $content--margin 0;
 }
+
+.dark-theme {
+	svg {
+		.withdraw-1 {
+			fill: $dark-font-main-text-color;
+		}
+		.withdraw-2 {
+			fill: $dark-button-active;
+		}
+	}
+}

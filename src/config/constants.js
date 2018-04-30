@@ -14,27 +14,28 @@ export const API_URL = config[ENV][NETWORK].API_URL;
 export const WS_URL = config[ENV][NETWORK].WS_URL;
 
 export const ICONS = {
-	LIFESAVER: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-05.png`,
-	CHECK: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-06.png`,
+	LIFESAVER: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-05.svg`,
+	CHECK: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-06.svg`,
 	BLUE_QUESTION: `${
 		process.env.PUBLIC_URL
-	}/assets/acounts/account-icons-08.png`,
-	RED_WARNING: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-09.png`,
-	GENDER_F: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-10.png`,
-	GENDER_M: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-11.png`,
+	}/assets/acounts/account-icons-08.svg`,
+	RED_WARNING: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-09.svg`,
+	GENDER_F: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-10.svg`,
+	GENDER_M: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-11.svg`,
 	BITCOIN_CLEAR: `${
 		process.env.PUBLIC_URL
-	}/assets/acounts/account-icons-13.png`,
-	RED_ARROW: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-16.png`,
-	BLUE_CLIP: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-17.png`,
-	BLACK_CHECK: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-19.png`,
-	KEYS: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-22.png`,
-	GREEN_CHECK: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-23.png`,
-	LETTER: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-24.png`,
-	SQUARE_DOTS: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-25.png`,
+	}/assets/acounts/account-icons-13.svg`,
+	RED_ARROW: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-16.svg`,
+	BLUE_CLIP: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-17.svg`,
+	BLACK_CHECK: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-19.svg`,
+	KEYS: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-22.svg`,
+	GREEN_CHECK: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-23.svg`,
+	LETTER: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-24.svg`,
+	SQUARE_DOTS: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-25.svg`,
 	COPY_NEW: `${process.env.PUBLIC_URL}/assets/images/copy.svg`,
 	LOGO_BLUE: `${process.env.PUBLIC_URL}/assets/logo-blue-exir.svg`,
 	LOGO_GREY: `${process.env.PUBLIC_URL}/assets/images/EXIR-grey-login.svg`,
+	LOGO_WHITE: `${process.env.PUBLIC_URL}/assets/images/logo-white-exir.svg`,
 	BACKGROUND_LARGE: `${
 		process.env.PUBLIC_URL
 	}/assets/background-site-large.jpg`,
