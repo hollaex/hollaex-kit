@@ -14,13 +14,8 @@ export const API_URL = config[ENV][NETWORK].API_URL;
 export const WS_URL = config[ENV][NETWORK].WS_URL;
 
 export const ICONS = {
-	USER: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-01.png`,
-	FINGERPRINT: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-02.png`,
-	LOCK: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-03.png`,
-	BELL: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-04.png`,
 	LIFESAVER: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-05.png`,
 	CHECK: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-06.png`,
-	// BLUE_PLUS: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-07.png`,
 	BLUE_QUESTION: `${
 		process.env.PUBLIC_URL
 	}/assets/acounts/account-icons-08.png`,
@@ -30,26 +25,14 @@ export const ICONS = {
 	BITCOIN_CLEAR: `${
 		process.env.PUBLIC_URL
 	}/assets/acounts/account-icons-13.png`,
-	BITCOIN_DARK: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-14.png`,
-	USER_DARK: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-12.png`,
-	USER_WHITE: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-15.png`,
 	RED_ARROW: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-16.png`,
 	BLUE_CLIP: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-17.png`,
-	GREY_RIGHT_TRIANGLE: `${
-		process.env.PUBLIC_URL
-	}/assets/acounts/account-icons-18.png`,
 	BLACK_CHECK: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-19.png`,
-	WHITE_CHECK: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-20.png`,
-	BALCK_CORNER_TRIANGLE: `${
-		process.env.PUBLIC_URL
-	}/assets/acounts/account-icons-21.png`,
 	KEYS: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-22.png`,
 	GREEN_CHECK: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-23.png`,
 	LETTER: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-24.png`,
 	SQUARE_DOTS: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-25.png`,
 	COPY_NEW: `${process.env.PUBLIC_URL}/assets/images/copy.svg`,
-	COPY: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-26.png`,
-	LOGOUT: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-27.png`,
 	LOGO_BLUE: `${process.env.PUBLIC_URL}/assets/logo-blue-exir.svg`,
 	LOGO_GREY: `${process.env.PUBLIC_URL}/assets/images/EXIR-grey-login.svg`,
 	BACKGROUND_LARGE: `${
@@ -295,8 +278,7 @@ export const CURRENCIES = {
 		fullName: STRINGS.FIAT_FULLNAME,
 		shortName: STRINGS.FIAT_SHORTNAME,
 		currencySymbol: STRINGS.FIAT_CURRENCY_SYMBOL,
-		formatToCurrency: formatFiatAmount,
-		iconPath: ICONS.TOMAN_T_ICON
+		formatToCurrency: formatFiatAmount
 	},
 	btc: {
 		symbol: 'btc',
@@ -304,8 +286,7 @@ export const CURRENCIES = {
 		fullName: STRINGS.BTC_FULLNAME,
 		shortName: STRINGS.BTC_SHORTNAME,
 		currencySymbol: 'B',
-		formatToCurrency: formatBtcAmount,
-		iconPath: ICONS.BITCOIN_DARK
+		formatToCurrency: formatBtcAmount
 	}
 };
 
