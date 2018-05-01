@@ -65,7 +65,6 @@ class CandleChart extends Component {
 			ratio,
 			height,
 			type,
-			theme,
 			seriesName
 		} = this.props;
 		// const { gridY, gridX } = this.state;

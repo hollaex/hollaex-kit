@@ -14,7 +14,6 @@ import {
 	Accordion,
 	Dialog,
 	SuccessDisplay,
-	CheckboxButton,
 	OtpForm
 } from '../../components';
 import { errorHandler } from '../../components/OtpForm/utils';
