@@ -1,5 +1,6 @@
 import React from 'react';
 import math from 'mathjs';
+import ReactSVG from 'react-svg';
 import { Button } from '../../components';
 import { fiatSymbol, fiatFormatToCurrency } from '../../utils/currency';
 import { CURRENCIES, ICONS } from '../../config/constants';
@@ -49,11 +50,7 @@ const ReviewModalContent = ({
 
 	return (
 		<div className="d-flex flex-column review-wrapper">
-			<img
-				src={ICONS.CHECK_SENDING_BITCOIN}
-				alt="review"
-				className="review-icon"
-			/>
+			<ReactSVG path={ICONS.CHECK_SENDING_BITCOIN} wrapperClassName="review-icon" />
 			{symbol === fiatSymbol ? (
 				<div className="d-flex flex-column align-items-center review-info_container">
 					<div className="review-info_message">

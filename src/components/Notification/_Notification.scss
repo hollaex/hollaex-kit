@@ -16,6 +16,9 @@ $logout--size-difference: 3rem;
 		.notification-title-icon {
 			max-height: 8rem;
 			margin: 2rem 0;
+			svg {
+				@include size(8rem);
+			}
 		}
 
 		.notification-title-text {
@@ -152,7 +155,15 @@ $logout--size-difference: 3rem;
 
 		.notification-title-wrapper {
 			border-bottom-color: $dark-border-main;
-
+			.notification-title-icon {
+				svg {
+					.deposit-02,
+					.deposit-complete-01,
+					.deposit-complete-btc-01 {
+						fill: $dark-button-active;
+					}
+				}
+			}
 			.notification-title-text {
 				color: $dark-font-main-text-color;
 			}
@@ -164,11 +175,25 @@ $logout--size-difference: 3rem;
 			}
 		}
 		svg {
-			.check-order-1, .check-order-2 {
+			.check-order-1,
+			.check-order-2 {
 				stroke: $dark-tab-inactive;
 			}
 			.check-order-2 {
 				fill: $dark-tab-inactive;
+			}
+			.coin-btc-1 {
+				fill: $dark-tab-inactive;
+			}
+			.coin-btc-4 {
+				stroke: $dark-tab-inactive;
+			}
+
+			.coin-fiat-1 {
+				fill: $dark-tab-inactive;
+			}
+			.coin-fiat-4 {
+				stroke: $dark-tab-inactive;
 			}
 		}
 	}
