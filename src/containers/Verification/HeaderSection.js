@@ -14,6 +14,7 @@ const HeaderSection = ({ title, children, openContactForm }) => {
 						status="information"
 						iconPath={ICONS.BLUE_QUESTION}
 						onClick={openContactForm}
+						useSvg={true}
 					/>
 				</div>
 			</div>

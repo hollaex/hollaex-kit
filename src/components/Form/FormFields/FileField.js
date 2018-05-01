@@ -51,6 +51,7 @@ class FileField extends Component {
 							status="information"
 							iconPath={ICONS.BLUE_CLIP}
 							className="no_bottom pr-0 pl-0"
+							useSvg={true}
 						/>
 					)}
 					<input type="file" className="input_file" {...input} />

@@ -99,6 +99,7 @@ const generateHeaders = (onCancel) => [
 						className="relative"
 						status=""
 						textPosition="left"
+						useSvg={true}
 					/>
 				</td>
 			);

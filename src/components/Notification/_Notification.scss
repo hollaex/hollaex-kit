@@ -145,3 +145,31 @@ $logout--size-difference: 3rem;
 		font-family: $raleway-medium--font-family;
 	}
 }
+
+.dark-theme {
+	.notification-wrapper {
+		color: $dark-font-sub-text-color;
+
+		.notification-title-wrapper {
+			border-bottom-color: $dark-border-main;
+
+			.notification-title-text {
+				color: $dark-font-main-text-color;
+			}
+		}
+
+		.notification-content-information {
+			.text_disabled {
+				color: $dark-font-sub-text-color;
+			}
+		}
+		svg {
+			.check-order-1, .check-order-2 {
+				stroke: $dark-tab-inactive;
+			}
+			.check-order-2 {
+				fill: $dark-tab-inactive;
+			}
+		}
+	}
+}

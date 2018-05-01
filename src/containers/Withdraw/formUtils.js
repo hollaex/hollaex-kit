@@ -82,6 +82,7 @@ export const generateFormValues = (
 			status: 'information',
 			iconPath: ICONS.BLUE_PLUS,
 			className: 'file_upload_icon',
+			useSvg: true,
 			onClick: calculateMax
 		}
 	};

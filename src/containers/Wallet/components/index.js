@@ -83,6 +83,8 @@ export const renderNeedHelpAction = (openContactForm) => (
 		status="information"
 		iconPath={ICONS.BLUE_QUESTION}
 		onClick={openContactForm}
+		className="need-help"
+		useSvg={true}
 	/>
 );
 

@@ -62,6 +62,7 @@ class EditableInputField extends Component {
 					iconPath={ICONS.BLUE_EDIT}
 					className="no_bottom pr-0 pl-0"
 					onClick={this.toogleEditable}
+					useSvg={true}
 				/>
 			</FieldWrapper>
 		);

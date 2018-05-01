@@ -376,5 +376,5 @@ export const PRO_URL = process.env.REACT_APP_PRO_URL || 'https://exir.io';
 
 export const MIN_LEVEL_FOR_TOKENS = parseInt(process.env.REACT_APP_MIN_LEVEL_FOR_TOKENS || 2, 10)
 
-export const THEMES = ['white', 'dark'];
+export const THEMES = ['dark', 'white'];
 export const THEME_DEFAULT = THEMES[0];

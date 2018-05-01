@@ -112,6 +112,7 @@ $outline-height: 1.5px;
 }
 
 .dumb-field-wrapper {
+	color: $dark-font-sub-text-color;
 	> .field-content > .field-children {
 		padding-left: 0.25rem;
 	}
@@ -122,6 +123,16 @@ $outline-height: 1.5px;
 
 	.copy-wrapper {
 		top: 0;
+	}
+}
+
+.field-wrapper {
+	.action_notification-wrapper {
+		.action_notification-svg {
+			svg {
+				@include size(1rem);
+			}
+		}
 	}
 }
 

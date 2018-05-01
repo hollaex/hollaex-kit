@@ -15,6 +15,9 @@ $main-text--color: $colors-deactivate-color2;
 	font-size: $title--font-size;
 	padding: $accordion_content-padding;
 
+	.action_notification-svg svg {
+		@include size(1rem);
+	}
 	.accordion_section_title {
 		padding: $title--padding 0;
 		position: relative;
@@ -131,7 +134,7 @@ $main-text--color: $colors-deactivate-color2;
 		}
 
 		&:last-child {
-			border-bottom: $dark-border-main;
+			border-bottom-color: $dark-border-main;
 		}
 	}
 

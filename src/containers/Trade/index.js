@@ -120,6 +120,7 @@ class Trade extends Component {
 						iconPath={ICONS.CANCEL_CROSS_ACTIVE}
 						onClick={cancelAllOrders}
 						status=""
+						useSvg={true}
 					/>
 				)
 			},
@@ -132,6 +133,7 @@ class Trade extends Component {
 						iconPath={ICONS.ARROW_TRANSFER_HISTORY_ACTIVE}
 						onClick={this.goToTransactionsHistory}
 						status=""
+						useSvg={true}
 					/>
 				)
 			}

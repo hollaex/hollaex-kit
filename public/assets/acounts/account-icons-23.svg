@@ -3,11 +3,11 @@
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 viewBox="0 0 54.9 54.9" style="enable-background:new 0 0 54.9 54.9;" xml:space="preserve">
 <style type="text/css">
-	.st0{fill:#00A451;}
-	.st1{fill:none;stroke:#FFFFFF;stroke-width:4;stroke-linejoin:round;stroke-miterlimit:10;}
+	.check-green-1{fill:#00A451;}
+	.check-green-2{fill:none;stroke:#FFFFFF;stroke-width:4;stroke-linejoin:round;stroke-miterlimit:10;}
 </style>
 <g id="XMLID_2309_">
-	<circle id="XMLID_2127_" class="st0" cx="27.4" cy="27.4" r="27.4"/>
-	<polyline id="XMLID_2136_" class="st1" points="14.1,30 22.3,38 43.7,16.8 	"/>
+	<circle id="XMLID_2127_" class="check-green-1" cx="27.4" cy="27.4" r="27.4"/>
+	<polyline id="XMLID_2136_" class="check-green-2" points="14.1,30 22.3,38 43.7,16.8 	"/>
 </g>
 </svg>

@@ -105,4 +105,8 @@ $controllers--color-disabled: $colors-deactivate-color2;
 		color: $dark-font-main-text-color;
 		border-top-color: $dark-border-main;
 	}
+
+	.no-data {
+		color: $dark-font-main-text-color;
+	}
 }

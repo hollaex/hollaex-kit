@@ -52,4 +52,22 @@
 			fill: $dark-link;
 		}
 	}
+
+	svg {
+		.transaction-history-1 {
+			fill: $dark-button-active;
+		}
+		.transaction-history-2 {
+			fill: $dark-button-active;
+		}
+		.transaction-history-3 {
+			fill: $dark-button-active;
+		}
+		.transaction-history-4 {
+			stroke: $dark-button-active;
+		}
+		.transaction-history-5 {
+			fill: $dark-font-main-text-color;
+		}
+	}
 }

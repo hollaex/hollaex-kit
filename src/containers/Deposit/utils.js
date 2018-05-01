@@ -32,7 +32,9 @@ const renderBTCContent = (label = '', address = '') =>
 			</div>
 			<div className="deposit_info-qr-wrapper d-flex align-items-center justify-content-center">
 				<div className="qr_code-wrapper d-flex flex-column">
+					<div className="qr-code-bg d-flex justify-content-center align-items-center">
 					<QRCode value={address} />
+					</div>
 					<div className="qr-text">{STRINGS.DEPOSIT.QR_CODE}</div>
 				</div>
 			</div>

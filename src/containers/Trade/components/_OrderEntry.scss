@@ -109,3 +109,38 @@
 		@include entry_form($trade-bids-color-main, $trade-bids-color-disabled);
 	}
 }
+
+.dark-theme {
+	.trade_order_entry-wrapper {
+		color: $dark-font-sub-text-color !important;
+
+		.trade_order_entry-review {
+			border-top-color: $dark-border-main !important;
+			.text-price {
+				color: $dark-font-main-text-color !important;
+			}
+		}
+		.exir-button-font.active {
+			color: $dark-app-background-color !important;
+		}
+
+		.trade_order_entry-selector {
+			&:after {
+				background: $dark-border-main !important;
+			}
+
+			.active {
+				color: $dark-font-main-text-color !important;
+				&:after {
+					background: $dark-border-main !important;
+				}
+			}
+		}
+		&.order_side-selector-sell {
+			@include entry_form($dark-sell, $dark-disabled-secondary);
+		}
+		&.order_side-selector-buy {
+			@include entry_form($dark-buy, $dark-disabled-secondary);
+		}
+	}
+}
