@@ -16,3 +16,15 @@
 .otp_form-fields {
 	margin-bottom: 1rem;
 }
+
+.dark-theme {
+	border-top-color: $dark-border-main;
+
+	color: $dark-font-main-text-color;
+	.dots-1 {
+		stroke: $dark-font-main-text-color;
+	}
+	.dots-2 {
+		fill: $dark-font-main-text-color;
+	}
+}

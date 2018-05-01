@@ -118,3 +118,55 @@ $order_entry-column--width: 15rem;
 		}
 	}
 }
+
+.dark-theme {
+	.ask,
+	.buy {
+		color: $dark-buy;
+	}
+	.bid,
+	.sell {
+		color: $dark-sell;
+	}
+
+	.trade_history-row {
+		&.sell {
+			color: $dark-buy;
+		}
+
+		&.buy {
+			color: $dark-sell;
+		}
+	}
+
+	.cancel-cross-1 {
+		fill: $dark-font-sub-text-color;
+	}
+	.cancel-cross-2,
+	.cancel-cross-3 {
+		stroke: $dark-font-sub-text-color;
+	}
+	.trans-history-1 {
+		fill: $dark-font-sub-text-color;
+	}
+	.trans-history-4 {
+		stroke: $dark-font-sub-text-color;
+	}
+
+	.trade_active_orders-wrapper {
+		.cell_box-type {
+			&.fullfilled .cell-wrapper {
+				border-color: $dark-border-main;
+
+				> .cell_value-wrapper {
+					color: $dark-font-main-text-color;
+					z-index: 2;
+
+					.cell_value-bar {
+						background-color: $dark-button-active;
+					}
+				}
+			}
+		}
+	}
+}

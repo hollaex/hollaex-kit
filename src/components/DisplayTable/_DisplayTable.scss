@@ -30,3 +30,14 @@ $cell-height: 1.5rem;
 .f-1 {
 	flex: 1;
 }
+
+.dark-theme {
+	.display_table-wrapper {
+		.display_table-header {
+			border-bottom-color: $dark-border-main;
+		}
+		.display_table-cell {
+			color: $dark-font-main-text-color;
+		}
+	}
+}

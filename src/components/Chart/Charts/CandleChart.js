@@ -6,7 +6,7 @@ import { CandlesProps } from '../props';
 
 const CandleChart = (props) => (
 	<CustomChart {...props}>
-		<CandlestickSeries {...CandlesProps} />
+		<CandlestickSeries {...CandlesProps(props.theme)} />
 	</CustomChart>
 );
 

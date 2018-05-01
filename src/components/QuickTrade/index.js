@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
+import ReactSVG from 'react-svg';
 import { debounce } from 'lodash';
 import { Button } from '../../components';
 
@@ -99,7 +100,7 @@ class QuickTrade extends Component {
 						...GROUP_CLASSES
 					)}
 				>
-					<img src={ICONS.QUICK_TRADE} alt="" className="quick_trade-icon" />
+					<ReactSVG path={ICONS.QUICK_TRADE} wrapperClassName="quick_trade-icon" />
 					<div className="title text-capitalize">
 						{STRINGS.formatString(
 							STRINGS.QUICK_TRADE_COMPONENT.TRADE_TITLE,

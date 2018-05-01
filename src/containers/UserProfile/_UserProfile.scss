@@ -1,4 +1,5 @@
 $information--color: $colors-deactivate-color2;
+$dark-information--color: $dark-link;
 
 .information_section {
 	font-size: $font-size-subtext;
@@ -68,7 +69,7 @@ $information--color: $colors-deactivate-color2;
 
 			.td-levelball {
 				.td-levelball-content {
-					border:1px solid $colors-main-black;
+					border: 1px solid $colors-main-black;
 					border-radius: 50%;
 					@include size(1.5rem);
 				}
@@ -117,8 +118,6 @@ $information--color: $colors-deactivate-color2;
 			direction: ltr;
 		}
 	}
-
-
 }
 
 .direction_ltr {
@@ -154,6 +153,66 @@ $information--color: $colors-deactivate-color2;
 			.table-icon {
 				padding-left: 0.5rem;
 			}
+		}
+	}
+}
+
+.dark-theme {
+	.information_section {
+		color: $dark-information--color;
+		.information_svg {
+			fill: $dark-information--color;
+		}
+		.information_change {
+			color: $colors-notifications-blue;
+		}
+	}
+
+	.user-limits {
+		.user-limits-table {
+			th {
+				color: $dark-font-main-text-color;
+			}
+			.table-row {
+				color: $dark-font-sub-text-color;
+
+				.td-levelball {
+					.td-levelball-content {
+						border-color: $dark-font-main-text-color;
+						color: $dark-font-main-text-color;
+					}
+				}
+
+				&.user-level {
+					color: $dark-font-main-text-color;
+					td:not(:first-child) {
+						background: $dark-disabled-secondary;
+					}
+
+					.td-levelball {
+						.td-levelball-content {
+							color: $dark-disabled-main;
+							background-color: $dark-font-main-text-color;
+						}
+					}
+				}
+			}
+
+			.table-bottom-border td,
+			th {
+				&:not(:first-child) {
+					border-bottom-color: $dark-border-main;
+				}
+			}
+		}
+	}
+	.information_section {
+		color: $dark-link;
+		.information_svg {
+			fill: $dark-link;
+		}
+		.information_change {
+			color: $dark-link;
 		}
 	}
 }

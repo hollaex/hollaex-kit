@@ -13,6 +13,7 @@ export const renderOTPForm = (secret, email, activateOTP) => (
 			iconPath={ICONS.KEYS}
 			className="w-100"
 			textType="title"
+			useSvg={true}
 		/>
 		<div className="otp_form-section-wrapper">
 			<div className="otp_form-section-title">
@@ -22,10 +23,12 @@ export const renderOTPForm = (secret, email, activateOTP) => (
 				{STRINGS.ACCOUNT_SECURITY.OTP.CONTENT.MESSAGE_2}
 			</div>
 			<div className="d-flex justify-content-center otp_form-section-content">
-				<QRCode
-					value={`otpauth://totp/EXIR-${email}?secret=${secret}`}
-					size={150}
-				/>
+				<div className="qr-code-wrapper d-flex justify-content-center align-items-center">
+					<QRCode
+						value={`otpauth://totp/EXIR-${email}?secret=${secret}`}
+						size={150}
+					/>
+				</div>
 			</div>
 		</div>
 		<div className="otp_form-section-wrapper">
@@ -50,11 +53,15 @@ export const renderOTPForm = (secret, email, activateOTP) => (
 
 export const OTP = ({ requestOTP, data, otp_enabled, children }) => (
 	<div className="user_security-wrapper">
-		<div className="warning_text">
-			{STRINGS.ACCOUNT_SECURITY.OTP.CONTENT.WARNING}
-		</div>
+		{!otp_enabled && (
+			<div className="warning_text">
+				{STRINGS.ACCOUNT_SECURITY.OTP.CONTENT.WARNING}
+			</div>
+		)}
 		<CheckboxButton
-			label={STRINGS.ACCOUNT_SECURITY.OTP.CONTENT.ENABLE}
+			label={
+				STRINGS.ACCOUNT_SECURITY.OTP.CONTENT[otp_enabled ? 'DISABLE' : 'ENABLE']
+			}
 			onClick={requestOTP}
 			disabled={data.requesting}
 			loading={data.requesting}

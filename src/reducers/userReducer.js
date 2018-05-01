@@ -71,7 +71,7 @@ const INITIAL_STATE = {
 	settings: {
 		usernameIsSet: false,
 		orderConfirmationPopup: true,
-		theme: 'white',
+		theme: 'dark',
 		language: DEFAULT_LANGUAGE
 	},
 	limits: INITIAL_LIMIT_OBJECT

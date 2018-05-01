@@ -44,3 +44,14 @@ $loader-relative--height: 10rem;
 		transform: rotate(360deg);
 	}
 }
+
+.dark-theme {
+	.loader {
+		border-color: $dark-font-main-text-color; /* Light grey */
+		border-top-color: $dark-disabled-secondary; /* Blue */
+	}
+
+	.loader_background {
+		background-color: $dark-disabled-secondary;
+	}
+}

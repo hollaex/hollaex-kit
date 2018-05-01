@@ -112,7 +112,7 @@ $deactive-tab-border: $boder--width solid $border--color;
 					width: $icon--height;
 					height: $icon--height;
 
-					.st0 {
+					svg path {
 						fill: transparent;
 						stroke: $colors-deactivate-color2;
 					}
@@ -138,7 +138,7 @@ $deactive-tab-border: $boder--width solid $border--color;
 
 				.sidebar_hub-section-header {
 					.sidebar_hub-section-icon {
-						.st0 {
+						svg path {
 							fill: $colors-main-black;
 							stroke: $colors-main-black;
 						}
@@ -204,6 +204,77 @@ $deactive-tab-border: $boder--width solid $border--color;
 			.separator {
 				height: 1rem;
 				width: 100%;
+			}
+		}
+	}
+}
+
+.dark-theme {
+	.sidebar_hub-wrapper {
+		.sidebar_hub-content {
+			.sidebar_hub-section {
+				border-top-color: $dark-sidebar-color;
+
+				.sidebar_hub-section-header {
+
+					.sidebar_hub-section-icon {
+						svg path {
+							fill: transparent;
+							stroke: $dark-sidebar-color;
+						}
+					}
+					.sidebar_hub-section-title {
+						color: $dark-sidebar-color;
+					}
+				}
+
+				.sidebar_hub-section-content {
+					.accordion_wrapper .accordion_section {
+						border-color: $dark-sidebar-color;
+					}
+				}
+
+				&.section-active {
+					border-color: $dark-sidebar-color-active;
+
+					.sidebar_hub-section-header {
+						.sidebar_hub-section-icon {
+							svg path {
+								fill: $dark-sidebar-color-active;
+								stroke: $dark-sidebar-color-active;
+							}
+						}
+						.sidebar_hub-section-title {
+							color: $dark-sidebar-color-active;
+						}
+					}
+				}
+			}
+		}
+
+		.sidebar_hub-trade {
+			.sidebar_hub-button {
+				border: none;
+				&.not-active {
+					background: $dark-disabled-main !important;
+					color: $dark-font-main-text-color !important;
+				}
+				&.active {
+					background: $dark-button-active !important;
+				}
+			}
+		}
+
+		.currency-selector {
+			.tab-action {
+				&.tab-active {
+					background: $dark-app-background-color !important;
+					color: $dark-font-main-text-color;
+				}
+				&.not-active {
+					background: $dark-disabled-main !important;
+					color: $dark-font-main-text-color;
+				}
 			}
 		}
 	}

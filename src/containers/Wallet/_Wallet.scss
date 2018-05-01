@@ -164,3 +164,44 @@ $header-margin: 2rem;
 		right: 0;
 	}
 }
+
+.dark-theme {
+	svg {
+		.wallet-coins-1 {
+			stroke: $dark-button-active;
+		}
+		.wallet-coins-2 {
+			fill: $dark-font-main-text-color;
+		}
+	}
+
+	.wallet-container {
+		border-top-color: $dark-border-main;
+		.accordion_wrapper {
+			.accordion_section_content_text {
+				color: $dark-font-main-text-color !important;
+				&:after {
+					border-left-color: $dark-border-main !important;
+				}
+			}
+		}
+
+		.wallet-assets_block {
+			color: $dark-font-main-text-color !important;
+			.wallet-assets_block-table {
+				.table-bottom-border td,
+				th {
+					&:not(:first-child) {
+						border-bottom-color: $dark-border-main;
+					}
+				}
+			}
+		}
+	}
+}
+
+.need-help {
+	svg {
+		@include size-important(1rem);
+	}
+}

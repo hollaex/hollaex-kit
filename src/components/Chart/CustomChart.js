@@ -38,6 +38,7 @@ class CustomChart extends Component {
 			ratio,
 			seriesName,
 			modifier,
+			theme,
 			children
 		} = this.props;
 
@@ -63,9 +64,9 @@ class CustomChart extends Component {
 				xExtents={xExtents}
 			>
 				<Chart id={1} yExtents={yExtents(modifier)}>
-					<XAxis width={width} />
-					<YAxis height={height} />
-					<TXAxis width={width} />
+					<XAxis width={width} theme={theme} />
+					<YAxis height={height} theme={theme} />
+					<TXAxis width={width} theme={theme} />
 
 					<MouseCoordinateX
 						at="top"

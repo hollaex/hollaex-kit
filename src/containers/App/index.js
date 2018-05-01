@@ -507,6 +507,7 @@ class Container extends Component {
 					className="app-dialog"
 					onCloseDialog={this.onCloseDialog}
 					shouldCloseOnOverlayClick={shouldCloseOnOverlayClick}
+					theme={activeTheme}
 					showCloseText={
 						!(
 							activeNotification.type === CONTACT_FORM ||
@@ -516,7 +517,7 @@ class Container extends Component {
 					}
 					style={{ 'z-index': 100 }}
 				>
-					{this.renderDialogContent(activeNotification, prices)}
+					{dialogIsOpen && this.renderDialogContent(activeNotification, prices, activeTheme)}
 				</Dialog>
 			</div>
 		);

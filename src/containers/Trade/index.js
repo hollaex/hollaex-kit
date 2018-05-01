@@ -107,6 +107,7 @@ class Trade extends Component {
 			balance,
 			marketPrice,
 			activeLanguage,
+			activeTheme,
 			settings
 		} = this.props;
 		const { chartHeight, chartWidth, symbol } = this.state;
@@ -120,6 +121,7 @@ class Trade extends Component {
 						iconPath={ICONS.CANCEL_CROSS_ACTIVE}
 						onClick={cancelAllOrders}
 						status=""
+						useSvg={true}
 					/>
 				)
 			},
@@ -132,6 +134,7 @@ class Trade extends Component {
 						iconPath={ICONS.ARROW_TRANSFER_HISTORY_ACTIVE}
 						onClick={this.goToTransactionsHistory}
 						status=""
+						useSvg={true}
 					/>
 				)
 			}
@@ -200,7 +203,7 @@ class Trade extends Component {
 							className="f-1 overflow-x"
 						>
 							{chartHeight > 0 && (
-								<PriceChart height={chartHeight} width={chartWidth} />
+								<PriceChart height={chartHeight} width={chartWidth} theme={activeTheme} />
 							)}
 						</TradeBlock>
 					</div>
@@ -245,6 +248,7 @@ const mapStateToProps = (store) => ({
 	activeOrders: store.order.activeOrders,
 	userTrades: store.wallet.latestUserTrades,
 	activeLanguage: store.app.language,
+	activeTheme: store.app.theme,
 	fees: store.user.fees,
 	settings: store.user.settings
 });

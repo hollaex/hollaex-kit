@@ -48,7 +48,10 @@ $close-button--margin: 1.5rem;
 }
 
 .success_display-content-image {
-	width: 7.5rem;
+	@include size(7.5rem);
+	svg {
+		@include size(7.5rem);
+	}
 }
 
 .success_display-content-text {
@@ -74,5 +77,24 @@ $close-button--margin: 1.5rem;
 .app-dialog {
 	.ReactModal__Overlay {
 		z-index: 110 !important;
+	}
+}
+
+.dark-theme {
+	.ReactModal__Content {
+		background-color: $dark-app-background-color !important;
+	}
+	.ReactModal__Overlay {
+		background-color: rgba(46, 47, 55, 0.75) !important;
+	}
+	.success_display-wrapper {
+		color: $dark-font-main-text-color;
+
+		.success-check-1 {
+			stroke: $dark-font-main-text-color;
+		}
+		.success-check-2 {
+			stroke: $dark-font-main-text-color;
+		}
 	}
 }

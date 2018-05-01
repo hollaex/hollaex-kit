@@ -93,3 +93,54 @@ $limit-bar-side--padding: 0.5rem;
 		}
 	}
 }
+
+.dark-theme {
+	.trade_orderbook-wrapper {
+		.trade_orderbook-headers {
+			color: $dark-font-main-text-color;
+			border-bottom-color: $dark-border-main;
+		}
+
+		.trade_orderbook-content {
+			.trade_orderbook-spread {
+				color: $dark-font-sub-text-color;
+				.trade_orderbook-spread-text {
+					color: $dark-font-main-text-color;
+				}
+			}
+			.trade_orderbook-asks > .value-row:first-child {
+				background-color: $dark-sell;
+				> div {
+					color: $dark-app-background-color;
+				}
+			}
+
+			.trade_orderbook-bids > .value-row:first-child {
+				background-color: $dark-buy;
+				> div {
+					color: $dark-app-background-color;
+				}
+			}
+		}
+
+		.trade_orderbook-asks {
+			.trade_orderbook-cell-price,
+			.orderbook-limit_bar-wrapper {
+				color: $dark-sell;
+				.orderbook-limit_bar-line {
+					background-color: $dark-sell;
+				}
+			}
+		}
+
+		.trade_orderbook-bids {
+			.trade_orderbook-cell-price,
+			.orderbook-limit_bar-wrapper {
+				color: $dark-buy;
+				.orderbook-limit_bar-line {
+					background-color: $dark-buy;
+				}
+			}
+		}
+	}
+}

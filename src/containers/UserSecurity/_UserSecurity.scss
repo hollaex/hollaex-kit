@@ -16,6 +16,14 @@
 
 		.otp_form-section-content {
 			margin: 1rem 0;
+			.qr-code-wrapper {
+				background: white;
+				margin: 0.25rem;
+				@include size(10rem);
+				canvas {
+					@include size-important(10rem - 0.5rem);
+				}
+			}
 		}
 
 		.otp_form-section-title {
@@ -42,8 +50,11 @@
 		.icon_title-text.title {
 			font-size: $font-size-subhead2;
 		}
-		.icon_title-image {
+		.icon_title-svg {
 			@include size(6.5rem);
+			svg {
+				@include size(6.5rem);
+			}
 		}
 	}
 }
@@ -134,6 +145,29 @@ $padding-input: 4rem;
 	.dumb-field-wrapper.token-value-input {
 		.custom {
 			padding-left: $padding-input;
+		}
+	}
+}
+
+.dark-theme {
+	.otp_form-wrapper {
+		.otp_form-section-title {
+			color: $dark-font-main-text-color;
+		}
+		.otp_form-section-text {
+			color: $dark-font-sub-text-color;
+		}
+		.otp_secret {
+			color: $colors-main-black !important;
+		}
+
+		.otp_form-section-wrapper svg path {
+			fill: $dark-tab-active;
+		}
+	}
+	.tokens-icon-svg {
+		path, rect {
+			fill: $dark-font-sub-text-color;
 		}
 	}
 }
