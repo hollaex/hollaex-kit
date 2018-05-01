@@ -744,10 +744,10 @@ export default {
 		{ value: false, label: 'خیر' },
 		{ value: true, label: 'بله' }
 	],
-	SETTINGS_THEME_LABEL: 'Theme', // TODO
+	SETTINGS_THEME_LABEL: 'حالت نمايش سایت :',
 	SETTINGS_THEME_OPTIONS: [
-		{ value: 'white', label: 'White' }, // TODO
-		{ value: 'dark', label: 'Dark' } // TODO
+		{ value: 'white', label: 'روشن' },
+		{ value: 'dark', label: 'تیره' }
 	],
 	SETTING_BUTTON: 'ذخیره',
 	STRING_WITH_PARENTHESIS: '{0} ({1})',
