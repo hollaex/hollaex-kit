@@ -109,7 +109,7 @@ class ChartComponent extends Component {
 	};
 
 	render() {
-		const { height, width } = this.props;
+		const { height, width, theme } = this.props;
 		const { chartData, ready, chartType } = this.state;
 		return (
 			<div
@@ -132,6 +132,7 @@ class ChartComponent extends Component {
 						width={width}
 						height={height}
 						ratio={1}
+						theme={theme}
 					/>
 				) : (
 					<div>{ready ? STRINGS.NO_DATA : STRINGS.LOADING}</div>
