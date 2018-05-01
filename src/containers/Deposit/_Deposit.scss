@@ -20,7 +20,7 @@ $qr-code--size: 12rem;
 
 .qr_code-wrapper {
 	margin: 2rem;
-	$qr-code-margin: 0.5rem;
+	$qr-code-margin: 1rem;
 	width: $qr-code--size;
 	max-width: $qr-code--size;
 	.qr-code-bg {

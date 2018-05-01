@@ -18,10 +18,10 @@
 			margin: 1rem 0;
 			.qr-code-wrapper {
 				background: white;
-				margin: 0.25rem;
+				margin: 0.5rem;
 				@include size(10rem);
 				canvas {
-					@include size-important(10rem - 0.5rem);
+					@include size-important(10rem - 1rem);
 				}
 			}
 		}

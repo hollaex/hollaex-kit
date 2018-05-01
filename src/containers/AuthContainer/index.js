@@ -3,7 +3,7 @@ import classnames from 'classnames';
 import { connect } from 'react-redux';
 import { FLEX_CENTER_CLASSES } from '../../config/constants';
 import { getClasesForLanguage } from '../../utils/string';
-import { getThemeClass } from '../../utils/theme';
+// import { getThemeClass } from '../../utils/theme';
 
 const AuthContainer = ({ activeLanguage, activeTheme, children }) => {
 	const languageClasses = getClasesForLanguage(activeLanguage);
@@ -16,7 +16,7 @@ const AuthContainer = ({ activeLanguage, activeTheme, children }) => {
 				'auth-wrapper',
 				'w-100',
 				'h-100',
-				getThemeClass(activeTheme),
+				// getThemeClass(activeTheme),
 				...FLEX_CENTER_CLASSES
 			)}
 		>

@@ -97,4 +97,11 @@ $close-button--margin: 1.5rem;
 			stroke: $dark-font-main-text-color;
 		}
 	}
+	.close-button {
+		&.action_notification-wrapper {
+			.action_notification-image {
+				fill: $dark-font-main-text-color;
+			}
+		}
+	}
 }

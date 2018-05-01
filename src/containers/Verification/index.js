@@ -298,6 +298,7 @@ class Verification extends Component {
 				<AppBar
 					isHome={true}
 					token={token}
+					theme={activeTheme}
 					rightChildren={
 						<Logout className="sidebar-row bar-logout" onLogout={this.onLogout} />
 					}

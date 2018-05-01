@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import classnames from 'classnames';
 import { Link } from 'react-router';
 import {
-	EXIR_BLUE_LOGO,
 	IS_PRO_VERSION,
 	PRO_URL,
+	ICONS,
 	DEFAULT_VERSION_REDIRECT
 } from '../../config/constants';
 import { LinkButton } from './LinkButton';
@@ -67,7 +67,7 @@ class AppBar extends Component {
 		);
 	};
 
-	renderIcon = (isHome) => {
+	renderIcon = (isHome, theme) => {
 		return (
 			<div
 				className={classnames('app_bar-icon', 'text-uppercase', {
@@ -76,7 +76,7 @@ class AppBar extends Component {
 			>
 				{isHome ? (
 					<img
-						src={EXIR_BLUE_LOGO}
+						src={theme === 'dark' ? ICONS.LOGO_WHITE : ICONS.LOGO_BLUE}
 						alt={STRINGS.APP_NAME}
 						className="app_bar-icon-logo"
 					/>
@@ -94,12 +94,13 @@ class AppBar extends Component {
 			token,
 			verifyingToken,
 			isHome,
+			theme,
 			rightChildren
 		} = this.props;
 
 		return (
 			<div className={classnames('app_bar', { 'no-borders': noBorders })}>
-				{this.renderIcon(isHome)}
+				{this.renderIcon(isHome, theme)}
 				<div className="app_bar-main d-flex justify-content-between">
 					<div>{!isHome && STRINGS.APP_TITLE}</div>
 					{/*<LanguageSelector />*/}
