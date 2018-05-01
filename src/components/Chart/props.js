@@ -15,6 +15,16 @@ export const COLORS = {
 	SELL_CANDLE: '#f7941e'
 };
 
+export const DARK_COLORS = {
+	SELL: '#f69321',
+	BUY: '#29abe2',
+	LINE: '#b7b7ce',
+	FILL: 'orange',
+	AXIS: '#b7b7ce',
+	BUY_CANDLE: '#29abe2',
+	SELL_CANDLE: '#f69321'
+};
+
 export const fillIndicator = ({ close, open }) =>
 	close > open ? COLORS.BUY : COLORS.SELL;
 

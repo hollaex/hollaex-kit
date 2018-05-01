@@ -1,12 +1,12 @@
 import React from 'react';
 import classnames from 'classnames';
 import { ICONS } from '../../config/constants';
+import ReactSVG from 'react-svg';
 
-const renderCheckboxImage = (checked, disabled) => (
-	<img
-		src={checked ? ICONS.SUCCESS_BLACK : ICONS.SECURE}
-		alt={checked ? 'checked' : 'unchecked'}
-		className="checkbutton-input-wrapper--image"
+const renderCheckboxImage = (checked) => (
+	<ReactSVG
+		path={checked ? ICONS.SUCCESS_BLACK : ICONS.SECURE}
+		wrapperClassName="checkbutton-input-wrapper--image"
 	/>
 );
 

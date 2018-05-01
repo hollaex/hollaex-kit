@@ -513,7 +513,8 @@ export default {
 				INPUT: 'Enter One-Time Password (OTP)',
 				WARNING:
 					'We highly recommend you set up 2 factor authentication (2FA). Doing so will greatly increase the security of your funds.',
-				ENABLE: 'Enable Two-Factor Authentication'
+				ENABLE: 'Enable Two-Factor Authentication',
+				DISABLE: 'Disable Two-Factor Authentication'
 			},
 			FORM: {
 				PLACEHOLDER: 'Enter your OTP provided by Google Authenticator.',
