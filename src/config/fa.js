@@ -682,7 +682,7 @@ export default {
 	DATEFIELD_TOOGLE_DATE_PE: 'تاریخ شمسی‌',
 	DATEFIELD_TOOGLE_DATE_GR: 'Gregorian calendar',
 	VERIFICATION_WARNING_TITLE: 'نیاز به احراز هویت',
-	VERIFICATION_WARNING_MESSAGE: 'برای احراز هویت به {0} بروید',
+	VERIFICATION_WARNING_MESSAGE: 'برای انجام برداشت نیاز به احراز هویت دارید.',
 	ORDER_SPENT: 'خرج شده',
 	ORDER_RECEIVED: 'دریافت شده',
 	ORDER_SOLD: 'فروش',
@@ -775,43 +775,43 @@ export default {
 		DELETE: 'حذف',
 		FORM_NAME_LABEL: 'نام',
 		FORM_LABLE_PLACEHOLDER: 'نام کلید',
-		API_KEY_LABEL: 'کاید API',
+		API_KEY_LABEL: 'کلید API',
 		CREATED_TITLE: 'کپی کلید API',
 		CREATED_TEXT_1: 'لطفا کلید خود را در جایی امن نگه داری کنید زیرا کلید در آینده قابل دسترس نخواهد بود.',
 		CREATED_TEXT_2: 'کلید خود را در جایی امن نگه داری کنید.'
 	},
 	DEVELOPERS_TOKENS_TABLE: {
 		NAME: 'نام',
-		API_KEY: 'کاید API',
+		API_KEY: 'کلید API',
 		CREATED: 'تاریخ ساخت',
 		REVOKE: 'لغو کردن',
 		REVOKED: 'لغو شده',
 		REVOKE_TOOLTIP: 'شما باید احراز هویت دو عامل خود را برای لغو کلید فعال کنید.'
 	},
 	CHAT: {
-		CHAT_TEXT: 'chat', // TODO
-		CHAT_UNREAD: '{0} ({1})' // 0 -> CHAT_TEXT, 1 -> number
+		CHAT_TEXT: 'چت',
+		CHAT_UNREAD: '({1}) {0}'
 	},
-	INVALID_USERNAME: 'USERNAME must be between 3 and 15 characters long. Only contains lowercase, numbers and underscore', // TODO
-	USERNAME_TAKEN: 'This USERNAME has already been taken. Please try another.', // TODO
-	USERNAME_LABEL: 'USERNAME (used for chat)', // TODO
-	USERNAME_PLACEHOLDER: 'USERNAME', // TODO
-	TAB_USERNAME: 'USERNAME', // TODO
-	USERNAME_WARNING: 'Your USERNAME can only be changed once. Please assure your username is desirable.', // TODO
-	USERNAME_CANNOT_BE_CHANGED: 'USERNAME can not be changed', // TODO
-	UPGRADE_LEVEL: 'Upgrade account level', // TODO
+	INVALID_USERNAME: 'طول نام کاربری باید بین 3 تا 15 حرف باید باشد. فقط از حروف انگلیسی کوچک، اعداد و کاراکتر underscore استفاده نمایید.',
+	USERNAME_TAKEN: 'نام کاربری انتخاب شده توسط شما، قبلا توسط دیگر کاربران انتخاب شده است، لطفا نام دیگری انتخاب نمایید. ',
+	USERNAME_LABEL: 'ام مستعار(جهت نمایش در چت)',
+	USERNAME_PLACEHOLDER: 'USERNAME',
+	TAB_USERNAME: 'نام کاربری',
+	USERNAME_WARNING: 'نام کاربری شما فقط یکبار می تواند تغییر یابد. لطفا در انتخاب نام کاربری خود دقت فرمایید.',
+	USERNAME_CANNOT_BE_CHANGED: 'نام کاربری نمی تواند تغییر یابد.',
+	UPGRADE_LEVEL: 'سطح دسترسی کاربری خود را افزایش دهید.',
 	LEVELS: {
-		LABEL_LEVEL: 'Level', // TODO
-		LABEL_LEVEL_1: 'One', // TODO
-		LABEL_LEVEL_2: 'Two', // TODO
-		LABEL_LEVEL_3: 'Three', // TODO
-		LABEL_MAKER_FEE: 'Maker Fee', // TODO
-		LABEL_TAKER_FEE: 'Taker Fee', // TODO
-		LABEL_FIAT_DEPOSIT: 'Daily Rial Deposit', // TODO
-		LABEL_FIAT_WITHDRAWAL: 'Daily Rial Withdrawal', // TODO
-		LABEL_BTC_DEPOSIT: 'Daily Bitcoin Deposit', // TODO
-		LABEL_BTC_WITHDRAWAL: 'Daily Bitcoin Withdrawal', // TODO
-		UNLIMITED: 'Unlimited', // TODO
-		BLOCKED: '0' // TODO
+		LABEL_LEVEL: 'سطح کاربری',
+		LABEL_LEVEL_1: 'مبتدی',
+		LABEL_LEVEL_2: 'معمولی',
+		LABEL_LEVEL_3: 'حرفه ای',
+		LABEL_MAKER_FEE: 'کارمزد سفارش گذار',
+		LABEL_TAKER_FEE: 'کارمزد پذیرنده سفارش',
+		LABEL_FIAT_DEPOSIT: 'محدودیت واریز روزانه ریالی',
+		LABEL_FIAT_WITHDRAWAL: 'محدودیت برداشت روزانه ریالی',
+		LABEL_BTC_DEPOSIT: 'محدودیت واریز روزانه بیتکوین',
+		LABEL_BTC_WITHDRAWAL: 'محدودیت برداشت روزانه بیتکوین',
+		UNLIMITED: 'نامحدود',
+		BLOCKED: '0'
 	}
 };
