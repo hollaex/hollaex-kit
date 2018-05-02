@@ -52,14 +52,14 @@ class Signup extends Component {
 	};
 
 	render() {
-		const { languageClasses } = this.props;
+		const { languageClasses, activeTheme } = this.props;
 		const { success, showContactForm } = this.state;
 
 		if (success) {
 			return <SignupSuccess />;
 		}
 
-		const formFields = generateFormFields(STRINGS);
+		const formFields = generateFormFields(STRINGS, activeTheme);
 
 		return (
 			<div className={classnames(...FLEX_CENTER_CLASSES, 'flex-column', 'f-1')}>
@@ -84,8 +84,9 @@ class Signup extends Component {
 						)}
 						actionProps={{
 							text: STRINGS.HELP_TEXT,
-							iconPath: ICONS.HELP_ICON,
-							onClick: this.onOpenDialog
+							iconPath: ICONS.BLUE_QUESTION,
+							onClick: this.onOpenDialog,
+							useSvg: true
 						}}
 					/>
 					<div
@@ -135,8 +136,12 @@ class Signup extends Component {
 	}
 }
 
+const mapStateToProps = (store) => ({
+	activeTheme: store.app.theme
+});
+
 const mapDispatchToProps = (dispatch) => ({
 	change: bindActionCreators(change, dispatch)
 });
 
-export default connect(null, mapDispatchToProps)(Signup);
+export default connect(mapStateToProps, mapDispatchToProps)(Signup);
