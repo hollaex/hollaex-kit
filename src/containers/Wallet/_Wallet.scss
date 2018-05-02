@@ -167,10 +167,10 @@ $header-margin: 2rem;
 
 .dark-theme {
 	svg {
-		.wallet-coins-1 {
+		.wallet-coins-1, .deposit-wallet-01 {
 			stroke: $dark-button-active;
 		}
-		.wallet-coins-2 {
+		.wallet-coins-2, .deposit-wallet-02 {
 			fill: $dark-font-main-text-color;
 		}
 	}
