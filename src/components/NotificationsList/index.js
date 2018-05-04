@@ -1,16 +1,13 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { formatTimestamp } from '../../utils/utils';
 
 export const NotificationItem = (props) => {
-	const { type, data, timestamp } = props;
+	const { type, message, timestamp } = props;
 	return (
-		<div className="notifications_list-itme-container">
+		<div className="notifications_list-item-container">
 			{type && <div className="notifications_list-item-title">{type}</div>}
-			{data && (
-				<div className="notifications_list-item-text">
-					{JSON.stringify(data)}
-				</div>
-			)}
+			<div className="notifications_list-item-text">{message}</div>
 			{timestamp && (
 				<div className="notifications_list-item-timestamp">
 					{formatTimestamp(timestamp)}
@@ -20,10 +17,17 @@ export const NotificationItem = (props) => {
 	);
 };
 
-const NotificationsList = ({ notifications }) => (
+// TODO create announcement item style
+const NotificationsList = ({ announcements }) => (
 	<div className="notifications_list-wrapper">
-		{/*notifications.map((currentNotification, index) => <NotificationItem {...currentNotification} key={index} />)*/}
+		{/*announcements.map(({ id, ...rest }, index) => (
+			<NotificationItem {...rest} key={id} />
+		))*/}
 	</div>
 );
 
-export default NotificationsList;
+const mapStateToProps = (store) => ({
+	announcements: store.app.announcements
+});
+
+export default connect(mapStateToProps)(NotificationsList);

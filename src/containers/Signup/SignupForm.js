@@ -22,7 +22,7 @@ const BlueLink = ({ text, ...rest }) => (
 	</a>
 );
 
-export const generateFormFields = (strings) => ({
+export const generateFormFields = (strings, theme) => ({
 	email: {
 		type: 'email',
 		validate: [
@@ -66,6 +66,7 @@ export const generateFormFields = (strings) => ({
 	},
 	captcha: {
 		type: 'captcha',
+		theme,
 		validate: [required]
 	}
 });

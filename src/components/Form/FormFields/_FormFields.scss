@@ -159,3 +159,34 @@ $placeholder--font-weight: bold;
 		padding-left: $placeholder--padding * 2;
 	}
 }
+
+.dark-theme {
+	.input_field-input {
+		color: $dark-form-text !important;
+		&::placeholder {
+			color: $dark-form-placeholder !important;
+		}
+	}
+	.dropdown-triangle:after {
+		border-bottom-color: $dark-form-arrow !important;
+	}
+	.placeholder {
+		color: $dark-form-placeholder !important;
+	}
+	&.direction_ltr {
+		.dropdown-triangle:after {
+			border-right-color: $dark-form-arrow !important;
+		}
+	}
+
+	&.direction_rtl {
+		.dropdown-triangle:after {
+			border-left-color: $dark-form-arrow !important;
+		}
+	}
+	.datefield-wrapper {
+		.field-children {
+			color: $dark-form-text !important;
+		}
+	}
+}

@@ -3,7 +3,7 @@ $error-margin: 0.5rem;
 $underline-margin-bottom: 0.25rem;
 $children--padding: 0.4rem;
 $error-icon-size: 1.25rem;
-$valid-icon-size: 2rem;
+$valid-icon-size: 1.25rem;
 $outline-height: 1.5px;
 
 .field-wrapper {
@@ -54,10 +54,11 @@ $outline-height: 1.5px;
 
 	.field-valid {
 		position: absolute;
-		height: $valid-icon-size;
-		width: $valid-icon-size;
-
-		bottom: 0;
+		@include size($valid-icon-size);
+		svg {
+			@include size($valid-icon-size);
+		}
+		bottom: .25rem;
 	}
 }
 
@@ -111,6 +112,7 @@ $outline-height: 1.5px;
 }
 
 .dumb-field-wrapper {
+	color: $dark-font-sub-text-color;
 	> .field-content > .field-children {
 		padding-left: 0.25rem;
 	}
@@ -121,6 +123,16 @@ $outline-height: 1.5px;
 
 	.copy-wrapper {
 		top: 0;
+	}
+}
+
+.field-wrapper {
+	.action_notification-wrapper {
+		.action_notification-svg {
+			svg {
+				@include size(1rem);
+			}
+		}
 	}
 }
 
@@ -150,7 +162,7 @@ $outline-height: 1.5px;
 			}
 
 			.field-valid {
-				right: -$valid-icon-size;
+				right: -$valid-icon-size - 0.5rem;
 			}
 		}
 	}
@@ -181,8 +193,31 @@ $outline-height: 1.5px;
 			}
 
 			.field-valid {
-				left: -$valid-icon-size;
+				left: -$valid-icon-size - 0.5rem;
 			}
 		}
+	}
+}
+
+.dark-theme {
+	.field-label {
+		color: $dark-form-label !important;
+	}
+
+	.field-content-outline {
+		&:before {
+			background: $dark-form-color-underline;
+		}
+
+		&:after {
+			background: $dark-form-color-underline;
+		}
+
+		&.focused:after {
+			background: $dark-form-color-underline-focus;
+		}
+	}
+	.field-valid .icon-check-1 {
+		stroke: $dark-border-main;
 	}
 }

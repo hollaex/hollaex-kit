@@ -76,3 +76,37 @@ $controllers--color-disabled: $colors-deactivate-color2;
 		}
 	}
 }
+
+.dark-theme {
+	.table-wrapper {
+		color: $dark-font-main-text-color;
+		.table_body-wrapper {
+			tr.table_body-row td {
+				border-top-color: $dark-border-main;
+				border-bottom-color: $dark-border-main;
+			}
+		}
+		.cell_box-type {
+			.sell,
+			.buy {
+				color: $colors-main-black !important;
+			}
+			.sell {
+				background-color: $dark-sell !important;
+			}
+
+			.buy {
+				background-color: $dark-buy !important;
+			}
+		}
+	}
+
+	.table_controllers-wrapper {
+		color: $dark-font-main-text-color;
+		border-top-color: $dark-border-main;
+	}
+
+	.no-data {
+		color: $dark-font-main-text-color;
+	}
+}

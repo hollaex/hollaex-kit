@@ -38,6 +38,9 @@
 		.checkbutton-input-wrapper--loader {
 			width: 2rem;
 		}
+		.checkbutton-input-wrapper--image svg {
+			@include size(2rem);
+		}
 	}
 	.checkbutton-content-wrapper {
 		margin-left: 2rem;
@@ -59,5 +62,22 @@
 .direction_rtl {
 	.exir-button-font {
 		font-family: inherit !important;
+	}
+}
+
+.dark-theme {
+	.exir-button {
+		color: $dark-font-main-text-color;
+		background-color: $dark-button-active !important;
+
+		&.disabled {
+			background-color: $dark-disabled-secondary !important;
+		}
+	}
+	.checkbutton-wrapper {
+		color: $dark-font-main-text-color;
+		.success-black-1, .secure-1 {
+			fill: $dark-font-main-text-color;
+		}
 	}
 }

@@ -110,6 +110,7 @@ class TransactionsHistory extends Component {
 					text={STRINGS.TRANSACTION_HISTORY.TITLE}
 					iconPath={ICONS.TRANSACTION_HISTORY}
 					textType="title"
+					useSvg={true}
 				/>
 				<TabController
 					tabs={[

@@ -74,12 +74,14 @@ class RequestResetPassword extends Component {
 							text={STRINGS.REQUEST_RESET_PASSWORD.TITLE}
 							textType="title"
 							underline={true}
+							useSvg={true}
 							className="w-100"
 							subtitle={STRINGS.REQUEST_RESET_PASSWORD.SUBTITLE}
 							actionProps={{
 								text: STRINGS.REQUEST_RESET_PASSWORD.SUPPORT,
-								iconPath: ICONS.HELP_ICON,
-								onClick: this.onOpenDialog
+								iconPath: ICONS.BLUE_QUESTION,
+								onClick: this.onOpenDialog,
+								useSvg: true
 							}}
 						/>
 						<div

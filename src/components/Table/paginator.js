@@ -40,10 +40,11 @@ const Paginator = ({
 				<ActionNotification
 					text={STRINGS.PREVIOUS_PAGE}
 					status="information"
-					iconPath={ICONS.BLUE_ARROW_RIGHT}
+					iconPath={ICONS.BLUE_ARROW_LEFT}
 					textPosition="left"
 					iconPosition="left"
 					rotateIfLtr={true}
+					useSvg={true}
 				/>
 			</div>
 			{renderPageCount(currentPage, totalPages)}
@@ -59,6 +60,7 @@ const Paginator = ({
 					status="information"
 					iconPath={ICONS.BLUE_ARROW_RIGHT}
 					rotateIfRtl={true}
+					useSvg={true}
 				/>
 			</div>
 		</div>

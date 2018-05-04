@@ -4,6 +4,11 @@ $inner_container-border: 1px solid $colors-main-black;
 .app_container {
 	// height: 100%;
 
+	&.dark-theme {
+		background: $dark-app-background-color !important;
+		min-height: 100vh;
+	}
+
 	&.btc {
 		@include currency-color($btc-color);
 	}
@@ -79,6 +84,28 @@ $inner_container-border: 1px solid $colors-main-black;
 					color: $colors-deactivate-color2;
 					> p {
 						margin: 0.5rem 0;
+					}
+				}
+			}
+		}
+	}
+}
+
+.dark-theme {
+
+	.presentation_container {
+		.inner_container {
+			&.with_border_top {
+				border-top-color: $dark-border-main;
+			}
+			&.with_border_bottom {
+				border-bottom-color: $dark-border-main;
+			}
+
+			.information_block {
+				.information_block-text_wrapper {
+					.title, .text {
+						color: $dark-font-sub-text-color;
 					}
 				}
 			}

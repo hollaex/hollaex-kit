@@ -103,7 +103,7 @@ class Login extends Component {
 	};
 
 	render() {
-		const { logoutMessage } = this.props;
+		const { logoutMessage, activeTheme } = this.props;
 		const { otpDialogIsOpen, logoutDialogIsOpen } = this.state;
 
 		return (
@@ -130,7 +130,8 @@ class Login extends Component {
 						actionProps={{
 							text: STRINGS.LOGIN.CANT_LOGIN,
 							iconPath: ICONS.BLUE_ARROW_RIGHT,
-							onClick: this.redirectToResetPassword
+							onClick: this.redirectToResetPassword,
+							useSvg: true
 						}}
 					/>
 					<div
@@ -141,7 +142,7 @@ class Login extends Component {
 							'w-100'
 						)}
 					>
-						<LoginForm onSubmit={this.onSubmitLogin} />
+						<LoginForm onSubmit={this.onSubmitLogin} theme={activeTheme} />
 					</div>
 				</div>
 				<div className={classnames('f-1', 'link_wrapper')}>
@@ -172,6 +173,7 @@ class Login extends Component {
 }
 
 const mapStateToProps = (store) => ({
+	activeTheme: store.app.theme,
 	logoutMessage: store.auth.logoutMessage
 });
 

@@ -8,7 +8,7 @@ import { debounce } from 'lodash';
 import { WS_URL, ICONS, SESSION_TIME } from '../../config/constants';
 
 import { logout } from '../../actions/authAction';
-import { setMe, setBalance, updateUser } from '../../actions/userAction';
+import { setMe, setBalance, updateUser, requestLimits } from '../../actions/userAction';
 import { addUserTrades } from '../../actions/walletActions';
 import {
 	setUserOrders,
@@ -26,11 +26,13 @@ import {
 	closeNotification,
 	openContactForm,
 	setLanguage,
+	changeTheme,
 	closeAllNotification,
 	NOTIFICATIONS,
 	CONTACT_FORM
 } from '../../actions/appActions';
 
+import { getThemeClass } from '../../utils/theme';
 import { checkUserSessionExpired } from '../../utils/utils';
 import { getToken, getTokenTimestamp } from '../../utils/token';
 import {
@@ -78,6 +80,7 @@ class Container extends Component {
 		) {
 			if (!this.state.publicSocket) {
 				this.initSocketConnections();
+				this.props.requestLimits();
 			}
 		}
 		if (
@@ -190,9 +193,12 @@ class Container extends Component {
 			// 	return this.goToVerificationPage();
 			// }
 			this.props.setMe(data);
-			// if (data.settings && data.settings.language !== this.props.activeLanguage) {
-			// 	this.props.changeLanguage(data.settings.language);
-			// }
+			if (data.settings && data.settings.language !== this.props.activeLanguage) {
+				this.props.changeLanguage(data.settings.language);
+			}
+			if (data.settings && data.settings.theme !== this.props.activeTheme) {
+				this.props.changeTheme(data.settings.theme);
+			}
 		});
 
 		privateSocket.on('orders', (data) => {
@@ -405,6 +411,7 @@ class Container extends Component {
 					<ContactForm
 						onSubmitSuccess={this.onCloseDialog}
 						onClose={this.onCloseDialog}
+						data={data}
 					/>
 				);
 			case NOTIFICATIONS.NEW_ORDER: {
@@ -433,11 +440,12 @@ class Container extends Component {
 			children,
 			activeNotification,
 			changeSymbol,
-			notifications,
 			prices,
 			verification_level,
 			activeLanguage,
-			openContactForm
+			openContactForm,
+			activeTheme,
+			unreadMessages
 		} = this.props;
 		const { dialogIsOpen, appLoaded } = this.state;
 		const languageClasses = getClasesForLanguage(activeLanguage, 'array');
@@ -452,6 +460,7 @@ class Container extends Component {
 				className={classnames(
 					'app_container',
 					'd-flex',
+					getThemeClass(activeTheme),
 					activePath,
 					symbol,
 					fontClass,
@@ -486,10 +495,10 @@ class Container extends Component {
 					<Sidebar
 						activePath={activePath}
 						logout={this.logout}
-						notifications={notifications}
 						changeSymbol={changeSymbol}
 						symbol={symbol}
 						help={openContactForm}
+						unreadMessages={unreadMessages}
 					/>
 				</div>
 				<Dialog
@@ -498,6 +507,7 @@ class Container extends Component {
 					className="app-dialog"
 					onCloseDialog={this.onCloseDialog}
 					shouldCloseOnOverlayClick={shouldCloseOnOverlayClick}
+					theme={activeTheme}
 					showCloseText={
 						!(
 							activeNotification.type === CONTACT_FORM ||
@@ -507,7 +517,7 @@ class Container extends Component {
 					}
 					style={{ 'z-index': 100 }}
 				>
-					{this.renderDialogContent(activeNotification, prices)}
+					{dialogIsOpen && this.renderDialogContent(activeNotification, prices, activeTheme)}
 				</Dialog>
 			</div>
 		);
@@ -520,15 +530,17 @@ const mapStateToProps = (store) => ({
 	prices: store.orderbook.prices,
 	fetchingAuth: store.auth.fetching,
 	activeNotification: store.app.activeNotification,
-	notifications: store.app.notifications,
 	verification_level: store.user.verification_level,
 	activeLanguage: store.app.language,
+	activeTheme: store.app.theme,
 	orders: store.order.activeOrders,
-	user: store.user.userData
+	user: store.user.userData,
+	unreadMessages: store.app.chatUnreadMessages
 });
 
 const mapDispatchToProps = (dispatch) => ({
 	logout: bindActionCreators(logout, dispatch),
+	requestLimits: bindActionCreators(requestLimits, dispatch),
 	addTrades: bindActionCreators(addTrades, dispatch),
 	setOrderbook: bindActionCreators(setOrderbook, dispatch),
 	setMe: bindActionCreators(setMe, dispatch),
@@ -544,7 +556,8 @@ const mapDispatchToProps = (dispatch) => ({
 	openContactForm: bindActionCreators(openContactForm, dispatch),
 	setNotification: bindActionCreators(setNotification, dispatch),
 	changeSymbol: bindActionCreators(changeSymbol, dispatch),
-	changeLanguage: bindActionCreators(setLanguage, dispatch)
+	changeLanguage: bindActionCreators(setLanguage, dispatch),
+	changeTheme: bindActionCreators(changeTheme, dispatch)
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Container);

@@ -32,6 +32,7 @@ const DepositNotification = ({ data, onClose, goToPage, openContactForm }) => {
 					status="information"
 					iconPath={ICONS.BLUE_QUESTION}
 					onClick={onClick}
+					useSvg={true}
 				/>
 			</div>
 			{depositTexts.information.length > 0 && (

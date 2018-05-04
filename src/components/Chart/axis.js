@@ -5,11 +5,16 @@ import {
 	YAxis as BaseYAxis
 } from 'react-stockcharts/lib/axes';
 
-export const YAxis = ({ height, ...rest }) => {
+const TickProps = (theme) => ({
+	tickStroke: theme ? TXAxisStrokeColor[theme] : 'black',
+	stroke: 'transparent'
+});
+
+export const YAxis = ({ height, theme, ...rest }) => {
 	const ticks = Math.floor(height / 50);
 	const props = {
 		ticks,
-		stroke: 'transparent',
+		...TickProps(theme),
 		...rest
 	};
 
@@ -21,11 +26,11 @@ YAxis.defaultProps = {
 	orient: 'right'
 };
 
-export const XAxis = ({ width, ...rest }) => {
+export const XAxis = ({ width, theme, ...rest }) => {
 	const ticks = Math.floor(width / 50);
 	const props = {
 		ticks,
-		stroke: 'transparent',
+		...TickProps(theme),
 		...rest
 	};
 
@@ -37,14 +42,18 @@ XAxis.defaultProps = {
 	orient: 'bottom'
 };
 
-export const TXAxis = ({ ...rest }) => {
+const TXAxisStrokeColor = {
+	dark: '#b7b7ce',
+	white: 'black'
+};
+
+export const TXAxis = ({ theme, ...rest }) => {
 	const props = {
 		...rest,
 		showTicks: false,
-		stroke: 'black',
+		stroke: theme ? TXAxisStrokeColor[theme] : 'black',
 		axisAt: 'top',
 		orient: 'top'
 	};
-
 	return <XAxis {...props} />;
 };

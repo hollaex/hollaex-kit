@@ -14,6 +14,7 @@ export const renderCopy = (text, component) => {
 				text={STRINGS.COPY_TEXT}
 				iconPath={ICONS.COPY_NEW}
 				className="copy-wrapper"
+				useSvg={true}
 			/>
 		</CopyToClipboard>
 	);

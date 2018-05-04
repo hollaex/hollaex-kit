@@ -497,7 +497,8 @@ export default {
 				INPUT: 'Enter One-Time Password (OTP)',
 				WARNING:
 					'We highly recommend you set up 2 factor authentication (2FA). Doing so will greatly increase the security of your funds.',
-				ENABLE: 'Enable Two-Factor Authentication'
+				ENABLE: 'Enable Two-Factor Authentication',
+				DISABLE: 'Disable Two-Factor Authentication'
 			},
 			FORM: {
 				PLACEHOLDER: 'Enter your OTP provided by Google Authenticator.',
@@ -631,6 +632,7 @@ export default {
 	DEPOSIT_VERIFICATION_ERROR: 'There has been an error verifying the deposit.',
 	DEPOSIT_VERIFICATION_ERROR_VERIFIED: 'The deposit has been already verified',
 	DEPOSIT_VERIFICATION_ERROR_STATUS: 'Invalid status',
+	DEPOSIT_VERIFICATION_ERROR_USER_MATCH: 'The card you made the deposit is not the same as your registered card. Therefore your deposit is rejected and your funds will be refunded in less than an hour.',
 	QUOTE_MESSAGE: 'You are going to {0} {1} {2} for {3} {4}',
 	QUOTE_BUTTON: 'Accept',
 	QUOTE_REVIEW: 'Review',
@@ -730,14 +732,19 @@ export default {
 	CONFIRM_TEXT: 'Confirm',
 	INVALID_CAPTCHA: 'Invalid captcha',
 	NO_FEE: 'N/A',
-	SETTINGS_LANGUAGE_LABEL: 'Language of Emails',
+	SETTINGS_LANGUAGE_LABEL: 'Language preferences (Includes Emails)',
 	SETTINGS_LANGUAGE_OPTIONS: [
-		{ value: 'en', label: 'English' },
+		{ value: 'en', label: 'English', icon: `${process.env.PUBLIC_URL}/assets/flags/selected-en.png` },
 	],
 	SETTINGS_ORDERPOPUP_LABEL: 'Display order confirmation popup',
 	SETTINGS_ORDERPOPUP_OPTIONS: [
 		{ value: false, label: 'NO' },
 		{ value: true, label: 'YES' }
+	],
+	SETTINGS_THEME_LABEL: 'Theme', // TODO set right labels
+	SETTINGS_THEME_OPTIONS: [
+		{ value: 'white', label: 'White' },
+		{ value: 'dark', label: 'Dark' }
 	],
 	SETTING_BUTTON: 'save',
 	STRING_WITH_PARENTHESIS: '{0} ({1})',
@@ -777,5 +784,31 @@ export default {
 		REVOKE: 'Revoke',
 		REVOKED: 'Revoked',
 		REVOKE_TOOLTIP: 'You have to enable 2FA to revoke the token' // TODO
+	},
+	CHAT: {
+		CHAT_TEXT: 'chat',
+		CHAT_UNREAD: '{0} ({1})' // 0 -> CHAT_TEXT, 1 -> number
+	},
+	INVALID_USERNAME: 'Username must be between 3 and 15 characters long. Only contains lowercase, numbers and underscore',
+	USERNAME_TAKEN: 'This username has already been taken. Please try another.',
+	USERNAME_LABEL: 'Username (used for chat)',
+	USERNAME_PLACEHOLDER: 'Username',
+	TAB_USERNAME: 'Username',
+	USERNAME_WARNING: 'Your username can only be changed once. Please assure your username is desirable.',
+	USERNAME_CANNOT_BE_CHANGED: 'Username can not be changed',
+	UPGRADE_LEVEL: 'Upgrade account level',
+	LEVELS: {
+		LABEL_LEVEL: 'Level',
+		LABEL_LEVEL_1: 'One',
+		LABEL_LEVEL_2: 'Two',
+		LABEL_LEVEL_3: 'Three',
+		LABEL_MAKER_FEE: 'Maker Fee',
+		LABEL_TAKER_FEE: 'Taker Fee',
+		LABEL_FIAT_DEPOSIT: 'Daily Rial Deposit',
+		LABEL_FIAT_WITHDRAWAL: 'Daily Rial Withdrawal',
+		LABEL_BTC_DEPOSIT: 'Daily Bitcoin Deposit',
+		LABEL_BTC_WITHDRAWAL: 'Daily Bitcoin Withdrawal',
+		UNLIMITED: 'Unlimited',
+		BLOCKED: '0'
 	}
 };

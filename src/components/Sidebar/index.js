@@ -1,16 +1,16 @@
 import React from 'react';
 
 import { NotificationsList, SidebarHub } from '../';
-import { Logout, Help } from './rows';
+import { Logout, Help, Chat } from './rows';
 
 const Sidebar = ({
 	active,
 	activePath,
 	logout,
 	help,
-	notifications,
 	symbol,
-	changeSymbol
+	changeSymbol,
+	unreadMessages = 0
 }) => {
 	const sidebarHubProps = {
 		activePath,
@@ -21,10 +21,13 @@ const Sidebar = ({
 		<div className="sidebar-container apply_rtl">
 			<SidebarHub {...sidebarHubProps} />
 			<div className="sidebar-notifications">
-				<NotificationsList notifications={notifications} />
+				<NotificationsList />
 			</div>
-			<Help className="sidebar-row" onHelp={help} />
-			<Logout className="sidebar-row" onLogout={logout} />
+			<div className="sidebar-row d-flex">
+				{/*<Chat className="f-1" unreadMessages={unreadMessages} />*/}
+				<Help className="f-1" onHelp={help} />
+				<Logout className="f-0" onLogout={logout} />
+			</div>
 		</div>
 	);
 };

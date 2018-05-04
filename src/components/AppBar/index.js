@@ -5,6 +5,7 @@ import {
 	HOLLAEX_LOGO_BLACK,
 	IS_PRO_VERSION,
 	PRO_URL,
+	ICONS,
 	DEFAULT_VERSION_REDIRECT
 } from '../../config/constants';
 import { LinkButton } from './LinkButton';
@@ -65,7 +66,7 @@ class AppBar extends Component {
 		);
 	};
 
-	renderIcon = (isHome) => {
+	renderIcon = (isHome, theme) => {
 		return (
 			<div
 				className={classnames('app_bar-icon', 'text-uppercase', {
@@ -92,12 +93,13 @@ class AppBar extends Component {
 			token,
 			verifyingToken,
 			isHome,
+			theme,
 			rightChildren
 		} = this.props;
 
 		return (
 			<div className={classnames('app_bar', { 'no-borders': noBorders })}>
-				{this.renderIcon(isHome)}
+				{this.renderIcon(isHome, theme)}
 				<div className="app_bar-main d-flex justify-content-between">
 					<div>{!isHome && STRINGS.APP_TITLE}</div>
 				</div>

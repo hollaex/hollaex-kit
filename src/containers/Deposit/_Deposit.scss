@@ -20,17 +20,23 @@ $qr-code--size: 12rem;
 
 .qr_code-wrapper {
 	margin: 2rem;
-
+	$qr-code-margin: 1rem;
 	width: $qr-code--size;
 	max-width: $qr-code--size;
-	> *:first-child {
-		@include size-important($qr-code--size);
+	.qr-code-bg {
+		background-color: white;
+		margin: $qr-code-margin;
+		> *:first-child {
+			@include size-important($qr-code--size - $qr-code-margin);
+		}
 	}
 
 	.qr-text {
 		display: flex;
 		font-size: $font-size-subtext;
 		padding-top: $qr-text--pading;
+		margin-left: $qr-code-margin;
+
 		&:before {
 			padding-top: $qr-text--pading;
 			@include css-triangle($qr-code--arrow-color, 'up', $qr-code--arrow-size, relative);
@@ -71,5 +77,28 @@ $qr-code--size: 12rem;
 	}
 	.block-wrapper {
 		margin: 1rem;
+	}
+}
+
+.dark-theme {
+	.qr_code-wrapper {
+		margin: 2rem;
+
+		width: $qr-code--size;
+		max-width: $qr-code--size;
+		> *:first-child {
+			@include size-important($qr-code--size);
+		}
+
+		.qr-text {
+			color: $dark-font-sub-text-color;
+			&:before {
+				@include css-triangle($dark-border-main, 'up', $qr-code--arrow-size, relative);
+				border-bottom-color: $dark-border-main;
+			}
+		}
+	}
+	.review-wrapper {
+		color: $dark-font-main-text-color;
 	}
 }

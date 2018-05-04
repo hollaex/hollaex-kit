@@ -130,9 +130,9 @@ class Account extends Component {
 
 	renderContent = (tabs, activeTab) => tabs[activeTab].content;
 
-	openContactForm = () => {
+	openContactForm = (data) => {
 		// console.log('here');
-		this.props.openContactForm();
+		this.props.openContactForm(data);
 	};
 	goToVerification = () => this.props.router.push('/verification');
 
@@ -151,9 +151,8 @@ class Account extends Component {
 					setActiveTab={this.setActiveTab}
 					tabs={tabs}
 					title={STRINGS.ACCOUNTS.TITLE}
-					titleIcon={`${
-						process.env.PUBLIC_URL
-					}/assets/acounts/account-icons-01.png`}
+					titleIcon={ICONS.ACCOUNT_LINE}
+					className="account-tab"
 				/>
 				<div className="inner_container">
 					{activeTab > -1 && this.renderContent(tabs, activeTab)}

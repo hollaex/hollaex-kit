@@ -14,42 +14,34 @@ export const API_URL = config[ENV][NETWORK].API_URL;
 export const WS_URL = config[ENV][NETWORK].WS_URL;
 
 export const ICONS = {
-	USER: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-01.png`,
-	FINGERPRINT: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-02.png`,
-	LOCK: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-03.png`,
-	BELL: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-04.png`,
-	LIFESAVER: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-05.png`,
-	CHECK: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-06.png`,
-	// BLUE_PLUS: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-07.png`,
+	LIFESAVER: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-05.svg`,
+	CHECK: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-06.svg`,
 	BLUE_QUESTION: `${
 		process.env.PUBLIC_URL
-	}/assets/acounts/account-icons-08.png`,
-	RED_WARNING: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-09.png`,
-	GENDER_F: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-10.png`,
-	GENDER_M: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-11.png`,
+	}/assets/acounts/account-icons-08.svg`,
+	RED_WARNING: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-09.svg`,
+	GENDER_F: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-10.svg`,
+	GENDER_M: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-11.svg`,
 	BITCOIN_CLEAR: `${
 		process.env.PUBLIC_URL
-	}/assets/acounts/account-icons-13.png`,
-	BITCOIN_DARK: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-14.png`,
-	USER_DARK: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-12.png`,
-	USER_WHITE: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-15.png`,
-	RED_ARROW: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-16.png`,
-	BLUE_CLIP: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-17.png`,
-	GREY_RIGHT_TRIANGLE: `${
-		process.env.PUBLIC_URL
-	}/assets/acounts/account-icons-18.png`,
-	BLACK_CHECK: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-19.png`,
-	WHITE_CHECK: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-20.png`,
-	BALCK_CORNER_TRIANGLE: `${
-		process.env.PUBLIC_URL
-	}/assets/acounts/account-icons-21.png`,
-	KEYS: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-22.png`,
-	GREEN_CHECK: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-23.png`,
-	LETTER: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-24.png`,
-	SQUARE_DOTS: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-25.png`,
+	}/assets/acounts/account-icons-13.svg`,
+	RED_ARROW: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-16.svg`,
+	BLUE_CLIP: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-17.svg`,
+	BLACK_CHECK: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-19.svg`,
+	KEYS: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-22.svg`,
+	GREEN_CHECK: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-23.svg`,
+	LETTER: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-24.svg`,
+	SQUARE_DOTS: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-25.svg`,
 	COPY_NEW: `${process.env.PUBLIC_URL}/assets/images/copy.svg`,
-	COPY: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-26.png`,
-	LOGOUT: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-27.png`,
+	LOGO_BLUE: `${process.env.PUBLIC_URL}/assets/logo-blue-exir.svg`,
+	LOGO_GREY: `${process.env.PUBLIC_URL}/assets/images/EXIR-grey-login.svg`,
+	LOGO_WHITE: `${process.env.PUBLIC_URL}/assets/images/logo-white-exir.svg`,
+	BACKGROUND_LARGE: `${
+		process.env.PUBLIC_URL
+	}/assets/background-site-large.jpg`,
+	BACKGROUND_SMALL: `${
+		process.env.PUBLIC_URL
+	}/assets/background-site-smaller.jpg`,
 	ACCOUNT_LINE: `${process.env.PUBLIC_URL}/assets/images/account.svg`,
 	ACCOUNT_RECOVERY: `${
 		process.env.PUBLIC_URL
@@ -288,8 +280,7 @@ export const CURRENCIES = {
 		fullName: STRINGS.FIAT_FULLNAME,
 		shortName: STRINGS.FIAT_SHORTNAME,
 		currencySymbol: STRINGS.FIAT_CURRENCY_SYMBOL,
-		formatToCurrency: formatFiatAmount,
-		iconPath: ICONS.TOMAN_T_ICON
+		formatToCurrency: formatFiatAmount
 	},
 	btc: {
 		symbol: 'btc',
@@ -297,8 +288,7 @@ export const CURRENCIES = {
 		fullName: STRINGS.BTC_FULLNAME,
 		shortName: STRINGS.BTC_SHORTNAME,
 		currencySymbol: 'B',
-		formatToCurrency: formatBtcAmount,
-		iconPath: ICONS.BITCOIN_DARK
+		formatToCurrency: formatBtcAmount
 	}
 };
 
@@ -385,3 +375,6 @@ export const DEFAULT_VERSION_REDIRECT = process.env.REACT_APP_DEFAULT_VERSION_RE
 export const PRO_URL = process.env.REACT_APP_PRO_URL || 'https://hollaex.com';
 
 export const MIN_LEVEL_FOR_TOKENS = parseInt(process.env.REACT_APP_MIN_LEVEL_FOR_TOKENS || 2, 10)
+
+export const THEMES = ['dark', 'white'];
+export const THEME_DEFAULT = THEMES[0];

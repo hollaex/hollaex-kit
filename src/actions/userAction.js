@@ -232,3 +232,16 @@ export const tokenRevoked = (token) => ({
 		token
 	}
 });
+
+export const setUsername = (values) => axios.post('/user/username', values);
+export const setUsernameStore = (username) => ({
+	type: 'SET_USERNAME',
+	payload: {
+		username
+	}
+})
+
+export const requestLimits = () => ({
+	type: 'REQUEST_LIMITS',
+	payload: axios.get('/limits')
+});

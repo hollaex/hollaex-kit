@@ -2,21 +2,29 @@ import {
 	SET_NOTIFICATION,
 	CLOSE_NOTIFICATION,
 	CLOSE_ALL_NOTIFICATION,
-	CHANGE_LANGUAGE
+	CHANGE_LANGUAGE,
+	SET_ANNOUNCEMENT,
+	CHANGE_THEME,
+	SET_UNREAD
 } from '../actions/appActions';
-
+import { THEME_DEFAULT } from '../config/constants';
 import { getLanguage } from '../utils/string';
+import { getTheme } from '../utils/theme';
 
 const EMPTY_NOTIFICATION = {
 	type: '',
 	message: '',
+	contactFormData: {},
 	timestamp: undefined
 };
 
 const INITIAL_STATE = {
+	announcements: [],
 	notifications: [],
 	notificationsQueue: [],
+	chatUnreadMessages: 0,
 	activeNotification: EMPTY_NOTIFICATION,
+	theme: THEME_DEFAULT,
 	language: getLanguage()
 };
 
@@ -41,6 +49,7 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 				...state,
 				notifications,
 				activeNotification,
+				contactFormData: payload.data,
 				notificationsQueue
 			};
 		}
@@ -55,9 +64,23 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 			return {
 				...state,
 				notificationsQueue,
-				activeNotification
+				activeNotification,
+				contactFormData: {}
 			};
 		}
+
+		case SET_UNREAD:
+			return {
+				...state,
+				chatUnreadMessages: payload.chatUnreadMessages
+			};
+
+		case SET_ANNOUNCEMENT:
+			const announcements = state.announcements.concat(payload.announcements);
+			return {
+				...state,
+				announcements
+			};
 
 		case CLOSE_ALL_NOTIFICATION:
 			return {
@@ -70,6 +93,12 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 			return {
 				...state,
 				language: payload.language
+			};
+
+		case CHANGE_THEME:
+			return {
+				...state,
+				theme: getTheme(payload.theme)
 			};
 		default:
 			return state;

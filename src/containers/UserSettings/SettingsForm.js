@@ -4,7 +4,7 @@ import { reduxForm } from 'redux-form';
 import renderFields from '../../components/Form/factoryFields';
 import { Button } from '../../components';
 import { required, requiredBoolean } from '../../components/Form/validations';
-
+import { getErrorLocalized } from '../../utils/errors';
 import STRINGS from '../../config/localizedStrings';
 
 export const generateFormValues = () => ({
@@ -19,6 +19,11 @@ export const generateFormValues = () => ({
 		validate: [requiredBoolean],
 		label: STRINGS.SETTINGS_ORDERPOPUP_LABEL,
 		options: STRINGS.SETTINGS_ORDERPOPUP_OPTIONS
+	},
+	theme: {
+		type: 'select',
+		label: STRINGS.SETTINGS_THEME_LABEL,
+		options: STRINGS.SETTINGS_THEME_OPTIONS
 	}
 });
 
@@ -33,7 +38,7 @@ const Form = ({
 }) => (
 	<form onSubmit={handleSubmit}>
 		{renderFields(formFields)}
-		{error && <div className="warning_text">{error}</div>}
+		{error && <div className="warning_text">{getErrorLocalized(error)}</div>}
 		<Button
 			label={STRINGS.SETTING_BUTTON}
 			disabled={pristine || submitting || !valid}

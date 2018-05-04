@@ -4,7 +4,8 @@ import {
 	maxValue,
 	checkBalance,
 	validAddress,
-	normalizeBTC
+	normalizeBTC,
+	normalizeBTCFee
 } from '../../components/Form/validations';
 import STRINGS from '../../config/localizedStrings';
 import { WITHDRAW_LIMITS, ICONS } from '../../config/constants';
@@ -81,6 +82,7 @@ export const generateFormValues = (
 			status: 'information',
 			iconPath: ICONS.BLUE_PLUS,
 			className: 'file_upload_icon',
+			useSvg: true,
 			onClick: calculateMax
 		}
 	};
@@ -98,7 +100,7 @@ export const generateFormValues = (
 			max: fees.max || MAX,
 			step: STEP,
 			validate: [required, minValue(fees.min), maxValue(fees.max)],
-			normalize: normalizeBTC
+			normalize: normalizeBTCFee
 		};
 	} else {
 		fields.fee = {
