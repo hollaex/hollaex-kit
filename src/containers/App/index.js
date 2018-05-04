@@ -8,7 +8,7 @@ import { debounce } from 'lodash';
 import { WS_URL, ICONS, SESSION_TIME } from '../../config/constants';
 
 import { logout } from '../../actions/authAction';
-import { setMe, setBalance, updateUser, requestLimits } from '../../actions/userAction';
+import { setMe, setBalance, updateUser } from '../../actions/userAction';
 import { addUserTrades } from '../../actions/walletActions';
 import {
 	setUserOrders,
@@ -79,7 +79,6 @@ class Container extends Component {
 		) {
 			if (!this.state.publicSocket) {
 				this.initSocketConnections();
-				this.props.requestLimits();
 			}
 		}
 		if (
@@ -537,7 +536,6 @@ const mapStateToProps = (store) => ({
 
 const mapDispatchToProps = (dispatch) => ({
 	logout: bindActionCreators(logout, dispatch),
-	requestLimits: bindActionCreators(requestLimits, dispatch),
 	addTrades: bindActionCreators(addTrades, dispatch),
 	setOrderbook: bindActionCreators(setOrderbook, dispatch),
 	setMe: bindActionCreators(setMe, dispatch),
