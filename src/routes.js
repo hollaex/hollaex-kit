@@ -12,7 +12,8 @@ import {
 import {
 	App as Container,
 	Account,
-	Wallet,
+	MainWallet,
+	CurrencyWallet,
 	Login,
 	Signup,
 	VerificationEmailRequest,
@@ -137,9 +138,10 @@ export default (
 			<Route path="security" name="Security" component={Account} />
 			<Route path="developers" name="Developers" component={Account} />
 			<Route path="settings" name="Settings" component={Account} />
-			<Route path="wallet" name="Wallet" component={Wallet} />
-			<Route path="withdraw" name="Withdraw" component={Withdraw} />
-			<Route path="deposit" name="Deposit" component={Deposit} />
+			<Route path="wallet" name="Wallet" component={MainWallet} />
+			<Route path="wallet/:currency" name="Wallet" component={CurrencyWallet} />
+			<Route path="withdraw/:currency" name="Withdraw" component={Withdraw} />
+			<Route path="deposit/:currency" name="Deposit" component={Deposit} />
 			<Route
 				path="deposit/verification"
 				name="Deposit Verification"

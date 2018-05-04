@@ -9,7 +9,7 @@ import {
 	DEPOSIT_LIMITS,
 	BALANCE_ERROR
 } from '../../config/constants';
-import { fiatSymbol } from '../../utils/currency';
+import { fiatSymbol, getCurrencyFromName } from '../../utils/currency';
 
 import { openContactForm } from '../../actions/appActions';
 
@@ -25,35 +25,53 @@ import BankDeposit from './BankDeposit';
 
 class Deposit extends Component {
 	state = {
-		depositPrice: 0
+		depositPrice: 0,
+		currency: ''
 	};
 
 	componentWillMount() {
 		if (this.props.quoteData.error === BALANCE_ERROR) {
 			this.setState({ depositPrice: this.props.quoteData.data.price });
 		}
+		this.setCurrency(this.props.routeParams.currency);
 	}
-	render() {
-		const { id, crypto_wallet, symbol, openContactForm, balance } = this.props;
-		const { depositPrice } = this.state;
 
-		if (!id) {
+	componentWillReceiveProps(nextProps) {
+		if (nextProps.routeParams.currency !== this.props.routeParams.currency) {
+			this.setCurrency(nextProps.routeParams.currency);
+		}
+	}
+
+	setCurrency = (currencyName) => {
+		const currency = getCurrencyFromName(currencyName);
+		if (currency) {
+			this.setState({ currency });
+		} else {
+			this.props.router.push('/wallet');
+		}
+	};
+
+	render() {
+		const { id, crypto_wallet, openContactForm, balance } = this.props;
+		const { depositPrice, currency } = this.state;
+
+		if (!id || !currency) {
 			return <div />;
 		}
 
-		const { name } = CURRENCIES[symbol];
-		const balanceAvailable = balance[`${symbol}_available`];
+		const { name } = CURRENCIES[currency];
+		const balanceAvailable = balance[`${currency}_available`];
 
-		const limit = DEPOSIT_LIMITS[symbol] ? DEPOSIT_LIMITS[symbol].DAILY : 0;
-		const min = DEPOSIT_LIMITS[symbol] ? DEPOSIT_LIMITS[symbol].MIN : 0;
-		const max = DEPOSIT_LIMITS[symbol] ? DEPOSIT_LIMITS[symbol].MAX : 0;
+		const limit = DEPOSIT_LIMITS[currency] ? DEPOSIT_LIMITS[currency].DAILY : 0;
+		const min = DEPOSIT_LIMITS[currency] ? DEPOSIT_LIMITS[currency].MIN : 0;
+		const max = DEPOSIT_LIMITS[currency] ? DEPOSIT_LIMITS[currency].MAX : 0;
 
 		return (
 			<div className="presentation_container  apply_rtl">
 				{renderTitleSection(
-					symbol,
+					currency,
 					'deposit',
-					symbol === fiatSymbol ? ICONS.DEPOSIT_FIAT : ICONS.DEPOSIT_BITCOIN
+					currency === fiatSymbol ? ICONS.DEPOSIT_FIAT : ICONS.DEPOSIT_BITCOIN
 				)}
 				<div
 					className={classnames(
@@ -63,13 +81,13 @@ class Deposit extends Component {
 					)}
 				>
 					{renderInformation(
-						symbol,
+						currency,
 						balance,
 						openContactForm,
 						generateFiatInformation,
 						'deposit'
 					)}
-					{symbol === fiatSymbol ? (
+					{currency === fiatSymbol ? (
 						<BankDeposit
 							available={balanceAvailable}
 							minAmount={min}
@@ -78,7 +96,7 @@ class Deposit extends Component {
 							depositPrice={depositPrice}
 						/>
 					) : (
-						renderContent(symbol, crypto_wallet)
+						renderContent(currency, crypto_wallet)
 					)}
 					{renderExtraInformation(limit)}
 				</div>
@@ -89,7 +107,6 @@ class Deposit extends Component {
 
 const mapStateToProps = (store) => ({
 	id: store.user.id,
-	symbol: store.orderbook.symbol,
 	crypto_wallet: store.user.crypto_wallet,
 	balance: store.user.balance,
 	activeLanguage: store.app.language,
