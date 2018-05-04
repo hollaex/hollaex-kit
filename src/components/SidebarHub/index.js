@@ -5,14 +5,8 @@ import STRINGS from '../../config/localizedStrings';
 
 import { ButtonLink, Wallet } from '../';
 import { Section } from './Section';
-import { CurrencySelector } from './CurrencySelector';
 
 class SidebarHub extends Component {
-	setActiveCurrency = (currency) => () => {
-		if (this.props.changeCurrency) {
-			this.props.changeCurrency(currency);
-		}
-	};
 
 	render() {
 		const { activePath, currency } = this.props;
@@ -24,10 +18,6 @@ class SidebarHub extends Component {
 					`active-${activePath}`
 				)}
 			>
-				<CurrencySelector
-					activeCurrency={currency}
-					changeCurrency={this.setActiveCurrency}
-				/>
 				<div className="d-flex sidebar_hub-content d-flex flex-column">
 					<Section
 						title={STRINGS.ACCOUNT_TEXT}

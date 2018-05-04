@@ -18,8 +18,7 @@ import {
 } from '../../actions/orderAction';
 import {
 	setOrderbook,
-	addTrades,
-	changeSymbol
+	addTrades
 } from '../../actions/orderbookAction';
 import {
 	setNotification,
@@ -439,7 +438,6 @@ class Container extends Component {
 			symbol,
 			children,
 			activeNotification,
-			changeSymbol,
 			prices,
 			verification_level,
 			activeLanguage,
@@ -495,7 +493,6 @@ class Container extends Component {
 					<Sidebar
 						activePath={activePath}
 						logout={this.logout}
-						changeSymbol={changeSymbol}
 						symbol={symbol}
 						help={openContactForm}
 						unreadMessages={unreadMessages}
@@ -555,7 +552,6 @@ const mapDispatchToProps = (dispatch) => ({
 	closeAllNotification: bindActionCreators(closeAllNotification, dispatch),
 	openContactForm: bindActionCreators(openContactForm, dispatch),
 	setNotification: bindActionCreators(setNotification, dispatch),
-	changeSymbol: bindActionCreators(changeSymbol, dispatch),
 	changeLanguage: bindActionCreators(setLanguage, dispatch),
 	changeTheme: bindActionCreators(changeTheme, dispatch)
 });
