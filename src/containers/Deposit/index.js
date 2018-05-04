@@ -5,11 +5,9 @@ import { connect } from 'react-redux';
 
 import {
 	ICONS,
-	CURRENCIES,
-	DEPOSIT_LIMITS,
 	BALANCE_ERROR
 } from '../../config/constants';
-import { fiatSymbol, getCurrencyFromName } from '../../utils/currency';
+import { getCurrencyFromName } from '../../utils/currency';
 
 import { openContactForm } from '../../actions/appActions';
 
@@ -17,11 +15,9 @@ import { renderInformation, renderTitleSection } from '../Wallet/components';
 
 import {
 	generateFiatInformation,
-	renderContent,
-	renderExtraInformation
+	renderContent
 } from './utils';
 
-import BankDeposit from './BankDeposit';
 
 class Deposit extends Component {
 	state = {
@@ -53,26 +49,15 @@ class Deposit extends Component {
 
 	render() {
 		const { id, crypto_wallet, openContactForm, balance } = this.props;
-		const { depositPrice, currency } = this.state;
+		const { currency } = this.state;
 
 		if (!id || !currency) {
 			return <div />;
 		}
 
-		const { name } = CURRENCIES[currency];
-		const balanceAvailable = balance[`${currency}_available`];
-
-		const limit = DEPOSIT_LIMITS[currency] ? DEPOSIT_LIMITS[currency].DAILY : 0;
-		const min = DEPOSIT_LIMITS[currency] ? DEPOSIT_LIMITS[currency].MIN : 0;
-		const max = DEPOSIT_LIMITS[currency] ? DEPOSIT_LIMITS[currency].MAX : 0;
-
 		return (
 			<div className="presentation_container  apply_rtl">
-				{renderTitleSection(
-					currency,
-					'deposit',
-					currency === fiatSymbol ? ICONS.DEPOSIT_FIAT : ICONS.DEPOSIT_BITCOIN
-				)}
+				{renderTitleSection(currency, 'deposit', ICONS.DEPOSIT_BITCOIN)}
 				<div
 					className={classnames(
 						'inner_container',
@@ -87,18 +72,7 @@ class Deposit extends Component {
 						generateFiatInformation,
 						'deposit'
 					)}
-					{currency === fiatSymbol ? (
-						<BankDeposit
-							available={balanceAvailable}
-							minAmount={min}
-							maxAmount={max}
-							currencyName={name}
-							depositPrice={depositPrice}
-						/>
-					) : (
-						renderContent(currency, crypto_wallet)
-					)}
-					{renderExtraInformation(limit)}
+					{renderContent(currency, crypto_wallet)}
 				</div>
 			</div>
 		);

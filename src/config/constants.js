@@ -354,12 +354,6 @@ export const TOKEN_KEY = `${ENV}_${NETWORK}_TOKEN`;
 export const LANGUAGE_KEY = `${ENV}_${NETWORK}_LANGUAGE`;
 export const DEFAULT_LANGUAGE = 'en';
 
-export const BANK_INFORMATION = {
-	bank_name: process.env.REACT_APP_BANK_NAME || 'Hollaex',
-	account_owner: process.env.REACT_APP_ACCOUNT_OWNER || 'Exchange',
-	account_number: process.env.REACT_APP_ACCOUNT_NUMBER || '2313-0631-2313-3121'
-};
-
 export const BANK_WITHDRAWAL_BASE_FEE =
 	process.env.REACT_APP_BANK_WITHDRAWAL_BASE_FEE || 1;
 export const BANK_WITHDRAWAL_DYNAMIC_FEE_RATE =

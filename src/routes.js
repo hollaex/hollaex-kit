@@ -20,7 +20,6 @@ import {
 	VerificationEmailCode,
 	Home,
 	Deposit,
-	DepositVerification,
 	Withdraw,
 	TransactionsHistory,
 	Trade,
@@ -142,11 +141,6 @@ export default (
 			<Route path="wallet/:currency" name="Wallet" component={CurrencyWallet} />
 			<Route path="withdraw/:currency" name="Withdraw" component={Withdraw} />
 			<Route path="deposit/:currency" name="Deposit" component={Deposit} />
-			<Route
-				path="deposit/verification"
-				name="Deposit Verification"
-				component={DepositVerification}
-			/>
 			<Route
 				path="transactions"
 				name="Transactions"

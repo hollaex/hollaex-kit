@@ -45,28 +45,12 @@ const renderBTCContent = (label = '', address = '') =>
 
 export const renderContent = (symbol, crypto_wallet = {}) => {
 	switch (symbol) {
+		case 'btc':
+			return renderBTCContent(STRINGS.DEPOSIT.CRYPTO_LABELS.BTC, crypto_wallet.bitcoin);
+		case 'eth':
+			return renderBTCContent(STRINGS.DEPOSIT.CRYPTO_LABELS.ETH, crypto_wallet.ethereum);
 		case fiatSymbol:
-			// return renderBankInformation(BANK_INFORMATION);
-			return;
-		case 'btc': {
-			const CRYPTO_LABELS = {
-				btc: STRINGS.DEPOSIT.CRYPTO_LABELS.BTC
-			};
-			return renderBTCContent(CRYPTO_LABELS.btc, crypto_wallet.bitcoin);
-		}
 		default:
 			return <div>{STRINGS.DEPOSIT.NO_DATA}</div>;
 	}
-};
-
-export const renderExtraInformation = (limit = 0) => {
-	if (limit === 0) {
-		return;
-	}
-
-	return (
-		<div className="extra_information-wrapper d-flex">
-			{STRINGS.DEPOSIT.LIMIT_MESSAGE}
-		</div>
-	);
 };
