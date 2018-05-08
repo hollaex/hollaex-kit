@@ -4,9 +4,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import {
 	IconTitle,
-	CurrencyBallWithPrice,
 	Button,
-	ActionNotification,
 	Accordion
 } from '../../components';
 import { changeSymbol } from '../../actions/orderbookAction';
@@ -99,32 +97,6 @@ class Wallet extends Component {
 		);
 	};
 
-	renderWalletHeaderBlock = (symbol, price, balance) => {
-		const balanceValue = balance[`${symbol}_balance`] || 0;
-		return (
-			<div className="wallet-header_block">
-				<div className="wallet-header_block-currency_title">
-					{STRINGS.formatString(
-						STRINGS.CURRENCY_BALANCE_TEXT,
-						STRINGS[`${symbol.toUpperCase()}_FULLNAME`]
-					)}
-					<ActionNotification
-						text={STRINGS.TRADE_HISTORY}
-						status="information"
-						iconPath={ICONS.BLUE_CLIP}
-						useSvg={true}
-						onClick={this.goToTransactionsHistory}
-					/>
-				</div>
-				<CurrencyBallWithPrice
-					symbol={symbol}
-					amount={balanceValue}
-					price={price}
-				/>
-			</div>
-		);
-	};
-
 	renderButtonsBlock = (symbol) => {
 		const { depositText, withdrawText } = generateWalletActionsText(symbol);
 
@@ -140,7 +112,6 @@ class Wallet extends Component {
 	};
 
 	render() {
-		const { symbol, balance, price } = this.props;
 		const { sections } = this.state;
 
 		return (
@@ -152,7 +123,6 @@ class Wallet extends Component {
 					textType="title"
 				/>
 				<div className="wallet-container">
-					{this.renderWalletHeaderBlock(symbol, price, balance)}
 					<Accordion sections={sections} notifyOnOpen={this.notifyOnOpen} />
 				</div>
 			</div>
