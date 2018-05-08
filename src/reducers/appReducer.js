@@ -5,6 +5,7 @@ import {
 	CHANGE_LANGUAGE,
 	SET_ANNOUNCEMENT,
 	CHANGE_THEME,
+	SET_PAIRS,
 	SET_UNREAD
 } from '../actions/appActions';
 import { THEME_DEFAULT } from '../config/constants';
@@ -25,11 +26,23 @@ const INITIAL_STATE = {
 	chatUnreadMessages: 0,
 	activeNotification: EMPTY_NOTIFICATION,
 	theme: THEME_DEFAULT,
-	language: getLanguage()
+	language: getLanguage(),
+	pairs: {},
+	pair: ''
 };
 
 const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 	switch (type) {
+		case SET_PAIRS:
+			return {
+				...state,
+				pairs: payload.pairs
+			};
+		case 'CHANGE_PAIR':
+			return {
+				...state,
+				pair: payload.pair
+			};
 		case SET_NOTIFICATION: {
 			const newNotification =
 				payload.type.indexOf('NOTIFICATIONS') > -1 ? [payload] : [];

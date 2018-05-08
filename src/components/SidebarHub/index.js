@@ -14,7 +14,6 @@ class SidebarHub extends Component {
 			<div
 				className={classnames(
 					'd-flex flex-column sidebar_hub-wrapper',
-					`active_currency-${currency}`,
 					`active-${activePath}`
 				)}
 			>

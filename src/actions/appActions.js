@@ -21,6 +21,8 @@ export const CONTACT_FORM = 'CONTACT_FORM';
 export const CHANGE_LANGUAGE = 'CHANGE_LANGUAGE';
 export const SET_ANNOUNCEMENT = 'SET_ANNOUNCEMENT';
 export const SET_UNREAD = 'SET_UNREAD';
+export const SET_PAIRS = 'SET_PAIRS';
+export const CHANGE_PAIR = 'CHANGE_PAIR';
 export const CHANGE_THEME = 'CHANGE_THEME';
 
 export const setNotification = (type = '', data = {}, show = true) => ({
@@ -78,5 +80,19 @@ export const changeTheme = (theme = '') => ({
 	type: CHANGE_THEME,
 	payload: {
 		theme
+	}
+});
+
+export const setPairs = (pairs) => ({
+	type: SET_PAIRS,
+	payload: {
+		pairs
+	}
+});
+
+export const changePair = (pair) => ({
+	type: CHANGE_PAIR,
+	payload: {
+		pair
 	}
 });

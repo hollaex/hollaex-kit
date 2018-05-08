@@ -21,6 +21,8 @@ import {
 	addTrades
 } from '../../actions/orderbookAction';
 import {
+	setPairs,
+	changePair,
 	setNotification,
 	closeNotification,
 	openContactForm,
@@ -141,27 +143,34 @@ class Container extends Component {
 
 	setPublicWS = () => {
 		// TODO change when added more cryptocurrencies
-		// const { symbol } = this.props;
-		const symbol = 'btc';
 
 		const publicSocket = io(`${WS_URL}/realtime`, {
 			query: {
-				symbol
+				// symbol: 'btc'
 			}
 		});
 
 		this.setState({ publicSocket });
 
+		publicSocket.on('initial', (data) => {
+			console.log('initial', data)
+			// TODO
+			if (!this.props.pair) {
+				const pair = Object.keys(data.pairs)[0];
+				this.props.changePair(pair);
+			}
+			this.props.setPairs(data.pairs);
+		});
+
 		publicSocket.on('orderbook', (data) => {
-			// console.log('orderbook', data)
-			this.props.setOrderbook(data[symbol]);
+			console.log('orderbook', data)
+			// TODO
+			// this.props.setOrderbook(data[symbol]);
 		});
 
 		publicSocket.on('trades', (data) => {
-			// console.log('trades', data);
-			if (data[symbol].length > 0) {
-				this.props.addTrades(symbol, data[symbol]);
-			}
+			console.log('trades', data);
+			// TODO
 		});
 	};
 
@@ -492,7 +501,6 @@ class Container extends Component {
 					<Sidebar
 						activePath={activePath}
 						logout={this.logout}
-						symbol={symbol}
 						help={openContactForm}
 						unreadMessages={unreadMessages}
 					/>
@@ -521,7 +529,7 @@ class Container extends Component {
 }
 
 const mapStateToProps = (store) => ({
-	orderbook: store.orderbook,
+	pair: store.app.pair,
 	symbol: store.orderbook.symbol,
 	prices: store.orderbook.prices,
 	fetchingAuth: store.auth.fetching,
@@ -551,6 +559,8 @@ const mapDispatchToProps = (dispatch) => ({
 	openContactForm: bindActionCreators(openContactForm, dispatch),
 	setNotification: bindActionCreators(setNotification, dispatch),
 	changeLanguage: bindActionCreators(setLanguage, dispatch),
+	changePair: bindActionCreators(changePair, dispatch),
+	setPairs: bindActionCreators(setPairs, dispatch),
 	changeTheme: bindActionCreators(changeTheme, dispatch)
 });
 

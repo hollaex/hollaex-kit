@@ -37,6 +37,7 @@ const INITIAL_STATE = {
 	fetching: false,
 	trades: [],
 	error: null,
+	pair: '',
 	symbol: 'btc',
 	price: 0,
 	prices: {
@@ -55,6 +56,11 @@ export default function reducer(state = INITIAL_STATE, { payload, type }) {
 			return {
 				...state,
 				symbol: payload.symbol
+			};
+		case 'CHANGE_PAIR':
+			return {
+				...state,
+				pair: payload.pair
 			};
 		// getOrderbook
 		case 'GET_ORDERBOOK_PENDING':
