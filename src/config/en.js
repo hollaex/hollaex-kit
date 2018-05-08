@@ -5,10 +5,20 @@ export default {
 	FIAT_FULLNAME: 'Euro',
 	FIAT_SHORTNAME: 'EUR',
 	FIAT_CURRENCY_SYMBOL: '€',
+	FIAT_PRICE_FORMAT: '{0} {1}', // 0-> amount  1 -> symbol  600,000 T
+
 	BTC_NAME: 'Bitcoin',
 	BTC_FULLNAME: 'Bitcoin',
 	BTC_SHORTNAME: 'BTC',
 	BTC_CURRENCY_SYMBOL: 'BTC',
+	BTC_PRICE_FORMAT: '{0} {1}', // 0-> amount  1 -> symbol  6.00245 BTC
+
+	ETH_NAME: 'Ethereum',
+	ETH_FULLNAME: 'Ethereum',
+	ETH_SHORTNAME: 'ETH',
+	ETH_CURRENCY_SYMBOL: 'ETH',
+	ETH_PRICE_FORMAT: '{0} {1}', // 0-> amount  1 -> symbol  6.00245 ETH
+
 	TIMESTAMP_FORMAT: 'YYYY/MM/DD HH:mm:ss A',
 	HOUR_FORMAT: 'HH:mm:ss A',
 	LOGIN_TEXT: 'Login',
@@ -106,13 +116,13 @@ export default {
 	},
 	DEPOSIT: {
 		CRYPTO_LABELS: {
-			BTC: 'Your Bitcoin receiving address'
+			BTC: 'Your Bitcoin receiving address',
+			ETH: 'Your Ethereum receiving address'
 		},
 		INFORMATION_MESSAGES: [
 			'Use the bank details below to deposit USD in to your account. Transfers usally take up to 1-2 business day.',
 			'Deposits will only be accepeted from a bank account in a name that matches the name registered with your HOLLAEX account.'
 		],
-		LIMIT_MESSAGE: 'Use your registered card and bank for deposit otherwise you may face issues and your funds might get blocked.',
 		INCREASE_LIMIT: 'Want to increase your daily limit?',
 		QR_CODE:
 			'This QR Code can be scanned by the person who wants to send you Bitcoins',
@@ -672,8 +682,6 @@ export default {
 	ORDERBOOK_BUYERS: 'Buyers',
 	ORDERBOOK_SPREAD: '{0} spread', // 0 -> 660,000 T
 	ORDERBOOK_SPREAD_PRICE: '{0} {1}', //// 0-> amount  1 -> symbol  600,000 T
-	FIAT_PRICE_FORMAT: '{0} {1}', // 0-> amount  1 -> symbol  600,000 T
-	BTC_PRICE_FORMAT: '{0} {1}', // 0-> amount  1 -> symbol  6.00245 BTC
 	CALCULATE_MAX: 'Max',
 	DATEFIELD_TOOGLE_DATE_PE: 'تاریخ شمسی‌',
 	DATEFIELD_TOOGLE_DATE_GR: 'Gregorian calendar',

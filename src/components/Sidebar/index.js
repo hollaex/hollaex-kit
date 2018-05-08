@@ -8,14 +8,12 @@ const Sidebar = ({
 	activePath,
 	logout,
 	help,
-	symbol,
-	changeSymbol,
+	pair,
 	unreadMessages = 0
 }) => {
 	const sidebarHubProps = {
 		activePath,
-		currency: symbol,
-		changeCurrency: changeSymbol
+		pair
 	};
 	return (
 		<div className="sidebar-container apply_rtl">

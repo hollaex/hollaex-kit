@@ -1,6 +1,7 @@
 import React from 'react';
 import { CurrencyBall } from '../../components';
 import { CURRENCIES } from '../../config/constants';
+import { Link } from 'react-router';
 import {
 	calculatePrice,
 	fiatFormatToCurrency,
@@ -8,7 +9,7 @@ import {
 } from '../../utils/currency';
 import STRINGS from '../../config/localizedStrings';
 
-export const AssetsBlock = ({ balance, prices, totalAssets, changeSymbol }) => (
+export const AssetsBlock = ({ balance, prices, totalAssets }) => (
 	<div className="wallet-assets_block">
 		<table className="wallet-assets_block-table">
 			<thead>
@@ -38,18 +39,18 @@ export const AssetsBlock = ({ balance, prices, totalAssets, changeSymbol }) => (
 						return (
 							<tr className="table-row table-bottom-border" key={key}>
 								<td className="table-icon td-fit">
-									<div className="pointer" onClick={() => changeSymbol(key)}>
+									<Link to={`/wallet/${key.toLowerCase()}`}>
 										<CurrencyBall
 											name={CURRENCIES[key].shortName}
 											symbol={key}
 											size="s"
 										/>
-									</div>
+									</Link>
 								</td>
 								<td className="td-name td-fit">
-									<div className="pointer" onClick={() => changeSymbol(key)}>
+									<Link to={`/wallet/${key.toLowerCase()}`}>
 										{STRINGS[`${key.toUpperCase()}_FULLNAME`]}
-									</div>
+									</Link>
 								</td>
 								<td className="td-amount">
 									{STRINGS.formatString(

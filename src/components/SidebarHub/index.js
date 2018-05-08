@@ -5,29 +5,18 @@ import STRINGS from '../../config/localizedStrings';
 
 import { ButtonLink, Wallet } from '../';
 import { Section } from './Section';
-import { CurrencySelector } from './CurrencySelector';
 
 class SidebarHub extends Component {
-	setActiveCurrency = (currency) => () => {
-		if (this.props.changeCurrency) {
-			this.props.changeCurrency(currency);
-		}
-	};
 
 	render() {
-		const { activePath, currency } = this.props;
+		const { activePath, pair } = this.props;
 		return (
 			<div
 				className={classnames(
 					'd-flex flex-column sidebar_hub-wrapper',
-					`active_currency-${currency}`,
 					`active-${activePath}`
 				)}
 			>
-				<CurrencySelector
-					activeCurrency={currency}
-					changeCurrency={this.setActiveCurrency}
-				/>
 				<div className="d-flex sidebar_hub-content d-flex flex-column">
 					<Section
 						title={STRINGS.ACCOUNT_TEXT}
@@ -56,7 +45,8 @@ class SidebarHub extends Component {
 								active: activePath === 'trade',
 								'not-active': activePath !== 'trade'
 							})}
-							link="/trade"
+							disabled={!pair}
+							link={`/trade/${pair}`}
 						/>
 						<div className="separator" />
 						<ButtonLink
@@ -65,7 +55,8 @@ class SidebarHub extends Component {
 								active: activePath === 'quick-trade',
 								'not-active': activePath !== 'quick-trade'
 							})}
-							link="/quick-trade"
+							disabled={!pair}
+							link={`/quick-trade/${pair}`}
 						/>
 					</Section>
 				</div>

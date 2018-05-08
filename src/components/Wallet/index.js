@@ -24,7 +24,6 @@ class Wallet extends Component {
 			nextProps.user_id !== this.props.user_id ||
 			nextProps.price !== this.props.price ||
 			nextProps.orders.length !== this.props.orders.length ||
-			nextProps.symbol !== this.props.symbol ||
 			nextProps.balance.timestamp !== this.props.balance.timestamp ||
 			nextProps.activeLanguage !== this.props.activeLanguage
 		) {
@@ -56,14 +55,14 @@ class Wallet extends Component {
 		};
 	};
 
-	calculateSections = ({ symbol, price, balance, orders, prices }) => {
+	calculateSections = ({ price, balance, orders, prices }) => {
 		const sections = [];
 
-		if (symbol !== 'fiat') {
+		// TODO calculate right price
+		Object.keys(CURRENCIES).forEach((currency) => {
+			const { symbol } = CURRENCIES[currency]
 			sections.push(this.generateSection(symbol, price, balance, orders));
-		}
-
-		sections.push(this.generateSection('fiat', price, balance, orders));
+		});
 
 		const totalAssets = formatFiatAmount(
 			calculateBalancePrice(balance, prices)
@@ -80,7 +79,7 @@ class Wallet extends Component {
 
 		return (
 			<div className="wallet-wrapper">
-				<Accordion sections={sections} allowMultiOpen={true} />
+				<Accordion sections={sections} />
 				<div className="wallet_section-wrapper wallet_section-total_asset d-flex flex-column">
 					<div className="wallet_section-title">
 						{STRINGS.WALLET.TOTAL_ASSETS}

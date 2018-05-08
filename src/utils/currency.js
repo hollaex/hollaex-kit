@@ -84,3 +84,20 @@ export const generateWalletActionsText = (symbol, useFullName = false) => {
 		withdrawText
 	};
 };
+
+export const getCurrencyFromName = (name = '') => {
+	switch (name.toLowerCase()) {
+		case 'btc':
+		case 'bitcoin':
+			return 'btc';
+		case 'eth':
+		case 'ethereum':
+			return 'eth';
+		case 'eur':
+		case 'euro':
+		case 'fiat':
+			return 'fiat';
+		default:
+			return '';
+	}
+};

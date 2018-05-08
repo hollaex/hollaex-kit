@@ -12,14 +12,14 @@ import {
 import {
 	App as Container,
 	Account,
-	Wallet,
+	MainWallet,
+	CurrencyWallet,
 	Login,
 	Signup,
 	VerificationEmailRequest,
 	VerificationEmailCode,
 	Home,
 	Deposit,
-	DepositVerification,
 	Withdraw,
 	TransactionsHistory,
 	Trade,
@@ -137,21 +137,17 @@ export default (
 			<Route path="security" name="Security" component={Account} />
 			<Route path="developers" name="Developers" component={Account} />
 			<Route path="settings" name="Settings" component={Account} />
-			<Route path="wallet" name="Wallet" component={Wallet} />
-			<Route path="withdraw" name="Withdraw" component={Withdraw} />
-			<Route path="deposit" name="Deposit" component={Deposit} />
-			<Route
-				path="deposit/verification"
-				name="Deposit Verification"
-				component={DepositVerification}
-			/>
+			<Route path="wallet" name="Wallet" component={MainWallet} />
+			<Route path="wallet/:currency" name="Wallet" component={CurrencyWallet} />
+			<Route path="withdraw/:currency" name="Withdraw" component={Withdraw} />
+			<Route path="deposit/:currency" name="Deposit" component={Deposit} />
 			<Route
 				path="transactions"
 				name="Transactions"
 				component={TransactionsHistory}
 			/>
-			<Route path="trade" name="Trade" component={Trade} />
-			<Route path="quick-trade" name="Quick Trade" component={QuickTrade} />
+			<Route path="trade/:pair" name="Trade" component={Trade} />
+			<Route path="quick-trade/:pair" name="Quick Trade" component={QuickTrade} />
 		</Route>
 		<Route
 			path="verification"

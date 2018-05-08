@@ -6,6 +6,7 @@ import { ICONS } from '../../config/constants';
 import { UserProfile, UserSecurity, UserSettings } from '../';
 import STRINGS from '../../config/localizedStrings';
 import { openContactForm } from '../../actions/appActions';
+import { requestLimits } from '../../actions/userAction';
 
 const getInitialTab = ({ name, path }) => {
 	let activeTab = -1;
@@ -36,6 +37,9 @@ class Account extends Component {
 	componentDidMount() {
 		if (this.props.id) {
 			this.updateTabs(this.props);
+		}
+		if (!this.props.limits.fetched && !this.props.limits.fetching) {
+			this.props.requestLimits();
 		}
 	}
 
@@ -164,6 +168,7 @@ class Account extends Component {
 
 const mapStateToProps = (state) => ({
 	verification_level: state.user.verification_level,
+	limits: state.user.limits,
 	otp_enabled: state.user.otp_enabled || false,
 	id: state.user.id,
 	bank_account: state.user.userData.bank_account,
@@ -172,6 +177,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
+	requestLimits: bindActionCreators(requestLimits, dispatch),
 	openContactForm: bindActionCreators(openContactForm, dispatch)
 });
 

@@ -1,5 +1,9 @@
 import config from './index';
-import { formatBtcAmount, formatFiatAmount } from '../utils/string';
+import {
+	formatBtcAmount,
+	formatFiatAmount,
+	formatEthAmount
+} from '../utils/string';
 
 import STRINGS from './localizedStrings';
 
@@ -241,7 +245,9 @@ export const ICONS = {
 	TOKEN_REVOKED: `${process.env.PUBLIC_URL}/assets/images/api-key-revoked.svg`,
 	TOKEN_ACTIVE: `${process.env.PUBLIC_URL}/assets/images/api-key-active.svg`,
 	TOKEN_TRASHED: `${process.env.PUBLIC_URL}/assets/images/api-key-trashed.svg`,
-	TOKEN_GENERATE: `${process.env.PUBLIC_URL}/assets/images/api-key-generate.svg`,
+	TOKEN_GENERATE: `${
+		process.env.PUBLIC_URL
+	}/assets/images/api-key-generate.svg`,
 	TOKEN_CREATED: `${process.env.PUBLIC_URL}/assets/images/api-key-created.svg`,
 	CHECK_ORDER: `${process.env.PUBLIC_URL}/assets/images/check-order.svg`
 };
@@ -274,14 +280,6 @@ export const HOLLAEX_LOGO_BLACK = `${
 }/assets/hollaEx_logo-blk.svg`;
 
 export const CURRENCIES = {
-	fiat: {
-		symbol: 'fiat',
-		name: STRINGS.FIAT_NAME,
-		fullName: STRINGS.FIAT_FULLNAME,
-		shortName: STRINGS.FIAT_SHORTNAME,
-		currencySymbol: STRINGS.FIAT_CURRENCY_SYMBOL,
-		formatToCurrency: formatFiatAmount
-	},
 	btc: {
 		symbol: 'btc',
 		name: STRINGS.BTC_NAME,
@@ -289,6 +287,22 @@ export const CURRENCIES = {
 		shortName: STRINGS.BTC_SHORTNAME,
 		currencySymbol: 'B',
 		formatToCurrency: formatBtcAmount
+	},
+	eth: {
+		symbol: 'eth',
+		name: STRINGS.ETH_NAME,
+		fullName: STRINGS.ETH_FULLNAME,
+		shortName: STRINGS.ETH_SHORTNAME,
+		currencySymbol: 'E',
+		formatToCurrency: formatEthAmount
+	},
+	fiat: {
+		symbol: 'fiat',
+		name: STRINGS.FIAT_NAME,
+		fullName: STRINGS.FIAT_FULLNAME,
+		shortName: STRINGS.FIAT_SHORTNAME,
+		currencySymbol: STRINGS.FIAT_CURRENCY_SYMBOL,
+		formatToCurrency: formatFiatAmount
 	}
 };
 
@@ -339,12 +353,6 @@ export const WITHDRAW_LIMITS = {
 export const TOKEN_KEY = `${ENV}_${NETWORK}_TOKEN`;
 export const LANGUAGE_KEY = `${ENV}_${NETWORK}_LANGUAGE`;
 export const DEFAULT_LANGUAGE = 'en';
-
-export const BANK_INFORMATION = {
-	bank_name: process.env.REACT_APP_BANK_NAME || 'Hollaex',
-	account_owner: process.env.REACT_APP_ACCOUNT_OWNER || 'Exchange',
-	account_number: process.env.REACT_APP_ACCOUNT_NUMBER || '2313-0631-2313-3121'
-};
 
 export const BANK_WITHDRAWAL_BASE_FEE =
 	process.env.REACT_APP_BANK_WITHDRAWAL_BASE_FEE || 1;

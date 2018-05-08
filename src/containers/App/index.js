@@ -6,14 +6,8 @@ import io from 'socket.io-client';
 import EventListener from 'react-event-listener';
 import { debounce } from 'lodash';
 import { WS_URL, ICONS, SESSION_TIME } from '../../config/constants';
-
 import { logout } from '../../actions/authAction';
-import {
-	setMe,
-	setBalance,
-	updateUser,
-	requestLimits
-} from '../../actions/userAction';
+import { setMe, setBalance, updateUser } from '../../actions/userAction';
 import { addUserTrades } from '../../actions/walletActions';
 import {
 	setUserOrders,
@@ -23,10 +17,11 @@ import {
 } from '../../actions/orderAction';
 import {
 	setOrderbook,
-	addTrades,
-	changeSymbol
+	addTrades
 } from '../../actions/orderbookAction';
 import {
+	setPairs,
+	changePair,
 	setNotification,
 	closeNotification,
 	openContactForm,
@@ -86,7 +81,6 @@ class Container extends Component {
 		) {
 			if (!this.state.publicSocket) {
 				this.initSocketConnections();
-				this.props.requestLimits();
 			}
 		}
 		if (
@@ -149,27 +143,34 @@ class Container extends Component {
 
 	setPublicWS = () => {
 		// TODO change when added more cryptocurrencies
-		// const { symbol } = this.props;
-		const symbol = 'btc';
 
 		const publicSocket = io(`${WS_URL}/realtime`, {
 			query: {
-				symbol
+				// symbol: 'btc'
 			}
 		});
 
 		this.setState({ publicSocket });
 
+		publicSocket.on('initial', (data) => {
+			console.log('initial', data)
+			// TODO
+			if (!this.props.pair) {
+				const pair = Object.keys(data.pairs)[0];
+				this.props.changePair(pair);
+			}
+			this.props.setPairs(data.pairs);
+		});
+
 		publicSocket.on('orderbook', (data) => {
-			// console.log('orderbook', data)
-			this.props.setOrderbook(data[symbol]);
+			console.log('orderbook', data)
+			// TODO
+			// this.props.setOrderbook(data[symbol]);
 		});
 
 		publicSocket.on('trades', (data) => {
-			// console.log('trades', data);
-			if (data[symbol].length > 0) {
-				this.props.addTrades(symbol, data[symbol]);
-			}
+			console.log('trades', data);
+			// TODO
 		});
 	};
 
@@ -446,9 +447,9 @@ class Container extends Component {
 	render() {
 		const {
 			symbol,
+			pair,
 			children,
 			activeNotification,
-			changeSymbol,
 			prices,
 			verification_level,
 			activeLanguage,
@@ -512,10 +513,9 @@ class Container extends Component {
 					<Sidebar
 						activePath={activePath}
 						logout={this.logout}
-						changeSymbol={changeSymbol}
-						symbol={symbol}
 						help={openContactForm}
 						unreadMessages={unreadMessages}
+						pair={pair}
 					/>
 				</div>
 				<Dialog
@@ -543,7 +543,7 @@ class Container extends Component {
 }
 
 const mapStateToProps = (store) => ({
-	orderbook: store.orderbook,
+	pair: store.app.pair,
 	symbol: store.orderbook.symbol,
 	prices: store.orderbook.prices,
 	fetchingAuth: store.auth.fetching,
@@ -558,7 +558,6 @@ const mapStateToProps = (store) => ({
 
 const mapDispatchToProps = (dispatch) => ({
 	logout: bindActionCreators(logout, dispatch),
-	requestLimits: bindActionCreators(requestLimits, dispatch),
 	addTrades: bindActionCreators(addTrades, dispatch),
 	setOrderbook: bindActionCreators(setOrderbook, dispatch),
 	setMe: bindActionCreators(setMe, dispatch),
@@ -573,8 +572,9 @@ const mapDispatchToProps = (dispatch) => ({
 	closeAllNotification: bindActionCreators(closeAllNotification, dispatch),
 	openContactForm: bindActionCreators(openContactForm, dispatch),
 	setNotification: bindActionCreators(setNotification, dispatch),
-	changeSymbol: bindActionCreators(changeSymbol, dispatch),
 	changeLanguage: bindActionCreators(setLanguage, dispatch),
+	changePair: bindActionCreators(changePair, dispatch),
+	setPairs: bindActionCreators(setPairs, dispatch),
 	changeTheme: bindActionCreators(changeTheme, dispatch)
 });
 

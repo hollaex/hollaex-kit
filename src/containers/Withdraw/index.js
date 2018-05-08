@@ -11,7 +11,7 @@ import {
 	MIN_VERIFICATION_LEVEL_TO_WITHDRAW,
 	MAX_VERIFICATION_LEVEL_TO_WITHDRAW
 } from '../../config/constants';
-import { fiatSymbol } from '../../utils/currency';
+import { fiatSymbol, getCurrencyFromName } from '../../utils/currency';
 import {
 	performBtcWithdraw,
 	requestFiatWithdraw,
@@ -46,23 +46,24 @@ class Withdraw extends Component {
 		) {
 			this.props.requestBtcWithdrawFee();
 			this.generateFormValues(
-				this.props.symbol,
+				getCurrencyFromName(this.props.routeParams.currency),
 				this.props.balance,
 				this.props.btcFee
 			);
 		}
+		this.setCurrency(this.props.routeParams.currency);
 	}
 
 	componentWillReceiveProps(nextProps) {
 		if (
 			nextProps.verification_level >= MIN_VERIFICATION_LEVEL_TO_WITHDRAW &&
 			nextProps.verification_level <= MAX_VERIFICATION_LEVEL_TO_WITHDRAW &&
-			(nextProps.symbol !== this.props.symbol ||
-				nextProps.activeLanguage !== this.props.activeLanguage ||
-				nextProps.btcFee.ready !== this.props.btcFee.ready)
+			(nextProps.activeLanguage !== this.props.activeLanguage ||
+				nextProps.btcFee.ready !== this.props.btcFee.ready ||
+				nextProps.routeParams.currency !== this.props.routeParams.currency)
 		) {
 			this.generateFormValues(
-				nextProps.symbol,
+				getCurrencyFromName(nextProps.routeParams.currency),
 				nextProps.balance,
 				nextProps.btcFee
 			);
@@ -70,24 +71,36 @@ class Withdraw extends Component {
 				this.props.requestBtcWithdrawFee();
 			}
 		}
+		if (nextProps.routeParams.currency !== this.props.routeParams.currency) {
+			this.setCurrency(nextProps.routeParams.currency);
+		}
 	}
 
-	generateFormValues = (symbol, balance, fees) => {
-		const balanceAvailable = balance[`${symbol}_available`];
+	setCurrency = (currencyName) => {
+		const currency = getCurrencyFromName(currencyName);
+		if (currency) {
+			this.setState({ currency });
+		} else {
+			this.props.router.push('/wallet');
+		}
+	};
+
+	generateFormValues = (currency, balance, fees) => {
+		const balanceAvailable = balance[`${currency}_available`];
 		const formValues = generateFormValues(
-			symbol,
+			currency,
 			balanceAvailable,
 			fees,
 			this.onCalculateMax
 		);
-		const initialValues = generateInitialValues(symbol, fees);
+		const initialValues = generateInitialValues(currency, fees);
 
 		this.setState({ formValues, initialValues });
 	};
 
 	onSubmitWithdraw = (values) => {
 		const withdrawAction =
-			this.props.symbol === fiatSymbol
+			this.state.curerncy === fiatSymbol
 				? requestFiatWithdraw
 				: performBtcWithdraw;
 
@@ -99,9 +112,10 @@ class Withdraw extends Component {
 	};
 
 	onCalculateMax = () => {
-		const { balance, symbol, selectedFee = 0, dispatch } = this.props;
-		const balanceAvailable = balance[`${symbol}_available`];
-		if (symbol === fiatSymbol) {
+		const { balance, selectedFee = 0, dispatch } = this.props;
+		const { currency } = this.state;
+		const balanceAvailable = balance[`${currency}_available`];
+		if (currency === fiatSymbol) {
 			const fee = calculateFiatFee(balanceAvailable);
 			const amount = math.number(
 				math.subtract(math.fraction(balanceAvailable), math.fraction(fee))
@@ -120,7 +134,6 @@ class Withdraw extends Component {
 
 	render() {
 		const {
-			symbol,
 			balance,
 			verification_level,
 			prices,
@@ -130,9 +143,13 @@ class Withdraw extends Component {
 			activeLanguage,
 			btcFee
 		} = this.props;
-		const { formValues, initialValues } = this.state;
+		const { formValues, initialValues, currency } = this.state;
 
-		const balanceAvailable = balance[`${symbol}_available`];
+		if (!currency) {
+			return <div />;
+		}
+
+		const balanceAvailable = balance[`${currency}_available`];
 
 		if (
 			verification_level >= MIN_VERIFICATION_LEVEL_TO_WITHDRAW &&
@@ -143,7 +160,7 @@ class Withdraw extends Component {
 		}
 
 		const formProps = {
-			symbol,
+			currency,
 			onSubmit: this.onSubmitWithdraw,
 			onOpenDialog: this.onOpenDialog,
 			otp_enabled,
@@ -152,22 +169,23 @@ class Withdraw extends Component {
 			initialValues,
 			activeLanguage,
 			balanceAvailable,
-			currentPrice: prices[symbol]
+			currentPrice: prices[currency]
 		};
 
 		return (
 			<div className="presentation_container apply_rtl">
-				{renderTitleSection(symbol, 'withdraw', ICONS.WITHDRAW)}
-				{verification_level >= MIN_VERIFICATION_LEVEL_TO_WITHDRAW && verification_level <= MAX_VERIFICATION_LEVEL_TO_WITHDRAW ? (
+				{renderTitleSection(currency, 'withdraw', ICONS.WITHDRAW)}
+				{verification_level >= MIN_VERIFICATION_LEVEL_TO_WITHDRAW &&
+				verification_level <= MAX_VERIFICATION_LEVEL_TO_WITHDRAW ? (
 					<div className={classnames('inner_container', 'with_border_top')}>
 						{renderInformation(
-							symbol,
+							currency,
 							balance,
 							openContactForm,
 							generateFiatInformation
 						)}
 						<WithdrawCryptocurrency {...formProps} />
-						{renderExtraInformation(symbol, bank_account)}
+						{renderExtraInformation(currency, bank_account)}
 					</div>
 				) : (
 					<div className={classnames('inner_container', 'with_border_top')}>
@@ -180,7 +198,6 @@ class Withdraw extends Component {
 }
 
 const mapStateToProps = (store) => ({
-	symbol: store.orderbook.symbol,
 	prices: store.orderbook.prices,
 	balance: store.user.balance,
 	fee: store.user.fee,
