@@ -146,8 +146,8 @@ export default (
 				name="Transactions"
 				component={TransactionsHistory}
 			/>
-			<Route path="trade" name="Trade" component={Trade} />
-			<Route path="quick-trade" name="Quick Trade" component={QuickTrade} />
+			<Route path="trade/:pair" name="Trade" component={Trade} />
+			<Route path="quick-trade/:pair" name="Quick Trade" component={QuickTrade} />
 		</Route>
 		<Route
 			path="verification"

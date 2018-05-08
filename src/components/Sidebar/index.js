@@ -8,10 +8,12 @@ const Sidebar = ({
 	activePath,
 	logout,
 	help,
+	pair,
 	unreadMessages = 0
 }) => {
 	const sidebarHubProps = {
-		activePath
+		activePath,
+		pair
 	};
 	return (
 		<div className="sidebar-container apply_rtl">

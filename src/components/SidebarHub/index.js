@@ -9,7 +9,7 @@ import { Section } from './Section';
 class SidebarHub extends Component {
 
 	render() {
-		const { activePath, currency } = this.props;
+		const { activePath, pair } = this.props;
 		return (
 			<div
 				className={classnames(
@@ -45,7 +45,8 @@ class SidebarHub extends Component {
 								active: activePath === 'trade',
 								'not-active': activePath !== 'trade'
 							})}
-							link="/trade"
+							disabled={!pair}
+							link={`/trade/${pair}`}
 						/>
 						<div className="separator" />
 						<ButtonLink
@@ -54,7 +55,8 @@ class SidebarHub extends Component {
 								active: activePath === 'quick-trade',
 								'not-active': activePath !== 'quick-trade'
 							})}
-							link="/quick-trade"
+							disabled={!pair}
+							link={`/quick-trade/${pair}`}
 						/>
 					</Section>
 				</div>

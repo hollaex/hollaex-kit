@@ -444,6 +444,7 @@ class Container extends Component {
 	render() {
 		const {
 			symbol,
+			pair,
 			children,
 			activeNotification,
 			prices,
@@ -503,6 +504,7 @@ class Container extends Component {
 						logout={this.logout}
 						help={openContactForm}
 						unreadMessages={unreadMessages}
+						pair={pair}
 					/>
 				</div>
 				<Dialog
