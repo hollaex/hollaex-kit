@@ -8,7 +8,12 @@ import { debounce } from 'lodash';
 import { WS_URL, ICONS, SESSION_TIME } from '../../config/constants';
 
 import { logout } from '../../actions/authAction';
-import { setMe, setBalance, updateUser, requestLimits } from '../../actions/userAction';
+import {
+	setMe,
+	setBalance,
+	updateUser,
+	requestLimits
+} from '../../actions/userAction';
 import { addUserTrades } from '../../actions/walletActions';
 import {
 	setUserOrders,
@@ -41,7 +46,8 @@ import {
 	Dialog,
 	Loader,
 	Notification,
-	MessageDisplay
+	MessageDisplay,
+	CurrencyList
 } from '../../components';
 import { ContactForm } from '../';
 
@@ -193,7 +199,10 @@ class Container extends Component {
 			// 	return this.goToVerificationPage();
 			// }
 			this.props.setMe(data);
-			if (data.settings && data.settings.language !== this.props.activeLanguage) {
+			if (
+				data.settings &&
+				data.settings.language !== this.props.activeLanguage
+			) {
 				this.props.changeLanguage(data.settings.language);
 			}
 			if (data.settings && data.settings.theme !== this.props.activeTheme) {
@@ -476,7 +485,15 @@ class Container extends Component {
 					onKeyPress={this.resetTimer}
 				/>
 				<div className="d-flex flex-column f-1">
-					<AppBar goToDashboard={this.goToDashboard} />
+					<AppBar
+						goToDashboard={this.goToDashboard}
+						rightChildren={
+							<CurrencyList
+								className="horizontal-currency-list justify-content-end"
+								currencies={['EUR', 'USD', 'ETH', 'BTC']}
+							/>
+						}
+					/>
 					<div className="app_container-content d-flex justify-content-between">
 						<div
 							className={classnames(
@@ -517,7 +534,8 @@ class Container extends Component {
 					}
 					style={{ 'z-index': 100 }}
 				>
-					{dialogIsOpen && this.renderDialogContent(activeNotification, prices, activeTheme)}
+					{dialogIsOpen &&
+						this.renderDialogContent(activeNotification, prices, activeTheme)}
 				</Dialog>
 			</div>
 		);
