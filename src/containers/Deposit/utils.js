@@ -4,7 +4,7 @@ import QRCode from 'qrcode.react';
 import { fiatSymbol } from '../../utils/currency';
 import STRINGS from '../../config/localizedStrings';
 
-import { renderBankInformation, renderDumbField } from '../Wallet/components'; // eslint-disable-line
+import { renderDumbField } from '../Wallet/components'; // eslint-disable-line
 
 export const generateFiatInformation = (id = '') => (
 	<div className="text">

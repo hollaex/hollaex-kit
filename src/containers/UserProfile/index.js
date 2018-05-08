@@ -11,7 +11,6 @@ import {
 	prepareInitialValues,
 	generateFormValues as generateDataFormValues
 } from './IdentificationFormValues';
-import { generateFormValues as generateBankFormValues } from './BankAccountFormValues';
 import { InformationSection } from './InformationSection';
 import { LevelSection } from './LevelSection';
 
@@ -19,14 +18,12 @@ import STRINGS from '../../config/localizedStrings';
 
 const MobileForm = Form('MobileForm');
 const InformationForm = Form('InformationForm');
-// const BankForm = Form('BankForm');
 
 class UserProfile extends Component {
 	state = {
 		sections: [],
 		dataFormValues: {},
-		mobileFormValues: {},
-		bankFormValues: {}
+		mobileFormValues: {}
 	};
 
 	componentDidMount() {
@@ -92,10 +89,9 @@ class UserProfile extends Component {
 			language,
 			userData.nationality
 		);
-		const bankFormValues = generateBankFormValues();
 		const mobileFormValues = generateMobileFormValues();
 		this.setState(
-			{ dataFormValues, mobileFormValues, bankFormValues },
+			{ dataFormValues, mobileFormValues },
 			() => {
 				this.calculateSections(verification_level, email, userData, limits);
 			}
@@ -112,13 +108,11 @@ class UserProfile extends Component {
 	calculateSections = (verification_level, email, userData, limits) => {
 		const {
 			dataFormValues,
-			mobileFormValues,
-			bankFormValues
+			mobileFormValues
 		} = this.state;
 		const {
 			phone_number,
 			full_name,
-			// bank_account = {},
 			id_data = {}
 		} = userData;
 
@@ -181,34 +175,6 @@ class UserProfile extends Component {
 					STRINGS.USER_VERIFICATION.VERIFY_USER_DOCUMENTATION
 				)
 			},
-			// {
-			// 	title: STRINGS.USER_VERIFICATION.TITLE_BANK_ACCOUNT,
-			// 	subtitle: bank_account.card_number,
-			// 	content: bank_account.provided ? (
-			// 		<BankForm initialValues={bank_account} formValues={bankFormValues}>
-			// 			<InformationSection
-			// 				text={
-			// 					!bank_account.verified && bank_account.provided
-			// 						? STRINGS.USER_VERIFICATION.PENDING_VERIFICATION_BANK
-			// 						: ''
-			// 				}
-			// 				onChangeValue={this.onOpenContactForm}
-			// 			/>
-			// 		</BankForm>
-			// 	) : (
-			// 		<div>
-			// 			<InformationSection
-			// 				text=""
-			// 				onChangeValue={this.onOpenContactForm}
-			// 			/>
-			// 		</div>
-			// 	),
-			// 	notification: this.generateNotification(
-			// 		bank_account.verified,
-			// 		bank_account.provided,
-			// 		STRINGS.USER_VERIFICATION.VERIFY_BANK_ACCOUNT
-			// 	)
-			// },
 			{
 				title: STRINGS.USER_VERIFICATION.TITLE_ID_DOCUMENTS,
 				content: (
