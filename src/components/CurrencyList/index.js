@@ -1,50 +1,35 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import classnames from 'classnames';
 import MarketList from './MarketList';
+import STRINGS from '../../config/localizedStrings';
+import { CURRENCIES } from '../../config/constants';
 
 class CurrencyList extends Component {
 	state = {
-		focusedCurrency: '',
-		markets: []
+		focusedSymbol: '',
+		markets: {}
 	};
 
-	loadMarkets = (focusedCurrency) => {
+	loadMarkets = (symbol = '', pair) => {
+		const focusedSymbol = symbol.toUpperCase();
 		this.removeFocus();
-		this[`currency-${focusedCurrency}`].classList.add('focused');
-		switch (focusedCurrency) {
-			case 'EUR':
-				this.setState({
-					focusedCurrency,
-					markets: ['ADA', 'AAA', 'BBB', 'CCC', 'DDD', 'JJJ', 'PPP', 'PPT']
-				});
-				break;
-			case 'USD':
-				this.setState({
-					focusedCurrency,
-					markets: ['JJJ', 'JJJ', 'JJJ', 'CCC', 'DDD', 'JJJ', 'PPP', 'TTP']
-				});
-				break;
-			case 'ETH':
-				this.setState({
-					focusedCurrency,
-					markets: ['OOO', 'OOO', 'BBB', 'CCC', 'OOO', 'JJJ', 'OOO', 'MMM']
-				});
-				break;
-			case 'BTC':
-				this.setState({
-					focusedCurrency,
-					markets: ['ZZZ', 'AAA', 'ZZZ', 'CCC', 'ZZZ', 'JJJ', 'PPP', 'ZZZ']
-				});
-				break;
-			default:
-				this.setState({ focusedCurrency: '', markets: [] });
-				break;
+
+		this[
+			`symbol-${STRINGS[`${focusedSymbol}_NAME`].toUpperCase()}`
+		].classList.add('focused');
+		if (focusedSymbol) {
+			const markets = Object.entries(this.props.pairs)
+				.filter(([key, pair]) => pair.pair_base === symbol)
+			this.setState({ focusedSymbol, markets });
+		} else {
+			this.setState({ focusedSymbol: '', markets: {} });
 		}
 	};
 
 	setCurrencyRef = (el) => {
 		if (el) {
-			this[`currency-${el.innerText}`] = el;
+			this[`symbol-${el.innerText}`] = el;
 		}
 	};
 
@@ -56,27 +41,28 @@ class CurrencyList extends Component {
 	};
 
 	render() {
-		const { currencies, className } = this.props;
-		const { markets, focusedCurrency } = this.state;
+		const { className } = this.props;
+		const { markets, focusedSymbol } = this.state;
+		const symbols = Object.keys(CURRENCIES);
 		return (
 			<div className={classnames('currency-list', className)}>
-				{currencies.map((currency, index) => (
+				{symbols.map((symbol, index) => (
 					<div
 						ref={this.setCurrencyRef}
 						key={index}
 						className="d-flex align-items-center single-currency"
-						onMouseEnter={() => this.loadMarkets(currency)}
-						onClick={() => this.loadMarkets(currency)}
+						onMouseEnter={() => this.loadMarkets(symbol)}
+						onClick={() => this.loadMarkets(symbol)}
 					>
-						{currency}
+						{STRINGS[`${symbol.toUpperCase()}_NAME`].toUpperCase()}
 					</div>
 				))}
-				{focusedCurrency && (
+				{focusedSymbol && (
 					<MarketList
 						markets={markets}
 						unFocus={() => {
 							this.removeFocus();
-							this.setState({ focusedCurrency: '' });
+							this.setState({ focusedSymbol: '' });
 						}}
 					/>
 				)}
@@ -85,4 +71,8 @@ class CurrencyList extends Component {
 	}
 }
 
-export default CurrencyList;
+const mapStateToProps = (store) => ({
+	pairs: store.app.pairs
+});
+
+export default connect(mapStateToProps)(CurrencyList);
