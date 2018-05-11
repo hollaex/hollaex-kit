@@ -39,6 +39,13 @@ export function setOrderbooks(orderbooks) {
 	};
 }
 
+export function setTrades(trades) {
+	return {
+		type: 'SET_TRADES_DATA',
+		payload: trades
+	};
+}
+
 export function getTrades() {
 	return {
 		type: 'GET_TRADES',

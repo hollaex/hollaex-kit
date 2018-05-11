@@ -3,8 +3,11 @@ import React from 'react';
 import { Table } from '../../../components';
 import { generateTradeHeaders } from '../../TransactionsHistory/utils';
 
-const ActiveOrders = ({ trades, symbol }) => {
-	const headers = generateTradeHeaders(symbol);
+const ActiveOrders = ({ trades, pairData, pair }) => {
+	const headers = generateTradeHeaders(pairData.pair_base);
+	if (!pair) {
+		return <div />;
+	}
 	return (
 		<div className="trade_active_orders-wrapper">
 			<Table
@@ -20,6 +23,7 @@ const ActiveOrders = ({ trades, symbol }) => {
 
 ActiveOrders.defaultProps = {
 	trades: [],
-	symbol: 'btc'
+	pair: '',
+	pairData: {}
 };
 export default ActiveOrders;

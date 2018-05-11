@@ -16,42 +16,61 @@ class ChartComponent extends Component {
 		chartType: CHART_TYPES.CANDLE
 	};
 
-	componentWillMount() {
-		const chartSocket = io.connect(`${WS_URL}/chart`, {
-			query: {
-				symbol: 'btc'
-			}
-		});
-		this.setState({ chartSocket });
-		chartSocket.on('data', this.setChartData);
-		chartSocket.on('ticker', this.setTickData);
-	}
-
-	componentWillUnmount() {
-		if (this.state.chartSocket) {
-			this.state.chartSocket.close();
+	componentDidMount() {
+		if (this.props.pair) {
+			this.connectToWs(this.props.pair);
 		}
 	}
 
+	componentWillReceiveProps(nextProps) {
+		if (nextProps.pair !== this.props.pair) {
+			this.connectToWs(nextProps.pair);
+		}
+	}
+
+	componentWillUnmount() {
+		this.disconnectWs();
+	}
+
+	connectToWs = (pair) => {
+		this.disconnectWs();
+
+		const chartSocket = io.connect(`${WS_URL}/chart`, {
+			query: {
+				symbol: pair
+			}
+		});
+		this.setState({ chartSocket, pair });
+		chartSocket.on('data', this.setChartData);
+		chartSocket.on('ticker', this.setTickData);
+	};
+
+	disconnectWs = () => {
+		if (this.state.chartSocket) {
+			this.state.chartSocket.close();
+		}
+	};
 	getCurrentBlockTimestamp() {
-		const timestamp = moment().add({ hour: 1}).set({ minutes: 0, seconds: 0 });
+		const timestamp = moment()
+			.add({ hour: 1 })
+			.set({ minutes: 0, seconds: 0 });
 		return timestamp.format();
 	}
 
 	setChartData = ({ data, timestamp }) => {
+		console.log(data, '---------------')
 		const { chartData } = this.state;
 		Object.keys(data).forEach((symbol) => {
 			if (!chartData[symbol]) {
 				chartData[symbol] = [];
 			}
 			if (Array.isArray(data[symbol])) {
-				chartData[symbol] = data[symbol].map((item) => ({
-					date: moment(item.date).format(),
-					open: item.open,
-					close: item.close,
-					high: item.high,
-					low: item.low
-				}));
+				chartData[symbol] = data[symbol].map((item) => {
+					return {
+						...item,
+						date: moment(item.date).format(),
+					}
+				});
 			} else if (
 				data[symbol].date &&
 				chartData[symbol].length > 0 &&
@@ -68,6 +87,7 @@ class ChartComponent extends Component {
 	};
 
 	setTickData = ({ data, timestamp }) => {
+		console.log(data, '---------------ticker')
 		const { tickers, chartData } = this.state;
 		const keys = Object.keys(data);
 		if (keys.length === 1) {
@@ -89,11 +109,8 @@ class ChartComponent extends Component {
 				chartData[symbol][chartData[symbol].length - 1] = lastData;
 			} else {
 				chartData[symbol].push({
+					...data[symbol],
 					date: currentBlockTimestamp,
-					high: data[symbol],
-					low: data[symbol],
-					open: tickers[symbol],
-					close: data[symbol]
 				});
 			}
 		}
@@ -109,7 +126,7 @@ class ChartComponent extends Component {
 	};
 
 	render() {
-		const { height, width, theme } = this.props;
+		const { height, width, theme, pair } = this.props;
 		const { chartData, ready, chartType } = this.state;
 		return (
 			<div
@@ -123,12 +140,12 @@ class ChartComponent extends Component {
 				}}
 				className="direction_ltr"
 			>
-				{ready && chartData.btc && chartData.btc.length > 1 ? (
+				{ready && chartData[pair] && chartData[pair].length > 1 ? (
 					<Chart
 						chartType={chartType}
 						serieName="BTC"
 						type="hybrid"
-						data={chartData.btc}
+						data={chartData[pair].reverse()}
 						width={width}
 						height={height}
 						ratio={1}

@@ -38,7 +38,7 @@ const INITIAL_STATE = {
 	trades: [],
 	error: null,
 	pair: '',
-	symbol: 'btc',
+	symbol: '',
 	price: 0,
 	prices: {
 		fiat: 1
@@ -47,7 +47,9 @@ const INITIAL_STATE = {
 	bids: [],
 	orderbookReady: false,
 	quickTrade: INITIAL_QUICK_TRADE,
-	quoteData: INITIAL_QUOTE
+	quoteData: INITIAL_QUOTE,
+	pairsOrderbooks: {},
+	pairsTrades: {}
 };
 
 export default function reducer(state = INITIAL_STATE, { payload, type }) {
@@ -60,6 +62,7 @@ export default function reducer(state = INITIAL_STATE, { payload, type }) {
 		case 'CHANGE_PAIR':
 			return {
 				...state,
+				symbol: payload.pair,
 				pair: payload.pair
 			};
 		// getOrderbook
@@ -238,6 +241,36 @@ export default function reducer(state = INITIAL_STATE, { payload, type }) {
 				}
 			};
 
+		case 'SET_ORDERBOOKS_DATA': {
+			const { action, ...rest } = payload;
+			return {
+				...state,
+				pairsOrderbooks: {
+					...state.pairsOrderbooks,
+					...rest
+				}
+			}
+		}
+
+		case 'SET_TRADES_DATA': {
+			const { action, ...rest } = payload;
+			let pairsTrades = {};
+			if (action === 'partial') {
+				pairsTrades = {
+					...state.pairsTrades,
+					...rest
+				}
+			} else if (action === 'update') {
+				pairsTrades = {
+					...state.pairsTrades
+				}
+				pairsTrades[rest.symbol] = rest[rest.symbol].concat(pairsTrades[rest.symbol]);
+			}
+			return {
+				...state,
+				pairsTrades
+			}
+		}
 		case 'LOGOUT':
 			return INITIAL_STATE;
 		default:

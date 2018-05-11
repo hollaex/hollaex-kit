@@ -17,6 +17,8 @@ import {
 	removeOrder
 } from '../../actions/orderAction';
 import {
+	setOrderbooks,
+	setTrades,
 	setOrderbook,
 	addTrades
 } from '../../actions/orderbookAction';
@@ -166,10 +168,17 @@ class Container extends Component {
 			console.log('orderbook', data)
 			// TODO
 			// this.props.setOrderbook(data[symbol]);
+			this.props.setOrderbooks(data)
 		});
 
 		publicSocket.on('trades', (data) => {
 			console.log('trades', data);
+			// TODO
+			this.props.setTrades(data)
+		});
+
+		publicSocket.on('ticker', (data) => {
+			console.log('ticker', data);
 			// TODO
 		});
 	};
@@ -563,6 +572,8 @@ const mapDispatchToProps = (dispatch) => ({
 	changeLanguage: bindActionCreators(setLanguage, dispatch),
 	changePair: bindActionCreators(changePair, dispatch),
 	setPairs: bindActionCreators(setPairs, dispatch),
+	setOrderbooks: bindActionCreators(setOrderbooks, dispatch),
+	setTrades: bindActionCreators(setTrades, dispatch),
 	changeTheme: bindActionCreators(changeTheme, dispatch)
 });
 

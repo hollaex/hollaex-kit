@@ -84,7 +84,7 @@ class Orderbook extends Component {
 	};
 
 	render() {
-		const { asks, bids, symbol } = this.props;
+		const { asks, bids, symbol, pairData } = this.props;
 		const { dataBlockHeight } = this.state;
 		const blockStyle =
 			dataBlockHeight > 0
@@ -94,6 +94,8 @@ class Orderbook extends Component {
 					}
 				: {};
 
+		const pairBase = pairData.pair_base.toUpperCase();
+		const pairTwo = pairData.pair_2.toUpperCase();
 		return (
 			<div className="trade_orderbook-wrapper d-flex flex-column f-1 apply_rtl">
 				<EventListener target="window" onResize={this.scrollTop} />
@@ -101,11 +103,11 @@ class Orderbook extends Component {
 					<div className="f-1 trade_orderbook-cell">
 						{STRINGS.formatString(
 							STRINGS.PRICE_CURRENCY,
-							STRINGS.FIAT_CURRENCY_SYMBOL
+							STRINGS[`${pairTwo}_CURRENCY_SYMBOL`]
 						)}
 					</div>
 					<div className="f-1 trade_orderbook-cell">
-						{STRINGS.formatString(STRINGS.AMOUNT_SYMBOL, symbol)}
+						{STRINGS.formatString(STRINGS.AMOUNT_SYMBOL, pairBase)}
 					</div>
 				</div>
 				<div
@@ -134,7 +136,7 @@ class Orderbook extends Component {
 								{STRINGS.formatString(
 									STRINGS.ORDERBOOK_SPREAD_PRICE,
 									calculateSpread(asks, bids),
-									STRINGS.FIAT_CURRENCY_SYMBOL
+									STRINGS[`${pairTwo}_CURRENCY_SYMBOL`]
 								)}
 							</div>
 						)}
