@@ -334,6 +334,11 @@ export default function reducer(state = INITIAL_STATE, action) {
 					success: true
 				}
 			};
+		case 'CLEAN_CREATE_ADDRESS':
+			return {
+				...state,
+				addressRequest: INITIAL_ADDRESS_OBJECT
+			}
 		case 'LOGOUT':
 			return INITIAL_STATE;
 		default:
