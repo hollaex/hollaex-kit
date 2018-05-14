@@ -818,5 +818,9 @@ export default {
 		LABEL_BTC_WITHDRAWAL: 'Daily Bitcoin Withdrawal',
 		UNLIMITED: 'Unlimited',
 		BLOCKED: '0'
-	}
+	},
+	WALLET_ADDRESS_TITLE: 'Generate {0} Wallet',
+	WALLET_ADDRESS_GENERATE: 'Generate',
+	WALLET_ADDRESS_MESSAGE: 'When you generate a wallet you create a deposit and withdrawal address.',
+	WALLET_ADDRESS_ERROR: 'Error generating the address, please refresh and try again.'
 };

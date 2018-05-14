@@ -7,11 +7,12 @@ export const NotificationWraper = ({
 	iconType,
 	title,
 	children,
-	className = ''
+	className = '',
+	titleClassName = ''
 }) => (
 	<div className={classnames('notification-content-wrapper', className)}>
 		{icon && <ReactSVG path={icon} wrapperClassName="notification-content-icon" />}
-		<div className="font-weight-bold notification-content-title">{title}</div>
+		<div className={classnames('font-weight-bold notification-content-title', titleClassName)}>{title}</div>
 		{children}
 	</div>
 );

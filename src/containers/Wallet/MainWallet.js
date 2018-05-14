@@ -5,9 +5,13 @@ import { bindActionCreators } from 'redux';
 import {
 	IconTitle,
 	Button,
-	Accordion
+	Dialog,
+	Accordion,
+	Notification
 } from '../../components';
 import { changeSymbol } from '../../actions/orderbookAction';
+import { NOTIFICATIONS } from '../../actions/appActions';
+import { createAddress } from '../../actions/userAction';
 import { ICONS, FLEX_CENTER_CLASSES, CURRENCIES } from '../../config/constants';
 import {
 	calculateBalancePrice,
@@ -23,7 +27,9 @@ class Wallet extends Component {
 	state = {
 		sections: [],
 		isOpen: true,
-		totalAssets: ''
+		totalAssets: '',
+		dialogIsOpen: false,
+		selectedCurrency: ''
 	};
 
 	componentDidMount() {
@@ -111,9 +117,21 @@ class Wallet extends Component {
 		);
 	};
 
-	render() {
-		const { sections } = this.state;
+	onOpenDialog = () => {
+		this.setState({ dialogIsOpen: true });
+	};
+	onCloseDialog = () => {
+		this.setState({ dialogIsOpen: false, selectedCurrency: '' });
+	};
+	onCreateAddress = () => {
+		if (this.state.selectedCurrency && !this.props.addressRequest.error) {
+			this.props.createAddress(this.state.selectedCurrency);
+		}
+	};
 
+	render() {
+		const { sections, dialogIsOpen, selectedCurrency } = this.state;
+		const { activeTheme, addressRequest } = this.props;
 		return (
 			<div className="presentation_container apply_rtl">
 				<IconTitle
@@ -125,6 +143,26 @@ class Wallet extends Component {
 				<div className="wallet-container">
 					<Accordion sections={sections} notifyOnOpen={this.notifyOnOpen} />
 				</div>
+				<Dialog
+					isOpen={dialogIsOpen}
+					label="hollaex-modal"
+					className="app-dialog"
+					onCloseDialog={this.onCloseDialog}
+					shouldCloseOnOverlayClick={false}
+					theme={activeTheme}
+					showCloseText={true}
+					style={{ 'z-index': 100 }}
+				>
+					{dialogIsOpen && selectedCurrency && (
+						<Notification
+							type={NOTIFICATIONS.GENERATE_ADDRESS}
+							onBack={this.onCloseDialog}
+							onGenerate={this.onCreateAddress}
+							currency={selectedCurrency}
+							data={addressRequest}
+						/>
+					)}
+				</Dialog>
 			</div>
 		);
 	}
@@ -135,10 +173,13 @@ const mapStateToProps = (store) => ({
 	price: store.orderbook.price,
 	prices: store.orderbook.prices,
 	balance: store.user.balance,
+	addressRequest: store.user.addressRequest,
+	activeTheme: store.app.theme,
 	activeLanguage: store.app.language
 });
 
 const mapDispatchToProps = (dispatch) => ({
+	createAddress: bindActionCreators(createAddress, dispatch),
 	changeSymbol: bindActionCreators(changeSymbol, dispatch)
 });
 

@@ -35,7 +35,11 @@ $logout--size-difference: 3rem;
 		display: flex;
 		flex-direction: column;
 		flex: 1;
-
+		.notification-content-title {
+			&.with-border-bottom {
+				border-bottom: 1px solid $colors-main-black;
+			}
+		}
 		&.notification_verification {
 			text-align: center;
 			.notification-content-title {
@@ -153,6 +157,11 @@ $logout--size-difference: 3rem;
 	.notification-wrapper {
 		color: $dark-font-sub-text-color;
 
+		.notification-content-title {
+			&.with-border-bottom {
+				border-bottom-color: $dark-border-main;
+			}
+		}
 		.notification-title-wrapper {
 			border-bottom-color: $dark-border-main;
 			.notification-title-icon {

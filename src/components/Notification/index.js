@@ -9,6 +9,7 @@ import Verification from './Verification';
 import Logout from './Logout';
 import ContactForm from './ContactForm';
 import NewOrder from './NewOrder';
+import GenerateAddressNotification from './GenerateAddress'
 import { GenerateApiKey, CreatedApiKey } from './GenerateApiKey';
 
 const generateNotificationContent = ({ type, data, ...rest }) => {
@@ -34,6 +35,8 @@ const generateNotificationContent = ({ type, data, ...rest }) => {
 			return <GenerateApiKey data={data} {...rest} />;
 		case NOTIFICATIONS.CREATED_API_KEY:
 			return <CreatedApiKey data={data} {...rest} />;
+		case NOTIFICATIONS.GENERATE_ADDRESS:
+			return <GenerateAddressNotification data={data} {...rest} />;
 		default:
 			break;
 	}
