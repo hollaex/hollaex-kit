@@ -24,6 +24,7 @@ export const SET_ANNOUNCEMENT = 'SET_ANNOUNCEMENT';
 export const SET_UNREAD = 'SET_UNREAD';
 export const SET_PAIRS = 'SET_PAIRS';
 export const CHANGE_PAIR = 'CHANGE_PAIR';
+export const SET_TICKERS = 'SET_TICKERS';
 export const CHANGE_THEME = 'CHANGE_THEME';
 
 export const setNotification = (type = '', data = {}, show = true) => ({
@@ -97,3 +98,8 @@ export const changePair = (pair) => ({
 		pair
 	}
 });
+
+export const setTickers = (data) => ({
+	type: SET_TICKERS,
+	payload: data
+})

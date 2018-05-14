@@ -27,6 +27,7 @@ import {
 	addTrades
 } from '../../actions/orderbookAction';
 import {
+	setTickers,
 	setPairs,
 	changePair,
 	setNotification,
@@ -160,8 +161,7 @@ class Container extends Component {
 		this.setState({ publicSocket });
 
 		publicSocket.on('initial', (data) => {
-			console.log('initial', data);
-			// TODO
+			// console.log('initial', data);
 			if (!this.props.pair) {
 				const pair = Object.keys(data.pairs)[0];
 				this.props.changePair(pair);
@@ -170,21 +170,18 @@ class Container extends Component {
 		});
 
 		publicSocket.on('orderbook', (data) => {
-			console.log('orderbook', data);
-			// TODO
-			// this.props.setOrderbook(data[symbol]);
-			this.props.setOrderbooks(data)
+			// console.log('orderbook', data);
+			this.props.setOrderbooks(data);
 		});
 
 		publicSocket.on('trades', (data) => {
-			console.log('trades', data);
-			// TODO
-			this.props.setTrades(data)
+			// console.log('trades', data);
+			this.props.setTrades(data);
 		});
 
 		publicSocket.on('ticker', (data) => {
 			console.log('ticker', data);
-			// TODO
+			this.props.setTickers(data);
 		});
 	};
 
@@ -503,9 +500,7 @@ class Container extends Component {
 					<AppBar
 						goToDashboard={this.goToDashboard}
 						rightChildren={
-							<CurrencyList
-								className="horizontal-currency-list justify-content-end"
-							/>
+							<CurrencyList className="horizontal-currency-list justify-content-end" />
 						}
 					/>
 					<div className="app_container-content d-flex justify-content-between">
@@ -590,6 +585,7 @@ const mapDispatchToProps = (dispatch) => ({
 	setPairs: bindActionCreators(setPairs, dispatch),
 	setOrderbooks: bindActionCreators(setOrderbooks, dispatch),
 	setTrades: bindActionCreators(setTrades, dispatch),
+	setTickers: bindActionCreators(setTickers, dispatch),
 	changeTheme: bindActionCreators(changeTheme, dispatch)
 });
 

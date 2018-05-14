@@ -41,7 +41,9 @@ const INITIAL_STATE = {
 	symbol: '',
 	price: 0,
 	prices: {
-		fiat: 1
+		fiat: 1,
+		eth: 1,
+		btc: 1
 	},
 	asks: [],
 	bids: [],
@@ -249,27 +251,54 @@ export default function reducer(state = INITIAL_STATE, { payload, type }) {
 					...state.pairsOrderbooks,
 					...rest
 				}
-			}
+			};
 		}
 
 		case 'SET_TRADES_DATA': {
-			const { action, ...rest } = payload;
+			const { action, symbol, ...rest } = payload;
+			const { prices } = state;
 			let pairsTrades = {};
 			if (action === 'partial') {
 				pairsTrades = {
 					...state.pairsTrades,
 					...rest
-				}
+				};
+				Object.keys(rest).forEach((key) => {
+					if (rest[key].length > 0) {
+						let keyPrice = '';
+						if (key === 'btc-eur') {
+							keyPrice = 'btc';
+						} else if (key === 'eth-eur') {
+							keyPrice = 'eth';
+						}
+						prices[keyPrice] = rest[key][0].price;
+					}
+				});
 			} else if (action === 'update') {
 				pairsTrades = {
 					...state.pairsTrades
+				};
+				pairsTrades[symbol] = rest[symbol].concat(
+					pairsTrades[symbol]
+				);
+
+				let keyPrice = '';
+				if (symbol === 'btc-eur') {
+					keyPrice = 'btc';
+				} else if (symbol === 'eth-eur') {
+					keyPrice = 'eth';
 				}
-				pairsTrades[rest.symbol] = rest[rest.symbol].concat(pairsTrades[rest.symbol]);
+
+				if (keyPrice) {
+					prices[keyPrice] = rest[symbol][0].price;
+				}
 			}
+
 			return {
 				...state,
-				pairsTrades
-			}
+				pairsTrades,
+				prices
+			};
 		}
 		case 'LOGOUT':
 			return INITIAL_STATE;

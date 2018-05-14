@@ -6,6 +6,7 @@ import {
 	SET_ANNOUNCEMENT,
 	CHANGE_THEME,
 	SET_PAIRS,
+	SET_TICKERS,
 	SET_UNREAD
 } from '../actions/appActions';
 import { THEME_DEFAULT } from '../config/constants';
@@ -28,7 +29,8 @@ const INITIAL_STATE = {
 	theme: THEME_DEFAULT,
 	language: getLanguage(),
 	pairs: {},
-	pair: ''
+	pair: '',
+	tickers: {}
 };
 
 const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
@@ -112,6 +114,14 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 			return {
 				...state,
 				theme: getTheme(payload.theme)
+			};
+		case SET_TICKERS:
+			return {
+				...state,
+				tickers: {
+					...state.tickers,
+					...payload
+				}
 			};
 		default:
 			return state;
