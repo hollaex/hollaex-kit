@@ -111,9 +111,9 @@ class ChartComponent extends Component {
 			} else if (data.price){
 				chartData[symbol].push({
 					open: data[symbol].price,
-					open: data[symbol].price,
-					open: data[symbol].price,
-					open: data[symbol].price,
+					close: data[symbol].price,
+					low: data[symbol].price,
+					high: data[symbol].price,
 					volume: data[symbol].volume,
 					date: currentBlockTimestamp,
 				});
