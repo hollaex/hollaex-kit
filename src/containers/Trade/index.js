@@ -119,7 +119,7 @@ class Trade extends Component {
 		} = this.props;
 		const { chartHeight, chartWidth, symbol } = this.state;
 
-		if (symbol !== pair) {
+		if (symbol !== pair || !pairData) {
 			return <Loader background={false} />;
 		}
 
@@ -139,7 +139,9 @@ class Trade extends Component {
 			},
 			{
 				title: STRINGS.TRADES,
-				children: <UserTrades trades={userTrades} pair={pair} pairData={pairData} />,
+				children: (
+					<UserTrades trades={userTrades} pair={pair} pairData={pairData} />
+				),
 				titleAction: (
 					<ActionNotification
 						text={STRINGS.TRADE_HISTORY}
@@ -216,14 +218,15 @@ class Trade extends Component {
 							setRef={this.setChartRef}
 							className="f-1 overflow-x"
 						>
-							{pair && chartHeight > 0 && (
-								<PriceChart
-									height={chartHeight}
-									width={chartWidth}
-									theme={activeTheme}
-									pair={pair}
-								/>
-							)}
+							{pair &&
+								chartHeight > 0 && (
+									<PriceChart
+										height={chartHeight}
+										width={chartWidth}
+										theme={activeTheme}
+										pair={pair}
+									/>
+								)}
 						</TradeBlock>
 					</div>
 					<div
@@ -262,8 +265,12 @@ const mapStateToProps = (store) => {
 	const { asks, bids } = store.orderbook.pairsOrderbooks[pair];
 	const tradeHistory = store.orderbook.pairsTrades[pair];
 	const marketPrice = tradeHistory.length > 0 ? tradeHistory[0].price : 1;
-	const userTrades = store.wallet.latestUserTrades.filter(({ symbol }) => symbol === pair);
-	const activeOrders = store.order.activeOrders.filter(({ symbol }) => symbol === pair);
+	const userTrades = store.wallet.latestUserTrades.filter(
+		({ symbol }) => symbol === pair
+	);
+	const activeOrders = store.order.activeOrders.filter(
+		({ symbol }) => symbol === pair
+	);
 	return {
 		pair,
 		pairData,

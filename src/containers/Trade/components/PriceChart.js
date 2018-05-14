@@ -145,7 +145,7 @@ class ChartComponent extends Component {
 						chartType={chartType}
 						serieName="BTC"
 						type="hybrid"
-						data={chartData[pair].reverse()}
+						data={chartData[pair]}
 						width={width}
 						height={height}
 						ratio={1}
