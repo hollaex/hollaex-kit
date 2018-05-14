@@ -204,6 +204,14 @@ $logout--size-difference: 3rem;
 			.coin-fiat-4 {
 				stroke: $dark-tab-inactive;
 			}
+			.wallet-selected-2 {
+				stroke: $dark-tab-inactive;
+				fill: transparent;
+			}
+			g .wallet-selected-2 {
+				stroke: transparent;
+				fill: $dark-tab-inactive;
+			}
 		}
 	}
 }
