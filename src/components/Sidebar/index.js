@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { NotificationsList, SidebarHub } from '../';
-import { Logout, Help, Chat } from './rows';
+import { Logout, Help } from './rows';
 
 const Sidebar = ({
 	active,

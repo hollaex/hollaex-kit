@@ -5,7 +5,6 @@ import {
 	HOLLAEX_LOGO_BLACK,
 	IS_PRO_VERSION,
 	PRO_URL,
-	ICONS,
 	DEFAULT_VERSION_REDIRECT
 } from '../../config/constants';
 import { LinkButton } from './LinkButton';

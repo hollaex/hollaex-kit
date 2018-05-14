@@ -1,5 +1,4 @@
 import React from 'react';
-import { isUUID } from 'validator';
 import { NotificationWraper, NotificationContent } from './Notification';
 import {
 	ICONS,
