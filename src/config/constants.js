@@ -314,10 +314,10 @@ export const PAIRS = {
 	'eth-eur': {
 		pair_base: 'eth',
 		pair_2: 'fiat'
-	},
-}
+	}
+};
 
-export const DEFAULT_PAIR = 'btc-eur'
+export const DEFAULT_PAIR = 'btc-eur';
 
 export const FLEX_CENTER_CLASSES = [
 	'd-flex',
@@ -388,6 +388,10 @@ export const MAX_VERIFICATION_LEVEL_TO_WITHDRAW = 5;
 export const BLOCKTRAIL_ENDPOINT = `https://www.blocktrail.com/${
 	NETWORK === 'testnet' ? 't' : ''
 }BTC/tx/`;
+
+export const ETHEREUM_ENDPOINT = `https://${
+	NETWORK === 'testnet' ? 'ropsten.etherscan.io' : 'etherscan.io'
+}/tx/`;
 
 export const BALANCE_ERROR = 'Insufficient balance to perform the order';
 

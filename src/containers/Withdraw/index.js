@@ -141,7 +141,11 @@ class Withdraw extends Component {
 			...values,
 			amount: math.eval(values.amount),
 			fee: values.fee ? math.eval(values.fee) : 0
-		}).catch(errorHandler);
+		})
+			.then((response) => {
+				return { ...response.data, currency: this.state.currency };
+			})
+			.catch(errorHandler);
 	};
 
 	onCalculateMax = () => {

@@ -106,7 +106,10 @@ class Form extends Component {
 			})
 			.then((response) => {
 				this.onCloseDialog();
-				this.props.onSubmitSuccess(response, this.props.dispatch);
+				this.props.onSubmitSuccess(
+					{ ...response.data, currency: this.props.currency },
+					this.props.dispatch
+				);
 				return response;
 			})
 			.catch((err) => {
@@ -186,7 +189,7 @@ class Form extends Component {
 const WithdrawForm = reduxForm({
 	form: FORM_NAME,
 	onSubmitFail: setWithdrawNotificationError,
-	onSubmitSuccess: ({ data }, dispatch) => {
+	onSubmitSuccess: (data, dispatch) => {
 		dispatch(reset(FORM_NAME));
 		setWithdrawNotificationSuccess(data, dispatch);
 	},

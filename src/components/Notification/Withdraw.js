@@ -1,14 +1,29 @@
 import React from 'react';
+import { isUUID } from 'validator';
 import { NotificationWraper, NotificationContent } from './Notification';
-import { ICONS, BLOCKTRAIL_ENDPOINT } from '../../config/constants';
+import {
+	ICONS,
+	BLOCKTRAIL_ENDPOINT,
+	ETHEREUM_ENDPOINT
+} from '../../config/constants';
 import { Button } from '../';
 
 import STRINGS from '../../config/localizedStrings';
 
+const getTransactionEndpoint = (currency, transaction_id) => {
+	switch (currency) {
+		case 'btc':
+			return `${BLOCKTRAIL_ENDPOINT}${transaction_id}`;
+		case 'eth':
+			return `${ETHEREUM_ENDPOINT}${transaction_id}`;
+		default:
+			return transaction_id;
+	}
+};
 const WithdrawNotification = ({ data, onClose }) => {
 	const notificationProps = {
 		icon:
-			ICONS[`COIN_WITHDRAW_${data.currency.toUpperCase()}`] ||
+			ICONS[`COIN_WITHDRAW_BTC`] ||
 			ICONS.COIN_WITHDRAW_FIAT,
 		title: STRINGS.SUCCESS_TEXT
 	};
@@ -24,7 +39,10 @@ const WithdrawNotification = ({ data, onClose }) => {
 						<span>{STRINGS.WITHDRAW_NOTIFICATION_TRANSACTION_ID}</span>
 						<div className="notification-link-wrapper">
 							<a
-								href={`${BLOCKTRAIL_ENDPOINT}${data.transaction_id}`}
+								href={getTransactionEndpoint(
+									data.currency,
+									data.transaction_id
+								)}
 								target="_blank"
 								className="notification-link"
 							>

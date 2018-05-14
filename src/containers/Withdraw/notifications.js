@@ -2,7 +2,7 @@ import { setNotification, NOTIFICATIONS } from '../../actions/appActions';
 
 export const setWithdrawNotificationSuccess = (data, dispatch) => {
 	dispatch(
-		setNotification(NOTIFICATIONS.WITHDRAWAL, { ...data, currency: 'btc' })
+		setNotification(NOTIFICATIONS.WITHDRAWAL, { ...data })
 	);
 };
 
