@@ -139,8 +139,8 @@ export default (
 			<Route path="settings" name="Settings" component={Account} />
 			<Route path="wallet" name="Wallet" component={MainWallet} />
 			<Route path="wallet/:currency" name="Wallet" component={CurrencyWallet} />
-			<Route path="withdraw/:currency" name="Withdraw" component={Withdraw} />
-			<Route path="deposit/:currency" name="Deposit" component={Deposit} />
+			<Route path="wallet/:currency/deposit" name="Deposit" component={Deposit} />
+			<Route path="wallet/:currency/withdraw" name="Withdraw" component={Withdraw} />
 			<Route
 				path="transactions"
 				name="Transactions"
