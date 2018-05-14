@@ -822,5 +822,7 @@ export default {
 	WALLET_ADDRESS_TITLE: 'Generate {0} Wallet',
 	WALLET_ADDRESS_GENERATE: 'Generate',
 	WALLET_ADDRESS_MESSAGE: 'When you generate a wallet you create a deposit and withdrawal address.',
-	WALLET_ADDRESS_ERROR: 'Error generating the address, please refresh and try again.'
+	WALLET_ADDRESS_ERROR: 'Error generating the address, please refresh and try again.',
+	DEPOSIT_WITHDRAW: 'Deposit/Withdraw',
+	GENERATE_WALLET: 'Generate Wallet'
 };

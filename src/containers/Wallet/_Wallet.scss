@@ -44,6 +44,17 @@ $header-margin: 2rem;
 
 	.wallet-assets_block {
 		// border-top: $wrapper-border;
+		.action_notification-wrapper {
+			margin: 0 !important;
+		}
+
+		.td-wallet {
+			min-width: 225px;
+			.deposit-withdrawal-wrapper {
+				margin-left: -3rem;
+				width: 14rem;
+			}
+		}
 		.wallet-assets_block-table {
 			width: 100%;
 			font-size: $font-size-subtext;
@@ -83,7 +94,7 @@ $header-margin: 2rem;
 			}
 
 			.td-name {
-				min-width: 75px !important;
+				min-width: 200px !important;
 			}
 			.table-icon {
 				& > div {
@@ -167,10 +178,12 @@ $header-margin: 2rem;
 
 .dark-theme {
 	svg {
-		.wallet-coins-1, .deposit-wallet-01 {
+		.wallet-coins-1,
+		.deposit-wallet-01 {
 			stroke: $dark-button-active;
 		}
-		.wallet-coins-2, .deposit-wallet-02 {
+		.wallet-coins-2,
+		.deposit-wallet-02 {
 			fill: $dark-font-main-text-color;
 		}
 	}

@@ -37,7 +37,9 @@ class Wallet extends Component {
 			this.props.changeSymbol,
 			this.props.balance,
 			this.props.prices,
-			this.state.isOpen
+			this.state.isOpen,
+			this.props.wallets,
+			this.props.bankaccount
 		);
 	}
 
@@ -46,8 +48,17 @@ class Wallet extends Component {
 			nextProps.changeSymbol,
 			nextProps.balance,
 			nextProps.prices,
-			this.state.isOpen
+			this.state.isOpen,
+			this.props.wallets,
+			this.props.bankaccount
 		);
+		if (
+			nextProps.addressRequest.success === true &&
+			nextProps.addressRequest.success !==
+				this.props.addressRequest.success
+		) {
+			this.onCloseDialog();
+		}
 	}
 
 	calculateTotalAssets = (balance, prices) => {
@@ -59,7 +70,14 @@ class Wallet extends Component {
 		);
 	};
 
-	generateSections = (changeSymbol, balance, prices, isOpen = false) => {
+	generateSections = (
+		changeSymbol,
+		balance,
+		prices,
+		isOpen = false,
+		wallets,
+		bankaccount
+	) => {
 		const totalAssets = this.calculateTotalAssets(balance, prices);
 
 		const sections = [
@@ -71,6 +89,10 @@ class Wallet extends Component {
 						prices={prices}
 						totalAssets={totalAssets}
 						changeSymbol={changeSymbol}
+						wallets={wallets}
+						onOpenDialog={this.onOpenDialog}
+						bankaccount={bankaccount}
+						navigate={this.navigate}
 					/>
 				),
 				isOpen: true,
@@ -99,7 +121,9 @@ class Wallet extends Component {
 			this.props.changeSymbol,
 			this.props.balance,
 			this.props.prices,
-			isOpen
+			isOpen,
+			this.props.wallets,
+			this.props.bankaccount
 		);
 	};
 
@@ -117,18 +141,25 @@ class Wallet extends Component {
 		);
 	};
 
-	onOpenDialog = () => {
-		this.setState({ dialogIsOpen: true });
-		this.props.cleanCreateAddress();
+
+	onOpenDialog = (selectedCurrency) => {
+		this.setState({ dialogIsOpen: true, selectedCurrency });
+    this.props.cleanCreateAddress();
 	};
+
 	onCloseDialog = () => {
 		this.setState({ dialogIsOpen: false, selectedCurrency: '' });
 	};
+
 	onCreateAddress = () => {
 		if (this.state.selectedCurrency && !this.props.addressRequest.error) {
 			this.props.createAddress(this.state.selectedCurrency);
 		}
 	};
+
+	navigate = (route) => {
+		this.props.router.push(route);
+	}
 
 	render() {
 		const { sections, dialogIsOpen, selectedCurrency } = this.state;
@@ -154,15 +185,16 @@ class Wallet extends Component {
 					showCloseText={true}
 					style={{ 'z-index': 100 }}
 				>
-					{dialogIsOpen && selectedCurrency && (
-						<Notification
-							type={NOTIFICATIONS.GENERATE_ADDRESS}
-							onBack={this.onCloseDialog}
-							onGenerate={this.onCreateAddress}
-							currency={selectedCurrency}
-							data={addressRequest}
-						/>
-					)}
+					{dialogIsOpen &&
+						selectedCurrency && (
+							<Notification
+								type={NOTIFICATIONS.GENERATE_ADDRESS}
+								onBack={this.onCloseDialog}
+								onGenerate={this.onCreateAddress}
+								currency={selectedCurrency}
+								data={addressRequest}
+							/>
+						)}
 				</Dialog>
 			</div>
 		);
@@ -176,7 +208,9 @@ const mapStateToProps = (store) => ({
 	balance: store.user.balance,
 	addressRequest: store.user.addressRequest,
 	activeTheme: store.app.theme,
-	activeLanguage: store.app.language
+	activeLanguage: store.app.language,
+	bankaccount: store.user.userData.bank_account,
+	wallets: store.user.crypto_wallet
 });
 
 const mapDispatchToProps = (dispatch) => ({
