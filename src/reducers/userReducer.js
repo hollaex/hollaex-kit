@@ -20,6 +20,12 @@ const INITIAL_OTP_OBJECT = {
 	activated: false
 };
 
+const INITIAL_ADDRESS_OBJECT = {
+	fetching: false,
+	success: false,
+	error: false
+};
+
 const extractuserData = (data) => {
 	const userData = {
 		timestamp: Date.now()
@@ -74,6 +80,7 @@ const INITIAL_STATE = {
 		theme: 'dark',
 		language: DEFAULT_LANGUAGE
 	},
+	addressRequest: INITIAL_ADDRESS_OBJECT,
 	limits: INITIAL_LIMIT_OBJECT
 };
 
@@ -293,6 +300,38 @@ export default function reducer(state = INITIAL_STATE, action) {
 				limits: {
 					...INITIAL_LIMIT_OBJECT,
 					error: action.payload.response
+				}
+			};
+		case 'CREATE_ADDRESS_PENDING':
+			return {
+				...state,
+				addressRequest: {
+					...INITIAL_ADDRESS_OBJECT,
+					fetching: true
+				}
+			};
+		case 'CREATE_ADDRESS_REJECTED':
+			return {
+				...state,
+				addressRequest: {
+					...INITIAL_ADDRESS_OBJECT,
+					error: action.payload.response.data.message
+				}
+			};
+		case 'CREATE_ADDRESS_FULFILLED':
+			const { address, crypto } = action.payload.data;
+			const { crypto_wallet } = state;
+			if (crypto === 'btc') {
+				crypto_wallet.bitcoin = address;
+			} else if (crypto == 'eth') {
+				crypto_wallet.ethereum = address;
+			}
+			return {
+				...state,
+				crypto_wallet,
+				addressRequest: {
+					...INITIAL_ADDRESS_OBJECT,
+					success: true
 				}
 			};
 		case 'LOGOUT':

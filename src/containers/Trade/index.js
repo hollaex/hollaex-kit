@@ -12,7 +12,11 @@ import {
 	cancelAllOrders
 } from '../../actions/orderAction';
 import { getUserTrades } from '../../actions/walletActions';
-import { setNotification, NOTIFICATIONS } from '../../actions/appActions';
+import {
+	changePair,
+	setNotification,
+	NOTIFICATIONS
+} from '../../actions/appActions';
 
 import TradeBlock from './components/TradeBlock';
 import TradeBlockTabs from './components/TradeBlockTabs';
@@ -24,7 +28,7 @@ import UserTrades from './components/UserTrades';
 import TradeHistory from './components/TradeHistory';
 import PriceChart from './components/PriceChart';
 
-import { ActionNotification } from '../../components';
+import { ActionNotification, Loader } from '../../components';
 
 import STRINGS from '../../config/localizedStrings';
 
@@ -32,20 +36,21 @@ class Trade extends Component {
 	state = {
 		chartHeight: 0,
 		chartWidth: 0,
-		symbol: 'btc'
+		symbol: ''
 	};
 
 	componentWillMount() {
-		this.setSymbol(this.props.symbol === 'fiat' ? 'btc' : this.props.symbol);
+		this.setSymbol(this.props.routeParams.pair);
 	}
 
 	componentWillReceiveProps(nextProps) {
-		if (nextProps.symbol !== this.props.symbol) {
-			this.setSymbol(nextProps.symbol === 'fiat' ? 'btc' : nextProps.symbol);
+		if (nextProps.routeParams.pair !== this.props.routeParams.pair) {
+			this.setSymbol(nextProps.routeParams.pair);
 		}
 	}
 
-	setSymbol = (symbol = 'btc') => {
+	setSymbol = (symbol = '') => {
+		this.props.changePair(symbol);
 		this.setState({ symbol });
 	};
 
@@ -88,14 +93,16 @@ class Trade extends Component {
 
 	onPriceClick = (price) => {
 		this.props.change(FORM_NAME, 'price', price);
-	}
+	};
 
 	onAmountClick = (size) => {
 		this.props.change(FORM_NAME, 'size', size);
-	}
+	};
 
 	render() {
 		const {
+			pair,
+			pairData,
 			tradeHistory,
 			orderbookReady,
 			asks,
@@ -111,6 +118,11 @@ class Trade extends Component {
 			settings
 		} = this.props;
 		const { chartHeight, chartWidth, symbol } = this.state;
+
+		if (symbol !== pair || !pairData) {
+			return <Loader background={false} />;
+		}
+
 		const USER_TABS = [
 			{
 				title: STRINGS.ORDERS,
@@ -127,7 +139,9 @@ class Trade extends Component {
 			},
 			{
 				title: STRINGS.TRADES,
-				children: <UserTrades trades={userTrades} symbol={symbol} />,
+				children: (
+					<UserTrades trades={userTrades} pair={pair} pairData={pairData} />
+				),
 				titleAction: (
 					<ActionNotification
 						text={STRINGS.TRADE_HISTORY}
@@ -140,13 +154,15 @@ class Trade extends Component {
 			}
 		];
 
+		// TODO get right fiat pair
 		const orderbookProps = {
 			symbol,
+			pairData,
 			fiatSymbol: STRINGS.FIAT_SHORTNAME,
 			asks,
 			bids,
 			onPriceClick: this.onPriceClick,
-			onAmountClick: this.onAmountClick,
+			onAmountClick: this.onAmountClick
 		};
 
 		return (
@@ -202,9 +218,15 @@ class Trade extends Component {
 							setRef={this.setChartRef}
 							className="f-1 overflow-x"
 						>
-							{chartHeight > 0 && (
-								<PriceChart height={chartHeight} width={chartWidth} theme={activeTheme} />
-							)}
+							{pair &&
+								chartHeight > 0 && (
+									<PriceChart
+										height={chartHeight}
+										width={chartWidth}
+										theme={activeTheme}
+										pair={pair}
+									/>
+								)}
 						</TradeBlock>
 					</div>
 					<div
@@ -237,27 +259,42 @@ class Trade extends Component {
 
 Trade.defaultProps = {};
 
-const mapStateToProps = (store) => ({
-	symbol: store.orderbook.symbol,
-	balance: store.user.balance,
-	tradeHistory: store.orderbook.trades,
-	orderbookReady: store.orderbook.orderbookReady,
-	asks: store.orderbook.asks,
-	bids: store.orderbook.bids,
-	marketPrice: store.orderbook.price,
-	activeOrders: store.order.activeOrders,
-	userTrades: store.wallet.latestUserTrades,
-	activeLanguage: store.app.language,
-	activeTheme: store.app.theme,
-	fees: store.user.fees,
-	settings: store.user.settings
-});
+const mapStateToProps = (store) => {
+	const pair = store.app.pair;
+	const pairData = store.app.pairs[pair];
+	const { asks, bids } = store.orderbook.pairsOrderbooks[pair];
+	const tradeHistory = store.orderbook.pairsTrades[pair];
+	const marketPrice = tradeHistory.length > 0 ? tradeHistory[0].price : 1;
+	const userTrades = store.wallet.latestUserTrades.filter(
+		({ symbol }) => symbol === pair
+	);
+	const activeOrders = store.order.activeOrders.filter(
+		({ symbol }) => symbol === pair
+	);
+	return {
+		pair,
+		pairData,
+		balance: store.user.balance,
+		orderbookReady: true,
+		tradeHistory,
+		asks,
+		bids,
+		marketPrice,
+		activeOrders,
+		userTrades,
+		activeLanguage: store.app.language,
+		activeTheme: store.app.theme,
+		fees: store.user.fees,
+		settings: store.user.settings
+	};
+};
 
 const mapDispatchToProps = (dispatch) => ({
 	getUserTrades: (symbol) => dispatch(getUserTrades({ symbol })),
 	cancelOrder: bindActionCreators(cancelOrder, dispatch),
 	cancelAllOrders: bindActionCreators(cancelAllOrders, dispatch),
 	setNotification: bindActionCreators(setNotification, dispatch),
+	changePair: bindActionCreators(changePair, dispatch),
 	change: bindActionCreators(change, dispatch)
 });
 

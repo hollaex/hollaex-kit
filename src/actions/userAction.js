@@ -239,9 +239,14 @@ export const setUsernameStore = (username) => ({
 	payload: {
 		username
 	}
-})
+});
 
 export const requestLimits = () => ({
 	type: 'REQUEST_LIMITS',
 	payload: axios.get('/limits')
+});
+
+export const createAddress = (addressType = '') => ({
+	type: 'CREATE_ADDRESS',
+	payload: axios.post(`/user/address/${addressType}`, {})
 });

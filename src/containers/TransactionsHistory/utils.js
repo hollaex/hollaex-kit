@@ -47,9 +47,7 @@ const calculatePrice = (isQuick = false, price, size) => {
 	return price;
 };
 
-// export const generateTradeHeaders = (symbol) => {
-export const generateTradeHeaders = () => {
-	const symbol = 'btc';
+export const generateTradeHeaders = (symbol) => {
 	const { formatToCurrency } = CURRENCIES[symbol];
 	const shortName = STRINGS[`${symbol.toUpperCase()}_SHORTNAME`];
 	const fullName = STRINGS[`${symbol.toUpperCase()}_FULLNAME`];

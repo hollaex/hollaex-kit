@@ -7,7 +7,8 @@ import { Button } from '../../components';
 import STRINGS from '../../config/localizedStrings';
 import {
 	ICONS,
-	CURRENCIES,
+	PAIRS,
+	DEFAULT_PAIR,
 	FLEX_CENTER_CLASSES,
 	BALANCE_ERROR
 } from '../../config/constants';
@@ -17,7 +18,6 @@ import ToogleButton from './ToogleButton';
 import ReviewBlock from './ReviewBlock';
 import InputBlock from './InputBlock';
 
-import { DEFAULT_SYMBOL } from './constants';
 
 const GROUP_CLASSES = [...FLEX_CENTER_CLASSES, 'flex-column'];
 
@@ -25,14 +25,14 @@ class QuickTrade extends Component {
 	state = {
 		side: STRINGS.SIDES[0].value,
 		value: 0.1,
-		symbol: DEFAULT_SYMBOL
+		symbol: DEFAULT_PAIR
 	};
 
 	componentDidMount() {
 		if (this.props.symbol !== fiatSymbol) {
 			this.onChangeSymbol(this.props.symbol);
 		} else {
-			this.onChangeSymbol(DEFAULT_SYMBOL);
+			this.onChangeSymbol(DEFAULT_PAIR);
 		}
 		if (this.props.onChangeSide) {
 			this.props.onChangeSide(this.state.side);
@@ -41,7 +41,6 @@ class QuickTrade extends Component {
 
 	componentWillReceiveProps(nextProps) {
 		if (
-			nextProps.symbol !== fiatSymbol &&
 			nextProps.symbol !== this.props.symbol
 		) {
 			this.onChangeSymbol(nextProps.symbol);
@@ -90,7 +89,7 @@ class QuickTrade extends Component {
 		const { onReviewQuickTrade, quickTradeData, disabled } = this.props;
 		const { side, value, symbol } = this.state;
 		const { data, fetching, error } = quickTradeData;
-		const { name } = CURRENCIES[symbol];
+		const name = STRINGS[`${PAIRS[symbol].pair_base.toUpperCase()}_NAME`];
 		return (
 			<div className={classnames('quick_trade-wrapper', ...GROUP_CLASSES)}>
 				<div

@@ -306,6 +306,19 @@ export const CURRENCIES = {
 	}
 };
 
+export const PAIRS = {
+	'btc-eur': {
+		pair_base: 'btc',
+		pair_2: 'fiat'
+	},
+	'eth-eur': {
+		pair_base: 'eth',
+		pair_2: 'fiat'
+	},
+}
+
+export const DEFAULT_PAIR = 'btc-eur'
+
 export const FLEX_CENTER_CLASSES = [
 	'd-flex',
 	'justify-content-center',
