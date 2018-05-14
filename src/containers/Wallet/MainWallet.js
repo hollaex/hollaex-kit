@@ -11,7 +11,7 @@ import {
 } from '../../components';
 import { changeSymbol } from '../../actions/orderbookAction';
 import { NOTIFICATIONS } from '../../actions/appActions';
-import { createAddress } from '../../actions/userAction';
+import { createAddress, cleanCreateAddress } from '../../actions/userAction';
 import { ICONS, FLEX_CENTER_CLASSES, CURRENCIES } from '../../config/constants';
 import {
 	calculateBalancePrice,
@@ -141,8 +141,10 @@ class Wallet extends Component {
 		);
 	};
 
+
 	onOpenDialog = (selectedCurrency) => {
 		this.setState({ dialogIsOpen: true, selectedCurrency });
+    this.props.cleanCreateAddress();
 	};
 
 	onCloseDialog = () => {
@@ -213,6 +215,7 @@ const mapStateToProps = (store) => ({
 
 const mapDispatchToProps = (dispatch) => ({
 	createAddress: bindActionCreators(createAddress, dispatch),
+	cleanCreateAddress: bindActionCreators(cleanCreateAddress, dispatch),
 	changeSymbol: bindActionCreators(changeSymbol, dispatch)
 });
 

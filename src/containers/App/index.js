@@ -5,7 +5,11 @@ import { bindActionCreators } from 'redux';
 import io from 'socket.io-client';
 import EventListener from 'react-event-listener';
 import { debounce } from 'lodash';
-import { WS_URL, ICONS, SESSION_TIME } from '../../config/constants';
+import {
+	WS_URL,
+	ICONS,
+	SESSION_TIME
+} from '../../config/constants';
 
 import { logout } from '../../actions/authAction';
 import { setMe, setBalance, updateUser } from '../../actions/userAction';
@@ -44,7 +48,8 @@ import {
 	Dialog,
 	Loader,
 	Notification,
-	MessageDisplay
+	MessageDisplay,
+	CurrencyList
 } from '../../components';
 import { ContactForm } from '../';
 
@@ -155,7 +160,7 @@ class Container extends Component {
 		this.setState({ publicSocket });
 
 		publicSocket.on('initial', (data) => {
-			console.log('initial', data)
+			console.log('initial', data);
 			// TODO
 			if (!this.props.pair) {
 				const pair = Object.keys(data.pairs)[0];
@@ -165,7 +170,7 @@ class Container extends Component {
 		});
 
 		publicSocket.on('orderbook', (data) => {
-			console.log('orderbook', data)
+			console.log('orderbook', data);
 			// TODO
 			// this.props.setOrderbook(data[symbol]);
 			this.props.setOrderbooks(data)
@@ -209,7 +214,10 @@ class Container extends Component {
 			// 	return this.goToVerificationPage();
 			// }
 			this.props.setMe(data);
-			if (data.settings && data.settings.language !== this.props.activeLanguage) {
+			if (
+				data.settings &&
+				data.settings.language !== this.props.activeLanguage
+			) {
 				this.props.changeLanguage(data.settings.language);
 			}
 			if (data.settings && data.settings.theme !== this.props.activeTheme) {
@@ -492,7 +500,14 @@ class Container extends Component {
 					onKeyPress={this.resetTimer}
 				/>
 				<div className="d-flex flex-column f-1">
-					<AppBar goToDashboard={this.goToDashboard} />
+					<AppBar
+						goToDashboard={this.goToDashboard}
+						rightChildren={
+							<CurrencyList
+								className="horizontal-currency-list justify-content-end"
+							/>
+						}
+					/>
 					<div className="app_container-content d-flex justify-content-between">
 						<div
 							className={classnames(
@@ -532,7 +547,8 @@ class Container extends Component {
 					}
 					style={{ 'z-index': 100 }}
 				>
-					{dialogIsOpen && this.renderDialogContent(activeNotification, prices, activeTheme)}
+					{dialogIsOpen &&
+						this.renderDialogContent(activeNotification, prices, activeTheme)}
 				</Dialog>
 			</div>
 		);

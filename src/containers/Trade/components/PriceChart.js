@@ -58,7 +58,7 @@ class ChartComponent extends Component {
 	}
 
 	setChartData = ({ data, timestamp }) => {
-		console.log(data)
+		console.log(data);
 		const { chartData } = this.state;
 		Object.keys(data).forEach((symbol) => {
 			if (!chartData[symbol]) {
@@ -68,8 +68,8 @@ class ChartComponent extends Component {
 				chartData[symbol] = data[symbol].map((item) => {
 					return {
 						...item,
-						date: moment(item.date).format(),
-					}
+						date: moment(item.date).format()
+					};
 				});
 			} else if (
 				data[symbol].date &&
@@ -93,35 +93,38 @@ class ChartComponent extends Component {
 			const symbol = keys[0];
 			const currentBlockTimestamp = this.getCurrentBlockTimestamp();
 			if (
-				data[symbol].price &&
 				chartData[symbol].length > 0 &&
 				chartData[symbol][chartData[symbol].length - 1].date ===
 					currentBlockTimestamp
 			) {
-				const lastData = chartData[symbol][chartData[symbol].length - 1];
-				const newClosePrice = data[symbol].price;
-				if (lastData.low > newClosePrice) {
-					lastData.low = newClosePrice;
-				} else if (lastData.high < newClosePrice) {
-					lastData.high = newClosePrice;
+				if (data[symbol].price) {
+					const lastData = chartData[symbol][chartData[symbol].length - 1];
+					const newClosePrice = data[symbol].price;
+					if (lastData.low > newClosePrice) {
+						lastData.low = newClosePrice;
+					} else if (lastData.high < newClosePrice) {
+						lastData.high = newClosePrice;
+					}
+					lastData.close = newClosePrice;
+					lastData.volume = lastData.volume + data[symbol].volume;
+					chartData[symbol][chartData[symbol].length - 1] = lastData;
 				}
-				lastData.close = newClosePrice;
-				lastData.volume = lastData.volume + data[symbol].volume;
-				chartData[symbol][chartData[symbol].length - 1] = lastData;
-			} else if (data.price){
-				chartData[symbol].push({
-					open: data[symbol].price,
-					close: data[symbol].price,
-					low: data[symbol].price,
-					high: data[symbol].price,
-					volume: data[symbol].volume,
-					date: currentBlockTimestamp,
-				});
 			} else {
-				chartData[symbol].push({
-					...data[symbol],
-					date: currentBlockTimestamp,
-				});
+				if (data.price) {
+					chartData[symbol].push({
+						open: data[symbol].price,
+						close: data[symbol].price,
+						low: data[symbol].price,
+						high: data[symbol].price,
+						volume: data[symbol].volume,
+						date: currentBlockTimestamp
+					});
+				} else {
+					chartData[symbol].push({
+						...data[symbol],
+						date: currentBlockTimestamp
+					});
+				}
 			}
 		}
 

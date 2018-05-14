@@ -250,3 +250,7 @@ export const createAddress = (addressType = '') => ({
 	type: 'CREATE_ADDRESS',
 	payload: axios.post(`/user/address/${addressType}`, {})
 });
+
+export const cleanCreateAddress = () => ({
+	type: 'CLEAN_CREATE_ADDRESS',
+})

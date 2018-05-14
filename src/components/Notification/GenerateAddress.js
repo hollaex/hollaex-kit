@@ -1,17 +1,7 @@
 import React from 'react';
-import EventListener from 'react-event-listener';
 import { ICONS } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
-import {
-	formatBtcAmount,
-	// formatBtcFullAmount,
-	formatFiatAmount
-} from '../../utils/currency';
-import {
-	NotificationWraper,
-	NotificationContent,
-	InformationRow
-} from './Notification';
+import { NotificationWraper, NotificationContent } from './Notification';
 import { Button, Loader } from '../';
 
 const GenerateAddressNotification = ({
@@ -41,14 +31,24 @@ const GenerateAddressNotification = ({
 			titleClassName="with-border-bottom"
 		>
 			<NotificationContent>
-				<div className="notification-content-header">
-					{STRINGS.WALLET_ADDRESS_MESSAGE}
-				</div>
+				{!error ? (
+					<div className="notification-content-header">
+						{STRINGS.WALLET_ADDRESS_MESSAGE}
+					</div>
+				) : (
+					<div className="notification-content-header warning_text">
+						{STRINGS.WALLET_ADDRESS_ERROR}
+					</div>
+				)}
 			</NotificationContent>
 			<div className="d-flex mt-4">
 				<Button label={STRINGS.BACK_TEXT} onClick={onBack} />
 				<div className="separator" />
-				<Button label={STRINGS.WALLET_ADDRESS_GENERATE} onClick={onGenerate} />
+				<Button
+					label={STRINGS.WALLET_ADDRESS_GENERATE}
+					onClick={onGenerate}
+					disabled={!!error}
+				/>
 			</div>
 		</NotificationWraper>
 	);

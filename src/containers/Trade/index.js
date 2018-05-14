@@ -51,7 +51,11 @@ class Trade extends Component {
 
 	setSymbol = (symbol = '') => {
 		this.props.changePair(symbol);
-		this.setState({ symbol });
+		this.setState({ symbol: '' }, () => {
+			setTimeout(() => {
+				this.setState({ symbol });
+			}, 1000);
+		});
 	};
 
 	onSubmitOrder = (values) => {
