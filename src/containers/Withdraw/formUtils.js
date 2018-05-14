@@ -15,7 +15,7 @@ export const generateInitialValues = (symbol, fees = {}) => {
 	const { MIN } = WITHDRAW_LIMITS[symbol];
 	const initialValues = {};
 
-	if (symbol !== fiatSymbol) {
+	if (symbol === 'btc') {
 		initialValues.fee = fees.optimal || fees.min;
 	} else {
 		initialValues.fee = fees.value || 0;
@@ -87,7 +87,7 @@ export const generateFormValues = (
 		}
 	};
 
-	if (symbol !== fiatSymbol) {
+	if (symbol === 'btc') {
 		fields.fee = {
 			type: 'editable',
 			inputType: 'number',

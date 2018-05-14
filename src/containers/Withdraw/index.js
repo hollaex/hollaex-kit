@@ -109,7 +109,10 @@ class Withdraw extends Component {
 					this.props.crypto_wallet
 				);
 			});
-			this.props.requestWithdrawFee(currency);
+			if (currency === 'btc') {
+				this.props.requestWithdrawFee(currency);
+			}
+
 			this.generateFormValues(
 				getCurrencyFromName(currency),
 				this.props.balance,
@@ -184,7 +187,7 @@ class Withdraw extends Component {
 		if (
 			verification_level >= MIN_VERIFICATION_LEVEL_TO_WITHDRAW &&
 			verification_level <= MAX_VERIFICATION_LEVEL_TO_WITHDRAW &&
-			(balanceAvailable === undefined || btcFee.loading || !btcFee.ready)
+			(balanceAvailable === undefined || btcFee.loading)
 		) {
 			return <Loader />;
 		}
