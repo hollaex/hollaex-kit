@@ -58,7 +58,7 @@ class ChartComponent extends Component {
 	}
 
 	setChartData = ({ data, timestamp }) => {
-		console.log(data, '---------------')
+		console.log(data)
 		const { chartData } = this.state;
 		Object.keys(data).forEach((symbol) => {
 			if (!chartData[symbol]) {
@@ -87,26 +87,36 @@ class ChartComponent extends Component {
 	};
 
 	setTickData = ({ data, timestamp }) => {
-		console.log(data, '---------------ticker')
 		const { tickers, chartData } = this.state;
 		const keys = Object.keys(data);
 		if (keys.length === 1) {
 			const symbol = keys[0];
 			const currentBlockTimestamp = this.getCurrentBlockTimestamp();
 			if (
+				data[symbol].price &&
 				chartData[symbol].length > 0 &&
 				chartData[symbol][chartData[symbol].length - 1].date ===
 					currentBlockTimestamp
 			) {
 				const lastData = chartData[symbol][chartData[symbol].length - 1];
-				const newClosePrice = data[symbol]
+				const newClosePrice = data[symbol].price;
 				if (lastData.low > newClosePrice) {
 					lastData.low = newClosePrice;
 				} else if (lastData.high < newClosePrice) {
 					lastData.high = newClosePrice;
 				}
 				lastData.close = newClosePrice;
+				lastData.volume = lastData.volume + data[symbol].volume;
 				chartData[symbol][chartData[symbol].length - 1] = lastData;
+			} else if (data.price){
+				chartData[symbol].push({
+					open: data[symbol].price,
+					open: data[symbol].price,
+					open: data[symbol].price,
+					open: data[symbol].price,
+					volume: data[symbol].volume,
+					date: currentBlockTimestamp,
+				});
 			} else {
 				chartData[symbol].push({
 					...data[symbol],
