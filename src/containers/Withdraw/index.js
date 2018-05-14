@@ -36,26 +36,42 @@ import { FORM_NAME } from './form';
 class Withdraw extends Component {
 	state = {
 		formValues: {},
-		initialValues: {}
+		initialValues: {},
+		checked: false
 	};
 
 	componentWillMount() {
-		if (
-			this.props.verification_level >= MIN_VERIFICATION_LEVEL_TO_WITHDRAW &&
-			this.props.verification_level <= MAX_VERIFICATION_LEVEL_TO_WITHDRAW
-		) {
-			this.props.requestBtcWithdrawFee();
-			this.generateFormValues(
-				getCurrencyFromName(this.props.routeParams.currency),
-				this.props.balance,
-				this.props.btcFee
+		// if (
+		// 	this.props.verification_level >= MIN_VERIFICATION_LEVEL_TO_WITHDRAW &&
+		// 	this.props.verification_level <= MAX_VERIFICATION_LEVEL_TO_WITHDRAW
+		// ) {
+		// 	this.props.requestBtcWithdrawFee();
+		// 	this.generateFormValues(
+		// 		getCurrencyFromName(this.props.routeParams.currency),
+		// 		this.props.balance,
+		// 		this.props.btcFee
+		// 	);
+		// }
+		if (this.props.verification_level) {
+			this.validateRoute(
+				this.props.routeParams.currency,
+				this.props.bank_account,
+				this.props.crypto_wallet
 			);
 		}
 		this.setCurrency(this.props.routeParams.currency);
 	}
 
 	componentWillReceiveProps(nextProps) {
-		if (
+		if (!this.state.checked) {
+			if (nextProps.verification_level) {
+				this.validateRoute(
+					nextProps.routeParams.currency,
+					nextProps.bank_account,
+					nextProps.crypto_wallet
+				);
+			}
+		} else if (
 			nextProps.verification_level >= MIN_VERIFICATION_LEVEL_TO_WITHDRAW &&
 			nextProps.verification_level <= MAX_VERIFICATION_LEVEL_TO_WITHDRAW &&
 			(nextProps.activeLanguage !== this.props.activeLanguage ||
@@ -76,10 +92,28 @@ class Withdraw extends Component {
 		}
 	}
 
+	validateRoute = (currency, bank_account, crypto_wallet) => {
+		if (
+			(currency === 'fiat' && !bank_account.verified) ||
+			(currency === 'eth' && !crypto_wallet.ethereum) ||
+			(currency === 'btc' && !crypto_wallet.bitcoin)
+		) {
+			this.props.router.push('/wallet');
+		} else if (currency) {
+			this.setState({ checked: true });
+		}
+	};
+
 	setCurrency = (currencyName) => {
 		const currency = getCurrencyFromName(currencyName);
 		if (currency) {
-			this.setState({ currency });
+			this.setState({ currency, checked: false }, () => {
+				this.validateRoute(
+					this.props.routeParams.currency,
+					this.props.bank_account,
+					this.props.crypto_wallet
+				);
+			});
 		} else {
 			this.props.router.push('/wallet');
 		}
@@ -143,9 +177,9 @@ class Withdraw extends Component {
 			activeLanguage,
 			btcFee
 		} = this.props;
-		const { formValues, initialValues, currency } = this.state;
+		const { formValues, initialValues, currency, checked } = this.state;
 
-		if (!currency) {
+		if (!currency || !checked) {
 			return <div />;
 		}
 
@@ -204,6 +238,7 @@ const mapStateToProps = (store) => ({
 	verification_level: store.user.verification_level,
 	otp_enabled: store.user.otp_enabled,
 	bank_account: store.user.userData.bank_account,
+	crypto_wallet: store.user.crypto_wallet,
 	activeLanguage: store.app.language,
 	btcFee: store.wallet.btcFee,
 	selectedFee: formValueSelector(FORM_NAME)(store, 'fee')
