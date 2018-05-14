@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import classnames from 'classnames';
 import MarketList from './MarketList';
 import STRINGS from '../../config/localizedStrings';
-import { CURRENCIES } from '../../config/constants';
 
 class CurrencyList extends Component {
 	state = {

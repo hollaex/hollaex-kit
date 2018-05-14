@@ -323,7 +323,7 @@ export default function reducer(state = INITIAL_STATE, action) {
 			const { crypto_wallet } = state;
 			if (crypto === 'btc') {
 				crypto_wallet.bitcoin = address;
-			} else if (crypto == 'eth') {
+			} else if (crypto === 'eth') {
 				crypto_wallet.ethereum = address;
 			}
 			return {

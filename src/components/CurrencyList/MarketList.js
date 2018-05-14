@@ -3,7 +3,6 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import { changePair } from '../../actions/appActions';
-import STRINGS from '../../config/localizedStrings';
 
 class MarketList extends Component {
 	render() {
