@@ -41,9 +41,9 @@ class CurrencyList extends Component {
 	};
 
 	render() {
-		const { className } = this.props;
+		const { className, pairs } = this.props;
 		const { markets, focusedSymbol } = this.state;
-		const symbols = Object.keys(CURRENCIES);
+		const symbols = Object.entries(pairs).map(([key, pair]) => pair.pair_base);
 		return (
 			<div className={classnames('currency-list', className)}>
 				{symbols.map((symbol, index) => (

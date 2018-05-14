@@ -6,7 +6,6 @@ import { changePair } from '../../actions/appActions';
 import STRINGS from '../../config/localizedStrings';
 
 class MarketList extends Component {
-
 	render() {
 		const { markets, unFocus } = this.props;
 		return (
@@ -19,7 +18,7 @@ class MarketList extends Component {
 							className="d-flex align-items-center justify-content-center market"
 							to={`/trade/${pair}`}
 						>
-							{STRINGS[`${obj.pair_2.toUpperCase()}_NAME`].toUpperCase()}
+							{pair.replace('-', '/').toUpperCase()}
 						</Link>
 					))}
 				</div>
