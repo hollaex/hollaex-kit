@@ -18,8 +18,9 @@ class CurrencyList extends Component {
 			`symbol-${STRINGS[`${focusedSymbol}_NAME`].toUpperCase()}`
 		].classList.add('focused');
 		if (focusedSymbol) {
-			const markets = Object.entries(this.props.pairs)
-				.filter(([key, pair]) => pair.pair_base === symbol)
+			const markets = Object.entries(this.props.pairs).filter(
+				([key, pair]) => pair.pair_base === symbol
+			);
 			this.setState({ focusedSymbol, markets });
 		} else {
 			this.setState({ focusedSymbol: '', markets: {} });
@@ -39,12 +40,20 @@ class CurrencyList extends Component {
 		});
 	};
 
+	onMouseLeave = () => {
+		this.removeFocus();
+		this.setState({ focusedSymbol: '' });
+	};
+
 	render() {
 		const { className, pairs } = this.props;
 		const { markets, focusedSymbol } = this.state;
 		const symbols = Object.entries(pairs).map(([key, pair]) => pair.pair_base);
 		return (
-			<div className={classnames('currency-list', className)}>
+			<div
+				className={classnames('currency-list f-0', className)}
+				onMouseLeave={this.onMouseLeave}
+			>
 				{symbols.map((symbol, index) => (
 					<div
 						ref={this.setCurrencyRef}
@@ -57,13 +66,7 @@ class CurrencyList extends Component {
 					</div>
 				))}
 				{focusedSymbol && (
-					<MarketList
-						markets={markets}
-						unFocus={() => {
-							this.removeFocus();
-							this.setState({ focusedSymbol: '' });
-						}}
-					/>
+					<MarketList markets={markets} />
 				)}
 			</div>
 		);
