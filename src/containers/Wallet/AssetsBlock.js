@@ -1,21 +1,31 @@
 import React from 'react';
 import { CurrencyBall } from '../../components';
-import { CURRENCIES } from '../../config/constants';
+import { CURRENCIES, ICONS } from '../../config/constants';
 import { Link } from 'react-router';
 import {
 	calculatePrice,
 	fiatFormatToCurrency,
 	fiatSymbol
 } from '../../utils/currency';
+import { ActionNotification } from '../../components';
 import STRINGS from '../../config/localizedStrings';
 
-export const AssetsBlock = ({ balance, prices, totalAssets }) => (
+export const AssetsBlock = ({
+	balance,
+	prices,
+	totalAssets,
+	wallets,
+	onOpenDialog,
+	bankaccount,
+	navigate
+}) => (
 	<div className="wallet-assets_block">
 		<table className="wallet-assets_block-table">
 			<thead>
 				<tr className="table-bottom-border">
 					<th />
 					<th>{STRINGS.CURRENCY}</th>
+					<th>{STRINGS.DEPOSIT_WITHDRAW}</th>
 					<th>{STRINGS.AMOUNT}</th>
 					<th className="align-opposite">
 						{STRINGS.formatString(
@@ -51,6 +61,38 @@ export const AssetsBlock = ({ balance, prices, totalAssets }) => (
 									<Link to={`/wallet/${key.toLowerCase()}`}>
 										{STRINGS[`${key.toUpperCase()}_FULLNAME`]}
 									</Link>
+								</td>
+								<td className="td-wallet">
+									{wallets[CURRENCIES[key].fullName.toLowerCase()] || (key === fiatSymbol && bankaccount.verified) ? (
+										<div className="d-flex justify-content-between deposit-withdrawal-wrapper">
+											<ActionNotification
+												text={STRINGS.WALLET_BUTTON_FIAT_DEPOSIT}
+												iconPath={ICONS.BLUE_PLUS}
+		
+												onClick={() => navigate(`wallet/${key}/deposit`)}
+												useSvg={true}
+												className="csv-action"
+											/>
+											<ActionNotification
+												text={STRINGS.WALLET_BUTTON_FIAT_WITHDRAW}
+												iconPath={ICONS.BLUE_PLUS}
+												onClick={() => navigate(`wallet/${key}/withdraw`)}
+												useSvg={true}
+												className="csv-action"
+											/>
+										</div>
+									) : (
+										key !== fiatSymbol && (
+											<ActionNotification
+												text={STRINGS.GENERATE_WALLET}
+												status="information"
+												iconPath={ICONS.BLUE_PLUS}
+												onClick={() => onOpenDialog(key)}
+												className="need-help"
+												useSvg={true}
+											/>
+										)
+									)}
 								</td>
 								<td className="td-amount">
 									{STRINGS.formatString(
