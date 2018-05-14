@@ -1,17 +1,7 @@
 import React from 'react';
-import EventListener from 'react-event-listener';
 import { ICONS } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
-import {
-	formatBtcAmount,
-	// formatBtcFullAmount,
-	formatFiatAmount
-} from '../../utils/currency';
-import {
-	NotificationWraper,
-	NotificationContent,
-	InformationRow
-} from './Notification';
+import { NotificationWraper, NotificationContent } from './Notification';
 import { Button, Loader } from '../';
 
 const GenerateAddressNotification = ({

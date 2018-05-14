@@ -1,0 +1,105 @@
+.currency-list {
+	&.horizontal-currency-list {
+		flex: 1;
+		border-left: none !important;
+
+		.single-currency {
+			position: relative;
+			justify-content: center;
+			min-width: 5rem;
+			padding: 0 1rem;
+			&:hover,
+			&.focused {
+				border-left: 1px solid;
+				border-right: 1px solid;
+				background-color: #fafafa;
+				border-color: black;
+				&::before {
+					content: '';
+					position: absolute;
+					width: 100%;
+					border-bottom: 1px solid;
+					border-color: #fafafa;
+					left: 0;
+					right: 0;
+					bottom: -1px;
+				}
+				&::after {
+					content: '';
+					position: absolute;
+					width: 100%;
+					top: 0;
+					left: 0;
+					right: 0;
+					border-color: black;
+					border-top: 0.25rem solid;
+					border-left: 1px solid;
+					border-right: 1px solid;
+				}
+			}
+		}
+	}
+
+	.single-currency {
+		height: 100%;
+		font-size: 1rem;
+		cursor: pointer;
+	}
+}
+
+.markets-list {
+	position: absolute;
+	right: 0;
+	top: 36px;
+	min-width: 14rem;
+	min-height: 8rem;
+	background-color: #fafafa;
+	z-index: 20;
+	padding: 1rem 2rem;
+	-webkit-box-shadow: 0px 3px 1px -1px rgba(0, 0, 0, 0.4);
+	-moz-box-shadow: 0px 3px 1px -1px rgba(0, 0, 0, 0.4);
+	box-shadow: 0px 3px 1px -1px rgba(0, 0, 0, 0.4);
+
+	.markets-wrapper {
+		width: 1rem;
+		.market {
+			position: relative;
+			margin: 0 1rem;
+			cursor: pointer;
+
+			&:hover {
+				&:after {
+					content: '';
+					position: absolute;
+					width: 100%;
+					bottom: 0;
+					border-bottom: 1px solid black;
+				}
+			}
+		}
+	}
+}
+
+.dark-theme {
+	.currency-list {
+		&.horizontal-currency-list {
+			.single-currency {
+				&:hover,
+				&.focused {
+					border-color: black;
+					background-color: #353740;
+					&::before {
+						border-color: #353740;
+					}
+					&::after {
+						content: '';
+						border-color: white;
+					}
+				}
+			}
+		}
+		.markets-list {
+			background-color: #353740;
+		}
+	}
+}
