@@ -49,7 +49,7 @@ class Form extends Component {
 	};
 
 	componentWillReceiveProps(nextProps) {
-		if (nextProps.symbol !== this.props.symbol) {
+		if (nextProps.currency !== this.props.currency) {
 			nextProps.dispatch(reset(FORM_NAME));
 		}
 		if (
@@ -60,10 +60,10 @@ class Form extends Component {
 		}
 
 		if (
-			nextProps.symbol === fiatSymbol &&
+			nextProps.currency === fiatSymbol &&
 			(nextProps.data.amount !== this.props.data.amount ||
-				(nextProps.symbol === fiatSymbol &&
-					nextProps.amount !== this.props.symbol))
+				(nextProps.currency === fiatSymbol &&
+					nextProps.amount !== this.props.currency))
 		) {
 			const fee = calculateFiatFee(nextProps.data.amount);
 			if (fee !== nextProps.data.fee) {
@@ -136,7 +136,7 @@ class Form extends Component {
 			error,
 			valid,
 			initialValues, // eslint-disable-line
-			symbol,
+			currency,
 			data,
 			openContactForm,
 			formValues,
@@ -168,7 +168,7 @@ class Form extends Component {
 						/>
 					) : !submitting ? (
 						<ReviewModalContent
-							symbol={symbol}
+							currency={currency}
 							data={data}
 							price={currentPrice}
 							onClickAccept={this.onAcceptDialog}
