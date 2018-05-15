@@ -89,7 +89,7 @@ class OrderEntry extends Component {
 		const price = parseFloat(props.price || 0);
 
 		let orderPrice = 0;
-		if (size >= LIMIT_VALUES.SIZE.MIN && !(type === 'limit' && price === 0)) {
+		if (size >= LIMIT_VALUES[this.props.pair_base].SIZE.MIN && !(type === 'limit' && price === 0)) {
 			if (props.side === 'sell') {
 				const { bids } = props;
 				orderPrice = checkMarketPrice(size, bids, type, side, price);
@@ -106,7 +106,7 @@ class OrderEntry extends Component {
 			.done();
 		let outsideFormError = '';
 
-		if (type === 'market' && orderPrice === 0 && size >= LIMIT_VALUES.SIZE.MIN) {
+		if (type === 'market' && orderPrice === 0 && size >= LIMIT_VALUES[this.props.pair_base].SIZE.MIN) {
 			outsideFormError = STRINGS.QUICK_TRADE_ORDER_NOT_FILLED;
 		} else if (type === 'market' && side === 'buy') {
 			const values = {
@@ -220,13 +220,13 @@ class OrderEntry extends Component {
 				type: 'number',
 				placeholder: '0.00',
 				normalize: normalizeFloat,
-				step: LIMIT_VALUES.SIZE.STEP,
-				min: LIMIT_VALUES.SIZE.MIN,
-				max: LIMIT_VALUES.SIZE.MAX,
+				step: LIMIT_VALUES[pair].SIZE.STEP,
+				min: LIMIT_VALUES[pair].SIZE.MIN,
+				max: LIMIT_VALUES[pair].SIZE.MAX,
 				validate: [
 					required,
-					minValue(LIMIT_VALUES.SIZE.MIN),
-					maxValue(LIMIT_VALUES.SIZE.MAX)
+					minValue(LIMIT_VALUES[pair].SIZE.MIN),
+					maxValue(LIMIT_VALUES[pair].SIZE.MAX)
 				],
 				currency: STRINGS[`${pair.toUpperCase()}_SHORTNAME`]
 			},
@@ -236,14 +236,14 @@ class OrderEntry extends Component {
 				type: 'number',
 				placeholder: '0',
 				normalize: normalizeInt,
-				step: LIMIT_VALUES.PRICE.STEP,
-				min: LIMIT_VALUES.PRICE.MIN,
-				max: LIMIT_VALUES.PRICE.MAX,
+				step: LIMIT_VALUES[pair].PRICE.STEP,
+				min: LIMIT_VALUES[pair].PRICE.MIN,
+				max: LIMIT_VALUES[pair].PRICE.MAX,
 				validate: [
 					required,
-					minValue(LIMIT_VALUES.PRICE.MIN),
-					maxValue(LIMIT_VALUES.PRICE.MAX),
-					step(LIMIT_VALUES.PRICE.STEP)
+					minValue(LIMIT_VALUES[pair].PRICE.MIN),
+					maxValue(LIMIT_VALUES[pair].PRICE.MAX),
+					step(LIMIT_VALUES[pair].PRICE.STEP)
 				],
 				// normalize: normalizeInt,
 				currency: STRINGS.FIAT_SHORTNAME
