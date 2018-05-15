@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
-import classnames from 'classnames';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import {
 	IconTitle,
-	Button,
 	Dialog,
 	Accordion,
 	Notification
@@ -12,10 +10,9 @@ import {
 import { changeSymbol } from '../../actions/orderbookAction';
 import { NOTIFICATIONS } from '../../actions/appActions';
 import { createAddress, cleanCreateAddress } from '../../actions/userAction';
-import { ICONS, FLEX_CENTER_CLASSES, CURRENCIES } from '../../config/constants';
+import { ICONS, CURRENCIES } from '../../config/constants';
 import {
-	calculateBalancePrice,
-	generateWalletActionsText
+	calculateBalancePrice
 } from '../../utils/currency';
 import STRINGS from '../../config/localizedStrings';
 
@@ -54,8 +51,7 @@ class Wallet extends Component {
 		);
 		if (
 			nextProps.addressRequest.success === true &&
-			nextProps.addressRequest.success !==
-				this.props.addressRequest.success
+			nextProps.addressRequest.success !== this.props.addressRequest.success
 		) {
 			this.onCloseDialog();
 		}
@@ -92,17 +88,21 @@ class Wallet extends Component {
 						wallets={wallets}
 						onOpenDialog={this.onOpenDialog}
 						bankaccount={bankaccount}
-						navigate={this.navigate}
+						navigate={this.goToPage}
 					/>
 				),
 				isOpen: true,
+				allowClose: false,
 				notification: {
-					text: isOpen ? STRINGS.HIDE_TEXT : totalAssets,
+					text: STRINGS.TRADE_HISTORY,
 					status: 'information',
-					iconPath: isOpen ? ICONS.BLUE_PLUS : ICONS.BLUE_CLIP,
+					iconPath: ICONS.BLUE_CLIP,
 					allowClick: true,
 					useSvg: true,
-					className: isOpen ? '' : 'wallet-notification'
+					className: isOpen ? '' : 'wallet-notification',
+					onClick: () => {
+						this.props.router.push('/transactions');
+					}
 				}
 			}
 		];
@@ -116,35 +116,9 @@ class Wallet extends Component {
 	goToWithdraw = () => this.goToPage('withdraw');
 	goToTransactionsHistory = () => this.goToPage('transactions');
 
-	notifyOnOpen = (index, isOpen) => {
-		this.generateSections(
-			this.props.changeSymbol,
-			this.props.balance,
-			this.props.prices,
-			isOpen,
-			this.props.wallets,
-			this.props.bankaccount
-		);
-	};
-
-	renderButtonsBlock = (symbol) => {
-		const { depositText, withdrawText } = generateWalletActionsText(symbol);
-
-		return (
-			<div
-				className={classnames(...FLEX_CENTER_CLASSES, 'wallet-buttons_action')}
-			>
-				<Button label={depositText} onClick={this.goToDeposit} />
-				<div className="separator" />
-				<Button label={withdrawText} onClick={this.goToWithdraw} />
-			</div>
-		);
-	};
-
-
 	onOpenDialog = (selectedCurrency) => {
 		this.setState({ dialogIsOpen: true, selectedCurrency });
-    this.props.cleanCreateAddress();
+		this.props.cleanCreateAddress();
 	};
 
 	onCloseDialog = () => {
@@ -156,10 +130,6 @@ class Wallet extends Component {
 			this.props.createAddress(this.state.selectedCurrency);
 		}
 	};
-
-	navigate = (route) => {
-		this.props.router.push(route);
-	}
 
 	render() {
 		const { sections, dialogIsOpen, selectedCurrency } = this.state;
@@ -173,7 +143,7 @@ class Wallet extends Component {
 					textType="title"
 				/>
 				<div className="wallet-container">
-					<Accordion sections={sections} notifyOnOpen={this.notifyOnOpen} />
+					<Accordion sections={sections} />
 				</div>
 				<Dialog
 					isOpen={dialogIsOpen}
