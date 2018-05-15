@@ -103,7 +103,7 @@ $header-margin: 2rem;
 				}
 			}
 			.td-amount {
-				width: 150px;
+				min-width: 150px !important;
 				direction: ltr;
 			}
 		}
