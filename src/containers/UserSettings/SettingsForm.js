@@ -20,11 +20,11 @@ export const generateFormValues = () => ({
 		label: STRINGS.SETTINGS_ORDERPOPUP_LABEL,
 		options: STRINGS.SETTINGS_ORDERPOPUP_OPTIONS
 	},
-	theme: {
-		type: 'select',
-		label: STRINGS.SETTINGS_THEME_LABEL,
-		options: STRINGS.SETTINGS_THEME_OPTIONS
-	}
+	// theme: {
+	// 	type: 'select',
+	// 	label: STRINGS.SETTINGS_THEME_LABEL,
+	// 	options: STRINGS.SETTINGS_THEME_OPTIONS
+	// }
 });
 
 const Form = ({

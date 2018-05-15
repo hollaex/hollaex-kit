@@ -407,4 +407,4 @@ export const PRO_URL = process.env.REACT_APP_PRO_URL || 'https://hollaex.com';
 export const MIN_LEVEL_FOR_TOKENS = parseInt(process.env.REACT_APP_MIN_LEVEL_FOR_TOKENS || 2, 10)
 
 export const THEMES = ['dark', 'white'];
-export const THEME_DEFAULT = THEMES[0];
+export const THEME_DEFAULT = THEMES[1];
