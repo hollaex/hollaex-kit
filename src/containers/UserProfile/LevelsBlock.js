@@ -25,7 +25,9 @@ const LevelRow = ({ data = {}, isUserLevel = false }) => {
 		fiat_deposit_daily,
 		fiat_withdraw_daily,
 		btc_deposit_daily,
-		btc_withdraw_daily
+		btc_withdraw_daily,
+		eth_deposit_daily,
+		eth_withdraw_daily
 	} = data;
 	return (
 		<tr
@@ -55,6 +57,12 @@ const LevelRow = ({ data = {}, isUserLevel = false }) => {
 			<td className="td-name td-amount">
 				{getLimitValue(btc_withdraw_daily, formatBtcAmount)}
 			</td>
+			<td className="td-name td-amount">
+				{getLimitValue(eth_deposit_daily, formatBtcAmount)}
+			</td>
+			<td className="td-name td-amount">
+				{getLimitValue(eth_withdraw_daily, formatBtcAmount)}
+			</td>
 		</tr>
 	);
 };
@@ -72,6 +80,8 @@ export const LevelsBlock = ({ userLevel, limits }) => (
 					<th>{STRINGS.LEVELS.LABEL_FIAT_WITHDRAWAL}</th>
 					<th>{STRINGS.LEVELS.LABEL_BTC_DEPOSIT}</th>
 					<th>{STRINGS.LEVELS.LABEL_BTC_WITHDRAWAL}</th>
+					<th>{STRINGS.LEVELS.LABEL_ETH_DEPOSIT}</th>
+					<th>{STRINGS.LEVELS.LABEL_ETH_WITHDRAWAL}</th>
 				</tr>
 			</thead>
 			<tbody>

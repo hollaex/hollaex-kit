@@ -816,6 +816,8 @@ export default {
 		LABEL_FIAT_WITHDRAWAL: 'Daily Rial Withdrawal',
 		LABEL_BTC_DEPOSIT: 'Daily Bitcoin Deposit',
 		LABEL_BTC_WITHDRAWAL: 'Daily Bitcoin Withdrawal',
+		LABEL_ETH_DEPOSIT: 'Daily Ethereum Deposit',
+		LABEL_ETH_WITHDRAWAL: 'Daily Ethereum Withdrawal',
 		UNLIMITED: 'Unlimited',
 		BLOCKED: '0'
 	},
