@@ -26,13 +26,8 @@ export const AssetsBlock = ({
 					<th />
 					<th>{STRINGS.CURRENCY}</th>
 					<th>{STRINGS.DEPOSIT_WITHDRAW}</th>
+					<th className="td-amount" />
 					<th>{STRINGS.AMOUNT}</th>
-					<th className="align-opposite">
-						{STRINGS.formatString(
-							STRINGS.WALLET_TABLE_AMOUNT_IN,
-							STRINGS.FIAT_NAME
-						)}
-					</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -63,12 +58,12 @@ export const AssetsBlock = ({
 									</Link>
 								</td>
 								<td className="td-wallet">
-									{wallets[CURRENCIES[key].fullName.toLowerCase()] || (key === fiatSymbol && bankaccount.verified) ? (
+									{wallets[CURRENCIES[key].fullName.toLowerCase()] ||
+									(key === fiatSymbol && bankaccount.verified) ? (
 										<div className="d-flex justify-content-between deposit-withdrawal-wrapper">
 											<ActionNotification
 												text={STRINGS.WALLET_BUTTON_FIAT_DEPOSIT}
 												iconPath={ICONS.BLUE_PLUS}
-		
 												onClick={() => navigate(`wallet/${key}/deposit`)}
 												useSvg={true}
 												className="csv-action"
@@ -94,19 +89,21 @@ export const AssetsBlock = ({
 										)
 									)}
 								</td>
+								<td className="td-amount" />
 								<td className="td-amount">
-									{STRINGS.formatString(
-										STRINGS[`${key.toUpperCase()}_PRICE_FORMAT`],
-										formatToCurrency(balanceValue),
-										STRINGS[`${key.toUpperCase()}_CURRENCY_SYMBOL`]
-									)}
-								</td>
-								<td className="align-opposite show-equals td-amount">
-									{STRINGS.formatString(
-										STRINGS.FIAT_PRICE_FORMAT,
-										balanceText,
-										STRINGS.FIAT_CURRENCY_SYMBOL
-									)}
+									<div className="d-flex">
+										<div className="mr-2">
+											{STRINGS.formatString(
+												STRINGS[`${key.toUpperCase()}_PRICE_FORMAT`],
+												formatToCurrency(balanceValue),
+												STRINGS[`${key.toUpperCase()}_CURRENCY_SYMBOL`]
+											)}
+										</div>
+										<div>
+											{key !== fiatSymbol &&
+												`(≈ ${STRINGS.FIAT_CURRENCY_SYMBOL} ${balanceText})`}
+										</div>
+									</div>
 								</td>
 							</tr>
 						);
@@ -115,9 +112,15 @@ export const AssetsBlock = ({
 			<tfoot>
 				<tr>
 					<td />
-					<td>{STRINGS.WALLET_TABLE_TOTAL}</td>
 					<td />
-					<td className="align-opposite td-amount">{totalAssets}</td>
+					<td />
+					<td />
+					<td>
+						<div className="d-flex">
+							<div className="mr-2">{STRINGS.WALLET_TABLE_TOTAL}</div>
+							<div style={{ direction: 'rtl' }}>{totalAssets}</div>
+						</div>
+					</td>
 				</tr>
 			</tfoot>
 		</table>
