@@ -27,7 +27,7 @@ export const AssetsBlock = ({
 					<th>{STRINGS.CURRENCY}</th>
 					<th>{STRINGS.DEPOSIT_WITHDRAW}</th>
 					<th className="td-amount" />
-					<th className="align-opposite">{STRINGS.AMOUNT}</th>
+					<th>{STRINGS.AMOUNT}</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -91,8 +91,8 @@ export const AssetsBlock = ({
 								</td>
 								<td className="td-amount" />
 								<td className="td-amount">
-									<div className="d-flex justify-content-end">
-										<div className="mr-2">
+									<div className="d-flex">
+										<div className="mr-4">
 											{STRINGS.formatString(
 												STRINGS[`${key.toUpperCase()}_PRICE_FORMAT`],
 												formatToCurrency(balanceValue),
@@ -116,8 +116,8 @@ export const AssetsBlock = ({
 					<td />
 					<td />
 					<td>
-						<div className="d-flex justify-content-end">
-							<div className="mr-2">{STRINGS.WALLET_TABLE_TOTAL}</div>
+						<div className="d-flex">
+							<div className="mr-4">{STRINGS.WALLET_TABLE_TOTAL}</div>
 							<div style={{ direction: 'rtl' }}>{totalAssets}</div>
 						</div>
 					</td>
