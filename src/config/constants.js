@@ -332,15 +332,29 @@ export const TIMESTAMP_FORMAT_FA = STRINGS.TIMESTAMP_FORMAT.split('/')
 	.join('/');
 
 export const LIMIT_VALUES = {
-	PRICE: {
-		MIN: process.env.REACT_APP_MIN_PRICE || 500,
-		MAX: process.env.REACT_APP_MAX_PRICE || 50000,
-		STEP: process.env.REACT_APP_PRICE_STEP || 1
+	btc: {
+		PRICE: {
+			MIN: process.env.REACT_APP_BTC_MIN_PRICE || 500,
+			MAX: process.env.REACT_APP_BTC_MAX_PRICE || 50000,
+			STEP: process.env.REACT_APP_BTC_PRICE_STEP || 1
+		},
+		SIZE: {
+			MIN: 0.0001,
+			MAX: 21000000,
+			STEP: 0.0001
+		}
 	},
-	SIZE: {
-		MIN: 0.0001,
-		MAX: 21000000,
-		STEP: 0.0001
+	eth: {
+		PRICE: {
+			MIN: process.env.REACT_APP_ETH_MIN_PRICE || 100,
+			MAX: process.env.REACT_APP_ETH_MAX_PRICE || 10000,
+			STEP: process.env.REACT_APP_ETH_PRICE_STEP || 1
+		},
+		SIZE: {
+			MIN: 0.001,
+			MAX: 2000000,
+			STEP: 0.001
+		}
 	}
 };
 

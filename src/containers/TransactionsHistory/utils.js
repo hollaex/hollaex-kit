@@ -54,7 +54,6 @@ export const generateTradeHeaders = (symbol) => {
 			key: 'icon',
 			renderCell: (data, key, index) => {
 				const symbol = PAIRS[data.symbol].pair_base;
-				const { formatToCurrency } = CURRENCIES[symbol];
 				const shortName = STRINGS[`${symbol.toUpperCase()}_SHORTNAME`];
 				return (
 					<td className={classnames('icon-cell')} key={index}>

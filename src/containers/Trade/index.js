@@ -229,6 +229,7 @@ class Trade extends Component {
 										width={chartWidth}
 										theme={activeTheme}
 										pair={pair}
+										pairBase={pairData.pair_base}
 									/>
 								)}
 						</TradeBlock>
