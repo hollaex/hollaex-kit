@@ -15,11 +15,28 @@ export const COLORS = {
 	SELL_CANDLE: '#f7941e'
 };
 
+export const DARK_COLORS = {
+	SELL: '#f69321',
+	BUY: '#29abe2',
+	LINE: '#b7b7ce',
+	FILL: 'orange',
+	AXIS: '#b7b7ce',
+	BUY_CANDLE: '#29abe2',
+	SELL_CANDLE: '#f69321'
+};
+
+const THEME_COLORS = {
+	dark: DARK_COLORS,
+	white: COLORS
+};
+
 export const fillIndicator = ({ close, open }) =>
 	close > open ? COLORS.BUY : COLORS.SELL;
 
-const CandleColor = ({ open, close }) =>
-	close > open ? COLORS.BUY_CANDLE : COLORS.SELL_CANDLE;
+const CandleColor = (theme = 'white') => ({ open, close }) =>
+	close > open
+		? THEME_COLORS[theme].BUY_CANDLE
+		: THEME_COLORS[theme].SELL_CANDLE;
 
 export const areaProps = {
 	stroke: COLORS.STROKE,
@@ -46,14 +63,14 @@ export const OHLCProps = {
 	children: OHLCChildren
 };
 
-export const CandlesProps = {
-	wickStroke: CandleColor,
-	fill: CandleColor,
-	stroke: CandleColor,
+export const CandlesProps = (theme) => ({
+	wickStroke: CandleColor(theme),
+	fill: CandleColor(theme),
+	stroke: CandleColor(theme),
 	candleStrokeWidth: 1,
 	widthRatio: 0.8,
 	opacity: 1
-};
+});
 
 export const CandleChartXAxis = {
 	axisAt: 'bottom',

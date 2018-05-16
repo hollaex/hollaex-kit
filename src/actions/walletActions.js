@@ -27,19 +27,19 @@ const ENDPOINTS = {
 	WITHDRAWALS: '/user/withdrawals',
 	DEPOSIT_BANK: '/user/deposit/bank',
 	WITHDRAW_BANK: '/user/withdraw/bank',
-	WITHDRAW_BTC: '/user/withdraw/btc',
-	WITHDRAW_BTC_FEE: '/user/withdraw/btc/fee'
+	WITHDRAW: (currency) => `/user/withdraw/${currency}`,
+	WITHDRAW_FEE: (currency) => `/user/withdraw/${currency}/fee`
 };
 
-export const performBtcWithdraw = (values) => {
-	return axios.post(ENDPOINTS.WITHDRAW_BTC, values);
+export const performWithdraw = (currency, values) => {
+	return axios.post(ENDPOINTS.WITHDRAW(currency), values);
 };
 
-export const requestBtcWithdrawFee = () => {
+export const requestWithdrawFee = (currency = 'btc') => {
 	return (dispatch) => {
 		dispatch({ type: ACTION_KEYS.USER_WITHDRAWALS_BTC_FEE_PENDING });
 		axios
-			.get(ENDPOINTS.WITHDRAW_BTC_FEE)
+			.get(ENDPOINTS.WITHDRAW_FEE(currency))
 			.then((body) => {
 				dispatch({
 					type: ACTION_KEYS.USER_WITHDRAWALS_BTC_FEE_FULFILLED,
@@ -50,35 +50,6 @@ export const requestBtcWithdrawFee = () => {
 				const payload = err.response.data || { message: err.message };
 				dispatch({
 					type: ACTION_KEYS.USER_WITHDRAWALS_BTC_FEE_REJECTED,
-					payload
-				});
-			});
-	};
-};
-
-export const requestFiatDeposit = (amount) => {
-	return axios.get(`${ENDPOINTS.DEPOSIT_BANK}?amount=${amount}`);
-};
-
-export const requestFiatWithdraw = (values) => {
-	return axios.post(ENDPOINTS.WITHDRAW_BANK, values);
-};
-
-export const verifyFiatDeposit = (deposit_id, status) => {
-	return (dispatch) => {
-		dispatch({ type: ACTION_KEYS.DEPOSIT_VERIFICATION_PENDING });
-		axios
-			.get(`${ENDPOINTS.DEPOSIT_BANK}/${deposit_id}?status=${status}`)
-			.then((body) => {
-				dispatch({
-					type: ACTION_KEYS.DEPOSIT_VERIFICATION_FULFILLED,
-					payload: body.data
-				});
-			})
-			.catch((err) => {
-				const payload = err.response.data || { message: err.message };
-				dispatch({
-					type: ACTION_KEYS.DEPOSIT_VERIFICATION_REJECTED,
 					payload
 				});
 			});

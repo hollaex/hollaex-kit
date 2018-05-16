@@ -6,13 +6,20 @@ import { bindActionCreators } from 'redux';
 import STRINGS from '../../config/localizedStrings';
 import { ICONS, BALANCE_ERROR } from '../../config/constants';
 
-import { QuickTrade, Dialog, Countdown, IconTitle } from '../../components';
+import {
+	QuickTrade,
+	Dialog,
+	Countdown,
+	IconTitle,
+	Loader
+} from '../../components';
 import {
 	requestQuote,
 	executeQuote,
 	changeSymbol
 } from '../../actions/orderbookAction';
 import { formatBtcAmount, formatFiatAmount } from '../../utils/currency';
+import { changePair } from '../../actions/appActions';
 
 import { FLEX_CENTER_CLASSES } from '../../config/constants';
 
@@ -20,11 +27,16 @@ import QuoteResult from './QuoteResult';
 
 class QuickTradeContainer extends Component {
 	state = {
+		pair: '',
 		showQuickTradeModal: false,
 		side: 'buy',
 		quote: {},
 		interval: undefined
 	};
+
+	componentWillMount() {
+		this.changePair(this.props.routeParams.pair);
+	}
 
 	componentWillReceiveProps(nextProps) {
 		const nextExp = nextProps.quoteData.data.exp;
@@ -42,11 +54,19 @@ class QuickTradeContainer extends Component {
 			this.onClearQuoteInterval();
 			this.setState({ interval });
 		}
+		if (nextProps.routeParams.pair !== this.props.routeParams.pair) {
+			this.changePair(nextProps.routeParams.pair);
+		}
 	}
 
 	componentWillUnmount() {
 		this.onClearQuoteInterval();
 	}
+
+	changePair = (pair) => {
+		this.setState({ pair });
+		this.props.changePair(pair);
+	};
 
 	onOpenDialog = () => {
 		this.onClearQuoteInterval();
@@ -61,8 +81,10 @@ class QuickTradeContainer extends Component {
 	};
 
 	onReviewQuickTrade = () => {
+		const { pair_base, pair_2 } = this.props.pairData;
+
 		if (this.props.quoteData.error === BALANCE_ERROR) {
-			this.props.changeSymbol(this.state.side === 'sell' ? 'btc' : 'fiat');
+			this.props.changeSymbol(this.state.side === 'sell' ? pair_base : pair_2);
 			this.props.router.push('deposit');
 		} else {
 			this.onClearQuoteInterval();
@@ -112,10 +134,14 @@ class QuickTradeContainer extends Component {
 	);
 
 	render() {
-		const { quoteData, symbol } = this.props;
-		const { showQuickTradeModal, side } = this.state;
+		const { quoteData, pairData } = this.props;
+		const { showQuickTradeModal, side, pair } = this.state;
 
-		const name = STRINGS[`${symbol.toUpperCase()}_NAME`];
+		if (!pair || pair !== this.props.pair || !pairData) {
+			return <Loader background={false} />;
+		}
+
+		const name = STRINGS[`${pairData.pair_base.toUpperCase()}_NAME`];
 		const { data, order } = quoteData;
 		const end = quoteData.data.exp;
 		return (
@@ -125,7 +151,7 @@ class QuickTradeContainer extends Component {
 				<QuickTrade
 					onReviewQuickTrade={this.onReviewQuickTrade}
 					onRequestMarketValue={this.onRequestQuote}
-					symbol={symbol}
+					symbol={pair}
 					quickTradeData={quoteData}
 					onChangeSide={this.onChangeSide}
 					disabled={
@@ -178,13 +204,19 @@ class QuickTradeContainer extends Component {
 	}
 }
 
-const mapStateToProps = (store) => ({
-	symbol: store.orderbook.symbol,
-	quoteData: store.orderbook.quoteData,
-	activeLanguage: store.app.language
-});
+const mapStateToProps = (store) => {
+	const pair = store.app.pair;
+	const pairData = store.app.pairs[pair];
+	return {
+		pair,
+		pairData,
+		quoteData: store.orderbook.quoteData,
+		activeLanguage: store.app.language
+	};
+};
 
 const mapDispatchToProps = (dispatch) => ({
+	changePair: bindActionCreators(changePair, dispatch),
 	requestQuote: bindActionCreators(requestQuote, dispatch),
 	executeQuote: bindActionCreators(executeQuote, dispatch),
 	changeSymbol: bindActionCreators(changeSymbol, dispatch)

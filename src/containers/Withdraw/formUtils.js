@@ -4,7 +4,8 @@ import {
 	maxValue,
 	checkBalance,
 	validAddress,
-	normalizeBTC
+	normalizeBTC,
+	normalizeBTCFee
 } from '../../components/Form/validations';
 import STRINGS from '../../config/localizedStrings';
 import { WITHDRAW_LIMITS, ICONS } from '../../config/constants';
@@ -14,7 +15,7 @@ export const generateInitialValues = (symbol, fees = {}) => {
 	const { MIN } = WITHDRAW_LIMITS[symbol];
 	const initialValues = {};
 
-	if (symbol !== fiatSymbol) {
+	if (symbol === 'btc') {
 		initialValues.fee = fees.optimal || fees.min;
 	} else {
 		initialValues.fee = fees.value || 0;
@@ -81,11 +82,12 @@ export const generateFormValues = (
 			status: 'information',
 			iconPath: ICONS.BLUE_PLUS,
 			className: 'file_upload_icon',
+			useSvg: true,
 			onClick: calculateMax
 		}
 	};
 
-	if (symbol !== fiatSymbol) {
+	if (symbol === 'btc') {
 		fields.fee = {
 			type: 'editable',
 			inputType: 'number',
@@ -98,7 +100,7 @@ export const generateFormValues = (
 			max: fees.max || MAX,
 			step: STEP,
 			validate: [required, minValue(fees.min), maxValue(fees.max)],
-			normalize: normalizeBTC
+			normalize: normalizeBTCFee
 		};
 	} else {
 		fields.fee = {

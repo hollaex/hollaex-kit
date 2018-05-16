@@ -5,7 +5,11 @@ import { bindActionCreators } from 'redux';
 import io from 'socket.io-client';
 import EventListener from 'react-event-listener';
 import { debounce } from 'lodash';
-import { WS_URL, ICONS, SESSION_TIME } from '../../config/constants';
+import {
+	WS_URL,
+	ICONS,
+	SESSION_TIME
+} from '../../config/constants';
 
 import { logout } from '../../actions/authAction';
 import { setMe, setBalance, updateUser } from '../../actions/userAction';
@@ -17,20 +21,26 @@ import {
 	removeOrder
 } from '../../actions/orderAction';
 import {
+	setOrderbooks,
+	setTrades,
 	setOrderbook,
-	addTrades,
-	changeSymbol
+	addTrades
 } from '../../actions/orderbookAction';
 import {
+	setTickers,
+	setPairs,
+	changePair,
 	setNotification,
 	closeNotification,
 	openContactForm,
 	setLanguage,
+	changeTheme,
 	closeAllNotification,
 	NOTIFICATIONS,
 	CONTACT_FORM
 } from '../../actions/appActions';
 
+import { getThemeClass } from '../../utils/theme';
 import { checkUserSessionExpired } from '../../utils/utils';
 import { getToken, getTokenTimestamp } from '../../utils/token';
 import {
@@ -39,7 +49,8 @@ import {
 	Dialog,
 	Loader,
 	Notification,
-	MessageDisplay
+	MessageDisplay,
+	CurrencyList
 } from '../../components';
 import { ContactForm } from '../';
 
@@ -140,27 +151,37 @@ class Container extends Component {
 
 	setPublicWS = () => {
 		// TODO change when added more cryptocurrencies
-		// const { symbol } = this.props;
-		const symbol = 'btc';
 
 		const publicSocket = io(`${WS_URL}/realtime`, {
 			query: {
-				symbol
+				// symbol: 'btc'
 			}
 		});
 
 		this.setState({ publicSocket });
 
+		publicSocket.on('initial', (data) => {
+			// console.log('initial', data);
+			if (!this.props.pair) {
+				const pair = Object.keys(data.pairs)[0];
+				this.props.changePair(pair);
+			}
+			this.props.setPairs(data.pairs);
+		});
+
 		publicSocket.on('orderbook', (data) => {
-			// console.log('orderbook', data)
-			this.props.setOrderbook(data[symbol]);
+			// console.log('orderbook', data);
+			this.props.setOrderbooks(data);
 		});
 
 		publicSocket.on('trades', (data) => {
 			// console.log('trades', data);
-			if (data[symbol].length > 0) {
-				this.props.addTrades(symbol, data[symbol]);
-			}
+			this.props.setTrades(data);
+		});
+
+		publicSocket.on('ticker', (data) => {
+			// console.log('ticker', data);
+			this.props.setTickers(data);
 		});
 	};
 
@@ -190,9 +211,15 @@ class Container extends Component {
 			// 	return this.goToVerificationPage();
 			// }
 			this.props.setMe(data);
-			// if (data.settings && data.settings.language !== this.props.activeLanguage) {
-			// 	this.props.changeLanguage(data.settings.language);
-			// }
+			if (
+				data.settings &&
+				data.settings.language !== this.props.activeLanguage
+			) {
+				this.props.changeLanguage(data.settings.language);
+			}
+			if (data.settings && data.settings.theme !== this.props.activeTheme) {
+				this.props.changeTheme(data.settings.theme);
+			}
 		});
 
 		privateSocket.on('orders', (data) => {
@@ -331,9 +358,6 @@ class Container extends Component {
 
 	goToAccountPage = () => this.goToPage('/account');
 	goToVerificationPage = () => this.goToPage('/verification');
-	goToWalletPage = () => this.goToPage('/wallet');
-	goToTradePage = () => this.goToPage('/trade');
-	goToQuickTradePage = () => this.goToPage('/quick-trade');
 	goToDashboard = () => this.goToPage('/');
 
 	logout = (message = '') => {
@@ -356,6 +380,9 @@ class Container extends Component {
 			case '/wallet':
 				return 'wallet';
 			case '/account':
+			case '/developers':
+			case '/security':
+			case '/settings':
 				return 'account';
 			case '/quick-trade':
 				return 'quick-trade';
@@ -405,6 +432,7 @@ class Container extends Component {
 					<ContactForm
 						onSubmitSuccess={this.onCloseDialog}
 						onClose={this.onCloseDialog}
+						data={data}
 					/>
 				);
 			case NOTIFICATIONS.NEW_ORDER: {
@@ -430,14 +458,15 @@ class Container extends Component {
 	render() {
 		const {
 			symbol,
+			pair,
 			children,
 			activeNotification,
-			changeSymbol,
-			notifications,
 			prices,
 			verification_level,
 			activeLanguage,
-			openContactForm
+			openContactForm,
+			activeTheme,
+			unreadMessages
 		} = this.props;
 		const { dialogIsOpen, appLoaded } = this.state;
 		const languageClasses = getClasesForLanguage(activeLanguage, 'array');
@@ -452,6 +481,7 @@ class Container extends Component {
 				className={classnames(
 					'app_container',
 					'd-flex',
+					getThemeClass(activeTheme),
 					activePath,
 					symbol,
 					fontClass,
@@ -467,7 +497,12 @@ class Container extends Component {
 					onKeyPress={this.resetTimer}
 				/>
 				<div className="d-flex flex-column f-1">
-					<AppBar goToDashboard={this.goToDashboard} />
+					<AppBar
+						goToDashboard={this.goToDashboard}
+						rightChildren={
+							<CurrencyList className="horizontal-currency-list justify-content-end" />
+						}
+					/>
 					<div className="app_container-content d-flex justify-content-between">
 						<div
 							className={classnames(
@@ -485,22 +520,19 @@ class Container extends Component {
 				<div className="app_container-sidebar">
 					<Sidebar
 						activePath={activePath}
-						goToAccountPage={this.goToAccountPage}
-						goToWalletPage={this.goToWalletPage}
-						goToTradePage={this.goToTradePage}
-						goToQuickTradePage={this.goToQuickTradePage}
 						logout={this.logout}
-						notifications={notifications}
-						changeSymbol={changeSymbol}
-						symbol={symbol}
 						help={openContactForm}
+						unreadMessages={unreadMessages}
+						pair={pair}
 					/>
 				</div>
 				<Dialog
 					isOpen={dialogIsOpen}
 					label="hollaex-modal"
+					className="app-dialog"
 					onCloseDialog={this.onCloseDialog}
 					shouldCloseOnOverlayClick={shouldCloseOnOverlayClick}
+					theme={activeTheme}
 					showCloseText={
 						!(
 							activeNotification.type === CONTACT_FORM ||
@@ -510,7 +542,8 @@ class Container extends Component {
 					}
 					style={{ 'z-index': 100 }}
 				>
-					{this.renderDialogContent(activeNotification, prices)}
+					{dialogIsOpen &&
+						this.renderDialogContent(activeNotification, prices, activeTheme)}
 				</Dialog>
 			</div>
 		);
@@ -518,16 +551,17 @@ class Container extends Component {
 }
 
 const mapStateToProps = (store) => ({
-	orderbook: store.orderbook,
+	pair: store.app.pair,
 	symbol: store.orderbook.symbol,
 	prices: store.orderbook.prices,
 	fetchingAuth: store.auth.fetching,
 	activeNotification: store.app.activeNotification,
-	notifications: store.app.notifications,
 	verification_level: store.user.verification_level,
 	activeLanguage: store.app.language,
+	activeTheme: store.app.theme,
 	orders: store.order.activeOrders,
-	user: store.user.userData
+	user: store.user.userData,
+	unreadMessages: store.app.chatUnreadMessages
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -546,8 +580,13 @@ const mapDispatchToProps = (dispatch) => ({
 	closeAllNotification: bindActionCreators(closeAllNotification, dispatch),
 	openContactForm: bindActionCreators(openContactForm, dispatch),
 	setNotification: bindActionCreators(setNotification, dispatch),
-	changeSymbol: bindActionCreators(changeSymbol, dispatch),
-	changeLanguage: bindActionCreators(setLanguage, dispatch)
+	changeLanguage: bindActionCreators(setLanguage, dispatch),
+	changePair: bindActionCreators(changePair, dispatch),
+	setPairs: bindActionCreators(setPairs, dispatch),
+	setOrderbooks: bindActionCreators(setOrderbooks, dispatch),
+	setTrades: bindActionCreators(setTrades, dispatch),
+	setTickers: bindActionCreators(setTickers, dispatch),
+	changeTheme: bindActionCreators(changeTheme, dispatch)
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Container);

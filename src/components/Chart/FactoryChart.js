@@ -11,13 +11,13 @@ export const CHART_TYPES = {
 	CANDLE: 'CHART_TYPE_CANDLE'
 };
 
-export const FactoryChart = ({ chartType, ...props }) => {
+export const FactoryChart = ({ chartType, symbol, ...props }) => {
 	switch (chartType) {
 		case CHART_TYPES.AREA:
 			return <AreaChart dataCount={100} {...props} />;
 		case CHART_TYPES.CANDLE:
 		default:
-			const modifier = 30 * LIMIT_VALUES.PRICE.STEP;
+			const modifier = 30 * LIMIT_VALUES[symbol].PRICE.STEP;
 			return <CandleChart modifier={modifier} {...props} />;
 	}
 };

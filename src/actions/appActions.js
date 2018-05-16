@@ -13,10 +13,19 @@ export const NOTIFICATIONS = {
 	LOGOUT: 'NOTIFICATIONS_LOGOUT',
 	VERIFICATION: 'NOTIFICATIONS_VERIFICATION',
 	CONTACT_FORM: 'NOTIFICATIONS_CONTACT_FORM',
-	NEW_ORDER: 'NOTIFICATIONS_NEW_ORDER'
+	NEW_ORDER: 'NOTIFICATIONS_NEW_ORDER',
+	GENERATE_API_KEY: 'NOTIFICATIONS_GENERATE_API_KEY',
+	CREATED_API_KEY: 'NOTIFICATIONS_CREATED_API_KEY',
+	GENERATE_ADDRESS: 'NOTIFICATIONS_GENERATE_ADDRESS'
 };
 export const CONTACT_FORM = 'CONTACT_FORM';
 export const CHANGE_LANGUAGE = 'CHANGE_LANGUAGE';
+export const SET_ANNOUNCEMENT = 'SET_ANNOUNCEMENT';
+export const SET_UNREAD = 'SET_UNREAD';
+export const SET_PAIRS = 'SET_PAIRS';
+export const CHANGE_PAIR = 'CHANGE_PAIR';
+export const SET_TICKERS = 'SET_TICKERS';
+export const CHANGE_THEME = 'CHANGE_THEME';
 
 export const setNotification = (type = '', data = {}, show = true) => ({
 	type: SET_NOTIFICATION,
@@ -39,7 +48,7 @@ export const closeAllNotification = () => ({
 });
 
 export const openContactForm = (data = {}) =>
-	setNotification(CONTACT_FORM, 'Contact Form', data);
+	setNotification(CONTACT_FORM, data, true);
 
 export const setLanguage = (value = 'en') => {
 	const language = storeLanguageInBrowser(value);
@@ -54,3 +63,43 @@ export const setLanguage = (value = 'en') => {
 export const sendSupportMail = (values = {}) => {
 	return axios.post('/support', values);
 };
+
+export const setAnnouncements = (announcements) => ({
+	type: SET_ANNOUNCEMENT,
+	payload: {
+		announcements
+	}
+});
+
+export const setChatUnreadMessages = (chatUnreadMessages = 0) => ({
+	type: SET_UNREAD,
+	payload: {
+		chatUnreadMessages
+	}
+});
+
+export const changeTheme = (theme = '') => ({
+	type: CHANGE_THEME,
+	payload: {
+		theme
+	}
+});
+
+export const setPairs = (pairs) => ({
+	type: SET_PAIRS,
+	payload: {
+		pairs
+	}
+});
+
+export const changePair = (pair) => ({
+	type: CHANGE_PAIR,
+	payload: {
+		pair
+	}
+});
+
+export const setTickers = (data) => ({
+	type: SET_TICKERS,
+	payload: data
+})

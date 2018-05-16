@@ -8,12 +8,11 @@ class Accordion extends Component {
 	};
 
 	componentWillReceiveProps(nextProps) {
-		if (!this.state.ready) {
+		if (!this.state.ready && nextProps.sections.length > 0) {
 			const openSections = nextProps.sections
 				.map(({ isOpen }, index) => ({ isOpen, index }))
 				.filter(({ isOpen }) => isOpen)
 				.map(({ index }) => index);
-
 			this.setState({ openSections, ready: true });
 		}
 	}

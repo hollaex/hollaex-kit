@@ -32,6 +32,7 @@ import {
 } from '../../utils/string';
 import { ContactForm } from '../';
 import { NOTIFICATIONS } from '../../actions/appActions';
+import { getThemeClass } from '../../utils/theme';
 
 const CONTENT_CLASS =
 	'd-flex justify-content-center align-items-center f-1 flex-column verification_content-wrapper';
@@ -252,7 +253,7 @@ class Verification extends Component {
 	onLogout = () => this.props.logout('');
 
 	render() {
-		const { activeLanguage, token } = this.props;
+		const { activeLanguage, token, activeTheme } = this.props;
 		const { activeTab, tabs, dialogIsOpen, dialogType } = this.state;
 
 		if (activeTab === -1 && tabs.length > 0) {
@@ -268,11 +269,12 @@ class Verification extends Component {
 
 		return (
 			<div
-				className={classnames('app_container', fontClass, languageClasses[0])}
+				className={classnames('app_container', getThemeClass(activeTheme), fontClass, languageClasses[0])}
 			>
 				<AppBar
 					isHome={true}
 					token={token}
+					theme={activeTheme}
 					rightChildren={
 						<Logout className="sidebar-row bar-logout" onLogout={this.onLogout} />
 					}
@@ -316,6 +318,7 @@ class Verification extends Component {
 const mapStateToProps = (state) => ({
 	activeLanguage: state.app.language,
 	token: state.auth.token,
+	activeTheme: state.app.theme,
 	fetchingAuth: state.auth.fetching
 });
 

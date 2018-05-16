@@ -49,7 +49,7 @@ class Form extends Component {
 	};
 
 	componentWillReceiveProps(nextProps) {
-		if (nextProps.symbol !== this.props.symbol) {
+		if (nextProps.currency !== this.props.currency) {
 			nextProps.dispatch(reset(FORM_NAME));
 		}
 		if (
@@ -60,10 +60,10 @@ class Form extends Component {
 		}
 
 		if (
-			nextProps.symbol === fiatSymbol &&
+			nextProps.currency === fiatSymbol &&
 			(nextProps.data.amount !== this.props.data.amount ||
-				(nextProps.symbol === fiatSymbol &&
-					nextProps.amount !== this.props.symbol))
+				(nextProps.currency === fiatSymbol &&
+					nextProps.amount !== this.props.currency))
 		) {
 			const fee = calculateFiatFee(nextProps.data.amount);
 			if (fee !== nextProps.data.fee) {
@@ -106,7 +106,10 @@ class Form extends Component {
 			})
 			.then((response) => {
 				this.onCloseDialog();
-				this.props.onSubmitSuccess(response, this.props.dispatch);
+				this.props.onSubmitSuccess(
+					{ ...response.data, currency: this.props.currency },
+					this.props.dispatch
+				);
 				return response;
 			})
 			.catch((err) => {
@@ -136,7 +139,7 @@ class Form extends Component {
 			error,
 			valid,
 			initialValues, // eslint-disable-line
-			symbol,
+			currency,
 			data,
 			openContactForm,
 			formValues,
@@ -168,7 +171,7 @@ class Form extends Component {
 						/>
 					) : !submitting ? (
 						<ReviewModalContent
-							symbol={symbol}
+							currency={currency}
 							data={data}
 							price={currentPrice}
 							onClickAccept={this.onAcceptDialog}
@@ -186,7 +189,7 @@ class Form extends Component {
 const WithdrawForm = reduxForm({
 	form: FORM_NAME,
 	onSubmitFail: setWithdrawNotificationError,
-	onSubmitSuccess: ({ data }, dispatch) => {
+	onSubmitSuccess: (data, dispatch) => {
 		dispatch(reset(FORM_NAME));
 		setWithdrawNotificationSuccess(data, dispatch);
 	},

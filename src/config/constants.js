@@ -1,5 +1,9 @@
 import config from './index';
-import { formatBtcAmount, formatFiatAmount } from '../utils/string';
+import {
+	formatBtcAmount,
+	formatFiatAmount,
+	formatEthAmount
+} from '../utils/string';
 
 import STRINGS from './localizedStrings';
 
@@ -14,42 +18,34 @@ export const API_URL = config[ENV][NETWORK].API_URL;
 export const WS_URL = config[ENV][NETWORK].WS_URL;
 
 export const ICONS = {
-	USER: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-01.png`,
-	FINGERPRINT: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-02.png`,
-	LOCK: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-03.png`,
-	BELL: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-04.png`,
-	LIFESAVER: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-05.png`,
-	CHECK: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-06.png`,
-	// BLUE_PLUS: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-07.png`,
+	LIFESAVER: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-05.svg`,
+	CHECK: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-06.svg`,
 	BLUE_QUESTION: `${
 		process.env.PUBLIC_URL
-	}/assets/acounts/account-icons-08.png`,
-	RED_WARNING: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-09.png`,
-	GENDER_F: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-10.png`,
-	GENDER_M: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-11.png`,
+	}/assets/acounts/account-icons-08.svg`,
+	RED_WARNING: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-09.svg`,
+	GENDER_F: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-10.svg`,
+	GENDER_M: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-11.svg`,
 	BITCOIN_CLEAR: `${
 		process.env.PUBLIC_URL
-	}/assets/acounts/account-icons-13.png`,
-	BITCOIN_DARK: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-14.png`,
-	USER_DARK: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-12.png`,
-	USER_WHITE: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-15.png`,
-	RED_ARROW: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-16.png`,
-	BLUE_CLIP: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-17.png`,
-	GREY_RIGHT_TRIANGLE: `${
-		process.env.PUBLIC_URL
-	}/assets/acounts/account-icons-18.png`,
-	BLACK_CHECK: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-19.png`,
-	WHITE_CHECK: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-20.png`,
-	BALCK_CORNER_TRIANGLE: `${
-		process.env.PUBLIC_URL
-	}/assets/acounts/account-icons-21.png`,
-	KEYS: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-22.png`,
-	GREEN_CHECK: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-23.png`,
-	LETTER: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-24.png`,
-	SQUARE_DOTS: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-25.png`,
+	}/assets/acounts/account-icons-13.svg`,
+	RED_ARROW: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-16.svg`,
+	BLUE_CLIP: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-17.svg`,
+	BLACK_CHECK: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-19.svg`,
+	KEYS: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-22.svg`,
+	GREEN_CHECK: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-23.svg`,
+	LETTER: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-24.svg`,
+	SQUARE_DOTS: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-25.svg`,
 	COPY_NEW: `${process.env.PUBLIC_URL}/assets/images/copy.svg`,
-	COPY: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-26.png`,
-	LOGOUT: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-27.png`,
+	LOGO_BLUE: `${process.env.PUBLIC_URL}/assets/logo-blue-exir.svg`,
+	LOGO_GREY: `${process.env.PUBLIC_URL}/assets/images/EXIR-grey-login.svg`,
+	LOGO_WHITE: `${process.env.PUBLIC_URL}/assets/images/logo-white-exir.svg`,
+	BACKGROUND_LARGE: `${
+		process.env.PUBLIC_URL
+	}/assets/background-site-large.jpg`,
+	BACKGROUND_SMALL: `${
+		process.env.PUBLIC_URL
+	}/assets/background-site-smaller.jpg`,
 	ACCOUNT_LINE: `${process.env.PUBLIC_URL}/assets/images/account.svg`,
 	ACCOUNT_RECOVERY: `${
 		process.env.PUBLIC_URL
@@ -243,8 +239,17 @@ export const ICONS = {
 	ARROW_TRANSFER_HISTORY_INACTIVE: `${
 		process.env.PUBLIC_URL
 	}/assets/images/arrow-trans-history.svg`,
-	CHECK_ORDER: `${process.env.PUBLIC_URL}/assets/images/check-order.svg`,
-	ARROW_DOWN: `${process.env.PUBLIC_URL}/assets/images/arrow-down.svg`
+	ARROW_DOWN: `${process.env.PUBLIC_URL}/assets/images/arrow-down.svg`,
+	TOKENS_INACTIVE: `${process.env.PUBLIC_URL}/assets/images/dev-icon.svg`,
+	TOKENS_ACTIVE: `${process.env.PUBLIC_URL}/assets/images/dev-icon.svg`,
+	TOKEN_REVOKED: `${process.env.PUBLIC_URL}/assets/images/api-key-revoked.svg`,
+	TOKEN_ACTIVE: `${process.env.PUBLIC_URL}/assets/images/api-key-active.svg`,
+	TOKEN_TRASHED: `${process.env.PUBLIC_URL}/assets/images/api-key-trashed.svg`,
+	TOKEN_GENERATE: `${
+		process.env.PUBLIC_URL
+	}/assets/images/api-key-generate.svg`,
+	TOKEN_CREATED: `${process.env.PUBLIC_URL}/assets/images/api-key-created.svg`,
+	CHECK_ORDER: `${process.env.PUBLIC_URL}/assets/images/check-order.svg`
 };
 
 export const SOCIAL_ICONS = {
@@ -275,25 +280,44 @@ export const HOLLAEX_LOGO_BLACK = `${
 }/assets/hollaEx_logo-blk.svg`;
 
 export const CURRENCIES = {
-	fiat: {
-		symbol: 'fiat',
-		name: STRINGS.FIAT_NAME,
-		fullName: STRINGS.FIAT_FULLNAME,
-		shortName: STRINGS.FIAT_SHORTNAME,
-		currencySymbol: STRINGS.FIAT_CURRENCY_SYMBOL,
-		formatToCurrency: formatFiatAmount,
-		iconPath: ICONS.TOMAN_T_ICON
-	},
 	btc: {
 		symbol: 'btc',
 		name: STRINGS.BTC_NAME,
 		fullName: STRINGS.BTC_FULLNAME,
 		shortName: STRINGS.BTC_SHORTNAME,
 		currencySymbol: 'B',
-		formatToCurrency: formatBtcAmount,
-		iconPath: ICONS.BITCOIN_DARK
+		formatToCurrency: formatBtcAmount
+	},
+	eth: {
+		symbol: 'eth',
+		name: STRINGS.ETH_NAME,
+		fullName: STRINGS.ETH_FULLNAME,
+		shortName: STRINGS.ETH_SHORTNAME,
+		currencySymbol: 'E',
+		formatToCurrency: formatEthAmount
+	},
+	fiat: {
+		symbol: 'fiat',
+		name: STRINGS.FIAT_NAME,
+		fullName: STRINGS.FIAT_FULLNAME,
+		shortName: STRINGS.FIAT_SHORTNAME,
+		currencySymbol: STRINGS.FIAT_CURRENCY_SYMBOL,
+		formatToCurrency: formatFiatAmount
 	}
 };
+
+export const PAIRS = {
+	'btc-eur': {
+		pair_base: 'btc',
+		pair_2: 'fiat'
+	},
+	'eth-eur': {
+		pair_base: 'eth',
+		pair_2: 'fiat'
+	}
+};
+
+export const DEFAULT_PAIR = 'btc-eur';
 
 export const FLEX_CENTER_CLASSES = [
 	'd-flex',
@@ -308,15 +332,29 @@ export const TIMESTAMP_FORMAT_FA = STRINGS.TIMESTAMP_FORMAT.split('/')
 	.join('/');
 
 export const LIMIT_VALUES = {
-	PRICE: {
-		MIN: process.env.REACT_APP_MIN_PRICE || 500,
-		MAX: process.env.REACT_APP_MAX_PRICE || 50000,
-		STEP: process.env.REACT_APP_PRICE_STEP || 1
+	btc: {
+		PRICE: {
+			MIN: process.env.REACT_APP_BTC_MIN_PRICE || 500,
+			MAX: process.env.REACT_APP_BTC_MAX_PRICE || 50000,
+			STEP: process.env.REACT_APP_BTC_PRICE_STEP || 1
+		},
+		SIZE: {
+			MIN: 0.0001,
+			MAX: 21000000,
+			STEP: 0.0001
+		}
 	},
-	SIZE: {
-		MIN: 0.0001,
-		MAX: 21000000,
-		STEP: 0.0001
+	eth: {
+		PRICE: {
+			MIN: process.env.REACT_APP_ETH_MIN_PRICE || 100,
+			MAX: process.env.REACT_APP_ETH_MAX_PRICE || 10000,
+			STEP: process.env.REACT_APP_ETH_PRICE_STEP || 1
+		},
+		SIZE: {
+			MIN: 0.001,
+			MAX: 2000000,
+			STEP: 0.001
+		}
 	}
 };
 
@@ -328,11 +366,6 @@ export const DEPOSIT_LIMITS = {
 	}
 };
 
-console.log(process.env.REACT_APP_WITHDRAWAL_FIAT_MIN, typeof process.env.REACT_APP_WITHDRAWAL_FIAT_MIN)
-console.log(process.env.REACT_APP_WITHDRAWAL_FIAT_STEP, typeof process.env.REACT_APP_WITHDRAWAL_FIAT_STEP)
-console.log(process.env.REACT_APP_WITHDRAWAL_BTC_MIN, typeof process.env.REACT_APP_WITHDRAWAL_BTC_MIN)
-console.log(process.env.REACT_APP_WITHDRAWAL_BTC_MAX, typeof process.env.REACT_APP_WITHDRAWAL_BTC_MAX)
-console.log(process.env.REACT_APP_WITHDRAWAL_BTC_STEP, typeof process.env.REACT_APP_WITHDRAWAL_BTC_STEP)
 export const WITHDRAW_LIMITS = {
 	fiat: {
 		MIN: process.env.REACT_APP_WITHDRAWAL_FIAT_MIN || 20000,
@@ -342,17 +375,16 @@ export const WITHDRAW_LIMITS = {
 		MIN: process.env.REACT_APP_WITHDRAWAL_BTC_MIN || 0.0001,
 		MAX: process.env.REACT_APP_WITHDRAWAL_BTC_MAX || 10,
 		STEP: process.env.REACT_APP_WITHDRAWAL_BTC_STEP || 0.0001
+	},
+	eth: {
+		MIN: process.env.REACT_APP_WITHDRAWAL_ETH_MIN || 0.0001,
+		MAX: process.env.REACT_APP_WITHDRAWAL_ETH_MAX || 10,
+		STEP: process.env.REACT_APP_WITHDRAWAL_ETH_STEP || 0.0001
 	}
 };
 export const TOKEN_KEY = `${ENV}_${NETWORK}_TOKEN`;
 export const LANGUAGE_KEY = `${ENV}_${NETWORK}_LANGUAGE`;
 export const DEFAULT_LANGUAGE = 'en';
-
-export const BANK_INFORMATION = {
-	bank_name: process.env.REACT_APP_BANK_NAME || 'Hollaex',
-	account_owner: process.env.REACT_APP_ACCOUNT_OWNER || 'Exchange',
-	account_number: process.env.REACT_APP_ACCOUNT_NUMBER || '2313-0631-2313-3121'
-};
 
 export const BANK_WITHDRAWAL_BASE_FEE =
 	process.env.REACT_APP_BANK_WITHDRAWAL_BASE_FEE || 1;
@@ -371,6 +403,10 @@ export const BLOCKTRAIL_ENDPOINT = `https://www.blocktrail.com/${
 	NETWORK === 'testnet' ? 't' : ''
 }BTC/tx/`;
 
+export const ETHEREUM_ENDPOINT = `https://${
+	NETWORK === 'testnet' ? 'ropsten.etherscan.io' : 'etherscan.io'
+}/tx/`;
+
 export const BALANCE_ERROR = 'Insufficient balance to perform the order';
 
 export const CAPTCHA_SITEKEY =
@@ -380,4 +416,9 @@ export const CAPTCHA_TIMEOUT = process.env.REACT_APP_CAPTCHA_TIMEOUT ? parseInt(
 export const IS_PRO_VERSION = process.env.REACT_APP_IS_PRO_VERSION && process.env.REACT_APP_IS_PRO_VERSION === 'true';
 export const PRO_VERSION_REDIRECT = process.env.REACT_APP_PRO_VERSION_REDIRECT || '/account';
 export const DEFAULT_VERSION_REDIRECT = process.env.REACT_APP_DEFAULT_VERSION_REDIRECT || '/';
-export const PRO_URL = process.env.REACT_APP_PRO_URL || 'https://exir.io';
+export const PRO_URL = process.env.REACT_APP_PRO_URL || 'https://hollaex.com';
+
+export const MIN_LEVEL_FOR_TOKENS = parseInt(process.env.REACT_APP_MIN_LEVEL_FOR_TOKENS || 2, 10)
+
+export const THEMES = ['dark', 'white'];
+export const THEME_DEFAULT = THEMES[1];

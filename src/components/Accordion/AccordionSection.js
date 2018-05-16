@@ -10,6 +10,7 @@ const AccordionSection = ({
 	titleInformation,
 	content,
 	openSection,
+	allowClose = true,
 	isOpen = false,
 	disabled = false,
 	notification,
@@ -20,6 +21,18 @@ const AccordionSection = ({
 			openSection(index, !isOpen);
 		}
 	};
+	const headerProps = {
+		className: classnames(
+			'accordion_section_title d-flex justify-content-between',
+			{
+				pointer: !disabled && allowClose
+			}
+		)
+	};
+
+	if (allowClose) {
+		headerProps.onClick = onClick;
+	}
 
 	return (
 		<div
@@ -28,20 +41,12 @@ const AccordionSection = ({
 				disabled: disabled
 			})}
 		>
-			<div
-				onClick={onClick}
-				className={classnames(
-					'accordion_section_title d-flex justify-content-between',
-					{
-						pointer: !disabled
-					}
-				)}
-			>
+			<div {...headerProps}>
 				<span
 					className={classnames(
 						'accordion_section_content_text',
 						titleClassName,
-						{ with_arrow: !disabled }
+						{ with_arrow: !disabled && allowClose }
 					)}
 				>
 					{title}{' '}
@@ -55,8 +60,13 @@ const AccordionSection = ({
 				{notification && (
 					<ActionNotification
 						{...notification}
-						onClick={notification.allowClick ? onClick : openSection}
+						onClick={
+							notification.allowClick
+								? notification.onClick ? notification.onClick : onClick
+								: openSection
+						}
 						showPointer={notification.allowClick}
+						useSvg={true}
 					/>
 				)}
 			</div>

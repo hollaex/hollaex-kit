@@ -83,6 +83,8 @@ export const renderNeedHelpAction = (openContactForm) => (
 		status="information"
 		iconPath={ICONS.BLUE_QUESTION}
 		onClick={openContactForm}
+		className="need-help"
+		useSvg={true}
 	/>
 );
 
@@ -108,5 +110,5 @@ export const renderTitleSection = (symbol, type, icon) => {
 	const { withdrawText, depositText } = generateWalletActionsText(symbol);
 	const text = type === 'withdraw' ? withdrawText : depositText;
 
-	return <IconTitle text={text} iconPath={icon} textType="title" />;
+	return <IconTitle text={text} iconPath={icon} textType="title" useSvg={true} />;
 };

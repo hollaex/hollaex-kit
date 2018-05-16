@@ -97,3 +97,27 @@ $container--padding: 4rem;
 		margin: 1.5rem 0 0;
 	}
 }
+
+.dark-theme {
+	&.auth-wrapper {
+		background: $dark-disabled-secondary;
+		&:before {
+			background-color: transparent;
+		}
+
+		.auth-container {
+			.auth_wrapper {
+				background-color: $dark-app-background-color;
+			}
+		}
+	}
+	.exir-logo-01,
+	.account-recovery-1,
+	.account-recovery-success-1,
+	.account-recovery-success-2,
+	.password-reset-1,
+	.password-reset-2,
+	.success-black-1 {
+		fill: $dark-button-active;
+	}
+}

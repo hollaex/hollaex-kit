@@ -5,30 +5,25 @@ import { ICONS } from '../../config/constants';
 import { Accordion, Loader } from '../../components';
 import Form from './Form';
 import {
-	generateFormValues as generateMobileFormValues,
-	generateEmailFormValues
+	generateFormValues as generateMobileFormValues
 } from './MobileFormValues';
 import {
 	prepareInitialValues,
 	generateFormValues as generateDataFormValues
 } from './IdentificationFormValues';
-import { generateFormValues as generateBankFormValues } from './BankAccountFormValues';
 import { InformationSection } from './InformationSection';
+import { LevelSection } from './LevelSection';
 
 import STRINGS from '../../config/localizedStrings';
 
-const EmailForm = Form('EmailForm');
 const MobileForm = Form('MobileForm');
 const InformationForm = Form('InformationForm');
-// const BankForm = Form('BankForm');
 
 class UserProfile extends Component {
 	state = {
 		sections: [],
 		dataFormValues: {},
-		mobileFormValues: {},
-		bankFormValues: {},
-		emailFormValues: {}
+		mobileFormValues: {}
 	};
 
 	componentDidMount() {
@@ -36,7 +31,8 @@ class UserProfile extends Component {
 			this.props.activeLanguage,
 			this.props.verification_level,
 			this.props.email,
-			this.props.userData
+			this.props.userData,
+			this.props.limits
 		);
 	}
 
@@ -46,21 +42,25 @@ class UserProfile extends Component {
 				nextProps.activeLanguage,
 				nextProps.verification_level,
 				nextProps.email,
-				nextProps.userData
+				nextProps.userData,
+				nextProps.limits
 			);
 			this.calculateSections(
 				nextProps.verification_level,
 				nextProps.email,
-				nextProps.userData
+				nextProps.userData,
+				nextProps.limits
 			);
 		} else if (
 			nextProps.verification_level !== this.props.verification_level ||
-			nextProps.userData.timestamp !== this.props.userData.timestamp
+			nextProps.userData.timestamp !== this.props.userData.timestamp ||
+			nextProps.limits.fetched !== this.props.limits.fetched
 		) {
 			this.calculateSections(
 				nextProps.verification_level,
 				nextProps.email,
-				nextProps.userData
+				nextProps.userData,
+				nextProps.limits
 			);
 		}
 	}
@@ -84,18 +84,16 @@ class UserProfile extends Component {
 		};
 	};
 
-	calculateFormValues = (language, verification_level, email, userData) => {
+	calculateFormValues = (language, verification_level, email, userData, limits) => {
 		const dataFormValues = generateDataFormValues(
 			language,
 			userData.nationality
 		);
-		const bankFormValues = generateBankFormValues();
 		const mobileFormValues = generateMobileFormValues();
-		const emailFormValues = generateEmailFormValues();
 		this.setState(
-			{ dataFormValues, mobileFormValues, bankFormValues, emailFormValues },
+			{ dataFormValues, mobileFormValues },
 			() => {
-				this.calculateSections(verification_level, email, userData);
+				this.calculateSections(verification_level, email, userData, limits);
 			}
 		);
 	};
@@ -107,17 +105,14 @@ class UserProfile extends Component {
 		/>
 	);
 
-	calculateSections = (verification_level, email, userData) => {
+	calculateSections = (verification_level, email, userData, limits) => {
 		const {
 			dataFormValues,
-			mobileFormValues,
-			// bankFormValues,
-			emailFormValues
+			mobileFormValues
 		} = this.state;
 		const {
 			phone_number,
 			full_name,
-			// bank_account = {},
 			id_data = {}
 		} = userData;
 
@@ -126,8 +121,11 @@ class UserProfile extends Component {
 				title: STRINGS.USER_VERIFICATION.TITLE_EMAIL,
 				subtitle: email,
 				content: (
-					<EmailForm initialValues={{ email }} formValues={emailFormValues} />
+					<LevelSection limits={limits} verification_level={verification_level}>
+						<InformationSection onChangeValue={this.onOpenContactFormSelected('category', 'level')} onChangeText={STRINGS.UPGRADE_LEVEL} />
+					</LevelSection>
 				),
+				isOpen: true,
 				notification: this.generateNotification(
 					true,
 					true,
@@ -177,34 +175,6 @@ class UserProfile extends Component {
 					STRINGS.USER_VERIFICATION.VERIFY_USER_DOCUMENTATION
 				)
 			},
-			// {
-			// 	title: STRINGS.USER_VERIFICATION.TITLE_BANK_ACCOUNT,
-			// 	subtitle: bank_account.card_number,
-			// 	content: bank_account.provided ? (
-			// 		<BankForm initialValues={bank_account} formValues={bankFormValues}>
-			// 			<InformationSection
-			// 				text={
-			// 					!bank_account.verified && bank_account.provided
-			// 						? STRINGS.USER_VERIFICATION.PENDING_VERIFICATION_BANK
-			// 						: ''
-			// 				}
-			// 				onChangeValue={this.onOpenContactForm}
-			// 			/>
-			// 		</BankForm>
-			// 	) : (
-			// 		<div>
-			// 			<InformationSection
-			// 				text=""
-			// 				onChangeValue={this.onOpenContactForm}
-			// 			/>
-			// 		</div>
-			// 	),
-			// 	notification: this.generateNotification(
-			// 		bank_account.verified,
-			// 		bank_account.provided,
-			// 		STRINGS.USER_VERIFICATION.VERIFY_BANK_ACCOUNT
-			// 	)
-			// },
 			{
 				title: STRINGS.USER_VERIFICATION.TITLE_ID_DOCUMENTS,
 				content: (
@@ -247,6 +217,12 @@ class UserProfile extends Component {
 		}
 	};
 
+	onOpenContactFormSelected = (key = '', value = '') => () => {
+		if (this.props.openContactForm) {
+			this.props.openContactForm({ [key]: value });
+		}
+	};
+
 	render() {
 		if (!this.props.id) {
 			return <Loader />;
@@ -271,6 +247,7 @@ const mapStateToProps = (state) => ({
 	verification_level: state.user.verification_level,
 	userData: state.user.userData,
 	email: state.user.email,
+	limits: state.user.limits,
 	activeLanguage: state.app.language
 });
 

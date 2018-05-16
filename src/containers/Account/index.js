@@ -6,6 +6,28 @@ import { ICONS } from '../../config/constants';
 import { UserProfile, UserSecurity, UserSettings } from '../';
 import STRINGS from '../../config/localizedStrings';
 import { openContactForm } from '../../actions/appActions';
+import { requestLimits } from '../../actions/userAction';
+
+const getInitialTab = ({ name, path }) => {
+	let activeTab = -1;
+	let activeDevelopers = false;
+	if (path === 'account') {
+		activeTab = 0;
+	} else if (path === 'security') {
+		activeTab = 1;
+	} else if (path === 'developers') {
+		activeTab = 1;
+		activeDevelopers = true;
+	} else if (path === 'settings') {
+		activeTab = 2;
+		activeDevelopers = true;
+	}
+	return {
+		activeTab,
+		activeDevelopers
+	};
+};
+
 class Account extends Component {
 	state = {
 		activeTab: -1,
@@ -16,6 +38,9 @@ class Account extends Component {
 		if (this.props.id) {
 			this.updateTabs(this.props);
 		}
+		if (!this.props.limits.fetched && !this.props.limits.fetching) {
+			this.props.requestLimits();
+		}
 	}
 
 	componentWillReceiveProps(nextProps) {
@@ -25,7 +50,9 @@ class Account extends Component {
 			nextProps.otp_enabled !== this.props.otp_enabled ||
 			nextProps.activeLanguage !== this.props.activeLanguage
 		) {
-			this.updateTabs(nextProps);
+			this.updateTabs(nextProps, false);
+		} else if (nextProps.route.path !== this.props.route.path) {
+			this.updateTabs(nextProps, true);
 		}
 	}
 
@@ -40,8 +67,19 @@ class Account extends Component {
 		return true;
 	};
 
-	updateTabs = ({ verification_level, otp_enabled, bank_account, id_data }) => {
-		const activeTab = this.state.activeTab > -1 ? this.state.activeTab : 0;
+	updateTabs = (
+		{ verification_level, otp_enabled, bank_account, id_data, route },
+		updateActiveTab = false
+	) => {
+		let activeTab = this.state.activeTab > -1 ? this.state.activeTab : 0;
+		let activeDevelopers = false;
+
+		if (updateActiveTab || this.state.activeTab === -1) {
+			const initialValues = getInitialTab(route);
+			activeTab = initialValues.activeTab;
+			activeDevelopers = initialValues.activeDevelopers;
+		}
+
 		const tabs = [
 			{
 				title: (
@@ -74,7 +112,7 @@ class Account extends Component {
 						notifications={!otp_enabled ? '!' : ''}
 					/>
 				),
-				content: <UserSecurity />
+				content: <UserSecurity openApiKey={activeDevelopers} />
 			},
 			{
 				title: (
@@ -96,20 +134,19 @@ class Account extends Component {
 
 	renderContent = (tabs, activeTab) => tabs[activeTab].content;
 
-	openContactForm = () => {
+	openContactForm = (data) => {
 		// console.log('here');
-		this.props.openContactForm();
+		this.props.openContactForm(data);
 	};
 	goToVerification = () => this.props.router.push('/verification');
 
 	render() {
 		const { id } = this.props;
+		const { activeTab, tabs } = this.state;
 
-		if (!id) {
+		if (!id || activeTab === -1) {
 			return <div>Loading</div>;
 		}
-
-		const { activeTab, tabs } = this.state;
 
 		return (
 			<div className="presentation_container apply_rtl">
@@ -118,9 +155,8 @@ class Account extends Component {
 					setActiveTab={this.setActiveTab}
 					tabs={tabs}
 					title={STRINGS.ACCOUNTS.TITLE}
-					titleIcon={`${
-						process.env.PUBLIC_URL
-					}/assets/acounts/account-icons-01.png`}
+					titleIcon={ICONS.ACCOUNT_LINE}
+					className="account-tab"
 				/>
 				<div className="inner_container">
 					{activeTab > -1 && this.renderContent(tabs, activeTab)}
@@ -132,6 +168,7 @@ class Account extends Component {
 
 const mapStateToProps = (state) => ({
 	verification_level: state.user.verification_level,
+	limits: state.user.limits,
 	otp_enabled: state.user.otp_enabled || false,
 	id: state.user.id,
 	bank_account: state.user.userData.bank_account,
@@ -140,6 +177,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
+	requestLimits: bindActionCreators(requestLimits, dispatch),
 	openContactForm: bindActionCreators(openContactForm, dispatch)
 });
 

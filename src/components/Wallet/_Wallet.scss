@@ -3,7 +3,6 @@ $accordion_arrow-size: 0.3rem;
 $sections-font--color: $colors-deactivate-color2;
 
 .wallet_section-wrapper {
-	// border-top: 1px solid $colors-main-black;
 	font-size: $font-size-subtext;
 	padding: 0.25rem 0;
 
@@ -95,6 +94,59 @@ $sections-font--color: $colors-deactivate-color2;
 		color: $colors-main-black;
 		&:after {
 			border-right-color: $colors-main-black;
+		}
+	}
+}
+
+.dark-theme {
+	.wallet-wrapper,
+	.wallet_section-title,
+	.wallet_section-title-amount,
+	.wallet_section-total_asset {
+		color: $dark-font-sub-text-color !important;
+	}
+
+	.direction_ltr {
+		.sidebar_section-container
+			.wallet-wrapper
+			.accordion_section_title
+			.wallet_section-title {
+			&:after {
+				@include css-triangle($dark-font-sub-text-color, 'left', $accordion_arrow-size);
+			}
+		}
+
+		.sidebar_section-container
+			.wallet-wrapper
+			.accordion_section--open
+			.accordion_section_title
+			.wallet_section-title {
+			color: $dark-font-sub-text-color;
+			&:after {
+				border-right-color: $dark-border-main;
+			}
+		}
+	}
+
+	.direction_rtl {
+		.sidebar_section-container
+			.wallet-wrapper
+			.accordion_section_title
+			.wallet_section-title {
+			&:after {
+				@include css-triangle($dark-font-sub-text-color, 'left', $accordion_arrow-size);
+			}
+		}
+
+		.sidebar_section-container
+			.wallet-wrapper
+			.accordion_section--open
+			.accordion_section_title
+			.wallet_section-title {
+			color: $dark-font-sub-text-color;
+			&:after {
+				border-right-color: $dark-border-main;
+			}
 		}
 	}
 }

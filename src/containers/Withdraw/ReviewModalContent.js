@@ -1,5 +1,6 @@
 import React from 'react';
 import math from 'mathjs';
+import ReactSVG from 'react-svg';
 import { Button } from '../../components';
 import { fiatSymbol, fiatFormatToCurrency } from '../../utils/currency';
 import { CURRENCIES, ICONS } from '../../config/constants';
@@ -25,22 +26,22 @@ const ButtonSection = ({ onClickAccept, onClickCancel }) => {
 };
 
 const ReviewModalContent = ({
-	symbol,
+	currency,
 	data,
 	price,
 	onClickAccept,
 	onClickCancel
 }) => {
-	const { formatToCurrency } = CURRENCIES[symbol];
-	const shortName = STRINGS[`${symbol.toUpperCase()}_SHORTNAME`];
-	const name = STRINGS[`${symbol.toUpperCase()}_NAME`];
+	const { formatToCurrency } = CURRENCIES[currency];
+	const shortName = STRINGS[`${currency.toUpperCase()}_SHORTNAME`];
+	const name = STRINGS[`${currency.toUpperCase()}_NAME`];
 
 	const totalTransaction = math.number(
 		math.add(math.fraction(data.amount), math.fraction(data.fee || 0))
 	);
 
 	const cryptoAmountText = STRINGS.formatString(
-		STRINGS.BTC_PRICE_FORMAT,
+		STRINGS[`${currency.toUpperCase()}_PRICE_FORMAT`],
 		formatToCurrency(totalTransaction),
 		shortName
 	);
@@ -49,12 +50,11 @@ const ReviewModalContent = ({
 
 	return (
 		<div className="d-flex flex-column review-wrapper">
-			<img
-				src={ICONS.CHECK_SENDING_BITCOIN}
-				alt="review"
-				className="review-icon"
+			<ReactSVG
+				path={ICONS.CHECK_SENDING_BITCOIN}
+				wrapperClassName="review-icon"
 			/>
-			{symbol === fiatSymbol ? (
+			{currency === fiatSymbol ? (
 				<div className="d-flex flex-column align-items-center review-info_container">
 					<div className="review-info_message">
 						{STRINGS.WITHDRAW_PAGE.MESSAGE_ABOUT_WITHDRAW}

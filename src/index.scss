@@ -24,7 +24,6 @@ body {
 }
 
 .language_rtl {
-	font-family: $fa--font-family !important;
 }
 
 .direction_rtl {
@@ -87,7 +86,7 @@ input[type='number']::-webkit-outer-spin-button {
 	margin: 0;
 }
 
-::-webkit-scrollbar {
+*:not(.show-scroll)::-webkit-scrollbar {
 	display: none;
 }
 

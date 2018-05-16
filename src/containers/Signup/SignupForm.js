@@ -22,7 +22,7 @@ const BlueLink = ({ text, ...rest }) => (
 	</a>
 );
 
-export const generateFormFields = (strings) => ({
+export const generateFormFields = (strings, theme) => ({
 	email: {
 		type: 'email',
 		validate: [
@@ -55,17 +55,18 @@ export const generateFormFields = (strings) => ({
 		label: strings.formatString(
 			strings.SIGN_UP.TERMS.text,
 			<BlueLink
-				href="https://www.exir.io/terms_privacy/"
+				href="https://www.hollaex.com/terms_privacy/"
 				text={strings.SIGN_UP.TERMS.terms}
 			/>,
 			<BlueLink
-				href="https://www.exir.io/terms_privacy/"
+				href="https://www.hollaex.com/terms_privacy/"
 				text={strings.SIGN_UP.TERMS.policy}
 			/>
 		)
 	},
 	captcha: {
 		type: 'captcha',
+		theme,
 		validate: [required]
 	}
 });

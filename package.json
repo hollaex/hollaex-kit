@@ -1,6 +1,6 @@
 {
 	"name": "hollaex",
-	"version": "1.2.1",
+	"version": "1.5.0",
 	"private": true,
 	"dependencies": {
 		"@material/button": "^0.7.0",
@@ -23,6 +23,7 @@
 		"numbro": "^1.11.0",
 		"qrcode.react": "^0.7.1",
 		"query-string": "^5.0.0",
+		"rc-tooltip": "^3.7.0",
 		"react": "^15.4.0",
 		"react-addons-shallow-compare": "^15.6.2",
 		"react-advance-jalaali-datepicker": "^0.1.0",
@@ -43,7 +44,7 @@
 		"react-router": "^3.0.5",
 		"react-router-redux": "^4.0.8",
 		"react-snapshot": "^1.1.0",
-		"react-stockcharts": "^0.7.0-beta.19",
+		"react-stockcharts": "^0.7.6",
 		"react-svg": "^2.2.5",
 		"redux": "^3.7.0",
 		"redux-form": "^7.0.3",
@@ -53,7 +54,7 @@
 		"redux-thunk": "^2.2.0",
 		"socket.io-client": "^2.0.3",
 		"validator": "^8.2.0",
-		"wallet-address-validator": "^0.1.1"
+		"wallet-address-validator": "^0.1.7"
 	},
 	"devDependencies": {
 		"prettier": "1.10.2",

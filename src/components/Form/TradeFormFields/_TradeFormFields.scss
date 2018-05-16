@@ -67,3 +67,19 @@ $padding: 0.25rem;
 		left: 0;
 	}
 }
+
+.dark-theme {
+	.trade_input-wrapper {
+		.trade_input-input-wrapper {
+			> input {
+				background: $dark-disabled-main;
+				border-color: $dark-disabled-main;
+				color: $dark-font-main-text-color;
+			}
+		}
+
+		.trade_input-input-currency {
+			color: $dark-font-sub-text-color;
+		}
+	}
+}

@@ -3,21 +3,18 @@ import classnames from 'classnames';
 import math from 'mathjs';
 import { isNumeric, isFloat } from 'validator';
 
-import { DECIMALS } from './constants';
 import { CurrencyBall } from '../../components';
 
 import { minValue, maxValue } from '../../components/Form/validations';
 import { FieldError } from '../../components/Form/FormFields/FieldWrapper';
-import { FLEX_CENTER_CLASSES, LIMIT_VALUES } from '../../config/constants';
+import { FLEX_CENTER_CLASSES, LIMIT_VALUES, PAIRS } from '../../config/constants';
 
 import STRINGS from '../../config/localizedStrings';
 
 import { translateError } from './utils';
 
-const MIN_VALUE = LIMIT_VALUES.SIZE.MIN;
-const MAX_VALUE = LIMIT_VALUES.SIZE.MAX;
-const STEP = LIMIT_VALUES.SIZE.STEP;
 const PLACEHOLDER = '0.00';
+const DECIMALS = 4;
 
 const generateStyle = (value) => {
 	const length = `${value}`.length;
@@ -27,12 +24,22 @@ const generateStyle = (value) => {
 
 class InputBlock extends Component {
 	state = {
-		value: ''
+		value: '',
+		symbol: 'btc'
 	};
 
 	componentDidMount() {
+		const { pair_base } = PAIRS[this.props.symbol];
+
 		if (this.props.initialValue) {
-			this.setState({ value: this.props.initialValue });
+			this.setState({ value: this.props.initialValue, symbol: pair_base });
+		}
+	}
+
+	componentWillReceiveProps(nextProps) {
+		if (nextProps.symbol !== this.props.symbol) {
+			const { pair_base } = PAIRS[nextProps.symbol];
+			this.setState({ symbol: pair_base });
 		}
 	}
 
@@ -57,10 +64,10 @@ class InputBlock extends Component {
 
 	onLostFocus = () => {
 		const { value } = this.state;
-		if (!value || value < MIN_VALUE) {
-			this.setState({ value: MIN_VALUE });
-		} else if (value > MAX_VALUE) {
-			this.setState({ value: MAX_VALUE });
+		if (!value || value < LIMIT_VALUES[this.state.symbol].SIZE.MIN) {
+			this.setState({ value: LIMIT_VALUES[this.state.symbol].SIZE.MIN });
+		} else if (value > LIMIT_VALUES[this.state.symbol].SIZE.MAX) {
+			this.setState({ value: LIMIT_VALUES[this.state.symbol].SIZE.MAX });
 		} else {
 			this.setState({ value: math.round(value, DECIMALS) });
 		}
@@ -71,15 +78,15 @@ class InputBlock extends Component {
 		if (!value) {
 			error = '';
 		} else {
-			error = minValue(MIN_VALUE)(value) || maxValue(MAX_VALUE)(value);
+			error = minValue(LIMIT_VALUES[this.state.symbol].SIZE.MIN)(value) || maxValue(LIMIT_VALUES[this.state.symbol].SIZE.MAX)(value);
 		}
 		return error;
 	};
 
 	render() {
-		const { text, symbol, className, error } = this.props;
+		const { text, className, error } = this.props;
+		const { value, errorValue, symbol } = this.state;
 		const shortName = STRINGS[`${symbol.toUpperCase()}_SHORTNAME`];
-		const { value, errorValue } = this.state;
 		const errorMessage = this.renderErrorMessage(errorValue) || error;
 		return (
 			<div
@@ -121,10 +128,10 @@ class InputBlock extends Component {
 							className="input_block-inputbox"
 							onChange={this.onChangeEvent}
 							placeholder={PLACEHOLDER}
-							step={STEP}
+							step={LIMIT_VALUES[this.state.symbol].SIZE.STEP}
 							value={value}
-							min={MIN_VALUE}
-							max={MAX_VALUE}
+							min={LIMIT_VALUES[this.state.symbol].SIZE.MIN}
+							max={LIMIT_VALUES[this.state.symbol].SIZE.MAX}
 							style={generateStyle(value || PLACEHOLDER)}
 							onBlur={this.onLostFocus}
 						/>

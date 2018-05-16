@@ -37,16 +37,21 @@ const INITIAL_STATE = {
 	fetching: false,
 	trades: [],
 	error: null,
-	symbol: 'btc',
+	pair: '',
+	symbol: '',
 	price: 0,
 	prices: {
-		fiat: 1
+		fiat: 1,
+		eth: 1,
+		btc: 1
 	},
 	asks: [],
 	bids: [],
 	orderbookReady: false,
 	quickTrade: INITIAL_QUICK_TRADE,
-	quoteData: INITIAL_QUOTE
+	quoteData: INITIAL_QUOTE,
+	pairsOrderbooks: {},
+	pairsTrades: {}
 };
 
 export default function reducer(state = INITIAL_STATE, { payload, type }) {
@@ -55,6 +60,12 @@ export default function reducer(state = INITIAL_STATE, { payload, type }) {
 			return {
 				...state,
 				symbol: payload.symbol
+			};
+		case 'CHANGE_PAIR':
+			return {
+				...state,
+				symbol: payload.pair,
+				pair: payload.pair
 			};
 		// getOrderbook
 		case 'GET_ORDERBOOK_PENDING':
@@ -232,6 +243,63 @@ export default function reducer(state = INITIAL_STATE, { payload, type }) {
 				}
 			};
 
+		case 'SET_ORDERBOOKS_DATA': {
+			const { action, ...rest } = payload;
+			return {
+				...state,
+				pairsOrderbooks: {
+					...state.pairsOrderbooks,
+					...rest
+				}
+			};
+		}
+
+		case 'SET_TRADES_DATA': {
+			const { action, symbol, ...rest } = payload;
+			const { prices } = state;
+			let pairsTrades = {};
+			if (action === 'partial') {
+				pairsTrades = {
+					...state.pairsTrades,
+					...rest
+				};
+				Object.keys(rest).forEach((key) => {
+					if (rest[key].length > 0) {
+						let keyPrice = '';
+						if (key === 'btc-eur') {
+							keyPrice = 'btc';
+						} else if (key === 'eth-eur') {
+							keyPrice = 'eth';
+						}
+						prices[keyPrice] = rest[key][0].price;
+					}
+				});
+			} else if (action === 'update') {
+				pairsTrades = {
+					...state.pairsTrades
+				};
+				pairsTrades[symbol] = rest[symbol].concat(
+					pairsTrades[symbol]
+				);
+
+				let keyPrice = '';
+				if (symbol === 'btc-eur') {
+					keyPrice = 'btc';
+				} else if (symbol === 'eth-eur') {
+					keyPrice = 'eth';
+				}
+
+				if (keyPrice) {
+					prices[keyPrice] = rest[symbol][0].price;
+				}
+			}
+
+			return {
+				...state,
+				pairsTrades,
+				prices
+			};
+		}
 		case 'LOGOUT':
 			return INITIAL_STATE;
 		default:

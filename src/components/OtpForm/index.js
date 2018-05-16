@@ -52,10 +52,11 @@ class Form extends Component {
 				<IconTitle
 					text={STRINGS.OTP_FORM.OTP_TITLE}
 					iconPath={ICONS.SQUARE_DOTS}
+					useSvg={true}
 				/>
 				<div className="otp_form-title-wrapper">
 					<span className="otp_form-title-text">
-						Enter your authentication code to continue
+						{STRINGS.OTP_FORM.OTP_FORM_TITLE}
 					</span>
 					{onClickHelp && (
 						<ActionNotification
@@ -63,6 +64,7 @@ class Form extends Component {
 							onClick={onClickHelp}
 							iconPath={ICONS.BLUE_QUESTION}
 							status="information"
+							useSvg={true}
 						/>
 					)}
 				</div>

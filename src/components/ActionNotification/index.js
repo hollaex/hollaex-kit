@@ -1,20 +1,24 @@
 import React from 'react';
 import classnames from 'classnames';
+import ReactSVG from 'react-svg';
 
 const getClassNames = (status) => {
 	switch (status) {
 		case 'success':
-			return 'success';
+			return 'notification-success';
 		case 'warning':
-			return 'warning';
+			return 'notification-warning';
 		case 'information':
-			return 'info';
+			return 'notification-info';
+		case 'disabled':
+			return 'notification-disabled';
 		default:
 			return '';
 	}
 };
 
 const ActionNotification = ({
+	useSvg,
 	text,
 	status,
 	onClick,
@@ -48,21 +52,27 @@ const ActionNotification = ({
 			{text}
 		</div>
 		{iconPath && (
-			<img
-				src={iconPath}
-				alt={text}
-				className={classnames('action_notification-image', {
-					rotate_ltr: rotateIfLtr,
-					rotate_rtl: rotateIfRtl,
-					rotate,
-					reverse: reverseImage
-				})}
-			/>
+			useSvg ? (
+				<ReactSVG path={iconPath} wrapperClassName="action_notification-svg" />
+			)
+			: (
+				<img
+					src={iconPath}
+					alt={text}
+					className={classnames('action_notification-image', {
+						rotate_ltr: rotateIfLtr,
+						rotate_rtl: rotateIfRtl,
+						rotate,
+						reverse: reverseImage
+					})}
+				/>
+			)
 		)}
 	</div>
 );
 
 ActionNotification.defaultProps = {
+	useSvg: false,
 	text: '',
 	status: 'information',
 	iconPath: '',

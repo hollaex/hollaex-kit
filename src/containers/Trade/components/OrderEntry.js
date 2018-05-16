@@ -42,7 +42,9 @@ class OrderEntry extends Component {
 	};
 
 	componentDidMount() {
-		this.generateFormValues();
+		if (this.props.pair_base) {
+			this.generateFormValues(this.props.pair_base);
+		}
 	}
 
 	componentWillReceiveProps(nextProps) {
@@ -56,7 +58,7 @@ class OrderEntry extends Component {
 			this.calculateOrderPrice(nextProps);
 		}
 		if (nextProps.activeLanguage !== this.props.activeLanguage) {
-			this.generateFormValues();
+			this.generateFormValues(nextProps.pair_base);
 		}
 		if (nextProps.marketPrice && !this.state.initialValues.price) {
 			this.setState({
@@ -69,10 +71,10 @@ class OrderEntry extends Component {
 	}
 
 	setMax = () => {
-		const { side, balance, symbol } = this.props;
+		const { side, balance, pair_base } = this.props;
 		const size = parseFloat(this.props.size || 0);
 		const price = parseFloat(this.props.price || 0);
-		let maxSize = balance[`${symbol}_available`];
+		let maxSize = balance[`${pair_base}_available`];
 		if (side === 'buy') {
 			maxSize = mathjs.divide(balance[`fiat_available`], price) ;
 		}
@@ -87,7 +89,7 @@ class OrderEntry extends Component {
 		const price = parseFloat(props.price || 0);
 
 		let orderPrice = 0;
-		if (size > 0 && !(type === 'limit' && price === 0)) {
+		if (size >= LIMIT_VALUES[this.props.pair_base].SIZE.MIN && !(type === 'limit' && price === 0)) {
 			if (props.side === 'sell') {
 				const { bids } = props;
 				orderPrice = checkMarketPrice(size, bids, type, side, price);
@@ -104,7 +106,7 @@ class OrderEntry extends Component {
 			.done();
 		let outsideFormError = '';
 
-		if (type === 'market' && orderPrice === 0) {
+		if (type === 'market' && orderPrice === 0 && size >= LIMIT_VALUES[this.props.pair_base].SIZE.MIN) {
 			outsideFormError = STRINGS.QUICK_TRADE_ORDER_NOT_FILLED;
 		} else if (type === 'market' && side === 'buy') {
 			const values = {
@@ -113,10 +115,10 @@ class OrderEntry extends Component {
 				type,
 				price
 			};
-			const { symbol, balance } = props;
+			const { pair_base, balance } = props;
 
 			outsideFormError = evaluateOrder(
-				symbol,
+				pair_base,
 				balance,
 				values,
 				type,
@@ -130,16 +132,15 @@ class OrderEntry extends Component {
 
 	evaluateOrder = (values) => {
 		const { side, type } = values;
-		const { symbol, balance } = this.props;
-
-		return evaluateOrder(symbol, balance, values, type, side);
+		const { pair_base, balance } = this.props;
+		return evaluateOrder(pair_base, balance, values, type, side);
 	};
 
 	onSubmit = (values) => {
 		const order = {
 			...values,
 			size: formatNumber(values.size, 4),
-			symbol: this.props.symbol
+			symbol: this.props.pair
 		};
 
 		if (values.type === 'market') {
@@ -160,7 +161,7 @@ class OrderEntry extends Component {
 			side,
 			price,
 			size,
-			symbol,
+			pair_base,
 			openCheckOrder,
 			submit
 		} = this.props;
@@ -169,7 +170,7 @@ class OrderEntry extends Component {
 			side,
 			price,
 			size: formatNumber(size, 4),
-			symbol,
+			symbol: pair_base,
 			orderPrice: this.state.orderPrice,
 			orderFees: this.state.orderFees
 		};
@@ -189,7 +190,7 @@ class OrderEntry extends Component {
 		}
 	};
 
-	generateFormValues = () => {
+	generateFormValues = (pair = '') => {
 		const formValues = {
 			type: {
 				name: 'type',
@@ -219,15 +220,15 @@ class OrderEntry extends Component {
 				type: 'number',
 				placeholder: '0.00',
 				normalize: normalizeFloat,
-				step: LIMIT_VALUES.SIZE.STEP,
-				min: LIMIT_VALUES.SIZE.MIN,
-				max: LIMIT_VALUES.SIZE.MAX,
+				step: LIMIT_VALUES[pair].SIZE.STEP,
+				min: LIMIT_VALUES[pair].SIZE.MIN,
+				max: LIMIT_VALUES[pair].SIZE.MAX,
 				validate: [
 					required,
-					minValue(LIMIT_VALUES.SIZE.MIN),
-					maxValue(LIMIT_VALUES.SIZE.MAX)
+					minValue(LIMIT_VALUES[pair].SIZE.MIN),
+					maxValue(LIMIT_VALUES[pair].SIZE.MAX)
 				],
-				currency: STRINGS.BTC_SHORTNAME
+				currency: STRINGS[`${pair.toUpperCase()}_SHORTNAME`]
 			},
 			price: {
 				name: 'price',
@@ -235,16 +236,15 @@ class OrderEntry extends Component {
 				type: 'number',
 				placeholder: '0',
 				normalize: normalizeInt,
-				step: LIMIT_VALUES.PRICE.STEP,
-				min: LIMIT_VALUES.PRICE.MIN,
-				max: LIMIT_VALUES.PRICE.MAX,
+				step: LIMIT_VALUES[pair].PRICE.STEP,
+				min: LIMIT_VALUES[pair].PRICE.MIN,
+				max: LIMIT_VALUES[pair].PRICE.MAX,
 				validate: [
 					required,
-					minValue(LIMIT_VALUES.PRICE.MIN),
-					maxValue(LIMIT_VALUES.PRICE.MAX),
-					step(LIMIT_VALUES.PRICE.STEP)
+					minValue(LIMIT_VALUES[pair].PRICE.MIN),
+					maxValue(LIMIT_VALUES[pair].PRICE.MAX),
+					step(LIMIT_VALUES[pair].PRICE.STEP)
 				],
-				// normalize: normalizeInt,
 				currency: STRINGS.FIAT_SHORTNAME
 			}
 		};
@@ -253,7 +253,7 @@ class OrderEntry extends Component {
 	};
 
 	render() {
-		const { balance, symbol, type, side } = this.props;
+		const { balance, type, side, pair_base } = this.props;
 		const {
 			initialValues,
 			formValues,
@@ -261,9 +261,10 @@ class OrderEntry extends Component {
 			orderFees,
 			outsideFormError
 		} = this.state;
-		const currencyName = STRINGS[`${symbol.toUpperCase()}_NAME`];
 
-		if (!balance.hasOwnProperty(`${symbol}_balance`)) {
+		const currencyName = STRINGS[`${pair_base.toUpperCase()}_NAME`];
+
+		if (!balance.hasOwnProperty(`${pair_base}_balance`)) {
 			return <Loader relative={true} background={false} />;
 		}
 
@@ -302,10 +303,13 @@ const selector = formValueSelector(FORM_NAME);
 
 const mapStateToProps = (state) => {
 	const formValues = selector(state, 'price', 'size', 'side', 'type');
+	const { pair_base } = state.app.pairs[state.app.pair];
 	return {
 		...formValues,
 		activeLanguage: state.app.language,
-		fees: state.user.fees
+		fees: state.user.fees,
+		pair: state.app.pair,
+		pair_base
 	};
 };
 

@@ -1,15 +1,18 @@
 import React from 'react';
 import classnames from 'classnames';
+import ReactSVG from 'react-svg';
 
 export const NotificationWraper = ({
 	icon,
+	iconType,
 	title,
 	children,
-	className = ''
+	className = '',
+	titleClassName = ''
 }) => (
 	<div className={classnames('notification-content-wrapper', className)}>
-		{icon && <img src={icon} alt="" className="notification-content-icon" />}
-		<div className="font-weight-bold notification-content-title">{title}</div>
+		{icon && <ReactSVG path={icon} wrapperClassName="notification-content-icon" />}
+		<div className={classnames('font-weight-bold notification-content-title', titleClassName)}>{title}</div>
 		{children}
 	</div>
 );

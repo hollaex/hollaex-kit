@@ -40,7 +40,7 @@ class CaptchaField extends Component {
 	};
 
 	render() {
-		const { language } = this.props;
+		const { language, theme = 'light' } = this.props;
 		const { ready, active } = this.state;
 		return (
 			active && (
@@ -54,6 +54,7 @@ class CaptchaField extends Component {
 						expiredCallback={this.onExpiredCallback}
 						onloadCallback={this.onLoadCallback}
 						hl={language || DEFAULT_LANGUAGE}
+						theme={theme}
 					/>
 				</div>
 			)

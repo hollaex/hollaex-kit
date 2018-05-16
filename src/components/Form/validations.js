@@ -6,6 +6,7 @@ import { fiatSymbol, roundNumber } from '../../utils/currency';
 import STRINGS from '../../config/localizedStrings';
 
 const passwordRegEx = /^(?=.*[a-zA-Z])(?=.*\d).{8,}$/;
+const usernameRegEx = /^[a-z0-9_]{3,15}$/;
 
 export const required = (value) =>
 	!value ? STRINGS.VALIDATIONS.REQUIRED : undefined;
@@ -26,6 +27,11 @@ export const email = (value = '') =>
 export const password = (value = '') =>
 	!passwordRegEx.test(value)
 		? STRINGS.VALIDATIONS.INVALID_PASSWORD_2
+		: undefined;
+
+export const username = (value = '') =>
+	!usernameRegEx.test(value)
+		? STRINGS.INVALID_USERNAME
 		: undefined;
 
 export const validAddress = (symbol = '', message) => {
@@ -106,7 +112,7 @@ export const evaluateOrder = (
 		}
 	}
 
-	if ((available === 0 && orderPrice > 0) || available < orderPrice) {
+	if (available < orderPrice) {
 		return STRINGS.VALIDATIONS.INSUFFICIENT_BALANCE;
 	}
 	return '';
@@ -147,6 +153,8 @@ export const checkMarketPrice = (
 
 	if (type === 'limit' && math.larger(remaining, 0)) {
 		accumulated = math.add(accumulated, math.multiply(remaining, orderPrice));
+	} if (type === 'market' && math.larger(remaining, 0)) {
+		return -roundNumber(accumulated)
 	}
 	return roundNumber(accumulated);
 };
@@ -164,9 +172,10 @@ export const isBefore = (
 	};
 };
 
-export const normalizeInt = (value = 0) => validator.toInt(value) || 0;
-export const normalizeFloat = (value = 0) => validator.toFloat(value) || 0;
+export const normalizeInt = (value) => validator.toInt(value) || '';
+export const normalizeFloat = (value) => validator.toFloat(value) || '';
 export const normalizeBTC = (value = 0) => (value ? roundNumber(value, 8) : '');
+export const normalizeBTCFee = (value = 0) => (value ? roundNumber(value, 4) : '');
 
 export const validateOtp = (message = STRINGS.OTP_FORM.ERROR_INVALID) => (
 	value = ''
@@ -179,3 +188,5 @@ export const validateOtp = (message = STRINGS.OTP_FORM.ERROR_INVALID) => (
 };
 
 export const normalizeEmail = (value = '') => value.toLowerCase();
+
+export const tokenKeyValidation = required;

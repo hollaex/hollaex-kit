@@ -3,58 +3,84 @@ import classnames from 'classnames';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-import {
-	ICONS,
-	CURRENCIES,
-	DEPOSIT_LIMITS,
-	BALANCE_ERROR
-} from '../../config/constants';
-import { fiatSymbol } from '../../utils/currency';
+import { ICONS, BALANCE_ERROR } from '../../config/constants';
+import { getCurrencyFromName } from '../../utils/currency';
 
 import { openContactForm } from '../../actions/appActions';
 
 import { renderInformation, renderTitleSection } from '../Wallet/components';
 
-import {
-	generateFiatInformation,
-	renderContent,
-	renderExtraInformation
-} from './utils';
-
-import BankDeposit from './BankDeposit';
+import { generateFiatInformation, renderContent } from './utils';
 
 class Deposit extends Component {
 	state = {
-		depositPrice: 0
+		depositPrice: 0,
+		currency: '',
+		checked: false
 	};
 
 	componentWillMount() {
 		if (this.props.quoteData.error === BALANCE_ERROR) {
 			this.setState({ depositPrice: this.props.quoteData.data.price });
 		}
+		if (this.props.verification_level) {
+			this.validateRoute(
+				this.props.routeParams.currency,
+				this.props.crypto_wallet
+			);
+		}
+		this.setCurrency(this.props.routeParams.currency);
 	}
-	render() {
-		const { id, crypto_wallet, symbol, openContactForm, balance } = this.props;
-		const { depositPrice } = this.state;
 
-		if (!id) {
+	componentWillReceiveProps(nextProps) {
+		if (nextProps.routeParams.currency !== this.props.routeParams.currency) {
+			this.setCurrency(nextProps.routeParams.currency);
+		} else if (!this.state.checked) {
+			if (nextProps.verification_level) {
+				this.validateRoute(
+					nextProps.routeParams.currency,
+					nextProps.crypto_wallet
+				);
+			}
+		}
+	}
+
+	setCurrency = (currencyName) => {
+		const currency = getCurrencyFromName(currencyName);
+		if (currency) {
+			this.setState({ currency, checked: false }, () => {
+				this.validateRoute(
+					this.props.routeParams.currency,
+					this.props.crypto_wallet
+				);
+			});
+		} else {
+			this.props.router.push('/wallet');
+		}
+	};
+
+	validateRoute = (currency, crypto_wallet) => {
+		if (
+			(currency === 'eth' && !crypto_wallet.ethereum) ||
+			(currency === 'btc' && !crypto_wallet.bitcoin)
+		) {
+			this.props.router.push('/wallet');
+		} else if (currency) {
+			this.setState({ checked: true });
+		}
+	};
+
+	render() {
+		const { id, crypto_wallet, openContactForm, balance } = this.props;
+		const { currency, checked } = this.state;
+
+		if (!id || !currency || !checked) {
 			return <div />;
 		}
 
-		const { name } = CURRENCIES[symbol];
-		const balanceAvailable = balance[`${symbol}_available`];
-
-		const limit = DEPOSIT_LIMITS[symbol] ? DEPOSIT_LIMITS[symbol].DAILY : 0;
-		const min = DEPOSIT_LIMITS[symbol] ? DEPOSIT_LIMITS[symbol].MIN : 0;
-		const max = DEPOSIT_LIMITS[symbol] ? DEPOSIT_LIMITS[symbol].MAX : 0;
-
 		return (
 			<div className="presentation_container  apply_rtl">
-				{renderTitleSection(
-					symbol,
-					'deposit',
-					symbol === fiatSymbol ? ICONS.DEPOSIT_FIAT : ICONS.DEPOSIT_BITCOIN
-				)}
+				{renderTitleSection(currency, 'deposit', ICONS.DEPOSIT_BITCOIN)}
 				<div
 					className={classnames(
 						'inner_container',
@@ -63,24 +89,13 @@ class Deposit extends Component {
 					)}
 				>
 					{renderInformation(
-						symbol,
+						currency,
 						balance,
 						openContactForm,
 						generateFiatInformation,
 						'deposit'
 					)}
-					{symbol === fiatSymbol ? (
-						<BankDeposit
-							available={balanceAvailable}
-							minAmount={min}
-							maxAmount={max}
-							currencyName={name}
-							depositPrice={depositPrice}
-						/>
-					) : (
-						renderContent(symbol, crypto_wallet)
-					)}
-					{renderExtraInformation(limit)}
+					{renderContent(currency, crypto_wallet)}
 				</div>
 			</div>
 		);
@@ -89,7 +104,6 @@ class Deposit extends Component {
 
 const mapStateToProps = (store) => ({
 	id: store.user.id,
-	symbol: store.orderbook.symbol,
 	crypto_wallet: store.user.crypto_wallet,
 	balance: store.user.balance,
 	activeLanguage: store.app.language,

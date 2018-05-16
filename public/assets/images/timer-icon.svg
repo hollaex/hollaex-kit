@@ -3,9 +3,9 @@
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 viewBox="-474 276 10 10" style="enable-background:new -474 276 10 10;" xml:space="preserve">
 <style type="text/css">
-	.st0{fill:#27AAE1;}
-	.st1{fill:none;stroke:#FFFFFF;stroke-miterlimit:10;}
+	.icon-tamer-01{fill:#27AAE1;}
+	.icon-tamer-02{fill:none;stroke:#FFFFFF;stroke-miterlimit:10;}
 </style>
-<circle id="XMLID_260_" class="st0" cx="-469" cy="281" r="5"/>
-<polyline class="st1" points="-469,277.4 -469,281 -467.1,281 "/>
+<circle id="XMLID_260_" class="icon-tamer-01" cx="-469" cy="281" r="5"/>
+<polyline class="icon-tamer-02" points="-469,277.4 -469,281 -467.1,281 "/>
 </svg>

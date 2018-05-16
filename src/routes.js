@@ -2,19 +2,24 @@ import React from 'react';
 import { Router, Route, browserHistory } from 'react-router';
 import ReactGA from 'react-ga';
 
-import { NETWORK,IS_PRO_VERSION, PRO_VERSION_REDIRECT, DEFAULT_VERSION_REDIRECT } from './config/constants';
+import {
+	NETWORK,
+	IS_PRO_VERSION,
+	PRO_VERSION_REDIRECT,
+	DEFAULT_VERSION_REDIRECT
+} from './config/constants';
 
 import {
 	App as Container,
 	Account,
-	Wallet,
+	MainWallet,
+	CurrencyWallet,
 	Login,
 	Signup,
 	VerificationEmailRequest,
 	VerificationEmailCode,
 	Home,
 	Deposit,
-	DepositVerification,
 	Withdraw,
 	TransactionsHistory,
 	Trade,
@@ -88,7 +93,9 @@ const logOutUser = () => {
 };
 
 const NotFound = ({ router }) => {
-	router.replace(IS_PRO_VERSION ? PRO_VERSION_REDIRECT : DEFAULT_VERSION_REDIRECT);
+	router.replace(
+		IS_PRO_VERSION ? PRO_VERSION_REDIRECT : DEFAULT_VERSION_REDIRECT
+	);
 	return <div />;
 };
 
@@ -104,16 +111,8 @@ export default (
 	<Router history={browserHistory}>
 		{!IS_PRO_VERSION && <Route path="/" name="Home" component={Home} />}
 		<Route component={AuthContainer} {...noAuthRoutesCommonProps}>
-			<Route
-				path="login"
-				name="Login"
-				component={Login}
-			/>
-			<Route
-				path="signup"
-				name="signup"
-				component={Signup}
-			/>
+			<Route path="login" name="Login" component={Login} />
+			<Route path="signup" name="signup" component={Signup} />
 		</Route>
 		<Route component={AuthContainer} {...noLoggedUserCommonProps}>
 			<Route
@@ -126,11 +125,7 @@ export default (
 				name="Reset Password"
 				component={ResetPassword}
 			/>
-			<Route
-				path="verify"
-				name="Verify"
-				component={VerificationEmailRequest}
-			/>
+			<Route path="verify" name="Verify" component={VerificationEmailRequest} />
 			<Route
 				path="verify/:code"
 				name="verifyCode"
@@ -139,21 +134,20 @@ export default (
 		</Route>
 		<Route component={Container} onEnter={requireAuth}>
 			<Route path="account" name="Account" component={Account} />
-			<Route path="wallet" name="Wallet" component={Wallet} />
-			<Route path="withdraw" name="Withdraw" component={Withdraw} />
-			<Route path="deposit" name="Deposit" component={Deposit} />
-			<Route
-				path="deposit/verification"
-				name="Deposit Verification"
-				component={DepositVerification}
-			/>
+			<Route path="security" name="Security" component={Account} />
+			<Route path="developers" name="Developers" component={Account} />
+			<Route path="settings" name="Settings" component={Account} />
+			<Route path="wallet" name="Wallet" component={MainWallet} />
+			<Route path="wallet/:currency" name="Wallet" component={CurrencyWallet} />
+			<Route path="wallet/:currency/deposit" name="Deposit" component={Deposit} />
+			<Route path="wallet/:currency/withdraw" name="Withdraw" component={Withdraw} />
 			<Route
 				path="transactions"
 				name="Transactions"
 				component={TransactionsHistory}
 			/>
-			<Route path="trade" name="Trade" component={Trade} />
-			<Route path="quick-trade" name="Quick Trade" component={QuickTrade} />
+			<Route path="trade/:pair" name="Trade" component={Trade} />
+			<Route path="quick-trade/:pair" name="Quick Trade" component={QuickTrade} />
 		</Route>
 		<Route
 			path="verification"

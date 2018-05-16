@@ -70,3 +70,21 @@ $tabs-title--margin: 2rem;
 		}
 	}
 }
+
+.dark-theme {
+	.trade_block-wrapper {
+		.trade_block-title {
+			border-top-color: $dark-border-main;
+			color: $dark-font-main-text-color;
+		}
+	}
+	.trade_block_tabs-wrapper .trade_block-title {
+		.trade_block-title-items {
+			.active {
+				&:after {
+					background-color: $dark-border-main;
+				}
+			}
+		}
+	}
+}

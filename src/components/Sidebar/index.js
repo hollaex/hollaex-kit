@@ -4,35 +4,28 @@ import { NotificationsList, SidebarHub } from '../';
 import { Logout, Help } from './rows';
 
 const Sidebar = ({
-	goToWalletPage,
-	goToTradePage,
 	active,
 	activePath,
 	logout,
 	help,
-	notifications,
-	symbol,
-	changeSymbol,
-	goToAccountPage,
-	goToQuickTradePage
+	pair,
+	unreadMessages = 0
 }) => {
 	const sidebarHubProps = {
-		goToQuickTradePage,
-		goToWalletPage,
-		goToTradePage,
-		goToAccountPage,
 		activePath,
-		currency: symbol,
-		changeCurrency: changeSymbol
+		pair
 	};
 	return (
 		<div className="sidebar-container apply_rtl">
 			<SidebarHub {...sidebarHubProps} />
 			<div className="sidebar-notifications">
-				<NotificationsList notifications={notifications} />
+				<NotificationsList />
 			</div>
-			<Help className="sidebar-row" onHelp={help} />
-			<Logout className="sidebar-row" onLogout={logout} />
+			<div className="sidebar-row d-flex">
+				{/*<Chat className="f-1" unreadMessages={unreadMessages} />*/}
+				<Help className="f-1" onHelp={help} />
+				<Logout className="f-0" onLogout={logout} />
+			</div>
 		</div>
 	);
 };

@@ -1,4 +1,5 @@
 $information--color: $colors-deactivate-color2;
+$dark-information--color: $dark-link;
 
 .information_section {
 	font-size: $font-size-subtext;
@@ -38,6 +39,180 @@ $information--color: $colors-deactivate-color2;
 	.information_section {
 		.information_text-text {
 			margin-right: 0.5rem;
+		}
+	}
+}
+
+.user-limits {
+	.user-limits-table {
+		width: 100%;
+		font-size: $font-size-subtext;
+
+		thead,
+		tfoot {
+			& tr {
+				height: 3.5rem;
+				vertical-align: bottom;
+			}
+		}
+
+		tfoot {
+			font-size: $font-size-main;
+			td {
+				white-space: nowrap;
+			}
+		}
+
+		.table-row {
+			height: 2.5rem;
+			color: $information--color;
+
+			.td-levelball {
+				.td-levelball-content {
+					border: 1px solid $colors-main-black;
+					border-radius: 50%;
+					@include size(1.5rem);
+				}
+			}
+
+			&.user-level {
+				color: $colors-main-black;
+				td:not(:first-child) {
+					background: $colors-deactivate-color3;
+				}
+
+				.td-levelball {
+					.td-levelball-content {
+						color: white;
+						background-color: $colors-main-black;
+					}
+				}
+			}
+		}
+
+		.table-bottom-border td,
+		th {
+			position: relative;
+			&:not(:first-child) {
+				border-bottom: 1px solid $colors-main-black;
+				padding: 0 0.25rem;
+				min-width: 25%;
+			}
+		}
+
+		.td-fit {
+			width: 1%;
+			white-space: nowrap;
+		}
+
+		.td-name {
+			min-width: 75px !important;
+		}
+		.table-icon {
+			& > div {
+				vertical-align: middle;
+				margin: auto;
+			}
+		}
+		.td-amount {
+			direction: ltr;
+		}
+	}
+}
+
+.direction_ltr {
+	.user-limits {
+		.user-limits-table {
+			th {
+				font-family: $raleway--font-family;
+			}
+			th,
+			td {
+				text-align: left;
+			}
+			.align-opposite {
+				text-align: right;
+			}
+			.table-icon {
+				padding-right: 0.5rem;
+			}
+		}
+	}
+}
+
+.direction_rtl {
+	.user-limits {
+		.user-limits-table {
+			th,
+			td {
+				text-align: right;
+			}
+			.align-opposite {
+				text-align: left;
+			}
+			.table-icon {
+				padding-left: 0.5rem;
+			}
+		}
+	}
+}
+
+.dark-theme {
+	.information_section {
+		color: $dark-information--color;
+		.information_svg {
+			fill: $dark-information--color;
+		}
+		.information_change {
+			color: $colors-notifications-blue;
+		}
+	}
+
+	.user-limits {
+		.user-limits-table {
+			th {
+				color: $dark-font-main-text-color;
+			}
+			.table-row {
+				color: $dark-font-sub-text-color;
+
+				.td-levelball {
+					.td-levelball-content {
+						border-color: $dark-font-main-text-color;
+						color: $dark-font-main-text-color;
+					}
+				}
+
+				&.user-level {
+					color: $dark-font-main-text-color;
+					td:not(:first-child) {
+						background: $dark-disabled-secondary;
+					}
+
+					.td-levelball {
+						.td-levelball-content {
+							color: $dark-disabled-main;
+							background-color: $dark-font-main-text-color;
+						}
+					}
+				}
+			}
+
+			.table-bottom-border td,
+			th {
+				&:not(:first-child) {
+					border-bottom-color: $dark-border-main;
+				}
+			}
+		}
+	}
+	.information_section {
+		color: $dark-link;
+		.information_svg {
+			fill: $dark-link;
+		}
+		.information_change {
+			color: $dark-link;
 		}
 	}
 }

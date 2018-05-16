@@ -5,10 +5,20 @@ export default {
 	FIAT_FULLNAME: 'Euro',
 	FIAT_SHORTNAME: 'EUR',
 	FIAT_CURRENCY_SYMBOL: '€',
+	FIAT_PRICE_FORMAT: '{0} {1}', // 0-> amount  1 -> symbol  600,000 T
+
 	BTC_NAME: 'Bitcoin',
 	BTC_FULLNAME: 'Bitcoin',
 	BTC_SHORTNAME: 'BTC',
 	BTC_CURRENCY_SYMBOL: 'BTC',
+	BTC_PRICE_FORMAT: '{0} {1}', // 0-> amount  1 -> symbol  6.00245 BTC
+
+	ETH_NAME: 'Ethereum',
+	ETH_FULLNAME: 'Ethereum',
+	ETH_SHORTNAME: 'ETH',
+	ETH_CURRENCY_SYMBOL: 'ETH',
+	ETH_PRICE_FORMAT: '{0} {1}', // 0-> amount  1 -> symbol  6.00245 ETH
+
 	TIMESTAMP_FORMAT: 'YYYY/MM/DD HH:mm:ss A',
 	HOUR_FORMAT: 'HH:mm:ss A',
 	LOGIN_TEXT: 'Login',
@@ -106,13 +116,13 @@ export default {
 	},
 	DEPOSIT: {
 		CRYPTO_LABELS: {
-			BTC: 'Your Bitcoin receiving address'
+			BTC: 'Your Bitcoin receiving address',
+			ETH: 'Your Ethereum receiving address'
 		},
 		INFORMATION_MESSAGES: [
 			'Use the bank details below to deposit USD in to your account. Transfers usally take up to 1-2 business day.',
 			'Deposits will only be accepeted from a bank account in a name that matches the name registered with your HOLLAEX account.'
 		],
-		LIMIT_MESSAGE: 'Use your registered card and bank for deposit otherwise you may face issues and your funds might get blocked.',
 		INCREASE_LIMIT: 'Want to increase your daily limit?',
 		QR_CODE:
 			'This QR Code can be scanned by the person who wants to send you Bitcoins',
@@ -210,6 +220,7 @@ export default {
 		}
 	},
 	OTP_FORM: {
+		OTP_FORM_TITLE: 'Enter your authentication code to continue',
 		OTP_LABEL: 'OTP Code',
 		OTP_PLACEHOLDER: 'Enter the authentication code',
 		OTP_TITLE: 'Authenticator Code',
@@ -496,7 +507,8 @@ export default {
 				INPUT: 'Enter One-Time Password (OTP)',
 				WARNING:
 					'We highly recommend you set up 2 factor authentication (2FA). Doing so will greatly increase the security of your funds.',
-				ENABLE: 'Enable Two-Factor Authentication'
+				ENABLE: 'Enable Two-Factor Authentication',
+				DISABLE: 'Disable Two-Factor Authentication'
 			},
 			FORM: {
 				PLACEHOLDER: 'Enter your OTP provided by Google Authenticator.',
@@ -630,6 +642,7 @@ export default {
 	DEPOSIT_VERIFICATION_ERROR: 'There has been an error verifying the deposit.',
 	DEPOSIT_VERIFICATION_ERROR_VERIFIED: 'The deposit has been already verified',
 	DEPOSIT_VERIFICATION_ERROR_STATUS: 'Invalid status',
+	DEPOSIT_VERIFICATION_ERROR_USER_MATCH: 'The card you made the deposit is not the same as your registered card. Therefore your deposit is rejected and your funds will be refunded in less than an hour.',
 	QUOTE_MESSAGE: 'You are going to {0} {1} {2} for {3} {4}',
 	QUOTE_BUTTON: 'Accept',
 	QUOTE_REVIEW: 'Review',
@@ -669,8 +682,6 @@ export default {
 	ORDERBOOK_BUYERS: 'Buyers',
 	ORDERBOOK_SPREAD: '{0} spread', // 0 -> 660,000 T
 	ORDERBOOK_SPREAD_PRICE: '{0} {1}', //// 0-> amount  1 -> symbol  600,000 T
-	FIAT_PRICE_FORMAT: '{0} {1}', // 0-> amount  1 -> symbol  600,000 T
-	BTC_PRICE_FORMAT: '{0} {1}', // 0-> amount  1 -> symbol  6.00245 BTC
 	CALCULATE_MAX: 'Max',
 	DATEFIELD_TOOGLE_DATE_PE: 'تاریخ شمسی‌',
 	DATEFIELD_TOOGLE_DATE_GR: 'Gregorian calendar',
@@ -729,18 +740,91 @@ export default {
 	CONFIRM_TEXT: 'Confirm',
 	INVALID_CAPTCHA: 'Invalid captcha',
 	NO_FEE: 'N/A',
-	SETTINGS_LANGUAGE_LABEL: 'Language of Emails',
+	SETTINGS_LANGUAGE_LABEL: 'Language preferences (Includes Emails)',
 	SETTINGS_LANGUAGE_OPTIONS: [
-		{ value: 'en', label: 'English' },
+		{ value: 'en', label: 'English', icon: `${process.env.PUBLIC_URL}/assets/flags/selected-en.png` },
 	],
 	SETTINGS_ORDERPOPUP_LABEL: 'Display order confirmation popup',
 	SETTINGS_ORDERPOPUP_OPTIONS: [
 		{ value: false, label: 'NO' },
 		{ value: true, label: 'YES' }
 	],
+	SETTINGS_THEME_LABEL: 'Theme', // TODO set right labels
+	SETTINGS_THEME_OPTIONS: [
+		{ value: 'white', label: 'White' },
+		{ value: 'dark', label: 'Dark' }
+	],
 	SETTING_BUTTON: 'save',
 	STRING_WITH_PARENTHESIS: '{0} ({1})',
 	VERIFICATION_NO_WITHDRAW_TITLE: 'Withdrawals disabled',
 	VERIFICATION_NO_WITHDRAW_MESSAGE:
-		'Your account is disabled for withdrawals'
+		'Your account is disabled for withdrawals',
+	UP_TO_MARKET: 'Up to market',
+	DEVELOPER_SECTION: {
+		TITLE: 'API Key',
+		INFORMATION_TEXT: 'The API provides functionality such as getting wallet balances, managing buy/sell orders, requesting withdrawals as well as market data such as recent trades, order book and ticker.',
+		ERROR_INACTIVE_OTP: 'To generate an API key you need to enable 2-factor authentication.',
+		ENABLE_2FA: 'Enable 2FA',
+		WARNING_TEXT: 'Do not share your API key with others.',
+		GENERATE_KEY: 'Generate API Key',
+		ACTIVE: 'Active',
+		INACTIVE: 'Inactive',
+		INVALID_LEVEL: 'You need to upgrade your verification level to have access this feature' // TODO
+	},
+	DEVELOPERS_TOKENS_POPUP: {
+		GENERATE_TITLE: 'Generate API Key',
+		GENERATE_TEXT: 'Please name your API key and keep it in private after its generated. You wont be able to retrieve it again later.',
+		GENERATE: 'Generate',
+		DELETE_TITLE: 'Delete API Key',
+		DELETE_TEXT: 'Deleting your API key is ireversalable although you can generate a new API key at anytime. Do you want to delete your API key?',
+		DELETE: 'DELETE',
+		FORM_NAME_LABEL: 'Name',
+		FORM_LABLE_PLACEHOLDER: 'Name for the Api Key',
+		API_KEY_LABEL: 'API Key',
+		CREATED_TITLE: 'Copy your API Key',
+		CREATED_TEXT_1: 'Please copy your API key as it will be unattainable in the future.',
+		CREATED_TEXT_2: 'Keep your key private.'
+	},
+	DEVELOPERS_TOKENS_TABLE: {
+		NAME: 'Name',
+		API_KEY: 'API Key',
+		CREATED: 'Date Generated',
+		REVOKE: 'Revoke',
+		REVOKED: 'Revoked',
+		REVOKE_TOOLTIP: 'You have to enable 2FA to revoke the token' // TODO
+	},
+	CHAT: {
+		CHAT_TEXT: 'chat',
+		CHAT_UNREAD: '{0} ({1})' // 0 -> CHAT_TEXT, 1 -> number
+	},
+	INVALID_USERNAME: 'Username must be between 3 and 15 characters long. Only contains lowercase, numbers and underscore',
+	USERNAME_TAKEN: 'This username has already been taken. Please try another.',
+	USERNAME_LABEL: 'Username (used for chat)',
+	USERNAME_PLACEHOLDER: 'Username',
+	TAB_USERNAME: 'Username',
+	USERNAME_WARNING: 'Your username can only be changed once. Please assure your username is desirable.',
+	USERNAME_CANNOT_BE_CHANGED: 'Username can not be changed',
+	UPGRADE_LEVEL: 'Upgrade account level',
+	LEVELS: {
+		LABEL_LEVEL: 'Level',
+		LABEL_LEVEL_1: 'One',
+		LABEL_LEVEL_2: 'Two',
+		LABEL_LEVEL_3: 'Three',
+		LABEL_MAKER_FEE: 'Maker Fee',
+		LABEL_TAKER_FEE: 'Taker Fee',
+		LABEL_FIAT_DEPOSIT: 'Daily Euro Deposit',
+		LABEL_FIAT_WITHDRAWAL: 'Daily Euro Withdrawal',
+		LABEL_BTC_DEPOSIT: 'Daily Bitcoin Deposit',
+		LABEL_BTC_WITHDRAWAL: 'Daily Bitcoin Withdrawal',
+		LABEL_ETH_DEPOSIT: 'Daily Ethereum Deposit',
+		LABEL_ETH_WITHDRAWAL: 'Daily Ethereum Withdrawal',
+		UNLIMITED: 'Unlimited',
+		BLOCKED: '0'
+	},
+	WALLET_ADDRESS_TITLE: 'Generate {0} Wallet',
+	WALLET_ADDRESS_GENERATE: 'Generate',
+	WALLET_ADDRESS_MESSAGE: 'When you generate a wallet you create a deposit and withdrawal address.',
+	WALLET_ADDRESS_ERROR: 'Error generating the address, please refresh and try again.',
+	DEPOSIT_WITHDRAW: 'Deposit/Withdraw',
+	GENERATE_WALLET: 'Generate Wallet'
 };

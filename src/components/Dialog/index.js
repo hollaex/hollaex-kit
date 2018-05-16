@@ -6,6 +6,7 @@ import Ionicon from 'react-ionicons';
 import { Button, ActionNotification } from '../';
 import STRINGS from '../../config/localizedStrings';
 import { getClasesForLanguage, getLanguage } from '../../utils/string';
+import { getThemeClass } from '../../utils/theme';
 
 class Dialog extends PureComponent {
 	static propTypes = {
@@ -32,9 +33,10 @@ class Dialog extends PureComponent {
 			shouldCloseOnOverlayClick,
 			showCloseText,
 			dialogId,
+			theme,
 			className
 		} = this.props;
-
+		
 		return (
 			<Modal
 				id={dialogId}
@@ -42,7 +44,7 @@ class Dialog extends PureComponent {
 				contentLabel={label}
 				onRequestClose={this.onRequestClose}
 				shouldCloseOnOverlayClick={shouldCloseOnOverlayClick}
-				portalClassName={classnames(className, languageClasses)}
+				portalClassName={classnames(className, languageClasses, getThemeClass(theme))}
 			>
 				{showCloseText &&
 					!closeButton && (
@@ -72,6 +74,7 @@ class Dialog extends PureComponent {
 Dialog.defaultProps = {
 	shouldCloseOnOverlayClick: true,
 	showCloseText: true,
+	theme: '',
 	className: ''
 };
 
