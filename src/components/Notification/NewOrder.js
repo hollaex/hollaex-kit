@@ -1,12 +1,7 @@
 import React from 'react';
 import EventListener from 'react-event-listener';
-import { ICONS } from '../../config/constants';
+import { ICONS, CURRENCIES } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
-import {
-	formatBtcAmount,
-	// formatBtcFullAmount,
-	formatFiatAmount
-} from '../../utils/currency';
 import {
 	NotificationWraper,
 	NotificationContent,
@@ -14,8 +9,13 @@ import {
 } from './Notification';
 import { Button } from '../';
 
-const generateRows = ({ order }) => {
+const generateRows = ({ order, pairData }) => {
 	const { type, side, price, size, orderFees, orderPrice } = order;
+	console.log(pairData)
+	const secondaryCurrency = pairData.pair_2.toUpperCase();
+	const secondaryFormat = CURRENCIES[pairData.pair_2].formatToCurrency;
+	const baseCurrency = pairData.pair_base.toUpperCase();
+	const baseFormat = CURRENCIES[pairData.pair_base].formatToCurrency;
 	const rows = [];
 	rows.push({
 		label: STRINGS.TYPE,
@@ -33,9 +33,9 @@ const generateRows = ({ order }) => {
 	rows.push({
 		label: STRINGS.SIZE,
 		value: STRINGS.formatString(
-			STRINGS.BTC_PRICE_FORMAT,
-			formatBtcAmount(size),
-			STRINGS.BTC_CURRENCY_SYMBOL
+			STRINGS[`${baseCurrency}_PRICE_FORMAT`],
+			baseFormat(size),
+			STRINGS[`${secondaryCurrency}_CURRENCY_SYMBOL`]
 		)
 	});
 
@@ -43,9 +43,9 @@ const generateRows = ({ order }) => {
 		rows.push({
 			label: STRINGS.PRICE,
 			value: STRINGS.formatString(
-				STRINGS.BTC_PRICE_FORMAT,
-				formatFiatAmount(price),
-				STRINGS.FIAT_CURRENCY_SYMBOL
+				STRINGS[`${baseCurrency}_PRICE_FORMAT`],
+				secondaryFormat(price),
+				STRINGS[`${secondaryCurrency}_CURRENCY_SYMBOL`]
 			)
 		});
 	}
@@ -53,18 +53,18 @@ const generateRows = ({ order }) => {
 	rows.push({
 		label: STRINGS.FEE,
 		value: STRINGS.formatString(
-			STRINGS.BTC_PRICE_FORMAT,
-			formatFiatAmount(orderFees),
-			STRINGS.FIAT_CURRENCY_SYMBOL
+			STRINGS[`${baseCurrency}_PRICE_FORMAT`],
+			secondaryFormat(orderFees),
+			STRINGS[`${secondaryCurrency}_CURRENCY_SYMBOL`]
 		)
 	});
 
 	rows.push({
 		label: STRINGS.TOTAL_ORDER,
 		value: STRINGS.formatString(
-			STRINGS.BTC_PRICE_FORMAT,
-			formatFiatAmount(orderPrice),
-			STRINGS.FIAT_CURRENCY_SYMBOL
+			STRINGS[`${baseCurrency}_PRICE_FORMAT`],
+			secondaryFormat(orderPrice),
+			STRINGS[`${secondaryCurrency}_CURRENCY_SYMBOL`]
 		)
 	});
 
