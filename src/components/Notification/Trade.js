@@ -2,7 +2,6 @@ import React from 'react';
 import math from 'mathjs';
 import { ICONS, PAIRS, CURRENCIES } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
-import { formatBtcAmount, formatFiatAmount } from '../../utils/currency';
 import {
 	NotificationWraper,
 	NotificationContent,
