@@ -121,6 +121,15 @@ $tab-border-color: $colors-main-black;
 $tab-text-padding: 0 8px 8px;
 $tab-selected-line-height: 4px;
 
+// MOBILE
+$navigation_bar-mobile--height: 4rem;
+$navigation_bar-mobile--background: $colors-main-black;
+$dark-navigation_bar-mobile--background: white;
+$bottom_bar--height: 5rem;
+$bottom-bar--background: $navigation_bar-mobile--background;
+$dark-bottom-bar--background: $dark-navigation_bar-mobile--background;
+$max-content-height-mobile: calc(100vh - #{$navigation_bar-mobile--height + $bottom-bar--height});
+
 // CONTAINERS
 $max-content-height: calc(100vh - #{$navigation_bar-height});
 $max-width-content: 50rem;

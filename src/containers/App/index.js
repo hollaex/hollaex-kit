@@ -5,11 +5,8 @@ import { bindActionCreators } from 'redux';
 import io from 'socket.io-client';
 import EventListener from 'react-event-listener';
 import { debounce } from 'lodash';
-import {
-	WS_URL,
-	ICONS,
-	SESSION_TIME
-} from '../../config/constants';
+import { WS_URL, ICONS, SESSION_TIME } from '../../config/constants';
+import { isBrowser, isMobile } from 'react-device-detect';
 
 import { logout } from '../../actions/authAction';
 import { setMe, setBalance, updateUser } from '../../actions/userAction';
@@ -485,7 +482,11 @@ class Container extends Component {
 					activePath,
 					symbol,
 					fontClass,
-					languageClasses[0]
+					languageClasses[0],
+					{
+						'layout-mobile': isMobile,
+						'layout-desktop': isBrowser
+					}
 				)}
 			>
 				<EventListener
@@ -516,16 +517,23 @@ class Container extends Component {
 							{appLoaded && verification_level > 0 ? children : <Loader />}
 						</div>
 					</div>
+					{isMobile && (
+						<div className="app_container-bottom_bar">
+							<div>f</div>
+						</div>
+					)}
 				</div>
-				<div className="app_container-sidebar">
-					<Sidebar
-						activePath={activePath}
-						logout={this.logout}
-						help={openContactForm}
-						unreadMessages={unreadMessages}
-						pair={pair}
-					/>
-				</div>
+				{isBrowser && (
+					<div className="app_container-sidebar">
+						<Sidebar
+							activePath={activePath}
+							logout={this.logout}
+							help={openContactForm}
+							unreadMessages={unreadMessages}
+							pair={pair}
+						/>
+					</div>
+				)}
 				<Dialog
 					isOpen={dialogIsOpen}
 					label="hollaex-modal"

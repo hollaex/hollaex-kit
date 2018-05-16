@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import { Link } from 'react-router';
+import ReactSVG from 'react-svg';
+import { isMobile } from 'react-device-detect';
 import {
 	HOLLAEX_LOGO_BLACK,
 	IS_PRO_VERSION,
@@ -96,7 +98,13 @@ class AppBar extends Component {
 			rightChildren
 		} = this.props;
 
-		return (
+		return isMobile ? (
+			<div className="app_bar-mobile d-flex justify-content-center align-items-center">
+				<Link to="/">
+					<ReactSVG path={HOLLAEX_LOGO_BLACK} wrapperClassName="homeicon-svg" />
+				</Link>
+			</div>
+		) : (
 			<div className={classnames('app_bar', { 'no-borders': noBorders })}>
 				{this.renderIcon(isHome, theme)}
 				<div className="app_bar-main d-flex justify-content-between">
@@ -114,4 +122,5 @@ AppBar.defaultProps = {
 	noBorders: false,
 	isHome: false
 };
+
 export default AppBar;
