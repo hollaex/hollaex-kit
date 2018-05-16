@@ -187,7 +187,6 @@ class Withdraw extends Component {
 
 		const balanceAvailable = balance[`${currency}_available`];
 
-		console.log(currency, checked, balanceAvailable, btcFee);
 		if (
 			verification_level >= MIN_VERIFICATION_LEVEL_TO_WITHDRAW &&
 			verification_level <= MAX_VERIFICATION_LEVEL_TO_WITHDRAW &&
