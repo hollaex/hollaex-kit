@@ -172,8 +172,24 @@ export const isBefore = (
 	};
 };
 
-export const normalizeInt = (value) => validator.toInt(value) || '';
-export const normalizeFloat = (value) => validator.toFloat(value) || '';
+export const normalizeInt = (value) => {
+	if (validator.isNumeric(value)) {
+		return validator.toInt(value);
+	} else if (value === '0' || value === 0) {
+		return 0;
+	} else {
+		return '';
+	}
+};
+export const normalizeFloat = (value) => {
+	if (validator.isFloat(value)) {
+		return validator.toFloat(value);
+	} else if (value === '0' || value === 0) {
+		return 0;
+	} else {
+		return '';
+	}
+};
 export const normalizeBTC = (value = 0) => (value ? roundNumber(value, 8) : '');
 export const normalizeBTCFee = (value = 0) => (value ? roundNumber(value, 4) : '');
 
