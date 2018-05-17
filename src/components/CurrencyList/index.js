@@ -19,7 +19,7 @@ class CurrencyList extends Component {
 		].classList.add('focused');
 		if (focusedSymbol) {
 			const markets = Object.entries(this.props.pairs).filter(
-				([key, pair]) => pair.pair_base === symbol
+				([key, pair]) => pair.pair_base === symbol || pair.pair_2 === symbol
 			);
 			this.setState({ focusedSymbol, markets });
 		} else {
