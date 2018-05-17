@@ -73,7 +73,7 @@ export const LTR_CLASSES_OBJECT = {
 
 export const getClasesForLanguage = (language = '', type = 'object') => {
 	switch (language) {
-		case 'fa':
+		case 'rtl':
 			return type === 'object' ? RTL_CLASSES_OBJECT : RTL_CLASSES_ARRAY;
 		default:
 			return type === 'object' ? LTR_CLASSES_OBJECT : LTR_CLASSES_ARRAY;
@@ -82,7 +82,7 @@ export const getClasesForLanguage = (language = '', type = 'object') => {
 
 export const getFontClassForLanguage = (language = '') => {
 	switch (language) {
-		case 'fa':
+		case 'rtl':
 			return LANGUAGE_RTL;
 		default:
 			return '';
