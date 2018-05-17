@@ -1,11 +1,6 @@
 import moment from 'moment';
 
-import {
-	TOKEN_TIME,
-	TIMESTAMP_FORMAT,
-	TIMESTAMP_FORMAT_FA
-} from '../config/constants';
-import { getLanguage } from './string';
+import { TOKEN_TIME, TIMESTAMP_FORMAT } from '../config/constants';
 
 const bitcoin = {
 	COIN: 100000000,
