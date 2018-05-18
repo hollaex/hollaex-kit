@@ -9,6 +9,7 @@ export { default as TabController } from './TabController';
 export { default as CheckTitle } from './CheckTitle';
 export { default as Footer } from './Footer';
 export { default as Sidebar } from './Sidebar';
+export { SidebarBottom } from './Sidebar/SidebarBottom';
 export { Logout } from './Sidebar/rows';
 export { default as Wallet } from './Wallet';
 export { default as SidebarHub } from './SidebarHub';

@@ -43,6 +43,7 @@ import { getToken, getTokenTimestamp } from '../../utils/token';
 import {
 	AppBar,
 	Sidebar,
+	SidebarBottom,
 	Dialog,
 	Loader,
 	Notification,
@@ -386,8 +387,14 @@ class Container extends Component {
 			case '/trade':
 				return 'trade';
 			default:
-				return '';
 		}
+		if (path.indexOf('/trade/') === 0) {
+			return 'trade';
+		} else if (path.indexOf('/quick-trade/') === 0) {
+			return 'quick-trade';
+		}
+		
+		return '';
 	};
 
 	renderDialogContent = ({ type, data }, prices) => {
@@ -519,7 +526,7 @@ class Container extends Component {
 					</div>
 					{isMobile && (
 						<div className="app_container-bottom_bar">
-							<div>f</div>
+							<SidebarBottom activePath={activePath} pair={pair} />
 						</div>
 					)}
 				</div>

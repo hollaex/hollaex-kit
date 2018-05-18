@@ -125,9 +125,6 @@ $inner_container-border: 1px solid $colors-main-black;
 .app_container-bottom_bar {
 	display: flex;
 	flex: 0;
-	min-height: $bottom-bar--height;
-	max-height: $bottom-bar--height;
-	background-color: $bottom-bar--background;
 	width: 100%;
   max-width: 100vw;
 }
