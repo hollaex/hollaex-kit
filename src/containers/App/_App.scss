@@ -39,6 +39,7 @@ $inner_container-border: 1px solid $colors-main-black;
 		.app_container-content {
 			min-height: $max-content-height-mobile;
 			max-height: $max-content-height-mobile;
+			max-width:  $max-content-width-mobile
 		}
 	}
 	.app_container-content {

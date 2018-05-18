@@ -129,6 +129,7 @@ $bottom_bar--height: 5rem;
 $bottom-bar--background: $navigation_bar-mobile--background;
 $dark-bottom-bar--background: $dark-navigation_bar-mobile--background;
 $max-content-height-mobile: calc(100vh - #{$navigation_bar-mobile--height + $bottom-bar--height});
+$max-content-width-mobile: 100vw;
 
 // CONTAINERS
 $max-content-height: calc(100vh - #{$navigation_bar-height});

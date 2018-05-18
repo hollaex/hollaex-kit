@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import classnames from 'classnames';
+import { isMobile } from 'react-device-detect';
 import AccordionSection from './AccordionSection';
 
 class Accordion extends Component {
@@ -78,7 +80,10 @@ class Accordion extends Component {
 	render() {
 		const { sections, wrapperId } = this.props;
 		return (
-			<div className="accordion_wrapper" ref={this.setRef(wrapperId)}>
+			<div
+				className={classnames('accordion_wrapper', isMobile && 'mobile')}
+				ref={this.setRef(wrapperId)}
+			>
 				{sections.map((section, index) => (
 					<AccordionSection
 						key={index}

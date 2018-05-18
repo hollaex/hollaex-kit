@@ -10,6 +10,49 @@ $main-text--color: $colors-deactivate-color2;
 	position: relative;
 }
 
+.layout-mobile {
+	.accordion_wrapper {
+		.accordion_section {
+			.accordion_section_title {
+				font-size: 1.75rem;
+			}
+
+			.action_notification-svg {
+				svg {
+					width: 1.75rem !important;
+					height: 1.75rem !important;
+				}
+			}
+
+			.accordion_section_content {
+				overflow-x: auto;
+				.information_section {
+					font-size: 1.2rem;
+				}
+				.field-wrapper {
+					font-size: 1.2rem;
+				}
+				table {
+					tbody {
+						.table-row {
+							font-size: 1.25rem;
+
+							.td-levelball {
+								.td-levelball-content {
+									width: 2.5rem;
+									height: 2.5rem;
+								}
+							}
+						}
+						td:not(:first-child) {
+							padding: 1.5rem 0.25rem;
+						}
+					}
+				}
+			}
+		}
+	}
+}
 .accordion_wrapper .accordion_section {
 	border-top: $accordion-border;
 	font-size: $title--font-size;
