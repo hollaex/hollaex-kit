@@ -37,15 +37,6 @@ export const ICONS = {
 	LETTER: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-24.svg`,
 	SQUARE_DOTS: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-25.svg`,
 	COPY_NEW: `${process.env.PUBLIC_URL}/assets/images/copy.svg`,
-	LOGO_BLUE: `${process.env.PUBLIC_URL}/assets/logo-blue-exir.svg`,
-	LOGO_GREY: `${process.env.PUBLIC_URL}/assets/images/EXIR-grey-login.svg`,
-	LOGO_WHITE: `${process.env.PUBLIC_URL}/assets/images/logo-white-exir.svg`,
-	BACKGROUND_LARGE: `${
-		process.env.PUBLIC_URL
-	}/assets/background-site-large.jpg`,
-	BACKGROUND_SMALL: `${
-		process.env.PUBLIC_URL
-	}/assets/background-site-smaller.jpg`,
 	ACCOUNT_LINE: `${process.env.PUBLIC_URL}/assets/images/account.svg`,
 	ACCOUNT_RECOVERY: `${
 		process.env.PUBLIC_URL
@@ -137,7 +128,6 @@ export const ICONS = {
 	BLUE_PLUS: `${process.env.PUBLIC_URL}/assets/images/max-plus-blue-icon.svg`,
 	BLUE_TIMER: `${process.env.PUBLIC_URL}/assets/images/timer-icon.svg`,
 	DROPDOWN_ARROW: `${process.env.PUBLIC_URL}/assets/images/down-arrow-home.svg`,
-	TOMAN_T_ICON: `${process.env.PUBLIC_URL}/assets/images/toman-t-icon.svg`,
 	NOTIFICATION_ORDER_LIMIT_BUY_FILLED: `${
 		process.env.PUBLIC_URL
 	}/assets/images/limit-buy-order-filled-01.svg`,
