@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { CandlestickSeries } from 'react-stockcharts/lib/series';
+import { fitWidth } from "react-stockcharts/lib/helper";
 import CustomChart from '../CustomChart';
 import { CandlesProps } from '../props';
 
@@ -23,4 +24,4 @@ CandleChart.defaultProps = {
 	seriesName: 'AreaChart'
 };
 
-export default CandleChart;
+export default fitWidth(CandleChart);

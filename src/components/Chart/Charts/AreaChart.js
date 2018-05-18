@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { AreaSeries } from 'react-stockcharts/lib/series';
+import { fitWidth } from "react-stockcharts/lib/helper";
 import CustomChart from '../CustomChart';
 import { areaProps } from '../props';
-
 const AreaChart = (props) => (
 	<CustomChart {...props}>
 		<AreaSeries {...areaProps} />
@@ -23,4 +23,4 @@ AreaChart.defaultProps = {
 	seriesName: 'AreaChart'
 };
 
-export default AreaChart;
+export default fitWidth(AreaChart);
