@@ -101,6 +101,13 @@ class Account extends Component {
 						}
 					/>
 				),
+				notifications: this.hasUserVerificationNotifications(
+					verification_level,
+					bank_account,
+					id_data
+				)
+					? '!'
+					: '',
 				content: (
 					<UserProfile
 						goToVerification={this.goToVerification}
@@ -118,6 +125,7 @@ class Account extends Component {
 						notifications={!otp_enabled ? '!' : ''}
 					/>
 				),
+				notifications: !otp_enabled ? '!' : '',
 				content: <UserSecurity openApiKey={activeDevelopers} />
 			},
 			{
