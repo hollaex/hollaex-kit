@@ -1,22 +1,44 @@
+$mobile-notification-size: 1.75rem;
+
 .mobile-bar {
 	width: 100%;
-  min-width: 100vw;
+	min-width: 100vw;
 	max-width: 100vw;
 	min-height: $navigation_bar-mobile--height;
 	max-height: $navigation_bar-mobile--height;
 	background-color: $navigation_bar-mobile--background;
-  color: white;
+	color: white;
 }
 
 .mobile-bar-tab {
-  font-size: 2rem;
-  font-weight: bold;
+	font-size: 2rem;
+	font-weight: bold;
 	&.active {
 		position: relative;
 		&:after {
 			content: '';
 			bottom: 0;
 			@include css-triangle(white, 'up', 1rem);
+		}
+	}
+
+	.bartab-text-wrapper {
+		position: relative;
+		.bartab-notification {
+			position: absolute;
+			right: -$mobile-notification-size;
+			top: 0;
+			height: $mobile-notification-size;
+			width: $mobile-notification-size;
+			border-radius: $mobile-notification-size;
+			background-color: red;
+			color: white;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			font-size: $mobile-notification-size * 0.75;
+			line-height: 1;
+			font-weight: bold;
 		}
 	}
 }

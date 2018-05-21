@@ -14,6 +14,7 @@ const renderMobileTab = ({
 	key,
 	className = '',
 	active = false,
+	notifications = '',
 	onClick
 }) => {
 	return (
@@ -26,7 +27,12 @@ const renderMobileTab = ({
 			)}
 			onClick={onClick}
 		>
-			{title}
+			<div className="bartab-text-wrapper">
+				{title}
+				{notifications && (
+					<div className="bartab-notification">{notifications}</div>
+				)}
+			</div>
 		</div>
 	);
 };
