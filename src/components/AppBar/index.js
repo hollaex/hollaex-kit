@@ -10,7 +10,7 @@ import {
 	DEFAULT_VERSION_REDIRECT
 } from '../../config/constants';
 import { LinkButton } from './LinkButton';
-
+import { MobileBarWrapper } from '../';
 import STRINGS from '../../config/localizedStrings';
 
 class AppBar extends Component {
@@ -99,11 +99,11 @@ class AppBar extends Component {
 		} = this.props;
 
 		return isMobile ? (
-			<div className="app_bar-mobile d-flex justify-content-center align-items-center">
+			<MobileBarWrapper className="app_bar-mobile d-flex justify-content-center align-items-center">
 				<Link to="/">
 					<ReactSVG path={HOLLAEX_LOGO_BLACK} wrapperClassName="homeicon-svg" />
 				</Link>
-			</div>
+			</MobileBarWrapper>
 		) : (
 			<div className={classnames('app_bar', { 'no-borders': noBorders })}>
 				{this.renderIcon(isHome, theme)}

@@ -39,7 +39,14 @@ $inner_container-border: 1px solid $colors-main-black;
 		.app_container-content {
 			min-height: $max-content-height-mobile;
 			max-height: $max-content-height-mobile;
-			max-width:  $max-content-width-mobile
+			max-width: $max-content-width-mobile;
+		}
+		.content-with-bar {
+			min-height: $max-content-height-double-bar-mobile;
+			max-height: $max-content-height-double-bar-mobile;
+			max-width: $max-content-width-mobile;
+			padding: $content-display-vertical-margin;
+			margin: 0;
 		}
 	}
 	.app_container-content {
@@ -127,5 +134,5 @@ $inner_container-border: 1px solid $colors-main-black;
 	display: flex;
 	flex: 0;
 	width: 100%;
-  max-width: 100vw;
+	max-width: 100vw;
 }

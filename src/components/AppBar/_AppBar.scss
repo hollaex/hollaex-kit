@@ -85,11 +85,6 @@ $app-bar--background: white;
 }
 
 .app_bar-mobile {
-	width: 100%;
-	max-width: 100vw;
-	min-height: $navigation_bar-mobile--height;
-	max-height: $navigation_bar-mobile--height;
-	background-color: $navigation_bar-mobile--background;
 	padding: 1rem 0;
 	.homeicon-svg svg {
 		@include size(8rem);

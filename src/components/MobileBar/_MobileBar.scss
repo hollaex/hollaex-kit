@@ -1,0 +1,22 @@
+.mobile-bar {
+	width: 100%;
+  min-width: 100vw;
+	max-width: 100vw;
+	min-height: $navigation_bar-mobile--height;
+	max-height: $navigation_bar-mobile--height;
+	background-color: $navigation_bar-mobile--background;
+  color: white;
+}
+
+.mobile-bar-tab {
+  font-size: 2rem;
+  font-weight: bold;
+	&.active {
+		position: relative;
+		&:after {
+			content: '';
+			bottom: 0;
+			@include css-triangle(white, 'up', 1rem);
+		}
+	}
+}

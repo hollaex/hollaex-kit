@@ -393,7 +393,7 @@ class Container extends Component {
 		} else if (path.indexOf('/quick-trade/') === 0) {
 			return 'quick-trade';
 		}
-		
+
 		return '';
 	};
 
@@ -518,7 +518,9 @@ class Container extends Component {
 								'd-flex',
 								'flex-column',
 								'justify-content-between',
-								'overflow-y'
+								{
+									'overflow-y': !isMobile
+								}
 							)}
 						>
 							{appLoaded && verification_level > 0 ? children : <Loader />}

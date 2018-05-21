@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { TabController, CheckTitle } from '../../components';
+import { isMobile } from 'react-device-detect';
+
+import { TabController, CheckTitle, MobileBarTabs } from '../../components';
 import { ICONS } from '../../config/constants';
 import { UserProfile, UserSecurity, UserSettings } from '../';
 import STRINGS from '../../config/localizedStrings';
@@ -82,7 +84,9 @@ class Account extends Component {
 
 		const tabs = [
 			{
-				title: (
+				title: isMobile ? (
+					STRINGS.ACCOUNTS.TAB_PROFILE
+				) : (
 					<CheckTitle
 						title={STRINGS.ACCOUNTS.TAB_PROFILE}
 						icon={ICONS.VERIFICATION_ID_INACTIVE}
@@ -105,7 +109,9 @@ class Account extends Component {
 				)
 			},
 			{
-				title: (
+				title: isMobile ? (
+					STRINGS.ACCOUNTS.TAB_SECURITY
+				) : (
 					<CheckTitle
 						title={STRINGS.ACCOUNTS.TAB_SECURITY}
 						icon={ICONS.SECURITY_GREY}
@@ -115,7 +121,9 @@ class Account extends Component {
 				content: <UserSecurity openApiKey={activeDevelopers} />
 			},
 			{
-				title: (
+				title: isMobile ? (
+					STRINGS.ACCOUNTS.TAB_SETTINGS
+				) : (
 					<CheckTitle
 						title={STRINGS.ACCOUNTS.TAB_SETTINGS}
 						icon={ICONS.GEAR_GREY}
@@ -148,7 +156,20 @@ class Account extends Component {
 			return <div>Loading</div>;
 		}
 
-		return (
+		return isMobile ? (
+			<div className="apply_rtl">
+				<MobileBarTabs
+					tabs={tabs}
+					activeTab={activeTab}
+					setActiveTab={this.setActiveTab}
+				/>
+				<div className="presentation_container apply_rtl content-with-bar overflow-y">
+					<div className="inner_container">
+						{activeTab > -1 && this.renderContent(tabs, activeTab)}
+					</div>
+				</div>
+			</div>
+		) : (
 			<div className="presentation_container apply_rtl">
 				<TabController
 					activeTab={activeTab}
