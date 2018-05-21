@@ -1,5 +1,6 @@
 import React from 'react';
 import { reduxForm } from 'redux-form';
+import { isMobile } from 'react-device-detect';
 
 import renderFields from '../../components/Form/factoryFields';
 import { FieldError } from '../../components/Form/FormFields/FieldWrapper';
@@ -14,7 +15,8 @@ export const generateUsernameFormValues = (disabled = false) => ({
 		validate: [required, username],
 		label: STRINGS.USERNAME_LABEL,
 		placeholder: STRINGS.USERNAME_PLACEHOLDER,
-    disabled
+		disabled,
+		fullWidth: isMobile
 	}
 });
 

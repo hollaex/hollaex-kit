@@ -1,6 +1,6 @@
 import React from 'react';
 import { reduxForm } from 'redux-form';
-
+import { isMobile } from 'react-device-detect';
 import renderFields from '../../components/Form/factoryFields';
 import { Button } from '../../components';
 import { required, requiredBoolean } from '../../components/Form/validations';
@@ -12,13 +12,16 @@ export const generateFormValues = () => ({
 		type: 'select',
 		validate: [required],
 		label: STRINGS.SETTINGS_LANGUAGE_LABEL,
-		options: STRINGS.SETTINGS_LANGUAGE_OPTIONS
+		options: STRINGS.SETTINGS_LANGUAGE_OPTIONS,
+		fullWidth: isMobile
 	},
 	orderConfirmationPopup: {
 		type: 'select',
 		validate: [requiredBoolean],
 		label: STRINGS.SETTINGS_ORDERPOPUP_LABEL,
-		options: STRINGS.SETTINGS_ORDERPOPUP_OPTIONS
+		options: STRINGS.SETTINGS_ORDERPOPUP_OPTIONS,
+		fullWidth: isMobile
+
 	},
 	// theme: {
 	// 	type: 'select',

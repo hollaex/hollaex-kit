@@ -11,6 +11,9 @@ $main-text--color: $colors-deactivate-color2;
 }
 
 .layout-mobile {
+	.exir-button-font {
+		font-size: 1.2rem;
+	}
 	.accordion_wrapper {
 		.accordion_section {
 			.accordion_section_title {
@@ -26,6 +29,7 @@ $main-text--color: $colors-deactivate-color2;
 
 			.accordion_section_content {
 				overflow-x: auto;
+				font-size: 1.2rem;
 				.information_section {
 					font-size: 1.2rem;
 				}
