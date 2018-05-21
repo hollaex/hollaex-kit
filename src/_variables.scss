@@ -130,6 +130,11 @@ $bottom-bar--background: $navigation_bar-mobile--background;
 $dark-bottom-bar--background: $dark-navigation_bar-mobile--background;
 $max-content-height-mobile: calc(100vh - #{$navigation_bar-mobile--height + $bottom-bar--height});
 $max-content-width-mobile: 100vw;
+$regular--font-size: 1.2rem;
+$title--font-size: 1.75rem;
+$extra-thick--font-size: 1.5rem;
+$component--margin-bottom: 3rem;
+$input--height: 4.5rem;
 
 // CONTAINERS
 $max-content-height: calc(100vh - #{$navigation_bar-height});

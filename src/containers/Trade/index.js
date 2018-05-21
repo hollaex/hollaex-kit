@@ -4,6 +4,7 @@ import EventListener from 'react-event-listener';
 import classnames from 'classnames';
 import { bindActionCreators } from 'redux';
 import { SubmissionError, change } from 'redux-form';
+import { isMobile } from 'react-device-detect';
 
 import { ICONS } from '../../config/constants';
 import {
@@ -27,6 +28,7 @@ import ActiveOrders from './components/ActiveOrders';
 import UserTrades from './components/UserTrades';
 import TradeHistory from './components/TradeHistory';
 import PriceChart from './components/PriceChart';
+import { Mobile } from './Mobile';
 
 import { ActionNotification, Loader } from '../../components';
 
@@ -92,7 +94,12 @@ class Trade extends Component {
 
 	openCheckOrder = (order, onConfirm) => {
 		const { setNotification, fees, pairData } = this.props;
-		setNotification(NOTIFICATIONS.NEW_ORDER, { order, onConfirm, fees, pairData });
+		setNotification(NOTIFICATIONS.NEW_ORDER, {
+			order,
+			onConfirm,
+			fees,
+			pairData
+		});
 	};
 
 	onPriceClick = (price) => {
@@ -171,92 +178,106 @@ class Trade extends Component {
 
 		return (
 			<div className={classnames('trade-container', 'd-flex')}>
-				<EventListener target="window" onResize={this.onResize} />
-				<div
-					className={classnames(
-						'trade-col_side_wrapper',
-						'flex-column',
-						'd-flex',
-						'apply_rtl'
-					)}
-				>
-					<TradeBlock title={STRINGS.ORDERBOOK}>
-						{orderbookReady && <Orderbook {...orderbookProps} />}
-					</TradeBlock>
-				</div>
-				<div
-					className={classnames(
-						'trade-col_main_wrapper',
-						'flex-column',
-						'd-flex',
-						'f-1',
-						'overflow-x'
-					)}
-				>
-					<div
-						className={classnames('trade-main_content', 'flex-auto', 'd-flex')}
-					>
+				{isMobile ? (
+					<Mobile
+						props={this.props}
+						orderbookProps={orderbookProps}
+						symbol={symbol}
+					/>
+				) : (
+					<div>
+						<EventListener target="window" onResize={this.onResize} />
 						<div
 							className={classnames(
-								'trade-col_action_wrapper',
+								'trade-col_side_wrapper',
 								'flex-column',
 								'd-flex',
 								'apply_rtl'
 							)}
 						>
-							<TradeBlock title={STRINGS.ORDER_ENTRY}>
-								<OrderEntry
-									submitOrder={this.onSubmitOrder}
-									openCheckOrder={this.openCheckOrder}
-									symbol={symbol}
-									balance={balance}
-									asks={asks}
-									bids={bids}
-									marketPrice={marketPrice}
-									showPopup={settings.orderConfirmationPopup}
-								/>
+							<TradeBlock title={STRINGS.ORDERBOOK}>
+								{orderbookReady && <Orderbook {...orderbookProps} />}
 							</TradeBlock>
 						</div>
-						<TradeBlock
-							title={STRINGS.CHART}
-							setRef={this.setChartRef}
-							className="f-1 overflow-x"
+						<div
+							className={classnames(
+								'trade-col_main_wrapper',
+								'flex-column',
+								'd-flex',
+								'f-1',
+								'overflow-x'
+							)}
 						>
-							{pair &&
-								chartHeight > 0 && (
-									<PriceChart
-										height={chartHeight}
-										width={chartWidth}
-										theme={activeTheme}
-										pair={pair}
-										pairBase={pairData.pair_base}
-									/>
+							<div
+								className={classnames(
+									'trade-main_content',
+									'flex-auto',
+									'd-flex'
 								)}
-						</TradeBlock>
+							>
+								<div
+									className={classnames(
+										'trade-col_action_wrapper',
+										'flex-column',
+										'd-flex',
+										'apply_rtl'
+									)}
+								>
+									<TradeBlock title={STRINGS.ORDER_ENTRY}>
+										<OrderEntry
+											submitOrder={this.onSubmitOrder}
+											openCheckOrder={this.openCheckOrder}
+											symbol={symbol}
+											balance={balance}
+											asks={asks}
+											bids={bids}
+											marketPrice={marketPrice}
+											showPopup={settings.orderConfirmationPopup}
+										/>
+									</TradeBlock>
+								</div>
+								<TradeBlock
+									title={STRINGS.CHART}
+									setRef={this.setChartRef}
+									className="f-1 overflow-x"
+								>
+									{pair &&
+										chartHeight > 0 && (
+											<PriceChart
+												height={chartHeight}
+												width={chartWidth}
+												theme={activeTheme}
+												pair={pair}
+												pairBase={pairData.pair_base}
+											/>
+										)}
+								</TradeBlock>
+							</div>
+							<div
+								className={classnames(
+									'trade-tabs_content',
+									'd-flex',
+									'flex-column',
+									'apply_rtl'
+								)}
+							>
+								<TradeBlockTabs content={USER_TABS} />
+							</div>
+						</div>
+						<div
+							className={classnames(
+								'trade-col_side_wrapper',
+								'flex-column',
+								'd-flex',
+								'apply_rtl'
+							)}
+						>
+							<TradeBlock title={STRINGS.TRADE_HISTORY}>
+								<TradeHistory data={tradeHistory} language={activeLanguage} />
+							</TradeBlock>
+						</div>
 					</div>
-					<div
-						className={classnames(
-							'trade-tabs_content',
-							'd-flex',
-							'flex-column',
-							'apply_rtl'
-						)}
-					>
-						<TradeBlockTabs content={USER_TABS} />
-					</div>
-				</div>
-				<div
-					className={classnames(
-						'trade-col_side_wrapper',
-						'flex-column',
-						'd-flex',
-						'apply_rtl'
-					)}
-				>
-					<TradeBlock title={STRINGS.TRADE_HISTORY}>
-						<TradeHistory data={tradeHistory} language={activeLanguage} />
-					</TradeBlock>
-				</div>
+				)}
 			</div>
 		);
 	}

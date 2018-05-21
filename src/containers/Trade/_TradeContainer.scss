@@ -35,3 +35,94 @@
 		margin: 0;
 	}
 }
+
+.layout-mobile {
+	.trade_order_entry-wrapper {
+		&.order_side-selector-sell,
+		&.order_side-selector-buy {
+			.trade_order_entry-form-action {
+				height: 4.5rem;
+			}
+		}
+	}
+	.trade_order_entry-wrapper {
+		.trade_order_entry-review,
+		.trade_order_entry-selector,
+		.trade_order_entry-action_selector,
+		&.order_side-selector-sell .trade_order_entry-form_fields-wrapper,
+		&.order_side-selector-buy .trade_order_entry-form_fields-wrapper {
+			margin-bottom: $component--margin-bottom !important;
+		}
+	}
+	.trade_block-title {
+		font-size: $title--font-size;
+		border-top-width: 0.4rem !important;
+		margin-bottom: $component--margin-bottom !important;
+	}
+	.trade_order_entry-action_selector {
+		height: 4rem !important;
+	}
+	.trade_order_entry-selector {
+		font-size: $regular--font-size;
+
+		& > div {
+			line-height: $component--margin-bottom !important;
+		}
+	}
+	.trade_orderbook-headers {
+		border-bottom: none !important;
+		border-top: 0.1rem solid black;
+		font-size: $regular--font-size;
+	}
+	.trade_orderbook-asks,
+	.trade_orderbook-bids,
+	.trade_orderbook-spread {
+		font-size: $extra-thick--font-size;
+	}
+	.orderbook-limit_bar-wrapper {
+		.orderbook-limit_bar-text {
+			font-size: $regular--font-size !important;
+		}
+	}
+	.trade_orderbook-spread {
+		height: 2rem;
+		margin: 1rem 0;
+	}
+	.trade_orderbook-asks,
+	.trade_orderbook-bids {
+		min-height: unset !important;
+		height: calc(50% - 4rem);
+	}
+	.trade_input-wrapper {
+		.trade_input-label {
+			font-size: $regular--font-size;
+		}
+		.trade_input-input-wrapper {
+			> input {
+				height: $input--height !important;
+				font-size: $extra-thick--font-size;
+			}
+
+			.trade_input-input-currency {
+				height: $input--height !important;
+				width: 3.5rem !important;
+				font-size: $regular--font-size;
+			}
+		}
+	}
+
+	.trade_order_entry-review {
+		& > div {
+			margin-bottom: 0.5rem;
+			font-size: $regular--font-size;
+		}
+	}
+	.trade_orderbook-content {
+		.trade_orderbook-asks,
+		.trade_orderbook-bids {
+			.value-row {
+				flex: 1;
+			}
+		}
+	}
+}

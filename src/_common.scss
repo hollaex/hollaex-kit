@@ -22,6 +22,10 @@
 	flex: 0 !important;
 }
 
+.f-1 {
+	flex: 1;
+}
+
 .overflow-y {
 	overflow-y: auto;
 }
@@ -84,12 +88,11 @@ table th {
 	}
 }
 
-
 .blue-link {
 	color: $colors-notifications-blue !important;
 }
 
-.dark-theme {	
+.dark-theme {
 	.blue-link {
 		color: $dark-link !important;
 	}
