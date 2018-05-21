@@ -23,29 +23,31 @@ export const Mobile = ({ props, orderbookProps, symbol }) => {
 		activeTheme,
 		settings
 	} = props;
-	return(<div
-		className={classnames(
-			'flex-row',
-			'd-flex',
-			'justify-content-between',
-			'f-1',
-			'apply_rtl'
-		)}
-	>
-		<TradeBlock title={STRINGS.ORDER_ENTRY}>
-			<OrderEntry
-				submitOrder={this.onSubmitOrder}
-				openCheckOrder={this.openCheckOrder}
-				symbol={symbol}
-				balance={balance}
-				asks={asks}
-				bids={bids}
-				marketPrice={marketPrice}
-				showPopup={settings.orderConfirmationPopup}
-			/>
-		</TradeBlock>
-		<TradeBlock title={STRINGS.ORDERBOOK}>
-			{orderbookReady && <Orderbook {...orderbookProps} />}
-		</TradeBlock>
-	</div>)
+	return (
+		<div
+			className={classnames(
+				'flex-row',
+				'd-flex',
+				'justify-content-between',
+				'f-1',
+				'apply_rtl'
+			)}
+		>
+			<TradeBlock title={STRINGS.ORDER_ENTRY}>
+				<OrderEntry
+					submitOrder={this.onSubmitOrder}
+					openCheckOrder={this.openCheckOrder}
+					symbol={symbol}
+					balance={balance}
+					asks={asks}
+					bids={bids}
+					marketPrice={marketPrice}
+					showPopup={settings.orderConfirmationPopup}
+				/>
+			</TradeBlock>
+			<TradeBlock title={STRINGS.ORDERBOOK}>
+				{orderbookReady && <Orderbook {...orderbookProps} />}
+			</TradeBlock>
+		</div>
+	);
 };

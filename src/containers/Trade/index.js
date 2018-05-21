@@ -185,7 +185,7 @@ class Trade extends Component {
 						symbol={symbol}
 					/>
 				) : (
-					<div>
+					<div className={classnames('trade-container', 'd-flex')}>
 						<EventListener target="window" onResize={this.onResize} />
 						<div
 							className={classnames(
