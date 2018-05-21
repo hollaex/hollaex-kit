@@ -69,6 +69,12 @@ $inner_container-border: 1px solid $colors-main-black;
 	}
 }
 
+.layout-mobile {
+	.presentation_container {
+		padding-top: 4rem !important;
+	}
+}
+
 .presentation_container {
 	width: $content-display-width;
 	max-width: calc(100% - #{$content-display-vertical-margin * 2});
