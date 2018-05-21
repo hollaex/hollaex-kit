@@ -1,5 +1,6 @@
 import React from 'react';
 import classnames from 'classnames';
+import { isBrowser, isMobile } from 'react-device-detect';
 import { connect } from 'react-redux';
 import { FLEX_CENTER_CLASSES } from '../../config/constants';
 import { getClasesForLanguage } from '../../utils/string';
@@ -17,6 +18,10 @@ const AuthContainer = ({ activeLanguage, activeTheme, children }) => {
 				'w-100',
 				'h-100',
 				getThemeClass(activeTheme),
+				{
+					'layout-mobile': isMobile,
+					'layout-desktop': isBrowser
+				},
 				...FLEX_CENTER_CLASSES
 			)}
 		>

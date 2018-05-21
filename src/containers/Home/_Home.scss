@@ -6,11 +6,20 @@ $features-container--sm--width: 45rem;
 $card-text--margin: 0.75rem;
 $no-background--color: white;
 
+.layout-mobile {
+	&.home_container {
+		.app_container-content {
+			min-height: $max-content-height-home-mobile;
+			max-height: $max-content-height-home-mobile;
+		}
+	}
+}
+
 .home_container {
 	background: url($background-image);
 
-	background-repeat:no-repeat;
-	background-size:cover;
+	background-repeat: no-repeat;
+	background-size: cover;
 
 	// background-repeat: repeat;
 	// background-size: $background-patter--size;
