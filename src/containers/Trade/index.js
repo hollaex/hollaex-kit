@@ -30,12 +30,13 @@ import TradeHistory from './components/TradeHistory';
 import PriceChart from './components/PriceChart';
 import { Mobile } from './Mobile';
 
-import { ActionNotification, Loader } from '../../components';
+import { ActionNotification, Loader, MobileBarTabs } from '../../components';
 
 import STRINGS from '../../config/localizedStrings';
 
 class Trade extends Component {
 	state = {
+		activeTab: 0,
 		chartHeight: 0,
 		chartWidth: 0,
 		symbol: ''
@@ -110,6 +111,10 @@ class Trade extends Component {
 		this.props.change(FORM_NAME, 'size', size);
 	};
 
+	setActiveTab = (activeTab) => {
+		this.setState({ activeTab });
+	};
+
 	render() {
 		const {
 			pair,
@@ -128,7 +133,7 @@ class Trade extends Component {
 			activeTheme,
 			settings
 		} = this.props;
-		const { chartHeight, chartWidth, symbol } = this.state;
+		const { chartHeight, chartWidth, symbol, activeTab } = this.state;
 
 		if (symbol !== pair || !pairData) {
 			return <Loader background={false} />;
@@ -176,14 +181,39 @@ class Trade extends Component {
 			onAmountClick: this.onAmountClick
 		};
 
-		return (
-			<div className={classnames('trade-container', 'd-flex')}>
-				{isMobile ? (
+		const mobileTabs = [
+			{
+				title: STRINGS.TRADE_TAB_CHART,
+				content: <div>chart</div>
+			},
+			{
+				title: STRINGS.TRADE_TAB_TRADE,
+				content: (
 					<Mobile
 						props={this.props}
 						orderbookProps={orderbookProps}
 						symbol={symbol}
 					/>
+				)
+			},
+			{
+				title: STRINGS.TRADE_TAB_ORDERS,
+				content: <div>orders</div>
+			}
+		];
+		return (
+			<div className={classnames('trade-container', 'd-flex')}>
+				{isMobile ? (
+					<div className="">
+						<MobileBarTabs
+							tabs={mobileTabs}
+							activeTab={activeTab}
+							setActiveTab={this.setActiveTab}
+						/>
+						<div className="content-with-bar d-flex">
+							{mobileTabs[activeTab].content}
+						</div>
+					</div>
 				) : (
 					<div className={classnames('trade-container', 'd-flex')}>
 						<EventListener target="window" onResize={this.onResize} />
