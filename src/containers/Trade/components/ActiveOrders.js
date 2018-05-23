@@ -6,7 +6,7 @@ import { ICONS } from '../../../config/constants';
 import { Table, ActionNotification } from '../../../components';
 import { formatTimestamp } from '../../../utils/utils';
 import { formatFiatAmount, formatBtcAmount } from '../../../utils/currency';
-
+import { isMobile } from 'react-device-detect';
 import { subtract } from '../utils';
 import STRINGS from '../../../config/localizedStrings';
 
@@ -60,7 +60,7 @@ const generateHeaders = (onCancel) => [
 			return <td key={index}>{formatBtcAmount(subtract(size, filled))}</td>;
 		}
 	},
-	{
+	!isMobile && {
 		label: STRINGS.STATUS,
 		key: 'status',
 		renderCell: ({ size = 0, filled = 0 }, key, index) => {

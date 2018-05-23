@@ -1,5 +1,24 @@
 $tabs-title--margin: 2rem;
 
+.layout-mobile {
+	.trade_block-wrapper {
+		.trade_block-content {
+			font-size: $regular--font-size;
+			.table_body-wrapper {
+				font-size: $regular--font-size;
+				.action_notification-wrapper {
+					.action_notification-svg {
+						svg {
+							width: 1.5rem;
+							height: 1.5rem;
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
 .trade_block-wrapper {
 	padding: 1rem;
 	flex: auto;

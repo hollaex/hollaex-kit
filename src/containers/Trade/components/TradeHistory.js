@@ -8,6 +8,38 @@ import { formatFiatAmount, formatBtcAmount } from '../../../utils/currency';
 
 import STRINGS from '../../../config/localizedStrings';
 
+const generateExtraHeaders = () => [
+	{
+		key: 'side',
+		label: STRINGS.SIDE,
+		renderCell: ({ side }, index) => (
+			<div className={side} key={`side-${index}`}>
+				{side}
+			</div>
+		)
+	},
+	{
+		key: 'price',
+		label: STRINGS.PRICE,
+		renderCell: ({ side, price = 0 }, index) => (
+			<div className={classnames('trade_history-row')} key={`time-${index}`}>
+				{formatFiatAmount(price)}
+			</div>
+		)
+	},
+	{
+		key: 'size',
+		label: STRINGS.SIZE,
+		renderCell: ({ size = 0 }, index) => formatBtcAmount(size)
+	},
+	{
+		key: 'timestamp',
+		label: STRINGS.TIME,
+		renderCell: ({ timestamp }, index) =>
+			formatTimestamp(timestamp, STRINGS.HOUR_FORMAT)
+	}
+];
+
 const generateHeaders = () => [
 	{
 		key: 'price',
@@ -50,7 +82,9 @@ class TradeHistory extends Component {
 	}
 
 	calculateHeaders = () => {
-		const headers = generateHeaders();
+		const headers = this.props.renderExtra
+			? generateExtraHeaders()
+			: generateHeaders();
 		this.setState({ headers });
 	};
 

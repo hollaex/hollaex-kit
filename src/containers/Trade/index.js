@@ -28,7 +28,9 @@ import ActiveOrders from './components/ActiveOrders';
 import UserTrades from './components/UserTrades';
 import TradeHistory from './components/TradeHistory';
 import PriceChart from './components/PriceChart';
-import { Mobile } from './Mobile';
+import MobileTrade from './MobileTrade';
+import MobileChart from './MobileChart';
+import MobileOrders from './MobileOrders';
 
 import { ActionNotification, Loader, MobileBarTabs } from '../../components';
 
@@ -83,6 +85,10 @@ class Trade extends Component {
 	goToTransactionsHistory = () => {
 		this.props.router.push('transactions');
 	};
+
+	goToPair = (pair) => {
+		this.props.router.push(`/trade/${pair}`);
+	}
 
 	onResize = () => {
 		if (this.chartBlock) {
@@ -184,21 +190,38 @@ class Trade extends Component {
 		const mobileTabs = [
 			{
 				title: STRINGS.TRADE_TAB_CHART,
-				content: <div>chart</div>
+				content: (
+					<MobileChart
+						props={this.props}
+						orderbookProps={orderbookProps}
+						symbol={symbol}
+						chartHeight={chartHeight}
+						chartWidth={chartWidth}
+					/>
+				)
 			},
 			{
 				title: STRINGS.TRADE_TAB_TRADE,
 				content: (
-					<Mobile
+					<MobileTrade
 						props={this.props}
 						orderbookProps={orderbookProps}
 						symbol={symbol}
+						goToPair={this.goToPair}
 					/>
 				)
 			},
 			{
 				title: STRINGS.TRADE_TAB_ORDERS,
-				content: <div>orders</div>
+				content: (
+					<MobileOrders
+						props={this.props}
+						orderbookProps={orderbookProps}
+						symbol={symbol}
+						chartHeight={chartHeight}
+						chartWidth={chartWidth}
+					/>
+				)
 			}
 		];
 		return (

@@ -132,6 +132,7 @@ $max-content-height-mobile: calc(100vh - #{$navigation_bar-mobile--height + $bot
 $max-content-height-double-bar-mobile: calc(100vh - #{$navigation_bar-mobile--height * 2 + $bottom-bar--height});
 $max-content-height-home-mobile: calc(100vh - #{$navigation_bar-mobile--height});
 $max-content-width-mobile: 100vw;
+$table-header-column--font-size: 1rem;
 $regular--font-size: 1.2rem;
 $title--font-size: 1.75rem;
 $extra-thick--font-size: 1.5rem;
