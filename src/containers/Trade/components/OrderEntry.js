@@ -245,7 +245,6 @@ class OrderEntry extends Component {
 					maxValue(LIMIT_VALUES[pair].PRICE.MAX),
 					step(LIMIT_VALUES[pair].PRICE.STEP)
 				],
-				// normalize: normalizeInt,
 				currency: STRINGS.FIAT_SHORTNAME
 			}
 		};

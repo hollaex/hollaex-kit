@@ -1,5 +1,5 @@
 import PhoneNumber from 'awesome-phonenumber';
-import { DEFAULT_LANGUAGE } from '../config/constants';
+import { DEFAULT_LANGUAGE, THEME_DEFAULT } from '../config/constants';
 
 const USER_DATA_KEYS = [
 	'full_name',
@@ -77,7 +77,7 @@ const INITIAL_STATE = {
 	settings: {
 		usernameIsSet: false,
 		orderConfirmationPopup: true,
-		theme: 'dark',
+		theme: THEME_DEFAULT,
 		language: DEFAULT_LANGUAGE
 	},
 	addressRequest: INITIAL_ADDRESS_OBJECT,

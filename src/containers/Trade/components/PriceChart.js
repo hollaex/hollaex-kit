@@ -58,7 +58,6 @@ class ChartComponent extends Component {
 	}
 
 	setChartData = ({ data, timestamp }) => {
-		console.log(data);
 		const { chartData } = this.state;
 		Object.keys(data).forEach((symbol) => {
 			if (!chartData[symbol]) {

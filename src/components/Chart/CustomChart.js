@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import { ChartCanvas, Chart } from 'react-stockcharts';
+import { BarSeries } from 'react-stockcharts/lib/series';
 
 import { XAxis, YAxis, TXAxis } from './axis';
 
@@ -24,7 +25,12 @@ import {
 	FORMAT_Y_TICK
 } from './utils';
 
-import { OHLCProps, edgeIndicatorProps } from './props';
+import {
+	OHLCProps,
+	edgeIndicatorProps,
+	BarSeriesProps,
+	BarSeriesChartProps
+} from './props';
 
 import STRINGS from '../../config/localizedStrings';
 
@@ -82,6 +88,9 @@ class CustomChart extends Component {
 					{children}
 					<OHLCTooltip {...OHLCProps} displayTexts={STRINGS.CHART_TEXTS} />
 					<EdgeIndicator {...edgeIndicatorProps} />
+				</Chart>
+				<Chart id={2} {...BarSeriesChartProps(height, 4)}>
+					<BarSeries {...BarSeriesProps(theme)} />
 				</Chart>
 				<CrossHairCursor />
 			</ChartCanvas>

@@ -11,7 +11,6 @@ import { Button } from '../';
 
 const generateRows = ({ order, pairData }) => {
 	const { type, side, price, size, orderFees, orderPrice } = order;
-	console.log(pairData)
 	const secondaryCurrency = pairData.pair_2.toUpperCase();
 	const secondaryFormat = CURRENCIES[pairData.pair_2].formatToCurrency;
 	const baseCurrency = pairData.pair_base.toUpperCase();

@@ -64,7 +64,6 @@ class QuickTradeContainer extends Component {
 	}
 
 	changePair = (pair) => {
-		console.log(this.props);
 		this.setState({ pair });
 		this.props.changePair(pair);
 	};

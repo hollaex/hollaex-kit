@@ -216,6 +216,16 @@ export default {
 					'Your {0} require 1 confirmations before you can begin trading.',
 				INFORMATION_PENDING_2:
 					'This may take 10-30 minutes. We will send an email once your {0} have completed Confirming.'
+			},
+			ETH: {
+				TITLE_RECEIVED: '{0} Deposit received',
+				TITLE_INCOMING: 'Incoming {0}',
+				SUBTITLE_RECEIVED: 'You’ve received your {0} deposit',
+				SUBTITLE_INCOMING: 'You have incoming {0}',
+				INFORMATION_PENDING_1:
+					'Your {0} require 1 confirmations before you can begin trading.',
+				INFORMATION_PENDING_2:
+					'This may take 10-30 minutes. We will send an email once your {0} have completed Confirming.'
 			}
 		}
 	},
@@ -812,8 +822,8 @@ export default {
 		LABEL_LEVEL_3: 'Three',
 		LABEL_MAKER_FEE: 'Maker Fee',
 		LABEL_TAKER_FEE: 'Taker Fee',
-		LABEL_FIAT_DEPOSIT: 'Daily Rial Deposit',
-		LABEL_FIAT_WITHDRAWAL: 'Daily Rial Withdrawal',
+		LABEL_FIAT_DEPOSIT: 'Daily Euro Deposit',
+		LABEL_FIAT_WITHDRAWAL: 'Daily Euro Withdrawal',
 		LABEL_BTC_DEPOSIT: 'Daily Bitcoin Deposit',
 		LABEL_BTC_WITHDRAWAL: 'Daily Bitcoin Withdrawal',
 		LABEL_ETH_DEPOSIT: 'Daily Ethereum Deposit',

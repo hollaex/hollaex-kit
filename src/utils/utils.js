@@ -1,12 +1,6 @@
 import moment from 'moment';
-import momentJ from 'moment-jalaali';
 
-import {
-	TOKEN_TIME,
-	TIMESTAMP_FORMAT,
-	TIMESTAMP_FORMAT_FA
-} from '../config/constants';
-import { getLanguage } from './string';
+import { TOKEN_TIME, TIMESTAMP_FORMAT } from '../config/constants';
 
 const bitcoin = {
 	COIN: 100000000,
@@ -44,13 +38,8 @@ export const checkUserSessionExpired = (loginTime) => {
 };
 
 export const formatTimestamp = (date, format) => {
-	if (getLanguage() === 'fa') {
-		return formatTimestampFarsi(date, format);
-	}
 	return formatTimestampGregorian(date, format);
 };
 
 export const formatTimestampGregorian = (date, format = TIMESTAMP_FORMAT) =>
 	moment(date).format(format);
-export const formatTimestampFarsi = (date, format = TIMESTAMP_FORMAT_FA) =>
-	momentJ(date).format(format);

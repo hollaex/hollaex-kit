@@ -178,7 +178,7 @@ class Container extends Component {
 		});
 
 		publicSocket.on('ticker', (data) => {
-			console.log('ticker', data);
+			// console.log('ticker', data);
 			this.props.setTickers(data);
 		});
 	};

@@ -29,7 +29,6 @@ class InputBlock extends Component {
 	};
 
 	componentDidMount() {
-		console.log(this.props.symbol)
 		const { pair_base } = PAIRS[this.props.symbol];
 
 		if (this.props.initialValue) {
