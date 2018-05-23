@@ -1,5 +1,6 @@
 import { timeFormat } from 'd3-time-format';
 import { format } from 'd3-format';
+import { isMobile } from 'react-device-detect';
 
 import {
 	yAccessor,
@@ -7,6 +8,8 @@ import {
 	OHLCChildren,
 	FORMAT_Y_TICK
 } from './utils';
+
+const FONT_SIZE = isMobile ? 10 : 6;
 
 const OHLC_TIME_FORMAT = '%Y-%m-%d %H:%M:%S';
 
@@ -70,8 +73,10 @@ export const edgeIndicatorProps = {
 	displayFormat: FORMAT_Y_TICK
 };
 
+const OHLCOrigin = isMobile ? [0, -10] : [0, -25];
+
 export const OHLCProps = {
-	origin: [0, -25],
+	origin: OHLCOrigin,
 	xDisplayFormat: timeFormat(OHLC_TIME_FORMAT),
 	ohlcFormat: FORMAT_Y_TICK,
 	volumeFormat: (v) => v,
@@ -92,7 +97,7 @@ export const CandleChartXAxis = {
 	orient: 'bottom',
 	stroke: COLORS.AXIS,
 	tickStroke: COLORS.AXIS,
-	fontSize: 10
+	fontSize: FONT_SIZE
 };
 
 export const CandleChartYAxis = {
@@ -101,7 +106,7 @@ export const CandleChartYAxis = {
 	stroke: COLORS.AXIS,
 	tickStroke: COLORS.AXIS,
 	ticks: 5,
-	fontSize: 10
+	fontSize: FONT_SIZE
 };
 
 export const CandleChartEdgeIndicatorProps = {
@@ -110,7 +115,7 @@ export const CandleChartEdgeIndicatorProps = {
 	edgeAt: 'right',
 	yAccessor,
 	fill: CandleColor,
-	fontSize: 10
+	fontSize: FONT_SIZE
 };
 
 export const BarSeriesProps = (theme) => ({
@@ -125,7 +130,7 @@ export const BarSeriesYAxis = {
 	orient: 'left',
 	ticks: 5,
 	tickFormat: format('.2s'),
-	fontSize: 10
+	fontSize: FONT_SIZE
 };
 
 export const BarSeriesChartProps = (height = 150, ratio = 2) => {
