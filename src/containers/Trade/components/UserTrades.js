@@ -1,10 +1,15 @@
 import React from 'react';
 
 import { Table } from '../../../components';
-import { generateTradeHeaders } from '../../TransactionsHistory/utils';
+import {
+	generateTradeHeaders,
+	generateLessTradeHeaders
+} from '../../TransactionsHistory/utils';
 
-const ActiveOrders = ({ trades, pairData, pair }) => {
-	const headers = generateTradeHeaders(pairData.pair_base);
+const ActiveOrders = ({ trades, pairData, pair, lessHeaders }) => {
+	const headers = lessHeaders
+		? generateLessTradeHeaders(pairData.pair_base)
+		: generateTradeHeaders(pairData.pair_base);
 	if (!pair) {
 		return <div />;
 	}
