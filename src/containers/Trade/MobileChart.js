@@ -7,19 +7,25 @@ import TradeHistory from './components/TradeHistory';
 import { MobileDropdown } from '../../components';
 
 class MobileChart extends Component {
+	state = {
+		chartWidth: 0,
+		chartHeight: 0
+	};
+
+	setChartRef = (el) => {
+		if (el) {
+			this.setState({
+				chartHeight: el.offsetHeight,
+				chartWidth: el.offsetWidth
+			});
+		}
+	};
+
 	render() {
 		const {
-			props: {
-				pair,
-				pairData,
-				activeTheme,
-				chartHeight,
-				chartWidth,
-				tradeHistory,
-				activeLanguage
-			}
+			pair, pairData, activeTheme, tradeHistory, activeLanguage
 		} = this.props;
-
+		const { chartHeight, chartWidth } = this.state;
 		return (
 			<div
 				className={classnames(

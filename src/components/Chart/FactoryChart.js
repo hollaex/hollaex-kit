@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { isMobile } from "react-device-detect";
 import CandleChart from './Charts/CandleChart';
 import AreaChart from './Charts/AreaChart';
 
@@ -12,9 +11,6 @@ export const CHART_TYPES = {
 };
 
 export const FactoryChart = ({ chartType, symbol, ...props }) => {
-	if (isMobile) {
-		return <div>Chart not available yet</div>;
-	}
 	switch (chartType) {
 		case CHART_TYPES.AREA:
 			return <AreaChart dataCount={100} {...props} />;

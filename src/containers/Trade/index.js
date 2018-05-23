@@ -192,11 +192,12 @@ class Trade extends Component {
 				title: STRINGS.TRADE_TAB_CHART,
 				content: (
 					<MobileChart
-						props={this.props}
-						orderbookProps={orderbookProps}
+						pair={pair}
+						pairData={pairData}
+						tradeHistory={tradeHistory}
+						activeLanguage={activeLanguage}
+						activeTheme={activeTheme}
 						symbol={symbol}
-						chartHeight={chartHeight}
-						chartWidth={chartWidth}
 					/>
 				)
 			},
