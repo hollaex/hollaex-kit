@@ -147,4 +147,30 @@ $close-button--margin: 1.5rem;
 			}
 		}
 	}
+
+	&.compressed {
+		.ReactModal__Content {
+			top: 0 !important;
+			min-height: inherit;
+			max-height: inherit;
+			background: transparent !important;
+
+			.dialog-mobile-content {
+				min-height: inherit;
+				max-height: inherit;
+			}
+		}
+	}
+}
+
+.dialog-compressed-wrapper {
+	background-color: $colors-main-black;
+	position: fixed;
+	bottom: 0;
+	right: 0;
+	left: 0;
+
+	.dialog-compressed-content {
+
+	}
 }

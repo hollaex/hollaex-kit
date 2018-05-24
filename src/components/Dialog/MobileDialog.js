@@ -5,6 +5,38 @@ import Modal from 'react-modal';
 import { MobileBarBack } from '../';
 import { getClasesForLanguage, getLanguage } from '../../utils/string';
 import { getThemeClass } from '../../utils/theme';
+import { ICONS } from '../../config/constants';
+import ReactSVG from 'react-svg';
+
+const CompressedContent = ({ children, onClose }) => {
+	return (
+		<div className="dialog-compressed-wrapper d-flex">
+			<div className="dialog-compressed-content f-1">{children}</div>
+			<div className="dialog-compressed-close f-0 d-flex justify-content-center align-items-center" onClick={onClose}>
+				<div className="close-dialog">
+					<ReactSVG
+						path={ICONS.CANCEL_CROSS_ACTIVE}
+						wrapperClassName="bar-icon-back"
+					/>
+				</div>
+			</div>
+		</div>
+	);
+};
+
+const RegularContent = ({ showBar, onBackClick, children }) => {
+	return (
+		<div className="dialog-regular-content">
+			{showBar && (
+				<MobileBarBack
+					onBackClick={onBackClick}
+					wrapperClassName="dialog-svg"
+				/>
+			)}
+			<div className="dialog-mobile-content">{children}</div>
+		</div>
+	);
+};
 
 class Dialog extends PureComponent {
 	static propTypes = {
@@ -53,13 +85,15 @@ class Dialog extends PureComponent {
 					}
 				)}
 			>
-				{showBar && (
-					<MobileBarBack
-						onBackClick={this.onRequestClose}
-						wrapperClassName="dialog-svg"
-					/>
+				{compressed ? (
+					<CompressedContent onClose={this.onRequestClose}>
+						{children}
+					</CompressedContent>
+				) : (
+					<RegularContent showBar={showBar} onBackClick={this.onRequestClose}>
+						{children}
+					</RegularContent>
 				)}
-				<div className="dialog-mobile-content">{children}</div>
 			</Modal>
 		);
 	}

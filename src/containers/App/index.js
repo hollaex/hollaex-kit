@@ -557,6 +557,10 @@ class Container extends Component {
 							activeNotification.type === NOTIFICATIONS.ERROR
 						)
 					}
+					compressed={
+						activeNotification.type === NOTIFICATIONS.ORDERS ||
+						activeNotification.type === NOTIFICATIONS.TRADES
+					}
 					style={{ 'z-index': 100 }}
 				>
 					{dialogIsOpen &&

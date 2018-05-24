@@ -224,4 +224,9 @@ $logout--size-difference: 3rem;
 			justify-content: space-evenly;
 		}
 	}
+
+	.order-notification, .trade-notification {
+		flex-direction: row;
+		color: white;
+	}
 }
