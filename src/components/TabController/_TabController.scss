@@ -78,3 +78,9 @@ $tab_controller-item-min-width: 12rem;
 		}
 	}
 }
+
+.layout-mobile {
+	.transaction-history-wrapper {
+		padding-top: 0 !important;
+	}
+}

@@ -9,6 +9,7 @@ import {
 	Notification,
 	MobileBarTabs
 } from '../../components';
+import { TransactionsHistory } from '../'
 import { changeSymbol } from '../../actions/orderbookAction';
 import { NOTIFICATIONS } from '../../actions/appActions';
 import { createAddress, cleanCreateAddress } from '../../actions/userAction';
@@ -149,7 +150,7 @@ class Wallet extends Component {
 			},
 			{
 				title: STRINGS.WALLET_TAB_TRANSACTIONS,
-				content: <div>my trade history</div>
+				content: <TransactionsHistory />
 			}
 		];
 
