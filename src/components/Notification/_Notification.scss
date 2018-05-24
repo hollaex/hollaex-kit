@@ -215,3 +215,13 @@ $logout--size-difference: 3rem;
 		}
 	}
 }
+
+.layout-mobile {
+	.notification-wrapper {
+		flex: 1;
+
+		.notification-withdrawal {
+			justify-content: space-evenly;
+		}
+	}
+}

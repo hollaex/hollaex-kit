@@ -124,6 +124,9 @@ $close-button--margin: 1.5rem;
 
 		.dialog-mobile-content {
 			padding: $dialog--padding !important;
+			min-height: $max-content-height-dialog-mobile;
+			max-height: $max-content-height-dialog-mobile;
+			display: flex;
 		}
 	}
 
