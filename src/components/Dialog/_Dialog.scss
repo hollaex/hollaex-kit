@@ -141,4 +141,22 @@ $close-button--margin: 1.5rem;
 			}
 		}
 	}
+
+	&.dialog_full-screen {
+		.ReactModal__Content {
+			top: 0 !important;
+			min-height: 100vh;
+			max-height: 100vh;
+
+			.dialog-mobile-content {
+				min-height: 100vh;
+				max-height: 100vh;
+			}
+		}
+		&.login-dialog {
+			.dialog-mobile-content {
+				align-items: center;
+			}
+		}
+	}
 }

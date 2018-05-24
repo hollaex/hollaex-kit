@@ -25,7 +25,17 @@ class Dialog extends PureComponent {
 
 	render() {
 		const languageClasses = getClasesForLanguage(getLanguage());
-		const { isOpen, children, label, dialogId, theme, className } = this.props;
+		const {
+			isOpen,
+			children,
+			label,
+			dialogId,
+			theme,
+			className,
+			useFullScreen = false,
+			compressed = false,
+			showBar = false
+		} = this.props;
 
 		return (
 			<Modal
@@ -38,14 +48,20 @@ class Dialog extends PureComponent {
 					className,
 					languageClasses,
 					getThemeClass(theme),
-					'layout-mobile'
+					'layout-mobile',
+					{
+						compressed,
+						'dialog_full-screen': useFullScreen
+					}
 				)}
 			>
-				<MobileBarWrapper className="d-flex align-items-center">
-					<div className="close-dialog" onClick={this.onRequestClose}>
-						<ReactSVG path={ICONS.ARROW_DOWN} wrapperClassName="dialog-svg" />
-					</div>
-				</MobileBarWrapper>
+				{showBar && (
+					<MobileBarWrapper className="d-flex align-items-center">
+						<div className="close-dialog" onClick={this.onRequestClose}>
+							<ReactSVG path={ICONS.ARROW_DOWN} wrapperClassName="dialog-svg" />
+						</div>
+					</MobileBarWrapper>
+				)}
 				<div className="dialog-mobile-content">{children}</div>
 			</Modal>
 		);
