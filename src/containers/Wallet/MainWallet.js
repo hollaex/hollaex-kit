@@ -1,27 +1,29 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { isMobile } from 'react-device-detect';
 import {
 	IconTitle,
 	Dialog,
 	Accordion,
-	Notification
+	Notification,
+	MobileBarTabs
 } from '../../components';
 import { changeSymbol } from '../../actions/orderbookAction';
 import { NOTIFICATIONS } from '../../actions/appActions';
 import { createAddress, cleanCreateAddress } from '../../actions/userAction';
 import { ICONS, CURRENCIES } from '../../config/constants';
-import {
-	calculateBalancePrice
-} from '../../utils/currency';
+import { calculateBalancePrice } from '../../utils/currency';
 import STRINGS from '../../config/localizedStrings';
 
 import { AssetsBlock } from './AssetsBlock';
+import MobileWallet from './MobileWallet';
 
 const fiatFormatToCurrency = CURRENCIES.fiat.formatToCurrency;
 
 class Wallet extends Component {
 	state = {
+		activeTab: 0,
 		sections: [],
 		isOpen: true,
 		totalAssets: '',
@@ -131,10 +133,39 @@ class Wallet extends Component {
 		}
 	};
 
+	setActiveTab = (activeTab) => {
+		this.setState({ activeTab });
+	};
+
 	render() {
-		const { sections, dialogIsOpen, selectedCurrency } = this.state;
+		const { sections, dialogIsOpen, selectedCurrency, activeTab } = this.state;
 		const { activeTheme, addressRequest } = this.props;
-		return (
+
+		console.log('() ====>> ',sections)
+		const mobileTabs = [
+			{
+				title: STRINGS.WALLET_TAB_WALLET,
+				content: <MobileWallet sections={sections} />
+			},
+			{
+				title: STRINGS.WALLET_TAB_TRANSACTIONS,
+				content: <div>my trade history</div>
+			}
+		];
+
+		return isMobile ? (
+			<div>
+				<MobileBarTabs
+					tabs={mobileTabs}
+					activeTab={activeTab}
+					setActiveTab={this.setActiveTab}
+				/>
+				<div className="content-with-bar d-flex">
+				{console.log()}
+					{mobileTabs[activeTab].content}
+				</div>
+			</div>
+		) : (
 			<div className="presentation_container apply_rtl">
 				<IconTitle
 					text={STRINGS.WALLET_TITLE}

@@ -839,5 +839,7 @@ export default {
 	GENERATE_WALLET: 'Generate Wallet',
 	TRADE_TAB_CHART: 'Chart',
 	TRADE_TAB_TRADE: 'Trade',
-	TRADE_TAB_ORDERS: 'Orders'
+	TRADE_TAB_ORDERS: 'Orders',
+	WALLET_TAB_WALLET: 'Wallet',
+	WALLET_TAB_TRANSACTIONS: 'Transactions'
 };

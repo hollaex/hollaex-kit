@@ -88,7 +88,7 @@ class Trade extends Component {
 
 	goToPair = (pair) => {
 		this.props.router.push(`/trade/${pair}`);
-	}
+	};
 
 	onResize = () => {
 		if (this.chartBlock) {
@@ -216,6 +216,12 @@ class Trade extends Component {
 						openCheckOrder={this.openCheckOrder}
 						onSubmitOrder={this.onSubmitOrder}
 						goToPair={this.goToPair}
+						orderbookReady={orderbookReady}
+						asks={asks}
+						bids={bids}
+						balance={balance}
+						marketPrice={marketPrice}
+						settings={settings}
 					/>
 				)
 			},
@@ -223,11 +229,12 @@ class Trade extends Component {
 				title: STRINGS.TRADE_TAB_ORDERS,
 				content: (
 					<MobileOrders
-						props={this.props}
-						orderbookProps={orderbookProps}
-						symbol={symbol}
-						chartHeight={chartHeight}
-						chartWidth={chartWidth}
+						activeOrders={activeOrders}
+						cancelOrder={this.cancelOrder}
+						cancelAllOrders={this.cancelAllOrders}
+						pair={pair}
+						pairData={pairData}
+						userTrades={userTrades}
 					/>
 				)
 			}

@@ -1,5 +1,6 @@
 import React from 'react';
 import classnames from 'classnames';
+import { isMobile } from 'react-device-detect';
 import { ActionNotification } from '../';
 
 const AccordionSection = ({
@@ -14,7 +15,8 @@ const AccordionSection = ({
 	isOpen = false,
 	disabled = false,
 	notification,
-	subtitle = ''
+	subtitle = '',
+	showActionText = false
 }) => {
 	const onClick = () => {
 		if (!disabled) {
@@ -41,7 +43,7 @@ const AccordionSection = ({
 				disabled: disabled
 			})}
 		>
-			<div {...headerProps}>
+			{<div {...headerProps}>
 				<span
 					className={classnames(
 						'accordion_section_content_text',
@@ -67,9 +69,10 @@ const AccordionSection = ({
 						}
 						showPointer={notification.allowClick}
 						useSvg={true}
+						showActionText={showActionText}
 					/>
 				)}
-			</div>
+			</div>}
 			{isOpen && <div className="accordion_section_content">{content}</div>}
 		</div>
 	);
