@@ -9,7 +9,7 @@ import {
 	Notification,
 	MobileBarTabs
 } from '../../components';
-import { TransactionsHistory } from '../'
+import { TransactionsHistory } from '../';
 import { changeSymbol } from '../../actions/orderbookAction';
 import { NOTIFICATIONS } from '../../actions/appActions';
 import { createAddress, cleanCreateAddress } from '../../actions/userAction';
@@ -26,6 +26,7 @@ class Wallet extends Component {
 	state = {
 		activeTab: 0,
 		sections: [],
+		mobileTabs: [],
 		isOpen: true,
 		totalAssets: '',
 		dialogIsOpen: false,
@@ -96,7 +97,7 @@ class Wallet extends Component {
 				),
 				isOpen: true,
 				allowClose: false,
-				notification: {
+				notification: !isMobile && {
 					text: STRINGS.TRADE_HISTORY,
 					status: 'information',
 					iconPath: ICONS.BLUE_CLIP,
@@ -109,7 +110,17 @@ class Wallet extends Component {
 				}
 			}
 		];
-		this.setState({ sections, totalAssets, isOpen });
+		const mobileTabs = [
+			{
+				title: STRINGS.WALLET_TAB_WALLET,
+				content: <MobileWallet sections={sections} />
+			},
+			{
+				title: STRINGS.WALLET_TAB_TRANSACTIONS,
+				content: <TransactionsHistory />
+			}
+		];
+		this.setState({ sections, totalAssets, isOpen, mobileTabs });
 	};
 
 	goToPage = (path = '') => {
@@ -139,44 +150,45 @@ class Wallet extends Component {
 	};
 
 	render() {
-		const { sections, dialogIsOpen, selectedCurrency, activeTab } = this.state;
+		const {
+			sections,
+			dialogIsOpen,
+			selectedCurrency,
+			activeTab,
+			mobileTabs
+		} = this.state;
 		const { activeTheme, addressRequest } = this.props;
-
-		console.log('() ====>> ',sections)
-		const mobileTabs = [
-			{
-				title: STRINGS.WALLET_TAB_WALLET,
-				content: <MobileWallet sections={sections} />
-			},
-			{
-				title: STRINGS.WALLET_TAB_TRANSACTIONS,
-				content: <TransactionsHistory />
-			}
-		];
-
-		return isMobile ? (
-			<div>
-				<MobileBarTabs
-					tabs={mobileTabs}
-					activeTab={activeTab}
-					setActiveTab={this.setActiveTab}
-				/>
-				<div className="content-with-bar d-flex">
-				{console.log()}
-					{mobileTabs[activeTab].content}
-				</div>
-			</div>
-		) : (
-			<div className="presentation_container apply_rtl">
-				<IconTitle
-					text={STRINGS.WALLET_TITLE}
-					iconPath={ICONS.BITCOIN_WALLET}
-					useSvg={true}
-					textType="title"
-				/>
-				<div className="wallet-container">
-					<Accordion sections={sections} />
-				</div>
+		if (mobileTabs.length === 0) {
+			return <div />;
+		} else {
+			console.log(mobileTabs[activeTab].content)
+		}
+		return (
+			<div className="apply_rtl">
+				{isMobile ? (
+					<div>
+						<MobileBarTabs
+							tabs={mobileTabs}
+							activeTab={activeTab}
+							setActiveTab={this.setActiveTab}
+						/>
+						<div className="content-with-bar d-flex">
+							{mobileTabs[activeTab].content}
+						</div>
+					</div>
+				) : (
+					<div className="presentation_container apply_rtl">
+						<IconTitle
+							text={STRINGS.WALLET_TITLE}
+							iconPath={ICONS.BITCOIN_WALLET}
+							useSvg={true}
+							textType="title"
+						/>
+						<div className="wallet-container">
+							<Accordion sections={sections} />
+						</div>
+					</div>
+				)}
 				<Dialog
 					isOpen={dialogIsOpen}
 					label="hollaex-modal"

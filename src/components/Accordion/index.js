@@ -9,15 +9,25 @@ class Accordion extends Component {
 		ready: false
 	};
 
-	componentWillReceiveProps(nextProps) {
-		if (!this.state.ready && nextProps.sections.length > 0) {
-			const openSections = nextProps.sections
-				.map(({ isOpen }, index) => ({ isOpen, index }))
-				.filter(({ isOpen }) => isOpen)
-				.map(({ index }) => index);
-			this.setState({ openSections, ready: true });
+	componentWillMount() {
+		if (this.props.sections.length > 0) {
+			this.initialize(this.props.sections);
 		}
 	}
+
+	componentWillReceiveProps(nextProps) {
+		if (!this.state.ready && nextProps.sections.length > 0) {
+			this.initialize(nextProps.sections);
+		}
+	}
+
+	initialize = (sections) => {
+		const openSections = sections
+			.map(({ isOpen }, index) => ({ isOpen, index }))
+			.filter(({ isOpen }) => isOpen)
+			.map(({ index }) => index);
+		this.setState({ openSections, ready: true });
+	};
 
 	openSection = (section, open = true) => {
 		let openSections = [].concat(...this.state.openSections);
