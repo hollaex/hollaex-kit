@@ -205,9 +205,16 @@ class Trade extends Component {
 				title: STRINGS.TRADE_TAB_TRADE,
 				content: (
 					<MobileTrade
-						props={this.props}
 						orderbookProps={orderbookProps}
 						symbol={symbol}
+						asks={asks}
+						bids={bids}
+						balance={balance}
+						marketPrice={marketPrice}
+						settings={settings}
+						orderbookReady={orderbookReady}
+						openCheckOrder={this.openCheckOrder}
+						onSubmitOrder={this.onSubmitOrder}
 						goToPair={this.goToPair}
 					/>
 				)

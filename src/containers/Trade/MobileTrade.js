@@ -9,7 +9,14 @@ import STRINGS from '../../config/localizedStrings';
 class MobileTrade extends Component {
 	render() {
 		const {
-			props: { orderbookReady, asks, bids, balance, marketPrice, settings },
+			asks,
+			bids,
+			balance,
+			marketPrice,
+			settings,
+			onSubmitOrder,
+			openCheckOrder,
+			orderbookReady,
 			orderbookProps,
 			symbol,
 			goToPair
@@ -26,10 +33,10 @@ class MobileTrade extends Component {
 				)}
 			>
 				<TradeBlock title={STRINGS.ORDER_ENTRY} className="p-relative">
-					<MobileDropdownWrapper goToPair={goToPair}/>
+					<MobileDropdownWrapper goToPair={goToPair} />
 					<OrderEntry
-						submitOrder={this.onSubmitOrder}
-						openCheckOrder={this.openCheckOrder}
+						submitOrder={onSubmitOrder}
+						openCheckOrder={openCheckOrder}
 						symbol={symbol}
 						balance={balance}
 						asks={asks}
