@@ -7,6 +7,7 @@ import {
 	normalizeBTC,
 	normalizeBTCFee
 } from '../../components/Form/validations';
+import { isMobile } from 'react-device-detect';
 import STRINGS from '../../config/localizedStrings';
 import { WITHDRAW_LIMITS, ICONS } from '../../config/constants';
 import { fiatSymbol } from '../../utils/currency';
@@ -44,7 +45,8 @@ export const generateFormValues = (
 			validate: [
 				required,
 				validAddress(symbol, STRINGS.WITHDRAWALS_INVALID_ADDRESS)
-			]
+			],
+			fullWidth: isMobile
 		};
 	}
 
@@ -77,6 +79,7 @@ export const generateFormValues = (
 		step: STEP,
 		validate: amountValidate,
 		normalize: normalizeBTC,
+		fullWidth: isMobile,
 		notification: {
 			text: STRINGS.CALCULATE_MAX,
 			status: 'information',
@@ -100,7 +103,8 @@ export const generateFormValues = (
 			max: fees.max || MAX,
 			step: STEP,
 			validate: [required, minValue(fees.min), maxValue(fees.max)],
-			normalize: normalizeBTCFee
+			normalize: normalizeBTCFee,
+			fullWidth: isMobile
 		};
 	} else {
 		fields.fee = {
@@ -110,7 +114,8 @@ export const generateFormValues = (
 				STRINGS.WITHDRAWALS_FORM_FEE_PLACEHOLDER,
 				name
 			).join(''),
-			disabled: true
+			disabled: true,
+			fullWidth: isMobile
 		};
 	}
 

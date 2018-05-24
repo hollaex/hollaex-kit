@@ -58,7 +58,7 @@ $outline-height: 1.5px;
 		svg {
 			@include size($valid-icon-size);
 		}
-		bottom: .25rem;
+		bottom: 0.25rem;
 	}
 }
 
@@ -219,5 +219,23 @@ $outline-height: 1.5px;
 	}
 	.field-valid .icon-check-1 {
 		stroke: $dark-border-main;
+	}
+}
+
+.layout-mobile {
+	$move-side: 1.5rem;
+	&.direction_ltr {
+		.field-wrapper.field-valid.with-notification {
+			.action_notification-wrapper {
+				right: $move-side;
+			}
+		}
+	}
+	&.direction_rtl {
+		.field-wrapper.field-valid.with-notification {
+			.action_notification-wrapper {
+				left: $move-side;
+			}
+		}
 	}
 }
