@@ -22,7 +22,7 @@ import {
 	normalizeInt,
 	normalizeFloat
 } from '../../../components/Form/validations';
-import { Loader, MobileDropdown } from '../../../components';
+import { Loader } from '../../../components';
 import { LIMIT_VALUES, CURRENCIES } from '../../../config/constants';
 
 import STRINGS from '../../../config/localizedStrings';

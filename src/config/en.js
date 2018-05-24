@@ -841,5 +841,7 @@ export default {
 	TRADE_TAB_TRADE: 'Trade',
 	TRADE_TAB_ORDERS: 'Orders',
 	WALLET_TAB_WALLET: 'Wallet',
-	WALLET_TAB_TRANSACTIONS: 'Transactions'
+	WALLET_TAB_TRANSACTIONS: 'Transactions',
+	RECEIVE_CURRENCY: 'Receive {0}',
+	SEND_CURRENCY: 'Send {0}'
 };

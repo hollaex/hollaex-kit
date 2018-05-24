@@ -76,7 +76,8 @@ class Wallet extends Component {
 		prices,
 		isOpen = false,
 		wallets,
-		bankaccount
+		bankaccount,
+		
 	) => {
 		const totalAssets = this.calculateTotalAssets(balance, prices);
 
@@ -113,7 +114,12 @@ class Wallet extends Component {
 		const mobileTabs = [
 			{
 				title: STRINGS.WALLET_TAB_WALLET,
-				content: <MobileWallet sections={sections} />
+				content: <MobileWallet sections={sections}
+				wallets={wallets}
+				balance={balance}
+				prices={prices}
+				navigate={this.goToPage}
+			/>
 			},
 			{
 				title: STRINGS.WALLET_TAB_TRANSACTIONS,
@@ -160,8 +166,6 @@ class Wallet extends Component {
 		const { activeTheme, addressRequest } = this.props;
 		if (mobileTabs.length === 0) {
 			return <div />;
-		} else {
-			console.log(mobileTabs[activeTab].content)
 		}
 		return (
 			<div className="apply_rtl">
