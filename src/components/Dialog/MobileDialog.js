@@ -2,11 +2,9 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import Modal from 'react-modal';
-import ReactSVG from 'react-svg';
-import { MobileBarWrapper } from '../';
+import { MobileBarBack } from '../';
 import { getClasesForLanguage, getLanguage } from '../../utils/string';
 import { getThemeClass } from '../../utils/theme';
-import { ICONS } from '../../config/constants';
 
 class Dialog extends PureComponent {
 	static propTypes = {
@@ -34,7 +32,7 @@ class Dialog extends PureComponent {
 			className,
 			useFullScreen = false,
 			compressed = false,
-			showBar = false
+			showBar = true
 		} = this.props;
 
 		return (
@@ -56,11 +54,10 @@ class Dialog extends PureComponent {
 				)}
 			>
 				{showBar && (
-					<MobileBarWrapper className="d-flex align-items-center">
-						<div className="close-dialog" onClick={this.onRequestClose}>
-							<ReactSVG path={ICONS.ARROW_DOWN} wrapperClassName="dialog-svg" />
-						</div>
-					</MobileBarWrapper>
+					<MobileBarBack
+						onBackClick={this.onRequestClose}
+						wrapperClassName="dialog-svg"
+					/>
 				)}
 				<div className="dialog-mobile-content">{children}</div>
 			</Modal>

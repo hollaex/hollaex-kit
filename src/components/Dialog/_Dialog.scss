@@ -130,18 +130,6 @@ $close-button--margin: 1.5rem;
 		}
 	}
 
-	.close-dialog {
-		transform: rotate(90deg);
-		margin-left: 1rem;
-		@include size(2.5rem);
-		svg {
-			@include size(2.5rem);
-			.arrow-down {
-				stroke: white;
-			}
-		}
-	}
-
 	&.dialog_full-screen {
 		.ReactModal__Content {
 			top: 0 !important;

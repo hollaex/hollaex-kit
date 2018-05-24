@@ -27,3 +27,15 @@
 		background-color: $dark-disabled-secondary;
 	}
 }
+
+.layout-mobile {
+	.quote-container {
+		background-color: transparent;
+		.quick_trade-wrapper {
+			min-width: 100vw;
+			max-width: 100vw;
+			min-height: $max-content-height-bar-mobile;
+			max-height: $max-content-height-bar-mobile;
+		}
+	}
+}

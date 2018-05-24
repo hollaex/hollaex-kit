@@ -41,4 +41,16 @@ $mobile-notification-size: 1.75rem;
 			font-weight: bold;
 		}
 	}
+
+	.close-dialog {
+		transform: rotate(90deg);
+		margin-left: 1rem;
+		@include size(2.5rem);
+		svg {
+			@include size(2.5rem);
+			.arrow-down {
+				stroke: white;
+			}
+		}
+	}
 }
