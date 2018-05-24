@@ -1,6 +1,5 @@
 import React from 'react';
 import classnames from 'classnames';
-import { isMobile } from 'react-device-detect';
 import { ActionNotification } from '../';
 
 const AccordionSection = ({

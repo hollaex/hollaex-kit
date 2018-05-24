@@ -216,12 +216,6 @@ class Trade extends Component {
 						openCheckOrder={this.openCheckOrder}
 						onSubmitOrder={this.onSubmitOrder}
 						goToPair={this.goToPair}
-						orderbookReady={orderbookReady}
-						asks={asks}
-						bids={bids}
-						balance={balance}
-						marketPrice={marketPrice}
-						settings={settings}
 					/>
 				)
 			},
