@@ -12,110 +12,104 @@ import STRINGS from '../../../config/localizedStrings';
 
 class CurrencySlider extends Component {
 	state = {
-		currenctCurrency: '',
-		currenctCurrencyIndex: 0
+		currentCurrency: ''
 	};
 
 	componentWillMount() {
 		const currency = Object.keys(CURRENCIES)[0];
 		const currencyIndex = this.findCurrentCurrencyIndex(currency);
-		this.setcurrenctCurrency(currency);
-		this.setCurrenctCurrencyIndex(currencyIndex);
+		this.setcurrentCurrency(currency);
+		this.setcurrentCurrencyIndex(currencyIndex);
 	}
 
-	setcurrenctCurrency = (currency) => {
-		this.setState({ currenctCurrency: currency });
+	setcurrentCurrency = (currency) => {
+		this.setState({ currentCurrency: currency });
 	};
 
-	setCurrenctCurrencyIndex = (currenctCurrencyIndex) => {
-		this.setState({ currenctCurrencyIndex });
+	setcurrentCurrencyIndex = (currentCurrencyIndex) => {
+		this.setState({ currentCurrencyIndex });
 	};
 
 	nextCurrency = () => {
-		const { currenctCurrency } = this.state;
-		const currencyIndex = this.findCurrentCurrencyIndex(currenctCurrency);
-		const currenciesLength = Object.keys(CURRENCIES).length;
+		const { currentCurrency } = this.state;
+		const currencyArray = Object.keys(CURRENCIES);
+		const currenciesLength = currencyArray.length;
+		const currencyIndex = this.findCurrentCurrencyIndex(currentCurrency);
+		const currentCurrencyIndex =
+			currencyIndex >= currenciesLength - 1 ? 0 : currencyIndex + 1;
 
-		if (currencyIndex > -1 && currencyIndex < currenciesLength) {
-			this.setState({
-				currenctCurrency: Object.keys(CURRENCIES)[currencyIndex + 1]
-			});
-		}
+		this.setState({
+			currentCurrency: currencyArray[currentCurrencyIndex]
+		});
 	};
 
 	previousCurrency = () => {
-		const { currenctCurrency } = this.state;
-		const currencyIndex = this.findCurrentCurrencyIndex(currenctCurrency);
-
-		if (currencyIndex > 0) {
-			const currenctCurrencyIndex = currencyIndex - 1;
-			this.setState({
-				currenctCurrency: Object.keys(CURRENCIES)[currenctCurrencyIndex],
-				currenctCurrencyIndex
-			});
-		}
+		const { currentCurrency } = this.state;
+		const currencyArray = Object.keys(CURRENCIES);
+		const currencyIndex = this.findCurrentCurrencyIndex(currentCurrency);
+		const currentCurrencyIndex =
+			currencyIndex <= 0 ? currencyArray.length - 1 : currencyIndex - 1;
+		this.setState({
+			currentCurrency: currencyArray[currentCurrencyIndex]
+		});
 	};
 
-	findCurrentCurrencyIndex = (currenctCurrency) =>
+	findCurrentCurrencyIndex = (currentCurrency) =>
 		Object.keys(CURRENCIES).findIndex(
-			(currency) => currency === currenctCurrency
+			(currency) => currency === currentCurrency
 		);
 
 	render() {
 		const { wallets, balance, prices, navigate } = this.props;
-		const { currenctCurrency } = this.state;
-		const currenctCurrencyIndex = this.findCurrentCurrencyIndex(
-			currenctCurrency
-		);
-		const balanceValue = balance[`${currenctCurrency}_balance`];
+		const { currentCurrency } = this.state;
+		const balanceValue = balance[`${currentCurrency}_balance`];
 		const balanceText =
-			currenctCurrency === fiatSymbol
+			currentCurrency === fiatSymbol
 				? fiatFormatToCurrency(balanceValue)
 				: fiatFormatToCurrency(
-						calculatePrice(balanceValue, prices[currenctCurrency])
+						calculatePrice(balanceValue, prices[currentCurrency])
 					);
 
 		return (
 			<div className="d-flex flex-column justify-content-end currency-list-container f-1">
 				<div className="d-flex mb-5 flex-row">
-					<div className="d-flex arrow-container">
-						{currenctCurrencyIndex > 0 && (
-							<Arrow onClick={() => this.previousCurrency()} label="<" />
-						)}
+					<div className="d-flex align-items-center arrow-container">
+						<Arrow className="left" onClick={() => this.previousCurrency()} />
 					</div>
 					{
 						<Currency
-							currency={currenctCurrency}
+							currency={currentCurrency}
 							balance={balance}
 							balanceValue={balanceValue}
 							balanceText={balanceText}
 						/>
 					}
-					<div className="d-flex arrow-container">
-						{currenctCurrencyIndex < Object.keys(CURRENCIES).length - 1 && (
-							<Arrow onClick={() => this.nextCurrency()} label=">" />
-						)}
+					<div className="d-flex align-items-center arrow-container">
+						<Arrow className="right" onClick={() => this.nextCurrency()} />
 					</div>
 				</div>
-				{wallets[CURRENCIES[currenctCurrency].fullName.toLowerCase()] && (
-					<div className="d-flex justify-content-between flew-row mb-4">
-						<Button
-							className="mr-4"
-							label={STRINGS.formatString(
-								STRINGS.RECEIVE_CURRENCY,
-								CURRENCIES[currenctCurrency].fullName
-							).join('')}
-							onClick={() => navigate(`wallet/${currenctCurrency}/deposit`)}
-						/>
-						<Button
-							label={STRINGS.formatString(
-								STRINGS.SEND_CURRENCY,
-								CURRENCIES[currenctCurrency].fullName
-							).join('')}
-							onClick={() => navigate(`wallet/${currenctCurrency}/withdraw`)}
-						/>
-					</div>
-				)}
+
+				<div className="mb-4 button-container">
+					{wallets[CURRENCIES[currentCurrency].fullName.toLowerCase()] && (
+						<div className="d-flex justify-content-between flew-row ">
+							<Button
+								className="mr-4"
+								label={STRINGS.formatString(
+									STRINGS.RECEIVE_CURRENCY,
+									CURRENCIES[currentCurrency].fullName
+								).join('')}
+								onClick={() => navigate(`wallet/${currentCurrency}/deposit`)}
+							/>
+							<Button
+								label={STRINGS.formatString(
+									STRINGS.SEND_CURRENCY,
+									CURRENCIES[currentCurrency].fullName
+								).join('')}
+								onClick={() => navigate(`wallet/${currentCurrency}/withdraw`)}
+							/>
+						</div>
+					)}
+				</div>
 			</div>
 		);
 	}

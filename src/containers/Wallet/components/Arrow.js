@@ -1,11 +1,16 @@
 import React from 'react';
+import classnames from 'classnames';
 
-const Arrow = ({ onClick, label }) => (
-	<div className="d-flex justify-content-center align-items-center f-1 arrow">
-		<div onClick={onClick} className="previous-arrow">
-			{label}
-		</div>
-	</div>
+const Arrow = ({ onClick, className }) => (
+	<div
+		className={classnames(
+			'justify-content-center',
+			'f-1',
+			'arrow',
+			className
+		)}
+		onClick={onClick}
+	/>
 );
 
 export default Arrow;

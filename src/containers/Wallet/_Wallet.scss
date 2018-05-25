@@ -3,6 +3,9 @@ $wrapper-button-margin: 2.5rem;
 $header-margin: 2rem;
 
 .layout-mobile {
+	.button-container {
+		min-height: 4rem;
+	}
 	.currency-list-container {
 		.balance-big {
 			font-size: 4rem;
@@ -11,12 +14,6 @@ $header-margin: 2rem;
 			font-size: 1.5rem;
 		}
 
-		.arrow-container {
-			min-width: 4rem;
-			.arrow {
-				font-size: 5rem;
-			}
-		}
 	}
 	.wallet-container {
 		.action_notification-wrapper {
