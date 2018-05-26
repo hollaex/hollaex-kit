@@ -57,9 +57,9 @@ $mobile-notification-size: 1.75rem;
 .dialog-compressed-close {
 	.close-dialog {
 		margin-left: 0;
-		@include size(5rem);
+		@include size(7.5rem);
 		svg {
-			@include size(5rem);
+			@include size(7.5rem);
 			.cancel-cross-3 {
 				stroke: white;
 			}

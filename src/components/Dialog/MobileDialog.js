@@ -12,8 +12,8 @@ const CompressedContent = ({ children, onClose }) => {
 	return (
 		<div className="dialog-compressed-wrapper d-flex">
 			<div className="dialog-compressed-content f-1">{children}</div>
-			<div className="dialog-compressed-close f-0 d-flex justify-content-center align-items-center" onClick={onClose}>
-				<div className="close-dialog">
+			<div className="dialog-compressed-close f-0 d-flex justify-content-center align-items-center">
+				<div className="close-dialog pointer" onClick={onClose}>
 					<ReactSVG
 						path={ICONS.CANCEL_CROSS_ACTIVE}
 						wrapperClassName="bar-icon-back"
