@@ -206,7 +206,8 @@ class Container extends Component {
 			}
 		});
 
-		privateSocket.on('user', (data) => {
+		privateSocket.on('user', ({ action, data }) => {
+			// console.log('user', action, data);
 			// if (!data.phone_number) {
 			// 	return this.goToVerificationPage();
 			// }
@@ -222,20 +223,23 @@ class Container extends Component {
 			}
 		});
 
-		privateSocket.on('orders', (data) => {
+		privateSocket.on('orders', ({ action, data }) => {
+			// console.log('orders', action, data);
 			this.props.setUserOrders(data);
 		});
 
-		privateSocket.on('trades', (data) => {
+		privateSocket.on('trades', ({ action, data }) => {
+			// console.log('trades', action, data);
 			this.props.addUserTrades(data);
 		});
 
-		privateSocket.on('wallet', (data) => {
-			this.props.setBalance(data.balance);
+		privateSocket.on('wallet', ({ action, balance }) => {
+			// console.log('wallet', action, balance);
+			this.props.setBalance(balance);
 		});
 
-		privateSocket.on('update', ({ type, data }) => {
-			// console.log('update', type, data);
+		privateSocket.on('update', ({ action, type, data }) => {
+			// console.log('update', action, type, data);
 			switch (type) {
 				case 'order_queued':
 					// TODO add queued orders to the store
