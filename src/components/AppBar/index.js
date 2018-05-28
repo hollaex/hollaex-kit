@@ -99,10 +99,18 @@ class AppBar extends Component {
 		} = this.props;
 
 		return isMobile ? (
-			<MobileBarWrapper className="app_bar-mobile d-flex justify-content-center align-items-center">
+			<MobileBarWrapper
+				className={classnames(
+					'd-flex',
+					'app_bar-mobile',
+					'align-items-center',
+					isHome ? 'justify-content-between pl-4 pr-4' : 'justify-content-center'
+				)}
+			>
 				<Link to="/">
 					<ReactSVG path={HOLLAEX_LOGO_BLACK} wrapperClassName="homeicon-svg" />
 				</Link>
+				{isHome && this.renderSplashActions(token, verifyingToken)}
 			</MobileBarWrapper>
 		) : (
 			<div className={classnames('app_bar', { 'no-borders': noBorders })}>

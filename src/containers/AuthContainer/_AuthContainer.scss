@@ -1,11 +1,47 @@
 $content-wrapper--max-width: $bp-xs;
 $container--padding: 4rem;
 
+.layout-mobile {
+	&.auth-wrapper {
+		.link_wrapper {
+			font-size: $regular--font-size;
+		}
+		.auth-container {
+			max-width: unset !important;
+			height: 100%;
+			> div {
+				height: 100%;
+				.auth_wrapper {
+					padding: 0 1rem !important;
+					height: 100%;
+				}
+			}
+			.icon_title-wrapper {
+				.icon_title-text.title {
+					font-size: 5rem;
+				}
+			}
+			.font-small {
+				font-size: $regular--font-size;
+			}
+
+			.auth_form-wrapper {
+				.field-wrapper {
+					font-size: $regular--font-size;
+					.field-label,
+					.input_field-input {
+						font-size: $regular--font-size;
+					}
+				}
+			}
+		}
+	}
+}
 .auth-wrapper {
 	background: url($background-image);
 
-	background-repeat:no-repeat;
-	background-size:cover;
+	background-repeat: no-repeat;
+	background-size: cover;
 	// background-repeat: repeat;
 	// background-size: $background-patter--size;
 	position: relative;

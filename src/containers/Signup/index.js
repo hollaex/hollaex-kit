@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import classnames from 'classnames';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
+import { isMobile } from 'react-device-detect';
 import { SubmissionError, change } from 'redux-form';
 import { bindActionCreators } from 'redux';
 import { performSignup } from '../../actions/authAction';
@@ -15,6 +16,23 @@ import {
 	ICONS
 } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
+
+const BottomLinks = () => (
+	<div className={classnames('f-1', 'link_wrapper', 'multi_links')}>
+		<div>
+			{STRINGS.SIGN_UP.HAVE_ACCOUNT}
+			<Link to="/login" className="blue-link">
+				{STRINGS.SIGN_UP.GOTO_LOGIN}
+			</Link>
+		</div>
+		<div>
+			{STRINGS.SIGN_UP.NO_EMAIL}
+			<Link to="/verify" className="blue-link">
+				{STRINGS.SIGN_UP.REQUEST_EMAIL}
+			</Link>
+		</div>
+	</div>
+);
 
 class Signup extends Component {
 	state = {
@@ -105,22 +123,10 @@ class Signup extends Component {
 							onSubmit={this.onSubmitSignup}
 							formFields={formFields}
 						/>
+						{isMobile && <BottomLinks />}
 					</div>
 				</div>
-				<div className={classnames('f-1', 'link_wrapper', 'multi_links')}>
-					<div>
-						{STRINGS.SIGN_UP.HAVE_ACCOUNT}
-						<Link to="/login" className="blue-link">
-							{STRINGS.SIGN_UP.GOTO_LOGIN}
-						</Link>
-					</div>
-					<div>
-						{STRINGS.SIGN_UP.NO_EMAIL}
-						<Link to="/verify" className="blue-link">
-							{STRINGS.SIGN_UP.REQUEST_EMAIL}
-						</Link>
-					</div>
-				</div>
+				{!isMobile && <BottomLinks />}
 				<Dialog
 					isOpen={showContactForm}
 					label="contact-modal"

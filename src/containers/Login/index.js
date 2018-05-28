@@ -19,6 +19,15 @@ import {
 
 import STRINGS from '../../config/localizedStrings';
 
+const BottomLink = () => (
+	<div className={classnames('f-1', 'link_wrapper')}>
+		{STRINGS.LOGIN.NO_ACCOUNT}
+		<Link to="/signup" className={classnames('blue-link')}>
+			{STRINGS.LOGIN.CREATE_ACCOUNT}
+		</Link>
+	</div>
+);
+
 class Login extends Component {
 	state = {
 		values: {},
@@ -153,14 +162,10 @@ class Login extends Component {
 						)}
 					>
 						<LoginForm onSubmit={this.onSubmitLogin} theme={activeTheme} />
+						{isMobile && <BottomLink />}
 					</div>
 				</div>
-				<div className={classnames('f-1', 'link_wrapper')}>
-					{STRINGS.LOGIN.NO_ACCOUNT}
-					<Link to="/signup" className={classnames('blue-link')}>
-						{STRINGS.LOGIN.CREATE_ACCOUNT}
-					</Link>
-				</div>
+				{!isMobile && <BottomLink />}
 				<Dialog
 					isOpen={otpDialogIsOpen || logoutDialogIsOpen}
 					label="otp-modal"

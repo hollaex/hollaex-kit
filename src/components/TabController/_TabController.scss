@@ -17,6 +17,11 @@ $tab_controller-item-min-width: 12rem;
 	}
 }
 
+.layout-mobile {
+	.tab_controller-tabs {
+		font-size: $extra-thick--font-size;
+	}
+}
 .tab_controller-tabs {
 	width: 100%;
 	display: flex;

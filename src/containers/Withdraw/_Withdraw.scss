@@ -82,4 +82,63 @@ $content--margin: 2rem;
 	.review-wrapper {
 		min-width: 0;
 	}
+	.presentation_container {
+		.action_notification-svg {
+			svg {
+				width: 1.5rem !important;
+				height: 1.5rem !important;
+			}
+		}
+		.inner_container {
+			.result-message {
+				font-size: $regular--font-size;
+			}
+			.deposit_info-wrapper {
+				.deposit_info-crypto-wrapper {
+					width: 100%;
+					.field-label {
+						font-size: $title--font-size;
+					}
+					.field-children {
+						.custom {
+							font-size: $title--font-size;	
+						}
+					}
+				}
+			}
+			.qr_code-wrapper {
+				width: 24rem;
+				max-width: 24rem;
+				.qr-code-bg > *:first-child {
+					width: 24rem !important;
+					height: 24rem !important;
+				}
+				.qr-text {
+					font-size: $regular--font-size;
+				}
+			}
+			.information_block {
+				.information_block-text_wrapper {
+					.title {
+						font-size: $title--font-size;
+					}
+					.text {
+						font-size: $regular--font-size;
+					}
+				}
+			}
+			.field-error-content {
+				font-size: $regular--font-size;
+			}
+			.field-label,
+			.input_field-input {
+				font-size: $regular--font-size;
+			}
+			.action_notification-wrapper {
+				.action_notification-text {
+					font-size: $regular--font-size;
+				}
+			}
+		}
+	}
 }

@@ -843,5 +843,7 @@ export default {
 	WALLET_TAB_WALLET: 'Wallet',
 	WALLET_TAB_TRANSACTIONS: 'Transactions',
 	RECEIVE_CURRENCY: 'Receive {0}',
-	SEND_CURRENCY: 'Send {0}'
+	SEND_CURRENCY: 'Send {0}',
+	COPY_ADDRESS: 'Copy Address',
+	SUCCESFUL_COPY: 'Successfully Copied!'
 };

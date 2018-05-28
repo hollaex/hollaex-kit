@@ -14,6 +14,7 @@ import { ICONS } from '../../config/constants';
 
 import {
 	generateTradeHeaders,
+	generateTradeHeadersMobile,
 	generateDepositsHeaders,
 	generateWithdrawalsHeaders
 } from './utils';
@@ -51,7 +52,9 @@ class TransactionsHistory extends Component {
 	generateHeaders(symbol) {
 		this.setState({
 			headers: {
-				trades: generateTradeHeaders(symbol),
+				trades: isMobile
+					? generateTradeHeadersMobile(symbol)
+					: generateTradeHeaders(symbol),
 				deposits: generateDepositsHeaders(symbol),
 				withdrawals: generateWithdrawalsHeaders(symbol)
 			}
@@ -106,7 +109,14 @@ class TransactionsHistory extends Component {
 		}
 
 		return (
-			<div className="presentation_container apply_rtl transaction-history-wrapper">
+			<div
+				className={classnames(
+					'presentation_container',
+					'apply_rtl',
+					'transaction-history-wrapper',
+					isMobile && 'overflow-y'
+				)}
+			>
 				{!isMobile && (
 					<IconTitle
 						text={STRINGS.TRANSACTION_HISTORY.TITLE}
