@@ -2,6 +2,7 @@ import React from 'react';
 import { CurrencyBall } from '../../components';
 import { CURRENCIES, ICONS } from '../../config/constants';
 import { Link } from 'react-router';
+import { isMobile } from 'react-device-detect';
 import {
 	calculatePrice,
 	fiatFormatToCurrency,
@@ -17,7 +18,7 @@ export const AssetsBlock = ({
 	wallets,
 	onOpenDialog,
 	bankaccount,
-	navigate
+	navigate,
 }) => (
 	<div className="wallet-assets_block">
 		<table className="wallet-assets_block-table">
@@ -67,6 +68,7 @@ export const AssetsBlock = ({
 												onClick={() => navigate(`wallet/${key}/deposit`)}
 												useSvg={true}
 												className="csv-action"
+												showActionText={isMobile}
 											/>
 											<ActionNotification
 												text={STRINGS.WALLET_BUTTON_FIAT_WITHDRAW}
@@ -74,6 +76,7 @@ export const AssetsBlock = ({
 												onClick={() => navigate(`wallet/${key}/withdraw`)}
 												useSvg={true}
 												className="csv-action"
+												showActionText={isMobile}
 											/>
 										</div>
 									) : (
@@ -99,17 +102,18 @@ export const AssetsBlock = ({
 												STRINGS[`${key.toUpperCase()}_CURRENCY_SYMBOL`]
 											)}
 										</div>
-										<div>
+										{!isMobile && <div>
 											{key !== fiatSymbol &&
 												`(≈ ${STRINGS.FIAT_CURRENCY_SYMBOL} ${balanceText})`}
 										</div>
+										}
 									</div>
 								</td>
 							</tr>
 						);
 					})}
 			</tbody>
-			<tfoot>
+			{!isMobile && <tfoot>
 				<tr>
 					<td />
 					<td />
@@ -123,6 +127,7 @@ export const AssetsBlock = ({
 					</td>
 				</tr>
 			</tfoot>
+			}
 		</table>
 	</div>
 );

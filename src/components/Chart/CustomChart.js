@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { isMobile } from 'react-device-detect';
 
 import { ChartCanvas, Chart } from 'react-stockcharts';
 import { BarSeries } from 'react-stockcharts/lib/series';
@@ -74,11 +75,11 @@ class CustomChart extends Component {
 					<YAxis height={height} theme={theme} />
 					<TXAxis width={width} theme={theme} />
 
-					<MouseCoordinateX
+					{!isMobile && <MouseCoordinateX
 						at="top"
 						orient="top"
 						displayFormat={FORMAT_DATE_X_TICK}
-					/>
+					/>}
 					<MouseCoordinateY
 						at="right"
 						orient="right"

@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import classnames from 'classnames';
+import { isMobile } from 'react-device-detect';
 import AccordionSection from './AccordionSection';
 
 class Accordion extends Component {
@@ -7,15 +9,25 @@ class Accordion extends Component {
 		ready: false
 	};
 
-	componentWillReceiveProps(nextProps) {
-		if (!this.state.ready && nextProps.sections.length > 0) {
-			const openSections = nextProps.sections
-				.map(({ isOpen }, index) => ({ isOpen, index }))
-				.filter(({ isOpen }) => isOpen)
-				.map(({ index }) => index);
-			this.setState({ openSections, ready: true });
+	componentWillMount() {
+		if (this.props.sections.length > 0) {
+			this.initialize(this.props.sections);
 		}
 	}
+
+	componentWillReceiveProps(nextProps) {
+		if (!this.state.ready && nextProps.sections.length > 0) {
+			this.initialize(nextProps.sections);
+		}
+	}
+
+	initialize = (sections) => {
+		const openSections = sections
+			.map(({ isOpen }, index) => ({ isOpen, index }))
+			.filter(({ isOpen }) => isOpen)
+			.map(({ index }) => index);
+		this.setState({ openSections, ready: true });
+	};
 
 	openSection = (section, open = true) => {
 		let openSections = [].concat(...this.state.openSections);
@@ -76,9 +88,12 @@ class Accordion extends Component {
 	};
 
 	render() {
-		const { sections, wrapperId } = this.props;
+		const { sections, wrapperId, showActionText } = this.props;
 		return (
-			<div className="accordion_wrapper" ref={this.setRef(wrapperId)}>
+			<div
+				className={classnames('accordion_wrapper', isMobile && 'mobile')}
+				ref={this.setRef(wrapperId)}
+			>
 				{sections.map((section, index) => (
 					<AccordionSection
 						key={index}
@@ -86,6 +101,7 @@ class Accordion extends Component {
 						openSection={this.openSection}
 						{...section}
 						isOpen={this.state.openSections.indexOf(index) > -1}
+						showActionText={showActionText}
 					/>
 				))}
 			</div>

@@ -836,5 +836,15 @@ export default {
 	WALLET_ADDRESS_MESSAGE: 'When you generate a wallet you create a deposit and withdrawal address.',
 	WALLET_ADDRESS_ERROR: 'Error generating the address, please refresh and try again.',
 	DEPOSIT_WITHDRAW: 'Deposit/Withdraw',
-	GENERATE_WALLET: 'Generate Wallet'
+	GENERATE_WALLET: 'Generate Wallet',
+	TRADE_TAB_CHART: 'Chart',
+	TRADE_TAB_TRADE: 'Trade',
+	TRADE_TAB_ORDERS: 'Orders',
+	WALLET_TAB_WALLET: 'Wallet',
+	WALLET_TAB_TRANSACTIONS: 'Transactions',
+	RECEIVE_CURRENCY: 'Receive {0}',
+	SEND_CURRENCY: 'Send {0}',
+	COPY_ADDRESS: 'Copy Address',
+	SUCCESFUL_COPY: 'Successfully Copied!',
+	QUICK_TRADE_MODE: 'Quick Trade Mode'
 };

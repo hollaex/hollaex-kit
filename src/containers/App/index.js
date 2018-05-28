@@ -5,11 +5,8 @@ import { bindActionCreators } from 'redux';
 import io from 'socket.io-client';
 import EventListener from 'react-event-listener';
 import { debounce } from 'lodash';
-import {
-	WS_URL,
-	ICONS,
-	SESSION_TIME
-} from '../../config/constants';
+import { WS_URL, ICONS, SESSION_TIME } from '../../config/constants';
+import { isBrowser, isMobile } from 'react-device-detect';
 
 import { logout } from '../../actions/authAction';
 import { setMe, setBalance, updateUser } from '../../actions/userAction';
@@ -46,6 +43,7 @@ import { getToken, getTokenTimestamp } from '../../utils/token';
 import {
 	AppBar,
 	Sidebar,
+	SidebarBottom,
 	Dialog,
 	Loader,
 	Notification,
@@ -393,8 +391,14 @@ class Container extends Component {
 			case '/trade':
 				return 'trade';
 			default:
-				return '';
 		}
+		if (path.indexOf('/trade/') === 0) {
+			return 'trade';
+		} else if (path.indexOf('/quick-trade/') === 0) {
+			return 'quick-trade';
+		}
+
+		return '';
 	};
 
 	renderDialogContent = ({ type, data }, prices) => {
@@ -489,7 +493,11 @@ class Container extends Component {
 					activePath,
 					symbol,
 					fontClass,
-					languageClasses[0]
+					languageClasses[0],
+					{
+						'layout-mobile': isMobile,
+						'layout-desktop': isBrowser
+					}
 				)}
 			>
 				<EventListener
@@ -514,22 +522,31 @@ class Container extends Component {
 								'd-flex',
 								'flex-column',
 								'justify-content-between',
-								'overflow-y'
+								{
+									'overflow-y': !isMobile
+								}
 							)}
 						>
 							{appLoaded && verification_level > 0 ? children : <Loader />}
 						</div>
 					</div>
+					{isMobile && (
+						<div className="app_container-bottom_bar">
+							<SidebarBottom activePath={activePath} pair={pair} />
+						</div>
+					)}
 				</div>
-				<div className="app_container-sidebar">
-					<Sidebar
-						activePath={activePath}
-						logout={this.logout}
-						help={openContactForm}
-						unreadMessages={unreadMessages}
-						pair={pair}
-					/>
-				</div>
+				{isBrowser && (
+					<div className="app_container-sidebar">
+						<Sidebar
+							activePath={activePath}
+							logout={this.logout}
+							help={openContactForm}
+							unreadMessages={unreadMessages}
+							pair={pair}
+						/>
+					</div>
+				)}
 				<Dialog
 					isOpen={dialogIsOpen}
 					label="hollaex-modal"
@@ -543,6 +560,10 @@ class Container extends Component {
 							activeNotification.type === NOTIFICATIONS.NEW_ORDER ||
 							activeNotification.type === NOTIFICATIONS.ERROR
 						)
+					}
+					compressed={
+						activeNotification.type === NOTIFICATIONS.ORDERS ||
+						activeNotification.type === NOTIFICATIONS.TRADES
 					}
 					style={{ 'z-index': 100 }}
 				>

@@ -4,6 +4,8 @@ import { connect } from 'react-redux';
 import { SubmissionError, change } from 'redux-form';
 import { bindActionCreators } from 'redux';
 import { Link } from 'react-router';
+import { isMobile } from 'react-device-detect';
+
 import { performLogin, setLogoutMessage } from '../../actions/authAction';
 import LoginForm, { FORM_NAME } from './LoginForm';
 import { Dialog, OtpForm, IconTitle, Notification } from '../../components';
@@ -16,6 +18,15 @@ import {
 } from '../../config/constants';
 
 import STRINGS from '../../config/localizedStrings';
+
+const BottomLink = () => (
+	<div className={classnames('f-1', 'link_wrapper')}>
+		{STRINGS.LOGIN.NO_ACCOUNT}
+		<Link to="/signup" className={classnames('blue-link')}>
+			{STRINGS.LOGIN.CREATE_ACCOUNT}
+		</Link>
+	</div>
+);
 
 class Login extends Component {
 	state = {
@@ -69,11 +80,19 @@ class Login extends Component {
 				} else {
 					if (_error === 'User is not activated') {
 						error._error = (
-							<div style={{ color: 'black'}}>
+							<div style={{ color: 'black' }}>
 								Account approval is required to access the demo exchange.<br />
-								Please contact us at <a style={{ color: 'blue' }} href="mailto:support@bitholla.com?Subject=Approval%20request" target="_top">support@bitholla.com</a> with your use case for approval access
+								Please contact us at{' '}
+								<a
+									style={{ color: 'blue' }}
+									href="mailto:support@bitholla.com?Subject=Approval%20request"
+									target="_top"
+								>
+									support@bitholla.com
+								</a>{' '}
+								with your use case for approval access
 							</div>
-						)
+						);
 					} else {
 						error._error = _error;
 					}
@@ -143,20 +162,19 @@ class Login extends Component {
 						)}
 					>
 						<LoginForm onSubmit={this.onSubmitLogin} theme={activeTheme} />
+						{isMobile && <BottomLink />}
 					</div>
 				</div>
-				<div className={classnames('f-1', 'link_wrapper')}>
-					{STRINGS.LOGIN.NO_ACCOUNT}
-					<Link to="/signup" className={classnames('blue-link')}>
-						{STRINGS.LOGIN.CREATE_ACCOUNT}
-					</Link>
-				</div>
+				{!isMobile && <BottomLink />}
 				<Dialog
 					isOpen={otpDialogIsOpen || logoutDialogIsOpen}
 					label="otp-modal"
 					onCloseDialog={this.onCloseDialog}
 					shouldCloseOnOverlayClick={otpDialogIsOpen ? false : true}
 					showCloseText={otpDialogIsOpen ? true : false}
+					className="login-dialog"
+					useFullScreen={isMobile}
+					showBar={otpDialogIsOpen}
 				>
 					{otpDialogIsOpen && <OtpForm onSubmit={this.onSubmitLoginOtp} />}
 					{logoutDialogIsOpen && (

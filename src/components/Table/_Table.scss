@@ -46,6 +46,21 @@ $controllers--color-disabled: $colors-deactivate-color2;
 	}
 }
 
+.layout-mobile {
+	.table_controllers-wrapper { 
+		font-size: $regular--font-size;
+
+		.action_notification-wrapper {
+			.action_notification-svg {
+				svg {
+					height: 2rem;
+					width: 2rem;
+				}
+			}
+		}
+	}
+}
+
 .table_controllers-wrapper {
 	margin: 2rem 0;
 	color: $colors-main-black;

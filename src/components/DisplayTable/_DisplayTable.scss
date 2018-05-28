@@ -1,5 +1,11 @@
 $cell-height: 1.5rem;
 
+.layout-mobile {
+	.display_table-wrapper {
+		font-size: $regular--font-size;
+	}
+}
+
 .display_table-wrapper {
 	position: relative;
 	height: 100%;

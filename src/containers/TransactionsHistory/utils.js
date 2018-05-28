@@ -47,6 +47,94 @@ const calculatePrice = (isQuick = false, price, size) => {
 	return price;
 };
 
+export const generateLessTradeHeaders = (symbol) => {
+	return [
+		{
+			label: STRINGS.TYPE,
+			key: 'side',
+			exportToCsv: ({ side = '' }) => side,
+			renderCell: ({ side = '' }, key, index) => {
+				return (
+					<td key={index} className={classnames('cell_box-type')}>
+						<div className={classnames(side)}>{STRINGS.SIDES_VALUES[side]}</div>
+					</td>
+				);
+			}
+		},
+		{
+			label: STRINGS.PRICE,
+			key: 'price',
+			exportToCsv: ({ price = 0, size = 0, quick }) =>
+				STRINGS.formatString(
+					STRINGS.FIAT_PRICE_FORMAT,
+					fiatFormatToCurrency(calculatePrice(quick, price, size)),
+					fiatCurrencySymbol
+				),
+			renderCell: ({ price = 0, size = 0, quick }, key, index) => {
+				return (
+					<td key={index}>
+						{STRINGS.formatString(
+							STRINGS.FIAT_PRICE_FORMAT,
+							fiatFormatToCurrency(calculatePrice(quick, price, size)),
+							fiatCurrencySymbol
+						)}
+					</td>
+				);
+			}
+		},
+		{
+			label: STRINGS.AMOUNT,
+			key: 'amount',
+			exportToCsv: ({ price = 0, size = 0, quick }) =>
+				STRINGS.formatString(
+					STRINGS.FIAT_PRICE_FORMAT,
+					fiatFormatToCurrency(calculateAmount(quick, price, size)),
+					fiatCurrencySymbol
+				),
+			renderCell: ({ price = 0, size = 0, quick }, key, index) => {
+				return (
+					<td key={index}>
+						{STRINGS.formatString(
+							STRINGS.FIAT_PRICE_FORMAT,
+							fiatFormatToCurrency(calculateAmount(quick, price, size)),
+							fiatCurrencySymbol
+						)}
+					</td>
+				);
+			}
+		},
+		{
+			label: STRINGS.FEE,
+			key: 'fee',
+			exportToCsv: ({ fee = 0, price = 0, size = 0, quick }) =>
+				calculateFeeAmount(fee, quick, price, size),
+			renderCell: ({ fee, price, size, quick }, key, index) => {
+				if (!fee) {
+					return <td key={index}> {calculateFeeAmount(fee)}</td>;
+				}
+				return (
+					<td key={index}>
+						{STRINGS.formatString(
+							STRINGS.FIAT_PRICE_FORMAT,
+							fiatFormatToCurrency(calculateFeeAmount(fee, quick, price, size)),
+							fiatCurrencySymbol
+						)}
+					</td>
+				);
+			}
+		},
+		{
+			label: STRINGS.TIME,
+			key: 'timestamp',
+			exportToCsv: ({ timestamp = '' }) => timestamp,
+			renderCell: ({ timestamp = '' }, key, index) => {
+				return <td key={index}>{formatTimestamp(timestamp)}</td>;
+			}
+		}
+	];
+};
+
+
 export const generateTradeHeaders = (symbol) => {
 	return [
 		{
@@ -282,3 +370,111 @@ export const filterData = (symbol, { count = 0, data = [] }) => {
 		data: filteredData
 	};
 };
+
+export const generateTradeHeadersMobile = (symbol) => {
+	return [
+		{
+			label: '',
+			key: 'icon',
+			renderCell: (data, key, index) => {
+				const symbol = PAIRS[data.symbol].pair_base;
+				const shortName = STRINGS[`${symbol.toUpperCase()}_SHORTNAME`];
+				return (
+					<td className={classnames('icon-cell')} key={index}>
+						<CurrencyBall name={shortName} symbol={symbol} size="s" />
+					</td>
+				);
+			}
+		},
+		{
+			label: STRINGS.TYPE,
+			key: 'side',
+			exportToCsv: ({ side = '' }) => side,
+			renderCell: ({ side = '' }, key, index) => {
+				return (
+					<td key={index} className={classnames('cell_box-type')}>
+						<div className={classnames(side)}>{STRINGS.SIDES_VALUES[side]}</div>
+					</td>
+				);
+			}
+		},
+		{
+			label: STRINGS.SIZE,
+			key: 'size',
+			exportToCsv: ({ size = 0, ...data }) => {
+				const symbol = PAIRS[data.symbol].pair_base;
+				const { formatToCurrency } = CURRENCIES[symbol];
+				const shortName = STRINGS[`${symbol.toUpperCase()}_SHORTNAME`];
+				return STRINGS.formatString(
+					STRINGS[`${symbol.toUpperCase()}_PRICE_FORMAT`],
+					formatToCurrency(size),
+					shortName
+				);
+			},
+			renderCell: ({ size = 0, ...data }, key, index) => {
+				const symbol = PAIRS[data.symbol].pair_base;
+				const { formatToCurrency } = CURRENCIES[symbol];
+				const shortName = STRINGS[`${symbol.toUpperCase()}_SHORTNAME`];
+				return (
+					<td key={index}>
+						{STRINGS.formatString(
+							STRINGS[`${symbol.toUpperCase()}_PRICE_FORMAT`],
+							formatToCurrency(size),
+							shortName
+						)}
+					</td>
+				);
+			}
+		},
+		{
+			label: STRINGS.PRICE,
+			key: 'price',
+			exportToCsv: ({ price = 0, size = 0, quick }) =>
+				STRINGS.formatString(
+					STRINGS.FIAT_PRICE_FORMAT,
+					fiatFormatToCurrency(calculatePrice(quick, price, size)),
+					fiatCurrencySymbol
+				),
+			renderCell: ({ price = 0, size = 0, quick }, key, index) => {
+				return (
+					<td key={index}>
+						{STRINGS.formatString(
+							STRINGS.FIAT_PRICE_FORMAT,
+							fiatFormatToCurrency(calculatePrice(quick, price, size)),
+							fiatCurrencySymbol
+						)}
+					</td>
+				);
+			}
+		},
+		{
+			label: STRINGS.FEE,
+			key: 'fee',
+			exportToCsv: ({ fee = 0, price = 0, size = 0, quick }) =>
+				calculateFeeAmount(fee, quick, price, size),
+			renderCell: ({ fee, price, size, quick }, key, index) => {
+				if (!fee) {
+					return <td key={index}> {calculateFeeAmount(fee)}</td>;
+				}
+				return (
+					<td key={index}>
+						{STRINGS.formatString(
+							STRINGS.FIAT_PRICE_FORMAT,
+							fiatFormatToCurrency(calculateFeeAmount(fee, quick, price, size)),
+							fiatCurrencySymbol
+						)}
+					</td>
+				);
+			}
+		},
+		{
+			label: STRINGS.TIME,
+			key: 'timestamp',
+			exportToCsv: ({ timestamp = '' }) => timestamp,
+			renderCell: ({ timestamp = '' }, key, index) => {
+				return <td key={index}>{formatTimestamp(timestamp)}</td>;
+			}
+		}
+	];
+};
+

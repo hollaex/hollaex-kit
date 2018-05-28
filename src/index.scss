@@ -108,3 +108,10 @@ a {
 		font-size: 8px !important;
 	}
 }
+
+@media (max-width: $bp-md) {
+	.ReactModal__Body--open #root {
+		filter: none !important;
+		background: transparent !important;
+	}
+}

@@ -1,13 +1,18 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
+
+import { CopyToClipboard } from 'react-copy-to-clipboard';
+
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-
-import { ICONS, BALANCE_ERROR } from '../../config/constants';
+import { isMobile } from 'react-device-detect';
+import { ICONS, BALANCE_ERROR, CURRENCIES } from '../../config/constants';
+import STRINGS from '../../config/localizedStrings';
 import { getCurrencyFromName } from '../../utils/currency';
 
 import { openContactForm } from '../../actions/appActions';
 
+import { Button } from '../../components';
 import { renderInformation, renderTitleSection } from '../Wallet/components';
 
 import { generateFiatInformation, renderContent } from './utils';
@@ -16,7 +21,8 @@ class Deposit extends Component {
 	state = {
 		depositPrice: 0,
 		currency: '',
-		checked: false
+		checked: false,
+		copied: false
 	};
 
 	componentWillMount() {
@@ -72,7 +78,7 @@ class Deposit extends Component {
 
 	render() {
 		const { id, crypto_wallet, openContactForm, balance } = this.props;
-		const { currency, checked } = this.state;
+		const { currency, checked, copied } = this.state;
 
 		if (!id || !currency || !checked) {
 			return <div />;
@@ -80,7 +86,8 @@ class Deposit extends Component {
 
 		return (
 			<div className="presentation_container  apply_rtl">
-				{renderTitleSection(currency, 'deposit', ICONS.DEPOSIT_BITCOIN)}
+				{!isMobile &&
+					renderTitleSection(currency, 'deposit', ICONS.DEPOSIT_BITCOIN)}
 				<div
 					className={classnames(
 						'inner_container',
@@ -96,6 +103,18 @@ class Deposit extends Component {
 						'deposit'
 					)}
 					{renderContent(currency, crypto_wallet)}
+					{isMobile && (
+						<CopyToClipboard
+							text={
+								crypto_wallet[`${CURRENCIES[currency].fullName.toLowerCase()}`]
+							}
+							onCopy={() => this.setState({ copied: true })}
+						>
+							<Button
+								label={copied ? STRINGS.SUCCESFUL_COPY : STRINGS.COPY_ADDRESS}
+							/>
+						</CopyToClipboard>
+					)}
 				</div>
 			</div>
 		);

@@ -1,9 +1,10 @@
 import React from 'react';
 import QRCode from 'qrcode.react';
-
+import classnames from 'classnames';
 import { fiatSymbol } from '../../utils/currency';
 import STRINGS from '../../config/localizedStrings';
 
+import { isMobile } from 'react-device-detect';
 import { renderDumbField } from '../Wallet/components'; // eslint-disable-line
 
 export const generateFiatInformation = (id = '') => (
@@ -21,7 +22,12 @@ export const generateFiatInformation = (id = '') => (
 
 const renderBTCContent = (label = '', address = '') =>
 	address ? (
-		<div className="deposit_info-wrapper d-flex align-items-center">
+		<div
+			className={classnames(
+				'deposit_info-wrapper d-flex align-items-center',
+				isMobile && 'flex-column-reverse'
+			)}
+		>
 			<div className="deposit_info-crypto-wrapper">
 				{renderDumbField({
 					label,
@@ -33,7 +39,7 @@ const renderBTCContent = (label = '', address = '') =>
 			<div className="deposit_info-qr-wrapper d-flex align-items-center justify-content-center">
 				<div className="qr_code-wrapper d-flex flex-column">
 					<div className="qr-code-bg d-flex justify-content-center align-items-center">
-					<QRCode value={address} />
+						<QRCode value={address} />
 					</div>
 					<div className="qr-text">{STRINGS.DEPOSIT.QR_CODE}</div>
 				</div>
@@ -46,9 +52,15 @@ const renderBTCContent = (label = '', address = '') =>
 export const renderContent = (symbol, crypto_wallet = {}) => {
 	switch (symbol) {
 		case 'btc':
-			return renderBTCContent(STRINGS.DEPOSIT.CRYPTO_LABELS.BTC, crypto_wallet.bitcoin);
+			return renderBTCContent(
+				STRINGS.DEPOSIT.CRYPTO_LABELS.BTC,
+				crypto_wallet.bitcoin
+			);
 		case 'eth':
-			return renderBTCContent(STRINGS.DEPOSIT.CRYPTO_LABELS.ETH, crypto_wallet.ethereum);
+			return renderBTCContent(
+				STRINGS.DEPOSIT.CRYPTO_LABELS.ETH,
+				crypto_wallet.ethereum
+			);
 		case fiatSymbol:
 		default:
 			return <div>{STRINGS.DEPOSIT.NO_DATA}</div>;

@@ -171,3 +171,18 @@ $padding-input: 4rem;
 		}
 	}
 }
+
+.layout-mobile {
+	.otp_form-wrapper {
+		min-width: auto;
+		width: auto;
+		.otp_form-section-content {
+			.qr-code-wrapper {
+				@include size(15rem);
+				canvas {
+					@include size-important(15rem - 1rem);
+				}
+			}
+		}
+	}
+}

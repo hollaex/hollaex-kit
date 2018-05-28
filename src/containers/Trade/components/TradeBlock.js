@@ -7,6 +7,7 @@ const TradeBlock = ({
 	title,
 	overflowY = false,
 	setRef,
+	alignChildY = false,
 	className = ''
 }) => {
 	return (
@@ -26,7 +27,8 @@ const TradeBlock = ({
 			<div
 				ref={setRef}
 				className={classnames('trade_block-content', 'd-flex', {
-					'overflow-y': overflowY
+					'overflow-y': overflowY,
+					'flex-column': alignChildY
 				})}
 			>
 				{children}

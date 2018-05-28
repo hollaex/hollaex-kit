@@ -28,3 +28,9 @@
 		fill: $dark-font-main-text-color;
 	}
 }
+
+.layout-mobile {
+	.otp_form-wrapper {
+		flex: 1;
+	}
+}

@@ -9,6 +9,7 @@ export { default as TabController } from './TabController';
 export { default as CheckTitle } from './CheckTitle';
 export { default as Footer } from './Footer';
 export { default as Sidebar } from './Sidebar';
+export { SidebarBottom } from './Sidebar/SidebarBottom';
 export { Logout } from './Sidebar/rows';
 export { default as Wallet } from './Wallet';
 export { default as SidebarHub } from './SidebarHub';
@@ -34,3 +35,5 @@ export { default as WarningVerification } from './WarningVerification';
 export { FactoryChart, CHART_TYPES } from './Chart';
 export { Tooltip } from './Tooltip';
 export { default as CurrencyList } from './CurrencyList';
+export {  MobileDropdown } from './MobileDropdown'
+export * from './MobileBar';

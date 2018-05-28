@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
 import CandleChart from './Charts/CandleChart';
 import AreaChart from './Charts/AreaChart';
 
