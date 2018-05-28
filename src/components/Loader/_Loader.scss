@@ -1,5 +1,6 @@
 $loader-absolute--height: 100vh;
 $loader-relative--height: 10rem;
+$loader-full--height: 20rem;
 
 .loader_wrapper {
 	position: absolute;
@@ -16,17 +17,22 @@ $loader-relative--height: 10rem;
 	width: 100%;
 	min-width: $loader-relative--height;
 	height: $loader-relative--height;
+	max-width: 100%;
+	max-height: 100%;
 }
 
 .loader {
-	border: 0.5rem solid $colors-deactivate-color2; /* Light grey */
-	border-top: 0.5rem solid $colors-main-black; /* Blue */
-	border-radius: 50%;
-	width: $loader-relative--height;
-	height: $loader-relative--height;
-	animation: spin 1s linear infinite;
+	width: $loader-full--height;
+	height: $loader-full--height;
+	max-width: 100%;
+	max-height: 100%;
 	position: absolute;
 	pointer-events: none;
+
+	background: url('/assets/loader-light.gif');
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-position: center;
 }
 
 .loader_background {
@@ -36,19 +42,9 @@ $loader-relative--height: 10rem;
 	height: 100%;
 }
 
-@keyframes spin {
-	0% {
-		transform: rotate(0deg);
-	}
-	100% {
-		transform: rotate(360deg);
-	}
-}
-
 .dark-theme {
 	.loader {
-		border-color: $dark-font-main-text-color; /* Light grey */
-		border-top-color: $dark-disabled-secondary; /* Blue */
+		background: url('/assets/loader-dark.gif');
 	}
 
 	.loader_background {
