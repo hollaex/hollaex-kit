@@ -42,12 +42,16 @@ class MobileChart extends Component {
 				)}
 			>
 				<TradeBlock
-					title={STRINGS.CHART}
+					title={
+						<div className="d-flex justify-content-start flex-row">
+							{STRINGS.CHART}
+							<MobileDropdownWrapper goToPair={goToPair} className="ml-2" />
+						</div>
+					}
 					setRef={this.setChartRef}
 					className="f-1 overflow-x"
 					alignChildTitle={true}
 				>
-					<MobileDropdownWrapper goToPair={goToPair} className="ml-2"/>
 					{pair &&
 						chartHeight > 0 && (
 							<PriceChart
