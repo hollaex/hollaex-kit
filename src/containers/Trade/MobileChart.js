@@ -4,7 +4,7 @@ import TradeBlock from './components/TradeBlock';
 import PriceChart from './components/PriceChart';
 import STRINGS from '../../config/localizedStrings';
 import TradeHistory from './components/TradeHistory';
-import { MobileDropdown } from '../../components';
+import MobileDropdownWrapper from './components/MobileDropdownWrapper';
 
 class MobileChart extends Component {
 	state = {
@@ -23,7 +23,12 @@ class MobileChart extends Component {
 
 	render() {
 		const {
-			pair, pairData, activeTheme, tradeHistory, activeLanguage
+			pair,
+			pairData,
+			activeTheme,
+			tradeHistory,
+			activeLanguage,
+			goToPair
 		} = this.props;
 		const { chartHeight, chartWidth } = this.state;
 		return (
@@ -40,7 +45,9 @@ class MobileChart extends Component {
 					title={STRINGS.CHART}
 					setRef={this.setChartRef}
 					className="f-1 overflow-x"
+					alignChildTitle={true}
 				>
+					<MobileDropdownWrapper goToPair={goToPair} className="ml-2"/>
 					{pair &&
 						chartHeight > 0 && (
 							<PriceChart

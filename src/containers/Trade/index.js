@@ -198,6 +198,7 @@ class Trade extends Component {
 						activeLanguage={activeLanguage}
 						activeTheme={activeTheme}
 						symbol={symbol}
+						goToPair={this.goToPair}
 					/>
 				)
 			},

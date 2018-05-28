@@ -20,7 +20,9 @@ const TradeBlock = ({
 				'apply_rtl'
 			)}
 		>
-			<div className="trade_block-title">{title} {alignChildTitle && children}</div>
+			<div className={classnames('trade_block-title', alignChildTitle && 'd-flex flex-row justify-flex-start')}>
+				{title} {alignChildTitle && <div className="ml-2">{children[0]}</div>}
+			</div>
 			<div
 				ref={setRef}
 				className={classnames('trade_block-content', 'd-flex', {
@@ -28,7 +30,7 @@ const TradeBlock = ({
 					'flex-column': alignChildY
 				})}
 			>
-				{!alignChildTitle && children}
+				{!alignChildTitle ? children : children[1]}
 			</div>
 		</div>
 	);

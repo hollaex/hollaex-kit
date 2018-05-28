@@ -36,7 +36,7 @@ const MobileTrade = ({
 			alignChildY={true}
 		>
 			<MobileDropdownWrapper goToPair={goToPair} />
-			<Link className={classnames('blue-link')} to={`/quick-trade/${pair}`}>
+			<Link className={classnames('blue-link', 'mb-2', 'caps')} to={`/quick-trade/${pair}`}>
 				{STRINGS.QUICK_TRADE_MODE}
 			</Link>
 			<OrderEntry
