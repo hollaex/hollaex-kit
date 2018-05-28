@@ -117,12 +117,4 @@
 			font-size: $regular--font-size;
 		}
 	}
-	.trade_orderbook-content {
-		.trade_orderbook-asks,
-		.trade_orderbook-bids {
-			.value-row {
-				flex: 1;
-			}
-		}
-	}
 }
