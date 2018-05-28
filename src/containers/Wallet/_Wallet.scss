@@ -7,6 +7,9 @@ $header-margin: 2rem;
 		min-height: 4.5rem;
 	}
 	.currency-list-container {
+		.wallet-currency  {
+			max-width: calc(100vw - 6rem);
+		}
 		.balance-big {
 			font-size: 4rem;
 		}

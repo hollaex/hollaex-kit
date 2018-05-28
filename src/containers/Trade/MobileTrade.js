@@ -1,5 +1,6 @@
 import React from 'react';
 import classnames from 'classnames';
+import { Link } from 'react-router';
 import TradeBlock from './components/TradeBlock';
 import Orderbook from './components/Orderbook';
 import OrderEntry from './components/OrderEntry';
@@ -17,7 +18,8 @@ const MobileTrade = ({
 	settings,
 	orderbookProps,
 	symbol,
-	goToPair
+	goToPair,
+	pair
 }) => (
 	<div
 		className={classnames(
@@ -28,8 +30,15 @@ const MobileTrade = ({
 			'apply_rtl'
 		)}
 	>
-		<TradeBlock title={STRINGS.ORDER_ENTRY} className="p-relative">
+		<TradeBlock
+			title={STRINGS.ORDER_ENTRY}
+			className="p-relative order-book flex-column"
+			alignChildY={true}
+		>
 			<MobileDropdownWrapper goToPair={goToPair} />
+			<Link className={classnames('blue-link')} to={`/quick-trade/${pair}`}>
+				{STRINGS.QUICK_TRADE_MODE}
+			</Link>
 			<OrderEntry
 				submitOrder={onSubmitOrder}
 				openCheckOrder={openCheckOrder}
@@ -41,7 +50,7 @@ const MobileTrade = ({
 				showPopup={settings.orderConfirmationPopup}
 			/>
 		</TradeBlock>
-		<TradeBlock title={STRINGS.ORDERBOOK}>
+		<TradeBlock title={STRINGS.ORDERBOOK} className="order-entry">
 			{orderbookReady && <Orderbook {...orderbookProps} />}
 		</TradeBlock>
 	</div>

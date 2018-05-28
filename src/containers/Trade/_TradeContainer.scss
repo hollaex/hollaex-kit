@@ -57,7 +57,7 @@
 	.trade_block-title {
 		font-size: $title--font-size;
 		border-top-width: 0.4rem !important;
-		margin-bottom: $component--margin-bottom !important;
+		margin-bottom: unset !important;
 	}
 	.trade_order_entry-action_selector {
 		height: 4rem !important;

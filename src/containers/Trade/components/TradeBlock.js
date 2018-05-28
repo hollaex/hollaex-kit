@@ -6,6 +6,8 @@ const TradeBlock = ({
 	title,
 	overflowY = false,
 	setRef,
+	alignChildY = false,
+	alignChildTitle = false,
 	className = ''
 }) => {
 	return (
@@ -18,14 +20,15 @@ const TradeBlock = ({
 				'apply_rtl'
 			)}
 		>
-			<div className="trade_block-title">{title}</div>
+			<div className="trade_block-title">{title} {alignChildTitle && children}</div>
 			<div
 				ref={setRef}
 				className={classnames('trade_block-content', 'd-flex', {
-					'overflow-y': overflowY
+					'overflow-y': overflowY,
+					'flex-column': alignChildY
 				})}
 			>
-				{children}
+				{!alignChildTitle && children}
 			</div>
 		</div>
 	);

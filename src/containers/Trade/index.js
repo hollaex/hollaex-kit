@@ -216,6 +216,7 @@ class Trade extends Component {
 						openCheckOrder={this.openCheckOrder}
 						onSubmitOrder={this.onSubmitOrder}
 						goToPair={this.goToPair}
+						pair={pair}
 					/>
 				)
 			},
