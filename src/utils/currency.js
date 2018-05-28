@@ -1,14 +1,9 @@
 import math from 'mathjs';
 import numbro from 'numbro';
-import { CURRENCIES } from '../config/constants';
 import STRINGS from '../config/localizedStrings';
 
-export const fiatSymbol = 'fiat';
-export const fiatName = CURRENCIES[fiatSymbol].name;
-export const fiatShortName = CURRENCIES[fiatSymbol].shortName;
-export const fiatFormatToCurrency = CURRENCIES[fiatSymbol].formatToCurrency;
-
 export const BTC_FORMAT = '0,0.[0000]';
+export const ETH_FORMAT = '0,0.[0000]';
 export const BTC_FULL_FORMAT = '0,0.[00000000]';
 export const FIAT_FORMAT = '0,0.[00]';
 export const PERCENTAGE_FORMAT = '0.[00]%';
@@ -34,13 +29,15 @@ export const roundNumber = (number = 0, decimals = 4) => {
 export const formatPercentage = (value = 0) =>
 	numbro(math.number(value / 100)).format(PERCENTAGE_FORMAT);
 export const formatBtcAmount = (amount = 0) =>
-	numbro(math.number(amount)).format(BTC_FORMAT);
+	numbro(roundNumber(amount, 4)).format(BTC_FORMAT);
 export const formatBtcFullAmount = (amount = 0) =>
-	numbro(math.number(amount)).format(BTC_FULL_FORMAT);
+	numbro(roundNumber(amount, 8)).format(BTC_FULL_FORMAT);
 export const formatFiatAmount = (amount = 0) =>
-	numbro(math.number(amount)).format(FIAT_FORMAT);
+	numbro(roundNumber(amount, 2)).format(FIAT_FORMAT);
+export const formatEthAmount = (amount = 0) =>
+	numbro(roundNumber(amount, 4)).format(ETH_FORMAT);
 export const formatNumber = (number, round = 0) => {
-	return math.round(number, round);
+	return roundNumber(number, round);
 };
 
 export const calculatePrice = (value = 0, price = 1) =>
@@ -101,3 +98,8 @@ export const getCurrencyFromName = (name = '') => {
 			return '';
 	}
 };
+
+export const fiatSymbol = 'fiat';
+export const fiatName = STRINGS.FIAT_NAME;
+export const fiatShortName = STRINGS.FIAT_SHORTNAME;
+export const fiatFormatToCurrency = formatFiatAmount;

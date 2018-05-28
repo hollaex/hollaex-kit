@@ -3,7 +3,7 @@ import {
 	formatBtcAmount,
 	formatFiatAmount,
 	formatEthAmount
-} from '../utils/string';
+} from '../utils/currency';
 
 import STRINGS from './localizedStrings';
 

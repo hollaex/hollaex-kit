@@ -3,6 +3,7 @@ import classnames from 'classnames';
 
 const TradeBlock = ({
 	children,
+	action,
 	title,
 	overflowY = false,
 	setRef,
@@ -19,7 +20,10 @@ const TradeBlock = ({
 				'apply_rtl'
 			)}
 		>
-			<div className="trade_block-title">{title}</div>
+			<div className="trade_block-title">
+				<div className="trade_block-title-items">{title}</div>
+				{action}
+			</div>
 			<div
 				ref={setRef}
 				className={classnames('trade_block-content', 'd-flex', {
