@@ -6,6 +6,7 @@
 		"@material/button": "^0.7.0",
 		"awesome-phonenumber": "^2.2.3",
 		"axios": "^0.16.2",
+		"babel-polyfill": "^6.26.0",
 		"classnames": "^2.2.5",
 		"country-data": "0.0.31",
 		"crypto": "0.0.3",
