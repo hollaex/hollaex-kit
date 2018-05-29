@@ -2,6 +2,68 @@ $wrapper-border: 1px solid $colors-main-black;
 $wrapper-button-margin: 2.5rem;
 $header-margin: 2rem;
 
+.layout-mobile {
+	.button-container {
+		min-height: 4.5rem;
+	}
+	.currency-list-container {
+		.wallet-currency  {
+			max-width: calc(100vw - 6rem);
+		}
+		.balance-big {
+			font-size: 4rem;
+		}
+		.balance-small {
+			font-size: 1.5rem;
+		}
+
+	}
+	.wallet-container {
+		.action_notification-wrapper {
+			.action_notification-text {
+				font-size: 1.2rem !important;
+			}
+		}
+		.accordion_wrapper {
+			.accordion_section {
+				border-width: 2px;
+				.accordion_section_title {
+					.accordion_section_content_text {
+						font-size: $title--font-size;
+						text-transform: uppercase;
+						font-weight: bold;
+					}
+				}
+			}
+		}
+		.wallet-assets_block {
+			.wallet-assets_block-table {
+				.td-wallet,
+				.td-amount,
+				.td-name {
+					min-width: unset !important;
+				}
+				.td-wallet {
+					.deposit-withdrawal-wrapper {
+						margin-left: 0;
+						width: 18rem;
+						.action_notification-wrapper {
+							.action_notification-text {
+								font-size: 1.2rem;
+							}
+						}
+					}
+				}
+				.currency_ball-wrapper.s {
+					width: 2.5rem;
+					height: 2.5rem;
+					font-size: 0.8rem;
+				}
+			}
+		}
+	}
+}
+
 .wallet-container {
 	border-top: $wrapper-border;
 	// border-bottom: $wrapper-border;

@@ -5,10 +5,19 @@ $app-bar--background: white;
 	.app_bar {
 		background: $dark-app-background-color !important;
 		border-bottom-color: $dark-border-main !important;
-		color: $dark-font-main-text-color  !important;
+		color: $dark-font-main-text-color !important;
 		> div {
 			&:not(:first-child) {
 				border-left-color: $dark-border-main !important;
+			}
+		}
+	}
+
+	.app_bar-mobile {
+		background-color: $dark-navigation_bar-mobile--background;
+		.homeicon-svg svg {
+			.logo-black {
+				fill: $colors-main-black;
 			}
 		}
 	}
@@ -72,5 +81,16 @@ $app-bar--background: white;
 	.bar-logout {
 		max-height: $navigation_bar-height;
 		min-height: $navigation_bar-height;
+	}
+}
+
+.app_bar-mobile {
+	padding: 1rem 0;
+	.homeicon-svg svg {
+		@include size(8rem);
+
+		.logo-black {
+			fill: white;
+		}
 	}
 }

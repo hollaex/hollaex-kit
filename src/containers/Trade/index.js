@@ -4,6 +4,7 @@ import EventListener from 'react-event-listener';
 import classnames from 'classnames';
 import { bindActionCreators } from 'redux';
 import { SubmissionError, change } from 'redux-form';
+import { isMobile } from 'react-device-detect';
 
 import { ICONS } from '../../config/constants';
 import {
@@ -27,13 +28,17 @@ import ActiveOrders from './components/ActiveOrders';
 import UserTrades from './components/UserTrades';
 import TradeHistory from './components/TradeHistory';
 import PriceChart from './components/PriceChart';
+import MobileTrade from './MobileTrade';
+import MobileChart from './MobileChart';
+import MobileOrders from './MobileOrders';
 
-import { ActionNotification, Loader } from '../../components';
+import { ActionNotification, Loader, MobileBarTabs } from '../../components';
 
 import STRINGS from '../../config/localizedStrings';
 
 class Trade extends Component {
 	state = {
+		activeTab: 0,
 		chartHeight: 0,
 		chartWidth: 0,
 		symbol: ''
@@ -81,6 +86,10 @@ class Trade extends Component {
 		this.props.router.push('transactions');
 	};
 
+	goToPair = (pair) => {
+		this.props.router.push(`/trade/${pair}`);
+	};
+
 	onResize = () => {
 		if (this.chartBlock) {
 			this.setState({
@@ -92,7 +101,12 @@ class Trade extends Component {
 
 	openCheckOrder = (order, onConfirm) => {
 		const { setNotification, fees, pairData } = this.props;
-		setNotification(NOTIFICATIONS.NEW_ORDER, { order, onConfirm, fees, pairData });
+		setNotification(NOTIFICATIONS.NEW_ORDER, {
+			order,
+			onConfirm,
+			fees,
+			pairData
+		});
 	};
 
 	onPriceClick = (price) => {
@@ -101,6 +115,10 @@ class Trade extends Component {
 
 	onAmountClick = (size) => {
 		this.props.change(FORM_NAME, 'size', size);
+	};
+
+	setActiveTab = (activeTab) => {
+		this.setState({ activeTab });
 	};
 
 	render() {
@@ -121,7 +139,7 @@ class Trade extends Component {
 			activeTheme,
 			settings
 		} = this.props;
-		const { chartHeight, chartWidth, symbol } = this.state;
+		const { chartHeight, chartWidth, symbol, activeTab } = this.state;
 
 		if (symbol !== pair || !pairData) {
 			return <Loader background={false} />;
@@ -169,94 +187,161 @@ class Trade extends Component {
 			onAmountClick: this.onAmountClick
 		};
 
+		const mobileTabs = [
+			{
+				title: STRINGS.TRADE_TAB_CHART,
+				content: (
+					<MobileChart
+						pair={pair}
+						pairData={pairData}
+						tradeHistory={tradeHistory}
+						activeLanguage={activeLanguage}
+						activeTheme={activeTheme}
+						symbol={symbol}
+						goToPair={this.goToPair}
+					/>
+				)
+			},
+			{
+				title: STRINGS.TRADE_TAB_TRADE,
+				content: (
+					<MobileTrade
+						orderbookProps={orderbookProps}
+						symbol={symbol}
+						asks={asks}
+						bids={bids}
+						balance={balance}
+						marketPrice={marketPrice}
+						settings={settings}
+						orderbookReady={orderbookReady}
+						openCheckOrder={this.openCheckOrder}
+						onSubmitOrder={this.onSubmitOrder}
+						goToPair={this.goToPair}
+						pair={pair}
+					/>
+				)
+			},
+			{
+				title: STRINGS.TRADE_TAB_ORDERS,
+				content: (
+					<MobileOrders
+						activeOrders={activeOrders}
+						cancelOrder={this.cancelOrder}
+						cancelAllOrders={this.cancelAllOrders}
+						pair={pair}
+						pairData={pairData}
+						userTrades={userTrades}
+					/>
+				)
+			}
+		];
 		return (
 			<div className={classnames('trade-container', 'd-flex')}>
-				<EventListener target="window" onResize={this.onResize} />
-				<div
-					className={classnames(
-						'trade-col_side_wrapper',
-						'flex-column',
-						'd-flex',
-						'apply_rtl'
-					)}
-				>
-					<TradeBlock title={STRINGS.ORDERBOOK}>
-						{orderbookReady && <Orderbook {...orderbookProps} />}
-					</TradeBlock>
-				</div>
-				<div
-					className={classnames(
-						'trade-col_main_wrapper',
-						'flex-column',
-						'd-flex',
-						'f-1',
-						'overflow-x'
-					)}
-				>
-					<div
-						className={classnames('trade-main_content', 'flex-auto', 'd-flex')}
-					>
+				{isMobile ? (
+					<div className="">
+						<MobileBarTabs
+							tabs={mobileTabs}
+							activeTab={activeTab}
+							setActiveTab={this.setActiveTab}
+						/>
+						<div className="content-with-bar d-flex">
+							{mobileTabs[activeTab].content}
+						</div>
+					</div>
+				) : (
+					<div className={classnames('trade-container', 'd-flex')}>
+						<EventListener target="window" onResize={this.onResize} />
 						<div
 							className={classnames(
-								'trade-col_action_wrapper',
+								'trade-col_side_wrapper',
 								'flex-column',
 								'd-flex',
 								'apply_rtl'
 							)}
 						>
-							<TradeBlock title={STRINGS.ORDER_ENTRY}>
-								<OrderEntry
-									submitOrder={this.onSubmitOrder}
-									openCheckOrder={this.openCheckOrder}
-									symbol={symbol}
-									balance={balance}
-									asks={asks}
-									bids={bids}
-									marketPrice={marketPrice}
-									showPopup={settings.orderConfirmationPopup}
-								/>
+							<TradeBlock title={STRINGS.ORDERBOOK}>
+								{orderbookReady && <Orderbook {...orderbookProps} />}
 							</TradeBlock>
 						</div>
-						<TradeBlock
-							title={STRINGS.CHART}
-							setRef={this.setChartRef}
-							className="f-1 overflow-x"
+						<div
+							className={classnames(
+								'trade-col_main_wrapper',
+								'flex-column',
+								'd-flex',
+								'f-1',
+								'overflow-x'
+							)}
 						>
-							{pair &&
-								chartHeight > 0 && (
-									<PriceChart
-										height={chartHeight}
-										width={chartWidth}
-										theme={activeTheme}
-										pair={pair}
-										pairBase={pairData.pair_base}
-									/>
+							<div
+								className={classnames(
+									'trade-main_content',
+									'flex-auto',
+									'd-flex'
 								)}
-						</TradeBlock>
+							>
+								<div
+									className={classnames(
+										'trade-col_action_wrapper',
+										'flex-column',
+										'd-flex',
+										'apply_rtl'
+									)}
+								>
+									<TradeBlock title={STRINGS.ORDER_ENTRY}>
+										<OrderEntry
+											submitOrder={this.onSubmitOrder}
+											openCheckOrder={this.openCheckOrder}
+											symbol={symbol}
+											balance={balance}
+											asks={asks}
+											bids={bids}
+											marketPrice={marketPrice}
+											showPopup={settings.orderConfirmationPopup}
+										/>
+									</TradeBlock>
+								</div>
+								<TradeBlock
+									title={STRINGS.CHART}
+									setRef={this.setChartRef}
+									className="f-1 overflow-x"
+								>
+									{pair &&
+										chartHeight > 0 && (
+											<PriceChart
+												height={chartHeight}
+												width={chartWidth}
+												theme={activeTheme}
+												pair={pair}
+												pairBase={pairData.pair_base}
+											/>
+										)}
+								</TradeBlock>
+							</div>
+							<div
+								className={classnames(
+									'trade-tabs_content',
+									'd-flex',
+									'flex-column',
+									'apply_rtl'
+								)}
+							>
+								<TradeBlockTabs content={USER_TABS} />
+							</div>
+						</div>
+						<div
+							className={classnames(
+								'trade-col_side_wrapper',
+								'flex-column',
+								'd-flex',
+								'apply_rtl'
+							)}
+						>
+							<TradeBlock title={STRINGS.TRADE_HISTORY}>
+								<TradeHistory data={tradeHistory} language={activeLanguage} />
+							</TradeBlock>
+						</div>
 					</div>
-					<div
-						className={classnames(
-							'trade-tabs_content',
-							'd-flex',
-							'flex-column',
-							'apply_rtl'
-						)}
-					>
-						<TradeBlockTabs content={USER_TABS} />
-					</div>
-				</div>
-				<div
-					className={classnames(
-						'trade-col_side_wrapper',
-						'flex-column',
-						'd-flex',
-						'apply_rtl'
-					)}
-				>
-					<TradeBlock title={STRINGS.TRADE_HISTORY}>
-						<TradeHistory data={tradeHistory} language={activeLanguage} />
-					</TradeBlock>
-				</div>
+				)}
 			</div>
 		);
 	}

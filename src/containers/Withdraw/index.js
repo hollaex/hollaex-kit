@@ -4,6 +4,7 @@ import math from 'mathjs';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { formValueSelector, change } from 'redux-form';
+import { isMobile } from 'react-device-detect';
 
 import { Loader, WarningVerification } from '../../components';
 import {
@@ -210,7 +211,7 @@ class Withdraw extends Component {
 
 		return (
 			<div className="presentation_container apply_rtl">
-				{renderTitleSection(currency, 'withdraw', ICONS.WITHDRAW)}
+				{!isMobile && renderTitleSection(currency, 'withdraw', ICONS.WITHDRAW)}
 				{verification_level >= MIN_VERIFICATION_LEVEL_TO_WITHDRAW &&
 				verification_level <= MAX_VERIFICATION_LEVEL_TO_WITHDRAW ? (
 					<div className={classnames('inner_container', 'with_border_top')}>

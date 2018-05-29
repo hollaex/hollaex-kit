@@ -3,10 +3,10 @@
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 viewBox="0 0 31 31" style="enable-background:new 0 0 31 31;" xml:space="preserve">
 <style type="text/css">
-	.st0{fill:none;stroke:#4D4D4D;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;}
+	.arrow-down{fill:none;stroke:#4D4D4D;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;}
 </style>
 <g id="XMLID_41_">
-	<line id="XMLID_181_" class="st0" x1="15.5" y1="1" x2="15.5" y2="28.7"/>
-	<polyline id="XMLID_170_" class="st0" points="27.9,17.1 15.5,29.5 3.1,17.1 	"/>
+	<line id="XMLID_181_" class="arrow-down" x1="15.5" y1="1" x2="15.5" y2="28.7"/>
+	<polyline id="XMLID_170_" class="arrow-down" points="27.9,17.1 15.5,29.5 3.1,17.1 	"/>
 </g>
 </svg>

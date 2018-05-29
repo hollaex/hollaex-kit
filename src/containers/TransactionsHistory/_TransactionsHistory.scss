@@ -1,3 +1,22 @@
+.layout-mobile {
+	.tab_controller-wrapper {
+		height: 4.5rem;
+	}
+
+	.inner_container {
+		height: calc(100% - 4.5rem);
+		.history_block-wrapper {
+			max-height: calc(100% - 1rem);
+			.table-wrapper {
+				.table_body-wrapper {
+					font-size: $regular--font-size;
+					height: 4.5rem;
+				}
+			}
+		}
+	}
+}
+
 .icon-cell {
 	width: 3rem;
 

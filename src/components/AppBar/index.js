@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import { Link } from 'react-router';
+import ReactSVG from 'react-svg';
+import { isMobile } from 'react-device-detect';
 import {
 	HOLLAEX_LOGO_BLACK,
 	IS_PRO_VERSION,
@@ -8,7 +10,7 @@ import {
 	DEFAULT_VERSION_REDIRECT
 } from '../../config/constants';
 import { LinkButton } from './LinkButton';
-
+import { MobileBarWrapper } from '../';
 import STRINGS from '../../config/localizedStrings';
 
 class AppBar extends Component {
@@ -96,7 +98,21 @@ class AppBar extends Component {
 			rightChildren
 		} = this.props;
 
-		return (
+		return isMobile ? (
+			<MobileBarWrapper
+				className={classnames(
+					'd-flex',
+					'app_bar-mobile',
+					'align-items-center',
+					isHome ? 'justify-content-between pl-4 pr-4' : 'justify-content-center'
+				)}
+			>
+				<Link to="/">
+					<ReactSVG path={HOLLAEX_LOGO_BLACK} wrapperClassName="homeicon-svg" />
+				</Link>
+				{isHome && this.renderSplashActions(token, verifyingToken)}
+			</MobileBarWrapper>
+		) : (
 			<div className={classnames('app_bar', { 'no-borders': noBorders })}>
 				{this.renderIcon(isHome, theme)}
 				<div className="app_bar-main d-flex justify-content-between">
@@ -114,4 +130,5 @@ AppBar.defaultProps = {
 	noBorders: false,
 	isHome: false
 };
+
 export default AppBar;

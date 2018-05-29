@@ -4,6 +4,8 @@ import {
 } from '../../utils/countries';
 import { ICONS } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
+import { isMobile } from 'react-device-detect';
+
 
 export const generateFormValues = (
 	language,
@@ -17,7 +19,8 @@ export const generateFormValues = (
 			label:
 				STRINGS.USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS
 					.FULL_NAME_LABEL,
-			disabled: true
+			disabled: true,
+			fullWidth: isMobile
 		},
 		gender: {
 			type: 'select',
@@ -40,14 +43,16 @@ export const generateFormValues = (
 					icon: ICONS.GENDER_F
 				}
 			],
-			disabled: true
+			disabled: true,
+			fullWidth: isMobile
 		},
 		dob: {
 			type: 'date-dropdown',
 			language,
 			label:
 				STRINGS.USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.DOB_LABEL,
-			disabled: true
+			disabled: true,
+			fullWidth: isMobile
 		},
 		nationality: {
 			type: 'autocomplete',
@@ -55,7 +60,8 @@ export const generateFormValues = (
 				STRINGS.USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS
 					.NATIONALITY_LABEL,
 			options: COUNTRIES_OPTIONS,
-			disabled: true
+			disabled: true,
+			fullWidth: isMobile
 		},
 		id_number: {
 			type: 'text',
@@ -67,7 +73,8 @@ export const generateFormValues = (
 				STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS[
 					`ID_${ID_NUMBER_TYPE}_NUMBER_PLACEHOLDER`
 				],
-			disabled: true
+			disabled: true,
+			fullWidth: isMobile
 		},
 		id_issued_date: {
 			type: 'date-dropdown',
@@ -75,7 +82,8 @@ export const generateFormValues = (
 				STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS
 					.ISSUED_DATE_LABEL,
 			disabled: true,
-			language
+			language,
+			fullWidth: isMobile
 		},
 		id_expiration_date: {
 			type: 'date-dropdown',
@@ -83,7 +91,8 @@ export const generateFormValues = (
 				STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS
 					.EXPIRATION_DATE_LABEL,
 			disabled: true,
-			language
+			language,
+			fullWidth: isMobile
 		},
 		country: {
 			type: 'autocomplete',
@@ -91,28 +100,32 @@ export const generateFormValues = (
 				STRINGS.USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS
 					.COUNTRY_LABEL,
 			options: COUNTRIES_OPTIONS,
-			disabled: true
+			disabled: true,
+			fullWidth: isMobile
 		},
 		city: {
 			type: 'text',
 			label:
 				STRINGS.USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS
 					.CITY_LABEL,
-			disabled: true
+			disabled: true,
+			fullWidth: isMobile
 		},
 		address: {
 			type: 'text',
 			label:
 				STRINGS.USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS
 					.ADDRESS_LABEL,
-			disabled: true
+			disabled: true,
+			fullWidth: isMobile
 		},
 		postal_code: {
 			type: 'text',
 			label:
 				STRINGS.USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS
 					.POSTAL_CODE_LABEL,
-			disabled: true
+			disabled: true,
+			fullWidth: isMobile
 		}
 	};
 

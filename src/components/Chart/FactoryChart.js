@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
 import CandleChart from './Charts/CandleChart';
 import AreaChart from './Charts/AreaChart';
 
@@ -17,7 +16,7 @@ export const FactoryChart = ({ chartType, symbol, ...props }) => {
 			return <AreaChart dataCount={100} {...props} />;
 		case CHART_TYPES.CANDLE:
 		default:
-			const modifier = 30 * LIMIT_VALUES[symbol].PRICE.STEP;
+			const modifier = 1 * LIMIT_VALUES[symbol].PRICE.STEP;
 			return <CandleChart modifier={modifier} {...props} />;
 	}
 };

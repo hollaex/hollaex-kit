@@ -99,7 +99,11 @@ const TradeNotification = ({ data: { order, data } }) => {
 	const notificationProps = getTitleAndIcon(side, type);
 
 	return (
-		<NotificationWraper {...notificationProps} className="trade-notification">
+		<NotificationWraper
+			{...notificationProps}
+			className="trade-notification"
+			compressOnMobile={true}
+		>
 			<TradeDisplay side={side} data={data} />
 		</NotificationWraper>
 	);

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
+import { isMobile } from 'react-device-detect';
 
 import {
 	getUserTrades,
@@ -13,6 +14,7 @@ import { ICONS } from '../../config/constants';
 
 import {
 	generateTradeHeaders,
+	generateTradeHeadersMobile,
 	generateDepositsHeaders,
 	generateWithdrawalsHeaders
 } from './utils';
@@ -33,8 +35,8 @@ class TransactionsHistory extends Component {
 
 	componentWillReceiveProps(nextProps) {
 		// if (nextProps.symbol !== this.props.symbol) {
-			// this.requestData(nextProps.symbol);
-			// this.generateHeaders(nextProps.symbol, nextProps.activeLanguage);
+		// this.requestData(nextProps.symbol);
+		// this.generateHeaders(nextProps.symbol, nextProps.activeLanguage);
 		// } else if (nextProps.activeLanguage !== this.props.activeLanguage) {
 		if (nextProps.activeLanguage !== this.props.activeLanguage) {
 			this.generateHeaders(nextProps.symbol);
@@ -50,7 +52,9 @@ class TransactionsHistory extends Component {
 	generateHeaders(symbol) {
 		this.setState({
 			headers: {
-				trades: generateTradeHeaders(symbol),
+				trades: isMobile
+					? generateTradeHeadersMobile(symbol)
+					: generateTradeHeaders(symbol),
 				deposits: generateDepositsHeaders(symbol),
 				withdrawals: generateWithdrawalsHeaders(symbol)
 			}
@@ -105,17 +109,28 @@ class TransactionsHistory extends Component {
 		}
 
 		return (
-			<div className="presentation_container apply_rtl transaction-history-wrapper">
-				<IconTitle
-					text={STRINGS.TRANSACTION_HISTORY.TITLE}
-					iconPath={ICONS.TRANSACTION_HISTORY}
-					textType="title"
-					useSvg={true}
-				/>
+			<div
+				className={classnames(
+					'presentation_container',
+					'apply_rtl',
+					'transaction-history-wrapper',
+					isMobile && 'overflow-y'
+				)}
+			>
+				{!isMobile && (
+					<IconTitle
+						text={STRINGS.TRANSACTION_HISTORY.TITLE}
+						iconPath={ICONS.TRANSACTION_HISTORY}
+						textType="title"
+						useSvg={true}
+					/>
+				)}
 				<TabController
 					tabs={[
 						{
-							title: (
+							title: isMobile ? (
+								STRINGS.TRANSACTION_HISTORY.TRADES
+							) : (
 								<CheckTitle
 									title={STRINGS.TRANSACTION_HISTORY.TRADES}
 									icon={ICONS.TRADE_HISTORY}
@@ -123,7 +138,9 @@ class TransactionsHistory extends Component {
 							)
 						},
 						{
-							title: (
+							title: isMobile ? (
+								STRINGS.TRANSACTION_HISTORY.DEPOSITS
+							) : (
 								<CheckTitle
 									title={STRINGS.TRANSACTION_HISTORY.DEPOSITS}
 									icon={ICONS.DEPOSIT_HISTORY}
@@ -131,7 +148,9 @@ class TransactionsHistory extends Component {
 							)
 						},
 						{
-							title: (
+							title: isMobile ? (
+								STRINGS.TRANSACTION_HISTORY.WITHDRAWALS
+							) : (
 								<CheckTitle
 									title={STRINGS.TRANSACTION_HISTORY.WITHDRAWALS}
 									icon={ICONS.WITHDRAW_HISTORY}

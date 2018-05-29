@@ -9,6 +9,7 @@ export { default as TabController } from './TabController';
 export { default as CheckTitle } from './CheckTitle';
 export { default as Footer } from './Footer';
 export { default as Sidebar } from './Sidebar';
+export { SidebarBottom } from './Sidebar/SidebarBottom';
 export { Logout } from './Sidebar/rows';
 export { default as Wallet } from './Wallet';
 export { default as SidebarHub } from './SidebarHub';
@@ -31,6 +32,8 @@ export { default as HocForm } from './Form/HocForm';
 export { default as Countdown } from './Countdown';
 export { default as LanguageSelector } from './LanguageSelector';
 export { default as WarningVerification } from './WarningVerification';
-export { CandleChart, AreaChart, FactoryChart, CHART_TYPES } from './Chart';
+export { FactoryChart, CHART_TYPES } from './Chart';
 export { Tooltip } from './Tooltip';
 export { default as CurrencyList } from './CurrencyList';
+export {  MobileDropdown } from './MobileDropdown'
+export * from './MobileBar';

@@ -1,6 +1,7 @@
 import React from 'react';
 import classnames from 'classnames';
 import ReactSVG from 'react-svg';
+import { isMobile } from 'react-device-detect';
 
 const getClassNames = (status) => {
 	switch (status) {
@@ -30,7 +31,8 @@ const ActionNotification = ({
 	showPointer,
 	rotate,
 	rotateIfLtr,
-	rotateIfRtl
+	rotateIfRtl,
+	showActionText
 }) => (
 	<div
 		className={classnames(
@@ -46,16 +48,20 @@ const ActionNotification = ({
 		)}
 		onClick={onClick}
 	>
-		<div
-			className={classnames('action_notification-text', getClassNames(status))}
-		>
-			{text}
-		</div>
-		{iconPath && (
-			useSvg ? (
+		{(showActionText || !isMobile) && (
+			<div
+				className={classnames(
+					'action_notification-text',
+					getClassNames(status)
+				)}
+			>
+				{text}
+			</div>
+		)}
+		{iconPath &&
+			(useSvg ? (
 				<ReactSVG path={iconPath} wrapperClassName="action_notification-svg" />
-			)
-			: (
+			) : (
 				<img
 					src={iconPath}
 					alt={text}
@@ -66,8 +72,7 @@ const ActionNotification = ({
 						reverse: reverseImage
 					})}
 				/>
-			)
-		)}
+			))}
 	</div>
 );
 

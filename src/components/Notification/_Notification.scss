@@ -215,3 +215,33 @@ $logout--size-difference: 3rem;
 		}
 	}
 }
+
+.layout-mobile {
+	.notification-wrapper {
+		flex: 1;
+
+		.notification-withdrawal {
+			justify-content: space-evenly;
+		}
+
+		.trade-notification,
+		.order-notification {
+			margin: 0.75rem;
+			flex-direction: row;
+			color: white;
+			.notification-content-icon {
+				margin: 0;
+				padding: 1rem;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				svg {
+					@include size(6rem);
+				}
+			}
+			.notification-content-title {
+				margin: 0;
+			}
+		}
+	}
+}
