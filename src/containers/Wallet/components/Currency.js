@@ -13,10 +13,10 @@ const Currency = ({ currency, balance, balanceValue, balanceText }) => (
 			/>
 		</Link>
 		<div className="d-flex flex-row">
-			<span className="balance-big mr-1">{Number(balanceValue).toFixed(4)}</span>
-			<span className="d-flex align-items-end balance-small pb-4">
-				{balanceText}
-			</span>
+			<span className="balance-big mr-1">{CURRENCIES[currency].formatToCurrency(balanceValue)}</span>
+			{balanceText && <span className="d-flex align-items-end balance-small pb-4">
+				{CURRENCIES.fiat.formatToCurrency(balanceText)}
+			</span>}
 		</div>
 	</div>
 );
