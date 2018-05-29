@@ -62,13 +62,12 @@ class CurrencySlider extends Component {
 	render() {
 		const { wallets, balance, prices, navigate } = this.props;
 		const { currentCurrency } = this.state;
-		const balanceValue = balance[`${currentCurrency}_balance`];
+		const balanceValue = CURRENCIES[currentCurrency].formatToCurrency(balance[`${currentCurrency}_balance`]);
 		const balanceText =
-			currentCurrency === fiatSymbol
-				? fiatFormatToCurrency(balanceValue)
-				: fiatFormatToCurrency(
-						calculatePrice(balanceValue, prices[currentCurrency])
-					);
+			currentCurrency !== fiatSymbol
+				&& fiatFormatToCurrency(
+					calculatePrice(balanceValue, prices[currentCurrency])
+				);
 
 		return (
 			<div className="d-flex flex-column justify-content-end currency-list-container f-1">
