@@ -3,7 +3,6 @@ import { Button } from '../../../components';
 import { CURRENCIES } from '../../../config/constants';
 import {
 	calculatePrice,
-	fiatFormatToCurrency,
 	fiatSymbol
 } from '../../../utils/currency';
 import Currency from './Currency';
@@ -62,12 +61,10 @@ class CurrencySlider extends Component {
 	render() {
 		const { wallets, balance, prices, navigate } = this.props;
 		const { currentCurrency } = this.state;
-		const balanceValue = CURRENCIES[currentCurrency].formatToCurrency(balance[`${currentCurrency}_balance`]);
-		const balanceText =
+		const balanceValue = balance[`${currentCurrency}_balance`];
+		const balanceFiat =
 			currentCurrency !== fiatSymbol
-				&& fiatFormatToCurrency(
-					calculatePrice(balanceValue, prices[currentCurrency])
-				);
+				&& calculatePrice(balanceValue, prices[currentCurrency]);
 
 		return (
 			<div className="d-flex flex-column justify-content-end currency-list-container f-1">
@@ -80,7 +77,7 @@ class CurrencySlider extends Component {
 							currency={currentCurrency}
 							balance={balance}
 							balanceValue={balanceValue}
-							balanceText={balanceText}
+							balanceText={balanceFiat}
 						/>
 					}
 					<div className="d-flex align-items-center arrow-container">
