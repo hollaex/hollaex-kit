@@ -7,7 +7,7 @@ $header-margin: 2rem;
 		min-height: 4.5rem;
 	}
 	.currency-list-container {
-		.wallet-currency  {
+		.wallet-currency {
 			max-width: calc(100vw - 6rem);
 		}
 		.balance-big {
@@ -16,7 +16,6 @@ $header-margin: 2rem;
 		.balance-small {
 			font-size: 1.5rem;
 		}
-
 	}
 	.wallet-container {
 		.action_notification-wrapper {
@@ -38,6 +37,13 @@ $header-margin: 2rem;
 		}
 		.wallet-assets_block {
 			.wallet-assets_block-table {
+				thead {
+					tr {
+						th:nth-child(3) {
+							text-align: center;
+						}
+					}
+				}
 				.td-wallet,
 				.td-amount,
 				.td-name {
@@ -45,7 +51,7 @@ $header-margin: 2rem;
 				}
 				.td-wallet {
 					.deposit-withdrawal-wrapper {
-						margin-left: 0;
+						margin: 0 auto;
 						width: 18rem;
 						.action_notification-wrapper {
 							.action_notification-text {

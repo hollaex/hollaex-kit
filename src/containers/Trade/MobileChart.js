@@ -43,9 +43,9 @@ class MobileChart extends Component {
 			>
 				<TradeBlock
 					title={
-						<div className="d-flex justify-content-start flex-row">
+						<div className="d-flex justify-content-start align-items-center flex-row">
 							{STRINGS.CHART}
-							<MobileDropdownWrapper goToPair={goToPair} className="ml-2" />
+							<MobileDropdownWrapper goToPair={goToPair} className="ml-3" />
 						</div>
 					}
 					setRef={this.setChartRef}

@@ -11,6 +11,7 @@ const MobileOrders = ({
 	activeOrders,
 	cancelOrder,
 	cancelAllOrders,
+	goToTransactionsHistory,
 	pair,
 	pairData,
 	userTrades
@@ -33,13 +34,27 @@ const MobileOrders = ({
 					onClick={cancelAllOrders}
 					status=""
 					useSvg={true}
+					showActionText={true}
 				/>
 			}
 			className="f-1"
 		>
 			<ActiveOrders orders={activeOrders} onCancel={cancelOrder} />
 		</TradeBlock>
-		<TradeBlock title={STRINGS.TRADE_HISTORY} className="f-1">
+		<TradeBlock
+			title={STRINGS.TRADE_HISTORY}
+			action={
+				<ActionNotification
+					text={STRINGS.TRADE_HISTORY}
+					iconPath={ICONS.ARROW_TRANSFER_HISTORY_ACTIVE}
+					onClick={goToTransactionsHistory}
+					status=""
+					useSvg={true}
+					showActionText={true}
+				/>
+			}
+			className="f-1"
+		>
 			<UserTrades
 				trades={userTrades}
 				pair={pair}
@@ -48,6 +63,6 @@ const MobileOrders = ({
 			/>
 		</TradeBlock>
 	</div>
-)
+);
 
-export default MobileOrders
+export default MobileOrders;
