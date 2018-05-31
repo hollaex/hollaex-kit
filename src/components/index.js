@@ -30,7 +30,6 @@ export { default as Legal } from './Legal';
 export { default as AuthForm } from './Form/AuthForm';
 export { default as HocForm } from './Form/HocForm';
 export { default as Countdown } from './Countdown';
-export { default as LanguageSelector } from './LanguageSelector';
 export { default as WarningVerification } from './WarningVerification';
 export { FactoryChart, CHART_TYPES } from './Chart';
 export { Tooltip } from './Tooltip';

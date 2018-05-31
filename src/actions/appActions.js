@@ -1,4 +1,5 @@
 import { setLanguage as storeLanguageInBrowser } from '../utils/string';
+import { DEFAULT_LANGUAGE } from '../config/constants';
 import axios from 'axios';
 
 export const SET_NOTIFICATION = 'SET_NOTIFICATION';
@@ -50,7 +51,7 @@ export const closeAllNotification = () => ({
 export const openContactForm = (data = {}) =>
 	setNotification(CONTACT_FORM, data, true);
 
-export const setLanguage = (value = 'en') => {
+export const setLanguage = (value = DEFAULT_LANGUAGE) => {
 	const language = storeLanguageInBrowser(value);
 	return {
 		type: CHANGE_LANGUAGE,
