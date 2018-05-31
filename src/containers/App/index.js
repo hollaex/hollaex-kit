@@ -512,7 +512,7 @@ class Container extends Component {
 					<AppBar
 						goToDashboard={this.goToDashboard}
 						rightChildren={
-							<CurrencyList className="horizontal-currency-list justify-content-end" />
+							<CurrencyList className="horizontal-currency-list justify-content-end" activeLanguage={activeLanguage}/>
 						}
 					/>
 					<div className="app_container-content d-flex justify-content-between">
