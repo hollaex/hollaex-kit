@@ -11,38 +11,21 @@ class CurrencyList extends Component {
 	};
 
 	loadMarkets = (symbol = '', pair) => {
-		const focusedSymbol = symbol.toUpperCase();
 		this.removeFocus();
 
-		this[
-			`symbol-${STRINGS[`${focusedSymbol}_NAME`].toUpperCase()}`
-		].classList.add('focused');
-		if (focusedSymbol) {
+		if (symbol) {
 			const markets = Object.entries(this.props.pairs).filter(
 				([key, pair]) => pair.pair_base === symbol || pair.pair_2 === symbol
 			);
-			this.setState({ focusedSymbol, markets });
-		} else {
-			this.setState({ focusedSymbol: '', markets: {} });
-		}
-	};
-
-	setCurrencyRef = (el) => {
-		if (el) {
-			this[`symbol-${el.innerText}`] = el;
+			this.setState({ focusedSymbol: symbol, markets });
 		}
 	};
 
 	removeFocus = () => {
-		const currencyDomNodes = document.querySelectorAll('div.single-currency');
-		currencyDomNodes.forEach((currencyNode) => {
-			currencyNode.classList.remove('focused');
+		this.setState({
+			focusedSymbol: '',
+			markets: {}
 		});
-	};
-
-	onMouseLeave = () => {
-		this.removeFocus();
-		this.setState({ focusedSymbol: '' });
 	};
 
 	render() {
@@ -57,20 +40,21 @@ class CurrencyList extends Component {
 		return (
 			<div
 				className={classnames('currency-list f-0', className)}
-				onMouseLeave={this.onMouseLeave}
+				onMouseLeave={this.removeFocus}
 			>
 				{symbols.map((symbol, index) => (
 					<div
-						ref={this.setCurrencyRef}
 						key={index}
-						className="d-flex align-items-center single-currency"
+						className={classnames(
+							'd-flex align-items-center single-currency',
+						)}
 						onMouseEnter={() => this.loadMarkets(symbol)}
 						onClick={() => this.loadMarkets(symbol)}
 					>
 						{STRINGS[`${symbol.toUpperCase()}_NAME`].toUpperCase()}
 					</div>
 				))}
-				{focusedSymbol && <MarketList markets={markets} />}
+				{focusedSymbol && <MarketList markets={markets}  />}
 			</div>
 		);
 	}

@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import moment from 'moment';
-import momentJ from 'moment-jalaali';
 import { range } from 'lodash';
 import FieldWrapper from './FieldWrapper';
 import DropdownDateOption from './DropdownDateOption';
+import { DEFAULT_LANGUAGE } from '../../../config/constants';
 
 const FIELDS = [
 	{ key: 'year', label: 'Year' },
@@ -12,23 +12,17 @@ const FIELDS = [
 	{ key: 'day', label: 'Day' }
 ];
 const LIMIT_YEARS = 100;
-const DEFAULT_LANGUAGE = 'en';
 
 const FORMATS = {
 	en: {
 		year: 'YYYY',
 		month: 'MM',
 		day: 'DD'
-	},
-	fa: {
-		year: 'jYYYY',
-		month: 'jMM',
-		day: 'jDD'
 	}
 };
 
 const generateDateLimits = (yearsBack = LIMIT_YEARS, yearsForward = 0) => {
-	const nowMoment = momentJ();
+	const nowMoment = moment();
 	return {
 		en: {
 			maxYears: nowMoment.year() + yearsForward,
@@ -85,7 +79,7 @@ class DropdownDateField extends Component {
 		const display = {};
 		let dateUnixtime = moment(dateString || new Date()).valueOf();
 		moment.locale(language);
-		const date = momentJ(dateUnixtime);
+		const date = moment(dateUnixtime);
 		moment.locale(DEFAULT_LANGUAGE);
 		display.en = {
 			...limits.en,
@@ -101,7 +95,7 @@ class DropdownDateField extends Component {
 		const { input } = this.props;
 		const { unixtime, limits, language } = this.state;
 
-		const date = momentJ(unixtime);
+		const date = moment(unixtime);
 		if (key === 'year') {
 			date.year(value);
 		} else if (key === 'month') {

@@ -226,8 +226,9 @@ class Trade extends Component {
 				content: (
 					<MobileOrders
 						activeOrders={activeOrders}
-						cancelOrder={this.cancelOrder}
-						cancelAllOrders={this.cancelAllOrders}
+						cancelOrder={cancelOrder}
+						cancelAllOrders={cancelAllOrders}
+						goToTransactionsHistory={this.goToTransactionsHistory}
 						pair={pair}
 						pairData={pairData}
 						userTrades={userTrades}

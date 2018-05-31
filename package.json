@@ -1,6 +1,6 @@
 {
 	"name": "hollaex",
-	"version": "1.6.0",
+	"version": "1.6.1",
 	"private": true,
 	"dependencies": {
 		"@material/button": "^0.7.0",
@@ -18,7 +18,6 @@
 		"lint-staged": "^6.0.0",
 		"mathjs": "^3.16.0",
 		"moment": "^2.19.1",
-		"moment-jalaali": "^0.7.2",
 		"node-sass-chokidar": "0.0.3",
 		"npm-run-all": "^4.0.2",
 		"numbro": "^1.11.0",
@@ -27,7 +26,6 @@
 		"rc-tooltip": "^3.7.0",
 		"react": "^15.4.0",
 		"react-addons-shallow-compare": "^15.6.2",
-		"react-advance-jalaali-datepicker": "^0.1.0",
 		"react-copy-to-clipboard": "^5.0.1",
 		"react-csv": "^1.0.8",
 		"react-dates": "^13.0.6",

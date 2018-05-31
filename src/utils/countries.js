@@ -3,6 +3,7 @@ import React from 'react';
 import classnames from 'classnames';
 import { countries } from 'country-data';
 import STRINGS from '../config/localizedStrings';
+import { DEFAULT_COUNTRY } from '../config/constants';
 
 const convertCountry = (value = {}) => {
 	return {
@@ -26,7 +27,7 @@ const convertCountry = (value = {}) => {
 const filterCountries = (country) =>
 	country.status === 'assigned' && country.alpha2;
 
-export const initialCountry = convertCountry(countries.FR);
+export const initialCountry = convertCountry(countries[DEFAULT_COUNTRY]);
 export const NATIONAL_COUNTRY_VALUE = initialCountry.value;
 
 export const COUNTRIES = countries.all

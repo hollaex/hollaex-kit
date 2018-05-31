@@ -15,7 +15,7 @@ const Currency = ({ currency, balance, balanceValue, balanceText }) => (
 		<div className="d-flex flex-row">
 			<span className="balance-big mr-1">{CURRENCIES[currency].formatToCurrency(balanceValue)}</span>
 			{balanceText && <span className="d-flex align-items-end balance-small pb-4">
-				{CURRENCIES.fiat.formatToCurrency(balanceText)}
+			{`${CURRENCIES.fiat.currencySymbol}	${CURRENCIES.fiat.formatToCurrency(balanceText)}`}
 			</span>}
 		</div>
 	</div>
