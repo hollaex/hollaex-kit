@@ -68,6 +68,7 @@ const INITIAL_STATE = {
 	},
 	tokens: [],
 	username: '',
+	username_set: false,
 	settings: {
 		usernameIsSet: false,
 		orderConfirmationPopup: true,
@@ -265,6 +266,7 @@ export default function reducer(state = INITIAL_STATE, action) {
 			return {
 				...state,
 				username: action.payload.username,
+				username_set: action.payload.username_set,
 				settings: {
 					...state.settings,
 					usernameIsSet: true

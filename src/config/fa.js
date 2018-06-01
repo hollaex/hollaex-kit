@@ -792,7 +792,13 @@ export default {
 	CHAT: {
 		CHAT_TEXT: 'چت',
 		CHAT_UNREAD: '({1}) {0}'
-	},
+		READ_MORE: 'Read More',
+		SHOW_IMAGE: 'Show Image',
+		HIDE_IMAGE: 'Hide Image',
+		CHAT_MESSAGE_BOX_PLACEHOLDER: 'Message',
+		SIGN_UP_CHAT: 'Sign Up To Chat',
+		JOIN_CHAT: 'Set Username To Chat'
+	},	
 	INVALID_USERNAME: 'طول نام کاربری باید بین 3 تا 15 حرف باید باشد. فقط از حروف انگلیسی کوچک، اعداد و کاراکتر underscore استفاده نمایید.',
 	USERNAME_TAKEN: 'نام کاربری انتخاب شده توسط شما، قبلا توسط دیگر کاربران انتخاب شده است، لطفا نام دیگری انتخاب نمایید. ',
 	USERNAME_LABEL: 'ام مستعار(جهت نمایش در چت)',

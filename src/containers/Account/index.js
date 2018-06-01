@@ -75,7 +75,7 @@ class Account extends Component {
 			activeTab = initialValues.activeTab;
 			activeDevelopers = initialValues.activeDevelopers;
 		}
-
+		
 		const tabs = [
 			{
 				title: (
