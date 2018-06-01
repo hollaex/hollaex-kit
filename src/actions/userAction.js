@@ -237,6 +237,7 @@ export const setUsername = (values) => axios.post('/user/username', values);
 export const setUsernameStore = (username) => ({
 	type: 'SET_USERNAME',
 	payload: {
+		username_set: true,
 		username
 	}
 });

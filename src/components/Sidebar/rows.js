@@ -1,8 +1,6 @@
 import React from 'react';
 import classnames from 'classnames';
 import ReactSVG from 'react-svg';
-
-import { Chat as ChatComponent } from '../../containers';
 import { ICONS } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 
@@ -45,7 +43,11 @@ export const Cell = ({
 	</div>
 );
 
-export const Chat = ({ unreadMessages = 0, ...rest }) => {
+export const Chat = ({
+	onMinimize,
+	unreadMessages = 0,
+	...rest
+}) => {
 	const text =
 		unreadMessages > 0
 			? STRINGS.formatString(
@@ -55,11 +57,7 @@ export const Chat = ({ unreadMessages = 0, ...rest }) => {
 				)
 			: STRINGS.CHAT.CHAT_TEXT;
 
-	return (
-		<Cell {...rest} text={text}>
-			<ChatComponent />
-		</Cell>
-	);
+	return <Cell onClick={onMinimize} {...rest} text={text} />;
 };
 
 export const Logout = ({ onLogout, ...rest }) => (

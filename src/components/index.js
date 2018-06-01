@@ -36,3 +36,4 @@ export { Tooltip } from './Tooltip';
 export { default as CurrencyList } from './CurrencyList';
 export {  MobileDropdown } from './MobileDropdown'
 export * from './MobileBar';
+export * from './Chat';
