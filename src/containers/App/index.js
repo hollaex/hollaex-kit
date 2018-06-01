@@ -33,6 +33,7 @@ import {
 	setLanguage,
 	changeTheme,
 	closeAllNotification,
+	setChatUnreadMessages,
 	NOTIFICATIONS,
 	CONTACT_FORM
 } from '../../actions/appActions';
@@ -50,7 +51,7 @@ import {
 	MessageDisplay,
 	CurrencyList
 } from '../../components';
-import { ContactForm } from '../';
+import { ContactForm, Chat as ChatComponent } from '../';
 
 import {
 	getClasesForLanguage,
@@ -61,6 +62,7 @@ class Container extends Component {
 	state = {
 		appLoaded: false,
 		dialogIsOpen: false,
+		chatIsClosed: false,
 		publicSocket: undefined,
 		privateSocket: undefined,
 		idleTimer: undefined,
@@ -377,6 +379,14 @@ class Container extends Component {
 		this.props.closeNotification();
 	};
 
+	minimizeChat = () => {
+		const chatIsClosed = !this.state.chatIsClosed;
+		if (chatIsClosed === false){
+			this.props.setChatUnreadMessages();
+		}
+		this.setState({ chatIsClosed });
+	};
+
 	getClassForActivePath = (path) => {
 		switch (path) {
 			case '/wallet':
@@ -476,7 +486,7 @@ class Container extends Component {
 			activeTheme,
 			unreadMessages
 		} = this.props;
-		const { dialogIsOpen, appLoaded } = this.state;
+		const { dialogIsOpen, appLoaded, chatIsClosed } = this.state;
 		const languageClasses = getClasesForLanguage(activeLanguage, 'array');
 		const fontClass = getFontClassForLanguage(activeLanguage);
 
@@ -544,6 +554,9 @@ class Container extends Component {
 							help={openContactForm}
 							unreadMessages={unreadMessages}
 							pair={pair}
+							minimizeChat={this.minimizeChat}
+							chatIsClosed={chatIsClosed}
+							unreadMessages={unreadMessages}
 						/>
 					</div>
 				)}
@@ -570,6 +583,7 @@ class Container extends Component {
 					{dialogIsOpen &&
 						this.renderDialogContent(activeNotification, prices, activeTheme)}
 				</Dialog>
+				<ChatComponent minimized={chatIsClosed} onMinimize={this.minimizeChat} />
 			</div>
 		);
 	}
@@ -611,7 +625,8 @@ const mapDispatchToProps = (dispatch) => ({
 	setOrderbooks: bindActionCreators(setOrderbooks, dispatch),
 	setTrades: bindActionCreators(setTrades, dispatch),
 	setTickers: bindActionCreators(setTickers, dispatch),
-	changeTheme: bindActionCreators(changeTheme, dispatch)
+	changeTheme: bindActionCreators(changeTheme, dispatch),
+	setChatUnreadMessages: bindActionCreators(setChatUnreadMessages, dispatch)
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Container);
