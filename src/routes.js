@@ -35,7 +35,7 @@ import store from './store';
 import { verifyToken } from './actions/authAction';
 import { setLanguage } from './actions/appActions';
 
-import { getToken, removeToken, getTokenTimestamp } from './utils/token';
+import { isLoggedIn, getToken, removeToken, getTokenTimestamp } from './utils/token';
 import { getLanguage, getInterfaceLanguage } from './utils/string';
 import { checkUserSessionExpired } from './utils/utils';
 
@@ -63,11 +63,6 @@ if (token) {
 	} else {
 		store.dispatch(verifyToken(token));
 	}
-}
-
-function isLoggedIn() {
-	let token = getToken();
-	return !!token;
 }
 
 function requireAuth(nextState, replace) {
