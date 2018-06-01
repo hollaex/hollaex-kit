@@ -1,3 +1,6 @@
+import { decodeToken } from '../utils/token';
+import { USER_TYPES } from '../actions/appActions';
+
 const VERIFICATION = {
 	data: {},
 	fetching: false,
@@ -17,7 +20,8 @@ const INITIAL_STATE = {
 	resetPasswordPending: false,
 	resetPasswordComplete: false,
 	verification: VERIFICATION,
-	logoutMessage: ''
+	logoutMessage: '',
+	userType: USER_TYPES.USER_TYPE_NORMAL
 };
 
 export default function reducer(state = INITIAL_STATE, { type, payload }) {
@@ -99,12 +103,20 @@ export default function reducer(state = INITIAL_STATE, { type, payload }) {
 				verifyingToken: false
 			};
 		case 'VERIFY_TOKEN_FULFILLED':
+			const decodedToken = decodeToken(payload);
+			const userType =
+				decodedToken &&
+				decodedToken.scopes &&
+				decodedToken.scopes.includes(USER_TYPES.USER_TYPE_ADMIN)
+					? USER_TYPES.USER_TYPE_ADMIN
+					: USER_TYPES.USER_TYPE_NORMAL;
 			return {
 				...state,
 				fetching: false,
 				verifyingToken: false,
 				fetched: true,
-				token: payload
+				token: payload,
+				userType
 			};
 		case 'LOAD_TOKEN':
 			return {

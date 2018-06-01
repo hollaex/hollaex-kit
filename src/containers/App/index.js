@@ -33,6 +33,7 @@ import {
 	setLanguage,
 	changeTheme,
 	closeAllNotification,
+	setChatUnreadMessages,
 	NOTIFICATIONS,
 	CONTACT_FORM
 } from '../../actions/appActions';
@@ -50,7 +51,7 @@ import {
 	MessageDisplay,
 	CurrencyList
 } from '../../components';
-import { ContactForm } from '../';
+import { ContactForm, Chat as ChatComponent } from '../';
 
 import {
 	getClasesForLanguage,
@@ -61,6 +62,7 @@ class Container extends Component {
 	state = {
 		appLoaded: false,
 		dialogIsOpen: false,
+		chatIsClosed: false,
 		publicSocket: undefined,
 		privateSocket: undefined,
 		idleTimer: undefined,
@@ -377,6 +379,14 @@ class Container extends Component {
 		this.props.closeNotification();
 	};
 
+	minimizeChat = () => {
+		const chatIsClosed = !this.state.chatIsClosed;
+		if (chatIsClosed === false) {
+			this.props.setChatUnreadMessages();
+		}
+		this.setState({ chatIsClosed });
+	};
+
 	getClassForActivePath = (path) => {
 		switch (path) {
 			case '/wallet':
@@ -390,6 +400,8 @@ class Container extends Component {
 				return 'quick-trade';
 			case '/trade':
 				return 'trade';
+			case '/chat':
+				return 'chat';
 			default:
 		}
 		if (path.indexOf('/trade/') === 0) {
@@ -476,7 +488,7 @@ class Container extends Component {
 			activeTheme,
 			unreadMessages
 		} = this.props;
-		const { dialogIsOpen, appLoaded } = this.state;
+		const { dialogIsOpen, appLoaded, chatIsClosed } = this.state;
 		const languageClasses = getClasesForLanguage(activeLanguage, 'array');
 		const fontClass = getFontClassForLanguage(activeLanguage);
 
@@ -512,7 +524,10 @@ class Container extends Component {
 					<AppBar
 						goToDashboard={this.goToDashboard}
 						rightChildren={
-							<CurrencyList className="horizontal-currency-list justify-content-end" activeLanguage={activeLanguage}/>
+							<CurrencyList
+								className="horizontal-currency-list justify-content-end"
+								activeLanguage={activeLanguage}
+							/>
 						}
 					/>
 					<div className="app_container-content d-flex justify-content-between">
@@ -542,8 +557,10 @@ class Container extends Component {
 							activePath={activePath}
 							logout={this.logout}
 							help={openContactForm}
-							unreadMessages={unreadMessages}
 							pair={pair}
+							minimizeChat={this.minimizeChat}
+							chatIsClosed={chatIsClosed}
+							unreadMessages={unreadMessages}
 						/>
 					</div>
 				)}
@@ -570,6 +587,12 @@ class Container extends Component {
 					{dialogIsOpen &&
 						this.renderDialogContent(activeNotification, prices, activeTheme)}
 				</Dialog>
+				{!isMobile && (
+					<ChatComponent
+						minimized={chatIsClosed}
+						onMinimize={this.minimizeChat}
+					/>
+				)}
 			</div>
 		);
 	}
@@ -611,7 +634,8 @@ const mapDispatchToProps = (dispatch) => ({
 	setOrderbooks: bindActionCreators(setOrderbooks, dispatch),
 	setTrades: bindActionCreators(setTrades, dispatch),
 	setTickers: bindActionCreators(setTickers, dispatch),
-	changeTheme: bindActionCreators(changeTheme, dispatch)
+	changeTheme: bindActionCreators(changeTheme, dispatch),
+	setChatUnreadMessages: bindActionCreators(setChatUnreadMessages, dispatch)
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Container);
