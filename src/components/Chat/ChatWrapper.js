@@ -2,6 +2,7 @@ import React from 'react';
 import Draggable from 'react-draggable';
 import classnames from 'classnames';
 import { ChatHeader, ChatMessageList, ChatFooter } from './';
+import { isMobile } from 'react-device-detect';
 
 export const ChatWrapper = ({
 	chatSocketInitializing,
@@ -24,7 +25,7 @@ export const ChatWrapper = ({
 	const chatWrapperInitialized = chatInitialized && usernameInitalized && userInitialized
 
 	return (
-		<Draggable disabled={!userInitialized || minimized} cancel=".chat-message-box">
+		<Draggable disabled={!userInitialized || minimized || isMobile} cancel=".chat-message-box">
 			<div
 				className={classnames(
 					'd-flex',
@@ -34,11 +35,11 @@ export const ChatWrapper = ({
 					unreadMessages > 0 && 'unread-messages'
 				)}
 			>
-				<ChatHeader
+				{!isMobile && <ChatHeader
 					title={minimized && unreadMessages > 0 ? unreadMessages : title}
 					minimizeChat={minimizeChat}
 					minimized={minimized}
-				/>
+				/>}
 				<ChatMessageList
 					chatInitialized={chatInitialized}
 					usernameInitalized={usernameInitalized}

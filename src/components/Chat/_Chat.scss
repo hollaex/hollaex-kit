@@ -10,6 +10,47 @@ $chat-other-message--color: white;
 $chat-element-action--color: #2798c7;
 $unread-messages-border--color: #b9b500;
 
+.layout-mobile {
+	.chat-wrapper {
+		position: relative;
+		height: 100%;
+		box-shadow: unset !important;
+		right: 0;
+		bottom: 0;
+		.chat-message-list {
+			width: 100% !important;
+			.chat-message {
+				.message-content {
+					.username {
+						font-size: $regular-chat--font-size;
+					}
+
+					.message {
+						font-size: $regular--font-size;
+						line-height: unset !important;
+					}
+				}
+				.item-options {
+					.item-options-wrapper {
+						min-width: 5rem;
+						font-size: $regular--font-size;
+						right: 1.5rem;
+						top: -0.5rem;
+					}
+				}
+			}
+		}
+		.chat-footer {
+			padding: 0.5rem;
+			.chat-message-box {
+				min-height: 4rem;
+				font-size: $regular-chat--font-size;
+				padding: 1rem 0.5rem;
+			}
+		}
+	}
+}
+
 .chat-wrapper {
 	position: fixed;
 	background-color: $chat-wrapper-light--background-color;
@@ -90,7 +131,7 @@ $unread-messages-border--color: #b9b500;
 
 		.chat-header-icon {
 			flex: 1;
-			background-image: url("/assets/images/dotted-grip-chat-repeat-pattern.svg");
+			background-image: url('/assets/images/dotted-grip-chat-repeat-pattern.svg');
 			background-repeat: repeat-x;
 			background-size: 0.75rem;
 			height: 1.2rem;

@@ -381,7 +381,7 @@ class Container extends Component {
 
 	minimizeChat = () => {
 		const chatIsClosed = !this.state.chatIsClosed;
-		if (chatIsClosed === false){
+		if (chatIsClosed === false) {
 			this.props.setChatUnreadMessages();
 		}
 		this.setState({ chatIsClosed });
@@ -400,6 +400,8 @@ class Container extends Component {
 				return 'quick-trade';
 			case '/trade':
 				return 'trade';
+			case '/chat':
+				return 'chat';
 			default:
 		}
 		if (path.indexOf('/trade/') === 0) {
@@ -522,7 +524,10 @@ class Container extends Component {
 					<AppBar
 						goToDashboard={this.goToDashboard}
 						rightChildren={
-							<CurrencyList className="horizontal-currency-list justify-content-end" activeLanguage={activeLanguage}/>
+							<CurrencyList
+								className="horizontal-currency-list justify-content-end"
+								activeLanguage={activeLanguage}
+							/>
 						}
 					/>
 					<div className="app_container-content d-flex justify-content-between">
@@ -582,7 +587,12 @@ class Container extends Component {
 					{dialogIsOpen &&
 						this.renderDialogContent(activeNotification, prices, activeTheme)}
 				</Dialog>
-				<ChatComponent minimized={chatIsClosed} onMinimize={this.minimizeChat} />
+				{!isMobile && (
+					<ChatComponent
+						minimized={chatIsClosed}
+						onMinimize={this.minimizeChat}
+					/>
+				)}
 			</div>
 		);
 	}

@@ -28,7 +28,8 @@ import {
 	RequestResetPassword,
 	ResetPassword,
 	QuickTrade,
-	Verification
+	Verification,
+	Chat
 } from './containers';
 
 import store from './store';
@@ -143,6 +144,7 @@ export default (
 			/>
 			<Route path="trade/:pair" name="Trade" component={Trade} />
 			<Route path="quick-trade/:pair" name="Quick Trade" component={QuickTrade} />
+			<Route path="chat" name="Chat" component={Chat} />
 		</Route>
 		<Route
 			path="verification"

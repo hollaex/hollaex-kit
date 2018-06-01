@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import io from 'socket.io-client';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { isMobile } from 'react-device-detect';
 import { ChatWrapper } from '../../components';
 import { WS_URL } from '../../config/constants';
 import {
@@ -65,7 +66,7 @@ class Chat extends Component {
 				? this.props.unreadMessages +
 					(messages.length - this.state.messages.length)
 				: 0;
-			this.props.setChatUnreadMessages(unreadMessages)
+			this.props.setChatUnreadMessages(unreadMessages);
 			this.setState({ messages });
 		});
 
@@ -83,8 +84,6 @@ class Chat extends Component {
 				this.setState({ messages });
 			}
 		});
-
-		
 
 		this.setState({ chatWs });
 	};
@@ -119,7 +118,7 @@ class Chat extends Component {
 				this.state.chatWs.emit('message', chatMessage);
 
 				this.chatMessageBox.value = '';
-				this.chatMessageBox.style.height = '36px';
+				this.chatMessageBox.style.height = isMobile ? '32px' : '36px';
 			}
 		}
 	};
@@ -166,7 +165,6 @@ class Chat extends Component {
 				minimized={minimized}
 				minimizeChat={onMinimize}
 				removeMessage={this.removeMessage}
-			
 			/>
 		);
 	}
