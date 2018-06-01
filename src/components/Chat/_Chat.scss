@@ -57,7 +57,7 @@ $unread-messages-border--color: #b9b500;
 .chat-wrapper {
 	position: fixed;
 	background-color: $chat-wrapper-light--background-color;
-	height: 50rem;
+	height: 35rem;
 	right: 0.5rem;
 	bottom: 1rem;
 	color: $chat-message-light--font-color;
@@ -173,6 +173,12 @@ $unread-messages-border--color: #b9b500;
 						}
 					}
 				}
+				.nonmobile {
+					.own-message {
+						line-height: 1.1rem;
+						word-break: keep-all;
+					}
+				}
 			}
 
 			&.user {
@@ -181,6 +187,7 @@ $unread-messages-border--color: #b9b500;
 					font-weight: bold;
 				}
 			}
+
 
 			.message-content {
 				span {
