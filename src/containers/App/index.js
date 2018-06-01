@@ -552,7 +552,6 @@ class Container extends Component {
 							activePath={activePath}
 							logout={this.logout}
 							help={openContactForm}
-							unreadMessages={unreadMessages}
 							pair={pair}
 							minimizeChat={this.minimizeChat}
 							chatIsClosed={chatIsClosed}
