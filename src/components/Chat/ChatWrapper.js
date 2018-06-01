@@ -22,10 +22,14 @@ export const ChatWrapper = ({
 	const chatInitialized =
 		chatSocketInitialized && !chatSocketInitializing ? true : false;
 	const usernameInitalized = username ? true : false;
-	const chatWrapperInitialized = chatInitialized && usernameInitalized && userInitialized
+	const chatWrapperInitialized =
+		chatInitialized && usernameInitalized && userInitialized;
 
 	return (
-		<Draggable disabled={!userInitialized || minimized || isMobile} cancel=".chat-message-box">
+		<Draggable
+			disabled={!userInitialized || minimized || isMobile}
+			cancel=".nondraggable"
+		>
 			<div
 				className={classnames(
 					'd-flex',
@@ -35,25 +39,29 @@ export const ChatWrapper = ({
 					unreadMessages > 0 && 'unread-messages'
 				)}
 			>
-				{!isMobile && <ChatHeader
-					title={minimized && unreadMessages > 0 ? unreadMessages : title}
-					minimizeChat={minimizeChat}
-					minimized={minimized}
-				/>}
-				<ChatMessageList
-					chatInitialized={chatInitialized}
-					usernameInitalized={usernameInitalized}
-					userInitialized={userInitialized}
-					username={username}
-					userType={userType}
-					messages={messages}
-					removeMessage={removeMessage}
-				/>
-				<ChatFooter
-					chatWrapperInitialized={chatWrapperInitialized}
-					sendMessage={sendMessage}
-					setChatBoxRef={setChatBoxRef}
-				/>
+				{!isMobile && (
+					<ChatHeader
+						title={minimized && unreadMessages > 0 ? unreadMessages : title}
+						minimizeChat={minimizeChat}
+						minimized={minimized}
+					/>
+				)}
+				<div className="d-flex flex-column nondraggable">
+					<ChatMessageList
+						chatInitialized={chatInitialized}
+						usernameInitalized={usernameInitalized}
+						userInitialized={userInitialized}
+						username={username}
+						userType={userType}
+						messages={messages}
+						removeMessage={removeMessage}
+					/>
+					<ChatFooter
+						chatWrapperInitialized={chatWrapperInitialized}
+						sendMessage={sendMessage}
+						setChatBoxRef={setChatBoxRef}
+					/>
+				</div>
 			</div>
 		</Draggable>
 	);

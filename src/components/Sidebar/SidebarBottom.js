@@ -27,7 +27,7 @@ export const SidebarBottom = ({ activePath = 'x', pair = '' }) => {
 			/>
 			<SidebarButtom
 				path={`/chat`}
-				iconPath={ICONS.SIDEBAR_WALLET_ACTIVE}
+				iconPath={ICONS.CHAT}
 				active={activePath === 'chat'}
 			/>
 			<SidebarButtom
