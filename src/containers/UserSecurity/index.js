@@ -14,7 +14,6 @@ import {
 	Accordion,
 	Dialog,
 	SuccessDisplay,
-	CheckboxButton,
 	OtpForm
 } from '../../components';
 import { errorHandler } from '../../components/OtpForm/utils';
@@ -75,7 +74,7 @@ class UserVerification extends Component {
 						data={otp}
 						otp_enabled={otp_enabled}
 					>
-						{otp_enabled && (
+						{/*otp_enabled && (
 							<div className="d-flex flex-column">
 								<CheckboxButton
 									label={STRINGS.ACCOUNT_SECURITY.OTP.ENABLED_TEXTS.TEXT_1}
@@ -86,7 +85,7 @@ class UserVerification extends Component {
 									checked={true}
 								/>
 							</div>
-						)}
+						)*/}
 					</OTP>
 				),
 				notification: {

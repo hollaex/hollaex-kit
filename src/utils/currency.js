@@ -11,6 +11,7 @@ export const fiatFormatToCurrency = CURRENCIES[fiatSymbol].formatToCurrency;
 export const BTC_FORMAT = '0,0.[0000]';
 export const BTC_FULL_FORMAT = '0,0.[00000000]';
 export const FIAT_FORMAT = '0,0.[00]';
+export const PERCENTAGE_FORMAT = '0.[00]%';
 
 export const roundNumber = (number = 0, decimals = 4) => {
 	if (number === 0) {
@@ -30,6 +31,8 @@ export const roundNumber = (number = 0, decimals = 4) => {
 	}
 };
 
+export const formatPercentage = (value = 0) =>
+	numbro(math.number(value / 100)).format(PERCENTAGE_FORMAT);
 export const formatBtcAmount = (amount = 0) =>
 	numbro(math.number(amount)).format(BTC_FORMAT);
 export const formatBtcFullAmount = (amount = 0) =>

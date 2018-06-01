@@ -8,7 +8,7 @@ import { debounce } from 'lodash';
 import { WS_URL, ICONS, SESSION_TIME } from '../../config/constants';
 
 import { logout } from '../../actions/authAction';
-import { setMe, setBalance, updateUser } from '../../actions/userAction';
+import { setMe, setBalance, updateUser, requestLimits } from '../../actions/userAction';
 import { addUserTrades } from '../../actions/walletActions';
 import {
 	setUserOrders,
@@ -82,6 +82,7 @@ class Container extends Component {
 		) {
 			if (!this.state.publicSocket) {
 				this.initSocketConnections();
+				this.props.requestLimits();
 			}
 		}
 		if (
@@ -423,6 +424,7 @@ class Container extends Component {
 					<ContactForm
 						onSubmitSuccess={this.onCloseDialog}
 						onClose={this.onCloseDialog}
+						data={data}
 					/>
 				);
 			case NOTIFICATIONS.NEW_ORDER: {
@@ -520,6 +522,7 @@ class Container extends Component {
 					className="app-dialog"
 					onCloseDialog={this.onCloseDialog}
 					shouldCloseOnOverlayClick={shouldCloseOnOverlayClick}
+					theme={activeTheme}
 					showCloseText={
 						!(
 							activeNotification.type === CONTACT_FORM ||
@@ -529,7 +532,7 @@ class Container extends Component {
 					}
 					style={{ 'z-index': 100 }}
 				>
-					{this.renderDialogContent(activeNotification, prices)}
+					{dialogIsOpen && this.renderDialogContent(activeNotification, prices, activeTheme)}
 				</Dialog>
 				<ChatComponent minimized={chatIsClosed} onMinimize={this.minimizeChat} />
 			</div>
@@ -553,6 +556,7 @@ const mapStateToProps = (store) => ({
 
 const mapDispatchToProps = (dispatch) => ({
 	logout: bindActionCreators(logout, dispatch),
+	requestLimits: bindActionCreators(requestLimits, dispatch),
 	addTrades: bindActionCreators(addTrades, dispatch),
 	setOrderbook: bindActionCreators(setOrderbook, dispatch),
 	setMe: bindActionCreators(setMe, dispatch),

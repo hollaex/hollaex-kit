@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
+import ReactSVG from 'react-svg';
+
 import { ICONS } from '../../../config/constants';
 import { ActionNotification } from '../../';
 import { getErrorLocalized } from '../../../utils/errors';
+
 export const FieldContent = ({
 	label = '',
 	valid = false,
@@ -25,7 +28,7 @@ export const FieldContent = ({
 				{children}
 				{valid &&
 					hasValue && (
-						<img src={ICONS.BLACK_CHECK} alt="valid" className="field-valid" />
+						<ReactSVG path={ICONS.BLACK_CHECK} wrapperClassName="field-valid" />
 					)}
 			</div>
 			{!hideUnderline && (

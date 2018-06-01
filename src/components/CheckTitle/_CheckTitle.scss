@@ -66,3 +66,9 @@ $notification-size: 1.5rem;
 		font-family: $raleway--font-family;
 	}
 }
+
+.dark-theme {
+	.check_title-notification {
+		background-color: $dark-tab-notification;
+	}
+}

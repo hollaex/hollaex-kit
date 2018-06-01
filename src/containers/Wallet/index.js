@@ -75,6 +75,7 @@ class Wallet extends Component {
 					status: 'information',
 					iconPath: isOpen ? ICONS.BLUE_PLUS : ICONS.BLUE_CLIP,
 					allowClick: true,
+					useSvg: true,
 					className: isOpen ? '' : 'wallet-notification'
 				}
 			}
@@ -111,6 +112,7 @@ class Wallet extends Component {
 						text={STRINGS.TRADE_HISTORY}
 						status="information"
 						iconPath={ICONS.BLUE_CLIP}
+						useSvg={true}
 						onClick={this.goToTransactionsHistory}
 					/>
 				</div>
@@ -148,6 +150,7 @@ class Wallet extends Component {
 					iconPath={
 						symbol === fiatSymbol ? ICONS.FIAT_WALLET : ICONS.BITCOIN_WALLET
 					}
+					useSvg={true}
 					textType="title"
 				/>
 				<div className={classnames('wallet-container')}>

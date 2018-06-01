@@ -14,6 +14,7 @@ import { getTheme } from '../utils/theme';
 const EMPTY_NOTIFICATION = {
 	type: '',
 	message: '',
+	contactFormData: {},
 	timestamp: undefined
 };
 
@@ -48,6 +49,7 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 				...state,
 				notifications,
 				activeNotification,
+				contactFormData: payload.data,
 				notificationsQueue
 			};
 		}
@@ -62,7 +64,8 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 			return {
 				...state,
 				notificationsQueue,
-				activeNotification
+				activeNotification,
+				contactFormData: {}
 			};
 		}
 

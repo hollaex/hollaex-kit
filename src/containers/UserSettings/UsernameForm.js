@@ -39,5 +39,5 @@ const Form = ({
 );
 
 export default reduxForm({
-	form: 'SettingsForm'
+	form: 'UsernameForm'
 })(Form);

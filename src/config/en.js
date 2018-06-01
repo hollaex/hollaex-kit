@@ -513,7 +513,8 @@ export default {
 				INPUT: 'Enter One-Time Password (OTP)',
 				WARNING:
 					'We highly recommend you set up 2 factor authentication (2FA). Doing so will greatly increase the security of your funds.',
-				ENABLE: 'Enable Two-Factor Authentication'
+				ENABLE: 'Enable Two-Factor Authentication',
+				DISABLE: 'Disable Two-Factor Authentication'
 			},
 			FORM: {
 				PLACEHOLDER: 'Enter your OTP provided by Google Authenticator.',
@@ -817,5 +818,20 @@ export default {
 	USERNAME_PLACEHOLDER: 'Username',
 	TAB_USERNAME: 'Username',
 	USERNAME_WARNING: 'Your username can only be changed once. Please assure your username is desirable.',
-	USERNAME_CANNOT_BE_CHANGED: 'Username can not be changed'
+	USERNAME_CANNOT_BE_CHANGED: 'Username can not be changed',
+	UPGRADE_LEVEL: 'Upgrade account level',
+	LEVELS: {
+		LABEL_LEVEL: 'Level',
+		LABEL_LEVEL_1: 'One',
+		LABEL_LEVEL_2: 'Two',
+		LABEL_LEVEL_3: 'Three',
+		LABEL_MAKER_FEE: 'Maker Fee',
+		LABEL_TAKER_FEE: 'Taker Fee',
+		LABEL_FIAT_DEPOSIT: 'Daily Rial Deposit',
+		LABEL_FIAT_WITHDRAWAL: 'Daily Rial Withdrawal',
+		LABEL_BTC_DEPOSIT: 'Daily Bitcoin Deposit',
+		LABEL_BTC_WITHDRAWAL: 'Daily Bitcoin Withdrawal',
+		UNLIMITED: 'Unlimited',
+		BLOCKED: '0'
+	}
 };

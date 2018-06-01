@@ -79,10 +79,12 @@ class ResetPassword extends Component {
 						underline={true}
 						className="w-100"
 						subtitle={STRINGS.RESET_PASSWORD.SUBTITLE}
+						useSvg={true}
 						actionProps={{
 							text: STRINGS.HELP_TEXT,
-							iconPath: ICONS.HELP_ICON,
-							onClick: this.onOpenDialog
+							iconPath: ICONS.BLUE_QUESTION,
+							onClick: this.onOpenDialog,
+							useSvg: true
 						}}
 					/>
 					<div

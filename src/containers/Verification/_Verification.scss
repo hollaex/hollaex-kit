@@ -45,3 +45,24 @@
 		}
 	}
 }
+
+.dark-theme {
+	.header_title-wrapper {
+		border-top-color: $dark-border-main !important;
+
+		.header_title-children {
+			color: $dark-font-sub-text-color !important;
+
+			.important_information {
+				color: $dark-font-sub-text-color !important
+			}
+		}
+	}
+	.title-inactive {
+		color: $dark-tab-inactive !important;
+	}
+
+	.astrics-1 {
+		fill: $dark-tab-inactive;
+	}
+}

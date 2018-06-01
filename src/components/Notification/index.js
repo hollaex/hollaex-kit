@@ -27,7 +27,7 @@ const generateNotificationContent = ({ type, data, ...rest }) => {
 		case NOTIFICATIONS.VERIFICATION:
 			return <Verification data={data} />;
 		case NOTIFICATIONS.CONTACT_FORM:
-			return <ContactForm {...rest} />;
+			return <ContactForm {...rest} data={data} />;
 		case NOTIFICATIONS.NEW_ORDER:
 			return <NewOrder data={data} {...rest} />;
 		case NOTIFICATIONS.GENERATE_API_KEY:

@@ -28,6 +28,7 @@ const Form = (props) => {
 		captcha: {
 			type: 'captcha',
 			language: getLanguage(),
+			theme: props.theme,
 			validate: [required]
 		}
 	};

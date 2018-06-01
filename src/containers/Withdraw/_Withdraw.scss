@@ -7,6 +7,9 @@ $content--margin: 2rem;
 	.review-icon {
 		@include size(8rem);
 		margin: 0 auto;
+		svg {
+			@include size(8rem);
+		}
 	}
 
 	.review-info_container {
@@ -59,4 +62,18 @@ $content--margin: 2rem;
 
 .bank_account-information-wrapper {
 	margin: $content--margin 0;
+}
+
+.dark-theme {
+	svg {
+		.withdraw-1 {
+			fill: $dark-font-main-text-color;
+		}
+		.withdraw-2 {
+			fill: $dark-button-active;
+		}
+		.check-send-btc-1 {
+			fill: $dark-button-active;
+		}
+	}
 }

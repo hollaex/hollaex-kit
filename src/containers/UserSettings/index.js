@@ -3,7 +3,12 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { SubmissionError } from 'redux-form';
 import { setLanguage, changeTheme } from '../../actions/appActions';
-import { updateUser, setUserData, setUsername, setUsernameStore } from '../../actions/userAction';
+import {
+	updateUser,
+	setUserData,
+	setUsername,
+	setUsernameStore
+} from '../../actions/userAction';
 import { Accordion } from '../../components';
 import SettingsForm, { generateFormValues } from './SettingsForm';
 import UsernameForm, { generateUsernameFormValues } from './UsernameForm';
@@ -22,14 +27,20 @@ class UserSettings extends Component {
 	}
 
 	componentWillReceiveProps(nextProps) {
-		if (nextProps.activeLanguage !== this.props.activeLanguage) {
+		if (
+			nextProps.activeLanguage !== this.props.activeLanguage ||
+			nextProps.username !== this.props.username ||
+			nextProps.settings !== this.props.settings
+		) {
 			this.calculateSections(nextProps);
 		}
 	}
 
-	calculateSections = ({ username = 'XX', settings = {}}) => {
+	calculateSections = ({ username = '', settings = {} }) => {
 		const formValues = generateFormValues();
-		const usernameFormValues = generateUsernameFormValues(settings.usernameIsSet);
+		const usernameFormValues = generateUsernameFormValues(
+			settings.usernameIsSet
+		);
 
 		const sections = [
 			{

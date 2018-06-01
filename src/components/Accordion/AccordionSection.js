@@ -57,6 +57,7 @@ const AccordionSection = ({
 						{...notification}
 						onClick={notification.allowClick ? onClick : openSection}
 						showPointer={notification.allowClick}
+						useSvg={true}
 					/>
 				)}
 			</div>

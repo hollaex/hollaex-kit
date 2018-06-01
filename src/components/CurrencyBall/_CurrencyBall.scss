@@ -1,6 +1,3 @@
-@import '../../mixins';
-@import '../../variables';
-
 $small-size: 1.5rem;
 $small-font: 0.6rem;
 $medium-modifier: 1.5;
@@ -73,5 +70,17 @@ $large-modifier: 2.25;
 .direction_rtl {
 	.with_price-block_amount {
 		justify-content: flex-end;
+	}
+}
+
+.dark-theme {
+	.with_price-block_amount {
+		color: $dark-font-main-text-color;
+		.with_price-block_amount-value-fiat {
+			color: $dark-font-sub-text-color;
+		}
+	}
+	.currency_ball-wrapper {
+		color: $dark-app-background-color;
 	}
 }

@@ -53,8 +53,8 @@ $title-icon--height: 10rem;
 		margin-bottom: $section--margin-bottom;
 	}
 
-	.quick_trade-icon {
-		max-height: $title-icon--height;
+	.quick_trade-icon svg {
+		@include size($title-icon--height);
 	}
 	.title {
 		font-size: $font-size-headline;
@@ -242,5 +242,75 @@ $title-icon--height: 10rem;
 	100% {
 		width: 0;
 		left: 100%;
+	}
+}
+
+.dark-theme {
+	.quick_trade-wrapper {
+		background-color: $dark-app-background-color;
+
+		.title,
+		.input_block-title {
+			color: $dark-font-main-text-color;
+		}
+		> .quick_trade-section_wrapper {
+			&.fetching {
+				color: $dark-disabled-main;
+			}
+		}
+
+		.toogle_button-wrapper {
+			.toogle-content {
+				color: $dark-disabled-main;
+
+				.selected {
+					color: $dark-font-main-text-color;
+				}
+
+				.toogle-action_button {
+					border-color: $dark-border-main;
+
+					.toogle-action_button-display {
+						background: $dark-border-main;
+					}
+				}
+			}
+
+			.toogle-side_line {
+				&::after {
+					background-color: $dark-border-main;
+				}
+			}
+		}
+
+		.input_block-content {
+			border-bottom-color: $dark-border-main;
+
+			&.loading {
+				border-bottom-color: $dark-disabled-main;
+				&:after {
+					background-color: $dark-border-main;
+				}
+			}
+		}
+		.input_block-inputbox {
+			background-color: $dark-app-background-color;
+			color: $dark-font-main-text-color;
+		}
+	}
+
+	svg {
+		.quick-trade-1 {
+			stroke: $dark-button-active;
+		}
+		.quick-trade-2 {
+			fill: $dark-font-main-text-color;
+		}
+		.quick-trade-3 {
+			stroke: $dark-button-active;
+		}
+		.quick-trade-4 {
+			fill: $dark-button-active;
+		}
 	}
 }

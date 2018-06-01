@@ -23,6 +23,8 @@ const HistoryDisplay = (props) => {
 						<ActionNotification
 							text={STRINGS.TRANSACTION_HISTORY.TEXT_DOWNLOAD}
 							iconPath={ICONS.DATA}
+							useSvg={true}
+							className="csv-action"
 						/>
 					</CsvDownload>
 				)}

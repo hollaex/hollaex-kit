@@ -25,11 +25,11 @@ const Sidebar = ({
 				<NotificationsList />
 			</div>
 			<div className="sidebar-row d-flex">
-				<Chat
+				{*<Chat
 					className="f-1"
 					onMinimize={minimizeChat}
 					unreadMessages={unreadMessages}
-				/>
+				/>*}
 				<Help className="f-1" onHelp={help} />
 				<Logout className="f-0" onLogout={logout} />
 			</div>
