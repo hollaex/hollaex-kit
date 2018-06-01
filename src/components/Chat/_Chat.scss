@@ -17,6 +17,9 @@ $unread-messages-border--color: #b9b500;
 		box-shadow: unset !important;
 		right: 0;
 		bottom: 0;
+		.nondraggable { 
+			height: 100%;
+		}
 		.chat-message-list {
 			width: 100% !important;
 			.chat-message {
@@ -54,7 +57,7 @@ $unread-messages-border--color: #b9b500;
 .chat-wrapper {
 	position: fixed;
 	background-color: $chat-wrapper-light--background-color;
-	height: 50rem;
+	height: 35rem;
 	right: 0.5rem;
 	bottom: 1rem;
 	color: $chat-message-light--font-color;
@@ -63,6 +66,10 @@ $unread-messages-border--color: #b9b500;
 	-moz-box-shadow: 1px 0px 3px 0px rgba(0, 0, 0, 0.29);
 	box-shadow: 1px 0px 3px 0px rgba(0, 0, 0, 0.29);
 	font-family: 'Roboto-Light';
+
+	.nondraggable {
+		height: calc(100% - 2.5rem);
+	}
 
 	&.unread-messages {
 		border-color: $unread-messages-border--color;
@@ -120,14 +127,12 @@ $unread-messages-border--color: #b9b500;
 			height: 5rem;
 		}
 	}
-	> div {
-		padding: 0.5rem 1rem;
-	}
 
 	.chat-header {
 		padding-top: 0.75rem;
 		padding-bottom: 0.75rem;
 		font-weight: bold;
+		padding: 0.5rem 1rem;
 
 		.chat-header-icon {
 			flex: 1;
@@ -135,6 +140,7 @@ $unread-messages-border--color: #b9b500;
 			background-repeat: repeat-x;
 			background-size: 0.75rem;
 			height: 1.2rem;
+			cursor: -webkit-grab;
 		}
 	}
 
@@ -167,6 +173,12 @@ $unread-messages-border--color: #b9b500;
 						}
 					}
 				}
+				.nonmobile {
+					.own-message {
+						line-height: 1.1rem;
+						word-break: keep-all;
+					}
+				}
 			}
 
 			&.user {
@@ -175,6 +187,7 @@ $unread-messages-border--color: #b9b500;
 					font-weight: bold;
 				}
 			}
+
 
 			.message-content {
 				span {
