@@ -241,7 +241,8 @@ export const ICONS = {
 	TOKEN_CREATED: `${process.env.PUBLIC_URL}/assets/images/api-key-created.svg`,
 	CHECK_ORDER: `${process.env.PUBLIC_URL}/assets/images/check-order.svg`,
 	ITEM_OPTIONS : `${process.env.PUBLIC_URL}/assets/images/item-options.svg`,
-	DOTTED_GRIP: `${process.env.PUBLIC_URL}/assets/images/dotted-grip-chat-repeat-pattern.svg`
+	DOTTED_GRIP: `${process.env.PUBLIC_URL}/assets/images/dotted-grip-chat-repeat-pattern.svg`,
+	CHAT: `${process.env.PUBLIC_URL}/assets/images/chat-icon.svg`
 };
 
 export const SOCIAL_ICONS = {
