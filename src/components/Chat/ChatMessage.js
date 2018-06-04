@@ -5,7 +5,6 @@ import TruncateMarkup from 'react-truncate-markup';
 import { ICONS } from '../../config/constants';
 import { USER_TYPES } from '../../actions/appActions';
 import ReactSVG from 'react-svg';
-import { isMobile } from 'react-device-detect';
 
 const MAX_LINES = 5;
 
