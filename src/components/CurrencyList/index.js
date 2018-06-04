@@ -47,6 +47,7 @@ class CurrencyList extends Component {
 						key={index}
 						className={classnames(
 							'd-flex align-items-center single-currency',
+							focusedSymbol === symbol && 'focused'
 						)}
 						onMouseEnter={() => this.loadMarkets(symbol)}
 						onClick={() => this.loadMarkets(symbol)}

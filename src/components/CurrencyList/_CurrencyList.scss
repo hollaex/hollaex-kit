@@ -8,10 +8,11 @@
 			justify-content: center;
 			min-width: 7rem;
 			padding: 0 1rem;
+			border-left: 1px solid;
+			border-right: 1px solid;
+			border-color: transparent;
 			&:hover,
 			&.focused {
-				border-left: 1px solid;
-				border-right: 1px solid;
 				background-color: #fafafa;
 				border-color: black;
 				&::before {
