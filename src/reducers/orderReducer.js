@@ -51,9 +51,9 @@ export default function reducer(state = INITIAL_STATE, action) {
 			return { ...state, fetching: false, error: action.payload.data };
 		case 'CANCEL_ORDER_FULFILLED': {
 			const id = action.payload.data.id;
-			const data = _.filter(state.activeOrders, (user) => {
-				if (user.id !== id) {
-					return user;
+			const data = _.filter(state.activeOrders, (order) => {
+				if (order.id !== id) {
+					return order;
 				}
 			});
 			return {
@@ -67,8 +67,13 @@ export default function reducer(state = INITIAL_STATE, action) {
 			return { ...state, fetching: true, fetched: false, error: null };
 		case 'CANCEL_ALL_ORDERS_REJECTED':
 			return { ...state, fetching: false, error: action.payload.data };
-		case 'CANCEL_ALL_ORDERS_FULFILLED':
-			return { ...state, fetching: false, activeOrders: [] };
+		case 'CANCEL_ALL_ORDERS_FULFILLED': {
+			const deletedOrders = action.payload.data.map(({ id }) => id);
+			const activeOrders = state.activeOrders.filter(({ id }) => {
+				return deletedOrders.indexOf(id) === -1;
+			});
+			return { ...state, fetching: false, activeOrders };
+		}
 		case 'LOGOUT':
 			return INITIAL_STATE;
 		default:
