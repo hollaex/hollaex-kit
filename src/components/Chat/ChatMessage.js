@@ -5,7 +5,6 @@ import TruncateMarkup from 'react-truncate-markup';
 import { ICONS } from '../../config/constants';
 import { USER_TYPES } from '../../actions/appActions';
 import ReactSVG from 'react-svg';
-import { isMobile } from 'react-device-detect';
 
 const MAX_LINES = 5;
 
@@ -35,11 +34,11 @@ class ChatMessageWithText extends Component {
 		const { username, to, messageContent, ownMessage } = this.props;
 		const { maxLines } = this.state;
 		return (
-			<div className={classnames(!isMobile && 'd-flex', 'nonmobile')}>
-				<div className="mr-1 own-message username">{`${username}:`}</div>
+			<div className={classnames('nonmobile')}>
+				<div className="d-inline mr-1 own-message username">{`${username}:`}</div>
 				{to && <div className="mr-1">{`${to}:`}</div>}
 				{ownMessage ? (
-					<div className="message">{messageContent}</div>
+					<div className="d-inline message">{messageContent}</div>
 				) : (
 					<TruncateMarkup
 						className="d-inline message"

@@ -6,32 +6,28 @@ import { Loader } from '../';
 import { isLoggedIn } from '../../utils/token';
 
 class ChatMessageList extends Component {
-
 	state = {
 		containerHeight: 0
-	}
+	};
 
 	componentDidUpdate(prevProps) {
-		if (this.scrollbarsRef && this.scrollbarsRef.container) {
-			this.scrollToBottom()
-
-		}
-		if (prevProps.messages !== this.props.messages) {
-			this.scrollbarsRef.scrollToBottom();
-		}
+		this.scrollbarsRef.scrollToBottom();
 	}
 
 	scrollToBottom = () => {
-		if (this.scrollbarsRef.container.clientHeight < this.state.containerHeight) {
-			this.setState({ containerHeight: this.scrollbarsRef.container.clientHeight })
+		if (
+			this.scrollbarsRef.container.clientHeight < this.state.containerHeight
+		) {
+			this.setState({
+				containerHeight: this.scrollbarsRef.container.clientHeight
+			});
 			this.scrollbarsRef.scrollToBottom();
 		}
-	}
+	};
 
 	scrollUpdate = (values) => {
 		this.scrollToBottom();
-	}
-
+	};
 
 	setScrollbarsRef = (el) => {
 		if (el) {
@@ -40,7 +36,10 @@ class ChatMessageList extends Component {
 	};
 
 	componentDidMount() {
-		this.setState({ containerHeight: this.scrollbarsRef.container.clientHeight })
+		this.setState({
+			containerHeight: this.scrollbarsRef.container.clientHeight
+		});
+
 	}
 
 	render() {
@@ -76,26 +75,24 @@ class ChatMessageList extends Component {
 				onUpdate={this.scrollUpdate}
 			>
 				{(chatInitialized && usernameInitalized) ||
-					(!usernameInitalized && userInitialized) ||
-					(chatInitialized && !isLoggedIn()) ? (
-						messages.map(
-							({ id, username, to, messageType, message }, index) => (
-								<ChatMessage
-									key={index}
-									id={id}
-									username={username}
-									ownMessage={username === this.props.username}
-									to={to}
-									userType={userType}
-									messageType={messageType}
-									messageContent={message}
-									removeMessage={removeMessage}
-								/>
-							)
-						)
-					) : (
-						<Loader />
-					)}
+				(!usernameInitalized && userInitialized) ||
+				(chatInitialized && !isLoggedIn()) ? (
+					messages.map(({ id, username, to, messageType, message }, index) => (
+						<ChatMessage
+							key={index}
+							id={id}
+							username={username}
+							ownMessage={username === this.props.username}
+							to={to}
+							userType={userType}
+							messageType={messageType}
+							messageContent={message}
+							removeMessage={removeMessage}
+						/>
+					))
+				) : (
+					<Loader />
+				)}
 			</Scrollbars>
 		);
 	}

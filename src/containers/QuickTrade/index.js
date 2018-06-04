@@ -167,7 +167,7 @@ class QuickTradeContainer extends Component {
 					quickTradeData={quoteData}
 					onChangeSide={this.onChangeSide}
 					disabled={
-						quoteData.error === BALANCE_ERROR ? false : !quoteData.token
+						quoteData.error === BALANCE_ERROR ? true : !quoteData.token
 					}
 				/>
 				<Dialog
