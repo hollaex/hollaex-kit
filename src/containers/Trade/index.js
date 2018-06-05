@@ -121,6 +121,10 @@ class Trade extends Component {
 		this.setState({ activeTab });
 	};
 
+	cancelAllOrders = () => {
+		this.props.cancelAllOrders(this.state.symbol);
+	}
+
 	render() {
 		const {
 			pair,
@@ -132,7 +136,6 @@ class Trade extends Component {
 			activeOrders,
 			userTrades,
 			cancelOrder,
-			cancelAllOrders,
 			balance,
 			marketPrice,
 			activeLanguage,
@@ -153,7 +156,7 @@ class Trade extends Component {
 					<ActionNotification
 						text={STRINGS.CANCEL_ALL}
 						iconPath={ICONS.CANCEL_CROSS_ACTIVE}
-						onClick={cancelAllOrders}
+						onClick={this.cancelAllOrders}
 						status=""
 						useSvg={true}
 					/>

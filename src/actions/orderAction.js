@@ -35,7 +35,7 @@ export const cancelOrder = (orderId) => ({
 	payload: axios.delete(`/user/orders/${orderId}`)
 });
 
-export const cancelAllOrders = () => ({
+export const cancelAllOrders = (symbol = '') => ({
 	type: 'CANCEL_ALL_ORDERS',
-	payload: axios.delete('/user/orders')
+	payload: axios.delete(`/user/orders?symbol=${symbol}`)
 });
