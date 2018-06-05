@@ -23,11 +23,9 @@ import {
 	normalizeFloat
 } from '../../../components/Form/validations';
 import { Loader } from '../../../components';
-import { LIMIT_VALUES, CURRENCIES } from '../../../config/constants';
+import { LIMIT_VALUES } from '../../../config/constants';
 
 import STRINGS from '../../../config/localizedStrings';
-
-const FIAT_NAME = CURRENCIES.fiat.shortName;
 
 class OrderEntry extends Component {
 	state = {
@@ -43,7 +41,7 @@ class OrderEntry extends Component {
 
 	componentDidMount() {
 		if (this.props.pair_base) {
-			this.generateFormValues(this.props.pair_base);
+			this.generateFormValues(this.props.pair_base, this.props.pair_2);
 		}
 	}
 
@@ -76,7 +74,7 @@ class OrderEntry extends Component {
 		const price = parseFloat(this.props.price || 0);
 		let maxSize = balance[`${pair_base}_available`];
 		if (side === 'buy') {
-			maxSize = mathjs.divide(balance[`fiat_available`], price) ;
+			maxSize = mathjs.divide(balance[`fiat_available`], price);
 		}
 		if (maxSize !== size) {
 			this.props.change(FORM_NAME, 'size', roundNumber(maxSize, 4));
@@ -89,7 +87,10 @@ class OrderEntry extends Component {
 		const price = parseFloat(props.price || 0);
 
 		let orderPrice = 0;
-		if (size >= LIMIT_VALUES[this.props.pair_base].SIZE.MIN && !(type === 'limit' && price === 0)) {
+		if (
+			size >= LIMIT_VALUES[this.props.pair_base].SIZE.MIN &&
+			!(type === 'limit' && price === 0)
+		) {
 			if (props.side === 'sell') {
 				const { bids } = props;
 				orderPrice = checkMarketPrice(size, bids, type, side, price);
@@ -106,7 +107,11 @@ class OrderEntry extends Component {
 			.done();
 		let outsideFormError = '';
 
-		if (type === 'market' && orderPrice === 0 && size >= LIMIT_VALUES[this.props.pair_base].SIZE.MIN) {
+		if (
+			type === 'market' &&
+			orderPrice === 0 &&
+			size >= LIMIT_VALUES[this.props.pair_base].SIZE.MIN
+		) {
 			outsideFormError = STRINGS.QUICK_TRADE_ORDER_NOT_FILLED;
 		} else if (type === 'market' && side === 'buy') {
 			const values = {
@@ -190,7 +195,7 @@ class OrderEntry extends Component {
 		}
 	};
 
-	generateFormValues = (pair = '') => {
+	generateFormValues = (pair = '', byuingPair = '') => {
 		const formValues = {
 			type: {
 				name: 'type',
@@ -211,7 +216,10 @@ class OrderEntry extends Component {
 						{STRINGS.formatString(
 							STRINGS.STRING_WITH_PARENTHESIS,
 							STRINGS.SIZE,
-							<div className="pointer text-uppercase blue-link" onClick={this.setMax}>
+							<div
+								className="pointer text-uppercase blue-link"
+								onClick={this.setMax}
+							>
 								{STRINGS.CALCULATE_MAX}
 							</div>
 						)}
@@ -245,7 +253,7 @@ class OrderEntry extends Component {
 					maxValue(LIMIT_VALUES[pair].PRICE.MAX),
 					step(LIMIT_VALUES[pair].PRICE.STEP)
 				],
-				currency: STRINGS.FIAT_SHORTNAME
+				currency: STRINGS[`${byuingPair.toUpperCase()}_SHORTNAME`]
 			}
 		};
 
@@ -253,7 +261,7 @@ class OrderEntry extends Component {
 	};
 
 	render() {
-		const { balance, type, side, pair_base } = this.props;
+		const { balance, type, side, pair_base, pair_2 } = this.props;
 		const {
 			initialValues,
 			formValues,
@@ -263,8 +271,8 @@ class OrderEntry extends Component {
 		} = this.state;
 
 		const currencyName = STRINGS[`${pair_base.toUpperCase()}_NAME`];
-
-		if (!balance.hasOwnProperty(`${pair_base}_balance`)) {
+		const buyingName = STRINGS[`${pair_2.toUpperCase()}_SHORTNAME`];
+		if (!balance.hasOwnProperty(`${pair_2}_balance`)) {
 			return <Loader relative={true} background={false} />;
 		}
 
@@ -288,7 +296,7 @@ class OrderEntry extends Component {
 				>
 					<Review
 						type={type}
-						currency={FIAT_NAME}
+						currency={buyingName}
 						orderPrice={orderPrice}
 						fees={orderFees}
 						formatToCurrency={formatFiatAmount}
@@ -303,13 +311,14 @@ const selector = formValueSelector(FORM_NAME);
 
 const mapStateToProps = (state) => {
 	const formValues = selector(state, 'price', 'size', 'side', 'type');
-	const { pair_base } = state.app.pairs[state.app.pair];
+	const { pair_base, pair_2 } = state.app.pairs[state.app.pair];
 	return {
 		...formValues,
 		activeLanguage: state.app.language,
 		fees: state.user.fees,
 		pair: state.app.pair,
-		pair_base
+		pair_base,
+		pair_2
 	};
 };
 
