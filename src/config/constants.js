@@ -374,7 +374,7 @@ export const WITHDRAW_LIMITS = {
 };
 export const TOKEN_KEY = `${ENV}_${NETWORK}_TOKEN`;
 export const LANGUAGE_KEY = `${ENV}_${NETWORK}_LANGUAGE`;
-export const DEFAULT_LANGUAGE = process.env.DEFAULT_LANGUAGE || 'en';
+export const DEFAULT_LANGUAGE = process.env.REACT_APP_DEFAULT_LANGUAGE || 'en';
 
 export const BANK_WITHDRAWAL_BASE_FEE =
 	process.env.REACT_APP_BANK_WITHDRAWAL_BASE_FEE || 1;
@@ -413,4 +413,4 @@ export const MIN_LEVEL_FOR_TOKENS = parseInt(process.env.REACT_APP_MIN_LEVEL_FOR
 export const THEMES = ['dark', 'white'];
 export const THEME_DEFAULT = THEMES[1];
 
-export const DEFAULT_COUNTRY = process.env.DEFAULT_COUNTRY ? process.env.DEFAULT_COUNTRY.toUpperCase() : 'FR';
+export const DEFAULT_COUNTRY = process.env.REACT_APP_DEFAULT_COUNTRY ? process.env.REACT_APP_DEFAULT_COUNTRY.toUpperCase() : 'FR';
