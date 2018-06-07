@@ -17,7 +17,7 @@ $unread-messages-border--color: #b9b500;
 		box-shadow: unset !important;
 		right: 0;
 		bottom: 0;
-		.nondraggable { 
+		.nondraggable {
 			height: 100%;
 		}
 		.chat-message-list {
@@ -59,7 +59,7 @@ $unread-messages-border--color: #b9b500;
 	background-color: $chat-wrapper-light--background-color;
 	height: 35rem;
 	right: 0.5rem;
-	bottom: 1rem;
+	bottom: 3rem;
 	color: $chat-message-light--font-color;
 	z-index: 100;
 	-webkit-box-shadow: 1px 0px 3px 0px rgba(0, 0, 0, 0.29);
