@@ -365,6 +365,7 @@ const mapStateToProps = (store) => {
 	const activeOrders = store.order.activeOrders.filter(
 		({ symbol }) => symbol === pair
 	);
+	const fees = store.user.fees[pair];
 	return {
 		pair,
 		pairData,
@@ -378,7 +379,7 @@ const mapStateToProps = (store) => {
 		userTrades,
 		activeLanguage: store.app.language,
 		activeTheme: store.app.theme,
-		fees: store.user.fees,
+		fees,
 		settings: store.user.settings
 	};
 };
