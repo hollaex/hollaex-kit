@@ -14,6 +14,7 @@ import STRINGS from '../../config/localizedStrings';
 import { verifyBankData } from '../../actions/verificationActions';
 import { getErrorLocalized } from '../../utils/errors';
 import HeaderSection from './HeaderSection';
+import { isMobile } from 'react-device-detect';
 
 const SHABA_PREFIX = 'IR';
 const FORM_NAME = 'BankVerification';
@@ -52,7 +53,8 @@ class BankVerification extends Component {
 					{ value: true, label: STRINGS.YES },
 					{ value: false, label: STRINGS.NO }
 				],
-				validate: [requiredBoolean]
+				validate: [requiredBoolean],
+				fullWidth: isMobile
 			}
 		};
 
@@ -65,7 +67,8 @@ class BankVerification extends Component {
 				placeholder:
 					STRINGS.USER_VERIFICATION.BANK_ACCOUNT_FORM.FORM_FIELDS
 						.BANK_NAME_PLACEHOLDER,
-				validate: [required]
+				validate: [required],
+				fullWidth: isMobile
 			};
 			formFields.card_number = {
 				type: 'text',
@@ -83,7 +86,8 @@ class BankVerification extends Component {
 						STRINGS.USER_VERIFICATION.BANK_ACCOUNT_FORM.VALIDATIONS.CARD_NUMBER
 					)
 				],
-				maxLength: 16
+				maxLength: 16,
+				fullWidth: isMobile
 			};
 			formFields.account_number = {
 				type: 'text',
@@ -101,7 +105,8 @@ class BankVerification extends Component {
 							.ACCOUNT_NUMBER_MAX_LENGTH
 					)
 				],
-				maxLength: 50
+				maxLength: 50,
+				fullWidth: isMobile
 			};
 			formFields.shaba_number = {
 				type: 'text',
@@ -129,7 +134,8 @@ class BankVerification extends Component {
 					}
 					return value;
 				},
-				maxLength: 50
+				maxLength: 50,
+				fullWidth: isMobile
 			};
 		}
 		this.setState({ formFields });

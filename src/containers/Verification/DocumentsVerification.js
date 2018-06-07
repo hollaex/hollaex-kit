@@ -11,6 +11,7 @@ import HeaderSection, {
 import { getErrorLocalized } from '../../utils/errors';
 import { updateDocuments } from '../../actions/userAction';
 
+import { isMobile } from 'react-device-detect';
 const FORM_NAME = 'DocumentsVerification';
 
 class DocumentsVerification extends Component {
@@ -49,24 +50,24 @@ class DocumentsVerification extends Component {
 						requiredWithCustomMessage(
 							STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.VALIDATIONS.FRONT
 						)
-					]
+					],
+					fullWidth: isMobile
 				}
 			},
 			proofOfResidence: {
-				proofOfResidency: {
-					type: 'file',
-					label:
-						STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS.POR_LABEL,
-					placeholder:
-						STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS
-							.POR_PLACEHOLDER,
-					validate: [
-						requiredWithCustomMessage(
-							STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.VALIDATIONS
-								.PROOF_OF_RESIDENCY
-						)
-					]
-				}
+				type: 'file',
+				label:
+					STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS.POR_LABEL,
+				placeholder:
+					STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS
+						.POR_PLACEHOLDER,
+				validate: [
+					requiredWithCustomMessage(
+						STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.VALIDATIONS
+							.PROOF_OF_RESIDENCY
+					)
+				],
+				fullWidth: isMobile
 			}
 		};
 
