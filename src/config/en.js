@@ -834,6 +834,8 @@ export default {
 		LABEL_BTC_WITHDRAWAL: 'Daily Bitcoin Withdrawal',
 		LABEL_ETH_DEPOSIT: 'Daily Ethereum Deposit',
 		LABEL_ETH_WITHDRAWAL: 'Daily Ethereum Withdrawal',
+		LABEL_PAIR_MAKER_FEE: '{0} Maker Fee',
+		LABEL_PAIR_TAKER_FEE: '{0} Taker Fee',
 		UNLIMITED: 'Unlimited',
 		BLOCKED: '0'
 	},
