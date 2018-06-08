@@ -93,4 +93,10 @@ $app-bar--background: white;
 			fill: white;
 		}
 	}
+	.app_bar-controllers-splash {
+		.action_button {
+			min-width: 4rem;
+			margin: 0 0.75rem;
+		}
+	}
 }

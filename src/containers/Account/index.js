@@ -8,7 +8,7 @@ import { ICONS } from '../../config/constants';
 import { UserProfile, UserSecurity, UserSettings } from '../';
 import STRINGS from '../../config/localizedStrings';
 import { openContactForm } from '../../actions/appActions';
-import { requestLimits } from '../../actions/userAction';
+import { requestLimits, requestFees } from '../../actions/userAction';
 
 const getInitialTab = ({ name, path }) => {
 	let activeTab = -1;
@@ -42,6 +42,10 @@ class Account extends Component {
 		}
 		if (!this.props.limits.fetched && !this.props.limits.fetching) {
 			this.props.requestLimits();
+		}
+
+		if (!this.props.fees.fetched && !this.props.fees.fetching) {
+			this.props.requestFees();
 		}
 	}
 
@@ -81,7 +85,7 @@ class Account extends Component {
 			activeTab = initialValues.activeTab;
 			activeDevelopers = initialValues.activeDevelopers;
 		}
-		
+
 		const tabs = [
 			{
 				title: isMobile ? (
@@ -198,6 +202,7 @@ class Account extends Component {
 const mapStateToProps = (state) => ({
 	verification_level: state.user.verification_level,
 	limits: state.user.limits,
+	fees: state.user.feeValues,
 	otp_enabled: state.user.otp_enabled || false,
 	id: state.user.id,
 	bank_account: state.user.userData.bank_account,
@@ -207,6 +212,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
 	requestLimits: bindActionCreators(requestLimits, dispatch),
+	requestFees: bindActionCreators(requestFees, dispatch),
 	openContactForm: bindActionCreators(openContactForm, dispatch)
 });
 

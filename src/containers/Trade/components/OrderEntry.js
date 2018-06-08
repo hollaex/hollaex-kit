@@ -312,10 +312,12 @@ const selector = formValueSelector(FORM_NAME);
 const mapStateToProps = (state) => {
 	const formValues = selector(state, 'price', 'size', 'side', 'type');
 	const { pair_base, pair_2 } = state.app.pairs[state.app.pair];
+	const fees = state.user.fees[state.app.pair];
+	
 	return {
 		...formValues,
 		activeLanguage: state.app.language,
-		fees: state.user.fees,
+		fees,
 		pair: state.app.pair,
 		pair_base,
 		pair_2

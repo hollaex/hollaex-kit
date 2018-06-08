@@ -9,7 +9,8 @@ import {
 	Dialog,
 	Loader,
 	Logout,
-	Notification
+	Notification,
+	MobileBarTabs
 } from '../../components';
 import { ICONS } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
@@ -22,6 +23,7 @@ import {
 import { logout } from '../../actions/authAction';
 
 // import BankVerification from './BankVerification';
+import { isBrowser, isMobile } from 'react-device-detect';
 import IdentityVerification from './IdentityVerification';
 import MobileVerification from './MobileVerification';
 import DocumentsVerification from './DocumentsVerification';
@@ -107,7 +109,9 @@ class Verification extends Component {
 		const { full_name } = user;
 		const tabs = [
 			{
-				title: (
+				title: isMobile ? (
+					STRINGS.USER_VERIFICATION.TITLE_IDENTITY
+				) : (
 					<CheckTitle
 						title={STRINGS.USER_VERIFICATION.TITLE_IDENTITY}
 						titleClassName={activeTab !== 0 ? 'title-inactive' : ''}
@@ -131,7 +135,9 @@ class Verification extends Component {
 				)
 			},
 			{
-				title: (
+				title: isMobile ? (
+					STRINGS.USER_VERIFICATION.TITLE_MOBILE
+				) : (
 					<CheckTitle
 						title={STRINGS.USER_VERIFICATION.TITLE_MOBILE}
 						titleClassName={activeTab !== 1 ? 'title-inactive' : ''}
@@ -154,7 +160,9 @@ class Verification extends Component {
 				)
 			},
 			{
-				title: (
+				title: isMobile ? (
+					STRINGS.USER_VERIFICATION.TITLE_ID_DOCUMENTS
+				) : (
 					<CheckTitle
 						title={STRINGS.USER_VERIFICATION.TITLE_ID_DOCUMENTS}
 						titleClassName={activeTab !== 2 ? 'title-inactive' : ''}
@@ -266,38 +274,46 @@ class Verification extends Component {
 
 		const languageClasses = getClasesForLanguage(activeLanguage, 'array');
 		const fontClass = getFontClassForLanguage(activeLanguage);
-
+		const tabProps = {
+			tabs: activeTab < tabs.length ? tabs : [],
+			title: STRINGS.ACCOUNTS.TAB_VERIFICATION,
+			titleIcon: ICONS.ID_GREY
+		};
 		return (
 			<div
-				className={classnames('app_container', getThemeClass(activeTheme), fontClass, languageClasses[0])}
+				className={classnames(
+					'app_container',
+					getThemeClass(activeTheme),
+					fontClass,
+					languageClasses[0],
+					{
+						'layout-mobile': isMobile,
+						'layout-desktop': isBrowser
+					}
+				)}
 			>
 				<AppBar
 					isHome={true}
 					token={token}
 					theme={activeTheme}
 					rightChildren={
-						<Logout className="sidebar-row bar-logout" onLogout={this.onLogout} />
+						<Logout
+							className="sidebar-row bar-logout"
+							onLogout={this.onLogout}
+						/>
 					}
 				/>
+				{isMobile && <MobileBarTabs {...tabProps} activeTab={activeTab} />}
 				{activeTab < tabs.length ? (
 					<div className="presentation_container apply_rtl verification_container">
-						<TabController
-							activeTab={activeTab}
-							tabs={tabs}
-							title={STRINGS.ACCOUNTS.TAB_VERIFICATION}
-							titleIcon={ICONS.ID_GREY}
-						/>
+						{!isMobile && <TabController activeTab={activeTab} {...tabProps} />}
 						<div className="inner_container">
 							{activeTab > -1 && this.renderContent(tabs, activeTab)}
 						</div>
 					</div>
 				) : (
 					<div className="presentation_container apply_rtl verification_container">
-						<TabController
-							tabs={[]}
-							title={STRINGS.ACCOUNTS.TAB_VERIFICATION}
-							titleIcon={ICONS.ID_GREY}
-						/>
+						{!isMobile && <TabController {...tabProps} />}
 						<div className="inner_container">complete</div>
 					</div>
 				)}

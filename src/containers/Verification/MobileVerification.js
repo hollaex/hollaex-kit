@@ -13,6 +13,7 @@ import {
 	requestSmsCode
 } from '../../actions/verificationActions';
 import HeaderSection from './HeaderSection';
+import { isMobile } from 'react-device-detect';
 
 const FORM_NAME = 'MobileVerification';
 
@@ -43,7 +44,8 @@ class MobileVerification extends Component {
 					STRINGS.USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS
 						.PHONE_CODE_PLACEHOLDER,
 				options: PHONE_OPTIONS,
-				validate: [required]
+				validate: [required],
+				fullWidth: isMobile
 			},
 			phone_number: {
 				type: 'text',
@@ -62,7 +64,8 @@ class MobileVerification extends Component {
 					iconPath: ICONS.BLUE_ARROW_RIGHT,
 					className: 'file_upload_icon',
 					onClick: this.handleSendSmsCode
-				}
+				},
+				fullWidth: isMobile
 			},
 			code: {
 				type: 'text',
@@ -74,7 +77,8 @@ class MobileVerification extends Component {
 						.SMS_CODE_PLACEHOLDER,
 				disabled: !codeRequested,
 				validate: [required]
-			}
+			},
+			fullWidth: isMobile
 		};
 
 		this.setState({ formFields });

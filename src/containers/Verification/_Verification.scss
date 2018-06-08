@@ -66,3 +66,14 @@
 		fill: $dark-tab-inactive;
 	}
 }
+
+.layout-mobile {
+	.mobile-bar-tab .bartab-text-wrapper {
+		font-size: 1.5rem;
+		line-height: 1.5rem;
+	}
+	.presentation_container.verification_container {
+		padding-top: 0 !important;
+		max-height: $max-content-height-mobile;
+	}
+}

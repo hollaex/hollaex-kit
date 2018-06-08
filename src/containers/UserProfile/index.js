@@ -4,9 +4,7 @@ import { connect } from 'react-redux';
 import { ICONS } from '../../config/constants';
 import { Accordion, Loader } from '../../components';
 import Form from './Form';
-import {
-	generateFormValues as generateMobileFormValues
-} from './MobileFormValues';
+import { generateFormValues as generateMobileFormValues } from './MobileFormValues';
 import {
 	prepareInitialValues,
 	generateFormValues as generateDataFormValues
@@ -32,7 +30,8 @@ class UserProfile extends Component {
 			this.props.verification_level,
 			this.props.email,
 			this.props.userData,
-			this.props.limits
+			this.props.limits,
+			this.props.fees
 		);
 	}
 
@@ -43,24 +42,28 @@ class UserProfile extends Component {
 				nextProps.verification_level,
 				nextProps.email,
 				nextProps.userData,
-				nextProps.limits
+				nextProps.limits,
+				nextProps.fees
 			);
 			this.calculateSections(
 				nextProps.verification_level,
 				nextProps.email,
 				nextProps.userData,
-				nextProps.limits
+				nextProps.limits,
+				nextProps.fees
 			);
 		} else if (
 			nextProps.verification_level !== this.props.verification_level ||
 			nextProps.userData.timestamp !== this.props.userData.timestamp ||
-			nextProps.limits.fetched !== this.props.limits.fetched
+			nextProps.limits.fetched !== this.props.limits.fetched ||
+			nextProps.fees.fetched !== this.props.fees.fetched
 		) {
 			this.calculateSections(
 				nextProps.verification_level,
 				nextProps.email,
 				nextProps.userData,
-				nextProps.limits
+				nextProps.limits,
+				nextProps.fees
 			);
 		}
 	}
@@ -84,18 +87,22 @@ class UserProfile extends Component {
 		};
 	};
 
-	calculateFormValues = (language, verification_level, email, userData, limits) => {
+	calculateFormValues = (
+		language,
+		verification_level,
+		email,
+		userData,
+		limits,
+		fees
+	) => {
 		const dataFormValues = generateDataFormValues(
 			language,
 			userData.nationality
 		);
 		const mobileFormValues = generateMobileFormValues();
-		this.setState(
-			{ dataFormValues, mobileFormValues },
-			() => {
-				this.calculateSections(verification_level, email, userData, limits);
-			}
-		);
+		this.setState({ dataFormValues, mobileFormValues }, () => {
+			this.calculateSections(verification_level, email, userData, limits, fees);
+		});
 	};
 
 	renderGoToVerification = () => (
@@ -105,24 +112,27 @@ class UserProfile extends Component {
 		/>
 	);
 
-	calculateSections = (verification_level, email, userData, limits) => {
-		const {
-			dataFormValues,
-			mobileFormValues
-		} = this.state;
-		const {
-			phone_number,
-			full_name,
-			id_data = {}
-		} = userData;
+	calculateSections = (verification_level, email, userData, limits, fees) => {
+		const { dataFormValues, mobileFormValues } = this.state;
+		const { phone_number, full_name, id_data = {} } = userData;
 
 		const sections = [
 			{
 				title: STRINGS.USER_VERIFICATION.TITLE_EMAIL,
 				subtitle: email,
 				content: (
-					<LevelSection limits={limits} verification_level={verification_level}>
-						<InformationSection onChangeValue={this.onOpenContactFormSelected('category', 'level')} onChangeText={STRINGS.UPGRADE_LEVEL} />
+					<LevelSection
+						limits={limits}
+						verification_level={verification_level}
+						fees={fees}
+					>
+						<InformationSection
+							onChangeValue={this.onOpenContactFormSelected(
+								'category',
+								'level'
+							)}
+							onChangeText={STRINGS.UPGRADE_LEVEL}
+						/>
 					</LevelSection>
 				),
 				isOpen: true,
@@ -248,6 +258,7 @@ const mapStateToProps = (state) => ({
 	userData: state.user.userData,
 	email: state.user.email,
 	limits: state.user.limits,
+	fees: state.user.feeValues,
 	activeLanguage: state.app.language
 });
 

@@ -3,8 +3,7 @@ import classnames from 'classnames';
 import STRINGS from '../../config/localizedStrings';
 import {
 	formatFiatAmount,
-	formatBtcAmount,
-	formatPercentage
+	formatBtcAmount
 } from '../../utils/currency';
 
 const getLimitValue = (limit = -1, format) => {
@@ -20,8 +19,6 @@ const getLimitValue = (limit = -1, format) => {
 const LevelRow = ({ data = {}, isUserLevel = false }) => {
 	const {
 		verification_level,
-		maker_fee,
-		taker_fee,
 		fiat_deposit_daily,
 		fiat_withdraw_daily,
 		btc_deposit_daily,
@@ -43,8 +40,6 @@ const LevelRow = ({ data = {}, isUserLevel = false }) => {
 			<td className="td-name td-amount">
 				{STRINGS.LEVELS[`LABEL_LEVEL_${verification_level}`]}
 			</td>
-			<td className="td-name td-amount">{formatPercentage(maker_fee)}</td>
-			<td className="td-name td-amount">{formatPercentage(taker_fee)}</td>
 			<td className="td-name td-amount">
 				{getLimitValue(fiat_deposit_daily, formatFiatAmount)}
 			</td>
@@ -74,8 +69,6 @@ export const LevelsBlock = ({ userLevel, limits }) => (
 				<tr className="table-bottom-border">
 					<th />
 					<th>{STRINGS.LEVELS.LABEL_LEVEL}</th>
-					<th>{STRINGS.LEVELS.LABEL_MAKER_FEE}</th>
-					<th>{STRINGS.LEVELS.LABEL_TAKER_FEE}</th>
 					<th>{STRINGS.LEVELS.LABEL_FIAT_DEPOSIT}</th>
 					<th>{STRINGS.LEVELS.LABEL_FIAT_WITHDRAWAL}</th>
 					<th>{STRINGS.LEVELS.LABEL_BTC_DEPOSIT}</th>
