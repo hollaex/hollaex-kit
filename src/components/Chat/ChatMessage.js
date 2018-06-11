@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
+import moment from 'moment';
 import STRINGS from '../../config/localizedStrings';
 import TruncateMarkup from 'react-truncate-markup';
 import { ICONS } from '../../config/constants';
@@ -12,12 +13,22 @@ const MESSAGE_OPTIONS = {
 	DELETE_MESSAGE: 'Remove'
 };
 
+const TIME_LIMIT = 10000;
+
 const ReadMore = ({ onClick }) => (
 	<div className="d-inline">
 		<span>...</span>
 		<span className="toggle-content" onClick={onClick}>
 			<span>{STRINGS.CHAT.READ_MORE}</span>
 		</span>
+	</div>
+);
+
+const Timestamp = ({ timestamp }) => (
+	<div className="timestamp">
+		{Math.abs(moment().diff(timestamp)) < TIME_LIMIT
+			? STRINGS.JUST_NOW
+			: moment(timestamp).fromNow()}
 	</div>
 );
 
@@ -31,10 +42,11 @@ class ChatMessageWithText extends Component {
 	};
 
 	render() {
-		const { username, to, messageContent, ownMessage } = this.props;
+		const { username, to, messageContent, ownMessage, timestamp } = this.props;
 		const { maxLines } = this.state;
 		return (
 			<div className={classnames('nonmobile')}>
+				<Timestamp timestamp={timestamp} />
 				<div className="d-inline mr-1 own-message username">{`${username}:`}</div>
 				{to && <div className="mr-1">{`${to}:`}</div>}
 				{ownMessage ? (
@@ -63,13 +75,14 @@ class ChatMessageWithImage extends Component {
 	};
 
 	render() {
-		const { username, to, messageType, messageContent } = this.props;
+		const { username, to, messageType, messageContent, timestamp } = this.props;
 		const { hideImage } = this.state;
 
 		return (
 			<div>
 				<div className="d-flex flex-row">
 					<div>
+						<Timestamp timestamp={timestamp} />
 						<div className="d-inline username">{`${username}:`}</div>
 						{to && <div className="d-inline mr-1">{`${to}:`}</div>}
 					</div>
@@ -116,16 +129,17 @@ export class ChatMessage extends Component {
 			to,
 			messageType,
 			messageContent,
-			ownMessage
+			ownMessage,
+			timestamp
 		} = this.props;
 		const { showOptions } = this.state;
 		const imageType = messageType === 'image';
-
 		return (
 			<div
 				className={classnames(
 					'd-flex',
 					'flex-row',
+					'flex-1',
 					'chat-message',
 					'justify-content-between',
 					ownMessage && 'user'
@@ -138,6 +152,7 @@ export class ChatMessage extends Component {
 							to={to}
 							messageContent={messageContent}
 							messageType={messageType}
+							timestamp={timestamp}
 						/>
 					) : (
 						<ChatMessageWithText
@@ -145,31 +160,36 @@ export class ChatMessage extends Component {
 							to={to}
 							messageContent={messageContent}
 							ownMessage={ownMessage}
+							timestamp={timestamp}
 						/>
 					)}
 				</div>
-				{userType === USER_TYPES.USER_TYPE_ADMIN && (
-					<div className="d-flex item-options" onClick={this.toggleOptions}>
-						<ReactSVG
-							path={ICONS.ITEM_OPTIONS}
-							className="item-options-icon"
-							wrapperClassName="item-options-icon-wrapper"
-						/>
-						{showOptions && (
-							<div className="item-options-wrapper">
-								{Object.entries(MESSAGE_OPTIONS).map(([key, value], index) => (
-									<div
-										key={index}
-										className="d-flex item-option"
-										onClick={() => this.onClickOption(key, id)}
-									>
-										{value}
-									</div>
-								))}
-							</div>
-						)}
-					</div>
-				)}
+				<div className="d-flex">
+					{userType === USER_TYPES.USER_TYPE_ADMIN && (
+						<div className="d-flex item-options" onClick={this.toggleOptions}>
+							<ReactSVG
+								path={ICONS.ITEM_OPTIONS}
+								className="item-options-icon"
+								wrapperClassName="item-options-icon-wrapper"
+							/>
+							{showOptions && (
+								<div className="item-options-wrapper">
+									{Object.entries(MESSAGE_OPTIONS).map(
+										([key, value], index) => (
+											<div
+												key={index}
+												className="d-flex item-option"
+												onClick={() => this.onClickOption(key, id)}
+											>
+												{value}
+											</div>
+										)
+									)}
+								</div>
+							)}
+						</div>
+					)}
+				</div>
 			</div>
 		);
 	}

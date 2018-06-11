@@ -854,5 +854,6 @@ export default {
 	SEND_CURRENCY: 'Send {0}',
 	COPY_ADDRESS: 'Copy Address',
 	SUCCESFUL_COPY: 'Successfully Copied!',
-	QUICK_TRADE_MODE: 'Quick Trade Mode'
+	QUICK_TRADE_MODE: 'Quick Trade Mode',
+	JUST_NOW: 'just now'
 };
