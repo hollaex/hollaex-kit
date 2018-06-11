@@ -77,7 +77,7 @@ class ChatMessageList extends Component {
 				{(chatInitialized && usernameInitalized) ||
 				(!usernameInitalized && userInitialized) ||
 				(chatInitialized && !isLoggedIn()) ? (
-					messages.map(({ id, username, to, messageType, message }, index) => (
+					messages.map(({ id, username, to, messageType, message, timestamp }, index) => (
 						<ChatMessage
 							key={index}
 							id={id}
@@ -88,6 +88,7 @@ class ChatMessageList extends Component {
 							messageType={messageType}
 							messageContent={message}
 							removeMessage={removeMessage}
+							timestamp={timestamp}
 						/>
 					))
 				) : (
