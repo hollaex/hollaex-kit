@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-
+import { bindActionCreators } from 'redux';
 import { ICONS } from '../../config/constants';
-import { Accordion, Loader } from '../../components';
+import { Accordion, Loader, Button } from '../../components';
 import Form from './Form';
 import { generateFormValues as generateMobileFormValues } from './MobileFormValues';
 import {
@@ -11,8 +11,9 @@ import {
 } from './IdentificationFormValues';
 import { InformationSection } from './InformationSection';
 import { LevelSection } from './LevelSection';
-
+import { logout } from '../../actions/authAction';
 import STRINGS from '../../config/localizedStrings';
+import { isMobile } from 'react-device-detect';
 
 const MobileForm = Form('MobileForm');
 const InformationForm = Form('InformationForm');
@@ -238,7 +239,6 @@ class UserProfile extends Component {
 			return <Loader />;
 		}
 		const { sections } = this.state;
-
 		return (
 			<div>
 				<Accordion
@@ -247,10 +247,21 @@ class UserProfile extends Component {
 					wrapperId="app_container-main"
 					doScroll={false}
 				/>
+				{isMobile && (
+					<Button
+						label={STRINGS.LOGOUT}
+						onClick={() => this.props.logout()}
+						className="mt-4"
+					/>
+				)}
 			</div>
 		);
 	}
 }
+
+const mapDispatchToProps = (dispatch) => ({
+	logout: bindActionCreators(logout, dispatch)
+});
 
 const mapStateToProps = (state) => ({
 	id: state.user.id,
@@ -262,4 +273,4 @@ const mapStateToProps = (state) => ({
 	activeLanguage: state.app.language
 });
 
-export default connect(mapStateToProps)(UserProfile);
+export default connect(mapStateToProps, mapDispatchToProps)(UserProfile);
