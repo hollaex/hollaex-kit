@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
-import * as moment from 'moment';
+import moment from 'moment';
 import STRINGS from '../../config/localizedStrings';
 import TruncateMarkup from 'react-truncate-markup';
 import { ICONS } from '../../config/constants';
