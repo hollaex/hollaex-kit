@@ -9,6 +9,9 @@ $chat-own-message--color: #ef3ba5;
 $chat-other-message--color: white;
 $chat-element-action--color: #2798c7;
 $unread-messages-border--color: #b9b500;
+$chat-message--font-size: 1.2rem;
+$chat-username--font-size: 1.2rem;
+$mobile-regular--font-size: 1.5rem;
 
 .layout-mobile {
 	.chat-wrapper {
@@ -20,23 +23,26 @@ $unread-messages-border--color: #b9b500;
 		.nondraggable {
 			height: 100%;
 		}
+		.timestamp { 
+			font-size: 1rem;
+		}
 		.chat-message-list {
 			width: 100% !important;
 			.chat-message {
 				.message-content {
 					.username {
-						font-size: $regular-chat--font-size;
+						font-size: $mobile-regular--font-size;
 					}
 
 					.message {
-						font-size: $regular--font-size;
+						font-size: $mobile-regular--font-size;
 						line-height: unset !important;
 					}
-				}
+				}	
 				.item-options {
 					.item-options-wrapper {
 						min-width: 5rem;
-						font-size: $regular--font-size;
+						font-size: $chat-message--font-size;
 						right: 1.5rem;
 						top: -0.5rem;
 					}
@@ -66,6 +72,13 @@ $unread-messages-border--color: #b9b500;
 	-moz-box-shadow: 1px 0px 3px 0px rgba(0, 0, 0, 0.29);
 	box-shadow: 1px 0px 3px 0px rgba(0, 0, 0, 0.29);
 	font-family: 'Roboto-Light';
+
+	.timestamp {
+		color: $chat-message-dark--font-color;
+		font-size: 0.7rem;
+		min-width: 3.2rem;
+		text-align: right;
+	}
 
 	.nondraggable {
 		height: calc(100% - 2.5rem);
@@ -145,27 +158,27 @@ $unread-messages-border--color: #b9b500;
 	}
 
 	.chat-message-list {
-		width: 20rem !important;
+		width: 23rem !important;
 		flex: 1;
 
 		> div {
 			&:first-child {
-				padding: 0.5rem 2rem;
+				padding: 0.5rem 0.5rem 0.5rem 2rem;
 			}
 			padding: 0.5rem 0;
 		}
 		.chat-message {
-			font-size: 0.7rem;
 			font-weight: bold;
 			color: $chat-other-message--color;
-			margin-bottom: 0.5rem;
+			margin-bottom: 0.8rem;
 			word-break: break-all;
 			.message-content {
+				width: 100%;
 				.message {
 					color: $chat-message-light--font-color;
-					word-break: break-all;
+					word-break: break-word;
 					line-height: 1.1rem;
-					font-size: 0.9rem;
+					font-size: $chat-message--font-size;
 					font-weight: normal;
 					line > span {
 						> span {
@@ -231,7 +244,7 @@ $unread-messages-border--color: #b9b500;
 			.username {
 				color: black;
 				font-weight: bold;
-				font-size: 0.9rem;
+				font-size: $chat-username--font-size;
 				margin-bottom: 0.5rem;
 			}
 
