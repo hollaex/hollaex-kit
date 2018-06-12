@@ -615,8 +615,10 @@ export default {
 		'You don’t have enough {0} in your balance to send that transaction',
 	WITHDRAWALS_FEE_TOO_LARGE:
 		'The fee is more than {0}% of your total transaction',
-	WITHDRAWALS_INVALID_ADDRESS:
+	WITHDRAWALS_BTC_INVALID_ADDRESS:
 		'The Bitcoin address is invalid. Please check carefully and input again',
+	WITHDRAWALS_ETH_INVALID_ADDRESS:
+		'The Ethereum address is invalid. Please check carefully and input again',
 	WITHDRAWALS_BUTTON_TEXT: 'review withdrawal',
 	WITHDRAWALS_FORM_ADDRESS_LABEL: 'Destination address',
 	WITHDRAWALS_FORM_ADDRESS_PLACEHOLDER: 'Type the address',

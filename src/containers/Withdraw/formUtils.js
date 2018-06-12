@@ -46,7 +46,7 @@ export const generateFormValues = (
 			placeholder: STRINGS.WITHDRAWALS_FORM_ADDRESS_PLACEHOLDER,
 			validate: [
 				required,
-				validAddress(symbol, STRINGS.WITHDRAWALS_INVALID_ADDRESS)
+				validAddress(symbol, STRINGS[`WITHDRAWALS_${symbol.toUpperCase()}_INVALID_ADDRESS`])
 			],
 			fullWidth: isMobile
 		};
