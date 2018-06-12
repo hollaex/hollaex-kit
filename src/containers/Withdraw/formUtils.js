@@ -111,7 +111,7 @@ export const generateFormValues = (
 	} else {
 		fields.fee = {
 			type: 'number',
-			label: STRINGS[`WITHDRAWALS_FORM_FEE_FIAT_LABEL`],
+			label: STRINGS[`WITHDRAWALS_FORM_FEE_${symbol.toUpperCase()}_LABEL`],
 			placeholder: STRINGS.formatString(
 				STRINGS.WITHDRAWALS_FORM_FEE_PLACEHOLDER,
 				name
