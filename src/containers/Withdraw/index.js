@@ -12,7 +12,7 @@ import {
 	MIN_VERIFICATION_LEVEL_TO_WITHDRAW,
 	MAX_VERIFICATION_LEVEL_TO_WITHDRAW
 } from '../../config/constants';
-import { fiatSymbol, getCurrencyFromName } from '../../utils/currency';
+import { fiatSymbol, getCurrencyFromName, roundNumber } from '../../utils/currency';
 import {
 	performWithdraw,
 	requestWithdrawFee
@@ -166,7 +166,7 @@ class Withdraw extends Component {
 					math.fraction(selectedFee)
 				)
 			);
-			dispatch(change(FORM_NAME, 'amount', math.round(amount, 4)));
+			dispatch(change(FORM_NAME, 'amount', roundNumber(amount, 4)));
 		}
 	};
 
