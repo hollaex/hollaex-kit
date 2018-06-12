@@ -18,6 +18,8 @@ export const generateInitialValues = (symbol, fees = {}) => {
 
 	if (symbol === 'btc') {
 		initialValues.fee = fees.optimal || fees.min;
+	} else if (symbol === 'eth') {
+		initialValues.fee = WITHDRAW_LIMITS.eth.MIN_FEE;
 	} else {
 		initialValues.fee = fees.value || 0;
 	}

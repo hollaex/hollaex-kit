@@ -23,11 +23,11 @@ export const generateFormValues = () => ({
 		fullWidth: isMobile
 
 	},
-	// theme: {
-	// 	type: 'select',
-	// 	label: STRINGS.SETTINGS_THEME_LABEL,
-	// 	options: STRINGS.SETTINGS_THEME_OPTIONS
-	// }
+	theme: {
+		type: 'select',
+		label: STRINGS.SETTINGS_THEME_LABEL,
+		options: STRINGS.SETTINGS_THEME_OPTIONS
+	}
 });
 
 const Form = ({
