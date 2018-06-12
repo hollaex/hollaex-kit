@@ -369,7 +369,8 @@ export const WITHDRAW_LIMITS = {
 	eth: {
 		MIN: process.env.REACT_APP_WITHDRAWAL_ETH_MIN || 0.0001,
 		MAX: process.env.REACT_APP_WITHDRAWAL_ETH_MAX || 10,
-		STEP: process.env.REACT_APP_WITHDRAWAL_ETH_STEP || 0.0001
+		STEP: process.env.REACT_APP_WITHDRAWAL_ETH_STEP || 0.0001,
+		MIN_FEE: parseFloat(process.env.REACT_APP_ETH_MIN_FEE || 0.001)
 	}
 };
 export const TOKEN_KEY = `${ENV}_${NETWORK}_TOKEN`;
