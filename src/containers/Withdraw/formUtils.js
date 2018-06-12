@@ -46,7 +46,7 @@ export const generateFormValues = (
 			placeholder: STRINGS.WITHDRAWALS_FORM_ADDRESS_PLACEHOLDER,
 			validate: [
 				required,
-				validAddress(symbol, STRINGS.WITHDRAWALS_INVALID_ADDRESS)
+				validAddress(symbol, STRINGS[`WITHDRAWALS_${symbol.toUpperCase()}_INVALID_ADDRESS`])
 			],
 			fullWidth: isMobile
 		};
@@ -111,7 +111,7 @@ export const generateFormValues = (
 	} else {
 		fields.fee = {
 			type: 'number',
-			label: STRINGS[`WITHDRAWALS_FORM_FEE_FIAT_LABEL`],
+			label: STRINGS[`WITHDRAWALS_FORM_FEE_${symbol.toUpperCase()}_LABEL`],
 			placeholder: STRINGS.formatString(
 				STRINGS.WITHDRAWALS_FORM_FEE_PLACEHOLDER,
 				name

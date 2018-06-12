@@ -615,8 +615,10 @@ export default {
 		'You don’t have enough {0} in your balance to send that transaction',
 	WITHDRAWALS_FEE_TOO_LARGE:
 		'The fee is more than {0}% of your total transaction',
-	WITHDRAWALS_INVALID_ADDRESS:
+	WITHDRAWALS_BTC_INVALID_ADDRESS:
 		'The Bitcoin address is invalid. Please check carefully and input again',
+	WITHDRAWALS_ETH_INVALID_ADDRESS:
+		'The Ethereum address is invalid. Please check carefully and input again',
 	WITHDRAWALS_BUTTON_TEXT: 'review withdrawal',
 	WITHDRAWALS_FORM_ADDRESS_LABEL: 'Destination address',
 	WITHDRAWALS_FORM_ADDRESS_PLACEHOLDER: 'Type the address',
@@ -624,6 +626,7 @@ export default {
 	WITHDRAWALS_FORM_AMOUNT_PLACEHOLDER:
 		'Type the amount of {0} you wish to withdraw',
 	WITHDRAWALS_FORM_FEE_BTC_LABEL: 'Bitcoin transaction fee (This is Bitcoin mining fee. If you lower that amount there is chance your transaction takes significant time to get confirmed.)',
+	WITHDRAWALS_FORM_FEE_ETH_LABEL: 'Ethereum transaction fee (This is Ethereum mining fee. If you lower that amount there is chance your transaction takes significant time to get confirmed.)', // TODO CHECK
 	WITHDRAWALS_FORM_FEE_FIAT_LABEL: 'Bank withdrawal fee',
 	WITHDRAWALS_FORM_FEE_PLACEHOLDER:
 		'Type the amount of {0} you wish to use in the fee of the transaction',
