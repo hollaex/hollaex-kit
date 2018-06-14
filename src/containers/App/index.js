@@ -542,7 +542,7 @@ class Container extends Component {
 								}
 							)}
 						>
-							{appLoaded && verification_level > 0 ? children : <Loader />}
+							{appLoaded && verification_level > 0 ? children : <Loader background={false} />}
 						</div>
 					</div>
 					{isMobile && (
