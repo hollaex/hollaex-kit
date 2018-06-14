@@ -120,10 +120,11 @@ class OrderEntry extends Component {
 				type,
 				price
 			};
-			const { pair_base, balance } = props;
+			const { pair_base, pair_2, balance } = props;
 
 			outsideFormError = evaluateOrder(
 				pair_base,
+				pair_2,
 				balance,
 				values,
 				type,
@@ -137,8 +138,8 @@ class OrderEntry extends Component {
 
 	evaluateOrder = (values) => {
 		const { side, type } = values;
-		const { pair_base, balance } = this.props;
-		return evaluateOrder(pair_base, balance, values, type, side);
+		const { pair_base, pair_2, balance } = this.props;
+		return evaluateOrder(pair_base, pair_2, balance, values, type, side);
 	};
 
 	onSubmit = (values) => {
@@ -313,7 +314,7 @@ const mapStateToProps = (state) => {
 	const formValues = selector(state, 'price', 'size', 'side', 'type');
 	const { pair_base, pair_2 } = state.app.pairs[state.app.pair];
 	const fees = state.user.fees[state.app.pair];
-	
+
 	return {
 		...formValues,
 		activeLanguage: state.app.language,
