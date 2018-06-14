@@ -23,7 +23,7 @@ import {
 	normalizeFloat
 } from '../../../components/Form/validations';
 import { Loader } from '../../../components';
-import { LIMIT_VALUES } from '../../../config/constants';
+import { ORDER_LIMITS } from '../../../config/constants';
 
 import STRINGS from '../../../config/localizedStrings';
 
@@ -41,7 +41,7 @@ class OrderEntry extends Component {
 
 	componentDidMount() {
 		if (this.props.pair_base) {
-			this.generateFormValues(this.props.pair_base, this.props.pair_2);
+			this.generateFormValues(this.props.pair);
 		}
 	}
 
@@ -56,7 +56,7 @@ class OrderEntry extends Component {
 			this.calculateOrderPrice(nextProps);
 		}
 		if (nextProps.activeLanguage !== this.props.activeLanguage) {
-			this.generateFormValues(nextProps.pair_base);
+			this.generateFormValues(nextProps.pair);
 		}
 		if (nextProps.marketPrice && !this.state.initialValues.price) {
 			this.setState({
@@ -88,7 +88,7 @@ class OrderEntry extends Component {
 
 		let orderPrice = 0;
 		if (
-			size >= LIMIT_VALUES[this.props.pair_base].SIZE.MIN &&
+			size >= ORDER_LIMITS[this.props.pair].SIZE.MIN &&
 			!(type === 'limit' && price === 0)
 		) {
 			if (props.side === 'sell') {
@@ -110,7 +110,7 @@ class OrderEntry extends Component {
 		if (
 			type === 'market' &&
 			orderPrice === 0 &&
-			size >= LIMIT_VALUES[this.props.pair_base].SIZE.MIN
+			size >= ORDER_LIMITS[this.props.pair_base].SIZE.MIN
 		) {
 			outsideFormError = STRINGS.QUICK_TRADE_ORDER_NOT_FILLED;
 		} else if (type === 'market' && side === 'buy') {
@@ -197,6 +197,7 @@ class OrderEntry extends Component {
 	};
 
 	generateFormValues = (pair = '', byuingPair = '') => {
+		console.log(pair, ORDER_LIMITS[pair])
 		const formValues = {
 			type: {
 				name: 'type',
@@ -229,13 +230,13 @@ class OrderEntry extends Component {
 				type: 'number',
 				placeholder: '0.00',
 				normalize: normalizeFloat,
-				step: LIMIT_VALUES[pair].SIZE.STEP,
-				min: LIMIT_VALUES[pair].SIZE.MIN,
-				max: LIMIT_VALUES[pair].SIZE.MAX,
+				step: ORDER_LIMITS[pair].SIZE.STEP,
+				min: ORDER_LIMITS[pair].SIZE.MIN,
+				max: ORDER_LIMITS[pair].SIZE.MAX,
 				validate: [
 					required,
-					minValue(LIMIT_VALUES[pair].SIZE.MIN),
-					maxValue(LIMIT_VALUES[pair].SIZE.MAX)
+					minValue(ORDER_LIMITS[pair].SIZE.MIN),
+					maxValue(ORDER_LIMITS[pair].SIZE.MAX)
 				],
 				currency: STRINGS[`${pair.toUpperCase()}_SHORTNAME`]
 			},
@@ -245,14 +246,14 @@ class OrderEntry extends Component {
 				type: 'number',
 				placeholder: '0',
 				normalize: normalizeInt,
-				step: LIMIT_VALUES[pair].PRICE.STEP,
-				min: LIMIT_VALUES[pair].PRICE.MIN,
-				max: LIMIT_VALUES[pair].PRICE.MAX,
+				step: ORDER_LIMITS[pair].PRICE.STEP,
+				min: ORDER_LIMITS[pair].PRICE.MIN,
+				max: ORDER_LIMITS[pair].PRICE.MAX,
 				validate: [
 					required,
-					minValue(LIMIT_VALUES[pair].PRICE.MIN),
-					maxValue(LIMIT_VALUES[pair].PRICE.MAX),
-					step(LIMIT_VALUES[pair].PRICE.STEP)
+					minValue(ORDER_LIMITS[pair].PRICE.MIN),
+					maxValue(ORDER_LIMITS[pair].PRICE.MAX),
+					step(ORDER_LIMITS[pair].PRICE.STEP)
 				],
 				currency: STRINGS[`${byuingPair.toUpperCase()}_SHORTNAME`]
 			}

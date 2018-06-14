@@ -138,7 +138,7 @@ class ChartComponent extends Component {
 	};
 
 	render() {
-		const { height, width, theme, pair, pairBase } = this.props;
+		const { height, width, theme, pair } = this.props;
 		const { chartData, ready, chartType } = this.state;
 		return (
 			<div
@@ -162,7 +162,7 @@ class ChartComponent extends Component {
 						height={height}
 						ratio={1}
 						theme={theme}
-						symbol={pairBase}
+						symbol={pair}
 					/>
 				) : (
 					<div>{ready ? STRINGS.NO_DATA : STRINGS.LOADING}</div>

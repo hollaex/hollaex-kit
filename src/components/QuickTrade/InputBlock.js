@@ -7,7 +7,7 @@ import { CurrencyBall } from '../../components';
 
 import { minValue, maxValue } from '../../components/Form/validations';
 import { FieldError } from '../../components/Form/FormFields/FieldWrapper';
-import { FLEX_CENTER_CLASSES, LIMIT_VALUES, PAIRS } from '../../config/constants';
+import { FLEX_CENTER_CLASSES, ORDER_LIMITS, PAIRS, DEFAULT_PAIR } from '../../config/constants';
 
 import STRINGS from '../../config/localizedStrings';
 
@@ -25,21 +25,18 @@ const generateStyle = (value) => {
 class InputBlock extends Component {
 	state = {
 		value: '',
-		symbol: 'btc'
+		symbol: DEFAULT_PAIR
 	};
 
 	componentDidMount() {
-		const { pair_base } = PAIRS[this.props.symbol];
-
 		if (this.props.initialValue) {
-			this.setState({ value: this.props.initialValue, symbol: pair_base });
+			this.setState({ value: this.props.initialValue, symbol: PAIRS[this.props.symbol] });
 		}
 	}
 
 	componentWillReceiveProps(nextProps) {
 		if (nextProps.symbol !== this.props.symbol) {
-			const { pair_base } = PAIRS[nextProps.symbol];
-			this.setState({ symbol: pair_base });
+			this.setState({ symbol: PAIRS[nextProps.symbol] });
 		}
 	}
 
@@ -64,10 +61,10 @@ class InputBlock extends Component {
 
 	onLostFocus = () => {
 		const { value } = this.state;
-		if (!value || value < LIMIT_VALUES[this.state.symbol].SIZE.MIN) {
-			this.setState({ value: LIMIT_VALUES[this.state.symbol].SIZE.MIN });
-		} else if (value > LIMIT_VALUES[this.state.symbol].SIZE.MAX) {
-			this.setState({ value: LIMIT_VALUES[this.state.symbol].SIZE.MAX });
+		if (!value || value < ORDER_LIMITS[this.state.symbol].SIZE.MIN) {
+			this.setState({ value: ORDER_LIMITS[this.state.symbol].SIZE.MIN });
+		} else if (value > ORDER_LIMITS[this.state.symbol].SIZE.MAX) {
+			this.setState({ value: ORDER_LIMITS[this.state.symbol].SIZE.MAX });
 		} else {
 			this.setState({ value: math.round(value, DECIMALS) });
 		}
@@ -78,7 +75,7 @@ class InputBlock extends Component {
 		if (!value) {
 			error = '';
 		} else {
-			error = minValue(LIMIT_VALUES[this.state.symbol].SIZE.MIN)(value) || maxValue(LIMIT_VALUES[this.state.symbol].SIZE.MAX)(value);
+			error = minValue(ORDER_LIMITS[this.state.symbol].SIZE.MIN)(value) || maxValue(ORDER_LIMITS[this.state.symbol].SIZE.MAX)(value);
 		}
 		return error;
 	};
@@ -128,10 +125,10 @@ class InputBlock extends Component {
 							className="input_block-inputbox"
 							onChange={this.onChangeEvent}
 							placeholder={PLACEHOLDER}
-							step={LIMIT_VALUES[this.state.symbol].SIZE.STEP}
+							step={ORDER_LIMITS[this.state.symbol].SIZE.STEP}
 							value={value}
-							min={LIMIT_VALUES[this.state.symbol].SIZE.MIN}
-							max={LIMIT_VALUES[this.state.symbol].SIZE.MAX}
+							min={ORDER_LIMITS[this.state.symbol].SIZE.MIN}
+							max={ORDER_LIMITS[this.state.symbol].SIZE.MAX}
 							style={generateStyle(value || PLACEHOLDER)}
 							onBlur={this.onLostFocus}
 						/>
