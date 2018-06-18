@@ -38,7 +38,11 @@ import {
 	CONTACT_FORM
 } from '../../actions/appActions';
 
-import { getThemeClass } from '../../utils/theme';
+import {
+	getThemeClass,
+	getChatMinimized,
+	setChatMinimized
+} from '../../utils/theme';
 import { checkUserSessionExpired } from '../../utils/utils';
 import { getToken, getTokenTimestamp } from '../../utils/token';
 import {
@@ -70,6 +74,10 @@ class Container extends Component {
 	};
 
 	componentWillMount() {
+		const chatIsClosed = getChatMinimized();
+		this.setState({
+			chatIsClosed
+		});
 		if (checkUserSessionExpired(getTokenTimestamp())) {
 			this.logout('Token is expired');
 		}
@@ -384,6 +392,7 @@ class Container extends Component {
 		if (chatIsClosed === false) {
 			this.props.setChatUnreadMessages();
 		}
+		setChatMinimized(chatIsClosed);
 		this.setState({ chatIsClosed });
 	};
 
