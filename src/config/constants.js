@@ -240,8 +240,10 @@ export const ICONS = {
 	}/assets/images/api-key-generate.svg`,
 	TOKEN_CREATED: `${process.env.PUBLIC_URL}/assets/images/api-key-created.svg`,
 	CHECK_ORDER: `${process.env.PUBLIC_URL}/assets/images/check-order.svg`,
-	ITEM_OPTIONS : `${process.env.PUBLIC_URL}/assets/images/item-options.svg`,
-	DOTTED_GRIP: `${process.env.PUBLIC_URL}/assets/images/dotted-grip-chat-repeat-pattern.svg`,
+	ITEM_OPTIONS: `${process.env.PUBLIC_URL}/assets/images/item-options.svg`,
+	DOTTED_GRIP: `${
+		process.env.PUBLIC_URL
+	}/assets/images/dotted-grip-chat-repeat-pattern.svg`,
 	CHAT: `${process.env.PUBLIC_URL}/assets/images/chat-icon.svg`
 };
 
@@ -350,6 +352,7 @@ export const WITHDRAW_LIMITS = {
 		MIN_FEE: parseFloat(process.env.REACT_APP_ETH_MIN_FEE || 0.001)
 	}
 };
+
 export const TOKEN_KEY = `${ENV}_${NETWORK}_TOKEN`;
 export const LANGUAGE_KEY = `${ENV}_${NETWORK}_LANGUAGE`;
 export const DEFAULT_LANGUAGE = process.env.REACT_APP_DEFAULT_LANGUAGE || 'en';
@@ -377,22 +380,32 @@ export const ETHEREUM_ENDPOINT = `https://${
 
 export const BALANCE_ERROR = 'Insufficient balance to perform the order';
 
-export const CAPTCHA_SITEKEY =
-	process.env.REACT_APP_CAPTCHA_SITE_KEY;
-export const CAPTCHA_TIMEOUT = process.env.REACT_APP_CAPTCHA_TIMEOUT ? parseInt(process.env.REACT_APP_CAPTCHA_TIMEOUT, 10) : 2000;
+export const CAPTCHA_SITEKEY = process.env.REACT_APP_CAPTCHA_SITE_KEY;
+export const CAPTCHA_TIMEOUT = process.env.REACT_APP_CAPTCHA_TIMEOUT
+	? parseInt(process.env.REACT_APP_CAPTCHA_TIMEOUT, 10)
+	: 2000;
 
-export const IS_PRO_VERSION = process.env.REACT_APP_IS_PRO_VERSION && process.env.REACT_APP_IS_PRO_VERSION === 'true';
-export const PRO_VERSION_REDIRECT = process.env.REACT_APP_PRO_VERSION_REDIRECT || '/account';
-export const DEFAULT_VERSION_REDIRECT = process.env.REACT_APP_DEFAULT_VERSION_REDIRECT || '/';
+export const IS_PRO_VERSION =
+	process.env.REACT_APP_IS_PRO_VERSION &&
+	process.env.REACT_APP_IS_PRO_VERSION === 'true';
+export const PRO_VERSION_REDIRECT =
+	process.env.REACT_APP_PRO_VERSION_REDIRECT || '/account';
+export const DEFAULT_VERSION_REDIRECT =
+	process.env.REACT_APP_DEFAULT_VERSION_REDIRECT || '/';
 export const PRO_URL = process.env.REACT_APP_PRO_URL || 'https://hollaex.com';
 
-export const MIN_LEVEL_FOR_TOKENS = parseInt(process.env.REACT_APP_MIN_LEVEL_FOR_TOKENS || 2, 10)
+export const MIN_LEVEL_FOR_TOKENS = parseInt(
+	process.env.REACT_APP_MIN_LEVEL_FOR_TOKENS || 2,
+	10
+);
 
 export const THEMES = ['dark', 'white'];
 export const THEME_DEFAULT = THEMES[1];
 export const CHAT_STATUS_KEY = 'chat:minimized';
 
-export const DEFAULT_COUNTRY = process.env.REACT_APP_DEFAULT_COUNTRY ? process.env.REACT_APP_DEFAULT_COUNTRY.toUpperCase() : 'FR';
+export const DEFAULT_COUNTRY = process.env.REACT_APP_DEFAULT_COUNTRY
+	? process.env.REACT_APP_DEFAULT_COUNTRY.toUpperCase()
+	: 'FR';
 
 export const ORDER_LIMITS = {
 	'btc-eur': {
@@ -403,7 +416,9 @@ export const ORDER_LIMITS = {
 		},
 		SIZE: {
 			MIN: parseFloat(process.env.REACT_APP_BTC_FIAT_MIN_ORDER_SIZE || 0.0001),
-			MAX: parseFloat(process.env.REACT_APP_BTC_FIAT_MAX_ORDER_SIZE || 21000000),
+			MAX: parseFloat(
+				process.env.REACT_APP_BTC_FIAT_MAX_ORDER_SIZE || 21000000
+			),
 			STEP: parseFloat(process.env.REACT_APP_BTC_FIAT_MIN_ORDER_SIZE || 0.0001)
 		}
 	},
@@ -415,7 +430,9 @@ export const ORDER_LIMITS = {
 		},
 		SIZE: {
 			MIN: parseFloat(process.env.REACT_APP_ETH_FIAT_MIN_ORDER_SIZE || 0.0001),
-			MAX: parseFloat(process.env.REACT_APP_ETH_FIAT_MAX_ORDER_SIZE || 21000000),
+			MAX: parseFloat(
+				process.env.REACT_APP_ETH_FIAT_MAX_ORDER_SIZE || 21000000
+			),
 			STEP: parseFloat(process.env.REACT_APP_ETH_FIAT_MIN_ORDER_SIZE || 0.0001)
 		}
 	},
@@ -432,3 +449,5 @@ export const ORDER_LIMITS = {
 		}
 	}
 };
+
+export const BASE_CURRENCY = process.env.REACT_APP_BASE_CURRENCY;

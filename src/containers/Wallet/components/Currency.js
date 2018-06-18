@@ -1,7 +1,7 @@
 import React from 'react';
 import { CurrencyBall } from '../../../components';
 import { Link } from 'react-router';
-import { CURRENCIES } from '../../../config/constants';
+import { CURRENCIES, BASE_CURRENCY } from '../../../config/constants';
 
 const Currency = ({ currency, balance, balanceValue, balanceText }) => (
 	<div className="d-flex justify-content-center align-items-center wallet-currency f-1">
@@ -13,10 +13,19 @@ const Currency = ({ currency, balance, balanceValue, balanceText }) => (
 			/>
 		</Link>
 		<div className="d-flex flex-row">
-			<span className="balance-big mr-1">{CURRENCIES[currency].formatToCurrency(balanceValue)}</span>
-			{balanceText && <span className="d-flex align-items-end balance-small pb-4">
-			{`${CURRENCIES.fiat.currencySymbol}	${CURRENCIES.fiat.formatToCurrency(balanceText)}`}
-			</span>}
+			<span className="balance-big mr-1">
+				{CURRENCIES[currency].formatToCurrency(balanceValue)}
+			</span>
+			{currency !== BASE_CURRENCY &&
+				balanceText &&
+				parseFloat(balanceText || 0) > 0 && (
+					<span className="d-flex align-items-end balance-small pb-4">
+						{BASE_CURRENCY &&
+							`${
+								CURRENCIES.fiat.currencySymbol
+							}	${CURRENCIES.fiat.formatToCurrency(balanceText)}`}
+					</span>
+				)}
 		</div>
 	</div>
 );
