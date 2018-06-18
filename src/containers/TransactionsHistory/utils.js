@@ -6,11 +6,7 @@ import STRINGS from '../../config/localizedStrings';
 
 import { CurrencyBall } from '../../components';
 import { CURRENCIES, PAIRS } from '../../config/constants';
-import { fiatSymbol } from '../../utils/currency';
 import { formatTimestamp } from '../../utils/utils';
-
-const fiatFormatToCurrency = CURRENCIES[fiatSymbol].formatToCurrency;
-const fiatCurrencySymbol = CURRENCIES.fiat.currencySymbol;
 
 const calculateFeeAmount = (fee = 0, quick = false, price = 1, size = 0) => {
 	if (!fee || fee <= 0) {
@@ -47,121 +43,18 @@ const calculatePrice = (isQuick = false, price, size) => {
 	return price;
 };
 
-export const generateLessTradeHeaders = (symbol) => {
-	return [
-		{
-			label: STRINGS.TYPE,
-			key: 'side',
-			exportToCsv: ({ side = '' }) => side,
-			renderCell: ({ side = '' }, key, index) => {
-				return (
-					<td key={index} className={classnames('cell_box-type')}>
-						<div className={classnames(side)}>{STRINGS.SIDES_VALUES[side]}</div>
-					</td>
-				);
-			}
-		},
-		{
-			label: STRINGS.PRICE,
-			key: 'price',
-			exportToCsv: ({ price = 0, size = 0, quick }) =>
-				STRINGS.formatString(
-					STRINGS.FIAT_PRICE_FORMAT,
-					fiatFormatToCurrency(calculatePrice(quick, price, size)),
-					fiatCurrencySymbol
-				),
-			renderCell: ({ price = 0, size = 0, quick }, key, index) => {
-				return (
-					<td key={index}>
-						{STRINGS.formatString(
-							STRINGS.FIAT_PRICE_FORMAT,
-							fiatFormatToCurrency(calculatePrice(quick, price, size)),
-							fiatCurrencySymbol
-						)}
-					</td>
-				);
-			}
-		},
-		{
-			label: STRINGS.AMOUNT,
-			key: 'amount',
-			exportToCsv: ({ price = 0, size = 0, quick }) =>
-				STRINGS.formatString(
-					STRINGS.FIAT_PRICE_FORMAT,
-					fiatFormatToCurrency(calculateAmount(quick, price, size)),
-					fiatCurrencySymbol
-				),
-			renderCell: ({ price = 0, size = 0, quick }, key, index) => {
-				return (
-					<td key={index}>
-						{STRINGS.formatString(
-							STRINGS.FIAT_PRICE_FORMAT,
-							fiatFormatToCurrency(calculateAmount(quick, price, size)),
-							fiatCurrencySymbol
-						)}
-					</td>
-				);
-			}
-		},
-		{
-			label: STRINGS.FEE,
-			key: 'fee',
-			exportToCsv: ({ fee = 0, price = 0, size = 0, quick }) =>
-				calculateFeeAmount(fee, quick, price, size),
-			renderCell: ({ fee, price, size, quick }, key, index) => {
-				if (!fee) {
-					return <td key={index}> {calculateFeeAmount(fee)}</td>;
-				}
-				return (
-					<td key={index}>
-						{STRINGS.formatString(
-							STRINGS.FIAT_PRICE_FORMAT,
-							fiatFormatToCurrency(calculateFeeAmount(fee, quick, price, size)),
-							fiatCurrencySymbol
-						)}
-					</td>
-				);
-			}
-		},
-		{
-			label: STRINGS.TIME,
-			key: 'timestamp',
-			exportToCsv: ({ timestamp = '' }) => timestamp,
-			renderCell: ({ timestamp = '' }, key, index) => {
-				return <td key={index}>{formatTimestamp(timestamp)}</td>;
-			}
-		}
-	];
-};
-
-
 export const generateTradeHeaders = (symbol) => {
 	return [
 		{
-			label: '',
-			key: 'icon',
-			renderCell: (data, key, index) => {
-				const symbol = PAIRS[data.symbol].pair_base;
-				const shortName = STRINGS[`${symbol.toUpperCase()}_SHORTNAME`];
+			label: STRINGS.PAIR,
+			key: 'pair',
+			exportToCsv: ({ symbol }) => symbol.toUpperCase(),
+			renderCell: ({ symbol }, key, index) => {
 				return (
-					<td className={classnames('icon-cell')} key={index}>
-						<CurrencyBall name={shortName} symbol={symbol} size="s" />
+					<td key={index} className="text-uppercase">
+						{symbol}
 					</td>
 				);
-			}
-		},
-		{
-			label: STRINGS.CURRENCY,
-			key: 'currency',
-			exportToCsv: (data) => {
-				const symbol = PAIRS[data.symbol].pair_base;
-				const fullName = STRINGS[`${symbol.toUpperCase()}_FULLNAME`];
-				return fullName;
-			},
-			renderCell: (data, key, index) => {
-				const symbol = PAIRS[data.symbol].pair_base;
-				const fullName = STRINGS[`${symbol.toUpperCase()}_FULLNAME`];
-				return <td key={index}>{fullName}</td>;
 			}
 		},
 		{
@@ -207,19 +100,28 @@ export const generateTradeHeaders = (symbol) => {
 		{
 			label: STRINGS.PRICE,
 			key: 'price',
-			exportToCsv: ({ price = 0, size = 0, quick }) =>
-				STRINGS.formatString(
-					STRINGS.FIAT_PRICE_FORMAT,
-					fiatFormatToCurrency(calculatePrice(quick, price, size)),
-					fiatCurrencySymbol
-				),
-			renderCell: ({ price = 0, size = 0, quick }, key, index) => {
+			exportToCsv: ({ price = 0, size = 0, quick, symbol }) => {
+				const { pair_2 } = PAIRS[symbol];
+				const pair = pair_2.toUpperCase();
+				return STRINGS.formatString(
+					STRINGS[`${pair}_PRICE_FORMAT`],
+					CURRENCIES[pair_2].formatToCurrency(
+						calculatePrice(quick, price, size)
+					),
+					CURRENCIES[pair_2].currencySymbol
+				);
+			},
+			renderCell: ({ price = 0, size = 0, quick, symbol }, key, index) => {
+				const { pair_2 } = PAIRS[symbol];
+				const pair = pair_2.toUpperCase();
 				return (
 					<td key={index}>
 						{STRINGS.formatString(
-							STRINGS.FIAT_PRICE_FORMAT,
-							fiatFormatToCurrency(calculatePrice(quick, price, size)),
-							fiatCurrencySymbol
+							STRINGS[`${pair}_PRICE_FORMAT`],
+							CURRENCIES[pair_2].formatToCurrency(
+								calculatePrice(quick, price, size)
+							),
+							CURRENCIES[pair_2].currencySymbol
 						)}
 					</td>
 				);
@@ -228,19 +130,28 @@ export const generateTradeHeaders = (symbol) => {
 		{
 			label: STRINGS.AMOUNT,
 			key: 'amount',
-			exportToCsv: ({ price = 0, size = 0, quick }) =>
-				STRINGS.formatString(
-					STRINGS.FIAT_PRICE_FORMAT,
-					fiatFormatToCurrency(calculateAmount(quick, price, size)),
-					fiatCurrencySymbol
-				),
-			renderCell: ({ price = 0, size = 0, quick }, key, index) => {
+			exportToCsv: ({ price = 0, size = 0, quick, symbol }) => {
+				const { pair_2 } = PAIRS[symbol];
+				const pair = pair_2.toUpperCase();
+				return STRINGS.formatString(
+					STRINGS[`${pair}_PRICE_FORMAT`],
+					CURRENCIES[pair_2].formatToCurrency(
+						calculateAmount(quick, price, size)
+					),
+					CURRENCIES[pair_2].currencySymbol
+				);
+			},
+			renderCell: ({ price = 0, size = 0, quick, symbol }, key, index) => {
+				const { pair_2 } = PAIRS[symbol];
+				const pair = pair_2.toUpperCase();
 				return (
 					<td key={index}>
 						{STRINGS.formatString(
-							STRINGS.FIAT_PRICE_FORMAT,
-							fiatFormatToCurrency(calculateAmount(quick, price, size)),
-							fiatCurrencySymbol
+							STRINGS[`${pair}_PRICE_FORMAT`],
+							CURRENCIES[pair_2].formatToCurrency(
+								calculateAmount(quick, price, size)
+							),
+							CURRENCIES[pair_2].currencySymbol
 						)}
 					</td>
 				);
@@ -249,18 +160,34 @@ export const generateTradeHeaders = (symbol) => {
 		{
 			label: STRINGS.FEE,
 			key: 'fee',
-			exportToCsv: ({ fee = 0, price = 0, size = 0, quick }) =>
-				calculateFeeAmount(fee, quick, price, size),
-			renderCell: ({ fee, price, size, quick }, key, index) => {
+			exportToCsv: ({ fee = 0, price = 0, size = 0, quick, symbol, side }) => {
+				if (!fee) {
+					return calculateFeeAmount(fee);
+				}
+				const { pair_base, pair_2 } = PAIRS[symbol];
+				const pair = side === 'buy' ? pair_base : pair_2;
+				return STRINGS.formatString(
+					STRINGS[`${pair.toUpperCase()}_PRICE_FORMAT`],
+					CURRENCIES[pair].formatToCurrency(
+						calculateFeeAmount(fee, quick, price, size)
+					),
+					CURRENCIES[pair].currencySymbol
+				);
+			},
+			renderCell: ({ fee, price, size, quick, symbol, side }, key, index) => {
 				if (!fee) {
 					return <td key={index}> {calculateFeeAmount(fee)}</td>;
 				}
+				const { pair_base, pair_2 } = PAIRS[symbol];
+				const pair = side === 'buy' ? pair_base : pair_2;
 				return (
 					<td key={index}>
 						{STRINGS.formatString(
-							STRINGS.FIAT_PRICE_FORMAT,
-							fiatFormatToCurrency(calculateFeeAmount(fee, quick, price, size)),
-							fiatCurrencySymbol
+							STRINGS[`${pair.toUpperCase()}_PRICE_FORMAT`],
+							CURRENCIES[pair].formatToCurrency(
+								calculateFeeAmount(fee, quick, price, size)
+							),
+							CURRENCIES[pair].currencySymbol
 						)}
 					</td>
 				);
@@ -335,16 +262,16 @@ export const generateWithdrawalsHeaders = (symbol) => {
 			label: STRINGS.FEE,
 			key: 'fee',
 			exportToCsv: ({ fee = 0 }) => fee,
-			renderCell: ({ fee, price, size, quick }, key, index) => {
+			renderCell: ({ fee, price, size, currency }, key, index) => {
 				if (fee === 0) {
 					return <td key={index}>{calculateFeeAmount(fee)}</td>;
 				}
 				return (
 					<td key={index}>
 						{STRINGS.formatString(
-							STRINGS.FIAT_PRICE_FORMAT,
+							STRINGS[`${currency.toUpperCase()}_PRICE_FORMAT`],
 							fee,
-							fiatCurrencySymbol
+							CURRENCIES[currency].currencySymbol
 						)}
 					</td>
 				);
@@ -372,109 +299,15 @@ export const filterData = (symbol, { count = 0, data = [] }) => {
 };
 
 export const generateTradeHeadersMobile = (symbol) => {
-	return [
-		{
-			label: '',
-			key: 'icon',
-			renderCell: (data, key, index) => {
-				const symbol = PAIRS[data.symbol].pair_base;
-				const shortName = STRINGS[`${symbol.toUpperCase()}_SHORTNAME`];
-				return (
-					<td className={classnames('icon-cell')} key={index}>
-						<CurrencyBall name={shortName} symbol={symbol} size="s" />
-					</td>
-				);
-			}
-		},
-		{
-			label: STRINGS.TYPE,
-			key: 'side',
-			exportToCsv: ({ side = '' }) => side,
-			renderCell: ({ side = '' }, key, index) => {
-				return (
-					<td key={index} className={classnames('cell_box-type')}>
-						<div className={classnames(side)}>{STRINGS.SIDES_VALUES[side]}</div>
-					</td>
-				);
-			}
-		},
-		{
-			label: STRINGS.SIZE,
-			key: 'size',
-			exportToCsv: ({ size = 0, ...data }) => {
-				const symbol = PAIRS[data.symbol].pair_base;
-				const { formatToCurrency } = CURRENCIES[symbol];
-				const shortName = STRINGS[`${symbol.toUpperCase()}_SHORTNAME`];
-				return STRINGS.formatString(
-					STRINGS[`${symbol.toUpperCase()}_PRICE_FORMAT`],
-					formatToCurrency(size),
-					shortName
-				);
-			},
-			renderCell: ({ size = 0, ...data }, key, index) => {
-				const symbol = PAIRS[data.symbol].pair_base;
-				const { formatToCurrency } = CURRENCIES[symbol];
-				const shortName = STRINGS[`${symbol.toUpperCase()}_SHORTNAME`];
-				return (
-					<td key={index}>
-						{STRINGS.formatString(
-							STRINGS[`${symbol.toUpperCase()}_PRICE_FORMAT`],
-							formatToCurrency(size),
-							shortName
-						)}
-					</td>
-				);
-			}
-		},
-		{
-			label: STRINGS.PRICE,
-			key: 'price',
-			exportToCsv: ({ price = 0, size = 0, quick }) =>
-				STRINGS.formatString(
-					STRINGS.FIAT_PRICE_FORMAT,
-					fiatFormatToCurrency(calculatePrice(quick, price, size)),
-					fiatCurrencySymbol
-				),
-			renderCell: ({ price = 0, size = 0, quick }, key, index) => {
-				return (
-					<td key={index}>
-						{STRINGS.formatString(
-							STRINGS.FIAT_PRICE_FORMAT,
-							fiatFormatToCurrency(calculatePrice(quick, price, size)),
-							fiatCurrencySymbol
-						)}
-					</td>
-				);
-			}
-		},
-		{
-			label: STRINGS.FEE,
-			key: 'fee',
-			exportToCsv: ({ fee = 0, price = 0, size = 0, quick }) =>
-				calculateFeeAmount(fee, quick, price, size),
-			renderCell: ({ fee, price, size, quick }, key, index) => {
-				if (!fee) {
-					return <td key={index}> {calculateFeeAmount(fee)}</td>;
-				}
-				return (
-					<td key={index}>
-						{STRINGS.formatString(
-							STRINGS.FIAT_PRICE_FORMAT,
-							fiatFormatToCurrency(calculateFeeAmount(fee, quick, price, size)),
-							fiatCurrencySymbol
-						)}
-					</td>
-				);
-			}
-		},
-		{
-			label: STRINGS.TIME,
-			key: 'timestamp',
-			exportToCsv: ({ timestamp = '' }) => timestamp,
-			renderCell: ({ timestamp = '' }, key, index) => {
-				return <td key={index}>{formatTimestamp(timestamp)}</td>;
-			}
-		}
-	];
+	const KEYS = ['pair', 'side', 'size', 'price', 'fee', 'timestamp'];
+	return generateTradeHeaders(symbol).filter(
+		({ key }) => KEYS.indexOf(key) > -1
+	);
 };
 
+export const generateLessTradeHeaders = (symbol) => {
+	const KEYS = ['side', 'price', 'amount', 'fee', 'timestamp'];
+	return generateTradeHeaders(symbol).filter(
+		({ key }) => KEYS.indexOf(key) > -1
+	);
+};
