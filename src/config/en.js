@@ -858,5 +858,6 @@ export default {
 	COPY_ADDRESS: 'Copy Address',
 	SUCCESFUL_COPY: 'Successfully Copied!',
 	QUICK_TRADE_MODE: 'Quick Trade Mode',
-	JUST_NOW: 'just now'
+	JUST_NOW: 'just now',
+	PAIR: 'Pair'
 };
