@@ -1,6 +1,6 @@
 import React from 'react';
 import math from 'mathjs';
-import { ICONS } from '../../config/constants';
+import { ICONS, PAIRS } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 import { formatBtcAmount, formatFiatAmount } from '../../utils/currency';
 import {
@@ -53,22 +53,25 @@ const getTitleAndIcon = (type, { side, filled }) => {
 
 const generateRows = (type, order) => {
 	const rows = [];
+	const pair = PAIRS[order.symbol];
+	const basePair = pair.pair_base.toUpperCase();
+	const payPair = pair.pair_2.toUpperCase();
 
 	if (type === 'order_added' && order.filled === 0) {
 		rows.push({
 			label: STRINGS.SIZE,
 			value: STRINGS.formatString(
-				STRINGS.BTC_PRICE_FORMAT,
+				STRINGS[`${basePair}_PRICE_FORMAT`],
 				formatBtcAmount(order.size),
-				STRINGS.BTC_SHORTNAME
+				STRINGS[`${basePair}_SHORTNAME`]
 			)
 		});
 		rows.push({
 			label: STRINGS.PRICE,
 			value: STRINGS.formatString(
-				STRINGS.FIAT_PRICE_FORMAT,
+				STRINGS[`${payPair}_PRICE_FORMAT`],
 				formatFiatAmount(order.price),
-				STRINGS.FIAT_SHORTNAME
+				STRINGS[`${payPair}_SHORTNAME`]
 			)
 		});
 	} else {
@@ -81,26 +84,26 @@ const generateRows = (type, order) => {
 			label:
 				order.side === SIDE_BUY ? STRINGS.ORDER_BOUGHT : STRINGS.ORDER_SOLD,
 			value: STRINGS.formatString(
-				STRINGS.BTC_PRICE_FORMAT,
+				STRINGS[`${basePair}_PRICE_FORMAT`],
 				formatBtcAmount(order.filled),
-				STRINGS.BTC_SHORTNAME
+				STRINGS[`${basePair}_SHORTNAME`]
 			)
 		});
 		rows.push({
 			label: STRINGS.PRICE,
 			value: STRINGS.formatString(
-				STRINGS.FIAT_PRICE_FORMAT,
+				STRINGS[`${payPair}_PRICE_FORMAT`],
 				formatFiatAmount(order.price),
-				STRINGS.FIAT_SHORTNAME
+				STRINGS[`${payPair}_SHORTNAME`]
 			)
 		});
 		rows.push({
 			label:
 				order.side === SIDE_BUY ? STRINGS.ORDER_SPENT : STRINGS.ORDER_RECEIVED,
 			value: STRINGS.formatString(
-				STRINGS.FIAT_PRICE_FORMAT,
+				STRINGS[`${payPair}_PRICE_FORMAT`],
 				formatFiatAmount(orderValue),
-				STRINGS.FIAT_SHORTNAME
+				STRINGS[`${payPair}_SHORTNAME`]
 			)
 		});
 

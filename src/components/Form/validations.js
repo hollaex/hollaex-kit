@@ -2,7 +2,7 @@ import validator from 'validator';
 import WAValidator from 'wallet-address-validator';
 import math from 'mathjs';
 import { NETWORK } from '../../config/constants';
-import { fiatSymbol, roundNumber } from '../../utils/currency';
+import { roundNumber } from '../../utils/currency';
 import STRINGS from '../../config/localizedStrings';
 
 const passwordRegEx = /^(?=.*[a-zA-Z])(?=.*\d).{8,}$/;
@@ -86,7 +86,8 @@ export const checkBalance = (available, message, fee = 0) => (value = 0) => {
 };
 
 export const evaluateOrder = (
-	symbol = '',
+	pair_base = '',
+	pair_2 = '',
 	balance = {},
 	order = {},
 	orderType = '',
@@ -97,10 +98,10 @@ export const evaluateOrder = (
 	let available = 0;
 
 	if (side === 'sell') {
-		available = balance[`${symbol}_available`];
+		available = balance[`${pair_base}_available`];
 		orderPrice = order.size;
 	} else {
-		available = balance[`${fiatSymbol}_available`];
+		available = balance[`${pair_2}_available`];
 
 		if (orderType === 'market') {
 			orderPrice = marketPrice;

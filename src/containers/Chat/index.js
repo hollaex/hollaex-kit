@@ -49,9 +49,13 @@ class Chat extends Component {
 		chatWs.on('init', ({ messages = [], announcements = [] }) => {
 			this.setState({
 				chatSocketInitializing: false,
-				chatSocketInitialized: true,
 				messages: messages
 			});
+			setTimeout(() => {
+				this.setState({
+					chatSocketInitialized: true
+				});
+			}, 1000);
 			this.props.setAnnouncements(announcements);
 		});
 
@@ -162,7 +166,7 @@ class Chat extends Component {
 				setChatBoxRef={this.setChatBoxRef}
 				sendMessage={this.sendMessage}
 				userInitialized={userInitialized}
-				minimized={minimized}
+				minimized={minimized || !userInitialized || !chatSocketInitialized}
 				minimizeChat={onMinimize}
 				removeMessage={this.removeMessage}
 			/>

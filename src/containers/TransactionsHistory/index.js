@@ -71,7 +71,8 @@ class TransactionsHistory extends Component {
 		// const name = STRINGS[`${symbol.toUpperCase()}_NAME`];
 
 		const props = {
-			symbol
+			symbol,
+			withIcon: true
 		};
 
 		switch (activeTab) {
@@ -80,6 +81,7 @@ class TransactionsHistory extends Component {
 				props.headers = headers.trades;
 				props.data = trades;
 				props.filename = `${symbol}-transfers_history`;
+				props.withIcon = false;
 				break;
 			case 1:
 				props.title = STRINGS.TRANSACTION_HISTORY.TITLE_DEPOSITS;

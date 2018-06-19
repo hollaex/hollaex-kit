@@ -426,7 +426,7 @@ export default {
 					WARNING_1:
 						'Only a valid government-issued identification document is accepted.',
 					WARNING_2:
-						'Make sure you are uploading your own documents. Any usage of wrong or fake documents will have legal consequences and result in freezing your account immidiately.'
+						'Make sure you are uploading your own documents. Any usage of wrong or fake documents will have legal consequences and result in freezing your account immediately.'
 				},
 				POR: {
 					SECTION_1_TEXT_1:
@@ -858,5 +858,6 @@ export default {
 	COPY_ADDRESS: 'Copy Address',
 	SUCCESFUL_COPY: 'Successfully Copied!',
 	QUICK_TRADE_MODE: 'Quick Trade Mode',
-	JUST_NOW: 'just now'
+	JUST_NOW: 'just now',
+	PAIR: 'Pair'
 };
