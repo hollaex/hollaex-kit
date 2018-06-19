@@ -110,7 +110,7 @@ class OrderEntry extends Component {
 		if (
 			type === 'market' &&
 			orderPrice === 0 &&
-			size >= ORDER_LIMITS[this.props.pair_base].SIZE.MIN
+			size >= ORDER_LIMITS[this.props.pair].SIZE.MIN
 		) {
 			outsideFormError = STRINGS.QUICK_TRADE_ORDER_NOT_FILLED;
 		} else if (type === 'market' && side === 'buy') {

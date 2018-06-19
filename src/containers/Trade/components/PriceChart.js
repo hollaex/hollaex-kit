@@ -4,6 +4,7 @@ import moment from 'moment';
 import { FactoryChart as Chart, CHART_TYPES } from '../../../components';
 import { WS_URL } from '../../../config/constants';
 import STRINGS from '../../../config/localizedStrings';
+import { roundNumber } from '../../../utils/currency';
 
 class ChartComponent extends Component {
 	state = {
@@ -88,6 +89,7 @@ class ChartComponent extends Component {
 	setTickData = ({ data, timestamp }) => {
 		const { tickers, chartData } = this.state;
 		const keys = Object.keys(data);
+
 		if (keys.length === 1) {
 			const symbol = keys[0];
 			const currentBlockTimestamp = this.getCurrentBlockTimestamp();
@@ -105,7 +107,7 @@ class ChartComponent extends Component {
 						lastData.high = newClosePrice;
 					}
 					lastData.close = newClosePrice;
-					lastData.volume = lastData.volume + data[symbol].volume;
+					lastData.volume = roundNumber(lastData.volume + data[symbol].volume);
 					chartData[symbol][chartData[symbol].length - 1] = lastData;
 				}
 			} else {
