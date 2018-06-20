@@ -19,7 +19,6 @@ import {
 	maxValue,
 	checkMarketPrice,
 	step,
-	normalizeInt,
 	normalizeFloat
 } from '../../../components/Form/validations';
 import { Loader } from '../../../components';
@@ -245,7 +244,7 @@ class OrderEntry extends Component {
 				label: STRINGS.PRICE,
 				type: 'number',
 				placeholder: '0',
-				normalize: normalizeInt,
+				normalize: normalizeFloat,
 				step: ORDER_LIMITS[pair].PRICE.STEP,
 				min: ORDER_LIMITS[pair].PRICE.MIN,
 				max: ORDER_LIMITS[pair].PRICE.MAX,

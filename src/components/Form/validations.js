@@ -58,7 +58,7 @@ export const maxValue = (maxValue, message) => (value = 0) =>
 		? message || STRINGS.formatString(STRINGS.VALIDATIONS.MAX_VALUE, maxValue)
 		: undefined;
 export const step = (step, message) => (value = 0) =>
-	value % step > 0
+	math.larger(math.mod(value, step), 0)
 		? message || STRINGS.formatString(STRINGS.VALIDATIONS.STEP, step)
 		: undefined;
 export const checkBalance = (available, message, fee = 0) => (value = 0) => {
