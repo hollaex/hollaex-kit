@@ -8,16 +8,31 @@ import { CurrencyBall } from '../../components';
 import { CURRENCIES, PAIRS } from '../../config/constants';
 import { formatTimestamp } from '../../utils/utils';
 
-const calculateFeeAmount = (fee = 0, quick = false, price = 1, size = 0) => {
+const calculateFeeAmount = (
+	fee = 0,
+	quick = false,
+	price = 1,
+	size = 0,
+	side = ''
+) => {
 	if (!fee || fee <= 0) {
 		return STRINGS.NO_FEE;
 	}
-	const amount = calculateAmount(quick, price, size);
-	const feeAmount = mathjs
-		.chain(amount)
-		.multiply(fee)
-		.divide(100)
-		.done();
+	let feeAmount = 0;
+	if (side === 'buy') {
+		feeAmount = mathjs
+			.chain(size)
+			.multiply(fee)
+			.divide(100)
+			.done();
+	} else if (side === 'sell') {
+		const amount = calculateAmount(quick, price, size);
+		feeAmount = mathjs
+			.chain(amount)
+			.multiply(fee)
+			.divide(100)
+			.done();
+	}
 	return feeAmount;
 };
 
@@ -169,7 +184,7 @@ export const generateTradeHeaders = (symbol) => {
 				return STRINGS.formatString(
 					STRINGS[`${pair.toUpperCase()}_PRICE_FORMAT`],
 					CURRENCIES[pair].formatToCurrency(
-						calculateFeeAmount(fee, quick, price, size)
+						calculateFeeAmount(fee, quick, price, size, side)
 					),
 					CURRENCIES[pair].currencySymbol
 				);
@@ -185,7 +200,7 @@ export const generateTradeHeaders = (symbol) => {
 						{STRINGS.formatString(
 							STRINGS[`${pair.toUpperCase()}_PRICE_FORMAT`],
 							CURRENCIES[pair].formatToCurrency(
-								calculateFeeAmount(fee, quick, price, size)
+								calculateFeeAmount(fee, quick, price, size, side)
 							),
 							CURRENCIES[pair].currencySymbol
 						)}
