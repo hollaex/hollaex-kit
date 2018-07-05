@@ -16,6 +16,7 @@ const generateRows = ({ order, pairData }) => {
 	const baseCurrency = pairData.pair_base.toUpperCase();
 	const baseFormat = CURRENCIES[pairData.pair_base].formatToCurrency;
 	const rows = [];
+
 	rows.push({
 		label: STRINGS.TYPE,
 		value: (
@@ -34,7 +35,7 @@ const generateRows = ({ order, pairData }) => {
 		value: STRINGS.formatString(
 			STRINGS[`${baseCurrency}_PRICE_FORMAT`],
 			baseFormat(size),
-			STRINGS[`${secondaryCurrency}_CURRENCY_SYMBOL`]
+			STRINGS[`${baseCurrency}_CURRENCY_SYMBOL`]
 		)
 	});
 
