@@ -436,7 +436,7 @@ export const ORDER_LIMITS = {
 			STEP: parseFloat(process.env.REACT_APP_ETH_FIAT_MIN_ORDER_SIZE || 0.0001)
 		}
 	},
-	'btc-eth': {
+	'eth-btc': {
 		PRICE: {
 			MIN: parseFloat(process.env.REACT_APP_BTC_ETH_MIN_ORDER_PRICE || 500),
 			MAX: parseFloat(process.env.REACT_APP_BTC_ETH_MAX_ORDER_PRICE || 50000),

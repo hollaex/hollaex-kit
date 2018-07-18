@@ -10,7 +10,8 @@ import Form, { FORM_NAME } from './OrderEntryForm';
 import {
 	formatNumber,
 	formatFiatAmount,
-	roundNumber
+	roundNumber,
+	fiatSymbol
 } from '../../../utils/currency';
 import {
 	evaluateOrder,
@@ -142,16 +143,18 @@ class OrderEntry extends Component {
 	};
 
 	onSubmit = (values) => {
+		const { pair } = this.props;
+	
 		const order = {
 			...values,
-			size: formatNumber(values.size, 4),
+			size: formatNumber(values.size, ORDER_LIMITS[pair].SIZE.STEP),
 			symbol: this.props.pair
 		};
 
 		if (values.type === 'market') {
 			delete order.price;
 		} else if (values.price) {
-			order.price = formatNumber(values.price);
+			order.price = formatNumber(values.price, ORDER_LIMITS[pair].PRICE.STEP);
 		}
 
 		return this.props.submitOrder(order).then(() => {
@@ -166,7 +169,9 @@ class OrderEntry extends Component {
 			side,
 			price,
 			size,
+			pair,
 			pair_base,
+			pair_2,
 			openCheckOrder,
 			submit
 		} = this.props;
@@ -174,7 +179,7 @@ class OrderEntry extends Component {
 			type,
 			side,
 			price,
-			size: formatNumber(size, 4),
+			size: formatNumber(size, ORDER_LIMITS[pair].SIZE.STEP),
 			symbol: pair_base,
 			orderPrice: this.state.orderPrice,
 			orderFees: this.state.orderFees
@@ -183,7 +188,7 @@ class OrderEntry extends Component {
 		if (type === 'market') {
 			delete order.price;
 		} else if (price) {
-			order.price = formatNumber(price);
+			order.price = 	pair_2 === fiatSymbol ? formatNumber(price, ORDER_LIMITS[pair].PRICE.STEP) : formatNumber(price);
 		}
 
 		if (showPopup) {
@@ -196,7 +201,6 @@ class OrderEntry extends Component {
 	};
 
 	generateFormValues = (pair = '', byuingPair = '') => {
-		console.log(pair, ORDER_LIMITS[pair])
 		const formValues = {
 			type: {
 				name: 'type',
