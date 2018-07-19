@@ -412,40 +412,46 @@ export const ORDER_LIMITS = {
 		PRICE: {
 			MIN: parseFloat(process.env.REACT_APP_BTC_FIAT_MIN_ORDER_PRICE || 500),
 			MAX: parseFloat(process.env.REACT_APP_BTC_FIAT_MAX_ORDER_PRICE || 50000),
-			STEP: parseFloat(process.env.REACT_APP_BTC_FIAT_TICK_SIZE || 1)
+			STEP: parseFloat(process.env.REACT_APP_BTC_FIAT_TICK_SIZE || 1),
+			DECIMALS: process.env.REACT_APP_BTC_FIAT_PRICE_DECIMALS
 		},
 		SIZE: {
 			MIN: parseFloat(process.env.REACT_APP_BTC_FIAT_MIN_ORDER_SIZE || 0.0001),
 			MAX: parseFloat(
 				process.env.REACT_APP_BTC_FIAT_MAX_ORDER_SIZE || 21000000
 			),
-			STEP: parseFloat(process.env.REACT_APP_BTC_FIAT_MIN_ORDER_SIZE || 0.0001)
+			STEP: parseFloat(process.env.REACT_APP_BTC_FIAT_MIN_ORDER_SIZE || 0.0001),
+			DECIMALS: process.env.REACT_APP_BTC_FIAT_SIZE_DECIMALS
 		}
 	},
 	'eth-eur': {
 		PRICE: {
 			MIN: parseFloat(process.env.REACT_APP_ETH_FIAT_MIN_ORDER_PRICE || 500),
 			MAX: parseFloat(process.env.REACT_APP_ETH_FIAT_MAX_ORDER_PRICE || 50000),
-			STEP: parseFloat(process.env.REACT_APP_ETH_FIAT_TICK_SIZE || 1)
+			STEP: parseFloat(process.env.REACT_APP_ETH_FIAT_TICK_SIZE || 1),
+			DECIMALS: process.env.REACT_APP_ETH_FIAT_PRICE_DECIMALS
 		},
 		SIZE: {
 			MIN: parseFloat(process.env.REACT_APP_ETH_FIAT_MIN_ORDER_SIZE || 0.0001),
 			MAX: parseFloat(
 				process.env.REACT_APP_ETH_FIAT_MAX_ORDER_SIZE || 21000000
 			),
-			STEP: parseFloat(process.env.REACT_APP_ETH_FIAT_MIN_ORDER_SIZE || 0.0001)
+			STEP: parseFloat(process.env.REACT_APP_ETH_FIAT_MIN_ORDER_SIZE || 0.0001),
+			DECIMALS: process.env.REACT_APP_ETH_FIAT_SIZE_DECIMALS
 		}
 	},
 	'eth-btc': {
 		PRICE: {
 			MIN: parseFloat(process.env.REACT_APP_BTC_ETH_MIN_ORDER_PRICE || 500),
 			MAX: parseFloat(process.env.REACT_APP_BTC_ETH_MAX_ORDER_PRICE || 50000),
-			STEP: parseFloat(process.env.REACT_APP_BTC_ETH_TICK_SIZE || 1)
+			STEP: parseFloat(process.env.REACT_APP_BTC_ETH_TICK_SIZE || 1),
+			DECIMALS: process.env.REACT_APP_BTC_ETH_PRICE_DECIMALS
 		},
 		SIZE: {
 			MIN: parseFloat(process.env.REACT_APP_BTC_ETH_MIN_ORDER_SIZE || 0.0001),
 			MAX: parseFloat(process.env.REACT_APP_BTC_ETH_MAX_ORDER_SIZE || 21000000),
-			STEP: parseFloat(process.env.REACT_APP_BTC_ETH_MIN_ORDER_SIZE || 0.0001)
+			STEP: parseFloat(process.env.REACT_APP_BTC_ETH_MIN_ORDER_SIZE || 0.0001),
+			DECIMALS: process.env.REACT_APP_BTC_ETH_SIZE_DECIMALS
 		}
 	}
 };

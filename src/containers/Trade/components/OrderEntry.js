@@ -147,14 +147,14 @@ class OrderEntry extends Component {
 	
 		const order = {
 			...values,
-			size: formatNumber(values.size, ORDER_LIMITS[pair].SIZE.STEP),
+			size: formatNumber(values.size, ORDER_LIMITS[pair].SIZE.DECIMALS),
 			symbol: this.props.pair
 		};
 
 		if (values.type === 'market') {
 			delete order.price;
 		} else if (values.price) {
-			order.price = formatNumber(values.price, ORDER_LIMITS[pair].PRICE.STEP);
+			order.price = formatNumber(values.price, ORDER_LIMITS[pair].PRICE.DECIMALS);
 		}
 
 		return this.props.submitOrder(order).then(() => {
@@ -179,7 +179,7 @@ class OrderEntry extends Component {
 			type,
 			side,
 			price,
-			size: formatNumber(size, ORDER_LIMITS[pair].SIZE.STEP),
+			size: formatNumber(size, ORDER_LIMITS[pair].SIZE.DECIMALS),
 			symbol: pair_base,
 			orderPrice: this.state.orderPrice,
 			orderFees: this.state.orderFees
@@ -188,7 +188,7 @@ class OrderEntry extends Component {
 		if (type === 'market') {
 			delete order.price;
 		} else if (price) {
-			order.price = 	pair_2 === fiatSymbol ? formatNumber(price, ORDER_LIMITS[pair].PRICE.STEP) : formatNumber(price);
+			order.price = 	pair_2 === fiatSymbol ? formatNumber(price, ORDER_LIMITS[pair].PRICE.DECIMALS) : formatNumber(price);
 		}
 
 		if (showPopup) {
