@@ -14,7 +14,7 @@ const PriceRow = (side, onPriceClick, onAmountClick) => (
 			className={`f-1 trade_orderbook-cell trade_orderbook-cell-price ${side} pointer`}
 			onClick={onPriceClick(price)}
 		>
-			{formatFiatAmount(price)}
+			{price}
 		</div>
 		<div
 			className="f-1 trade_orderbook-cell trade_orderbook-cell-amount pointer"
