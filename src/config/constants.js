@@ -3,7 +3,7 @@ import {
 	formatBtcAmount,
 	formatFiatAmount,
 	formatEthAmount
-} from '../utils/string';
+} from '../utils/currency';
 
 import STRINGS from './localizedStrings';
 
@@ -37,15 +37,6 @@ export const ICONS = {
 	LETTER: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-24.svg`,
 	SQUARE_DOTS: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-25.svg`,
 	COPY_NEW: `${process.env.PUBLIC_URL}/assets/images/copy.svg`,
-	LOGO_BLUE: `${process.env.PUBLIC_URL}/assets/logo-blue-exir.svg`,
-	LOGO_GREY: `${process.env.PUBLIC_URL}/assets/images/EXIR-grey-login.svg`,
-	LOGO_WHITE: `${process.env.PUBLIC_URL}/assets/images/logo-white-exir.svg`,
-	BACKGROUND_LARGE: `${
-		process.env.PUBLIC_URL
-	}/assets/background-site-large.jpg`,
-	BACKGROUND_SMALL: `${
-		process.env.PUBLIC_URL
-	}/assets/background-site-smaller.jpg`,
 	ACCOUNT_LINE: `${process.env.PUBLIC_URL}/assets/images/account.svg`,
 	ACCOUNT_RECOVERY: `${
 		process.env.PUBLIC_URL
@@ -137,7 +128,6 @@ export const ICONS = {
 	BLUE_PLUS: `${process.env.PUBLIC_URL}/assets/images/max-plus-blue-icon.svg`,
 	BLUE_TIMER: `${process.env.PUBLIC_URL}/assets/images/timer-icon.svg`,
 	DROPDOWN_ARROW: `${process.env.PUBLIC_URL}/assets/images/down-arrow-home.svg`,
-	TOMAN_T_ICON: `${process.env.PUBLIC_URL}/assets/images/toman-t-icon.svg`,
 	NOTIFICATION_ORDER_LIMIT_BUY_FILLED: `${
 		process.env.PUBLIC_URL
 	}/assets/images/limit-buy-order-filled-01.svg`,
@@ -249,7 +239,12 @@ export const ICONS = {
 		process.env.PUBLIC_URL
 	}/assets/images/api-key-generate.svg`,
 	TOKEN_CREATED: `${process.env.PUBLIC_URL}/assets/images/api-key-created.svg`,
-	CHECK_ORDER: `${process.env.PUBLIC_URL}/assets/images/check-order.svg`
+	CHECK_ORDER: `${process.env.PUBLIC_URL}/assets/images/check-order.svg`,
+	ITEM_OPTIONS: `${process.env.PUBLIC_URL}/assets/images/item-options.svg`,
+	DOTTED_GRIP: `${
+		process.env.PUBLIC_URL
+	}/assets/images/dotted-grip-chat-repeat-pattern.svg`,
+	CHAT: `${process.env.PUBLIC_URL}/assets/images/chat-icon.svg`
 };
 
 export const SOCIAL_ICONS = {
@@ -314,6 +309,10 @@ export const PAIRS = {
 	'eth-eur': {
 		pair_base: 'eth',
 		pair_2: 'fiat'
+	},
+	'eth-btc': {
+		pair_base: 'eth',
+		pair_2: 'btc'
 	}
 };
 
@@ -327,36 +326,6 @@ export const FLEX_CENTER_CLASSES = [
 
 export const TIMESTAMP_FORMAT = STRINGS.TIMESTAMP_FORMAT;
 export const HOUR_FORMAT = STRINGS.HOUR_FORMAT;
-export const TIMESTAMP_FORMAT_FA = STRINGS.TIMESTAMP_FORMAT.split('/')
-	.map((s) => `j${s}`)
-	.join('/');
-
-export const LIMIT_VALUES = {
-	btc: {
-		PRICE: {
-			MIN: process.env.REACT_APP_BTC_MIN_PRICE || 500,
-			MAX: process.env.REACT_APP_BTC_MAX_PRICE || 50000,
-			STEP: process.env.REACT_APP_BTC_PRICE_STEP || 1
-		},
-		SIZE: {
-			MIN: 0.0001,
-			MAX: 21000000,
-			STEP: 0.0001
-		}
-	},
-	eth: {
-		PRICE: {
-			MIN: process.env.REACT_APP_ETH_MIN_PRICE || 100,
-			MAX: process.env.REACT_APP_ETH_MAX_PRICE || 10000,
-			STEP: process.env.REACT_APP_ETH_PRICE_STEP || 1
-		},
-		SIZE: {
-			MIN: 0.001,
-			MAX: 2000000,
-			STEP: 0.001
-		}
-	}
-};
 
 export const DEPOSIT_LIMITS = {
 	fiat: {
@@ -379,12 +348,14 @@ export const WITHDRAW_LIMITS = {
 	eth: {
 		MIN: process.env.REACT_APP_WITHDRAWAL_ETH_MIN || 0.0001,
 		MAX: process.env.REACT_APP_WITHDRAWAL_ETH_MAX || 10,
-		STEP: process.env.REACT_APP_WITHDRAWAL_ETH_STEP || 0.0001
+		STEP: process.env.REACT_APP_WITHDRAWAL_ETH_STEP || 0.0001,
+		MIN_FEE: parseFloat(process.env.REACT_APP_ETH_MIN_FEE || 0.001)
 	}
 };
+
 export const TOKEN_KEY = `${ENV}_${NETWORK}_TOKEN`;
 export const LANGUAGE_KEY = `${ENV}_${NETWORK}_LANGUAGE`;
-export const DEFAULT_LANGUAGE = 'en';
+export const DEFAULT_LANGUAGE = process.env.REACT_APP_DEFAULT_LANGUAGE || 'en';
 
 export const BANK_WITHDRAWAL_BASE_FEE =
 	process.env.REACT_APP_BANK_WITHDRAWAL_BASE_FEE || 1;
@@ -409,16 +380,74 @@ export const ETHEREUM_ENDPOINT = `https://${
 
 export const BALANCE_ERROR = 'Insufficient balance to perform the order';
 
-export const CAPTCHA_SITEKEY =
-	process.env.REACT_APP_CAPTCHA_SITE_KEY;
-export const CAPTCHA_TIMEOUT = process.env.REACT_APP_CAPTCHA_TIMEOUT ? parseInt(process.env.REACT_APP_CAPTCHA_TIMEOUT, 10) : 2000;
+export const CAPTCHA_SITEKEY = process.env.REACT_APP_CAPTCHA_SITE_KEY;
+export const CAPTCHA_TIMEOUT = process.env.REACT_APP_CAPTCHA_TIMEOUT
+	? parseInt(process.env.REACT_APP_CAPTCHA_TIMEOUT, 10)
+	: 2000;
 
-export const IS_PRO_VERSION = process.env.REACT_APP_IS_PRO_VERSION && process.env.REACT_APP_IS_PRO_VERSION === 'true';
-export const PRO_VERSION_REDIRECT = process.env.REACT_APP_PRO_VERSION_REDIRECT || '/account';
-export const DEFAULT_VERSION_REDIRECT = process.env.REACT_APP_DEFAULT_VERSION_REDIRECT || '/';
+export const IS_PRO_VERSION =
+	process.env.REACT_APP_IS_PRO_VERSION &&
+	process.env.REACT_APP_IS_PRO_VERSION === 'true';
+export const PRO_VERSION_REDIRECT =
+	process.env.REACT_APP_PRO_VERSION_REDIRECT || '/account';
+export const DEFAULT_VERSION_REDIRECT =
+	process.env.REACT_APP_DEFAULT_VERSION_REDIRECT || '/';
 export const PRO_URL = process.env.REACT_APP_PRO_URL || 'https://hollaex.com';
 
-export const MIN_LEVEL_FOR_TOKENS = parseInt(process.env.REACT_APP_MIN_LEVEL_FOR_TOKENS || 2, 10)
+export const MIN_LEVEL_FOR_TOKENS = parseInt(
+	process.env.REACT_APP_MIN_LEVEL_FOR_TOKENS || 2,
+	10
+);
 
 export const THEMES = ['dark', 'white'];
 export const THEME_DEFAULT = THEMES[1];
+export const CHAT_STATUS_KEY = 'chat:minimized';
+
+export const DEFAULT_COUNTRY = process.env.REACT_APP_DEFAULT_COUNTRY
+	? process.env.REACT_APP_DEFAULT_COUNTRY.toUpperCase()
+	: 'FR';
+
+export const ORDER_LIMITS = {
+	'btc-eur': {
+		PRICE: {
+			MIN: parseFloat(process.env.REACT_APP_BTC_FIAT_MIN_ORDER_PRICE || 500),
+			MAX: parseFloat(process.env.REACT_APP_BTC_FIAT_MAX_ORDER_PRICE || 50000),
+			STEP: parseFloat(process.env.REACT_APP_BTC_FIAT_TICK_SIZE || 1)
+		},
+		SIZE: {
+			MIN: parseFloat(process.env.REACT_APP_BTC_FIAT_MIN_ORDER_SIZE || 0.0001),
+			MAX: parseFloat(
+				process.env.REACT_APP_BTC_FIAT_MAX_ORDER_SIZE || 21000000
+			),
+			STEP: parseFloat(process.env.REACT_APP_BTC_FIAT_MIN_ORDER_SIZE || 0.0001)
+		}
+	},
+	'eth-eur': {
+		PRICE: {
+			MIN: parseFloat(process.env.REACT_APP_ETH_FIAT_MIN_ORDER_PRICE || 500),
+			MAX: parseFloat(process.env.REACT_APP_ETH_FIAT_MAX_ORDER_PRICE || 50000),
+			STEP: parseFloat(process.env.REACT_APP_ETH_FIAT_TICK_SIZE || 1)
+		},
+		SIZE: {
+			MIN: parseFloat(process.env.REACT_APP_ETH_FIAT_MIN_ORDER_SIZE || 0.0001),
+			MAX: parseFloat(
+				process.env.REACT_APP_ETH_FIAT_MAX_ORDER_SIZE || 21000000
+			),
+			STEP: parseFloat(process.env.REACT_APP_ETH_FIAT_MIN_ORDER_SIZE || 0.0001)
+		}
+	},
+	'eth-btc': {
+		PRICE: {
+			MIN: parseFloat(process.env.REACT_APP_BTC_ETH_MIN_ORDER_PRICE || 500),
+			MAX: parseFloat(process.env.REACT_APP_BTC_ETH_MAX_ORDER_PRICE || 50000),
+			STEP: parseFloat(process.env.REACT_APP_BTC_ETH_TICK_SIZE || 1)
+		},
+		SIZE: {
+			MIN: parseFloat(process.env.REACT_APP_BTC_ETH_MIN_ORDER_SIZE || 0.0001),
+			MAX: parseFloat(process.env.REACT_APP_BTC_ETH_MAX_ORDER_SIZE || 21000000),
+			STEP: parseFloat(process.env.REACT_APP_BTC_ETH_MIN_ORDER_SIZE || 0.0001)
+		}
+	}
+};
+
+export const BASE_CURRENCY = process.env.REACT_APP_BASE_CURRENCY;
