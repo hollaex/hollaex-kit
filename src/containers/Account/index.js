@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { TabController, CheckTitle } from '../../components';
+import { isMobile } from 'react-device-detect';
+
+import { TabController, CheckTitle, MobileBarTabs } from '../../components';
 import { ICONS } from '../../config/constants';
 import { UserProfile, UserSecurity, UserSettings } from '../';
 import STRINGS from '../../config/localizedStrings';
 import { openContactForm } from '../../actions/appActions';
-import { requestLimits } from '../../actions/userAction';
+import { requestLimits, requestFees } from '../../actions/userAction';
 
 const getInitialTab = ({ name, path }) => {
 	let activeTab = -1;
@@ -40,6 +42,10 @@ class Account extends Component {
 		}
 		if (!this.props.limits.fetched && !this.props.limits.fetching) {
 			this.props.requestLimits();
+		}
+
+		if (!this.props.fees.fetched && !this.props.fees.fetching) {
+			this.props.requestFees();
 		}
 	}
 
@@ -82,7 +88,9 @@ class Account extends Component {
 
 		const tabs = [
 			{
-				title: (
+				title: isMobile ? (
+					STRINGS.ACCOUNTS.TAB_PROFILE
+				) : (
 					<CheckTitle
 						title={STRINGS.ACCOUNTS.TAB_PROFILE}
 						icon={ICONS.VERIFICATION_ID_INACTIVE}
@@ -97,6 +105,13 @@ class Account extends Component {
 						}
 					/>
 				),
+				notifications: this.hasUserVerificationNotifications(
+					verification_level,
+					bank_account,
+					id_data
+				)
+					? '!'
+					: '',
 				content: (
 					<UserProfile
 						goToVerification={this.goToVerification}
@@ -105,17 +120,22 @@ class Account extends Component {
 				)
 			},
 			{
-				title: (
+				title: isMobile ? (
+					STRINGS.ACCOUNTS.TAB_SECURITY
+				) : (
 					<CheckTitle
 						title={STRINGS.ACCOUNTS.TAB_SECURITY}
 						icon={ICONS.SECURITY_GREY}
 						notifications={!otp_enabled ? '!' : ''}
 					/>
 				),
+				notifications: !otp_enabled ? '!' : '',
 				content: <UserSecurity openApiKey={activeDevelopers} />
 			},
 			{
-				title: (
+				title: isMobile ? (
+					STRINGS.ACCOUNTS.TAB_SETTINGS
+				) : (
 					<CheckTitle
 						title={STRINGS.ACCOUNTS.TAB_SETTINGS}
 						icon={ICONS.GEAR_GREY}
@@ -148,7 +168,20 @@ class Account extends Component {
 			return <div>Loading</div>;
 		}
 
-		return (
+		return isMobile ? (
+			<div className="apply_rtl">
+				<MobileBarTabs
+					tabs={tabs}
+					activeTab={activeTab}
+					setActiveTab={this.setActiveTab}
+				/>
+				<div className="presentation_container apply_rtl content-with-bar overflow-y">
+					<div className="inner_container">
+						{activeTab > -1 && this.renderContent(tabs, activeTab)}
+					</div>
+				</div>
+			</div>
+		) : (
 			<div className="presentation_container apply_rtl">
 				<TabController
 					activeTab={activeTab}
@@ -169,6 +202,7 @@ class Account extends Component {
 const mapStateToProps = (state) => ({
 	verification_level: state.user.verification_level,
 	limits: state.user.limits,
+	fees: state.user.feeValues,
 	otp_enabled: state.user.otp_enabled || false,
 	id: state.user.id,
 	bank_account: state.user.userData.bank_account,
@@ -178,6 +212,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
 	requestLimits: bindActionCreators(requestLimits, dispatch),
+	requestFees: bindActionCreators(requestFees, dispatch),
 	openContactForm: bindActionCreators(openContactForm, dispatch)
 });
 

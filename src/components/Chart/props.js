@@ -1,7 +1,15 @@
 import { timeFormat } from 'd3-time-format';
 import { format } from 'd3-format';
+import { isMobile } from 'react-device-detect';
 
-import { yAccessor, OHLCChildren, FORMAT_Y_TICK } from './utils';
+import {
+	yAccessor,
+	yVolumeAccessor,
+	OHLCChildren,
+	FORMAT_Y_TICK
+} from './utils';
+
+const FONT_SIZE = isMobile ? 10 : 6;
 
 const OHLC_TIME_FORMAT = '%Y-%m-%d %H:%M:%S';
 
@@ -12,7 +20,9 @@ export const COLORS = {
 	FILL: 'orange',
 	AXIS: '#4D4D4D',
 	BUY_CANDLE: 'blue',
-	SELL_CANDLE: '#f7941e'
+	SELL_CANDLE: '#f7941e',
+	BUY_VOLUME: 'lightblue',
+	SELL_VOLUME: '#f7941e'
 };
 
 export const DARK_COLORS = {
@@ -22,7 +32,9 @@ export const DARK_COLORS = {
 	FILL: 'orange',
 	AXIS: '#b7b7ce',
 	BUY_CANDLE: '#29abe2',
-	SELL_CANDLE: '#f69321'
+	SELL_CANDLE: '#f69321',
+	BUY_VOLUME: '#29abe2',
+	SELL_VOLUME: '#f69321'
 };
 
 const THEME_COLORS = {
@@ -37,6 +49,11 @@ const CandleColor = (theme = 'white') => ({ open, close }) =>
 	close > open
 		? THEME_COLORS[theme].BUY_CANDLE
 		: THEME_COLORS[theme].SELL_CANDLE;
+
+const VolumeBarColor = (theme = 'white') => ({ open, close }) =>
+	close > open
+		? THEME_COLORS[theme].BUY_VOLUME
+		: THEME_COLORS[theme].SELL_VOLUME;
 
 export const areaProps = {
 	stroke: COLORS.STROKE,
@@ -56,10 +73,13 @@ export const edgeIndicatorProps = {
 	displayFormat: FORMAT_Y_TICK
 };
 
+const OHLCOrigin = isMobile ? [0, -10] : [0, -25];
+
 export const OHLCProps = {
-	origin: [0, -25],
+	origin: OHLCOrigin,
 	xDisplayFormat: timeFormat(OHLC_TIME_FORMAT),
 	ohlcFormat: FORMAT_Y_TICK,
+	volumeFormat: (v) => v,
 	children: OHLCChildren
 };
 
@@ -77,7 +97,7 @@ export const CandleChartXAxis = {
 	orient: 'bottom',
 	stroke: COLORS.AXIS,
 	tickStroke: COLORS.AXIS,
-	fontSize: 10
+	fontSize: FONT_SIZE
 };
 
 export const CandleChartYAxis = {
@@ -86,7 +106,7 @@ export const CandleChartYAxis = {
 	stroke: COLORS.AXIS,
 	tickStroke: COLORS.AXIS,
 	ticks: 5,
-	fontSize: 10
+	fontSize: FONT_SIZE
 };
 
 export const CandleChartEdgeIndicatorProps = {
@@ -95,21 +115,22 @@ export const CandleChartEdgeIndicatorProps = {
 	edgeAt: 'right',
 	yAccessor,
 	fill: CandleColor,
-	fontSize: 10
+	fontSize: FONT_SIZE
 };
 
-export const BarSeriesProps = {
-	yAccessor,
-	fill: CandleColor,
+export const BarSeriesProps = (theme) => ({
+	yAccessor: yVolumeAccessor,
+	fill: VolumeBarColor(theme),
+	stroke: false,
 	opacity: 0.5
-};
+});
 
 export const BarSeriesYAxis = {
 	axisAt: 'left',
 	orient: 'left',
 	ticks: 5,
 	tickFormat: format('.2s'),
-	fontSize: 10
+	fontSize: FONT_SIZE
 };
 
 export const BarSeriesChartProps = (height = 150, ratio = 2) => {
@@ -117,6 +138,6 @@ export const BarSeriesChartProps = (height = 150, ratio = 2) => {
 	return {
 		origin: (w, h) => [0, h - chartHeight],
 		height: chartHeight,
-		yExtents: ({ volume }) => volume
+		yExtents: yVolumeAccessor
 	};
 };

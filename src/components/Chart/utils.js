@@ -5,6 +5,7 @@ import { format } from 'd3-format';
 import moment from 'moment';
 import { discontinuousTimeScaleProvider } from 'react-stockcharts/lib/scale';
 import { last } from 'react-stockcharts/lib/utils';
+import { isMobile } from 'react-device-detect';
 
 export const X_GAP = 1;
 export const Y_GAP = 10;
@@ -15,7 +16,9 @@ export const xScaleProvider = discontinuousTimeScaleProvider.inputDateAccessor(
 	inputDateAccessor
 );
 
-export const margins = { left: 0, right: 75, top: 35, bottom: 30 };
+const DesktopMargins = { left: 0, right: 75, top: 35, bottom: 30 };
+const MobileMargins = { left: 0, right: 50, top: 15, bottom: 25 };
+export const margins = isMobile ? MobileMargins: DesktopMargins;
 
 export const yExtents = (modifier = 1) => (data) => {
 	return [data.high + Y_GAP * modifier, data.low - Y_GAP * modifier];
@@ -36,8 +39,8 @@ const LabelData = ({ label, value = '-' }) => (
 );
 
 export const OHLCChildren = (props, moreProps, itemsToDisplay) => {
-	const { displayTexts: { o, h, l, c }, className } = props;
-	const { open, high, low, close, x, y } = itemsToDisplay;
+	const { displayTexts: { o, h, l, c, v }, className } = props;
+	const { open, high, low, close, volume, x, y } = itemsToDisplay;
 	return (
 		<g className={classnames(className)} transform={`translate(${x}, ${y})`}>
 			<text className={classnames('ohlc_wrapper')}>
@@ -45,6 +48,7 @@ export const OHLCChildren = (props, moreProps, itemsToDisplay) => {
 				<LabelData label={h} value={high} />
 				<LabelData label={l} value={low} />
 				<LabelData label={c} value={close} />
+				<LabelData label={v} value={volume} />
 			</text>
 		</g>
 	);
@@ -57,8 +61,9 @@ export const FORMAT_Y_TICK = format(',.0d');
 
 export const XAxisTickFormat = (date) => {
 	const endPeriod = moment(date)
-		.add(5, 'm')
+		.add({ hours: 1 })
 		.toDate();
 	return `${FORMAT_DATE_X_TICK(date)} - ${FORMAT_DATE_X_TICK(endPeriod)}`;
 };
 export const yAccessor = ({ close }) => close;
+export const yVolumeAccessor = ({ volume }) => volume;

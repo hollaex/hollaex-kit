@@ -7,6 +7,7 @@ import {
 	normalizeBTC,
 	normalizeBTCFee
 } from '../../components/Form/validations';
+import { isMobile } from 'react-device-detect';
 import STRINGS from '../../config/localizedStrings';
 import { WITHDRAW_LIMITS, ICONS } from '../../config/constants';
 import { fiatSymbol } from '../../utils/currency';
@@ -17,6 +18,8 @@ export const generateInitialValues = (symbol, fees = {}) => {
 
 	if (symbol === 'btc') {
 		initialValues.fee = fees.optimal || fees.min;
+	} else if (symbol === 'eth') {
+		initialValues.fee = WITHDRAW_LIMITS.eth.MIN_FEE;
 	} else {
 		initialValues.fee = fees.value || 0;
 	}
@@ -43,8 +46,9 @@ export const generateFormValues = (
 			placeholder: STRINGS.WITHDRAWALS_FORM_ADDRESS_PLACEHOLDER,
 			validate: [
 				required,
-				validAddress(symbol, STRINGS.WITHDRAWALS_INVALID_ADDRESS)
-			]
+				validAddress(symbol, STRINGS[`WITHDRAWALS_${symbol.toUpperCase()}_INVALID_ADDRESS`])
+			],
+			fullWidth: isMobile
 		};
 	}
 
@@ -77,6 +81,7 @@ export const generateFormValues = (
 		step: STEP,
 		validate: amountValidate,
 		normalize: normalizeBTC,
+		fullWidth: isMobile,
 		notification: {
 			text: STRINGS.CALCULATE_MAX,
 			status: 'information',
@@ -100,17 +105,19 @@ export const generateFormValues = (
 			max: fees.max || MAX,
 			step: STEP,
 			validate: [required, minValue(fees.min), maxValue(fees.max)],
-			normalize: normalizeBTCFee
+			normalize: normalizeBTCFee,
+			fullWidth: isMobile
 		};
 	} else {
 		fields.fee = {
 			type: 'number',
-			label: STRINGS[`WITHDRAWALS_FORM_FEE_FIAT_LABEL`],
+			label: STRINGS[`WITHDRAWALS_FORM_FEE_${symbol.toUpperCase()}_LABEL`],
 			placeholder: STRINGS.formatString(
 				STRINGS.WITHDRAWALS_FORM_FEE_PLACEHOLDER,
 				name
 			).join(''),
-			disabled: true
+			disabled: true,
+			fullWidth: isMobile
 		};
 	}
 

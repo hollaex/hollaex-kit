@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { isMobile } from 'react-device-detect';
 
 import STRINGS from '../../config/localizedStrings';
 import { ICONS, BALANCE_ERROR } from '../../config/constants';
@@ -11,7 +12,8 @@ import {
 	Dialog,
 	Countdown,
 	IconTitle,
-	Loader
+	Loader,
+	MobileBarBack
 } from '../../components';
 import {
 	requestQuote,
@@ -133,6 +135,10 @@ class QuickTradeContainer extends Component {
 		<div className="quote-countdown-wrapper">{STRINGS.QUOTE_EXPIRED_TOKEN}</div>
 	);
 
+	onGoBack = () => {
+		this.props.router.push(`/trade/${this.state.pair}`);
+	};
+
 	render() {
 		const { quoteData, pairData } = this.props;
 		const { showQuickTradeModal, side, pair } = this.state;
@@ -146,8 +152,14 @@ class QuickTradeContainer extends Component {
 		const end = quoteData.data.exp;
 		return (
 			<div
-				className={classnames(...FLEX_CENTER_CLASSES, 'f-1', 'quote-container')}
+				className={classnames(
+					...FLEX_CENTER_CLASSES,
+					'f-1',
+					'quote-container',
+					{ 'flex-column': isMobile }
+				)}
 			>
+				{isMobile && <MobileBarBack onBackClick={this.onGoBack} />}
 				<QuickTrade
 					onReviewQuickTrade={this.onReviewQuickTrade}
 					onRequestMarketValue={this.onRequestQuote}
@@ -155,7 +167,7 @@ class QuickTradeContainer extends Component {
 					quickTradeData={quoteData}
 					onChangeSide={this.onChangeSide}
 					disabled={
-						quoteData.error === BALANCE_ERROR ? false : !quoteData.token
+						quoteData.error === BALANCE_ERROR ? true : !quoteData.token
 					}
 				/>
 				<Dialog

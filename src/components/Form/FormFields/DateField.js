@@ -1,14 +1,12 @@
 import React, { Component } from 'react';
 import moment from 'moment';
-import momentJ from 'moment-jalaali';
 import {
 	SingleDatePicker,
 	isInclusivelyAfterDay,
 	isInclusivelyBeforeDay
 } from 'react-dates';
-import { DatePicker } from 'react-advance-jalaali-datepicker';
 import FieldWrapper, { FieldContent } from './FieldWrapper';
-import { TIMESTAMP_FORMAT_FA } from '../../../config/constants';
+import { DEFAULT_LANGUAGE } from '../../../config/constants';
 
 const FIELDS = [
 	{ key: 'year', label: 'Year' },
@@ -43,20 +41,13 @@ class DateField extends Component {
 		}
 	}
 
-	setDisplay = (dateString = '', language = 'en') => {
+	setDisplay = (dateString = '', language = DEFAULT_LANGUAGE) => {
 		const display = {};
 		let date;
-		if (language === 'fa') {
-			date = momentJ(dateString);
-			display.year = date.jYear();
-			display.month = date.jMonth() + 1;
-			display.day = date.jDate();
-		} else {
-			date = moment(dateString);
-			display.year = date.year();
-			display.month = date.month() + 1;
-			display.day = date.date();
-		}
+		date = moment(dateString);
+		display.year = date.year();
+		display.month = date.month() + 1;
+		display.day = date.date();
 		this.setState({ date, display });
 	};
 
@@ -82,9 +73,6 @@ class DateField extends Component {
 
 	onChangeOpen = (focused = false) => {
 		this.setState({ focused });
-		if (this.props.language === 'fa') {
-			this.farsiInput.click();
-		}
 	};
 
 	renderValues = (display, valid) => {
@@ -112,14 +100,6 @@ class DateField extends Component {
 		return false;
 	};
 
-	onChangeFarsiDate = (val) => {
-		this.onChangeInputValue(momentJ.unix(val).valueOf());
-		this.onChangeOpen(false);
-	};
-
-	setDatePickerRef = (el) => {
-		this.farsiInput = document.getElementById('farsiDatePicker');
-	};
 	render() {
 		const { focused, date, display } = this.state;
 		const {
@@ -130,8 +110,7 @@ class DateField extends Component {
 				invalid
 			},
 			startDate,
-			endDate,
-			language
+			endDate
 		} = this.props;
 		// const displayError = !active && touched && error;
 
@@ -145,30 +124,18 @@ class DateField extends Component {
 				>
 					{this.renderValues(display, invalid)}
 				</FieldWrapper>
-				{language !== 'fa' ? (
-					<SingleDatePicker
-						date={date} // momentPropTypes.momentObj or null
-						onDateChange={this.onChangeInput} // PropTypes.func.isRequired
-						focused={focused} // PropTypes.bool
-						onFocusChange={this.onFocusChange} // PropTypes.func.isRequired
-						keepOpenOnDateSelect={false}
-						hideKeyboardShortcutsPanel={true}
-						withPortal={true}
-						numberOfMonths={1}
-						isOutsideRange={this.isOutsideRange(startDate, endDate)}
-						initialVisibleMonth={() => moment()}
-					/>
-				) : (
-					<div className="datefield-farsi_picker">
-						<DatePicker
-							onChange={this.onChangeFarsiDate}
-							idStart="farsiDatePicker"
-							format={TIMESTAMP_FORMAT_FA}
-							preSelected={date.format(TIMESTAMP_FORMAT_FA)}
-							ref={this.setDatePickerRef}
-						/>
-					</div>
-				)}
+				<SingleDatePicker
+					date={date} // momentPropTypes.momentObj or null
+					onDateChange={this.onChangeInput} // PropTypes.func.isRequired
+					focused={focused} // PropTypes.bool
+					onFocusChange={this.onFocusChange} // PropTypes.func.isRequired
+					keepOpenOnDateSelect={false}
+					hideKeyboardShortcutsPanel={true}
+					withPortal={true}
+					numberOfMonths={1}
+					isOutsideRange={this.isOutsideRange(startDate, endDate)}
+					initialVisibleMonth={() => moment()}
+				/>
 			</div>
 		);
 	}

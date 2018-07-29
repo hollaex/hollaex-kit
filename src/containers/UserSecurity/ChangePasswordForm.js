@@ -1,5 +1,6 @@
 import React from 'react';
 import { reduxForm } from 'redux-form';
+import { isMobile } from 'react-device-detect';
 
 import renderFields from '../../components/Form/factoryFields';
 import { Button } from '../../components';
@@ -20,17 +21,20 @@ export const generateFormValues = () => ({
 	old_password: {
 		type: 'password',
 		validate: [required, password],
-		...STRINGS.ACCOUNT_SECURITY.CHANGE_PASSWORD.FORM.CURRENT_PASSWORD
+		...STRINGS.ACCOUNT_SECURITY.CHANGE_PASSWORD.FORM.CURRENT_PASSWORD,
+		fullWidth: isMobile
 	},
 	new_password: {
 		type: 'password',
 		validate: [required, password],
-		...STRINGS.ACCOUNT_SECURITY.CHANGE_PASSWORD.FORM.NEW_PASSWORD
+		...STRINGS.ACCOUNT_SECURITY.CHANGE_PASSWORD.FORM.NEW_PASSWORD,
+		fullWidth: isMobile
 	},
 	new_password_confirm: {
 		type: 'password',
 		validate: [required],
-		...STRINGS.ACCOUNT_SECURITY.CHANGE_PASSWORD.FORM.NEW_PASSWORD_REPEAT
+		...STRINGS.ACCOUNT_SECURITY.CHANGE_PASSWORD.FORM.NEW_PASSWORD_REPEAT,
+		fullWidth: isMobile
 	}
 });
 

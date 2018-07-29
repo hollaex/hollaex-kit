@@ -77,11 +77,12 @@ class FieldWrapper extends Component {
 		const hasValue = value || value === false;
 		return (
 			<div
-				className={classnames(
-					'field-wrapper',
-					{ error: displayError, inline: !fullWidth },
-					className
-				)}
+				className={classnames('field-wrapper', className, {
+					error: displayError,
+					inline: !fullWidth,
+					'with-notification': !!notification,
+					'field-valid': !invalid
+				})}
 			>
 				<FieldContent
 					label={label}
@@ -97,6 +98,7 @@ class FieldWrapper extends Component {
 							<ActionNotification
 								{...notification}
 								className="pr-0 pl-0 no_bottom"
+								showActionText={true}
 							/>
 						)}
 				</FieldContent>

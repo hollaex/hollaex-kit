@@ -53,6 +53,13 @@ const INITIAL_LIMIT_OBJECT = {
 	error: ''
 };
 
+const INITIAL_FEES_OBJECT = {
+	data: {},
+	fetching: false,
+	fetched: false,
+	error: ''
+};
+
 const INITIAL_STATE = {
 	id: null,
 	email: null,
@@ -74,6 +81,7 @@ const INITIAL_STATE = {
 	},
 	tokens: [],
 	username: '',
+	username_set: false,
 	settings: {
 		usernameIsSet: false,
 		orderConfirmationPopup: true,
@@ -81,7 +89,8 @@ const INITIAL_STATE = {
 		language: DEFAULT_LANGUAGE
 	},
 	addressRequest: INITIAL_ADDRESS_OBJECT,
-	limits: INITIAL_LIMIT_OBJECT
+	limits: INITIAL_LIMIT_OBJECT,
+	feeValues: INITIAL_FEES_OBJECT
 };
 
 export default function reducer(state = INITIAL_STATE, action) {
@@ -272,6 +281,7 @@ export default function reducer(state = INITIAL_STATE, action) {
 			return {
 				...state,
 				username: action.payload.username,
+				username_set: action.payload.username_set,
 				settings: {
 					...state.settings,
 					usernameIsSet: true
@@ -299,6 +309,32 @@ export default function reducer(state = INITIAL_STATE, action) {
 				...state,
 				limits: {
 					...INITIAL_LIMIT_OBJECT,
+					error: action.payload.response
+				}
+			};
+
+		case 'REQUEST_FEES_PENDING':
+			return {
+				...state,
+				feeValues: {
+					...INITIAL_FEES_OBJECT,
+					fetching: true
+				}
+			};
+		case 'REQUEST_FEES_FULFILLED':
+			return {
+				...state,
+				feeValues: {
+					...INITIAL_FEES_OBJECT,
+					fetched: true,
+					data: action.payload.data
+				}
+			};
+		case 'REQUEST_FEES_REJECTED':
+			return {
+				...state,
+				feeValues: {
+					...INITIAL_FEES_OBJECT,
 					error: action.payload.response
 				}
 			};
@@ -338,7 +374,7 @@ export default function reducer(state = INITIAL_STATE, action) {
 			return {
 				...state,
 				addressRequest: INITIAL_ADDRESS_OBJECT
-			}
+			};
 		case 'LOGOUT':
 			return INITIAL_STATE;
 		default:

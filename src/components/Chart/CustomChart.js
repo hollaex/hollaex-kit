@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { isMobile } from 'react-device-detect';
 
 import { ChartCanvas, Chart } from 'react-stockcharts';
+import { BarSeries } from 'react-stockcharts/lib/series';
 
 import { XAxis, YAxis, TXAxis } from './axis';
 
@@ -24,7 +26,12 @@ import {
 	FORMAT_Y_TICK
 } from './utils';
 
-import { OHLCProps, edgeIndicatorProps } from './props';
+import {
+	OHLCProps,
+	edgeIndicatorProps,
+	BarSeriesProps,
+	BarSeriesChartProps
+} from './props';
 
 import STRINGS from '../../config/localizedStrings';
 
@@ -68,11 +75,11 @@ class CustomChart extends Component {
 					<YAxis height={height} theme={theme} />
 					<TXAxis width={width} theme={theme} />
 
-					<MouseCoordinateX
+					{!isMobile && <MouseCoordinateX
 						at="top"
 						orient="top"
 						displayFormat={FORMAT_DATE_X_TICK}
-					/>
+					/>}
 					<MouseCoordinateY
 						at="right"
 						orient="right"
@@ -82,6 +89,9 @@ class CustomChart extends Component {
 					{children}
 					<OHLCTooltip {...OHLCProps} displayTexts={STRINGS.CHART_TEXTS} />
 					<EdgeIndicator {...edgeIndicatorProps} />
+				</Chart>
+				<Chart id={2} {...BarSeriesChartProps(height, 4)}>
+					<BarSeries {...BarSeriesProps(theme)} />
 				</Chart>
 				<CrossHairCursor />
 			</ChartCanvas>

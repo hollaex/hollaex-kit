@@ -3,6 +3,7 @@ import classnames from 'classnames';
 import { connect } from 'react-redux';
 import EventListener from 'react-event-listener';
 import { bindActionCreators } from 'redux';
+import { isBrowser, isMobile } from 'react-device-detect';
 
 import { AppBar, Footer } from '../../components';
 
@@ -89,7 +90,11 @@ class Home extends Component {
 					'app_container',
 					'home_container',
 					'app_background',
-					getClasesForLanguage(activeLanguage)
+					getClasesForLanguage(activeLanguage),
+					{
+						'layout-mobile': isMobile,
+						'layout-desktop': isBrowser
+					}
 				)}
 			>
 				<EventListener target="window" onResize={this.onResize} />

@@ -1,3 +1,4 @@
+import { BASE_CURRENCY, PAIRS } from '../config/constants';
 import { ORDERBOOK_CONSTANTS } from '../actions/orderbookAction';
 
 const INITIAL_QUICK_TRADE = {
@@ -266,10 +267,8 @@ export default function reducer(state = INITIAL_STATE, { payload, type }) {
 				Object.keys(rest).forEach((key) => {
 					if (rest[key].length > 0) {
 						let keyPrice = '';
-						if (key === 'btc-eur') {
-							keyPrice = 'btc';
-						} else if (key === 'eth-eur') {
-							keyPrice = 'eth';
+						if (PAIRS[key] && PAIRS[key].pair_2 === BASE_CURRENCY) {
+							keyPrice = PAIRS[key].pair_base;
 						}
 						prices[keyPrice] = rest[key][0].price;
 					}
@@ -283,10 +282,8 @@ export default function reducer(state = INITIAL_STATE, { payload, type }) {
 				);
 
 				let keyPrice = '';
-				if (symbol === 'btc-eur') {
-					keyPrice = 'btc';
-				} else if (symbol === 'eth-eur') {
-					keyPrice = 'eth';
+				if (PAIRS[symbol] && PAIRS[symbol].pair_2 === BASE_CURRENCY) {
+					keyPrice = PAIRS[symbol].pair_base;
 				}
 
 				if (keyPrice) {

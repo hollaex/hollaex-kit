@@ -1,28 +1,32 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { isMobile } from 'react-device-detect';
 import {
 	IconTitle,
 	Dialog,
 	Accordion,
-	Notification
+	Notification,
+	MobileBarTabs
 } from '../../components';
+import { TransactionsHistory } from '../';
 import { changeSymbol } from '../../actions/orderbookAction';
 import { NOTIFICATIONS } from '../../actions/appActions';
 import { createAddress, cleanCreateAddress } from '../../actions/userAction';
 import { ICONS, CURRENCIES } from '../../config/constants';
-import {
-	calculateBalancePrice
-} from '../../utils/currency';
+import { calculateBalancePrice } from '../../utils/currency';
 import STRINGS from '../../config/localizedStrings';
 
 import { AssetsBlock } from './AssetsBlock';
+import MobileWallet from './MobileWallet';
 
 const fiatFormatToCurrency = CURRENCIES.fiat.formatToCurrency;
 
 class Wallet extends Component {
 	state = {
+		activeTab: 0,
 		sections: [],
+		mobileTabs: [],
 		isOpen: true,
 		totalAssets: '',
 		dialogIsOpen: false,
@@ -72,7 +76,8 @@ class Wallet extends Component {
 		prices,
 		isOpen = false,
 		wallets,
-		bankaccount
+		bankaccount,
+		
 	) => {
 		const totalAssets = this.calculateTotalAssets(balance, prices);
 
@@ -93,7 +98,7 @@ class Wallet extends Component {
 				),
 				isOpen: true,
 				allowClose: false,
-				notification: {
+				notification: !isMobile && {
 					text: STRINGS.TRADE_HISTORY,
 					status: 'information',
 					iconPath: ICONS.BLUE_CLIP,
@@ -106,7 +111,22 @@ class Wallet extends Component {
 				}
 			}
 		];
-		this.setState({ sections, totalAssets, isOpen });
+		const mobileTabs = [
+			{
+				title: STRINGS.WALLET_TAB_WALLET,
+				content: <MobileWallet sections={sections}
+				wallets={wallets}
+				balance={balance}
+				prices={prices}
+				navigate={this.goToPage}
+			/>
+			},
+			{
+				title: STRINGS.WALLET_TAB_TRANSACTIONS,
+				content: <TransactionsHistory />
+			}
+		];
+		this.setState({ sections, totalAssets, isOpen, mobileTabs });
 	};
 
 	goToPage = (path = '') => {
@@ -131,20 +151,48 @@ class Wallet extends Component {
 		}
 	};
 
+	setActiveTab = (activeTab) => {
+		this.setState({ activeTab });
+	};
+
 	render() {
-		const { sections, dialogIsOpen, selectedCurrency } = this.state;
+		const {
+			sections,
+			dialogIsOpen,
+			selectedCurrency,
+			activeTab,
+			mobileTabs
+		} = this.state;
 		const { activeTheme, addressRequest } = this.props;
+		if (mobileTabs.length === 0) {
+			return <div />;
+		}
 		return (
-			<div className="presentation_container apply_rtl">
-				<IconTitle
-					text={STRINGS.WALLET_TITLE}
-					iconPath={ICONS.BITCOIN_WALLET}
-					useSvg={true}
-					textType="title"
-				/>
-				<div className="wallet-container">
-					<Accordion sections={sections} />
-				</div>
+			<div className="apply_rtl">
+				{isMobile ? (
+					<div>
+						<MobileBarTabs
+							tabs={mobileTabs}
+							activeTab={activeTab}
+							setActiveTab={this.setActiveTab}
+						/>
+						<div className="content-with-bar d-flex">
+							{mobileTabs[activeTab].content}
+						</div>
+					</div>
+				) : (
+					<div className="presentation_container apply_rtl">
+						<IconTitle
+							text={STRINGS.WALLET_TITLE}
+							iconPath={ICONS.BITCOIN_WALLET}
+							useSvg={true}
+							textType="title"
+						/>
+						<div className="wallet-container">
+							<Accordion sections={sections} />
+						</div>
+					</div>
+				)}
 				<Dialog
 					isOpen={dialogIsOpen}
 					label="hollaex-modal"

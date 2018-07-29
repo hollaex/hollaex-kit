@@ -216,6 +216,16 @@ export default {
 					'Your {0} require 1 confirmations before you can begin trading.',
 				INFORMATION_PENDING_2:
 					'This may take 10-30 minutes. We will send an email once your {0} have completed Confirming.'
+			},
+			ETH: {
+				TITLE_RECEIVED: '{0} Deposit received',
+				TITLE_INCOMING: 'Incoming {0}',
+				SUBTITLE_RECEIVED: 'You’ve received your {0} deposit',
+				SUBTITLE_INCOMING: 'You have incoming {0}',
+				INFORMATION_PENDING_1:
+					'Your {0} require 1 confirmations before you can begin trading.',
+				INFORMATION_PENDING_2:
+					'This may take 10-30 minutes. We will send an email once your {0} have completed Confirming.'
 			}
 		}
 	},
@@ -416,7 +426,7 @@ export default {
 					WARNING_1:
 						'Only a valid government-issued identification document is accepted.',
 					WARNING_2:
-						'Make sure you are uploading your own documents. Any usage of wrong or fake documents will have legal consequences and result in freezing your account immidiately.'
+						'Make sure you are uploading your own documents. Any usage of wrong or fake documents will have legal consequences and result in freezing your account immediately.'
 				},
 				POR: {
 					SECTION_1_TEXT_1:
@@ -605,8 +615,10 @@ export default {
 		'You don’t have enough {0} in your balance to send that transaction',
 	WITHDRAWALS_FEE_TOO_LARGE:
 		'The fee is more than {0}% of your total transaction',
-	WITHDRAWALS_INVALID_ADDRESS:
+	WITHDRAWALS_BTC_INVALID_ADDRESS:
 		'The Bitcoin address is invalid. Please check carefully and input again',
+	WITHDRAWALS_ETH_INVALID_ADDRESS:
+		'The Ethereum address is invalid. Please check carefully and input again',
 	WITHDRAWALS_BUTTON_TEXT: 'review withdrawal',
 	WITHDRAWALS_FORM_ADDRESS_LABEL: 'Destination address',
 	WITHDRAWALS_FORM_ADDRESS_PLACEHOLDER: 'Type the address',
@@ -614,6 +626,7 @@ export default {
 	WITHDRAWALS_FORM_AMOUNT_PLACEHOLDER:
 		'Type the amount of {0} you wish to withdraw',
 	WITHDRAWALS_FORM_FEE_BTC_LABEL: 'Bitcoin transaction fee (This is Bitcoin mining fee. If you lower that amount there is chance your transaction takes significant time to get confirmed.)',
+	WITHDRAWALS_FORM_FEE_ETH_LABEL: 'Ethereum transaction fee (This is Ethereum mining fee. If you lower that amount there is chance your transaction takes significant time to get confirmed.)', // TODO CHECK
 	WITHDRAWALS_FORM_FEE_FIAT_LABEL: 'Bank withdrawal fee',
 	WITHDRAWALS_FORM_FEE_PLACEHOLDER:
 		'Type the amount of {0} you wish to use in the fee of the transaction',
@@ -742,7 +755,7 @@ export default {
 	NO_FEE: 'N/A',
 	SETTINGS_LANGUAGE_LABEL: 'Language preferences (Includes Emails)',
 	SETTINGS_LANGUAGE_OPTIONS: [
-		{ value: 'en', label: 'English', icon: `${process.env.PUBLIC_URL}/assets/flags/selected-en.png` },
+		{ value: 'en', label: 'English', icon: `${process.env.PUBLIC_URL}/assets/flags/selected-en.png` }
 	],
 	SETTINGS_ORDERPOPUP_LABEL: 'Display order confirmation popup',
 	SETTINGS_ORDERPOPUP_OPTIONS: [
@@ -795,7 +808,13 @@ export default {
 	},
 	CHAT: {
 		CHAT_TEXT: 'chat',
-		CHAT_UNREAD: '{0} ({1})' // 0 -> CHAT_TEXT, 1 -> number
+		CHAT_UNREAD: '{0} ({1})', // 0 -> CHAT_TEXT, 1 -> number
+		READ_MORE: 'Read More',
+		SHOW_IMAGE: 'Show Image',
+		HIDE_IMAGE: 'Hide Image',
+		CHAT_MESSAGE_BOX_PLACEHOLDER: 'Message',
+		SIGN_UP_CHAT: 'Sign Up To Chat',
+		JOIN_CHAT: 'Set Username To Chat'
 	},
 	INVALID_USERNAME: 'Username must be between 3 and 15 characters long. Only contains lowercase, numbers and underscore',
 	USERNAME_TAKEN: 'This username has already been taken. Please try another.',
@@ -818,6 +837,8 @@ export default {
 		LABEL_BTC_WITHDRAWAL: 'Daily Bitcoin Withdrawal',
 		LABEL_ETH_DEPOSIT: 'Daily Ethereum Deposit',
 		LABEL_ETH_WITHDRAWAL: 'Daily Ethereum Withdrawal',
+		LABEL_PAIR_MAKER_FEE: '{0} Maker Fee',
+		LABEL_PAIR_TAKER_FEE: '{0} Taker Fee',
 		UNLIMITED: 'Unlimited',
 		BLOCKED: '0'
 	},
@@ -826,5 +847,17 @@ export default {
 	WALLET_ADDRESS_MESSAGE: 'When you generate a wallet you create a deposit and withdrawal address.',
 	WALLET_ADDRESS_ERROR: 'Error generating the address, please refresh and try again.',
 	DEPOSIT_WITHDRAW: 'Deposit/Withdraw',
-	GENERATE_WALLET: 'Generate Wallet'
+	GENERATE_WALLET: 'Generate Wallet',
+	TRADE_TAB_CHART: 'Chart',
+	TRADE_TAB_TRADE: 'Trade',
+	TRADE_TAB_ORDERS: 'Orders',
+	WALLET_TAB_WALLET: 'Wallet',
+	WALLET_TAB_TRANSACTIONS: 'Transactions',
+	RECEIVE_CURRENCY: 'Receive {0}',
+	SEND_CURRENCY: 'Send {0}',
+	COPY_ADDRESS: 'Copy Address',
+	SUCCESFUL_COPY: 'Successfully Copied!',
+	QUICK_TRADE_MODE: 'Quick Trade Mode',
+	JUST_NOW: 'just now',
+	PAIR: 'Pair'
 };

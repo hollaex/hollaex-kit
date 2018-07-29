@@ -14,35 +14,35 @@ const generateFiatDepositTexts = (strings) => ({
 	INFORMATION_COMPLETE: []
 });
 
-const generateBtcDepositTexts = (strings, status) => {
-	const name = strings.BTC_NAME;
-	const fullName = strings.BTC_FULLNAME;
+const generateCryptoDepositTexts = (strings, status, currency) => {
+	const name = strings[`${currency}_NAME`];
+	const fullName = strings[`${currency}_FULLNAME`];
 	return {
 		TITLE: status
 			? strings.formatString(
-					strings.NOTIFICATIONS.DEPOSITS.BTC.TITLE_RECEIVED,
+					strings.NOTIFICATIONS.DEPOSITS[currency].TITLE_RECEIVED,
 					name
 				)
 			: strings.formatString(
-					strings.NOTIFICATIONS.DEPOSITS.BTC.TITLE_INCOMING,
+					strings.NOTIFICATIONS.DEPOSITS[currency].TITLE_INCOMING,
 					fullName
 				),
 		SUBTITLE: strings.formatString(
 			status
-				? strings.NOTIFICATIONS.DEPOSITS.BTC.SUBTITLE_RECEIVED
-				: strings.NOTIFICATIONS.DEPOSITS.BTC.SUBTITLE_INCOMING,
+				? strings.NOTIFICATIONS.DEPOSITS[currency].SUBTITLE_RECEIVED
+				: strings.NOTIFICATIONS.DEPOSITS[currency].SUBTITLE_INCOMING,
 			fullName
 		),
 		INFORMATION_PENDING: [
 			strings
 				.formatString(
-					strings.NOTIFICATIONS.DEPOSITS.BTC.INFORMATION_PENDING_1,
+					strings.NOTIFICATIONS.DEPOSITS[currency].INFORMATION_PENDING_1,
 					name
 				)
 				.join(''),
 			strings
 				.formatString(
-					strings.NOTIFICATIONS.DEPOSITS.BTC.INFORMATION_PENDING_2,
+					strings.NOTIFICATIONS.DEPOSITS[currency].INFORMATION_PENDING_2,
 					name
 				)
 				.join('')
@@ -56,7 +56,7 @@ export const getDepositTexts = (currency, status = false) => {
 	if (currency === fiatSymbol) {
 		texts = generateFiatDepositTexts(STRINGS);
 	} else {
-		texts = generateBtcDepositTexts(STRINGS, status);
+		texts = generateCryptoDepositTexts(STRINGS, status, currency.toUpperCase());
 	}
 	return {
 		title: texts.TITLE,

@@ -43,7 +43,7 @@ class EditableInputField extends Component {
 		const displayError = touched && error && !active;
 
 		return (
-			<FieldWrapper {...this.props}>
+			<FieldWrapper {...this.props} className="with-notification">
 				<input
 					placeholder={placeholder}
 					className={classnames('input_field-input', {
@@ -63,6 +63,7 @@ class EditableInputField extends Component {
 					className="no_bottom pr-0 pl-0"
 					onClick={this.toogleEditable}
 					useSvg={true}
+					showActionText={true}
 				/>
 			</FieldWrapper>
 		);

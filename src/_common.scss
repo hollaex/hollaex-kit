@@ -22,6 +22,14 @@
 	flex: 0 !important;
 }
 
+.f-1 {
+	flex: 1;
+}
+
+.f-05 {
+	flex: 0.5;
+}
+
 .overflow-y {
 	overflow-y: auto;
 }
@@ -84,13 +92,39 @@ table th {
 	}
 }
 
-
 .blue-link {
 	color: $colors-notifications-blue !important;
 }
 
-.dark-theme {	
+.dark-theme {
 	.blue-link {
 		color: $dark-link !important;
 	}
+}
+
+.arrow {
+	border: solid grey;
+	border-width: 0 3px 3px 0;
+	display: inline-block;
+	padding: 3px;
+	height: 2rem;
+	width: 2rem;
+
+	&.right {
+		transform: rotate(-45deg);
+		-webkit-transform: rotate(-45deg);
+	}
+
+	&.left {
+		transform: rotate(135deg);
+		-webkit-transform: rotate(135deg);
+	}
+}
+
+.caps {
+	text-transform: uppercase;
+}
+
+.d-inline {
+	display: inline;
 }

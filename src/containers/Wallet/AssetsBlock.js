@@ -1,7 +1,8 @@
 import React from 'react';
 import { CurrencyBall } from '../../components';
-import { CURRENCIES, ICONS } from '../../config/constants';
+import { CURRENCIES, ICONS, BASE_CURRENCY } from '../../config/constants';
 import { Link } from 'react-router';
+import { isMobile } from 'react-device-detect';
 import {
 	calculatePrice,
 	fiatFormatToCurrency,
@@ -36,7 +37,7 @@ export const AssetsBlock = ({
 					.map(([key, { formatToCurrency }]) => {
 						const balanceValue = balance[`${key}_balance`];
 						const balanceText =
-							key === fiatSymbol
+							key === BASE_CURRENCY
 								? fiatFormatToCurrency(balanceValue)
 								: fiatFormatToCurrency(
 										calculatePrice(balanceValue, prices[key])
@@ -67,6 +68,7 @@ export const AssetsBlock = ({
 												onClick={() => navigate(`wallet/${key}/deposit`)}
 												useSvg={true}
 												className="csv-action"
+												showActionText={isMobile}
 											/>
 											<ActionNotification
 												text={STRINGS.WALLET_BUTTON_FIAT_WITHDRAW}
@@ -74,6 +76,7 @@ export const AssetsBlock = ({
 												onClick={() => navigate(`wallet/${key}/withdraw`)}
 												useSvg={true}
 												className="csv-action"
+												showActionText={isMobile}
 											/>
 										</div>
 									) : (
@@ -99,30 +102,40 @@ export const AssetsBlock = ({
 												STRINGS[`${key.toUpperCase()}_CURRENCY_SYMBOL`]
 											)}
 										</div>
-										<div>
-											{key !== fiatSymbol &&
-												`(≈ ${STRINGS.FIAT_CURRENCY_SYMBOL} ${balanceText})`}
-										</div>
+										{!isMobile &&
+											key !== BASE_CURRENCY &&
+											parseFloat(balanceText || 0) > 0 && (
+												<div>
+													{`(≈ ${
+														STRINGS[
+															`${BASE_CURRENCY.toUpperCase()}_CURRENCY_SYMBOL`
+														]
+													} ${balanceText})`}
+												</div>
+											)}
 									</div>
 								</td>
 							</tr>
 						);
 					})}
 			</tbody>
-			<tfoot>
-				<tr>
-					<td />
-					<td />
-					<td />
-					<td />
-					<td>
-						<div className="d-flex">
-							<div className="mr-4">{STRINGS.WALLET_TABLE_TOTAL}</div>
-							<div style={{ direction: 'rtl' }}>{totalAssets}</div>
-						</div>
-					</td>
-				</tr>
-			</tfoot>
+			{!isMobile &&
+				BASE_CURRENCY && (
+					<tfoot>
+						<tr>
+							<td />
+							<td />
+							<td />
+							<td />
+							<td>
+								<div className="d-flex">
+									<div className="mr-4">{STRINGS.WALLET_TABLE_TOTAL}</div>
+									<div style={{ direction: 'rtl' }}>{totalAssets}</div>
+								</div>
+							</td>
+						</tr>
+					</tfoot>
+				)}
 		</table>
 	</div>
 );

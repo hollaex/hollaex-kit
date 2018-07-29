@@ -10,7 +10,8 @@ import Form, { FORM_NAME } from './OrderEntryForm';
 import {
 	formatNumber,
 	formatFiatAmount,
-	roundNumber
+	roundNumber,
+	fiatSymbol
 } from '../../../utils/currency';
 import {
 	evaluateOrder,
@@ -19,15 +20,12 @@ import {
 	maxValue,
 	checkMarketPrice,
 	step,
-	normalizeInt,
 	normalizeFloat
 } from '../../../components/Form/validations';
 import { Loader } from '../../../components';
-import { LIMIT_VALUES, CURRENCIES } from '../../../config/constants';
+import { ORDER_LIMITS } from '../../../config/constants';
 
 import STRINGS from '../../../config/localizedStrings';
-
-const FIAT_NAME = CURRENCIES.fiat.shortName;
 
 class OrderEntry extends Component {
 	state = {
@@ -43,7 +41,7 @@ class OrderEntry extends Component {
 
 	componentDidMount() {
 		if (this.props.pair_base) {
-			this.generateFormValues(this.props.pair_base);
+			this.generateFormValues(this.props.pair);
 		}
 	}
 
@@ -58,7 +56,7 @@ class OrderEntry extends Component {
 			this.calculateOrderPrice(nextProps);
 		}
 		if (nextProps.activeLanguage !== this.props.activeLanguage) {
-			this.generateFormValues(nextProps.pair_base);
+			this.generateFormValues(nextProps.pair);
 		}
 		if (nextProps.marketPrice && !this.state.initialValues.price) {
 			this.setState({
@@ -76,7 +74,7 @@ class OrderEntry extends Component {
 		const price = parseFloat(this.props.price || 0);
 		let maxSize = balance[`${pair_base}_available`];
 		if (side === 'buy') {
-			maxSize = mathjs.divide(balance[`fiat_available`], price) ;
+			maxSize = mathjs.divide(balance[`fiat_available`], price);
 		}
 		if (maxSize !== size) {
 			this.props.change(FORM_NAME, 'size', roundNumber(maxSize, 4));
@@ -89,7 +87,10 @@ class OrderEntry extends Component {
 		const price = parseFloat(props.price || 0);
 
 		let orderPrice = 0;
-		if (size >= LIMIT_VALUES[this.props.pair_base].SIZE.MIN && !(type === 'limit' && price === 0)) {
+		if (
+			size >= ORDER_LIMITS[this.props.pair].SIZE.MIN &&
+			!(type === 'limit' && price === 0)
+		) {
 			if (props.side === 'sell') {
 				const { bids } = props;
 				orderPrice = checkMarketPrice(size, bids, type, side, price);
@@ -106,7 +107,11 @@ class OrderEntry extends Component {
 			.done();
 		let outsideFormError = '';
 
-		if (type === 'market' && orderPrice === 0 && size >= LIMIT_VALUES[this.props.pair_base].SIZE.MIN) {
+		if (
+			type === 'market' &&
+			orderPrice === 0 &&
+			size >= ORDER_LIMITS[this.props.pair].SIZE.MIN
+		) {
 			outsideFormError = STRINGS.QUICK_TRADE_ORDER_NOT_FILLED;
 		} else if (type === 'market' && side === 'buy') {
 			const values = {
@@ -115,10 +120,11 @@ class OrderEntry extends Component {
 				type,
 				price
 			};
-			const { pair_base, balance } = props;
+			const { pair_base, pair_2, balance } = props;
 
 			outsideFormError = evaluateOrder(
 				pair_base,
+				pair_2,
 				balance,
 				values,
 				type,
@@ -132,21 +138,23 @@ class OrderEntry extends Component {
 
 	evaluateOrder = (values) => {
 		const { side, type } = values;
-		const { pair_base, balance } = this.props;
-		return evaluateOrder(pair_base, balance, values, type, side);
+		const { pair_base, pair_2, balance } = this.props;
+		return evaluateOrder(pair_base, pair_2, balance, values, type, side);
 	};
 
 	onSubmit = (values) => {
+		const { pair } = this.props;
+	
 		const order = {
 			...values,
-			size: formatNumber(values.size, 4),
+			size: formatNumber(values.size, ORDER_LIMITS[pair].SIZE.DECIMALS),
 			symbol: this.props.pair
 		};
 
 		if (values.type === 'market') {
 			delete order.price;
 		} else if (values.price) {
-			order.price = formatNumber(values.price);
+			order.price = formatNumber(values.price, ORDER_LIMITS[pair].PRICE.DECIMALS);
 		}
 
 		return this.props.submitOrder(order).then(() => {
@@ -161,7 +169,9 @@ class OrderEntry extends Component {
 			side,
 			price,
 			size,
+			pair,
 			pair_base,
+			pair_2,
 			openCheckOrder,
 			submit
 		} = this.props;
@@ -169,7 +179,7 @@ class OrderEntry extends Component {
 			type,
 			side,
 			price,
-			size: formatNumber(size, 4),
+			size: formatNumber(size, ORDER_LIMITS[pair].SIZE.DECIMALS),
 			symbol: pair_base,
 			orderPrice: this.state.orderPrice,
 			orderFees: this.state.orderFees
@@ -178,7 +188,7 @@ class OrderEntry extends Component {
 		if (type === 'market') {
 			delete order.price;
 		} else if (price) {
-			order.price = formatNumber(price);
+			order.price = 	pair_2 === fiatSymbol ? formatNumber(price, ORDER_LIMITS[pair].PRICE.DECIMALS) : formatNumber(price);
 		}
 
 		if (showPopup) {
@@ -190,7 +200,7 @@ class OrderEntry extends Component {
 		}
 	};
 
-	generateFormValues = (pair = '') => {
+	generateFormValues = (pair = '', byuingPair = '') => {
 		const formValues = {
 			type: {
 				name: 'type',
@@ -211,7 +221,10 @@ class OrderEntry extends Component {
 						{STRINGS.formatString(
 							STRINGS.STRING_WITH_PARENTHESIS,
 							STRINGS.SIZE,
-							<div className="pointer text-uppercase blue-link" onClick={this.setMax}>
+							<div
+								className="pointer text-uppercase blue-link"
+								onClick={this.setMax}
+							>
 								{STRINGS.CALCULATE_MAX}
 							</div>
 						)}
@@ -220,13 +233,13 @@ class OrderEntry extends Component {
 				type: 'number',
 				placeholder: '0.00',
 				normalize: normalizeFloat,
-				step: LIMIT_VALUES[pair].SIZE.STEP,
-				min: LIMIT_VALUES[pair].SIZE.MIN,
-				max: LIMIT_VALUES[pair].SIZE.MAX,
+				step: ORDER_LIMITS[pair].SIZE.STEP,
+				min: ORDER_LIMITS[pair].SIZE.MIN,
+				max: ORDER_LIMITS[pair].SIZE.MAX,
 				validate: [
 					required,
-					minValue(LIMIT_VALUES[pair].SIZE.MIN),
-					maxValue(LIMIT_VALUES[pair].SIZE.MAX)
+					minValue(ORDER_LIMITS[pair].SIZE.MIN),
+					maxValue(ORDER_LIMITS[pair].SIZE.MAX)
 				],
 				currency: STRINGS[`${pair.toUpperCase()}_SHORTNAME`]
 			},
@@ -235,17 +248,17 @@ class OrderEntry extends Component {
 				label: STRINGS.PRICE,
 				type: 'number',
 				placeholder: '0',
-				normalize: normalizeInt,
-				step: LIMIT_VALUES[pair].PRICE.STEP,
-				min: LIMIT_VALUES[pair].PRICE.MIN,
-				max: LIMIT_VALUES[pair].PRICE.MAX,
+				normalize: normalizeFloat,
+				step: ORDER_LIMITS[pair].PRICE.STEP,
+				min: ORDER_LIMITS[pair].PRICE.MIN,
+				max: ORDER_LIMITS[pair].PRICE.MAX,
 				validate: [
 					required,
-					minValue(LIMIT_VALUES[pair].PRICE.MIN),
-					maxValue(LIMIT_VALUES[pair].PRICE.MAX),
-					step(LIMIT_VALUES[pair].PRICE.STEP)
+					minValue(ORDER_LIMITS[pair].PRICE.MIN),
+					maxValue(ORDER_LIMITS[pair].PRICE.MAX),
+					step(ORDER_LIMITS[pair].PRICE.STEP)
 				],
-				currency: STRINGS.FIAT_SHORTNAME
+				currency: STRINGS[`${byuingPair.toUpperCase()}_SHORTNAME`]
 			}
 		};
 
@@ -253,7 +266,7 @@ class OrderEntry extends Component {
 	};
 
 	render() {
-		const { balance, type, side, pair_base } = this.props;
+		const { balance, type, side, pair_base, pair_2 } = this.props;
 		const {
 			initialValues,
 			formValues,
@@ -263,8 +276,8 @@ class OrderEntry extends Component {
 		} = this.state;
 
 		const currencyName = STRINGS[`${pair_base.toUpperCase()}_NAME`];
-
-		if (!balance.hasOwnProperty(`${pair_base}_balance`)) {
+		const buyingName = STRINGS[`${pair_2.toUpperCase()}_SHORTNAME`];
+		if (!balance.hasOwnProperty(`${pair_2}_balance`)) {
 			return <Loader relative={true} background={false} />;
 		}
 
@@ -288,7 +301,7 @@ class OrderEntry extends Component {
 				>
 					<Review
 						type={type}
-						currency={FIAT_NAME}
+						currency={buyingName}
 						orderPrice={orderPrice}
 						fees={orderFees}
 						formatToCurrency={formatFiatAmount}
@@ -303,13 +316,16 @@ const selector = formValueSelector(FORM_NAME);
 
 const mapStateToProps = (state) => {
 	const formValues = selector(state, 'price', 'size', 'side', 'type');
-	const { pair_base } = state.app.pairs[state.app.pair];
+	const { pair_base, pair_2 } = state.app.pairs[state.app.pair];
+	const fees = state.user.fees[state.app.pair];
+
 	return {
 		...formValues,
 		activeLanguage: state.app.language,
-		fees: state.user.fees,
+		fees,
 		pair: state.app.pair,
-		pair_base
+		pair_base,
+		pair_2
 	};
 };
 

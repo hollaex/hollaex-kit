@@ -1,12 +1,13 @@
 import React from 'react';
 
 import { NotificationsList, SidebarHub } from '../';
-import { Logout, Help } from './rows';
+import { Logout, Help, Chat } from './rows';
 
 const Sidebar = ({
 	active,
 	activePath,
 	logout,
+	minimizeChat,
 	help,
 	pair,
 	unreadMessages = 0
@@ -22,7 +23,11 @@ const Sidebar = ({
 				<NotificationsList />
 			</div>
 			<div className="sidebar-row d-flex">
-				{/*<Chat className="f-1" unreadMessages={unreadMessages} />*/}
+				<Chat
+					className="f-1"
+					onMinimize={minimizeChat}
+					unreadMessages={unreadMessages}
+				/>
 				<Help className="f-1" onHelp={help} />
 				<Logout className="f-0" onLogout={logout} />
 			</div>

@@ -1,5 +1,5 @@
 import React from 'react';
-
+import { isMobile } from 'react-device-detect';
 import { TABLE_PAGE_SIZE } from './constants';
 import { ICONS } from '../../config/constants';
 import {
@@ -12,11 +12,11 @@ import {
 import STRINGS from '../../config/localizedStrings';
 
 const HistoryDisplay = (props) => {
-	const { title, headers, data: { data, count, loading }, filename } = props;
+	const { title, headers, data: { data, count, loading }, filename, withIcon } = props;
 
 	return (
 		<div className="history_block-wrapper">
-			<div className="title text-capitalize">
+			{!isMobile && <div className="title text-capitalize">
 				{title}
 				{count > 0 && (
 					<CsvDownload data={data} headers={headers} filename={filename}>
@@ -29,6 +29,7 @@ const HistoryDisplay = (props) => {
 					</CsvDownload>
 				)}
 			</div>
+			}
 			{loading ? (
 				<Loader />
 			) : (
@@ -36,7 +37,7 @@ const HistoryDisplay = (props) => {
 					data={data}
 					count={count}
 					headers={headers}
-					withIcon={true}
+					withIcon={withIcon}
 					pageSize={TABLE_PAGE_SIZE}
 					title={title}
 				/>

@@ -6,12 +6,13 @@
 		.single-currency {
 			position: relative;
 			justify-content: center;
-			min-width: 5rem;
+			min-width: 7rem;
 			padding: 0 1rem;
+			border-left: 1px solid;
+			border-right: 1px solid;
+			border-color: transparent;
 			&:hover,
 			&.focused {
-				border-left: 1px solid;
-				border-right: 1px solid;
 				background-color: #fafafa;
 				border-color: black;
 				&::before {
@@ -51,7 +52,7 @@
 	position: absolute;
 	right: 0;
 	top: 36px;
-	min-width: 14rem;
+	min-width: 14.8rem;
 	min-height: 8rem;
 	background-color: #fafafa;
 	z-index: 20;

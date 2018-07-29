@@ -1,5 +1,27 @@
 $tabs-title--margin: 2rem;
 
+.layout-mobile {
+	.action_notification-wrapper {
+		.action_notification-svg {
+			svg {
+				width: 1.5rem;
+				height: 1.5rem;
+			}
+		}
+		.action_notification-text {
+			font-size: $regular--font-size;
+		}
+	}
+	.trade_block-wrapper {
+		.trade_block-content {
+			font-size: $regular--font-size;
+			.table_body-wrapper {
+				font-size: $regular--font-size;
+			}
+		}
+	}
+}
+
 .trade_block-wrapper {
 	padding: 1rem;
 	flex: auto;
@@ -10,6 +32,7 @@ $tabs-title--margin: 2rem;
 		font-weight: bold;
 		margin-bottom: 1rem;
 		flex: none;
+		position: relative;
 	}
 
 	.trade_block-content {

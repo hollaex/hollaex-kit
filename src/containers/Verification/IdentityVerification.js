@@ -12,6 +12,7 @@ import { Button } from '../../components';
 import STRINGS from '../../config/localizedStrings';
 import { COUNTRIES_OPTIONS } from '../../utils/countries';
 
+import { isMobile } from 'react-device-detect';
 import { ICONS } from '../../config/constants';
 import { getErrorLocalized } from '../../utils/errors';
 import { updateUser } from '../../actions/userAction';
@@ -46,7 +47,8 @@ class IdentityVerification extends Component {
 					STRINGS.USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS
 						.FULL_NAME_PLACEHOLDER,
 				disabled: fullName.length > 0,
-				validate: [required]
+				validate: [required],
+				fullWidth: isMobile
 			},
 			gender: {
 				type: 'select',
@@ -72,7 +74,8 @@ class IdentityVerification extends Component {
 						icon: ICONS.GENDER_F
 					}
 				],
-				validate: [requiredBoolean]
+				validate: [requiredBoolean],
+				fullWidth: isMobile
 			},
 			dob: {
 				type: 'date-dropdown',
@@ -82,7 +85,8 @@ class IdentityVerification extends Component {
 						.DOB_LABEL,
 				validate: [required, isBefore()],
 				endDate: moment().add(1, 'days'),
-				pattern: '[0-9]{4}-[0-9]{2}-[0-9]{2}'
+				pattern: '[0-9]{4}-[0-9]{2}-[0-9]{2}',
+				fullWidth: isMobile
 			},
 			nationality: {
 				type: 'autocomplete',
@@ -93,7 +97,8 @@ class IdentityVerification extends Component {
 					STRINGS.USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS
 						.NATIONALITY_PLACEHOLDER,
 				options: COUNTRIES_OPTIONS,
-				validate: [required]
+				validate: [required],
+				fullWidth: isMobile
 			},
 			id_number: {
 				type: 'text',
@@ -109,7 +114,8 @@ class IdentityVerification extends Component {
 					requiredWithCustomMessage(
 						STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.VALIDATIONS.ID_NUMBER
 					)
-				]
+				],
+				fullWidth: isMobile
 			},
 			id_issued_date: {
 				type: 'date-dropdown',
@@ -123,7 +129,8 @@ class IdentityVerification extends Component {
 					isBefore()
 				],
 				endDate: moment().add(1, 'days'),
-				language
+				language,
+				fullWidth: isMobile
 			},
 			id_expiration_date: {
 				type: 'date-dropdown',
@@ -140,7 +147,8 @@ class IdentityVerification extends Component {
 				endDate: moment().add(15, 'years'),
 				addYears: 15,
 				yearsBefore: 5,
-				language
+				language,
+				fullWidth: isMobile
 			},
 			country: {
 				type: 'autocomplete',
@@ -151,7 +159,8 @@ class IdentityVerification extends Component {
 					STRINGS.USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS
 						.COUNTRY_PLACEHOLDER,
 				options: COUNTRIES_OPTIONS,
-				validate: [required]
+				validate: [required],
+				fullWidth: isMobile
 			},
 			city: {
 				type: 'text',
@@ -161,7 +170,8 @@ class IdentityVerification extends Component {
 				placeholder:
 					STRINGS.USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS
 						.CITY_PLACEHOLDER,
-				validate: [required]
+				validate: [required],
+				fullWidth: isMobile
 			},
 			address: {
 				type: 'text',
@@ -171,7 +181,8 @@ class IdentityVerification extends Component {
 				placeholder:
 					STRINGS.USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS
 						.ADDRESS_PLACEHOLDER,
-				validate: [required]
+				validate: [required],
+				fullWidth: isMobile
 			},
 			postal_code: {
 				type: 'text',
@@ -181,7 +192,8 @@ class IdentityVerification extends Component {
 				placeholder:
 					STRINGS.USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS
 						.POSTAL_CODE_PLACEHOLDER,
-				validate: [required]
+				validate: [required],
+				fullWidth: isMobile
 			}
 		};
 

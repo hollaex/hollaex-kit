@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Accordion } from '../';
-import { CURRENCIES } from '../../config/constants';
+import { CURRENCIES, BASE_CURRENCY } from '../../config/constants';
 import { calculateBalancePrice, formatFiatAmount } from '../../utils/currency';
 import WalletSection from './Section';
 import STRINGS from '../../config/localizedStrings';
@@ -60,7 +60,7 @@ class Wallet extends Component {
 
 		// TODO calculate right price
 		Object.keys(CURRENCIES).forEach((currency) => {
-			const { symbol } = CURRENCIES[currency]
+			const { symbol } = CURRENCIES[currency];
 			sections.push(this.generateSection(symbol, price, balance, orders));
 		});
 
@@ -80,15 +80,17 @@ class Wallet extends Component {
 		return (
 			<div className="wallet-wrapper">
 				<Accordion sections={sections} />
-				<div className="wallet_section-wrapper wallet_section-total_asset d-flex flex-column">
-					<div className="wallet_section-title">
-						{STRINGS.WALLET.TOTAL_ASSETS}
+				{BASE_CURRENCY && (
+					<div className="wallet_section-wrapper wallet_section-total_asset d-flex flex-column">
+						<div className="wallet_section-title">
+							{STRINGS.WALLET.TOTAL_ASSETS}
+						</div>
+						<div className="wallet_section-total_asset d-flex justify-content-end">
+							{STRINGS.FIAT_CURRENCY_SYMBOL}
+							<span>{totalAssets}</span>
+						</div>
 					</div>
-					<div className="wallet_section-total_asset d-flex justify-content-end">
-						{STRINGS.FIAT_CURRENCY_SYMBOL}
-						<span>{totalAssets}</span>
-					</div>
-				</div>
+				)}
 			</div>
 		);
 	}

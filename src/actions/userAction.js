@@ -237,6 +237,7 @@ export const setUsername = (values) => axios.post('/user/username', values);
 export const setUsernameStore = (username) => ({
 	type: 'SET_USERNAME',
 	payload: {
+		username_set: true,
 		username
 	}
 });
@@ -246,11 +247,16 @@ export const requestLimits = () => ({
 	payload: axios.get('/limits')
 });
 
+export const requestFees = () => ({
+	type: 'REQUEST_FEES',
+	payload: axios.get('/fees')
+});
+
 export const createAddress = (addressType = '') => ({
 	type: 'CREATE_ADDRESS',
 	payload: axios.post(`/user/address/${addressType}`, {})
 });
 
 export const cleanCreateAddress = () => ({
-	type: 'CLEAN_CREATE_ADDRESS',
-})
+	type: 'CLEAN_CREATE_ADDRESS'
+});

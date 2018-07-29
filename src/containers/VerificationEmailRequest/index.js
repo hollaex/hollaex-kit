@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import { Link } from 'react-router';
+import { isMobile } from 'react-device-detect';
 import { SubmissionError } from 'redux-form';
 import { requestVerificationEmail } from '../../actions/authAction';
 import EmailRequestForm, { generateFormFields } from './EmailRequestForm';
@@ -9,6 +10,15 @@ import { IconTitle, Dialog } from '../../components';
 import { ContactForm } from '../';
 import { HOLLAEX_LOGO, FLEX_CENTER_CLASSES } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
+
+const BottomLink = () => (
+	<div className={classnames('f-1', 'link_wrapper')}>
+		{STRINGS.VERIFICATION_EMAIL_REQUEST.NO_EMAIL}
+		<Link to="/verify" className={classnames('blue-link')}>
+			{STRINGS.VERIFICATION_EMAIL_REQUEST.REQUEST_EMAIL}
+		</Link>
+	</div>
+);
 
 class VerifyEmailRequest extends Component {
 	state = {
@@ -110,14 +120,10 @@ class VerifyEmailRequest extends Component {
 							onSubmit={this.onSubmitEmailRequest}
 							formFields={formFields}
 						/>
+						{isMobile && <BottomLink />}
 					</div>
 				</div>
-				<div className={classnames('f-1', 'link_wrapper')}>
-					{STRINGS.VERIFICATION_EMAIL_REQUEST.NO_EMAIL}
-					<Link to="/verify" className={classnames('blue-link')}>
-						{STRINGS.VERIFICATION_EMAIL_REQUEST.REQUEST_EMAIL}
-					</Link>
-				</div>
+				{!isMobile && <BottomLink />}
 			</div>
 		);
 	}

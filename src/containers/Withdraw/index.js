@@ -4,6 +4,7 @@ import math from 'mathjs';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { formValueSelector, change } from 'redux-form';
+import { isMobile } from 'react-device-detect';
 
 import { Loader, WarningVerification } from '../../components';
 import {
@@ -11,7 +12,7 @@ import {
 	MIN_VERIFICATION_LEVEL_TO_WITHDRAW,
 	MAX_VERIFICATION_LEVEL_TO_WITHDRAW
 } from '../../config/constants';
-import { fiatSymbol, getCurrencyFromName } from '../../utils/currency';
+import { fiatSymbol, getCurrencyFromName, roundNumber } from '../../utils/currency';
 import {
 	performWithdraw,
 	requestWithdrawFee
@@ -165,7 +166,7 @@ class Withdraw extends Component {
 					math.fraction(selectedFee)
 				)
 			);
-			dispatch(change(FORM_NAME, 'amount', math.round(amount, 4)));
+			dispatch(change(FORM_NAME, 'amount', roundNumber(amount, 4)));
 		}
 	};
 
@@ -210,7 +211,7 @@ class Withdraw extends Component {
 
 		return (
 			<div className="presentation_container apply_rtl">
-				{renderTitleSection(currency, 'withdraw', ICONS.WITHDRAW)}
+				{!isMobile && renderTitleSection(currency, 'withdraw', ICONS.WITHDRAW)}
 				{verification_level >= MIN_VERIFICATION_LEVEL_TO_WITHDRAW &&
 				verification_level <= MAX_VERIFICATION_LEVEL_TO_WITHDRAW ? (
 					<div className={classnames('inner_container', 'with_border_top')}>

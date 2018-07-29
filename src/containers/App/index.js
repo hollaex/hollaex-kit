@@ -5,11 +5,8 @@ import { bindActionCreators } from 'redux';
 import io from 'socket.io-client';
 import EventListener from 'react-event-listener';
 import { debounce } from 'lodash';
-import {
-	WS_URL,
-	ICONS,
-	SESSION_TIME
-} from '../../config/constants';
+import { WS_URL, ICONS, SESSION_TIME } from '../../config/constants';
+import { isBrowser, isMobile } from 'react-device-detect';
 
 import { logout } from '../../actions/authAction';
 import { setMe, setBalance, updateUser } from '../../actions/userAction';
@@ -36,23 +33,29 @@ import {
 	setLanguage,
 	changeTheme,
 	closeAllNotification,
+	setChatUnreadMessages,
 	NOTIFICATIONS,
 	CONTACT_FORM
 } from '../../actions/appActions';
 
-import { getThemeClass } from '../../utils/theme';
+import {
+	getThemeClass,
+	getChatMinimized,
+	setChatMinimized
+} from '../../utils/theme';
 import { checkUserSessionExpired } from '../../utils/utils';
 import { getToken, getTokenTimestamp } from '../../utils/token';
 import {
 	AppBar,
 	Sidebar,
+	SidebarBottom,
 	Dialog,
 	Loader,
 	Notification,
 	MessageDisplay,
 	CurrencyList
 } from '../../components';
-import { ContactForm } from '../';
+import { ContactForm, Chat as ChatComponent } from '../';
 
 import {
 	getClasesForLanguage,
@@ -63,6 +66,7 @@ class Container extends Component {
 	state = {
 		appLoaded: false,
 		dialogIsOpen: false,
+		chatIsClosed: false,
 		publicSocket: undefined,
 		privateSocket: undefined,
 		idleTimer: undefined,
@@ -70,6 +74,10 @@ class Container extends Component {
 	};
 
 	componentWillMount() {
+		const chatIsClosed = getChatMinimized();
+		this.setState({
+			chatIsClosed
+		});
 		if (checkUserSessionExpired(getTokenTimestamp())) {
 			this.logout('Token is expired');
 		}
@@ -206,7 +214,8 @@ class Container extends Component {
 			}
 		});
 
-		privateSocket.on('user', (data) => {
+		privateSocket.on('user', ({ action, data }) => {
+			// console.log('user', action, data);
 			// if (!data.phone_number) {
 			// 	return this.goToVerificationPage();
 			// }
@@ -222,20 +231,23 @@ class Container extends Component {
 			}
 		});
 
-		privateSocket.on('orders', (data) => {
+		privateSocket.on('orders', ({ action, data }) => {
+			// console.log('orders', action, data);
 			this.props.setUserOrders(data);
 		});
 
-		privateSocket.on('trades', (data) => {
+		privateSocket.on('trades', ({ action, data }) => {
+			// console.log('trades', action, data);
 			this.props.addUserTrades(data);
 		});
 
-		privateSocket.on('wallet', (data) => {
-			this.props.setBalance(data.balance);
+		privateSocket.on('wallet', ({ action, balance }) => {
+			// console.log('wallet', action, balance);
+			this.props.setBalance(balance);
 		});
 
-		privateSocket.on('update', ({ type, data }) => {
-			// console.log('update', type, data);
+		privateSocket.on('update', ({ action, type, data }) => {
+			// console.log('update', action, type, data);
 			switch (type) {
 				case 'order_queued':
 					// TODO add queued orders to the store
@@ -375,6 +387,15 @@ class Container extends Component {
 		this.props.closeNotification();
 	};
 
+	minimizeChat = () => {
+		const chatIsClosed = !this.state.chatIsClosed;
+		if (chatIsClosed === false) {
+			this.props.setChatUnreadMessages();
+		}
+		setChatMinimized(chatIsClosed);
+		this.setState({ chatIsClosed });
+	};
+
 	getClassForActivePath = (path) => {
 		switch (path) {
 			case '/wallet':
@@ -388,9 +409,17 @@ class Container extends Component {
 				return 'quick-trade';
 			case '/trade':
 				return 'trade';
+			case '/chat':
+				return 'chat';
 			default:
-				return '';
 		}
+		if (path.indexOf('/trade/') === 0) {
+			return 'trade';
+		} else if (path.indexOf('/quick-trade/') === 0) {
+			return 'quick-trade';
+		}
+
+		return '';
 	};
 
 	renderDialogContent = ({ type, data }, prices) => {
@@ -468,7 +497,7 @@ class Container extends Component {
 			activeTheme,
 			unreadMessages
 		} = this.props;
-		const { dialogIsOpen, appLoaded } = this.state;
+		const { dialogIsOpen, appLoaded, chatIsClosed } = this.state;
 		const languageClasses = getClasesForLanguage(activeLanguage, 'array');
 		const fontClass = getFontClassForLanguage(activeLanguage);
 
@@ -485,7 +514,11 @@ class Container extends Component {
 					activePath,
 					symbol,
 					fontClass,
-					languageClasses[0]
+					languageClasses[0],
+					{
+						'layout-mobile': isMobile,
+						'layout-desktop': isBrowser
+					}
 				)}
 			>
 				<EventListener
@@ -500,7 +533,10 @@ class Container extends Component {
 					<AppBar
 						goToDashboard={this.goToDashboard}
 						rightChildren={
-							<CurrencyList className="horizontal-currency-list justify-content-end" />
+							<CurrencyList
+								className="horizontal-currency-list justify-content-end"
+								activeLanguage={activeLanguage}
+							/>
 						}
 					/>
 					<div className="app_container-content d-flex justify-content-between">
@@ -510,22 +546,33 @@ class Container extends Component {
 								'd-flex',
 								'flex-column',
 								'justify-content-between',
-								'overflow-y'
+								{
+									'overflow-y': !isMobile
+								}
 							)}
 						>
-							{appLoaded && verification_level > 0 ? children : <Loader />}
+							{appLoaded && verification_level > 0 ? children : <Loader background={false} />}
 						</div>
 					</div>
+					{isMobile && (
+						<div className="app_container-bottom_bar">
+							<SidebarBottom activePath={activePath} pair={pair} />
+						</div>
+					)}
 				</div>
-				<div className="app_container-sidebar">
-					<Sidebar
-						activePath={activePath}
-						logout={this.logout}
-						help={openContactForm}
-						unreadMessages={unreadMessages}
-						pair={pair}
-					/>
-				</div>
+				{isBrowser && (
+					<div className="app_container-sidebar">
+						<Sidebar
+							activePath={activePath}
+							logout={this.logout}
+							help={openContactForm}
+							pair={pair}
+							minimizeChat={this.minimizeChat}
+							chatIsClosed={chatIsClosed}
+							unreadMessages={unreadMessages}
+						/>
+					</div>
+				)}
 				<Dialog
 					isOpen={dialogIsOpen}
 					label="hollaex-modal"
@@ -540,11 +587,21 @@ class Container extends Component {
 							activeNotification.type === NOTIFICATIONS.ERROR
 						)
 					}
+					compressed={
+						activeNotification.type === NOTIFICATIONS.ORDERS ||
+						activeNotification.type === NOTIFICATIONS.TRADES
+					}
 					style={{ 'z-index': 100 }}
 				>
 					{dialogIsOpen &&
 						this.renderDialogContent(activeNotification, prices, activeTheme)}
 				</Dialog>
+				{!isMobile && (
+					<ChatComponent
+						minimized={chatIsClosed}
+						onMinimize={this.minimizeChat}
+					/>
+				)}
 			</div>
 		);
 	}
@@ -586,7 +643,8 @@ const mapDispatchToProps = (dispatch) => ({
 	setOrderbooks: bindActionCreators(setOrderbooks, dispatch),
 	setTrades: bindActionCreators(setTrades, dispatch),
 	setTickers: bindActionCreators(setTickers, dispatch),
-	changeTheme: bindActionCreators(changeTheme, dispatch)
+	changeTheme: bindActionCreators(changeTheme, dispatch),
+	setChatUnreadMessages: bindActionCreators(setChatUnreadMessages, dispatch)
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Container);
