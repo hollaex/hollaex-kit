@@ -438,16 +438,14 @@ export const ORDER_LIMITS = {
 	},
 	'eth-btc': {
 		PRICE: {
-			MIN: parseFloat(process.env.REACT_APP_BTC_ETH_MIN_ORDER_PRICE || 500),
-			MAX: parseFloat(process.env.REACT_APP_BTC_ETH_MAX_ORDER_PRICE || 50000),
-			STEP: parseFloat(process.env.REACT_APP_BTC_ETH_TICK_SIZE || 1),
-			DECIMALS: process.env.REACT_APP_BTC_ETH_PRICE_DECIMALS
+			MIN: parseFloat(process.env.REACT_APP_ETH_BTC_MIN_ORDER_PRICE || 500),
+			MAX: parseFloat(process.env.REACT_APP_ETH_BTC_MAX_ORDER_PRICE || 50000),
+			STEP: parseFloat(process.env.REACT_APP_ETH_BTC_TICK_SIZE || 1)
 		},
 		SIZE: {
-			MIN: parseFloat(process.env.REACT_APP_BTC_ETH_MIN_ORDER_SIZE || 0.0001),
-			MAX: parseFloat(process.env.REACT_APP_BTC_ETH_MAX_ORDER_SIZE || 21000000),
-			STEP: parseFloat(process.env.REACT_APP_BTC_ETH_MIN_ORDER_SIZE || 0.0001),
-			DECIMALS: process.env.REACT_APP_BTC_ETH_SIZE_DECIMALS
+			MIN: parseFloat(process.env.REACT_APP_ETH_BTC_MIN_ORDER_SIZE || 0.0001),
+			MAX: parseFloat(process.env.REACT_APP_ETH_BTC_MAX_ORDER_SIZE || 21000000),
+			STEP: parseFloat(process.env.REACT_APP_ETH_BTC_MIN_ORDER_SIZE || 0.0001)
 		}
 	}
 };
