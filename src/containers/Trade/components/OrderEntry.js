@@ -13,6 +13,7 @@ import {
 	roundNumber,
 	fiatSymbol
 } from '../../../utils/currency';
+import { getDecimals } from '../../../utils/utils';
 import {
 	evaluateOrder,
 	required,
@@ -143,18 +144,24 @@ class OrderEntry extends Component {
 	};
 
 	onSubmit = (values) => {
-		const { pair } = this.props;
-	
+		const { pair, min_size, tick_size } = this.props;
+
 		const order = {
 			...values,
-			size: formatNumber(values.size, ORDER_LIMITS[pair].SIZE.DECIMALS),
+			size: formatNumber(
+				values.size,
+				getDecimals(min_size)
+			),
 			symbol: this.props.pair
 		};
 
 		if (values.type === 'market') {
 			delete order.price;
 		} else if (values.price) {
-			order.price = formatNumber(values.price, ORDER_LIMITS[pair].PRICE.DECIMALS);
+			order.price = formatNumber(
+				values.price,
+				getDecimals(tick_size)
+			);
 		}
 
 		return this.props.submitOrder(order).then(() => {
@@ -172,6 +179,8 @@ class OrderEntry extends Component {
 			pair,
 			pair_base,
 			pair_2,
+			min_size,
+			tick_size,
 			openCheckOrder,
 			submit
 		} = this.props;
@@ -179,7 +188,7 @@ class OrderEntry extends Component {
 			type,
 			side,
 			price,
-			size: formatNumber(size, ORDER_LIMITS[pair].SIZE.DECIMALS),
+			size: formatNumber(size, getDecimals(min_size)),
 			symbol: pair_base,
 			orderPrice: this.state.orderPrice,
 			orderFees: this.state.orderFees
@@ -188,7 +197,8 @@ class OrderEntry extends Component {
 		if (type === 'market') {
 			delete order.price;
 		} else if (price) {
-			order.price = 	pair_2 === fiatSymbol ? formatNumber(price, ORDER_LIMITS[pair].PRICE.DECIMALS) : formatNumber(price);
+			order.price = formatNumber(price, getDecimals(tick_size))
+
 		}
 
 		if (showPopup) {
@@ -316,7 +326,7 @@ const selector = formValueSelector(FORM_NAME);
 
 const mapStateToProps = (state) => {
 	const formValues = selector(state, 'price', 'size', 'side', 'type');
-	const { pair_base, pair_2 } = state.app.pairs[state.app.pair];
+	const { pair_base, pair_2, max_price, max_size, min_size, min_price, tick_size } = state.app.pairs[state.app.pair];
 	const fees = state.user.fees[state.app.pair];
 
 	return {
@@ -325,7 +335,13 @@ const mapStateToProps = (state) => {
 		fees,
 		pair: state.app.pair,
 		pair_base,
-		pair_2
+		pair_2,
+		max_price,
+		max_size,
+		min_size,
+		min_price,
+		tick_size
+
 	};
 };
 
