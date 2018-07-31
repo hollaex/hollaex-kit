@@ -20,7 +20,7 @@ class HollaEx {
 	}
 
 	getUser() {
-		return createRequest('GET', `${this._url}/me`, this._headers);
+		return createRequest('GET', `${this._url}/user`, this._headers);
 	}
 
 	/********************************************************************* TO BE ADDED MORE... */
