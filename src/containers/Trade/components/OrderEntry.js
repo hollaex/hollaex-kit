@@ -10,8 +10,10 @@ import Form, { FORM_NAME } from './OrderEntryForm';
 import {
 	formatNumber,
 	formatFiatAmount,
-	roundNumber
+	roundNumber,
+	fiatSymbol
 } from '../../../utils/currency';
+import { getDecimals } from '../../../utils/utils';
 import {
 	evaluateOrder,
 	required,
@@ -19,7 +21,6 @@ import {
 	maxValue,
 	checkMarketPrice,
 	step,
-	normalizeInt,
 	normalizeFloat
 } from '../../../components/Form/validations';
 import { Loader } from '../../../components';
@@ -143,16 +144,24 @@ class OrderEntry extends Component {
 	};
 
 	onSubmit = (values) => {
+		const { pair, min_size, tick_size } = this.props;
+
 		const order = {
 			...values,
-			size: formatNumber(values.size, 4),
+			size: formatNumber(
+				values.size,
+				getDecimals(min_size)
+			),
 			symbol: this.props.pair
 		};
 
 		if (values.type === 'market') {
 			delete order.price;
 		} else if (values.price) {
-			order.price = formatNumber(values.price);
+			order.price = formatNumber(
+				values.price,
+				getDecimals(tick_size)
+			);
 		}
 
 		return this.props.submitOrder(order).then(() => {
@@ -167,7 +176,11 @@ class OrderEntry extends Component {
 			side,
 			price,
 			size,
+			pair,
 			pair_base,
+			pair_2,
+			min_size,
+			tick_size,
 			openCheckOrder,
 			submit
 		} = this.props;
@@ -175,7 +188,7 @@ class OrderEntry extends Component {
 			type,
 			side,
 			price,
-			size: formatNumber(size, 4),
+			size: formatNumber(size, getDecimals(min_size)),
 			symbol: pair_base,
 			orderPrice: this.state.orderPrice,
 			orderFees: this.state.orderFees
@@ -184,7 +197,8 @@ class OrderEntry extends Component {
 		if (type === 'market') {
 			delete order.price;
 		} else if (price) {
-			order.price = formatNumber(price);
+			order.price = formatNumber(price, getDecimals(tick_size))
+
 		}
 
 		if (showPopup) {
@@ -197,7 +211,6 @@ class OrderEntry extends Component {
 	};
 
 	generateFormValues = (pair = '', byuingPair = '') => {
-		console.log(pair, ORDER_LIMITS[pair])
 		const formValues = {
 			type: {
 				name: 'type',
@@ -245,7 +258,7 @@ class OrderEntry extends Component {
 				label: STRINGS.PRICE,
 				type: 'number',
 				placeholder: '0',
-				normalize: normalizeInt,
+				normalize: normalizeFloat,
 				step: ORDER_LIMITS[pair].PRICE.STEP,
 				min: ORDER_LIMITS[pair].PRICE.MIN,
 				max: ORDER_LIMITS[pair].PRICE.MAX,
@@ -313,7 +326,7 @@ const selector = formValueSelector(FORM_NAME);
 
 const mapStateToProps = (state) => {
 	const formValues = selector(state, 'price', 'size', 'side', 'type');
-	const { pair_base, pair_2 } = state.app.pairs[state.app.pair];
+	const { pair_base, pair_2, max_price, max_size, min_size, min_price, tick_size } = state.app.pairs[state.app.pair];
 	const fees = state.user.fees[state.app.pair];
 
 	return {
@@ -322,7 +335,13 @@ const mapStateToProps = (state) => {
 		fees,
 		pair: state.app.pair,
 		pair_base,
-		pair_2
+		pair_2,
+		max_price,
+		max_size,
+		min_size,
+		min_price,
+		tick_size
+
 	};
 };
 

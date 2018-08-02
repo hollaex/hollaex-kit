@@ -43,3 +43,6 @@ export const formatTimestamp = (date, format) => {
 
 export const formatTimestampGregorian = (date, format = TIMESTAMP_FORMAT) =>
 	moment(date).format(format);
+
+export const getDecimals = (value = 0) =>
+	value % 1 ? value.toString().split('.')[1].length : 0;
