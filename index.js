@@ -1,6 +1,6 @@
 const  { createRequest } = require('./utils');
 
-class HollaEx {
+class HollaEx  {
 	constructor(opts = {
 		apiURL: 'https://api.hollaex.com',
 		baseURL: '/v0',
@@ -13,15 +13,31 @@ class HollaEx {
 			Accept: 'application/json',
 			Authorization: 'Bearer ' + this._accessToken 
 		}
+
 	}
 
 	getTicker(symbol) {
 		return createRequest('GET', `${this._url}/ticker?symbol=${symbol}`, this._headers);
 	}
 
+	getOrderbook (symbol) {
+		return createRequest ('GET' , `${this._url}/orderbooks?symbol=${symbol}` , this._headers);
+	}
+
+	getTrade (symbol) {
+		return createRequest ('GET', `${this._url}/trades?symbol=${symbol}` , this._headers )
+	}
+
 	getUser() {
 		return createRequest('GET', `${this._url}/user`, this._headers);
 	}
+
+	getBalance () {
+		return createRequest('GET',`${this._url}/user/balance` , this._headers);
+	}
+
+	
+
 
 	/********************************************************************* TO BE ADDED MORE... */
 }
