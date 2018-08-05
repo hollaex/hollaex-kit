@@ -6,6 +6,8 @@ You need to have `node` and `npm` installed and run `npm start`. You need to imp
 
 ## Usage
 ```node
+const HollaEx = require('hollaex-node-lib');
+
 var client = new HollaEx();
 ```
 You can pass your Access_Token generated from the site as follows:
