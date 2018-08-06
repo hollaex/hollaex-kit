@@ -11,14 +11,45 @@ class HollaEx  {
 		this._headers = {
 			'content-type': 'application/json',
 			Accept: 'application/json',
-			Authorization: 'Bearer ' + this._accessToken 
+			Authorization: 'Bearer ' + this._accessToken
 		}
 
 	}
 
+
+
+	// Data
 	getTicker(symbol) {
 		return createRequest('GET', `${this._url}/ticker?symbol=${symbol}`, this._headers);
 	}
+
+
+
+	// Deposit
+
+
+
+	// Orderbook
+
+
+
+	// Public
+
+
+
+	// Token
+
+
+
+	// User
+
+
+
+	// Wallet
+
+
+
+	// Withdraw
 
 	getOrderbook(symbol) {
 		return createRequest ('GET' , `${this._url}/orderbooks?symbol=${symbol}` , this._headers);
@@ -42,23 +73,23 @@ class HollaEx  {
 	}
 
 	getOrder(orderId) {
-		return createRequest('GET',`${this._url}/user/orders/${orderId}` , this._headers);	
+		return createRequest('GET',`${this._url}/user/orders/${orderId}` , this._headers);
 	}
 
 	getAllOrders(symbol='') {
-		return createRequest('GET',`${this._url}/user/orders?symbol=${symbol}` , this._headers);	
+		return createRequest('GET',`${this._url}/user/orders?symbol=${symbol}` , this._headers);
 	}
 
 	cancelOrder(orderId) {
-		return createRequest('DELETE',`${this._url}/user/orders/${orderId}` , this._headers);	
+		return createRequest('DELETE',`${this._url}/user/orders/${orderId}` , this._headers);
 	}
 
 	cancelAllOrders(symbol='') {
 		let data = {symbol};
-		return createRequest('DELETE',`${this._url}/user/orders?symbol=${symbol}` , this._headers);	
+		return createRequest('DELETE',`${this._url}/user/orders?symbol=${symbol}` , this._headers);
 	}
 
-	
+
 
 
 	/********************************************************************* TO BE ADDED MORE... */
