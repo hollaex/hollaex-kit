@@ -13,71 +13,66 @@ class HollaEx  {
 			Accept: 'application/json',
 			Authorization: 'Bearer ' + this._accessToken
 		}
-
 	}
 
+	/* Public */
 
-
-	// Data
+	// Ticker
 	getTicker(symbol) {
 		return createRequest('GET', `${this._url}/ticker?symbol=${symbol}`, this._headers);
 	}
 
-
-
-	// Deposit
-
-
-
 	// Orderbook
-
-
-
-	// Public
-
-
-
-	// Token
-
-
-
-	// User
-
-
-
-	// Wallet
-
-
-
-	// Withdraw
-
 	getOrderbook(symbol) {
 		return createRequest ('GET' , `${this._url}/orderbooks?symbol=${symbol}` , this._headers);
 	}
 
+	// Trades
 	getTrades(symbol) {
 		return createRequest ('GET', `${this._url}/trades?symbol=${symbol}` , this._headers )
 	}
 
+	/*********************************************************************************************************
+
+	/* Private */
+
+	// User
 	getUser() {
 		return createRequest('GET', `${this._url}/user`, this._headers);
 	}
 
+	// Balance
 	getBalance() {
 		return createRequest('GET',`${this._url}/user/balance` , this._headers);
 	}
 
-	createOrder(symbol, side, size, type, price) {
-		let data = {symbol, side, size, type, price};
-		return createRequest('POST',`${this._url}/order` , this._headers, data);
+	// Deposits
+	getDeposits() {
+		return createRequest('GET',`${this._url}/user/deposits` , this._headers);
 	}
 
+	// Withdrawal
+	getWithdrawals() {
+		return createRequest('GET',`${this._url}/user/withdrawals` , this._headers);
+	}
+
+	// Trades
+	getUserTrades() {
+		return createRequest('GET',`${this._url}/user/trades` , this._headers);
+	}
+
+	// Orders
 	getOrder(orderId) {
 		return createRequest('GET',`${this._url}/user/orders/${orderId}` , this._headers);
 	}
 
 	getAllOrders(symbol='') {
 		return createRequest('GET',`${this._url}/user/orders?symbol=${symbol}` , this._headers);
+	}
+
+	createOrder(symbol, side, size, type, price) {
+		let data = {symbol, side, size, type, price};
+		return createRequest('POST',`${this._url}/order` , this._headers, data);
 	}
 
 	cancelOrder(orderId) {
@@ -88,8 +83,6 @@ class HollaEx  {
 		let data = {symbol};
 		return createRequest('DELETE',`${this._url}/user/orders?symbol=${symbol}` , this._headers);
 	}
-
-
 
 
 	/********************************************************************* TO BE ADDED MORE... */
