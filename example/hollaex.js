@@ -1,15 +1,16 @@
 const HollaEx = require('../index');
 
-const ACCESS_TOCKEN = '';
+require('dotenv').load();
 
+const ACCESS_TOCKEN = process.env.ACCESS_TOCKEN;
 var client = new HollaEx({accessToken : ACCESS_TOCKEN});
 
 
-client.getTicker('btc-eur')
-	.then(res => {
-		let data = JSON.parse(res)
-		console.log("Get Ticker: ", data)
-	});
+// client.getTicker('btc-eur')
+// 	.then(res => {
+// 		let data = JSON.parse(res)
+// 		console.log("Get Ticker: ", data)
+// 	});
 //
 // client.getUser()
 // 	.then(res => {
