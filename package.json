@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
+    "nodemon": "^1.18.3",
     "request": "^2.87.0",
     "request-promise": "^4.2.2"
   },
