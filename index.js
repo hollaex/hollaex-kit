@@ -1,9 +1,8 @@
 const  { createRequest } = require('./utils');
 
-// var io = require('socket.io')(80);
+
 const io = require('socket.io-client');
-const socket = io('http://api.hollaex.com/realtime');
-// var socket = io.connect('https://api.hollaex.com/v0/realtime');
+const socket = io.connect('https://api.exir.tech/realtime');
 
 class HollaEx  {
 	constructor(opts = {
@@ -19,12 +18,15 @@ class HollaEx  {
 			Authorization: 'Bearer ' + this._accessToken
 		}
 	}
-
 	connectSocket(){
-		socket.on('connection', function(){
-			socket.emit('hi');
-			console.log('connected')
-		})
+		socket.on('connect', function(){
+			console.log('hello');
+			// console.log(socket);
+
+		});
+			console.log(socket);
+
+
 	}
 
 
