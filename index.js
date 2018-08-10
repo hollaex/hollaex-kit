@@ -1,9 +1,7 @@
 const  { createRequest } = require('./utils');
 
-// var io = require('socket.io')(80);
 const io = require('socket.io-client');
 const socket = io('http://api.hollaex.com/realtime');
-// var socket = io.connect('https://api.hollaex.com/v0/realtime');
 
 class HollaEx  {
 	constructor(opts = {
@@ -20,14 +18,24 @@ class HollaEx  {
 		}
 	}
 
-	connectSocket(){
-		socket.on('connection', function(){
-			socket.emit('hi');
-			console.log('connected')
-		})
+	connectSocket() {
+		this.publicSocket = io(`https://api.hollaex.com/realtime`, {
+			// if you dont pass anything it will return all symbols
+			query: {
+				symbol: 'btc-eur'
+			}
+		});
+		this.publicSocket.on('trades', (data) => {
+			console.log(data)
+		});
+		this.publicSocket.on('orderbook', (data) => {
+			console.log(data)
+		});
 	}
 
-
+	connectPrivateSocket() {
+		// need to pass user token in the query
+	}
 
 
 	/* Public */

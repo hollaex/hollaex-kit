@@ -7,7 +7,7 @@ const ACCESS_TOKEN = process.env.ACCESS_TOKEN;
 var client = new HollaEx({accessToken : ACCESS_TOKEN});
 
 
-client.getTicker('btc-eur')
+client.getTickers('btc-eur')
 	.then(res => {
 		let data = JSON.parse(res)
 		console.log("Get Ticker: ", data)
