@@ -1,7 +1,7 @@
+var io = require('socket.io-client');
+
 const  { createRequest } = require('./utils');
 
-const io = require('socket.io-client');
-const socket = io('http://api.hollaex.com/realtime');
 
 class HollaEx  {
 	constructor(opts = {
@@ -10,6 +10,7 @@ class HollaEx  {
 		accessToken: ''
 	}) {
 		this._url = opts.apiURL + opts.baseURL || 'https://api.hollaex.com/v0'
+		this._wsUrl = opts.apiURL || 'https://api.hollaex.com'
 		this._accessToken = opts.accessToken || ''
 		this._headers = {
 			'content-type': 'application/json',
@@ -17,26 +18,6 @@ class HollaEx  {
 			Authorization: 'Bearer ' + this._accessToken
 		}
 	}
-
-	connectSocket() {
-		this.publicSocket = io(`https://api.hollaex.com/realtime`, {
-			// if you dont pass anything it will return all symbols
-			query: {
-				symbol: 'btc-eur'
-			}
-		});
-		this.publicSocket.on('trades', (data) => {
-			console.log(data)
-		});
-		this.publicSocket.on('orderbook', (data) => {
-			console.log(data)
-		});
-	}
-
-	connectPrivateSocket() {
-		// need to pass user token in the query
-	}
-
 
 	/* Public */
 
@@ -106,6 +87,94 @@ class HollaEx  {
 		let data = {symbol};
 		return createRequest('DELETE',`${this._url}/user/orders?symbol=${symbol}` , this._headers);
 	}
+	/*********************************************************************************************************
+
+	//Websocket
+	/* Public */
+
+	// Real Time Connect
+	connectRealTimeSocket(symbol) {
+		if(symbol){
+			this.publicSocket = io(`${this._wsUrl}/realtime`, {
+				// if you dont pass anything it will return all symbols
+				query: { symbol }
+			});
+			console.log('connecting realtime', symbol);
+		} else {
+			this.publicSocket = io(`${this._wsUrl}/realtime`);
+			console.log('connecting realtime all symbols');
+		}
+	}
+
+	// Real Time Trades
+	socketRealTimeTrades(){
+		this.publicSocket.on('trades', (data) => {
+			console.log(data)
+		});
+		console.log('getting real time trades');
+	}
+
+	// Real Time Orderbook
+	socketRealTimeOrderbook(){
+		this.publicSocket.on('orderbook', (data) => {
+			console.log(data)
+		});
+		console.log('getting real time orderbooks')
+	}
+
+	// Real Time Ticker
+	socketRealTimeTicker(){
+		this.publicSocket.on('ticker', (data) => {
+			console.log(data)
+		});
+		console.log('getting real time ticker')
+	}
+
+	// Chart Connect
+	connectChartSocket(symbol) {
+		if(symbol){
+			this.publicSocket = io(`${this._wsUrl}/chart`, {
+				// if you dont pass anything it will return all symbols
+				query: { symbol }
+			});
+			console.log('connecting chart', symbol);
+		} else {
+			this.publicSocket = io(`${this._wsUrl}/chart`);
+			console.log('connecting all symbols');
+		}
+	}
+
+	// Chart data
+	socketChartData(){
+		this.publicSocket.on('data', (data) => {
+			console.log(data)
+		});
+		console.log('getting chart data');
+	}
+
+
+
+
+
+	/*********************************************************************************************************
+	/* Private */
+
+	realTime(){
+		this.privateSocket = io(`${this._wsUrl}/realtime`, {
+			query: {
+				token: `Bearer ${this._accessToken}`
+			}
+		});
+		// privateSocket.on('connection', ()=> {
+			console.log('connected')
+		// });
+
+		this.privateSocket.on('trades', ({ action, data }) => {
+			console.log('trades', action, data);
+			console.log(data);
+		});
+	}
+
 
 
 	/********************************************************************* TO BE ADDED MORE... */
