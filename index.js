@@ -92,8 +92,19 @@ class HollaEx  {
 	//Websocket
 	/* Public */
 
+	// Check current socket connection
+	checkConnection(){
+		if(this.publicSocket|| this.privateSocket){
+			console.log(this.publicSocket || this.privateSocket);
+			this.publicSocket ? console.log(`connected to ${this.publicSocket['nsp']}`)
+				: console.log(`connected to ${this.privateSocket['nsp']}`);
+		} else {
+			console.log('no socket connection established');
+		}
+	}
+
 	// Connect ultimate socket
-	connectSocket(event, symbol){
+	connectPublicSocket(event, symbol){
 		const realtime = ['trades', 'orderbook', 'ticker'];
 		const chart = ['data', 'ticker'];
 
@@ -127,98 +138,83 @@ class HollaEx  {
 		}
 	}
 
-	// Check current socket connection
-	checkConnection(){
-		if(this.publicSocket){
-			console.log(this.publicSocket);
-			console.log(`connected to ${this.publicSocket['nsp']}`);
-		} else {
-			console.log('no socket connection established');
-		}
-	}
 
-
-	// Real Time Connect
-	connectRealTimeSocket(symbol) {
-		if(symbol){
-			this.publicSocket = io(`${this._wsUrl}/realtime`, {
-				// if you dont pass anything it will return all symbols
-				query: { symbol }
-			});
-			console.log('connecting realtime', symbol);
-		} else {
-			this.publicSocket = io(`${this._wsUrl}/realtime`);
-			console.log('connecting realtime all symbols');
-		}
-	}
-
-	// Real Time Trades
-	socketRealTimeTrades(){
-		this.publicSocket.on('trades', (data) => {
-			console.log(data)
-		});
-		console.log('getting real time trades');
-	}
-
-	// Real Time Orderbook
-	socketRealTimeOrderbook(){
-		this.publicSocket.on('orderbook', (data) => {
-			console.log(data)
-		});
-		console.log('getting real time orderbooks')
-	}
-
-	// Real Time Ticker
-	socketRealTimeTicker(){
-		this.publicSocket.on('ticker', (data) => {
-			console.log(data)
-		});
-		console.log('getting real time ticker')
-	}
-
-	// Chart Connect
-	connectChartSocket(symbol) {
-		if(symbol){
-			this.publicSocket = io(`${this._wsUrl}/chart`, {
-				// if you dont pass anything it will return all symbols
-				query: { symbol }
-			});
-			console.log('connecting chart', symbol);
-		} else {
-			this.publicSocket = io(`${this._wsUrl}/chart`);
-			console.log('connecting all symbols');
-		}
-	}
-
-	// Chart data
-	socketChartData(){
-		this.publicSocket.on('data', (data) => {
-			console.log(data)
-		});
-		console.log('getting chart data');
-	}
-
-
-
+	// // Real Time Connect
+	// connectRealTimeSocket(symbol) {
+	// 	if(symbol){
+	// 		this.publicSocket = io(`${this._wsUrl}/realtime`, {
+	// 			// if you dont pass anything it will return all symbols
+	// 			query: { symbol }
+	// 		});
+	// 		console.log('connecting realtime', symbol);
+	// 	} else {
+	// 		this.publicSocket = io(`${this._wsUrl}/realtime`);
+	// 		console.log('connecting realtime all symbols');
+	// 	}
+	// }
+	//
+	// // Real Time Trades
+	// socketRealTimeTrades(){
+	// 	this.publicSocket.on('trades', (data) => {
+	// 		console.log(data)
+	// 	});
+	// 	console.log('getting real time trades');
+	// }
+	//
+	// // Real Time Orderbook
+	// socketRealTimeOrderbook(){
+	// 	this.publicSocket.on('orderbook', (data) => {
+	// 		console.log(data)
+	// 	});
+	// 	console.log('getting real time orderbooks')
+	// }
+	//
+	// // Real Time Ticker
+	// socketRealTimeTicker(){
+	// 	this.publicSocket.on('ticker', (data) => {
+	// 		console.log(data)
+	// 	});
+	// 	console.log('getting real time ticker')
+	// }
+	//
+	// // Chart Connect
+	// connectChartSocket(symbol) {
+	// 	if(symbol){
+	// 		this.publicSocket = io(`${this._wsUrl}/chart`, {
+	// 			// if you dont pass anything it will return all symbols
+	// 			query: { symbol }
+	// 		});
+	// 		console.log('connecting chart', symbol);
+	// 	} else {
+	// 		this.publicSocket = io(`${this._wsUrl}/chart`);
+	// 		console.log('connecting all symbols');
+	// 	}
+	// }
+	//
+	// // Chart data
+	// socketChartData(){
+	// 	this.publicSocket.on('data', (data) => {
+	// 		console.log(data)
+	// 	});
+	// 	console.log('getting chart data');
+	// }
 
 
 	/*********************************************************************************************************
 	/* Private */
 
-	realTime(){
-		this.privateSocket = io(`${this._wsUrl}/realtime`, {
+	connectPrivateSocket(event){
+		this.privateSocket = io(`${this._wsUrl}/user`, {
 			query: {
 				token: `Bearer ${this._accessToken}`
 			}
 		});
-		// privateSocket.on('connection', ()=> {
-			console.log('connected')
-		// });
 
-		this.privateSocket.on('trades', ({ action, data }) => {
-			console.log('trades', action, data);
+		this.privateSocket.on(event, (data) => {
 			console.log(data);
 		});
+		console.log(`connecting to ${event}`)
+
 	}
 
 

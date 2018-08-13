@@ -37,10 +37,13 @@ var client = new HollaEx({accessToken : ACCESS_TOKEN});
 // 		console.log("Get User Trades: ", data)
 // 	});
 
-client.connectSocket('trades');
-// client.connectSocket('data', 'btc-eur');
-// client.connectSocket('orderbook', 'btc-eur');
-client.checkConnection();
+// client.connectPublicSocket('trades');
+// client.connectPublicSocket('data', 'btc-eur');
+// client.connectPublicSocket('orderbook', 'btc-eur');
+// client.checkConnection();
+
+//connect to private socket
+client.connectPrivateSocket('update');
 
 
 // client.connectChartSocket();
