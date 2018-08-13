@@ -92,6 +92,52 @@ class HollaEx  {
 	//Websocket
 	/* Public */
 
+	// Connect ultimate socket
+	connectSocket(event, symbol){
+		const realtime = ['trades', 'orderbook', 'ticker'];
+		const chart = ['data', 'ticker'];
+
+		if(realtime.includes(event)){
+			if(symbol){
+				this.publicSocket = io(`${this._wsUrl}/realtime`, {
+					// if you dont pass anything it will return all symbols
+					query: { symbol }
+				});
+			} else {
+				this.publicSocket = io(`${this._wsUrl}/realtime`);
+			}
+			this.publicSocket.on(event, (data) => {
+				console.log(data);
+			});
+			console.log(`getting real time ${event} for ${symbol?symbol:'all symbols'}`);
+		}
+		if(chart.includes(event)){
+			if(symbol){
+				this.publicSocket = io(`${this._wsUrl}/chart`, {
+					// if you dont pass anything it will return all symbols
+					query: { symbol }
+				});
+			} else {
+				this.publicSocket = io(`${this._wsUrl}/chart`);
+			}
+			this.publicSocket.on(event, (data) => {
+				console.log(data);
+			});
+			console.log(`getting chart ${event} for ${symbol?symbol:'all symbols'}`);
+		}
+	}
+
+	// Check current socket connection
+	checkConnection(){
+		if(this.publicSocket){
+			console.log(this.publicSocket);
+			console.log(`connected to ${this.publicSocket['nsp']}`);
+		} else {
+			console.log('no socket connection established');
+		}
+	}
+
+
 	// Real Time Connect
 	connectRealTimeSocket(symbol) {
 		if(symbol){

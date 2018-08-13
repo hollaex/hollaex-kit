@@ -37,11 +37,17 @@ var client = new HollaEx({accessToken : ACCESS_TOKEN});
 // 		console.log("Get User Trades: ", data)
 // 	});
 
-client.connectChartSocket();
-client.socketChartData();
-// client.realTimeTrades();
-// client.realTimeOrderbook();
-// client.realTimeTicker();
+client.connectSocket('trades');
+// client.connectSocket('data', 'btc-eur');
+// client.connectSocket('orderbook', 'btc-eur');
+client.checkConnection();
+
+
+// client.connectChartSocket();
+// client.socketChartData();
+// client.socketRealTimeTrades
+// client.socketRealTimeOrderbook();
+// client.socketRealTimeTicker();
 
 
 // client.getLiveTrades('btc-eur');
