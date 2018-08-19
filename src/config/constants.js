@@ -1,8 +1,10 @@
 import config from './index';
 import {
 	formatBtcAmount,
+	formatBtcFullAmount,
 	formatFiatAmount,
-	formatEthAmount
+	formatEthAmount,
+	formatEthFullAmount
 } from '../utils/currency';
 
 import STRINGS from './localizedStrings';
@@ -281,7 +283,8 @@ export const CURRENCIES = {
 		fullName: STRINGS.BTC_FULLNAME,
 		shortName: STRINGS.BTC_SHORTNAME,
 		currencySymbol: 'B',
-		formatToCurrency: formatBtcAmount
+		formatToCurrency: formatBtcAmount,
+		formatToCurrencyFull: formatBtcFullAmount,
 	},
 	eth: {
 		symbol: 'eth',
@@ -289,7 +292,8 @@ export const CURRENCIES = {
 		fullName: STRINGS.ETH_FULLNAME,
 		shortName: STRINGS.ETH_SHORTNAME,
 		currencySymbol: 'E',
-		formatToCurrency: formatEthAmount
+		formatToCurrency: formatEthAmount,
+		formatToCurrencyFull: formatEthFullAmount,
 	},
 	fiat: {
 		symbol: 'fiat',
@@ -297,7 +301,8 @@ export const CURRENCIES = {
 		fullName: STRINGS.FIAT_FULLNAME,
 		shortName: STRINGS.FIAT_SHORTNAME,
 		currencySymbol: STRINGS.FIAT_CURRENCY_SYMBOL,
-		formatToCurrency: formatFiatAmount
+		formatToCurrency: formatFiatAmount,
+		formatToCurrencyFull: formatFiatAmount,
 	}
 };
 

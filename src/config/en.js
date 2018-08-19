@@ -570,6 +570,8 @@ export default {
 	FEES: 'Fees',
 	TIME: 'Time',
 	TIMESTAMP: 'Timestamp',
+	SEE_MORE: 'See more',
+	VIEW: 'View',
 	STATUS: 'Status',
 	AMOUNT: 'Amount',
 	COMPLETE: 'Complete',
