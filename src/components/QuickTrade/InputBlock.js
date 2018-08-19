@@ -7,7 +7,7 @@ import { CurrencyBall } from '../../components';
 
 import { minValue, maxValue } from '../../components/Form/validations';
 import { FieldError } from '../../components/Form/FormFields/FieldWrapper';
-import { FLEX_CENTER_CLASSES, ORDER_LIMITS, PAIRS, DEFAULT_PAIR } from '../../config/constants';
+import { FLEX_CENTER_CLASSES, ORDER_LIMITS, DEFAULT_PAIR } from '../../config/constants';
 
 import STRINGS from '../../config/localizedStrings';
 
@@ -30,13 +30,13 @@ class InputBlock extends Component {
 
 	componentDidMount() {
 		if (this.props.initialValue) {
-			this.setState({ value: this.props.initialValue, symbol: PAIRS[this.props.symbol] });
+			this.setState({ value: this.props.initialValue, symbol: this.props.symbol });
 		}
 	}
 
 	componentWillReceiveProps(nextProps) {
 		if (nextProps.symbol !== this.props.symbol) {
-			this.setState({ symbol: PAIRS[nextProps.symbol] });
+			this.setState({ symbol: nextProps.symbol });
 		}
 	}
 
