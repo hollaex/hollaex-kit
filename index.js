@@ -1,4 +1,7 @@
 var io = require('socket.io-client');
+const EventEmitter = require('events');
+
+class MyEmitter extends EventEmitter {}
 
 const  { createRequest } = require('./utils');
 
@@ -107,8 +110,10 @@ class HollaEx  {
 	connectPublicSocket(event, symbol){
 		const realtime = ['trades', 'orderbook', 'ticker'];
 		const chart = ['data', 'ticker'];
+		const myEmitter = new MyEmitter();
 
-		if(realtime.includes(event)){
+
+		if(realtime.includes(event)) {
 			if(symbol){
 				this.publicSocket = io(`${this._wsUrl}/realtime`, {
 					// if you dont pass anything it will return all symbols
@@ -118,7 +123,7 @@ class HollaEx  {
 				this.publicSocket = io(`${this._wsUrl}/realtime`);
 			}
 			this.publicSocket.on(event, (data) => {
-				console.log(data);
+				myEmitter.emit(event, data)
 			});
 			console.log(`getting real time ${event} for ${symbol?symbol:'all symbols'}`);
 		}
@@ -136,6 +141,7 @@ class HollaEx  {
 			});
 			console.log(`getting chart ${event} for ${symbol?symbol:'all symbols'}`);
 		}
+		return myEmitter;
 	}
 
 
