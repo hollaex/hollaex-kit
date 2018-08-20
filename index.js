@@ -96,52 +96,92 @@ class HollaEx  {
 	/* Public */
 
 	// Check current socket connection
-	checkConnection(){
-		if(this.publicSocket|| this.privateSocket){
-			console.log(this.publicSocket || this.privateSocket);
-			this.publicSocket ? console.log(`connected to ${this.publicSocket['nsp']}`)
-				: console.log(`connected to ${this.privateSocket['nsp']}`);
-		} else {
-			console.log('no socket connection established');
-		}
-	}
+	// checkConnection(){
+	// 	if(this.publicSocket|| this.privateSocket){
+	// 		console.log(this.publicSocket || this.privateSocket);
+	// 		this.publicSocket ? console.log(`connected to ${this.publicSocket['nsp']}`)
+	// 			: console.log(`connected to ${this.privateSocket['nsp']}`);
+	// 	} else {
+	// 		console.log('no socket connection established');
+	// 	}
+	// }
+	//
+	// // Connect ultimate socket
+	// connectPublicSocket(event, symbol){
+	// 	const realtime = ['trades', 'orderbook', 'ticker'];
+	// 	const chart = ['data', 'ticker'];
+	// 	const myEmitter = new MyEmitter();
+	//
+	//
+	// 	if(realtime.includes(event)) {
+	// 		if(symbol){
+	// 			this.publicSocket = io(`${this._wsUrl}/realtime`, {
+	// 				// if you dont pass anything it will return all symbols
+	// 				query: { symbol }
+	// 			});
+	// 		} else {
+	// 			this.publicSocket = io(`${this._wsUrl}/realtime`);
+	// 		}
+	// 		this.publicSocket.on(event, (data) => {
+	// 			myEmitter.emit(event, data)
+	// 		});
+	// 		console.log(`getting real time ${event} for ${symbol?symbol:'all symbols'}`);
+	// 	}
+	// 	if(chart.includes(event)){
+	// 		if(symbol){
+	// 			this.publicSocket = io(`${this._wsUrl}/chart`, {
+	// 				// if you dont pass anything it will return all symbols
+	// 				query: { symbol }
+	// 			});
+	// 		} else {
+	// 			this.publicSocket = io(`${this._wsUrl}/chart`);
+	// 		}
+	// 		this.publicSocket.on(event, (data) => {
+	// 			console.log(data);
+	// 		});
+	// 		console.log(`getting chart ${event} for ${symbol?symbol:'all symbols'}`);
+	// 	}
+	// 	return myEmitter;
+	// }
 
-	// Connect ultimate socket
-	connectPublicSocket(event, symbol){
-		const realtime = ['trades', 'orderbook', 'ticker'];
-		const chart = ['data', 'ticker'];
-		const myEmitter = new MyEmitter();
+	connectPublicSocket(eventArr){
+		eventArr.map(([event,symbol])=>{
+			console.log(event, symbol);
+			console.log('...');
+			const realtime = ['trades', 'orderbook', 'ticker'];
+			const chart = ['data', 'ticker'];
+			const myEmitter = new MyEmitter();
 
-
-		if(realtime.includes(event)) {
-			if(symbol){
-				this.publicSocket = io(`${this._wsUrl}/realtime`, {
-					// if you dont pass anything it will return all symbols
-					query: { symbol }
+			if(realtime.includes(event)) {
+				if(symbol){
+					this.publicSocket = io(`${this._wsUrl}/realtime`, {
+						// if you dont pass anything it will return all symbols
+						query: { symbol }
+					});
+				} else {
+					this.publicSocket = io(`${this._wsUrl}/realtime`);
+				}
+				this.publicSocket.on(event, (data) => {
+					myEmitter.emit(event, data)
 				});
-			} else {
-				this.publicSocket = io(`${this._wsUrl}/realtime`);
+				console.log(`getting real time ${event} for ${symbol?symbol:'all symbols'}`);
 			}
-			this.publicSocket.on(event, (data) => {
-				myEmitter.emit(event, data)
-			});
-			console.log(`getting real time ${event} for ${symbol?symbol:'all symbols'}`);
-		}
-		if(chart.includes(event)){
-			if(symbol){
-				this.publicSocket = io(`${this._wsUrl}/chart`, {
-					// if you dont pass anything it will return all symbols
-					query: { symbol }
+			if(chart.includes(event)){
+				if(symbol){
+					this.publicSocket = io(`${this._wsUrl}/chart`, {
+						// if you dont pass anything it will return all symbols
+						query: { symbol }
+					});
+				} else {
+					this.publicSocket = io(`${this._wsUrl}/chart`);
+				}
+				this.publicSocket.on(event, (data) => {
+					console.log(data);
 				});
-			} else {
-				this.publicSocket = io(`${this._wsUrl}/chart`);
+				console.log(`getting chart ${event} for ${symbol?symbol:'all symbols'}`);
 			}
-			this.publicSocket.on(event, (data) => {
-				console.log(data);
-			});
-			console.log(`getting chart ${event} for ${symbol?symbol:'all symbols'}`);
-		}
-		return myEmitter;
+			return myEmitter;
+		})
 	}
 
 
