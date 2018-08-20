@@ -5,19 +5,19 @@ require('dotenv').load();
 const ACCESS_TOKEN = process.env.ACCESS_TOKEN;
 var client = new HollaEx({accessToken : ACCESS_TOKEN});
 
-//Public rest API
-client.getTickers('btc-eur')
-	.then(res => {
-		let data = JSON.parse(res)
-		console.log("Get Ticker: ", data)
-	});
-
-//Private rest API
-client.getUser()
-	.then(res => {
-		let data = JSON.parse(res)
-		console.log("Get User: ", data)
-	});
+// //Public rest API
+// client.getTickers('btc-eur')
+// 	.then(res => {
+// 		let data = JSON.parse(res)
+// 		console.log("Get Ticker: ", data)
+// 	});
+//
+// //Private rest API
+// client.getUser()
+// 	.then(res => {
+// 		let data = JSON.parse(res)
+// 		console.log("Get User: ", data)
+// 	});
 
 // client.getDeposits()
 // 	.then(res => {
@@ -45,13 +45,13 @@ client.getUser()
 
 
 // connect to Public websocket
-const socket = client.connectPublicSocket('trades');
-socket.on('trades', (data) => {
+const socket = client.connectPublicSocket([['trades','btc-eur'], ['orderbook', 'eth-btc']]);
+socket.on('orderbook', (data) => {
 	console.log(data)
 })
 // client.connectPublicSocket('data', 'btc-eur');
 // client.connectPublicSocket('orderbook', 'btc-eur');
-client.checkConnection();
+// client.checkConnection();
 
 // client.connectRealTimeSocket();
 // client.socketChartData();
@@ -65,5 +65,5 @@ client.checkConnection();
 	// });
 
 
-//connect to Private socket
-client.connectPrivateSocket('wallet');
+// //connect to Private socket
+// client.connectPrivateSocket('wallet');
