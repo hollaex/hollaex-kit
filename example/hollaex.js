@@ -45,7 +45,10 @@ client.getUser()
 
 
 // connect to Public websocket
-client.connectPublicSocket('trades');
+const socket = client.connectPublicSocket('trades');
+socket.on('trades', (data) => {
+	console.log(data)
+})
 // client.connectPublicSocket('data', 'btc-eur');
 // client.connectPublicSocket('orderbook', 'btc-eur');
 client.checkConnection();
