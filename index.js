@@ -99,16 +99,17 @@ class HollaEx  {
 	checkConnection(){
 		if(this.publicSocket|| this.privateSocket){
 			console.log(this.publicSocket || this.privateSocket);
-			this.publicSocket ? console.log(`connected to ${this.publicSocket['nsp']}`)
-				: console.log(`connected to ${this.privateSocket['nsp']}`);
+			this.publicSocket ? console.log(`connected to public socket ${this.publicSocket['nsp']}`)
+				: console.log(`connected to private socket ${this.privateSocket['nsp']}`);
 		} else {
-			console.log('no socket connection established');
+			console.log('no socket connecting established');
 		}
 	}
 
-	connectPublicSocket(eventArr){
+	connectSocket(eventArr){
 		const realtime = ['trades', 'orderbook', 'ticker'];
-		const chart = ['data', 'chartTicker'];
+		const chart = ['chartData', 'chartTicker'];
+		const privateUser = ['privateUser', 'privateWallet', 'privateOrders', 'privateTrades', 'privateUpdate'];
 		const myEmitter = new MyEmitter();
 
 		const colonSeperated=[];
@@ -133,10 +134,11 @@ class HollaEx  {
 				this.publicSocket.on(event, (data) => {
 					myEmitter.emit(event, data)
 				});
-				console.log(`connection to real time ${event} for ${symbol?symbol:'all symbols'}`);
+				console.log(`connecting to real time ${event} for ${symbol?symbol:'all symbols'}`);
 			}
+
 			if(chart.includes(event)){
-				event === 'chartTicker' ? event = 'ticker' : null;
+				event = event.slice(5).toLowerCase();
 
 				if(symbol){
 					this.publicSocket = io(`${this._wsUrl}/chart`, {
@@ -149,7 +151,23 @@ class HollaEx  {
 				this.publicSocket.on(event, (data) => {
 					myEmitter.emit(event, data)
 				});
-				console.log(`connection to chart ${event} for ${symbol?symbol:'all symbols'}`);
+				console.log(`connecting to chart ${event} for ${symbol?symbol:'all symbols'}`);
+			}
+
+			if(privateUser.includes(event)){
+
+				event = event.slice(7).toLowerCase();
+
+				this.privateSocket = io(`${this._wsUrl}/user`, {
+					query: {
+						token: `Bearer ${this._accessToken}`
+					}
+				});
+
+				this.privateSocket.on(event, (data) => {
+					myEmitter.emit(event, data)
+				});
+				console.log(`connecting to private ${event}`);
 			}
 		})
 		return myEmitter;
@@ -220,19 +238,19 @@ class HollaEx  {
 	/*********************************************************************************************************
 	/* Private */
 
-	connectPrivateSocket(event){
-		this.privateSocket = io(`${this._wsUrl}/user`, {
-			query: {
-				token: `Bearer ${this._accessToken}`
-			}
-		});
-
-		this.privateSocket.on(event, (data) => {
-			console.log(data);
-		});
-		console.log(`connecting to ${event}`)
-
-	}
+	// connectPrivateSocket(event){
+	// 	this.privateSocket = io(`${this._wsUrl}/user`, {
+	// 		query: {
+	// 			token: `Bearer ${this._accessToken}`
+	// 		}
+	// 	});
+	//
+	// 	this.privateSocket.on(event, (data) => {
+	// 		console.log(data);
+	// 	});
+	// 	console.log(`connecting to ${event}`)
+	//
+	// }
 
 
 

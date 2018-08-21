@@ -44,14 +44,22 @@ var client = new HollaEx({accessToken : ACCESS_TOKEN});
 // 	});
 
 
-// connect to Public websocket
-// const socket = client.connectPublicSocket([['trades','btc-eur'], ['data', 'eth-btc']]);
-const socket = client.connectPublicSocket(['trades:btc-eur', 'data:eth-btc']);
-// const socket = client.connectPublicSocket('trades','btc-eur');
+// connect to websocket
+/*
+	events : trades, orderbook, ticker,chartData, chartTicker,privateUser, privateWallet, privateOrders
+
+	symbols : btc-eur, eth-btc, eth-eur
+*/
+
+const socket = client.connectSocket(['trades:btc-eur', 'chartData:eth-btc', 'privateUser']);
+
 // client.checkConnection();
 socket.on('trades', (data) => {
 	console.log(data)
 })
-socket.on('data', (data) => {
+socket.on('user', (data) => {
 	console.log(data)
 })
+// socket.on('data', (data) => {
+// 	console.log(data)
+// })
