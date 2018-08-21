@@ -96,61 +96,29 @@ class HollaEx  {
 	/* Public */
 
 	// Check current socket connection
-	// checkConnection(){
-	// 	if(this.publicSocket|| this.privateSocket){
-	// 		console.log(this.publicSocket || this.privateSocket);
-	// 		this.publicSocket ? console.log(`connected to ${this.publicSocket['nsp']}`)
-	// 			: console.log(`connected to ${this.privateSocket['nsp']}`);
-	// 	} else {
-	// 		console.log('no socket connection established');
-	// 	}
-	// }
-	//
-	// // Connect ultimate socket
-	// connectPublicSocket(event, symbol){
-	// 	const realtime = ['trades', 'orderbook', 'ticker'];
-	// 	const chart = ['data', 'ticker'];
-	// 	const myEmitter = new MyEmitter();
-	//
-	//
-	// 	if(realtime.includes(event)) {
-	// 		if(symbol){
-	// 			this.publicSocket = io(`${this._wsUrl}/realtime`, {
-	// 				// if you dont pass anything it will return all symbols
-	// 				query: { symbol }
-	// 			});
-	// 		} else {
-	// 			this.publicSocket = io(`${this._wsUrl}/realtime`);
-	// 		}
-	// 		this.publicSocket.on(event, (data) => {
-	// 			myEmitter.emit(event, data)
-	// 		});
-	// 		console.log(`getting real time ${event} for ${symbol?symbol:'all symbols'}`);
-	// 	}
-	// 	if(chart.includes(event)){
-	// 		if(symbol){
-	// 			this.publicSocket = io(`${this._wsUrl}/chart`, {
-	// 				// if you dont pass anything it will return all symbols
-	// 				query: { symbol }
-	// 			});
-	// 		} else {
-	// 			this.publicSocket = io(`${this._wsUrl}/chart`);
-	// 		}
-	// 		this.publicSocket.on(event, (data) => {
-	// 			console.log(data);
-	// 		});
-	// 		console.log(`getting chart ${event} for ${symbol?symbol:'all symbols'}`);
-	// 	}
-	// 	return myEmitter;
-	// }
+	checkConnection(){
+		if(this.publicSocket|| this.privateSocket){
+			console.log(this.publicSocket || this.privateSocket);
+			this.publicSocket ? console.log(`connected to ${this.publicSocket['nsp']}`)
+				: console.log(`connected to ${this.privateSocket['nsp']}`);
+		} else {
+			console.log('no socket connection established');
+		}
+	}
 
 	connectPublicSocket(eventArr){
-		eventArr.map(([event,symbol])=>{
-			console.log(event, symbol);
-			console.log('...');
-			const realtime = ['trades', 'orderbook', 'ticker'];
-			const chart = ['data', 'ticker'];
-			const myEmitter = new MyEmitter();
+		const realtime = ['trades', 'orderbook', 'ticker'];
+		const chart = ['data', 'chartTicker'];
+		const myEmitter = new MyEmitter();
+
+		const colonSeperated=[];
+		eventArr.map(oneEvent=>{
+			 colonSeperated.push(oneEvent.split(":"));
+		 });
+
+		console.log(colonSeperated);
+
+		colonSeperated.map(([event,symbol])=>{
 
 			if(realtime.includes(event)) {
 				if(symbol){
@@ -161,12 +129,15 @@ class HollaEx  {
 				} else {
 					this.publicSocket = io(`${this._wsUrl}/realtime`);
 				}
+
 				this.publicSocket.on(event, (data) => {
 					myEmitter.emit(event, data)
 				});
-				console.log(`getting real time ${event} for ${symbol?symbol:'all symbols'}`);
+				console.log(`connection to real time ${event} for ${symbol?symbol:'all symbols'}`);
 			}
 			if(chart.includes(event)){
+				event === 'chartTicker' ? event = 'ticker' : null;
+
 				if(symbol){
 					this.publicSocket = io(`${this._wsUrl}/chart`, {
 						// if you dont pass anything it will return all symbols
@@ -176,12 +147,12 @@ class HollaEx  {
 					this.publicSocket = io(`${this._wsUrl}/chart`);
 				}
 				this.publicSocket.on(event, (data) => {
-					console.log(data);
+					myEmitter.emit(event, data)
 				});
-				console.log(`getting chart ${event} for ${symbol?symbol:'all symbols'}`);
+				console.log(`connection to chart ${event} for ${symbol?symbol:'all symbols'}`);
 			}
-			return myEmitter;
 		})
+		return myEmitter;
 	}
 
 
