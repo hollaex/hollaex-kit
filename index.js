@@ -24,49 +24,64 @@ class HollaEx  {
 
 	/* Public */
 
-	// Ticker
-	getTickers(symbol) {
-		return createRequest('GET', `${this._url}/ticker?symbol=${symbol}`, this._headers);
+ /* events: ticker, orderbooks, trades */
+
+	getPublicAPI(event, symbol){
+		return createRequest('GET', `${this._url}/${event}?symbol=${symbol}`, this._headers);
 	}
 
-	// Orderbook
-	getOrderbooks(symbol) {
-		return createRequest ('GET' , `${this._url}/orderbooks?symbol=${symbol}` , this._headers);
-	}
-
-	// Trades
-	getTrades(symbol) {
-		return createRequest ('GET', `${this._url}/trades?symbol=${symbol}` , this._headers )
-	}
+	// // Ticker
+	// getTickers(symbol) {
+	// 	return createRequest('GET', `${this._url}/ticker?symbol=${symbol}`, this._headers);
+	// }
+	//
+	// // Orderbook
+	// getOrderbooks(symbol) {
+	// 	return createRequest ('GET' , `${this._url}/orderbooks?symbol=${symbol}` , this._headers);
+	// }
+	//
+	// // Trades
+	// getTrades(symbol) {
+	// 	return createRequest ('GET', `${this._url}/trades?symbol=${symbol}` , this._headers )
+	// }
 
 	/*********************************************************************************************************
 
 	/* Private */
 
-	// User
-	getUser() {
-		return createRequest('GET', `${this._url}/user`, this._headers);
+	/* events: user,balance,deposits,withdrawals,trades */
+	getPrivateAPI(event){
+		if (event === 'user'){
+			return createRequest('GET', `${this._url}/user`, this._headers);
+		} else {
+			return createRequest('GET', `${this._url}/user/${event}`, this._headers);
+		}
 	}
 
-	// Balance
-	getBalance() {
-		return createRequest('GET',`${this._url}/user/balance` , this._headers);
-	}
-
-	// Deposits
-	getDeposits() {
-		return createRequest('GET',`${this._url}/user/deposits` , this._headers);
-	}
-
-	// Withdrawal
-	getWithdrawals() {
-		return createRequest('GET',`${this._url}/user/withdrawals` , this._headers);
-	}
-
-	// Trades
-	getUserTrades() {
-		return createRequest('GET',`${this._url}/user/trades` , this._headers);
-	}
+	// // User
+	// getUser() {
+	// 	return createRequest('GET', `${this._url}/user`, this._headers);
+	// }
+	//
+	// // Balance
+	// getBalance() {
+	// 	return createRequest('GET',`${this._url}/user/balance` , this._headers);
+	// }
+	//
+	// // Deposits
+	// getDeposits() {
+	// 	return createRequest('GET',`${this._url}/user/deposits` , this._headers);
+	// }
+	//
+	// // Withdrawal
+	// getWithdrawals() {
+	// 	return createRequest('GET',`${this._url}/user/withdrawals` , this._headers);
+	// }
+	//
+	// // Trades
+	// getUserTrades() {
+	// 	return createRequest('GET',`${this._url}/user/trades` , this._headers);
+	// }
 
 	// Orders
 	getOrder(orderId) {

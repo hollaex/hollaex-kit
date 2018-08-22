@@ -5,7 +5,14 @@ require('dotenv').load();
 const ACCESS_TOKEN = process.env.ACCESS_TOKEN;
 var client = new HollaEx({accessToken : ACCESS_TOKEN});
 
-// //Public rest API
+//Public rest API
+
+client.getPublicAPI('trades', 'btc-eur')
+	.then(res => {
+		let data = JSON.parse(res)
+		console.log("Get Ticker: ", data)
+	});
+
 // client.getTickers('btc-eur')
 // 	.then(res => {
 // 		let data = JSON.parse(res)
@@ -51,15 +58,15 @@ var client = new HollaEx({accessToken : ACCESS_TOKEN});
 	symbols : btc-eur, eth-btc, eth-eur
 */
 
-const socket = client.connectSocket(['trades:btc-eur', 'chartData:eth-btc', 'privateUser']);
-
-// client.checkConnection();
-socket.on('trades', (data) => {
-	console.log(data)
-})
-socket.on('user', (data) => {
-	console.log(data)
-})
+// const socket = client.connectSocket(['trades:btc-eur', 'chartData:eth-btc', 'privateUser']);
+//
+// // client.checkConnection();
+// socket.on('trades', (data) => {
+// 	console.log(data)
+// })
+// socket.on('user', (data) => {
+// 	console.log(data)
+// })
 // socket.on('data', (data) => {
 // 	console.log(data)
 // })
