@@ -1,8 +1,10 @@
+var io = require('socket.io-client');
+const EventEmitter = require('events');
+
+class MyEmitter extends EventEmitter {}
+
 const  { createRequest } = require('./utils');
 
-
-const io = require('socket.io-client');
-const socket = io.connect('https://api.exir.tech/realtime');
 
 class HollaEx  {
 	constructor(opts = {
@@ -11,6 +13,7 @@ class HollaEx  {
 		accessToken: ''
 	}) {
 		this._url = opts.apiURL + opts.baseURL || 'https://api.hollaex.com/v0'
+		this._wsUrl = opts.apiURL || 'https://api.hollaex.com'
 		this._accessToken = opts.accessToken || ''
 		this._headers = {
 			'content-type': 'application/json',
@@ -18,19 +21,6 @@ class HollaEx  {
 			Authorization: 'Bearer ' + this._accessToken
 		}
 	}
-	connectSocket(){
-		socket.on('connect', function(){
-			console.log('hello');
-			// console.log(socket);
-
-		});
-			console.log(socket);
-
-
-	}
-
-
-
 
 	/* Public */
 
@@ -100,6 +90,168 @@ class HollaEx  {
 		let data = {symbol};
 		return createRequest('DELETE',`${this._url}/user/orders?symbol=${symbol}` , this._headers);
 	}
+	/*********************************************************************************************************
+
+	//Websocket
+	/* Public */
+
+	// Check current socket connection
+	checkConnection(){
+		if(this.publicSocket|| this.privateSocket){
+			console.log(this.publicSocket || this.privateSocket);
+			this.publicSocket ? console.log(`connected to public socket ${this.publicSocket['nsp']}`)
+				: console.log(`connected to private socket ${this.privateSocket['nsp']}`);
+		} else {
+			console.log('no socket connecting established');
+		}
+	}
+
+	connectSocket(eventArr){
+		const realtime = ['trades', 'orderbook', 'ticker'];
+		const chart = ['chartData', 'chartTicker'];
+		const privateUser = ['privateUser', 'privateWallet', 'privateOrders', 'privateTrades', 'privateUpdate'];
+		const myEmitter = new MyEmitter();
+
+		const colonSeperated=[];
+		eventArr.map(oneEvent=>{
+			 colonSeperated.push(oneEvent.split(":"));
+		 });
+
+		console.log(colonSeperated);
+
+		colonSeperated.map(([event,symbol])=>{
+
+			if(realtime.includes(event)) {
+				if(symbol){
+					this.publicSocket = io(`${this._wsUrl}/realtime`, {
+						// if you dont pass anything it will return all symbols
+						query: { symbol }
+					});
+				} else {
+					this.publicSocket = io(`${this._wsUrl}/realtime`);
+				}
+
+				this.publicSocket.on(event, (data) => {
+					myEmitter.emit(event, data)
+				});
+				console.log(`connecting to real time ${event} for ${symbol?symbol:'all symbols'}`);
+			}
+
+			if(chart.includes(event)){
+				event = event.slice(5).toLowerCase();
+
+				if(symbol){
+					this.publicSocket = io(`${this._wsUrl}/chart`, {
+						// if you dont pass anything it will return all symbols
+						query: { symbol }
+					});
+				} else {
+					this.publicSocket = io(`${this._wsUrl}/chart`);
+				}
+				this.publicSocket.on(event, (data) => {
+					myEmitter.emit(event, data)
+				});
+				console.log(`connecting to chart ${event} for ${symbol?symbol:'all symbols'}`);
+			}
+
+			if(privateUser.includes(event)){
+
+				event = event.slice(7).toLowerCase();
+
+				this.privateSocket = io(`${this._wsUrl}/user`, {
+					query: {
+						token: `Bearer ${this._accessToken}`
+					}
+				});
+
+				this.privateSocket.on(event, (data) => {
+					myEmitter.emit(event, data)
+				});
+				console.log(`connecting to private ${event}`);
+			}
+		})
+		return myEmitter;
+	}
+
+
+	// // Real Time Connect
+	// connectRealTimeSocket(symbol) {
+	// 	if(symbol){
+	// 		this.publicSocket = io(`${this._wsUrl}/realtime`, {
+	// 			// if you dont pass anything it will return all symbols
+	// 			query: { symbol }
+	// 		});
+	// 		console.log('connecting realtime', symbol);
+	// 	} else {
+	// 		this.publicSocket = io(`${this._wsUrl}/realtime`);
+	// 		console.log('connecting realtime all symbols');
+	// 	}
+	// }
+	//
+	// // Real Time Trades
+	// socketRealTimeTrades(){
+	// 	this.publicSocket.on('trades', (data) => {
+	// 		console.log(data)
+	// 	});
+	// 	console.log('getting real time trades');
+	// }
+	//
+	// // Real Time Orderbook
+	// socketRealTimeOrderbook(){
+	// 	this.publicSocket.on('orderbook', (data) => {
+	// 		console.log(data)
+	// 	});
+	// 	console.log('getting real time orderbooks')
+	// }
+	//
+	// // Real Time Ticker
+	// socketRealTimeTicker(){
+	// 	this.publicSocket.on('ticker', (data) => {
+	// 		console.log(data)
+	// 	});
+	// 	console.log('getting real time ticker')
+	// }
+	//
+	// // Chart Connect
+	// connectChartSocket(symbol) {
+	// 	if(symbol){
+	// 		this.publicSocket = io(`${this._wsUrl}/chart`, {
+	// 			// if you dont pass anything it will return all symbols
+	// 			query: { symbol }
+	// 		});
+	// 		console.log('connecting chart', symbol);
+	// 	} else {
+	// 		this.publicSocket = io(`${this._wsUrl}/chart`);
+	// 		console.log('connecting all symbols');
+	// 	}
+	// }
+	//
+	// // Chart data
+	// socketChartData(){
+	// 	this.publicSocket.on('data', (data) => {
+	// 		console.log(data)
+	// 	});
+	// 	console.log('getting chart data');
+	// }
+
+
+	/*********************************************************************************************************
+	/* Private */
+
+	// connectPrivateSocket(event){
+	// 	this.privateSocket = io(`${this._wsUrl}/user`, {
+	// 		query: {
+	// 			token: `Bearer ${this._accessToken}`
+	// 		}
+	// 	});
+	//
+	// 	this.privateSocket.on(event, (data) => {
+	// 		console.log(data);
+	// 	});
+	// 	console.log(`connecting to ${event}`)
+	//
+	// }
+
 
 
 	/********************************************************************* TO BE ADDED MORE... */
