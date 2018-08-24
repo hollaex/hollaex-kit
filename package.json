@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
+    "bluebird": "^3.5.1",
     "dotenv": "^6.0.0",
     "request": "^2.87.0",
     "request-promise": "^4.2.2",

@@ -7,11 +7,36 @@ var client = new HollaEx({accessToken : ACCESS_TOKEN});
 
 //Public rest API
 
-client.getPublicAPI('trades', 'btc-eur')
+client.getPublicAPI(['ticker:btc-eur', 'trades:eth-btc', 'orderbooks:btc-eur'])
 	.then(res => {
-		let data = JSON.parse(res)
-		console.log("Get Ticker: ", data)
+		res.map(datum=>{
+			const data=JSON.parse(datum);
+			console.log(data);
+		})
 	});
+
+	client.getPrivateAPI(['user', 'balance'])
+		.then(res => {
+			res.map(datum=>{
+				const data=JSON.parse(datum);
+				console.log(data);
+			})
+		});
+
+// const data = client.allRequest([['publicAPI', 'ticker:btc-eur', 'trades:eth-btc', 'orderbooks:btc-eur'], ['privateAPI','user','balance']])
+// 	.then(res => {
+// 		res.map(array=>{
+// 			array.map(datum => {
+// 				const data=JSON.parse(datum);
+// 				console.log(data);
+// 			})
+// 		})
+// 	});
+//
+// 	data.on('trades', (data) => {
+// 		console.log(data)
+// 	})
+
 
 // client.getTickers('btc-eur')
 // 	.then(res => {
@@ -59,8 +84,7 @@ client.getPublicAPI('trades', 'btc-eur')
 */
 
 // const socket = client.connectSocket(['trades:btc-eur', 'chartData:eth-btc', 'privateUser']);
-//
-// // client.checkConnection();
+// client.checkConnection();
 // socket.on('trades', (data) => {
 // 	console.log(data)
 // })

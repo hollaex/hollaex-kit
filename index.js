@@ -1,3 +1,4 @@
+var Promise = require('bluebird');
 var io = require('socket.io-client');
 const EventEmitter = require('events');
 
@@ -22,12 +23,36 @@ class HollaEx  {
 		}
 	}
 
+	/* Make any request */
+	/* types: publicAPI, privateAPI, socket */
+
+	allRequest(allEvents){
+		const promises = allEvents.map(([type, ...events])=>{
+			if(type === 'publicAPI'){
+				this.getPublicAPI(events);
+			} else if (type === 'privateAPI'){
+				this.getPrivateAPI(events);
+			} else if (type === 'socket'){
+				this.connectSocket(events);
+			}
+		})
+		return Promise.all(promises);
+	}
+
+
 	/* Public */
 
  /* events: ticker, orderbooks, trades */
 
-	getPublicAPI(event, symbol){
-		return createRequest('GET', `${this._url}/${event}?symbol=${symbol}`, this._headers);
+	getPublicAPI(events){
+		const eventArr = events.map(oneEvent=>{
+			 return oneEvent.split(":");
+		 });
+		const promises = eventArr.map(([event, symbol])=>{
+			console.log('getting', symbol, event);
+			return createRequest('GET', `${this._url}/${event}?symbol=${symbol}`, this._headers);
+		});
+		return Promise.all(promises);
 	}
 
 	// // Ticker
@@ -50,12 +75,16 @@ class HollaEx  {
 	/* Private */
 
 	/* events: user,balance,deposits,withdrawals,trades */
-	getPrivateAPI(event){
-		if (event === 'user'){
-			return createRequest('GET', `${this._url}/user`, this._headers);
-		} else {
-			return createRequest('GET', `${this._url}/user/${event}`, this._headers);
-		}
+	getPrivateAPI(events){
+		const promises = events.map(event=>{
+			console.log('getting', event);
+			if (event === 'user'){
+				return createRequest('GET', `${this._url}/user`, this._headers);
+			} else {
+				return createRequest('GET', `${this._url}/user/${event}`, this._headers);
+			}
+		});
+		return Promise.all(promises);
 	}
 
 	// // User
@@ -110,32 +139,17 @@ class HollaEx  {
 	//Websocket
 	/* Public */
 
-	// Check current socket connection
-	checkConnection(){
-		if(this.publicSocket|| this.privateSocket){
-			console.log(this.publicSocket || this.privateSocket);
-			this.publicSocket ? console.log(`connected to public socket ${this.publicSocket['nsp']}`)
-				: console.log(`connected to private socket ${this.privateSocket['nsp']}`);
-		} else {
-			console.log('no socket connecting established');
-		}
-	}
-
-	connectSocket(eventArr){
+	connectSocket(events){
 		const realtime = ['trades', 'orderbook', 'ticker'];
 		const chart = ['chartData', 'chartTicker'];
 		const privateUser = ['privateUser', 'privateWallet', 'privateOrders', 'privateTrades', 'privateUpdate'];
 		const myEmitter = new MyEmitter();
 
-		const colonSeperated=[];
-		eventArr.map(oneEvent=>{
-			 colonSeperated.push(oneEvent.split(":"));
+		const eventArr = events.map(oneEvent=>{
+			 return oneEvent.split(":");
 		 });
 
-		console.log(colonSeperated);
-
-		colonSeperated.map(([event,symbol])=>{
-
+		eventArr.map(([event,symbol])=>{
 			if(realtime.includes(event)) {
 				if(symbol){
 					this.publicSocket = io(`${this._wsUrl}/realtime`, {
@@ -145,16 +159,13 @@ class HollaEx  {
 				} else {
 					this.publicSocket = io(`${this._wsUrl}/realtime`);
 				}
-
 				this.publicSocket.on(event, (data) => {
 					myEmitter.emit(event, data)
 				});
 				console.log(`connecting to real time ${event} for ${symbol?symbol:'all symbols'}`);
 			}
-
 			if(chart.includes(event)){
 				event = event.slice(5).toLowerCase();
-
 				if(symbol){
 					this.publicSocket = io(`${this._wsUrl}/chart`, {
 						// if you dont pass anything it will return all symbols
@@ -170,15 +181,12 @@ class HollaEx  {
 			}
 
 			if(privateUser.includes(event)){
-
 				event = event.slice(7).toLowerCase();
-
 				this.privateSocket = io(`${this._wsUrl}/user`, {
 					query: {
 						token: `Bearer ${this._accessToken}`
 					}
 				});
-
 				this.privateSocket.on(event, (data) => {
 					myEmitter.emit(event, data)
 				});
@@ -267,6 +275,17 @@ class HollaEx  {
 	//
 	// }
 
+
+		// Check current socket connection
+		checkConnection(){
+			if(this.publicSocket|| this.privateSocket){
+				console.log(this.publicSocket || this.privateSocket);
+				this.publicSocket ? console.log(`connected to public socket ${this.publicSocket['nsp']}`)
+					: console.log(`connected to private socket ${this.privateSocket['nsp']}`);
+			} else {
+				console.log('no socket connecting established');
+			}
+		}
 
 
 	/********************************************************************* TO BE ADDED MORE... */
