@@ -5,23 +5,44 @@ require('dotenv').load();
 const ACCESS_TOKEN = process.env.ACCESS_TOKEN;
 var client = new HollaEx({accessToken : ACCESS_TOKEN});
 
-//Public rest API
 
-client.getPublicAPI(['ticker:btc-eur', 'trades:eth-btc', 'orderbooks:btc-eur'])
+const formatAPI = (nestArr) => {
+	const dataArr = nestArr.map((datum) =>{
+		if(typeof datum==='string'){
+			const data = JSON.parse(datum);
+			return data
+		} else {
+			return formatAPI(datum);
+		}
+	});
+	return dataArr;
+}
+
+//get all API
+
+client.getAPI(['ticker:btc-eur', 'trades:eth-btc', 'privateUser', 'privateBalance'])
 	.then(res => {
-		res.map(datum=>{
-			const data=JSON.parse(datum);
-			console.log(data);
-		})
+			const data = formatAPI(res);
+			// console.log(data);
+			console.log(JSON.stringify(data, null, 4));
 	});
 
-	client.getPrivateAPI(['user', 'balance'])
-		.then(res => {
-			res.map(datum=>{
-				const data=JSON.parse(datum);
-				console.log(data);
-			})
-		});
+// client.getPrivateAPI(['user', 'balance'])
+// 	.then(res => {
+// 		res.map(datum=>{
+// 			const data=JSON.parse(datum);
+// 			console.log(data);
+// 		})
+// 	});
+
+
+// client.orderAction(getAllOrders, cancelAllOrders)
+// 	.then(res => {
+// 		let data = JSON.parse(res)
+// 		console.log("Get Ticker: ", data)
+// 	});
+
+
 
 // const data = client.allRequest([['publicAPI', 'ticker:btc-eur', 'trades:eth-btc', 'orderbooks:btc-eur'], ['privateAPI','user','balance']])
 // 	.then(res => {

@@ -26,32 +26,39 @@ class HollaEx  {
 	/* Make any request */
 	/* types: publicAPI, privateAPI, socket */
 
-	allRequest(allEvents){
-		const promises = allEvents.map(([type, ...events])=>{
-			if(type === 'publicAPI'){
-				this.getPublicAPI(events);
-			} else if (type === 'privateAPI'){
-				this.getPrivateAPI(events);
-			} else if (type === 'socket'){
-				this.connectSocket(events);
-			}
-		})
-		return Promise.all(promises);
-	}
+	// allRequest(allEvents){
+	// 	const promises = allEvents.map(([type, ...events])=>{
+	// 		if(type === 'publicAPI'){
+	// 			this.getPublicAPI(events);
+	// 		} else if (type === 'privateAPI'){
+	// 			this.getPrivateAPI(events);
+	// 		} else if (type === 'socket'){
+	// 			this.connectSocket(events);
+	// 		}
+	// 	})
+	// 	return Promise.all(promises);
+	// }
 
 
 	/* Public */
 
  /* events: ticker, orderbooks, trades */
 
-	getPublicAPI(events){
-		const eventArr = events.map(oneEvent=>{
-			 return oneEvent.split(":");
+	getAPI(events){
+		const privateArr = [];
+		const publicArr = [];
+		events.map(oneEvent=>{
+			if(oneEvent.includes('private')){
+				privateArr.push(oneEvent.slice(7).toLowerCase());
+			} else {
+				publicArr.push(oneEvent.split(":"));
+			}
 		 });
-		const promises = eventArr.map(([event, symbol])=>{
+		const promises = publicArr.map(([event, symbol])=>{
 			console.log('getting', symbol, event);
 			return createRequest('GET', `${this._url}/${event}?symbol=${symbol}`, this._headers);
 		});
+		promises.push(this.getPrivateAPI(privateArr));
 		return Promise.all(promises);
 	}
 
@@ -80,7 +87,7 @@ class HollaEx  {
 			console.log('getting', event);
 			if (event === 'user'){
 				return createRequest('GET', `${this._url}/user`, this._headers);
-			} else {
+			}	else {
 				return createRequest('GET', `${this._url}/user/${event}`, this._headers);
 			}
 		});
@@ -111,6 +118,13 @@ class HollaEx  {
 	// getUserTrades() {
 	// 	return createRequest('GET',`${this._url}/user/trades` , this._headers);
 	// }
+
+	orderAction(actionArray){
+		const promises = actionArray.map((action(actionVar))=>{
+			return this.action(actionVar);
+		});
+		return Promise.all(promises);
+	}
 
 	// Orders
 	getOrder(orderId) {
