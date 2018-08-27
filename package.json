@@ -10,10 +10,12 @@
     "request-promise": "^4.2.2",
     "socket.io-client": "^2.1.1"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "mocha": "^5.2.0"
+  },
   "scripts": {
     "start": "node index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha"
   },
   "author": "bitHolla Inc",
   "license": "ISC"
