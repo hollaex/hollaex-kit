@@ -14,12 +14,14 @@ export const NOTIFICATIONS = {
 	LOGOUT: 'NOTIFICATIONS_LOGOUT',
 	VERIFICATION: 'NOTIFICATIONS_VERIFICATION',
 	CONTACT_FORM: 'NOTIFICATIONS_CONTACT_FORM',
+	HELPFUL_RESOURCES_FORM: 'HELPFUL_RESOURCES_FORM',
 	NEW_ORDER: 'NOTIFICATIONS_NEW_ORDER',
 	GENERATE_API_KEY: 'NOTIFICATIONS_GENERATE_API_KEY',
 	CREATED_API_KEY: 'NOTIFICATIONS_CREATED_API_KEY',
 	GENERATE_ADDRESS: 'NOTIFICATIONS_GENERATE_ADDRESS'
 };
 export const CONTACT_FORM = 'CONTACT_FORM';
+export const HELPFUL_RESOURCES_FORM = 'HELPFUL_RESOURCES_FORM';
 export const CHANGE_LANGUAGE = 'CHANGE_LANGUAGE';
 export const SET_ANNOUNCEMENT = 'SET_ANNOUNCEMENT';
 export const SET_UNREAD = 'SET_UNREAD';
@@ -62,6 +64,9 @@ export const closeAllNotification = () => ({
 
 export const openContactForm = (data = {}) =>
 	setNotification(CONTACT_FORM, data, true);
+
+export const openHelpfulResourcesForm = (data = {}) =>
+	setNotification(HELPFUL_RESOURCES_FORM, data, true);
 
 export const setLanguage = (value = DEFAULT_LANGUAGE) => {
 	const language = storeLanguageInBrowser(value);

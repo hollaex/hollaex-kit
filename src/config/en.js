@@ -29,6 +29,7 @@ export default {
 	COPY_TEXT: 'Copy',
 	UPLOAD_TEXT: 'Upload',
 	CONTACT_US_TEXT: 'Contact us',
+	HELPFUL_RESOURCES_TEXT: 'Helpful resources',
 	NEED_HELP_TEXT: 'Need help',
 	HELP_TEXT: 'help',
 	SUCCESS_TEXT: 'Success',

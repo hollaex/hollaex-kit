@@ -19,6 +19,9 @@ export const WS_URL = config[ENV][NETWORK].WS_URL;
 
 export const ICONS = {
 	LIFESAVER: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-05.svg`,
+	QUESTION_MARK: `${process.env.PUBLIC_URL}/assets/icons/question-mark-black.svg`,
+	LAPTOP: `${process.env.PUBLIC_URL}/assets/icons/compute-play-black.svg`,
+	TELEGRAM: `${process.env.PUBLIC_URL}/assets/icons/telegram-black.svg`,
 	CHECK: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-06.svg`,
 	BLUE_QUESTION: `${
 		process.env.PUBLIC_URL
