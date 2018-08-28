@@ -1,8 +1,10 @@
 import config from './index';
 import {
 	formatBtcAmount,
+	formatBtcFullAmount,
 	formatFiatAmount,
-	formatEthAmount
+	formatEthAmount,
+	formatEthFullAmount
 } from '../utils/currency';
 
 import STRINGS from './localizedStrings';
@@ -284,7 +286,8 @@ export const CURRENCIES = {
 		fullName: STRINGS.BTC_FULLNAME,
 		shortName: STRINGS.BTC_SHORTNAME,
 		currencySymbol: 'B',
-		formatToCurrency: formatBtcAmount
+		formatToCurrency: formatBtcAmount,
+		formatToCurrencyFull: formatBtcFullAmount,
 	},
 	eth: {
 		symbol: 'eth',
@@ -292,7 +295,8 @@ export const CURRENCIES = {
 		fullName: STRINGS.ETH_FULLNAME,
 		shortName: STRINGS.ETH_SHORTNAME,
 		currencySymbol: 'E',
-		formatToCurrency: formatEthAmount
+		formatToCurrency: formatEthAmount,
+		formatToCurrencyFull: formatEthFullAmount,
 	},
 	fiat: {
 		symbol: 'fiat',
@@ -300,7 +304,8 @@ export const CURRENCIES = {
 		fullName: STRINGS.FIAT_FULLNAME,
 		shortName: STRINGS.FIAT_SHORTNAME,
 		currencySymbol: STRINGS.FIAT_CURRENCY_SYMBOL,
-		formatToCurrency: formatFiatAmount
+		formatToCurrency: formatFiatAmount,
+		formatToCurrencyFull: formatFiatAmount,
 	}
 };
 
@@ -313,9 +318,9 @@ export const PAIRS = {
 		pair_base: 'eth',
 		pair_2: 'fiat'
 	},
-	'btc-eth': {
-		pair_base: 'btc',
-		pair_2: 'eth'
+	'eth-btc': {
+		pair_base: 'eth',
+		pair_2: 'btc'
 	}
 };
 
@@ -413,42 +418,38 @@ export const DEFAULT_COUNTRY = process.env.REACT_APP_DEFAULT_COUNTRY
 export const ORDER_LIMITS = {
 	'btc-eur': {
 		PRICE: {
-			MIN: parseFloat(process.env.REACT_APP_BTC_FIAT_MIN_ORDER_PRICE || 500),
-			MAX: parseFloat(process.env.REACT_APP_BTC_FIAT_MAX_ORDER_PRICE || 50000),
-			STEP: parseFloat(process.env.REACT_APP_BTC_FIAT_TICK_SIZE || 1)
+			MIN: 500,
+			MAX: 50000,
+			STEP: 1
 		},
 		SIZE: {
-			MIN: parseFloat(process.env.REACT_APP_BTC_FIAT_MIN_ORDER_SIZE || 0.0001),
-			MAX: parseFloat(
-				process.env.REACT_APP_BTC_FIAT_MAX_ORDER_SIZE || 21000000
-			),
-			STEP: parseFloat(process.env.REACT_APP_BTC_FIAT_MIN_ORDER_SIZE || 0.0001)
+			MIN: 0.0001,
+			MAX: 21000000,
+			STEP: 0.0001
 		}
 	},
 	'eth-eur': {
 		PRICE: {
-			MIN: parseFloat(process.env.REACT_APP_ETH_FIAT_MIN_ORDER_PRICE || 500),
-			MAX: parseFloat(process.env.REACT_APP_ETH_FIAT_MAX_ORDER_PRICE || 50000),
-			STEP: parseFloat(process.env.REACT_APP_ETH_FIAT_TICK_SIZE || 1)
+			MIN: 10,
+			MAX: 10000,
+			STEP: 1
 		},
 		SIZE: {
-			MIN: parseFloat(process.env.REACT_APP_ETH_FIAT_MIN_ORDER_SIZE || 0.0001),
-			MAX: parseFloat(
-				process.env.REACT_APP_ETH_FIAT_MAX_ORDER_SIZE || 21000000
-			),
-			STEP: parseFloat(process.env.REACT_APP_ETH_FIAT_MIN_ORDER_SIZE || 0.0001)
+			MIN: 0.001,
+			MAX: 20000000,
+			STEP: 0.001
 		}
 	},
-	'btc-eth': {
+	'eth-btc': {
 		PRICE: {
-			MIN: parseFloat(process.env.REACT_APP_BTC_ETH_MIN_ORDER_PRICE || 500),
-			MAX: parseFloat(process.env.REACT_APP_BTC_ETH_MAX_ORDER_PRICE || 50000),
-			STEP: parseFloat(process.env.REACT_APP_BTC_ETH_TICK_SIZE || 1)
+			MIN: 0.0001,
+			MAX: 10,
+			STEP: 0.00001
 		},
 		SIZE: {
-			MIN: parseFloat(process.env.REACT_APP_BTC_ETH_MIN_ORDER_SIZE || 0.0001),
-			MAX: parseFloat(process.env.REACT_APP_BTC_ETH_MAX_ORDER_SIZE || 21000000),
-			STEP: parseFloat(process.env.REACT_APP_BTC_ETH_MIN_ORDER_SIZE || 0.0001)
+			MIN: 0.001,
+			MAX: 20000000,
+			STEP: 0.001
 		}
 	}
 };

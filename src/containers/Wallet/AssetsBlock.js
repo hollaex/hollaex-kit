@@ -34,7 +34,7 @@ export const AssetsBlock = ({
 			<tbody>
 				{Object.entries(CURRENCIES)
 					.filter(([key]) => balance.hasOwnProperty(`${key}_balance`))
-					.map(([key, { formatToCurrency }]) => {
+					.map(([key, { formatToCurrencyFull }]) => {
 						const balanceValue = balance[`${key}_balance`];
 						const balanceText =
 							key === BASE_CURRENCY
@@ -98,7 +98,7 @@ export const AssetsBlock = ({
 										<div className="mr-4">
 											{STRINGS.formatString(
 												STRINGS[`${key.toUpperCase()}_PRICE_FORMAT`],
-												formatToCurrency(balanceValue),
+												formatToCurrencyFull(balanceValue),
 												STRINGS[`${key.toUpperCase()}_CURRENCY_SYMBOL`]
 											)}
 										</div>
