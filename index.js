@@ -62,10 +62,10 @@ class HollaEx  {
 		return Promise.all(promises);
 	}
 
-	// // Ticker
-	// getTickers(symbol) {
-	// 	return createRequest('GET', `${this._url}/ticker?symbol=${symbol}`, this._headers);
-	// }
+	// Ticker
+	getTickers(symbol) {
+		return createRequest('GET', `${this._url}/ticker?symbol=${symbol}`, this._headers);
+	}
 	//
 	// // Orderbook
 	// getOrderbooks(symbol) {
@@ -119,12 +119,6 @@ class HollaEx  {
 	// 	return createRequest('GET',`${this._url}/user/trades` , this._headers);
 	// }
 
-	orderAction(actionArray){
-		const promises = actionArray.map((action(actionVar))=>{
-			return this.action(actionVar);
-		});
-		return Promise.all(promises);
-	}
 
 	// Orders
 	getOrder(orderId) {
