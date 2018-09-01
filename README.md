@@ -73,6 +73,8 @@ socket.on('userUpdate', (data) => {
 However `userUpdate` is what is used for all updates on user's private data.
 
 These are list of `userUpdate` client gets after subscribtion.
+
+  - **userUpdate**: Updates related to the user's pivate information are as follows:
     - *order_queued*: When a user order is added to the queue.
     ```json
     {
