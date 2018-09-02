@@ -27,7 +27,7 @@ client.getTicker('btc-eur')
 	});
 ```
 | Command | Parameters | Description
-| --- | --- |
+| --- | --- | --- |
 | `getTicker` | symbol (*optional*) e.g. `btc-eur` | Last, high, low, open and close price and volume within the last 24 hours |
 | `getOrderbook` | symbol (*optional*) e.g. `btc-eur` | Orderbook containing list of bids and asks |
 | `getTrade` | symbol (*optional*) e.g. `btc-eur` | List of last trades |
@@ -106,7 +106,7 @@ These are list of `userUpdate` client gets after subscribtion.
     - *order_processed*: When a user order has been processed in the queue.
     ```json
     {
-      "type": "order_queued",
+      "type": "order_processed",
       "data": { "id": "ac7717d4-04e9-4430-a21b-08d32b2c34cd" },
     }
     ```
@@ -177,7 +177,7 @@ These are list of `userUpdate` client gets after subscribtion.
       }
     }
     ```
-    - *order_removed*: When a user order is taken or the user cancel the orders/orders.
+    - *order_remove*: When a user order is taken or the user cancel the orders/orders.
     ```json
     {
       "type": "order_remove",
