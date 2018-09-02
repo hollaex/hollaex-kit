@@ -1,9 +1,6 @@
 # hollaex-node-lib
 HollaEx crypto exchange nodejs library
 
-## Deployment
-You need to have `node` and `npm` installed and run `npm start`. You need to import `index.js` and instantiate your connection as explained in the usage section.
-
 ## Usage
 ```node
 const HollaEx = require('hollaex-node-lib');

@@ -24,58 +24,27 @@ class HollaEx  {
 	}
 
 	/* Public */
-
- /* events: ticker, orderbooks, trades */
-
-	// getAPI(events){
-	// 	const privateArr = [];
-	// 	const publicArr = [];
-	// 	events.map(oneEvent=>{
-	// 		if(oneEvent.includes('private')){
-	// 			privateArr.push(oneEvent.slice(7).toLowerCase());
-	// 		} else {
-	// 			publicArr.push(oneEvent.split(":"));
-	// 		}
-	// 	 });
-	// 	const promises = publicArr.map(([event, symbol])=>{
-	// 		console.log('getting', symbol, event);
-	// 		return createRequest('GET', `${this._url}/${event}?symbol=${symbol}`, this._headers);
-	// 	});
-	// 	promises.push(this.getPrivateAPI(privateArr));
-	// 	return Promise.all(promises);
-	// }
+ 	/* events: ticker, orderbooks, trades */
 
 	// Ticker
-	getTickers(symbol) {
+	getTicker(symbol) {
 		return createRequest('GET', `${this._url}/ticker?symbol=${symbol}`, this._headers);
 	}
 	
 	// Orderbook
-	getOrderbooks(symbol) {
+	getOrderbook(symbol) {
 		return createRequest ('GET' , `${this._url}/orderbooks?symbol=${symbol}` , this._headers);
 	}
 	
 	// Trades
-	getTrades(symbol) {
+	getTrade(symbol) {
 		return createRequest ('GET', `${this._url}/trades?symbol=${symbol}` , this._headers )
 	}
 
 	/*********************************************************************************************************
 
 	/* Private */
-
 	/* events: user,balance,deposits,withdrawals,trades */
-	// getPrivateAPI(events){
-	// 	const promises = events.map(event=>{
-	// 		console.log('getting', event);
-	// 		if (event === 'user'){
-	// 			return createRequest('GET', `${this._url}/user`, this._headers);
-	// 		}	else {
-	// 			return createRequest('GET', `${this._url}/user/${event}`, this._headers);
-	// 		}
-	// 	});
-	// 	return Promise.all(promises);
-	// }
 
 	// User
 	getUser() {
