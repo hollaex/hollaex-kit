@@ -1,9 +1,6 @@
 # hollaex-node-lib
 HollaEx crypto exchange nodejs library
 
-## Deployment
-You need to have `node` and `npm` installed and run `npm start`. You need to import `index.js` and instantiate your connection as explained in the usage section.
-
 ## Usage
 ```node
 const HollaEx = require('hollaex-node-lib');
@@ -29,11 +26,28 @@ client.getTicker('btc-eur')
 		console.log(err);
 	});
 ```
+| Command | Parameters | Description
+| --- | --- |
+| `getTicker` | symbol (*optional*) e.g. `btc-eur` | Last, high, low, open and close price and volume within the last 24 hours |
+| `getOrderbook` | symbol (*optional*) e.g. `btc-eur` | Orderbook containing list of bids and asks |
+| `getTrade` | symbol (*optional*) e.g. `btc-eur` | List of last trades |
+| `getUser` |  | User's personal information |
+| `getBalance` |  | User's wallet balance |
+| `getDeposit` |  | User's list of all deposits |
+| `getWithdrawal` |  | User's list of all withdrawals |
+| `getUserTrade` |  | User's list of all trades |
+| `getOrder` | orderId | Get specific information about a certain order |
+| `getAllOrder` | symbol (*optional*) e.g. `btc-eur` | Get the list of all user orders. It can be filter by passing the symbol |
+| `createOrder` | symbol, side (*buy* or *sell*), size (amount), type (*market* or *limit*), price | create a new order |
+| `cancelOrder` | orderId | Cancel a specific order with its ID |
+| `cancelAllOrder` | symbol (*optional*) e.g. `btc-eur` | Cancel all open order. It can be filter by passing the symbol |
+
+
 
 ### Websocket
 You can connect and subscribe to different websocket channels for realtime updates.
 ```node
-const socket = client.connectSocket('orderbook');
+const socket = client.connect('orderbook');
 socket.on('orderbook', (data) => {
 	console.log(data)
 })
@@ -51,7 +65,7 @@ Here is the list of events you can subscribe:
 When you subscribe to private updates on user you should listen for the events as follows:
 
 ```node
-const socket = client.connectSocket('user');
+const socket = client.connect('user');
 
 socket.on('userInfo', (data) => {
 	console.log(data)
