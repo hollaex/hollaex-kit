@@ -20,7 +20,6 @@ client.getTicker('btc-eur')
 */
 
 const socket = client.connect('all');
-// const socket2 = client.connectSocket('ticker:eth-btc');
 
 // client.checkConnection();
 socket.on('ticker', (data) => {
@@ -33,5 +32,10 @@ socket.on('chart', (data) => {
 	console.log(data)
 })
 socket.on('orderbook', (data) => {
+	console.log(data)
+})
+
+// You have to use a token to use this otherwise the socket disconnects
+socket.on('userInfo', (data) => {
 	console.log(data)
 })
