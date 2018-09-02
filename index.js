@@ -95,7 +95,7 @@ class HollaEx  {
 	}
 
 	// connect to websocket
-	connectSocket(events) {
+	connect(events) {
 		return new Socket(events, this._wsUrl, this._accessToken);
 	}
 }

@@ -11,7 +11,7 @@ var client = new HollaEx({accessToken : ACCESS_TOKEN});
 	symbols : btc-eur, eth-btc, eth-eur
 */
 
-const socket = client.connectSocket('all');
+const socket = client.connect('all');
 // const socket2 = client.connectSocket('ticker:eth-btc');
 
 // client.checkConnection();
