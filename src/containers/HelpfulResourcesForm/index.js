@@ -1,17 +1,13 @@
 import React, { Component } from 'react';
 import { SubmissionError } from 'redux-form';
 import { connect } from 'react-redux';
-import { HocForm, IconTitle, Notification, Button } from '../../components';
+import { IconTitle, Notification, Button } from '../../components';
 import STRINGS from '../../config/localizedStrings';
 import { ICONS } from '../../config/constants';
 import { sendSupportMail, NOTIFICATIONS, openContactForm } from '../../actions/appActions';
-import './helpfulResources.css';
 import { bindActionCreators } from 'redux';
-import { logout } from '../../actions/authAction';
 
-const FORM_NAME = 'HelpfulResourcesForm';
 
-const Form = HocForm(FORM_NAME, { enableReinitialize: true });
 
 class HelpfulResourcesForm extends Component {
 	state = {
