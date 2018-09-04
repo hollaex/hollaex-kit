@@ -1,5 +1,4 @@
 import React from 'react';
-import classnames from 'classnames';
 import { reduxForm } from 'redux-form';
 import {
 	required,
@@ -8,19 +7,10 @@ import {
 	requiredWithCustomMessage,
 	normalizeEmail
 } from '../../components/Form/validations';
-import { AuthForm } from '../../components';
+import { AuthForm, BlueLink } from '../../components';
 import STRINGS from '../../config/localizedStrings';
 
 export const FORM_NAME = 'SignForm';
-const BlueLink = ({ text, ...rest }) => (
-	<a
-		{...rest}
-		target="_blank"
-		className={classnames('blue-link', 'dialog-link', 'pointer')}
-	>
-		{text}
-	</a>
-);
 
 export const generateFormFields = (strings, theme) => ({
 	email: {
