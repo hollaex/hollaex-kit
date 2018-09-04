@@ -49,9 +49,8 @@ class HelpfulResourcesForm extends Component {
 
 
 	render() {
-		const { onClose } = this.props;
+		const { onClose, activeTheme } = this.props;
 		const { submited } = this.state;
-
 		if (submited) {
 			return (
 				<Notification type={NOTIFICATIONS.CONTACT_FORM} onClose={onClose} />
@@ -61,6 +60,7 @@ class HelpfulResourcesForm extends Component {
 
 		return (
 			<div className="help-wrapper">
+			{activeTheme==='white' ?
 				<IconTitle
 					iconPath={ICONS.QUESTION_MARK}
 					text={STRINGS.HELPFUL_RESOURCES_TEXT}
@@ -69,9 +69,22 @@ class HelpfulResourcesForm extends Component {
 					className="w-100"
 					useSvg={true}
 				/>
+			:
+				<IconTitle
+					iconPath={ICONS.QUESTION_MARK_COLOR}
+					text={STRINGS.HELPFUL_RESOURCES_TEXT}
+					textType="title"
+					underline={true}
+					className="w-100"
+					useSvg={true}
+				/>
+			}
 				<div>
 					<div className='d-flex mt-5'>
+					{activeTheme==='white' ?
 						<ReactSVG path={ICONS.LAPTOP} wrapperClassName='help_icons' />
+					:	<ReactSVG path={ICONS.LAPTOP_COLOR} wrapperClassName='help_icons' />
+					}
 						<div className='text' >
 							{STRINGS.HELP_RESOURCE_GUIDE_TEXT}
 							<BlueLink
@@ -82,7 +95,10 @@ class HelpfulResourcesForm extends Component {
 						<div className="w-25" />
 					</div>
 					<div className='d-flex mt-5 mb-5'>
+					{activeTheme==='white' ?
 						<ReactSVG path={ICONS.TELEGRAM} wrapperClassName='help_icons' />
+					:	<ReactSVG path={ICONS.TELEGRAM_COLOR} wrapperClassName='help_icons' />
+					}
 						<div className='text' >
 							{STRINGS.HELP_TELEGRAM_TEXT} 
 							<BlueLink
@@ -105,7 +121,8 @@ class HelpfulResourcesForm extends Component {
 
 const mapStateToProps = (store) => ({
 	email: store.user.email,
-	contactFormData: store.app.contactFormData
+	contactFormData: store.app.contactFormData,
+	activeTheme: store.app.theme,
 });
 
 const mapDispatchToProps = (dispatch) => ({

@@ -35,17 +35,6 @@ $contact-form--icon-size: 6rem;
   }
 }
 
-.dark-theme {
-  svg {
-    .st9 {
-      fill: $dark-button-active;
-    }
-    .ques, .pc, .telegram {
-      fill: $dark-font-main-text-color !important;
-    }
-  }  
-}
-
 .layout-mobile {
   .contact_form-wrapper {
     min-width: auto;
