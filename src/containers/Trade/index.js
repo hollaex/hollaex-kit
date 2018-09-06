@@ -263,7 +263,7 @@ class Trade extends Component {
 								'apply_rtl'
 							)}
 						>
-							<TradeBlock title={STRINGS.ORDERBOOK}>
+							<TradeBlock title={STRINGS.ORDERBOOK} pairData={pairData} pair={pair}>
 								{orderbookReady && <Orderbook {...orderbookProps} />}
 							</TradeBlock>
 						</div>
@@ -291,7 +291,7 @@ class Trade extends Component {
 										'apply_rtl'
 									)}
 								>
-									<TradeBlock title={STRINGS.ORDER_ENTRY}>
+									<TradeBlock title={STRINGS.ORDER_ENTRY} pairData={pairData} pair={pair}>
 										<OrderEntry
 											submitOrder={this.onSubmitOrder}
 											openCheckOrder={this.openCheckOrder}
@@ -308,6 +308,8 @@ class Trade extends Component {
 									title={STRINGS.CHART}
 									setRef={this.setChartRef}
 									className="f-1 overflow-x"
+									pairData={pairData} 
+									pair={pair}
 								>
 									{pair &&
 										chartHeight > 0 && (

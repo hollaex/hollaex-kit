@@ -583,7 +583,7 @@ export default {
 	AMOUNT: 'Amount',
 	COMPLETE: 'Complete',
 	PENDING: 'Pending',
-	ORDERBOOK: 'Orderbook',
+	ORDERBOOK: 'Order book',
 	CANCEL: 'Cancel',
 	CANCEL_ALL: 'Cancel All',
 	GO_TRADE_HISTORY: 'Go to Trade History',
