@@ -77,7 +77,8 @@ class ApiKey extends Component {
 			openContactForm,
 			fetching,
 			otp_enabled,
-			openOtp
+			openOtp,
+			activeTheme
 		} = this.props;
 		const { dialogIsOpen, dialogType } = this.state;
 		return (
@@ -106,6 +107,7 @@ class ApiKey extends Component {
 				<Dialog
 					isOpen={dialogIsOpen}
 					label="token-modal"
+					theme={activeTheme}
 					onCloseDialog={this.onCloseDialog}
 					shouldCloseOnOverlayClick={false}
 					showCloseText={false}
@@ -132,7 +134,8 @@ ApiKey.defaultProps = {
 const mapStateToProps = (state) => ({
 	tokens: state.user.tokens,
 	fetching: state.user.fetching,
-	error: state.user.error
+	error: state.user.error,
+	activeTheme: state.app.theme
 });
 
 const mapDispatchToProps = (dispatch) => ({

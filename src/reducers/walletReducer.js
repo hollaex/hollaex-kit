@@ -15,6 +15,11 @@ const INITIAL_VERIFICATION_OBJECT = {
 	error: ''
 };
 
+const INITIAL_DELETE_WHITDRAWALS_MSG = {
+	message:'',
+	error:''
+}
+
 const INITIAL_BTC_WHITDRAWALS_FEE = {
 	loading: false,
 	ready: false,
@@ -33,7 +38,8 @@ const INITIAL_STATE = {
 	deposits: INITIAL_API_OBJECT,
 	withdrawals: INITIAL_API_OBJECT,
 	depositVerification: INITIAL_VERIFICATION_OBJECT,
-	btcFee: INITIAL_BTC_WHITDRAWALS_FEE
+	btcFee: INITIAL_BTC_WHITDRAWALS_FEE,
+	withdrawalCancelData: INITIAL_DELETE_WHITDRAWALS_MSG
 };
 
 export default function reducer(state = INITIAL_STATE, { type, payload }) {
@@ -109,6 +115,38 @@ export default function reducer(state = INITIAL_STATE, { type, payload }) {
 				...state,
 				depositVerification: {
 					...INITIAL_VERIFICATION_OBJECT,
+					error: payload.message
+				}
+			};
+
+		//Delete Withdrawal
+		case ACTION_KEYS.WITHDRAWAL_CANCEL_PENDING:
+		console.log('pending', payload);
+			return {
+				...state,
+				withdrawalCancelData: {
+					...INITIAL_DELETE_WHITDRAWALS_MSG,
+					error:''
+				}
+			};
+		case ACTION_KEYS.WITHDRAWAL_CANCEL_FULFILLED:
+		console.log('FULFILLED:', payload);
+
+			return {
+				...state,
+				withdrawalCancelData: {
+					...INITIAL_DELETE_WHITDRAWALS_MSG,
+					error:'',
+					message: payload.message
+				}
+			};
+		case ACTION_KEYS.WITHDRAWAL_CANCEL_REJECTED:
+		console.log('reject:', payload);
+
+			return {
+				...state,
+				withdrawalCancelData: {
+					...INITIAL_DELETE_WHITDRAWALS_MSG,
 					error: payload.message
 				}
 			};

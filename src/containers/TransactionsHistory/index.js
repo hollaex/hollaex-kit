@@ -6,7 +6,8 @@ import { isMobile } from 'react-device-detect';
 import {
 	getUserTrades,
 	getUserDeposits,
-	getUserWithdrawals
+	getUserWithdrawals,
+	withdrawalCancel
 } from '../../actions/walletActions';
 
 import { IconTitle, TabController, Loader, CheckTitle } from '../../components';
@@ -50,19 +51,23 @@ class TransactionsHistory extends Component {
 	};
 
 	generateHeaders(symbol) {
+		const {cancelWithdrawal}=this
 		this.setState({
 			headers: {
 				trades: isMobile
 					? generateTradeHeadersMobile(symbol)
 					: generateTradeHeaders(symbol),
 				deposits: generateDepositsHeaders(symbol),
-				withdrawals: generateWithdrawalsHeaders(symbol)
+				withdrawals: generateWithdrawalsHeaders(symbol, cancelWithdrawal)
 			}
 		});
 	}
 
 	setActiveTab = (activeTab = 0) => {
 		this.setState({ activeTab });
+	};
+	cancelWithdrawal = (transactionId) => {
+		this.props.withdrawalCancel(transactionId);
 	};
 
 	renderActiveTab = () => {
@@ -183,7 +188,8 @@ const mapStateToProps = (store) => ({
 const mapDispatchToProps = (dispatch) => ({
 	getUserTrades: (symbol) => dispatch(getUserTrades({ symbol })),
 	getUserDeposits: (symbol) => dispatch(getUserDeposits({ symbol })),
-	getUserWithdrawals: (symbol) => dispatch(getUserWithdrawals({ symbol }))
+	getUserWithdrawals: (symbol) => dispatch(getUserWithdrawals({ symbol })),
+	withdrawalCancel: (transactionId) => dispatch(withdrawalCancel({ transactionId }))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(

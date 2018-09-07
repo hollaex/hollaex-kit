@@ -19,6 +19,8 @@ export default {
 	ETH_CURRENCY_SYMBOL: 'ETH',
 	ETH_PRICE_FORMAT: '{0} {1}', // 0-> amount  1 -> symbol  6.00245 ETH
 
+	CANT_BE_CANCELLED:'-',
+	ALREADY_CANCELLED:'-',
 	TIMESTAMP_FORMAT: 'YYYY/MM/DD HH:mm:ss A',
 	HOUR_FORMAT: 'HH:mm:ss A',
 	LOGIN_TEXT: 'Login',
