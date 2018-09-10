@@ -317,40 +317,27 @@ export const generateWithdrawalsHeaders = (symbol, cancelWithdrawal) => {
 			}
 		},
 		{
-			label: STRINGS.SEE_MORE,
+			label: STRINGS.MORE,
 			key: 'transaction_id',
 			exportToCsv: ({ transaction_id = '' }) => transaction_id,
-			renderCell: ({ transaction_id = '', currency }, key, index) => {
-				return isBlockchainTx(transaction_id) ? 
-					<td key={index}><a target="blank" href={(currency === 'btc' ? BLOCKTRAIL_ENDPOINT : ETHEREUM_ENDPOINT) + transaction_id}>{STRINGS.VIEW}</a></td> : <td></td>;
-			}
-		},
-		{
-			label: STRINGS.CANCEL,
-			key: 'transaction_id',
-			exportToCsv: ({ transaction_id = '' }) => transaction_id,
-			renderCell: ({ transaction_id = '', status, dismissed, currency }, key, index) => {
+			renderCell: ({ transaction_id = '', currency, status, dismissed, id }, key, index) => {
 				if(status===false && dismissed===false) {
 					return isBlockchainTx(transaction_id) ? 
-					<td style={{height:'2rem', width: '2rem'}} key={index}>
-						<Button 
-							onClick={() => cancelWithdrawal(transaction_id)}
-							label= {STRINGS.CANCEL} 
-							key={transaction_id}>
-						</Button>
+					<td key={index}>
+						<div 
+							className='withdrawal-cancel'
+							onClick={() => cancelWithdrawal(id)}
+							key={id}
+						>
+							{STRINGS.CANCEL} 
+						</div>
 					</td>:''
-				} else if(status=true && dismissed===false) {
-					return (
-						<td key={index}>{ STRINGS.CANT_BE_CANCELLED}</td>
-					);
-				} else {
-					return (
-						<td key={index}>{ STRINGS.ALREADY_CANCELLED}</td>
-						
-					);
+		       	}else{
+					return isBlockchainTx(transaction_id) ? 
+						<td key={index}><a target="blank" href={(currency === 'btc' ? BLOCKTRAIL_ENDPOINT : ETHEREUM_ENDPOINT) + transaction_id}>{STRINGS.VIEW}</a></td> : <td></td>;
 				}
 			}
-		}
+		},
 	];
 };
 

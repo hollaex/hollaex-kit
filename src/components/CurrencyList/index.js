@@ -34,16 +34,16 @@ class CurrencyList extends Component {
 	render() {
 		const { className, pairs, orderBookData, activeTheme, pair } = this.props;
 		const { markets, focusedSymbol } = this.state;
-		const { currencySymbol, formatToCurrency } = CURRENCIES.fiat;
+		const { formatToCurrency } = CURRENCIES.fiat;
 		const obj = {};
 		Object.entries(pairs).forEach(([key, pair]) => {
 			obj[pair.pair_base] = '';
 		});
 		const symbols = Object.keys(obj).map((key) => key);
 		let marketPrice = {};
-		Object.keys(orderBookData).map(order => {
+		Object.keys(orderBookData).forEach(order => {
 			const symbol = order.split('-')[0];
-			if(orderBookData[order].length) marketPrice[symbol] = orderBookData[order][0].price
+			if(orderBookData[order].length && order.includes(STRINGS.FIAT_SHORTNAME.toLowerCase())) marketPrice[symbol] = orderBookData[order][0].price;
 		});
 		return (
 			<div

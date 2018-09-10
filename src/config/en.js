@@ -579,7 +579,7 @@ export default {
 	FEES: 'Fees',
 	TIME: 'Time',
 	TIMESTAMP: 'Timestamp',
-	SEE_MORE: 'See more',
+	MORE: 'More',
 	VIEW: 'View',
 	STATUS: 'Status',
 	AMOUNT: 'Amount',
