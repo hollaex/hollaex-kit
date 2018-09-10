@@ -18,11 +18,15 @@ export const ACTION_KEYS = {
 	USER_WITHDRAWALS_BTC_FEE_REJECTED: 'USER_WITHDRAWALS_BTC_FEE_REJECTED',
 	DEPOSIT_VERIFICATION_PENDING: 'DEPOSIT_VERIFICATION_PENDING',
 	DEPOSIT_VERIFICATION_FULFILLED: 'DEPOSIT_VERIFICATION_FULFILLED',
-	DEPOSIT_VERIFICATION_REJECTED: 'DEPOSIT_VERIFICATION_REJECTED'
+	DEPOSIT_VERIFICATION_REJECTED: 'DEPOSIT_VERIFICATION_REJECTED',
+	WITHDRAWAL_CANCEL_PENDING: 'WITHDRAWAL_CANCEL_PENDING',
+	WITHDRAWAL_CANCEL_FULFILLED: 'WITHDRAWAL_CANCEL_FULFILLED',
+	WITHDRAWAL_CANCEL_REJECTED: 'WITHDRAWAL_CANCEL_REJECTED'
 };
 
 const ENDPOINTS = {
 	TRADES: '/user/trades',
+	DELETE: '/user/withdrawals',
 	DEPOSITS: '/user/deposits',
 	WITHDRAWALS: '/user/withdrawals',
 	DEPOSIT_BANK: '/user/deposit/bank',
@@ -53,6 +57,27 @@ export const requestWithdrawFee = (currency = 'btc') => {
 					payload
 				});
 			});
+	};
+};
+
+export const withdrawalCancel = (transactionId) => {
+	return (dispatch) => {
+		dispatch({ type: ACTION_KEYS.WITHDRAWAL_CANCEL_PENDING });
+		axios
+			.delete(ENDPOINTS.DELETE, {data: { transactionId: parseInt(transactionId.transactionId)}} )
+			.then((body) => {
+				dispatch({
+					type: ACTION_KEYS.WITHDRAWAL_CANCEL_FULFILLED,
+					payload: body.data
+				});
+			})
+			.catch((err) => {
+				const payload = err.response.data || { message: err.message };
+				dispatch({
+					type: ACTION_KEYS.WITHDRAWAL_CANCEL_REJECTED,
+					payload
+				});
+			}); 
 	};
 };
 

@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { SubmissionError } from 'redux-form';
 import { connect } from 'react-redux';
-import { IconTitle, Notification, Button } from '../../components';
+import { bindActionCreators } from 'redux';
+import ReactSVG from 'react-svg';
+import { IconTitle, Notification, Button, BlueLink } from '../../components';
 import STRINGS from '../../config/localizedStrings';
 import { ICONS } from '../../config/constants';
 import { sendSupportMail, NOTIFICATIONS, openContactForm } from '../../actions/appActions';
-import { bindActionCreators } from 'redux';
-
 
 
 class HelpfulResourcesForm extends Component {
@@ -49,20 +49,18 @@ class HelpfulResourcesForm extends Component {
 
 
 	render() {
-		const { onClose, openContactForm } = this.props;
-		const { submited, initialValues } = this.state;
-
+		const { onClose, activeTheme } = this.props;
+		const { submited } = this.state;
 		if (submited) {
 			return (
 				<Notification type={NOTIFICATIONS.CONTACT_FORM} onClose={onClose} />
 			);
 		}
 
-
 		return (
-			<div className="contact_form-wrapper" style={{width: '50rem'}}>
+			<div className="help-wrapper">
 				<IconTitle
-					iconPath={ICONS.QUESTION_MARK}
+					iconPath={activeTheme==='white' ? ICONS.QUESTION_MARK : ICONS.QUESTION_MARK_COLOR}
 					text={STRINGS.HELPFUL_RESOURCES_TEXT}
 					textType="title"
 					underline={true}
@@ -70,21 +68,32 @@ class HelpfulResourcesForm extends Component {
 					useSvg={true}
 				/>
 				<div>
-					<div className='cardDiv'>
-						<div><img src={ICONS.LAPTOP} className='cardIcon'/></div>
-						<div className='cardText'>Find videos and PDF guides explaining how to use EXIR on our
-						tutorial guide section of our website: <a href='https://www.exir.io/tutorial/' style={{color:'blue'}}>https://www.exir.io/tutorial/</a></div>
-					</div>
-					<div className='cardDiv'>
-						<img src={ICONS.TELEGRAM} className='cardIcon'/>
-						<div className='cardText'>
-							Join our Telegram group to get the latest updates on EXIR and
-							crypto trading news: <a href="https://t.me/exirofficial" style={{color:'blue'}}>https://t.me/exirofficial</a>
+					<div className='d-flex mt-5'>
+						<ReactSVG path={activeTheme==='white' ? ICONS.LAPTOP : ICONS.LAPTOP_COLOR} wrapperClassName='help_icons' />
+						<div className='text' >
+							{STRINGS.HELP_RESOURCE_GUIDE_TEXT}
+							<BlueLink
+								href={STRINGS.HELP_EXIR_TUTORIAL_LINK}
+								text={STRINGS.HELP_EXIR_TUTORIAL_LINK}
+							/>
 						</div>
+						<div className="w-25" />
 					</div>
-					<div className='buttonDiv'>
-						<Button className='cardButton' label='BACK' onClick={onClose}/>
-						<Button className='cardButton' label='CONTACT SUPPORT' onClick={this.openNewForm}/>
+					<div className='d-flex mt-5 mb-5'>
+						<ReactSVG path={activeTheme==='white' ? ICONS.TELEGRAM : ICONS.TELEGRAM_COLOR} wrapperClassName='help_icons' />
+						<div className='text' >
+							{STRINGS.HELP_TELEGRAM_TEXT} 
+							<BlueLink
+								href={STRINGS.HELP_TELEGRAM_LINK}
+								text={STRINGS.HELP_TELEGRAM_LINK}
+							/>
+						</div>
+						<div className="w-25" />
+					</div>
+					<div className='w-100 buttons-wrapper d-flex' >
+						<Button label='BACK' onClick={onClose}/>
+						<div className='separator' />
+						<Button label='CONTACT SUPPORT' onClick={this.openNewForm}/>
 					</div>
 				</div>
 			</div>
@@ -94,7 +103,8 @@ class HelpfulResourcesForm extends Component {
 
 const mapStateToProps = (store) => ({
 	email: store.user.email,
-	contactFormData: store.app.contactFormData
+	contactFormData: store.app.contactFormData,
+	activeTheme: store.app.theme,
 });
 
 const mapDispatchToProps = (dispatch) => ({

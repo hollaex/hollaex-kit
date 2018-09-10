@@ -1,14 +1,16 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
+import { connect } from 'react-redux';
 
 import { DisplayTable } from '../../../components';
 
 import { formatTimestamp } from '../../../utils/utils';
-import { formatFiatAmount, formatBtcAmount } from '../../../utils/currency';
+import { formatFiatAmount, formatBtcFullAmount, formatBtcAmount } from '../../../utils/currency';
 
 import STRINGS from '../../../config/localizedStrings';
 
-const generateHeaders = () => [
+const generateHeaders = (isNonFiatPair) => {
+	return [
 	{
 		key: 'price',
 		label: STRINGS.PRICE,
@@ -17,7 +19,7 @@ const generateHeaders = () => [
 				className={classnames('trade_history-row', side)}
 				key={`time-${index}`}
 			>
-				{formatFiatAmount(price)}
+				{isNonFiatPair ? formatBtcFullAmount(price) : formatFiatAmount(price)}
 			</div>
 		)
 	},
@@ -33,6 +35,7 @@ const generateHeaders = () => [
 			formatTimestamp(timestamp, STRINGS.HOUR_FORMAT)
 	}
 ];
+}
 
 class TradeHistory extends Component {
 	state = {
@@ -50,12 +53,14 @@ class TradeHistory extends Component {
 	}
 
 	calculateHeaders = () => {
-		const headers = generateHeaders();
+		const { pair } = this.props;
+		const isNonFiatPair = !pair.includes(STRINGS.FIAT_SHORTNAME.toLowerCase());
+		const headers = generateHeaders(isNonFiatPair);
 		this.setState({ headers });
 	};
 
 	render() {
-		const { data } = this.props;
+		const { data, pairs, pair } = this.props;
 		const { headers } = this.state;
 		return (
 			<div className="flex-auto d-flex apply_rtl">
@@ -69,4 +74,8 @@ TradeHistory.defaultProps = {
 	data: []
 };
 
-export default TradeHistory;
+const mapStateToProps = (store) => ({
+	pair: store.app.pair
+});
+
+export default connect(mapStateToProps)(TradeHistory);

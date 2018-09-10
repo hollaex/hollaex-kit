@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import classnames from 'classnames';
 import ReactSVG from 'react-svg';
 import { debounce } from 'lodash';
-import { Button } from '../../components';
+import { isMobile } from 'react-device-detect';
+import { browserHistory } from 'react-router';
+import {Button, TabController, CheckTitle, MobileBarTabs, ButtonLink } from '../../components';
 
 import STRINGS from '../../config/localizedStrings';
 import {
@@ -21,20 +23,40 @@ import InputBlock from './InputBlock';
 
 const GROUP_CLASSES = [...FLEX_CENTER_CLASSES, 'flex-column'];
 
+const getInitialTab = ( path ) => {
+	let activeTab = -1;
+	let activeDevelopers = false;
+	if (path === 'btc-eur') {
+		activeTab = 0;
+	}
+	 else if (path === 'eth-eur') {
+		activeTab = 1;
+	} 
+	
+	return {
+		activeTab,
+		activeDevelopers
+	};
+};
 class QuickTrade extends Component {
 	state = {
 		side: STRINGS.SIDES[0].value,
 		value: 0.1,
-		symbol: DEFAULT_PAIR
+		symbol: DEFAULT_PAIR,
+		tabs: [],
+		activeTab:-1,
 	};
 
 	componentDidMount() {
 		if (this.props.symbol !== fiatSymbol) {
+			this.updateTabs()
 			this.onChangeSymbol(this.props.symbol);
 		} else {
+			this.updateTabs()
 			this.onChangeSymbol(DEFAULT_PAIR);
 		}
 		if (this.props.onChangeSide) {
+			this.updateTabs()
 			this.props.onChangeSide(this.state.side);
 		}
 	}
@@ -43,7 +65,18 @@ class QuickTrade extends Component {
 		if (
 			nextProps.symbol !== this.props.symbol
 		) {
+			this.updateTabs()
 			this.onChangeSymbol(nextProps.symbol);
+		}
+	}
+
+	setActiveTab = (activeTab) => {
+		if(activeTab===0) {
+			browserHistory.push(`/quick-trade/btc-eur`)
+			this.setState({ activeTab });
+		} else {
+			browserHistory.push(`/quick-trade/eth-eur`)
+			this.setState({ activeTab });
 		}
 	}
 
@@ -85,9 +118,41 @@ class QuickTrade extends Component {
 
 	requestValue = debounce(this.props.onRequestMarketValue, 250);
 
+	updateTabs = (
+		updateActiveTab = false
+	) => {
+		let activeTab = this.state.activeTab > -1 ? this.state.activeTab : 0;
+		let activeDevelopers = false;
+		const {theme} = this.props 
+		if (updateActiveTab || this.state.activeTab === -1) {
+			const initialValues = getInitialTab(this.props.symbol);
+			activeTab = initialValues.activeTab;
+			activeDevelopers = initialValues.activeDevelopers;
+		}
+		
+		const tabs = [
+			{
+				title:
+					<CheckTitle
+						title={STRINGS.BTC_NAME}
+						icon={ theme==='dark'? ICONS.BTC_ICON_DARK:ICONS.BTC_ICON}
+					/>
+				
+			},
+			{	title:
+					<CheckTitle
+						title={STRINGS.ETH_NAME}
+						icon={theme==='dark'? ICONS.ETH_ICON_DARK:ICONS.ETH_ICON }
+					/>
+			}
+		];
+
+		this.setState({ tabs, activeTab });
+	};
+
 	render() {
-		const { onReviewQuickTrade, quickTradeData, disabled } = this.props;
-		const { side, value, symbol } = this.state;
+		const { onReviewQuickTrade, quickTradeData, disabled, theme } = this.props;
+		const { side, value, symbol, tabs, activeTab } = this.state;
 		const { data, fetching, error } = quickTradeData;
 		const name = STRINGS[`${PAIRS[symbol].pair_base.toUpperCase()}_NAME`];
 		return (
@@ -114,6 +179,14 @@ class QuickTrade extends Component {
 						...GROUP_CLASSES
 					)}
 				>
+					<div className="presentation_container apply_rtl">
+						<TabController
+							activeTab={activeTab}
+							setActiveTab={this.setActiveTab}
+							tabs={tabs}
+							className="account-tab"
+						/>
+					</div>
 					<ToogleButton
 						values={STRINGS.SIDES}
 						onToogle={this.onToogleSide}

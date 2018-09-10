@@ -21,7 +21,7 @@ export const Cell = ({
 			'cell-wrapper',
 			'pointer'
 		)}
-		onClick={onClick}
+		onClick={() => onClick()}
 	>
 		{text && (
 			<div className="sidebar-row--left text-uppercase w-100 text-center">

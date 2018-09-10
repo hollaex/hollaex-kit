@@ -4,7 +4,7 @@ import mathjs from 'mathjs';
 
 import STRINGS from '../../config/localizedStrings';
 
-import { CurrencyBall } from '../../components';
+import { CurrencyBall, Button } from '../../components';
 import { CURRENCIES, PAIRS, BLOCKTRAIL_ENDPOINT, ETHEREUM_ENDPOINT } from '../../config/constants';
 import { formatTimestamp, isBlockchainTx } from '../../utils/utils';
 
@@ -235,7 +235,7 @@ export const generateTradeHeaders = (symbol) => {
 	];
 };
 
-export const generateWithdrawalsHeaders = (symbol) => {
+export const generateWithdrawalsHeaders = (symbol, cancelWithdrawal) => {
 	return [
 		{
 			label: '',
@@ -317,14 +317,27 @@ export const generateWithdrawalsHeaders = (symbol) => {
 			}
 		},
 		{
-			label: STRINGS.SEE_MORE,
+			label: STRINGS.MORE,
 			key: 'transaction_id',
 			exportToCsv: ({ transaction_id = '' }) => transaction_id,
-			renderCell: ({ transaction_id = '', currency }, key, index) => {
-				return isBlockchainTx(transaction_id) ? 
-					<td key={index}><a target="blank" href={(currency === 'btc' ? BLOCKTRAIL_ENDPOINT : ETHEREUM_ENDPOINT) + transaction_id}>{STRINGS.VIEW}</a></td> : <td></td>;
+			renderCell: ({ transaction_id = '', currency, status, dismissed, id }, key, index) => {
+				if(status===false && dismissed===false) {
+					return isBlockchainTx(transaction_id) ? 
+					<td key={index}>
+						<div 
+							className='withdrawal-cancel'
+							onClick={() => cancelWithdrawal(id)}
+							key={id}
+						>
+							{STRINGS.CANCEL} 
+						</div>
+					</td>:''
+		       	}else{
+					return isBlockchainTx(transaction_id) ? 
+						<td key={index}><a target="blank" href={(currency === 'btc' ? BLOCKTRAIL_ENDPOINT : ETHEREUM_ENDPOINT) + transaction_id}>{STRINGS.VIEW}</a></td> : <td></td>;
+				}
 			}
-		}
+		},
 	];
 };
 

@@ -20,10 +20,17 @@ export const API_URL = config[ENV][NETWORK].API_URL;
 export const WS_URL = config[ENV][NETWORK].WS_URL;
 
 export const ICONS = {
+	BTC_ICON_DARK: `${process.env.PUBLIC_URL}/assets/icons/btc-icon-dark-01.svg`,
+	BTC_ICON: `${process.env.PUBLIC_URL}/assets/icons/btc-icon-01.svg`,
+	ETH_ICON: `${process.env.PUBLIC_URL}/assets/icons/eth-icon-01.svg`,
+	ETH_ICON_DARK: `${process.env.PUBLIC_URL}/assets/icons/eth-icon-dark-01.svg`,
 	LIFESAVER: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-05.svg`,
 	QUESTION_MARK: `${process.env.PUBLIC_URL}/assets/icons/question-mark-black.svg`,
+	QUESTION_MARK_COLOR: `${process.env.PUBLIC_URL}/assets/icons/question-mark-color.svg`,
 	LAPTOP: `${process.env.PUBLIC_URL}/assets/icons/compute-play-black.svg`,
+	LAPTOP_COLOR: `${process.env.PUBLIC_URL}/assets/icons/compute-play-color.svg`,
 	TELEGRAM: `${process.env.PUBLIC_URL}/assets/icons/telegram-black.svg`,
+	TELEGRAM_COLOR: `${process.env.PUBLIC_URL}/assets/icons/telegram-color.svg`,
 	CHECK: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-06.svg`,
 	BLUE_QUESTION: `${
 		process.env.PUBLIC_URL
@@ -243,7 +250,11 @@ export const ICONS = {
 	TOKEN_GENERATE: `${
 		process.env.PUBLIC_URL
 	}/assets/images/api-key-generate.svg`,
+	TOKEN_GENERATE_DARK: `${
+		process.env.PUBLIC_URL
+	}/assets/images/api-key-generate-dark.svg`, 
 	TOKEN_CREATED: `${process.env.PUBLIC_URL}/assets/images/api-key-created.svg`,
+	TOKEN_CREATED_DARK: `${process.env.PUBLIC_URL}/assets/images/api-key-created-dark.svg`,
 	CHECK_ORDER: `${process.env.PUBLIC_URL}/assets/images/check-order.svg`,
 	ITEM_OPTIONS: `${process.env.PUBLIC_URL}/assets/images/item-options.svg`,
 	DOTTED_GRIP: `${

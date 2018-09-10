@@ -33,6 +33,17 @@ $tabs-title--margin: 2rem;
 		margin-bottom: 1rem;
 		flex: none;
 		position: relative;
+		.trade_block-icon{
+			width: 1.4rem;
+			height: 1.4rem;
+			margin-top: 0.08rem;
+		}
+		.trade_block-title-currency{
+			color: black;
+			font-size: 0.9rem;
+			margin-left: 0.3rem;
+			margin-top: 0.1rem;
+		}
 	}
 
 	.trade_block-content {
@@ -99,6 +110,9 @@ $tabs-title--margin: 2rem;
 		.trade_block-title {
 			border-top-color: $dark-border-main;
 			color: $dark-font-main-text-color;
+			.trade_block-title-currency {
+				color: white;
+			}
 		}
 	}
 	.trade_block_tabs-wrapper .trade_block-title {

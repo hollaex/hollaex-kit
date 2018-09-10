@@ -1,8 +1,8 @@
-$contact-form--icon-size: 69rem;
+$contact-form--icon-size: 6rem;
 
-.contact_form-wrapper {
+.help-wrapper {
   min-width: 30rem;
-  max-width: 30rem;
+  max-width: 38rem;
 
   .icon_title-wrapper {
     .icon_title-text.title {
@@ -21,11 +21,17 @@ $contact-form--icon-size: 69rem;
   .buttons-wrapper {
     margin-top: 1.5rem;
   }
-}
-
-.dark-theme {
-  svg .contact-1 {
-    fill: $dark-button-active;
+  .text {
+    font-size: 0.8rem;
+    flex: 6 ;
+    margin-left: 1rem;
+  }
+  .separator {
+    width: 2rem;
+  }
+  .help_icons {
+    width: 3rem;
+    height: 3rem;
   }
 }
 

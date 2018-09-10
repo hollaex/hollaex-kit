@@ -19,6 +19,8 @@ export default {
 	ETH_CURRENCY_SYMBOL: 'ETH',
 	ETH_PRICE_FORMAT: '{0} {1}', // 0-> amount  1 -> symbol  6.00245 ETH
 
+	CANT_BE_CANCELLED:'-',
+	ALREADY_CANCELLED:'-',
 	TIMESTAMP_FORMAT: 'YYYY/MM/DD HH:mm:ss A',
 	HOUR_FORMAT: 'HH:mm:ss A',
 	LOGIN_TEXT: 'Login',
@@ -30,6 +32,12 @@ export default {
 	UPLOAD_TEXT: 'Upload',
 	CONTACT_US_TEXT: 'Contact us',
 	HELPFUL_RESOURCES_TEXT: 'Helpful resources',
+	HELP_RESOURCE_GUIDE_TEXT: 
+		'Find videos and PDF guides explaining how to use EXIR on our	tutorial guide section of our website:',
+	HELP_EXIR_TUTORIAL_LINK: 'https://www.exir.io/tutorial/',
+	HELP_TELEGRAM_TEXT: 
+		'Join our Telegram group to get the latest updates on EXIR and crypto trading news:',
+	HELP_TELEGRAM_LINK: 'https://t.me/exirofficial',
 	NEED_HELP_TEXT: 'Need help',
 	HELP_TEXT: 'help',
 	SUCCESS_TEXT: 'Success',
@@ -571,13 +579,13 @@ export default {
 	FEES: 'Fees',
 	TIME: 'Time',
 	TIMESTAMP: 'Timestamp',
-	SEE_MORE: 'See more',
+	MORE: 'More',
 	VIEW: 'View',
 	STATUS: 'Status',
 	AMOUNT: 'Amount',
 	COMPLETE: 'Complete',
 	PENDING: 'Pending',
-	ORDERBOOK: 'Orderbook',
+	ORDERBOOK: 'Order book',
 	CANCEL: 'Cancel',
 	CANCEL_ALL: 'Cancel All',
 	GO_TRADE_HISTORY: 'Go to Trade History',

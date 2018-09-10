@@ -3,6 +3,16 @@
 	&.horizontal-currency-list {
 		border-left: none !important;
 
+		.app_bar_currency-icon {
+			width: 2rem;
+			height: 2rem;
+		}
+		.selected_currency-tab {
+			background-color: white;
+			border-left: 1px solid black !important;
+			border-right: 1px solid black !important;
+			height: 3.1rem;
+		}
 		.single-currency {
 			position: relative;
 			justify-content: center;
@@ -52,7 +62,7 @@
 	position: absolute;
 	right: 0;
 	top: 36px;
-	min-width: 14.8rem;
+	min-width: 23.3rem;
 	min-height: 8rem;
 	background-color: #fafafa;
 	z-index: 20;
@@ -97,6 +107,12 @@
 						border-color: white;
 					}
 				}
+			}
+			.selected_currency-tab {
+				background-color: $dark-app-background-color;
+				border-left: 1px solid $dark-font-main-text-color !important;
+				border-right: 1px solid $dark-font-main-text-color !important;
+				border-bottom: 0px !important;
 			}
 		}
 		.markets-list {
