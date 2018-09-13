@@ -19,6 +19,8 @@ export default {
 	ETH_CURRENCY_SYMBOL: 'ETH',
 	ETH_PRICE_FORMAT: '{0} {1}', // 0-> amount  1 -> symbol  6.00245 ETH
 
+	CANT_BE_CANCELLED:'-',
+	ALREADY_CANCELLED:'-',
 	TIMESTAMP_FORMAT: 'YYYY/MM/DD HH:mm:ss A',
 	HOUR_FORMAT: 'HH:mm:ss A',
 	LOGIN_TEXT: 'Login',
@@ -29,6 +31,12 @@ export default {
 	COPY_TEXT: 'Copy',
 	UPLOAD_TEXT: 'Upload',
 	CONTACT_US_TEXT: 'Contact us',
+	HELPFUL_RESOURCES_TEXT: 'Helpful resources',
+	HELP_RESOURCE_GUIDE_TEXT: 
+		'Feel free to contact us for more information and any issues by sending us an email to support@bitholla.com',
+	HELP_TELEGRAM_TEXT: 
+		'Check out HollaEx open API documentation:',
+	HELP_TELEGRAM_LINK: 'https://apidocs.hollaex.com',
 	NEED_HELP_TEXT: 'Need help',
 	HELP_TEXT: 'help',
 	SUCCESS_TEXT: 'Success',
@@ -570,11 +578,13 @@ export default {
 	FEES: 'Fees',
 	TIME: 'Time',
 	TIMESTAMP: 'Timestamp',
+	MORE: 'More',
+	VIEW: 'View',
 	STATUS: 'Status',
 	AMOUNT: 'Amount',
 	COMPLETE: 'Complete',
 	PENDING: 'Pending',
-	ORDERBOOK: 'Orderbook',
+	ORDERBOOK: 'Order book',
 	CANCEL: 'Cancel',
 	CANCEL_ALL: 'Cancel All',
 	GO_TRADE_HISTORY: 'Go to Trade History',

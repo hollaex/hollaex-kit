@@ -208,6 +208,9 @@ $logout--size-difference: 3rem;
 				stroke: $dark-tab-inactive;
 				fill: transparent;
 			}
+			.email_sent {
+				fill: $dark-tab-inactive;
+			}
 			g .wallet-selected-2 {
 				stroke: transparent;
 				fill: $dark-tab-inactive;

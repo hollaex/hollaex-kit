@@ -145,7 +145,8 @@ class Chat extends Component {
 			userType,
 			userInitialized,
 			onMinimize,
-			minimized
+			minimized,
+			chatIsClosed
 		} = this.props;
 		const {
 			messages,
@@ -168,6 +169,7 @@ class Chat extends Component {
 				userInitialized={userInitialized}
 				minimized={minimized || !userInitialized || !chatSocketInitialized}
 				minimizeChat={onMinimize}
+				chatIsClosed={chatIsClosed}
 				removeMessage={this.removeMessage}
 			/>
 		);

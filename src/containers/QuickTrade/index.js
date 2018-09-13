@@ -140,7 +140,7 @@ class QuickTradeContainer extends Component {
 	};
 
 	render() {
-		const { quoteData, pairData } = this.props;
+		const { quoteData, pairData, activeTheme } = this.props;
 		const { showQuickTradeModal, side, pair } = this.state;
 
 		if (!pair || pair !== this.props.pair || !pairData) {
@@ -164,6 +164,7 @@ class QuickTradeContainer extends Component {
 					onReviewQuickTrade={this.onReviewQuickTrade}
 					onRequestMarketValue={this.onRequestQuote}
 					symbol={pair}
+					theme={activeTheme}
 					quickTradeData={quoteData}
 					onChangeSide={this.onChangeSide}
 					disabled={
@@ -219,11 +220,13 @@ class QuickTradeContainer extends Component {
 const mapStateToProps = (store) => {
 	const pair = store.app.pair;
 	const pairData = store.app.pairs[pair];
+	const activeTheme= store.app.theme
 	return {
 		pair,
 		pairData,
 		quoteData: store.orderbook.quoteData,
-		activeLanguage: store.app.language
+		activeTheme,
+		activeLanguage: store.app.language,
 	};
 };
 

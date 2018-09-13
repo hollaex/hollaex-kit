@@ -46,3 +46,7 @@ export const formatTimestampGregorian = (date, format = TIMESTAMP_FORMAT) =>
 
 export const getDecimals = (value = 0) =>
 	value % 1 ? value.toString().split('.')[1].length : 0;
+
+export const isBlockchainTx = (transactionId) => {
+	return (transactionId.indexOf('-') === -1) ? true : false
+}

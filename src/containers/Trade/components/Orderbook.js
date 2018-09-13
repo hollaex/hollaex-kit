@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import EventListener from 'react-event-listener';
+import { connect } from 'react-redux';
+
 import { subtract } from '../utils';
-import { formatFiatAmount, formatBtcAmount } from '../../../utils/currency';
+import { formatFiatAmount, formatBtcAmount, formatBtcFullAmount, checkNonFiatPair } from '../../../utils/currency';
 import STRINGS from '../../../config/localizedStrings';
 
 const PriceRow = (side, onPriceClick, onAmountClick) => (
@@ -25,11 +27,12 @@ const PriceRow = (side, onPriceClick, onAmountClick) => (
 	</div>
 );
 
-const calculateSpread = (asks, bids) => {
+const calculateSpread = (asks, bids, pair) => {
 	const lowerAsk = asks.length > 0 ? asks[0][0] : 0;
 	const higherBid = bids.length > 0 ? bids[0][0] : 0;
+	const isNonFiatPair = checkNonFiatPair(pair);
 	if (lowerAsk && higherBid) {
-		return formatFiatAmount(subtract(lowerAsk, higherBid));
+		return isNonFiatPair ? formatBtcFullAmount(subtract(lowerAsk, higherBid)) : formatFiatAmount(subtract(lowerAsk, higherBid));
 	}
 	return '-';
 };
@@ -84,7 +87,7 @@ class Orderbook extends Component {
 	};
 
 	render() {
-		const { asks, bids, pairData } = this.props;
+		const { asks, bids, pairData, pair } = this.props;
 		const { dataBlockHeight } = this.state;
 		const blockStyle =
 			dataBlockHeight > 0
@@ -135,7 +138,7 @@ class Orderbook extends Component {
 							<div className="trade_orderbook-spread-text">
 								{STRINGS.formatString(
 									STRINGS.ORDERBOOK_SPREAD_PRICE,
-									calculateSpread(asks, bids),
+									calculateSpread(asks, bids, pair),
 									STRINGS[`${pairTwo}_CURRENCY_SYMBOL`]
 								)}
 							</div>
@@ -167,4 +170,8 @@ Orderbook.defaultProps = {
 	onAmountClick: () => {}
 };
 
-export default Orderbook;
+const mapStateToProps = (store) => ({
+	pair: store.app.pair
+});
+
+export default connect(mapStateToProps)(Orderbook);

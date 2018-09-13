@@ -30,12 +30,14 @@ import {
 	setNotification,
 	closeNotification,
 	openContactForm,
+	openHelpfulResourcesForm,
 	setLanguage,
 	changeTheme,
 	closeAllNotification,
 	setChatUnreadMessages,
 	NOTIFICATIONS,
-	CONTACT_FORM
+	CONTACT_FORM,
+	HELPFUL_RESOURCES_FORM
 } from '../../actions/appActions';
 
 import {
@@ -55,7 +57,7 @@ import {
 	MessageDisplay,
 	CurrencyList
 } from '../../components';
-import { ContactForm, Chat as ChatComponent } from '../';
+import { ContactForm, HelpfulResourcesForm, Chat as ChatComponent } from '../';
 
 import {
 	getClasesForLanguage,
@@ -464,6 +466,14 @@ class Container extends Component {
 						data={data}
 					/>
 				);
+			case HELPFUL_RESOURCES_FORM:
+				return (
+					<HelpfulResourcesForm
+						onSubmitSuccess={this.onCloseDialog}
+						onClose={this.onCloseDialog}
+						data={data}
+					/>
+				);
 			case NOTIFICATIONS.NEW_ORDER: {
 				const { onConfirm, ...rest } = data;
 				return (
@@ -494,6 +504,7 @@ class Container extends Component {
 			verification_level,
 			activeLanguage,
 			openContactForm,
+			openHelpfulResourcesForm,
 			activeTheme,
 			unreadMessages
 		} = this.props;
@@ -565,7 +576,8 @@ class Container extends Component {
 						<Sidebar
 							activePath={activePath}
 							logout={this.logout}
-							help={openContactForm}
+							// help={openContactForm}
+							help={openHelpfulResourcesForm}
 							pair={pair}
 							minimizeChat={this.minimizeChat}
 							chatIsClosed={chatIsClosed}
@@ -583,6 +595,7 @@ class Container extends Component {
 					showCloseText={
 						!(
 							activeNotification.type === CONTACT_FORM ||
+							activeNotification.type === HELPFUL_RESOURCES_FORM ||
 							activeNotification.type === NOTIFICATIONS.NEW_ORDER ||
 							activeNotification.type === NOTIFICATIONS.ERROR
 						)
@@ -600,6 +613,7 @@ class Container extends Component {
 					<ChatComponent
 						minimized={chatIsClosed}
 						onMinimize={this.minimizeChat}
+						chatIsClosed={chatIsClosed}
 					/>
 				)}
 			</div>
@@ -636,6 +650,7 @@ const mapDispatchToProps = (dispatch) => ({
 	closeNotification: bindActionCreators(closeNotification, dispatch),
 	closeAllNotification: bindActionCreators(closeAllNotification, dispatch),
 	openContactForm: bindActionCreators(openContactForm, dispatch),
+	openHelpfulResourcesForm: bindActionCreators(openHelpfulResourcesForm, dispatch),
 	setNotification: bindActionCreators(setNotification, dispatch),
 	changeLanguage: bindActionCreators(setLanguage, dispatch),
 	changePair: bindActionCreators(changePair, dispatch),

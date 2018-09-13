@@ -4,9 +4,9 @@ import mathjs from 'mathjs';
 
 import STRINGS from '../../config/localizedStrings';
 
-import { CurrencyBall } from '../../components';
-import { CURRENCIES, PAIRS } from '../../config/constants';
-import { formatTimestamp } from '../../utils/utils';
+import { CurrencyBall, Button } from '../../components';
+import { CURRENCIES, PAIRS, BLOCKTRAIL_ENDPOINT, ETHEREUM_ENDPOINT } from '../../config/constants';
+import { formatTimestamp, isBlockchainTx } from '../../utils/utils';
 
 const calculateFeeAmount = (
 	fee = 0,
@@ -88,88 +88,100 @@ export const generateTradeHeaders = (symbol) => {
 			label: STRINGS.SIZE,
 			key: 'size',
 			exportToCsv: ({ size = 0, ...data }) => {
-				const symbol = PAIRS[data.symbol].pair_base;
-				const { formatToCurrency } = CURRENCIES[symbol];
-				const shortName = STRINGS[`${symbol.toUpperCase()}_SHORTNAME`];
-				return STRINGS.formatString(
-					STRINGS[`${symbol.toUpperCase()}_PRICE_FORMAT`],
-					formatToCurrency(size),
-					shortName
-				);
+				if (PAIRS[data.symbol]) {
+					const symbol = PAIRS[data.symbol].pair_base;
+					const { formatToCurrency } = CURRENCIES[symbol];
+					const shortName = STRINGS[`${symbol.toUpperCase()}_SHORTNAME`];
+					return STRINGS.formatString(
+						STRINGS[`${symbol.toUpperCase()}_PRICE_FORMAT`],
+						formatToCurrency(size),
+						shortName
+					);
+				}
 			},
 			renderCell: ({ size = 0, ...data }, key, index) => {
-				const symbol = PAIRS[data.symbol].pair_base;
-				const { formatToCurrency } = CURRENCIES[symbol];
-				const shortName = STRINGS[`${symbol.toUpperCase()}_SHORTNAME`];
-				return (
-					<td key={index}>
-						{STRINGS.formatString(
-							STRINGS[`${symbol.toUpperCase()}_PRICE_FORMAT`],
-							formatToCurrency(size),
-							shortName
-						)}
-					</td>
-				);
+				if (PAIRS[data.symbol]) {
+					const symbol = PAIRS[data.symbol].pair_base;
+					const { formatToCurrency } = CURRENCIES[symbol];
+					const shortName = STRINGS[`${symbol.toUpperCase()}_SHORTNAME`];
+					return (
+						<td key={index}>
+							{STRINGS.formatString(
+								STRINGS[`${symbol.toUpperCase()}_PRICE_FORMAT`],
+								formatToCurrency(size),
+								shortName
+							)}
+						</td>
+					);
+				}
 			}
 		},
 		{
 			label: STRINGS.PRICE,
 			key: 'price',
 			exportToCsv: ({ price = 0, size = 0, quick, symbol }) => {
-				const { pair_2 } = PAIRS[symbol];
-				const pair = pair_2.toUpperCase();
-				return STRINGS.formatString(
-					STRINGS[`${pair}_PRICE_FORMAT`],
-					CURRENCIES[pair_2].formatToCurrency(
-						calculatePrice(quick, price, size)
-					),
-					CURRENCIES[pair_2].currencySymbol
-				);
+				if (PAIRS[symbol]) {
+					const { pair_2 } = PAIRS[symbol];
+					const pair = pair_2.toUpperCase();
+					return STRINGS.formatString(
+						STRINGS[`${pair}_PRICE_FORMAT`],
+						CURRENCIES[pair_2].formatToCurrency(
+							calculatePrice(quick, price, size)
+						),
+						CURRENCIES[pair_2].currencySymbol
+					);
+				}
 			},
 			renderCell: ({ price = 0, size = 0, quick, symbol }, key, index) => {
-				const { pair_2 } = PAIRS[symbol];
-				const pair = pair_2.toUpperCase();
-				return (
-					<td key={index}>
-						{STRINGS.formatString(
-							STRINGS[`${pair}_PRICE_FORMAT`],
-							CURRENCIES[pair_2].formatToCurrency(
-								calculatePrice(quick, price, size)
-							),
-							CURRENCIES[pair_2].currencySymbol
-						)}
-					</td>
-				);
+				if (PAIRS[symbol]) {
+					const { pair_2 } = PAIRS[symbol];
+					const pair = pair_2.toUpperCase();
+					return (
+						<td key={index}>
+							{STRINGS.formatString(
+								STRINGS[`${pair}_PRICE_FORMAT`],
+								CURRENCIES[pair_2].formatToCurrency(
+									calculatePrice(quick, price, size)
+								),
+								CURRENCIES[pair_2].currencySymbol
+							)}
+						</td>
+					);
+				}
 			}
 		},
 		{
 			label: STRINGS.AMOUNT,
 			key: 'amount',
 			exportToCsv: ({ price = 0, size = 0, quick, symbol }) => {
-				const { pair_2 } = PAIRS[symbol];
-				const pair = pair_2.toUpperCase();
-				return STRINGS.formatString(
-					STRINGS[`${pair}_PRICE_FORMAT`],
-					CURRENCIES[pair_2].formatToCurrency(
-						calculateAmount(quick, price, size)
-					),
-					CURRENCIES[pair_2].currencySymbol
-				);
+				if (PAIRS[symbol]) {
+					const { pair_2 } = PAIRS[symbol];
+					const pair = pair_2.toUpperCase();
+					return STRINGS.formatString(
+						STRINGS[`${pair}_PRICE_FORMAT`],
+						CURRENCIES[pair_2].formatToCurrency(
+							calculateAmount(quick, price, size)
+						),
+						CURRENCIES[pair_2].currencySymbol
+					);
+				}
 			},
 			renderCell: ({ price = 0, size = 0, quick, symbol }, key, index) => {
-				const { pair_2 } = PAIRS[symbol];
-				const pair = pair_2.toUpperCase();
-				return (
-					<td key={index}>
-						{STRINGS.formatString(
-							STRINGS[`${pair}_PRICE_FORMAT`],
-							CURRENCIES[pair_2].formatToCurrency(
-								calculateAmount(quick, price, size)
-							),
-							CURRENCIES[pair_2].currencySymbol
-						)}
-					</td>
-				);
+				if (PAIRS[symbol]) {
+					const { pair_2 } = PAIRS[symbol];
+					const pair = pair_2.toUpperCase();
+					return (
+						<td key={index}>
+							{STRINGS.formatString(
+								STRINGS[`${pair}_PRICE_FORMAT`],
+								CURRENCIES[pair_2].formatToCurrency(
+									calculateAmount(quick, price, size)
+								),
+								CURRENCIES[pair_2].currencySymbol
+							)}
+						</td>
+					);
+				}
 			}
 		},
 		{
@@ -179,33 +191,37 @@ export const generateTradeHeaders = (symbol) => {
 				if (!fee) {
 					return calculateFeeAmount(fee);
 				}
-				const { pair_base, pair_2 } = PAIRS[symbol];
-				const pair = side === 'buy' ? pair_base : pair_2;
-				return STRINGS.formatString(
-					STRINGS[`${pair.toUpperCase()}_PRICE_FORMAT`],
-					CURRENCIES[pair].formatToCurrency(
-						calculateFeeAmount(fee, quick, price, size, side)
-					),
-					CURRENCIES[pair].currencySymbol
-				);
+				if (PAIRS[symbol]) {
+					const { pair_base, pair_2 } = PAIRS[symbol];
+					const pair = side === 'buy' ? pair_base : pair_2;
+					return STRINGS.formatString(
+						STRINGS[`${pair.toUpperCase()}_PRICE_FORMAT`],
+						CURRENCIES[pair].formatToCurrency(
+							calculateFeeAmount(fee, quick, price, size, side)
+						),
+						CURRENCIES[pair].currencySymbol
+					);
+				}
 			},
 			renderCell: ({ fee, price, size, quick, symbol, side }, key, index) => {
 				if (!fee) {
 					return <td key={index}> {calculateFeeAmount(fee)}</td>;
 				}
-				const { pair_base, pair_2 } = PAIRS[symbol];
-				const pair = side === 'buy' ? pair_base : pair_2;
-				return (
-					<td key={index}>
-						{STRINGS.formatString(
-							STRINGS[`${pair.toUpperCase()}_PRICE_FORMAT`],
-							CURRENCIES[pair].formatToCurrency(
-								calculateFeeAmount(fee, quick, price, size, side)
-							),
-							CURRENCIES[pair].currencySymbol
-						)}
-					</td>
-				);
+				if (PAIRS[symbol]) {
+					const { pair_base, pair_2 } = PAIRS[symbol];
+					const pair = side === 'buy' ? pair_base : pair_2;
+					return (
+						<td key={index}>
+							{STRINGS.formatString(
+								STRINGS[`${pair.toUpperCase()}_PRICE_FORMAT`],
+								CURRENCIES[pair].formatToCurrencyFull(
+									calculateFeeAmount(fee, quick, price, size, side)
+								),
+								CURRENCIES[pair].currencySymbol
+							)}
+						</td>
+					);
+				}
 			}
 		},
 		{
@@ -219,7 +235,7 @@ export const generateTradeHeaders = (symbol) => {
 	];
 };
 
-export const generateWithdrawalsHeaders = (symbol) => {
+export const generateWithdrawalsHeaders = (symbol, cancelWithdrawal) => {
 	return [
 		{
 			label: '',
@@ -263,11 +279,11 @@ export const generateWithdrawalsHeaders = (symbol) => {
 				return `${formatToCurrency(amount - fee)} ${currencySymbol}`;
 			},
 			renderCell: ({ amount = 0, fee = 0, currency }, key, index) => {
-				const { formatToCurrency } = CURRENCIES[currency];
+				const { formatToCurrencyFull } = CURRENCIES[currency];
 				const currencySymbol =
 					STRINGS[`${currency.toUpperCase()}_CURRENCY_SYMBOL`];
 				return (
-					<td key={index}>{`${formatToCurrency(
+					<td key={index}>{`${formatToCurrencyFull(
 						amount - fee
 					)} ${currencySymbol}`}</td>
 				);
@@ -299,7 +315,29 @@ export const generateWithdrawalsHeaders = (symbol) => {
 			renderCell: ({ created_at = '' }, key, index) => {
 				return <td key={index}>{formatTimestamp(created_at)}</td>;
 			}
-		}
+		},
+		{
+			label: STRINGS.MORE,
+			key: 'transaction_id',
+			exportToCsv: ({ transaction_id = '' }) => transaction_id,
+			renderCell: ({ transaction_id = '', currency, status, dismissed, id }, key, index) => {
+				if(status===false && dismissed===false) {
+					return isBlockchainTx(transaction_id) ? 
+					<td key={index}>
+						<div 
+							className='withdrawal-cancel'
+							onClick={() => cancelWithdrawal(id)}
+							key={id}
+						>
+							{STRINGS.CANCEL} 
+						</div>
+					</td>:''
+		       	}else{
+					return isBlockchainTx(transaction_id) ? 
+						<td key={index}><a target="blank" href={(currency === 'btc' ? BLOCKTRAIL_ENDPOINT : ETHEREUM_ENDPOINT) + transaction_id}>{STRINGS.VIEW}</a></td> : <td></td>;
+				}
+			}
+		},
 	];
 };
 

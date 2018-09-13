@@ -37,7 +37,7 @@ class SidebarHub extends Component {
 						icon={ICONS.SIDEBAR_TRADING_ACTIVE}
 						childrenClassName="d-flex sidebar_hub-trade"
 						active={activePath === 'trade' || activePath === 'quick-trade'}
-						path="/trade"
+						path={`/trade/${pair}`}
 					>
 						<ButtonLink
 							label={STRINGS.PRO_TRADE}

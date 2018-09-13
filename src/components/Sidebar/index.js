@@ -10,6 +10,7 @@ const Sidebar = ({
 	minimizeChat,
 	help,
 	pair,
+	chatIsClosed,
 	unreadMessages = 0
 }) => {
 	const sidebarHubProps = {
@@ -27,6 +28,7 @@ const Sidebar = ({
 					className="f-1"
 					onMinimize={minimizeChat}
 					unreadMessages={unreadMessages}
+					chatIsClosed={chatIsClosed}
 				/>
 				<Help className="f-1" onHelp={help} />
 				<Logout className="f-0" onLogout={logout} />

@@ -5,6 +5,7 @@ import STRINGS from '../config/localizedStrings';
 export const BTC_FORMAT = '0,0.[0000]';
 export const ETH_FORMAT = '0,0.[0000]';
 export const BTC_FULL_FORMAT = '0,0.[00000000]';
+export const ETH_FULL_FORMAT = '0,0.[00000000]';
 export const FIAT_FORMAT = '0,0.[00]';
 export const PERCENTAGE_FORMAT = '0.[00]%';
 
@@ -36,6 +37,8 @@ export const formatFiatAmount = (amount = 0) =>
 	numbro(roundNumber(amount, 2)).format(FIAT_FORMAT);
 export const formatEthAmount = (amount = 0) =>
 	numbro(roundNumber(amount, 4)).format(ETH_FORMAT);
+export const formatEthFullAmount = (amount = 0) =>
+	numbro(roundNumber(amount, 8)).format(ETH_FULL_FORMAT);
 export const formatNumber = (number, round = 0) => {
 	return roundNumber(number, round);
 };
@@ -99,6 +102,7 @@ export const getCurrencyFromName = (name = '') => {
 	}
 };
 
+export const checkNonFiatPair = (pair) => !pair.includes(STRINGS.FIAT_SHORTNAME.toLowerCase());
 export const fiatSymbol = 'fiat';
 export const fiatName = STRINGS.FIAT_NAME;
 export const fiatShortName = STRINGS.FIAT_SHORTNAME;

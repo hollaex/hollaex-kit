@@ -17,6 +17,7 @@ const EMPTY_NOTIFICATION = {
 	type: '',
 	message: '',
 	contactFormData: {},
+	helpfulResourcesFormData: {},
 	timestamp: undefined
 };
 

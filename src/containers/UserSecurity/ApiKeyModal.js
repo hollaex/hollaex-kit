@@ -58,27 +58,26 @@ class ApiKeyModal extends Component {
 
 	render() {
 		const { dialogOtpOpen, loading, tokenName, tokenKey } = this.state;
-		const { notificationType, openContactForm } = this.props;
-
-		if (dialogOtpOpen) {
+		const { notificationType, openContactForm, activeTheme } = this.props;
+ 		if (dialogOtpOpen) {
 			return <OtpForm onSubmit={this.onSubmit} onClickHelp={openContactForm} />;
 		} else if (loading) {
 			return <Loader relative={true} background={false} />;
-		} else if (tokenKey) {
+		} else if (tokenKey) { 
 			return (
 				<Notification
-					icon={ICONS.TOKEN_CREATED}
+					icon={ICONS[`TOKEN_CREATED${activeTheme === 'dark' ? '_DARK' : ''}`]}
 					onClose={this.onCloseDialog}
 					type={NOTIFICATIONS.CREATED_API_KEY}
 				>
 					<TokenCreatedInfo token={tokenKey} />
 				</Notification>
 			);
-		} else {
+ 		} else {
 			const icon =
 				notificationType === TYPE_REVOKE
 					? ICONS.TOKEN_TRASHED
-					: ICONS.TOKEN_GENERATE;
+					: ICONS[`TOKEN_GENERATE${activeTheme === 'dark' ? '_DARK' : ''}`];
 			const nextLabel =
 				notificationType === TYPE_REVOKE
 					? STRINGS.DEVELOPERS_TOKENS_POPUP.DELETE
@@ -101,13 +100,14 @@ class ApiKeyModal extends Component {
 					<TokenForm formFields={generateFormValues(notificationType)} />
 				</Notification>
 			);
-		}
+		} 
 	}
 }
 
 const selector = formValueSelector(FORM_NAME);
 const mapStateToForm = (state) => ({
-	tokenName: selector(state, 'name')
+	tokenName: selector(state, 'name'),
+	activeTheme: state.app.theme
 });
 
 export default connect(mapStateToForm)(ApiKeyModal);

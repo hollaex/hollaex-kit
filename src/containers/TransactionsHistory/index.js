@@ -6,10 +6,11 @@ import { isMobile } from 'react-device-detect';
 import {
 	getUserTrades,
 	getUserDeposits,
-	getUserWithdrawals
+	getUserWithdrawals,
+	withdrawalCancel
 } from '../../actions/walletActions';
 
-import { IconTitle, TabController, Loader, CheckTitle } from '../../components';
+import { IconTitle, TabController, Loader, CheckTitle, Dialog } from '../../components';
 import { ICONS } from '../../config/constants';
 
 import {
@@ -25,7 +26,8 @@ import STRINGS from '../../config/localizedStrings';
 class TransactionsHistory extends Component {
 	state = {
 		headers: [],
-		activeTab: 0
+		activeTab: 0,
+		dialogIsOpen: false,
 	};
 
 	componentDidMount() {
@@ -43,6 +45,16 @@ class TransactionsHistory extends Component {
 		}
 	}
 
+	onCloseDialog = () => {
+		this.setState({
+			dialogIsOpen: false,
+		});
+	};
+
+	openDialog = () => {
+		this.setState({ dialogIsOpen: true });
+	};
+
 	requestData = (symbol) => {
 		// this.props.getUserTrades(symbol);
 		this.props.getUserDeposits(symbol);
@@ -50,19 +62,26 @@ class TransactionsHistory extends Component {
 	};
 
 	generateHeaders(symbol) {
+		const {cancelWithdrawal}=this
 		this.setState({
 			headers: {
 				trades: isMobile
 					? generateTradeHeadersMobile(symbol)
 					: generateTradeHeaders(symbol),
 				deposits: generateDepositsHeaders(symbol),
-				withdrawals: generateWithdrawalsHeaders(symbol)
+				withdrawals: generateWithdrawalsHeaders(symbol, cancelWithdrawal)
 			}
 		});
 	}
 
 	setActiveTab = (activeTab = 0) => {
 		this.setState({ activeTab });
+	};
+	cancelWithdrawal = (id) => {
+		this.props.withdrawalCancel(id);
+		// if(id) {
+		// 	this.openDialog()
+		// }
 	};
 
 	renderActiveTab = () => {
@@ -103,8 +122,9 @@ class TransactionsHistory extends Component {
 	};
 
 	render() {
-		const { id } = this.props;
-		const { activeTab } = this.state;
+		const { id, activeTheme } = this.props;
+		const { activeTab, dialogIsOpen } = this.state;
+		const {onCloseDialog} =this;
 
 		if (!id) {
 			return <Loader />;
@@ -163,6 +183,16 @@ class TransactionsHistory extends Component {
 					activeTab={activeTab}
 					setActiveTab={this.setActiveTab}
 				/>
+				<Dialog
+					isOpen={dialogIsOpen}
+					label="token-modal"
+					theme={activeTheme}
+					onCloseDialog={onCloseDialog}
+					shouldCloseOnOverlayClick={true}
+					showCloseText={false}
+				>
+					<div>Withdrawal cancel sucessfully</div>
+				</Dialog>
 				<div className={classnames('inner_container', 'with_border_top')}>
 					{this.renderActiveTab()}
 				</div>
@@ -177,13 +207,15 @@ const mapStateToProps = (store) => ({
 	deposits: store.wallet.deposits,
 	withdrawals: store.wallet.withdrawals,
 	symbol: store.orderbook.symbol,
-	activeLanguage: store.app.language
+	activeLanguage: store.app.language,
+	activeTheme: store.app.theme
 });
 
 const mapDispatchToProps = (dispatch) => ({
 	getUserTrades: (symbol) => dispatch(getUserTrades({ symbol })),
 	getUserDeposits: (symbol) => dispatch(getUserDeposits({ symbol })),
-	getUserWithdrawals: (symbol) => dispatch(getUserWithdrawals({ symbol }))
+	getUserWithdrawals: (symbol) => dispatch(getUserWithdrawals({ symbol })),
+	withdrawalCancel: (transactionId) => dispatch(withdrawalCancel({ transactionId }))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(
