@@ -102,6 +102,7 @@ export const getCurrencyFromName = (name = '') => {
 	}
 };
 
+export const checkNonFiatPair = (pair) => !pair.includes(STRINGS.FIAT_SHORTNAME.toLowerCase());
 export const fiatSymbol = 'fiat';
 export const fiatName = STRINGS.FIAT_NAME;
 export const fiatShortName = STRINGS.FIAT_SHORTNAME;

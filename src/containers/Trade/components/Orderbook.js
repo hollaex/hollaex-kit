@@ -4,7 +4,7 @@ import EventListener from 'react-event-listener';
 import { connect } from 'react-redux';
 
 import { subtract } from '../utils';
-import { formatFiatAmount, formatBtcAmount, formatBtcFullAmount } from '../../../utils/currency';
+import { formatFiatAmount, formatBtcAmount, formatBtcFullAmount, checkNonFiatPair } from '../../../utils/currency';
 import STRINGS from '../../../config/localizedStrings';
 
 const PriceRow = (side, onPriceClick, onAmountClick) => (
@@ -30,7 +30,7 @@ const PriceRow = (side, onPriceClick, onAmountClick) => (
 const calculateSpread = (asks, bids, pair) => {
 	const lowerAsk = asks.length > 0 ? asks[0][0] : 0;
 	const higherBid = bids.length > 0 ? bids[0][0] : 0;
-	const isNonFiatPair = !pair.includes(STRINGS.FIAT_SHORTNAME.toLowerCase())
+	const isNonFiatPair = checkNonFiatPair(pair);
 	if (lowerAsk && higherBid) {
 		return isNonFiatPair ? formatBtcFullAmount(subtract(lowerAsk, higherBid)) : formatFiatAmount(subtract(lowerAsk, higherBid));
 	}

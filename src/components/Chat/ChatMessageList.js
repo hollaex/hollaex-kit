@@ -11,23 +11,11 @@ class ChatMessageList extends Component {
 	};
 
 	componentDidUpdate(prevProps) {
-		this.scrollbarsRef.scrollToBottom();
-	}
-
-	scrollToBottom = () => {
-		if (
-			this.scrollbarsRef.container.clientHeight < this.state.containerHeight
-		) {
-			this.setState({
-				containerHeight: this.scrollbarsRef.container.clientHeight
-			});
+		const { chatIsClosed } = prevProps;
+		if(chatIsClosed && (this.props.chatIsClosed !== chatIsClosed)) {
 			this.scrollbarsRef.scrollToBottom();
 		}
-	};
-
-	scrollUpdate = (values) => {
-		this.scrollToBottom();
-	};
+	}
 
 	setScrollbarsRef = (el) => {
 		if (el) {
@@ -39,7 +27,6 @@ class ChatMessageList extends Component {
 		this.setState({
 			containerHeight: this.scrollbarsRef.container.clientHeight
 		});
-
 	}
 
 	render() {
@@ -51,7 +38,6 @@ class ChatMessageList extends Component {
 			usernameInitalized,
 			removeMessage
 		} = this.props;
-
 		return (
 			<Scrollbars
 				ref={this.setScrollbarsRef}
@@ -72,7 +58,6 @@ class ChatMessageList extends Component {
 					/>
 				)}
 				renderView={(props) => <div {...props} className="view" />}
-				onUpdate={this.scrollUpdate}
 			>
 				{(chatInitialized && usernameInitalized) ||
 				(!usernameInitalized && userInitialized) ||

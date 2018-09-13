@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { DisplayTable } from '../../../components';
 
 import { formatTimestamp } from '../../../utils/utils';
-import { formatFiatAmount, formatBtcFullAmount, formatBtcAmount } from '../../../utils/currency';
+import { formatFiatAmount, formatBtcFullAmount, formatBtcAmount, checkNonFiatPair } from '../../../utils/currency';
 
 import STRINGS from '../../../config/localizedStrings';
 
@@ -54,7 +54,7 @@ class TradeHistory extends Component {
 
 	calculateHeaders = () => {
 		const { pair } = this.props;
-		const isNonFiatPair = !pair.includes(STRINGS.FIAT_SHORTNAME.toLowerCase());
+		const isNonFiatPair = checkNonFiatPair(pair);
 		const headers = generateHeaders(isNonFiatPair);
 		this.setState({ headers });
 	};

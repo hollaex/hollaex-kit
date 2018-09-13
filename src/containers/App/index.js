@@ -613,6 +613,7 @@ class Container extends Component {
 					<ChatComponent
 						minimized={chatIsClosed}
 						onMinimize={this.minimizeChat}
+						chatIsClosed={chatIsClosed}
 					/>
 				)}
 			</div>
