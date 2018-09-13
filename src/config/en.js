@@ -33,11 +33,10 @@ export default {
 	CONTACT_US_TEXT: 'Contact us',
 	HELPFUL_RESOURCES_TEXT: 'Helpful resources',
 	HELP_RESOURCE_GUIDE_TEXT: 
-		'Find videos and PDF guides explaining how to use EXIR on our	tutorial guide section of our website:',
-	HELP_EXIR_TUTORIAL_LINK: 'https://www.exir.io/tutorial/',
+		'Feel free to contact us for more information and any issues by sending us an email to support@bitholla.com',
 	HELP_TELEGRAM_TEXT: 
-		'Join our Telegram group to get the latest updates on EXIR and crypto trading news:',
-	HELP_TELEGRAM_LINK: 'https://t.me/exirofficial',
+		'Check out HollaEx open API documentation:',
+	HELP_TELEGRAM_LINK: 'https://apidocs.hollaex.com',
 	NEED_HELP_TEXT: 'Need help',
 	HELP_TEXT: 'help',
 	SUCCESS_TEXT: 'Success',
