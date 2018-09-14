@@ -4,6 +4,7 @@ export default {
 	FIAT_NAME: 'EURO',
 	FIAT_FULLNAME: 'Euro',
 	FIAT_SHORTNAME: 'EUR',
+	FIAT_SHORTNAME_EN: 'EUR',
 	FIAT_CURRENCY_SYMBOL: '€',
 	FIAT_PRICE_FORMAT: '{0} {1}', // 0-> amount  1 -> symbol  600,000 T
 

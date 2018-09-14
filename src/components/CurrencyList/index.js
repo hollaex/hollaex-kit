@@ -43,7 +43,7 @@ class CurrencyList extends Component {
 		let marketPrice = {};
 		Object.keys(orderBookData).forEach(order => {
 			const symbol = order.split('-')[0];
-			if(orderBookData[order].length && order.includes(STRINGS.FIAT_SHORTNAME.toLowerCase())) marketPrice[symbol] = orderBookData[order][0].price;
+			if(orderBookData[order].length && order.includes(STRINGS.FIAT_SHORTNAME_EN.toLowerCase())) marketPrice[symbol] = orderBookData[order][0].price;
 		});
 		return (
 			<div
