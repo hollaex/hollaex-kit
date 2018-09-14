@@ -6,6 +6,7 @@ import MarketList from './MarketList';
 import STRINGS from '../../config/localizedStrings';
 import  { ICONS } from '../../config/constants';
 import { CURRENCIES } from '../../config/constants';
+import { getClasesForLanguage } from '../../utils/string';
 
 class CurrencyList extends Component {
 	state = {
@@ -32,7 +33,7 @@ class CurrencyList extends Component {
 	};
 
 	render() {
-		const { className, pairs, orderBookData, activeTheme, pair } = this.props;
+		const { className, pairs, orderBookData, activeTheme, pair, activeLanguage } = this.props;
 		const { markets, focusedSymbol } = this.state;
 		const { formatToCurrency } = CURRENCIES.fiat;
 		const obj = {};
@@ -47,7 +48,7 @@ class CurrencyList extends Component {
 		});
 		return (
 			<div
-				className={classnames('currency-list f-0', className)}
+				className={classnames('currency-list f-0', className, getClasesForLanguage(activeLanguage))}
 				onMouseLeave={this.removeFocus}
 			>
 				{symbols.map((symbol, index) => (
@@ -83,7 +84,8 @@ const mapStateToProps = (store) => ({
 	pairs: store.app.pairs,
 	orderBookData: store.orderbook.pairsTrades,
 	activeTheme: store.app.theme,
-	pair: store.app.pair
+	pair: store.app.pair,
+	activeLanguage: store.app.language
 });
 
 export default connect(mapStateToProps)(CurrencyList);
