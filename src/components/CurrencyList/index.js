@@ -62,9 +62,8 @@ class CurrencyList extends Component {
 						onMouseEnter={() => this.loadMarkets(symbol)}
 						onClick={() => this.loadMarkets(symbol)}
 					>
-						<ReactSVG path={ICONS[`${symbol.toUpperCase()}_ICON${activeTheme === 'dark' ? '_DARK':''}`]} wrapperClassName="app_bar_currency-icon" />
+						<ReactSVG path={ICONS[`${symbol.toUpperCase()}_ICON${activeTheme === 'dark' ? '_DARK':''}`]} wrapperClassName="app_bar_currency-icon ml-2 mr-2" />
 						{STRINGS[`${symbol.toUpperCase()}_NAME`]}:
-						<div className="ml-1">{`${STRINGS.FIAT_CURRENCY_SYMBOL}`}</div>
 						<div className="ml-1">
 							{STRINGS.formatString(
 								STRINGS.FIAT_PRICE_FORMAT,
@@ -72,6 +71,7 @@ class CurrencyList extends Component {
 								''
 							)}
 						</div>
+						<div className="ml-1 mr-1">{`${STRINGS.FIAT_CURRENCY_SYMBOL}`}</div>
 					</div>
 				))}
 				{focusedSymbol && <MarketList markets={markets}  />}
