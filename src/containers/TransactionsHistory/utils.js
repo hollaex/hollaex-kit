@@ -261,11 +261,11 @@ export const generateWithdrawalsHeaders = (symbol, withdrawalPopup) => {
 		{
 			label: STRINGS.STATUS,
 			key: 'status',
-			exportToCsv: ({ status = false }) =>
-				status ? STRINGS.COMPLETE : STRINGS.PENDING,
-			renderCell: ({ status = false }, key, index) => {
+			exportToCsv: ({ status = false, dismissed = false }) =>
+				status ? STRINGS.COMPLETE : (dismissed ? STRINGS.REJECTED : STRINGS.PENDING),
+			renderCell: ({ status = false, dismissed = false }, key, index) => {
 				return (
-					<td key={index}>{status ? STRINGS.COMPLETE : STRINGS.PENDING}</td>
+					<td key={index}>{status ? STRINGS.COMPLETE : (dismissed ? STRINGS.REJECTED : STRINGS.PENDING)}</td>
 				);
 			}
 		},
@@ -332,8 +332,8 @@ export const generateWithdrawalsHeaders = (symbol, withdrawalPopup) => {
 							{STRINGS.CANCEL} 
 						</div>
 					</td>:''
-		       	}else{
-					return isBlockchainTx(transaction_id) ? 
+		       	} else {
+					return isBlockchainTx(transaction_id) && currency !== 'fiat' ?
 						<td key={index}><a target="blank" href={(currency === 'btc' ? BLOCKTRAIL_ENDPOINT : ETHEREUM_ENDPOINT) + transaction_id}>{STRINGS.VIEW}</a></td> : <td></td>;
 				}
 			}

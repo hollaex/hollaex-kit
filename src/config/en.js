@@ -589,6 +589,7 @@ export default {
 	AMOUNT: 'Amount',
 	COMPLETE: 'Complete',
 	PENDING: 'Pending',
+	REJECTED: 'Rejected',
 	ORDERBOOK: 'Order book',
 	CANCEL: 'Cancel',
 	CANCEL_ALL: 'Cancel All',
