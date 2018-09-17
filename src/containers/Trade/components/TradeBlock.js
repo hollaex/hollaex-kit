@@ -29,9 +29,11 @@ const TradeBlock = ({
 			)}
 		>
 			<div className="trade_block-title">
-				<div className='d-flex'>
-					{pairs.length ? <ReactSVG path={ICON_PATH} wrapperClassName='trade_block-icon'/> : null}
-					<div className="trade_block-title-items">{title}</div>
+				<div className='d-flex justify-content-between'>
+					<div className='d-flex'>
+						{pairs.length ? <ReactSVG path={ICON_PATH} wrapperClassName='trade_block-icon'/> : null}
+						<div className="trade_block-title-items">{title}</div>
+					</div>
 					<div className="trade_block-title-currency">{pairs.length ? `${pairs[0]}/${pairs[1]}` : ''}</div>
 				</div>
 				{action}

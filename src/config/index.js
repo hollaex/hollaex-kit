@@ -1,6 +1,6 @@
 const PRODUCTION_ENDPOINT =
 	process.env.REACT_APP_SERVER_ENDPOINT || 'https://api.hollaex.com';
-const LOCALHOST_ENDPOINT = 'http://188.166.226.103';
+const LOCALHOST_ENDPOINT = 'https://api.hollaex.com';
 
 const API_PATH_V0 = '/v0';
 

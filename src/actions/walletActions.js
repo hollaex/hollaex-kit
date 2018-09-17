@@ -26,13 +26,13 @@ export const ACTION_KEYS = {
 
 const ENDPOINTS = {
 	TRADES: '/user/trades',
-	DELETE: '/user/withdrawals',
 	DEPOSITS: '/user/deposits',
 	WITHDRAWALS: '/user/withdrawals',
 	DEPOSIT_BANK: '/user/deposit/bank',
 	WITHDRAW_BANK: '/user/withdraw/bank',
 	WITHDRAW: (currency) => `/user/withdraw/${currency}`,
-	WITHDRAW_FEE: (currency) => `/user/withdraw/${currency}/fee`
+	WITHDRAW_FEE: (currency) => `/user/withdraw/${currency}/fee`,
+	CANCEL_WITHDRAWAL: '/user/withdrawals'
 };
 
 export const performWithdraw = (currency, values) => {
@@ -64,7 +64,7 @@ export const withdrawalCancel = (transactionId) => {
 	return (dispatch) => {
 		dispatch({ type: ACTION_KEYS.WITHDRAWAL_CANCEL_PENDING });
 		axios
-			.delete(ENDPOINTS.DELETE, {data: { transactionId: parseInt(transactionId.transactionId)}} )
+			.delete(ENDPOINTS.CANCEL_WITHDRAWAL, {data: { transactionId: parseInt(transactionId.transactionId, 10)}} )
 			.then((body) => {
 				dispatch({
 					type: ACTION_KEYS.WITHDRAWAL_CANCEL_FULFILLED,

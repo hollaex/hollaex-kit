@@ -235,7 +235,7 @@ export const generateTradeHeaders = (symbol) => {
 	];
 };
 
-export const generateWithdrawalsHeaders = (symbol, cancelWithdrawal) => {
+export const generateWithdrawalsHeaders = (symbol, withdrawalPopup) => {
 	return [
 		{
 			label: '',
@@ -261,11 +261,11 @@ export const generateWithdrawalsHeaders = (symbol, cancelWithdrawal) => {
 		{
 			label: STRINGS.STATUS,
 			key: 'status',
-			exportToCsv: ({ status = false }) =>
-				status ? STRINGS.COMPLETE : STRINGS.PENDING,
-			renderCell: ({ status = false }, key, index) => {
+			exportToCsv: ({ status = false, dismissed = false }) =>
+				status ? STRINGS.COMPLETE : (dismissed ? STRINGS.REJECTED : STRINGS.PENDING),
+			renderCell: ({ status = false, dismissed = false }, key, index) => {
 				return (
-					<td key={index}>{status ? STRINGS.COMPLETE : STRINGS.PENDING}</td>
+					<td key={index}>{status ? STRINGS.COMPLETE : (dismissed ? STRINGS.REJECTED : STRINGS.PENDING)}</td>
 				);
 			}
 		},
@@ -320,20 +320,20 @@ export const generateWithdrawalsHeaders = (symbol, cancelWithdrawal) => {
 			label: STRINGS.MORE,
 			key: 'transaction_id',
 			exportToCsv: ({ transaction_id = '' }) => transaction_id,
-			renderCell: ({ transaction_id = '', currency, status, dismissed, id }, key, index) => {
+			renderCell: ({ transaction_id = '', currency, status, dismissed, id, amount }, key, index) => {
 				if(status===false && dismissed===false) {
 					return isBlockchainTx(transaction_id) ? 
 					<td key={index}>
 						<div 
 							className='withdrawal-cancel'
-							onClick={() => cancelWithdrawal(id)}
+							onClick={() => withdrawalPopup(id, amount)}
 							key={id}
 						>
 							{STRINGS.CANCEL} 
 						</div>
 					</td>:''
-		       	}else{
-					return isBlockchainTx(transaction_id) ? 
+		       	} else {
+					return isBlockchainTx(transaction_id) && currency !== 'fiat' ?
 						<td key={index}><a target="blank" href={(currency === 'btc' ? BLOCKTRAIL_ENDPOINT : ETHEREUM_ENDPOINT) + transaction_id}>{STRINGS.VIEW}</a></td> : <td></td>;
 				}
 			}

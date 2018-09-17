@@ -1,5 +1,5 @@
 import React from 'react';
-import { Router, Route, Redirect, browserHistory } from 'react-router';
+import { Router, Route, browserHistory } from 'react-router';
 import ReactGA from 'react-ga';
 
 import {
@@ -88,11 +88,10 @@ const logOutUser = () => {
 	}
 };
 
-const createLocalizedRoutes = (locale) => {
-	store.dispatch(setLanguage(locale));
-	return (
-		<Redirect to="/" />
-	);
+const createLocalizedRoutes = ({ router, routeParams}) => {
+	store.dispatch(setLanguage(routeParams.locale));
+	router.replace('/');
+	return <div />;
 }
 
 const NotFound = ({ router }) => {
@@ -113,7 +112,7 @@ const noLoggedUserCommonProps = {
 export default (
 	<Router history={browserHistory}>
 		{!IS_PRO_VERSION && <Route path="/" name="Home" component={Home} />}
-		{createLocalizedRoutes()}
+		<Route path="lang/:locale" component={createLocalizedRoutes} />
 		<Route component={AuthContainer} {...noAuthRoutesCommonProps}>
 			<Route path="login" name="Login" component={Login} />
 			<Route path="signup" name="signup" component={Signup} />

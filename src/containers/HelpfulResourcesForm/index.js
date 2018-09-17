@@ -69,7 +69,7 @@ class HelpfulResourcesForm extends Component {
 				/>
 				<div>
 					<div className='d-flex mt-5'>
-						<ReactSVG path={activeTheme==='white' ? ICONS.LAPTOP : ICONS.LAPTOP_COLOR} wrapperClassName='help_icons' />
+						<ReactSVG path={activeTheme==='white' ? ICONS.LAPTOP : ICONS.LAPTOP_COLOR} wrapperClassName='help_icons ml-1 mr-1' />
 						<div className='text' >
 							{STRINGS.HELP_RESOURCE_GUIDE_TEXT}
 							<BlueLink
@@ -80,7 +80,7 @@ class HelpfulResourcesForm extends Component {
 						<div className="w-25" />
 					</div>
 					<div className='d-flex mt-5 mb-5'>
-						<ReactSVG path={activeTheme==='white' ? ICONS.TELEGRAM : ICONS.TELEGRAM_COLOR} wrapperClassName='help_icons' />
+						<ReactSVG path={activeTheme==='white' ? ICONS.TELEGRAM : ICONS.TELEGRAM_COLOR} wrapperClassName='help_icons ml-1 mr-1' />
 						<div className='text' >
 							{STRINGS.HELP_TELEGRAM_TEXT} 
 							<BlueLink
@@ -91,9 +91,9 @@ class HelpfulResourcesForm extends Component {
 						<div className="w-25" />
 					</div>
 					<div className='w-100 buttons-wrapper d-flex' >
-						<Button label='BACK' onClick={onClose}/>
+						<Button label={STRINGS.BACK_TEXT} onClick={onClose}/>
 						<div className='separator' />
-						<Button label='CONTACT SUPPORT' onClick={this.openNewForm}/>
+						<Button label={STRINGS.REQUEST_RESET_PASSWORD.SUPPORT} onClick={this.openNewForm}/>
 					</div>
 				</div>
 			</div>

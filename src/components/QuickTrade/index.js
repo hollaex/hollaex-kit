@@ -2,9 +2,8 @@ import React, { Component } from 'react';
 import classnames from 'classnames';
 import ReactSVG from 'react-svg';
 import { debounce } from 'lodash';
-import { isMobile } from 'react-device-detect';
 import { browserHistory } from 'react-router';
-import {Button, TabController, CheckTitle, MobileBarTabs, ButtonLink } from '../../components';
+import {Button, TabController, CheckTitle } from '../../components';
 
 import STRINGS from '../../config/localizedStrings';
 import {
@@ -25,17 +24,15 @@ const GROUP_CLASSES = [...FLEX_CENTER_CLASSES, 'flex-column'];
 
 const getInitialTab = ( path ) => {
 	let activeTab = -1;
-	let activeDevelopers = false;
-	if (path === 'btc-eur') {
+	if (path === `${STRINGS.BTC_SHORTNAME.toLowerCase()}-${STRINGS.FIAT_SHORTNAME_EN.toLowerCase()}`) {
 		activeTab = 0;
 	}
-	 else if (path === 'eth-eur') {
+	 else if (path === `${STRINGS.ETH_SHORTNAME.toLowerCase()}-${STRINGS.FIAT_SHORTNAME_EN.toLowerCase()}`) {
 		activeTab = 1;
 	} 
 	
 	return {
 		activeTab,
-		activeDevelopers
 	};
 };
 class QuickTrade extends Component {
@@ -72,10 +69,10 @@ class QuickTrade extends Component {
 
 	setActiveTab = (activeTab) => {
 		if(activeTab===0) {
-			browserHistory.push(`/quick-trade/btc-eur`)
+			browserHistory.push(`/quick-trade/${STRINGS.BTC_SHORTNAME.toLowerCase()}-${STRINGS.FIAT_SHORTNAME_EN.toLowerCase()}`)
 			this.setState({ activeTab });
 		} else {
-			browserHistory.push(`/quick-trade/eth-eur`)
+			browserHistory.push(`/quick-trade/${STRINGS.ETH_SHORTNAME.toLowerCase()}-${STRINGS.FIAT_SHORTNAME_EN.toLowerCase()}`)
 			this.setState({ activeTab });
 		}
 	}
@@ -122,12 +119,10 @@ class QuickTrade extends Component {
 		updateActiveTab = false
 	) => {
 		let activeTab = this.state.activeTab > -1 ? this.state.activeTab : 0;
-		let activeDevelopers = false;
 		const {theme} = this.props 
 		if (updateActiveTab || this.state.activeTab === -1) {
 			const initialValues = getInitialTab(this.props.symbol);
 			activeTab = initialValues.activeTab;
-			activeDevelopers = initialValues.activeDevelopers;
 		}
 		
 		const tabs = [

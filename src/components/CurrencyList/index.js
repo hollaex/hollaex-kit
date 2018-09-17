@@ -6,6 +6,7 @@ import MarketList from './MarketList';
 import STRINGS from '../../config/localizedStrings';
 import  { ICONS } from '../../config/constants';
 import { CURRENCIES } from '../../config/constants';
+import { getClasesForLanguage } from '../../utils/string';
 
 class CurrencyList extends Component {
 	state = {
@@ -32,7 +33,7 @@ class CurrencyList extends Component {
 	};
 
 	render() {
-		const { className, pairs, orderBookData, activeTheme, pair } = this.props;
+		const { className, pairs, orderBookData, activeTheme, pair, activeLanguage } = this.props;
 		const { markets, focusedSymbol } = this.state;
 		const { formatToCurrency } = CURRENCIES.fiat;
 		const obj = {};
@@ -43,11 +44,11 @@ class CurrencyList extends Component {
 		let marketPrice = {};
 		Object.keys(orderBookData).forEach(order => {
 			const symbol = order.split('-')[0];
-			if(orderBookData[order].length && order.includes(STRINGS.FIAT_SHORTNAME.toLowerCase())) marketPrice[symbol] = orderBookData[order][0].price;
+			if(orderBookData[order].length && order.includes(STRINGS.FIAT_SHORTNAME_EN.toLowerCase())) marketPrice[symbol] = orderBookData[order][0].price;
 		});
 		return (
 			<div
-				className={classnames('currency-list f-0', className)}
+				className={classnames('currency-list f-0', className, getClasesForLanguage(activeLanguage))}
 				onMouseLeave={this.removeFocus}
 			>
 				{symbols.map((symbol, index) => (
@@ -61,9 +62,8 @@ class CurrencyList extends Component {
 						onMouseEnter={() => this.loadMarkets(symbol)}
 						onClick={() => this.loadMarkets(symbol)}
 					>
-						<ReactSVG path={ICONS[`${symbol.toUpperCase()}_ICON${activeTheme === 'dark' ? '_DARK':''}`]} wrapperClassName="app_bar_currency-icon" />
+						<ReactSVG path={ICONS[`${symbol.toUpperCase()}_ICON${activeTheme === 'dark' ? '_DARK':''}`]} wrapperClassName="app_bar_currency-icon ml-2 mr-2" />
 						{STRINGS[`${symbol.toUpperCase()}_NAME`]}:
-						<div className="ml-1">{`${STRINGS.FIAT_CURRENCY_SYMBOL}`}</div>
 						<div className="ml-1">
 							{STRINGS.formatString(
 								STRINGS.FIAT_PRICE_FORMAT,
@@ -71,6 +71,7 @@ class CurrencyList extends Component {
 								''
 							)}
 						</div>
+						<div className="ml-1 mr-1">{`${STRINGS.FIAT_CURRENCY_SYMBOL}`}</div>
 					</div>
 				))}
 				{focusedSymbol && <MarketList markets={markets}  />}
@@ -83,7 +84,8 @@ const mapStateToProps = (store) => ({
 	pairs: store.app.pairs,
 	orderBookData: store.orderbook.pairsTrades,
 	activeTheme: store.app.theme,
-	pair: store.app.pair
+	pair: store.app.pair,
+	activeLanguage: store.app.language
 });
 
 export default connect(mapStateToProps)(CurrencyList);
