@@ -20,6 +20,10 @@ export default {
 	ETH_CURRENCY_SYMBOL: 'ETH',
 	ETH_PRICE_FORMAT: '{0} {1}', // 0-> amount  1 -> symbol  6.00245 ETH
 
+
+	CANCEL_FIAT_WITHDRAWAL: 'Cancel {0} Withdrawal',
+	CANCEL_WITHDRAWAL: 'Cancel Withdrawal',
+	CANCEL_WITHDRAWAL_POPUP_CONFIRM: 'Do you want to cancel your pending withdrawal of:',
 	CANT_BE_CANCELLED:'-',
 	ALREADY_CANCELLED:'-',
 	TIMESTAMP_FORMAT: 'YYYY/MM/DD HH:mm:ss A',
