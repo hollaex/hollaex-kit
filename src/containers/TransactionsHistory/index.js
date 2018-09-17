@@ -10,9 +10,9 @@ import {
 	withdrawalCancel
 } from '../../actions/walletActions';
 
-import { IconTitle, TabController, Loader, CheckTitle, Dialog } from '../../components';
-import { ICONS } from '../../config/constants';
-
+import { fiatSymbol } from '../../utils/currency';
+import { IconTitle, TabController, Loader, CheckTitle, Dialog, Button, CurrencyBallWithPrice } from '../../components';
+import { ICONS, FLEX_CENTER_CLASSES } from '../../config/constants';
 import {
 	generateTradeHeaders,
 	generateTradeHeadersMobile,
@@ -23,11 +23,15 @@ import HistoryDisplay from './HistoryDisplay';
 
 import STRINGS from '../../config/localizedStrings';
 
+const GROUP_CLASSES = [...FLEX_CENTER_CLASSES, 'flex-column'];
+
 class TransactionsHistory extends Component {
 	state = {
 		headers: [],
 		activeTab: 0,
 		dialogIsOpen: false,
+		amount: 0,
+		transactionId:0
 	};
 
 	componentDidMount() {
@@ -43,6 +47,11 @@ class TransactionsHistory extends Component {
 		if (nextProps.activeLanguage !== this.props.activeLanguage) {
 			this.generateHeaders(nextProps.symbol);
 		}
+		if((this.props.cancelData.dismissed !== nextProps.cancelData.dismissed) && nextProps.cancelData.dismissed===true) {
+			this.onCloseDialog()
+			this.requestData(nextProps.symbol);
+
+		}
 	}
 
 	onCloseDialog = () => {
@@ -52,7 +61,7 @@ class TransactionsHistory extends Component {
 	};
 
 	openDialog = () => {
-		this.setState({ dialogIsOpen: true });
+		this.setState({ dialogIsOpen: true});
 	};
 
 	requestData = (symbol) => {
@@ -62,14 +71,14 @@ class TransactionsHistory extends Component {
 	};
 
 	generateHeaders(symbol) {
-		const {cancelWithdrawal}=this
+		const {withdrawalPopup}=this
 		this.setState({
 			headers: {
 				trades: isMobile
 					? generateTradeHeadersMobile(symbol)
 					: generateTradeHeaders(symbol),
 				deposits: generateDepositsHeaders(symbol),
-				withdrawals: generateWithdrawalsHeaders(symbol, cancelWithdrawal)
+				withdrawals: generateWithdrawalsHeaders(symbol, withdrawalPopup)
 			}
 		});
 	}
@@ -77,12 +86,20 @@ class TransactionsHistory extends Component {
 	setActiveTab = (activeTab = 0) => {
 		this.setState({ activeTab });
 	};
-	cancelWithdrawal = (id) => {
-		this.props.withdrawalCancel(id);
-		// if(id) {
-		// 	this.openDialog()
-		// }
+	withdrawalPopup = (id, amount) => {
+		if(id) {
+			this.setState({ amount:amount, transactionId:id });
+			this.openDialog()
+		}
 	};
+
+	withdrawalCancel = () => {
+		const {transactionId} =this.state
+		this.props.withdrawalCancel(transactionId);
+	}
+	onClose = () => {
+		this.onCloseDialog()
+	}
 
 	renderActiveTab = () => {
 		const { trades, deposits, withdrawals, symbol } = this.props;
@@ -122,9 +139,10 @@ class TransactionsHistory extends Component {
 	};
 
 	render() {
-		const { id, activeTheme } = this.props;
-		const { activeTab, dialogIsOpen } = this.state;
+		const { id, activeTheme, symbol, cancelData } = this.props;
+		const { activeTab, dialogIsOpen, amount } = this.state;
 		const {onCloseDialog} =this;
+		const shortName = STRINGS[`${symbol.toUpperCase()}_SHORTNAME`];
 
 		if (!id) {
 			return <Loader />;
@@ -191,7 +209,31 @@ class TransactionsHistory extends Component {
 					shouldCloseOnOverlayClick={true}
 					showCloseText={false}
 				>
-					<div>Withdrawal cancel sucessfully</div>
+					<div>
+						<IconTitle
+							iconPath={activeTheme ==='dark' ? ICONS.CANCEL_WITHDRAW_DARK: ICONS.CANCEL_WITHDRAW_LIGHT }
+							text={STRINGS.formatString(
+								STRINGS.CANCEL_FIAT_WITHDRAWAL,
+								STRINGS.FIAT_FULLNAME
+							)}
+							textType="title"
+							underline={true}
+							className="w-100"
+						/>
+						<div>
+							<div className='text-center mt-5 mb-5'>
+								<div>{STRINGS.CANCEL_WITHDRAWAL_POPUP_CONFIRM}</div> 
+								<div className={classnames(...GROUP_CLASSES)}>
+									<CurrencyBallWithPrice  symbol={fiatSymbol} amount={amount} price={1} />
+								</div>
+							</div>
+							<div className='w-100 buttons-wrapper d-flex' >
+								<Button label={STRINGS.BACK_TEXT} onClick={this.onClose}/>
+								<div className='separator' />
+								<Button label={STRINGS.CANCEL_WITHDRAWAL} onClick={this.withdrawalCancel}/>
+							</div>
+						</div>
+					</div>
 				</Dialog>
 				<div className={classnames('inner_container', 'with_border_top')}>
 					{this.renderActiveTab()}
@@ -208,7 +250,8 @@ const mapStateToProps = (store) => ({
 	withdrawals: store.wallet.withdrawals,
 	symbol: store.orderbook.symbol,
 	activeLanguage: store.app.language,
-	activeTheme: store.app.theme
+	activeTheme: store.app.theme,
+	cancelData: store.wallet.withdrawalCancelData,
 });
 
 const mapDispatchToProps = (dispatch) => ({

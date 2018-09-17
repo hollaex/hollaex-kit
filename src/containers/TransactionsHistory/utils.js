@@ -235,7 +235,7 @@ export const generateTradeHeaders = (symbol) => {
 	];
 };
 
-export const generateWithdrawalsHeaders = (symbol, cancelWithdrawal) => {
+export const generateWithdrawalsHeaders = (symbol, withdrawalPopup) => {
 	return [
 		{
 			label: '',
@@ -320,13 +320,13 @@ export const generateWithdrawalsHeaders = (symbol, cancelWithdrawal) => {
 			label: STRINGS.MORE,
 			key: 'transaction_id',
 			exportToCsv: ({ transaction_id = '' }) => transaction_id,
-			renderCell: ({ transaction_id = '', currency, status, dismissed, id }, key, index) => {
+			renderCell: ({ transaction_id = '', currency, status, dismissed, id, amount }, key, index) => {
 				if(status===false && dismissed===false) {
 					return isBlockchainTx(transaction_id) ? 
 					<td key={index}>
 						<div 
 							className='withdrawal-cancel'
-							onClick={() => cancelWithdrawal(id)}
+							onClick={() => withdrawalPopup(id, amount)}
 							key={id}
 						>
 							{STRINGS.CANCEL} 

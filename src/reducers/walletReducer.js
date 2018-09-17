@@ -16,7 +16,7 @@ const INITIAL_VERIFICATION_OBJECT = {
 };
 
 const INITIAL_DELETE_WHITDRAWALS_MSG = {
-	message:'',
+	dismissed:false,
 	error:''
 }
 
@@ -126,28 +126,29 @@ export default function reducer(state = INITIAL_STATE, { type, payload }) {
 				...state,
 				withdrawalCancelData: {
 					...INITIAL_DELETE_WHITDRAWALS_MSG,
-					error:''
+					error:'',
+					dismissed: false,
 				}
 			};
 		case ACTION_KEYS.WITHDRAWAL_CANCEL_FULFILLED:
-		console.log('FULFILLED:', payload);
 
 			return {
 				...state,
 				withdrawalCancelData: {
 					...INITIAL_DELETE_WHITDRAWALS_MSG,
 					error:'',
-					message: payload.message
+					dismissed: payload.dismissed
 				}
 			};
 		case ACTION_KEYS.WITHDRAWAL_CANCEL_REJECTED:
-		console.log('reject:', payload);
 
 			return {
 				...state,
 				withdrawalCancelData: {
 					...INITIAL_DELETE_WHITDRAWALS_MSG,
-					error: payload.message
+					error: payload.message,
+					dismissed: false,
+
 				}
 			};
 		// USER_TRADES

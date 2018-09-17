@@ -20,6 +20,8 @@ export const API_URL = config[ENV][NETWORK].API_URL;
 export const WS_URL = config[ENV][NETWORK].WS_URL;
 
 export const ICONS = {
+	CANCEL_WITHDRAW_DARK: `${process.env.PUBLIC_URL}/assets/icons/cancel-withdraw-dark-02-03.svg`,
+	CANCEL_WITHDRAW_LIGHT: `${process.env.PUBLIC_URL}/assets/icons/cancel-withdraw-light-02.svg`,
 	BTC_ICON_DARK: `${process.env.PUBLIC_URL}/assets/icons/btc-icon-dark-01.svg`,
 	BTC_ICON: `${process.env.PUBLIC_URL}/assets/icons/btc-icon-01.svg`,
 	ETH_ICON: `${process.env.PUBLIC_URL}/assets/icons/eth-icon-01.svg`,
