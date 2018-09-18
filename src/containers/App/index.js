@@ -567,7 +567,7 @@ class Container extends Component {
 					</div>
 					{isMobile && (
 						<div className="app_container-bottom_bar">
-							<SidebarBottom activePath={activePath} pair={pair} />
+							<SidebarBottom isLogged={true} activePath={activePath} pair={pair} />
 						</div>
 					)}
 				</div>
@@ -577,6 +577,8 @@ class Container extends Component {
 							activePath={activePath}
 							logout={this.logout}
 							// help={openContactForm}
+							theme={activeTheme}
+							isLogged={true}
 							help={openHelpfulResourcesForm}
 							pair={pair}
 							minimizeChat={this.minimizeChat}

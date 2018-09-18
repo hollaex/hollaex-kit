@@ -2,8 +2,10 @@ import React from 'react';
 
 import { NotificationsList, SidebarHub } from '../';
 import { Logout, Help, Chat } from './rows';
+import { isLoggedIn } from '../../utils/token';
 
 const Sidebar = ({
+	isLogged,
 	active,
 	activePath,
 	logout,
@@ -11,18 +13,23 @@ const Sidebar = ({
 	help,
 	pair,
 	chatIsClosed,
+	theme,
 	unreadMessages = 0
 }) => {
 	const sidebarHubProps = {
 		activePath,
-		pair
+		pair,
+		isLogged,
+		theme
 	};
 	return (
 		<div className="sidebar-container apply_rtl">
 			<SidebarHub {...sidebarHubProps} />
+			{isLogged ?
 			<div className="sidebar-notifications">
 				<NotificationsList />
-			</div>
+			</div>: '' }
+			{isLogged ?
 			<div className="sidebar-row d-flex">
 				<Chat
 					className="f-1"
@@ -32,7 +39,7 @@ const Sidebar = ({
 				/>
 				<Help className="f-1" onHelp={help} />
 				<Logout className="f-0" onLogout={logout} />
-			</div>
+			</div> : ''}
 		</div>
 	);
 };
