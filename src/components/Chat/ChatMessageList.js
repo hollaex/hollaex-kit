@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import { Scrollbars } from 'react-custom-scrollbars';
+import  { cloneDeep } from 'lodash';
 import { ChatMessage } from './';
 import { Loader } from '../';
 import { isLoggedIn } from '../../utils/token';
@@ -11,9 +12,18 @@ class ChatMessageList extends Component {
 	};
 
 	componentDidUpdate(prevProps) {
-		this.scrollbarsRef.scrollToBottom();
+		const lastMsg = cloneDeep(this.props.messages).pop();
+		if(lastMsg && ((this.scrollbarsRef.getValues().top > 0.95) || (this.props.username === lastMsg.username)) ) {
+			this.scrollbarsRef.scrollToBottom();
+		}
 	}
 
+	componentWillReceiveProps(nextProps){
+		const { chatIsClosed } = nextProps;
+		if(this.props.chatIsClosed !== chatIsClosed) {
+			this.scrollbarsRef.scrollToBottom();
+		}
+	}
 	scrollToBottom = () => {
 		if (
 			this.scrollbarsRef.container.clientHeight < this.state.containerHeight
