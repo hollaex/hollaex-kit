@@ -70,7 +70,7 @@ class OrderEntry extends Component {
 	}
 
 	setMax = () => {
-		const { side, balance, pair_base } = this.props;
+		const { side, balance, pair_base, min_size } = this.props;
 		const size = parseFloat(this.props.size || 0);
 		const price = parseFloat(this.props.price || 0);
 		let maxSize = balance[`${pair_base}_available`];
@@ -78,7 +78,7 @@ class OrderEntry extends Component {
 			maxSize = mathjs.divide(balance[`fiat_available`], price);
 		}
 		if (maxSize !== size) {
-			this.props.change(FORM_NAME, 'size', roundNumber(maxSize, 4));
+			this.props.change(FORM_NAME, 'size', roundNumber(maxSize, getDecimals(min_size)));
 		}
 	};
 
@@ -211,6 +211,15 @@ class OrderEntry extends Component {
 	};
 
 	generateFormValues = (pair = '', byuingPair = '') => {
+		const {
+
+			min_size,
+			max_size,
+			tick_size,
+			min_price,
+			max_price,
+
+		} = this.props;
 		const formValues = {
 			type: {
 				name: 'type',
@@ -243,13 +252,13 @@ class OrderEntry extends Component {
 				type: 'number',
 				placeholder: '0.00',
 				normalize: normalizeFloat,
-				step: ORDER_LIMITS[pair].SIZE.STEP,
-				min: ORDER_LIMITS[pair].SIZE.MIN,
-				max: ORDER_LIMITS[pair].SIZE.MAX,
+				step: min_size,
+				min: min_size,
+				max: max_size,
 				validate: [
 					required,
-					minValue(ORDER_LIMITS[pair].SIZE.MIN),
-					maxValue(ORDER_LIMITS[pair].SIZE.MAX)
+					minValue(min_size),
+					maxValue(max_size)
 				],
 				currency: STRINGS[`${pair.toUpperCase()}_SHORTNAME`]
 			},
@@ -259,14 +268,14 @@ class OrderEntry extends Component {
 				type: 'number',
 				placeholder: '0',
 				normalize: normalizeFloat,
-				step: ORDER_LIMITS[pair].PRICE.STEP,
-				min: ORDER_LIMITS[pair].PRICE.MIN,
-				max: ORDER_LIMITS[pair].PRICE.MAX,
+				step: tick_size,
+				min: min_price,
+				max: max_price,
 				validate: [
 					required,
-					minValue(ORDER_LIMITS[pair].PRICE.MIN),
-					maxValue(ORDER_LIMITS[pair].PRICE.MAX),
-					step(ORDER_LIMITS[pair].PRICE.STEP)
+					minValue(min_price),
+					maxValue(max_price),
+					step(tick_size)
 				],
 				currency: STRINGS[`${byuingPair.toUpperCase()}_SHORTNAME`]
 			}
