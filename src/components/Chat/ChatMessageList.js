@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import { Scrollbars } from 'react-custom-scrollbars';
+import  { cloneDeep } from 'lodash';
 import { ChatMessage } from './';
 import { Loader } from '../';
 import { isLoggedIn } from '../../utils/token';
@@ -11,11 +12,32 @@ class ChatMessageList extends Component {
 	};
 
 	componentDidUpdate(prevProps) {
-		const { chatIsClosed } = prevProps;
-		if(chatIsClosed && (this.props.chatIsClosed !== chatIsClosed)) {
+		const lastMsg = cloneDeep(this.props.messages).pop();
+		if(lastMsg && ((this.scrollbarsRef.getValues().top > 0.95) || (this.props.username === lastMsg.username)) ) {
 			this.scrollbarsRef.scrollToBottom();
 		}
 	}
+
+	componentWillReceiveProps(nextProps){
+		const { chatIsClosed } = nextProps;
+		if(this.props.chatIsClosed !== chatIsClosed) {
+			this.scrollbarsRef.scrollToBottom();
+		}
+	}
+	scrollToBottom = () => {
+		if (
+			this.scrollbarsRef.container.clientHeight < this.state.containerHeight
+		) {
+			this.setState({
+				containerHeight: this.scrollbarsRef.container.clientHeight
+			});
+			this.scrollbarsRef.scrollToBottom();
+		}
+	};
+
+	scrollUpdate = (values) => {
+		this.scrollToBottom();
+	};
 
 	setScrollbarsRef = (el) => {
 		if (el) {
@@ -27,6 +49,7 @@ class ChatMessageList extends Component {
 		this.setState({
 			containerHeight: this.scrollbarsRef.container.clientHeight
 		});
+
 	}
 
 	render() {
@@ -38,6 +61,7 @@ class ChatMessageList extends Component {
 			usernameInitalized,
 			removeMessage
 		} = this.props;
+
 		return (
 			<Scrollbars
 				ref={this.setScrollbarsRef}
@@ -58,6 +82,7 @@ class ChatMessageList extends Component {
 					/>
 				)}
 				renderView={(props) => <div {...props} className="view" />}
+				onUpdate={this.scrollUpdate}
 			>
 				{(chatInitialized && usernameInitalized) ||
 				(!usernameInitalized && userInitialized) ||
