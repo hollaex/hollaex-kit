@@ -46,7 +46,7 @@ import {
 	setChatMinimized
 } from '../../utils/theme';
 import { checkUserSessionExpired } from '../../utils/utils';
-import { getToken, getTokenTimestamp } from '../../utils/token';
+import { getToken, getTokenTimestamp, isLoggedIn } from '../../utils/token';
 import {
 	AppBar,
 	Sidebar,
@@ -80,7 +80,7 @@ class Container extends Component {
 		this.setState({
 			chatIsClosed
 		});
-		if (checkUserSessionExpired(getTokenTimestamp())) {
+		if (isLoggedIn() && checkUserSessionExpired(getTokenTimestamp())) {
 			this.logout('Token is expired');
 		}
 	}
@@ -153,7 +153,9 @@ class Container extends Component {
 
 	initSocketConnections = () => {
 		this.setPublicWS();
-		this.setUserSocket(getToken());
+		if(isLoggedIn()) {
+			this.setUserSocket(getToken());
+		}
 		this.setState({ appLoaded: true }, () => {
 			this._resetTimer();
 		});
@@ -506,7 +508,9 @@ class Container extends Component {
 			openContactForm,
 			openHelpfulResourcesForm,
 			activeTheme,
-			unreadMessages
+			unreadMessages,
+			orderbooks,
+			pairsTrades
 		} = this.props;
 		const { dialogIsOpen, appLoaded, chatIsClosed } = this.state;
 		const languageClasses = getClasesForLanguage(activeLanguage, 'array');
@@ -562,12 +566,12 @@ class Container extends Component {
 								}
 							)}
 						>
-							{appLoaded && verification_level > 0 ? children : <Loader background={false} />}
+							{(Object.keys(orderbooks).length && Object.keys(pairsTrades).length) ? children : null}
 						</div>
 					</div>
 					{isMobile && (
 						<div className="app_container-bottom_bar">
-							<SidebarBottom isLogged={true} activePath={activePath} pair={pair} />
+							<SidebarBottom isLogged={isLoggedIn()} activePath={activePath} pair={pair} />
 						</div>
 					)}
 				</div>
@@ -578,7 +582,7 @@ class Container extends Component {
 							logout={this.logout}
 							// help={openContactForm}
 							theme={activeTheme}
-							isLogged={true}
+							isLogged={isLoggedIn()}
 							help={openHelpfulResourcesForm}
 							pair={pair}
 							minimizeChat={this.minimizeChat}
@@ -634,7 +638,9 @@ const mapStateToProps = (store) => ({
 	activeTheme: store.app.theme,
 	orders: store.order.activeOrders,
 	user: store.user.userData,
-	unreadMessages: store.app.chatUnreadMessages
+	unreadMessages: store.app.chatUnreadMessages,
+	orderbooks: store.orderbook.pairsOrderbooks,
+	pairsTrades: store.orderbook.pairsTrades
 });
 
 const mapDispatchToProps = (dispatch) => ({

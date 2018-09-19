@@ -2,7 +2,6 @@ import React from 'react';
 
 import { NotificationsList, SidebarHub } from '../';
 import { Logout, Help, Chat } from './rows';
-import { isLoggedIn } from '../../utils/token';
 
 const Sidebar = ({
 	isLogged,

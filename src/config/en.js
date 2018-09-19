@@ -20,7 +20,7 @@ export default {
 	ETH_CURRENCY_SYMBOL: 'ETH',
 	ETH_PRICE_FORMAT: '{0} {1}', // 0-> amount  1 -> symbol  6.00245 ETH
 
-
+	ACTIVE_TRADES: 'You must {0} to access your active trades',
 	CANCEL_FIAT_WITHDRAWAL: 'Cancel {0} Withdrawal',
 	CANCEL_WITHDRAWAL: 'Cancel Withdrawal',
 	CANCEL_WITHDRAWAL_POPUP_CONFIRM: 'Do you want to cancel your pending withdrawal of:',
