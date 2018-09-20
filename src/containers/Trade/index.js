@@ -189,7 +189,7 @@ class Trade extends Component {
 						<UserTrades trades={userTrades} pair={pair} pairData={pairData} /> :
 					<div className='text-center'>
 						<IconTitle
-							iconPath={activeTheme ==='dark' ? ICONS.CANCEL_WITHDRAW_DARK: ICONS.CANCEL_WITHDRAW_LIGHT }
+							iconPath={activeTheme ==='dark' ? ICONS.TRADE_HISTORY_DARK: ICONS.TRADE_HISTORY_LIGHT }
 							textType="title"
 							className="w-100"
 							useSvg={true}

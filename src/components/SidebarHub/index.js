@@ -47,10 +47,7 @@ class SidebarHub extends Component {
 						
 						<ButtonLink
 							label={STRINGS.SIGN_IN.toUpperCase()}
-							className={classnames('sidebar_hub-button f-1', {
-								active: activePath === 'login',
-								'not-active': activePath !== 'login'
-							})}
+							className={ 'log_in-btn'}
 							disabled={isLogged}
 							link={`/login`}
 						/>
@@ -60,11 +57,7 @@ class SidebarHub extends Component {
 
 						<ButtonLink
 							label={STRINGS.SIGNUP_TEXT.toUpperCase()}
-							className={classnames('sidebar_hub-button f-1 mb-5', {
-								active: activePath === 'signup',
-								'not-active': activePath !== 'signup'
-
-							})}
+							className={ 'sign_up-btn mb-5'}
 							disabled={isLogged}
 							link={`/signup`}
 						/>

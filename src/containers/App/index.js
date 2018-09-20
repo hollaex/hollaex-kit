@@ -496,6 +496,16 @@ class Container extends Component {
 		return this.props.changeLanguage(language);
 	};
 
+	isSocketDataReady(){
+		const {
+			orderbooks,
+			pairsTrades,
+			pair
+		} = this.props;
+		return (Object.keys(orderbooks).length && orderbooks[pair] && Object.keys(orderbooks[pair]).length && 
+			Object.keys(pairsTrades).length && pairsTrades[pair] && pairsTrades[pair].length);
+	}
+
 	render() {
 		const {
 			symbol,
@@ -509,8 +519,6 @@ class Container extends Component {
 			openHelpfulResourcesForm,
 			activeTheme,
 			unreadMessages,
-			orderbooks,
-			pairsTrades
 		} = this.props;
 		const { dialogIsOpen, appLoaded, chatIsClosed } = this.state;
 		const languageClasses = getClasesForLanguage(activeLanguage, 'array');
@@ -566,7 +574,7 @@ class Container extends Component {
 								}
 							)}
 						>
-							{(Object.keys(orderbooks).length && Object.keys(pairsTrades).length) ? children : null}
+							{this.isSocketDataReady() ? children : null}
 						</div>
 					</div>
 					{isMobile && (

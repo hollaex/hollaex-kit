@@ -20,6 +20,8 @@ export const API_URL = config[ENV][NETWORK].API_URL;
 export const WS_URL = config[ENV][NETWORK].WS_URL;
 
 export const ICONS = {
+	TRADE_HISTORY_DARK: `${process.env.PUBLIC_URL}/assets/icons/trade-history-dark.svg`,
+	TRADE_HISTORY_LIGHT: `${process.env.PUBLIC_URL}/assets/icons/trade-history-light.svg`,
 	ACTIVE_TRADE_DARK: `${process.env.PUBLIC_URL}/assets/icons/active-trade-dark.svg`,
 	ACTIVE_TRADE_LIGHT: `${process.env.PUBLIC_URL}/assets/icons/active-trade-light.svg`,
 	DEMO_LOGIN_ICON_DARK: `${process.env.PUBLIC_URL}/assets/icons/demo-login-icon-dark.svg`,
