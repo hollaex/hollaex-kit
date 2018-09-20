@@ -27,6 +27,18 @@ export const roundNumber = (number = 0, decimals = 4) => {
 	}
 };
 
+export const formatCurrency = (amount = 0, currency = 'fiat', type = 'simple') => {
+	switch (currency.toLowerCase()) {
+		case 'btc':
+			return numbro(roundNumber(amount, 8)).format(BTC_FULL_FORMAT);
+		case 'eth':
+			return numbro(roundNumber(amount, 8)).format(ETH_FULL_FORMAT);
+		case 'fiat':
+			return numbro(roundNumber(amount, 8)).format(FIAT_FORMAT);
+		default:
+			return numbro(roundNumber(amount, 8)).format(FIAT_FORMAT); 
+	}
+}
 export const formatPercentage = (value = 0) =>
 	numbro(math.number(value / 100)).format(PERCENTAGE_FORMAT);
 export const formatBtcAmount = (amount = 0) =>
