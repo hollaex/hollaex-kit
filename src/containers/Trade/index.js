@@ -265,6 +265,7 @@ class Trade extends Component {
 				title: STRINGS.TRADE_TAB_ORDERS,
 				content: (
 					<MobileOrders
+						isLoggedIn={isLoggedIn()}
 						activeOrders={activeOrders}
 						cancelOrder={cancelOrder}
 						cancelAllOrders={cancelAllOrders}
@@ -272,6 +273,7 @@ class Trade extends Component {
 						pair={pair}
 						pairData={pairData}
 						userTrades={userTrades}
+						activeTheme={activeTheme}
 					/>
 				)
 			}
@@ -300,7 +302,7 @@ class Trade extends Component {
 								'apply_rtl'
 							)}
 						>
-							<TradeBlock title={STRINGS.ORDERBOOK} pairData={pairData} pair={pair}>
+							<TradeBlock isLoggedIn={isLoggedIn()} title={STRINGS.ORDERBOOK} pairData={pairData} pair={pair}>
 								{orderbookReady && <Orderbook {...orderbookProps} />}
 							</TradeBlock>
 						</div>
