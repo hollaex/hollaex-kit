@@ -503,7 +503,7 @@ class Container extends Component {
 			pair
 		} = this.props;
 		return (Object.keys(orderbooks).length && orderbooks[pair] && Object.keys(orderbooks[pair]).length && 
-			Object.keys(pairsTrades).length && pairsTrades[pair] && pairsTrades[pair].length);
+			Object.keys(pairsTrades).length);
 	}
 
 	render() {
@@ -574,7 +574,7 @@ class Container extends Component {
 								}
 							)}
 						>
-							{this.isSocketDataReady() ? children : null}
+							{appLoaded && this.isSocketDataReady() ? children : <Loader background={false} />}
 						</div>
 					</div>
 					{isMobile && (
