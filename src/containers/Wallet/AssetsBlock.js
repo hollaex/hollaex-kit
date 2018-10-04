@@ -60,7 +60,7 @@ export const AssetsBlock = ({
 								</td>
 								<td className="td-wallet">
 									{wallets[CURRENCIES[key].fullName.toLowerCase()] ||
-									(key === fiatSymbol && bankaccount.verified) ? (
+									(key === fiatSymbol && bankaccount && bankaccount.verified) ? (
 										<div className="d-flex justify-content-between deposit-withdrawal-wrapper">
 											<ActionNotification
 												text={STRINGS.WALLET_BUTTON_FIAT_DEPOSIT}

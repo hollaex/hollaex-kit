@@ -24,9 +24,10 @@ import {
 	normalizeFloat
 } from '../../../components/Form/validations';
 import { Loader } from '../../../components';
-import { ORDER_LIMITS } from '../../../config/constants';
+import { ORDER_LIMITS, takerFee } from '../../../config/constants';
 
 import STRINGS from '../../../config/localizedStrings';
+import { isLoggedIn } from '../../../utils/token';
 
 class OrderEntry extends Component {
 	state = {
@@ -103,7 +104,7 @@ class OrderEntry extends Component {
 
 		let orderFees = mathjs
 			.chain(orderPrice)
-			.multiply(fees.taker_fee)
+			.multiply(fees ? fees.taker_fee : takerFee)
 			.divide(100)
 			.done();
 		let outsideFormError = '';
@@ -296,7 +297,7 @@ class OrderEntry extends Component {
 
 		const currencyName = STRINGS[`${pair_base.toUpperCase()}_NAME`];
 		const buyingName = STRINGS[`${pair_2.toUpperCase()}_SHORTNAME`];
-		if (!balance.hasOwnProperty(`${pair_2}_balance`)) {
+		if (isLoggedIn() && !balance.hasOwnProperty(`${pair_2}_balance`)) {
 			return <Loader relative={true} background={false} />;
 		}
 

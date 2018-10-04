@@ -5,6 +5,7 @@ import  { cloneDeep } from 'lodash';
 import { ChatMessage } from './';
 import { Loader } from '../';
 import { isLoggedIn } from '../../utils/token';
+import { isMobile } from 'react-device-detect';
 
 class ChatMessageList extends Component {
 	state = {
@@ -12,17 +13,17 @@ class ChatMessageList extends Component {
 	};
 
 	componentDidUpdate(prevProps) {
-		const lastMsg = cloneDeep(this.props.messages).pop();
-		if(lastMsg && ((this.scrollbarsRef.getValues().top > 0.95) || (this.props.username === lastMsg.username)) ) {
+		if(this.shouldScroll(prevProps)) {
 			this.scrollbarsRef.scrollToBottom();
 		}
 	}
 
-	componentWillReceiveProps(nextProps){
-		const { chatIsClosed } = nextProps;
-		if(this.props.chatIsClosed !== chatIsClosed) {
-			this.scrollbarsRef.scrollToBottom();
-		}
+	shouldScroll = prevProps => {
+		const lastMsg = cloneDeep(this.props.messages).pop();
+		return ((lastMsg && ((this.scrollbarsRef.getValues().top > 0.95) || (this.props.username === lastMsg.username)))  || 
+		(!isMobile && prevProps.chatIsClosed && (prevProps.chatIsClosed !== this.props.chatIsClosed)) ||
+		(!prevProps.chatInitialized && (prevProps.chatInitialized !== this.props.chatInitialized)) ||
+		(!prevProps.userInitialized && (prevProps.userInitialized !== this.props.userInitialized)))
 	}
 	scrollToBottom = () => {
 		if (
@@ -49,7 +50,9 @@ class ChatMessageList extends Component {
 		this.setState({
 			containerHeight: this.scrollbarsRef.container.clientHeight
 		});
-
+		if(isMobile){
+			this.scrollbarsRef.scrollToBottom();
+		}
 	}
 
 	render() {

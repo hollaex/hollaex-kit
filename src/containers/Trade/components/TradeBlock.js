@@ -12,7 +12,8 @@ const TradeBlock = ({
 	alignChildY = false,
 	className = '',
 	pairData = {},
-	pair, 
+	pair,
+	isLoggedIn, 
 	activeTheme
 }) => {
 	const pairs = pair ? pair.split('-').map(curr => curr.toUpperCase()) : [];
@@ -40,7 +41,7 @@ const TradeBlock = ({
 			</div>
 			<div
 				ref={setRef}
-				className={classnames('trade_block-content', 'd-flex', {
+				className={classnames('trade_block-content', isLoggedIn ? 'd-flex': '', {
 					'overflow-y': overflowY,
 					'flex-column': alignChildY
 				})}

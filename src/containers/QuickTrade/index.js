@@ -18,9 +18,11 @@ import {
 import {
 	requestQuote,
 	executeQuote,
-	changeSymbol
+	changeSymbol,
+	requestQuickTrade
 } from '../../actions/orderbookAction';
 import { formatBtcAmount, formatFiatAmount } from '../../utils/currency';
+import { isLoggedIn } from '../../utils/token';
 import { changePair } from '../../actions/appActions';
 
 import { FLEX_CENTER_CLASSES } from '../../config/constants';
@@ -111,7 +113,7 @@ class QuickTradeContainer extends Component {
 		} else {
 			quote = this.state.quote;
 		}
-		this.props.requestQuote(quote);
+		isLoggedIn() ? this.props.requestQuote(quote) : this.props.requestQuickTrade(quote);
 	};
 
 	onClearQuoteInterval = () => {
@@ -140,7 +142,7 @@ class QuickTradeContainer extends Component {
 	};
 
 	render() {
-		const { quoteData, pairData, activeTheme } = this.props;
+		const { quoteData, pairData, activeTheme, quickTrade } = this.props;
 		const { showQuickTradeModal, side, pair } = this.state;
 
 		if (!pair || pair !== this.props.pair || !pairData) {
@@ -150,6 +152,7 @@ class QuickTradeContainer extends Component {
 		const name = STRINGS[`${pairData.pair_base.toUpperCase()}_NAME`];
 		const { data, order } = quoteData;
 		const end = quoteData.data.exp;
+		const tradeData = isLoggedIn() ? quoteData : quickTrade;
 		return (
 			<div
 				className={classnames(
@@ -165,7 +168,7 @@ class QuickTradeContainer extends Component {
 					onRequestMarketValue={this.onRequestQuote}
 					symbol={pair}
 					theme={activeTheme}
-					quickTradeData={quoteData}
+					quickTradeData={tradeData}
 					onChangeSide={this.onChangeSide}
 					disabled={
 						quoteData.error === BALANCE_ERROR ? true : !quoteData.token
@@ -227,6 +230,7 @@ const mapStateToProps = (store) => {
 		quoteData: store.orderbook.quoteData,
 		activeTheme,
 		activeLanguage: store.app.language,
+		quickTrade: store.orderbook.quickTrade
 	};
 };
 
@@ -234,7 +238,8 @@ const mapDispatchToProps = (dispatch) => ({
 	changePair: bindActionCreators(changePair, dispatch),
 	requestQuote: bindActionCreators(requestQuote, dispatch),
 	executeQuote: bindActionCreators(executeQuote, dispatch),
-	changeSymbol: bindActionCreators(changeSymbol, dispatch)
+	changeSymbol: bindActionCreators(changeSymbol, dispatch),
+	requestQuickTrade: bindActionCreators(requestQuickTrade, dispatch)
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(

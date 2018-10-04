@@ -1,7 +1,7 @@
 import React from 'react';
 import classnames from 'classnames';
 
-const RENDER_CELL = (row, key) => <td key={key}>{row[key]}</td>;
+const RENDER_CELL = (row, key, cellIndex) => <td key={cellIndex}>{row[key]}</td>;
 
 const renderRow = (headers = []) => (row, rowIndex) => (
 	<tr className="table_body-row" key={`row_${rowIndex}`}>

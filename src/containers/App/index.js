@@ -46,7 +46,7 @@ import {
 	setChatMinimized
 } from '../../utils/theme';
 import { checkUserSessionExpired } from '../../utils/utils';
-import { getToken, getTokenTimestamp } from '../../utils/token';
+import { getToken, getTokenTimestamp, isLoggedIn } from '../../utils/token';
 import {
 	AppBar,
 	Sidebar,
@@ -80,7 +80,7 @@ class Container extends Component {
 		this.setState({
 			chatIsClosed
 		});
-		if (checkUserSessionExpired(getTokenTimestamp())) {
+		if (isLoggedIn() && checkUserSessionExpired(getTokenTimestamp())) {
 			this.logout('Token is expired');
 		}
 	}
@@ -153,7 +153,9 @@ class Container extends Component {
 
 	initSocketConnections = () => {
 		this.setPublicWS();
-		this.setUserSocket(getToken());
+		if(isLoggedIn()) {
+			this.setUserSocket(getToken());
+		}
 		this.setState({ appLoaded: true }, () => {
 			this._resetTimer();
 		});
@@ -494,6 +496,16 @@ class Container extends Component {
 		return this.props.changeLanguage(language);
 	};
 
+	isSocketDataReady(){
+		const {
+			orderbooks,
+			pairsTrades,
+			pair
+		} = this.props;
+		return (Object.keys(orderbooks).length && orderbooks[pair] && Object.keys(orderbooks[pair]).length && 
+			Object.keys(pairsTrades).length);
+	}
+
 	render() {
 		const {
 			symbol,
@@ -506,7 +518,7 @@ class Container extends Component {
 			openContactForm,
 			openHelpfulResourcesForm,
 			activeTheme,
-			unreadMessages
+			unreadMessages,
 		} = this.props;
 		const { dialogIsOpen, appLoaded, chatIsClosed } = this.state;
 		const languageClasses = getClasesForLanguage(activeLanguage, 'array');
@@ -562,12 +574,12 @@ class Container extends Component {
 								}
 							)}
 						>
-							{appLoaded && verification_level > 0 ? children : <Loader background={false} />}
+							{appLoaded && this.isSocketDataReady() ? children : <Loader background={false} />}
 						</div>
 					</div>
 					{isMobile && (
 						<div className="app_container-bottom_bar">
-							<SidebarBottom activePath={activePath} pair={pair} />
+							<SidebarBottom isLogged={isLoggedIn()} activePath={activePath} pair={pair} />
 						</div>
 					)}
 				</div>
@@ -577,6 +589,8 @@ class Container extends Component {
 							activePath={activePath}
 							logout={this.logout}
 							// help={openContactForm}
+							theme={activeTheme}
+							isLogged={isLoggedIn()}
 							help={openHelpfulResourcesForm}
 							pair={pair}
 							minimizeChat={this.minimizeChat}
@@ -632,7 +646,9 @@ const mapStateToProps = (store) => ({
 	activeTheme: store.app.theme,
 	orders: store.order.activeOrders,
 	user: store.user.userData,
-	unreadMessages: store.app.chatUnreadMessages
+	unreadMessages: store.app.chatUnreadMessages,
+	orderbooks: store.orderbook.pairsOrderbooks,
+	pairsTrades: store.orderbook.pairsTrades
 });
 
 const mapDispatchToProps = (dispatch) => ({

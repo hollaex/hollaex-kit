@@ -20,6 +20,12 @@ export const API_URL = config[ENV][NETWORK].API_URL;
 export const WS_URL = config[ENV][NETWORK].WS_URL;
 
 export const ICONS = {
+	TRADE_HISTORY_DARK: `${process.env.PUBLIC_URL}/assets/icons/trade-history-dark.svg`,
+	TRADE_HISTORY_LIGHT: `${process.env.PUBLIC_URL}/assets/icons/trade-history-light.svg`,
+	ACTIVE_TRADE_DARK: `${process.env.PUBLIC_URL}/assets/icons/active-trade-dark.svg`,
+	ACTIVE_TRADE_LIGHT: `${process.env.PUBLIC_URL}/assets/icons/active-trade-light.svg`,
+	DEMO_LOGIN_ICON_DARK: `${process.env.PUBLIC_URL}/assets/icons/demo-login-icon-dark.svg`,
+	DEMO_LOGIN_ICON_LIGHT: `${process.env.PUBLIC_URL}/assets/icons/demo-login-icon-light.svg`,
 	CANCEL_WITHDRAW_DARK: `${process.env.PUBLIC_URL}/assets/icons/cancel-withdraw-dark-02-03.svg`,
 	CANCEL_WITHDRAW_LIGHT: `${process.env.PUBLIC_URL}/assets/icons/cancel-withdraw-light-02.svg`,
 	BTC_ICON_DARK: `${process.env.PUBLIC_URL}/assets/icons/btc-icon-dark-01.svg`,
@@ -386,6 +392,7 @@ export const BANK_WITHDRAWAL_MAX_DYNAMIC_FEE =
 	process.env.REACT_APP_BANK_WITHDRAWAL_MAX_DYNAMIC_FEE || 50;
 export const BANK_WITHDRAWAL_MAX_AMOUNT_FOR_BASE_FEE =
 	process.env.REACT_APP_BANK_WITHDRAWAL_MAX_AMOUNT_FOR_BASE_FEE || 0;
+export const takerFee  = process.env.REACT_APP_NOT_LOGGEDIN_FEE || 0;
 
 export const BANK_PAYMENT_LINK = '';
 export const MIN_VERIFICATION_LEVEL_TO_WITHDRAW = 2;

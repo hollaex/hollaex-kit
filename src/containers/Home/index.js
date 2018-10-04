@@ -6,7 +6,7 @@ import { bindActionCreators } from 'redux';
 import { isBrowser, isMobile } from 'react-device-detect';
 
 import { AppBar, Footer } from '../../components';
-
+import { DEFAULT_PAIR } from '../../config/constants';
 // import { requestQuickTrade } from '../../actions/orderbookAction';
 import { setLanguage } from '../../actions/appActions';
 import { getClasesForLanguage } from '../../utils/string';
@@ -132,7 +132,7 @@ class Home extends Component {
 					<Section3
 						style={style}
 						token={token}
-						onClickDemo={this.goTo('login')}
+						onClickDemo={this.goTo(`trade/${DEFAULT_PAIR}`)}
 					/>
 					<Footer
 						onChangeLanguage={this.onChangeLanguage}
