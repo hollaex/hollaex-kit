@@ -4,10 +4,10 @@ import EventListener from 'react-event-listener';
 import { connect } from 'react-redux';
 
 import { subtract } from '../utils';
-import { formatFiatAmount, formatBtcAmount, formatBtcFullAmount, checkNonFiatPair } from '../../../utils/currency';
+import { formatCurrency, formatFiatAmount, formatBtcFullAmount, checkNonFiatPair } from '../../../utils/currency';
 import STRINGS from '../../../config/localizedStrings';
 
-const PriceRow = (side, onPriceClick, onAmountClick) => (
+const PriceRow = (pairBase, pairTwo, side, onPriceClick, onAmountClick) => (
 	[price, amount],
 	index
 ) => (
@@ -16,13 +16,13 @@ const PriceRow = (side, onPriceClick, onAmountClick) => (
 			className={`f-1 trade_orderbook-cell trade_orderbook-cell-price ${side} pointer`}
 			onClick={onPriceClick(price)}
 		>
-			{price}
+			{formatCurrency(price, pairTwo)}
 		</div>
 		<div
 			className="f-1 trade_orderbook-cell trade_orderbook-cell-amount pointer"
 			onClick={onAmountClick(amount)}
 		>
-			{formatBtcAmount(amount)}
+			{formatCurrency(amount, pairBase)}
 		</div>
 	</div>
 );
@@ -126,7 +126,7 @@ class Orderbook extends Component {
 						style={blockStyle}
 						ref={this.setRefs('asksWrapper')}
 					>
-						{asks.map(PriceRow('ask', this.onPriceClick, this.onAmountClick))}
+						{asks.map(PriceRow(pairBase, pairTwo, 'ask', this.onPriceClick, this.onAmountClick))}
 						<LimitBar text={STRINGS.ORDERBOOK_SELLERS} />
 					</div>
 					<div
@@ -153,7 +153,7 @@ class Orderbook extends Component {
 						ref={this.setRefs('bidsWrapper')}
 						style={blockStyle}
 					>
-						{bids.map(PriceRow('bids', this.onPriceClick, this.onAmountClick))}
+						{bids.map(PriceRow(pairBase, pairTwo, 'bids', this.onPriceClick, this.onAmountClick))}
 						<LimitBar text={STRINGS.ORDERBOOK_BUYERS} />
 					</div>
 				</div>

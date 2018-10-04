@@ -12,29 +12,31 @@ const SidebarButtom = ({ path = '', iconPath = '', active = false }) => {
 	);
 };
 
-export const SidebarBottom = ({ activePath = 'x', pair = '' }) => {
+export const SidebarBottom = ({ activePath = 'x', pair = '', isLogged }) => {
 	return (
-		<div className="sidebar-bottom-wrapper d-flex justify-content-between">
-			<SidebarButtom
-				path="/account"
-				iconPath={ICONS.SIDEBAR_ACCOUNT_ACTIVE}
-				active={activePath === 'account'}
-			/>
-			<SidebarButtom
-				path={`/trade/${pair}`}
-				iconPath={ICONS.SIDEBAR_TRADING_ACTIVE}
-				active={activePath === 'trade' || activePath === 'quick-trade'}
-			/>
-			<SidebarButtom
-				path={`/chat`}
-				iconPath={ICONS.CHAT}
-				active={activePath === 'chat'}
-			/>
-			<SidebarButtom
-				path="/wallet"
-				iconPath={ICONS.SIDEBAR_WALLET_ACTIVE}
-				active={activePath === 'wallet'}
-			/>
-		</div>
+		isLogged ?
+			<div className="sidebar-bottom-wrapper d-flex justify-content-between">
+				<SidebarButtom
+					path={"/account"} 
+					iconPath={ICONS.SIDEBAR_ACCOUNT_ACTIVE}
+					active={ activePath === 'account' }
+				/>
+				<SidebarButtom
+					path={`/trade/${pair}`}
+					iconPath={ICONS.SIDEBAR_TRADING_ACTIVE}
+					active={activePath === 'trade' || activePath === 'quick-trade'}
+				/>
+				<SidebarButtom
+					path={`/chat`}
+					iconPath={ICONS.CHAT}
+					active={activePath === 'chat'}
+				/>
+				<SidebarButtom
+					path="/wallet"
+					iconPath={ICONS.SIDEBAR_WALLET_ACTIVE}
+					active={activePath === 'wallet'}
+				/>
+			</div>: 
+			<div></div>
 	);
 };

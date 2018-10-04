@@ -5,8 +5,10 @@ import classnames from 'classnames';
 import { bindActionCreators } from 'redux';
 import { SubmissionError, change } from 'redux-form';
 import { isMobile } from 'react-device-detect';
+import { Link } from 'react-router';
 
 import { ICONS } from '../../config/constants';
+import { IconTitle } from '../../components';
 import {
 	submitOrder,
 	cancelOrder,
@@ -19,6 +21,7 @@ import {
 	NOTIFICATIONS
 } from '../../actions/appActions';
 
+import { isLoggedIn } from '../../utils/token';
 import TradeBlock from './components/TradeBlock';
 import TradeBlockTabs from './components/TradeBlockTabs';
 import Orderbook from './components/Orderbook';
@@ -41,7 +44,7 @@ class Trade extends Component {
 		activeTab: 0,
 		chartHeight: 0,
 		chartWidth: 0,
-		symbol: ''
+		symbol: '',
 	};
 
 	componentWillMount() {
@@ -142,7 +145,7 @@ class Trade extends Component {
 			activeTheme,
 			settings
 		} = this.props;
-		const { chartHeight, chartWidth, symbol, activeTab } = this.state;
+		const { chartHeight, chartWidth, symbol, activeTab, isLogged } = this.state;
 
 		if (symbol !== pair || !pairData) {
 			return <Loader background={false} />;
@@ -151,23 +154,57 @@ class Trade extends Component {
 		const USER_TABS = [
 			{
 				title: STRINGS.ORDERS,
-				children: <ActiveOrders orders={activeOrders} onCancel={cancelOrder} />,
-				titleAction: activeOrders.length > 0 && (
+				children: isLoggedIn() ? <ActiveOrders orders={activeOrders} onCancel={cancelOrder} /> :
+				<div className='text-center'>
+					<IconTitle
+						iconPath={activeTheme==='white' ? ICONS.ACTIVE_TRADE_LIGHT : ICONS.ACTIVE_TRADE_DARK}
+						textType="title"
+						className="w-100"
+						useSvg={true}
+					/>
+					<div>
+						{STRINGS.formatString(
+							STRINGS.ACTIVE_TRADES,
+							<Link to="/login" className={classnames('blue-link', 'dialog-link', 'pointer')} >
+								{STRINGS.SIGN_IN}
+							</Link>
+						)}
+					</div>
+				</div>,
+				titleAction: isLoggedIn() ? (activeOrders.length > 0 && (
 					<ActionNotification
 						text={STRINGS.CANCEL_ALL}
 						iconPath={ICONS.CANCEL_CROSS_ACTIVE}
 						onClick={this.cancelAllOrders}
 						status=""
 						useSvg={true}
-					/>
-				)
+					/>)
+				
+				) : ''
 			},
 			{
 				title: STRINGS.TRADES,
-				children: (
-					<UserTrades trades={userTrades} pair={pair} pairData={pairData} />
+				children:   (
+					isLoggedIn() ?
+						<UserTrades trades={userTrades} pair={pair} pairData={pairData} /> :
+					<div className='text-center'>
+						<IconTitle
+							iconPath={activeTheme ==='dark' ? ICONS.TRADE_HISTORY_DARK: ICONS.TRADE_HISTORY_LIGHT }
+							textType="title"
+							className="w-100"
+							useSvg={true}
+						/>
+						<div>
+							{STRINGS.formatString(
+								STRINGS.ACTIVE_TRADES,
+								<Link to="/login" className={classnames('blue-link', 'dialog-link', 'pointer')} >
+									{STRINGS.SIGN_IN}
+								</Link>
+							)}
+						</div>
+					</div>
 				),
-				titleAction: (
+				titleAction:  isLoggedIn() ? (
 					<ActionNotification
 						text={STRINGS.TRADE_HISTORY}
 						iconPath={ICONS.ARROW_TRANSFER_HISTORY_ACTIVE}
@@ -175,7 +212,7 @@ class Trade extends Component {
 						status=""
 						useSvg={true}
 					/>
-				)
+				) : ''
 			}
 		];
 
@@ -228,6 +265,7 @@ class Trade extends Component {
 				title: STRINGS.TRADE_TAB_ORDERS,
 				content: (
 					<MobileOrders
+						isLoggedIn={isLoggedIn()}
 						activeOrders={activeOrders}
 						cancelOrder={cancelOrder}
 						cancelAllOrders={cancelAllOrders}
@@ -235,6 +273,7 @@ class Trade extends Component {
 						pair={pair}
 						pairData={pairData}
 						userTrades={userTrades}
+						activeTheme={activeTheme}
 					/>
 				)
 			}
@@ -263,7 +302,7 @@ class Trade extends Component {
 								'apply_rtl'
 							)}
 						>
-							<TradeBlock title={STRINGS.ORDERBOOK} pairData={pairData} pair={pair}>
+							<TradeBlock isLoggedIn={isLoggedIn()} title={STRINGS.ORDERBOOK} pairData={pairData} pair={pair}>
 								{orderbookReady && <Orderbook {...orderbookProps} />}
 							</TradeBlock>
 						</div>
@@ -331,7 +370,7 @@ class Trade extends Component {
 									'apply_rtl'
 								)}
 							>
-								<TradeBlockTabs content={USER_TABS} />
+								<TradeBlockTabs content={USER_TABS} /> 
 							</div>
 						</div>
 						<div

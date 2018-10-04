@@ -6,6 +6,7 @@ import { reduxForm, formValueSelector } from 'redux-form';
 import STRINGS from '../../../config/localizedStrings';
 import { Button } from '../../../components';
 import renderFields from '../../../components/Form/factoryTradeFields';
+import { isLoggedIn } from '../../../utils/token';
 
 export const FORM_NAME = 'OrderEntryForm';
 
@@ -66,7 +67,7 @@ const Form = ({
 						STRINGS.SIDES_VALUES[side] || '',
 						currencyName
 					).join(' ')}
-					disabled={submitting || !valid || !!errorText}
+					disabled={submitting || !valid || !!errorText || !isLoggedIn()}
 					className={classnames('trade_order_entry-form-action')}
 				/>
 			</form>

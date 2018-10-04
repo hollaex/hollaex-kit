@@ -3,9 +3,12 @@ import classnames from 'classnames';
 import TradeBlock from './components/TradeBlock';
 import ActiveOrders from './components/ActiveOrders';
 import UserTrades from './components/UserTrades';
-import { ActionNotification } from '../../components';
+import { ActionNotification, IconTitle } from '../../components';
 import STRINGS from '../../config/localizedStrings';
 import { ICONS } from '../../config/constants';
+import { Link } from 'react-router';
+
+
 
 const MobileOrders = ({
 	activeOrders,
@@ -14,7 +17,9 @@ const MobileOrders = ({
 	goToTransactionsHistory,
 	pair,
 	pairData,
-	userTrades
+	userTrades,
+	activeTheme,
+	isLoggedIn
 }) => (
 	<div
 		className={classnames(
@@ -28,6 +33,7 @@ const MobileOrders = ({
 		<TradeBlock
 			title={STRINGS.ORDERS}
 			action={
+				isLoggedIn ?
 				<ActionNotification
 					text={STRINGS.CANCEL_ALL}
 					iconPath={ICONS.CANCEL_CROSS_ACTIVE}
@@ -35,15 +41,34 @@ const MobileOrders = ({
 					status=""
 					useSvg={true}
 					showActionText={true}
-				/>
+				/> : ''
 			}
 			className="f-1"
 		>
+		{	isLoggedIn ?
 			<ActiveOrders orders={activeOrders} onCancel={cancelOrder} />
+			:
+			<div className='text-center'>
+					<IconTitle
+						iconPath={activeTheme==='white' ? ICONS.ACTIVE_TRADE_LIGHT : ICONS.ACTIVE_TRADE_DARK}
+						textType="title"
+						className="w-100"
+						useSvg={true}
+					/>
+					<div>
+						{STRINGS.formatString(
+							STRINGS.ACTIVE_TRADES,
+							<Link to="/login" className={classnames('blue-link', 'dialog-link', 'pointer')} >
+								{STRINGS.SIGN_IN}
+							</Link>
+						)}
+					</div>
+				</div>
+			}
 		</TradeBlock>
 		<TradeBlock
 			title={STRINGS.TRADE_HISTORY}
-			action={
+			action={ isLoggedIn ? 
 				<ActionNotification
 					text={STRINGS.TRADE_HISTORY}
 					iconPath={ICONS.ARROW_TRANSFER_HISTORY_ACTIVE}
@@ -51,16 +76,34 @@ const MobileOrders = ({
 					status=""
 					useSvg={true}
 					showActionText={true}
-				/>
+				/> 
+				: ''
 			}
 			className="f-1"
 		>
-			<UserTrades
+			{isLoggedIn ? <UserTrades
 				trades={userTrades}
 				pair={pair}
 				pairData={pairData}
 				lessHeaders={true}
-			/>
+			/>:
+			<div className='text-center'>
+				<IconTitle
+					iconPath={activeTheme ==='dark' ? ICONS.TRADE_HISTORY_DARK: ICONS.TRADE_HISTORY_LIGHT }
+					textType="title"
+					className="w-100"
+					useSvg={true}
+				/>
+				<div>
+					{STRINGS.formatString(
+						STRINGS.ACTIVE_TRADES,
+						<Link to="/login" className={classnames('blue-link', 'dialog-link', 'pointer')} >
+							{STRINGS.SIGN_IN}
+						</Link>
+					)}
+				</div>
+			</div>
+			}
 		</TradeBlock>
 	</div>
 );

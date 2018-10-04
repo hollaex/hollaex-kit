@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import classnames from 'classnames';
 import EventListener from 'react-event-listener';
 import TradeBlock from './TradeBlock';
+import { isLoggedIn } from '../../../utils/token';
 
 class TradeBlockTabs extends Component {
 	state = {
@@ -47,12 +48,11 @@ class TradeBlockTabs extends Component {
 	renderContent = (maxHeight) => {
 		const { content, overflowY } = this.props;
 		const { activeTab, height } = this.state;
-
 		return height < maxHeight ? (
 			<div className="trade_block-wrapper trade_block_tabs-wrapper d-flex flex-column">
 				{this.renderTitles(activeTab, content)}
 				<div
-					className={classnames('trade_block-content', 'd-flex', {
+					className={classnames('trade_block-content', isLoggedIn() ? 'd-flex': '', {
 						'overflow-y': overflowY
 					})}
 				>

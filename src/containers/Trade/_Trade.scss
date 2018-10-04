@@ -45,10 +45,16 @@ $order_entry-column--width: 15rem;
 	}
 }
 
+.layout-mobile{
+	.trade_active_orders-wrapper {
+		max-height: 35vh !important;
+	}
+}
+
 .trade_active_orders-wrapper {
 	overflow-y: auto;
 	flex: 1;
-
+	
 	.cell_box-type {
 		padding: 0.1rem;
 
