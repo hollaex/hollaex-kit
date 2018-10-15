@@ -426,9 +426,9 @@ export const MIN_LEVEL_FOR_TOKENS = parseInt(
 	process.env.REACT_APP_MIN_LEVEL_FOR_TOKENS || 2,
 	10
 );
-
+const THEME_COLOR=localStorage.getItem("theme")
 export const THEMES = ['dark', 'white'];
-export const THEME_DEFAULT = THEMES[1];
+export const THEME_DEFAULT = THEME_COLOR!=='' ? THEME_COLOR : THEMES[1];
 export const CHAT_STATUS_KEY = 'chat:minimized';
 
 export const DEFAULT_COUNTRY = process.env.REACT_APP_DEFAULT_COUNTRY

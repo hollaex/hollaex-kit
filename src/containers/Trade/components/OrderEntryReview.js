@@ -13,10 +13,11 @@ const Review = ({
 	orderPrice = 0,
 	fees = 0,
 	currency,
+	price,
 	formatToCurrency,
 	type
 }) => {
-	const orderAmountReceived = math.subtract(
+	const orderAmountReceived = math.add(
 		math.fraction(orderPrice),
 		math.fraction(fees)
 	);
@@ -29,7 +30,7 @@ const Review = ({
 				</div>
 				<div className="text-price">
 					{upToMarket
-						? renderAmount(formatToCurrency(orderAmountReceived), currency)
+						?price ? renderAmount(formatToCurrency(price), currency) :0
 						: STRINGS.UP_TO_MARKET}
 				</div>
 			</div>
@@ -45,7 +46,7 @@ const Review = ({
 				<div>{STRINGS.TOTAL_ORDER}:</div>
 				<div className="text-price">
 					{upToMarket
-						? renderAmount(formatToCurrency(orderPrice), currency)
+						? renderAmount(formatToCurrency(orderAmountReceived), currency)
 						: STRINGS.UP_TO_MARKET}
 				</div>
 			</div>

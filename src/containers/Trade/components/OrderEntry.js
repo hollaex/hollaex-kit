@@ -185,13 +185,17 @@ class OrderEntry extends Component {
 			openCheckOrder,
 			submit
 		} = this.props;
+		const orderTotal = mathjs.add(
+			mathjs.fraction(this.state.orderPrice),
+			mathjs.fraction(this.state.orderFees)
+		);
 		const order = {
 			type,
 			side,
 			price,
 			size: formatNumber(size, getDecimals(min_size)),
 			symbol: pair_base,
-			orderPrice: this.state.orderPrice,
+			orderPrice: orderTotal,
 			orderFees: this.state.orderFees
 		};
 
@@ -286,7 +290,7 @@ class OrderEntry extends Component {
 	};
 
 	render() {
-		const { balance, type, side, pair_base, pair_2 } = this.props;
+		const { balance, type, side, pair_base, pair_2, price } = this.props;
 		const {
 			initialValues,
 			formValues,
@@ -320,6 +324,7 @@ class OrderEntry extends Component {
 					outsideFormError={outsideFormError}
 				>
 					<Review
+						price={price}
 						type={type}
 						currency={buyingName}
 						orderPrice={orderPrice}
