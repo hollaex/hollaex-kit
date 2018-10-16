@@ -43,7 +43,7 @@ const Form = ({
 }) => {
 	const fields = getFields(formValues, type);
 	const errorText = error || outsideFormError;
-
+	const theme=localStorage.getItem('theme')
 	return (
 		<div className="trade_order_entry-form d-flex">
 			<form
@@ -68,7 +68,11 @@ const Form = ({
 						currencyName
 					).join(' ')}
 					disabled={submitting || !valid || !!errorText || !isLoggedIn()}
-					className={classnames('trade_order_entry-form-action')}
+					className={
+						(submitting || !valid || !!errorText || !isLoggedIn()) && theme==='dark' ?
+						classnames('dark_theme_order_diable')
+						:
+						classnames('trade_order_entry-form-action')}
 				/>
 			</form>
 		</div>
