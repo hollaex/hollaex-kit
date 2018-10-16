@@ -23,6 +23,9 @@ const getInitialTab = ({ name, path }) => {
 	} else if (path === 'settings') {
 		activeTab = 2;
 		activeDevelopers = true;
+	} else if (path === 'account/settings/username') {
+		activeTab = 2;
+		activeDevelopers = true;
 	}
 	return {
 		activeTab,

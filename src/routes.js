@@ -29,7 +29,8 @@ import {
 	ResetPassword,
 	QuickTrade,
 	Verification,
-	Chat
+	Chat,
+	UserSettings
 } from './containers';
 
 import store from './store';
@@ -137,6 +138,7 @@ export default (
 		</Route>
 		<Route component={Container}>
 			<Route path="account" name="Account" component={Account} onEnter={requireAuth}/>
+			<Route path="account/settings/username" name="username" component={Account} />
 			<Route path="security" name="Security" component={Account} />
 			<Route path="developers" name="Developers" component={Account} />
 			<Route path="settings" name="Settings" component={Account} />
