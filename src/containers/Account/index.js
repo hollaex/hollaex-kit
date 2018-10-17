@@ -62,7 +62,7 @@ class Account extends Component {
 			this.updateTabs(nextProps, false);
 		} else if (nextProps.route.path !== this.props.route.path) {
 			this.updateTabs(nextProps, true);
-		}
+		} 
 	}
 
 	hasUserVerificationNotifications = (

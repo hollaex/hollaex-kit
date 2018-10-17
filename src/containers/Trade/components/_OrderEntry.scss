@@ -83,7 +83,7 @@
 			font-weight: bold;
 
 			&:disabled {
-				background-color: #cccbcb !important;
+				background-color: $theme-color-disabled !important;
 			}
 		}
 
@@ -108,10 +108,6 @@
 	&.order_side-selector-buy {
 		@include entry_form($trade-bids-color-main, $trade-bids-color-disabled);
 	}
-}
-
-.dark_theme_order_diable {
-	background-color: black
 }
 
 .dark-theme {

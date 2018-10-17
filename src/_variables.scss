@@ -20,13 +20,13 @@ $color-currency-btc--main: #f15a29;
 $color-currency-btc--secondary: #f7941e;
 
 $colors-currencies-fiat: $color-currency-fiat--main;
-$colors-currencies-btc: $colors-notifications-red;
+$colors-currencies-btc: $color-currency-btc--secondary;;
 $colors-currencies-bch: #ec008c;
 $colors-currencies-eth: #2e3192;
 $colors-currencies-ltc: #58595b;
 
 // dark theme colors
-$colors-username-set-dark: $colors-currencies-bch;
+$colors-username-set-dark: #ff4bb6;
 $dark-app-background-color: #20212a;
 $dark-app-bar-background-color: #3c3c49;
 $dark-font-main-text-color: #b7b7ce;

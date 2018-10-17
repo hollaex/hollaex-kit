@@ -84,9 +84,10 @@ $mobile-regular--font-size: 1.5rem;
 	}
 	.username-to-chat {
 		cursor: pointer;
-		padding: 0.5rem !important;
+		padding: 0.7rem !important;
 		color:$colors-notifications-blue !important;
-		font-size: $regular-chat--font-size !important;
+		font-size: 1rem !important;
+		font-family: "Open Sans"!important;
 	}
 
 	.nondraggable {
@@ -352,9 +353,11 @@ $mobile-regular--font-size: 1.5rem;
 		}
 		.username-to-chat {
 			cursor: pointer;
-			padding: 0.5rem !important;
+			padding: 0.7rem !important;
 			color:$colors-username-set-dark !important;
-			font-size: $regular-chat--font-size !important;
+			font-size: 1rem !important;
+			font-family: "Open Sans"!important;
+			
 		}
 		.chat-footer {
 			.chat-message-box {

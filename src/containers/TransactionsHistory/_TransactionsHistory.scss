@@ -1,3 +1,5 @@
+$trade-asks-color-main: $colors-currencies-btc;
+$trade-asks-color-font: $colors-currencies-btc;
 .layout-mobile {
 	.tab_controller-wrapper {
 		height: 4.5rem;
@@ -37,12 +39,12 @@
 
 	.withdraw,
 	.sell {
-		background-color: $colors-notifications-red;
+		background-color: $colors-currencies-btc;
 	}
 
 	.deposit,
 	.buy {
-		background-color: $colors-notifications-green;
+		background-color: blue;
 	}
 }
 
