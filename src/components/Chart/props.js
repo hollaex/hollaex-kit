@@ -15,14 +15,14 @@ const OHLC_TIME_FORMAT = '%Y-%m-%d %H:%M:%S';
 
 export const COLORS = {
 	SELL: 'red',
-	BUY: 'blue',
+	BUY: 'green',
 	LINE: 'black',
-	FILL: 'orange',
+	FILL: 'green',
 	AXIS: '#4D4D4D',
-	BUY_CANDLE: 'blue',
-	SELL_CANDLE: '#f7941e',
-	BUY_VOLUME: 'lightblue',
-	SELL_VOLUME: '#f7941e'
+	BUY_CANDLE: 'green',
+	SELL_CANDLE: '#ed1c24',
+	BUY_VOLUME: 'lightgreen',
+	SELL_VOLUME: '#ed1c24'
 };
 
 export const DARK_COLORS = {
