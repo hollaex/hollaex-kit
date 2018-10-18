@@ -51,6 +51,10 @@ $order_entry-column--width: 15rem;
 	}
 }
 
+.trade_active-lg-view {
+	max-height: 14vh;
+}
+
 .trade_active_orders-wrapper {
 	overflow-y: auto;
 	flex: 1;
