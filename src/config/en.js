@@ -20,6 +20,13 @@ export default {
 	ETH_CURRENCY_SYMBOL: 'ETH',
 	ETH_PRICE_FORMAT: '{0} {1}', // 0-> amount  1 -> symbol  6.00245 ETH
 
+	// TODO: Added for new BCH coin and need to be approved
+	BCH_NAME: 'Bitcoin Cash',
+	BCH_FULLNAME: 'Bitcoin Cash',
+	BCH_SHORTNAME: 'BCH',
+	BCH_CURRENCY_SYMBOL: 'BCH',
+	BCH_PRICE_FORMAT: '{0} {1}',
+
 	ACTIVE_TRADES: 'You must {0} to access your active trades',
 	CANCEL_FIAT_WITHDRAWAL: 'Cancel {0} Withdrawal',
 	CANCEL_WITHDRAWAL: 'Cancel Withdrawal',

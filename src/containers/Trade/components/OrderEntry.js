@@ -90,6 +90,7 @@ class OrderEntry extends Component {
 
 		let orderPrice = 0;
 		if (
+			ORDER_LIMITS[this.props.pair] && 
 			size >= ORDER_LIMITS[this.props.pair].SIZE.MIN &&
 			!(type === 'limit' && price === 0)
 		) {

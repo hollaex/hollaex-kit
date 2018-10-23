@@ -502,7 +502,9 @@ class Container extends Component {
 			pairsTrades,
 			pair
 		} = this.props;
-		return (Object.keys(orderbooks).length && orderbooks[pair] && Object.keys(orderbooks[pair]).length && 
+		// return (Object.keys(orderbooks).length && orderbooks[pair] && Object.keys(orderbooks[pair]).length && 
+		// 	Object.keys(pairsTrades).length);
+		return (Object.keys(orderbooks).length && orderbooks[pair] &&
 			Object.keys(pairsTrades).length);
 	}
 
