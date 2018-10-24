@@ -317,6 +317,15 @@ export const CURRENCIES = {
 		formatToCurrency: formatEthAmount,
 		formatToCurrencyFull: formatEthFullAmount,
 	},
+	bch: {
+		symbol: 'bch',
+		name: STRINGS.BCH_NAME,
+		fullName: STRINGS.BCH_FULLNAME,
+		shortName: STRINGS.BCH_SHORTNAME,
+		currencySymbol: 'B',
+		formatToCurrency: formatBtcAmount,
+		formatToCurrencyFull: formatBtcFullAmount,
+	},
 	fiat: {
 		symbol: 'fiat',
 		name: STRINGS.FIAT_NAME,
@@ -340,7 +349,15 @@ export const PAIRS = {
 	'eth-btc': {
 		pair_base: 'eth',
 		pair_2: 'btc'
-	}
+	},
+	'bch-btc': {
+		pair_base: 'bch',
+		pair_2: 'btc'
+	},
+	'bch-eur': {
+		pair_base: 'bch',
+		pair_2: 'fiat'
+	},
 };
 
 export const DEFAULT_PAIR = 'btc-eur';
