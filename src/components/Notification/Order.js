@@ -1,6 +1,7 @@
 import React from 'react';
 import math from 'mathjs';
-import { ICONS, PAIRS } from '../../config/constants';
+import { connect } from 'react-redux';
+import { ICONS } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 import { formatBtcAmount, formatFiatAmount } from '../../utils/currency';
 import {
@@ -51,9 +52,9 @@ const getTitleAndIcon = (type, { side, filled }) => {
 	return data;
 };
 
-const generateRows = (type, order) => {
+const generateRows = (type, order, pairs) => {
 	const rows = [];
-	const pair = PAIRS[order.symbol];
+	const pair = pairs[order.symbol];
 	const basePair = pair.pair_base.toUpperCase();
 	const payPair = pair.pair_2.toUpperCase();
 
@@ -130,9 +131,9 @@ const OrderDisplay = ({ rows }) => {
 	);
 };
 
-const OrderNotification = ({ type, data }) => {
+const OrderNotification = ({ type, data, pairs }) => {
 	const notificationProps = getTitleAndIcon(type, data);
-	const rows = generateRows(type, data);
+	const rows = generateRows(type, data, pairs);
 
 	return (
 		<NotificationWraper
@@ -146,4 +147,8 @@ const OrderNotification = ({ type, data }) => {
 	);
 };
 
-export default OrderNotification;
+const mapStateToProps = state => ({
+	pairs: state.app.pairs
+});
+
+export default connect(mapStateToProps)(OrderNotification);

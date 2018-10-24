@@ -29,6 +29,7 @@ export const SET_PAIRS = 'SET_PAIRS';
 export const CHANGE_PAIR = 'CHANGE_PAIR';
 export const SET_TICKERS = 'SET_TICKERS';
 export const CHANGE_THEME = 'CHANGE_THEME';
+export const SET_ORDER_LIMITS = 'SET_ORDER_LIMITS';
 
 export const USER_TYPES = {
 	USER_TYPE_NORMAL: 'normal',
@@ -120,4 +121,9 @@ export const changePair = (pair) => ({
 export const setTickers = (data) => ({
 	type: SET_TICKERS,
 	payload: data
-})
+});
+
+export const setOrderLimits = (data) => ({
+	type: SET_ORDER_LIMITS,
+	payload: data
+});

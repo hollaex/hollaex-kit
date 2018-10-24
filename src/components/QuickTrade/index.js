@@ -8,7 +8,6 @@ import {Button, TabController, CheckTitle } from '../../components';
 import STRINGS from '../../config/localizedStrings';
 import {
 	ICONS,
-	PAIRS,
 	DEFAULT_PAIR,
 	FLEX_CENTER_CLASSES,
 	BALANCE_ERROR
@@ -146,10 +145,10 @@ class QuickTrade extends Component {
 	};
 
 	render() {
-		const { onReviewQuickTrade, quickTradeData, disabled, theme } = this.props;
+		const { onReviewQuickTrade, quickTradeData, disabled, theme, orderLimits, pairs } = this.props;
 		const { side, value, symbol, tabs, activeTab } = this.state;
 		const { data, fetching, error } = quickTradeData;
-		const name = STRINGS[`${PAIRS[symbol].pair_base.toUpperCase()}_NAME`];
+		const name = STRINGS[`${pairs[symbol].pair_base.toUpperCase()}_NAME`];
 		return (
 			<div className={classnames('quick_trade-wrapper', ...GROUP_CLASSES)}>
 				<div
@@ -206,6 +205,7 @@ class QuickTrade extends Component {
 						symbol={symbol}
 						className={classnames({ loading: fetching })}
 						error={error}
+						orderLimits={orderLimits}
 					/>
 				</div>
 				<div

@@ -7,7 +7,8 @@ import {
 	CHANGE_THEME,
 	SET_PAIRS,
 	SET_TICKERS,
-	SET_UNREAD
+	SET_UNREAD,
+	SET_ORDER_LIMITS
 } from '../actions/appActions';
 import { THEME_DEFAULT } from '../config/constants';
 import { getLanguage } from '../utils/string';
@@ -31,7 +32,8 @@ const INITIAL_STATE = {
 	language: getLanguage(),
 	pairs: {},
 	pair: '',
-	tickers: {}
+	tickers: {},
+	orderLimits: {}
 };
 
 const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
@@ -123,6 +125,11 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 					...state.tickers,
 					...payload
 				}
+			};
+		case SET_ORDER_LIMITS:
+			return {
+				...state,
+				orderLimits: payload
 			};
 		default:
 			return state;

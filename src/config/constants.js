@@ -337,7 +337,8 @@ export const CURRENCIES = {
 	}
 };
 
-export const PAIRS = {
+// TODO: to be removed after testing
+/* export const PAIRS = {
 	'btc-eur': {
 		pair_base: 'btc',
 		pair_2: 'fiat'
@@ -358,7 +359,7 @@ export const PAIRS = {
 		pair_base: 'bch',
 		pair_2: 'fiat'
 	},
-};
+}; */
 
 export const DEFAULT_PAIR = 'btc-eur';
 
@@ -451,44 +452,5 @@ export const CHAT_STATUS_KEY = 'chat:minimized';
 export const DEFAULT_COUNTRY = process.env.REACT_APP_DEFAULT_COUNTRY
 	? process.env.REACT_APP_DEFAULT_COUNTRY.toUpperCase()
 	: 'FR';
-
-export const ORDER_LIMITS = {
-	'btc-eur': {
-		PRICE: {
-			MIN: 500,
-			MAX: 50000,
-			STEP: 1
-		},
-		SIZE: {
-			MIN: 0.0001,
-			MAX: 21000000,
-			STEP: 0.0001
-		}
-	},
-	'eth-eur': {
-		PRICE: {
-			MIN: 10,
-			MAX: 10000,
-			STEP: 1
-		},
-		SIZE: {
-			MIN: 0.001,
-			MAX: 20000000,
-			STEP: 0.001
-		}
-	},
-	'eth-btc': {
-		PRICE: {
-			MIN: 0.0001,
-			MAX: 10,
-			STEP: 0.00001
-		},
-		SIZE: {
-			MIN: 0.001,
-			MAX: 20000000,
-			STEP: 0.001
-		}
-	}
-};
 
 export const BASE_CURRENCY = process.env.REACT_APP_BASE_CURRENCY;

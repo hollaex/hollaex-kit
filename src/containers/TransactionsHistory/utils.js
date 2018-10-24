@@ -5,7 +5,7 @@ import mathjs from 'mathjs';
 import STRINGS from '../../config/localizedStrings';
 
 import { CurrencyBall, Button } from '../../components';
-import { CURRENCIES, PAIRS, BLOCKTRAIL_ENDPOINT, ETHEREUM_ENDPOINT } from '../../config/constants';
+import { CURRENCIES, BLOCKTRAIL_ENDPOINT, ETHEREUM_ENDPOINT } from '../../config/constants';
 import { formatTimestamp, isBlockchainTx } from '../../utils/utils';
 
 const calculateFeeAmount = (
@@ -58,7 +58,7 @@ const calculatePrice = (isQuick = false, price, size) => {
 	return price;
 };
 
-export const generateTradeHeaders = (symbol) => {
+export const generateTradeHeaders = (symbol, pairs) => {
 	return [
 		{
 			label: STRINGS.PAIR,
@@ -88,8 +88,8 @@ export const generateTradeHeaders = (symbol) => {
 			label: STRINGS.SIZE,
 			key: 'size',
 			exportToCsv: ({ size = 0, ...data }) => {
-				if (PAIRS[data.symbol]) {
-					const symbol = PAIRS[data.symbol].pair_base;
+				if (pairs[data.symbol]) {
+					const symbol = pairs[data.symbol].pair_base;
 					const { formatToCurrency } = CURRENCIES[symbol];
 					const shortName = STRINGS[`${symbol.toUpperCase()}_SHORTNAME`];
 					return STRINGS.formatString(
@@ -100,8 +100,8 @@ export const generateTradeHeaders = (symbol) => {
 				}
 			},
 			renderCell: ({ size = 0, ...data }, key, index) => {
-				if (PAIRS[data.symbol]) {
-					const symbol = PAIRS[data.symbol].pair_base;
+				if (pairs[data.symbol]) {
+					const symbol = pairs[data.symbol].pair_base;
 					const { formatToCurrency } = CURRENCIES[symbol];
 					const shortName = STRINGS[`${symbol.toUpperCase()}_SHORTNAME`];
 					return (
@@ -120,8 +120,8 @@ export const generateTradeHeaders = (symbol) => {
 			label: STRINGS.PRICE,
 			key: 'price',
 			exportToCsv: ({ price = 0, size = 0, quick, symbol }) => {
-				if (PAIRS[symbol]) {
-					const { pair_2 } = PAIRS[symbol];
+				if (pairs[symbol]) {
+					const { pair_2 } = pairs[symbol];
 					const pair = pair_2.toUpperCase();
 					return STRINGS.formatString(
 						STRINGS[`${pair}_PRICE_FORMAT`],
@@ -133,8 +133,8 @@ export const generateTradeHeaders = (symbol) => {
 				}
 			},
 			renderCell: ({ price = 0, size = 0, quick, symbol }, key, index) => {
-				if (PAIRS[symbol]) {
-					const { pair_2 } = PAIRS[symbol];
+				if (pairs[symbol]) {
+					const { pair_2 } = pairs[symbol];
 					const pair = pair_2.toUpperCase();
 					return (
 						<td key={index}>
@@ -154,8 +154,8 @@ export const generateTradeHeaders = (symbol) => {
 			label: STRINGS.AMOUNT,
 			key: 'amount',
 			exportToCsv: ({ price = 0, size = 0, quick, symbol }) => {
-				if (PAIRS[symbol]) {
-					const { pair_2 } = PAIRS[symbol];
+				if (pairs[symbol]) {
+					const { pair_2 } = pairs[symbol];
 					const pair = pair_2.toUpperCase();
 					return STRINGS.formatString(
 						STRINGS[`${pair}_PRICE_FORMAT`],
@@ -167,8 +167,8 @@ export const generateTradeHeaders = (symbol) => {
 				}
 			},
 			renderCell: ({ price = 0, size = 0, quick, symbol }, key, index) => {
-				if (PAIRS[symbol]) {
-					const { pair_2 } = PAIRS[symbol];
+				if (pairs[symbol]) {
+					const { pair_2 } = pairs[symbol];
 					const pair = pair_2.toUpperCase();
 					return (
 						<td key={index}>
@@ -191,8 +191,8 @@ export const generateTradeHeaders = (symbol) => {
 				if (!fee) {
 					return calculateFeeAmount(fee);
 				}
-				if (PAIRS[symbol]) {
-					const { pair_base, pair_2 } = PAIRS[symbol];
+				if (pairs[symbol]) {
+					const { pair_base, pair_2 } = pairs[symbol];
 					const pair = side === 'buy' ? pair_base : pair_2;
 					return STRINGS.formatString(
 						STRINGS[`${pair.toUpperCase()}_PRICE_FORMAT`],
@@ -207,8 +207,8 @@ export const generateTradeHeaders = (symbol) => {
 				if (!fee) {
 					return <td key={index}> {calculateFeeAmount(fee)}</td>;
 				}
-				if (PAIRS[symbol]) {
-					const { pair_base, pair_2 } = PAIRS[symbol];
+				if (pairs[symbol]) {
+					const { pair_base, pair_2 } = pairs[symbol];
 					const pair = side === 'buy' ? pair_base : pair_2;
 					return (
 						<td key={index}>
@@ -351,16 +351,16 @@ export const filterData = (symbol, { count = 0, data = [] }) => {
 	};
 };
 
-export const generateTradeHeadersMobile = (symbol) => {
+export const generateTradeHeadersMobile = (symbol, pairs) => {
 	const KEYS = ['pair', 'side', 'size', 'price', 'fee', 'timestamp'];
-	return generateTradeHeaders(symbol).filter(
+	return generateTradeHeaders(symbol, pairs).filter(
 		({ key }) => KEYS.indexOf(key) > -1
 	);
 };
 
-export const generateLessTradeHeaders = (symbol) => {
+export const generateLessTradeHeaders = (symbol, pairs) => {
 	const KEYS = ['side', 'price', 'amount', 'fee', 'timestamp'];
-	return generateTradeHeaders(symbol).filter(
+	return generateTradeHeaders(symbol, pairs).filter(
 		({ key }) => KEYS.indexOf(key) > -1
 	);
 };

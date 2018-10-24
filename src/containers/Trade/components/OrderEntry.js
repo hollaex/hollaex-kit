@@ -24,7 +24,7 @@ import {
 	normalizeFloat
 } from '../../../components/Form/validations';
 import { Loader } from '../../../components';
-import { ORDER_LIMITS, takerFee } from '../../../config/constants';
+import { takerFee } from '../../../config/constants';
 
 import STRINGS from '../../../config/localizedStrings';
 import { isLoggedIn } from '../../../utils/token';
@@ -84,14 +84,14 @@ class OrderEntry extends Component {
 	};
 
 	calculateOrderPrice = (props) => {
-		const { type, side, fees } = props;
+		const { type, side, fees, orderLimits } = props;
 		const size = parseFloat(props.size || 0);
 		const price = parseFloat(props.price || 0);
 
 		let orderPrice = 0;
 		if (
-			ORDER_LIMITS[this.props.pair] && 
-			size >= ORDER_LIMITS[this.props.pair].SIZE.MIN &&
+			orderLimits[this.props.pair] && 
+			size >= orderLimits[this.props.pair].SIZE.MIN &&
 			!(type === 'limit' && price === 0)
 		) {
 			if (props.side === 'sell') {
@@ -113,7 +113,7 @@ class OrderEntry extends Component {
 		if (
 			type === 'market' &&
 			orderPrice === 0 &&
-			size >= ORDER_LIMITS[this.props.pair].SIZE.MIN
+			size >= orderLimits[this.props.pair].SIZE.MIN
 		) {
 			outsideFormError = STRINGS.QUICK_TRADE_ORDER_NOT_FILLED;
 		} else if (type === 'market' && side === 'buy') {
@@ -356,7 +356,8 @@ const mapStateToProps = (state) => {
 		max_size,
 		min_size,
 		min_price,
-		tick_size
+		tick_size,
+		orderLimits: state.app.orderLimits
 
 	};
 };

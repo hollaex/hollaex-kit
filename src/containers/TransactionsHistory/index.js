@@ -72,11 +72,12 @@ class TransactionsHistory extends Component {
 
 	generateHeaders(symbol) {
 		const {withdrawalPopup}=this
+		const { pairs } = this.props;
 		this.setState({
 			headers: {
 				trades: isMobile
-					? generateTradeHeadersMobile(symbol)
-					: generateTradeHeaders(symbol),
+					? generateTradeHeadersMobile(symbol, pairs)
+					: generateTradeHeaders(symbol, pairs),
 				deposits: generateDepositsHeaders(symbol),
 				withdrawals: generateWithdrawalsHeaders(symbol, withdrawalPopup)
 			}
@@ -244,6 +245,7 @@ class TransactionsHistory extends Component {
 }
 
 const mapStateToProps = (store) => ({
+	pairs: store.app.pairs,
 	id: store.user.id,
 	trades: store.wallet.trades,
 	deposits: store.wallet.deposits,
