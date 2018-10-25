@@ -95,6 +95,10 @@ class Form extends Component {
 		}
 	};
 
+	onConfirmEmail = () => {
+		this.onCloseDialog();
+	};
+
 	onSubmitOtp = ({ otp_code = '' }) => {
 		const values = this.props.data;
 		return this.props

@@ -141,7 +141,8 @@ class Withdraw extends Component {
 		return performWithdraw(currency, {
 			...values,
 			amount: math.eval(values.amount),
-			fee: values.fee ? math.eval(values.fee) : 0
+			fee: values.fee ? math.eval(values.fee) : 0,
+			currency
 		})
 			.then((response) => {
 				return { ...response.data, currency: this.state.currency };

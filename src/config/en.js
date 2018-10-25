@@ -702,7 +702,12 @@ export default {
 			'You can only withdraw to a bank account in a name that matches the name registered with your HOLLAEX account.',
 		FIAT_MESSAGE_2: 'Withdrawal min amount',
 		FIAT_MESSAGE_3: 'Daily withdrawal max amount',
-		FIAT_INCREASE_LIMIT: 'Increase your daily limit'
+		FIAT_INCREASE_LIMIT: 'Increase your daily limit',
+		CONFIRM_VIA_EMAIL: 'Confirm via Email',
+		CONFIRM_VIA_EMAIL_1: 'We have sent you a confirmation withdrawal email.',
+		CONFIRM_VIA_EMAIL_2: 'In order to complete the withdrawal process please confirm',
+		CONFIRM_VIA_EMAIL_3: 'the withdrawal via your email within 5 minutes.'
+
 	},
 	WALLET_BUTTON_FIAT_DEPOSIT: 'deposit',
 	WALLET_BUTTON_FIAT_WITHDRAW: 'withdraw',

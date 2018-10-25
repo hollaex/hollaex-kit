@@ -76,6 +76,9 @@ $content--margin: 2rem;
 			fill: $dark-button-active;
 		}
 	}
+	.review_email-content {
+		border-color: $colors-main-black;
+	}
 }
 
 .layout-mobile {
@@ -140,5 +143,12 @@ $content--margin: 2rem;
 				}
 			}
 		}
+	}
+}
+
+.review_email-wrapper {
+	.review_email-content {
+		border-top: 1px solid;
+		padding: 1rem;
 	}
 }
