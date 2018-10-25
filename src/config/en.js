@@ -22,7 +22,7 @@ export default {
 
 	// TODO: Added for new BCH coin and need to be approved
 	BCH_NAME: 'Bitcoin Cash',
-	BCH_FULLNAME: 'Bitcoin Cash',
+	BCH_FULLNAME: 'BitcoinCash',
 	BCH_SHORTNAME: 'BCH',
 	BCH_CURRENCY_SYMBOL: 'BCH',
 	BCH_PRICE_FORMAT: '{0} {1}',
@@ -139,7 +139,8 @@ export default {
 	DEPOSIT: {
 		CRYPTO_LABELS: {
 			BTC: 'Your Bitcoin receiving address',
-			ETH: 'Your Ethereum receiving address'
+			ETH: 'Your Ethereum receiving address',
+			BCH: 'Your Bitcoin Cash receiving address'
 		},
 		INFORMATION_MESSAGES: [
 			'Use the bank details below to deposit USD in to your account. Transfers usally take up to 1-2 business day.',

@@ -105,6 +105,9 @@ export const getCurrencyFromName = (name = '') => {
 		case 'eth':
 		case 'ethereum':
 			return 'eth';
+		case 'bch':
+		case 'bitcoincash':
+			return 'bch';
 		case 'eur':
 		case 'euro':
 		case 'fiat':
