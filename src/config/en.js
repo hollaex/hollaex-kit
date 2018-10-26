@@ -706,7 +706,10 @@ export default {
 		CONFIRM_VIA_EMAIL: 'Confirm via Email',
 		CONFIRM_VIA_EMAIL_1: 'We have sent you a confirmation withdrawal email.',
 		CONFIRM_VIA_EMAIL_2: 'In order to complete the withdrawal process please confirm',
-		CONFIRM_VIA_EMAIL_3: 'the withdrawal via your email within 5 minutes.'
+		CONFIRM_VIA_EMAIL_3: 'the withdrawal via your email within 5 minutes.',
+		WITHDRAW_CONFIRM_SUCCESS_1: 'Your withdrawal request has been received successfully and will take 5 minutes to process.',
+		WITHDRAW_CONFIRM_SUCCESS_2: 'If you’d like to cancel your withdrawal please visit your withdrawal history page.',
+		GO_WITHDRAWAL_HISTORY: 'Go To Withdrawal History'
 
 	},
 	WALLET_BUTTON_FIAT_DEPOSIT: 'deposit',

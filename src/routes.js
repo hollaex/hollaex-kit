@@ -30,7 +30,8 @@ import {
 	QuickTrade,
 	Verification,
 	Chat,
-	UserSettings
+	UserSettings,
+	WithdrawConfirmation
 } from './containers';
 
 import store from './store';
@@ -146,6 +147,7 @@ export default (
 			<Route path="wallet/:currency" name="Wallet" component={CurrencyWallet} onEnter={requireAuth}/>
 			<Route path="wallet/:currency/deposit" name="Deposit" component={Deposit} onEnter={requireAuth}/>
 			<Route path="wallet/:currency/withdraw" name="Withdraw" component={Withdraw} onEnter={requireAuth}/>
+			<Route path="wallet/confirm-withdraw/:token" name="ConfirmWithdraw" component={WithdrawConfirmation} onEnter={requireAuth}/>
 			<Route
 				path="transactions"
 				name="Transactions"

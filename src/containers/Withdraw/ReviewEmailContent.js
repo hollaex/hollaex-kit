@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Button, IconTitle } from '../../components';
 
 import STRINGS from '../../config/localizedStrings';
@@ -9,7 +9,7 @@ const ReviewEmailContent = ({ onConfirmEmail }) => {
         <div className="d-flex flex-column review_email-wrapper">
             <IconTitle
                 text={STRINGS.WITHDRAW_PAGE.CONFIRM_VIA_EMAIL}
-                iconPath={ICONS.VERIFICATION_EMAIL}
+                iconPath={ICONS.EMAIL_SENT}
                 useSvg={true}
                 textType="title"
             />

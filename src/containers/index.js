@@ -9,6 +9,7 @@ export { default as Account } from './Account';
 export * from './Wallet';
 export { default as Deposit } from './Deposit';
 export { default as Withdraw } from './Withdraw';
+export { default as WithdrawConfirmation } from './WithdrawConfirmation';
 export { default as TransactionsHistory } from './TransactionsHistory';
 export { default as Login } from './Login';
 export { default as Signup } from './Signup';
