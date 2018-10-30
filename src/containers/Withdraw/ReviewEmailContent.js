@@ -9,7 +9,7 @@ const ReviewEmailContent = ({ onConfirmEmail }) => {
         <div className="d-flex flex-column review_email-wrapper">
             <IconTitle
                 text={STRINGS.WITHDRAW_PAGE.CONFIRM_VIA_EMAIL}
-                iconPath={ICONS.EMAIL_SENT}
+                iconPath={ICONS.WITHDRAW_MAIL_CONFIRMATION}
                 useSvg={true}
                 textType="title"
             />

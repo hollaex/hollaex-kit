@@ -268,7 +268,8 @@ export const ICONS = {
 	DOTTED_GRIP: `${
 		process.env.PUBLIC_URL
 	}/assets/images/dotted-grip-chat-repeat-pattern.svg`,
-	CHAT: `${process.env.PUBLIC_URL}/assets/images/chat-icon.svg`
+	CHAT: `${process.env.PUBLIC_URL}/assets/images/chat-icon.svg`,
+	WITHDRAW_MAIL_CONFIRMATION: `${process.env.PUBLIC_URL}/assets/images/withdraw-mail-confirmation.svg`
 };
 
 export const SOCIAL_ICONS = {
