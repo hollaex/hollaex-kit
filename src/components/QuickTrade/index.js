@@ -25,10 +25,11 @@ const getInitialTab = ( path ) => {
 	let activeTab = -1;
 	if (path === `${STRINGS.BTC_SHORTNAME.toLowerCase()}-${STRINGS.FIAT_SHORTNAME_EN.toLowerCase()}`) {
 		activeTab = 0;
-	}
-	 else if (path === `${STRINGS.ETH_SHORTNAME.toLowerCase()}-${STRINGS.FIAT_SHORTNAME_EN.toLowerCase()}`) {
+	} else if (path === `${STRINGS.ETH_SHORTNAME.toLowerCase()}-${STRINGS.FIAT_SHORTNAME_EN.toLowerCase()}`) {
 		activeTab = 1;
-	} 
+	} else if (path === `${STRINGS.BCH_SHORTNAME.toLowerCase()}-${STRINGS.FIAT_SHORTNAME_EN.toLowerCase()}`) {
+		activeTab = 2;
+	}
 	
 	return {
 		activeTab,
@@ -41,6 +42,7 @@ class QuickTrade extends Component {
 		symbol: DEFAULT_PAIR,
 		tabs: [],
 		activeTab:-1,
+		currencies: []
 	};
 
 	componentDidMount() {
@@ -67,13 +69,9 @@ class QuickTrade extends Component {
 	}
 
 	setActiveTab = (activeTab) => {
-		if(activeTab===0) {
-			browserHistory.push(`/quick-trade/${STRINGS.BTC_SHORTNAME.toLowerCase()}-${STRINGS.FIAT_SHORTNAME_EN.toLowerCase()}`)
-			this.setState({ activeTab });
-		} else {
-			browserHistory.push(`/quick-trade/${STRINGS.ETH_SHORTNAME.toLowerCase()}-${STRINGS.FIAT_SHORTNAME_EN.toLowerCase()}`)
-			this.setState({ activeTab });
-		}
+		const { currencies } = this.state;
+		browserHistory.push(`/quick-trade/${currencies[activeTab]}-${STRINGS.FIAT_SHORTNAME_EN.toLowerCase()}`)
+		this.setState({ activeTab });
 	}
 
 	onChangeSymbol = (symbol) => {
@@ -118,30 +116,26 @@ class QuickTrade extends Component {
 		updateActiveTab = false
 	) => {
 		let activeTab = this.state.activeTab > -1 ? this.state.activeTab : 0;
-		const {theme} = this.props 
+		const { theme, pairs } = this.props;
+		const obj = {};
+		Object.entries(pairs).forEach(([key, pair]) => {
+			obj[pair.pair_base] = '';
+		});
+		const symbols = Object.keys(obj).map((key) => key);
 		if (updateActiveTab || this.state.activeTab === -1) {
 			const initialValues = getInitialTab(this.props.symbol);
 			activeTab = initialValues.activeTab;
 		}
-		
-		const tabs = [
-			{
-				title:
-					<CheckTitle
-						title={STRINGS.BTC_NAME}
-						icon={ theme==='dark'? ICONS.BTC_ICON_DARK:ICONS.BTC_ICON}
-					/>
-				
-			},
-			{	title:
-					<CheckTitle
-						title={STRINGS.ETH_NAME}
-						icon={theme==='dark'? ICONS.ETH_ICON_DARK:ICONS.ETH_ICON }
-					/>
-			}
-		];
 
-		this.setState({ tabs, activeTab });
+		const tabs = symbols.map(pair => ({
+			title:
+				<CheckTitle
+					title={STRINGS[`${pair.toUpperCase()}_NAME`]}
+					icon={ICONS[`${pair.toUpperCase()}_ICON${theme === 'dark' ? '_DARK' : ''}`]}
+				/>
+		}));
+
+		this.setState({ tabs, activeTab, currencies: symbols });
 	};
 
 	render() {
