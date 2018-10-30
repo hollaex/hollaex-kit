@@ -127,13 +127,19 @@ class QuickTrade extends Component {
 			activeTab = initialValues.activeTab;
 		}
 
-		const tabs = symbols.map(pair => ({
-			title:
-				<CheckTitle
-					title={STRINGS[`${pair.toUpperCase()}_NAME`]}
-					icon={ICONS[`${pair.toUpperCase()}_ICON${theme === 'dark' ? '_DARK' : ''}`]}
-				/>
-		}));
+		const tabs = symbols.map(pair => {
+			let icon = ICONS[`${pair.toUpperCase()}_ICON${theme === 'dark' ? '_DARK' : ''}`];
+			if (!icon && theme === 'dark') {
+				icon = ICONS[`${pair.toUpperCase()}_ICON`];
+			}
+			return ({
+				title:
+					<CheckTitle
+						title={STRINGS[`${pair.toUpperCase()}_NAME`]}
+						icon={icon}
+					/>
+			});
+		});
 
 		this.setState({ tabs, activeTab, currencies: symbols });
 	};

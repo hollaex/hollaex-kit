@@ -39,6 +39,8 @@ export const ICONS = {
 	LAPTOP_COLOR: `${process.env.PUBLIC_URL}/assets/icons/compute-play-color.svg`,
 	TELEGRAM: `${process.env.PUBLIC_URL}/assets/icons/telegram-black.svg`,
 	TELEGRAM_COLOR: `${process.env.PUBLIC_URL}/assets/icons/telegram-color.svg`,
+	BCH_ICON: `${process.env.PUBLIC_URL}/assets/icons/bch-icon.svg`,
+	BCH_NAV_ICON: `${process.env.PUBLIC_URL}/assets/icons/bch-icon-nav.svg`,
 	CHECK: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-06.svg`,
 	BLUE_QUESTION: `${
 		process.env.PUBLIC_URL

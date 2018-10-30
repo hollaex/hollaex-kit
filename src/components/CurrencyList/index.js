@@ -51,29 +51,35 @@ class CurrencyList extends Component {
 				className={classnames('currency-list f-0', className, getClasesForLanguage(activeLanguage))}
 				onMouseLeave={this.removeFocus}
 			>
-				{symbols.map((symbol, index) => (
-					<div
-						key={index}
-						className={classnames(
-							'd-flex align-items-center single-currency',
-							focusedSymbol === symbol && 'focused',
-							pair.split('-')[0] === symbol && 'selected_currency-tab'
-						)}
-						onMouseEnter={() => this.loadMarkets(symbol)}
-						onClick={() => this.loadMarkets(symbol)}
-					>
-						<ReactSVG path={ICONS[`${symbol.toUpperCase()}_ICON${activeTheme === 'dark' ? '_DARK':''}`]} wrapperClassName="app_bar_currency-icon ml-2 mr-2" />
-						{STRINGS[`${symbol.toUpperCase()}_NAME`]}:
-						<div className="ml-1">
-							{STRINGS.formatString(
-								STRINGS.FIAT_PRICE_FORMAT,
-								formatToCurrency(marketPrice[symbol]),
-								''
+				{symbols.map((symbol, index) => {
+					let icon = ICONS[`${symbol.toUpperCase()}_ICON${activeTheme === 'dark' ? '_DARK' : ''}`];
+					if (symbol === 'bch') {
+						icon = ICONS[`${symbol.toUpperCase()}_NAV_ICON`];
+					}
+					return (
+						<div
+							key={index}
+							className={classnames(
+								'd-flex align-items-center single-currency',
+								focusedSymbol === symbol && 'focused',
+								pair.split('-')[0] === symbol && 'selected_currency-tab'
 							)}
+							onMouseEnter={() => this.loadMarkets(symbol)}
+							onClick={() => this.loadMarkets(symbol)}
+						>
+							<ReactSVG path={icon} wrapperClassName="app_bar_currency-icon ml-2 mr-2" />
+							{STRINGS[`${symbol.toUpperCase()}_NAME`]}:
+							<div className="ml-1">
+								{STRINGS.formatString(
+									STRINGS.FIAT_PRICE_FORMAT,
+									formatToCurrency(marketPrice[symbol]),
+									''
+								)}
+							</div>
+							<div className="ml-1 mr-1">{`${STRINGS.FIAT_CURRENCY_SYMBOL}`}</div>
 						</div>
-						<div className="ml-1 mr-1">{`${STRINGS.FIAT_CURRENCY_SYMBOL}`}</div>
-					</div>
-				))}
+					)
+				})}
 				{focusedSymbol && <MarketList markets={markets}  />}
 			</div>
 		);

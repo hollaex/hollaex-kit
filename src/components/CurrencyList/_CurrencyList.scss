@@ -118,5 +118,10 @@
 		.markets-list {
 			background-color: #353740;
 		}
+		svg {
+			.bch-icon-nav {
+				fill: $dark-font-main-text-color
+			}
+		}
 	}
 }
