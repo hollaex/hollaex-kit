@@ -32,7 +32,7 @@ class ConfirmWithdrawal extends Component {
                 return response;
             })
             .catch((err) => {
-                this.setState({ is_success: false, error_txt: err.message, loading: false });
+                this.setState({ is_success: false, error_txt: err.response.data.message || err.message, loading: false });
             })
     };
 

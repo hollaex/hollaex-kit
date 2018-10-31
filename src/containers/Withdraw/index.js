@@ -181,7 +181,8 @@ class Withdraw extends Component {
 			bank_account,
 			openContactForm,
 			activeLanguage,
-			btcFee
+			btcFee,
+			router
 		} = this.props;
 		const { formValues, initialValues, currency, checked } = this.state;
 		if (!currency || !checked) {
@@ -208,7 +209,8 @@ class Withdraw extends Component {
 			initialValues,
 			activeLanguage,
 			balanceAvailable,
-			currentPrice: prices[currency]
+			currentPrice: prices[currency],
+			router
 		};
 
 		return (
