@@ -400,9 +400,9 @@ export const WITHDRAW_LIMITS = {
 		MIN_FEE: parseFloat(process.env.REACT_APP_ETH_MIN_FEE || 0.001)
 	},
 	bch: {
-		MIN: process.env.REACT_APP_WITHDRAWAL_BTC_MIN || 0.0001,
-		MAX: process.env.REACT_APP_WITHDRAWAL_BTC_MAX || 10,
-		STEP: process.env.REACT_APP_WITHDRAWAL_BTC_STEP || 0.0001
+		MIN: process.env.REACT_APP_WITHDRAWAL_BCH_MIN || 0.001,
+		MAX: process.env.REACT_APP_WITHDRAWAL_BCH_MAX || 10,
+		STEP: process.env.REACT_APP_WITHDRAWAL_BCH_STEP || 0.001
 	},
 };
 

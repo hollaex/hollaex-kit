@@ -92,7 +92,8 @@ class Withdraw extends Component {
 		if (
 			currency === 'fiat' ||
 			(currency === 'eth' && !crypto_wallet.ethereum) ||
-			(currency === 'btc' && !crypto_wallet.bitcoin)
+			(currency === 'btc' && !crypto_wallet.bitcoin) || 
+			(currency === 'bch' && !crypto_wallet.bitcoincash) 
 		) {
 			this.props.router.push('/wallet');
 		} else if (currency) {
@@ -110,7 +111,7 @@ class Withdraw extends Component {
 					this.props.crypto_wallet
 				);
 			});
-			if (currency === 'btc') {
+			if (currency === 'btc' || currency === 'bch') {
 				this.props.requestWithdrawFee(currency);
 			}
 
