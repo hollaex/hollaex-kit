@@ -5,7 +5,7 @@ import mathjs from 'mathjs';
 import STRINGS from '../../config/localizedStrings';
 
 import { CurrencyBall, Button } from '../../components';
-import { CURRENCIES, BLOCKTRAIL_ENDPOINT, ETHEREUM_ENDPOINT } from '../../config/constants';
+import { CURRENCIES, BLOCKTRAIL_ENDPOINT, ETHEREUM_ENDPOINT, BITCOINCOM_ENDPOINT } from '../../config/constants';
 import { formatTimestamp, isBlockchainTx } from '../../utils/utils';
 
 const calculateFeeAmount = (
@@ -320,8 +320,8 @@ export const generateWithdrawalsHeaders = (symbol, withdrawalPopup) => {
 			label: STRINGS.MORE,
 			key: 'transaction_id',
 			exportToCsv: ({ transaction_id = '' }) => transaction_id,
-			renderCell: ({ transaction_id = '', currency, status, dismissed, id, amount }, key, index) => {
-				if(status===false && dismissed===false) {
+			renderCell: ({ transaction_id = '', currency, status, dismissed, id, amount, type }, key, index) => {
+				if(status===false && dismissed===false && type==='withdrawal') {
 					return isBlockchainTx(transaction_id) ? 
 					<td key={index}>
 						<div 
@@ -334,7 +334,8 @@ export const generateWithdrawalsHeaders = (symbol, withdrawalPopup) => {
 					</td>:''
 		       	} else {
 					return isBlockchainTx(transaction_id) && currency !== 'fiat' ?
-						<td key={index}><a target="blank" href={(currency === 'btc' ? BLOCKTRAIL_ENDPOINT : ETHEREUM_ENDPOINT) + transaction_id}>{STRINGS.VIEW}</a></td> : <td></td>;
+						<td key={index}><a target="blank" href={(currency === 'btc' ? BLOCKTRAIL_ENDPOINT : 
+							(currency === 'eth') ? ETHEREUM_ENDPOINT : BITCOINCOM_ENDPOINT) + transaction_id}>{STRINGS.VIEW}</a></td> : <td></td>;
 				}
 			}
 		},

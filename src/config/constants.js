@@ -432,6 +432,11 @@ export const ETHEREUM_ENDPOINT = `https://${
 	NETWORK === 'testnet' ? 'ropsten.etherscan.io' : 'etherscan.io'
 }/tx/`;
 
+export const BITCOINCOM_ENDPOINT = 
+	NETWORK === 'testnet' ? 
+	`https://www.blocktrail.com/tBCC/tx/` :
+	'https://explorer.bitcoin.com/bch/tx/';
+
 export const BALANCE_ERROR = 'Insufficient balance to perform the order';
 
 export const CAPTCHA_SITEKEY = process.env.REACT_APP_CAPTCHA_SITE_KEY;

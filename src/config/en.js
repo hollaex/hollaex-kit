@@ -238,7 +238,7 @@ export default {
 				INFORMATION_PENDING_1:
 					'Your {0} require 1 confirmations before you can begin trading.',
 				INFORMATION_PENDING_2:
-					'This may take 10-30 minutes. We will send an email once your {0} have completed Confirming.'
+					'This may take 10-30 minutes. We will send an email once your {0} is confirmed on the blockchain.'
 			},
 			ETH: {
 				TITLE_RECEIVED: '{0} Deposit received',
@@ -248,8 +248,18 @@ export default {
 				INFORMATION_PENDING_1:
 					'Your {0} require 1 confirmations before you can begin trading.',
 				INFORMATION_PENDING_2:
-					'This may take 10-30 minutes. We will send an email once your {0} have completed Confirming.'
-			}
+					'This may take 10-30 minutes. We will send an email once your {0} is confirmed on the blockchain.'
+			},
+			BCH: {
+				TITLE_RECEIVED: '{0} Deposit received',
+				TITLE_INCOMING: 'Incoming {0}',
+				SUBTITLE_RECEIVED: 'You’ve received your {0} deposit',
+				SUBTITLE_INCOMING: 'You have incoming {0}',
+				INFORMATION_PENDING_1:
+					'Your {0} requires 2 confirmations before you can begin trading.',
+				INFORMATION_PENDING_2:
+					'This may take 10-30 minutes. We will send an email once your {0} is confirmed on the blockchain.'
+			},
 		}
 	},
 	OTP_FORM: {
