@@ -112,6 +112,7 @@ class Form extends Component {
 
 	onConfirmEmail = () => {
 		this.onCloseDialog();
+		this.props.router.push('/wallet');
 	};
 
 	onSubmitOtp = ({ otp_code = '' }) => {
