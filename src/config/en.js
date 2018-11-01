@@ -113,7 +113,11 @@ export default {
 		TAB_SECURITY: 'Security',
 		TAB_NOTIFICATIONS: 'Notifications',
 		TAB_SETTINGS: 'Settings',
-		TAB_PROFILE: 'Profile'
+		TAB_PROFILE: 'Profile',
+		TAB_WALLET: 'Wallet',
+		TAB_SUMMARY: 'Summary',
+		TAB_API: 'API',
+		TAB_SIGNOUT: 'Signout'
 	},
 	CONTACT_FORM: {
 		CATEGORY_LABEL: 'Category',

@@ -4,18 +4,22 @@ import { Link } from 'react-router';
 import ReactSVG from 'react-svg';
 import { isMobile } from 'react-device-detect';
 import {
+	HOLLAEX_LOGO,
 	HOLLAEX_LOGO_BLACK,
 	IS_PRO_VERSION,
 	PRO_URL,
-	DEFAULT_VERSION_REDIRECT
+	DEFAULT_VERSION_REDIRECT,
+	ICONS
 } from '../../config/constants';
 import { LinkButton } from './LinkButton';
+import PairTabs from './PairTabs';
 import { MobileBarWrapper } from '../';
 import STRINGS from '../../config/localizedStrings';
 
 class AppBar extends Component {
 	state = {
-		symbolSelectorIsOpen: false
+		symbolSelectorIsOpen: false,
+		isAccountMenu: false
 	};
 
 	toogleSymbolSelector = () => {
@@ -25,6 +29,10 @@ class AppBar extends Component {
 	onChangeSymbol = (symbol) => {
 		this.props.changeSymbol(symbol);
 		this.toogleSymbolSelector();
+	};
+
+	handleAccountMenu = () => {
+		this.setState({ isAccountMenu: !this.state.isAccountMenu });
 	};
 
 	renderSymbolOption = ({ symbol, name, currencySymbol, iconPath }, index) => (
@@ -49,12 +57,12 @@ class AppBar extends Component {
 
 		const WRAPPER_CLASSES = ['app_bar-controllers-splash', 'd-flex'];
 		return token ? (
-			<div className={classnames(...WRAPPER_CLASSES)}>
-				<LinkButton
-					path="/account"
-					text={STRINGS.ACCOUNT_TEXT}
-					buttonClassName="contrast"
-				/>
+			<div className="d-flex app-bar-account" onClick={this.handleAccountMenu}>
+				<div className="app-bar-account-content mr-5">
+					<ReactSVG path={ICONS.SIDEBAR_ACCOUNT_INACTIVE} wrapperClassName="app-bar-currency-icon" />
+					<div className="app-bar-account-notification">2</div>
+				</div>
+				<div>{STRINGS.ACCOUNT_TEXT}</div>
 			</div>
 		) : (
 			<div className={classnames(...WRAPPER_CLASSES)}>
@@ -70,19 +78,17 @@ class AppBar extends Component {
 	renderIcon = (isHome, theme) => {
 		return (
 			<div
-				className={classnames('app_bar-icon', 'text-uppercase', {
-					contrast: !isHome
-				})}
+				className={classnames('app_bar-icon', 'text-uppercase')}
 			>
 				{isHome ? (
 					<img
-						src={HOLLAEX_LOGO_BLACK}
+						src={HOLLAEX_LOGO}
 						alt={STRINGS.APP_NAME}
 						className="app_bar-icon-logo"
 					/>
 				) : (
 					<Link href={IS_PRO_VERSION ? PRO_URL : DEFAULT_VERSION_REDIRECT}>
-						{STRINGS.APP_NAME}
+						<ReactSVG path={HOLLAEX_LOGO_BLACK} wrapperClassName="app_bar-icon-logo" />
 					</Link>
 				)}
 			</div>
@@ -97,6 +103,7 @@ class AppBar extends Component {
 			theme,
 			rightChildren
 		} = this.props;
+		const { isAccountMenu } = this.state;
 
 		return isMobile ? (
 			<MobileBarWrapper
@@ -113,14 +120,71 @@ class AppBar extends Component {
 				{isHome && this.renderSplashActions(token, verifyingToken)}
 			</MobileBarWrapper>
 		) : (
-			<div className={classnames('app_bar', { 'no-borders': noBorders })}>
-				{this.renderIcon(isHome, theme)}
-				<div className="app_bar-main d-flex justify-content-between">
-					<div>{!isHome && STRINGS.APP_TITLE}</div>
+			<div className={classnames('app_bar justify-content-between', { 'no-borders': noBorders })}>
+				<div className="d-flex">
+					{this.renderIcon(isHome, theme)}
+					<div className="d-flex ml-2 mr-2">
+						{!isHome
+							? <Link to="/quick-trade">
+								<div className='app_bar-quicktrade d-flex'>
+									<ReactSVG path={ICONS.QUICK_TRADE_TAB} wrapperClassName="quicktrade_icon" />
+									{STRINGS.QUICK_TRADE}
+								</div>
+							</Link>
+							: null
+						}
+					</div>
+					{!isHome && <PairTabs />}
 				</div>
-				{rightChildren
-					? rightChildren
-					: isHome && this.renderSplashActions(token, verifyingToken)}
+				{!isHome
+					? <div className="d-flex app-bar-account" onClick={this.handleAccountMenu}>
+						<div className="app-bar-account-content mr-2">
+							<ReactSVG path={ICONS.SIDEBAR_ACCOUNT_INACTIVE} wrapperClassName="app-bar-account-icon" />
+							<div className="app-bar-account-notification">2</div>
+						</div>
+						<div>{STRINGS.ACCOUNT_TEXT}</div>
+					</div>
+					: this.renderSplashActions(token, verifyingToken)
+				}
+				{isAccountMenu && <div className="app-bar-account-menu">
+					<div className="d-flex app-bar-account-menu-list">
+						<div className="app-bar-account-content mr-2">
+							<ReactSVG path={ICONS.SIDEBAR_ACCOUNT_INACTIVE} wrapperClassName="app-bar-account-list-icon" />
+							<div className="app-bar-account-notification">2</div>
+						</div>
+						<div>{STRINGS.ACCOUNT_TEXT}</div>
+					</div>
+					<div className="app-bar-account-menu-list d-flex">
+						<ReactSVG path={ICONS.TAB_SUMMARY} wrapperClassName="app-bar-account-list-icon" />
+						{STRINGS.ACCOUNTS.TAB_SUMMARY}
+					</div>
+					<div className="app-bar-account-menu-list d-flex">
+						<ReactSVG path={ICONS.TAB_WALLET} wrapperClassName="app-bar-account-list-icon" />
+						{STRINGS.ACCOUNTS.TAB_WALLET}
+					</div>
+					<div className={classnames('app-bar-account-menu-list d-flex', { 'notification': true })}>
+						<div className="app-bar-account-list-notification">1</div>
+						<ReactSVG path={ICONS.TAB_SECURITY} wrapperClassName="app-bar-account-list-icon" />
+						{STRINGS.ACCOUNTS.TAB_SECURITY}
+					</div>
+					<div className={classnames('app-bar-account-menu-list d-flex', { 'notification': true })}>
+						<div className="app-bar-account-list-notification">2</div>
+						<ReactSVG path={ICONS.TAB_VERIFY} wrapperClassName="app-bar-account-list-icon" />
+						{STRINGS.ACCOUNTS.TAB_VERIFICATION}
+					</div>
+					<div className="app-bar-account-menu-list d-flex">
+						<ReactSVG path={ICONS.TAB_SETTING} wrapperClassName="app-bar-account-list-icon" />
+						{STRINGS.ACCOUNTS.TAB_SETTINGS}
+					</div>
+					<div className="app-bar-account-menu-list d-flex">
+						<ReactSVG path={ICONS.TAB_API} wrapperClassName="app-bar-account-list-icon" />
+						{STRINGS.ACCOUNTS.TAB_API}
+					</div>
+					<div className="app-bar-account-menu-list d-flex">
+						<ReactSVG path={ICONS.TAB_SIGNOUT} wrapperClassName="app-bar-account-list-icon" />
+						{STRINGS.ACCOUNTS.TAB_SIGNOUT}
+					</div>
+				</div>}
 			</div>
 		);
 	}

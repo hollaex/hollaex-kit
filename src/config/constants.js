@@ -108,6 +108,7 @@ export const ICONS = {
 		process.env.PUBLIC_URL
 	}/assets/images/payment-options.svg`,
 	QUICK_TRADE: `${process.env.PUBLIC_URL}/assets/images/quick-trade.svg`,
+	QUICK_TRADE_TAB: `${process.env.PUBLIC_URL}/assets/images/quick-trade-tab.svg`,
 	SECURE: `${process.env.PUBLIC_URL}/assets/images/secure.svg`,
 	SECURITY_BLACK: `${process.env.PUBLIC_URL}/assets/images/security.svg`,
 	SECURITY_GREY: `${process.env.PUBLIC_URL}/assets/images/security-grey.svg`,
@@ -271,7 +272,16 @@ export const ICONS = {
 		process.env.PUBLIC_URL
 	}/assets/images/dotted-grip-chat-repeat-pattern.svg`,
 	CHAT: `${process.env.PUBLIC_URL}/assets/images/chat-icon.svg`,
-	WITHDRAW_MAIL_CONFIRMATION: `${process.env.PUBLIC_URL}/assets/images/withdraw-mail-confirmation.svg`
+	WITHDRAW_MAIL_CONFIRMATION: `${process.env.PUBLIC_URL}/assets/images/withdraw-mail-confirmation.svg`,
+	CLOSE_CROSS: `${process.env.PUBLIC_URL}/assets/images/close-cross-tab.svg`,
+	ADD_TAB: `${process.env.PUBLIC_URL}/assets/images/add-tab.svg`,
+	TAB_SUMMARY: `${process.env.PUBLIC_URL}/assets/images/tab-summary.svg`,
+	TAB_WALLET: `${process.env.PUBLIC_URL}/assets/images/tab-wallet.svg`,
+	TAB_SECURITY: `${process.env.PUBLIC_URL}/assets/images/tab-security.svg`,
+	TAB_VERIFY: `${process.env.PUBLIC_URL}/assets/images/tab-verify.svg`,
+	TAB_SETTING: `${process.env.PUBLIC_URL}/assets/images/tab-setting.svg`,
+	TAB_API: `${process.env.PUBLIC_URL}/assets/images/tab-api.svg`,
+	TAB_SIGNOUT: `${process.env.PUBLIC_URL}/assets/images/signout.svg`
 };
 
 export const SOCIAL_ICONS = {

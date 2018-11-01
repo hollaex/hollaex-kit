@@ -1,5 +1,12 @@
 $language-selector-arrow--size: 0.4rem;
 $app-bar--background: white;
+$app-bar--pairs-color: #CCCBCA;
+$app-bar-tab-color-inactive: #808184;
+$app-bar--quicktrade-active-color: #fff100;
+$app-bar--quicktrade-inactive-color: #a08e24;
+$app-bar--arrow-size: 0.5rem;
+$notification-size: 1.5rem;
+$app-menu-notification-size: 1.2rem;
 
 .dark-theme {
 	.app_bar {
@@ -30,10 +37,9 @@ $app-bar--background: white;
 	height: $navigation_bar-height;
 	border-bottom: 1px solid $app_bar-border--color;
 	display: flex;
-	justify-content: space-between;
 	font-size: $navigation_bar-font_size;
 	font-weight: bold;
-	background-color: $app-bar--background;
+	background: $dark-app-background-color;
 
 	&.no-borders {
 		border-bottom: none;
@@ -46,21 +52,20 @@ $app-bar--background: white;
 		display: flex;
 		align-items: center;
 		padding: 0 8px;
-
-		&:not(:first-child) {
-			border-left: 1px solid $app_bar-border--color;
-		}
 	}
 
 	.app_bar-icon-logo {
-		width: 4rem;
+		width: 5rem;
+	}
+
+	.app_bar-icon-logo svg {
+		.logo-black {
+			fill: $colors-white;
+		}
 	}
 
 	.app_bar-icon {
 		flex: 0;
-	}
-
-	.app_bar-icon {
 		width: 100%;
 	}
 
@@ -82,6 +87,183 @@ $app-bar--background: white;
 		max-height: $navigation_bar-height;
 		min-height: $navigation_bar-height;
 	}
+
+	.app_bar-quicktrade {
+		border: 1px solid $app-bar--quicktrade-active-color;
+		border-radius: .25rem;
+		color: $app-bar--quicktrade-active-color;
+		font-weight: 400;
+		padding: .1rem;
+		text-transform: capitalize;
+
+		svg {
+			.st0 {
+				fill: $app-bar--quicktrade-active-color;
+			}
+		}
+	}
+
+	.quicktrade_icon {
+		width: 1rem;
+	}
+
+	.app-bar-account {
+		color: $colors-white;
+		cursor: pointer;
+	}
+
+	.app_bar-pair-content {
+		align-items: center;
+		border-left: 1px solid $app-bar--pairs-color;
+		color: $app-bar-tab-color-inactive;
+		cursor: pointer;
+		display: flex;
+		font-size: $font-size-main;
+		font-weight: 400;
+		height: 100%;
+		padding: 0 .5rem;
+	}
+
+	.app-bar-currency-icon {
+		margin: .5rem .3rem 0 .3rem;
+		width: 2rem;
+	}
+	
+	.app-bar-tab-close {
+		margin: .5rem .4rem 0 .4rem;
+		width: 1rem;
+	}
+
+	.app-bar-account-icon {
+		margin: .5rem .3rem 0 .3rem;
+		width: 1.5rem;
+	}
+
+	.app-bar-tab-close, .app-bar-currency-icon, .app-bar-account-icon svg {
+		.btc0 {
+			fill: $app-bar-tab-color-inactive;
+		}
+		.btc1 {
+			fill: $app-bar-tab-color-inactive;
+		}
+		.eth0 {
+			fill: $app-bar-tab-color-inactive;
+		}
+		.eth1 {
+			fill: $app-bar-tab-color-inactive;
+		}
+		.bch-icon {
+			fill: $app-bar-tab-color-inactive;
+		}
+		.tab-close {
+			stroke: $app-bar-tab-color-inactive;
+		}
+		.add {
+			stroke: $app-bar--pairs-color;
+		}
+		.st0 {
+			fill: $colors-white;
+			stroke-width: 0rem;
+		}
+	}
+
+	.app_bar-currency-txt {
+		font-size: $font-size-main;
+		font-weight: 600;
+	}
+
+	.app-price-diff-red {
+		color: $colors-notifications-red;
+	}
+
+	.app-bar-price_difference {
+		margin-left: 0.5rem;
+	}
+
+	.app-bar-price_difference:before {
+		@include css-triangle($colors-notifications-red, 'down', $app-bar--arrow-size);
+		display: inline-block;
+		position: relative;
+		top: calc(50% - 0.6rem);
+	}
+
+	.app-bar-account-menu {
+		display: block;
+		position: absolute;
+		right: 0;
+		top: 36px;
+		min-width: 10rem;
+		min-height: 8rem;
+		background-color: #fafafa;
+		z-index: 20;
+		padding: 1rem;
+		-webkit-box-shadow: 0px 3px 1px -1px rgba(0, 0, 0, 0.4);
+		-moz-box-shadow: 0px 3px 1px -1px rgba(0, 0, 0, 0.4);
+		box-shadow: 0px 3px 1px -1px rgba(0, 0, 0, 0.4);
+
+		.app-bar-account-menu-list {
+			color: $app-bar-tab-color-inactive;
+			cursor: pointer;
+			padding: .7rem;
+		}
+
+		.app-bar-account-list-icon {
+			margin: 0 .1rem;
+			width: 1rem;
+		}
+
+		.notification {
+			color: $colors-notifications-red;
+		
+			svg {
+				.tab-summary0, .tab-wallet0, .tab-setting0, .tab-verify0,
+				.tab-security0, .tab-api0 {
+					fill: $colors-notifications-red;
+				}
+			}
+		}
+
+		.app-bar-account-list-notification {
+			position: relative;
+			right: 0;
+			top: -4px;
+			height: $app-menu-notification-size;
+			width: $app-menu-notification-size;
+			border-radius: $app-menu-notification-size;
+			background-color: $colors-notifications-red;
+			color: white;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			font-size: .8rem;
+			line-height: 1;
+			font-weight: bold;
+		}
+	}
+
+	.app-bar-account-content {
+		align-items: center;
+		flex-direction: column;
+		justify-content: center;
+		position: relative;
+	}
+
+	.app-bar-account-notification {
+		position: absolute;
+		right: -6px;
+		top: 0;
+		height: $app-menu-notification-size;
+		width: $app-menu-notification-size;
+		border-radius: $app-menu-notification-size;
+		background-color: red;
+		color: white;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		font-size: .8rem;
+		line-height: 1;
+		font-weight: bold;
+	}
 }
 
 .app_bar-mobile {
@@ -90,7 +272,7 @@ $app-bar--background: white;
 		@include size(8rem);
 
 		.logo-black {
-			fill: white;
+			fill: $colors-white;
 		}
 	}
 	.app_bar-controllers-splash {
@@ -100,3 +282,72 @@ $app-bar--background: white;
 		}
 	}
 }
+
+.app-menu-bar {
+	background: $app-menu-bar-background-color;
+	border-bottom: 1px solid $app-menu-bar-border--color;
+	display: flex;
+	font-size: $navigation_bar-font_size;
+	height: $navigation_bar-height;
+	min-height: $navigation_bar-height;
+	position: relative;
+	width: 100%;
+
+	.app-menu-bar-content {
+		color: $app-bar-tab-color-inactive;
+		cursor: pointer;
+		padding: .7rem 3rem;
+	}
+
+	.app-menu-bar-icon {
+		margin: 0 .1rem;
+		width: 1rem;
+	}
+
+	.active-menu {
+		border-top: 1px solid $app-bar--pairs-color;
+		border-left: 1px solid $app-bar--pairs-color;
+		border-right: 1px solid $app-bar--pairs-color;
+		background-color: $colors-white;
+		color: $colors-main-black;
+		height: 2.5rem;
+		position: relative;
+		top: 1px;
+
+		svg {
+			.tab-summary0, .tab-wallet0, .tab-setting0, .tab-verify0,
+			.tab-security0, .tab-api0 {
+				fill: $colors-main-black;
+			}
+		}
+	}
+
+	.notification {
+		color: $colors-notifications-red;
+	
+		svg {
+			.tab-summary0, .tab-wallet0, .tab-setting0, .tab-verify0,
+			.tab-security0, .tab-api0 {
+				fill: $colors-notifications-red;
+			}
+		}
+	}
+
+	.app-menu-bar-icon-notification {
+		position: relative;
+		right: 0;
+		top: -4px;
+		height: $app-menu-notification-size;
+		width: $app-menu-notification-size;
+		border-radius: $app-menu-notification-size;
+		background-color: $colors-notifications-red;
+		color: white;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		font-size: .8rem;
+		line-height: 1;
+		font-weight: bold;
+	}
+}
+

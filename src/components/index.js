@@ -1,4 +1,5 @@
 export { default as AppBar } from './AppBar';
+export { default as AppMenuBar } from './AppBar/AppMenuBar';
 export { default as Button } from './Button';
 export { default as ButtonLink } from './Button/ButtonLink';
 export { default as CheckboxButton } from './Button/CheckboxButton';

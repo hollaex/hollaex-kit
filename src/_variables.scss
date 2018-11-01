@@ -66,6 +66,8 @@ $sidebar-border--color: $colors-deactivate;
 $quick-trade--background: #ebf3f1;
 $border-color: $colors-deactivate-color2;
 $error-color: $colors-notifications-red;
+$app-menu-bar-background-color: #F2F2F3;
+$app-menu-bar-border--color: #CCCBCA;
 
 $bitcoin-color-main: $colors-currencies-btc;
 
@@ -147,5 +149,5 @@ $component--margin-bottom: 3rem;
 $input--height: 4.5rem;
 
 // CONTAINERS
-$max-content-height: calc(100vh - #{$navigation_bar-height});
+$max-content-height: calc(100vh - #{$navigation_bar-height * 2});
 $max-width-content: 50rem;
