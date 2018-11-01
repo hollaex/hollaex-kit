@@ -1,5 +1,6 @@
 import PhoneNumber from 'awesome-phonenumber';
 import { DEFAULT_LANGUAGE, THEME_DEFAULT } from '../config/constants';
+import { getCurrencyFromSymbol } from '../utils/currency';
 
 const USER_DATA_KEYS = [
 	'full_name',
@@ -357,11 +358,7 @@ export default function reducer(state = INITIAL_STATE, action) {
 		case 'CREATE_ADDRESS_FULFILLED':
 			const { address, crypto } = action.payload.data;
 			const { crypto_wallet } = state;
-			if (crypto === 'btc') {
-				crypto_wallet.bitcoin = address;
-			} else if (crypto === 'eth') {
-				crypto_wallet.ethereum = address;
-			}
+			crypto_wallet[getCurrencyFromSymbol(crypto)] = address;
 			return {
 				...state,
 				crypto_wallet,

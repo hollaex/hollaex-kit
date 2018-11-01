@@ -19,7 +19,7 @@ const GenerateAddressNotification = ({
 	if (fetching) {
 		return (
 			<NotificationWraper className="new-order-notification">
-				<Loader relative={true} background={false} />;
+				<Loader relative={true} background={false} />
 			</NotificationWraper>
 		);
 	}

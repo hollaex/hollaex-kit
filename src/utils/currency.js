@@ -125,6 +125,26 @@ export const getCurrencyFromName = (name = '') => {
 	}
 };
 
+export const getCurrencyFromSymbol = (symbol = '') => {
+	switch (symbol.toLowerCase()) {
+		case 'btc':
+		case 'bitcoin':
+			return 'bitcoin';
+		case 'eth':
+		case 'ethereum':
+			return 'ethereum';
+		case 'bch':
+		case 'bitcoincash':
+			return 'bitcoincash';
+		case 'eur':
+		case 'euro':
+		case 'fiat':
+			return 'fiat';
+		default:
+			return '';
+	}
+};
+
 export const checkNonFiatPair = (pair) => !pair.includes(STRINGS.FIAT_SHORTNAME_EN.toLowerCase());
 export const fiatSymbol = 'fiat';
 export const fiatName = STRINGS.FIAT_NAME;
