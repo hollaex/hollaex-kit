@@ -526,7 +526,7 @@ class Container extends Component {
 		// 	Object.keys(pairsTrades).length);
 		return (Object.keys(orderbooks).length && orderbooks[pair] &&
 			Object.keys(pairsTrades).length);
-	}
+	};
 
 	render() {
 		const {
@@ -541,7 +541,8 @@ class Container extends Component {
 			openHelpfulResourcesForm,
 			activeTheme,
 			unreadMessages,
-			router
+			router,
+			location
 		} = this.props;
 		const { dialogIsOpen, appLoaded, chatIsClosed } = this.state;
 		const languageClasses = getClasesForLanguage(activeLanguage, 'array');
@@ -590,7 +591,10 @@ class Container extends Component {
 					/>
 					<div className="d-flex flex-column f-1">
 						<AppBar
+							router={router}
+							location={location}
 							goToDashboard={this.goToDashboard}
+							logout={this.logout}
 							rightChildren={
 								<CurrencyList
 									className="horizontal-currency-list justify-content-end"
@@ -598,7 +602,7 @@ class Container extends Component {
 								/>
 							}
 						/>
-						<AppMenuBar router={router} />
+						<AppMenuBar router={router} location={location} />
 						<div className="app_container-content d-flex justify-content-between">
 							<div
 								className={classnames(

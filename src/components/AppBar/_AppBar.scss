@@ -187,60 +187,6 @@ $app-menu-notification-size: 1.2rem;
 		top: calc(50% - 0.6rem);
 	}
 
-	.app-bar-account-menu {
-		display: block;
-		position: absolute;
-		right: 0;
-		top: 36px;
-		min-width: 10rem;
-		min-height: 8rem;
-		background-color: #fafafa;
-		z-index: 20;
-		padding: 1rem;
-		-webkit-box-shadow: 0px 3px 1px -1px rgba(0, 0, 0, 0.4);
-		-moz-box-shadow: 0px 3px 1px -1px rgba(0, 0, 0, 0.4);
-		box-shadow: 0px 3px 1px -1px rgba(0, 0, 0, 0.4);
-
-		.app-bar-account-menu-list {
-			color: $app-bar-tab-color-inactive;
-			cursor: pointer;
-			padding: .7rem;
-		}
-
-		.app-bar-account-list-icon {
-			margin: 0 .1rem;
-			width: 1rem;
-		}
-
-		.notification {
-			color: $colors-notifications-red;
-		
-			svg {
-				.tab-summary0, .tab-wallet0, .tab-setting0, .tab-verify0,
-				.tab-security0, .tab-api0 {
-					fill: $colors-notifications-red;
-				}
-			}
-		}
-
-		.app-bar-account-list-notification {
-			position: relative;
-			right: 0;
-			top: -4px;
-			height: $app-menu-notification-size;
-			width: $app-menu-notification-size;
-			border-radius: $app-menu-notification-size;
-			background-color: $colors-notifications-red;
-			color: white;
-			display: flex;
-			justify-content: center;
-			align-items: center;
-			font-size: .8rem;
-			line-height: 1;
-			font-weight: bold;
-		}
-	}
-
 	.app-bar-account-content {
 		align-items: center;
 		flex-direction: column;
@@ -263,6 +209,98 @@ $app-menu-notification-size: 1.2rem;
 		font-size: .8rem;
 		line-height: 1;
 		font-weight: bold;
+	}
+
+	.app-bar-account-menu {
+		display: block;
+		position: absolute;
+		right: 0;
+		top: 36px;
+		min-width: 10rem;
+		min-height: 8rem;
+		background-color: #fafafa;
+		z-index: 20;
+		padding: 1rem;
+		-webkit-box-shadow: 0px 6px 10px -1px rgba(0, 0, 0, 0.4);
+		-moz-box-shadow: 0px 6px 10px -1px rgba(0, 0, 0, 0.4);
+		box-shadow: 0px 6px 10px -1px rgba(0, 0, 0, 0.4);
+
+		.app-bar-account-menu-list {
+			color: $app-bar-tab-color-inactive;
+			cursor: pointer;
+			padding: .5rem 0;
+		}
+
+		.app-bar-account-list-icon {
+			margin: 0 .1rem;
+			width: 1rem;
+		}
+		.app-bar-account-list-icon svg {
+			.account-active-1 {
+				fill: $app-bar-tab-color-inactive;
+			}
+		}
+
+		.menu-active {
+			color: $colors-main-black;
+
+			svg {
+				.tab-summary0, .tab-wallet0, .tab-setting0, .tab-verify0,
+				.tab-security0, .tab-api0, .account-active-1 {
+					fill: $colors-main-black;
+				}
+			}
+		}
+
+		.notification-content {
+			width: $app-menu-notification-size;
+		}
+
+		.notification {
+			color: $colors-notifications-red;
+			// padding-left: 0;
+		
+			svg {
+				.tab-summary0, .tab-wallet0, .tab-setting0, .tab-verify0,
+				.tab-security0, .tab-api0 {
+					fill: $colors-notifications-red;
+				}
+			}
+		}
+
+		.app-bar-account-menu-notification {
+			position: absolute;
+			right: -10px;
+			top: -10px;
+			height: $app-menu-notification-size;
+			width: $app-menu-notification-size;
+			border-radius: $app-menu-notification-size;
+			background-color: $colors-notifications-red;
+			color: white;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			font-size: .8rem;
+			line-height: 1;
+			font-weight: bold;
+		}
+
+		.app-bar-account-list-notification {
+			position: relative;
+			right: 0;
+			bottom: 8px;
+			height: $app-menu-notification-size;
+			width: $app-menu-notification-size;
+			border-radius: $app-menu-notification-size;
+			background-color: $colors-notifications-red;
+			color: white;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			font-size: .8rem;
+			line-height: 1;
+			font-weight: bold;
+		}
 	}
 }
 
@@ -336,7 +374,7 @@ $app-menu-notification-size: 1.2rem;
 	.app-menu-bar-icon-notification {
 		position: relative;
 		right: 0;
-		top: -4px;
+		bottom: 6px;
 		height: $app-menu-notification-size;
 		width: $app-menu-notification-size;
 		border-radius: $app-menu-notification-size;

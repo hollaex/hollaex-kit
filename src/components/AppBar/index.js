@@ -13,14 +13,29 @@ import {
 } from '../../config/constants';
 import { LinkButton } from './LinkButton';
 import PairTabs from './PairTabs';
+import MenuList from './MenuList';
 import { MobileBarWrapper } from '../';
 import STRINGS from '../../config/localizedStrings';
 
 class AppBar extends Component {
 	state = {
 		symbolSelectorIsOpen: false,
-		isAccountMenu: false
+		isAccountMenu: false,
+		selectedMenu: ''
 	};
+
+	componentDidMount() {
+		if (this.props.location && this.props.location.pathname) {
+			this.setActiveMenu(this.props.location.pathname);
+		}
+	}
+	
+	componentWillReceiveProps(nextProps) {
+		if (this.props.location && nextProps.location
+			&& this.props.location.pathname !== nextProps.location.pathname) {
+			this.setActiveMenu(nextProps.location.pathname);
+		}
+	}
 
 	toogleSymbolSelector = () => {
 		this.setState({ symbolSelectorIsOpen: !this.state.symbolSelectorIsOpen });
@@ -32,6 +47,7 @@ class AppBar extends Component {
 	};
 
 	handleAccountMenu = () => {
+
 		this.setState({ isAccountMenu: !this.state.isAccountMenu });
 	};
 
@@ -58,7 +74,7 @@ class AppBar extends Component {
 		const WRAPPER_CLASSES = ['app_bar-controllers-splash', 'd-flex'];
 		return token ? (
 			<div className="d-flex app-bar-account" onClick={this.handleAccountMenu}>
-				<div className="app-bar-account-content mr-5">
+				<div className="app-bar-account-content mr-2">
 					<ReactSVG path={ICONS.SIDEBAR_ACCOUNT_INACTIVE} wrapperClassName="app-bar-currency-icon" />
 					<div className="app-bar-account-notification">2</div>
 				</div>
@@ -94,6 +110,56 @@ class AppBar extends Component {
 			</div>
 		);
 	};
+
+	handleMenu = menu => {
+		if (menu === 'account') {
+			this.props.router.push('/account');
+		} else if (menu === 'security') {
+			this.props.router.push('/security');
+		} else if (menu === 'verification') {
+			this.props.router.push('/verification');
+		} else if (menu === 'wallet') {
+			this.props.router.push('/wallet');
+		} else if (menu === 'settings') {
+			this.props.router.push('/settings');
+		} /* else if (menu === 'api') {
+			this.props.router.push('/api');
+		}  else if (menu === 'summary') {
+			this.props.router.push('/summary');
+		} */
+		this.setState({ selectedMenu: menu });
+	};
+
+	setActiveMenu = path => {
+		let selectedMenu = this.state.selectedMenu;
+		switch (path) {
+			case '/account':
+				selectedMenu = 'account';
+				break;
+			case '/summary':
+				selectedMenu = 'summary';
+				break;
+			case '/wallet':
+				selectedMenu = 'wallet';
+				break;
+			case '/security':
+				selectedMenu = 'security';
+				break;
+			case '/settings':
+				selectedMenu = 'settings';
+				break;
+			case '/verification':
+				selectedMenu = 'verification';
+				break;
+			case '/api':
+				selectedMenu = 'api';
+				break;
+			default:
+				break;
+		};
+		this.setState({ selectedMenu });
+	};
+
 	render() {
 		const {
 			noBorders,
@@ -101,9 +167,9 @@ class AppBar extends Component {
 			verifyingToken,
 			isHome,
 			theme,
-			rightChildren
+			logout
 		} = this.props;
-		const { isAccountMenu } = this.state;
+		const { isAccountMenu, selectedMenu } = this.state;
 
 		return isMobile ? (
 			<MobileBarWrapper
@@ -125,7 +191,7 @@ class AppBar extends Component {
 					{this.renderIcon(isHome, theme)}
 					<div className="d-flex ml-2 mr-2">
 						{!isHome
-							? <Link to="/quick-trade">
+							? <Link to="/quick-trade/btc-eth">
 								<div className='app_bar-quicktrade d-flex'>
 									<ReactSVG path={ICONS.QUICK_TRADE_TAB} wrapperClassName="quicktrade_icon" />
 									{STRINGS.QUICK_TRADE}
@@ -146,45 +212,7 @@ class AppBar extends Component {
 					</div>
 					: this.renderSplashActions(token, verifyingToken)
 				}
-				{isAccountMenu && <div className="app-bar-account-menu">
-					<div className="d-flex app-bar-account-menu-list">
-						<div className="app-bar-account-content mr-2">
-							<ReactSVG path={ICONS.SIDEBAR_ACCOUNT_INACTIVE} wrapperClassName="app-bar-account-list-icon" />
-							<div className="app-bar-account-notification">2</div>
-						</div>
-						<div>{STRINGS.ACCOUNT_TEXT}</div>
-					</div>
-					<div className="app-bar-account-menu-list d-flex">
-						<ReactSVG path={ICONS.TAB_SUMMARY} wrapperClassName="app-bar-account-list-icon" />
-						{STRINGS.ACCOUNTS.TAB_SUMMARY}
-					</div>
-					<div className="app-bar-account-menu-list d-flex">
-						<ReactSVG path={ICONS.TAB_WALLET} wrapperClassName="app-bar-account-list-icon" />
-						{STRINGS.ACCOUNTS.TAB_WALLET}
-					</div>
-					<div className={classnames('app-bar-account-menu-list d-flex', { 'notification': true })}>
-						<div className="app-bar-account-list-notification">1</div>
-						<ReactSVG path={ICONS.TAB_SECURITY} wrapperClassName="app-bar-account-list-icon" />
-						{STRINGS.ACCOUNTS.TAB_SECURITY}
-					</div>
-					<div className={classnames('app-bar-account-menu-list d-flex', { 'notification': true })}>
-						<div className="app-bar-account-list-notification">2</div>
-						<ReactSVG path={ICONS.TAB_VERIFY} wrapperClassName="app-bar-account-list-icon" />
-						{STRINGS.ACCOUNTS.TAB_VERIFICATION}
-					</div>
-					<div className="app-bar-account-menu-list d-flex">
-						<ReactSVG path={ICONS.TAB_SETTING} wrapperClassName="app-bar-account-list-icon" />
-						{STRINGS.ACCOUNTS.TAB_SETTINGS}
-					</div>
-					<div className="app-bar-account-menu-list d-flex">
-						<ReactSVG path={ICONS.TAB_API} wrapperClassName="app-bar-account-list-icon" />
-						{STRINGS.ACCOUNTS.TAB_API}
-					</div>
-					<div className="app-bar-account-menu-list d-flex">
-						<ReactSVG path={ICONS.TAB_SIGNOUT} wrapperClassName="app-bar-account-list-icon" />
-						{STRINGS.ACCOUNTS.TAB_SIGNOUT}
-					</div>
-				</div>}
+				{isAccountMenu && <MenuList selectedMenu={selectedMenu} handleMenu={this.handleMenu} logout={logout} />}
 			</div>
 		);
 	}
