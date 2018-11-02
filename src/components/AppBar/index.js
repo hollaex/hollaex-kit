@@ -191,7 +191,7 @@ class AppBar extends Component {
 					{this.renderIcon(isHome, theme)}
 					<div className="d-flex ml-2 mr-2">
 						{!isHome
-							? <Link to="/quick-trade/btc-eth">
+							? <Link to="/quick-trade/btc-eur">
 								<div className='app_bar-quicktrade d-flex'>
 									<ReactSVG path={ICONS.QUICK_TRADE_TAB} wrapperClassName="quicktrade_icon" />
 									{STRINGS.QUICK_TRADE}
