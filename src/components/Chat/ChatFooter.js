@@ -5,13 +5,16 @@ import { ChatMessageBox } from '../';
 export const ChatFooter = ({
 	sendMessage,
 	setChatBoxRef,
-	chatWrapperInitialized
+	chatWrapperInitialized,
+	usernameIsSet
 }) => (
 	<div
-		className={classnames('d-flex', 'justify-content-center', 'chat-footer')}
+		className={usernameIsSet ? classnames('d-flex', 'justify-content-center', 'chat-footer'):
+		classnames('d-flex', 'justify-content-center', 'chat-footer', 'chat-username-footer')
+		}
 	>
 		{chatWrapperInitialized && (
-			<ChatMessageBox sendMessage={sendMessage} setChatBoxRef={setChatBoxRef} />
+			<ChatMessageBox usernameIsSet={usernameIsSet} sendMessage={sendMessage} setChatBoxRef={setChatBoxRef} />
 		)}
 	</div>
 );

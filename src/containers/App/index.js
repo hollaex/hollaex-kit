@@ -21,7 +21,8 @@ import {
 	setOrderbooks,
 	setTrades,
 	setOrderbook,
-	addTrades
+	addTrades,
+	setPairsData
 } from '../../actions/orderbookAction';
 import {
 	setTickers,
@@ -35,6 +36,7 @@ import {
 	changeTheme,
 	closeAllNotification,
 	setChatUnreadMessages,
+	setOrderLimits,
 	NOTIFICATIONS,
 	CONTACT_FORM,
 	HELPFUL_RESOURCES_FORM
@@ -179,6 +181,23 @@ class Container extends Component {
 				this.props.changePair(pair);
 			}
 			this.props.setPairs(data.pairs);
+			this.props.setPairsData(data.pairs);
+			const orderLimits = {};
+			Object.keys(data.pairs).map((pair, index) => {
+				orderLimits[pair] = {
+					PRICE: {
+						MIN: data.pairs[pair].min_price,
+						MAX: data.pairs[pair].max_price,
+						STEP: data.pairs[pair].tick_size
+					},
+					SIZE: {
+						MIN: data.pairs[pair].min_size,
+						MAX: data.pairs[pair].max_size,
+						STEP: data.pairs[pair].tick_size
+					}
+				}
+			});
+			this.props.setOrderLimits(orderLimits);
 		});
 
 		publicSocket.on('orderbook', (data) => {
@@ -502,7 +521,9 @@ class Container extends Component {
 			pairsTrades,
 			pair
 		} = this.props;
-		return (Object.keys(orderbooks).length && orderbooks[pair] && Object.keys(orderbooks[pair]).length && 
+		// return (Object.keys(orderbooks).length && orderbooks[pair] && Object.keys(orderbooks[pair]).length && 
+		// 	Object.keys(pairsTrades).length);
+		return (Object.keys(orderbooks).length && orderbooks[pair] &&
 			Object.keys(pairsTrades).length);
 	}
 
@@ -671,11 +692,13 @@ const mapDispatchToProps = (dispatch) => ({
 	changeLanguage: bindActionCreators(setLanguage, dispatch),
 	changePair: bindActionCreators(changePair, dispatch),
 	setPairs: bindActionCreators(setPairs, dispatch),
+	setPairsData: bindActionCreators(setPairsData, dispatch),
 	setOrderbooks: bindActionCreators(setOrderbooks, dispatch),
 	setTrades: bindActionCreators(setTrades, dispatch),
 	setTickers: bindActionCreators(setTickers, dispatch),
 	changeTheme: bindActionCreators(changeTheme, dispatch),
-	setChatUnreadMessages: bindActionCreators(setChatUnreadMessages, dispatch)
+	setChatUnreadMessages: bindActionCreators(setChatUnreadMessages, dispatch),
+	setOrderLimits: bindActionCreators(setOrderLimits, dispatch)
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Container);

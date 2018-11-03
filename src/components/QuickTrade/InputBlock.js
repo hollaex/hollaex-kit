@@ -7,7 +7,7 @@ import { CurrencyBall } from '../../components';
 
 import { minValue, maxValue } from '../../components/Form/validations';
 import { FieldError } from '../../components/Form/FormFields/FieldWrapper';
-import { FLEX_CENTER_CLASSES, ORDER_LIMITS, DEFAULT_PAIR } from '../../config/constants';
+import { FLEX_CENTER_CLASSES, DEFAULT_PAIR } from '../../config/constants';
 
 import STRINGS from '../../config/localizedStrings';
 
@@ -60,28 +60,30 @@ class InputBlock extends Component {
 	};
 
 	onLostFocus = () => {
+		const { orderLimits } = this.props;
 		const { value } = this.state;
-		if (!value || value < ORDER_LIMITS[this.state.symbol].SIZE.MIN) {
-			this.setState({ value: ORDER_LIMITS[this.state.symbol].SIZE.MIN });
-		} else if (value > ORDER_LIMITS[this.state.symbol].SIZE.MAX) {
-			this.setState({ value: ORDER_LIMITS[this.state.symbol].SIZE.MAX });
+		if (!value || value < orderLimits[this.state.symbol].SIZE.MIN) {
+			this.setState({ value: orderLimits[this.state.symbol].SIZE.MIN });
+		} else if (value > orderLimits[this.state.symbol].SIZE.MAX) {
+			this.setState({ value: orderLimits[this.state.symbol].SIZE.MAX });
 		} else {
 			this.setState({ value: math.round(value, DECIMALS) });
 		}
 	};
 
 	renderErrorMessage = (value) => {
+		const { orderLimits } = this.props;
 		let error = '';
 		if (!value) {
 			error = '';
 		} else {
-			error = minValue(ORDER_LIMITS[this.state.symbol].SIZE.MIN)(value) || maxValue(ORDER_LIMITS[this.state.symbol].SIZE.MAX)(value);
+			error = minValue(orderLimits[this.state.symbol].SIZE.MIN)(value) || maxValue(orderLimits[this.state.symbol].SIZE.MAX)(value);
 		}
 		return error;
 	};
 
 	render() {
-		const { text, className, error } = this.props;
+		const { text, className, error, orderLimits } = this.props;
 		const { value, errorValue, symbol } = this.state;
 		const shortName = STRINGS[`${symbol.toUpperCase()}_SHORTNAME`];
 		const errorMessage = this.renderErrorMessage(errorValue) || error;
@@ -125,10 +127,10 @@ class InputBlock extends Component {
 							className="input_block-inputbox"
 							onChange={this.onChangeEvent}
 							placeholder={PLACEHOLDER}
-							step={ORDER_LIMITS[this.state.symbol].SIZE.STEP}
+							step={orderLimits[this.state.symbol].SIZE.STEP}
 							value={value}
-							min={ORDER_LIMITS[this.state.symbol].SIZE.MIN}
-							max={ORDER_LIMITS[this.state.symbol].SIZE.MAX}
+							min={orderLimits[this.state.symbol].SIZE.MIN}
+							max={orderLimits[this.state.symbol].SIZE.MAX}
 							style={generateStyle(value || PLACEHOLDER)}
 							onBlur={this.onLostFocus}
 						/>

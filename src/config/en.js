@@ -20,6 +20,13 @@ export default {
 	ETH_CURRENCY_SYMBOL: 'ETH',
 	ETH_PRICE_FORMAT: '{0} {1}', // 0-> amount  1 -> symbol  6.00245 ETH
 
+	// TODO: Added for new BCH coin and need to be approved
+	BCH_NAME: 'Bitcoin Cash',
+	BCH_FULLNAME: 'BitcoinCash',
+	BCH_SHORTNAME: 'BCH',
+	BCH_CURRENCY_SYMBOL: 'BCH',
+	BCH_PRICE_FORMAT: '{0} {1}',
+
 	ACTIVE_TRADES: 'You must {0} to access your active trades',
 	CANCEL_FIAT_WITHDRAWAL: 'Cancel {0} Withdrawal',
 	CANCEL_WITHDRAWAL: 'Cancel Withdrawal',
@@ -132,7 +139,8 @@ export default {
 	DEPOSIT: {
 		CRYPTO_LABELS: {
 			BTC: 'Your Bitcoin receiving address',
-			ETH: 'Your Ethereum receiving address'
+			ETH: 'Your Ethereum receiving address',
+			BCH: 'Your Bitcoin Cash receiving address'
 		},
 		INFORMATION_MESSAGES: [
 			'Use the bank details below to deposit USD in to your account. Transfers usally take up to 1-2 business day.',
@@ -230,7 +238,7 @@ export default {
 				INFORMATION_PENDING_1:
 					'Your {0} require 1 confirmations before you can begin trading.',
 				INFORMATION_PENDING_2:
-					'This may take 10-30 minutes. We will send an email once your {0} have completed Confirming.'
+					'This may take 10-30 minutes. We will send an email once your {0} is confirmed on the blockchain.'
 			},
 			ETH: {
 				TITLE_RECEIVED: '{0} Deposit received',
@@ -240,8 +248,18 @@ export default {
 				INFORMATION_PENDING_1:
 					'Your {0} require 1 confirmations before you can begin trading.',
 				INFORMATION_PENDING_2:
-					'This may take 10-30 minutes. We will send an email once your {0} have completed Confirming.'
-			}
+					'This may take 10-30 minutes. We will send an email once your {0} is confirmed on the blockchain.'
+			},
+			BCH: {
+				TITLE_RECEIVED: '{0} Deposit received',
+				TITLE_INCOMING: 'Incoming {0}',
+				SUBTITLE_RECEIVED: 'You’ve received your {0} deposit',
+				SUBTITLE_INCOMING: 'You have incoming {0}',
+				INFORMATION_PENDING_1:
+					'Your {0} requires 2 confirmations before you can begin trading.',
+				INFORMATION_PENDING_2:
+					'This may take 10-30 minutes. We will send an email once your {0} is confirmed on the blockchain.'
+			},
 		}
 	},
 	OTP_FORM: {
@@ -694,7 +712,15 @@ export default {
 			'You can only withdraw to a bank account in a name that matches the name registered with your HOLLAEX account.',
 		FIAT_MESSAGE_2: 'Withdrawal min amount',
 		FIAT_MESSAGE_3: 'Daily withdrawal max amount',
-		FIAT_INCREASE_LIMIT: 'Increase your daily limit'
+		FIAT_INCREASE_LIMIT: 'Increase your daily limit',
+		CONFIRM_VIA_EMAIL: 'Confirm via Email',
+		CONFIRM_VIA_EMAIL_1: 'We have sent you a confirmation withdrawal email.',
+		CONFIRM_VIA_EMAIL_2: 'In order to complete the withdrawal process please confirm',
+		CONFIRM_VIA_EMAIL_3: 'the withdrawal via your email within 5 minutes.',
+		WITHDRAW_CONFIRM_SUCCESS_1: 'Your withdrawal is confirmed and sent.',
+		WITHDRAW_CONFIRM_SUCCESS_2: 'If you’d like to view your withdrawal please visit your withdrawal history page.',
+		GO_WITHDRAWAL_HISTORY: 'Go To Withdrawal History'
+
 	},
 	WALLET_BUTTON_FIAT_DEPOSIT: 'deposit',
 	WALLET_BUTTON_FIAT_WITHDRAW: 'withdraw',

@@ -1,6 +1,7 @@
 import React from 'react';
 import math from 'mathjs';
-import { ICONS, PAIRS, CURRENCIES } from '../../config/constants';
+import { connect } from 'react-redux';
+import { ICONS, CURRENCIES } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 import {
 	NotificationWraper,
@@ -54,8 +55,8 @@ const calculateValues = (data = [], pair) => {
 	};
 };
 
-const TradeDisplay = ({ side, data, ...rest }) => {
-	const pair = PAIRS[data[0].symbol];
+const TradeDisplay = ({ side, data, pairs, ...rest }) => {
+	const pair = pairs[data[0].symbol];
 	const basePair = pair.pair_base.toUpperCase();
 	const payPair = pair.pair_2.toUpperCase();
 
@@ -94,7 +95,7 @@ const TradeDisplay = ({ side, data, ...rest }) => {
 	);
 };
 
-const TradeNotification = ({ data: { order, data } }) => {
+const TradeNotification = ({ data: { order, data }, pairs }) => {
 	const { side, type } = order;
 	const notificationProps = getTitleAndIcon(side, type);
 
@@ -104,9 +105,13 @@ const TradeNotification = ({ data: { order, data } }) => {
 			className="trade-notification"
 			compressOnMobile={true}
 		>
-			<TradeDisplay side={side} data={data} />
+			<TradeDisplay side={side} data={data} pairs={pairs} />
 		</NotificationWraper>
 	);
 };
 
-export default TradeNotification;
+const mapStateToProps = state => ({
+	pairs: state.app.pairs
+});
+
+export default connect(mapStateToProps)(TradeNotification);

@@ -19,7 +19,8 @@ const MobileOrders = ({
 	pairData,
 	userTrades,
 	activeTheme,
-	isLoggedIn
+	isLoggedIn,
+	pairs
 }) => (
 	<div
 		className={classnames(
@@ -86,6 +87,7 @@ const MobileOrders = ({
 				pair={pair}
 				pairData={pairData}
 				lessHeaders={true}
+				pairs={pairs}
 			/>:
 			<div className='text-center'>
 				<IconTitle

@@ -63,7 +63,7 @@ class TradeBlockTabs extends Component {
 			<div className="d-flex flex-column f-1 trade_block-column-wrapper">
 				{content.map(({ title, titleAction, children }, index) => (
 					<TradeBlock title={title} action={titleAction} key={index}>
-						{children}
+						{React.cloneElement(children, { ...this.props, height: this.state.height })}
 					</TradeBlock>
 				))}
 			</div>

@@ -143,7 +143,9 @@ class Trade extends Component {
 			marketPrice,
 			activeLanguage,
 			activeTheme,
-			settings
+			settings,
+			orderLimits,
+			pairs
 		} = this.props;
 		const { chartHeight, chartWidth, symbol, activeTab, isLogged } = this.state;
 
@@ -186,7 +188,7 @@ class Trade extends Component {
 				title: STRINGS.TRADES,
 				children:   (
 					isLoggedIn() ?
-						<UserTrades trades={userTrades} pair={pair} pairData={pairData} /> :
+						<UserTrades trades={userTrades} pair={pair} pairData={pairData} pairs={pairs} /> :
 					<div className='text-center'>
 						<IconTitle
 							iconPath={activeTheme ==='dark' ? ICONS.TRADE_HISTORY_DARK: ICONS.TRADE_HISTORY_LIGHT }
@@ -239,6 +241,7 @@ class Trade extends Component {
 						activeTheme={activeTheme}
 						symbol={symbol}
 						goToPair={this.goToPair}
+						orderLimits={orderLimits}
 					/>
 				)
 			},
@@ -272,6 +275,7 @@ class Trade extends Component {
 						goToTransactionsHistory={this.goToTransactionsHistory}
 						pair={pair}
 						pairData={pairData}
+						pairs={pairs}
 						userTrades={userTrades}
 						activeTheme={activeTheme}
 					/>
@@ -358,6 +362,7 @@ class Trade extends Component {
 												theme={activeTheme}
 												pair={pair}
 												pairBase={pairData.pair_base}
+												orderLimits={orderLimits}
 											/>
 										)}
 								</TradeBlock>
@@ -399,7 +404,7 @@ const mapStateToProps = (store) => {
 	const pairData = store.app.pairs[pair];
 	const { asks, bids } = store.orderbook.pairsOrderbooks[pair];
 	const tradeHistory = store.orderbook.pairsTrades[pair];
-	const marketPrice = tradeHistory.length > 0 ? tradeHistory[0].price : 1;
+	const marketPrice = tradeHistory && tradeHistory.length > 0 ? tradeHistory[0].price : 1;
 	const userTrades = store.wallet.latestUserTrades.filter(
 		({ symbol }) => symbol === pair
 	);
@@ -410,6 +415,7 @@ const mapStateToProps = (store) => {
 	return {
 		pair,
 		pairData,
+		pairs: store.app.pairs,
 		balance: store.user.balance,
 		orderbookReady: true,
 		tradeHistory,
@@ -421,7 +427,8 @@ const mapStateToProps = (store) => {
 		activeLanguage: store.app.language,
 		activeTheme: store.app.theme,
 		fees,
-		settings: store.user.settings
+		settings: store.user.settings,
+		orderLimits: store.app.orderLimits
 	};
 };
 

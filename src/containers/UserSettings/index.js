@@ -74,6 +74,7 @@ class UserSettings extends Component {
 				this.props.setUserData(data);
 				this.props.changeLanguage(data.settings.language);
 				this.props.changeTheme(data.settings.theme);
+				localStorage.setItem("theme", data.settings.theme);
 			})
 			.catch((err) => {
 				// console.log(err.response.data);

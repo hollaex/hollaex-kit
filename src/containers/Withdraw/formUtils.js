@@ -20,6 +20,8 @@ export const generateInitialValues = (symbol, fees = {}) => {
 		initialValues.fee = fees.optimal || fees.min;
 	} else if (symbol === 'eth') {
 		initialValues.fee = WITHDRAW_LIMITS.eth.MIN_FEE;
+	} else if (symbol === 'bch') {
+		initialValues.fee = fees.optimal || fees.min;
 	} else {
 		initialValues.fee = fees.value || 0;
 	}
@@ -92,7 +94,7 @@ export const generateFormValues = (
 		}
 	};
 
-	if (symbol === 'btc') {
+	if (symbol === 'btc' || symbol === 'bch') {
 		fields.fee = {
 			type: 'editable',
 			inputType: 'number',

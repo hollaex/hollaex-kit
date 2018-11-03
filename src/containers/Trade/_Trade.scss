@@ -1,9 +1,9 @@
-$trade-bids-color-main: blue;
-$trade-bids-color-font: blue;
-$trade-bids-color-disabled: rgba(0, 0, 255, 0.4);
-$trade-asks-color-main: $colors-currencies-btc;
-$trade-asks-color-font: $colors-currencies-btc;
-$trade-asks-color-disabled: rgba(247, 148, 30, 0.4);
+$trade-bids-color-main: green;
+$trade-bids-color-font: green;
+$trade-bids-color-disabled: rgba(19, 136, 15, 0.356);
+$trade-asks-color-main: $colors-orderbook-red-light;
+$trade-asks-color-font: $colors-orderbook-red-light;
+$trade-asks-color-disabled: rgba(248, 7, 67, 0.4);
 
 $font-color--disabled: grey;
 $font-color--acitve: black;
@@ -49,6 +49,10 @@ $order_entry-column--width: 15rem;
 	.trade_active_orders-wrapper {
 		max-height: 35vh !important;
 	}
+}
+
+.trade_active-lg-view {
+	max-height: 14vh;
 }
 
 .trade_active_orders-wrapper {

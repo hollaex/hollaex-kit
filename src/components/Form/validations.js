@@ -1,6 +1,8 @@
 import validator from 'validator';
 import WAValidator from 'wallet-address-validator';
+import BAValidator from 'bitcoin-address-validation';
 import math from 'mathjs';
+import bchaddr from 'bchaddrjs';
 import { NETWORK } from '../../config/constants';
 import { roundNumber } from '../../utils/currency';
 import STRINGS from '../../config/localizedStrings';
@@ -37,7 +39,31 @@ export const username = (value = '') =>
 export const validAddress = (symbol = '', message) => {
 	const currency = symbol.toUpperCase();
 	return (address) => {
-		const valid = WAValidator.validate(address, currency, NETWORK);
+		let valid = WAValidator.validate(address, currency, NETWORK);
+		// in case of bitcoin cash new addresses and new bitcoin addresses
+		if (!valid) {
+			console.log(currency);
+			switch (currency) {
+				// case 'BTC':
+				// 	address = BAValidator(address).address;
+				// 	console.log(address)
+				// 	if (address) {
+				// 		valid = true;
+				// 	}
+				// 	break;
+				case 'BCH':
+					try {
+						bchaddr.toLegacyAddress(address);
+						valid = true;
+					}
+					catch (err) {
+						valid = false;
+					}
+					break;
+				default:
+					break;
+			};
+		}
 		return !valid
 			? message ||
 					STRINGS.formatString(

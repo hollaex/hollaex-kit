@@ -16,7 +16,7 @@
 		.single-currency {
 			position: relative;
 			justify-content: center;
-			min-width: 7rem;
+			min-width: 15rem;
 			padding: 0 1rem;
 			border-left: 1px solid;
 			border-right: 1px solid;
@@ -117,6 +117,11 @@
 		}
 		.markets-list {
 			background-color: #353740;
+		}
+		svg {
+			.bch-icon-nav {
+				fill: $dark-font-main-text-color
+			}
 		}
 	}
 }

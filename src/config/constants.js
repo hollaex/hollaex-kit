@@ -39,6 +39,8 @@ export const ICONS = {
 	LAPTOP_COLOR: `${process.env.PUBLIC_URL}/assets/icons/compute-play-color.svg`,
 	TELEGRAM: `${process.env.PUBLIC_URL}/assets/icons/telegram-black.svg`,
 	TELEGRAM_COLOR: `${process.env.PUBLIC_URL}/assets/icons/telegram-color.svg`,
+	BCH_ICON: `${process.env.PUBLIC_URL}/assets/icons/bch-icon.svg`,
+	BCH_NAV_ICON: `${process.env.PUBLIC_URL}/assets/icons/bch-icon-nav.svg`,
 	CHECK: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-06.svg`,
 	BLUE_QUESTION: `${
 		process.env.PUBLIC_URL
@@ -268,7 +270,8 @@ export const ICONS = {
 	DOTTED_GRIP: `${
 		process.env.PUBLIC_URL
 	}/assets/images/dotted-grip-chat-repeat-pattern.svg`,
-	CHAT: `${process.env.PUBLIC_URL}/assets/images/chat-icon.svg`
+	CHAT: `${process.env.PUBLIC_URL}/assets/images/chat-icon.svg`,
+	WITHDRAW_MAIL_CONFIRMATION: `${process.env.PUBLIC_URL}/assets/images/withdraw-mail-confirmation.svg`
 };
 
 export const SOCIAL_ICONS = {
@@ -317,6 +320,15 @@ export const CURRENCIES = {
 		formatToCurrency: formatEthAmount,
 		formatToCurrencyFull: formatEthFullAmount,
 	},
+	bch: {
+		symbol: 'bch',
+		name: STRINGS.BCH_NAME,
+		fullName: STRINGS.BCH_FULLNAME,
+		shortName: STRINGS.BCH_SHORTNAME,
+		currencySymbol: 'B',
+		formatToCurrency: formatBtcAmount,
+		formatToCurrencyFull: formatBtcFullAmount,
+	},
 	fiat: {
 		symbol: 'fiat',
 		name: STRINGS.FIAT_NAME,
@@ -328,7 +340,8 @@ export const CURRENCIES = {
 	}
 };
 
-export const PAIRS = {
+// TODO: to be removed after testing
+/* export const PAIRS = {
 	'btc-eur': {
 		pair_base: 'btc',
 		pair_2: 'fiat'
@@ -340,8 +353,16 @@ export const PAIRS = {
 	'eth-btc': {
 		pair_base: 'eth',
 		pair_2: 'btc'
-	}
-};
+	},
+	'bch-btc': {
+		pair_base: 'bch',
+		pair_2: 'btc'
+	},
+	'bch-eur': {
+		pair_base: 'bch',
+		pair_2: 'fiat'
+	},
+}; */
 
 export const DEFAULT_PAIR = 'btc-eur';
 
@@ -377,7 +398,12 @@ export const WITHDRAW_LIMITS = {
 		MAX: process.env.REACT_APP_WITHDRAWAL_ETH_MAX || 10,
 		STEP: process.env.REACT_APP_WITHDRAWAL_ETH_STEP || 0.0001,
 		MIN_FEE: parseFloat(process.env.REACT_APP_ETH_MIN_FEE || 0.001)
-	}
+	},
+	bch: {
+		MIN: process.env.REACT_APP_WITHDRAWAL_BCH_MIN || 0.001,
+		MAX: process.env.REACT_APP_WITHDRAWAL_BCH_MAX || 10,
+		STEP: process.env.REACT_APP_WITHDRAWAL_BCH_STEP || 0.001
+	},
 };
 
 export const TOKEN_KEY = `${ENV}_${NETWORK}_TOKEN`;
@@ -406,6 +432,11 @@ export const ETHEREUM_ENDPOINT = `https://${
 	NETWORK === 'testnet' ? 'ropsten.etherscan.io' : 'etherscan.io'
 }/tx/`;
 
+export const BITCOINCOM_ENDPOINT = 
+	NETWORK === 'testnet' ? 
+	`https://www.blocktrail.com/tBCC/tx/` :
+	'https://explorer.bitcoin.com/bch/tx/';
+
 export const BALANCE_ERROR = 'Insufficient balance to perform the order';
 
 export const CAPTCHA_SITEKEY = process.env.REACT_APP_CAPTCHA_SITE_KEY;
@@ -426,52 +457,13 @@ export const MIN_LEVEL_FOR_TOKENS = parseInt(
 	process.env.REACT_APP_MIN_LEVEL_FOR_TOKENS || 2,
 	10
 );
-
+const THEME_COLOR=localStorage.getItem("theme")
 export const THEMES = ['dark', 'white'];
-export const THEME_DEFAULT = THEMES[1];
+export const THEME_DEFAULT = THEME_COLOR!=='' ? THEME_COLOR : THEMES[1];
 export const CHAT_STATUS_KEY = 'chat:minimized';
 
 export const DEFAULT_COUNTRY = process.env.REACT_APP_DEFAULT_COUNTRY
 	? process.env.REACT_APP_DEFAULT_COUNTRY.toUpperCase()
 	: 'FR';
-
-export const ORDER_LIMITS = {
-	'btc-eur': {
-		PRICE: {
-			MIN: 500,
-			MAX: 50000,
-			STEP: 1
-		},
-		SIZE: {
-			MIN: 0.0001,
-			MAX: 21000000,
-			STEP: 0.0001
-		}
-	},
-	'eth-eur': {
-		PRICE: {
-			MIN: 10,
-			MAX: 10000,
-			STEP: 1
-		},
-		SIZE: {
-			MIN: 0.001,
-			MAX: 20000000,
-			STEP: 0.001
-		}
-	},
-	'eth-btc': {
-		PRICE: {
-			MIN: 0.0001,
-			MAX: 10,
-			STEP: 0.00001
-		},
-		SIZE: {
-			MIN: 0.001,
-			MAX: 20000000,
-			STEP: 0.001
-		}
-	}
-};
 
 export const BASE_CURRENCY = process.env.REACT_APP_BASE_CURRENCY;

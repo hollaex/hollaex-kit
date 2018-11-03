@@ -30,9 +30,10 @@ const ENDPOINTS = {
 	WITHDRAWALS: '/user/withdrawals',
 	DEPOSIT_BANK: '/user/deposit/bank',
 	WITHDRAW_BANK: '/user/withdraw/bank',
-	WITHDRAW: (currency) => `/user/withdraw/${currency}`,
+	WITHDRAW: (currency) => `/user/request-withdrawal`,
 	WITHDRAW_FEE: (currency) => `/user/withdraw/${currency}/fee`,
-	CANCEL_WITHDRAWAL: '/user/withdrawals'
+	CANCEL_WITHDRAWAL: '/user/withdrawals',
+	CONFIRM_WITHDRAWAL: '/user/confirm-withdrawal'
 };
 
 export const performWithdraw = (currency, values) => {
@@ -176,4 +177,8 @@ export const getUserWithdrawals = ({ limit = 100, page = 1, ...rest }) => {
 				});
 			});
 	};
+};
+
+export const performConfirmWithdrawal = (token) => {
+	return axios.post(ENDPOINTS.CONFIRM_WITHDRAWAL, { token });
 };

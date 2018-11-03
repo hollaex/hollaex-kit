@@ -6,10 +6,10 @@ import {
 	generateLessTradeHeaders
 } from '../../TransactionsHistory/utils';
 
-const ActiveOrders = ({ trades, pairData, pair, lessHeaders }) => {
+const ActiveOrders = ({ trades, pairData, pair, pairs, lessHeaders }) => {
 	const headers = lessHeaders
-		? generateLessTradeHeaders(pairData.pair_base)
-		: generateTradeHeaders(pairData.pair_base);
+		? generateLessTradeHeaders(pairData.pair_base, pairs)
+		: generateTradeHeaders(pairData.pair_base, pairs);
 	if (!pair) {
 		return <div />;
 	}
@@ -29,6 +29,7 @@ const ActiveOrders = ({ trades, pairData, pair, lessHeaders }) => {
 ActiveOrders.defaultProps = {
 	trades: [],
 	pair: '',
-	pairData: {}
+	pairData: {},
+	pairs: {}
 };
 export default ActiveOrders;

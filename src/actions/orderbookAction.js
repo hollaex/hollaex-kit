@@ -151,3 +151,10 @@ export const executeQuote = (token) => {
 			});
 	};
 };
+
+export const setPairsData = (pairs) => ({
+	type: 'SET_PAIRS_DATA',
+	payload: {
+		pairs
+	}
+});

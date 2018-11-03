@@ -1,4 +1,4 @@
-import { BASE_CURRENCY, PAIRS } from '../config/constants';
+import { BASE_CURRENCY } from '../config/constants';
 import { ORDERBOOK_CONSTANTS } from '../actions/orderbookAction';
 
 const INITIAL_QUICK_TRADE = {
@@ -52,7 +52,8 @@ const INITIAL_STATE = {
 	quickTrade: INITIAL_QUICK_TRADE,
 	quoteData: INITIAL_QUOTE,
 	pairsOrderbooks: {},
-	pairsTrades: {}
+	pairsTrades: {},
+	pairs: {}
 };
 
 export default function reducer(state = INITIAL_STATE, { payload, type }) {
@@ -257,7 +258,7 @@ export default function reducer(state = INITIAL_STATE, { payload, type }) {
 
 		case 'SET_TRADES_DATA': {
 			const { action, symbol, ...rest } = payload;
-			const { prices } = state;
+			const { prices, pairs } = state;
 			let pairsTrades = {};
 			if (action === 'partial') {
 				pairsTrades = {
@@ -267,8 +268,8 @@ export default function reducer(state = INITIAL_STATE, { payload, type }) {
 				Object.keys(rest).forEach((key) => {
 					if (rest[key].length > 0) {
 						let keyPrice = '';
-						if (PAIRS[key] && PAIRS[key].pair_2 === BASE_CURRENCY) {
-							keyPrice = PAIRS[key].pair_base;
+						if (pairs[key] && pairs[key].pair_2 === BASE_CURRENCY) {
+							keyPrice = pairs[key].pair_base;
 						}
 						prices[keyPrice] = rest[key][0].price;
 					}
@@ -282,8 +283,8 @@ export default function reducer(state = INITIAL_STATE, { payload, type }) {
 				);
 
 				let keyPrice = '';
-				if (PAIRS[symbol] && PAIRS[symbol].pair_2 === BASE_CURRENCY) {
-					keyPrice = PAIRS[symbol].pair_base;
+				if (pairs[symbol] && pairs[symbol].pair_2 === BASE_CURRENCY) {
+					keyPrice = pairs[symbol].pair_base;
 				}
 
 				if (keyPrice) {
@@ -297,6 +298,11 @@ export default function reducer(state = INITIAL_STATE, { payload, type }) {
 				prices
 			};
 		}
+		case 'SET_PAIRS_DATA':
+			return {
+				...state,
+				pairs: payload.pairs
+			};
 		case 'LOGOUT':
 			return INITIAL_STATE;
 		default:

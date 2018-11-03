@@ -28,7 +28,8 @@ class MobileChart extends Component {
 			activeTheme,
 			tradeHistory,
 			activeLanguage,
-			goToPair
+			goToPair,
+			orderLimits
 		} = this.props;
 		const { chartHeight, chartWidth } = this.state;
 		return (
@@ -60,6 +61,7 @@ class MobileChart extends Component {
 								theme={activeTheme}
 								pair={pair}
 								pairBase={pairData.pair_base}
+								orderLimits={orderLimits}
 							/>
 						)}
 				</TradeBlock>

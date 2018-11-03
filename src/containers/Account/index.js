@@ -23,6 +23,9 @@ const getInitialTab = ({ name, path }) => {
 	} else if (path === 'settings') {
 		activeTab = 2;
 		activeDevelopers = true;
+	} else if (path === 'account/settings/username') {
+		activeTab = 2;
+		activeDevelopers = true;
 	}
 	return {
 		activeTab,
@@ -59,7 +62,7 @@ class Account extends Component {
 			this.updateTabs(nextProps, false);
 		} else if (nextProps.route.path !== this.props.route.path) {
 			this.updateTabs(nextProps, true);
-		}
+		} 
 	}
 
 	hasUserVerificationNotifications = (

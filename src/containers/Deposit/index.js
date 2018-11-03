@@ -68,7 +68,8 @@ class Deposit extends Component {
 	validateRoute = (currency, crypto_wallet) => {
 		if (
 			(currency === 'eth' && !crypto_wallet.ethereum) ||
-			(currency === 'btc' && !crypto_wallet.bitcoin)
+			(currency === 'btc' && !crypto_wallet.bitcoin) ||
+			(currency === 'bch' && !crypto_wallet.bitcoincash)
 		) {
 			this.props.router.push('/wallet');
 		} else if (currency) {
