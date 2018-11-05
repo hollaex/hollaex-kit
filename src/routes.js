@@ -29,7 +29,9 @@ import {
 	ResetPassword,
 	QuickTrade,
 	Verification,
-	Chat
+	Chat,
+	UserSettings,
+	WithdrawConfirmation
 } from './containers';
 
 import store from './store';
@@ -137,6 +139,7 @@ export default (
 		</Route>
 		<Route component={Container}>
 			<Route path="account" name="Account" component={Account} onEnter={requireAuth}/>
+			<Route path="account/settings/username" name="username" component={Account} />
 			<Route path="security" name="Security" component={Account} />
 			<Route path="developers" name="Developers" component={Account} />
 			<Route path="settings" name="Settings" component={Account} />
@@ -144,6 +147,7 @@ export default (
 			<Route path="wallet/:currency" name="Wallet" component={CurrencyWallet} onEnter={requireAuth}/>
 			<Route path="wallet/:currency/deposit" name="Deposit" component={Deposit} onEnter={requireAuth}/>
 			<Route path="wallet/:currency/withdraw" name="Withdraw" component={Withdraw} onEnter={requireAuth}/>
+			<Route path="confirm-withdraw/:token" name="ConfirmWithdraw" component={WithdrawConfirmation} onEnter={requireAuth}/>
 			<Route
 				path="transactions"
 				name="Transactions"

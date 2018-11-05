@@ -20,6 +20,7 @@ import { calculateFiatFee } from './utils';
 import STRINGS from '../../config/localizedStrings';
 
 import ReviewModalContent from './ReviewModalContent';
+import ReviewEmailContent from './ReviewEmailContent';
 
 export const FORM_NAME = 'WithdrawCryptocurrencyForm';
 
@@ -45,7 +46,9 @@ const validate = (values, props) => {
 class Form extends Component {
 	state = {
 		dialogIsOpen: false,
-		dialogOtpOpen: false
+		dialogOtpOpen: false,
+		dialogEmailOpen: false,
+		otp_code: ''
 	};
 
 	componentWillReceiveProps(nextProps) {
@@ -83,7 +86,7 @@ class Form extends Component {
 		if (ev && ev.preventDefault) {
 			ev.preventDefault();
 		}
-		this.setState({ dialogIsOpen: false, dialogOtpOpen: false });
+		this.setState({ dialogIsOpen: false, dialogOtpOpen: false, dialogEmailOpen: false });
 	};
 
 	onAcceptDialog = () => {
@@ -91,8 +94,25 @@ class Form extends Component {
 			this.setState({ dialogOtpOpen: true });
 		} else {
 			// this.onCloseDialog();
-			this.props.submit();
+			// this.props.submit();
+			const values = this.props.data;
+			return this.props
+				.onSubmit({
+					...values,
+					amount: math.eval(values.amount),
+					fee: values.fee ? math.eval(values.fee) : 0,
+				})
+				.then((response) => {
+					this.onCloseDialog();
+					this.setState({ dialogIsOpen: true, dialogEmailOpen: true });
+					return response;
+				})
 		}
+	};
+
+	onConfirmEmail = () => {
+		this.onCloseDialog();
+		this.props.router.push('/wallet');
 	};
 
 	onSubmitOtp = ({ otp_code = '' }) => {
@@ -106,6 +126,7 @@ class Form extends Component {
 			})
 			.then((response) => {
 				this.onCloseDialog();
+				this.setState({ dialogIsOpen: true, dialogEmailOpen: true });
 				this.props.onSubmitSuccess(
 					{ ...response.data, currency: this.props.currency },
 					this.props.dispatch
@@ -146,7 +167,7 @@ class Form extends Component {
 			currentPrice
 		} = this.props;
 
-		const { dialogIsOpen, dialogOtpOpen } = this.state;
+		const { dialogIsOpen, dialogOtpOpen, dialogEmailOpen } = this.state;
 
 		return (
 			<form onSubmit={handleSubmit}>
@@ -169,6 +190,9 @@ class Form extends Component {
 							onSubmit={this.onSubmitOtp}
 							onClickHelp={openContactForm}
 						/>
+					) : dialogEmailOpen ? (
+						<ReviewEmailContent
+							onConfirmEmail={this.onConfirmEmail} />
 					) : !submitting ? (
 						<ReviewModalContent
 							currency={currency}
@@ -177,7 +201,7 @@ class Form extends Component {
 							onClickAccept={this.onAcceptDialog}
 							onClickCancel={this.onCloseDialog}
 						/>
-					) : (
+						) : (
 						<Loader relative={true} background={false} />
 					)}
 				</Dialog>
@@ -191,7 +215,7 @@ const WithdrawForm = reduxForm({
 	onSubmitFail: setWithdrawNotificationError,
 	onSubmitSuccess: (data, dispatch) => {
 		dispatch(reset(FORM_NAME));
-		setWithdrawNotificationSuccess(data, dispatch);
+		// setWithdrawNotificationSuccess(data, dispatch);
 	},
 	enableReinitialize: true,
 	validate

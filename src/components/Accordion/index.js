@@ -13,11 +13,17 @@ class Accordion extends Component {
 		if (this.props.sections.length > 0) {
 			this.initialize(this.props.sections);
 		}
+		if(window.location.pathname ==='/account/settings/username') {
+			this.openSection(0, true)
+		}
 	}
 
 	componentWillReceiveProps(nextProps) {
 		if (!this.state.ready && nextProps.sections.length > 0) {
 			this.initialize(nextProps.sections);
+		}
+		if(window.location.pathname ==='/account/settings/username') {
+			this.openSection(0, true)
 		}
 	}
 

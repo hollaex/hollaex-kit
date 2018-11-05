@@ -79,6 +79,16 @@ $mobile-regular--font-size: 1.5rem;
 		min-width: 3.2rem;
 		text-align: right;
 	}
+	.chat-username-footer{
+		border-top: 1px solid gray;
+	}
+	.username-to-chat {
+		cursor: pointer;
+		padding: 0.7rem !important;
+		color:$colors-notifications-blue !important;
+		font-size: 1rem !important;
+		font-family: "Open Sans"!important;
+	}
 
 	.nondraggable {
 		height: calc(100% - 2.5rem);
@@ -313,7 +323,9 @@ $mobile-regular--font-size: 1.5rem;
 .dark-theme {
 	.chat-wrapper {
 		background-color: $chat-wrapper-dark--background-color;
-
+		.chat-username-footer{
+			border-top: 1px solid gray
+		}
 		.chat-message {
 			.message-content {
 				.message {
@@ -339,7 +351,14 @@ $mobile-regular--font-size: 1.5rem;
 				color: white;
 			}
 		}
-
+		.username-to-chat {
+			cursor: pointer;
+			padding: 0.7rem !important;
+			color:$colors-username-set-dark !important;
+			font-size: 1rem !important;
+			font-family: "Open Sans"!important;
+			
+		}
 		.chat-footer {
 			.chat-message-box {
 				background-color: $chat-message-box-dark--background-color;

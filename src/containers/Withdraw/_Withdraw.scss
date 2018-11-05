@@ -75,6 +75,12 @@ $content--margin: 2rem;
 		.check-send-btc-1 {
 			fill: $dark-button-active;
 		}
+		.email-confirmation {
+			fill: $dark-button-active;
+		}
+	}
+	.review_email-content {
+		border-color: $colors-main-black;
 	}
 }
 
@@ -140,5 +146,12 @@ $content--margin: 2rem;
 				}
 			}
 		}
+	}
+}
+
+.review_email-wrapper {
+	.review_email-content {
+		border-top: 1px solid;
+		padding: 1rem;
 	}
 }

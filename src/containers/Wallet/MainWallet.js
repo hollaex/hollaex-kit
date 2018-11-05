@@ -50,8 +50,8 @@ class Wallet extends Component {
 			nextProps.balance,
 			nextProps.prices,
 			this.state.isOpen,
-			this.props.wallets,
-			this.props.bankaccount
+			nextProps.wallets,
+			nextProps.bankaccount
 		);
 		if (
 			nextProps.addressRequest.success === true &&

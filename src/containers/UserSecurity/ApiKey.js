@@ -109,8 +109,6 @@ class ApiKey extends Component {
 					label="token-modal"
 					theme={activeTheme}
 					onCloseDialog={this.onCloseDialog}
-					shouldCloseOnOverlayClick={false}
-					showCloseText={false}
 				>
 					<ApiKeyModal
 						onCloseDialog={this.onCloseDialog}

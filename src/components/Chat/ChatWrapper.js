@@ -18,7 +18,8 @@ export const ChatWrapper = ({
 	unreadMessages,
 	userType,
 	removeMessage,
-	chatIsClosed
+	chatIsClosed,
+	usernameIsSet
 }) => {
 	const chatInitialized =
 		chatSocketInitialized && !chatSocketInitializing ? true : false;
@@ -59,6 +60,7 @@ export const ChatWrapper = ({
 						chatIsClosed={chatIsClosed}
 					/>
 					<ChatFooter
+						usernameIsSet={usernameIsSet}
 						chatWrapperInitialized={chatWrapperInitialized}
 						sendMessage={sendMessage}
 						setChatBoxRef={setChatBoxRef}

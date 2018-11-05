@@ -1,12 +1,14 @@
 {
 	"name": "hollaex",
-	"version": "1.11.0",
+	"version": "1.12.0",
 	"private": true,
 	"dependencies": {
 		"@material/button": "^0.7.0",
 		"awesome-phonenumber": "^2.2.3",
 		"axios": "^0.16.2",
 		"babel-polyfill": "^6.26.0",
+		"bchaddrjs": "^0.2.2",
+		"bitcoin-address-validation": "^0.1.2",
 		"classnames": "^2.2.5",
 		"country-data": "0.0.31",
 		"crypto": "0.0.3",

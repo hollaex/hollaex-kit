@@ -142,7 +142,7 @@ class QuickTradeContainer extends Component {
 	};
 
 	render() {
-		const { quoteData, pairData, activeTheme, quickTrade } = this.props;
+		const { quoteData, pairData, activeTheme, quickTrade, orderLimits, pairs } = this.props;
 		const { showQuickTradeModal, side, pair } = this.state;
 
 		if (!pair || pair !== this.props.pair || !pairData) {
@@ -173,6 +173,8 @@ class QuickTradeContainer extends Component {
 					disabled={
 						quoteData.error === BALANCE_ERROR ? true : !quoteData.token
 					}
+					orderLimits={orderLimits}
+					pairs={pairs}
 				/>
 				<Dialog
 					isOpen={!!end && showQuickTradeModal}
@@ -227,10 +229,12 @@ const mapStateToProps = (store) => {
 	return {
 		pair,
 		pairData,
+		pairs: store.app.pairs,
 		quoteData: store.orderbook.quoteData,
 		activeTheme,
 		activeLanguage: store.app.language,
-		quickTrade: store.orderbook.quickTrade
+		quickTrade: store.orderbook.quickTrade,
+		orderLimits: store.app.orderLimits
 	};
 };
 

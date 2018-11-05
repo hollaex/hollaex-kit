@@ -61,6 +61,11 @@ export const renderContent = (symbol, crypto_wallet = {}) => {
 				STRINGS.DEPOSIT.CRYPTO_LABELS.ETH,
 				crypto_wallet.ethereum
 			);
+		case 'bch':
+			return renderBTCContent(
+				STRINGS.DEPOSIT.CRYPTO_LABELS.BCH,
+				crypto_wallet.bitcoincash
+			);
 		case fiatSymbol:
 		default:
 			return <div>{STRINGS.DEPOSIT.NO_DATA}</div>;

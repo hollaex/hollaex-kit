@@ -43,7 +43,6 @@ const Form = ({
 }) => {
 	const fields = getFields(formValues, type);
 	const errorText = error || outsideFormError;
-
 	return (
 		<div className="trade_order_entry-form d-flex">
 			<form
