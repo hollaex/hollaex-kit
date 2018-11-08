@@ -9,16 +9,6 @@ const MenuList = ({ selectedMenu, handleMenu, logout }) => {
     return (
         <div className="app-bar-account-menu">
             <div 
-                className={classnames("d-flex app-bar-account-menu-list", { 'menu-active': selectedMenu === 'account' })}
-                onClick={() => handleMenu('account')}>
-                <div className="notification-content"></div>
-                <div className="app-bar-account-content mr-2">
-                    <ReactSVG path={ICONS.SIDEBAR_ACCOUNT_ACTIVE} wrapperClassName="app-bar-account-list-icon" />
-                    <div className="app-bar-account-menu-notification">2</div>
-                </div>
-                <div>{STRINGS.ACCOUNT_TEXT}</div>
-            </div>
-            <div 
                 className={classnames("app-bar-account-menu-list d-flex", { 'menu-active': selectedMenu === 'summary' })}
                 onClick={() => handleMenu('summary')}>
                 <div className="notification-content"></div>

@@ -73,45 +73,48 @@ class AppMenuBar extends Component {
     render() {
         const { activeMenu } = this.state;
         return (
-            <div className="app-menu-bar d-flex align-items-end justify-content-center title-font">
-                <div
-                    className={classnames("app-menu-bar-content d-flex", { 'active-menu': activeMenu === 'summary' })}
-                    onClick={() => this.handleMenuChange('summary')}>
-                    <ReactSVG path={ICONS.TAB_SUMMARY} wrapperClassName="app-menu-bar-icon" />
-                    {STRINGS.ACCOUNTS.TAB_SUMMARY}
+            <div className="d-flex justify-content-between">
+                <div className="app-menu-bar d-flex align-items-end justify-content-center title-font">
+                    <div
+                        className={classnames("app-menu-bar-content d-flex", { 'active-menu': activeMenu === 'summary' })}
+                        onClick={() => this.handleMenuChange('summary')}>
+                        <ReactSVG path={ICONS.TAB_SUMMARY} wrapperClassName="app-menu-bar-icon" />
+                        {STRINGS.ACCOUNTS.TAB_SUMMARY}
+                    </div>
+                    <div
+                        className={classnames("app-menu-bar-content d-flex", { 'active-menu': activeMenu === 'wallet' })}
+                        onClick={() => this.handleMenuChange('wallet')}>
+                        <ReactSVG path={ICONS.TAB_WALLET} wrapperClassName="app-menu-bar-icon" />
+                        {STRINGS.ACCOUNTS.TAB_WALLET}
+                    </div>
+                    <div
+                        className={classnames('app-menu-bar-content d-flex', { 'notification': true, 'active-menu': activeMenu === 'security' })}
+                        onClick={() => this.handleMenuChange('security')}>
+                        <div className="app-menu-bar-icon-notification">1</div>
+                        <ReactSVG path={ICONS.TAB_SECURITY} wrapperClassName="app-menu-bar-icon" />
+                        {STRINGS.ACCOUNTS.TAB_SECURITY}
+                    </div>
+                    <div
+                        className={classnames('app-menu-bar-content d-flex', { 'notification': true, 'active-menu': activeMenu === 'verification' })}
+                        onClick={() => this.handleMenuChange('verification')}>
+                        <div className="app-menu-bar-icon-notification">2</div>
+                        <ReactSVG path={ICONS.TAB_VERIFY} wrapperClassName="app-menu-bar-icon" />
+                        {STRINGS.ACCOUNTS.TAB_VERIFICATION}
+                    </div>
+                    <div
+                        className={classnames("app-menu-bar-content d-flex", { 'active-menu': activeMenu === 'settings' })}
+                        onClick={() => this.handleMenuChange('settings')}>
+                        <ReactSVG path={ICONS.TAB_SETTING} wrapperClassName="app-menu-bar-icon" />
+                        {STRINGS.ACCOUNTS.TAB_SETTINGS}
+                    </div>
+                    <div
+                        className={classnames("app-menu-bar-content d-flex", { 'active-menu': activeMenu === 'api' })}
+                        onClick={() => this.handleMenuChange('api')}>
+                        <ReactSVG path={ICONS.TAB_API} wrapperClassName="app-menu-bar-icon" />
+                        {STRINGS.ACCOUNTS.TAB_API}
+                    </div>
                 </div>
-                <div
-                    className={classnames("app-menu-bar-content d-flex", { 'active-menu': activeMenu === 'wallet' })}
-                    onClick={() => this.handleMenuChange('wallet')}>
-                    <ReactSVG path={ICONS.TAB_WALLET} wrapperClassName="app-menu-bar-icon" />
-                    {STRINGS.ACCOUNTS.TAB_WALLET}
-                </div>
-                <div
-                    className={classnames('app-menu-bar-content d-flex', { 'notification': true, 'active-menu': activeMenu === 'security' })}
-                    onClick={() => this.handleMenuChange('security')}>
-                    <div className="app-menu-bar-icon-notification">1</div>
-                    <ReactSVG path={ICONS.TAB_SECURITY} wrapperClassName="app-menu-bar-icon" />
-                    {STRINGS.ACCOUNTS.TAB_SECURITY}
-                </div>
-                <div
-                    className={classnames('app-menu-bar-content d-flex', { 'notification': true, 'active-menu': activeMenu === 'verification' })}
-                    onClick={() => this.handleMenuChange('verification')}>
-                    <div className="app-menu-bar-icon-notification">2</div>
-                    <ReactSVG path={ICONS.TAB_VERIFY} wrapperClassName="app-menu-bar-icon" />
-                    {STRINGS.ACCOUNTS.TAB_VERIFICATION}
-                </div>
-                <div
-                    className={classnames("app-menu-bar-content d-flex", { 'active-menu': activeMenu === 'settings' })}
-                    onClick={() => this.handleMenuChange('settings')}>
-                    <ReactSVG path={ICONS.TAB_SETTING} wrapperClassName="app-menu-bar-icon" />
-                    {STRINGS.ACCOUNTS.TAB_SETTINGS}
-                </div>
-                <div
-                    className={classnames("app-menu-bar-content d-flex", { 'active-menu': activeMenu === 'api' })}
-                    onClick={() => this.handleMenuChange('api')}>
-                    <ReactSVG path={ICONS.TAB_API} wrapperClassName="app-menu-bar-icon" />
-                    {STRINGS.ACCOUNTS.TAB_API}
-                </div>
+                <div className="app-menu-bar app-menu-bar-side"></div>
             </div>
         );
     }

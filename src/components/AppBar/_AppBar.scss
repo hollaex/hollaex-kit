@@ -4,7 +4,7 @@ $app-bar--pairs-color: #CCCBCA;
 $app-bar-tab-color-inactive: #808184;
 $app-bar--quicktrade-active-color: #fff100;
 $app-bar--quicktrade-inactive-color: #a08e24;
-$app-bar--arrow-size: 0.5rem;
+$app-bar--arrow-size: 0.4rem;
 $notification-size: 1.5rem;
 $app-menu-notification-size: 1.2rem;
 
@@ -110,6 +110,11 @@ $app-menu-notification-size: 1.2rem;
 	.app-bar-account {
 		color: $colors-white;
 		cursor: pointer;
+		margin-right: 2rem;
+	}
+
+	.app_bar-pair-font {
+		font-size: .8rem;
 	}
 
 	.app_bar-pair-content {
@@ -122,16 +127,51 @@ $app-menu-notification-size: 1.2rem;
 		font-weight: 400;
 		height: 100%;
 		padding: 0 .5rem;
+		position: relative;
+	}
+
+	.active-tab-pair {
+		background-color: $colors-white;
+		border-left: 1px solid $colors-white;
+		color: $colors-main-black;
+
+		svg {
+			.btc0 {
+				fill: $colors-main-black;
+			}
+			.btc1 {
+				fill: $colors-main-black;
+			}
+			.eth0 {
+				fill: $colors-main-black;
+			}
+			.eth1 {
+				fill: $colors-main-black;
+			}
+			.bch-icon {
+				fill: $colors-main-black;
+			}
+			.tab-close {
+				stroke: $colors-main-black;
+			}
+			.add {
+				stroke: $colors-main-black;
+			}
+			.st0 {
+				fill: $colors-main-black;
+				stroke-width: 0rem;
+			}
+		}
 	}
 
 	.app-bar-currency-icon {
 		margin: .5rem .3rem 0 .3rem;
-		width: 2rem;
+		width: 1.5rem;
 	}
 	
 	.app-bar-tab-close {
-		margin: .5rem .4rem 0 .4rem;
-		width: 1rem;
+		margin: .2rem .4rem 0 .4rem;
+		width: .8rem;
 	}
 
 	.app-bar-account-icon {
@@ -168,7 +208,6 @@ $app-menu-notification-size: 1.2rem;
 	}
 
 	.app_bar-currency-txt {
-		font-size: $font-size-main;
 		font-weight: 600;
 	}
 
@@ -221,18 +260,18 @@ $app-menu-notification-size: 1.2rem;
 		background-color: #fafafa;
 		z-index: 20;
 		padding: 1rem;
-		-webkit-box-shadow: 0px 6px 10px -1px rgba(0, 0, 0, 0.4);
-		-moz-box-shadow: 0px 6px 10px -1px rgba(0, 0, 0, 0.4);
-		box-shadow: 0px 6px 10px -1px rgba(0, 0, 0, 0.4);
+		-webkit-box-shadow: 0px 6px 10px 2px rgba(0, 0, 0, 0.4);
+		-moz-box-shadow: 0px 6px 10px 2px rgba(0, 0, 0, 0.4);
+		box-shadow: 0px 6px 10px 2px rgba(0, 0, 0, 0.4);
 
 		.app-bar-account-menu-list {
 			color: $app-bar-tab-color-inactive;
 			cursor: pointer;
-			padding: .5rem 0;
+			padding: .2rem 0;
 		}
 
 		.app-bar-account-list-icon {
-			margin: 0 .1rem;
+			margin-right: .4rem;
 			width: 1rem;
 		}
 		.app-bar-account-list-icon svg {
@@ -326,19 +365,19 @@ $app-menu-notification-size: 1.2rem;
 	border-bottom: 1px solid $app-menu-bar-border--color;
 	display: flex;
 	font-size: $navigation_bar-font_size;
-	height: $navigation_bar-height;
-	min-height: $navigation_bar-height;
+	height: $navigation_bar_secondary-height;
+	min-height: $navigation_bar_secondary-height;
 	position: relative;
 	width: 100%;
 
 	.app-menu-bar-content {
 		color: $app-bar-tab-color-inactive;
 		cursor: pointer;
-		padding: .7rem 3rem;
+		padding: .5rem 2rem;
 	}
 
 	.app-menu-bar-icon {
-		margin: 0 .1rem;
+		margin-right: .4rem;
 		width: 1rem;
 	}
 
@@ -386,6 +425,55 @@ $app-menu-notification-size: 1.2rem;
 		font-size: .8rem;
 		line-height: 1;
 		font-weight: bold;
+	}
+}
+
+.app-menu-bar-side {
+	min-width: $sidebar-width;
+	max-width: $sidebar-width;
+}
+
+.app-bar-add-tab-menu {
+	background-color: $dark-app-background-color;
+	color: $app-bar--pairs-color;
+	display: block;
+	min-width: 20rem;
+	min-height: 8rem;
+	position: absolute;
+	top: 36px;
+	z-index: 20;
+	-webkit-box-shadow: 0px 6px 10px 2px rgba(0, 0, 0, 0.4);
+	-moz-box-shadow: 0px 6px 10px 2px rgba(0, 0, 0, 0.4);
+	box-shadow: 0px 6px 10px 2px rgba(0, 0, 0, 0.4);
+
+	.app-bar-tab-menu-list {
+		background-color: $dark-app-background-color;
+		color: $app-bar--pairs-color;
+		padding: .5rem;
+		height: 2.5rem;
+	}
+
+	.active-tab {
+		background-color: #544343;
+		color: #fafafa;
+		font-weight: bold;
+	}
+
+	.app-bar-add-tab-content {
+		background-color: #544343;
+		color: $app-bar--pairs-color;
+		font-size: .8rem;
+		height: 20rem;
+		overflow-y: scroll;
+		padding: .3rem;
+	}
+
+	.app-bar-add-tab-content-list {
+	}
+
+	.app-bar-tab-setting {
+		margin: .2rem .4rem 0 .4rem;
+		width: 1rem;
 	}
 }
 

@@ -167,7 +167,8 @@ class AppBar extends Component {
 			verifyingToken,
 			isHome,
 			theme,
-			logout
+			logout,
+			router
 		} = this.props;
 		const { isAccountMenu, selectedMenu } = this.state;
 
@@ -189,7 +190,7 @@ class AppBar extends Component {
 			<div className={classnames('app_bar justify-content-between', { 'no-borders': noBorders })}>
 				<div className="d-flex">
 					{this.renderIcon(isHome, theme)}
-					<div className="d-flex ml-2 mr-2">
+					<div className="d-flex ml-3 mr-3">
 						{!isHome
 							? <Link to="/quick-trade/btc-eur">
 								<div className='app_bar-quicktrade d-flex'>
@@ -200,7 +201,7 @@ class AppBar extends Component {
 							: null
 						}
 					</div>
-					{!isHome && <PairTabs />}
+					{!isHome && <PairTabs router={router} />}
 				</div>
 				{!isHome
 					? <div className="d-flex app-bar-account" onClick={this.handleAccountMenu}>
