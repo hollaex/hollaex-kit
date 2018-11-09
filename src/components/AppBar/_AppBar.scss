@@ -7,6 +7,9 @@ $app-bar--quicktrade-inactive-color: #a08e24;
 $app-bar--arrow-size: 0.4rem;
 $notification-size: 1.5rem;
 $app-menu-notification-size: 1.2rem;
+$app-bar--black: #000000;
+$app-bar-add-tab-inactive: #808080;
+$app-bar-add-tab-red: #ff0000;
 
 .dark-theme {
 	.app_bar {
@@ -130,10 +133,22 @@ $app-menu-notification-size: 1.2rem;
 		position: relative;
 	}
 
+	.app_bar-pair-overflow {
+		align-items: center;
+		color: $app-bar-tab-color-inactive;
+		cursor: pointer;
+		display: flex;
+		font-size: $font-size-main;
+		font-weight: 400;
+		height: 100%;
+		padding: 0 .5rem;
+		position: relative;
+	}
+
 	.active-tab-pair {
 		background-color: $colors-white;
-		border-left: 1px solid $colors-white;
-		color: $colors-main-black;
+		border-left: 1px solid $app-bar--black;
+		color: $app-bar--black;
 
 		svg {
 			.btc0 {
@@ -154,7 +169,7 @@ $app-menu-notification-size: 1.2rem;
 			.tab-close {
 				stroke: $colors-main-black;
 			}
-			.add {
+			.plus {
 				stroke: $colors-main-black;
 			}
 			.st0 {
@@ -198,7 +213,7 @@ $app-menu-notification-size: 1.2rem;
 		.tab-close {
 			stroke: $app-bar-tab-color-inactive;
 		}
-		.add {
+		.plus {
 			stroke: $app-bar--pairs-color;
 		}
 		.st0 {
@@ -434,10 +449,11 @@ $app-menu-notification-size: 1.2rem;
 }
 
 .app-bar-add-tab-menu {
-	background-color: $dark-app-background-color;
+	background-color: $app-bar--black;
+	border: 1px solid $colors-white;
 	color: $app-bar--pairs-color;
 	display: block;
-	min-width: 20rem;
+	min-width: 22rem;
 	min-height: 8rem;
 	position: absolute;
 	top: 36px;
@@ -447,33 +463,107 @@ $app-menu-notification-size: 1.2rem;
 	box-shadow: 0px 6px 10px 2px rgba(0, 0, 0, 0.4);
 
 	.app-bar-tab-menu-list {
-		background-color: $dark-app-background-color;
+		background-color: $app-bar--black;
 		color: $app-bar--pairs-color;
-		padding: .5rem;
+		font-size: .8rem;
 		height: 2.5rem;
+		padding: .5rem;
 	}
 
 	.active-tab {
-		background-color: #544343;
+		background-color: #2e2f37;
 		color: #fafafa;
 		font-weight: bold;
 	}
 
 	.app-bar-add-tab-content {
-		background-color: #544343;
-		color: $app-bar--pairs-color;
+		background-color: #2e2f37;
+		color: $app-bar-add-tab-inactive;
 		font-size: .8rem;
 		height: 20rem;
 		overflow-y: scroll;
-		padding: .3rem;
+		padding: .3rem 0;
+	}
+	
+	.app-bar-tab-overflow-content {
+		background-color: #2e2f37;
+		color: $app-bar-add-tab-inactive;
+		font-size: .8rem;
+		overflow-y: scroll;
+		padding: .3rem 0;
 	}
 
 	.app-bar-add-tab-content-list {
+		color: $app-bar-add-tab-inactive;
+		height: 2.2rem;
+		
+		&:hover {
+			background-color: #383c42;
+			color: $colors-white;
+
+			svg {
+				.btc0 {
+					fill: $colors-white;
+				}
+				.btc1 {
+					fill: $colors-white;
+				}
+				.eth0 {
+					fill: $colors-white;
+				}
+				.eth1 {
+					fill: $colors-white;
+				}
+				.bch-icon {
+					fill: $colors-white;
+				}
+				.st0 {
+					fill: $colors-white;
+					stroke-width: 0rem;
+				}
+			}
+		}
 	}
 
 	.app-bar-tab-setting {
-		margin: .2rem .4rem 0 .4rem;
+		margin: .4rem;
 		width: 1rem;
 	}
-}
 
+	.app-bar-add-tab-icons {
+		width: 1.2rem;
+		margin: auto .3rem;
+	}
+
+	.app-bar-tab-setting, .app-bar-add-tab-icons {
+		svg {
+			.btc0 {
+				fill: $app-bar-add-tab-inactive;
+			}
+			.btc1 {
+				fill: $app-bar-add-tab-inactive;
+			}
+			.eth0 {
+				fill: $app-bar-add-tab-inactive;
+			}
+			.eth1 {
+				fill: $app-bar-add-tab-inactive;
+			}
+			.bch-icon {
+				fill: $app-bar-add-tab-inactive;
+			}
+			.plus {
+				stroke: $colors-white;
+				stroke-width: .2rem;
+			}
+			.st0 {
+				fill: $colors-white;
+				stroke-width: 0rem;
+			}
+		}
+
+		.app-price-diff-red {
+			color: $app-bar-add-tab-red;
+		}
+	}
+}

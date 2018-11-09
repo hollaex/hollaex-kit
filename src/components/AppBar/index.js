@@ -16,6 +16,7 @@ import PairTabs from './PairTabs';
 import MenuList from './MenuList';
 import { MobileBarWrapper } from '../';
 import STRINGS from '../../config/localizedStrings';
+import { isLoggedIn } from '../../utils/token';
 
 class AppBar extends Component {
 	state = {
@@ -204,13 +205,15 @@ class AppBar extends Component {
 					{!isHome && <PairTabs router={router} />}
 				</div>
 				{!isHome
-					? <div className="d-flex app-bar-account" onClick={this.handleAccountMenu}>
-						<div className="app-bar-account-content mr-2">
-							<ReactSVG path={ICONS.SIDEBAR_ACCOUNT_INACTIVE} wrapperClassName="app-bar-account-icon" />
-							<div className="app-bar-account-notification">2</div>
+					? isLoggedIn()
+						? <div className="d-flex app-bar-account" onClick={this.handleAccountMenu}>
+							<div className="app-bar-account-content mr-2">
+								<ReactSVG path={ICONS.SIDEBAR_ACCOUNT_INACTIVE} wrapperClassName="app-bar-account-icon" />
+								<div className="app-bar-account-notification">2</div>
+							</div>
+							<div>{STRINGS.ACCOUNT_TEXT}</div>
 						</div>
-						<div>{STRINGS.ACCOUNT_TEXT}</div>
-					</div>
+						: null
 					: this.renderSplashActions(token, verifyingToken)
 				}
 				{isAccountMenu && <MenuList selectedMenu={selectedMenu} handleMenu={this.handleMenu} logout={logout} />}

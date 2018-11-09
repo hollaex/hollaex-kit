@@ -602,7 +602,7 @@ class Container extends Component {
 								/>
 							}
 						/>
-						<AppMenuBar router={router} location={location} />
+						{isBrowser && <AppMenuBar router={router} location={location} />}
 						<div className="app_container-content d-flex justify-content-between">
 							<div
 								className={classnames(
