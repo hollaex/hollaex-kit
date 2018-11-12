@@ -149,7 +149,7 @@ class PairTabs extends Component {
                     && <div
                         className={classnames('app_bar-pair-overflow', 'd-flex', 'align-items-center', { 'active-tab-pair': isTabOverflow })}>
                         <div onClick={this.onOverflowClick}>
-                            <ReactSVG path={ICONS.CLOSE_CROSS} wrapperClassName="app-bar-tab-close" />
+                            <ReactSVG path={ICONS.DOUBLE_ARROW} wrapperClassName="app-bar-tab-close" />
                         </div>
                     {isTabOverflow
                         && <TabOverflowList

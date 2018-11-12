@@ -282,7 +282,9 @@ export const ICONS = {
 	TAB_VERIFY: `${process.env.PUBLIC_URL}/assets/images/tab-verify.svg`,
 	TAB_SETTING: `${process.env.PUBLIC_URL}/assets/images/tab-setting.svg`,
 	TAB_API: `${process.env.PUBLIC_URL}/assets/images/tab-api.svg`,
-	TAB_SIGNOUT: `${process.env.PUBLIC_URL}/assets/images/signout.svg`
+	TAB_SIGNOUT: `${process.env.PUBLIC_URL}/assets/images/signout.svg`,
+	DOUBLE_ARROW: `${process.env.PUBLIC_URL}/assets/images/double-arrow.svg`,
+	SEARCH: `${process.env.PUBLIC_URL}/assets/images/search.svg`
 };
 
 export const SOCIAL_ICONS = {

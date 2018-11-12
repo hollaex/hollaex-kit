@@ -20,7 +20,7 @@ const AddTabList = ({ symbols, pairs, selectedTabs, selectedTabMenu, onAddTabCli
     const searchField = {
         search: {
             type: 'text',
-            options: { icon: ICONS.TAB_SETTING, label: 'search' },
+            options: { icon: ICONS.SEARCH, label: 'search' },
             className: 'app-bar-search-field',
             hideCheck: true,
             outlineClassName: 'app-bar-search-field-outline',
