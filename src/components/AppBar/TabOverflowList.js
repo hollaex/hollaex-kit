@@ -16,7 +16,7 @@ const TabOverflowList = ({ selectedTabs, activeTabs, handleOverflow }) => {
                             className="app-bar-add-tab-content-list d-flex align-items-center"
                             onClick={() => handleOverflow(pair)}>
                             {activeTabs[pair]
-                                ? <ReactSVG path={ICONS.TAB_MINUS} wrapperClassName="app-bar-tab-setting" />
+                                ? <ReactSVG path={ICONS.BLACK_CHECK} wrapperClassName="app-bar-tab-setting" />
                                 : <div className="app-bar-tab-setting"> </div>
                             }
                             <ReactSVG path={ICONS[`${menu.pair_base.toUpperCase()}_ICON`]} wrapperClassName="app-bar-add-tab-icons" />

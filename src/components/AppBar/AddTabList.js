@@ -1,7 +1,9 @@
 import React from 'react';
 import ReactSVG from 'react-svg';
 import classnames from 'classnames';
+import { reduxForm } from 'redux-form';
 
+import renderFields from '../../components/Form/factoryFields';
 import { ICONS } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 
@@ -14,6 +16,17 @@ const AddTabList = ({ symbols, pairs, selectedTabs, selectedTabMenu, onAddTabCli
         }
         return key;
     });
+
+    const searchField = {
+        search: {
+            type: 'text',
+            options: { icon: ICONS.TAB_SETTING, label: 'search' },
+            className: 'app-bar-search-field',
+            hideCheck: true,
+            outlineClassName: 'app-bar-search-field-outline',
+            placeholder: 'Search...'
+        }
+    };
 
     return (
         <div className="app-bar-add-tab-menu">
@@ -35,6 +48,9 @@ const AddTabList = ({ symbols, pairs, selectedTabs, selectedTabMenu, onAddTabCli
                 </div>
             </div>
             <div className="app-bar-add-tab-content">
+                <div className="app-bar-add-tab-search">
+                    {renderFields(searchField)}
+                </div>
                 {Object.keys(tabMenu).map((pair, index) => {
                     let menu = tabMenu[pair];
                     return (
@@ -58,4 +74,6 @@ const AddTabList = ({ symbols, pairs, selectedTabs, selectedTabMenu, onAddTabCli
     );
 };
 
-export default AddTabList;
+export default reduxForm({
+    form: 'addTabSearch'
+})(AddTabList);

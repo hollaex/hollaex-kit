@@ -5,6 +5,11 @@ $placeholder--padding: 0.25rem;
 $placeholder--font-size: $font-size-subtext;
 $placeholder--font-weight: bold;
 
+.input_icon {
+	margin-right: .25rem;
+	width: 1.5rem;
+}
+
 .input_field-input {
 	width: 100%;
 	position: relative;

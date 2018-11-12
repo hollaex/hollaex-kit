@@ -493,6 +493,23 @@ $app-bar-add-tab-red: #ff0000;
 		padding: .3rem 0;
 	}
 
+	.app-bar-add-tab-search {
+		color: $app-bar-add-tab-inactive;
+		height: 2.2rem;
+	}
+
+	.app-bar-search-field {
+		background-color: #2e2f37;
+		color: $app-bar-add-tab-inactive;
+		flex-direction: row-reverse;
+		margin: 0;
+		padding-right: .5rem;
+	}
+
+	.app-bar-search-field-outline {
+		height: .5px;
+	}
+
 	.app-bar-add-tab-content-list {
 		color: $app-bar-add-tab-inactive;
 		height: 2.2rem;
@@ -559,6 +576,9 @@ $app-bar-add-tab-red: #ff0000;
 			.st0 {
 				fill: $colors-white;
 				stroke-width: 0rem;
+			}
+			.icon-check-1 {
+				stroke: $colors-white;
 			}
 		}
 
