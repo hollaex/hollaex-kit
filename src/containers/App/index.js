@@ -60,6 +60,7 @@ import {
 	CurrencyList
 } from '../../components';
 import { ContactForm, HelpfulResourcesForm, Chat as ChatComponent } from '../';
+import ReviewEmailContent from '../Withdraw/ReviewEmailContent';
 
 import {
 	getClasesForLanguage,
@@ -419,6 +420,11 @@ class Container extends Component {
 		this.setState({ chatIsClosed });
 	};
 
+	onConfirmEmail = () => {
+		this.onCloseDialog();
+		this.props.router.push('/wallet');
+	};
+
 	getClassForActivePath = (path) => {
 		switch (path) {
 			case '/wallet':
@@ -506,6 +512,12 @@ class Container extends Component {
 					/>
 				);
 			}
+			case NOTIFICATIONS.WITHDRAWAL_EMAIL_CONFIRMATION:
+				return (
+					<ReviewEmailContent
+						onConfirmEmail={this.onConfirmEmail}
+						onClose={this.onCloseDialog} />
+				);
 			default:
 				return <div />;
 		}
