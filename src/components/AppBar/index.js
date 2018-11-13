@@ -169,7 +169,8 @@ class AppBar extends Component {
 			isHome,
 			theme,
 			logout,
-			router
+			router,
+			activePath
 		} = this.props;
 		const { isAccountMenu, selectedMenu } = this.state;
 
@@ -196,13 +197,13 @@ class AppBar extends Component {
 							? <Link to="/quick-trade/btc-eur">
 								<div className='app_bar-quicktrade d-flex'>
 									<ReactSVG path={ICONS.QUICK_TRADE_TAB} wrapperClassName="quicktrade_icon" />
-									{STRINGS.QUICK_TRADE}
+									<div>{STRINGS.QUICK_TRADE}</div>
 								</div>
 							</Link>
 							: null
 						}
 					</div>
-					{!isHome && <PairTabs router={router} />}
+						{!isHome && <PairTabs activePath={activePath} router={router} />}
 				</div>
 				{!isHome
 					? isLoggedIn()

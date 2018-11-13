@@ -35,13 +35,17 @@ const AddTabList = ({ symbols, pairs, selectedTabs, selectedTabMenu, onAddTabCli
                     {symbols.map((symbol, index) =>
                         <div
                             key={index}
-                            className={classnames("app-bar-tab-menu-list", { 'active-tab': symbol === selectedTabMenu })}
+                            className={classnames(
+                                "app-bar-tab-menu-list",
+                                "d-flex",
+                                "align-items-center",
+                                { 'active-tab': symbol === selectedTabMenu })}
                             onClick={() => onAddTabClick(symbol)}>
                             {symbol.toUpperCase()}
                         </div>
                     )}
                 </div>
-                <div>
+                <div className="d-flex align-items-center mr-2">
                     <ReactSVG
                         path={ICONS.TAB_SETTING}
                         wrapperClassName="app-bar-tab-setting" />

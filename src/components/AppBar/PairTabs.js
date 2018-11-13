@@ -37,6 +37,13 @@ class PairTabs extends Component {
         }
     }
 
+    componentWillReceiveProps(nextProps) {
+        if (this.props.activePath !== nextProps.activePath 
+            && nextProps.activePath !== 'trade') {
+            this.setState({ activePairTab: '' });
+        }
+    }
+
     onTabClick = pair => {
         if (pair) {
             this.props.router.push(`/trade/${pair}`);

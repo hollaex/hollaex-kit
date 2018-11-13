@@ -434,6 +434,8 @@ class Container extends Component {
 			case '/developers':
 			case '/security':
 			case '/settings':
+			case '/summary':
+			case '/api':
 				return 'account';
 			case '/quick-trade':
 				return 'quick-trade';
@@ -607,6 +609,7 @@ class Container extends Component {
 							location={location}
 							goToDashboard={this.goToDashboard}
 							logout={this.logout}
+							activePath={activePath}
 							rightChildren={
 								<CurrencyList
 									className="horizontal-currency-list justify-content-end"
@@ -614,7 +617,9 @@ class Container extends Component {
 								/>
 							}
 						/>
-						{isBrowser && <AppMenuBar router={router} location={location} />}
+						{isBrowser &&
+							(activePath === 'account' || activePath === 'wallet') && 
+								<AppMenuBar router={router} location={location} />}
 						<div className="app_container-content d-flex justify-content-between">
 							<div
 								className={classnames(

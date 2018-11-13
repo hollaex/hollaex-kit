@@ -13,12 +13,39 @@ $app-bar-add-tab-red: #ff0000;
 
 .dark-theme {
 	.app_bar {
-		background: $dark-app-bar-background-color !important;
+		background: $colors-main-black !important;
 		border-bottom-color: $dark-border-main !important;
 		color: $dark-font-main-text-color !important;
 		> div {
 			&:not(:first-child) {
 				border-left-color: $dark-border-main !important;
+			}
+		}
+	}
+
+	.app-menu-bar {
+		background: $dark-disabled-secondary !important;
+		
+		.active-menu {
+			background: $dark-app-background-color !important;
+			color: $dark-font-main-text-color !important;
+
+			svg {
+				.tab-summary0, .tab-wallet0, .tab-setting0, .tab-verify0,
+				.tab-security0, .tab-api0 {
+					fill: $dark-font-main-text-color !important;
+				}
+			}
+		}
+
+		.notification {
+			color: $colors-notifications-red !important;
+		
+			svg {
+				.tab-summary0, .tab-wallet0, .tab-setting0, .tab-verify0,
+				.tab-security0, .tab-api0 {
+					fill: $colors-notifications-red !important;
+				}
 			}
 		}
 	}
@@ -69,6 +96,7 @@ $app-bar-add-tab-red: #ff0000;
 
 	.app_bar-icon {
 		flex: 0;
+		margin-top: .4rem;
 		width: 100%;
 	}
 
@@ -107,7 +135,8 @@ $app-bar-add-tab-red: #ff0000;
 	}
 
 	.quicktrade_icon {
-		width: 1rem;
+		margin-top: .2rem;
+		width: .9rem;
 	}
 
 	.app-bar-account {
@@ -278,9 +307,9 @@ $app-bar-add-tab-red: #ff0000;
 		background-color: #fafafa;
 		z-index: 20;
 		padding: 1rem;
-		-webkit-box-shadow: 0px 6px 10px 2px rgba(0, 0, 0, 0.4);
-		-moz-box-shadow: 0px 6px 10px 2px rgba(0, 0, 0, 0.4);
-		box-shadow: 0px 6px 10px 2px rgba(0, 0, 0, 0.4);
+		-webkit-box-shadow: 0px 4px 6px 1px rgba(0, 0, 0, 0.4);
+		-moz-box-shadow: 0px 4px 6px 1px rgba(0, 0, 0, 0.4);
+		box-shadow: 0px 4px 6px 1px rgba(0, 0, 0, 0.4);
 
 		.app-bar-account-menu-list {
 			color: $app-bar-tab-color-inactive;
@@ -459,11 +488,11 @@ $app-bar-add-tab-red: #ff0000;
 	min-width: 22rem;
 	min-height: 8rem;
 	position: absolute;
-	top: 36px;
+	top: 32px;
 	z-index: 20;
-	-webkit-box-shadow: 0px 6px 10px 2px rgba(0, 0, 0, 0.4);
-	-moz-box-shadow: 0px 6px 10px 2px rgba(0, 0, 0, 0.4);
-	box-shadow: 0px 6px 10px 2px rgba(0, 0, 0, 0.4);
+	-webkit-box-shadow: 0px 4px 6px 1px rgba(0, 0, 0, 0.4);
+	-moz-box-shadow: 0px 4px 6px 1px rgba(0, 0, 0, 0.4);
+	box-shadow: 0px 4px 6px 1px rgba(0, 0, 0, 0.4);
 
 	.app-bar-tab-menu-list {
 		background-color: $app-bar--black;
@@ -474,22 +503,21 @@ $app-bar-add-tab-red: #ff0000;
 	}
 
 	.active-tab {
-		background-color: #2e2f37;
+		background-color: $dark-disabled-secondary;
 		color: #fafafa;
 		font-weight: bold;
 	}
 
 	.app-bar-add-tab-content {
-		background-color: #2e2f37;
+		background-color: $dark-disabled-secondary;
 		color: $app-bar-add-tab-inactive;
 		font-size: .8rem;
-		height: 20rem;
 		overflow-y: scroll;
 		padding: .3rem 0;
 	}
 	
 	.app-bar-tab-overflow-content {
-		background-color: #2e2f37;
+		background-color: $dark-disabled-secondary;
 		color: $app-bar-add-tab-inactive;
 		font-size: .8rem;
 		overflow-y: scroll;
@@ -499,10 +527,11 @@ $app-bar-add-tab-red: #ff0000;
 	.app-bar-add-tab-search {
 		color: $app-bar-add-tab-inactive;
 		height: 2.2rem;
+		margin-bottom: .5rem;
 	}
 
 	.app-bar-search-field {
-		background-color: #2e2f37;
+		background-color: $dark-disabled-secondary;
 		color: $app-bar-add-tab-inactive;
 		flex-direction: row-reverse;
 		margin: 0;
@@ -546,13 +575,13 @@ $app-bar-add-tab-red: #ff0000;
 	}
 
 	.app-bar-tab-setting {
-		margin: .4rem;
+		margin: .3rem .4rem 0 .4rem;
 		width: 1rem;
 	}
 
 	.app-bar-add-tab-icons {
 		width: 1.2rem;
-		margin: auto .3rem;
+		margin: .3rem .3rem 0 .3rem;
 	}
 
 	.app-bar-tab-setting, .app-bar-add-tab-icons {
