@@ -3,8 +3,10 @@ import ReactSVG from 'react-svg';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
 
+import Tab from './Tab';
 import AddTabList from './AddTabList';
 import TabOverflowList from './TabOverflowList';
+import { DEFAULT_TRADING_PAIRS } from '../../config/constants';
 import { ICONS } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 
@@ -15,32 +17,45 @@ class PairTabs extends Component {
         activePairTab: '',
         isAddTab: false,
         selectedAddTab: '',
-        isTabOverflow: false
+        isTabOverflow: false,
+        searchValue: '',
+        searchResult: {}
     };
 
     componentDidMount() {
-        const { router } = this.props;
+        const { router, pairs } = this.props;
         if (router && router.params.pair) {
             this.setState({ activePairTab: router.params.pair });
         } else {
             this.setState({ activePairTab: '' });
         }
-        let tabs = localStorage.getItem('tabs');
-        if (tabs) {
-            tabs = JSON.parse(tabs);
-            const tempTabs = {};
-            Object.keys(tabs).map((key, index) => {
-                if (index <= 2)
-                    tempTabs[key] = tabs[key];
-            });
-            this.setState({ selectedTabs: tabs, activeTabs: tempTabs });
-        }
+        this.initTabs(pairs);
     }
 
     componentWillReceiveProps(nextProps) {
         if (this.props.activePath !== nextProps.activePath 
             && nextProps.activePath !== 'trade') {
             this.setState({ activePairTab: '' });
+        }
+        if (JSON.stringify(this.props.pairs) !== JSON.stringify(nextProps.pairs)) {
+            this.initTabs(nextProps.pairs);
+        }
+    }
+
+    initTabs = pairs => {
+        let tabs = localStorage.getItem('tabs');
+        tabs = tabs ? JSON.parse(tabs) : [];
+        if (Object.keys(pairs).length) {
+            tabs = tabs.length ? tabs : DEFAULT_TRADING_PAIRS;
+            const tempTabs = {};
+            const selected = {};
+            tabs.map((key, index) => {
+                if (index <= 2)
+                    tempTabs[key] = pairs[key];
+                selected[key] = pairs[key];
+                return key;
+            });
+            this.setState({ selectedTabs: selected, activeTabs: tempTabs });
         }
     }
 
@@ -58,9 +73,9 @@ class PairTabs extends Component {
     onAddTabClick = pair => {
         this.setState({ selectedAddTab: pair });
     };
-
+    
     onTabChange = pair => {
-        const { selectedTabs } = this.state;
+        const { selectedTabs, activeTabs } = this.state;
         let localTabs = {};
         if (selectedTabs[pair]) {
             localTabs = { ...selectedTabs };
@@ -73,10 +88,19 @@ class PairTabs extends Component {
                 this.setState({ selectedTabs: { ...localTabs } });
             }
         }
-        if (Object.keys(localTabs).length <= 3) {
+        if (activeTabs[pair]) {
+            let tempActive = {};
+            Object.keys(localTabs).map((key, index) => {
+                if (index <= 2) {
+                    tempActive = { ...tempActive, [key]: localTabs[key] };
+                }
+                return key;
+            });
+            this.setState({ activeTabs: { ...tempActive } });
+        } else if (Object.keys(localTabs).length <= 3) {
             this.setState({ activeTabs: { ...localTabs } });
         }
-        localStorage.setItem('tabs', JSON.stringify(localTabs));
+        localStorage.setItem('tabs', JSON.stringify(Object.keys(localTabs)));
     };
 
     onOverflowClick = () => {
@@ -95,18 +119,60 @@ class PairTabs extends Component {
             delete tempTabs[pair];
             const pairs = Object.keys(tempTabs);
             let pushed = false;
-            Object.keys(selectedTabs).map((key, index) => {
+            Object.keys(selectedTabs).map(key => {
                 if (!pairs.includes(key) && key !== pair && !pushed) {
                     pushed = true;
                     tempTabs[key] = selectedTabs[key];
                 }
+                return key;
             });
             this.setState({ activeTabs: { ...tempTabs } });
         }
     };
 
+    closeAddTabMenu = () => {
+        this.setState({ isAddTab: false });
+    };
+
+    closeOverflowMenu = () => {
+        this.setState({ isTabOverflow: false });
+    };
+
+    onSortItems = sortItems => {
+        const sortedTabs = {};
+        sortItems.map(pair => {
+            let temp = this.state.activeTabs[pair];
+            sortedTabs[pair] = temp;
+            return pair;
+        });
+        localStorage.setItem('tabs', JSON.stringify(Object.keys({ ...sortedTabs, ...this.state.selectedTabs })));
+        this.setState({ activeTabs: { ...sortedTabs }, selectedTabs: { ...sortedTabs, ...this.state.selectedTabs } });
+    };
+    
+    handleSearch = (_, value) => {
+        const { pairs } = this.props;
+        if (value) {
+            let result = {};
+            let searchValue = value.toLowerCase().trim();
+            Object.keys(pairs).map(key => {
+                let temp = pairs[key];
+                let cashName = STRINGS[`${temp.pair_base.toUpperCase()}_FULLNAME`].toLowerCase();
+                if (key.indexOf(searchValue) !== -1 ||
+                    temp.pair_base.indexOf(searchValue) !== -1 ||
+                    temp.pair_2.indexOf(searchValue) !== -1 ||
+                    cashName.indexOf(searchValue) !== -1) {
+                        result[key] = temp;
+                }
+                return key;
+            });
+            this.setState({ searchResult: { ...result }, searchValue: value });
+        } else {
+            this.setState({ searchResult: {}, searchValue: '' });
+        }
+    };
+
     render() {
-        const { selectedTabs, isAddTab, selectedAddTab, activePairTab, isTabOverflow, activeTabs } = this.state;
+        const { selectedTabs, isAddTab, selectedAddTab, activePairTab, isTabOverflow, activeTabs, searchValue, searchResult } = this.state;
         const { pairs } = this.props;
         const obj = {};
         Object.entries(pairs).forEach(([key, pair]) => {
@@ -119,22 +185,16 @@ class PairTabs extends Component {
                     const pair = activeTabs[tab];
                     if(index <= 2) {
                         return (
-                            <div
+                            <Tab
                                 key={index}
-                                className={classnames('app_bar-pair-content', 'd-flex', { 'active-tab-pair': activePairTab === tab })}
-                                onClick={() => this.onTabClick(tab)}>
-                                <div className="app_bar-currency-txt app_bar-pair-font">{STRINGS[`${pair.pair_base.toUpperCase()}_SHORTNAME`]}</div>
-                                <ReactSVG path={ICONS[`${pair.pair_base.toUpperCase()}_ICON`]} wrapperClassName="app-bar-currency-icon" />
-                                <div className="app_bar-pair-font">{STRINGS[`${pair.pair_base.toUpperCase()}_FULLNAME`]}: </div>
-                                <div className="title-font">T 65,800,000</div>
-                                <div className="app-price-diff-red app-bar-price_difference app_bar-pair-font"> -120,000 </div>
-                                <div className="app-price-diff-red title-font app_bar-pair-font"> (-1.71%) </div>
-                                <div onClick={() => this.onTabChange(tab)}>
-                                    <ReactSVG
-                                        path={ICONS.CLOSE_CROSS} 
-                                        wrapperClassName="app-bar-tab-close" />
-                                </div>
-                            </div>
+                                tab={tab}
+                                pair={pair}
+                                activePairTab={activePairTab}
+                                onSortItems={this.onSortItems}
+                                items={Object.keys(activeTabs)}
+                                sortId={index}
+                                onTabClick={this.onTabClick}
+                                onTabChange={this.onTabChange} />
                         )
                     }}
                 )}
@@ -142,15 +202,21 @@ class PairTabs extends Component {
                     <div onClick={this.handleAddTab}>
                         <ReactSVG path={ICONS.TAB_PLUS} wrapperClassName="app-bar-tab-close" />
                     </div>
-                {isAddTab
-                    && <AddTabList 
-                        symbols={symbols} 
-                        pairs={pairs}
-                        selectedTabs={selectedTabs}
-                        activeTabs={activeTabs}
-                        selectedTabMenu={selectedAddTab || symbols[0]} 
-                        onAddTabClick={this.onAddTabClick}
-                        onTabChange={this.onTabChange} />}
+                    {isAddTab &&
+                        <AddTabList 
+                            symbols={symbols} 
+                            pairs={pairs}
+                            selectedTabs={selectedTabs}
+                            activeTabs={activeTabs}
+                            selectedTabMenu={selectedAddTab || symbols[0]}
+                            searchValue={searchValue}
+                            searchResult={searchResult}
+                            onAddTabClick={this.onAddTabClick}
+                            onTabChange={this.onTabChange}
+                            closeAddTabMenu={this.closeAddTabMenu}
+                            handleSearch={this.handleSearch}
+                        />
+                    }
                 </div>
                 {Object.keys(selectedTabs).length > 3
                     && <div
@@ -163,6 +229,7 @@ class PairTabs extends Component {
                             activeTabs={activeTabs}
                             selectedTabs={selectedTabs}
                             handleOverflow={this.handleOverflow}
+                            closeOverflowMenu={this.closeOverflowMenu}
                         />
                     }
                 </div>}

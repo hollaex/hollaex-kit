@@ -419,6 +419,10 @@ export const WITHDRAW_LIMITS = {
 	},
 };
 
+export const DEFAULT_TRADING_PAIRS = process.env.REACT_APP_DEFAULT_TRADING_PAIRS
+	? process.env.REACT_APP_DEFAULT_TRADING_PAIRS.split(',')
+	: ['btc-eur', 'eth-eur'];
+
 export const TOKEN_KEY = `${ENV}_${NETWORK}_TOKEN`;
 export const LANGUAGE_KEY = `${ENV}_${NETWORK}_LANGUAGE`;
 export const DEFAULT_LANGUAGE = process.env.REACT_APP_DEFAULT_LANGUAGE || 'en';

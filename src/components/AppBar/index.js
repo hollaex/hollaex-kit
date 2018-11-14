@@ -48,8 +48,11 @@ class AppBar extends Component {
 	};
 
 	handleAccountMenu = () => {
-
 		this.setState({ isAccountMenu: !this.state.isAccountMenu });
+	};
+
+	closeAccountMenu = () => {
+		this.setState({ isAccountMenu: false });
 	};
 
 	renderSymbolOption = ({ symbol, name, currencySymbol, iconPath }, index) => (
@@ -128,7 +131,7 @@ class AppBar extends Component {
 		}  else if (menu === 'summary') {
 			this.props.router.push('/summary');
 		} */
-		this.setState({ selectedMenu: menu });
+		this.setState({ selectedMenu: menu, isAccountMenu: false });
 	};
 
 	setActiveMenu = path => {
@@ -217,7 +220,14 @@ class AppBar extends Component {
 						: null
 					: this.renderSplashActions(token, verifyingToken)
 				}
-				{isAccountMenu && <MenuList selectedMenu={selectedMenu} handleMenu={this.handleMenu} logout={logout} />}
+				{isAccountMenu &&
+					<MenuList
+						selectedMenu={selectedMenu}
+						handleMenu={this.handleMenu}
+						logout={logout}
+						closeAccountMenu={this.closeAccountMenu}
+					/>
+				}
 			</div>
 		);
 	}
