@@ -13,12 +13,61 @@ $app-bar-add-tab-red: #ff0000;
 
 .dark-theme {
 	.app_bar {
-		background: $colors-main-black !important;
-		border-bottom-color: $dark-border-main !important;
+		background: $app-bar--black !important;
 		color: $dark-font-main-text-color !important;
 		> div {
 			&:not(:first-child) {
 				border-left-color: $dark-border-main !important;
+			}
+		}
+
+		.active-tab-pair {
+			background-color: $dark-app-background-color !important;
+			border-left: 1px solid $app-bar--pairs-color !important;
+			color: $colors-white !important;
+
+			svg {
+				.btc0 {
+					fill: $colors-white;
+				}
+				.btc1 {
+					fill: $colors-white;
+				}
+				.eth0 {
+					fill: $colors-white;
+				}
+				.eth1 {
+					fill: $colors-white;
+				}
+				.bch-icon {
+					fill: $colors-white;
+				}
+				.tab-close {
+					stroke: $colors-white;
+				}
+				.plus {
+					stroke: $colors-white;
+				}
+				.st0 {
+					fill: $colors-white;
+					stroke-width: 0rem;
+				}
+				.double-arrow {
+					stroke: $colors-white;
+				}
+			}
+		}
+
+		.active-tab-overflow {
+			background-color: $dark-app-background-color !important;
+			border-left: 1px solid $dark-app-background-color !important;
+			color: $colors-white !important;
+			top: 1px;
+
+			svg {
+				.double-arrow {
+					stroke: $colors-white;
+				}
 			}
 		}
 	}
@@ -65,11 +114,10 @@ $app-bar-add-tab-red: #ff0000;
 	width: 100%;
 	min-height: $navigation_bar-height;
 	height: $navigation_bar-height;
-	border-bottom: 1px solid $app_bar-border--color;
 	display: flex;
 	font-size: $navigation_bar-font_size;
 	font-weight: bold;
-	background: $dark-app-background-color;
+	background: $app-bar--black;
 
 	&.no-borders {
 		border-bottom: none;
@@ -176,8 +224,9 @@ $app-bar-add-tab-red: #ff0000;
 
 	.active-tab-pair {
 		background-color: $colors-white;
-		border-left: 1px solid $app-bar--black;
+		border-left: 1px solid $colors-white;
 		color: $app-bar--black;
+		top: 1px;
 
 		svg {
 			.btc0 {
@@ -211,6 +260,19 @@ $app-bar-add-tab-red: #ff0000;
 		}
 	}
 
+	.active-tab-overflow {
+		background-color: $colors-white;
+		border-left: 1px solid $colors-white;
+		color: $app-bar--black;
+		top: 1px;
+
+		svg {
+			.double-arrow {
+				stroke: $colors-main-black;
+			}
+		}
+	}
+
 	.app-bar-currency-icon {
 		margin: .5rem .3rem 0 .3rem;
 		width: 1.5rem;
@@ -226,7 +288,7 @@ $app-bar-add-tab-red: #ff0000;
 		width: 1.5rem;
 	}
 
-	.app-bar-tab-close, .app-bar-currency-icon, .app-bar-account-icon svg {
+	.app_bar-pair-content, .app-bar-tab-close, .app-bar-currency-icon, .app-bar-account-icon svg {
 		.btc0 {
 			fill: $app-bar-tab-color-inactive;
 		}
@@ -246,7 +308,7 @@ $app-bar-add-tab-red: #ff0000;
 			stroke: $app-bar-tab-color-inactive;
 		}
 		.plus {
-			stroke: $app-bar--pairs-color;
+			stroke: $app-bar-tab-color-inactive;
 		}
 		.st0 {
 			fill: $colors-white;
@@ -409,18 +471,23 @@ $app-bar-add-tab-red: #ff0000;
 
 .app-menu-bar {
 	background: $app-menu-bar-background-color;
-	border-bottom: 1px solid $app-menu-bar-border--color;
 	display: flex;
 	font-size: $navigation_bar-font_size;
-	height: $navigation_bar_secondary-height;
-	min-height: $navigation_bar_secondary-height;
+	height: $navigation_bar-height;
+	min-height: $navigation_bar-height;
 	position: relative;
 	width: 100%;
 
 	.app-menu-bar-content {
 		color: $app-bar-tab-color-inactive;
 		cursor: pointer;
-		padding: .5rem 2rem;
+		height: 2.5rem;
+		width: 10rem;
+	}
+
+	.app-menu-bar-content-item {
+		margin: auto;
+		position: relative;
 	}
 
 	.app-menu-bar-icon {
@@ -429,9 +496,6 @@ $app-bar-add-tab-red: #ff0000;
 	}
 
 	.active-menu {
-		border-top: 1px solid $app-bar--pairs-color;
-		border-left: 1px solid $app-bar--pairs-color;
-		border-right: 1px solid $app-bar--pairs-color;
 		background-color: $colors-white;
 		color: $colors-main-black;
 		height: 2.5rem;
@@ -458,9 +522,9 @@ $app-bar-add-tab-red: #ff0000;
 	}
 
 	.app-menu-bar-icon-notification {
-		position: relative;
-		right: 0;
-		bottom: 6px;
+		position: absolute;
+		left: -14px;
+		top: -5px;
 		height: $app-menu-notification-size;
 		width: $app-menu-notification-size;
 		border-radius: $app-menu-notification-size;
@@ -469,7 +533,7 @@ $app-bar-add-tab-red: #ff0000;
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		font-size: .8rem;
+		font-size: 10px;
 		line-height: 1;
 		font-weight: bold;
 	}
@@ -488,7 +552,8 @@ $app-bar-add-tab-red: #ff0000;
 	min-width: 22rem;
 	min-height: 8rem;
 	position: absolute;
-	top: 32px;
+	top: 34px;
+	left: -1px;
 	z-index: 20;
 	-webkit-box-shadow: 0px 4px 6px 1px rgba(0, 0, 0, 0.4);
 	-moz-box-shadow: 0px 4px 6px 1px rgba(0, 0, 0, 0.4);
@@ -552,22 +617,22 @@ $app-bar-add-tab-red: #ff0000;
 
 			svg {
 				.btc0 {
-					fill: $colors-white;
+					fill: $colors-white !important;
 				}
 				.btc1 {
-					fill: $colors-white;
+					fill: $colors-white !important;
 				}
 				.eth0 {
-					fill: $colors-white;
+					fill: $colors-white !important;
 				}
 				.eth1 {
-					fill: $colors-white;
+					fill: $colors-white !important;
 				}
 				.bch-icon {
-					fill: $colors-white;
+					fill: $colors-white !important;
 				}
 				.st0 {
-					fill: $colors-white;
+					fill: $colors-white !important;
 					stroke-width: 0rem;
 				}
 			}
@@ -587,19 +652,19 @@ $app-bar-add-tab-red: #ff0000;
 	.app-bar-tab-setting, .app-bar-add-tab-icons {
 		svg {
 			.btc0 {
-				fill: $app-bar-add-tab-inactive;
+				fill: $app-bar-add-tab-inactive !important;
 			}
 			.btc1 {
-				fill: $app-bar-add-tab-inactive;
+				fill: $app-bar-add-tab-inactive !important;
 			}
 			.eth0 {
-				fill: $app-bar-add-tab-inactive;
+				fill: $app-bar-add-tab-inactive !important;
 			}
 			.eth1 {
-				fill: $app-bar-add-tab-inactive;
+				fill: $app-bar-add-tab-inactive !important;
 			}
 			.bch-icon {
-				fill: $app-bar-add-tab-inactive;
+				fill: $app-bar-add-tab-inactive !important;
 			}
 			.plus {
 				stroke: $colors-white;

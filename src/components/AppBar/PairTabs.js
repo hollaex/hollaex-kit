@@ -66,7 +66,7 @@ class PairTabs extends Component {
         }
     };
 
-    handleAddTab = e => {
+    openAddTabMenu = e => {
         this.setState({ isAddTab: !this.state.isAddTab, isTabOverflow: false });
     };
 
@@ -100,7 +100,7 @@ class PairTabs extends Component {
         } else if (Object.keys(localTabs).length <= 3) {
             this.setState({ activeTabs: { ...localTabs } });
         }
-        localStorage.setItem('tabs', JSON.stringify(Object.keys(localTabs)));
+        this.setTabsLocal(localTabs);
     };
 
     onOverflowClick = () => {
@@ -109,25 +109,17 @@ class PairTabs extends Component {
 
     handleOverflow = pair => {
         const { selectedTabs, activeTabs } = this.state;
-        const tempTabs = { ...activeTabs };
         if (!activeTabs[pair]) {
-            const pairs = Object.keys(activeTabs);
-            delete tempTabs[pairs[pairs.length - 1]];
-            tempTabs[pair] = selectedTabs[pair];
-            this.setState({ activeTabs: { ...tempTabs } });
-        } else {
-            delete tempTabs[pair];
+            const tempTabs = { [pair]: selectedTabs[pair], ...activeTabs };
             const pairs = Object.keys(tempTabs);
-            let pushed = false;
-            Object.keys(selectedTabs).map(key => {
-                if (!pairs.includes(key) && key !== pair && !pushed) {
-                    pushed = true;
-                    tempTabs[key] = selectedTabs[key];
-                }
-                return key;
+            delete tempTabs[pairs[pairs.length - 1]];
+            this.setState({
+                activeTabs: { ...tempTabs },
+                selectedTabs: { ...tempTabs, ...this.state.selectedTabs }
             });
-            this.setState({ activeTabs: { ...tempTabs } });
+            this.setTabsLocal({ ...tempTabs, ...this.state.selectedTabs });
         }
+        this.onTabClick(pair);
     };
 
     closeAddTabMenu = () => {
@@ -145,7 +137,7 @@ class PairTabs extends Component {
             sortedTabs[pair] = temp;
             return pair;
         });
-        localStorage.setItem('tabs', JSON.stringify(Object.keys({ ...sortedTabs, ...this.state.selectedTabs })));
+        this.setTabsLocal({ ...sortedTabs, ...this.state.selectedTabs });
         this.setState({ activeTabs: { ...sortedTabs }, selectedTabs: { ...sortedTabs, ...this.state.selectedTabs } });
     };
     
@@ -169,6 +161,10 @@ class PairTabs extends Component {
         } else {
             this.setState({ searchResult: {}, searchValue: '' });
         }
+    };
+
+    setTabsLocal = tabs => {
+        localStorage.setItem('tabs', JSON.stringify(Object.keys(tabs)));
     };
 
     render() {
@@ -199,7 +195,7 @@ class PairTabs extends Component {
                     }}
                 )}
                 <div className={classnames('app_bar-pair-content', 'd-flex', 'justify-content-between', { 'active-tab-pair': isAddTab })}>
-                    <div onClick={this.handleAddTab}>
+                    <div onClick={this.openAddTabMenu}>
                         <ReactSVG path={ICONS.TAB_PLUS} wrapperClassName="app-bar-tab-close" />
                     </div>
                     {isAddTab &&
@@ -220,13 +216,14 @@ class PairTabs extends Component {
                 </div>
                 {Object.keys(selectedTabs).length > 3
                     && <div
-                        className={classnames('app_bar-pair-overflow', 'd-flex', 'align-items-center', { 'active-tab-pair': isTabOverflow })}>
+                        className={classnames('app_bar-pair-overflow', 'd-flex', 'align-items-center', { 'active-tab-overflow': isTabOverflow })}>
                         <div onClick={this.onOverflowClick}>
                             <ReactSVG path={ICONS.DOUBLE_ARROW} wrapperClassName="app-bar-tab-close" />
                         </div>
                     {isTabOverflow
                         && <TabOverflowList
                             activeTabs={activeTabs}
+                            activePairTab={activePairTab}
                             selectedTabs={selectedTabs}
                             handleOverflow={this.handleOverflow}
                             closeOverflowMenu={this.closeOverflowMenu}

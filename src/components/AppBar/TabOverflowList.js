@@ -35,7 +35,7 @@ class TabOverflowList extends Component {
     }
 
     render() {
-        const { selectedTabs, activeTabs } = this.props;
+        const { selectedTabs, activeTabs, activePairTab } = this.props;
         return (
             <div id="tab-overflow-list" className="app-bar-add-tab-menu">
                 <div className="app-bar-tab-overflow-content">
@@ -46,7 +46,7 @@ class TabOverflowList extends Component {
                                 key={index}
                                 className="app-bar-add-tab-content-list d-flex align-items-center"
                                 onClick={() => this.onOverflow(pair)}>
-                                {activeTabs[pair]
+                                {pair === activePairTab
                                     ? <ReactSVG path={ICONS.BLACK_CHECK} wrapperClassName="app-bar-tab-setting" />
                                     : <div className="app-bar-tab-setting"> </div>
                                 }
@@ -54,7 +54,7 @@ class TabOverflowList extends Component {
                                 <div className="app_bar-pair-font">{STRINGS[`${menu.pair_base.toUpperCase()}_FULLNAME`]}: </div>
                                 <div className="title-font"> T 65,800,000 </div>
                                 <div className="app-price-diff-red app-bar-price_difference app_bar-pair-font"> -120,000 </div>
-                                <div className="app-price-diff-red title-font app_bar-pair-font"> (-1.71%) </div>
+                                <div className="app-price-diff-red title-font app_bar-pair-font ml-1">-1.71 %</div>
                             </div>
                         )
                     }

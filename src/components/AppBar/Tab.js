@@ -17,7 +17,7 @@ const Tab = ({ pair, tab, activePairTab, onTabClick, onTabChange, items, ...rest
                 <div className="app_bar-pair-font">{STRINGS[`${pair.pair_base.toUpperCase()}_FULLNAME`]}: </div>
                 <div className="title-font">T 65,800,000</div>
                 <div className="app-price-diff-red app-bar-price_difference app_bar-pair-font"> -120,000 </div>
-                <div className="app-price-diff-red title-font app_bar-pair-font"> (-1.71%) </div>
+                <div className="app-price-diff-red title-font app_bar-pair-font ml-1">-1.71 %</div>
             </div>
             <div onClick={() => onTabChange(tab)}>
                 <ReactSVG

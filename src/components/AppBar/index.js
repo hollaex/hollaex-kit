@@ -200,7 +200,7 @@ class AppBar extends Component {
 							? <Link to="/quick-trade/btc-eur">
 								<div className='app_bar-quicktrade d-flex'>
 									<ReactSVG path={ICONS.QUICK_TRADE_TAB} wrapperClassName="quicktrade_icon" />
-									<div>{STRINGS.QUICK_TRADE}</div>
+									<div className="d-flex align-items-center">{STRINGS.QUICK_TRADE}</div>
 								</div>
 							</Link>
 							: null
