@@ -371,6 +371,8 @@ export default {
 		PENDING_VERIFICATION_BANK: 'Your bank details are being verified',
 		PENDING_VERIFICATION_DOCUMENTS: 'Your documents are being verified',
 		GOTO_VERIFICATION: 'Go to verification',
+		CONNECT_BANK_ACCOUNT: 'Connect Bank Account', // ToDo: Add this into farsi in exir
+		ACTIVATE_2FA: 'Activate 2FA', // ToDo: Add this into farsi in exir
 		USER_DOCUMENTATION_FORM: {
 			FORM_FIELDS: {
 				FIRST_NAME_LABEL: 'First name',
@@ -907,5 +909,27 @@ export default {
 	SUCCESFUL_COPY: 'Successfully Copied!',
 	QUICK_TRADE_MODE: 'Quick Trade Mode',
 	JUST_NOW: 'just now',
-	PAIR: 'Pair'
+	PAIR: 'Pair',
+	SUMMARY_TITLE: 'Account Summary', // ToDo: need to add in farsi when move to exir.
+	SUMMARY: { // ToDo: need to add this entire suumary in farsi when move to exir.
+		TINY_PINK_SHRIMP_TRADER: 'Tiny Pink Shrimp Trader',
+		TINY_PINK_SHRIMP_TRADER_ACCOUNT: 'Tiny Pink Shrimp Trader Account',
+		LITTLE_RED_SNAPPER_TRADER: 'Little Red Snapper Trader',
+		LITTLE_RED_SNAPPER_TRADER_TXT_1: 'Little Red Snapper Trader',
+		LITTLE_RED_SNAPPER_TRADER_TXT_2: 'Little Red Snapper Trader',
+		LITTLE_RED_SNAPPER_TRADER_ACCOUNT: 'Little Red Snapper Trader Account',
+		CUNNING_BLUE_KRAKEN_TRADING: 'Cunning Blue Kraken Trading',
+		CUNNING_BLUE_KRAKEN_TRADING_ACCOUNT: 'Cunning Blue Kraken Trading Account',
+		BLACK_LEVIATHAN_TRADING: 'Black Leviathan Trading',
+		BLACK_LEVIATHAN_TRADING_ACCOUNT: 'Black Leviathan Trading Account',
+		URGENT_REQUIREMENTS: 'Urgent Requirements',
+		TRADING_VOLUME: 'Trading Volume',
+		ACCOUNT_ASSETS: 'Account Assets',
+		ACCOUNT_DETAILS: 'Account Details',
+		TRADER_ACCOUNT_TXT_1: 'Your journey begins here!',
+		TRADER_ACCOUNT_TXT_2: 'Keep swimming true, you’ll soon stand out from the rest of the shoal',
+		VIEW_FEE_STRUCTURE: 'View Fee Structure and Limits',
+		UPGRADE_ACCOUNT: 'Upgrade Account',
+		ACTIVE_2FA_SECURITY: 'Active 2FA Security'
+	}
 };

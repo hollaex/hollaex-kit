@@ -36,9 +36,9 @@ class AppMenuBar extends Component {
             this.props.router.push('/settings');
         } /* else if (menu === 'api') {
 			this.props.router.push('/api');
-		}  else if (menu === 'summary') {
+		} */else if (menu === 'summary') {
 			this.props.router.push('/summary');
-		} */
+		}
         this.setState({ activeMenu: menu });
     };
 

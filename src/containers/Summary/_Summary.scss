@@ -1,0 +1,97 @@
+$summary--black: #000000;
+$summary-icon-color-inactive: #808184;
+
+.summary-container {
+    color: $colors-deactivate-color2;
+    height: inherit;
+    max-width: calc(100% - 2rem);
+    margin: 1rem auto;
+    width: 75rem;
+
+    .summary-block_wrapper {
+        border-top: .2rem solid $summary--black;
+        margin: 0 .5rem;
+        padding: .5rem;
+        width: 100%;
+        
+        .summary-block-title {
+            color: $summary--black;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+    }
+
+    .trader-account-wrapper {
+        flex: 4;
+
+        .trader-account-icon {
+            width: 7rem;
+            margin: 1rem 1rem .5rem 0;
+        }
+    
+        .trade-account-secondary-txt {
+            font-size: .8rem;
+            margin: auto 0;
+            width: 45%;
+        }
+    }
+    
+    .trade-account-link {
+        color: $colors-notifications-blue;
+        font-weight: bold;
+    }
+
+    .summary-section_1 {
+        height: 12rem;
+    }
+
+    .requirement-wrapper {
+        flex: 6;
+
+        .requirements-content-text {
+            font-size: .8rem;
+            margin: auto 0;
+        }
+
+        .requirement-verified {
+            color: $colors-notifications-green;
+            width: 11rem;
+        }
+
+        .requirement-not-verified {
+            color: $colors-notifications-red;
+        }
+
+        .requirement-doc-icon {
+            width: 6rem;
+            margin: 1rem 1rem .5rem 0;
+
+            svg {
+                .verification-doc {
+                    fill: $colors-deactivate-color2;
+                }
+            }
+        }
+
+        .requirement-stauts {
+            width: 1rem;
+        }
+
+        .requirement-status-warning {
+            height: 1rem;
+            width: 1rem;
+            border-radius: 1.5rem;
+            background-color: red;
+            color: white;
+            display: -ms-flexbox;
+            display: flex;
+            -ms-flex-pack: center;
+            justify-content: center;
+            -ms-flex-align: center;
+            align-items: center;
+            font-size: .8rem;
+            line-height: 1;
+            font-weight: bold;
+        }
+    }
+}

@@ -284,7 +284,8 @@ export const ICONS = {
 	TAB_API: `${process.env.PUBLIC_URL}/assets/images/tab-api.svg`,
 	TAB_SIGNOUT: `${process.env.PUBLIC_URL}/assets/images/signout.svg`,
 	DOUBLE_ARROW: `${process.env.PUBLIC_URL}/assets/images/double-arrow.svg`,
-	SEARCH: `${process.env.PUBLIC_URL}/assets/images/search.svg`
+	SEARCH: `${process.env.PUBLIC_URL}/assets/images/search.svg`,
+	VERIFICATION_DOC_STATUS: `${process.env.PUBLIC_URL}/assets/images/verification-doc-status.svg`
 };
 
 export const SOCIAL_ICONS = {
@@ -307,6 +308,15 @@ export const FEATURES_ICONS = {
 	SUPPORT: `${process.env.PUBLIC_URL}/assets/images/features-support-icons.svg`,
 	LEGAL: `${process.env.PUBLIC_URL}/assets/images/features-legal-icons.svg`
 };
+
+export const SUMMMARY_ICON = {
+	KRAKKEN: `${process.env.PUBLIC_URL}/assets/summary/krakken.png`,
+	RED_SNAPPER: `${process.env.PUBLIC_URL}/assets/summary/red-snapper.png`,
+	SHRIMP: `${process.env.PUBLIC_URL}/assets/summary/shrimp.png`,
+	WHALE: `${process.env.PUBLIC_URL}/assets/summary/whale.png`,
+	WHALE_DARK: `${process.env.PUBLIC_URL}/assets/summary/whale-dark.png`
+};
+
 export const HOLLAEX_LOGO = `${
 	process.env.PUBLIC_URL
 }/assets/hollaEx_logo-grey.svg`;
