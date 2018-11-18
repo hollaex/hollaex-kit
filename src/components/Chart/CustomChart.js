@@ -88,7 +88,7 @@ class CustomChart extends Component {
 
 					{children}
 					<OHLCTooltip {...OHLCProps} displayTexts={STRINGS.CHART_TEXTS} />
-					<EdgeIndicator {...edgeIndicatorProps} />
+					<EdgeIndicator {...edgeIndicatorProps(theme)} />
 				</Chart>
 				<Chart id={2} {...BarSeriesChartProps(height, 4)}>
 					<BarSeries {...BarSeriesProps(theme)} />
