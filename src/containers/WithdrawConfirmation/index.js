@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
-import ReactSVG from 'react-svg';
 
-import MessageDisplay from '../../components/Dialog/MessageDisplay';
-import { Button, Loader } from '../../components';
+import { IconTitle, Button, Loader } from '../../components';
 import { performConfirmWithdrawal } from '../../actions/walletActions';
 import { FLEX_CENTER_CLASSES, ICONS } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
@@ -42,32 +40,58 @@ class ConfirmWithdrawal extends Component {
 
     render() {
         const { is_success, error_txt, loading } = this.state;
+        let childProps = {};
         if (loading) {
-            return <Loader />;
+            childProps = {
+                loading,
+                child: <Loader relative={true} background={false} />
+            }
+        } else if (!is_success && error_txt) {
+            childProps = {
+                titleSection: {
+                    iconPath: ICONS.RED_WARNING,
+                    text: STRINGS.ERROR_TEXT
+                },
+                child: <div className='text-center mb-4'>
+                        <div>{error_txt}</div>
+                    </div>
+            }
+        } else {
+            childProps = {
+                titleSection: {
+                    iconPath: ICONS.COIN_WITHDRAW_BTC,
+                    text: STRINGS.SUCCESS_TEXT
+                },
+                child: <div className='text-center mb-4'>
+                    <div>{STRINGS.WITHDRAW_PAGE.WITHDRAW_CONFIRM_SUCCESS_1}</div>
+                    <div>{STRINGS.WITHDRAW_PAGE.WITHDRAW_CONFIRM_SUCCESS_2}</div>
+                </div>
+            }
         }
         return (
             <div className={classnames(...FLEX_CENTER_CLASSES, 'flex-column', 'f-1', 'withdrawal-confirm-warpper')}>
-                {!is_success && error_txt 
-                ? <MessageDisplay
-                    iconPath={ICONS.RED_WARNING}
-                    onClick={this.handleTransaction}
-                    text={error_txt}
-                    buttonLabel={STRINGS.WITHDRAW_PAGE.GO_WITHDRAWAL_HISTORY} />
-                : <div className={classnames(...FLEX_CENTER_CLASSES, 'flex-column', 'f-1')}>
-                    <ReactSVG
-                        path={ICONS.COIN_WITHDRAW_BTC}
-                        wrapperClassName="withdrawal-confirm--image"
+                <div
+                    className={classnames(
+                        ...FLEX_CENTER_CLASSES,
+                        'flex-column',
+                        'w-100',
+                        { "auth_wrapper": !loading}
+                    )}
+                >
+                    <IconTitle
+                        textType="title"
+                        className="w-100"
+                        {...childProps.titleSection}
                     />
-                    <div className='withdrawal-confirm-title'>
-                        {STRINGS.SUCCESS_TEXT}
-                    </div>
-                    <div className='text-center mb-4'>
-                        <div>{STRINGS.WITHDRAW_PAGE.WITHDRAW_CONFIRM_SUCCESS_1}</div>
-                        <div>{STRINGS.WITHDRAW_PAGE.WITHDRAW_CONFIRM_SUCCESS_2}</div>
-                    </div>
-                    <Button className='w-50' label={STRINGS.WITHDRAW_PAGE.GO_WITHDRAWAL_HISTORY} onClick={this.handleTransaction} />
+                    {childProps.child}
+                    {!loading &&
+                        <Button
+                            className='w-50'
+                            label={STRINGS.WITHDRAW_PAGE.GO_WITHDRAWAL_HISTORY}
+                            onClick={this.handleTransaction}
+                        />
+                    }
                 </div>
-                }
             </div>
         );
     }

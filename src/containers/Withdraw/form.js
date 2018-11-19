@@ -11,7 +11,7 @@ import math from 'mathjs';
 import { Button, Dialog, OtpForm, Loader } from '../../components';
 import renderFields from '../../components/Form/factoryFields';
 import {
-	setWithdrawNotificationSuccess,
+	setWithdrawEmailConfirmation,
 	setWithdrawNotificationError
 } from './notifications';
 import { fiatSymbol } from '../../utils/currency';
@@ -20,7 +20,6 @@ import { calculateFiatFee } from './utils';
 import STRINGS from '../../config/localizedStrings';
 
 import ReviewModalContent from './ReviewModalContent';
-import ReviewEmailContent from './ReviewEmailContent';
 
 export const FORM_NAME = 'WithdrawCryptocurrencyForm';
 
@@ -47,7 +46,6 @@ class Form extends Component {
 	state = {
 		dialogIsOpen: false,
 		dialogOtpOpen: false,
-		dialogEmailOpen: false,
 		otp_code: ''
 	};
 
@@ -86,14 +84,14 @@ class Form extends Component {
 		if (ev && ev.preventDefault) {
 			ev.preventDefault();
 		}
-		this.setState({ dialogIsOpen: false, dialogOtpOpen: false, dialogEmailOpen: false });
+		this.setState({ dialogIsOpen: false, dialogOtpOpen: false });
 	};
 
 	onAcceptDialog = () => {
 		if (this.props.otp_enabled) {
 			this.setState({ dialogOtpOpen: true });
 		} else {
-			// this.onCloseDialog();
+			this.onCloseDialog();
 			// this.props.submit();
 			const values = this.props.data;
 			return this.props
@@ -103,8 +101,10 @@ class Form extends Component {
 					fee: values.fee ? math.eval(values.fee) : 0,
 				})
 				.then((response) => {
-					this.onCloseDialog();
-					this.setState({ dialogIsOpen: true, dialogEmailOpen: true });
+					this.props.onSubmitSuccess(
+						{ ...response.data, currency: this.props.currency },
+						this.props.dispatch
+					);
 					return response;
 				})
 		}
@@ -126,7 +126,6 @@ class Form extends Component {
 			})
 			.then((response) => {
 				this.onCloseDialog();
-				this.setState({ dialogIsOpen: true, dialogEmailOpen: true });
 				this.props.onSubmitSuccess(
 					{ ...response.data, currency: this.props.currency },
 					this.props.dispatch
@@ -167,7 +166,7 @@ class Form extends Component {
 			currentPrice
 		} = this.props;
 
-		const { dialogIsOpen, dialogOtpOpen, dialogEmailOpen } = this.state;
+		const { dialogIsOpen, dialogOtpOpen } = this.state;
 
 		return (
 			<form onSubmit={handleSubmit}>
@@ -190,9 +189,6 @@ class Form extends Component {
 							onSubmit={this.onSubmitOtp}
 							onClickHelp={openContactForm}
 						/>
-					) : dialogEmailOpen ? (
-						<ReviewEmailContent
-							onConfirmEmail={this.onConfirmEmail} />
 					) : !submitting ? (
 						<ReviewModalContent
 							currency={currency}
@@ -215,7 +211,7 @@ const WithdrawForm = reduxForm({
 	onSubmitFail: setWithdrawNotificationError,
 	onSubmitSuccess: (data, dispatch) => {
 		dispatch(reset(FORM_NAME));
-		// setWithdrawNotificationSuccess(data, dispatch);
+		setWithdrawEmailConfirmation(data, dispatch);
 	},
 	enableReinitialize: true,
 	validate

@@ -130,6 +130,11 @@ export default (
 				name="Reset Password"
 				component={ResetPassword}
 			/>
+			<Route
+				path="confirm-withdraw/:token"
+				name="ConfirmWithdraw"
+				component={WithdrawConfirmation}
+			/>
 			<Route path="verify" name="Verify" component={VerificationEmailRequest} />
 			<Route
 				path="verify/:code"
@@ -147,7 +152,6 @@ export default (
 			<Route path="wallet/:currency" name="Wallet" component={CurrencyWallet} onEnter={requireAuth}/>
 			<Route path="wallet/:currency/deposit" name="Deposit" component={Deposit} onEnter={requireAuth}/>
 			<Route path="wallet/:currency/withdraw" name="Withdraw" component={Withdraw} onEnter={requireAuth}/>
-			<Route path="confirm-withdraw/:token" name="ConfirmWithdraw" component={WithdrawConfirmation} onEnter={requireAuth}/>
 			<Route
 				path="transactions"
 				name="Transactions"
