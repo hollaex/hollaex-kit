@@ -130,11 +130,6 @@ export default (
 				name="Reset Password"
 				component={ResetPassword}
 			/>
-			<Route
-				path="confirm-withdraw/:token"
-				name="ConfirmWithdraw"
-				component={WithdrawConfirmation}
-			/>
 			<Route path="verify" name="Verify" component={VerificationEmailRequest} />
 			<Route
 				path="verify/:code"
@@ -161,6 +156,11 @@ export default (
 			<Route path="trade/:pair" name="Trade" component={Trade} />
 			<Route path="quick-trade/:pair" name="Quick Trade" component={QuickTrade} />
 			<Route path="chat" name="Chat" component={Chat} onEnter={requireAuth}/>
+			<Route
+				path="confirm-withdraw/:token"
+				name="ConfirmWithdraw"
+				component={WithdrawConfirmation}
+			/>
 		</Route>
 		<Route
 			path="verification"
