@@ -24,7 +24,6 @@ $logout--size-difference: 3rem;
 		.notification-title-text {
 			flex: 0;
 			text-align: center;
-			font-family: $raleway-medium--font-family;
 			font-size: $font-size-subhead3;
 		}
 	}
@@ -44,7 +43,6 @@ $logout--size-difference: 3rem;
 			text-align: center;
 			.notification-content-title {
 				text-transform: capitalize;
-				font-family: $raleway-medium--font-family;
 			}
 			.notification-content-information {
 				padding: 1rem;
@@ -93,7 +91,6 @@ $logout--size-difference: 3rem;
 		.notification-content-header {
 			position: relative;
 			font-size: $font-size-subtext;
-			font-family: $raleway-medium--font-family;
 		}
 	}
 	.notification-buttons-wrapper {
@@ -125,7 +122,6 @@ $logout--size-difference: 3rem;
 	}
 
 	.with_price-block_amount {
-		font-family: $raleway-medium--font-family;
 		margin: 3rem 0 4rem;
 		line-height: 3.5rem;
 	}
