@@ -149,7 +149,6 @@ export default (
 			<Route path="wallet/:currency" name="Wallet" component={CurrencyWallet} onEnter={requireAuth}/>
 			<Route path="wallet/:currency/deposit" name="Deposit" component={Deposit} onEnter={requireAuth}/>
 			<Route path="wallet/:currency/withdraw" name="Withdraw" component={Withdraw} onEnter={requireAuth}/>
-			<Route path="confirm-withdraw/:token" name="ConfirmWithdraw" component={WithdrawConfirmation} onEnter={requireAuth}/>
 			<Route
 				path="transactions"
 				name="Transactions"
@@ -159,6 +158,11 @@ export default (
 			<Route path="trade/:pair" name="Trade" component={Trade} />
 			<Route path="quick-trade/:pair" name="Quick Trade" component={QuickTrade} />
 			<Route path="chat" name="Chat" component={Chat} onEnter={requireAuth}/>
+			<Route
+				path="confirm-withdraw/:token"
+				name="ConfirmWithdraw"
+				component={WithdrawConfirmation}
+			/>
 		</Route>
 		<Route
 			path="verification"

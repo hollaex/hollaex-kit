@@ -42,13 +42,15 @@ const THEME_COLORS = {
 	white: COLORS
 };
 
-export const fillIndicator = ({ close, open }) =>
-	close > open ? COLORS.BUY : COLORS.SELL;
+export const fillIndicator = (theme = 'white') => ({ close, open }) =>
+	close > open
+	? THEME_COLORS[theme].BUY
+	: THEME_COLORS[theme].SELL;
 
 const CandleColor = (theme = 'white') => ({ open, close }) =>
 	close > open
-		? THEME_COLORS[theme].BUY_CANDLE
-		: THEME_COLORS[theme].SELL_CANDLE;
+		? THEME_COLORS[theme].BUY
+		: THEME_COLORS[theme].SELL;
 
 const VolumeBarColor = (theme = 'white') => ({ open, close }) =>
 	close > open
@@ -64,14 +66,14 @@ export const areaProps = {
 	yAccessor
 };
 
-export const edgeIndicatorProps = {
-	fill: fillIndicator,
+export const edgeIndicatorProps = (theme) => ({
+	fill: fillIndicator(theme),
 	yAccessor,
 	orient: 'right',
 	edgeAt: 'right',
 	itemType: 'last',
 	displayFormat: FORMAT_Y_TICK
-};
+});
 
 const OHLCOrigin = isMobile ? [0, -10] : [0, -25];
 

@@ -261,11 +261,11 @@ export const generateWithdrawalsHeaders = (symbol, withdrawalPopup) => {
 		{
 			label: STRINGS.STATUS,
 			key: 'status',
-			exportToCsv: ({ status = false, dismissed = false }) =>
-				status ? STRINGS.COMPLETE : (dismissed ? STRINGS.REJECTED : STRINGS.PENDING),
-			renderCell: ({ status = false, dismissed = false }, key, index) => {
+			exportToCsv: ({ status = false, dismissed = false, rejected = false }) =>
+				status ? STRINGS.COMPLETE : ((dismissed || rejected) ? STRINGS.REJECTED : STRINGS.PENDING),
+			renderCell: ({ status = false, dismissed = false, rejected = false }, key, index) => {
 				return (
-					<td key={index}>{status ? STRINGS.COMPLETE : (dismissed ? STRINGS.REJECTED : STRINGS.PENDING)}</td>
+					<td key={index}>{status ? STRINGS.COMPLETE : ((dismissed || rejected) ? STRINGS.REJECTED : STRINGS.PENDING)}</td>
 				);
 			}
 		},
