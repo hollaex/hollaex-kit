@@ -40,7 +40,7 @@ const generateSectionsText = (strings) => {
 			TITLE: SECTIONS.SECTION_3_TITLE,
 			LINKS: [
 				{ text: SECTIONS.SECTION_3_LINK_1, link: 'https://apidocs.hollaex.com' },
-				{ text: SECTIONS.SECTION_3_LINK_2, link: '' },
+				{ text: SECTIONS.SECTION_3_LINK_2, link: 'https://status.hollaex.com' },
 				{ text: SECTIONS.SECTION_3_LINK_3, link: '' },
 				{ text: SECTIONS.SECTION_3_LINK_4, link: '' },
 				{ text: SECTIONS.SECTION_3_LINK_5, link: '' },

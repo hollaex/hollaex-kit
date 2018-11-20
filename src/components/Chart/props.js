@@ -43,7 +43,9 @@ const THEME_COLORS = {
 };
 
 export const fillIndicator = (theme = 'white') => ({ close, open }) =>
-	close > open ? COLORS.BUY : COLORS.SELL;
+	close > open
+	? THEME_COLORS[theme].BUY
+	: THEME_COLORS[theme].SELL;
 
 const CandleColor = (theme = 'white') => ({ open, close }) =>
 	close > open
