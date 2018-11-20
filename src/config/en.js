@@ -374,6 +374,7 @@ export default {
 		GOTO_VERIFICATION: 'Go to verification',
 		CONNECT_BANK_ACCOUNT: 'Connect Bank Account', // ToDo: Add this into farsi in exir
 		ACTIVATE_2FA: 'Activate 2FA', // ToDo: Add this into farsi in exir
+		INCOMPLETED: 'Incompleted', // ToDo: Add this into farsi in exir
 		USER_DOCUMENTATION_FORM: {
 			FORM_FIELDS: {
 				FIRST_NAME_LABEL: 'First name',
@@ -916,8 +917,6 @@ export default {
 		TINY_PINK_SHRIMP_TRADER: 'Tiny Pink Shrimp Trader',
 		TINY_PINK_SHRIMP_TRADER_ACCOUNT: 'Tiny Pink Shrimp Trader Account',
 		LITTLE_RED_SNAPPER_TRADER: 'Little Red Snapper Trader',
-		LITTLE_RED_SNAPPER_TRADER_TXT_1: 'Little Red Snapper Trader',
-		LITTLE_RED_SNAPPER_TRADER_TXT_2: 'Little Red Snapper Trader',
 		LITTLE_RED_SNAPPER_TRADER_ACCOUNT: 'Little Red Snapper Trader Account',
 		CUNNING_BLUE_KRAKEN_TRADING: 'Cunning Blue Kraken Trading',
 		CUNNING_BLUE_KRAKEN_TRADING_ACCOUNT: 'Cunning Blue Kraken Trading Account',
@@ -927,10 +926,24 @@ export default {
 		TRADING_VOLUME: 'Trading Volume',
 		ACCOUNT_ASSETS: 'Account Assets',
 		ACCOUNT_DETAILS: 'Account Details',
-		TRADER_ACCOUNT_TXT_1: 'Your journey begins here!',
-		TRADER_ACCOUNT_TXT_2: 'Keep swimming true, you’ll soon stand out from the rest of the shoal',
+		SHRIMP_ACCOUNT_TXT_1: 'Your journey begins here!',
+		SHRIMP_ACCOUNT_TXT_2: 'Keep swimming true, you’ll soon stand out from the rest of the shoal',
+		SNAPPER_ACCOUNT_TXT_1: 'Congrats on staying your course through the swell of the market.',
+		SNAPPER_ACCOUNT_TXT_2: 'Forge through and fight the surge for more crypto treasures ahead.',
+		KRAKEN_ACCOUNT_TXT_1: 'Likelier to crack jokes than hulls, this crustacean has weathered his share of storms!',
+		LEVIATHAN_ACCOUNT_TXT_1: 'Beast from the abyss, seeing through altcoins into unfathomable depths, masters of midnight waters and tidal wave.',
 		VIEW_FEE_STRUCTURE: 'View Fee Structure and Limits',
 		UPGRADE_ACCOUNT: 'Upgrade Account',
-		ACTIVE_2FA_SECURITY: 'Active 2FA Security'
+		ACTIVE_2FA_SECURITY: 'Active 2FA Security',
+		ACCOUNT_ASSETS_TXT_1: 'Displayed is a summery of all your assets.',
+		ACCOUNT_ASSETS_TXT_2: 'Holding a large amounts of assets will entitle you for an account upgrade which includes a unique badge and lower trading fees.',
+		TRADING_VOLUME_TXT_1: 'Your trading volume history displayed in Bitcoin and calculated at the end of every month.',
+		TRADING_VOLUME_TXT_2: 'High trading activity will entitle you for an account upgrade rewarding you with a unique badge and lower trading fees',
+		ACCOUNT_DETAILS_TXT_1: 'Your account type determines your account badge, trading fee, deposits and withdrawal limits.',
+		ACCOUNT_DETAILS_TXT_2: 'Your trading account age, activity level and total account assets amount will determine if your account is legable for an upgrade.',
+		ACCOUNT_DETAILS_TXT_3: 'Maintaining your account level requires constant trading and maintaining a certain amount of deposited assets.',
+		ACCOUNT_DETAILS_TXT_4: 'Periodic downgrading of accounts will occur if activity and assets are not maintained.',
+		REQUIREMENTS: 'Requirements',
+		REQUEST_ACCOUNT_UPGRADE: 'Request an Account Upgrade'
 	}
 };

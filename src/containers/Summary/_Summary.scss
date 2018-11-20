@@ -12,7 +12,6 @@ $summary-icon-color-inactive: #808184;
         border-top: .2rem solid $summary--black;
         margin: 0 .5rem;
         padding: .5rem;
-        width: 100%;
         
         .summary-block-title {
             color: $summary--black;
@@ -21,19 +20,22 @@ $summary-icon-color-inactive: #808184;
         }
     }
 
-    .trader-account-wrapper {
-        flex: 4;
+    .summary-content-txt {
+        font-size: .8rem;
+    }
 
-        .trader-account-icon {
-            width: 7rem;
-            margin: 1rem 1rem .5rem 0;
-        }
+    .trader-account-wrapper {
+        width: 25rem;
     
         .trade-account-secondary-txt {
-            font-size: .8rem;
             margin: auto 0;
             width: 45%;
         }
+    }
+
+    .trader-account-icon {
+        width: 7rem;
+        margin: 1rem 1rem .5rem 0;
     }
     
     .trade-account-link {
@@ -42,25 +44,35 @@ $summary-icon-color-inactive: #808184;
     }
 
     .summary-section_1 {
-        height: 12rem;
+        height: 15rem;
+    }
+
+    .summary-section_2 {
+        height: 15rem;
+    }
+
+    .requirements-content-text {
+        margin: auto 0;
+    }
+
+    .requirements-content {
+        width: 11rem;
+    }
+
+    .requirement-verified {
+        color: $colors-notifications-green;
+    }
+
+    .requirement-not-verified {
+        color: $colors-notifications-red;
+    }
+
+    .requirement-incomplete {
+        color: $colors-deactivate-color2;
     }
 
     .requirement-wrapper {
-        flex: 6;
-
-        .requirements-content-text {
-            font-size: .8rem;
-            margin: auto 0;
-        }
-
-        .requirement-verified {
-            color: $colors-notifications-green;
-            width: 11rem;
-        }
-
-        .requirement-not-verified {
-            color: $colors-notifications-red;
-        }
+        width: 50rem;
 
         .requirement-doc-icon {
             width: 6rem;
@@ -73,25 +85,82 @@ $summary-icon-color-inactive: #808184;
             }
         }
 
-        .requirement-stauts {
-            width: 1rem;
+    }
+
+    .requirement-stauts {
+        width: 1rem;
+    }
+
+    .requirement-status-warning {
+        height: 1rem;
+        width: 1rem;
+        border-radius: 1.5rem;
+        background-color: red;
+        color: white;
+        display: -ms-flexbox;
+        display: flex;
+        -ms-flex-pack: center;
+        justify-content: center;
+        -ms-flex-align: center;
+        align-items: center;
+        font-size: .8rem;
+        line-height: 1;
+        font-weight: bold;
+    }
+
+    .assets-wrapper {
+        width: 25rem;
+
+        .assets-description {
+            width: 86%;
+        }
+    }
+
+    .trading-volume-wrapper {
+        width: 50rem;
+    }
+
+    .account-details-wrapper {
+
+        .account-type-container {
+            width: 30%;
         }
 
-        .requirement-status-warning {
-            height: 1rem;
-            width: 1rem;
-            border-radius: 1.5rem;
-            background-color: red;
-            color: white;
-            display: -ms-flexbox;
-            display: flex;
-            -ms-flex-pack: center;
-            justify-content: center;
-            -ms-flex-align: center;
-            align-items: center;
-            font-size: .8rem;
-            line-height: 1;
+        .account-type-icon {
+            width: 4rem;
+        }
+
+        .account-type-menu {
+            border-top: 1px solid $colors-deactivate;
+            color: $colors-notifications-blue;
+            cursor: pointer;
             font-weight: bold;
+            padding: .5rem 0;
+            text-transform: uppercase;
+        }
+
+        .account-type-menu-active {
+            border-top: 2px solid $summary--black;
+            border-bottom: 1px solid $summary--black;
+            color: $summary--black;
+            font-size: 1rem;
+            text-transform: capitalize;
+        }
+
+        .accounnt-type-menu-last-active {
+            border-bottom: none !important;
+        }
+
+        .account-current {
+            color: $colors-deactivate-color2;
+            text-transform: lowercase;
+        }
+
+        .requirement-header {
+            color: $summary--black;
+            font-weight: bold;
+            border-bottom: 1px solid $summary--black;
+            margin-bottom: 1rem;
         }
     }
 }

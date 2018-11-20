@@ -310,11 +310,11 @@ export const FEATURES_ICONS = {
 };
 
 export const SUMMMARY_ICON = {
-	KRAKKEN: `${process.env.PUBLIC_URL}/assets/summary/krakken.png`,
-	RED_SNAPPER: `${process.env.PUBLIC_URL}/assets/summary/red-snapper.png`,
+	KRAKEN: `${process.env.PUBLIC_URL}/assets/summary/kraken.png`,
+	SNAPPER: `${process.env.PUBLIC_URL}/assets/summary/snapper.png`,
 	SHRIMP: `${process.env.PUBLIC_URL}/assets/summary/shrimp.png`,
-	WHALE: `${process.env.PUBLIC_URL}/assets/summary/whale.png`,
-	WHALE_DARK: `${process.env.PUBLIC_URL}/assets/summary/whale-dark.png`
+	LEVIATHAN: `${process.env.PUBLIC_URL}/assets/summary/leviathan.png`,
+	LEVIATHAN_DARK: `${process.env.PUBLIC_URL}/assets/summary/leviathan_dark.png`
 };
 
 export const HOLLAEX_LOGO = `${
@@ -494,3 +494,26 @@ export const DEFAULT_COUNTRY = process.env.REACT_APP_DEFAULT_COUNTRY
 	: 'FR';
 
 export const BASE_CURRENCY = process.env.REACT_APP_BASE_CURRENCY;
+
+export const TRADING_ACCOUNT_TYPE = {
+	shrimp: {
+		symbol: 'shrimp',
+		name: STRINGS.SUMMARY.TINY_PINK_SHRIMP_TRADER,
+		fullName: STRINGS.SUMMARY.TINY_PINK_SHRIMP_TRADER_ACCOUNT
+	},
+	snapper: {
+		symbol: 'snapper',
+		name: STRINGS.SUMMARY.LITTLE_RED_SNAPPER_TRADER,
+		fullName: STRINGS.SUMMARY.LITTLE_RED_SNAPPER_TRADER_ACCOUNT
+	},
+	kraken: {
+		symbol: 'kraken',
+		name: STRINGS.SUMMARY.CUNNING_BLUE_KRAKEN_TRADING,
+		fullName: STRINGS.SUMMARY.CUNNING_BLUE_KRAKEN_TRADING_ACCOUNT
+	},
+	leviathan: {
+		symbol: 'leviathan',
+		name: STRINGS.SUMMARY.BLACK_LEVIATHAN_TRADING,
+		fullName: STRINGS.SUMMARY.BLACK_LEVIATHAN_TRADING_ACCOUNT
+	}
+};

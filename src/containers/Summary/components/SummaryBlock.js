@@ -1,10 +1,14 @@
 import React from 'react';
+import classnames from 'classnames';
 
 const SummaryBlock = (props) => {
-    const { title, supportTitle, children } = props;
+    const { title, wrapperClassname="", secondaryTitle, children } = props;
     return (
-        <div className="summary-block_wrapper">
-            <div className="summary-block-title">{title}</div>
+        <div className={classnames(wrapperClassname, "summary-block_wrapper")}>
+            <div className="d-flex">
+                <div className="summary-block-title">{title}</div>
+                {secondaryTitle && <div>: {secondaryTitle}</div>}
+            </div>
             {children}
         </div>
     );
