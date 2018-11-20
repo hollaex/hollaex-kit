@@ -104,7 +104,8 @@ export default {
 			SECTION_2_LINK_2: 'Contact Us',
 			SECTION_2_LINK_3: 'Career',
 			SECTION_3_TITLE: 'DEVELOPERS',
-			SECTION_3_LINK_1: 'API Explorer'
+			SECTION_3_LINK_1: 'API Explorer',
+			SECTION_3_LINK_2: 'Server Status'
 		}
 	},
 	ACCOUNTS: {
