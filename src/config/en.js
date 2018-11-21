@@ -609,6 +609,7 @@ export default {
 	PRICE: 'Price',
 	FEE: 'Fee',
 	FEES: 'Fees',
+	LIMIT: 'Limit', // ToDo: Add it into farsi
 	TIME: 'Time',
 	TIMESTAMP: 'Timestamp',
 	MORE: 'More',
@@ -944,6 +945,15 @@ export default {
 		ACCOUNT_DETAILS_TXT_3: 'Maintaining your account level requires constant trading and maintaining a certain amount of deposited assets.',
 		ACCOUNT_DETAILS_TXT_4: 'Periodic downgrading of accounts will occur if activity and assets are not maintained.',
 		REQUIREMENTS: 'Requirements',
-		REQUEST_ACCOUNT_UPGRADE: 'Request an Account Upgrade'
+		REQUEST_ACCOUNT_UPGRADE: 'Request an Account Upgrade',
+		FEES_AND_LIMIT: 'Fee and Limit Structure for',
+		FEES_AND_LIMIT_TXT_1: 'Becoming a crypto trader marks new beginning. Armed with wits, will and speed, dive into the bottomless blue.Only by delving deep within the crypto oceans will you unlock your fortunes.',
+		FEES_AND_LIMIT_TXT_2: 'Each account has its own fees and deposit and withdrawal limits.Please visit the EXIR website to get more information.',
+		DEPOSIT_WITHDRAWAL_ALLOWENCE: 'Deposit & withdrawal allowence',
+		TRADING_FEE_STRUCTURE: 'Trading fee structure',
+		WITHDRAWAL: 'Withdrawal',
+		DEPOSIT: 'Deposit',
+		TAKER: 'Taker',
+		MAKER: 'Maker'
 	}
 };

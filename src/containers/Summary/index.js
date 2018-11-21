@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
 import SummaryBlock from './components/SummaryBlock';
 import TraderAccounts from './components/TraderAccounts';
@@ -9,6 +10,8 @@ import TradingVolume from './components/TradingVolume';
 import AccountDetails from './components/AccountDetails';
 
 import { IconTitle } from '../../components';
+import { openFeesStructureandLimits } from '../../actions/appActions';
+import { requestLimits, requestFees } from '../../actions/userAction';
 import { SUMMMARY_ICON, CURRENCIES, TRADING_ACCOUNT_TYPE } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 
@@ -19,6 +22,27 @@ class Summary extends Component {
     state = {
         selectedAccount: default_trader_account.symbol,
         currentTradingAccount: default_trader_account
+    };
+
+    componentDidMount() {
+        if (!this.props.limits.fetched && !this.props.limits.fetching) {
+            this.props.requestLimits();
+        }
+
+        if (!this.props.fees.fetched && !this.props.fees.fetching) {
+            this.props.requestFees();
+        }
+    }
+
+    onFeesAndLimits = tradingAccount => {
+        const { fees, limits, verification_level, pairs } = this.props;
+        this.props.openFeesStructureandLimits({
+            fees: fees.data,
+            limits: limits.data,
+            verification_level,
+            tradingAccount,
+            pairs
+        });
     };
 
     onAccountTypeChange = type => {
@@ -39,7 +63,8 @@ class Summary extends Component {
                         <SummaryBlock title={STRINGS.SUMMARY.TINY_PINK_SHRIMP_TRADER_ACCOUNT} >
                             <TraderAccounts
                                 icon={SUMMMARY_ICON.SHRIMP}
-                                account={default_trader_account} />
+                                account={default_trader_account}
+                                onFeesAndLimits={this.onFeesAndLimits} />
                         </SummaryBlock>
                     </div>
                     <div className="summary-section_1 requirement-wrapper d-flex">
@@ -75,7 +100,8 @@ class Summary extends Component {
                             user={user}
                             currentTradingAccount={currentTradingAccount.symbol}
                             selectedAccount={selectedAccount}
-                            onAccountTypeChange={this.onAccountTypeChange} />
+                            onAccountTypeChange={this.onAccountTypeChange}
+                            onFeesAndLimits={this.onFeesAndLimits} />
                     </SummaryBlock>
                 </div>
             </div>
@@ -84,10 +110,19 @@ class Summary extends Component {
 }
 
 const mapStateToProps = (state) => ({
+    pairs: state.app.pairs,
     user: state.user,
+    verification_level: state.user.verification_level,
     balance: state.user.balance,
-    orderBook: state.orderbook
+    fees: state.user.feeValues,
+    limits: state.user.limits
 });
 
-export default connect(mapStateToProps)(Summary);
+const mapDispatchToProps = (dispatch) => ({
+    requestLimits: bindActionCreators(requestLimits, dispatch),
+    requestFees: bindActionCreators(requestFees, dispatch),
+    openFeesStructureandLimits: bindActionCreators(openFeesStructureandLimits, dispatch)
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Summary);
 

@@ -3,7 +3,7 @@ import React from 'react';
 import STRINGS from '../../../config/localizedStrings';
 import { SUMMMARY_ICON } from '../../../config/constants';
 
-const TraderAccounts = ({ account = {}, isAccountDetails=false }) => {
+const TraderAccounts = ({ account = {}, isAccountDetails = false, onFeesAndLimits }) => {
     return (
         <div className="d-flex">
             <div>
@@ -13,7 +13,11 @@ const TraderAccounts = ({ account = {}, isAccountDetails=false }) => {
                 {isAccountDetails && <div className="summary-block-title">{account.fullName}</div>}
                 <div className="mb-2">{STRINGS.SUMMARY[`${account.symbol.toUpperCase()}_ACCOUNT_TXT_1`]}</div>
                 <div className="mb-2">{STRINGS.SUMMARY[`${account.symbol.toUpperCase()}_ACCOUNT_TXT_2`]}</div>
-                <div className="trade-account-link mb-2">{STRINGS.SUMMARY.VIEW_FEE_STRUCTURE.toUpperCase()}</div>
+                <div
+                    className="trade-account-link mb-2"
+                    onClick={() => onFeesAndLimits(account)}>
+                    {STRINGS.SUMMARY.VIEW_FEE_STRUCTURE.toUpperCase()}
+                </div>
                 {!isAccountDetails && <div className="trade-account-link mb-2">{STRINGS.SUMMARY.UPGRADE_ACCOUNT.toUpperCase()}</div>}
             </div>
         </div>

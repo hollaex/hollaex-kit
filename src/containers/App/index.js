@@ -39,7 +39,8 @@ import {
 	setOrderLimits,
 	NOTIFICATIONS,
 	CONTACT_FORM,
-	HELPFUL_RESOURCES_FORM
+	HELPFUL_RESOURCES_FORM,
+	FEES_STRUCTURE_AND_LIMITS
 } from '../../actions/appActions';
 
 import {
@@ -62,6 +63,7 @@ import {
 } from '../../components';
 import { ContactForm, HelpfulResourcesForm, Chat as ChatComponent } from '../';
 import ReviewEmailContent from '../Withdraw/ReviewEmailContent';
+import FeesAndLimits from '../Summary/components/FeesAndLimits';
 
 import {
 	getClasesForLanguage,
@@ -519,7 +521,16 @@ class Container extends Component {
 				return (
 					<ReviewEmailContent
 						onConfirmEmail={this.onConfirmEmail}
-						onClose={this.onCloseDialog} />
+						onClose={this.onCloseDialog}
+					/>
+				);
+			case FEES_STRUCTURE_AND_LIMITS:
+				return (
+					<FeesAndLimits
+						type={type}
+						data={data}
+						onClose={this.onCloseDialog}
+					/>
 				);
 			default:
 				return <div />;

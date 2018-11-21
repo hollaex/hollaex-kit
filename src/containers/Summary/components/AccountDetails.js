@@ -7,7 +7,7 @@ import { TRADING_ACCOUNT_TYPE, SUMMMARY_ICON, FLEX_CENTER_CLASSES } from '../../
 import STRINGS from '../../../config/localizedStrings';
 import { Button } from '../../../components';
 
-const AccountDetails = ({ user, selectedAccount, onAccountTypeChange, currentTradingAccount }) => {
+const AccountDetails = ({ user, selectedAccount, onAccountTypeChange, currentTradingAccount, onFeesAndLimits }) => {
     const accounts = Object.keys(TRADING_ACCOUNT_TYPE);
     return (
         <div className="account-details-wrapper summary-content-txt">
@@ -52,7 +52,8 @@ const AccountDetails = ({ user, selectedAccount, onAccountTypeChange, currentTra
                 <div className="w-50 ml-5">
                     <TraderAccounts
                         account={TRADING_ACCOUNT_TYPE[selectedAccount]}
-                        isAccountDetails={true} />
+                        isAccountDetails={true}
+                        onFeesAndLimits={onFeesAndLimits} />
                     <div>
                         <div className="requirement-header d-flex justify-content-between">
                             <div>{STRINGS.SUMMARY.REQUIREMENTS}</div>
