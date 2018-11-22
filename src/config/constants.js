@@ -495,6 +495,8 @@ export const DEFAULT_COUNTRY = process.env.REACT_APP_DEFAULT_COUNTRY
 
 export const BASE_CURRENCY = process.env.REACT_APP_BASE_CURRENCY;
 
+export const FEES_LIMIT_SITE_URL = 'https://www.exir.io/exir_fees/';
+
 export const TRADING_ACCOUNT_TYPE = {
 	shrimp: {
 		symbol: 'shrimp',

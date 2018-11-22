@@ -1,6 +1,89 @@
 $summary--black: #000000;
 $summary-icon-color-inactive: #808184;
 
+.dark-theme {
+    .summary-container {
+        color: $dark-font-sub-text-color;
+
+        .trade-account-link {
+            color: $dark-link;
+        }
+
+        .summary-block_wrapper {
+            border-top: .2rem solid $dark-font-main-text-color;
+
+            .summary-block-title {
+                color: $dark-font-main-text-color;
+            }
+        }
+
+        .requirement-wrapper {
+            .requirement-doc-icon {
+                svg {
+                    .verification-doc {
+                        fill: $dark-font-main-text-color;
+                    }
+                }
+            }
+        }
+
+        .account-details-wrapper {
+            .account-type-menu {
+                color: $dark-link
+            }
+
+            .account-type-menu-active {
+                border-top: 2px solid $dark-font-main-text-color;
+                border-bottom: 1.5px solid $dark-font-main-text-color;
+                color: $dark-font-main-text-color;
+            }
+
+            .accounnt-type-menu-last-active {
+                border-bottom: none !important;
+            }
+
+            .requirement-header {
+                border-bottom: 1px solid $dark-font-main-text-color;
+                color: $dark-font-main-text-color;
+            }
+        }
+    }
+
+    .fee-limits-wrapper {
+        .fee-limits-link {
+            color: $dark-link;
+        }
+
+        table {
+            border-collapse: collapse;
+        }
+
+        td {
+            border: 1px solid $dark-font-sub-text-color;
+        }
+
+        .account-limits-coin {
+            border-bottom: 2px solid $dark-font-sub-text-color;
+        }
+
+        .account-limits-content {
+            border: 2px solid $dark-font-sub-text-color;
+        }
+
+        .account-limits-maker {
+            border-left: 2px solid $dark-font-sub-text-color;
+            border-right: 2px solid $dark-font-sub-text-color;
+            border-top: 2px solid $dark-font-sub-text-color;
+        }
+        
+        .account-limits-taker {
+            border-bottom: 2px solid $dark-font-sub-text-color;
+            border-left: 2px solid $dark-font-sub-text-color;
+            border-right: 2px solid $dark-font-sub-text-color;
+        }
+    }
+}
+
 .summary-container {
     color: $colors-deactivate-color2;
     height: inherit;
@@ -158,10 +241,14 @@ $summary-icon-color-inactive: #808184;
         }
 
         .requirement-header {
+            border-bottom: 1px solid $summary--black;
             color: $summary--black;
             font-weight: bold;
-            border-bottom: 1px solid $summary--black;
             margin-bottom: 1rem;
+        }
+
+        .status-header {
+            width: 6rem;
         }
     }
 
@@ -169,6 +256,12 @@ $summary-icon-color-inactive: #808184;
 
 .fee-limits-wrapper {
     width: 36rem;
+
+    .fee-limits-link {
+        color: $colors-notifications-blue;
+        cursor: pointer;
+        font-weight: bold;
+    }
 
     .content-txt {
         font-size: $font-size-subtext;
@@ -199,13 +292,30 @@ $summary-icon-color-inactive: #808184;
         width: 100%;
     }
 
+    .account-limits-content {
+        border: 2px solid $summary--black;
+    }
+
+    .account-limits-maker {
+        border-left: 2px solid $summary--black;
+        border-right: 2px solid $summary--black;
+        border-top: 2px solid $summary--black;
+    }
+    
+    .account-limits-taker {
+        border-bottom: 2px solid $summary--black;
+        border-left: 2px solid $summary--black;
+        border-right: 2px solid $summary--black;
+    }
+
     .account-limits-coin {
-        max-width: 4rem;
+        border-bottom: 2px solid $summary--black;
         padding: .25rem .5rem;
+        width: 14rem;
     }
 
     .account-limits-status {
-        max-width: 2rem;
+        width: 6rem;
         padding: .25rem .5rem;
     }
 
@@ -215,7 +325,7 @@ $summary-icon-color-inactive: #808184;
 
     .limit-head-currency {
         font-weight: normal !important;
-        padding: .25rem .5rem;
+        padding: .25rem .5rem .25rem 3rem;
     }
 
     .limit-head {

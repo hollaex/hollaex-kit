@@ -7,7 +7,7 @@ import { TRADING_ACCOUNT_TYPE, SUMMMARY_ICON, FLEX_CENTER_CLASSES } from '../../
 import STRINGS from '../../../config/localizedStrings';
 import { Button } from '../../../components';
 
-const AccountDetails = ({ user, selectedAccount, onAccountTypeChange, currentTradingAccount, onFeesAndLimits }) => {
+const AccountDetails = ({ user, activeTheme, selectedAccount, onAccountTypeChange, currentTradingAccount, onFeesAndLimits }) => {
     const accounts = Object.keys(TRADING_ACCOUNT_TYPE);
     return (
         <div className="account-details-wrapper summary-content-txt">
@@ -21,6 +21,8 @@ const AccountDetails = ({ user, selectedAccount, onAccountTypeChange, currentTra
                 <div className="account-type-container">
                     {accounts.map((key, index) => {
                         let account = TRADING_ACCOUNT_TYPE[key];
+                        let icon = activeTheme === 'dark' && SUMMMARY_ICON[`${key.toUpperCase()}_DARK`]
+                            ? SUMMMARY_ICON[`${key.toUpperCase()}_DARK`] : SUMMMARY_ICON[key.toUpperCase()];
                         return (
                             <div
                                 key={index}
@@ -37,7 +39,7 @@ const AccountDetails = ({ user, selectedAccount, onAccountTypeChange, currentTra
                                 onClick={() => onAccountTypeChange(key)}
                             >
                                 <div className="mr-4">
-                                    <img src={SUMMMARY_ICON[key.toUpperCase()]} alt={account.name} className="account-type-icon" />
+                                    <img src={icon} alt={account.name} className="account-type-icon" />
                                 </div>
                                 <div className={classnames(FLEX_CENTER_CLASSES)}>
                                     {account.name}
@@ -51,13 +53,14 @@ const AccountDetails = ({ user, selectedAccount, onAccountTypeChange, currentTra
                 </div>
                 <div className="w-50 ml-5">
                     <TraderAccounts
+                        activeTheme={activeTheme}
                         account={TRADING_ACCOUNT_TYPE[selectedAccount]}
                         isAccountDetails={true}
                         onFeesAndLimits={onFeesAndLimits} />
                     <div>
                         <div className="requirement-header d-flex justify-content-between">
                             <div>{STRINGS.SUMMARY.REQUIREMENTS}</div>
-                            <div>{STRINGS.STATUS}</div>
+                            <div className="status-header">{STRINGS.STATUS}</div>
                         </div>
                         <SummaryRequirements
                             user={user}

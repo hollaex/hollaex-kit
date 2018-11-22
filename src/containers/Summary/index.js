@@ -10,7 +10,7 @@ import TradingVolume from './components/TradingVolume';
 import AccountDetails from './components/AccountDetails';
 
 import { IconTitle } from '../../components';
-import { openFeesStructureandLimits } from '../../actions/appActions';
+import { openFeesStructureandLimits, openContactForm } from '../../actions/appActions';
 import { requestLimits, requestFees } from '../../actions/userAction';
 import { SUMMMARY_ICON, CURRENCIES, TRADING_ACCOUNT_TYPE } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
@@ -49,8 +49,12 @@ class Summary extends Component {
         this.setState({ selectedAccount: type });
     };
 
+    onUpgradeAccount = () => {
+        this.props.openContactForm({ category: 'level' });
+    };
+
     render() {
-        const { user, balance } = this.props;
+        const { user, balance, activeTheme } = this.props;
         const { selectedAccount, currentTradingAccount } = this.state;
         return (
             <div className="summary-container">
@@ -63,8 +67,10 @@ class Summary extends Component {
                         <SummaryBlock title={STRINGS.SUMMARY.TINY_PINK_SHRIMP_TRADER_ACCOUNT} >
                             <TraderAccounts
                                 icon={SUMMMARY_ICON.SHRIMP}
+                                activeTheme={activeTheme}
                                 account={default_trader_account}
-                                onFeesAndLimits={this.onFeesAndLimits} />
+                                onFeesAndLimits={this.onFeesAndLimits}
+                                onUpgradeAccount={this.onUpgradeAccount} />
                         </SummaryBlock>
                     </div>
                     <div className="summary-section_1 requirement-wrapper d-flex">
@@ -98,6 +104,7 @@ class Summary extends Component {
                         wrapperClassname="w-100" >
                         <AccountDetails
                             user={user}
+                            activeTheme={activeTheme}
                             currentTradingAccount={currentTradingAccount.symbol}
                             selectedAccount={selectedAccount}
                             onAccountTypeChange={this.onAccountTypeChange}
@@ -115,13 +122,15 @@ const mapStateToProps = (state) => ({
     verification_level: state.user.verification_level,
     balance: state.user.balance,
     fees: state.user.feeValues,
-    limits: state.user.limits
+    limits: state.user.limits,
+    activeTheme: state.app.theme
 });
 
 const mapDispatchToProps = (dispatch) => ({
     requestLimits: bindActionCreators(requestLimits, dispatch),
     requestFees: bindActionCreators(requestFees, dispatch),
-    openFeesStructureandLimits: bindActionCreators(openFeesStructureandLimits, dispatch)
+    openFeesStructureandLimits: bindActionCreators(openFeesStructureandLimits, dispatch),
+    openContactForm: bindActionCreators(openContactForm, dispatch)
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Summary);

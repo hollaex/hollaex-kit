@@ -3,11 +3,13 @@ import React from 'react';
 import STRINGS from '../../../config/localizedStrings';
 import { SUMMMARY_ICON } from '../../../config/constants';
 
-const TraderAccounts = ({ account = {}, isAccountDetails = false, onFeesAndLimits }) => {
+const TraderAccounts = ({ account = {}, activeTheme, isAccountDetails = false, onFeesAndLimits, onUpgradeAccount }) => {
+    let icon = activeTheme === 'dark' && SUMMMARY_ICON[`${account.symbol.toUpperCase()}_DARK`]
+        ? SUMMMARY_ICON[`${account.symbol.toUpperCase()}_DARK`] : SUMMMARY_ICON[account.symbol.toUpperCase()];
     return (
         <div className="d-flex">
             <div>
-                <img src={SUMMMARY_ICON[account.symbol.toUpperCase()]} alt="trader account" className="trader-account-icon" />
+                <img src={icon} alt="trader account" className="trader-account-icon" />
             </div>
             <div className="trade-account-secondary-txt summary-content-txt">
                 {isAccountDetails && <div className="summary-block-title">{account.fullName}</div>}
@@ -18,7 +20,11 @@ const TraderAccounts = ({ account = {}, isAccountDetails = false, onFeesAndLimit
                     onClick={() => onFeesAndLimits(account)}>
                     {STRINGS.SUMMARY.VIEW_FEE_STRUCTURE.toUpperCase()}
                 </div>
-                {!isAccountDetails && <div className="trade-account-link mb-2">{STRINGS.SUMMARY.UPGRADE_ACCOUNT.toUpperCase()}</div>}
+                {!isAccountDetails &&
+                    <div className="trade-account-link mb-2" onClick={onUpgradeAccount}>
+                        {STRINGS.SUMMARY.UPGRADE_ACCOUNT.toUpperCase()}
+                    </div>
+                }
             </div>
         </div>
     );

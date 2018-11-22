@@ -491,6 +491,7 @@ class Container extends Component {
 					/>
 				);
 			case CONTACT_FORM:
+					console.log('data=======================', data);
 				return (
 					<ContactForm
 						onSubmitSuccess={this.onCloseDialog}
@@ -530,6 +531,7 @@ class Container extends Component {
 						type={type}
 						data={data}
 						onClose={this.onCloseDialog}
+						activeTheme={this.props.activeTheme}
 					/>
 				);
 			default:

@@ -948,12 +948,13 @@ export default {
 		REQUEST_ACCOUNT_UPGRADE: 'Request an Account Upgrade',
 		FEES_AND_LIMIT: 'Fee and Limit Structure for',
 		FEES_AND_LIMIT_TXT_1: 'Becoming a crypto trader marks new beginning. Armed with wits, will and speed, dive into the bottomless blue.Only by delving deep within the crypto oceans will you unlock your fortunes.',
-		FEES_AND_LIMIT_TXT_2: 'Each account has its own fees and deposit and withdrawal limits.Please visit the EXIR website to get more information.',
+		FEES_AND_LIMIT_TXT_2: 'Each account has its own fees and deposit and withdrawal limits.Please visit the {0} to get more information.',
 		DEPOSIT_WITHDRAWAL_ALLOWENCE: 'Deposit & withdrawal allowence',
 		TRADING_FEE_STRUCTURE: 'Trading fee structure',
 		WITHDRAWAL: 'Withdrawal',
 		DEPOSIT: 'Deposit',
 		TAKER: 'Taker',
-		MAKER: 'Maker'
+		MAKER: 'Maker',
+		WEBSITE: 'website'
 	}
 };
