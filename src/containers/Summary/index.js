@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { isMobile } from 'react-device-detect';
 
 import SummaryBlock from './components/SummaryBlock';
 import TraderAccounts from './components/TraderAccounts';
@@ -8,6 +9,7 @@ import SummaryRequirements from './components/SummaryRequirements';
 import AccountAssets from './components/AccountAssets';
 import TradingVolume from './components/TradingVolume';
 import AccountDetails from './components/AccountDetails';
+import MobileSummary from './MobileSummary';
 
 import { IconTitle } from '../../components';
 import { openFeesStructureandLimits, openContactForm } from '../../actions/appActions';
@@ -58,59 +60,75 @@ class Summary extends Component {
         const { selectedAccount, currentTradingAccount } = this.state;
         return (
             <div className="summary-container">
-                <IconTitle
-                    text={STRINGS.SUMMARY_TITLE}
+                {/* <IconTitle
+                    text={`${STRINGS.ACCOUNTS.TITLE} ${STRINGS.SUMMARY.TITLE}`}
                     textType="title"
-                />
-                <div className="d-flex align-items-center">
-                    <div className="summary-section_1 trader-account-wrapper d-flex">
-                        <SummaryBlock title={STRINGS.SUMMARY.TINY_PINK_SHRIMP_TRADER_ACCOUNT} >
-                            <TraderAccounts
-                                icon={SUMMMARY_ICON.SHRIMP}
-                                activeTheme={activeTheme}
-                                account={default_trader_account}
-                                onFeesAndLimits={this.onFeesAndLimits}
-                                onUpgradeAccount={this.onUpgradeAccount} />
-                        </SummaryBlock>
-                    </div>
-                    <div className="summary-section_1 requirement-wrapper d-flex">
-                        <SummaryBlock
-                            title={STRINGS.SUMMARY.URGENT_REQUIREMENTS}
-                            wrapperClassname="w-100" >
-                            <SummaryRequirements user={user} contentClassName="requirements-content" />
-                        </SummaryBlock>
-                    </div>
-                </div>
-                <div className="d-flex align-items-center">
-                    <div className="assets-wrapper">
-                        <SummaryBlock
-                            title={STRINGS.SUMMARY.ACCOUNT_ASSETS}
-                            secondaryTitle={`${balance[`${FIAT}_balance`]} ${STRINGS.FIAT_FULLNAME}`} >
-                            <AccountAssets user={user} />
-                        </SummaryBlock>
-                    </div>
-                    <div className="trading-volume-wrapper">
-                        <SummaryBlock
-                            title={STRINGS.SUMMARY.TRADING_VOLUME}
-                            secondaryTitle={`${balance[`${FIAT}_balance`]} ${STRINGS.FIAT_FULLNAME}`} >
-                            <TradingVolume user={user} />
-                        </SummaryBlock>
-                    </div>
-                </div>
-                <div className="d-flex align-items-center">
-                    <SummaryBlock
-                        title={STRINGS.SUMMARY.ACCOUNT_DETAILS}
-                        secondaryTitle={currentTradingAccount.name}
-                        wrapperClassname="w-100" >
-                        <AccountDetails
-                            user={user}
-                            activeTheme={activeTheme}
-                            currentTradingAccount={currentTradingAccount.symbol}
-                            selectedAccount={selectedAccount}
-                            onAccountTypeChange={this.onAccountTypeChange}
-                            onFeesAndLimits={this.onFeesAndLimits} />
-                    </SummaryBlock>
-                </div>
+                /> */}
+                {isMobile
+                    ? <MobileSummary
+                        user={user}
+                        activeTheme={activeTheme}
+                        default_trader_account={default_trader_account}
+                        currentTradingAccount={currentTradingAccount}
+                        selectedAccount={selectedAccount}
+                        FIAT={FIAT}
+                        balance={balance}
+                        onFeesAndLimits={this.onFeesAndLimits}
+                        onUpgradeAccount={this.onUpgradeAccount}
+                        onAccountTypeChange={this.onAccountTypeChange}
+                    />
+                    : (<div>
+                        <div className="d-flex align-items-center">
+                            <div className="summary-section_1 trader-account-wrapper d-flex">
+                                <SummaryBlock title={STRINGS.SUMMARY.TINY_PINK_SHRIMP_TRADER_ACCOUNT} >
+                                    <TraderAccounts
+                                        icon={SUMMMARY_ICON.SHRIMP}
+                                        activeTheme={activeTheme}
+                                        account={default_trader_account}
+                                        onFeesAndLimits={this.onFeesAndLimits}
+                                        onUpgradeAccount={this.onUpgradeAccount} />
+                                </SummaryBlock>
+                            </div>
+                            <div className="summary-section_1 requirement-wrapper d-flex">
+                                <SummaryBlock
+                                    title={STRINGS.SUMMARY.URGENT_REQUIREMENTS}
+                                    wrapperClassname="w-100" >
+                                    <SummaryRequirements user={user} contentClassName="requirements-content" />
+                                </SummaryBlock>
+                            </div>
+                        </div>
+                        <div className="d-flex align-items-center">
+                            <div className="assets-wrapper">
+                                <SummaryBlock
+                                    title={STRINGS.SUMMARY.ACCOUNT_ASSETS}
+                                    secondaryTitle={`${balance[`${FIAT}_balance`]} ${STRINGS.FIAT_FULLNAME}`} >
+                                    <AccountAssets user={user} />
+                                </SummaryBlock>
+                            </div>
+                            <div className="trading-volume-wrapper">
+                                <SummaryBlock
+                                    title={STRINGS.SUMMARY.TRADING_VOLUME}
+                                    secondaryTitle={`${balance[`${FIAT}_balance`]} ${STRINGS.FIAT_FULLNAME}`} >
+                                    <TradingVolume user={user} />
+                                </SummaryBlock>
+                            </div>
+                        </div>
+                        <div className="d-flex align-items-center">
+                            <SummaryBlock
+                                title={STRINGS.SUMMARY.ACCOUNT_DETAILS}
+                                secondaryTitle={currentTradingAccount.name}
+                                wrapperClassname="w-100" >
+                                <AccountDetails
+                                    user={user}
+                                    activeTheme={activeTheme}
+                                    currentTradingAccount={currentTradingAccount.symbol}
+                                    selectedAccount={selectedAccount}
+                                    onAccountTypeChange={this.onAccountTypeChange}
+                                    onFeesAndLimits={this.onFeesAndLimits} />
+                            </SummaryBlock>
+                        </div>
+                    </div>)
+                }
             </div>
         );
     }

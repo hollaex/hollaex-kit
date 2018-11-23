@@ -913,8 +913,8 @@ export default {
 	QUICK_TRADE_MODE: 'Quick Trade Mode',
 	JUST_NOW: 'just now',
 	PAIR: 'Pair',
-	SUMMARY_TITLE: 'Account Summary', // ToDo: need to add in farsi when move to exir.
 	SUMMARY: { // ToDo: need to add this entire suumary in farsi when move to exir.
+		TITLE: 'Summary',
 		TINY_PINK_SHRIMP_TRADER: 'Tiny Pink Shrimp Trader',
 		TINY_PINK_SHRIMP_TRADER_ACCOUNT: 'Tiny Pink Shrimp Trader Account',
 		LITTLE_RED_SNAPPER_TRADER: 'Little Red Snapper Trader',

@@ -122,17 +122,22 @@ const SummaryRequirements = ({ user, isAccountDetails = false, contentClassName=
                         }
                     </div>
                 </div>
-                {!isAccountDetails && !user.otp_enabled && <Link to='/security'>
-                    <div className="trade-account-link mb-2">{STRINGS.SUMMARY.ACTIVE_2FA_SECURITY.toUpperCase()}</div>
-                </Link>
+                {!isAccountDetails && !user.otp_enabled && 
+                    <div className="trade-account-link mb-2">
+                        <Link to='/security'>
+                            {STRINGS.SUMMARY.ACTIVE_2FA_SECURITY.toUpperCase()}
+                        </Link>
+                    </div>
                 }
                 {(!isAccountDetails && ((user.verification_level < 1 && !full_name) ||
                     !id_data.verified ||
                     !phone_number ||
                     !bank_account.verified))
-                    ? <Link to='/verification'>
-                        <div className="trade-account-link mb-2">{STRINGS.USER_VERIFICATION.GOTO_VERIFICATION.toUpperCase()}</div>
-                    </Link>
+                    ? <div className="trade-account-link mb-2">
+                        <Link to='/verification'>
+                            {STRINGS.USER_VERIFICATION.GOTO_VERIFICATION.toUpperCase()}
+                        </Link>
+                    </div>
                     : null
                 }
             </div>

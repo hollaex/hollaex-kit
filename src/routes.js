@@ -144,7 +144,7 @@ export default (
 			<Route path="security" name="Security" component={Account} />
 			<Route path="developers" name="Developers" component={Account} />
 			<Route path="settings" name="Settings" component={Account} />
-			<Route path="summary" name="Summary" component={Summary} onEnter={requireAuth}/>
+			<Route path="summary" name="Summary" component={Account} />
 			<Route path="wallet" name="Wallet" component={MainWallet} onEnter={requireAuth}/>
 			<Route path="wallet/:currency" name="Wallet" component={CurrencyWallet} onEnter={requireAuth}/>
 			<Route path="wallet/:currency/deposit" name="Deposit" component={Deposit} onEnter={requireAuth}/>

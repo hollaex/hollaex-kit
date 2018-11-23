@@ -1,11 +1,12 @@
 import React from 'react';
-import classnames from 'classnames';
+import { isMobile } from 'react-device-detect';
 
-import TraderAccounts from './TraderAccounts';
-import SummaryRequirements from './SummaryRequirements';
-import { TRADING_ACCOUNT_TYPE, SUMMMARY_ICON, FLEX_CENTER_CLASSES } from '../../../config/constants';
+import AccountTypesList from './AccountTypesList';
+import AccountTypeDetails from './AccountTypeDetails';
+import MobileAccountTypeList from '../MobileAccountTypeList';
+
+import { TRADING_ACCOUNT_TYPE } from '../../../config/constants';
 import STRINGS from '../../../config/localizedStrings';
-import { Button } from '../../../components';
 
 const AccountDetails = ({ user, activeTheme, selectedAccount, onAccountTypeChange, currentTradingAccount, onFeesAndLimits }) => {
     const accounts = Object.keys(TRADING_ACCOUNT_TYPE);
@@ -17,59 +18,33 @@ const AccountDetails = ({ user, activeTheme, selectedAccount, onAccountTypeChang
                 <div className="mt-2">{STRINGS.SUMMARY.ACCOUNT_DETAILS_TXT_3}</div>
                 <div className="mt-2">{STRINGS.SUMMARY.ACCOUNT_DETAILS_TXT_4}</div>
             </div>
-            <div className="d-flex mt-5">
-                <div className="account-type-container">
-                    {accounts.map((key, index) => {
-                        let account = TRADING_ACCOUNT_TYPE[key];
-                        let icon = activeTheme === 'dark' && SUMMMARY_ICON[`${key.toUpperCase()}_DARK`]
-                            ? SUMMMARY_ICON[`${key.toUpperCase()}_DARK`] : SUMMMARY_ICON[key.toUpperCase()];
-                        return (
-                            <div
-                                key={index}
-                                className={
-                                    classnames(
-                                        "d-flex",
-                                        "account-type-menu",
-                                        {
-                                            "account-type-menu-active": selectedAccount === key,
-                                            "accounnt-type-menu-last-active": index === (accounts.length - 1)
-                                        }
-                                    )
-                                }
-                                onClick={() => onAccountTypeChange(key)}
-                            >
-                                <div className="mr-4">
-                                    <img src={icon} alt={account.name} className="account-type-icon" />
-                                </div>
-                                <div className={classnames(FLEX_CENTER_CLASSES)}>
-                                    {account.name}
-                                    {(key === currentTradingAccount) &&
-                                        <div className="account-current summary-content-txt ml-2"> (current) </div>
-                                    }
-                                </div>
-                            </div>
-                        )
-                    })}
-                </div>
-                <div className="w-50 ml-5">
-                    <TraderAccounts
+            {isMobile
+                ? <MobileAccountTypeList
+                    user={user}
+                    accounts={accounts}
+                    activeTheme={activeTheme}
+                    selectedAccount={selectedAccount}
+                    currentTradingAccount={currentTradingAccount}
+                    onAccountTypeChange={onAccountTypeChange}
+                    onFeesAndLimits={onFeesAndLimits} />
+                : <div className="d-flex mt-5">
+                    <AccountTypesList
+                        accounts={accounts}
                         activeTheme={activeTheme}
-                        account={TRADING_ACCOUNT_TYPE[selectedAccount]}
-                        isAccountDetails={true}
+                        selectedAccount={selectedAccount}
+                        currentTradingAccount={currentTradingAccount}
+                        onAccountTypeChange={onAccountTypeChange} />
+                    <AccountTypeDetails
+                        className="w-50"
+                        user={user}
+                        accounts={accounts}
+                        activeTheme={activeTheme}
+                        selectedAccount={selectedAccount}
+                        currentTradingAccount={currentTradingAccount}
+                        onAccountTypeChange={onAccountTypeChange}
                         onFeesAndLimits={onFeesAndLimits} />
-                    <div>
-                        <div className="requirement-header d-flex justify-content-between">
-                            <div>{STRINGS.SUMMARY.REQUIREMENTS}</div>
-                            <div className="status-header">{STRINGS.STATUS}</div>
-                        </div>
-                        <SummaryRequirements
-                            user={user}
-                            isAccountDetails={true}
-                            contentClassName="w-100" />
-                        <Button label={STRINGS.SUMMARY.REQUEST_ACCOUNT_UPGRADE} />
-                    </div>
                 </div>
-            </div>
+            }
         </div>
     );
 };

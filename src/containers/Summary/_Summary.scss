@@ -87,19 +87,22 @@ $summary-icon-color-inactive: #808184;
 .summary-container {
     color: $colors-deactivate-color2;
     height: inherit;
-    max-width: calc(100% - 2rem);
+    max-width: 100%;
     margin: 1rem auto;
     width: 75rem;
 
     .summary-block_wrapper {
         border-top: .2rem solid $summary--black;
-        margin: 0 .5rem;
+        // margin: 0 .5rem;
         padding: .5rem;
         
         .summary-block-title {
             color: $summary--black;
             font-weight: bold;
-            margin-bottom: 1rem;
+        }
+
+        .summary-title-icon {
+            width: 2rem;
         }
     }
 
@@ -108,11 +111,12 @@ $summary-icon-color-inactive: #808184;
     }
 
     .trader-account-wrapper {
+        margin-right: 1.5rem;
         width: 25rem;
     
         .trade-account-secondary-txt {
             margin: auto 0;
-            width: 45%;
+            width: 55%;
         }
     }
 
@@ -123,7 +127,6 @@ $summary-icon-color-inactive: #808184;
     
     .trade-account-link {
         color: $colors-notifications-blue;
-        cursor: pointer;
         font-weight: bold;
     }
 
@@ -193,6 +196,7 @@ $summary-icon-color-inactive: #808184;
     }
 
     .assets-wrapper {
+        margin-right: 1.5rem;
         width: 25rem;
 
         .assets-description {
@@ -208,6 +212,10 @@ $summary-icon-color-inactive: #808184;
 
         .account-type-container {
             width: 30%;
+        }
+
+        .mobile-account-type {
+            width: 80%
         }
 
         .account-type-icon {
