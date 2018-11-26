@@ -15,7 +15,7 @@ class TabOverflowList extends Component {
     onOutsideClick = event => {
         const element = document.getElementById('tab-overflow-list');
         if (element &&
-            event.target != element &&
+            event.target !== element &&
             !element.contains(event.target) &&
             !tickClicked) {
                 this.props.closeOverflowMenu();
@@ -35,7 +35,7 @@ class TabOverflowList extends Component {
     }
 
     render() {
-        const { selectedTabs, activeTabs, activePairTab } = this.props;
+        const { selectedTabs, activePairTab } = this.props;
         return (
             <div id="tab-overflow-list" className="app-bar-add-tab-menu">
                 <div className="app-bar-tab-overflow-content">
@@ -51,7 +51,9 @@ class TabOverflowList extends Component {
                                     : <div className="app-bar-tab-setting"> </div>
                                 }
                                 <ReactSVG path={ICONS[`${menu.pair_base.toUpperCase()}_ICON`]} wrapperClassName="app-bar-add-tab-icons" />
-                                <div className="app_bar-pair-font">{STRINGS[`${menu.pair_base.toUpperCase()}_FULLNAME`]}: </div>
+                                <div className="app_bar-pair-font">
+                                    {STRINGS[`${menu.pair_base.toUpperCase()}_SHORTNAME`]}/{STRINGS[`${menu.pair_2.toUpperCase()}_SHORTNAME`]}:
+                                </div>
                                 <div className="title-font"> T 65,800,000 </div>
                                 <div className="app-price-diff-red app-bar-price_difference app_bar-pair-font"> -120,000 </div>
                                 <div className="app-price-diff-red title-font app_bar-pair-font ml-1">-1.71 %</div>

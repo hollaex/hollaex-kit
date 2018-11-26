@@ -7,8 +7,6 @@ import renderFields from '../../components/Form/factoryFields';
 import { ICONS } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 
-let addTabIconClicked = false;
-
 class AddTabList extends Component {
 
     componentDidMount() {
@@ -18,18 +16,13 @@ class AddTabList extends Component {
     onOutsideClick = event => {
         const element = document.getElementById('add-tab-list-menu');
         if (element &&
-            event.target != element &&
-            !element.contains(event.target) &&
-            !addTabIconClicked) {
+            event.target !== element &&
+            !element.contains(event.target)) {
                 this.props.closeAddTabMenu();
-        }
-        if (addTabIconClicked) {
-            addTabIconClicked = false;
         }
     };
 
     handleChange = pair => {
-        addTabIconClicked = true;
         this.props.onTabChange(pair);
     };
 
@@ -95,15 +88,20 @@ class AddTabList extends Component {
                         ? Object.keys(tabMenu).map((pair, index) => {
                             let menu = tabMenu[pair];
                             return (
-                                <div key={index} className="app-bar-add-tab-content-list d-flex align-items-center">
-                                    <div onClick={() => this.handleChange(pair)}>
+                                <div
+                                    key={index}
+                                    className="app-bar-add-tab-content-list d-flex align-items-center"
+                                    onClick={() => this.handleChange(pair)}>
+                                    <div>
                                         {selectedTabs[pair] 
                                             ? <ReactSVG path={ICONS.TAB_MINUS} wrapperClassName="app-bar-tab-setting" />
                                             : <ReactSVG path={ICONS.TAB_PLUS} wrapperClassName="app-bar-tab-setting" />
                                         }
                                     </div>
                                     <ReactSVG path={ICONS[`${menu.pair_base.toUpperCase()}_ICON`]} wrapperClassName="app-bar-add-tab-icons" />
-                                    <div className="app_bar-pair-font">{STRINGS[`${menu.pair_base.toUpperCase()}_FULLNAME`]}: </div>
+                                    <div className="app_bar-pair-font">
+                                        {STRINGS[`${menu.pair_base.toUpperCase()}_SHORTNAME`]}/{STRINGS[`${menu.pair_2.toUpperCase()}_SHORTNAME`]}:
+                                    </div>
                                     <div className="title-font"> T 65,800,000 </div>
                                     <div className="app-price-diff-red app-bar-price_difference app_bar-pair-font"> -120,000 </div>
                                     <div className="app-price-diff-red title-font app_bar-pair-font ml-1">-1.71 %</div>

@@ -14,7 +14,7 @@ class MenuList extends Component {
     onOutsideClick = event => {
         const element = document.getElementById('tab-account-menu');
         if (element &&
-            event.target != element &&
+            event.target !== element &&
             !element.contains(event.target)) {
             this.props.closeAccountMenu();
         }

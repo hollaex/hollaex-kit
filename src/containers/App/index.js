@@ -579,6 +579,7 @@ class Container extends Component {
 		const activePath = !appLoaded
 			? ''
 			: this.getClassForActivePath(this.props.location.pathname);
+		const isMenubar = activePath === 'account' || activePath === 'wallet';
 		return (
 			<div
 				className={classnames(
@@ -631,9 +632,18 @@ class Container extends Component {
 							}
 						/>
 						{isBrowser &&
-							(activePath === 'account' || activePath === 'wallet') && 
+							(isMenubar) && 
 								<AppMenuBar router={router} location={location} />}
-						<div className="app_container-content d-flex justify-content-between">
+						<div
+							className={classnames(
+								"app_container-content",
+								"d-flex",
+								"justify-content-between",
+								{
+									"app_container-secondary-content": isMenubar
+								}
+							)}
+						>
 							<div
 								className={classnames(
 									'app_container-main',

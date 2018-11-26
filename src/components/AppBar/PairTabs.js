@@ -43,6 +43,7 @@ class PairTabs extends Component {
     }
 
     initTabs = pairs => {
+        const { activePairTab } = this.state;
         let tabs = localStorage.getItem('tabs');
         tabs = tabs ? JSON.parse(tabs) : [];
         if (Object.keys(pairs).length) {
@@ -50,12 +51,26 @@ class PairTabs extends Component {
             const tempTabs = {};
             const selected = {};
             tabs.map((key, index) => {
-                if (index <= 2)
+                if (index <= 3)
                     tempTabs[key] = pairs[key];
                 selected[key] = pairs[key];
                 return key;
             });
+            if (!tempTabs[activePairTab]) {
+                const temp = pairs[activePairTab];
+                const pairKeys = Object.keys(tempTabs);
+                if (pairKeys.length < 4) {
+                    tempTabs[activePairTab] = temp;
+                } else {
+                    delete tempTabs[pairKeys[pairKeys.length - 1]];
+                    tempTabs[activePairTab] = temp;
+                }
+                if (!selected[activePairTab]) {
+                    selected[activePairTab] = temp;
+                }
+            }
             this.setState({ selectedTabs: selected, activeTabs: tempTabs });
+            this.setTabsLocal(selected);
         }
     }
 
@@ -91,16 +106,25 @@ class PairTabs extends Component {
         if (activeTabs[pair]) {
             let tempActive = {};
             Object.keys(localTabs).map((key, index) => {
-                if (index <= 2) {
+                if (index <= 3) {
                     tempActive = { ...tempActive, [key]: localTabs[key] };
                 }
                 return key;
             });
             this.setState({ activeTabs: { ...tempActive } });
-        } else if (Object.keys(localTabs).length <= 3) {
-            this.setState({ activeTabs: { ...localTabs } });
+        } else if (!activeTabs[pair] && localTabs[pair]) {
+            let tempActive = activeTabs;
+            let activeKeys = Object.keys(activeTabs);
+            if (Object.keys(localTabs).length <= 4) {
+                this.setState({ activeTabs: { ...localTabs } });
+            } else {
+                delete tempActive[activeKeys[activeKeys.length - 1]];
+                tempActive[pair] = localTabs[pair];
+                this.setState({ activeTabs: { ...tempActive } });
+            }
         }
         this.setTabsLocal(localTabs);
+        this.closeAddTabMenu();
     };
 
     onOverflowClick = () => {
@@ -123,7 +147,7 @@ class PairTabs extends Component {
     };
 
     closeAddTabMenu = () => {
-        this.setState({ isAddTab: false });
+        this.setState({ isAddTab: false, searchValue: '', searchResult: {} });
     };
 
     closeOverflowMenu = () => {
@@ -179,7 +203,7 @@ class PairTabs extends Component {
             <div className="d-flex h-100">
                 {Object.keys(activeTabs).map((tab, index) => {
                     const pair = activeTabs[tab];
-                    if(index <= 2) {
+                    if(index <= 3) {
                         return (
                             <Tab
                                 key={index}
@@ -214,7 +238,7 @@ class PairTabs extends Component {
                         />
                     }
                 </div>
-                {Object.keys(selectedTabs).length > 3
+                {Object.keys(selectedTabs).length > 4
                     && <div
                         className={classnames('app_bar-pair-overflow', 'd-flex', 'align-items-center', { 'active-tab-overflow': isTabOverflow })}>
                         <div onClick={this.onOverflowClick}>
