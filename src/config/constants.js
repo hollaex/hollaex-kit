@@ -109,6 +109,7 @@ export const ICONS = {
 	}/assets/images/payment-options.svg`,
 	QUICK_TRADE: `${process.env.PUBLIC_URL}/assets/images/quick-trade.svg`,
 	QUICK_TRADE_TAB: `${process.env.PUBLIC_URL}/assets/images/quick-trade-tab.svg`,
+	QUICK_TRADE_TAB_ACTIVE: `${process.env.PUBLIC_URL}/assets/images/quick-trade-tab-active.svg`,
 	SECURE: `${process.env.PUBLIC_URL}/assets/images/secure.svg`,
 	SECURITY_BLACK: `${process.env.PUBLIC_URL}/assets/images/security.svg`,
 	SECURITY_GREY: `${process.env.PUBLIC_URL}/assets/images/security-grey.svg`,

@@ -198,9 +198,15 @@ class AppBar extends Component {
 					<div className="d-flex ml-3 mr-3">
 						{!isHome
 							? <Link to="/quick-trade/btc-eur">
-								<div className='app_bar-quicktrade d-flex'>
-									<ReactSVG path={ICONS.QUICK_TRADE_TAB} wrapperClassName="quicktrade_icon" />
-									<div className="d-flex align-items-center">{STRINGS.QUICK_TRADE}</div>
+									<div
+										className={classnames(
+											'app_bar-quicktrade',
+											'd-flex',
+											{ "quick_trade-active": activePath === 'quick-trade' })}>
+										<ReactSVG
+											path={ICONS.QUICK_TRADE_TAB_ACTIVE}
+											wrapperClassName="quicktrade_icon" />
+										<div className="d-flex align-items-center">{STRINGS.QUICK_TRADE}</div>
 								</div>
 							</Link>
 							: null

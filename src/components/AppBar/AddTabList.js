@@ -75,9 +75,9 @@ class AddTabList extends Component {
                         )}
                     </div>
                     <div className="d-flex align-items-center mr-2">
-                        <ReactSVG
+                        {/* <ReactSVG
                             path={ICONS.TAB_SETTING}
-                            wrapperClassName="app-bar-tab-setting" />
+                            wrapperClassName="app-bar-tab-setting" /> */}
                     </div>
                 </div>
                 <div className="app-bar-add-tab-content">

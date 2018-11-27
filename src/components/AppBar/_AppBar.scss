@@ -3,7 +3,7 @@ $app-bar--background: white;
 $app-bar--pairs-color: #CCCBCA;
 $app-bar-tab-color-inactive: #808184;
 $app-bar--quicktrade-active-color: #fff100;
-$app-bar--quicktrade-inactive-color: #a08e24;
+$app-bar--quicktrade-inactive-color: #ceac20;
 $app-bar--arrow-size: 0.4rem;
 $notification-size: 1.5rem;
 $app-menu-notification-size: 1.2rem;
@@ -168,23 +168,38 @@ $app-bar-add-tab-red: #ff0000;
 	}
 
 	.app_bar-quicktrade {
-		border: 1px solid $app-bar--quicktrade-active-color;
+		border: 1px solid $app-bar--quicktrade-inactive-color;
 		border-radius: .25rem;
-		color: $app-bar--quicktrade-active-color;
+		color: $app-bar--quicktrade-inactive-color;
 		font-weight: 400;
-		padding: .1rem;
+		padding: 0 .4rem;
 		text-transform: capitalize;
 
 		svg {
 			.st0 {
-				fill: $app-bar--quicktrade-active-color;
+				fill: $app-bar--black !important;
+				stroke: $app-bar--quicktrade-inactive-color !important;
+				stroke-width: 3 !important;
+			}
+		}
+	}
+
+	.quick_trade-active {
+		border: 1px solid $app-bar--quicktrade-active-color;
+		color: $app-bar--quicktrade-active-color;
+
+		svg {
+			.st0 {
+				fill: $app-bar--quicktrade-active-color !important;
+				stroke: $app-bar--quicktrade-active-color !important;
+				stroke-width: 3 !important;
 			}
 		}
 	}
 
 	.quicktrade_icon {
 		margin-top: .2rem;
-		width: .9rem;
+		width: 1rem;
 	}
 
 	.app-bar-account {
