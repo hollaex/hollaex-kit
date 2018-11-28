@@ -612,6 +612,11 @@ $app-bar-pairs-up: green;
 	max-width: $sidebar-width;
 }
 
+.tab-menu-left {
+	left: -1px !important;
+	right: 0 !important;
+}
+
 .app-bar-add-tab-menu {
 	background-color: $app-bar--black;
 	border: 1px solid $colors-white;

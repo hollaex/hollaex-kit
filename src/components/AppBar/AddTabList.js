@@ -45,6 +45,7 @@ class AddTabList extends Component {
                 return key;
             });
         }
+        const selectedtabPairs = Object.keys(selectedTabs);
     
         const searchField = {
             search: {
@@ -59,7 +60,7 @@ class AddTabList extends Component {
         };
     
         return (
-            <div id="add-tab-list-menu" className="app-bar-add-tab-menu">
+            <div id="add-tab-list-menu" className={classnames("app-bar-add-tab-menu", { "tab-menu-left": !selectedtabPairs.length })}>
                 <div className="app-bar-tab-menu d-flex justify-content-between">
                     <div className="d-flex">
                         {symbols.map((symbol, index) =>
