@@ -195,7 +195,7 @@ class AppBar extends Component {
 			<div className={classnames('app_bar justify-content-between', { 'no-borders': noBorders })}>
 				<div className="d-flex">
 					{this.renderIcon(isHome, theme)}
-					<div className="d-flex ml-3 mr-3">
+					<div className="d-flex app_bar-quicktrade-container">
 						{!isHome
 							? <Link to="/quick-trade/btc-eur">
 									<div

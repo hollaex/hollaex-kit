@@ -10,6 +10,7 @@ $app-menu-notification-size: 1.2rem;
 $app-bar--black: #000000;
 $app-bar-add-tab-inactive: #808080;
 $app-bar-add-tab-red: #ff0000;
+$app-bar-pairs-up: green;
 
 .dark-theme {
 	.app_bar {
@@ -69,6 +70,31 @@ $app-bar-add-tab-red: #ff0000;
 					stroke: $colors-white;
 				}
 			}
+		}
+
+		.app-price-diff-down {
+			color: $dark-sell;
+		}
+
+		.app-price-diff-up {
+			color: $dark-buy;
+		}
+
+		.app-bar-price_diff_up:before {
+			@include css-triangle($dark-buy, 'up', $app-bar--arrow-size);
+			display: inline-block;
+			margin-bottom: 0.2rem;
+			margin-right: 0.5rem;
+			position: relative;
+			top: calc(50% - 0.6rem);
+		}
+
+		.app-bar-price_diff_down:before {
+			@include css-triangle($dark-sell, 'down', $app-bar--arrow-size);
+			display: inline-block;
+			margin-right: 0.5rem;
+			position: relative;
+			top: calc(50% - 0.6rem);
 		}
 	}
 
@@ -167,6 +193,10 @@ $app-bar-add-tab-red: #ff0000;
 		min-height: $navigation_bar-height;
 	}
 
+	.app_bar-quicktrade-container {
+		margin: 0 .85rem;
+	}
+
 	.app_bar-quicktrade {
 		border: 1px solid $app-bar--quicktrade-inactive-color;
 		border-radius: .25rem;
@@ -224,6 +254,11 @@ $app-bar-add-tab-red: #ff0000;
 		padding: 0 .5rem;
 		position: relative;
 	}
+
+	.app_bar-pair-tab {
+		min-width: 20rem;
+		max-width: 20rem;
+	}	
 
 	.app_bar-pair-overflow {
 		align-items: center;
@@ -335,17 +370,35 @@ $app-bar-add-tab-red: #ff0000;
 		font-weight: 600;
 	}
 
-	.app-price-diff-red {
+	.app-price-diff-down {
 		color: $colors-notifications-red;
 	}
 
-	.app-bar-price_difference {
+	.app-price-diff-up {
+		color: $app-bar-pairs-up;
+	}
+
+	.app-bar-price_diff_up {
 		margin-left: 0.5rem;
 	}
 
-	.app-bar-price_difference:before {
+	.app-bar-price_diff_up:before {
+		@include css-triangle($app-bar-pairs-up, 'up', $app-bar--arrow-size);
+		display: inline-block;
+		margin-bottom: 0.2rem;
+		margin-right: 0.5rem;
+		position: relative;
+		top: calc(50% - 0.6rem);
+	}
+
+	.app-bar-price_diff_down {
+		margin-left: 0.5rem;
+	}
+
+	.app-bar-price_diff_down:before {
 		@include css-triangle($colors-notifications-red, 'down', $app-bar--arrow-size);
 		display: inline-block;
+		margin-right: 0.5rem;
 		position: relative;
 		top: calc(50% - 0.6rem);
 	}
@@ -568,7 +621,7 @@ $app-bar-add-tab-red: #ff0000;
 	min-height: 8rem;
 	position: absolute;
 	top: 34px;
-	left: -1px;
+	right: -1px;
 	z-index: 20;
 	-webkit-box-shadow: 0px 4px 6px 1px rgba(0, 0, 0, 0.4);
 	-moz-box-shadow: 0px 4px 6px 1px rgba(0, 0, 0, 0.4);
@@ -694,8 +747,12 @@ $app-bar-add-tab-red: #ff0000;
 			}
 		}
 
-		.app-price-diff-red {
+		.app-price-diff-down {
 			color: $app-bar-add-tab-red;
+		}
+		
+		.app-price-diff-up {
+			color: $app-bar-pairs-up
 		}
 	}
 }

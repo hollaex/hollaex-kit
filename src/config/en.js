@@ -1,5 +1,6 @@
 export default {
 	APP_TITLE: 'Hollaex',
+	APP_SUB_TITLE: 'White Label Cryptocurrency Exchange', // ToDo: need to add that in fasri
 	APP_NAME: 'hollaex',
 	FIAT_NAME: 'EURO',
 	FIAT_FULLNAME: 'Euro',

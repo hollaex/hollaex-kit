@@ -62,7 +62,7 @@ class PairTabs extends Component {
                 selected[key] = pairs[key];
                 return key;
             });
-            if (activePairTab && !tempTabs[activePairTab]) {
+            if (activePairTab && !tempTabs[activePairTab] && tabs.length) {
                 const temp = pairs[activePairTab];
                 const pairKeys = Object.keys(tempTabs);
                 if (pairKeys.length < 4) {
@@ -214,7 +214,7 @@ class PairTabs extends Component {
 
     render() {
         const { selectedTabs, isAddTab, selectedAddTab, activePairTab, isTabOverflow, activeTabs, searchValue, searchResult } = this.state;
-        const { pairs } = this.props;
+        const { pairs, tickers } = this.props;
         const obj = {};
         Object.entries(pairs).forEach(([key, pair]) => {
             obj[pair.pair_base] = '';
@@ -224,12 +224,14 @@ class PairTabs extends Component {
             <div className="d-flex h-100">
                 {Object.keys(activeTabs).map((tab, index) => {
                     const pair = activeTabs[tab];
+                    const ticker = tickers[tab];
                     if (index <= 3) {
                         return (
                             <Tab
                                 key={index}
                                 tab={tab}
                                 pair={pair}
+                                ticker={ticker}
                                 activePairTab={activePairTab}
                                 onSortItems={this.onSortItems}
                                 items={Object.keys(activeTabs)}
@@ -247,6 +249,7 @@ class PairTabs extends Component {
                         <AddTabList 
                             symbols={symbols} 
                             pairs={pairs}
+                            tickers={tickers}
                             selectedTabs={selectedTabs}
                             activeTabs={activeTabs}
                             selectedTabMenu={selectedAddTab || symbols[0]}
@@ -270,6 +273,7 @@ class PairTabs extends Component {
                             activeTabs={activeTabs}
                             activePairTab={activePairTab}
                             selectedTabs={selectedTabs}
+                            tickers={tickers}
                             handleOverflow={this.handleOverflow}
                             closeOverflowMenu={this.closeOverflowMenu}
                         />
@@ -281,7 +285,8 @@ class PairTabs extends Component {
 }
 
 const mapStateToProps = store => ({
-    pairs: store.app.pairs
+    pairs: store.app.pairs,
+    tickers: store.app.tickers
 });
 
 export default connect(mapStateToProps)(PairTabs);
