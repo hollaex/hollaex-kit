@@ -1,5 +1,6 @@
 export { default as AppBar } from './AppBar';
 export { default as AppMenuBar } from './AppBar/AppMenuBar';
+export { default as SearchBox } from './AppBar/SearchBox';
 export { default as Button } from './Button';
 export { default as ButtonLink } from './Button/ButtonLink';
 export { default as CheckboxButton } from './Button/CheckboxButton';
@@ -24,6 +25,7 @@ export { default as Loader } from './Loader';
 export { default as CurrencyBall } from './CurrencyBall';
 export { default as CurrencyBallWithPrice } from './CurrencyBall/withPrice';
 export { default as Table } from './Table';
+export { default as Paginator } from './Table/paginator';
 export { default as CsvDownload } from './CsvDownload';
 export { default as DisplayTable } from './DisplayTable';
 export { default as QuickTrade } from './QuickTrade';

@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
 import ReactSVG from 'react-svg';
 import classnames from 'classnames';
-import { reduxForm } from 'redux-form';
 
-import renderFields from '../../components/Form/factoryFields';
 import { ICONS } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 import { formatPercentage } from '../../utils/currency';
+import SearchBox from './SearchBox';
 
 class AddTabList extends Component {
 
@@ -47,18 +46,6 @@ class AddTabList extends Component {
         }
         const selectedtabPairs = Object.keys(selectedTabs);
     
-        const searchField = {
-            search: {
-                type: 'text',
-                options: { icon: ICONS.SEARCH, label: 'search' },
-                className: 'app-bar-search-field',
-                hideCheck: true,
-                outlineClassName: 'app-bar-search-field-outline',
-                placeholder: 'Search...',
-                onChange: handleSearch
-            }
-        };
-    
         return (
             <div id="add-tab-list-menu" className={classnames("app-bar-add-tab-menu", { "tab-menu-left": !selectedtabPairs.length })}>
                 <div className="app-bar-tab-menu d-flex justify-content-between">
@@ -84,7 +71,11 @@ class AddTabList extends Component {
                 </div>
                 <div className="app-bar-add-tab-content">
                     <div className="app-bar-add-tab-search">
-                        {renderFields(searchField)}
+                        <SearchBox
+                            name={STRINGS.SEARCH_TXT}
+                            placeHolder={`${STRINGS.SEARCH_TXT}...`}
+                            className='app-bar-search-field'
+                            handleSearch={handleSearch} />
                     </div>
                     {Object.keys(tabMenu).length
                         ? Object.keys(tabMenu).map((pair, index) => {
@@ -129,6 +120,4 @@ class AddTabList extends Component {
     }
 };
 
-export default reduxForm({
-    form: 'addTabSearch'
-})(AddTabList);
+export default AddTabList;

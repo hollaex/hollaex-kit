@@ -32,7 +32,8 @@ import {
 	Chat,
 	UserSettings,
 	WithdrawConfirmation,
-	Summary
+	Summary,
+	AddTradeTabs
 } from './containers';
 
 import store from './store';
@@ -156,6 +157,7 @@ export default (
 				onEnter={requireAuth}
 			/>
 			<Route path="trade/:pair" name="Trade" component={Trade} />
+			<Route path="trade/add/tabs" name="Trade Tabs" component={AddTradeTabs} />
 			<Route path="quick-trade/:pair" name="Quick Trade" component={QuickTrade} />
 			<Route path="chat" name="Chat" component={Chat} onEnter={requireAuth}/>
 			<Route

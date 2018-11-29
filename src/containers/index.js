@@ -26,3 +26,4 @@ export { default as QuickTrade } from './QuickTrade';
 export { default as Verification } from './Verification';
 export { default as Chat } from './Chat';
 export { default as Summary } from './Summary';
+export { default as AddTradeTabs } from './TradeTabs';

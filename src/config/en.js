@@ -914,6 +914,8 @@ export default {
 	QUICK_TRADE_MODE: 'Quick Trade Mode',
 	JUST_NOW: 'just now',
 	PAIR: 'Pair',
+	SEARCH_TXT: 'Search', // ToDo: need to add this in farsi when move to exir.
+	SEARCH_ASSETS: 'Search Assets', // ToDo: need to add this in farsi when move to exir.
 	SUMMARY: { // ToDo: need to add this entire suumary in farsi when move to exir.
 		TITLE: 'Summary',
 		TINY_PINK_SHRIMP_TRADER: 'Tiny Pink Shrimp Trader',

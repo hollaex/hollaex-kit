@@ -25,6 +25,10 @@ class PairTabs extends Component {
     componentDidMount() {
         const { router, pairs } = this.props;
         if (router && router.params.pair) {
+            let tabs = localStorage.getItem('tabs');
+            if (tabs !== null && tabs !== '' && !JSON.parse(tabs).length) {
+                this.props.router.push('/trade/add/tabs');
+            }
             this.setState({ activePairTab: router.params.pair });
         } else {
             this.setState({ activePairTab: '' });
