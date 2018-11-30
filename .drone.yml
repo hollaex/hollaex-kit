@@ -63,9 +63,9 @@ pipeline:
 
   ### BUILD AND SYNC ON S3 ###
   npm_run_build:
-      image: "node"
+      image: node:8.11.1-slim
       commands:
-        - npm install --save && npm run build
+        - npm install && npm run build
       when:
         event: push
         branch: [master, deployment]
