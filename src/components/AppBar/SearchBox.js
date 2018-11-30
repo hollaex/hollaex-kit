@@ -7,7 +7,7 @@ import renderFields from '../../components/Form/factoryFields';
 
 class SearchBox extends Component {
     render() {
-        const { handleSearch, placeHolder, className="", name } = this.props;
+        const { handleSearch, placeHolder, className = "", outlineClassName="", name } = this.props;
         const searchField = {
             search: {
                 name: name,
@@ -15,7 +15,7 @@ class SearchBox extends Component {
                 options: { icon: ICONS.SEARCH, label: 'search' },
                 className: classnames("search-field", className),
                 hideCheck: true,
-                outlineClassName: 'app-bar-search-field-outline',
+                outlineClassName: outlineClassName ? outlineClassName : 'app-bar-search-field-outline',
                 placeholder: placeHolder,
                 onChange: handleSearch
             }

@@ -15,23 +15,24 @@ class AddTradeTab extends Component {
         page: 0,
         pageSize: 9,
         data: [],
-        count: 0
+        count: 0,
+        searchValue: ''
     };
 
     componentDidMount() {
-        this.goToPage(this.props.pairs, this.props.tickers, this.state.page);
+        this.goToPage(this.props.pairs, this.props.tickers, this.state.page, this.state.searchValue);
     }
 
     componentWillReceiveProps(nextProps) {
         if ((JSON.stringify(this.props.pairs) !== JSON.stringify(nextProps.pairs)
             || (JSON.stringify(this.props.tickers) !== JSON.stringify(nextProps.tickers)))) {
-            this.goToPage(nextProps.pairs, nextProps.tickers, this.state.page);
+            this.goToPage(nextProps.pairs, nextProps.tickers, this.state.page, this.state.searchValue);
         }
     }
 
-    goToPage = (pairs, tickers, page) => {
-        
+    goToPage = (pairval, tickers, page, searchValue) => {
         const { pageSize } = this.state;
+        const pairs = searchValue ? this.getSearchPairs(searchValue) : pairval;
         const pairKeys = Object.keys(pairs).sort((a, b) => {
             let tickA = tickers[a] || {};
             let tickB = tickers[b] || {};
@@ -49,7 +50,8 @@ class AddTradeTab extends Component {
         this.goToPage(
             this.props.pairs,
             this.props.tickers,
-            this.state.page - 1
+            this.state.page - 1,
+            this.state.searchValue
         );
     };
 
@@ -57,11 +59,55 @@ class AddTradeTab extends Component {
         this.goToPage(
             this.props.pairs,
             this.props.tickers,
-            this.state.page + 1
+            this.state.page + 1,
+            this.state.searchValue
         );
     };
 
-    handleTabSearch = () => {
+    handleTabSearch = (_, value) => {
+        if (value) {
+            const result = this.getSearchPairs(value);
+            this.goToPage(
+                result,
+                this.props.tickers,
+                0,
+                value
+            );
+        } else {
+            this.goToPage(
+                this.props.pairs,
+                this.props.tickers,
+                this.state.page,
+                value
+            );
+        }
+        this.setState({ searchValue: value });
+    };
+
+    getSearchPairs = value => {
+        const { pairs } = this.props;
+        let result = {};
+        let searchValue = value.toLowerCase().trim();
+        Object.keys(pairs).map(key => {
+            let temp = pairs[key];
+            let cashName = STRINGS[`${temp.pair_base.toUpperCase()}_FULLNAME`].toLowerCase();
+            if (key.indexOf(searchValue) !== -1 ||
+                temp.pair_base.indexOf(searchValue) !== -1 ||
+                temp.pair_2.indexOf(searchValue) !== -1 ||
+                cashName.indexOf(searchValue) !== -1) {
+                result[key] = temp;
+            }
+            return key;
+        });
+        return result;
+    };
+
+    handleClick = pair => {
+        let tabs = localStorage.getItem('tabs');
+        tabs = tabs ? JSON.parse(tabs) : [];
+        tabs.push(pair);
+        localStorage.setItem('tabs', JSON.stringify(tabs));
+        this.props.router.push(`/trade/${pair}`);
     };
 
     render() {
@@ -74,7 +120,7 @@ class AddTradeTab extends Component {
                         src={activeTheme === 'dark' ? HOLLAEX_LOGO : HOLLAEX_LOGO_BLACK}
                         alt="app logo"
                         className="app-icon d-flex" />
-                    <div className="text-center">{STRINGS.APP_SUB_TITLE.toUpperCase()}</div>
+                    <div className="text-center trade-tab-app-title">{STRINGS.APP_SUB_TITLE.toUpperCase()}</div>
                 </div>
                 <div className="trade_tabs-content">
                     <div className="d-flex justify-content-end">
@@ -88,22 +134,26 @@ class AddTradeTab extends Component {
                             <Link to="/wallet">{STRINGS.WALLET_TITLE}</Link>
                         </span>
                     </div>
-                    <div >
+                    <div className="w-50">
                         <SearchBox
                             name={STRINGS.SEARCH_ASSETS}
                             className="trade_tabs-search-field"
+                            outlineClassName="trade_tabs-search-outline"
                             placeHolder={`${STRINGS.SEARCH_ASSETS}...`}
                             handleSearch={this.handleTabSearch}
                         />
                     </div>
-                    <div className="d-flex flex-wrap p-3 my-3">
+                    <div className="d-flex flex-wrap p-3 my-5">
                         {data.map((key, index) => {
                             let pair = pairs[key];
                             let ticker = tickers[key] || {};
                             const priceDifference = ticker.close - ticker.open;
                             const priceDifferencePercent = formatPercentage((ticker.close - ticker.open) / ticker.open);
                             return (
-                                <div key={index} className={classnames("d-flex", "trade-tab-list", { "active-tab": index === 0 })}>
+                                <div
+                                    key={index}
+                                    className={classnames("d-flex", "trade-tab-list", { "active-tab": index === 0 })}
+                                    onClick={() => this.handleClick(key)}>
                                     <div className="px-2">
                                         <ReactSVG path={ICONS[`${pair.pair_base.toUpperCase()}_ICON`]} wrapperClassName="trade_tab-icons" />
                                     </div>
@@ -114,7 +164,11 @@ class AddTradeTab extends Component {
                                         <div>
                                             {STRINGS[`${pair.pair_base.toUpperCase()}_FULLNAME`]}/{STRINGS[`${pair.pair_2.toUpperCase()}_FULLNAME`]}
                                         </div>
-                                        <div>{STRINGS.PRICE}:<span className="title-font ml-1">{`T ${ticker.close}`}</span></div>
+                                        <div>{STRINGS.PRICE}:
+                                            <span className="title-font ml-1">
+                                                {`${STRINGS[`${pair.pair_2.toUpperCase()}_CURRENCY_SYMBOL`]} ${ticker.close}`}
+                                            </span>
+                                        </div>
                                         <div className="d-flex">
                                             <div className={priceDifference < 0 ? "price-diff-down trade-tab-price_diff_down" : "trade-tab-price_diff_up price-diff-up"}>
                                                 {priceDifference}
@@ -125,7 +179,7 @@ class AddTradeTab extends Component {
                                                 {`(${priceDifferencePercent})`}
                                             </div>
                                         </div>
-                                        <div>{`${STRINGS.CHART_TEXTS.v}: ${ticker.volume} ${STRINGS.BTC_SHORTNAME}`}</div>
+                                        <div>{`${STRINGS.CHART_TEXTS.v}: ${ticker.volume} ${STRINGS[`${pair.pair_2.toUpperCase()}_CURRENCY_SYMBOL`]}`}</div>
                                     </div>
                                 </div>
                             )

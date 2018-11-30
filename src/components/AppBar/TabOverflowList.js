@@ -58,7 +58,7 @@ class TabOverflowList extends Component {
                                 <div className="app_bar-pair-font">
                                     {STRINGS[`${menu.pair_base.toUpperCase()}_SHORTNAME`]}/{STRINGS[`${menu.pair_2.toUpperCase()}_SHORTNAME`]}:
                                 </div>
-                                <div className="title-font ml-1">{`T ${ticker.close}`}</div>
+                                <div className="title-font ml-1">{`${STRINGS[`${menu.pair_2.toUpperCase()}_CURRENCY_SYMBOL`]} ${ticker.close}`}</div>
                                 <div className={priceDifference < 0 ? "app-price-diff-down app-bar-price_diff_down" : "app-bar-price_diff_up app-price-diff-up"}>
                                     {priceDifference}
                                 </div>

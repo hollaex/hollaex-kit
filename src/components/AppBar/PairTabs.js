@@ -23,10 +23,11 @@ class PairTabs extends Component {
     };
 
     componentDidMount() {
-        const { router, pairs } = this.props;
+        const { router, pairs, location } = this.props;
         if (router && router.params.pair) {
             let tabs = localStorage.getItem('tabs');
-            if (tabs !== null && tabs !== '' && !JSON.parse(tabs).length) {
+            if (tabs !== null && tabs !== '' && !JSON.parse(tabs).length
+                && location.pathname.indexOf('/trade/') === 0) {
                 this.props.router.push('/trade/add/tabs');
             }
             this.setState({ activePairTab: router.params.pair });
@@ -37,12 +38,27 @@ class PairTabs extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (this.props.activePath !== nextProps.activePath 
-            && nextProps.activePath !== 'trade') {
-            this.setState({ activePairTab: '' });
+        const { activePath, pairs, router, location } = nextProps;
+        if (this.props.activePath !== activePath) {
+            if (activePath !== 'trade') {
+                this.setState({ activePairTab: '' });
+            }
         }
-        if (JSON.stringify(this.props.pairs) !== JSON.stringify(nextProps.pairs)) {
-            this.initTabs(nextProps.pairs);
+        if (JSON.stringify(this.props.pairs) !== JSON.stringify(pairs)) {
+            this.initTabs(pairs);
+        }
+        if (this.props.location && location
+            && this.props.location.pathname !== location.pathname) {
+            this.initTabs(pairs);
+            if (router && router.params.pair && location.pathname.indexOf('/trade/') === 0) {
+                this.setState({ activePairTab: router.params.pair });
+				let tabs = localStorage.getItem('tabs');
+				if (tabs !== null &&
+					tabs !== '' &&
+					!JSON.parse(tabs).length) {
+					this.props.router.push('/trade/add/tabs');
+				}
+			}
         }
     }
 
@@ -84,7 +100,7 @@ class PairTabs extends Component {
         }
     }
 
-    onTabClick = pair => {
+    onTabClick = (pair, value) => {
         if (pair) {
             this.props.router.push(`/trade/${pair}`);
             this.setState({ activePairTab: pair });
@@ -107,6 +123,8 @@ class PairTabs extends Component {
         if (selectedTabs[pair]) {
             localTabs = { ...selectedTabs };
             tabPairs = Object.keys(localTabs);
+            delete localTabs[pair];
+            this.setTabsLocal(localTabs);
             if (activePairTab === pair || activePath !== 'trade') {
                 let index = tabPairs.indexOf(pair);
                 if (index < (tabPairs.length - 1)) {
@@ -115,7 +133,6 @@ class PairTabs extends Component {
                     this.onTabClick(tabPairs[index - 1]);
                 }
             }
-            delete localTabs[pair];
             tabPairs = Object.keys(localTabs);
             this.setState({ selectedTabs: { ...localTabs } });
         } else {
@@ -125,6 +142,7 @@ class PairTabs extends Component {
                 tabPairs = Object.keys(localTabs);
                 this.setState({ selectedTabs: { ...localTabs } });
             }
+            this.setTabsLocal(localTabs);
             this.onTabClick(pair);
         }
         if (activeTabs[pair]) {
@@ -147,7 +165,7 @@ class PairTabs extends Component {
                 this.setState({ activeTabs: { ...tempActive } });
             }
         }
-        this.setTabsLocal(localTabs);
+        // this.setTabsLocal(localTabs);
         this.closeAddTabMenu();
     };
 

@@ -173,7 +173,8 @@ class AppBar extends Component {
 			theme,
 			logout,
 			router,
-			activePath
+			activePath,
+			location
 		} = this.props;
 		const { isAccountMenu, selectedMenu } = this.state;
 
@@ -212,7 +213,7 @@ class AppBar extends Component {
 							: null
 						}
 					</div>
-						{!isHome && <PairTabs activePath={activePath} router={router} />}
+						{!isHome && <PairTabs activePath={activePath} location={location} router={router} />}
 				</div>
 				{!isHome
 					? isLoggedIn()

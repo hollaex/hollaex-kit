@@ -9,6 +9,9 @@ $tab--black: #000000;
     .trade_tabs-container {
         color: $trade-tab-dark-pair-content;
 
+        .trade-tab-app-title {
+            color: $trade-tab-active-dark-title
+        }
         .trade_tabs-content {
             border-top: 2px solid $dark-font-main-text-color;
         }
@@ -17,29 +20,34 @@ $tab--black: #000000;
         }
         .trade_tabs-search-field {
             background-color: $dark-app-background-color;
+            color: $colors-deactivate-color2;
+
+            &::placeholder {
+                color: $colors-deactivate-color2;
+            }
         }
         .trade_tab-pair-title {
-            color: $dark-font-main-text-color;
+            color: $trade-tab-add-tab-inactive;
         }
         .trade_tab-icons {
             svg {
                 .btc0 {
-                    fill: $dark-font-main-text-color !important;
+                    fill: $trade-tab-add-tab-inactive !important;
                 }
                 .btc1 {
-                    fill: $dark-font-main-text-color !important;
+                    fill: $trade-tab-add-tab-inactive !important;
                 }
                 .eth0 {
-                    fill: $dark-font-main-text-color !important;
+                    fill: $trade-tab-add-tab-inactive !important;
                 }
                 .eth1 {
-                    fill: $dark-font-main-text-color !important;
+                    fill: $trade-tab-add-tab-inactive !important;
                 }
                 .bch-icon {
-                    fill: $dark-font-main-text-color !important;
+                    fill: $trade-tab-add-tab-inactive !important;
                 }
                 .st0 {
-                    fill: $dark-font-main-text-color !important;
+                    fill: $trade-tab-add-tab-inactive !important;
                     stroke-width: 0rem;
                 }
             }
@@ -70,8 +78,10 @@ $tab--black: #000000;
         }
         
         .trade-tab-list {
+            border: 1px solid $dark-app-background-color;
             &:hover {
                 border: 1px solid $trade-tab-dark-pair-content;
+                color: $trade-tab-dark-pair-content;
 
                 .trade_tab-pair-title {
                     color: $trade-tab-active-dark-title !important;
@@ -116,6 +126,12 @@ $tab--black: #000000;
         width: 8rem;
     }
 
+    .trade-tab-app-title {
+        font-family: $raleway-light--font-family;
+        letter-spacing: .3rem;
+        font-size: .8rem;
+    }
+
     .trade_tabs-content {
         border-top: 2px solid $colors-main-black;
         font-size: .8rem;
@@ -134,9 +150,17 @@ $tab--black: #000000;
 
     .trade_tabs-search-field {
         background-color: $colors-white;
-        color: $trade-tab-add-tab-inactive;
+        color: $colors-deactivate-color1;
         margin: 0;
         padding-right: .5rem;
+
+        &::placeholder {
+            color: $colors-deactivate-color1;
+        }
+    }
+
+    .trade_tabs-search-outline {
+        background: #808080;
     }
 
     .tabs-pair-details {
@@ -209,11 +233,13 @@ $tab--black: #000000;
     }
 
     .trade-tab-list {
+        border: 1px solid $app-background-color;
         padding: 1rem 0;
         margin: 2rem 1.5rem;
-
+        
         &:hover {
             border: 1px solid $tab--black;
+            color: $tab--black;
             position: relative;
             bottom: .5rem;
             right: .5rem;
@@ -245,4 +271,8 @@ $tab--black: #000000;
             }
         }
     } 
+}
+
+input::placeholder {
+    color: red;
 }
