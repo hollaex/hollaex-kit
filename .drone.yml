@@ -10,9 +10,11 @@ pipeline:
   notify_job_start:
     image: plugins/slack
     channel: deployment
+    secrets: [ slack_webhook ]
     template: "<{{build.link}}|Deployment #{{build.number}} started> on <https://github.com/{{repo.owner}}/{{repo.name}}/tree/{{build.branch}}|{{repo.name}}:{{build.branch}}> by {{build.author}}"
     when:
       branch: [master, deployment]
+      event: push
 
   not_deploying_this_branch:
     image: golang:1.10.0-alpine
