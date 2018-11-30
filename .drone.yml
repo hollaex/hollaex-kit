@@ -67,8 +67,8 @@ pipeline:
       commands:
         - node -v
         - npm -v
-        - npm install -dd
-        - npm run build
+        - npm install yarn
+        - yarn install
       when:
         event: push
         branch: [master, deployment]
