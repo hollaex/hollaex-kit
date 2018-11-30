@@ -27,13 +27,14 @@ pipeline:
 
   ### RESTRICTING_CLOUDFRONT_REGION ###
   restricting_region_for_maintenance:
-      image: quay.io/honestbee/awscli:1.15.26
+      #image: quay.io/honestbee/awscli:1.15.26
+      image: mesosphere/aws-cli:1.14.5
       environment:
         - AWS_DEFAULT_REGION=eu-west-1
         - AWS_DEFAULT_OUTPUT=json
       secrets: [ aws_access_key_id, aws_secret_access_key ]
       commands:
-        - aws configure set preview.cloudfront true
+        #- aws configure set preview.cloudfront true
         - export CLOUDFRONT_ETAG="$(aws cloudfront get-distribution-config --id E1FPBCJ0EFOPZJ | grep ETag | cut -c 14- | rev | cut -c 3- | rev)" && echo "$CLOUDFRONT_ETAG" > .etag
         - cat .etag && echo "= Current Etag for CloudFront"
         - aws cloudfront update-distribution --id E1FPBCJ0EFOPZJ --distribution-config file://cloudfront/hollaex-enable-georestriction.json --if-match $(cat .etag)
@@ -44,13 +45,14 @@ pipeline:
 
   ### UNESTRICTING_CLOUDFRONT_REGION ###
   unrestricting_region_for_maintenance:
-      image: quay.io/honestbee/awscli:1.15.26
+      #image: quay.io/honestbee/awscli:1.15.26
+      image: mesosphere/aws-cli:1.14.5
       environment:
         - AWS_DEFAULT_REGION=eu-west-1
         - AWS_DEFAULT_OUTPUT=json
       secrets: [ aws_access_key_id, aws_secret_access_key ]
       commands:
-        - aws configure set preview.cloudfront true
+        #- aws configure set preview.cloudfront true
         - export CLOUDFRONT_ETAG="$(aws cloudfront get-distribution-config --id E1FPBCJ0EFOPZJ | grep ETag | cut -c 14- | rev | cut -c 3- | rev)" && echo "$CLOUDFRONT_ETAG" > .etag
         - cat .etag && echo "= Current Etag for CloudFront"
         - aws cloudfront update-distribution --id E1FPBCJ0EFOPZJ --distribution-config file://cloudfront/hollaex-disable-georestriction.json --if-match $(cat .etag)
