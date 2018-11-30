@@ -25,51 +25,51 @@ pipeline:
         exclude: [master, deployment]
         event: push
 
-  ### RESTRICTING_CLOUDFRONT_REGION ###
-  restricting_region_for_maintenance:
-      #image: quay.io/honestbee/awscli:1.15.26
-      image: mesosphere/aws-cli:1.14.5
-      environment:
-        - AWS_DEFAULT_REGION=eu-west-1
-        - AWS_DEFAULT_OUTPUT=json
-      secrets: [ aws_access_key_id, aws_secret_access_key ]
-      commands:
-        #- aws configure set preview.cloudfront true
-        - export CLOUDFRONT_ETAG="$(aws cloudfront get-distribution-config --id E1FPBCJ0EFOPZJ | grep ETag | cut -c 14- | rev | cut -c 4- | rev)" && echo "$CLOUDFRONT_ETAG" > .etag
-        - cat .etag && echo "= Current Etag for CloudFront"
-        - aws cloudfront update-distribution --id E1FPBCJ0EFOPZJ --distribution-config file://cloudfront/hollaex-enable-georestriction.json --if-match $(cat .etag)
-      when:
-        branch: deployment
-        event: deployment
-        environment: enable-georestriction
-
-  ### UNESTRICTING_CLOUDFRONT_REGION ###
-  unrestricting_region_for_maintenance:
-      #image: quay.io/honestbee/awscli:1.15.26
-      image: mesosphere/aws-cli:1.14.5
-      environment:
-        - AWS_DEFAULT_REGION=eu-west-1
-        - AWS_DEFAULT_OUTPUT=json
-      secrets: [ aws_access_key_id, aws_secret_access_key ]
-      commands:
-        #- aws configure set preview.cloudfront true
-        - export CLOUDFRONT_ETAG="$(aws cloudfront get-distribution-config --id E1FPBCJ0EFOPZJ | grep ETag | cut -c 14- | rev | cut -c 4- | rev)" && echo "$CLOUDFRONT_ETAG" > .etag
-        - cat .etag && echo "= Current Etag for CloudFront"
-        - aws cloudfront update-distribution --id E1FPBCJ0EFOPZJ --distribution-config file://cloudfront/hollaex-disable-georestriction.json --if-match $(cat .etag)
-      when:
-        branch: deployment
-        event: deployment
-        environment: disable-georestriction
+  # ### RESTRICTING_CLOUDFRONT_REGION ###
+  # restricting_region_for_maintenance:
+  #     #image: quay.io/honestbee/awscli:1.15.26
+  #     image: mesosphere/aws-cli:1.14.5
+  #     environment:
+  #       - AWS_DEFAULT_REGION=eu-west-1
+  #       - AWS_DEFAULT_OUTPUT=json
+  #     secrets: [ aws_access_key_id, aws_secret_access_key ]
+  #     commands:
+  #       #- aws configure set preview.cloudfront true
+  #       - export CLOUDFRONT_ETAG="$(aws cloudfront get-distribution-config --id E1FPBCJ0EFOPZJ | grep ETag | cut -c 14- | rev | cut -c 4- | rev)" && echo "$CLOUDFRONT_ETAG" > .etag
+  #       - cat .etag && echo "= Current Etag for CloudFront"
+  #       - aws cloudfront update-distribution --id E1FPBCJ0EFOPZJ --distribution-config file://cloudfront/hollaex-enable-georestriction.json --if-match $(cat .etag)
+  #     when:
+  #       branch: deployment
+  #       event: deployment
+  #       environment: enable-georestriction
+  #
+  # ### UNESTRICTING_CLOUDFRONT_REGION ###
+  # unrestricting_region_for_maintenance:
+  #     #image: quay.io/honestbee/awscli:1.15.26
+  #     image: mesosphere/aws-cli:1.14.5
+  #     environment:
+  #       - AWS_DEFAULT_REGION=eu-west-1
+  #       - AWS_DEFAULT_OUTPUT=json
+  #     secrets: [ aws_access_key_id, aws_secret_access_key ]
+  #     commands:
+  #       #- aws configure set preview.cloudfront true
+  #       - export CLOUDFRONT_ETAG="$(aws cloudfront get-distribution-config --id E1FPBCJ0EFOPZJ | grep ETag | cut -c 14- | rev | cut -c 4- | rev)" && echo "$CLOUDFRONT_ETAG" > .etag
+  #       - cat .etag && echo "= Current Etag for CloudFront"
+  #       - aws cloudfront update-distribution --id E1FPBCJ0EFOPZJ --distribution-config file://cloudfront/hollaex-disable-georestriction.json --if-match $(cat .etag)
+  #     when:
+  #       branch: deployment
+  #       event: deployment
+  #       environment: disable-georestriction
 
   ### BUILD AND SYNC ON S3 ###
   npm_run_build:
       image: "node"
       commands:
-        - npm install
-        - npm run build
+        - npm install && npm run build
       when:
         event: push
         branch: [master, deployment]
+
   s3_sync:
       image: quay.io/honestbee/awscli:1.15.26
       environment:
@@ -81,6 +81,18 @@ pipeline:
       when:
         branch: [master, deployment]
         event: push
+
+  restricting_region_for_maintenance:
+    image: mesosphere/aws-cli:1.14.5
+    environment:
+      - AWS_DEFAULT_REGION=eu-west-1
+      - AWS_DEFAULT_OUTPUT=json
+    secrets: [ aws_access_key_id, aws_secret_access_key ]
+    commands:
+      - aws cloudfront create-invalidation --distribution-id E1FPBCJ0EFOPZJ --paths /
+    when:
+      branch: [master, deployment]
+      event: push
 
   ### SLACK NOTIFY ###
   notify_push_done:
@@ -98,34 +110,34 @@ pipeline:
       branch: [ master, deployment ]
       event: push
 
-  notify_enable-georestriction_done:
-    image: plugins/slack
-    channel: deployment
-    secrets: [ slack_webhook ]
-    template: >
-      {{#success build.status}}
-         Geo-Restriction on hollaex-client is successfully enabled. - Build number : {{build.number}}.
-       {{else}}
-         Geo-Restriction on hollaex-client is not successfully enabled. Please check Build number : {{build.number}}.
-       {{/success}}
-    when:
-      status: [success, failure]
-      branch: deployment
-      event: deployment
-      environment: enable-georestriction
-
-  notify_disable-georestriction_done:
-    image: plugins/slack
-    channel: deployment
-    secrets: [ slack_webhook ]
-    template: >
-      {{#success build.status}}
-         Geo-Restriction on hollaex-client is successfully disabled. - Build number : {{build.number}}.
-       {{else}}
-         Geo-Restriction on hollaex-client is not successfully disabled. Please check Build number : {{build.number}}.
-       {{/success}}
-    when:
-      status: [success, failure]
-      branch: deployment
-      event: deployment
-      environment: disable-georestriction
+  # notify_enable-georestriction_done:
+  #   image: plugins/slack
+  #   channel: deployment
+  #   secrets: [ slack_webhook ]
+  #   template: >
+  #     {{#success build.status}}
+  #        Geo-Restriction on hollaex-client is successfully enabled. - Build number : {{build.number}}.
+  #      {{else}}
+  #        Geo-Restriction on hollaex-client is not successfully enabled. Please check Build number : {{build.number}}.
+  #      {{/success}}
+  #   when:
+  #     status: [success, failure]
+  #     branch: deployment
+  #     event: deployment
+  #     environment: enable-georestriction
+  #
+  # notify_disable-georestriction_done:
+  #   image: plugins/slack
+  #   channel: deployment
+  #   secrets: [ slack_webhook ]
+  #   template: >
+  #     {{#success build.status}}
+  #        Geo-Restriction on hollaex-client is successfully disabled. - Build number : {{build.number}}.
+  #      {{else}}
+  #        Geo-Restriction on hollaex-client is not successfully disabled. Please check Build number : {{build.number}}.
+  #      {{/success}}
+  #   when:
+  #     status: [success, failure]
+  #     branch: deployment
+  #     event: deployment
+  #     environment: disable-georestriction
