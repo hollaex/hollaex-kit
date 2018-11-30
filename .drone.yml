@@ -65,6 +65,7 @@ pipeline:
   npm_run_build:
       image: "node"
       commands:
+        - npm install
         - npm run build
       when:
         event: push
@@ -94,7 +95,7 @@ pipeline:
        {{/success}}
     when:
       status: [success, failure]
-      branch: [ master ]
+      branch: [ master, deployment ]
       event: push
 
   notify_enable-georestriction_done:
