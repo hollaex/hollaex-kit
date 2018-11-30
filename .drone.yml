@@ -1,0 +1,121 @@
+clone:
+  git:
+    image: plugins/git
+    when:
+      branch: [master, deployment]
+
+#### Filter unnecessary branches ####
+pipeline:
+  ### SLACK NOTIFY ###
+  notify_job_start:
+    image: plugins/slack
+    channel: deployment
+    template: "<{{build.link}}|Deployment #{{build.number}} started> on <https://github.com/{{repo.owner}}/{{repo.name}}/tree/{{build.branch}}|{{repo.name}}:{{build.branch}}> by {{build.author}}"
+    when:
+      branch: [master, deployment]
+
+  not_deploying_this_branch:
+    image: golang:1.10.0-alpine
+    commands:
+      - echo "Your latest code is now up on ${DRONE_BRANCH}. but Drone will not build this branch. have fun :)"
+    when:
+      branch:
+        exclude: [master, deployment]
+        event: push
+
+  ### RESTRICTING_CLOUDFRONT_REGION ###
+  restricting_region_for_maintenance:
+      image: quay.io/honestbee/awscli:1.11.55
+      environment:
+        - AWS_DEFAULT_REGION=eu-west-1
+        - AWS_DEFAULT_OUTPUT=json
+      secrets: [ AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY ]
+      commands:
+        - export CLOUDFRONT_ETAG="$(aws cloudfront get-distribution-config --id E1FPBCJ0EFOPZJ | grep ETag | cut -c 14- | rev | cut -c 3- | rev)" && echo "$CLOUDFRONT_ETAG" > .etag
+        - aws cloudfront update-distribution --id E1FPBCJ0EFOPZJ --distribution-config file://cloudfront/hollaex-enable-georestriction.json --if-match $(cat .etag)
+      when:
+        branch: deployment
+        event: deployment
+        environment: enable-georestriction
+
+  ### UNESTRICTING_CLOUDFRONT_REGION ###
+  unrestricting_region_for_maintenance:
+      image: quay.io/honestbee/awscli:1.11.55
+      environment:
+        - AWS_DEFAULT_REGION=eu-west-1
+        - AWS_DEFAULT_OUTPUT=json
+      secrets: [ AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY ]
+      commands:
+        - export CLOUDFRONT_ETAG="$(aws cloudfront get-distribution-config --id E1FPBCJ0EFOPZJ | grep ETag | cut -c 14- | rev | cut -c 3- | rev)" && echo "$CLOUDFRONT_ETAG" > .etag
+        - aws cloudfront update-distribution --id E1FPBCJ0EFOPZJ --distribution-config file://cloudfront/hollaex-disable-georestriction.json --if-match $(cat .etag)
+      when:
+        branch: deployment
+        event: deployment
+        environment: disable-georestriction
+
+  ### BUILD AND SYNC ON S3 ###
+  npm_run_build:
+      image: "node"
+      commands:
+        - npm run build
+      when:
+        event: deployment
+        branch: master
+  s3_sync:
+      image: quay.io/honestbee/awscli:1.11.55
+      environment:
+        - AWS_DEFAULT_REGION=eu-west-1
+        - AWS_DEFAULT_OUTPUT=json
+      secrets: [ AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY ]
+      commands:
+        - aws s3 sync build/ s3://hollaex.com
+        branch: master
+        event: push
+
+  ### SLACK NOTIFY ###
+  notify_push_done:
+    image: plugins/slack
+    channel: deployment
+    secrets: [ slack_webhook ]
+    template: >
+      {{#success build.status}}
+         Latest hollaex-client: ${DRONE_BRANCH} is successfully built and synced with S3 bucket. - Build number : {{build.number}}.
+       {{else}}
+         Latest hollaex-client: ${DRONE_BRANCH} didn't build successfully, Please check Build number : {{build.number}}.
+       {{/success}}
+    when:
+      status: [success, failure]
+      branch: [ master ]
+      event: push
+
+  notify_enable-georestriction_done:
+    image: plugins/slack
+    channel: deployment
+    secrets: [ slack_webhook ]
+    template: >
+      {{#success build.status}}
+         Geo-Restriction on hollaex-client is successfully enabled. - Build number : {{build.number}}.
+       {{else}}
+         Geo-Restriction on hollaex-client is not successfully enabled. Please check Build number : {{build.number}}.
+       {{/success}}
+    when:
+      status: [success, failure]
+      branch: deployment
+      event: deployment
+      environment: enable-georestriction
+
+  notify_disable-georestriction_done:
+    image: plugins/slack
+    channel: deployment
+    secrets: [ slack_webhook ]
+    template: >
+      {{#success build.status}}
+         Geo-Restriction on hollaex-client is successfully disabled. - Build number : {{build.number}}.
+       {{else}}
+         Geo-Restriction on hollaex-client is not successfully disabled. Please check Build number : {{build.number}}.
+       {{/success}}
+    when:
+      status: [success, failure]
+      branch: deployment
+      event: deployment
+      environment: disable-georestriction
