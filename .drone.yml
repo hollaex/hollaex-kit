@@ -11,7 +11,7 @@ pipeline:
     image: plugins/slack
     channel: deployment
     secrets: [ slack_webhook ]
-    template: "<{{build.link}}|Deployment #{{build.number}} started> on <https://github.com/{{repo.owner}}/{{repo.name}}/tree/{{build.branch}}|{{repo.name}}:{{build.branch}}> by {{build.author}}"
+    template: "<{{build.link}}|Deployment - #{{build.number}} started> on <https://github.com/{{repo.owner}}/{{repo.name}}/tree/{{build.branch}}|{{repo.name}}-client / {{build.branch}}> by {{build.author}}"
     when:
       branch: [master, deployment]
       event: push
@@ -33,6 +33,7 @@ pipeline:
         - AWS_DEFAULT_OUTPUT=json
       secrets: [ AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY ]
       commands:
+        - aws configure set preview.cloudfront true
         - export CLOUDFRONT_ETAG="$(aws cloudfront get-distribution-config --id E1FPBCJ0EFOPZJ | grep ETag | cut -c 14- | rev | cut -c 3- | rev)" && echo "$CLOUDFRONT_ETAG" > .etag
         - aws cloudfront update-distribution --id E1FPBCJ0EFOPZJ --distribution-config file://cloudfront/hollaex-enable-georestriction.json --if-match $(cat .etag)
       when:
@@ -48,6 +49,7 @@ pipeline:
         - AWS_DEFAULT_OUTPUT=json
       secrets: [ AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY ]
       commands:
+        - aws configure set preview.cloudfront true
         - export CLOUDFRONT_ETAG="$(aws cloudfront get-distribution-config --id E1FPBCJ0EFOPZJ | grep ETag | cut -c 14- | rev | cut -c 3- | rev)" && echo "$CLOUDFRONT_ETAG" > .etag
         - aws cloudfront update-distribution --id E1FPBCJ0EFOPZJ --distribution-config file://cloudfront/hollaex-disable-georestriction.json --if-match $(cat .etag)
       when:
