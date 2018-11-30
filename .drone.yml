@@ -63,12 +63,11 @@ pipeline:
 
   ### BUILD AND SYNC ON S3 ###
   npm_run_build:
-      image: node:10.14-alpine
+      image: node
       commands:
         - node -v
         - npm -v
-        - npm install yarn
-        - yarn install
+        - npm install --save
       when:
         event: push
         branch: [master, deployment]
