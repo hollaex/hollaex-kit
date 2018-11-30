@@ -11,7 +11,7 @@ pipeline:
     image: plugins/slack
     channel: deployment
     secrets: [ slack_webhook ]
-    template: "<{{build.link}}|Deployment - #{{build.number}} started> on <https://github.com/{{repo.owner}}/{{repo.name}}/tree/{{build.branch}}|{{repo.name}}-client / {{build.branch}}> by {{build.author}}"
+    template: "<{{build.link}}|Deployment> - #{{build.number}} started on <https://github.com/{{repo.owner}}/{{repo.name}}/tree/{{build.branch}}|{{repo.name}}-client / {{build.branch}}> by {{build.author}}"
     when:
       branch: [master, deployment]
       event: push
@@ -65,6 +65,8 @@ pipeline:
   npm_run_build:
       image: node:10.14-alpine
       commands:
+        - node -v
+        - npm -v 
         - npm install
         - npm run build
       when:
