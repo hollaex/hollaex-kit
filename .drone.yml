@@ -35,6 +35,7 @@ pipeline:
       commands:
         - aws configure set preview.cloudfront true
         - export CLOUDFRONT_ETAG="$(aws cloudfront get-distribution-config --id E1FPBCJ0EFOPZJ | grep ETag | cut -c 14- | rev | cut -c 3- | rev)" && echo "$CLOUDFRONT_ETAG" > .etag
+        - cat .etag && echo "= Current Etag for CloudFront"
         - aws cloudfront update-distribution --id E1FPBCJ0EFOPZJ --distribution-config file://cloudfront/hollaex-enable-georestriction.json --if-match $(cat .etag)
       when:
         branch: deployment
@@ -51,6 +52,7 @@ pipeline:
       commands:
         - aws configure set preview.cloudfront true
         - export CLOUDFRONT_ETAG="$(aws cloudfront get-distribution-config --id E1FPBCJ0EFOPZJ | grep ETag | cut -c 14- | rev | cut -c 3- | rev)" && echo "$CLOUDFRONT_ETAG" > .etag
+        - cat .etag && echo "= Current Etag for CloudFront"
         - aws cloudfront update-distribution --id E1FPBCJ0EFOPZJ --distribution-config file://cloudfront/hollaex-disable-georestriction.json --if-match $(cat .etag)
       when:
         branch: deployment
