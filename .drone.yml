@@ -66,8 +66,8 @@ pipeline:
       image: node:10.14-alpine
       commands:
         - node -v
-        - npm -v 
-        - npm install
+        - npm -v
+        - npm install -dd
         - npm run build
       when:
         event: push
