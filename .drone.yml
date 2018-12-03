@@ -63,12 +63,11 @@ pipeline:
 
   ### BUILD AND SYNC ON S3 ###
   npm_run_build:
-      image: node:8.11.1-slim
+      image: node
       commands:
         - npm config set registry="http://registry.npmjs.org"
-        - node -v
-        - npm -v
-        - npm install
+        - node -v && npm -v
+        - npm install --dd
         - npm run build
       when:
         event: push
