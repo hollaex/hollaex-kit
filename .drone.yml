@@ -87,8 +87,8 @@ pipeline:
         - export CI="false"
         - npm install -g react-scripts --unsafe-perm
         - react-scripts build
-      #mem_limit: "2048m"
-      oom_kill_disable: "true"
+      oom_kill_disable: true
+      mem_limit: "2048m"
       when:
         event: push
         branch: [master, deployment]
