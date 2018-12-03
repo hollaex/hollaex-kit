@@ -69,6 +69,7 @@ pipeline:
         - node -v
         - npm -v
         - npm install --dd
+        - npm run build
       when:
         event: push
         branch: [master, deployment]
