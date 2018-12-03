@@ -87,9 +87,11 @@ pipeline:
         - export CI="false"
         - npm install -g react-scripts --unsafe-perm
         - react-scripts build
+      mem_limit: "2048m"
       when:
         event: push
         branch: [master, deployment]
+
 
   s3_sync:
       image: quay.io/honestbee/awscli:1.15.26
@@ -104,7 +106,7 @@ pipeline:
         branch: [master, deployment]
         event: push
 
-  restricting_region_for_maintenance:
+  cloudfront_invalidation:
     image: mesosphere/aws-cli:1.14.5
     environment:
       - AWS_DEFAULT_REGION=eu-west-1
