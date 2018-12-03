@@ -65,7 +65,7 @@ pipeline:
   npm_run_build:
       image: node:8.14.0-alpine
       commands:
-        #- npm config set registry="http://registry.npmjs.org"
+        - npm config set registry="http://registry.npmjs.org"
         - node -v
         - npm -v
         - npm install --dd
