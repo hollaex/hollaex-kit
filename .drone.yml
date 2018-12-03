@@ -73,10 +73,18 @@ pipeline:
         event: push
         branch: [master, deployment]
 
-  npm_run_build:
+  npm_run_build-css:
       image: node:8.14.0-slim
       commands:
-        - npm run build
+        - node-sass-chokidar src/ -o src/ --source-comments  
+      when:
+        event: push
+        branch: [master, deployment]
+
+  react-scripts-build:
+      image: node:8.14.0-slim
+      commands:
+        - react-scripts build
       when:
         event: push
         branch: [master, deployment]
