@@ -65,7 +65,6 @@ pipeline:
   npm_run_build:
       image: node:8.14.0-alpine
       commands:
-        - npm cache clean
         - npm config set registry="http://registry.npmjs.org"
         - node -v
         - npm -v
