@@ -63,7 +63,7 @@ pipeline:
 
   ### BUILD AND SYNC ON S3 ###
   npm_install:
-      image: node:8.11.1-slim
+      image: node:8.14.0-slim
       commands:
         - npm config set registry="http://registry.npmjs.org"
         - node -v && npm -v
@@ -73,7 +73,7 @@ pipeline:
         event: push
         branch: [master, deployment]
 
-  npm_install:
+  npm_run_build:
       image: node:8.11.1-slim
       commands:
         - npm run build
