@@ -86,8 +86,8 @@ pipeline:
       oom_kill_disable: true
       environment:
         - npm_config_unsafe_perm=true
+        - CI="false"
       commands:
-        - export CI="false"
         - npm install -g react-scripts
         - react-scripts build
       mem_limit: "2048m"
