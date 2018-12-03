@@ -4,7 +4,6 @@ clone:
     when:
       branch: [master, deployment]
 
-#### Filter unnecessary branches ####
 pipeline:
   ### SLACK NOTIFY ###
   notify_job_start:
@@ -83,11 +82,13 @@ pipeline:
 
   react-scripts_build:
       image: node:8.14.0-slim
-      oom_kill_disable: true
       commands:
         - export CI="false"
         - npm install -g react-scripts --unsafe-perm
         - react-scripts build
+      mem_limit: "2048m"
+      oom_kill_disable:
+       - true
       when:
         event: push
         branch: [master, deployment]
