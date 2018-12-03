@@ -65,30 +65,32 @@ pipeline:
   npm_install:
       image: node:8.14.0-slim
       commands:
+        - export CI="false"
         - npm config set registry="http://registry.npmjs.org"
         - node -v && npm -v
         - npm install --save --dd
+        - npm run build
       when:
         event: push
         branch: [master, deployment]
 
-  npm_run_build-css:
-      image: node:8.14.0-slim
-      commands:
-        - npm install -g node-sass-chokidar --unsafe-perm
-        - node-sass-chokidar src/ -o src/ --source-comments
-      when:
-        event: push
-        branch: [master, deployment]
-
-  react-scripts-build:
-      image: node:8.14.0-slim
-      commands:
-        - npm install -g react-scripts --unsafe-perm
-        - react-scripts build
-      when:
-        event: push
-        branch: [master, deployment]
+  # npm_run_build-css:
+  #     image: node:8.14.0-slim
+  #     commands:
+  #       - npm install -g node-sass-chokidar --unsafe-perm
+  #       - node-sass-chokidar src/ -o src/ --source-comments
+  #     when:
+  #       event: push
+  #       branch: [master, deployment]
+  #
+  # react-scripts_build:
+  #     image: node:8.14.0-slim
+  #     commands:
+  #       - npm install -g react-scripts --unsafe-perm
+  #       - react-scripts build
+  #     when:
+  #       event: push
+  #       branch: [master, deployment]
 
   s3_sync:
       image: quay.io/honestbee/awscli:1.15.26
