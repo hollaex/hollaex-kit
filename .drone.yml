@@ -65,10 +65,10 @@ pipeline:
   npm_run_build:
       image: node:8.14.0-alpine
       commands:
-        - npm config set registry="http://registry.npmjs.org"
+        #- npm config set registry="http://registry.npmjs.org"
         - node -v
         - npm -v
-        - npm install --save --dd
+        - npm install --dd
       when:
         event: push
         branch: [master, deployment]
@@ -80,6 +80,7 @@ pipeline:
         - AWS_DEFAULT_OUTPUT=json
       secrets: [ aws_access_key_id, aws_secret_access_key ]
       commands:
+        - ls -al
         - aws s3 sync build/ s3://hollaex.com
       when:
         branch: [master, deployment]
