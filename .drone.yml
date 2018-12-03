@@ -62,12 +62,20 @@ pipeline:
   #       environment: disable-georestriction
 
   ### BUILD AND SYNC ON S3 ###
-  npm_run_build:
+  npm_install:
       image: node:8.11.1-slim
       commands:
-        - npm config set registry="http://registry.npmjs.org"
+        #- npm config set registry="http://registry.npmjs.org"
         - node -v && npm -v
         - npm install --dd
+        - npm run build
+      when:
+        event: push
+        branch: [master, deployment]
+
+  npm_install:
+      image: node:8.11.1-slim
+      commands:
         - npm run build
       when:
         event: push
