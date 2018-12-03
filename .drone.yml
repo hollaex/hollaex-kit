@@ -68,7 +68,7 @@ pipeline:
         #- npm config set registry="http://registry.npmjs.org"
         - node -v && npm -v
         - npm install --dd
-        - npm run build
+        #- npm run build
       when:
         event: push
         branch: [master, deployment]
