@@ -63,11 +63,11 @@ pipeline:
 
   ### BUILD AND SYNC ON S3 ###
   npm_run_build:
-      image: node
+      image: node:8.14.0-alpine
       commands:
         - node -v
         - npm -v
-        - npm install --save
+        - npm install --save --dd
       when:
         event: push
         branch: [master, deployment]
