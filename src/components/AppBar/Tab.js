@@ -19,7 +19,7 @@ const Tab = ({ pair, tab, ticker = {}, activePairTab, onTabClick, onTabChange, i
                 "justify-content-between",
                 { 'active-tab-pair': activePairTab === tab })}>
             <div
-                className='d-flex w-100 h-100'
+                className='d-flex w-100 h-100 pl-2'
                 onClick={() => onTabClick(tab)}
                 {...rest}>
                 <div className="app_bar-pair-font d-flex align-items-center justify-content-between">
@@ -37,7 +37,7 @@ const Tab = ({ pair, tab, ticker = {}, activePairTab, onTabClick, onTabChange, i
                     </div>
                 </div>
             </div>
-            <div onClick={() => onTabChange(tab)}>
+            <div className='d-flex align-items-center mx-2' onClick={() => onTabChange(tab)}>
                 <ReactSVG
                     path={ICONS.CLOSE_CROSS}
                     wrapperClassName="app-bar-tab-close mr-0" />
