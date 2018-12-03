@@ -73,7 +73,7 @@ pipeline:
         branch: [master, deployment]
 
   npm_run_build:
-      image: node:8.14.0-alpine
+      image: node
       commands:
         - npm run build
       when:
