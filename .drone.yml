@@ -84,6 +84,7 @@ pipeline:
   react-scripts-build:
       image: node:8.14.0-slim
       commands:
+        - npm install -g react-scripts --unsafe-perm
         - react-scripts build
       when:
         event: push
