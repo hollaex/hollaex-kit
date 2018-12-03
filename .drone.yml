@@ -63,17 +63,18 @@ pipeline:
 
   ### BUILD AND SYNC ON S3 ###
   npm_install:
-      image: node:8.14.0-alpine
+      image: node:8.14.0-slim
       commands:
         - npm config set registry="http://registry.npmjs.org"
         - node -v && npm -v
+        - npm install -g node-sass-chokidar
         - npm install --dd
       when:
         event: push
         branch: [master, deployment]
 
   npm_run_build:
-      image: node
+      image: node:8.14.0-slim
       commands:
         - npm run build
       when:
