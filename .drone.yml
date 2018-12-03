@@ -67,8 +67,8 @@ pipeline:
       commands:
         - npm config set registry="http://registry.npmjs.org"
         - node -v && npm -v
-        - npm install -g node-sass-chokidar
-        - npm install --dd
+        - npm install --save node-sass-chokidar
+        - npm install --save --dd
       when:
         event: push
         branch: [master, deployment]
