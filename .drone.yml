@@ -67,7 +67,6 @@ pipeline:
       commands:
         - npm config set registry="http://registry.npmjs.org"
         - node -v && npm -v
-        - npm install -g node-sass-chokidar --unsafe-perm
         - npm install --save --dd
       when:
         event: push
@@ -76,6 +75,7 @@ pipeline:
   npm_run_build-css:
       image: node:8.14.0-slim
       commands:
+        - - npm install -g node-sass-chokidar --unsafe-perm
         - node-sass-chokidar src/ -o src/ --source-comments
       when:
         event: push
