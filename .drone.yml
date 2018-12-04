@@ -83,11 +83,10 @@ pipeline:
   react-scripts_build:
       image: node:8.14.0-slim
       commands:
-        - export CI="false"
         - npm install -g react-scripts --unsafe-perm
-        - react-scripts build
+        - export CI="false" && react-scripts build
         - exit 0;
-      mem_limit: "2048m"
+      #mem_limit: "2048m"
       #oom_kill_disable: true
       when:
         event: push
