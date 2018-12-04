@@ -2,7 +2,7 @@ clone:
   git:
     image: plugins/git
     when:
-      branch: [master, deployment]
+      branch: [master]
 
 pipeline:
   ### SLACK NOTIFY ###
@@ -12,7 +12,7 @@ pipeline:
     secrets: [ slack_webhook ]
     template: "<{{build.link}}|Deployment> - #{{build.number}} started on <https://github.com/{{repo.owner}}/{{repo.name}}/tree/{{build.branch}}|{{repo.name}}-client / {{build.branch}}> by {{build.author}}"
     when:
-      branch: [master, deployment]
+      branch: [master]
       event: push
 
   not_deploying_this_branch:
@@ -21,7 +21,7 @@ pipeline:
       - echo "Your latest code is now up on ${DRONE_BRANCH}. but Drone will not build this branch. have fun :)"
     when:
       branch:
-        exclude: [master, deployment]
+        exclude: [master]
         event: push
 
   # ### RESTRICTING_CLOUDFRONT_REGION ###
@@ -69,7 +69,7 @@ pipeline:
         - npm install --save --dd
       when:
         event: push
-        branch: [master, deployment]
+        branch: [master]
 
   npm_run_build-css:
       image: node:8.14.0-slim
@@ -78,7 +78,7 @@ pipeline:
         - node-sass-chokidar src/ -o src/ --source-comments
       when:
         event: push
-        branch: [master, deployment]
+        branch: [master]
 
   react-scripts_build:
       image: node:8.14.0-slim
@@ -90,7 +90,7 @@ pipeline:
       #oom_kill_disable: true
       when:
         event: push
-        branch: [master, deployment]
+        branch: [master]
 
 
   s3_sync:
@@ -103,7 +103,7 @@ pipeline:
         - ls -al
         - aws s3 sync build/ s3://hollaex.com
       when:
-        branch: [master, deployment]
+        branch: [master]
         event: push
 
   cloudfront_invalidation:
@@ -115,7 +115,7 @@ pipeline:
     commands:
       - aws cloudfront create-invalidation --distribution-id E1FPBCJ0EFOPZJ --paths /
     when:
-      branch: [master, deployment]
+      branch: [master]
       event: push
 
   ### SLACK NOTIFY ###
@@ -125,13 +125,13 @@ pipeline:
     secrets: [ slack_webhook ]
     template: >
       {{#success build.status}}
-         Latest hollaex-client: ${DRONE_BRANCH} is successfully built and synced with S3 bucket. - Build number : {{build.number}}.
+         Latest hollaex-client/${DRONE_BRANCH} is successfully built and synced with S3 bucket. - Build number : {{build.number}}.
        {{else}}
-         Latest hollaex-client: ${DRONE_BRANCH} didn't build successfully, Please check Build number : {{build.number}}.
+         Latest hollaex-client/${DRONE_BRANCH} didn't build successfully, Please check Build number : {{build.number}}.
        {{/success}}
     when:
       status: [success, failure]
-      branch: [ master, deployment ]
+      branch: [ master]
       event: push
 
   # notify_enable-georestriction_done:
