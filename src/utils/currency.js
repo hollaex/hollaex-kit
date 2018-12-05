@@ -83,7 +83,7 @@ export const calculateBalancePrice = (balance, prices) => {
 };
 
 export const calculatePricePercentage = (value = 0, total = 0) =>
-	formatNumber(math.number(math.multiply(math.divide(math.fraction(value), math.fraction(total)), 100)));
+	math.number(math.multiply(math.divide(math.fraction(value), math.fraction(total)), 100));
 
 export const generateWalletActionsText = (symbol, useFullName = false) => {
 	const name = STRINGS[`${symbol.toUpperCase()}_NAME`];

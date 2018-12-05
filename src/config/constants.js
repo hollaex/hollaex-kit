@@ -32,6 +32,7 @@ export const ICONS = {
 	BTC_ICON: `${process.env.PUBLIC_URL}/assets/icons/btc-icon-01.svg`,
 	ETH_ICON: `${process.env.PUBLIC_URL}/assets/icons/eth-icon-01.svg`,
 	ETH_ICON_DARK: `${process.env.PUBLIC_URL}/assets/icons/eth-icon-dark-01.svg`,
+	EUR_ICON: `${process.env.PUBLIC_URL}/assets/icons/eur-icon.svg`,
 	LIFESAVER: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-05.svg`,
 	QUESTION_MARK: `${process.env.PUBLIC_URL}/assets/icons/question-mark-black.svg`,
 	QUESTION_MARK_COLOR: `${process.env.PUBLIC_URL}/assets/icons/question-mark-color.svg`,

@@ -15,7 +15,11 @@ const colors_currencies = {
 
 function translate(x, y) {
     return `translate(${x}, ${y})`;
-}
+};
+
+function rotate (d) {
+    return `rotate(${180 / Math.PI * (d.startAngle + d.endAngle) / 2 + 45})`;
+};
 
 class DonutChart extends Component {
 
@@ -68,7 +72,7 @@ class DonutChart extends Component {
         let radius = (minViewportSize * .9) / 3;
         let innerRadius = radius * .60;
         let outerRadius = radius;
-        let labelRadious = radius + 25;
+        let labelRadious = radius + 30;
         let cornerRadius = 0;
         let arcj = arc()
             .innerRadius(innerRadius)
@@ -95,8 +99,8 @@ class DonutChart extends Component {
                     <text
                         transform={translate(10 - innerRadius, 10)}
                         dy=".35em"
-                        className="donut-label-percentage deposite-asset">
-                        <Link to='/wallet'>{STRINGS.DEPOSIT_ASSETS.toUpperCase()}</Link>
+                        className="donut-label-percentage">
+                        <Link to='/wallet' className="deposite-asset">{STRINGS.DEPOSIT_ASSETS.toUpperCase()}</Link>
                     </text>
                 </g>
             );

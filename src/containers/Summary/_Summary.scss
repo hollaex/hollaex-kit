@@ -47,6 +47,15 @@ $summary-icon-color-inactive: #808184;
                 color: $dark-font-main-text-color;
             }
         }
+
+        .assets-wrapper {
+            .asset-changes {
+                background-color: $dark-link;
+            }
+            .price-text {
+                color: $dark-font-main-text-color;
+            }
+        }
     }
 
     .fee-limits-wrapper {
@@ -98,6 +107,7 @@ $summary-icon-color-inactive: #808184;
         
         .summary-block-title {
             color: $summary--black;
+            font-size: 1rem;
             font-weight: bold;
         }
 
@@ -135,7 +145,7 @@ $summary-icon-color-inactive: #808184;
     }
 
     .summary-section_2 {
-        height: 25rem;
+        height: 45rem;
     }
 
     .requirements-content-text {
@@ -196,11 +206,55 @@ $summary-icon-color-inactive: #808184;
     }
 
     .assets-wrapper {
+        font-size: .8rem;
         margin-right: 1.5rem;
         width: 25rem;
 
         .assets-description {
             width: 86%;
+        }
+
+        .donut-container {
+            height: 23rem;
+        }
+
+        .price-content {
+            width: 10rem;
+        }
+
+        .price-text {
+            color: $summary--black;
+            font-weight: bold;
+        }
+
+        .total-assets {
+            background: repeating-linear-gradient(-45deg, #fff, #fff 2px, #cccbcb 2px, #cccbcb 4px);
+            font-size: 1.2rem;
+            font-weight: bold;
+            padding: .5rem;
+            color: $summary--black;
+        }
+
+        .asset-changes {
+            background-color: $colors-notifications-blue;
+        }
+
+        .coin-price {
+            height: 3.5rem;
+            margin: auto;
+            width: 3rem;
+
+            svg {
+                .btc0, .btc1 {
+                    fill: $colors-currencies-btc;
+                }
+                .eth0, .eth1 {
+                    fill: $colors-currencies-eth;
+                }
+                .bch-icon {
+                    fill: $colors-currencies-bch;
+                }
+            }
         }
     }
 
