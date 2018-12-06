@@ -919,7 +919,6 @@ export default {
 	SEARCH_TXT: 'Search', // ToDo: need to add this in farsi when move to exir.
 	SEARCH_ASSETS: 'Search Assets', // ToDo: need to add this in farsi when move to exir.
 	TOTAL_ASSETS_VALUE: 'Total assets value in {0}: {1}', // ToDo: need to add this in farsi when move to exir.
-	TOTAL_ASSETS_VALUE_CHANGE: 'The total value of all your assets has changed {0} since your last login', // ToDo: need to add this in farsi when move to exir.
 	SUMMARY: { // ToDo: need to add this entire suumary in farsi when move to exir.
 		TITLE: 'Summary',
 		TINY_PINK_SHRIMP_TRADER: 'Tiny Pink Shrimp Trader',

@@ -31,9 +31,7 @@ class Summary extends Component {
         selectedAccount: default_trader_account.symbol,
         currentTradingAccount: default_trader_account,
         chartData: [],
-        totalAssets: '',
-        chartBalance: [],
-        allData: {}
+        totalAssets: ''
     };
 
     
@@ -85,31 +83,26 @@ class Summary extends Component {
 
     calculateSections = ({ price, balance, orders, prices }) => {
         const data = [];
-        const chartBalance = [];
 
         const totalAssets = calculateBalancePrice(balance, prices);
         Object.keys(CURRENCIES).forEach((currency) => {
             const { symbol, formatToCurrency } = CURRENCIES[currency];
             const currencyBalance = calculatePrice(balance[`${symbol}_balance`], prices[currency]);
             const balancePercent = calculatePricePercentage(currencyBalance, totalAssets);
-            chartBalance.push(balancePercent);
-            // if (balancePercent > 0) {
-            // } else {
-            //     chartBalance.push(0.504);
-            // }
             data.push({
                 ...CURRENCIES[currency],
-                balance: formatToCurrency(currencyBalance),
+                balance: balancePercent,
+                balanceFormat: formatToCurrency(currencyBalance),
                 balancePercentage: formatPercentage(balancePercent),
             });
         });
 
-        this.setState({ chartData: data, totalAssets: formatFiatAmount(totalAssets), chartBalance });
+        this.setState({ chartData: data, totalAssets: formatFiatAmount(totalAssets) });
     };
 
     render() {
         const { user, balance, activeTheme } = this.props;
-        const { selectedAccount, currentTradingAccount, chartData, chartBalance, totalAssets } = this.state;
+        const { selectedAccount, currentTradingAccount, chartData, totalAssets } = this.state;
         return (
             <div className="summary-container">
                 {/* <IconTitle
@@ -157,7 +150,6 @@ class Summary extends Component {
                                     <AccountAssets
                                         user={user}
                                         chartData={chartData}
-                                        chartBalance={chartBalance}
                                         totalAssets={totalAssets}
                                         balance={balance} />
                                 </SummaryBlock>

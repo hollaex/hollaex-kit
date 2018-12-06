@@ -5,7 +5,7 @@ import { DonutChart } from '../../../components';
 import STRINGS from '../../../config/localizedStrings';
 import { CURRENCIES, BASE_CURRENCY, ICONS } from '../../../config/constants';
 
-const AccountAssets = ({ chartData, chartBalance, totalAssets, balance }) => {
+const AccountAssets = ({ chartData, totalAssets, balance }) => {
     const baseValue = CURRENCIES[BASE_CURRENCY];
     return (
         <div className="summary-section_2">
@@ -14,7 +14,7 @@ const AccountAssets = ({ chartData, chartBalance, totalAssets, balance }) => {
                 <div>{STRINGS.SUMMARY.ACCOUNT_ASSETS_TXT_2}</div>
             </div>
             <div className="w-100 donut-container">
-                {BASE_CURRENCY && <DonutChart data={chartBalance} chartData={chartData} />}
+                {BASE_CURRENCY && <DonutChart chartData={chartData} />}
             </div>
             <div className="d-flex">
                 {chartData.map((value, index) => (
@@ -24,7 +24,7 @@ const AccountAssets = ({ chartData, chartBalance, totalAssets, balance }) => {
                         <div className="price-text">
                             {`${STRINGS[`${value.symbol.toUpperCase()}_CURRENCY_SYMBOL`]} ${balance[`${value.symbol}_balance`]}`}
                         </div>
-                        {value.symbol !== 'fiat' && <div>{`~${value.balance}`}</div>}
+                        {value.symbol !== 'fiat' && <div>{`~${value.balanceFormat}`}</div>}
                     </div>
                 ))}
             </div>
@@ -32,12 +32,6 @@ const AccountAssets = ({ chartData, chartBalance, totalAssets, balance }) => {
                 <span className="total-assets">
                     {STRINGS.formatString(STRINGS.TOTAL_ASSETS_VALUE, baseValue.fullName, totalAssets)}
                 </span>
-            </div>
-            <div className="text-center my-3 title-font total-assets">
-                {STRINGS.formatString(
-                    STRINGS.TOTAL_ASSETS_VALUE_CHANGE,
-                    <span className="asset-changes">{totalAssets}</span>
-                )}
             </div>
         </div>
     );
