@@ -32,6 +32,7 @@ export const ICONS = {
 	BTC_ICON: `${process.env.PUBLIC_URL}/assets/icons/btc-icon-01.svg`,
 	ETH_ICON: `${process.env.PUBLIC_URL}/assets/icons/eth-icon-01.svg`,
 	ETH_ICON_DARK: `${process.env.PUBLIC_URL}/assets/icons/eth-icon-dark-01.svg`,
+	EUR_ICON: `${process.env.PUBLIC_URL}/assets/icons/eur-icon.svg`,
 	LIFESAVER: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-05.svg`,
 	QUESTION_MARK: `${process.env.PUBLIC_URL}/assets/icons/question-mark-black.svg`,
 	QUESTION_MARK_COLOR: `${process.env.PUBLIC_URL}/assets/icons/question-mark-color.svg`,
@@ -108,6 +109,8 @@ export const ICONS = {
 		process.env.PUBLIC_URL
 	}/assets/images/payment-options.svg`,
 	QUICK_TRADE: `${process.env.PUBLIC_URL}/assets/images/quick-trade.svg`,
+	QUICK_TRADE_TAB: `${process.env.PUBLIC_URL}/assets/images/quick-trade-tab.svg`,
+	QUICK_TRADE_TAB_ACTIVE: `${process.env.PUBLIC_URL}/assets/images/quick-trade-tab-active.svg`,
 	SECURE: `${process.env.PUBLIC_URL}/assets/images/secure.svg`,
 	SECURITY_BLACK: `${process.env.PUBLIC_URL}/assets/images/security.svg`,
 	SECURITY_GREY: `${process.env.PUBLIC_URL}/assets/images/security-grey.svg`,
@@ -271,7 +274,20 @@ export const ICONS = {
 		process.env.PUBLIC_URL
 	}/assets/images/dotted-grip-chat-repeat-pattern.svg`,
 	CHAT: `${process.env.PUBLIC_URL}/assets/images/chat-icon.svg`,
-	WITHDRAW_MAIL_CONFIRMATION: `${process.env.PUBLIC_URL}/assets/images/withdraw-mail-confirmation.svg`
+	WITHDRAW_MAIL_CONFIRMATION: `${process.env.PUBLIC_URL}/assets/images/withdraw-mail-confirmation.svg`,
+	CLOSE_CROSS: `${process.env.PUBLIC_URL}/assets/images/close-cross-tab.svg`,
+	TAB_PLUS: `${process.env.PUBLIC_URL}/assets/images/tab-plus.svg`,
+	TAB_MINUS: `${process.env.PUBLIC_URL}/assets/images/tab-minus.svg`,
+	TAB_SUMMARY: `${process.env.PUBLIC_URL}/assets/images/tab-summary.svg`,
+	TAB_WALLET: `${process.env.PUBLIC_URL}/assets/images/tab-wallet.svg`,
+	TAB_SECURITY: `${process.env.PUBLIC_URL}/assets/images/tab-security.svg`,
+	TAB_VERIFY: `${process.env.PUBLIC_URL}/assets/images/tab-verify.svg`,
+	TAB_SETTING: `${process.env.PUBLIC_URL}/assets/images/tab-setting.svg`,
+	TAB_API: `${process.env.PUBLIC_URL}/assets/images/tab-api.svg`,
+	TAB_SIGNOUT: `${process.env.PUBLIC_URL}/assets/images/signout.svg`,
+	DOUBLE_ARROW: `${process.env.PUBLIC_URL}/assets/images/double-arrow.svg`,
+	SEARCH: `${process.env.PUBLIC_URL}/assets/images/search.svg`,
+	VERIFICATION_DOC_STATUS: `${process.env.PUBLIC_URL}/assets/images/verification-doc-status.svg`
 };
 
 export const SOCIAL_ICONS = {
@@ -294,6 +310,15 @@ export const FEATURES_ICONS = {
 	SUPPORT: `${process.env.PUBLIC_URL}/assets/images/features-support-icons.svg`,
 	LEGAL: `${process.env.PUBLIC_URL}/assets/images/features-legal-icons.svg`
 };
+
+export const SUMMMARY_ICON = {
+	KRAKEN: `${process.env.PUBLIC_URL}/assets/summary/kraken.png`,
+	SNAPPER: `${process.env.PUBLIC_URL}/assets/summary/snapper.png`,
+	SHRIMP: `${process.env.PUBLIC_URL}/assets/summary/shrimp.png`,
+	LEVIATHAN: `${process.env.PUBLIC_URL}/assets/summary/leviathan.png`,
+	LEVIATHAN_DARK: `${process.env.PUBLIC_URL}/assets/summary/leviathan_dark.png`
+};
+
 export const HOLLAEX_LOGO = `${
 	process.env.PUBLIC_URL
 }/assets/hollaEx_logo-grey.svg`;
@@ -406,6 +431,10 @@ export const WITHDRAW_LIMITS = {
 	},
 };
 
+export const DEFAULT_TRADING_PAIRS = process.env.REACT_APP_DEFAULT_TRADING_PAIRS
+	? process.env.REACT_APP_DEFAULT_TRADING_PAIRS.split(',')
+	: ['btc-eur', 'eth-eur'];
+
 export const TOKEN_KEY = `${ENV}_${NETWORK}_TOKEN`;
 export const LANGUAGE_KEY = `${ENV}_${NETWORK}_LANGUAGE`;
 export const DEFAULT_LANGUAGE = process.env.REACT_APP_DEFAULT_LANGUAGE || 'en';
@@ -467,3 +496,28 @@ export const DEFAULT_COUNTRY = process.env.REACT_APP_DEFAULT_COUNTRY
 	: 'FR';
 
 export const BASE_CURRENCY = process.env.REACT_APP_BASE_CURRENCY;
+
+export const FEES_LIMIT_SITE_URL = 'https://www.exir.io/exir_fees/';
+
+export const TRADING_ACCOUNT_TYPE = {
+	shrimp: {
+		symbol: 'shrimp',
+		name: STRINGS.SUMMARY.TINY_PINK_SHRIMP_TRADER,
+		fullName: STRINGS.SUMMARY.TINY_PINK_SHRIMP_TRADER_ACCOUNT
+	},
+	snapper: {
+		symbol: 'snapper',
+		name: STRINGS.SUMMARY.LITTLE_RED_SNAPPER_TRADER,
+		fullName: STRINGS.SUMMARY.LITTLE_RED_SNAPPER_TRADER_ACCOUNT
+	},
+	kraken: {
+		symbol: 'kraken',
+		name: STRINGS.SUMMARY.CUNNING_BLUE_KRAKEN_TRADING,
+		fullName: STRINGS.SUMMARY.CUNNING_BLUE_KRAKEN_TRADING_ACCOUNT
+	},
+	leviathan: {
+		symbol: 'leviathan',
+		name: STRINGS.SUMMARY.BLACK_LEVIATHAN_TRADING,
+		fullName: STRINGS.SUMMARY.BLACK_LEVIATHAN_TRADING_ACCOUNT
+	}
+};

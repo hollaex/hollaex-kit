@@ -1,0 +1,274 @@
+$trade-tab--arrow-size: 0.4rem;
+$trade-tab-pairs-up: green;
+$trade-tab-add-tab-inactive: #808080;
+$trade-tab-dark-pair-content: #a3a1c9;
+$trade-tab-active-dark-title: #b7b5cd;
+$tab--black: #000000;
+
+.dark-theme {
+    .trade_tabs-container {
+        color: $trade-tab-dark-pair-content;
+
+        .trade-tab-app-title {
+            color: $trade-tab-active-dark-title
+        }
+        .trade_tabs-content {
+            border-top: 2px solid $dark-font-main-text-color;
+        }
+        .trade_tabs-link {
+            color: $dark-link;
+        }
+        .trade_tabs-search-field {
+            background-color: $dark-app-background-color;
+            color: $colors-deactivate-color2;
+
+            &::placeholder {
+                color: $colors-deactivate-color2;
+            }
+        }
+        .trade_tab-pair-title {
+            color: $trade-tab-add-tab-inactive;
+        }
+        .trade_tab-icons {
+            svg {
+                .btc0 {
+                    fill: $trade-tab-add-tab-inactive !important;
+                }
+                .btc1 {
+                    fill: $trade-tab-add-tab-inactive !important;
+                }
+                .eth0 {
+                    fill: $trade-tab-add-tab-inactive !important;
+                }
+                .eth1 {
+                    fill: $trade-tab-add-tab-inactive !important;
+                }
+                .bch-icon {
+                    fill: $trade-tab-add-tab-inactive !important;
+                }
+                .st0 {
+                    fill: $trade-tab-add-tab-inactive !important;
+                    stroke-width: 0rem;
+                }
+            }
+        }
+        .price-diff-down {
+			color: $dark-sell;
+		}
+
+		.price-diff-up {
+			color: $dark-buy;
+		}
+
+		.trade-tab-price_diff_up:before {
+			@include css-triangle($dark-buy, 'up', $trade-tab--arrow-size);
+			display: inline-block;
+			margin-bottom: 0.2rem;
+			margin-right: 0.5rem;
+			position: relative;
+			top: calc(50% - 0.6rem);
+		}
+
+		.trade-tab-price_diff_down:before {
+			@include css-triangle($dark-sell, 'down', $trade-tab--arrow-size);
+			display: inline-block;
+			margin-right: 0.5rem;
+			position: relative;
+			top: calc(50% - 0.6rem);
+        }
+        
+        .trade-tab-list {
+            border: 1px solid $dark-app-background-color;
+            &:hover {
+                border: 1px solid $trade-tab-dark-pair-content;
+                color: $trade-tab-dark-pair-content;
+
+                .trade_tab-pair-title {
+                    color: $trade-tab-active-dark-title !important;
+                }
+
+                svg {
+                    .btc0 {
+                        fill: $trade-tab-active-dark-title !important;
+                    }
+                    .btc1 {
+                        fill: $trade-tab-active-dark-title !important;
+                    }
+                    .eth0 {
+                        fill: $trade-tab-active-dark-title !important;
+                    }
+                    .eth1 {
+                        fill: $trade-tab-active-dark-title !important;
+                    }
+                    .bch-icon {
+                        fill: $trade-tab-active-dark-title !important;
+                    }
+                    .st0 {
+                        fill: $trade-tab-active-dark-title !important;
+                        stroke-width: 0rem;
+                    }
+                }
+            }
+        }
+    }
+
+}
+
+.trade_tabs-container {
+    color: $colors-deactivate-color2;
+    height: inherit;
+    max-width: 100%;
+    margin: 3rem auto;
+    width: 75rem;
+
+    .app-icon {
+        margin: 1rem auto;
+        width: 8rem;
+    }
+
+    .trade-tab-app-title {
+        font-family: $raleway-light--font-family;
+        letter-spacing: .3rem;
+        font-size: .8rem;
+    }
+
+    .trade_tabs-content {
+        border-top: 2px solid $colors-main-black;
+        font-size: .8rem;
+    }
+
+    .trade_tabs-link {
+        color: $colors-notifications-blue;
+        margin: .5rem 0;
+        padding: 0 .5rem;
+        text-transform: uppercase;
+    }
+
+    .link-separator {
+        border-right: 1px solid $colors-deactivate-color2;
+    }
+
+    .trade_tabs-search-field {
+        background-color: $colors-white;
+        color: $colors-deactivate-color1;
+        margin: 0;
+        padding-right: .5rem;
+
+        &::placeholder {
+            color: $colors-deactivate-color1;
+        }
+    }
+
+    .trade_tabs-search-outline {
+        background: #808080;
+    }
+
+    .tabs-pair-details {
+        font-size: 1.2rem;
+        width: 15rem;
+    }
+
+    .trade_tab-icons {
+        width: 5rem;
+
+        svg {
+            .btc0 {
+                fill: $trade-tab-add-tab-inactive !important;
+            }
+            .btc1 {
+                fill: $trade-tab-add-tab-inactive !important;
+            }
+            .eth0 {
+                fill: $trade-tab-add-tab-inactive !important;
+            }
+            .eth1 {
+                fill: $trade-tab-add-tab-inactive !important;
+            }
+            .bch-icon {
+                fill: $trade-tab-add-tab-inactive !important;
+            }
+            .st0 {
+                fill: $trade-tab-add-tab-inactive !important;
+                stroke-width: 0rem;
+            }
+        }
+    }
+
+    .trade_tab-pair-title {
+        font-size: $font-size-subhead2;
+        font-weight: bold;
+    }
+
+    .price-diff-down {
+		color: $colors-notifications-red;
+	}
+
+	.price-diff-up {
+		color: $trade-tab-pairs-up;
+	}
+
+	.trade-tab-price_diff_up {
+		margin: auto 0;
+	}
+
+	.trade-tab-price_diff_up:before {
+		@include css-triangle($trade-tab-pairs-up, 'up', $trade-tab--arrow-size);
+		display: inline-block;
+		margin-bottom: 0.2rem;
+		margin-right: 0.5rem;
+		position: relative;
+		top: calc(50% - 0.6rem);
+	}
+
+	.trade-tab-price_diff_down {
+		margin: auto 0;
+	}
+
+	.trade-tab-price_diff_down:before {
+		@include css-triangle($colors-notifications-red, 'down', $trade-tab--arrow-size);
+		display: inline-block;
+		margin-right: 0.5rem;
+		position: relative;
+		top: calc(50% - 0.6rem);
+    }
+
+    .trade-tab-list {
+        border: 1px solid $app-background-color;
+        padding: 1rem 0;
+        margin: 2rem 1.5rem;
+        
+        &:hover {
+            border: 1px solid $tab--black;
+            color: $tab--black;
+            position: relative;
+            bottom: .5rem;
+            right: .5rem;
+
+            .trade_tab-pair-title {
+                color: $tab--black !important;
+            }
+
+            svg {
+                .btc0 {
+                    fill: $tab--black !important;
+                }
+                .btc1 {
+                    fill: $tab--black !important;
+                }
+                .eth0 {
+                    fill: $tab--black !important;
+                }
+                .eth1 {
+                    fill: $tab--black !important;
+                }
+                .bch-icon {
+                    fill: $tab--black !important;
+                }
+                .st0 {
+                    fill: $tab--black !important;
+                    stroke-width: 0rem;
+                }
+            }
+        }
+    } 
+}

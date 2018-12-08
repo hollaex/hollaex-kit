@@ -81,7 +81,8 @@ class Home extends Component {
 			// symbol,
 			// quickTradeData,
 			// requestQuickTrade,
-			activeLanguage
+			activeLanguage,
+			router
 		} = this.props;
 		const { style } = this.state;
 		return (
@@ -103,6 +104,7 @@ class Home extends Component {
 					isHome={true}
 					token={token}
 					verifyToken={verifyToken}
+					router={router}
 				/>
 				<div
 					className={classnames(

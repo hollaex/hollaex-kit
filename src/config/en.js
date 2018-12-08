@@ -1,5 +1,6 @@
 export default {
 	APP_TITLE: 'Hollaex',
+	APP_SUB_TITLE: 'White Label Cryptocurrency Exchange', // ToDo: need to add that in fasri
 	APP_NAME: 'hollaex',
 	FIAT_NAME: 'EURO',
 	FIAT_FULLNAME: 'Euro',
@@ -114,7 +115,11 @@ export default {
 		TAB_SECURITY: 'Security',
 		TAB_NOTIFICATIONS: 'Notifications',
 		TAB_SETTINGS: 'Settings',
-		TAB_PROFILE: 'Profile'
+		TAB_PROFILE: 'Profile',
+		TAB_WALLET: 'Wallet',
+		TAB_SUMMARY: 'Summary',
+		TAB_API: 'API',
+		TAB_SIGNOUT: 'Signout'
 	},
 	CONTACT_FORM: {
 		CATEGORY_LABEL: 'Category',
@@ -368,6 +373,9 @@ export default {
 		PENDING_VERIFICATION_BANK: 'Your bank details are being verified',
 		PENDING_VERIFICATION_DOCUMENTS: 'Your documents are being verified',
 		GOTO_VERIFICATION: 'Go to verification',
+		CONNECT_BANK_ACCOUNT: 'Connect Bank Account', // ToDo: Add this into farsi in exir
+		ACTIVATE_2FA: 'Activate 2FA', // ToDo: Add this into farsi in exir
+		INCOMPLETED: 'Incompleted', // ToDo: Add this into farsi in exir
 		USER_DOCUMENTATION_FORM: {
 			FORM_FIELDS: {
 				FIRST_NAME_LABEL: 'First name',
@@ -602,6 +610,7 @@ export default {
 	PRICE: 'Price',
 	FEE: 'Fee',
 	FEES: 'Fees',
+	LIMIT: 'Limit', // ToDo: Add it into farsi
 	TIME: 'Time',
 	TIMESTAMP: 'Timestamp',
 	MORE: 'More',
@@ -904,5 +913,54 @@ export default {
 	SUCCESFUL_COPY: 'Successfully Copied!',
 	QUICK_TRADE_MODE: 'Quick Trade Mode',
 	JUST_NOW: 'just now',
-	PAIR: 'Pair'
+	PAIR: 'Pair',
+	ZERO_ASSET: 'You have zero assets', // ToDo: need to add this in farsi when move to exir.
+	DEPOSIT_ASSETS: 'Deposit Assets', // ToDo: need to add this in farsi when move to exir.
+	SEARCH_TXT: 'Search', // ToDo: need to add this in farsi when move to exir.
+	SEARCH_ASSETS: 'Search Assets', // ToDo: need to add this in farsi when move to exir.
+	TOTAL_ASSETS_VALUE: 'Total assets value in {0}: {1}', // ToDo: need to add this in farsi when move to exir.
+	SUMMARY: { // ToDo: need to add this entire suumary in farsi when move to exir.
+		TITLE: 'Summary',
+		TINY_PINK_SHRIMP_TRADER: 'Tiny Pink Shrimp Trader',
+		TINY_PINK_SHRIMP_TRADER_ACCOUNT: 'Tiny Pink Shrimp Trader Account',
+		LITTLE_RED_SNAPPER_TRADER: 'Little Red Snapper Trader',
+		LITTLE_RED_SNAPPER_TRADER_ACCOUNT: 'Little Red Snapper Trader Account',
+		CUNNING_BLUE_KRAKEN_TRADING: 'Cunning Blue Kraken Trading',
+		CUNNING_BLUE_KRAKEN_TRADING_ACCOUNT: 'Cunning Blue Kraken Trading Account',
+		BLACK_LEVIATHAN_TRADING: 'Black Leviathan Trading',
+		BLACK_LEVIATHAN_TRADING_ACCOUNT: 'Black Leviathan Trading Account',
+		URGENT_REQUIREMENTS: 'Urgent Requirements',
+		TRADING_VOLUME: 'Trading Volume',
+		ACCOUNT_ASSETS: 'Account Assets',
+		ACCOUNT_DETAILS: 'Account Details',
+		SHRIMP_ACCOUNT_TXT_1: 'Your journey begins here!',
+		SHRIMP_ACCOUNT_TXT_2: 'Keep swimming true, you’ll soon stand out from the rest of the shoal',
+		SNAPPER_ACCOUNT_TXT_1: 'Congrats on staying your course through the swell of the market.',
+		SNAPPER_ACCOUNT_TXT_2: 'Forge through and fight the surge for more crypto treasures ahead.',
+		KRAKEN_ACCOUNT_TXT_1: 'Likelier to crack jokes than hulls, this crustacean has weathered his share of storms!',
+		LEVIATHAN_ACCOUNT_TXT_1: 'Beast from the abyss, seeing through altcoins into unfathomable depths, masters of midnight waters and tidal wave.',
+		VIEW_FEE_STRUCTURE: 'View Fee Structure and Limits',
+		UPGRADE_ACCOUNT: 'Upgrade Account',
+		ACTIVE_2FA_SECURITY: 'Active 2FA Security',
+		ACCOUNT_ASSETS_TXT_1: 'Displayed is a summery of all your assets.',
+		ACCOUNT_ASSETS_TXT_2: 'Holding a large amounts of assets will entitle you for an account upgrade which includes a unique badge and lower trading fees.',
+		TRADING_VOLUME_TXT_1: 'Your trading volume history displayed in Bitcoin and calculated at the end of every month.',
+		TRADING_VOLUME_TXT_2: 'High trading activity will entitle you for an account upgrade rewarding you with a unique badge and lower trading fees',
+		ACCOUNT_DETAILS_TXT_1: 'Your account type determines your account badge, trading fee, deposits and withdrawal limits.',
+		ACCOUNT_DETAILS_TXT_2: 'Your trading account age, activity level and total account assets amount will determine if your account is legable for an upgrade.',
+		ACCOUNT_DETAILS_TXT_3: 'Maintaining your account level requires constant trading and maintaining a certain amount of deposited assets.',
+		ACCOUNT_DETAILS_TXT_4: 'Periodic downgrading of accounts will occur if activity and assets are not maintained.',
+		REQUIREMENTS: 'Requirements',
+		REQUEST_ACCOUNT_UPGRADE: 'Request an Account Upgrade',
+		FEES_AND_LIMIT: 'Fee and Limit Structure for',
+		FEES_AND_LIMIT_TXT_1: 'Becoming a crypto trader marks new beginning. Armed with wits, will and speed, dive into the bottomless blue.Only by delving deep within the crypto oceans will you unlock your fortunes.',
+		FEES_AND_LIMIT_TXT_2: 'Each account has its own fees and deposit and withdrawal limits.Please visit the {0} to get more information.',
+		DEPOSIT_WITHDRAWAL_ALLOWENCE: 'Deposit & withdrawal allowence',
+		TRADING_FEE_STRUCTURE: 'Trading fee structure',
+		WITHDRAWAL: 'Withdrawal',
+		DEPOSIT: 'Deposit',
+		TAKER: 'Taker',
+		MAKER: 'Maker',
+		WEBSITE: 'website'
+	}
 };

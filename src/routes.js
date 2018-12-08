@@ -31,7 +31,9 @@ import {
 	Verification,
 	Chat,
 	UserSettings,
-	WithdrawConfirmation
+	WithdrawConfirmation,
+	Summary,
+	AddTradeTabs
 } from './containers';
 
 import store from './store';
@@ -143,6 +145,7 @@ export default (
 			<Route path="security" name="Security" component={Account} />
 			<Route path="developers" name="Developers" component={Account} />
 			<Route path="settings" name="Settings" component={Account} />
+			<Route path="summary" name="Summary" component={Account} />
 			<Route path="wallet" name="Wallet" component={MainWallet} onEnter={requireAuth}/>
 			<Route path="wallet/:currency" name="Wallet" component={CurrencyWallet} onEnter={requireAuth}/>
 			<Route path="wallet/:currency/deposit" name="Deposit" component={Deposit} onEnter={requireAuth}/>
@@ -154,6 +157,7 @@ export default (
 				onEnter={requireAuth}
 			/>
 			<Route path="trade/:pair" name="Trade" component={Trade} />
+			<Route path="trade/add/tabs" name="Trade Tabs" component={AddTradeTabs} />
 			<Route path="quick-trade/:pair" name="Quick Trade" component={QuickTrade} />
 			<Route path="chat" name="Chat" component={Chat} onEnter={requireAuth}/>
 			<Route

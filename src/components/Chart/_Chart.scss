@@ -15,10 +15,38 @@
 	}
 }
 
+.donut-label-percentage {
+	font-size: .8rem;
+	font-weight: bold;
+}
+
+.donut-label-no-price {
+	font-size: .7rem;
+	font-weight: bold;
+}
+
+.donut-label-pair {
+	font-size: 1rem;
+	font-weight: bold;
+}
+
+.deposite-asset {
+	fill: $dark-buy;
+	font-weight: bold;
+}
+
 .dark-theme {
 	.ohlc_wrapper {
 		tspan {
 			fill: $dark-font-main-text-color;
 		}
+	}
+
+	.deposite-asset {
+		fill: $dark-link;
+	}
+
+	.donut-label-pair, .donut-label-percentage {
+		fill: $dark-font-sub-text-color;
 	}
 }

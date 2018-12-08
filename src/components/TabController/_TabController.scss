@@ -67,7 +67,7 @@ $tab_controller-item-min-width: 12rem;
 		.tab_item {
 			color: $disabled-color;
 
-			svg path {
+			svg path, svg rect {
 				fill: $disabled-color;
 				stroke: $disabled-color;
 			}
@@ -75,7 +75,7 @@ $tab_controller-item-min-width: 12rem;
 			&.tab_item-active {
 				border-top-color: $dark-border-main !important;
 				color: $active-color;
-				svg path {
+				svg path, svg rect {
 					fill: $active-color;
 					stroke: $active-color;
 				}

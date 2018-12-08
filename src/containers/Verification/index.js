@@ -261,7 +261,7 @@ class Verification extends Component {
 	onLogout = () => this.props.logout('');
 
 	render() {
-		const { activeLanguage, token, activeTheme } = this.props;
+		const { activeLanguage, token, activeTheme, router, location } = this.props;
 		const { activeTab, tabs, dialogIsOpen, dialogType } = this.state;
 
 		if (activeTab === -1 && tabs.length > 0) {
@@ -296,6 +296,8 @@ class Verification extends Component {
 					isHome={true}
 					token={token}
 					theme={activeTheme}
+					router={router}
+					location={location}
 					rightChildren={
 						<Logout
 							className="sidebar-row bar-logout"

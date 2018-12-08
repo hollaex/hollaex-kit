@@ -5,7 +5,7 @@ import { isMobile } from 'react-device-detect';
 
 import { TabController, CheckTitle, MobileBarTabs } from '../../components';
 import { ICONS } from '../../config/constants';
-import { UserProfile, UserSecurity, UserSettings } from '../';
+import { UserProfile, UserSecurity, UserSettings, Summary } from '../';
 import STRINGS from '../../config/localizedStrings';
 import { openContactForm } from '../../actions/appActions';
 import { requestLimits, requestFees } from '../../actions/userAction';
@@ -15,16 +15,20 @@ const getInitialTab = ({ name, path }) => {
 	let activeDevelopers = false;
 	if (path === 'account') {
 		activeTab = 0;
+	} else if (path === 'summary') {
+		activeTab = 0;
+	} else if (path === 'profile') {
+		activeTab = 1;
 	} else if (path === 'security') {
-		activeTab = 1;
+		activeTab = 2;
 	} else if (path === 'developers') {
-		activeTab = 1;
+		activeTab = 2;
 		activeDevelopers = true;
 	} else if (path === 'settings') {
-		activeTab = 2;
+		activeTab = 3;
 		activeDevelopers = true;
 	} else if (path === 'account/settings/username') {
-		activeTab = 2;
+		activeTab = 3;
 		activeDevelopers = true;
 	}
 	return {
@@ -90,6 +94,17 @@ class Account extends Component {
 		}
 
 		const tabs = [
+			{
+				title: isMobile ? (
+					STRINGS.SUMMARY.TITLE
+				) : (
+						<CheckTitle
+							title={STRINGS.SUMMARY.TITLE}
+							icon={ICONS.TAB_SUMMARY}
+						/>
+					),
+				content: <Summary />
+			},
 			{
 				title: isMobile ? (
 					STRINGS.ACCOUNTS.TAB_PROFILE
