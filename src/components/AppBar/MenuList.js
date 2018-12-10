@@ -25,7 +25,7 @@ class MenuList extends Component {
     }
 
     render() {
-        const { selectedMenu, handleMenu, logout } = this.props;
+        const { selectedMenu, handleMenu, logout, securityPending, verificationPending } = this.props;
         return (
             <div id="tab-account-menu" className="app-bar-account-menu">
                 <div
@@ -43,19 +43,19 @@ class MenuList extends Component {
                     {STRINGS.ACCOUNTS.TAB_WALLET}
                 </div>
                 <div
-                    className={classnames('app-bar-account-menu-list d-flex', { 'notification': true })}
+                    className={classnames('app-bar-account-menu-list d-flex', { 'notification': !!securityPending })}
                     onClick={() => handleMenu('security')}>
                     <div className="notification-content">
-                        <div className="app-bar-account-list-notification">1</div>
+                        {!!securityPending && <div className="app-bar-account-list-notification">{securityPending}</div>}
                     </div>
                     <ReactSVG path={ICONS.TAB_SECURITY} wrapperClassName="app-bar-account-list-icon" />
                     {STRINGS.ACCOUNTS.TAB_SECURITY}
                 </div>
                 <div
-                    className={classnames('app-bar-account-menu-list d-flex', { 'notification': true })}
+                    className={classnames('app-bar-account-menu-list d-flex', { 'notification': !!verificationPending })}
                     onClick={() => handleMenu('verification')}>
                     <div className="notification-content">
-                        <div className="app-bar-account-list-notification">2</div>
+                        {!!verificationPending && <div className="app-bar-account-list-notification">{verificationPending}</div>}
                     </div>
                     <ReactSVG path={ICONS.TAB_VERIFY} wrapperClassName="app-bar-account-list-icon" />
                     {STRINGS.ACCOUNTS.TAB_VERIFICATION}

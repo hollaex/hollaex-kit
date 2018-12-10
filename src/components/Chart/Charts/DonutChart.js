@@ -141,15 +141,17 @@ class DonutChart extends Component {
                 <g key={i}>
                     <path d={arcj(value)} fill={colors_currencies.noData} />
                     <text
-                        transform={translate(5 - innerRadius, -10)}
+                        transform={translate(0, -10)}
                         dy=".35em"
-                        className="donut-label-no-price">
+                        className="donut-label-no-price"
+                        textAnchor="middle">
                         <tspan>{STRINGS.ZERO_ASSET}</tspan>
                     </text>
                     <text
-                        transform={translate(10 - innerRadius, 10)}
+                        transform={translate(0, 10)}
                         dy=".35em"
-                        className="donut-label-no-price">
+                        className="donut-label-no-price"
+                        textAnchor="middle">
                         <Link to='/wallet' className="deposite-asset">{STRINGS.DEPOSIT_ASSETS.toUpperCase()}</Link>
                     </text>
                 </g>

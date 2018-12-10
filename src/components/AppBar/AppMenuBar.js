@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import ReactSVG from 'react-svg';
 import classnames from 'classnames';
 
@@ -7,12 +8,17 @@ import STRINGS from '../../config/localizedStrings';
  
 class AppMenuBar extends Component {
     state = {
-        activeMenu: ''
+        activeMenu: '',
+        securityPending: 0,
+        verificationPending: 0
     };
 
     componentDidMount() {
         if (this.props.location && this.props.location.pathname) {
             this.setActiveMenu(this.props.location.pathname);
+        }
+        if (this.props.user) {
+            this.checkVerificationStatus(this.props.user);
         }
     }
 
@@ -21,7 +27,33 @@ class AppMenuBar extends Component {
             && this.props.location.pathname !== nextProps.location.pathname) {
             this.setActiveMenu(nextProps.location.pathname);
         }
+        if (JSON.stringify(this.props.user) !== JSON.stringify(nextProps.user)) {
+            this.checkVerificationStatus(nextProps.user);
+        }
     }
+
+    checkVerificationStatus = user => {
+        const userData = user.userData || {};
+        const { phone_number, full_name, id_data = {}, bank_account = {} } = userData;
+        let securityPending = 0;
+        let verificationPending = 0;
+        if (!user.otp_enabled) {
+            securityPending += 1;
+        }
+        if (user.verification_level < 1 && !full_name) {
+            verificationPending += 1;
+        }
+        if (!id_data.verified) {
+            verificationPending += 1;
+        }
+        if (!phone_number) {
+            verificationPending += 1;
+        }
+        if (!bank_account.verified) {
+            verificationPending += 1;
+        }
+        this.setState({ securityPending, verificationPending });
+    };
 
     handleMenuChange = menu => {
         if (menu === 'account') {
@@ -71,7 +103,7 @@ class AppMenuBar extends Component {
     };
 
     render() {
-        const { activeMenu } = this.state;
+        const { activeMenu, securityPending, verificationPending } = this.state;
         return (
             <div className="d-flex justify-content-between">
                 <div className="app-menu-bar d-flex align-items-end justify-content-center title-font">
@@ -95,7 +127,7 @@ class AppMenuBar extends Component {
                         className={classnames('app-menu-bar-content d-flex', { 'notification': true, 'active-menu': activeMenu === 'security' })}
                         onClick={() => this.handleMenuChange('security')}>
                         <div className="app-menu-bar-content-item d-flex">
-                            <div className="app-menu-bar-icon-notification">1</div>
+                            {!!securityPending && <div className="app-menu-bar-icon-notification">{securityPending}</div>}
                             <ReactSVG path={ICONS.TAB_SECURITY} wrapperClassName="app-menu-bar-icon" />
                             {STRINGS.ACCOUNTS.TAB_SECURITY}
                         </div>
@@ -104,7 +136,7 @@ class AppMenuBar extends Component {
                         className={classnames('app-menu-bar-content d-flex', { 'notification': true, 'active-menu': activeMenu === 'verification' })}
                         onClick={() => this.handleMenuChange('verification')}>
                         <div className="app-menu-bar-content-item d-flex">
-                            <div className="app-menu-bar-icon-notification">2</div>
+                            {!!verificationPending && <div className="app-menu-bar-icon-notification">{verificationPending}</div>}
                             <ReactSVG path={ICONS.TAB_VERIFY} wrapperClassName="app-menu-bar-icon" />
                             {STRINGS.ACCOUNTS.TAB_VERIFICATION}
                         </div>
@@ -132,4 +164,8 @@ class AppMenuBar extends Component {
     }
 }
 
-export default AppMenuBar;
+const mapStateToProps = (state) => ({
+    user: state.user
+});
+
+export default connect(mapStateToProps)(AppMenuBar);

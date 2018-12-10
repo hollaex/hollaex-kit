@@ -491,7 +491,6 @@ class Container extends Component {
 					/>
 				);
 			case CONTACT_FORM:
-					console.log('data=======================', data);
 				return (
 					<ContactForm
 						onSubmitSuccess={this.onCloseDialog}
@@ -569,7 +568,8 @@ class Container extends Component {
 			activeTheme,
 			unreadMessages,
 			router,
-			location
+			location,
+			user
 		} = this.props;
 		const { dialogIsOpen, appLoaded, chatIsClosed } = this.state;
 		const languageClasses = getClasesForLanguage(activeLanguage, 'array');
@@ -727,7 +727,7 @@ const mapStateToProps = (store) => ({
 	activeLanguage: store.app.language,
 	activeTheme: store.app.theme,
 	orders: store.order.activeOrders,
-	user: store.user.userData,
+	user: store.user,
 	unreadMessages: store.app.chatUnreadMessages,
 	orderbooks: store.orderbook.pairsOrderbooks,
 	pairsTrades: store.orderbook.pairsTrades

@@ -348,9 +348,14 @@ export default {
 		TEXT_2: 'You can now proceed to login'
 	},
 	USER_VERIFICATION: {
+		INFO_TXT: 'Here you can monitor your progress towards verification and an account upgrades.', // ToDo: Here we need to add this in farsi
+		INFO_TXT_1: 'Please submit the relevent information needed for each section below.Only when all sections have submissions completed will your information be reviewed and approved for an account upgrade.', // ToDo: Here we need to add this in farsi
+		INFO_TXT_2: '* Bank and Identity section require {0} in order to be fully verified.', // ToDo: Here we need to add this in farsi
+		DOCUMENTATIONS: 'documentations',
 		COMPLETED: 'Completed',
 		PENDING_VERIFICATION: 'Pending verification',
 		TITLE_EMAIL: 'Email',
+		MY_EMAIL: 'My Email', // ToDo: Here we need to add this in farsi
 		TITLE_USER_DOCUMENTATION: 'Identification',
 		TITLE_ID_DOCUMENTS: 'Documents',
 		TITLE_BANK_ACCOUNT: 'Bank Account',
@@ -376,6 +381,10 @@ export default {
 		CONNECT_BANK_ACCOUNT: 'Connect Bank Account', // ToDo: Add this into farsi in exir
 		ACTIVATE_2FA: 'Activate 2FA', // ToDo: Add this into farsi in exir
 		INCOMPLETED: 'Incompleted', // ToDo: Add this into farsi in exir
+		START_BANK_VERIFICATION: 'Start Bank Verification', // ToDo: Add this into farsi in exir
+		START_IDENTITY_VERIFICATION: 'Start Identity Verification', // ToDo: Add this into farsi in exir
+		START_PHONE_VERIFICATION: 'Start Phone Verification', // ToDo: Add this into farsi in exir
+		START_DOCUMENTATION_SUBMISSION: 'Start Documentation Submission', // ToDo: Add this into farsi in exir
 		USER_DOCUMENTATION_FORM: {
 			FORM_FIELDS: {
 				FIRST_NAME_LABEL: 'First name',

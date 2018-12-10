@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import classnames from 'classnames';
 import { Link } from 'react-router';
 import ReactSVG from 'react-svg';
@@ -22,12 +23,17 @@ class AppBar extends Component {
 	state = {
 		symbolSelectorIsOpen: false,
 		isAccountMenu: false,
-		selectedMenu: ''
+		selectedMenu: '',
+		securityPending: 0,
+		verificationPending: 0
 	};
 
 	componentDidMount() {
 		if (this.props.location && this.props.location.pathname) {
 			this.setActiveMenu(this.props.location.pathname);
+		}
+		if (this.props.user) {
+			this.checkVerificationStatus(this.props.user);
 		}
 	}
 	
@@ -36,7 +42,35 @@ class AppBar extends Component {
 			&& this.props.location.pathname !== nextProps.location.pathname) {
 			this.setActiveMenu(nextProps.location.pathname);
 		}
+		if (JSON.stringify(this.props.user) !== JSON.stringify(nextProps.user)) {
+			this.checkVerificationStatus(nextProps.user);
+		}
 	}
+
+	checkVerificationStatus = user => {
+		const userData = user.userData || {};
+		const { phone_number, full_name, id_data = {}, bank_account = {} } = userData;
+		let securityPending = 0;
+		let verificationPending = 0;
+		if (user.id) {
+			if (!user.otp_enabled) {
+				securityPending += 1;
+			}
+			if (user.verification_level < 1 && !full_name) {
+				verificationPending += 1;
+			}
+			if (!id_data.verified) {
+				verificationPending += 1;
+			}
+			if (!phone_number) {
+				verificationPending += 1;
+			}
+			if (!bank_account.verified) {
+				verificationPending += 1;
+			}
+			this.setState({ securityPending, verificationPending });
+		}
+	};
 
 	toogleSymbolSelector = () => {
 		this.setState({ symbolSelectorIsOpen: !this.state.symbolSelectorIsOpen });
@@ -71,6 +105,7 @@ class AppBar extends Component {
 	);
 
 	renderSplashActions = (token, verifyingToken) => {
+		const { securityPending, verificationPending } = this.state;
 		if (verifyingToken) {
 			return <div />;
 		}
@@ -80,7 +115,9 @@ class AppBar extends Component {
 			<div className="d-flex app-bar-account" onClick={this.handleAccountMenu}>
 				<div className="app-bar-account-content mr-2">
 					<ReactSVG path={ICONS.SIDEBAR_ACCOUNT_INACTIVE} wrapperClassName="app-bar-currency-icon" />
-					<div className="app-bar-account-notification">2</div>
+					{!!(securityPending + verificationPending)
+						&& <div className="app-bar-account-notification">{securityPending + verificationPending}</div>
+					}
 				</div>
 				<div>{STRINGS.ACCOUNT_TEXT}</div>
 			</div>
@@ -174,9 +211,11 @@ class AppBar extends Component {
 			logout,
 			router,
 			activePath,
-			location
+			location,
+			user
 		} = this.props;
-		const { isAccountMenu, selectedMenu } = this.state;
+		const { isAccountMenu, selectedMenu, securityPending, verificationPending } = this.state;
+		const totalPending = securityPending + verificationPending;
 
 		return isMobile ? (
 			<MobileBarWrapper
@@ -220,7 +259,7 @@ class AppBar extends Component {
 						? <div className="d-flex app-bar-account" onClick={this.handleAccountMenu}>
 							<div className="app-bar-account-content mr-2">
 								<ReactSVG path={ICONS.SIDEBAR_ACCOUNT_INACTIVE} wrapperClassName="app-bar-account-icon" />
-								<div className="app-bar-account-notification">2</div>
+								{!!totalPending && <div className="app-bar-account-notification">{totalPending}</div>}
 							</div>
 							<div>{STRINGS.ACCOUNT_TEXT}</div>
 						</div>
@@ -230,6 +269,8 @@ class AppBar extends Component {
 				{isAccountMenu &&
 					<MenuList
 						selectedMenu={selectedMenu}
+						securityPending={securityPending}
+						verificationPending={verificationPending}
 						handleMenu={this.handleMenu}
 						logout={logout}
 						closeAccountMenu={this.closeAccountMenu}
@@ -240,9 +281,13 @@ class AppBar extends Component {
 	}
 }
 
+const mapStateToProps = (state) => ({
+	user: state.user
+});
+
 AppBar.defaultProps = {
 	noBorders: false,
 	isHome: false
 };
 
-export default AppBar;
+export default connect(mapStateToProps)(AppBar);

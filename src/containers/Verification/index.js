@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
+import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import {
@@ -10,7 +11,9 @@ import {
 	Loader,
 	Logout,
 	Notification,
-	MobileBarTabs
+	MobileBarTabs,
+	IconTitle,
+	PanelInformationRow
 } from '../../components';
 import { ICONS } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
@@ -27,6 +30,8 @@ import { isBrowser, isMobile } from 'react-device-detect';
 import IdentityVerification from './IdentityVerification';
 import MobileVerification from './MobileVerification';
 import DocumentsVerification from './DocumentsVerification';
+import CustomTabs from './CustomTabs';
+import HeaderSection from './HeaderSection';
 import { mobileInitialValues, identityInitialValues } from './utils';
 import {
 	getClasesForLanguage,
@@ -35,6 +40,10 @@ import {
 import { ContactForm } from '../';
 import { NOTIFICATIONS } from '../../actions/appActions';
 import { getThemeClass } from '../../utils/theme';
+import BankVerificationHome from './BankVerificationHome';
+import IdentityVerificationHome from './IdentityVerificationHome';
+import MobileVerificationHome from './MobileVerificationHome';
+import DocumentsVerificationHome from './DocumentsVerificationHome';
 
 const CONTENT_CLASS =
 	'd-flex justify-content-center align-items-center f-1 flex-column verification_content-wrapper';
@@ -106,23 +115,66 @@ class Verification extends Component {
 		if (activeTab === -1) {
 			return;
 		}
-		const { full_name } = user;
+		const { full_name, email } = user;
 		const tabs = [
+			{
+				title: isMobile ? (
+					STRINGS.USER_VERIFICATION.TITLE_EMAIL
+				) : (
+					<CheckTitle
+						title={STRINGS.USER_VERIFICATION.TITLE_EMAIL}
+						titleClassName={activeTab !== 0 ? 'title-inactive' : ''}
+							icon={
+								activeTab === 0
+									? ICONS.VERIFICATION_EMAIL
+									: ICONS.VERIFICATION_EMAIL_INACTIVE
+							}
+					/>
+				),
+				content: activeTab === 0 && (
+					<div>
+						<PanelInformationRow
+							label={STRINGS.USER_VERIFICATION.MY_EMAIL}
+							information={email}
+							className={"title-font"}
+							disable
+						/>
+					</div>
+				)
+			},
+			{
+				title: isMobile ? (
+					STRINGS.USER_VERIFICATION.TITLE_BANK
+				) : (
+					<CheckTitle
+						title={STRINGS.USER_VERIFICATION.TITLE_BANK}
+						titleClassName={activeTab !== 1 ? 'title-inactive' : ''}
+						icon={
+							activeTab === 1
+								? ICONS.VERIFICATION_BANK
+								: ICONS.VERIFICATION_BANK_INACTIVE
+						}
+						notifications={email ? '' : '!'}
+						statusCode={email ? 3 : 0}
+					/>
+				),
+				content: (<BankVerificationHome user={user} />)
+			},
 			{
 				title: isMobile ? (
 					STRINGS.USER_VERIFICATION.TITLE_IDENTITY
 				) : (
 					<CheckTitle
 						title={STRINGS.USER_VERIFICATION.TITLE_IDENTITY}
-						titleClassName={activeTab !== 0 ? 'title-inactive' : ''}
+						titleClassName={activeTab !== 2 ? 'title-inactive' : ''}
 						icon={
-							activeTab === 0
+							activeTab === 2
 								? ICONS.VERIFICATION_ID
 								: ICONS.VERIFICATION_ID_INACTIVE
 						}
 					/>
 				),
-				content: activeTab === 0 && (
+				content: isMobile ? (
 					<div className={CONTENT_CLASS}>
 						<IdentityVerification
 							fullName={full_name}
@@ -132,32 +184,23 @@ class Verification extends Component {
 							openContactForm={this.openContactForm}
 						/>
 					</div>
-				)
+				) : (<IdentityVerificationHome user={user} />)
 			},
 			{
 				title: isMobile ? (
-					STRINGS.USER_VERIFICATION.TITLE_MOBILE
+					STRINGS.USER_VERIFICATION.USER_DOCUMENTATION_FORM.INFORMATION.TITLE_PHONE
 				) : (
 					<CheckTitle
-						title={STRINGS.USER_VERIFICATION.TITLE_MOBILE}
-						titleClassName={activeTab !== 1 ? 'title-inactive' : ''}
+						title={STRINGS.USER_VERIFICATION.USER_DOCUMENTATION_FORM.INFORMATION.TITLE_PHONE}
+						titleClassName={activeTab !== 3 ? 'title-inactive' : ''}
 						icon={
-							activeTab === 1
+							activeTab === 3
 								? ICONS.VERIFICATION_MOBILE
 								: ICONS.VERIFICATION_MOBILE_INACTIVE
 						}
 					/>
 				),
-				content: activeTab === 1 && (
-					<div className={CONTENT_CLASS}>
-						<MobileVerification
-							initialValues={mobileInitialValues}
-							moveToNextStep={this.goNextTab}
-							activeLanguage={activeLanguage}
-							openContactForm={this.openContactForm}
-						/>
-					</div>
-				)
+				content: (<MobileVerificationHome user={user} />)
 			},
 			{
 				title: isMobile ? (
@@ -165,28 +208,15 @@ class Verification extends Component {
 				) : (
 					<CheckTitle
 						title={STRINGS.USER_VERIFICATION.TITLE_ID_DOCUMENTS}
-						titleClassName={activeTab !== 2 ? 'title-inactive' : ''}
+						titleClassName={activeTab !== 4 ? 'title-inactive' : ''}
 						icon={
-							activeTab === 2
+							activeTab === 4
 								? ICONS.VERIFICATION_DOC
 								: ICONS.VERIFICATION_DOC_INACTIVE
 						}
 					/>
 				),
-				content: activeTab === 2 && (
-					<div className={CONTENT_CLASS}>
-						<DocumentsVerification
-							nationality={user.nationality}
-							initialValues={{
-								type: user.nationality === 'IR' ? 'id' : 'passport'
-							}}
-							moveToNextStep={this.goNextTab}
-							skip={this.skip}
-							activeLanguage={activeLanguage}
-							openContactForm={this.openContactForm}
-						/>
-					</div>
-				)
+				content: (<DocumentsVerificationHome user={user} />)
 			}
 		];
 
@@ -308,7 +338,20 @@ class Verification extends Component {
 				{isMobile && <MobileBarTabs {...tabProps} activeTab={activeTab} />}
 				{activeTab < tabs.length ? (
 					<div className="presentation_container apply_rtl verification_container">
-						{!isMobile && <TabController activeTab={activeTab} {...tabProps} />}
+						<IconTitle text={STRINGS.ACCOUNTS.TAB_VERIFICATION} textType="title" />
+						<HeaderSection
+							openContactForm={this.openContactForm}
+						/>
+						<div className="w-50 header-content">
+							<div className="mb-3">{STRINGS.USER_VERIFICATION.INFO_TXT}</div>
+							<div className="mb-3">{STRINGS.USER_VERIFICATION.INFO_TXT_1}</div>
+							<div className="mb-3">{STRINGS.formatString(
+								STRINGS.USER_VERIFICATION.INFO_TXT_2,
+								<Link to="/account" className="link-content">{STRINGS.USER_VERIFICATION.DOCUMENTATIONS}</Link>
+							)}</div>
+						</div>
+						{!isMobile && <CustomTabs activeTab={activeTab} setActiveTab={this.setActiveTab} {...tabProps} />}
+						{/* {!isMobile && <TabController activeTab={activeTab} {...tabProps} />} */}
 						<div className="inner_container">
 							{activeTab > -1 && this.renderContent(tabs, activeTab)}
 						</div>
