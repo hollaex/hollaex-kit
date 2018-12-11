@@ -281,9 +281,11 @@ class AppBar extends Component {
 	}
 }
 
-const mapStateToProps = (state) => ({
-	user: state.user
-});
+const mapStateToProps = (state, ownProps) => {
+	const userData = (!state.user.id && ownProps.user && ownProps.user.id) ? ownProps.user : state.user;
+	return {
+		user: userData
+}};
 
 AppBar.defaultProps = {
 	noBorders: false,

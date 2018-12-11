@@ -115,7 +115,17 @@ class Verification extends Component {
 		if (activeTab === -1) {
 			return;
 		}
-		const { full_name, email } = user;
+		const { full_name, email, bank_account, id_data, phone_number } = user;
+		let bank_status = 0;
+		if (bank_account.length) {
+			if (bank_account.filter(data => data.status === 3).length) {
+				bank_status = 3;
+			} else if (bank_account.filter(data => data.status === 1).length) {
+				bank_status = 1;
+			} else if (bank_account.filter(data => data.status === 2).length) {
+				bank_status = 2;
+			}
+		}
 		const tabs = [
 			{
 				title: isMobile ? (
@@ -124,11 +134,9 @@ class Verification extends Component {
 					<CheckTitle
 						title={STRINGS.USER_VERIFICATION.TITLE_EMAIL}
 						titleClassName={activeTab !== 0 ? 'title-inactive' : ''}
-							icon={
-								activeTab === 0
-									? ICONS.VERIFICATION_EMAIL
-									: ICONS.VERIFICATION_EMAIL_INACTIVE
-							}
+						className={activeTab === 0 ? 'active-tab-icon' : ''}
+						icon={ICONS.VERIFICATION_EMAIL_NEW}
+						statusCode={email ? 3 : 0}
 					/>
 				),
 				content: activeTab === 0 && (
@@ -149,13 +157,9 @@ class Verification extends Component {
 					<CheckTitle
 						title={STRINGS.USER_VERIFICATION.TITLE_BANK}
 						titleClassName={activeTab !== 1 ? 'title-inactive' : ''}
-						icon={
-							activeTab === 1
-								? ICONS.VERIFICATION_BANK
-								: ICONS.VERIFICATION_BANK_INACTIVE
-						}
-						notifications={email ? '' : '!'}
-						statusCode={email ? 3 : 0}
+						className={activeTab === 1 ? 'active-tab-icon' : ''}
+						icon={ICONS.VERIFICATION_BANK_NEW}
+						statusCode={bank_status}
 					/>
 				),
 				content: (<BankVerificationHome user={user} />)
@@ -167,11 +171,9 @@ class Verification extends Component {
 					<CheckTitle
 						title={STRINGS.USER_VERIFICATION.TITLE_IDENTITY}
 						titleClassName={activeTab !== 2 ? 'title-inactive' : ''}
-						icon={
-							activeTab === 2
-								? ICONS.VERIFICATION_ID
-								: ICONS.VERIFICATION_ID_INACTIVE
-						}
+						className={activeTab === 2 ? 'id-active' : ''}
+						icon={ICONS.VERIFICATION_ID_NEW}
+						statusCode={id_data.status}
 					/>
 				),
 				content: isMobile ? (
@@ -193,11 +195,9 @@ class Verification extends Component {
 					<CheckTitle
 						title={STRINGS.USER_VERIFICATION.USER_DOCUMENTATION_FORM.INFORMATION.TITLE_PHONE}
 						titleClassName={activeTab !== 3 ? 'title-inactive' : ''}
-						icon={
-							activeTab === 3
-								? ICONS.VERIFICATION_MOBILE
-								: ICONS.VERIFICATION_MOBILE_INACTIVE
-						}
+						className={activeTab === 3 ? 'phone-active' : ''}
+						icon={ICONS.VERIFICATION_PHONE_NEW}
+						statusCode={!phone_number ? 0 : 3}
 					/>
 				),
 				content: (<MobileVerificationHome user={user} />)
@@ -209,11 +209,8 @@ class Verification extends Component {
 					<CheckTitle
 						title={STRINGS.USER_VERIFICATION.TITLE_ID_DOCUMENTS}
 						titleClassName={activeTab !== 4 ? 'title-inactive' : ''}
-						icon={
-							activeTab === 4
-								? ICONS.VERIFICATION_DOC
-								: ICONS.VERIFICATION_DOC_INACTIVE
-						}
+						className={activeTab === 4 ? 'document-active' : ''}
+						icon={ICONS.VERIFICATION_DOCUMENT_NEW}
 					/>
 				),
 				content: (<DocumentsVerificationHome user={user} />)
@@ -292,7 +289,8 @@ class Verification extends Component {
 
 	render() {
 		const { activeLanguage, token, activeTheme, router, location } = this.props;
-		const { activeTab, tabs, dialogIsOpen, dialogType } = this.state;
+		const { activeTab, tabs, dialogIsOpen, dialogType, user } = this.state;
+		console.log('user verification', user);
 
 		if (activeTab === -1 && tabs.length > 0) {
 			return (
@@ -328,6 +326,8 @@ class Verification extends Component {
 					theme={activeTheme}
 					router={router}
 					location={location}
+					user={user}
+					logout={this.onLogout}
 					rightChildren={
 						<Logout
 							className="sidebar-row bar-logout"
@@ -380,7 +380,8 @@ const mapStateToProps = (state) => ({
 	activeLanguage: state.app.language,
 	token: state.auth.token,
 	activeTheme: state.app.theme,
-	fetchingAuth: state.auth.fetching
+	fetchingAuth: state.auth.fetching,
+	user: state.user
 });
 
 const mapDispatchToProps = (dispatch) => ({

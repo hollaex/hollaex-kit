@@ -7,7 +7,7 @@ const BankVerificationHome = ({ user }) => {
     const { bank_account } = user;
     return (
         <div>
-            {bank_account.status === 0
+            {!bank_account.length
                 ? <div>
                     <Button label={STRINGS.USER_VERIFICATION.START_BANK_VERIFICATION} />
                 </div>

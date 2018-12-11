@@ -287,7 +287,16 @@ export const ICONS = {
 	TAB_SIGNOUT: `${process.env.PUBLIC_URL}/assets/images/signout.svg`,
 	DOUBLE_ARROW: `${process.env.PUBLIC_URL}/assets/images/double-arrow.svg`,
 	SEARCH: `${process.env.PUBLIC_URL}/assets/images/search.svg`,
-	VERIFICATION_DOC_STATUS: `${process.env.PUBLIC_URL}/assets/images/verification-doc-status.svg`
+	VERIFICATION_DOC_STATUS: `${process.env.PUBLIC_URL}/assets/images/verification-doc-status.svg`,
+	VERIFICATION_PENDING: `${process.env.PUBLIC_URL}/assets/images/verification-pending-orange.svg`,
+	VERIFICATION_REJECTED: `${process.env.PUBLIC_URL}/assets/images/verification-rejected-yellow-cross.svg`,
+	VERIFICATION_INCOMPLETE: `${process.env.PUBLIC_URL}/assets/images/verification-attention-red.svg`,
+	VERIFICATION_VERIFIED: `${process.env.PUBLIC_URL}/assets/images/verification-green-tick.svg`,
+	VERIFICATION_EMAIL_NEW: `${process.env.PUBLIC_URL}/assets/images/verification-email.svg`,
+	VERIFICATION_PHONE_NEW: `${process.env.PUBLIC_URL}/assets/images/verification-phone.svg`,
+	VERIFICATION_ID_NEW: `${process.env.PUBLIC_URL}/assets/images/verification-id.svg`,
+	VERIFICATION_BANK_NEW: `${process.env.PUBLIC_URL}/assets/images/verification-bank.svg`,
+	VERIFICATION_DOCUMENT_NEW: `${process.env.PUBLIC_URL}/assets/images/verification-document.svg`,
 };
 
 export const SOCIAL_ICONS = {

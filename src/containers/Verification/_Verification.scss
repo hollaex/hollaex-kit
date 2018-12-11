@@ -56,7 +56,7 @@ $colors-black: #000000;
 
 .custom-tab-wrapper {
 	.tab_item {
-		padding: 2rem 3rem;
+		padding: 2rem 2rem;
 		margin: 1rem 2rem;
 		width: 12rem;
 	}
@@ -75,6 +75,41 @@ $colors-black: #000000;
 			}
 			.st0 {
 				stroke: $colors-main-black !important;
+			}
+		}
+	}
+
+	.bank-active {
+		svg {
+			.verification-bank {
+				fill: $colors-main-black;
+			}
+		}
+	}
+
+	.email-active {
+		svg {
+			.verification-email {
+				fill: $colors-main-black;
+			}
+		}
+	}
+	.active-tab-icon {
+		svg {
+			.verification-email {
+				fill: $colors-main-black;
+			}
+			.verification-id {
+				fill: $colors-main-black;
+			}
+			.verification-document {
+				fill: $colors-main-black;
+			}
+			.verification-phone {
+				fill: $colors-main-black;
+			}
+			.verification-bank {
+				fill: $colors-main-black;
 			}
 		}
 	}
