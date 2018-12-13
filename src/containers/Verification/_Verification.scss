@@ -28,6 +28,14 @@ $colors-black: #000000;
 	padding: 0.25rem;
 }
 
+.account-pending-icon {
+	width: 3rem;
+}
+
+.verification_link {
+	color: $dark-buy
+}
+
 .header_title-wrapper {
 	border-top: 1px solid $colors-main-black;
 	margin-bottom: 1rem;
@@ -49,6 +57,27 @@ $colors-black: #000000;
 		.header_title-content {
 			&:not(:last-child) {
 				margin-bottom: 0.75rem;
+			}
+		}
+	}
+
+	.header_title-icon {
+		width: 4rem;
+		svg {
+			.verification-email {
+				fill: $colors-main-black;
+			}
+			.verification-id {
+				fill: $colors-main-black;
+			}
+			.verification-document {
+				fill: $colors-main-black;
+			}
+			.verification-phone {
+				fill: $colors-main-black;
+			}
+			.verification-bank {
+				fill: $colors-main-black;
 			}
 		}
 	}
@@ -79,21 +108,6 @@ $colors-black: #000000;
 		}
 	}
 
-	.bank-active {
-		svg {
-			.verification-bank {
-				fill: $colors-main-black;
-			}
-		}
-	}
-
-	.email-active {
-		svg {
-			.verification-email {
-				fill: $colors-main-black;
-			}
-		}
-	}
 	.active-tab-icon {
 		svg {
 			.verification-email {
@@ -137,8 +151,12 @@ $colors-black: #000000;
 
 	.verification_container {
 		.link-content {
-			color: $dark-buy;
+			color: $dark-link;
 		}
+	}
+
+	.verification_link {
+		color: $dark-link;
 	}
 
 	.custom-tab-wrapper {

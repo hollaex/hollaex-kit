@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { reduxForm, formValueSelector, SubmissionError } from 'redux-form';
+import { Link } from 'react-router';
 import {
 	required,
 	requiredBoolean,
@@ -9,7 +10,7 @@ import {
 	maxLength
 } from '../../components/Form/validations';
 import renderFields from '../../components/Form/factoryFields';
-import { Button } from '../../components';
+import { Button, IconTitle } from '../../components';
 import STRINGS from '../../config/localizedStrings';
 import { verifyBankData } from '../../actions/verificationActions';
 import { getErrorLocalized } from '../../utils/errors';
@@ -147,7 +148,7 @@ class BankVerification extends Component {
 		} else {
 			return verifyBankData(rest)
 				.then(({ data }) => {
-					// console.log(data);
+					console.log('verifyBankData', data);
 					this.props.moveToNextStep('bank', {
 						bank_data: rest,
 						full_name: data.name
@@ -163,6 +164,11 @@ class BankVerification extends Component {
 		}
 	};
 
+	onGoBack = () => {
+		this.props.setActivePageContent(0);
+		this.props.setActiveTab(1);
+	};
+
 	render() {
 		const {
 			handleSubmit,
@@ -170,26 +176,46 @@ class BankVerification extends Component {
 			submitting,
 			valid,
 			error,
-			openContactForm
+			openContactForm,
+			icon
 		} = this.props;
 		const { formFields } = this.state;
 		return (
-			<form className="d-flex flex-column w-100 verification_content-form-wrapper">
-				<HeaderSection
-					title={STRINGS.USER_VERIFICATION.TITLE_BANK_HEADER}
-					openContactForm={openContactForm}
-				/>
-				{renderFields(formFields)}
-				{error && (
-					<div className="warning_text">{getErrorLocalized(error)}</div>
-				)}
-				<Button
-					label={STRINGS.NEXT}
-					type="button"
-					onClick={handleSubmit(this.handleSubmit)}
-					disabled={pristine || submitting || !valid || !!error}
-				/>
-			</form>
+			<div className="presentation_container apply_rtl verification_container">
+				<IconTitle text={STRINGS.USER_VERIFICATION.BANK_VERIFICATION} textType="title" />
+				<form className="d-flex flex-column w-100 verification_content-form-wrapper">
+					<HeaderSection
+						title={STRINGS.USER_VERIFICATION.TITLE_BANK_ACCOUNT}
+						icon={icon}
+						openContactForm={openContactForm}
+					>
+					<div className="my-2">{STRINGS.USER_VERIFICATION.BANK_VERIFICATION_TEXT_1}</div>
+					<div className="my-2">{STRINGS.USER_VERIFICATION.BANK_VERIFICATION_TEXT_2}</div>
+					<ul className="pl-4">
+						<li className="my-1">{STRINGS.USER_VERIFICATION.FIAT_WITHDRAWAL}</li>
+						<li className="my-1">{STRINGS.USER_VERIFICATION.FIAT_DEPOSITS}</li>
+						<li className="my-1">{STRINGS.USER_VERIFICATION.WARNING.LIST_ITEM_3}</li>
+					</ul>
+					</HeaderSection>
+					{renderFields(formFields)}
+					{error && (
+						<div className="warning_text">{getErrorLocalized(error)}</div>
+					)}
+					<div className="d-flex">
+						<Button 
+							label={STRINGS.USER_VERIFICATION.GO_BACK}
+							className="mr-5"
+							onClick={this.onGoBack}
+						/>
+						<Button
+							label={STRINGS.NEXT}
+							type="button"
+							onClick={handleSubmit(this.handleSubmit)}
+							disabled={pristine || submitting || !valid || !!error}
+						/>
+					</div>
+				</form>
+			</div>
 		);
 	}
 }

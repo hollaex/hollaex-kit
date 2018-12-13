@@ -381,10 +381,25 @@ export default {
 		CONNECT_BANK_ACCOUNT: 'Connect Bank Account', // ToDo: Add this into farsi in exir
 		ACTIVATE_2FA: 'Activate 2FA', // ToDo: Add this into farsi in exir
 		INCOMPLETED: 'Incompleted', // ToDo: Add this into farsi in exir
+		BANK_VERIFICATION: 'Bank Verification', // ToDo: Add this into farsi in exir
+		IDENTITY_VERIFICATION: 'Identity Verification', // ToDo: Add this into farsi in exir
+		PHONE_VERIFICATION: 'Phone Verification', // ToDo: Add this into farsi in exir
+		DOCUMENTATION_VERIFICATION: 'Documentation Verification', // ToDo: Add this into farsi in exir
 		START_BANK_VERIFICATION: 'Start Bank Verification', // ToDo: Add this into farsi in exir
 		START_IDENTITY_VERIFICATION: 'Start Identity Verification', // ToDo: Add this into farsi in exir
 		START_PHONE_VERIFICATION: 'Start Phone Verification', // ToDo: Add this into farsi in exir
 		START_DOCUMENTATION_SUBMISSION: 'Start Documentation Submission', // ToDo: Add this into farsi in exir
+		GO_BACK: 'Go Back', // ToDo: Add this into farsi in exir
+		BANK_VERIFICATION_TEXT_1: 'You can add up to 3 bank accounts. International bank accounts will require you contacting customer support and will have limited withdrawal limits.', // ToDo: Add this into farsi in exir
+		BANK_VERIFICATION_TEXT_2: 'By verifing your bank acount you can obtain the following:', // ToDo: Add this into farsi in exir
+		FIAT_WITHDRAWAL: 'Fiat withdrawal', // ToDo: Add this into farsi in exir
+		FIAT_DEPOSITS: 'Fiat deposits', // ToDo: Add this into farsi in exir
+		ADD_ANOTHER_BANK_ACCOUNT: 'Add Another Bank Account', // ToDo: Add this into farsi in exir
+		BANK_NAME: 'Bank Name', // ToDo: Add this into farsi in exir
+		ACCOUNT_NUMBER: 'Account Number', // ToDo: Add this into farsi in exir
+		CARD_NUMBER: 'Card Number', // ToDo: Add this into farsi in exir
+		BANK_VERIFICATION_HELP_TEXT: 'In order for this section to be verified you must complete the {0} section.', // ToDo: Add this into farsi in exir
+		DOCUMENT_SUBMISSION: 'Document Submission', // ToDo: Add this into farsi in exir
 		USER_DOCUMENTATION_FORM: {
 			FORM_FIELDS: {
 				FIRST_NAME_LABEL: 'First name',

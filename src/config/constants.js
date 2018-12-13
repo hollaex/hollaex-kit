@@ -297,6 +297,7 @@ export const ICONS = {
 	VERIFICATION_ID_NEW: `${process.env.PUBLIC_URL}/assets/images/verification-id.svg`,
 	VERIFICATION_BANK_NEW: `${process.env.PUBLIC_URL}/assets/images/verification-bank.svg`,
 	VERIFICATION_DOCUMENT_NEW: `${process.env.PUBLIC_URL}/assets/images/verification-document.svg`,
+	PENDING_TIMER: `${process.env.PUBLIC_URL}/assets/images/pending-timer.svg`
 };
 
 export const SOCIAL_ICONS = {
@@ -530,3 +531,5 @@ export const TRADING_ACCOUNT_TYPE = {
 		fullName: STRINGS.SUMMARY.BLACK_LEVIATHAN_TRADING_ACCOUNT
 	}
 };
+
+export const MAX_NUMBER_BANKS = 3;
