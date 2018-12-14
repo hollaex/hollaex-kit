@@ -75,16 +75,16 @@ export const IdentificationFormSection = () => (
 		}
 		importantContent={
 			<div>
-				<div>
+				<div className="id-warning">
 					{
 						STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.INFORMATION.ID_SECTION
-							.WARNING_1
+							.WARNING_3
 					}
 				</div>
 				<div>
 					{
 						STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.INFORMATION.ID_SECTION
-							.WARNING_2
+							.WARNING_1
 					}
 				</div>
 			</div>

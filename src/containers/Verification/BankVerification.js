@@ -12,7 +12,7 @@ import {
 import renderFields from '../../components/Form/factoryFields';
 import { Button, IconTitle } from '../../components';
 import STRINGS from '../../config/localizedStrings';
-import { verifyBankData } from '../../actions/verificationActions';
+import { verifyBankData, getUserData } from '../../actions/verificationActions';
 import { getErrorLocalized } from '../../utils/errors';
 import HeaderSection from './HeaderSection';
 import { isMobile } from 'react-device-detect';
@@ -71,25 +71,6 @@ class BankVerification extends Component {
 				validate: [required],
 				fullWidth: isMobile
 			};
-			formFields.card_number = {
-				type: 'text',
-				label:
-					STRINGS.USER_VERIFICATION.BANK_ACCOUNT_FORM.FORM_FIELDS
-						.CARD_NUMBER_LABEL,
-				placeholder:
-					STRINGS.USER_VERIFICATION.BANK_ACCOUNT_FORM.FORM_FIELDS
-						.CARD_NUMBER_PLACEHOLDER,
-				validate: [
-					required,
-					onlyNumbers,
-					exactLength(
-						16,
-						STRINGS.USER_VERIFICATION.BANK_ACCOUNT_FORM.VALIDATIONS.CARD_NUMBER
-					)
-				],
-				maxLength: 16,
-				fullWidth: isMobile
-			};
 			formFields.account_number = {
 				type: 'text',
 				label:
@@ -138,6 +119,25 @@ class BankVerification extends Component {
 				maxLength: 50,
 				fullWidth: isMobile
 			};
+			formFields.card_number = {
+				type: 'text',
+				label:
+					STRINGS.USER_VERIFICATION.BANK_ACCOUNT_FORM.FORM_FIELDS
+						.CARD_NUMBER_LABEL,
+				placeholder:
+					STRINGS.USER_VERIFICATION.BANK_ACCOUNT_FORM.FORM_FIELDS
+						.CARD_NUMBER_PLACEHOLDER,
+				validate: [
+					required,
+					onlyNumbers,
+					exactLength(
+						16,
+						STRINGS.USER_VERIFICATION.BANK_ACCOUNT_FORM.VALIDATIONS.CARD_NUMBER
+					)
+				],
+				maxLength: 16,
+				fullWidth: isMobile
+			};
 		}
 		this.setState({ formFields });
 	};
@@ -148,11 +148,10 @@ class BankVerification extends Component {
 		} else {
 			return verifyBankData(rest)
 				.then(({ data }) => {
-					console.log('verifyBankData', data);
 					this.props.moveToNextStep('bank', {
-						bank_data: rest,
-						full_name: data.name
+						bank_data: data,
 					});
+					this.props.setActivePageContent(0);
 				})
 				.catch((err) => {
 					const error = { _error: err.message };
@@ -208,7 +207,7 @@ class BankVerification extends Component {
 							onClick={this.onGoBack}
 						/>
 						<Button
-							label={STRINGS.NEXT}
+							label={STRINGS.SUBMIT}
 							type="button"
 							onClick={handleSubmit(this.handleSubmit)}
 							disabled={pristine || submitting || !valid || !!error}

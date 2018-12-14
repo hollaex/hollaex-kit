@@ -1,18 +1,30 @@
 import React from 'react';
 
-import { Button } from '../../components';
+import { getCountry } from './utils';
+import { Button, PanelInformationRow } from '../../components';
 import STRINGS from '../../config/localizedStrings';
 
-const MobileVerificationHome = ({ user }) => {
-    const { phone_number } = user;
+const MobileVerificationHome = ({ user, setActivePageContent, setActiveTab }) => {
+    const { phone_number, address } = user;
     if (!phone_number) {
         return (
             <div>
-                <Button label={STRINGS.USER_VERIFICATION.START_PHONE_VERIFICATION} />
+                <Button label={STRINGS.USER_VERIFICATION.START_PHONE_VERIFICATION} onClick={() => setActivePageContent(3)} />
             </div>
         );
     } else {
-        return <div></div>
+        return <div className="my-3">
+            <PanelInformationRow
+                label={STRINGS.USER_VERIFICATION.PHONE_COUNTRY_ORIGIN}
+                information={getCountry(address.country)}
+                className="title-font"
+                disable />
+            <PanelInformationRow
+                label={STRINGS.USER_VERIFICATION.MOBILE_NUMBER}
+                information={user.phone_number}
+                className="title-font"
+                disable />
+        </div>
     }
 };
 
