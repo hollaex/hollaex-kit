@@ -28,6 +28,18 @@ $colors-black: #000000;
 	padding: 0.25rem;
 }
 
+.account-pending-icon {
+	width: 3rem;
+}
+
+.verification_link {
+	color: $dark-buy
+}
+
+.verification-info-txt {
+	width: 70%;
+}
+
 .header_title-wrapper {
 	border-top: 1px solid $colors-main-black;
 	margin-bottom: 1rem;
@@ -52,11 +64,36 @@ $colors-black: #000000;
 			}
 		}
 	}
+
+	.header_title-icon {
+		width: 4rem;
+		svg {
+			.verification-email {
+				fill: $colors-main-black;
+			}
+			.verification-id {
+				fill: $colors-main-black;
+			}
+			.verification-document {
+				fill: $colors-main-black;
+			}
+			.verification-phone {
+				fill: $colors-main-black;
+			}
+			.verification-bank {
+				fill: $colors-main-black;
+			}
+		}
+	}
+
+	.id-warning {
+		color: $colors-notifications-red;
+	}
 }
 
 .custom-tab-wrapper {
 	.tab_item {
-		padding: 2rem 3rem;
+		padding: 2rem 2rem;
 		margin: 1rem 2rem;
 		width: 12rem;
 	}
@@ -75,6 +112,26 @@ $colors-black: #000000;
 			}
 			.st0 {
 				stroke: $colors-main-black !important;
+			}
+		}
+	}
+
+	.active-tab-icon {
+		svg {
+			.verification-email {
+				fill: $colors-main-black;
+			}
+			.verification-id {
+				fill: $colors-main-black;
+			}
+			.verification-document {
+				fill: $colors-main-black;
+			}
+			.verification-phone {
+				fill: $colors-main-black;
+			}
+			.verification-bank {
+				fill: $colors-main-black;
 			}
 		}
 	}
@@ -102,8 +159,12 @@ $colors-black: #000000;
 
 	.verification_container {
 		.link-content {
-			color: $dark-buy;
+			color: $dark-link;
 		}
+	}
+
+	.verification_link {
+		color: $dark-link;
 	}
 
 	.custom-tab-wrapper {

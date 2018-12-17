@@ -72,6 +72,19 @@ $notification-size: 1.5rem;
 	color: #777677;
 }
 
+.verification-status-container {
+	position: relative;
+	top: 8px;
+}
+
+.verification-stauts {
+	width: 1rem;
+}
+
+.empty-notification {
+	height: 1.5rem;
+}
+
 .direction_ltr {
 	.check_title-container {
 		font-family: $raleway--font-family;

@@ -2,15 +2,41 @@ import React from 'react';
 import classnames from 'classnames';
 import ReactSVG from 'react-svg';
 
+import { ICONS } from '../../config/constants';
+
 const CheckTitle = ({
 	title,
 	icon,
 	notifications,
 	className,
-	titleClassName
+	titleClassName,
+	statusCode = -1
 }) => {
+	let notificationStatus = '';
+	switch (statusCode) {
+		case 0:
+			notificationStatus = <ReactSVG path={ICONS.VERIFICATION_INCOMPLETE} wrapperClassName="verification-stauts" />;
+			break;
+		case 1:
+			notificationStatus = <ReactSVG path={ICONS.VERIFICATION_PENDING} wrapperClassName="verification-stauts" />;
+			break;
+		case 2:
+			notificationStatus = <ReactSVG path={ICONS.VERIFICATION_REJECTED} wrapperClassName="verification-stauts" />;
+			break;
+		case 3:
+			notificationStatus = <ReactSVG path={ICONS.VERIFICATION_VERIFIED} wrapperClassName="verification-stauts" />;
+			break;
+		default:
+			notificationStatus = '';
+	}
 	return (
 		<div className={classnames('check_title-container', className)}>
+			<div className='verification-status-container w-100 d-flex justify-content-end'>
+				{!!notificationStatus
+					? notificationStatus
+					: <div className="empty-notification"></div>
+				}
+			</div>
 			{title && (
 				<div className={classnames('check_title-label', titleClassName)}>
 					{title}

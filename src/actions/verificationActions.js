@@ -3,7 +3,7 @@ import querystring from 'query-string';
 
 const VERIFICATION_ENDPOINTS = {
 	VERIFY_SMS_CODE: '/user/verify/sms',
-	VERIFY_BANK: '/user/verify/bank_data',
+	VERIFY_BANK: '/user/bank',
 	GET_USER: '/user'
 };
 

@@ -9,6 +9,7 @@ import { AppBar, Footer } from '../../components';
 import { DEFAULT_PAIR } from '../../config/constants';
 // import { requestQuickTrade } from '../../actions/orderbookAction';
 import { setLanguage } from '../../actions/appActions';
+import { logout } from '../../actions/authAction';
 import { getClasesForLanguage } from '../../utils/string';
 
 import Section1 from './Section1';
@@ -74,6 +75,8 @@ class Home extends Component {
 		return this.props.changeLanguage(language);
 	};
 
+	onLogout = () => this.props.logout('');
+
 	render() {
 		const {
 			token,
@@ -105,6 +108,7 @@ class Home extends Component {
 					token={token}
 					verifyToken={verifyToken}
 					router={router}
+					logout={this.onLogout}
 				/>
 				<div
 					className={classnames(
@@ -157,7 +161,8 @@ const mapStateToProps = (store) => ({
 
 const mapDispatchToProps = (dispatch) => ({
 	// requestQuickTrade: bindActionCreators(requestQuickTrade, dispatch),
-	changeLanguage: bindActionCreators(setLanguage, dispatch)
+	changeLanguage: bindActionCreators(setLanguage, dispatch),
+	logout: bindActionCreators(logout, dispatch)
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);

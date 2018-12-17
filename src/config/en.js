@@ -381,10 +381,30 @@ export default {
 		CONNECT_BANK_ACCOUNT: 'Connect Bank Account', // ToDo: Add this into farsi in exir
 		ACTIVATE_2FA: 'Activate 2FA', // ToDo: Add this into farsi in exir
 		INCOMPLETED: 'Incompleted', // ToDo: Add this into farsi in exir
+		BANK_VERIFICATION: 'Bank Verification', // ToDo: Add this into farsi in exir
+		IDENTITY_VERIFICATION: 'Identity Verification', // ToDo: Add this into farsi in exir
+		PHONE_VERIFICATION: 'Phone Verification', // ToDo: Add this into farsi in exir
+		DOCUMENT_VERIFICATION: 'Document Verification', // ToDo: Add this into farsi in exir
 		START_BANK_VERIFICATION: 'Start Bank Verification', // ToDo: Add this into farsi in exir
 		START_IDENTITY_VERIFICATION: 'Start Identity Verification', // ToDo: Add this into farsi in exir
 		START_PHONE_VERIFICATION: 'Start Phone Verification', // ToDo: Add this into farsi in exir
 		START_DOCUMENTATION_SUBMISSION: 'Start Documentation Submission', // ToDo: Add this into farsi in exir
+		GO_BACK: 'Go Back', // ToDo: Add this into farsi in exir
+		BANK_VERIFICATION_TEXT_1: 'You can add up to 3 bank accounts. International bank accounts will require you contacting customer support and will have limited withdrawal limits.', // ToDo: Add this into farsi in exir
+		BANK_VERIFICATION_TEXT_2: 'By verifing your bank acount you can obtain the following:', // ToDo: Add this into farsi in exir
+		FIAT_WITHDRAWAL: 'Fiat withdrawal', // ToDo: Add this into farsi in exir
+		FIAT_DEPOSITS: 'Fiat deposits', // ToDo: Add this into farsi in exir
+		ADD_ANOTHER_BANK_ACCOUNT: 'Add Another Bank Account', // ToDo: Add this into farsi in exir
+		BANK_NAME: 'Bank Name', // ToDo: Add this into farsi in exir
+		ACCOUNT_NUMBER: 'Account Number', // ToDo: Add this into farsi in exir
+		CARD_NUMBER: 'Card Number', // ToDo: Add this into farsi in exir
+		BANK_VERIFICATION_HELP_TEXT: 'In order for this section to be verified you must complete the {0} section.', // ToDo: Add this into farsi in exir
+		DOCUMENT_SUBMISSION: 'Document Submission', // ToDo: Add this into farsi in exir
+		REVIEW_IDENTITY_VERIFICATION: 'Review Identity Verification', // ToDo: Add this into farsi in exir
+		PHONE_DETAILS: 'Phone Details', // ToDo: Add this into farsi in exir
+		PHONE_COUNTRY_ORIGIN: 'Phone Country of Origin', // ToDo: Add this into farsi in exir
+		MOBILE_NUMBER: 'Mobile Number', // ToDo: Add this into farsi in exir
+		DOCUMENT_PROOF_SUBMISSION: 'Document Proof Submission', // ToDo: Add this into farsi in exir
 		USER_DOCUMENTATION_FORM: {
 			FORM_FIELDS: {
 				FIRST_NAME_LABEL: 'First name',
@@ -427,7 +447,10 @@ export default {
 				TEXT:
 					'IMPORTANT: Enter your name into the fields exactly as it appears on your identity document (full first name, any middle names/initials and full last name(s)). Are you a business? Contact customer support for a corporate account.',
 				TITLE_PERSONAL_INFORMATION: 'Personal Information',
-				TITLE_PHONE: 'Phone'
+				TITLE_PHONE: 'Phone',
+				PHONE_VERIFICATION_TXT: 'Providing valid contact details will assist EXIR greatly in conflict resolution while preventing unwanted transactions on your account.',
+				PHONE_VERIFICATION_TXT_1: 'Receive real-time updates for deposits and withdrawals by sharing your mobile phone number.',
+				PHONE_VERIFICATION_TXT_2: 'Further prove your identity and address by sharing your LAN phone number (optional).',
 			}
 		},
 		ID_DOCUMENTS_FORM: {
@@ -475,9 +498,10 @@ export default {
 					LIST_ITEM_2: 'VISIBLE IN THEIR ENTIRETY (watermarks are permitted).',
 					LIST_ITEM_3: 'VALID, with the expiry date clearly visible.',
 					WARNING_1:
-						'Only a valid government-issued identification document is accepted.',
+						'Only a valid government-issued identification document is acceptedt; high quality photos or scanned images of these documents are acceptable:',
 					WARNING_2:
-						'Make sure you are uploading your own documents. Any usage of wrong or fake documents will have legal consequences and result in freezing your account immediately.'
+						'Make sure you are uploading your own documents. Any usage of wrong or fake documents will have legal consequences and result in freezing your account immediately.',
+					WARNING_3: 'Please do not submit the identity document as your proof of residence.'
 				},
 				POR: {
 					SECTION_1_TEXT_1:

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { reduxForm, SubmissionError } from 'redux-form';
 import { requiredWithCustomMessage } from '../../components/Form/validations';
 import renderFields from '../../components/Form/factoryFields';
-import { Button } from '../../components';
+import { Button, IconTitle } from '../../components';
 import STRINGS from '../../config/localizedStrings';
 import HeaderSection, {
 	IdentificationFormSection,
@@ -12,6 +12,7 @@ import { getErrorLocalized } from '../../utils/errors';
 import { updateDocuments } from '../../actions/userAction';
 
 import { isMobile } from 'react-device-detect';
+import { ICONS } from '../../config/constants';
 const FORM_NAME = 'DocumentsVerification';
 
 class DocumentsVerification extends Component {
@@ -88,6 +89,11 @@ class DocumentsVerification extends Component {
 			});
 	};
 
+	onGoBack = () => {
+		this.props.setActivePageContent(0);
+		this.props.setActiveTab(4);
+	};
+
 	render() {
 		const {
 			handleSubmit,
@@ -95,60 +101,61 @@ class DocumentsVerification extends Component {
 			submitting,
 			valid,
 			error,
-			skip,
+			// skip,
 			openContactForm
 		} = this.props;
 		const { formFields } = this.state;
 		return (
-			<form
-				className="d-flex flex-column w-100 verification_content-form-wrapper"
-				onSubmit={this.handleSubmit}
-			>
-				<HeaderSection
-					title={
-						STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.INFORMATION
-							.IDENTITY_DOCUMENT
-					}
-					openContactForm={openContactForm}
+			<div className="presentation_container apply_rtl verification_container">
+				<IconTitle text={STRINGS.USER_VERIFICATION.DOCUMENT_VERIFICATION} textType="title" />
+				<form
+					className="d-flex flex-column w-100 verification_content-form-wrapper"
+					onSubmit={this.handleSubmit}
 				>
-					<IdentificationFormSection />
-				</HeaderSection>
-				{renderFields(formFields.id)}
+					<HeaderSection
+						title={STRINGS.USER_VERIFICATION.DOCUMENT_PROOF_SUBMISSION}
+						icon={ICONS.VERIFICATION_DOCUMENT_NEW}
+						openContactForm={openContactForm}
+					>
+						<IdentificationFormSection />
+					</HeaderSection>
+					{renderFields(formFields.id)}
 
-				{formFields.proofOfResidence && (
-					<div>
-						<HeaderSection
-							title={
-								STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.INFORMATION
-									.PROOF_OF_RESIDENCY
-							}
-							openContactForm={openContactForm}
-						>
-							<PORSection />
-						</HeaderSection>
-						{renderFields(formFields.proofOfResidence)}
+					{formFields.proofOfResidence && (
+						<div>
+							<HeaderSection
+								title={
+									STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.INFORMATION
+										.PROOF_OF_RESIDENCY
+								}
+								openContactForm={openContactForm}
+							>
+								<PORSection />
+							</HeaderSection>
+							{renderFields(formFields.proofOfResidence)}
+						</div>
+					)}
+					{error && (
+						<div className="warning_text">{getErrorLocalized(error)}</div>
+					)}
+
+					<div className="d-flex verification-buttons-wrapper">
+						<Button
+							type="button"
+							onClick={this.onGoBack}
+							label={STRINGS.USER_VERIFICATION.GO_BACK}
+							disabled={submitting}
+						/>
+						<div className="separator" />
+						<Button
+							type="button"
+							onClick={handleSubmit(this.handleSubmit)}
+							label={STRINGS.SUBMIT}
+							disabled={pristine || submitting || !valid || !!error}
+						/>
 					</div>
-				)}
-				{error && (
-					<div className="warning_text">{getErrorLocalized(error)}</div>
-				)}
-
-				<div className="d-flex verification-buttons-wrapper">
-					<Button
-						type="button"
-						onClick={skip}
-						label={STRINGS.SKIP_FOR_NOW}
-						disabled={submitting}
-					/>
-					<div className="separator" />
-					<Button
-						type="button"
-						onClick={handleSubmit(this.handleSubmit)}
-						label={STRINGS.SUBMIT}
-						disabled={pristine || submitting || !valid || !!error}
-					/>
-				</div>
-			</form>
+				</form>
+			</div>
 		);
 	}
 }
