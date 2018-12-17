@@ -34,7 +34,7 @@ class AppMenuBar extends Component {
 
     checkVerificationStatus = user => {
         const userData = user.userData || {};
-        const { phone_number, full_name, id_data = {}, bank_account = {} } = userData;
+        const { phone_number, full_name, id_data = {}, bank_account = [] } = userData;
         let securityPending = 0;
         let verificationPending = 0;
         if (!user.otp_enabled) {
@@ -49,7 +49,7 @@ class AppMenuBar extends Component {
         if (!phone_number) {
             verificationPending += 1;
         }
-        if (!bank_account.verified) {
+        if (!bank_account.filter(acc => acc.status === 3).length) {
             verificationPending += 1;
         }
         this.setState({ securityPending, verificationPending });
@@ -149,14 +149,14 @@ class AppMenuBar extends Component {
                             {STRINGS.ACCOUNTS.TAB_SETTINGS}
                         </div>
                     </div>
-                    <div
+                    {/* <div
                         className={classnames("app-menu-bar-content d-flex", { 'active-menu': activeMenu === 'api' })}
                         onClick={() => this.handleMenuChange('api')}>
                         <div className="app-menu-bar-content-item d-flex">
                             <ReactSVG path={ICONS.TAB_API} wrapperClassName="app-menu-bar-icon" />
                             {STRINGS.ACCOUNTS.TAB_API}
                         </div>
-                    </div>
+                    </div> */}
                 </div>
                 <div className="app-menu-bar app-menu-bar-side"></div>
             </div>

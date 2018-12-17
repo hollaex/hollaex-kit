@@ -297,7 +297,8 @@ export const ICONS = {
 	VERIFICATION_ID_NEW: `${process.env.PUBLIC_URL}/assets/images/verification-id.svg`,
 	VERIFICATION_BANK_NEW: `${process.env.PUBLIC_URL}/assets/images/verification-bank.svg`,
 	VERIFICATION_DOCUMENT_NEW: `${process.env.PUBLIC_URL}/assets/images/verification-document.svg`,
-	PENDING_TIMER: `${process.env.PUBLIC_URL}/assets/images/pending-timer.svg`
+	PENDING_TIMER: `${process.env.PUBLIC_URL}/assets/images/pending-timer.svg`,
+	VERIFICATION_DOCUMENT_SAMPLE: `${process.env.PUBLIC_URL}/assets/verification-document.jpg`
 };
 
 export const SOCIAL_ICONS = {
@@ -513,22 +514,26 @@ export const TRADING_ACCOUNT_TYPE = {
 	shrimp: {
 		symbol: 'shrimp',
 		name: STRINGS.SUMMARY.TINY_PINK_SHRIMP_TRADER,
-		fullName: STRINGS.SUMMARY.TINY_PINK_SHRIMP_TRADER_ACCOUNT
+		fullName: STRINGS.SUMMARY.TINY_PINK_SHRIMP_TRADER_ACCOUNT,
+		level: 1
 	},
 	snapper: {
 		symbol: 'snapper',
 		name: STRINGS.SUMMARY.LITTLE_RED_SNAPPER_TRADER,
-		fullName: STRINGS.SUMMARY.LITTLE_RED_SNAPPER_TRADER_ACCOUNT
+		fullName: STRINGS.SUMMARY.LITTLE_RED_SNAPPER_TRADER_ACCOUNT,
+		level: 2
 	},
 	kraken: {
 		symbol: 'kraken',
 		name: STRINGS.SUMMARY.CUNNING_BLUE_KRAKEN_TRADING,
-		fullName: STRINGS.SUMMARY.CUNNING_BLUE_KRAKEN_TRADING_ACCOUNT
+		fullName: STRINGS.SUMMARY.CUNNING_BLUE_KRAKEN_TRADING_ACCOUNT,
+		level: 3
 	},
 	leviathan: {
 		symbol: 'leviathan',
 		name: STRINGS.SUMMARY.BLACK_LEVIATHAN_TRADING,
-		fullName: STRINGS.SUMMARY.BLACK_LEVIATHAN_TRADING_ACCOUNT
+		fullName: STRINGS.SUMMARY.BLACK_LEVIATHAN_TRADING_ACCOUNT,
+		level: 4
 	}
 };
 

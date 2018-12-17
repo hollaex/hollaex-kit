@@ -5,7 +5,7 @@ import { DonutChart } from '../../../components';
 import STRINGS from '../../../config/localizedStrings';
 import { CURRENCIES, BASE_CURRENCY, ICONS } from '../../../config/constants';
 
-const AccountAssets = ({ chartData, totalAssets, balance }) => {
+const AccountAssets = ({ chartData = [], totalAssets, balance }) => {
     const baseValue = CURRENCIES[BASE_CURRENCY];
     return (
         <div className="summary-section_2">

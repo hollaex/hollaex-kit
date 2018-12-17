@@ -48,8 +48,11 @@ class AppBar extends Component {
 	}
 
 	checkVerificationStatus = user => {
-		const userData = user.userData || {};
-		const { phone_number, full_name, id_data = {}, bank_account = {} } = userData;
+		let userData = user.userData || {};
+		if (!Object.keys(userData).length && user.id) {
+			userData = user;
+		}
+		const { phone_number, full_name, id_data = {}, bank_account = [] } = userData;
 		let securityPending = 0;
 		let verificationPending = 0;
 		if (user.id) {
@@ -65,7 +68,7 @@ class AppBar extends Component {
 			if (!phone_number) {
 				verificationPending += 1;
 			}
-			if (!bank_account.verified) {
+			if (!bank_account.filter(acc => acc.status === 3).length) {
 				verificationPending += 1;
 			}
 			this.setState({ securityPending, verificationPending });
@@ -211,8 +214,7 @@ class AppBar extends Component {
 			logout,
 			router,
 			activePath,
-			location,
-			user
+			location
 		} = this.props;
 		const { isAccountMenu, selectedMenu, securityPending, verificationPending } = this.state;
 		const totalPending = securityPending + verificationPending;

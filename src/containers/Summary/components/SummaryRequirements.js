@@ -28,8 +28,13 @@ const IncompleteStatus = ({ isAccountDetails }) => (
     </div>
 );
 
+const checkBankVerification = (accounts = []) => {
+    return !!accounts.filter(acc => acc.status === 3).length;
+};
+
 const SummaryRequirements = ({ user, isAccountDetails = false, contentClassName="" }) => {
-    const { phone_number, full_name, id_data = {}, bank_account = {} } = user.userData;
+    const { phone_number, full_name, id_data = {}, bank_account } = user.userData;
+    const bank_verified = checkBankVerification(bank_account);
     return (
         <div className="d-flex">
             {!isAccountDetails && <div>
@@ -93,12 +98,12 @@ const SummaryRequirements = ({ user, isAccountDetails = false, contentClassName=
                         "justify-content-between",
                         {
                             "requirement-verified": !isAccountDetails,
-                            "requirement-not-verified": !isAccountDetails && !bank_account.verified
+                            "requirement-not-verified": !isAccountDetails && !bank_verified
                         })}
                 >
                     <div>{`4. ${STRINGS.USER_VERIFICATION.CONNECT_BANK_ACCOUNT}`}</div>
                     <div>
-                        {bank_account.verified
+                        {bank_account.length && bank_verified
                             ? <SucessStatus isAccountDetails={isAccountDetails} />
                             : <IncompleteStatus isAccountDetails={isAccountDetails} />
                         }

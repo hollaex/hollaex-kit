@@ -40,6 +40,10 @@ $colors-black: #000000;
 	width: 70%;
 }
 
+.verification_document-sample {
+	width: 60rem;
+}
+
 .header_title-wrapper {
 	border-top: 1px solid $colors-main-black;
 	margin-bottom: 1rem;
@@ -146,6 +150,26 @@ $colors-black: #000000;
 
 			.important_information {
 				color: $dark-font-sub-text-color !important
+			}
+		}
+
+		.header_title-icon {
+			svg {
+				.verification-email {
+					fill: $dark-font-main-text-color;
+				}
+				.verification-id {
+					fill: $dark-font-main-text-color;
+				}
+				.verification-document {
+					fill: $dark-font-main-text-color;
+				}
+				.verification-phone {
+					fill: $dark-font-main-text-color;
+				}
+				.verification-bank {
+					fill: $dark-font-main-text-color;
+				}
 			}
 		}
 	}

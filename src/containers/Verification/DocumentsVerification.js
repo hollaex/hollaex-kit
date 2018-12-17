@@ -6,7 +6,8 @@ import { Button, IconTitle } from '../../components';
 import STRINGS from '../../config/localizedStrings';
 import HeaderSection, {
 	IdentificationFormSection,
-	PORSection
+	PORSection,
+	SelfieWithPhotoId
 } from './HeaderSection';
 import { getErrorLocalized } from '../../utils/errors';
 import { updateDocuments } from '../../actions/userAction';
@@ -56,19 +57,44 @@ class DocumentsVerification extends Component {
 				}
 			},
 			proofOfResidence: {
-				type: 'file',
-				label:
-					STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS.POR_LABEL,
-				placeholder:
-					STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS
-						.POR_PLACEHOLDER,
-				validate: [
-					requiredWithCustomMessage(
-						STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.VALIDATIONS
-							.PROOF_OF_RESIDENCY
-					)
-				],
-				fullWidth: isMobile
+				type: {
+					type: 'hidden'
+				},
+				por: {
+					type: 'file',
+					label:
+						STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS.POR_LABEL,
+					placeholder:
+						STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS
+							.POR_PLACEHOLDER,
+					validate: [
+						requiredWithCustomMessage(
+							STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.VALIDATIONS
+								.PROOF_OF_RESIDENCY
+						)
+					],
+					fullWidth: isMobile
+				}
+			},
+			selfieWithNote: {
+				type: {
+					type: 'hidden'
+				},
+				selfie: {
+					type: 'file',
+					label:
+						STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS.SELFIE_PHOTO_ID_LABEL,
+					placeholder:
+						STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS
+							.SELFIE_PHOTO_ID_PLACEHOLDER,
+					validate: [
+						requiredWithCustomMessage(
+							STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.VALIDATIONS
+								.SELFIE_PHOTO_ID
+						)
+					],
+					fullWidth: isMobile
+				}
 			}
 		};
 
@@ -128,11 +154,29 @@ class DocumentsVerification extends Component {
 									STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.INFORMATION
 										.PROOF_OF_RESIDENCY
 								}
-								openContactForm={openContactForm}
 							>
 								<PORSection />
 							</HeaderSection>
 							{renderFields(formFields.proofOfResidence)}
+						</div>
+					)}
+					{formFields.selfieWithNote && (
+						<div>
+							<HeaderSection
+								title={
+									STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.INFORMATION
+										.SELFIE.TITLE
+								}
+							>
+								<SelfieWithPhotoId />
+							</HeaderSection>
+							<div className="my-2">
+								<img
+									src={ICONS.VERIFICATION_DOCUMENT_SAMPLE}
+									className="verification_document-sample"
+									alt="document-sample" />
+							</div>
+							{renderFields(formFields.selfieWithNote)}
 						</div>
 					)}
 					{error && (

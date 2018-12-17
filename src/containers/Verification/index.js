@@ -88,7 +88,7 @@ class Verification extends Component {
 
 	setUserData = (user = {}) => {
 		const activeTab = this.calculateActiveTab(user);
-		if (activeTab > 3) {
+		if (activeTab > 4) {
 			this.goToAccountPage();
 		} else {
 			this.updateTabs(user, this.props.activeLanguage, activeTab);
@@ -115,7 +115,7 @@ class Verification extends Component {
 		} else if (!id_data.provided) {
 			return 4;
 		}
-		return 4;
+		return 0;
 	};
 
 	updateTabs = (
@@ -368,7 +368,6 @@ class Verification extends Component {
 	render() {
 		const { activeLanguage, token, activeTheme, router, location } = this.props;
 		const { activeTab, tabs, dialogIsOpen, dialogType, user } = this.state;
-		// console.log('user verification', user);
 
 		if (activeTab === -1 && tabs.length > 0) {
 			return (

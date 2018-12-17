@@ -67,13 +67,13 @@ class MenuList extends Component {
                     <ReactSVG path={ICONS.TAB_SETTING} wrapperClassName="app-bar-account-list-icon" />
                     {STRINGS.ACCOUNTS.TAB_SETTINGS}
                 </div>
-                <div 
+                {/* <div 
                     className={classnames("app-bar-account-menu-list d-flex", { 'menu-active': selectedMenu === 'api' })}
                     onClick={() => handleMenu('api')}>
                     <div className="notification-content"></div>
                     <ReactSVG path={ICONS.TAB_API} wrapperClassName="app-bar-account-list-icon" />
                     {STRINGS.ACCOUNTS.TAB_API}
-                </div>
+                </div> */}
                 <div
                     className="app-bar-account-menu-list d-flex" onClick={logout}>
                     <div className="notification-content"></div>

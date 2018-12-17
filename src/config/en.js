@@ -462,7 +462,8 @@ export default {
 					'Please select the date when your document will expire',
 				FRONT: 'Please upload a scan of your photo identity document',
 				PROOF_OF_RESIDENCY:
-					'Please upload a scan of document proving the address you current reside'
+					'Please upload a scan of document proving the address you current reside',
+				SELFIE_PHOTO_ID: 'Please upload a selfie with photo id and note'
 			},
 			FORM_FIELDS: {
 				TYPE_LABEL: 'ID Document Type',
@@ -486,7 +487,9 @@ export default {
 				PASSPORT_LABEL: 'Passport Document',
 				PASSPORT_PLACEHOLDER: 'Add a copy of your Passport document',
 				POR_LABEL: 'Document proving your address',
-				POR_PLACEHOLDER: 'Add a copy of a document that proves your address'
+				POR_PLACEHOLDER: 'Add a copy of a document that proves your address',
+				SELFIE_PHOTO_ID_LABEL: 'Your Selfie with Photo ID and Note',
+				SELFIE_PHOTO_ID_PLACEHOLDER: 'Add a copy of your Selfie with Photo ID and Note',
 			},
 			INFORMATION: {
 				IDENTITY_DOCUMENT: 'Identity Document',
@@ -520,6 +523,17 @@ export default {
 						'A government-issued document (tax statement, certificate of residency, etc.).',
 					WARNING:
 						'We cannot accept the address on your submitted identity document as a valid proof of residence.'
+				},
+				SELFIE: {
+					TITLE: 'Selfie with Photo ID and Note',
+					INFO_TEXT: "Please provide a photo of you holding your passport or photo ID. In the same picture and have a reference to ‘exir.io’, today's date and your signature displayed.Make sure your face is clearly visible and that your ID details are clearly readable.",
+					REQUIRED: 'Required:',
+					INSTRUCTION_1: 'Your face clearly visable',
+					INSTRUCTION_2: 'Photo ID clearly readable',
+					INSTRUCTION_3: 'Write the word ‘exir.io’',
+					INSTRUCTION_4: "Write today's date",
+					INSTRUCTION_5: "Write your signature",
+					WARNING: 'Selfie with a different inconsistent ID with uploaded content will be rejected'
 				}
 			}
 		},

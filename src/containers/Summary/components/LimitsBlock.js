@@ -42,7 +42,7 @@ const getWithdrawalRow = (data, currency, index) => {
     return (
         <tr key={`${index}_1`}>
             <td className="account-limits-taker account-limits-status">{STRINGS.SUMMARY.WITHDRAWAL}:</td>
-            <td className="account-limits-taker account-limits-value">{getLimitValue(data[`${currency}_withdrawal_daily`], format)}</td>
+            <td className="account-limits-taker account-limits-value">{getLimitValue(data[`${currency}_withdraw_daily`], format)}</td>
         </tr>
     );
 };
