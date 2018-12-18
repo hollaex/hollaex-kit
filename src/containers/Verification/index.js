@@ -29,8 +29,6 @@ import VerificationHome from './VerificationHome';
 import IdentityVerification from './IdentityVerification';
 import MobileVerification from './MobileVerification';
 import DocumentsVerification from './DocumentsVerification';
-import CustomTabs from './CustomTabs';
-import HeaderSection from './HeaderSection';
 import { mobileInitialValues, identityInitialValues } from './utils';
 import {
 	getClasesForLanguage,
@@ -192,17 +190,7 @@ class Verification extends Component {
 						statusCode={!address.country ? 1 : 3}
 					/>
 				),
-				content: isMobile ? (
-					<div className={CONTENT_CLASS}>
-						<IdentityVerification
-							fullName={full_name}
-							moveToNextStep={this.goNextTab}
-							activeLanguage={activeLanguage}
-							initialValues={identityInitialValues(user)}
-							openContactForm={this.openContactForm}
-						/>
-					</div>
-				) : (<IdentityVerificationHome
+				content: (<IdentityVerificationHome
 						user={user}
 						setActiveTab={this.setActiveTab}
 						setActivePageContent={this.setActivePageContent} />)

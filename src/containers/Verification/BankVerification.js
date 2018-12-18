@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { reduxForm, formValueSelector, SubmissionError } from 'redux-form';
-import { Link } from 'react-router';
 import {
 	required,
 	requiredBoolean,
@@ -12,7 +11,7 @@ import {
 import renderFields from '../../components/Form/factoryFields';
 import { Button, IconTitle } from '../../components';
 import STRINGS from '../../config/localizedStrings';
-import { verifyBankData, getUserData } from '../../actions/verificationActions';
+import { verifyBankData } from '../../actions/verificationActions';
 import { getErrorLocalized } from '../../utils/errors';
 import HeaderSection from './HeaderSection';
 import { isMobile } from 'react-device-detect';

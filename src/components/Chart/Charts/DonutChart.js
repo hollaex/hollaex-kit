@@ -17,9 +17,9 @@ function translate(x, y) {
     return `translate(${x}, ${y})`;
 };
 
-function rotate (d) {
-    return `rotate(${180 / Math.PI * (d.startAngle + d.endAngle) / 2 + 45})`;
-};
+// function rotate (d) {
+//     return `rotate(${180 / Math.PI * (d.startAngle + d.endAngle) / 2 + 45})`;
+// };
 
 class DonutChart extends Component {
 

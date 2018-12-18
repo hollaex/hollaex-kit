@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
 import { reduxForm, SubmissionError } from 'redux-form';
-import { requiredWithCustomMessage } from '../../components/Form/validations';
+import moment from 'moment';
+import {
+	isBefore,
+	requiredWithCustomMessage
+} from '../../components/Form/validations';
 import renderFields from '../../components/Form/factoryFields';
 import { Button, IconTitle } from '../../components';
 import STRINGS from '../../config/localizedStrings';
@@ -22,18 +26,79 @@ class DocumentsVerification extends Component {
 	};
 
 	componentDidMount() {
-		this.generateFormFields();
+		this.generateFormFields(this.props.activeLanguage);
 	}
 
 	componentWillReceiveProps(nextProps) {
 		if (nextProps.activeLanguage !== this.props.activeLanguage) {
-			this.generateFormFields();
+			this.generateFormFields(nextProps.activeLanguage);
 		}
 	}
 
-	generateFormFields = () => {
-		const FRONT_TYPE = 'PASSPORT';
+	generateFormFields = (language) => {
+		// const FRONT_TYPE = 'PASSPORT';
 		const formFields = {
+			idDocument: {
+				type: {
+					type: 'text',
+					label:
+						STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS.TYPE_LABEL,
+					placeholder:
+						STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS.TYPE_PLACEHOLDER,
+					validate: [
+						requiredWithCustomMessage(
+							STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.VALIDATIONS.ID_TYPE
+						)
+					],
+					fullWidth: isMobile
+				},
+				number: {
+					type: 'text',
+					label:
+						STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS.ID_NUMBER_LABEL,
+					placeholder:
+						STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS.ID_NUMBER_PLACEHOLDER,
+					validate: [
+						requiredWithCustomMessage(
+							STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.VALIDATIONS.ID_NUMBER
+						)
+					],
+					fullWidth: isMobile
+				},
+				issued_date: {
+					type: 'date-dropdown',
+					label:
+						STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS
+							.ISSUED_DATE_LABEL,
+					validate: [
+						requiredWithCustomMessage(
+							STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.VALIDATIONS.ISSUED_DATE
+						),
+						isBefore()
+					],
+					endDate: moment().add(1, 'days'),
+					language,
+					fullWidth: isMobile
+				},
+				expiration_date: {
+					type: 'date-dropdown',
+					label:
+						STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS
+							.EXPIRATION_DATE_LABEL,
+					validate: [
+						requiredWithCustomMessage(
+							STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.VALIDATIONS
+								.EXPIRATION_DATE
+						),
+						isBefore(moment().add(15, 'years'))
+					],
+					endDate: moment().add(15, 'years'),
+					addYears: 15,
+					yearsBefore: 5,
+					language,
+					fullWidth: isMobile
+				},
+			},
 			id: {
 				type: {
 					type: 'hidden'
@@ -41,13 +106,9 @@ class DocumentsVerification extends Component {
 				front: {
 					type: 'file',
 					label:
-						STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS[
-							`${FRONT_TYPE}_LABEL`
-						],
+						STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS.FRONT_LABEL,
 					placeholder:
-						STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS[
-							`${FRONT_TYPE}_PLACEHOLDER`
-						],
+						STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS.FRONT_PLACEHOLDER,
 					validate: [
 						requiredWithCustomMessage(
 							STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.VALIDATIONS.FRONT
@@ -60,7 +121,7 @@ class DocumentsVerification extends Component {
 				type: {
 					type: 'hidden'
 				},
-				por: {
+				back: {
 					type: 'file',
 					label:
 						STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS.POR_LABEL,
@@ -80,7 +141,7 @@ class DocumentsVerification extends Component {
 				type: {
 					type: 'hidden'
 				},
-				selfie: {
+				proofOfResidency: {
 					type: 'file',
 					label:
 						STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS.SELFIE_PHOTO_ID_LABEL,
@@ -105,6 +166,7 @@ class DocumentsVerification extends Component {
 		return updateDocuments(values)
 			.then(({ data }) => {
 				this.props.moveToNextStep('documents');
+				this.props.setActivePageContent(0);
 			})
 			.catch((err) => {
 				const error = { _error: err.message };
@@ -145,6 +207,7 @@ class DocumentsVerification extends Component {
 					>
 						<IdentificationFormSection />
 					</HeaderSection>
+					{renderFields(formFields.idDocument)}
 					{renderFields(formFields.id)}
 
 					{formFields.proofOfResidence && (

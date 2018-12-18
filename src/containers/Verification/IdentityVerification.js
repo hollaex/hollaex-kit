@@ -100,56 +100,6 @@ class IdentityVerification extends Component {
 				validate: [required],
 				fullWidth: isMobile
 			},
-			id_number: {
-				type: 'text',
-				label:
-					STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS[
-						`ID_${ID_NUMBER_TYPE}_NUMBER_LABEL`
-					],
-				placeholder:
-					STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS[
-						`ID_${ID_NUMBER_TYPE}_NUMBER_PLACEHOLDER`
-					],
-				validate: [
-					requiredWithCustomMessage(
-						STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.VALIDATIONS.ID_NUMBER
-					)
-				],
-				fullWidth: isMobile
-			},
-			id_issued_date: {
-				type: 'date-dropdown',
-				label:
-					STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS
-						.ISSUED_DATE_LABEL,
-				validate: [
-					requiredWithCustomMessage(
-						STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.VALIDATIONS.ISSUED_DATE
-					),
-					isBefore()
-				],
-				endDate: moment().add(1, 'days'),
-				language,
-				fullWidth: isMobile
-			},
-			id_expiration_date: {
-				type: 'date-dropdown',
-				label:
-					STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS
-						.EXPIRATION_DATE_LABEL,
-				validate: [
-					requiredWithCustomMessage(
-						STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.VALIDATIONS
-							.EXPIRATION_DATE
-					),
-					isBefore(moment().add(15, 'years'))
-				],
-				endDate: moment().add(15, 'years'),
-				addYears: 15,
-				yearsBefore: 5,
-				language,
-				fullWidth: isMobile
-			},
 			country: {
 				type: 'autocomplete',
 				label:
