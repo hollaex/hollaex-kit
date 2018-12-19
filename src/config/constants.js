@@ -4,7 +4,8 @@ import {
 	formatBtcFullAmount,
 	formatFiatAmount,
 	formatEthAmount,
-	formatEthFullAmount
+	formatEthFullAmount,
+	formatNumber
 } from '../utils/currency';
 
 import STRINGS from './localizedStrings';
@@ -298,7 +299,8 @@ export const ICONS = {
 	VERIFICATION_BANK_NEW: `${process.env.PUBLIC_URL}/assets/images/verification-bank.svg`,
 	VERIFICATION_DOCUMENT_NEW: `${process.env.PUBLIC_URL}/assets/images/verification-document.svg`,
 	PENDING_TIMER: `${process.env.PUBLIC_URL}/assets/images/pending-timer.svg`,
-	VERIFICATION_DOCUMENT_SAMPLE: `${process.env.PUBLIC_URL}/assets/verification-document.jpg`
+	SELF_KYC_ID_FA: `${process.env.PUBLIC_URL}/assets/self-kyc-id-note-persian.png`,
+	SELF_KYC_ID_EN: `${process.env.PUBLIC_URL}/assets/self-kyc-id-note-english.png`
 };
 
 export const SOCIAL_ICONS = {
@@ -445,6 +447,10 @@ export const WITHDRAW_LIMITS = {
 export const DEFAULT_TRADING_PAIRS = process.env.REACT_APP_DEFAULT_TRADING_PAIRS
 	? process.env.REACT_APP_DEFAULT_TRADING_PAIRS.split(',')
 	: ['btc-eur', 'eth-eur'];
+
+export const TRADING_VOLUME_CHART_LIMITS = process.env.REACT_APP_TRADING_VOLUME_CHART_LIMITS
+	? process.env.REACT_APP_TRADING_VOLUME_CHART_LIMITS.split(',').map(data => formatNumber(data))
+	: [450000000, 1500000000]
 
 export const TOKEN_KEY = `${ENV}_${NETWORK}_TOKEN`;
 export const LANGUAGE_KEY = `${ENV}_${NETWORK}_LANGUAGE`;

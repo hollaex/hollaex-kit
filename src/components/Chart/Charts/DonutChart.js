@@ -7,7 +7,7 @@ import STRINGS from '../../../config/localizedStrings';
 const colors_currencies = {
     fiat: '#00a651',
     btc: '#f7941e',
-    bch: '#ec008c',
+    bch: '#9ec51e',
     eth: '#2e3192',
     ltc: '#58595b',
     noData: '#cccbcb'

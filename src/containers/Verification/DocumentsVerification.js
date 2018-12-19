@@ -190,7 +190,8 @@ class DocumentsVerification extends Component {
 			valid,
 			error,
 			// skip,
-			openContactForm
+			openContactForm,
+			activeLanguage
 		} = this.props;
 		const { formFields } = this.state;
 		return (
@@ -235,7 +236,7 @@ class DocumentsVerification extends Component {
 							</HeaderSection>
 							<div className="my-2">
 								<img
-									src={ICONS.VERIFICATION_DOCUMENT_SAMPLE}
+									src={activeLanguage === 'en' ? ICONS.SELF_KYC_ID_EN : ICONS.SELF_KYC_ID_FA}
 									className="verification_document-sample"
 									alt="document-sample" />
 							</div>

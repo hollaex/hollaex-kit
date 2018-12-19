@@ -35,6 +35,60 @@
 	font-weight: bold;
 }
 
+.bar_wrapper {
+	.btc {
+		fill: #f7941e;
+		stroke: #f6921e;
+	}
+	.bch {
+		fill: #9ec51e;
+		stroke: #8bc53f;
+	}
+	.eth {
+		fill: #2e3192;
+		stroke: #2b388f;
+	}
+	.bar_yAxis {
+		line {
+			fill: $colors-deactivate-color2;
+			stroke-dasharray: 5 5;
+			stroke-width: .5px;
+		}
+		.tick text {
+			color: $colors-main-black;
+			font-family: $raleway--font-family;
+			font-size: 1.2rem;
+			font-weight: bold;
+		}
+	}
+	.bar_xAxis {
+		line {
+			visibility: hidden;
+		}
+		.axis_month {
+			font-size: 1.2rem;
+			font-family: $raleway--font-family;
+			color: $colors-deactivate-color2;
+		}
+		.axis_month-active {
+			color: $colors-main-black;
+			font-weight: bold;
+		}
+		.axis_month-total {
+			font-size: .8rem;
+			font-weight: bold;
+		}
+		.axis_month-total-active {
+			color: $colors-main-black;
+		}
+		path {
+			stroke: $colors-deactivate-color2;
+			stroke-width: 1;
+		}
+	}
+}
+
+
 .dark-theme {
 	.ohlc_wrapper {
 		tspan {
