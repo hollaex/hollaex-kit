@@ -1,3 +1,5 @@
+$dark-theme-limit-text: #b7b5cd;
+$dark-theme-chart-content: #a3a1c9;
 .ohlc_wrapper {
 	x: 0;
 	y: 0;
@@ -35,19 +37,28 @@
 	font-weight: bold;
 }
 
+.chart_btc {
+	fill: #f7941e;
+	stroke: #f6921e;
+}
+.chart_bch {
+	fill: #9ec51e;
+	stroke: #8bc53f;
+}
+.chart_eth {
+	fill: #2e3192;
+	stroke: #2b388f;
+}
+.chart_fiat {
+	fill: #00a651;
+	stroke: #00a651
+}
+.chart_ltc {
+	fill: #58595b;
+	stroke: #58595b;
+}
+
 .bar_wrapper {
-	.btc {
-		fill: #f7941e;
-		stroke: #f6921e;
-	}
-	.bch {
-		fill: #9ec51e;
-		stroke: #8bc53f;
-	}
-	.eth {
-		fill: #2e3192;
-		stroke: #2b388f;
-	}
 	.bar_yAxis {
 		line {
 			fill: $colors-deactivate-color2;
@@ -86,6 +97,12 @@
 			stroke-width: 1;
 		}
 	}
+	.limit_contnet-text {
+		font-size: 0.8rem;
+	}
+	.bar_axis_triangle {
+		fill: $colors-main-black;
+	}
 }
 
 
@@ -102,5 +119,64 @@
 
 	.donut-label-pair, .donut-label-percentage {
 		fill: $dark-font-sub-text-color;
+	}
+
+	.chart_btc, .chart_bch, .chart_eth, .chart_fiat, .chart_ltc {
+		fill-opacity: 0.1;
+		stroke-width: 2;
+	}
+	.chart_btc {
+		fill: #f6921e;
+		stroke: #f6921e;
+	}
+	.chart_bch {
+		fill: #8bc53f;
+		stroke: #8bc53f;
+	}
+	.chart_eth {
+		fill: #2b388f;
+		stroke: #2b388f;
+	}
+	.chart_fiat {
+		fill: #00a651;
+		stroke: #00a651
+	}
+	.chart_ltc {
+		fill: #58595b;
+		stroke: #58595b;
+	}
+	.bar_wrapper {
+		.bar_xAxis {
+			.axis_month {
+				color: $dark-theme-chart-content;
+			}
+			.axis_month-active {
+				color: $colors-white;
+				font-weight: bold;
+			}
+			.axis_month-total-active {
+				color: $colors-white;
+			}
+			path {
+				stroke: $dark-theme-chart-content;
+				stroke-width: 1;
+			}
+		}
+		.bar_yAxis {
+			line {
+				fill: $dark-theme-chart-content;
+				stroke-dasharray: 5 5;
+				stroke-width: .5px;
+			}
+			.tick text {
+				color: $dark-theme-limit-text;
+				font-family: $raleway--font-family;
+				font-size: 1.2rem;
+				font-weight: bold;
+			}
+		}
+		.bar_axis_triangle {
+			fill: $dark-theme-chart-content;
+		}
 	}
 }

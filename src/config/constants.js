@@ -299,6 +299,8 @@ export const ICONS = {
 	VERIFICATION_BANK_NEW: `${process.env.PUBLIC_URL}/assets/images/verification-bank.svg`,
 	VERIFICATION_DOCUMENT_NEW: `${process.env.PUBLIC_URL}/assets/images/verification-document.svg`,
 	PENDING_TIMER: `${process.env.PUBLIC_URL}/assets/images/pending-timer.svg`,
+	VOLUME_PENDING: `${process.env.PUBLIC_URL}/assets/images/volume-pending-icon.svg`,
+	VOLUME_PENDING_DARK: `${process.env.PUBLIC_URL}/assets/images/volume-pending-dark.svg`,
 	SELF_KYC_ID_FA: `${process.env.PUBLIC_URL}/assets/self-kyc-id-note-persian.png`,
 	SELF_KYC_ID_EN: `${process.env.PUBLIC_URL}/assets/self-kyc-id-note-english.png`
 };
@@ -448,10 +450,6 @@ export const DEFAULT_TRADING_PAIRS = process.env.REACT_APP_DEFAULT_TRADING_PAIRS
 	? process.env.REACT_APP_DEFAULT_TRADING_PAIRS.split(',')
 	: ['btc-eur', 'eth-eur'];
 
-export const TRADING_VOLUME_CHART_LIMITS = process.env.REACT_APP_TRADING_VOLUME_CHART_LIMITS
-	? process.env.REACT_APP_TRADING_VOLUME_CHART_LIMITS.split(',').map(data => formatNumber(data))
-	: [450000000, 1500000000]
-
 export const TOKEN_KEY = `${ENV}_${NETWORK}_TOKEN`;
 export const LANGUAGE_KEY = `${ENV}_${NETWORK}_LANGUAGE`;
 export const DEFAULT_LANGUAGE = process.env.REACT_APP_DEFAULT_LANGUAGE || 'en';
@@ -507,6 +505,10 @@ const THEME_COLOR=localStorage.getItem("theme")
 export const THEMES = ['dark', 'white'];
 export const THEME_DEFAULT = THEME_COLOR!=='' ? THEME_COLOR : THEMES[1];
 export const CHAT_STATUS_KEY = 'chat:minimized';
+
+export const TRADING_VOLUME_CHART_LIMITS = process.env.REACT_APP_TRADING_VOLUME_CHART_LIMITS
+	? process.env.REACT_APP_TRADING_VOLUME_CHART_LIMITS.split(',').map(data => formatNumber(data))
+	: [450000000, 1500000000];
 
 export const DEFAULT_COUNTRY = process.env.REACT_APP_DEFAULT_COUNTRY
 	? process.env.REACT_APP_DEFAULT_COUNTRY.toUpperCase()

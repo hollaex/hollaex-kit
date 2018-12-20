@@ -159,7 +159,7 @@ class DonutChart extends Component {
         } else if (data.balance > 0) {
             return (
                 <g key={i}>
-                    <path d={arcj(value)} fill={colors_currencies[data.symbol]} />
+                    <path d={arcj(value)} className={`chart_${data.symbol}`} />
                     <text transform={translate(valX, valY)}
                         dy="20px"
                         textAnchor="middle"

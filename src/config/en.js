@@ -1008,6 +1008,8 @@ export default {
 		DEPOSIT: 'Deposit',
 		TAKER: 'Taker',
 		MAKER: 'Maker',
-		WEBSITE: 'website'
+		WEBSITE: 'website',
+		VIP_TRADER_ACCOUNT_ELIGIBLITY: 'VIP Trader Account Upgrade Eligiblity',
+		PRO_TRADER_ACCOUNT_ELIGIBLITY: 'Pro Trader Account Upgrade Eligiblity'
 	}
 };

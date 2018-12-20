@@ -5,7 +5,8 @@ import { bindActionCreators } from 'redux';
 import STRINGS from '../../../config/localizedStrings';
 import { getTradeVolume } from '../../../actions/userAction';
 import { BarChart } from '../../../components';
-import { calculatePrice, formatCurrency } from '../../../utils/currency';
+import { calculatePrice } from '../../../utils/currency';
+import { TRADING_VOLUME_CHART_LIMITS, SUMMMARY_ICON } from '../../../config/constants';
 
 const monthObj = [
     { key: 1, value: 'Jan' },
@@ -24,7 +25,10 @@ const monthObj = [
 
 class TradingVolume extends Component {
     state = {
-        chartData: []
+        chartData: [],
+        limits: TRADING_VOLUME_CHART_LIMITS,
+        limitContent: [],
+        totalVolume: 0
     };
 
     componentDidMount() {
@@ -38,8 +42,9 @@ class TradingVolume extends Component {
     }
 
     constructData = tradeValues => {
-        const { pairs, prices } = this.props;
+        const { pairs, prices, activeTheme } = this.props;
         const chartData = [];
+        let totalVolume = 0;
         if (Object.keys(tradeValues).length) {
             monthObj.map((obj, key) => {
                 let trade = tradeValues[obj.key];
@@ -63,13 +68,34 @@ class TradingVolume extends Component {
                     data.pairWisePrice = {};
                     data.total = 0;
                 }
+                totalVolume += data.total;
                 chartData.push(data);
             });
-            this.setState({ chartData });
+            const limitContent = [];
+            TRADING_VOLUME_CHART_LIMITS.map((_, index) => {
+                if (index === 0) {
+                    limitContent.push({
+                        icon: SUMMMARY_ICON.KRAKEN,
+                        text: STRINGS.SUMMARY.PRO_TRADER_ACCOUNT_ELIGIBLITY
+                    });
+                } else if (index === 1 && activeTheme === 'dark') {
+                    limitContent.push({
+                        icon: SUMMMARY_ICON.LEVIATHAN_DARK,
+                        text: STRINGS.SUMMARY.VIP_TRADER_ACCOUNT_ELIGIBLITY
+                    });
+                } else {
+                    limitContent.push({
+                        icon: SUMMMARY_ICON.LEVIATHAN,
+                        text: STRINGS.SUMMARY.VIP_TRADER_ACCOUNT_ELIGIBLITY
+                    });
+                }
+            });
+            this.setState({ chartData, limitContent, totalVolume });
         }
     };
 
     render() {
+        const { chartData, limits, limitContent } = this.state;
         return (
             <div className="summary-section_2">
                 <div className="summary-content-txt">
@@ -77,7 +103,11 @@ class TradingVolume extends Component {
                     <div>{STRINGS.SUMMARY.TRADING_VOLUME_TXT_2}</div>
                 </div>
                 <div style={{ height: '35rem' }} className="w-100">
-                    <BarChart chartData={this.state.chartData} />
+                    <BarChart
+                        chartData={chartData}
+                        yAxisLimits={limits}
+                        limitContent={limitContent}
+                        activeTheme={this.props.activeTheme} />
                 </div>
             </div>
         );
@@ -87,7 +117,8 @@ class TradingVolume extends Component {
 const mapStateToProps = state => ({
     tradeVolumes: state.user.tradeVolumes,
     pairs: state.app.pairs,
-    prices: state.orderbook.prices
+    prices: state.orderbook.prices,
+    activeTheme: state.app.theme
 });
 
 const mapDispatchToProps = dispatch => ({
