@@ -10,6 +10,7 @@ export const ETH_FULL_FORMAT = '0,0.[00000000]';
 export const BCH_FULL_FORMAT = '0,0.[00000000]';
 export const FIAT_FORMAT = '0,0.[00]';
 export const PERCENTAGE_FORMAT = '0.[00]%';
+export const AVERAGE_FORMAT = '3a';
 
 export const roundNumber = (number = 0, decimals = 4) => {
 	if (number === 0) {
@@ -62,6 +63,8 @@ export const formatBchFullAmount = (amount = 0) =>
 export const formatNumber = (number, round = 0) => {
 	return roundNumber(number, round);
 };
+export const formatAverage = (amount = 0) =>
+	numbro(amount).format(AVERAGE_FORMAT);
 
 export const calculatePrice = (value = 0, price = 1) =>
 	math.number(math.multiply(math.fraction(value), math.fraction(price)));

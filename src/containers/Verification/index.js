@@ -29,8 +29,6 @@ import VerificationHome from './VerificationHome';
 import IdentityVerification from './IdentityVerification';
 import MobileVerification from './MobileVerification';
 import DocumentsVerification from './DocumentsVerification';
-import CustomTabs from './CustomTabs';
-import HeaderSection from './HeaderSection';
 import { mobileInitialValues, identityInitialValues } from './utils';
 import {
 	getClasesForLanguage,
@@ -88,7 +86,7 @@ class Verification extends Component {
 
 	setUserData = (user = {}) => {
 		const activeTab = this.calculateActiveTab(user);
-		if (activeTab > 3) {
+		if (activeTab > 4) {
 			this.goToAccountPage();
 		} else {
 			this.updateTabs(user, this.props.activeLanguage, activeTab);
@@ -115,7 +113,7 @@ class Verification extends Component {
 		} else if (!id_data.provided) {
 			return 4;
 		}
-		return 4;
+		return 0;
 	};
 
 	updateTabs = (
@@ -192,17 +190,7 @@ class Verification extends Component {
 						statusCode={!address.country ? 1 : 3}
 					/>
 				),
-				content: isMobile ? (
-					<div className={CONTENT_CLASS}>
-						<IdentityVerification
-							fullName={full_name}
-							moveToNextStep={this.goNextTab}
-							activeLanguage={activeLanguage}
-							initialValues={identityInitialValues(user)}
-							openContactForm={this.openContactForm}
-						/>
-					</div>
-				) : (<IdentityVerificationHome
+				content: (<IdentityVerificationHome
 						user={user}
 						setActiveTab={this.setActiveTab}
 						setActivePageContent={this.setActivePageContent} />)
@@ -368,7 +356,6 @@ class Verification extends Component {
 	render() {
 		const { activeLanguage, token, activeTheme, router, location } = this.props;
 		const { activeTab, tabs, dialogIsOpen, dialogType, user } = this.state;
-		// console.log('user verification', user);
 
 		if (activeTab === -1 && tabs.length > 0) {
 			return (

@@ -4,7 +4,8 @@ import {
 	formatBtcFullAmount,
 	formatFiatAmount,
 	formatEthAmount,
-	formatEthFullAmount
+	formatEthFullAmount,
+	formatNumber
 } from '../utils/currency';
 
 import STRINGS from './localizedStrings';
@@ -297,7 +298,11 @@ export const ICONS = {
 	VERIFICATION_ID_NEW: `${process.env.PUBLIC_URL}/assets/images/verification-id.svg`,
 	VERIFICATION_BANK_NEW: `${process.env.PUBLIC_URL}/assets/images/verification-bank.svg`,
 	VERIFICATION_DOCUMENT_NEW: `${process.env.PUBLIC_URL}/assets/images/verification-document.svg`,
-	PENDING_TIMER: `${process.env.PUBLIC_URL}/assets/images/pending-timer.svg`
+	PENDING_TIMER: `${process.env.PUBLIC_URL}/assets/images/pending-timer.svg`,
+	VOLUME_PENDING: `${process.env.PUBLIC_URL}/assets/images/volume-pending-icon.svg`,
+	VOLUME_PENDING_DARK: `${process.env.PUBLIC_URL}/assets/images/volume-pending-dark.svg`,
+	SELF_KYC_ID_FA: `${process.env.PUBLIC_URL}/assets/self-kyc-id-note-persian.png`,
+	SELF_KYC_ID_EN: `${process.env.PUBLIC_URL}/assets/self-kyc-id-note-english.png`
 };
 
 export const SOCIAL_ICONS = {
@@ -501,6 +506,10 @@ export const THEMES = ['dark', 'white'];
 export const THEME_DEFAULT = THEMES[1];
 export const CHAT_STATUS_KEY = 'chat:minimized';
 
+export const TRADING_VOLUME_CHART_LIMITS = process.env.REACT_APP_TRADING_VOLUME_CHART_LIMITS
+	? process.env.REACT_APP_TRADING_VOLUME_CHART_LIMITS.split(',').map(data => formatNumber(data))
+	: [450000000, 1500000000];
+
 export const DEFAULT_COUNTRY = process.env.REACT_APP_DEFAULT_COUNTRY
 	? process.env.REACT_APP_DEFAULT_COUNTRY.toUpperCase()
 	: 'FR';
@@ -513,22 +522,26 @@ export const TRADING_ACCOUNT_TYPE = {
 	shrimp: {
 		symbol: 'shrimp',
 		name: STRINGS.SUMMARY.TINY_PINK_SHRIMP_TRADER,
-		fullName: STRINGS.SUMMARY.TINY_PINK_SHRIMP_TRADER_ACCOUNT
+		fullName: STRINGS.SUMMARY.TINY_PINK_SHRIMP_TRADER_ACCOUNT,
+		level: 1
 	},
 	snapper: {
 		symbol: 'snapper',
 		name: STRINGS.SUMMARY.LITTLE_RED_SNAPPER_TRADER,
-		fullName: STRINGS.SUMMARY.LITTLE_RED_SNAPPER_TRADER_ACCOUNT
+		fullName: STRINGS.SUMMARY.LITTLE_RED_SNAPPER_TRADER_ACCOUNT,
+		level: 2
 	},
 	kraken: {
 		symbol: 'kraken',
 		name: STRINGS.SUMMARY.CUNNING_BLUE_KRAKEN_TRADING,
-		fullName: STRINGS.SUMMARY.CUNNING_BLUE_KRAKEN_TRADING_ACCOUNT
+		fullName: STRINGS.SUMMARY.CUNNING_BLUE_KRAKEN_TRADING_ACCOUNT,
+		level: 3
 	},
 	leviathan: {
 		symbol: 'leviathan',
 		name: STRINGS.SUMMARY.BLACK_LEVIATHAN_TRADING,
-		fullName: STRINGS.SUMMARY.BLACK_LEVIATHAN_TRADING_ACCOUNT
+		fullName: STRINGS.SUMMARY.BLACK_LEVIATHAN_TRADING_ACCOUNT,
+		level: 4
 	}
 };
 

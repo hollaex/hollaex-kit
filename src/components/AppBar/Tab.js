@@ -7,7 +7,7 @@ import { ICONS } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 import { formatPercentage } from '../../utils/currency';
 
-const Tab = ({ pair, tab, ticker = {}, activePairTab, onTabClick, onTabChange, items, ...rest }) => {
+const Tab = ({ pair = {}, tab, ticker = {}, activePairTab, onTabClick, onTabChange, items, ...rest }) => {
     const priceDifference = ticker.close - ticker.open;
     const priceDifferencePercent = formatPercentage((ticker.close - ticker.open) / ticker.open);
     return (

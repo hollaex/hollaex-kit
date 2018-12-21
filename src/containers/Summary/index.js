@@ -11,10 +11,10 @@ import TradingVolume from './components/TradingVolume';
 import AccountDetails from './components/AccountDetails';
 import MobileSummary from './MobileSummary';
 
-import { IconTitle } from '../../components';
+// import { IconTitle } from '../../components';
 import { openFeesStructureandLimits, openContactForm } from '../../actions/appActions';
 import { requestLimits, requestFees } from '../../actions/userAction';
-import { SUMMMARY_ICON, CURRENCIES, TRADING_ACCOUNT_TYPE } from '../../config/constants';
+import { CURRENCIES, TRADING_ACCOUNT_TYPE } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 import {
     formatFiatAmount,
@@ -47,6 +47,7 @@ class Summary extends Component {
 
         if (user.id && symbol) {
             this.calculateSections(this.props);
+            this.setCurrentTradeAccount(user);
         }
     }
 
@@ -60,14 +61,17 @@ class Summary extends Component {
         ) {
             this.calculateSections(nextProps);
         }
+        if (this.props.user.verification_level !== nextProps.user.verification_level) {
+            this.setCurrentTradeAccount(nextProps.user);
+        }
     }
 
     onFeesAndLimits = tradingAccount => {
-        const { fees, limits, verification_level, pairs } = this.props;
+        const { fees, limits, pairs } = this.props;
         this.props.openFeesStructureandLimits({
             fees: fees.data,
             limits: limits.data,
-            verification_level,
+            verification_level: tradingAccount.level,
             tradingAccount,
             pairs
         });
@@ -100,6 +104,27 @@ class Summary extends Component {
         this.setState({ chartData: data, totalAssets: formatFiatAmount(totalAssets) });
     };
 
+    setCurrentTradeAccount = user => {
+        let currentTradingAccount = this.state.currentTradingAccount;
+        switch (user.verification_level) {
+            case 1:
+                currentTradingAccount = TRADING_ACCOUNT_TYPE.shrimp;
+                break;
+            case 2:
+                currentTradingAccount = TRADING_ACCOUNT_TYPE.snapper;
+                break;
+            case 3:
+                currentTradingAccount = TRADING_ACCOUNT_TYPE.kraken;
+                break;
+            case 4:
+                currentTradingAccount = TRADING_ACCOUNT_TYPE.leviathan;
+                break;
+            default:
+                break;
+        }
+        this.setState({ currentTradingAccount, selectedAccount: currentTradingAccount.symbol });
+    };
+
     render() {
         const { user, balance, activeTheme } = this.props;
         const { selectedAccount, currentTradingAccount, chartData, totalAssets } = this.state;
@@ -118,6 +143,8 @@ class Summary extends Component {
                         selectedAccount={selectedAccount}
                         FIAT={FIAT}
                         balance={balance}
+                        chartData={chartData}
+                        totalAssets={totalAssets}
                         onFeesAndLimits={this.onFeesAndLimits}
                         onUpgradeAccount={this.onUpgradeAccount}
                         onAccountTypeChange={this.onAccountTypeChange}
@@ -127,9 +154,8 @@ class Summary extends Component {
                             <div className="summary-section_1 trader-account-wrapper d-flex">
                                 <SummaryBlock title={STRINGS.SUMMARY.TINY_PINK_SHRIMP_TRADER_ACCOUNT} >
                                     <TraderAccounts
-                                        icon={SUMMMARY_ICON.SHRIMP}
                                         activeTheme={activeTheme}
-                                        account={default_trader_account}
+                                        account={currentTradingAccount}
                                         onFeesAndLimits={this.onFeesAndLimits}
                                         onUpgradeAccount={this.onUpgradeAccount} />
                                 </SummaryBlock>

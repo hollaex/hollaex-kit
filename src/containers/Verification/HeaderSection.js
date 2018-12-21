@@ -15,7 +15,7 @@ const HeaderSection = ({ title, children, openContactForm, icon }) => {
 				<div>
 					<div className="d-flex justify-content-between w-100 f-1">
 						<div className="header_title-text font-weight-bold">{title}</div>
-						<div className="header_title-action">
+						{!!openContactForm && <div className="header_title-action">
 							<ActionNotification
 								text={STRINGS.NEED_HELP_TEXT}
 								status="information"
@@ -23,7 +23,7 @@ const HeaderSection = ({ title, children, openContactForm, icon }) => {
 								onClick={openContactForm}
 								useSvg={true}
 							/>
-						</div>
+						</div>}
 					</div>
 					{children && <div className="header_title-children">{children}</div>}
 				</div>
@@ -146,8 +146,68 @@ export const PORSection = () => (
 			</div>
 		}
 		importantContent={
-			<div>
+			<div className="id-warning">
 				{STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.INFORMATION.POR.WARNING}
+			</div>
+		}
+	/>
+);
+
+export const SelfieWithPhotoId = () => (
+	<ChildrenContainer
+		mainContent={
+			<div>
+				<div className="header_title-content w-75">
+					{
+						STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.INFORMATION.SELFIE.INFO_TEXT
+					}
+				</div>
+				<div className="header_title-content">
+					<div className="text-uppercase">
+						{
+							STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.INFORMATION.SELFIE
+								.REQUIRED
+						}
+					</div>
+					<div>
+						{
+							STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.INFORMATION.SELFIE
+								.INSTRUCTION_1
+						}
+					</div>
+					<div>
+						{
+							STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.INFORMATION.SELFIE
+								.INSTRUCTION_2
+						}
+					</div>
+					<div>
+						{
+							STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.INFORMATION.SELFIE
+								.INSTRUCTION_3
+						}
+					</div>
+					<div>
+						{
+							STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.INFORMATION.SELFIE
+								.INSTRUCTION_4
+						}
+					</div>
+					<div>
+						{
+							STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.INFORMATION.SELFIE
+								.INSTRUCTION_5
+						}
+					</div>
+				</div>
+			</div>
+		}
+		importantContent={
+			<div className="id-warning mt-3">
+				{
+					STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.INFORMATION.SELFIE
+						.WARNING
+				}
 			</div>
 		}
 	/>

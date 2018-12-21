@@ -78,7 +78,7 @@ const IdentityVerificationHome = ({ user, setActivePageContent, setActiveTab }) 
                             disable />
                     </div>
                 </div>
-                <Button label={STRINGS.USER_VERIFICATION.REVIEW_IDENTITY_VERIFICATION} onClick={() => setActivePageContent(2)} />
+                {/* <Button label={STRINGS.USER_VERIFICATION.REVIEW_IDENTITY_VERIFICATION} onClick={() => setActivePageContent(2)} /> */}
             </div>
         );
     }

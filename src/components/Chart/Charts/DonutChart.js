@@ -7,7 +7,7 @@ import STRINGS from '../../../config/localizedStrings';
 const colors_currencies = {
     fiat: '#00a651',
     btc: '#f7941e',
-    bch: '#ec008c',
+    bch: '#9ec51e',
     eth: '#2e3192',
     ltc: '#58595b',
     noData: '#cccbcb'
@@ -17,9 +17,9 @@ function translate(x, y) {
     return `translate(${x}, ${y})`;
 };
 
-function rotate (d) {
-    return `rotate(${180 / Math.PI * (d.startAngle + d.endAngle) / 2 + 45})`;
-};
+// function rotate (d) {
+//     return `rotate(${180 / Math.PI * (d.startAngle + d.endAngle) / 2 + 45})`;
+// };
 
 class DonutChart extends Component {
 
@@ -159,7 +159,7 @@ class DonutChart extends Component {
         } else if (data.balance > 0) {
             return (
                 <g key={i}>
-                    <path d={arcj(value)} fill={colors_currencies[data.symbol]} />
+                    <path d={arcj(value)} className={`chart_${data.symbol}`} />
                     <text transform={translate(valX, valY)}
                         dy="20px"
                         textAnchor="middle"

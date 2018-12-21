@@ -6,6 +6,7 @@ import { formatPercentage } from '../../../utils/currency';
 
 const getMakerRow = (data, pair, pairs, index) => {
     const { pair_base, pair_2 } = pairs[pair];
+    const { maker_fees } = data[pair];
     return (
         <tr key={index}>
             <td className="account-limits-coin" rowSpan={2}>
@@ -17,16 +18,17 @@ const getMakerRow = (data, pair, pairs, index) => {
                 </div>
             </td>
             <td className="account-limits-maker account-limits-status">{STRINGS.SUMMARY.MAKER}:</td>
-            <td className="account-limits-maker account-limits-value">{formatPercentage(data.maker_fees)}</td>
+            <td className="account-limits-maker account-limits-value">{formatPercentage(maker_fees)}</td>
         </tr>
     );
 }
 
 const getTakerRow = (data, pair, index) => {
+    const { taker_fees } = data[pair];
     return (
         <tr key={`${index}_1`}>
             <td className="account-limits-taker account-limits-status">{STRINGS.SUMMARY.TAKER}:</td>
-            <td className="account-limits-taker account-limits-value">{formatPercentage(data.taker_fees)}</td>
+            <td className="account-limits-taker account-limits-value">{formatPercentage(taker_fees)}</td>
         </tr>
     );
 }

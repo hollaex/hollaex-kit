@@ -61,6 +61,13 @@ const INITIAL_FEES_OBJECT = {
 	error: ''
 };
 
+const INITIAL_TRADE_VOLUME_OBJECT = {
+	data: {},
+	fetching: false,
+	fetched: false,
+	error: ''
+};
+
 const INITIAL_STATE = {
 	id: null,
 	email: null,
@@ -91,7 +98,8 @@ const INITIAL_STATE = {
 	},
 	addressRequest: INITIAL_ADDRESS_OBJECT,
 	limits: INITIAL_LIMIT_OBJECT,
-	feeValues: INITIAL_FEES_OBJECT
+	feeValues: INITIAL_FEES_OBJECT,
+	tradeVolumes: INITIAL_TRADE_VOLUME_OBJECT
 };
 
 export default function reducer(state = INITIAL_STATE, action) {
@@ -371,6 +379,31 @@ export default function reducer(state = INITIAL_STATE, action) {
 			return {
 				...state,
 				addressRequest: INITIAL_ADDRESS_OBJECT
+			};
+		case 'GET_TRADE_VOLUME_PENDING':
+			return {
+				...state,
+				tradeVolumes: {
+					...INITIAL_TRADE_VOLUME_OBJECT,
+					fetching: true
+				}
+			};
+		case 'GET_TRADE_VOLUME_FULFILLED':
+			return {
+				...state,
+				tradeVolumes: {
+					...INITIAL_TRADE_VOLUME_OBJECT,
+					fetched: true,
+					data: action.payload.data.data
+				}
+			};
+		case 'GET_TRADE_VOLUME_REJECTED':
+			return {
+				...state,
+				tradeVolumes: {
+					...INITIAL_TRADE_VOLUME_OBJECT,
+					error: action.payload.response.data.message
+				}
 			};
 		case 'LOGOUT':
 			return INITIAL_STATE;

@@ -19,6 +19,8 @@ const MobileSummary = ({
     selectedAccount,
     FIAT,
     balance,
+    chartData,
+    totalAssets,
     onFeesAndLimits,
     onUpgradeAccount,
     onAccountTypeChange
@@ -36,9 +38,8 @@ const MobileSummary = ({
             <div className="summary-section_1 trader-account-wrapper d-flex w-100">
                 <SummaryBlock title={STRINGS.SUMMARY.TINY_PINK_SHRIMP_TRADER_ACCOUNT} wrapperClassname="w-100" >
                     <TraderAccounts
-                        icon={SUMMMARY_ICON.SHRIMP}
                         activeTheme={activeTheme}
-                        account={default_trader_account}
+                        account={currentTradingAccount}
                         onFeesAndLimits={onFeesAndLimits}
                         onUpgradeAccount={onUpgradeAccount} />
                 </SummaryBlock>
@@ -54,7 +55,11 @@ const MobileSummary = ({
                 <SummaryBlock
                     title={STRINGS.SUMMARY.ACCOUNT_ASSETS}
                     secondaryTitle={`${balance[`${FIAT}_balance`]} ${STRINGS.FIAT_FULLNAME}`} >
-                    <AccountAssets user={user} />
+                    <AccountAssets
+                        user={user}
+                        chartData={chartData}
+                        totalAssets={totalAssets}
+                        balance={balance} />
                 </SummaryBlock>
             </div>
             <div className="trading-volume-wrapper w-100">

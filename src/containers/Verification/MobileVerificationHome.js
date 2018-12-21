@@ -16,12 +16,12 @@ const MobileVerificationHome = ({ user, setActivePageContent, setActiveTab }) =>
         return <div className="my-3">
             <PanelInformationRow
                 label={STRINGS.USER_VERIFICATION.PHONE_COUNTRY_ORIGIN}
-                information={getCountry(address.country)}
+                information={getCountry(address.country).name}
                 className="title-font"
                 disable />
             <PanelInformationRow
                 label={STRINGS.USER_VERIFICATION.MOBILE_NUMBER}
-                information={user.phone_number}
+                information={phone_number}
                 className="title-font"
                 disable />
         </div>
