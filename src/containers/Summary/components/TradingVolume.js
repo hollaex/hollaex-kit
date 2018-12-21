@@ -6,22 +6,7 @@ import STRINGS from '../../../config/localizedStrings';
 import { getTradeVolume } from '../../../actions/userAction';
 import { BarChart } from '../../../components';
 import { calculatePrice } from '../../../utils/currency';
-import { TRADING_VOLUME_CHART_LIMITS, SUMMMARY_ICON } from '../../../config/constants';
-
-const monthObj = [
-    { key: 1, value: 'Jan' },
-    { key: 2, value: 'Feb' },
-    { key: 3, value: 'Mar' },
-    { key: 4, value: 'Apr' },
-    { key: 5, value: 'May' },
-    { key: 6, value: 'Jun' },
-    { key: 7, value: 'Jul' },
-    { key: 8, value: 'Aug' },
-    { key: 9, value: 'Sep' },
-    { key: 10, value: 'Oct' },
-    { key: 11, value: 'Nov' },
-    { key: 12, value: 'Dec' },
-];
+import { TRADING_VOLUME_CHART_LIMITS, SUMMMARY_ICON, CHART_MONTHS } from '../../../config/constants';
 
 class TradingVolume extends Component {
     state = {
@@ -46,7 +31,7 @@ class TradingVolume extends Component {
         const chartData = [];
         let totalVolume = 0;
         if (Object.keys(tradeValues).length) {
-            monthObj.map((obj, key) => {
+            CHART_MONTHS.map((obj, key) => {
                 let trade = tradeValues[obj.key];
                 let data = {
                     key: obj.key,
@@ -54,22 +39,28 @@ class TradingVolume extends Component {
                 }
                 if (trade) {
                     let total = 0;
-                    let pairWisePrice = {}
+                    let pairWisePrice = {};
+                    let pairVolume = {};
                     Object.keys(trade).map((pair) => {
                         let pairValue = pairs[pair];
                         let volumeObj = trade[pair];
                         let pairPrice = calculatePrice(volumeObj.volume, prices[pairValue.pair_base]);
                         pairWisePrice[pairValue.pair_base] = pairPrice;
+                        pairVolume[pairValue.pair_base] = volumeObj.volume;
                         total += pairPrice;
+                        return total;
                     });
+                    data.pairVolume = pairVolume;
                     data.pairWisePrice = pairWisePrice;
                     data.total = total;
                 } else {
+                    data.pairVolume = {};
                     data.pairWisePrice = {};
                     data.total = 0;
                 }
                 totalVolume += data.total;
                 chartData.push(data);
+                return chartData;
             });
             const limitContent = [];
             TRADING_VOLUME_CHART_LIMITS.map((_, index) => {
@@ -89,6 +80,7 @@ class TradingVolume extends Component {
                         text: STRINGS.SUMMARY.VIP_TRADER_ACCOUNT_ELIGIBLITY
                     });
                 }
+                return index;
             });
             this.setState({ chartData, limitContent, totalVolume });
         }
@@ -99,7 +91,11 @@ class TradingVolume extends Component {
         return (
             <div className="summary-section_2">
                 <div className="summary-content-txt">
-                    <div>{STRINGS.SUMMARY.TRADING_VOLUME_TXT_1}</div>
+                    <div>{STRINGS.formatString(
+                        STRINGS.SUMMARY.TRADING_VOLUME_TXT_1,
+                        STRINGS.FIAT_FULLNAME
+                        )}
+                    </div>
                     <div>{STRINGS.SUMMARY.TRADING_VOLUME_TXT_2}</div>
                 </div>
                 <div style={{ height: '35rem' }} className="w-100">

@@ -546,3 +546,18 @@ export const TRADING_ACCOUNT_TYPE = {
 };
 
 export const MAX_NUMBER_BANKS = 3;
+
+export const CHART_MONTHS = [
+	{ key: 1, value: 'Jan' },
+	{ key: 2, value: 'Feb' },
+	{ key: 3, value: 'Mar' },
+	{ key: 4, value: 'Apr' },
+	{ key: 5, value: 'May' },
+	{ key: 6, value: 'Jun' },
+	{ key: 7, value: 'Jul' },
+	{ key: 8, value: 'Aug' },
+	{ key: 9, value: 'Sep' },
+	{ key: 10, value: 'Oct' },
+	{ key: 11, value: 'Nov' },
+	{ key: 12, value: 'Dec' },
+];

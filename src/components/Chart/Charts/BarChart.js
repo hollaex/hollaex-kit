@@ -5,22 +5,8 @@ import * as d3 from 'd3-selection';
 import moment from 'moment';
 
 import { ICONS } from '../../../config/constants';
+import STRINGS from '../../../config/localizedStrings';
 import { formatAverage } from '../../../utils/currency';
-
-const barSample = [
-    { key: 1, month: "Jan", pairWisePrice: { btc: 220000000, eth: 220000000, bch: 40000000 }, total: 48000000000 },
-    { key: 2, month: "Feb", pairWisePrice: { btc: 44, eth: 23, bch: 50 }, total: 117 },
-    { key: 3, month: "Mar", pairWisePrice: { btc: 30, eth: 20 }, total: 50 },
-    { key: 4, month: "Apr", pairWisePrice: { btc: 60, eth: 25, bch: 35 }, total: 120 },
-    { key: 5, month: "May", pairWisePrice: { btc: 52, eth: 71, bch: 43 }, total: 166 },
-    { key: 6, month: "Jun", pairWisePrice: { eth: 202, bch: 105 }, total: 307 },
-    { key: 7, month: "Jul", pairWisePrice: { btc: 103, bch: 55 }, total: 158 },
-    { key: 8, month: "Aug", pairWisePrice: { btc: 304 }, total: 304 },
-    { key: 9, month: "Sep", pairWisePrice: { btc: 38, eth: 42, bch: 55 }, total: 135 },
-    { key: 10, month: "Oct", pairWisePrice: { bch: 205 }, total: 205 },
-    { key: 11, month: "Nov", pairWisePrice: {}, total: 0 },
-    { key: 12, month: "Dec", pairWisePrice: { btc: 300, eth: 55, bch: 45 }, total: 400 }
-];
 
 function translate(x, y) {
     return `translate(${x}, ${y})`;
@@ -52,14 +38,13 @@ class BarChart extends Component {
         const { yAxisLimits, activeTheme } = this.props;
         const { margin, height, width } = this.state;
         const SvgElement = d3.select(this.BarSVG);
-        const barContainer = d3.select('#bar-container');
         const upperLimit = yAxisLimits[yAxisLimits.length - 1];
+        const currentMonth = moment().month();
         if (SvgElement) {
-            const tooltip = barContainer.append("div")
-                .style("position", "adsolute")
-                .style("z-index", "10")
-                .style("visibility", "hidden")
-                .text("");
+            const tooltip = d3.select('body')
+                .append("div")
+                .attr('class', activeTheme === 'dark' ? 'bar-tooltip-dark' : 'bar-tooltip')
+                .style("visibility", "hidden");
             const chart = SvgElement.append('g')
                 .attr('transform', translate(10, margin));
             const yScale = scaleLinear()
@@ -78,21 +63,23 @@ class BarChart extends Component {
                     .tickValues([0, ...yAxisLimits])
                     .tickSize(-width)
                     .tickFormat(d =>
-                        d !== 0 ? formatAverage(d) : '')
+                        d !== 0 ? formatAverage(d).toUpperCase() : '')
                 )
                 .call(g => g.select('.domain').remove());
             chart.append('g')
                 .attr('class', 'bar_xAxis')
                 .attr('transform', translate(0, height))
-                .call(axisBottom(xScale))
+                .call(axisBottom(xScale));
+            chart.select('.bar_xAxis path')
+                .attr('d', `M0.5,1V0.5H${width}.5V1`);
             chart.selectAll('.bar_xAxis .tick text')
                 .call((t) => {
                     t.each((d, key, node) => {
                         const data = chartData[key];
-                        const totalTxt = data.key - 1 >= moment().month()
+                        const totalTxt = data.key - 1 === currentMonth
                             ? 'Pending'
-                            : data.total !== 0
-                                ? formatAverage(data.total)
+                            : data.total !== 0 && data.key - 1 <= currentMonth
+                                ? formatAverage(data.total).toUpperCase()
                                 : '';
                         const self = d3.select(node[key]);
                         self.text('');
@@ -161,7 +148,7 @@ class BarChart extends Component {
                 let barEnter = d3.select(node[key]);
                 let barKeys = Object.keys(d.pairWisePrice);
                 let count = 0;
-                if (d.key - 1 < moment().month()) {
+                if (d.key - 1 < currentMonth) {
                     barKeys.map((pair) => {
                         barEnter.append('rect')
                             .attr('class', `chart_${pair}`)
@@ -175,17 +162,28 @@ class BarChart extends Component {
                                 return height - yScale(total);
                             })
                             .attr('width', xScale.bandwidth())
-                            .on("mouseover", function () {
-                                return tooltip.style("visibility", "visible")
-                                    .attr('x', xScale(d.month))
-                                    .attr('y', yScale(count));
+                            .on("mouseover", function (d) {
+                                tooltip.selectAll("*").remove();
+                                tooltip.style("visibility", "visible")
+                                    .style("top", (d3.event.pageY - 10) + "px")
+                                    .style("left", (d3.event.pageX + 10) + "px")
+                                    .append('div')
+                                    .attr('class', 'tool_tip-pair-volume')
+                                    .text(`${pair.toUpperCase()}: ${d.pairVolume[pair]}`);
+                                tooltip.append('div')
+                                    .attr('class', 'tool_tip-pair-price')
+                                    .text(`~ ${STRINGS.FIAT_SHORTNAME}: ${d.pairWisePrice[pair]}`);
+                            })
+                            .on("mousemove", function () {
+                                return tooltip.style("top", (d3.event.pageY - 10) + "px")
+                                    .style("left", (d3.event.pageX + 10) + "px");
                             })
                             .on("mouseout", function () {
-                                // return tooltip.style("visibility", "hidden");
+                                return tooltip.style("visibility", "hidden");
                             });
                         return 0;
                     });
-                } else {
+                } else if (d.key - 1 === currentMonth) {
                     barEnter.append("svg:image")
                         .attr("xlink:href", activeTheme === 'dark'
                             ? ICONS.VOLUME_PENDING_DARK : ICONS.VOLUME_PENDING)

@@ -991,8 +991,8 @@ export default {
 		ACTIVE_2FA_SECURITY: 'Active 2FA Security',
 		ACCOUNT_ASSETS_TXT_1: 'Displayed is a summery of all your assets.',
 		ACCOUNT_ASSETS_TXT_2: 'Holding a large amounts of assets will entitle you for an account upgrade which includes a unique badge and lower trading fees.',
-		TRADING_VOLUME_TXT_1: 'Your trading volume history displayed in Bitcoin and calculated at the end of every month.',
-		TRADING_VOLUME_TXT_2: 'High trading activity will entitle you for an account upgrade rewarding you with a unique badge and lower trading fees',
+		TRADING_VOLUME_TXT_1: 'Your trading volume history is displayed in {0} and is a nominally calculated at the end of every month from all trading pairs.',
+		TRADING_VOLUME_TXT_2: 'High trading activity will entitle you for an account upgrade rewarding you with a unique badge and other perks.',
 		ACCOUNT_DETAILS_TXT_1: 'Your account type determines your account badge, trading fee, deposits and withdrawal limits.',
 		ACCOUNT_DETAILS_TXT_2: 'Your trading account age, activity level and total account assets amount will determine if your account is legable for an upgrade.',
 		ACCOUNT_DETAILS_TXT_3: 'Maintaining your account level requires constant trading and maintaining a certain amount of deposited assets.',
@@ -1010,6 +1010,8 @@ export default {
 		MAKER: 'Maker',
 		WEBSITE: 'website',
 		VIP_TRADER_ACCOUNT_ELIGIBLITY: 'VIP Trader Account Upgrade Eligiblity',
-		PRO_TRADER_ACCOUNT_ELIGIBLITY: 'Pro Trader Account Upgrade Eligiblity'
+		PRO_TRADER_ACCOUNT_ELIGIBLITY: 'Pro Trader Account Upgrade Eligiblity',
+		NOMINAL_TRADING: 'Nominal Trading',
+		NOMINAL_TRADING_WITH_MONTH: 'Nominal Trading Last {0}'
 	}
 };
