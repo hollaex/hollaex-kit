@@ -41,6 +41,8 @@ import BankVerificationHome from './BankVerificationHome';
 import IdentityVerificationHome from './IdentityVerificationHome';
 import MobileVerificationHome from './MobileVerificationHome';
 import DocumentsVerificationHome from './DocumentsVerificationHome';
+import MobileTabs from './MobileTabs';
+import MobileTabBar from './MobileTabBar';
 
 const CONTENT_CLASS =
 	'd-flex justify-content-center align-items-center f-1 flex-column verification_content-wrapper';
@@ -138,7 +140,12 @@ class Verification extends Component {
 		const tabs = [
 			{
 				title: isMobile ? (
-					STRINGS.USER_VERIFICATION.TITLE_EMAIL
+					<MobileTabs
+						title={STRINGS.USER_VERIFICATION.TITLE_EMAIL}
+						className={activeTab === 0 ? 'active_mobile_tab' : ''}
+						icon={ICONS.VERIFICATION_EMAIL_NEW}
+						statusCode={email ? 3 : 0}
+					/>
 				) : (
 					<CheckTitle
 						title={STRINGS.USER_VERIFICATION.TITLE_EMAIL}
@@ -161,7 +168,12 @@ class Verification extends Component {
 			},
 			{
 				title: isMobile ? (
-					STRINGS.USER_VERIFICATION.TITLE_BANK
+					<MobileTabs
+						title={STRINGS.USER_VERIFICATION.TITLE_BANK}
+						className={activeTab === 1 ? 'active_mobile_tab' : ''}
+						icon={ICONS.VERIFICATION_BANK_NEW}
+						statusCode={bank_status}
+					/>
 				) : (
 					<CheckTitle
 						title={STRINGS.USER_VERIFICATION.TITLE_BANK}
@@ -180,7 +192,12 @@ class Verification extends Component {
 			},
 			{
 				title: isMobile ? (
-					STRINGS.USER_VERIFICATION.TITLE_IDENTITY
+					<MobileTabs
+						title={STRINGS.USER_VERIFICATION.TITLE_IDENTITY}
+						className={activeTab === 2 ? 'active_mobile_tab' : ''}
+						icon={ICONS.VERIFICATION_ID_NEW}
+						statusCode={!address.country ? 1 : 3}
+					/>
 				) : (
 					<CheckTitle
 						title={STRINGS.USER_VERIFICATION.TITLE_IDENTITY}
@@ -197,7 +214,12 @@ class Verification extends Component {
 			},
 			{
 				title: isMobile ? (
-					STRINGS.USER_VERIFICATION.USER_DOCUMENTATION_FORM.INFORMATION.TITLE_PHONE
+					<MobileTabs
+						title={STRINGS.USER_VERIFICATION.USER_DOCUMENTATION_FORM.INFORMATION.TITLE_PHONE}
+						className={activeTab === 3 ? 'active_mobile_tab' : ''}
+						icon={ICONS.VERIFICATION_PHONE_NEW}
+						statusCode={!phone_number ? 0 : 3}
+					/>
 				) : (
 					<CheckTitle
 						title={STRINGS.USER_VERIFICATION.USER_DOCUMENTATION_FORM.INFORMATION.TITLE_PHONE}
@@ -211,7 +233,12 @@ class Verification extends Component {
 			},
 			{
 				title: isMobile ? (
-					STRINGS.USER_VERIFICATION.TITLE_ID_DOCUMENTS
+					<MobileTabs
+						title={STRINGS.USER_VERIFICATION.TITLE_ID_DOCUMENTS}
+						className={activeTab === 4 ? 'active_mobile_tab' : ''}
+						icon={ICONS.VERIFICATION_DOCUMENT_NEW}
+						statusCode={id_data.status}
+					/>
 				) : (
 					<CheckTitle
 						title={STRINGS.USER_VERIFICATION.TITLE_ID_DOCUMENTS}
@@ -385,7 +412,7 @@ class Verification extends Component {
 					}
 				)}
 			>
-				<AppBar
+				{!isMobile && <AppBar
 					isHome={true}
 					token={token}
 					theme={activeTheme}
@@ -399,8 +426,8 @@ class Verification extends Component {
 							onLogout={this.onLogout}
 						/>
 					}
-				/>
-				{isMobile && <MobileBarTabs {...tabProps} activeTab={activeTab} setActiveTab={this.setActiveTab} />}
+				/>}
+				{/* {isMobile && <MobileTabBar {...tabProps} activeTab={activeTab} setActiveTab={this.setActiveTab} />} */}
 				{this.renderPageContent(tabProps)}
 				<Dialog
 					isOpen={dialogIsOpen}

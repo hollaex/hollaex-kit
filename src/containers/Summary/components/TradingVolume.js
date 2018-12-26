@@ -42,8 +42,8 @@ class TradingVolume extends Component {
                     let pairWisePrice = {};
                     let pairVolume = {};
                     Object.keys(trade).map((pair) => {
-                        let pairValue = pairs[pair];
-                        let volumeObj = trade[pair];
+                        let pairValue = pairs[pair] || {};
+                        let volumeObj = trade[pair] || {};
                         let pairPrice = calculatePrice(volumeObj.volume, prices[pairValue.pair_base]);
                         pairWisePrice[pairValue.pair_base] = pairPrice;
                         pairVolume[pairValue.pair_base] = volumeObj.volume;

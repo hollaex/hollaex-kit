@@ -141,6 +141,72 @@ $colors-black: #000000;
 	}
 }
 
+.mobile_tab-wrapper {
+	border-top: 1px solid $colors-deactivate-color2;
+	color: $colors-deactivate-color2;
+	padding: 0.5rem;
+	font-size: 1.2rem;
+
+	.verification_icon-mobile {
+		width: 4rem;
+		// color: #292b2c;
+	}
+
+	.verification_status-icon {
+		width: 1.7rem;
+	}
+
+	.mobile-tab-title {
+		font-size: 2rem;
+		font-weight: bold;
+	}
+
+	.verified {
+		color: #00A551;
+	}
+	.pending {
+		color: #F6921E;
+	}
+	.rejected {
+		color: #FFF100;
+	}
+	.incompleted {
+		color: #EC1C24;
+	}
+}
+
+.mobile_tab_last {
+	border-bottom: 1px solid $colors-deactivate-color2;
+}
+
+.mobile_tab_last-active {
+	border-bottom: 2px solid $colors-black !important;
+}
+
+.active_mobile_tab {
+	color: $colors-black;
+	border-top: 2px solid $colors-black;
+	border-bottom: 1px solid $colors-black;
+
+	svg {
+		.verification-email {
+			fill: $colors-main-black;
+		}
+		.verification-id {
+			fill: $colors-main-black;
+		}
+		.verification-document {
+			fill: $colors-main-black;
+		}
+		.verification-phone {
+			fill: $colors-main-black;
+		}
+		.verification-bank {
+			fill: $colors-main-black;
+		}
+	}
+}
+
 .dark-theme {
 	.header_title-wrapper {
 		border-top-color: $dark-border-main !important;
@@ -185,6 +251,12 @@ $colors-black: #000000;
 		.link-content {
 			color: $dark-link;
 		}
+
+		svg {
+			.pending-timer {
+				stroke: $dark-font-main-text-color;
+			}
+		}
 	}
 
 	.verification_link {
@@ -209,6 +281,64 @@ $colors-black: #000000;
 				}
 			}
 		}
+	}
+
+	.mobile_tab-wrapper {
+		color: $dark-button-active;
+		border-top: 1px solid $dark-button-active;
+
+		svg {
+			.verification-email {
+				fill: $dark-button-active;
+			}
+			.verification-id {
+				fill: $dark-button-active;
+			}
+			.verification-document {
+				fill: $dark-button-active;
+			}
+			.verification-phone {
+				fill: $dark-button-active;
+			}
+			.verification-bank {
+				fill: $dark-button-active;
+			}
+			.pending-timer {
+				stroke: $dark-font-main-text-color
+			}
+		}
+	}
+
+	.active_mobile_tab {
+		color: $dark-font-main-text-color;
+		border-top: 2px solid $dark-font-main-text-color;
+		border-bottom: 1.5px solid $dark-font-main-text-color;
+
+		svg {
+			.verification-email {
+				fill: $dark-font-main-text-color;
+			}
+			.verification-id {
+				fill: $dark-font-main-text-color;
+			}
+			.verification-document {
+				fill: $dark-font-main-text-color;
+			}
+			.verification-phone {
+				fill: $dark-font-main-text-color;
+			}
+			.verification-bank {
+				fill: $dark-font-main-text-color;
+			}
+		}
+	}
+
+	.mobile_tab_last {
+		border-bottom: 1px solid $dark-button-active;
+	}
+
+	.mobile_tab_last-active {
+		border-bottom: 2px solid $dark-font-main-text-color !important;
 	}
 }
 

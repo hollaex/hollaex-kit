@@ -4,6 +4,7 @@ import { Link } from 'react-router';
 
 import CustomTabs from './CustomTabs';
 import HeaderSection from './HeaderSection';
+import MobileTabBar from './MobileTabBar';
 import { IconTitle } from '../../components';
 import STRINGS from '../../config/localizedStrings';
 
@@ -11,7 +12,7 @@ const VerificationHome = ({ activeTab, tabProps, tabs, openContactForm, setActiv
     // if (activeTab < tabs.length) {
         return (
             <div className="presentation_container apply_rtl verification_container">
-                <IconTitle text={STRINGS.ACCOUNTS.TAB_VERIFICATION} textType="title" />
+                {!isMobile && <IconTitle text={STRINGS.ACCOUNTS.TAB_VERIFICATION} textType="title" />}
                 <HeaderSection
                     openContactForm={openContactForm}
                 />
@@ -23,11 +24,16 @@ const VerificationHome = ({ activeTab, tabProps, tabs, openContactForm, setActiv
                         <Link to="/account" className="link-content">{STRINGS.USER_VERIFICATION.DOCUMENTATIONS}</Link>
                     )}</div>
                 </div>
-                {!isMobile && <CustomTabs activeTab={activeTab} setActiveTab={setActiveTab} {...tabProps} />}
-                {/* {!isMobile && <TabController activeTab={activeTab} {...tabProps} />} */}
-                <div className="inner_container">
-                    {activeTab > -1 && renderContent(tabs, activeTab)}
-                </div>
+                {!isMobile
+                    ? <CustomTabs activeTab={activeTab} setActiveTab={setActiveTab} {...tabProps} />
+                    : <MobileTabBar activeTab={activeTab} renderContent={renderContent} setActiveTab={setActiveTab} {...tabProps} />
+                }
+                {!isMobile
+                    ? <div className="inner_container">
+                        {activeTab > -1 && renderContent(tabs, activeTab)}
+                    </div>
+                    : null
+                }
             </div>
         );
     // } else {

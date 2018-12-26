@@ -5,7 +5,7 @@ import { isMobile } from 'react-device-detect';
 
 import { TabController, CheckTitle, MobileBarTabs } from '../../components';
 import { ICONS } from '../../config/constants';
-import { UserProfile, UserSecurity, UserSettings, Summary } from '../';
+import { UserProfile, UserSecurity, UserSettings, Summary, Verification } from '../';
 import STRINGS from '../../config/localizedStrings';
 import { openContactForm } from '../../actions/appActions';
 import { requestLimits, requestFees } from '../../actions/userAction';
@@ -81,7 +81,7 @@ class Account extends Component {
 	};
 
 	updateTabs = (
-		{ verification_level, otp_enabled, bank_account, id_data, route },
+		{ verification_level, otp_enabled, bank_account, id_data, full_name, phone_number, route },
 		updateActiveTab = false
 	) => {
 		let activeTab = this.state.activeTab > -1 ? this.state.activeTab : 0;
@@ -91,6 +91,16 @@ class Account extends Component {
 			const initialValues = getInitialTab(route);
 			activeTab = initialValues.activeTab;
 			activeDevelopers = initialValues.activeDevelopers;
+		}
+		let verificationPending = false;
+		if (verification_level < 1 && !full_name) {
+			verificationPending = true;
+		} else if (!id_data.verified) {
+			verificationPending = true;
+		} else if (!phone_number) {
+			verificationPending = true;
+		} else if (!bank_account.filter(acc => acc.status === 3).length) {
+			verificationPending = true;
 		}
 
 		const tabs = [
@@ -149,19 +159,33 @@ class Account extends Component {
 				),
 				notifications: !otp_enabled ? '!' : '',
 				content: <UserSecurity openApiKey={activeDevelopers} />
-			},
-			{
-				title: isMobile ? (
-					STRINGS.ACCOUNTS.TAB_SETTINGS
-				) : (
-					<CheckTitle
-						title={STRINGS.ACCOUNTS.TAB_SETTINGS}
-						icon={ICONS.GEAR_GREY}
-					/>
-				),
-				content: <UserSettings />
 			}
 		];
+		if (isMobile) {
+			tabs.push({
+				title: isMobile ? (
+					STRINGS.ACCOUNTS.TAB_VERIFICATION
+				) : (
+						<CheckTitle
+							title={STRINGS.ACCOUNTS.TAB_VERIFICATION}
+							icon={ICONS.TAB_SUMMARY}
+						/>
+					),
+				notifications: verificationPending ? '!' : '',
+				content: <Verification />
+			});
+		}
+		tabs.push({
+			title: isMobile ? (
+				STRINGS.ACCOUNTS.TAB_SETTINGS
+			) : (
+				<CheckTitle
+					title={STRINGS.ACCOUNTS.TAB_SETTINGS}
+					icon={ICONS.GEAR_GREY}
+				/>
+			),
+			content: <UserSettings />
+		});
 
 		this.setState({ tabs, activeTab });
 	};
@@ -225,6 +249,8 @@ const mapStateToProps = (state) => ({
 	id: state.user.id,
 	bank_account: state.user.userData.bank_account,
 	id_data: state.user.userData.id_data,
+	phone_number: state.user.userData.phone_number,
+	full_name: state.user.userData.full_name,
 	activeLanguage: state.app.language
 });
 
