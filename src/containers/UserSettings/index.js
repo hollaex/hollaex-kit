@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { SubmissionError } from 'redux-form';
+import { isMobile } from 'react-device-detect';
+
 import { setLanguage, changeTheme } from '../../actions/appActions';
 import {
 	updateUser,
@@ -9,7 +11,7 @@ import {
 	setUsername,
 	setUsernameStore
 } from '../../actions/userAction';
-import { Accordion } from '../../components';
+import { Accordion, IconTitle } from '../../components';
 import SettingsForm, { generateFormValues } from './SettingsForm';
 import UsernameForm, { generateUsernameFormValues } from './UsernameForm';
 
@@ -105,7 +107,13 @@ class UserSettings extends Component {
 		}
 
 		const { sections } = this.state;
-		return <Accordion sections={sections} />;
+		return <div>
+			{!isMobile && <IconTitle
+				text={STRINGS.ACCOUNTS.TAB_SETTINGS}
+				textType="title"
+			/>}
+			<Accordion sections={sections} />
+		</div>;
 	}
 }
 

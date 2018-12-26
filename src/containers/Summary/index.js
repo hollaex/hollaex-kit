@@ -12,7 +12,7 @@ import TradingVolume from './components/TradingVolume';
 import AccountDetails from './components/AccountDetails';
 import MobileSummary from './MobileSummary';
 
-// import { IconTitle } from '../../components';
+import { IconTitle } from '../../components';
 import { openFeesStructureandLimits, openContactForm } from '../../actions/appActions';
 import { requestLimits, requestFees } from '../../actions/userAction';
 import { CURRENCIES, TRADING_ACCOUNT_TYPE } from '../../config/constants';
@@ -141,10 +141,10 @@ class Summary extends Component {
         const { selectedAccount, currentTradingAccount, chartData, totalAssets, totalVolume } = this.state;
         return (
             <div className="summary-container">
-                {/* <IconTitle
+                {!isMobile && <IconTitle
                     text={`${STRINGS.ACCOUNTS.TITLE} ${STRINGS.SUMMARY.TITLE}`}
                     textType="title"
-                /> */}
+                />}
                 {isMobile
                     ? <MobileSummary
                         user={user}

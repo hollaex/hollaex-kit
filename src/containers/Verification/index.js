@@ -42,10 +42,9 @@ import IdentityVerificationHome from './IdentityVerificationHome';
 import MobileVerificationHome from './MobileVerificationHome';
 import DocumentsVerificationHome from './DocumentsVerificationHome';
 import MobileTabs from './MobileTabs';
-import MobileTabBar from './MobileTabBar';
 
-const CONTENT_CLASS =
-	'd-flex justify-content-center align-items-center f-1 flex-column verification_content-wrapper';
+// const CONTENT_CLASS =
+// 	'd-flex justify-content-center align-items-center f-1 flex-column verification_content-wrapper';
 
 class Verification extends Component {
 	state = {
@@ -126,7 +125,7 @@ class Verification extends Component {
 		if (activeTab === -1) {
 			return;
 		}
-		const { full_name, email, bank_account, address, id_data, phone_number } = user;
+		const { email, bank_account, address, id_data, phone_number } = user;
 		let bank_status = 0;
 		if (bank_account.length) {
 			if (bank_account.filter(data => data.status === 3).length) {
@@ -137,6 +136,10 @@ class Verification extends Component {
 				bank_status = 2;
 			}
 		}
+		const identity_status = address.country 
+				? id_data.status === 3
+					? 3 : 1
+				: 1;
 		const tabs = [
 			{
 				title: isMobile ? (
@@ -196,7 +199,7 @@ class Verification extends Component {
 						title={STRINGS.USER_VERIFICATION.TITLE_IDENTITY}
 						className={activeTab === 2 ? 'active_mobile_tab' : ''}
 						icon={ICONS.VERIFICATION_ID_NEW}
-						statusCode={!address.country ? 1 : 3}
+						statusCode={identity_status}
 					/>
 				) : (
 					<CheckTitle
@@ -204,7 +207,7 @@ class Verification extends Component {
 						titleClassName={activeTab !== 2 ? 'title-inactive' : ''}
 						className={activeTab === 2 ? 'active-tab-icon' : ''}
 						icon={ICONS.VERIFICATION_ID_NEW}
-						statusCode={!address.country ? 1 : 3}
+						statusCode={identity_status}
 					/>
 				),
 				content: (<IdentityVerificationHome
@@ -402,7 +405,8 @@ class Verification extends Component {
 		return (
 			<div
 				className={classnames(
-					'app_container',
+					'app_container-main',
+					'my-3',
 					getThemeClass(activeTheme),
 					fontClass,
 					languageClasses[0],
@@ -412,7 +416,7 @@ class Verification extends Component {
 					}
 				)}
 			>
-				{!isMobile && <AppBar
+				{/* {!isMobile && <AppBar
 					isHome={true}
 					token={token}
 					theme={activeTheme}
@@ -426,7 +430,7 @@ class Verification extends Component {
 							onLogout={this.onLogout}
 						/>
 					}
-				/>}
+				/>} */}
 				{/* {isMobile && <MobileTabBar {...tabProps} activeTab={activeTab} setActiveTab={this.setActiveTab} />} */}
 				{this.renderPageContent(tabProps)}
 				<Dialog

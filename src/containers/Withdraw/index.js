@@ -75,7 +75,8 @@ class Withdraw extends Component {
 			nextProps.verification_level >= MIN_VERIFICATION_LEVEL_TO_WITHDRAW &&
 			nextProps.verification_level <= MAX_VERIFICATION_LEVEL_TO_WITHDRAW &&
 			(nextProps.activeLanguage !== this.props.activeLanguage ||
-				nextProps.routeParams.currency !== this.props.routeParams.currency)
+				nextProps.routeParams.currency !== this.props.routeParams.currency ||
+				JSON.stringify(nextProps.btcFee) !== JSON.stringify(this.props.btcFee))
 		) {
 			this.generateFormValues(
 				getCurrencyFromName(nextProps.routeParams.currency),
@@ -111,7 +112,7 @@ class Withdraw extends Component {
 					this.props.crypto_wallet
 				);
 			});
-			if (currency === 'btc' || currency === 'bch') {
+			if (currency === 'btc' || currency === 'bch' || currency === 'eth') {
 				this.props.requestWithdrawFee(currency);
 			}
 
