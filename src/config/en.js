@@ -436,7 +436,7 @@ export default {
 				POSTAL_CODE_PLACEHOLDER: 'Type your postal code',
 				PHONE_CODE_LABEL: 'Country',
 				PHONE_CODE_PLACEHOLDER: 'Select the country your phone is connected to',
-				PHONE_CODE_DISPLAY: '({0}) {1}', // 0 -> (+21)  1 -> Iran
+				PHONE_CODE_DISPLAY: '({0}) {1}', // 0 -> (+21)  1 -> South Korea
 				PHONE_NUMBER_LABEL: 'Phone number',
 				PHONE_NUMBER_PLACEHOLDER: 'Type your phone number',
 				SMS_SEND: 'Send SMS',
@@ -474,8 +474,6 @@ export default {
 				},
 				ID_NUMBER_LABEL: 'ID Document Number',
 				ID_NUMBER_PLACEHOLDER: 'Type the documents number',
-				ID_NATIONAL_NUMBER_LABEL: 'National Iranian Id',
-				ID_NATIONAL_NUMBER_PLACEHOLDER: 'Type your National Iranian Id number',
 				ID_PASSPORT_NUMBER_LABEL: 'Passport Number',
 				ID_PASSPORT_NUMBER_PLACEHOLDER: 'Type your passport number',
 				ISSUED_DATE_LABEL: 'ID Document Issue Date',
@@ -544,18 +542,13 @@ export default {
 				ACCOUNT_NUMBER: 'Your bank account number should be 24 digits',
 				ACCOUNT_NUMBER_MAX_LENGTH:
 					'Your bank account number has a limit of 50 characters',
-				SHABA_NUMBER_MAX_LENGTH:
-					'Your shaba number has a limit of 50 characters',
 				CARD_NUMBER: 'Your card number should be 16 digits'
 			},
 			FORM_FIELDS: {
-				IRANIAN_ACCOUNT_LABEL: 'Do you have an Iranian Bank Account?',
 				BANK_NAME_LABEL: 'Bank Name (We reccomend you to use Pasargad Bank for instant withdrawals. Otherwise your withdrawals will have 1 to 2 days delay.',
 				BANK_NAME_PLACEHOLDER: 'Type the name of your bank',
 				ACCOUNT_NUMBER_LABEL: 'Bank Account Number',
 				ACCOUNT_NUMBER_PLACEHOLDER: 'Type your bank account number',
-				SHABA_NUMBER_LABEL: 'Shaba Number',
-				SHABA_NUMBER_PLACEHOLDER: 'Type your Shaba number',
 				ACCOUNT_OWNER_LABEL: 'Bank Account Owner’s Name',
 				ACCOUNT_OWNER_PLACEHOLDER: 'Type the name as on your bank account',
 				CARD_NUMBER_LABEL: 'Bank Card Number',
