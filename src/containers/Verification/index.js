@@ -400,7 +400,7 @@ class Verification extends Component {
 						/>
 					}
 				/>
-				{isMobile && <MobileBarTabs {...tabProps} activeTab={activeTab} />}
+				{isMobile && <MobileBarTabs {...tabProps} activeTab={activeTab} setActiveTab={this.setActiveTab} />}
 				{this.renderPageContent(tabProps)}
 				<Dialog
 					isOpen={dialogIsOpen}

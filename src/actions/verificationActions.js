@@ -24,7 +24,6 @@ export const verifyBankData = (values) => {
 		card_number: values.card_number,
 		bank_name: values.bank_name,
 		account_number: values.account_number,
-		shaba_number: values.shaba_number
 	};
 	return axios.post(VERIFICATION_ENDPOINTS.VERIFY_BANK, body);
 };

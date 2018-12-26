@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { reduxForm, formValueSelector, SubmissionError } from 'redux-form';
+import { reduxForm, SubmissionError } from 'redux-form';
 import {
 	required,
-	requiredBoolean,
 	exactLength,
 	onlyNumbers,
 	maxLength
@@ -16,9 +15,7 @@ import { getErrorLocalized } from '../../utils/errors';
 import HeaderSection from './HeaderSection';
 import { isMobile } from 'react-device-detect';
 
-const SHABA_PREFIX = 'IR';
 const FORM_NAME = 'BankVerification';
-const SELECT_FIELDS = ['isIranianAccount'];
 
 class BankVerification extends Component {
 	state = {
@@ -26,140 +23,80 @@ class BankVerification extends Component {
 	};
 
 	componentDidMount() {
-		this.generateFormFields(this.props.isIranianAccount);
+		this.generateFormFields();
 	}
 
-	componentWillReceiveProps(nextProps) {
-		if (
-			nextProps.isIranianAccount !== this.props.isIranianAccount ||
-			nextProps.activeLanguage !== this.props.activeLanguage
-		) {
-			this.generateFormFields(nextProps.isIranianAccount);
-		}
-	}
+	generateFormFields = () => {
+		const formFields = {};
 
-	generateFormFields = (isIranianAccount = false) => {
-		const formFields = {
-			isIranianAccount: {
-				type: 'select',
-				label:
-					STRINGS.USER_VERIFICATION.BANK_ACCOUNT_FORM.FORM_FIELDS
-						.IRANIAN_ACCOUNT_LABEL,
-				placeholder:
-					STRINGS.USER_VERIFICATION.BANK_ACCOUNT_FORM.FORM_FIELDS
-						.IRANIAN_ACCOUNT_LABEL,
-				defaultValue: true,
-				options: [
-					{ value: true, label: STRINGS.YES },
-					{ value: false, label: STRINGS.NO }
-				],
-				validate: [requiredBoolean],
-				fullWidth: isMobile
-			}
+		formFields.bank_name = {
+			type: 'text',
+			label:
+				STRINGS.USER_VERIFICATION.BANK_ACCOUNT_FORM.FORM_FIELDS
+					.BANK_NAME_LABEL,
+			placeholder:
+				STRINGS.USER_VERIFICATION.BANK_ACCOUNT_FORM.FORM_FIELDS
+					.BANK_NAME_PLACEHOLDER,
+			validate: [required],
+			fullWidth: isMobile
 		};
-
-		if (isIranianAccount) {
-			formFields.bank_name = {
-				type: 'text',
-				label:
-					STRINGS.USER_VERIFICATION.BANK_ACCOUNT_FORM.FORM_FIELDS
-						.BANK_NAME_LABEL,
-				placeholder:
-					STRINGS.USER_VERIFICATION.BANK_ACCOUNT_FORM.FORM_FIELDS
-						.BANK_NAME_PLACEHOLDER,
-				validate: [required],
-				fullWidth: isMobile
-			};
-			formFields.account_number = {
-				type: 'text',
-				label:
-					STRINGS.USER_VERIFICATION.BANK_ACCOUNT_FORM.FORM_FIELDS
-						.ACCOUNT_NUMBER_LABEL,
-				placeholder:
-					STRINGS.USER_VERIFICATION.BANK_ACCOUNT_FORM.FORM_FIELDS
-						.ACCOUNT_NUMBER_PLACEHOLDER,
-				validate: [
-					required,
-					maxLength(
-						50,
-						STRINGS.USER_VERIFICATION.BANK_ACCOUNT_FORM.VALIDATIONS
-							.ACCOUNT_NUMBER_MAX_LENGTH
-					)
-				],
-				maxLength: 50,
-				fullWidth: isMobile
-			};
-			formFields.shaba_number = {
-				type: 'text',
-				label:
-					STRINGS.USER_VERIFICATION.BANK_ACCOUNT_FORM.FORM_FIELDS
-						.SHABA_NUMBER_LABEL,
-				placeholder:
-					STRINGS.USER_VERIFICATION.BANK_ACCOUNT_FORM.FORM_FIELDS
-						.SHABA_NUMBER_PLACEHOLDER,
-				validate: [
-					required,
-					maxLength(
-						50,
-						STRINGS.USER_VERIFICATION.BANK_ACCOUNT_FORM.VALIDATIONS
-							.SHABA_NUMBER_MAX_LENGTH
-					)
-				],
-				format: (value = '') => {
-					if (value.indexOf(SHABA_PREFIX) === -1) {
-						if (value.length < 2) {
-							return SHABA_PREFIX;
-						} else {
-							return `${SHABA_PREFIX}${value}`;
-						}
-					}
-					return value;
-				},
-				maxLength: 50,
-				fullWidth: isMobile
-			};
-			formFields.card_number = {
-				type: 'text',
-				label:
-					STRINGS.USER_VERIFICATION.BANK_ACCOUNT_FORM.FORM_FIELDS
-						.CARD_NUMBER_LABEL,
-				placeholder:
-					STRINGS.USER_VERIFICATION.BANK_ACCOUNT_FORM.FORM_FIELDS
-						.CARD_NUMBER_PLACEHOLDER,
-				validate: [
-					required,
-					onlyNumbers,
-					exactLength(
-						16,
-						STRINGS.USER_VERIFICATION.BANK_ACCOUNT_FORM.VALIDATIONS.CARD_NUMBER
-					)
-				],
-				maxLength: 16,
-				fullWidth: isMobile
-			};
-		}
+		formFields.account_number = {
+			type: 'text',
+			label:
+				STRINGS.USER_VERIFICATION.BANK_ACCOUNT_FORM.FORM_FIELDS
+					.ACCOUNT_NUMBER_LABEL,
+			placeholder:
+				STRINGS.USER_VERIFICATION.BANK_ACCOUNT_FORM.FORM_FIELDS
+					.ACCOUNT_NUMBER_PLACEHOLDER,
+			validate: [
+				required,
+				maxLength(
+					50,
+					STRINGS.USER_VERIFICATION.BANK_ACCOUNT_FORM.VALIDATIONS
+						.ACCOUNT_NUMBER_MAX_LENGTH
+				)
+			],
+			maxLength: 50,
+			fullWidth: isMobile
+		};
+		formFields.card_number = {
+			type: 'text',
+			label:
+				STRINGS.USER_VERIFICATION.BANK_ACCOUNT_FORM.FORM_FIELDS
+					.CARD_NUMBER_LABEL,
+			placeholder:
+				STRINGS.USER_VERIFICATION.BANK_ACCOUNT_FORM.FORM_FIELDS
+					.CARD_NUMBER_PLACEHOLDER,
+			validate: [
+				required,
+				onlyNumbers,
+				exactLength(
+					16,
+					STRINGS.USER_VERIFICATION.BANK_ACCOUNT_FORM.VALIDATIONS.CARD_NUMBER
+				)
+			],
+			maxLength: 16,
+			fullWidth: isMobile
+		};
 		this.setState({ formFields });
 	};
 
-	handleSubmit = ({ isIranianAccount, ...rest }) => {
-		if (!isIranianAccount) {
-			this.props.moveToNextStep();
-		} else {
-			return verifyBankData(rest)
-				.then(({ data }) => {
-					this.props.moveToNextStep('bank', {
-						bank_data: data,
-					});
-					this.props.setActivePageContent(0);
-				})
-				.catch((err) => {
-					const error = { _error: err.message };
-					if (err.response && err.response.data) {
-						error._error = err.response.data.message;
-					}
-					throw new SubmissionError(error);
+	handleSubmit = ({ ...rest }) => {
+		return verifyBankData(rest)
+			.then(({ data }) => {
+				this.props.moveToNextStep('bank', {
+					bank_data: data,
 				});
-		}
+				this.props.setActivePageContent(0);
+			})
+			.catch((err) => {
+				const error = { _error: err.message };
+				if (err.response && err.response.data) {
+					error._error = err.response.data.message;
+				}
+				throw new SubmissionError(error);
+			});
+	
 	};
 
 	onGoBack = () => {
@@ -222,13 +159,8 @@ const BankVerificationForm = reduxForm({
 	form: FORM_NAME
 })(BankVerification);
 
-const selector = formValueSelector(FORM_NAME);
-
 const mapStateToProps = (state) => {
 	const values = {};
-	SELECT_FIELDS.forEach((fieldName) => {
-		values[fieldName] = selector(state, 'isIranianAccount');
-	});
 	return values;
 };
 

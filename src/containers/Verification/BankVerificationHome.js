@@ -41,11 +41,6 @@ const BankVerificationHome = ({ user, setActivePageContent, setActiveTab }) => {
                                     className="mr-3 title-font"
                                     disable />
                                 <PanelInformationRow
-                                    label={STRINGS.USER_VERIFICATION.BANK_ACCOUNT_FORM.FORM_FIELDS.SHABA_NUMBER_LABEL}
-                                    information={account.shaba_number}
-                                    className="mr-3 title-font"
-                                    disable />
-                                <PanelInformationRow
                                     label={STRINGS.USER_VERIFICATION.CARD_NUMBER}
                                     information={account.card_number}
                                     className="title-font"

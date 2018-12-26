@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { isMobile } from 'react-device-detect';
+import moment from 'moment';
 
 import SummaryBlock from './components/SummaryBlock';
 import TraderAccounts from './components/TraderAccounts';
@@ -22,6 +23,7 @@ import {
     formatPercentage,
     calculatePrice,
     calculatePricePercentage } from '../../utils/currency';
+import { getTradeVolumeTotal } from './components/utils';
 
 const FIAT = CURRENCIES.fiat.symbol;
 const default_trader_account = TRADING_ACCOUNT_TYPE.shrimp;
@@ -31,12 +33,13 @@ class Summary extends Component {
         selectedAccount: default_trader_account.symbol,
         currentTradingAccount: default_trader_account,
         chartData: [],
-        totalAssets: ''
+        totalAssets: '',
+        totalVolume: 0
     };
 
     
     componentDidMount() {
-        const { user, symbol, limits, requestLimits, fees, requestFees } = this.props;
+        const { user, symbol, limits, requestLimits, fees, requestFees, tradeVolumes, pairs, prices } = this.props;
         if (!limits.fetched && !limits.fetching) {
             requestLimits();
         }
@@ -48,6 +51,10 @@ class Summary extends Component {
         if (user.id && symbol) {
             this.calculateSections(this.props);
             this.setCurrentTradeAccount(user);
+        }
+        if (tradeVolumes.fetched) {
+            let totalVolume = getTradeVolumeTotal(tradeVolumes.data, prices, pairs);
+            this.setState({ totalVolume });
         }
     }
 
@@ -63,6 +70,10 @@ class Summary extends Component {
         }
         if (this.props.user.verification_level !== nextProps.user.verification_level) {
             this.setCurrentTradeAccount(nextProps.user);
+        }
+        if (JSON.stringify(this.props.tradeVolumes) !== JSON.stringify(nextProps.tradeVolumes)) {
+            let totalVolume = getTradeVolumeTotal(nextProps.tradeVolumes.data, nextProps.prices, nextProps.pairs);
+            this.setState({ totalVolume });
         }
     }
 
@@ -127,7 +138,7 @@ class Summary extends Component {
 
     render() {
         const { user, balance, activeTheme } = this.props;
-        const { selectedAccount, currentTradingAccount, chartData, totalAssets } = this.state;
+        const { selectedAccount, currentTradingAccount, chartData, totalAssets, totalVolume } = this.state;
         return (
             <div className="summary-container">
                 {/* <IconTitle
@@ -183,7 +194,11 @@ class Summary extends Component {
                             <div className="trading-volume-wrapper">
                                 <SummaryBlock
                                     title={STRINGS.SUMMARY.TRADING_VOLUME}
-                                    secondaryTitle={`${balance[`${FIAT}_balance`]} ${STRINGS.FIAT_FULLNAME}`} >
+                                    secondaryTitle={
+                                        `${formatFiatAmount(totalVolume)} ${STRINGS.FIAT_FULLNAME} 
+                                        ${STRINGS.formatString(STRINGS.SUMMARY.NOMINAL_TRADING_WITH_MONTH, moment().subtract(1, "month").startOf("month").format('MMMM')).join('')}`
+                                        }
+                                    >
                                     <TradingVolume user={user} />
                                 </SummaryBlock>
                             </div>
@@ -221,7 +236,8 @@ const mapStateToProps = (state) => ({
     symbol: state.orderbook.symbol,
     price: state.orderbook.price,
     orders: state.order.activeOrders,
-    activeLanguage: state.app.language
+    activeLanguage: state.app.language,
+    tradeVolumes: state.user.tradeVolumes
 });
 
 const mapDispatchToProps = (dispatch) => ({
