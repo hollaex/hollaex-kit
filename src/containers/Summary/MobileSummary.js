@@ -8,11 +8,13 @@ import AccountAssets from './components/AccountAssets';
 import TradingVolume from './components/TradingVolume';
 import AccountDetails from './components/AccountDetails';
 
-import { SUMMMARY_ICON } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 
 const MobileSummary = ({
     user,
+    fees,
+    limits,
+    pairs,
     activeTheme,
     default_trader_account,
     currentTradingAccount,
@@ -21,6 +23,7 @@ const MobileSummary = ({
     balance,
     chartData,
     totalAssets,
+    lastMonthVolume,
     onFeesAndLimits,
     onUpgradeAccount,
     onAccountTypeChange
@@ -38,6 +41,9 @@ const MobileSummary = ({
             <div className="summary-section_1 trader-account-wrapper d-flex w-100">
                 <SummaryBlock title={STRINGS.SUMMARY.TINY_PINK_SHRIMP_TRADER_ACCOUNT} wrapperClassname="w-100" >
                     <TraderAccounts
+                        fees={fees}
+                        limits={limits}
+                        pairs={pairs}
                         activeTheme={activeTheme}
                         account={currentTradingAccount}
                         onFeesAndLimits={onFeesAndLimits}
@@ -48,7 +54,7 @@ const MobileSummary = ({
                 <SummaryBlock
                     title={STRINGS.SUMMARY.URGENT_REQUIREMENTS}
                     wrapperClassname="w-100" >
-                    <SummaryRequirements user={user} contentClassName="requirements-content" />
+                    <SummaryRequirements user={user} lastMonthVolume={lastMonthVolume} contentClassName="requirements-content" />
                 </SummaryBlock>
             </div>
             <div className="assets-wrapper w-100">
@@ -74,6 +80,9 @@ const MobileSummary = ({
                 secondaryTitle={currentTradingAccount.name}
                 wrapperClassname="w-100" >
                 <AccountDetails
+                    fees={fees}
+                    limits={limits}
+                    pairs={pairs}
                     user={user}
                     activeTheme={activeTheme}
                     currentTradingAccount={currentTradingAccount.symbol}

@@ -23,7 +23,7 @@ import {
     formatPercentage,
     calculatePrice,
     calculatePricePercentage } from '../../utils/currency';
-import { getTradeVolumeTotal } from './components/utils';
+import { getTradeVolumeTotal, getLastMonthVolume } from './components/utils';
 
 const FIAT = CURRENCIES.fiat.symbol;
 const default_trader_account = TRADING_ACCOUNT_TYPE.shrimp;
@@ -34,7 +34,7 @@ class Summary extends Component {
         currentTradingAccount: default_trader_account,
         chartData: [],
         totalAssets: '',
-        totalVolume: 0
+        lastMonthVolume: 0
     };
 
     
@@ -53,8 +53,8 @@ class Summary extends Component {
             this.setCurrentTradeAccount(user);
         }
         if (tradeVolumes.fetched) {
-            let totalVolume = getTradeVolumeTotal(tradeVolumes.data, prices, pairs);
-            this.setState({ totalVolume });
+            let lastMonthVolume = getLastMonthVolume(tradeVolumes.data, prices, pairs);
+            this.setState({ lastMonthVolume });
         }
     }
 
@@ -72,8 +72,8 @@ class Summary extends Component {
             this.setCurrentTradeAccount(nextProps.user);
         }
         if (JSON.stringify(this.props.tradeVolumes) !== JSON.stringify(nextProps.tradeVolumes)) {
-            let totalVolume = getTradeVolumeTotal(nextProps.tradeVolumes.data, nextProps.prices, nextProps.pairs);
-            this.setState({ totalVolume });
+            let lastMonthVolume = getLastMonthVolume(nextProps.tradeVolumes.data, nextProps.prices, nextProps.pairs);
+            this.setState({ lastMonthVolume });
         }
     }
 
@@ -137,8 +137,8 @@ class Summary extends Component {
     };
 
     render() {
-        const { user, balance, activeTheme } = this.props;
-        const { selectedAccount, currentTradingAccount, chartData, totalAssets, totalVolume } = this.state;
+        const { user, balance, activeTheme, fees, limits, pairs } = this.props;
+        const { selectedAccount, currentTradingAccount, chartData, totalAssets, lastMonthVolume } = this.state;
         return (
             <div className="summary-container">
                 {!isMobile && <IconTitle
@@ -148,6 +148,9 @@ class Summary extends Component {
                 {isMobile
                     ? <MobileSummary
                         user={user}
+                        fees={fees.data}
+                        limits={limits.data}
+                        pairs={pairs}
                         activeTheme={activeTheme}
                         default_trader_account={default_trader_account}
                         currentTradingAccount={currentTradingAccount}
@@ -156,6 +159,7 @@ class Summary extends Component {
                         balance={balance}
                         chartData={chartData}
                         totalAssets={totalAssets}
+                        lastMonthVolume={lastMonthVolume}
                         onFeesAndLimits={this.onFeesAndLimits}
                         onUpgradeAccount={this.onUpgradeAccount}
                         onAccountTypeChange={this.onAccountTypeChange}
@@ -165,6 +169,9 @@ class Summary extends Component {
                             <div className="summary-section_1 trader-account-wrapper d-flex">
                                 <SummaryBlock title={STRINGS.SUMMARY.TINY_PINK_SHRIMP_TRADER_ACCOUNT} >
                                     <TraderAccounts
+                                        fees={fees.data}
+                                        limits={limits.data}
+                                        pairs={pairs}
                                         activeTheme={activeTheme}
                                         account={currentTradingAccount}
                                         onFeesAndLimits={this.onFeesAndLimits}
@@ -175,7 +182,7 @@ class Summary extends Component {
                                 <SummaryBlock
                                     title={STRINGS.SUMMARY.URGENT_REQUIREMENTS}
                                     wrapperClassname="w-100" >
-                                    <SummaryRequirements user={user} contentClassName="requirements-content" />
+                                    <SummaryRequirements user={user} lastMonthVolume={lastMonthVolume} contentClassName="requirements-content" />
                                 </SummaryBlock>
                             </div>
                         </div>
@@ -194,11 +201,14 @@ class Summary extends Component {
                             <div className="trading-volume-wrapper">
                                 <SummaryBlock
                                     title={STRINGS.SUMMARY.TRADING_VOLUME}
-                                    secondaryTitle={
-                                        `${formatFiatAmount(totalVolume)} ${STRINGS.FIAT_FULLNAME} 
-                                        ${STRINGS.formatString(STRINGS.SUMMARY.NOMINAL_TRADING_WITH_MONTH, moment().subtract(1, "month").startOf("month").format('MMMM')).join('')}`
-                                        }
-                                    >
+                                    secondaryTitle={<span>
+                                        <span className="title-font">
+                                            {` ${formatFiatAmount(lastMonthVolume)}`}
+                                        </span>
+                                        {` ${STRINGS.FIAT_FULLNAME} ${STRINGS.formatString(STRINGS.SUMMARY.NOMINAL_TRADING_WITH_MONTH, moment().subtract(1, "month").startOf("month").format('MMMM')).join('')}`}
+                                    </span>
+                                    }
+                                >
                                     <TradingVolume user={user} />
                                 </SummaryBlock>
                             </div>
@@ -210,11 +220,16 @@ class Summary extends Component {
                                 wrapperClassname="w-100" >
                                 <AccountDetails
                                     user={user}
+                                    fees={fees.data}
+                                    limits={limits.data}
+                                    pairs={pairs}
                                     activeTheme={activeTheme}
                                     currentTradingAccount={currentTradingAccount.symbol}
                                     selectedAccount={selectedAccount}
+                                    lastMonthVolume={lastMonthVolume}
                                     onAccountTypeChange={this.onAccountTypeChange}
-                                    onFeesAndLimits={this.onFeesAndLimits} />
+                                    onFeesAndLimits={this.onFeesAndLimits}
+                                    onUpgradeAccount={this.onUpgradeAccount} />
                             </SummaryBlock>
                         </div>
                     </div>)

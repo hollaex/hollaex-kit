@@ -162,10 +162,18 @@ class DocumentsVerification extends Component {
 		this.setState({ formFields });
 	};
 
-	handleSubmit = (values) => {
-		return updateDocuments(values)
+	handleSubmit = (formValues) => {
+		return updateDocuments(formValues)
 			.then(({ data }) => {
-				this.props.moveToNextStep('documents');
+				const values = {
+					type: formValues.type,
+					number: formValues.number,
+					expiration_date: formValues.expiration_date,
+					issued_date: formValues.issued_date,
+					status: 1
+				};
+
+				this.props.moveToNextStep('documents', values);
 				this.props.setActivePageContent(0);
 			})
 			.catch((err) => {

@@ -17,7 +17,7 @@ class AppMenuBar extends Component {
         if (this.props.location && this.props.location.pathname) {
             this.setActiveMenu(this.props.location.pathname);
         }
-        if (this.props.user) {
+        if (this.props.user && this.props.user.id) {
             this.checkVerificationStatus(this.props.user);
         }
     }
@@ -124,7 +124,7 @@ class AppMenuBar extends Component {
                         </div>
                     </div>
                     <div
-                        className={classnames('app-menu-bar-content d-flex', { 'notification': true, 'active-menu': activeMenu === 'security' })}
+                        className={classnames('app-menu-bar-content d-flex', { 'notification': !!securityPending, 'active-menu': activeMenu === 'security' })}
                         onClick={() => this.handleMenuChange('security')}>
                         <div className="app-menu-bar-content-item d-flex">
                             {!!securityPending && <div className="app-menu-bar-icon-notification">{securityPending}</div>}
@@ -133,7 +133,7 @@ class AppMenuBar extends Component {
                         </div>
                     </div>
                     <div
-                        className={classnames('app-menu-bar-content d-flex', { 'notification': true, 'active-menu': activeMenu === 'verification' })}
+                        className={classnames('app-menu-bar-content d-flex', { 'notification': !!verificationPending, 'active-menu': activeMenu === 'verification' })}
                         onClick={() => this.handleMenuChange('verification')}>
                         <div className="app-menu-bar-content-item d-flex">
                             {!!verificationPending && <div className="app-menu-bar-icon-notification">{verificationPending}</div>}

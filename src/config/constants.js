@@ -510,6 +510,10 @@ export const TRADING_VOLUME_CHART_LIMITS = process.env.REACT_APP_TRADING_VOLUME_
 	? process.env.REACT_APP_TRADING_VOLUME_CHART_LIMITS.split(',').map(data => formatNumber(data))
 	: [10000, 100000];
 
+export const TRADE_ACCOUNT_UPGRADE_MONTH = process.env.REACT_APP_ACCOUNT_UPGRADE_MONTH
+	? process.env.REACT_APP_ACCOUNT_UPGRADE_MONTH.split(',').map(data => formatNumber(data))
+	: [3, 6];
+
 export const DEFAULT_COUNTRY = process.env.REACT_APP_DEFAULT_COUNTRY
 	? process.env.REACT_APP_DEFAULT_COUNTRY.toUpperCase()
 	: 'FR';

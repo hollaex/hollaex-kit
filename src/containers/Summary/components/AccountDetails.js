@@ -8,7 +8,19 @@ import MobileAccountTypeList from '../MobileAccountTypeList';
 import { TRADING_ACCOUNT_TYPE } from '../../../config/constants';
 import STRINGS from '../../../config/localizedStrings';
 
-const AccountDetails = ({ user, activeTheme, selectedAccount, onAccountTypeChange, currentTradingAccount, onFeesAndLimits }) => {
+const AccountDetails = ({
+    user, 
+    activeTheme,
+    fees,
+    limits,
+    pairs,
+    selectedAccount,
+    lastMonthVolume,
+    onAccountTypeChange,
+    currentTradingAccount,
+    onFeesAndLimits,
+    onUpgradeAccount }) => {
+
     const accounts = Object.keys(TRADING_ACCOUNT_TYPE);
     return (
         <div className="account-details-wrapper summary-content-txt">
@@ -24,9 +36,11 @@ const AccountDetails = ({ user, activeTheme, selectedAccount, onAccountTypeChang
                     accounts={accounts}
                     activeTheme={activeTheme}
                     selectedAccount={selectedAccount}
+                    lastMonthVolume={lastMonthVolume}
                     currentTradingAccount={currentTradingAccount}
                     onAccountTypeChange={onAccountTypeChange}
-                    onFeesAndLimits={onFeesAndLimits} />
+                    onFeesAndLimits={onFeesAndLimits}
+                    onUpgradeAccount={onUpgradeAccount} />
                 : <div className="d-flex mt-5">
                     <AccountTypesList
                         accounts={accounts}
@@ -37,12 +51,17 @@ const AccountDetails = ({ user, activeTheme, selectedAccount, onAccountTypeChang
                     <AccountTypeDetails
                         className="w-50"
                         user={user}
+                        fees={fees}
+                        limits={limits}
+                        pairs={pairs}
                         accounts={accounts}
                         activeTheme={activeTheme}
                         selectedAccount={selectedAccount}
+                        lastMonthVolume={lastMonthVolume}
                         currentTradingAccount={currentTradingAccount}
                         onAccountTypeChange={onAccountTypeChange}
-                        onFeesAndLimits={onFeesAndLimits} />
+                        onFeesAndLimits={onFeesAndLimits}
+                        onUpgradeAccount={onUpgradeAccount} />
                 </div>
             }
         </div>

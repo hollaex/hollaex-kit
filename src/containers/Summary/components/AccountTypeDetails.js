@@ -10,19 +10,28 @@ import STRINGS from '../../../config/localizedStrings';
 
 const AccountTypeDetails = ({
     user,
+    fees,
+    limits,
+    pairs,
     className='',
     activeTheme,
     selectedAccount,
-    onFeesAndLimits
+    lastMonthVolume,
+    onFeesAndLimits,
+    onUpgradeAccount
 }) => {
+    const currentAccount = TRADING_ACCOUNT_TYPE[selectedAccount];
     return (
         <div className={classnames(className, "ml-5")}>
             <TraderAccounts
+                fees={fees}
+                limits={limits}
+                pairs={pairs}
                 activeTheme={activeTheme}
-                account={TRADING_ACCOUNT_TYPE[selectedAccount]}
+                account={currentAccount}
                 isAccountDetails={true}
                 onFeesAndLimits={onFeesAndLimits} />
-            <div>
+            {currentAccount.level > 1 && <div>
                 <div className="requirement-header d-flex justify-content-between">
                     <div>{STRINGS.SUMMARY.REQUIREMENTS}</div>
                     <div className="status-header">{STRINGS.STATUS}</div>
@@ -30,9 +39,11 @@ const AccountTypeDetails = ({
                 <SummaryRequirements
                     user={user}
                     isAccountDetails={true}
+                    verificationLevel={currentAccount.level || user.verification_level}
+                    lastMonthVolume={lastMonthVolume}
+                    onUpgradeAccount={onUpgradeAccount}
                     contentClassName="w-100" />
-                <Button label={STRINGS.SUMMARY.REQUEST_ACCOUNT_UPGRADE} />
-            </div>
+            </div>}
         </div>
     );
 };

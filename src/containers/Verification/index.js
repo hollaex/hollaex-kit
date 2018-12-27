@@ -36,6 +36,7 @@ import {
 } from '../../utils/string';
 import { ContactForm } from '../';
 import { NOTIFICATIONS } from '../../actions/appActions';
+import { setMe } from '../../actions/userAction';
 import { getThemeClass } from '../../utils/theme';
 import BankVerificationHome from './BankVerificationHome';
 import IdentityVerificationHome from './IdentityVerificationHome';
@@ -135,9 +136,12 @@ class Verification extends Component {
 			} else if (bank_account.filter(data => data.status === 2).length) {
 				bank_status = 2;
 			}
+			if (id_data.status !== 3) {
+				bank_status = 1;
+			}
 		}
 		const identity_status = address.country 
-				? id_data.status === 3
+			? id_data.status && id_data.status === 3
 					? 3 : 1
 				: 1;
 		const tabs = [
@@ -271,8 +275,11 @@ class Verification extends Component {
 			};
 		} else if (type === 'mobile') {
 			user.phone_number = data.phone;
+		} else if (type === 'documents') {
+			user.id_data = { ...data };
 		}
 		const activeTab = this.state.activeTab;
+		this.props.setMe(user);
 		this.setState({ user, activeTab }, () => {
 			if (activeTab >= this.state.tabs.length) {
 				this.setState({ dialogIsOpen: true, dialogType: 'complete' });
@@ -384,8 +391,8 @@ class Verification extends Component {
 	onLogout = () => this.props.logout('');
 
 	render() {
-		const { activeLanguage, token, activeTheme, router, location } = this.props;
-		const { activeTab, tabs, dialogIsOpen, dialogType, user } = this.state;
+		const { activeLanguage, activeTheme } = this.props;
+		const { activeTab, tabs, dialogIsOpen, dialogType } = this.state;
 
 		if (activeTab === -1 && tabs.length > 0) {
 			return (
@@ -459,6 +466,7 @@ const mapDispatchToProps = (dispatch) => ({
 	requestSmsCode: bindActionCreators(requestSmsCode, dispatch),
 	verifySmsCode: bindActionCreators(verifySmsCode, dispatch),
 	verifyBankData: bindActionCreators(verifyBankData, dispatch),
+	setMe: bindActionCreators(setMe, dispatch),
 	logout: bindActionCreators(logout, dispatch)
 });
 

@@ -21,7 +21,7 @@ const VerificationHome = ({ activeTab, tabProps, tabs, openContactForm, setActiv
                     <div className="mb-3">{STRINGS.USER_VERIFICATION.INFO_TXT_1}</div>
                     <div className="mb-3">{STRINGS.formatString(
                         STRINGS.USER_VERIFICATION.INFO_TXT_2,
-                        <Link to="/account" className="link-content">{STRINGS.USER_VERIFICATION.DOCUMENTATIONS}</Link>
+                        <Link className="link-content" onClick={() => setActiveTab(4)}>{STRINGS.USER_VERIFICATION.DOCUMENTATIONS}</Link>
                     )}</div>
                 </div>
                 {!isMobile

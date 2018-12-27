@@ -10,8 +10,10 @@ const MobileAccountTypeList = ({
     activeTheme,
     selectedAccount,
     currentTradingAccount,
+    lastMonthVolume,
     onAccountTypeChange,
-    onFeesAndLimits
+    onFeesAndLimits,
+    onUpgradeAccount
 }) => {
     return (
         <div className="mobile-account-type my-4">
@@ -50,7 +52,9 @@ const MobileAccountTypeList = ({
                                     user={user}
                                     activeTheme={activeTheme}
                                     selectedAccount={selectedAccount}
-                                    onFeesAndLimits={onFeesAndLimits} />
+                                    lastMonthVolume={lastMonthVolume}
+                                    onFeesAndLimits={onFeesAndLimits}
+                                    onUpgradeAccount={onUpgradeAccount} />
                             </div>
                         }
                     </div>

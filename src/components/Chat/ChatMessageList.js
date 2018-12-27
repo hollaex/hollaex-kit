@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import classnames from 'classnames';
 import { Scrollbars } from 'react-custom-scrollbars';
 import  { cloneDeep } from 'lodash';
@@ -6,6 +7,7 @@ import { ChatMessage } from './';
 import { Loader } from '../';
 import { isLoggedIn } from '../../utils/token';
 import { isMobile } from 'react-device-detect';
+import { TRADING_ACCOUNT_TYPE, SUMMMARY_ICON } from '../../config/constants';
 
 class ChatMessageList extends Component {
 	state = {
@@ -55,6 +57,18 @@ class ChatMessageList extends Component {
 		}
 	}
 
+	getUserLevelIcon = (verification_level) => {
+		let icon = '';
+		Object.keys(TRADING_ACCOUNT_TYPE).map(type => {
+			let trade = TRADING_ACCOUNT_TYPE[type];
+			if (trade && trade.level === verification_level) {
+				icon = this.props.activeTheme === 'dark' && SUMMMARY_ICON[`${trade.symbol.toUpperCase()}_DARK`]
+					? SUMMMARY_ICON[`${trade.symbol.toUpperCase()}_DARK`] : SUMMMARY_ICON[trade.symbol.toUpperCase()];
+			}
+		});
+		return icon;
+	};
+
 	render() {
 		const {
 			messages,
@@ -90,20 +104,22 @@ class ChatMessageList extends Component {
 				{(chatInitialized && usernameInitalized) ||
 				(!usernameInitalized && userInitialized) ||
 				(chatInitialized && !isLoggedIn()) ? (
-					messages.map(({ id, username, to, messageType, message, timestamp }, index) => (
-						<ChatMessage
+					messages.map(({ id, username, to, messageType, message, timestamp, verification_level }, index) => {
+						let chatIcon = this.getUserLevelIcon(verification_level);
+						return <ChatMessage
 							key={index}
 							id={id}
 							username={username}
 							ownMessage={username === this.props.username}
 							to={to}
 							userType={userType}
+							chatIcon={chatIcon}
 							messageType={messageType}
 							messageContent={message}
 							removeMessage={removeMessage}
 							timestamp={timestamp}
 						/>
-					))
+					})
 				) : (
 					<Loader />
 				)}
@@ -112,4 +128,8 @@ class ChatMessageList extends Component {
 	}
 }
 
-export default ChatMessageList;
+const mapStateToProps = (store) => ({
+	activeTheme: store.app.theme
+});
+
+export default connect(mapStateToProps)(ChatMessageList);

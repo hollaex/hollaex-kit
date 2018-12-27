@@ -112,7 +112,8 @@ export default function reducer(state = INITIAL_STATE, action) {
 				crypto_wallet,
 				verification_level,
 				otp_enabled,
-				username
+				username,
+				created_at
 			} = action.payload;
 			const userData = extractuserData(action.payload);
 			const fees = action.payload.fees || state.fees;
@@ -137,7 +138,8 @@ export default function reducer(state = INITIAL_STATE, action) {
 				otp_enabled,
 				fees,
 				settings,
-				username
+				username,
+				created_at
 			};
 		}
 		case 'SET_USER_DATA': {
