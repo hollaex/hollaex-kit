@@ -17,13 +17,13 @@ const getInitialTab = ({ name, path }) => {
 		activeTab = 0;
 	} else if (path === 'summary') {
 		activeTab = 0;
-	} else if (path === 'profile') {
-		activeTab = 1;
 	} else if (path === 'security') {
-		activeTab = 2;
+		activeTab = 1;
 	} else if (path === 'developers') {
-		activeTab = 2;
+		activeTab = 1;
 		activeDevelopers = true;
+	} else if (path === 'verification') {
+		activeTab = 2;
 	} else if (path === 'settings') {
 		activeTab = 3;
 		activeDevelopers = true;
@@ -117,38 +117,6 @@ class Account extends Component {
 			},
 			{
 				title: isMobile ? (
-					STRINGS.ACCOUNTS.TAB_PROFILE
-				) : (
-					<CheckTitle
-						title={STRINGS.ACCOUNTS.TAB_PROFILE}
-						icon={ICONS.VERIFICATION_ID_INACTIVE}
-						notifications={
-							this.hasUserVerificationNotifications(
-								verification_level,
-								bank_account,
-								id_data
-							)
-								? '!'
-								: ''
-						}
-					/>
-				),
-				notifications: this.hasUserVerificationNotifications(
-					verification_level,
-					bank_account,
-					id_data
-				)
-					? '!'
-					: '',
-				content: (
-					<UserProfile
-						goToVerification={this.goToVerification}
-						openContactForm={this.openContactForm}
-					/>
-				)
-			},
-			{
-				title: isMobile ? (
 					STRINGS.ACCOUNTS.TAB_SECURITY
 				) : (
 					<CheckTitle
@@ -159,10 +127,8 @@ class Account extends Component {
 				),
 				notifications: !otp_enabled ? '!' : '',
 				content: <UserSecurity openApiKey={activeDevelopers} />
-			}
-		];
-		if (isMobile) {
-			tabs.push({
+			},
+			{
 				title: isMobile ? (
 					STRINGS.ACCOUNTS.TAB_VERIFICATION
 				) : (
@@ -173,20 +139,19 @@ class Account extends Component {
 					),
 				notifications: verificationPending ? '!' : '',
 				content: <Verification />
-			});
-		}
-		tabs.push({
-			title: isMobile ? (
-				STRINGS.ACCOUNTS.TAB_SETTINGS
-			) : (
-				<CheckTitle
-					title={STRINGS.ACCOUNTS.TAB_SETTINGS}
-					icon={ICONS.GEAR_GREY}
-				/>
-			),
-			content: <UserSettings />
-		});
-
+			},
+			{
+				title: isMobile ? (
+					STRINGS.ACCOUNTS.TAB_SETTINGS
+				) : (
+					<CheckTitle
+						title={STRINGS.ACCOUNTS.TAB_SETTINGS}
+						icon={ICONS.GEAR_GREY}
+					/>
+				),
+				content: <UserSettings />
+			}
+		];
 		this.setState({ tabs, activeTab });
 	};
 
@@ -197,7 +162,6 @@ class Account extends Component {
 	renderContent = (tabs, activeTab) => tabs[activeTab].content;
 
 	openContactForm = (data) => {
-		// console.log('here');
 		this.props.openContactForm(data);
 	};
 	goToVerification = () => this.props.router.push('/verification');
@@ -225,14 +189,14 @@ class Account extends Component {
 			</div>
 		) : (
 			<div className="presentation_container apply_rtl">
-				<TabController
+				{/* <TabController
 					activeTab={activeTab}
 					setActiveTab={this.setActiveTab}
 					tabs={tabs}
 					title={STRINGS.ACCOUNTS.TITLE}
 					titleIcon={ICONS.ACCOUNT_LINE}
 					className="account-tab"
-				/>
+				/> */}
 				<div className="inner_container">
 					{activeTab > -1 && this.renderContent(tabs, activeTab)}
 				</div>
@@ -242,6 +206,7 @@ class Account extends Component {
 }
 
 const mapStateToProps = (state) => ({
+	user: state.user,
 	verification_level: state.user.verification_level,
 	limits: state.user.limits,
 	fees: state.user.feeValues,

@@ -6,7 +6,7 @@ import { getCountry } from './utils';
 import STRINGS from '../../config/localizedStrings';
 
 const IdentityVerificationHome = ({ user, setActivePageContent, setActiveTab }) => {
-    const { address } = user;
+    const { address, id_data } = user;
     if (!address.country) {
         return (
             <div>
@@ -78,7 +78,12 @@ const IdentityVerificationHome = ({ user, setActivePageContent, setActiveTab }) 
                             disable />
                     </div>
                 </div>
-                {/* <Button label={STRINGS.USER_VERIFICATION.REVIEW_IDENTITY_VERIFICATION} onClick={() => setActivePageContent(2)} /> */}
+                {id_data.status === 3
+                    ? null
+                    :<Button
+                        label={STRINGS.USER_VERIFICATION.REVIEW_IDENTITY_VERIFICATION}
+                        onClick={() => setActivePageContent(2)} />
+                }
             </div>
         );
     }

@@ -17,11 +17,11 @@ export const generateInitialValues = (symbol, fees = {}) => {
 	const initialValues = {};
 
 	if (symbol === 'btc') {
-		initialValues.fee = fees.optimal || fees.min;
+		initialValues.fee = fees.fee || fees.optimal || fees.min;
 	} else if (symbol === 'eth') {
-		initialValues.fee = WITHDRAW_LIMITS.eth.MIN_FEE;
+		initialValues.fee = fees.fee || fees.optimal || fees.min;
 	} else if (symbol === 'bch') {
-		initialValues.fee = fees.optimal || fees.min;
+		initialValues.fee = fees.fee || fees.optimal || fees.min;
 	} else {
 		initialValues.fee = fees.value || 0;
 	}
@@ -94,7 +94,7 @@ export const generateFormValues = (
 		}
 	};
 
-	if (symbol === 'btc' || symbol === 'bch') {
+	if (symbol === 'btc' || symbol === 'bch' || symbol === 'eth') {
 		fields.fee = {
 			type: 'editable',
 			inputType: 'number',

@@ -23,7 +23,7 @@ class BarChart extends Component {
     componentDidMount() {
         const donutContainer = document.getElementById("bar-container");
         const rect = donutContainer.getBoundingClientRect();
-        this.setState({ width: (rect.width - 100), height: (rect.height - 100) }, () => {
+        this.setState({ width: (rect.width - (rect.width * 0.3)), height: (rect.height - (rect.height * 0.35)) }, () => {
             this.generateChart(this.props.chartData, this.props.limitContent);
         });
     }
@@ -44,7 +44,7 @@ class BarChart extends Component {
             const tooltip = d3.select('body')
                 .append("div")
                 .attr('class', activeTheme === 'dark' ? 'bar-tooltip-dark' : 'bar-tooltip')
-                .style("visibility", "hidden");
+                .style("display", "none");
             const chart = SvgElement.append('g')
                 .attr('transform', translate(10, margin));
             const yScale = scaleLinear()
@@ -119,21 +119,23 @@ class BarChart extends Component {
             if (limitContent.length) {
                 yAxisLimits.map((limits, index) => {
                     let content = limitContent[index];
+                    let scale = yScale(limits) + (yScale(limits) * 0.01);
+                    let scaleTxt = scale + (32 + (index * 10));
                     if (content.icon) {
                         chart.append('svg')
                             .append("svg:image")
                             .attr("xlink:href", content.icon)
                             .attr('class', 'limit_contnet-icon')
                             .attr('x', width + 15)
-                            .attr('y', yScale(limits) + 10)
+                            .attr('y', scale)
                             .attr('viewBox', '0 0 1024 1024')
-                            .attr('width', '3.5rem');
+                            .attr('width', '3rem');
                     }
                     if (content.text) {
                         chart.append('foreignObject')
                             .attr('x', width + 15)
-                            .attr('y', yScale(limits) + 50)
-                            .attr('width', '6rem')
+                            .attr('y', scaleTxt)
+                            .attr('width', '8rem')
                             .append('xhtml:div')
                             .attr('class', 'limit_contnet-text')
                             .html(`<span>${content.text}</span>`);
@@ -164,7 +166,7 @@ class BarChart extends Component {
                             .attr('width', xScale.bandwidth())
                             .on("mouseover", function (d) {
                                 tooltip.selectAll("*").remove();
-                                tooltip.style("visibility", "visible")
+                                tooltip.style("display", "block")
                                     .style("top", (d3.event.pageY - 10) + "px")
                                     .style("left", (d3.event.pageX + 10) + "px")
                                     .append('div')
@@ -179,7 +181,7 @@ class BarChart extends Component {
                                     .style("left", (d3.event.pageX + 10) + "px");
                             })
                             .on("mouseout", function () {
-                                return tooltip.style("visibility", "hidden");
+                                return tooltip.style("display", "none");
                             });
                         return 0;
                     });
@@ -188,11 +190,11 @@ class BarChart extends Component {
                         .attr("xlink:href", activeTheme === 'dark'
                             ? ICONS.VOLUME_PENDING_DARK : ICONS.VOLUME_PENDING)
                         .attr('class', 'bar_pending-icon')
-                        .attr('x', (xScale(d.month) + 8))
-                        .attr('y', (yScale(0) - 30))
+                        .attr('x', (xScale(d.month)))
+                        .attr('y', (yScale(0) - 20))
                         .attr('viewBox', '0 0 1024 1024')
-                        .attr('height', 20)
-                        .attr('width', 20);
+                        .attr('height', 18)
+                        .attr('width', 18);
                 }
             });
         }

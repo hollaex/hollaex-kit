@@ -508,7 +508,7 @@ export const CHAT_STATUS_KEY = 'chat:minimized';
 
 export const TRADING_VOLUME_CHART_LIMITS = process.env.REACT_APP_TRADING_VOLUME_CHART_LIMITS
 	? process.env.REACT_APP_TRADING_VOLUME_CHART_LIMITS.split(',').map(data => formatNumber(data))
-	: [450000000, 1500000000];
+	: [10000, 100000];
 
 export const DEFAULT_COUNTRY = process.env.REACT_APP_DEFAULT_COUNTRY
 	? process.env.REACT_APP_DEFAULT_COUNTRY.toUpperCase()

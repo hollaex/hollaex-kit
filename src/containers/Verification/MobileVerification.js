@@ -98,6 +98,7 @@ class MobileVerification extends Component {
 		return verifySmsCode(values)
 			.then(({ data }) => {
 				this.props.moveToNextStep('mobile', values);
+				this.props.setActivePageContent(0);
 			})
 			.catch((err) => {
 				const error = { _error: err.message };
@@ -168,7 +169,7 @@ class MobileVerification extends Component {
 						<Button
 							type="button"
 							onClick={handleSubmit(this.handleSubmit)}
-							label={STRINGS.NEXT}
+							label={STRINGS.SUBMIT}
 							disabled={
 								pristine || submitting || !valid || !!error || !codeRequested
 							}

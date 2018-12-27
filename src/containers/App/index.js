@@ -435,6 +435,7 @@ class Container extends Component {
 			case '/account':
 			case '/developers':
 			case '/security':
+			case '/verification':
 			case '/settings':
 			case '/summary':
 			case '/api':
