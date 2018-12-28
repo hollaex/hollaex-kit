@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { SubmissionError } from 'redux-form';
+import { isMobile } from 'react-device-detect';
 
 import { ICONS } from '../../config/constants';
 import {
@@ -14,7 +15,8 @@ import {
 	Accordion,
 	Dialog,
 	SuccessDisplay,
-	OtpForm
+	OtpForm,
+	IconTitle
 } from '../../components';
 import { errorHandler } from '../../components/OtpForm/utils';
 import ChangePasswordForm, { generateFormValues } from './ChangePasswordForm';
@@ -264,6 +266,10 @@ class UserVerification extends Component {
 		const { otp, email, otp_enabled } = this.props.user;
 		return (
 			<div>
+				{!isMobile && <IconTitle
+					text={STRINGS.ACCOUNTS.TAB_SECURITY}
+					textType="title"
+				/>}
 				<Accordion sections={sections} ref={this.setRef} />
 				<Dialog
 					isOpen={dialogIsOpen && !otp.requesting}

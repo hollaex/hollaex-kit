@@ -5,7 +5,7 @@ import { isMobile } from 'react-device-detect';
 
 import { TabController, CheckTitle, MobileBarTabs } from '../../components';
 import { ICONS } from '../../config/constants';
-import { UserProfile, UserSecurity, UserSettings } from '../';
+import { UserProfile, UserSecurity, UserSettings, Summary, Verification } from '../';
 import STRINGS from '../../config/localizedStrings';
 import { openContactForm } from '../../actions/appActions';
 import { requestLimits, requestFees } from '../../actions/userAction';
@@ -15,16 +15,20 @@ const getInitialTab = ({ name, path }) => {
 	let activeDevelopers = false;
 	if (path === 'account') {
 		activeTab = 0;
+	} else if (path === 'summary') {
+		activeTab = 0;
 	} else if (path === 'security') {
 		activeTab = 1;
 	} else if (path === 'developers') {
 		activeTab = 1;
 		activeDevelopers = true;
-	} else if (path === 'settings') {
+	} else if (path === 'verification') {
 		activeTab = 2;
+	} else if (path === 'settings') {
+		activeTab = 3;
 		activeDevelopers = true;
 	} else if (path === 'account/settings/username') {
-		activeTab = 2;
+		activeTab = 3;
 		activeDevelopers = true;
 	}
 	return {
@@ -77,7 +81,7 @@ class Account extends Component {
 	};
 
 	updateTabs = (
-		{ verification_level, otp_enabled, bank_account, id_data, route },
+		{ verification_level, otp_enabled, bank_account, id_data, full_name, phone_number, route },
 		updateActiveTab = false
 	) => {
 		let activeTab = this.state.activeTab > -1 ? this.state.activeTab : 0;
@@ -88,39 +92,28 @@ class Account extends Component {
 			activeTab = initialValues.activeTab;
 			activeDevelopers = initialValues.activeDevelopers;
 		}
+		let verificationPending = false;
+		if (verification_level < 1 && !full_name) {
+			verificationPending = true;
+		} else if (!id_data.verified) {
+			verificationPending = true;
+		} else if (!phone_number) {
+			verificationPending = true;
+		} else if (!bank_account.filter(acc => acc.status === 3).length) {
+			verificationPending = true;
+		}
 
 		const tabs = [
 			{
 				title: isMobile ? (
-					STRINGS.ACCOUNTS.TAB_PROFILE
+					STRINGS.SUMMARY.TITLE
 				) : (
-					<CheckTitle
-						title={STRINGS.ACCOUNTS.TAB_PROFILE}
-						icon={ICONS.VERIFICATION_ID_INACTIVE}
-						notifications={
-							this.hasUserVerificationNotifications(
-								verification_level,
-								bank_account,
-								id_data
-							)
-								? '!'
-								: ''
-						}
-					/>
-				),
-				notifications: this.hasUserVerificationNotifications(
-					verification_level,
-					bank_account,
-					id_data
-				)
-					? '!'
-					: '',
-				content: (
-					<UserProfile
-						goToVerification={this.goToVerification}
-						openContactForm={this.openContactForm}
-					/>
-				)
+						<CheckTitle
+							title={STRINGS.SUMMARY.TITLE}
+							icon={ICONS.TAB_SUMMARY}
+						/>
+					),
+				content: <Summary />
 			},
 			{
 				title: isMobile ? (
@@ -137,6 +130,18 @@ class Account extends Component {
 			},
 			{
 				title: isMobile ? (
+					STRINGS.ACCOUNTS.TAB_VERIFICATION
+				) : (
+						<CheckTitle
+							title={STRINGS.ACCOUNTS.TAB_VERIFICATION}
+							icon={ICONS.TAB_SUMMARY}
+						/>
+					),
+				notifications: verificationPending ? '!' : '',
+				content: <Verification />
+			},
+			{
+				title: isMobile ? (
 					STRINGS.ACCOUNTS.TAB_SETTINGS
 				) : (
 					<CheckTitle
@@ -147,7 +152,6 @@ class Account extends Component {
 				content: <UserSettings />
 			}
 		];
-
 		this.setState({ tabs, activeTab });
 	};
 
@@ -158,7 +162,6 @@ class Account extends Component {
 	renderContent = (tabs, activeTab) => tabs[activeTab].content;
 
 	openContactForm = (data) => {
-		// console.log('here');
 		this.props.openContactForm(data);
 	};
 	goToVerification = () => this.props.router.push('/verification');
@@ -186,14 +189,14 @@ class Account extends Component {
 			</div>
 		) : (
 			<div className="presentation_container apply_rtl">
-				<TabController
+				{/* <TabController
 					activeTab={activeTab}
 					setActiveTab={this.setActiveTab}
 					tabs={tabs}
 					title={STRINGS.ACCOUNTS.TITLE}
 					titleIcon={ICONS.ACCOUNT_LINE}
 					className="account-tab"
-				/>
+				/> */}
 				<div className="inner_container">
 					{activeTab > -1 && this.renderContent(tabs, activeTab)}
 				</div>
@@ -203,6 +206,7 @@ class Account extends Component {
 }
 
 const mapStateToProps = (state) => ({
+	user: state.user,
 	verification_level: state.user.verification_level,
 	limits: state.user.limits,
 	fees: state.user.feeValues,
@@ -210,6 +214,8 @@ const mapStateToProps = (state) => ({
 	id: state.user.id,
 	bank_account: state.user.userData.bank_account,
 	id_data: state.user.userData.id_data,
+	phone_number: state.user.userData.phone_number,
+	full_name: state.user.userData.full_name,
 	activeLanguage: state.app.language
 });
 

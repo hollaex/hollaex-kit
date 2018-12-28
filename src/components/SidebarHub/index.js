@@ -22,7 +22,8 @@ class SidebarHub extends Component {
 				<div className="d-flex sidebar_hub-content d-flex flex-column">
 				{isLogged ?
 					<div>
-						<Section
+						<Wallet />
+						{/* <Section
 							title={STRINGS.ACCOUNT_TEXT}
 							icon={ICONS.SIDEBAR_ACCOUNT_ACTIVE}
 							active={activePath === 'account'}
@@ -35,7 +36,7 @@ class SidebarHub extends Component {
 							path="/wallet"
 						>
 							<Wallet />
-						</Section>
+						</Section> */}
 					</div> :
 					<div>
 						<IconTitle

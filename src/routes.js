@@ -28,10 +28,10 @@ import {
 	RequestResetPassword,
 	ResetPassword,
 	QuickTrade,
-	Verification,
 	Chat,
 	UserSettings,
-	WithdrawConfirmation
+	WithdrawConfirmation,
+	AddTradeTabs
 } from './containers';
 
 import store from './store';
@@ -143,6 +143,8 @@ export default (
 			<Route path="security" name="Security" component={Account} />
 			<Route path="developers" name="Developers" component={Account} />
 			<Route path="settings" name="Settings" component={Account} />
+			<Route path="summary" name="Summary" component={Account} />
+			<Route path="verification" name="Verification" component={Account} onEnter={requireAuth} />
 			<Route path="wallet" name="Wallet" component={MainWallet} onEnter={requireAuth}/>
 			<Route path="wallet/:currency" name="Wallet" component={CurrencyWallet} onEnter={requireAuth}/>
 			<Route path="wallet/:currency/deposit" name="Deposit" component={Deposit} onEnter={requireAuth}/>
@@ -154,6 +156,7 @@ export default (
 				onEnter={requireAuth}
 			/>
 			<Route path="trade/:pair" name="Trade" component={Trade} />
+			<Route path="trade/add/tabs" name="Trade Tabs" component={AddTradeTabs} />
 			<Route path="quick-trade/:pair" name="Quick Trade" component={QuickTrade} />
 			<Route path="chat" name="Chat" component={Chat} onEnter={requireAuth}/>
 			<Route
@@ -162,12 +165,6 @@ export default (
 				component={WithdrawConfirmation}
 			/>
 		</Route>
-		<Route
-			path="verification"
-			name="Verification"
-			component={Verification}
-			onEnter={requireAuth}
-		/>
 		<Route path="privacy-policy" component={Legal} content="legal" onEnter={requireAuth}/>
 		<Route path="general-terms" component={Legal} content="terms" onEnter={requireAuth}/>
 		<Route path="*" component={NotFound} />

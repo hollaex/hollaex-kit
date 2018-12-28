@@ -67,6 +67,7 @@ class Login extends Component {
 				this.redirectToHome();
 			})
 			.catch((err) => {
+				console.log('err', err);
 				const _error = err.response.data
 					? err.response.data.message
 					: err.message;

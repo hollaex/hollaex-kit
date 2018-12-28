@@ -1,5 +1,6 @@
 export default {
 	APP_TITLE: 'Hollaex',
+	APP_SUB_TITLE: 'White Label Cryptocurrency Exchange', // ToDo: need to add that in fasri
 	APP_NAME: 'hollaex',
 	FIAT_NAME: 'EURO',
 	FIAT_FULLNAME: 'Euro',
@@ -114,7 +115,11 @@ export default {
 		TAB_SECURITY: 'Security',
 		TAB_NOTIFICATIONS: 'Notifications',
 		TAB_SETTINGS: 'Settings',
-		TAB_PROFILE: 'Profile'
+		TAB_PROFILE: 'Profile',
+		TAB_WALLET: 'Wallet',
+		TAB_SUMMARY: 'Summary',
+		TAB_API: 'API',
+		TAB_SIGNOUT: 'Signout'
 	},
 	CONTACT_FORM: {
 		CATEGORY_LABEL: 'Category',
@@ -343,9 +348,14 @@ export default {
 		TEXT_2: 'You can now proceed to login'
 	},
 	USER_VERIFICATION: {
+		INFO_TXT: 'Here you can monitor your progress towards verification and an account upgrades.', // ToDo: Here we need to add this in farsi
+		INFO_TXT_1: 'Please submit the relevent information needed for each section below.Only when all sections have submissions completed will your information be reviewed and approved for an account upgrade.', // ToDo: Here we need to add this in farsi
+		INFO_TXT_2: '* Bank and Identity section require {0} in order to be fully verified.', // ToDo: Here we need to add this in farsi
+		DOCUMENTATIONS: 'documentations',
 		COMPLETED: 'Completed',
 		PENDING_VERIFICATION: 'Pending verification',
 		TITLE_EMAIL: 'Email',
+		MY_EMAIL: 'My Email', // ToDo: Here we need to add this in farsi
 		TITLE_USER_DOCUMENTATION: 'Identification',
 		TITLE_ID_DOCUMENTS: 'Documents',
 		TITLE_BANK_ACCOUNT: 'Bank Account',
@@ -368,6 +378,33 @@ export default {
 		PENDING_VERIFICATION_BANK: 'Your bank details are being verified',
 		PENDING_VERIFICATION_DOCUMENTS: 'Your documents are being verified',
 		GOTO_VERIFICATION: 'Go to verification',
+		CONNECT_BANK_ACCOUNT: 'Connect Bank Account', // ToDo: Add this into farsi in exir
+		ACTIVATE_2FA: 'Activate 2FA', // ToDo: Add this into farsi in exir
+		INCOMPLETED: 'Incompleted', // ToDo: Add this into farsi in exir
+		BANK_VERIFICATION: 'Bank Verification', // ToDo: Add this into farsi in exir
+		IDENTITY_VERIFICATION: 'Identity Verification', // ToDo: Add this into farsi in exir
+		PHONE_VERIFICATION: 'Phone Verification', // ToDo: Add this into farsi in exir
+		DOCUMENT_VERIFICATION: 'Document Verification', // ToDo: Add this into farsi in exir
+		START_BANK_VERIFICATION: 'Start Bank Verification', // ToDo: Add this into farsi in exir
+		START_IDENTITY_VERIFICATION: 'Start Identity Verification', // ToDo: Add this into farsi in exir
+		START_PHONE_VERIFICATION: 'Start Phone Verification', // ToDo: Add this into farsi in exir
+		START_DOCUMENTATION_SUBMISSION: 'Start Documentation Submission', // ToDo: Add this into farsi in exir
+		GO_BACK: 'Go Back', // ToDo: Add this into farsi in exir
+		BANK_VERIFICATION_TEXT_1: 'You can add up to 3 bank accounts. International bank accounts will require you contacting customer support and will have limited withdrawal limits.', // ToDo: Add this into farsi in exir
+		BANK_VERIFICATION_TEXT_2: 'By verifing your bank acount you can obtain the following:', // ToDo: Add this into farsi in exir
+		FIAT_WITHDRAWAL: 'Fiat withdrawal', // ToDo: Add this into farsi in exir
+		FIAT_DEPOSITS: 'Fiat deposits', // ToDo: Add this into farsi in exir
+		ADD_ANOTHER_BANK_ACCOUNT: 'Add Another Bank Account', // ToDo: Add this into farsi in exir
+		BANK_NAME: 'Bank Name', // ToDo: Add this into farsi in exir
+		ACCOUNT_NUMBER: 'Account Number', // ToDo: Add this into farsi in exir
+		CARD_NUMBER: 'Card Number', // ToDo: Add this into farsi in exir
+		BANK_VERIFICATION_HELP_TEXT: 'In order for this section to be verified you must complete the {0} section.', // ToDo: Add this into farsi in exir
+		DOCUMENT_SUBMISSION: 'Document Submission', // ToDo: Add this into farsi in exir
+		REVIEW_IDENTITY_VERIFICATION: 'Review Identity Verification', // ToDo: Add this into farsi in exir
+		PHONE_DETAILS: 'Phone Details', // ToDo: Add this into farsi in exir
+		PHONE_COUNTRY_ORIGIN: 'Phone Country of Origin', // ToDo: Add this into farsi in exir
+		MOBILE_NUMBER: 'Mobile Number', // ToDo: Add this into farsi in exir
+		DOCUMENT_PROOF_SUBMISSION: 'Document Proof Submission', // ToDo: Add this into farsi in exir
 		USER_DOCUMENTATION_FORM: {
 			FORM_FIELDS: {
 				FIRST_NAME_LABEL: 'First name',
@@ -399,7 +436,7 @@ export default {
 				POSTAL_CODE_PLACEHOLDER: 'Type your postal code',
 				PHONE_CODE_LABEL: 'Country',
 				PHONE_CODE_PLACEHOLDER: 'Select the country your phone is connected to',
-				PHONE_CODE_DISPLAY: '({0}) {1}', // 0 -> (+21)  1 -> Iran
+				PHONE_CODE_DISPLAY: '({0}) {1}', // 0 -> (+21)  1 -> South Korea
 				PHONE_NUMBER_LABEL: 'Phone number',
 				PHONE_NUMBER_PLACEHOLDER: 'Type your phone number',
 				SMS_SEND: 'Send SMS',
@@ -410,7 +447,10 @@ export default {
 				TEXT:
 					'IMPORTANT: Enter your name into the fields exactly as it appears on your identity document (full first name, any middle names/initials and full last name(s)). Are you a business? Contact customer support for a corporate account.',
 				TITLE_PERSONAL_INFORMATION: 'Personal Information',
-				TITLE_PHONE: 'Phone'
+				TITLE_PHONE: 'Phone',
+				PHONE_VERIFICATION_TXT: 'Providing valid contact details will assist EXIR greatly in conflict resolution while preventing unwanted transactions on your account.',
+				PHONE_VERIFICATION_TXT_1: 'Receive real-time updates for deposits and withdrawals by sharing your mobile phone number.',
+				PHONE_VERIFICATION_TXT_2: 'Further prove your identity and address by sharing your LAN phone number (optional).',
 			}
 		},
 		ID_DOCUMENTS_FORM: {
@@ -422,7 +462,8 @@ export default {
 					'Please select the date when your document will expire',
 				FRONT: 'Please upload a scan of your photo identity document',
 				PROOF_OF_RESIDENCY:
-					'Please upload a scan of document proving the address you current reside'
+					'Please upload a scan of document proving the address you current reside',
+				SELFIE_PHOTO_ID: 'Please upload a selfie with photo id and note'
 			},
 			FORM_FIELDS: {
 				TYPE_LABEL: 'ID Document Type',
@@ -433,8 +474,6 @@ export default {
 				},
 				ID_NUMBER_LABEL: 'ID Document Number',
 				ID_NUMBER_PLACEHOLDER: 'Type the documents number',
-				ID_NATIONAL_NUMBER_LABEL: 'National Iranian Id',
-				ID_NATIONAL_NUMBER_PLACEHOLDER: 'Type your National Iranian Id number',
 				ID_PASSPORT_NUMBER_LABEL: 'Passport Number',
 				ID_PASSPORT_NUMBER_PLACEHOLDER: 'Type your passport number',
 				ISSUED_DATE_LABEL: 'ID Document Issue Date',
@@ -446,7 +485,9 @@ export default {
 				PASSPORT_LABEL: 'Passport Document',
 				PASSPORT_PLACEHOLDER: 'Add a copy of your Passport document',
 				POR_LABEL: 'Document proving your address',
-				POR_PLACEHOLDER: 'Add a copy of a document that proves your address'
+				POR_PLACEHOLDER: 'Add a copy of a document that proves your address',
+				SELFIE_PHOTO_ID_LABEL: 'Your Selfie with Photo ID and Note',
+				SELFIE_PHOTO_ID_PLACEHOLDER: 'Add a copy of your Selfie with Photo ID and Note',
 			},
 			INFORMATION: {
 				IDENTITY_DOCUMENT: 'Identity Document',
@@ -458,9 +499,10 @@ export default {
 					LIST_ITEM_2: 'VISIBLE IN THEIR ENTIRETY (watermarks are permitted).',
 					LIST_ITEM_3: 'VALID, with the expiry date clearly visible.',
 					WARNING_1:
-						'Only a valid government-issued identification document is accepted.',
+						'Only a valid government-issued identification document is acceptedt; high quality photos or scanned images of these documents are acceptable:',
 					WARNING_2:
-						'Make sure you are uploading your own documents. Any usage of wrong or fake documents will have legal consequences and result in freezing your account immediately.'
+						'Make sure you are uploading your own documents. Any usage of wrong or fake documents will have legal consequences and result in freezing your account immediately.',
+					WARNING_3: 'Please do not submit the identity document as your proof of residence.'
 				},
 				POR: {
 					SECTION_1_TEXT_1:
@@ -479,6 +521,17 @@ export default {
 						'A government-issued document (tax statement, certificate of residency, etc.).',
 					WARNING:
 						'We cannot accept the address on your submitted identity document as a valid proof of residence.'
+				},
+				SELFIE: {
+					TITLE: 'Selfie with Photo ID and Note',
+					INFO_TEXT: "Please provide a photo of you holding your passport or photo ID. In the same picture and have a reference to ‘exir.io’, today's date and your signature displayed.Make sure your face is clearly visible and that your ID details are clearly readable.",
+					REQUIRED: 'Required:',
+					INSTRUCTION_1: 'Your face clearly visable',
+					INSTRUCTION_2: 'Photo ID clearly readable',
+					INSTRUCTION_3: 'Write the word ‘exir.io’',
+					INSTRUCTION_4: "Write today's date",
+					INSTRUCTION_5: "Write your signature",
+					WARNING: 'Selfie with a different inconsistent ID with uploaded content will be rejected'
 				}
 			}
 		},
@@ -489,18 +542,13 @@ export default {
 				ACCOUNT_NUMBER: 'Your bank account number should be 24 digits',
 				ACCOUNT_NUMBER_MAX_LENGTH:
 					'Your bank account number has a limit of 50 characters',
-				SHABA_NUMBER_MAX_LENGTH:
-					'Your shaba number has a limit of 50 characters',
 				CARD_NUMBER: 'Your card number should be 16 digits'
 			},
 			FORM_FIELDS: {
-				IRANIAN_ACCOUNT_LABEL: 'Do you have an Iranian Bank Account?',
 				BANK_NAME_LABEL: 'Bank Name (We reccomend you to use Pasargad Bank for instant withdrawals. Otherwise your withdrawals will have 1 to 2 days delay.',
 				BANK_NAME_PLACEHOLDER: 'Type the name of your bank',
 				ACCOUNT_NUMBER_LABEL: 'Bank Account Number',
 				ACCOUNT_NUMBER_PLACEHOLDER: 'Type your bank account number',
-				SHABA_NUMBER_LABEL: 'Shaba Number',
-				SHABA_NUMBER_PLACEHOLDER: 'Type your Shaba number',
 				ACCOUNT_OWNER_LABEL: 'Bank Account Owner’s Name',
 				ACCOUNT_OWNER_PLACEHOLDER: 'Type the name as on your bank account',
 				CARD_NUMBER_LABEL: 'Bank Card Number',
@@ -602,6 +650,7 @@ export default {
 	PRICE: 'Price',
 	FEE: 'Fee',
 	FEES: 'Fees',
+	LIMIT: 'Limit', // ToDo: Add it into farsi
 	TIME: 'Time',
 	TIMESTAMP: 'Timestamp',
 	MORE: 'More',
@@ -904,5 +953,60 @@ export default {
 	SUCCESFUL_COPY: 'Successfully Copied!',
 	QUICK_TRADE_MODE: 'Quick Trade Mode',
 	JUST_NOW: 'just now',
-	PAIR: 'Pair'
+	PAIR: 'Pair',
+	ZERO_ASSET: 'You have zero assets', // ToDo: need to add this in farsi when move to exir.
+	DEPOSIT_ASSETS: 'Deposit Assets', // ToDo: need to add this in farsi when move to exir.
+	SEARCH_TXT: 'Search', // ToDo: need to add this in farsi when move to exir.
+	SEARCH_ASSETS: 'Search Assets', // ToDo: need to add this in farsi when move to exir.
+	TOTAL_ASSETS_VALUE: 'Total assets value in {0}: {1}', // ToDo: need to add this in farsi when move to exir.
+	SUMMARY: { // ToDo: need to add this entire suumary in farsi when move to exir.
+		TITLE: 'Summary',
+		TINY_PINK_SHRIMP_TRADER: 'Tiny Pink Shrimp Trader',
+		TINY_PINK_SHRIMP_TRADER_ACCOUNT: 'Tiny Pink Shrimp Trader Account',
+		LITTLE_RED_SNAPPER_TRADER: 'Little Red Snapper Trader',
+		LITTLE_RED_SNAPPER_TRADER_ACCOUNT: 'Little Red Snapper Trader Account',
+		CUNNING_BLUE_KRAKEN_TRADING: 'Cunning Blue Kraken Trading',
+		CUNNING_BLUE_KRAKEN_TRADING_ACCOUNT: 'Cunning Blue Kraken Trading Account',
+		BLACK_LEVIATHAN_TRADING: 'Black Leviathan Trading',
+		BLACK_LEVIATHAN_TRADING_ACCOUNT: 'Black Leviathan Trading Account',
+		URGENT_REQUIREMENTS: 'Urgent Requirements',
+		TRADING_VOLUME: 'Trading Volume',
+		ACCOUNT_ASSETS: 'Account Assets',
+		ACCOUNT_DETAILS: 'Account Details',
+		SHRIMP_ACCOUNT_TXT_1: 'Your journey begins here!',
+		SHRIMP_ACCOUNT_TXT_2: 'Keep swimming true, you’ll soon stand out from the rest of the shoal',
+		SNAPPER_ACCOUNT_TXT_1: 'Congrats on staying your course through the swell of the market.',
+		SNAPPER_ACCOUNT_TXT_2: 'Forge through and fight the surge for more crypto treasures ahead.',
+		KRAKEN_ACCOUNT_TXT_1: 'Likelier to crack jokes than hulls, this crustacean has weathered his share of storms!',
+		LEVIATHAN_ACCOUNT_TXT_1: 'Beast from the abyss, seeing through altcoins into unfathomable depths, masters of midnight waters and tidal wave.',
+		VIEW_FEE_STRUCTURE: 'View Fee Structure and Limits',
+		UPGRADE_ACCOUNT: 'Upgrade Account',
+		ACTIVE_2FA_SECURITY: 'Active 2FA Security',
+		ACCOUNT_ASSETS_TXT_1: 'Displayed is a summery of all your assets.',
+		ACCOUNT_ASSETS_TXT_2: 'Holding a large amounts of assets will entitle you for an account upgrade which includes a unique badge and lower trading fees.',
+		TRADING_VOLUME_TXT_1: 'Your trading volume history is displayed in {0} and is a nominally calculated at the end of every month from all trading pairs.',
+		TRADING_VOLUME_TXT_2: 'High trading activity will entitle you for an account upgrade rewarding you with a unique badge and other perks.',
+		ACCOUNT_DETAILS_TXT_1: 'Your account type determines your account badge, trading fee, deposits and withdrawal limits.',
+		ACCOUNT_DETAILS_TXT_2: 'Your trading account age, activity level and total account assets amount will determine if your account is legable for an upgrade.',
+		ACCOUNT_DETAILS_TXT_3: 'Maintaining your account level requires constant trading and maintaining a certain amount of deposited assets.',
+		ACCOUNT_DETAILS_TXT_4: 'Periodic downgrading of accounts will occur if activity and assets are not maintained.',
+		REQUIREMENTS: 'Requirements',
+		REQUEST_ACCOUNT_UPGRADE: 'Request an Account Upgrade',
+		FEES_AND_LIMIT: 'Fee and Limit Structure for',
+		FEES_AND_LIMIT_TXT_1: 'Becoming a crypto trader marks new beginning. Armed with wits, will and speed, dive into the bottomless blue.Only by delving deep within the crypto oceans will you unlock your fortunes.',
+		FEES_AND_LIMIT_TXT_2: 'Each account has its own fees and deposit and withdrawal limits.Please visit the {0} to get more information.',
+		DEPOSIT_WITHDRAWAL_ALLOWENCE: 'Deposit & withdrawal allowence',
+		TRADING_FEE_STRUCTURE: 'Trading fee structure',
+		WITHDRAWAL: 'Withdrawal',
+		DEPOSIT: 'Deposit',
+		TAKER: 'Taker',
+		MAKER: 'Maker',
+		WEBSITE: 'website',
+		VIP_TRADER_ACCOUNT_ELIGIBLITY: 'VIP Trader Account Upgrade Eligiblity',
+		PRO_TRADER_ACCOUNT_ELIGIBLITY: 'Pro Trader Account Upgrade Eligiblity',
+		NOMINAL_TRADING: 'Nominal Trading',
+		NOMINAL_TRADING_WITH_MONTH: 'Nominal Trading Last {0}',
+		ACCOUNT_AGE_OF_MONTHS: 'Account Age of {0} Months',
+		TRADING_VOLUME_EQUIVALENT: '{0} {1} Trading Volume Equivalent'
+	}
 };

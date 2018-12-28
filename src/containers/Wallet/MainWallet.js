@@ -184,7 +184,7 @@ class Wallet extends Component {
 					<div className="presentation_container apply_rtl">
 						<IconTitle
 							text={STRINGS.WALLET_TITLE}
-							iconPath={ICONS.BITCOIN_WALLET}
+							// iconPath={ICONS.BITCOIN_WALLET}
 							useSvg={true}
 							textType="title"
 						/>
