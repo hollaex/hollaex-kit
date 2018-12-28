@@ -200,6 +200,11 @@ $mobile-regular--font-size: 1.5rem;
 					.own-message {
 						line-height: 1.1rem;
 						word-break: keep-all;
+
+						.user-icon {
+							height: 3rem;
+							width: 3rem;
+						}
 					}
 				}
 			}

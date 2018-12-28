@@ -3,7 +3,7 @@ import querystring from 'query-string';
 
 const VERIFICATION_ENDPOINTS = {
 	VERIFY_SMS_CODE: '/user/verify/sms',
-	VERIFY_BANK: '/user/verify/bank_data',
+	VERIFY_BANK: '/user/bank',
 	GET_USER: '/user'
 };
 
@@ -24,7 +24,6 @@ export const verifyBankData = (values) => {
 		card_number: values.card_number,
 		bank_name: values.bank_name,
 		account_number: values.account_number,
-		shaba_number: values.shaba_number
 	};
 	return axios.post(VERIFICATION_ENDPOINTS.VERIFY_BANK, body);
 };

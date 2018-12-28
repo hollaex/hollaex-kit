@@ -8,7 +8,7 @@ import {
 	requiredWithCustomMessage
 } from '../../components/Form/validations';
 import renderFields from '../../components/Form/factoryFields';
-import { Button } from '../../components';
+import { Button, IconTitle } from '../../components';
 import STRINGS from '../../config/localizedStrings';
 import { COUNTRIES_OPTIONS } from '../../utils/countries';
 
@@ -100,56 +100,6 @@ class IdentityVerification extends Component {
 				validate: [required],
 				fullWidth: isMobile
 			},
-			id_number: {
-				type: 'text',
-				label:
-					STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS[
-						`ID_${ID_NUMBER_TYPE}_NUMBER_LABEL`
-					],
-				placeholder:
-					STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS[
-						`ID_${ID_NUMBER_TYPE}_NUMBER_PLACEHOLDER`
-					],
-				validate: [
-					requiredWithCustomMessage(
-						STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.VALIDATIONS.ID_NUMBER
-					)
-				],
-				fullWidth: isMobile
-			},
-			id_issued_date: {
-				type: 'date-dropdown',
-				label:
-					STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS
-						.ISSUED_DATE_LABEL,
-				validate: [
-					requiredWithCustomMessage(
-						STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.VALIDATIONS.ISSUED_DATE
-					),
-					isBefore()
-				],
-				endDate: moment().add(1, 'days'),
-				language,
-				fullWidth: isMobile
-			},
-			id_expiration_date: {
-				type: 'date-dropdown',
-				label:
-					STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS
-						.EXPIRATION_DATE_LABEL,
-				validate: [
-					requiredWithCustomMessage(
-						STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.VALIDATIONS
-							.EXPIRATION_DATE
-					),
-					isBefore(moment().add(15, 'years'))
-				],
-				endDate: moment().add(15, 'years'),
-				addYears: 15,
-				yearsBefore: 5,
-				language,
-				fullWidth: isMobile
-			},
 			country: {
 				type: 'autocomplete',
 				label:
@@ -207,6 +157,7 @@ class IdentityVerification extends Component {
 		return updateUser(values)
 			.then(({ data }) => {
 				this.props.moveToNextStep('identity', data);
+				this.props.setActivePageContent(0);
 			})
 			.catch((err) => {
 				const error = { _error: err.message };
@@ -215,6 +166,11 @@ class IdentityVerification extends Component {
 				}
 				throw new SubmissionError(error);
 			});
+	};
+
+	onGoBack = () => {
+		this.props.setActivePageContent(0);
+		this.props.setActiveTab(2);
 	};
 
 	render() {
@@ -228,25 +184,38 @@ class IdentityVerification extends Component {
 		} = this.props;
 		const { formFields } = this.state;
 		return (
-			<form className="d-flex flex-column w-100 verification_content-form-wrapper">
-				<HeaderSection
-					title={
-						STRINGS.USER_VERIFICATION.USER_DOCUMENTATION_FORM.INFORMATION
-							.TITLE_PERSONAL_INFORMATION
-					}
-					openContactForm={openContactForm}
-				/>
-				{renderFields(formFields)}
-				{error && (
-					<div className="warning_text">{getErrorLocalized(error)}</div>
-				)}
-				<Button
-					type="button"
-					onClick={handleSubmit(this.handleSubmit)}
-					label={STRINGS.NEXT}
-					disabled={pristine || submitting || !valid || !!error}
-				/>
-			</form>
+			<div className="presentation_container apply_rtl verification_container">
+				<IconTitle text={STRINGS.USER_VERIFICATION.IDENTITY_VERIFICATION} textType="title" />
+				<form className="d-flex flex-column w-100 verification_content-form-wrapper">
+					<HeaderSection
+						title={
+							STRINGS.USER_VERIFICATION.USER_DOCUMENTATION_FORM.INFORMATION
+								.TITLE_PERSONAL_INFORMATION
+						}
+						icon={ICONS.VERIFICATION_ID_NEW}
+						openContactForm={openContactForm}
+					>
+						<div className="my-1 verification-info-txt">{STRINGS.USER_VERIFICATION.USER_DOCUMENTATION_FORM.INFORMATION.TEXT}</div>
+					</HeaderSection>
+					{renderFields(formFields)}
+					{error && (
+						<div className="warning_text">{getErrorLocalized(error)}</div>
+					)}
+					<div className="d-flex">
+						<Button
+							label={STRINGS.USER_VERIFICATION.GO_BACK}
+							className="mr-5"
+							onClick={this.onGoBack}
+						/>
+						<Button
+							type="button"
+							onClick={handleSubmit(this.handleSubmit)}
+							label={STRINGS.SUBMIT}
+							disabled={pristine || submitting || !valid || !!error}
+						/>
+					</div>
+				</form>
+			</div>
 		);
 	}
 }

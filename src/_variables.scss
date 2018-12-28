@@ -66,6 +66,8 @@ $sidebar-border--color: $colors-deactivate;
 $quick-trade--background: #ebf3f1;
 $border-color: $colors-deactivate-color2;
 $error-color: $colors-notifications-red;
+$app-menu-bar-background-color: #F2F2F3;
+$app-menu-bar-border--color: #CCCBCA;
 
 $bitcoin-color-main: $colors-currencies-btc;
 
@@ -91,6 +93,7 @@ $en--font-family: 'Open Sans';
 $raleway--font-family: 'Raleway';
 $raleway-extrabold--font-family: 'Raleway Extrabold';
 $raleway-medium--font-family: 'Raleway Medium';
+$raleway-light--font-family: 'Raleway Light';
 $title--font-family: $raleway-extrabold--font-family;
 
 $backgound-pattern: '/assets/pattern-grey.jpg';
@@ -104,6 +107,9 @@ $dialog-min-height: 30rem;
 $navigation_bar-height: 36px;
 $navigation_bar-action_button: 7.5rem;
 $navigation_bar-font_size: $font-size-subtext;
+
+// APP SECONDARY BAR
+$navigation_bar_secondary-height: 32px;
 
 // FOOTER
 $footer-height: 64px;
@@ -148,4 +154,5 @@ $input--height: 4.5rem;
 
 // CONTAINERS
 $max-content-height: calc(100vh - #{$navigation_bar-height});
+$max-content-secondary-height: calc(100vh - #{$navigation_bar-height * 2});
 $max-width-content: 50rem;

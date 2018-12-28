@@ -42,12 +42,15 @@ class ChatMessageWithText extends Component {
 	};
 
 	render() {
-		const { username, to, messageContent, ownMessage, timestamp } = this.props;
+		const { username, to, messageContent, ownMessage, timestamp, chatIcon } = this.props;
 		const { maxLines } = this.state;
 		return (
 			<div className={classnames('nonmobile')}>
 				<Timestamp timestamp={timestamp} />
-				<div className="d-inline mr-1 own-message username">{`${username}:`}</div>
+				<div className="d-inline mr-1 own-message username">
+					{chatIcon && <img src={chatIcon} alt="trader account" className="user-icon" />}
+					{`${username}:`}
+				</div>
 				{to && <div className="mr-1">{`${to}:`}</div>}
 				{ownMessage ? (
 					<div className="d-inline message">{messageContent}</div>
@@ -75,7 +78,7 @@ class ChatMessageWithImage extends Component {
 	};
 
 	render() {
-		const { username, to, messageType, messageContent, timestamp } = this.props;
+		const { username, to, messageType, messageContent, timestamp, chatIcon } = this.props;
 		const { hideImage } = this.state;
 
 		return (
@@ -83,6 +86,7 @@ class ChatMessageWithImage extends Component {
 				<div className="d-flex flex-row">
 					<div>
 						<Timestamp timestamp={timestamp} />
+						{chatIcon && <img src={chatIcon} alt="trader account" className="user-icon" />}
 						<div className="d-inline username">{`${username}:`}</div>
 						{to && <div className="d-inline mr-1">{`${to}:`}</div>}
 					</div>
@@ -130,7 +134,8 @@ export class ChatMessage extends Component {
 			messageType,
 			messageContent,
 			ownMessage,
-			timestamp
+			timestamp,
+			chatIcon
 		} = this.props;
 		const { showOptions } = this.state;
 		const imageType = messageType === 'image';
@@ -153,6 +158,7 @@ export class ChatMessage extends Component {
 							messageContent={messageContent}
 							messageType={messageType}
 							timestamp={timestamp}
+							chatIcon={chatIcon}
 						/>
 					) : (
 						<ChatMessageWithText
@@ -161,6 +167,7 @@ export class ChatMessage extends Component {
 							messageContent={messageContent}
 							ownMessage={ownMessage}
 							timestamp={timestamp}
+							chatIcon={chatIcon}
 						/>
 					)}
 				</div>

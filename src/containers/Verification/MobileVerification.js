@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { reduxForm, formValueSelector, SubmissionError } from 'redux-form';
 import { required } from '../../components/Form/validations';
 import renderFields from '../../components/Form/factoryFields';
-import { Button } from '../../components';
+import { Button, IconTitle } from '../../components';
 import STRINGS from '../../config/localizedStrings';
 import { PHONE_OPTIONS } from '../../utils/countries';
 import { ICONS } from '../../config/constants';
@@ -76,9 +76,9 @@ class MobileVerification extends Component {
 					STRINGS.USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS
 						.SMS_CODE_PLACEHOLDER,
 				disabled: !codeRequested,
-				validate: [required]
-			},
-			fullWidth: isMobile
+				validate: [required],
+				fullWidth: isMobile
+			}
 		};
 
 		this.setState({ formFields });
@@ -98,6 +98,7 @@ class MobileVerification extends Component {
 		return verifySmsCode(values)
 			.then(({ data }) => {
 				this.props.moveToNextStep('mobile', values);
+				this.props.setActivePageContent(0);
 			})
 			.catch((err) => {
 				const error = { _error: err.message };
@@ -127,6 +128,11 @@ class MobileVerification extends Component {
 		}
 	};
 
+	onGoBack = () => {
+		this.props.setActivePageContent(0);
+		this.props.setActiveTab(3);
+	};
+
 	render() {
 		const {
 			handleSubmit,
@@ -138,24 +144,39 @@ class MobileVerification extends Component {
 		} = this.props;
 		const { formFields, codeRequested } = this.state;
 		return (
-			<form className="d-flex flex-column w-100 verification_content-form-wrapper">
-				<HeaderSection
-					title={STRINGS.USER_VERIFICATION.TITLE_MOBILE_HEADER}
-					openContactForm={openContactForm}
-				/>
-				{renderFields(formFields)}
-				{error && (
-					<div className="warning_text">{getErrorLocalized(error)}</div>
-				)}
-				<Button
-					type="button"
-					onClick={handleSubmit(this.handleSubmit)}
-					label={STRINGS.NEXT}
-					disabled={
-						pristine || submitting || !valid || !!error || !codeRequested
-					}
-				/>
-			</form>
+			<div className="presentation_container apply_rtl verification_container">
+				<IconTitle text={STRINGS.USER_VERIFICATION.PHONE_VERIFICATION} textType="title" />
+				<form className="d-flex flex-column w-100 verification_content-form-wrapper">
+					<HeaderSection
+						title={STRINGS.USER_VERIFICATION.PHONE_DETAILS}
+						openContactForm={openContactForm}
+						icon={ICONS.VERIFICATION_PHONE_NEW}
+					>
+						<div>{STRINGS.USER_VERIFICATION.USER_DOCUMENTATION_FORM.INFORMATION.PHONE_VERIFICATION_TXT}</div>
+						<div>{STRINGS.USER_VERIFICATION.USER_DOCUMENTATION_FORM.INFORMATION.PHONE_VERIFICATION_TXT_1}</div>
+						<div>{STRINGS.USER_VERIFICATION.USER_DOCUMENTATION_FORM.INFORMATION.PHONE_VERIFICATION_TXT_2}</div>
+					</HeaderSection>
+					{renderFields(formFields)}
+					{error && (
+						<div className="warning_text">{getErrorLocalized(error)}</div>
+					)}
+					<div className="d-flex">
+						<Button
+							label={STRINGS.USER_VERIFICATION.GO_BACK}
+							className="mr-5"
+							onClick={this.onGoBack}
+						/>
+						<Button
+							type="button"
+							onClick={handleSubmit(this.handleSubmit)}
+							label={STRINGS.SUBMIT}
+							disabled={
+								pristine || submitting || !valid || !!error || !codeRequested
+							}
+						/>
+					</div>
+				</form>
+			</div>
 		);
 	}
 }
