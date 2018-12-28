@@ -29,7 +29,7 @@ import VerificationHome from './VerificationHome';
 import IdentityVerification from './IdentityVerification';
 import MobileVerification from './MobileVerification';
 import DocumentsVerification from './DocumentsVerification';
-import { mobileInitialValues, identityInitialValues } from './utils';
+import { mobileInitialValues, identityInitialValues, documentInitialValues } from './utils';
 import {
 	getClasesForLanguage,
 	getFontClassForLanguage
@@ -343,9 +343,8 @@ class Verification extends Component {
 			case 4:
 				return <DocumentsVerification
 						nationality={user.nationality}
-						initialValues={{
-							type: user.nationality === 'IR' ? 'id' : 'passport'
-						}}
+						idData={user.id_data}
+						initialValues={documentInitialValues(user)}
 						moveToNextStep={this.goNextTab}
 						skip={this.skip}
 						activeLanguage={activeLanguage}

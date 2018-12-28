@@ -302,7 +302,10 @@ export const ICONS = {
 	VOLUME_PENDING: `${process.env.PUBLIC_URL}/assets/images/volume-pending-icon.svg`,
 	VOLUME_PENDING_DARK: `${process.env.PUBLIC_URL}/assets/images/volume-pending-dark.svg`,
 	SELF_KYC_ID_FA: `${process.env.PUBLIC_URL}/assets/self-kyc-id-note-persian.png`,
-	SELF_KYC_ID_EN: `${process.env.PUBLIC_URL}/assets/self-kyc-id-note-english.png`
+	SELF_KYC_ID_EN: `${process.env.PUBLIC_URL}/assets/self-kyc-id-note-english.png`,
+	CHAT_ICON_LVL_3: `${process.env.PUBLIC_URL}/assets/images/kraken-chat-lvl-3.svg`,
+	CHAT_ICON_LVL_4: `${process.env.PUBLIC_URL}/assets/images/whale-chat-lvl-4.svg`,
+	CHAT_ICON_SPECIAL: `${process.env.PUBLIC_URL}/assets/images/fin-chat-special.svg`
 };
 
 export const SOCIAL_ICONS = {

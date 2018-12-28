@@ -43,7 +43,7 @@ class AppMenuBar extends Component {
         if (user.verification_level < 1 && !full_name) {
             verificationPending += 1;
         }
-        if (!id_data.verified) {
+        if (id_data.status !== 3) {
             verificationPending += 1;
         }
         if (!phone_number) {

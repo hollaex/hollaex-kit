@@ -74,7 +74,7 @@ class Account extends Component {
 		bank_account = {},
 		id_data = {}
 	) => {
-		if (verification_level >= 2 && bank_account.verified && id_data.verified) {
+		if (verification_level >= 2 && bank_account.verified && id_data.status === 3) {
 			return false;
 		}
 		return true;
@@ -95,7 +95,7 @@ class Account extends Component {
 		let verificationPending = false;
 		if (verification_level < 1 && !full_name) {
 			verificationPending = true;
-		} else if (!id_data.verified) {
+		} else if (id_data.status !== 3) {
 			verificationPending = true;
 		} else if (!phone_number) {
 			verificationPending = true;

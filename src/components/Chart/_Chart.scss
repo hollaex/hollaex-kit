@@ -59,6 +59,8 @@ $dark-theme-chart-content: #a3a1c9;
 }
 
 .bar_wrapper {
+	height: 38rem;
+
 	.bar_yAxis {
 		line {
 			fill: $colors-deactivate-color2;

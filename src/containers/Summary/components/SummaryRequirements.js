@@ -143,7 +143,7 @@ const SummaryRequirements = ({ user, isAccountDetails = false, contentClassName 
                     </div>
                 }
                 {(!isAccountDetails && ((user.verification_level < 1 && !full_name) ||
-                    !id_data.verified ||
+                    !id_data.status === 3 ||
                     !phone_number ||
                     !bank_account.verified))
                     ? <div className="trade-account-link mb-2">
@@ -153,7 +153,7 @@ const SummaryRequirements = ({ user, isAccountDetails = false, contentClassName 
                     </div>
                     : null
                 }
-                {isAccountDetails && user.verification_level > 2 && selectedLevel === user.verification_level
+                {isAccountDetails
                     ? <div className="mt-2">
                         <Button
                             label={STRINGS.SUMMARY.REQUEST_ACCOUNT_UPGRADE}

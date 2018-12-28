@@ -405,6 +405,11 @@ export default {
 		PHONE_COUNTRY_ORIGIN: 'Phone Country of Origin', // ToDo: Add this into farsi in exir
 		MOBILE_NUMBER: 'Mobile Number', // ToDo: Add this into farsi in exir
 		DOCUMENT_PROOF_SUBMISSION: 'Document Proof Submission', // ToDo: Add this into farsi in exir
+		START_DOCUMENTATION_RESUBMISSION: 'Start Documentation Re-Submission', // ToDo: Add this into farsi in exir
+		SUBMISSION_PENDING_TXT: '*This section has already been submitted. Making changes and resubmitting will overwrite your previous information.', // ToDo: Add this into farsi in exir
+		CUSTOMER_SUPPORT_MESSAGE: 'Customer Support Message',
+		DOCUMENT_PENDING_NOTE: 'Your documents is submitted and is pending for review. Please be patient.',
+		DOCUMENT_VERIFIED_NOTE: 'Your documents are completed.',
 		USER_DOCUMENTATION_FORM: {
 			FORM_FIELDS: {
 				FIRST_NAME_LABEL: 'First name',
@@ -825,6 +830,7 @@ export default {
 	NEXT: 'Next',
 	SKIP_FOR_NOW: 'Skip for now',
 	SUBMIT: 'submit',
+	RESUBMIT: 'Resubmit', // ToDo: need to add this entire suumary in farsi when move to exir.
 	VERIFICATION_NOTIFICATION_SKIP_TITLE: 'Missing Documents!',
 	VERIFICATION_NOTIFICATION_SKIP_TEXT:
 		'To get full access to withdrawal and deposit functions on HOLLAEX you must submit your identity documents in your account page.',

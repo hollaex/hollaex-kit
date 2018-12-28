@@ -192,6 +192,7 @@ class DocumentsVerification extends Component {
 
 	render() {
 		const {
+			idData,
 			handleSubmit,
 			pristine,
 			submitting,
@@ -256,19 +257,26 @@ class DocumentsVerification extends Component {
 					)}
 
 					<div className="d-flex verification-buttons-wrapper">
-						<Button
-							type="button"
-							onClick={this.onGoBack}
-							label={STRINGS.USER_VERIFICATION.GO_BACK}
-							disabled={submitting}
-						/>
+						<div className="w-50">
+							<Button
+								type="button"
+								onClick={this.onGoBack}
+								label={STRINGS.USER_VERIFICATION.GO_BACK}
+								disabled={submitting}
+							/>
+						</div>
 						<div className="separator" />
-						<Button
-							type="button"
-							onClick={handleSubmit(this.handleSubmit)}
-							label={STRINGS.SUBMIT}
-							disabled={pristine || submitting || !valid || !!error}
-						/>
+						<div className="w-50">
+							<Button
+								type="button"
+								onClick={handleSubmit(this.handleSubmit)}
+								label={idData.status === 0 ? STRINGS.SUBMIT : `${STRINGS.RESUBMIT}*`}
+								disabled={pristine || submitting || !valid || !!error}
+							/>
+							{idData.status !== 0 &&
+								<span className="content-text">{STRINGS.USER_VERIFICATION.SUBMISSION_PENDING_TXT}</span>
+							}
+						</div>
 					</div>
 				</form>
 			</div>

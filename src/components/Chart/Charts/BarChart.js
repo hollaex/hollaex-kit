@@ -23,22 +23,25 @@ class BarChart extends Component {
     componentDidMount() {
         const donutContainer = document.getElementById("bar-container");
         const rect = donutContainer.getBoundingClientRect();
-        this.setState({ width: (rect.width - (rect.width * 0.3)), height: (rect.height - (rect.height * 0.35)) }, () => {
-            this.generateChart(this.props.chartData, this.props.limitContent);
+        this.setState({ width: (rect.width - 100), height: (rect.height - 130) }, () => {
+            if (!this.props.loading) {
+                this.generateChart(this.props.chartData, this.props.limitContent);
+            }
         });
     }
 
     componentWillReceiveProps(nextProps) {
-        if (JSON.stringify(this.props.chartData) !== JSON.stringify(nextProps.chartData)) {
-            this.generateChart(nextProps.chartData, nextProps.limitContent);
+        if (JSON.stringify(this.props.chartData) !== JSON.stringify(nextProps.chartData)
+            && !nextProps.loading) {
+            this.generateChart(nextProps.chartData, nextProps.limitContent, nextProps.peakVolume);
         }
     }
 
-    generateChart = (chartData, limitContent) => {
+    generateChart = (chartData, limitContent, peakVolume) => {
         const { yAxisLimits, activeTheme } = this.props;
         const { margin, height, width } = this.state;
         const SvgElement = d3.select(this.BarSVG);
-        const upperLimit = yAxisLimits[yAxisLimits.length - 1];
+        const upperLimit = peakVolume || yAxisLimits[yAxisLimits.length - 1];
         const currentMonth = moment().month();
         if (SvgElement) {
             const tooltip = d3.select('body')
@@ -119,26 +122,28 @@ class BarChart extends Component {
             if (limitContent.length) {
                 yAxisLimits.map((limits, index) => {
                     let content = limitContent[index];
-                    let scale = yScale(limits) + (yScale(limits) * 0.01);
-                    let scaleTxt = scale + (32 + (index * 10));
-                    if (content.icon) {
-                        chart.append('svg')
-                            .append("svg:image")
-                            .attr("xlink:href", content.icon)
-                            .attr('class', 'limit_contnet-icon')
-                            .attr('x', width + 15)
-                            .attr('y', scale)
-                            .attr('viewBox', '0 0 1024 1024')
-                            .attr('width', '3rem');
-                    }
-                    if (content.text) {
-                        chart.append('foreignObject')
-                            .attr('x', width + 15)
-                            .attr('y', scaleTxt)
-                            .attr('width', '8rem')
-                            .append('xhtml:div')
-                            .attr('class', 'limit_contnet-text')
-                            .html(`<span>${content.text}</span>`);
+                    if (content) {
+                        let scale = yScale(limits) + (yScale(limits) * 0.01);
+                        let scaleTxt = scale + (32 + (index * 10));
+                        if (content.icon) {
+                            chart.append('svg')
+                                .append("svg:image")
+                                .attr("xlink:href", content.icon)
+                                .attr('class', 'limit_contnet-icon')
+                                .attr('x', width + 15)
+                                .attr('y', scale)
+                                .attr('viewBox', '0 0 1024 1024')
+                                .attr('width', '3rem');
+                        }
+                        if (content.text) {
+                            chart.append('foreignObject')
+                                .attr('x', width + 15)
+                                .attr('y', scaleTxt)
+                                .attr('width', '6rem')
+                                .append('xhtml:div')
+                                .attr('class', 'limit_contnet-text')
+                                .html(`<span>${content.text}</span>`);
+                        }
                     }
                     return 0;
                 });
@@ -202,13 +207,15 @@ class BarChart extends Component {
     
     render() {
         return (
-            <div id="bar-container" className="bar_wrapper w-100 h-100">
-                <div id="testing"></div>
-                <svg ref={el => { this.BarSVG = el; }} width="100%" height="100%">
-                </svg>
+            <div id="bar-container" className="bar_wrapper w-100">
+                <svg ref={el => { this.BarSVG = el; }} width="100%" height="100%" />
             </div>
         );
     }
 }
+
+BarChart.defaultProps = {
+    loading: false
+};
 
 export default BarChart;

@@ -23,7 +23,7 @@ import {
     formatPercentage,
     calculatePrice,
     calculatePricePercentage } from '../../utils/currency';
-import { getTradeVolumeTotal, getLastMonthVolume } from './components/utils';
+import { getLastMonthVolume } from './components/utils';
 
 const FIAT = CURRENCIES.fiat.symbol;
 const default_trader_account = TRADING_ACCOUNT_TYPE.shrimp;
@@ -167,7 +167,7 @@ class Summary extends Component {
                     : (<div>
                         <div className="d-flex align-items-center">
                             <div className="summary-section_1 trader-account-wrapper d-flex">
-                                <SummaryBlock title={STRINGS.SUMMARY.TINY_PINK_SHRIMP_TRADER_ACCOUNT} >
+                                <SummaryBlock title={currentTradingAccount.fullName} >
                                     <TraderAccounts
                                         fees={fees.data}
                                         limits={limits.data}

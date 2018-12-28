@@ -24,7 +24,7 @@ const TraderAccounts = ({ account = {}, activeTheme, limits = [], isAccountDetai
                         {STRINGS.SUMMARY.VIEW_FEE_STRUCTURE.toUpperCase()}
                     </span>
                 </div>}
-                {!isAccountDetails &&
+                {!isAccountDetails && account.level > 1 &&
                     <div className="trade-account-link mb-2">
                         <span className="pointer" onClick={onUpgradeAccount}>
                             {STRINGS.SUMMARY.UPGRADE_ACCOUNT.toUpperCase()}
