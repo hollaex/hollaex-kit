@@ -96,6 +96,17 @@ export const generateFormValues = (
 
 	if (symbol === 'btc' || symbol === 'bch' || symbol === 'eth') {
 		fields.fee = {
+			type: 'number',
+			label: STRINGS[`WITHDRAWALS_FORM_FEE_${symbol.toUpperCase()}_LABEL`],
+			placeholder: STRINGS.formatString(
+				STRINGS.WITHDRAWALS_FORM_FEE_PLACEHOLDER,
+				name
+			).join(''),
+			disabled: true,
+			fullWidth: isMobile
+		};
+	} else {
+		fields.fee = {
 			type: 'editable',
 			inputType: 'number',
 			label: STRINGS[`WITHDRAWALS_FORM_FEE_${symbol.toUpperCase()}_LABEL`],
@@ -108,17 +119,6 @@ export const generateFormValues = (
 			step: STEP,
 			validate: [required, minValue(fees.min), maxValue(fees.max)],
 			normalize: normalizeBTCFee,
-			fullWidth: isMobile
-		};
-	} else {
-		fields.fee = {
-			type: 'number',
-			label: STRINGS[`WITHDRAWALS_FORM_FEE_${symbol.toUpperCase()}_LABEL`],
-			placeholder: STRINGS.formatString(
-				STRINGS.WITHDRAWALS_FORM_FEE_PLACEHOLDER,
-				name
-			).join(''),
-			disabled: true,
 			fullWidth: isMobile
 		};
 	}

@@ -6,15 +6,23 @@ import { renderStatusIcon } from '../../components';
 
 import { FLEX_CENTER_CLASSES } from '../../config/constants';
 
-const status = {
-    0: 'Incompleted',
-    1: 'Pending',
-    2: 'Rejected',
-    3: 'Verified'
+const status = (key) => {
+    switch (key) {
+        case 0: 
+            return 'Incompleted';
+        case 1:
+            return 'Pending';
+        case 2:
+            return 'Rejected';
+        case 3:
+            return 'Verified';
+        default:
+            return 'Incompleted';
+    }
 }
 
 const MobileTabs = ({ title, icon, statusCode, className }) => {
-    const statusText = status[statusCode];
+    const statusText = status(statusCode);
     return (
         <div className={
             classnames(

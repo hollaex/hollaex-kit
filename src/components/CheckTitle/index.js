@@ -16,7 +16,7 @@ export const renderStatusIcon = (statusCode = -1, className = "") => {
 		case 3:
 			return <ReactSVG path={ICONS.VERIFICATION_VERIFIED} wrapperClassName={className} />;
 		default:
-			return '';
+			return <ReactSVG path={ICONS.VERIFICATION_INCOMPLETE} wrapperClassName={className} />;
 	}
 };
 
