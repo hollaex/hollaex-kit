@@ -1,10 +1,13 @@
 import React from 'react';
 import moment from 'moment';
+import ReactSVG from 'react-svg';
+import classnames from "classnames";
 
 import { Button, PanelInformationRow } from '../../components';
 import STRINGS from '../../config/localizedStrings';
+import { ICONS, FLEX_CENTER_CLASSES } from '../../config/constants';
 
-const DocumentsVerificationHome = ({ user, setActivePageContent }) => {
+const DocumentsVerificationHome = ({ user, setActivePageContent, onTipOpen, onTipClose, onTipMove }) => {
     const { id_data } = user;
     let note = '';
     if (id_data.status === 1) {
@@ -17,7 +20,12 @@ const DocumentsVerificationHome = ({ user, setActivePageContent }) => {
     return (
         <div>
             {id_data.status !== 0 &&
-                <div className="my-3">
+                <div className="d-flex my-3">
+                    <div
+                        className={classnames('mr-2', FLEX_CENTER_CLASSES)}
+                        title={STRINGS.USER_VERIFICATION.NOTE_FROM_VERIFICATION_DEPARTMENT}>
+                        <ReactSVG path={ICONS.TAB_SUMMARY} wrapperClassName="document-note-icon" />
+                    </div>
                     <PanelInformationRow
                         label={STRINGS.USER_VERIFICATION.CUSTOMER_SUPPORT_MESSAGE}
                         information={note}

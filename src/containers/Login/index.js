@@ -32,10 +32,17 @@ class Login extends Component {
 	state = {
 		values: {},
 		otpDialogIsOpen: false,
-		logoutDialogIsOpen: false
+		logoutDialogIsOpen: false,
+		service: ''
 	};
-
+	
 	componentDidMount() {
+		if (window.location
+			&& window.location.search
+			&& window.location.search.includes('service')) {
+				const service = window.location.search.split('?service=')[1];
+				this.setState({ service });
+		}
 		if (this.props.logoutMessage) {
 			this.setState({ logoutDialogIsOpen: true });
 		}
@@ -62,6 +69,9 @@ class Login extends Component {
 	};
 
 	onSubmitLogin = (values) => {
+		if (this.state.service) {
+			values.service = this.state.service;
+		}
 		return performLogin(values)
 			.then((res) => {
 				this.redirectToHome();

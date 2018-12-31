@@ -1,16 +1,16 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
-import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import * as d3 from 'd3-selection';
 import {
-	AppBar,
+	// AppBar,
 	CheckTitle,
 	Dialog,
 	Loader,
-	Logout,
+	// Logout,
 	Notification,
-	MobileBarTabs,
+	// MobileBarTabs,
 	PanelInformationRow
 } from '../../components';
 import { ICONS } from '../../config/constants';
@@ -138,6 +138,9 @@ class Verification extends Component {
 			}
 			if (id_data.status !== 3) {
 				bank_status = 1;
+			}
+			if (bank_account.length === bank_account.filter(data => data.status === 0).length) {
+				bank_status = 0;
 			}
 		}
 		const identity_status = address.country 

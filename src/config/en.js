@@ -407,9 +407,10 @@ export default {
 		DOCUMENT_PROOF_SUBMISSION: 'Document Proof Submission', // ToDo: Add this into farsi in exir
 		START_DOCUMENTATION_RESUBMISSION: 'Start Documentation Re-Submission', // ToDo: Add this into farsi in exir
 		SUBMISSION_PENDING_TXT: '*This section has already been submitted. Making changes and resubmitting will overwrite your previous information.', // ToDo: Add this into farsi in exir
-		CUSTOMER_SUPPORT_MESSAGE: 'Customer Support Message',
-		DOCUMENT_PENDING_NOTE: 'Your documents is submitted and is pending for review. Please be patient.',
-		DOCUMENT_VERIFIED_NOTE: 'Your documents are completed.',
+		CUSTOMER_SUPPORT_MESSAGE: 'Customer Support Message',// ToDo: Add this into farsi in exir
+		DOCUMENT_PENDING_NOTE: 'Your documents is submitted and is pending for review. Please be patient.', // ToDo: Add this into farsi in exir
+		DOCUMENT_VERIFIED_NOTE: 'Your documents are completed.', // ToDo: Add this into farsi in exir
+		NOTE_FROM_VERIFICATION_DEPARTMENT: 'Note from the verification department', // ToDo: Add this into farsi in exir
 		USER_DOCUMENTATION_FORM: {
 			FORM_FIELDS: {
 				FIRST_NAME_LABEL: 'First name',

@@ -55,10 +55,12 @@ class DonutChart extends Component {
                 return d.balance;
             });
         const pieData = []
-        pieJ(data).map((value, i) => {
-            pieData.push(value)
+        pieJ(data).map((pieValue, i) => {
+            if (pieValue.value !== 0) {
+                pieData.push(pieValue);
+            }
         });
-        const pieMax = [...pieData.sort((a, b) => a.index - b.index)];
+        const pieMax = [...pieData.sort((a, b) => b.data.balance - a.data.balance)];
         let pieMin = pieMax.splice(pieMax.length / 2, pieMax.length);
         pieMin = pieMin.sort((a, b) => a.data.balance - b.data.balance);
         let temp = pieMax.length > pieMin.length ? pieMax : pieMin;
@@ -108,7 +110,7 @@ class DonutChart extends Component {
             <div id="donut-container" className="w-100 h-100">
                 <svg width="100%" height="100%">
                     <g transform={translate(x, y)}>
-                        {pieJ(data).map((value, i) =>
+                        {sortedData.map((value, i) =>
                             this.renderSlice(value, i, width, height)
                         )}
                     </g>
