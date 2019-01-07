@@ -81,7 +81,7 @@ class BarChart extends Component {
                         const data = chartData[key];
                         const totalTxt = data.key - 1 === currentMonth
                             ? 'Pending'
-                            : data.total !== 0 && data.key - 1 <= currentMonth
+                            : data.total !== 0
                                 ? formatAverage(data.total).toUpperCase()
                                 : '';
                         const self = d3.select(node[key]);
@@ -155,7 +155,17 @@ class BarChart extends Component {
                 let barEnter = d3.select(node[key]);
                 let barKeys = Object.keys(d.pairWisePrice);
                 let count = 0;
-                if (d.key - 1 < currentMonth) {
+                if (d.key - 1 === currentMonth) {
+                    barEnter.append("svg:image")
+                        .attr("xlink:href", activeTheme === 'dark'
+                            ? ICONS.VOLUME_PENDING_DARK : ICONS.VOLUME_PENDING)
+                        .attr('class', 'bar_pending-icon')
+                        .attr('x', (xScale(d.month)))
+                        .attr('y', (yScale(0) - 20))
+                        .attr('viewBox', '0 0 1024 1024')
+                        .attr('height', 18)
+                        .attr('width', 18);
+                } else {
                     barKeys.map((pair) => {
                         barEnter.append('rect')
                             .attr('class', `chart_${pair}`)
@@ -190,16 +200,6 @@ class BarChart extends Component {
                             });
                         return 0;
                     });
-                } else if (d.key - 1 === currentMonth) {
-                    barEnter.append("svg:image")
-                        .attr("xlink:href", activeTheme === 'dark'
-                            ? ICONS.VOLUME_PENDING_DARK : ICONS.VOLUME_PENDING)
-                        .attr('class', 'bar_pending-icon')
-                        .attr('x', (xScale(d.month)))
-                        .attr('y', (yScale(0) - 20))
-                        .attr('viewBox', '0 0 1024 1024')
-                        .attr('height', 18)
-                        .attr('width', 18);
                 }
             });
         }

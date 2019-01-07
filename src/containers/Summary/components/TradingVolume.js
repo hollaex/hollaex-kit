@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import moment from 'moment';
 
 import STRINGS from '../../../config/localizedStrings';
 import { getTradeVolume } from '../../../actions/userAction';
@@ -32,8 +33,15 @@ class TradingVolume extends Component {
         const chartData = [];
         let totalVolume = 0;
         let peakVolume = this.state.peakVolume;
+        const currentMonth = moment().month();
+        let chartMonths = [ ...CHART_MONTHS ];
+        for (let i = 0; i <= currentMonth; i++) {
+            let temp = chartMonths.shift();
+            chartMonths = [ ...chartMonths, temp ];
+        }
+        
         if (Object.keys(tradeValues).length) {
-            CHART_MONTHS.map((obj, key) => {
+            chartMonths.map((obj, key) => {
                 let trade = tradeValues[obj.key];
                 let data = {
                     key: obj.key,

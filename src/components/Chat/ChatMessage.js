@@ -49,8 +49,13 @@ class ChatMessageWithText extends Component {
 				<Timestamp timestamp={timestamp} />
 				<div className="d-flex">
 					<div className="mx-2">
-						{verification_level === 3 || verification_level === 4
-							? <ReactSVG path={ICONS[`CHAT_ICON_LVL_${verification_level}`]} wrapperClassName="user-icon mr-1" />
+						{verification_level === 3 || verification_level >= 4
+							? <ReactSVG
+								path={verification_level >= 4
+									? ICONS.CHAT_ICON_LVL_4
+									: ICONS[`CHAT_ICON_LVL_${verification_level}`]
+								}
+								wrapperClassName="user-icon mr-1" />
 							: <div className="user-icon mr-1"></div>}
 					</div>
 					<div>
@@ -107,7 +112,12 @@ class ChatMessageWithImage extends Component {
 				<div className="d-flex">
 					<div className="mx-2">
 						{verification_level === 3 || verification_level === 4
-							? <ReactSVG path={ICONS[`CHAT_ICON_LVL_${verification_level}`]} wrapperClassName="user-icon mr-1" />
+							? <ReactSVG 
+								path={ verification_level >= 4
+									? ICONS.CHAT_ICON_LVL_4
+									: ICONS[`CHAT_ICON_LVL_${verification_level}`]
+								}
+								wrapperClassName="user-icon mr-1" />
 							: <div className="user-icon mr-1"></div>}
 					</div>
 					<div>
@@ -146,7 +156,6 @@ export class ChatMessage extends Component {
 	render() {
 		const {
 			id,
-			username,
 			userType,
 			to,
 			messageType,
@@ -157,6 +166,7 @@ export class ChatMessage extends Component {
 		} = this.props;
 		const { showOptions } = this.state;
 		const imageType = messageType === 'image';
+		const username = this.props.username.username ? this.props.username.username : this.props.username;
 		return (
 			<div
 				className={classnames(

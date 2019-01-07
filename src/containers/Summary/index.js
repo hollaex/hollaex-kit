@@ -48,7 +48,7 @@ class Summary extends Component {
             requestFees();
         }
 
-        if (user.id && symbol) {
+        if (user.id) {
             this.calculateSections(this.props);
             this.setCurrentTradeAccount(user);
         }
@@ -131,6 +131,7 @@ class Summary extends Component {
                 currentTradingAccount = TRADING_ACCOUNT_TYPE.leviathan;
                 break;
             default:
+                currentTradingAccount = TRADING_ACCOUNT_TYPE.leviathan;
                 break;
         }
         this.setState({ currentTradingAccount, selectedAccount: currentTradingAccount.symbol });

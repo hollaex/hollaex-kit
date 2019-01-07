@@ -60,8 +60,8 @@ class Login extends Component {
 		this.props.setLogoutMessage();
 	}
 
-	redirectToHome = () => {
-		this.props.router.replace('/account');
+	redirectToHome = (url = '/account') => {
+		this.props.router.replace(url);
 	};
 
 	redirectToResetPassword = () => {
@@ -74,7 +74,10 @@ class Login extends Component {
 		}
 		return performLogin(values)
 			.then((res) => {
-				this.redirectToHome();
+				if (res.data && res.data.callback)
+					this.redirectToHome(res.data.callback);
+				else
+					this.redirectToHome();
 			})
 			.catch((err) => {
 				console.log('err', err);

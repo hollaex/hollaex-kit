@@ -305,7 +305,8 @@ export const ICONS = {
 	SELF_KYC_ID_EN: `${process.env.PUBLIC_URL}/assets/self-kyc-id-note-english.png`,
 	CHAT_ICON_LVL_3: `${process.env.PUBLIC_URL}/assets/images/kraken-chat-lvl-3.svg`,
 	CHAT_ICON_LVL_4: `${process.env.PUBLIC_URL}/assets/images/whale-chat-lvl-4.svg`,
-	CHAT_ICON_SPECIAL: `${process.env.PUBLIC_URL}/assets/images/fin-chat-special.svg`
+	CHAT_ICON_SPECIAL: `${process.env.PUBLIC_URL}/assets/images/fin-chat-special.svg`,
+	NOTE_KYC: `${process.env.PUBLIC_URL}/assets/images/note-KYC.svg`
 };
 
 export const SOCIAL_ICONS = {

@@ -65,7 +65,11 @@ class Chat extends Component {
 		});
 
 		chatWs.on('message', (message) => {
-			const messages = this.state.messages.concat(message);
+			let newMessage = { ...message };
+			if (typeof message.username === 'object') {
+				newMessage = { ...message, ...message.username };
+			}
+			const messages = this.state.messages.concat(newMessage);
 			const unreadMessages = this.props.minimized
 				? this.props.unreadMessages +
 					(messages.length - this.state.messages.length)

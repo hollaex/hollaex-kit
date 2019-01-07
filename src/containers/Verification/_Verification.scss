@@ -26,7 +26,7 @@ $colors-black: #000000;
 		font-size: 0.8rem;
 	}
 	.document-note-icon {
-		width: 4rem;
+		width: 3.5rem;
 	}
 }
 
@@ -261,6 +261,9 @@ $colors-black: #000000;
 		svg {
 			.pending-timer {
 				stroke: $dark-font-main-text-color;
+			}
+			.note-kyc {
+				fill: $dark-font-main-text-color;
 			}
 		}
 	}

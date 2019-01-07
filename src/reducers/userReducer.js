@@ -404,7 +404,7 @@ export default function reducer(state = INITIAL_STATE, action) {
 				...state,
 				tradeVolumes: {
 					...INITIAL_TRADE_VOLUME_OBJECT,
-					error: action.payload.response.data.message
+					error: action.payload.response
 				}
 			};
 		case 'LOGOUT':

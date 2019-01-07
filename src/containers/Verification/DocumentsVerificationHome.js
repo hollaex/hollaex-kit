@@ -24,7 +24,7 @@ const DocumentsVerificationHome = ({ user, setActivePageContent, onTipOpen, onTi
                     <div
                         className={classnames('mr-2', FLEX_CENTER_CLASSES)}
                         title={STRINGS.USER_VERIFICATION.NOTE_FROM_VERIFICATION_DEPARTMENT}>
-                        <ReactSVG path={ICONS.TAB_SUMMARY} wrapperClassName="document-note-icon" />
+                        <ReactSVG path={ICONS.NOTE_KYC} wrapperClassName="document-note-icon" />
                     </div>
                     <PanelInformationRow
                         label={STRINGS.USER_VERIFICATION.CUSTOMER_SUPPORT_MESSAGE}
