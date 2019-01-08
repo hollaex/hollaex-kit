@@ -5,7 +5,7 @@ import classnames from 'classnames';
 import { Sortable } from '../Sortable';
 import { ICONS } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
-import { formatPercentage } from '../../utils/currency';
+import { formatPercentage, formatAverage } from '../../utils/currency';
 
 const Tab = ({ pair = {}, tab, ticker = {}, activePairTab, onTabClick, onTabChange, items, ...rest }) => {
     const priceDifference = ticker.close - ticker.open;
@@ -28,7 +28,7 @@ const Tab = ({ pair = {}, tab, ticker = {}, activePairTab, onTabClick, onTabChan
                     </div>
                     <div className="title-font ml-1">{`${STRINGS[`${pair.pair_2.toUpperCase()}_CURRENCY_SYMBOL`]} ${ticker.close}`}</div>
                     <div className={priceDifference < 0 ? "app-price-diff-down app-bar-price_diff_down" : "app-bar-price_diff_up app-price-diff-up"}>
-                        {priceDifference}
+                        {formatAverage(priceDifference)}
                     </div>
                     <div
                         className={priceDifference < 0

@@ -47,13 +47,13 @@ class Account extends Component {
 		if (this.props.id) {
 			this.updateTabs(this.props);
 		}
-		if (!this.props.limits.fetched && !this.props.limits.fetching) {
-			this.props.requestLimits();
-		}
+		// if (!this.props.limits.fetched && !this.props.limits.fetching) {
+		// 	this.props.requestLimits();
+		// }
 
-		if (!this.props.fees.fetched && !this.props.fees.fetching) {
-			this.props.requestFees();
-		}
+		// if (!this.props.fees.fetched && !this.props.fees.fetching) {
+		// 	this.props.requestFees();
+		// }
 	}
 
 	componentWillReceiveProps(nextProps) {

@@ -146,4 +146,8 @@ $inner_container-border: 1px solid $colors-main-black;
 	flex: 0;
 	width: 100%;
 	max-width: 100vw;
+	position: -webkit-sticky;
+	position: sticky;
+	bottom: 5rem;
+	align-self: flex-end;
 }

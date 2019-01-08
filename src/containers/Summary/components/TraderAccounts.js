@@ -16,14 +16,22 @@ const TraderAccounts = ({ account = {}, activeTheme, limits = [], isAccountDetai
                 {isAccountDetails && <div className="summary-block-title mb-3">{account.fullName}</div>}
                 <div className="mb-2">{STRINGS.SUMMARY[`${account.symbol.toUpperCase()}_ACCOUNT_TXT_1`]}</div>
                 <div className="mb-2">{STRINGS.SUMMARY[`${account.symbol.toUpperCase()}_ACCOUNT_TXT_2`]}</div>
-                {!!limitLevel.length && <div
+                {/* {!!limitLevel.length && <div
                     className="trade-account-link mb-2">
                     <span
                         className="pointer"
                         onClick={() => onFeesAndLimits(account)}>
                         {STRINGS.SUMMARY.VIEW_FEE_STRUCTURE.toUpperCase()}
                     </span>
-                </div>}
+                </div>} */}
+                <div
+                    className="trade-account-link mb-2">
+                    <span
+                        className="pointer"
+                        onClick={() => onFeesAndLimits(account)}>
+                        {STRINGS.SUMMARY.VIEW_FEE_STRUCTURE.toUpperCase()}
+                    </span>
+                </div>
                 {!isAccountDetails && account.level > 1 &&
                     <div className="trade-account-link mb-2">
                         <span className="pointer" onClick={onUpgradeAccount}>

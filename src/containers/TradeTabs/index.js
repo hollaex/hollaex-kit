@@ -8,7 +8,7 @@ import { Paginator, SearchBox } from '../../components';
 import { HOLLAEX_LOGO, HOLLAEX_LOGO_BLACK } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 import { ICONS } from '../../config/constants';
-import { formatPercentage } from '../../utils/currency';
+import { formatPercentage, formatAverage } from '../../utils/currency';
 
 class AddTradeTab extends Component {
     state = {
@@ -171,7 +171,7 @@ class AddTradeTab extends Component {
                                         </div>
                                         <div className="d-flex">
                                             <div className={priceDifference < 0 ? "price-diff-down trade-tab-price_diff_down" : "trade-tab-price_diff_up price-diff-up"}>
-                                                {priceDifference}
+                                                {formatAverage(priceDifference)}
                                             </div>
                                             <div
                                                 className={priceDifference < 0

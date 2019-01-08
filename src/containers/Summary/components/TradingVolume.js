@@ -6,7 +6,7 @@ import moment from 'moment';
 import STRINGS from '../../../config/localizedStrings';
 import { getTradeVolume } from '../../../actions/userAction';
 import { BarChart } from '../../../components';
-import { calculatePrice } from '../../../utils/currency';
+import { calculatePrice, formatFiatAmount } from '../../../utils/currency';
 import { TRADING_VOLUME_CHART_LIMITS, SUMMMARY_ICON, CHART_MONTHS } from '../../../config/constants';
 
 class TradingVolume extends Component {
@@ -97,7 +97,7 @@ class TradingVolume extends Component {
             });
             peakVolume += (peakVolume * 0.1);
 
-            this.setState({ chartData, limitContent, peakVolume, totalVolume });
+            this.setState({ chartData, limitContent, peakVolume, totalVolume: formatFiatAmount(totalVolume) });
         }
     };
 

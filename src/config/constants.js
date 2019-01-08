@@ -518,6 +518,8 @@ export const TRADE_ACCOUNT_UPGRADE_MONTH = process.env.REACT_APP_ACCOUNT_UPGRADE
 	? process.env.REACT_APP_ACCOUNT_UPGRADE_MONTH.split(',').map(data => formatNumber(data))
 	: [3, 6];
 
+export const BAR_CHART_LIMIT_CAPACITY = 340000;
+
 export const DEFAULT_COUNTRY = process.env.REACT_APP_DEFAULT_COUNTRY
 	? process.env.REACT_APP_DEFAULT_COUNTRY.toUpperCase()
 	: 'FR';

@@ -18,7 +18,7 @@ import { requestLimits, requestFees } from '../../actions/userAction';
 import { CURRENCIES, TRADING_ACCOUNT_TYPE } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 import {
-    formatFiatAmount,
+    formatAverage,
     calculateBalancePrice,
     formatPercentage,
     calculatePrice,
@@ -39,14 +39,7 @@ class Summary extends Component {
 
     
     componentDidMount() {
-        const { user, symbol, limits, requestLimits, fees, requestFees, tradeVolumes, pairs, prices } = this.props;
-        if (!limits.fetched && !limits.fetching) {
-            requestLimits();
-        }
-
-        if (!fees.fetched && !fees.fetching) {
-            requestFees();
-        }
+        const { user, tradeVolumes, pairs, prices } = this.props;
 
         if (user.id) {
             this.calculateSections(this.props);
@@ -78,7 +71,14 @@ class Summary extends Component {
     }
 
     onFeesAndLimits = tradingAccount => {
-        const { fees, limits, pairs } = this.props;
+        const { fees, limits, pairs, requestLimits, requestFees } = this.props;
+        if (!limits.fetched && !limits.fetching) {
+            requestLimits();
+        }
+
+        if (!fees.fetched && !fees.fetching) {
+            requestFees();
+        }
         this.props.openFeesStructureandLimits({
             fees: fees.data,
             limits: limits.data,
@@ -107,12 +107,12 @@ class Summary extends Component {
             data.push({
                 ...CURRENCIES[currency],
                 balance: balancePercent,
-                balanceFormat: formatToCurrency(currencyBalance),
+                balanceFormat: formatAverage(currencyBalance),
                 balancePercentage: formatPercentage(balancePercent),
             });
         });
 
-        this.setState({ chartData: data, totalAssets: formatFiatAmount(totalAssets) });
+        this.setState({ chartData: data, totalAssets: formatAverage(totalAssets) });
     };
 
     setCurrentTradeAccount = user => {
@@ -204,7 +204,7 @@ class Summary extends Component {
                                     title={STRINGS.SUMMARY.TRADING_VOLUME}
                                     secondaryTitle={<span>
                                         <span className="title-font">
-                                            {` ${formatFiatAmount(lastMonthVolume)}`}
+                                            {` ${formatAverage(lastMonthVolume)}`}
                                         </span>
                                         {` ${STRINGS.FIAT_FULLNAME} ${STRINGS.formatString(STRINGS.SUMMARY.NOMINAL_TRADING_WITH_MONTH, moment().subtract(1, "month").startOf("month").format('MMMM')).join('')}`}
                                     </span>

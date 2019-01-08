@@ -4,7 +4,7 @@ import classnames from 'classnames';
 
 import { ICONS } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
-import { formatPercentage } from '../../utils/currency';
+import { formatPercentage, formatAverage } from '../../utils/currency';
 import SearchBox from './SearchBox';
 
 class AddTabList extends Component {
@@ -100,7 +100,7 @@ class AddTabList extends Component {
                                     </div>
                                     <div className="title-font ml-1">{`${STRINGS[`${menu.pair_2.toUpperCase()}_CURRENCY_SYMBOL`]} ${ticker.close}`}</div>
                                     <div className={priceDifference < 0 ? "app-price-diff-down app-bar-price_diff_down" : "app-bar-price_diff_up app-price-diff-up"}>
-                                        {priceDifference}
+                                        {formatAverage(priceDifference)}
                                     </div>
                                     <div
                                         className={priceDifference < 0
