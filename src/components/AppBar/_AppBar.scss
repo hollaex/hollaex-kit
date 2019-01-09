@@ -553,6 +553,8 @@ $app-bar-pairs-up: green;
 		color: $app-bar-tab-color-inactive;
 		cursor: pointer;
 		height: 2.5rem;
+		position: relative;
+		top: 1px;
 		width: 10rem;
 	}
 
@@ -571,7 +573,7 @@ $app-bar-pairs-up: green;
 		color: $colors-main-black;
 		height: 2.5rem;
 		position: relative;
-		top: 1px;
+		// top: 1px;
 
 		svg {
 			.tab-summary0, .tab-wallet0, .tab-setting0, .tab-verify0,

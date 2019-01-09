@@ -7,8 +7,8 @@ import classnames from 'classnames';
 import { Paginator, SearchBox } from '../../components';
 import { HOLLAEX_LOGO, HOLLAEX_LOGO_BLACK } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
-import { ICONS } from '../../config/constants';
-import { formatPercentage, formatAverage } from '../../utils/currency';
+import { ICONS, CURRENCIES } from '../../config/constants';
+import { formatPercentage } from '../../utils/currency';
 
 class AddTradeTab extends Component {
     state = {
@@ -146,9 +146,12 @@ class AddTradeTab extends Component {
                     <div className="d-flex flex-wrap p-3 my-5">
                         {data.map((key, index) => {
                             let pair = pairs[key];
+                            let { formatToCurrency } = CURRENCIES[pair.pair_base];
                             let ticker = tickers[key] || {};
-                            const priceDifference = ticker.close - ticker.open;
-                            const priceDifferencePercent = formatPercentage((ticker.close - ticker.open) / ticker.open);
+                            const priceDifference = -120.0044855034544554445;
+                            const priceDifferencePercent = formatPercentage(-0.79999856423);
+                            {/* const priceDifference = ticker.close - ticker.open;
+                            const priceDifferencePercent = formatPercentage((ticker.close - ticker.open) / ticker.open); */}
                             return (
                                 <div
                                     key={index}
@@ -166,12 +169,12 @@ class AddTradeTab extends Component {
                                         </div>
                                         <div>{STRINGS.PRICE}:
                                             <span className="title-font ml-1">
-                                                {`${STRINGS[`${pair.pair_2.toUpperCase()}_CURRENCY_SYMBOL`]} ${ticker.close}`}
+                                                {`${STRINGS[`${pair.pair_2.toUpperCase()}_CURRENCY_SYMBOL`]} ${formatToCurrency(ticker.close)}`}
                                             </span>
                                         </div>
                                         <div className="d-flex">
                                             <div className={priceDifference < 0 ? "price-diff-down trade-tab-price_diff_down" : "trade-tab-price_diff_up price-diff-up"}>
-                                                {formatAverage(priceDifference)}
+                                                {formatToCurrency(priceDifference)}
                                             </div>
                                             <div
                                                 className={priceDifference < 0

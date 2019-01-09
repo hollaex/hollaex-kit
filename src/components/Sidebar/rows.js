@@ -16,7 +16,7 @@ export const Cell = ({
 		className={classnames(
 			className,
 			'd-flex',
-			'justify-content-between',
+			'justify-content-center',
 			'align-items-center',
 			'cell-wrapper',
 			'pointer'
@@ -52,12 +52,18 @@ export const Chat = ({
 		unreadMessages > 0
 			? STRINGS.formatString(
 					STRINGS.CHAT.CHAT_UNREAD,
-					STRINGS.CHAT.CHAT_TEXT,
+					STRINGS.CHAT.MARKET_CHAT,
 					unreadMessages
 				)
-			: STRINGS.CHAT.CHAT_TEXT;
+			: STRINGS.CHAT.MARKET_CHAT;
 
-	return <Cell onClick={onMinimize} {...rest} text={text} />;
+	return <Cell
+		onClick={onMinimize}
+		{...rest}
+		iconClassName="icon--chat"
+		iconPath={ICONS.SIDEBAR_CHAT}>
+			<div>{text}</div>
+		</Cell>;
 };
 
 export const Logout = ({ onLogout, ...rest }) => (
@@ -70,5 +76,9 @@ export const Logout = ({ onLogout, ...rest }) => (
 );
 
 export const Help = ({ onHelp, ...rest }) => (
-	<Cell onClick={onHelp} {...rest} text={STRINGS.HELP_TEXT} />
+	<Cell
+		onClick={onHelp}
+		{...rest}
+		iconClassName="icon--help"
+		iconPath={ICONS.SIDEBAR_HELP} />
 );

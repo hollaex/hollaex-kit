@@ -101,7 +101,7 @@ const getAllCompleted = requirement => {
 
 const SummaryRequirements = ({ user, isAccountDetails = false, contentClassName = "", verificationLevel, lastMonthVolume, onUpgradeAccount }) => {
     const { phone_number, full_name, id_data = {}, bank_account } = user.userData;
-    const selectedLevel = verificationLevel || user.verification_level;
+    const selectedLevel = isAccountDetails ? verificationLevel || user.verification_level : 2;
     const requirement = getRequirements(user, selectedLevel, lastMonthVolume);
     let requirementResolved = getAllCompleted(requirement);
     return (

@@ -909,6 +909,7 @@ export default {
 	},
 	CHAT: {
 		CHAT_TEXT: 'chat',
+		MARKET_CHAT: 'Market Chat',
 		CHAT_UNREAD: '{0} ({1})', // 0 -> CHAT_TEXT, 1 -> number
 		READ_MORE: 'Read More',
 		SHOW_IMAGE: 'Show Image',

@@ -18,7 +18,7 @@ import { requestLimits, requestFees } from '../../actions/userAction';
 import { CURRENCIES, TRADING_ACCOUNT_TYPE } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 import {
-    formatAverage,
+    formatFiatAmount,
     calculateBalancePrice,
     formatPercentage,
     calculatePrice,
@@ -107,12 +107,12 @@ class Summary extends Component {
             data.push({
                 ...CURRENCIES[currency],
                 balance: balancePercent,
-                balanceFormat: formatAverage(currencyBalance),
+                balanceFormat: formatToCurrency(currencyBalance),
                 balancePercentage: formatPercentage(balancePercent),
             });
         });
 
-        this.setState({ chartData: data, totalAssets: formatAverage(totalAssets) });
+        this.setState({ chartData: data, totalAssets: formatFiatAmount(totalAssets) });
     };
 
     setCurrentTradeAccount = user => {
@@ -204,7 +204,7 @@ class Summary extends Component {
                                     title={STRINGS.SUMMARY.TRADING_VOLUME}
                                     secondaryTitle={<span>
                                         <span className="title-font">
-                                            {` ${formatAverage(lastMonthVolume)}`}
+                                            {` ${formatFiatAmount(lastMonthVolume)}`}
                                         </span>
                                         {` ${STRINGS.FIAT_FULLNAME} ${STRINGS.formatString(STRINGS.SUMMARY.NOMINAL_TRADING_WITH_MONTH, moment().subtract(1, "month").startOf("month").format('MMMM')).join('')}`}
                                     </span>

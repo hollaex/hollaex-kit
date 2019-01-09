@@ -306,7 +306,9 @@ export const ICONS = {
 	CHAT_ICON_LVL_3: `${process.env.PUBLIC_URL}/assets/images/kraken-chat-lvl-3.svg`,
 	CHAT_ICON_LVL_4: `${process.env.PUBLIC_URL}/assets/images/whale-chat-lvl-4.svg`,
 	CHAT_ICON_SPECIAL: `${process.env.PUBLIC_URL}/assets/images/fin-chat-special.svg`,
-	NOTE_KYC: `${process.env.PUBLIC_URL}/assets/images/note-KYC.svg`
+	NOTE_KYC: `${process.env.PUBLIC_URL}/assets/images/note-KYC.svg`,
+	SIDEBAR_CHAT: `${process.env.PUBLIC_URL}/assets/images/bottom-chat-icon.svg`,
+	SIDEBAR_HELP: `${process.env.PUBLIC_URL}/assets/images/help-question-mark-icon.svg`
 };
 
 export const SOCIAL_ICONS = {
@@ -518,7 +520,7 @@ export const TRADE_ACCOUNT_UPGRADE_MONTH = process.env.REACT_APP_ACCOUNT_UPGRADE
 	? process.env.REACT_APP_ACCOUNT_UPGRADE_MONTH.split(',').map(data => formatNumber(data))
 	: [3, 6];
 
-export const BAR_CHART_LIMIT_CAPACITY = 340000;
+export const BAR_CHART_LIMIT_CAPACITY = [340000, 2050000];
 
 export const DEFAULT_COUNTRY = process.env.REACT_APP_DEFAULT_COUNTRY
 	? process.env.REACT_APP_DEFAULT_COUNTRY.toUpperCase()

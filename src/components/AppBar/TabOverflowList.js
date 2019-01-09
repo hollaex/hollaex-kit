@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import ReactSVG from 'react-svg';
 
-import { ICONS } from '../../config/constants';
+import { ICONS, CURRENCIES } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
-import { formatPercentage, formatAverage } from '../../utils/currency';
+import { formatPercentage } from '../../utils/currency';
 
 let tickClicked = false;
 
@@ -42,6 +42,7 @@ class TabOverflowList extends Component {
                 <div className="app-bar-tab-overflow-content">
                     {Object.keys(selectedTabs).map((pair, index) => {
                         let menu = selectedTabs[pair];
+                        let { formatToCurrency } = CURRENCIES[menu.pair_base];
                         let ticker = tickers[pair];
                         let priceDifference = ticker.close - ticker.open;
                         let priceDifferencePercent = formatPercentage((ticker.close - ticker.open) / ticker.open);
@@ -58,9 +59,9 @@ class TabOverflowList extends Component {
                                 <div className="app_bar-pair-font">
                                     {STRINGS[`${menu.pair_base.toUpperCase()}_SHORTNAME`]}/{STRINGS[`${menu.pair_2.toUpperCase()}_SHORTNAME`]}:
                                 </div>
-                                <div className="title-font ml-1">{`${STRINGS[`${menu.pair_2.toUpperCase()}_CURRENCY_SYMBOL`]} ${ticker.close}`}</div>
+                                <div className="title-font ml-1">{`${STRINGS[`${menu.pair_2.toUpperCase()}_CURRENCY_SYMBOL`]} ${formatToCurrency(ticker.close)}`}</div>
                                 <div className={priceDifference < 0 ? "app-price-diff-down app-bar-price_diff_down" : "app-bar-price_diff_up app-price-diff-up"}>
-                                    {formatAverage(priceDifference)}
+                                    {formatToCurrency(priceDifference)}
                                 </div>
                                 <div
                                     className={priceDifference < 0

@@ -31,13 +31,13 @@ const Sidebar = ({
 			{isLogged ?
 			<div className="sidebar-row d-flex">
 				<Chat
-					className="f-1"
+					className="f-1 title-font text-capitalize justify-content-center"
 					onMinimize={minimizeChat}
 					unreadMessages={unreadMessages}
 					chatIsClosed={chatIsClosed}
 				/>
-				<Help className="f-1" onHelp={help} />
-				<Logout className="f-0" onLogout={logout} />
+				<Help className="f-8" onHelp={help} />
+				{/* <Logout className="f-0" onLogout={logout} /> */}
 			</div> : ''}
 		</div>
 	);

@@ -4,9 +4,9 @@ import { axisBottom, axisRight} from 'd3-axis';
 import * as d3 from 'd3-selection';
 import moment from 'moment';
 
-import { ICONS } from '../../../config/constants';
+import { ICONS, CURRENCIES, BAR_CHART_LIMIT_CAPACITY } from '../../../config/constants';
 import STRINGS from '../../../config/localizedStrings';
-import { formatAverage } from '../../../utils/currency';
+import { formatAverage, formatBtcAmount, formatFiatAmount } from '../../../utils/currency';
 
 function translate(x, y) {
     return `translate(${x}, ${y})`;
@@ -66,7 +66,10 @@ class BarChart extends Component {
                     .tickValues([0, ...yAxisLimits])
                     .tickSize(-width)
                     .tickFormat(d =>
-                        d !== 0 ? formatAverage(d).toUpperCase() : '')
+                        d !== 0 && upperLimit <= BAR_CHART_LIMIT_CAPACITY[1]
+                            ? formatAverage(d).toUpperCase()
+                            : ''
+                    )
                 )
                 .call(g => g.select('.domain').remove());
             chart.append('g')
@@ -119,7 +122,7 @@ class BarChart extends Component {
                         }
                     })
                 });
-            if (limitContent.length) {
+            if (limitContent.length && upperLimit <= BAR_CHART_LIMIT_CAPACITY[0]) {
                 yAxisLimits.map((limits, index) => {
                     let content = limitContent[index];
                     if (content) {
@@ -180,16 +183,20 @@ class BarChart extends Component {
                             })
                             .attr('width', xScale.bandwidth())
                             .on("mouseover", function (d) {
+                                let currencyFormat = CURRENCIES[pair];
+                                let volume = currencyFormat
+                                    ? currencyFormat.formatToCurrency(d.pairVolume[pair])
+                                    : formatBtcAmount(d.pairVolume[pair]);
                                 tooltip.selectAll("*").remove();
                                 tooltip.style("display", "block")
                                     .style("top", (d3.event.pageY - 10) + "px")
                                     .style("left", (d3.event.pageX + 10) + "px")
                                     .append('div')
                                     .attr('class', 'tool_tip-pair-volume')
-                                    .text(`${pair.toUpperCase()}: ${formatAverage(d.pairVolume[pair])}`);
+                                    .text(`${pair.toUpperCase()}: ${volume}`);
                                 tooltip.append('div')
                                     .attr('class', 'tool_tip-pair-price')
-                                    .text(`~ ${STRINGS.FIAT_SHORTNAME}: ${formatAverage(d.pairWisePrice[pair])}`);
+                                    .text(`~ ${STRINGS.FIAT_SHORTNAME}: ${formatFiatAmount(d.pairWisePrice[pair])}`);
                             })
                             .on("mousemove", function () {
                                 return tooltip.style("top", (d3.event.pageY - 10) + "px")
