@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import ReactSVG from 'react-svg';
 import classnames from 'classnames';
 
-import { ICONS, CURRENCIES } from '../../config/constants';
+import { ICONS, CURRENCIES, BASE_CURRENCY } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 import { formatPercentage } from '../../utils/currency';
 import SearchBox from './SearchBox';
@@ -81,8 +81,8 @@ class AddTabList extends Component {
                         ? Object.keys(tabMenu).map((pair, index) => {
                             let menu = tabMenu[pair];
                             let ticker = tickers[pair];
-                            let { formatToCurrency } = CURRENCIES[menu.pair_base];
-                            const priceDifference = ticker.close - ticker.open;
+                            let { formatToCurrency } = CURRENCIES[menu.pair_base || BASE_CURRENCY];
+                            const priceDifference = (ticker.close || 0) - (ticker.open || 0);
                             const priceDifferencePercent = formatPercentage((ticker.close - ticker.open) / ticker.open);
                             return (
                                 <div

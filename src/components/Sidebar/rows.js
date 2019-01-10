@@ -1,7 +1,7 @@
 import React from 'react';
 import classnames from 'classnames';
 import ReactSVG from 'react-svg';
-import { ICONS } from '../../config/constants';
+import { ICONS, FLEX_CENTER_CLASSES } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 
 export const Cell = ({
@@ -15,9 +15,7 @@ export const Cell = ({
 	<div
 		className={classnames(
 			className,
-			'd-flex',
-			'justify-content-center',
-			'align-items-center',
+			FLEX_CENTER_CLASSES,
 			'cell-wrapper',
 			'pointer'
 		)}
@@ -62,7 +60,7 @@ export const Chat = ({
 		{...rest}
 		iconClassName="icon--chat"
 		iconPath={ICONS.SIDEBAR_CHAT}>
-			<div>{text}</div>
+			<div className="ml-2">{text}</div>
 		</Cell>;
 };
 

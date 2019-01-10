@@ -163,11 +163,11 @@ class BarChart extends Component {
                         .attr("xlink:href", activeTheme === 'dark'
                             ? ICONS.VOLUME_PENDING_DARK : ICONS.VOLUME_PENDING)
                         .attr('class', 'bar_pending-icon')
-                        .attr('x', (xScale(d.month)))
+                        .attr('x', (xScale(d.month) + 5))
                         .attr('y', (yScale(0) - 20))
                         .attr('viewBox', '0 0 1024 1024')
                         .attr('height', 18)
-                        .attr('width', 18);
+                        .attr('width', xScale.bandwidth());
                 } else {
                     barKeys.map((pair) => {
                         barEnter.append('rect')

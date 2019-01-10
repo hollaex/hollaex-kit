@@ -163,6 +163,14 @@ $summary-icon-color-inactive: #808184;
     .requirement-not-verified {
         color: $colors-notifications-red;
     }
+    
+    .requirement-rejected {
+        color: #FFF100;
+    }
+    
+    .requirement-pending {
+        color: #F6921E;
+    }
 
     .requirement-incomplete {
         color: $colors-deactivate-color2;

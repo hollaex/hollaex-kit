@@ -3,12 +3,12 @@ import ReactSVG from 'react-svg';
 import classnames from 'classnames';
 
 import { Sortable } from '../Sortable';
-import { ICONS, CURRENCIES } from '../../config/constants';
+import { ICONS, CURRENCIES, BASE_CURRENCY } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 import { formatPercentage } from '../../utils/currency';
 
 const Tab = ({ pair = {}, tab, ticker = {}, activePairTab, onTabClick, onTabChange, items, ...rest }) => {
-    const { formatToCurrency } = CURRENCIES[pair.pair_base];
+    const { formatToCurrency } = CURRENCIES[pair.pair_base || BASE_CURRENCY];
     const priceDifference = (ticker.close || 0) - (ticker.open || 0);
     const priceDifferencePercent = formatPercentage((ticker.close - ticker.open) / ticker.open);
     return (

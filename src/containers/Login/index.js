@@ -53,12 +53,16 @@ class Login extends Component {
 		this.props.setLogoutMessage();
 	}
 
-	redirectToHome = (url = '/account') => {
-		this.props.router.replace(url);
+	redirectToHome = () => {
+		this.props.router.replace('/account');
 	};
 
 	redirectToResetPassword = () => {
 		this.props.router.replace('/reset-password');
+	};
+
+	redirectToService = (url) => {
+		window.location.href = url;
 	};
 
 	getServiceParam = () => {
@@ -83,7 +87,7 @@ class Login extends Component {
 		return performLogin(values)
 			.then((res) => {
 				if (res.data && res.data.callbackUrl)
-					this.redirectToHome(res.data.callbackUrl);
+					this.redirectToService(`http://${res.data.service}.com${res.data.callbackUrl}`);
 				else
 					this.redirectToHome();
 			})

@@ -19,7 +19,7 @@ const AccountAssets = ({ chartData = [], totalAssets, balance }) => {
             </div>
             <div className="d-flex">
                 {chartData.map((value, index) => {
-                    const { formatToCurrency } = CURRENCIES[value.symbol];
+                    const { formatToCurrency } = CURRENCIES[value.symbol || BASE_CURRENCY];
                     let currencyBalance = formatToCurrency(balance[`${value.symbol}_balance`]);
                     return (
                         <div key={index} className="price-content text-center">

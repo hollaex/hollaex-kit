@@ -5,7 +5,7 @@ import ReactSVG from 'react-svg';
 import classnames from 'classnames';
 
 import { Paginator, SearchBox } from '../../components';
-import { HOLLAEX_LOGO, HOLLAEX_LOGO_BLACK } from '../../config/constants';
+import { HOLLAEX_LOGO, HOLLAEX_LOGO_BLACK, BASE_CURRENCY } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 import { ICONS, CURRENCIES } from '../../config/constants';
 import { formatPercentage } from '../../utils/currency';
@@ -146,12 +146,10 @@ class AddTradeTab extends Component {
                     <div className="d-flex flex-wrap p-3 my-5">
                         {data.map((key, index) => {
                             let pair = pairs[key];
-                            let { formatToCurrency } = CURRENCIES[pair.pair_base];
+                            let { formatToCurrency } = CURRENCIES[pair.pair_base || BASE_CURRENCY];
                             let ticker = tickers[key] || {};
-                            const priceDifference = -120.0044855034544554445;
-                            const priceDifferencePercent = formatPercentage(-0.79999856423);
-                            {/* const priceDifference = ticker.close - ticker.open;
-                            const priceDifferencePercent = formatPercentage((ticker.close - ticker.open) / ticker.open); */}
+                            const priceDifference = (ticker.close || 0) - (ticker.open || 0);
+                            const priceDifferencePercent = formatPercentage((ticker.close - ticker.open) / ticker.open);
                             return (
                                 <div
                                     key={index}

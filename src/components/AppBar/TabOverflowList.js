@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import ReactSVG from 'react-svg';
 
-import { ICONS, CURRENCIES } from '../../config/constants';
+import { ICONS, CURRENCIES, BASE_CURRENCY } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 import { formatPercentage } from '../../utils/currency';
 
@@ -42,9 +42,9 @@ class TabOverflowList extends Component {
                 <div className="app-bar-tab-overflow-content">
                     {Object.keys(selectedTabs).map((pair, index) => {
                         let menu = selectedTabs[pair];
-                        let { formatToCurrency } = CURRENCIES[menu.pair_base];
+                        let { formatToCurrency } = CURRENCIES[menu.pair_base || BASE_CURRENCY];
                         let ticker = tickers[pair];
-                        let priceDifference = ticker.close - ticker.open;
+                        let priceDifference = (ticker.close || 0) - (ticker.open || 0);
                         let priceDifferencePercent = formatPercentage((ticker.close - ticker.open) / ticker.open);
                         return (
                             <div
