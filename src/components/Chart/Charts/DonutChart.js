@@ -121,7 +121,7 @@ class DonutChart extends Component {
 
     renderSlice = (value, i, width, height) => {
         let minViewportSize = Math.min(width, height);
-        let radius = this.state.isData ? (minViewportSize * .9) / 3.8 : (minViewportSize * .9) / 2;
+        let radius = this.state.isData ? (minViewportSize * .9) / 3.2 : (minViewportSize * .9) / 2;
         let innerRadius = radius * .60;
         let outerRadius = radius;
         let labelRadious = radius + 30;

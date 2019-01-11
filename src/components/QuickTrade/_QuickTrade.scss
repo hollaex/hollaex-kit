@@ -41,12 +41,14 @@ $title-icon--height: 10rem;
 	max-width: $wrapper--max-width;
 	padding: $wrapper--padding;
 	background-color: white;
+	margin: 3rem auto;
+	height: fit-content;
 
 	.review-block-wrapper,
 	.input_block-wrapper,
 	.toogle_button-wrapper {
-		margin: 1rem;
-		width: 100%;
+		margin: 1rem 0;
+		width: auto;
 	}
 
 	.quick_trade-bottom-padded {
