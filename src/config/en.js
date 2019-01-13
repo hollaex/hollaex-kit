@@ -551,7 +551,7 @@ export default {
 				CARD_NUMBER: 'Your card number should be 16 digits'
 			},
 			FORM_FIELDS: {
-				BANK_NAME_LABEL: 'Bank Name (We reccomend you to use Pasargad Bank for instant withdrawals. Otherwise your withdrawals will have 1 to 2 days delay.',
+				BANK_NAME_LABEL: 'Bank Name',
 				BANK_NAME_PLACEHOLDER: 'Type the name of your bank',
 				ACCOUNT_NUMBER_LABEL: 'Bank Account Number',
 				ACCOUNT_NUMBER_PLACEHOLDER: 'Type your bank account number',
