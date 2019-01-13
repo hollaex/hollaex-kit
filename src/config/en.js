@@ -454,7 +454,7 @@ export default {
 					'IMPORTANT: Enter your name into the fields exactly as it appears on your identity document (full first name, any middle names/initials and full last name(s)). Are you a business? Contact customer support for a corporate account.',
 				TITLE_PERSONAL_INFORMATION: 'Personal Information',
 				TITLE_PHONE: 'Phone',
-				PHONE_VERIFICATION_TXT: 'Providing valid contact details will assist EXIR greatly in conflict resolution while preventing unwanted transactions on your account.',
+				PHONE_VERIFICATION_TXT: 'Providing valid contact details will assist HollaEx greatly in conflict resolution while preventing unwanted transactions on your account.',
 				PHONE_VERIFICATION_TXT_1: 'Receive real-time updates for deposits and withdrawals by sharing your mobile phone number.',
 				PHONE_VERIFICATION_TXT_2: 'Further prove your identity and address by sharing your LAN phone number (optional).',
 			}
@@ -530,11 +530,11 @@ export default {
 				},
 				SELFIE: {
 					TITLE: 'Selfie with Photo ID and Note',
-					INFO_TEXT: "Please provide a photo of you holding your passport or photo ID. In the same picture and have a reference to ‘exir.io’, today's date and your signature displayed.Make sure your face is clearly visible and that your ID details are clearly readable.",
+					INFO_TEXT: "Please provide a photo of you holding your passport or photo ID. In the same picture and have a reference to HollaEx.com’, today's date and your signature displayed.Make sure your face is clearly visible and that your ID details are clearly readable.",
 					REQUIRED: 'Required:',
 					INSTRUCTION_1: 'Your face clearly visable',
 					INSTRUCTION_2: 'Photo ID clearly readable',
-					INSTRUCTION_3: 'Write the word ‘exir.io’',
+					INSTRUCTION_3: 'Write the word ‘hollaex.com',
 					INSTRUCTION_4: "Write today's date",
 					INSTRUCTION_5: "Write your signature",
 					WARNING: 'Selfie with a different inconsistent ID with uploaded content will be rejected'
