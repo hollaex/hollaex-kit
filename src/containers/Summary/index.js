@@ -23,7 +23,7 @@ import {
     formatPercentage,
     calculatePrice,
     calculatePricePercentage } from '../../utils/currency';
-import { getTradeVolumeTotal, getLastMonthVolume } from './components/utils';
+import { getLastMonthVolume } from './components/utils';
 
 const FIAT = CURRENCIES.fiat.symbol;
 const default_trader_account = TRADING_ACCOUNT_TYPE.shrimp;
@@ -39,16 +39,9 @@ class Summary extends Component {
 
     
     componentDidMount() {
-        const { user, symbol, limits, requestLimits, fees, requestFees, tradeVolumes, pairs, prices } = this.props;
-        if (!limits.fetched && !limits.fetching) {
-            requestLimits();
-        }
+        const { user, tradeVolumes, pairs, prices } = this.props;
 
-        if (!fees.fetched && !fees.fetching) {
-            requestFees();
-        }
-
-        if (user.id && symbol) {
+        if (user.id) {
             this.calculateSections(this.props);
             this.setCurrentTradeAccount(user);
         }
@@ -78,7 +71,14 @@ class Summary extends Component {
     }
 
     onFeesAndLimits = tradingAccount => {
-        const { fees, limits, pairs } = this.props;
+        const { fees, limits, pairs, requestLimits, requestFees } = this.props;
+        if (!limits.fetched && !limits.fetching) {
+            requestLimits();
+        }
+
+        if (!fees.fetched && !fees.fetching) {
+            requestFees();
+        }
         this.props.openFeesStructureandLimits({
             fees: fees.data,
             limits: limits.data,
@@ -131,6 +131,7 @@ class Summary extends Component {
                 currentTradingAccount = TRADING_ACCOUNT_TYPE.leviathan;
                 break;
             default:
+                currentTradingAccount = TRADING_ACCOUNT_TYPE.leviathan;
                 break;
         }
         this.setState({ currentTradingAccount, selectedAccount: currentTradingAccount.symbol });
@@ -167,7 +168,7 @@ class Summary extends Component {
                     : (<div>
                         <div className="d-flex align-items-center">
                             <div className="summary-section_1 trader-account-wrapper d-flex">
-                                <SummaryBlock title={STRINGS.SUMMARY.TINY_PINK_SHRIMP_TRADER_ACCOUNT} >
+                                <SummaryBlock title={currentTradingAccount.fullName} >
                                     <TraderAccounts
                                         fees={fees.data}
                                         limits={limits.data}

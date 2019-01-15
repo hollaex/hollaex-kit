@@ -29,6 +29,26 @@ export const identityInitialValues = ({ full_name, gender, nationality, dob, add
 	return initialValues;
 };
 
+export const documentInitialValues = ({ nationality, id_data = {} }) => {
+	const { type, number, issued_date, expiration_date } = id_data;
+	const initialValues = {};
+	if (type)
+		initialValues.type = type;
+	else if (nationality === 'IR')
+		initialValues.type = 'id';
+	else
+		initialValues.type = 'passport';
+
+	if (number)
+		initialValues.number = number;
+	if (issued_date)
+		initialValues.issued_date = issued_date;
+	if (expiration_date)
+		initialValues.expiration_date = expiration_date;
+
+	return initialValues;
+};
+
 export const getCountry = country => {
 	const filterValue = COUNTRIES.filter(data => data.value === country);
 	if (filterValue.length) return filterValue[0];

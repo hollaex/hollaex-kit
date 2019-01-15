@@ -25,7 +25,7 @@ import { formatBtcAmount, formatFiatAmount } from '../../utils/currency';
 import { isLoggedIn } from '../../utils/token';
 import { changePair } from '../../actions/appActions';
 
-import { FLEX_CENTER_CLASSES } from '../../config/constants';
+// import { FLEX_CENTER_CLASSES } from '../../config/constants';
 
 import QuoteResult from './QuoteResult';
 
@@ -156,7 +156,7 @@ class QuickTradeContainer extends Component {
 		return (
 			<div
 				className={classnames(
-					...FLEX_CENTER_CLASSES,
+					'd-flex',
 					'f-1',
 					'quote-container',
 					{ 'flex-column': isMobile }

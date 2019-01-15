@@ -55,6 +55,10 @@ $summary-icon-color-inactive: #808184;
             .price-text {
                 color: $dark-font-main-text-color;
             }
+            .total-assets {
+                background: repeating-linear-gradient(-45deg, $colors-main-black, $colors-main-black 2px, #77768a 2px, #63626d 4px);
+                color: $dark-font-main-text-color;
+            }
         }
     }
 
@@ -162,6 +166,14 @@ $summary-icon-color-inactive: #808184;
 
     .requirement-not-verified {
         color: $colors-notifications-red;
+    }
+    
+    .requirement-rejected {
+        color: #FFF100;
+    }
+    
+    .requirement-pending {
+        color: #F6921E;
     }
 
     .requirement-incomplete {

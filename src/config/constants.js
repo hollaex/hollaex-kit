@@ -302,7 +302,13 @@ export const ICONS = {
 	VOLUME_PENDING: `${process.env.PUBLIC_URL}/assets/images/volume-pending-icon.svg`,
 	VOLUME_PENDING_DARK: `${process.env.PUBLIC_URL}/assets/images/volume-pending-dark.svg`,
 	SELF_KYC_ID_FA: `${process.env.PUBLIC_URL}/assets/self-kyc-id-note-persian.png`,
-	SELF_KYC_ID_EN: `${process.env.PUBLIC_URL}/assets/self-kyc-id-note-english.png`
+	SELF_KYC_ID_EN: `${process.env.PUBLIC_URL}/assets/self-kyc-id-note-english.png`,
+	CHAT_ICON_LVL_3: `${process.env.PUBLIC_URL}/assets/images/kraken-chat-lvl-3.svg`,
+	CHAT_ICON_LVL_4: `${process.env.PUBLIC_URL}/assets/images/whale-chat-lvl-4.svg`,
+	CHAT_ICON_SPECIAL: `${process.env.PUBLIC_URL}/assets/images/fin-chat-special.svg`,
+	NOTE_KYC: `${process.env.PUBLIC_URL}/assets/images/note-KYC.svg`,
+	SIDEBAR_CHAT: `${process.env.PUBLIC_URL}/assets/images/bottom-chat-icon.svg`,
+	SIDEBAR_HELP: `${process.env.PUBLIC_URL}/assets/images/help-question-mark-icon.svg`
 };
 
 export const SOCIAL_ICONS = {
@@ -514,13 +520,15 @@ export const TRADE_ACCOUNT_UPGRADE_MONTH = process.env.REACT_APP_ACCOUNT_UPGRADE
 	? process.env.REACT_APP_ACCOUNT_UPGRADE_MONTH.split(',').map(data => formatNumber(data))
 	: [3, 6];
 
+export const BAR_CHART_LIMIT_CAPACITY = [340000, 2050000];
+
 export const DEFAULT_COUNTRY = process.env.REACT_APP_DEFAULT_COUNTRY
 	? process.env.REACT_APP_DEFAULT_COUNTRY.toUpperCase()
 	: 'FR';
 
 export const BASE_CURRENCY = process.env.REACT_APP_BASE_CURRENCY;
 
-export const FEES_LIMIT_SITE_URL = 'https://www.exir.io/exir_fees/';
+export const FEES_LIMIT_SITE_URL = 'https://www.hollaex.com';
 
 export const TRADING_ACCOUNT_TYPE = {
 	shrimp: {

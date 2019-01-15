@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import ReactSVG from 'react-svg';
 import classnames from 'classnames';
 
-import { ICONS } from '../../config/constants';
+import { ICONS, CURRENCIES, BASE_CURRENCY } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 import { formatPercentage } from '../../utils/currency';
 import SearchBox from './SearchBox';
@@ -81,7 +81,8 @@ class AddTabList extends Component {
                         ? Object.keys(tabMenu).map((pair, index) => {
                             let menu = tabMenu[pair];
                             let ticker = tickers[pair];
-                            const priceDifference = ticker.close - ticker.open;
+                            let { formatToCurrency } = CURRENCIES[menu.pair_base || BASE_CURRENCY];
+                            const priceDifference = (ticker.close || 0) - (ticker.open || 0);
                             const priceDifferencePercent = formatPercentage((ticker.close - ticker.open) / ticker.open);
                             return (
                                 <div
@@ -98,9 +99,9 @@ class AddTabList extends Component {
                                     <div className="app_bar-pair-font">
                                         {STRINGS[`${menu.pair_base.toUpperCase()}_SHORTNAME`]}/{STRINGS[`${menu.pair_2.toUpperCase()}_SHORTNAME`]}:
                                     </div>
-                                    <div className="title-font ml-1">{`${STRINGS[`${menu.pair_2.toUpperCase()}_CURRENCY_SYMBOL`]} ${ticker.close}`}</div>
+                                    <div className="title-font ml-1">{`${STRINGS[`${menu.pair_2.toUpperCase()}_CURRENCY_SYMBOL`]} ${formatToCurrency(ticker.close)}`}</div>
                                     <div className={priceDifference < 0 ? "app-price-diff-down app-bar-price_diff_down" : "app-bar-price_diff_up app-price-diff-up"}>
-                                        {priceDifference}
+                                        {formatToCurrency(priceDifference)}
                                     </div>
                                     <div
                                         className={priceDifference < 0

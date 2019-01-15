@@ -62,13 +62,13 @@ class AppBar extends Component {
 			if (user.verification_level < 1 && !full_name) {
 				verificationPending += 1;
 			}
-			if (!id_data.verified) {
+			if (id_data.status === 0 || id_data.status === 2) {
 				verificationPending += 1;
 			}
 			if (!phone_number) {
 				verificationPending += 1;
 			}
-			if (!bank_account.filter(acc => acc.status === 3).length) {
+			if (bank_account.filter(acc => acc.status === 0 || acc.status === 2).length === bank_account.length) {
 				verificationPending += 1;
 			}
 			this.setState({ securityPending, verificationPending });

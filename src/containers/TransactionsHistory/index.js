@@ -37,7 +37,9 @@ class TransactionsHistory extends Component {
 	componentDidMount() {
 		this.requestData(this.props.symbol);
 		this.generateHeaders(this.props.symbol);
-		if (this.props.location.query.tab) {
+		if (this.props.location
+			&& this.props.location.query
+			&& this.props.location.query.tab) {
 			this.setActiveTab(parseInt(this.props.location.query.tab, 10));
 		}
 	}

@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import moment from 'moment';
 
 import STRINGS from '../../../config/localizedStrings';
 import { getTradeVolume } from '../../../actions/userAction';
 import { BarChart } from '../../../components';
-import { calculatePrice } from '../../../utils/currency';
+import { calculatePrice, formatFiatAmount } from '../../../utils/currency';
 import { TRADING_VOLUME_CHART_LIMITS, SUMMMARY_ICON, CHART_MONTHS } from '../../../config/constants';
 
 class TradingVolume extends Component {
@@ -13,6 +14,7 @@ class TradingVolume extends Component {
         chartData: [],
         limits: TRADING_VOLUME_CHART_LIMITS,
         limitContent: [],
+        peakVolume: TRADING_VOLUME_CHART_LIMITS[TRADING_VOLUME_CHART_LIMITS.length - 1],
         totalVolume: 0
     };
 
@@ -30,8 +32,16 @@ class TradingVolume extends Component {
         const { pairs, prices, activeTheme } = this.props;
         const chartData = [];
         let totalVolume = 0;
+        let peakVolume = this.state.peakVolume;
+        const currentMonth = moment().month();
+        let chartMonths = [ ...CHART_MONTHS ];
+        for (let i = 0; i <= currentMonth; i++) {
+            let temp = chartMonths.shift();
+            chartMonths = [ ...chartMonths, temp ];
+        }
+        
         if (Object.keys(tradeValues).length) {
-            CHART_MONTHS.map((obj, key) => {
+            chartMonths.map((obj, key) => {
                 let trade = tradeValues[obj.key];
                 let data = {
                     key: obj.key,
@@ -58,6 +68,9 @@ class TradingVolume extends Component {
                     data.pairWisePrice = {};
                     data.total = 0;
                 }
+                if (peakVolume < data.total) {
+                    peakVolume = data.total;
+                }
                 totalVolume += data.total;
                 chartData.push(data);
                 return chartData;
@@ -82,25 +95,30 @@ class TradingVolume extends Component {
                 }
                 return index;
             });
-            this.setState({ chartData, limitContent, totalVolume });
+            peakVolume += (peakVolume * 0.1);
+
+            this.setState({ chartData, limitContent, peakVolume, totalVolume: formatFiatAmount(totalVolume) });
         }
     };
 
     render() {
-        const { chartData, limits, limitContent } = this.state;
+        const { chartData, limits, limitContent, peakVolume } = this.state;
+        const { tradeVolumes } = this.props;
         return (
             <div className="summary-section_2">
-                <div className="summary-content-txt">
-                    <div>{STRINGS.formatString(
-                        STRINGS.SUMMARY.TRADING_VOLUME_TXT_1,
-                        STRINGS.FIAT_FULLNAME
-                        )}
+                <div className="w-100 h-100">
+                    <div className="summary-content-txt">
+                        <div>{STRINGS.formatString(
+                            STRINGS.SUMMARY.TRADING_VOLUME_TXT_1,
+                            STRINGS.FIAT_FULLNAME
+                            )}
+                        </div>
+                        <div>{STRINGS.SUMMARY.TRADING_VOLUME_TXT_2}</div>
                     </div>
-                    <div>{STRINGS.SUMMARY.TRADING_VOLUME_TXT_2}</div>
-                </div>
-                <div style={{ height: '35rem' }} className="w-100">
                     <BarChart
+                        loading={tradeVolumes.fetching && !tradeVolumes.fetched}
                         chartData={chartData}
+                        peakVolume={peakVolume}
                         yAxisLimits={limits}
                         limitContent={limitContent}
                         activeTheme={this.props.activeTheme} />

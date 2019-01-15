@@ -405,6 +405,12 @@ export default {
 		PHONE_COUNTRY_ORIGIN: 'Phone Country of Origin', // ToDo: Add this into farsi in exir
 		MOBILE_NUMBER: 'Mobile Number', // ToDo: Add this into farsi in exir
 		DOCUMENT_PROOF_SUBMISSION: 'Document Proof Submission', // ToDo: Add this into farsi in exir
+		START_DOCUMENTATION_RESUBMISSION: 'Start Documentation Re-Submission', // ToDo: Add this into farsi in exir
+		SUBMISSION_PENDING_TXT: '*This section has already been submitted. Making changes and resubmitting will overwrite your previous information.', // ToDo: Add this into farsi in exir
+		CUSTOMER_SUPPORT_MESSAGE: 'Customer Support Message',// ToDo: Add this into farsi in exir
+		DOCUMENT_PENDING_NOTE: 'Your documents is submitted and is pending for review. Please be patient.', // ToDo: Add this into farsi in exir
+		DOCUMENT_VERIFIED_NOTE: 'Your documents are completed.', // ToDo: Add this into farsi in exir
+		NOTE_FROM_VERIFICATION_DEPARTMENT: 'Note from the verification department', // ToDo: Add this into farsi in exir
 		USER_DOCUMENTATION_FORM: {
 			FORM_FIELDS: {
 				FIRST_NAME_LABEL: 'First name',
@@ -448,7 +454,7 @@ export default {
 					'IMPORTANT: Enter your name into the fields exactly as it appears on your identity document (full first name, any middle names/initials and full last name(s)). Are you a business? Contact customer support for a corporate account.',
 				TITLE_PERSONAL_INFORMATION: 'Personal Information',
 				TITLE_PHONE: 'Phone',
-				PHONE_VERIFICATION_TXT: 'Providing valid contact details will assist EXIR greatly in conflict resolution while preventing unwanted transactions on your account.',
+				PHONE_VERIFICATION_TXT: 'Providing valid contact details will assist HollaEx greatly in conflict resolution while preventing unwanted transactions on your account.',
 				PHONE_VERIFICATION_TXT_1: 'Receive real-time updates for deposits and withdrawals by sharing your mobile phone number.',
 				PHONE_VERIFICATION_TXT_2: 'Further prove your identity and address by sharing your LAN phone number (optional).',
 			}
@@ -524,11 +530,11 @@ export default {
 				},
 				SELFIE: {
 					TITLE: 'Selfie with Photo ID and Note',
-					INFO_TEXT: "Please provide a photo of you holding your passport or photo ID. In the same picture and have a reference to ‘exir.io’, today's date and your signature displayed.Make sure your face is clearly visible and that your ID details are clearly readable.",
+					INFO_TEXT: "Please provide a photo of you holding your passport or photo ID. In the same picture and have a reference to HollaEx.com’, today's date and your signature displayed.Make sure your face is clearly visible and that your ID details are clearly readable.",
 					REQUIRED: 'Required:',
 					INSTRUCTION_1: 'Your face clearly visable',
 					INSTRUCTION_2: 'Photo ID clearly readable',
-					INSTRUCTION_3: 'Write the word ‘exir.io’',
+					INSTRUCTION_3: 'Write the word ‘hollaex.com',
 					INSTRUCTION_4: "Write today's date",
 					INSTRUCTION_5: "Write your signature",
 					WARNING: 'Selfie with a different inconsistent ID with uploaded content will be rejected'
@@ -545,7 +551,7 @@ export default {
 				CARD_NUMBER: 'Your card number should be 16 digits'
 			},
 			FORM_FIELDS: {
-				BANK_NAME_LABEL: 'Bank Name (We reccomend you to use Pasargad Bank for instant withdrawals. Otherwise your withdrawals will have 1 to 2 days delay.',
+				BANK_NAME_LABEL: 'Bank Name',
 				BANK_NAME_PLACEHOLDER: 'Type the name of your bank',
 				ACCOUNT_NUMBER_LABEL: 'Bank Account Number',
 				ACCOUNT_NUMBER_PLACEHOLDER: 'Type your bank account number',
@@ -825,6 +831,7 @@ export default {
 	NEXT: 'Next',
 	SKIP_FOR_NOW: 'Skip for now',
 	SUBMIT: 'submit',
+	RESUBMIT: 'Resubmit', // ToDo: need to add this entire suumary in farsi when move to exir.
 	VERIFICATION_NOTIFICATION_SKIP_TITLE: 'Missing Documents!',
 	VERIFICATION_NOTIFICATION_SKIP_TEXT:
 		'To get full access to withdrawal and deposit functions on HOLLAEX you must submit your identity documents in your account page.',
@@ -902,6 +909,7 @@ export default {
 	},
 	CHAT: {
 		CHAT_TEXT: 'chat',
+		MARKET_CHAT: 'Market Chat',
 		CHAT_UNREAD: '{0} ({1})', // 0 -> CHAT_TEXT, 1 -> number
 		READ_MORE: 'Read More',
 		SHOW_IMAGE: 'Show Image',

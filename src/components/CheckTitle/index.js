@@ -7,6 +7,8 @@ import { ICONS } from '../../config/constants';
 export const renderStatusIcon = (statusCode = -1, className = "") => {
 
 	switch (statusCode) {
+		case -1:
+			return null;
 		case 0:
 			return <ReactSVG path={ICONS.VERIFICATION_INCOMPLETE} wrapperClassName={className} />;
 		case 1:

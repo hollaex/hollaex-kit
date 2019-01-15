@@ -22,6 +22,12 @@ $colors-black: #000000;
 	.header-content {
 		font-size: .8rem;
 	}
+	.content-text {
+		font-size: 0.8rem;
+	}
+	.document-note-icon {
+		width: 3.5rem;
+	}
 }
 
 .verification_content-form-wrapper {
@@ -255,6 +261,9 @@ $colors-black: #000000;
 		svg {
 			.pending-timer {
 				stroke: $dark-font-main-text-color;
+			}
+			.note-kyc {
+				fill: $dark-font-main-text-color;
 			}
 		}
 	}

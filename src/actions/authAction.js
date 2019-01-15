@@ -53,11 +53,13 @@ export function verifyVerificationCode(data) {
 
 export const performLogin = (values) =>
 	axios.post('/login', values).then((res) => {
-		setTokenInApp(res.data.token, true);
-		store.dispatch({
-			type: 'VERIFY_TOKEN_FULFILLED',
-			payload: res.data.token
-		});
+		if (res.data.token) {
+			setTokenInApp(res.data.token, true);
+			store.dispatch({
+				type: 'VERIFY_TOKEN_FULFILLED',
+				payload: res.data.token
+			});
+		}
 		return res;
 	});
 

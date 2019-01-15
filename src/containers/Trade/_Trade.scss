@@ -141,11 +141,11 @@ $order_entry-column--width: 15rem;
 
 	.trade_history-row {
 		&.sell {
-			color: $dark-buy;
+			color: $dark-sell;
 		}
 
 		&.buy {
-			color: $dark-sell;
+			color: $dark-buy;
 		}
 	}
 

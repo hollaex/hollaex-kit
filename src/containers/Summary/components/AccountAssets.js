@@ -4,6 +4,7 @@ import ReactSVG from 'react-svg';
 import { DonutChart } from '../../../components';
 import STRINGS from '../../../config/localizedStrings';
 import { CURRENCIES, BASE_CURRENCY, ICONS } from '../../../config/constants';
+// import { formatAverage } from '../../../utils/currency';
 
 const AccountAssets = ({ chartData = [], totalAssets, balance }) => {
     const baseValue = CURRENCIES[BASE_CURRENCY];
@@ -17,16 +18,20 @@ const AccountAssets = ({ chartData = [], totalAssets, balance }) => {
                 {BASE_CURRENCY && <DonutChart chartData={chartData} />}
             </div>
             <div className="d-flex">
-                {chartData.map((value, index) => (
-                    <div key={index} className="price-content text-center">
-                        <ReactSVG path={ICONS[`${value.shortName.toUpperCase()}_ICON`]} wrapperClassName="coin-price" />
-                        <div className="price-text">{value.fullName}:</div>
-                        <div className="price-text">
-                            {`${STRINGS[`${value.symbol.toUpperCase()}_CURRENCY_SYMBOL`]} ${balance[`${value.symbol}_balance`]}`}
+                {chartData.map((value, index) => {
+                    const { formatToCurrency } = CURRENCIES[value.symbol || BASE_CURRENCY];
+                    let currencyBalance = formatToCurrency(balance[`${value.symbol}_balance`]);
+                    return (
+                        <div key={index} className="price-content text-center">
+                            <ReactSVG path={ICONS[`${value.shortName.toUpperCase()}_ICON`]} wrapperClassName="coin-price" />
+                            <div className="price-text">{value.fullName}:</div>
+                            <div className="price-text">
+                                {`${STRINGS[`${value.symbol.toUpperCase()}_CURRENCY_SYMBOL`]} ${currencyBalance}`}
+                            </div>
+                            {value.symbol !== 'fiat' && <div>{`~${value.balanceFormat}`}</div>}
                         </div>
-                        {value.symbol !== 'fiat' && <div>{`~${value.balanceFormat}`}</div>}
-                    </div>
-                ))}
+                    )}
+                )}
             </div>
             <div className="text-center my-3 title-font">
                 <span className="total-assets">

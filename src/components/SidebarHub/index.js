@@ -22,13 +22,13 @@ class SidebarHub extends Component {
 				<div className="d-flex sidebar_hub-content d-flex flex-column">
 				{isLogged ?
 					<div>
-						<Wallet />
-						{/* <Section
+						{/* <Wallet />
+						<Section
 							title={STRINGS.ACCOUNT_TEXT}
 							icon={ICONS.SIDEBAR_ACCOUNT_ACTIVE}
 							active={activePath === 'account'}
 							path="/account"
-						/>
+						/> */}
 						<Section
 							title={STRINGS.WALLET_TITLE}
 							icon={ICONS.SIDEBAR_WALLET_ACTIVE}
@@ -36,7 +36,7 @@ class SidebarHub extends Component {
 							path="/wallet"
 						>
 							<Wallet />
-						</Section> */}
+						</Section>
 					</div> :
 					<div>
 						<IconTitle
@@ -69,9 +69,9 @@ class SidebarHub extends Component {
 						icon={ICONS.SIDEBAR_TRADING_ACTIVE}
 						childrenClassName="d-flex sidebar_hub-trade"
 						active={activePath === 'trade' || activePath === 'quick-trade'}
-						path={`/trade/${pair}`}
-					>
-						<ButtonLink
+						path={`/trade/add/tabs`}
+					/>
+						{/* <ButtonLink
 							label={STRINGS.PRO_TRADE}
 							className={classnames('sidebar_hub-button f-1', {
 								active: activePath === 'trade',
@@ -89,8 +89,8 @@ class SidebarHub extends Component {
 							})}
 							disabled={!pair}
 							link={`/quick-trade/${pair}`}
-						/>
-					</Section>
+						/> */}
+					{/* </Section> */}
 				</div>
 			</div>
 		);

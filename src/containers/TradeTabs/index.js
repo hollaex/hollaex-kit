@@ -5,9 +5,9 @@ import ReactSVG from 'react-svg';
 import classnames from 'classnames';
 
 import { Paginator, SearchBox } from '../../components';
-import { HOLLAEX_LOGO, HOLLAEX_LOGO_BLACK } from '../../config/constants';
+import { HOLLAEX_LOGO, HOLLAEX_LOGO_BLACK, BASE_CURRENCY } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
-import { ICONS } from '../../config/constants';
+import { ICONS, CURRENCIES } from '../../config/constants';
 import { formatPercentage } from '../../utils/currency';
 
 class AddTradeTab extends Component {
@@ -146,13 +146,14 @@ class AddTradeTab extends Component {
                     <div className="d-flex flex-wrap p-3 my-5">
                         {data.map((key, index) => {
                             let pair = pairs[key];
+                            let { formatToCurrency } = CURRENCIES[pair.pair_base || BASE_CURRENCY];
                             let ticker = tickers[key] || {};
-                            const priceDifference = ticker.close - ticker.open;
+                            const priceDifference = (ticker.close || 0) - (ticker.open || 0);
                             const priceDifferencePercent = formatPercentage((ticker.close - ticker.open) / ticker.open);
                             return (
                                 <div
                                     key={index}
-                                    className={classnames("d-flex", "trade-tab-list", { "active-tab": index === 0 })}
+                                    className={classnames("d-flex", "trade-tab-list", "pointer", { "active-tab": index === 0 })}
                                     onClick={() => this.handleClick(key)}>
                                     <div className="px-2">
                                         <ReactSVG path={ICONS[`${pair.pair_base.toUpperCase()}_ICON`]} wrapperClassName="trade_tab-icons" />
@@ -166,12 +167,12 @@ class AddTradeTab extends Component {
                                         </div>
                                         <div>{STRINGS.PRICE}:
                                             <span className="title-font ml-1">
-                                                {`${STRINGS[`${pair.pair_2.toUpperCase()}_CURRENCY_SYMBOL`]} ${ticker.close}`}
+                                                {`${STRINGS[`${pair.pair_2.toUpperCase()}_CURRENCY_SYMBOL`]} ${formatToCurrency(ticker.close)}`}
                                             </span>
                                         </div>
                                         <div className="d-flex">
                                             <div className={priceDifference < 0 ? "price-diff-down trade-tab-price_diff_down" : "trade-tab-price_diff_up price-diff-up"}>
-                                                {priceDifference}
+                                                {formatToCurrency(priceDifference)}
                                             </div>
                                             <div
                                                 className={priceDifference < 0

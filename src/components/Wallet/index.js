@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { browserHistory } from 'react-router';
 import { Accordion } from '../';
 import { CURRENCIES, BASE_CURRENCY } from '../../config/constants';
 import { calculateBalancePrice,
@@ -82,6 +83,8 @@ class Wallet extends Component {
 
 		this.setState({ sections, chartData: data, totalAssets: formatFiatAmount(totalAssets) });
 	};
+	
+	goToWallet = () => browserHistory.push('/wallet');
 
 	render() {
 		const { sections, totalAssets, chartData } = this.state;
@@ -92,7 +95,7 @@ class Wallet extends Component {
 
 		return (
 			<div className="wallet-wrapper">
-				<div className="donut-container">
+				<div className="donut-container pointer" onClick={this.goToWallet}>
 					<DonutChart chartData={chartData} />
 				</div>
 				<Accordion sections={sections} />
