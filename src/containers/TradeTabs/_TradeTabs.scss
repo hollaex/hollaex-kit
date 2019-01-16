@@ -272,3 +272,9 @@ $tab--black: #000000;
         }
     } 
 }
+
+.layout-mobile {
+    .trade_tabs-container {
+        overflow-y: scroll;
+    }
+}

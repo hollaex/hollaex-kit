@@ -193,10 +193,10 @@ class BarChart extends Component {
                                     .style("left", (d3.event.pageX + 10) + "px")
                                     .append('div')
                                     .attr('class', 'tool_tip-pair-volume')
-                                    .text(`${pair.toUpperCase()}: ${volume}`);
+                                    .text(`${pair.toUpperCase()}: ${formatAverage(volume)}`);
                                 tooltip.append('div')
                                     .attr('class', 'tool_tip-pair-price')
-                                    .text(`~ ${STRINGS.FIAT_SHORTNAME}: ${formatFiatAmount(d.pairWisePrice[pair])}`);
+                                    .text(`~ ${STRINGS.FIAT_SHORTNAME}: ${formatAverage(formatFiatAmount(d.pairWisePrice[pair]))}`);
                             })
                             .on("mousemove", function () {
                                 return tooltip.style("top", (d3.event.pageY - 10) + "px")

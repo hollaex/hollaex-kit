@@ -180,7 +180,7 @@ class AddTradeTab extends Component {
                                                 {`(${priceDifferencePercent})`}
                                             </div>
                                         </div>
-                                        <div>{`${STRINGS.CHART_TEXTS.v}: ${ticker.volume} ${STRINGS[`${pair.pair_2.toUpperCase()}_CURRENCY_SYMBOL`]}`}</div>
+                                        <div>{`${STRINGS.CHART_TEXTS.v}: ${ticker.volume} ${STRINGS[`${pair.pair_base.toUpperCase()}_CURRENCY_SYMBOL`]}`}</div>
                                     </div>
                                 </div>
                             )

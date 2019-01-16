@@ -87,7 +87,7 @@ class Login extends Component {
 		return performLogin(values)
 			.then((res) => {
 				if (res.data && res.data.callbackUrl)
-					this.redirectToService(`http://${res.data.service}.com${res.data.callbackUrl}`);
+					this.redirectToService(res.data.callbackUrl);
 				else
 					this.redirectToHome();
 			})
