@@ -81,9 +81,11 @@ class PairTabs extends Component {
             const tempTabs = {};
             const selected = {};
             tabs.map((key, index) => {
-                if (index <= 3)
-                    tempTabs[key] = pairs[key];
-                selected[key] = pairs[key];
+                if (pairs[key]) {
+                    if (index <= 3)
+                        tempTabs[key] = pairs[key];
+                    selected[key] = pairs[key];
+                }
                 return key;
             });
             if (activePair && !tempTabs[activePair] && tabs.length) {

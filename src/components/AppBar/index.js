@@ -5,8 +5,6 @@ import { Link } from 'react-router';
 import ReactSVG from 'react-svg';
 import { isMobile } from 'react-device-detect';
 import {
-	HOLLAEX_LOGO,
-	HOLLAEX_LOGO_BLACK,
 	IS_PRO_VERSION,
 	PRO_URL,
 	DEFAULT_VERSION_REDIRECT,
@@ -142,13 +140,13 @@ class AppBar extends Component {
 			>
 				{isHome ? (
 					<img
-						src={HOLLAEX_LOGO}
+						src={ICONS.LOGO_GREY}
 						alt={STRINGS.APP_NAME}
 						className="app_bar-icon-logo"
 					/>
 				) : (
 					<Link href={IS_PRO_VERSION ? PRO_URL : DEFAULT_VERSION_REDIRECT}>
-						<ReactSVG path={HOLLAEX_LOGO_BLACK} wrapperClassName="app_bar-icon-logo" />
+						<ReactSVG path={ICONS.LOGO_BLACK} wrapperClassName="app_bar-icon-logo" />
 					</Link>
 				)}
 			</div>
@@ -229,7 +227,7 @@ class AppBar extends Component {
 				)}
 			>
 				<Link to="/">
-					<ReactSVG path={HOLLAEX_LOGO_BLACK} wrapperClassName="homeicon-svg" />
+					<ReactSVG path={ICONS.LOGO_BLACK} wrapperClassName="homeicon-svg" />
 				</Link>
 				{isHome && this.renderSplashActions(token, verifyingToken)}
 			</MobileBarWrapper>

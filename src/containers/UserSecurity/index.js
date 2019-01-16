@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { SubmissionError } from 'redux-form';
 import { isMobile } from 'react-device-detect';
-import ReactSVG from 'react-svg';
 
 import { ICONS } from '../../config/constants';
 import {
@@ -12,7 +11,6 @@ import {
 	otpSetActivated,
 	otpRevoke
 } from '../../actions/userAction';
-import { logout } from '../../actions/authAction';
 import {
 	Accordion,
 	Dialog,
@@ -260,10 +258,6 @@ class UserVerification extends Component {
 		}
 	};
 
-	logout = (message = '') => {
-		this.props.logout(typeof message === 'string' ? message : '');
-	};
-
 	render() {
 		if (this.props.user.verification_level === 0) {
 			return <div>Loading</div>;
@@ -277,13 +271,6 @@ class UserVerification extends Component {
 					textType="title"
 				/>}
 				<Accordion sections={sections} ref={this.setRef} />
-				{isMobile && 
-					<div
-						className="logout-menu-wrapper d-flex pointer" onClick={this.logout}>
-						<ReactSVG path={ICONS.TAB_SIGNOUT} wrapperClassName="logout-icon" />
-						{STRINGS.ACCOUNTS.TAB_SIGNOUT}
-					</div>
-				}
 				<Dialog
 					isOpen={dialogIsOpen && !otp.requesting}
 					label="security-modal"
@@ -308,7 +295,6 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
 	requestOTP: () => dispatch(otpRequest()),
-	logout: (message) => dispatch(logout(message)),
 	otpSetActivated: (active) => dispatch(otpSetActivated(active))
 });
 
