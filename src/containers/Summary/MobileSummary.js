@@ -39,7 +39,7 @@ const MobileSummary = ({
             )}
         >
             <div className="summary-section_1 trader-account-wrapper d-flex w-100">
-                <SummaryBlock title={STRINGS.SUMMARY.TINY_PINK_SHRIMP_TRADER_ACCOUNT} wrapperClassname="w-100" >
+                <SummaryBlock title={currentTradingAccount.fullName} wrapperClassname="w-100" >
                     <TraderAccounts
                         fees={fees}
                         limits={limits}
