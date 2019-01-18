@@ -21,6 +21,8 @@ export const API_URL = config[ENV][NETWORK].API_URL;
 export const WS_URL = config[ENV][NETWORK].WS_URL;
 
 export const ICONS = {
+	LOGO_GREY: `${process.env.PUBLIC_URL}/assets/hollaEx_logo-grey.svg`,
+	LOGO_BLACK: `${process.env.PUBLIC_URL}/assets/hollaEx_logo-blk.svg`,
 	TRADE_HISTORY_DARK: `${process.env.PUBLIC_URL}/assets/icons/trade-history-dark.svg`,
 	TRADE_HISTORY_LIGHT: `${process.env.PUBLIC_URL}/assets/icons/trade-history-light.svg`,
 	ACTIVE_TRADE_DARK: `${process.env.PUBLIC_URL}/assets/icons/active-trade-dark.svg`,

@@ -4,7 +4,7 @@ import ReactSVG from 'react-svg';
 import { DonutChart } from '../../../components';
 import STRINGS from '../../../config/localizedStrings';
 import { CURRENCIES, BASE_CURRENCY, ICONS } from '../../../config/constants';
-// import { formatAverage } from '../../../utils/currency';
+import { formatAverage } from '../../../utils/currency';
 
 const AccountAssets = ({ chartData = [], totalAssets, balance }) => {
     const baseValue = CURRENCIES[BASE_CURRENCY];
@@ -26,9 +26,9 @@ const AccountAssets = ({ chartData = [], totalAssets, balance }) => {
                             <ReactSVG path={ICONS[`${value.shortName.toUpperCase()}_ICON`]} wrapperClassName="coin-price" />
                             <div className="price-text">{value.fullName}:</div>
                             <div className="price-text">
-                                {`${STRINGS[`${value.symbol.toUpperCase()}_CURRENCY_SYMBOL`]} ${currencyBalance}`}
+                                {`${STRINGS[`${value.symbol.toUpperCase()}_CURRENCY_SYMBOL`]} ${formatAverage(currencyBalance)}`}
                             </div>
-                            {value.symbol !== 'fiat' && <div>{`~${value.balanceFormat}`}</div>}
+                            {value.symbol !== 'fiat' && <div>{`~${formatAverage(value.balanceFormat)}`}</div>}
                         </div>
                     )}
                 )}
