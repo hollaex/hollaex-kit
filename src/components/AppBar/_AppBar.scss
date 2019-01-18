@@ -1,14 +1,126 @@
 $language-selector-arrow--size: 0.4rem;
 $app-bar--background: white;
+$app-bar--pairs-color: #CCCBCA;
+$app-bar-tab-color-inactive: #808184;
+$app-bar--quicktrade-active-color: #fff100;
+$app-bar--quicktrade-inactive-color: #ceac20;
+$app-bar--arrow-size: 0.4rem;
+$notification-size: 1.5rem;
+$app-menu-notification-size: 1.2rem;
+$app-bar--black: #000000;
+$app-bar-add-tab-inactive: #808080;
+$app-bar-add-tab-red: #ff0000;
+$app-bar-pairs-up: green;
 
 .dark-theme {
 	.app_bar {
-		background: $dark-app-bar-background-color !important;
-		border-bottom-color: $dark-border-main !important;
+		background: $app-bar--black !important;
 		color: $dark-font-main-text-color !important;
 		> div {
 			&:not(:first-child) {
 				border-left-color: $dark-border-main !important;
+			}
+		}
+
+		.active-tab-pair {
+			background-color: $dark-app-background-color !important;
+			border-left: 1px solid $app-bar--pairs-color !important;
+			color: $colors-white !important;
+
+			svg {
+				.btc0 {
+					fill: $colors-white;
+				}
+				.btc1 {
+					fill: $colors-white;
+				}
+				.eth0 {
+					fill: $colors-white;
+				}
+				.eth1 {
+					fill: $colors-white;
+				}
+				.bch-icon {
+					fill: $colors-white;
+				}
+				.tab-close {
+					stroke: $colors-white;
+				}
+				.plus {
+					stroke: $colors-white;
+				}
+				.st0 {
+					fill: $colors-white;
+					stroke-width: 0rem;
+				}
+				.double-arrow {
+					stroke: $colors-white;
+				}
+			}
+		}
+
+		.active-tab-overflow {
+			background-color: $dark-app-background-color !important;
+			border-left: 1px solid $dark-app-background-color !important;
+			color: $colors-white !important;
+			top: 1px;
+
+			svg {
+				.double-arrow {
+					stroke: $colors-white;
+				}
+			}
+		}
+
+		.app-price-diff-down {
+			color: $dark-sell;
+		}
+
+		.app-price-diff-up {
+			color: $dark-buy;
+		}
+
+		.app-bar-price_diff_up:before {
+			@include css-triangle($dark-buy, 'up', $app-bar--arrow-size);
+			display: inline-block;
+			margin-bottom: 0.2rem;
+			margin-right: 0.5rem;
+			position: relative;
+			top: calc(50% - 0.6rem);
+		}
+
+		.app-bar-price_diff_down:before {
+			@include css-triangle($dark-sell, 'down', $app-bar--arrow-size);
+			display: inline-block;
+			margin-right: 0.5rem;
+			position: relative;
+			top: calc(50% - 0.6rem);
+		}
+	}
+
+	.app-menu-bar {
+		background: $dark-disabled-secondary !important;
+		
+		.active-menu {
+			background: $dark-app-background-color !important;
+			color: $dark-font-main-text-color !important;
+
+			svg {
+				.tab-summary0, .tab-wallet0, .tab-setting0, .tab-verify0,
+				.tab-security0, .tab-api0 {
+					fill: $dark-font-main-text-color !important;
+				}
+			}
+		}
+
+		.notification {
+			color: $colors-notifications-red !important;
+		
+			svg {
+				.tab-summary0, .tab-wallet0, .tab-setting0, .tab-verify0,
+				.tab-security0, .tab-api0 {
+					fill: $colors-notifications-red !important;
+				}
 			}
 		}
 	}
@@ -21,6 +133,10 @@ $app-bar--background: white;
 			}
 		}
 	}
+
+	.search-field {
+		background-color: $dark-app-background-color;
+	}
 }
 
 .app_bar {
@@ -28,12 +144,10 @@ $app-bar--background: white;
 	width: 100%;
 	min-height: $navigation_bar-height;
 	height: $navigation_bar-height;
-	border-bottom: 1px solid $app_bar-border--color;
 	display: flex;
-	justify-content: space-between;
 	font-size: $navigation_bar-font_size;
 	font-weight: bold;
-	background-color: $app-bar--background;
+	background: $app-bar--black;
 
 	&.no-borders {
 		border-bottom: none;
@@ -46,21 +160,21 @@ $app-bar--background: white;
 		display: flex;
 		align-items: center;
 		padding: 0 8px;
-
-		&:not(:first-child) {
-			border-left: 1px solid $app_bar-border--color;
-		}
 	}
 
 	.app_bar-icon-logo {
-		width: 4rem;
+		width: 5rem;
+	}
+
+	.app_bar-icon-logo svg {
+		.logo-black {
+			fill: $colors-white;
+		}
 	}
 
 	.app_bar-icon {
 		flex: 0;
-	}
-
-	.app_bar-icon {
+		margin-top: .4rem;
 		width: 100%;
 	}
 
@@ -82,6 +196,331 @@ $app-bar--background: white;
 		max-height: $navigation_bar-height;
 		min-height: $navigation_bar-height;
 	}
+
+	.app_bar-quicktrade-container {
+		margin: 0 .85rem;
+	}
+
+	.app_bar-quicktrade {
+		border: 1px solid $app-bar--quicktrade-inactive-color;
+		border-radius: .25rem;
+		color: $app-bar--quicktrade-inactive-color;
+		font-weight: 400;
+		padding: 0 .4rem;
+		text-transform: capitalize;
+
+		svg {
+			.st0 {
+				fill: $app-bar--black !important;
+				stroke: $app-bar--quicktrade-inactive-color !important;
+				stroke-width: 3 !important;
+			}
+		}
+	}
+
+	.quick_trade-active {
+		border: 1px solid $app-bar--quicktrade-active-color;
+		color: $app-bar--quicktrade-active-color;
+
+		svg {
+			.st0 {
+				fill: $app-bar--quicktrade-active-color !important;
+				stroke: $app-bar--quicktrade-active-color !important;
+				stroke-width: 3 !important;
+			}
+		}
+	}
+
+	.quicktrade_icon {
+		margin-top: .2rem;
+		width: 1rem;
+	}
+
+	.app-bar-account {
+		color: $colors-white;
+		cursor: pointer;
+		margin-right: 2rem;
+	}
+
+	.app_bar-pair-font {
+		font-size: .8rem;
+	}
+
+	.app_bar-pair-content {
+		align-items: center;
+		border-left: 1px solid $app-bar--pairs-color;
+		color: $app-bar-tab-color-inactive;
+		cursor: pointer;
+		display: flex;
+		font-size: $font-size-main;
+		font-weight: 400;
+		height: 100%;
+		position: relative;
+	}
+
+	.app_bar-pair-tab {
+		min-width: 20rem;
+		max-width: 20rem;
+	}	
+
+	.app_bar-pair-overflow {
+		align-items: center;
+		color: $app-bar-tab-color-inactive;
+		cursor: pointer;
+		display: flex;
+		font-size: $font-size-main;
+		font-weight: 400;
+		height: 100%;
+		padding: 0 .5rem;
+		position: relative;
+	}
+
+	.active-tab-pair {
+		background-color: $colors-white;
+		border-left: 1px solid $colors-white;
+		color: $app-bar--black;
+		top: 1px;
+
+		svg {
+			.btc0 {
+				fill: $colors-main-black;
+			}
+			.btc1 {
+				fill: $colors-main-black;
+			}
+			.eth0 {
+				fill: $colors-main-black;
+			}
+			.eth1 {
+				fill: $colors-main-black;
+			}
+			.bch-icon {
+				fill: $colors-main-black;
+			}
+			.tab-close {
+				stroke: $colors-main-black;
+			}
+			.plus {
+				stroke: $colors-main-black;
+			}
+			.st0 {
+				fill: $colors-main-black;
+				stroke-width: 0rem;
+			}
+			.double-arrow {
+				stroke: $colors-main-black;
+			}
+		}
+	}
+
+	.active-tab-overflow {
+		background-color: $colors-white;
+		border-left: 1px solid $colors-white;
+		color: $app-bar--black;
+		top: 1px;
+
+		svg {
+			.double-arrow {
+				stroke: $colors-main-black;
+			}
+		}
+	}
+
+	.app-bar-currency-icon {
+		margin: .5rem .3rem 0 .3rem;
+		width: 1.5rem;
+	}
+	
+	.app-bar-tab-close {
+		margin: .2rem .4rem 0 .4rem;
+		width: .9rem;
+	}
+
+	.app-bar-account-icon {
+		margin: .5rem .3rem 0 .3rem;
+		width: 1.5rem;
+	}
+
+	.app_bar-pair-content, .app-bar-tab-close, .app-bar-currency-icon, .app-bar-account-icon svg {
+		.btc0 {
+			fill: $app-bar-tab-color-inactive;
+		}
+		.btc1 {
+			fill: $app-bar-tab-color-inactive;
+		}
+		.eth0 {
+			fill: $app-bar-tab-color-inactive;
+		}
+		.eth1 {
+			fill: $app-bar-tab-color-inactive;
+		}
+		.bch-icon {
+			fill: $app-bar-tab-color-inactive;
+		}
+		.tab-close {
+			stroke: $app-bar-tab-color-inactive;
+		}
+		.plus {
+			stroke: $app-bar-tab-color-inactive;
+		}
+		.st0 {
+			fill: $colors-white;
+			stroke-width: 0rem;
+		}
+	}
+
+	.app_bar-currency-txt {
+		font-weight: 600;
+	}
+
+	.app-price-diff-down {
+		color: $colors-notifications-red;
+	}
+
+	.app-price-diff-up {
+		color: $app-bar-pairs-up;
+	}
+
+	.app-bar-price_diff_up {
+		margin-left: 0.5rem;
+	}
+
+	.app-bar-price_diff_up:before {
+		@include css-triangle($app-bar-pairs-up, 'up', $app-bar--arrow-size);
+		display: inline-block;
+		margin-bottom: 0.2rem;
+		margin-right: 0.5rem;
+		position: relative;
+		top: calc(50% - 0.6rem);
+	}
+
+	.app-bar-price_diff_down {
+		margin-left: 0.5rem;
+	}
+
+	.app-bar-price_diff_down:before {
+		@include css-triangle($colors-notifications-red, 'down', $app-bar--arrow-size);
+		display: inline-block;
+		margin-right: 0.5rem;
+		position: relative;
+		top: calc(50% - 0.6rem);
+	}
+
+	.app-bar-account-content {
+		align-items: center;
+		flex-direction: column;
+		justify-content: center;
+		position: relative;
+	}
+
+	.app-bar-account-notification {
+		position: absolute;
+		right: -6px;
+		top: 0;
+		height: $app-menu-notification-size;
+		width: $app-menu-notification-size;
+		border-radius: $app-menu-notification-size;
+		background-color: red;
+		color: white;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		font-size: .8rem;
+		line-height: 1;
+		font-weight: bold;
+	}
+
+	.app-bar-account-menu {
+		display: block;
+		position: absolute;
+		right: 0;
+		top: 36px;
+		min-width: 10rem;
+		min-height: 8rem;
+		background-color: #fafafa;
+		z-index: 20;
+		padding: 1rem;
+		-webkit-box-shadow: 0px 4px 6px 1px rgba(0, 0, 0, 0.4);
+		-moz-box-shadow: 0px 4px 6px 1px rgba(0, 0, 0, 0.4);
+		box-shadow: 0px 4px 6px 1px rgba(0, 0, 0, 0.4);
+
+		.app-bar-account-menu-list {
+			color: $app-bar-tab-color-inactive;
+			cursor: pointer;
+			padding: .2rem 0;
+		}
+
+		.app-bar-account-list-icon {
+			margin-right: .4rem;
+			width: 1rem;
+		}
+		.app-bar-account-list-icon svg {
+			.account-active-1 {
+				fill: $app-bar-tab-color-inactive;
+			}
+		}
+
+		.menu-active {
+			color: $colors-main-black;
+
+			svg {
+				.tab-summary0, .tab-wallet0, .tab-setting0, .tab-verify0,
+				.tab-security0, .tab-api0, .account-active-1 {
+					fill: $colors-main-black;
+				}
+			}
+		}
+
+		.notification-content {
+			width: $app-menu-notification-size;
+		}
+
+		.notification {
+			color: $colors-notifications-red;
+			// padding-left: 0;
+		
+			svg {
+				.tab-summary0, .tab-wallet0, .tab-setting0, .tab-verify0,
+				.tab-security0, .tab-api0 {
+					fill: $colors-notifications-red;
+				}
+			}
+		}
+
+		.app-bar-account-menu-notification {
+			position: absolute;
+			right: -10px;
+			top: -10px;
+			height: $app-menu-notification-size;
+			width: $app-menu-notification-size;
+			border-radius: $app-menu-notification-size;
+			background-color: $colors-notifications-red;
+			color: white;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			font-size: .8rem;
+			line-height: 1;
+			font-weight: bold;
+		}
+
+		.app-bar-account-list-notification {
+			position: relative;
+			right: 0;
+			bottom: 8px;
+			height: $app-menu-notification-size;
+			width: $app-menu-notification-size;
+			border-radius: $app-menu-notification-size;
+			background-color: $colors-notifications-red;
+			color: white;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			font-size: .8rem;
+			line-height: 1;
+			font-weight: bold;
+		}
+	}
 }
 
 .app_bar-mobile {
@@ -90,13 +529,244 @@ $app-bar--background: white;
 		@include size(8rem);
 
 		.logo-black {
-			fill: white;
+			fill: $colors-white;
 		}
 	}
 	.app_bar-controllers-splash {
 		.action_button {
 			min-width: 4rem;
 			margin: 0 0.75rem;
+		}
+	}
+}
+
+.app-menu-bar {
+	background: $app-menu-bar-background-color;
+	display: flex;
+	font-size: $navigation_bar-font_size;
+	height: $navigation_bar-height;
+	min-height: $navigation_bar-height;
+	position: relative;
+	width: 100%;
+
+	.app-menu-bar-content {
+		color: $app-bar-tab-color-inactive;
+		cursor: pointer;
+		height: 2.5rem;
+		position: relative;
+		top: 1px;
+		width: 10rem;
+	}
+
+	.app-menu-bar-content-item {
+		margin: auto;
+		position: relative;
+	}
+
+	.app-menu-bar-icon {
+		margin-right: .4rem;
+		width: 1rem;
+	}
+
+	.active-menu {
+		background-color: $colors-white;
+		color: $colors-main-black;
+		height: 2.5rem;
+		position: relative;
+		// top: 1px;
+
+		svg {
+			.tab-summary0, .tab-wallet0, .tab-setting0, .tab-verify0,
+			.tab-security0, .tab-api0 {
+				fill: $colors-main-black;
+			}
+		}
+	}
+
+	.notification {
+		color: $colors-notifications-red;
+	
+		svg {
+			.tab-summary0, .tab-wallet0, .tab-setting0, .tab-verify0,
+			.tab-security0, .tab-api0 {
+				fill: $colors-notifications-red;
+			}
+		}
+	}
+
+	.app-menu-bar-icon-notification {
+		position: absolute;
+		left: -14px;
+		top: -5px;
+		height: $app-menu-notification-size;
+		width: $app-menu-notification-size;
+		border-radius: $app-menu-notification-size;
+		background-color: $colors-notifications-red;
+		color: white;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		font-size: 10px;
+		line-height: 1;
+		font-weight: bold;
+	}
+}
+
+.app-menu-bar-side {
+	min-width: $sidebar-width;
+	max-width: $sidebar-width;
+}
+
+.tab-menu-left {
+	left: -1px !important;
+	right: 0 !important;
+}
+
+.app-bar-add-tab-search {
+	color: $app-bar-add-tab-inactive;
+	height: 2.2rem;
+	margin-bottom: .5rem;
+}
+
+.search-field {
+	color: $app-bar-add-tab-inactive;
+	width: 100%;
+}
+
+.app-bar-search-field {
+	background-color: $dark-disabled-secondary !important;
+	flex-direction: row-reverse;
+	margin: 0;
+	padding-right: .5rem;
+}
+
+.app-bar-search-field-outline {
+	height: .5px;
+}
+
+.app-bar-add-tab-menu {
+	background-color: $app-bar--black;
+	border: 1px solid $colors-white;
+	color: $app-bar--pairs-color;
+	display: block;
+	min-width: 22rem;
+	min-height: 8rem;
+	position: absolute;
+	top: 34px;
+	right: -1px;
+	z-index: 20;
+	-webkit-box-shadow: 0px 4px 6px 1px rgba(0, 0, 0, 0.4);
+	-moz-box-shadow: 0px 4px 6px 1px rgba(0, 0, 0, 0.4);
+	box-shadow: 0px 4px 6px 1px rgba(0, 0, 0, 0.4);
+
+	.app-bar-tab-menu-list {
+		background-color: $app-bar--black;
+		color: $app-bar--pairs-color;
+		font-size: .8rem;
+		height: 2.5rem;
+		padding: .5rem;
+	}
+
+	.active-tab {
+		background-color: $dark-disabled-secondary;
+		color: #fafafa;
+		font-weight: bold;
+	}
+
+	.app-bar-add-tab-content {
+		background-color: $dark-disabled-secondary;
+		color: $app-bar-add-tab-inactive;
+		font-size: .8rem;
+		overflow-y: scroll;
+		padding: .3rem 0;
+	}
+	
+	.app-bar-tab-overflow-content {
+		background-color: $dark-disabled-secondary;
+		color: $app-bar-add-tab-inactive;
+		font-size: .8rem;
+		overflow-y: scroll;
+		padding: .3rem 0;
+	}
+
+	.app-bar-add-tab-content-list {
+		color: $app-bar-add-tab-inactive;
+		height: 2.2rem;
+		
+		&:hover {
+			background-color: #383c42;
+			color: $colors-white;
+
+			svg {
+				.btc0 {
+					fill: $colors-white !important;
+				}
+				.btc1 {
+					fill: $colors-white !important;
+				}
+				.eth0 {
+					fill: $colors-white !important;
+				}
+				.eth1 {
+					fill: $colors-white !important;
+				}
+				.bch-icon {
+					fill: $colors-white !important;
+				}
+				.st0 {
+					fill: $colors-white !important;
+					stroke-width: 0rem;
+				}
+			}
+		}
+	}
+
+	.app-bar-tab-setting {
+		margin: .3rem .4rem 0 .4rem;
+		width: 1rem;
+	}
+
+	.app-bar-add-tab-icons {
+		width: 1.2rem;
+		margin: .3rem .3rem 0 .3rem;
+	}
+
+	.app-bar-tab-setting, .app-bar-add-tab-icons {
+		svg {
+			.btc0 {
+				fill: $app-bar-add-tab-inactive !important;
+			}
+			.btc1 {
+				fill: $app-bar-add-tab-inactive !important;
+			}
+			.eth0 {
+				fill: $app-bar-add-tab-inactive !important;
+			}
+			.eth1 {
+				fill: $app-bar-add-tab-inactive !important;
+			}
+			.bch-icon {
+				fill: $app-bar-add-tab-inactive !important;
+			}
+			.plus {
+				stroke: $colors-white;
+				stroke-width: .2rem;
+			}
+			.st0 {
+				fill: $colors-white;
+				stroke-width: 0rem;
+			}
+			.icon-check-1 {
+				stroke: $colors-white;
+			}
+		}
+
+		.app-price-diff-down {
+			color: $app-bar-add-tab-red;
+		}
+		
+		.app-price-diff-up {
+			color: $app-bar-pairs-up
 		}
 	}
 }

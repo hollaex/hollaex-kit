@@ -13,7 +13,9 @@ export const FieldContent = ({
 	focused = false,
 	children,
 	hideUnderline = false,
-	contentClassName = ''
+	contentClassName = '',
+	hideCheck = false,
+	outlineClassName = ''
 }) => {
 	return (
 		<div className={classnames('field-content')}>
@@ -26,14 +28,15 @@ export const FieldContent = ({
 				)}
 			>
 				{children}
-				{valid &&
-					hasValue && (
-						<ReactSVG path={ICONS.BLACK_CHECK} wrapperClassName="field-valid" />
+				{!hideCheck &&
+					valid &&
+						hasValue && (
+							<ReactSVG path={ICONS.BLACK_CHECK} wrapperClassName="field-valid" />
 					)}
 			</div>
 			{!hideUnderline && (
 				<span
-					className={classnames('field-content-outline', {
+					className={classnames('field-content-outline', outlineClassName, {
 						focused
 					})}
 				/>
@@ -70,7 +73,9 @@ class FieldWrapper extends Component {
 			hideUnderline = false,
 			className = '',
 			onClick = () => {},
-			notification
+			notification,
+			hideCheck = false,
+			outlineClassName = ''
 		} = this.props;
 
 		const displayError = !(active || focused) && (visited || touched) && error;
@@ -90,6 +95,8 @@ class FieldWrapper extends Component {
 					hasValue={hasValue}
 					focused={active || focused}
 					hideUnderline={hideUnderline}
+					hideCheck={hideCheck}
+					outlineClassName={outlineClassName}
 					onClick={onClick}
 				>
 					{children}

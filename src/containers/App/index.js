@@ -39,7 +39,8 @@ import {
 	setOrderLimits,
 	NOTIFICATIONS,
 	CONTACT_FORM,
-	HELPFUL_RESOURCES_FORM
+	HELPFUL_RESOURCES_FORM,
+	FEES_STRUCTURE_AND_LIMITS
 } from '../../actions/appActions';
 
 import {
@@ -51,6 +52,7 @@ import { checkUserSessionExpired } from '../../utils/utils';
 import { getToken, getTokenTimestamp, isLoggedIn } from '../../utils/token';
 import {
 	AppBar,
+	AppMenuBar,
 	Sidebar,
 	SidebarBottom,
 	Dialog,
@@ -61,6 +63,7 @@ import {
 } from '../../components';
 import { ContactForm, HelpfulResourcesForm, Chat as ChatComponent } from '../';
 import ReviewEmailContent from '../Withdraw/ReviewEmailContent';
+import FeesAndLimits from '../Summary/components/FeesAndLimits';
 
 import {
 	getClasesForLanguage,
@@ -432,7 +435,10 @@ class Container extends Component {
 			case '/account':
 			case '/developers':
 			case '/security':
+			case '/verification':
 			case '/settings':
+			case '/summary':
+			case '/api':
 				return 'account';
 			case '/quick-trade':
 				return 'quick-trade';
@@ -516,7 +522,17 @@ class Container extends Component {
 				return (
 					<ReviewEmailContent
 						onConfirmEmail={this.onConfirmEmail}
-						onClose={this.onCloseDialog} />
+						onClose={this.onCloseDialog}
+					/>
+				);
+			case FEES_STRUCTURE_AND_LIMITS:
+				return (
+					<FeesAndLimits
+						type={type}
+						data={data}
+						onClose={this.onCloseDialog}
+						activeTheme={this.props.activeTheme}
+					/>
 				);
 			default:
 				return <div />;
@@ -537,7 +553,7 @@ class Container extends Component {
 		// 	Object.keys(pairsTrades).length);
 		return (Object.keys(orderbooks).length && orderbooks[pair] &&
 			Object.keys(pairsTrades).length);
-	}
+	};
 
 	render() {
 		const {
@@ -552,6 +568,9 @@ class Container extends Component {
 			openHelpfulResourcesForm,
 			activeTheme,
 			unreadMessages,
+			router,
+			location,
+			user
 		} = this.props;
 		const { dialogIsOpen, appLoaded, chatIsClosed } = this.state;
 		const languageClasses = getClasesForLanguage(activeLanguage, 'array');
@@ -561,11 +580,10 @@ class Container extends Component {
 		const activePath = !appLoaded
 			? ''
 			: this.getClassForActivePath(this.props.location.pathname);
+		const isMenubar = activePath === 'account' || activePath === 'wallet';
 		return (
 			<div
 				className={classnames(
-					'app_container',
-					'd-flex',
 					getThemeClass(activeTheme),
 					activePath,
 					symbol,
@@ -577,92 +595,124 @@ class Container extends Component {
 					}
 				)}
 			>
-				<EventListener
-					target="window"
-					onResize={this.resetTimer}
-					onScroll={this.resetTimer}
-					onMouseMove={this.resetTimer}
-					onClick={this.resetTimer}
-					onKeyPress={this.resetTimer}
-				/>
-				<div className="d-flex flex-column f-1">
-					<AppBar
-						goToDashboard={this.goToDashboard}
-						rightChildren={
-							<CurrencyList
-								className="horizontal-currency-list justify-content-end"
-								activeLanguage={activeLanguage}
-							/>
+				<div
+					className={classnames(
+						'app_container',
+						'd-flex',
+						getThemeClass(activeTheme),
+						activePath,
+						symbol,
+						fontClass,
+						languageClasses[0],
+						{
+							'layout-mobile': isMobile,
+							'layout-desktop': isBrowser
 						}
+					)}
+				>
+					<EventListener
+						target="window"
+						onResize={this.resetTimer}
+						onScroll={this.resetTimer}
+						onMouseMove={this.resetTimer}
+						onClick={this.resetTimer}
+						onKeyPress={this.resetTimer}
 					/>
-					<div className="app_container-content d-flex justify-content-between">
+					<div className="d-flex flex-column f-1">
+						<AppBar
+							router={router}
+							location={location}
+							goToDashboard={this.goToDashboard}
+							logout={this.logout}
+							activePath={activePath}
+							rightChildren={
+								<CurrencyList
+									className="horizontal-currency-list justify-content-end"
+									activeLanguage={activeLanguage}
+								/>
+							}
+						/>
+						{isBrowser &&
+							(isMenubar) && 
+								<AppMenuBar router={router} location={location} />}
 						<div
 							className={classnames(
-								'app_container-main',
-								'd-flex',
-								'flex-column',
-								'justify-content-between',
+								"app_container-content",
+								"d-flex",
+								"justify-content-between",
 								{
-									'overflow-y': !isMobile
+									"app_container-secondary-content": isMenubar
 								}
 							)}
 						>
-							{appLoaded && this.isSocketDataReady() ? children : <Loader background={false} />}
+							<div
+								className={classnames(
+									'app_container-main',
+									'd-flex',
+									'flex-column',
+									'justify-content-between',
+									{
+										'overflow-y': !isMobile
+									}
+								)}
+							>
+								{appLoaded && this.isSocketDataReady() ? children : <Loader background={false} />}
+							</div>
+							{isBrowser && (
+								<div className="app_container-sidebar">
+									<Sidebar
+										activePath={activePath}
+										logout={this.logout}
+										// help={openContactForm}
+										theme={activeTheme}
+										isLogged={isLoggedIn()}
+										help={openHelpfulResourcesForm}
+										pair={pair}
+										minimizeChat={this.minimizeChat}
+										chatIsClosed={chatIsClosed}
+										unreadMessages={unreadMessages}
+									/>
+								</div>
+							)}
+							<Dialog
+								isOpen={dialogIsOpen}
+								label="hollaex-modal"
+								className="app-dialog"
+								onCloseDialog={this.onCloseDialog}
+								shouldCloseOnOverlayClick={shouldCloseOnOverlayClick}
+								theme={activeTheme}
+								showCloseText={
+									!(
+										activeNotification.type === CONTACT_FORM ||
+										activeNotification.type === HELPFUL_RESOURCES_FORM ||
+										activeNotification.type === NOTIFICATIONS.NEW_ORDER ||
+										activeNotification.type === NOTIFICATIONS.ERROR
+									)
+								}
+								compressed={
+									activeNotification.type === NOTIFICATIONS.ORDERS ||
+									activeNotification.type === NOTIFICATIONS.TRADES
+								}
+								style={{ 'z-index': 100 }}
+							>
+								{dialogIsOpen &&
+									this.renderDialogContent(activeNotification, prices, activeTheme)}
+							</Dialog>
+							{!isMobile && (
+								<ChatComponent
+									minimized={chatIsClosed}
+									onMinimize={this.minimizeChat}
+									chatIsClosed={chatIsClosed}
+								/>
+							)}
 						</div>
+						{isMobile && (
+							<div className="app_container-bottom_bar">
+								<SidebarBottom isLogged={isLoggedIn()} activePath={activePath} pair={pair} />
+							</div>
+						)}
 					</div>
-					{isMobile && (
-						<div className="app_container-bottom_bar">
-							<SidebarBottom isLogged={isLoggedIn()} activePath={activePath} pair={pair} />
-						</div>
-					)}
 				</div>
-				{isBrowser && (
-					<div className="app_container-sidebar">
-						<Sidebar
-							activePath={activePath}
-							logout={this.logout}
-							// help={openContactForm}
-							theme={activeTheme}
-							isLogged={isLoggedIn()}
-							help={openHelpfulResourcesForm}
-							pair={pair}
-							minimizeChat={this.minimizeChat}
-							chatIsClosed={chatIsClosed}
-							unreadMessages={unreadMessages}
-						/>
-					</div>
-				)}
-				<Dialog
-					isOpen={dialogIsOpen}
-					label="hollaex-modal"
-					className="app-dialog"
-					onCloseDialog={this.onCloseDialog}
-					shouldCloseOnOverlayClick={shouldCloseOnOverlayClick}
-					theme={activeTheme}
-					showCloseText={
-						!(
-							activeNotification.type === CONTACT_FORM ||
-							activeNotification.type === HELPFUL_RESOURCES_FORM ||
-							activeNotification.type === NOTIFICATIONS.NEW_ORDER ||
-							activeNotification.type === NOTIFICATIONS.ERROR
-						)
-					}
-					compressed={
-						activeNotification.type === NOTIFICATIONS.ORDERS ||
-						activeNotification.type === NOTIFICATIONS.TRADES
-					}
-					style={{ 'z-index': 100 }}
-				>
-					{dialogIsOpen &&
-						this.renderDialogContent(activeNotification, prices, activeTheme)}
-				</Dialog>
-				{!isMobile && (
-					<ChatComponent
-						minimized={chatIsClosed}
-						onMinimize={this.minimizeChat}
-						chatIsClosed={chatIsClosed}
-					/>
-				)}
 			</div>
 		);
 	}
@@ -678,7 +728,7 @@ const mapStateToProps = (store) => ({
 	activeLanguage: store.app.language,
 	activeTheme: store.app.theme,
 	orders: store.order.activeOrders,
-	user: store.user.userData,
+	user: store.user,
 	unreadMessages: store.app.chatUnreadMessages,
 	orderbooks: store.orderbook.pairsOrderbooks,
 	pairsTrades: store.orderbook.pairsTrades

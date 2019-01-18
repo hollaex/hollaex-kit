@@ -3,7 +3,7 @@ import classnames from 'classnames';
 import ReactSVG from 'react-svg';
 import { debounce } from 'lodash';
 import { browserHistory } from 'react-router';
-import {Button, TabController, CheckTitle } from '../../components';
+import {Button, TabController, CheckTitle, IconTitle } from '../../components';
 
 import STRINGS from '../../config/localizedStrings';
 import {
@@ -19,7 +19,7 @@ import ReviewBlock from './ReviewBlock';
 import InputBlock from './InputBlock';
 
 
-const GROUP_CLASSES = [...FLEX_CENTER_CLASSES, 'flex-column'];
+// const GROUP_CLASSES = [...FLEX_CENTER_CLASSES, 'flex-column'];
 
 const getInitialTab = ( path ) => {
 	let activeTab = -1;
@@ -150,16 +150,16 @@ class QuickTrade extends Component {
 		const { data, fetching, error } = quickTradeData;
 		const name = STRINGS[`${pairs[symbol].pair_base.toUpperCase()}_NAME`];
 		return (
-			<div className={classnames('quick_trade-wrapper', ...GROUP_CLASSES)}>
+			<div className={classnames('quick_trade-wrapper', 'd-flex', 'flex-column')}>
 				<div
 					className={classnames(
 						'quick_trade-section_wrapper',
 						'quick_trade-bottom-padded',
-						...GROUP_CLASSES
+						// ...GROUP_CLASSES
 					)}
 				>
 					<ReactSVG path={ICONS.QUICK_TRADE} wrapperClassName="quick_trade-icon" />
-					<div className="title text-capitalize">
+					<div className={classnames("title text-capitalize", ...FLEX_CENTER_CLASSES)}>
 						{STRINGS.formatString(
 							STRINGS.QUICK_TRADE_COMPONENT.TRADE_TITLE,
 							STRINGS.QUICK_TRADE_COMPONENT.TITLE,
@@ -170,10 +170,10 @@ class QuickTrade extends Component {
 				<div
 					className={classnames(
 						'quick_trade-section_wrapper',
-						...GROUP_CLASSES
+						// ...GROUP_CLASSES
 					)}
 				>
-					<div className="presentation_container apply_rtl">
+					<div className="apply_rtl">
 						<TabController
 							activeTab={activeTab}
 							setActiveTab={this.setActiveTab}
@@ -191,7 +191,7 @@ class QuickTrade extends Component {
 					className={classnames(
 						'quick_trade-section_wrapper',
 						'quick_trade-bottom-padded',
-						...GROUP_CLASSES
+						// ...GROUP_CLASSES
 					)}
 				>
 					<InputBlock
@@ -212,7 +212,7 @@ class QuickTrade extends Component {
 					className={classnames(
 						'quick_trade-section_wrapper',
 						'quick_trade-bottom-padded',
-						...GROUP_CLASSES,
+						// ...GROUP_CLASSES,
 						{ fetching }
 					)}
 				>
@@ -224,7 +224,8 @@ class QuickTrade extends Component {
 				<div
 					className={classnames(
 						'quick_trade-section_wrapper',
-						...GROUP_CLASSES
+						'quick_trade-bottom-padded',
+						// ...GROUP_CLASSES
 					)}
 				>
 					<Button

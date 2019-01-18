@@ -34,6 +34,10 @@ $inner_container-border: 1px solid $colors-main-black;
 			min-height: $max-content-height;
 			max-height: $max-content-height;
 		}
+		.app_container-secondary-content {
+			min-height: $max-content-secondary-height !important;
+			max-height: $max-content-secondary-height !important;
+		}
 	}
 
 	&.layout-mobile {
@@ -142,4 +146,8 @@ $inner_container-border: 1px solid $colors-main-black;
 	flex: 0;
 	width: 100%;
 	max-width: 100vw;
+	position: -webkit-sticky;
+	position: sticky;
+	bottom: 5rem;
+	align-self: flex-end;
 }

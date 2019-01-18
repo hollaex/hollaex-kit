@@ -173,7 +173,7 @@ $mobile-regular--font-size: 1.5rem;
 
 		> div {
 			&:first-child {
-				padding: 0.5rem 0.5rem 0.5rem 2rem;
+				padding: 0.5rem;
 			}
 			padding: 0.5rem 0;
 		}
@@ -293,6 +293,9 @@ $mobile-regular--font-size: 1.5rem;
 				}
 			}
 		}
+		.user-icon {
+			width: 2rem;
+		}
 	}
 
 	.chat-footer {
@@ -325,6 +328,15 @@ $mobile-regular--font-size: 1.5rem;
 		background-color: $chat-wrapper-dark--background-color;
 		.chat-username-footer{
 			border-top: 1px solid gray
+		}
+		.user-icon {
+			width: 2rem;
+
+			svg {
+				.chat-lvl-4 {
+					fill: #000000;
+				}
+			}
 		}
 		.chat-message {
 			.message-content {

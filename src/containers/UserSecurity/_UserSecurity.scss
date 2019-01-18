@@ -148,7 +148,28 @@ $padding-input: 4rem;
 	}
 }
 
+.logout-menu-wrapper {
+	color: $colors-deactivate-color2;
+	font-size: 1.75rem;
+	padding: 0.5rem 0;
+	border-bottom: 1px solid $colors-main-black;
+
+	.logout-icon {
+		width: 1.5rem;
+	}
+}
+
 .dark-theme {
+	.logout-menu-wrapper {
+		color: $dark-font-main-text-color;
+		border-bottom: 1px solid $dark-font-main-text-color;
+
+		.logout-icon {
+			.tab-signout {
+				fill: $dark-font-main-text-color;
+			}
+		}
+	}
 	.otp_form-wrapper {
 		.otp_form-section-title {
 			color: $dark-font-main-text-color;

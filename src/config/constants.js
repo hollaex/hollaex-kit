@@ -4,7 +4,8 @@ import {
 	formatBtcFullAmount,
 	formatFiatAmount,
 	formatEthAmount,
-	formatEthFullAmount
+	formatEthFullAmount,
+	formatNumber
 } from '../utils/currency';
 
 import STRINGS from './localizedStrings';
@@ -20,6 +21,8 @@ export const API_URL = config[ENV][NETWORK].API_URL;
 export const WS_URL = config[ENV][NETWORK].WS_URL;
 
 export const ICONS = {
+	LOGO_GREY: `${process.env.PUBLIC_URL}/assets/hollaEx_logo-grey.svg`,
+	LOGO_BLACK: `${process.env.PUBLIC_URL}/assets/hollaEx_logo-blk.svg`,
 	TRADE_HISTORY_DARK: `${process.env.PUBLIC_URL}/assets/icons/trade-history-dark.svg`,
 	TRADE_HISTORY_LIGHT: `${process.env.PUBLIC_URL}/assets/icons/trade-history-light.svg`,
 	ACTIVE_TRADE_DARK: `${process.env.PUBLIC_URL}/assets/icons/active-trade-dark.svg`,
@@ -32,6 +35,7 @@ export const ICONS = {
 	BTC_ICON: `${process.env.PUBLIC_URL}/assets/icons/btc-icon-01.svg`,
 	ETH_ICON: `${process.env.PUBLIC_URL}/assets/icons/eth-icon-01.svg`,
 	ETH_ICON_DARK: `${process.env.PUBLIC_URL}/assets/icons/eth-icon-dark-01.svg`,
+	EUR_ICON: `${process.env.PUBLIC_URL}/assets/icons/eur-icon.svg`,
 	LIFESAVER: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-05.svg`,
 	QUESTION_MARK: `${process.env.PUBLIC_URL}/assets/icons/question-mark-black.svg`,
 	QUESTION_MARK_COLOR: `${process.env.PUBLIC_URL}/assets/icons/question-mark-color.svg`,
@@ -108,6 +112,8 @@ export const ICONS = {
 		process.env.PUBLIC_URL
 	}/assets/images/payment-options.svg`,
 	QUICK_TRADE: `${process.env.PUBLIC_URL}/assets/images/quick-trade.svg`,
+	QUICK_TRADE_TAB: `${process.env.PUBLIC_URL}/assets/images/quick-trade-tab.svg`,
+	QUICK_TRADE_TAB_ACTIVE: `${process.env.PUBLIC_URL}/assets/images/quick-trade-tab-active.svg`,
 	SECURE: `${process.env.PUBLIC_URL}/assets/images/secure.svg`,
 	SECURITY_BLACK: `${process.env.PUBLIC_URL}/assets/images/security.svg`,
 	SECURITY_GREY: `${process.env.PUBLIC_URL}/assets/images/security-grey.svg`,
@@ -271,7 +277,40 @@ export const ICONS = {
 		process.env.PUBLIC_URL
 	}/assets/images/dotted-grip-chat-repeat-pattern.svg`,
 	CHAT: `${process.env.PUBLIC_URL}/assets/images/chat-icon.svg`,
-	WITHDRAW_MAIL_CONFIRMATION: `${process.env.PUBLIC_URL}/assets/images/withdraw-mail-confirmation.svg`
+	WITHDRAW_MAIL_CONFIRMATION: `${process.env.PUBLIC_URL}/assets/images/withdraw-mail-confirmation.svg`,
+	CLOSE_CROSS: `${process.env.PUBLIC_URL}/assets/images/close-cross-tab.svg`,
+	TAB_PLUS: `${process.env.PUBLIC_URL}/assets/images/tab-plus.svg`,
+	TAB_MINUS: `${process.env.PUBLIC_URL}/assets/images/tab-minus.svg`,
+	TAB_SUMMARY: `${process.env.PUBLIC_URL}/assets/images/tab-summary.svg`,
+	TAB_WALLET: `${process.env.PUBLIC_URL}/assets/images/tab-wallet.svg`,
+	TAB_SECURITY: `${process.env.PUBLIC_URL}/assets/images/tab-security.svg`,
+	TAB_VERIFY: `${process.env.PUBLIC_URL}/assets/images/tab-verify.svg`,
+	TAB_SETTING: `${process.env.PUBLIC_URL}/assets/images/tab-setting.svg`,
+	TAB_API: `${process.env.PUBLIC_URL}/assets/images/tab-api.svg`,
+	TAB_SIGNOUT: `${process.env.PUBLIC_URL}/assets/images/signout.svg`,
+	DOUBLE_ARROW: `${process.env.PUBLIC_URL}/assets/images/double-arrow.svg`,
+	SEARCH: `${process.env.PUBLIC_URL}/assets/images/search.svg`,
+	VERIFICATION_DOC_STATUS: `${process.env.PUBLIC_URL}/assets/images/verification-doc-status.svg`,
+	VERIFICATION_PENDING: `${process.env.PUBLIC_URL}/assets/images/verification-pending-orange.svg`,
+	VERIFICATION_REJECTED: `${process.env.PUBLIC_URL}/assets/images/verification-rejected-yellow-cross.svg`,
+	VERIFICATION_INCOMPLETE: `${process.env.PUBLIC_URL}/assets/images/verification-attention-red.svg`,
+	VERIFICATION_VERIFIED: `${process.env.PUBLIC_URL}/assets/images/verification-green-tick.svg`,
+	VERIFICATION_EMAIL_NEW: `${process.env.PUBLIC_URL}/assets/images/verification-email.svg`,
+	VERIFICATION_PHONE_NEW: `${process.env.PUBLIC_URL}/assets/images/verification-phone.svg`,
+	VERIFICATION_ID_NEW: `${process.env.PUBLIC_URL}/assets/images/verification-id.svg`,
+	VERIFICATION_BANK_NEW: `${process.env.PUBLIC_URL}/assets/images/verification-bank.svg`,
+	VERIFICATION_DOCUMENT_NEW: `${process.env.PUBLIC_URL}/assets/images/verification-document.svg`,
+	PENDING_TIMER: `${process.env.PUBLIC_URL}/assets/images/pending-timer.svg`,
+	VOLUME_PENDING: `${process.env.PUBLIC_URL}/assets/images/volume-pending-icon.svg`,
+	VOLUME_PENDING_DARK: `${process.env.PUBLIC_URL}/assets/images/volume-pending-dark.svg`,
+	SELF_KYC_ID_FA: `${process.env.PUBLIC_URL}/assets/self-kyc-id-note-persian.png`,
+	SELF_KYC_ID_EN: `${process.env.PUBLIC_URL}/assets/self-kyc-id-note-english.png`,
+	CHAT_ICON_LVL_3: `${process.env.PUBLIC_URL}/assets/images/kraken-chat-lvl-3.svg`,
+	CHAT_ICON_LVL_4: `${process.env.PUBLIC_URL}/assets/images/whale-chat-lvl-4.svg`,
+	CHAT_ICON_SPECIAL: `${process.env.PUBLIC_URL}/assets/images/fin-chat-special.svg`,
+	NOTE_KYC: `${process.env.PUBLIC_URL}/assets/images/note-KYC.svg`,
+	SIDEBAR_CHAT: `${process.env.PUBLIC_URL}/assets/images/bottom-chat-icon.svg`,
+	SIDEBAR_HELP: `${process.env.PUBLIC_URL}/assets/images/help-question-mark-icon.svg`
 };
 
 export const SOCIAL_ICONS = {
@@ -294,6 +333,15 @@ export const FEATURES_ICONS = {
 	SUPPORT: `${process.env.PUBLIC_URL}/assets/images/features-support-icons.svg`,
 	LEGAL: `${process.env.PUBLIC_URL}/assets/images/features-legal-icons.svg`
 };
+
+export const SUMMMARY_ICON = {
+	KRAKEN: `${process.env.PUBLIC_URL}/assets/summary/kraken.png`,
+	SNAPPER: `${process.env.PUBLIC_URL}/assets/summary/snapper.png`,
+	SHRIMP: `${process.env.PUBLIC_URL}/assets/summary/shrimp.png`,
+	LEVIATHAN: `${process.env.PUBLIC_URL}/assets/summary/leviathan.png`,
+	LEVIATHAN_DARK: `${process.env.PUBLIC_URL}/assets/summary/leviathan_dark.png`
+};
+
 export const HOLLAEX_LOGO = `${
 	process.env.PUBLIC_URL
 }/assets/hollaEx_logo-grey.svg`;
@@ -406,6 +454,10 @@ export const WITHDRAW_LIMITS = {
 	},
 };
 
+export const DEFAULT_TRADING_PAIRS = process.env.REACT_APP_DEFAULT_TRADING_PAIRS
+	? process.env.REACT_APP_DEFAULT_TRADING_PAIRS.split(',')
+	: ['btc-eur', 'eth-eur'];
+
 export const TOKEN_KEY = `${ENV}_${NETWORK}_TOKEN`;
 export const LANGUAGE_KEY = `${ENV}_${NETWORK}_LANGUAGE`;
 export const DEFAULT_LANGUAGE = process.env.REACT_APP_DEFAULT_LANGUAGE || 'en';
@@ -457,13 +509,69 @@ export const MIN_LEVEL_FOR_TOKENS = parseInt(
 	process.env.REACT_APP_MIN_LEVEL_FOR_TOKENS || 2,
 	10
 );
-const THEME_COLOR=localStorage.getItem("theme")
+// const THEME_COLOR=localStorage.getItem("theme")
 export const THEMES = ['dark', 'white'];
-export const THEME_DEFAULT = THEME_COLOR!=='' ? THEME_COLOR : THEMES[1];
+export const THEME_DEFAULT = THEMES[1];
 export const CHAT_STATUS_KEY = 'chat:minimized';
+
+export const TRADING_VOLUME_CHART_LIMITS = process.env.REACT_APP_TRADING_VOLUME_CHART_LIMITS
+	? process.env.REACT_APP_TRADING_VOLUME_CHART_LIMITS.split(',').map(data => formatNumber(data))
+	: [10000, 100000];
+
+export const TRADE_ACCOUNT_UPGRADE_MONTH = process.env.REACT_APP_ACCOUNT_UPGRADE_MONTH
+	? process.env.REACT_APP_ACCOUNT_UPGRADE_MONTH.split(',').map(data => formatNumber(data))
+	: [3, 6];
+
+export const BAR_CHART_LIMIT_CAPACITY = [340000, 2050000];
 
 export const DEFAULT_COUNTRY = process.env.REACT_APP_DEFAULT_COUNTRY
 	? process.env.REACT_APP_DEFAULT_COUNTRY.toUpperCase()
 	: 'FR';
 
 export const BASE_CURRENCY = process.env.REACT_APP_BASE_CURRENCY;
+
+export const FEES_LIMIT_SITE_URL = 'https://www.hollaex.com';
+
+export const TRADING_ACCOUNT_TYPE = {
+	shrimp: {
+		symbol: 'shrimp',
+		name: STRINGS.SUMMARY.TINY_PINK_SHRIMP_TRADER,
+		fullName: STRINGS.SUMMARY.TINY_PINK_SHRIMP_TRADER_ACCOUNT,
+		level: 1
+	},
+	snapper: {
+		symbol: 'snapper',
+		name: STRINGS.SUMMARY.LITTLE_RED_SNAPPER_TRADER,
+		fullName: STRINGS.SUMMARY.LITTLE_RED_SNAPPER_TRADER_ACCOUNT,
+		level: 2
+	},
+	kraken: {
+		symbol: 'kraken',
+		name: STRINGS.SUMMARY.CUNNING_BLUE_KRAKEN_TRADING,
+		fullName: STRINGS.SUMMARY.CUNNING_BLUE_KRAKEN_TRADING_ACCOUNT,
+		level: 3
+	},
+	leviathan: {
+		symbol: 'leviathan',
+		name: STRINGS.SUMMARY.BLACK_LEVIATHAN_TRADING,
+		fullName: STRINGS.SUMMARY.BLACK_LEVIATHAN_TRADING_ACCOUNT,
+		level: 4
+	}
+};
+
+export const MAX_NUMBER_BANKS = 3;
+
+export const CHART_MONTHS = [
+	{ key: 1, value: 'Jan' },
+	{ key: 2, value: 'Feb' },
+	{ key: 3, value: 'Mar' },
+	{ key: 4, value: 'Apr' },
+	{ key: 5, value: 'May' },
+	{ key: 6, value: 'Jun' },
+	{ key: 7, value: 'Jul' },
+	{ key: 8, value: 'Aug' },
+	{ key: 9, value: 'Sep' },
+	{ key: 10, value: 'Oct' },
+	{ key: 11, value: 'Nov' },
+	{ key: 12, value: 'Dec' },
+];

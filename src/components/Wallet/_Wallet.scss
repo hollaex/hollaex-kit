@@ -18,6 +18,16 @@ $sections-font--color: $colors-deactivate-color2;
 	}
 }
 
+.wallet-wrapper {
+	
+	.donut-container {
+		height: 18rem;
+		.donut-label-pair {
+			font-size: .8rem;
+		}
+	}
+}
+
 .wallet_section-title {
 	text-transform: uppercase;
 	color: $sections-font--color;

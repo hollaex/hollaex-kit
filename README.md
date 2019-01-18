@@ -32,3 +32,5 @@ You can build the project by running `npm run build` and the projects builds the
   - REACT_APP_BANK_WITHDRAWAL_BASE_FEE `1`
   - REACT_APP_BANK_WITHDRAWAL_DYNAMIC_FEE_RATE `0.5`
   - REACT_APP_BANK_WITHDRAWAL_MAX_DYNAMIC_FEE `50`
+- TOP NAV BAR DEFAULT PAIRS
+  - REACT_APP_DEFAULT_TRADING_PAIRS `btc-eur,eth-eur`

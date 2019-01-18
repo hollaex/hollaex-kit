@@ -34,7 +34,7 @@ $row--size: calc(#{$row--height} - #{$sidebar-sections-padding});
 		padding-right: $sidebar-sections-padding;
 	}
 	.sidebar-row--right-icon {
-		@include size($row--size);
+		@include size(1.5rem);
 		&.icon--help {
 			@include hover-icon($colors-main-black, $colors-deactivate-color2);
 			circle {
@@ -45,10 +45,13 @@ $row--size: calc(#{$row--height} - #{$sidebar-sections-padding});
 		&.icon--logout {
 			@include hover-icon($colors-main-black, $colors-deactivate-color2);
 		}
+		&.icon--chat {
+			@include hover-icon($colors-main-black, $colors-deactivate-color2);
+		}
 
 		> div,
 		svg {
-			@include size($row--size);
+			// @include size(1.5rem);
 		}
 	}
 }
@@ -133,6 +136,9 @@ $row--size: calc(#{$row--height} - #{$sidebar-sections-padding});
 				@include hover-icon($dark-icon-hover, $dark-icon-unhover);
 			}
 			&.icon--logout {
+				@include hover-icon($dark-icon-hover, $dark-icon-unhover);
+			}
+			&.icon--chat {
 				@include hover-icon($dark-icon-hover, $dark-icon-unhover);
 			}
 		}

@@ -1,7 +1,7 @@
 import React from 'react';
 import classnames from 'classnames';
 import ReactSVG from 'react-svg';
-import { ICONS } from '../../config/constants';
+import { ICONS, FLEX_CENTER_CLASSES } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 
 export const Cell = ({
@@ -15,9 +15,7 @@ export const Cell = ({
 	<div
 		className={classnames(
 			className,
-			'd-flex',
-			'justify-content-between',
-			'align-items-center',
+			FLEX_CENTER_CLASSES,
 			'cell-wrapper',
 			'pointer'
 		)}
@@ -52,12 +50,18 @@ export const Chat = ({
 		unreadMessages > 0
 			? STRINGS.formatString(
 					STRINGS.CHAT.CHAT_UNREAD,
-					STRINGS.CHAT.CHAT_TEXT,
+					STRINGS.CHAT.MARKET_CHAT,
 					unreadMessages
 				)
-			: STRINGS.CHAT.CHAT_TEXT;
+			: STRINGS.CHAT.MARKET_CHAT;
 
-	return <Cell onClick={onMinimize} {...rest} text={text} />;
+	return <Cell
+		onClick={onMinimize}
+		{...rest}
+		iconClassName="icon--chat"
+		iconPath={ICONS.SIDEBAR_CHAT}>
+			<div className="ml-2">{text}</div>
+		</Cell>;
 };
 
 export const Logout = ({ onLogout, ...rest }) => (
@@ -70,5 +74,9 @@ export const Logout = ({ onLogout, ...rest }) => (
 );
 
 export const Help = ({ onHelp, ...rest }) => (
-	<Cell onClick={onHelp} {...rest} text={STRINGS.HELP_TEXT} />
+	<Cell
+		onClick={onHelp}
+		{...rest}
+		iconClassName="icon--help"
+		iconPath={ICONS.SIDEBAR_HELP} />
 );

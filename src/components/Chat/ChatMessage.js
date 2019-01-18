@@ -42,24 +42,40 @@ class ChatMessageWithText extends Component {
 	};
 
 	render() {
-		const { username, to, messageContent, ownMessage, timestamp } = this.props;
+		const { username, to, messageContent, ownMessage, timestamp, verification_level } = this.props;
 		const { maxLines } = this.state;
 		return (
 			<div className={classnames('nonmobile')}>
 				<Timestamp timestamp={timestamp} />
-				<div className="d-inline mr-1 own-message username">{`${username}:`}</div>
-				{to && <div className="mr-1">{`${to}:`}</div>}
-				{ownMessage ? (
-					<div className="d-inline message">{messageContent}</div>
-				) : (
-					<TruncateMarkup
-						className="d-inline message"
-						lines={maxLines}
-						ellipsis={<ReadMore onClick={() => this.showMore()} />}
-					>
-						<div className="d-inline message">{messageContent}</div>
-					</TruncateMarkup>
-				)}
+				<div className="d-flex">
+					<div className="mx-2">
+						{verification_level === 3 || verification_level >= 4
+							? <ReactSVG
+								path={verification_level >= 4
+									? ICONS.CHAT_ICON_LVL_4
+									: ICONS[`CHAT_ICON_LVL_${verification_level}`]
+								}
+								wrapperClassName="user-icon mr-1" />
+							: <div className="user-icon mr-1"></div>}
+					</div>
+					<div>
+						<div className="d-flex mr-1 own-message username">
+							{`${username}:`}
+						</div>
+						{to && <div className="mr-1">{`${to}:`}</div>}
+						{ownMessage ? (
+							<div className="d-inline message">{messageContent}</div>
+						) : (
+							<TruncateMarkup
+								className="d-inline message"
+								lines={maxLines}
+								ellipsis={<ReadMore onClick={() => this.showMore()} />}
+							>
+								<div className="d-inline message">{messageContent}</div>
+							</TruncateMarkup>
+						)}
+					</div>
+				</div>
 			</div>
 		);
 	}
@@ -75,16 +91,14 @@ class ChatMessageWithImage extends Component {
 	};
 
 	render() {
-		const { username, to, messageType, messageContent, timestamp } = this.props;
+		const { username, to, messageType, messageContent, timestamp, verification_level } = this.props;
 		const { hideImage } = this.state;
 
 		return (
 			<div>
-				<div className="d-flex flex-row">
+				<div className="d-flex flex-row justify-content-end">
 					<div>
 						<Timestamp timestamp={timestamp} />
-						<div className="d-inline username">{`${username}:`}</div>
-						{to && <div className="d-inline mr-1">{`${to}:`}</div>}
 					</div>
 					<div
 						className={classnames(hideImage ? 'hide' : 'show')}
@@ -95,9 +109,27 @@ class ChatMessageWithImage extends Component {
 						</span>
 					</div>
 				</div>
-				{!hideImage && (
-					<img className={messageType} src={messageContent} alt="img" />
-				)}
+				<div className="d-flex">
+					<div className="mx-2">
+						{verification_level === 3 || verification_level === 4
+							? <ReactSVG 
+								path={ verification_level >= 4
+									? ICONS.CHAT_ICON_LVL_4
+									: ICONS[`CHAT_ICON_LVL_${verification_level}`]
+								}
+								wrapperClassName="user-icon mr-1" />
+							: <div className="user-icon mr-1"></div>}
+					</div>
+					<div>
+						<div>
+							<div className="d-inline username">{`${username}:`}</div>
+							{to && <div className="d-inline mr-1">{`${to}:`}</div>}
+						</div>
+						{!hideImage && (
+							<img className={messageType} src={messageContent} style={{ width: '4rem', height: "4rem" }} alt="img" />
+						)}
+					</div>
+				</div>
 			</div>
 		);
 	}
@@ -124,16 +156,17 @@ export class ChatMessage extends Component {
 	render() {
 		const {
 			id,
-			username,
 			userType,
 			to,
 			messageType,
 			messageContent,
 			ownMessage,
-			timestamp
+			timestamp,
+			verification_level
 		} = this.props;
 		const { showOptions } = this.state;
 		const imageType = messageType === 'image';
+		const username = this.props.username.username ? this.props.username.username : this.props.username;
 		return (
 			<div
 				className={classnames(
@@ -153,6 +186,7 @@ export class ChatMessage extends Component {
 							messageContent={messageContent}
 							messageType={messageType}
 							timestamp={timestamp}
+							verification_level={verification_level}
 						/>
 					) : (
 						<ChatMessageWithText
@@ -161,6 +195,7 @@ export class ChatMessage extends Component {
 							messageContent={messageContent}
 							ownMessage={ownMessage}
 							timestamp={timestamp}
+							verification_level={verification_level}
 						/>
 					)}
 				</div>

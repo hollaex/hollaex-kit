@@ -2,14 +2,17 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { SubmissionError } from 'redux-form';
+import { isMobile } from 'react-device-detect';
+
 import { setLanguage, changeTheme } from '../../actions/appActions';
+import { logout } from '../../actions/authAction';
 import {
 	updateUser,
 	setUserData,
 	setUsername,
 	setUsernameStore
 } from '../../actions/userAction';
-import { Accordion } from '../../components';
+import { Accordion, IconTitle, Button } from '../../components';
 import SettingsForm, { generateFormValues } from './SettingsForm';
 import UsernameForm, { generateUsernameFormValues } from './UsernameForm';
 
@@ -99,13 +102,28 @@ class UserSettings extends Component {
 			});
 	};
 
+	logout = (message = '') => {
+		this.props.logout(typeof message === 'string' ? message : '');
+	};
+
 	render() {
 		if (this.props.verification_level === 0) {
 			return <div>Loading</div>;
 		}
 
 		const { sections } = this.state;
-		return <Accordion sections={sections} />;
+		return <div>
+			{!isMobile && <IconTitle
+				text={STRINGS.ACCOUNTS.TAB_SETTINGS}
+				textType="title"
+			/>}
+			<Accordion sections={sections} />
+			{isMobile &&
+				<div className="my-4">
+					<Button label={STRINGS.ACCOUNTS.TAB_SIGNOUT} onClick={this.logout} />
+				</div>
+			}
+		</div>;
 	}
 }
 
@@ -120,7 +138,8 @@ const mapDispatchToProps = (dispatch) => ({
 	setUsernameStore: bindActionCreators(setUsernameStore, dispatch),
 	setUserData: bindActionCreators(setUserData, dispatch),
 	changeLanguage: bindActionCreators(setLanguage, dispatch),
-	changeTheme: bindActionCreators(changeTheme, dispatch)
+	changeTheme: bindActionCreators(changeTheme, dispatch),
+	logout: bindActionCreators(logout, dispatch)
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(UserSettings);

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import classnames from 'classnames';
 import { Scrollbars } from 'react-custom-scrollbars';
 import  { cloneDeep } from 'lodash';
@@ -90,7 +91,7 @@ class ChatMessageList extends Component {
 				{(chatInitialized && usernameInitalized) ||
 				(!usernameInitalized && userInitialized) ||
 				(chatInitialized && !isLoggedIn()) ? (
-					messages.map(({ id, username, to, messageType, message, timestamp }, index) => (
+					messages.map(({ id, username, to, messageType, message, timestamp, verification_level }, index) => (
 						<ChatMessage
 							key={index}
 							id={id}
@@ -98,6 +99,7 @@ class ChatMessageList extends Component {
 							ownMessage={username === this.props.username}
 							to={to}
 							userType={userType}
+							verification_level={verification_level}
 							messageType={messageType}
 							messageContent={message}
 							removeMessage={removeMessage}
@@ -112,4 +114,8 @@ class ChatMessageList extends Component {
 	}
 }
 
-export default ChatMessageList;
+const mapStateToProps = (store) => ({
+	activeTheme: store.app.theme
+});
+
+export default connect(mapStateToProps)(ChatMessageList);

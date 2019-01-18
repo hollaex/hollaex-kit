@@ -44,7 +44,8 @@ const INITIAL_STATE = {
 	prices: {
 		fiat: 1,
 		eth: 1,
-		btc: 1
+		btc: 1,
+		bch: 1
 	},
 	asks: [],
 	bids: [],

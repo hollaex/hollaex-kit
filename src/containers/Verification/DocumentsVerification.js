@@ -1,17 +1,23 @@
 import React, { Component } from 'react';
 import { reduxForm, SubmissionError } from 'redux-form';
-import { requiredWithCustomMessage } from '../../components/Form/validations';
+import moment from 'moment';
+import {
+	isBefore,
+	requiredWithCustomMessage
+} from '../../components/Form/validations';
 import renderFields from '../../components/Form/factoryFields';
-import { Button } from '../../components';
+import { Button, IconTitle } from '../../components';
 import STRINGS from '../../config/localizedStrings';
 import HeaderSection, {
 	IdentificationFormSection,
-	PORSection
+	PORSection,
+	SelfieWithPhotoId
 } from './HeaderSection';
 import { getErrorLocalized } from '../../utils/errors';
 import { updateDocuments } from '../../actions/userAction';
 
 import { isMobile } from 'react-device-detect';
+import { ICONS } from '../../config/constants';
 const FORM_NAME = 'DocumentsVerification';
 
 class DocumentsVerification extends Component {
@@ -20,18 +26,79 @@ class DocumentsVerification extends Component {
 	};
 
 	componentDidMount() {
-		this.generateFormFields();
+		this.generateFormFields(this.props.activeLanguage);
 	}
 
 	componentWillReceiveProps(nextProps) {
 		if (nextProps.activeLanguage !== this.props.activeLanguage) {
-			this.generateFormFields();
+			this.generateFormFields(nextProps.activeLanguage);
 		}
 	}
 
-	generateFormFields = () => {
-		const FRONT_TYPE = 'PASSPORT';
+	generateFormFields = (language) => {
+		// const FRONT_TYPE = 'PASSPORT';
 		const formFields = {
+			idDocument: {
+				type: {
+					type: 'text',
+					label:
+						STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS.TYPE_LABEL,
+					placeholder:
+						STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS.TYPE_PLACEHOLDER,
+					validate: [
+						requiredWithCustomMessage(
+							STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.VALIDATIONS.ID_TYPE
+						)
+					],
+					fullWidth: isMobile
+				},
+				number: {
+					type: 'text',
+					label:
+						STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS.ID_NUMBER_LABEL,
+					placeholder:
+						STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS.ID_NUMBER_PLACEHOLDER,
+					validate: [
+						requiredWithCustomMessage(
+							STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.VALIDATIONS.ID_NUMBER
+						)
+					],
+					fullWidth: isMobile
+				},
+				issued_date: {
+					type: 'date-dropdown',
+					label:
+						STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS
+							.ISSUED_DATE_LABEL,
+					validate: [
+						requiredWithCustomMessage(
+							STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.VALIDATIONS.ISSUED_DATE
+						),
+						isBefore()
+					],
+					endDate: moment().add(1, 'days'),
+					language,
+					fullWidth: isMobile
+				},
+				expiration_date: {
+					type: 'date-dropdown',
+					label:
+						STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS
+							.EXPIRATION_DATE_LABEL,
+					validate: [
+						requiredWithCustomMessage(
+							STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.VALIDATIONS
+								.EXPIRATION_DATE
+						),
+						isBefore(moment().add(15, 'years'))
+					],
+					endDate: moment().add(15, 'years'),
+					addYears: 15,
+					yearsBefore: 5,
+					language,
+					fullWidth: isMobile
+				},
+			},
 			id: {
 				type: {
 					type: 'hidden'
@@ -39,13 +106,9 @@ class DocumentsVerification extends Component {
 				front: {
 					type: 'file',
 					label:
-						STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS[
-							`${FRONT_TYPE}_LABEL`
-						],
+						STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS.FRONT_LABEL,
 					placeholder:
-						STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS[
-							`${FRONT_TYPE}_PLACEHOLDER`
-						],
+						STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS.FRONT_PLACEHOLDER,
 					validate: [
 						requiredWithCustomMessage(
 							STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.VALIDATIONS.FRONT
@@ -55,29 +118,63 @@ class DocumentsVerification extends Component {
 				}
 			},
 			proofOfResidence: {
-				type: 'file',
-				label:
-					STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS.POR_LABEL,
-				placeholder:
-					STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS
-						.POR_PLACEHOLDER,
-				validate: [
-					requiredWithCustomMessage(
-						STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.VALIDATIONS
-							.PROOF_OF_RESIDENCY
-					)
-				],
-				fullWidth: isMobile
+				type: {
+					type: 'hidden'
+				},
+				back: {
+					type: 'file',
+					label:
+						STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS.POR_LABEL,
+					placeholder:
+						STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS
+							.POR_PLACEHOLDER,
+					validate: [
+						requiredWithCustomMessage(
+							STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.VALIDATIONS
+								.PROOF_OF_RESIDENCY
+						)
+					],
+					fullWidth: isMobile
+				}
+			},
+			selfieWithNote: {
+				type: {
+					type: 'hidden'
+				},
+				proofOfResidency: {
+					type: 'file',
+					label:
+						STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS.SELFIE_PHOTO_ID_LABEL,
+					placeholder:
+						STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS
+							.SELFIE_PHOTO_ID_PLACEHOLDER,
+					validate: [
+						requiredWithCustomMessage(
+							STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.VALIDATIONS
+								.SELFIE_PHOTO_ID
+						)
+					],
+					fullWidth: isMobile
+				}
 			}
 		};
 
 		this.setState({ formFields });
 	};
 
-	handleSubmit = (values) => {
-		return updateDocuments(values)
+	handleSubmit = (formValues) => {
+		return updateDocuments(formValues)
 			.then(({ data }) => {
-				this.props.moveToNextStep('documents');
+				const values = {
+					type: formValues.type,
+					number: formValues.number,
+					expiration_date: formValues.expiration_date,
+					issued_date: formValues.issued_date,
+					status: 1
+				};
+
+				this.props.moveToNextStep('documents', values);
+				this.props.setActivePageContent(0);
 			})
 			.catch((err) => {
 				const error = { _error: err.message };
@@ -88,67 +185,101 @@ class DocumentsVerification extends Component {
 			});
 	};
 
+	onGoBack = () => {
+		this.props.setActivePageContent(0);
+		this.props.setActiveTab(4);
+	};
+
 	render() {
 		const {
+			idData,
 			handleSubmit,
 			pristine,
 			submitting,
 			valid,
 			error,
-			skip,
-			openContactForm
+			// skip,
+			openContactForm,
+			activeLanguage
 		} = this.props;
 		const { formFields } = this.state;
 		return (
-			<form
-				className="d-flex flex-column w-100 verification_content-form-wrapper"
-				onSubmit={this.handleSubmit}
-			>
-				<HeaderSection
-					title={
-						STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.INFORMATION
-							.IDENTITY_DOCUMENT
-					}
-					openContactForm={openContactForm}
+			<div className="presentation_container apply_rtl verification_container">
+				<IconTitle text={STRINGS.USER_VERIFICATION.DOCUMENT_VERIFICATION} textType="title" />
+				<form
+					className="d-flex flex-column w-100 verification_content-form-wrapper"
+					onSubmit={this.handleSubmit}
 				>
-					<IdentificationFormSection />
-				</HeaderSection>
-				{renderFields(formFields.id)}
+					<HeaderSection
+						title={STRINGS.USER_VERIFICATION.DOCUMENT_PROOF_SUBMISSION}
+						icon={ICONS.VERIFICATION_DOCUMENT_NEW}
+						openContactForm={openContactForm}
+					>
+						<IdentificationFormSection />
+					</HeaderSection>
+					{renderFields(formFields.idDocument)}
+					{renderFields(formFields.id)}
 
-				{formFields.proofOfResidence && (
-					<div>
-						<HeaderSection
-							title={
-								STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.INFORMATION
-									.PROOF_OF_RESIDENCY
+					{formFields.proofOfResidence && (
+						<div>
+							<HeaderSection
+								title={
+									STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.INFORMATION
+										.PROOF_OF_RESIDENCY
+								}
+							>
+								<PORSection />
+							</HeaderSection>
+							{renderFields(formFields.proofOfResidence)}
+						</div>
+					)}
+					{formFields.selfieWithNote && (
+						<div>
+							<HeaderSection
+								title={
+									STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.INFORMATION
+										.SELFIE.TITLE
+								}
+							>
+								<SelfieWithPhotoId />
+							</HeaderSection>
+							<div className="my-2">
+								<img
+									src={activeLanguage === 'en' ? ICONS.SELF_KYC_ID_EN : ICONS.SELF_KYC_ID_FA}
+									className="verification_document-sample"
+									alt="document-sample" />
+							</div>
+							{renderFields(formFields.selfieWithNote)}
+						</div>
+					)}
+					{error && (
+						<div className="warning_text">{getErrorLocalized(error)}</div>
+					)}
+
+					<div className="d-flex verification-buttons-wrapper">
+						<div className="w-50">
+							<Button
+								type="button"
+								onClick={this.onGoBack}
+								label={STRINGS.USER_VERIFICATION.GO_BACK}
+								disabled={submitting}
+							/>
+						</div>
+						<div className="separator" />
+						<div className="w-50">
+							<Button
+								type="button"
+								onClick={handleSubmit(this.handleSubmit)}
+								label={idData.status === 0 ? STRINGS.SUBMIT : `${STRINGS.RESUBMIT}*`}
+								disabled={pristine || submitting || !valid || !!error}
+							/>
+							{idData.status !== 0 &&
+								<span className="content-text">{STRINGS.USER_VERIFICATION.SUBMISSION_PENDING_TXT}</span>
 							}
-							openContactForm={openContactForm}
-						>
-							<PORSection />
-						</HeaderSection>
-						{renderFields(formFields.proofOfResidence)}
+						</div>
 					</div>
-				)}
-				{error && (
-					<div className="warning_text">{getErrorLocalized(error)}</div>
-				)}
-
-				<div className="d-flex verification-buttons-wrapper">
-					<Button
-						type="button"
-						onClick={skip}
-						label={STRINGS.SKIP_FOR_NOW}
-						disabled={submitting}
-					/>
-					<div className="separator" />
-					<Button
-						type="button"
-						onClick={handleSubmit(this.handleSubmit)}
-						label={STRINGS.SUBMIT}
-						disabled={pristine || submitting || !valid || !!error}
-					/>
-				</div>
-			</form>
+				</form>
+			</div>
 		);
 	}
 }

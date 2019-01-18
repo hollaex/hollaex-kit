@@ -34,7 +34,7 @@ class Login extends Component {
 		otpDialogIsOpen: false,
 		logoutDialogIsOpen: false
 	};
-
+	
 	componentDidMount() {
 		if (this.props.logoutMessage) {
 			this.setState({ logoutDialogIsOpen: true });
@@ -61,12 +61,38 @@ class Login extends Component {
 		this.props.router.replace('/reset-password');
 	};
 
+	redirectToService = (url) => {
+		window.location.href = url;
+	};
+
+	getServiceParam = () => {
+		let service = '';
+		if (this.props.location
+			&& this.props.location.query
+			&& this.props.location.query.service) {
+			service = this.props.location.query.service;
+		} else if (window.location
+			&& window.location.search
+			&& window.location.search.includes('service')) {
+			service = window.location.search.split('?service=')[1];
+		}
+		return service;
+	}
+
 	onSubmitLogin = (values) => {
+		const service = this.getServiceParam();
+		if (service) {
+			values.service = service;
+		}
 		return performLogin(values)
 			.then((res) => {
-				this.redirectToHome();
+				if (res.data && res.data.callbackUrl)
+					this.redirectToService(res.data.callbackUrl);
+				else
+					this.redirectToHome();
 			})
 			.catch((err) => {
+				console.log('err', err);
 				const _error = err.response.data
 					? err.response.data.message
 					: err.message;

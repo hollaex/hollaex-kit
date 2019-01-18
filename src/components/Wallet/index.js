@@ -1,15 +1,22 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { browserHistory } from 'react-router';
 import { Accordion } from '../';
 import { CURRENCIES, BASE_CURRENCY } from '../../config/constants';
-import { calculateBalancePrice, formatFiatAmount } from '../../utils/currency';
+import { calculateBalancePrice,
+	formatFiatAmount,
+	calculatePrice,
+	calculatePricePercentage,
+	formatPercentage } from '../../utils/currency';
 import WalletSection from './Section';
+import { DonutChart } from '../../components';
 import STRINGS from '../../config/localizedStrings';
 
 class Wallet extends Component {
 	state = {
 		sections: [],
-		totalAssets: 0
+		totalAssets: 0,
+		chartData: []
 	};
 
 	componentDidMount() {
@@ -57,21 +64,30 @@ class Wallet extends Component {
 
 	calculateSections = ({ price, balance, orders, prices }) => {
 		const sections = [];
+		const data = [];
 
 		// TODO calculate right price
+		const totalAssets = calculateBalancePrice(balance, prices);
 		Object.keys(CURRENCIES).forEach((currency) => {
-			const { symbol } = CURRENCIES[currency];
+			const { symbol, formatToCurrency } = CURRENCIES[currency];
+			const currencyBalance = calculatePrice(balance[`${symbol}_balance`], prices[currency]);
+			const balancePercent = calculatePricePercentage(currencyBalance, totalAssets);
+			data.push({
+				...CURRENCIES[currency],
+				balance: balancePercent,
+				balanceFormat: formatToCurrency(currencyBalance),
+				balancePercentage: formatPercentage(balancePercent),
+			});
 			sections.push(this.generateSection(symbol, price, balance, orders));
 		});
 
-		const totalAssets = formatFiatAmount(
-			calculateBalancePrice(balance, prices)
-		);
-		this.setState({ sections, totalAssets });
+		this.setState({ sections, chartData: data, totalAssets: formatFiatAmount(totalAssets) });
 	};
+	
+	goToWallet = () => browserHistory.push('/wallet');
 
 	render() {
-		const { sections, totalAssets } = this.state;
+		const { sections, totalAssets, chartData } = this.state;
 
 		if (Object.keys(this.props.balance).length === 0) {
 			return <div />;
@@ -79,6 +95,9 @@ class Wallet extends Component {
 
 		return (
 			<div className="wallet-wrapper">
+				<div className="donut-container pointer" onClick={this.goToWallet}>
+					<DonutChart chartData={chartData} />
+				</div>
 				<Accordion sections={sections} />
 				{BASE_CURRENCY && (
 					<div className="wallet_section-wrapper wallet_section-total_asset d-flex flex-column">
