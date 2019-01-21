@@ -218,7 +218,7 @@ $deactive-tab-border: $boder--width solid $border--color;
 				border: 1px solid $border--color
 			}
 			.sidebar_hub-section {
-				border-top-color: $dark-sidebar-color;
+				border-top-color: $dark-app-line-divider;
 
 				.sidebar_hub-section-header {
 
@@ -235,12 +235,12 @@ $deactive-tab-border: $boder--width solid $border--color;
 
 				.sidebar_hub-section-content {
 					.accordion_wrapper .accordion_section {
-						border-color: $dark-sidebar-color;
+						border-color: $dark-app-line-divider;
 					}
 				}
 
 				&.section-active {
-					border-color: $dark-sidebar-color-active;
+					border-color: $dark-app-line-divider;
 
 					.sidebar_hub-section-header {
 						.sidebar_hub-section-icon {

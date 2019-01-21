@@ -1,5 +1,3 @@
-$summary--black: #000000;
-$summary-icon-color-inactive: #808184;
 
 .dark-theme {
     .summary-container {
@@ -10,7 +8,7 @@ $summary-icon-color-inactive: #808184;
         }
 
         .summary-block_wrapper {
-            border-top: .2rem solid $dark-font-main-text-color;
+            border-top: .2rem solid $dark-app-line-divider;
 
             .summary-block-title {
                 color: $dark-font-main-text-color;
@@ -105,12 +103,12 @@ $summary-icon-color-inactive: #808184;
     width: 75rem;
 
     .summary-block_wrapper {
-        border-top: .2rem solid $summary--black;
+        border-top: .2rem solid $colors-black;
         // margin: 0 .5rem;
         padding: .5rem;
         
         .summary-block-title {
-            color: $summary--black;
+            color: $colors-black;
             font-size: 1rem;
             font-weight: bold;
         }
@@ -235,7 +233,7 @@ $summary-icon-color-inactive: #808184;
         }
 
         .price-text {
-            color: $summary--black;
+            color: $colors-black;
             font-weight: bold;
         }
 
@@ -244,7 +242,7 @@ $summary-icon-color-inactive: #808184;
             font-size: 1.2rem;
             font-weight: bold;
             padding: .5rem;
-            color: $summary--black;
+            color: $colors-black;
         }
 
         .asset-changes {
@@ -298,9 +296,9 @@ $summary-icon-color-inactive: #808184;
         }
 
         .account-type-menu-active {
-            border-top: 2px solid $summary--black;
-            border-bottom: 1px solid $summary--black;
-            color: $summary--black;
+            border-top: 2px solid $colors-black;
+            border-bottom: 1px solid $colors-black;
+            color: $colors-black;
             font-size: 1rem;
             text-transform: capitalize;
         }
@@ -315,8 +313,8 @@ $summary-icon-color-inactive: #808184;
         }
 
         .requirement-header {
-            border-bottom: 1px solid $summary--black;
-            color: $summary--black;
+            border-bottom: 1px solid $colors-black;
+            color: $colors-black;
             font-weight: bold;
         }
 
@@ -357,7 +355,7 @@ $summary-icon-color-inactive: #808184;
     }
 
     td {
-        border: 1px solid $summary--black;
+        border: 1px solid $colors-black;
     }
 
     .account-limits {
@@ -366,23 +364,23 @@ $summary-icon-color-inactive: #808184;
     }
 
     .account-limits-content {
-        border: 2px solid $summary--black;
+        border: 2px solid $colors-black;
     }
 
     .account-limits-maker {
-        border-left: 2px solid $summary--black;
-        border-right: 2px solid $summary--black;
-        border-top: 2px solid $summary--black;
+        border-left: 2px solid $colors-black;
+        border-right: 2px solid $colors-black;
+        border-top: 2px solid $colors-black;
     }
     
     .account-limits-taker {
-        border-bottom: 2px solid $summary--black;
-        border-left: 2px solid $summary--black;
-        border-right: 2px solid $summary--black;
+        border-bottom: 2px solid $colors-black;
+        border-left: 2px solid $colors-black;
+        border-right: 2px solid $colors-black;
     }
 
     .account-limits-coin {
-        border-bottom: 2px solid $summary--black;
+        border-bottom: 2px solid $colors-black;
         padding: .25rem .5rem;
         width: 14rem;
     }

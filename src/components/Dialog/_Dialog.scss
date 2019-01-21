@@ -85,7 +85,7 @@ $close-button--margin: 1.5rem;
 		background-color: $dark-app-background-color !important;
 	}
 	.ReactModal__Overlay {
-		background-color: rgba(46, 47, 55, 0.75) !important;
+		background-color: $app-modal-background !important;
 	}
 	.success_display-wrapper {
 		color: $dark-font-main-text-color;

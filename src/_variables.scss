@@ -30,16 +30,20 @@ $colors-currencies-ltc: #58595b;
 $color-sell-btc-light:#ed1c24;
 $color-buy-btc-light:#00a651;
 $colors-username-set-dark: #ff4bb6;
-$dark-app-background-color: #20212a;
-$dark-app-bar-background-color: #3c3c49;
+
+$dark-app-background-color: #010e45;
+$dark-app-light-blue-background: #00145c;
+$dark-app-bar-background-color: #010829;
+$dark-app-line-divider: #1558a0;
+
 $dark-font-main-text-color: #b7b7ce;
 $dark-font-sub-text-color: #a5a3cc;
 $dark-button-active: #444162;
 $dark-disabled-main: #353740;
 $dark-disabled-secondary: #2e2f37;
 $dark-link: #fa507b;
-$dark-buy: #29abe2;
-$dark-sell: #f69321;
+$dark-buy: #00a69c;
+$dark-sell: #ec1c24;
 $dark-border-main: $dark-font-main-text-color;
 $dark-button-disabled: $dark-disabled-main;
 $dark-form-color-underline: $dark-font-main-text-color;
@@ -58,6 +62,7 @@ $dark-accordion-arrow-active: $dark-font-main-text-color;
 $dark-accordion-arrow-inactive: $dark-font-sub-text-color;
 $dark-sidebar-color: $dark-font-sub-text-color;
 $dark-sidebar-color-active: $dark-font-main-text-color;
+$app-modal-background: rgba(35, 31, 32, 0.5);
 
 $app-background-color: white;
 $app-background-color-on-modal: lightgrey;
@@ -68,6 +73,12 @@ $border-color: $colors-deactivate-color2;
 $error-color: $colors-notifications-red;
 $app-menu-bar-background-color: #F2F2F3;
 $app-menu-bar-border--color: #CCCBCA;
+$app-bar-icon-inactive: #808184;
+$app-bar--quicktrade-active-color: #fff100;
+$app-bar--quicktrade-inactive-color: #ceac20;
+$colors-black: #000000;
+
+$trade-tabs-inactive-color: #808080;
 
 $bitcoin-color-main: $colors-currencies-btc;
 

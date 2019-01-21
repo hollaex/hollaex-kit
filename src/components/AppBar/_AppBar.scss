@@ -1,20 +1,14 @@
 $language-selector-arrow--size: 0.4rem;
-$app-bar--background: white;
 $app-bar--pairs-color: #CCCBCA;
-$app-bar-tab-color-inactive: #808184;
-$app-bar--quicktrade-active-color: #fff100;
-$app-bar--quicktrade-inactive-color: #ceac20;
 $app-bar--arrow-size: 0.4rem;
 $notification-size: 1.5rem;
 $app-menu-notification-size: 1.2rem;
-$app-bar--black: #000000;
-$app-bar-add-tab-inactive: #808080;
 $app-bar-add-tab-red: #ff0000;
 $app-bar-pairs-up: green;
 
 .dark-theme {
 	.app_bar {
-		background: $app-bar--black !important;
+		background: $dark-app-bar-background-color !important;
 		color: $dark-font-main-text-color !important;
 		> div {
 			&:not(:first-child) {
@@ -24,7 +18,7 @@ $app-bar-pairs-up: green;
 
 		.active-tab-pair {
 			background-color: $dark-app-background-color !important;
-			border-left: 1px solid $app-bar--pairs-color !important;
+			border-left: 1px solid $app-menu-bar-border--color !important;
 			color: $colors-white !important;
 
 			svg {
@@ -99,7 +93,8 @@ $app-bar-pairs-up: green;
 	}
 
 	.app-menu-bar {
-		background: $dark-disabled-secondary !important;
+		background: $dark-app-light-blue-background !important;
+		border-bottom: 1px solid $dark-app-line-divider;
 		
 		.active-menu {
 			background: $dark-app-background-color !important;
@@ -147,7 +142,7 @@ $app-bar-pairs-up: green;
 	display: flex;
 	font-size: $navigation_bar-font_size;
 	font-weight: bold;
-	background: $app-bar--black;
+	background: $colors-black;
 
 	&.no-borders {
 		border-bottom: none;
@@ -211,7 +206,7 @@ $app-bar-pairs-up: green;
 
 		svg {
 			.st0 {
-				fill: $app-bar--black !important;
+				fill: $colors-black !important;
 				stroke: $app-bar--quicktrade-inactive-color !important;
 				stroke-width: 3 !important;
 			}
@@ -248,8 +243,8 @@ $app-bar-pairs-up: green;
 
 	.app_bar-pair-content {
 		align-items: center;
-		border-left: 1px solid $app-bar--pairs-color;
-		color: $app-bar-tab-color-inactive;
+		border-left: 1px solid $app-menu-bar-border--color;
+		color: $app-bar-icon-inactive;
 		cursor: pointer;
 		display: flex;
 		font-size: $font-size-main;
@@ -265,7 +260,7 @@ $app-bar-pairs-up: green;
 
 	.app_bar-pair-overflow {
 		align-items: center;
-		color: $app-bar-tab-color-inactive;
+		color: $app-bar-icon-inactive;
 		cursor: pointer;
 		display: flex;
 		font-size: $font-size-main;
@@ -278,7 +273,7 @@ $app-bar-pairs-up: green;
 	.active-tab-pair {
 		background-color: $colors-white;
 		border-left: 1px solid $colors-white;
-		color: $app-bar--black;
+		color: $colors-black;
 		top: 1px;
 
 		svg {
@@ -316,7 +311,7 @@ $app-bar-pairs-up: green;
 	.active-tab-overflow {
 		background-color: $colors-white;
 		border-left: 1px solid $colors-white;
-		color: $app-bar--black;
+		color: $colors-black;
 		top: 1px;
 
 		svg {
@@ -343,25 +338,25 @@ $app-bar-pairs-up: green;
 
 	.app_bar-pair-content, .app-bar-tab-close, .app-bar-currency-icon, .app-bar-account-icon svg {
 		.btc0 {
-			fill: $app-bar-tab-color-inactive;
+			fill: $app-bar-icon-inactive;
 		}
 		.btc1 {
-			fill: $app-bar-tab-color-inactive;
+			fill: $app-bar-icon-inactive;
 		}
 		.eth0 {
-			fill: $app-bar-tab-color-inactive;
+			fill: $app-bar-icon-inactive;
 		}
 		.eth1 {
-			fill: $app-bar-tab-color-inactive;
+			fill: $app-bar-icon-inactive;
 		}
 		.bch-icon {
-			fill: $app-bar-tab-color-inactive;
+			fill: $app-bar-icon-inactive;
 		}
 		.tab-close {
-			stroke: $app-bar-tab-color-inactive;
+			stroke: $app-bar-icon-inactive;
 		}
 		.plus {
-			stroke: $app-bar-tab-color-inactive;
+			stroke: $app-bar-icon-inactive;
 		}
 		.st0 {
 			fill: $colors-white;
@@ -445,7 +440,7 @@ $app-bar-pairs-up: green;
 		box-shadow: 0px 4px 6px 1px rgba(0, 0, 0, 0.4);
 
 		.app-bar-account-menu-list {
-			color: $app-bar-tab-color-inactive;
+			color: $app-bar-icon-inactive;
 			cursor: pointer;
 			padding: .2rem 0;
 		}
@@ -456,7 +451,7 @@ $app-bar-pairs-up: green;
 		}
 		.app-bar-account-list-icon svg {
 			.account-active-1 {
-				fill: $app-bar-tab-color-inactive;
+				fill: $app-bar-icon-inactive;
 			}
 		}
 
@@ -550,7 +545,7 @@ $app-bar-pairs-up: green;
 	width: 100%;
 
 	.app-menu-bar-content {
-		color: $app-bar-tab-color-inactive;
+		color: $app-bar-icon-inactive;
 		cursor: pointer;
 		height: 2.5rem;
 		position: relative;
@@ -623,18 +618,18 @@ $app-bar-pairs-up: green;
 }
 
 .app-bar-add-tab-search {
-	color: $app-bar-add-tab-inactive;
+	color: $trade-tabs-inactive-color;
 	height: 2.2rem;
 	margin-bottom: .5rem;
 }
 
 .search-field {
-	color: $app-bar-add-tab-inactive;
+	color: $trade-tabs-inactive-color;
 	width: 100%;
 }
 
 .app-bar-search-field {
-	background-color: $dark-disabled-secondary !important;
+	background-color: $dark-app-background-color !important;
 	flex-direction: row-reverse;
 	margin: 0;
 	padding-right: .5rem;
@@ -645,7 +640,7 @@ $app-bar-pairs-up: green;
 }
 
 .app-bar-add-tab-menu {
-	background-color: $app-bar--black;
+	background-color: $dark-app-bar-background-color;
 	border: 1px solid $colors-white;
 	color: $app-bar--pairs-color;
 	display: block;
@@ -660,41 +655,41 @@ $app-bar-pairs-up: green;
 	box-shadow: 0px 4px 6px 1px rgba(0, 0, 0, 0.4);
 
 	.app-bar-tab-menu-list {
-		background-color: $app-bar--black;
+		background-color: $dark-app-bar-background-color;
 		color: $app-bar--pairs-color;
 		font-size: .8rem;
 		height: 2.5rem;
-		padding: .5rem;
+		padding: .5rem .8rem;
 	}
 
 	.active-tab {
-		background-color: $dark-disabled-secondary;
+		background-color: $dark-app-background-color;
 		color: #fafafa;
 		font-weight: bold;
 	}
 
 	.app-bar-add-tab-content {
-		background-color: $dark-disabled-secondary;
-		color: $app-bar-add-tab-inactive;
+		background-color: $dark-app-background-color;
+		color: $trade-tabs-inactive-color;
 		font-size: .8rem;
 		overflow-y: scroll;
 		padding: .3rem 0;
 	}
 	
 	.app-bar-tab-overflow-content {
-		background-color: $dark-disabled-secondary;
-		color: $app-bar-add-tab-inactive;
+		background-color: $dark-app-background-color;
+		color: $trade-tabs-inactive-color;
 		font-size: .8rem;
 		overflow-y: scroll;
 		padding: .3rem 0;
 	}
 
 	.app-bar-add-tab-content-list {
-		color: $app-bar-add-tab-inactive;
+		color: $trade-tabs-inactive-color;
 		height: 2.2rem;
 		
 		&:hover {
-			background-color: #383c42;
+			background-color: $dark-app-light-blue-background;
 			color: $colors-white;
 
 			svg {
@@ -734,19 +729,19 @@ $app-bar-pairs-up: green;
 	.app-bar-tab-setting, .app-bar-add-tab-icons {
 		svg {
 			.btc0 {
-				fill: $app-bar-add-tab-inactive !important;
+				fill: $trade-tabs-inactive-color !important;
 			}
 			.btc1 {
-				fill: $app-bar-add-tab-inactive !important;
+				fill: $trade-tabs-inactive-color !important;
 			}
 			.eth0 {
-				fill: $app-bar-add-tab-inactive !important;
+				fill: $trade-tabs-inactive-color !important;
 			}
 			.eth1 {
-				fill: $app-bar-add-tab-inactive !important;
+				fill: $trade-tabs-inactive-color !important;
 			}
 			.bch-icon {
-				fill: $app-bar-add-tab-inactive !important;
+				fill: $trade-tabs-inactive-color !important;
 			}
 			.plus {
 				stroke: $colors-white;
