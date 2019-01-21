@@ -78,7 +78,7 @@
 		"build": "npm run build-css && react-scripts build",
 		"test": "react-scripts test --env=jsdom",
 		"eject": "react-scripts eject",
-		"deploy-main": "npm run build && aws s3 sync build/ s3://hollaex.com"
+		"deploy-main": "npm run build && aws s3 sync build/ s3://hollaex.com && aws cloudfront create-invalidation --distribution-id E1FPBCJ0EFOPZJ --paths /"
 	},
 	"description": "Cryptocurrency exchange platfrom",
 	"main": "index.js",
