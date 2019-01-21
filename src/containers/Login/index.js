@@ -62,7 +62,7 @@ class Login extends Component {
 	};
 
 	redirectToService = (url) => {
-		window.location.href = url;
+		window.location.href = `https://${url}`;
 	};
 
 	getServiceParam = () => {

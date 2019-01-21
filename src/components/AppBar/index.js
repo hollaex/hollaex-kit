@@ -212,10 +212,15 @@ class AppBar extends Component {
 			logout,
 			router,
 			activePath,
-			location
+			location,
+			pairs
 		} = this.props;
 		const { isAccountMenu, selectedMenu, securityPending, verificationPending } = this.state;
 		const totalPending = securityPending + verificationPending;
+		let pair = this.props.pair;
+		if (!this.props.pair && Object.keys(pairs).length) {
+			pair = Object.keys(pairs)[0];
+		}
 
 		return isMobile ? (
 			<MobileBarWrapper
@@ -237,7 +242,7 @@ class AppBar extends Component {
 					{this.renderIcon(isHome, theme)}
 					<div className="d-flex app_bar-quicktrade-container">
 						{!isHome
-							? <Link to="/quick-trade/btc-eur">
+							? <Link to={`/quick-trade/${pair}`}>
 									<div
 										className={classnames(
 											'app_bar-quicktrade',
@@ -284,7 +289,10 @@ class AppBar extends Component {
 const mapStateToProps = (state, ownProps) => {
 	const userData = (!state.user.id && ownProps.user && ownProps.user.id) ? ownProps.user : state.user;
 	return {
-		user: userData
+		user: userData,
+		theme: state.app.theme,
+		pair: state.app.pair,
+		pairs: state.app.pairs
 }};
 
 AppBar.defaultProps = {
