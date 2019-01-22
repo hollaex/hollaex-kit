@@ -148,21 +148,21 @@ $dark-theme-chart-content: #a3a1c9;
 }
 .bar-tooltip-dark:after {
 	border-color: rgba(136, 183, 213, 0);
-	border-right-color: #1f212a;
+	border-right-color: $dark-app-background-color;
 	border-width: 5px;
 	margin-top: -5px;
 }
 .bar-tooltip-dark:before {
 	border-color: rgba(194, 225, 245, 0);
-	border-right-color: $dark-theme-chart-content;
+	border-right-color: $dark-app-blue-link-highlight;
 	border-width: 7px;
 	margin-top: -7px;
 }
 
 .bar-tooltip-dark {
-	background-color: #1f212a;
-	border: 1px solid $dark-theme-chart-content;
-	color: $dark-theme-chart-content;
+	background-color: $dark-app-background-color;
+	border: 1px solid $dark-app-blue-link-highlight;
+	color: $dark-app-blue-link-highlight;
 }
 
 .dark-theme {

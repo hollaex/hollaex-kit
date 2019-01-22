@@ -249,7 +249,7 @@ $title-icon--height: 10rem;
 
 .dark-theme {
 	.quick_trade-wrapper {
-		background-color: $dark-app-background-color;
+		background-color: $dark-app-light-blue-background;
 
 		.title,
 		.input_block-title {
@@ -263,17 +263,17 @@ $title-icon--height: 10rem;
 
 		.toogle_button-wrapper {
 			.toogle-content {
-				color: $dark-disabled-main;
+				color: $dark-font-sub-text-1-color;
 
 				.selected {
 					color: $dark-font-main-text-color;
 				}
 
 				.toogle-action_button {
-					border-color: $dark-border-main;
+					border-color: $dark-font-main-text-color;
 
 					.toogle-action_button-display {
-						background: $dark-border-main;
+						background: $dark-font-main-text-color;
 					}
 				}
 			}

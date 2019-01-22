@@ -13,6 +13,7 @@ $colors-notifications-red: #ed1c24;
 $colors-notifications-blue: #00aeef;
 $colors-notifications-green: #00a651;
 $colors-white: white;
+$colors-black: #000000;
 
 $color-currency-fiat--main: #00a651;
 $color-currency-fiat--secondary: #52c2b8;
@@ -35,27 +36,38 @@ $dark-app-background-color: #010e45;
 $dark-app-light-blue-background: #00145c;
 $dark-app-bar-background-color: #010829;
 $dark-app-line-divider: #1558a0;
-
-$dark-font-main-text-color: #b7b7ce;
-$dark-font-sub-text-color: #a5a3cc;
-$dark-button-active: #444162;
-$dark-disabled-main: #353740;
-$dark-disabled-secondary: #2e2f37;
-$dark-link: #fa507b;
+$dark-app-blue-link-highlight: #2a9ff8;
+$dark-box-fields: #010c3e;
+$dark-inactive-color: #454162;
+$dark-icon-color: #a3a1ca;
+$dark-font-main-text-color: $colors-white;
+$dark-font-sub-text-color: #bbbdbf;
+$dark-font-sub-text-1-color: #808184;
 $dark-buy: #00a69c;
 $dark-sell: #ec1c24;
-$dark-border-main: $dark-font-main-text-color;
-$dark-button-disabled: $dark-disabled-main;
-$dark-form-color-underline: $dark-font-main-text-color;
-$dark-form-color-underline-focus: $dark-font-main-text-color;
-$dark-form-arrow: $dark-font-main-text-color;
-$dark-form-placeholder: $dark-button-active;
+$dark-link: $dark-app-blue-link-highlight;
+// dark-border-button
+$dark-border-main: $dark-app-line-divider;
+$dark-button-active: $dark-app-blue-link-highlight;
+$dark-button-text: $colors-black;
+$dark-button-disabled:  $dark-app-light-blue-background;
+$dark-button-text-disabled: $dark-inactive-color;
+// dark-form-fields
+$dark-form-color-underline: $dark-app-line-divider;
+$dark-form-color-underline-focus: $dark-app-blue-link-highlight;
+$dark-form-arrow: $dark-app-blue-link-highlight;
 $dark-form-text: $dark-font-sub-text-color;
-$dark-form-text-disabled: $dark-disabled-main;
+$dark-form-placeholder: $dark-font-sub-text-1-color;
 $dark-form-label: $dark-font-main-text-color;
-$dark-tab-active: $dark-font-main-text-color;
-$dark-tab-notification: $dark-link;
-$dark-tab-inactive: $dark-button-active;
+$dark-form-text-disabled: $dark-inactive-color;
+// dark-tabs
+$dark-tab-active: $dark-app-blue-link-highlight;
+$dark-tab-inactive: $dark-inactive-color;
+$dark-tab-notification: $dark-link; // need to check this
+
+$dark-disabled-main: $dark-inactive-color;
+$dark-disabled-secondary: #2e2f37;
+
 $dark-icon-hover: $dark-font-main-text-color;
 $dark-icon-unhover: $dark-font-sub-text-color;
 $dark-accordion-arrow-active: $dark-font-main-text-color;
@@ -76,7 +88,6 @@ $app-menu-bar-border--color: #CCCBCA;
 $app-bar-icon-inactive: #808184;
 $app-bar--quicktrade-active-color: #fff100;
 $app-bar--quicktrade-inactive-color: #ceac20;
-$colors-black: #000000;
 
 $trade-tabs-inactive-color: #808080;
 

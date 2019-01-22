@@ -96,7 +96,16 @@ $notification-size: 1.5rem;
 		background-color: $dark-tab-notification;
 	}
 	.panel-information-row {
-		background-color: #353740;
+		background-color: $dark-box-fields;
 		color: $dark-font-main-text-color;
+		.information-content {
+			color: $dark-font-sub-text-color;
+		}
+	}
+	.panel-information-row-disable {
+		color: $dark-inactive-color !important;
+		.information-content {
+			color: $dark-inactive-color;
+		}
 	}
 }

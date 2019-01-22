@@ -27,12 +27,13 @@
 
         .account-details-wrapper {
             .account-type-menu {
-                color: $dark-link
+                border-top: 1px solid $dark-border-main;
+                color: $dark-link;
             }
 
             .account-type-menu-active {
-                border-top: 2px solid $dark-font-main-text-color;
-                border-bottom: 1.5px solid $dark-font-main-text-color;
+                border-top: 2px solid $dark-border-main;
+                border-bottom: 1.5px solid $dark-border-main;
                 color: $dark-font-main-text-color;
             }
 
@@ -41,7 +42,7 @@
             }
 
             .requirement-header {
-                border-bottom: 1px solid $dark-font-main-text-color;
+                border-bottom: 1px solid $dark-border-main;
                 color: $dark-font-main-text-color;
             }
         }
@@ -54,7 +55,7 @@
                 color: $dark-font-main-text-color;
             }
             .total-assets {
-                background: repeating-linear-gradient(-45deg, $colors-main-black, $colors-main-black 2px, #2e2f37 2px, #2e2f37 4px);
+                background: repeating-linear-gradient(-45deg, $dark-app-background-color, $dark-app-background-color 2px, $dark-app-light-blue-background 2px, $dark-app-light-blue-background 4px);
                 color: $dark-font-main-text-color;
             }
         }
