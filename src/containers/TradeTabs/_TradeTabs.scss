@@ -5,47 +5,35 @@ $trade-tab-active-dark-title: #b7b5cd;
 
 .dark-theme {
     .trade_tabs-container {
-        color: $trade-tab-dark-pair-content;
+        color: $dark-font-sub-text-1-color;
 
         .trade-tab-app-title {
-            color: $trade-tab-active-dark-title
+            color: $dark-font-sub-text-color;
         }
         .trade_tabs-content {
-            border-top: 2px solid $dark-font-main-text-color;
+            border-top: 2px solid $dark-border-main;
         }
         .trade_tabs-link {
             color: $dark-link;
         }
         .trade_tabs-search-field {
             background-color: $dark-app-background-color;
-            color: $colors-deactivate-color2;
+            color: $dark-font-main-text-color;
 
             &::placeholder {
-                color: $colors-deactivate-color2;
+                color: $dark-font-sub-text-1-color !important;
             }
         }
         .trade_tab-pair-title {
-            color: $trade-tabs-inactive-color;
+            color: $dark-font-sub-text-1-color;
         }
         .trade_tab-icons {
             svg {
-                .btc0 {
-                    fill: $trade-tabs-inactive-color !important;
-                }
-                .btc1 {
-                    fill: $trade-tabs-inactive-color !important;
-                }
-                .eth0 {
-                    fill: $trade-tabs-inactive-color !important;
-                }
-                .eth1 {
-                    fill: $trade-tabs-inactive-color !important;
-                }
-                .bch-icon {
-                    fill: $trade-tabs-inactive-color !important;
+                .btc0, .btc1, .eth0, .eth1, .bch-icon {
+                    fill: $dark-font-sub-text-1-color !important;
                 }
                 .st0 {
-                    fill: $trade-tabs-inactive-color !important;
+                    fill: $dark-font-sub-text-1-color !important;
                     stroke-width: 0rem;
                 }
             }
@@ -79,30 +67,18 @@ $trade-tab-active-dark-title: #b7b5cd;
             border: 1px solid $dark-app-background-color;
             &:hover {
                 border: 1px solid $trade-tab-dark-pair-content;
-                color: $trade-tab-dark-pair-content;
+                color: $dark-font-sub-text-color;
 
                 .trade_tab-pair-title {
-                    color: $trade-tab-active-dark-title !important;
+                    color: $dark-font-sub-text-color !important;
                 }
 
                 svg {
-                    .btc0 {
-                        fill: $trade-tab-active-dark-title !important;
-                    }
-                    .btc1 {
-                        fill: $trade-tab-active-dark-title !important;
-                    }
-                    .eth0 {
-                        fill: $trade-tab-active-dark-title !important;
-                    }
-                    .eth1 {
-                        fill: $trade-tab-active-dark-title !important;
-                    }
-                    .bch-icon {
-                        fill: $trade-tab-active-dark-title !important;
+                    .btc0, .btc1, .eth0, .eth1, .bch-icon {
+                        fill: $dark-font-sub-text-color !important;
                     }
                     .st0 {
-                        fill: $trade-tab-active-dark-title !important;
+                        fill: $dark-font-sub-text-color !important;
                         stroke-width: 0rem;
                     }
                 }
@@ -143,7 +119,7 @@ $trade-tab-active-dark-title: #b7b5cd;
     }
 
     .link-separator {
-        border-right: 1px solid $colors-deactivate-color2;
+        border-right: 1px solid $dark-font-sub-text-1-color;
     }
 
     .trade_tabs-search-field {
@@ -170,19 +146,7 @@ $trade-tab-active-dark-title: #b7b5cd;
         width: 5rem;
 
         svg {
-            .btc0 {
-                fill: $trade-tabs-inactive-color !important;
-            }
-            .btc1 {
-                fill: $trade-tabs-inactive-color !important;
-            }
-            .eth0 {
-                fill: $trade-tabs-inactive-color !important;
-            }
-            .eth1 {
-                fill: $trade-tabs-inactive-color !important;
-            }
-            .bch-icon {
+            .btc0, .btc1, .eth0, .eth1, .bch-icon {
                 fill: $trade-tabs-inactive-color !important;
             }
             .st0 {
@@ -247,19 +211,7 @@ $trade-tab-active-dark-title: #b7b5cd;
             }
 
             svg {
-                .btc0 {
-                    fill: $colors-black !important;
-                }
-                .btc1 {
-                    fill: $colors-black !important;
-                }
-                .eth0 {
-                    fill: $colors-black !important;
-                }
-                .eth1 {
-                    fill: $colors-black !important;
-                }
-                .bch-icon {
+                .btc0, .btc1, .eth0, .eth1, .bch-icon {
                     fill: $colors-black !important;
                 }
                 .st0 {

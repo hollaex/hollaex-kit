@@ -44,6 +44,7 @@ export const ICONS = {
 	TELEGRAM: `${process.env.PUBLIC_URL}/assets/icons/telegram-black.svg`,
 	TELEGRAM_COLOR: `${process.env.PUBLIC_URL}/assets/icons/telegram-color.svg`,
 	BCH_ICON: `${process.env.PUBLIC_URL}/assets/icons/bch-icon.svg`,
+	BCH_ICON_DARK: `${process.env.PUBLIC_URL}/assets/icons/bch-icon.svg`,
 	BCH_NAV_ICON: `${process.env.PUBLIC_URL}/assets/icons/bch-icon-nav.svg`,
 	CHECK: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-06.svg`,
 	BLUE_QUESTION: `${
@@ -575,3 +576,9 @@ export const CHART_MONTHS = [
 	{ key: 11, value: 'Nov' },
 	{ key: 12, value: 'Dec' },
 ];
+
+export const DARK_THEME_COLORS = {
+	dark_border_main: '#1558a0',
+	dark_sub_text: '#bbbdbf',
+	dark_sub_text_1: '#808184'
+};

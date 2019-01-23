@@ -16,39 +16,25 @@ $app-bar-pairs-up: green;
 			}
 		}
 
+		.app_bar-pair-content {
+			color: $dark-font-sub-text-1-color;
+		}
+
 		.active-tab-pair {
 			background-color: $dark-app-background-color !important;
 			border-left: 1px solid $app-menu-bar-border--color !important;
-			color: $colors-white !important;
+			color: $dark-font-main-text-color !important;
 
 			svg {
-				.btc0 {
-					fill: $colors-white;
+				.btc0, .btc1, .eth0, .eth1, .bch-icon {
+					fill: $dark-font-main-text-color;
 				}
-				.btc1 {
-					fill: $colors-white;
-				}
-				.eth0 {
-					fill: $colors-white;
-				}
-				.eth1 {
-					fill: $colors-white;
-				}
-				.bch-icon {
-					fill: $colors-white;
-				}
-				.tab-close {
-					stroke: $colors-white;
-				}
-				.plus {
-					stroke: $colors-white;
+				.tab-close, .plus, .double-arrow {
+					stroke: $dark-font-main-text-color;
 				}
 				.st0 {
-					fill: $colors-white;
+					fill: $dark-font-main-text-color;
 					stroke-width: 0rem;
-				}
-				.double-arrow {
-					stroke: $colors-white;
 				}
 			}
 		}
@@ -56,12 +42,12 @@ $app-bar-pairs-up: green;
 		.active-tab-overflow {
 			background-color: $dark-app-background-color !important;
 			border-left: 1px solid $dark-app-background-color !important;
-			color: $colors-white !important;
+			color: $dark-font-main-text-color !important;
 			top: 1px;
 
 			svg {
 				.double-arrow {
-					stroke: $colors-white;
+					stroke: $dark-font-main-text-color;
 				}
 			}
 		}
@@ -277,33 +263,15 @@ $app-bar-pairs-up: green;
 		top: 1px;
 
 		svg {
-			.btc0 {
+			.btc0, .btc1, .eth0, .eth1, .bch-icon {
 				fill: $colors-main-black;
 			}
-			.btc1 {
-				fill: $colors-main-black;
-			}
-			.eth0 {
-				fill: $colors-main-black;
-			}
-			.eth1 {
-				fill: $colors-main-black;
-			}
-			.bch-icon {
-				fill: $colors-main-black;
-			}
-			.tab-close {
-				stroke: $colors-main-black;
-			}
-			.plus {
+			.tab-close, .plus, .double-arrow {
 				stroke: $colors-main-black;
 			}
 			.st0 {
 				fill: $colors-main-black;
 				stroke-width: 0rem;
-			}
-			.double-arrow {
-				stroke: $colors-main-black;
 			}
 		}
 	}
@@ -337,25 +305,10 @@ $app-bar-pairs-up: green;
 	}
 
 	.app_bar-pair-content, .app-bar-tab-close, .app-bar-currency-icon, .app-bar-account-icon svg {
-		.btc0 {
+		.btc0, .btc1, .eth0, .eth1, .bch-icon {
 			fill: $app-bar-icon-inactive;
 		}
-		.btc1 {
-			fill: $app-bar-icon-inactive;
-		}
-		.eth0 {
-			fill: $app-bar-icon-inactive;
-		}
-		.eth1 {
-			fill: $app-bar-icon-inactive;
-		}
-		.bch-icon {
-			fill: $app-bar-icon-inactive;
-		}
-		.tab-close {
-			stroke: $app-bar-icon-inactive;
-		}
-		.plus {
+		.tab-close, .plus {
 			stroke: $app-bar-icon-inactive;
 		}
 		.st0 {
@@ -624,15 +577,19 @@ $app-bar-pairs-up: green;
 }
 
 .search-field {
-	color: $trade-tabs-inactive-color;
+	color: $dark-font-main-text-color;
 	width: 100%;
 }
 
 .app-bar-search-field {
-	background-color: $dark-app-background-color !important;
+	background-color: $dark-app-bar-add-tab-menu-background !important;
 	flex-direction: row-reverse;
 	margin: 0;
 	padding-right: .5rem;
+
+	&::placeholder {
+		color: $dark-inactive-color !important;
+	}
 }
 
 .app-bar-search-field-outline {
@@ -642,7 +599,7 @@ $app-bar-pairs-up: green;
 .app-bar-add-tab-menu {
 	background-color: $dark-app-bar-background-color;
 	border: 1px solid $colors-white;
-	color: $app-bar--pairs-color;
+	color: $dark-font-sub-text-1-color;
 	display: block;
 	min-width: 22rem;
 	min-height: 8rem;
@@ -656,61 +613,58 @@ $app-bar-pairs-up: green;
 
 	.app-bar-tab-menu-list {
 		background-color: $dark-app-bar-background-color;
-		color: $app-bar--pairs-color;
+		color: $dark-font-sub-text-1-color;
 		font-size: .8rem;
 		height: 2.5rem;
 		padding: .5rem .8rem;
 	}
 
 	.active-tab {
-		background-color: $dark-app-background-color;
-		color: #fafafa;
+		background-color: $dark-app-bar-add-tab-menu-background;
+		color: $dark-font-main-text-color;
 		font-weight: bold;
 	}
 
 	.app-bar-add-tab-content {
-		background-color: $dark-app-background-color;
-		color: $trade-tabs-inactive-color;
+		background-color: $dark-app-bar-add-tab-menu-background;
+		color: $dark-font-sub-text-1-color;
 		font-size: .8rem;
 		overflow-y: scroll;
 		padding: .3rem 0;
 	}
+
+
 	
 	.app-bar-tab-overflow-content {
-		background-color: $dark-app-background-color;
-		color: $trade-tabs-inactive-color;
+		background-color: $dark-app-bar-add-tab-menu-background;
+		color: $dark-font-sub-text-1-color;
 		font-size: .8rem;
 		overflow-y: scroll;
 		padding: .3rem 0;
 	}
 
 	.app-bar-add-tab-content-list {
-		color: $trade-tabs-inactive-color;
+		color: $dark-font-sub-text-1-color;
 		height: 2.2rem;
 		
 		&:hover {
 			background-color: $dark-app-light-blue-background;
-			color: $colors-white;
+			color: $dark-font-main-text-color;
 
 			svg {
-				.btc0 {
-					fill: $colors-white !important;
-				}
-				.btc1 {
-					fill: $colors-white !important;
-				}
-				.eth0 {
-					fill: $colors-white !important;
-				}
-				.eth1 {
-					fill: $colors-white !important;
-				}
+				.btc0,
+				.btc1,
+				.eth0,
+				.eth1,
 				.bch-icon {
-					fill: $colors-white !important;
+					fill: $dark-font-main-text-color !important;
 				}
 				.st0 {
-					fill: $colors-white !important;
+					fill: $dark-font-main-text-color !important;
 					stroke-width: 0rem;
+				}
+				.plus, .minus {
+					stroke: $dark-font-main-text-color !important;
 				}
 			}
 		}
@@ -728,23 +682,11 @@ $app-bar-pairs-up: green;
 
 	.app-bar-tab-setting, .app-bar-add-tab-icons {
 		svg {
-			.btc0 {
-				fill: $trade-tabs-inactive-color !important;
+			.btc0, .btc1, .eth0, .eth1, .bch-icon {
+				fill: $dark-font-sub-text-1-color !important;
 			}
-			.btc1 {
-				fill: $trade-tabs-inactive-color !important;
-			}
-			.eth0 {
-				fill: $trade-tabs-inactive-color !important;
-			}
-			.eth1 {
-				fill: $trade-tabs-inactive-color !important;
-			}
-			.bch-icon {
-				fill: $trade-tabs-inactive-color !important;
-			}
-			.plus {
-				stroke: $colors-white;
+			.plus, .minus {
+				stroke: $dark-font-sub-text-1-color !important;
 				stroke-width: .2rem;
 			}
 			.st0 {

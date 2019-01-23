@@ -63,6 +63,9 @@ class PairTabs extends Component {
                     !JSON.parse(tabs).length) {
                     this.setNoTabs();
                 }
+            } else if (router && !router.params.pair) {
+                active = "";
+                this.setState({ activePairTab: '' });
             }
             this.initTabs(pairs, active);
         }

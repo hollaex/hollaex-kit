@@ -38,24 +38,24 @@ $dark-theme-chart-content: #a3a1c9;
 }
 
 .chart_btc {
-	fill: #f7941e;
-	stroke: #f6921e;
+	fill: $coin-btc;
+	stroke: $coin-btc-1;
 }
 .chart_bch {
-	fill: #9ec51e;
-	stroke: #8bc53f;
+	fill: $coin-bch;
+	stroke: $coin-bch-1;
 }
 .chart_eth {
-	fill: #2e3192;
-	stroke: #2b388f;
+	fill: $coin-eth;
+	stroke: $coin-eth-1;
 }
 .chart_fiat {
-	fill: #00a651;
-	stroke: #00a651
+	fill: $coin-fiat;
+	stroke: $coin-fiat-1;
 }
 .chart_ltc {
-	fill: #58595b;
-	stroke: #58595b;
+	fill: $coin-ltc;
+	stroke: $coin-ltc-1;
 }
 
 .bar_wrapper {
@@ -168,7 +168,7 @@ $dark-theme-chart-content: #a3a1c9;
 .dark-theme {
 	.ohlc_wrapper {
 		tspan {
-			fill: $dark-font-main-text-color;
+			fill: $dark-font-sub-text-color;
 		}
 	}
 

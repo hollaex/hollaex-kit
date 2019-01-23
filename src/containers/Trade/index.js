@@ -178,7 +178,7 @@ class Trade extends Component {
 						text={STRINGS.CANCEL_ALL}
 						iconPath={ICONS.CANCEL_CROSS_ACTIVE}
 						onClick={this.cancelAllOrders}
-						status=""
+						status="information"
 						useSvg={true}
 					/>)
 				
@@ -211,7 +211,7 @@ class Trade extends Component {
 						text={STRINGS.TRADE_HISTORY}
 						iconPath={ICONS.ARROW_TRANSFER_HISTORY_ACTIVE}
 						onClick={this.goToTransactionsHistory}
-						status=""
+						status="information"
 						useSvg={true}
 					/>
 				) : ''

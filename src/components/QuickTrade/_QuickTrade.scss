@@ -261,6 +261,15 @@ $title-icon--height: 10rem;
 			}
 		}
 
+		.quick_trade-section_wrapper {
+			.exir-button {
+				&.disabled {
+					background-color: $dark-app-background-color !important;
+					color: $dark-inactive-color !important;
+				}
+			}
+		}
+
 		.toogle_button-wrapper {
 			.toogle-content {
 				color: $dark-font-sub-text-1-color;

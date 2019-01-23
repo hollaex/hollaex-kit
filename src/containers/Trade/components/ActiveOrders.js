@@ -97,7 +97,7 @@ const generateHeaders = (onCancel) => [
 						iconPath={ICONS.CANCEL_CROSS_ACTIVE}
 						onClick={() => onCancel(id)}
 						className="relative"
-						status=""
+						status="information"
 						textPosition="left"
 						useSvg={true}
 					/>

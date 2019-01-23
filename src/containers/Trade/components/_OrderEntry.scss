@@ -86,6 +86,7 @@
 
 			&:disabled {
 				background-color: $theme-color-disabled !important;
+				color: $dark-font-sub-text-1-color !important;
 			}
 		}
 
@@ -126,8 +127,13 @@
 			color: $dark-app-background-color !important;
 		}
 
+		.trade_order_entry-action_selector {
+			color: $dark-font-sub-text-1-color;
+		}
+
 		.trade_order_entry-selector {
 			border-top: 1px solid $dark-border-main !important;
+			color: $dark-font-sub-text-1-color;
 			// &:after {
 			// 	background: $dark-border-main !important;
 			// }
@@ -140,10 +146,10 @@
 			}
 		}
 		&.order_side-selector-sell {
-			@include entry_form($dark-sell, $dark-disabled-secondary);
+			@include entry_form($dark-sell, $dark-inactive-color);
 		}
 		&.order_side-selector-buy {
-			@include entry_form($dark-buy, $dark-disabled-secondary);
+			@include entry_form($dark-buy, $dark-inactive-color);
 		}
 	}
 }

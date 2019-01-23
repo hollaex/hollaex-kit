@@ -46,6 +46,7 @@ $dark-font-sub-text-1-color: #808184;
 $dark-buy: #00a69c;
 $dark-sell: #ec1c24;
 $dark-link: $dark-app-blue-link-highlight;
+$dark-trade-fields: #020c3b;
 // dark-border-button
 $dark-border-main: $dark-app-line-divider;
 $dark-button-active: $dark-app-blue-link-highlight;
@@ -64,6 +65,21 @@ $dark-form-text-disabled: $dark-inactive-color;
 $dark-tab-active: $dark-app-blue-link-highlight;
 $dark-tab-inactive: $dark-inactive-color;
 $dark-tab-notification: $dark-link; // need to check this
+$dark-app-bar-add-tab-menu-background: $dark-box-fields;
+$dark-sidebar-color: $dark-font-sub-text-color;
+$dark-sidebar-color-active: $dark-font-main-text-color;
+$app-modal-background: rgba(35, 31, 32, 0.5);
+
+$coin-btc: #f7941e;
+$coin-btc-1: #f6921e;
+$coin-bch: #9ec51e;
+$coin-bch-1: #8bc53f;
+$coin-eth: #2e3192;
+$coin-eth-1: #2b388f;
+$coin-fiat: #00a651;
+$coin-fiat-1: #00a651;
+$coin-ltc: #58595b;
+$coin-ltc-1: #58595b;
 
 $dark-disabled-main: $dark-inactive-color;
 $dark-disabled-secondary: #2e2f37;
@@ -72,9 +88,6 @@ $dark-icon-hover: $dark-font-main-text-color;
 $dark-icon-unhover: $dark-font-sub-text-color;
 $dark-accordion-arrow-active: $dark-font-main-text-color;
 $dark-accordion-arrow-inactive: $dark-font-sub-text-color;
-$dark-sidebar-color: $dark-font-sub-text-color;
-$dark-sidebar-color-active: $dark-font-main-text-color;
-$app-modal-background: rgba(35, 31, 32, 0.5);
 
 $app-background-color: white;
 $app-background-color-on-modal: lightgrey;

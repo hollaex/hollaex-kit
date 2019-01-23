@@ -35,7 +35,9 @@ const TradeBlock = ({
 						{pairs.length ? <ReactSVG path={ICON_PATH} wrapperClassName='trade_block-icon'/> : null}
 						<div className="trade_block-title-items">{title}</div>
 					</div>
-					<div className="trade_block-title-currency">{pairs.length ? `${pairs[0]}/${pairs[1]}` : ''}</div>
+					<div className={pairs.length ? `trade_block-title-currency-${pairs[0].toLowerCase()}` : 'trade_block-title-currency'}>
+						{pairs.length ? `${pairs[0]}/${pairs[1]}` : ''}
+					</div>
 				</div>
 				{action}
 			</div>
