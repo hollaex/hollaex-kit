@@ -64,7 +64,7 @@ $dark-theme-chart-content: #a3a1c9;
 	.bar_yAxis {
 		line {
 			fill: $colors-deactivate-color2;
-			stroke-dasharray: 5 5;
+			stroke-dasharray: 3 3;
 			stroke-width: .5px;
 		}
 		.tick text {
@@ -207,35 +207,39 @@ $dark-theme-chart-content: #a3a1c9;
 	.bar_wrapper {
 		.bar_xAxis {
 			.axis_month {
-				color: $dark-theme-chart-content;
+				color: $dark-font-sub-text-color;
 			}
 			.axis_month-active {
-				color: $colors-white;
+				color: $dark-font-main-text-color;
 				font-weight: bold;
 			}
 			.axis_month-total-active {
-				color: $colors-white;
+				color: $dark-font-main-text-color;
 			}
 			path {
-				stroke: $dark-theme-chart-content;
+				stroke: $dark-app-line-divider;
 				stroke-width: 1;
 			}
 		}
 		.bar_yAxis {
 			line {
-				fill: $dark-theme-chart-content;
-				stroke-dasharray: 5 5;
-				stroke-width: .5px;
+				fill: $dark-app-line-divider;
+				color: $dark-app-line-divider;
+				stroke-dasharray: 3 3;
+				stroke-width: 1px;
 			}
 			.tick text {
-				color: $dark-theme-limit-text;
+				color: $dark-font-main-text-color;
 				font-family: $raleway--font-family;
 				font-size: 1.2rem;
 				font-weight: bold;
 			}
 		}
 		.bar_axis_triangle {
-			fill: $dark-theme-chart-content;
+			fill: $dark-app-blue-link-highlight;
+		}
+		.limit_contnet-text {
+			color: $dark-font-main-text-color;
 		}
 	}
 }

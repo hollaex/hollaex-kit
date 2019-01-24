@@ -77,18 +77,10 @@
 	.header_title-icon {
 		width: 4rem;
 		svg {
-			.verification-email {
-				fill: $colors-main-black;
-			}
-			.verification-id {
-				fill: $colors-main-black;
-			}
-			.verification-document {
-				fill: $colors-main-black;
-			}
-			.verification-phone {
-				fill: $colors-main-black;
-			}
+			.verification-email,
+			.verification-id,
+			.verification-document,
+			.verification-phone,
 			.verification-bank {
 				fill: $colors-main-black;
 			}
@@ -127,18 +119,10 @@
 
 	.active-tab-icon {
 		svg {
-			.verification-email {
-				fill: $colors-main-black;
-			}
-			.verification-id {
-				fill: $colors-main-black;
-			}
-			.verification-document {
-				fill: $colors-main-black;
-			}
-			.verification-phone {
-				fill: $colors-main-black;
-			}
+			.verification-email,
+			.verification-id,
+			.verification-document,
+			.verification-phone,
 			.verification-bank {
 				fill: $colors-main-black;
 			}
@@ -194,18 +178,10 @@
 	border-bottom: 1px solid $colors-black;
 
 	svg {
-		.verification-email {
-			fill: $colors-main-black;
-		}
-		.verification-id {
-			fill: $colors-main-black;
-		}
-		.verification-document {
-			fill: $colors-main-black;
-		}
-		.verification-phone {
-			fill: $colors-main-black;
-		}
+		.verification-email,
+		.verification-id,
+		.verification-document,
+		.verification-phone,
 		.verification-bank {
 			fill: $colors-main-black;
 		}
@@ -226,20 +202,12 @@
 
 		.header_title-icon {
 			svg {
-				.verification-email {
-					fill: $dark-font-main-text-color;
-				}
-				.verification-id {
-					fill: $dark-font-main-text-color;
-				}
-				.verification-document {
-					fill: $dark-font-main-text-color;
-				}
-				.verification-phone {
-					fill: $dark-font-main-text-color;
-				}
+				.verification-email,
+				.verification-id,
+				.verification-document,
+				.verification-phone,
 				.verification-bank {
-					fill: $dark-font-main-text-color;
+					fill: $dark-icon-color;
 				}
 			}
 		}
@@ -259,13 +227,13 @@
 
 		svg {
 			.pending-timer {
-				stroke: $dark-font-main-text-color;
+				stroke: $dark-icon-color;
 			}
 			.note-kyc {
-				fill: $dark-font-main-text-color;
+				fill: $dark-icon-color;
 			}
 		}
-
+		.content-text,
 		.header-content {
 			color: $dark-font-sub-text-color;
 		}
@@ -300,18 +268,10 @@
 		border-top: 1px solid $dark-button-active;
 
 		svg {
-			.verification-email {
-				fill: $dark-button-active;
-			}
-			.verification-id {
-				fill: $dark-button-active;
-			}
-			.verification-document {
-				fill: $dark-button-active;
-			}
-			.verification-phone {
-				fill: $dark-button-active;
-			}
+			.verification-email,
+			.verification-id,
+			.verification-document,
+			.verification-phone,
 			.verification-bank {
 				fill: $dark-button-active;
 			}
@@ -327,18 +287,10 @@
 		border-bottom: 1.5px solid $dark-font-main-text-color;
 
 		svg {
-			.verification-email {
-				fill: $dark-font-main-text-color;
-			}
-			.verification-id {
-				fill: $dark-font-main-text-color;
-			}
-			.verification-document {
-				fill: $dark-font-main-text-color;
-			}
-			.verification-phone {
-				fill: $dark-font-main-text-color;
-			}
+			.verification-email,
+			.verification-id,
+			.verification-document,
+			.verification-phone,
 			.verification-bank {
 				fill: $dark-font-main-text-color;
 			}

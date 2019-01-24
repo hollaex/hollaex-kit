@@ -79,7 +79,7 @@ $app-bar-pairs-up: green;
 	}
 
 	.app-menu-bar {
-		background: $dark-app-light-blue-background !important;
+		background: $dark-app-light-background !important;
 		border-bottom: 1px solid $dark-app-line-divider;
 		
 		.active-menu {
@@ -648,7 +648,7 @@ $app-bar-pairs-up: green;
 		height: 2.2rem;
 		
 		&:hover {
-			background-color: $dark-app-light-blue-background;
+			background-color: $dark-app-light-background;
 			color: $dark-font-main-text-color;
 
 			svg {

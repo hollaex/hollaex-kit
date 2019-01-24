@@ -194,4 +194,9 @@ $placeholder--font-weight: bold;
 			color: $dark-form-text !important;
 		}
 	}
+	.file_wrapper {
+		.text_overflow {
+			color: $dark-font-sub-text-color;
+		}
+	}
 }

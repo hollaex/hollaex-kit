@@ -270,6 +270,9 @@ $header-margin: 2rem;
 		.wallet-assets_block {
 			color: $dark-font-main-text-color !important;
 			.wallet-assets_block-table {
+				tbody, tfoot {
+					color: $dark-font-sub-text-color;
+				}
 				.table-bottom-border td,
 				th {
 					&:not(:first-child) {

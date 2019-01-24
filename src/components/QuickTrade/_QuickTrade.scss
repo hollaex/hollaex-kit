@@ -249,7 +249,7 @@ $title-icon--height: 10rem;
 
 .dark-theme {
 	.quick_trade-wrapper {
-		background-color: $dark-app-light-blue-background;
+		background-color: $dark-app-light-background;
 
 		.title,
 		.input_block-title {
@@ -312,16 +312,16 @@ $title-icon--height: 10rem;
 
 	svg {
 		.quick-trade-1 {
-			stroke: $dark-button-active;
+			stroke: $dark-icon-color;
 		}
 		.quick-trade-2 {
 			fill: $dark-font-main-text-color;
 		}
 		.quick-trade-3 {
-			stroke: $dark-button-active;
+			stroke: $dark-icon-color;
 		}
 		.quick-trade-4 {
-			fill: $dark-button-active;
+			fill: $dark-icon-color;
 		}
 	}
 }

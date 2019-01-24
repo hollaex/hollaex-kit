@@ -19,22 +19,35 @@
             .requirement-doc-icon {
                 svg {
                     .verification-doc {
-                        fill: $dark-font-main-text-color;
+                        fill: $dark-icon-color;
                     }
                 }
             }
+        }
+        .requirement-incomplete {
+            color: $dark-font-sub-text-1-color;
         }
 
         .account-details-wrapper {
             .account-type-menu {
                 border-top: 1px solid $dark-border-main;
                 color: $dark-link;
+
+                .account-current {
+                    color: $dark-font-sub-text-color;
+                    text-transform: lowercase;
+                }
             }
 
             .account-type-menu-active {
-                border-top: 2px solid $dark-border-main;
-                border-bottom: 1.5px solid $dark-border-main;
+                border-top: 2px solid $dark-font-main-text-color;
+                border-bottom: 1.5px solid $dark-font-main-text-color;
                 color: $dark-font-main-text-color;
+
+                .account-current {
+                    color: $dark-font-main-text-color;
+                    text-transform: lowercase;
+                }
             }
 
             .accounnt-type-menu-last-active {
@@ -52,11 +65,11 @@
                 background-color: $dark-link;
             }
             .price-text {
-                color: $dark-font-main-text-color;
+                color: $dark-font-sub-text-color;
             }
             .total-assets {
-                background: repeating-linear-gradient(-45deg, $dark-app-background-color, $dark-app-background-color 2px, $dark-app-light-blue-background 2px, $dark-app-light-blue-background 4px);
-                color: $dark-font-main-text-color;
+                background: repeating-linear-gradient(-45deg, $dark-app-background-color, $dark-app-background-color 2px, $dark-app-light-background 2px, $dark-app-light-background 4px);
+                color: $dark-font-sub-text-color;
             }
         }
     }
@@ -294,6 +307,11 @@
             font-weight: bold;
             padding: .5rem 0;
             text-transform: uppercase;
+
+            .account-current {
+                color: $colors-deactivate-color2;
+                text-transform: lowercase;
+            }
         }
 
         .account-type-menu-active {
@@ -302,15 +320,15 @@
             color: $colors-black;
             font-size: 1rem;
             text-transform: capitalize;
+
+            .account-current {
+                color: $colors-black;
+                text-transform: lowercase;
+            }
         }
 
         .accounnt-type-menu-last-active {
             border-bottom: none !important;
-        }
-
-        .account-current {
-            color: $colors-deactivate-color2;
-            text-transform: lowercase;
         }
 
         .requirement-header {
