@@ -146,7 +146,9 @@ $tabs-title--margin: 2rem;
 	}
 	.trade_block_tabs-wrapper .trade_block-title {
 		.trade_block-title-items {
+			color: $dark-font-sub-text-1-color;
 			.active {
+				color: $dark-font-main-text-color;
 				&:after {
 					background-color: $dark-border-main;
 				}

@@ -73,8 +73,12 @@ $padding: 0.25rem;
 		.trade_input-input-wrapper {
 			> input {
 				background: $dark-trade-fields;
-				border-color: $dark-border-main;
+				border-color: $dark-trade-fields;
 				color: $dark-font-main-text-color;
+
+				&:focus {
+					border-color: $dark-border-main;
+				}
 			}
 		}
 

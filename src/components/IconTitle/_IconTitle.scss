@@ -53,6 +53,12 @@ $title--margin: 1rem;
 			.g1_3 {
 				fill: $dark-icon-hover;
 			}
+			.otp-code, .dots-2 {
+				fill: $dark-icon-color;
+			}
+			.dots-1 {
+				stroke: $dark-icon-color;
+			}
 		}
 		&.underline:after {
 			background: $dark-border-main;

@@ -10,7 +10,7 @@ export const renderOTPForm = (secret, email, activateOTP) => (
 	<div className="otp_form-wrapper">
 		<IconTitle
 			text={STRINGS.ACCOUNT_SECURITY.OTP.CONTENT.TITLE}
-			iconPath={ICONS.KEYS}
+			iconPath={ICONS.OTP_KEYS}
 			className="w-100"
 			textType="title"
 			useSvg={true}

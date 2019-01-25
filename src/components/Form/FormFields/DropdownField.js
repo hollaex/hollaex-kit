@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import EventListener from 'react-event-listener';
 import classnames from 'classnames';
 import keycode from 'keycode';
+import ReactSVG from 'react-svg'
 import FieldWrapper from './FieldWrapper';
 import STRINGS from '../../../config/localizedStrings';
 
@@ -74,7 +75,9 @@ class DropdownField extends Component {
 
 	renderIcon = ({ icon = '', label = '' }) => {
 		if (icon && typeof icon === 'string') {
-			return <img className="icon" src={icon} alt={label} />;
+			return icon.indexOf('.svg') > 0
+				? <ReactSVG path={icon} alt={label} wrapperClassName={classnames("icon", "option-icon")} />
+				: <img className="icon" src={icon} alt={label} />;
 		}
 		return icon;
 	};

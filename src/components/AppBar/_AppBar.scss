@@ -22,7 +22,7 @@ $app-bar-pairs-up: green;
 
 		.active-tab-pair {
 			background-color: $dark-app-background-color !important;
-			border-left: 1px solid $app-menu-bar-border--color !important;
+			border-left: 1px solid $dark-inactive-color !important;
 			color: $dark-font-main-text-color !important;
 
 			svg {
@@ -229,7 +229,7 @@ $app-bar-pairs-up: green;
 
 	.app_bar-pair-content {
 		align-items: center;
-		border-left: 1px solid $app-menu-bar-border--color;
+		border-left: 1px solid $dark-inactive-color;
 		color: $app-bar-icon-inactive;
 		cursor: pointer;
 		display: flex;

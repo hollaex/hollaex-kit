@@ -32,11 +32,12 @@ $color-sell-btc-light:#ed1c24;
 $color-buy-btc-light:#00a651;
 $colors-username-set-dark: #ff4bb6;
 
+// dark theme colors
 $dark-app-background-color: #010e45;
 $dark-app-light-background: #00145c;
 $dark-app-bar-background-color: #010829;
 $dark-app-line-divider: #1558a0;
-$dark-app-blue-link-highlight: #2a9ff8;
+$dark-app-link-highlight: #2a9ff8;
 $dark-box-fields: #010c3e;
 $dark-inactive-color: #454162;
 $dark-icon-color: #a3a1ca;
@@ -45,24 +46,24 @@ $dark-font-sub-text-color: #bbbdbf;
 $dark-font-sub-text-1-color: #808184;
 $dark-buy: #00a69c;
 $dark-sell: #ec1c24;
-$dark-link: $dark-app-blue-link-highlight;
+$dark-link: $dark-app-link-highlight;
 $dark-trade-fields: #020c3b;
 // dark-border-button
 $dark-border-main: $dark-app-line-divider;
-$dark-button-active: $dark-app-blue-link-highlight;
+$dark-button-active: $dark-app-link-highlight;
 $dark-button-text: $colors-black;
 $dark-button-disabled:  $dark-app-light-background;
 $dark-button-text-disabled: $dark-inactive-color;
 // dark-form-fields
 $dark-form-color-underline: $dark-app-line-divider;
-$dark-form-color-underline-focus: $dark-app-blue-link-highlight;
-$dark-form-arrow: $dark-app-blue-link-highlight;
+$dark-form-color-underline-focus: $dark-app-link-highlight;
+$dark-form-arrow: $dark-app-link-highlight;
 $dark-form-text: $dark-font-sub-text-color;
 $dark-form-placeholder: $dark-font-sub-text-1-color;
 $dark-form-label: $dark-font-main-text-color;
 $dark-form-text-disabled: $dark-inactive-color;
 // dark-tabs
-$dark-tab-active: $dark-app-blue-link-highlight;
+$dark-tab-active: $dark-app-link-highlight;
 $dark-tab-inactive: $dark-inactive-color;
 $dark-tab-notification: $dark-link; // need to check this
 $dark-app-bar-add-tab-menu-background: $dark-box-fields;
@@ -85,7 +86,7 @@ $dark-disabled-main: $dark-inactive-color;
 $dark-disabled-secondary: #2e2f37;
 
 $dark-icon-hover: $dark-font-main-text-color;
-$dark-icon-unhover: $dark-font-sub-text-color;
+$dark-icon-unhover: $dark-icon-color;
 $dark-accordion-arrow-active: $dark-font-main-text-color;
 $dark-accordion-arrow-inactive: $dark-font-sub-text-color;
 

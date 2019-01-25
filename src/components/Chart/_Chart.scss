@@ -1,5 +1,3 @@
-$dark-theme-limit-text: #b7b5cd;
-$dark-theme-chart-content: #a3a1c9;
 .ohlc_wrapper {
 	x: 0;
 	y: 0;
@@ -154,15 +152,15 @@ $dark-theme-chart-content: #a3a1c9;
 }
 .bar-tooltip-dark:before {
 	border-color: rgba(194, 225, 245, 0);
-	border-right-color: $dark-app-blue-link-highlight;
+	border-right-color: $dark-font-sub-text-color;
 	border-width: 7px;
 	margin-top: -7px;
 }
 
 .bar-tooltip-dark {
 	background-color: $dark-app-background-color;
-	border: 1px solid $dark-app-blue-link-highlight;
-	color: $dark-app-blue-link-highlight;
+	border: 1px solid $dark-font-sub-text-color;
+	color: $dark-font-sub-text-color;
 }
 
 .dark-theme {
@@ -236,7 +234,7 @@ $dark-theme-chart-content: #a3a1c9;
 			}
 		}
 		.bar_axis_triangle {
-			fill: $dark-app-blue-link-highlight;
+			fill: $dark-app-link-highlight;
 		}
 		.limit_contnet-text {
 			color: $dark-font-main-text-color;

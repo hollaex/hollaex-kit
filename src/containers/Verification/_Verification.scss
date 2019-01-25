@@ -233,6 +233,7 @@
 				fill: $dark-icon-color;
 			}
 		}
+		.inner_container,
 		.content-text,
 		.header-content {
 			color: $dark-font-sub-text-color;
@@ -276,7 +277,7 @@
 				fill: $dark-button-active;
 			}
 			.pending-timer {
-				stroke: $dark-font-main-text-color
+				stroke: $dark-icon-color;
 			}
 		}
 	}

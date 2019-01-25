@@ -67,10 +67,13 @@ $content--margin: 2rem;
 .dark-theme {
 	svg {
 		.withdraw-1 {
-			fill: $dark-font-main-text-color;
+			fill: $dark-app-bar-background-color;
 		}
 		.withdraw-2 {
-			fill: $dark-icon-color;
+			fill: $dark-app-link-highlight;
+		}
+		.withdraw-3 {
+			fill: $dark-app-line-divider;
 		}
 		.check-send-btc-1 {
 			fill: $dark-icon-color;

@@ -268,6 +268,9 @@ $title-icon--height: 10rem;
 					color: $dark-inactive-color !important;
 				}
 			}
+			.input_block-inputbox {
+				background-color: $dark-app-light-background;
+			}
 		}
 
 		.toogle_button-wrapper {
@@ -312,16 +315,16 @@ $title-icon--height: 10rem;
 
 	svg {
 		.quick-trade-1 {
-			stroke: $dark-icon-color;
+			stroke: $dark-app-link-highlight;
 		}
 		.quick-trade-2 {
-			fill: $dark-font-main-text-color;
+			fill: $dark-app-bar-background-color;
 		}
 		.quick-trade-3 {
 			stroke: $dark-icon-color;
 		}
 		.quick-trade-4 {
-			fill: $dark-icon-color;
+			fill: $dark-app-line-divider;
 		}
 	}
 }

@@ -14,8 +14,10 @@ const TraderAccounts = ({ account = {}, activeTheme, limits = [], isAccountDetai
             </div>
             <div className="trade-account-secondary-txt summary-content-txt">
                 {isAccountDetails && <div className="summary-block-title mb-3">{account.fullName}</div>}
-                <div className="mb-2">{STRINGS.SUMMARY[`${account.symbol.toUpperCase()}_ACCOUNT_TXT_1`]}</div>
-                <div className="mb-2">{STRINGS.SUMMARY[`${account.symbol.toUpperCase()}_ACCOUNT_TXT_2`]}</div>
+                <div className="account-details-content">
+                    <div className="mb-2">{STRINGS.SUMMARY[`${account.symbol.toUpperCase()}_ACCOUNT_TXT_1`]}</div>
+                    <div className="mb-2">{STRINGS.SUMMARY[`${account.symbol.toUpperCase()}_ACCOUNT_TXT_2`]}</div>
+                </div>
                 {/* {!!limitLevel.length && <div
                     className="trade-account-link mb-2">
                     <span

@@ -103,16 +103,14 @@ $controllers--color-disabled: $colors-deactivate-color2;
 			}
 		}
 		.cell_box-type {
-			.sell,
-			.buy {
-				color: $colors-main-black !important;
-			}
 			.sell {
 				background-color: $dark-sell !important;
+				color: $colors-white !important;
 			}
-
+			
 			.buy {
 				background-color: $dark-buy !important;
+				color: $colors-main-black !important;
 			}
 		}
 	}
@@ -123,6 +121,6 @@ $controllers--color-disabled: $colors-deactivate-color2;
 	}
 
 	.no-data {
-		color: $dark-font-main-text-color;
+		color: $dark-font-sub-text-color;
 	}
 }

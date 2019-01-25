@@ -25,6 +25,7 @@ const QuoteResult = ({ name, onClose, ...props }) => {
 					text={STRINGS.QUOTE_SUCCESS_REVIEW_TITLE}
 					underline={true}
 					className="w-100"
+					useSvg={true}
 				/>
 				<div className="quote-success-review-text">
 					{STRINGS.formatString(

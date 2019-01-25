@@ -48,6 +48,9 @@ $dropdown-option--padding: 0.25rem;
 	> .icon {
 		max-height: $dropdown-option--height;
 	}
+	.option-icon {
+		width: 0.8rem;
+	}
 }
 
 .direction_ltr {
@@ -84,5 +87,13 @@ $dropdown-option--padding: 0.25rem;
 	}
 	.dropdown-option {
 		color: $dark-form-text !important;
+
+		.option-icon {
+			svg {
+				path {
+					fill: $dark-font-sub-text-color;
+				}
+			}
+		}
 	}
 }
