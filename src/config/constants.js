@@ -586,3 +586,15 @@ export const DARK_THEME_COLORS = {
 	dark_sub_text: '#bbbdbf',
 	dark_sub_text_1: '#808184'
 };
+
+export const DARK_THEME_CHART_COLORS = {
+	SELL: '#ec1c24',
+	BUY: '#00a69c',
+	LINE: '#b7b7ce',
+	FILL: 'orange',
+	AXIS: '#b7b7ce',
+	BUY_CANDLE: '#00a69c',
+	SELL_CANDLE: '#ec1c24',
+	BUY_VOLUME: '#00a69c',
+	SELL_VOLUME: '#ec1c24'
+};
