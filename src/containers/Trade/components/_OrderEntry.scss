@@ -156,6 +156,10 @@
 		}
 		&.order_side-selector-buy {
 			@include entry_form($dark-buy, $dark-inactive-color);
+
+			.trade_order_entry-form-action {
+				color: $colors-black !important;
+			}
 		}
 	}
 }
