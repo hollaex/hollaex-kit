@@ -582,19 +582,19 @@ export const CHART_MONTHS = [
 ];
 
 export const DARK_THEME_COLORS = {
-	dark_border_main: '#1558a0',
-	dark_sub_text: '#bbbdbf',
+	dark_border_main: '#b7b5cd',
+	dark_sub_text: '#a3a1ca',
 	dark_sub_text_1: '#808184'
 };
 
 export const DARK_THEME_CHART_COLORS = {
-	SELL: '#ec1c24',
-	BUY: '#00a69c',
+	SELL: '#f69321',
+	BUY: '#29abe2',
 	LINE: '#b7b7ce',
 	FILL: 'orange',
 	AXIS: '#b7b7ce',
-	BUY_CANDLE: '#00a69c',
-	SELL_CANDLE: '#ec1c24',
-	BUY_VOLUME: '#00a69c',
-	SELL_VOLUME: '#ec1c24'
+	BUY_CANDLE: '#29abe2',
+	SELL_CANDLE: '#f69321',
+	BUY_VOLUME: '#29abe2',
+	SELL_VOLUME: '#f69321'
 };

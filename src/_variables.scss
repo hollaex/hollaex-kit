@@ -33,38 +33,39 @@ $color-buy-btc-light:#00a651;
 $colors-username-set-dark: #ff4bb6;
 
 // dark theme colors
-$dark-app-background-color: #010e45;
-$dark-app-light-background: #00145c;
-$dark-app-bar-background-color: #010829;
-$dark-app-line-divider: #1558a0;
-$dark-app-link-highlight: #2a9ff8;
-$dark-box-fields: #010c3e;
-$dark-inactive-color: #454162;
+$dark-app-background-color: #1f212a;
+$dark-app-light-background: #2e2f37;
+$dark-app-bar-background-color: #000000;
+$dark-app-line-divider: #b7b5cd;
+$dark-app-link-highlight: #ed507b;
+$dark-box-fields: #353841;
+$dark-inactive-color: #2e2f37;
 $dark-icon-color: #a3a1ca;
-$dark-font-main-text-color: $colors-white;
-$dark-font-sub-text-color: #bbbdbf;
+$dark-font-main-text-color: #b6b5cd;
+$dark-font-sub-text-color: #a3a1ca;
 $dark-font-sub-text-1-color: #808184;
-$dark-buy: #00a69c;
-$dark-sell: #ec1c24;
+$dark-buy: #29a8e0;
+$dark-sell: #f59121;
 $dark-link: $dark-app-link-highlight;
-$dark-trade-fields: #020c3b;
-$dark-trade-fill-indicator: $dark-app-line-divider;
+$dark-trade-fields: #454162;
+$dark-trade-fill-indicator: #444162;
+$dark-quick-trade-background: #1b1b1f;
 // dark-border-button
 $dark-border-main: $dark-app-line-divider;
-$dark-button-active: $dark-app-link-highlight;
-$dark-button-text: $colors-black;
-$dark-button-disabled:  $dark-app-light-background;
-$dark-button-text-disabled: $dark-inactive-color;
+$dark-button-active: #454162;
+$dark-button-text: $dark-font-main-text-color;
+$dark-button-disabled:  $dark-inactive-color;
+$dark-button-text-disabled: #b7b7ce;
 // dark-form-fields
 $dark-form-color-underline: $dark-app-line-divider;
-$dark-form-color-underline-focus: $dark-app-link-highlight;
-$dark-form-arrow: $dark-app-link-highlight;
+$dark-form-color-underline-focus: $dark-app-line-divider;
+$dark-form-arrow: $dark-app-line-divider;
 $dark-form-text: $dark-font-sub-text-color;
 $dark-form-placeholder: $dark-font-sub-text-1-color;
 $dark-form-label: $dark-font-main-text-color;
 $dark-form-text-disabled: $dark-inactive-color;
 // dark-tabs
-$dark-tab-active: $dark-app-link-highlight;
+$dark-tab-active: $dark-app-line-divider;
 $dark-tab-inactive: $dark-inactive-color;
 $dark-tab-notification: $dark-link; // need to check this
 $dark-app-bar-add-tab-menu-background: $dark-box-fields;
@@ -72,11 +73,11 @@ $dark-sidebar-color: $dark-font-sub-text-color;
 $dark-sidebar-color-active: $dark-font-main-text-color;
 $app-modal-background: rgba(35, 31, 32, 0.5);
 $dark-info-panel-background: $dark-box-fields;
-$dar-info-panel-text: $dark-inactive-color;
+$dar-info-panel-text: $dark-font-sub-text-1-color;
 // main title icons fill(quick trade, deposit, withdrawal)
 $dark-main-title-icon-color-1: $dark-app-bar-background-color;
-$dark-main-title-icon-color-2: $dark-app-line-divider;
-$dark-main-title-icon-color-3: $dark-app-link-highlight;
+$dark-main-title-icon-color-2: $dark-icon-color;
+$dark-main-title-icon-color-3: $dark-icon-color;
 
 $coin-btc: #f7941e;
 $coin-btc-1: #f6921e;

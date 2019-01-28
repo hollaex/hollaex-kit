@@ -249,7 +249,7 @@ $title-icon--height: 10rem;
 
 .dark-theme {
 	.quick_trade-wrapper {
-		background-color: $dark-app-light-background;
+		background-color: $dark-quick-trade-background;
 
 		.title,
 		.input_block-title {
@@ -269,7 +269,7 @@ $title-icon--height: 10rem;
 				}
 			}
 			.input_block-inputbox {
-				background-color: $dark-app-light-background;
+				background-color: $dark-quick-trade-background;
 			}
 		}
 
