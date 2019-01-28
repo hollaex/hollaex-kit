@@ -448,6 +448,7 @@ class Verification extends Component {
 					onCloseDialog={this.onCloseDialog}
 					shouldCloseOnOverlayClick={dialogType !== 'complete'}
 					showCloseText={false}
+					theme={activeTheme}
 				>
 					{this.renderDialogContent(dialogType)}
 				</Dialog>

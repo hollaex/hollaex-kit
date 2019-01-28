@@ -81,17 +81,17 @@ $qr-code--size: 12rem;
 }
 
 .dark-theme {
-	// svg {
-	// 	.deposit-bitcoin-1 {
-	// 		fill: $dark-app-bar-background-color;
-	// 	}
-	// 	.deposit-bitcoin-2 {
-	// 		fill: $dark-app-link-highlight;
-	// 	}
-	// 	.deposit-bitcoin-3 {
-	// 		fill: $dark-app-line-divider;
-	// 	}
-	// }
+	svg {
+		.deposit-bitcoin-1 {
+			fill: $dark-app-bar-background-color;
+		}
+		.deposit-bitcoin-2 {
+			fill: $dark-app-line-divider;
+		}
+		.deposit-bitcoin-3 {
+			fill: $dark-app-link-highlight;
+		}
+	}
 	.qr_code-wrapper {
 		margin: 2rem;
 		$qr-code-margin: 1rem;
@@ -106,6 +106,7 @@ $qr-code--size: 12rem;
 		}
 	
 		.qr-text {
+			color: $dark-font-sub-text-color;
 			display: flex;
 			font-size: $font-size-subtext;
 			padding-top: $qr-text--pading;

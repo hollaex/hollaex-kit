@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
+import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import { isMobile } from 'react-device-detect';
 import { SubmissionError } from 'redux-form';
@@ -56,7 +57,7 @@ class VerifyEmailRequest extends Component {
 	};
 
 	render() {
-		const { languageClasses } = this.props;
+		const { languageClasses, activeTheme } = this.props;
 		const { success, showContactForm, formFields } = this.state;
 
 		if (success) {
@@ -71,6 +72,7 @@ class VerifyEmailRequest extends Component {
 						style={{ 'z-index': 100 }}
 						className={classnames(languageClasses)}
 						showCloseText={false}
+						theme={activeTheme}
 					>
 						<ContactForm
 							onSubmitSuccess={this.onCloseDialog}
@@ -129,4 +131,8 @@ class VerifyEmailRequest extends Component {
 	}
 }
 
-export default VerifyEmailRequest;
+const mapStateToProps = (store) => ({
+	activeTheme: store.app.theme
+});
+
+export default connect(mapStateToProps)(VerifyEmailRequest);

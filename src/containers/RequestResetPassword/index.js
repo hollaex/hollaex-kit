@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
+import { connect } from 'react-redux';
 import { SubmissionError } from 'redux-form';
 import { requestResetPassword } from '../../actions/authAction';
 import ResetPasswordForm, { generateFormFields } from './ResetPasswordForm';
@@ -50,7 +51,7 @@ class RequestResetPassword extends Component {
 	};
 
 	render() {
-		const { languageClasses } = this.props;
+		const { languageClasses, activeTheme } = this.props;
 		const { success, showContactForm, formFields } = this.state;
 
 		return (
@@ -107,6 +108,7 @@ class RequestResetPassword extends Component {
 					style={{ 'z-index': 100 }}
 					className={classnames(languageClasses)}
 					showCloseText={false}
+					theme={activeTheme}
 				>
 					<ContactForm
 						onSubmitSuccess={this.onCloseDialog}
@@ -118,4 +120,8 @@ class RequestResetPassword extends Component {
 	}
 }
 
-export default RequestResetPassword;
+const mapStateToProps = (store) => ({
+	activeTheme: store.app.theme
+});
+
+export default connect(mapStateToProps)(RequestResetPassword);

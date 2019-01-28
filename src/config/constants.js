@@ -79,7 +79,7 @@ export const ICONS = {
 	DATA: `${process.env.PUBLIC_URL}/assets/images/data.svg`,
 	DEPOSIT_BITCOIN: `${
 		process.env.PUBLIC_URL
-	}/assets/images/deposit-bitcoin.svg`,
+	}/assets/images/deposit-bitcoin-dark-theme.svg`,
 	DEPOSIT_HISTORY: `${
 		process.env.PUBLIC_URL
 	}/assets/images/deposit-history.svg`,
