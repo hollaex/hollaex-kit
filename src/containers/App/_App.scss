@@ -139,6 +139,12 @@ $inner_container-border: 1px solid $colors-main-black;
 			}
 		}
 	}
+
+	.app_container {
+		.app_container-sidebar {
+			border-left: 1px solid $dark-app-line-divider;
+		}
+	}
 }
 
 .app_container-bottom_bar {

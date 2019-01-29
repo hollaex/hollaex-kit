@@ -67,11 +67,13 @@
 
 .dark-theme {
 	.exir-button {
-		color: $dark-font-main-text-color;
+		color: $dark-button-text;
 		background-color: $dark-button-active !important;
 
 		&.disabled {
-			background-color: $dark-disabled-secondary !important;
+			background-color: $dark-button-disabled !important;
+			color: $dark-button-text-disabled !important;
+			font-weight: bold;
 		}
 	}
 	.checkbutton-wrapper {

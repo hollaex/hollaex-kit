@@ -5,6 +5,8 @@ import {
 	YAxis as BaseYAxis
 } from 'react-stockcharts/lib/axes';
 
+import { DARK_THEME_COLORS } from '../../config/constants';
+
 const TickProps = (theme) => ({
 	tickStroke: theme ? TXAxisStrokeColor[theme] : 'black',
 	stroke: 'transparent'
@@ -43,7 +45,12 @@ XAxis.defaultProps = {
 };
 
 const TXAxisStrokeColor = {
-	dark: '#b7b7ce',
+	dark: DARK_THEME_COLORS.dark_sub_text,
+	white: 'black'
+};
+
+const TXStrokeColor = {
+	dark: DARK_THEME_COLORS.dark_border_main,
 	white: 'black'
 };
 
@@ -51,7 +58,7 @@ export const TXAxis = ({ theme, ...rest }) => {
 	const props = {
 		...rest,
 		showTicks: false,
-		stroke: theme ? TXAxisStrokeColor[theme] : 'black',
+		stroke: theme ? TXStrokeColor[theme] : 'black',
 		axisAt: 'top',
 		orient: 'top'
 	};

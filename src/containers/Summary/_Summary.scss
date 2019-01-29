@@ -1,5 +1,3 @@
-$summary--black: #000000;
-$summary-icon-color-inactive: #808184;
 
 .dark-theme {
     .summary-container {
@@ -8,56 +6,67 @@ $summary-icon-color-inactive: #808184;
         .trade-account-link {
             color: $dark-link;
         }
-
         .summary-block_wrapper {
-            border-top: .2rem solid $dark-font-main-text-color;
+            border-top: .2rem solid $dark-app-line-divider;
 
             .summary-block-title {
                 color: $dark-font-main-text-color;
             }
         }
-
         .requirement-wrapper {
             .requirement-doc-icon {
                 svg {
                     .verification-doc {
-                        fill: $dark-font-main-text-color;
+                        fill: $dark-icon-color;
                     }
                 }
             }
         }
-
+        .requirement-incomplete {
+            color: $dark-font-sub-text-1-color;
+        }
         .account-details-wrapper {
             .account-type-menu {
-                color: $dark-link
-            }
+                border-top: 1px solid $dark-border-main;
+                color: $dark-link;
 
+                .account-current {
+                    color: $dark-font-sub-text-color;
+                    text-transform: lowercase;
+                }
+            }
             .account-type-menu-active {
                 border-top: 2px solid $dark-font-main-text-color;
                 border-bottom: 1.5px solid $dark-font-main-text-color;
                 color: $dark-font-main-text-color;
-            }
 
+                .account-current {
+                    color: $dark-font-main-text-color;
+                    text-transform: lowercase;
+                }
+                .requirements-content-text,
+                .account-details-content {
+                    color: $dark-font-sub-text-color;
+                }
+            }
             .accounnt-type-menu-last-active {
                 border-bottom: none !important;
             }
-
             .requirement-header {
-                border-bottom: 1px solid $dark-font-main-text-color;
+                border-bottom: 1px solid $dark-border-main;
                 color: $dark-font-main-text-color;
             }
         }
-
         .assets-wrapper {
             .asset-changes {
                 background-color: $dark-link;
             }
             .price-text {
-                color: $dark-font-main-text-color;
+                color: $dark-font-sub-text-color;
             }
             .total-assets {
-                background: repeating-linear-gradient(-45deg, $colors-main-black, $colors-main-black 2px, #2e2f37 2px, #2e2f37 4px);
-                color: $dark-font-main-text-color;
+                background: repeating-linear-gradient(-45deg, $dark-app-background-color, $dark-app-background-color 2px, $dark-app-light-background 2px, $dark-app-light-background 4px);
+                color: $dark-font-sub-text-color;
             }
         }
     }
@@ -66,34 +75,42 @@ $summary-icon-color-inactive: #808184;
         .fee-limits-link {
             color: $dark-link;
         }
-
+        .content-txt {
+            color: $dark-font-sub-text-color;
+        }
+        .limit-head-currency,
+        .limit-head,
+        .content-title {
+            color: $dark-font-main-text-color;
+        }
         table {
             border-collapse: collapse;
         }
-
         td {
-            border: 1px solid $dark-font-sub-text-color;
+            border: 1px solid $dark-border-main;
         }
-
         .account-limits-coin {
-            border-bottom: 2px solid $dark-font-sub-text-color;
+            border-bottom-color: $dark-border-main;
         }
-
         .account-limits-content {
-            border: 2px solid $dark-font-sub-text-color;
+            border-color: $dark-border-main;
         }
-
         .account-limits-maker {
-            border-left: 2px solid $dark-font-sub-text-color;
-            border-right: 2px solid $dark-font-sub-text-color;
-            border-top: 2px solid $dark-font-sub-text-color;
+            border-left-color: $dark-border-main;
+            border-right-color: $dark-border-main;
+            border-top-color: $dark-border-main;
         }
-        
         .account-limits-taker {
-            border-bottom: 2px solid $dark-font-sub-text-color;
-            border-left: 2px solid $dark-font-sub-text-color;
-            border-right: 2px solid $dark-font-sub-text-color;
+            border-bottom-color: $dark-border-main;
+            border-left-color: $dark-border-main;
+            border-right-color: $dark-border-main;
         }
+    }
+}
+
+.layout-mobile {
+    .fee-limits-wrapper {
+        margin: 0 auto;
     }
 }
 
@@ -105,16 +122,15 @@ $summary-icon-color-inactive: #808184;
     width: 75rem;
 
     .summary-block_wrapper {
-        border-top: .2rem solid $summary--black;
+        border-top: .2rem solid $colors-black;
         // margin: 0 .5rem;
         padding: .5rem;
         
         .summary-block-title {
-            color: $summary--black;
+            color: $colors-black;
             font-size: 1rem;
             font-weight: bold;
         }
-
         .summary-title-icon {
             width: 2rem;
         }
@@ -138,44 +154,34 @@ $summary-icon-color-inactive: #808184;
         width: 7rem;
         margin: 1rem 1rem .5rem 0;
     }
-    
     .trade-account-link {
         color: $colors-notifications-blue;
         font-weight: bold;
     }
-
     .summary-section_1 {
         height: 15rem;
     }
-
     .summary-section_2 {
         height: 40rem;
     }
-
     .requirements-content-text {
         margin: auto 0;
     }
-
     .requirements-content {
         width: 11rem;
     }
-
     .requirement-verified {
         color: $colors-notifications-green;
     }
-
     .requirement-not-verified {
         color: $colors-notifications-red;
     }
-    
     .requirement-rejected {
         color: #FFF100;
     }
-    
     .requirement-pending {
         color: #F6921E;
     }
-
     .requirement-incomplete {
         color: $colors-deactivate-color2;
     }
@@ -199,7 +205,6 @@ $summary-icon-color-inactive: #808184;
     .requirement-stauts {
         width: 1rem;
     }
-
     .requirement-status-warning {
         height: 1rem;
         width: 1rem;
@@ -225,32 +230,26 @@ $summary-icon-color-inactive: #808184;
         .assets-description {
             width: 86%;
         }
-
         .donut-container {
             height: 23rem;
         }
-
         .price-content {
             width: 10rem;
         }
-
         .price-text {
-            color: $summary--black;
+            color: $colors-black;
             font-weight: bold;
         }
-
         .total-assets {
             background: repeating-linear-gradient(-45deg, #fff, #fff 2px, #cccbcb 2px, #cccbcb 4px);
             font-size: 1.2rem;
             font-weight: bold;
             padding: .5rem;
-            color: $summary--black;
+            color: $colors-black;
         }
-
         .asset-changes {
             background-color: $colors-notifications-blue;
         }
-
         .coin-price {
             height: 3.5rem;
             margin: auto;
@@ -273,21 +272,17 @@ $summary-icon-color-inactive: #808184;
     .trading-volume-wrapper {
         width: 50rem;
     }
-
     .account-details-wrapper {
 
         .account-type-container {
             width: 30%;
         }
-
         .mobile-account-type {
             width: 80%
         }
-
         .account-type-icon {
             width: 4rem;
         }
-
         .account-type-menu {
             border-top: 1px solid $colors-deactivate;
             color: $colors-notifications-blue;
@@ -295,31 +290,34 @@ $summary-icon-color-inactive: #808184;
             font-weight: bold;
             padding: .5rem 0;
             text-transform: uppercase;
+
+            .account-current {
+                color: $colors-deactivate-color2;
+                text-transform: lowercase;
+            }
         }
 
         .account-type-menu-active {
-            border-top: 2px solid $summary--black;
-            border-bottom: 1px solid $summary--black;
-            color: $summary--black;
+            border-top: 2px solid $colors-black;
+            border-bottom: 1px solid $colors-black;
+            color: $colors-black;
             font-size: 1rem;
             text-transform: capitalize;
+
+            .account-current {
+                color: $colors-black;
+                text-transform: lowercase;
+            }
         }
 
         .accounnt-type-menu-last-active {
             border-bottom: none !important;
         }
-
-        .account-current {
-            color: $colors-deactivate-color2;
-            text-transform: lowercase;
-        }
-
         .requirement-header {
-            border-bottom: 1px solid $summary--black;
-            color: $summary--black;
+            border-bottom: 1px solid $colors-black;
+            color: $colors-black;
             font-weight: bold;
         }
-
         .status-header {
             width: 6rem;
         }
@@ -335,17 +333,14 @@ $summary-icon-color-inactive: #808184;
         cursor: pointer;
         font-weight: bold;
     }
-
     .content-txt {
         font-size: $font-size-subtext;
     }
-
     .content-title {
         font-size: $font-size-main;
         font-weight: bold;
         margin: 1.5rem 0;
     }
-
     .icon_title-wrapper {
         .icon_title-text.title {
             font-size: 2rem;
@@ -357,50 +352,41 @@ $summary-icon-color-inactive: #808184;
     }
 
     td {
-        border: 1px solid $summary--black;
+        border: 1px solid $colors-black;
     }
-
     .account-limits {
         margin: 1rem 0;
         width: 100%;
     }
-
     .account-limits-content {
-        border: 2px solid $summary--black;
+        border: 1px solid $colors-black;
     }
-
     .account-limits-maker {
-        border-left: 2px solid $summary--black;
-        border-right: 2px solid $summary--black;
-        border-top: 2px solid $summary--black;
+        border-left: 1px solid $colors-black;
+        border-right: 1px solid $colors-black;
+        border-top: 1px solid $colors-black;
     }
-    
     .account-limits-taker {
-        border-bottom: 2px solid $summary--black;
-        border-left: 2px solid $summary--black;
-        border-right: 2px solid $summary--black;
+        border-bottom: 1px solid $colors-black;
+        border-left: 1px solid $colors-black;
+        border-right: 1px solid $colors-black;
     }
-
     .account-limits-coin {
-        border-bottom: 2px solid $summary--black;
+        border-bottom: 1px solid $colors-black;
         padding: .25rem .5rem;
         width: 14rem;
     }
-
     .account-limits-status {
         width: 6rem;
         padding: .25rem .5rem;
     }
-
     .account-limits-value {
         padding: .25rem 1rem;
     }
-
     .limit-head-currency {
         font-weight: normal !important;
         padding: .25rem .5rem .25rem 3rem;
     }
-
     .limit-head {
         font-weight: normal !important;
         padding: .25rem 1rem;

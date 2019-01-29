@@ -1,5 +1,3 @@
-$dark-theme-limit-text: #b7b5cd;
-$dark-theme-chart-content: #a3a1c9;
 .ohlc_wrapper {
 	x: 0;
 	y: 0;
@@ -38,24 +36,24 @@ $dark-theme-chart-content: #a3a1c9;
 }
 
 .chart_btc {
-	fill: #f7941e;
-	stroke: #f6921e;
+	fill: $coin-btc;
+	stroke: $coin-btc-1;
 }
 .chart_bch {
-	fill: #9ec51e;
-	stroke: #8bc53f;
+	fill: $coin-bch;
+	stroke: $coin-bch-1;
 }
 .chart_eth {
-	fill: #2e3192;
-	stroke: #2b388f;
+	fill: $coin-eth;
+	stroke: $coin-eth-1;
 }
 .chart_fiat {
-	fill: #00a651;
-	stroke: #00a651
+	fill: $coin-fiat;
+	stroke: $coin-fiat-1;
 }
 .chart_ltc {
-	fill: #58595b;
-	stroke: #58595b;
+	fill: $coin-ltc;
+	stroke: $coin-ltc-1;
 }
 
 .bar_wrapper {
@@ -64,7 +62,7 @@ $dark-theme-chart-content: #a3a1c9;
 	.bar_yAxis {
 		line {
 			fill: $colors-deactivate-color2;
-			stroke-dasharray: 5 5;
+			stroke-dasharray: 3 3;
 			stroke-width: .5px;
 		}
 		.tick text {
@@ -148,27 +146,27 @@ $dark-theme-chart-content: #a3a1c9;
 }
 .bar-tooltip-dark:after {
 	border-color: rgba(136, 183, 213, 0);
-	border-right-color: #1f212a;
+	border-right-color: $dark-app-background-color;
 	border-width: 5px;
 	margin-top: -5px;
 }
 .bar-tooltip-dark:before {
 	border-color: rgba(194, 225, 245, 0);
-	border-right-color: $dark-theme-chart-content;
+	border-right-color: $dark-font-sub-text-color;
 	border-width: 7px;
 	margin-top: -7px;
 }
 
 .bar-tooltip-dark {
-	background-color: #1f212a;
-	border: 1px solid $dark-theme-chart-content;
-	color: $dark-theme-chart-content;
+	background-color: $dark-app-background-color;
+	border: 1px solid $dark-font-sub-text-color;
+	color: $dark-font-sub-text-color;
 }
 
 .dark-theme {
 	.ohlc_wrapper {
 		tspan {
-			fill: $dark-font-main-text-color;
+			fill: $dark-font-sub-text-color;
 		}
 	}
 
@@ -207,35 +205,39 @@ $dark-theme-chart-content: #a3a1c9;
 	.bar_wrapper {
 		.bar_xAxis {
 			.axis_month {
-				color: $dark-theme-chart-content;
+				color: $dark-font-sub-text-color;
 			}
 			.axis_month-active {
-				color: $colors-white;
+				color: $dark-font-main-text-color;
 				font-weight: bold;
 			}
 			.axis_month-total-active {
-				color: $colors-white;
+				color: $dark-font-main-text-color;
 			}
 			path {
-				stroke: $dark-theme-chart-content;
+				stroke: $dark-app-line-divider;
 				stroke-width: 1;
 			}
 		}
 		.bar_yAxis {
 			line {
-				fill: $dark-theme-chart-content;
-				stroke-dasharray: 5 5;
-				stroke-width: .5px;
+				fill: $dark-app-line-divider;
+				color: $dark-app-line-divider;
+				stroke-dasharray: 3 3;
+				stroke-width: 1px;
 			}
 			.tick text {
-				color: $dark-theme-limit-text;
+				color: $dark-font-main-text-color;
 				font-family: $raleway--font-family;
 				font-size: 1.2rem;
 				font-weight: bold;
 			}
 		}
 		.bar_axis_triangle {
-			fill: $dark-theme-chart-content;
+			fill: $dark-app-line-divider;
+		}
+		.limit_contnet-text {
+			color: $dark-font-main-text-color;
 		}
 	}
 }

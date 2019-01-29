@@ -27,6 +27,15 @@
 	.dots-2 {
 		fill: $dark-font-main-text-color;
 	}
+	.otp_form-wrapper {
+		.icon_title-svg {
+			svg {
+				path {
+					fill: $dark-icon-color;
+				}
+			}
+		}
+	}
 }
 
 .layout-mobile {

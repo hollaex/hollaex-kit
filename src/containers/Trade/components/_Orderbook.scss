@@ -98,7 +98,7 @@ $limit-bar-side--padding: 0.5rem;
 .dark-theme {
 	.trade_orderbook-wrapper {
 		.trade_orderbook-headers {
-			color: $dark-font-main-text-color;
+			color: $dark-font-sub-text-color;
 			border-bottom-color: $dark-border-main;
 		}
 
@@ -106,20 +106,20 @@ $limit-bar-side--padding: 0.5rem;
 			.trade_orderbook-spread {
 				color: $dark-font-sub-text-color;
 				.trade_orderbook-spread-text {
-					color: $dark-font-main-text-color;
+					color: $dark-font-sub-text-color;
 				}
 			}
 			.trade_orderbook-asks > .value-row:first-child {
 				background-color: $dark-sell;
 				> div {
-					color: $dark-app-background-color;
+					color: $dark-font-main-text-color;
 				}
 			}
 
 			.trade_orderbook-bids > .value-row:first-child {
 				background-color: $dark-buy;
 				> div {
-					color: $dark-app-background-color;
+					color: $colors-black;
 				}
 			}
 		}
@@ -142,6 +142,10 @@ $limit-bar-side--padding: 0.5rem;
 					background-color: $dark-buy;
 				}
 			}
+		}
+
+		.trade_orderbook-cell-amount {
+			color: $dark-font-sub-text-color;
 		}
 	}
 }

@@ -157,7 +157,10 @@ $main-text--color: $colors-deactivate-color2;
 
 .dark-theme {
 	.accordion_wrapper .accordion_section {
-		border-top-color: $dark-border-main;
+		border-top-color: $dark-app-line-divider;
+		.accordion_section_content {
+			color: $dark-font-sub-text-color;
+		}
 		.accordion_section_content_text {
 			color: $dark-font-main-text-color;
 
@@ -181,7 +184,7 @@ $main-text--color: $colors-deactivate-color2;
 		}
 
 		&:last-child {
-			border-bottom-color: $dark-border-main;
+			border-bottom-color: $dark-app-line-divider;
 		}
 	}
 

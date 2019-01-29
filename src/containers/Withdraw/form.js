@@ -163,7 +163,8 @@ class Form extends Component {
 			data,
 			openContactForm,
 			formValues,
-			currentPrice
+			currentPrice,
+			activeTheme
 		} = this.props;
 
 		const { dialogIsOpen, dialogOtpOpen } = this.state;
@@ -182,6 +183,7 @@ class Form extends Component {
 					label="withdraw-modal"
 					onCloseDialog={this.onCloseDialog}
 					shouldCloseOnOverlayClick={dialogOtpOpen}
+					theme={activeTheme}
 					showCloseText={false}
 				>
 					{dialogOtpOpen ? (
@@ -218,7 +220,8 @@ const WithdrawForm = reduxForm({
 })(Form);
 
 const mapStateToForm = (state) => ({
-	data: selector(state, 'address', 'amount', 'fee')
+	data: selector(state, 'address', 'amount', 'fee'),
+	activeTheme: state.app.theme
 });
 
 const WithdrawFormWithValues = connect(mapStateToForm)(WithdrawForm);

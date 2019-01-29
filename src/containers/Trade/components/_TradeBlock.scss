@@ -68,10 +68,10 @@ $tabs-title--margin: 2rem;
 
 			&:after {
 				content: '';
-				height: 1px;
+				height: 3px;
 				width: 100%;
 				background-color: $trade_title-border--color;
-				top: -1px;
+				top: -2px;
 				left: 0;
 				right: 0;
 				position: absolute;
@@ -113,14 +113,42 @@ $tabs-title--margin: 2rem;
 		.trade_block-title {
 			border-top-color: $dark-border-main;
 			color: $dark-font-main-text-color;
+
+			.trade_block-title-currency-btc {
+				color: $coin-btc;
+			}
+			.trade_block-title-currency-bch {
+				color: $coin-bch;
+			}
+			.trade_block-title-currency-eth {
+				color: $coin-eth;
+			}
+			.trade_block-title-currency-fiat {
+				color: $coin-fiat;
+			}
+			.trade_block-title-currency-ltc {
+				color: $coin-ltc;
+			}
 			.trade_block-title-currency {
 				color: white;
+			}
+			.trade_block-icon {
+				svg {
+					.st0 {
+						fill: $dark-font-main-text-color !important;
+					}
+					.bch-icon {
+						fill: $dark-font-main-text-color !important;
+					}
+				}
 			}
 		}
 	}
 	.trade_block_tabs-wrapper .trade_block-title {
 		.trade_block-title-items {
+			color: $dark-font-sub-text-1-color;
 			.active {
+				color: $dark-font-main-text-color;
 				&:after {
 					background-color: $dark-border-main;
 				}

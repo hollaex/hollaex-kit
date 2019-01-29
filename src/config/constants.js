@@ -44,6 +44,7 @@ export const ICONS = {
 	TELEGRAM: `${process.env.PUBLIC_URL}/assets/icons/telegram-black.svg`,
 	TELEGRAM_COLOR: `${process.env.PUBLIC_URL}/assets/icons/telegram-color.svg`,
 	BCH_ICON: `${process.env.PUBLIC_URL}/assets/icons/bch-icon.svg`,
+	BCH_ICON_DARK: `${process.env.PUBLIC_URL}/assets/icons/bch-icon.svg`,
 	BCH_NAV_ICON: `${process.env.PUBLIC_URL}/assets/icons/bch-icon-nav.svg`,
 	CHECK: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-06.svg`,
 	BLUE_QUESTION: `${
@@ -52,6 +53,8 @@ export const ICONS = {
 	RED_WARNING: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-09.svg`,
 	GENDER_F: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-10.svg`,
 	GENDER_M: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-11.svg`,
+	GENDER_FEMALE: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-26.svg`,
+	GENDER_MALE: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-27.svg`,
 	BITCOIN_CLEAR: `${
 		process.env.PUBLIC_URL
 	}/assets/acounts/account-icons-13.svg`,
@@ -59,9 +62,11 @@ export const ICONS = {
 	BLUE_CLIP: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-17.svg`,
 	BLACK_CHECK: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-19.svg`,
 	KEYS: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-22.svg`,
+	OTP_KEYS: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-29.svg`,
 	GREEN_CHECK: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-23.svg`,
 	LETTER: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-24.svg`,
 	SQUARE_DOTS: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-25.svg`,
+	OTP_CODE: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-28.svg`,
 	COPY_NEW: `${process.env.PUBLIC_URL}/assets/images/copy.svg`,
 	ACCOUNT_LINE: `${process.env.PUBLIC_URL}/assets/images/account.svg`,
 	ACCOUNT_RECOVERY: `${
@@ -74,7 +79,7 @@ export const ICONS = {
 	DATA: `${process.env.PUBLIC_URL}/assets/images/data.svg`,
 	DEPOSIT_BITCOIN: `${
 		process.env.PUBLIC_URL
-	}/assets/images/deposit-bitcoin.svg`,
+	}/assets/images/deposit-bitcoin-dark-theme.svg`,
 	DEPOSIT_HISTORY: `${
 		process.env.PUBLIC_URL
 	}/assets/images/deposit-history.svg`,
@@ -575,3 +580,21 @@ export const CHART_MONTHS = [
 	{ key: 11, value: 'Nov' },
 	{ key: 12, value: 'Dec' },
 ];
+
+export const DARK_THEME_COLORS = {
+	dark_border_main: '#b7b5cd',
+	dark_sub_text: '#a3a1ca',
+	dark_sub_text_1: '#808184'
+};
+
+export const DARK_THEME_CHART_COLORS = {
+	SELL: '#f69321',
+	BUY: '#29abe2',
+	LINE: '#b7b7ce',
+	FILL: 'orange',
+	AXIS: '#b7b7ce',
+	BUY_CANDLE: '#29abe2',
+	SELL_CANDLE: '#f69321',
+	BUY_VOLUME: '#29abe2',
+	SELL_VOLUME: '#f69321'
+};

@@ -41,3 +41,16 @@ $contact-form--icon-size: 6rem;
     flex: 1;
   }
 }
+
+.dark-theme {
+  .help-wrapper {
+    .icon_title-svg,
+    .help_icons {
+      svg {
+        .st7, .st11 {
+          fill: $dark-icon-color;
+        }
+      }
+    }
+  }
+}

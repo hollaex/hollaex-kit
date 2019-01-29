@@ -84,7 +84,9 @@ export const PanelInformationRow = ({
 			{ 'panel-information-row-disable': disable }
 		)}
 	>
-		<span style={{ wordBreak: 'normal' }}>{bold ? <b>{label}</b> : label}: {information}</span>
+		<span style={{ wordBreak: 'normal' }}>
+			{bold ? <b>{label}</b> : label}: <span className='information-content'>{information}</span>
+		</span>
 	</div>
 );
 

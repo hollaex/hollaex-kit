@@ -201,6 +201,7 @@ class Login extends Component {
 					className="login-dialog"
 					useFullScreen={isMobile}
 					showBar={otpDialogIsOpen}
+					theme={activeTheme}
 				>
 					{otpDialogIsOpen && <OtpForm onSubmit={this.onSubmitLoginOtp} />}
 					{logoutDialogIsOpen && (
