@@ -136,7 +136,7 @@ $container--padding: 4rem;
 
 .dark-theme {
 	&.auth-wrapper {
-		background: $dark-disabled-secondary;
+		background: $dark-app-light-background;
 		&:before {
 			background-color: transparent;
 		}

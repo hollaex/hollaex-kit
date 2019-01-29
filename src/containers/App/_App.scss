@@ -145,6 +145,28 @@ $inner_container-border: 1px solid $colors-main-black;
 			border-left: 1px solid $dark-app-line-divider;
 		}
 	}
+	svg {
+		.incoming-btc-01,
+		.incoming-toman-01 {
+			fill: $dark-app-background-color;
+		}
+		.incoming-toman-02,
+		.incoming-btc-2,
+		.buy-order-filled-1,
+		.buy-order-filled-3,
+		.buy-filled-01,
+		.buy-filled-03,
+		.sell-order-01,
+		.sell-order-03,
+		.sell-part-01,
+		.sell-part-03 {
+			fill: $dark-icon-color;
+		}
+		.buy-order-filled-4,
+		.sell-order-04 {
+			stroke: $dark-app-background-color;
+		}
+	}
 }
 
 .app_container-bottom_bar {
