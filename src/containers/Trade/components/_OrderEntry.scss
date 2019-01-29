@@ -150,15 +150,18 @@
 
 			.trade_order_entry-action_selector {
 				.active {
-					color: $colors-white !important;
+					color: $dark-sell-bids-text !important;
 				}
+			}
+			.trade_order_entry-form-action {
+				color: $dark-sell-bids-text !important;
 			}
 		}
 		&.order_side-selector-buy {
 			@include entry_form($dark-buy, $dark-inactive-color);
 
 			.trade_order_entry-form-action {
-				color: $colors-black !important;
+				color: $dark-buy-bids-text !important;
 			}
 		}
 	}

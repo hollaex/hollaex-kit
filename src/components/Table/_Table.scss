@@ -105,12 +105,12 @@ $controllers--color-disabled: $colors-deactivate-color2;
 		.cell_box-type {
 			.sell {
 				background-color: $dark-sell !important;
-				color: $colors-white !important;
+				color: $dark-sell-bids-text !important;
 			}
 			
 			.buy {
 				background-color: $dark-buy !important;
-				color: $colors-main-black !important;
+				color: $dark-buy-bids-text !important;
 			}
 		}
 	}

@@ -112,14 +112,14 @@ $limit-bar-side--padding: 0.5rem;
 			.trade_orderbook-asks > .value-row:first-child {
 				background-color: $dark-sell;
 				> div {
-					color: $dark-font-main-text-color;
+					color: $dark-sell-bids-text;
 				}
 			}
 
 			.trade_orderbook-bids > .value-row:first-child {
 				background-color: $dark-buy;
 				> div {
-					color: $colors-black;
+					color: $dark-buy-bids-text;
 				}
 			}
 		}
