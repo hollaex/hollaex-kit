@@ -106,6 +106,12 @@ class Form extends Component {
 						this.props.dispatch
 					);
 					return response;
+				}).catch(err => {
+					const error = { _error: err.message, ...err.errors };
+					this.props.onSubmitFail(err.errors, this.props.dispatch);
+					this.onCloseDialog();
+					this.props.dispatch(stopSubmit(FORM_NAME, error));
+					// throw new SubmissionError(error);
 				})
 		}
 	};
@@ -168,6 +174,7 @@ class Form extends Component {
 		} = this.props;
 
 		const { dialogIsOpen, dialogOtpOpen } = this.state;
+		console.log('dialogOtpOpen', dialogOtpOpen);
 
 		return (
 			<form onSubmit={handleSubmit}>

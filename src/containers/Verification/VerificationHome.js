@@ -2,7 +2,7 @@ import React from 'react';
 import { isMobile } from 'react-device-detect';
 import { Link } from 'react-router';
 
-import CustomTabs from './CustomTabs';
+import CustomTabBar from './CustomTabBar';
 import HeaderSection from './HeaderSection';
 import MobileTabBar from './MobileTabBar';
 import { IconTitle } from '../../components';
@@ -25,7 +25,7 @@ const VerificationHome = ({ activeTab, tabProps, tabs, openContactForm, setActiv
                     )}</div>
                 </div>
                 {!isMobile
-                    ? <CustomTabs activeTab={activeTab} setActiveTab={setActiveTab} {...tabProps} />
+                    ? <CustomTabBar activeTab={activeTab} setActiveTab={setActiveTab} {...tabProps} />
                     : <MobileTabBar activeTab={activeTab} renderContent={renderContent} setActiveTab={setActiveTab} {...tabProps} />
                 }
                 {!isMobile

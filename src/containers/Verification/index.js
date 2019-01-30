@@ -6,6 +6,7 @@ import * as d3 from 'd3-selection';
 import {
 	// AppBar,
 	CheckTitle,
+	CustomTabs,
 	Dialog,
 	Loader,
 	// Logout,
@@ -157,7 +158,7 @@ class Verification extends Component {
 						statusCode={email ? 3 : 0}
 					/>
 				) : (
-					<CheckTitle
+					<CustomTabs
 						title={STRINGS.USER_VERIFICATION.TITLE_EMAIL}
 						titleClassName={activeTab !== 0 ? 'title-inactive' : ''}
 						className={activeTab === 0 ? 'active-tab-icon' : ''}
@@ -185,7 +186,7 @@ class Verification extends Component {
 						statusCode={bank_status}
 					/>
 				) : (
-					<CheckTitle
+					<CustomTabs
 						title={STRINGS.USER_VERIFICATION.TITLE_BANK}
 						titleClassName={activeTab !== 1 ? 'title-inactive' : ''}
 						className={activeTab === 1 ? 'active-tab-icon' : ''}
@@ -209,7 +210,7 @@ class Verification extends Component {
 						statusCode={identity_status}
 					/>
 				) : (
-					<CheckTitle
+					<CustomTabs
 						title={STRINGS.USER_VERIFICATION.TITLE_IDENTITY}
 						titleClassName={activeTab !== 2 ? 'title-inactive' : ''}
 						className={activeTab === 2 ? 'active-tab-icon' : ''}
@@ -231,7 +232,7 @@ class Verification extends Component {
 						statusCode={!phone_number ? 0 : 3}
 					/>
 				) : (
-					<CheckTitle
+					<CustomTabs
 						title={STRINGS.USER_VERIFICATION.USER_DOCUMENTATION_FORM.INFORMATION.TITLE_PHONE}
 						titleClassName={activeTab !== 3 ? 'title-inactive' : ''}
 						className={activeTab === 3 ? 'active-tab-icon' : ''}
@@ -250,7 +251,7 @@ class Verification extends Component {
 						statusCode={id_data.status}
 					/>
 				) : (
-					<CheckTitle
+					<CustomTabs
 						title={STRINGS.USER_VERIFICATION.TITLE_ID_DOCUMENTS}
 						titleClassName={activeTab !== 4 ? 'title-inactive' : ''}
 						className={activeTab === 4 ? 'active-tab-icon' : ''}

@@ -42,6 +42,8 @@ class AddTradeTab extends Component {
         if (initItem < count) {
             const data = pairKeys.slice(initItem, initItem + pageSize);
             this.setState({ data, page, count });
+        } else {
+            this.setState({ data: pairKeys, page, count });
         }
     };
 

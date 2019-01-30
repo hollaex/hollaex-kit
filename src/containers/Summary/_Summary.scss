@@ -250,20 +250,22 @@
         .asset-changes {
             background-color: $colors-notifications-blue;
         }
-        .coin-price {
+        .coin-price-container {
             height: 3.5rem;
-            margin: auto;
-            width: 3rem;
 
-            svg {
-                .btc0, .btc1 {
-                    fill: $colors-currencies-btc;
-                }
-                .eth0, .eth1 {
-                    fill: $colors-currencies-eth;
-                }
-                .bch-icon {
-                    fill: #9ec51e;
+            .coin-price {
+                width: 3rem;
+    
+                svg {
+                    .btc0, .btc1 {
+                        fill: $colors-currencies-btc;
+                    }
+                    .eth0, .eth1 {
+                        fill: $colors-currencies-eth;
+                    }
+                    .bch-icon {
+                        fill: #9ec51e;
+                    }
                 }
             }
         }
@@ -342,6 +344,10 @@
         margin: 1.5rem 0;
     }
     .icon_title-wrapper {
+        .icon_title-image {
+            height: 7.5rem;
+            width: 7.5rem;
+        }
         .icon_title-text.title {
             font-size: 2rem;
         }

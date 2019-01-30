@@ -46,7 +46,7 @@
 }
 
 .verification_document-sample {
-	width: 65rem;
+	width: 65%;
 }
 
 .header_title-wrapper {
@@ -94,9 +94,10 @@
 
 .custom-tab-wrapper {
 	.tab_item {
-		padding: 2rem 2rem;
-		margin: 1rem 2rem;
-		width: 12rem;
+		height: 10rem;
+		margin: 1rem;
+		max-width: 10rem;
+		min-width: 10rem;
 	}
 
 	.tab_item-active {

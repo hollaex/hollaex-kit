@@ -90,4 +90,41 @@ export const PanelInformationRow = ({
 	</div>
 );
 
+export const CustomTabs = ({
+	title,
+	icon,
+	notifications,
+	className,
+	titleClassName,
+	statusCode = -1
+}) => {
+	let notificationStatus = renderStatusIcon(statusCode, "verification-stauts");
+	return (
+		<div className={classnames('check_title-container', className)}>
+			<div className="check_title-icon">
+				<div className='verification-status-container w-100 d-flex justify-content-end'>
+					{!!notificationStatus
+						? notificationStatus
+						: <div className="empty-notification"></div>
+					}
+				</div>
+				{icon &&
+					(icon.indexOf('.svg') > 0 ? (
+						<ReactSVG path={icon} wrapperClassName="custom_title-svg" />
+					) : (
+							<img alt={icon} src={icon} className="custom_title-img" />
+						))}
+				{!!notifications && (
+					<div className="check_title-notification">{notifications}</div>
+				)}
+			</div>
+			{title && (
+				<div className={classnames('custom_title-label', titleClassName)}>
+					{title}
+				</div>
+			)}
+		</div>
+	);
+};
+
 export default CheckTitle;

@@ -219,6 +219,7 @@ class DocumentsVerification extends Component {
 					</HeaderSection>
 					{renderFields(formFields.idDocument)}
 					{renderFields(formFields.id)}
+					<div className="my-4"></div>
 
 					{formFields.proofOfResidence && (
 						<div>
@@ -233,6 +234,7 @@ class DocumentsVerification extends Component {
 							{renderFields(formFields.proofOfResidence)}
 						</div>
 					)}
+					<div className="my-4"></div>
 					{formFields.selfieWithNote && (
 						<div>
 							<HeaderSection

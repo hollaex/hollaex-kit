@@ -1,13 +1,13 @@
 import React from 'react';
 import classnames from 'classnames';
 
-const CustomTabs = ({ tabs, activeTab, setActiveTab }) => {
+const CustomTabBar = ({ tabs, activeTab, setActiveTab }) => {
     return (
-        <div className="custom-tab-wrapper d-flex justify-content-between">
+        <div className="custom-tab-wrapper d-flex justify-content-between flex-nowrap flex-row">
             {tabs.map((tab, index) => {
                 const tabProps = {
                     key: `tab_item-${index}`,
-                    className: classnames('tab_item', {
+                    className: classnames('tab_item', 'f-1', {
                         'tab_item-active': index === activeTab,
                         pointer: setActiveTab
                     })
@@ -22,4 +22,4 @@ const CustomTabs = ({ tabs, activeTab, setActiveTab }) => {
     );
 };
 
-export default CustomTabs;
+export default CustomTabBar;

@@ -1,4 +1,5 @@
 $check-title-img-size: 4rem;
+$custom-title-img-size: 6rem;
 $notification-size: 1.5rem;
 
 .check_title-container {
@@ -10,6 +11,12 @@ $notification-size: 1.5rem;
 	.check_title-label {
 		font-size: $font-size-subhead2;
 		line-height: $font-size-subhead2;
+		padding: 0.25rem 0;
+	}
+
+	.custom_title-label {
+		font-size: $font-size-subhead3;
+		line-height: $font-size-subhead3;
 		padding: 0.25rem 0;
 	}
 
@@ -32,6 +39,29 @@ $notification-size: 1.5rem;
 			max-width: 100%;
 			height: $check-title-img-size;
 			width: $check-title-img-size;
+		}
+		.st0,
+		.g1_4,
+		.g1_2 {
+			stroke: $colors-deactivate;
+		}
+		.st0 {
+			fill: $colors-deactivate;
+		}
+	}
+
+	.custom_title-img {
+		height: $custom-title-img-size;
+		width: $custom-title-img-size;
+	}
+
+	.custom_title-svg {
+		height: $custom-title-img-size;
+		width: $custom-title-img-size;
+		svg {
+			max-width: 100%;
+			height: $custom-title-img-size;
+			width: $custom-title-img-size;
 		}
 		.st0,
 		.g1_4,
@@ -74,7 +104,7 @@ $notification-size: 1.5rem;
 
 .verification-status-container {
 	position: relative;
-	top: 8px;
+	top: 15px;
 }
 
 .verification-stauts {

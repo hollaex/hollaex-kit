@@ -70,6 +70,16 @@ $controllers--color-disabled: $colors-deactivate-color2;
 	.disabled {
 		cursor: default;
 		pointer-events: none;
+		.action_notification-wrapper {
+			.notification-info {
+				color: $colors-deactivate-color1;
+			}
+			.action_notification-svg {
+				.arrow-1 {
+					fill: $colors-deactivate-color1;
+				}
+			}
+		}
 	}
 }
 
@@ -118,6 +128,19 @@ $controllers--color-disabled: $colors-deactivate-color2;
 	.table_controllers-wrapper {
 		color: $dark-font-sub-text-color;
 		border-top-color: $dark-border-main;
+
+		.disabled {
+			.action_notification-wrapper {
+				.notification-info {
+					color: $dark-font-sub-text-1-color;;
+				}
+				.action_notification-svg {
+					.arrow-1 {
+						fill: $dark-font-sub-text-1-color;;
+					}
+				}
+			}
+		}
 	}
 
 	.no-data {
