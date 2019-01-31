@@ -59,6 +59,7 @@ export default {
 	EDIT_TEXT: 'Edit',
 	BACK_TEXT: 'Back',
 	NO_OPTIONS: 'No options availables',
+	SECONDS: 'seconds',  // ToDo: Add this into farsi in exir
 	HOME: {
 		SECTION_1_TITLE: 'Build your own Bitcoin exchange',
 		SECTION_1_TEXT_1:
@@ -411,6 +412,7 @@ export default {
 		DOCUMENT_PENDING_NOTE: 'Your documents is submitted and is pending for review. Please be patient.', // ToDo: Add this into farsi in exir
 		DOCUMENT_VERIFIED_NOTE: 'Your documents are completed.', // ToDo: Add this into farsi in exir
 		NOTE_FROM_VERIFICATION_DEPARTMENT: 'Note from the verification department', // ToDo: Add this into farsi in exir
+		CODE_EXPIRES_IN: 'Code expires in', // ToDo: Add this into farsi in exir
 		USER_DOCUMENTATION_FORM: {
 			FORM_FIELDS: {
 				FIRST_NAME_LABEL: 'First name',
@@ -445,6 +447,7 @@ export default {
 				PHONE_CODE_DISPLAY: '({0}) {1}', // 0 -> (+21)  1 -> South Korea
 				PHONE_NUMBER_LABEL: 'Phone number',
 				PHONE_NUMBER_PLACEHOLDER: 'Type your phone number',
+				CONNECTING_LOADING: 'Connecting', // ToDo: Add this into farsi in exir
 				SMS_SEND: 'Send SMS',
 				SMS_CODE_LABEL: 'SMS Code',
 				SMS_CODE_PLACEHOLDER: 'Input your SMS code'

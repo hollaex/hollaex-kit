@@ -9,7 +9,7 @@ import reducer from './reducers/reducer';
 const middlewares = [promise(), thunk];
 
 if (ENV === 'development') {
-	// middlewares.push(logger);
+	middlewares.push(logger);
 }
 
 const middleware = applyMiddleware(...middlewares);
