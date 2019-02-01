@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { reduxForm, formValueSelector, SubmissionError } from 'redux-form';
+import { reduxForm, formValueSelector, SubmissionError, stopSubmit } from 'redux-form';
 import { required } from '../../components/Form/validations';
 import renderFields from '../../components/Form/factoryFields';
 import { Button, IconTitle, ElapsedTimer } from '../../components';
@@ -146,12 +146,11 @@ class MobileVerification extends Component {
 					});
 				})
 				.catch((err) => {
-					// alert(
-					// 	STRINGS.formatString(STRINGS.SMS_ERROR_SENT_TO, phone).join('')
-					// );
+					const error = { _error: STRINGS.formatString(STRINGS.SMS_ERROR_SENT_TO, phone).join('') };
 					this.setState({ codeRequestLoading: false }, () => {
 						this.generateFormFields();
 					});
+					this.props.dispatch(stopSubmit(FORM_NAME, error));
 				});
 		}
 	};
