@@ -135,7 +135,7 @@ class MobileVerification extends Component {
 			});
 			requestSmsCode(phone)
 				.then(({ data }) => {
-					alert(STRINGS.formatString(STRINGS.SMS_SENT_TO, phone).join(''));
+					// alert(STRINGS.formatString(STRINGS.SMS_SENT_TO, phone).join(''));
 					this.setState({ 
 						codeRequested: true,
 						codeRequestLoading: false,
@@ -146,9 +146,9 @@ class MobileVerification extends Component {
 					});
 				})
 				.catch((err) => {
-					alert(
-						STRINGS.formatString(STRINGS.SMS_ERROR_SENT_TO, phone).join('')
-					);
+					// alert(
+					// 	STRINGS.formatString(STRINGS.SMS_ERROR_SENT_TO, phone).join('')
+					// );
 					this.setState({ codeRequestLoading: false }, () => {
 						this.generateFormFields();
 					});
