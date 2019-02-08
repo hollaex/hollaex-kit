@@ -1,23 +1,26 @@
 {
-  "name": "hollaex-node-lib",
-  "version": "0.3.1",
-  "description": "",
-  "main": "index.js",
-  "dependencies": {
-    "bluebird": "^3.5.1",
-    "request": "^2.87.0",
-    "request-promise": "^4.2.2",
-    "socket.io-client": "^2.1.1"
-  },
-  "devDependencies": {
-    "chai": "^4.1.2",
-    "chai-http": "^4.0.0",
-    "mocha": "^5.2.0"
-  },
-  "scripts": {
-    "start": "node index.js",
-    "test": "mocha"
-  },
-  "author": "bitHolla Inc",
-  "license": "ISC"
+	"name": "hollaex-node-lib",
+	"version": "0.3.2",
+	"description": "",
+	"main": "index.js",
+	"dependencies": {
+		"request": "2.88.0",
+		"request-promise": "4.2.2",
+		"socket.io-client": "2.2.0"
+	},
+	"devDependencies": {
+		"chai": "4.2.0",
+		"dotenv": "6.2.0",
+		"eslint": "5.13.0",
+		"mocha": "5.2.0",
+		"prettier": "1.16.4"
+	},
+	"scripts": {
+		"start": "node index.js",
+		"test": "mocha --timeout 10000",
+		"prettier": "prettier --config .prettierrc.json --ignore-path .prettierignore.json --write \"./**/*.{js,json,css,scss,md}\"",
+		"eslint": "eslint --config .eslintrc.json ./"
+	},
+	"author": "bitHolla Inc",
+	"license": "ISC"
 }
