@@ -11,5 +11,5 @@ const createRequest = (verb, url, headers, data) => {
 };
 
 module.exports = {
-	createRequest,	
+	createRequest
 };
