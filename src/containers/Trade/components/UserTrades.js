@@ -19,7 +19,7 @@ const ActiveOrders = ({ trades, pairData, pair, pairs, lessHeaders }) => {
 				headers={headers}
 				data={trades}
 				count={trades.length}
-				pageSize={5}
+				pageSize={50}
 				displayPaginator={false}
 			/>
 		</div>

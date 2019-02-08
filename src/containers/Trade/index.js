@@ -405,8 +405,9 @@ const mapStateToProps = (store) => {
 	const { asks, bids } = store.orderbook.pairsOrderbooks[pair];
 	const tradeHistory = store.orderbook.pairsTrades[pair];
 	const marketPrice = tradeHistory && tradeHistory.length > 0 ? tradeHistory[0].price : 1;
-	const userTrades = store.wallet.latestUserTrades.filter(
-		({ symbol }) => symbol === pair
+	let count = 0;
+	const userTrades = store.wallet.trades.data.filter(
+		({ symbol }) => symbol === pair && count++ < 50
 	);
 	const activeOrders = store.order.activeOrders.filter(
 		({ symbol }) => symbol === pair

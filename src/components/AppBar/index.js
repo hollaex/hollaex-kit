@@ -136,7 +136,7 @@ class AppBar extends Component {
 	renderIcon = (isHome, theme) => {
 		return (
 			<div
-				className={classnames('app_bar-icon', 'text-uppercase')}
+				className={classnames('app_bar-icon', 'text-uppercase', 'mx-2')}
 			>
 				{isHome ? (
 					<img
@@ -239,10 +239,28 @@ class AppBar extends Component {
 		) : (
 			<div className={classnames('app_bar justify-content-between', { 'no-borders': noBorders })}>
 				<div className="d-flex">
-					{this.renderIcon(isHome, theme)}
-					<div className="d-flex app_bar-quicktrade-container">
-						{!isHome
-							? <Link to={`/quick-trade/${pair}`}>
+					<div className="d-flex align-items-center justify-content-center h-100">
+						{this.renderIcon(isHome, theme)}
+					</div>
+					{!isHome && <PairTabs activePath={activePath} location={location} router={router} />}
+				</div>
+				{!isHome
+					? isLoggedIn()
+						? <div className="d-flex app-bar-account">
+							<div className="d-flex app_bar-quicktrade-container">
+									<Link to='/trade/add/tabs'>
+									<div
+										className={classnames(
+											'app_bar-quicktrade',
+											'd-flex',
+											{ "quick_trade-active": location.pathname === '/trade/add/tabs' })}>
+										<ReactSVG
+											path={ICONS.SIDEBAR_TRADING_ACTIVE}
+												wrapperClassName="quicktrade_icon mx-1" />
+										<div className="d-flex align-items-center">{STRINGS.PRO_TRADE}</div>
+									</div>
+								</Link>
+								<Link to={`/quick-trade/${pair}`}>
 									<div
 										className={classnames(
 											'app_bar-quicktrade',
@@ -252,21 +270,18 @@ class AppBar extends Component {
 											path={ICONS.QUICK_TRADE_TAB_ACTIVE}
 											wrapperClassName="quicktrade_icon" />
 										<div className="d-flex align-items-center">{STRINGS.QUICK_TRADE}</div>
-								</div>
-							</Link>
-							: null
-						}
-					</div>
-						{!isHome && <PairTabs activePath={activePath} location={location} router={router} />}
-				</div>
-				{!isHome
-					? isLoggedIn()
-						? <div className="d-flex app-bar-account" onClick={this.handleAccountMenu}>
-							<div className="app-bar-account-content mr-2">
+									</div>
+								</Link>
+							</div>
+							<div
+								className={classnames(
+									"app-bar-account-content",
+									{ "account-inactive": activePath !== 'account' && activePath !== 'wallet' }
+								)}
+								onClick={this.handleAccountMenu} >
 								<ReactSVG path={ICONS.SIDEBAR_ACCOUNT_INACTIVE} wrapperClassName="app-bar-account-icon" />
 								{!!totalPending && <div className="app-bar-account-notification">{totalPending}</div>}
 							</div>
-							<div>{STRINGS.ACCOUNT_TEXT}</div>
 						</div>
 						: null
 					: this.renderSplashActions(token, verifyingToken)

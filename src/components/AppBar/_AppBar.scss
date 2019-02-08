@@ -106,6 +106,14 @@ $app-bar-pairs-up: green;
 		}
 	}
 
+	.app_bar-icon {
+		.app_bar-icon-logo svg {
+			.logo-black {
+				fill: $dark-app-logo-color;
+			}
+		}
+	}
+
 	.app_bar-mobile {
 		background-color: $dark-navigation_bar-mobile--background;
 		.homeicon-svg svg {
@@ -156,6 +164,7 @@ $app-bar-pairs-up: green;
 	.app_bar-icon {
 		flex: 0;
 		margin-top: .4rem;
+		padding-right: 8px;
 		width: 100%;
 	}
 
@@ -179,34 +188,35 @@ $app-bar-pairs-up: green;
 	}
 
 	.app_bar-quicktrade-container {
-		margin: 0 .85rem;
+		margin: 0 .25rem;
 	}
 
 	.app_bar-quicktrade {
-		border: 1px solid $app-bar--quicktrade-inactive-color;
-		border-radius: .25rem;
-		color: $app-bar--quicktrade-inactive-color;
+		border: 1px solid $app-bar-icon-inactive;
+		border-radius: .35rem;
+		color: $app-bar-icon-inactive;
 		font-weight: 400;
+		margin: 0 6px;
 		padding: 0 .4rem;
 		text-transform: capitalize;
 
 		svg {
-			.st0 {
+			.trade-active-2, .st0 {
 				fill: $colors-black !important;
-				stroke: $app-bar--quicktrade-inactive-color !important;
+				stroke: $app-bar-icon-inactive !important;
 				stroke-width: 3 !important;
 			}
 		}
 	}
 
 	.quick_trade-active {
-		border: 1px solid $app-bar--quicktrade-active-color;
-		color: $app-bar--quicktrade-active-color;
+		border: 1px solid $colors-white;
+		color: $colors-white;
 
 		svg {
-			.st0 {
-				fill: $app-bar--quicktrade-active-color !important;
-				stroke: $app-bar--quicktrade-active-color !important;
+			.trade-active-2, .st0 {
+				fill: $colors-white !important;
+				stroke: $colors-white !important;
 				stroke-width: 3 !important;
 			}
 		}
@@ -220,7 +230,7 @@ $app-bar-pairs-up: green;
 	.app-bar-account {
 		color: $colors-white;
 		cursor: pointer;
-		margin-right: 2rem;
+		margin-right: 0.8rem;
 	}
 
 	.app_bar-pair-font {
@@ -312,8 +322,16 @@ $app-bar-pairs-up: green;
 			stroke: $app-bar-icon-inactive;
 		}
 		.st0 {
-			fill: $colors-white;
+			fill: $colors-white !important;
 			stroke-width: 0rem;
+		}
+	}
+
+	.account-inactive {
+		.app-bar-account-icon svg {
+			.st0 {
+				fill: $app-bar-icon-inactive !important;
+			}
 		}
 	}
 
