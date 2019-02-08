@@ -1,11 +1,7 @@
-var Promise = require('bluebird');
-var io = require('socket.io-client');
+const io = require('socket.io-client');
 const EventEmitter = require('events');
 
-class Emitter extends EventEmitter {}
-
 const  { createRequest } = require('./utils');
-
 
 class HollaEx  {
 	constructor(opts = {
@@ -24,7 +20,7 @@ class HollaEx  {
 	}
 
 	/* Public */
- 	/* events: ticker, orderbooks, trades */
+ 	/* events: ticker, orderbooks, trades, constant */
 
 	// Ticker
 	getTicker(symbol) {
@@ -49,7 +45,7 @@ class HollaEx  {
 	/*********************************************************************************************************
 
 	/* Private */
-	/* events: user,balance,deposits,withdrawals,trades */
+	/* events: user, balance, deposits, withdrawals, trades */
 
 	// User
 	getUser() {
