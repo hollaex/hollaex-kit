@@ -28,9 +28,10 @@ client.getTicker('btc-eur')
 ```
 | Command | Parameters | Description
 | --- | --- | --- |
-| `getTicker` | symbol (*optional*) e.g. `btc-eur` | Last, high, low, open and close price and volume within the last 24 hours |
+| `getTicker` | symbol e.g. `btc-eur` | Last, high, low, open and close price and volume within the last 24 hours |
 | `getOrderbook` | symbol (*optional*) e.g. `btc-eur` | Orderbook containing list of bids and asks |
 | `getTrade` | symbol (*optional*) e.g. `btc-eur` | List of last trades |
+| `getConstant` |  | Tick size, min price, max price, min size and max size of each symbol pair |
 | `getUser` |  | User's personal information |
 | `getBalance` |  | User's wallet balance |
 | `getDeposit` |  | User's list of all deposits |
@@ -99,6 +100,8 @@ These are list of `userUpdate` client gets after subscribtion.
         "price": 1001,
         "side": "sell",
         "size": 2,
+        "symbol": "bch-btc",
+        "filled": 0,
         "type": "limit"
       }
     }
@@ -130,6 +133,8 @@ These are list of `userUpdate` client gets after subscribtion.
         "price": 1001,
         "side": "sell",
         "size": 2,
+        "symbol": "bch-btc",
+        "filled": 0,
         "type": "limit"
       }
     }
