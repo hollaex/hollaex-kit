@@ -13,9 +13,9 @@ class HollaEx  {
 		baseURL: '/v0',
 		accessToken: ''
 	}) {
-		this._url = opts.apiURL + opts.baseURL || 'https://api.hollaex.com/v0'
-		this._wsUrl = opts.apiURL || 'https://api.hollaex.com'
-		this._accessToken = opts.accessToken || ''
+		this._url = opts.apiURL + opts.baseURL || 'https://api.hollaex.com/v0';
+		this._wsUrl = opts.apiURL || 'https://api.hollaex.com';
+		this._accessToken = opts.accessToken || '';
 		this._headers = {
 			'content-type': 'application/json',
 			Accept: 'application/json',
@@ -39,6 +39,11 @@ class HollaEx  {
 	// Trades
 	getTrade(symbol) {
 		return createRequest ('GET', `${this._url}/trades?symbol=${symbol}` , this._headers )
+	}
+
+	// Constant
+	getConstant() {
+		return createRequest ('GET', `${this._url}/constant` , this._headers )
 	}
 
 	/*********************************************************************************************************
@@ -111,7 +116,7 @@ class Socket extends EventEmitter {
 			let listeners = [];
 			let ioLink;
 			events = events.split(":");
-			let [event, symbol] = events
+			let [event, symbol] = events;
 			switch (event) {
 				case 'orderbook':
 				case 'trades':
