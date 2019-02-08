@@ -23,6 +23,10 @@
 		color: $colors-deactivate;
 	}
 
+	.notification-loading {
+		color: $colors-deactivate;
+	}
+
 	.relative {
 		position: relative;
 	}
@@ -148,6 +152,9 @@
 		.notification-info {
 			color: $dark-link;
 		}
+		.notification-loading {
+			color: $dark-font-sub-text-color;
+		}
 		.icon-clip-1,
 		.icon-plus-1,
 		.icon-edit-1,
@@ -165,6 +172,9 @@
 		.cancel-cross-3,
 		.trans-history-4 {
 			stroke: $dark-link;
+		}
+		.connect-loading {
+			fill: $dark-font-sub-text-color !important;
 		}
 	}
 }

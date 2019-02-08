@@ -344,9 +344,13 @@
         margin: 1.5rem 0;
     }
     .icon_title-wrapper {
-        .icon_title-image {
-            height: 7.5rem;
-            width: 7.5rem;
+        .icon_title-svg {
+            height: 8rem;
+            width: 8rem;
+        }
+        .icon_title-svg svg{
+            height: 8rem;
+            width: 8rem;
         }
         .icon_title-text.title {
             font-size: 2rem;

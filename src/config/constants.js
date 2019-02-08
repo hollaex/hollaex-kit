@@ -315,7 +315,12 @@ export const ICONS = {
 	CHAT_ICON_SPECIAL: `${process.env.PUBLIC_URL}/assets/images/fin-chat-special.svg`,
 	NOTE_KYC: `${process.env.PUBLIC_URL}/assets/images/note-KYC.svg`,
 	SIDEBAR_CHAT: `${process.env.PUBLIC_URL}/assets/images/bottom-chat-icon.svg`,
-	SIDEBAR_HELP: `${process.env.PUBLIC_URL}/assets/images/help-question-mark-icon.svg`
+	SIDEBAR_HELP: `${process.env.PUBLIC_URL}/assets/images/help-question-mark-icon.svg`,
+	CONNECT_LOADING: `${process.env.PUBLIC_URL}/assets/images/connect-loading.svg`,
+	KRAKEN: `${process.env.PUBLIC_URL}/assets/images/cunning-blue-kraken-trader.svg`,
+	SNAPPER: `${process.env.PUBLIC_URL}/assets/images/little-red-snapper-trader.svg`,
+	SHRIMP: `${process.env.PUBLIC_URL}/assets/images/tiny-pink-shrimp-trader.svg`,
+	LEVIATHAN: `${process.env.PUBLIC_URL}/assets/images/black-leviathan-trader.svg`
 };
 
 export const SOCIAL_ICONS = {

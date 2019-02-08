@@ -146,6 +146,9 @@ $inner_container-border: 1px solid $colors-main-black;
 		}
 	}
 	svg {
+		.leviathan-trader0 {
+			fill: $colors-black;
+		}
 		.incoming-btc-01,
 		.incoming-toman-01 {
 			fill: $dark-app-background-color;
@@ -159,7 +162,8 @@ $inner_container-border: 1px solid $colors-main-black;
 		.sell-order-01,
 		.sell-order-03,
 		.sell-part-01,
-		.sell-part-03 {
+		.sell-part-03,
+		.key-trashed {
 			fill: $dark-icon-color;
 		}
 		.buy-order-filled-4,

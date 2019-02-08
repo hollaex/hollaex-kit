@@ -13,6 +13,8 @@ const getClassNames = (status) => {
 			return 'notification-info';
 		case 'disabled':
 			return 'notification-disabled';
+		case 'loading':
+			return 'notification-loading';
 		default:
 			return '';
 	}

@@ -1,8 +1,9 @@
 import React from 'react';
 import classnames from 'classnames';
+import ReactSVG from 'react-svg';
 
 import AccountTypeDetails from './components/AccountTypeDetails';
-import { TRADING_ACCOUNT_TYPE, SUMMMARY_ICON, FLEX_CENTER_CLASSES } from '../../config/constants';
+import { TRADING_ACCOUNT_TYPE, ICONS, FLEX_CENTER_CLASSES } from '../../config/constants';
 
 const MobileAccountTypeList = ({
     user,
@@ -19,8 +20,6 @@ const MobileAccountTypeList = ({
         <div className="mobile-account-type my-4">
             {accounts.map((key, index) => {
                 let account = TRADING_ACCOUNT_TYPE[key];
-                let icon = activeTheme === 'dark' && SUMMMARY_ICON[`${key.toUpperCase()}_DARK`]
-                    ? SUMMMARY_ICON[`${key.toUpperCase()}_DARK`] : SUMMMARY_ICON[key.toUpperCase()];
                 return (
                     <div
                         key={index}
@@ -37,7 +36,7 @@ const MobileAccountTypeList = ({
                     >
                         <div className="d-flex">
                             <div className="mr-4">
-                                <img src={icon} alt={account.name} className="account-type-icon" />
+                                <ReactSVG path={ICONS[key.toUpperCase()]} wrapperClassName="account-type-icon" />
                             </div>
                             <div className={classnames(FLEX_CENTER_CLASSES)}>
                                 {account.name}

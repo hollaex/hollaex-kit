@@ -7,7 +7,7 @@ import LimitsBlock from './LimitsBlock';
 import FeesBlock from './FeesBlock';
 import { IconTitle, Button } from '../../../components';
 import { requestLimits, requestFees } from '../../../actions/userAction';
-import { SUMMMARY_ICON, FEES_LIMIT_SITE_URL } from '../../../config/constants';
+import { ICONS, FEES_LIMIT_SITE_URL } from '../../../config/constants';
 import STRINGS from '../../../config/localizedStrings';
 
 class FeesAndLimits extends Component {
@@ -25,15 +25,13 @@ class FeesAndLimits extends Component {
     render () {
         const { tradingAccount, verification_level, pairs } = this.props.data;
         const { fees, limits, onClose } = this.props;
-        const icon = this.props.activeTheme === 'dark' && SUMMMARY_ICON[`${tradingAccount.symbol.toUpperCase()}_DARK`]
-            ? SUMMMARY_ICON[`${tradingAccount.symbol.toUpperCase()}_DARK`]
-            : SUMMMARY_ICON[tradingAccount.symbol.toUpperCase()];
         return (
             <div className="fee-limits-wrapper">
                 <IconTitle
                     text={`${STRINGS.SUMMARY.FEES_AND_LIMIT} ${tradingAccount.fullName}`}
-                    iconPath={icon}
+                    iconPath={ICONS[tradingAccount.symbol.toUpperCase()]}
                     textType="title"
+                    useSvg={true}
                     underline={true}
                 />
                 <div className="content-txt">

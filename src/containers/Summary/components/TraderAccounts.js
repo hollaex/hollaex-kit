@@ -1,16 +1,15 @@
 import React from 'react';
+import ReactSVG from 'react-svg';
 
 import STRINGS from '../../../config/localizedStrings';
-import { SUMMMARY_ICON } from '../../../config/constants';
+import { ICONS } from '../../../config/constants';
 
 const TraderAccounts = ({ account = {}, activeTheme, limits = [], isAccountDetails = false, onFeesAndLimits, onUpgradeAccount }) => {
-    let icon = activeTheme === 'dark' && SUMMMARY_ICON[`${account.symbol.toUpperCase()}_DARK`]
-        ? SUMMMARY_ICON[`${account.symbol.toUpperCase()}_DARK`] : SUMMMARY_ICON[account.symbol.toUpperCase()];
     // let limitLevel = limits.filter(obj => obj.verification_level === account.level);
     return (
         <div className="d-flex">
             <div>
-                <img src={icon} alt="trader account" className="trader-account-icon" />
+                <ReactSVG path={ICONS[account.symbol.toUpperCase()]} wrapperClassName="trader-account-icon" />
             </div>
             <div className="trade-account-secondary-txt summary-content-txt">
                 {isAccountDetails && <div className="summary-block-title mb-3">{account.fullName}</div>}
