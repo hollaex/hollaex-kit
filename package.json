@@ -15,7 +15,7 @@
   },
   "scripts": {
     "start": "node index.js",
-    "test": "mocha"
+    "test": "mocha --timeout 10000"
   },
   "author": "bitHolla Inc",
   "license": "ISC"
