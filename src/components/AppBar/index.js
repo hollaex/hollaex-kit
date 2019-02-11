@@ -136,7 +136,7 @@ class AppBar extends Component {
 	renderIcon = (isHome, theme) => {
 		return (
 			<div
-				className={classnames('app_bar-icon', 'text-uppercase', 'mx-2')}
+				className={classnames('app_bar-icon', 'text-uppercase')}
 			>
 				{isHome ? (
 					<img

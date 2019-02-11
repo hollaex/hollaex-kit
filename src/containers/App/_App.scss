@@ -183,3 +183,56 @@ $inner_container-border: 1px solid $colors-main-black;
 	bottom: 5rem;
 	align-self: flex-end;
 }
+
+@media (min-width: 1920px) {
+	.font-small,
+	.exir-button,
+	.field-wrapper,
+	.action_notification-text,
+	.wallet-assets_block-table,
+	.accordion_section_content,
+	.verification_container .header-content,
+	.verification_container .content-text,
+	.table_body-wrapper,
+	.wallet_section-title-amount,
+	.wallet_section-title,
+	.trade_tabs-container .trade_tabs-content,
+	.toogle_button-wrapper .toogle-content,
+	.trade_block-wrapper .trade_block-content,
+	.ohlc_data_wrapper .ohlc_label,
+	.ohlc_value,
+	.information_block-text_wrapper .text,
+	.qr-text,
+	.header_title-children,
+	.placeholder,
+	.notification-content-wrapper,
+	.otp_form-section-wrapper .otp_form-section-text,
+	.popup_info-wrapper .popup_info-text,
+	.otp_secret {
+		font-size: 1rem !important;
+	}
+	
+	.presentation_container {
+		width: $content-display-width !important;
+	}
+	.app_bar-pair-tab {
+		min-width: 23rem;
+		max-width: 23rem;
+	}
+	.app_container {
+		.app_container-sidebar {
+			min-width: $sidebar-width-lg;
+			max-width: $sidebar-width-lg;
+		}
+		&.layout-desktop {
+			.app_container-content {
+				min-height: $max-content-height-lg !important;
+				max-height: $max-content-height-lg !important;
+			}
+			.app_container-secondary-content {
+				min-height: $max-content-secondary-height-lg !important;
+				max-height: $max-content-secondary-height-lg !important;
+			}
+		}
+	}
+}

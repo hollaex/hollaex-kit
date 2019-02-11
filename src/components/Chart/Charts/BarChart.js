@@ -144,7 +144,7 @@ class BarChart extends Component {
                                 .attr('y', scaleTxt)
                                 .attr('width', '6rem')
                                 .append('xhtml:div')
-                                .attr('class', 'limit_contnet-text')
+                                .attr('class', 'limit_content-text')
                                 .html(`<span>${content.text}</span>`);
                         }
                     }

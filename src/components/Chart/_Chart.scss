@@ -97,7 +97,7 @@
 			stroke-width: 1;
 		}
 	}
-	.limit_contnet-text {
+	.limit_content-text {
 		font-size: 0.72rem;
 	}
 	.bar_axis_triangle {
@@ -236,8 +236,29 @@
 		.bar_axis_triangle {
 			fill: $dark-app-line-divider;
 		}
-		.limit_contnet-text {
+		.limit_content-text {
 			color: $dark-font-main-text-color;
 		}
 	}
+}
+
+@media (min-width: 1920px) {
+	.donut-label-pair {
+		font-size: 1.2rem;
+	}
+	.donut-label-percentage {
+		font-size: 1rem;
+	}
+	.bar_wrapper {
+		.limit_content-text {
+			font-size: 0.9rem;
+		}
+		.bar_xAxis .axis_month-total {
+			font-size: 1rem;
+		}
+	}
+}
+
+foreignObject {
+	overflow: visible;
 }

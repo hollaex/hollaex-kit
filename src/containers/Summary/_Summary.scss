@@ -402,3 +402,36 @@
         padding: .25rem 1rem;
     }
 }
+
+@media (min-width: 1920px) {
+    .summary-container {
+        width: $content-display-width !important;
+
+        .summary-block_wrapper .summary-block-title {
+            font-size: 1.2rem;
+        }
+        
+        .summary-content-txt {
+            font-size: 1rem;
+        }
+
+        .assets-wrapper,
+        .trader-account-wrapper {
+            font-size: 1rem;
+            width: 35% !important;
+        }
+        .trading-volume-wrapper,
+        .requirement-wrapper {
+            width: 65% !important;
+        }
+        .summary-section_1 {
+            height: 18rem !important;
+        }
+        .summary-section_2 {
+            height: 43rem !important;
+        }
+    }
+    .fee-limits-wrapper .content-txt {
+        font-size: 1rem;
+    }
+}

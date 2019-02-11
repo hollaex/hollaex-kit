@@ -163,7 +163,7 @@ $app-bar-pairs-up: green;
 
 	.app_bar-icon {
 		flex: 0;
-		margin-top: .4rem;
+		margin: .4rem .5rem 0 .5rem;
 		padding-right: 8px;
 		width: 100%;
 	}
@@ -722,6 +722,50 @@ $app-bar-pairs-up: green;
 		
 		.app-price-diff-up {
 			color: $app-bar-pairs-up
+		}
+	}
+}
+
+@media (min-width: 1920px) {
+	.app_bar {
+		font-size: 1rem;
+		height: $navigation_bar-height-lg;
+		min-height: $navigation_bar-height-lg;
+
+		.app_bar-pair-font {
+			font-size: 1rem;
+		}
+
+		.app_bar-icon-logo {
+			width: 6rem;
+		}
+		.app-bar-tab-close {
+			width: 1.1rem;
+		}
+		.app_bar-icon {
+			margin: 0.4rem 1rem 0 1rem;
+		}
+	}
+	.app-menu-bar {
+		font-size: 1rem !important;
+		height: $navigation_bar-height-lg;
+		min-height: $navigation_bar-height-lg;
+
+		.active-menu, .app-menu-bar-content {
+			height: 3rem;
+		}
+
+		.app-menu-bar-content {
+			width: 12rem;
+		}
+	}
+	.app-bar-add-tab-menu {
+		min-width: 24rem;
+		
+		.app-bar-add-tab-content,
+		.app-bar-tab-menu-list,
+		.app-bar-tab-overflow-content {
+			font-size: 1rem;
 		}
 	}
 }

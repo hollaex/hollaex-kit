@@ -160,3 +160,15 @@ $sections-font--color: $colors-deactivate-color2;
 		}
 	}
 }
+
+@media (min-width: 1920px) {
+	.wallet-wrapper {
+		.donut-container {
+			height: 19rem;
+
+			.donut-label-pair {
+				font-size: 1rem;
+			}
+		}
+	}
+}

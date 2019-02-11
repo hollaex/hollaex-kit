@@ -121,3 +121,17 @@
 		}
 	}
 }
+
+@media (min-width: 1920px) {
+	.trade-container {
+		.trade-col_side_wrapper {
+			min-width: $side-column--width-lg;
+			max-width: $side-column--width-lg;
+		}
+		.trade-col_action_wrapper {
+			min-width: $order_entry-column--width-lg;
+			max-width: $order_entry-column--width-lg;
+		}
+	}
+}
+
