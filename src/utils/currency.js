@@ -10,6 +10,7 @@ export const ETH_FULL_FORMAT = '0,0.[00000000]';
 export const BCH_FULL_FORMAT = '0,0.[00000000]';
 export const FIAT_FORMAT = '0,0.[00]';
 export const PERCENTAGE_FORMAT = '0.[00]%';
+export const DONUT_PERCENTAGE_FORMAT = '0.[0]%';
 export const AVERAGE_FORMAT = '3a';
 
 export const roundNumber = (number = 0, decimals = 4) => {
@@ -46,6 +47,8 @@ export const formatCurrency = (amount = 0, currency = 'fiat', type = 'simple') =
 }
 export const formatPercentage = (value = 0) =>
 	numbro(math.number(value / 100)).format(PERCENTAGE_FORMAT);
+export const donutFormatPercentage = (value = 0) =>
+	numbro(math.number(value / 100)).format(DONUT_PERCENTAGE_FORMAT);
 export const formatBtcAmount = (amount = 0) =>
 	numbro(roundNumber(amount, 4)).format(BTC_FORMAT);
 export const formatBtcFullAmount = (amount = 0) =>

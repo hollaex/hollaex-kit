@@ -108,6 +108,22 @@
     }
 }
 
+.direction_ltr {
+	.summary-container {
+        .trader-account-icon {
+            margin-right: 1rem;
+        }
+	}
+}
+
+.direction_rtl {
+	.summary-container {
+        .trader-account-icon {
+            margin-left: 1rem;
+        }
+    }
+}
+
 .layout-mobile {
     .fee-limits-wrapper {
         margin: 0 auto;
@@ -152,7 +168,7 @@
 
     .trader-account-icon {
         width: 7rem;
-        margin: 1rem 1rem .5rem 0;
+        margin-right: 1rem;
     }
     .trade-account-link {
         color: $colors-notifications-blue;
@@ -232,9 +248,10 @@
         }
         .donut-container {
             height: 23rem;
+            width: 100%;
         }
         .price-content {
-            width: 10rem;
+            padding: 0 .5rem;
         }
         .price-text {
             color: $colors-black;

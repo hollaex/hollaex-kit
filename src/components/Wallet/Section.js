@@ -51,14 +51,14 @@ const Section = ({ symbol = fiatSymbol, balance, orders, price }) => {
 						{STRINGS.formatString(
 							amountFormat,
 							formatToCurrency(total),
-							currencySymbol
+							STRINGS[`${symbol.toUpperCase()}_CURRENCY_SYMBOL`]
 						)}
 					</div>
 				</div>
 				{ordersOfSymbol > 0 && (
 					<TextHolders
 						ordersOfSymbol={ordersOfSymbol}
-						currencySymbol={currencySymbol}
+						currencySymbol={STRINGS[`${symbol.toUpperCase()}_CURRENCY_SYMBOL`]}
 						hold={formatToCurrency(hold)}
 						name={shortName}
 					/>
@@ -69,7 +69,7 @@ const Section = ({ symbol = fiatSymbol, balance, orders, price }) => {
 						{STRINGS.formatString(
 							amountFormat,
 							formatToCurrency(available),
-							currencySymbol
+							STRINGS[`${symbol.toUpperCase()}_CURRENCY_SYMBOL`]
 						)}
 					</div>
 				</div>

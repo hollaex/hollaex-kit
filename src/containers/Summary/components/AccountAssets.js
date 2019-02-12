@@ -18,7 +18,7 @@ const AccountAssets = ({ chartData = [], totalAssets, balance }) => {
             <div className="w-100 donut-container">
                 {BASE_CURRENCY && <DonutChart chartData={chartData} />}
             </div>
-            <div className="d-flex">
+            <div className="d-flex justify-content-between">
                 {chartData.map((value, index) => {
                     const { formatToCurrency } = CURRENCIES[value.symbol || BASE_CURRENCY];
                     let currencyBalance = formatToCurrency(balance[`${value.symbol}_balance`]);

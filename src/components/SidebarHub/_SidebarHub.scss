@@ -34,6 +34,8 @@ $deactive-tab-border: $boder--width solid $border--color;
 }
 
 .sidebar_hub-wrapper {
+	overflow-y: scroll;
+
 	.currency-selector {
 		.tab-action {
 			height: $navigation_bar-height;
@@ -120,8 +122,8 @@ $deactive-tab-border: $boder--width solid $border--color;
 				.sidebar_hub-section-title {
 					font-size: $font-size-subhead3;
 					margin: 0 0.5rem;
-					display: flex;
-					align-items: center;
+					// display: flex;
+					// align-items: center;
 					color: $font-color;
 				}
 			}
