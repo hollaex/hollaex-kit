@@ -7,7 +7,7 @@ import { ICONS, CURRENCIES, BASE_CURRENCY } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 import { formatPercentage } from '../../utils/currency';
 
-const Tab = ({ pair = {}, tab, ticker = {}, activePairTab, onTabClick, onTabChange, items, ...rest }) => {
+const Tab = ({ pair = {}, tab, ticker = {}, activePairTab, onTabClick, onTabChange, items, selectedToOpen, selectedToRemove, ...rest }) => {
     const { formatToCurrency } = CURRENCIES[pair.pair_base || BASE_CURRENCY];
     const priceDifference = (ticker.close || 0) - (ticker.open || 0);
     const priceDifferencePercent = formatPercentage((ticker.close - ticker.open) / ticker.open);
@@ -15,10 +15,14 @@ const Tab = ({ pair = {}, tab, ticker = {}, activePairTab, onTabClick, onTabChan
         <div
             className={classnames(
                 'app_bar-pair-content',
-                'app_bar-pair-tab',
                 'd-flex',
                 "justify-content-between",
-                { 'active-tab-pair': activePairTab === tab })}>
+                'app_bar-pair-tab',
+                {
+                    'active-tab-pair': activePairTab === tab,
+                    'transition_open': selectedToOpen === tab,
+                    'transition_close': selectedToRemove === tab
+                })}>
             <div
                 className='d-flex w-100 h-100 pl-2'
                 onClick={() => onTabClick(tab)}

@@ -22,6 +22,7 @@ const MobileSummary = ({
     FIAT,
     balance,
     chartData,
+    logout,
     totalAssets,
     lastMonthVolume,
     onFeesAndLimits,
@@ -44,6 +45,7 @@ const MobileSummary = ({
                         fees={fees}
                         limits={limits}
                         pairs={pairs}
+                        logout={logout}
                         activeTheme={activeTheme}
                         account={currentTradingAccount}
                         onFeesAndLimits={onFeesAndLimits}

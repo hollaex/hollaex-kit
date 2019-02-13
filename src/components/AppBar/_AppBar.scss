@@ -252,7 +252,28 @@ $app-bar-pairs-up: green;
 	.app_bar-pair-tab {
 		min-width: 20rem;
 		max-width: 20rem;
-	}	
+	}
+
+	.transition_open {
+		left: -5rem;
+		-webkit-animation: slide 0.5s forwards;
+		animation: slide 0.5s forwards;
+	}
+
+	.transition_close {
+		left: 5rem;
+		-webkit-animation: slide 0.5s backwards;
+		animation: slide 0.5s backwards;
+		z-index: 99;
+	}
+
+	@-webkit-keyframes slide {
+		100% { left: 0; }
+	}
+
+	@keyframes slide {
+		100% { left: 0; }
+	}
 
 	.app_bar-pair-overflow {
 		align-items: center;

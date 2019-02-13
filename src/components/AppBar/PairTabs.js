@@ -10,6 +10,8 @@ import { DEFAULT_TRADING_PAIRS } from '../../config/constants';
 import { ICONS } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 
+let timeOut = '';
+
 class PairTabs extends Component {
     state = {
         selectedTabs: {},
@@ -19,7 +21,9 @@ class PairTabs extends Component {
         selectedAddTab: '',
         isTabOverflow: false,
         searchValue: '',
-        searchResult: {}
+        searchResult: {},
+        selectedToRemove: '',
+        selectedToOpen: ''
     };
 
     componentDidMount() {
@@ -32,7 +36,7 @@ class PairTabs extends Component {
                 this.setNoTabs();
             }
             active = router.params.pair;
-            this.setState({ activePairTab: router.params.pair });
+            this.setState({ activePairTab: router.params.pair, selectedToOpen: router.params.pair });
         } else {
             active = '';
             this.setState({ activePairTab: '' });
@@ -43,10 +47,11 @@ class PairTabs extends Component {
     componentWillReceiveProps(nextProps) {
         const { activePath, pairs, router, location } = nextProps;
         let active = this.state.activePairTab;
+        let selectedToOpen = '';
         if (this.props.activePath !== activePath) {
             if (activePath !== 'trade') {
                 active = "";
-                this.setState({ activePairTab: '' });
+                this.setState({ activePairTab: '', selectedToOpen: '' });
             }
         }
         if (JSON.stringify(this.props.pairs) !== JSON.stringify(pairs)) {
@@ -56,7 +61,10 @@ class PairTabs extends Component {
             && this.props.location.pathname !== location.pathname) {
             if (router && router.params.pair && location.pathname.indexOf('/trade/') === 0) {
                 active = router.params.pair;
-                this.setState({ activePairTab: router.params.pair });
+                if (!this.state.activeTabs[active]) {
+                    selectedToOpen = active;
+                }
+                this.setState({ activePairTab: router.params.pair, selectedToOpen });
                 let tabs = localStorage.getItem('tabs');
                 if (tabs !== null &&
                     tabs !== '' &&
@@ -65,11 +73,18 @@ class PairTabs extends Component {
                 }
             } else if (router && !router.params.pair) {
                 active = "";
-                this.setState({ activePairTab: '' });
+                this.setState({ activePairTab: '', selectedToOpen: '' });
             }
             this.initTabs(pairs, active);
         }
     }
+
+    componentWillUnmount() {
+        if (timeOut) {
+            clearTimeout(timeOut);
+        }
+    }
+    
 
     initTabs = (pairs, activePair) => {
         let tabs = localStorage.getItem('tabs');
@@ -125,7 +140,7 @@ class PairTabs extends Component {
     };
     
     onTabChange = pair => {
-        const { selectedTabs, activeTabs, activePairTab } = this.state;
+        const { selectedTabs, activeTabs, activePairTab, selectedToOpen } = this.state;
         const { activePath, pairs } = this.props;
         let localTabs = {};
         let tabPairs = [];
@@ -136,20 +151,22 @@ class PairTabs extends Component {
             this.setTabsLocal(localTabs);
             if (activePairTab === pair || activePath !== 'trade') {
                 let index = tabPairs.indexOf(pair);
-                if (index < (tabPairs.length - 1)) {
-                    this.onTabClick(tabPairs[index + 1]);
-                } else {
-                    this.onTabClick(tabPairs[index - 1]);
-                }
+                timeOut = setTimeout(() => {
+                    if (index < (tabPairs.length - 1)) {
+                        this.onTabClick(tabPairs[index + 1]);
+                    } else {
+                        this.onTabClick(tabPairs[index - 1]);
+                    }
+                }, 300);
             }
             tabPairs = Object.keys(localTabs);
-            this.setState({ selectedTabs: { ...localTabs } });
+            this.setState({ selectedTabs: { ...localTabs }, selectedToRemove: pair, selectedToOpen: '' });
         } else {
             const temp = pairs[pair];
             if (temp && temp.pair_base) {
                 localTabs = { ...selectedTabs, [pair]: temp };
                 tabPairs = Object.keys(localTabs);
-                this.setState({ selectedTabs: { ...localTabs } });
+                this.setState({ selectedTabs: { ...localTabs }, selectedToOpen: pair, selectedToRemove: '' });
             }
             this.setTabsLocal(localTabs);
             this.onTabClick(pair);
@@ -162,20 +179,29 @@ class PairTabs extends Component {
                 }
                 return key;
             });
-            this.setState({ activeTabs: { ...tempActive } });
+            timeOut = setTimeout(() => {
+                this.setState({ activeTabs: { ...tempActive } });
+            }, 300);
         } else if (!activeTabs[pair] && localTabs[pair]) {
             let tempActive = activeTabs;
             let activeKeys = Object.keys(activeTabs);
-            if (tabPairs.length <= 4) {
-                this.setState({ activeTabs: { ...localTabs } });
-            } else {
-                delete tempActive[activeKeys[activeKeys.length - 1]];
-                tempActive[pair] = localTabs[pair];
-                this.setState({ activeTabs: { ...tempActive } });
-            }
+            timeOut = setTimeout(() => {
+                if (tabPairs.length <= 4) {
+                    this.setState({ activeTabs: { ...localTabs } });
+                } else {
+                    delete tempActive[activeKeys[activeKeys.length - 1]];
+                    tempActive[pair] = localTabs[pair];
+                    this.setState({ activeTabs: { ...tempActive } });
+                }
+            }, 300);
         }
         if (!tabPairs.length) {
             this.setNoTabs()
+        }
+        if (activeTabs[pair]
+            && pair !== activePairTab
+            && selectedToOpen === activePairTab) {
+            this.setState({ selectedToOpen: '' });
         }
         // this.setTabsLocal(localTabs);
         this.closeAddTabMenu();
@@ -247,12 +273,12 @@ class PairTabs extends Component {
     };
 
     setNoTabs = () => {
-        this.props.router.push('/trade/add/tabs');
+        this.props.router.push('/account');
     };
 
     render() {
-        const { selectedTabs, isAddTab, selectedAddTab, activePairTab, isTabOverflow, activeTabs, searchValue, searchResult } = this.state;
-        const { pairs, tickers } = this.props;
+        const { selectedTabs, isAddTab, selectedAddTab, activePairTab, isTabOverflow, activeTabs, searchValue, searchResult, selectedToOpen, selectedToRemove } = this.state;
+        const { pairs, tickers, location } = this.props;
         const obj = {};
         Object.entries(pairs).forEach(([key, pair]) => {
             obj[pair.pair_base] = '';
@@ -270,6 +296,8 @@ class PairTabs extends Component {
                                 tab={tab}
                                 pair={pair}
                                 ticker={ticker}
+                                selectedToOpen={selectedToOpen}
+                                selectedToRemove={selectedToRemove}
                                 activePairTab={activePairTab}
                                 onSortItems={this.onSortItems}
                                 items={Object.keys(activeTabs)}
@@ -279,10 +307,22 @@ class PairTabs extends Component {
                         )
                     }}
                 )}
-                <div className={classnames('app_bar-pair-content', 'd-flex', 'justify-content-between', 'px-2', { 'active-tab-pair': isAddTab })}>
+                <div className={
+                    classnames(
+                        'app_bar-pair-content', 
+                        'd-flex', 
+                        'justify-content-between', 
+                        'px-2', 
+                        { 
+                            'active-tab-pair': isAddTab || (location.pathname === '/trade/add/tabs' && !Object.keys(selectedTabs).length)
+                        })
+                    }>
                     <div onClick={this.openAddTabMenu}>
                         <ReactSVG path={ICONS.TAB_PLUS} wrapperClassName="app-bar-tab-close" />
                     </div>
+                    {Object.keys(selectedTabs).length <= 0 ?
+                        <span onClick={this.openAddTabMenu}>{STRINGS.ADD_TRADING_PAIR}</span>
+                    : '' }
                     {isAddTab &&
                         <AddTabList 
                             symbols={symbols} 

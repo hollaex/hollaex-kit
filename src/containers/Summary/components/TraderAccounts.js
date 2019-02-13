@@ -1,10 +1,12 @@
 import React from 'react';
 import ReactSVG from 'react-svg';
+import { isMobile } from 'react-device-detect';
 
 import STRINGS from '../../../config/localizedStrings';
 import { ICONS } from '../../../config/constants';
 
-const TraderAccounts = ({ account = {}, activeTheme, limits = [], isAccountDetails = false, onFeesAndLimits, onUpgradeAccount }) => {
+
+const TraderAccounts = ({ account = {}, activeTheme, limits = [], isAccountDetails = false, onFeesAndLimits, onUpgradeAccount, logout }) => {
     // let limitLevel = limits.filter(obj => obj.verification_level === account.level);
     return (
         <div className="d-flex">
@@ -35,9 +37,14 @@ const TraderAccounts = ({ account = {}, activeTheme, limits = [], isAccountDetai
                 </div>
                 {!isAccountDetails && account.level >= 1 && account.level < 4 &&
                     <div className="trade-account-link mb-2">
-                        <span className="pointer" onClick={onUpgradeAccount}>
-                            {STRINGS.SUMMARY.UPGRADE_ACCOUNT.toUpperCase()}
-                        </span>
+                    <span className="pointer" onClick={onUpgradeAccount}>
+                        {STRINGS.SUMMARY.UPGRADE_ACCOUNT.toUpperCase()}
+                    </span>
+                    {isMobile ?
+                        <div className="my-2" onClick={() => logout()} > 
+                            {STRINGS.LOGOUT}
+                        </div> 
+                    :'' }
                     </div>
                 }
             </div>
