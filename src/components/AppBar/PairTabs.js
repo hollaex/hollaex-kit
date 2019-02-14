@@ -151,12 +151,14 @@ class PairTabs extends Component {
             this.setTabsLocal(localTabs);
             if (activePairTab === pair || activePath !== 'trade') {
                 let index = tabPairs.indexOf(pair);
+                let tabValue = '';
+                if (index < (tabPairs.length - 1)) {
+                    tabValue = tabPairs[index + 1];
+                } else {
+                    tabValue = tabPairs[index - 1];
+                }
                 timeOut = setTimeout(() => {
-                    if (index < (tabPairs.length - 1)) {
-                        this.onTabClick(tabPairs[index + 1]);
-                    } else {
-                        this.onTabClick(tabPairs[index - 1]);
-                    }
+                    this.onTabClick(tabValue);
                 }, 300);
             }
             tabPairs = Object.keys(localTabs);

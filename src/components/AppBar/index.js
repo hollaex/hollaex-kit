@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import classnames from 'classnames';
 import { Link } from 'react-router';
 import ReactSVG from 'react-svg';
@@ -16,6 +17,8 @@ import MenuList from './MenuList';
 import { MobileBarWrapper } from '../';
 import STRINGS from '../../config/localizedStrings';
 import { isLoggedIn } from '../../utils/token';
+import { getMe, setMe } from '../../actions/userAction';
+import { setNotification, NOTIFICATIONS } from '../../actions/appActions';
 
 class AppBar extends Component {
 	state = {
@@ -33,6 +36,9 @@ class AppBar extends Component {
 		if (this.props.user) {
 			this.checkVerificationStatus(this.props.user);
 		}
+		if (this.props.isHome && this.props.token) {
+			this.getUserDetails();
+		}
 	}
 	
 	componentWillReceiveProps(nextProps) {
@@ -43,7 +49,23 @@ class AppBar extends Component {
 		if (JSON.stringify(this.props.user) !== JSON.stringify(nextProps.user)) {
 			this.checkVerificationStatus(nextProps.user);
 		}
+		if (this.props.token !== nextProps.token && nextProps.token && nextProps.isHome) {
+			this.getUserDetails();
+		}
 	}
+
+	getUserDetails = () => {
+		return this.props.getMe()
+			.then(({ value }) => {
+				if (value && value.data && value.data.id) {
+					this.props.setMe(value.data);
+				}
+			})
+			.catch(err => {
+				const message = err.message || JSON.stringify(err);
+				this.props.setNotification(NOTIFICATIONS.ERROR, message);
+			})
+	};
 
 	checkVerificationStatus = user => {
 		let userData = user.userData || {};
@@ -313,9 +335,15 @@ const mapStateToProps = (state, ownProps) => {
 		pairs: state.app.pairs
 }};
 
+const mapDispatchToProps = (dispatch) => ({
+	getMe: bindActionCreators(getMe, dispatch),
+	setMe: bindActionCreators(setMe, dispatch),
+	setNotification: bindActionCreators(setNotification, dispatch)
+});
+
 AppBar.defaultProps = {
 	noBorders: false,
 	isHome: false
 };
 
-export default connect(mapStateToProps)(AppBar);
+export default connect(mapStateToProps, mapDispatchToProps)(AppBar);

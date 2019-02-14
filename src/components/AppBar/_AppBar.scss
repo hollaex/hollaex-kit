@@ -255,13 +255,13 @@ $app-bar-pairs-up: green;
 	}
 
 	.transition_open {
-		left: -5rem;
+		left: -3.5rem;
 		-webkit-animation: slide 0.5s forwards;
 		animation: slide 0.5s forwards;
 	}
 
 	.transition_close {
-		left: 5rem;
+		left: 3.5rem;
 		-webkit-animation: slide 0.5s backwards;
 		animation: slide 0.5s backwards;
 		z-index: 99;

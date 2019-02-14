@@ -24,8 +24,13 @@ class MenuList extends Component {
         document.removeEventListener('click', this.onOutsideClick);
     }
 
+    logout = () => {
+        this.props.logout();
+        this.props.closeAccountMenu();
+    }
+
     render() {
-        const { selectedMenu, handleMenu, logout, securityPending, verificationPending } = this.props;
+        const { selectedMenu, handleMenu, securityPending, verificationPending } = this.props;
         return (
             <div id="tab-account-menu" className="app-bar-account-menu">
                 <div
@@ -75,7 +80,7 @@ class MenuList extends Component {
                     {STRINGS.ACCOUNTS.TAB_API}
                 </div> */}
                 <div
-                    className="app-bar-account-menu-list d-flex" onClick={logout}>
+                    className="app-bar-account-menu-list d-flex" onClick={this.logout}>
                     <div className="notification-content"></div>
                     <ReactSVG path={ICONS.TAB_SIGNOUT} wrapperClassName="app-bar-account-list-icon" />
                     {STRINGS.ACCOUNTS.TAB_SIGNOUT}
