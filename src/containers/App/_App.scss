@@ -170,6 +170,10 @@ $inner_container-border: 1px solid $colors-main-black;
 		.sell-order-04 {
 			stroke: $dark-app-background-color;
 		}
+		.copy-notification-0,
+		.copy-notification-1 {
+			fill: $dark-icon-color;
+		}
 	}
 }
 

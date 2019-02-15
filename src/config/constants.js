@@ -68,6 +68,7 @@ export const ICONS = {
 	SQUARE_DOTS: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-25.svg`,
 	OTP_CODE: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-28.svg`,
 	COPY_NEW: `${process.env.PUBLIC_URL}/assets/images/copy.svg`,
+	COPY_NOTIFICATION: `${process.env.PUBLIC_URL}/assets/images/copy-icon-snack-notification.svg`,
 	ACCOUNT_LINE: `${process.env.PUBLIC_URL}/assets/images/account.svg`,
 	ACCOUNT_RECOVERY: `${
 		process.env.PUBLIC_URL
@@ -519,9 +520,9 @@ export const MIN_LEVEL_FOR_TOKENS = parseInt(
 	process.env.REACT_APP_MIN_LEVEL_FOR_TOKENS || 2,
 	10
 );
-// const THEME_COLOR=localStorage.getItem("theme")
+const THEME_COLOR=localStorage.getItem("theme")
 export const THEMES = ['dark', 'white'];
-export const THEME_DEFAULT = THEMES[1];
+export const THEME_DEFAULT = THEME_COLOR ? THEME_COLOR : THEMES[1];
 export const CHAT_STATUS_KEY = 'chat:minimized';
 
 export const TRADING_VOLUME_CHART_LIMITS = process.env.REACT_APP_TRADING_VOLUME_CHART_LIMITS

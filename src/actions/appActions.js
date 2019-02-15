@@ -5,6 +5,8 @@ import axios from 'axios';
 export const SET_NOTIFICATION = 'SET_NOTIFICATION';
 export const CLOSE_NOTIFICATION = 'CLOSE_NOTIFICATION';
 export const CLOSE_ALL_NOTIFICATION = 'CLOSE_ALL_NOTIFICATION';
+export const SET_SNACK_NOTIFICATION = 'SET_SNACK_NOTIFICATION';
+export const CLOSE_SNACK_NOTIFICATION = 'CLOSE_SNACK_NOTIFICATION';
 export const NOTIFICATIONS = {
 	ORDERS: 'NOTIFICATIONS_ORDERS',
 	TRADES: 'NOTIFICATIONS_TRADES',
@@ -62,6 +64,16 @@ export const closeNotification = () => ({
 
 export const closeAllNotification = () => ({
 	type: CLOSE_ALL_NOTIFICATION,
+	payload: {}
+});
+
+export const setSnackNotification = (data = {}) => ({
+	type: SET_SNACK_NOTIFICATION,
+	payload: data
+});
+
+export const closeSnackNotification = () => ({
+	type: CLOSE_SNACK_NOTIFICATION,
 	payload: {}
 });
 

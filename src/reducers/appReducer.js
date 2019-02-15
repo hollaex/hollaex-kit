@@ -2,6 +2,8 @@ import {
 	SET_NOTIFICATION,
 	CLOSE_NOTIFICATION,
 	CLOSE_ALL_NOTIFICATION,
+	SET_SNACK_NOTIFICATION,
+	CLOSE_SNACK_NOTIFICATION,
 	CHANGE_LANGUAGE,
 	SET_ANNOUNCEMENT,
 	CHANGE_THEME,
@@ -22,12 +24,20 @@ const EMPTY_NOTIFICATION = {
 	timestamp: undefined
 };
 
+const EMPTY_SNACK_NOTIFICATION = {
+	showSnack: false,
+	icon: '',
+	useSvg: true,
+	content: ''
+};
+
 const INITIAL_STATE = {
 	announcements: [],
 	notifications: [],
 	notificationsQueue: [],
 	chatUnreadMessages: 0,
 	activeNotification: EMPTY_NOTIFICATION,
+	snackNotification: EMPTY_SNACK_NOTIFICATION,
 	theme: THEME_DEFAULT,
 	language: getLanguage(),
 	pairs: {},
@@ -86,6 +96,24 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 				contactFormData: {}
 			};
 		}
+
+		case SET_SNACK_NOTIFICATION:
+			return {
+				...state,
+				snackNotification: {
+					...state.snackNotification,
+					showSnack: true,
+					icon: payload.icon ? payload.icon : '',
+					useSvg: payload.useSvg ? payload.useSvg : true,
+					content: payload.content ? payload.content : ''
+				}
+			};
+		
+		case CLOSE_SNACK_NOTIFICATION:
+			return {
+				...state,
+				snackNotification: EMPTY_SNACK_NOTIFICATION
+			};
 
 		case SET_UNREAD:
 			return {

@@ -59,7 +59,8 @@ import {
 	Loader,
 	Notification,
 	MessageDisplay,
-	CurrencyList
+	CurrencyList,
+	SnackNotification
 } from '../../components';
 import { ContactForm, HelpfulResourcesForm, Chat as ChatComponent } from '../';
 import ReviewEmailContent from '../Withdraw/ReviewEmailContent';
@@ -713,6 +714,7 @@ class Container extends Component {
 						)}
 					</div>
 				</div>
+				<SnackNotification />
 			</div>
 		);
 	}

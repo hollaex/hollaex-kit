@@ -261,9 +261,9 @@ $app-bar-pairs-up: green;
 	}
 
 	.transition_close {
-		left: 3.5rem;
-		-webkit-animation: slide 0.5s backwards;
-		animation: slide 0.5s backwards;
+		left: 0;
+		-webkit-animation: slideRev 0.5s backwards;
+		animation: slideRev 0.5s backwards;
 		z-index: 99;
 	}
 
@@ -273,6 +273,14 @@ $app-bar-pairs-up: green;
 
 	@keyframes slide {
 		100% { left: 0; }
+	}
+	
+	@-webkit-keyframes slideRev {
+		100% { left: -4rem; }
+	}
+
+	@keyframes slideRev {
+		100% { left: -4rem; }
 	}
 
 	.app_bar-pair-overflow {

@@ -44,6 +44,7 @@ export default {
 	ACCOUNT_TEXT: 'Account',
 	CLOSE_TEXT: 'Close',
 	COPY_TEXT: 'Copy',
+	COPY_SUCCESS_TEXT: 'Successfully Copied', // ToDO: need to Add it in farsi.
 	UPLOAD_TEXT: 'Upload',
 	OR_TEXT: 'Or',
 	CONTACT_US_TEXT: 'Contact us',

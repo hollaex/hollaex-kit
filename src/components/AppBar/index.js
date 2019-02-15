@@ -318,6 +318,7 @@ class AppBar extends Component {
 						verificationPending={verificationPending}
 						handleMenu={this.handleMenu}
 						logout={logout}
+						activePath={activePath}
 						closeAccountMenu={this.closeAccountMenu}
 					/>
 				}

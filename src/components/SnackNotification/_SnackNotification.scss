@@ -1,0 +1,68 @@
+
+.snack_notification-wrapper {
+    background-color: $colors-white;
+    border-top: .3rem solid $colors-deactivate;
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+    font-family: $raleway--font-family;
+    height: 3.5rem;
+    left: calc(50vw - 7.5rem);
+    padding: .3rem .5rem !important;
+    position: absolute;
+    // top: 1rem;
+    width: 20rem;
+    z-index: 9999;
+    -webkit-box-shadow: 2px 2px 3px 2px rgba(0, 0, 0, 0.4);
+	-moz-box-shadow: 2px 2px 3px 2px rgba(0, 0, 0, 0.4);
+    box-shadow: 2px 2px 3px 2px rgba(0, 0, 0, 0.4);
+    
+    .notification-text {
+        font-size: 1.20rem;
+        font-weight: 400;
+    }
+
+    .notification-icon {
+        width: 2rem;
+    }
+}
+
+.snack_open {
+    top: 0;
+    -webkit-animation: snackSlide 0.5s forwards;
+    animation: snackSlide 0.5s forwards;
+}
+
+.snack_close {
+    top: 1rem;
+    -webkit-animation: slideClose 0.5s forwards;
+    animation: slideClose 0.5s forwards;
+}
+
+@-webkit-keyframes snackSlide {
+    100% { top: 1rem; }
+}
+
+@keyframes snackSlide {
+    100% { top: 1rem; }
+}
+
+@-webkit-keyframes slideClose {
+    100% { top: 0; }
+}
+
+@keyframes slideClose {
+    100% { top: 0; }
+}
+
+.dark-theme {
+    .snack_notification-wrapper {
+        background-color: $dark-app-background-color;
+        border-top-color: $dark-app-line-divider;
+        border-left: 1px solid $dark-app-line-divider;
+        border-right: 1px solid $dark-app-line-divider;
+        border-bottom: 1px solid $dark-app-line-divider;
+        -webkit-box-shadow: none;
+        -moz-box-shadow: none;
+        box-shadow: none;
+    }
+}
