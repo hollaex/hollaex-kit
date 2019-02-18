@@ -45,7 +45,7 @@ class CaptchaField extends Component {
 		return (
 			active && (
 				<div
-					className={classnames('field-wrapper', { hidden: !ready })}
+					className={classnames('field-wrapper', 'captcha-wrapper', { hidden: !ready })}
 				>
 					<Recaptcha
 						ref={this.setRef}

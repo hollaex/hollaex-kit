@@ -1,5 +1,26 @@
 $content-wrapper--max-width: $bp-xs;
+$content-wrapper-width-small-devices: 475px;
 $container--padding: 4rem;
+$container--padding-sm: 1.3rem;
+
+.light-auth-body {
+	background: url($background-image) !important;
+	background-repeat: no-repeat;
+	background-size: cover;
+	position: relative;
+
+	&:before {
+		position: absolute;
+		content: '';
+		width: 100%;
+		height: 130%;
+		background-color: rgba(241, 242, 242, 0.6);
+	}
+}
+
+.dark-auth-body {
+	background: $dark-app-light-background !important;
+}
 
 .layout-mobile {
 	&.auth-wrapper {

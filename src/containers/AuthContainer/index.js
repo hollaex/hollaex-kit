@@ -6,11 +6,19 @@ import { FLEX_CENTER_CLASSES } from '../../config/constants';
 import { getClasesForLanguage } from '../../utils/string';
 import { getThemeClass } from '../../utils/theme';
 
+const updateThemeToBody = (theme = 'white') => {
+	const themeName = theme === 'dark' ? 'dark-auth-body' : 'light-auth-body';
+	if (document.body) {
+		document.body.className = themeName;
+	}
+};
+
 const AuthContainer = ({ activeLanguage, activeTheme, children }) => {
 	const languageClasses = getClasesForLanguage(activeLanguage);
 	const childWithLanguageClasses = React.Children.map(children, (child) =>
 		React.cloneElement(child, { activeLanguage, languageClasses })
 	);
+	updateThemeToBody(activeTheme);
 	return (
 		<div
 			className={classnames(

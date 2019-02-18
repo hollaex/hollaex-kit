@@ -97,6 +97,7 @@ class Container extends Component {
 			this.initSocketConnections();
 		}
 		this._resetTimer();
+		this.updateThemeToBody(this.props.activeTheme);
 	}
 
 	componentWillReceiveProps(nextProps) {
@@ -130,6 +131,9 @@ class Container extends Component {
 		) {
 			// this.goToAccountPage();
 		}
+		if (this.props.activeTheme !== nextProps.activeTheme) {
+			this.updateThemeToBody(nextProps.activeTheme);
+		}
 	}
 
 	componentWillUnmount() {
@@ -145,6 +149,13 @@ class Container extends Component {
 			clearTimeout(this.state.idleTimer);
 		}
 	}
+
+	updateThemeToBody = theme => {
+		const themeName = theme === 'dark' ? 'dark-app-body' : '';
+		if (document.body) {
+			document.body.className = themeName;
+		}
+	};
 
 	_resetTimer = () => {
 		if (this.state.idleTimer) {

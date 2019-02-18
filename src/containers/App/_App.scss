@@ -1,5 +1,9 @@
 $inner_container-border: 1px solid $colors-main-black;
 
+.dark-app-body {
+	background: $dark-app-background-color !important;
+}
+
 .app_container {
 	// height: 100%;
 	min-height: 100vh;
@@ -216,7 +220,8 @@ $inner_container-border: 1px solid $colors-main-black;
 		font-size: 1rem !important;
 	}
 	
-	.presentation_container {
+	.presentation_container,
+	.trade_tabs-container {
 		width: $content-display-width !important;
 	}
 	.app_bar-pair-tab {
@@ -238,5 +243,36 @@ $inner_container-border: 1px solid $colors-main-black;
 				max-height: $max-content-secondary-height-lg !important;
 			}
 		}
+	}
+}
+
+@media screen and (max-width: 1096px) {
+	.app_bar-pair-tab {
+		min-width: 19rem !important;
+		max-width: 19rem !important;
+	}
+	.presentation_container,
+	.trade_tabs-container {
+		width: 65rem !important;
+	}
+
+	.app_container {
+		.app_container-sidebar {
+			min-width: $sidebar-width-md;
+			max-width: $sidebar-width-md;
+		}
+		.sidebar_hub-content {
+			margin: 1.3rem !important;
+		}
+		// &.layout-desktop {
+		// 	.app_container-content {
+		// 		min-height: $max-content-height-lg !important;
+		// 		max-height: $max-content-height-lg !important;
+		// 	}
+		// 	.app_container-secondary-content {
+		// 		min-height: $max-content-secondary-height-lg !important;
+		// 		max-height: $max-content-secondary-height-lg !important;
+		// 	}
+		// }
 	}
 }

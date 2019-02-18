@@ -452,3 +452,11 @@
         font-size: 1rem;
     }
 }
+
+@media screen and (max-width: 1096px) {
+    .summary-container {
+        .summary-section_1 {
+            height: 16rem !important;
+        }
+    }
+}
