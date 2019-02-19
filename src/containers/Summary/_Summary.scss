@@ -455,8 +455,21 @@
 
 @media screen and (max-width: 1096px) {
     .summary-container {
-        .summary-section_1 {
-            height: 16rem !important;
+        .summary-content-txt {
+            font-size: 0.9rem;
         }
+        .assets-wrapper,
+        .trader-account-wrapper {
+            font-size: 0.9rem;
+        }
+        .summary-section_1 {
+            height: 18rem !important;
+        }
+        .summary-section_2 {
+            height: 44rem !important;
+        }
+    }
+    .fee-limits-wrapper .content-txt {
+        font-size: 0.9rem;
     }
 }

@@ -335,7 +335,7 @@ export const generateWithdrawalsHeaders = (symbol, withdrawalPopup) => {
 		       	} else {
 					return isBlockchainTx(transaction_id) && currency !== 'fiat' ?
 						<td key={index}><a target="blank" href={(currency === 'btc' ? BLOCKTRAIL_ENDPOINT : 
-							(currency === 'eth') ? ETHEREUM_ENDPOINT : BITCOINCOM_ENDPOINT) + transaction_id}>{STRINGS.VIEW}</a></td> : <td></td>;
+							(currency === 'eth') ? ETHEREUM_ENDPOINT : BITCOINCOM_ENDPOINT) + transaction_id}>{STRINGS.VIEW}</a></td> : <td key={index}></td>;
 				}
 			}
 		},

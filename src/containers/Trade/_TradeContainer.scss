@@ -135,3 +135,16 @@
 	}
 }
 
+@media screen and (max-width: 1096px) {
+	.trade-container {
+		.trade-col_side_wrapper {
+			min-width: $side-column--width-sm;
+			max-width: $side-column--width-sm;
+		}
+		.trade-col_action_wrapper {
+			min-width: $order_entry-column--width-sm;
+			max-width: $order_entry-column--width-sm;
+		}
+	}
+}
+

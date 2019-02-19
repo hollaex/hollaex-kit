@@ -52,6 +52,7 @@ $tabs-title--margin: 2rem;
 	.trade_block-content {
 		flex: auto;
 		font-size: $trade-font-size;
+		overflow-y: scroll;
 	}
 }
 

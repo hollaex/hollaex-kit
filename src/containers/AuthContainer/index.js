@@ -9,7 +9,7 @@ import { getThemeClass } from '../../utils/theme';
 const updateThemeToBody = (theme = 'white') => {
 	const themeName = theme === 'dark' ? 'dark-auth-body' : 'light-auth-body';
 	if (document.body) {
-		document.body.className = themeName;
+		// document.body.className = themeName;
 	}
 };
 
@@ -33,7 +33,7 @@ const AuthContainer = ({ activeLanguage, activeTheme, children }) => {
 				...FLEX_CENTER_CLASSES
 			)}
 		>
-			<div className={classnames('auth-container', 'f-1', languageClasses)}>
+			<div className={classnames('auth-container', 'f-1', 'h-100', languageClasses)}>
 				{childWithLanguageClasses}
 			</div>
 		</div>

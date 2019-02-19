@@ -798,3 +798,23 @@ $app-bar-pairs-up: green;
 		}
 	}
 }
+
+@media screen and (max-width: 1096px) {
+	.app_bar {
+		font-size: 0.9rem;
+
+		.app_bar-pair-font {
+			font-size: 0.9rem;
+		}
+	}
+	.app-menu-bar {
+		font-size: 0.9rem !important;
+	}
+	.app-bar-add-tab-menu {
+		.app-bar-add-tab-content,
+		.app-bar-tab-menu-list,
+		.app-bar-tab-overflow-content {
+			font-size: 0.9rem;
+		}
+	}
+}

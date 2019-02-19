@@ -10,7 +10,8 @@ const MobileWallet = ({ sections, wallets, balance, prices, navigate }) => (
 			'd-flex',
 			'justify-content-between',
 			'f-1',
-			'apply_rtl'
+			'apply_rtl',
+			'h-100'
 		)}
 	>
 		<div className="d-flex f-05">

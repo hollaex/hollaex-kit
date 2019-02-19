@@ -49,6 +49,7 @@ $inner_container-border: 1px solid $colors-main-black;
 			min-height: $max-content-height-mobile;
 			max-height: $max-content-height-mobile;
 			max-width: $max-content-width-mobile;
+			overflow-y: scroll;
 		}
 		.content-with-bar {
 			min-height: $max-content-height-double-bar-mobile;
@@ -56,6 +57,7 @@ $inner_container-border: 1px solid $colors-main-black;
 			max-width: $max-content-width-mobile;
 			padding: $content-display-vertical-margin;
 			margin: 0;
+			overflow-y: scroll;
 		}
 	}
 	.app_container-content {
@@ -247,6 +249,32 @@ $inner_container-border: 1px solid $colors-main-black;
 }
 
 @media screen and (max-width: 1096px) {
+	.font-small,
+	.exir-button,
+	.field-wrapper,
+	.action_notification-text,
+	.wallet-assets_block-table,
+	.accordion_section_content,
+	.verification_container .header-content,
+	.verification_container .content-text,
+	.table_body-wrapper,
+	.wallet_section-title-amount,
+	.wallet_section-title,
+	.trade_tabs-container .trade_tabs-content,
+	.toogle_button-wrapper .toogle-content,
+	.trade_block-wrapper .trade_block-content,
+	.ohlc_data_wrapper .ohlc_label,
+	.ohlc_value,
+	.information_block-text_wrapper .text,
+	.qr-text,
+	.header_title-children,
+	.placeholder,
+	.notification-content-wrapper,
+	.otp_form-section-wrapper .otp_form-section-text,
+	.popup_info-wrapper .popup_info-text,
+	.otp_secret {
+		font-size: 0.9rem !important;
+	}
 	.app_bar-pair-tab {
 		min-width: 19rem !important;
 		max-width: 19rem !important;
@@ -264,15 +292,5 @@ $inner_container-border: 1px solid $colors-main-black;
 		.sidebar_hub-content {
 			margin: 1.3rem !important;
 		}
-		// &.layout-desktop {
-		// 	.app_container-content {
-		// 		min-height: $max-content-height-lg !important;
-		// 		max-height: $max-content-height-lg !important;
-		// 	}
-		// 	.app_container-secondary-content {
-		// 		min-height: $max-content-secondary-height-lg !important;
-		// 		max-height: $max-content-secondary-height-lg !important;
-		// 	}
-		// }
 	}
 }
