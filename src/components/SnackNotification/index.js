@@ -3,6 +3,7 @@ import ReactSVG from 'react-svg';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import classnames from 'classnames';
+import { isMobile } from 'react-device-detect';
 
 import { closeSnackNotification } from '../../actions/appActions';
 
@@ -43,6 +44,7 @@ class SnackNotification extends Component {
                     "d-flex",
                     "align-items-center",
                     {
+                        "mobile-notification": isMobile,
                         "snack_open": snackProps.showSnack,
                         "snack_close": this.state.closeSnack,
                     }

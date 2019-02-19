@@ -142,7 +142,7 @@ class AppBar extends Component {
 						&& <div className="app-bar-account-notification">{securityPending + verificationPending}</div>
 					}
 				</div>
-				<div>{STRINGS.ACCOUNT_TEXT}</div>
+				<div className="d-flex align-items-center">{STRINGS.ACCOUNT_TEXT}</div>
 			</div>
 		) : (
 			<div className={classnames(...WRAPPER_CLASSES)}>

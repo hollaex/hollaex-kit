@@ -6,7 +6,7 @@
     border-bottom-right-radius: 4px;
     font-family: $raleway--font-family;
     height: 3.5rem;
-    left: calc(50vw - 7.5rem);
+    left: calc(50vw - 10rem);
     padding: .3rem .5rem !important;
     position: absolute;
     // top: 1rem;
@@ -65,4 +65,21 @@
         -moz-box-shadow: none;
         box-shadow: none;
     }
+    .mobile-notification {
+        border-left: 1px solid $dark-app-line-divider;
+        border-right: 1px solid $dark-app-line-divider;
+        border-top: 1px solid $dark-app-line-divider;
+        border-bottom: .5rem solid $dark-app-line-divider;
+    }
+}
+
+.mobile-notification {
+    border-top: 0;
+    border-bottom: .5rem solid $colors-black;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    width: 22rem;
+    left: calc(50vw - 11rem);
 }

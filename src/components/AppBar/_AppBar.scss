@@ -533,6 +533,41 @@ $app-bar-pairs-up: green;
 			margin: 0 0.75rem;
 		}
 	}
+	.app-bar-account {
+		color: $colors-white;
+		cursor: pointer;
+		margin-right: 0.5rem;
+	}
+	.app-bar-account-content {
+		align-items: center;
+		flex-direction: column;
+		justify-content: center;
+		position: relative;
+	}
+	.app-bar-currency-icon {
+		margin: .5rem .3rem 0 .3rem;
+		width: 1.5rem;
+		.st0 {
+			fill: $colors-white !important;
+			stroke-width: 0rem;
+		}
+	}
+	.app-bar-account-notification {
+		position: absolute;
+		right: -6px;
+		top: 0;
+		height: $app-menu-notification-size;
+		width: $app-menu-notification-size;
+		border-radius: $app-menu-notification-size;
+		background-color: red;
+		color: white;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		font-size: .8rem;
+		line-height: 1;
+		font-weight: bold;
+	}
 }
 
 .app-menu-bar {
