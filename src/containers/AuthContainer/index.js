@@ -33,7 +33,7 @@ const AuthContainer = ({ activeLanguage, activeTheme, children }) => {
 				...FLEX_CENTER_CLASSES
 			)}
 		>
-			<div className={classnames('auth-container', 'f-1', 'h-100', languageClasses)}>
+			<div className={classnames('auth-container', 'f-1', languageClasses)}>
 				{childWithLanguageClasses}
 			</div>
 		</div>

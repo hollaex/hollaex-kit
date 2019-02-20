@@ -267,6 +267,7 @@ class Container extends Component {
 			}
 			if (data.settings && data.settings.theme !== this.props.activeTheme) {
 				this.props.changeTheme(data.settings.theme);
+				localStorage.setItem("theme", data.settings.theme);
 			}
 		});
 

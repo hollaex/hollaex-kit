@@ -113,7 +113,10 @@ export default function reducer(state = INITIAL_STATE, action) {
 				verification_level,
 				otp_enabled,
 				username,
-				created_at
+				created_at,
+				bank_account,
+				address,
+				id_data
 			} = action.payload;
 			const userData = extractuserData(action.payload);
 			const fees = action.payload.fees || state.fees;
@@ -139,7 +142,10 @@ export default function reducer(state = INITIAL_STATE, action) {
 				fees,
 				settings,
 				username,
-				created_at
+				created_at,
+				bank_account,
+				address,
+				id_data
 			};
 		}
 		case 'SET_USER_DATA': {

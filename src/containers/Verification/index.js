@@ -58,15 +58,16 @@ class Verification extends Component {
 	};
 
 	componentDidMount() {
-		if (this.props.token) {
-			this.init(this.props);
+		if(this.props.user) {
+			this.setUserData(this.props.user);
 		}
 	}
 
 	componentWillReceiveProps(nextProps) {
-		if (!nextProps.fetchingAuth && this.props.fetchingAuth) {
-			this.init(nextProps);
-		} else if (nextProps.activeLanguage !== this.props.activeLanguage) {
+		if(nextProps.user !== this.props.user) {
+			this.setUserData(nextProps.user);
+		}
+		if (nextProps.activeLanguage !== this.props.activeLanguage) {
 			this.updateTabs(this.state.user, nextProps.activeLanguage);
 		}
 	}
@@ -77,16 +78,6 @@ class Verification extends Component {
 		}
 	}
 	
-	init = (props) => {
-		getUserData()
-			.then(({ data }) => {
-				this.setUserData(data);
-			})
-			.catch((err) => {
-				// TODO what to do in case of error
-			});
-	};
-
 	setUserData = (user = {}) => {
 		const activeTab = this.calculateActiveTab(user);
 		if (activeTab > 4) {
