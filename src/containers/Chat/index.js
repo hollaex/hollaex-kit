@@ -11,7 +11,7 @@ import {
 	USER_TYPES,
 	MESSAGE_TYPES
 } from '../../actions/appActions';
-import { getToken } from '../../utils/token';
+import { getToken, isLoggedIn } from '../../utils/token';
 
 const ENTER_KEY = 'Enter';
 
@@ -25,10 +25,20 @@ class Chat extends Component {
 	};
 
 	componentWillMount() {
-		this.initializeChatWs(getToken());
+		if (!this.props.fetchingAuth && isLoggedIn()) {
+			this.initializeChatWs(getToken());
+		}
 	}
 
 	componentWillReceiveProps(nextProps) {
+		if (
+			!nextProps.fetchingAuth &&
+			nextProps.fetchingAuth !== this.props.fetchingAuth
+		) {
+			if (!this.state.chatWs && isLoggedIn()) {
+				this.initializeChatWs(getToken());
+			}
+		}
 		if (nextProps.username_set) {
 			this.state.chatWs.emit('changeUsername');
 		}
@@ -45,6 +55,8 @@ class Chat extends Component {
 				token: token ? `Bearer ${token}` : ''
 			}
 		});
+
+		this.setState({ chatWs });
 
 		chatWs.on('init', ({ messages = [], announcements = [] }) => {
 			this.setState({
@@ -92,8 +104,6 @@ class Chat extends Component {
 				this.setState({ messages });
 			}
 		});
-
-		this.setState({ chatWs });
 	};
 
 	closeChatSocket = () => {
@@ -183,6 +193,7 @@ class Chat extends Component {
 }
 
 const mapStateToProps = (store) => ({
+	fetchingAuth: store.auth.fetching,
 	username: store.user.username,
 	username_set: store.user.username_set,
 	userType: store.auth.userType,
