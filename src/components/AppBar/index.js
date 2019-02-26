@@ -135,7 +135,7 @@ class AppBar extends Component {
 
 		const WRAPPER_CLASSES = ['app_bar-controllers-splash', 'd-flex'];
 		return token ? (
-			<div className="d-flex app-bar-account" onClick={ this.props.router.location.pathname==='/' && isMobile ? this.handleSummary:this.handleAccountMenu}>
+			<div className="d-flex app-bar-account" onClick={this.handleSummary}>
 				<div className="app-bar-account-content mr-2">
 					<ReactSVG path={ICONS.SIDEBAR_ACCOUNT_INACTIVE} wrapperClassName="app-bar-currency-icon" />
 					{!!(securityPending + verificationPending)

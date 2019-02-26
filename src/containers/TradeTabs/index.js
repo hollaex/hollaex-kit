@@ -7,7 +7,7 @@ import classnames from 'classnames';
 import { Paginator, SearchBox } from '../../components';
 import { ICONS, BASE_CURRENCY, CURRENCIES } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
-import { formatPercentage } from '../../utils/currency';
+import { formatPercentage, formatAverage } from '../../utils/currency';
 
 class AddTradeTab extends Component {
     state = {
@@ -114,6 +114,10 @@ class AddTradeTab extends Component {
     render() {
         const { activeTheme, pairs, tickers } = this.props;
         const { page, pageSize, count, data } = this.state;
+        let quickPair = this.props.pair || '';
+        if (!this.props.pair && Object.keys(pairs).length) {
+            quickPair = Object.keys(pairs)[0];
+        }
         return (
             <div className="trade_tabs-container">
                 <div className="mb-5">
@@ -126,7 +130,7 @@ class AddTradeTab extends Component {
                 <div className="trade_tabs-content">
                     <div className="d-flex justify-content-end">
                         <span className="trade_tabs-link link-separator">
-                            <Link to="/quick-trade/btc-eur">{STRINGS.QUICK_TRADE}</Link>
+                            <Link to={`/quick-trade/${quickPair}`}>{STRINGS.QUICK_TRADE}</Link>
                         </span>
                         <span className="trade_tabs-link link-separator">
                             <Link to="/account">{STRINGS.ACCOUNTS.TITLE}</Link>
@@ -150,7 +154,8 @@ class AddTradeTab extends Component {
                             let { formatToCurrency } = CURRENCIES[pair.pair_base || BASE_CURRENCY];
                             let ticker = tickers[key] || {};
                             const priceDifference = (ticker.close || 0) - (ticker.open || 0);
-                            const priceDifferencePercent = formatPercentage((ticker.close - ticker.open) / ticker.open);
+                            const tickerPercent = ((priceDifference / ticker.open) * 100);
+                            const priceDifferencePercent = formatPercentage(tickerPercent);
                             return (
                                 <div
                                     key={index}
@@ -168,12 +173,12 @@ class AddTradeTab extends Component {
                                         </div>
                                         <div>{STRINGS.PRICE}:
                                             <span className="title-font ml-1">
-                                                {`${STRINGS[`${pair.pair_2.toUpperCase()}_CURRENCY_SYMBOL`]} ${formatToCurrency(ticker.close)}`}
+                                                {`${STRINGS[`${pair.pair_2.toUpperCase()}_CURRENCY_SYMBOL`]} ${formatAverage(formatToCurrency(ticker.close))}`}
                                             </span>
                                         </div>
                                         <div className="d-flex">
                                             <div className={priceDifference < 0 ? "price-diff-down trade-tab-price_diff_down" : "trade-tab-price_diff_up price-diff-up"}>
-                                                {formatToCurrency(priceDifference)}
+                                                {formatAverage(formatToCurrency(priceDifference))}
                                             </div>
                                             <div
                                                 className={priceDifference < 0
@@ -203,7 +208,8 @@ class AddTradeTab extends Component {
 const mapStateToProps = (store) => ({
     activeTheme: store.app.theme,
     pairs: store.app.pairs,
-    tickers: store.app.tickers
+    tickers: store.app.tickers,
+    pair: store.app.pair
 });
 
 export default connect(mapStateToProps)(AddTradeTab);

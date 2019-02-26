@@ -4,7 +4,7 @@ import classnames from 'classnames';
 
 import { ICONS, CURRENCIES, BASE_CURRENCY } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
-import { formatPercentage } from '../../utils/currency';
+import { formatPercentage, formatAverage } from '../../utils/currency';
 import SearchBox from './SearchBox';
 
 class AddTabList extends Component {
@@ -83,7 +83,8 @@ class AddTabList extends Component {
                             let ticker = tickers[pair];
                             let { formatToCurrency } = CURRENCIES[menu.pair_base || BASE_CURRENCY];
                             const priceDifference = (ticker.close || 0) - (ticker.open || 0);
-                            const priceDifferencePercent = formatPercentage((ticker.close - ticker.open) / ticker.open);
+                            const tickerPercent = ((priceDifference / ticker.open) * 100);
+                            const priceDifferencePercent = formatPercentage(tickerPercent);
                             return (
                                 <div
                                     key={index}
@@ -99,9 +100,9 @@ class AddTabList extends Component {
                                     <div className="app_bar-pair-font">
                                         {STRINGS[`${menu.pair_base.toUpperCase()}_SHORTNAME`]}/{STRINGS[`${menu.pair_2.toUpperCase()}_SHORTNAME`]}:
                                     </div>
-                                    <div className="title-font ml-1">{`${STRINGS[`${menu.pair_2.toUpperCase()}_CURRENCY_SYMBOL`]} ${formatToCurrency(ticker.close)}`}</div>
+                                    <div className="title-font ml-1">{`${STRINGS[`${menu.pair_2.toUpperCase()}_CURRENCY_SYMBOL`]} ${formatAverage(formatToCurrency(ticker.close))}`}</div>
                                     <div className={priceDifference < 0 ? "app-price-diff-down app-bar-price_diff_down" : "app-bar-price_diff_up app-price-diff-up"}>
-                                        {formatToCurrency(priceDifference)}
+                                        {formatAverage(formatToCurrency(priceDifference))}
                                     </div>
                                     <div
                                         className={priceDifference < 0
