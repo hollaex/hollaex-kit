@@ -1,4 +1,6 @@
 import axios from 'axios';
+import { ICONS } from '../config/constants';
+import STRINGS from '../config/localizedStrings';
 
 // Set orders from websocket
 export function setUserOrders(orders) {
@@ -30,12 +32,39 @@ export function removeOrder(ids) {
 }
 
 export const submitOrder = (order) => axios.post('/order', order);
-export const cancelOrder = (orderId) => ({
-	type: 'CANCEL_ORDER',
-	payload: axios.delete(`/user/orders/${orderId}`)
-});
+export const cancelOrder = (orderId) => (dispatch) => {
+	axios.delete(`/user/orders/${orderId}`)
+		.then((data) => {
+			dispatch({
+				type: 'CANCEL_ORDER',
+				payload: data
+			});
+			dispatch({
+				type: 'SET_SNACK_NOTIFICATION',
+				payload: {
+					icon: ICONS.CLOSE_CROSS,
+					content: STRINGS.CANCEL_SUCCESS_TEXT
+				}
+			});
+		})
+		.catch((err) => {
+		})
+};
 
-export const cancelAllOrders = (symbol = '') => ({
-	type: 'CANCEL_ALL_ORDERS',
-	payload: axios.delete(`/user/orders?symbol=${symbol}`)
-});
+export const cancelAllOrders = (symbol = '') => dispatch => {
+	axios.delete(`/user/orders?symbol=${symbol}`)
+		.then((data) => {
+			dispatch({
+				type: 'CANCEL_ALL_ORDERS',
+				payload: data
+			});
+			dispatch({
+				type: 'SET_SNACK_NOTIFICATION',
+				payload: {
+					icon: ICONS.CLOSE_CROSS,
+					content: STRINGS.CANCEL_SUCCESS_TEXT
+				}
+			});
+		})
+		.catch((err) => {})
+};

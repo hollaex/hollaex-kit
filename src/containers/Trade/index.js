@@ -45,6 +45,7 @@ class Trade extends Component {
 		chartHeight: 0,
 		chartWidth: 0,
 		symbol: '',
+		cancelDelayData: []
 	};
 
 	componentWillMount() {
@@ -125,7 +126,21 @@ class Trade extends Component {
 	};
 
 	cancelAllOrders = () => {
-		this.props.cancelAllOrders(this.state.symbol);
+		let cancelDelayData = [];
+		this.props.activeOrders.map((order) => {
+			cancelDelayData = [ ...cancelDelayData, order.id ]
+		});
+		this.setState({ cancelDelayData });
+		setTimeout(() => {
+			this.props.cancelAllOrders(this.state.symbol);
+		}, 1000);
+	}
+
+	handleCancelOrders = (id) => {
+		this.setState({ cancelDelayData: this.state.cancelDelayData.concat(id) });
+		setTimeout(() => {
+			this.props.cancelOrder(id);
+		}, 1000);
 	}
 
 	render() {
@@ -138,7 +153,6 @@ class Trade extends Component {
 			bids,
 			activeOrders,
 			userTrades,
-			cancelOrder,
 			balance,
 			marketPrice,
 			activeLanguage,
@@ -147,7 +161,7 @@ class Trade extends Component {
 			orderLimits,
 			pairs
 		} = this.props;
-		const { chartHeight, chartWidth, symbol, activeTab, isLogged } = this.state;
+		const { chartHeight, chartWidth, symbol, activeTab, isLogged, cancelDelayData } = this.state;
 
 		if (symbol !== pair || !pairData) {
 			return <Loader background={false} />;
@@ -156,7 +170,7 @@ class Trade extends Component {
 		const USER_TABS = [
 			{
 				title: STRINGS.ORDERS,
-				children: isLoggedIn() ? <ActiveOrders orders={activeOrders} onCancel={cancelOrder} /> :
+				children: isLoggedIn() ? <ActiveOrders cancelDelayData= {cancelDelayData} orders={activeOrders} onCancel={this.handleCancelOrders} /> :
 				<div className='text-center'>
 					<IconTitle
 						iconPath={activeTheme==='white' ? ICONS.ACTIVE_TRADE_LIGHT : ICONS.ACTIVE_TRADE_DARK}
@@ -270,7 +284,8 @@ class Trade extends Component {
 					<MobileOrders
 						isLoggedIn={isLoggedIn()}
 						activeOrders={activeOrders}
-						cancelOrder={cancelOrder}
+						cancelOrder={this.handleCancelOrders}
+						cancelDelayData={cancelDelayData}
 						cancelAllOrders={cancelAllOrders}
 						goToTransactionsHistory={this.goToTransactionsHistory}
 						pair={pair}

@@ -45,6 +45,7 @@ export default {
 	CLOSE_TEXT: 'Close',
 	COPY_TEXT: 'Copy',
 	COPY_SUCCESS_TEXT: 'Successfully Copied', // ToDO: need to Add it in farsi.
+	CANCEL_SUCCESS_TEXT: 'Successfully Cancelled!', // ToDo: need to add this in farsi when move to exir.
 	UPLOAD_TEXT: 'Upload',
 	OR_TEXT: 'Or',
 	CONTACT_US_TEXT: 'Contact us',

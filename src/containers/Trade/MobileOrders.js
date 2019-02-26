@@ -20,7 +20,8 @@ const MobileOrders = ({
 	userTrades,
 	activeTheme,
 	isLoggedIn,
-	pairs
+	pairs,
+	cancelDelayData
 }) => (
 	<div
 		className={classnames(
@@ -47,7 +48,7 @@ const MobileOrders = ({
 			className="f-1"
 		>
 		{	isLoggedIn ?
-			<ActiveOrders orders={activeOrders} onCancel={cancelOrder} />
+			<ActiveOrders cancelDelayData={cancelDelayData} orders={activeOrders} onCancel={cancelOrder} />
 			:
 			<div className='text-center'>
 					<IconTitle

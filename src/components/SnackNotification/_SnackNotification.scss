@@ -22,36 +22,40 @@
     }
 
     .notification-icon {
-        width: 2rem;
+        width: 1.5rem;
     }
 }
 
 .snack_open {
-    top: 0;
-    -webkit-animation: snackSlide 0.5s forwards;
-    animation: snackSlide 0.5s forwards;
+    top: -1rem;
+    -webkit-animation: snackSlide 0.6s forwards;
+    animation: snackSlide 0.6s forwards;
 }
 
 .snack_close {
     top: 1rem;
-    -webkit-animation: slideClose 0.5s forwards;
-    animation: slideClose 0.5s forwards;
+    -webkit-animation: slideClose 0.6s forwards;
+    animation: slideClose 0.6s forwards;
 }
 
 @-webkit-keyframes snackSlide {
+    0% { top: -1rem; }
     100% { top: 1rem; }
 }
 
 @keyframes snackSlide {
+    0% { top: -1rem; }
     100% { top: 1rem; }
 }
 
 @-webkit-keyframes slideClose {
-    100% { top: 0; }
+    0% { top: 1rem; }
+    100% { top: -1rem; }
 }
 
 @keyframes slideClose {
-    100% { top: 0; }
+    0% { top: 1rem; }
+    100% { top: -1rem; }
 }
 
 .dark-theme {

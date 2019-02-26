@@ -34,6 +34,58 @@ $controllers--color-disabled: $colors-deactivate-color2;
 			border-top: $row--border;
 			border-bottom: $row--border;
 		}
+		.cancel-row-color {
+			@extend .cancel-animate;
+			.cell_box-type {
+				.sell, .buy {
+					@extend .cancel-animate;
+				}
+			}
+			.action_notification-wrapper .notification-info {
+				@extend .cancel-animate;
+			}
+			.cell-wrapper {
+				@extend .cancel-animate;
+				.cell_value-wrapper {
+					@extend .cancel-animate;
+					.cell_value-bar {
+						@extend .cancel-animate;
+					}
+				}
+			}
+		}
+
+		.cancel-animate {
+			-webkit-animation: cancelRow 2s;
+			-moz-animation:    cancelRow 2s;
+			-o-animation:      cancelRow 2s;
+			animation:         cancelRow 2s;
+		}
+		
+		@-webkit-keyframes cancelRow {
+			from {}
+			to {
+				color: $colors-white;
+				background-color: $colors-white;
+				border-color: $colors-white;
+			}
+		}
+		@-moz-keyframes cancelRow {
+			from {}
+			to {
+				color: $colors-white;
+				background-color: $colors-white;
+				border-color: $colors-white;
+			}
+		}
+		@keyframes cancelRow {
+			from {}
+			to {
+				color: $colors-white;
+				background-color: $colors-white;
+				border-color: $colors-white;
+			}
+		}		
 	}
 
 	.cell_box-type {
@@ -110,6 +162,37 @@ $controllers--color-disabled: $colors-deactivate-color2;
 			tr.table_body-row td {
 				border-top-color: $dark-border-main;
 				border-bottom-color: $dark-border-main;
+			}
+			.cancel-animate {
+				-webkit-animation: cancelRowDark 2s;
+				-moz-animation:    cancelRowDark 2s;
+				-o-animation:      cancelRowDark 2s;
+				animation:         cancelRowDark 2s;
+			}
+			
+			@-webkit-keyframes cancelRowDark {
+				from {}
+				to {
+					color: $dark-app-background-color;
+					background-color: $dark-app-background-color;
+					border-color: $dark-app-background-color;
+				}
+			}
+			@-moz-keyframes cancelRowDark {
+				from {}
+				to {
+					color: $dark-app-background-color;
+					background-color: $dark-app-background-color;
+					border-color: $dark-app-background-color;
+				}
+			}
+			@keyframes cancelRowDark {
+				from {}
+				to {
+					color: $dark-app-background-color;
+					background-color: $dark-app-background-color;
+					border-color: $dark-app-background-color;
+				}
 			}
 		}
 		.cell_box-type {
