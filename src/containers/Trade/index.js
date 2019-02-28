@@ -424,8 +424,9 @@ const mapStateToProps = (store) => {
 	const userTrades = store.wallet.trades.data.filter(
 		({ symbol }) => symbol === pair && count++ < 50
 	);
+	count = 0;
 	const activeOrders = store.order.activeOrders.filter(
-		({ symbol }) => symbol === pair
+		({ symbol }) => symbol === pair && count++ < 50
 	);
 	const fees = store.user.fees[pair];
 	return {
