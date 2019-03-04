@@ -242,9 +242,12 @@ class AppBar extends Component {
 		} = this.props;
 		const { isAccountMenu, selectedMenu, securityPending, verificationPending } = this.state;
 		const totalPending = securityPending + verificationPending;
-		let pair = this.props.pair;
-		if (!this.props.pair && Object.keys(pairs).length) {
-			pair = Object.keys(pairs)[0];
+		let pair = '';
+		if (Object.keys(pairs).length) {
+			const { pair_base } = pairs[Object.keys(pairs)[0]];
+			pair = `${pair_base}-${STRINGS.FIAT_SHORTNAME_EN.toLowerCase()}`;
+		} else {
+			pair = this.props.pair;
 		}
 
 		return isMobile ? (
