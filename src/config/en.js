@@ -575,6 +575,16 @@ export default {
 			LIST_ITEM_3: 'Lower fees'
 		}
 	},
+	USER_SETTINGS: { // ToDo: add it in farsi on exir
+		TITLE_TEXT_1: 'Change the settings of your account. From interface, notifcations, username and other customizations.',
+		TITLE_TEXT_2: 'Saving your settings will apply the changes and save it.',
+		TITLE_NOTIFICATION: 'Notification',
+		TITLE_INTERFACE: 'Interface',
+		TITLE_LANGUAGE: 'Language',
+		TITLE_CHAT: 'Chat',
+		TITLE_AUDIO_CUE: 'Audio Cue',
+		TITLE_MANAGE_RISK: 'Manage Risk'
+	},
 	TRANSACTION_HISTORY: {
 		TITLE: 'Transactions  History',
 		TITLE_TRADES: 'Trades  History',

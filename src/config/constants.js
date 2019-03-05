@@ -321,7 +321,13 @@ export const ICONS = {
 	KRAKEN: `${process.env.PUBLIC_URL}/assets/images/cunning-blue-kraken-trader.svg`,
 	SNAPPER: `${process.env.PUBLIC_URL}/assets/images/little-red-snapper-trader.svg`,
 	SHRIMP: `${process.env.PUBLIC_URL}/assets/images/tiny-pink-shrimp-trader.svg`,
-	LEVIATHAN: `${process.env.PUBLIC_URL}/assets/images/black-leviathan-trader.svg`
+	LEVIATHAN: `${process.env.PUBLIC_URL}/assets/images/black-leviathan-trader.svg`,
+	SETTING_NOTIFICATION_ICON: `${process.env.PUBLIC_URL}/assets/images/notification-settings-icon.svg`,
+	SETTING_INTERFACE_ICON: `${process.env.PUBLIC_URL}/assets/images/interface-settings-icon.svg`,
+	SETTING_LANGUAGE_ICON: `${process.env.PUBLIC_URL}/assets/images/language-settings-icon.svg`,
+	SETTING_CHAT_ICON: `${process.env.PUBLIC_URL}/assets/images/chat-settings-icon.svg`,
+	SETTING_AUDIO_ICON: `${process.env.PUBLIC_URL}/assets/images/audio-settings-icon.svg`,
+	SETTING_RISK_ICON: `${process.env.PUBLIC_URL}/assets/images/risk-settings-icon.svg`,
 };
 
 export const SOCIAL_ICONS = {

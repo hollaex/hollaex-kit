@@ -3,17 +3,15 @@ import { reduxForm } from 'redux-form';
 import { isMobile } from 'react-device-detect';
 import renderFields from '../../components/Form/factoryFields';
 import { Button } from '../../components';
-import { required, requiredBoolean } from '../../components/Form/validations';
+import { requiredBoolean } from '../../components/Form/validations';
 import { getErrorLocalized } from '../../utils/errors';
 import STRINGS from '../../config/localizedStrings';
 
 export const generateFormValues = () => ({
-	language: {
+	theme: {
 		type: 'select',
-		validate: [required],
-		label: STRINGS.SETTINGS_LANGUAGE_LABEL,
-		options: STRINGS.SETTINGS_LANGUAGE_OPTIONS,
-		fullWidth: isMobile
+		label: STRINGS.SETTINGS_THEME_LABEL,
+		options: STRINGS.SETTINGS_THEME_OPTIONS
 	},
 	orderConfirmationPopup: {
 		type: 'select',
@@ -22,11 +20,6 @@ export const generateFormValues = () => ({
 		options: STRINGS.SETTINGS_ORDERPOPUP_OPTIONS,
 		fullWidth: isMobile
 
-	},
-	theme: {
-		type: 'select',
-		label: STRINGS.SETTINGS_THEME_LABEL,
-		options: STRINGS.SETTINGS_THEME_OPTIONS
 	}
 });
 

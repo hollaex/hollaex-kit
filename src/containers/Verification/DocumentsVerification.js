@@ -6,9 +6,9 @@ import {
 	requiredWithCustomMessage
 } from '../../components/Form/validations';
 import renderFields from '../../components/Form/factoryFields';
-import { Button, IconTitle } from '../../components';
+import { Button, IconTitle, HeaderSection } from '../../components';
 import STRINGS from '../../config/localizedStrings';
-import HeaderSection, {
+import {
 	IdentificationFormSection,
 	PORSection,
 	SelfieWithPhotoId
