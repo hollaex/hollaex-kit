@@ -12,10 +12,13 @@ import {
 	setUsername,
 	setUsernameStore
 } from '../../actions/userAction';
-import { Accordion, IconTitle, Button, HeaderSection, CustomTabs, CustomMobileTabs, CustomTabBar, MobileTabBar } from '../../components';
+import { IconTitle, Button, HeaderSection, CustomTabs, CustomMobileTabs, CustomTabBar, MobileTabBar } from '../../components';
 import SettingsForm, { generateFormValues } from './SettingsForm';
 import UsernameForm, { generateUsernameFormValues } from './UsernameForm';
 import LanguageForm, { generateLanguageFormValues } from './LanguageForm';
+import  NotificationForm, { generateNotificationFormValues } from './NotificationForm';
+import AudioCueForm, { generateAudioCueFormValues } from './AudioForm';
+import RiskForm from './RiskForm';
 
 import STRINGS from '../../config/localizedStrings';
 import { ICONS } from '../../config/constants';
@@ -47,11 +50,13 @@ class UserSettings extends Component {
 	
 
 	updateTabs = ({ username = '', settings = {} }, activeTab) => {
-		const formValues = generateFormValues();
+		const formValues = generateFormValues({});
 		const usernameFormValues = generateUsernameFormValues(
 			settings.usernameIsSet
 		);
 		const languageFormValue = generateLanguageFormValues();
+		const notificationFormValues = generateNotificationFormValues();
+		const audioFormValues = generateAudioCueFormValues();
 
 		const tabs = [
 			{
@@ -67,9 +72,11 @@ class UserSettings extends Component {
 						/>
 					),
 				content: activeTab === 0 && (
-					<div>
-						Coming soon...
-					</div>
+					<NotificationForm
+						onSubmit={this.onSubmitSettings}
+						formFields={notificationFormValues}
+						initialValues={settings}
+					/>
 				)
 			}, {
 				title: isMobile ? (
@@ -140,9 +147,11 @@ class UserSettings extends Component {
 						/>
 					),
 				content: activeTab === 4 && (
-					<div>
-						Coming soon...
-					</div>
+					<AudioCueForm
+						onSubmit={this.onSubmitUsername}
+						formFields={audioFormValues}
+						initialValues={settings}
+					/>
 				)
 			}, {
 				title: isMobile ? (
@@ -157,9 +166,7 @@ class UserSettings extends Component {
 						/>
 					),
 				content: activeTab === 5 && (
-					<div>
-						Coming soon...
-					</div>
+					<RiskForm />
 				)
 			}
 		];

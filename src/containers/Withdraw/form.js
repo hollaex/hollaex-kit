@@ -174,7 +174,6 @@ class Form extends Component {
 		} = this.props;
 
 		const { dialogIsOpen, dialogOtpOpen } = this.state;
-		console.log('dialogOtpOpen', dialogOtpOpen);
 
 		return (
 			<form onSubmit={handleSubmit}>

@@ -1,6 +1,9 @@
 @import './DropdownField.scss';
 @import './FieldWrapper.scss';
 
+$toggle-size: 14px;
+$toggle-border: 2px;
+$toggle-margin: 2px;
 $placeholder--padding: 0.25rem;
 $placeholder--font-size: $font-size-subtext;
 $placeholder--font-weight: bold;
@@ -51,7 +54,7 @@ $placeholder--font-weight: bold;
 		> * {
 			flex: 1;
 		}
-		.datefield-toogle {
+		.datefield-toggle {
 			&.fa {
 				min-width: 10rem;
 			}
@@ -141,6 +144,68 @@ $placeholder--font-weight: bold;
 	}
 }
 
+.toggle_button-wrapper {
+	.toggle-content {
+		padding: 0 1rem;
+		text-transform: uppercase;
+		padding: 0 0.5rem;
+		font-size: $font-size-subtext;
+		color: $colors-deactivate-color2;
+		height: $toggle-size + $toggle-border * 2 + $toggle-margin * 2;
+		font-family: $raleway-medium--font-family;
+
+		.selected {
+			font-family: $raleway-extrabold--font-family;
+			font-weight: bold;
+			color: $colors-main-black;
+		}
+
+		.toggle-action_button {
+			border: $toggle-border solid $colors-main-black;
+			height: 100%;
+			width: $toggle-size * 3;
+			border-radius: $toggle-size;
+			margin: 0 0.5rem;
+			display: flex;
+			align-items: center;
+			position: relative;
+
+			&.left .toggle-action_button-display {
+				$right-pos: $toggle-size + $toggle-margin * 2;
+				right: calc(100% - #{$right-pos});
+			}
+			&.right .toggle-action_button-display {
+				right: 0;
+			}
+
+			.toggle-action_button-display {
+				position: absolute;
+				transition: 0.5s;
+				background: $colors-main-black;
+				height: $toggle-size;
+				width: $toggle-size;
+				border-radius: 50%;
+				margin: $toggle-margin;
+				top: 0;
+			}
+		}
+	}
+
+	.toggle-side_line {
+		position: relative;
+		&::after {
+			content: '';
+			height: 1px;
+			width: 100%;
+			position: absolute;
+			background-color: $colors-main-black;
+			left: 0;
+			right: 0;
+			top: 50%;
+		}
+	}
+}
+
 .direction_ltr {
 	.dropdown-triangle:after {
 		border-right: 0.25rem solid $colors-main-black;
@@ -162,6 +227,15 @@ $placeholder--font-weight: bold;
 
 	.placeholder {
 		padding-left: $placeholder--padding * 2;
+	}
+
+	.toggle_button-wrapper {
+		.toggle-content {
+			font-family: inherit;
+			.selected {
+				font-family: inherit;
+			}
+		}
 	}
 }
 
@@ -197,6 +271,29 @@ $placeholder--font-weight: bold;
 	.file_wrapper {
 		.text_overflow {
 			color: $dark-font-sub-text-color;
+		}
+	}
+	.toggle_button-wrapper {
+		.toggle-content {
+			color: $dark-font-sub-text-1-color;
+
+			.selected {
+				color: $dark-font-main-text-color;
+			}
+
+			.toggle-action_button {
+				border-color: $dark-font-main-text-color;
+
+				.toggle-action_button-display {
+					background: $dark-font-main-text-color;
+				}
+			}
+		}
+
+		.toggle-side_line {
+			&::after {
+				background-color: $dark-border-main;
+			}
 		}
 	}
 }

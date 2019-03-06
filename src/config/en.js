@@ -583,7 +583,24 @@ export default {
 		TITLE_LANGUAGE: 'Language',
 		TITLE_CHAT: 'Chat',
 		TITLE_AUDIO_CUE: 'Audio Cue',
-		TITLE_MANAGE_RISK: 'Manage Risk'
+		TITLE_MANAGE_RISK: 'Manage Risk',
+		ORDERBOOK_LEVEL: 'Orderbook Levels (Max 20)',
+		CREATE_ORDER_WARING: 'Create Order Warning',
+		NOTIFICATION_FORM: {
+			TRADE_POPUPS: 'Trade Pop ups',
+			ORDER_SUBMIT_CONFIRMATION: 'Ask for confirmation before submitting orders',
+			ORDER_COMPLETED_POPUP: 'Show pop up when order has been completed',
+			ORDER_PARTIALLY_COMPLETED: 'Show pop up when order has partially filled pop up',
+		},
+		AUDIO_CUE_FORM: {
+			ORDERS_COMPLETED_AUDIO: 'Play an audio cue when one of your orders is fully filled',
+			ORDERS_PARTIAL_AUDIO: 'Play an audio cue when one of your orders is partially filled',
+			PUBLIC_TRADE_AUDIO: 'Play an audio cue on every public trade'
+		},
+		RISK_MANAGEMENT: {
+			INFO_TEXT: 'Create a warning pop up when a trade order value goes over a set percentage amount of your portfolio',
+			INFO_TEXT_1: 'Total assets value in Toman: {0}',
+		}
 	},
 	TRANSACTION_HISTORY: {
 		TITLE: 'Transactions  History',
@@ -668,6 +685,7 @@ export default {
 		sell: 'sell'
 	},
 	SIDES: [{ value: 'buy', label: 'buy' }, { value: 'sell', label: 'sell' }],
+	DEFAULT_TOGGLE_OPTIONS: [{ value: 'on', label: 'on' }, { value: 'off', label: 'off' }], // ToDo: Add it into farsi
 	SIZE: 'Size',
 	PRICE: 'Price',
 	FEE: 'Fee',
@@ -879,7 +897,7 @@ export default {
 		{ value: false, label: 'NO' },
 		{ value: true, label: 'YES' }
 	],
-	SETTINGS_THEME_LABEL: 'Theme', // TODO set right labels
+	SETTINGS_THEME_LABEL: 'User Interface Theme', // TODO set right labels // ToDo
 	SETTINGS_THEME_OPTIONS: [
 		{ value: 'white', label: 'White' },
 		{ value: 'dark', label: 'Dark' }

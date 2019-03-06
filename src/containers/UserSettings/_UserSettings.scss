@@ -1,0 +1,11 @@
+.toggle-wrapper {
+	border-top: 1px solid $colors-deactivate-color1;
+	border-bottom: 1px solid $colors-deactivate-color1;
+}
+
+.dark-theme {
+    .toggle-wrapper {
+        border-top: 1px solid $dark-inactive-color;
+        border-bottom: 1px solid $dark-inactive-color;
+    }
+}

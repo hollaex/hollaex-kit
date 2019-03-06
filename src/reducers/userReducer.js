@@ -94,7 +94,8 @@ const INITIAL_STATE = {
 		usernameIsSet: false,
 		orderConfirmationPopup: true,
 		theme: THEME_DEFAULT,
-		language: DEFAULT_LANGUAGE
+		language: DEFAULT_LANGUAGE,
+		orderBookLevels: 10
 	},
 	addressRequest: INITIAL_ADDRESS_OBJECT,
 	limits: INITIAL_LIMIT_OBJECT,

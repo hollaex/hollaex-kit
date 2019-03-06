@@ -3,23 +3,41 @@ import { reduxForm } from 'redux-form';
 import { isMobile } from 'react-device-detect';
 import renderFields from '../../components/Form/factoryFields';
 import { Button } from '../../components';
-import { requiredBoolean } from '../../components/Form/validations';
+import { required, minValue, maxValue, step } from '../../components/Form/validations';
 import { getErrorLocalized } from '../../utils/errors';
 import STRINGS from '../../config/localizedStrings';
+import { ICONS } from '../../config/constants';
 
-export const generateFormValues = () => ({
+const orderbook_level_step = 1;
+const orderbook_level_min = 1;
+const orderbook_level_max = 20;
+
+export const generateFormValues = ({ calculateMin, calculateMax }) => ({
 	theme: {
 		type: 'select',
 		label: STRINGS.SETTINGS_THEME_LABEL,
 		options: STRINGS.SETTINGS_THEME_OPTIONS
 	},
-	orderConfirmationPopup: {
-		type: 'select',
-		validate: [requiredBoolean],
-		label: STRINGS.SETTINGS_ORDERPOPUP_LABEL,
-		options: STRINGS.SETTINGS_ORDERPOPUP_OPTIONS,
-		fullWidth: isMobile
-
+	orderBookLevels: {
+		type: 'number',
+		validate: [
+			required,
+			minValue(orderbook_level_min),
+			maxValue(orderbook_level_max),
+			step(orderbook_level_step)
+		],
+		label: STRINGS.USER_SETTINGS.ORDERBOOK_LEVEL,
+		step: orderbook_level_step,
+		min: orderbook_level_min,
+		max: orderbook_level_max,
+		fullWidth: isMobile,
+		notification: {
+				status: 'information',
+				iconPath: ICONS.BLUE_PLUS,
+				className: 'file_upload_icon',
+				useSvg: true,
+				onClick: calculateMin
+			}
 	}
 });
 
