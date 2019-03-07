@@ -585,12 +585,15 @@ export default {
 		TITLE_AUDIO_CUE: 'Audio Cue',
 		TITLE_MANAGE_RISK: 'Manage Risk',
 		ORDERBOOK_LEVEL: 'Orderbook Levels (Max 20)',
+		SET_TXT: 'SET',
 		CREATE_ORDER_WARING: 'Create Order Warning',
+		CREATE_ORDER_WARING_TEXT: 'Create a warning pop up when your trade order uses more than {0} of your portfolio',
+		ORDER_PORTFOLIO_LABEL: 'Portfolio Percentage Amount:',
 		NOTIFICATION_FORM: {
 			TRADE_POPUPS: 'Trade Pop ups',
-			ORDER_SUBMIT_CONFIRMATION: 'Ask for confirmation before submitting orders',
-			ORDER_COMPLETED_POPUP: 'Show pop up when order has been completed',
-			ORDER_PARTIALLY_COMPLETED: 'Show pop up when order has partially filled pop up',
+			POPUP_ORDER_CONFIRMATION: 'Ask for confirmation before submitting orders',
+			POPUP_ORDER_COMPLETED: 'Show pop up when order has been completed',
+			POPUP_ORDER_PARTIALLY_FILLED: 'Show pop up when order has partially filled pop up',
 		},
 		AUDIO_CUE_FORM: {
 			ORDERS_COMPLETED_AUDIO: 'Play an audio cue when one of your orders is fully filled',
@@ -600,6 +603,10 @@ export default {
 		RISK_MANAGEMENT: {
 			INFO_TEXT: 'Create a warning pop up when a trade order value goes over a set percentage amount of your portfolio',
 			INFO_TEXT_1: 'Total assets value in Toman: {0}',
+			PORTFOLIO: 'Percentage of portfolio',
+			TOMAN_ASSET : 'Appromixmate Value in Toman',
+			ADJUST: 'ADJUST'
+
 		}
 	},
 	TRANSACTION_HISTORY: {
@@ -685,7 +692,7 @@ export default {
 		sell: 'sell'
 	},
 	SIDES: [{ value: 'buy', label: 'buy' }, { value: 'sell', label: 'sell' }],
-	DEFAULT_TOGGLE_OPTIONS: [{ value: 'on', label: 'on' }, { value: 'off', label: 'off' }], // ToDo: Add it into farsi
+	DEFAULT_TOGGLE_OPTIONS: [{ value: true, label: 'on' }, { value: false, label: 'off' }], // ToDo: Add it into farsi
 	SIZE: 'Size',
 	PRICE: 'Price',
 	FEE: 'Fee',

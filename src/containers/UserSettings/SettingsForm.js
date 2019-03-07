@@ -18,7 +18,7 @@ export const generateFormValues = ({ calculateMin, calculateMax }) => ({
 		label: STRINGS.SETTINGS_THEME_LABEL,
 		options: STRINGS.SETTINGS_THEME_OPTIONS
 	},
-	orderBookLevels: {
+	order_book_levels: {
 		type: 'number',
 		validate: [
 			required,
@@ -31,13 +31,13 @@ export const generateFormValues = ({ calculateMin, calculateMax }) => ({
 		min: orderbook_level_min,
 		max: orderbook_level_max,
 		fullWidth: isMobile,
-		notification: {
-				status: 'information',
-				iconPath: ICONS.BLUE_PLUS,
-				className: 'file_upload_icon',
-				useSvg: true,
-				onClick: calculateMin
-			}
+		// notification: {
+		// 		status: 'information',
+		// 		iconPath: ICONS.BLUE_PLUS,
+		// 		className: 'file_upload_icon',
+		// 		useSvg: true,
+		// 		onClick: calculateMin
+		// 	}
 	}
 });
 

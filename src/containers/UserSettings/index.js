@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 import { SubmissionError } from 'redux-form';
 import { isMobile } from 'react-device-detect';
 
-import { setLanguage, changeTheme, openContactForm } from '../../actions/appActions';
+import { setLanguage, changeTheme, openContactForm, openRiskPortfolioOrderWarning } from '../../actions/appActions';
 import { logout } from '../../actions/authAction';
 import {
 	updateUser,
@@ -22,6 +22,10 @@ import RiskForm from './RiskForm';
 
 import STRINGS from '../../config/localizedStrings';
 import { ICONS } from '../../config/constants';
+import {
+    formatFiatAmount,
+    calculateBalancePrice,
+     } from '../../utils/currency';
 
 class UserSettings extends Component {
 	state = {
@@ -29,11 +33,17 @@ class UserSettings extends Component {
 		tabs: [],
 		dialogIsOpen: false,
 		modalText: '',
-		activeTab: 0
+		activeTab: 0,
+        totalAssets: ''
 	};
 
 	componentDidMount() {
+        const { user } = this.props;
+
 		this.updateTabs(this.props, this.state.activeTab);
+        if (user.id) {
+			this.calculateSections(this.props);
+		}
 	}
 
 	componentWillReceiveProps(nextProps) {
@@ -43,11 +53,28 @@ class UserSettings extends Component {
 	}
 	
 	componentWillUpdate(nextProps, nextState) {
+		if (
+            nextProps.user.id !== this.props.user.id ||
+            nextProps.price !== this.props.price ||
+            nextProps.orders.length !== this.props.orders.length ||
+            nextProps.balance.timestamp !== this.props.balance.timestamp ||
+            nextProps.activeLanguage !== this.props.activeLanguage
+        ) {
+            this.calculateSections(nextProps);
+        }
 		if (this.state.activeTab !== nextState.activeTab && this.state.activeTab !== -1) {
 			this.updateTabs(nextProps, nextState.activeTab);
 		}
 	}
 	
+	onAdjustPortfolio = () => {
+		this.props.openRiskPortfolioOrderWarning({ onSubmit: this.onSubmit, initialValues: this.props.settings });
+	};
+
+	calculateSections = ({ balance, prices }) => {
+		const totalAssets = calculateBalancePrice(balance, prices);
+        this.setState({ totalAssets: formatFiatAmount(totalAssets) });
+    };
 
 	updateTabs = ({ username = '', settings = {} }, activeTab) => {
 		const formValues = generateFormValues({});
@@ -166,7 +193,10 @@ class UserSettings extends Component {
 						/>
 					),
 				content: activeTab === 5 && (
-					<RiskForm />
+					<RiskForm
+						onAdjustPortfolio={this.onAdjustPortfolio}
+						totalAssets={this.state.totalAssets}
+						percentageOfPortfolio='50%' />
 				)
 			}
 		];
@@ -256,7 +286,12 @@ const mapStateToProps = (state) => ({
 	verification_level: state.user.verification_level,
 	settings: state.user.settings,
 	username: state.user.username,
-	activeLanguage: state.app.language
+	activeLanguage: state.app.language,
+	balance: state.user.balance,
+	prices: state.orderbook.prices,
+	user: state.user,
+    price: state.orderbook.price,
+    orders: state.order.activeOrders,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -265,6 +300,7 @@ const mapDispatchToProps = (dispatch) => ({
 	changeLanguage: bindActionCreators(setLanguage, dispatch),
 	changeTheme: bindActionCreators(changeTheme, dispatch),
 	openContactForm: bindActionCreators(openContactForm, dispatch),
+	openRiskPortfolioOrderWarning: bindActionCreators(openRiskPortfolioOrderWarning, dispatch),
 	logout: bindActionCreators(logout, dispatch)
 });
 

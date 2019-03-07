@@ -328,6 +328,7 @@ export const ICONS = {
 	SETTING_CHAT_ICON: `${process.env.PUBLIC_URL}/assets/images/chat-settings-icon.svg`,
 	SETTING_AUDIO_ICON: `${process.env.PUBLIC_URL}/assets/images/audio-settings-icon.svg`,
 	SETTING_RISK_ICON: `${process.env.PUBLIC_URL}/assets/images/risk-settings-icon.svg`,
+	SETTING_RISK_ADJUST_ICON: `${process.env.PUBLIC_URL}/assets/images/risk-management-pop-adjust.svg`
 };
 
 export const SOCIAL_ICONS = {

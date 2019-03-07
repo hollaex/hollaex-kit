@@ -59,6 +59,9 @@ $title--margin: 1rem;
 			.dots-1 {
 				stroke: $dark-icon-color;
 			}
+			.risk-order-warning {
+				fill: $dark-icon-color;
+			}
 		}
 		&.underline:after {
 			background: $dark-border-main;

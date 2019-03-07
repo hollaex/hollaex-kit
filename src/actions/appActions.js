@@ -34,6 +34,7 @@ export const SET_TICKERS = 'SET_TICKERS';
 export const CHANGE_THEME = 'CHANGE_THEME';
 export const SET_ORDER_LIMITS = 'SET_ORDER_LIMITS';
 export const FEES_STRUCTURE_AND_LIMITS = 'FEES_STRUCTURE_AND_LIMITS';
+export const RISK_PORTFOLIO_ORDER_WARING = 'RISK_PORTFOLIO_ORDER_WARING';
 
 export const USER_TYPES = {
 	USER_TYPE_NORMAL: 'normal',
@@ -144,3 +145,6 @@ export const setOrderLimits = (data) => ({
 
 export const openFeesStructureandLimits = (data = {}) =>
 	setNotification(FEES_STRUCTURE_AND_LIMITS, data, true);
+
+export const openRiskPortfolioOrderWarning = (data = {}) =>
+	setNotification(RISK_PORTFOLIO_ORDER_WARING, data, true);

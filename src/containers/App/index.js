@@ -40,7 +40,8 @@ import {
 	NOTIFICATIONS,
 	CONTACT_FORM,
 	HELPFUL_RESOURCES_FORM,
-	FEES_STRUCTURE_AND_LIMITS
+	FEES_STRUCTURE_AND_LIMITS,
+	RISK_PORTFOLIO_ORDER_WARING
 } from '../../actions/appActions';
 
 import {
@@ -65,6 +66,7 @@ import {
 import { ContactForm, HelpfulResourcesForm, Chat as ChatComponent } from '../';
 import ReviewEmailContent from '../Withdraw/ReviewEmailContent';
 import FeesAndLimits from '../Summary/components/FeesAndLimits';
+import SetOrderPortfolio from '../UserSettings/SetOrderPortfolio';
 
 import {
 	getClasesForLanguage,
@@ -547,6 +549,13 @@ class Container extends Component {
 						activeTheme={this.props.activeTheme}
 					/>
 				);
+			case RISK_PORTFOLIO_ORDER_WARING:
+					return (
+						<SetOrderPortfolio
+							data={data}
+							onClose={this.onCloseDialog}
+						/>
+					)
 			default:
 				return <div />;
 		}

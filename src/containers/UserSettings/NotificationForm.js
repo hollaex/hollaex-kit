@@ -10,19 +10,19 @@ import { getErrorLocalized } from '../../utils/errors';
 import STRINGS from '../../config/localizedStrings';
 
 export const generateNotificationFormValues = () => ({
-    order_submit_confirmation: {
+    popup_order_confirmation: {
         type: 'toggle',
-        label: STRINGS.USER_SETTINGS.NOTIFICATION_FORM.ORDER_SUBMIT_CONFIRMATION,
+        label: STRINGS.USER_SETTINGS.NOTIFICATION_FORM.POPUP_ORDER_CONFIRMATION,
         className: 'toggle-wrapper'
     },
-    order_completed_popup: {
+    popup_order_completed: {
         type: 'toggle',
-        label: STRINGS.USER_SETTINGS.NOTIFICATION_FORM.ORDER_COMPLETED_POPUP,
+        label: STRINGS.USER_SETTINGS.NOTIFICATION_FORM.POPUP_ORDER_COMPLETED,
         className: 'toggle-wrapper'
     },
-    order_partially_completed: {
+    popup_order_partially_filled: {
         type: 'toggle',
-        label: STRINGS.USER_SETTINGS.NOTIFICATION_FORM.ORDER_PARTIALLY_COMPLETED,
+        label: STRINGS.USER_SETTINGS.NOTIFICATION_FORM.POPUP_ORDER_PARTIALLY_FILLED,
         className: 'toggle-wrapper'
     }
 });

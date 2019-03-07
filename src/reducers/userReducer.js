@@ -95,7 +95,7 @@ const INITIAL_STATE = {
 		orderConfirmationPopup: true,
 		theme: THEME_DEFAULT,
 		language: DEFAULT_LANGUAGE,
-		orderBookLevels: 10
+		order_book_levels: 10
 	},
 	addressRequest: INITIAL_ADDRESS_OBJECT,
 	limits: INITIAL_LIMIT_OBJECT,
