@@ -1,26 +1,23 @@
 import React from 'react';
 import { reduxForm } from 'redux-form';
-// import { isMobile } from 'react-device-detect';
 
 import renderFields from '../../components/Form/factoryFields';
-import { FieldError } from '../../components/Form/FormFields/FieldWrapper';
 import { Button, Accordion } from '../../components';
-// import { required } from '../../components/Form/validations';
 import { getErrorLocalized } from '../../utils/errors';
 import STRINGS from '../../config/localizedStrings';
 
 export const generateAudioCueFormValues = () => ({
-    order_submit_confirmation: {
+    audio_order_completed: {
         type: 'toggle',
         label: STRINGS.USER_SETTINGS.AUDIO_CUE_FORM.ORDERS_COMPLETED_AUDIO,
         className: 'toggle-wrapper'
     },
-    order_completed_popup: {
+    audio_order_partially_completed: {
         type: 'toggle',
         label: STRINGS.USER_SETTINGS.AUDIO_CUE_FORM.ORDERS_PARTIAL_AUDIO,
         className: 'toggle-wrapper'
     },
-    order_partially_completed: {
+    audio_public_trade: {
         type: 'toggle',
         label: STRINGS.USER_SETTINGS.AUDIO_CUE_FORM.PUBLIC_TRADE_AUDIO,
         className: 'toggle-wrapper'

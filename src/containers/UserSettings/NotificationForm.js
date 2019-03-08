@@ -1,11 +1,8 @@
 import React from 'react';
 import { reduxForm } from 'redux-form';
-// import { isMobile } from 'react-device-detect';
 
 import renderFields from '../../components/Form/factoryFields';
-import { FieldError } from '../../components/Form/FormFields/FieldWrapper';
 import { Button, Accordion } from '../../components';
-// import { required } from '../../components/Form/validations';
 import { getErrorLocalized } from '../../utils/errors';
 import STRINGS from '../../config/localizedStrings';
 

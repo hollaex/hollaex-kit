@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 import { SubmissionError } from 'redux-form';
 import { isMobile } from 'react-device-detect';
 
-import { setLanguage, changeTheme, openContactForm, openRiskPortfolioOrderWarning } from '../../actions/appActions';
+import { setLanguage, changeTheme, openContactForm, openRiskPortfolioOrderWarning, closeNotification } from '../../actions/appActions';
 import { logout } from '../../actions/authAction';
 import {
 	updateUser,
@@ -18,14 +18,15 @@ import UsernameForm, { generateUsernameFormValues } from './UsernameForm';
 import LanguageForm, { generateLanguageFormValues } from './LanguageForm';
 import  NotificationForm, { generateNotificationFormValues } from './NotificationForm';
 import AudioCueForm, { generateAudioCueFormValues } from './AudioForm';
-import RiskForm from './RiskForm';
+import RiskForm, { generateWarningFormValues } from './RiskForm';
 
 import STRINGS from '../../config/localizedStrings';
 import { ICONS } from '../../config/constants';
 import {
     formatFiatAmount,
     calculateBalancePrice,
-     } from '../../utils/currency';
+	 } from '../../utils/currency';
+import { constructSettings } from '../../utils/utils';
 
 class UserSettings extends Component {
 	state = {
@@ -68,7 +69,7 @@ class UserSettings extends Component {
 	}
 	
 	onAdjustPortfolio = () => {
-		this.props.openRiskPortfolioOrderWarning({ onSubmit: this.onSubmit, initialValues: this.props.settings });
+		this.props.openRiskPortfolioOrderWarning({ onSubmit: (formProps) => this.onSubmitSettings(formProps, 'risk'), initialValues: this.props.settings.manage_risk });
 	};
 
 	calculateSections = ({ balance, prices }) => {
@@ -84,6 +85,7 @@ class UserSettings extends Component {
 		const languageFormValue = generateLanguageFormValues();
 		const notificationFormValues = generateNotificationFormValues();
 		const audioFormValues = generateAudioCueFormValues();
+		const warningFormValues = generateWarningFormValues();
 
 		const tabs = [
 			{
@@ -100,9 +102,9 @@ class UserSettings extends Component {
 					),
 				content: activeTab === 0 && (
 					<NotificationForm
-						onSubmit={this.onSubmitSettings}
+						onSubmit={(formProps) => this.onSubmitSettings(formProps, 'notification')}
 						formFields={notificationFormValues}
-						initialValues={settings}
+						initialValues={settings.notification}
 					/>
 				)
 			}, {
@@ -119,9 +121,9 @@ class UserSettings extends Component {
 					),
 				content: activeTab === 1 && (
 					<SettingsForm
-						onSubmit={this.onSubmitSettings}
+						onSubmit={(formProps) => this.onSubmitSettings(formProps, 'interface')}
 						formFields={formValues}
-						initialValues={settings}
+						initialValues={settings.interface}
 					/>
 				)
 			}, {
@@ -138,7 +140,7 @@ class UserSettings extends Component {
 					),
 				content: activeTab === 2 && (
 					<LanguageForm
-						onSubmit={this.onSubmitSettings}
+						onSubmit={(formProps) => this.onSubmitSettings(formProps, 'language')}
 						formFields={languageFormValue}
 						initialValues={settings} />
 				)
@@ -175,9 +177,9 @@ class UserSettings extends Component {
 					),
 				content: activeTab === 4 && (
 					<AudioCueForm
-						onSubmit={this.onSubmitUsername}
+						onSubmit={(formProps) => this.onSubmitSettings(formProps, 'audio')}
 						formFields={audioFormValues}
-						initialValues={settings}
+						initialValues={settings.audio_cue}
 					/>
 				)
 			}, {
@@ -196,7 +198,9 @@ class UserSettings extends Component {
 					<RiskForm
 						onAdjustPortfolio={this.onAdjustPortfolio}
 						totalAssets={this.state.totalAssets}
-						percentageOfPortfolio='50%' />
+						onSubmit={(formProps) => this.onSubmitSettings(formProps, 'risk')}
+						formFields={warningFormValues}
+						initialValues={settings.manage_risk} />
 				)
 			}
 		];
@@ -206,12 +210,33 @@ class UserSettings extends Component {
 
 	renderContent = (tabs, activeTab) => tabs[activeTab] && tabs[activeTab].content ? tabs[activeTab].content : <div></div>;
 
-	onSubmitSettings = (settings) => {
+	onSubmitSettings = (formProps, formKey) => {
+		let settings = {};
+		switch (formKey) {
+			case 'notification':
+				settings.notification = formProps;
+				break;
+			case 'interface':
+				settings = { ...formProps }; // ToDo: need to be removed after end point update
+				settings.interface = formProps;
+				break;
+			case 'language':
+				settings = { ...formProps };
+				break;
+			case 'audio':
+				settings.audio_cue = formProps;
+				break;
+			case 'risk':
+				settings.manage_risk = formProps;
+				break;
+			default:
+		};
 		return updateUser({ settings })
 			.then(({ data }) => {
 				this.props.setUserData(data);
 				this.props.changeLanguage(data.settings.language);
 				this.props.changeTheme(data.settings.theme);
+				this.props.closeNotification();
 				localStorage.setItem("theme", data.settings.theme);
 			})
 			.catch((err) => {
@@ -301,6 +326,7 @@ const mapDispatchToProps = (dispatch) => ({
 	changeTheme: bindActionCreators(changeTheme, dispatch),
 	openContactForm: bindActionCreators(openContactForm, dispatch),
 	openRiskPortfolioOrderWarning: bindActionCreators(openRiskPortfolioOrderWarning, dispatch),
+	closeNotification: bindActionCreators(closeNotification, dispatch),
 	logout: bindActionCreators(logout, dispatch)
 });
 

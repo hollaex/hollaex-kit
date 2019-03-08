@@ -6,13 +6,12 @@ import { Button } from '../../components';
 import { required, minValue, maxValue, step } from '../../components/Form/validations';
 import { getErrorLocalized } from '../../utils/errors';
 import STRINGS from '../../config/localizedStrings';
-import { ICONS } from '../../config/constants';
 
 const orderbook_level_step = 1;
 const orderbook_level_min = 1;
 const orderbook_level_max = 20;
 
-export const generateFormValues = ({ calculateMin, calculateMax }) => ({
+export const generateFormValues = ({}) => ({
 	theme: {
 		type: 'select',
 		label: STRINGS.SETTINGS_THEME_LABEL,

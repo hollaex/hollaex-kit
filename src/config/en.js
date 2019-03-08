@@ -605,8 +605,8 @@ export default {
 			INFO_TEXT_1: 'Total assets value in Toman: {0}',
 			PORTFOLIO: 'Percentage of portfolio',
 			TOMAN_ASSET : 'Appromixmate Value in Toman',
-			ADJUST: 'ADJUST'
-
+			ADJUST: 'ADJUST',
+			WARNING_POP_UP: 'Warning pop ups'
 		}
 	},
 	TRANSACTION_HISTORY: {

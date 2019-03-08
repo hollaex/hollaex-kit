@@ -3,7 +3,6 @@ import { reduxForm } from 'redux-form';
 import { isMobile } from 'react-device-detect';
 
 import renderFields from '../../components/Form/factoryFields';
-import { FieldError } from '../../components/Form/FormFields/FieldWrapper';
 import { Button } from '../../components';
 import { required } from '../../components/Form/validations';
 import { getErrorLocalized } from '../../utils/errors';

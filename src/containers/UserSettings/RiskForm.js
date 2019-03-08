@@ -1,6 +1,9 @@
 import React from 'react';
+import { reduxForm } from 'redux-form';
 
-import { Accordion, Table } from '../../components';
+import { Accordion, Table, Button } from '../../components';
+import renderFields from '../../components/Form/factoryFields';
+import { getErrorLocalized } from '../../utils/errors';
 import STRINGS from '../../config/localizedStrings';
 
 export const generateHeaders = (onAdjustPortfolio) => {
@@ -36,9 +39,46 @@ export const generateHeaders = (onAdjustPortfolio) => {
 	];
 };
 
-const RiskForm = ({ onAdjustPortfolio, totalAssets, percentageOfPortfolio}) => {
+export const generateWarningFormValues = () => ({
+	popup_warning: {
+		type: 'toggle',
+		label: STRINGS.USER_SETTINGS.RISK_MANAGEMENT.WARNING_POP_UP,
+		className: 'toggle-wrapper'
+	}
+});
+
+const Form = ({
+	handleSubmit,
+	submitting,
+	pristine,
+	error,
+	valid,
+	initialValues,
+	formFields
+}) => (
+		<form onSubmit={handleSubmit}>
+			{renderFields(formFields)}
+			{error && <div className="warning_text">{getErrorLocalized(error)}</div>}
+			<Button
+				className="mt-4"
+				label={STRINGS.SETTING_BUTTON}
+				disabled={pristine || submitting || !valid}
+			/>
+		</form>
+	);
+
+const WarningForm = reduxForm({
+	form: 'WarningForm'
+})(Form);
+
+const RiskForm = ({ onAdjustPortfolio, totalAssets, percentageOfPortfolio, ...rest }) => {
+	const { initialValues = {} } = rest;
 	const assetData = [
-		{ id: 1, percentage: percentageOfPortfolio, assetValue: totalAssets }
+		{
+			id: 1,
+			percentage: initialValues.order_portfolio_percentage ? `${initialValues.order_portfolio_percentage}%` : '',
+			assetValue: totalAssets
+		}
 	];
     const sections = [
         {
@@ -54,8 +94,11 @@ const RiskForm = ({ onAdjustPortfolio, totalAssets, percentageOfPortfolio}) => {
                     displayPaginator= {false}
                 />
             </div>
-        }
-    ]
+        }, {
+			title: STRINGS.USER_SETTINGS.RISK_MANAGEMENT.WARNING_POP_UP,
+			content: <WarningForm {...rest} />
+		}
+    ];
     return <Accordion sections={sections} />;
 };
 
