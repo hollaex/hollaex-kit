@@ -19,7 +19,7 @@ class ContactForm extends Component {
 
 	componentDidMount() {
 		if (this.props.email) {
-			const initialValues = { email: this.props.email, ...this.props.contactFormData };
+			const initialValues = { email: this.props.email, ...this.props.contactFormData, ...this.props.initialValues };
 			this.setInitialValues(initialValues);
 		}
 	}

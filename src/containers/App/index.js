@@ -322,11 +322,13 @@ class Container extends Component {
 				}
 				case 'order_partialy_filled': {
 					this.props.updateOrder(data);
-					this.props.setNotification(
-						NOTIFICATIONS.ORDERS,
-						{ type, data },
-						false
-					);
+					if (this.props.notificationSettings.popup_order_partially_filled) {
+						this.props.setNotification(
+							NOTIFICATIONS.ORDERS,
+							{ type, data },
+							false
+						);
+					}
 					break;
 				}
 				case 'order_updated':
@@ -345,15 +347,17 @@ class Container extends Component {
 						);
 					});
 					this.props.removeOrder(data);
-					ordersDeleted.forEach((orderDeleted) => {
-						this.props.setNotification(NOTIFICATIONS.ORDERS, {
-							type,
-							data: {
-								...orderDeleted,
-								filled: orderDeleted.size
-							}
+					if (this.props.notificationSettings.popup_order_completed) {
+						ordersDeleted.forEach((orderDeleted) => {
+							this.props.setNotification(NOTIFICATIONS.ORDERS, {
+								type,
+								data: {
+									...orderDeleted,
+									filled: orderDeleted.size
+								}
+							});
 						});
-					});
+					}
 					break;
 				}
 				case 'order_removed':
@@ -754,7 +758,8 @@ const mapStateToProps = (store) => ({
 	user: store.user,
 	unreadMessages: store.app.chatUnreadMessages,
 	orderbooks: store.orderbook.pairsOrderbooks,
-	pairsTrades: store.orderbook.pairsTrades
+	pairsTrades: store.orderbook.pairsTrades,
+	notificationSettings: store.user.settings.notification || {}
 });
 
 const mapDispatchToProps = (dispatch) => ({

@@ -358,7 +358,7 @@ class Trade extends Component {
 											asks={asks}
 											bids={bids}
 											marketPrice={marketPrice}
-											showPopup={settings.orderConfirmationPopup}
+											showPopup={settings.notification.popup_order_confirmation}
 										/>
 									</TradeBlock>
 								</div>
@@ -429,6 +429,13 @@ const mapStateToProps = (store) => {
 		({ symbol }) => symbol === pair && count++ < 50
 	);
 	const fees = store.user.fees[pair];
+	const orderBookLevels = store.user.settings.interface.order_book_levels;
+	const asksFilter = asks.filter(
+		(ask, index) => index < orderBookLevels
+	);
+	const bidsFilter = bids.filter(
+		(bid, index) => index < orderBookLevels
+	);
 	return {
 		pair,
 		pairData,
@@ -436,8 +443,8 @@ const mapStateToProps = (store) => {
 		balance: store.user.balance,
 		orderbookReady: true,
 		tradeHistory,
-		asks,
-		bids,
+		asks: asksFilter,
+		bids: bidsFilter,
 		marketPrice,
 		activeOrders,
 		userTrades,

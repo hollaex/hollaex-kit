@@ -359,6 +359,7 @@ class Verification extends Component {
 			case 'contact':
 				return (
 					<ContactForm
+						initialValues={{category: 'verify'}}
 						onSubmitSuccess={this.onCloseDialog}
 						onClose={this.onCloseDialog}
 					/>

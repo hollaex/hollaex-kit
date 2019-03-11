@@ -176,7 +176,7 @@ class AppBar extends Component {
 	};
 
 	handleSummary = () => {
-		this.props.router.push('/account')
+		this.props.router.push('/summary');
 	}
 	handleMenu = menu => {
 		if (menu === 'account') {

@@ -24,6 +24,12 @@
     }
 }
 
+.layout-mobile {
+    .portfolio-wrapper {
+        margin: 0 auto;
+    }
+}
+
 .dark-theme {
     .toggle-wrapper {
         border-top: 1px solid $dark-inactive-color;
