@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { ICONS } from '../config/constants';
 import STRINGS from '../config/localizedStrings';
+import { playBackgroundAudioNotification } from '../utils/utils';
 
 // Set orders from websocket
 export function setUserOrders(orders) {
@@ -39,6 +40,7 @@ export const cancelOrder = (orderId) => (dispatch) => {
 				type: 'CANCEL_ORDER',
 				payload: data
 			});
+			playBackgroundAudioNotification('cancel_order');
 			dispatch({
 				type: 'SET_SNACK_NOTIFICATION',
 				payload: {
@@ -58,6 +60,7 @@ export const cancelAllOrders = (symbol = '') => dispatch => {
 				type: 'CANCEL_ALL_ORDERS',
 				payload: data
 			});
+			playBackgroundAudioNotification('cancel_order');
 			dispatch({
 				type: 'SET_SNACK_NOTIFICATION',
 				payload: {

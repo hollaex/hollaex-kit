@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux';
 import io from 'socket.io-client';
 import EventListener from 'react-event-listener';
 import { debounce } from 'lodash';
-import { WS_URL, ICONS, SESSION_TIME } from '../../config/constants';
+import { WS_URL, ICONS, SESSION_TIME, AUDIOS } from '../../config/constants';
 import { isBrowser, isMobile } from 'react-device-detect';
 
 import { logout } from '../../actions/authAction';
@@ -49,7 +49,7 @@ import {
 	getChatMinimized,
 	setChatMinimized
 } from '../../utils/theme';
-import { checkUserSessionExpired } from '../../utils/utils';
+import { checkUserSessionExpired, playBackgroundAudioNotification } from '../../utils/utils';
 import { getToken, getTokenTimestamp, isLoggedIn } from '../../utils/token';
 import {
 	AppBar,
@@ -226,6 +226,9 @@ class Container extends Component {
 		publicSocket.on('trades', (data) => {
 			// console.log('trades', data);
 			this.props.setTrades(data);
+			if (data.action === "update" && this.props.settings.audio_cue && this.props.settings.audio_cue.audio_public_trade) {
+				playBackgroundAudioNotification('public_trade');
+			}
 		});
 
 		publicSocket.on('ticker', (data) => {
@@ -322,12 +325,15 @@ class Container extends Component {
 				}
 				case 'order_partialy_filled': {
 					this.props.updateOrder(data);
-					if (this.props.notificationSettings.popup_order_partially_filled) {
+					if (this.props.settings.notification && this.props.settings.notification.popup_order_partially_filled) {
 						this.props.setNotification(
 							NOTIFICATIONS.ORDERS,
 							{ type, data },
 							false
 						);
+					}
+					if (this.props.settings.audio_cue && this.props.settings.audio_cue.audio_order_partially_completed) {
+						playBackgroundAudioNotification('order_partialy_filled');
 					}
 					break;
 				}
@@ -347,7 +353,7 @@ class Container extends Component {
 						);
 					});
 					this.props.removeOrder(data);
-					if (this.props.notificationSettings.popup_order_completed) {
+					if (this.props.settings.notification && this.props.settings.notification.popup_order_completed) {
 						ordersDeleted.forEach((orderDeleted) => {
 							this.props.setNotification(NOTIFICATIONS.ORDERS, {
 								type,
@@ -357,6 +363,9 @@ class Container extends Component {
 								}
 							});
 						});
+					}
+					if (this.props.settings.audio_cue && this.props.settings.audio_cue.audio_order_completed) {
+						playBackgroundAudioNotification('order_filled');
 					}
 					break;
 				}
@@ -759,7 +768,7 @@ const mapStateToProps = (store) => ({
 	unreadMessages: store.app.chatUnreadMessages,
 	orderbooks: store.orderbook.pairsOrderbooks,
 	pairsTrades: store.orderbook.pairsTrades,
-	notificationSettings: store.user.settings.notification || {}
+	settings: store.user.settings
 });
 
 const mapDispatchToProps = (dispatch) => ({

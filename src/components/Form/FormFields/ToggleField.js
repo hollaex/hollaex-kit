@@ -10,6 +10,20 @@ class ToggleField extends Component {
         selected: this.props.options[0] && this.props.options[0].value ? this.props.options[0].value : ''
     }
 
+    componentDidMount() {
+        const { input } = this.props;
+        if (input && (input.value || input.value === false)) {
+            this.setState({ selected: input.value });
+        }
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (this.props.input.value !== nextProps.input.value
+            && (nextProps.input.value || nextProps.input.value === false)) {
+            this.setState({ selected: nextProps.input.value });
+        }
+    }
+
     onToogle = () => {
         const { options, input } = this.props;
         const selected =

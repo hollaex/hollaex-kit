@@ -1,6 +1,6 @@
 import moment from 'moment';
 
-import { TOKEN_TIME, TIMESTAMP_FORMAT } from '../config/constants';
+import { TOKEN_TIME, TIMESTAMP_FORMAT, AUDIOS } from '../config/constants';
 
 const bitcoin = {
 	COIN: 100000000,
@@ -112,4 +112,32 @@ export const constructSettings = (state = {}, settings) => {
 		settingsData.language = settings.language
 	}
 	return settingsData;
+};
+
+export const playBackgroundAudioNotification = (type = '') => {
+	let audioFile = '';
+	switch (type) {
+		case 'orderbook_market_order':
+		case 'order_filled':
+			audioFile = AUDIOS.ORDER_COMPLETED;
+			break;
+		case 'order_partialy_filled':
+			audioFile = AUDIOS.ORDER_PARTIALLY_COMPLETED;
+			break;
+		case 'orderbook_field_update':
+			audioFile = AUDIOS.ORDERBOOK_FIELD_UPDATE;
+			break;
+		case 'orderbook_limit_order':
+			audioFile = AUDIOS.ORDERBOOK_LIMIT_ORDER;
+			break;
+		case 'public_trade':
+			audioFile = AUDIOS.PUBLIC_TRADE_NOTIFICATION;
+			break;
+		case 'cancel_order':
+			audioFile = AUDIOS.CANCEL_ORDER;
+			break;
+		default:
+	}
+	const audio = new Audio(audioFile);
+	if (audioFile) audio.play();
 };

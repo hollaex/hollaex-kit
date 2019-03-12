@@ -367,6 +367,15 @@ export const HOLLAEX_LOGO_BLACK = `${
 	process.env.PUBLIC_URL
 }/assets/hollaEx_logo-blk.svg`;
 
+export const AUDIOS = {
+	ORDERBOOK_FIELD_UPDATE: `${process.env.PUBLIC_URL}/assets/audio/orderbook_field_update.wav`,
+	ORDERBOOK_LIMIT_ORDER: `${process.env.PUBLIC_URL}/assets/audio/orderbook-limit-order.wav`,
+	PUBLIC_TRADE_NOTIFICATION: `${process.env.PUBLIC_URL}/assets/audio/public-trade-notification.wav`,
+	ORDER_COMPLETED: `${process.env.PUBLIC_URL}/assets/audio/order-filled.wav`,
+	ORDER_PARTIALLY_COMPLETED: `${process.env.PUBLIC_URL}/assets/audio/order-partially-filled.wav`,
+	CANCEL_ORDER: `${process.env.PUBLIC_URL}/assets/audio/cancel_order.wav`
+}
+
 export const CURRENCIES = {
 	btc: {
 		symbol: 'btc',

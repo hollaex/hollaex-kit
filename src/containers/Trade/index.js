@@ -38,6 +38,7 @@ import MobileOrders from './MobileOrders';
 import { ActionNotification, Loader, MobileBarTabs } from '../../components';
 
 import STRINGS from '../../config/localizedStrings';
+import { playBackgroundAudioNotification } from '../../utils/utils';
 
 class Trade extends Component {
 	state = {
@@ -115,10 +116,12 @@ class Trade extends Component {
 
 	onPriceClick = (price) => {
 		this.props.change(FORM_NAME, 'price', price);
+		playBackgroundAudioNotification('orderbook_field_update');
 	};
 
 	onAmountClick = (size) => {
 		this.props.change(FORM_NAME, 'size', size);
+		playBackgroundAudioNotification('orderbook_field_update');
 	};
 
 	setActiveTab = (activeTab) => {

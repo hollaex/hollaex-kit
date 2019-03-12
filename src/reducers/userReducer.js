@@ -114,7 +114,7 @@ const INITIAL_STATE = {
 		audio_cue: {
 			audio_order_completed: true,
 			audio_order_partially_completed: true,
-			audio_public_trade: true
+			audio_public_trade: false
 		},
 		manage_risk: {
 			order_portfolio_percentage: 50,

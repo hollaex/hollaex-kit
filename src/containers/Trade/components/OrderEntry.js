@@ -13,7 +13,7 @@ import {
 	roundNumber,
 	fiatSymbol
 } from '../../../utils/currency';
-import { getDecimals } from '../../../utils/utils';
+import { getDecimals, playBackgroundAudioNotification } from '../../../utils/utils';
 import {
 	evaluateOrder,
 	required,
@@ -167,6 +167,13 @@ class OrderEntry extends Component {
 		}
 
 		return this.props.submitOrder(order).then(() => {
+			let audioType = ''
+			if (values.type === 'market') {
+				audioType = 'orderbook_market_order';
+			} else {
+				audioType = 'orderbook_limit_order';
+			}
+			playBackgroundAudioNotification(audioType);
 			this.setState({ initialValues: values });
 		});
 	};
