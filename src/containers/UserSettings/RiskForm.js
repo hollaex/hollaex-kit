@@ -99,7 +99,7 @@ const RiskForm = ({ onAdjustPortfolio, totalAssets, percentageOfPortfolio, ...re
 			content: <WarningForm {...rest} />
 		}
     ];
-    return <Accordion sections={sections} />;
+	return <Accordion initialOpen={true} sections={sections} />;
 };
 
 export default RiskForm;

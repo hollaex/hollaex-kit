@@ -94,6 +94,17 @@ $app-bar-pairs-up: green;
 			}
 		}
 
+		.menu-notification-active {
+			color:$colors-notifications-darkred !important;
+
+			svg {
+				.tab-summary0, .tab-wallet0, .tab-setting0, .tab-verify0,
+				.tab-security0, .tab-api0 {
+					fill: $colors-notifications-darkred !important;
+				}
+			}
+		}
+
 		.notification {
 			color: $colors-notifications-red !important;
 		
@@ -454,7 +465,16 @@ $app-bar-pairs-up: green;
 				fill: $app-bar-icon-inactive;
 			}
 		}
-
+		.menu-notification-active {
+				color: $colors-notifications-darkred;
+			
+				svg {
+					.tab-summary0, .tab-wallet0, .tab-setting0, .tab-verify0,
+					.tab-security0, .tab-api0 {
+						fill: $colors-notifications-darkred;
+					}
+				}
+			}
 		.menu-active {
 			color: $colors-main-black;
 
@@ -498,7 +518,12 @@ $app-bar-pairs-up: green;
 			line-height: 1;
 			font-weight: bold;
 		}
-
+		.securitySelected {
+			background-color: $colors-notifications-darkred !important;
+		}
+		.verificationSelected {
+			background-color: $colors-notifications-darkred !important;
+		}
 		.app-bar-account-list-notification {
 			position: relative;
 			right: 0;
@@ -613,6 +638,19 @@ $app-bar-pairs-up: green;
 		}
 	}
 
+	.menu-notification-active {
+		background-color: $colors-white;
+		height: 2.5rem;
+		position: relative;
+		color: $colors-notifications-darkred;
+	
+		svg {
+			.tab-summary0, .tab-wallet0, .tab-setting0, .tab-verify0,
+			.tab-security0, .tab-api0 {
+				fill: $colors-notifications-darkred;
+			}
+		}
+	}
 	.notification {
 		color: $colors-notifications-red;
 	

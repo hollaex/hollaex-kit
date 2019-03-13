@@ -48,19 +48,19 @@ class MenuList extends Component {
                     {STRINGS.ACCOUNTS.TAB_WALLET}
                 </div>
                 <div
-                    className={classnames('app-bar-account-menu-list d-flex', { 'menu-active': activePath === 'account'&& selectedMenu === 'security', 'notification': !!securityPending })}
+                    className={classnames('app-bar-account-menu-list d-flex', !!securityPending ? { 'menu-notification-active': activePath === 'account' && selectedMenu === 'security' && !!securityPending, 'notification': selectedMenu !== 'security' && !!securityPending } : { 'menu-active': activePath === 'account' && selectedMenu === 'security', 'notification': !!securityPending })}
                     onClick={() => handleMenu('security')}>
                     <div className="notification-content">
-                        {!!securityPending && <div className="app-bar-account-list-notification">{securityPending}</div>}
+                        {!!securityPending && <div className={!!securityPending && selectedMenu === 'security' ?   "app-bar-account-list-notification securitySelected" : "app-bar-account-list-notification" } >{securityPending}</div>}
                     </div>
                     <ReactSVG path={ICONS.TAB_SECURITY} wrapperClassName="app-bar-account-list-icon" />
                     {STRINGS.ACCOUNTS.TAB_SECURITY}
                 </div>
                 <div
-                    className={classnames('app-bar-account-menu-list d-flex', { 'menu-active': activePath === 'account' && selectedMenu === 'verification', 'notification': !!verificationPending })}
+                    className={classnames('app-bar-account-menu-list d-flex', !!verificationPending ? { 'menu-notification-active': activePath === 'account' && selectedMenu === 'verification', 'notification': selectedMenu === 'verification' && !!verificationPending }: {'menu-active': activePath === 'account' && selectedMenu === 'verification', 'notification': !!verificationPending })}
                     onClick={() => handleMenu('verification')}>
                     <div className="notification-content">
-                        {!!verificationPending && <div className="app-bar-account-list-notification">{verificationPending}</div>}
+                        {!!verificationPending && <div className={!!verificationPending && selectedMenu === 'verification' ?   "app-bar-account-list-notification verificationSelected" : "app-bar-account-list-notification" }>{verificationPending}</div>}
                     </div>
                     <ReactSVG path={ICONS.TAB_VERIFY} wrapperClassName="app-bar-account-list-icon" />
                     {STRINGS.ACCOUNTS.TAB_VERIFICATION}

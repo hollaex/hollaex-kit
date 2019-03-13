@@ -49,7 +49,7 @@ const NotificationForm = (props) => {
         title: STRINGS.USER_SETTINGS.NOTIFICATION_FORM.TRADE_POPUPS,
         content: <Form {...props} />
     }]
-    return <Accordion sections={section} />
+    return <Accordion initialOpen={true} sections={section} />
 }
 
 export default reduxForm({
