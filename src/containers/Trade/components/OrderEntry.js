@@ -68,6 +68,12 @@ class OrderEntry extends Component {
 				}
 			});
 		}
+		if (this.props.priceInitialized !== nextProps.priceInitialized) {
+			this.generateFormValues(nextProps.pair, '', nextProps.priceInitialized);
+		}
+		if (this.props.sizeInitialized !== nextProps.sizeInitialized) {
+			this.generateFormValues(nextProps.pair, '', nextProps.priceInitialized, nextProps.sizeInitialized);
+		}
 	}
 
 	setMax = () => {
@@ -167,13 +173,9 @@ class OrderEntry extends Component {
 		}
 
 		return this.props.submitOrder(order).then(() => {
-			let audioType = ''
 			if (values.type === 'market') {
-				audioType = 'orderbook_market_order';
-			} else {
-				audioType = 'orderbook_limit_order';
+				playBackgroundAudioNotification('orderbook_market_order');
 			}
-			playBackgroundAudioNotification(audioType);
 			this.setState({ initialValues: values });
 		});
 	};
@@ -223,7 +225,7 @@ class OrderEntry extends Component {
 		}
 	};
 
-	generateFormValues = (pair = '', byuingPair = '') => {
+	generateFormValues = (pair = '', byuingPair = '', priceInitialized = false, sizeInitialized = false) => {
 		const {
 
 			min_size,
@@ -273,7 +275,8 @@ class OrderEntry extends Component {
 					minValue(min_size),
 					maxValue(max_size)
 				],
-				currency: STRINGS[`${pair.toUpperCase()}_SHORTNAME`]
+				currency: STRINGS[`${pair.toUpperCase()}_SHORTNAME`],
+				initializeEffect: sizeInitialized
 			},
 			price: {
 				name: 'price',
@@ -290,7 +293,8 @@ class OrderEntry extends Component {
 					maxValue(max_price),
 					step(tick_size)
 				],
-				currency: STRINGS[`${byuingPair.toUpperCase()}_SHORTNAME`]
+				currency: STRINGS[`${byuingPair.toUpperCase()}_SHORTNAME`],
+				initializeEffect: priceInitialized
 			}
 		};
 

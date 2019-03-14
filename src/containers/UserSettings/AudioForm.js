@@ -47,9 +47,10 @@ const Form = ({
 const AudioCueForm = (props) => {
     const section = [{
         title: STRINGS.USER_SETTINGS.TITLE_AUDIO_CUE,
-        content: <Form {...props} />
+        content: <Form {...props} />,
+        isOpen: true
     }]
-    return <Accordion initialOpen={true} sections={section} />
+    return <Accordion sections={section} />
 }
 
 export default reduxForm({

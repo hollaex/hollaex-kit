@@ -40,13 +40,18 @@ import { ActionNotification, Loader, MobileBarTabs } from '../../components';
 import STRINGS from '../../config/localizedStrings';
 import { playBackgroundAudioNotification } from '../../utils/utils';
 
+let priceTimeOut = '';
+let sizeTimeOut = '';
+
 class Trade extends Component {
 	state = {
 		activeTab: 0,
 		chartHeight: 0,
 		chartWidth: 0,
 		symbol: '',
-		cancelDelayData: []
+		cancelDelayData: [],
+		priceInitialized: false,
+		sizeInitialized: false
 	};
 
 	componentWillMount() {
@@ -117,11 +122,19 @@ class Trade extends Component {
 	onPriceClick = (price) => {
 		this.props.change(FORM_NAME, 'price', price);
 		playBackgroundAudioNotification('orderbook_field_update');
+		this.setState({ priceInitialized: true });
+		priceTimeOut = setTimeout(() => {
+			this.setState({ priceInitialized: false });
+		}, 1000);
 	};
 
 	onAmountClick = (size) => {
 		this.props.change(FORM_NAME, 'size', size);
 		playBackgroundAudioNotification('orderbook_field_update');
+		this.setState({ sizeInitialized: true });
+		sizeTimeOut = setTimeout(() => {
+			this.setState({ sizeInitialized: false });
+		}, 1000);
 	};
 
 	setActiveTab = (activeTab) => {
@@ -164,7 +177,7 @@ class Trade extends Component {
 			orderLimits,
 			pairs
 		} = this.props;
-		const { chartHeight, chartWidth, symbol, activeTab, isLogged, cancelDelayData } = this.state;
+		const { chartHeight, chartWidth, symbol, activeTab, isLogged, cancelDelayData, priceInitialized, sizeInitialized } = this.state;
 
 		if (symbol !== pair || !pairData) {
 			return <Loader background={false} />;
@@ -362,6 +375,8 @@ class Trade extends Component {
 											bids={bids}
 											marketPrice={marketPrice}
 											showPopup={settings.notification.popup_order_confirmation}
+											priceInitialized={priceInitialized}
+											sizeInitialized={sizeInitialized}
 										/>
 									</TradeBlock>
 								</div>

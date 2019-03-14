@@ -604,7 +604,7 @@ export default {
 			INFO_TEXT: 'Create a warning pop up when a trade order value goes over a set percentage amount of your portfolio',
 			INFO_TEXT_1: 'Total assets value in Toman: {0}',
 			PORTFOLIO: 'Percentage of portfolio',
-			TOMAN_ASSET : 'Appromixmate Value in Toman',
+			TOMAN_ASSET : 'Value in Toman',
 			ADJUST: 'ADJUST',
 			WARNING_POP_UP: 'Warning pop ups'
 		}

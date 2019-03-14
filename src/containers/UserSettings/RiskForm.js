@@ -93,13 +93,14 @@ const RiskForm = ({ onAdjustPortfolio, totalAssets, percentageOfPortfolio, ...re
                     count={1}
                     displayPaginator= {false}
                 />
-            </div>
+            </div>,
+			isOpen: true
         }, {
 			title: STRINGS.USER_SETTINGS.RISK_MANAGEMENT.WARNING_POP_UP,
 			content: <WarningForm {...rest} />
 		}
     ];
-	return <Accordion initialOpen={true} sections={sections} />;
+	return <Accordion sections={sections} />;
 };
 
 export default RiskForm;

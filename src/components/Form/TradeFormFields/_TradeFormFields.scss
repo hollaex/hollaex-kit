@@ -42,6 +42,26 @@ $padding: 0.25rem;
 		font-weight: bold;
 		color: $input--border-color;
 	}
+
+	.initialize-animation {
+		> input {
+			-webkit-animation-name: bounce; /* Safari 4.0 - 8.0 */
+			-webkit-animation-duration: 10s; /* Safari 4.0 - 8.0 */
+			animation-name: bounce;
+			animation-duration: 10s;
+			border: 1px solid $input--border-color;
+		}
+		/* Safari 4.0 - 8.0 */
+		@-webkit-keyframes bounce {
+			from {border-color: $colors-notifications-blue;}
+			to {border-color: $input--border-color;}
+		}
+		/* Standard syntax */
+		@keyframes bounce {
+			from {border-color: $colors-notifications-blue;}
+			to {border-color: $input--border-color;}
+		}
+	}
 }
 
 .direction_ltr {
@@ -84,6 +104,26 @@ $padding: 0.25rem;
 
 		.trade_input-input-currency {
 			color: $dark-font-sub-text-color;
+		}
+
+		.initialize-animation {
+			> input {
+				-webkit-animation-name: bounceDark; /* Safari 4.0 - 8.0 */
+				-webkit-animation-duration: 10s; /* Safari 4.0 - 8.0 */
+				animation-name: bounceDark;
+				animation-duration: 10s;
+				border: 1px solid $dark-trade-fields;
+			}
+			/* Safari 4.0 - 8.0 */
+			@-webkit-keyframes bounceDark {
+				from {border-color: $dark-link;}
+				to {border-color: $dark-trade-fields;}
+			}
+			/* Standard syntax */
+			@keyframes bounceDark {
+				from {border-color: $dark-link;}
+				to {border-color: $dark-trade-fields;}
+			}
 		}
 	}
 }

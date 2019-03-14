@@ -73,6 +73,8 @@ import {
 	getFontClassForLanguage
 } from '../../utils/string';
 
+let limitTimeOut = null;
+
 class Container extends Component {
 	state = {
 		appLoaded: false,
@@ -81,7 +83,8 @@ class Container extends Component {
 		publicSocket: undefined,
 		privateSocket: undefined,
 		idleTimer: undefined,
-		ordersQueued: []
+		ordersQueued: [],
+		limitFilledOnOrder: ''
 	};
 
 	componentWillMount() {
@@ -226,7 +229,11 @@ class Container extends Component {
 		publicSocket.on('trades', (data) => {
 			// console.log('trades', data);
 			this.props.setTrades(data);
-			if (data.action === "update" && this.props.settings.audio_cue && this.props.settings.audio_cue.audio_public_trade) {
+			if (data.action === "update"
+				&& this.props.settings.audio_cue
+				&& this.props.settings.audio_cue.audio_public_trade
+				&& this.props.location.pathname.indexOf('/trade/') === 0
+				&& this.props.params.pair) {
 				playBackgroundAudioNotification('public_trade');
 			}
 		});
@@ -297,6 +304,14 @@ class Container extends Component {
 				case 'order_queued':
 					// TODO add queued orders to the store
 					this.setState({ ordersQueued: this.state.ordersQueued.concat(data) });
+					if (data.type === 'limit') {
+						playBackgroundAudioNotification('orderbook_limit_order');
+						this.setState({ limitFilledOnOrder: data.id });
+						limitTimeOut = setTimeout(() => {
+							if (this.state.limitFilledOnOrder)
+								this.setState({ limitFilledOnOrder: '' });
+						}, 1000);
+					}
 					break;
 				case 'order_processed':
 				case 'order_canceled': {
@@ -396,6 +411,11 @@ class Container extends Component {
 						if (order) {
 							this.props.setNotification(NOTIFICATIONS.TRADES, { data, order });
 						}
+					}
+					if (this.state.limitFilledOnOrder && data.filter((limit) => limit.order.id === this.state.limitFilledOnOrder).length) {
+						setTimeout(() => {
+							playBackgroundAudioNotification('order_filled');
+						}, 1000);
 					}
 					break;
 				}
