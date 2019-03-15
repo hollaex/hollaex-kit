@@ -57,7 +57,7 @@ class MenuList extends Component {
                     {STRINGS.ACCOUNTS.TAB_SECURITY}
                 </div>
                 <div
-                    className={classnames('app-bar-account-menu-list d-flex', !!verificationPending ? { 'menu-notification-active': activePath === 'account' && selectedMenu === 'verification', 'notification': selectedMenu === 'verification' && !!verificationPending }: {'menu-active': activePath === 'account' && selectedMenu === 'verification', 'notification': !!verificationPending })}
+                    className={classnames('app-bar-account-menu-list d-flex', !!verificationPending ? { 'menu-notification-active': activePath === 'account' && selectedMenu === 'verification', 'notification': selectedMenu !== 'verification' && !!verificationPending }: {'menu-active': activePath === 'account' && selectedMenu === 'verification', 'notification': !!verificationPending })}
                     onClick={() => handleMenu('verification')}>
                     <div className="notification-content">
                         {!!verificationPending && <div className={!!verificationPending && selectedMenu === 'verification' ?   "app-bar-account-list-notification verificationSelected" : "app-bar-account-list-notification" }>{verificationPending}</div>}

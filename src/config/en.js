@@ -59,6 +59,7 @@ export default {
 	HELP_TEXT: 'help',
 	SUCCESS_TEXT: 'Success',
 	ERROR_TEXT: 'Error',
+	PROCEED: 'PROCEED', // ToDo: add it in farsi on exir
 	EDIT_TEXT: 'Edit',
 	BACK_TEXT: 'Back',
 	NO_OPTIONS: 'No options availables',
@@ -587,6 +588,11 @@ export default {
 		ORDERBOOK_LEVEL: 'Orderbook Levels (Max 20)',
 		SET_TXT: 'SET',
 		CREATE_ORDER_WARING: 'Create Order Warning',
+		RISKY_TRADE_DETECTED: 'Risky Trade Detected', // ToDo: add it in farsi on exir
+		RISKY_WARNING_TEXT_1:'This orders value is over your designated order limit amount you’ve set {0} .', // ToDo: add it in farsi on exir
+		RISKY_WARNING_TEXT_2:'({0} of portfolio)',  // ToDo: add it in farsi on exir
+		RISKY_WARNING_TEXT_3: ' Please check and verify that you indeed want to make this trade.',  // ToDo: add it in farsi on exir
+		GO_TO_RISK_MANAGMENT: 'GO TO RISK MANAGMENT', // ToDo: add it in farsi on exir
 		CREATE_ORDER_WARING_TEXT: 'Create a warning pop up when your trade order uses more than {0} of your portfolio',
 		ORDER_PORTFOLIO_LABEL: 'Portfolio Percentage Amount:',
 		NOTIFICATION_FORM: {
@@ -604,7 +610,7 @@ export default {
 			INFO_TEXT: 'Create a warning pop up when a trade order value goes over a set percentage amount of your portfolio',
 			INFO_TEXT_1: 'Total assets value in Toman: {0}',
 			PORTFOLIO: 'Percentage of portfolio',
-			TOMAN_ASSET : 'Value in Toman',
+			TOMAN_ASSET : 'Appromixmate Value in Toman',
 			ADJUST: 'ADJUST',
 			WARNING_POP_UP: 'Warning pop ups'
 		}

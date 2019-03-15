@@ -46,7 +46,7 @@ class TabOverflowList extends Component {
                         let ticker = tickers[pair];
                         let priceDifference = (ticker.close || 0) - (ticker.open || 0);
                         const tickerPercent = ((priceDifference / ticker.open) * 100);
-                        let priceDifferencePercent = formatPercentage(tickerPercent);
+                        let priceDifferencePercent = tickerPercent==='NaN' ? formatPercentage(tickerPercent) : formatPercentage(0);
                         return (
                             <div
                                 key={index}

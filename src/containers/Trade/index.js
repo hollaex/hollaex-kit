@@ -18,7 +18,8 @@ import { getUserTrades } from '../../actions/walletActions';
 import {
 	changePair,
 	setNotification,
-	NOTIFICATIONS
+	NOTIFICATIONS,
+	RISKY_ORDER
 } from '../../actions/appActions';
 
 import { isLoggedIn } from '../../utils/token';
@@ -119,13 +120,23 @@ class Trade extends Component {
 		});
 	};
 
+	onRiskyTrade = (order, onConfirm) => {
+		const { setNotification, fees, pairData } = this.props;
+		setNotification(RISKY_ORDER, {
+			order,
+			onConfirm,
+			fees,
+			pairData
+		});
+	};
+
 	onPriceClick = (price) => {
 		this.props.change(FORM_NAME, 'price', price);
 		playBackgroundAudioNotification('orderbook_field_update');
 		this.setState({ priceInitialized: true });
 		priceTimeOut = setTimeout(() => {
 			this.setState({ priceInitialized: false });
-		}, 1000);
+		}, 1500);
 	};
 
 	onAmountClick = (size) => {
@@ -134,7 +145,7 @@ class Trade extends Component {
 		this.setState({ sizeInitialized: true });
 		sizeTimeOut = setTimeout(() => {
 			this.setState({ sizeInitialized: false });
-		}, 1000);
+		}, 1500);
 	};
 
 	setActiveTab = (activeTab) => {
@@ -288,6 +299,7 @@ class Trade extends Component {
 						settings={settings}
 						orderbookReady={orderbookReady}
 						openCheckOrder={this.openCheckOrder}
+						onRiskyTrade={this.onRiskyTrade}
 						onSubmitOrder={this.onSubmitOrder}
 						goToPair={this.goToPair}
 						pair={pair}
@@ -369,6 +381,7 @@ class Trade extends Component {
 										<OrderEntry
 											submitOrder={this.onSubmitOrder}
 											openCheckOrder={this.openCheckOrder}
+											onRiskyTrade={this.onRiskyTrade}
 											symbol={symbol}
 											balance={balance}
 											asks={asks}

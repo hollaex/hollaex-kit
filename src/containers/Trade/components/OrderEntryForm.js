@@ -39,7 +39,8 @@ const Form = ({
 	type,
 	currencyName,
 	outsideFormError,
-	onReview
+	onReview,
+	formKeyDown
 }) => {
 	const fields = getFields(formValues, type);
 	const errorText = error || outsideFormError;
@@ -48,6 +49,11 @@ const Form = ({
 			<form
 				className="trade_order_entry-form_inputs-wrapper"
 				onSubmit={handleSubmit}
+				onKeyDown={(e) => {
+					if (!submitting && valid && !errorText && isLoggedIn())
+						formKeyDown(e);
+					}
+				}
 			>
 				<div className="trade_order_entry-form_fields-wrapper">
 					{Object.entries(fields).map(renderFields)}

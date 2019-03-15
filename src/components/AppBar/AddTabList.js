@@ -84,7 +84,7 @@ class AddTabList extends Component {
                             let { formatToCurrency } = CURRENCIES[menu.pair_base || BASE_CURRENCY];
                             const priceDifference = (ticker.close || 0) - (ticker.open || 0);
                             const tickerPercent = ((priceDifference / ticker.open) * 100);
-                            const priceDifferencePercent = formatPercentage(tickerPercent);
+                            const priceDifferencePercent = tickerPercent==='NaN' ? formatPercentage(tickerPercent) : formatPercentage(0);
                             return (
                                 <div
                                     key={index}

@@ -11,7 +11,9 @@ import {
 	formatNumber,
 	formatFiatAmount,
 	roundNumber,
-	fiatSymbol
+	fiatSymbol,
+	calculatePrice,
+	calculateBalancePrice
 } from '../../../utils/currency';
 import { getDecimals, playBackgroundAudioNotification } from '../../../utils/utils';
 import {
@@ -38,12 +40,16 @@ class OrderEntry extends Component {
 		},
 		orderPrice: 0,
 		orderFees: 0,
-		outsideFormError: ''
+		outsideFormError: '',
+		totalAssets: ''
 	};
 
 	componentDidMount() {
 		if (this.props.pair_base) {
 			this.generateFormValues(this.props.pair);
+		}
+		if (this.props.user.id) {
+			this.calculateSections(this.props);
 		}
 	}
 
@@ -74,7 +80,16 @@ class OrderEntry extends Component {
 		if (this.props.sizeInitialized !== nextProps.sizeInitialized) {
 			this.generateFormValues(nextProps.pair, '', nextProps.priceInitialized, nextProps.sizeInitialized);
 		}
+		if (JSON.stringify(this.props.prices) !== JSON.stringify(nextProps.prices) ||
+			JSON.stringify(this.props.balance) !== JSON.stringify(nextProps.balance)) {
+			this.calculateSections(nextProps);
+		}
 	}
+
+	calculateSections = ({ balance, prices }) => {
+		const totalAssets = calculateBalancePrice(balance, prices);
+		this.setState({ totalAssets });
+	};
 
 	setMax = () => {
 		const { side, balance, pair_base, min_size } = this.props;
@@ -193,7 +208,9 @@ class OrderEntry extends Component {
 			min_size,
 			tick_size,
 			openCheckOrder,
-			submit
+			onRiskyTrade,
+			submit,
+			settings: { manage_risk = {} }
 		} = this.props;
 		const orderTotal = mathjs.add(
 			mathjs.fraction(this.state.orderPrice),
@@ -208,17 +225,25 @@ class OrderEntry extends Component {
 			orderPrice: orderTotal,
 			orderFees: this.state.orderFees
 		};
+		const orderPriceInFiat = calculatePrice(orderTotal, this.props.prices[pair_2]);
+		const riskyPrice = ((this.state.totalAssets / 100) * manage_risk.order_portfolio_percentage);
 
 		if (type === 'market') {
 			delete order.price;
 		} else if (price) {
 			order.price = formatNumber(price, getDecimals(tick_size))
-
 		}
 
 		if (showPopup) {
 			openCheckOrder(order, () => {
-				submit(FORM_NAME);
+				if (manage_risk.popup_warning && riskyPrice < orderPriceInFiat) {
+					order['order_portfolio_percentage'] = manage_risk.order_portfolio_percentage
+					onRiskyTrade(order, () => {
+						submit(FORM_NAME);
+					});
+				} else {
+					submit(FORM_NAME);
+				}
 			});
 		} else {
 			submit(FORM_NAME);
@@ -301,6 +326,13 @@ class OrderEntry extends Component {
 		this.setState({ formValues });
 	};
 
+	formKeyDown = (e) => {
+		if (e.key === 'Enter' && e.shiftKey === false) {
+			e.preventDefault();
+			this.onReview();
+		}
+	};
+
 	render() {
 		const { balance, type, side, pair_base, pair_2, price } = this.props;
 		const {
@@ -332,6 +364,7 @@ class OrderEntry extends Component {
 					onSubmit={this.onSubmit}
 					onReview={this.onReview}
 					formValues={formValues}
+					formKeyDown={this.formKeyDown}
 					initialValues={initialValues}
 					outsideFormError={outsideFormError}
 				>
@@ -368,8 +401,11 @@ const mapStateToProps = (state) => {
 		min_size,
 		min_price,
 		tick_size,
-		orderLimits: state.app.orderLimits
-
+		orderLimits: state.app.orderLimits,
+		prices: state.orderbook.prices,
+		balance: state.user.balance,
+		user: state.user,
+		settings: state.user.settings,
 	};
 };
 

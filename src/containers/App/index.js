@@ -41,7 +41,8 @@ import {
 	CONTACT_FORM,
 	HELPFUL_RESOURCES_FORM,
 	FEES_STRUCTURE_AND_LIMITS,
-	RISK_PORTFOLIO_ORDER_WARING
+	RISK_PORTFOLIO_ORDER_WARING,
+	RISKY_ORDER
 } from '../../actions/appActions';
 
 import {
@@ -67,6 +68,7 @@ import { ContactForm, HelpfulResourcesForm, Chat as ChatComponent } from '../';
 import ReviewEmailContent from '../Withdraw/ReviewEmailContent';
 import FeesAndLimits from '../Summary/components/FeesAndLimits';
 import SetOrderPortfolio from '../UserSettings/SetOrderPortfolio';
+import RiskyOrder from '../Trade/components/RiskyOrder';
 
 import {
 	getClasesForLanguage,
@@ -583,12 +585,21 @@ class Container extends Component {
 					/>
 				);
 			case RISK_PORTFOLIO_ORDER_WARING:
-					return (
-						<SetOrderPortfolio
-							data={data}
-							onClose={this.onCloseDialog}
-						/>
-					)
+				return (
+					<SetOrderPortfolio
+						data={data}
+						onClose={this.onCloseDialog}
+					/>
+				);
+			case RISKY_ORDER:
+				const { onConfirm, ...rest } = data;
+				return (
+					<RiskyOrder
+						data={rest}
+						onConfirm={onConfirm}
+						onClose={this.onCloseDialog}
+					/>
+				);
 			default:
 				return <div />;
 		}

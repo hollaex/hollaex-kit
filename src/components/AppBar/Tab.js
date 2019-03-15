@@ -11,7 +11,7 @@ const Tab = ({ pair = {}, tab, ticker = {}, activePairTab, onTabClick, onTabChan
     const { formatToCurrency } = CURRENCIES[pair.pair_base || BASE_CURRENCY];
     const priceDifference = (ticker.close || 0) - (ticker.open || 0);
     const tickerPercent = ((priceDifference / ticker.open) * 100);
-    const priceDifferencePercent = formatPercentage(tickerPercent);
+    const priceDifferencePercent = tickerPercent==='NaN' ? formatPercentage(tickerPercent) : formatPercentage(0);
     const pairBase = pair.pair_base || '';
     const pair2 = pair.pair_2 || '';
     return (

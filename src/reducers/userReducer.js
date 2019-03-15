@@ -117,7 +117,7 @@ const INITIAL_STATE = {
 			audio_public_trade: false
 		},
 		manage_risk: {
-			order_portfolio_percentage: 50,
+			order_portfolio_percentage: 10,
 			popup_warning: true
 		}
 	},

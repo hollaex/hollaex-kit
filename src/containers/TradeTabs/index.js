@@ -155,7 +155,7 @@ class AddTradeTab extends Component {
                             let ticker = tickers[key] || {};
                             const priceDifference = (ticker.close || 0) - (ticker.open || 0);
                             const tickerPercent = ((priceDifference / ticker.open) * 100);
-                            const priceDifferencePercent = formatPercentage(tickerPercent);
+                            const priceDifferencePercent =  tickerPercent==='NaN' ? formatPercentage(tickerPercent) : formatPercentage(0);;
                             return (
                                 <div
                                     key={index}

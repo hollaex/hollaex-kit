@@ -46,20 +46,20 @@ $padding: 0.25rem;
 	.initialize-animation {
 		> input {
 			-webkit-animation-name: bounce; /* Safari 4.0 - 8.0 */
-			-webkit-animation-duration: 10s; /* Safari 4.0 - 8.0 */
+			-webkit-animation-duration: 5s; /* Safari 4.0 - 8.0 */
 			animation-name: bounce;
-			animation-duration: 10s;
+			animation-duration: 5s;
 			border: 1px solid $input--border-color;
 		}
 		/* Safari 4.0 - 8.0 */
 		@-webkit-keyframes bounce {
-			from {border-color: $colors-notifications-blue;}
-			to {border-color: $input--border-color;}
+			15%  {border-color: $colors-notifications-blue;}
+			75% {border-color: $input--border-color;}
 		}
 		/* Standard syntax */
 		@keyframes bounce {
-			from {border-color: $colors-notifications-blue;}
-			to {border-color: $input--border-color;}
+			15%  {border-color: $colors-notifications-blue;}
+			75% {border-color: $input--border-color;}
 		}
 	}
 }
@@ -109,20 +109,20 @@ $padding: 0.25rem;
 		.initialize-animation {
 			> input {
 				-webkit-animation-name: bounceDark; /* Safari 4.0 - 8.0 */
-				-webkit-animation-duration: 10s; /* Safari 4.0 - 8.0 */
+				-webkit-animation-duration: 5s; /* Safari 4.0 - 8.0 */
 				animation-name: bounceDark;
-				animation-duration: 10s;
+				animation-duration: 5s;
 				border: 1px solid $dark-trade-fields;
 			}
 			/* Safari 4.0 - 8.0 */
 			@-webkit-keyframes bounceDark {
-				from {border-color: $dark-link;}
-				to {border-color: $dark-trade-fields;}
+				15%  {border-color: $dark-link;}
+				75% {border-color: $dark-trade-fields;}
 			}
 			/* Standard syntax */
 			@keyframes bounceDark {
-				from {border-color: $dark-link;}
-				to {border-color: $dark-trade-fields;}
+				15%  {border-color:  $dark-link;}
+				75% {border-color: $dark-trade-fields;}
 			}
 		}
 	}
