@@ -56,6 +56,23 @@ export const constructSettings = (state = {}, settings) => {
 	if (settings.notification) {
 		settingsData.notification = { ...settingsData.notification, ...settings.notification };
 	}
+	if (settings.interface) {
+		settingsData.interface = { ...settingsData.interface, ...settings.interface };
+	}
+	if (settings.audio) {
+		settingsData.audio = { ...settingsData.settingsData, ...settings.audio };
+	}
+	if (settings.risk) {
+		settingsData.risk = { ...settingsData.risk, ...settings.risk };
+	}
+	if (settings.chat) {
+		settingsData.chat = { ...settingsData.chat, ...settings.chat }
+	}
+	if (settings.language) {
+		settingsData.language = settings.language
+	}
+
+	// ToDo: need to these code after end point update.
 	if (settings.popup_order_confirmation || settings.popup_order_confirmation === false) {
 		settingsData.notification.popup_order_confirmation = settings.popup_order_confirmation;
 	}
@@ -65,52 +82,38 @@ export const constructSettings = (state = {}, settings) => {
 	if (settings.popup_order_partially_filled || settings.popup_order_partially_filled === false) {
 		settingsData.notification.popup_order_partially_filled = settings.popup_order_partially_filled;
 	}
-	if (settings.interface) {
-		settingsData.interface = { ...settingsData.interface, ...settings.interface };
-	}
+
 	if (settings.theme) {
 		settingsData.interface.theme = settings.theme;
 	}
 	if (settings.order_book_levels) {
 		settingsData.interface.order_book_levels = settings.order_book_levels;
 	}
-	// if (settings.language) {
-	// 	settingsData.language = { ...settingsData.language, ...settings.language };
-	// } else {
-	// 	if (settings.language) {
-	// 		settingsData.language.language = settings.language;
-	// 	}
-	// }
-	if (settings.audio_cue) {
-		settingsData.audio_cue = { ...settingsData.settingsData, ...settings.audio_cue };
+
+	if (settings.order_completed || settings.order_completed === false) {
+		settingsData.audio.order_completed = settings.order_completed;
 	}
-	if (settings.audio_order_completed || settings.audio_order_completed === false) {
-		settingsData.audio_cue.audio_order_completed = settings.audio_order_completed;
+	if (settings.order_partially_completed || settings.order_partially_completed === false) {
+		settingsData.audio.order_partially_completed = settings.order_partially_completed;
 	}
-	if (settings.audio_order_partially_completed || settings.audio_order_partially_completed === false) {
-		settingsData.audio_cue.audio_order_partially_completed = settings.audio_order_partially_completed;
+	if (settings.public_trade || settings.public_trade === false) {
+		settingsData.audio.public_trade = settings.public_trade;
 	}
-	if (settings.audio_public_trade || settings.audio_public_trade === false) {
-		settingsData.audio_cue.audio_public_trade = settings.audio_public_trade;
-	}
-	if (settings.manage_risk) {
-		settingsData.manage_risk = { ...settings.manage_risk };
-	}
+
 	if (settings.order_portfolio_percentage) {
-		settingsData.manage_risk.order_portfolio_percentage = settings.order_portfolio_percentage;
+		settingsData.risk.order_portfolio_percentage = settings.order_portfolio_percentage;
 	}
 	if (settings.popup_warning || settings.popup_warning === false) {
-		settingsData.manage_risk.popup_warning = settings.popup_warning;
+		settingsData.risk.popup_warning = settings.popup_warning;
 	}
-	if (settings.usernameIsSet) {
-		settingsData.usernameIsSet = settings.usernameIsSet
+
+	if (settings.set_username) {
+		settingsData.chat.set_username = settings.set_username
 	}
 	if (settings.theme) {
 		settingsData.theme = settings.theme
 	}
-	if (settings.language) {
-		settingsData.language = settings.language
-	}
+
 	return settingsData;
 };
 

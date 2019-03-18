@@ -92,7 +92,6 @@ const INITIAL_STATE = {
 	username: '',
 	username_set: false,
 	settings: {
-		usernameIsSet: false,
 		orderConfirmationPopup: true,
 		theme: THEME_DEFAULT,
 		language: DEFAULT_LANGUAGE,
@@ -105,18 +104,15 @@ const INITIAL_STATE = {
 			theme: THEME_DEFAULT,
 			order_book_levels: 10
 		},
-		// language: {
-		// 	language: DEFAULT_LANGUAGE,
-		// },
-		// chat: {
-		// 	usernameIsSet: false,
-		// },
-		audio_cue: {
-			audio_order_completed: true,
-			audio_order_partially_completed: true,
-			audio_public_trade: false
+		chat: {
+			set_username: false,
 		},
-		manage_risk: {
+		audio: {
+			order_completed: true,
+			order_partially_completed: true,
+			public_trade: false
+		},
+		risk: {
 			order_portfolio_percentage: 10,
 			popup_warning: true
 		}
@@ -320,7 +316,9 @@ export default function reducer(state = INITIAL_STATE, action) {
 				username_set: action.payload.username_set,
 				settings: {
 					...state.settings,
-					usernameIsSet: true
+					chat: {
+						set_username: true
+					}
 				}
 			};
 		case 'REQUEST_LIMITS_PENDING':

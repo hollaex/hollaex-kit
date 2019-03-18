@@ -210,7 +210,7 @@ class OrderEntry extends Component {
 			openCheckOrder,
 			onRiskyTrade,
 			submit,
-			settings: { manage_risk = {} }
+			settings: { risk = {} }
 		} = this.props;
 		const orderTotal = mathjs.add(
 			mathjs.fraction(this.state.orderPrice),
@@ -226,7 +226,7 @@ class OrderEntry extends Component {
 			orderFees: this.state.orderFees
 		};
 		const orderPriceInFiat = calculatePrice(orderTotal, this.props.prices[pair_2]);
-		const riskyPrice = ((this.state.totalAssets / 100) * manage_risk.order_portfolio_percentage);
+		const riskyPrice = ((this.state.totalAssets / 100) * risk.order_portfolio_percentage);
 
 		if (type === 'market') {
 			delete order.price;
@@ -236,8 +236,8 @@ class OrderEntry extends Component {
 
 		if (showPopup) {
 			openCheckOrder(order, () => {
-				if (manage_risk.popup_warning && riskyPrice < orderPriceInFiat) {
-					order['order_portfolio_percentage'] = manage_risk.order_portfolio_percentage
+				if (risk.popup_warning && riskyPrice < orderPriceInFiat) {
+					order['order_portfolio_percentage'] = risk.order_portfolio_percentage
 					onRiskyTrade(order, () => {
 						submit(FORM_NAME);
 					});

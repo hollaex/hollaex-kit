@@ -161,7 +161,7 @@ class Chat extends Component {
 			onMinimize,
 			minimized,
 			chatIsClosed,
-			usernameIsSet
+			set_username
 		} = this.props;
 		const {
 			messages,
@@ -185,7 +185,7 @@ class Chat extends Component {
 				minimized={minimized || !userInitialized || !chatSocketInitialized}
 				minimizeChat={onMinimize}
 				chatIsClosed={chatIsClosed}
-				usernameIsSet={usernameIsSet}
+				set_username={set_username}
 				removeMessage={this.removeMessage}
 			/>
 		);
@@ -199,7 +199,7 @@ const mapStateToProps = (store) => ({
 	userType: store.auth.userType,
 	userInitialized: store.user.fetched,
 	unreadMessages: store.app.chatUnreadMessages,
-	usernameIsSet: store.user.settings.usernameIsSet,
+	set_username: store.user.settings.chat.set_username,
 });
 
 const mapDispatchToProps = (dispatch) => ({

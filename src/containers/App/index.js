@@ -232,8 +232,8 @@ class Container extends Component {
 			// console.log('trades', data);
 			this.props.setTrades(data);
 			if (data.action === "update"
-				&& this.props.settings.audio_cue
-				&& this.props.settings.audio_cue.audio_public_trade
+				&& this.props.settings.audio
+				&& this.props.settings.audio.public_trade
 				&& this.props.location.pathname.indexOf('/trade/') === 0
 				&& this.props.params.pair) {
 				playBackgroundAudioNotification('public_trade');
@@ -279,9 +279,9 @@ class Container extends Component {
 			) {
 				this.props.changeLanguage(data.settings.language);
 			}
-			if (data.settings && data.settings.theme !== this.props.activeTheme) {
-				this.props.changeTheme(data.settings.theme);
-				localStorage.setItem("theme", data.settings.theme);
+			if (data.settings.interface && data.settings.interface.theme !== this.props.activeTheme) {
+				this.props.changeTheme(data.settings.interface.theme);
+				localStorage.setItem("theme", data.settings.interface.theme);
 			}
 		});
 
@@ -349,7 +349,7 @@ class Container extends Component {
 							false
 						);
 					}
-					if (this.props.settings.audio_cue && this.props.settings.audio_cue.audio_order_partially_completed) {
+					if (this.props.settings.audio && this.props.settings.audio.order_partially_completed) {
 						playBackgroundAudioNotification('order_partialy_filled');
 					}
 					break;
@@ -381,7 +381,7 @@ class Container extends Component {
 							});
 						});
 					}
-					if (this.props.settings.audio_cue && this.props.settings.audio_cue.audio_order_completed) {
+					if (this.props.settings.audio && this.props.settings.audio.order_completed) {
 						playBackgroundAudioNotification('order_filled');
 					}
 					break;

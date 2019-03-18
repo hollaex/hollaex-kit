@@ -26,7 +26,6 @@ import {
     formatFiatAmount,
     calculateBalancePrice,
 	 } from '../../utils/currency';
-import { constructSettings } from '../../utils/utils';
 
 class UserSettings extends Component {
 	state = {
@@ -51,6 +50,9 @@ class UserSettings extends Component {
 		if (nextProps.activeLanguage !== this.props.activeLanguage) {
 			this.updateTabs(this.props, this.state.activeTab);
 		}
+		if (JSON.stringify(this.props.settings) !== JSON.stringify(nextProps.settings)) {
+			this.updateTabs(nextProps, this.state.activeTab);
+		}
 	}
 	
 	componentWillUpdate(nextProps, nextState) {
@@ -69,7 +71,7 @@ class UserSettings extends Component {
 	}
 	
 	onAdjustPortfolio = () => {
-		this.props.openRiskPortfolioOrderWarning({ onSubmit: (formProps) => this.onSubmitSettings(formProps, 'risk'), initialValues: this.props.settings.manage_risk });
+		this.props.openRiskPortfolioOrderWarning({ onSubmit: (formProps) => this.onSubmitSettings(formProps, 'risk'), initialValues: this.props.settings.risk });
 	};
 
 	calculateSections = ({ balance, prices }) => {
@@ -80,7 +82,7 @@ class UserSettings extends Component {
 	updateTabs = ({ username = '', settings = {} }, activeTab) => {
 		const formValues = generateFormValues({});
 		const usernameFormValues = generateUsernameFormValues(
-			settings.usernameIsSet
+			settings.chat.set_username
 		);
 		const languageFormValue = generateLanguageFormValues();
 		const notificationFormValues = generateNotificationFormValues();
@@ -179,7 +181,7 @@ class UserSettings extends Component {
 					<AudioCueForm
 						onSubmit={(formProps) => this.onSubmitSettings(formProps, 'audio')}
 						formFields={audioFormValues}
-						initialValues={settings.audio_cue}
+						initialValues={settings.audio}
 					/>
 				)
 			}, {
@@ -200,7 +202,7 @@ class UserSettings extends Component {
 						totalAssets={this.state.totalAssets}
 						onSubmit={(formProps) => this.onSubmitSettings(formProps, 'risk')}
 						formFields={warningFormValues}
-						initialValues={settings.manage_risk} />
+						initialValues={settings.risk} />
 				)
 			}
 		];
@@ -223,11 +225,14 @@ class UserSettings extends Component {
 			case 'language':
 				settings = { ...formProps };
 				break;
+			case 'chat':
+				settings.chat = { ...formProps };
+				break;
 			case 'audio':
-				settings.audio_cue = formProps;
+				settings.audio = formProps;
 				break;
 			case 'risk':
-				settings.manage_risk = formProps;
+				settings.risk = formProps;
 				break;
 			default:
 		};
@@ -235,9 +240,9 @@ class UserSettings extends Component {
 			.then(({ data }) => {
 				this.props.setUserData(data);
 				this.props.changeLanguage(data.settings.language);
-				this.props.changeTheme(data.settings.theme);
+				this.props.changeTheme(data.settings.interface.theme);
 				this.props.closeNotification();
-				localStorage.setItem("theme", data.settings.theme);
+				localStorage.setItem("theme", data.settings.interface.theme);
 			})
 			.catch((err) => {
 				// console.log(err.response.data);
@@ -252,6 +257,7 @@ class UserSettings extends Component {
 		return setUsername(values)
 			.then(() => {
 				this.props.setUsernameStore(values.username);
+				this.onSubmitSettings({ set_username: true }, 'chat');
 			})
 			.catch((err) => {
 				// console.log(err.response.data);

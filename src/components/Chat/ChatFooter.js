@@ -6,15 +6,15 @@ export const ChatFooter = ({
 	sendMessage,
 	setChatBoxRef,
 	chatWrapperInitialized,
-	usernameIsSet
+	set_username
 }) => (
 	<div
-		className={usernameIsSet ? classnames('d-flex', 'justify-content-center', 'chat-footer'):
+		className={set_username ? classnames('d-flex', 'justify-content-center', 'chat-footer'):
 		classnames('d-flex', 'justify-content-center', 'chat-footer', 'chat-username-footer')
 		}
 	>
 		{chatWrapperInitialized && (
-			<ChatMessageBox usernameIsSet={usernameIsSet} sendMessage={sendMessage} setChatBoxRef={setChatBoxRef} />
+			<ChatMessageBox set_username={set_username} sendMessage={sendMessage} setChatBoxRef={setChatBoxRef} />
 		)}
 	</div>
 );

@@ -11,9 +11,9 @@ export const ChatMessageBox = ({
 	onChange,
 	sendMessage,
 	setChatBoxRef,
-	usernameIsSet
+	set_username
 }) => (
-	usernameIsSet?
+	set_username?
 	<div className={classnames('d-flex')} style={{flex:1}}>
 		<Textarea
 			ref={setChatBoxRef}

@@ -7,17 +7,17 @@ import { getErrorLocalized } from '../../utils/errors';
 import STRINGS from '../../config/localizedStrings';
 
 export const generateAudioCueFormValues = () => ({
-    audio_order_completed: {
+    order_completed: {
         type: 'toggle',
         label: STRINGS.USER_SETTINGS.AUDIO_CUE_FORM.ORDERS_COMPLETED_AUDIO,
         className: 'toggle-wrapper'
     },
-    audio_order_partially_completed: {
+    order_partially_completed: {
         type: 'toggle',
         label: STRINGS.USER_SETTINGS.AUDIO_CUE_FORM.ORDERS_PARTIAL_AUDIO,
         className: 'toggle-wrapper'
     },
-    audio_public_trade: {
+    public_trade: {
         type: 'toggle',
         label: STRINGS.USER_SETTINGS.AUDIO_CUE_FORM.PUBLIC_TRADE_AUDIO,
         className: 'toggle-wrapper'
