@@ -22,10 +22,7 @@ import RiskForm, { generateWarningFormValues } from './RiskForm';
 
 import STRINGS from '../../config/localizedStrings';
 import { ICONS } from '../../config/constants';
-import {
-    formatFiatAmount,
-    calculateBalancePrice,
-	 } from '../../utils/currency';
+import { calculateBalancePrice } from '../../utils/currency';
 
 class UserSettings extends Component {
 	state = {
@@ -76,7 +73,7 @@ class UserSettings extends Component {
 
 	calculateSections = ({ balance, prices }) => {
 		const totalAssets = calculateBalancePrice(balance, prices);
-        this.setState({ totalAssets: formatFiatAmount(totalAssets) });
+        this.setState({ totalAssets: totalAssets });
     };
 
 	updateTabs = ({ username = '', settings = {} }, activeTab) => {

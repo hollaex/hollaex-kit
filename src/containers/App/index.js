@@ -344,9 +344,8 @@ class Container extends Component {
 					this.props.updateOrder(data);
 					if (this.props.settings.notification && this.props.settings.notification.popup_order_partially_filled) {
 						this.props.setNotification(
-							NOTIFICATIONS.ORDERS,
-							{ type, data },
-							false
+							NOTIFICATIONS.TRADES,
+							{ type, order: data, data: [{...data}] }
 						);
 					}
 					if (this.props.settings.audio && this.props.settings.audio.order_partially_completed) {
@@ -410,7 +409,7 @@ class Container extends Component {
 							const { orders } = this.props;
 							order = orders.find(({ id }) => id === orderIdFromTrade);
 						}
-						if (order) {
+						if (order && order.type === 'market' && this.props.settings.notification && this.props.settings.notification.popup_order_completed) {
 							this.props.setNotification(NOTIFICATIONS.TRADES, { data, order });
 						}
 					}

@@ -5,6 +5,7 @@ import { Accordion, Table, Button } from '../../components';
 import renderFields from '../../components/Form/factoryFields';
 import { getErrorLocalized } from '../../utils/errors';
 import STRINGS from '../../config/localizedStrings';
+import { formatFiatAmount } from '../../utils/currency';
 
 export const generateHeaders = (onAdjustPortfolio) => {
 	return [
@@ -73,11 +74,12 @@ const WarningForm = reduxForm({
 
 const RiskForm = ({ onAdjustPortfolio, totalAssets, percentageOfPortfolio, ...rest }) => {
 	const { initialValues = {} } = rest;
+	const percentPrice = ((totalAssets / 100) * initialValues.order_portfolio_percentage);
 	const assetData = [
 		{
 			id: 1,
 			percentage: initialValues.order_portfolio_percentage ? `${initialValues.order_portfolio_percentage}%` : '',
-			assetValue: totalAssets
+			assetValue: percentPrice ? `${formatFiatAmount(percentPrice)} ${STRINGS.FIAT_CURRENCY_SYMBOL}` : 0
 		}
 	];
     const sections = [
@@ -85,7 +87,7 @@ const RiskForm = ({ onAdjustPortfolio, totalAssets, percentageOfPortfolio, ...re
             title: STRINGS.USER_SETTINGS.CREATE_ORDER_WARING,
             content: <div>
                 <p>{STRINGS.USER_SETTINGS.RISK_MANAGEMENT.INFO_TEXT}</p>
-				<p>{STRINGS.formatString(STRINGS.USER_SETTINGS.RISK_MANAGEMENT.INFO_TEXT_1, totalAssets).join('')}</p>
+				<p>{STRINGS.formatString(STRINGS.USER_SETTINGS.RISK_MANAGEMENT.INFO_TEXT_1, STRINGS.FIAT_FULLNAME, totalAssets).join('')}</p>
                 <Table
                     rowClassName="pt-2 pb-2"
 					headers={generateHeaders(onAdjustPortfolio)}

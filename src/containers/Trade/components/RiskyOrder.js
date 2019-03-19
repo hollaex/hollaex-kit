@@ -22,7 +22,7 @@ const RiskyOrder = ({ data, onConfirm, onClose }) => {
                     <span className="risky_managment_percentage" >
                         {STRINGS.formatString(
                         STRINGS.USER_SETTINGS.RISKY_WARNING_TEXT_2,
-                        data.order.order_portfolio_percentage).join('')}
+                        `${data.order.order_portfolio_percentage}%`).join('')}
                     </span>)
                 }
             </div>

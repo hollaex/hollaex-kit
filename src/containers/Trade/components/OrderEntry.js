@@ -245,6 +245,11 @@ class OrderEntry extends Component {
 					submit(FORM_NAME);
 				}
 			});
+		} else if (risk.popup_warning && riskyPrice < orderPriceInFiat) {
+			order['order_portfolio_percentage'] = risk.order_portfolio_percentage
+			onRiskyTrade(order, () => {
+				submit(FORM_NAME);
+			});
 		} else {
 			submit(FORM_NAME);
 		}
