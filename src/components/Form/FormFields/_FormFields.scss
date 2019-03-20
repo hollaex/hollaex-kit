@@ -121,7 +121,7 @@ $placeholder--font-weight: bold;
 	bottom: 0;
 }
 
-.file_wrapper {
+.file_wrapper, .multiple_file_wrapper {
 	display: flex;
 	justify-content: space-between;
 	padding-right: 0 !important;
@@ -130,6 +130,10 @@ $placeholder--font-weight: bold;
 		position: relative;
 		top: 0 !important;
 	}
+}
+
+.multiple_file_wrapper {
+	display: unset;
 }
 
 .checkfield-wrapper {
@@ -268,7 +272,7 @@ $placeholder--font-weight: bold;
 			color: $dark-form-text !important;
 		}
 	}
-	.file_wrapper {
+	.file_wrapper, .multiple_file_wrapper {
 		.text_overflow {
 			color: $dark-font-sub-text-color;
 		}

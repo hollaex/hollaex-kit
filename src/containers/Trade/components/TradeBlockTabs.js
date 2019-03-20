@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import classnames from 'classnames';
 import EventListener from 'react-event-listener';
 import TradeBlock from './TradeBlock';
+import STRINGS from '../../../config/localizedStrings';
 import { isLoggedIn } from '../../../utils/token';
 
 class TradeBlockTabs extends Component {
@@ -33,7 +34,7 @@ class TradeBlockTabs extends Component {
 					{content.map((item, index) => (
 						<div
 							key={index}
-							className={classnames('pointer', { active: active === index })}
+							className={classnames('pointer', { active: active === index, recent_trade: active === 1 && item.title === STRINGS.RECENT_TRADES })}
 							onClick={this.setActiveTab(index)}
 						>
 							{item.title}

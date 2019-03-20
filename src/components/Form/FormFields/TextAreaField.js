@@ -12,6 +12,7 @@ const TextAreaField = (props) => {
 		fullWidth = false, // eslint-disable-line
 		information,
 		notification,
+		rows,
 		...rest
 	} = props;
 	const displayError = touched && error && !active;
@@ -19,7 +20,7 @@ const TextAreaField = (props) => {
 	return (
 		<FieldWrapper {...props}>
 			<textarea
-				rows="1"
+				rows={rows ? rows : "1" }
 				placeholder={placeholder}
 				className={classnames('input_field-input', {
 					error: displayError

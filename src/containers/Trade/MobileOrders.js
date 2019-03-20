@@ -69,13 +69,15 @@ const MobileOrders = ({
 			}
 		</TradeBlock>
 		<TradeBlock
-			title={STRINGS.TRADE_HISTORY}
+			title={STRINGS.RECENT_TRADES}
+			active={true}
 			action={ isLoggedIn ? 
 				<ActionNotification
-					text={STRINGS.TRADE_HISTORY}
+					text={STRINGS.TRANSACTION_HISTORY.TITLE}
 					iconPath={ICONS.ARROW_TRANSFER_HISTORY_ACTIVE}
 					onClick={goToTransactionsHistory}
 					status=""
+					active={true}
 					useSvg={true}
 					showActionText={true}
 				/> 

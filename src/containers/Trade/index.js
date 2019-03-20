@@ -226,7 +226,7 @@ class Trade extends Component {
 				) : ''
 			},
 			{
-				title: STRINGS.TRADES,
+				title: STRINGS.RECENT_TRADES,
 				children:   (
 					isLoggedIn() ?
 						<UserTrades trades={userTrades} pair={pair} pairData={pairData} pairs={pairs} /> :
@@ -249,10 +249,11 @@ class Trade extends Component {
 				),
 				titleAction:  isLoggedIn() ? (
 					<ActionNotification
-						text={STRINGS.TRADE_HISTORY}
+						text={STRINGS.TRANSACTION_HISTORY.TITLE}
 						iconPath={ICONS.ARROW_TRANSFER_HISTORY_ACTIVE}
 						onClick={this.goToTransactionsHistory}
 						status="information"
+						active={true}
 						useSvg={true}
 					/>
 				) : ''
@@ -432,7 +433,7 @@ class Trade extends Component {
 								'apply_rtl'
 							)}
 						>
-							<TradeBlock title={STRINGS.TRADE_HISTORY}>
+							<TradeBlock active={true} title={STRINGS.PUBLIC_SALES}>
 								<TradeHistory data={tradeHistory} language={activeLanguage} />
 							</TradeBlock>
 						</div>

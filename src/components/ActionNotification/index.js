@@ -32,6 +32,7 @@ const ActionNotification = ({
 	iconPosition,
 	showPointer,
 	rotate,
+	active,
 	rotateIfLtr,
 	rotateIfRtl,
 	showActionText
@@ -54,7 +55,7 @@ const ActionNotification = ({
 			<div
 				className={classnames(
 					'action_notification-text',
-					getClassNames(status)
+					active ? 'transaction_history_active' : getClassNames(status)
 				)}
 			>
 				{text}

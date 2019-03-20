@@ -96,7 +96,27 @@ export const setLanguage = (value = DEFAULT_LANGUAGE) => {
 };
 
 export const sendSupportMail = (values = {}) => {
-	return axios.post('/support', values);
+	const formData = new FormData();
+	if (values.attachment instanceof Array) {
+		(values.attachment.map((data, key) => {
+			formData.append(`attachment_${key}`, data);
+		}))
+	}
+
+	Object.keys(values).map((data, key) => {
+		if (data !== 'attachment') {
+			formData.append(data, values[data])
+		}
+	});
+
+	return axios({
+		headers: {
+			'Content-Type': 'multipart/form-data'
+		},
+		data: formData,
+		url: '/support',
+		method: 'POST'
+	});
 };
 
 export const setAnnouncements = (announcements) => ({

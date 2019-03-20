@@ -3,7 +3,7 @@
 <svg version="1.2" baseProfile="tiny" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
 	 x="0px" y="0px" viewBox="0 0 113.5 113.5" xml:space="preserve">
 <style type="text/css">
-	.risk-order-warning{fill:#BBBDBF}
+	.risk-order-warning{fill:#000000}
 </style>
 <path class="risk-order-warning" d="M26,14.9h36.6v6.6H26c-0.3,0-0.6,0.1-0.8,0.3c-0.2,0.2-0.3,0.5-0.3,0.8v72.7c0,0.3,0.1,0.6,0.3,0.8
 	c0.2,0.2,0.5,0.3,0.8,0.3h57.4c0.3,0,0.6-0.1,0.8-0.3c0.2-0.2,0.3-0.5,0.3-0.8V44.6h6.6v50.6c0,2.1-0.9,4-2.3,5.4

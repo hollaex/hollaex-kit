@@ -74,6 +74,10 @@ class ContactForm extends Component {
 				{
 					value: 'bug',
 					label: STRINGS.CONTACT_FORM.CATEGORY_OPTIONS.OPTION_BUG
+				},
+				{
+					value: 'personal',
+					label: STRINGS.CONTACT_FORM.CATEGORY_OPTIONS.OPTION_PERSONAL_INFO
 				}
 			],
 			validate: [required],
@@ -91,14 +95,17 @@ class ContactForm extends Component {
 			label: STRINGS.CONTACT_FORM.DESCRIPTION_LABEL,
 			placeholder: STRINGS.CONTACT_FORM.DESCRIPTION_PLACEHOLDER,
 			validate: [required],
-			fullWidth: true
+			fullWidth: true,
+			rows: '2'
+		},
+		attachment: {
+		  type: 'file',
+		  label: STRINGS.CONTACT_FORM.ATTACHMENT_LABEL,
+		  placeholder: STRINGS.CONTACT_FORM.ATTACHMENT_PLACEHOLDER,
+		  fullWidth: true,
+		  multiple: true,
+		  length: 3
 		}
-		// attachment: {
-		//   type: 'file',
-		//   label: STRINGS.CONTACT_FORM.ATTACHMENT_LABEL,
-		//   placeholder: STRINGS.CONTACT_FORM.ATTACHMENT_PLACEHOLDER,
-		//   fullWidth: true,
-		// }
 	});
 
 	render() {
@@ -115,7 +122,7 @@ class ContactForm extends Component {
 		return (
 			<div className="contact_form-wrapper">
 				<IconTitle
-					iconPath={ICONS.LIFESAVER}
+					iconPath={ICONS.CONTACT_US_ICON}
 					text={STRINGS.CONTACT_US_TEXT}
 					textType="title"
 					underline={true}

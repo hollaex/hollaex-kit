@@ -37,6 +37,7 @@ export const ICONS = {
 	ETH_ICON_DARK: `${process.env.PUBLIC_URL}/assets/icons/eth-icon-dark-01.svg`,
 	EUR_ICON: `${process.env.PUBLIC_URL}/assets/icons/eur-icon.svg`,
 	LIFESAVER: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-05.svg`,
+	CONTACT_US_ICON:`${process.env.PUBLIC_URL}/assets/acounts/help-contact-us-01.svg`,
 	QUESTION_MARK: `${process.env.PUBLIC_URL}/assets/icons/question-mark-black.svg`,
 	QUESTION_MARK_COLOR: `${process.env.PUBLIC_URL}/assets/icons/question-mark-color.svg`,
 	LAPTOP: `${process.env.PUBLIC_URL}/assets/icons/compute-play-black.svg`,

@@ -47,6 +47,7 @@ export default {
 	COPY_SUCCESS_TEXT: 'Successfully Copied', // ToDO: need to Add it in farsi.
 	CANCEL_SUCCESS_TEXT: 'Successfully Cancelled!', // ToDo: need to add this in farsi when move to exir.
 	UPLOAD_TEXT: 'Upload',
+	ADD_FILES: 'ADD FILES', // ToDo
 	OR_TEXT: 'Or',
 	CONTACT_US_TEXT: 'Contact us',
 	HELPFUL_RESOURCES_TEXT: 'Helpful resources',
@@ -133,13 +134,14 @@ export default {
 			OPTION_VERIFY: 'User verification',
 			OPTION_LEVEL: 'Increase user level',
 			OPTION_DEPOSIT: 'Deposit & Withdrawal',
-			OPTION_BUG: 'Report bug'
+			OPTION_BUG: 'Report bug', // ToDo:
+			OPTION_PERSONAL_INFO: 'Change personal information' // ToDo:
 		},
 		SUBJECT_LABEL: 'Subject',
 		SUBJECT_PLACEHOLDER: 'Type the subject of your issue',
 		DESCRIPTION_LABEL: 'Description',
 		DESCRIPTION_PLACEHOLDER: 'Type in detail what the issue is',
-		ATTACHMENT_LABEL: 'Add an attachment',
+		ATTACHMENT_LABEL: 'Add attachments(3 max)',  // ToDo:
 		ATTACHMENT_PLACEHOLDER:
 			'Add a file to help communicate your issue. PDF, JPG, PNG and GIF files are accepted',
 		SUCCESS_MESSAGE: 'The email has been seent to our support',
@@ -722,6 +724,8 @@ export default {
 	CHART: 'price chart',
 	ORDERS: 'my active orders',
 	TRADES: 'my trade history',
+	RECENT_TRADES: 'my recent trades', // ToDo
+	PUBLIC_SALES: 'public sales', // ToDo
 	REMAINING: 'Remaining',
 	FULLFILLED: '{0} % Fullfilled',
 	PRICE_CURRENCY: 'PRICE ({0})',

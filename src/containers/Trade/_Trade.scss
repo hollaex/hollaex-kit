@@ -143,6 +143,10 @@ $order_entry-column--width-lg: 18rem;
 		color: $dark-sell;
 	}
 
+	.trade-active {
+		color: $error-color;
+	}
+
 	.trade_history-row {
 		&.sell {
 			color: $dark-sell;
