@@ -229,7 +229,7 @@ class Trade extends Component {
 				title: STRINGS.RECENT_TRADES,
 				children:   (
 					isLoggedIn() ?
-						<UserTrades trades={userTrades} pair={pair} pairData={pairData} pairs={pairs} /> :
+						<UserTrades pageSize={10} trades={userTrades} pair={pair} pairData={pairData} pairs={pairs} /> :
 					<div className='text-center'>
 						<IconTitle
 							iconPath={activeTheme ==='dark' ? ICONS.TRADE_HISTORY_DARK: ICONS.TRADE_HISTORY_LIGHT }
@@ -454,11 +454,11 @@ const mapStateToProps = (store) => {
 	const marketPrice = tradeHistory && tradeHistory.length > 0 ? tradeHistory[0].price : 1;
 	let count = 0;
 	const userTrades = store.wallet.trades.data.filter(
-		({ symbol }) => symbol === pair && count++ < 50
+		({ symbol }) => symbol === pair && count++ < 10
 	);
 	count = 0;
 	const activeOrders = store.order.activeOrders.filter(
-		({ symbol }) => symbol === pair && count++ < 50
+		({ symbol }) => symbol === pair && count++ < 10
 	);
 	const fees = store.user.fees[pair];
 	const orderBookLevels = store.user.settings.interface.order_book_levels;

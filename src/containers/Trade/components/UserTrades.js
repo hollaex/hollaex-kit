@@ -6,7 +6,7 @@ import {
 	generateLessTradeHeaders
 } from '../../TransactionsHistory/utils';
 
-const ActiveOrders = ({ trades, pairData, pair, pairs, lessHeaders }) => {
+const ActiveOrders = ({ trades, pairData, pair, pairs, lessHeaders, pageSize }) => {
 	const headers = lessHeaders
 		? generateLessTradeHeaders(pairData.pair_base, pairs)
 		: generateTradeHeaders(pairData.pair_base, pairs);
@@ -19,7 +19,7 @@ const ActiveOrders = ({ trades, pairData, pair, pairs, lessHeaders }) => {
 				headers={headers}
 				data={trades}
 				count={trades.length}
-				pageSize={50}
+				pageSize={pageSize	? pageSize : 50}
 				displayPaginator={false}
 			/>
 		</div>

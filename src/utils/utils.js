@@ -139,6 +139,15 @@ export const playBackgroundAudioNotification = (type = '') => {
 		case 'cancel_order':
 			audioFile = AUDIOS.CANCEL_ORDER;
 			break;
+		case 'quick_trade_complete':
+			audioFile= AUDIOS.QUICK_TRADE_COMPLETE;
+			break;
+		case 'review_quick_trade_order':
+			audioFile=AUDIOS.REVIEW_QUICK_TRADE_ORDER;
+			break;
+		case 'time_out_quick_trade':
+			audioFile=AUDIOS.TIME_OUT_QUICK_TRADE;
+			break;
 		default:
 	}
 	const audio = new Audio(audioFile);

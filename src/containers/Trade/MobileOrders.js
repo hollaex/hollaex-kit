@@ -86,6 +86,7 @@ const MobileOrders = ({
 			className="f-1"
 		>
 			{isLoggedIn ? <UserTrades
+				pageSize={10}
 				trades={userTrades}
 				pair={pair}
 				pairData={pairData}

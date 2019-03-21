@@ -375,7 +375,10 @@ export const AUDIOS = {
 	PUBLIC_TRADE_NOTIFICATION: `${process.env.PUBLIC_URL}/assets/audio/public-trade-notification.wav`,
 	ORDER_COMPLETED: `${process.env.PUBLIC_URL}/assets/audio/order-filled.wav`,
 	ORDER_PARTIALLY_COMPLETED: `${process.env.PUBLIC_URL}/assets/audio/order-partially-filled.wav`,
-	CANCEL_ORDER: `${process.env.PUBLIC_URL}/assets/audio/cancel_order.wav`
+	CANCEL_ORDER: `${process.env.PUBLIC_URL}/assets/audio/cancel_order.wav`,
+	QUICK_TRADE_COMPLETE: `${process.env.PUBLIC_URL}/assets/audio/quick-trade-complete.wav`,
+	REVIEW_QUICK_TRADE_ORDER:`${process.env.PUBLIC_URL}/assets/audio/review-quick-trade-order.wav`,
+	TIME_OUT_QUICK_TRADE:`${process.env.PUBLIC_URL}/assets/audio/time-out-quick-trade.wav`
 }
 
 export const CURRENCIES = {

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import classnames from 'classnames';
 import moment from 'moment';
 
+import { playBackgroundAudioNotification } from '../../utils/utils';
 import STRINGS from '../../config/localizedStrings';
 
 import { Button, Loader } from '../';
@@ -24,6 +25,7 @@ class Countdown extends Component {
 	}
 
 	onInit = (expirationTime) => {
+		playBackgroundAudioNotification('review_quick_trade_order')
 		const end = moment.unix(expirationTime).subtract(5, 'seconds');
 		this.onTick(end);
 		const interval = setInterval(() => {
@@ -35,6 +37,7 @@ class Countdown extends Component {
 	onTick = (end) => {
 		const countdown = end.diff(moment(), 'seconds');
 		if (countdown <= 0) {
+			playBackgroundAudioNotification('time_out_quick_trade')
 			this.onStop();
 		} else {
 			this.setState({
