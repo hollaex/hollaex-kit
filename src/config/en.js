@@ -613,7 +613,8 @@ export default {
 			INFO_TEXT_1: 'Total assets value in {0}: {1}',
 			PORTFOLIO: 'Percentage of portfolio',
 			TOMAN_ASSET: 'Approximate Value',
-			ADJUST: 'ADJUST',
+			ADJUST: '(ADJUST PERCENTAGE)',  //ToDo: add it in farsi on exir
+			ACTIVATE_RISK_MANAGMENT: 'Activate Risk Managment', //ToDo: add it in farsi on exir
 			WARNING_POP_UP: 'Warning pop ups'
 		}
 	},

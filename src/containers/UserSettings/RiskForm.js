@@ -14,7 +14,10 @@ export const generateHeaders = (onAdjustPortfolio) => {
 			key: 'percentage',
 			renderCell: ({ id, percentage }, key, index) => (
 				<td key={`${key}-${id}-percentage`}>
-					{percentage}
+					<span className= {percentage.popupWarning ? '' : 'deactive_risk_data' }>
+						{percentage.portfolioPercentage}
+						<span className= {percentage.popupWarning ?  "ml-2 pointer blue-link" : "ml-2 deactive_risk_data" } onClick={percentage.popupWarning ? onAdjustPortfolio: ''  }>{STRINGS.USER_SETTINGS.RISK_MANAGEMENT.ADJUST}</span>
+					</span>
 				</td>
 			)
 		},
@@ -22,18 +25,20 @@ export const generateHeaders = (onAdjustPortfolio) => {
 			label: STRINGS.USER_SETTINGS.RISK_MANAGEMENT.TOMAN_ASSET,
 			key: 'assetValue',
 			renderCell: ({ id, assetValue }, key, index) => (
-				<td key={`${key}-${id}-assetValue`}>
-					{assetValue}
+				<td key={`${key}-${id}-assetValue.percentPrice`}>
+					<span className= {assetValue.popupWarning ? '' : 'deactive_risk_data' }> {assetValue.percentPrice}</span>
 				</td>
 			)
 		},
 		{
-			label: '',
+			label: STRINGS.USER_SETTINGS.RISK_MANAGEMENT.ACTIVATE_RISK_MANAGMENT,
 			key: 'adjust',
-			className: 'text-center',
-			renderCell: ({ id }, key, index) => (
-				<td key={`${key}-${id}-adjusted`} className="text-center pointer blue-link" onClick={onAdjustPortfolio}>
-					{STRINGS.USER_SETTINGS.RISK_MANAGEMENT.ADJUST}
+			className: 'text-right',
+			renderCell: ({ id, adjust }, key, index) => (
+				<td key={`${key}-${id}-adjusted`}>
+					<div className="d-flex justify-content-end">
+						{renderFields(adjust)}
+					</div>
 				</td>
 			)
 		}
@@ -44,42 +49,29 @@ export const generateWarningFormValues = () => ({
 	popup_warning: {
 		type: 'toggle',
 		label: STRINGS.USER_SETTINGS.RISK_MANAGEMENT.WARNING_POP_UP,
-		className: 'toggle-wrapper'
+		className: 'toggle-wrapper',
+		toggleOnly: true
 	}
 });
 
-const Form = ({
-	handleSubmit,
-	submitting,
-	pristine,
-	error,
-	valid,
-	initialValues,
-	formFields
-}) => (
-		<form onSubmit={handleSubmit}>
-			{renderFields(formFields)}
-			{error && <div className="warning_text">{getErrorLocalized(error)}</div>}
-			<Button
-				className="mt-4"
-				label={STRINGS.SETTING_BUTTON}
-				disabled={pristine || submitting || !valid}
-			/>
-		</form>
-	);
-
-const WarningForm = reduxForm({
-	form: 'WarningForm'
-})(Form);
-
 const RiskForm = ({ onAdjustPortfolio, totalAssets, percentageOfPortfolio, ...rest }) => {
-	const { initialValues = {} } = rest;
+	const {
+		initialValues = {},
+		handleSubmit,
+		submitting,
+		pristine,
+		error,
+		valid,
+		formFields
+	} = rest;
 	const percentPrice = ((totalAssets / 100) * initialValues.order_portfolio_percentage);
 	const assetData = [
 		{
 			id: 1,
-			percentage: initialValues.order_portfolio_percentage ? `${initialValues.order_portfolio_percentage}%` : '',
-			assetValue: percentPrice ? `${formatFiatAmount(percentPrice)} ${STRINGS.FIAT_CURRENCY_SYMBOL}` : 0
+			percentage: {portfolioPercentage :initialValues.order_portfolio_percentage ? `${initialValues.order_portfolio_percentage}%` : '',  popupWarning:initialValues.popup_warning},
+			assetValue: { percentPrice: percentPrice ? `${formatFiatAmount(percentPrice)} ${STRINGS.FIAT_CURRENCY_SYMBOL}` : 0, popupWarning:initialValues.popup_warning},
+			adjust: formFields,
+			warning: initialValues.popup_warning
 		}
 	];
     const sections = [
@@ -93,16 +85,24 @@ const RiskForm = ({ onAdjustPortfolio, totalAssets, percentageOfPortfolio, ...re
 					headers={generateHeaders(onAdjustPortfolio)}
                     data={assetData}
                     count={1}
-                    displayPaginator= {false}
+                    displayPaginator={false}
                 />
             </div>,
 			isOpen: true
-        }, {
-			title: STRINGS.USER_SETTINGS.RISK_MANAGEMENT.WARNING_POP_UP,
-			content: <WarningForm {...rest} />
-		}
+        }
     ];
-	return <Accordion sections={sections} />;
+	return <div>
+		<form onSubmit={handleSubmit}>
+			<Accordion sections={sections} />
+			<Button
+				className="mt-4"
+				label={STRINGS.SETTING_BUTTON}
+				disabled={pristine || submitting || !valid}
+			/> 
+		</form>
+	</div>;
 };
 
-export default RiskForm;
+export default reduxForm({
+	form: 'WarningForm'
+})(RiskForm);

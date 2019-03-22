@@ -30,7 +30,6 @@ const Form = ({
     error,
     valid,
     initialValues,
-    formFields,
     onClose
 }) => (
         <form onSubmit={handleSubmit}>
@@ -47,7 +46,7 @@ const Form = ({
     );
 
 const OrderPortfolioForm = reduxForm({
-    form: 'orderWarningPortfolio'
+    form: 'WarningForm'
 })(Form);
 
 const SetOrderPortfolio = ({ data, ...rest }) => {

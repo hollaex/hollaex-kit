@@ -38,54 +38,64 @@ class ToggleField extends Component {
             label,
             className,
             meta = { active: false, error: '', touched: false, invalid: false },
+            toggleOnly,
             ...rest
         } = this.props;
         const { selected } = this.state;
         return (
             <div className={classnames("py-2", className)}>
-                <FieldContent
-                    hideUnderline={true}
-                    meta={meta}
-                    valid={!meta.invalid}
-                    {...rest}>
-                    <div className="d-flex justify-content-between">
-                        <div>
-                            {label}
-                        </div>
-                        <div className={classnames('toggle_button-wrapper', 'd-flex')}>
-                            <div
-                                className={classnames(
-                                    'toggle-content',
-                                    'f-0',
-                                    ...FLEX_CENTER_CLASSES,
-                                    'direction_ltr'
-                                )}
-                            >
-                                <div className={classnames({ selected: options[0].value === selected })}>
-                                    {options[0].label}
-                                </div>
-                                <div
-                                    onClick={this.onToogle}
-                                    className={classnames('toggle-action_button', {
-                                        left: options[0].value === selected,
-                                        right: options[1].value === selected
-                                    })}
-                                >
-                                    <div className="toggle-action_button-display" />
-                                </div>
-                                <div className={classnames({ selected: options[1].value === selected })}>
-                                    {options[1].label}
-                                </div>
+                {toggleOnly 
+                    ? <Toggle selected={selected} options={options} onToogle={this.onToogle}  />
+                    : <FieldContent
+                        hideUnderline={true}
+                        meta={meta}
+                        valid={!meta.invalid}
+                        {...rest}>
+                        <div className="d-flex justify-content-between">
+                            <div>
+                                {label}
                             </div>
+                            <Toggle selected={selected} options={options} onToogle={this.onToogle}  />
                         </div>
-                    </div>
-                </FieldContent>
+                    </FieldContent>
+                }
             </div>
         );
     }
 }
+
+const Toggle = ({ options, selected, onToogle }) => (
+    <div className={classnames('toggle_button-wrapper', 'd-flex')}>
+        <div
+            className={classnames(
+                'toggle-content',
+                'f-0',
+                ...FLEX_CENTER_CLASSES,
+                'direction_ltr'
+            )}
+        >
+            <div className={classnames({ selected: options[0].value === selected })}>
+                {options[0].label}
+            </div>
+            <div
+                onClick={onToogle}
+                className={classnames('toggle-action_button', {
+                    left: options[0].value === selected,
+                    right: options[1].value === selected
+                })}
+            >
+                <div className="toggle-action_button-display" />
+            </div>
+            <div className={classnames({ selected: options[1].value === selected })}>
+                {options[1].label}
+            </div>
+        </div>
+    </div>
+);
+
 ToggleField.defaultProps = {
     options: STRINGS.DEFAULT_TOGGLE_OPTIONS,
-    onChange: () => {}
+    onChange: () => {},
+    toggleOnly: false
 };
 export default ToggleField;
