@@ -77,7 +77,6 @@ const MobileOrders = ({
 					iconPath={ICONS.ARROW_TRANSFER_HISTORY_ACTIVE}
 					onClick={goToTransactionsHistory}
 					status=""
-					active={true}
 					useSvg={true}
 					showActionText={true}
 				/> 

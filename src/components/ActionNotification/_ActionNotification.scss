@@ -11,10 +11,6 @@
 		color: $colors-notifications-blue;
 	}
 
-	.transaction_history_active{
-		color: $colors-notifications-blue;
-	}
-	
 	.notification-warning {
 		color: $colors-notifications-red;
 	}
@@ -166,23 +162,16 @@
 		.icon-copy-1,
 		.icon-tamer-01,
 		.arrow-1,
+		.trans-history-1,
+		.trans-history-2,
+		.trans-history-3,
 		.cancel-cross-1 {
 			fill: $dark-link;
 		}
-		.trans-history-1,
-		.trans-history-2,
-		.trans-history-3 {
-			fill: $error-color;
-		}
 		.cancel-cross-2,
-		.cancel-cross-3 {
-			stroke: $dark-link;
-		}
+		.cancel-cross-3, 
 		.trans-history-4 {
-			stroke: $error-color;
-		}
-		.transaction_history_active{
-			color: $error-color;
+			stroke: $dark-link;
 		}
 		.connect-loading {
 			fill: $dark-font-sub-text-color !important;

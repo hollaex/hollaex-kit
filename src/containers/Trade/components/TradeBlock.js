@@ -14,7 +14,6 @@ const TradeBlock = ({
 	pairData = {},
 	pair,
 	isLoggedIn,
-	active, 
 	activeTheme
 }) => {
 	const pairs = pair ? pair.split('-').map(curr => curr.toUpperCase()) : [];
@@ -34,7 +33,7 @@ const TradeBlock = ({
 				<div className='d-flex justify-content-between'>
 					<div className='d-flex'>
 						{pairs.length ? <ReactSVG path={ICON_PATH} wrapperClassName='trade_block-icon'/> : null}
-						<div className= { active === true ? "trade_block-title-items trade-active" : "trade_block-title-items"} >{title}</div>
+						<div className="trade_block-title-items" >{title}</div>
 					</div>
 					<div className={pairs.length ? `trade_block-title-currency-${pairs[0].toLowerCase()}` : 'trade_block-title-currency'}>
 						{pairs.length ? `${pairs[0]}/${pairs[1]}` : ''}

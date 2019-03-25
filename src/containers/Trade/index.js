@@ -167,7 +167,7 @@ class Trade extends Component {
 		this.setState({ cancelDelayData: this.state.cancelDelayData.concat(id) });
 		setTimeout(() => {
 			this.props.cancelOrder(id);
-		}, 1000);
+		}, 800);
 	}
 
 	render() {
@@ -253,7 +253,6 @@ class Trade extends Component {
 						iconPath={ICONS.ARROW_TRANSFER_HISTORY_ACTIVE}
 						onClick={this.goToTransactionsHistory}
 						status="information"
-						active={true}
 						useSvg={true}
 					/>
 				) : ''
@@ -433,7 +432,7 @@ class Trade extends Component {
 								'apply_rtl'
 							)}
 						>
-							<TradeBlock active={true} title={STRINGS.PUBLIC_SALES}>
+							<TradeBlock title={STRINGS.PUBLIC_SALES}>
 								<TradeHistory data={tradeHistory} language={activeLanguage} />
 							</TradeBlock>
 						</div>

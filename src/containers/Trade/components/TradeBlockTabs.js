@@ -34,7 +34,7 @@ class TradeBlockTabs extends Component {
 					{content.map((item, index) => (
 						<div
 							key={index}
-							className={classnames('pointer', { active: active === index, recent_trade: active === 1 && item.title === STRINGS.RECENT_TRADES })}
+							className={classnames('pointer', { active: active === index })}
 							onClick={this.setActiveTab(index)}
 						>
 							{item.title}

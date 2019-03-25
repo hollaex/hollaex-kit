@@ -27,7 +27,7 @@ const RiskyOrder = ({ data, onConfirm, onClose }) => {
                 }
             </div>
             <div className="mt-1 mb-2 ">{STRINGS.USER_SETTINGS.RISKY_WARNING_TEXT_3}</div>
-            <Link to='/settings' onClick={() => onClose()} className='blue-link'>{STRINGS.USER_SETTINGS.GO_TO_RISK_MANAGMENT}</Link>
+            <Link to='/settings?tab=5' onClick={() => onClose()} className='blue-link'>{STRINGS.USER_SETTINGS.GO_TO_RISK_MANAGMENT}</Link>
             <div className="mb-2 mt-2">{STRINGS.TYPE}: {data.order.type} {data.order.side}</div>
             <div className="mb-2" >{STRINGS.AMOUNT}: {data.order.price} {STRINGS[`${data.pairData.pair_2.toUpperCase()}_SHORTNAME`]}</div>
             <div className="mb-2" >{STRINGS.FEE}: {formatFiatAmount(data.order.orderFees)} {STRINGS[`${data.pairData.pair_2.toUpperCase()}_SHORTNAME`]}</div>

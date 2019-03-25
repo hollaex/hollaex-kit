@@ -28,8 +28,8 @@
 
 .snack_open {
     top: -1rem;
-    -webkit-animation: snackSlide 1s forwards;
-    animation: snackSlide 1s forwards;
+    -webkit-animation: snackSlide 0.7s forwards;
+    animation: snackSlide 0.7s forwards;
 }
 
 .snack_close {
@@ -50,12 +50,12 @@
 
 @-webkit-keyframes slideClose {
     0% { top: 1rem; }
-    100% { top: -2rem; }
+    100% { top: -4rem; }
 }
 
 @keyframes slideClose {
     0% { top: 1rem; }
-    100% { top: -2rem; }
+    100% { top: -4rem; }
 }
 
 .dark-theme {

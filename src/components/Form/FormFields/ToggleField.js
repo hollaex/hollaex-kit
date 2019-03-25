@@ -74,20 +74,21 @@ const Toggle = ({ options, selected, onToogle }) => (
                 'direction_ltr'
             )}
         >
-            <div className={classnames({ selected: options[0].value === selected })}>
-                {options[0].label}
+
+            <div className={classnames({ selected: options[1].value === selected })}>
+                {options[1].label}
             </div>
             <div
                 onClick={onToogle}
                 className={classnames('toggle-action_button', {
-                    left: options[0].value === selected,
-                    right: options[1].value === selected
+                    left: options[1].value === selected,
+                    right: options[0].value === selected
                 })}
             >
                 <div className="toggle-action_button-display" />
             </div>
-            <div className={classnames({ selected: options[1].value === selected })}>
-                {options[1].label}
+            <div className={classnames({ selected: options[0].value === selected })}>
+                {options[0].label}
             </div>
         </div>
     </div>

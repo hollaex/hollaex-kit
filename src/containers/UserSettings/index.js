@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { SubmissionError } from 'redux-form';
 import { isMobile } from 'react-device-detect';
+import { browserHistory } from 'react-router';
 
 import { setLanguage, changeTheme, openContactForm, openRiskPortfolioOrderWarning, closeNotification } from '../../actions/appActions';
 import { logout } from '../../actions/authAction';
@@ -37,9 +38,15 @@ class UserSettings extends Component {
 	componentDidMount() {
         const { user } = this.props;
 
-		this.updateTabs(this.props, this.state.activeTab);
         if (user.id) {
 			this.calculateSections(this.props);
+		}
+		if (this.props.location.query && this.props.location.query.tab) {
+			this.setState({ activeTab: parseInt(this.props.location.query.tab, 10) }, () => {
+				this.updateTabs(this.props, this.state.activeTab);
+			});
+		} else {
+			this.updateTabs(this.props, this.state.activeTab);
 		}
 	}
 
@@ -275,7 +282,15 @@ class UserSettings extends Component {
 
 	setActiveTab = (activeTab) => {
 		this.setState({ activeTab });
+		if (this.props.location.query && this.props.location.query.tab) {
+			this.removeQueryString();
+		}
 	};
+	removeQueryString=() => {
+        const { location } = this.props;
+		['tab'].forEach(q => delete location.query[q]);
+		browserHistory.push(location);
+	}
 
 	render() {
 		if (this.props.verification_level === 0) {

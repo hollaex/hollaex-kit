@@ -113,7 +113,7 @@ const INITIAL_STATE = {
 			public_trade: false
 		},
 		risk: {
-			order_portfolio_percentage: 10,
+			order_portfolio_percentage: 25,
 			popup_warning: true
 		}
 	},

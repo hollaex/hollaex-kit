@@ -164,10 +164,10 @@ $controllers--color-disabled: $colors-deactivate-color2;
 				border-bottom-color: $dark-border-main;
 			}
 			.cancel-animate {
-				-webkit-animation: cancelRowDark 2s;
-				-moz-animation:    cancelRowDark 2s;
-				-o-animation:      cancelRowDark 2s;
-				animation:         cancelRowDark 2s;
+				-webkit-animation: cancelRowDark 1.2s;
+				-moz-animation:    cancelRowDark 1.2s;
+				-o-animation:      cancelRowDark 1.2s;
+				animation:         cancelRowDark 1.2s;
 			}
 			
 			@-webkit-keyframes cancelRowDark {
