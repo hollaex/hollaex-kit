@@ -34,6 +34,8 @@ export const SET_TICKERS = 'SET_TICKERS';
 export const CHANGE_THEME = 'CHANGE_THEME';
 export const SET_ORDER_LIMITS = 'SET_ORDER_LIMITS';
 export const FEES_STRUCTURE_AND_LIMITS = 'FEES_STRUCTURE_AND_LIMITS';
+export const RISK_PORTFOLIO_ORDER_WARING = 'RISK_PORTFOLIO_ORDER_WARING';
+export const RISKY_ORDER = 'RISKY_ORDER';
 
 export const USER_TYPES = {
 	USER_TYPE_NORMAL: 'normal',
@@ -94,7 +96,27 @@ export const setLanguage = (value = DEFAULT_LANGUAGE) => {
 };
 
 export const sendSupportMail = (values = {}) => {
-	return axios.post('/support', values);
+	const formData = new FormData();
+	if (values.attachment instanceof Array) {
+		(values.attachment.map((data, key) => {
+			formData.append(`attachment_${key}`, data);
+		}))
+	}
+
+	Object.keys(values).map((data, key) => {
+		if (data !== 'attachment') {
+			formData.append(data, values[data])
+		}
+	});
+
+	return axios({
+		headers: {
+			'Content-Type': 'multipart/form-data'
+		},
+		data: formData,
+		url: '/support',
+		method: 'POST'
+	});
 };
 
 export const setAnnouncements = (announcements) => ({
@@ -144,3 +166,6 @@ export const setOrderLimits = (data) => ({
 
 export const openFeesStructureandLimits = (data = {}) =>
 	setNotification(FEES_STRUCTURE_AND_LIMITS, data, true);
+
+export const openRiskPortfolioOrderWarning = (data = {}) =>
+	setNotification(RISK_PORTFOLIO_ORDER_WARING, data, true);

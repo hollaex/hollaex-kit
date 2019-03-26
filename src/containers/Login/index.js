@@ -133,7 +133,10 @@ class Login extends Component {
 		)
 			.then((res) => {
 				this.setState({ otpDialogIsOpen: false });
-				this.redirectToHome();
+				if (res.data && res.data.callbackUrl)
+					this.redirectToService(res.data.callbackUrl);
+				else
+					this.redirectToHome();
 			})
 			.catch(errorHandler);
 	};

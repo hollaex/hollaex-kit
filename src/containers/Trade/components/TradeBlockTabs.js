@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import classnames from 'classnames';
 import EventListener from 'react-event-listener';
 import TradeBlock from './TradeBlock';
+import STRINGS from '../../../config/localizedStrings';
 import { isLoggedIn } from '../../../utils/token';
 
 class TradeBlockTabs extends Component {

@@ -107,7 +107,7 @@ const generateHeaders = (onCancel) => [
 	}
 ];
 
-const ActiveOrders = ({ orders, onCancel, maxHeight, height }) => {
+const ActiveOrders = ({ orders, onCancel, maxHeight, height, cancelDelayData }) => {
 	return (
 		<div 
 			className={(height && maxHeight && height > maxHeight)
@@ -115,6 +115,7 @@ const ActiveOrders = ({ orders, onCancel, maxHeight, height }) => {
 				: "trade_active_orders-wrapper"}>
 			<Table
 				headers={generateHeaders(onCancel)}
+				cancelDelayData={cancelDelayData}
 				data={orders}
 				count={orders.length}
 				showAll={true}

@@ -5,12 +5,15 @@ import classnames from 'classnames';
 import { Sortable } from '../Sortable';
 import { ICONS, CURRENCIES, BASE_CURRENCY } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
-import { formatPercentage } from '../../utils/currency';
+import { formatPercentage, formatAverage } from '../../utils/currency';
 
 const Tab = ({ pair = {}, tab, ticker = {}, activePairTab, onTabClick, onTabChange, items, selectedToOpen, selectedToRemove, ...rest }) => {
     const { formatToCurrency } = CURRENCIES[pair.pair_base || BASE_CURRENCY];
     const priceDifference = (ticker.close || 0) - (ticker.open || 0);
-    const priceDifferencePercent = formatPercentage((ticker.close - ticker.open) / ticker.open);
+    const tickerPercent = ((priceDifference / ticker.open) * 100);
+    const priceDifferencePercent = tickerPercent==='NaN' ? formatPercentage(tickerPercent) : formatPercentage(0);
+    const pairBase = pair.pair_base || '';
+    const pair2 = pair.pair_2 || '';
     return (
         <div
             className={classnames(
@@ -29,11 +32,11 @@ const Tab = ({ pair = {}, tab, ticker = {}, activePairTab, onTabClick, onTabChan
                 {...rest}>
                 <div className="app_bar-pair-font d-flex align-items-center justify-content-between">
                     <div className="app_bar-currency-txt">
-                        {STRINGS[`${pair.pair_base.toUpperCase()}_SHORTNAME`]}/{STRINGS[`${pair.pair_2.toUpperCase()}_SHORTNAME`]}:
+                        {STRINGS[`${pairBase.toUpperCase()}_SHORTNAME`]}/{STRINGS[`${pair2.toUpperCase()}_SHORTNAME`]}:
                     </div>
-                    <div className="title-font ml-1">{`${STRINGS[`${pair.pair_2.toUpperCase()}_CURRENCY_SYMBOL`]} ${formatToCurrency(ticker.close)}`}</div>
+                    <div className="title-font ml-1">{`${STRINGS[`${pair2.toUpperCase()}_CURRENCY_SYMBOL`]} ${formatAverage(formatToCurrency(ticker.close))}`}</div>
                     <div className={priceDifference < 0 ? "app-price-diff-down app-bar-price_diff_down" : "app-bar-price_diff_up app-price-diff-up"}>
-                        {formatToCurrency(priceDifference)}
+                        {formatAverage(formatToCurrency(priceDifference))}
                     </div>
                     <div
                         className={priceDifference < 0

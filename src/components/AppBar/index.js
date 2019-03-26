@@ -135,7 +135,7 @@ class AppBar extends Component {
 
 		const WRAPPER_CLASSES = ['app_bar-controllers-splash', 'd-flex'];
 		return token ? (
-			<div className="d-flex app-bar-account" onClick={ this.props.router.location.pathname==='/' && isMobile ? this.handleSummary:this.handleAccountMenu}>
+			<div className="d-flex app-bar-account" onClick={this.handleSummary}>
 				<div className="app-bar-account-content mr-2">
 					<ReactSVG path={ICONS.SIDEBAR_ACCOUNT_INACTIVE} wrapperClassName="app-bar-currency-icon" />
 					{!!(securityPending + verificationPending)
@@ -176,7 +176,7 @@ class AppBar extends Component {
 	};
 
 	handleSummary = () => {
-		this.props.router.push('/account')
+		this.props.router.push('/summary');
 	}
 	handleMenu = menu => {
 		if (menu === 'account') {
@@ -242,9 +242,12 @@ class AppBar extends Component {
 		} = this.props;
 		const { isAccountMenu, selectedMenu, securityPending, verificationPending } = this.state;
 		const totalPending = securityPending + verificationPending;
-		let pair = this.props.pair;
-		if (!this.props.pair && Object.keys(pairs).length) {
-			pair = Object.keys(pairs)[0];
+		let pair = '';
+		if (Object.keys(pairs).length) {
+			const { pair_base } = pairs[Object.keys(pairs)[0]];
+			pair = `${pair_base}-${STRINGS.FIAT_SHORTNAME_EN.toLowerCase()}`;
+		} else {
+			pair = this.props.pair;
 		}
 
 		return isMobile ? (

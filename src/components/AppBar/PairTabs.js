@@ -98,6 +98,9 @@ class PairTabs extends Component {
         if (Object.keys(pairs).length) {
             const tempTabs = {};
             const selected = {};
+            if (activePair && !Object.keys(pairs).filter(value => value === activePair).length) {
+                this.props.router.push('/trade/add/tabs');
+            }
             tabs.map((key, index) => {
                 if (pairs[key]) {
                     if (index <= 3)

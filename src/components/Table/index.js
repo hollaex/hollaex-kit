@@ -79,14 +79,14 @@ class Table extends Component {
 			);
 		}
 
-		const { withIcon, displayPaginator, pageSize } = this.props;
+		const { withIcon, displayPaginator, pageSize, cancelDelayData } = this.props;
 		const { data, page, headers } = this.state;
 
 		return (
 			<div className="table_container">
 				<table className={classnames('table-wrapper')}>
 					<TableHeader headers={headers} />
-					<TableBody headers={headers} data={data} withIcon={withIcon} />
+					<TableBody cancelDelayData={cancelDelayData} headers={headers} data={data} withIcon={withIcon} />
 				</table>
 				{displayPaginator && (
 					<Paginator
@@ -109,7 +109,8 @@ Table.defaultProps = {
 	pageSize: 10,
 	displayPaginator: true,
 	showAll: false,
-	title: ''
+	title: '',
+	cancelDelayData: []
 };
 
 export default Table;

@@ -113,6 +113,37 @@
 	}
 }
 
+.risky-trade-wrapper {
+    width: 32rem;
+    .icon_title-wrapper {
+        .icon_title-svg {
+            height: 10rem;
+            width: 10rem;
+        }
+        .icon_title-svg svg{
+            height: 10rem;
+            width: 10rem;
+        }
+        .icon_title-text.title {
+            font-size: 2rem;
+        }
+        .icon_title-text {
+            margin-top: 3rem;
+            text-align: left !important;
+            width: 100%;
+        }
+	}
+	.risky_managment_percentage {
+        color: $error-color
+    }
+}
+
+.layout-mobile {
+    .risky-trade-wrapper {
+        margin: 0 auto;
+    }
+}
+
 .dark-theme {
 	.trade_order_entry-wrapper {
 		color: $dark-font-sub-text-color !important;

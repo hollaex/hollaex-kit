@@ -1,4 +1,5 @@
 import axios from 'axios';
+import {  playBackgroundAudioNotification } from '../utils/utils';
 
 const QUICK_TRADE = 'QUICK_TRADE';
 const TRADE_QUOTE_REQUEST = 'TRADE_QUOTE_REQUEST';
@@ -142,6 +143,7 @@ export const executeQuote = (token) => {
 					type: ORDERBOOK_CONSTANTS.TRADE_QUOTE_PERFORM_FULFILLED,
 					payload: body.data
 				});
+				playBackgroundAudioNotification('quick_trade_complete');
 			})
 			.catch((err) => {
 				dispatch({

@@ -94,6 +94,17 @@ $app-bar-pairs-up: green;
 			}
 		}
 
+		.menu-notification-active {
+			color:$colors-notifications-red !important;
+
+			svg {
+				.tab-summary0, .tab-wallet0, .tab-setting0, .tab-verify0,
+				.tab-security0, .tab-api0 {
+					fill:$colors-notifications-red !important;
+				}
+			}
+		}
+
 		.notification {
 			color: $colors-notifications-red !important;
 		
@@ -101,6 +112,16 @@ $app-bar-pairs-up: green;
 				.tab-summary0, .tab-wallet0, .tab-setting0, .tab-verify0,
 				.tab-security0, .tab-api0 {
 					fill: $colors-notifications-red !important;
+				}
+			}
+		}
+		.security_notification, .verification_notification {
+			color: $colors-notification-inactive-red !important;
+		
+			svg {
+				.tab-summary0, .tab-wallet0, .tab-setting0, .tab-verify0,
+				.tab-security0, .tab-api0 {
+					fill: $colors-notification-inactive-red !important;
 				}
 			}
 		}
@@ -250,8 +271,8 @@ $app-bar-pairs-up: green;
 	}
 
 	.app_bar-pair-tab {
-		min-width: 20rem;
-		max-width: 20rem;
+		min-width: 19rem;
+		max-width: 19rem;
 	}
 
 	.transition_open {
@@ -454,7 +475,16 @@ $app-bar-pairs-up: green;
 				fill: $app-bar-icon-inactive;
 			}
 		}
-
+		.menu-notification-active {
+				color: $colors-notifications-red;
+			
+				svg {
+					.tab-summary0, .tab-wallet0, .tab-setting0, .tab-verify0,
+					.tab-security0, .tab-api0 {
+						fill: $colors-notifications-red;
+					}
+				}
+			}
 		.menu-active {
 			color: $colors-main-black;
 
@@ -481,6 +511,17 @@ $app-bar-pairs-up: green;
 				}
 			}
 		}
+		.security_notification, .verification_notification {
+			color: $colors-notification-inactive-red;
+			// padding-left: 0;
+		
+			svg {
+				.tab-summary0, .tab-wallet0, .tab-setting0, .tab-verify0,
+				.tab-security0, .tab-api0 {
+					fill: $colors-notification-inactive-red;
+				}
+			}
+		}
 
 		.app-bar-account-menu-notification {
 			position: absolute;
@@ -497,6 +538,18 @@ $app-bar-pairs-up: green;
 			font-size: .8rem;
 			line-height: 1;
 			font-weight: bold;
+		}
+		.security_selected {
+			background-color: $colors-notifications-red !important;
+		}
+		.verification_selected {
+			background-color: $colors-notifications-red !important;
+		}
+		.verification_selected_inactive {
+			background-color: $colors-notification-inactive-red !important;
+		}
+		.security_selected_inactive {
+			background-color: $colors-notification-inactive-red !important;
 		}
 
 		.app-bar-account-list-notification {
@@ -613,6 +666,19 @@ $app-bar-pairs-up: green;
 		}
 	}
 
+	.menu-notification-active {
+		background-color: $colors-white;
+		height: 2.5rem;
+		position: relative;
+		color: $colors-notifications-red;
+	
+		svg {
+			.tab-summary0, .tab-wallet0, .tab-setting0, .tab-verify0,
+			.tab-security0, .tab-api0 {
+				fill: $colors-notifications-red;
+			}
+		}
+	}
 	.notification {
 		color: $colors-notifications-red;
 	
@@ -620,6 +686,16 @@ $app-bar-pairs-up: green;
 			.tab-summary0, .tab-wallet0, .tab-setting0, .tab-verify0,
 			.tab-security0, .tab-api0 {
 				fill: $colors-notifications-red;
+			}
+		}
+	}
+	.security_notification, .verification_notification {
+		color: $colors-notification-inactive-red;
+	
+		svg {
+			.tab-summary0, .tab-wallet0, .tab-setting0, .tab-verify0,
+			.tab-security0, .tab-api0 {
+				fill: $colors-notification-inactive-red;
 			}
 		}
 	}

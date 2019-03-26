@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { reduxForm, formValueSelector, SubmissionError, stopSubmit } from 'redux-form';
+import { isMobile } from 'react-device-detect';
+
 import { required } from '../../components/Form/validations';
 import renderFields from '../../components/Form/factoryFields';
-import { Button, IconTitle, ElapsedTimer } from '../../components';
+import { Button, IconTitle, ElapsedTimer, HeaderSection } from '../../components';
 import STRINGS from '../../config/localizedStrings';
 import { PHONE_OPTIONS } from '../../utils/countries';
 import { ICONS } from '../../config/constants';
@@ -12,8 +14,6 @@ import {
 	verifySmsCode,
 	requestSmsCode
 } from '../../actions/verificationActions';
-import HeaderSection from './HeaderSection';
-import { isMobile } from 'react-device-detect';
 
 const FORM_NAME = 'MobileVerification';
 let loadingTimeOut = '';

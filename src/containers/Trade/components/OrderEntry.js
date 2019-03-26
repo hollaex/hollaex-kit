@@ -11,9 +11,11 @@ import {
 	formatNumber,
 	formatFiatAmount,
 	roundNumber,
-	fiatSymbol
+	fiatSymbol,
+	calculatePrice,
+	calculateBalancePrice
 } from '../../../utils/currency';
-import { getDecimals } from '../../../utils/utils';
+import { getDecimals, playBackgroundAudioNotification } from '../../../utils/utils';
 import {
 	evaluateOrder,
 	required,
@@ -38,12 +40,16 @@ class OrderEntry extends Component {
 		},
 		orderPrice: 0,
 		orderFees: 0,
-		outsideFormError: ''
+		outsideFormError: '',
+		totalAssets: ''
 	};
 
 	componentDidMount() {
 		if (this.props.pair_base) {
 			this.generateFormValues(this.props.pair);
+		}
+		if (this.props.user.id) {
+			this.calculateSections(this.props);
 		}
 	}
 
@@ -68,7 +74,22 @@ class OrderEntry extends Component {
 				}
 			});
 		}
+		if (this.props.priceInitialized !== nextProps.priceInitialized) {
+			this.generateFormValues(nextProps.pair, '', nextProps.priceInitialized);
+		}
+		if (this.props.sizeInitialized !== nextProps.sizeInitialized) {
+			this.generateFormValues(nextProps.pair, '', nextProps.priceInitialized, nextProps.sizeInitialized);
+		}
+		if (JSON.stringify(this.props.prices) !== JSON.stringify(nextProps.prices) ||
+			JSON.stringify(this.props.balance) !== JSON.stringify(nextProps.balance)) {
+			this.calculateSections(nextProps);
+		}
 	}
+
+	calculateSections = ({ balance, prices }) => {
+		const totalAssets = calculateBalancePrice(balance, prices);
+		this.setState({ totalAssets });
+	};
 
 	setMax = () => {
 		const { side, balance, pair_base, min_size } = this.props;
@@ -167,6 +188,9 @@ class OrderEntry extends Component {
 		}
 
 		return this.props.submitOrder(order).then(() => {
+			if (values.type === 'market') {
+				playBackgroundAudioNotification('orderbook_market_order');
+			}
 			this.setState({ initialValues: values });
 		});
 	};
@@ -184,7 +208,9 @@ class OrderEntry extends Component {
 			min_size,
 			tick_size,
 			openCheckOrder,
-			submit
+			onRiskyTrade,
+			submit,
+			settings: { risk = {} }
 		} = this.props;
 		const orderTotal = mathjs.add(
 			mathjs.fraction(this.state.orderPrice),
@@ -199,16 +225,29 @@ class OrderEntry extends Component {
 			orderPrice: orderTotal,
 			orderFees: this.state.orderFees
 		};
+		const orderPriceInFiat = calculatePrice(orderTotal, this.props.prices[pair_2]);
+		const riskyPrice = ((this.state.totalAssets / 100) * risk.order_portfolio_percentage);
 
 		if (type === 'market') {
 			delete order.price;
 		} else if (price) {
 			order.price = formatNumber(price, getDecimals(tick_size))
-
 		}
 
 		if (showPopup) {
 			openCheckOrder(order, () => {
+				if (risk.popup_warning && riskyPrice < orderPriceInFiat) {
+					order['order_portfolio_percentage'] = risk.order_portfolio_percentage
+					onRiskyTrade(order, () => {
+						submit(FORM_NAME);
+					});
+				} else {
+					submit(FORM_NAME);
+				}
+			});
+		} else if (risk.popup_warning && riskyPrice < orderPriceInFiat) {
+			order['order_portfolio_percentage'] = risk.order_portfolio_percentage
+			onRiskyTrade(order, () => {
 				submit(FORM_NAME);
 			});
 		} else {
@@ -216,7 +255,7 @@ class OrderEntry extends Component {
 		}
 	};
 
-	generateFormValues = (pair = '', byuingPair = '') => {
+	generateFormValues = (pair = '', byuingPair = '', priceInitialized = false, sizeInitialized = false) => {
 		const {
 
 			min_size,
@@ -266,7 +305,8 @@ class OrderEntry extends Component {
 					minValue(min_size),
 					maxValue(max_size)
 				],
-				currency: STRINGS[`${pair.toUpperCase()}_SHORTNAME`]
+				currency: STRINGS[`${pair.toUpperCase()}_SHORTNAME`],
+				initializeEffect: sizeInitialized
 			},
 			price: {
 				name: 'price',
@@ -283,11 +323,19 @@ class OrderEntry extends Component {
 					maxValue(max_price),
 					step(tick_size)
 				],
-				currency: STRINGS[`${byuingPair.toUpperCase()}_SHORTNAME`]
+				currency: STRINGS[`${byuingPair.toUpperCase()}_SHORTNAME`],
+				initializeEffect: priceInitialized
 			}
 		};
 
 		this.setState({ formValues });
+	};
+
+	formKeyDown = (e) => {
+		if (e.key === 'Enter' && e.shiftKey === false) {
+			e.preventDefault();
+			this.onReview();
+		}
 	};
 
 	render() {
@@ -321,6 +369,7 @@ class OrderEntry extends Component {
 					onSubmit={this.onSubmit}
 					onReview={this.onReview}
 					formValues={formValues}
+					formKeyDown={this.formKeyDown}
 					initialValues={initialValues}
 					outsideFormError={outsideFormError}
 				>
@@ -357,8 +406,11 @@ const mapStateToProps = (state) => {
 		min_size,
 		min_price,
 		tick_size,
-		orderLimits: state.app.orderLimits
-
+		orderLimits: state.app.orderLimits,
+		prices: state.orderbook.prices,
+		balance: state.user.balance,
+		user: state.user,
+		settings: state.user.settings,
 	};
 };
 

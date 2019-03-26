@@ -2,7 +2,7 @@ import React from 'react';
 import classnames from 'classnames';
 import ReactSVG from 'react-svg';
 
-import { ICONS } from '../../config/constants';
+import { ICONS, FLEX_CENTER_CLASSES } from '../../config/constants';
 
 export const renderStatusIcon = (statusCode = -1, className = "") => {
 
@@ -95,7 +95,6 @@ export const CustomTabs = ({
 	icon,
 	notifications,
 	className,
-	titleClassName,
 	statusCode = -1
 }) => {
 	let notificationStatus = renderStatusIcon(statusCode, "verification-stauts");
@@ -119,10 +118,59 @@ export const CustomTabs = ({
 				)}
 			</div>
 			{title && (
-				<div className={classnames('custom_title-label', titleClassName)}>
+				<div className={classnames('custom_title-label', { 'title-inactive': false })}>
 					{title}
 				</div>
 			)}
+		</div>
+	);
+};
+
+const status = (key) => {
+	switch (key) {
+		case -1:
+			return '';
+		case 0:
+			return 'Incompleted';
+		case 1:
+			return 'Pending';
+		case 2:
+			return 'Rejected';
+		case 3:
+			return 'Verified';
+		default:
+			return 'Incompleted';
+	}
+}
+
+export const CustomMobileTabs = ({ title, icon, statusCode = -1 }) => {
+	const statusText = status(statusCode);
+	const statusIcon = renderStatusIcon(statusCode, "custom_tab_status-icon ml-1");
+	return (
+		<div className={
+			classnames(
+				"d-flex",
+				"justify-content-between"
+			)}
+		>
+			<div className="d-flex">
+				<ReactSVG
+					path={icon}
+					wrapperClassName="custom_tab_icon-mobile"
+				/>
+				<div className={classnames(FLEX_CENTER_CLASSES, "mobile-tab-title", "ml-3")}>
+					{title}
+				</div>
+			</div>
+			<div className={
+				classnames(
+					FLEX_CENTER_CLASSES,
+					statusText.toLowerCase()
+				)}
+			>
+				{!!statusText ? <div>{statusText}</div> : null}
+				{!!statusIcon ? statusIcon : null}
+			</div>
 		</div>
 	);
 };

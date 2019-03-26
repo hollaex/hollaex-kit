@@ -4,9 +4,9 @@ export const mobileInitialValues = ({ country }) => {
 	return { phone_country: getCountry(country).phoneCode };
 };
 
-export const identityInitialValues = ({ full_name, gender, nationality, dob, address }) => {
+export const identityInitialValues = ({ full_name, gender, nationality, dob, address, userData }) => {
 	const initialValues = {
-		full_name,
+		full_name: full_name || userData.full_name,
 		country: initialCountry.value,
 		nationality: initialCountry.value
 	};
@@ -15,9 +15,13 @@ export const identityInitialValues = ({ full_name, gender, nationality, dob, add
 	}
 	if (gender || gender === false) {
 		initialValues.gender = gender;
+	} else if (userData.gender || userData.gender === false) {
+		initialValues.gender = userData.gender;
 	}
 	if (dob) {
 		initialValues.dob = dob;
+	} else if (userData.dob) {
+		initialValues.dob = userData.dob;
 	}
 	if (address.city) {
 		initialValues.country = getCountry(address.country).value;

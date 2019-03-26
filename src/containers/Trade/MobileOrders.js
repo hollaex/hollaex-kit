@@ -20,7 +20,8 @@ const MobileOrders = ({
 	userTrades,
 	activeTheme,
 	isLoggedIn,
-	pairs
+	pairs,
+	cancelDelayData
 }) => (
 	<div
 		className={classnames(
@@ -47,7 +48,7 @@ const MobileOrders = ({
 			className="f-1"
 		>
 		{	isLoggedIn ?
-			<ActiveOrders orders={activeOrders} onCancel={cancelOrder} />
+			<ActiveOrders cancelDelayData={cancelDelayData} orders={activeOrders} onCancel={cancelOrder} />
 			:
 			<div className='text-center'>
 					<IconTitle
@@ -68,10 +69,11 @@ const MobileOrders = ({
 			}
 		</TradeBlock>
 		<TradeBlock
-			title={STRINGS.TRADE_HISTORY}
+			title={STRINGS.RECENT_TRADES}
+			active={true}
 			action={ isLoggedIn ? 
 				<ActionNotification
-					text={STRINGS.TRADE_HISTORY}
+					text={STRINGS.TRANSACTION_HISTORY.TITLE}
 					iconPath={ICONS.ARROW_TRANSFER_HISTORY_ACTIVE}
 					onClick={goToTransactionsHistory}
 					status=""
@@ -83,6 +85,7 @@ const MobileOrders = ({
 			className="f-1"
 		>
 			{isLoggedIn ? <UserTrades
+				pageSize={10}
 				trades={userTrades}
 				pair={pair}
 				pairData={pairData}

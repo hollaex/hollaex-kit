@@ -53,7 +53,10 @@ $title--margin: 1rem;
 			.g1_3 {
 				fill: $dark-icon-color;
 			}
-			.otp-code, .dots-2 {
+			.otp-code,
+			.dots-2,
+			.warning-icon,
+			.risk-order-warning {
 				fill: $dark-icon-color;
 			}
 			.dots-1 {

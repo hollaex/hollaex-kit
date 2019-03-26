@@ -227,8 +227,8 @@ $inner_container-border: 1px solid $colors-main-black;
 		width: $content-display-width !important;
 	}
 	.app_bar-pair-tab {
-		min-width: 23rem;
-		max-width: 23rem;
+		min-width: 25rem !important;
+		max-width: 25rem !important;
 	}
 	.app_container {
 		.app_container-sidebar {

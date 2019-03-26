@@ -37,6 +37,7 @@ export const ICONS = {
 	ETH_ICON_DARK: `${process.env.PUBLIC_URL}/assets/icons/eth-icon-dark-01.svg`,
 	EUR_ICON: `${process.env.PUBLIC_URL}/assets/icons/eur-icon.svg`,
 	LIFESAVER: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-05.svg`,
+	CONTACT_US_ICON:`${process.env.PUBLIC_URL}/assets/acounts/help-contact-us-01.svg`,
 	QUESTION_MARK: `${process.env.PUBLIC_URL}/assets/icons/question-mark-black.svg`,
 	QUESTION_MARK_COLOR: `${process.env.PUBLIC_URL}/assets/icons/question-mark-color.svg`,
 	LAPTOP: `${process.env.PUBLIC_URL}/assets/icons/compute-play-black.svg`,
@@ -321,7 +322,15 @@ export const ICONS = {
 	KRAKEN: `${process.env.PUBLIC_URL}/assets/images/cunning-blue-kraken-trader.svg`,
 	SNAPPER: `${process.env.PUBLIC_URL}/assets/images/little-red-snapper-trader.svg`,
 	SHRIMP: `${process.env.PUBLIC_URL}/assets/images/tiny-pink-shrimp-trader.svg`,
-	LEVIATHAN: `${process.env.PUBLIC_URL}/assets/images/black-leviathan-trader.svg`
+	LEVIATHAN: `${process.env.PUBLIC_URL}/assets/images/black-leviathan-trader.svg`,
+	SETTING_NOTIFICATION_ICON: `${process.env.PUBLIC_URL}/assets/images/notification-settings-icon.svg`,
+	SETTING_INTERFACE_ICON: `${process.env.PUBLIC_URL}/assets/images/interface-settings-icon.svg`,
+	SETTING_LANGUAGE_ICON: `${process.env.PUBLIC_URL}/assets/images/language-settings-icon.svg`,
+	SETTING_CHAT_ICON: `${process.env.PUBLIC_URL}/assets/images/chat-settings-icon.svg`,
+	SETTING_AUDIO_ICON: `${process.env.PUBLIC_URL}/assets/images/audio-settings-icon.svg`,
+	SETTING_RISK_ICON: `${process.env.PUBLIC_URL}/assets/images/risk-settings-icon.svg`,
+	SETTING_RISK_ADJUST_ICON: `${process.env.PUBLIC_URL}/assets/images/risk-management-pop-adjust.svg`,
+	SETTING_RISK_MANAGE_WARNING_ICON: `${process.env.PUBLIC_URL}/assets/images/risk-manage-pop-warning.svg`
 };
 
 export const SOCIAL_ICONS = {
@@ -359,6 +368,18 @@ export const HOLLAEX_LOGO = `${
 export const HOLLAEX_LOGO_BLACK = `${
 	process.env.PUBLIC_URL
 }/assets/hollaEx_logo-blk.svg`;
+
+export const AUDIOS = {
+	ORDERBOOK_FIELD_UPDATE: `${process.env.PUBLIC_URL}/assets/audio/orderbook_field_update.wav`,
+	ORDERBOOK_LIMIT_ORDER: `${process.env.PUBLIC_URL}/assets/audio/orderbook-limit-order.wav`,
+	PUBLIC_TRADE_NOTIFICATION: `${process.env.PUBLIC_URL}/assets/audio/public-trade-notification.wav`,
+	ORDER_COMPLETED: `${process.env.PUBLIC_URL}/assets/audio/order-filled.wav`,
+	ORDER_PARTIALLY_COMPLETED: `${process.env.PUBLIC_URL}/assets/audio/order-partially-filled.wav`,
+	CANCEL_ORDER: `${process.env.PUBLIC_URL}/assets/audio/cancel_order.wav`,
+	QUICK_TRADE_COMPLETE: `${process.env.PUBLIC_URL}/assets/audio/quick-trade-complete.wav`,
+	REVIEW_QUICK_TRADE_ORDER:`${process.env.PUBLIC_URL}/assets/audio/review-quick-trade-order.wav`,
+	TIME_OUT_QUICK_TRADE:`${process.env.PUBLIC_URL}/assets/audio/time-out-quick-trade.wav`
+}
 
 export const CURRENCIES = {
 	btc: {

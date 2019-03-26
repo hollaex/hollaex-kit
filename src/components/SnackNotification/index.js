@@ -20,7 +20,7 @@ class SnackNotification extends Component {
                 this.setState({ closeSnack: false });
                 closeTimeOut = setTimeout(() => {
                     this.setState({ closeSnack: true });
-                }, 1700);
+                }, 1200);
                 timeout = setTimeout(() => {
                     this.props.closeSnackNotification();
                 }, 2000);

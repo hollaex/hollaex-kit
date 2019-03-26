@@ -1,11 +1,7 @@
 import React from 'react';
 import { isMobile } from 'react-device-detect';
-import { Link } from 'react-router';
 
-import CustomTabBar from './CustomTabBar';
-import HeaderSection from './HeaderSection';
-import MobileTabBar from './MobileTabBar';
-import { IconTitle } from '../../components';
+import { IconTitle, HeaderSection, CustomTabBar, MobileTabBar } from '../../components';
 import STRINGS from '../../config/localizedStrings';
 
 const VerificationHome = ({ activeTab, tabProps, tabs, openContactForm, setActiveTab, renderContent }) => {

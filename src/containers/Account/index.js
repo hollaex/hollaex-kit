@@ -81,7 +81,7 @@ class Account extends Component {
 	};
 
 	updateTabs = (
-		{ verification_level, otp_enabled, bank_account, id_data, full_name, phone_number, route },
+		{ verification_level, otp_enabled, bank_account, id_data, full_name, phone_number, route, location },
 		updateActiveTab = false
 	) => {
 		let activeTab = this.state.activeTab > -1 ? this.state.activeTab : 0;
@@ -149,7 +149,7 @@ class Account extends Component {
 						icon={ICONS.GEAR_GREY}
 					/>
 				),
-				content: <UserSettings />
+				content: <UserSettings location={location} />
 			}
 		];
 		this.setState({ tabs, activeTab });
