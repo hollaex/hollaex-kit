@@ -257,7 +257,7 @@ $header-margin: 2rem;
 	}
 
 	.wallet-container {
-		border-top-color: $dark-border-main;
+		border-top-color: $dark-app-line-divider;
 		.accordion_wrapper {
 			.accordion_section_content_text {
 				color: $dark-font-main-text-color !important;
@@ -270,6 +270,9 @@ $header-margin: 2rem;
 		.wallet-assets_block {
 			color: $dark-font-main-text-color !important;
 			.wallet-assets_block-table {
+				tbody, tfoot {
+					color: $dark-font-sub-text-color;
+				}
 				.table-bottom-border td,
 				th {
 					&:not(:first-child) {

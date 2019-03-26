@@ -182,6 +182,7 @@ class QuickTradeContainer extends Component {
 					onCloseDialog={this.onCloseDialog}
 					shouldCloseOnOverlayClick={false}
 					showCloseText={!order.fetching && !order.completed}
+					theme={activeTheme}
 					style={{ 'z-index': 100 }}
 				>
 					{!order.fetching && !order.completed ? (
@@ -196,6 +197,7 @@ class QuickTradeContainer extends Component {
 								iconPath={ICONS.SQUARE_DOTS}
 								text={STRINGS.QUOTE_REVIEW}
 								underline={true}
+								useSvg={true}
 								className="w-100"
 							/>
 							<div className="quote-review-wrapper">

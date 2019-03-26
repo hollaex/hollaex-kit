@@ -121,7 +121,8 @@ class Orderbook extends Component {
 						className={classnames(
 							'trade_orderbook-asks',
 							'd-flex',
-							'flex-column-reverse'
+							'flex-column-reverse',
+							'overflow-y'
 						)}
 						style={blockStyle}
 						ref={this.setRefs('asksWrapper')}
@@ -148,7 +149,8 @@ class Orderbook extends Component {
 						className={classnames(
 							'trade_orderbook-bids',
 							'd-flex',
-							'flex-column'
+							'flex-column',
+							'overflow-y'
 						)}
 						ref={this.setRefs('bidsWrapper')}
 						style={blockStyle}

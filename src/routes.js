@@ -113,7 +113,7 @@ const noLoggedUserCommonProps = {
 
 export default (
 	<Router history={browserHistory}>
-		{!IS_PRO_VERSION && <Route path="/" name="Home" component={Home} />}
+		{!IS_PRO_VERSION ? <Route path="/" name="Home" component={Home} /> : null}
 		<Route path="lang/:locale" component={createLocalizedRoutes} />
 		<Route component={AuthContainer} {...noAuthRoutesCommonProps}>
 			<Route path="login" name="Login" component={Login} />

@@ -37,6 +37,7 @@ export const ICONS = {
 	ETH_ICON_DARK: `${process.env.PUBLIC_URL}/assets/icons/eth-icon-dark-01.svg`,
 	EUR_ICON: `${process.env.PUBLIC_URL}/assets/icons/eur-icon.svg`,
 	LIFESAVER: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-05.svg`,
+	CONTACT_US_ICON:`${process.env.PUBLIC_URL}/assets/acounts/help-contact-us-01.svg`,
 	QUESTION_MARK: `${process.env.PUBLIC_URL}/assets/icons/question-mark-black.svg`,
 	QUESTION_MARK_COLOR: `${process.env.PUBLIC_URL}/assets/icons/question-mark-color.svg`,
 	LAPTOP: `${process.env.PUBLIC_URL}/assets/icons/compute-play-black.svg`,
@@ -44,6 +45,7 @@ export const ICONS = {
 	TELEGRAM: `${process.env.PUBLIC_URL}/assets/icons/telegram-black.svg`,
 	TELEGRAM_COLOR: `${process.env.PUBLIC_URL}/assets/icons/telegram-color.svg`,
 	BCH_ICON: `${process.env.PUBLIC_URL}/assets/icons/bch-icon.svg`,
+	BCH_ICON_DARK: `${process.env.PUBLIC_URL}/assets/icons/bch-icon.svg`,
 	BCH_NAV_ICON: `${process.env.PUBLIC_URL}/assets/icons/bch-icon-nav.svg`,
 	CHECK: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-06.svg`,
 	BLUE_QUESTION: `${
@@ -52,6 +54,8 @@ export const ICONS = {
 	RED_WARNING: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-09.svg`,
 	GENDER_F: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-10.svg`,
 	GENDER_M: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-11.svg`,
+	GENDER_FEMALE: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-26.svg`,
+	GENDER_MALE: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-27.svg`,
 	BITCOIN_CLEAR: `${
 		process.env.PUBLIC_URL
 	}/assets/acounts/account-icons-13.svg`,
@@ -59,10 +63,13 @@ export const ICONS = {
 	BLUE_CLIP: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-17.svg`,
 	BLACK_CHECK: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-19.svg`,
 	KEYS: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-22.svg`,
+	OTP_KEYS: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-29.svg`,
 	GREEN_CHECK: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-23.svg`,
 	LETTER: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-24.svg`,
 	SQUARE_DOTS: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-25.svg`,
+	OTP_CODE: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-28.svg`,
 	COPY_NEW: `${process.env.PUBLIC_URL}/assets/images/copy.svg`,
+	COPY_NOTIFICATION: `${process.env.PUBLIC_URL}/assets/images/copy-icon-snack-notification.svg`,
 	ACCOUNT_LINE: `${process.env.PUBLIC_URL}/assets/images/account.svg`,
 	ACCOUNT_RECOVERY: `${
 		process.env.PUBLIC_URL
@@ -74,7 +81,7 @@ export const ICONS = {
 	DATA: `${process.env.PUBLIC_URL}/assets/images/data.svg`,
 	DEPOSIT_BITCOIN: `${
 		process.env.PUBLIC_URL
-	}/assets/images/deposit-bitcoin.svg`,
+	}/assets/images/deposit-bitcoin-dark-theme.svg`,
 	DEPOSIT_HISTORY: `${
 		process.env.PUBLIC_URL
 	}/assets/images/deposit-history.svg`,
@@ -310,7 +317,20 @@ export const ICONS = {
 	CHAT_ICON_SPECIAL: `${process.env.PUBLIC_URL}/assets/images/fin-chat-special.svg`,
 	NOTE_KYC: `${process.env.PUBLIC_URL}/assets/images/note-KYC.svg`,
 	SIDEBAR_CHAT: `${process.env.PUBLIC_URL}/assets/images/bottom-chat-icon.svg`,
-	SIDEBAR_HELP: `${process.env.PUBLIC_URL}/assets/images/help-question-mark-icon.svg`
+	SIDEBAR_HELP: `${process.env.PUBLIC_URL}/assets/images/help-question-mark-icon.svg`,
+	CONNECT_LOADING: `${process.env.PUBLIC_URL}/assets/images/connect-loading.svg`,
+	KRAKEN: `${process.env.PUBLIC_URL}/assets/images/cunning-blue-kraken-trader.svg`,
+	SNAPPER: `${process.env.PUBLIC_URL}/assets/images/little-red-snapper-trader.svg`,
+	SHRIMP: `${process.env.PUBLIC_URL}/assets/images/tiny-pink-shrimp-trader.svg`,
+	LEVIATHAN: `${process.env.PUBLIC_URL}/assets/images/black-leviathan-trader.svg`,
+	SETTING_NOTIFICATION_ICON: `${process.env.PUBLIC_URL}/assets/images/notification-settings-icon.svg`,
+	SETTING_INTERFACE_ICON: `${process.env.PUBLIC_URL}/assets/images/interface-settings-icon.svg`,
+	SETTING_LANGUAGE_ICON: `${process.env.PUBLIC_URL}/assets/images/language-settings-icon.svg`,
+	SETTING_CHAT_ICON: `${process.env.PUBLIC_URL}/assets/images/chat-settings-icon.svg`,
+	SETTING_AUDIO_ICON: `${process.env.PUBLIC_URL}/assets/images/audio-settings-icon.svg`,
+	SETTING_RISK_ICON: `${process.env.PUBLIC_URL}/assets/images/risk-settings-icon.svg`,
+	SETTING_RISK_ADJUST_ICON: `${process.env.PUBLIC_URL}/assets/images/risk-management-pop-adjust.svg`,
+	SETTING_RISK_MANAGE_WARNING_ICON: `${process.env.PUBLIC_URL}/assets/images/risk-manage-pop-warning.svg`
 };
 
 export const SOCIAL_ICONS = {
@@ -348,6 +368,18 @@ export const HOLLAEX_LOGO = `${
 export const HOLLAEX_LOGO_BLACK = `${
 	process.env.PUBLIC_URL
 }/assets/hollaEx_logo-blk.svg`;
+
+export const AUDIOS = {
+	ORDERBOOK_FIELD_UPDATE: `${process.env.PUBLIC_URL}/assets/audio/orderbook_field_update.wav`,
+	ORDERBOOK_LIMIT_ORDER: `${process.env.PUBLIC_URL}/assets/audio/orderbook-limit-order.wav`,
+	PUBLIC_TRADE_NOTIFICATION: `${process.env.PUBLIC_URL}/assets/audio/public-trade-notification.wav`,
+	ORDER_COMPLETED: `${process.env.PUBLIC_URL}/assets/audio/order-filled.wav`,
+	ORDER_PARTIALLY_COMPLETED: `${process.env.PUBLIC_URL}/assets/audio/order-partially-filled.wav`,
+	CANCEL_ORDER: `${process.env.PUBLIC_URL}/assets/audio/cancel_order.wav`,
+	QUICK_TRADE_COMPLETE: `${process.env.PUBLIC_URL}/assets/audio/quick-trade-complete.wav`,
+	REVIEW_QUICK_TRADE_ORDER:`${process.env.PUBLIC_URL}/assets/audio/review-quick-trade-order.wav`,
+	TIME_OUT_QUICK_TRADE:`${process.env.PUBLIC_URL}/assets/audio/time-out-quick-trade.wav`
+}
 
 export const CURRENCIES = {
 	btc: {
@@ -509,9 +541,9 @@ export const MIN_LEVEL_FOR_TOKENS = parseInt(
 	process.env.REACT_APP_MIN_LEVEL_FOR_TOKENS || 2,
 	10
 );
-// const THEME_COLOR=localStorage.getItem("theme")
+const THEME_COLOR=localStorage.getItem("theme")
 export const THEMES = ['dark', 'white'];
-export const THEME_DEFAULT = THEMES[1];
+export const THEME_DEFAULT = THEME_COLOR ? THEME_COLOR : THEMES[1];
 export const CHAT_STATUS_KEY = 'chat:minimized';
 
 export const TRADING_VOLUME_CHART_LIMITS = process.env.REACT_APP_TRADING_VOLUME_CHART_LIMITS
@@ -575,3 +607,21 @@ export const CHART_MONTHS = [
 	{ key: 11, value: 'Nov' },
 	{ key: 12, value: 'Dec' },
 ];
+
+export const DARK_THEME_COLORS = {
+	dark_border_main: '#b7b5cd',
+	dark_sub_text: '#a3a1ca',
+	dark_sub_text_1: '#808184'
+};
+
+export const DARK_THEME_CHART_COLORS = {
+	SELL: '#f69321',
+	BUY: '#29abe2',
+	LINE: '#b7b7ce',
+	FILL: 'orange',
+	AXIS: '#b7b7ce',
+	BUY_CANDLE: '#29abe2',
+	SELL_CANDLE: '#f69321',
+	BUY_VOLUME: '#29abe2',
+	SELL_VOLUME: '#f69321'
+};

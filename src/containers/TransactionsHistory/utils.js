@@ -128,7 +128,7 @@ export const generateTradeHeaders = (symbol, pairs) => {
 						CURRENCIES[pair_2].formatToCurrency(
 							calculatePrice(quick, price, size)
 						),
-						CURRENCIES[pair_2].currencySymbol
+						STRINGS[`${pair}_CURRENCY_SYMBOL`]
 					);
 				}
 			},
@@ -143,7 +143,7 @@ export const generateTradeHeaders = (symbol, pairs) => {
 								CURRENCIES[pair_2].formatToCurrency(
 									calculatePrice(quick, price, size)
 								),
-								CURRENCIES[pair_2].currencySymbol
+								STRINGS[`${pair}_CURRENCY_SYMBOL`]
 							)}
 						</td>
 					);
@@ -162,7 +162,7 @@ export const generateTradeHeaders = (symbol, pairs) => {
 						CURRENCIES[pair_2].formatToCurrency(
 							calculateAmount(quick, price, size)
 						),
-						CURRENCIES[pair_2].currencySymbol
+						STRINGS[`${pair}_CURRENCY_SYMBOL`]
 					);
 				}
 			},
@@ -177,7 +177,7 @@ export const generateTradeHeaders = (symbol, pairs) => {
 								CURRENCIES[pair_2].formatToCurrency(
 									calculateAmount(quick, price, size)
 								),
-								CURRENCIES[pair_2].currencySymbol
+								STRINGS[`${pair}_CURRENCY_SYMBOL`]
 							)}
 						</td>
 					);
@@ -199,7 +199,7 @@ export const generateTradeHeaders = (symbol, pairs) => {
 						CURRENCIES[pair].formatToCurrency(
 							calculateFeeAmount(fee, quick, price, size, side)
 						),
-						CURRENCIES[pair].currencySymbol
+						STRINGS[`${pair.toUpperCase()}_CURRENCY_SYMBOL`]
 					);
 				}
 			},
@@ -217,7 +217,7 @@ export const generateTradeHeaders = (symbol, pairs) => {
 								CURRENCIES[pair].formatToCurrencyFull(
 									calculateFeeAmount(fee, quick, price, size, side)
 								),
-								CURRENCIES[pair].currencySymbol
+								STRINGS[`${pair.toUpperCase()}_CURRENCY_SYMBOL`]
 							)}
 						</td>
 					);
@@ -302,7 +302,7 @@ export const generateWithdrawalsHeaders = (symbol, withdrawalPopup) => {
 						{STRINGS.formatString(
 							STRINGS[`${currency.toUpperCase()}_PRICE_FORMAT`],
 							fee,
-							CURRENCIES[currency].currencySymbol
+							STRINGS[`${currency.toUpperCase()}_CURRENCY_SYMBOL`]
 						)}
 					</td>
 				);
@@ -335,7 +335,7 @@ export const generateWithdrawalsHeaders = (symbol, withdrawalPopup) => {
 		       	} else {
 					return isBlockchainTx(transaction_id) && currency !== 'fiat' ?
 						<td key={index}><a target="blank" href={(currency === 'btc' ? BLOCKTRAIL_ENDPOINT : 
-							(currency === 'eth') ? ETHEREUM_ENDPOINT : BITCOINCOM_ENDPOINT) + transaction_id}>{STRINGS.VIEW}</a></td> : <td></td>;
+							(currency === 'eth') ? ETHEREUM_ENDPOINT : BITCOINCOM_ENDPOINT) + transaction_id}>{STRINGS.VIEW}</a></td> : <td key={index}></td>;
 				}
 			}
 		},

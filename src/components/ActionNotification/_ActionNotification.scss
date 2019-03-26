@@ -23,6 +23,10 @@
 		color: $colors-deactivate;
 	}
 
+	.notification-loading {
+		color: $colors-deactivate;
+	}
+
 	.relative {
 		position: relative;
 	}
@@ -148,14 +152,29 @@
 		.notification-info {
 			color: $dark-link;
 		}
+		.notification-loading {
+			color: $dark-font-sub-text-color;
+		}
 		.icon-clip-1,
 		.icon-plus-1,
 		.icon-edit-1,
 		.icon-help-1,
 		.icon-copy-1,
 		.icon-tamer-01,
-		.arrow-1 {
+		.arrow-1,
+		.trans-history-1,
+		.trans-history-2,
+		.trans-history-3,
+		.cancel-cross-1 {
 			fill: $dark-link;
+		}
+		.cancel-cross-2,
+		.cancel-cross-3, 
+		.trans-history-4 {
+			stroke: $dark-link;
+		}
+		.connect-loading {
+			fill: $dark-font-sub-text-color !important;
 		}
 	}
 }

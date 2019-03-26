@@ -1,5 +1,9 @@
 $inner_container-border: 1px solid $colors-main-black;
 
+.dark-app-body {
+	background: $dark-app-background-color !important;
+}
+
 .app_container {
 	// height: 100%;
 	min-height: 100vh;
@@ -45,6 +49,7 @@ $inner_container-border: 1px solid $colors-main-black;
 			min-height: $max-content-height-mobile;
 			max-height: $max-content-height-mobile;
 			max-width: $max-content-width-mobile;
+			overflow-y: scroll;
 		}
 		.content-with-bar {
 			min-height: $max-content-height-double-bar-mobile;
@@ -52,6 +57,7 @@ $inner_container-border: 1px solid $colors-main-black;
 			max-width: $max-content-width-mobile;
 			padding: $content-display-vertical-margin;
 			margin: 0;
+			overflow-y: scroll;
 		}
 	}
 	.app_container-content {
@@ -139,6 +145,42 @@ $inner_container-border: 1px solid $colors-main-black;
 			}
 		}
 	}
+
+	.app_container {
+		.app_container-sidebar {
+			border-left: 1px solid $dark-app-line-divider;
+		}
+	}
+	svg {
+		.leviathan-trader0 {
+			fill: $colors-black;
+		}
+		.incoming-btc-01,
+		.incoming-toman-01 {
+			fill: $dark-app-background-color;
+		}
+		.incoming-toman-02,
+		.incoming-btc-2,
+		.buy-order-filled-1,
+		.buy-order-filled-3,
+		.buy-filled-01,
+		.buy-filled-03,
+		.sell-order-01,
+		.sell-order-03,
+		.sell-part-01,
+		.sell-part-03,
+		.key-trashed {
+			fill: $dark-icon-color;
+		}
+		.buy-order-filled-4,
+		.sell-order-04 {
+			stroke: $dark-app-background-color;
+		}
+		.copy-notification-0,
+		.copy-notification-1 {
+			fill: $dark-icon-color;
+		}
+	}
 }
 
 .app_container-bottom_bar {
@@ -150,4 +192,105 @@ $inner_container-border: 1px solid $colors-main-black;
 	position: sticky;
 	bottom: 5rem;
 	align-self: flex-end;
+}
+
+@media (min-width: 1920px) {
+	.font-small,
+	.exir-button,
+	.field-wrapper,
+	.action_notification-text,
+	.wallet-assets_block-table,
+	.accordion_section_content,
+	.verification_container .header-content,
+	.verification_container .content-text,
+	.table_body-wrapper,
+	.wallet_section-title-amount,
+	.wallet_section-title,
+	.trade_tabs-container .trade_tabs-content,
+	.toogle_button-wrapper .toogle-content,
+	.trade_block-wrapper .trade_block-content,
+	.ohlc_data_wrapper .ohlc_label,
+	.ohlc_value,
+	.information_block-text_wrapper .text,
+	.qr-text,
+	.header_title-children,
+	.placeholder,
+	.notification-content-wrapper,
+	.otp_form-section-wrapper .otp_form-section-text,
+	.popup_info-wrapper .popup_info-text,
+	.otp_secret {
+		font-size: 1rem !important;
+	}
+	
+	.presentation_container,
+	.trade_tabs-container {
+		width: $content-display-width !important;
+	}
+	.app_bar-pair-tab {
+		min-width: 25rem !important;
+		max-width: 25rem !important;
+	}
+	.app_container {
+		.app_container-sidebar {
+			min-width: $sidebar-width-lg;
+			max-width: $sidebar-width-lg;
+		}
+		&.layout-desktop {
+			.app_container-content {
+				min-height: $max-content-height-lg !important;
+				max-height: $max-content-height-lg !important;
+			}
+			.app_container-secondary-content {
+				min-height: $max-content-secondary-height-lg !important;
+				max-height: $max-content-secondary-height-lg !important;
+			}
+		}
+	}
+}
+
+@media screen and (max-width: 1096px) {
+	.font-small,
+	.exir-button,
+	.field-wrapper,
+	.action_notification-text,
+	.wallet-assets_block-table,
+	.accordion_section_content,
+	.verification_container .header-content,
+	.verification_container .content-text,
+	.table_body-wrapper,
+	.wallet_section-title-amount,
+	.wallet_section-title,
+	.trade_tabs-container .trade_tabs-content,
+	.toogle_button-wrapper .toogle-content,
+	.trade_block-wrapper .trade_block-content,
+	.ohlc_data_wrapper .ohlc_label,
+	.ohlc_value,
+	.information_block-text_wrapper .text,
+	.qr-text,
+	.header_title-children,
+	.placeholder,
+	.notification-content-wrapper,
+	.otp_form-section-wrapper .otp_form-section-text,
+	.popup_info-wrapper .popup_info-text,
+	.otp_secret {
+		font-size: 0.9rem !important;
+	}
+	.app_bar-pair-tab {
+		min-width: 19rem !important;
+		max-width: 19rem !important;
+	}
+	.presentation_container,
+	.trade_tabs-container {
+		width: 65rem !important;
+	}
+
+	.app_container {
+		.app_container-sidebar {
+			min-width: $sidebar-width-md;
+			max-width: $sidebar-width-md;
+		}
+		.sidebar_hub-content {
+			margin: 1.3rem !important;
+		}
+	}
 }

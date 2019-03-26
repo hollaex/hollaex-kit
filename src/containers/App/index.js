@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux';
 import io from 'socket.io-client';
 import EventListener from 'react-event-listener';
 import { debounce } from 'lodash';
-import { WS_URL, ICONS, SESSION_TIME } from '../../config/constants';
+import { WS_URL, ICONS, SESSION_TIME, AUDIOS } from '../../config/constants';
 import { isBrowser, isMobile } from 'react-device-detect';
 
 import { logout } from '../../actions/authAction';
@@ -40,7 +40,9 @@ import {
 	NOTIFICATIONS,
 	CONTACT_FORM,
 	HELPFUL_RESOURCES_FORM,
-	FEES_STRUCTURE_AND_LIMITS
+	FEES_STRUCTURE_AND_LIMITS,
+	RISK_PORTFOLIO_ORDER_WARING,
+	RISKY_ORDER
 } from '../../actions/appActions';
 
 import {
@@ -48,7 +50,7 @@ import {
 	getChatMinimized,
 	setChatMinimized
 } from '../../utils/theme';
-import { checkUserSessionExpired } from '../../utils/utils';
+import { checkUserSessionExpired, playBackgroundAudioNotification } from '../../utils/utils';
 import { getToken, getTokenTimestamp, isLoggedIn } from '../../utils/token';
 import {
 	AppBar,
@@ -59,16 +61,21 @@ import {
 	Loader,
 	Notification,
 	MessageDisplay,
-	CurrencyList
+	CurrencyList,
+	SnackNotification
 } from '../../components';
 import { ContactForm, HelpfulResourcesForm, Chat as ChatComponent } from '../';
 import ReviewEmailContent from '../Withdraw/ReviewEmailContent';
 import FeesAndLimits from '../Summary/components/FeesAndLimits';
+import SetOrderPortfolio from '../UserSettings/SetOrderPortfolio';
+import RiskyOrder from '../Trade/components/RiskyOrder';
 
 import {
 	getClasesForLanguage,
 	getFontClassForLanguage
 } from '../../utils/string';
+
+let limitTimeOut = null;
 
 class Container extends Component {
 	state = {
@@ -78,7 +85,8 @@ class Container extends Component {
 		publicSocket: undefined,
 		privateSocket: undefined,
 		idleTimer: undefined,
-		ordersQueued: []
+		ordersQueued: [],
+		limitFilledOnOrder: ''
 	};
 
 	componentWillMount() {
@@ -96,6 +104,7 @@ class Container extends Component {
 			this.initSocketConnections();
 		}
 		this._resetTimer();
+		this.updateThemeToBody(this.props.activeTheme);
 	}
 
 	componentWillReceiveProps(nextProps) {
@@ -129,6 +138,9 @@ class Container extends Component {
 		) {
 			// this.goToAccountPage();
 		}
+		if (this.props.activeTheme !== nextProps.activeTheme) {
+			this.updateThemeToBody(nextProps.activeTheme);
+		}
 	}
 
 	componentWillUnmount() {
@@ -144,6 +156,13 @@ class Container extends Component {
 			clearTimeout(this.state.idleTimer);
 		}
 	}
+
+	updateThemeToBody = theme => {
+		const themeName = theme === 'dark' ? 'dark-app-body' : '';
+		if (document.body) {
+			document.body.className = themeName;
+		}
+	};
 
 	_resetTimer = () => {
 		if (this.state.idleTimer) {
@@ -212,6 +231,13 @@ class Container extends Component {
 		publicSocket.on('trades', (data) => {
 			// console.log('trades', data);
 			this.props.setTrades(data);
+			if (data.action === "update"
+				&& this.props.settings.audio
+				&& this.props.settings.audio.public_trade
+				&& this.props.location.pathname.indexOf('/trade/') === 0
+				&& this.props.params.pair) {
+				playBackgroundAudioNotification('public_trade');
+			}
 		});
 
 		publicSocket.on('ticker', (data) => {
@@ -253,8 +279,9 @@ class Container extends Component {
 			) {
 				this.props.changeLanguage(data.settings.language);
 			}
-			if (data.settings && data.settings.theme !== this.props.activeTheme) {
-				this.props.changeTheme(data.settings.theme);
+			if (data.settings.interface && data.settings.interface.theme !== this.props.activeTheme) {
+				this.props.changeTheme(data.settings.interface.theme);
+				localStorage.setItem("theme", data.settings.interface.theme);
 			}
 		});
 
@@ -279,6 +306,14 @@ class Container extends Component {
 				case 'order_queued':
 					// TODO add queued orders to the store
 					this.setState({ ordersQueued: this.state.ordersQueued.concat(data) });
+					if (data.type === 'limit') {
+						playBackgroundAudioNotification('orderbook_limit_order');
+						this.setState({ limitFilledOnOrder: data.id });
+						limitTimeOut = setTimeout(() => {
+							if (this.state.limitFilledOnOrder)
+								this.setState({ limitFilledOnOrder: '' });
+						}, 1000);
+					}
 					break;
 				case 'order_processed':
 				case 'order_canceled': {
@@ -307,11 +342,15 @@ class Container extends Component {
 				}
 				case 'order_partialy_filled': {
 					this.props.updateOrder(data);
-					this.props.setNotification(
-						NOTIFICATIONS.ORDERS,
-						{ type, data },
-						false
-					);
+					if (this.props.settings.notification && this.props.settings.notification.popup_order_partially_filled) {
+						this.props.setNotification(
+							NOTIFICATIONS.TRADES,
+							{ type, order: data, data: [{...data}] }
+						);
+					}
+					if (this.props.settings.audio && this.props.settings.audio.order_partially_completed) {
+						playBackgroundAudioNotification('order_partialy_filled');
+					}
 					break;
 				}
 				case 'order_updated':
@@ -330,15 +369,20 @@ class Container extends Component {
 						);
 					});
 					this.props.removeOrder(data);
-					ordersDeleted.forEach((orderDeleted) => {
-						this.props.setNotification(NOTIFICATIONS.ORDERS, {
-							type,
-							data: {
-								...orderDeleted,
-								filled: orderDeleted.size
-							}
+					if (this.props.settings.notification && this.props.settings.notification.popup_order_completed) {
+						ordersDeleted.forEach((orderDeleted) => {
+							this.props.setNotification(NOTIFICATIONS.ORDERS, {
+								type,
+								data: {
+									...orderDeleted,
+									filled: orderDeleted.size
+								}
+							});
 						});
-					});
+					}
+					if (this.props.settings.audio && this.props.settings.audio.order_completed) {
+						playBackgroundAudioNotification('order_filled');
+					}
 					break;
 				}
 				case 'order_removed':
@@ -365,9 +409,14 @@ class Container extends Component {
 							const { orders } = this.props;
 							order = orders.find(({ id }) => id === orderIdFromTrade);
 						}
-						if (order) {
+						if (order && order.type === 'market' && this.props.settings.notification && this.props.settings.notification.popup_order_completed) {
 							this.props.setNotification(NOTIFICATIONS.TRADES, { data, order });
 						}
+					}
+					if (this.state.limitFilledOnOrder && data.filter((limit) => limit.order.id === this.state.limitFilledOnOrder).length) {
+						setTimeout(() => {
+							playBackgroundAudioNotification('order_filled');
+						}, 1000);
 					}
 					break;
 				}
@@ -532,6 +581,22 @@ class Container extends Component {
 						data={data}
 						onClose={this.onCloseDialog}
 						activeTheme={this.props.activeTheme}
+					/>
+				);
+			case RISK_PORTFOLIO_ORDER_WARING:
+				return (
+					<SetOrderPortfolio
+						data={data}
+						onClose={this.onCloseDialog}
+					/>
+				);
+			case RISKY_ORDER:
+				const { onConfirm, ...rest } = data;
+				return (
+					<RiskyOrder
+						data={rest}
+						onConfirm={onConfirm}
+						onClose={this.onCloseDialog}
 					/>
 				);
 			default:
@@ -713,6 +778,7 @@ class Container extends Component {
 						)}
 					</div>
 				</div>
+				<SnackNotification />
 			</div>
 		);
 	}
@@ -731,7 +797,8 @@ const mapStateToProps = (store) => ({
 	user: store.user,
 	unreadMessages: store.app.chatUnreadMessages,
 	orderbooks: store.orderbook.pairsOrderbooks,
-	pairsTrades: store.orderbook.pairsTrades
+	pairsTrades: store.orderbook.pairsTrades,
+	settings: store.user.settings
 });
 
 const mapDispatchToProps = (dispatch) => ({

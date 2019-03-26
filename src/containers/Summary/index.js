@@ -13,6 +13,7 @@ import AccountDetails from './components/AccountDetails';
 import MobileSummary from './MobileSummary';
 
 import { IconTitle } from '../../components';
+import { logout } from '../../actions/authAction';
 import { openFeesStructureandLimits, openContactForm } from '../../actions/appActions';
 import { requestLimits, requestFees } from '../../actions/userAction';
 import { CURRENCIES, TRADING_ACCOUNT_TYPE } from '../../config/constants';
@@ -139,7 +140,7 @@ class Summary extends Component {
     };
 
     render() {
-        const { user, balance, activeTheme, fees, limits, pairs } = this.props;
+        const { user, balance, activeTheme, fees, limits, pairs, logout } = this.props;
         const { selectedAccount, currentTradingAccount, chartData, totalAssets, lastMonthVolume } = this.state;
         return (
             <div className="summary-container">
@@ -158,6 +159,7 @@ class Summary extends Component {
                         currentTradingAccount={currentTradingAccount}
                         selectedAccount={selectedAccount}
                         FIAT={FIAT}
+                        logout={logout}
                         balance={balance}
                         chartData={chartData}
                         totalAssets={totalAssets}
@@ -258,6 +260,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
+	logout: bindActionCreators(logout, dispatch),
     requestLimits: bindActionCreators(requestLimits, dispatch),
     requestFees: bindActionCreators(requestFees, dispatch),
     openFeesStructureandLimits: bindActionCreators(openFeesStructureandLimits, dispatch),

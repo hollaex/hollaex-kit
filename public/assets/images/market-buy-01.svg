@@ -3,9 +3,9 @@
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 viewBox="-170 262 270 270" style="enable-background:new -170 262 270 270;" xml:space="preserve">
 <style type="text/css">
-	.st0{fill:#F6921E;}
+	.market-buy{fill:#F6921E;}
 </style>
-<ellipse id="XMLID_501_" transform="matrix(0.8793 -0.4763 0.4763 0.8793 -192.371 36.1758)" class="st0" cx="-24.8" cy="397.6" rx="73.8" ry="86.7"/>
+<ellipse id="XMLID_501_" transform="matrix(0.8793 -0.4763 0.4763 0.8793 -192.371 36.1758)" class="market-buy" cx="-24.8" cy="397.6" rx="73.8" ry="86.7"/>
 <g id="XMLID_452_" transform="translate(0,-952.36218)">
 	<path id="XMLID_456_" d="M-118.5,1287.2c-10,14.6-13.5,36.6-10.7,55.2c7.2,62.9,47.9,91.5,82,97.1c8,0.4,16.4,0,23.1-1.6
 		c0.8,2,2.9,3.4,5.1,3.5l25.8,0.1c2.9,0,5.5-2.6,5.5-5.6v-13c5.6-3.6,10.6-8.2,14.7-13.8c1.9-2.6,3.5-5.4,5-8.4h15.3

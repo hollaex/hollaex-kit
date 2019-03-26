@@ -8,7 +8,7 @@ import {
 	requiredWithCustomMessage
 } from '../../components/Form/validations';
 import renderFields from '../../components/Form/factoryFields';
-import { Button, IconTitle } from '../../components';
+import { Button, IconTitle, HeaderSection } from '../../components';
 import STRINGS from '../../config/localizedStrings';
 import { COUNTRIES_OPTIONS } from '../../utils/countries';
 
@@ -16,7 +16,6 @@ import { isMobile } from 'react-device-detect';
 import { ICONS } from '../../config/constants';
 import { getErrorLocalized } from '../../utils/errors';
 import { updateUser } from '../../actions/userAction';
-import HeaderSection from './HeaderSection';
 
 const FORM_NAME = 'IdentityVerification';
 

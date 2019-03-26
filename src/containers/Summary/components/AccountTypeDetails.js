@@ -22,7 +22,7 @@ const AccountTypeDetails = ({
 }) => {
     const currentAccount = TRADING_ACCOUNT_TYPE[selectedAccount];
     return (
-        <div className={classnames(className, "ml-5")}>
+        <div className={classnames(className, "mx-auto")}>
             <TraderAccounts
                 fees={fees}
                 limits={limits}

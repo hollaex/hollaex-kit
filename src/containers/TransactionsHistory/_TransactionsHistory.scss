@@ -2,7 +2,7 @@ $trade-asks-color-main: $colors-currencies-btc;
 $trade-asks-color-font: $colors-currencies-btc;
 .layout-mobile {
 	.tab_controller-wrapper {
-		height: 100%;
+		height: auto;
 	}
 
 	.inner_container {
@@ -85,19 +85,19 @@ $trade-asks-color-font: $colors-currencies-btc;
 
 	svg {
 		.transaction-history-1 {
-			fill: $dark-button-active;
+			fill: $dark-main-title-icon-color-2;
 		}
 		.transaction-history-2 {
-			fill: $dark-button-active;
+			fill: $dark-main-title-icon-color-3;
 		}
 		.transaction-history-3 {
-			fill: $dark-button-active;
+			fill: $dark-main-title-icon-color-2;
 		}
 		.transaction-history-4 {
-			stroke: $dark-button-active;
+			stroke: $dark-main-title-icon-color-2;
 		}
 		.transaction-history-5 {
-			fill: $dark-font-main-text-color;
+			fill: $dark-main-title-icon-color-1;
 		}
 	}
 }

@@ -1,11 +1,7 @@
 import React from 'react';
 import { isMobile } from 'react-device-detect';
-import { Link } from 'react-router';
 
-import CustomTabs from './CustomTabs';
-import HeaderSection from './HeaderSection';
-import MobileTabBar from './MobileTabBar';
-import { IconTitle } from '../../components';
+import { IconTitle, HeaderSection, CustomTabBar, MobileTabBar } from '../../components';
 import STRINGS from '../../config/localizedStrings';
 
 const VerificationHome = ({ activeTab, tabProps, tabs, openContactForm, setActiveTab, renderContent }) => {
@@ -21,11 +17,11 @@ const VerificationHome = ({ activeTab, tabProps, tabs, openContactForm, setActiv
                     <div className="mb-3">{STRINGS.USER_VERIFICATION.INFO_TXT_1}</div>
                     <div className="mb-3">{STRINGS.formatString(
                         STRINGS.USER_VERIFICATION.INFO_TXT_2,
-                        <Link className="link-content" onClick={() => setActiveTab(4)}>{STRINGS.USER_VERIFICATION.DOCUMENTATIONS}</Link>
+                        <span className="verification_link pointer" onClick={() => setActiveTab(4)}>{STRINGS.USER_VERIFICATION.DOCUMENTATIONS}</span>
                     )}</div>
                 </div>
                 {!isMobile
-                    ? <CustomTabs activeTab={activeTab} setActiveTab={setActiveTab} {...tabProps} />
+                    ? <CustomTabBar activeTab={activeTab} setActiveTab={setActiveTab} {...tabProps} />
                     : <MobileTabBar activeTab={activeTab} renderContent={renderContent} setActiveTab={setActiveTab} {...tabProps} />
                 }
                 {!isMobile

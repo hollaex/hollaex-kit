@@ -28,6 +28,7 @@ export default {
 	BCH_CURRENCY_SYMBOL: 'BCH',
 	BCH_PRICE_FORMAT: '{0} {1}',
 
+	ADD_TRADING_PAIR: 'Add Trading Pair',  // ToDo: need to add this in farsi when move to exir.
 	ACTIVE_TRADES: 'You must {0} to access your active trades',
 	CANCEL_FIAT_WITHDRAWAL: 'Cancel {0} Withdrawal',
 	CANCEL_WITHDRAWAL: 'Cancel Withdrawal',
@@ -43,7 +44,10 @@ export default {
 	ACCOUNT_TEXT: 'Account',
 	CLOSE_TEXT: 'Close',
 	COPY_TEXT: 'Copy',
+	COPY_SUCCESS_TEXT: 'Successfully Copied', // ToDO: need to Add it in farsi.
+	CANCEL_SUCCESS_TEXT: 'Successfully Cancelled!', // ToDo: need to add this in farsi when move to exir.
 	UPLOAD_TEXT: 'Upload',
+	ADD_FILES: 'ADD FILES', // ToDo
 	OR_TEXT: 'Or',
 	CONTACT_US_TEXT: 'Contact us',
 	HELPFUL_RESOURCES_TEXT: 'Helpful resources',
@@ -56,9 +60,11 @@ export default {
 	HELP_TEXT: 'help',
 	SUCCESS_TEXT: 'Success',
 	ERROR_TEXT: 'Error',
+	PROCEED: 'PROCEED', // ToDo: add it in farsi on exir
 	EDIT_TEXT: 'Edit',
 	BACK_TEXT: 'Back',
 	NO_OPTIONS: 'No options availables',
+	SECONDS: 'seconds',  // ToDo: Add this into farsi in exir
 	HOME: {
 		SECTION_1_TITLE: 'Build your own Bitcoin exchange',
 		SECTION_1_TEXT_1:
@@ -128,13 +134,14 @@ export default {
 			OPTION_VERIFY: 'User verification',
 			OPTION_LEVEL: 'Increase user level',
 			OPTION_DEPOSIT: 'Deposit & Withdrawal',
-			OPTION_BUG: 'Report bug'
+			OPTION_BUG: 'Report bug', // ToDo:
+			OPTION_PERSONAL_INFO: 'Change personal information' // ToDo:
 		},
 		SUBJECT_LABEL: 'Subject',
 		SUBJECT_PLACEHOLDER: 'Type the subject of your issue',
 		DESCRIPTION_LABEL: 'Description',
 		DESCRIPTION_PLACEHOLDER: 'Type in detail what the issue is',
-		ATTACHMENT_LABEL: 'Add an attachment',
+		ATTACHMENT_LABEL: 'Add attachments(3 max)',  // ToDo:
 		ATTACHMENT_PLACEHOLDER:
 			'Add a file to help communicate your issue. PDF, JPG, PNG and GIF files are accepted',
 		SUCCESS_MESSAGE: 'The email has been seent to our support',
@@ -411,6 +418,7 @@ export default {
 		DOCUMENT_PENDING_NOTE: 'Your documents is submitted and is pending for review. Please be patient.', // ToDo: Add this into farsi in exir
 		DOCUMENT_VERIFIED_NOTE: 'Your documents are completed.', // ToDo: Add this into farsi in exir
 		NOTE_FROM_VERIFICATION_DEPARTMENT: 'Note from the verification department', // ToDo: Add this into farsi in exir
+		CODE_EXPIRES_IN: 'Code expires in', // ToDo: Add this into farsi in exir
 		USER_DOCUMENTATION_FORM: {
 			FORM_FIELDS: {
 				FIRST_NAME_LABEL: 'First name',
@@ -445,6 +453,7 @@ export default {
 				PHONE_CODE_DISPLAY: '({0}) {1}', // 0 -> (+21)  1 -> South Korea
 				PHONE_NUMBER_LABEL: 'Phone number',
 				PHONE_NUMBER_PLACEHOLDER: 'Type your phone number',
+				CONNECTING_LOADING: 'Connecting', // ToDo: Add this into farsi in exir
 				SMS_SEND: 'Send SMS',
 				SMS_CODE_LABEL: 'SMS Code',
 				SMS_CODE_PLACEHOLDER: 'Input your SMS code'
@@ -569,6 +578,46 @@ export default {
 			LIST_ITEM_3: 'Lower fees'
 		}
 	},
+	USER_SETTINGS: { // ToDo: add it in farsi on exir
+		TITLE_TEXT_1: 'Change the settings of your account. From interface, notifcations, username and other customizations.',
+		TITLE_TEXT_2: 'Saving your settings will apply the changes and save it.',
+		TITLE_NOTIFICATION: 'Notification',
+		TITLE_INTERFACE: 'Interface',
+		TITLE_LANGUAGE: 'Language',
+		TITLE_CHAT: 'Chat',
+		TITLE_AUDIO_CUE: 'Audio Cue',
+		TITLE_MANAGE_RISK: 'Manage Risk',
+		ORDERBOOK_LEVEL: 'Orderbook Levels (Max 20)',
+		SET_TXT: 'SET',
+		CREATE_ORDER_WARING: 'Create Order Warning',
+		RISKY_TRADE_DETECTED: 'Risky Trade Detected', // ToDo: add it in farsi on exir
+		RISKY_WARNING_TEXT_1:'This orders value is over your designated order limit amount you’ve set {0} .', // ToDo: add it in farsi on exir
+		RISKY_WARNING_TEXT_2:'({0} of portfolio)',  // ToDo: add it in farsi on exir
+		RISKY_WARNING_TEXT_3: ' Please check and verify that you indeed want to make this trade.',  // ToDo: add it in farsi on exir
+		GO_TO_RISK_MANAGMENT: 'GO TO RISK MANAGMENT', // ToDo: add it in farsi on exir
+		CREATE_ORDER_WARING_TEXT: 'Create a warning pop up when your trade order uses more than {0} of your portfolio',
+		ORDER_PORTFOLIO_LABEL: 'Portfolio Percentage Amount:',
+		NOTIFICATION_FORM: {
+			TRADE_POPUPS: 'Trade Pop ups',
+			POPUP_ORDER_CONFIRMATION: 'Ask for confirmation before submitting orders',
+			POPUP_ORDER_COMPLETED: 'Show pop up when order has been completed',
+			POPUP_ORDER_PARTIALLY_FILLED: 'Show pop up when order has partially filled pop up',
+		},
+		AUDIO_CUE_FORM: {
+			ORDERS_COMPLETED_AUDIO: 'Play an audio cue when one of your orders is fully filled',
+			ORDERS_PARTIAL_AUDIO: 'Play an audio cue when one of your orders is partially filled',
+			PUBLIC_TRADE_AUDIO: 'Play an audio cue on every public trade'
+		},
+		RISK_MANAGEMENT: {
+			INFO_TEXT: 'Create a warning pop up when a trade order value goes over a set percentage amount of your portfolio',
+			INFO_TEXT_1: 'Total assets value in {0}: {1}',
+			PORTFOLIO: 'Percentage of portfolio',
+			TOMAN_ASSET: 'Approximate Value',
+			ADJUST: '(ADJUST PERCENTAGE)',  //ToDo: add it in farsi on exir
+			ACTIVATE_RISK_MANAGMENT: 'Activate Risk Managment', //ToDo: add it in farsi on exir
+			WARNING_POP_UP: 'Warning pop ups'
+		}
+	},
 	TRANSACTION_HISTORY: {
 		TITLE: 'Transactions  History',
 		TITLE_TRADES: 'Trades  History',
@@ -652,6 +701,7 @@ export default {
 		sell: 'sell'
 	},
 	SIDES: [{ value: 'buy', label: 'buy' }, { value: 'sell', label: 'sell' }],
+	DEFAULT_TOGGLE_OPTIONS: [{ value: true, label: 'on' }, { value: false, label: 'off' }], // ToDo: Add it into farsi
 	SIZE: 'Size',
 	PRICE: 'Price',
 	FEE: 'Fee',
@@ -675,6 +725,8 @@ export default {
 	CHART: 'price chart',
 	ORDERS: 'my active orders',
 	TRADES: 'my trade history',
+	RECENT_TRADES: 'my recent trades', // ToDo
+	PUBLIC_SALES: 'public sales', // ToDo
 	REMAINING: 'Remaining',
 	FULLFILLED: '{0} % Fullfilled',
 	PRICE_CURRENCY: 'PRICE ({0})',
@@ -863,7 +915,7 @@ export default {
 		{ value: false, label: 'NO' },
 		{ value: true, label: 'YES' }
 	],
-	SETTINGS_THEME_LABEL: 'Theme', // TODO set right labels
+	SETTINGS_THEME_LABEL: 'User Interface Theme', // TODO set right labels // ToDo
 	SETTINGS_THEME_OPTIONS: [
 		{ value: 'white', label: 'White' },
 		{ value: 'dark', label: 'Dark' }

@@ -41,9 +41,10 @@ $cell-height: 1.5rem;
 	.display_table-wrapper {
 		.display_table-header {
 			border-bottom-color: $dark-border-main;
-		}
-		.display_table-cell {
 			color: $dark-font-main-text-color;
+		}
+		.display_table-body {
+			color: $dark-font-sub-text-color;
 		}
 	}
 }

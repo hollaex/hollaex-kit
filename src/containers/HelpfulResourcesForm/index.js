@@ -43,8 +43,8 @@ class HelpfulResourcesForm extends Component {
 			});
 	};
 	openNewForm=()=>{
-		this.props.openContactForm();
 		this.props.onClose();
+		this.props.openContactForm({ category: 'bug' });
 	};
 
 

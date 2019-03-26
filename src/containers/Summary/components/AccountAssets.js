@@ -1,9 +1,10 @@
 import React from 'react';
 import ReactSVG from 'react-svg';
+import classnames from 'classnames';
 
 import { DonutChart } from '../../../components';
 import STRINGS from '../../../config/localizedStrings';
-import { CURRENCIES, BASE_CURRENCY, ICONS } from '../../../config/constants';
+import { CURRENCIES, BASE_CURRENCY, ICONS, FLEX_CENTER_CLASSES } from '../../../config/constants';
 import { formatAverage } from '../../../utils/currency';
 
 const AccountAssets = ({ chartData = [], totalAssets, balance }) => {
@@ -17,13 +18,15 @@ const AccountAssets = ({ chartData = [], totalAssets, balance }) => {
             <div className="w-100 donut-container">
                 {BASE_CURRENCY && <DonutChart chartData={chartData} />}
             </div>
-            <div className="d-flex">
+            <div className="d-flex justify-content-between">
                 {chartData.map((value, index) => {
                     const { formatToCurrency } = CURRENCIES[value.symbol || BASE_CURRENCY];
                     let currencyBalance = formatToCurrency(balance[`${value.symbol}_balance`]);
                     return (
                         <div key={index} className="price-content text-center">
-                            <ReactSVG path={ICONS[`${value.shortName.toUpperCase()}_ICON`]} wrapperClassName="coin-price" />
+                            <div className={classnames("coin-price-container", FLEX_CENTER_CLASSES)}>
+                                <ReactSVG path={ICONS[`${value.shortName.toUpperCase()}_ICON`]} wrapperClassName="coin-price" />
+                            </div>
                             <div className="price-text">{value.fullName}:</div>
                             <div className="price-text">
                                 {`${STRINGS[`${value.symbol.toUpperCase()}_CURRENCY_SYMBOL`]} ${formatAverage(currencyBalance)}`}

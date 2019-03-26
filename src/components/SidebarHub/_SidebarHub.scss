@@ -34,6 +34,8 @@ $deactive-tab-border: $boder--width solid $border--color;
 }
 
 .sidebar_hub-wrapper {
+	overflow-y: scroll;
+
 	.currency-selector {
 		.tab-action {
 			height: $navigation_bar-height;
@@ -120,8 +122,8 @@ $deactive-tab-border: $boder--width solid $border--color;
 				.sidebar_hub-section-title {
 					font-size: $font-size-subhead3;
 					margin: 0 0.5rem;
-					display: flex;
-					align-items: center;
+					// display: flex;
+					// align-items: center;
 					color: $font-color;
 				}
 			}
@@ -218,7 +220,7 @@ $deactive-tab-border: $boder--width solid $border--color;
 				border: 1px solid $border--color
 			}
 			.sidebar_hub-section {
-				border-top-color: $dark-sidebar-color;
+				border-top-color: $dark-app-line-divider;
 
 				.sidebar_hub-section-header {
 
@@ -235,12 +237,12 @@ $deactive-tab-border: $boder--width solid $border--color;
 
 				.sidebar_hub-section-content {
 					.accordion_wrapper .accordion_section {
-						border-color: $dark-sidebar-color;
+						border-color: $dark-app-line-divider;
 					}
 				}
 
 				&.section-active {
-					border-color: $dark-sidebar-color-active;
+					border-color: $dark-app-line-divider;
 
 					.sidebar_hub-section-header {
 						.sidebar_hub-section-icon {

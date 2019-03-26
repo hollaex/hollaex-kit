@@ -106,6 +106,12 @@ class Form extends Component {
 						this.props.dispatch
 					);
 					return response;
+				}).catch(err => {
+					const error = { _error: err.message, ...err.errors };
+					this.props.onSubmitFail(err.errors, this.props.dispatch);
+					this.onCloseDialog();
+					this.props.dispatch(stopSubmit(FORM_NAME, error));
+					// throw new SubmissionError(error);
 				})
 		}
 	};
@@ -163,7 +169,8 @@ class Form extends Component {
 			data,
 			openContactForm,
 			formValues,
-			currentPrice
+			currentPrice,
+			activeTheme
 		} = this.props;
 
 		const { dialogIsOpen, dialogOtpOpen } = this.state;
@@ -182,6 +189,7 @@ class Form extends Component {
 					label="withdraw-modal"
 					onCloseDialog={this.onCloseDialog}
 					shouldCloseOnOverlayClick={dialogOtpOpen}
+					theme={activeTheme}
 					showCloseText={false}
 				>
 					{dialogOtpOpen ? (
@@ -218,7 +226,8 @@ const WithdrawForm = reduxForm({
 })(Form);
 
 const mapStateToForm = (state) => ({
-	data: selector(state, 'address', 'amount', 'fee')
+	data: selector(state, 'address', 'amount', 'fee'),
+	activeTheme: state.app.theme
 });
 
 const WithdrawFormWithValues = connect(mapStateToForm)(WithdrawForm);

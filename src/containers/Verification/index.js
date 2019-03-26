@@ -6,6 +6,8 @@ import * as d3 from 'd3-selection';
 import {
 	// AppBar,
 	CheckTitle,
+	CustomTabs,
+	CustomMobileTabs,
 	Dialog,
 	Loader,
 	// Logout,
@@ -42,7 +44,7 @@ import BankVerificationHome from './BankVerificationHome';
 import IdentityVerificationHome from './IdentityVerificationHome';
 import MobileVerificationHome from './MobileVerificationHome';
 import DocumentsVerificationHome from './DocumentsVerificationHome';
-import MobileTabs from './MobileTabs';
+// import MobileTabs from './MobileTabs';
 
 // const CONTENT_CLASS =
 // 	'd-flex justify-content-center align-items-center f-1 flex-column verification_content-wrapper';
@@ -57,15 +59,16 @@ class Verification extends Component {
 	};
 
 	componentDidMount() {
-		if (this.props.token) {
-			this.init(this.props);
+		if(this.props.user) {
+			this.setUserData(this.props.user);
 		}
 	}
 
 	componentWillReceiveProps(nextProps) {
-		if (!nextProps.fetchingAuth && this.props.fetchingAuth) {
-			this.init(nextProps);
-		} else if (nextProps.activeLanguage !== this.props.activeLanguage) {
+		if(nextProps.user !== this.props.user) {
+			this.setUserData(nextProps.user);
+		}
+		if (nextProps.activeLanguage !== this.props.activeLanguage) {
 			this.updateTabs(this.state.user, nextProps.activeLanguage);
 		}
 	}
@@ -76,16 +79,6 @@ class Verification extends Component {
 		}
 	}
 	
-	init = (props) => {
-		getUserData()
-			.then(({ data }) => {
-				this.setUserData(data);
-			})
-			.catch((err) => {
-				// TODO what to do in case of error
-			});
-	};
-
 	setUserData = (user = {}) => {
 		const activeTab = this.calculateActiveTab(user);
 		if (activeTab > 4) {
@@ -150,17 +143,14 @@ class Verification extends Component {
 		const tabs = [
 			{
 				title: isMobile ? (
-					<MobileTabs
+					<CustomMobileTabs
 						title={STRINGS.USER_VERIFICATION.TITLE_EMAIL}
-						className={activeTab === 0 ? 'active_mobile_tab' : ''}
 						icon={ICONS.VERIFICATION_EMAIL_NEW}
 						statusCode={email ? 3 : 0}
 					/>
 				) : (
-					<CheckTitle
+					<CustomTabs
 						title={STRINGS.USER_VERIFICATION.TITLE_EMAIL}
-						titleClassName={activeTab !== 0 ? 'title-inactive' : ''}
-						className={activeTab === 0 ? 'active-tab-icon' : ''}
 						icon={ICONS.VERIFICATION_EMAIL_NEW}
 						statusCode={email ? 3 : 0}
 					/>
@@ -178,17 +168,14 @@ class Verification extends Component {
 			},
 			{
 				title: isMobile ? (
-					<MobileTabs
+					<CustomMobileTabs
 						title={STRINGS.USER_VERIFICATION.TITLE_BANK}
-						className={activeTab === 1 ? 'active_mobile_tab' : ''}
 						icon={ICONS.VERIFICATION_BANK_NEW}
 						statusCode={bank_status}
 					/>
 				) : (
-					<CheckTitle
+					<CustomTabs
 						title={STRINGS.USER_VERIFICATION.TITLE_BANK}
-						titleClassName={activeTab !== 1 ? 'title-inactive' : ''}
-						className={activeTab === 1 ? 'active-tab-icon' : ''}
 						icon={ICONS.VERIFICATION_BANK_NEW}
 						statusCode={bank_status}
 					/>
@@ -202,17 +189,14 @@ class Verification extends Component {
 			},
 			{
 				title: isMobile ? (
-					<MobileTabs
+					<CustomMobileTabs
 						title={STRINGS.USER_VERIFICATION.TITLE_IDENTITY}
-						className={activeTab === 2 ? 'active_mobile_tab' : ''}
 						icon={ICONS.VERIFICATION_ID_NEW}
 						statusCode={identity_status}
 					/>
 				) : (
-					<CheckTitle
+					<CustomTabs
 						title={STRINGS.USER_VERIFICATION.TITLE_IDENTITY}
-						titleClassName={activeTab !== 2 ? 'title-inactive' : ''}
-						className={activeTab === 2 ? 'active-tab-icon' : ''}
 						icon={ICONS.VERIFICATION_ID_NEW}
 						statusCode={identity_status}
 					/>
@@ -224,17 +208,14 @@ class Verification extends Component {
 			},
 			{
 				title: isMobile ? (
-					<MobileTabs
+					<CustomMobileTabs
 						title={STRINGS.USER_VERIFICATION.USER_DOCUMENTATION_FORM.INFORMATION.TITLE_PHONE}
-						className={activeTab === 3 ? 'active_mobile_tab' : ''}
 						icon={ICONS.VERIFICATION_PHONE_NEW}
 						statusCode={!phone_number ? 0 : 3}
 					/>
 				) : (
-					<CheckTitle
+					<CustomTabs
 						title={STRINGS.USER_VERIFICATION.USER_DOCUMENTATION_FORM.INFORMATION.TITLE_PHONE}
-						titleClassName={activeTab !== 3 ? 'title-inactive' : ''}
-						className={activeTab === 3 ? 'active-tab-icon' : ''}
 						icon={ICONS.VERIFICATION_PHONE_NEW}
 						statusCode={!phone_number ? 0 : 3}
 					/>
@@ -243,17 +224,14 @@ class Verification extends Component {
 			},
 			{
 				title: isMobile ? (
-					<MobileTabs
+					<CustomMobileTabs
 						title={STRINGS.USER_VERIFICATION.TITLE_ID_DOCUMENTS}
-						className={activeTab === 4 ? 'active_mobile_tab' : ''}
 						icon={ICONS.VERIFICATION_DOCUMENT_NEW}
 						statusCode={id_data.status}
 					/>
 				) : (
-					<CheckTitle
+					<CustomTabs
 						title={STRINGS.USER_VERIFICATION.TITLE_ID_DOCUMENTS}
-						titleClassName={activeTab !== 4 ? 'title-inactive' : ''}
-						className={activeTab === 4 ? 'active-tab-icon' : ''}
 						icon={ICONS.VERIFICATION_DOCUMENT_NEW}
 						statusCode={id_data.status}
 					/>
@@ -381,6 +359,7 @@ class Verification extends Component {
 			case 'contact':
 				return (
 					<ContactForm
+						initialValues={{category: 'verify'}}
 						onSubmitSuccess={this.onCloseDialog}
 						onClose={this.onCloseDialog}
 					/>
@@ -448,6 +427,7 @@ class Verification extends Component {
 					onCloseDialog={this.onCloseDialog}
 					shouldCloseOnOverlayClick={dialogType !== 'complete'}
 					showCloseText={false}
+					theme={activeTheme}
 				>
 					{this.renderDialogContent(dialogType)}
 				</Dialog>

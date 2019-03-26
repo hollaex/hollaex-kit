@@ -6,7 +6,7 @@ import { ActionNotification } from '../../';
 import { ICONS } from '../../../config/constants';
 import STRINGS from '../../../config/localizedStrings';
 
-export const renderCopy = (text, component) => {
+export const renderCopy = (text, onCopy, component) => {
 	return (
 		<CopyToClipboard text={text}>
 			<ActionNotification
@@ -15,6 +15,7 @@ export const renderCopy = (text, component) => {
 				iconPath={ICONS.COPY_NEW}
 				className="copy-wrapper"
 				useSvg={true}
+				onClick={onCopy}
 			/>
 		</CopyToClipboard>
 	);
@@ -25,6 +26,7 @@ const DumbField = ({
 	value,
 	className = '',
 	allowCopy = false,
+	onCopy,
 	...rest
 }) => {
 	const props = {
@@ -39,7 +41,7 @@ const DumbField = ({
 		>
 			<FieldContent {...props}>
 				{value}
-				{value && allowCopy && renderCopy(value)}
+				{value && allowCopy && renderCopy(value, onCopy)}
 			</FieldContent>
 		</FieldWrapper>
 	);

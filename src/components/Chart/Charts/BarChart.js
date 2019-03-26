@@ -23,7 +23,7 @@ class BarChart extends Component {
     componentDidMount() {
         const donutContainer = document.getElementById("bar-container");
         const rect = donutContainer.getBoundingClientRect();
-        this.setState({ width: (rect.width - 100), height: (rect.height - 130) }, () => {
+        this.setState({ width: (rect.width - 120), height: (rect.height - 130) }, () => {
             if (!this.props.loading) {
                 this.generateChart(this.props.chartData, this.props.limitContent);
             }
@@ -144,7 +144,7 @@ class BarChart extends Component {
                                 .attr('y', scaleTxt)
                                 .attr('width', '6rem')
                                 .append('xhtml:div')
-                                .attr('class', 'limit_contnet-text')
+                                .attr('class', 'limit_content-text')
                                 .html(`<span>${content.text}</span>`);
                         }
                     }

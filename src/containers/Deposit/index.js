@@ -10,7 +10,7 @@ import { ICONS, BALANCE_ERROR, CURRENCIES } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 import { getCurrencyFromName } from '../../utils/currency';
 
-import { openContactForm } from '../../actions/appActions';
+import { openContactForm, setSnackNotification } from '../../actions/appActions';
 
 import { Button } from '../../components';
 import { renderInformation, renderTitleSection } from '../Wallet/components';
@@ -77,6 +77,13 @@ class Deposit extends Component {
 		}
 	};
 
+	onCopy = () => {
+		this.props.setSnackNotification({
+			icon: ICONS.COPY_NOTIFICATION,
+			content: STRINGS.COPY_SUCCESS_TEXT
+		});
+	};
+
 	render() {
 		const { id, crypto_wallet, openContactForm, balance } = this.props;
 		const { currency, checked, copied } = this.state;
@@ -103,7 +110,7 @@ class Deposit extends Component {
 						generateFiatInformation,
 						'deposit'
 					)}
-					{renderContent(currency, crypto_wallet)}
+					{renderContent(currency, crypto_wallet, this.onCopy)}
 					{isMobile && (
 						<CopyToClipboard
 							text={
@@ -131,7 +138,9 @@ const mapStateToProps = (store) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-	openContactForm: bindActionCreators(openContactForm, dispatch)
+	openContactForm: bindActionCreators(openContactForm, dispatch),
+	setSnackNotification: bindActionCreators(setSnackNotification, dispatch)
+
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Deposit);

@@ -34,3 +34,7 @@ You can build the project by running `npm run build` and the projects builds the
   - REACT_APP_BANK_WITHDRAWAL_MAX_DYNAMIC_FEE `50`
 - TOP NAV BAR DEFAULT PAIRS
   - REACT_APP_DEFAULT_TRADING_PAIRS `btc-eur,eth-eur`
+
+## Styles to set for changing new dark theme
+1. Modify colors under the `dark theme color` text in variables.scss file.
+2. Change the colors of `DARK_THEME_COLORS` and `DARK_THEME_CHART_COLORS` objects in constants.js file to apply the theme colors inside the charts.

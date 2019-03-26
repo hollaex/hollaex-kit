@@ -178,7 +178,8 @@ $padding-input: 4rem;
 			color: $dark-font-sub-text-color;
 		}
 		.otp_secret {
-			color: $colors-main-black !important;
+			background-color: $dark-inactive-color;
+			color: $dark-font-sub-text-color !important;
 		}
 
 		.otp_form-section-wrapper svg path {

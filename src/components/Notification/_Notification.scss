@@ -165,7 +165,7 @@ $logout--size-difference: 3rem;
 					.deposit-02,
 					.deposit-complete-01,
 					.deposit-complete-btc-01 {
-						fill: $dark-button-active;
+						fill: $dark-icon-color;
 					}
 				}
 			}
@@ -181,35 +181,35 @@ $logout--size-difference: 3rem;
 		}
 		svg {
 			.check-order-1,
-			.check-order-2 {
-				stroke: $dark-tab-inactive;
-			}
-			.check-order-2 {
-				fill: $dark-tab-inactive;
-			}
-			.coin-btc-1 {
-				fill: $dark-tab-inactive;
-			}
-			.coin-btc-4 {
-				stroke: $dark-tab-inactive;
-			}
-
-			.coin-fiat-1 {
-				fill: $dark-tab-inactive;
-			}
+			.check-order-2,
+			.coin-btc-4,
 			.coin-fiat-4 {
-				stroke: $dark-tab-inactive;
+				stroke: $dark-icon-color;
 			}
+			.market-buy,
+			.check-order-2,
+			.coin-btc-1,
+			.coin-btc-5,
+			.coin-fiat-1,
+			.coin-fiat-5,
+			.email_sent,
+			.limit-sell-03,
+			.limit-sell-04,
+			.limit-buy-03,
+			.limit-buy-04 {
+				fill: $dark-icon-color;
+			}
+			.limit-sell-01,
+			.limit-buy-01,
+			.limit-buy-02,
+			.limit-sell-02,
 			.wallet-selected-2 {
-				stroke: $dark-tab-inactive;
+				stroke: $dark-icon-color;
 				fill: transparent;
-			}
-			.email_sent {
-				fill: $dark-tab-inactive;
 			}
 			g .wallet-selected-2 {
 				stroke: transparent;
-				fill: $dark-tab-inactive;
+				fill: $dark-icon-color;
 			}
 		}
 	}

@@ -8,11 +8,10 @@ import {
 	maxLength
 } from '../../components/Form/validations';
 import renderFields from '../../components/Form/factoryFields';
-import { Button, IconTitle } from '../../components';
+import { Button, IconTitle, HeaderSection } from '../../components';
 import STRINGS from '../../config/localizedStrings';
 import { verifyBankData } from '../../actions/verificationActions';
 import { getErrorLocalized } from '../../utils/errors';
-import HeaderSection from './HeaderSection';
 import { isMobile } from 'react-device-detect';
 
 const FORM_NAME = 'BankVerification';

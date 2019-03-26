@@ -77,6 +77,7 @@ class AppMenuBar extends Component {
     setActiveMenu = path => {
         let activeMenu = this.state.activeMenu;
         switch (path) {
+            case '/account':
             case '/summary':
                 activeMenu = 'summary';
                 break;

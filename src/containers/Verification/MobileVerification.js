@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { reduxForm, formValueSelector, SubmissionError } from 'redux-form';
+import { reduxForm, formValueSelector, SubmissionError, stopSubmit } from 'redux-form';
+import { isMobile } from 'react-device-detect';
+
 import { required } from '../../components/Form/validations';
 import renderFields from '../../components/Form/factoryFields';
-import { Button, IconTitle } from '../../components';
+import { Button, IconTitle, ElapsedTimer, HeaderSection } from '../../components';
 import STRINGS from '../../config/localizedStrings';
 import { PHONE_OPTIONS } from '../../utils/countries';
 import { ICONS } from '../../config/constants';
@@ -12,15 +14,17 @@ import {
 	verifySmsCode,
 	requestSmsCode
 } from '../../actions/verificationActions';
-import HeaderSection from './HeaderSection';
-import { isMobile } from 'react-device-detect';
 
 const FORM_NAME = 'MobileVerification';
+let loadingTimeOut = '';
 
 class MobileVerification extends Component {
 	state = {
 		formFields: {},
-		codeRequested: false
+		codeRequested: false,
+		codeRequestLoading: false,
+		isLoadingTimeUp: false,
+		isTimer: false
 	};
 
 	componentDidMount() {
@@ -33,7 +37,14 @@ class MobileVerification extends Component {
 		}
 	}
 
-	generateFormFields = (codeRequested = false) => {
+	componentWillUnmount() {
+		if (loadingTimeOut) {
+			clearTimeout(loadingTimeOut);
+		}
+	}
+	
+
+	generateFormFields = (codeRequested = false, loading = false) => {
 		const formFields = {
 			phone_country: {
 				type: 'autocomplete',
@@ -57,13 +68,14 @@ class MobileVerification extends Component {
 						.PHONE_NUMBER_PLACEHOLDER,
 				validate: [required], // TODO ^\+?[1-9]\d{1,14}$
 				notification: {
-					text:
-						STRINGS.USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS
-							.SMS_SEND,
-					status: 'information',
-					iconPath: ICONS.BLUE_ARROW_RIGHT,
+					text: loading
+						? STRINGS.USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.CONNECTING_LOADING
+						: STRINGS.USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.SMS_SEND,
+					status: loading ? 'loading' : 'information',
+					iconPath: loading ? ICONS.CONNECT_LOADING :ICONS.BLUE_ARROW_RIGHT,
+					useSvg: loading ? true : false,
 					className: 'file_upload_icon',
-					onClick: this.handleSendSmsCode
+					onClick: loading ? () => {} : this.handleSendSmsCode
 				},
 				fullWidth: isMobile
 			},
@@ -113,17 +125,32 @@ class MobileVerification extends Component {
 		const { phone_number, phone_country } = this.props;
 		if (phone_country && phone_number) {
 			const phone = `${phone_country} ${phone_number}`;
+			this.setState({
+				codeRequestLoading: true,
+				codeRequested: false,
+				isLoadingTimeUp: false
+			}, () => {
+				this.generateFormFields(false, true);
+				this.checkLoadingTime();
+			});
 			requestSmsCode(phone)
 				.then(({ data }) => {
-					alert(STRINGS.formatString(STRINGS.SMS_SENT_TO, phone).join(''));
-					this.setState({ codeRequested: true }, () => {
-						this.generateFormFields(true);
+					// alert(STRINGS.formatString(STRINGS.SMS_SENT_TO, phone).join(''));
+					this.setState({ 
+						codeRequested: true,
+						codeRequestLoading: false,
+						isTimer: this.state.isLoadingTimeUp
+					}, () => {
+						let loading = this.state.isLoadingTimeUp ? false : true;
+						this.generateFormFields(true, loading);
 					});
 				})
 				.catch((err) => {
-					alert(
-						STRINGS.formatString(STRINGS.SMS_ERROR_SENT_TO, phone).join('')
-					);
+					const error = { _error: STRINGS.formatString(STRINGS.SMS_ERROR_SENT_TO, phone).join('') };
+					this.setState({ codeRequestLoading: false }, () => {
+						this.generateFormFields();
+					});
+					this.props.dispatch(stopSubmit(FORM_NAME, error));
 				});
 		}
 	};
@@ -131,6 +158,23 @@ class MobileVerification extends Component {
 	onGoBack = () => {
 		this.props.setActivePageContent(0);
 		this.props.setActiveTab(3);
+	};
+
+	checkLoadingTime = () => {
+		loadingTimeOut = setTimeout(() => {
+			let isTimer = false;
+			if (this.state.codeRequested) {
+				this.generateFormFields(true, false);
+				isTimer = true;
+			}
+			this.setState({ isLoadingTimeUp: true, isTimer });
+		}, 3000);
+	};
+
+	onClearTimer = () => {
+		this.setState({ isTimer: false, codeRequested: false }, () => {
+			this.generateFormFields();
+		});
 	};
 
 	render() {
@@ -142,7 +186,7 @@ class MobileVerification extends Component {
 			error,
 			openContactForm
 		} = this.props;
-		const { formFields, codeRequested } = this.state;
+		const { formFields, codeRequested, isTimer } = this.state;
 		return (
 			<div className="presentation_container apply_rtl verification_container">
 				<IconTitle text={STRINGS.USER_VERIFICATION.PHONE_VERIFICATION} textType="title" />
@@ -157,6 +201,10 @@ class MobileVerification extends Component {
 						<div>{STRINGS.USER_VERIFICATION.USER_DOCUMENTATION_FORM.INFORMATION.PHONE_VERIFICATION_TXT_2}</div>
 					</HeaderSection>
 					{renderFields(formFields)}
+					<ElapsedTimer
+						timerText={STRINGS.USER_VERIFICATION.CODE_EXPIRES_IN}
+						isLoading={isTimer}
+						timeoutCallback={this.onClearTimer} />
 					{error && (
 						<div className="warning_text">{getErrorLocalized(error)}</div>
 					)}

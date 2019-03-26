@@ -41,7 +41,7 @@ const AccountDetails = ({
                     onAccountTypeChange={onAccountTypeChange}
                     onFeesAndLimits={onFeesAndLimits}
                     onUpgradeAccount={onUpgradeAccount} />
-                : <div className="d-flex mt-5">
+                : <div className="d-flex align-items-center mt-5">
                     <AccountTypesList
                         accounts={accounts}
                         activeTheme={activeTheme}

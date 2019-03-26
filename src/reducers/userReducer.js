@@ -1,6 +1,7 @@
 import PhoneNumber from 'awesome-phonenumber';
 import { DEFAULT_LANGUAGE, THEME_DEFAULT } from '../config/constants';
 import { getCurrencyFromSymbol } from '../utils/currency';
+import { constructSettings } from '../utils/utils';
 
 const USER_DATA_KEYS = [
 	'full_name',
@@ -91,10 +92,30 @@ const INITIAL_STATE = {
 	username: '',
 	username_set: false,
 	settings: {
-		usernameIsSet: false,
 		orderConfirmationPopup: true,
 		theme: THEME_DEFAULT,
-		language: DEFAULT_LANGUAGE
+		language: DEFAULT_LANGUAGE,
+		notification: {
+			popup_order_confirmation: true,
+			popup_order_completed: true,
+			popup_order_partially_filled: true
+		},
+		interface: {
+			theme: THEME_DEFAULT,
+			order_book_levels: 10
+		},
+		chat: {
+			set_username: false,
+		},
+		audio: {
+			order_completed: true,
+			order_partially_completed: true,
+			public_trade: false
+		},
+		risk: {
+			order_portfolio_percentage: 25,
+			popup_warning: true
+		}
 	},
 	addressRequest: INITIAL_ADDRESS_OBJECT,
 	limits: INITIAL_LIMIT_OBJECT,
@@ -113,14 +134,14 @@ export default function reducer(state = INITIAL_STATE, action) {
 				verification_level,
 				otp_enabled,
 				username,
-				created_at
+				created_at,
+				bank_account,
+				address,
+				id_data
 			} = action.payload;
 			const userData = extractuserData(action.payload);
 			const fees = action.payload.fees || state.fees;
-			const settings = {
-				...state.settings,
-				...action.payload.settings
-			};
+			const settings = constructSettings(state.settings, action.payload.settings);
 			return {
 				...state,
 				fetching: false,
@@ -139,16 +160,16 @@ export default function reducer(state = INITIAL_STATE, action) {
 				fees,
 				settings,
 				username,
-				created_at
+				created_at,
+				bank_account,
+				address,
+				id_data
 			};
 		}
 		case 'SET_USER_DATA': {
 			const userData = extractuserData(action.payload);
 			const fees = action.payload.fees || state.fees;
-			const settings = {
-				...state.settings,
-				...action.payload.settings
-			};
+			const settings = constructSettings(state.settings, action.payload.settings);
 			return {
 				...state,
 				userData: {
@@ -295,7 +316,9 @@ export default function reducer(state = INITIAL_STATE, action) {
 				username_set: action.payload.username_set,
 				settings: {
 					...state.settings,
-					usernameIsSet: true
+					chat: {
+						set_username: true
+					}
 				}
 			};
 		case 'REQUEST_LIMITS_PENDING':

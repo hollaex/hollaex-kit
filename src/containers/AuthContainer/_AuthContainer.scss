@@ -1,5 +1,26 @@
 $content-wrapper--max-width: $bp-xs;
+$content-wrapper-width-small-devices: 475px;
 $container--padding: 4rem;
+$container--padding-sm: 3rem;
+
+.light-auth-body {
+	background: url($background-image) !important;
+	background-repeat: no-repeat;
+	background-size: cover;
+	position: relative;
+
+	&:before {
+		position: absolute;
+		content: '';
+		width: 100%;
+		height: 130%;
+		background-color: rgba(241, 242, 242, 0.6);
+	}
+}
+
+.dark-auth-body {
+	background: $dark-app-light-background !important;
+}
 
 .layout-mobile {
 	&.auth-wrapper {
@@ -45,8 +66,9 @@ $container--padding: 4rem;
 	// background-repeat: repeat;
 	// background-size: $background-patter--size;
 	position: relative;
+	overflow-y: scroll;
 	&:before {
-		position: absolute;
+		position: fixed;
 		content: '';
 		width: 100%;
 		height: 100%;
@@ -54,6 +76,7 @@ $container--padding: 4rem;
 	}
 	.auth-container {
 		max-width: $content-wrapper--max-width;
+		max-height: 100vh;
 		z-index: 1;
 
 		.auth_wrapper {
@@ -136,7 +159,7 @@ $container--padding: 4rem;
 
 .dark-theme {
 	&.auth-wrapper {
-		background: $dark-disabled-secondary;
+		background: $dark-app-light-background;
 		&:before {
 			background-color: transparent;
 		}
@@ -155,5 +178,113 @@ $container--padding: 4rem;
 	.password-reset-2,
 	.success-black-1 {
 		fill: $dark-button-active;
+	}
+}
+
+@media screen and (max-width: 1096px) {
+	.auth-wrapper {
+		.auth-container {
+			max-width: $content-wrapper-width-small-devices !important;
+			
+			.auth_wrapper {
+				padding: $container--padding-sm $container--padding $container--padding-sm;
+			}
+			.auth_form-wrapper {
+				margin-top: 1rem;
+				.field-wrapper {
+					margin: 0.5rem 0;
+				}
+				// .captcha-wrapper {
+				// 	height: 5.5rem;
+				// }
+			}
+			.exir-button {
+				margin-top: 0.5rem;
+			}
+		}
+		.link_wrapper {
+			margin-top: 1rem;
+		}
+		.icon_title-wrapper {
+			.icon_title-svg {
+				svg {
+					width: 3rem;
+					height: 3rem;
+				}
+			}
+
+			&.exir-logo {
+				.icon_title-svg {
+					svg {
+						height: 3rem;
+					}
+				}
+			}
+
+			.icon_title-text {
+				margin: 0.8rem auto;
+
+				&.title {
+					font-size: 2rem;
+				}
+			}
+		}
+	}
+	#rc-imageselect,
+	.g-recaptcha {
+		transform: scale(0.72);
+		-webkit-transform: scale(0.72);
+		transform-origin: 0 0;
+		-webkit-transform-origin: 0% 0%;
+	}
+}
+
+@media screen and (max-width: 1096px) and (min-width: 768px) {
+	.auth-wrapper {
+		.auth-container {
+			.auth_form-wrapper {
+				.captcha-wrapper {
+					height: 5.5rem;
+				}
+			}
+		}
+	}
+}
+
+@media screen and (max-width: 334px) and (min-width: 280px) {
+	.auth-wrapper {
+		.auth-container {
+			.auth_form-wrapper {
+				.captcha-wrapper {
+					height: 7rem;
+				}
+			}
+		}
+	}
+	#rc-imageselect,
+	.g-recaptcha {
+		transform: scale(0.6);
+		-webkit-transform: scale(0.6);
+		transform-origin: 0 0;
+		-webkit-transform-origin: 0% 0%;
+	}
+}
+
+@media screen and (max-width: 460px) and (min-width: 335px) {
+	.auth-wrapper {
+		.auth-container {
+			.auth_form-wrapper {
+				.captcha-wrapper {
+					height: 7rem;
+				}
+			}
+		}
+	}
+	#rc-imageselect,
+	.g-recaptcha {
+		transform: scale(0.62);
+		-webkit-transform: scale(0.62);
+		transform-origin: 0 0;
+		-webkit-transform-origin: 0 0;
 	}
 }

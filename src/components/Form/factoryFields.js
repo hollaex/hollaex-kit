@@ -9,6 +9,7 @@ import DropdownDateField from './FormFields/DropdownDateField';
 import CheckField from './FormFields/CheckField';
 import EditableInputField from './FormFields/EditableInputField';
 import CaptchaField from './FormFields/Captcha';
+import ToggleField from './FormFields/ToggleField';
 
 const renderFields = (fields = {}) => {
 	return (
@@ -54,6 +55,8 @@ const renderFields = (fields = {}) => {
 						return <Field component={EditableInputField} {...commonProps} />;
 					case 'textarea':
 						return <Field component={TextAreaField} {...commonProps} />;
+					case 'toggle':
+						return <Field component={ToggleField} {...commonProps} />;
 					case 'text':
 					case 'password':
 					case 'email':

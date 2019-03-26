@@ -6,9 +6,9 @@ import {
 	requiredWithCustomMessage
 } from '../../components/Form/validations';
 import renderFields from '../../components/Form/factoryFields';
-import { Button, IconTitle } from '../../components';
+import { Button, IconTitle, HeaderSection } from '../../components';
 import STRINGS from '../../config/localizedStrings';
-import HeaderSection, {
+import {
 	IdentificationFormSection,
 	PORSection,
 	SelfieWithPhotoId
@@ -219,6 +219,7 @@ class DocumentsVerification extends Component {
 					</HeaderSection>
 					{renderFields(formFields.idDocument)}
 					{renderFields(formFields.id)}
+					<div className="my-4"></div>
 
 					{formFields.proofOfResidence && (
 						<div>
@@ -233,6 +234,7 @@ class DocumentsVerification extends Component {
 							{renderFields(formFields.proofOfResidence)}
 						</div>
 					)}
+					<div className="my-4"></div>
 					{formFields.selfieWithNote && (
 						<div>
 							<HeaderSection

@@ -14,6 +14,7 @@ const MobileTrade = ({
 	balance,
 	onSubmitOrder,
 	openCheckOrder,
+	onRiskyTrade,
 	marketPrice,
 	settings,
 	orderbookProps,
@@ -42,6 +43,7 @@ const MobileTrade = ({
 			<OrderEntry
 				submitOrder={onSubmitOrder}
 				openCheckOrder={openCheckOrder}
+				onRiskyTrade={onRiskyTrade}
 				symbol={symbol}
 				balance={balance}
 				asks={asks}

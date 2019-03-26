@@ -7,7 +7,7 @@ import { calculateBalancePrice,
 	formatFiatAmount,
 	calculatePrice,
 	calculatePricePercentage,
-	formatPercentage } from '../../utils/currency';
+	donutFormatPercentage } from '../../utils/currency';
 import WalletSection from './Section';
 import { DonutChart } from '../../components';
 import STRINGS from '../../config/localizedStrings';
@@ -39,7 +39,7 @@ class Wallet extends Component {
 	}
 
 	generateSection = (symbol, price, balance, orders) => {
-		const { currencySymbol, formatToCurrency } = CURRENCIES[symbol];
+		const { formatToCurrency } = CURRENCIES[symbol];
 		const name = STRINGS[`${symbol.toUpperCase()}_NAME`];
 		return {
 			accordionClassName: 'wallet_section-wrapper',
@@ -47,8 +47,8 @@ class Wallet extends Component {
 			titleClassName: 'wallet_section-title',
 			titleInformation: (
 				<div className="wallet_section-title-amount">
-					<span>{currencySymbol}</span>
 					{formatToCurrency(balance[`${symbol}_balance`])}
+					<span className="mx-1">{STRINGS[`${symbol.toUpperCase()}_CURRENCY_SYMBOL`]}</span>
 				</div>
 			),
 			content: (
@@ -76,7 +76,7 @@ class Wallet extends Component {
 				...CURRENCIES[currency],
 				balance: balancePercent,
 				balanceFormat: formatToCurrency(currencyBalance),
-				balancePercentage: formatPercentage(balancePercent),
+				balancePercentage: donutFormatPercentage(balancePercent)
 			});
 			sections.push(this.generateSection(symbol, price, balance, orders));
 		});

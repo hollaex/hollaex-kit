@@ -42,6 +42,26 @@ $padding: 0.25rem;
 		font-weight: bold;
 		color: $input--border-color;
 	}
+
+	.initialize-animation {
+		> input {
+			-webkit-animation-name: bounce; /* Safari 4.0 - 8.0 */
+			-webkit-animation-duration: 5s; /* Safari 4.0 - 8.0 */
+			animation-name: bounce;
+			animation-duration: 5s;
+			border: 1px solid $input--border-color;
+		}
+		/* Safari 4.0 - 8.0 */
+		@-webkit-keyframes bounce {
+			15%  {border-color: $colors-notifications-blue;}
+			75% {border-color: $input--border-color;}
+		}
+		/* Standard syntax */
+		@keyframes bounce {
+			15%  {border-color: $colors-notifications-blue;}
+			75% {border-color: $input--border-color;}
+		}
+	}
 }
 
 .direction_ltr {
@@ -72,14 +92,38 @@ $padding: 0.25rem;
 	.trade_input-wrapper {
 		.trade_input-input-wrapper {
 			> input {
-				background: $dark-disabled-main;
-				border-color: $dark-disabled-main;
+				background: $dark-trade-fields;
+				border-color: $dark-trade-fields;
 				color: $dark-font-main-text-color;
+
+				&:focus {
+					border-color: $dark-border-main;
+				}
 			}
 		}
 
 		.trade_input-input-currency {
 			color: $dark-font-sub-text-color;
+		}
+
+		.initialize-animation {
+			> input {
+				-webkit-animation-name: bounceDark; /* Safari 4.0 - 8.0 */
+				-webkit-animation-duration: 5s; /* Safari 4.0 - 8.0 */
+				animation-name: bounceDark;
+				animation-duration: 5s;
+				border: 1px solid $dark-trade-fields;
+			}
+			/* Safari 4.0 - 8.0 */
+			@-webkit-keyframes bounceDark {
+				15%  {border-color: $dark-link;}
+				75% {border-color: $dark-trade-fields;}
+			}
+			/* Standard syntax */
+			@keyframes bounceDark {
+				15%  {border-color:  $dark-link;}
+				75% {border-color: $dark-trade-fields;}
+			}
 		}
 	}
 }

@@ -18,7 +18,11 @@ $trade-fullfilled-background-color: grey;
 $trade-font-size: $font-size-subtext;
 
 $side-column--width: 17.5rem;
+$side-column--width-sm: 16rem;
+$side-column--width-lg: 20rem;
 $order_entry-column--width: 15rem;
+$order_entry-column--width-sm: 14rem;
+$order_entry-column--width-lg: 18rem;
 
 @import './_TradeContainer.scss';
 @import './components/_TradeBlock.scss';
@@ -169,11 +173,11 @@ $order_entry-column--width: 15rem;
 				border-color: $dark-border-main;
 
 				> .cell_value-wrapper {
-					color: $dark-font-main-text-color;
+					color: $dark-font-sub-text-color;
 					z-index: 2;
 
 					.cell_value-bar {
-						background-color: $dark-button-active;
+						background-color: $dark-trade-fill-indicator;
 					}
 				}
 			}

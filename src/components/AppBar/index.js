@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import classnames from 'classnames';
 import { Link } from 'react-router';
 import ReactSVG from 'react-svg';
@@ -16,6 +17,8 @@ import MenuList from './MenuList';
 import { MobileBarWrapper } from '../';
 import STRINGS from '../../config/localizedStrings';
 import { isLoggedIn } from '../../utils/token';
+import { getMe, setMe } from '../../actions/userAction';
+import { setNotification, NOTIFICATIONS } from '../../actions/appActions';
 
 class AppBar extends Component {
 	state = {
@@ -33,6 +36,9 @@ class AppBar extends Component {
 		if (this.props.user) {
 			this.checkVerificationStatus(this.props.user);
 		}
+		if (this.props.isHome && this.props.token) {
+			this.getUserDetails();
+		}
 	}
 	
 	componentWillReceiveProps(nextProps) {
@@ -43,7 +49,23 @@ class AppBar extends Component {
 		if (JSON.stringify(this.props.user) !== JSON.stringify(nextProps.user)) {
 			this.checkVerificationStatus(nextProps.user);
 		}
+		if (this.props.token !== nextProps.token && nextProps.token && nextProps.isHome) {
+			this.getUserDetails();
+		}
 	}
+
+	getUserDetails = () => {
+		return this.props.getMe()
+			.then(({ value }) => {
+				if (value && value.data && value.data.id) {
+					this.props.setMe(value.data);
+				}
+			})
+			.catch(err => {
+				const message = err.message || JSON.stringify(err);
+				this.props.setNotification(NOTIFICATIONS.ERROR, message);
+			})
+	};
 
 	checkVerificationStatus = user => {
 		let userData = user.userData || {};
@@ -113,14 +135,14 @@ class AppBar extends Component {
 
 		const WRAPPER_CLASSES = ['app_bar-controllers-splash', 'd-flex'];
 		return token ? (
-			<div className="d-flex app-bar-account" onClick={this.handleAccountMenu}>
+			<div className="d-flex app-bar-account" onClick={this.handleSummary}>
 				<div className="app-bar-account-content mr-2">
 					<ReactSVG path={ICONS.SIDEBAR_ACCOUNT_INACTIVE} wrapperClassName="app-bar-currency-icon" />
 					{!!(securityPending + verificationPending)
 						&& <div className="app-bar-account-notification">{securityPending + verificationPending}</div>
 					}
 				</div>
-				<div>{STRINGS.ACCOUNT_TEXT}</div>
+				<div className="d-flex align-items-center">{STRINGS.ACCOUNT_TEXT}</div>
 			</div>
 		) : (
 			<div className={classnames(...WRAPPER_CLASSES)}>
@@ -153,6 +175,9 @@ class AppBar extends Component {
 		);
 	};
 
+	handleSummary = () => {
+		this.props.router.push('/summary');
+	}
 	handleMenu = menu => {
 		if (menu === 'account') {
 			this.props.router.push('/account');
@@ -217,9 +242,12 @@ class AppBar extends Component {
 		} = this.props;
 		const { isAccountMenu, selectedMenu, securityPending, verificationPending } = this.state;
 		const totalPending = securityPending + verificationPending;
-		let pair = this.props.pair;
-		if (!this.props.pair && Object.keys(pairs).length) {
-			pair = Object.keys(pairs)[0];
+		let pair = '';
+		if (Object.keys(pairs).length) {
+			const { pair_base } = pairs[Object.keys(pairs)[0]];
+			pair = `${pair_base}-${STRINGS.FIAT_SHORTNAME_EN.toLowerCase()}`;
+		} else {
+			pair = this.props.pair;
 		}
 
 		return isMobile ? (
@@ -239,10 +267,28 @@ class AppBar extends Component {
 		) : (
 			<div className={classnames('app_bar justify-content-between', { 'no-borders': noBorders })}>
 				<div className="d-flex">
-					{this.renderIcon(isHome, theme)}
-					<div className="d-flex app_bar-quicktrade-container">
-						{!isHome
-							? <Link to={`/quick-trade/${pair}`}>
+					<div className="d-flex align-items-center justify-content-center h-100">
+						{this.renderIcon(isHome, theme)}
+					</div>
+					{!isHome && <PairTabs activePath={activePath} location={location} router={router} />}
+				</div>
+				{!isHome
+					? isLoggedIn()
+						? <div className="d-flex app-bar-account">
+							<div className="d-flex app_bar-quicktrade-container">
+									<Link to='/trade/add/tabs'>
+									<div
+										className={classnames(
+											'app_bar-quicktrade',
+											'd-flex',
+											{ "quick_trade-active": location.pathname === '/trade/add/tabs' })}>
+										<ReactSVG
+											path={ICONS.SIDEBAR_TRADING_ACTIVE}
+												wrapperClassName="quicktrade_icon mx-1" />
+										<div className="d-flex align-items-center">{STRINGS.PRO_TRADE}</div>
+									</div>
+								</Link>
+								<Link to={`/quick-trade/${pair}`}>
 									<div
 										className={classnames(
 											'app_bar-quicktrade',
@@ -252,21 +298,18 @@ class AppBar extends Component {
 											path={ICONS.QUICK_TRADE_TAB_ACTIVE}
 											wrapperClassName="quicktrade_icon" />
 										<div className="d-flex align-items-center">{STRINGS.QUICK_TRADE}</div>
-								</div>
-							</Link>
-							: null
-						}
-					</div>
-						{!isHome && <PairTabs activePath={activePath} location={location} router={router} />}
-				</div>
-				{!isHome
-					? isLoggedIn()
-						? <div className="d-flex app-bar-account" onClick={this.handleAccountMenu}>
-							<div className="app-bar-account-content mr-2">
+									</div>
+								</Link>
+							</div>
+							<div
+								className={classnames(
+									"app-bar-account-content",
+									{ "account-inactive": activePath !== 'account' && activePath !== 'wallet' }
+								)}
+								onClick={this.handleAccountMenu} >
 								<ReactSVG path={ICONS.SIDEBAR_ACCOUNT_INACTIVE} wrapperClassName="app-bar-account-icon" />
 								{!!totalPending && <div className="app-bar-account-notification">{totalPending}</div>}
 							</div>
-							<div>{STRINGS.ACCOUNT_TEXT}</div>
 						</div>
 						: null
 					: this.renderSplashActions(token, verifyingToken)
@@ -278,6 +321,7 @@ class AppBar extends Component {
 						verificationPending={verificationPending}
 						handleMenu={this.handleMenu}
 						logout={logout}
+						activePath={activePath}
 						closeAccountMenu={this.closeAccountMenu}
 					/>
 				}
@@ -295,9 +339,15 @@ const mapStateToProps = (state, ownProps) => {
 		pairs: state.app.pairs
 }};
 
+const mapDispatchToProps = (dispatch) => ({
+	getMe: bindActionCreators(getMe, dispatch),
+	setMe: bindActionCreators(setMe, dispatch),
+	setNotification: bindActionCreators(setNotification, dispatch)
+});
+
 AppBar.defaultProps = {
 	noBorders: false,
 	isHome: false
 };
 
-export default connect(mapStateToProps)(AppBar);
+export default connect(mapStateToProps, mapDispatchToProps)(AppBar);
