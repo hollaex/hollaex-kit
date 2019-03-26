@@ -319,6 +319,7 @@ class Trade extends Component {
 						pair={pair}
 						pairData={pairData}
 						pairs={pairs}
+						goToPair={this.goToPair}
 						userTrades={userTrades}
 						activeTheme={activeTheme}
 					/>

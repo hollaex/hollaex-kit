@@ -12,3 +12,28 @@
 	font-size: 2rem;
 	font-weight: bold;
 }
+.layout-mobile{
+	.with_arrow_trade:after  {	
+		border-left-color: $colors-main-black !important;
+		border-right-color: $colors-main-black !important;
+	}
+	.direction_ltr {
+		.with_arrow_trade:after {
+			@include css-triangle($dark-accordion-arrow-active, 'right', $accordion_arrow-size);
+			transform: rotate(90deg);
+		}
+		
+	}
+	.direction_rtl {
+		.with_arrow_trade:after {
+			transform: rotate(90deg);
+			@include css-triangle($dark-accordion-arrow-active, 'left', $accordion_arrow-size);
+		}
+	}
+	.dark-theme {
+		.with_arrow_trade:after {
+			border-left-color: $dark-font-main-text-color !important;
+			border-right-color: $dark-font-main-text-color !important;
+		}
+	}
+}

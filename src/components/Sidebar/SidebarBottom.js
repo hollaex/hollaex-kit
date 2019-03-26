@@ -22,9 +22,14 @@ export const SidebarBottom = ({ activePath = 'x', pair = '', isLogged }) => {
 					active={ activePath === 'account' }
 				/>
 				<SidebarButtom
+					path={`/quick-trade/${pair}`}
+					iconPath={activePath === 'quick-trade' ? ICONS.SIDEBAR_QUICK_TRADING_ACTIVE : ICONS.SIDEBAR_QUICK_TRADING_INACTIVE}
+					active={activePath === 'quick-trade'}
+				/>
+				<SidebarButtom
 					path={`/trade/${pair}`}
 					iconPath={ICONS.SIDEBAR_TRADING_ACTIVE}
-					active={activePath === 'trade' || activePath === 'quick-trade'}
+					active={activePath === 'trade'}
 				/>
 				<SidebarButtom
 					path={`/chat`}

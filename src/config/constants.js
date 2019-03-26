@@ -258,6 +258,12 @@ export const ICONS = {
 	SIDEBAR_TRADING_INACTIVE: `${
 		process.env.PUBLIC_URL
 	}/assets/images/trade-inactive.svg`,
+	SIDEBAR_QUICK_TRADING_ACTIVE: `${
+		process.env.PUBLIC_URL
+	}/assets/images/quick-trade-tab-selected-01.svg`,
+	SIDEBAR_QUICK_TRADING_INACTIVE: `${
+		process.env.PUBLIC_URL
+	}/assets/images/quick-trade-tab-01-01.svg`,
 	ARROW_TRANSFER_HISTORY_ACTIVE: `${
 		process.env.PUBLIC_URL
 	}/assets/images/arrow-trans-history-active.svg`,

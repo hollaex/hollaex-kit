@@ -36,6 +36,12 @@ $title-icon--height: 10rem;
 	}
 }
 
+.quick_trade-tab-icon {
+	fill: black !important;
+	@include size($title-icon--height);
+	margin: 0 auto;
+}
+
 .quick_trade-wrapper {
 	min-width: $wrapper--min-width;
 	max-width: $wrapper--max-width;

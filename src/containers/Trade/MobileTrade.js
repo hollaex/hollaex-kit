@@ -32,7 +32,7 @@ const MobileTrade = ({
 		)}
 	>
 		<TradeBlock
-			title={STRINGS.ORDER_ENTRY}
+			title={''}
 			className="p-relative order-book flex-column"
 			alignChildY={true}
 		>
