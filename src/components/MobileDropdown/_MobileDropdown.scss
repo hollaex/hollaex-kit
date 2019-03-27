@@ -11,6 +11,7 @@
 	color: $dark-sell;
 	font-size: 2rem;
 	font-weight: bold;
+	padding-right: 1rem;
 }
 .layout-mobile{
 	.with_arrow_trade:after  {	
@@ -19,15 +20,17 @@
 	}
 	.direction_ltr {
 		.with_arrow_trade:after {
-			@include css-triangle($dark-accordion-arrow-active, 'right', $accordion_arrow-size);
+			@include css-triangle($dark-accordion-arrow-active, 'right', $accordion_arrow-size, relative);
 			transform: rotate(90deg);
+			left: -1rem;
 		}
 		
 	}
 	.direction_rtl {
 		.with_arrow_trade:after {
 			transform: rotate(90deg);
-			@include css-triangle($dark-accordion-arrow-active, 'left', $accordion_arrow-size);
+			@include css-triangle($dark-accordion-arrow-active, 'left', $accordion_arrow-size, relative);
+			right: -1rem;
 		}
 	}
 	.dark-theme {
