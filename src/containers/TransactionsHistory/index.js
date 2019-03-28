@@ -19,6 +19,7 @@ import {
 	generateDepositsHeaders,
 	generateWithdrawalsHeaders
 } from './utils';
+import { RECORD_LIMIT } from './constants';
 import HistoryDisplay from './HistoryDisplay';
 
 import STRINGS from '../../config/localizedStrings';
@@ -31,7 +32,8 @@ class TransactionsHistory extends Component {
 		activeTab: 0,
 		dialogIsOpen: false,
 		amount: 0,
-		transactionId:0
+		transactionId:0,
+		jumpToPage: 0
 	};
 
 	componentDidMount() {
@@ -70,9 +72,18 @@ class TransactionsHistory extends Component {
 	};
 
 	requestData = (symbol) => {
-		// this.props.getUserTrades(symbol);
-		this.props.getUserDeposits(symbol);
-		this.props.getUserWithdrawals(symbol);
+		switch (this.state.activeTab) {
+			case 0:
+				this.props.getUserTrades(symbol, RECORD_LIMIT);
+				break;
+			case 1:
+				this.props.getUserDeposits(symbol);
+				break;
+			case 2:
+				this.props.getUserWithdrawals(symbol);
+				break;
+			default:
+		}
 	};
 
 	generateHeaders(symbol) {
@@ -90,7 +101,14 @@ class TransactionsHistory extends Component {
 	}
 
 	setActiveTab = (activeTab = 0) => {
-		this.setState({ activeTab });
+		const { symbol, trades, withdrawals, deposits } = this.props;
+		this.setState({ activeTab }, () => {
+			if ((trades.page === 1 && trades.fetched === false)
+				|| (withdrawals.page === 1 && withdrawals.fetched === false)
+				|| (deposits.page === 1 && deposits.fetched === false)) {
+					this.requestData(symbol);
+				}
+		});
 	};
 	withdrawalPopup = (id, amount) => {
 		if(id) {
@@ -106,6 +124,18 @@ class TransactionsHistory extends Component {
 	onClose = () => {
 		this.onCloseDialog()
 	}
+
+	handleNext = (pageCount, pageNumber) => {
+		const { trades, symbol } = this.props;
+		const pageTemp = (pageNumber % 2) === 0 ? 2 : 1;
+		const apiPageTemp = Math.floor(((pageNumber + 1) / 2));
+		if (RECORD_LIMIT === (pageCount * pageTemp)
+			&& apiPageTemp >= trades.page
+			&& trades.isRemaining) {
+				this.props.getUserTrades(symbol, RECORD_LIMIT, trades.page + 1);
+				this.setState({ jumpToPage: pageNumber });
+		}
+	};
 
 	renderActiveTab = () => {
 		const { trades, deposits, withdrawals, symbol } = this.props;
@@ -124,6 +154,8 @@ class TransactionsHistory extends Component {
 				props.data = trades;
 				props.filename = `${symbol}-transfers_history`;
 				props.withIcon = false;
+				props.handleNext = this.handleNext;
+				props.jumpToPage = this.state.jumpToPage;
 				break;
 			case 1:
 				props.title = STRINGS.TRANSACTION_HISTORY.TITLE_DEPOSITS;
@@ -262,7 +294,7 @@ const mapStateToProps = (store) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-	getUserTrades: (symbol) => dispatch(getUserTrades({ symbol })),
+	getUserTrades: (symbol, limit, page = 1) => dispatch(getUserTrades({ symbol, limit, page })),
 	getUserDeposits: (symbol) => dispatch(getUserDeposits({ symbol })),
 	getUserWithdrawals: (symbol) => dispatch(getUserWithdrawals({ symbol })),
 	withdrawalCancel: (transactionId) => dispatch(withdrawalCancel({ transactionId }))

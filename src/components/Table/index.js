@@ -16,7 +16,11 @@ class Table extends Component {
 
 	componentDidMount() {
 		// this.setPageSize(this.props.pageSize);
-		this.goToPage(0, this.props.data, this.props.headers, this.props.count);
+		if (this.props.jumpToPage) {
+			this.goToPage(this.props.jumpToPage, this.props.data, this.props.headers, this.props.count);
+		} else {
+			this.goToPage(0, this.props.data, this.props.headers, this.props.count);
+		}
 	}
 
 	componentWillReceiveProps(nextProps) {
@@ -49,6 +53,7 @@ class Table extends Component {
 	};
 
 	goToNextPage = () => {
+		this.props.handleNext(this.props.pageSize, this.state.page + 1);
 		this.goToPage(
 			this.state.page + 1,
 			this.props.data,
@@ -110,7 +115,9 @@ Table.defaultProps = {
 	displayPaginator: true,
 	showAll: false,
 	title: '',
-	cancelDelayData: []
+	cancelDelayData: [],
+	handleNext: () => {},
+	jumpToPage: 0
 };
 
 export default Table;

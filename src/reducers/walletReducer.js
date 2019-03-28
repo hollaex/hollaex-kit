@@ -5,6 +5,8 @@ const INITIAL_API_OBJECT = {
 	count: 0,
 	loading: false,
 	fetched: false,
+	page: 1,
+	isRemaining: false,
 	error: ''
 };
 
@@ -75,6 +77,8 @@ export default function reducer(state = INITIAL_STATE, { type, payload }) {
 					loading: false,
 					fetched: true,
 					count: payload.count,
+					page: payload.page,
+					isRemaining: payload.isRemaining,
 					data: joinData(state.trades.data, payload.data)
 				}
 			};
