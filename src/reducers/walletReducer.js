@@ -186,6 +186,7 @@ export default function reducer(state = INITIAL_STATE, { type, payload }) {
 					loading: false,
 					fetched: true,
 					count: payload.count,
+					isRemaining: payload.isRemaining,
 					data: joinData(state.deposits.data, payload.data)
 				}
 			};
@@ -221,6 +222,7 @@ export default function reducer(state = INITIAL_STATE, { type, payload }) {
 					loading: false,
 					fetched: true,
 					count: payload.count,
+					isRemaining: payload.isRemaining,
 					data: joinData(state.withdrawals.data, payload.data)
 				}
 			};

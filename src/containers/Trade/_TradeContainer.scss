@@ -94,7 +94,10 @@
 	.trade_orderbook-asks,
 	.trade_orderbook-bids {
 		min-height: unset !important;
-		height: calc(50% - 4rem);
+		// height: calc(50% - 6rem);
+	}
+	.trade_orderbook-wrapper {
+		height: 100% !important;
 	}
 	.trade_input-wrapper {
 		.trade_input-label {
