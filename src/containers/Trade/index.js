@@ -35,6 +35,7 @@ import PriceChart from './components/PriceChart';
 import MobileTrade from './MobileTrade';
 import MobileChart from './MobileChart';
 import MobileOrders from './MobileOrders';
+import TVChartContainer from './Chart'
 
 import { ActionNotification, Loader, MobileBarTabs } from '../../components';
 
@@ -403,14 +404,7 @@ class Trade extends Component {
 								>
 									{pair &&
 										chartHeight > 0 && (
-											<PriceChart
-												height={chartHeight}
-												width={chartWidth}
-												theme={activeTheme}
-												pair={pair}
-												pairBase={pairData.pair_base}
-												orderLimits={orderLimits}
-											/>
+											<TVChartContainer/>
 										)}
 								</TradeBlock>
 							</div>
