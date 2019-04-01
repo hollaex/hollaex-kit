@@ -66,6 +66,7 @@ class Trade extends Component {
 	}
 
 	setSymbol = (symbol = '') => {
+		this.props.getUserTrades(symbol);
 		this.props.changePair(symbol);
 		this.setState({ symbol: '' }, () => {
 			setTimeout(() => {

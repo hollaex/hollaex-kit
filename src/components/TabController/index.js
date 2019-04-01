@@ -2,7 +2,7 @@ import React from 'react';
 import classnames from 'classnames';
 import { IconTitle } from '../';
 
-const TabController = ({ tabs, activeTab, setActiveTab, title, titleIcon }) => (
+const TabController = ({ tabs, activeTab, setActiveTab, title, titleIcon, quicktrade }) => (
 	<div className="tab_controller-wrapper">
 		{(title || titleIcon) && (
 			<IconTitle text={title} iconPath={titleIcon} textType="title" useSvg={titleIcon.indexOf('.svg') > 0} />
@@ -14,6 +14,7 @@ const TabController = ({ tabs, activeTab, setActiveTab, title, titleIcon }) => (
 					className: classnames('tab_item', {
 						'tab_item-active': index === activeTab,
 						'tab_item-deactive': index !== activeTab,
+						'tab-trade': quicktrade === true,
 						pointer: setActiveTab
 					})
 				};

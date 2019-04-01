@@ -176,6 +176,7 @@ class QuickTrade extends Component {
 				>
 					<div className="apply_rtl">
 						<TabController
+							quicktrade={true}
 							activeTab={activeTab}
 							setActiveTab={this.setActiveTab}
 							tabs={tabs}

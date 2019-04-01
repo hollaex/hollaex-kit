@@ -37,7 +37,6 @@ $title-icon--height: 10rem;
 }
 
 .quick_trade-tab-icon {
-	fill: black !important;
 	@include size($title-icon--height);
 	margin: 0 auto;
 }
@@ -279,6 +278,10 @@ $title-icon--height: 10rem;
 			}
 		}
 
+		.quick_trade-tab-icon {
+			fill: #808083 !important;
+		}
+
 		.toogle_button-wrapper {
 			.toogle-content {
 				color: $dark-font-sub-text-1-color;
@@ -332,5 +335,11 @@ $title-icon--height: 10rem;
 		.quick-trade-4 {
 			fill: $dark-main-title-icon-color-2;
 		}
+	}
+}
+
+.layout-mobile {
+	.quick_trade-wrapper {
+		margin-top: -24px;
 	}
 }
