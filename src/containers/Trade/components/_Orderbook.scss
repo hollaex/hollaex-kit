@@ -159,6 +159,24 @@ $limit-bar-side--padding: 0.5rem;
 			}
 		}
 
+		.trade_asks-limit_bar {
+			.orderbook-limit_bar-wrapper {
+				color: $dark-sell;
+				.orderbook-limit_bar-line {
+					background-color:$dark-sell;
+				}
+			}
+		}
+
+		.trade_bids-limit_bar {
+			.orderbook-limit_bar-wrapper {
+				color: $dark-buy;
+				.orderbook-limit_bar-line {
+					background-color: $dark-buy;
+				}
+			}
+		}
+
 		.trade_orderbook-cell-amount {
 			color: $dark-font-sub-text-color;
 		}

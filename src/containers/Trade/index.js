@@ -458,8 +458,11 @@ const mapStateToProps = (store) => {
 		({ symbol }) => symbol === pair && count++ < 10
 	);
 	count = 0;
+	// const activeOrders = store.order.activeOrders.filter(
+	// 	({ symbol }) => symbol === pair && count++ < 10
+	// );
 	const activeOrders = store.order.activeOrders.filter(
-		({ symbol }) => symbol === pair && count++ < 10
+		({ symbol }) => symbol === pair
 	);
 	const fees = store.user.fees[pair];
 	const orderBookLevels = store.user.settings.interface.order_book_levels;

@@ -11,7 +11,7 @@
 	color: $dark-sell;
 	font-size: 2rem;
 	font-weight: bold;
-	padding-right: 1rem;
+	padding-right: 2rem;
 }
 .layout-mobile{
 	.with_arrow_trade:after  {	
@@ -20,9 +20,9 @@
 	}
 	.direction_ltr {
 		.with_arrow_trade:after {
-			@include css-triangle($dark-accordion-arrow-active, 'right', $accordion_arrow-size, relative);
+			@include css-triangle($dark-accordion-arrow-active, 'right', 0.9rem, relative);
 			transform: rotate(90deg);
-			left: -1rem;
+			left: -1.5rem;
 		}
 		
 	}
