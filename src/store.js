@@ -16,6 +16,5 @@ const middleware = applyMiddleware(...middlewares);
 
 export default createStore(
 	reducer,
-	window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
-	compose(middleware, autoRehydrate())
+	compose(middleware, autoRehydrate(), window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__())
 );
