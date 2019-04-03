@@ -88,11 +88,12 @@ class Orderbook extends Component {
 
 	render() {
 		const { asks, bids, pairData, pair } = this.props;
+		// const blockStyle = {};
 		const { dataBlockHeight } = this.state;
 		const blockStyle =
 			dataBlockHeight > 0
 				? {
-						maxHeight: dataBlockHeight,
+						// maxHeight: dataBlockHeight,
 						minHeight: dataBlockHeight
 					}
 				: {};

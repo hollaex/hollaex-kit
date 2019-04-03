@@ -30,6 +30,9 @@
 }
 
 .layout-mobile {
+	.fiat_negative_balance {
+		margin: auto
+	}
 	.quote-container {
 		background-color: transparent;
 		overflow-y: scroll;
@@ -39,5 +42,8 @@
 			min-height: $max-content-height-double-bar-mobile;
 			max-height: $max-content-height-double-bar-mobile;
 		}
+	}
+	.success-review{
+		margin: auto;
 	}
 }
