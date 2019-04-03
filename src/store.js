@@ -6,7 +6,7 @@ import { autoRehydrate } from 'redux-persist';
 import { ENV } from './config/constants';
 import reducer from './reducers/reducer';
 
-const middlewares = [promise(), thunk];
+const middlewares = [promise, thunk];
 
 if (ENV === 'development') {
 	middlewares.push(logger);
