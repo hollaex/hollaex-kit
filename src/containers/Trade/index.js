@@ -304,6 +304,8 @@ class Trade extends Component {
 						onSubmitOrder={this.onSubmitOrder}
 						goToPair={this.goToPair}
 						pair={pair}
+						priceInitialized={priceInitialized}
+						sizeInitialized={sizeInitialized}
 					/>
 				)
 			},
