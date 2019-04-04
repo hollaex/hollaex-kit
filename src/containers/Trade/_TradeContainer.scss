@@ -96,7 +96,8 @@
 	}
 	.trade_orderbook-asks,
 	.trade_orderbook-bids {
-		min-height: unset !important;
+		// min-height: unset !important;
+		min-height: unset;
 		// height: calc(50% - 6rem);
 	}
 	.trade_orderbook-wrapper {
