@@ -79,8 +79,8 @@ class AddTabList extends Component {
                     </div>
                     {Object.keys(tabMenu).length
                         ? Object.keys(tabMenu).map((pair, index) => {
-                            let menu = tabMenu[pair];
-                            let ticker = tickers[pair];
+                            let menu = tabMenu[pair] || {};
+                            let ticker = tickers[pair] || {};
                             let { formatToCurrency } = CURRENCIES[menu.pair_base || BASE_CURRENCY];
                             const priceDifference = (ticker.close || 0) - (ticker.open || 0);
                             const tickerPercent = ((priceDifference / ticker.open) * 100);

@@ -404,7 +404,7 @@ class Trade extends Component {
 								>
 									{pair &&
 										chartHeight > 0 && (
-											<TVChartContainer/>
+											<TVChartContainer activeTheme={activeTheme} symbol={symbol} />
 										)}
 								</TradeBlock>
 							</div>
