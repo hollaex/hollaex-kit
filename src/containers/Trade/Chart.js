@@ -14,6 +14,7 @@ function getThemeOverrides(theme = 'white') {
 			"paneProperties.background": "#ffffff",
 			"paneProperties.vertGridProperties.color": "#E6ECEF",
 			"paneProperties.horzGridProperties.color": "#E6ECEF",
+			// "paneProperties.crossHairProperties.color": "#1f212a",
 			"symbolWatermarkProperties.transparency": 90,
 			"symbolWatermarkProperties.color": '#1f212a',
 			"scalesProperties.textColor": "#292b2c",
@@ -48,10 +49,11 @@ function getThemeOverrides(theme = 'white') {
 			"paneProperties.background": "#1F212A",
 			"paneProperties.vertGridProperties.color": "#34416D",
 			"paneProperties.horzGridProperties.color": "#0C1D51",
+			// "paneProperties.crossHairProperties.color": "#aaaaaa",
 			"symbolWatermarkProperties.transparency": 90,
 			"symbolWatermarkProperties.color": '#aaaaaa',
 			"scalesProperties.textColor": "#AAA",
-			"scalesProperties.backgroundColor": "#ffffff",
+			"scalesProperties.backgroundColor": "#000000",
 
 			// Candles-property
 			"mainSeriesProperties.candleStyle.upColor": "#6D9EEB",
@@ -94,6 +96,18 @@ class TVChartContainer extends React.PureComponent {
 		fullscreen: false,
 		autosize: true,
 		studiesOverrides: {},
+		time_frames: [
+			{ text: "1D", resolution: "1" },
+			{ text: "5D", resolution: "5" },
+			{ text: "3M", resolution: "60" },
+			{ text: "6M", resolution: "120" },
+			{ text: "1m", resolution: "30" },
+			// { text: "YTD", resolution: "YTD" },
+			{ text: "1Y", resolution: "D" },
+			{ text: "3Y", resolution: "D" },
+			{ text: "5Y", resolution: "W" },
+			// { text: "ALL", resolution: "ALL" },
+		],
 	};
 
 	tvWidget = null;
@@ -117,9 +131,23 @@ class TVChartContainer extends React.PureComponent {
 				'border_around_the_chart',
 				'header_symbol_search',
 				'header_compare',
-				'header_settings'
+				'header_settings',
+				'control_bar',
+				'header_screenshot'
 			],
-			enabled_features: ['items_favoriting'],
+			enabled_features: ['items_favoriting', 'support_multicharts'],
+			time_frames: [
+				{ text: "1D", resolution: "1D" },
+				{ text: "5D", resolution: "1W" },
+				{ text: "1M", resolution: "1M" },
+				{ text: "3M", resolution: "60" },
+				{ text: "6M", resolution: "120" },
+				// { text: "YTD", resolution: "YTD" },
+				{ text: "1Y", resolution: "D" },
+				{ text: "3Y", resolution: "D" },
+				{ text: "5Y", resolution: "W" },
+				// { text: "ALL", resolution: "ALL" },
+			],
 			charts_storage_url: this.props.chartsStorageUrl,
 			charts_storage_api_version: this.props.chartsStorageApiVersion,
 			client_id: this.props.clientId,
@@ -133,6 +161,7 @@ class TVChartContainer extends React.PureComponent {
 			loading_screen: activeTheme === 'white'
 				? { backgroundColor: "#ffffff" }
 				: { backgroundColor: "#1f212a" },
+			custom_css_url: `${process.env.PUBLIC_URL}/css/chart.css`,
 			overrides: getThemeOverrides(activeTheme)
 		};
 
@@ -140,26 +169,18 @@ class TVChartContainer extends React.PureComponent {
 		this.tvWidget = tvWidget;
 
 		tvWidget.onChartReady(() => {
-			// const button = tvWidget.createButton()
-			// 	.attr('title', 'Click to show a notification popup')
-			// 	.addClass('apply-common-tooltip')
-			// 	.on('click', () => tvWidget.showNoticeDialog({
-			// 		title: 'Notification',
-			// 		body: 'TradingView Charting Library API works correctly',
-			// 		callback: () => {
-			// 			console.log('Noticed!');
-			// 		},
-			// 	}));
-			tvWidget.addCustomCSSFile(`${process.env.PUBLIC_URL}/css/chart.css`)
+			const button = tvWidget.createButton({ 'align': 'right' })
+				.attr('title', 'Take instant snapshot of your chart. No more paint or other editors to save screenshots - simply click the button and copy the link of the picture.')
+				.addClass('apply-common-tooltip screen-button')
+				.on('click', () => tvWidget.takeScreenshot());
 			tvWidget.applyOverrides(getThemeOverrides(activeTheme))
 			if (activeTheme === 'white') {
 				tvWidget.changeTheme('light')
 			} else {
 				tvWidget.changeTheme('dark')
-				tvWidget.applyOverrides(getThemeOverrides(activeTheme))
 			}
-
-			// button[0].innerHTML = 'Check API';
+			
+			button[0].innerHTML = `<div class='screen-container'><div class='screen-content'>Share Screenshot</div> <div><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 21 17" width="21" height="17"><g fill="none" stroke="currentColor"><path d="M2.5 2.5h3.691a.5.5 0 0 0 .447-.276l.586-1.171A1 1 0 0 1 8.118.5h4.764a1 1 0 0 1 .894.553l.586 1.17a.5.5 0 0 0 .447.277H18.5a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-16a2 2 0 0 1-2-2v-10a2 2 0 0 1 2-2z"></path><circle cx="10.5" cy="9.5" r="4"></circle></g></svg></div></div>`;
 		});
 	}
 
@@ -171,7 +192,6 @@ class TVChartContainer extends React.PureComponent {
 			} else {
 				this.tvWidget.changeTheme('dark')
 				this.tvWidget.applyOverrides(getThemeOverrides(nextProps.activeTheme))
-				this.tvWidget.addCustomCSSFile(`${process.env.PUBLIC_URL}/css/chart.css`)
 			}
 		}
 	}
