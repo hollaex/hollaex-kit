@@ -57,6 +57,20 @@
 			@include size(1rem);
 		}
 	}
+		.cancel-cross-2 {
+			fill:none;
+			stroke:$colors-notifications-blue;
+		}
+		.trans-history-1,
+		.trans-history-2,
+		.trans-history-3,
+		.cancel-cross-1	{
+			fill: $colors-notifications-blue
+		}
+		.trans-history-4,
+		.cancel-cross-3 {
+			stroke: $colors-notifications-blue;
+		}
 }
 
 .direction_ltr {
@@ -177,4 +191,17 @@
 			fill: $dark-font-sub-text-color !important;
 		}
 	}
+}
+
+.layout-mobile { 
+	.dark-theme {
+		.action_notification-text {
+			color: $dark-link;
+		}
+	}
+	.action_notification-text {
+		color: $colors-notifications-blue;
+	}
+	
+
 }
