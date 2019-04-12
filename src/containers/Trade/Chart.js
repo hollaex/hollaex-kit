@@ -117,6 +117,7 @@ class TVChartContainer extends React.PureComponent {
 		const widgetOptions = {
 			symbol: this.props.symbol,
 			// BEWARE: no trailing slash is expected in feed URL
+			theme: activeTheme === 'white' ? 'light' : 'dark',
 			toolbar_bg: activeTheme === 'white' ? '#ffffff' : '#1f212a',
 			datafeed: new window.Datafeeds.UDFCompatibleDatafeed(this.props.datafeedUrl),
 			interval: this.props.interval,
@@ -124,6 +125,8 @@ class TVChartContainer extends React.PureComponent {
 			library_path: this.props.libraryPath,
 
 			locale: getLanguageFromURL() || 'en',
+			withdateranges: true,
+			range: 'ytd',
 			disabled_features: [
 				'use_localstorage_for_settings',
 				'edit_buttons_in_legend',
