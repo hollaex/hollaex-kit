@@ -8,6 +8,7 @@ import mathjs from 'mathjs';
 import Review from './OrderEntryReview';
 import Form, { FORM_NAME } from './OrderEntryForm';
 import {
+	toFixed,
 	formatNumber,
 	formatFiatAmount,
 	roundNumber,
@@ -92,12 +93,12 @@ class OrderEntry extends Component {
 	};
 
 	setMax = () => {
-		const { side, balance, pair_base, min_size } = this.props;
+		const { side, balance, pair_base, min_size , pair_2} = this.props;
 		const size = parseFloat(this.props.size || 0);
 		const price = parseFloat(this.props.price || 0);
 		let maxSize = balance[`${pair_base}_available`];
 		if (side === 'buy') {
-			maxSize = mathjs.divide(balance[`fiat_available`], price);
+			maxSize = mathjs.divide(balance[`${pair_2}_available`], price);
 		}
 		if (maxSize !== size) {
 			this.props.change(FORM_NAME, 'size', roundNumber(maxSize, getDecimals(min_size)));
@@ -305,7 +306,18 @@ class OrderEntry extends Component {
 					maxValue(max_size)
 				],
 				currency: STRINGS[`${pair.toUpperCase()}_SHORTNAME`],
-				initializeEffect: sizeInitialized
+				initializeEffect: sizeInitialized,
+				format: (value = '') => {
+					let decimal = getDecimals(min_size);
+					let decValue = toFixed(value);
+					let valueDecimal = getDecimals(decValue);
+
+					let result = value;
+					if (decimal < valueDecimal) {
+						result = decValue.toString().substring(0, (decValue.toString().length - (valueDecimal - decimal)));
+					}
+					return result;
+				}
 			},
 			price: {
 				name: 'price',

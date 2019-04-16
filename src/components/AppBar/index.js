@@ -260,7 +260,7 @@ class AppBar extends Component {
 				)}
 			>
 				<Link to="/">
-					<ReactSVG path={ICONS.LOGO_BLACK} wrapperClassName="homeicon-svg" />
+					<ReactSVG path={ICONS.LOGO_GREY} wrapperClassName="homeicon-svg" />
 				</Link>
 				{isHome && this.renderSplashActions(token, verifyingToken)}
 			</MobileBarWrapper>
