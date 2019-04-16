@@ -66,6 +66,7 @@ class Trade extends Component {
 	}
 
 	setSymbol = (symbol = '') => {
+		this.props.getUserTrades(symbol);
 		this.props.changePair(symbol);
 		this.setState({ symbol: '' }, () => {
 			setTimeout(() => {
@@ -303,6 +304,8 @@ class Trade extends Component {
 						onSubmitOrder={this.onSubmitOrder}
 						goToPair={this.goToPair}
 						pair={pair}
+						priceInitialized={priceInitialized}
+						sizeInitialized={sizeInitialized}
 					/>
 				)
 			},
@@ -319,6 +322,7 @@ class Trade extends Component {
 						pair={pair}
 						pairData={pairData}
 						pairs={pairs}
+						goToPair={this.goToPair}
 						userTrades={userTrades}
 						activeTheme={activeTheme}
 					/>
@@ -456,8 +460,11 @@ const mapStateToProps = (store) => {
 		({ symbol }) => symbol === pair && count++ < 10
 	);
 	count = 0;
+	// const activeOrders = store.order.activeOrders.filter(
+	// 	({ symbol }) => symbol === pair && count++ < 10
+	// );
 	const activeOrders = store.order.activeOrders.filter(
-		({ symbol }) => symbol === pair && count++ < 10
+		({ symbol }) => symbol === pair
 	);
 	const fees = store.user.fees[pair];
 	const orderBookLevels = store.user.settings.interface.order_book_levels;

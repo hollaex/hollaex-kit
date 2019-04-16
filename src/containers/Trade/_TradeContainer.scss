@@ -7,10 +7,13 @@
 	.trade-col_main_wrapper {
 		.trade-main_content {
 			flex: 6;
+			min-height: 25vh;
+			max-height: 60vh;
 		}
 
 		.trade-tabs_content {
 			flex: 3;
+			height: 30vh;
 
 			> * {
 				flex: 1 !important;
@@ -74,7 +77,6 @@
 	}
 	.trade_orderbook-headers {
 		border-bottom: none !important;
-		border-top: 0.1rem solid black;
 		font-size: $regular--font-size;
 	}
 	.trade_orderbook-asks,
@@ -93,8 +95,12 @@
 	}
 	.trade_orderbook-asks,
 	.trade_orderbook-bids {
-		min-height: unset !important;
-		height: calc(50% - 4rem);
+		// min-height: unset !important;
+		min-height: unset;
+		// height: calc(50% - 6rem);
+	}
+	.trade_orderbook-wrapper {
+		height: 100% !important;
 	}
 	.trade_input-wrapper {
 		.trade_input-label {

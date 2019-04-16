@@ -420,6 +420,17 @@
     }
 }
 
+@media (max-width: 920px) { 
+    .summary-container {
+        .summary-block_wrapper .summary-block-title {
+            font-size: 2rem;
+        }
+        .summary-content-txt {
+            font-size: 1.2rem !important;
+        }
+
+    }
+}
 @media (min-width: 1920px) {
     .summary-container {
         width: $content-display-width !important;

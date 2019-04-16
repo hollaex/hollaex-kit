@@ -12,7 +12,7 @@ import {
 import STRINGS from '../../config/localizedStrings';
 
 const HistoryDisplay = (props) => {
-	const { title, headers, data: { data, count, loading }, filename, withIcon } = props;
+	const { title, headers, data: { data, count, loading }, filename, withIcon, handleNext, jumpToPage } = props;
 
 	return (
 		<div className="history_block-wrapper">
@@ -40,6 +40,8 @@ const HistoryDisplay = (props) => {
 					withIcon={withIcon}
 					pageSize={TABLE_PAGE_SIZE}
 					title={title}
+					handleNext={handleNext}
+					jumpToPage={jumpToPage}
 				/>
 			)}
 		</div>

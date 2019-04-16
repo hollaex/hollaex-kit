@@ -292,7 +292,7 @@ class Container extends Component {
 
 		privateSocket.on('trades', ({ action, data }) => {
 			// console.log('trades', action, data);
-			this.props.addUserTrades(data);
+			// this.props.addUserTrades(data);
 		});
 
 		privateSocket.on('wallet', ({ action, balance }) => {

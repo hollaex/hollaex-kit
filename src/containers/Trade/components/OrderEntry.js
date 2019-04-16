@@ -210,7 +210,7 @@ class OrderEntry extends Component {
 			openCheckOrder,
 			onRiskyTrade,
 			submit,
-			settings: { risk = {} }
+			settings: { risk = {}, notification = {} }
 		} = this.props;
 		const orderTotal = mathjs.add(
 			mathjs.fraction(this.state.orderPrice),
@@ -233,8 +233,7 @@ class OrderEntry extends Component {
 		} else if (price) {
 			order.price = formatNumber(price, getDecimals(tick_size))
 		}
-
-		if (showPopup) {
+		if (notification.popup_order_confirmation) {
 			openCheckOrder(order, () => {
 				if (risk.popup_warning && riskyPrice < orderPriceInFiat) {
 					order['order_portfolio_percentage'] = risk.order_portfolio_percentage

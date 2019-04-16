@@ -75,7 +75,7 @@ class TradeBlockTabs extends Component {
 		const { maxHeight } = this.props;
 
 		return (
-			<div ref={this.setWrapperRef} className="d-flex">
+			<div ref={this.setWrapperRef} className="d-flex h-100">
 				<EventListener target="window" onResize={this.handleResize} />
 				{this.renderContent(maxHeight)}
 			</div>
@@ -84,7 +84,7 @@ class TradeBlockTabs extends Component {
 }
 
 TradeBlockTabs.defaultProps = {
-	maxHeight: 400,
+	maxHeight: 300,
 	overflowY: false
 };
 export default TradeBlockTabs;
