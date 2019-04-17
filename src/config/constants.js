@@ -284,7 +284,7 @@ export const ICONS = {
 	}/assets/images/api-key-generate-dark.svg`, 
 	TOKEN_CREATED: `${process.env.PUBLIC_URL}/assets/images/api-key-created.svg`,
 	TOKEN_CREATED_DARK: `${process.env.PUBLIC_URL}/assets/images/api-key-created-dark.svg`,
-	CHECK_ORDER: `${process.env.PUBLIC_URL}/assets/images/check-order.svg`,
+	CHECK_ORDER: `${process.env.PUBLIC_URL}/assets/images/check-order-popup-01.svg`,
 	ITEM_OPTIONS: `${process.env.PUBLIC_URL}/assets/images/item-options.svg`,
 	DOTTED_GRIP: `${
 		process.env.PUBLIC_URL

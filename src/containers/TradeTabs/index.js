@@ -154,8 +154,8 @@ class AddTradeTab extends Component {
                             let { formatToCurrency } = CURRENCIES[pair.pair_base || BASE_CURRENCY];
                             let ticker = tickers[key] || {};
                             const priceDifference = (ticker.close || 0) - (ticker.open || 0);
-                            const tickerPercent = ((priceDifference / ticker.open) * 100);
-                            const priceDifferencePercent =  tickerPercent==='NaN' ? formatPercentage(tickerPercent) : formatPercentage(0);;
+                            const tickerPercent = priceDifference === 0 ? 0 : ((priceDifference / ticker.open) * 100);
+                            const priceDifferencePercent = isNaN(tickerPercent) ? formatPercentage(0) : formatPercentage(tickerPercent);
                             return (
                                 <div
                                     key={index}

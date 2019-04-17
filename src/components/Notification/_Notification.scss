@@ -150,6 +150,12 @@ $logout--size-difference: 3rem;
 }
 
 .dark-theme {
+	.new-order-notification {
+		svg {
+			fill: $dark-icon-color;
+		}
+
+	}
 	.notification-wrapper {
 		color: $dark-font-sub-text-color;
 

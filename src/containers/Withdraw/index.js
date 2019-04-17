@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { formValueSelector, change } from 'redux-form';
 import { isMobile } from 'react-device-detect';
 
-import { Loader, WarningVerification } from '../../components';
+import { Loader, WarningVerification, MobileBarBack } from '../../components';
 import {
 	ICONS,
 	MIN_VERIFICATION_LEVEL_TO_WITHDRAW,
@@ -173,6 +173,10 @@ class Withdraw extends Component {
 		}
 	};
 
+	onGoBack = () => {
+		this.props.router.push('/wallet');
+	};
+
 	render() {
 		const {
 			balance,
@@ -215,25 +219,29 @@ class Withdraw extends Component {
 		};
 
 		return (
-			<div className="presentation_container apply_rtl">
-				{!isMobile && renderTitleSection(currency, 'withdraw', ICONS.WITHDRAW)}
-				{verification_level >= MIN_VERIFICATION_LEVEL_TO_WITHDRAW &&
-				verification_level <= MAX_VERIFICATION_LEVEL_TO_WITHDRAW ? (
-					<div className={classnames('inner_container', 'with_border_top')}>
-						{renderInformation(
-							currency,
-							balance,
-							openContactForm,
-							generateFiatInformation
-						)}
-						<WithdrawCryptocurrency {...formProps} />
-						{renderExtraInformation(currency, bank_account)}
-					</div>
-				) : (
-					<div className={classnames('inner_container', 'with_border_top')}>
-						<WarningVerification level={verification_level} />
-					</div>
-				)}
+			<div>
+				{isMobile && <MobileBarBack onBackClick={this.onGoBack}>
+				</MobileBarBack> }
+				<div className="presentation_container apply_rtl">
+					{!isMobile && renderTitleSection(currency, 'withdraw', ICONS.WITHDRAW)}
+					{verification_level >= MIN_VERIFICATION_LEVEL_TO_WITHDRAW &&
+					verification_level <= MAX_VERIFICATION_LEVEL_TO_WITHDRAW ? (
+						<div className={classnames('inner_container', 'with_border_top')}>
+							{renderInformation(
+								currency,
+								balance,
+								openContactForm,
+								generateFiatInformation
+							)}
+							<WithdrawCryptocurrency {...formProps} />
+							{renderExtraInformation(currency, bank_account)}
+						</div>
+					) : (
+						<div className={classnames('inner_container', 'with_border_top')}>
+							<WarningVerification level={verification_level} />
+						</div>
+					)}
+				</div>
 			</div>
 		);
 	}

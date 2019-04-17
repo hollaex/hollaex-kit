@@ -12,7 +12,7 @@ import { getCurrencyFromName } from '../../utils/currency';
 
 import { openContactForm, setSnackNotification } from '../../actions/appActions';
 
-import { Button } from '../../components';
+import { Button, MobileBarBack } from '../../components';
 import { renderInformation, renderTitleSection } from '../Wallet/components';
 
 import { generateFiatInformation, renderContent } from './utils';
@@ -84,6 +84,10 @@ class Deposit extends Component {
 		});
 	};
 
+	onGoBack = () => {
+		this.props.router.push('/wallet');
+	};
+
 	render() {
 		const { id, crypto_wallet, openContactForm, balance } = this.props;
 		const { currency, checked, copied } = this.state;
@@ -93,36 +97,40 @@ class Deposit extends Component {
 		}
 
 		return (
-			<div className="presentation_container  apply_rtl">
-				{!isMobile &&
-					renderTitleSection(currency, 'deposit', ICONS.DEPOSIT_BITCOIN)}
-				<div
-					className={classnames(
-						'inner_container',
-						'with_border_top',
-						'with_border_bottom'
-					)}
-				>
-					{renderInformation(
-						currency,
-						balance,
-						openContactForm,
-						generateFiatInformation,
-						'deposit'
-					)}
-					{renderContent(currency, crypto_wallet, this.onCopy)}
-					{isMobile && (
-						<CopyToClipboard
-							text={
-								crypto_wallet[`${CURRENCIES[currency].fullName.toLowerCase()}`]
-							}
-							onCopy={() => this.setState({ copied: true })}
-						>
-							<Button
-								label={copied ? STRINGS.SUCCESFUL_COPY : STRINGS.COPY_ADDRESS}
-							/>
-						</CopyToClipboard>
-					)}
+			<div>
+				{isMobile && <MobileBarBack onBackClick={this.onGoBack}>
+				</MobileBarBack> }
+				<div className="presentation_container  apply_rtl">
+					{!isMobile &&
+						renderTitleSection(currency, 'deposit', ICONS.DEPOSIT_BITCOIN)}
+					<div
+						className={classnames(
+							'inner_container',
+							'with_border_top',
+							'with_border_bottom'
+						)}
+					>
+						{renderInformation(
+							currency,
+							balance,
+							openContactForm,
+							generateFiatInformation,
+							'deposit'
+						)}
+						{renderContent(currency, crypto_wallet, this.onCopy)}
+						{isMobile && (
+							<CopyToClipboard
+								text={
+									crypto_wallet[`${CURRENCIES[currency].fullName.toLowerCase()}`]
+								}
+								onCopy={() => this.setState({ copied: true })}
+							>
+								<Button
+									label={copied ? STRINGS.SUCCESFUL_COPY : STRINGS.COPY_ADDRESS}
+								/>
+							</CopyToClipboard>
+						)}
+					</div>
 				</div>
 			</div>
 		);

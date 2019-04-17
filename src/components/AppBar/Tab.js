@@ -10,8 +10,8 @@ import { formatPercentage, formatAverage } from '../../utils/currency';
 const Tab = ({ pair = {}, tab, ticker = {}, activePairTab, onTabClick, onTabChange, items, selectedToOpen, selectedToRemove, ...rest }) => {
     const { formatToCurrency } = CURRENCIES[pair.pair_base || BASE_CURRENCY];
     const priceDifference = (ticker.close || 0) - (ticker.open || 0);
-    const tickerPercent = ((priceDifference / ticker.open) * 100);
-    const priceDifferencePercent = tickerPercent==='NaN' ? formatPercentage(0) : formatPercentage(tickerPercent);
+    const tickerPercent = priceDifference === 0 ? 0 : ((priceDifference / ticker.open) * 100);
+    const priceDifferencePercent = isNaN(tickerPercent) ? formatPercentage(0) : formatPercentage(tickerPercent);
     const pairBase = pair.pair_base || '';
     const pair2 = pair.pair_2 || '';
     return (
