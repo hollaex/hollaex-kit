@@ -14,7 +14,10 @@ if (ENV === 'development') {
 
 const middleware = applyMiddleware(...middlewares);
 
+const composeEnhancers =
+	window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+
 export default createStore(
 	reducer,
-	compose(middleware, autoRehydrate(), window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__())
+	composeEnhancers(middleware, autoRehydrate())
 );
