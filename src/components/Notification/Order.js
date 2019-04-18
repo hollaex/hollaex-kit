@@ -31,8 +31,8 @@ const getTitleAndIcon = (type, { side, filled }) => {
 		} else {
 			data.icon =
 				side === SIDE_BUY
-					? ICONS.NOTIFICATION_ORDER_LIMIT_BUY_FILLED_PART
-					: ICONS.NOTIFICATION_ORDER_LIMIT_SELL_FILLED_PART;
+					? ICONS.TRADE_PARTIALLY_FILLED
+					: ICONS.TRADE_PARTIALLY_FILLED;
 			data.title = STRINGS.formatString(
 				STRINGS.ORDER_TITLE_PARTIALLY_FILLED,
 				<span className="text-capitalize">{STRINGS.SIDES_VALUES[side]}</span>

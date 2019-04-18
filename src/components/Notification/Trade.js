@@ -19,14 +19,14 @@ const getTitleAndIcon = (side, type) => {
 	};
 
 	if (side === SIDE_BUY) {
-		data.icon = ICONS.NOTIFICATION_ORDER_MARKET_BUY_FILLED;
+		data.icon = ICONS.TRADE_FILLED_SUCESSFUL;
 		data.title = STRINGS.formatString(
 			STRINGS.ORDER_TITLE_TRADE_COMPLETE,
 			<span className="text-capitalize">{STRINGS.TYPES_VALUES[type]}</span>,
 			STRINGS.SIDES_VALUES[SIDE_BUY]
 		);
 	} else if (side === SIDE_SELL) {
-		data.icon = ICONS.NOTIFICATION_ORDER_MARKET_SELL_FILLED;
+		data.icon = ICONS.TRADE_FILLED_SUCESSFUL;
 		data.title = STRINGS.formatString(
 			STRINGS.ORDER_TITLE_TRADE_COMPLETE,
 			<span className="text-capitalize">{STRINGS.TYPES_VALUES[type]}</span>,

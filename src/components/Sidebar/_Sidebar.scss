@@ -65,13 +65,12 @@ $row--size: calc(#{$row--height} - #{$sidebar-sections-padding});
 }
 
 .sidebar-bottom-wrapper {
-	min-height: $bottom-bar--height;
-	max-height: $bottom-bar--height;
+	min-height: $bottom_bar--height;
+	max-height: $bottom_bar--height;
 	background-color: $bottom-bar--background;
 	color: white;
 	width: 100%;
-	padding: 0.5rem;
-
+    padding: 0.5rem 0.5rem 0.8rem 0.5rem;
 	.sidebar-bottom-button {
 		flex: 1;
 		&.active {
@@ -83,12 +82,21 @@ $row--size: calc(#{$row--height} - #{$sidebar-sections-padding});
 				}
 			}
 		}
+		.bottom-bar-text {
+			font-size: 12px;
+			text-align: center;
+			margin-top: -17PX;
+			font-weight: bold;
+			color: $dark-icon-color
+		}
+		.bottom-text-acttive {
+			color: black !important;
+		}
 		.sidebar-bottom-icon {
 			height: 100%;
 			> div {
 				display: flex;
 				justify-content: center;
-				align-items: center;
 				height: 100%;
 			}
 			svg {

@@ -150,6 +150,12 @@ $logout--size-difference: 3rem;
 }
 
 .dark-theme {
+	.partial-fill {
+		fill: $dark-icon-color;
+	}
+	.limit-trade-tick {
+		fill: $dark-icon-color;
+	}
 	.new-order-notification {
 		svg {
 			fill: $dark-icon-color;
