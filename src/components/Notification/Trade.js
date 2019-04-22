@@ -15,7 +15,8 @@ const SIDE_SELL = 'sell';
 const getTitleAndIcon = (side, type) => {
 	const data = {
 		icon: '',
-		title: ''
+		title: '',
+		onBack: true,
 	};
 
 	if (side === SIDE_BUY) {
@@ -95,7 +96,7 @@ const TradeDisplay = ({ side, data, pairs, ...rest }) => {
 	);
 };
 
-const TradeNotification = ({ data: { order, data }, pairs }) => {
+const TradeNotification = ({ onClose, data: { order, data }, pairs }) => {
 	const { side, type } = order;
 	const notificationProps = getTitleAndIcon(side, type);
 
@@ -104,6 +105,7 @@ const TradeNotification = ({ data: { order, data }, pairs }) => {
 			{...notificationProps}
 			className="trade-notification"
 			compressOnMobile={true}
+			onClose={onClose}
 		>
 			<TradeDisplay side={side} data={data} pairs={pairs} />
 		</NotificationWraper>

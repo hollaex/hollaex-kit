@@ -300,7 +300,7 @@ export const ICONS = {
 	TAB_VERIFY: `${process.env.PUBLIC_URL}/assets/images/tab-verify.svg`,
 	TAB_SETTING: `${process.env.PUBLIC_URL}/assets/images/tab-setting.svg`,
 	TAB_API: `${process.env.PUBLIC_URL}/assets/images/tab-api.svg`,
-	TRADE_FILLED_SUCESSFUL:`${process.env.PUBLIC_URL}/assets/images/limit_trade_sucess.svg`,
+	TRADE_FILLED_SUCESSFUL:`${process.env.PUBLIC_URL}/assets/images/Orderbook scrolling-01.svg`,
 	TRADE_PARTIALLY_FILLED:`${process.env.PUBLIC_URL}/assets/images/part-fill.svg`,
 	TAB_SIGNOUT: `${process.env.PUBLIC_URL}/assets/images/signout.svg`,
 	DOUBLE_ARROW: `${process.env.PUBLIC_URL}/assets/images/double-arrow.svg`,

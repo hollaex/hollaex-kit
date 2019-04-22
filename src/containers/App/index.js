@@ -751,6 +751,8 @@ class Container extends Component {
 										activeNotification.type === CONTACT_FORM ||
 										activeNotification.type === HELPFUL_RESOURCES_FORM ||
 										activeNotification.type === NOTIFICATIONS.NEW_ORDER ||
+										(activeNotification.type === NOTIFICATIONS.TRADES && !isMobile) ||
+										(activeNotification.type === NOTIFICATIONS.ORDERS && !isMobile) ||
 										activeNotification.type === NOTIFICATIONS.ERROR
 									)
 								}

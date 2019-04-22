@@ -192,7 +192,7 @@ class OrderEntry extends Component {
 			if (values.type === 'market') {
 				playBackgroundAudioNotification('orderbook_market_order');
 			}
-			this.setState({ initialValues: values });
+			// this.setState({ initialValues: values });
 		});
 	};
 
@@ -307,7 +307,7 @@ class OrderEntry extends Component {
 				],
 				currency: STRINGS[`${pair.toUpperCase()}_SHORTNAME`],
 				initializeEffect: sizeInitialized,
-				format: (value = '') => {
+				parse: (value = '') => {
 					let decimal = getDecimals(min_size);
 					let decValue = toFixed(value);
 					let valueDecimal = getDecimals(decValue);
