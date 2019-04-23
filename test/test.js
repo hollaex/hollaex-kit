@@ -117,6 +117,18 @@ describe('Private functions', function() {
 		});
 	});
 
+	describe('#getWithdrawalFee()', function() {
+		it('Get the withdrawal fee for btc', function(done) {
+			client.getWithdrawalFee('btc').then((result) => {
+				const data = JSON.parse(result);
+				expect(data).to.be.an('object');
+				expect(data).not.be.empty;
+				expect(data.fee).to.be.an('number');
+				done();
+			});
+		});
+	});
+
 	describe('#getUserTrade()', function() {
 		it('Get the user trade output', function(done) {
 			client.getUserTrade().then((result) => {

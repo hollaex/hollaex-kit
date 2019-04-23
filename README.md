@@ -43,6 +43,8 @@ client
 | `getBalance`     |                                                                                  | User's wallet balance                                                      |
 | `getDeposit`     |                                                                                  | User's list of all deposits                                                |
 | `getWithdrawal`  |                                                                                  | User's list of all withdrawals                                             |
+| `getWithdrawalFee`  | currency e.g. `btc`                                                                               | Withdrawal/transaction fee for a certain currency                          |
+| `requestWithdrawal` | currency, amount, address (_receipient's_)                                                                                | Create a new withdrawal request. __Must confirm via email to complete withdrawal__                                             |
 | `getUserTrade`   |                                                                                  | User's list of all trades                                                  |
 | `getOrder`       | orderId                                                                          | Get specific information about a certain order                             |
 | `getAllOrder`    | symbol (_optional_) e.g. `btc-eur`                                               | Get the list of all user orders. It can be filter by passing the symbol    |
@@ -262,7 +264,7 @@ These are list of `userUpdate` client gets after subscribtion.
 You can run the example by going to example folder and running:
 
 ```node
-node app.js
+node hollaex.js
 ```
 
 ## Documentation
