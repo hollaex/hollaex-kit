@@ -47,7 +47,8 @@ export const ICONS = {
 	BCH_ICON: `${process.env.PUBLIC_URL}/assets/icons/bch-icon.svg`,
 	BCH_ICON_DARK: `${process.env.PUBLIC_URL}/assets/icons/bch-icon.svg`,
 	BCH_NAV_ICON: `${process.env.PUBLIC_URL}/assets/icons/bch-icon-nav.svg`,
-	CHECK: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-06.svg`,
+	CHECK: `${process.env.PUBLIC_URL}/assets/images/Orderbook scrolling-01.svg`,
+	DARK_CHECK: `${process.env.PUBLIC_URL}/assets/images/dark-Orderbook-scrolling-01.svg`,
 	BLUE_QUESTION: `${
 		process.env.PUBLIC_URL
 	}/assets/acounts/account-icons-08.svg`,
@@ -142,7 +143,10 @@ export const ICONS = {
 	}/assets/images/update-quick-trade.svg`,
 	VERIFICATION_SENT: `${
 		process.env.PUBLIC_URL
-	}/assets/images/verification-resent.svg`,
+	}/assets/images/resend-email-light.svg`,
+	VERIFICATION_SENT_DARK: `${
+		process.env.PUBLIC_URL
+	}/assets/images/resend-email.svg`,
 	WITHDRAW: `${process.env.PUBLIC_URL}/assets/images/withdraw.svg`,
 	WITHDRAW_HISTORY: `${
 		process.env.PUBLIC_URL

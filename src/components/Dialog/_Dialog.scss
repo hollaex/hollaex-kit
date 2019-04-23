@@ -90,11 +90,8 @@ $close-button--margin: 1.5rem;
 	.success_display-wrapper {
 		color: $dark-font-main-text-color;
 
-		.success-check-1 {
-			stroke: $dark-font-main-text-color;
-		}
-		.success-check-2 {
-			stroke: $dark-font-main-text-color;
+		.limit-trade-tick {
+			color: $dark-icon-color
 		}
 	}
 	.close-button {

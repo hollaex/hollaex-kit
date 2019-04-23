@@ -35,6 +35,15 @@
 	font-weight: bold;
 }
 
+.chart_btc, .chart_bch, .chart_eth, .chart_fiat, .chart_ltc {
+	fill-opacity: 0.7;
+}
+
+.slice_active {
+	fill-opacity: 1;
+	stroke-width: 5;
+}
+
 .chart_btc {
 	fill: $coin-btc;
 	stroke: $coin-btc-1;
@@ -180,7 +189,11 @@
 
 	.chart_btc, .chart_bch, .chart_eth, .chart_fiat, .chart_ltc {
 		fill-opacity: 0.1;
-		stroke-width: 2;
+		stroke-width: 1.5;
+	}
+	.slice_active {
+		fill-opacity: 0.4;
+		stroke-width: 4;
 	}
 	.chart_btc {
 		fill: #f6921e;
