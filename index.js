@@ -84,18 +84,22 @@ class HollaEx {
 
 	// Withdrawal fee
 	getWithdrawalFee(currency) {
-		return createRequest('GET', `${this._url}/user/withdraw/${currency}/fee`, this._headers);
+		return createRequest(
+			'GET',
+			`${this._url}/user/withdraw/${currency}/fee`,
+			this._headers
+		);
 	}
 
 	// Request Withdrawal
 	requestWithdrawal(currency, amount, address) {
-		// Find withdrawal fee for selected currency
-		return this.getWithdrawalFee(currency)
-			.then((res) => {
-				let fee = JSON.parse(res).fee;
-				let data = { currency, amount, address, fee };
-				return createRequest('POST', `${this._url}/user/request-withdrawal`, this._headers, data);
-		});
+		let data = { currency, amount, address, fee: 0 };
+		return createRequest(
+			'POST',
+			`${this._url}/user/request-withdrawal`,
+			this._headers,
+			data
+		);
 	}
 
 	// Trades

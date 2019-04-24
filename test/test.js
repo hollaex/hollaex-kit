@@ -4,14 +4,15 @@ const HollaEx = require('../index');
 require('dotenv').load();
 
 const ACCESS_TOKEN = process.env.ACCESS_TOKEN;
+const SAMPLE_RECEIVING_ADDRESS = '2N4sL3HjkYSze9EkQeqNAZ5X8q6sjLkTQja'; //constants (.env)
 const client = new HollaEx({ accessToken: ACCESS_TOKEN });
 
 describe('Public functions', function() {
-	const symbolPare = 'btc-eur';
+	const symbolPair = 'btc-eur';
 
-	describe('#getTicker(symbolPare)', function() {
+	describe('#getTicker(symbolPair)', function() {
 		it('Get the ticker output', function(done) {
-			client.getTicker(symbolPare).then((result) => {
+			client.getTicker(symbolPair).then((result) => {
 				const data = JSON.parse(result);
 				expect(data).to.be.an('object');
 				expect(data).not.be.empty;
@@ -31,9 +32,9 @@ describe('Public functions', function() {
 		});
 	});
 
-	describe('#getOrderbook(symbolPare)', function() {
+	describe('#getOrderbook(symbolPair)', function() {
 		it('Get the orderbook output', function(done) {
-			client.getOrderbook(symbolPare).then((result) => {
+			client.getOrderbook(symbolPair).then((result) => {
 				const data = JSON.parse(result);
 				expect(data).to.be.an('object');
 				expect(data).not.be.empty;
@@ -42,18 +43,18 @@ describe('Public functions', function() {
 		});
 	});
 
-	describe('#getTrade(symbolPare)', function() {
+	describe('#getTrade(symbolPair)', function() {
 		it('Get the trade output', function(done) {
-			client.getTrade(symbolPare).then((result) => {
+			client.getTrade(symbolPair).then((result) => {
 				const data = JSON.parse(result);
 				expect(data).to.be.an('object');
 				expect(data).not.be.empty;
-				expect(data[symbolPare]).not.be.empty;
-				expect(data[symbolPare][0]).not.be.empty;
-				expect(data[symbolPare][0]).to.have.property('size');
-				expect(data[symbolPare][0]).to.have.property('price');
-				expect(data[symbolPare][0]).to.have.property('timestamp');
-				expect(data[symbolPare][0]).to.have.property('side');
+				expect(data[symbolPair]).not.be.empty;
+				expect(data[symbolPair][0]).not.be.empty;
+				expect(data[symbolPair][0]).to.have.property('size');
+				expect(data[symbolPair][0]).to.have.property('price');
+				expect(data[symbolPair][0]).to.have.property('timestamp');
+				expect(data[symbolPair][0]).to.have.property('side');
 				done();
 			});
 		});
@@ -124,6 +125,31 @@ describe('Private functions', function() {
 				expect(data).to.be.an('object');
 				expect(data).not.be.empty;
 				expect(data.fee).to.be.an('number');
+				done();
+			});
+		});
+	});
+
+	describe('#requestWithdrawal()', function() {
+		it('Get the request withdrawal output', function(done) {
+			client
+				.requestWithdrawal('btc', 0.0001, SAMPLE_RECEIVING_ADDRESS)
+				.then((result) => {
+					expect(result).to.equal('{"message":"Success"}');
+					done();
+				});
+		});
+		it('Get error messages when calling requestWithdrawal without parameters', function(done) {
+			client.requestWithdrawal().catch((err) => {
+				expect(err.response.body).to.include(
+					'Missing required property: currency'
+				);
+				expect(err.response.body).to.include(
+					'Missing required property: amount'
+				);
+				expect(err.response.body).to.include(
+					'Missing required property: address'
+				);
 				done();
 			});
 		});
