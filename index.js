@@ -39,10 +39,10 @@ class HollaEx {
 
 	/**
 	 * Retrieve orderbook containing lists of up to the last 20 bids and asks
-	 * @param {string} symbol - The currency pair symbol e.g. 'btc-eur', pass empty string to get orderbook for all symbol-pairs
+	 * @param {string} symbol - The currency pair symbol e.g. 'btc-eur', leave empty to get orderbook for all symbol-pairs
 	 * @return {string} A stringified JSON object with the symbol-pairs as keys where the values are objects with keys bids(array of active buy orders), asks(array of active sell orders), and timestamp(string)
 	 */
-	getOrderbook(symbol) {
+	getOrderbook(symbol = '') {
 		return createRequest(
 			'GET',
 			`${this._url}/orderbooks?symbol=${symbol}`,
@@ -52,10 +52,10 @@ class HollaEx {
 
 	/**
 	 * Retrieve list of up to the last 50 trades
-	 * @param {string} symbol - The currency pair symbol e.g. 'btc-eur', pass empty string to get trades for all symbol-pairs
+	 * @param {string} symbol - The currency pair symbol e.g. 'btc-eur', leave empty to get trades for all symbol-pairs
 	 * @return {string} A stringified JSON object with the symbol-pairs as keys where the values are arrays of objects with keys size(number), price(number), side(string), and timestamp(string)
 	 */
-	getTrade(symbol) {
+	getTrade(symbol = '') {
 		return createRequest(
 			'GET',
 			`${this._url}/trades?symbol=${symbol}`,
@@ -115,6 +115,9 @@ class HollaEx {
 	 * @return {string} A stringified JSON object with the key fee(number)
 	 */
 	getWithdrawalFee(currency) {
+		if (currency === '') {
+			currency = undefined;
+		}
 		return createRequest(
 			'GET',
 			`${this._url}/user/withdraw/${currency}/fee`,

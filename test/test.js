@@ -28,7 +28,8 @@ describe('Public functions', function() {
 			});
 		});
 		it('Should trigger an error when no symbol is given', function(done) {
-			client.getTicker().catch(() => {
+			client.getTicker().catch((err) => {
+				expect(err.response.body).to.include('Invalid symbol');
 				done();
 			});
 		});
@@ -40,6 +41,26 @@ describe('Public functions', function() {
 				const data = JSON.parse(result);
 				expect(data).to.be.an('object');
 				expect(data).not.be.empty;
+				done();
+			});
+		});
+		it('Get the orderbook output of all symbols and pairs if no symbol is specified', function(done) {
+			client.getOrderbook().then((result) => {
+				const data = JSON.parse(result);
+				expect(data).to.be.an('object');
+				expect(data).not.be.empty;
+				expect(Object.keys(data).length).to.equal(5);
+				expect(data).to.have.property('btc-eur');
+				expect(data).to.have.property('eth-eur');
+				expect(data).to.have.property('eth-btc');
+				expect(data).to.have.property('bch-eur');
+				expect(data).to.have.property('bch-btc');
+				done();
+			});
+		});
+		it('Should trigger an error when an invalid parameter is passed', function(done) {
+			client.getOrderbook(123).catch((err) => {
+				expect(err.response.body).to.include('Invalid symbols');
 				done();
 			});
 		});
@@ -57,6 +78,31 @@ describe('Public functions', function() {
 				expect(data[symbolPair][0]).to.have.property('price');
 				expect(data[symbolPair][0]).to.have.property('timestamp');
 				expect(data[symbolPair][0]).to.have.property('side');
+				done();
+			});
+		});
+		it('Get the trade output of all symbols and pairs if no symbol is specified', function(done) {
+			client.getTrade().then((result) => {
+				const data = JSON.parse(result);
+				expect(data).to.be.an('object');
+				expect(data).not.be.empty;
+				expect(Object.keys(data).length).to.equal(5);
+				expect(data).to.have.property('btc-eur');
+				expect(data).to.have.property('eth-eur');
+				expect(data).to.have.property('eth-btc');
+				expect(data).to.have.property('bch-eur');
+				expect(data).to.have.property('bch-btc');
+				expect(data['eth-eur'].length).to.equal(50);
+				expect(data['eth-eur'][0]).to.have.property('size');
+				expect(data['eth-eur'][0]).to.have.property('price');
+				expect(data['eth-eur'][0]).to.have.property('timestamp');
+				expect(data['eth-eur'][0]).to.have.property('side');
+				done();
+			});
+		});
+		it('Should trigger an error when an invalid parameter is passed', function(done) {
+			client.getTrade(123).catch((err) => {
+				expect(err.response.body).to.include('Invalid symbol');
 				done();
 			});
 		});
@@ -120,7 +166,7 @@ describe('Private functions', function() {
 		});
 	});
 
-	describe('#getWithdrawalFee()', function() {
+	describe('#getWithdrawalFee(currency)', function() {
 		it('Get the withdrawal fee for btc', function(done) {
 			client.getWithdrawalFee('btc').then((result) => {
 				const data = JSON.parse(result);
@@ -138,12 +184,19 @@ describe('Private functions', function() {
 		});
 	});
 
-	describe('#requestWithdrawal()', function() {
+	describe('#requestWithdrawal(currency, amount, address)', function() {
 		it('Get the successful request withdrawal output', function(done) {
 			client
 				.requestWithdrawal('btc', 0.0001, SAMPLE_BTC_RECEIVING_ADDRESS)
 				.then((result) => {
 					expect(result).to.equal('{"message":"Success"}');
+					done();
+				})
+				.catch((err) => {
+					console.log(
+						'*****ATTENTION: Disable Two-Factor Authenication to enable this function*****'
+					);
+					expect(err.response.body).to.include('Invalid OTP Code');
 					done();
 				});
 		});
@@ -225,6 +278,119 @@ describe('Private functions', function() {
 		it('Get the user trade output', function(done) {
 			client.getUserTrade().then((result) => {
 				const data = JSON.parse(result);
+				expect(data).to.be.an('object');
+				expect(data).not.be.empty;
+				done();
+			});
+		});
+	});
+
+	describe('Orders', function() {
+		let btcOrder;
+
+		describe('#createOrder(symbolPair, side, size, type, price)', function() {
+			it('Create an order and return output', function(done) {
+				client
+					.createOrder('btc-eur', 'buy', 0.0001, 'limit', 1000)
+					.then((result) => {
+						const data = JSON.parse(result);
+						btcOrder = data;
+						expect(data).to.be.an('object');
+						expect(data).not.be.empty;
+						done();
+					});
+			});
+			it('Get an error message when price is too low', function(done) {
+				client
+					.createOrder('btc-eur', 'buy', 0.0001, 'limit', -9999)
+					.catch((err) => {
+						expect(err.response.body).to.include(
+							'Order price is out of the limits'
+						);
+						done();
+					});
+			});
+			it('Get an error message when amount is too low', function(done) {
+				client
+					.createOrder('btc-eur', 'buy', -9999, 'limit', 1000)
+					.catch((err) => {
+						expect(err.response.body).to.include(
+							'Order size is out of the limits'
+						);
+						done();
+					});
+			});
+		});
+
+		describe('#getOrder(orderId)', function() {
+			it('Get the single order output', function(done) {
+				client.getOrder(btcOrder.id).then((result) => {
+					const data = JSON.parse(result);
+					expect(data).to.be.an('object');
+					expect(data).not.be.empty;
+					expect(data).to.include(btcOrder);
+					done();
+				});
+			});
+			it('Get an error message when order cannot be found', function(done) {
+				client.getOrder(123).catch((err) => {
+					expect(err.response.body).to.include('Order not found');
+					done();
+				});
+			});
+		});
+
+		describe('#getAllOrder(symbolPair)', function() {
+			it('Get all orders', function(done) {
+				client.getAllOrder('btc-eur').then((result) => {
+					const data = JSON.parse(result);
+					expect(data).to.be.an('array');
+					expect(data).not.be.empty;
+					expect(data[data.length - 1]).to.include(btcOrder);
+					done();
+				});
+			});
+			it('Get an error message when invalid pair is give', function(done) {
+				client.getAllOrder('hello').catch((err) => {
+					expect(err.response.body).to.include('Invalid symbol');
+					done();
+				});
+			});
+		});
+
+		describe('#cancelOrder(orderId)', function() {
+			it('Cancel a specific order', function(done) {
+				client.cancelOrder(btcOrder.id).then((result) => {
+					const data = JSON.parse(result);
+					expect(data).to.be.an('object');
+					expect(data).not.be.empty;
+					expect(data).to.include(btcOrder);
+					done();
+				});
+			});
+			it('Get an error message when order cannot be found', function(done) {
+				client.cancelOrder(123).catch((err) => {
+					expect(err.response.body).to.include('Order not found');
+					done();
+				});
+			});
+		});
+	});
+});
+
+describe('Socket testing', function() {
+	let socket;
+
+	describe('#connect()', function() {
+		it('Create a socket connection', function(done) {
+			socket = client.connect('all');
+			done();
+		});
+	});
+
+	describe('#ticker', function() {
+		it('Get the ticker output', function(done) {
+			socket.on('ticker', (data) => {
 				expect(data).to.be.an('object');
 				expect(data).not.be.empty;
 				done();
