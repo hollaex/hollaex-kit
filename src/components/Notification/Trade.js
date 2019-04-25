@@ -42,9 +42,15 @@ const calculateValues = (data = [], pair) => {
 	let baseAccumulated = math.fraction(0);
 	let fiatAccumulated = math.fraction(0);
 	const averages = [];
-	data.forEach(({ size, price }) => {
-		baseAccumulated = math.add(baseAccumulated, math.fraction(size));
-		const orderValue = math.multiply(math.fraction(price), math.fraction(size));
+	data.forEach(({ size, price, filled, side }) => {
+		let calcSize = size;
+		if (side === SIDE_BUY) {
+			calcSize = filled;
+		} else if (side === SIDE_SELL) {
+			calcSize = size;
+		}
+		baseAccumulated = math.add(baseAccumulated, math.fraction(calcSize));
+		const orderValue = math.multiply(math.fraction(price), math.fraction(calcSize));
 		fiatAccumulated = math.add(fiatAccumulated, orderValue);
 		averages.push(math.number(orderValue));
 	});

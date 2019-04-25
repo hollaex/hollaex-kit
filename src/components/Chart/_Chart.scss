@@ -196,24 +196,24 @@
 		stroke-width: 4;
 	}
 	.chart_btc {
-		fill: #f6921e;
-		stroke: #f6921e;
+		fill: $coin-btc-1;
+		stroke: $coin-btc-1;
 	}
 	.chart_bch {
-		fill: #8bc53f;
-		stroke: #8bc53f;
+		fill: $coin-bch-1;
+		stroke: $coin-bch-1;
 	}
 	.chart_eth {
-		fill: #2b388f;
-		stroke: #2b388f;
+		fill: $coin-eth;
+		stroke: $coin-eth;
 	}
 	.chart_fiat {
-		fill: #00a651;
-		stroke: #00a651
+		fill: $coin-fiat-1;
+		stroke: $coin-fiat-1
 	}
 	.chart_ltc {
-		fill: #58595b;
-		stroke: #58595b;
+		fill: $coin-ltc-1;
+		stroke: $coin-ltc-1;
 	}
 	.bar_wrapper {
 		.bar_xAxis {

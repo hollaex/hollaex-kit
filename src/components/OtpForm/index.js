@@ -16,6 +16,15 @@ class Form extends Component {
 		this.setFormValues();
 	}
 
+	componentWillReceiveProps = (nextProps)=> {
+		if (this.props.dirty !== nextProps.dirty
+			|| this.props.submitFailed !== nextProps.submitFailed
+			|| this.props.valid !== nextProps.valid) {
+				if (nextProps.dirty && nextProps.submitFailed && !nextProps.valid) {
+					this.setFormRef(this.otpFormRef);
+				}
+		}
+	}
 	setFormValues = () => {
 		const formValues = {
 			otp_code: {
@@ -32,6 +41,7 @@ class Form extends Component {
 
 	setFormRef = (el) => {
 		if (el) {
+			this.otpFormRef = el;
 			el.getElementsByTagName('input')[0].focus()
 		}
 	}

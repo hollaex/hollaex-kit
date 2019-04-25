@@ -100,6 +100,7 @@ const generateHeaders = (onCancel) => [
 						status="information"
 						textPosition="left"
 						useSvg={true}
+						showActionText={true}
 					/>
 				</td>
 			);
