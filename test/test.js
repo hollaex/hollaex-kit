@@ -4,7 +4,9 @@ const HollaEx = require('../index');
 require('dotenv').load();
 
 const ACCESS_TOKEN = process.env.ACCESS_TOKEN;
-const SAMPLE_RECEIVING_ADDRESS = '2N4sL3HjkYSze9EkQeqNAZ5X8q6sjLkTQja'; //constants (.env)
+const SAMPLE_BTC_RECEIVING_ADDRESS = '2N4sL3HjkYSze9EkQeqNAZ5X8q6sjLkTQja';
+const SAMPLE_ETH_RECEIVING_ADDRESS =
+	'0x2c6f8a619efd25ce9fa827952e50c46a26cb8d29';
 const client = new HollaEx({ accessToken: ACCESS_TOKEN });
 
 describe('Public functions', function() {
@@ -128,18 +130,24 @@ describe('Private functions', function() {
 				done();
 			});
 		});
+		it('Get error when passing non-currency parameter', function(done) {
+			client.getWithdrawalFee(123).catch((err) => {
+				expect(err.response.body).to.include('Invalid currency');
+				done();
+			});
+		});
 	});
 
 	describe('#requestWithdrawal()', function() {
-		it('Get the request withdrawal output', function(done) {
+		it('Get the successful request withdrawal output', function(done) {
 			client
-				.requestWithdrawal('btc', 0.0001, SAMPLE_RECEIVING_ADDRESS)
+				.requestWithdrawal('btc', 0.0001, SAMPLE_BTC_RECEIVING_ADDRESS)
 				.then((result) => {
 					expect(result).to.equal('{"message":"Success"}');
 					done();
 				});
 		});
-		it('Get error messages when calling requestWithdrawal without parameters', function(done) {
+		it('Get error when calling requestWithdrawal without parameters', function(done) {
 			client.requestWithdrawal().catch((err) => {
 				expect(err.response.body).to.include(
 					'Missing required property: currency'
@@ -152,6 +160,64 @@ describe('Private functions', function() {
 				);
 				done();
 			});
+		});
+		it('Get error when requesting BTC withdrawal request with ETH address', function(done) {
+			client
+				.requestWithdrawal('btc', 0.0001, SAMPLE_ETH_RECEIVING_ADDRESS)
+				.catch((err) => {
+					expect(err.response.body).to.include('Invalid BTC address');
+					done();
+				});
+		});
+		it('Get error when requesting negative amount of btc withdrawal', function(done) {
+			client
+				.requestWithdrawal('btc', -24, SAMPLE_BTC_RECEIVING_ADDRESS)
+				.catch((err) => {
+					expect(err.response.body).to.include(
+						'Amount should be bigger than 0'
+					);
+					done();
+				});
+		});
+		it('Get error when requesting a BTC amount that is larger than 10', function(done) {
+			client
+				.requestWithdrawal('btc', 11, SAMPLE_BTC_RECEIVING_ADDRESS)
+				.catch((err) => {
+					expect(err.response.body).to.include(
+						'Exceeded max amount for a withdrawal: 10'
+					);
+					done();
+				});
+		});
+		it('Get error when requesting a ETH amount that is larger than 50', function(done) {
+			client
+				.requestWithdrawal('eth', 51, SAMPLE_ETH_RECEIVING_ADDRESS)
+				.catch((err) => {
+					expect(err.response.body).to.include(
+						'Exceeded max amount for a withdrawal: 50'
+					);
+					done();
+				});
+		});
+		it('Get error when requesting a BTC amount that is lower than 0.0001', function(done) {
+			client
+				.requestWithdrawal('btc', 0.00001, SAMPLE_BTC_RECEIVING_ADDRESS)
+				.catch((err) => {
+					expect(err.response.body).to.include(
+						'Withdrawal amount is too small. Minimum amount for Bitcoin withdrawal: 0.0001'
+					);
+					done();
+				});
+		});
+		it('Get error when requesting a ETH amount that is lower than 0.001', function(done) {
+			client
+				.requestWithdrawal('eth', 0.0001, SAMPLE_ETH_RECEIVING_ADDRESS)
+				.catch((err) => {
+					expect(err.response.body).to.include(
+						'Withdrawal amount is too small. Minimum amount for Ethereum withdrawal: 0.001'
+					);
+					done();
+				});
 		});
 	});
 
