@@ -62,3 +62,6 @@ typings/
 
 # PhpStrom Project Files #
 .idea/
+
+# MacOS
+.DS_Store
