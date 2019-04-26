@@ -231,6 +231,7 @@ class Container extends Component {
 		publicSocket.on('trades', (data) => {
 			// console.log('trades', data);
 			this.props.setTrades(data);
+			this.props.setTickers(data);
 			if (data.action === "update"
 				&& this.props.settings.audio
 				&& this.props.settings.audio.public_trade
@@ -242,7 +243,7 @@ class Container extends Component {
 
 		publicSocket.on('ticker', (data) => {
 			// console.log('ticker', data);
-			this.props.setTickers(data);
+			// this.props.setTickers(data);
 		});
 	};
 

@@ -80,7 +80,8 @@ class Trade extends Component {
 			.then((body) => {})
 			.catch((err) => {
 				// console.log('error', err);
-				const _error = err.response.data
+				const _error = err.response
+					&& err.response.data
 					? err.response.data.message
 					: err.message;
 				throw new SubmissionError({ _error });
@@ -452,7 +453,7 @@ Trade.defaultProps = {};
 const mapStateToProps = (store) => {
 	const pair = store.app.pair;
 	const pairData = store.app.pairs[pair];
-	const { asks, bids } = store.orderbook.pairsOrderbooks[pair];
+	const { asks = [], bids = [] } = store.orderbook.pairsOrderbooks[pair];
 	const tradeHistory = store.orderbook.pairsTrades[pair];
 	const marketPrice = tradeHistory && tradeHistory.length > 0 ? tradeHistory[0].price : 1;
 	let count = 0;

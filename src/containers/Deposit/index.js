@@ -126,6 +126,7 @@ class Deposit extends Component {
 								onCopy={() => this.setState({ copied: true })}
 							>
 								<Button
+									onClick={this.onCopy}
 									label={copied ? STRINGS.SUCCESFUL_COPY : STRINGS.COPY_ADDRESS}
 								/>
 							</CopyToClipboard>

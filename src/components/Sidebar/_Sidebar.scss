@@ -86,11 +86,12 @@ $row--size: calc(#{$row--height} - #{$sidebar-sections-padding});
 			font-size: 12px;
 			text-align: center;
 			margin-top: -17PX;
-			font-weight: bold;
-			color: $dark-icon-color
+			font-weight: lighter;
+			color: $colors-deactivate-color2
 		}
 		.bottom-text-acttive {
 			color: black !important;
+			font-weight: bolder;
 		}
 		.sidebar-bottom-icon {
 			height: 100%;

@@ -45,7 +45,7 @@ const calculateValues = (data = [], pair) => {
 	data.forEach(({ size, price, filled, side }) => {
 		let calcSize = size;
 		if (side === SIDE_BUY) {
-			calcSize = filled;
+			calcSize = filled || size;
 		} else if (side === SIDE_SELL) {
 			calcSize = size;
 		}
