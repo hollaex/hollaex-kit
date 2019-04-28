@@ -96,8 +96,8 @@ class HollaEx {
 	 * Retrieve list of up to the user's last 50 deposits
 	 * @return {string} A stringified JSON object with the keys count(total number of user's deposits) and data(array of deposits as objects with keys id(number), type(string), amount(number), transaction_id(string), currency(string), created_at(string), status(boolean), fee(number), dismissed(boolean), rejected(boolean), description(string))
 	 */
-	getDeposit(limit = 50, page = 1) {
-		return createRequest('GET', `${this._url}/user/deposits?limit=${limit}&page=${page}`, this._headers);
+	getDeposit(currency, limit = 50, page = 1) {
+		return createRequest('GET', `${this._url}/user/deposits?limit=${limit}&page=${page}&currency=${currency}`, this._headers);
 	}
 
 	/****** Withdrawals ******/
@@ -105,8 +105,8 @@ class HollaEx {
 	 * Retrieve list of up to the user's last 50 withdrawals
 	 * @return {string} A stringified JSON object with the keys count(total number of user's withdrawals) and data(array of withdrawals as objects with keys id(number), type(string), amount(number), transaction_id(string), currency(string), created_at(string), status(boolean), fee(number), dismissed(boolean), rejected(boolean), description(string))
 	 */
-	getWithdrawal() {
-		return createRequest('GET', `${this._url}/user/withdrawals`, this._headers);
+	getWithdrawal(currency, limit = 50, page = 1) {
+		return createRequest('GET', `${this._url}/user/withdrawals?limit=${limit}&page=${page}&currency=${currency}`, this._headers);
 	}
 
 	/**
@@ -146,8 +146,12 @@ class HollaEx {
 	 * Retrieve list of up to the user's last 50 trades
 	 * @return {string} A stringified JSON object with the keys count(total number of user's completed trades) and data(array of up to the user's last 50 completed trades as objects with keys side(string), symbol(string), size(number), price(number), timestamp(string), and fee(number))
 	 */
-	getUserTrade() {
-		return createRequest('GET', `${this._url}/user/trades`, this._headers);
+	getUserTrade(symbol, limit = 50, page = 1) {
+		let queryString = `?limit=${limit}&page=${page}`;
+		if (symbol) {
+			queryString += `&symbol=${symbol}`;
+		}
+		return createRequest('GET', `${this._url}/user/trades${queryString}`, this._headers);
 	}
 
 	/****** Orders ******/

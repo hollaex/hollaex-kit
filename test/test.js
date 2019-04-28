@@ -154,7 +154,7 @@ describe('Private functions', function() {
 			});
 		});
 		it('Get only 2 deposits', function(done) {
-			client.getDeposit(2).then((result) => {
+			client.getDeposit(undefined, 2).then((result) => {
 				const data = JSON.parse(result);
 				expect(data).to.be.an('object');
 				expect(data).not.be.empty;
