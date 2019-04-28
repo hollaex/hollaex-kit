@@ -153,6 +153,19 @@ describe('Private functions', function() {
 				done();
 			});
 		});
+		it('Get only 2 deposits', function(done) {
+			client.getDeposit(2).then((result) => {
+				const data = JSON.parse(result);
+				expect(data).to.be.an('object');
+				expect(data).not.be.empty;
+				expect(data).to.be.an('object');
+				expect(data).to.have.property('count');
+				expect(data).to.have.property('data');
+				expect(data).to.have.property('count');
+				expect(data.data).to.have.lengthOf(2);
+				done();
+			});
+		});
 	});
 
 	describe('#getWithdrawal()', function() {

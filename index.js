@@ -96,8 +96,8 @@ class HollaEx {
 	 * Retrieve list of up to the user's last 50 deposits
 	 * @return {string} A stringified JSON object with the keys count(total number of user's deposits) and data(array of deposits as objects with keys id(number), type(string), amount(number), transaction_id(string), currency(string), created_at(string), status(boolean), fee(number), dismissed(boolean), rejected(boolean), description(string))
 	 */
-	getDeposit() {
-		return createRequest('GET', `${this._url}/user/deposits`, this._headers);
+	getDeposit(limit = 50, page = 1) {
+		return createRequest('GET', `${this._url}/user/deposits?limit=${limit}&page=${page}`, this._headers);
 	}
 
 	/****** Withdrawals ******/
