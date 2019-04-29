@@ -3,6 +3,7 @@ import classnames from 'classnames';
 import ReactSVG from 'react-svg';
 import { debounce } from 'lodash';
 import { browserHistory } from 'react-router';
+import { isMobile } from 'react-device-detect';
 import {Button, TabController, CheckTitle, IconTitle } from '../../components';
 
 import STRINGS from '../../config/localizedStrings';
@@ -158,7 +159,7 @@ class QuickTrade extends Component {
 						// ...GROUP_CLASSES
 					)}
 				>
-					<ReactSVG path={ICONS.QUICK_TRADE} wrapperClassName="quick_trade-icon" />
+					<ReactSVG path={ isMobile ? ICONS.SIDEBAR_QUICK_TRADING_INACTIVE: ICONS.QUICK_TRADE} wrapperClassName= {isMobile ?'quick_trade-tab-icon' :"quick_trade-icon"} />
 					<div className={classnames("title text-capitalize", ...FLEX_CENTER_CLASSES)}>
 						{STRINGS.formatString(
 							STRINGS.QUICK_TRADE_COMPONENT.TRADE_TITLE,
@@ -175,17 +176,20 @@ class QuickTrade extends Component {
 				>
 					<div className="apply_rtl">
 						<TabController
+							quicktrade={true}
 							activeTab={activeTab}
 							setActiveTab={this.setActiveTab}
 							tabs={tabs}
 							className="account-tab"
 						/>
 					</div>
-					<ToogleButton
-						values={STRINGS.SIDES}
-						onToogle={this.onToogleSide}
-						selected={side}
-					/>
+					<div>
+						<ToogleButton
+							values={STRINGS.SIDES}
+							onToogle={this.onToogleSide}
+							selected={side}
+						/>
+					</div>
 				</div>
 				<div
 					className={classnames(

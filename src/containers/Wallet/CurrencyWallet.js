@@ -2,11 +2,13 @@ import React, { Component } from 'react';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { isMobile } from 'react-device-detect';
 import {
 	IconTitle,
 	CurrencyBallWithPrice,
 	ButtonLink,
-	ActionNotification
+	ActionNotification,
+	MobileBarBack
 } from '../../components';
 import { changeSymbol } from '../../actions/orderbookAction';
 import { ICONS, FLEX_CENTER_CLASSES } from '../../config/constants';
@@ -68,6 +70,10 @@ class Wallet extends Component {
 		);
 	};
 
+	onGoBack = () => {
+		this.props.router.push('/wallet');
+	};
+
 	render() {
 		const { balance, price } = this.props;
 		const { currency } = this.state;
@@ -78,22 +84,26 @@ class Wallet extends Component {
 		const { depositText, withdrawText } = generateWalletActionsText(currency);
 
 		return (
-			<div className="presentation_container apply_rtl">
-				<IconTitle
-					text={STRINGS.WALLET_TITLE}
-					iconPath={ICONS.BITCOIN_WALLET}
-					useSvg={true}
-					textType="title"
-				/>
-				<div className="wallet-container">
-					{this.renderWalletHeaderBlock(currency, price, balance)}
-          <div
-    				className={classnames(...FLEX_CENTER_CLASSES, 'wallet-buttons_action')}
-    			>
-    				<ButtonLink label={depositText} link={`/wallet/${currency}/deposit`} />
-    				<div className="separator" />
-    				<ButtonLink label={withdrawText} link={`/wallet/${currency}/withdraw`} />
-    			</div>
+			<div>
+			{isMobile && <MobileBarBack onBackClick={this.onGoBack}>
+				</MobileBarBack> }
+				<div className="presentation_container apply_rtl">
+					<IconTitle
+						text={STRINGS.WALLET_TITLE}
+						iconPath={ICONS.BITCOIN_WALLET}
+						useSvg={true}
+						textType="title"
+					/>
+					<div className="wallet-container">
+						{this.renderWalletHeaderBlock(currency, price, balance)}
+						<div
+							className={classnames(...FLEX_CENTER_CLASSES, 'wallet-buttons_action')}
+						>
+						<ButtonLink label={depositText} link={`/wallet/${currency}/deposit`} />
+						<div className="separator" />
+							<ButtonLink label={withdrawText} link={`/wallet/${currency}/withdraw`} />
+						</div>
+					</div>
 				</div>
 			</div>
 		);

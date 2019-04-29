@@ -91,7 +91,7 @@ export const addUserTrades = (trades) => ({
 
 export const getUserTrades = ({
 	symbol = 'btc',
-	limit = 100,
+	limit = 50,
 	page = 1,
 	...rest
 }) => {
@@ -108,11 +108,15 @@ export const getUserTrades = ({
 			.then((body) => {
 				dispatch({
 					type: ACTION_KEYS.USER_TRADES_FULFILLED,
-					payload: body.data
+					payload: {
+						...body.data,
+						page,
+						isRemaining: body.data.count > page * limit
+					}
 				});
-				if (body.data.count > page * limit) {
-					dispatch(getUserTrades({ symbol, limit, page: page + 1 }));
-				}
+				// if (body.data.count > page * limit) {
+				// 	dispatch(getUserTrades({ symbol, limit, page: page + 1 }));
+				// }
 			})
 			.catch((err) => {
 				dispatch({
@@ -123,8 +127,9 @@ export const getUserTrades = ({
 	};
 };
 
-export const getUserDeposits = ({ limit = 100, page = 1, ...rest }) => {
+export const getUserDeposits = ({ symbol = 'btc', limit = 50, page = 1, ...rest }) => {
 	const query = querystring.stringify({
+		symbol,
 		page,
 		limit
 	});
@@ -136,11 +141,15 @@ export const getUserDeposits = ({ limit = 100, page = 1, ...rest }) => {
 			.then((body) => {
 				dispatch({
 					type: ACTION_KEYS.USER_DEPOSITS_FULFILLED,
-					payload: body.data
+					payload: {
+						...body.data,
+						page,
+						isRemaining: body.data.count > page * limit
+					}
 				});
-				if (body.data.count > page * limit) {
-					dispatch(getUserDeposits({ limit, page: page + 1 }));
-				}
+				// if (body.data.count > page * limit) {
+				// 	dispatch(getUserDeposits({ limit, page: page + 1 }));
+				// }
 			})
 			.catch((err) => {
 				dispatch({
@@ -151,8 +160,9 @@ export const getUserDeposits = ({ limit = 100, page = 1, ...rest }) => {
 	};
 };
 
-export const getUserWithdrawals = ({ limit = 100, page = 1, ...rest }) => {
+export const getUserWithdrawals = ({ symbol = 'btc', limit = 50, page = 1, ...rest }) => {
 	const query = querystring.stringify({
+		symbol,
 		page,
 		limit
 	});
@@ -164,11 +174,15 @@ export const getUserWithdrawals = ({ limit = 100, page = 1, ...rest }) => {
 			.then((body) => {
 				dispatch({
 					type: ACTION_KEYS.USER_WITHDRAWALS_FULFILLED,
-					payload: body.data
+					payload: {
+						...body.data,
+						page,
+						isRemaining: body.data.count > page * limit
+					}
 				});
-				if (body.data.count > page * limit) {
-					dispatch(getUserWithdrawals({ limit, page: page + 1 }));
-				}
+				// if (body.data.count > page * limit) {
+				// 	dispatch(getUserWithdrawals({ limit, page: page + 1 }));
+				// }
 			})
 			.catch((err) => {
 				dispatch({

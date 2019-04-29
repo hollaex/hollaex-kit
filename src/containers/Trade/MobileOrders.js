@@ -3,6 +3,7 @@ import classnames from 'classnames';
 import TradeBlock from './components/TradeBlock';
 import ActiveOrders from './components/ActiveOrders';
 import UserTrades from './components/UserTrades';
+import MobileDropdownWrapper from './components/MobileDropdownWrapper';
 import { ActionNotification, IconTitle } from '../../components';
 import STRINGS from '../../config/localizedStrings';
 import { ICONS } from '../../config/constants';
@@ -21,6 +22,7 @@ const MobileOrders = ({
 	activeTheme,
 	isLoggedIn,
 	pairs,
+	goToPair,
 	cancelDelayData
 }) => (
 	<div
@@ -32,6 +34,7 @@ const MobileOrders = ({
 			'apply_rtl'
 		)}
 	>
+		<MobileDropdownWrapper className='' goToPair={goToPair}  />
 		<TradeBlock
 			title={STRINGS.ORDERS}
 			action={

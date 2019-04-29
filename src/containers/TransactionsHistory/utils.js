@@ -1,6 +1,7 @@
 import React from 'react';
 import classnames from 'classnames';
 import mathjs from 'mathjs';
+import { isMobile } from 'react-device-detect';
 
 import STRINGS from '../../config/localizedStrings';
 
@@ -227,9 +228,10 @@ export const generateTradeHeaders = (symbol, pairs) => {
 		{
 			label: STRINGS.TIME,
 			key: 'timestamp',
+			className: isMobile ? "text-center" : '',
 			exportToCsv: ({ timestamp = '' }) => timestamp,
 			renderCell: ({ timestamp = '' }, key, index) => {
-				return <td key={index}>{formatTimestamp(timestamp)}</td>;
+				return <td key={index} className={isMobile ? "text-center" : ''}>{formatTimestamp(timestamp)}</td>;
 			}
 		}
 	];

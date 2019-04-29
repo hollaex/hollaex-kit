@@ -15,15 +15,16 @@ const SIDE_BUY = 'buy';
 const getTitleAndIcon = (type, { side, filled }) => {
 	const data = {
 		icon: '',
-		title: ''
+		title: '',
+		onBack: true,
 	};
 
 	if (type === 'order_added') {
 		if (filled === 0) {
 			data.icon =
 				side === SIDE_BUY
-					? ICONS.NOTIFICATION_ORDER_LIMIT_BUY_CREATED
-					: ICONS.NOTIFICATION_ORDER_LIMIT_SELL_CREATED;
+					? ICONS.TRADE_FILLED_SUCESSFUL
+					: ICONS.TRADE_FILLED_SUCESSFUL;
 			data.title = STRINGS.formatString(
 				STRINGS.ORDER_TITLE_CREATED,
 				STRINGS.SIDES_VALUES[side]
@@ -31,8 +32,8 @@ const getTitleAndIcon = (type, { side, filled }) => {
 		} else {
 			data.icon =
 				side === SIDE_BUY
-					? ICONS.NOTIFICATION_ORDER_LIMIT_BUY_FILLED_PART
-					: ICONS.NOTIFICATION_ORDER_LIMIT_SELL_FILLED_PART;
+					? ICONS.TRADE_PARTIALLY_FILLED
+					: ICONS.TRADE_PARTIALLY_FILLED;
 			data.title = STRINGS.formatString(
 				STRINGS.ORDER_TITLE_PARTIALLY_FILLED,
 				<span className="text-capitalize">{STRINGS.SIDES_VALUES[side]}</span>
@@ -41,8 +42,8 @@ const getTitleAndIcon = (type, { side, filled }) => {
 	} else if (type === 'order_filled') {
 		data.icon =
 			side === SIDE_BUY
-				? ICONS.NOTIFICATION_ORDER_LIMIT_SELL_FILLED
-				: ICONS.NOTIFICATION_ORDER_LIMIT_SELL_CREATED;
+				? ICONS.TRADE_FILLED_SUCESSFUL
+				: ICONS.TRADE_FILLED_SUCESSFUL;
 		data.title = STRINGS.formatString(
 			STRINGS.ORDER_TITLE_FULLY_FILLED,
 			<span className="text-capitalize">{STRINGS.SIDES_VALUES[side]}</span>
@@ -131,13 +132,14 @@ const OrderDisplay = ({ rows }) => {
 	);
 };
 
-const OrderNotification = ({ type, data, pairs }) => {
+const OrderNotification = ({ type, data, pairs, onClose }) => {
 	const notificationProps = getTitleAndIcon(type, data);
 	const rows = generateRows(type, data, pairs);
 
 	return (
 		<NotificationWraper
 			{...notificationProps}
+			onClose={onClose}
 			className="order-notification"
 			compressOnMobile={true}
 		>

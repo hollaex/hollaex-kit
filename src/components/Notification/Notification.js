@@ -2,6 +2,8 @@ import React from 'react';
 import classnames from 'classnames';
 import ReactSVG from 'react-svg';
 import { isMobile } from 'react-device-detect';
+import { Button } from '../';
+import STRINGS from '../../config/localizedStrings';
 
 export const NotificationWraperDesktop = ({
 	icon,
@@ -9,7 +11,9 @@ export const NotificationWraperDesktop = ({
 	title,
 	children,
 	className = '',
-	titleClassName = ''
+	titleClassName = '',
+	onClose,
+	onBack
 }) => (
 	<div className={classnames('notification-content-wrapper', className)}>
 		{icon && (
@@ -24,6 +28,13 @@ export const NotificationWraperDesktop = ({
 			{title}
 		</div>
 		{children}
+		{ onBack ?
+			<Button
+				label={STRINGS.NOTIFICATIONS.BUTTONS.OKAY}
+				onClick={onClose}
+			>
+			</Button>
+		: '' }
 	</div>
 );
 
@@ -53,11 +64,11 @@ export const NotificationWraperMobile = ({
 	</div>
 );
 
-export const NotificationWraper = ({ compressOnMobile = false, ...props }) =>
+export const NotificationWraper = ({ onClose , compressOnMobile = false, ...props }) =>
 	compressOnMobile && isMobile ? (
 		<NotificationWraperMobile {...props} />
 	) : (
-		<NotificationWraperDesktop {...props} />
+		<NotificationWraperDesktop {...props} onClose={onClose} />
 	);
 
 export const NotificationContent = ({ children, className = '' }) => (

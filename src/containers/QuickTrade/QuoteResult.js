@@ -12,14 +12,14 @@ const QuoteResult = ({ name, onClose, ...props }) => {
 		return <Loader relative={true} background={false} />;
 	} else if (error) {
 		return (
-			<div>
+			<div className="fiat_negative_balance">
 				<div className="quote-success-review-text">{error}</div>
 				{onClose && <Button label={STRINGS.CLOSE_TEXT} onClick={onClose} />}
 			</div>
 		);
 	} else {
 		return (
-			<div>
+			<div className='success-review'>
 				<IconTitle
 					iconPath={ICONS.SQUARE_DOTS}
 					text={STRINGS.QUOTE_SUCCESS_REVIEW_TITLE}

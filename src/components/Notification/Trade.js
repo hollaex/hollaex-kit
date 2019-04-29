@@ -15,18 +15,19 @@ const SIDE_SELL = 'sell';
 const getTitleAndIcon = (side, type) => {
 	const data = {
 		icon: '',
-		title: ''
+		title: '',
+		onBack: true,
 	};
 
 	if (side === SIDE_BUY) {
-		data.icon = ICONS.NOTIFICATION_ORDER_MARKET_BUY_FILLED;
+		data.icon = ICONS.TRADE_FILLED_SUCESSFUL;
 		data.title = STRINGS.formatString(
 			STRINGS.ORDER_TITLE_TRADE_COMPLETE,
 			<span className="text-capitalize">{STRINGS.TYPES_VALUES[type]}</span>,
 			STRINGS.SIDES_VALUES[SIDE_BUY]
 		);
 	} else if (side === SIDE_SELL) {
-		data.icon = ICONS.NOTIFICATION_ORDER_MARKET_SELL_FILLED;
+		data.icon = ICONS.TRADE_FILLED_SUCESSFUL;
 		data.title = STRINGS.formatString(
 			STRINGS.ORDER_TITLE_TRADE_COMPLETE,
 			<span className="text-capitalize">{STRINGS.TYPES_VALUES[type]}</span>,
@@ -41,9 +42,15 @@ const calculateValues = (data = [], pair) => {
 	let baseAccumulated = math.fraction(0);
 	let fiatAccumulated = math.fraction(0);
 	const averages = [];
-	data.forEach(({ size, price }) => {
-		baseAccumulated = math.add(baseAccumulated, math.fraction(size));
-		const orderValue = math.multiply(math.fraction(price), math.fraction(size));
+	data.forEach(({ size, price, filled, side }) => {
+		let calcSize = size;
+		if (side === SIDE_BUY) {
+			calcSize = filled || size;
+		} else if (side === SIDE_SELL) {
+			calcSize = filled || size;
+		}
+		baseAccumulated = math.add(baseAccumulated, math.fraction(calcSize));
+		const orderValue = math.multiply(math.fraction(price), math.fraction(calcSize));
 		fiatAccumulated = math.add(fiatAccumulated, orderValue);
 		averages.push(math.number(orderValue));
 	});
@@ -95,7 +102,7 @@ const TradeDisplay = ({ side, data, pairs, ...rest }) => {
 	);
 };
 
-const TradeNotification = ({ data: { order, data }, pairs }) => {
+const TradeNotification = ({ onClose, data: { order, data }, pairs }) => {
 	const { side, type } = order;
 	const notificationProps = getTitleAndIcon(side, type);
 
@@ -104,6 +111,7 @@ const TradeNotification = ({ data: { order, data }, pairs }) => {
 			{...notificationProps}
 			className="trade-notification"
 			compressOnMobile={true}
+			onClose={onClose}
 		>
 			<TradeDisplay side={side} data={data} pairs={pairs} />
 		</NotificationWraper>

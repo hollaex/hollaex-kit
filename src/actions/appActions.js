@@ -31,6 +31,7 @@ export const SET_UNREAD = 'SET_UNREAD';
 export const SET_PAIRS = 'SET_PAIRS';
 export const CHANGE_PAIR = 'CHANGE_PAIR';
 export const SET_TICKERS = 'SET_TICKERS';
+export const SET_TICKER_FROM_TRADE = 'SET_TICKER_FROM_TRADE';
 export const CHANGE_THEME = 'CHANGE_THEME';
 export const SET_ORDER_LIMITS = 'SET_ORDER_LIMITS';
 export const FEES_STRUCTURE_AND_LIMITS = 'FEES_STRUCTURE_AND_LIMITS';
@@ -154,8 +155,24 @@ export const changePair = (pair) => ({
 	}
 });
 
+export const getTickers = () => {
+	return (dispatch) => {
+		axios
+			.get('/ticker/all')
+			.then((res) => {
+				dispatch({
+					type: SET_TICKERS,
+					payload: res.data
+				});
+			})
+			.catch((err) => {
+				// console.log('err', err);
+			});
+	}
+};
+
 export const setTickers = (data) => ({
-	type: SET_TICKERS,
+	type: SET_TICKER_FROM_TRADE,
 	payload: data
 });
 

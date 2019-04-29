@@ -42,6 +42,9 @@ $tab_controller-item-min-width: 10rem;
 			opacity: 0.7;
 		}
 	}
+	.tab-trade {
+		padding: 0 1px 12px !important;
+	}
 	.tab_item-active {
 		border-top: $tab-selected-line-height solid $tab-border-color;
 		color: $colors-main-black;
@@ -60,7 +63,7 @@ $tab_controller-item-min-width: 10rem;
 }
 
 .dark-theme {
-	$disabled-color: $dark-tab-inactive !important;
+	$disabled-color: $colors-deactivate-color2 !important;
 	$active-color: $dark-tab-active !important;
 	.tab_controller-tabs {
 		border-top-color: $dark-border-main !important;

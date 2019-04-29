@@ -63,7 +63,7 @@ class VerifyEmailRequest extends Component {
 		if (success) {
 			return (
 				<div>
-					<EmailRequestSuccess onClick={this.onOpenDialog} />
+					<EmailRequestSuccess activeTheme = {activeTheme} onClick={this.onOpenDialog} />
 					<Dialog
 						isOpen={showContactForm}
 						label="contact-modal"

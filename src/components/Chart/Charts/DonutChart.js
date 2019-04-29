@@ -1,6 +1,7 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { pie, arc } from 'd3-shape';
 import { Link } from 'react-router';
+import classnames from 'classnames';
 
 import STRINGS from '../../../config/localizedStrings';
 
@@ -26,7 +27,8 @@ class DonutChart extends Component {
     state = {
         width: 0,
         height: 0,
-        isData: true
+        isData: true,
+        hoverId: ''
     }
 
     componentDidMount() {
@@ -45,6 +47,14 @@ class DonutChart extends Component {
     checkData = (data = []) => {
         const checkFilter = data.filter(value => value.balance > 0);
         return !!checkFilter.length;
+    };
+
+    handleHover = id => {
+        this.setState({ hoverId: `slice-${id}` });
+    };
+
+    handleOut = () => {
+        this.setState({ hoverId: '' });
     };
 
     render() {
@@ -110,8 +120,9 @@ class DonutChart extends Component {
             <div id="donut-container" className="w-100 h-100">
                 <svg width="100%" height="100%">
                     <g transform={translate(x, y)}>
-                        {sortedData.map((value, i) =>
-                            this.renderSlice(value, i, width, height)
+                        {sortedData.map((value, i) => {
+                            return this.renderSlice(value, i, width, height)
+                        }
                         )}
                     </g>
                 </svg>
@@ -161,19 +172,28 @@ class DonutChart extends Component {
         } else if (data.balance > 0) {
             return (
                 <g key={i}>
-                    <path d={arcj(value)} className={`chart_${data.symbol}`} />
-                    <text transform={translate(valX, valY)}
-                        dy="20px"
-                        textAnchor="middle"
-                        className="donut-label-percentage">
-                        {data.balancePercentage}
-                    </text>
-                    <text transform={translate(valX, valY - 12)}
-                        dy="20px"
-                        textAnchor="middle"
-                        className="donut-label-pair">
-                        {data.shortName}
-                    </text>
+                    <path
+                        d={arcj(value)}
+                        className={classnames(`chart_${data.symbol}`, { 'slice_active': this.state.hoverId === `slice-${i}` })}
+                        onMouseOver={() => this.handleHover(i)}
+                        onMouseOut={this.handleOut} />
+                    {this.state.hoverId === `slice-${i}`
+                        ? <Fragment>
+                            <text transform={translate(valX, valY)}
+                                dy="20px"
+                                textAnchor="middle"
+                                className="donut-label-percentage">
+                                {data.balancePercentage}
+                            </text>
+                            <text transform={translate(valX, valY - 12)}
+                                dy="20px"
+                                textAnchor="middle"
+                                className="donut-label-pair">
+                                {data.shortName}
+                            </text>
+                        </Fragment>
+                        : null
+                    }
                 </g>
             );
         } else {

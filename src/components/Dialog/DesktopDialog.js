@@ -71,6 +71,8 @@ class Dialog extends PureComponent {
 	}
 }
 
+Modal.setAppElement('#root');
+
 Dialog.defaultProps = {
 	shouldCloseOnOverlayClick: true,
 	showCloseText: true,

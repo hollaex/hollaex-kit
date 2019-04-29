@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 23.0.3, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.2" baseProfile="tiny" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+	 x="0px" y="0px" viewBox="0 0 89.05 89.05" xml:space="preserve">
+<style type="text/css">
+	.limit-trade-tick{fill:#000000;}
+</style>
+<path class="limit-trade-tick" d="M76.01,13.04c-17.39-17.39-45.58-17.39-62.97,0c-17.39,17.39-17.39,45.58,0,62.97s45.58,17.39,62.97,0
+	C93.4,58.62,93.4,30.43,76.01,13.04z M63.89,33.13L42.83,63.74c-0.63,0.91-1.61,1.52-2.7,1.69c-0.2,0.03-0.4,0.04-0.59,0.04
+	c-0.9,0-1.77-0.3-2.48-0.87l-11.08-8.78c-1.73-1.37-2.02-3.89-0.65-5.62c1.37-1.73,3.89-2.02,5.62-0.65l7.73,6.13L57.3,28.6
+	c1.25-1.82,3.74-2.28,5.56-1.03C64.68,28.82,65.14,31.31,63.89,33.13z"/>
+</svg>

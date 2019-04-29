@@ -131,7 +131,7 @@ const getRequirements = (user, level, lastMonthVolume) => {
     return verificationObj[`level_${level}`];
 };
 
-const getStatusClass = status_code => {
+const getStatusClass = (status_code, completed) => {
     switch (status_code) {
         case 0:
             return 'requirement-not-verified';
@@ -142,6 +142,9 @@ const getStatusClass = status_code => {
         case 3:
             return 'requirement-verified';
         default:
+            if (status_code === undefined && completed === false) {
+                return 'requirement-not-verified';
+            }
             return '';
     }
 };
@@ -166,6 +169,9 @@ const getStatusIcon = (reqObj, isAccountDetails) => {
             case 3:
                 return <SucessStatus isAccountDetails={isAccountDetails} />;
             default:
+                if (reqObj.status === undefined && reqObj.completed === false) {
+                    return <IncompleteStatus isAccountDetails={isAccountDetails} />;
+                }
                 return '';
         }
     }
@@ -192,7 +198,7 @@ const SummaryRequirements = ({ user, isAccountDetails = false, contentClassName 
                                     "d-flex",
                                     "justify-content-between",
                                     {
-                                        [getStatusClass(reqObj.status)]: !isAccountDetails
+                                        [getStatusClass(reqObj.status, reqObj.completed)]: !isAccountDetails
                                     })}
                             >
                                 <div>{`${step}. ${reqObj.title}`}</div>

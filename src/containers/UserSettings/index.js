@@ -57,6 +57,12 @@ class UserSettings extends Component {
 		if (JSON.stringify(this.props.settings) !== JSON.stringify(nextProps.settings)) {
 			this.updateTabs(nextProps, this.state.activeTab);
 		}
+		if (JSON.stringify(this.props.location.query) !== JSON.stringify(nextProps.location.query)
+			&& nextProps.location.query && nextProps.location.query.tab) {
+				this.setState({ activeTab: parseInt(nextProps.location.query.tab, 10) }, () => {
+					this.updateTabs(nextProps, this.state.activeTab);
+				});
+		}
 	}
 	
 	componentWillUpdate(nextProps, nextState) {
@@ -287,9 +293,7 @@ class UserSettings extends Component {
 		}
 	};
 	removeQueryString=() => {
-        const { location } = this.props;
-		['tab'].forEach(q => delete location.query[q]);
-		browserHistory.push(location);
+		browserHistory.push('/settings');
 	}
 
 	render() {

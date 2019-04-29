@@ -47,7 +47,8 @@ export const ICONS = {
 	BCH_ICON: `${process.env.PUBLIC_URL}/assets/icons/bch-icon.svg`,
 	BCH_ICON_DARK: `${process.env.PUBLIC_URL}/assets/icons/bch-icon.svg`,
 	BCH_NAV_ICON: `${process.env.PUBLIC_URL}/assets/icons/bch-icon-nav.svg`,
-	CHECK: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-06.svg`,
+	CHECK: `${process.env.PUBLIC_URL}/assets/images/Orderbook scrolling-01.svg`,
+	DARK_CHECK: `${process.env.PUBLIC_URL}/assets/images/dark-Orderbook-scrolling-01.svg`,
 	BLUE_QUESTION: `${
 		process.env.PUBLIC_URL
 	}/assets/acounts/account-icons-08.svg`,
@@ -142,7 +143,10 @@ export const ICONS = {
 	}/assets/images/update-quick-trade.svg`,
 	VERIFICATION_SENT: `${
 		process.env.PUBLIC_URL
-	}/assets/images/verification-resent.svg`,
+	}/assets/images/resend-email-light.svg`,
+	VERIFICATION_SENT_DARK: `${
+		process.env.PUBLIC_URL
+	}/assets/images/resend-email.svg`,
 	WITHDRAW: `${process.env.PUBLIC_URL}/assets/images/withdraw.svg`,
 	WITHDRAW_HISTORY: `${
 		process.env.PUBLIC_URL
@@ -258,6 +262,12 @@ export const ICONS = {
 	SIDEBAR_TRADING_INACTIVE: `${
 		process.env.PUBLIC_URL
 	}/assets/images/trade-inactive.svg`,
+	SIDEBAR_QUICK_TRADING_ACTIVE: `${
+		process.env.PUBLIC_URL
+	}/assets/images/quick-trade-tab-selected-01.svg`,
+	SIDEBAR_QUICK_TRADING_INACTIVE: `${
+		process.env.PUBLIC_URL
+	}/assets/images/quick-trade-tab-01-01.svg`,
 	ARROW_TRANSFER_HISTORY_ACTIVE: `${
 		process.env.PUBLIC_URL
 	}/assets/images/arrow-trans-history-active.svg`,
@@ -278,7 +288,7 @@ export const ICONS = {
 	}/assets/images/api-key-generate-dark.svg`, 
 	TOKEN_CREATED: `${process.env.PUBLIC_URL}/assets/images/api-key-created.svg`,
 	TOKEN_CREATED_DARK: `${process.env.PUBLIC_URL}/assets/images/api-key-created-dark.svg`,
-	CHECK_ORDER: `${process.env.PUBLIC_URL}/assets/images/check-order.svg`,
+	CHECK_ORDER: `${process.env.PUBLIC_URL}/assets/images/check-order-popup-01.svg`,
 	ITEM_OPTIONS: `${process.env.PUBLIC_URL}/assets/images/item-options.svg`,
 	DOTTED_GRIP: `${
 		process.env.PUBLIC_URL
@@ -294,6 +304,8 @@ export const ICONS = {
 	TAB_VERIFY: `${process.env.PUBLIC_URL}/assets/images/tab-verify.svg`,
 	TAB_SETTING: `${process.env.PUBLIC_URL}/assets/images/tab-setting.svg`,
 	TAB_API: `${process.env.PUBLIC_URL}/assets/images/tab-api.svg`,
+	TRADE_FILLED_SUCESSFUL:`${process.env.PUBLIC_URL}/assets/images/Orderbook scrolling-01.svg`,
+	TRADE_PARTIALLY_FILLED:`${process.env.PUBLIC_URL}/assets/images/part-fill.svg`,
 	TAB_SIGNOUT: `${process.env.PUBLIC_URL}/assets/images/signout.svg`,
 	DOUBLE_ARROW: `${process.env.PUBLIC_URL}/assets/images/double-arrow.svg`,
 	SEARCH: `${process.env.PUBLIC_URL}/assets/images/search.svg`,
@@ -474,9 +486,9 @@ export const WITHDRAW_LIMITS = {
 		STEP: process.env.REACT_APP_WITHDRAWAL_BTC_STEP || 0.0001
 	},
 	eth: {
-		MIN: process.env.REACT_APP_WITHDRAWAL_ETH_MIN || 0.0001,
+		MIN: process.env.REACT_APP_WITHDRAWAL_ETH_MIN || 0.001,
 		MAX: process.env.REACT_APP_WITHDRAWAL_ETH_MAX || 10,
-		STEP: process.env.REACT_APP_WITHDRAWAL_ETH_STEP || 0.0001,
+		STEP: process.env.REACT_APP_WITHDRAWAL_ETH_STEP || 0.001,
 		MIN_FEE: parseFloat(process.env.REACT_APP_ETH_MIN_FEE || 0.001)
 	},
 	bch: {

@@ -20,6 +20,8 @@ const MobileTrade = ({
 	orderbookProps,
 	symbol,
 	goToPair,
+	priceInitialized,
+	sizeInitialized,
 	pair
 }) => (
 	<div
@@ -32,14 +34,14 @@ const MobileTrade = ({
 		)}
 	>
 		<TradeBlock
-			title={STRINGS.ORDER_ENTRY}
+			title={''}
 			className="p-relative order-book flex-column"
 			alignChildY={true}
 		>
 			<MobileDropdownWrapper goToPair={goToPair} />
-			<Link className={classnames('blue-link', 'mb-2', 'caps')} to={`/quick-trade/${pair}`}>
+			{/* <Link className={classnames('blue-link', 'mb-2', 'caps')} to={`/quick-trade/${pair}`}>
 				{STRINGS.QUICK_TRADE_MODE}
-			</Link>
+			</Link> */}
 			<OrderEntry
 				submitOrder={onSubmitOrder}
 				openCheckOrder={openCheckOrder}
@@ -50,6 +52,8 @@ const MobileTrade = ({
 				bids={bids}
 				marketPrice={marketPrice}
 				showPopup={settings.orderConfirmationPopup}
+				priceInitialized={priceInitialized}
+				sizeInitialized={sizeInitialized}
 			/>
 		</TradeBlock>
 		<TradeBlock title={STRINGS.ORDERBOOK} className="order-entry">

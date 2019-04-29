@@ -356,7 +356,7 @@ export default {
 	},
 	USER_VERIFICATION: {
 		INFO_TXT: 'Here you can monitor your progress towards verification and an account upgrades.', // ToDo: Here we need to add this in farsi
-		INFO_TXT_1: 'Please submit the relevent information needed for each section below.Only when all sections have submissions completed will your information be reviewed and approved for an account upgrade.', // ToDo: Here we need to add this in farsi
+		INFO_TXT_1: 'Please submit the relevant information needed for each section below.Only when all sections have submissions completed will your information be reviewed and approved for an account upgrade.', // ToDo: Here we need to add this in farsi
 		INFO_TXT_2: '* Bank and Identity section require {0} in order to be fully verified.', // ToDo: Here we need to add this in farsi
 		DOCUMENTATIONS: 'documentations',
 		COMPLETED: 'Completed',
@@ -601,7 +601,7 @@ export default {
 			TRADE_POPUPS: 'Trade Pop ups',
 			POPUP_ORDER_CONFIRMATION: 'Ask for confirmation before submitting orders',
 			POPUP_ORDER_COMPLETED: 'Show pop up when order has been completed',
-			POPUP_ORDER_PARTIALLY_FILLED: 'Show pop up when order has partially filled pop up',
+			POPUP_ORDER_PARTIALLY_FILLED: 'Show pop up when order has partially filled',
 		},
 		AUDIO_CUE_FORM: {
 			ORDERS_COMPLETED_AUDIO: 'Play an audio cue when one of your orders is fully filled',

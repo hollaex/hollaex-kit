@@ -53,7 +53,7 @@ const DepositNotification = ({ data, onClose, goToPage, openContactForm }) => {
 			</div>
 			<div className="notification-buttons-wrapper d-flex">
 				<Button label={STRINGS.NOTIFICATIONS.BUTTONS.OKAY} onClick={onClose} />
-				<div className="separator" />
+				{/* <div className="separator" />
 				<Button
 					className={classnames(
 						`button-${data.currency}`,
@@ -68,7 +68,7 @@ const DepositNotification = ({ data, onClose, goToPage, openContactForm }) => {
 						goToPage(data.currency === fiatSymbol ? 'trade' : 'transactions');
 						onClose();
 					}}
-				/>
+				/> */}
 			</div>
 		</div>
 	);
