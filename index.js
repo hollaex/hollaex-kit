@@ -97,14 +97,16 @@ class HollaEx {
 	 * @param {string} currency The currency to filter by, pass undefined to receive data on all currencies
 	 * @param {number} limit The upper limit of deposits to return, max = 100
 	 * @param {number} page The page of data to receive
+	 * @param {string} orderBy The field to order data by e.g. amount, created_at
+	 * @param {string} order asc or desc
 	 * @return {string} A stringified JSON object with the keys count(total number of user's deposits) and data(array of deposits as objects with keys id(number), type(string), amount(number), transaction_id(string), currency(string), created_at(string), status(boolean), fee(number), dismissed(boolean), rejected(boolean), description(string))
 	 */
-	getDeposit(currency, limit = 50, page = 1) {
+	getDeposit(currency, limit = 50, page = 1, orderBy, order = 'asc') {
 		return createRequest(
 			'GET',
 			`${
 				this._url
-			}/user/deposits?limit=${limit}&page=${page}&currency=${currency}`,
+			}/user/deposits?limit=${limit}&page=${page}&currency=${currency}&orderBy=${orderBy}&order=${order}`,
 			this._headers
 		);
 	}
@@ -115,14 +117,16 @@ class HollaEx {
 	 * @param {string} currency The currency to filter by, pass undefined to receive data on all currencies
 	 * @param {number} limit The upper limit of withdrawals to return, max = 100
 	 * @param {number} page The page of data to receive
+	 * @param {string} orderBy The field to order data by e.g. amount, created_at
+	 * @param {string} order asc or desc
 	 * @return {string} A stringified JSON object with the keys count(total number of user's withdrawals) and data(array of withdrawals as objects with keys id(number), type(string), amount(number), transaction_id(string), currency(string), created_at(string), status(boolean), fee(number), dismissed(boolean), rejected(boolean), description(string))
 	 */
-	getWithdrawal(currency, limit = 50, page = 1) {
+	getWithdrawal(currency, limit = 50, page = 1, orderBy, order = 'asc') {
 		return createRequest(
 			'GET',
 			`${
 				this._url
-			}/user/withdrawals?limit=${limit}&page=${page}&currency=${currency}`,
+			}/user/withdrawals?limit=${limit}&page=${page}&currency=${currency}&orderBy=${orderBy}&order=${order}`,
 			this._headers
 		);
 	}

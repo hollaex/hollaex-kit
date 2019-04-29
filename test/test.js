@@ -144,7 +144,7 @@ describe('Private functions', function() {
 		});
 	});
 
-	describe('#getDeposit(currency, limit, page)', function() {
+	describe('#getDeposit(currency, limit, page, orderBy, order)', function() {
 		it('Get the deposit output', function(done) {
 			client.getDeposit().then((result) => {
 				const data = JSON.parse(result);
@@ -177,9 +177,20 @@ describe('Private functions', function() {
 				done();
 			});
 		});
+		it('Get results in descending order by amount field', function(done) {
+			client.getDeposit(undefined, 2, 1, 'amount', 'desc').then((result) => {
+				const data = JSON.parse(result);
+				expect(data).to.be.an('object');
+				expect(data).not.be.empty;
+				expect(data).to.have.property('count');
+				expect(data).to.have.property('data');
+				expect(data.data[0].amount).to.be.at.least(data.data[1].amount);
+				done();
+			});
+		});
 	});
 
-	describe('#getWithdrawal(currency, limit, page)', function() {
+	describe('#getWithdrawal(currency, limit, page, orderBy, order)', function() {
 		it('Get the withdrawal output', function(done) {
 			client.getWithdrawal().then((result) => {
 				const data = JSON.parse(result);
@@ -208,6 +219,17 @@ describe('Private functions', function() {
 				expect(data).to.have.property('count');
 				expect(data).to.have.property('data');
 				expect(data.data[0].currency).to.equal('btc');
+				done();
+			});
+		});
+		it('Get results in descending order by amount field', function(done) {
+			client.getWithdrawal(undefined, 2, 1, 'amount', 'desc').then((result) => {
+				const data = JSON.parse(result);
+				expect(data).to.be.an('object');
+				expect(data).not.be.empty;
+				expect(data).to.have.property('count');
+				expect(data).to.have.property('data');
+				expect(data.data[0].amount).to.be.at.least(data.data[1].amount);
 				done();
 			});
 		});
@@ -241,7 +263,7 @@ describe('Private functions', function() {
 				})
 				.catch((err) => {
 					console.log(
-						'*****ATTENTION: Disable Two-Factor Authenication to enable this function*****'
+						'*****ATTENTION: Disable Two-Factor Authentication to enable this function*****'
 					);
 					expect(err.response.body).to.include('Invalid OTP Code');
 					done();
