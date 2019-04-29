@@ -1,9 +1,10 @@
 {
 	"name": "hollaex-node-lib",
-	"version": "0.3.2",
+	"version": "0.4.0",
 	"description": "",
 	"main": "index.js",
 	"dependencies": {
+		"lodash": "4.17.11",
 		"request": "2.88.0",
 		"request-promise": "4.2.2",
 		"socket.io-client": "2.2.0"
