@@ -47,7 +47,7 @@ const calculateValues = (data = [], pair) => {
 		if (side === SIDE_BUY) {
 			calcSize = filled || size;
 		} else if (side === SIDE_SELL) {
-			calcSize = size;
+			calcSize = filled || size;
 		}
 		baseAccumulated = math.add(baseAccumulated, math.fraction(calcSize));
 		const orderValue = math.multiply(math.fraction(price), math.fraction(calcSize));
