@@ -93,20 +93,38 @@ class HollaEx {
 	}
 
 	/**
-	 * Retrieve list of up to the user's last 50 deposits
+	 * Retrieve list of the user's deposits
+	 * @param {string} currency The currency to filter by, pass undefined to receive data on all currencies
+	 * @param {number} limit The upper limit of deposits to return, max = 100
+	 * @param {number} page The page of data to receive
 	 * @return {string} A stringified JSON object with the keys count(total number of user's deposits) and data(array of deposits as objects with keys id(number), type(string), amount(number), transaction_id(string), currency(string), created_at(string), status(boolean), fee(number), dismissed(boolean), rejected(boolean), description(string))
 	 */
 	getDeposit(currency, limit = 50, page = 1) {
-		return createRequest('GET', `${this._url}/user/deposits?limit=${limit}&page=${page}&currency=${currency}`, this._headers);
+		return createRequest(
+			'GET',
+			`${
+				this._url
+			}/user/deposits?limit=${limit}&page=${page}&currency=${currency}`,
+			this._headers
+		);
 	}
 
 	/****** Withdrawals ******/
 	/**
-	 * Retrieve list of up to the user's last 50 withdrawals
+	 * Retrieve list of the user's withdrawals
+	 * @param {string} currency The currency to filter by, pass undefined to receive data on all currencies
+	 * @param {number} limit The upper limit of withdrawals to return, max = 100
+	 * @param {number} page The page of data to receive
 	 * @return {string} A stringified JSON object with the keys count(total number of user's withdrawals) and data(array of withdrawals as objects with keys id(number), type(string), amount(number), transaction_id(string), currency(string), created_at(string), status(boolean), fee(number), dismissed(boolean), rejected(boolean), description(string))
 	 */
 	getWithdrawal(currency, limit = 50, page = 1) {
-		return createRequest('GET', `${this._url}/user/withdrawals?limit=${limit}&page=${page}&currency=${currency}`, this._headers);
+		return createRequest(
+			'GET',
+			`${
+				this._url
+			}/user/withdrawals?limit=${limit}&page=${page}&currency=${currency}`,
+			this._headers
+		);
 	}
 
 	/**
@@ -143,7 +161,10 @@ class HollaEx {
 	}
 
 	/**
-	 * Retrieve list of up to the user's last 50 trades
+	 * Retrieve list of the user's completed trades
+	 * @param {string} symbol The symbol-pair to filter by, pass undefined to receive data on all currencies
+	 * @param {number} limit The upper limit of completed trades to return, max = 100
+	 * @param {number} page The page of data to receive
 	 * @return {string} A stringified JSON object with the keys count(total number of user's completed trades) and data(array of up to the user's last 50 completed trades as objects with keys side(string), symbol(string), size(number), price(number), timestamp(string), and fee(number))
 	 */
 	getUserTrade(symbol, limit = 50, page = 1) {
@@ -151,7 +172,11 @@ class HollaEx {
 		if (symbol) {
 			queryString += `&symbol=${symbol}`;
 		}
-		return createRequest('GET', `${this._url}/user/trades${queryString}`, this._headers);
+		return createRequest(
+			'GET',
+			`${this._url}/user/trades${queryString}`,
+			this._headers
+		);
 	}
 
 	/****** Orders ******/

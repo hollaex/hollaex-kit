@@ -144,7 +144,7 @@ describe('Private functions', function() {
 		});
 	});
 
-	describe('#getDeposit()', function() {
+	describe('#getDeposit(currency, limit, page)', function() {
 		it('Get the deposit output', function(done) {
 			client.getDeposit().then((result) => {
 				const data = JSON.parse(result);
@@ -166,14 +166,48 @@ describe('Private functions', function() {
 				done();
 			});
 		});
+		it('Get only BTC deposits', function(done) {
+			client.getDeposit('btc', 1).then((result) => {
+				const data = JSON.parse(result);
+				expect(data).to.be.an('object');
+				expect(data).not.be.empty;
+				expect(data).to.have.property('count');
+				expect(data).to.have.property('data');
+				expect(data.data[0].currency).to.equal('btc');
+				done();
+			});
+		});
 	});
 
-	describe('#getWithdrawal()', function() {
+	describe('#getWithdrawal(currency, limit, page)', function() {
 		it('Get the withdrawal output', function(done) {
 			client.getWithdrawal().then((result) => {
 				const data = JSON.parse(result);
 				expect(data).to.be.an('object');
 				expect(data).not.be.empty;
+				done();
+			});
+		});
+		it('Get only 2 withdrawals', function(done) {
+			client.getWithdrawal(undefined, 2).then((result) => {
+				const data = JSON.parse(result);
+				expect(data).to.be.an('object');
+				expect(data).not.be.empty;
+				expect(data).to.have.property('count');
+				expect(data).to.have.property('data');
+				expect(data).to.have.property('count');
+				expect(data.data).to.have.lengthOf(2);
+				done();
+			});
+		});
+		it('Get only BTC withdrawals', function(done) {
+			client.getWithdrawal('btc', 1).then((result) => {
+				const data = JSON.parse(result);
+				expect(data).to.be.an('object');
+				expect(data).not.be.empty;
+				expect(data).to.have.property('count');
+				expect(data).to.have.property('data');
+				expect(data.data[0].currency).to.equal('btc');
 				done();
 			});
 		});
@@ -287,12 +321,31 @@ describe('Private functions', function() {
 		});
 	});
 
-	describe('#getUserTrade()', function() {
+	describe('#getUserTrade(symbol, limit, page)', function() {
 		it('Get the user trade output', function(done) {
 			client.getUserTrade().then((result) => {
 				const data = JSON.parse(result);
 				expect(data).to.be.an('object');
 				expect(data).not.be.empty;
+				expect(data).to.have.property('count');
+				expect(data).to.have.property('data');
+				done();
+			});
+		});
+		it('Get one user trade output', function(done) {
+			client.getUserTrade(undefined, 2).then((result) => {
+				const data = JSON.parse(result);
+				expect(data).to.be.an('object');
+				expect(data).not.be.empty;
+				expect(data).to.have.property('count');
+				expect(data).to.have.property('data');
+				expect(data.data).to.have.lengthOf(2);
+				done();
+			});
+		});
+		it('Get error message when passing invalid symbol', function(done) {
+			client.getUserTrade(123).catch((err) => {
+				expect(err.response.body).to.include('Invalid symbol');
 				done();
 			});
 		});
