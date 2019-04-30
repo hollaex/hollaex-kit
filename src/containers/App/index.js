@@ -414,7 +414,10 @@ class Container extends Component {
 							this.props.setNotification(NOTIFICATIONS.TRADES, { data, order });
 						}
 					}
-					if (this.state.limitFilledOnOrder && data.filter((limit) => limit.order.id === this.state.limitFilledOnOrder).length) {
+					if (this.state.limitFilledOnOrder
+						&& data.filter((limit) => limit.order.id === this.state.limitFilledOnOrder).length
+						&& this.props.settings.audio
+						&& this.props.settings.audio.order_completed) {
 						setTimeout(() => {
 							playBackgroundAudioNotification('order_filled');
 						}, 1000);
