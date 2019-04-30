@@ -87,7 +87,8 @@ $row--size: calc(#{$row--height} - #{$sidebar-sections-padding});
 			text-align: center;
 			margin-top: -17PX;
 			font-weight: lighter;
-			color: $colors-deactivate-color2
+			color: $colors-deactivate-color2;
+			white-space: nowrap;
 		}
 		.bottom-text-acttive {
 			color: black !important;
