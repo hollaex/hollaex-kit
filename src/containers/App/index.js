@@ -231,6 +231,7 @@ class Container extends Component {
 		publicSocket.on('trades', (data) => {
 			// console.log('trades', data);
 			this.props.setTrades(data);
+			this.props.setTickers(data);
 			if (data.action === "update"
 				&& this.props.settings.audio
 				&& this.props.settings.audio.public_trade
@@ -242,7 +243,7 @@ class Container extends Component {
 
 		publicSocket.on('ticker', (data) => {
 			// console.log('ticker', data);
-			this.props.setTickers(data);
+			// this.props.setTickers(data);
 		});
 	};
 
@@ -292,7 +293,7 @@ class Container extends Component {
 
 		privateSocket.on('trades', ({ action, data }) => {
 			// console.log('trades', action, data);
-			this.props.addUserTrades(data);
+			// this.props.addUserTrades(data);
 		});
 
 		privateSocket.on('wallet', ({ action, balance }) => {
@@ -751,6 +752,8 @@ class Container extends Component {
 										activeNotification.type === CONTACT_FORM ||
 										activeNotification.type === HELPFUL_RESOURCES_FORM ||
 										activeNotification.type === NOTIFICATIONS.NEW_ORDER ||
+										(activeNotification.type === NOTIFICATIONS.TRADES && !isMobile) ||
+										(activeNotification.type === NOTIFICATIONS.ORDERS && !isMobile) ||
 										activeNotification.type === NOTIFICATIONS.ERROR
 									)
 								}

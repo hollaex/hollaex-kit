@@ -41,9 +41,9 @@ class TabOverflowList extends Component {
             <div id="tab-overflow-list" className="app-bar-add-tab-menu">
                 <div className="app-bar-tab-overflow-content">
                     {Object.keys(selectedTabs).map((pair, index) => {
-                        let menu = selectedTabs[pair];
+                        let menu = selectedTabs[pair] || {};
                         let { formatToCurrency } = CURRENCIES[menu.pair_base || BASE_CURRENCY];
-                        let ticker = tickers[pair];
+                        let ticker = tickers[pair] || {};
                         let priceDifference = (ticker.close || 0) - (ticker.open || 0);
                         const tickerPercent = ((priceDifference / ticker.open) * 100);
                         let priceDifferencePercent = tickerPercent==='NaN' ? formatPercentage(tickerPercent) : formatPercentage(0);

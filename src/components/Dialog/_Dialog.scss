@@ -90,11 +90,8 @@ $close-button--margin: 1.5rem;
 	.success_display-wrapper {
 		color: $dark-font-main-text-color;
 
-		.success-check-1 {
-			stroke: $dark-font-main-text-color;
-		}
-		.success-check-2 {
-			stroke: $dark-font-main-text-color;
+		.limit-trade-tick {
+			color: $dark-icon-color
 		}
 	}
 	.close-button {
@@ -109,6 +106,10 @@ $close-button--margin: 1.5rem;
 .layout-mobile {
 	.ReactModal__Overlay {
 		background-color: transparent !important;
+	}
+
+	.success_display-wrapper {
+		margin: auto
 	}
 
 	.ReactModal__Content {

@@ -1,0 +1,20 @@
+
+.theme-dark .layout__area--top div {
+    background-color: #1F212A !important;
+}
+
+.screen-container {
+    border: 1px solid #d1d1d1;
+    display: flex;
+    padding-top: 1px;
+    padding-right: 6px;
+    align-items: center;
+}
+
+.screen-content {
+    margin: 5px;
+}
+
+.theme-dark .screen-container { 
+   border: 1px solid #646464;
+}

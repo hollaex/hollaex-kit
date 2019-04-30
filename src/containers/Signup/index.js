@@ -78,7 +78,7 @@ class Signup extends Component {
 		const { success, showContactForm } = this.state;
 
 		if (success) {
-			return <SignupSuccess />;
+			return <SignupSuccess activeTheme={activeTheme} />;
 		}
 
 		const formFields = generateFormFields(STRINGS, activeTheme);

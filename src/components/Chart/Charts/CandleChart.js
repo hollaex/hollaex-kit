@@ -5,11 +5,11 @@ import { fitWidth } from "react-stockcharts/lib/helper";
 import CustomChart from '../CustomChart';
 import { CandlesProps } from '../props';
 
-const CandleChart = (props) => (
-	<CustomChart {...props}>
+const CandleChart = React.forwardRef((props, ref) => (
+	<CustomChart ref={ref} {...props}>
 		<CandlestickSeries {...CandlesProps(props.theme)} />
 	</CustomChart>
-);
+));
 
 CandleChart.propTypes = {
 	data: PropTypes.array.isRequired,

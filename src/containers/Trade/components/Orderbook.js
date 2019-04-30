@@ -88,11 +88,12 @@ class Orderbook extends Component {
 
 	render() {
 		const { asks, bids, pairData, pair } = this.props;
+		// const blockStyle = {};
 		const { dataBlockHeight } = this.state;
 		const blockStyle =
 			dataBlockHeight > 0
 				? {
-						maxHeight: dataBlockHeight,
+						// maxHeight: dataBlockHeight,
 						minHeight: dataBlockHeight
 					}
 				: {};
@@ -113,6 +114,9 @@ class Orderbook extends Component {
 						{STRINGS.formatString(STRINGS.AMOUNT_SYMBOL, pairBase)}
 					</div>
 				</div>
+				<div className="trade_asks-limit_bar">
+					<LimitBar text={STRINGS.ORDERBOOK_SELLERS} />
+				</div>
 				<div
 					ref={this.setRefs('wrapper')}
 					className={classnames('trade_orderbook-content', 'f-1', 'overflow-y')}
@@ -121,14 +125,12 @@ class Orderbook extends Component {
 						className={classnames(
 							'trade_orderbook-asks',
 							'd-flex',
-							'flex-column-reverse',
-							'overflow-y'
+							'flex-column-reverse'
 						)}
 						style={blockStyle}
 						ref={this.setRefs('asksWrapper')}
 					>
 						{asks.map(PriceRow(pairBase, pairTwo, 'ask', this.onPriceClick, this.onAmountClick))}
-						<LimitBar text={STRINGS.ORDERBOOK_SELLERS} />
 					</div>
 					<div
 						className="trade_orderbook-spread d-flex align-items-center"
@@ -149,15 +151,16 @@ class Orderbook extends Component {
 						className={classnames(
 							'trade_orderbook-bids',
 							'd-flex',
-							'flex-column',
-							'overflow-y'
+							'flex-column'
 						)}
 						ref={this.setRefs('bidsWrapper')}
 						style={blockStyle}
 					>
 						{bids.map(PriceRow(pairBase, pairTwo, 'bids', this.onPriceClick, this.onAmountClick))}
-						<LimitBar text={STRINGS.ORDERBOOK_BUYERS} />
 					</div>
+				</div>
+				<div className="trade_bids-limit_bar">
+					<LimitBar text={STRINGS.ORDERBOOK_BUYERS} />
 				</div>
 			</div>
 		);

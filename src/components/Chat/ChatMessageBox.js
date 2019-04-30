@@ -26,7 +26,7 @@ export const ChatMessageBox = ({
 	</div>:
 	<div className={classnames('d-flex', 'username-to-chat')} >
 		<Link
-		to={'/account/settings/username'}
+		to={'/account/settings/username?tab=3'}
 		>
 			SET USERNAME TO CHAT
 		</Link>

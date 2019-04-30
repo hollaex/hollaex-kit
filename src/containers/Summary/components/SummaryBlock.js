@@ -14,7 +14,7 @@ const SummaryBlock = (props) => {
                     }
                 </div>}
                 <div className="summary-block-title">{title}</div>
-                {secondaryTitle && <div>: {secondaryTitle}</div>}
+                {secondaryTitle && <div className="summary-block-secondaryTitle">: {secondaryTitle}</div>}
             </div>
             {children}
         </div>

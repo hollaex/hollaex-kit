@@ -22,7 +22,7 @@ import {
     formatAverage,
     formatFiatAmount,
     calculateBalancePrice,
-    formatPercentage,
+    donutFormatPercentage,
     calculatePrice,
     calculatePricePercentage } from '../../utils/currency';
 import { getLastMonthVolume } from './components/utils';
@@ -110,7 +110,7 @@ class Summary extends Component {
                 ...CURRENCIES[currency],
                 balance: balancePercent,
                 balanceFormat: formatToCurrency(currencyBalance),
-                balancePercentage: formatPercentage(balancePercent),
+                balancePercentage: donutFormatPercentage(balancePercent),
             });
         });
 

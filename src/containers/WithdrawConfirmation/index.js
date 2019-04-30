@@ -62,6 +62,7 @@ class ConfirmWithdrawal extends Component {
                     iconPath: ICONS.COIN_WITHDRAW_BTC,
                     text: STRINGS.SUCCESS_TEXT
                 },
+                useSvg: true,
                 child: <div className='text-center mb-4'>
                     <div>{STRINGS.WITHDRAW_PAGE.WITHDRAW_CONFIRM_SUCCESS_1}</div>
                     <div>{STRINGS.WITHDRAW_PAGE.WITHDRAW_CONFIRM_SUCCESS_2}</div>

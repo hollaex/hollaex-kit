@@ -8,7 +8,7 @@ const SignupSuccess = ({ ...rest }) => {
 	return (
 		<div className="signup_success-wrapper auth_wrapper">
 			<IconTitle
-				iconPath={ICONS.CHECK}
+				iconPath={rest.activeTheme ==="dark" ? ICONS.DARK_CHECK: ICONS.CHECK}
 				text={STRINGS.VERIFICATION_TEXTS.TITLE}
 				textType="title"
 				className="w-100"

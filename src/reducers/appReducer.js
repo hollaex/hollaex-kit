@@ -10,7 +10,8 @@ import {
 	SET_PAIRS,
 	SET_TICKERS,
 	SET_UNREAD,
-	SET_ORDER_LIMITS
+	SET_ORDER_LIMITS,
+	SET_TICKER_FROM_TRADE
 } from '../actions/appActions';
 import { THEME_DEFAULT } from '../config/constants';
 import { getLanguage } from '../utils/string';
@@ -152,6 +153,31 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 				tickers: {
 					...state.tickers,
 					...payload
+				}
+			};
+		case SET_TICKER_FROM_TRADE:
+			let tempTickers = {};
+			let pairs = Object.keys(state.pairs);
+			Object.keys(payload).map(key => {
+				if (pairs.includes(key)) {
+					let temp = state.tickers[key] || {};
+					let pairTrade = payload[key][0];
+					let close = pairTrade && pairTrade.price
+						? pairTrade.price
+						: temp.close
+							? temp.close
+							: 0;
+					tempTickers[key] = {
+						...temp,
+						close
+					}
+				}
+			});
+			return {
+				...state,
+				tickers: {
+					...state.tickers,
+					...tempTickers
 				}
 			};
 		case SET_ORDER_LIMITS:

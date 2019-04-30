@@ -7,7 +7,7 @@ const EmailRequestSuccess = ({ onClick, ...rest }) => {
 	return (
 		<div className="signup_success-wrapper auth_wrapper">
 			<IconTitle
-				iconPath={ICONS.VERIFICATION_SENT}
+				iconPath={ rest.activeTheme === 'dark' ? ICONS.VERIFICATION_SENT_DARK : ICONS.VERIFICATION_SENT}
 				text={STRINGS.VERIFICATION_EMAIL_REQUEST_SUCCESS.TITLE}
 				textType="title"
 				className="w-100"

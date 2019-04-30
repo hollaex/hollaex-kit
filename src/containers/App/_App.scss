@@ -255,7 +255,6 @@ $inner_container-border: 1px solid $colors-main-black;
 	.action_notification-text,
 	.wallet-assets_block-table,
 	.accordion_section_content,
-	.verification_container .header-content,
 	.verification_container .content-text,
 	.table_body-wrapper,
 	.wallet_section-title-amount,
@@ -274,6 +273,9 @@ $inner_container-border: 1px solid $colors-main-black;
 	.popup_info-wrapper .popup_info-text,
 	.otp_secret {
 		font-size: 0.9rem !important;
+	}
+	.verification_container .header-content {
+		font-size: 1.2rem !important;
 	}
 	.app_bar-pair-tab {
 		min-width: 19rem !important;

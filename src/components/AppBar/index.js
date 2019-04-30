@@ -18,7 +18,7 @@ import { MobileBarWrapper } from '../';
 import STRINGS from '../../config/localizedStrings';
 import { isLoggedIn } from '../../utils/token';
 import { getMe, setMe } from '../../actions/userAction';
-import { setNotification, NOTIFICATIONS } from '../../actions/appActions';
+import { getTickers, setNotification, NOTIFICATIONS } from '../../actions/appActions';
 
 class AppBar extends Component {
 	state = {
@@ -39,6 +39,7 @@ class AppBar extends Component {
 		if (this.props.isHome && this.props.token) {
 			this.getUserDetails();
 		}
+		this.props.getTickers();
 	}
 	
 	componentWillReceiveProps(nextProps) {
@@ -260,7 +261,7 @@ class AppBar extends Component {
 				)}
 			>
 				<Link to="/">
-					<ReactSVG path={ICONS.LOGO_BLACK} wrapperClassName="homeicon-svg" />
+					<ReactSVG path={ICONS.LOGO_GREY} wrapperClassName="homeicon-svg" />
 				</Link>
 				{isHome && this.renderSplashActions(token, verifyingToken)}
 			</MobileBarWrapper>
@@ -342,7 +343,8 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = (dispatch) => ({
 	getMe: bindActionCreators(getMe, dispatch),
 	setMe: bindActionCreators(setMe, dispatch),
-	setNotification: bindActionCreators(setNotification, dispatch)
+	setNotification: bindActionCreators(setNotification, dispatch),
+	getTickers: bindActionCreators(getTickers, dispatch)
 });
 
 AppBar.defaultProps = {

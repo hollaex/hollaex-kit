@@ -136,7 +136,8 @@ $app-bar-pairs-up: green;
 	}
 
 	.app_bar-mobile {
-		background-color: $dark-navigation_bar-mobile--background;
+		
+		background-color: $colors-black;
 		.homeicon-svg svg {
 			.logo-black {
 				fill: $colors-main-black;
@@ -927,5 +928,11 @@ $app-bar-pairs-up: green;
 		.app-bar-tab-overflow-content {
 			font-size: 0.9rem;
 		}
+	}
+}
+.layout-mobile { 
+	.st0 {
+		fill: #ffffff;
+		stroke-miterlimit: 10;
 	}
 }

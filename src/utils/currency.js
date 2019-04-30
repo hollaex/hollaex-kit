@@ -161,3 +161,22 @@ export const fiatSymbol = 'fiat';
 export const fiatName = STRINGS.FIAT_NAME;
 export const fiatShortName = STRINGS.FIAT_SHORTNAME;
 export const fiatFormatToCurrency = formatFiatAmount;
+
+export const toFixed = (exponential) => {
+	if (Math.abs(exponential) < 1.0) {
+		let e = parseInt(exponential.toString().split('e-')[1], 10);
+		if (e) {
+			exponential *= Math.pow(10, e - 1);
+			exponential = '0.' + (new Array(e)).join('0') + exponential.toString().substring(2);
+		}
+	} else {
+		let e = parseInt(exponential.toString().split('+')[1], 10);
+		if (e > 20) {
+			e -= 20;
+			exponential /= Math.pow(10, e);
+			exponential += (new Array(e + 1)).join('0');
+		}
+	}
+	return exponential;
+}
+

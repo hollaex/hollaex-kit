@@ -35,6 +35,7 @@ import PriceChart from './components/PriceChart';
 import MobileTrade from './MobileTrade';
 import MobileChart from './MobileChart';
 import MobileOrders from './MobileOrders';
+import TVChartContainer from './Chart'
 
 import { ActionNotification, Loader, MobileBarTabs } from '../../components';
 
@@ -66,6 +67,7 @@ class Trade extends Component {
 	}
 
 	setSymbol = (symbol = '') => {
+		this.props.getUserTrades(symbol);
 		this.props.changePair(symbol);
 		this.setState({ symbol: '' }, () => {
 			setTimeout(() => {
@@ -79,7 +81,8 @@ class Trade extends Component {
 			.then((body) => {})
 			.catch((err) => {
 				// console.log('error', err);
-				const _error = err.response.data
+				const _error = err.response
+					&& err.response.data
 					? err.response.data.message
 					: err.message;
 				throw new SubmissionError({ _error });
@@ -303,6 +306,8 @@ class Trade extends Component {
 						onSubmitOrder={this.onSubmitOrder}
 						goToPair={this.goToPair}
 						pair={pair}
+						priceInitialized={priceInitialized}
+						sizeInitialized={sizeInitialized}
 					/>
 				)
 			},
@@ -319,6 +324,7 @@ class Trade extends Component {
 						pair={pair}
 						pairData={pairData}
 						pairs={pairs}
+						goToPair={this.goToPair}
 						userTrades={userTrades}
 						activeTheme={activeTheme}
 					/>
@@ -402,14 +408,7 @@ class Trade extends Component {
 								>
 									{pair &&
 										chartHeight > 0 && (
-											<PriceChart
-												height={chartHeight}
-												width={chartWidth}
-												theme={activeTheme}
-												pair={pair}
-												pairBase={pairData.pair_base}
-												orderLimits={orderLimits}
-											/>
+											<TVChartContainer activeTheme={activeTheme} symbol={symbol} />
 										)}
 								</TradeBlock>
 							</div>
@@ -448,7 +447,7 @@ Trade.defaultProps = {};
 const mapStateToProps = (store) => {
 	const pair = store.app.pair;
 	const pairData = store.app.pairs[pair];
-	const { asks, bids } = store.orderbook.pairsOrderbooks[pair];
+	const { asks = [], bids = [] } = store.orderbook.pairsOrderbooks[pair];
 	const tradeHistory = store.orderbook.pairsTrades[pair];
 	const marketPrice = tradeHistory && tradeHistory.length > 0 ? tradeHistory[0].price : 1;
 	let count = 0;
@@ -456,8 +455,11 @@ const mapStateToProps = (store) => {
 		({ symbol }) => symbol === pair && count++ < 10
 	);
 	count = 0;
+	// const activeOrders = store.order.activeOrders.filter(
+	// 	({ symbol }) => symbol === pair && count++ < 10
+	// );
 	const activeOrders = store.order.activeOrders.filter(
-		({ symbol }) => symbol === pair && count++ < 10
+		({ symbol }) => symbol === pair
 	);
 	const fees = store.user.fees[pair];
 	const orderBookLevels = store.user.settings.interface.order_book_levels;
