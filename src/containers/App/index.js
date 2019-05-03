@@ -42,7 +42,8 @@ import {
 	HELPFUL_RESOURCES_FORM,
 	FEES_STRUCTURE_AND_LIMITS,
 	RISK_PORTFOLIO_ORDER_WARING,
-	RISKY_ORDER
+	RISKY_ORDER,
+	setSnackNotification,
 } from '../../actions/appActions';
 
 import {
@@ -344,10 +345,18 @@ class Container extends Component {
 				case 'order_partialy_filled': {
 					this.props.updateOrder(data);
 					if (this.props.settings.notification && this.props.settings.notification.popup_order_partially_filled) {
-						this.props.setNotification(
-							NOTIFICATIONS.TRADES,
-							{ type, order: data, data: [{...data}] }
-						);
+						if (isMobile) {
+							this.props.setSnackNotification({
+								isDialog: true,
+								type: 'trade',
+								data: { order: data, data: [{ ...data }] }
+							});
+						} else {
+							this.props.setNotification(
+								NOTIFICATIONS.TRADES,
+								{ type, order: data, data: [{...data}] }
+							);
+						}
 					}
 					if (this.props.settings.audio && this.props.settings.audio.order_partially_completed) {
 						playBackgroundAudioNotification('order_partialy_filled');
@@ -410,8 +419,18 @@ class Container extends Component {
 							const { orders } = this.props;
 							order = orders.find(({ id }) => id === orderIdFromTrade);
 						}
-						if (order && order.type === 'market' && this.props.settings.notification && this.props.settings.notification.popup_order_completed) {
-							this.props.setNotification(NOTIFICATIONS.TRADES, { data, order });
+						if (order && order.type === 'market'
+							&& this.props.settings.notification
+							&& this.props.settings.notification.popup_order_completed) {
+							if (isMobile) {
+								this.props.setSnackNotification({
+									isDialog: true,
+									type: 'trade',
+									data: { order, data }
+								});
+							} else {
+								this.props.setNotification(NOTIFICATIONS.TRADES, { data, order });
+							}
 						}
 					}
 					if (this.state.limitFilledOnOrder
@@ -833,7 +852,8 @@ const mapDispatchToProps = (dispatch) => ({
 	setTickers: bindActionCreators(setTickers, dispatch),
 	changeTheme: bindActionCreators(changeTheme, dispatch),
 	setChatUnreadMessages: bindActionCreators(setChatUnreadMessages, dispatch),
-	setOrderLimits: bindActionCreators(setOrderLimits, dispatch)
+	setOrderLimits: bindActionCreators(setOrderLimits, dispatch),
+	setSnackNotification: bindActionCreators(setSnackNotification, dispatch)
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Container);

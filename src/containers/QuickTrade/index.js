@@ -185,39 +185,41 @@ class QuickTradeContainer extends Component {
 					theme={activeTheme}
 					style={{ 'z-index': 100 }}
 				>
-					{!order.fetching && !order.completed ? (
-						<Countdown
-							buttonLabel={STRINGS.QUOTE_BUTTON}
-							onClickButton={this.onExecuteTrade}
-							end={end}
-							renderTimeout={this.renderTimeout}
-							renderCountdown={this.renderCountdown}
-						>
-							<IconTitle
-								iconPath={ICONS.SQUARE_DOTS}
-								text={STRINGS.QUOTE_REVIEW}
-								underline={true}
-								useSvg={true}
-								className="w-100"
-							/>
-							<div className="quote-review-wrapper">
-								{STRINGS.formatString(
-									STRINGS.QUOTE_MESSAGE,
-									STRINGS.SIDES_VALUES[side],
-									formatBtcAmount(data.size),
-									name,
-									formatFiatAmount(data.price),
-									STRINGS.FIAT_NAME
-								)}
-							</div>
-						</Countdown>
-					) : (
-						<QuoteResult
-							data={order}
-							name={name}
-							onClose={this.onCloseDialog}
-						/>
-					)}
+					{showQuickTradeModal
+						? !order.fetching && !order.completed ? (
+							<Countdown
+								buttonLabel={STRINGS.QUOTE_BUTTON}
+								onClickButton={this.onExecuteTrade}
+								end={end}
+								renderTimeout={this.renderTimeout}
+								renderCountdown={this.renderCountdown}
+							>
+								<IconTitle
+									iconPath={ICONS.SQUARE_DOTS}
+									text={STRINGS.QUOTE_REVIEW}
+									underline={true}
+									useSvg={true}
+									className="w-100"
+								/>
+								<div className="quote-review-wrapper">
+									{STRINGS.formatString(
+										STRINGS.QUOTE_MESSAGE,
+										STRINGS.SIDES_VALUES[side],
+										formatBtcAmount(data.size),
+										name,
+										formatFiatAmount(data.price),
+										STRINGS.FIAT_NAME
+									)}
+								</div>
+							</Countdown>
+							) : (
+								<QuoteResult
+									data={order}
+									name={name}
+									onClose={this.onCloseDialog}
+								/>
+							)
+						: <div></div>}
 				</Dialog>
 			</div>
 		);

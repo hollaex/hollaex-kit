@@ -29,7 +29,9 @@ const EMPTY_SNACK_NOTIFICATION = {
 	showSnack: false,
 	icon: '',
 	useSvg: true,
-	content: ''
+	content: '',
+	isDialog: false,
+	dialogData: []
 };
 
 const INITIAL_STATE = {
@@ -99,10 +101,17 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 		}
 
 		case SET_SNACK_NOTIFICATION:
+			const { isDialog, ...rest } = payload;
+			let dialogData = [...state.snackNotification.dialogData];
+			if (isDialog) {
+				dialogData = [...dialogData, {...rest}];
+			}
 			return {
 				...state,
 				snackNotification: {
 					...state.snackNotification,
+					...payload,
+					dialogData,
 					showSnack: true,
 					icon: payload.icon ? payload.icon : '',
 					useSvg: payload.useSvg ? payload.useSvg : true,

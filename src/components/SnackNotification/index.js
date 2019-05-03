@@ -5,6 +5,8 @@ import { bindActionCreators } from 'redux';
 import classnames from 'classnames';
 import { isMobile } from 'react-device-detect';
 
+import { ICONS } from '../../config/constants';
+import SnackDialog from './SnackDialog';
 import { closeSnackNotification } from '../../actions/appActions';
 
 let timeout = '';
@@ -13,6 +15,19 @@ class SnackNotification extends Component {
     state = {
         closeSnack: false
     }
+
+    componentDidMount() {
+        document.addEventListener('click', this.onOutsideClick);
+    }
+
+    onOutsideClick = event => {
+        const element = document.getElementById('snack-dialog');
+        if (element &&
+            event.target !== element &&
+            !element.contains(event.target)) {
+            this.props.closeSnackNotification();
+        }
+    };
     
     componentWillReceiveProps(nextProps) {
         if (this.props.snackProps.showSnack !== nextProps.snackProps.showSnack
@@ -22,7 +37,8 @@ class SnackNotification extends Component {
                     this.setState({ closeSnack: true });
                 }, 1200);
                 timeout = setTimeout(() => {
-                    this.props.closeSnackNotification();
+                    if (!nextProps.snackProps.isDialog)
+                        this.props.closeSnackNotification();
                 }, 2000);
         }
     }
@@ -36,6 +52,28 @@ class SnackNotification extends Component {
         const { snackProps } = this.props;
         if (!snackProps.showSnack) {
             return null;
+        }
+        if (snackProps.isDialog) {
+            return <div
+                id="snack-dialog"
+                className={
+                    classnames(
+                        "snack_dialog-wrapper",
+                        "d-flex",
+                        {
+                            "snack_dialog_open": snackProps.showSnack,
+                            "snack_dialog_close": this.state.closeSnack,
+                        }
+                    )
+                }>
+                <SnackDialog {...snackProps} />
+                <div className="close-dialog pointer" onClick={this.props.closeSnackNotification}>
+                    <ReactSVG
+                        path={ICONS.CANCEL_CROSS_ACTIVE}
+                        wrapperClassName="bar-icon-back"
+                    />
+                </div>
+            </div>
         }
         return (
             <div className={

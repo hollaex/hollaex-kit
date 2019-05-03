@@ -58,6 +58,69 @@
     100% { top: -4rem; }
 }
 
+.snack_dialog-wrapper {
+    background-color: $colors-main-black;
+    font-family: $raleway--font-family;
+    padding: .3rem .5rem !important;
+    position: absolute;
+    width: 100%;
+    z-index: 9999;
+    
+    .notification-text {
+        font-size: 1.20rem;
+        font-weight: 400;
+    }
+
+    .notification-icon {
+        width: 1.5rem;
+    }
+    .close-dialog {
+		margin-left: 0;
+		@include size(7.5rem);
+		svg {
+			@include size(7.5rem);
+			.cancel-cross-3 {
+				stroke: white;
+			}
+			.cancel-cross-2 {
+				stroke: transparent;
+			}
+		}
+	}
+}
+
+.snack_dialog_open {
+    bottom: -2rem;
+    -webkit-animation: dialogSlide 1.2s backwards;
+    animation: dialogSlide 1.2s backwards;
+}
+
+.snack_dialog_close {
+    bottom: 6.5rem;
+    -webkit-animation: dialogClose 1s backwards;
+    animation: dialogClose 1s backwards;
+}
+
+@-webkit-keyframes dialogSlide {
+    0% { bottom: -2rem; }
+    100% { bottom: 5rem; }
+}
+
+@keyframes dialogSlide {
+    0% { bottom: -2rem; }
+    100% { bottom: 5rem; }
+}
+
+@-webkit-keyframes dialogClose {
+    0% { bottom: 5rem; }
+    100% { bottom: -4rem; }
+}
+
+@keyframes dialogClose {
+    0% { bottom: 5rem; }
+    100% { bottom: -4rem; }
+}
+
 .dark-theme {
     .snack_notification-wrapper {
         background-color: $dark-app-background-color;

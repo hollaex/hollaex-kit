@@ -12,7 +12,7 @@ import {
 const SIDE_BUY = 'buy';
 const SIDE_SELL = 'sell';
 
-const getTitleAndIcon = (side, type) => {
+export const getTitleAndIcon = (side, type) => {
 	const data = {
 		icon: '',
 		title: '',
@@ -62,7 +62,7 @@ const calculateValues = (data = [], pair) => {
 	};
 };
 
-const TradeDisplay = ({ side, data, pairs, ...rest }) => {
+export const TradeDisplay = ({ side, data, pairs, ...rest }) => {
 	const pair = pairs[data[0].symbol];
 	const basePair = pair.pair_base.toUpperCase();
 	const payPair = pair.pair_2.toUpperCase();

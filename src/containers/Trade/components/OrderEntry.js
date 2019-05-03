@@ -168,7 +168,7 @@ class OrderEntry extends Component {
 	};
 
 	onSubmit = (values) => {
-		const { pair, min_size, tick_size } = this.props;
+		const { pair, min_size, tick_size, settings } = this.props;
 
 		const order = {
 			...values,
@@ -189,7 +189,8 @@ class OrderEntry extends Component {
 		}
 
 		return this.props.submitOrder(order).then(() => {
-			if (values.type === 'market') {
+			if (values.type === 'market'
+				&& settings.audio && settings.audio.order_completed) {
 				playBackgroundAudioNotification('orderbook_market_order');
 			}
 			// this.setState({ initialValues: values });

@@ -163,14 +163,14 @@ class Trade extends Component {
 		this.setState({ cancelDelayData });
 		setTimeout(() => {
 			this.props.cancelAllOrders(this.state.symbol);
-		}, 1000);
+		}, 700);
 	}
 
 	handleCancelOrders = (id) => {
 		this.setState({ cancelDelayData: this.state.cancelDelayData.concat(id) });
 		setTimeout(() => {
 			this.props.cancelOrder(id);
-		}, 800);
+		}, 700);
 	}
 
 	render() {
