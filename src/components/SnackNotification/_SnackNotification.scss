@@ -103,22 +103,22 @@
 
 @-webkit-keyframes dialogSlide {
     0% { bottom: -2rem; }
-    100% { bottom: 5rem; }
+    100% { bottom: 7.5rem; }
 }
 
 @keyframes dialogSlide {
     0% { bottom: -2rem; }
-    100% { bottom: 5rem; }
+    100% { bottom: 7.5rem; }
 }
 
 @-webkit-keyframes dialogClose {
-    0% { bottom: 5rem; }
-    100% { bottom: -4rem; }
+    0% { bottom: 7.5rem; }
+    100% { bottom: 6.5rem; }
 }
 
 @keyframes dialogClose {
-    0% { bottom: 5rem; }
-    100% { bottom: -4rem; }
+    0% { bottom: 7.5rem; }
+    100% { bottom: 6.5rem; }
 }
 
 .dark-theme {

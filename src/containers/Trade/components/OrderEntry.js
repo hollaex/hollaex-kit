@@ -12,7 +12,7 @@ import {
 	formatNumber,
 	formatFiatAmount,
 	roundNumber,
-	fiatSymbol,
+	// fiatSymbol,
 	calculatePrice,
 	calculateBalancePrice
 } from '../../../utils/currency';
@@ -168,7 +168,7 @@ class OrderEntry extends Component {
 	};
 
 	onSubmit = (values) => {
-		const { pair, min_size, tick_size, settings } = this.props;
+		const { min_size, tick_size, settings } = this.props;
 
 		const order = {
 			...values,
@@ -199,12 +199,12 @@ class OrderEntry extends Component {
 
 	onReview = () => {
 		const {
-			showPopup,
+			// showPopup,
 			type,
 			side,
 			price,
 			size,
-			pair,
+			// pair,
 			pair_base,
 			pair_2,
 			min_size,

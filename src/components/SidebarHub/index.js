@@ -11,7 +11,7 @@ import { Section } from './Section';
 class SidebarHub extends Component {
 
 	render() {
-		const { activePath, pair, isLogged, theme } = this.props;
+		const { activePath, isLogged, theme } = this.props;
 		return (
 			<div
 				className={classnames(

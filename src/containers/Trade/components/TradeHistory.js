@@ -60,11 +60,9 @@ class TradeHistory extends Component {
 	};
 
 	render() {
-		const { data, pairs, pair } = this.props;
-		const { headers } = this.state;
 		return (
 			<div className="flex-auto d-flex apply_rtl trade_history-wrapper">
-				<DisplayTable headers={headers} data={data} />
+				<DisplayTable headers={this.state.headers} data={this.props.data} />
 			</div>
 		);
 	}

@@ -29,7 +29,7 @@ import {
 	ResetPassword,
 	QuickTrade,
 	Chat,
-	UserSettings,
+	// UserSettings,
 	WithdrawConfirmation,
 	AddTradeTabs
 } from './containers';

@@ -7,6 +7,7 @@ export const CLOSE_NOTIFICATION = 'CLOSE_NOTIFICATION';
 export const CLOSE_ALL_NOTIFICATION = 'CLOSE_ALL_NOTIFICATION';
 export const SET_SNACK_NOTIFICATION = 'SET_SNACK_NOTIFICATION';
 export const CLOSE_SNACK_NOTIFICATION = 'CLOSE_SNACK_NOTIFICATION';
+export const SET_SNACK_DIALOG = 'SET_SNACK_DIALOG';
 export const CLOSE_SNACK_DIALOG = 'CLOSE_SNACK_DIALOG';
 export const NOTIFICATIONS = {
 	ORDERS: 'NOTIFICATIONS_ORDERS',
@@ -79,6 +80,11 @@ export const setSnackNotification = (data = {}) => ({
 export const closeSnackNotification = () => ({
 	type: CLOSE_SNACK_NOTIFICATION,
 	payload: {}
+});
+
+export const setSnackDialog = (data = {}) => ({
+	type: SET_SNACK_DIALOG,
+	payload: data
 });
 
 export const closeSnackDialog = (id) => ({

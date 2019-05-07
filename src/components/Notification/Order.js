@@ -12,7 +12,7 @@ import {
 
 const SIDE_BUY = 'buy';
 
-const getTitleAndIcon = (type, { side, filled }) => {
+export const getTitleAndIcon = (type, { side, filled }) => {
 	const data = {
 		icon: '',
 		title: '',
@@ -53,7 +53,7 @@ const getTitleAndIcon = (type, { side, filled }) => {
 	return data;
 };
 
-const generateRows = (type, order, pairs) => {
+export const generateRows = (type, order, pairs) => {
 	const rows = [];
 	const pair = pairs[order.symbol];
 	const basePair = pair.pair_base.toUpperCase();
@@ -124,7 +124,7 @@ const generateRows = (type, order, pairs) => {
 	return rows;
 };
 
-const OrderDisplay = ({ rows }) => {
+export const OrderDisplay = ({ rows }) => {
 	return (
 		<NotificationContent>
 			{rows.map((row, index) => <InformationRow {...row} key={index} />)}

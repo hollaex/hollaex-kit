@@ -3,9 +3,9 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { isMobile } from 'react-device-detect';
 
-import { TabController, CheckTitle, MobileBarTabs } from '../../components';
+import { CheckTitle, MobileBarTabs } from '../../components';
 import { ICONS } from '../../config/constants';
-import { UserProfile, UserSecurity, UserSettings, Summary, Verification } from '../';
+import { UserSecurity, UserSettings, Summary, Verification } from '../';
 import STRINGS from '../../config/localizedStrings';
 import { openContactForm } from '../../actions/appActions';
 import { requestLimits, requestFees } from '../../actions/userAction';

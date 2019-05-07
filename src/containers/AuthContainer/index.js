@@ -7,7 +7,7 @@ import { getClasesForLanguage } from '../../utils/string';
 import { getThemeClass } from '../../utils/theme';
 
 const updateThemeToBody = (theme = 'white') => {
-	const themeName = theme === 'dark' ? 'dark-auth-body' : 'light-auth-body';
+	// const themeName = theme === 'dark' ? 'dark-auth-body' : 'light-auth-body';
 	if (document.body) {
 		// document.body.className = themeName;
 	}

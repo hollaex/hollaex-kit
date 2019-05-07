@@ -3,7 +3,6 @@ import { reduxForm } from 'redux-form';
 
 import { Accordion, Table, Button } from '../../components';
 import renderFields from '../../components/Form/factoryFields';
-import { getErrorLocalized } from '../../utils/errors';
 import STRINGS from '../../config/localizedStrings';
 import { formatFiatAmount } from '../../utils/currency';
 
@@ -60,7 +59,7 @@ const RiskForm = ({ onAdjustPortfolio, totalAssets, percentageOfPortfolio, ...re
 		handleSubmit,
 		submitting,
 		pristine,
-		error,
+		// error,
 		valid,
 		formFields
 	} = rest;

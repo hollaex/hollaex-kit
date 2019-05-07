@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux';
 import io from 'socket.io-client';
 import EventListener from 'react-event-listener';
 import { debounce } from 'lodash';
-import { WS_URL, ICONS, SESSION_TIME, AUDIOS } from '../../config/constants';
+import { WS_URL, ICONS, SESSION_TIME } from '../../config/constants';
 import { isBrowser, isMobile } from 'react-device-detect';
 
 import { logout } from '../../actions/authAction';
@@ -43,7 +43,7 @@ import {
 	FEES_STRUCTURE_AND_LIMITS,
 	RISK_PORTFOLIO_ORDER_WARING,
 	RISKY_ORDER,
-	setSnackNotification,
+	setSnackDialog
 } from '../../actions/appActions';
 
 import {
@@ -63,7 +63,8 @@ import {
 	Notification,
 	MessageDisplay,
 	CurrencyList,
-	SnackNotification
+	SnackNotification,
+	SnackDialog
 } from '../../components';
 import { ContactForm, HelpfulResourcesForm, Chat as ChatComponent } from '../';
 import ReviewEmailContent from '../Withdraw/ReviewEmailContent';
@@ -220,6 +221,7 @@ class Container extends Component {
 						STEP: data.pairs[pair].tick_size
 					}
 				}
+				return '';
 			});
 			this.props.setOrderLimits(orderLimits);
 		});
@@ -346,7 +348,7 @@ class Container extends Component {
 					this.props.updateOrder(data);
 					if (this.props.settings.notification && this.props.settings.notification.popup_order_partially_filled) {
 						if (isMobile) {
-							this.props.setSnackNotification({
+							this.props.setSnackDialog({
 								isDialog: true,
 								type: 'trade',
 								data: { order: data, data: [{ ...data }] }
@@ -381,13 +383,27 @@ class Container extends Component {
 					this.props.removeOrder(data);
 					if (this.props.settings.notification && this.props.settings.notification.popup_order_completed) {
 						ordersDeleted.forEach((orderDeleted) => {
-							this.props.setNotification(NOTIFICATIONS.ORDERS, {
-								type,
-								data: {
-									...orderDeleted,
-									filled: orderDeleted.size
-								}
-							});
+							if (isMobile) {
+								this.props.setSnackDialog({
+									isDialog: true,
+									type: 'order',
+									data: {
+										type,
+										data: {
+											...orderDeleted,
+											filled: orderDeleted.size
+										}
+									}
+								});
+							} else {
+								this.props.setNotification(NOTIFICATIONS.ORDERS, {
+									type,
+									data: {
+										...orderDeleted,
+										filled: orderDeleted.size
+									}
+								});
+							}
 						});
 					}
 					if (this.props.settings.audio && this.props.settings.audio.order_completed) {
@@ -423,7 +439,7 @@ class Container extends Component {
 							&& this.props.settings.notification
 							&& this.props.settings.notification.popup_order_completed) {
 							if (isMobile) {
-								this.props.setSnackNotification({
+								this.props.setSnackDialog({
 									isDialog: true,
 									type: 'trade',
 									data: { order, data }
@@ -650,15 +666,15 @@ class Container extends Component {
 			children,
 			activeNotification,
 			prices,
-			verification_level,
+			// verification_level,
 			activeLanguage,
-			openContactForm,
+			// openContactForm,
 			openHelpfulResourcesForm,
 			activeTheme,
 			unreadMessages,
 			router,
 			location,
-			user
+			// user
 		} = this.props;
 		const { dialogIsOpen, appLoaded, chatIsClosed } = this.state;
 		const languageClasses = getClasesForLanguage(activeLanguage, 'array');
@@ -804,6 +820,7 @@ class Container extends Component {
 					</div>
 				</div>
 				<SnackNotification />
+				<SnackDialog />
 			</div>
 		);
 	}
@@ -853,7 +870,7 @@ const mapDispatchToProps = (dispatch) => ({
 	changeTheme: bindActionCreators(changeTheme, dispatch),
 	setChatUnreadMessages: bindActionCreators(setChatUnreadMessages, dispatch),
 	setOrderLimits: bindActionCreators(setOrderLimits, dispatch),
-	setSnackNotification: bindActionCreators(setSnackNotification, dispatch)
+	setSnackDialog: bindActionCreators(setSnackDialog, dispatch)
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Container);

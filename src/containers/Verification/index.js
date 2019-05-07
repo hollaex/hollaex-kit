@@ -2,10 +2,9 @@ import React, { Component } from 'react';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import * as d3 from 'd3-selection';
+// import * as d3 from 'd3-selection';
 import {
 	// AppBar,
-	CheckTitle,
 	CustomTabs,
 	CustomMobileTabs,
 	Dialog,
@@ -20,8 +19,7 @@ import STRINGS from '../../config/localizedStrings';
 import {
 	requestSmsCode,
 	verifySmsCode,
-	verifyBankData,
-	getUserData
+	verifyBankData
 } from '../../actions/verificationActions';
 import { logout } from '../../actions/authAction';
 
