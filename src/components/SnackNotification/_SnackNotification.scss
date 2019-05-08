@@ -64,7 +64,7 @@
     padding: .3rem .5rem !important;
     position: absolute;
     width: 100%;
-    z-index: 9999;
+    z-index: 9998;
     
     .notification-text {
         font-size: 1.20rem;
@@ -77,6 +77,7 @@
     .close-dialog {
 		margin-left: 0;
 		@include size(7.5rem);
+        height: auto;
 		svg {
 			@include size(7.5rem);
 			.cancel-cross-3 {
@@ -90,35 +91,35 @@
 }
 
 .snack_dialog_open {
-    bottom: -2rem;
-    -webkit-animation: dialogSlide 1.2s backwards;
-    animation: dialogSlide 1.2s backwards;
+    bottom: 0rem;
+    -webkit-animation: dialogSlide 1.5s backwards;
+    animation: dialogSlide 1.5s backwards;
 }
 
 .snack_dialog_close {
-    bottom: 6.5rem;
-    -webkit-animation: dialogClose 1s backwards;
-    animation: dialogClose 1s backwards;
+    bottom: 5.5rem;
+    -webkit-animation: dialogClose 0.8s backwards;
+    animation: dialogClose 0.8s backwards;
 }
 
 @-webkit-keyframes dialogSlide {
-    0% { bottom: -2rem; }
+    0% { bottom: 0rem; }
     100% { bottom: 7.5rem; }
 }
 
 @keyframes dialogSlide {
-    0% { bottom: -2rem; }
+    0% { bottom: 0rem; }
     100% { bottom: 7.5rem; }
 }
 
 @-webkit-keyframes dialogClose {
     0% { bottom: 7.5rem; }
-    100% { bottom: 6.5rem; }
+    100% { bottom: 5.5rem; }
 }
 
 @keyframes dialogClose {
     0% { bottom: 7.5rem; }
-    100% { bottom: 6.5rem; }
+    100% { bottom: 5.5rem; }
 }
 
 .dark-theme {
@@ -149,4 +150,13 @@
     border-bottom-right-radius: 0;
     width: 22rem;
     left: calc(50vw - 11rem);
+}
+
+.layout-mobile {
+    .snack_dialog-wrapper {
+        .notification-content-mobile-wrapper {
+            font-size: 1rem !important;
+        }
+
+    }
 }

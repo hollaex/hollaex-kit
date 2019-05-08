@@ -154,73 +154,76 @@ class QuickTradeContainer extends Component {
 		const end = quoteData.data.exp;
 		const tradeData = isLoggedIn() ? quoteData : quickTrade;
 		return (
-			<div
-				className={classnames(
-					'd-flex',
-					'f-1',
-					'quote-container',
-					{ 'flex-column': isMobile }
-				)}
-			>
+			<div>
 				{isMobile && <MobileBarBack onBackClick={this.onGoBack} />}
-				<QuickTrade
-					onReviewQuickTrade={this.onReviewQuickTrade}
-					onRequestMarketValue={this.onRequestQuote}
-					symbol={pair}
-					theme={activeTheme}
-					quickTradeData={tradeData}
-					onChangeSide={this.onChangeSide}
-					disabled={
-						quoteData.error === BALANCE_ERROR ? true : !quoteData.token
-					}
-					orderLimits={orderLimits}
-					pairs={pairs}
-				/>
-				<Dialog
-					isOpen={!!end && showQuickTradeModal}
-					label="quick-trade-modal"
-					onCloseDialog={this.onCloseDialog}
-					shouldCloseOnOverlayClick={false}
-					showCloseText={!order.fetching && !order.completed}
-					theme={activeTheme}
-					style={{ 'z-index': 100 }}
+
+				<div
+					className={classnames(
+						'd-flex',
+						'f-1',
+						'quote-container',
+						{ 'flex-column': isMobile }
+					)}
 				>
-					{showQuickTradeModal
-						? !order.fetching && !order.completed ? (
-							<Countdown
-								buttonLabel={STRINGS.QUOTE_BUTTON}
-								onClickButton={this.onExecuteTrade}
-								end={end}
-								renderTimeout={this.renderTimeout}
-								renderCountdown={this.renderCountdown}
-							>
-								<IconTitle
-									iconPath={ICONS.SQUARE_DOTS}
-									text={STRINGS.QUOTE_REVIEW}
-									underline={true}
-									useSvg={true}
-									className="w-100"
-								/>
-								<div className="quote-review-wrapper">
-									{STRINGS.formatString(
-										STRINGS.QUOTE_MESSAGE,
-										STRINGS.SIDES_VALUES[side],
-										formatBtcAmount(data.size),
-										name,
-										formatFiatAmount(data.price),
-										STRINGS.FIAT_NAME
-									)}
-								</div>
-							</Countdown>
-							) : (
-								<QuoteResult
-									data={order}
-									name={name}
-									onClose={this.onCloseDialog}
-								/>
-							)
-						: <div></div>}
-				</Dialog>
+					<QuickTrade
+						onReviewQuickTrade={this.onReviewQuickTrade}
+						onRequestMarketValue={this.onRequestQuote}
+						symbol={pair}
+						theme={activeTheme}
+						quickTradeData={tradeData}
+						onChangeSide={this.onChangeSide}
+						disabled={
+							quoteData.error === BALANCE_ERROR ? true : !quoteData.token
+						}
+						orderLimits={orderLimits}
+						pairs={pairs}
+					/>
+					<Dialog
+						isOpen={!!end && showQuickTradeModal}
+						label="quick-trade-modal"
+						onCloseDialog={this.onCloseDialog}
+						shouldCloseOnOverlayClick={false}
+						showCloseText={!order.fetching && !order.completed}
+						theme={activeTheme}
+						style={{ 'z-index': 100 }}
+					>
+						{showQuickTradeModal
+							? !order.fetching && !order.completed ? (
+								<Countdown
+									buttonLabel={STRINGS.QUOTE_BUTTON}
+									onClickButton={this.onExecuteTrade}
+									end={end}
+									renderTimeout={this.renderTimeout}
+									renderCountdown={this.renderCountdown}
+								>
+									<IconTitle
+										iconPath={ICONS.SQUARE_DOTS}
+										text={STRINGS.QUOTE_REVIEW}
+										underline={true}
+										useSvg={true}
+										className="w-100"
+									/>
+									<div className="quote-review-wrapper">
+										{STRINGS.formatString(
+											STRINGS.QUOTE_MESSAGE,
+											STRINGS.SIDES_VALUES[side],
+											formatBtcAmount(data.size),
+											name,
+											formatFiatAmount(data.price),
+											STRINGS.FIAT_NAME
+										)}
+									</div>
+								</Countdown>
+								) : (
+									<QuoteResult
+										data={order}
+										name={name}
+										onClose={this.onCloseDialog}
+									/>
+								)
+							: <div></div>}
+					</Dialog>
+				</div>
 			</div>
 		);
 	}

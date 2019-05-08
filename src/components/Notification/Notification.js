@@ -32,6 +32,7 @@ export const NotificationWraperDesktop = ({
 			<Button
 				label={STRINGS.NOTIFICATIONS.BUTTONS.OKAY}
 				onClick={onClose}
+				autoFocus
 			>
 			</Button>
 		: '' }

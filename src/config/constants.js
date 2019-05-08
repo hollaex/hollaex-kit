@@ -386,7 +386,7 @@ export const AUDIOS = {
 	ORDERBOOK_LIMIT_ORDER: `${process.env.PUBLIC_URL}/assets/audio/orderbook-limit-order.wav`,
 	PUBLIC_TRADE_NOTIFICATION: `${process.env.PUBLIC_URL}/assets/audio/public-trade-notification.wav`,
 	ORDER_COMPLETED: `${process.env.PUBLIC_URL}/assets/audio/order-filled.wav`,
-	ORDER_PARTIALLY_COMPLETED: `${process.env.PUBLIC_URL}/assets/audio/order-partially-filled.wav`,
+	ORDER_PARTIALLY_COMPLETED: `${process.env.PUBLIC_URL}/assets/audio/part-fill.wav`,
 	CANCEL_ORDER: `${process.env.PUBLIC_URL}/assets/audio/cancel_order.wav`,
 	QUICK_TRADE_COMPLETE: `${process.env.PUBLIC_URL}/assets/audio/quick-trade-complete.wav`,
 	REVIEW_QUICK_TRADE_ORDER:`${process.env.PUBLIC_URL}/assets/audio/review-quick-trade-order.wav`,

@@ -6,7 +6,7 @@ import { ICONS } from '../../config/constants';
 
 const SignupSuccess = ({ ...rest }) => {
 	return (
-		<div className="signup_success-wrapper auth_wrapper">
+		<div className="signup_success-wrapper d-flex justify-content-center align-items-center flex-column auth_wrapper">
 			<IconTitle
 				iconPath={rest.activeTheme ==="dark" ? ICONS.DARK_CHECK: ICONS.CHECK}
 				text={STRINGS.VERIFICATION_TEXTS.TITLE}

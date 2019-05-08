@@ -195,6 +195,7 @@ $inner_container-border: 1px solid $colors-main-black;
 	// position: sticky;
 	// bottom: 5rem;
 	align-self: flex-end;
+	z-index: 9999;
 }
 
 @media (min-width: 1920px) {

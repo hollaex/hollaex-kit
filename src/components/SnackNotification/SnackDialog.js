@@ -46,11 +46,18 @@ class SnackDialog extends Component {
                 closeTimeOut = setTimeout(() => {
                     this.setState({ closeSnack: true });
                 }, 1200);
-        }
-        if (this.props.snackProps.dialogData.length !== nextProps.snackProps.dialogData.length &&
-            closeIconClicked) {
+            }
+        if (this.props.snackProps.dialogData.length !== nextProps.snackProps.dialogData.length) {
+            if (closeIconClicked) {
                 this.setState({ updateCloseControl: true });
                 closeIconClicked = false;
+            }
+            const currentPopup = nextProps.snackProps.dialogData[nextProps.snackProps.dialogData.length - 1];
+            if (currentPopup) {
+                timeout = setTimeout(() => {
+                    this.props.closeSnackDialog(currentPopup.id);
+                }, 3000);
+            }
         }
     }
 

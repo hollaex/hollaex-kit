@@ -42,7 +42,7 @@ const TraderAccounts = ({ account = {}, activeTheme, limits = [], isAccountDetai
                     </span>
                     {isMobile ?
                         <div className="my-2" onClick={() => logout()} > 
-                            {STRINGS.LOGOUT}
+                            {STRINGS.LOGOUT.toUpperCase()}
                         </div> 
                     :'' }
                     </div>
