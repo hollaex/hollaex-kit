@@ -18,7 +18,7 @@ const BankVerificationHome = ({ user, setActivePageContent, setActiveTab }) => {
                 <div className="font-weight-bold text-lowercase">
                     {STRINGS.formatString(
                         STRINGS.USER_VERIFICATION.BANK_VERIFICATION_HELP_TEXT,
-                        <span className="verification_link pointer" onClick={() => setActiveTab(4)}>
+                        <span className="verification_link pointer" onClick={(e) => setActiveTab(4, e)}>
                             {STRINGS.USER_VERIFICATION.DOCUMENT_SUBMISSION}
                         </span>)
                     }

@@ -14,7 +14,7 @@ import MobileSummary from './MobileSummary';
 
 import { IconTitle } from '../../components';
 import { logout } from '../../actions/authAction';
-import { openFeesStructureandLimits, openContactForm } from '../../actions/appActions';
+import { openFeesStructureandLimits, openContactForm, logoutconfirm } from '../../actions/appActions';
 import { requestLimits, requestFees } from '../../actions/userAction';
 import { CURRENCIES, TRADING_ACCOUNT_TYPE } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
@@ -70,6 +70,10 @@ class Summary extends Component {
             let lastMonthVolume = getLastMonthVolume(nextProps.tradeVolumes.data, nextProps.prices, nextProps.pairs);
             this.setState({ lastMonthVolume });
         }
+    }
+
+    logoutConfirm = () => {
+        this.props.logoutconfirm()
     }
 
     onFeesAndLimits = tradingAccount => {
@@ -159,7 +163,7 @@ class Summary extends Component {
                         currentTradingAccount={currentTradingAccount}
                         selectedAccount={selectedAccount}
                         FIAT={FIAT}
-                        logout={logout}
+                        logout={this.logoutConfirm}
                         balance={balance}
                         chartData={chartData}
                         totalAssets={totalAssets}
@@ -260,6 +264,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
+    logoutconfirm: bindActionCreators(logoutconfirm, dispatch),
 	logout: bindActionCreators(logout, dispatch),
     requestLimits: bindActionCreators(requestLimits, dispatch),
     requestFees: bindActionCreators(requestFees, dispatch),

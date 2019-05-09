@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { reduxForm } from 'redux-form';
 
 import renderFields from '../../components/Form/factoryFields';
@@ -44,14 +44,22 @@ const Form = ({
         </form>
     );
 
-const AudioCueForm = (props) => {
-    const section = [{
-        title: STRINGS.USER_SETTINGS.TITLE_AUDIO_CUE,
-        content: <Form {...props} />,
-        isOpen: true
-    }]
-    return <Accordion sections={section} />
-}
+class AudioCueForm extends Component {
+    componentDidUpdate(prevProps) {
+        if (JSON.stringify(this.props.initialValues) !== JSON.stringify(prevProps.initialValues)) {
+            this.props.initialize(this.props.initialValues)
+        }
+    }
+
+    render() {
+        const section = [{
+            title: STRINGS.USER_SETTINGS.TITLE_AUDIO_CUE,
+            content: <Form {...this.props} />,
+            isOpen: true
+        }]
+        return <Accordion sections={section} />
+    }
+} 
 
 export default reduxForm({
     form: 'AudioCueForm'

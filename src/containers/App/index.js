@@ -43,7 +43,8 @@ import {
 	FEES_STRUCTURE_AND_LIMITS,
 	RISK_PORTFOLIO_ORDER_WARING,
 	RISKY_ORDER,
-	setSnackDialog
+	setSnackDialog,
+	LOGOUT_CONFORMATION
 } from '../../actions/appActions';
 
 import {
@@ -70,6 +71,7 @@ import { ContactForm, HelpfulResourcesForm, Chat as ChatComponent } from '../';
 import ReviewEmailContent from '../Withdraw/ReviewEmailContent';
 import FeesAndLimits from '../Summary/components/FeesAndLimits';
 import SetOrderPortfolio from '../UserSettings/SetOrderPortfolio';
+import LogoutConfirmation from '../Summary/components/LogoutConfirmation';
 import RiskyOrder from '../Trade/components/RiskyOrder';
 
 import {
@@ -626,6 +628,14 @@ class Container extends Component {
 				return (
 					<SetOrderPortfolio
 						data={data}
+						onClose={this.onCloseDialog}
+					/>
+				);
+			case LOGOUT_CONFORMATION:
+				return (
+					<LogoutConfirmation
+						data={data}
+						onConfirm={this.logout}
 						onClose={this.onCloseDialog}
 					/>
 				);

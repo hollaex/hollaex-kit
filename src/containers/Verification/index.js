@@ -271,7 +271,11 @@ class Verification extends Component {
 	goToAccountPage = () => this.props.router.push('/account');
 	goToExir = () => this.props.router.push('/account');
 
-	setActiveTab = (activeTab) => {
+	setActiveTab = (activeTab, event) => {
+		if (event) {
+			event.preventDefault();
+			event.stopPropagation();
+		}
 		this.setState({ activeTab });
 	};
 

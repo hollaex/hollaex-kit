@@ -21,9 +21,9 @@ import {
 	changeSymbol,
 	requestQuickTrade
 } from '../../actions/orderbookAction';
-import { formatBtcAmount, formatFiatAmount } from '../../utils/currency';
+import { formatBtcAmount, formatFiatAmount, calculateBalancePrice } from '../../utils/currency';
 import { isLoggedIn } from '../../utils/token';
-import { changePair } from '../../actions/appActions';
+import { changePair, setNotification, RISKY_ORDER } from '../../actions/appActions';
 
 // import { FLEX_CENTER_CLASSES } from '../../config/constants';
 
@@ -35,11 +35,18 @@ class QuickTradeContainer extends Component {
 		showQuickTradeModal: false,
 		side: 'buy',
 		quote: {},
-		interval: undefined
+		interval: undefined,
+		totalAssets: ''
 	};
 
 	componentWillMount() {
 		this.changePair(this.props.routeParams.pair);
+	}
+
+	componentDidMount() {
+		if (this.props.user.id) {
+			this.calculateSections(this.props);
+		}
 	}
 
 	componentWillReceiveProps(nextProps) {
@@ -60,6 +67,10 @@ class QuickTradeContainer extends Component {
 		}
 		if (nextProps.routeParams.pair !== this.props.routeParams.pair) {
 			this.changePair(nextProps.routeParams.pair);
+		}
+		if (JSON.stringify(this.props.prices) !== JSON.stringify(nextProps.prices)
+			|| JSON.stringify(this.props.balance) !== JSON.stringify(nextProps.balance)) {
+				this.calculateSections(nextProps);
 		}
 	}
 
@@ -84,15 +95,44 @@ class QuickTradeContainer extends Component {
 		}
 	};
 
+	calculateSections = ({ balance, prices }) => {
+		const totalAssets = calculateBalancePrice(balance, prices);
+		this.setState({ totalAssets });
+	};
+
 	onReviewQuickTrade = () => {
 		const { pair_base, pair_2 } = this.props.pairData;
+		const { settings: { risk = {}, notification = {} }, quoteData: { data = {} }, setNotification, pairData } = this.props;
 
 		if (this.props.quoteData.error === BALANCE_ERROR) {
 			this.props.changeSymbol(this.state.side === 'sell' ? pair_base : pair_2);
 			this.props.router.push('deposit');
 		} else {
-			this.onClearQuoteInterval();
-			this.onOpenDialog();
+			const order = {
+				type: 'quick trade',
+				side: data.side,
+				price: 0,
+				size: data.size,
+				symbol: pair_base,
+				orderPrice: data.price,
+				orderFees: 0
+			};
+			const riskyPrice = ((this.state.totalAssets / 100) * risk.order_portfolio_percentage);
+			if (risk.popup_warning && data.price > riskyPrice) {
+				order['order_portfolio_percentage'] = risk.order_portfolio_percentage
+				setNotification(RISKY_ORDER, {
+					order,
+					onConfirm: () => {
+						this.onClearQuoteInterval();
+						this.onOpenDialog();
+					},
+					fees: {},
+					pairData
+				});
+			} else {
+				this.onClearQuoteInterval();
+				this.onOpenDialog();
+			}
 		}
 	};
 
@@ -241,7 +281,11 @@ const mapStateToProps = (store) => {
 		activeTheme,
 		activeLanguage: store.app.language,
 		quickTrade: store.orderbook.quickTrade,
-		orderLimits: store.app.orderLimits
+		orderLimits: store.app.orderLimits,
+		prices: store.orderbook.prices,
+		balance: store.user.balance,
+		user: store.user,
+		settings: store.user.settings
 	};
 };
 
@@ -250,7 +294,8 @@ const mapDispatchToProps = (dispatch) => ({
 	requestQuote: bindActionCreators(requestQuote, dispatch),
 	executeQuote: bindActionCreators(executeQuote, dispatch),
 	changeSymbol: bindActionCreators(changeSymbol, dispatch),
-	requestQuickTrade: bindActionCreators(requestQuickTrade, dispatch)
+	requestQuickTrade: bindActionCreators(requestQuickTrade, dispatch),
+	setNotification: bindActionCreators(setNotification, dispatch)
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(
