@@ -498,23 +498,18 @@ describe('Socket testing', () => {
 
 				this.balance = result[0];
 				this.orderbook = result[1][symbolPair];
+				this.logs = [];
+				this.firstAsk = this.orderbook.asks[0];
+				this.firstBid = this.orderbook.bids[0];
+				this.fiat = this.balance['fiat_available'];
+				this.btc = this.balance['btc_available'];
 			});
-
-			this.logs = [];
-			this.askPrice = this.orderbook.asks[0][0];
-			this.bidPrice = this.orderbook.bids[0][0];
-			this.fiat = this.balance['fiat_available'];
-			this.btc = this.balance['btc_available'];
 		});
 
 		it('Market maker places a valid order', async () => {
-			// await socket.on('userUpdate', (data) => {
-			// 	this.logs.push(data);
-			// });
-
 			await sleep(1000);
 			await client
-				.createOrder(symbolPair, 'buy', 0.0001, 'limit', this.bidPrice + 1)
+				.createOrder(symbolPair, 'buy', 0.0001, 'limit', this.firstBid[0] + 1)
 				.then(async (result) => {
 					let data = JSON.parse(result);
 					await sleep(1000);
@@ -535,20 +530,107 @@ describe('Socket testing', () => {
 				});
 		});
 
-		// it('User creates an order without sufficient funds', async () => {
+		it('Market maker creates sell order significantly larger than largest sell order', async () => {
+			await sleep(1000);
+			let highestAskPrice = this.orderbook.asks[
+				this.orderbook.asks.length - 1
+			][0];
+			if (0.0001 * (highestAskPrice * 2) <= this.fiat) {
+				await client
+					.createOrder(symbolPair, 'sell', 0.0001, 'limit', highestAskPrice * 2)
+					.then(async (result) => {
+						let data = JSON.parse(result);
+						await sleep(1000);
+						expect(this.logs.length).to.equal(3);
+						expect(this.logs[0]['type']).to.equal('order_queued');
+						expect(this.logs[1]['type']).to.equal('order_added');
+						expect(this.logs[2]['type']).to.equal('order_processed');
+						this.logs.forEach((log) => {
+							expect(log.data.id).to.equal(data.id);
+						});
 
-		// })
+						await client.cancelOrder(data.id).then(async (result) => {
+							let data = JSON.parse(result);
+							await sleep(1000);
+							expect(this.logs[3]['type']).to.equal('order_removed');
+							expect(this.logs[3].data[0].id).to.equal(data.id);
+						});
+					});
+			} else {
+				expect.fail('not enough fiat available to run test');
+			}
+		});
+
+		it('Market taker creates an order that is immediately filled', async () => {
+			await sleep(1000);
+			await client
+				.createOrder(symbolPair, 'buy', 0.0001, 'limit', this.firstAsk[0] - 1)
+				.then(async () => {
+					await sleep(1000);
+					await client
+						.createOrder(
+							symbolPair,
+							'sell',
+							0.0001,
+							'limit',
+							this.firstAsk[0] - 1
+						)
+						.then(async (result) => {
+							let data = JSON.parse(result);
+							await sleep(1000);
+							const logs = await this.logs.filter((log) =>
+								log.data.id !== undefined
+									? log.data.id === data.id
+									: log.data[0].id === data.id
+							);
+							expect(logs.length).to.equal(4);
+							expect(logs[0]['type']).to.equal('order_queued');
+							expect(logs[1]['type']).to.equal('trade');
+							expect(logs[2]['type']).to.equal('order_filled');
+							expect(logs[3]['type']).to.equal('order_processed');
+							logs.forEach((log) => {
+								log.data.id !== undefined
+									? expect(log.data.id).to.equal(data.id)
+									: expect(log.data[0].id).to.equal(data.id);
+							});
+						});
+				});
+		});
+
+		it('Market taker creates an order that is immediately partially filled', async () => {
+			await sleep(1000);
+			await client
+				.createOrder(symbolPair, 'buy', 0.0001, 'limit', this.firstAsk[0] - 1)
+				.then(async () => {
+					await sleep(1000);
+					await client
+						.createOrder(
+							symbolPair,
+							'sell',
+							0.0002,
+							'limit',
+							this.firstAsk[0] - 1
+						)
+						.then(async (result) => {
+							let data = JSON.parse(result);
+							await sleep(1000);
+							const logs = await this.logs.filter((log) =>
+								log.data.id !== undefined
+									? log.data.id === data.id
+									: log.data[0].id === data.id
+							);
+							expect(logs.length).to.equal(4);
+							expect(logs[0]['type']).to.equal('order_queued');
+							expect(logs[1]['type']).to.equal('trade');
+							expect(logs[2]['type']).to.equal('order_partialy_filled');
+							expect(logs[3]['type']).to.equal('order_processed');
+							logs.forEach((log) => {
+								log.data.id !== undefined
+									? expect(log.data.id).to.equal(data.id)
+									: expect(log.data[0].id).to.equal(data.id);
+							});
+						});
+				});
+		});
 	});
 });
-
-// Market Maker
-// User creates an order
-// User creates an order without sufficient funds
-// User creates an order that is significantly larger/smaller than all other orders
-// Market Taker
-// User creates an order that is immediately filled
-// User creates an order that is immediately partially filled
-// User creates an order without sufficient funds
-// User creates an order that is partially filled then cancels that order
-// User creates a market order that passes
-// User creates a market order that doesn’t completely fill
