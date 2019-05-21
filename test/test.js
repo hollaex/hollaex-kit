@@ -620,6 +620,7 @@ describe('Socket testing', () => {
 							)
 							.then(async (result) => {
 								let data = JSON.parse(result);
+								this.currentOrder = data;
 								await sleep(1000);
 								const logs = await this.logs.filter((log) =>
 									log.data.id !== undefined
@@ -636,12 +637,28 @@ describe('Socket testing', () => {
 										? expect(log.data.id).to.equal(data.id)
 										: expect(log.data[0].id).to.equal(data.id);
 								});
-								await client.cancelOrder(data.id);
 							});
 					});
 			} else {
 				expect.fail('not enough balance available to run test');
 			}
 		});
+
+		it('Market taker cancels an order that was partially filled', async () => {
+			if (this.currentOrder !== undefined) {
+				await client.cancelOrder(this.currentOrder.id)
+				.then(async (result) => {
+					let data = JSON.parse(result);
+					await sleep(1000);
+					expect(this.logs[0]['type']).to.equal('order_removed');
+					expect(this.logs[0].data[0].id).to.equal(data.id);
+				})
+				.catch((err) => {
+					expect(err.error).to.include('Order not found');
+				})
+			} else {
+				expect.fail('not enough balance available to run test');
+			}
+		})
 	});
 });
