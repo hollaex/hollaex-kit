@@ -99,75 +99,95 @@ socket.on('userUpdate', (data) => {
 `userInfo`, `userOrder`, `userTrade`, `userWallet` are only `partial` and send data once. These sockets are similar to GET requests and you should not expect any updates after you receive the first set of data.
 However `userUpdate` is what is used for all updates on user's private data.
 
-These are list of `userUpdate` client gets after subscribtion.
+These are list of `userUpdate` client gets after subscription.
 
-- **userUpdate**: Updates related to the user's pivate information are as follows:
+- **userUpdate**: Updates related to the user's private information are as follows:
+
   - _order_queued_: When a user order is added to the queue.
+
   ```json
   {
+  	"action": "update",
   	"type": "order_queued",
   	"data": {
-  		"id": "ac7717d4-04e9-4430-a21b-08d32b2c34cd",
-  		"created_by": 79,
-  		"price": 1001,
   		"side": "sell",
+  		"type": "limit",
+  		"price": 1001,
   		"size": 2,
   		"symbol": "bch-btc",
-  		"filled": 0,
-  		"type": "limit"
+  		"id": "ac7717d4-04e9-4430-a21b-08d32b2c34cd",
+  		"created_by": 79,
+  		"filled": 0
   	}
   }
   ```
+
   - _order_processed_: When a user order has been processed in the queue.
+
   ```json
   {
+  	"action": "update",
   	"type": "order_processed",
   	"data": { "id": "ac7717d4-04e9-4430-a21b-08d32b2c34cd" }
   }
   ```
+
   - _order_canceled_: When a user order has been canceled in the queue, so it has not been added to the orderbook.
+
   ```json
   {
+  	"action": "update",
   	"type": "order_canceled",
   	"data": {
   		"id": "ac7717d4-04e9-4430-a21b-08d32b2c34cd",
-  		"message": "Insufficent balance to perform the order."
+  		"message": "Insufficient balance to perform the order."
   	}
   }
   ```
+
   - _order_added_: When a user order is added to the orderbook.
+
   ```json
   {
+  	"action": "update",
   	"type": "order_added",
   	"data": {
-  		"id": "ac7717d4-04e9-4430-a21b-08d32b2c34cd",
-  		"created_by": 79,
-  		"price": 1001,
   		"side": "sell",
+  		"type": "limit",
+  		"price": 1001,
   		"size": 2,
   		"symbol": "bch-btc",
-  		"filled": 0,
-  		"type": "limit"
+  		"id": "ac7717d4-04e9-4430-a21b-08d32b2c34cd",
+  		"created_by": 79,
+  		"filled": 0
   	}
   }
   ```
+
   - _order_partialy_filled_: When a user order is update because it was taken some part by another order.
+
   ```json
   {
+  	"action": "update",
   	"type": "order_partialy_filled",
   	"data": {
   		"id": "ac7717d4-04e9-4430-a21b-08d32b2c34cd",
+  		"filled": 0.0001,
   		"created_by": 79,
-  		"price": 1001,
   		"side": "sell",
+  		"type": "limit",
   		"size": 2,
-  		"type": "limit"
+  		"price": 1001,
+  		"symbol": "bch-btc"
   	}
   }
   ```
+
   - _order_filled_: When a user order is taken by another other in a trade.
+
   ```json
   {
+    "action": "update",
     "type": "order_filled",
     "data": [
       {
@@ -180,7 +200,9 @@ These are list of `userUpdate` client gets after subscribtion.
     ]
   }
   ```
+
   - _order_updated_: When a user updates the order.
+
   ```json
   {
   	"type": "order_updated",
@@ -194,10 +216,13 @@ These are list of `userUpdate` client gets after subscribtion.
   	}
   }
   ```
-  - _order_remove_: When a user order is taken or the user cancel the orders/orders.
+
+  - _order_removed_: When a user order is taken or the user cancel the orders/orders.
+
   ```json
   {
-    "type": "order_remove",
+    "action": "update",
+    "type": "order_removed",
     "data": [
       {
         "id": "ac7717d4-04e9-4430-a21b-08d32b2c34cd"
@@ -209,26 +234,33 @@ These are list of `userUpdate` client gets after subscribtion.
     ]
   }
   ```
+
   - _trade_: When a trade happens in the orderbook.
+
   ```json
   {
+    "action": "update",
     "type": "trade",
     "data": [
       {
-        "order": { "id": "1efd30b6-fcb5-44da-82c1-82d9def2ddbd", "size": 0.2 },
-        "price": 999,
+        "id": "1efd30b6-fcb5-44da-82c1-82d9def2ddbd",
         "side": "sell",
-        "size": 0.1,
+        "symbol": "bch-btc",
+        "size": 0.2,
+        "price": 999,
+        "timestamp": "2017-07-26T13:20:40.464Z",
         "fee": 0,
-        "timestamp": "2017-07-26T13:20:40.464Z"
       },
       ...
     ]
   }
   ```
+
   - _deposit_: When a user get a deposit in his account. Status = pending or completed
+
   ```json
   {
+  	"action": "update",
   	"type": "deposit",
   	"data": {
   		"amount": 3000,
@@ -242,9 +274,12 @@ These are list of `userUpdate` client gets after subscribtion.
   	}
   }
   ```
+
   - _withdrawal_: When a user performs a withdrawal in his account. Status = pending or completed
+
   ```json
   {
+  	"action": "update",
   	"type": "withdrawal",
   	"data": {
   		"amount": 5000,
@@ -264,7 +299,7 @@ These are list of `userUpdate` client gets after subscribtion.
 You can run the example by going to example folder and running:
 
 ```node
-node hollaex.js
+node example/hollaex.js
 ```
 
 ## Documentation

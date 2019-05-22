@@ -15,7 +15,6 @@ const sleep = (ms) => {
 };
 
 describe('Public functions', () => {
-
 	describe('#getTicker(symbolPair)', () => {
 		it('Get the ticker output', (done) => {
 			client.getTicker(symbolPair).then((result) => {
@@ -434,7 +433,7 @@ describe('Private functions', () => {
 		});
 
 		describe('#getAllOrder(symbolPair)', () => {
-			it('Get all orders', (done) =>{
+			it('Get all orders', (done) => {
 				client.getAllOrder('btc-eur').then((result) => {
 					const data = JSON.parse(result);
 					expect(data).to.be.an('array');
@@ -483,7 +482,6 @@ describe('Socket testing', () => {
 	});
 
 	describe('#userUpdate', () => {
-
 		beforeEach(async () => {
 			await Promise.all([
 				client.getBalance(),
