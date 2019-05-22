@@ -208,10 +208,10 @@ class TransactionsHistory extends Component {
 	};
 
 	render() {
-		const { id, activeTheme, symbol, cancelData } = this.props;
+		const { id, activeTheme } = this.props;
 		const { activeTab, dialogIsOpen, amount } = this.state;
 		const {onCloseDialog} =this;
-		const shortName = STRINGS[`${symbol.toUpperCase()}_SHORTNAME`];
+		// const shortName = STRINGS[`${this.props.symbol.toUpperCase()}_SHORTNAME`];
 
 		if (!id) {
 			return <Loader />;

@@ -112,7 +112,7 @@ $outline-height: 1.5px;
 }
 
 .dumb-field-wrapper {
-	color: $dark-font-sub-text-color;
+	color: $colors-notifications-blue;
 	> .field-content > .field-children {
 		padding-left: 0.25rem;
 	}
@@ -200,6 +200,9 @@ $outline-height: 1.5px;
 }
 
 .dark-theme {
+	.dumb-field-wrapper {
+		color: $dark-link;
+	}
 	.field-label {
 		color: $dark-form-label !important;
 	}

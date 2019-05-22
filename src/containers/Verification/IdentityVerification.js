@@ -4,8 +4,7 @@ import { reduxForm, SubmissionError } from 'redux-form';
 import {
 	required,
 	requiredBoolean,
-	isBefore,
-	requiredWithCustomMessage
+	isBefore
 } from '../../components/Form/validations';
 import renderFields from '../../components/Form/factoryFields';
 import { Button, IconTitle, HeaderSection } from '../../components';
@@ -35,7 +34,7 @@ class IdentityVerification extends Component {
 	}
 
 	generateFormFields = (language, fullName = '') => {
-		const ID_NUMBER_TYPE = 'PASSPORT';
+		// const ID_NUMBER_TYPE = 'PASSPORT';
 		const formFields = {
 			full_name: {
 				type: 'text',

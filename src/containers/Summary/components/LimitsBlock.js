@@ -52,6 +52,7 @@ const getRows = (data) => {
     Object.keys(CURRENCIES).map((currency, index) => {
         rowData.push(getDepositRow(data, currency, index));
         rowData.push(getWithdrawalRow(data, currency, index));
+        return '';
     });
     return rowData;
 };

@@ -31,7 +31,7 @@ import { FORM_NAME } from './components/OrderEntryForm';
 import ActiveOrders from './components/ActiveOrders';
 import UserTrades from './components/UserTrades';
 import TradeHistory from './components/TradeHistory';
-import PriceChart from './components/PriceChart';
+// import PriceChart from './components/PriceChart';
 import MobileTrade from './MobileTrade';
 import MobileChart from './MobileChart';
 import MobileOrders from './MobileOrders';
@@ -158,19 +158,20 @@ class Trade extends Component {
 	cancelAllOrders = () => {
 		let cancelDelayData = [];
 		this.props.activeOrders.map((order) => {
-			cancelDelayData = [ ...cancelDelayData, order.id ]
+			cancelDelayData = [ ...cancelDelayData, order.id ];
+			return '';
 		});
 		this.setState({ cancelDelayData });
 		setTimeout(() => {
 			this.props.cancelAllOrders(this.state.symbol);
-		}, 1000);
+		}, 700);
 	}
 
 	handleCancelOrders = (id) => {
 		this.setState({ cancelDelayData: this.state.cancelDelayData.concat(id) });
 		setTimeout(() => {
 			this.props.cancelOrder(id);
-		}, 800);
+		}, 700);
 	}
 
 	render() {
@@ -191,7 +192,7 @@ class Trade extends Component {
 			orderLimits,
 			pairs
 		} = this.props;
-		const { chartHeight, chartWidth, symbol, activeTab, isLogged, cancelDelayData, priceInitialized, sizeInitialized } = this.state;
+		const { chartHeight, symbol, activeTab, cancelDelayData, priceInitialized, sizeInitialized } = this.state;
 
 		if (symbol !== pair || !pairData) {
 			return <Loader background={false} />;

@@ -3,7 +3,6 @@ import classnames from 'classnames';
 
 import TraderAccounts from './TraderAccounts';
 import SummaryRequirements from './SummaryRequirements';
-import { Button } from '../../../components';
 
 import { TRADING_ACCOUNT_TYPE } from '../../../config/constants';
 import STRINGS from '../../../config/localizedStrings';

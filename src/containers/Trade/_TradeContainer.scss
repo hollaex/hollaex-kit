@@ -47,7 +47,7 @@
 		&.order_side-selector-sell,
 		&.order_side-selector-buy {
 			.trade_order_entry-form-action {
-				height: 4.5rem;
+				height: 4.5rem !important;
 			}
 		}
 	}

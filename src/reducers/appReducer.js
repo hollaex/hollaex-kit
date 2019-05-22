@@ -4,6 +4,8 @@ import {
 	CLOSE_ALL_NOTIFICATION,
 	SET_SNACK_NOTIFICATION,
 	CLOSE_SNACK_NOTIFICATION,
+	SET_SNACK_DIALOG,
+	CLOSE_SNACK_DIALOG,
 	CHANGE_LANGUAGE,
 	SET_ANNOUNCEMENT,
 	CHANGE_THEME,
@@ -29,7 +31,9 @@ const EMPTY_SNACK_NOTIFICATION = {
 	showSnack: false,
 	icon: '',
 	useSvg: true,
-	content: ''
+	content: '',
+	isDialog: false,
+	dialogData: []
 };
 
 const INITIAL_STATE = {
@@ -99,10 +103,12 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 		}
 
 		case SET_SNACK_NOTIFICATION:
+			
 			return {
 				...state,
 				snackNotification: {
 					...state.snackNotification,
+					...payload,
 					showSnack: true,
 					icon: payload.icon ? payload.icon : '',
 					useSvg: payload.useSvg ? payload.useSvg : true,
@@ -114,6 +120,33 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 			return {
 				...state,
 				snackNotification: EMPTY_SNACK_NOTIFICATION
+			};
+
+		case SET_SNACK_DIALOG:
+			const { isDialog, ...rest } = payload;
+			let dialogData = [...state.snackNotification.dialogData];
+			if (isDialog) {
+				dialogData = [...dialogData, { ...rest, id: `snack-dialog-${dialogData.length + 1}`}];
+			}
+			return {
+				...state,
+				snackNotification: {
+					...state.snackNotification,
+					isDialog,
+					dialogData
+				}
+			};
+
+		case CLOSE_SNACK_DIALOG:
+			const dataDialog = state.snackNotification.dialogData.filter((data) => data.id !== payload.dialogId);
+			let openDialog = dataDialog.length ? state.snackNotification.isDialog : false;
+			return {
+				...state,
+				snackNotification: {
+					...state.snackNotification,
+					isDialog: openDialog,
+					dialogData: dataDialog
+				}
 			};
 
 		case SET_UNREAD:

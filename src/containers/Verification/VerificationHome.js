@@ -17,7 +17,7 @@ const VerificationHome = ({ activeTab, tabProps, tabs, openContactForm, setActiv
                     <div className="mb-3">{STRINGS.USER_VERIFICATION.INFO_TXT_1}</div>
                     <div className="mb-3">{STRINGS.formatString(
                         STRINGS.USER_VERIFICATION.INFO_TXT_2,
-                        <span className="verification_link pointer" onClick={() => setActiveTab(4)}>{STRINGS.USER_VERIFICATION.DOCUMENTATIONS}</span>
+                        <span className="verification_link pointer" onClick={(e) => setActiveTab(4, e)}>{STRINGS.USER_VERIFICATION.DOCUMENTATIONS}</span>
                     )}</div>
                 </div>
                 {!isMobile

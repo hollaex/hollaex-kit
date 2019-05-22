@@ -48,3 +48,4 @@ export * from './MobileBar';
 export * from './Chat';
 export { default as ElapsedTimer } from './ElapsedTimer';
 export { default as SnackNotification } from './SnackNotification';
+export { default as SnackDialog } from './SnackNotification/SnackDialog';

@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import TradeBlock from './components/TradeBlock';
-import PriceChart from './components/PriceChart';
+// import PriceChart from './components/PriceChart';
 import STRINGS from '../../config/localizedStrings';
 import TradeHistory from './components/TradeHistory';
 import MobileDropdownWrapper from './components/MobileDropdownWrapper';
+import TVChartContainer from './Chart'
 
 class MobileChart extends Component {
 	state = {
@@ -24,14 +25,15 @@ class MobileChart extends Component {
 	render() {
 		const {
 			pair,
-			pairData,
+			// pairData,
 			activeTheme,
 			tradeHistory,
 			activeLanguage,
 			goToPair,
-			orderLimits
+			// orderLimits,
+			symbol
 		} = this.props;
-		const { chartHeight, chartWidth } = this.state;
+		const { chartHeight } = this.state;
 		return (
 			<div
 				className={classnames(
@@ -55,14 +57,7 @@ class MobileChart extends Component {
 				>
 					{pair &&
 						chartHeight > 0 && (
-							<PriceChart
-								height={chartHeight}
-								width={chartWidth}
-								theme={activeTheme}
-								pair={pair}
-								pairBase={pairData.pair_base}
-								orderLimits={orderLimits}
-							/>
+							<TVChartContainer activeTheme={activeTheme} symbol={symbol} />
 						)}
 				</TradeBlock>
 				<TradeBlock title={STRINGS.PUBLIC_SALES} className="f-1">

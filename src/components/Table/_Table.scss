@@ -56,10 +56,10 @@ $controllers--color-disabled: $colors-deactivate-color2;
 		}
 
 		.cancel-animate {
-			-webkit-animation: cancelRow 1.7s;
-			-moz-animation:    cancelRow 1.7s;
-			-o-animation:      cancelRow 1.7s;
-			animation:         cancelRow 1.7s;
+			-webkit-animation: cancelRow 1.4s;
+			-moz-animation:    cancelRow 1.4s;
+			-o-animation:      cancelRow 1.4s;
+			animation:         cancelRow 1.4s;
 		}
 		
 		@-webkit-keyframes cancelRow {
@@ -164,10 +164,10 @@ $controllers--color-disabled: $colors-deactivate-color2;
 				border-bottom-color: $dark-border-main;
 			}
 			.cancel-animate {
-				-webkit-animation: cancelRowDark 1.7s;
-				-moz-animation:    cancelRowDark 1.7s;
-				-o-animation:      cancelRowDark 1.7s;
-				animation:         cancelRowDark 1.7s;
+				-webkit-animation: cancelRowDark 1.4s;
+				-moz-animation:    cancelRowDark 1.4s;
+				-o-animation:      cancelRowDark 1.4s;
+				animation:         cancelRowDark 1.4s;
 			}
 			
 			@-webkit-keyframes cancelRowDark {
