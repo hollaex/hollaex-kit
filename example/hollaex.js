@@ -23,7 +23,6 @@ client
 
 const socket = client.connect('all');
 
-// client.checkConnection();
 socket.on('ticker', (data) => {
 	console.log(data);
 });
