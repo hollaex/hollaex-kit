@@ -310,7 +310,7 @@ class Container extends Component {
 			switch (type) {
 				case 'order_queued':
 					// TODO add queued orders to the store
-					this.props.addOrder(data);
+					// this.props.addOrder(data);
 					this.setState({ ordersQueued: this.state.ordersQueued.concat(data) });
 					if (data.type === 'limit') {
 						playBackgroundAudioNotification('orderbook_limit_order');
@@ -347,14 +347,14 @@ class Container extends Component {
 					break;
 				}
 				case 'order_partialy_filled': {
-					let filled = 0;
-					const order = this.props.orders.find(order => order.id === data.id)
-					if (order) {
-						filled = order.filled;
-					}
+					// let filled = 0;
+					// const order = this.props.orders.find(order => order.id === data.id)
+					// if (order) {
+					// 	filled = order.filled;
+					// }
 					this.props.updateOrder(data);
 					if (this.props.settings.notification && this.props.settings.notification.popup_order_partially_filled) {
-						data.filled = data.filled - filled;
+						// data.filled = data.filled - filled;
 						if (isMobile) {
 							this.props.setSnackDialog({
 								isDialog: true,

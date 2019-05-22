@@ -16,7 +16,7 @@ const VARIABLES = {
 	},
 	development: {
 		mainnet: generateEndpoint(PRODUCTION_ENDPOINT, API_PATH_V0),
-		testnet: generateEndpoint(LOCALHOST_ENDPOINT, API_PATH_V0)
+		testnet: generateEndpoint(PRODUCTION_ENDPOINT, API_PATH_V0)
 	}
 };
 
