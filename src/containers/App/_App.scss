@@ -188,10 +188,14 @@ $inner_container-border: 1px solid $colors-main-black;
 	flex: 0;
 	width: 100%;
 	max-width: 100vw;
-	position: -webkit-sticky;
-	position: sticky;
-	bottom: 5rem;
+	position: -webkit-fixed;
+	position: fixed;
+    bottom: 0;
+	// position: -webkit-sticky;
+	// position: sticky;
+	// bottom: 5rem;
 	align-self: flex-end;
+	z-index: 9999;
 }
 
 @media (min-width: 1920px) {

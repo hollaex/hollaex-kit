@@ -250,6 +250,9 @@ $logout--size-difference: 3rem;
 				svg {
 					@include size(6rem);
 				}
+				.limit-trade-tick {
+					fill: #BBBDBF;
+				}
 			}
 			.notification-content-title {
 				margin: 0;

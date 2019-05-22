@@ -2,9 +2,10 @@ import React, { Component } from 'react';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
 import { SubmissionError } from 'redux-form';
+import { isMobile } from 'react-device-detect';
 import { requestResetPassword } from '../../actions/authAction';
 import ResetPasswordForm, { generateFormFields } from './ResetPasswordForm';
-import { IconTitle, Dialog } from '../../components';
+import { IconTitle, Dialog, MobileBarBack } from '../../components';
 import { ContactForm } from '../';
 import { FLEX_CENTER_CLASSES, ICONS } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
@@ -49,6 +50,14 @@ class RequestResetPassword extends Component {
 	onClickLogin = () => {
 		this.props.router.replace('login');
 	};
+	
+	onGoBack = () => {
+		this.props.router.push(`/login`);
+	};
+
+	accountRecovery = () => {
+		this.setState({ success: false });
+	}
 
 	render() {
 		const { languageClasses, activeTheme } = this.props;
@@ -56,6 +65,8 @@ class RequestResetPassword extends Component {
 
 		return (
 			<div className={classnames(...FLEX_CENTER_CLASSES, 'flex-column', 'f-1')}>
+				{isMobile && !showContactForm && <MobileBarBack  onBackClick={success ? this.accountRecovery : this.onGoBack}>
+				</MobileBarBack>}
 				{success ? (
 					<RequestResetPasswordSuccess
 						onLoginClick={this.onClickLogin}

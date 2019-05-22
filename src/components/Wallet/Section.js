@@ -25,7 +25,7 @@ const TextHolders = ({ ordersOfSymbol, currencySymbol, hold, name }) => {
 };
 
 const Section = ({ symbol = fiatSymbol, balance, orders, price }) => {
-	const { currencySymbol, shortName, formatToCurrency } = CURRENCIES[symbol];
+	const { shortName, formatToCurrency } = CURRENCIES[symbol];
 	const ordersOfSymbol = orders.filter((order) => {
 		if (symbol === fiatSymbol) {
 			return order.side === 'buy';

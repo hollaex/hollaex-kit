@@ -4,7 +4,7 @@ import classnames from 'classnames';
 
 import '@material/button/dist/mdc.button.css';
 
-const Button = ({ label, onClick, type, disabled, className }) => (
+const Button = ({ label, onClick, type, disabled, className, autoFocus = false }) => (
 	<button
 		type={type}
 		onClick={onClick}
@@ -19,6 +19,7 @@ const Button = ({ label, onClick, type, disabled, className }) => (
 			className
 		)}
 		disabled={disabled}
+		autoFocus={autoFocus}
 	>
 		{label}
 	</button>

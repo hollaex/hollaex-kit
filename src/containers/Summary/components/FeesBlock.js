@@ -38,6 +38,7 @@ const getRows = (data, pairs) => {
     Object.keys(data).map((pair, index) => {
         rowData.push(getMakerRow(data, pair, pairs, index));
         rowData.push(getTakerRow(data, pair, index));
+        return '';
     });
     return rowData;
 };
@@ -50,6 +51,7 @@ const generateRowData = ({ fees, level }) => {
             taker_fees: temp.taker_fees[level],
             maker_fees: temp.maker_fees[level]
         };
+        return '';
     });
     return levelData;
 };

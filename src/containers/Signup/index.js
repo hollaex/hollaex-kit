@@ -9,7 +9,7 @@ import { performSignup } from '../../actions/authAction';
 import SignupForm, { generateFormFields, FORM_NAME } from './SignupForm';
 import SignupSuccess from './SignupSuccess';
 import { ContactForm } from '../';
-import { IconTitle, Dialog } from '../../components';
+import { IconTitle, Dialog, MobileBarBack } from '../../components';
 import {
 	HOLLAEX_LOGO,
 	FLEX_CENTER_CLASSES,
@@ -73,18 +73,29 @@ class Signup extends Component {
 		this.setState({ showContactForm: false });
 	};
 
+	onGoBack = () => {
+		this.props.router.push(`/login`);
+	};
+
+	onBackActiveEmail = () => {
+				this.setState({ success: false });
+	};
+
 	render() {
 		const { languageClasses, activeTheme } = this.props;
 		const { success, showContactForm } = this.state;
 
 		if (success) {
-			return <SignupSuccess activeTheme={activeTheme} />;
+			return <div>
+			{isMobile  && <MobileBarBack onBackClick={this.onBackActiveEmail} />}
+			<SignupSuccess activeTheme={activeTheme} /></div>
 		}
 
 		const formFields = generateFormFields(STRINGS, activeTheme);
 
 		return (
 			<div className={classnames(...FLEX_CENTER_CLASSES, 'flex-column', 'f-1')}>
+				{isMobile && !showContactForm && <MobileBarBack onBackClick={this.onGoBack} />}
 				<div
 					className={classnames(
 						...FLEX_CENTER_CLASSES,

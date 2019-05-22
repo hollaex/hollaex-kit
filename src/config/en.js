@@ -1,6 +1,6 @@
 export default {
 	APP_TITLE: 'Hollaex',
-	APP_SUB_TITLE: 'White Label Cryptocurrency Exchange', // ToDo: need to add that in fasri
+	APP_SUB_TITLE: 'White Label Cryptocurrency Exchange',
 	APP_NAME: 'hollaex',
 	FIAT_NAME: 'EURO',
 	FIAT_FULLNAME: 'Euro',
@@ -28,7 +28,8 @@ export default {
 	BCH_CURRENCY_SYMBOL: 'BCH',
 	BCH_PRICE_FORMAT: '{0} {1}',
 
-	ADD_TRADING_PAIR: 'Add Trading Pair',  // ToDo: need to add this in farsi when move to exir.
+	LOGOUT_CONFIRM_TEXT: 'Are you sure?. Do you want to logout',
+	ADD_TRADING_PAIR: 'Add Trading Pair',
 	ACTIVE_TRADES: 'You must {0} to access your active trades',
 	CANCEL_FIAT_WITHDRAWAL: 'Cancel {0} Withdrawal',
 	CANCEL_WITHDRAWAL: 'Cancel Withdrawal',
@@ -44,8 +45,8 @@ export default {
 	ACCOUNT_TEXT: 'Account',
 	CLOSE_TEXT: 'Close',
 	COPY_TEXT: 'Copy',
-	COPY_SUCCESS_TEXT: 'Successfully Copied', // ToDO: need to Add it in farsi.
-	CANCEL_SUCCESS_TEXT: 'Successfully Cancelled!', // ToDo: need to add this in farsi when move to exir.
+	COPY_SUCCESS_TEXT: 'Successfully Copied', 
+	CANCEL_SUCCESS_TEXT: 'Successfully Cancelled!', 
 	UPLOAD_TEXT: 'Upload',
 	ADD_FILES: 'ADD FILES', // ToDo
 	OR_TEXT: 'Or',
@@ -60,11 +61,11 @@ export default {
 	HELP_TEXT: 'help',
 	SUCCESS_TEXT: 'Success',
 	ERROR_TEXT: 'Error',
-	PROCEED: 'PROCEED', // ToDo: add it in farsi on exir
+	PROCEED: 'PROCEED', 
 	EDIT_TEXT: 'Edit',
 	BACK_TEXT: 'Back',
 	NO_OPTIONS: 'No options availables',
-	SECONDS: 'seconds',  // ToDo: Add this into farsi in exir
+	SECONDS: 'seconds',  
 	HOME: {
 		SECTION_1_TITLE: 'Build your own Bitcoin exchange',
 		SECTION_1_TEXT_1:
@@ -355,14 +356,14 @@ export default {
 		TEXT_2: 'You can now proceed to login'
 	},
 	USER_VERIFICATION: {
-		INFO_TXT: 'Here you can monitor your progress towards verification and an account upgrades.', // ToDo: Here we need to add this in farsi
-		INFO_TXT_1: 'Please submit the relevant information needed for each section below.Only when all sections have submissions completed will your information be reviewed and approved for an account upgrade.', // ToDo: Here we need to add this in farsi
-		INFO_TXT_2: '* Bank and Identity section require {0} in order to be fully verified.', // ToDo: Here we need to add this in farsi
+		INFO_TXT: 'Here you can monitor your progress towards verification and an account upgrades.', 
+		INFO_TXT_1: 'Please submit the relevant information needed for each section below.Only when all sections have submissions completed will your information be reviewed and approved for an account upgrade.', 
+		INFO_TXT_2: '* Bank and Identity section require {0} in order to be fully verified.', 
 		DOCUMENTATIONS: 'documentations',
 		COMPLETED: 'Completed',
 		PENDING_VERIFICATION: 'Pending verification',
 		TITLE_EMAIL: 'Email',
-		MY_EMAIL: 'My Email', // ToDo: Here we need to add this in farsi
+		MY_EMAIL: 'My Email', 
 		TITLE_USER_DOCUMENTATION: 'Identification',
 		TITLE_ID_DOCUMENTS: 'Documents',
 		TITLE_BANK_ACCOUNT: 'Bank Account',
@@ -385,40 +386,40 @@ export default {
 		PENDING_VERIFICATION_BANK: 'Your bank details are being verified',
 		PENDING_VERIFICATION_DOCUMENTS: 'Your documents are being verified',
 		GOTO_VERIFICATION: 'Go to verification',
-		CONNECT_BANK_ACCOUNT: 'Connect Bank Account', // ToDo: Add this into farsi in exir
-		ACTIVATE_2FA: 'Activate 2FA', // ToDo: Add this into farsi in exir
-		INCOMPLETED: 'Incompleted', // ToDo: Add this into farsi in exir
-		BANK_VERIFICATION: 'Bank Verification', // ToDo: Add this into farsi in exir
-		IDENTITY_VERIFICATION: 'Identity Verification', // ToDo: Add this into farsi in exir
-		PHONE_VERIFICATION: 'Phone Verification', // ToDo: Add this into farsi in exir
-		DOCUMENT_VERIFICATION: 'Document Verification', // ToDo: Add this into farsi in exir
-		START_BANK_VERIFICATION: 'Start Bank Verification', // ToDo: Add this into farsi in exir
-		START_IDENTITY_VERIFICATION: 'Start Identity Verification', // ToDo: Add this into farsi in exir
-		START_PHONE_VERIFICATION: 'Start Phone Verification', // ToDo: Add this into farsi in exir
-		START_DOCUMENTATION_SUBMISSION: 'Start Documentation Submission', // ToDo: Add this into farsi in exir
-		GO_BACK: 'Go Back', // ToDo: Add this into farsi in exir
-		BANK_VERIFICATION_TEXT_1: 'You can add up to 3 bank accounts. International bank accounts will require you contacting customer support and will have limited withdrawal limits.', // ToDo: Add this into farsi in exir
-		BANK_VERIFICATION_TEXT_2: 'By verifing your bank acount you can obtain the following:', // ToDo: Add this into farsi in exir
-		FIAT_WITHDRAWAL: 'Fiat withdrawal', // ToDo: Add this into farsi in exir
-		FIAT_DEPOSITS: 'Fiat deposits', // ToDo: Add this into farsi in exir
-		ADD_ANOTHER_BANK_ACCOUNT: 'Add Another Bank Account', // ToDo: Add this into farsi in exir
-		BANK_NAME: 'Bank Name', // ToDo: Add this into farsi in exir
-		ACCOUNT_NUMBER: 'Account Number', // ToDo: Add this into farsi in exir
-		CARD_NUMBER: 'Card Number', // ToDo: Add this into farsi in exir
-		BANK_VERIFICATION_HELP_TEXT: 'In order for this section to be verified you must complete the {0} section.', // ToDo: Add this into farsi in exir
-		DOCUMENT_SUBMISSION: 'Document Submission', // ToDo: Add this into farsi in exir
-		REVIEW_IDENTITY_VERIFICATION: 'Review Identity Verification', // ToDo: Add this into farsi in exir
-		PHONE_DETAILS: 'Phone Details', // ToDo: Add this into farsi in exir
-		PHONE_COUNTRY_ORIGIN: 'Phone Country of Origin', // ToDo: Add this into farsi in exir
-		MOBILE_NUMBER: 'Mobile Number', // ToDo: Add this into farsi in exir
-		DOCUMENT_PROOF_SUBMISSION: 'Document Proof Submission', // ToDo: Add this into farsi in exir
-		START_DOCUMENTATION_RESUBMISSION: 'Start Documentation Re-Submission', // ToDo: Add this into farsi in exir
-		SUBMISSION_PENDING_TXT: '*This section has already been submitted. Making changes and resubmitting will overwrite your previous information.', // ToDo: Add this into farsi in exir
-		CUSTOMER_SUPPORT_MESSAGE: 'Customer Support Message',// ToDo: Add this into farsi in exir
-		DOCUMENT_PENDING_NOTE: 'Your documents is submitted and is pending for review. Please be patient.', // ToDo: Add this into farsi in exir
-		DOCUMENT_VERIFIED_NOTE: 'Your documents are completed.', // ToDo: Add this into farsi in exir
-		NOTE_FROM_VERIFICATION_DEPARTMENT: 'Note from the verification department', // ToDo: Add this into farsi in exir
-		CODE_EXPIRES_IN: 'Code expires in', // ToDo: Add this into farsi in exir
+		CONNECT_BANK_ACCOUNT: 'Connect Bank Account', 
+		ACTIVATE_2FA: 'Activate 2FA', 
+		INCOMPLETED: 'Incompleted', 
+		BANK_VERIFICATION: 'Bank Verification', 
+		IDENTITY_VERIFICATION: 'Identity Verification', 
+		PHONE_VERIFICATION: 'Phone Verification', 
+		DOCUMENT_VERIFICATION: 'Document Verification', 
+		START_BANK_VERIFICATION: 'Start Bank Verification', 
+		START_IDENTITY_VERIFICATION: 'Start Identity Verification', 
+		START_PHONE_VERIFICATION: 'Start Phone Verification', 
+		START_DOCUMENTATION_SUBMISSION: 'Start Documentation Submission', 
+		GO_BACK: 'Go Back', 
+		BANK_VERIFICATION_TEXT_1: 'You can add up to 3 bank accounts. International bank accounts will require you contacting customer support and will have limited withdrawal limits.', 
+		BANK_VERIFICATION_TEXT_2: 'By verifing your bank acount you can obtain the following:', 
+		FIAT_WITHDRAWAL: 'Fiat withdrawal', 
+		FIAT_DEPOSITS: 'Fiat deposits', 
+		ADD_ANOTHER_BANK_ACCOUNT: 'Add Another Bank Account', 
+		BANK_NAME: 'Bank Name', 
+		ACCOUNT_NUMBER: 'Account Number', 
+		CARD_NUMBER: 'Card Number', 
+		BANK_VERIFICATION_HELP_TEXT: 'In order for this section to be verified you must complete the {0} section.', 
+		DOCUMENT_SUBMISSION: 'Document Submission', 
+		REVIEW_IDENTITY_VERIFICATION: 'Review Identity Verification', 
+		PHONE_DETAILS: 'Phone Details', 
+		PHONE_COUNTRY_ORIGIN: 'Phone Country of Origin', 
+		MOBILE_NUMBER: 'Mobile Number', 
+		DOCUMENT_PROOF_SUBMISSION: 'Document Proof Submission', 
+		START_DOCUMENTATION_RESUBMISSION: 'Start Documentation Re-Submission', 
+		SUBMISSION_PENDING_TXT: '*This section has already been submitted. Making changes and resubmitting will overwrite your previous information.', 
+		CUSTOMER_SUPPORT_MESSAGE: 'Customer Support Message',
+		DOCUMENT_PENDING_NOTE: 'Your documents is submitted and is pending for review. Please be patient.', 
+		DOCUMENT_VERIFIED_NOTE: 'Your documents are completed.', 
+		NOTE_FROM_VERIFICATION_DEPARTMENT: 'Note from the verification department', 
+		CODE_EXPIRES_IN: 'Code expires in', 
 		USER_DOCUMENTATION_FORM: {
 			FORM_FIELDS: {
 				FIRST_NAME_LABEL: 'First name',
@@ -453,7 +454,7 @@ export default {
 				PHONE_CODE_DISPLAY: '({0}) {1}', // 0 -> (+21)  1 -> South Korea
 				PHONE_NUMBER_LABEL: 'Phone number',
 				PHONE_NUMBER_PLACEHOLDER: 'Type your phone number',
-				CONNECTING_LOADING: 'Connecting', // ToDo: Add this into farsi in exir
+				CONNECTING_LOADING: 'Connecting', 
 				SMS_SEND: 'Send SMS',
 				SMS_CODE_LABEL: 'SMS Code',
 				SMS_CODE_PLACEHOLDER: 'Input your SMS code'
@@ -578,7 +579,7 @@ export default {
 			LIST_ITEM_3: 'Lower fees'
 		}
 	},
-	USER_SETTINGS: { // ToDo: add it in farsi on exir
+	USER_SETTINGS: { 
 		TITLE_TEXT_1: 'Change the settings of your account. From interface, notifcations, username and other customizations.',
 		TITLE_TEXT_2: 'Saving your settings will apply the changes and save it.',
 		TITLE_NOTIFICATION: 'Notification',
@@ -590,11 +591,11 @@ export default {
 		ORDERBOOK_LEVEL: 'Orderbook Levels (Max 20)',
 		SET_TXT: 'SET',
 		CREATE_ORDER_WARING: 'Create Order Warning',
-		RISKY_TRADE_DETECTED: 'Risky Trade Detected', // ToDo: add it in farsi on exir
-		RISKY_WARNING_TEXT_1:'This orders value is over your designated order limit amount you’ve set {0} .', // ToDo: add it in farsi on exir
-		RISKY_WARNING_TEXT_2:'({0} of portfolio)',  // ToDo: add it in farsi on exir
-		RISKY_WARNING_TEXT_3: ' Please check and verify that you indeed want to make this trade.',  // ToDo: add it in farsi on exir
-		GO_TO_RISK_MANAGMENT: 'GO TO RISK MANAGMENT', // ToDo: add it in farsi on exir
+		RISKY_TRADE_DETECTED: 'Risky Trade Detected', 
+		RISKY_WARNING_TEXT_1:'This orders value is over your designated order limit amount you’ve set {0} .', 
+		RISKY_WARNING_TEXT_2:'({0} of portfolio)',  
+		RISKY_WARNING_TEXT_3: ' Please check and verify that you indeed want to make this trade.',  
+		GO_TO_RISK_MANAGMENT: 'GO TO RISK MANAGMENT', 
 		CREATE_ORDER_WARING_TEXT: 'Create a warning pop up when your trade order uses more than {0} of your portfolio',
 		ORDER_PORTFOLIO_LABEL: 'Portfolio Percentage Amount:',
 		NOTIFICATION_FORM: {
@@ -613,8 +614,8 @@ export default {
 			INFO_TEXT_1: 'Total assets value in {0}: {1}',
 			PORTFOLIO: 'Percentage of portfolio',
 			TOMAN_ASSET: 'Approximate Value',
-			ADJUST: '(ADJUST PERCENTAGE)',  //ToDo: add it in farsi on exir
-			ACTIVATE_RISK_MANAGMENT: 'Activate Risk Managment', //ToDo: add it in farsi on exir
+			ADJUST: '(ADJUST PERCENTAGE)',  
+			ACTIVATE_RISK_MANAGMENT: 'Activate Risk Managment', 
 			WARNING_POP_UP: 'Warning pop ups'
 		}
 	},
@@ -701,12 +702,12 @@ export default {
 		sell: 'sell'
 	},
 	SIDES: [{ value: 'buy', label: 'buy' }, { value: 'sell', label: 'sell' }],
-	DEFAULT_TOGGLE_OPTIONS: [{ value: true, label: 'on' }, { value: false, label: 'off' }], // ToDo: Add it into farsi
+	DEFAULT_TOGGLE_OPTIONS: [{ value: true, label: 'on' }, { value: false, label: 'off' }], 
 	SIZE: 'Size',
 	PRICE: 'Price',
 	FEE: 'Fee',
 	FEES: 'Fees',
-	LIMIT: 'Limit', // ToDo: Add it into farsi
+	LIMIT: 'Limit', 
 	TIME: 'Time',
 	TIMESTAMP: 'Timestamp',
 	MORE: 'More',
@@ -883,7 +884,7 @@ export default {
 	NEXT: 'Next',
 	SKIP_FOR_NOW: 'Skip for now',
 	SUBMIT: 'submit',
-	RESUBMIT: 'Resubmit', // ToDo: need to add this entire suumary in farsi when move to exir.
+	RESUBMIT: 'Resubmit', 
 	VERIFICATION_NOTIFICATION_SKIP_TITLE: 'Missing Documents!',
 	VERIFICATION_NOTIFICATION_SKIP_TEXT:
 		'To get full access to withdrawal and deposit functions on HOLLAEX you must submit your identity documents in your account page.',
@@ -1014,12 +1015,12 @@ export default {
 	QUICK_TRADE_MODE: 'Quick Trade Mode',
 	JUST_NOW: 'just now',
 	PAIR: 'Pair',
-	ZERO_ASSET: 'You have zero assets', // ToDo: need to add this in farsi when move to exir.
-	DEPOSIT_ASSETS: 'Deposit Assets', // ToDo: need to add this in farsi when move to exir.
-	SEARCH_TXT: 'Search', // ToDo: need to add this in farsi when move to exir.
-	SEARCH_ASSETS: 'Search Assets', // ToDo: need to add this in farsi when move to exir.
-	TOTAL_ASSETS_VALUE: 'Total assets value in {0}: {1}', // ToDo: need to add this in farsi when move to exir.
-	SUMMARY: { // ToDo: need to add this entire suumary in farsi when move to exir.
+	ZERO_ASSET: 'You have zero assets', 
+	DEPOSIT_ASSETS: 'Deposit Assets', 
+	SEARCH_TXT: 'Search', 
+	SEARCH_ASSETS: 'Search Assets', 
+	TOTAL_ASSETS_VALUE: 'Total assets value in {0}: {1}', 
+	SUMMARY: { 
 		TITLE: 'Summary',
 		TINY_PINK_SHRIMP_TRADER: 'Tiny Pink Shrimp Trader',
 		TINY_PINK_SHRIMP_TRADER_ACCOUNT: 'Tiny Pink Shrimp Trader Account',

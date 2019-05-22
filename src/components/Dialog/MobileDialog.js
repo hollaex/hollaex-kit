@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import Modal from 'react-modal';
+import { isLoggedIn } from '../../utils/token';
 import { MobileBarBack } from '../';
 import { getClasesForLanguage, getLanguage } from '../../utils/string';
 import { getThemeClass } from '../../utils/theme';
@@ -81,7 +82,8 @@ class Dialog extends PureComponent {
 					'layout-mobile',
 					{
 						compressed,
-						'dialog_full-screen': useFullScreen
+						'dialog_full-screen': useFullScreen,
+						'LogoutModal': !isLoggedIn()
 					}
 				)}
 			>

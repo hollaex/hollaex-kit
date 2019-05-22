@@ -5,7 +5,7 @@ import STRINGS from '../../config/localizedStrings';
 import { IconTitle, Button } from '../../components';
 
 const RequestResetPasswordSuccess = ({ onLoginClick, onContactUs }) => (
-	<div className="auth_wrapper">
+	<div className="auth_wrapper d-flex justify-content-center align-items-center flex-column">
 		<IconTitle
 			iconPath={ICONS.PASSWORD_RESET}
 			text={STRINGS.REQUEST_RESET_PASSWORD_SUCCESS.TITLE}

@@ -7,7 +7,7 @@ import { SubmissionError } from 'redux-form';
 import { requestVerificationEmail } from '../../actions/authAction';
 import EmailRequestForm, { generateFormFields } from './EmailRequestForm';
 import EmailRequestSuccess from './EmailRequestSuccess';
-import { IconTitle, Dialog } from '../../components';
+import { IconTitle, Dialog, MobileBarBack } from '../../components';
 import { ContactForm } from '../';
 import { HOLLAEX_LOGO, FLEX_CENTER_CLASSES } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
@@ -56,6 +56,14 @@ class VerifyEmailRequest extends Component {
 		this.setState({ showContactForm: false });
 	};
 
+	onGoBack = () => {
+		this.props.router.push(`/signup`);
+	};
+
+	onBackEmailRequest=() => {
+		this.setState({ success: false });
+	}
+	
 	render() {
 		const { languageClasses, activeTheme } = this.props;
 		const { success, showContactForm, formFields } = this.state;
@@ -63,7 +71,9 @@ class VerifyEmailRequest extends Component {
 		if (success) {
 			return (
 				<div>
-					<EmailRequestSuccess activeTheme = {activeTheme} onClick={this.onOpenDialog} />
+					{isMobile && !showContactForm && <MobileBarBack onBackClick={this.onBackEmailRequest}>
+					</MobileBarBack>}
+					<EmailRequestSuccess showContactForm={showContactForm} activeTheme = {activeTheme} onClick={this.onOpenDialog} />
 					<Dialog
 						isOpen={showContactForm}
 						label="contact-modal"
@@ -92,6 +102,8 @@ class VerifyEmailRequest extends Component {
 					'login_container'
 				)}
 			>
+			{isMobile && <MobileBarBack onBackClick={this.onGoBack} />}
+
 				<div
 					className={classnames(
 						...FLEX_CENTER_CLASSES,
