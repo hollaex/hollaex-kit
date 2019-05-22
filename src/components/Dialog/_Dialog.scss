@@ -131,6 +131,11 @@ $close-button--margin: 1.5rem;
 		}
 	}
 
+	&.LogoutModal {
+		.ReactModal__Content {
+			top: 0 !important;
+		}
+	}
 	&.dialog_full-screen {
 		.ReactModal__Content {
 			top: 0 !important;

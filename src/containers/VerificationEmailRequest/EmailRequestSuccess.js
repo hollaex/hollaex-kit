@@ -1,13 +1,14 @@
 import React from 'react';
+import classnames from 'classnames';
 import { IconTitle, Button } from '../../components';
 import STRINGS from '../../config/localizedStrings';
-import { ICONS } from '../../config/constants';
+import { ICONS, FLEX_CENTER_CLASSES } from '../../config/constants';
 
 const EmailRequestSuccess = ({ onClick, ...rest }) => {
 	return (
-		<div className="signup_success-wrapper auth_wrapper">
+		<div className={classnames(...FLEX_CENTER_CLASSES, "signup_success-wrapper", "flex-column", "h-100", "auth_wrapper")}>
 			<IconTitle
-				iconPath={ rest.activeTheme === 'dark' ? ICONS.VERIFICATION_SENT_DARK : ICONS.VERIFICATION_SENT}
+				iconPath={rest.activeTheme === 'dark' ? ICONS.VERIFICATION_SENT_DARK : ICONS.VERIFICATION_SENT}
 				text={STRINGS.VERIFICATION_EMAIL_REQUEST_SUCCESS.TITLE}
 				textType="title"
 				className="w-100"

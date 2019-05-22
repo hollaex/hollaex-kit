@@ -7,6 +7,8 @@ export const CLOSE_NOTIFICATION = 'CLOSE_NOTIFICATION';
 export const CLOSE_ALL_NOTIFICATION = 'CLOSE_ALL_NOTIFICATION';
 export const SET_SNACK_NOTIFICATION = 'SET_SNACK_NOTIFICATION';
 export const CLOSE_SNACK_NOTIFICATION = 'CLOSE_SNACK_NOTIFICATION';
+export const SET_SNACK_DIALOG = 'SET_SNACK_DIALOG';
+export const CLOSE_SNACK_DIALOG = 'CLOSE_SNACK_DIALOG';
 export const NOTIFICATIONS = {
 	ORDERS: 'NOTIFICATIONS_ORDERS',
 	TRADES: 'NOTIFICATIONS_TRADES',
@@ -37,6 +39,7 @@ export const SET_ORDER_LIMITS = 'SET_ORDER_LIMITS';
 export const FEES_STRUCTURE_AND_LIMITS = 'FEES_STRUCTURE_AND_LIMITS';
 export const RISK_PORTFOLIO_ORDER_WARING = 'RISK_PORTFOLIO_ORDER_WARING';
 export const RISKY_ORDER = 'RISKY_ORDER';
+export const LOGOUT_CONFORMATION = 'LOGOUT_CONFORMATION';
 
 export const USER_TYPES = {
 	USER_TYPE_NORMAL: 'normal',
@@ -78,6 +81,16 @@ export const setSnackNotification = (data = {}) => ({
 export const closeSnackNotification = () => ({
 	type: CLOSE_SNACK_NOTIFICATION,
 	payload: {}
+});
+
+export const setSnackDialog = (data = {}) => ({
+	type: SET_SNACK_DIALOG,
+	payload: data
+});
+
+export const closeSnackDialog = (id) => ({
+	type: CLOSE_SNACK_DIALOG,
+	payload: {dialogId: id}
 });
 
 export const openContactForm = (data = {}) =>
@@ -186,3 +199,6 @@ export const openFeesStructureandLimits = (data = {}) =>
 
 export const openRiskPortfolioOrderWarning = (data = {}) =>
 	setNotification(RISK_PORTFOLIO_ORDER_WARING, data, true);
+
+export const logoutconfirm = (data = {}) =>
+	setNotification(LOGOUT_CONFORMATION, data, true);

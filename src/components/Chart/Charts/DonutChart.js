@@ -28,7 +28,8 @@ class DonutChart extends Component {
         width: 0,
         height: 0,
         isData: true,
-        hoverId: ''
+        hoverId: '',
+        higherId: ''
     }
 
     componentDidMount() {
@@ -45,6 +46,17 @@ class DonutChart extends Component {
     }
 
     checkData = (data = []) => {
+        let largerValue = 0;
+        let largerId = '';
+        data.map((value, index) => {
+            if (value.balance > largerValue) {
+                largerId = `slice-${index}`;
+                largerValue = value.balance;
+            }
+            return null;
+        });
+        this.setState({ higherId: largerId, hoverId: largerId });
+
         const checkFilter = data.filter(value => value.balance > 0);
         return !!checkFilter.length;
     };
@@ -54,7 +66,7 @@ class DonutChart extends Component {
     };
 
     handleOut = () => {
-        this.setState({ hoverId: '' });
+        this.setState({ hoverId: this.state.higherId });
     };
 
     render() {
@@ -69,6 +81,7 @@ class DonutChart extends Component {
             if (pieValue.value !== 0) {
                 pieData.push(pieValue);
             }
+            return null;
         });
         const pieMax = [...pieData.sort((a, b) => b.data.balance - a.data.balance)];
         let pieMin = pieMax.splice(pieMax.length / 2, pieMax.length);
@@ -112,6 +125,7 @@ class DonutChart extends Component {
                 ];
                 nextStartAngle += diffangle;
             }
+            return '';
         });
         let x = width / 2;
         let y = (height / 2) - 15;

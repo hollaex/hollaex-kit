@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux';
 import io from 'socket.io-client';
 import EventListener from 'react-event-listener';
 import { debounce } from 'lodash';
-import { WS_URL, ICONS, SESSION_TIME, AUDIOS } from '../../config/constants';
+import { WS_URL, ICONS, SESSION_TIME } from '../../config/constants';
 import { isBrowser, isMobile } from 'react-device-detect';
 
 import { logout } from '../../actions/authAction';
@@ -42,7 +42,9 @@ import {
 	HELPFUL_RESOURCES_FORM,
 	FEES_STRUCTURE_AND_LIMITS,
 	RISK_PORTFOLIO_ORDER_WARING,
-	RISKY_ORDER
+	RISKY_ORDER,
+	setSnackDialog,
+	LOGOUT_CONFORMATION
 } from '../../actions/appActions';
 
 import {
@@ -62,12 +64,14 @@ import {
 	Notification,
 	MessageDisplay,
 	CurrencyList,
-	SnackNotification
+	SnackNotification,
+	SnackDialog
 } from '../../components';
 import { ContactForm, HelpfulResourcesForm, Chat as ChatComponent } from '../';
 import ReviewEmailContent from '../Withdraw/ReviewEmailContent';
 import FeesAndLimits from '../Summary/components/FeesAndLimits';
 import SetOrderPortfolio from '../UserSettings/SetOrderPortfolio';
+import LogoutConfirmation from '../Summary/components/LogoutConfirmation';
 import RiskyOrder from '../Trade/components/RiskyOrder';
 
 import {
@@ -219,6 +223,7 @@ class Container extends Component {
 						STEP: data.pairs[pair].tick_size
 					}
 				}
+				return '';
 			});
 			this.props.setOrderLimits(orderLimits);
 		});
@@ -302,10 +307,10 @@ class Container extends Component {
 		});
 
 		privateSocket.on('update', ({ action, type, data }) => {
-			// console.log('update', action, type, data);
 			switch (type) {
 				case 'order_queued':
 					// TODO add queued orders to the store
+					this.props.addOrder(data);
 					this.setState({ ordersQueued: this.state.ordersQueued.concat(data) });
 					if (data.type === 'limit') {
 						playBackgroundAudioNotification('orderbook_limit_order');
@@ -342,12 +347,26 @@ class Container extends Component {
 					break;
 				}
 				case 'order_partialy_filled': {
+					let filled = 0;
+					const order = this.props.orders.find(order => order.id === data.id)
+					if (order) {
+						filled = order.filled;
+					}
 					this.props.updateOrder(data);
 					if (this.props.settings.notification && this.props.settings.notification.popup_order_partially_filled) {
-						this.props.setNotification(
-							NOTIFICATIONS.TRADES,
-							{ type, order: data, data: [{...data}] }
-						);
+						data.filled = data.filled - filled;
+						if (isMobile) {
+							this.props.setSnackDialog({
+								isDialog: true,
+								type: 'trade',
+								data: { order: data, data }
+							});
+						} else {
+							this.props.setNotification(
+								NOTIFICATIONS.ORDERS,
+								{ type, order: data, data }
+							);
+						}
 					}
 					if (this.props.settings.audio && this.props.settings.audio.order_partially_completed) {
 						playBackgroundAudioNotification('order_partialy_filled');
@@ -372,13 +391,27 @@ class Container extends Component {
 					this.props.removeOrder(data);
 					if (this.props.settings.notification && this.props.settings.notification.popup_order_completed) {
 						ordersDeleted.forEach((orderDeleted) => {
-							this.props.setNotification(NOTIFICATIONS.ORDERS, {
-								type,
-								data: {
-									...orderDeleted,
-									filled: orderDeleted.size
-								}
-							});
+							if (isMobile) {
+								this.props.setSnackDialog({
+									isDialog: true,
+									type: 'order',
+									data: {
+										type,
+										data: {
+											...orderDeleted,
+											filled: orderDeleted.size
+										}
+									}
+								});
+							} else {
+								this.props.setNotification(NOTIFICATIONS.ORDERS, {
+									type,
+									data: {
+										...orderDeleted,
+										filled: orderDeleted.size
+									}
+								});
+							}
 						});
 					}
 					if (this.props.settings.audio && this.props.settings.audio.order_completed) {
@@ -410,12 +443,22 @@ class Container extends Component {
 							const { orders } = this.props;
 							order = orders.find(({ id }) => id === orderIdFromTrade);
 						}
-						if (order && order.type === 'market' && this.props.settings.notification && this.props.settings.notification.popup_order_completed) {
-							this.props.setNotification(NOTIFICATIONS.TRADES, { data, order });
+						if (order && order.type === 'market'
+							&& this.props.settings.notification
+							&& this.props.settings.notification.popup_order_completed) {
+							if (isMobile) {
+								this.props.setSnackDialog({
+									isDialog: true,
+									type: 'trade',
+									data: { order, data }
+								});
+							} else {
+								this.props.setNotification(NOTIFICATIONS.TRADES, { data, order });
+							}
 						}
 					}
 					if (this.state.limitFilledOnOrder
-						&& data.filter((limit) => limit.order.id === this.state.limitFilledOnOrder).length
+						&& data.filter((limit) => limit.id === this.state.limitFilledOnOrder).length
 						&& this.props.settings.audio
 						&& this.props.settings.audio.order_completed) {
 						setTimeout(() => {
@@ -594,6 +637,14 @@ class Container extends Component {
 						onClose={this.onCloseDialog}
 					/>
 				);
+			case LOGOUT_CONFORMATION:
+				return (
+					<LogoutConfirmation
+						data={data}
+						onConfirm={this.logout}
+						onClose={this.onCloseDialog}
+					/>
+				);
 			case RISKY_ORDER:
 				const { onConfirm, ...rest } = data;
 				return (
@@ -631,15 +682,15 @@ class Container extends Component {
 			children,
 			activeNotification,
 			prices,
-			verification_level,
+			// verification_level,
 			activeLanguage,
-			openContactForm,
+			// openContactForm,
 			openHelpfulResourcesForm,
 			activeTheme,
 			unreadMessages,
 			router,
 			location,
-			user
+			// user
 		} = this.props;
 		const { dialogIsOpen, appLoaded, chatIsClosed } = this.state;
 		const languageClasses = getClasesForLanguage(activeLanguage, 'array');
@@ -785,6 +836,7 @@ class Container extends Component {
 					</div>
 				</div>
 				<SnackNotification />
+				<SnackDialog />
 			</div>
 		);
 	}
@@ -833,7 +885,8 @@ const mapDispatchToProps = (dispatch) => ({
 	setTickers: bindActionCreators(setTickers, dispatch),
 	changeTheme: bindActionCreators(changeTheme, dispatch),
 	setChatUnreadMessages: bindActionCreators(setChatUnreadMessages, dispatch),
-	setOrderLimits: bindActionCreators(setOrderLimits, dispatch)
+	setOrderLimits: bindActionCreators(setOrderLimits, dispatch),
+	setSnackDialog: bindActionCreators(setSnackDialog, dispatch)
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Container);

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import TradeBlock from './components/TradeBlock';
-import PriceChart from './components/PriceChart';
+// import PriceChart from './components/PriceChart';
 import STRINGS from '../../config/localizedStrings';
 import TradeHistory from './components/TradeHistory';
 import MobileDropdownWrapper from './components/MobileDropdownWrapper';
@@ -25,15 +25,15 @@ class MobileChart extends Component {
 	render() {
 		const {
 			pair,
-			pairData,
+			// pairData,
 			activeTheme,
 			tradeHistory,
 			activeLanguage,
 			goToPair,
-			orderLimits,
+			// orderLimits,
 			symbol
 		} = this.props;
-		const { chartHeight, chartWidth } = this.state;
+		const { chartHeight } = this.state;
 		return (
 			<div
 				className={classnames(

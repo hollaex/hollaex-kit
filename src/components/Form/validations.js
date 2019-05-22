@@ -1,6 +1,6 @@
 import validator from 'validator';
 import WAValidator from 'wallet-address-validator';
-import BAValidator from 'bitcoin-address-validation';
+// import BAValidator from 'bitcoin-address-validation';
 import math from 'mathjs';
 import bchaddr from 'bchaddrjs';
 import { NETWORK } from '../../config/constants';

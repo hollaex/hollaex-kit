@@ -28,7 +28,8 @@ export default {
 	BCH_CURRENCY_SYMBOL: 'BCH',
 	BCH_PRICE_FORMAT: '{0} {1}',
 
-	ADD_TRADING_PAIR: 'Add Trading Pair',  
+	LOGOUT_CONFIRM_TEXT: 'Are you sure?. Do you want to logout',
+	ADD_TRADING_PAIR: 'Add Trading Pair',
 	ACTIVE_TRADES: 'You must {0} to access your active trades',
 	CANCEL_FIAT_WITHDRAWAL: 'Cancel {0} Withdrawal',
 	CANCEL_WITHDRAWAL: 'Cancel Withdrawal',

@@ -4,7 +4,7 @@ import ReactSVG from 'react-svg';
 import { debounce } from 'lodash';
 import { browserHistory } from 'react-router';
 import { isMobile } from 'react-device-detect';
-import {Button, TabController, CheckTitle, IconTitle } from '../../components';
+import {Button, TabController, CheckTitle } from '../../components';
 
 import STRINGS from '../../config/localizedStrings';
 import {
@@ -146,7 +146,7 @@ class QuickTrade extends Component {
 	};
 
 	render() {
-		const { onReviewQuickTrade, quickTradeData, disabled, theme, orderLimits, pairs } = this.props;
+		const { onReviewQuickTrade, quickTradeData, disabled, orderLimits, pairs } = this.props;
 		const { side, value, symbol, tabs, activeTab } = this.state;
 		const { data, fetching, error } = quickTradeData;
 		const name = STRINGS[`${pairs[symbol].pair_base.toUpperCase()}_NAME`];

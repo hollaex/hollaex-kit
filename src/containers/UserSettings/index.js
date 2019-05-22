@@ -322,7 +322,7 @@ class UserSettings extends Component {
 			{!isMobile ? this.renderContent(tabs, activeTab) : null}
 			{isMobile &&
 				<div className="my-4">
-					<Button label={STRINGS.ACCOUNTS.TAB_SIGNOUT} onClick={this.logout} />
+					{/* <Button label={STRINGS.ACCOUNTS.TAB_SIGNOUT} onClick={this.logout} /> */}
 				</div>
 			}
 		</div>;

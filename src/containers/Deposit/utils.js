@@ -20,7 +20,7 @@ export const generateFiatInformation = (id = '') => (
 	</div>
 );
 
-const renderBTCContent = (label = '', address = '', onCopy) =>
+const renderBTCContent = (label = '', address = '', onCopy, copyOnClick) =>
 	address ? (
 		<div
 			className={classnames(
@@ -34,7 +34,8 @@ const renderBTCContent = (label = '', address = '', onCopy) =>
 					value: address,
 					fullWidth: true,
 					allowCopy: true,
-					onCopy
+					onCopy,
+					copyOnClick
 				})}
 			</div>
 			<div className="deposit_info-qr-wrapper d-flex align-items-center justify-content-center">
@@ -56,19 +57,22 @@ export const renderContent = (symbol, crypto_wallet = {}, onCopy) => {
 			return renderBTCContent(
 				STRINGS.DEPOSIT.CRYPTO_LABELS.BTC,
 				crypto_wallet.bitcoin,
-				onCopy
+				onCopy,
+				true
 			);
 		case 'eth':
 			return renderBTCContent(
 				STRINGS.DEPOSIT.CRYPTO_LABELS.ETH,
 				crypto_wallet.ethereum,
-				onCopy
+				onCopy,
+				true
 			);
 		case 'bch':
 			return renderBTCContent(
 				STRINGS.DEPOSIT.CRYPTO_LABELS.BCH,
 				crypto_wallet.bitcoincash,
-				onCopy
+				onCopy,
+				true
 			);
 		case fiatSymbol:
 		default:

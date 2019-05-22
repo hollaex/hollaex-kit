@@ -124,9 +124,23 @@
     }
 }
 
+
+.logout-wrapper {
+    width: 32rem;
+}
+
+.layout-mobile {
+    .logout-wrapper {
+        margin: 0 auto;
+    }
+    .confirm-text {
+        font-size: 2rem;
+    }
+}
+
 .layout-mobile {
     .fee-limits-wrapper {
-        margin: 0 auto;
+        margin: 3rem auto;
     }
 }
 

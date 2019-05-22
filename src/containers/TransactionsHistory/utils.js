@@ -5,7 +5,7 @@ import { isMobile } from 'react-device-detect';
 
 import STRINGS from '../../config/localizedStrings';
 
-import { CurrencyBall, Button } from '../../components';
+import { CurrencyBall } from '../../components';
 import { CURRENCIES, BLOCKTRAIL_ENDPOINT, ETHEREUM_ENDPOINT, BITCOINCOM_ENDPOINT } from '../../config/constants';
 import { formatTimestamp, isBlockchainTx } from '../../utils/utils';
 

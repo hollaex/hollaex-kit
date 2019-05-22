@@ -27,6 +27,7 @@ const DumbField = ({
 	className = '',
 	allowCopy = false,
 	onCopy,
+	copyOnClick = false,
 	...rest
 }) => {
 	const props = {
@@ -40,7 +41,7 @@ const DumbField = ({
 			{...rest}
 		>
 			<FieldContent {...props}>
-				{value}
+				{copyOnClick ? <div className="pointer" onClick={onCopy}>{value}</div> : value}
 				{value && allowCopy && renderCopy(value, onCopy)}
 			</FieldContent>
 		</FieldWrapper>
