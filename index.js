@@ -131,21 +131,21 @@ class HollaEx {
 		);
 	}
 
-	/**
-	 * Retrieve the withdrawal/transaction fee for a certain currency
-	 * @param {string} currency - The currency to find a fee for
-	 * @return {string} A stringified JSON object with the key fee(number)
-	 */
-	getWithdrawalFee(currency) {
-		if (currency === '') {
-			currency = undefined;
-		}
-		return createRequest(
-			'GET',
-			`${this._url}/user/withdraw/${currency}/fee`,
-			this._headers
-		);
-	}
+	// /**
+	//  * Retrieve the withdrawal/transaction fee for a certain currency
+	//  * @param {string} currency - The currency to find a fee for
+	//  * @return {string} A stringified JSON object with the key fee(number)
+	//  */
+	// getWithdrawalFee(currency) {
+	// 	if (currency === '') {
+	// 		currency = undefined;
+	// 	}
+	// 	return createRequest(
+	// 		'GET',
+	// 		`${this._url}/user/withdraw/${currency}/fee`,
+	// 		this._headers
+	// 	);
+	// }
 
 	/**
 	 * Make a withdrawal request
