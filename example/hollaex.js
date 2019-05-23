@@ -21,16 +21,19 @@ client
 	symbols : btc-eur, eth-btc, eth-eur
 */
 
-const socket = client.connect('all');
+const socket1 = client.connect('trades:bch-eur');
 
-socket.on('trades', (data) => {
+socket1.on('trades', (data) => {
 	console.log(data);
 });
-socket.on('orderbook', (data) => {
+
+const socket2 = client.connect('all');
+
+socket2.on('orderbook', (data) => {
 	console.log(data);
 });
 
 // You have to use a token to use these  otherwise the socket disconnects
-socket.on('userInfo', (data) => {
+socket2.on('userInfo', (data) => {
 	console.log(data);
 });
