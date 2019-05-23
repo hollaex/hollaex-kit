@@ -274,7 +274,7 @@ class Socket extends EventEmitter {
 			switch (event) {
 				case 'orderbook':
 				case 'trades':
-				// case 'ticker':
+					// case 'ticker':
 					if (symbol) {
 						ioLink = io(`${url}/realtime`, { query: { symbol } });
 					} else {

@@ -43,7 +43,6 @@ client
 | `getBalance`        |                                                                                                                                                                                    | User's wallet balance                                                                                                                                                  |
 | `getDeposit`        | **currency** (_optional_), **limit** (_default_=`50`, _max_=`100`), **page** (_default_=`1`), **orderBy** (_optional_) e.g. `amount`, **order** (_asc_ or _desc_, _default_=`asc`) | User's list of all deposits                                                                                                                                            |
 | `getWithdrawal`     | **currency** (_optional_), **limit** (_default_=`50`, _max_=`100`), **page** (_default_=`1`), **orderBy** (_optional_) e.g. `amount`, **order** (_asc_ or _desc_, _default_=`asc`) | User's list of all withdrawals                                                                                                                                         |
-| `getWithdrawalFee`  | **currency** e.g. `btc`                                                                                                                                                            | Withdrawal/transaction fee for a certain currency                                                                                                                      |
 | `requestWithdrawal` | **currency**, **amount**, **address** (_receipient's_)                                                                                                                             | Create a new withdrawal request. **Disable Two-Factor Authentication to be able to use this function. Must confirm within 5 minutes via email to complete withdrawal** |
 | `getUserTrade`      | **symbol** (_optional_), **limit** (_default_=`50`, _max_=`100`), **page** (_default_=`1`)                                                                                         | User's list of all trades                                                                                                                                              |
 | `getOrder`          | **orderId**                                                                                                                                                                        | Get specific information about a certain order                                                                                                                         |
@@ -68,11 +67,9 @@ You can only subscribe to specific symbols as follows:
 Here is the list of events you can subscribe:
 
 - orderbook
-- ticker
 - trades
-- chart
 - user (Private updates for the user such as balance, user orders etc as explained below)
-- all (It subsribes to all events)
+- all (It subscribes to all events)
 
 When you subscribe to private updates on user you should listen for the events as follows:
 
@@ -96,8 +93,11 @@ socket.on('userUpdate', (data) => {
 });
 ```
 
-`userInfo`, `userOrder`, `userTrade`, `userWallet` are only `partial` and send data once. These sockets are similar to GET requests and you should not expect any updates after you receive the first set of data.
-However `userUpdate` is what is used for all updates on user's private data.
+`userInfo`, `userOrder`, and `userTrade` are only `partial` and send data once. These sockets are similar to GET requests and you should not expect any updates after you receive the first set of data.
+
+`userWallet` gives updates on changes in the user's wallet
+
+`userUpdate` is what is used for all updates on user's private data.
 
 These are list of `userUpdate` client gets after subscription.
 
