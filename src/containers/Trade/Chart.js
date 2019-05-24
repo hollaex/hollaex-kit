@@ -1,84 +1,14 @@
 import * as React from 'react';
 import { widget } from '../../charting_library/charting_library.min';
-import { API_URL } from '../../config/constants';
+import { WHITE_THEME, DARK_THEME,  } from './ChartConfig';
+import { getChartConfig, getChartSymbol, getChartHistory } from '../../actions/chartAction';
 
-function getLanguageFromURL() {
-	const regex = new RegExp('[\\?&]lang=([^&#]*)');
-	const results = regex.exec(window.location.search);
-	return results === null ? null : decodeURIComponent(results[1].replace(/\+/g, ' '));
-}
 
 function getThemeOverrides(theme = 'white') {
 	if (theme === 'white') {
-		return {
-			"paneProperties.background": "#ffffff",
-			"paneProperties.vertGridProperties.color": "#E6ECEF",
-			"paneProperties.horzGridProperties.color": "#E6ECEF",
-			// "paneProperties.crossHairProperties.color": "#1f212a",
-			"symbolWatermarkProperties.transparency": 90,
-			"symbolWatermarkProperties.color": '#1f212a',
-			"scalesProperties.textColor": "#292b2c",
-			"scalesProperties.backgroundColor": "#ffffff",
-			// Candles-property
-			"mainSeriesProperties.candleStyle.upColor": "#D6FFE7",
-			"mainSeriesProperties.candleStyle.downColor": "#ED1C24",
-			"mainSeriesProperties.candleStyle.drawWick": true,
-			"mainSeriesProperties.candleStyle.drawBorder": true,
-			"mainSeriesProperties.candleStyle.borderUpColor": "#008000",
-			"mainSeriesProperties.candleStyle.borderDownColor": "#ED1C24",
-			"mainSeriesProperties.candleStyle.wickUpColor": '#008000',
-			"mainSeriesProperties.candleStyle.wickDownColor": '#ED1C24',
-			"mainSeriesProperties.candleStyle.barColorsOnPrevClose": false,
-			//	Bars styles
-			"mainSeriesProperties.barStyle.upColor": "#D6FFE7",
-			"mainSeriesProperties.barStyle.downColor": "#ED1C24",
-			"mainSeriesProperties.barStyle.barColorsOnPrevClose": false,
-			"mainSeriesProperties.barStyle.dontDrawOpen": false,
-
-
-			//	Area styles
-			"mainSeriesProperties.areaStyle.color1": "#D6FFE7",
-			"mainSeriesProperties.areaStyle.color2": "#ED1C24",
-			"mainSeriesProperties.areaStyle.linecolor": "#008000",
-			// "mainSeriesProperties.areaStyle.linestyle": CanvasEx.LINESTYLE_SOLID,
-			"mainSeriesProperties.areaStyle.linewidth": 1,
-			"mainSeriesProperties.areaStyle.priceSource": "close"
-		}
+		return WHITE_THEME;
 	} else {
-		return {
-			"paneProperties.background": "#1F212A",
-			"paneProperties.vertGridProperties.color": "#34416D",
-			"paneProperties.horzGridProperties.color": "#0C1D51",
-			// "paneProperties.crossHairProperties.color": "#aaaaaa",
-			"symbolWatermarkProperties.transparency": 90,
-			"symbolWatermarkProperties.color": '#aaaaaa',
-			"scalesProperties.textColor": "#AAA",
-			"scalesProperties.backgroundColor": "#000000",
-
-			// Candles-property
-			"mainSeriesProperties.candleStyle.upColor": "#6D9EEB",
-			"mainSeriesProperties.candleStyle.downColor": "#FF9800",
-			"mainSeriesProperties.candleStyle.drawWick": true,
-			"mainSeriesProperties.candleStyle.drawBorder": true,
-			"mainSeriesProperties.candleStyle.borderUpColor": "#6D9EEB",
-			"mainSeriesProperties.candleStyle.borderDownColor": "#FF9800",
-			"mainSeriesProperties.candleStyle.wickUpColor": '#6D9EEB',
-			"mainSeriesProperties.candleStyle.wickDownColor": '#FF9800',
-			"mainSeriesProperties.candleStyle.barColorsOnPrevClose": false,
-			//	Bars styles
-			"mainSeriesProperties.barStyle.upColor": "#6D9EEB",
-			"mainSeriesProperties.barStyle.downColor": "#FF9800",
-			"mainSeriesProperties.barStyle.barColorsOnPrevClose": false,
-			"mainSeriesProperties.barStyle.dontDrawOpen": false,
-
-			//	Area styles
-			"mainSeriesProperties.areaStyle.color1": "#6D9EEB",
-			"mainSeriesProperties.areaStyle.color2": "#FF9800",
-			"mainSeriesProperties.areaStyle.linecolor": "#6D9EEB",
-			// "mainSeriesProperties.areaStyle.linestyle": CanvasEx.LINESTYLE_SOLID,
-			"mainSeriesProperties.areaStyle.linewidth": 1,
-			"mainSeriesProperties.areaStyle.priceSource": "close"
-		}
+		return DARK_THEME;
 	}
 }
 
@@ -87,7 +17,6 @@ class TVChartContainer extends React.PureComponent {
 		symbol: 'eth-eur', // the trading tab we are in should be passed here
 		interval: 'D',
 		containerId: 'tv_chart_container',
-		datafeedUrl: `${API_URL}/udf`,
 		libraryPath: '/charting_library/',
 		// chartsStorageUrl: 'https://saveload.tradingview.com',
 		chartsStorageApiVersion: '1.1',
@@ -110,7 +39,128 @@ class TVChartContainer extends React.PureComponent {
 		],
 	};
 
-	tvWidget = null;
+	constructor(props) {
+		super(props);
+		this.state = {
+			subs: {},
+			lastBar: {}
+		}
+	}
+
+	componentWillMount() {
+		var that = this;
+		this.chartConfig = {
+			onReady: cb => {
+			console.log('=====onReady running')
+				getChartConfig()
+					.then(({ data }) => {
+						cb(data)
+					})		
+			},
+			searchSymbols: (userInput, exchange, symbolType, onResultReadyCallback) => {
+				console.log('====Search Symbols running')
+			},
+			resolveSymbol: (symbolName, onSymbolResolvedCallback, onResolveErrorCallback) => {
+				// expects a symbolInfo object in response
+				// console.log('======resolveSymbol running')
+				// console.log('resolveSymbol:',{symbolName})
+				// var split_data = symbolName.split(/[-/]/)
+				// console.log({split_data})
+				// var symbol_stub = {
+				// 	name: symbolName,
+				// 	description: '',
+				// 	type: 'crypto',
+				// 	session: '24x7',
+				// 	timezone: 'Etc/UTC',
+				// 	ticker: symbolName,
+				// 	exchange: split_data[0],
+				// 	minmov: 1,
+				// 	pricescale: 100000000,
+				// 	has_intraday: true,
+				// 	intraday_multipliers: ['1', '60'],
+				// 	supported_resolution:  supportedResolutions,
+				// 	volume_precision: 8,
+				// 	data_status: 'streaming',
+				// }
+
+				// if (split_data[2].match(/USD|EUR|JPY|AUD|GBP|KRW|CNY/)) {
+				// 	symbol_stub.pricescale = 100
+				// }
+				getChartSymbol(symbolName)
+					.then(({ data }) => {
+						onSymbolResolvedCallback(data)
+					})
+				
+				// onResolveErrorCallback('Not feeling it today')
+
+			},
+			getBars: function(symbolInfo, resolution, from, to, onHistoryCallback, onErrorCallback, firstDataRequest) {
+				getChartHistory(symbolInfo.ticker, resolution, from, to, firstDataRequest)
+				.then(({ data }) => {
+					if (data.length) {
+						const bars = data.map(bar => {
+							return {
+								time: new Date(bar.time).getTime(), //TradingView requires bar time in ms
+								low: bar.low,
+								high: bar.high,
+								open: bar.open,
+								close: bar.close,
+								volume: bar.volume 
+							}
+						})
+						if (firstDataRequest) {
+							that.setState({
+								lastBar: bars[bars.length - 1]
+							});
+							// setBars[symbolInfo.ticker] = { lastBar: lastBar }
+						}
+						onHistoryCallback(bars, {noData: false})
+					} else {
+						onHistoryCallback(data, {noData: true})
+					}
+				}).catch(err => {
+					console.log({err})
+					onErrorCallback(err)
+				})
+
+			},
+			subscribeBars: (symbolInfo, resolution, onRealtimeCallback, subscribeUID, onResetCacheNeededCallback) => {
+				console.log('=====subscribeBars runnning')
+				that.setState({
+					sub: {
+						uid: subscribeUID,
+						resolution,
+						symbolInfo,
+						lastBar: that.state.lastBar,
+						listener: onRealtimeCallback,
+					} 
+				});
+				// stream.subscribeBars(symbolInfo, resolution, onRealtimeCallback, subscribeUID, onResetCacheNeededCallback);
+			},
+			unsubscribeBars: subscriberUID => {
+				console.log('=====unsubscribeBars running')
+				// stream.unsubscribeBars(subscriberUID)
+			},
+			calculateHistoryDepth: (resolution, resolutionBack, intervalBack) => {
+				//optional
+				console.log('=====calculateHistoryDepth running')
+				// while optional, this makes sure we request 24 hours of minute data at a time
+				// CryptoCompare's minute data endpoint will throw an error if we request data beyond 7 days in the past, and return no data
+				return resolution < 60 ? {resolutionBack: 'D', intervalBack: '1'} : undefined
+			},
+			getMarks: (symbolInfo, startDate, endDate, onDataCallback, resolution) => {
+				//optional
+				console.log('=====getMarks running')
+			},
+			getTimeScaleMarks: (symbolInfo, startDate, endDate, onDataCallback, resolution) => {
+				//optional
+				console.log('=====getTimeScaleMarks running')
+			},
+			getServerTime: cb => {
+				console.log('=====getServerTime running')
+			}
+		}
+	}
 
 	componentDidMount() {
 		const { activeTheme } = this.props;
@@ -119,12 +169,12 @@ class TVChartContainer extends React.PureComponent {
 			// BEWARE: no trailing slash is expected in feed URL
 			theme: activeTheme === 'white' ? 'light' : 'dark',
 			toolbar_bg: activeTheme === 'white' ? '#ffffff' : '#1f212a',
-			datafeed: new window.Datafeeds.UDFCompatibleDatafeed(this.props.datafeedUrl),
+			datafeed: this.chartConfig,
 			interval: this.props.interval,
 			container_id: this.props.containerId,
 			library_path: this.props.libraryPath,
 
-			locale: getLanguageFromURL() || 'en',
+			locale: 'en',
 			withdateranges: true,
 			range: 'ytd',
 			disabled_features: [
@@ -188,6 +238,7 @@ class TVChartContainer extends React.PureComponent {
 	}
 
 	componentWillReceiveProps(nextProps) {
+		console.log('i')
 		if (this.props.activeTheme !== nextProps.activeTheme) {
 			if (nextProps.activeTheme === 'white') {
 				this.tvWidget.changeTheme('light')
@@ -196,6 +247,8 @@ class TVChartContainer extends React.PureComponent {
 				this.tvWidget.changeTheme('dark')
 				this.tvWidget.applyOverrides(getThemeOverrides(nextProps.activeTheme))
 			}
+		} else if (nextProps.tradeHistory && nextProps.tradeHistory.length && this.state.sub) {
+			this.updateBar(nextProps.tradeHistory[0])
 		}
 	}
 
@@ -204,6 +257,55 @@ class TVChartContainer extends React.PureComponent {
 			this.tvWidget.remove();
 			this.tvWidget = null;
 		}
+	}
+
+	updateBar(data) {
+		const { sub } = this.state;
+		let { lastBar, resolution } = sub;
+		let coeff = 0;
+		if (resolution.includes('60')) {
+			// 1 hour in minutes === 60
+			coeff = 60 * 60 * 1000;
+		} else if (resolution.includes('D')) {
+			// 1 day in minutes === 1440
+			coeff = 60 * 60 * 24 * 1000;
+		} else if (resolution.includes('W')) {
+			// 1 week in minutes === 10080
+			coeff = 60 * 60 * 24 * 7 * 1000;
+		}
+		
+		const lastTradeTime = new Date(data.timestamp).getTime();
+		let rounded = Math.floor(lastTradeTime / coeff) * coeff;
+		var _lastBar
+
+		if (rounded > lastBar.time) {
+			// create a new candle, use last close as open
+			_lastBar = {
+				time: rounded,
+				open: lastBar.close,
+				high: lastBar.close,
+				low: lastBar.close,
+				close: data.price,
+				volume: data.size
+			}
+
+		} else {
+			// update lastBar candle!
+			if (data.price < lastBar.low) {
+				lastBar.low = data.price
+			} else if (data.price > lastBar.high) {
+				lastBar.high = data.price
+			}
+
+			lastBar.volume += data.size
+			lastBar.close = data.price
+			_lastBar = lastBar
+		}
+		sub.listener(_lastBar);
+		sub.lastBar = _lastBar
+		this.setState({
+			sub: sub
+		})
 	}
 
 	render() {

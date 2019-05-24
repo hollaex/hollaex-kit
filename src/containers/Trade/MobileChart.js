@@ -57,7 +57,7 @@ class MobileChart extends Component {
 				>
 					{pair &&
 						chartHeight > 0 && (
-							<TVChartContainer activeTheme={activeTheme} symbol={symbol} />
+							<TVChartContainer activeTheme={activeTheme} symbol={symbol} tradeHistory={tradeHistory}/>
 						)}
 				</TradeBlock>
 				<TradeBlock title={STRINGS.PUBLIC_SALES} className="f-1">

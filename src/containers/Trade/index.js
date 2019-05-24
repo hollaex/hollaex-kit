@@ -66,6 +66,10 @@ class Trade extends Component {
 		}
 	}
 
+	shouldComponentUpdate(nextProps, nextState) {
+		return true;
+	}
+
 	setSymbol = (symbol = '') => {
 		this.props.getUserTrades(symbol);
 		this.props.changePair(symbol);
@@ -409,7 +413,7 @@ class Trade extends Component {
 								>
 									{pair &&
 										chartHeight > 0 && (
-											<TVChartContainer activeTheme={activeTheme} symbol={symbol} />
+											<TVChartContainer activeTheme={activeTheme} symbol={symbol} tradeHistory={tradeHistory} />
 										)}
 								</TradeBlock>
 							</div>

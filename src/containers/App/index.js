@@ -237,19 +237,20 @@ class Container extends Component {
 			// console.log('trades', data);
 			this.props.setTrades(data);
 			this.props.setTickers(data);
-			if (data.action === "update"
-				&& this.props.settings.audio
-				&& this.props.settings.audio.public_trade
-				&& this.props.location.pathname.indexOf('/trade/') === 0
-				&& this.props.params.pair) {
-				playBackgroundAudioNotification('public_trade');
+			if (data.action === "update") {
+				if (this.props.settings.audio
+					&& this.props.settings.audio.public_trade
+					&& this.props.location.pathname.indexOf('/trade/') === 0
+					&& this.props.params.pair) {
+					playBackgroundAudioNotification('public_trade');
+				}
 			}
 		});
 
-		publicSocket.on('ticker', (data) => {
+		// publicSocket.on('ticker', (data) => {
 			// console.log('ticker', data);
 			// this.props.setTickers(data);
-		});
+		// });
 	};
 
 	setUserSocket = (token) => {
