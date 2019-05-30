@@ -413,7 +413,7 @@ class Trade extends Component {
 								>
 									{pair &&
 										chartHeight > 0 && (
-											<TVChartContainer activeTheme={activeTheme} symbol={symbol} tradeHistory={tradeHistory} />
+											<TVChartContainer activeTheme={activeTheme} symbol={symbol} tradeHistory={tradeHistory} pairData={pairData}/>
 										)}
 								</TradeBlock>
 							</div>
@@ -474,6 +474,7 @@ const mapStateToProps = (store) => {
 	const bidsFilter = bids.filter(
 		(bid, index) => index < orderBookLevels
 	);
+
 	return {
 		pair,
 		pairData,

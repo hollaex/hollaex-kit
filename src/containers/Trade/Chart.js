@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { widget } from '../../charting_library/charting_library.min';
 import { WHITE_THEME, DARK_THEME,  } from './ChartConfig';
+import { getLanguage } from '../../utils/string';
 import { getChartConfig, getChartSymbol, getChartHistory } from '../../actions/chartAction';
 
 
@@ -51,9 +52,8 @@ class TVChartContainer extends React.PureComponent {
 		var that = this;
 		this.chartConfig = {
 			onReady: cb => {
-			console.log('=====onReady running')
 				getChartConfig()
-					.then(({ data }) => {
+					.then((data) => {
 						cb(data)
 					})		
 			},
@@ -86,8 +86,9 @@ class TVChartContainer extends React.PureComponent {
 				// if (split_data[2].match(/USD|EUR|JPY|AUD|GBP|KRW|CNY/)) {
 				// 	symbol_stub.pricescale = 100
 				// }
-				getChartSymbol(symbolName)
-					.then(({ data }) => {
+				const { tick_size } = this.props.pairData;
+				getChartSymbol(symbolName, tick_size)
+					.then((data) => {
 						onSymbolResolvedCallback(data)
 					})
 				
@@ -163,18 +164,18 @@ class TVChartContainer extends React.PureComponent {
 	}
 
 	componentDidMount() {
-		const { activeTheme } = this.props;
+		const { activeTheme, symbol, containerId, libraryPath, interval } = this.props;
 		const widgetOptions = {
-			symbol: this.props.symbol,
+			symbol: symbol,
 			// BEWARE: no trailing slash is expected in feed URL
 			theme: activeTheme === 'white' ? 'light' : 'dark',
 			toolbar_bg: activeTheme === 'white' ? '#ffffff' : '#1f212a',
 			datafeed: this.chartConfig,
-			interval: this.props.interval,
-			container_id: this.props.containerId,
-			library_path: this.props.libraryPath,
+			interval: interval,
+			container_id: containerId,
+			library_path: libraryPath,
 
-			locale: 'en',
+			locale: getLanguage(),
 			withdateranges: true,
 			range: 'ytd',
 			disabled_features: [
@@ -238,7 +239,6 @@ class TVChartContainer extends React.PureComponent {
 	}
 
 	componentWillReceiveProps(nextProps) {
-		console.log('i')
 		if (this.props.activeTheme !== nextProps.activeTheme) {
 			if (nextProps.activeTheme === 'white') {
 				this.tvWidget.changeTheme('light')
