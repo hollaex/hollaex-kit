@@ -5,6 +5,8 @@ import {
 	formatFiatAmount,
 	formatEthAmount,
 	formatEthFullAmount,
+	formatXrpAmount,
+	formatXrpFullAmount,
 	formatNumber
 } from '../utils/currency';
 
@@ -47,6 +49,9 @@ export const ICONS = {
 	BCH_ICON: `${process.env.PUBLIC_URL}/assets/icons/bch-icon.svg`,
 	BCH_ICON_DARK: `${process.env.PUBLIC_URL}/assets/icons/bch-icon.svg`,
 	BCH_NAV_ICON: `${process.env.PUBLIC_URL}/assets/icons/bch-icon-nav.svg`,
+	XRP_ICON: `${process.env.PUBLIC_URL}/assets/icons/bch-icon.svg`,
+	XRP_ICON_DARK: `${process.env.PUBLIC_URL}/assets/icons/bch-icon.svg`,
+	XRP_NAV_ICON: `${process.env.PUBLIC_URL}/assets/icons/bch-icon-nav.svg`,
 	CHECK: `${process.env.PUBLIC_URL}/assets/images/Orderbook scrolling-01.svg`,
 	DARK_CHECK: `${process.env.PUBLIC_URL}/assets/images/dark-Orderbook-scrolling-01.svg`,
 	BLUE_QUESTION: `${
@@ -421,6 +426,15 @@ export const CURRENCIES = {
 		formatToCurrency: formatBtcAmount,
 		formatToCurrencyFull: formatBtcFullAmount,
 	},
+	xrp: {
+		symbol: 'xrp',
+		name: STRINGS.XRP_NAME,
+		fullName: STRINGS.XRP_FULLNAME,
+		shortName: STRINGS.XRP_SHORTNAME,
+		currencySymbol: 'R',
+		formatToCurrency: formatXrpAmount,
+		formatToCurrencyFull: formatXrpFullAmount,
+	},
 	fiat: {
 		symbol: 'fiat',
 		name: STRINGS.FIAT_NAME,
@@ -495,6 +509,11 @@ export const WITHDRAW_LIMITS = {
 		MIN: process.env.REACT_APP_WITHDRAWAL_BCH_MIN || 0.001,
 		MAX: process.env.REACT_APP_WITHDRAWAL_BCH_MAX || 10,
 		STEP: process.env.REACT_APP_WITHDRAWAL_BCH_STEP || 0.001
+	},
+	xrp: {
+		MIN: process.env.REACT_APP_WITHDRAWAL_XRP_MIN || 0.1,
+		MAX: process.env.REACT_APP_WITHDRAWAL_XRP_MAX || 100000,
+		STEP: process.env.REACT_APP_WITHDRAWAL_XRP_STEP || 0.1
 	},
 };
 

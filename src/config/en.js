@@ -21,12 +21,17 @@ export default {
 	ETH_CURRENCY_SYMBOL: 'ETH',
 	ETH_PRICE_FORMAT: '{0} {1}', // 0-> amount  1 -> symbol  6.00245 ETH
 
-	// TODO: Added for new BCH coin and need to be approved
 	BCH_NAME: 'Bitcoin Cash',
 	BCH_FULLNAME: 'BitcoinCash',
 	BCH_SHORTNAME: 'BCH',
 	BCH_CURRENCY_SYMBOL: 'BCH',
 	BCH_PRICE_FORMAT: '{0} {1}',
+
+	XRP_NAME: 'Ripple',
+	XRP_FULLNAME: 'Ripple',
+	XRP_SHORTNAME: 'XRP',
+	XRP_CURRENCY_SYMBOL: 'XRP',
+	XRP_PRICE_FORMAT: '{0} {1}',
 
 	LOGOUT_CONFIRM_TEXT: 'Are you sure?. Do you want to logout',
 	ADD_TRADING_PAIR: 'Add Trading Pair',
