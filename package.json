@@ -1,6 +1,6 @@
 {
 	"name": "hollaex-node-lib",
-	"version": "0.4.0",
+	"version": "0.4.1",
 	"description": "",
 	"main": "index.js",
 	"dependencies": {
@@ -18,7 +18,7 @@
 	},
 	"scripts": {
 		"start": "node index.js",
-		"test": "mocha --timeout 10000",
+		"test": "mocha test/test.js --timeout 10000",
 		"prettier": "prettier --config .prettierrc.json --ignore-path .prettierignore.json --write \"./**/*.{js,json,css,scss,md}\"",
 		"eslint": "eslint --config .eslintrc.json ./"
 	},

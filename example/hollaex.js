@@ -16,28 +16,24 @@ client
 
 // connect to websocket
 /*
-	events : trades, orderbook, ticker, chart, user
+	events (emitted) : trades (trades), orderbook (orderbook), user (userInfo, userWallet, userOrder, userTrades, userUpdate), all
 
 	symbols : btc-eur, eth-btc, eth-eur
 */
 
-const socket = client.connect('all');
+const socket1 = client.connect('trades:bch-eur');
 
-// client.checkConnection();
-socket.on('ticker', (data) => {
-	console.log(data);
-});
-socket.on('userOrder', (data) => {
-	console.log(data);
-});
-socket.on('chart', (data) => {
-	console.log(data);
-});
-socket.on('orderbook', (data) => {
+socket1.on('trades', (data) => {
 	console.log(data);
 });
 
-// You have to use a token to use this otherwise the socket disconnects
-socket.on('userInfo', (data) => {
+const socket2 = client.connect('all');
+
+socket2.on('orderbook', (data) => {
+	console.log(data);
+});
+
+// You have to use a token to use these  otherwise the socket disconnects
+socket2.on('userInfo', (data) => {
 	console.log(data);
 });
