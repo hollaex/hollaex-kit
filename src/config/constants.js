@@ -49,9 +49,9 @@ export const ICONS = {
 	BCH_ICON: `${process.env.PUBLIC_URL}/assets/icons/bch-icon.svg`,
 	BCH_ICON_DARK: `${process.env.PUBLIC_URL}/assets/icons/bch-icon.svg`,
 	BCH_NAV_ICON: `${process.env.PUBLIC_URL}/assets/icons/bch-icon-nav.svg`,
-	XRP_ICON: `${process.env.PUBLIC_URL}/assets/icons/bch-icon.svg`,
-	XRP_ICON_DARK: `${process.env.PUBLIC_URL}/assets/icons/bch-icon.svg`,
-	XRP_NAV_ICON: `${process.env.PUBLIC_URL}/assets/icons/bch-icon-nav.svg`,
+	XRP_ICON: `${process.env.PUBLIC_URL}/assets/icons/xrp-icon-01.svg`,
+	XRP_ICON_DARK: `${process.env.PUBLIC_URL}/assets/icons/xrp-icon-01.svg`,
+	XRP_NAV_ICON: `${process.env.PUBLIC_URL}/assets/icons/xrp-icon-01.svg`,
 	CHECK: `${process.env.PUBLIC_URL}/assets/images/Orderbook scrolling-01.svg`,
 	DARK_CHECK: `${process.env.PUBLIC_URL}/assets/images/dark-Orderbook-scrolling-01.svg`,
 	BLUE_QUESTION: `${

@@ -913,7 +913,7 @@ export default {
 	SETTINGS_LANGUAGE_LABEL: '선호하는 언어(이메일포함)',
 	SETTINGS_LANGUAGE_OPTIONS: [
 		{ value: 'en', label: 'English', icon: `${process.env.PUBLIC_URL}/assets/flags/selected-en.png` },
-		{ value: 'ko', label: '한국어', icon: `${process.env.PUBLIC_URL}/assets/flags/selected-ko.png` }
+		{ value: 'ko', label: '한국어', icon: `${process.env.PUBLIC_URL}/assets/flags/selected-kr.png` }
 	],
 	SETTINGS_ORDERPOPUP_LABEL: 'Display order confirmation popup',
 	SETTINGS_ORDERPOPUP_OPTIONS: [

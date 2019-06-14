@@ -22,6 +22,10 @@ $large-modifier: 2.25;
 		background-color: $colors-currencies-bch;
 	}
 
+	&.xrp {
+		background-color: $colors-currencies-xrp;
+	}
+
 	&.eth {
 		background-color: $colors-currencies-eth;
 	}
