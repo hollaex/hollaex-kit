@@ -21,12 +21,17 @@ export default {
 	ETH_CURRENCY_SYMBOL: 'ETH',
 	ETH_PRICE_FORMAT: '{0} {1}', // 0-> amount  1 -> symbol  6.00245 ETH
 
-	// TODO: Added for new BCH coin and need to be approved
 	BCH_NAME: 'Bitcoin Cash',
 	BCH_FULLNAME: 'BitcoinCash',
 	BCH_SHORTNAME: 'BCH',
 	BCH_CURRENCY_SYMBOL: 'BCH',
 	BCH_PRICE_FORMAT: '{0} {1}',
+
+	XRP_NAME: 'Ripple',
+	XRP_FULLNAME: 'Ripple',
+	XRP_SHORTNAME: 'XRP',
+	XRP_CURRENCY_SYMBOL: 'XRP',
+	XRP_PRICE_FORMAT: '{0} {1}',
 
 	LOGOUT_CONFIRM_TEXT: 'Are you sure?. Do you want to logout',
 	ADD_TRADING_PAIR: 'Add Trading Pair',
@@ -100,7 +105,7 @@ export default {
 			'bitHolla Inc.'
 		],
 		FOOTER_LANGUAGE_TEXT: 'LANGUAGE',
-		FOOTER_LANGUAGE_LANGUAGES: [{ key: 'en', label: 'English' }],
+		FOOTER_LANGUAGE_LANGUAGES: [{ key: 'en', label: 'English' }, { key: 'ko', label: '한국어' }],
 		FOOTER_COPYRIGHT: 'COPYRIGHT 2018',
 		SECTIONS: {
 			SECTION_1_TITLE: 'ABOUT',
@@ -399,7 +404,7 @@ export default {
 		START_DOCUMENTATION_SUBMISSION: 'Start Documentation Submission', 
 		GO_BACK: 'Go Back', 
 		BANK_VERIFICATION_TEXT_1: 'You can add up to 3 bank accounts. International bank accounts will require you contacting customer support and will have limited withdrawal limits.', 
-		BANK_VERIFICATION_TEXT_2: 'By verifing your bank acount you can obtain the following:', 
+		BANK_VERIFICATION_TEXT_2: 'By verifying your bank account you can obtain the following:', 
 		FIAT_WITHDRAWAL: 'Fiat withdrawal', 
 		FIAT_DEPOSITS: 'Fiat deposits', 
 		ADD_ANOTHER_BANK_ACCOUNT: 'Add Another Bank Account', 
@@ -442,7 +447,7 @@ export default {
 					'Type what nationality is on your identity document',
 				DOB_LABEL: 'Date of birth',
 				COUNTRY_LABEL: 'Country you reside',
-				COUNTRY_PLACEHOLDER: 'elect the country you reside in currently',
+				COUNTRY_PLACEHOLDER: 'Select the country you reside in currently',
 				CITY_LABEL: 'City',
 				CITY_PLACEHOLDER: 'Type the city you live in',
 				ADDRESS_LABEL: 'Address',
@@ -540,7 +545,7 @@ export default {
 				},
 				SELFIE: {
 					TITLE: 'Selfie with Photo ID and Note',
-					INFO_TEXT: "Please provide a photo of you holding your passport or photo ID. In the same picture and have a reference to HollaEx.com’, today's date and your signature displayed.Make sure your face is clearly visible and that your ID details are clearly readable.",
+					INFO_TEXT: 'Please provide a photo of you holding your passport or photo ID. In the same picture and have a reference to HollaEx.com’, today\'s date and your signature displayed.Make sure your face is clearly visible and that your ID details are clearly readable.',
 					REQUIRED: 'Required:',
 					INSTRUCTION_1: 'Your face clearly visable',
 					INSTRUCTION_2: 'Photo ID clearly readable',
@@ -555,10 +560,10 @@ export default {
 			VALIDATIONS: {
 				ACCOUNT_OWNER:
 					'Please type your first and last name as associated with your bank account',
-				ACCOUNT_NUMBER: 'Your bank account number should be 24 digits',
+				ACCOUNT_NUMBER: 'Your bank account number should be less than 50 digits',
 				ACCOUNT_NUMBER_MAX_LENGTH:
 					'Your bank account number has a limit of 50 characters',
-				CARD_NUMBER: 'Your card number should be 16 digits'
+				CARD_NUMBER: 'Your card number has an incorrect format'
 			},
 			FORM_FIELDS: {
 				BANK_NAME_LABEL: 'Bank Name',
@@ -909,7 +914,8 @@ export default {
 	NO_FEE: 'N/A',
 	SETTINGS_LANGUAGE_LABEL: 'Language preferences (Includes Emails)',
 	SETTINGS_LANGUAGE_OPTIONS: [
-		{ value: 'en', label: 'English', icon: `${process.env.PUBLIC_URL}/assets/flags/selected-en.png` }
+		{ value: 'en', label: 'English', icon: `${process.env.PUBLIC_URL}/assets/flags/selected-en.png` },
+		{ value: 'ko', label: '한국어', icon: `${process.env.PUBLIC_URL}/assets/flags/selected-kr.png` }
 	],
 	SETTINGS_ORDERPOPUP_LABEL: 'Display order confirmation popup',
 	SETTINGS_ORDERPOPUP_OPTIONS: [
@@ -1043,7 +1049,7 @@ export default {
 		VIEW_FEE_STRUCTURE: 'View Fee Structure and Limits',
 		UPGRADE_ACCOUNT: 'Upgrade Account',
 		ACTIVE_2FA_SECURITY: 'Active 2FA Security',
-		ACCOUNT_ASSETS_TXT_1: 'Displayed is a summery of all your assets.',
+		ACCOUNT_ASSETS_TXT_1: 'Displayed is a summary of all your assets.',
 		ACCOUNT_ASSETS_TXT_2: 'Holding a large amounts of assets will entitle you for an account upgrade which includes a unique badge and lower trading fees.',
 		TRADING_VOLUME_TXT_1: 'Your trading volume history is displayed in {0} and is a nominally calculated at the end of every month from all trading pairs.',
 		TRADING_VOLUME_TXT_2: 'High trading activity will entitle you for an account upgrade rewarding you with a unique badge and other perks.',
@@ -1056,15 +1062,15 @@ export default {
 		FEES_AND_LIMIT: 'Fee and Limit Structure for',
 		FEES_AND_LIMIT_TXT_1: 'Becoming a crypto trader marks new beginning. Armed with wits, will and speed, dive into the bottomless blue.Only by delving deep within the crypto oceans will you unlock your fortunes.',
 		FEES_AND_LIMIT_TXT_2: 'Each account has its own fees and deposit and withdrawal limits.Please visit the {0} to get more information.',
-		DEPOSIT_WITHDRAWAL_ALLOWENCE: 'Deposit & withdrawal allowence',
+		DEPOSIT_WITHDRAWAL_ALLOWENCE: 'Deposit & withdrawal allowance',
 		TRADING_FEE_STRUCTURE: 'Trading fee structure',
 		WITHDRAWAL: 'Withdrawal',
 		DEPOSIT: 'Deposit',
 		TAKER: 'Taker',
 		MAKER: 'Maker',
 		WEBSITE: 'website',
-		VIP_TRADER_ACCOUNT_ELIGIBLITY: 'VIP Trader Account Upgrade Eligiblity',
-		PRO_TRADER_ACCOUNT_ELIGIBLITY: 'Pro Trader Account Upgrade Eligiblity',
+		VIP_TRADER_ACCOUNT_ELIGIBLITY: 'VIP Trader Account Upgrade Eligibility',
+		PRO_TRADER_ACCOUNT_ELIGIBLITY: 'Pro Trader Account Upgrade Eligibility',
 		NOMINAL_TRADING: 'Nominal Trading',
 		NOMINAL_TRADING_WITH_MONTH: 'Nominal Trading Last {0}',
 		ACCOUNT_AGE_OF_MONTHS: 'Account Age of {0} Months',

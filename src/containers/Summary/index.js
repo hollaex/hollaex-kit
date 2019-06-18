@@ -149,7 +149,7 @@ class Summary extends Component {
         return (
             <div className="summary-container">
                 {!isMobile && <IconTitle
-                    text={`${STRINGS.ACCOUNTS.TITLE} ${STRINGS.SUMMARY.TITLE}`}
+                    text={`${STRINGS.SUMMARY.TITLE}`}
                     textType="title"
                 />}
                 {isMobile

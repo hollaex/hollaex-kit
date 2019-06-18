@@ -127,7 +127,7 @@ class InputBlock extends Component {
 							className="input_block-inputbox"
 							onChange={this.onChangeEvent}
 							placeholder={PLACEHOLDER}
-							step={orderLimits[this.state.symbol].SIZE.STEP}
+							step={orderLimits[this.state.symbol].SIZE.MIN}
 							value={value}
 							min={orderLimits[this.state.symbol].SIZE.MIN}
 							max={orderLimits[this.state.symbol].SIZE.MAX}

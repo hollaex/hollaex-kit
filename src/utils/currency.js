@@ -4,11 +4,13 @@ import STRINGS from '../config/localizedStrings';
 
 export const BTC_FORMAT = '0,0.[0000]';
 export const ETH_FORMAT = '0,0.[0000]';
+export const XRP_FORMAT = '0,0.[]';
 export const BCH_FORMAT = '0,0.[0000]';
 export const BTC_FULL_FORMAT = '0,0.[00000000]';
 export const ETH_FULL_FORMAT = '0,0.[00000000]';
+export const XRP_FULL_FORMAT = '0,0.[0]';
 export const BCH_FULL_FORMAT = '0,0.[00000000]';
-export const FIAT_FORMAT = '0,0.[00]';
+export const FIAT_FORMAT = '0,0.[0000]';
 export const PERCENTAGE_FORMAT = '0.[00]%';
 export const DONUT_PERCENTAGE_FORMAT = '0.[0]%';
 export const AVERAGE_FORMAT = '3a';
@@ -39,6 +41,8 @@ export const formatCurrency = (amount = 0, currency = 'fiat', type = 'simple') =
 			return numbro(roundNumber(amount, 8)).format(ETH_FULL_FORMAT);
 		case 'bch':
 			return numbro(roundNumber(amount, 8)).format(BCH_FULL_FORMAT);
+		case 'xrp':
+			return numbro(roundNumber(amount, 8)).format(XRP_FULL_FORMAT);
 		case 'fiat':
 			return numbro(roundNumber(amount, 8)).format(FIAT_FORMAT);
 		default:
@@ -59,6 +63,10 @@ export const formatEthAmount = (amount = 0) =>
 	numbro(roundNumber(amount, 4)).format(ETH_FORMAT);
 export const formatEthFullAmount = (amount = 0) =>
 	numbro(roundNumber(amount, 8)).format(ETH_FULL_FORMAT);
+export const formatXrpAmount = (amount = 0) =>
+	numbro(roundNumber(amount, 4)).format(XRP_FORMAT);
+export const formatXrpFullAmount = (amount = 0) =>
+	numbro(roundNumber(amount, 8)).format(XRP_FULL_FORMAT);
 export const formatBchAmount = (amount = 0) =>
 	numbro(roundNumber(amount, 4)).format(BCH_FORMAT);
 export const formatBchFullAmount = (amount = 0) =>
@@ -127,6 +135,9 @@ export const getCurrencyFromName = (name = '') => {
 		case 'bch':
 		case 'bitcoincash':
 			return 'bch';
+		case 'xrp':
+		case 'ripple':
+			return 'xrp';
 		case 'eur':
 		case 'euro':
 		case 'fiat':
@@ -147,6 +158,8 @@ export const getCurrencyFromSymbol = (symbol = '') => {
 		case 'bch':
 		case 'bitcoincash':
 			return 'bitcoincash';
+		case 'xrp':
+			return 'ripple';
 		case 'eur':
 		case 'euro':
 		case 'fiat':

@@ -63,7 +63,7 @@ const calculateValues = (data = [], pair) => {
 };
 
 export const TradeDisplay = ({ side, data, pairs, ...rest }) => {
-	const pair = pairs[data[0].symbol];
+	const pair = data[0] ? pairs[data[0].symbol] : { pair_base: '', pair_2: '' };
 	const basePair = pair.pair_base.toUpperCase();
 	const payPair = pair.pair_2.toUpperCase();
 
