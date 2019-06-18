@@ -129,7 +129,7 @@ export default {
 		TAB_SETTINGS: '설정',
 		TAB_PROFILE: '프로필',
 		TAB_WALLET: '지갑',
-		TAB_SUMMARY: '요약',
+		TAB_SUMMARY: '마이페이지',
 		TAB_API: 'API',
 		TAB_SIGNOUT: '로그아웃'
 	},
@@ -913,7 +913,7 @@ export default {
 	SETTINGS_LANGUAGE_LABEL: '선호하는 언어(이메일포함)',
 	SETTINGS_LANGUAGE_OPTIONS: [
 		{ value: 'en', label: 'English', icon: `${process.env.PUBLIC_URL}/assets/flags/selected-en.png` },
-		{ value: 'ko', label: '한국어', icon: `${process.env.PUBLIC_URL}/assets/flags/selected-ko.png` }
+		{ value: 'ko', label: '한국어', icon: `${process.env.PUBLIC_URL}/assets/flags/selected-kr.png` }
 	],
 	SETTINGS_ORDERPOPUP_LABEL: 'Display order confirmation popup',
 	SETTINGS_ORDERPOPUP_OPTIONS: [
@@ -1025,7 +1025,7 @@ export default {
 	SEARCH_ASSETS: 'Search Assets', 
 	TOTAL_ASSETS_VALUE: 'Total assets value in {0}: {1}', 
 	SUMMARY: { 
-		TITLE: '',
+		TITLE: '마이페이지',
 		TINY_PINK_SHRIMP_TRADER: '핑크 쉬림프 트레이더 Tiny Pink Shrimp Trader',
 		TINY_PINK_SHRIMP_TRADER_ACCOUNT: '핑크쉬림프 트레이더 계정 Tiny Pink Shrimp Trader Account',
 		LITTLE_RED_SNAPPER_TRADER: '레드 스냅퍼 트레이더 Little Red Snapper Trader',
