@@ -25,7 +25,7 @@ class MobileChart extends Component {
 	render() {
 		const {
 			pair,
-			// pairData,
+			pairData,
 			activeTheme,
 			tradeHistory,
 			activeLanguage,
@@ -57,7 +57,7 @@ class MobileChart extends Component {
 				>
 					{pair &&
 						chartHeight > 0 && (
-							<TVChartContainer activeTheme={activeTheme} symbol={symbol} tradeHistory={tradeHistory}/>
+							<TVChartContainer activeTheme={activeTheme} symbol={symbol} tradeHistory={tradeHistory} pairData={pairData}/>
 						)}
 				</TradeBlock>
 				<TradeBlock title={STRINGS.PUBLIC_SALES} className="f-1">
