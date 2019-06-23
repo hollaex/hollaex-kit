@@ -1,18 +1,14 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
-import Recaptcha from 'react-recaptcha';
+import { ReCaptcha } from 'react-recaptcha-v3';
 import { CAPTCHA_SITEKEY, CAPTCHA_TIMEOUT, DEFAULT_LANGUAGE } from '../../../config/constants';
 
 class CaptchaField extends Component {
 	state = {
-		active: false,
+		active: true,
 		ready: false
 	};
-	componentDidMount() {
-		setTimeout(() => {
-			this.setState({ active: true });
-		}, CAPTCHA_TIMEOUT);
-	}
+
 	componentWillReceiveProps(nextProps) {
 		if (
 			nextProps.input.value === '' &&
@@ -26,17 +22,13 @@ class CaptchaField extends Component {
 		this.captcha = el;
 	};
 
-	onLoadCallback = () => {
-		this.setState({ ready: true });
-	};
-
 	onVerifyCallback = (data) => {
 		this.props.input.onChange(data);
 	};
 
 	onExpiredCallback = () => {
 		this.props.input.onChange('');
-		this.captcha.reset();
+		this.captcha.execute();
 	};
 
 	render() {
@@ -47,14 +39,12 @@ class CaptchaField extends Component {
 				<div
 					className={classnames('field-wrapper', 'captcha-wrapper', { hidden: !ready })}
 				>
-					<Recaptcha
+					<ReCaptcha
 						ref={this.setRef}
 						sitekey={CAPTCHA_SITEKEY}
 						verifyCallback={this.onVerifyCallback}
 						expiredCallback={this.onExpiredCallback}
-						onloadCallback={this.onLoadCallback}
-						hl={language || DEFAULT_LANGUAGE}
-						theme={theme}
+						lang={language || DEFAULT_LANGUAGE}
 					/>
 				</div>
 			)
