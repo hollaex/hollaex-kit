@@ -45,6 +45,8 @@ export const formatCurrency = (amount = 0, currency = 'fiat', type = 'simple') =
 			return numbro(roundNumber(amount, 8)).format(XRP_FULL_FORMAT);
 		case 'fiat':
 			return numbro(roundNumber(amount, 8)).format(FIAT_FORMAT);
+		case 'eur':
+			return numbro(roundNumber(amount, 8)).format(FIAT_FORMAT);
 		default:
 			return numbro(roundNumber(amount, 8)).format(FIAT_FORMAT); 
 	}

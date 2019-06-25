@@ -9,6 +9,13 @@ export default {
 	FIAT_CURRENCY_SYMBOL: '€',
 	FIAT_PRICE_FORMAT: '{0} {1}', // 0-> amount  1 -> symbol  600,000 T
 
+	EUR_NAME: 'EURO',
+	EUR_FULLNAME: 'Euro',
+	EUR_SHORTNAME: 'EUR',
+	EUR_SHORTNAME_EN: 'EUR',
+	EUR_CURRENCY_SYMBOL: '€',
+	EUR_PRICE_FORMAT: '{0} {1}', // 0-> amount  1 -> symbol  600,000 T
+
 	BTC_NAME: 'Bitcoin',
 	BTC_FULLNAME: 'Bitcoin',
 	BTC_SHORTNAME: 'BTC',

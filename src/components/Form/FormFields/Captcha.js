@@ -14,7 +14,7 @@ class CaptchaField extends Component {
 			nextProps.input.value === '' &&
 			nextProps.input.value !== this.props.input.value
 		) {
-			this.captcha.reset();
+			this.captcha.execute();
 		}
 	}
 

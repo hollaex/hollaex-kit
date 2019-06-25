@@ -435,6 +435,15 @@ export const CURRENCIES = {
 		formatToCurrency: formatXrpAmount,
 		formatToCurrencyFull: formatXrpFullAmount,
 	},
+	eur: {
+		symbol: 'eur',
+		name: STRINGS.EUR_NAME,
+		fullName: STRINGS.EUR_FULLNAME,
+		shortName: STRINGS.EUR_SHORTNAME,
+		currencySymbol: STRINGS.EUR_CURRENCY_SYMBOL,
+		formatToCurrency: formatFiatAmount,
+		formatToCurrencyFull: formatFiatAmount,
+	},
 	fiat: {
 		symbol: 'fiat',
 		name: STRINGS.FIAT_NAME,
@@ -446,29 +455,6 @@ export const CURRENCIES = {
 	}
 };
 
-// TODO: to be removed after testing
-/* export const PAIRS = {
-	'btc-eur': {
-		pair_base: 'btc',
-		pair_2: 'fiat'
-	},
-	'eth-eur': {
-		pair_base: 'eth',
-		pair_2: 'fiat'
-	},
-	'eth-btc': {
-		pair_base: 'eth',
-		pair_2: 'btc'
-	},
-	'bch-btc': {
-		pair_base: 'bch',
-		pair_2: 'btc'
-	},
-	'bch-eur': {
-		pair_base: 'bch',
-		pair_2: 'fiat'
-	},
-}; */
 
 export const DEFAULT_PAIR = 'btc-eur';
 
@@ -589,7 +575,7 @@ export const BAR_CHART_LIMIT_CAPACITY = [340000, 2050000];
 
 export const DEFAULT_COUNTRY = process.env.REACT_APP_DEFAULT_COUNTRY
 	? process.env.REACT_APP_DEFAULT_COUNTRY.toUpperCase()
-	: 'FR';
+	: 'KR';
 
 export const BASE_CURRENCY = process.env.REACT_APP_BASE_CURRENCY;
 
