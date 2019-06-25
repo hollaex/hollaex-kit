@@ -20,23 +20,23 @@ const generateCryptoDepositTexts = (strings, status, currency) => {
 	return {
 		TITLE: status
 			? strings.formatString(
-					strings.NOTIFICATIONS.DEPOSITS[currency].TITLE_RECEIVED,
+					strings.NOTIFICATIONS.DEPOSITS.TITLE_RECEIVED,
 					name
 				)
 			: strings.formatString(
-					strings.NOTIFICATIONS.DEPOSITS[currency].TITLE_INCOMING,
+					strings.NOTIFICATIONS.DEPOSITS.TITLE_INCOMING,
 					fullName
 				),
 		SUBTITLE: strings.formatString(
 			status
-				? strings.NOTIFICATIONS.DEPOSITS[currency].SUBTITLE_RECEIVED
-				: strings.NOTIFICATIONS.DEPOSITS[currency].SUBTITLE_INCOMING,
+				? strings.NOTIFICATIONS.DEPOSITS.SUBTITLE_RECEIVED
+				: strings.NOTIFICATIONS.DEPOSITS.SUBTITLE_INCOMING,
 			fullName
 		),
 		INFORMATION_PENDING: [
 			strings
 				.formatString(
-					strings.NOTIFICATIONS.DEPOSITS[currency].INFORMATION_PENDING_1,
+					strings.NOTIFICATIONS.DEPOSITS.INFORMATION_PENDING_1,
 					name
 				)
 				.join(''),

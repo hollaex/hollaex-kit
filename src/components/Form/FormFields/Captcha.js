@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import { ReCaptcha } from 'react-recaptcha-v3';
-import { CAPTCHA_SITEKEY, CAPTCHA_TIMEOUT, DEFAULT_LANGUAGE } from '../../../config/constants';
+import { CAPTCHA_SITEKEY, DEFAULT_LANGUAGE } from '../../../config/constants';
 
 class CaptchaField extends Component {
 	state = {
