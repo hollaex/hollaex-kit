@@ -5,11 +5,10 @@ import { connect } from 'react-redux';
 import { DisplayTable } from '../../../components';
 
 import { formatTimestamp } from '../../../utils/utils';
-import { formatFiatAmount, formatBtcFullAmount, formatBtcAmount, checkNonFiatPair } from '../../../utils/currency';
 
 import STRINGS from '../../../config/localizedStrings';
 
-const generateHeaders = (isNonFiatPair) => {
+const generateHeaders = () => {
 	return [
 	{
 		key: 'price',
@@ -19,14 +18,14 @@ const generateHeaders = (isNonFiatPair) => {
 				className={classnames('trade_history-row', side)}
 				key={`time-${index}`}
 			>
-				{isNonFiatPair ? formatBtcFullAmount(price) : formatFiatAmount(price)}
+				{price}
 			</div>
 		)
 	},
 	{
 		key: 'size',
 		label: STRINGS.SIZE,
-		renderCell: ({ size = 0 }, index) => formatBtcAmount(size)
+		renderCell: ({ size = 0 }, index) => size
 	},
 	{
 		key: 'timestamp',
@@ -53,9 +52,7 @@ class TradeHistory extends Component {
 	}
 
 	calculateHeaders = () => {
-		const { pair } = this.props;
-		const isNonFiatPair = checkNonFiatPair(pair);
-		const headers = generateHeaders(isNonFiatPair);
+		const headers = generateHeaders();
 		this.setState({ headers });
 	};
 
