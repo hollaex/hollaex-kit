@@ -9,6 +9,13 @@ export default {
 	FIAT_CURRENCY_SYMBOL: '€',
 	FIAT_PRICE_FORMAT: '{0} {1}', // 0-> amount  1 -> symbol  600,000 T
 
+	EUR_NAME: 'EURO',
+	EUR_FULLNAME: 'Euro',
+	EUR_SHORTNAME: 'EUR',
+	EUR_SHORTNAME_EN: 'EUR',
+	EUR_CURRENCY_SYMBOL: '€',
+	EUR_PRICE_FORMAT: '{0} {1}', // 0-> amount  1 -> symbol  600,000 T
+
 	BTC_NAME: 'Bitcoin',
 	BTC_FULLNAME: 'Bitcoin',
 	BTC_SHORTNAME: 'BTC',
@@ -245,12 +252,7 @@ export default {
 			SEE_HISTORY: 'see history'
 		},
 		DEPOSITS: {
-			FIAT: {
-				TITLE: '{0} Deposit received',
-				SUBTITLE: 'You’ve received your {0} deposit'
-			},
-			BTC: {
-				TITLE_RECEIVED: '{0} Deposit received',
+			TITLE_RECEIVED: '{0} Deposit received',
 				TITLE_INCOMING: 'Incoming {0}',
 				SUBTITLE_RECEIVED: 'You’ve received your {0} deposit',
 				SUBTITLE_INCOMING: 'You have incoming {0}',
@@ -258,27 +260,6 @@ export default {
 					'Your {0} require 1 confirmations before you can begin trading.',
 				INFORMATION_PENDING_2:
 					'This may take 10-30 minutes. We will send an email once your {0} is confirmed on the blockchain.'
-			},
-			ETH: {
-				TITLE_RECEIVED: '{0} Deposit received',
-				TITLE_INCOMING: 'Incoming {0}',
-				SUBTITLE_RECEIVED: 'You’ve received your {0} deposit',
-				SUBTITLE_INCOMING: 'You have incoming {0}',
-				INFORMATION_PENDING_1:
-					'Your {0} require 1 confirmations before you can begin trading.',
-				INFORMATION_PENDING_2:
-					'This may take 10-30 minutes. We will send an email once your {0} is confirmed on the blockchain.'
-			},
-			BCH: {
-				TITLE_RECEIVED: '{0} Deposit received',
-				TITLE_INCOMING: 'Incoming {0}',
-				SUBTITLE_RECEIVED: 'You’ve received your {0} deposit',
-				SUBTITLE_INCOMING: 'You have incoming {0}',
-				INFORMATION_PENDING_1:
-					'Your {0} requires 2 confirmations before you can begin trading.',
-				INFORMATION_PENDING_2:
-					'This may take 10-30 minutes. We will send an email once your {0} is confirmed on the blockchain.'
-			},
 		}
 	},
 	OTP_FORM: {
