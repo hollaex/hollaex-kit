@@ -187,7 +187,8 @@ class Withdraw extends Component {
 			openContactForm,
 			activeLanguage,
 			btcFee,
-			router
+			router,
+			coins
 		} = this.props;
 		const { formValues, initialValues, currency, checked } = this.state;
 		if (!currency || !checked) {
@@ -231,7 +232,8 @@ class Withdraw extends Component {
 								currency,
 								balance,
 								openContactForm,
-								generateFiatInformation
+								generateFiatInformation,
+								coins
 							)}
 							<WithdrawCryptocurrency {...formProps} />
 							{renderExtraInformation(currency, bank_account)}
@@ -257,7 +259,8 @@ const mapStateToProps = (store) => ({
 	crypto_wallet: store.user.crypto_wallet,
 	activeLanguage: store.app.language,
 	btcFee: store.wallet.btcFee,
-	selectedFee: formValueSelector(FORM_NAME)(store, 'fee')
+	selectedFee: formValueSelector(FORM_NAME)(store, 'fee'),
+	coins: store.app.coins
 });
 
 const mapDispatchToProps = (dispatch) => ({

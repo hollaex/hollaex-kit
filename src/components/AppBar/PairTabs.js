@@ -283,7 +283,7 @@ class PairTabs extends Component {
 
     render() {
         const { selectedTabs, isAddTab, selectedAddTab, activePairTab, isTabOverflow, activeTabs, searchValue, searchResult, selectedToOpen, selectedToRemove } = this.state;
-        const { pairs, tickers, location } = this.props;
+        const { pairs, tickers, location, coins } = this.props;
         const obj = {};
         Object.entries(pairs).forEach(([key, pair]) => {
             obj[pair.pair_base] = '';
@@ -301,6 +301,7 @@ class PairTabs extends Component {
                                 tab={tab}
                                 pair={pair}
                                 ticker={ticker}
+                                coins={coins}
                                 selectedToOpen={selectedToOpen}
                                 selectedToRemove={selectedToRemove}
                                 activePairTab={activePairTab}
@@ -333,6 +334,7 @@ class PairTabs extends Component {
                             symbols={symbols} 
                             pairs={pairs}
                             tickers={tickers}
+                            coins={coins}
                             selectedTabs={selectedTabs}
                             activeTabs={activeTabs}
                             selectedTabMenu={selectedAddTab || symbols[0]}
@@ -357,6 +359,7 @@ class PairTabs extends Component {
                             activePairTab={activePairTab}
                             selectedTabs={selectedTabs}
                             tickers={tickers}
+                            coins={coins}
                             handleOverflow={this.handleOverflow}
                             closeOverflowMenu={this.closeOverflowMenu}
                         />
@@ -369,7 +372,8 @@ class PairTabs extends Component {
 
 const mapStateToProps = store => ({
     pairs: store.app.pairs,
-    tickers: store.app.tickers
+    tickers: store.app.tickers,
+    coins: store.app.coins
 });
 
 export default connect(mapStateToProps)(PairTabs);

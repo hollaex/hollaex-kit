@@ -4,9 +4,9 @@ import classnames from 'classnames';
 import ReactSVG from 'react-svg';
 import MarketList from './MarketList';
 import STRINGS from '../../config/localizedStrings';
-import  { ICONS } from '../../config/constants';
-import { CURRENCIES } from '../../config/constants';
+import { BASE_CURRENCY, ICONS } from '../../config/constants';
 import { getClasesForLanguage } from '../../utils/string';
+import { formatToCurrency } from '../../utils/currency';
 
 class CurrencyList extends Component {
 	state = {
@@ -33,9 +33,9 @@ class CurrencyList extends Component {
 	};
 
 	render() {
-		const { className, pairs, orderBookData, activeTheme, pair, activeLanguage } = this.props;
+		const { className, pairs, orderBookData, activeTheme, pair, activeLanguage, coins } = this.props;
 		const { markets, focusedSymbol } = this.state;
-		const { formatToCurrency } = CURRENCIES.fiat;
+		const { min } = coins[BASE_CURRENCY] || {};
 		const obj = {};
 		Object.entries(pairs).forEach(([key, pair]) => {
 			obj[pair.pair_base] = '';
@@ -72,7 +72,7 @@ class CurrencyList extends Component {
 							<div className="ml-1">
 								{STRINGS.formatString(
 									STRINGS.FIAT_PRICE_FORMAT,
-									formatToCurrency(marketPrice[symbol]),
+									formatToCurrency(marketPrice[symbol], min),
 									''
 								)}
 							</div>
@@ -88,6 +88,7 @@ class CurrencyList extends Component {
 
 const mapStateToProps = (store) => ({
 	pairs: store.app.pairs,
+	coins: store.app.coins,
 	orderBookData: store.orderbook.pairsTrades,
 	activeTheme: store.app.theme,
 	pair: store.app.pair,

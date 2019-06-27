@@ -194,7 +194,8 @@ class Trade extends Component {
 			activeTheme,
 			settings,
 			orderLimits,
-			pairs
+			pairs,
+			coins
 		} = this.props;
 		const { chartHeight, symbol, activeTab, cancelDelayData, priceInitialized, sizeInitialized } = this.state;
 
@@ -237,7 +238,7 @@ class Trade extends Component {
 				title: STRINGS.RECENT_TRADES,
 				children:   (
 					isLoggedIn() ?
-						<UserTrades pageSize={10} trades={userTrades} pair={pair} pairData={pairData} pairs={pairs} /> :
+						<UserTrades pageSize={10} trades={userTrades} pair={pair} pairData={pairData} pairs={pairs} coins={coins} /> :
 					<div className='text-center'>
 						<IconTitle
 							iconPath={activeTheme ==='dark' ? ICONS.TRADE_HISTORY_DARK: ICONS.TRADE_HISTORY_LIGHT }
@@ -329,6 +330,7 @@ class Trade extends Component {
 						pair={pair}
 						pairData={pairData}
 						pairs={pairs}
+						coins={coins}
 						goToPair={this.goToPair}
 						userTrades={userTrades}
 						activeTheme={activeTheme}
@@ -479,6 +481,7 @@ const mapStateToProps = (store) => {
 		pair,
 		pairData,
 		pairs: store.app.pairs,
+		coins: store.app.coins,
 		balance: store.user.balance,
 		orderbookReady: true,
 		tradeHistory,

@@ -1,6 +1,7 @@
 import math from 'mathjs';
 import numbro from 'numbro';
 import STRINGS from '../config/localizedStrings';
+import { BASE_CURRENCY } from '../config/constants';
 
 export const BTC_FORMAT = '0,0.[0000]';
 export const ETH_FORMAT = '0,0.[0000]';
@@ -14,6 +15,18 @@ export const FIAT_FORMAT = '0,0.[0000]';
 export const PERCENTAGE_FORMAT = '0.[00]%';
 export const DONUT_PERCENTAGE_FORMAT = '0.[0]%';
 export const AVERAGE_FORMAT = '3a';
+
+// export const CURRENCY_FORMAT = {
+// 	BTC_FORMAT: '0,0.[0000]',
+// 	ETH_FORMAT: '0,0.[0000]',
+// 	XRP_FORMAT: '0,0.[]',
+// 	BCH_FORMAT: '0,0.[0000]',
+// 	BTC_FULL_FORMAT: '0,0.[00000000]',
+// 	ETH_FULL_FORMAT: '0,0.[00000000]',
+// 	XRP_FULL_FORMAT: '0,0.[0]',
+// 	BCH_FULL_FORMAT: '0,0.[00000000]',
+// 	EUR_FORMAT: '0,0.[0000]',
+// };
 
 export const roundNumber = (number = 0, decimals = 4) => {
 	if (number === 0) {
@@ -31,6 +44,23 @@ export const roundNumber = (number = 0, decimals = 4) => {
 	} else {
 		return math.floor(number);
 	}
+};
+
+export const getFormat = (min = 0, fullFormat) => {
+	if (fullFormat) {
+		return { digit: 8, format: '0,0.[00000000]' };
+	} else if (min % 1) {
+		let point = min.toString().split('.')[1];
+		let res = point.split('').map(val => 0).join('');
+		return { digit: point.length, format: `0,0.[${res}]` };
+	} else {
+		return { digit: 4, format: `0,0.[0000]` };
+	}
+};
+
+export const formatToCurrency = (amount = 0, min = 0, fullFormat = false) => {
+	let formatObj = getFormat(min, fullFormat);
+	return numbro(roundNumber(amount, formatObj.digit)).format(formatObj.format);
 };
 
 export const formatCurrency = (amount = 0, currency = 'fiat', type = 'simple') => {

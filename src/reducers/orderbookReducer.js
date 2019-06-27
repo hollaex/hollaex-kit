@@ -42,7 +42,7 @@ const INITIAL_STATE = {
 	symbol: '',
 	price: 0,
 	prices: {
-		fiat: 1,
+		eur: 1,
 		eth: 1,
 		btc: 1,
 		bch: 1

@@ -2,12 +2,13 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
 import { Accordion } from '../';
-import { CURRENCIES, BASE_CURRENCY } from '../../config/constants';
+import { BASE_CURRENCY } from '../../config/constants';
 import { calculateBalancePrice,
 	formatFiatAmount,
 	calculatePrice,
 	calculatePricePercentage,
-	donutFormatPercentage } from '../../utils/currency';
+	donutFormatPercentage,
+	formatToCurrency } from '../../utils/currency';
 import WalletSection from './Section';
 import { DonutChart } from '../../components';
 import STRINGS from '../../config/localizedStrings';
@@ -38,8 +39,8 @@ class Wallet extends Component {
 		}
 	}
 
-	generateSection = (symbol, price, balance, orders) => {
-		const { formatToCurrency } = CURRENCIES[symbol];
+	generateSection = (symbol, price, balance, orders, coins) => {
+		const { min } = coins[symbol] || {};
 		const name = STRINGS[`${symbol.toUpperCase()}_NAME`];
 		return {
 			accordionClassName: 'wallet_section-wrapper',
@@ -47,7 +48,7 @@ class Wallet extends Component {
 			titleClassName: 'wallet_section-title',
 			titleInformation: (
 				<div className="wallet_section-title-amount">
-					{formatToCurrency(balance[`${symbol}_balance`])}
+					{formatToCurrency(balance[`${symbol}_balance`], min)}
 					<span className="mx-1">{STRINGS[`${symbol.toUpperCase()}_CURRENCY_SYMBOL`]}</span>
 				</div>
 			),
@@ -57,28 +58,29 @@ class Wallet extends Component {
 					balance={balance}
 					orders={orders}
 					price={price}
+					coins={coins}
 				/>
 			)
 		};
 	};
 
-	calculateSections = ({ price, balance, orders, prices }) => {
+	calculateSections = ({ price, balance, orders, prices, coins }) => {
 		const sections = [];
 		const data = [];
 
 		// TODO calculate right price
 		const totalAssets = calculateBalancePrice(balance, prices);
-		Object.keys(CURRENCIES).forEach((currency) => {
-			const { symbol, formatToCurrency } = CURRENCIES[currency];
+		Object.keys(coins).forEach((currency) => {
+			const { symbol, min } = coins[currency] || {};
 			const currencyBalance = calculatePrice(balance[`${symbol}_balance`], prices[currency]);
 			const balancePercent = calculatePricePercentage(currencyBalance, totalAssets);
 			data.push({
-				...CURRENCIES[currency],
+				...coins[currency],
 				balance: balancePercent,
-				balanceFormat: formatToCurrency(currencyBalance),
+				balanceFormat: formatToCurrency(currencyBalance, min),
 				balancePercentage: donutFormatPercentage(balancePercent)
 			});
-			sections.push(this.generateSection(symbol, price, balance, orders));
+			sections.push(this.generateSection(symbol, price, balance, orders, coins));
 		});
 
 		this.setState({ sections, chartData: data, totalAssets: formatFiatAmount(totalAssets) });
@@ -122,7 +124,8 @@ const mapStateToProps = (state, ownProps) => ({
 	price: state.orderbook.price,
 	orders: state.order.activeOrders,
 	user_id: state.user.id,
-	activeLanguage: state.app.language
+	activeLanguage: state.app.language,
+	coins: state.app.coins
 });
 
 export default connect(mapStateToProps)(Wallet);

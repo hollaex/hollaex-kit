@@ -16,9 +16,10 @@ import { IconTitle } from '../../components';
 import { logout } from '../../actions/authAction';
 import { openFeesStructureandLimits, openContactForm, logoutconfirm } from '../../actions/appActions';
 import { requestLimits, requestFees } from '../../actions/userAction';
-import { CURRENCIES, TRADING_ACCOUNT_TYPE } from '../../config/constants';
+import { BASE_CURRENCY, TRADING_ACCOUNT_TYPE } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 import {
+    formatToCurrency,
     formatAverage,
     formatFiatAmount,
     calculateBalancePrice,
@@ -27,7 +28,6 @@ import {
     calculatePricePercentage } from '../../utils/currency';
 import { getLastMonthVolume } from './components/utils';
 
-const FIAT = CURRENCIES.fiat.symbol;
 const default_trader_account = TRADING_ACCOUNT_TYPE.shrimp;
 
 class Summary extends Component {
@@ -102,18 +102,18 @@ class Summary extends Component {
         this.props.openContactForm({ category: 'level' });
     };
 
-    calculateSections = ({ price, balance, orders, prices }) => {
+    calculateSections = ({ price, balance, orders, prices, coins }) => {
         const data = [];
 
         const totalAssets = calculateBalancePrice(balance, prices);
-        Object.keys(CURRENCIES).forEach((currency) => {
-            const { symbol, formatToCurrency } = CURRENCIES[currency];
+        Object.keys(coins).forEach((currency) => {
+            const { symbol, min } = coins[currency] || {};
             const currencyBalance = calculatePrice(balance[`${symbol}_balance`], prices[currency]);
             const balancePercent = calculatePricePercentage(currencyBalance, totalAssets);
             data.push({
-                ...CURRENCIES[currency],
+                ...coins[currency],
                 balance: balancePercent,
-                balanceFormat: formatToCurrency(currencyBalance),
+                balanceFormat: formatToCurrency(currencyBalance, min),
                 balancePercentage: donutFormatPercentage(balancePercent),
             });
         });
@@ -144,7 +144,7 @@ class Summary extends Component {
     };
 
     render() {
-        const { user, balance, activeTheme, fees, limits, pairs, logout } = this.props;
+        const { user, balance, activeTheme, fees, limits, pairs, coins, logout } = this.props;
         const { selectedAccount, currentTradingAccount, chartData, totalAssets, lastMonthVolume } = this.state;
         return (
             <div className="summary-container">
@@ -158,11 +158,11 @@ class Summary extends Component {
                         fees={fees.data}
                         limits={limits.data}
                         pairs={pairs}
+                        coins={coins}
                         activeTheme={activeTheme}
                         default_trader_account={default_trader_account}
                         currentTradingAccount={currentTradingAccount}
                         selectedAccount={selectedAccount}
-                        FIAT={FIAT}
                         logout={this.logoutConfirm}
                         balance={balance}
                         chartData={chartData}
@@ -198,12 +198,13 @@ class Summary extends Component {
                             <div className="assets-wrapper">
                                 <SummaryBlock
                                     title={STRINGS.SUMMARY.ACCOUNT_ASSETS}
-                                    secondaryTitle={<span><span className="title-font">{totalAssets}</span>{` ${STRINGS.FIAT_FULLNAME}`}</span>} >
+                                    secondaryTitle={<span><span className="title-font">{totalAssets}</span>{` ${STRINGS[`${BASE_CURRENCY.toUpperCase()}_FULLNAME`]}`}</span>} >
                                     <AccountAssets
                                         user={user}
                                         chartData={chartData}
                                         totalAssets={totalAssets}
-                                        balance={balance} />
+                                        balance={balance}
+                                        coins={coins} />
                                 </SummaryBlock>
                             </div>
                             <div className="trading-volume-wrapper">
@@ -249,6 +250,7 @@ class Summary extends Component {
 
 const mapStateToProps = (state) => ({
     pairs: state.app.pairs,
+    coins: state.app.coins,
     user: state.user,
     verification_level: state.user.verification_level,
     balance: state.user.balance,

@@ -1,14 +1,12 @@
 import React from 'react';
 
 import { CurrencyBall } from '../../../components';
-import { CURRENCIES } from '../../../config/constants';
+import { BASE_CURRENCY } from '../../../config/constants';
 import STRINGS from '../../../config/localizedStrings';
 import {
     formatFiatAmount,
     formatBtcAmount
 } from '../../../utils/currency';
-
-const FIAT = CURRENCIES.fiat.symbol;
 
 const getLimitValue = (limit = -1, format) => {
     if (limit === 0) {
@@ -20,15 +18,15 @@ const getLimitValue = (limit = -1, format) => {
     }
 };
 
-const getDepositRow = (data, currency, index) => {
-    const { symbol, shortName, fullName } = CURRENCIES[currency];
-    const format = currency === FIAT ? formatFiatAmount : formatBtcAmount;
+const getDepositRow = (data, currency, index, coins) => {
+    const { symbol } = coins[currency] || {};
+    const format = currency === BASE_CURRENCY ? formatFiatAmount : formatBtcAmount;
     return (
         <tr key={index}>
             <td className="account-limits-coin" rowSpan={2}>
                 <div className='d-flex align-items-center'>
-                    <CurrencyBall name={shortName} symbol={symbol} size='m' />
-                    <div className="ml-2">{fullName}</div>
+                    <CurrencyBall name={STRINGS[`${symbol.toUpperCase()}_SHORTNAME`]} symbol={symbol} size='m' />
+                    <div className="ml-2">{STRINGS[`${symbol.toUpperCase()}_FULLNAME`]}</div>
                 </div>
             </td>
             <td className="account-limits-maker account-limits-status">{STRINGS.SUMMARY.DEPOSIT}:</td>
@@ -38,7 +36,7 @@ const getDepositRow = (data, currency, index) => {
 };
 
 const getWithdrawalRow = (data, currency, index) => {
-    const format = currency === FIAT ? formatFiatAmount : formatBtcAmount;
+    const format = currency === BASE_CURRENCY ? formatFiatAmount : formatBtcAmount;
     return (
         <tr key={`${index}_1`}>
             <td className="account-limits-taker account-limits-status">{STRINGS.SUMMARY.WITHDRAWAL}:</td>
@@ -47,11 +45,11 @@ const getWithdrawalRow = (data, currency, index) => {
     );
 };
 
-const getRows = (data) => {
+const getRows = (data, coins) => {
     const rowData = [];
-    Object.keys(CURRENCIES).map((currency, index) => {
-        rowData.push(getDepositRow(data, currency, index));
-        rowData.push(getWithdrawalRow(data, currency, index));
+    Object.keys(coins).map((currency, index) => {
+        rowData.push(getDepositRow(data, currency, index, coins));
+        rowData.push(getWithdrawalRow(data, currency, index, coins));
         return '';
     });
     return rowData;
@@ -68,7 +66,7 @@ const generateRowData = ({limits, level}) => {
     return levelData;
 };
 
-const LimitsBlock = ({ limits, level }) => {
+const LimitsBlock = ({ limits, level, coins }) => {
     const data = generateRowData({ limits, level });
     return (
         <div>
@@ -81,7 +79,7 @@ const LimitsBlock = ({ limits, level }) => {
                     </tr>
                 </thead>
                 <tbody className="account-limits-content font-weight-bold">
-                    {getRows(data)}
+                    {getRows(data, coins)}
                 </tbody>
             </table>
         </div>

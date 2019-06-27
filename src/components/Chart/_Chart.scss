@@ -35,7 +35,7 @@
 	font-weight: bold;
 }
 
-.chart_btc, .chart_bch, .chart_eth, .chart_fiat, .chart_ltc {
+.chart_btc, .chart_bch, .chart_eth, .chart_eur, .chart_ltc, .chart_xrp {
 	fill-opacity: 0.7;
 }
 
@@ -56,13 +56,17 @@
 	fill: $coin-eth;
 	stroke: $coin-eth-1;
 }
-.chart_fiat {
-	fill: $coin-fiat;
-	stroke: $coin-fiat-1;
+.chart_eur {
+	fill: $coin-eur;
+	stroke: $coin-eur-1;
 }
 .chart_ltc {
 	fill: $coin-ltc;
 	stroke: $coin-ltc-1;
+}
+.chart_xrp {
+	fill: $coin-xrp;
+	stroke: $coin-xrp-1;
 }
 
 .bar_wrapper {
@@ -187,7 +191,7 @@
 		fill: $dark-font-sub-text-color;
 	}
 
-	.chart_btc, .chart_bch, .chart_eth, .chart_fiat, .chart_ltc {
+	.chart_btc, .chart_bch, .chart_eth, .chart_eur, .chart_ltc, .chart_xrp {
 		fill-opacity: 0.1;
 		stroke-width: 1.5;
 	}
@@ -207,13 +211,17 @@
 		fill: $coin-eth;
 		stroke: $coin-eth;
 	}
-	.chart_fiat {
-		fill: $coin-fiat-1;
-		stroke: $coin-fiat-1
+	.chart_eur {
+		fill: $coin-eur-1;
+		stroke: $coin-eur-1
 	}
 	.chart_ltc {
 		fill: $coin-ltc-1;
 		stroke: $coin-ltc-1;
+	}
+	.chart_xrp {
+		fill: $coin-xrp-1;
+		stroke: $coin-xrp-1;
 	}
 	.bar_wrapper {
 		.bar_xAxis {

@@ -14,8 +14,8 @@ $large-modifier: 2.25;
 		background-color: $colors-currencies-btc;
 	}
 
-	&.fiat {
-		background-color: $colors-currencies-fiat;
+	&.eur {
+		background-color: $colors-currencies-eur;
 	}
 
 	&.bch {
@@ -58,7 +58,7 @@ $large-modifier: 2.25;
 	.with_price-block_amount-value {
 		margin-left: 0.5rem;
 	}
-	.with_price-block_amount-value-fiat {
+	.with_price-block_amount-value-eur {
 		color: $colors-deactivate-color2;
 		font-size: $font-size-subhead2;
 		line-height: $font-size-subhead2;
@@ -80,7 +80,7 @@ $large-modifier: 2.25;
 .dark-theme {
 	.with_price-block_amount {
 		color: $dark-font-main-text-color;
-		.with_price-block_amount-value-fiat {
+		.with_price-block_amount-value-eur {
 			color: $dark-font-sub-text-color;
 		}
 	}

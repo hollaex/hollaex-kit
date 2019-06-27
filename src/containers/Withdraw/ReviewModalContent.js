@@ -2,8 +2,8 @@ import React from 'react';
 import math from 'mathjs';
 import ReactSVG from 'react-svg';
 import { Button } from '../../components';
-import { fiatSymbol, fiatFormatToCurrency } from '../../utils/currency';
-import { CURRENCIES, ICONS } from '../../config/constants';
+import { fiatSymbol, fiatFormatToCurrency, formatToCurrency } from '../../utils/currency';
+import { ICONS, BASE_CURRENCY } from '../../config/constants';
 
 import STRINGS from '../../config/localizedStrings';
 
@@ -26,13 +26,14 @@ const ButtonSection = ({ onClickAccept, onClickCancel }) => {
 };
 
 const ReviewModalContent = ({
+	coins,
 	currency,
 	data,
 	price,
 	onClickAccept,
 	onClickCancel
 }) => {
-	const { formatToCurrency } = CURRENCIES[currency];
+	const { min } = coins[currency || BASE_CURRENCY] || {};
 	const shortName = STRINGS[`${currency.toUpperCase()}_SHORTNAME`];
 	const name = STRINGS[`${currency.toUpperCase()}_NAME`];
 
@@ -42,7 +43,7 @@ const ReviewModalContent = ({
 
 	const cryptoAmountText = STRINGS.formatString(
 		STRINGS[`${currency.toUpperCase()}_PRICE_FORMAT`],
-		formatToCurrency(totalTransaction),
+		formatToCurrency(totalTransaction, min),
 		shortName
 	);
 
@@ -114,7 +115,8 @@ ReviewModalContent.defaultProps = {
 	data: {},
 	onClickAccept: () => {},
 	onClickCancel: () => {},
-	price: 0
+	price: 0,
+	coins: {}
 };
 
 export default ReviewModalContent;

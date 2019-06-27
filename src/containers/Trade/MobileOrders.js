@@ -22,6 +22,7 @@ const MobileOrders = ({
 	activeTheme,
 	isLoggedIn,
 	pairs,
+	coins,
 	goToPair,
 	cancelDelayData
 }) => (
@@ -94,6 +95,7 @@ const MobileOrders = ({
 				pairData={pairData}
 				lessHeaders={true}
 				pairs={pairs}
+				coins={coins}
 			/>:
 			<div className='text-center'>
 				<IconTitle

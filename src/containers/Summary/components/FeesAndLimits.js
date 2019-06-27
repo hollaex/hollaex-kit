@@ -24,7 +24,7 @@ class FeesAndLimits extends Component {
 
     render () {
         const { tradingAccount, verification_level, pairs } = this.props.data;
-        const { fees, limits, onClose } = this.props;
+        const { fees, limits, onClose, coins } = this.props;
         return (
             <div className="fee-limits-wrapper">
                 <IconTitle
@@ -49,6 +49,7 @@ class FeesAndLimits extends Component {
                     <div>
                         <div className="content-title">{STRINGS.SUMMARY.DEPOSIT_WITHDRAWAL_ALLOWENCE}</div>
                         <LimitsBlock
+                            coins={coins}
                             limits={limits.data}
                             level={verification_level} />
                     </div>
@@ -69,7 +70,8 @@ class FeesAndLimits extends Component {
 const mapStateToProps = (state) => ({
     activeTheme: state.app.theme,
     fees: state.user.feeValues,
-    limits: state.user.limits
+    limits: state.user.limits,
+    coins: state.app.coins
 });
 
 const mapDispatchToProps = (dispatch) => ({

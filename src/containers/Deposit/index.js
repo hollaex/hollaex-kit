@@ -6,7 +6,7 @@ import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { isMobile } from 'react-device-detect';
-import { ICONS, BALANCE_ERROR, CURRENCIES } from '../../config/constants';
+import { ICONS, BALANCE_ERROR } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 import { getCurrencyFromName } from '../../utils/currency';
 
@@ -89,7 +89,7 @@ class Deposit extends Component {
 	};
 
 	render() {
-		const { id, crypto_wallet, openContactForm, balance } = this.props;
+		const { id, crypto_wallet, openContactForm, balance, coins } = this.props;
 		const { currency, checked, copied } = this.state;
 
 		if (!id || !currency || !checked) {
@@ -115,13 +115,14 @@ class Deposit extends Component {
 							balance,
 							openContactForm,
 							generateFiatInformation,
-							'deposit'
+							'deposit',
+							coins
 						)}
 						{renderContent(currency, crypto_wallet, this.onCopy)}
 						{isMobile && (
 							<CopyToClipboard
 								text={
-									crypto_wallet[`${CURRENCIES[currency].fullName.toLowerCase()}`]
+									crypto_wallet[STRINGS[`${currency.toUpperCase()}_FULLNAME`].toLowerCase()]
 								}
 								onCopy={() => this.setState({ copied: true })}
 							>
@@ -143,7 +144,8 @@ const mapStateToProps = (store) => ({
 	crypto_wallet: store.user.crypto_wallet,
 	balance: store.user.balance,
 	activeLanguage: store.app.language,
-	quoteData: store.orderbook.quoteData
+	quoteData: store.orderbook.quoteData,
+	coins: store.app.coins
 });
 
 const mapDispatchToProps = (dispatch) => ({

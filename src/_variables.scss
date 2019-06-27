@@ -16,12 +16,12 @@ $colors-notifications-green: #00a651;
 $colors-white: white;
 $colors-black: #000000;
 
-$color-currency-fiat--main: #00a651;
-$color-currency-fiat--secondary: #52c2b8;
+$color-currency-eur--main: #00a651;
+$color-currency-eur--secondary: #52c2b8;
 $color-currency-btc--main: #f15a29;
 $color-currency-btc--secondary: #f7941e;
 
-$colors-currencies-fiat: $color-currency-fiat--main;
+$colors-currencies-eur: $color-currency-eur--main;
 $colors-currencies-btc: $color-currency-btc--secondary;
 $colors-orderbook-red-light: #ed1c24;
 $colors-currencies-bch: #ec008c;
@@ -93,8 +93,8 @@ $coin-eth: #334DAA;
 $coin-eth-1: #2b388f;
 $coin-xrp: #334DAA;
 $coin-xrp-1: #2b388f;
-$coin-fiat: #00a651;
-$coin-fiat-1: #00a651;
+$coin-eur: #00a651;
+$coin-eur-1: #00a651;
 $coin-ltc: #58595b;
 $coin-ltc-1: #58595b;
 

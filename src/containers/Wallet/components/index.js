@@ -1,8 +1,8 @@
 import React from 'react';
 import { ActionNotification, IconTitle } from '../../../components';
 import DumbField from '../../../components/Form/FormFields/DumbField';
-import { generateWalletActionsText } from '../../../utils/currency';
-import { ICONS, CURRENCIES } from '../../../config/constants';
+import { generateWalletActionsText, formatToCurrency } from '../../../utils/currency';
+import { ICONS } from '../../../config/constants';
 import STRINGS from '../../../config/localizedStrings';
 
 export const renderDumbField = (data) => <DumbField {...data} />;
@@ -57,11 +57,11 @@ export const renderTitle = (symbol, type = 'withdraw') => {
 	);
 };
 
-export const renderAvailableBalanceText = (symbol, balance) => {
-	const { formatToCurrency } = CURRENCIES[symbol];
+export const renderAvailableBalanceText = (symbol, balance, coins) => {
+	const { min } = coins[symbol] || {};
 	const shortName = STRINGS[`${symbol.toUpperCase()}_SHORTNAME`];
 	const fullName = STRINGS[`${symbol.toUpperCase()}_FULLNAME`];
-	const available = formatToCurrency(balance[`${symbol}_available`]);
+	const available = formatToCurrency(balance[`${symbol}_available`], min);
 
 	return (
 		<div className="text">
@@ -93,13 +93,14 @@ export const renderInformation = (
 	balance,
 	openContactForm,
 	generateFiatInformation,
-	type = 'withdraw'
+	type = 'withdraw',
+	coins
 ) => {
 	return (
 		<div className="information_block">
 			<div className="information_block-text_wrapper">
 				{renderTitle(symbol, type)}
-				{renderAvailableBalanceText(symbol, balance)}
+				{renderAvailableBalanceText(symbol, balance, coins)}
 			</div>
 			{openContactForm && renderNeedHelpAction(openContactForm)}
 		</div>

@@ -170,7 +170,8 @@ class Form extends Component {
 			openContactForm,
 			formValues,
 			currentPrice,
-			activeTheme
+			activeTheme,
+			coins
 		} = this.props;
 
 		const { dialogIsOpen, dialogOtpOpen } = this.state;
@@ -199,6 +200,7 @@ class Form extends Component {
 						/>
 					) : !submitting ? (
 						<ReviewModalContent
+							coins={coins}
 							currency={currency}
 							data={data}
 							price={currentPrice}
@@ -227,7 +229,8 @@ const WithdrawForm = reduxForm({
 
 const mapStateToForm = (state) => ({
 	data: selector(state, 'address', 'amount', 'fee'),
-	activeTheme: state.app.theme
+	activeTheme: state.app.theme,
+	coins: state.app.coins
 });
 
 const WithdrawFormWithValues = connect(mapStateToForm)(WithdrawForm);

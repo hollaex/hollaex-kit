@@ -38,7 +38,7 @@ class TransactionsHistory extends Component {
 
 	componentDidMount() {
 		this.requestData(this.props.symbol);
-		this.generateHeaders(this.props.symbol);
+		this.generateHeaders(this.props.symbol, this.props.coins);
 		if (this.props.location
 			&& this.props.location.query
 			&& this.props.location.query.tab) {
@@ -52,7 +52,7 @@ class TransactionsHistory extends Component {
 		// this.generateHeaders(nextProps.symbol, nextProps.activeLanguage);
 		// } else if (nextProps.activeLanguage !== this.props.activeLanguage) {
 		if (nextProps.activeLanguage !== this.props.activeLanguage) {
-			this.generateHeaders(nextProps.symbol);
+			this.generateHeaders(nextProps.symbol, nextProps.coins);
 		}
 		if((this.props.cancelData.dismissed !== nextProps.cancelData.dismissed) && nextProps.cancelData.dismissed===true) {
 			this.onCloseDialog()
@@ -86,16 +86,16 @@ class TransactionsHistory extends Component {
 		}
 	};
 
-	generateHeaders(symbol) {
+	generateHeaders(symbol, coins) {
 		const {withdrawalPopup}=this
 		const { pairs } = this.props;
 		this.setState({
 			headers: {
 				trades: isMobile
-					? generateTradeHeadersMobile(symbol, pairs)
-					: generateTradeHeaders(symbol, pairs),
-				deposits: generateDepositsHeaders(symbol),
-				withdrawals: generateWithdrawalsHeaders(symbol, withdrawalPopup)
+					? generateTradeHeadersMobile(symbol, pairs, coins)
+					: generateTradeHeaders(symbol, pairs, coins),
+				deposits: generateDepositsHeaders(symbol, coins),
+				withdrawals: generateWithdrawalsHeaders(symbol, withdrawalPopup, coins)
 			}
 		});
 	}
@@ -314,6 +314,7 @@ class TransactionsHistory extends Component {
 
 const mapStateToProps = (store) => ({
 	pairs: store.app.pairs,
+	coins: store.app.coins,
 	id: store.user.id,
 	trades: store.wallet.trades,
 	deposits: store.wallet.deposits,

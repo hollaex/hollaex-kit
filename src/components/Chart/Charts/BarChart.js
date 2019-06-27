@@ -3,10 +3,11 @@ import { scaleLinear, scaleBand } from 'd3-scale';
 import { axisBottom, axisRight} from 'd3-axis';
 import * as d3 from 'd3-selection';
 import moment from 'moment';
+import { connect } from 'react-redux';
 
-import { ICONS, CURRENCIES, BAR_CHART_LIMIT_CAPACITY } from '../../../config/constants';
+import { ICONS, BAR_CHART_LIMIT_CAPACITY } from '../../../config/constants';
 import STRINGS from '../../../config/localizedStrings';
-import { formatAverage, formatBtcAmount, formatFiatAmount } from '../../../utils/currency';
+import { formatToCurrency, formatAverage, formatBtcAmount, formatFiatAmount } from '../../../utils/currency';
 
 function translate(x, y) {
     return `translate(${x}, ${y})`;
@@ -182,10 +183,10 @@ class BarChart extends Component {
                                 return height - yScale(total);
                             })
                             .attr('width', xScale.bandwidth())
-                            .on("mouseover", function (d) {
-                                let currencyFormat = CURRENCIES[pair];
+                            .on("mouseover", (d) => {
+                                let currencyFormat = this.props.coins[pair];
                                 let volume = currencyFormat
-                                    ? currencyFormat.formatToCurrency(d.pairVolume[pair])
+                                    ? formatToCurrency(d.pairVolume[pair], currencyFormat.min)
                                     : formatBtcAmount(d.pairVolume[pair]);
                                 tooltip.selectAll("*").remove();
                                 tooltip.style("display", "block")
@@ -221,8 +222,12 @@ class BarChart extends Component {
     }
 }
 
+const mapStateToProps = (state) => ({
+    coins: state.app.coins
+});
+
 BarChart.defaultProps = {
     loading: false
 };
 
-export default BarChart;
+export default connect(mapStateToProps)(BarChart);

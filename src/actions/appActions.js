@@ -40,6 +40,7 @@ export const FEES_STRUCTURE_AND_LIMITS = 'FEES_STRUCTURE_AND_LIMITS';
 export const RISK_PORTFOLIO_ORDER_WARING = 'RISK_PORTFOLIO_ORDER_WARING';
 export const RISKY_ORDER = 'RISKY_ORDER';
 export const LOGOUT_CONFORMATION = 'LOGOUT_CONFORMATION';
+export const SET_CURRENCIES = 'SET_CURRENCIES';
 
 export const USER_TYPES = {
 	USER_TYPE_NORMAL: 'normal',
@@ -192,6 +193,13 @@ export const setTickers = (data) => ({
 export const setOrderLimits = (data) => ({
 	type: SET_ORDER_LIMITS,
 	payload: data
+});
+
+export const setCurrencies = (coins) => ({
+	type: SET_CURRENCIES,
+	payload: {
+		coins
+	}
 });
 
 export const openFeesStructureandLimits = (data = {}) =>

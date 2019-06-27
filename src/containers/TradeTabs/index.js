@@ -5,9 +5,9 @@ import ReactSVG from 'react-svg';
 import classnames from 'classnames';
 
 import { Paginator, SearchBox } from '../../components';
-import { ICONS, BASE_CURRENCY, CURRENCIES } from '../../config/constants';
+import { ICONS, BASE_CURRENCY } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
-import { formatPercentage, formatAverage } from '../../utils/currency';
+import { formatPercentage, formatAverage, formatToCurrency } from '../../utils/currency';
 
 class AddTradeTab extends Component {
     state = {
@@ -112,7 +112,7 @@ class AddTradeTab extends Component {
     };
 
     render() {
-        const { activeTheme, pairs, tickers } = this.props;
+        const { activeTheme, pairs, tickers, coins } = this.props;
         const { page, pageSize, count, data } = this.state;
         let quickPair = this.props.pair || '';
         if (!this.props.pair && Object.keys(pairs).length) {
@@ -151,7 +151,7 @@ class AddTradeTab extends Component {
                     <div className="d-flex flex-wrap p-3 my-5">
                         {data.map((key, index) => {
                             let pair = pairs[key];
-                            let { formatToCurrency } = CURRENCIES[pair.pair_base || BASE_CURRENCY];
+                            let { min } = coins[pair.pair_base || BASE_CURRENCY] || {};
                             let ticker = tickers[key] || {};
                             const priceDifference = (ticker.close || 0) - (ticker.open || 0);
                             const tickerPercent = priceDifference === 0 ? 0 : ((priceDifference / ticker.open) * 100);
@@ -173,12 +173,12 @@ class AddTradeTab extends Component {
                                         </div>
                                         <div>{STRINGS.PRICE}:
                                             <span className="title-font ml-1">
-                                                {`${STRINGS[`${pair.pair_2.toUpperCase()}_CURRENCY_SYMBOL`]} ${formatAverage(formatToCurrency(ticker.close))}`}
+                                                {`${STRINGS[`${pair.pair_2.toUpperCase()}_CURRENCY_SYMBOL`]} ${formatAverage(formatToCurrency(ticker.close, min))}`}
                                             </span>
                                         </div>
                                         <div className="d-flex">
                                             <div className={priceDifference < 0 ? "price-diff-down trade-tab-price_diff_down" : "trade-tab-price_diff_up price-diff-up"}>
-                                                {formatAverage(formatToCurrency(priceDifference))}
+                                                {formatAverage(formatToCurrency(priceDifference, min))}
                                             </div>
                                             <div
                                                 className={priceDifference < 0
@@ -209,7 +209,8 @@ const mapStateToProps = (store) => ({
     activeTheme: store.app.theme,
     pairs: store.app.pairs,
     tickers: store.app.tickers,
-    pair: store.app.pair
+    pair: store.app.pair,
+    coins: store.app.coins
 });
 
 export default connect(mapStateToProps)(AddTradeTab);

@@ -1,8 +1,7 @@
 import React from 'react';
 import math from 'mathjs';
 import STRINGS from '../../config/localizedStrings';
-import { CURRENCIES } from '../../config/constants';
-import { fiatSymbol } from '../../utils/currency';
+import { fiatSymbol, formatToCurrency } from '../../utils/currency';
 
 const TextHolders = ({ ordersOfSymbol, currencySymbol, hold, name }) => {
 	const ordersText =
@@ -24,8 +23,8 @@ const TextHolders = ({ ordersOfSymbol, currencySymbol, hold, name }) => {
 	);
 };
 
-const Section = ({ symbol = fiatSymbol, balance, orders, price }) => {
-	const { shortName, formatToCurrency } = CURRENCIES[symbol];
+const Section = ({ symbol = fiatSymbol, balance, orders, price, coins }) => {
+	const { name, min } = coins[symbol];
 	const ordersOfSymbol = orders.filter((order) => {
 		if (symbol === fiatSymbol) {
 			return order.side === 'buy';
@@ -50,7 +49,7 @@ const Section = ({ symbol = fiatSymbol, balance, orders, price }) => {
 					<div>
 						{STRINGS.formatString(
 							amountFormat,
-							formatToCurrency(total),
+							formatToCurrency(total, min),
 							STRINGS[`${symbol.toUpperCase()}_CURRENCY_SYMBOL`]
 						)}
 					</div>
@@ -59,8 +58,8 @@ const Section = ({ symbol = fiatSymbol, balance, orders, price }) => {
 					<TextHolders
 						ordersOfSymbol={ordersOfSymbol}
 						currencySymbol={STRINGS[`${symbol.toUpperCase()}_CURRENCY_SYMBOL`]}
-						hold={formatToCurrency(hold)}
-						name={shortName}
+						hold={formatToCurrency(hold, min)}
+						name={STRINGS[`${symbol.toUpperCase()}_SHORTNAME`] || name}
 					/>
 				)}
 				<div className="d-flex flex-column">
@@ -68,7 +67,7 @@ const Section = ({ symbol = fiatSymbol, balance, orders, price }) => {
 					<div>
 						{STRINGS.formatString(
 							amountFormat,
-							formatToCurrency(available),
+							formatToCurrency(available, min),
 							STRINGS[`${symbol.toUpperCase()}_CURRENCY_SYMBOL`]
 						)}
 					</div>

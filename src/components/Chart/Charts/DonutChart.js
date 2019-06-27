@@ -6,7 +6,7 @@ import classnames from 'classnames';
 import STRINGS from '../../../config/localizedStrings';
 
 const colors_currencies = {
-    fiat: '#00a651',
+    eur: '#00a651',
     btc: '#f7941e',
     bch: '#9ec51e',
     eth: '#2e3192',
@@ -203,7 +203,7 @@ class DonutChart extends Component {
                                 dy="20px"
                                 textAnchor="middle"
                                 className="donut-label-pair">
-                                {data.shortName}
+                                {STRINGS[`${data.symbol.toUpperCase()}_SHORTNAME`]}
                             </text>
                         </Fragment>
                         : null

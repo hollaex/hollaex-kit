@@ -16,13 +16,13 @@ const PriceRow = (pairBase, pairTwo, side, onPriceClick, onAmountClick) => (
 			className={`f-1 trade_orderbook-cell trade_orderbook-cell-price ${side} pointer`}
 			onClick={onPriceClick(price)}
 		>
-			{formatCurrency(price, pairTwo)}
+			{formatCurrency(price, pairTwo, true)}
 		</div>
 		<div
 			className="f-1 trade_orderbook-cell trade_orderbook-cell-amount pointer"
 			onClick={onAmountClick(amount)}
 		>
-			{formatCurrency(amount, pairBase)}
+			{formatCurrency(amount, pairBase, true)}
 		</div>
 	</div>
 );

@@ -86,8 +86,8 @@ class TVChartContainer extends React.PureComponent {
 				// if (split_data[2].match(/USD|EUR|JPY|AUD|GBP|KRW|CNY/)) {
 				// 	symbol_stub.pricescale = 100
 				// }
-				const { tick_size } = this.props.pairData;
-				getChartSymbol(symbolName, tick_size)
+				const { increment_price } = this.props.pairData;
+				getChartSymbol(symbolName, increment_price)
 					.then((data) => {
 						onSymbolResolvedCallback(data)
 					})

@@ -168,7 +168,7 @@ class OrderEntry extends Component {
 	};
 
 	onSubmit = (values) => {
-		const { min_size, tick_size, settings } = this.props;
+		const { min_size, increment_price, settings } = this.props;
 
 		const order = {
 			...values,
@@ -184,7 +184,7 @@ class OrderEntry extends Component {
 		} else if (values.price) {
 			order.price = formatNumber(
 				values.price,
-				getDecimals(tick_size)
+				getDecimals(increment_price)
 			);
 		}
 
@@ -208,7 +208,7 @@ class OrderEntry extends Component {
 			pair_base,
 			pair_2,
 			min_size,
-			tick_size,
+			increment_price,
 			openCheckOrder,
 			onRiskyTrade,
 			submit,
@@ -233,7 +233,7 @@ class OrderEntry extends Component {
 		if (type === 'market') {
 			delete order.price;
 		} else if (price) {
-			order.price = formatNumber(price, getDecimals(tick_size))
+			order.price = formatNumber(price, getDecimals(increment_price))
 		}
 		if (notification.popup_order_confirmation) {
 			openCheckOrder(order, () => {
@@ -261,7 +261,7 @@ class OrderEntry extends Component {
 
 			min_size,
 			max_size,
-			tick_size,
+			increment_price,
 			min_price,
 			max_price,
 
@@ -326,14 +326,14 @@ class OrderEntry extends Component {
 				type: 'number',
 				placeholder: '0',
 				normalize: normalizeFloat,
-				step: tick_size,
+				step: increment_price,
 				min: min_price,
 				max: max_price,
 				validate: [
 					required,
 					minValue(min_price),
 					maxValue(max_price),
-					step(tick_size)
+					step(increment_price)
 				],
 				currency: STRINGS[`${byuingPair.toUpperCase()}_SHORTNAME`],
 				initializeEffect: priceInitialized
@@ -403,7 +403,7 @@ const selector = formValueSelector(FORM_NAME);
 
 const mapStateToProps = (state) => {
 	const formValues = selector(state, 'price', 'size', 'side', 'type');
-	const { pair_base, pair_2, max_price, max_size, min_size, min_price, tick_size } = state.app.pairs[state.app.pair];
+	const { pair_base, pair_2, max_price, max_size, min_size, min_price, increment_price } = state.app.pairs[state.app.pair];
 	const fees = state.user.fees[state.app.pair];
 
 	return {
@@ -417,7 +417,7 @@ const mapStateToProps = (state) => {
 		max_size,
 		min_size,
 		min_price,
-		tick_size,
+		increment_price,
 		orderLimits: state.app.orderLimits,
 		prices: state.orderbook.prices,
 		balance: state.user.balance,
