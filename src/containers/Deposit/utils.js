@@ -1,13 +1,13 @@
 import React from 'react';
 import QRCode from 'qrcode.react';
 import classnames from 'classnames';
-import { fiatSymbol } from '../../utils/currency';
+import { BASE_CURRENCY } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 
 import { isMobile } from 'react-device-detect';
 import { renderDumbField } from '../Wallet/components'; // eslint-disable-line
 
-export const generateFiatInformation = (id = '') => (
+export const generateBaseInformation = (id = '') => (
 	<div className="text">
 		{STRINGS.DEPOSIT.INFORMATION_MESSAGES.map((message, index) => (
 			<p key={index}>{message}</p>
@@ -74,7 +74,7 @@ export const renderContent = (symbol, crypto_wallet = {}, onCopy) => {
 				onCopy,
 				true
 			);
-		case fiatSymbol:
+		case BASE_CURRENCY:
 		default:
 			return <div>{STRINGS.DEPOSIT.NO_DATA}</div>;
 	}

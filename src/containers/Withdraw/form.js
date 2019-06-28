@@ -14,8 +14,8 @@ import {
 	setWithdrawEmailConfirmation,
 	setWithdrawNotificationError
 } from './notifications';
-import { fiatSymbol } from '../../utils/currency';
-import { calculateFiatFee } from './utils';
+import { BASE_CURRENCY } from '../../config/constants';
+import { calculateBaseFee } from './utils';
 
 import STRINGS from '../../config/localizedStrings';
 
@@ -61,12 +61,12 @@ class Form extends Component {
 		}
 
 		if (
-			nextProps.currency === fiatSymbol &&
+			nextProps.currency === BASE_CURRENCY &&
 			(nextProps.data.amount !== this.props.data.amount ||
-				(nextProps.currency === fiatSymbol &&
+				(nextProps.currency === BASE_CURRENCY &&
 					nextProps.amount !== this.props.currency))
 		) {
-			const fee = calculateFiatFee(nextProps.data.amount);
+			const fee = calculateBaseFee(nextProps.data.amount);
 			if (fee !== nextProps.data.fee) {
 				nextProps.change('fee', fee);
 			}

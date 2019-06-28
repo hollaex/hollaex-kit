@@ -15,7 +15,7 @@ import { openContactForm, setSnackNotification } from '../../actions/appActions'
 import { Button, MobileBarBack } from '../../components';
 import { renderInformation, renderTitleSection } from '../Wallet/components';
 
-import { generateFiatInformation, renderContent } from './utils';
+import { generateBaseInformation, renderContent } from './utils';
 
 class Deposit extends Component {
 	state = {
@@ -114,7 +114,7 @@ class Deposit extends Component {
 							currency,
 							balance,
 							openContactForm,
-							generateFiatInformation,
+							generateBaseInformation,
 							'deposit',
 							coins
 						)}

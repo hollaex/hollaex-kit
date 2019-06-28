@@ -4,15 +4,13 @@ import STRINGS from '../../config/localizedStrings';
 import { CurrencyBall } from '../';
 import {
 	formatToCurrency,
-	calculatePrice,
-	fiatFormatToCurrency,
-	fiatShortName,
-	fiatSymbol
+	calculatePrice
 } from '../../utils/currency';
 import { BASE_CURRENCY } from '../../config/constants';
 
-const CurrencyBallWithPrice = ({ symbol, amount, price, size = 'm', coins }) => {
+const CurrencyBallWithPrice = ({ symbol, amount, price, size = 'm', coins = {} }) => {
 	const { name, min } = coins[symbol] || {};
+	const baseCoin = coins[BASE_CURRENCY] || {};
 	const currencyShortName = STRINGS[`${symbol.toUpperCase()}_SHORTNAME`]
 		? STRINGS[`${symbol.toUpperCase()}_SHORTNAME`]
 		: name;
@@ -21,11 +19,11 @@ const CurrencyBallWithPrice = ({ symbol, amount, price, size = 'm', coins }) => 
 			<CurrencyBall name={currencyShortName} symbol={symbol} size={size} />
 			<div className="with_price-block_amount-value d-flex">
 				{`${formatToCurrency(amount, min)}`}
-				{symbol !== fiatSymbol && (
+				{symbol !== BASE_CURRENCY && (
 					<div className={`with_price-block_amount-value-${BASE_CURRENCY.toLowerCase()} d-flex align-items-end`}>
-						{` ~ ${fiatFormatToCurrency(
-							calculatePrice(amount, price)
-						)} ${fiatShortName}`}
+						{` ~ ${formatToCurrency(
+							calculatePrice(amount, price), baseCoin.min
+						)} ${STRINGS[`${BASE_CURRENCY.toUpperCase()}_SHORTNAME`]}`}
 					</div>
 				)}
 			</div>

@@ -10,9 +10,10 @@ import { Loader, WarningVerification, MobileBarBack } from '../../components';
 import {
 	ICONS,
 	MIN_VERIFICATION_LEVEL_TO_WITHDRAW,
-	MAX_VERIFICATION_LEVEL_TO_WITHDRAW
+	MAX_VERIFICATION_LEVEL_TO_WITHDRAW,
+	BASE_CURRENCY
 } from '../../config/constants';
-import { fiatSymbol, getCurrencyFromName, roundNumber } from '../../utils/currency';
+import { getCurrencyFromName, roundNumber } from '../../utils/currency';
 import {
 	performWithdraw,
 	requestWithdrawFee
@@ -24,9 +25,9 @@ import { openContactForm } from '../../actions/appActions';
 import WithdrawCryptocurrency from './form';
 import { generateFormValues, generateInitialValues } from './formUtils';
 import {
-	generateFiatInformation,
+	generateBaseInformation,
 	renderExtraInformation,
-	calculateFiatFee
+	calculateBaseFee
 } from './utils';
 
 import { renderInformation, renderTitleSection } from '../Wallet/components';
@@ -91,7 +92,7 @@ class Withdraw extends Component {
 
 	validateRoute = (currency, bank_account, crypto_wallet) => {
 		if (
-			currency === 'fiat' ||
+			currency === BASE_CURRENCY ||
 			(currency === 'eth' && !crypto_wallet.ethereum) ||
 			(currency === 'btc' && !crypto_wallet.bitcoin) || 
 			(currency === 'bch' && !crypto_wallet.bitcoincash) 
@@ -156,8 +157,8 @@ class Withdraw extends Component {
 		const { balance, selectedFee = 0, dispatch } = this.props;
 		const { currency } = this.state;
 		const balanceAvailable = balance[`${currency}_available`];
-		if (currency === fiatSymbol) {
-			const fee = calculateFiatFee(balanceAvailable);
+		if (currency === BASE_CURRENCY) {
+			const fee = calculateBaseFee(balanceAvailable);
 			const amount = math.number(
 				math.subtract(math.fraction(balanceAvailable), math.fraction(fee))
 			);
@@ -232,7 +233,7 @@ class Withdraw extends Component {
 								currency,
 								balance,
 								openContactForm,
-								generateFiatInformation,
+								generateBaseInformation,
 								coins
 							)}
 							<WithdrawCryptocurrency {...formProps} />

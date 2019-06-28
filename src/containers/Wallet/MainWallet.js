@@ -65,9 +65,9 @@ class Wallet extends Component {
 		const total = calculateBalancePrice(balance, prices);
 		const { min } = coins[BASE_CURRENCY] || {};
 		return STRINGS.formatString(
-			STRINGS.FIAT_PRICE_FORMAT,
+			STRINGS[`${BASE_CURRENCY.toUpperCase()}_PRICE_FORMAT`],
 			formatToCurrency(total, min),
-			STRINGS.FIAT_CURRENCY_SYMBOL
+			STRINGS[`${BASE_CURRENCY.toUpperCase()}_CURRENCY_SYMBOL`]
 		);
 	};
 

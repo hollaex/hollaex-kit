@@ -288,7 +288,7 @@ export default function reducer(state = INITIAL_STATE, { payload, type }) {
 					keyPrice = pairs[symbol].pair_base;
 				}
 
-				if (keyPrice) {
+				if (keyPrice && rest[symbol][0]) {
 					prices[keyPrice] = rest[symbol][0].price;
 				}
 			}

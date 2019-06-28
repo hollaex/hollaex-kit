@@ -10,9 +10,8 @@ import Form, { FORM_NAME } from './OrderEntryForm';
 import {
 	toFixed,
 	formatNumber,
-	formatFiatAmount,
+	formatBaseAmount,
 	roundNumber,
-	// fiatSymbol,
 	calculatePrice,
 	calculateBalancePrice
 } from '../../../utils/currency';
@@ -227,7 +226,7 @@ class OrderEntry extends Component {
 			orderPrice: orderTotal,
 			orderFees: this.state.orderFees
 		};
-		const orderPriceInFiat = calculatePrice(orderTotal, this.props.prices[pair_2]);
+		const orderPriceInBaseCoin = calculatePrice(orderTotal, this.props.prices[pair_2]);
 		const riskyPrice = ((this.state.totalAssets / 100) * risk.order_portfolio_percentage);
 
 		if (type === 'market') {
@@ -237,7 +236,7 @@ class OrderEntry extends Component {
 		}
 		if (notification.popup_order_confirmation) {
 			openCheckOrder(order, () => {
-				if (risk.popup_warning && riskyPrice < orderPriceInFiat) {
+				if (risk.popup_warning && riskyPrice < orderPriceInBaseCoin) {
 					order['order_portfolio_percentage'] = risk.order_portfolio_percentage
 					onRiskyTrade(order, () => {
 						submit(FORM_NAME);
@@ -246,7 +245,7 @@ class OrderEntry extends Component {
 					submit(FORM_NAME);
 				}
 			});
-		} else if (risk.popup_warning && riskyPrice < orderPriceInFiat) {
+		} else if (risk.popup_warning && riskyPrice < orderPriceInBaseCoin) {
 			order['order_portfolio_percentage'] = risk.order_portfolio_percentage
 			onRiskyTrade(order, () => {
 				submit(FORM_NAME);
@@ -391,7 +390,7 @@ class OrderEntry extends Component {
 						currency={buyingName}
 						orderPrice={orderPrice}
 						fees={orderFees}
-						formatToCurrency={formatFiatAmount}
+						formatToCurrency={formatBaseAmount}
 					/>
 				</Form>
 			</div>

@@ -1,7 +1,8 @@
 import React from 'react';
 import math from 'mathjs';
 import STRINGS from '../../config/localizedStrings';
-import { fiatSymbol, formatToCurrency } from '../../utils/currency';
+import { BASE_CURRENCY } from '../../config/constants';
+import { formatToCurrency } from '../../utils/currency';
 
 const TextHolders = ({ ordersOfSymbol, currencySymbol, hold, name }) => {
 	const ordersText =
@@ -23,10 +24,10 @@ const TextHolders = ({ ordersOfSymbol, currencySymbol, hold, name }) => {
 	);
 };
 
-const Section = ({ symbol = fiatSymbol, balance, orders, price, coins }) => {
+const Section = ({ symbol = BASE_CURRENCY, balance, orders, price, coins }) => {
 	const { name, min } = coins[symbol];
 	const ordersOfSymbol = orders.filter((order) => {
-		if (symbol === fiatSymbol) {
+		if (symbol === BASE_CURRENCY) {
 			return order.side === 'buy';
 		} else {
 			return order.symbol === symbol && order.side === 'sell';
@@ -34,8 +35,8 @@ const Section = ({ symbol = fiatSymbol, balance, orders, price, coins }) => {
 	}).length;
 
 	const amountFormat =
-		symbol === fiatSymbol
-			? STRINGS.FIAT_PRICE_FORMAT
+		symbol === BASE_CURRENCY
+			? STRINGS[`${BASE_CURRENCY.toUpperCase()}_PRICE_FORMAT`]
 			: STRINGS.BTC_PRICE_FORMAT;
 	const total = balance[`${symbol}_balance`];
 	const available = balance[`${symbol}_available`];

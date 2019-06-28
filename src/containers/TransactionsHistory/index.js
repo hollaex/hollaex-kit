@@ -10,9 +10,8 @@ import {
 	withdrawalCancel
 } from '../../actions/walletActions';
 
-import { fiatSymbol } from '../../utils/currency';
 import { IconTitle, TabController, Loader, CheckTitle, Dialog, Button, CurrencyBallWithPrice } from '../../components';
-import { ICONS, FLEX_CENTER_CLASSES } from '../../config/constants';
+import { ICONS, FLEX_CENTER_CLASSES, BASE_CURRENCY } from '../../config/constants';
 import {
 	generateTradeHeaders,
 	generateTradeHeadersMobile,
@@ -282,8 +281,8 @@ class TransactionsHistory extends Component {
 						<IconTitle
 							iconPath={activeTheme ==='dark' ? ICONS.CANCEL_WITHDRAW_DARK: ICONS.CANCEL_WITHDRAW_LIGHT }
 							text={STRINGS.formatString(
-								STRINGS.CANCEL_FIAT_WITHDRAWAL,
-								STRINGS.FIAT_FULLNAME
+								STRINGS.CANCEL_BASE_WITHDRAWAL,
+								STRINGS[`${BASE_CURRENCY.toUpperCase()}_FULLNAME`]
 							)}
 							textType="title"
 							underline={true}
@@ -293,7 +292,7 @@ class TransactionsHistory extends Component {
 							<div className='text-center mt-5 mb-5'>
 								<div>{STRINGS.CANCEL_WITHDRAWAL_POPUP_CONFIRM}</div> 
 								<div className={classnames(...GROUP_CLASSES)}>
-									<CurrencyBallWithPrice  symbol={fiatSymbol} amount={amount} price={1} />
+									<CurrencyBallWithPrice  symbol={BASE_CURRENCY} amount={amount} price={1} />
 								</div>
 							</div>
 							<div className='w-100 buttons-wrapper d-flex' >

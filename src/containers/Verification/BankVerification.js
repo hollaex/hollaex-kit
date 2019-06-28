@@ -126,8 +126,8 @@ class BankVerification extends Component {
 					<div className="my-2">{STRINGS.USER_VERIFICATION.BANK_VERIFICATION_TEXT_1}</div>
 					<div className="my-2">{STRINGS.USER_VERIFICATION.BANK_VERIFICATION_TEXT_2}</div>
 					<ul className="pl-4">
-						<li className="my-1">{STRINGS.USER_VERIFICATION.FIAT_WITHDRAWAL}</li>
-						<li className="my-1">{STRINGS.USER_VERIFICATION.FIAT_DEPOSITS}</li>
+						<li className="my-1">{STRINGS.USER_VERIFICATION.BASE_WITHDRAWAL}</li>
+						<li className="my-1">{STRINGS.USER_VERIFICATION.BASE_DEPOSITS}</li>
 						<li className="my-1">{STRINGS.USER_VERIFICATION.WARNING.LIST_ITEM_3}</li>
 					</ul>
 					</HeaderSection>

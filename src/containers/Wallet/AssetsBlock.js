@@ -5,7 +5,6 @@ import { Link } from 'react-router';
 import { isMobile } from 'react-device-detect';
 import {
 	calculatePrice,
-	fiatFormatToCurrency,
 	formatToCurrency
 } from '../../utils/currency';
 import { ActionNotification } from '../../components';
@@ -37,11 +36,13 @@ export const AssetsBlock = ({
 					.filter(([key]) => balance.hasOwnProperty(`${key}_balance`))
 					.map(([key, { min, allowDeposit, allowWithdrawal }]) => {
 						const balanceValue = balance[`${key}_balance`];
+						const baseCoin = coins[BASE_CURRENCY] || {}
 						const balanceText =
 							key === BASE_CURRENCY
-								? fiatFormatToCurrency(balanceValue)
-								: fiatFormatToCurrency(
-										calculatePrice(balanceValue, prices[key])
+								? formatToCurrency(balanceValue, min)
+								: formatToCurrency(
+										calculatePrice(balanceValue, prices[key]),
+										baseCoin.min
 									);
 						return (
 							<tr className="table-row table-bottom-border" key={key}>
@@ -64,7 +65,7 @@ export const AssetsBlock = ({
 									(key === BASE_CURRENCY && bankaccount && bankaccount.verified) ? (
 										<div className="d-flex justify-content-between deposit-withdrawal-wrapper">
 											<ActionNotification
-												text={STRINGS.WALLET_BUTTON_FIAT_DEPOSIT}
+												text={STRINGS.WALLET_BUTTON_BASE_DEPOSIT}
 												iconPath={ICONS.BLUE_PLUS}
 												onClick={() => navigate(`wallet/${key}/deposit`)}
 												useSvg={true}
@@ -73,7 +74,7 @@ export const AssetsBlock = ({
 												disable={!allowDeposit}
 											/>
 											<ActionNotification
-												text={STRINGS.WALLET_BUTTON_FIAT_WITHDRAW}
+												text={STRINGS.WALLET_BUTTON_BASE_WITHDRAW}
 												iconPath={ICONS.BLUE_PLUS}
 												onClick={() => navigate(`wallet/${key}/withdraw`)}
 												useSvg={true}

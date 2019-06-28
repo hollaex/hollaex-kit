@@ -21,7 +21,7 @@ import STRINGS from '../../config/localizedStrings';
 import {
     formatToCurrency,
     formatAverage,
-    formatFiatAmount,
+    formatBaseAmount,
     calculateBalancePrice,
     donutFormatPercentage,
     calculatePrice,
@@ -118,7 +118,7 @@ class Summary extends Component {
             });
         });
 
-        this.setState({ chartData: data, totalAssets: formatAverage(formatFiatAmount(totalAssets)) });
+        this.setState({ chartData: data, totalAssets: formatAverage(formatBaseAmount(totalAssets)) });
     };
 
     setCurrentTradeAccount = user => {
@@ -212,9 +212,9 @@ class Summary extends Component {
                                     title={STRINGS.SUMMARY.TRADING_VOLUME}
                                     secondaryTitle={<span>
                                         <span className="title-font">
-                                            {` ${formatAverage(formatFiatAmount(lastMonthVolume))}`}
+                                            {` ${formatAverage(formatBaseAmount(lastMonthVolume))}`}
                                         </span>
-                                        {` ${STRINGS.FIAT_FULLNAME} ${STRINGS.formatString(STRINGS.SUMMARY.NOMINAL_TRADING_WITH_MONTH, moment().subtract(1, "month").startOf("month").format('MMMM')).join('')}`}
+                                        {` ${STRINGS[`${BASE_CURRENCY.toUpperCase()}_FULLNAME`]} ${STRINGS.formatString(STRINGS.SUMMARY.NOMINAL_TRADING_WITH_MONTH, moment().subtract(1, "month").startOf("month").format('MMMM')).join('')}`}
                                     </span>
                                     }
                                 >

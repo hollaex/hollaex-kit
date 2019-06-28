@@ -5,9 +5,9 @@ import * as d3 from 'd3-selection';
 import moment from 'moment';
 import { connect } from 'react-redux';
 
-import { ICONS, BAR_CHART_LIMIT_CAPACITY } from '../../../config/constants';
+import { ICONS, BAR_CHART_LIMIT_CAPACITY, BASE_CURRENCY } from '../../../config/constants';
 import STRINGS from '../../../config/localizedStrings';
-import { formatToCurrency, formatAverage, formatBtcAmount, formatFiatAmount } from '../../../utils/currency';
+import { formatToCurrency, formatAverage, formatBtcAmount } from '../../../utils/currency';
 
 function translate(x, y) {
     return `translate(${x}, ${y})`;
@@ -184,7 +184,8 @@ class BarChart extends Component {
                             })
                             .attr('width', xScale.bandwidth())
                             .on("mouseover", (d) => {
-                                let currencyFormat = this.props.coins[pair];
+                                let currencyFormat = this.props.coins[pair] || {};
+                                let baseFormat = this.props.coins[BASE_CURRENCY] || {};
                                 let volume = currencyFormat
                                     ? formatToCurrency(d.pairVolume[pair], currencyFormat.min)
                                     : formatBtcAmount(d.pairVolume[pair]);
@@ -197,7 +198,7 @@ class BarChart extends Component {
                                     .text(`${pair.toUpperCase()}: ${formatAverage(volume)}`);
                                 tooltip.append('div')
                                     .attr('class', 'tool_tip-pair-price')
-                                    .text(`~ ${STRINGS.FIAT_SHORTNAME}: ${formatAverage(formatFiatAmount(d.pairWisePrice[pair]))}`);
+                                    .text(`~ ${STRINGS[`${BASE_CURRENCY.toUpperCase()}_SHORTNAME`]}: ${formatAverage(formatToCurrency(d.pairWisePrice[pair], baseFormat.min))}`);
                             })
                             .on("mousemove", function () {
                                 return tooltip.style("top", (d3.event.pageY - 10) + "px")

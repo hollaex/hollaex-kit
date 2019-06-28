@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { Button } from '../../../components';
 import {
-	calculatePrice,
-	fiatSymbol
+	calculatePrice
 } from '../../../utils/currency';
+import { BASE_CURRENCY } from '../../../config/constants';
 import Currency from './Currency';
 import Arrow from './Arrow';
 import STRINGS from '../../../config/localizedStrings';
@@ -61,8 +61,8 @@ class CurrencySlider extends Component {
 		const { wallets, balance, prices, navigate, coins } = this.props;
 		const { currentCurrency } = this.state;
 		const balanceValue = balance[`${currentCurrency}_balance`];
-		const balanceFiat =
-			currentCurrency !== fiatSymbol
+		const baseBalance =
+			currentCurrency !== BASE_CURRENCY
 				&& calculatePrice(balanceValue, prices[currentCurrency]);
 
 		return (
@@ -76,7 +76,7 @@ class CurrencySlider extends Component {
 							currency={currentCurrency}
 							balance={balance}
 							balanceValue={balanceValue}
-							balanceText={balanceFiat}
+							balanceText={baseBalance}
 							coins={coins}
 						/>
 					}

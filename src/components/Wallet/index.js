@@ -4,7 +4,6 @@ import { browserHistory } from 'react-router';
 import { Accordion } from '../';
 import { BASE_CURRENCY } from '../../config/constants';
 import { calculateBalancePrice,
-	formatFiatAmount,
 	calculatePrice,
 	calculatePricePercentage,
 	donutFormatPercentage,
@@ -67,6 +66,7 @@ class Wallet extends Component {
 	calculateSections = ({ price, balance, orders, prices, coins }) => {
 		const sections = [];
 		const data = [];
+		const baseCoin = coins[BASE_CURRENCY] || {};
 
 		// TODO calculate right price
 		const totalAssets = calculateBalancePrice(balance, prices);
@@ -83,7 +83,7 @@ class Wallet extends Component {
 			sections.push(this.generateSection(symbol, price, balance, orders, coins));
 		});
 
-		this.setState({ sections, chartData: data, totalAssets: formatFiatAmount(totalAssets) });
+		this.setState({ sections, chartData: data, totalAssets: formatToCurrency(totalAssets, baseCoin.min) });
 	};
 	
 	goToWallet = () => browserHistory.push('/wallet');
@@ -107,7 +107,7 @@ class Wallet extends Component {
 							{STRINGS.WALLET.TOTAL_ASSETS}
 						</div>
 						<div className="wallet_section-total_asset d-flex justify-content-end">
-							{STRINGS.FIAT_CURRENCY_SYMBOL}
+							{STRINGS[`${BASE_CURRENCY.toUpperCase()}_CURRENCY_SYMBOL`]}
 							<span>{totalAssets}</span>
 						</div>
 					</div>

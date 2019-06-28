@@ -11,7 +11,7 @@ export const BTC_FULL_FORMAT = '0,0.[00000000]';
 export const ETH_FULL_FORMAT = '0,0.[00000000]';
 export const XRP_FULL_FORMAT = '0,0.[0]';
 export const BCH_FULL_FORMAT = '0,0.[00000000]';
-export const FIAT_FORMAT = '0,0.[0000]';
+export const BASE_FORMAT = '0,0.[0000]';
 export const PERCENTAGE_FORMAT = '0.[00]%';
 export const DONUT_PERCENTAGE_FORMAT = '0.[0]%';
 export const AVERAGE_FORMAT = '3a';
@@ -63,7 +63,7 @@ export const formatToCurrency = (amount = 0, min = 0, fullFormat = false) => {
 	return numbro(roundNumber(amount, formatObj.digit)).format(formatObj.format);
 };
 
-export const formatCurrency = (amount = 0, currency = 'fiat', type = 'simple') => {
+export const formatCurrency = (amount = 0, currency = BASE_CURRENCY, type = 'simple') => {
 	switch (currency.toLowerCase()) {
 		case 'btc':
 			return numbro(roundNumber(amount, 8)).format(BTC_FULL_FORMAT);
@@ -73,12 +73,10 @@ export const formatCurrency = (amount = 0, currency = 'fiat', type = 'simple') =
 			return numbro(roundNumber(amount, 8)).format(BCH_FULL_FORMAT);
 		case 'xrp':
 			return numbro(roundNumber(amount, 8)).format(XRP_FULL_FORMAT);
-		case 'fiat':
-			return numbro(roundNumber(amount, 8)).format(FIAT_FORMAT);
 		case 'eur':
-			return numbro(roundNumber(amount, 8)).format(FIAT_FORMAT);
+			return numbro(roundNumber(amount, 8)).format(BASE_FORMAT);
 		default:
-			return numbro(roundNumber(amount, 8)).format(FIAT_FORMAT); 
+			return numbro(roundNumber(amount, 8)).format(BASE_FORMAT); 
 	}
 }
 export const formatPercentage = (value = 0) =>
@@ -89,8 +87,8 @@ export const formatBtcAmount = (amount = 0) =>
 	numbro(roundNumber(amount, 4)).format(BTC_FORMAT);
 export const formatBtcFullAmount = (amount = 0) =>
 	numbro(roundNumber(amount, 8)).format(BTC_FULL_FORMAT);
-export const formatFiatAmount = (amount = 0) =>
-	numbro(roundNumber(amount, 2)).format(FIAT_FORMAT);
+export const formatBaseAmount = (amount = 0) =>
+	numbro(roundNumber(amount, 2)).format(BASE_FORMAT);
 export const formatEthAmount = (amount = 0) =>
 	numbro(roundNumber(amount, 4)).format(ETH_FORMAT);
 export const formatEthFullAmount = (amount = 0) =>
@@ -140,13 +138,13 @@ export const generateWalletActionsText = (symbol, useFullName = false) => {
 	const nameToDisplay = useFullName ? fullName : name;
 
 	const depositText = `${
-		symbol === fiatSymbol
-			? STRINGS.WALLET_BUTTON_FIAT_DEPOSIT
+		symbol === BASE_CURRENCY
+			? STRINGS.WALLET_BUTTON_BASE_DEPOSIT
 			: STRINGS.WALLET_BUTTON_CRYPTOCURRENCY_DEPOSIT
 	} ${nameToDisplay}`;
 	const withdrawText = `${
-		symbol === fiatSymbol
-			? STRINGS.WALLET_BUTTON_FIAT_WITHDRAW
+		symbol === BASE_CURRENCY
+			? STRINGS.WALLET_BUTTON_BASE_WITHDRAW
 			: STRINGS.WALLET_BUTTON_CRYPTOCURRENCY_WITHDRAW
 	} ${nameToDisplay}`;
 
@@ -172,8 +170,7 @@ export const getCurrencyFromName = (name = '') => {
 			return 'xrp';
 		case 'eur':
 		case 'euro':
-		case 'fiat':
-			return 'fiat';
+			return 'eur';
 		default:
 			return '';
 	}
@@ -194,18 +191,13 @@ export const getCurrencyFromSymbol = (symbol = '') => {
 			return 'ripple';
 		case 'eur':
 		case 'euro':
-		case 'fiat':
-			return 'fiat';
+			return 'euro';
 		default:
 			return '';
 	}
 };
 
-export const checkNonFiatPair = (pair) => !pair.includes(STRINGS.FIAT_SHORTNAME_EN.toLowerCase());
-export const fiatSymbol = 'fiat';
-export const fiatName = STRINGS.FIAT_NAME;
-export const fiatShortName = STRINGS.FIAT_SHORTNAME;
-export const fiatFormatToCurrency = formatFiatAmount;
+export const checkNonBasePair = (pair) => !pair.includes(STRINGS[`${BASE_CURRENCY.toUpperCase()}_SHORTNAME_EN`].toLowerCase());
 
 export const toFixed = (exponential) => {
 	if (Math.abs(exponential) < 1.0) {

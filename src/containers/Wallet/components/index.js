@@ -92,7 +92,7 @@ export const renderInformation = (
 	symbol,
 	balance,
 	openContactForm,
-	generateFiatInformation,
+	generateBaseInformation,
 	type = 'withdraw',
 	coins
 ) => {

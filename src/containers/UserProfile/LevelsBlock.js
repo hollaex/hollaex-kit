@@ -2,7 +2,7 @@ import React from 'react';
 import classnames from 'classnames';
 import STRINGS from '../../config/localizedStrings';
 import {
-	formatFiatAmount,
+	formatBaseAmount,
 	formatBtcAmount
 } from '../../utils/currency';
 
@@ -19,13 +19,14 @@ const getLimitValue = (limit = -1, format) => {
 const LevelRow = ({ data = {}, isUserLevel = false }) => {
 	const {
 		verification_level,
-		fiat_deposit_daily,
-		fiat_withdraw_daily,
+		eur_deposit_daily,
+		eur_withdraw_daily,
 		btc_deposit_daily,
 		btc_withdraw_daily,
 		eth_deposit_daily,
 		eth_withdraw_daily
 	} = data;
+	console.log('levelRow', data);
 	return (
 		<tr
 			className={classnames('table-row table-bottom-border', {
@@ -41,10 +42,10 @@ const LevelRow = ({ data = {}, isUserLevel = false }) => {
 				{STRINGS.LEVELS[`LABEL_LEVEL_${verification_level}`]}
 			</td>
 			<td className="td-name td-amount">
-				{getLimitValue(fiat_deposit_daily, formatFiatAmount)}
+				{getLimitValue(eur_deposit_daily, formatBaseAmount)}
 			</td>
 			<td className="td-name td-amount">
-				{getLimitValue(fiat_withdraw_daily, formatFiatAmount)}
+				{getLimitValue(eur_withdraw_daily, formatBaseAmount)}
 			</td>
 			<td className="td-name td-amount">
 				{getLimitValue(btc_deposit_daily, formatBtcAmount)}
@@ -69,8 +70,8 @@ export const LevelsBlock = ({ userLevel, limits }) => (
 				<tr className="table-bottom-border">
 					<th />
 					<th>{STRINGS.LEVELS.LABEL_LEVEL}</th>
-					<th>{STRINGS.LEVELS.LABEL_FIAT_DEPOSIT}</th>
-					<th>{STRINGS.LEVELS.LABEL_FIAT_WITHDRAWAL}</th>
+					<th>{STRINGS.LEVELS.LABEL_BASE_DEPOSIT}</th>
+					<th>{STRINGS.LEVELS.LABEL_BASE_WITHDRAWAL}</th>
 					<th>{STRINGS.LEVELS.LABEL_BTC_DEPOSIT}</th>
 					<th>{STRINGS.LEVELS.LABEL_BTC_WITHDRAWAL}</th>
 					<th>{STRINGS.LEVELS.LABEL_ETH_DEPOSIT}</th>

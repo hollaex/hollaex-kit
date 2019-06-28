@@ -1,14 +1,14 @@
-import { fiatSymbol } from '../../utils/currency';
+import { BASE_CURRENCY } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 
-const generateFiatDepositTexts = (strings) => ({
+const generateBaseDepositTexts = (strings) => ({
 	TITLE: strings.formatString(
-		strings.NOTIFICATIONS.DEPOSITS.FIAT.TITLE,
-		strings.FIAT_NAME
+		strings.NOTIFICATIONS.DEPOSITS[BASE_CURRENCY.toUpperCase()].TITLE,
+		strings[`${BASE_CURRENCY.toUpperCase()}_NAME`]
 	),
 	SUBTITLE: strings.formatString(
-		strings.NOTIFICATIONS.DEPOSITS.FIAT.SUBTITLE,
-		strings.FIAT_FULLNAME
+		strings.NOTIFICATIONS.DEPOSITS[BASE_CURRENCY.toUpperCase()].SUBTITLE,
+		strings[`${BASE_CURRENCY.toUpperCase()}_FULLNAME`]
 	),
 	INFORMATION_PENDING: [],
 	INFORMATION_COMPLETE: []
@@ -53,8 +53,8 @@ const generateCryptoDepositTexts = (strings, status, currency) => {
 
 export const getDepositTexts = (currency, status = false) => {
 	let texts = {};
-	if (currency === fiatSymbol) {
-		texts = generateFiatDepositTexts(STRINGS);
+	if (currency === BASE_CURRENCY) {
+		texts = generateBaseDepositTexts(STRINGS);
 	} else {
 		texts = generateCryptoDepositTexts(STRINGS, status, currency.toUpperCase());
 	}

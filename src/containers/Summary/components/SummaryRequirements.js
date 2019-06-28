@@ -5,7 +5,7 @@ import { Link } from 'react-router';
 import moment from 'moment';
 
 import { Button } from '../../../components';
-import { ICONS, TRADE_ACCOUNT_UPGRADE_MONTH, TRADING_VOLUME_CHART_LIMITS } from '../../../config/constants';
+import { ICONS, TRADE_ACCOUNT_UPGRADE_MONTH, TRADING_VOLUME_CHART_LIMITS, BASE_CURRENCY } from '../../../config/constants';
 import STRINGS from '../../../config/localizedStrings';
 
 const SucessStatus = ({ isAccountDetails }) => (
@@ -108,7 +108,7 @@ const getRequirements = (user, level, lastMonthVolume) => {
                 title: STRINGS.formatString(
                     STRINGS.SUMMARY.TRADING_VOLUME_EQUIVALENT,
                     TRADING_VOLUME_CHART_LIMITS[0],
-                    STRINGS.FIAT_CURRENCY_SYMBOL
+                    STRINGS[`${BASE_CURRENCY.toUpperCase()}_CURRENCY_SYMBOL`]
                 ).join(' '),
                 completed: TRADING_VOLUME_CHART_LIMITS[0] <= lastMonthVolume
             }
@@ -122,7 +122,7 @@ const getRequirements = (user, level, lastMonthVolume) => {
                 title: STRINGS.formatString(
                     STRINGS.SUMMARY.TRADING_VOLUME_EQUIVALENT,
                     TRADING_VOLUME_CHART_LIMITS[1],
-                    STRINGS.FIAT_CURRENCY_SYMBOL
+                    STRINGS[`${BASE_CURRENCY.toUpperCase()}_CURRENCY_SYMBOL`]
                 ).join(' '),
                 completed: TRADING_VOLUME_CHART_LIMITS[1] <= lastMonthVolume
             }

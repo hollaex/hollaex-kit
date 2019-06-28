@@ -43,7 +43,7 @@ export default {
 	LOGOUT_CONFIRM_TEXT: '로그아웃 하시겠습니까?',
 	ADD_TRADING_PAIR: '거래통화페어 추가',
 	ACTIVE_TRADES: '실제 거래를 이용하려면 반드시 {0}가 필요합니다.',
-	CANCEL_FIAT_WITHDRAWAL: '{0} 출금 취소',
+	CANCEL_BASE_WITHDRAWAL: '{0} 출금 취소',
 	CANCEL_WITHDRAWAL: '출금 취소',
 	CANCEL_WITHDRAWAL_POPUP_CONFIRM: '출금 진행중인 거래를 취소하시겠습니까?:',
 	CANT_BE_CANCELLED:'-',
@@ -252,7 +252,7 @@ export default {
 			SEE_HISTORY: '거래내역 보기',
 		},
 		DEPOSITS: {
-			FIAT: {
+			EUR: {
 				TITLE: '{0} 입금되었습니다.',
 				SUBTITLE: '회원님의 {0} 입금이 완료되었습니다.'
 			},
@@ -411,8 +411,8 @@ export default {
 		GO_BACK: '되돌아가기', 
 		BANK_VERIFICATION_TEXT_1: '은행계좌는 3개까지 추가하실 수 있습니다. 해외은행계좌는 고객센터에 문의하여주시고, 출금한도에 제한이 있습니다.', 
 		BANK_VERIFICATION_TEXT_2: '은행계좌등록을 하시면 아래와 같은 서비스를 이용하실 수 있습니다:', 
-		FIAT_WITHDRAWAL: '원화출금', 
-		FIAT_DEPOSITS: '원화입금', 
+		BASE_WITHDRAWAL: '원화출금', 
+		BASE_DEPOSITS: '원화입금', 
 		ADD_ANOTHER_BANK_ACCOUNT: '은행계좌 추가하기', 
 		BANK_NAME: '은행이름', 
 		ACCOUNT_NUMBER: '계좌번호', 
@@ -826,12 +826,12 @@ export default {
 			'Please ensure the accuracy of this address since {0} transfers are irreversible',
 		MESSAGE_ABOUT_WITHDRAW: 'You are about to transfer to your bank account',
 		MESSAGE_FEE: 'Transactions fee of {0} ({1}) included',
-		MESSAGE_FEE_FIAT: 'Transactions fee of {0} included',
-		FIAT_MESSAGE_1:
+		MESSAGE_FEE_BASE: 'Transactions fee of {0} included',
+		BASE_MESSAGE_1:
 			'회원님의 실명확인이 완료된 HollaEx에 등록하신 계좌로만 출금이 가능합니다. You can only withdraw to a bank account in a name that matches the name registered with your HOLLAEX account.',
-		FIAT_MESSAGE_2: '출금가능한 최소금액',
-		FIAT_MESSAGE_3: '1일 출금가능금액 Daily withdrawal max amount',
-		FIAT_INCREASE_LIMIT: '1일 한도 증액',
+		BASE_MESSAGE_2: '출금가능한 최소금액',
+		BASE_MESSAGE_3: '1일 출금가능금액 Daily withdrawal max amount',
+		BASE_INCREASE_LIMIT: '1일 한도 증액',
 		CONFIRM_VIA_EMAIL: '이메일 승인',
 		CONFIRM_VIA_EMAIL_1: '회원님의 이메일로 출금승인요청 이메일을 전송하였습니다.',
 		CONFIRM_VIA_EMAIL_2: '출금을 진행하기 위하여 출금승인을 확인해주시기 바랍니다.',
@@ -841,8 +841,8 @@ export default {
 		GO_WITHDRAWAL_HISTORY: '출금내역 보러가기 Go To Withdrawal History'
 
 	},
-	WALLET_BUTTON_FIAT_DEPOSIT: '입금',
-	WALLET_BUTTON_FIAT_WITHDRAW: '출금',
+	WALLET_BUTTON_BASE_DEPOSIT: '입금',
+	WALLET_BUTTON_BASE_WITHDRAW: '출금',
 	WALLET_BUTTON_CRYPTOCURRENCY_DEPOSIT: '받기',
 	WALLET_BUTTON_CRYPTOCURRENCY_WITHDRAW: '보내기',
 	AVAILABLE_TEXT: '사용가능',
@@ -997,8 +997,8 @@ export default {
 		LABEL_LEVEL_3: 'Three',
 		LABEL_MAKER_FEE: 'Maker Fee',
 		LABEL_TAKER_FEE: 'Taker Fee',
-		LABEL_FIAT_DEPOSIT: 'Daily Euro Deposit',
-		LABEL_FIAT_WITHDRAWAL: 'Daily Euro Withdrawal',
+		LABEL_BASE_DEPOSIT: 'Daily Euro Deposit',
+		LABEL_BASE_WITHDRAWAL: 'Daily Euro Withdrawal',
 		LABEL_BTC_DEPOSIT: 'Daily Bitcoin Deposit',
 		LABEL_BTC_WITHDRAWAL: 'Daily Bitcoin Withdrawal',
 		LABEL_ETH_DEPOSIT: 'Daily Ethereum Deposit',

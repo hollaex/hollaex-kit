@@ -7,7 +7,7 @@ import { SubmissionError, change } from 'redux-form';
 import { isMobile } from 'react-device-detect';
 import { Link } from 'react-router';
 
-import { ICONS } from '../../config/constants';
+import { ICONS, BASE_CURRENCY } from '../../config/constants';
 import { IconTitle } from '../../components';
 import {
 	submitOrder,
@@ -268,11 +268,11 @@ class Trade extends Component {
 			}
 		];
 
-		// TODO get right fiat pair
+		// TODO get right base pair
 		const orderbookProps = {
 			symbol,
 			pairData,
-			fiatSymbol: STRINGS.FIAT_SHORTNAME,
+			baseSymbol: STRINGS[`${BASE_CURRENCY.toUpperCase()}_SHORTNAME`],
 			asks,
 			bids,
 			onPriceClick: this.onPriceClick,

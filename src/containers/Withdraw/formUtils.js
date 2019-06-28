@@ -9,8 +9,7 @@ import {
 } from '../../components/Form/validations';
 import { isMobile } from 'react-device-detect';
 import STRINGS from '../../config/localizedStrings';
-import { WITHDRAW_LIMITS, ICONS } from '../../config/constants';
-import { fiatSymbol } from '../../utils/currency';
+import { WITHDRAW_LIMITS, ICONS, BASE_CURRENCY } from '../../config/constants';
 
 export const generateInitialValues = (symbol, fees = {}) => {
 	const { MIN } = WITHDRAW_LIMITS[symbol];
@@ -41,7 +40,7 @@ export const generateFormValues = (
 	const { MIN, MAX, STEP = 1 } = WITHDRAW_LIMITS[symbol];
 	const fields = {};
 
-	if (symbol !== fiatSymbol) {
+	if (symbol !== BASE_CURRENCY) {
 		fields.address = {
 			type: 'text',
 			label: STRINGS.WITHDRAWALS_FORM_ADDRESS_LABEL,

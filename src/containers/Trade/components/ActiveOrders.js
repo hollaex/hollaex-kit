@@ -5,7 +5,7 @@ import math from 'mathjs';
 import { ICONS } from '../../../config/constants';
 import { Table, ActionNotification } from '../../../components';
 import { formatTimestamp } from '../../../utils/utils';
-import { formatFiatAmount, formatBtcFullAmount, formatBtcAmount } from '../../../utils/currency';
+import { formatBaseAmount, formatBtcFullAmount, formatBtcAmount } from '../../../utils/currency';
 import { isMobile } from 'react-device-detect';
 import { subtract } from '../utils';
 import STRINGS from '../../../config/localizedStrings';
@@ -64,7 +64,7 @@ const generateHeaders = (onCancel) => [
 		label: STRINGS.STATUS,
 		key: 'status',
 		renderCell: ({ size = 0, filled = 0 }, key, index) => {
-			const fullfilled = formatFiatAmount(
+			const fullfilled = formatBaseAmount(
 				math
 					.chain(filled)
 					.divide(size)

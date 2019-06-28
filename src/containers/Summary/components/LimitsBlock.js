@@ -4,7 +4,7 @@ import { CurrencyBall } from '../../../components';
 import { BASE_CURRENCY } from '../../../config/constants';
 import STRINGS from '../../../config/localizedStrings';
 import {
-    formatFiatAmount,
+    formatBaseAmount,
     formatBtcAmount
 } from '../../../utils/currency';
 
@@ -20,7 +20,7 @@ const getLimitValue = (limit = -1, format) => {
 
 const getDepositRow = (data, currency, index, coins) => {
     const { symbol } = coins[currency] || {};
-    const format = currency === BASE_CURRENCY ? formatFiatAmount : formatBtcAmount;
+    const format = currency === BASE_CURRENCY ? formatBaseAmount : formatBtcAmount;
     return (
         <tr key={index}>
             <td className="account-limits-coin" rowSpan={2}>
@@ -36,7 +36,7 @@ const getDepositRow = (data, currency, index, coins) => {
 };
 
 const getWithdrawalRow = (data, currency, index) => {
-    const format = currency === BASE_CURRENCY ? formatFiatAmount : formatBtcAmount;
+    const format = currency === BASE_CURRENCY ? formatBaseAmount : formatBtcAmount;
     return (
         <tr key={`${index}_1`}>
             <td className="account-limits-taker account-limits-status">{STRINGS.SUMMARY.WITHDRAWAL}:</td>

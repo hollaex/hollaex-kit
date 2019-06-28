@@ -40,8 +40,8 @@ export const getTitleAndIcon = (side, type) => {
 };
 
 const calculateValues = (data = [], pair, coins = {}) => {
+	let btcAccumulated = math.fraction(0);
 	let baseAccumulated = math.fraction(0);
-	let fiatAccumulated = math.fraction(0);
 	const averages = [];
 	const baseFormat = coins[pair.pair_base] || {};
 	const secondaryFormat = coins[pair.pair_2] || {};
@@ -52,15 +52,15 @@ const calculateValues = (data = [], pair, coins = {}) => {
 		} else if (side === SIDE_SELL) {
 			calcSize = filled || size;
 		}
-		baseAccumulated = math.add(baseAccumulated, math.fraction(calcSize));
+		btcAccumulated = math.add(btcAccumulated, math.fraction(calcSize));
 		const orderValue = math.multiply(math.fraction(price), math.fraction(calcSize));
-		fiatAccumulated = math.add(fiatAccumulated, orderValue);
+		baseAccumulated = math.add(baseAccumulated, orderValue);
 		averages.push(math.number(orderValue));
 	});
 
 	return {
-		btc: formatToCurrency(baseAccumulated, baseFormat.min),
-		fiat: formatToCurrency(fiatAccumulated, secondaryFormat.min),
+		btc: formatToCurrency(btcAccumulated, baseFormat.min),
+		base: formatToCurrency(baseAccumulated, secondaryFormat.min),
 		average: formatToCurrency(math.median(averages), secondaryFormat.min)
 	};
 };
@@ -74,7 +74,7 @@ export const TradeDisplay = ({ side, data, pairs, coins, ...rest }) => {
 		side === 'sell' ? STRINGS.ORDER_SOLD : STRINGS.ORDER_BOUGHT;
 	const resultText =
 		side === 'sell' ? STRINGS.ORDER_RECEIVED : STRINGS.ORDER_SPENT;
-	const { btc, fiat, average } = calculateValues(data, pair, coins);
+	const { btc, base, average } = calculateValues(data, pair, coins);
 	return (
 		<NotificationContent>
 			<InformationRow
@@ -97,7 +97,7 @@ export const TradeDisplay = ({ side, data, pairs, coins, ...rest }) => {
 				label={resultText}
 				value={STRINGS.formatString(
 					STRINGS[`${payPair}_PRICE_FORMAT`],
-					fiat,
+					base,
 					STRINGS[`${payPair}_SHORTNAME`]
 				)}
 			/>
