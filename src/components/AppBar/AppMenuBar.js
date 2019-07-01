@@ -30,6 +30,9 @@ class AppMenuBar extends Component {
         if (JSON.stringify(this.props.user) !== JSON.stringify(nextProps.user)) {
             this.checkVerificationStatus(nextProps.user);
         }
+        if (this.props.activeLanguage !== nextProps.activeLanguage) {
+            this.setActiveMenu(nextProps.location.pathname);
+        }
     }
 
     checkVerificationStatus = user => {
@@ -166,7 +169,8 @@ class AppMenuBar extends Component {
 }
 
 const mapStateToProps = (state) => ({
-    user: state.user
+    user: state.user,
+    activeLanguage: state.app.language
 });
 
 export default connect(mapStateToProps)(AppMenuBar);

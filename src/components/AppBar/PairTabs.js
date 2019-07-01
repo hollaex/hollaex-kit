@@ -77,6 +77,9 @@ class PairTabs extends Component {
             }
             this.initTabs(pairs, active);
         }
+        if (this.props.activeLanguage !== nextProps.activeLanguage) {
+            this.initTabs(pairs, active);
+        }
     }
 
     componentWillUnmount() {
@@ -371,6 +374,7 @@ class PairTabs extends Component {
 }
 
 const mapStateToProps = store => ({
+    activeLanguage: store.app.language,
     pairs: store.app.pairs,
     tickers: store.app.tickers,
     coins: store.app.coins
