@@ -265,3 +265,22 @@ export const getTradeVolume = () => ({
 	type: 'GET_TRADE_VOLUME',
 	payload: axios.get(`/user/stats`)
 });
+
+export function getUserReferralCount() {
+	return (dispatch) => {
+		axios
+			.get('/user/affiliation')
+			.then((res) => {
+				dispatch({
+					type: 'REFERRAL_COUNT_FULFILLED',
+					payload: res
+				});
+			})
+			.catch((err) => {
+				dispatch({
+					type: 'REFERRAL_COUNT_REJECTED',
+					payload: err.response
+				});
+			});
+	};
+}

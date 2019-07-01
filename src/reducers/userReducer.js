@@ -120,7 +120,8 @@ const INITIAL_STATE = {
 	addressRequest: INITIAL_ADDRESS_OBJECT,
 	limits: INITIAL_LIMIT_OBJECT,
 	feeValues: INITIAL_FEES_OBJECT,
-	tradeVolumes: INITIAL_TRADE_VOLUME_OBJECT
+	tradeVolumes: INITIAL_TRADE_VOLUME_OBJECT,
+	affiliation: {}
 };
 
 export default function reducer(state = INITIAL_STATE, action) {
@@ -137,7 +138,8 @@ export default function reducer(state = INITIAL_STATE, action) {
 				created_at,
 				bank_account,
 				address,
-				id_data
+				id_data,
+				affiliation_code
 			} = action.payload;
 			const userData = extractuserData(action.payload);
 			const fees = action.payload.fees || state.fees;
@@ -163,7 +165,8 @@ export default function reducer(state = INITIAL_STATE, action) {
 				created_at,
 				bank_account,
 				address,
-				id_data
+				id_data,
+				affiliation_code
 			};
 		}
 		case 'SET_USER_DATA': {
@@ -429,6 +432,16 @@ export default function reducer(state = INITIAL_STATE, action) {
 					...INITIAL_TRADE_VOLUME_OBJECT,
 					error: action.payload.response
 				}
+			};
+		case 'REFERRAL_COUNT_FULFILLED':
+			return {
+				...state,
+				affiliation: action.payload
+			};
+		case 'REFERRAL_COUNT_REJECTED':
+			return {
+				...state,
+				affiliation: {}
 			};
 		case 'LOGOUT':
 			return INITIAL_STATE;

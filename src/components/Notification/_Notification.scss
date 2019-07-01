@@ -128,6 +128,29 @@ $logout--size-difference: 3rem;
 	// .new-order-notification.notification-content-wrapper {
 	// 	font-size: $font-size-subhead3;
 	// }
+
+	.invite_friends_wrapper {
+		width: 36rem;
+
+		.user_refer_info {
+			background-color: $colors-info-panel-background;
+			height: 6rem;
+		}
+
+		.icon_title-wrapper {
+			.icon_title-svg {
+				height: 8rem;
+				width: 8rem;
+			}
+			.icon_title-svg svg{
+				height: 8rem;
+				width: 8rem;
+			}
+			.icon_title-text.title {
+				font-size: 2rem;
+			}
+		}
+	}
 }
 
 .notification-wrapper {
@@ -222,6 +245,12 @@ $logout--size-difference: 3rem;
 			g .wallet-selected-2 {
 				stroke: transparent;
 				fill: $dark-icon-color;
+			}
+		}
+
+		.invite_friends_wrapper {
+			.user_refer_info {
+				background-color: $dark-info-panel-background;
 			}
 		}
 	}

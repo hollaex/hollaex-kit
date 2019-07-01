@@ -28,7 +28,8 @@ const MobileSummary = ({
     lastMonthVolume,
     onFeesAndLimits,
     onUpgradeAccount,
-    onAccountTypeChange
+    onAccountTypeChange,
+    onInviteFriends
 }) => {
     return (
         <div
@@ -49,6 +50,7 @@ const MobileSummary = ({
                         logout={logout}
                         activeTheme={activeTheme}
                         account={currentTradingAccount}
+                        onInviteFriends={onInviteFriends}
                         onFeesAndLimits={onFeesAndLimits}
                         onUpgradeAccount={onUpgradeAccount} />
                 </SummaryBlock>

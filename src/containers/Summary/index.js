@@ -14,7 +14,7 @@ import MobileSummary from './MobileSummary';
 
 import { IconTitle } from '../../components';
 import { logout } from '../../actions/authAction';
-import { openFeesStructureandLimits, openContactForm, logoutconfirm } from '../../actions/appActions';
+import { openFeesStructureandLimits, openContactForm, logoutconfirm, setNotification, NOTIFICATIONS } from '../../actions/appActions';
 import { requestLimits, requestFees } from '../../actions/userAction';
 import { BASE_CURRENCY, TRADING_ACCOUNT_TYPE } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
@@ -143,6 +143,10 @@ class Summary extends Component {
         this.setState({ currentTradingAccount, selectedAccount: currentTradingAccount.symbol });
     };
 
+    onInviteFriends = () => {
+        this.props.setNotification(NOTIFICATIONS.INVITE_FRIENDS, { affiliation_code: this.props.user.affiliation_code });
+    };
+
     render() {
         const { user, balance, activeTheme, fees, limits, pairs, coins, logout } = this.props;
         const { selectedAccount, currentTradingAccount, chartData, totalAssets, lastMonthVolume } = this.state;
@@ -168,6 +172,7 @@ class Summary extends Component {
                         chartData={chartData}
                         totalAssets={totalAssets}
                         lastMonthVolume={lastMonthVolume}
+                        onInviteFriends={this.onInviteFriends}
                         onFeesAndLimits={this.onFeesAndLimits}
                         onUpgradeAccount={this.onUpgradeAccount}
                         onAccountTypeChange={this.onAccountTypeChange}
@@ -183,7 +188,8 @@ class Summary extends Component {
                                         activeTheme={activeTheme}
                                         account={currentTradingAccount}
                                         onFeesAndLimits={this.onFeesAndLimits}
-                                        onUpgradeAccount={this.onUpgradeAccount} />
+                                        onUpgradeAccount={this.onUpgradeAccount}
+                                        onInviteFriends={this.onInviteFriends} />
                                 </SummaryBlock>
                             </div>
                             <div className="summary-section_1 requirement-wrapper d-flex">
@@ -271,7 +277,8 @@ const mapDispatchToProps = (dispatch) => ({
     requestLimits: bindActionCreators(requestLimits, dispatch),
     requestFees: bindActionCreators(requestFees, dispatch),
     openFeesStructureandLimits: bindActionCreators(openFeesStructureandLimits, dispatch),
-    openContactForm: bindActionCreators(openContactForm, dispatch)
+    openContactForm: bindActionCreators(openContactForm, dispatch),
+    setNotification: bindActionCreators(setNotification, dispatch)
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Summary);

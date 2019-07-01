@@ -1056,5 +1056,13 @@ export default {
 		NOMINAL_TRADING_WITH_MONTH: 'Nominal Trading Last {0}',
 		ACCOUNT_AGE_OF_MONTHS: 'Account Age of {0} Months',
 		TRADING_VOLUME_EQUIVALENT: '{0} {1} Trading Volume Equivalent'
+	},
+	REFERRAL_LINK: {
+		TITLE: 'Earn 10% in Commissions', // ToDo: Need to add it in korean
+		INFO_TEXT: 'Earn 1 HEX for every 10 HEX your friends buy.', // ToDo: Need to add it in korean
+		INFO_TEXT_1: 'Commissions are paid periodically to your HEX wallet',
+		COPY_FIELD_LABEL: 'Share the link below with friends and earn commissions:',
+		REFERRED_USER_COUT: 'You have referred {0} users',
+		COPY_LINK_BUTTON: 'COPY REFERRAL LINK'
 	}
 };

@@ -648,7 +648,7 @@ class Container extends Component {
 						onClose={this.onCloseDialog}
 					/>
 				);
-			case RISKY_ORDER:
+			case RISKY_ORDER: {
 				const { onConfirm, ...rest } = data;
 				return (
 					<RiskyOrder
@@ -657,6 +657,18 @@ class Container extends Component {
 						onClose={this.onCloseDialog}
 					/>
 				);
+			}
+			case NOTIFICATIONS.INVITE_FRIENDS: {
+				const { onConfirm, ...rest } = data;
+				return (
+					<Notification
+						type={type}
+						data={rest}
+						onConfirm={data.onConfirm}
+						onBack={this.onCloseDialog}
+					/>
+				);
+			}
 			default:
 				return <div />;
 		}
