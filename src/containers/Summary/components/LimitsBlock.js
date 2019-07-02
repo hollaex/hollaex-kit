@@ -66,7 +66,7 @@ const generateRowData = ({limits, level}) => {
     return levelData;
 };
 
-const LimitsBlock = ({ limits, level, coins }) => {
+const LimitsBlock = ({ limits = [], level, coins }) => {
     const data = generateRowData({ limits, level });
     return (
         <div>

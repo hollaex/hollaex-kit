@@ -1058,11 +1058,11 @@ export default {
 		TRADING_VOLUME_EQUIVALENT: '{0} {1} Trading Volume Equivalent'
 	},
 	REFERRAL_LINK: {
-		TITLE: 'Earn 10% in Commissions', // ToDo: Need to add it in korean
-		INFO_TEXT: 'Earn 1 HEX for every 10 HEX your friends buy.', // ToDo: Need to add it in korean
-		INFO_TEXT_1: 'Commissions are paid periodically to your HEX wallet',
-		COPY_FIELD_LABEL: 'Share the link below with friends and earn commissions:',
-		REFERRED_USER_COUT: 'You have referred {0} users',
-		COPY_LINK_BUTTON: 'COPY REFERRAL LINK'
+		TITLE: 'Earn 10% in Commissions', // new
+		INFO_TEXT: 'Earn 1 HEX for every 10 HEX your friends buy.', // new
+		INFO_TEXT_1: 'Commissions are paid periodically to your HEX wallet', // new
+		COPY_FIELD_LABEL: 'Share the link below with friends and earn commissions:', // new
+		REFERRED_USER_COUT: 'You have referred {0} users', // new
+		COPY_LINK_BUTTON: 'COPY REFERRAL LINK' // new
 	}
 };

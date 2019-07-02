@@ -273,7 +273,7 @@ export function getUserReferralCount() {
 			.then((res) => {
 				dispatch({
 					type: 'REFERRAL_COUNT_FULFILLED',
-					payload: res
+					payload: res.data
 				});
 			})
 			.catch((err) => {

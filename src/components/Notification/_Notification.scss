@@ -134,7 +134,7 @@ $logout--size-difference: 3rem;
 
 		.user_refer_info {
 			background-color: $colors-info-panel-background;
-			height: 6rem;
+			height: 5.5rem;
 		}
 
 		.icon_title-wrapper {
@@ -231,7 +231,8 @@ $logout--size-difference: 3rem;
 			.limit-sell-03,
 			.limit-sell-04,
 			.limit-buy-03,
-			.limit-buy-04 {
+			.limit-buy-04,
+			.refer-icon {
 				fill: $dark-icon-color;
 			}
 			.limit-sell-01,

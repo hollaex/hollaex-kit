@@ -27,11 +27,12 @@ class InviteFriends extends Component {
     render() {
         const { affiliation_code } = this.props.data;
         const referralLink = `${process.env.REACT_APP_PUBLIC_URL}/signup?affiliation_code=${affiliation_code}`;
+        const affiliationCount = this.props.affiliation.count ? this.props.affiliation.count : 0;
         return (
             <div className='invite_friends_wrapper'>
                 <IconTitle
                     text={STRINGS.REFERRAL_LINK.TITLE}
-                    iconPath={ICONS.COIN_WITHDRAW_TOMAN}
+                    iconPath={ICONS.REFER_ICON}
                     textType="title"
                     useSvg={true}
                     underline={true}
@@ -54,7 +55,7 @@ class InviteFriends extends Component {
                     <div className="user_refer_info p-4 d-flex align-items-center">
                         {STRINGS.formatString(
                             STRINGS.REFERRAL_LINK.REFERRED_USER_COUT,
-                            0
+                            affiliationCount
                         )}
                     </div>
                     <div className="d-flex my-5">
@@ -80,7 +81,7 @@ class InviteFriends extends Component {
 }
 
 const mapStateToProps = (store) => ({
-    affiliation: store.user.affiliation
+    affiliation: store.user.affiliation || {}
 });
 
 const mapDispatchToProps = (dispatch) => ({

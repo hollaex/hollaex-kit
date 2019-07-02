@@ -338,7 +338,7 @@ export default function reducer(state = INITIAL_STATE, action) {
 				limits: {
 					...INITIAL_LIMIT_OBJECT,
 					fetched: true,
-					data: action.payload.data.data
+					data: action.payload.data.rows
 				}
 			};
 		case 'REQUEST_LIMITS_REJECTED':

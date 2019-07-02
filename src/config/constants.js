@@ -347,7 +347,8 @@ export const ICONS = {
 	SETTING_AUDIO_ICON: `${process.env.PUBLIC_URL}/assets/images/audio-settings-icon.svg`,
 	SETTING_RISK_ICON: `${process.env.PUBLIC_URL}/assets/images/risk-settings-icon.svg`,
 	SETTING_RISK_ADJUST_ICON: `${process.env.PUBLIC_URL}/assets/images/risk-management-pop-adjust.svg`,
-	SETTING_RISK_MANAGE_WARNING_ICON: `${process.env.PUBLIC_URL}/assets/images/risk-manage-pop-warning.svg`
+	SETTING_RISK_MANAGE_WARNING_ICON: `${process.env.PUBLIC_URL}/assets/images/risk-manage-pop-warning.svg`,
+	REFER_ICON: `${process.env.PUBLIC_URL}/assets/images/refer-icon.svg`
 };
 
 export const SOCIAL_ICONS = {
