@@ -22,7 +22,6 @@ class InviteFriends extends Component {
     
     componentDidMount() {
         this.props.getUserReferralCount();
-        console.log('publicURL', process.env.PUBLIC_URL);
     }
     
     render() {
