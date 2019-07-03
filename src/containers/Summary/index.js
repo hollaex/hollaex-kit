@@ -82,9 +82,9 @@ class Summary extends Component {
             requestLimits();
         }
 
-        if (!fees.fetched && !fees.fetching) {
-            requestFees();
-        }
+        // if (!fees.fetched && !fees.fetching) {
+        //     requestFees();
+        // }
         this.props.openFeesStructureandLimits({
             fees: fees.data,
             limits: limits.data,

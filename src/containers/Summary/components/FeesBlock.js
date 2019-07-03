@@ -4,9 +4,9 @@ import { CurrencyBall } from '../../../components';
 import STRINGS from '../../../config/localizedStrings';
 import { formatPercentage } from '../../../utils/currency';
 
-const getMakerRow = (data, pair, pairs, index) => {
-    const { pair_base, pair_2 } = pairs[pair];
-    const { maker_fees } = data[pair];
+const getMakerRow = (pairs, pair, level, index) => {
+    const { pair_base, pair_2, maker_fees } = pairs[pair];
+    const feeData = maker_fees ? maker_fees[level] : 0;
     return (
         <tr key={index}>
             <td className="account-limits-coin" rowSpan={2}>
@@ -18,46 +18,33 @@ const getMakerRow = (data, pair, pairs, index) => {
                 </div>
             </td>
             <td className="account-limits-maker account-limits-status">{STRINGS.SUMMARY.MAKER}:</td>
-            <td className="account-limits-maker account-limits-value">{formatPercentage(maker_fees)}</td>
+            <td className="account-limits-maker account-limits-value">{formatPercentage(feeData)}</td>
         </tr>
     );
 }
 
-const getTakerRow = (data, pair, index) => {
-    const { taker_fees } = data[pair];
+const getTakerRow = (pairs, pair, level, index) => {
+    const { taker_fees } = pairs[pair];
+    const feeData = taker_fees ? taker_fees[level] : 0;
     return (
         <tr key={`${index}_1`}>
             <td className="account-limits-taker account-limits-status">{STRINGS.SUMMARY.TAKER}:</td>
-            <td className="account-limits-taker account-limits-value">{formatPercentage(taker_fees)}</td>
+            <td className="account-limits-taker account-limits-value">{formatPercentage(feeData)}</td>
         </tr>
     );
 }
 
-const getRows = (data, pairs) => {
+const getRows = (pairs, level) => {
     const rowData = [];
-    Object.keys(data).map((pair, index) => {
-        rowData.push(getMakerRow(data, pair, pairs, index));
-        rowData.push(getTakerRow(data, pair, index));
+    Object.keys(pairs).map((pair, index) => {
+        rowData.push(getMakerRow(pairs, pair, level, index));
+        rowData.push(getTakerRow(pairs, pair, level, index));
         return '';
     });
     return rowData;
 };
 
-const generateRowData = ({ fees, level }) => {
-    let levelData = {};
-    Object.keys(fees).map(key => {
-        const temp = fees[key];
-        levelData[key] = {
-            taker_fees: temp.taker_fees[level],
-            maker_fees: temp.maker_fees[level]
-        };
-        return '';
-    });
-    return levelData;
-};
-
-const FeesBlock = ({ fees, level, pairs }) => {
-    const data = generateRowData({ fees, level });
+const FeesBlock = ({ pairs, level }) => {
     return (
         <div>
             <table className="account-limits">
@@ -69,7 +56,7 @@ const FeesBlock = ({ fees, level, pairs }) => {
                     </tr>
                 </thead>
                 <tbody className="account-limits-content font-weight-bold">
-                    {getRows(data, pairs)}
+                    {getRows(pairs, level)}
                 </tbody>
             </table>
         </div>
