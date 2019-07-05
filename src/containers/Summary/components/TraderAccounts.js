@@ -6,7 +6,7 @@ import STRINGS from '../../../config/localizedStrings';
 import { ICONS } from '../../../config/constants';
 
 
-const TraderAccounts = ({ account = {}, activeTheme, limits = [], isAccountDetails = false, onFeesAndLimits, onUpgradeAccount, logout, onInviteFriends }) => {
+const TraderAccounts = ({ account = {}, activeTheme, isAccountDetails = false, onFeesAndLimits, onUpgradeAccount, logout, onInviteFriends }) => {
     // let limitLevel = limits.filter(obj => obj.verification_level === account.level);
     return (
         <div className="d-flex">

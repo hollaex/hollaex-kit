@@ -242,15 +242,15 @@ export const setUsernameStore = (username) => ({
 	}
 });
 
-export const requestLimits = () => ({
-	type: 'REQUEST_LIMITS',
-	payload: axios.get('/limits')
-});
+// export const requestLimits = () => ({
+// 	type: 'REQUEST_LIMITS',
+// 	payload: axios.get('/limits')
+// });
 
-export const requestFees = () => ({
-	type: 'REQUEST_FEES',
-	payload: axios.get('/fees')
-});
+// export const requestFees = () => ({
+// 	type: 'REQUEST_FEES',
+// 	payload: axios.get('/fees')
+// });
 
 export const createAddress = (addressType = '') => ({
 	type: 'CREATE_ADDRESS',

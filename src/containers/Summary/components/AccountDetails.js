@@ -11,8 +11,7 @@ import STRINGS from '../../../config/localizedStrings';
 const AccountDetails = ({
     user, 
     activeTheme,
-    fees,
-    limits,
+    coins,
     pairs,
     selectedAccount,
     lastMonthVolume,
@@ -51,8 +50,7 @@ const AccountDetails = ({
                     <AccountTypeDetails
                         className="w-50"
                         user={user}
-                        fees={fees}
-                        limits={limits}
+                        coins={coins}
                         pairs={pairs}
                         accounts={accounts}
                         activeTheme={activeTheme}

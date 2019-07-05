@@ -324,57 +324,57 @@ export default function reducer(state = INITIAL_STATE, action) {
 					}
 				}
 			};
-		case 'REQUEST_LIMITS_PENDING':
-			return {
-				...state,
-				limits: {
-					...INITIAL_LIMIT_OBJECT,
-					fetching: true
-				}
-			};
-		case 'REQUEST_LIMITS_FULFILLED':
-			return {
-				...state,
-				limits: {
-					...INITIAL_LIMIT_OBJECT,
-					fetched: true,
-					data: action.payload.data.rows
-				}
-			};
-		case 'REQUEST_LIMITS_REJECTED':
-			return {
-				...state,
-				limits: {
-					...INITIAL_LIMIT_OBJECT,
-					error: action.payload.response
-				}
-			};
+		// case 'REQUEST_LIMITS_PENDING':
+		// 	return {
+		// 		...state,
+		// 		limits: {
+		// 			...INITIAL_LIMIT_OBJECT,
+		// 			fetching: true
+		// 		}
+		// 	};
+		// case 'REQUEST_LIMITS_FULFILLED':
+		// 	return {
+		// 		...state,
+		// 		limits: {
+		// 			...INITIAL_LIMIT_OBJECT,
+		// 			fetched: true,
+		// 			data: action.payload.data.rows
+		// 		}
+		// 	};
+		// case 'REQUEST_LIMITS_REJECTED':
+		// 	return {
+		// 		...state,
+		// 		limits: {
+		// 			...INITIAL_LIMIT_OBJECT,
+		// 			error: action.payload.response
+		// 		}
+		// 	};
 
-		case 'REQUEST_FEES_PENDING':
-			return {
-				...state,
-				feeValues: {
-					...INITIAL_FEES_OBJECT,
-					fetching: true
-				}
-			};
-		case 'REQUEST_FEES_FULFILLED':
-			return {
-				...state,
-				feeValues: {
-					...INITIAL_FEES_OBJECT,
-					fetched: true,
-					data: action.payload.data
-				}
-			};
-		case 'REQUEST_FEES_REJECTED':
-			return {
-				...state,
-				feeValues: {
-					...INITIAL_FEES_OBJECT,
-					error: action.payload.response
-				}
-			};
+		// case 'REQUEST_FEES_PENDING':
+		// 	return {
+		// 		...state,
+		// 		feeValues: {
+		// 			...INITIAL_FEES_OBJECT,
+		// 			fetching: true
+		// 		}
+		// 	};
+		// case 'REQUEST_FEES_FULFILLED':
+		// 	return {
+		// 		...state,
+		// 		feeValues: {
+		// 			...INITIAL_FEES_OBJECT,
+		// 			fetched: true,
+		// 			data: action.payload.data
+		// 		}
+		// 	};
+		// case 'REQUEST_FEES_REJECTED':
+		// 	return {
+		// 		...state,
+		// 		feeValues: {
+		// 			...INITIAL_FEES_OBJECT,
+		// 			error: action.payload.response
+		// 		}
+		// 	};
 		case 'CREATE_ADDRESS_PENDING':
 			return {
 				...state,

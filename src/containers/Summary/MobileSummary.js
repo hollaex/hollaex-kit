@@ -13,8 +13,6 @@ import STRINGS from '../../config/localizedStrings';
 
 const MobileSummary = ({
     user,
-    fees,
-    limits,
     pairs,
     coins,
     activeTheme,
@@ -44,8 +42,7 @@ const MobileSummary = ({
             <div className="summary-section_1 trader-account-wrapper d-flex w-100">
                 <SummaryBlock title={currentTradingAccount.fullName} wrapperClassname="w-100" >
                     <TraderAccounts
-                        fees={fees}
-                        limits={limits}
+                        coins={coins}
                         pairs={pairs}
                         logout={logout}
                         activeTheme={activeTheme}
@@ -86,8 +83,7 @@ const MobileSummary = ({
                 secondaryTitle={currentTradingAccount.name}
                 wrapperClassname="w-100" >
                 <AccountDetails
-                    fees={fees}
-                    limits={limits}
+                    coins={coins}
                     pairs={pairs}
                     user={user}
                     activeTheme={activeTheme}
