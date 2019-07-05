@@ -93,8 +93,8 @@ export const renderInformation = (
 	balance,
 	openContactForm,
 	generateBaseInformation,
-	type = 'withdraw',
-	coins
+	coins,
+	type = 'withdraw'
 ) => {
 	return (
 		<div className="information_block">

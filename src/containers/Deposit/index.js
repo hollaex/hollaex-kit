@@ -115,8 +115,8 @@ class Deposit extends Component {
 							balance,
 							openContactForm,
 							generateBaseInformation,
-							'deposit',
-							coins
+							coins,
+							'deposit'
 						)}
 						{renderContent(currency, crypto_wallet, this.onCopy)}
 						{isMobile && (
