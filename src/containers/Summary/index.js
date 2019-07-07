@@ -15,7 +15,6 @@ import MobileSummary from './MobileSummary';
 import { IconTitle } from '../../components';
 import { logout } from '../../actions/authAction';
 import { openFeesStructureandLimits, openContactForm, logoutconfirm, setNotification, NOTIFICATIONS } from '../../actions/appActions';
-import { requestLimits, requestFees } from '../../actions/userAction';
 import { BASE_CURRENCY, TRADING_ACCOUNT_TYPE } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 import {
@@ -77,20 +76,9 @@ class Summary extends Component {
     }
 
     onFeesAndLimits = tradingAccount => {
-        const { fees, limits, pairs, requestLimits, requestFees } = this.props;
-        if (!limits.fetched && !limits.fetching) {
-            requestLimits();
-        }
-
-        // if (!fees.fetched && !fees.fetching) {
-        //     requestFees();
-        // }
         this.props.openFeesStructureandLimits({
-            fees: fees.data,
-            limits: limits.data,
             verification_level: tradingAccount.level,
-            tradingAccount,
-            pairs
+            tradingAccount
         });
     };
 
@@ -148,7 +136,7 @@ class Summary extends Component {
     };
 
     render() {
-        const { user, balance, activeTheme, fees, limits, pairs, coins, logout } = this.props;
+        const { user, balance, activeTheme, pairs, coins, logout } = this.props;
         const { selectedAccount, currentTradingAccount, chartData, totalAssets, lastMonthVolume } = this.state;
         return (
             <div className="summary-container">
@@ -159,8 +147,6 @@ class Summary extends Component {
                 {isMobile
                     ? <MobileSummary
                         user={user}
-                        fees={fees.data}
-                        limits={limits.data}
                         pairs={pairs}
                         coins={coins}
                         activeTheme={activeTheme}
@@ -182,9 +168,8 @@ class Summary extends Component {
                             <div className="summary-section_1 trader-account-wrapper d-flex">
                                 <SummaryBlock title={currentTradingAccount.fullName} >
                                     <TraderAccounts
-                                        fees={fees.data}
-                                        limits={limits.data}
                                         pairs={pairs}
+                                        coins={coins}
                                         activeTheme={activeTheme}
                                         account={currentTradingAccount}
                                         onFeesAndLimits={this.onFeesAndLimits}
@@ -235,8 +220,7 @@ class Summary extends Component {
                                 wrapperClassname="w-100" >
                                 <AccountDetails
                                     user={user}
-                                    fees={fees.data}
-                                    limits={limits.data}
+                                    coins={coins}
                                     pairs={pairs}
                                     activeTheme={activeTheme}
                                     currentTradingAccount={currentTradingAccount.symbol}
@@ -260,8 +244,6 @@ const mapStateToProps = (state) => ({
     user: state.user,
     verification_level: state.user.verification_level,
     balance: state.user.balance,
-    fees: state.user.feeValues,
-    limits: state.user.limits,
     activeTheme: state.app.theme,
     prices: state.orderbook.prices,
     symbol: state.orderbook.symbol,
@@ -274,8 +256,6 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
     logoutconfirm: bindActionCreators(logoutconfirm, dispatch),
 	logout: bindActionCreators(logout, dispatch),
-    requestLimits: bindActionCreators(requestLimits, dispatch),
-    requestFees: bindActionCreators(requestFees, dispatch),
     openFeesStructureandLimits: bindActionCreators(openFeesStructureandLimits, dispatch),
     openContactForm: bindActionCreators(openContactForm, dispatch),
     setNotification: bindActionCreators(setNotification, dispatch)

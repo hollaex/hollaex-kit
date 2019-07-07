@@ -402,13 +402,28 @@ const selector = formValueSelector(FORM_NAME);
 
 const mapStateToProps = (state) => {
 	const formValues = selector(state, 'price', 'size', 'side', 'type');
-	const { pair_base, pair_2, max_price, max_size, min_size, min_price, increment_price } = state.app.pairs[state.app.pair];
-	const fees = state.user.fees[state.app.pair];
+	const {
+		pair_base,
+		pair_2,
+		max_price,
+		max_size,
+		min_size,
+		min_price,
+		increment_price,
+		maker_fees = {},
+		taker_fees = {}
+	} = state.app.pairs[state.app.pair];
+
+	const feesData = {
+		maker_fee: maker_fees[state.user.verification_level],
+		taker_fee: taker_fees[state.user.verification_level]
+	};
 
 	return {
 		...formValues,
 		activeLanguage: state.app.language,
-		fees,
+		fees: feesData,
+		feesData,
 		pair: state.app.pair,
 		pair_base,
 		pair_2,

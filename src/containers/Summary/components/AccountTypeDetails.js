@@ -9,8 +9,7 @@ import STRINGS from '../../../config/localizedStrings';
 
 const AccountTypeDetails = ({
     user,
-    fees,
-    limits,
+    coins,
     pairs,
     className='',
     activeTheme,
@@ -23,8 +22,7 @@ const AccountTypeDetails = ({
     return (
         <div className={classnames(className, "mx-auto")}>
             <TraderAccounts
-                fees={fees}
-                limits={limits}
+                coins={coins}
                 pairs={pairs}
                 activeTheme={activeTheme}
                 account={currentAccount}

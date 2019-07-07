@@ -453,7 +453,7 @@ Trade.defaultProps = {};
 
 const mapStateToProps = (store) => {
 	const pair = store.app.pair;
-	const pairData = store.app.pairs[pair];
+	const pairData = store.app.pairs[pair] || {};
 	const { asks = [], bids = [] } = store.orderbook.pairsOrderbooks[pair];
 	const tradeHistory = store.orderbook.pairsTrades[pair];
 	const marketPrice = tradeHistory && tradeHistory.length > 0 ? tradeHistory[0].price : 1;
@@ -468,7 +468,12 @@ const mapStateToProps = (store) => {
 	const activeOrders = store.order.activeOrders.filter(
 		({ symbol }) => symbol === pair
 	);
-	const fees = store.user.fees[pair];
+	const makerFee = pairData.maker_fees || {};
+	const takerFee = pairData.taker_fees || {};
+	const feesData = {
+		maker_fee: makerFee[store.user.verification_level],
+		taker_fee: takerFee[store.user.verification_level]
+	};
 	const orderBookLevels = store.user.settings.interface.order_book_levels;
 	const asksFilter = asks.filter(
 		(ask, index) => index < orderBookLevels
@@ -492,7 +497,7 @@ const mapStateToProps = (store) => {
 		userTrades,
 		activeLanguage: store.app.language,
 		activeTheme: store.app.theme,
-		fees,
+		fees: feesData,
 		settings: store.user.settings,
 		orderLimits: store.app.orderLimits
 	};
