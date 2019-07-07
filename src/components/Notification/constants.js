@@ -42,7 +42,7 @@ const generateCryptoDepositTexts = (strings, status, currency) => {
 				.join(''),
 			strings
 				.formatString(
-					strings.NOTIFICATIONS.DEPOSITS[currency].INFORMATION_PENDING_2,
+					strings.NOTIFICATIONS.DEPOSITS.INFORMATION_PENDING_2,
 					name
 				)
 				.join('')
