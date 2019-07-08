@@ -11,33 +11,35 @@ import { isMobile } from 'react-device-detect';
 import STRINGS from '../../config/localizedStrings';
 import { WITHDRAW_LIMITS, ICONS, BASE_CURRENCY } from '../../config/constants';
 
-export const generateInitialValues = (symbol, fees = {}) => {
-	const { MIN } = WITHDRAW_LIMITS[symbol];
+export const generateInitialValues = (symbol, coins = {}) => {
+	// const { MIN } = WITHDRAW_LIMITS[symbol];
+	const { min, fee } = coins[symbol];
 	const initialValues = {};
 
-	if (symbol === 'btc') {
-		initialValues.fee = fees.fee || fees.optimal || fees.min;
-	} else if (symbol === 'eth') {
-		initialValues.fee = fees.fee || fees.optimal || fees.min;
-	} else if (symbol === 'bch') {
-		initialValues.fee = fees.fee || fees.optimal || fees.min;
+	if (coins[symbol]) {
+		initialValues.fee = fee;
 	} else {
-		initialValues.fee = fees.value || 0;
+		initialValues.fee = 0;
 	}
 
-	if (MIN) {
-		initialValues.amount = MIN;
+	if (min) {
+		initialValues.amount = min;
 	}
 	return initialValues;
 };
 export const generateFormValues = (
 	symbol,
 	available = 0,
-	fees = {},
-	calculateMax
+	calculateMax,
+	coins = {},
+	verification_level
 ) => {
 	const name = STRINGS[`${symbol.toUpperCase()}_NAME`];
-	const { MIN, MAX, STEP = 1 } = WITHDRAW_LIMITS[symbol];
+	// const { MIN, MAX, STEP = 1 } = WITHDRAW_LIMITS[symbol];
+	const { fullname, min, withdrawal_limits = {} } = coins[symbol];
+	let MAX = withdrawal_limits[verification_level];
+	if (withdrawal_limits[verification_level] === 0) MAX = "";
+	if (withdrawal_limits[verification_level] === -1) MAX = 0;
 	const fields = {};
 
 	if (symbol !== BASE_CURRENCY) {
@@ -54,8 +56,8 @@ export const generateFormValues = (
 	}
 
 	const amountValidate = [required];
-	if (MIN) {
-		amountValidate.push(minValue(MIN, STRINGS.WITHDRAWALS_MIN_VALUE_ERROR));
+	if (min) {
+		amountValidate.push(minValue(min, STRINGS.WITHDRAWALS_MIN_VALUE_ERROR));
 	}
 	if (MAX) {
 		amountValidate.push(maxValue(MAX, STRINGS.WITHDRAWALS_MAX_VALUE_ERROR));
@@ -77,9 +79,9 @@ export const generateFormValues = (
 			STRINGS.WITHDRAWALS_FORM_AMOUNT_PLACEHOLDER,
 			name
 		).join(''),
-		min: MIN,
+		min: min,
 		max: MAX,
-		step: STEP,
+		step: min,
 		validate: amountValidate,
 		normalize: normalizeBTC,
 		fullWidth: isMobile,
@@ -93,10 +95,14 @@ export const generateFormValues = (
 		}
 	};
 
-	if (symbol === 'btc' || symbol === 'bch' || symbol === 'eth') {
+	if (coins[symbol]) {
 		fields.fee = {
 			type: 'number',
-			label: STRINGS[`WITHDRAWALS_FORM_FEE_${symbol.toUpperCase()}_LABEL`],
+			// label: STRINGS[`WITHDRAWALS_FORM_FEE_${symbol.toUpperCase()}_LABEL`],
+			label: STRINGS.formatString(
+				STRINGS.WITHDRAWALS_FORM_FEE_COMMON_LABEL,
+				fullname
+			),
 			placeholder: STRINGS.formatString(
 				STRINGS.WITHDRAWALS_FORM_FEE_PLACEHOLDER,
 				name
@@ -113,10 +119,10 @@ export const generateFormValues = (
 				STRINGS.WITHDRAWALS_FORM_FEE_PLACEHOLDER,
 				name
 			).join(''),
-			min: fees.min || MIN,
-			max: fees.max || MAX,
-			step: STEP,
-			validate: [required, minValue(fees.min), maxValue(fees.max)],
+			min: min,
+			max: MAX,
+			step: min,
+			validate: [required, minValue(min), MAX ? maxValue(MAX) : ""],
 			normalize: normalizeBTCFee,
 			fullWidth: isMobile
 		};
