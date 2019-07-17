@@ -58,7 +58,6 @@ class TVChartContainer extends React.PureComponent {
 					})		
 			},
 			searchSymbols: (userInput, exchange, symbolType, onResultReadyCallback) => {
-				console.log('====Search Symbols running')
 			},
 			resolveSymbol: (symbolName, onSymbolResolvedCallback, onResolveErrorCallback) => {
 				// expects a symbolInfo object in response
@@ -126,7 +125,6 @@ class TVChartContainer extends React.PureComponent {
 
 			},
 			subscribeBars: (symbolInfo, resolution, onRealtimeCallback, subscribeUID, onResetCacheNeededCallback) => {
-				console.log('=====subscribeBars runnning')
 				that.setState({
 					sub: {
 						uid: subscribeUID,
@@ -139,26 +137,21 @@ class TVChartContainer extends React.PureComponent {
 				// stream.subscribeBars(symbolInfo, resolution, onRealtimeCallback, subscribeUID, onResetCacheNeededCallback);
 			},
 			unsubscribeBars: subscriberUID => {
-				console.log('=====unsubscribeBars running')
 				// stream.unsubscribeBars(subscriberUID)
 			},
 			calculateHistoryDepth: (resolution, resolutionBack, intervalBack) => {
 				//optional
-				console.log('=====calculateHistoryDepth running')
 				// while optional, this makes sure we request 24 hours of minute data at a time
 				// CryptoCompare's minute data endpoint will throw an error if we request data beyond 7 days in the past, and return no data
 				return resolution < 60 ? {resolutionBack: 'D', intervalBack: '1'} : undefined
 			},
 			getMarks: (symbolInfo, startDate, endDate, onDataCallback, resolution) => {
 				//optional
-				console.log('=====getMarks running')
 			},
 			getTimeScaleMarks: (symbolInfo, startDate, endDate, onDataCallback, resolution) => {
 				//optional
-				console.log('=====getTimeScaleMarks running')
 			},
 			getServerTime: cb => {
-				console.log('=====getServerTime running')
 			}
 		}
 	}
