@@ -77,7 +77,7 @@ class IdentityVerification extends Component {
 			},
 			dob: {
 				type: 'date-dropdown',
-				language,
+				language: 'en',
 				label:
 					STRINGS.USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS
 						.DOB_LABEL,
