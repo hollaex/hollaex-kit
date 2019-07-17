@@ -259,7 +259,8 @@ export default function reducer(state = INITIAL_STATE, { payload, type }) {
 
 		case 'SET_TRADES_DATA': {
 			const { action, symbol, ...rest } = payload;
-			const { prices, pairs } = state;
+			const { pairs } = state;
+			const prices = { ...state.prices };
 			let pairsTrades = {};
 			if (action === 'partial') {
 				pairsTrades = {

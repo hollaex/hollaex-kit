@@ -256,7 +256,7 @@ class UserSettings extends Component {
 			})
 			.catch((err) => {
 				// console.log(err.response.data);
-				const _error = err.response.data
+				const _error = err.response && err.response.data
 					? err.response.data.message
 					: err.message;
 				throw new SubmissionError({ _error });
@@ -271,7 +271,7 @@ class UserSettings extends Component {
 			})
 			.catch((err) => {
 				// console.log(err.response.data);
-				const _error = err.response.data
+				const _error = err.response && err.response.data
 					? err.response.data.message
 					: err.message;
 				throw new SubmissionError({ username: _error });

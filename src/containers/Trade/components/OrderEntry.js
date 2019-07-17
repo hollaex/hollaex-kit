@@ -126,7 +126,7 @@ class OrderEntry extends Component {
 
 		let orderFees = mathjs
 			.chain(orderPrice)
-			.multiply(fees ? fees.taker_fee : takerFee)
+			.multiply(fees && fees.taker_fee ? fees.taker_fee : takerFee)
 			.divide(100)
 			.done();
 		let outsideFormError = '';
