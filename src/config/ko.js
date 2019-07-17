@@ -9,13 +9,6 @@ export default {
 	FIAT_CURRENCY_SYMBOL: '€',
 	FIAT_PRICE_FORMAT: '{0} {1}', // 0-> amount  1 -> symbol  600,000 T
 
-	EUR_NAME: '유로',
-	EUR_FULLNAME: '유로',
-	EUR_SHORTNAME: 'EUR',
-	EUR_SHORTNAME_EN: 'EUR',
-	EUR_CURRENCY_SYMBOL: '€',
-	EUR_PRICE_FORMAT: '{0} {1}', // 0-> amount  1 -> symbol  600,000 T
-
 	BTC_NAME: '비트코인',
 	BTC_FULLNAME: '비트코인',
 	BTC_SHORTNAME: 'BTC',
@@ -42,8 +35,8 @@ export default {
 
 	LOGOUT_CONFIRM_TEXT: '로그아웃 하시겠습니까?',
 	ADD_TRADING_PAIR: '거래통화페어 추가',
-	ACTIVE_TRADES: '실제 거래를 이용하려면 반드시 {0}가 필요합니다.',
-	CANCEL_BASE_WITHDRAWAL: '{0} 출금 취소',
+	ACTIVE_TRADES: '실제 거래를 이용하기 위해 {0}을 해주시기바랍니다.',
+	CANCEL_FIAT_WITHDRAWAL: '{0} 출금 취소',
 	CANCEL_WITHDRAWAL: '출금 취소',
 	CANCEL_WITHDRAWAL_POPUP_CONFIRM: '출금 진행중인 거래를 취소하시겠습니까?:',
 	CANT_BE_CANCELLED:'-',
@@ -51,7 +44,7 @@ export default {
 	TIMESTAMP_FORMAT: 'YYYY/MM/DD HH:mm:ss A',
 	HOUR_FORMAT: 'HH:mm:ss A',
 	LOGIN_TEXT: '로그인',
-	SIGN_IN:'Sign In',
+	SIGN_IN:'로그인',
 	SIGNUP_TEXT: '회원가입',
 	REGISTER_TEXT: '등록',
 	ACCOUNT_TEXT: '계정',
@@ -63,7 +56,7 @@ export default {
 	ADD_FILES: '파일 추가', // ToDo
 	OR_TEXT: '또는',
 	CONTACT_US_TEXT: '문의하기',
-	HELPFUL_RESOURCES_TEXT: 'Helpful resources',
+	HELPFUL_RESOURCES_TEXT: '도움이 필요하신가요?',
 	HELP_RESOURCE_GUIDE_TEXT: 
 		'문의사항은 support@bitholla.com 로 연락주시기 바랍니다.',
 	HELP_TELEGRAM_TEXT: 
@@ -170,11 +163,11 @@ export default {
 		},
 		INFORMATION_MESSAGES: [
 			'아래의 은행 정보를 확인하시어 USD를 입금을 진행하시기 바랍니다. 이체완료까지 대략 1~2 영업일이 소요되는 점 양해부탁드립니다.',
-			'반드시 입금자명과 HollaEx계정의 이름이 같아야 입금수락이되므로 유의해주시기 바랍니다.'
+			'반드시 입금자명과 HollaEx계정의 이름이 같아야 입금이 수락이되므로 유의해주시기 바랍니다.'
 		],
 		INCREASE_LIMIT: '한도 증액이 필요하십니까?',
 		QR_CODE:
-			'이 QR코드는 비트코인 입금주소입니다. 회원님 계쩡으로 비트코인을 보내려는 경우 스캔하시기 바랍니다.',
+			'이 QR코드는 비트코인 입금주소입니다. 회원님의 계정으로 비트코인을 입금하려는 경우 스캔하시기 바랍니다.',
 		NO_DATA: '이용가능한 정보가 없습니다.',
 		FULL_MESSAGE_LIMIT: '{0}: {1} {2} {3}' //  0 -> {Daily deposit max amount}:  1 -> {50,000,000} 2 -> {T} 3 -> {(Want to increase your daily limit?)}
 	},
@@ -202,7 +195,7 @@ export default {
 		INVALID_PASSWORD:
 			'사용할 수 없는 비밀번호입니다.(비밀번호는 8자 이상, 영문 대소문자, 숫자 및 특수문자 사용)',
 		INVALID_PASSWORD_2:
-			'사용할 수 없는 비밀번호입니다.(비밀번호는 8자 이상, 최소 하나이상의 숫자와 특수문자 사용)',
+			'사용할 수 없는 비밀번호입니다.(비밀번호는 8자 이상, 최소 하나이상의 숫자 및 특수문자 사용)',
 		INVALID_CURRENCY: '?? Invalid {0} address ({1})',
 		INVALID_BALANCE:
 			'?? Insufficient balance available ({0}) to perform the operation ({1}).',
@@ -252,7 +245,7 @@ export default {
 			SEE_HISTORY: '거래내역 보기',
 		},
 		DEPOSITS: {
-			EUR: {
+			FIAT: {
 				TITLE: '{0} 입금되었습니다.',
 				SUBTITLE: '회원님의 {0} 입금이 완료되었습니다.'
 			},
@@ -301,7 +294,7 @@ export default {
 		TITLE: '퀵트레이딩',
 		TOTAL_COST: '총 금액',
 		BUTTON: '{0} 주문 확인하기',
-		INPUT: '{0} 에서 {1}',
+		INPUT: '{0} {1}',
 		TRADE_TITLE: '{0} {1}' // quick buy
 	},
 	PREVIOUS_PAGE: '이전페이지',
@@ -411,8 +404,8 @@ export default {
 		GO_BACK: '되돌아가기', 
 		BANK_VERIFICATION_TEXT_1: '은행계좌는 3개까지 추가하실 수 있습니다. 해외은행계좌는 고객센터에 문의하여주시고, 출금한도에 제한이 있습니다.', 
 		BANK_VERIFICATION_TEXT_2: '은행계좌등록을 하시면 아래와 같은 서비스를 이용하실 수 있습니다:', 
-		BASE_WITHDRAWAL: '원화출금', 
-		BASE_DEPOSITS: '원화입금', 
+		FIAT_WITHDRAWAL: '원화출금', 
+		FIAT_DEPOSITS: '원화입금', 
 		ADD_ANOTHER_BANK_ACCOUNT: '은행계좌 추가하기', 
 		BANK_NAME: '은행이름', 
 		ACCOUNT_NUMBER: '계좌번호', 
@@ -610,14 +603,14 @@ export default {
 		ORDER_PORTFOLIO_LABEL: 'Portfolio Percentage Amount:',
 		NOTIFICATION_FORM: {
 			TRADE_POPUPS: 'Trade Pop ups',
-			POPUP_ORDER_CONFIRMATION: 'Ask for confirmation before submitting orders',
-			POPUP_ORDER_COMPLETED: 'Show pop up when order has been completed',
-			POPUP_ORDER_PARTIALLY_FILLED: 'Show pop up when order has partially filled',
+			POPUP_ORDER_CONFIRMATION: '주문 실행시 확인요청 팝업',
+			POPUP_ORDER_COMPLETED: '주문 완료시 알림팝업',
+			POPUP_ORDER_PARTIALLY_FILLED: '주문이 부분적으로 채워질 경우 알림팝업',
 		},
 		AUDIO_CUE_FORM: {
-			ORDERS_COMPLETED_AUDIO: 'Play an audio cue when one of your orders is fully filled',
-			ORDERS_PARTIAL_AUDIO: 'Play an audio cue when one of your orders is partially filled',
-			PUBLIC_TRADE_AUDIO: 'Play an audio cue on every public trade'
+			ORDERS_COMPLETED_AUDIO: '하나의 주문이 완전히 채워질 경우 알림사운드재생',
+			ORDERS_PARTIAL_AUDIO: '주문 중 하나가 부분적으로 채워질 경우 알림사운드재생',
+			PUBLIC_TRADE_AUDIO: '모든 일반적인 거래에 관한 알림사운드재생'
 		},
 		RISK_MANAGEMENT: {
 			INFO_TEXT: 'Create a warning pop up when a trade order value goes over a set percentage amount of your portfolio',
@@ -630,12 +623,12 @@ export default {
 		}
 	},
 	TRANSACTION_HISTORY: {
-		TITLE: '입출금 내역',
-		TITLE_TRADES: '거래 내역',
+		TITLE: '나의 거래 히스토리',
+		TITLE_TRADES: '주문체결내역',
 		TITLE_DEPOSITS: '입금 내역',
 		TITLE_WITHDRAWALS: '출금 내역',
 		TEXT_DOWNLOAD: '기록 다운로드',
-		TRADES: '거래',
+		TRADES: '주문체결',
 		DEPOSITS: '입금',
 		WITHDRAWALS: '출금'
 	},
@@ -708,10 +701,10 @@ export default {
 	],
 	SIDE: 'Side',
 	SIDES_VALUES: {
-		buy: 'buy',
-		sell: 'sell'
+		buy: '매수',
+		sell: '매도'
 	},
-	SIDES: [{ value: 'buy', label: 'buy' }, { value: 'sell', label: 'sell' }],
+	SIDES: [{ value: 'buy', label: '매수' }, { value: 'sell', label: '매도' }],
 	DEFAULT_TOGGLE_OPTIONS: [{ value: true, label: 'on' }, { value: false, label: 'off' }], 
 	SIZE: 'Size',
 	PRICE: 'Price',
@@ -722,30 +715,30 @@ export default {
 	TIMESTAMP: 'Timestamp',
 	MORE: 'More',
 	VIEW: 'View',
-	STATUS: 'Status',
-	AMOUNT: 'Amount',
+	STATUS: '상태',
+	AMOUNT: '수량',
 	COMPLETE: 'Complete',
 	PENDING: 'Pending',
 	REJECTED: 'Rejected',
-	ORDERBOOK: '오더북',
+	ORDERBOOK: 'Order Book',
 	CANCEL: 'Cancel',
 	CANCEL_ALL: 'Cancel All',
-	GO_TRADE_HISTORY: 'Go to Trade History',
+	GO_TRADE_HISTORY: '거래내역 보러가기',
 	ORDER_ENTRY: 'order entry',
 	TRADE_HISTORY: 'trade history',
 	CHART: 'price chart',
-	ORDERS: 'my active orders',
-	TRADES: 'my trade history',
-	RECENT_TRADES: 'my recent trades', // ToDo
+	ORDERS: '진행중인 주문',
+	TRADES: '나의 거래 내역',
+	RECENT_TRADES: '최근 체결 내역', // ToDo
 	PUBLIC_SALES: 'public sales', // ToDo
 	REMAINING: 'Remaining',
 	FULLFILLED: '{0} % Fullfilled',
 	PRICE_CURRENCY: 'PRICE ({0})',
 	AMOUNT_SYMBOL: 'AMOUNT ({0})',
-	MARKET_PRICE: 'Market Price',
-	ORDER_PRICE: 'Order Price',
-	TOTAL_ORDER: 'Order Total',
-	NO_DATA: 'No Data',
+	MARKET_PRICE: '시장가',
+	ORDER_PRICE: '지정가',
+	TOTAL_ORDER: '총액',
+	NO_DATA: '거래 내역이 없습니다.',
 	LOADING: 'Loading',
 	CHART_TEXTS: {
 		d: 'Date',
@@ -794,16 +787,16 @@ export default {
 	DEPOSIT_BANK_REFERENCE:
 		'Add this "{0}" code to the bank transation to identify the deposit',
 	DEPOSIT_METHOD: '결제 수단{0}',
-	DEPOSIT_METHOD_DIRECT_PAYMENT: '신용카드 Credit card',
+	DEPOSIT_METHOD_DIRECT_PAYMENT: '신용카드',
 	DEPOSIT_METHOD_DIRECT_PAYMENT_MESSAGE_1:
-		'신용카드 결제를 진행하시기 바랍니다. ?? Proceed to the credit card payment method.',
+		'신용카드 결제를 진행합니다.',
 	DEPOSIT_METHOD_DIRECT_PAYMENT_MESSAGE_2:
-		'결제 진행을 위하여 플랫폼을 떠나게 됩니다. ?? You will leave the platform to perform the payment.',
-	DEPOSIT_VERIFICATION_WAITING_TITLE: '결제 확인 중 Verifiying the payment',
+		'결제를 진행하기위해 플랫폼을 떠나게 됩니다.',
+	DEPOSIT_VERIFICATION_WAITING_TITLE: '결제 확인 중',
 	DEPOSIT_VERIFICATION_WAITING_MESSAGE:
 		'결제가 진행되는 동안 해당 애플리케이션을 닫지마십시오.',
 	DEPOSIT_VERIFICATION_WARNING_MESSAGE:
-		'결제 진행시에 문제가 있으시다면, 고객센터로 연락주시기 바랍니다.',
+		'결제 진행과정에 문제가 있다면, 고객센터로 연락주시기 바랍니다.',
 	DEPOSIT_VERIFICATION_WARNING_INFORMATION:
 		'This is the ID of the operation: "{0}", please provide us this ID to help you.',
 	DEPOSIT_VERIFICATION_SUCCESS: '결제 완료',
@@ -826,12 +819,12 @@ export default {
 			'Please ensure the accuracy of this address since {0} transfers are irreversible',
 		MESSAGE_ABOUT_WITHDRAW: 'You are about to transfer to your bank account',
 		MESSAGE_FEE: 'Transactions fee of {0} ({1}) included',
-		MESSAGE_FEE_BASE: 'Transactions fee of {0} included',
-		BASE_MESSAGE_1:
+		MESSAGE_FEE_FIAT: 'Transactions fee of {0} included',
+		FIAT_MESSAGE_1:
 			'회원님의 실명확인이 완료된 HollaEx에 등록하신 계좌로만 출금이 가능합니다. You can only withdraw to a bank account in a name that matches the name registered with your HOLLAEX account.',
-		BASE_MESSAGE_2: '출금가능한 최소금액',
-		BASE_MESSAGE_3: '1일 출금가능금액 Daily withdrawal max amount',
-		BASE_INCREASE_LIMIT: '1일 한도 증액',
+		FIAT_MESSAGE_2: '출금가능한 최소금액',
+		FIAT_MESSAGE_3: '1일 출금가능금액 Daily withdrawal max amount',
+		FIAT_INCREASE_LIMIT: '1일 한도 증액',
 		CONFIRM_VIA_EMAIL: '이메일 승인',
 		CONFIRM_VIA_EMAIL_1: '회원님의 이메일로 출금승인요청 이메일을 전송하였습니다.',
 		CONFIRM_VIA_EMAIL_2: '출금을 진행하기 위하여 출금승인을 확인해주시기 바랍니다.',
@@ -841,8 +834,8 @@ export default {
 		GO_WITHDRAWAL_HISTORY: '출금내역 보러가기 Go To Withdrawal History'
 
 	},
-	WALLET_BUTTON_BASE_DEPOSIT: '입금',
-	WALLET_BUTTON_BASE_WITHDRAW: '출금',
+	WALLET_BUTTON_FIAT_DEPOSIT: '입금',
+	WALLET_BUTTON_FIAT_WITHDRAW: '출금',
 	WALLET_BUTTON_CRYPTOCURRENCY_DEPOSIT: '받기',
 	WALLET_BUTTON_CRYPTOCURRENCY_WITHDRAW: '보내기',
 	AVAILABLE_TEXT: '사용가능',
@@ -868,13 +861,13 @@ export default {
 	ORDER_RECEIVED: 'Received',
 	ORDER_SOLD: 'Sold',
 	ORDER_BOUGHT: 'Bought',
-	ORDER_AVERAGE_PRICE: 'Average price',
-	ORDER_TITLE_CREATED: 'Successfully created a limit {0}', // 0 -> buy / sell
-	ORDER_TITLE_FULLY_FILLED: '{0} order successfully filled', // 0 -> buy / sell
-	ORDER_TITLE_PARTIALLY_FILLED: '{0} order partially filled', // 0 -> buy / sell
-	ORDER_TITLE_TRADE_COMPLETE: '{0} {1} order was successful', // 0 -> buy / sell
+	ORDER_AVERAGE_PRICE: '평균 가격',
+	ORDER_TITLE_CREATED: '성공적으로 지정가 {0)가 생성되었습니다.', // 0 -> buy / sell
+	ORDER_TITLE_FULLY_FILLED: '{0} 주문이 성공적으로 채워졌습니다.', // 0 -> buy / sell
+	ORDER_TITLE_PARTIALLY_FILLED: '{0} 주문이 부분적으로 채워졌습니다.', // 0 -> buy / sell
+	ORDER_TITLE_TRADE_COMPLETE: '{0} {1} 주문이 완료되었습니다.', // 0 -> buy / sell
 	LOGOUT_TITLE: '로그아웃되었습니다.',
-	LOGOUT_ERROR_TOKEN_EXPIRED: '토큰이 만료되었습니다.',
+	LOGOUT_ERROR_TOKEN_EXPIRED: '세션이 만료되었습니다.',
 	LOGOUT_ERROR_LOGIN_AGAIN: '다시 로그인하시기바랍니다.', // ip doesnt match
 	LOGOUT_ERROR_INVALID_TOKEN: '잘못된 토큰',
 	LOGOUT_ERROR_INACTIVE:
@@ -886,15 +879,15 @@ export default {
 	QUICK_TRADE_QUOTE_INVALID: 'Invalid quote',
 	QUICK_TRADE_QUOTE_CALCULATING_ERROR: 'Error calculating the quote',
 	QUICK_TRADE_ORDER_CAN_NOT_BE_FILLED:
-		'The order with the current size can not be filled',
+		'주문가능 금액이 부족하여 실행할 수 없습니다.',
 	QUICK_TRADE_ORDER_NOT_FILLED: 'Order is not filled',
-	QUICK_TRADE_NO_BALANCE: 'Insufficient balance to perform the order',
-	YES: 'Yes',
-	NO: 'No',
-	NEXT: 'Next',
-	SKIP_FOR_NOW: 'Skip for now',
-	SUBMIT: 'submit',
-	RESUBMIT: 'Resubmit', 
+	QUICK_TRADE_NO_BALANCE: '주문가능 금액이 부족하여 실행할 수 없습니다.',
+	YES: '예',
+	NO: '아니오',
+	NEXT: '다음',
+	SKIP_FOR_NOW: '일단 건너뛰기',
+	SUBMIT: '제출하기',
+	RESUBMIT: '다시 제출하기', 
 	VERIFICATION_NOTIFICATION_SKIP_TITLE: 'Missing Documents!',
 	VERIFICATION_NOTIFICATION_SKIP_TEXT:
 		'To get full access to withdrawal and deposit functions on HOLLAEX you must submit your identity documents in your account page.',
@@ -911,11 +904,11 @@ export default {
 	SMS_SENT_TO: '{0}으로 SMS가 발송되었습니다.', // TODO check msg
 	SMS_ERROR_SENT_TO:
 		'{0}로 SMS를 보내는 중 오류가 발생하였습니다. 페이지 새로고침후 다시 시도하시기 바랍니다.', // TODO check msg
-	WITHDRAW_NOTIFICATION_TRANSACTION_ID: 'Transaction ID:', // TODO check msg
-	CHECK_ORDER: '회원님의 주문을 한번더 확인해주시기바랍니다.  Check and confirm your order',
+	WITHDRAW_NOTIFICATION_TRANSACTION_ID: '거래 ID:', // TODO check msg
+	CHECK_ORDER: '회원님의 주문을 한번더 확인해주시기바랍니다.',
 	CHECK_ORDER_TYPE: '{0} {1}', // 0 -> maker/limit  1 -> sell/buy
 	CONFIRM_TEXT: '확인',
-	INVALID_CAPTCHA: 'Invalid captcha',
+	INVALID_CAPTCHA: '유효하지않는 captcha',
 	NO_FEE: 'N/A',
 	SETTINGS_LANGUAGE_LABEL: '언어선택 (이메일포함)',
 	SETTINGS_LANGUAGE_OPTIONS: [
@@ -979,7 +972,7 @@ export default {
 		SHOW_IMAGE: 'Show Image',
 		HIDE_IMAGE: 'Hide Image',
 		CHAT_MESSAGE_BOX_PLACEHOLDER: 'Message',
-		SIGN_UP_CHAT: 'Sign Up To Chat',
+		SIGN_UP_CHAT: '채팅에 가입하기Sign Up To Chat',
 		JOIN_CHAT: '채팅 닉네임 설정하기'
 	},
 	INVALID_USERNAME: '닉네임은 3~15자로 영문소문자,숫자,_만 사용가능합니다.',
@@ -997,8 +990,8 @@ export default {
 		LABEL_LEVEL_3: 'Three',
 		LABEL_MAKER_FEE: 'Maker Fee',
 		LABEL_TAKER_FEE: 'Taker Fee',
-		LABEL_BASE_DEPOSIT: 'Daily Euro Deposit',
-		LABEL_BASE_WITHDRAWAL: 'Daily Euro Withdrawal',
+		LABEL_FIAT_DEPOSIT: 'Daily Euro Deposit',
+		LABEL_FIAT_WITHDRAWAL: 'Daily Euro Withdrawal',
 		LABEL_BTC_DEPOSIT: 'Daily Bitcoin Deposit',
 		LABEL_BTC_WITHDRAWAL: 'Daily Bitcoin Withdrawal',
 		LABEL_ETH_DEPOSIT: 'Daily Ethereum Deposit',
@@ -1033,35 +1026,35 @@ export default {
 	TOTAL_ASSETS_VALUE: 'Total assets value in {0}: {1}', 
 	SUMMARY: { 
 		TITLE: '마이페이지',
-		TINY_PINK_SHRIMP_TRADER: '핑크 쉬림프 트레이더 Tiny Pink Shrimp Trader',
-		TINY_PINK_SHRIMP_TRADER_ACCOUNT: '핑크쉬림프 트레이더 계정 Tiny Pink Shrimp Trader Account',
-		LITTLE_RED_SNAPPER_TRADER: '레드 스냅퍼 트레이더 Little Red Snapper Trader',
-		LITTLE_RED_SNAPPER_TRADER_ACCOUNT: '레드 스냅퍼 트레이더 계정 Little Red Snapper Trader Account',
-		CUNNING_BLUE_KRAKEN_TRADING: ' 블루 크라켄 트레이더 Cunning Blue Kraken Trading',
-		CUNNING_BLUE_KRAKEN_TRADING_ACCOUNT: '블루 크라켄 트레이더 계정 Cunning Blue Kraken Trading Account',
+		TINY_PINK_SHRIMP_TRADER: '핑크 쉬림프 트레이더',
+		TINY_PINK_SHRIMP_TRADER_ACCOUNT: '핑크쉬림프 트레이더 계정',
+		LITTLE_RED_SNAPPER_TRADER: '레드 스냅퍼 트레이더r',
+		LITTLE_RED_SNAPPER_TRADER_ACCOUNT: '레드 스냅퍼 트레이더 계정',
+		CUNNING_BLUE_KRAKEN_TRADING: ' 블루 크라켄 트레이더g',
+		CUNNING_BLUE_KRAKEN_TRADING_ACCOUNT: '블루 크라켄 트레이더 계정',
 		BLACK_LEVIATHAN_TRADING: '블랙 리바이어던 트레이더',
-		BLACK_LEVIATHAN_TRADING_ACCOUNT: '블랙 리바이어던 블랙 고래.. 트레이더 계정',
+		BLACK_LEVIATHAN_TRADING_ACCOUNT: '블랙 리바이어던 트레이더 계정',
 		URGENT_REQUIREMENTS: '회원정보인증',
 		TRADING_VOLUME: '총 거래금액',
 		ACCOUNT_ASSETS: '총 자산',
-		ACCOUNT_DETAILS: '레벨상세정보',
+		ACCOUNT_DETAILS: '레벨 정보',
 		SHRIMP_ACCOUNT_TXT_1: '자 ! 당신의 여정은 시작되었다.',
-		SHRIMP_ACCOUNT_TXT_2: '계속 헤엄쳐라, 당신은 머지않아 다른 사람들로부터(다른 사람들 사이에서) 두각을 나타낼 것이다. Keep swimming true, you’ll soon stand out from the rest of the shoal',
-		SNAPPER_ACCOUNT_TXT_1: 'Congrats on staying your course through the swell of the market.??',
+		SHRIMP_ACCOUNT_TXT_2: '계속 헤엄쳐라, 당신은 머지않아 무리에서 두각을 나타낼 것이다.',
+		SNAPPER_ACCOUNT_TXT_1: 'Congrats on staying your course through the swell of the market.',
 		SNAPPER_ACCOUNT_TXT_2: '앞으로 Forge through and fight the surge for more crypto treasures ahead.',
 		KRAKEN_ACCOUNT_TXT_1: 'Likelier to crack jokes than hulls, this crustacean has weathered his share of storms!',
 		LEVIATHAN_ACCOUNT_TXT_1: 'Beast from the abyss, seeing through altcoins into unfathomable depths, masters of midnight waters and tidal wave.',
 		VIEW_FEE_STRUCTURE: '수수료 구조 및 한도 보기',
 		UPGRADE_ACCOUNT: '계정 업그레이드',
 		ACTIVE_2FA_SECURITY: '2FA 보안 활성화',
-		ACCOUNT_ASSETS_TXT_1: '보유한 모든 자산을 나타냅니다.',
-		ACCOUNT_ASSETS_TXT_2: '많은 양의 자산을 보유함으로써 낮은 거래수수료 및 특별한 뱃지가 포함한 계정 업그레이드를 할 수 있는 자격이 주어집니다.',
-		TRADING_VOLUME_TXT_1: '회원님의 거래량 내역은 {0}로 표시되며, 매월 말에 한달 동안 거래한 모든 종류의 화폐가 계산되어 보여집니다.',
-		TRADING_VOLUME_TXT_2: '높은 거래 활동량은 특별한 뱃지와 특권으로 보상을 주는 계정 업그레이드가 가능한 자격이 주어집니다.',
-		ACCOUNT_DETAILS_TXT_1: '회원님의 계정 유형은 계정 뱃지, 거래수수료, 입출금한도를 결정합니다.',
-		ACCOUNT_DETAILS_TXT_2: '계정의 활동기간?회원기간?, 활동수준, 총 자산 등을 통해 해당 계정의 업그레이드 조정 가능 여부를 결정하게 됩니다.',
-		ACCOUNT_DETAILS_TXT_3: '회원님 계정의 레벨을 유지하기위해선 지속적인 거래와 일정량 이상의 예치자산을 유지하여야합니다.',
-		ACCOUNT_DETAILS_TXT_4: '지속적인 활동 및 일정 수준의 자산이 유지되지 않을 경우 주기적으로 하향조정이 이루어집니다.',
+		ACCOUNT_ASSETS_TXT_1: '보유하고계신 모든 자산을 나타냅니다.',
+		ACCOUNT_ASSETS_TXT_2: '많은 자산을 보유함으로서 낮은 거래수수료 및 특별한 뱃지가 포함된 계정 업그레이드가 가능한 자격을 부여받으실 수 있습니다.',
+		TRADING_VOLUME_TXT_1: '회원님의 거래금액은 {0}로 표시됩니다. 매월 말, 한달 동안 거래한 모든 거래내역의 금액이 계산됩니다.',
+		TRADING_VOLUME_TXT_2: '높은 거래금액을 유지하시면 계정 업그레이드가 가능한 자격을 부여받으실 수 있습니다. 특별한 뱃지와 업그레이드 된 특권을 누러보시기바랍니다.',
+		ACCOUNT_DETAILS_TXT_1: '회원님의 계정은 레벨에 따라 뱃지, 거래수수료, 입출금한도를 결정됩니다.',
+		ACCOUNT_DETAILS_TXT_2: '계정유지기간, 활동수준, 총 자산 등을 통해 계정의 업그레이드 가능 여부를 결정하게됩니다.',
+		ACCOUNT_DETAILS_TXT_3: '회원님의 레벨유지를 위해 지속적인 거래활동과 일정금액 이상의 자산예치등의 조건이 유지되어야합니다.',
+		ACCOUNT_DETAILS_TXT_4: '지속적인 거래활동 및 일정수준의 자산의 유지가 되지않을경우 하향조정이 이루어질 수 있습니다.',
 		REQUIREMENTS: '필요조건',
 		REQUEST_ACCOUNT_UPGRADE: '계정 업그레이드 요청',
 		FEES_AND_LIMIT: '수수료 및 입출금한도의 구조',
@@ -1074,11 +1067,19 @@ export default {
 		TAKER: 'Taker',
 		MAKER: 'Maker',
 		WEBSITE: '웹사이트',
-		VIP_TRADER_ACCOUNT_ELIGIBLITY: 'VIP 트레이더계정 업그레이드 자격',
-		PRO_TRADER_ACCOUNT_ELIGIBLITY: 'PRO  트레이더계정 업그레이드 자격',
+		VIP_TRADER_ACCOUNT_ELIGIBLITY: 'VIP 트레이더 업그레이드',
+		PRO_TRADER_ACCOUNT_ELIGIBLITY: 'PRO  트레이더 업그레이드',
 		NOMINAL_TRADING: 'Nominal Trading',
-		NOMINAL_TRADING_WITH_MONTH: 'Nominal Trading Last {0}',
+		NOMINAL_TRADING_WITH_MONTH: '지난 {0} 거래금액',
 		ACCOUNT_AGE_OF_MONTHS: '{0}개월 이상의 계정활동기간',
 		TRADING_VOLUME_EQUIVALENT: '{0} {1} 과 동등한 거래 볼륨량 Trading Volume Equivalent'
+	},
+	REFERRAL_LINK: {
+		TITLE: '10% 커미션 수익', // new
+		INFO_TEXT: '추천인이 되어 사용자가 10HEX를 매수할 때마다 1HEX의 수익을 얻으실 수 있습니다.', // new
+		INFO_TEXT_1: '커미션은 주기적으로 회원님의 HEX지갑에 적립됩니다.', // new
+		COPY_FIELD_LABEL: '아래 추천인 링크를 공유하여 커미션수익을 얻으세요:', // new
+		REFERRED_USER_COUT: ' {0}명의 사용자 추천을 받았습니다.', // new
+		COPY_LINK_BUTTON: '참조링크 복사' // new
 	}
 };
