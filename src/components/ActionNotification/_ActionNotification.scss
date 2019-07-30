@@ -61,20 +61,28 @@
 			@include size(1rem);
 		}
 	}
-		.cancel-cross-2 {
-			fill:none;
-			stroke:$colors-notifications-blue;
-		}
-		.trans-history-1,
-		.trans-history-2,
-		.trans-history-3,
-		.cancel-cross-1	{
-			fill: $colors-notifications-blue
-		}
-		.trans-history-4,
-		.cancel-cross-3 {
-			stroke: $colors-notifications-blue;
-		}
+	.cancel-cross-2 {
+		fill:none;
+		stroke:$colors-notifications-blue;
+	}
+	.icon-clip-1,
+	.icon-plus-1,
+	.icon-edit-1,
+	.icon-help-1,
+	.icon-copy-1,
+	.icon-tamer-01,
+	.arrow-1,
+	.trans-history-1,
+	.trans-history-2,
+	.trans-history-3,
+	.cancel-cross-1	{
+		fill: $colors-notifications-blue
+	}
+	.cancel-cross-2,
+	.trans-history-4,
+	.cancel-cross-3 {
+		stroke: $colors-notifications-blue;
+	}
 }
 
 .direction_ltr {

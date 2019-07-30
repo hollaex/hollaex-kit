@@ -31,7 +31,8 @@ import {
 	Chat,
 	// UserSettings,
 	WithdrawConfirmation,
-	AddTradeTabs
+	AddTradeTabs,
+	TermsOfService
 } from './containers';
 
 import store from './store';
@@ -136,6 +137,7 @@ export default (
 				name="verifyCode"
 				component={VerificationEmailCode}
 			/>
+			<Route path="terms" name="terms" component={TermsOfService} />
 		</Route>
 		<Route component={Container}>
 			<Route path="account" name="Account" component={Account} onEnter={requireAuth}/>

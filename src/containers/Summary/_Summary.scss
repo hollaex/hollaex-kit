@@ -255,13 +255,12 @@
     .assets-wrapper {
         font-size: .8rem;
         margin-right: 1.5rem;
-        width: 25rem;
 
         .assets-description {
             width: 86%;
         }
         .donut-container {
-            height: 23rem;
+            height: 40rem;
             width: 100%;
         }
         .price-content {
@@ -459,10 +458,12 @@
             font-size: 1rem;
         }
 
-        .assets-wrapper,
         .trader-account-wrapper {
             font-size: 1rem;
             width: 35% !important;
+        }
+        .assets-wrapper {
+            font-size: 1rem;
         }
         .trading-volume-wrapper,
         .requirement-wrapper {

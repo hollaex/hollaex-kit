@@ -16,10 +16,12 @@ $no-background--color: white;
 }
 
 .home_container {
-	background: url($background-image);
+	background-image: url($background-image);
 
 	background-repeat: no-repeat;
-	background-size: cover;
+	// background-size: cover;
+	background-size: $background-patter--size;
+	background-color: #d9dee5;
 
 	// background-repeat: repeat;
 	// background-size: $background-patter--size;

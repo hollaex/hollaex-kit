@@ -11,7 +11,7 @@ $colors-deactivate-color3: #f2f2f3;
 $colors-deactivate-color4: #f1f2f2;
 $colors-notifications-red: #ed1c24;
 $colors-notification-inactive-red: #e26171;
-$colors-notifications-blue: #00aeef;
+$colors-notifications-blue: #0000ff;
 $colors-notifications-green: #00a651;
 $colors-white: white;
 $colors-black: #000000;
@@ -34,6 +34,9 @@ $colors-currencies-xrp: #2e3192;
 $color-sell-btc-light:#ed1c24;
 $color-buy-btc-light:#00a651;
 $colors-username-set-dark: #ff4bb6;
+
+$color-buy: #d1d4dc;
+$color-sell: $colors-black;
 
 // dark theme colors
 $dark-app-background-color: #1f212a;
@@ -227,7 +230,7 @@ $bitcoin-color-main: $colors-currencies-btc;
 $content-display-width: 100rem;
 $app-content-display-width: 75rem;
 $content-display-vertical-margin: 1rem;
-$background-patter--size: 30rem;
+$background-patter--size: 70rem 65rem;
 
 $font-size-headline: 4rem;
 $font-size-headline2: 3.5rem;
@@ -250,7 +253,7 @@ $raleway-light--font-family: 'Raleway Light';
 $title--font-family: $raleway-extrabold--font-family;
 
 $backgound-pattern: '/assets/pattern-grey.jpg';
-$background-image: '/assets/background.jpg';
+$background-image: '/assets/hex-background-pattern.png';
 
 // DIALOG
 $dialog-min-width: 25rem;

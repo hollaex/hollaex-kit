@@ -4,18 +4,20 @@ $container--padding: 4rem;
 $container--padding-sm: 3rem;
 
 .light-auth-body {
-	background: url($background-image) !important;
+	background-image: url($background-image) !important;
 	background-repeat: no-repeat;
-	background-size: cover;
+	// background-size: cover;
+	background-size: $background-patter--size;
 	position: relative;
+	background-color: #d9dee5;
 
-	&:before {
-		position: absolute;
-		content: '';
-		width: 100%;
-		height: 130%;
-		background-color: rgba(241, 242, 242, 0.6);
-	}
+	// &:before {
+	// 	position: absolute;
+	// 	content: '';
+	// 	width: 100%;
+	// 	height: 130%;
+	// 	background-color: #d9dee5;
+	// }
 }
 
 .dark-auth-body {
@@ -59,21 +61,21 @@ $container--padding-sm: 3rem;
 	}
 }
 .auth-wrapper {
-	background: url($background-image);
+	background-image: url($background-image);
 
 	background-repeat: no-repeat;
-	background-size: cover;
+	// background-size: contain;
 	// background-repeat: repeat;
-	// background-size: $background-patter--size;
+	background-size: $background-patter--size;
 	position: relative;
 	overflow-y: scroll;
-	&:before {
-		position: fixed;
-		content: '';
-		width: 100%;
-		height: 100%;
-		background-color: rgba(241, 242, 242, 0.6);
-	}
+	background-color: #d9dee5;
+	// &:before {
+		// position: fixed;
+		// content: '';
+		// width: 100%;
+		// height: 100%;
+	// }
 	.auth-container {
 		max-width: $content-wrapper--max-width;
 		max-height: 100vh;
@@ -82,6 +84,12 @@ $container--padding-sm: 3rem;
 		.auth_wrapper {
 			background-color: white;
 			padding: $container--padding $container--padding $container--padding * 1.5;
+
+			.icon_title-svg {
+				.hollaEX_logo_gray {
+					fill: $colors-black;
+				}
+			}
 		}
 
 		.auth_form-wrapper {
@@ -167,6 +175,12 @@ $container--padding-sm: 3rem;
 		.auth-container {
 			.auth_wrapper {
 				background-color: $dark-app-background-color;
+
+				.icon_title-svg {
+					.hollaEX_logo_gray {
+						fill: $colors-white;
+					}
+				}
 			}
 		}
 	}

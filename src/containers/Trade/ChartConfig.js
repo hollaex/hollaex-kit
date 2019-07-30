@@ -9,26 +9,26 @@ export const WHITE_THEME = {
 	"scalesProperties.textColor": "#292b2c",
 	"scalesProperties.backgroundColor": "#ffffff",
 	// Candles-property
-	"mainSeriesProperties.candleStyle.upColor": "#D6FFE7",
-	"mainSeriesProperties.candleStyle.downColor": "#ED1C24",
+	"mainSeriesProperties.candleStyle.upColor": "#d1d4dc",
+	"mainSeriesProperties.candleStyle.downColor": "#000000",
 	"mainSeriesProperties.candleStyle.drawWick": true,
 	"mainSeriesProperties.candleStyle.drawBorder": true,
-	"mainSeriesProperties.candleStyle.borderUpColor": "#008000",
-	"mainSeriesProperties.candleStyle.borderDownColor": "#ED1C24",
-	"mainSeriesProperties.candleStyle.wickUpColor": '#008000',
-	"mainSeriesProperties.candleStyle.wickDownColor": '#ED1C24',
+	"mainSeriesProperties.candleStyle.borderUpColor": "#000000",
+	"mainSeriesProperties.candleStyle.borderDownColor": "#000000",
+	"mainSeriesProperties.candleStyle.wickUpColor": '#000000',
+	"mainSeriesProperties.candleStyle.wickDownColor": '#000000',
 	"mainSeriesProperties.candleStyle.barColorsOnPrevClose": false,
 	//	Bars styles
-	"mainSeriesProperties.barStyle.upColor": "#D6FFE7",
-	"mainSeriesProperties.barStyle.downColor": "#ED1C24",
+	"mainSeriesProperties.barStyle.upColor": "#d1d4dc",
+	"mainSeriesProperties.barStyle.downColor": "#000000",
 	"mainSeriesProperties.barStyle.barColorsOnPrevClose": false,
 	"mainSeriesProperties.barStyle.dontDrawOpen": false,
 
 
 	//	Area styles
-	"mainSeriesProperties.areaStyle.color1": "#D6FFE7",
-	"mainSeriesProperties.areaStyle.color2": "#ED1C24",
-	"mainSeriesProperties.areaStyle.linecolor": "#008000",
+	"mainSeriesProperties.areaStyle.color1": "#d1d4dc",
+	"mainSeriesProperties.areaStyle.color2": "#000000",
+	"mainSeriesProperties.areaStyle.linecolor": "#000000",
 	// "mainSeriesProperties.areaStyle.linestyle": CanvasEx.LINESTYLE_SOLID,
 	"mainSeriesProperties.areaStyle.linewidth": 1,
 	"mainSeriesProperties.areaStyle.priceSource": "close"

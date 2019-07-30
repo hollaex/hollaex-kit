@@ -75,60 +75,18 @@ const getRequirements = (user, level, lastMonthVolume) => {
             ? 3 : 1
         : 1;
     const verificationObj = {
-        level_1: {
+        '1': {
+            title: STRINGS.USER_VERIFICATION.MAKE_FIRST_DEPOSIT,
+            completed: false,
+            status: 0
         },
-        level_2: {
-            '1': {
-                title: STRINGS.USER_VERIFICATION.TITLE_USER_DOCUMENTATION,
-                completed: identity === 3 ? true : false,
-                status: identity
-            },
-            '2': {
-                title: STRINGS.USER_VERIFICATION.TITLE_ID_DOCUMENTS,
-                completed: id_data.status === 3,
-                status: id_data.status
-            },
-            '3': {
-                title: STRINGS.USER_VERIFICATION.TITLE_MOBILE,
-                completed: !!phone_number,
-                status: phone_number ? 3 : 0
-            },
-            '4': {
-                title: STRINGS.USER_VERIFICATION.CONNECT_BANK_ACCOUNT,
-                completed: bank_verified === 3 ? true : false,
-                status: bank_verified
-            }
-        },
-        level_3: {
-            '1': {
-                title: STRINGS.formatString(STRINGS.SUMMARY.ACCOUNT_AGE_OF_MONTHS, TRADE_ACCOUNT_UPGRADE_MONTH[0]).join(' '),
-                completed: checkMonth(user.created_at, TRADE_ACCOUNT_UPGRADE_MONTH[0])
-            },
-            '2': {
-                title: STRINGS.formatString(
-                    STRINGS.SUMMARY.TRADING_VOLUME_EQUIVALENT,
-                    TRADING_VOLUME_CHART_LIMITS[0],
-                    STRINGS[`${BASE_CURRENCY.toUpperCase()}_CURRENCY_SYMBOL`]
-                ).join(' '),
-                completed: TRADING_VOLUME_CHART_LIMITS[0] <= lastMonthVolume
-            }
-        },
-        level_4: {
-            '1': {
-                title: STRINGS.formatString(STRINGS.SUMMARY.ACCOUNT_AGE_OF_MONTHS, TRADE_ACCOUNT_UPGRADE_MONTH[1]).join(' '),
-                completed: checkMonth(user.created_at, TRADE_ACCOUNT_UPGRADE_MONTH[1])
-            },
-            '2': {
-                title: STRINGS.formatString(
-                    STRINGS.SUMMARY.TRADING_VOLUME_EQUIVALENT,
-                    TRADING_VOLUME_CHART_LIMITS[1],
-                    STRINGS[`${BASE_CURRENCY.toUpperCase()}_CURRENCY_SYMBOL`]
-                ).join(' '),
-                completed: TRADING_VOLUME_CHART_LIMITS[1] <= lastMonthVolume
-            }
+        '2': {
+            title: STRINGS.USER_VERIFICATION.OBTAIN_HEX,
+            completed: false,
+            status: 0
         }
     };
-    return verificationObj[`level_${level}`];
+    return verificationObj;
 };
 
 const getStatusClass = (status_code, completed) => {
@@ -209,25 +167,25 @@ const SummaryRequirements = ({ user, isAccountDetails = false, contentClassName 
                         )
                     })}
                 </div>
-                {!isAccountDetails && !user.otp_enabled && 
+                {/* {!isAccountDetails && !user.otp_enabled && 
                     <div className="trade-account-link mb-2">
                         <Link to='/security'>
                             {STRINGS.SUMMARY.ACTIVE_2FA_SECURITY.toUpperCase()}
                         </Link>
                     </div>
-                }
+                } */}
                 {(!isAccountDetails && (!address.country ||
                     id_data.status !== 3 ||
                     !phone_number ||
                     !bank_account.filter(acc => acc.status === 3).length))
                     ? <div className="trade-account-link mb-2">
-                        <Link to='/verification'>
-                            {STRINGS.USER_VERIFICATION.GOTO_VERIFICATION.toUpperCase()}
+                        <Link to='/wallet'>
+                            {STRINGS.USER_VERIFICATION.GOTO_WALLET.toUpperCase()}
                         </Link>
                     </div>
                     : null
                 }
-                {isAccountDetails
+                {/* {isAccountDetails
                     ? <div className="mt-2">
                         <Button
                             label={STRINGS.SUMMARY.REQUEST_ACCOUNT_UPGRADE}
@@ -235,7 +193,7 @@ const SummaryRequirements = ({ user, isAccountDetails = false, contentClassName 
                             onClick={onUpgradeAccount} />
                     </div>
                     : null
-                }
+                } */}
             </div>
         </div>
     );

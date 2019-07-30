@@ -34,17 +34,19 @@ $trade-asks-color-font: $colors-currencies-btc;
 
 .cell_box-type {
 	> div {
-		color: white;
+		// color: white;
 	}
 
 	.withdraw,
 	.sell {
-		background-color: $colors-notifications-red;
+		background-color: $color-sell;
+		color: $colors-white;
 	}
 
 	.deposit,
 	.buy {
-		background-color: $colors-notifications-green;
+		background-color: $color-buy;
+		color: $colors-black;
 	}
 }
 

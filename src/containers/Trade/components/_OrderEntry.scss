@@ -1,4 +1,4 @@
-@mixin entry_form($theme-color, $theme-color-disabled) {
+@mixin entry_form($theme-color, $theme-color-disabled, $theme-text-color: white) {
 	flex: 1;
 	$row-height: 2.5rem;
 	color: $font-color--disabled;
@@ -44,9 +44,9 @@
 	}
 
 	.trade_order_entry-action_selector {
-		border: 1px solid $theme-color;
+		border: 1px solid $colors-black;
 		.active {
-			background-color: $theme-color;
+			background-color: $colors-black;
 			color: white;
 			font-weight: bold;
 		}
@@ -106,10 +106,10 @@
 
 .trade_order_entry-wrapper {
 	&.order_side-selector-sell {
-		@include entry_form($color-sell-btc-light, $trade-asks-color-disabled);
+		@include entry_form($colors-black, #cccccc);
 	}
 	&.order_side-selector-buy {
-		@include entry_form($color-buy-btc-light, $trade-bids-color-disabled);
+		@include entry_form($colors-black, #cccccc);
 	}
 }
 

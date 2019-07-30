@@ -167,7 +167,7 @@ class Summary extends Component {
                     : (<div>
                         <div className="d-flex align-items-center">
                             <div className="summary-section_1 trader-account-wrapper d-flex">
-                                <SummaryBlock title={currentTradingAccount.fullName} >
+                                <SummaryBlock title={STRINGS.SUMMARY.TRADER_ACCOUNT_TITLE} >
                                     <TraderAccounts
                                         pairs={pairs}
                                         coins={coins}
@@ -187,10 +187,11 @@ class Summary extends Component {
                             </div>
                         </div>
                         <div className="d-flex align-items-center">
-                            <div className="assets-wrapper">
+                            <div className="assets-wrapper w-100">
                                 <SummaryBlock
                                     title={STRINGS.SUMMARY.ACCOUNT_ASSETS}
-                                    secondaryTitle={<span><span className="title-font">{totalAssets}</span>{` ${STRINGS[`${BASE_CURRENCY.toUpperCase()}_FULLNAME`]}`}</span>} >
+                                    secondaryTitle={<span><span className="title-font">{totalAssets}</span>{` ${STRINGS[`${BASE_CURRENCY.toUpperCase()}_FULLNAME`]}`}</span>}
+                                    wrapperClassname="w-100" >
                                     <AccountAssets
                                         user={user}
                                         chartData={chartData}
@@ -199,38 +200,6 @@ class Summary extends Component {
                                         coins={coins} />
                                 </SummaryBlock>
                             </div>
-                            <div className="trading-volume-wrapper">
-                                <SummaryBlock
-                                    title={STRINGS.SUMMARY.TRADING_VOLUME}
-                                    secondaryTitle={<span>
-                                        <span className="title-font">
-                                            {` ${formatAverage(formatBaseAmount(lastMonthVolume))}`}
-                                        </span>
-                                        {` ${STRINGS[`${BASE_CURRENCY.toUpperCase()}_FULLNAME`]} ${STRINGS.formatString(STRINGS.SUMMARY.NOMINAL_TRADING_WITH_MONTH, moment().subtract(1, "month").startOf("month").format('MMMM')).join('')}`}
-                                    </span>
-                                    }
-                                >
-                                    <TradingVolume user={user} />
-                                </SummaryBlock>
-                            </div>
-                        </div>
-                        <div className="d-flex align-items-center">
-                            <SummaryBlock
-                                title={STRINGS.SUMMARY.ACCOUNT_DETAILS}
-                                secondaryTitle={currentTradingAccount.name}
-                                wrapperClassname="w-100" >
-                                <AccountDetails
-                                    user={user}
-                                    coins={coins}
-                                    pairs={pairs}
-                                    activeTheme={activeTheme}
-                                    currentTradingAccount={currentTradingAccount.symbol}
-                                    selectedAccount={selectedAccount}
-                                    lastMonthVolume={lastMonthVolume}
-                                    onAccountTypeChange={this.onAccountTypeChange}
-                                    onFeesAndLimits={this.onFeesAndLimits}
-                                    onUpgradeAccount={this.onUpgradeAccount} />
-                            </SummaryBlock>
                         </div>
                     </div>)
                 }

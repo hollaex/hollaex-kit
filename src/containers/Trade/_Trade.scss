@@ -1,8 +1,10 @@
-$trade-bids-color-main: green;
-$trade-bids-color-font: green;
+$trade-bids-color-main: $color-buy;
+$trade-order-bids-color-font: #878787;
+$trade-bids-color-font: $color-buy;
 $trade-bids-color-disabled: rgba(19, 136, 15, 0.356);
-$trade-asks-color-main: $colors-orderbook-red-light;
-$trade-asks-color-font: $colors-orderbook-red-light;
+$trade-asks-color-main: $color-sell;
+$trade-order-asks-color-font: $colors-black;
+$trade-asks-color-font: $color-sell;
 $trade-asks-color-disabled: rgba(248, 7, 67, 0.4);
 
 $font-color--disabled: grey;
@@ -14,7 +16,8 @@ $trade-section-border-disabled--color: grey;
 $trade_title-border--color: black;
 $trade_title-border--size: 0.2rem;
 
-$trade-fullfilled-background-color: grey;
+$trade-fullfilled-background-color: $colors-black;
+$trade-fullfilled-text-color: #878787;
 $trade-font-size: $font-size-subtext;
 
 $side-column--width: 17.5rem;
@@ -31,21 +34,21 @@ $order_entry-column--width-lg: 18rem;
 
 .ask,
 .buy {
-	color: $trade-asks-color-font;
+	color: $trade-bids-color-font;
 }
 
 .bid,
 .sell {
-	color: $trade-bids-color-font;
+	color: $trade-asks-color-font;
 }
 
 .trade_history-row {
 	&.sell {
-		color: $trade-asks-color-font;
+		color: $trade-order-asks-color-font;
 	}
 
 	&.buy {
-		color: $trade-bids-color-font;
+		color: $trade-order-bids-color-font;
 	}
 }
 
@@ -67,14 +70,18 @@ $order_entry-column--width-lg: 18rem;
 		padding: 0.1rem;
 
 		> div {
-			color: white !important;
+			// color: white !important;
 			margin: 0;
 		}
 		.buy {
 			background-color: $trade-bids-color-font;
+			color: $colors-black;
+			font-weight: bold;
 		}
 		.sell {
 			background-color: $trade-asks-color-font;
+			color: $colors-white;
+			font-weight: bold;
 		}
 
 		&.fullfilled .cell-wrapper {
@@ -88,7 +95,7 @@ $order_entry-column--width-lg: 18rem;
 				padding: 0 0.15rem;
 				position: relative;
 				width: 100%;
-				color: $colors-main-black;
+				color: $trade-fullfilled-text-color;
 
 				.cell_value-bar {
 					position: absolute;

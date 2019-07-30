@@ -79,6 +79,15 @@ class Login extends Component {
 		return service;
 	}
 
+	checkLogin = () => {
+		// const termsAccepted = localStorage.getItem('termsAccepted');
+		// if (!termsAccepted) {
+		// 	this.props.router.replace('/terms');
+		// } else {
+			this.redirectToHome();
+		// }
+	}
+
 	onSubmitLogin = (values) => {
 		const service = this.getServiceParam();
 		if (service) {
@@ -89,7 +98,7 @@ class Login extends Component {
 				if (res.data && res.data.callbackUrl)
 					this.redirectToService(res.data.callbackUrl);
 				else
-					this.redirectToHome();
+					this.checkLogin();
 			})
 			.catch((err) => {
 				console.log('err', err);
@@ -136,7 +145,7 @@ class Login extends Component {
 				if (res.data && res.data.callbackUrl)
 					this.redirectToService(res.data.callbackUrl);
 				else
-					this.redirectToHome();
+					this.checkLogin();
 			})
 			.catch(errorHandler);
 	};

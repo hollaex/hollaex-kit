@@ -1,6 +1,6 @@
 export default {
 	APP_TITLE: 'Hollaex',
-	APP_SUB_TITLE: 'White Label Cryptocurrency Exchange',
+	APP_SUB_TITLE: 'THE DIGITAL FUEL FOR TRADING EXCHANGES', // new
 	APP_NAME: 'hollaex',
 	FIAT_NAME: 'EURO',
 	FIAT_FULLNAME: 'Euro',
@@ -39,6 +39,12 @@ export default {
 	XRP_SHORTNAME: 'XRP',
 	XRP_CURRENCY_SYMBOL: 'XRP',
 	XRP_PRICE_FORMAT: '{0} {1}',
+	
+	HEX_NAME: 'Heisenberg', // new
+	HEX_FULLNAME: 'Heisenberg', // new
+	HEX_SHORTNAME: 'HEX', // new
+	HEX_CURRENCY_SYMBOL: 'HEX', // new
+	HEX_PRICE_FORMAT: '{0} {1}', // new
 
 	LOGOUT_CONFIRM_TEXT: 'Are you sure?. Do you want to logout',
 	ADD_TRADING_PAIR: 'Add Trading Pair',
@@ -350,7 +356,9 @@ export default {
 		COMPLETED: 'Completed',
 		PENDING_VERIFICATION: 'Pending verification',
 		TITLE_EMAIL: 'Email',
-		MY_EMAIL: 'My Email', 
+		MY_EMAIL: 'My Email',
+		MAKE_FIRST_DEPOSIT: 'Make first deposit', // new
+		OBTAIN_HEX: 'Obtain HEX', // new
 		TITLE_USER_DOCUMENTATION: 'Identification',
 		TITLE_ID_DOCUMENTS: 'Documents',
 		TITLE_BANK_ACCOUNT: 'Bank Account',
@@ -373,6 +381,7 @@ export default {
 		PENDING_VERIFICATION_BANK: 'Your bank details are being verified',
 		PENDING_VERIFICATION_DOCUMENTS: 'Your documents are being verified',
 		GOTO_VERIFICATION: 'Go to verification',
+		GOTO_WALLET: 'Go to wallet', // new
 		CONNECT_BANK_ACCOUNT: 'Connect Bank Account', 
 		ACTIVATE_2FA: 'Activate 2FA', 
 		INCOMPLETED: 'Incompleted', 
@@ -1011,6 +1020,8 @@ export default {
 	TOTAL_ASSETS_VALUE: 'Total assets value in {0}: {1}', 
 	SUMMARY: { 
 		TITLE: 'Summary',
+		TRADER_ACCOUNT_TITLE: 'Account - Presale Period', // new
+		TRADER_ACCOUNT_TXT_1: 'Your account is in the presale period of {0}, this means you can obtain {0} for {1} per {0}. All deposit will be converted to {0} once the transaction has cleared',
 		TINY_PINK_SHRIMP_TRADER: 'Tiny Pink Shrimp Trader',
 		TINY_PINK_SHRIMP_TRADER_ACCOUNT: 'Tiny Pink Shrimp Trader Account',
 		LITTLE_RED_SNAPPER_TRADER: 'Little Red Snapper Trader',
@@ -1066,5 +1077,10 @@ export default {
 		COPY_FIELD_LABEL: 'Share the link below with friends and earn commissions:', // new
 		REFERRED_USER_COUT: 'You have referred {0} users', // new
 		COPY_LINK_BUTTON: 'COPY REFERRAL LINK' // new
+	},
+	TERMS_OF_SERVICES: { // new
+		TITLE: 'Before you obtain HEX please read and agree to our terms of service',
+		SERVICE_AGREEMENT: 'This agreement was written in English (US). To the extent any translated version of this agreement conflicts with the Korean version, the Korean version controls. Principle Statement of Basic Terms of Use This agreement has the purpose of defining the basic principles between we and individual users. For those of corporate users, you will find the provisions of Article 19 below. If you are a minor or person of limited legal capacity, you cannot be enrolled without the consent of the legal representative, due to the laws of Republic of Korea. If we confirm that a minor or person of limited legal capacity has registered as a user, we may instantly withdraw the membership without the consent of the user. When accessing our mobile page, web page or application in order to use our service, if you fill in the information of your account, password, or other login information, and it is the same with the information provided by you to us, all transactions occurred during that connection period are deemed to be due to your true doctor. Hence, you shall keep security of your account, password and other information, and also shall be held liable for any damages caused due to financial accidents or crimes related to leaks of personal information. Cryptocurrencies have no issuer and as a result no third party (including us) inside or outside of Republic of Korea warrants the value or payment. Therefore, the value of cryptocurrencies may experience large volatility depending on the laws of any state including the Republic of Korea, as well as the national policies, legal interpretation of these laws and the economic environment of each of any state including the Republic of Korea. In addition, the interpretation of laws regarding the exchange of cryptocurrencies is different in various countries and therefore cryptocurrencies have inherent risks different than that of legal currencies: please be aware of this. Coinone Transaction Service are services provided by us to enable exchange between you and other members as well as send cryptocurrency you hold from your Coinone Exchange internal electronic wallet to another external wallet through the blockchain or send coins from an external electronic wallet to your Coinone Exchange electronic wallet. The blockchain technology is currently known to be non-modifiable by a third party, but it may change anytime due to technological advances or other unforeseen circumstances. In the case of a user transacting in a cryptocurrency by using our service, the transactions of the corresponding cryptocurrency are recorded in the Coinone Exchange Service system. The company receives payment in set fees regarding all transactions that occur within the Coinone cryptocurrency',
+		PROCEED: 'PROCEED'
 	}
 };
