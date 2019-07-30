@@ -1,12 +1,11 @@
 import React from 'react';
 import { CurrencyBall } from '../../components';
-import { CURRENCIES, ICONS, BASE_CURRENCY } from '../../config/constants';
+import { ICONS, BASE_CURRENCY } from '../../config/constants';
 import { Link } from 'react-router';
 import { isMobile } from 'react-device-detect';
 import {
 	calculatePrice,
-	fiatFormatToCurrency,
-	fiatSymbol
+	formatToCurrency
 } from '../../utils/currency';
 import { ActionNotification } from '../../components';
 import STRINGS from '../../config/localizedStrings';
@@ -14,6 +13,7 @@ import STRINGS from '../../config/localizedStrings';
 export const AssetsBlock = ({
 	balance,
 	prices,
+	coins,
 	totalAssets,
 	wallets,
 	onOpenDialog,
@@ -32,22 +32,24 @@ export const AssetsBlock = ({
 				</tr>
 			</thead>
 			<tbody>
-				{Object.entries(CURRENCIES)
+				{Object.entries(coins)
 					.filter(([key]) => balance.hasOwnProperty(`${key}_balance`))
-					.map(([key, { formatToCurrencyFull }]) => {
+					.map(([key, { min, deposit, withdrawal }]) => {
 						const balanceValue = balance[`${key}_balance`];
+						const baseCoin = coins[BASE_CURRENCY] || {}
 						const balanceText =
 							key === BASE_CURRENCY
-								? fiatFormatToCurrency(balanceValue)
-								: fiatFormatToCurrency(
-										calculatePrice(balanceValue, prices[key])
+								? formatToCurrency(balanceValue, min)
+								: formatToCurrency(
+										calculatePrice(balanceValue, prices[key]),
+										baseCoin.min
 									);
 						return (
 							<tr className="table-row table-bottom-border" key={key}>
 								<td className="table-icon td-fit">
 									<Link to={`/wallet/${key.toLowerCase()}`}>
 										<CurrencyBall
-											name={CURRENCIES[key].shortName}
+											name={STRINGS[`${key.toUpperCase()}_SHORTNAME`]}
 											symbol={key}
 											size="s"
 										/>
@@ -59,28 +61,30 @@ export const AssetsBlock = ({
 									</Link>
 								</td>
 								<td className="td-wallet">
-									{wallets[CURRENCIES[key].fullName.toLowerCase()] ||
-									(key === fiatSymbol && bankaccount && bankaccount.verified) ? (
+									{wallets[STRINGS[`${key.toUpperCase()}_FULLNAME`].toLowerCase()] ||
+									(key === BASE_CURRENCY && bankaccount && bankaccount.verified) ? (
 										<div className="d-flex justify-content-between deposit-withdrawal-wrapper">
 											<ActionNotification
-												text={STRINGS.WALLET_BUTTON_FIAT_DEPOSIT}
+												text={STRINGS.WALLET_BUTTON_BASE_DEPOSIT}
 												iconPath={ICONS.BLUE_PLUS}
 												onClick={() => navigate(`wallet/${key}/deposit`)}
 												useSvg={true}
 												className="csv-action"
 												showActionText={isMobile}
+												disable={!deposit}
 											/>
 											<ActionNotification
-												text={STRINGS.WALLET_BUTTON_FIAT_WITHDRAW}
+												text={STRINGS.WALLET_BUTTON_BASE_WITHDRAW}
 												iconPath={ICONS.BLUE_PLUS}
 												onClick={() => navigate(`wallet/${key}/withdraw`)}
 												useSvg={true}
 												className="csv-action"
 												showActionText={isMobile}
+												disable={!withdrawal}
 											/>
 										</div>
 									) : (
-										key !== fiatSymbol && (
+										key !== BASE_CURRENCY && (
 											<ActionNotification
 												text={STRINGS.GENERATE_WALLET}
 												status="information"
@@ -88,6 +92,7 @@ export const AssetsBlock = ({
 												onClick={() => onOpenDialog(key)}
 												className="need-help"
 												useSvg={true}
+												disable={!deposit}
 											/>
 										)
 									)}
@@ -98,7 +103,7 @@ export const AssetsBlock = ({
 										<div className="mr-4">
 											{STRINGS.formatString(
 												STRINGS[`${key.toUpperCase()}_PRICE_FORMAT`],
-												formatToCurrencyFull(balanceValue),
+												formatToCurrency(balanceValue, min),
 												STRINGS[`${key.toUpperCase()}_CURRENCY_SYMBOL`]
 											)}
 										</div>

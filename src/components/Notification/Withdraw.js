@@ -23,7 +23,7 @@ const WithdrawNotification = ({ data, onClose }) => {
 	const notificationProps = {
 		icon:
 			ICONS[`COIN_WITHDRAW_BTC`] ||
-			ICONS.COIN_WITHDRAW_FIAT,
+			ICONS.COIN_WITHDRAW_BASE,
 		title: STRINGS.SUCCESS_TEXT
 	};
 

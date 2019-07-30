@@ -2,7 +2,7 @@ import moment from 'moment';
 
 import { LANGUAGE_KEY, DEFAULT_LANGUAGE } from '../config/constants';
 import STRINGS from '../config/localizedStrings';
-export { formatBtcAmount, formatFiatAmount, formatEthAmount } from './currency';
+export { formatBtcAmount, formatBaseAmount, formatEthAmount } from './currency';
 
 export const getFormattedDate = (value) => {
 	const stringDate = (value ? new Date(value) : new Date()).toISOString();

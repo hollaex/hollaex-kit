@@ -6,24 +6,24 @@ import {
 	BANK_WITHDRAWAL_BASE_FEE,
 	BANK_WITHDRAWAL_DYNAMIC_FEE_RATE,
 	BANK_WITHDRAWAL_MAX_DYNAMIC_FEE,
-	BANK_WITHDRAWAL_MAX_AMOUNT_FOR_BASE_FEE
+	BANK_WITHDRAWAL_MAX_AMOUNT_FOR_BASE_FEE,
+	BASE_CURRENCY
 } from '../../config/constants';
-import { fiatSymbol } from '../../utils/currency';
 import STRINGS from '../../config/localizedStrings';
 
 import { renderBankInformation } from '../Wallet/components';
 
-export const generateFiatInformation = (currency, limits = {}) => {
+export const generateBaseInformation = (currency, limits = {}) => {
 	const { minAmount = 2, maxAmount = 10000 } = limits;
 	const { currencySymbol, shortName, formatToCurrency } = currency;
 	return (
 		<div className="text">
-			<p>{STRINGS.WITHDRAW_PAGE.FIAT_MESSAGE_1}</p>
+			<p>{STRINGS.WITHDRAW_PAGE.BASE_MESSAGE_1}</p>
 			<p>{`${
-				STRINGS.WITHDRAW_PAGE.FIAT_MESSAGE_2
+				STRINGS.WITHDRAW_PAGE.BASE_MESSAGE_2
 			}: ${currencySymbol}${formatToCurrency(minAmount)} ${shortName}`}</p>
 			<p>{`${
-				STRINGS.WITHDRAW_PAGE.FIAT_MESSAGE_3
+				STRINGS.WITHDRAW_PAGE.BASE_MESSAGE_3
 			}: ${currencySymbol}${formatToCurrency(maxAmount)} ${shortName} (${
 				STRINGS.WITHDRAW_PAGE.MESSAGE_LIMIT
 			})`}</p>
@@ -32,7 +32,7 @@ export const generateFiatInformation = (currency, limits = {}) => {
 };
 
 export const renderExtraInformation = (symbol, bank_account) =>
-	symbol === fiatSymbol && (
+	symbol === BASE_CURRENCY && (
 		<div className="bank_account-information-wrapper">
 			<Accordion
 				sections={[
@@ -51,7 +51,7 @@ export const renderExtraInformation = (symbol, bank_account) =>
 		</div>
 	);
 
-export const calculateFiatFee = (amount = 0) => {
+export const calculateBaseFee = (amount = 0) => {
 	if (amount < 0) {
 		return 0;
 	}

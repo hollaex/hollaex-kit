@@ -1,8 +1,8 @@
 import React from 'react';
 import math from 'mathjs';
 import STRINGS from '../../config/localizedStrings';
-import { CURRENCIES } from '../../config/constants';
-import { fiatSymbol } from '../../utils/currency';
+import { BASE_CURRENCY } from '../../config/constants';
+import { formatToCurrency } from '../../utils/currency';
 
 const TextHolders = ({ ordersOfSymbol, currencySymbol, hold, name }) => {
 	const ordersText =
@@ -24,10 +24,10 @@ const TextHolders = ({ ordersOfSymbol, currencySymbol, hold, name }) => {
 	);
 };
 
-const Section = ({ symbol = fiatSymbol, balance, orders, price }) => {
-	const { shortName, formatToCurrency } = CURRENCIES[symbol];
+const Section = ({ symbol = BASE_CURRENCY, balance, orders, price, coins }) => {
+	const { name, min } = coins[symbol];
 	const ordersOfSymbol = orders.filter((order) => {
-		if (symbol === fiatSymbol) {
+		if (symbol === BASE_CURRENCY) {
 			return order.side === 'buy';
 		} else {
 			return order.symbol === symbol && order.side === 'sell';
@@ -35,8 +35,8 @@ const Section = ({ symbol = fiatSymbol, balance, orders, price }) => {
 	}).length;
 
 	const amountFormat =
-		symbol === fiatSymbol
-			? STRINGS.FIAT_PRICE_FORMAT
+		symbol === BASE_CURRENCY
+			? STRINGS[`${BASE_CURRENCY.toUpperCase()}_PRICE_FORMAT`]
 			: STRINGS.BTC_PRICE_FORMAT;
 	const total = balance[`${symbol}_balance`];
 	const available = balance[`${symbol}_available`];
@@ -50,7 +50,7 @@ const Section = ({ symbol = fiatSymbol, balance, orders, price }) => {
 					<div>
 						{STRINGS.formatString(
 							amountFormat,
-							formatToCurrency(total),
+							formatToCurrency(total, min),
 							STRINGS[`${symbol.toUpperCase()}_CURRENCY_SYMBOL`]
 						)}
 					</div>
@@ -59,8 +59,8 @@ const Section = ({ symbol = fiatSymbol, balance, orders, price }) => {
 					<TextHolders
 						ordersOfSymbol={ordersOfSymbol}
 						currencySymbol={STRINGS[`${symbol.toUpperCase()}_CURRENCY_SYMBOL`]}
-						hold={formatToCurrency(hold)}
-						name={shortName}
+						hold={formatToCurrency(hold, min)}
+						name={STRINGS[`${symbol.toUpperCase()}_SHORTNAME`] || name}
 					/>
 				)}
 				<div className="d-flex flex-column">
@@ -68,7 +68,7 @@ const Section = ({ symbol = fiatSymbol, balance, orders, price }) => {
 					<div>
 						{STRINGS.formatString(
 							amountFormat,
-							formatToCurrency(available),
+							formatToCurrency(available, min),
 							STRINGS[`${symbol.toUpperCase()}_CURRENCY_SYMBOL`]
 						)}
 					</div>

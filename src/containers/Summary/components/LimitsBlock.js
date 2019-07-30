@@ -1,14 +1,12 @@
 import React from 'react';
 
 import { CurrencyBall } from '../../../components';
-import { CURRENCIES } from '../../../config/constants';
+import { BASE_CURRENCY } from '../../../config/constants';
 import STRINGS from '../../../config/localizedStrings';
 import {
-    formatFiatAmount,
+    formatBaseAmount,
     formatBtcAmount
 } from '../../../utils/currency';
-
-const FIAT = CURRENCIES.fiat.symbol;
 
 const getLimitValue = (limit = -1, format) => {
     if (limit === 0) {
@@ -20,56 +18,45 @@ const getLimitValue = (limit = -1, format) => {
     }
 };
 
-const getDepositRow = (data, currency, index) => {
-    const { symbol, shortName, fullName } = CURRENCIES[currency];
-    const format = currency === FIAT ? formatFiatAmount : formatBtcAmount;
+const getDepositRow = (currency, index, coins, level) => {
+    const { symbol, deposit_limits = {} } = coins[currency] || {};
+    const format = currency === BASE_CURRENCY ? formatBaseAmount : formatBtcAmount;
     return (
         <tr key={index}>
             <td className="account-limits-coin" rowSpan={2}>
                 <div className='d-flex align-items-center'>
-                    <CurrencyBall name={shortName} symbol={symbol} size='m' />
-                    <div className="ml-2">{fullName}</div>
+                    <CurrencyBall name={STRINGS[`${symbol.toUpperCase()}_SHORTNAME`]} symbol={symbol} size='m' />
+                    <div className="ml-2">{STRINGS[`${symbol.toUpperCase()}_FULLNAME`]}</div>
                 </div>
             </td>
             <td className="account-limits-maker account-limits-status">{STRINGS.SUMMARY.DEPOSIT}:</td>
-            <td className="account-limits-maker account-limits-value">{getLimitValue(data[`${symbol}_deposit_daily`], format)}</td>
+            <td className="account-limits-maker account-limits-value">{getLimitValue(deposit_limits[level], format)}</td>
         </tr>
     );
 };
 
-const getWithdrawalRow = (data, currency, index) => {
-    const format = currency === FIAT ? formatFiatAmount : formatBtcAmount;
+const getWithdrawalRow = (currency, index, coins, level) => {
+    const { withdrawal_limits = {} } = coins[currency] || {};
+    const format = currency === BASE_CURRENCY ? formatBaseAmount : formatBtcAmount;
     return (
         <tr key={`${index}_1`}>
             <td className="account-limits-taker account-limits-status">{STRINGS.SUMMARY.WITHDRAWAL}:</td>
-            <td className="account-limits-taker account-limits-value">{getLimitValue(data[`${currency}_withdraw_daily`], format)}</td>
+            <td className="account-limits-taker account-limits-value">{getLimitValue(withdrawal_limits[level], format)}</td>
         </tr>
     );
 };
 
-const getRows = (data) => {
+const getRows = (coins, level) => {
     const rowData = [];
-    Object.keys(CURRENCIES).map((currency, index) => {
-        rowData.push(getDepositRow(data, currency, index));
-        rowData.push(getWithdrawalRow(data, currency, index));
+    Object.keys(coins).map((currency, index) => {
+        rowData.push(getDepositRow(currency, index, coins, level));
+        rowData.push(getWithdrawalRow(currency, index, coins, level));
         return '';
     });
     return rowData;
 };
 
-const generateRowData = ({limits, level}) => {
-    let levelData = {};
-    limits.map(data => {
-        if (data.verification_level === level)
-            levelData = data;
-        return data;
-    });
-
-    return levelData;
-};
-
-const LimitsBlock = ({ limits, level }) => {
-    const data = generateRowData({ limits, level });
+const LimitsBlock = ({ level, coins }) => {
     return (
         <div>
             <table className="account-limits">
@@ -81,7 +68,7 @@ const LimitsBlock = ({ limits, level }) => {
                     </tr>
                 </thead>
                 <tbody className="account-limits-content font-weight-bold">
-                    {getRows(data)}
+                    {getRows(coins, level)}
                 </tbody>
             </table>
         </div>

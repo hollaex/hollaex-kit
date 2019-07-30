@@ -125,7 +125,6 @@ export default function reducer(state = INITIAL_STATE, { type, payload }) {
 
 		//Delete Withdrawal
 		case ACTION_KEYS.WITHDRAWAL_CANCEL_PENDING:
-		console.log('pending', payload);
 			return {
 				...state,
 				withdrawalCancelData: {
@@ -186,6 +185,7 @@ export default function reducer(state = INITIAL_STATE, { type, payload }) {
 					loading: false,
 					fetched: true,
 					count: payload.count,
+					page: payload.page,
 					isRemaining: payload.isRemaining,
 					data: joinData(state.deposits.data, payload.data)
 				}
@@ -222,6 +222,7 @@ export default function reducer(state = INITIAL_STATE, { type, payload }) {
 					loading: false,
 					fetched: true,
 					count: payload.count,
+					page: payload.page,
 					isRemaining: payload.isRemaining,
 					data: joinData(state.withdrawals.data, payload.data)
 				}

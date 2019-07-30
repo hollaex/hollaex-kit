@@ -13,14 +13,12 @@ import { TransactionsHistory } from '../';
 import { changeSymbol } from '../../actions/orderbookAction';
 import { NOTIFICATIONS } from '../../actions/appActions';
 import { createAddress, cleanCreateAddress } from '../../actions/userAction';
-import { ICONS, CURRENCIES } from '../../config/constants';
-import { calculateBalancePrice } from '../../utils/currency';
+import { ICONS, BASE_CURRENCY } from '../../config/constants';
+import { calculateBalancePrice, formatToCurrency } from '../../utils/currency';
 import STRINGS from '../../config/localizedStrings';
 
 import { AssetsBlock } from './AssetsBlock';
 import MobileWallet from './MobileWallet';
-
-const fiatFormatToCurrency = CURRENCIES.fiat.formatToCurrency;
 
 class Wallet extends Component {
 	state = {
@@ -40,7 +38,8 @@ class Wallet extends Component {
 			this.props.prices,
 			this.state.isOpen,
 			this.props.wallets,
-			this.props.bankaccount
+			this.props.bankaccount,
+			this.props.coins
 		);
 	}
 
@@ -51,7 +50,8 @@ class Wallet extends Component {
 			nextProps.prices,
 			this.state.isOpen,
 			nextProps.wallets,
-			nextProps.bankaccount
+			nextProps.bankaccount,
+			nextProps.coins
 		);
 		if (
 			nextProps.addressRequest.success === true &&
@@ -61,12 +61,13 @@ class Wallet extends Component {
 		}
 	}
 
-	calculateTotalAssets = (balance, prices) => {
+	calculateTotalAssets = (balance, prices, coins) => {
 		const total = calculateBalancePrice(balance, prices);
+		const { min } = coins[BASE_CURRENCY] || {};
 		return STRINGS.formatString(
-			STRINGS.FIAT_PRICE_FORMAT,
-			fiatFormatToCurrency(total),
-			STRINGS.FIAT_CURRENCY_SYMBOL
+			STRINGS[`${BASE_CURRENCY.toUpperCase()}_PRICE_FORMAT`],
+			formatToCurrency(total, min),
+			STRINGS[`${BASE_CURRENCY.toUpperCase()}_CURRENCY_SYMBOL`]
 		);
 	};
 
@@ -77,9 +78,9 @@ class Wallet extends Component {
 		isOpen = false,
 		wallets,
 		bankaccount,
-		
+		coins
 	) => {
-		const totalAssets = this.calculateTotalAssets(balance, prices);
+		const totalAssets = this.calculateTotalAssets(balance, prices, coins);
 
 		const sections = [
 			{
@@ -88,6 +89,7 @@ class Wallet extends Component {
 					<AssetsBlock
 						balance={balance}
 						prices={prices}
+						coins={coins}
 						totalAssets={totalAssets}
 						changeSymbol={changeSymbol}
 						wallets={wallets}
@@ -119,6 +121,7 @@ class Wallet extends Component {
 				balance={balance}
 				prices={prices}
 				navigate={this.goToPage}
+				coins={coins}
 			/>
 			},
 			{
@@ -220,6 +223,7 @@ class Wallet extends Component {
 }
 
 const mapStateToProps = (store) => ({
+	coins: store.app.coins,
 	symbol: store.orderbook.symbol,
 	price: store.orderbook.price,
 	prices: store.orderbook.prices,

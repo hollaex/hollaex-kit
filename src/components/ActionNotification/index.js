@@ -34,21 +34,23 @@ const ActionNotification = ({
 	rotate,
 	rotateIfLtr,
 	rotateIfRtl,
-	showActionText
+	showActionText,
+	disable = false
 }) => (
 	<div
 		className={classnames(
 			'action_notification-wrapper',
 			{
-				pointer: showPointer,
+				pointer: !disable && showPointer,
 				left: textPosition === 'left',
 				right: textPosition === 'right',
 				'icon_on-right': iconPosition === 'right',
-				'icon_on-left': iconPosition === 'left'
+				'icon_on-left': iconPosition === 'left',
+				disabled: disable
 			},
 			className
 		)}
-		onClick={onClick}
+		onClick={disable ? () => {} : onClick}
 	>
 		{(showActionText || !isMobile) && (
 			<div

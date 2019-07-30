@@ -6,7 +6,7 @@ import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { isMobile } from 'react-device-detect';
-import { ICONS, BALANCE_ERROR, CURRENCIES } from '../../config/constants';
+import { ICONS, BALANCE_ERROR } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 import { getCurrencyFromName } from '../../utils/currency';
 
@@ -15,7 +15,7 @@ import { openContactForm, setSnackNotification } from '../../actions/appActions'
 import { Button, MobileBarBack } from '../../components';
 import { renderInformation, renderTitleSection } from '../Wallet/components';
 
-import { generateFiatInformation, renderContent } from './utils';
+import { generateBaseInformation, renderContent } from './utils';
 
 class Deposit extends Component {
 	state = {
@@ -32,7 +32,8 @@ class Deposit extends Component {
 		if (this.props.verification_level) {
 			this.validateRoute(
 				this.props.routeParams.currency,
-				this.props.crypto_wallet
+				this.props.crypto_wallet,
+				this.props.coins
 			);
 		}
 		this.setCurrency(this.props.routeParams.currency);
@@ -45,7 +46,8 @@ class Deposit extends Component {
 			if (nextProps.verification_level) {
 				this.validateRoute(
 					nextProps.routeParams.currency,
-					nextProps.crypto_wallet
+					nextProps.crypto_wallet,
+					this.props.coins
 				);
 			}
 		}
@@ -57,7 +59,8 @@ class Deposit extends Component {
 			this.setState({ currency, checked: false }, () => {
 				this.validateRoute(
 					this.props.routeParams.currency,
-					this.props.crypto_wallet
+					this.props.crypto_wallet,
+					this.props.coins
 				);
 			});
 		} else {
@@ -65,12 +68,8 @@ class Deposit extends Component {
 		}
 	};
 
-	validateRoute = (currency, crypto_wallet) => {
-		if (
-			(currency === 'eth' && !crypto_wallet.ethereum) ||
-			(currency === 'btc' && !crypto_wallet.bitcoin) ||
-			(currency === 'bch' && !crypto_wallet.bitcoincash)
-		) {
+	validateRoute = (currency, crypto_wallet, coins) => {
+		if (coins[currency] && !crypto_wallet[currency]) {
 			this.props.router.push('/wallet');
 		} else if (currency) {
 			this.setState({ checked: true });
@@ -89,7 +88,7 @@ class Deposit extends Component {
 	};
 
 	render() {
-		const { id, crypto_wallet, openContactForm, balance } = this.props;
+		const { id, crypto_wallet, openContactForm, balance, coins } = this.props;
 		const { currency, checked, copied } = this.state;
 
 		if (!id || !currency || !checked) {
@@ -114,14 +113,15 @@ class Deposit extends Component {
 							currency,
 							balance,
 							openContactForm,
-							generateFiatInformation,
+							generateBaseInformation,
+							coins,
 							'deposit'
 						)}
-						{renderContent(currency, crypto_wallet, this.onCopy)}
+						{renderContent(currency, crypto_wallet, coins, this.onCopy)}
 						{isMobile && (
 							<CopyToClipboard
 								text={
-									crypto_wallet[`${CURRENCIES[currency].fullName.toLowerCase()}`]
+									crypto_wallet[`${currency.toLowerCase()}`]
 								}
 								onCopy={() => this.setState({ copied: true })}
 							>
@@ -143,7 +143,8 @@ const mapStateToProps = (store) => ({
 	crypto_wallet: store.user.crypto_wallet,
 	balance: store.user.balance,
 	activeLanguage: store.app.language,
-	quoteData: store.orderbook.quoteData
+	quoteData: store.orderbook.quoteData,
+	coins: store.app.coins
 });
 
 const mapDispatchToProps = (dispatch) => ({

@@ -4,7 +4,7 @@ import EventListener from 'react-event-listener';
 import { connect } from 'react-redux';
 
 import { subtract } from '../utils';
-import { formatCurrency, formatFiatAmount, formatBtcFullAmount, checkNonFiatPair } from '../../../utils/currency';
+import { formatCurrency, formatBaseAmount, formatBtcFullAmount, checkNonBasePair } from '../../../utils/currency';
 import STRINGS from '../../../config/localizedStrings';
 
 const PriceRow = (pairBase, pairTwo, side, onPriceClick, onAmountClick) => (
@@ -16,13 +16,13 @@ const PriceRow = (pairBase, pairTwo, side, onPriceClick, onAmountClick) => (
 			className={`f-1 trade_orderbook-cell trade_orderbook-cell-price ${side} pointer`}
 			onClick={onPriceClick(price)}
 		>
-			{formatCurrency(price, pairTwo)}
+			{formatCurrency(price, pairTwo, true)}
 		</div>
 		<div
 			className="f-1 trade_orderbook-cell trade_orderbook-cell-amount pointer"
 			onClick={onAmountClick(amount)}
 		>
-			{formatCurrency(amount, pairBase)}
+			{formatCurrency(amount, pairBase, true)}
 		</div>
 	</div>
 );
@@ -30,9 +30,9 @@ const PriceRow = (pairBase, pairTwo, side, onPriceClick, onAmountClick) => (
 const calculateSpread = (asks, bids, pair) => {
 	const lowerAsk = asks.length > 0 ? asks[0][0] : 0;
 	const higherBid = bids.length > 0 ? bids[0][0] : 0;
-	const isNonFiatPair = checkNonFiatPair(pair);
+	const isNonBasePair = checkNonBasePair(pair);
 	if (lowerAsk && higherBid) {
-		return isNonFiatPair ? formatBtcFullAmount(subtract(lowerAsk, higherBid)) : formatFiatAmount(subtract(lowerAsk, higherBid));
+		return isNonBasePair ? formatBtcFullAmount(subtract(lowerAsk, higherBid)) : formatBaseAmount(subtract(lowerAsk, higherBid));
 	}
 	return '-';
 };

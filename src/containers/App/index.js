@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux';
 import io from 'socket.io-client';
 import EventListener from 'react-event-listener';
 import { debounce } from 'lodash';
-import { WS_URL, ICONS, SESSION_TIME } from '../../config/constants';
+import { WS_URL, ICONS, SESSION_TIME, BASE_CURRENCY } from '../../config/constants';
 import { isBrowser, isMobile } from 'react-device-detect';
 
 import { logout } from '../../actions/authAction';
@@ -28,6 +28,7 @@ import {
 	setTickers,
 	setPairs,
 	changePair,
+	setCurrencies,
 	setNotification,
 	closeNotification,
 	openContactForm,
@@ -209,18 +210,19 @@ class Container extends Component {
 			}
 			this.props.setPairs(data.pairs);
 			this.props.setPairsData(data.pairs);
+			this.props.setCurrencies(data.coins);
 			const orderLimits = {};
 			Object.keys(data.pairs).map((pair, index) => {
 				orderLimits[pair] = {
 					PRICE: {
 						MIN: data.pairs[pair].min_price,
 						MAX: data.pairs[pair].max_price,
-						STEP: data.pairs[pair].tick_size
+						STEP: data.pairs[pair].increment_price
 					},
 					SIZE: {
 						MIN: data.pairs[pair].min_size,
 						MAX: data.pairs[pair].max_size,
-						STEP: data.pairs[pair].tick_size
+						STEP: data.pairs[pair].increment_price
 					}
 				}
 				return '';
@@ -469,7 +471,7 @@ class Container extends Component {
 					break;
 				}
 				case 'deposit': {
-					const show = data.status || data.currency !== 'fiat';
+					const show = data.status || data.currency !== BASE_CURRENCY;
 					this.props.setNotification(NOTIFICATIONS.DEPOSIT, data, show);
 					break;
 				}
@@ -646,7 +648,7 @@ class Container extends Component {
 						onClose={this.onCloseDialog}
 					/>
 				);
-			case RISKY_ORDER:
+			case RISKY_ORDER: {
 				const { onConfirm, ...rest } = data;
 				return (
 					<RiskyOrder
@@ -655,6 +657,18 @@ class Container extends Component {
 						onClose={this.onCloseDialog}
 					/>
 				);
+			}
+			case NOTIFICATIONS.INVITE_FRIENDS: {
+				const { onConfirm, ...rest } = data;
+				return (
+					<Notification
+						type={type}
+						data={rest}
+						onConfirm={data.onConfirm}
+						onBack={this.onCloseDialog}
+					/>
+				);
+			}
 			default:
 				return <div />;
 		}
@@ -887,7 +901,8 @@ const mapDispatchToProps = (dispatch) => ({
 	changeTheme: bindActionCreators(changeTheme, dispatch),
 	setChatUnreadMessages: bindActionCreators(setChatUnreadMessages, dispatch),
 	setOrderLimits: bindActionCreators(setOrderLimits, dispatch),
-	setSnackDialog: bindActionCreators(setSnackDialog, dispatch)
+	setSnackDialog: bindActionCreators(setSnackDialog, dispatch),
+	setCurrencies: bindActionCreators(setCurrencies, dispatch)
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Container);

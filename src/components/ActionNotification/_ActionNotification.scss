@@ -27,6 +27,10 @@
 		color: $colors-deactivate;
 	}
 
+	&.disabled {
+		opacity: 0.3 !important;
+	}
+
 	.relative {
 		position: relative;
 	}

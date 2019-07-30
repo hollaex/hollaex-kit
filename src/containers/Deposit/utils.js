@@ -1,13 +1,13 @@
 import React from 'react';
 import QRCode from 'qrcode.react';
 import classnames from 'classnames';
-import { fiatSymbol } from '../../utils/currency';
+import { BASE_CURRENCY } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 
 import { isMobile } from 'react-device-detect';
 import { renderDumbField } from '../Wallet/components'; // eslint-disable-line
 
-export const generateFiatInformation = (id = '') => (
+export const generateBaseInformation = (id = '') => (
 	<div className="text">
 		{STRINGS.DEPOSIT.INFORMATION_MESSAGES.map((message, index) => (
 			<p key={index}>{message}</p>
@@ -51,31 +51,19 @@ const renderBTCContent = (label = '', address = '', onCopy, copyOnClick) =>
 		<div>{STRINGS.DEPOSIT.NO_DATA}</div>
 	);
 
-export const renderContent = (symbol, crypto_wallet = {}, onCopy) => {
-	switch (symbol) {
-		case 'btc':
-			return renderBTCContent(
-				STRINGS.DEPOSIT.CRYPTO_LABELS.BTC,
-				crypto_wallet.bitcoin,
-				onCopy,
-				true
-			);
-		case 'eth':
-			return renderBTCContent(
-				STRINGS.DEPOSIT.CRYPTO_LABELS.ETH,
-				crypto_wallet.ethereum,
-				onCopy,
-				true
-			);
-		case 'bch':
-			return renderBTCContent(
-				STRINGS.DEPOSIT.CRYPTO_LABELS.BCH,
-				crypto_wallet.bitcoincash,
-				onCopy,
-				true
-			);
-		case fiatSymbol:
-		default:
-			return <div>{STRINGS.DEPOSIT.NO_DATA}</div>;
+export const renderContent = (symbol, crypto_wallet = {}, coins = {}, onCopy) => {
+	if (coins[symbol] && symbol !== BASE_CURRENCY) {
+		const { fullname } = coins[symbol];
+		return renderBTCContent(
+			STRINGS.formatString(
+				STRINGS.DEPOSIT.CRYPTO_LABELS.ADDRESS,
+				fullname
+			),
+			crypto_wallet[symbol],
+			onCopy,
+			true
+		);
+	} else {
+		return <div>{STRINGS.DEPOSIT.NO_DATA}</div>;
 	}
 };

@@ -8,7 +8,6 @@ import { ICONS } from '../../config/constants';
 import { UserSecurity, UserSettings, Summary, Verification } from '../';
 import STRINGS from '../../config/localizedStrings';
 import { openContactForm } from '../../actions/appActions';
-import { requestLimits, requestFees } from '../../actions/userAction';
 
 const getInitialTab = ({ name, path }) => {
 	let activeTab = -1;
@@ -47,13 +46,6 @@ class Account extends Component {
 		if (this.props.id) {
 			this.updateTabs(this.props);
 		}
-		// if (!this.props.limits.fetched && !this.props.limits.fetching) {
-		// 	this.props.requestLimits();
-		// }
-
-		// if (!this.props.fees.fetched && !this.props.fees.fetching) {
-		// 	this.props.requestFees();
-		// }
 	}
 
 	componentWillReceiveProps(nextProps) {
@@ -208,8 +200,6 @@ class Account extends Component {
 const mapStateToProps = (state) => ({
 	user: state.user,
 	verification_level: state.user.verification_level,
-	limits: state.user.limits,
-	fees: state.user.feeValues,
 	otp_enabled: state.user.otp_enabled || false,
 	id: state.user.id,
 	bank_account: state.user.userData.bank_account,
@@ -220,8 +210,6 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-	requestLimits: bindActionCreators(requestLimits, dispatch),
-	requestFees: bindActionCreators(requestFees, dispatch),
 	openContactForm: bindActionCreators(openContactForm, dispatch)
 });
 

@@ -5,7 +5,7 @@ import { ICONS } from '../../config/constants';
 
 import { getDepositTexts } from './constants';
 import Header from './Header';
-import { fiatSymbol } from '../../utils/currency';
+import { BASE_CURRENCY } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 
 const DepositNotification = ({ data, onClose, goToPage, openContactForm }) => {
@@ -14,8 +14,8 @@ const DepositNotification = ({ data, onClose, goToPage, openContactForm }) => {
 	const headerProps = {
 		text: depositTexts.title,
 		icon:
-			data.currency === fiatSymbol
-				? data.status ? ICONS.DEPOSIT_FIAT_COMPLETE : ICONS.INCOMING_TOMAN
+			data.currency === BASE_CURRENCY
+				? data.status ? ICONS.DEPOSIT_BASE_COIN_COMPLETE : ICONS.INCOMING_TOMAN
 				: data.status ? ICONS.DEPOSIT_RECEIVED_BITCOIN : ICONS.INCOMING_BTC
 	};
 	const onClick = () => {
@@ -60,12 +60,12 @@ const DepositNotification = ({ data, onClose, goToPage, openContactForm }) => {
 						'deposit-button-notification'
 					)}
 					label={
-						data.currency === fiatSymbol
+						data.currency === BASE_CURRENCY
 							? STRINGS.NOTIFICATIONS.BUTTONS.START_TRADING
 							: STRINGS.NOTIFICATIONS.BUTTONS.SEE_HISTORY
 					}
 					onClick={() => {
-						goToPage(data.currency === fiatSymbol ? 'trade' : 'transactions');
+						goToPage(data.currency === BASE_CURRENCY ? 'trade' : 'transactions');
 						onClose();
 					}}
 				/> */}

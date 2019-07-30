@@ -14,8 +14,8 @@ import {
 	setWithdrawEmailConfirmation,
 	setWithdrawNotificationError
 } from './notifications';
-import { fiatSymbol } from '../../utils/currency';
-import { calculateFiatFee } from './utils';
+import { BASE_CURRENCY } from '../../config/constants';
+import { calculateBaseFee } from './utils';
 
 import STRINGS from '../../config/localizedStrings';
 
@@ -61,12 +61,12 @@ class Form extends Component {
 		}
 
 		if (
-			nextProps.currency === fiatSymbol &&
+			nextProps.currency === BASE_CURRENCY &&
 			(nextProps.data.amount !== this.props.data.amount ||
-				(nextProps.currency === fiatSymbol &&
+				(nextProps.currency === BASE_CURRENCY &&
 					nextProps.amount !== this.props.currency))
 		) {
-			const fee = calculateFiatFee(nextProps.data.amount);
+			const fee = calculateBaseFee(nextProps.data.amount);
 			if (fee !== nextProps.data.fee) {
 				nextProps.change('fee', fee);
 			}
@@ -108,7 +108,7 @@ class Form extends Component {
 					return response;
 				}).catch(err => {
 					const error = { _error: err.message, ...err.errors };
-					this.props.onSubmitFail(err.errors, this.props.dispatch);
+					this.props.onSubmitFail(err.errors || err, this.props.dispatch);
 					this.onCloseDialog();
 					this.props.dispatch(stopSubmit(FORM_NAME, error));
 					// throw new SubmissionError(error);
@@ -170,7 +170,8 @@ class Form extends Component {
 			openContactForm,
 			formValues,
 			currentPrice,
-			activeTheme
+			activeTheme,
+			coins
 		} = this.props;
 
 		const { dialogIsOpen, dialogOtpOpen } = this.state;
@@ -199,6 +200,7 @@ class Form extends Component {
 						/>
 					) : !submitting ? (
 						<ReviewModalContent
+							coins={coins}
 							currency={currency}
 							data={data}
 							price={currentPrice}
@@ -227,7 +229,8 @@ const WithdrawForm = reduxForm({
 
 const mapStateToForm = (state) => ({
 	data: selector(state, 'address', 'amount', 'fee'),
-	activeTheme: state.app.theme
+	activeTheme: state.app.theme,
+	coins: state.app.coins
 });
 
 const WithdrawFormWithValues = connect(mapStateToForm)(WithdrawForm);

@@ -6,7 +6,7 @@ import classnames from 'classnames';
 import STRINGS from '../../../config/localizedStrings';
 
 const colors_currencies = {
-    fiat: '#00a651',
+    eur: '#00a651',
     btc: '#f7941e',
     bch: '#9ec51e',
     eth: '#2e3192',
@@ -48,12 +48,11 @@ class DonutChart extends Component {
     checkData = (data = []) => {
         let largerValue = 0;
         let largerId = '';
-        data.map((value, index) => {
-            if (value.balance > largerValue) {
-                largerId = `slice-${index}`;
-                largerValue = value.balance;
+        data.map((value) => {
+            if (parseFloat(value.balancePercentage) > largerValue) {
+                largerId = value.symbol;
+                largerValue = parseFloat(value.balancePercentage);
             }
-            return null;
         });
         this.setState({ higherId: largerId, hoverId: largerId });
 
@@ -61,8 +60,8 @@ class DonutChart extends Component {
         return !!checkFilter.length;
     };
 
-    handleHover = id => {
-        this.setState({ hoverId: `slice-${id}` });
+    handleHover = symbol => {
+        this.setState({ hoverId: symbol });
     };
 
     handleOut = () => {
@@ -188,10 +187,10 @@ class DonutChart extends Component {
                 <g key={i}>
                     <path
                         d={arcj(value)}
-                        className={classnames(`chart_${data.symbol}`, { 'slice_active': this.state.hoverId === `slice-${i}` })}
-                        onMouseOver={() => this.handleHover(i)}
+                        className={classnames(`chart_${data.symbol}`, { 'slice_active': this.state.hoverId === data.symbol })}
+                        onMouseOver={() => this.handleHover(data.symbol)}
                         onMouseOut={this.handleOut} />
-                    {this.state.hoverId === `slice-${i}`
+                    {this.state.hoverId === data.symbol
                         ? <Fragment>
                             <text transform={translate(valX, valY)}
                                 dy="20px"
@@ -203,7 +202,7 @@ class DonutChart extends Component {
                                 dy="20px"
                                 textAnchor="middle"
                                 className="donut-label-pair">
-                                {data.shortName}
+                                {STRINGS[`${data.symbol.toUpperCase()}_SHORTNAME`]}
                             </text>
                         </Fragment>
                         : null

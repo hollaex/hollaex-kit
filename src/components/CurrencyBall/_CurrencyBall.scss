@@ -14,17 +14,17 @@ $large-modifier: 2.25;
 		background-color: $colors-currencies-btc;
 	}
 
-	&.fiat {
-		background-color: $colors-currencies-fiat;
+	&.eur {
+		background-color: $colors-currencies-eur;
 	}
 
 	&.bch {
 		background-color: $colors-currencies-bch;
 	}
 
-	&.xrp {
-		background-color: $colors-currencies-xrp;
-	}
+	// &.xrp {
+	// 	background-color: $colors-currencies-xrp;
+	// }
 
 	&.eth {
 		background-color: $colors-currencies-eth;
@@ -32,6 +32,132 @@ $large-modifier: 2.25;
 
 	&.ltc {
 		background-color: $colors-currencies-ltc;
+	}
+	&.xrp {
+		background-color: $coin-xrp;
+	}
+	&.hex {
+		background-color: $coin-hex;
+	}
+	&.eos {
+		background-color: $coin-eos;
+	}
+	&.bnb {
+		background-color: $coin-bnb;
+	}
+	&.link {
+		background-color: $coin-link;
+	}
+	&.trx {
+		background-color: $coin-trx;
+	}
+	&.ada {
+		background-color: $coin-ada;
+	}
+	&.matic {
+		background-color: $coin-matic;
+	}
+	&.neo {
+		background-color: $coin-neo;
+	}
+	&.etc {
+		background-color: $coin-etc;
+	}
+	&.xlm {
+		background-color: $coin-xlm;
+	}
+	&.xmr {
+		background-color: $coin-xmr;
+	}
+	&.zec {
+		background-color: $coin-zec;
+	}
+	&.one {
+		background-color: $coin-one;
+	}
+	&.pax {
+		background-color: $coin-pax;
+	}
+	&.usdc {
+		background-color: $coin-usdc;
+	}
+	&.usdt {
+		background-color: $coin-usdt;
+	}
+	&.vet {
+		background-color: $coin-vet;
+	}
+	&.btt {
+		background-color: $coin-btt;
+	}
+	&.qtum {
+		background-color: $coin-qtum;
+	}
+	&.algo {
+		background-color: $coin-algo;
+	}
+	&.rvn {
+		background-color: $coin-rvn;
+	}
+	&.iota {
+		background-color: $coin-iota;
+	}
+	&.dash {
+		background-color: $coin-dash;
+	}
+	&.bsv {
+		background-color: $coin-bsv;
+	}
+	&.ont {
+		background-color: $coin-ont;
+	}
+	&.atom {
+		background-color: $coin-atom;
+	}
+	&.celr {
+		background-color: $coin-celr;
+	}
+	&.omg {
+		background-color: $coin-omg;
+	}
+	&.hot {
+		background-color: $coin-hot;
+	}
+	&.usd {
+		background-color: $coin-usd;
+	}
+	&.jpy {
+		background-color: $coin-jpy;
+	}
+	&.gbp {
+		background-color: $coin-gbp;
+	}
+	&.chf {
+		background-color: $coin-chf;
+	}
+	&.cad {
+		background-color: $coin-cad;
+	}
+	&.aud {
+		background-color: $coin-aud;
+	}
+	&.nzd {
+		background-color: $coin-nzd;
+	}
+	&.zar {
+		background-color: $coin-zar;
+	}
+	&.hkd {
+		background-color: $coin-hkd;
+	}
+	&.krw {
+		background-color: $coin-krw;
+	}
+	&.cny {
+		background-color: $coin-cny;
+	}
+	&.sgd {
+		background-color: $coin-sgd;
 	}
 
 	&.s {
@@ -58,7 +184,7 @@ $large-modifier: 2.25;
 	.with_price-block_amount-value {
 		margin-left: 0.5rem;
 	}
-	.with_price-block_amount-value-fiat {
+	.with_price-block_amount-value-eur {
 		color: $colors-deactivate-color2;
 		font-size: $font-size-subhead2;
 		line-height: $font-size-subhead2;
@@ -80,7 +206,7 @@ $large-modifier: 2.25;
 .dark-theme {
 	.with_price-block_amount {
 		color: $dark-font-main-text-color;
-		.with_price-block_amount-value-fiat {
+		.with_price-block_amount-value-eur {
 			color: $dark-font-sub-text-color;
 		}
 	}

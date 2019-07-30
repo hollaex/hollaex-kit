@@ -17,8 +17,8 @@ $inner_container-border: 1px solid $colors-main-black;
 		@include currency-color($btc-color);
 	}
 
-	&.fiat {
-		@include currency-color($colors-currencies-fiat);
+	&.eur {
+		@include currency-color($colors-currencies-eur);
 	}
 
 	&.bch {

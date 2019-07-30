@@ -1,14 +1,14 @@
-import { fiatSymbol } from '../../utils/currency';
+import { BASE_CURRENCY } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 
-const generateFiatDepositTexts = (strings) => ({
+const generateBaseDepositTexts = (strings) => ({
 	TITLE: strings.formatString(
-		strings.NOTIFICATIONS.DEPOSITS.FIAT.TITLE,
-		strings.FIAT_NAME
+		strings.NOTIFICATIONS.DEPOSITS[BASE_CURRENCY.toUpperCase()].TITLE,
+		strings[`${BASE_CURRENCY.toUpperCase()}_NAME`]
 	),
 	SUBTITLE: strings.formatString(
-		strings.NOTIFICATIONS.DEPOSITS.FIAT.SUBTITLE,
-		strings.FIAT_FULLNAME
+		strings.NOTIFICATIONS.DEPOSITS[BASE_CURRENCY.toUpperCase()].SUBTITLE,
+		strings[`${BASE_CURRENCY.toUpperCase()}_FULLNAME`]
 	),
 	INFORMATION_PENDING: [],
 	INFORMATION_COMPLETE: []
@@ -20,29 +20,29 @@ const generateCryptoDepositTexts = (strings, status, currency) => {
 	return {
 		TITLE: status
 			? strings.formatString(
-					strings.NOTIFICATIONS.DEPOSITS[currency].TITLE_RECEIVED,
+					strings.NOTIFICATIONS.DEPOSITS.TITLE_RECEIVED,
 					name
 				)
 			: strings.formatString(
-					strings.NOTIFICATIONS.DEPOSITS[currency].TITLE_INCOMING,
+					strings.NOTIFICATIONS.DEPOSITS.TITLE_INCOMING,
 					fullName
 				),
 		SUBTITLE: strings.formatString(
 			status
-				? strings.NOTIFICATIONS.DEPOSITS[currency].SUBTITLE_RECEIVED
-				: strings.NOTIFICATIONS.DEPOSITS[currency].SUBTITLE_INCOMING,
+				? strings.NOTIFICATIONS.DEPOSITS.SUBTITLE_RECEIVED
+				: strings.NOTIFICATIONS.DEPOSITS.SUBTITLE_INCOMING,
 			fullName
 		),
 		INFORMATION_PENDING: [
 			strings
 				.formatString(
-					strings.NOTIFICATIONS.DEPOSITS[currency].INFORMATION_PENDING_1,
+					strings.NOTIFICATIONS.DEPOSITS.INFORMATION_PENDING_1,
 					name
 				)
 				.join(''),
 			strings
 				.formatString(
-					strings.NOTIFICATIONS.DEPOSITS[currency].INFORMATION_PENDING_2,
+					strings.NOTIFICATIONS.DEPOSITS.INFORMATION_PENDING_2,
 					name
 				)
 				.join('')
@@ -53,11 +53,8 @@ const generateCryptoDepositTexts = (strings, status, currency) => {
 
 export const getDepositTexts = (currency, status = false) => {
 	let texts = {};
-	if (currency === fiatSymbol) {
-		texts = generateFiatDepositTexts(STRINGS);
-	} else {
-		texts = generateCryptoDepositTexts(STRINGS, status, currency.toUpperCase());
-	}
+	let currencySymbol = currency.trim();
+	texts = generateCryptoDepositTexts(STRINGS, status, currencySymbol.toUpperCase());
 	return {
 		title: texts.TITLE,
 		subtitle: texts.SUBTITLE,

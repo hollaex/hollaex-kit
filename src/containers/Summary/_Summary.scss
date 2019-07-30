@@ -189,7 +189,7 @@
         font-weight: bold;
     }
     .summary-section_1 {
-        height: 15rem;
+        height: 16rem;
     }
     .summary-section_2 {
         height: 40rem;
@@ -295,7 +295,7 @@
                         fill: $colors-currencies-eth;
                     }
                     .bch-icon {
-                        fill: #9ec51e;
+                        fill: $coin-bch;
                     }
                 }
             }
@@ -469,7 +469,7 @@
             width: 65% !important;
         }
         .summary-section_1 {
-            height: 18rem !important;
+            height: 19rem !important;
         }
         .summary-section_2 {
             height: 43rem !important;
@@ -490,7 +490,7 @@
             font-size: 0.9rem;
         }
         .summary-section_1 {
-            height: 20rem !important;
+            height: 21rem !important;
         }
         .summary-section_2 {
             height: 44rem !important;

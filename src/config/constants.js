@@ -2,7 +2,7 @@ import config from './index';
 import {
 	formatBtcAmount,
 	formatBtcFullAmount,
-	formatFiatAmount,
+	formatBaseAmount,
 	formatEthAmount,
 	formatEthFullAmount,
 	formatXrpAmount,
@@ -102,11 +102,11 @@ export const ICONS = {
 	EMAIL: `${process.env.PUBLIC_URL}/assets/images/email.svg`,
 	EMAIL_SENT: `${process.env.PUBLIC_URL}/assets/images/email-sent.svg`,
 	OTP_DOTS: `${process.env.PUBLIC_URL}/assets/images/f2fa-pin.svg`,
-	DEPOSIT_FIAT: `${process.env.PUBLIC_URL}/assets/images/fiat-deposit.svg`,
-	DEPOSIT_FIAT_COMPLETE: `${
+	DEPOSIT_BASE: `${process.env.PUBLIC_URL}/assets/images/fiat-deposit.svg`,
+	DEPOSIT_BASE_COIN_COMPLETE: `${
 		process.env.PUBLIC_URL
 	}/assets/images/fiat-deposit-completed.svg`,
-	FIAT_WALLET: `${process.env.PUBLIC_URL}/assets/images/fiat-wallet.svg`,
+	BASE_WALLET: `${process.env.PUBLIC_URL}/assets/images/fiat-wallet.svg`,
 	GEAR_BLACK: `${process.env.PUBLIC_URL}/assets/images/gear.svg`,
 	GEAR_GREY: `${process.env.PUBLIC_URL}/assets/images/gear-grey.svg`,
 	HELP_ICON: `${process.env.PUBLIC_URL}/assets/images/help.svg`,
@@ -347,7 +347,8 @@ export const ICONS = {
 	SETTING_AUDIO_ICON: `${process.env.PUBLIC_URL}/assets/images/audio-settings-icon.svg`,
 	SETTING_RISK_ICON: `${process.env.PUBLIC_URL}/assets/images/risk-settings-icon.svg`,
 	SETTING_RISK_ADJUST_ICON: `${process.env.PUBLIC_URL}/assets/images/risk-management-pop-adjust.svg`,
-	SETTING_RISK_MANAGE_WARNING_ICON: `${process.env.PUBLIC_URL}/assets/images/risk-manage-pop-warning.svg`
+	SETTING_RISK_MANAGE_WARNING_ICON: `${process.env.PUBLIC_URL}/assets/images/risk-manage-pop-warning.svg`,
+	REFER_ICON: `${process.env.PUBLIC_URL}/assets/images/refer-icon.svg`
 };
 
 export const SOCIAL_ICONS = {
@@ -435,40 +436,26 @@ export const CURRENCIES = {
 		formatToCurrency: formatXrpAmount,
 		formatToCurrencyFull: formatXrpFullAmount,
 	},
+	eur: {
+		symbol: 'eur',
+		name: STRINGS.EUR_NAME,
+		fullName: STRINGS.EUR_FULLNAME,
+		shortName: STRINGS.EUR_SHORTNAME,
+		currencySymbol: STRINGS.EUR_CURRENCY_SYMBOL,
+		formatToCurrency: formatBaseAmount,
+		formatToCurrencyFull: formatBaseAmount,
+	},
 	fiat: {
 		symbol: 'fiat',
 		name: STRINGS.FIAT_NAME,
 		fullName: STRINGS.FIAT_FULLNAME,
 		shortName: STRINGS.FIAT_SHORTNAME,
 		currencySymbol: STRINGS.FIAT_CURRENCY_SYMBOL,
-		formatToCurrency: formatFiatAmount,
-		formatToCurrencyFull: formatFiatAmount,
+		formatToCurrency: formatBaseAmount,
+		formatToCurrencyFull: formatBaseAmount,
 	}
 };
 
-// TODO: to be removed after testing
-/* export const PAIRS = {
-	'btc-eur': {
-		pair_base: 'btc',
-		pair_2: 'fiat'
-	},
-	'eth-eur': {
-		pair_base: 'eth',
-		pair_2: 'fiat'
-	},
-	'eth-btc': {
-		pair_base: 'eth',
-		pair_2: 'btc'
-	},
-	'bch-btc': {
-		pair_base: 'bch',
-		pair_2: 'btc'
-	},
-	'bch-eur': {
-		pair_base: 'bch',
-		pair_2: 'fiat'
-	},
-}; */
 
 export const DEFAULT_PAIR = 'btc-eur';
 
@@ -482,7 +469,7 @@ export const TIMESTAMP_FORMAT = STRINGS.TIMESTAMP_FORMAT;
 export const HOUR_FORMAT = STRINGS.HOUR_FORMAT;
 
 export const DEPOSIT_LIMITS = {
-	fiat: {
+	eur: {
 		DAILY: 50000000,
 		MIN: 100,
 		MAX: 50000000
@@ -490,9 +477,9 @@ export const DEPOSIT_LIMITS = {
 };
 
 export const WITHDRAW_LIMITS = {
-	fiat: {
-		MIN: process.env.REACT_APP_WITHDRAWAL_FIAT_MIN || 20000,
-		STEP: process.env.REACT_APP_WITHDRAWAL_FIAT_STEP || 1
+	eur: {
+		MIN: process.env.REACT_APP_WITHDRAWAL_EUR_MIN || 20000,
+		STEP: process.env.REACT_APP_WITHDRAWAL_EUR_STEP || 1
 	},
 	btc: {
 		MIN: process.env.REACT_APP_WITHDRAWAL_BTC_MIN || 0.0001,
@@ -589,9 +576,11 @@ export const BAR_CHART_LIMIT_CAPACITY = [340000, 2050000];
 
 export const DEFAULT_COUNTRY = process.env.REACT_APP_DEFAULT_COUNTRY
 	? process.env.REACT_APP_DEFAULT_COUNTRY.toUpperCase()
-	: 'FR';
+	: 'KR';
 
-export const BASE_CURRENCY = process.env.REACT_APP_BASE_CURRENCY;
+export const BASE_CURRENCY = process.env.REACT_APP_BASE_CURRENCY
+	? process.env.REACT_APP_BASE_CURRENCY.toLowerCase()
+	: 'eur';
 
 export const FEES_LIMIT_SITE_URL = 'https://www.hollaex.com';
 

@@ -10,9 +10,8 @@ import {
 	withdrawalCancel
 } from '../../actions/walletActions';
 
-import { fiatSymbol } from '../../utils/currency';
 import { IconTitle, TabController, Loader, CheckTitle, Dialog, Button, CurrencyBallWithPrice } from '../../components';
-import { ICONS, FLEX_CENTER_CLASSES } from '../../config/constants';
+import { ICONS, FLEX_CENTER_CLASSES, BASE_CURRENCY } from '../../config/constants';
 import {
 	generateTradeHeaders,
 	generateTradeHeadersMobile,
@@ -38,7 +37,7 @@ class TransactionsHistory extends Component {
 
 	componentDidMount() {
 		this.requestData(this.props.symbol);
-		this.generateHeaders(this.props.symbol);
+		this.generateHeaders(this.props.symbol, this.props.coins);
 		if (this.props.location
 			&& this.props.location.query
 			&& this.props.location.query.tab) {
@@ -52,7 +51,7 @@ class TransactionsHistory extends Component {
 		// this.generateHeaders(nextProps.symbol, nextProps.activeLanguage);
 		// } else if (nextProps.activeLanguage !== this.props.activeLanguage) {
 		if (nextProps.activeLanguage !== this.props.activeLanguage) {
-			this.generateHeaders(nextProps.symbol);
+			this.generateHeaders(nextProps.symbol, nextProps.coins);
 		}
 		if((this.props.cancelData.dismissed !== nextProps.cancelData.dismissed) && nextProps.cancelData.dismissed===true) {
 			this.onCloseDialog()
@@ -86,16 +85,16 @@ class TransactionsHistory extends Component {
 		}
 	};
 
-	generateHeaders(symbol) {
+	generateHeaders(symbol, coins) {
 		const {withdrawalPopup}=this
 		const { pairs } = this.props;
 		this.setState({
 			headers: {
 				trades: isMobile
-					? generateTradeHeadersMobile(symbol, pairs)
-					: generateTradeHeaders(symbol, pairs),
-				deposits: generateDepositsHeaders(symbol),
-				withdrawals: generateWithdrawalsHeaders(symbol, withdrawalPopup)
+					? generateTradeHeadersMobile(symbol, pairs, coins)
+					: generateTradeHeaders(symbol, pairs, coins),
+				deposits: generateDepositsHeaders(symbol, coins),
+				withdrawals: generateWithdrawalsHeaders(symbol, withdrawalPopup, coins)
 			}
 		});
 	}
@@ -282,8 +281,8 @@ class TransactionsHistory extends Component {
 						<IconTitle
 							iconPath={activeTheme ==='dark' ? ICONS.CANCEL_WITHDRAW_DARK: ICONS.CANCEL_WITHDRAW_LIGHT }
 							text={STRINGS.formatString(
-								STRINGS.CANCEL_FIAT_WITHDRAWAL,
-								STRINGS.FIAT_FULLNAME
+								STRINGS.CANCEL_BASE_WITHDRAWAL,
+								STRINGS[`${BASE_CURRENCY.toUpperCase()}_FULLNAME`]
 							)}
 							textType="title"
 							underline={true}
@@ -293,7 +292,7 @@ class TransactionsHistory extends Component {
 							<div className='text-center mt-5 mb-5'>
 								<div>{STRINGS.CANCEL_WITHDRAWAL_POPUP_CONFIRM}</div> 
 								<div className={classnames(...GROUP_CLASSES)}>
-									<CurrencyBallWithPrice  symbol={fiatSymbol} amount={amount} price={1} />
+									<CurrencyBallWithPrice  symbol={BASE_CURRENCY} amount={amount} price={1} />
 								</div>
 							</div>
 							<div className='w-100 buttons-wrapper d-flex' >
@@ -314,6 +313,7 @@ class TransactionsHistory extends Component {
 
 const mapStateToProps = (store) => ({
 	pairs: store.app.pairs,
+	coins: store.app.coins,
 	id: store.user.id,
 	trades: store.wallet.trades,
 	deposits: store.wallet.deposits,

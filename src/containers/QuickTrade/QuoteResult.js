@@ -1,18 +1,18 @@
 import React from 'react';
 import { Loader, IconTitle, Button } from '../../components';
-import { formatBtcAmount, formatFiatAmount } from '../../utils/currency';
+import { formatBtcAmount, formatToCurrency } from '../../utils/currency';
 
 import STRINGS from '../../config/localizedStrings';
-import { ICONS } from '../../config/constants';
+import { ICONS, BASE_CURRENCY } from '../../config/constants';
 
-const QuoteResult = ({ name, onClose, ...props }) => {
+const QuoteResult = ({ name, onClose, coins, ...props }) => {
 	const { fetching, error, data } = props.data;
-
+	const { min } = coins[BASE_CURRENCY] || {};
 	if (fetching) {
 		return <Loader relative={true} background={false} />;
 	} else if (error) {
 		return (
-			<div className="fiat_negative_balance">
+			<div className="base_negative_balance">
 				<div className="quote-success-review-text">{error}</div>
 				{onClose && <Button label={STRINGS.CLOSE_TEXT} onClick={onClose} />}
 			</div>
@@ -33,8 +33,8 @@ const QuoteResult = ({ name, onClose, ...props }) => {
 						STRINGS.SIDES_VALUES[data.side],
 						formatBtcAmount(data.size),
 						name,
-						formatFiatAmount(data.price),
-						STRINGS.FIAT_NAME
+						formatToCurrency(data.price, min),
+						STRINGS[`${BASE_CURRENCY.toUpperCase()}_NAME`]
 					)}
 				</div>
 				{onClose && <Button label={STRINGS.CLOSE_TEXT} onClick={onClose} />}

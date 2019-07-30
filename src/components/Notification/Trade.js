@@ -1,13 +1,14 @@
 import React from 'react';
 import math from 'mathjs';
 import { connect } from 'react-redux';
-import { ICONS, CURRENCIES } from '../../config/constants';
+import { ICONS } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 import {
 	NotificationWraper,
 	NotificationContent,
 	InformationRow
 } from './Notification';
+import { formatToCurrency } from '../../utils/currency';
 
 const SIDE_BUY = 'buy';
 const SIDE_SELL = 'sell';
@@ -38,10 +39,12 @@ export const getTitleAndIcon = (side, type) => {
 	return data;
 };
 
-const calculateValues = (data = [], pair) => {
+const calculateValues = (data = [], pair, coins = {}) => {
+	let btcAccumulated = math.fraction(0);
 	let baseAccumulated = math.fraction(0);
-	let fiatAccumulated = math.fraction(0);
 	const averages = [];
+	const baseFormat = coins[pair.pair_base] || {};
+	const secondaryFormat = coins[pair.pair_2] || {};
 	data.forEach(({ size, price, filled, side }) => {
 		let calcSize = size;
 		if (side === SIDE_BUY) {
@@ -49,20 +52,20 @@ const calculateValues = (data = [], pair) => {
 		} else if (side === SIDE_SELL) {
 			calcSize = filled || size;
 		}
-		baseAccumulated = math.add(baseAccumulated, math.fraction(calcSize));
+		btcAccumulated = math.add(btcAccumulated, math.fraction(calcSize));
 		const orderValue = math.multiply(math.fraction(price), math.fraction(calcSize));
-		fiatAccumulated = math.add(fiatAccumulated, orderValue);
+		baseAccumulated = math.add(baseAccumulated, orderValue);
 		averages.push(math.number(orderValue));
 	});
 
 	return {
-		btc: CURRENCIES[pair.pair_base].formatToCurrency(baseAccumulated),
-		fiat: CURRENCIES[pair.pair_2].formatToCurrency(fiatAccumulated),
-		average: CURRENCIES[pair.pair_2].formatToCurrency(math.median(averages))
+		btc: formatToCurrency(btcAccumulated, baseFormat.min),
+		base: formatToCurrency(baseAccumulated, secondaryFormat.min),
+		average: formatToCurrency(math.median(averages), secondaryFormat.min)
 	};
 };
 
-export const TradeDisplay = ({ side, data, pairs, ...rest }) => {
+export const TradeDisplay = ({ side, data, pairs, coins, ...rest }) => {
 	const pair = data[0] ? pairs[data[0].symbol] : { pair_base: '', pair_2: '' };
 	const basePair = pair.pair_base.toUpperCase();
 	const payPair = pair.pair_2.toUpperCase();
@@ -71,7 +74,7 @@ export const TradeDisplay = ({ side, data, pairs, ...rest }) => {
 		side === 'sell' ? STRINGS.ORDER_SOLD : STRINGS.ORDER_BOUGHT;
 	const resultText =
 		side === 'sell' ? STRINGS.ORDER_RECEIVED : STRINGS.ORDER_SPENT;
-	const { btc, fiat, average } = calculateValues(data, pair);
+	const { btc, base, average } = calculateValues(data, pair, coins);
 	return (
 		<NotificationContent>
 			<InformationRow
@@ -94,7 +97,7 @@ export const TradeDisplay = ({ side, data, pairs, ...rest }) => {
 				label={resultText}
 				value={STRINGS.formatString(
 					STRINGS[`${payPair}_PRICE_FORMAT`],
-					fiat,
+					base,
 					STRINGS[`${payPair}_SHORTNAME`]
 				)}
 			/>
@@ -102,7 +105,7 @@ export const TradeDisplay = ({ side, data, pairs, ...rest }) => {
 	);
 };
 
-const TradeNotification = ({ onClose, data: { order, data }, pairs }) => {
+const TradeNotification = ({ onClose, data: { order, data }, pairs, coins }) => {
 	const { side, type } = order;
 	const notificationProps = getTitleAndIcon(side, type);
 
@@ -113,13 +116,14 @@ const TradeNotification = ({ onClose, data: { order, data }, pairs }) => {
 			compressOnMobile={true}
 			onClose={onClose}
 		>
-			<TradeDisplay side={side} data={data} pairs={pairs} />
+			<TradeDisplay side={side} data={data} pairs={pairs} coins={coins} />
 		</NotificationWraper>
 	);
 };
 
 const mapStateToProps = state => ({
-	pairs: state.app.pairs
+	pairs: state.app.pairs,
+	coins: state.app.coins
 });
 
 export default connect(mapStateToProps)(TradeNotification);

@@ -40,7 +40,25 @@ class Signup extends Component {
 		showContactForm: false
 	};
 
+	getReferralCode = () => {
+		let affiliation_code = '';
+		if (this.props.location
+			&& this.props.location.query
+			&& this.props.location.query.affiliation_code) {
+			affiliation_code = this.props.location.query.affiliation_code;
+		} else if (window.location
+			&& window.location.search
+			&& window.location.search.includes('affiliation_code')) {
+			affiliation_code = window.location.search.split('?affiliation_code=')[1];
+		}
+		return affiliation_code;
+	}
+
 	onSubmitSignup = (values) => {
+		const affiliation_code = this.getReferralCode();
+		if (affiliation_code) {
+			values.referral = affiliation_code;
+		}
 		return performSignup(values)
 			.then((res) => {
 				this.setState({ success: true });

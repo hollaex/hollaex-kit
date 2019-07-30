@@ -13,7 +13,8 @@ import {
 	SET_TICKERS,
 	SET_UNREAD,
 	SET_ORDER_LIMITS,
-	SET_TICKER_FROM_TRADE
+	SET_TICKER_FROM_TRADE,
+	SET_CURRENCIES
 } from '../actions/appActions';
 import { THEME_DEFAULT } from '../config/constants';
 import { getLanguage } from '../utils/string';
@@ -48,7 +49,8 @@ const INITIAL_STATE = {
 	pairs: {},
 	pair: '',
 	tickers: {},
-	orderLimits: {}
+	orderLimits: {},
+	coins: {}
 };
 
 const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
@@ -62,6 +64,11 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 			return {
 				...state,
 				pair: payload.pair
+			};
+		case SET_CURRENCIES:
+			return {
+				...state,
+				coins: payload.coins
 			};
 		case SET_NOTIFICATION: {
 			const newNotification =

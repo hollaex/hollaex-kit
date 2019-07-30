@@ -13,7 +13,7 @@ import {
 	FLEX_CENTER_CLASSES,
 	BALANCE_ERROR
 } from '../../config/constants';
-import { fiatSymbol } from '../../utils/currency';
+import { BASE_CURRENCY } from '../../config/constants';
 
 import ToogleButton from './ToogleButton';
 import ReviewBlock from './ReviewBlock';
@@ -24,11 +24,11 @@ import InputBlock from './InputBlock';
 
 const getInitialTab = ( path ) => {
 	let activeTab = -1;
-	if (path === `${STRINGS.BTC_SHORTNAME.toLowerCase()}-${STRINGS.FIAT_SHORTNAME_EN.toLowerCase()}`) {
+	if (path === `${STRINGS.BTC_SHORTNAME.toLowerCase()}-${STRINGS[`${BASE_CURRENCY.toUpperCase()}_SHORTNAME_EN`].toLowerCase()}`) {
 		activeTab = 0;
-	} else if (path === `${STRINGS.ETH_SHORTNAME.toLowerCase()}-${STRINGS.FIAT_SHORTNAME_EN.toLowerCase()}`) {
+	} else if (path === `${STRINGS.ETH_SHORTNAME.toLowerCase()}-${STRINGS[`${BASE_CURRENCY.toUpperCase()}_SHORTNAME_EN`].toLowerCase()}`) {
 		activeTab = 1;
-	} else if (path === `${STRINGS.BCH_SHORTNAME.toLowerCase()}-${STRINGS.FIAT_SHORTNAME_EN.toLowerCase()}`) {
+	} else if (path === `${STRINGS.BCH_SHORTNAME.toLowerCase()}-${STRINGS[`${BASE_CURRENCY.toUpperCase()}_SHORTNAME_EN`].toLowerCase()}`) {
 		activeTab = 2;
 	}
 	
@@ -47,7 +47,7 @@ class QuickTrade extends Component {
 	};
 
 	componentDidMount() {
-		if (this.props.symbol !== fiatSymbol) {
+		if (this.props.symbol !== BASE_CURRENCY) {
 			this.updateTabs()
 			this.onChangeSymbol(this.props.symbol);
 		} else {
@@ -71,7 +71,7 @@ class QuickTrade extends Component {
 
 	setActiveTab = (activeTab) => {
 		const { currencies } = this.state;
-		browserHistory.push(`/quick-trade/${currencies[activeTab]}-${STRINGS.FIAT_SHORTNAME_EN.toLowerCase()}`)
+		browserHistory.push(`/quick-trade/${currencies[activeTab]}-${STRINGS[`${BASE_CURRENCY.toUpperCase()}_SHORTNAME_EN`].toLowerCase()}`)
 		this.setState({ activeTab });
 	}
 

@@ -242,15 +242,15 @@ export const setUsernameStore = (username) => ({
 	}
 });
 
-export const requestLimits = () => ({
-	type: 'REQUEST_LIMITS',
-	payload: axios.get('/limits')
-});
+// export const requestLimits = () => ({
+// 	type: 'REQUEST_LIMITS',
+// 	payload: axios.get('/limits')
+// });
 
-export const requestFees = () => ({
-	type: 'REQUEST_FEES',
-	payload: axios.get('/fees')
-});
+// export const requestFees = () => ({
+// 	type: 'REQUEST_FEES',
+// 	payload: axios.get('/fees')
+// });
 
 export const createAddress = (addressType = '') => ({
 	type: 'CREATE_ADDRESS',
@@ -265,3 +265,22 @@ export const getTradeVolume = () => ({
 	type: 'GET_TRADE_VOLUME',
 	payload: axios.get(`/user/stats`)
 });
+
+export function getUserReferralCount() {
+	return (dispatch) => {
+		axios
+			.get('/user/affiliation')
+			.then((res) => {
+				dispatch({
+					type: 'REFERRAL_COUNT_FULFILLED',
+					payload: res.data
+				});
+			})
+			.catch((err) => {
+				dispatch({
+					type: 'REFERRAL_COUNT_REJECTED',
+					payload: err.response
+				});
+			});
+	};
+}

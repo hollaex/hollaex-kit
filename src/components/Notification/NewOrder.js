@@ -1,6 +1,7 @@
 import React from 'react';
 import EventListener from 'react-event-listener';
-import { ICONS, CURRENCIES } from '../../config/constants';
+import { connect } from 'react-redux';
+import { ICONS } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 import {
 	NotificationWraper,
@@ -8,13 +9,14 @@ import {
 	InformationRow
 } from './Notification';
 import { Button } from '../';
+import { formatToCurrency } from '../../utils/currency';
 
-const generateRows = ({ order, pairData }) => {
+const generateRows = ({ order, pairData }, coins) => {
 	const { type, side, price, size, orderFees, orderPrice } = order;
 	const secondaryCurrency = pairData.pair_2.toUpperCase();
-	const secondaryFormat = CURRENCIES[pairData.pair_2].formatToCurrency;
+	const secondaryFormat = coins[pairData.pair_2] || {};
 	const baseCurrency = pairData.pair_base.toUpperCase();
-	const baseFormat = CURRENCIES[pairData.pair_base].formatToCurrency;
+	const baseFormat = coins[pairData.pair_base] || {};
 	const rows = [];
 
 	rows.push({
@@ -34,7 +36,7 @@ const generateRows = ({ order, pairData }) => {
 		label: STRINGS.SIZE,
 		value: STRINGS.formatString(
 			STRINGS[`${baseCurrency}_PRICE_FORMAT`],
-			baseFormat(size),
+			formatToCurrency(size, baseFormat.min),
 			STRINGS[`${baseCurrency}_CURRENCY_SYMBOL`]
 		)
 	});
@@ -44,7 +46,7 @@ const generateRows = ({ order, pairData }) => {
 			label: STRINGS.PRICE,
 			value: STRINGS.formatString(
 				STRINGS[`${baseCurrency}_PRICE_FORMAT`],
-				secondaryFormat(price),
+				formatToCurrency(price, secondaryFormat.min),
 				STRINGS[`${secondaryCurrency}_CURRENCY_SYMBOL`]
 			)
 		});
@@ -54,7 +56,7 @@ const generateRows = ({ order, pairData }) => {
 		label: STRINGS.FEE,
 		value: STRINGS.formatString(
 			STRINGS[`${baseCurrency}_PRICE_FORMAT`],
-			secondaryFormat(orderFees),
+			formatToCurrency(orderFees, secondaryFormat.min),
 			STRINGS[`${secondaryCurrency}_CURRENCY_SYMBOL`]
 		)
 	});
@@ -63,7 +65,7 @@ const generateRows = ({ order, pairData }) => {
 		label: STRINGS.TOTAL_ORDER,
 		value: STRINGS.formatString(
 			STRINGS[`${baseCurrency}_PRICE_FORMAT`],
-			secondaryFormat(orderPrice),
+			formatToCurrency(orderPrice, secondaryFormat.min),
 			STRINGS[`${secondaryCurrency}_CURRENCY_SYMBOL`]
 		)
 	});
@@ -79,8 +81,8 @@ const OrderDisplay = ({ rows }) => {
 	);
 };
 
-const NewOrderNotification = ({ type, data, onBack, onConfirm }) => {
-	const rows = generateRows(data);
+const NewOrderNotification = ({ type, data, coins, onBack, onConfirm }) => {
+	const rows = generateRows(data, coins);
 	const onConfirmClick = () => {
 		onConfirm();
 		onBack();
@@ -109,4 +111,8 @@ const NewOrderNotification = ({ type, data, onBack, onConfirm }) => {
 	);
 };
 
-export default NewOrderNotification;
+const mapStateToProps = (state) => ({
+	coins: state.app.coins
+});
+
+export default connect(mapStateToProps)(NewOrderNotification);

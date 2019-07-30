@@ -6,8 +6,8 @@ import moment from 'moment';
 import STRINGS from '../../../config/localizedStrings';
 import { getTradeVolume } from '../../../actions/userAction';
 import { BarChart } from '../../../components';
-import { calculatePrice, formatFiatAmount } from '../../../utils/currency';
-import { TRADING_VOLUME_CHART_LIMITS, SUMMMARY_ICON, CHART_MONTHS } from '../../../config/constants';
+import { calculatePrice, formatToCurrency } from '../../../utils/currency';
+import { TRADING_VOLUME_CHART_LIMITS, SUMMMARY_ICON, CHART_MONTHS, BASE_CURRENCY } from '../../../config/constants';
 
 class TradingVolume extends Component {
     state = {
@@ -24,15 +24,16 @@ class TradingVolume extends Component {
 
     componentWillReceiveProps(nextProps) {
         if (JSON.stringify(this.props.tradeVolumes) !== JSON.stringify(nextProps.tradeVolumes)) {
-            this.constructData(nextProps.tradeVolumes.data);
+            this.constructData(nextProps.tradeVolumes.data, nextProps.coins);
         }
     }
 
-    constructData = tradeValues => {
+    constructData = (tradeValues, coins) => {
         const { pairs, prices, activeTheme } = this.props;
         const chartData = [];
         let totalVolume = 0;
         let peakVolume = this.state.peakVolume;
+        const { min } = coins[BASE_CURRENCY] || {};
         const currentMonth = moment().month();
         let chartMonths = [ ...CHART_MONTHS ];
         for (let i = 0; i <= currentMonth; i++) {
@@ -97,7 +98,7 @@ class TradingVolume extends Component {
             });
             peakVolume += (peakVolume * 0.1);
 
-            this.setState({ chartData, limitContent, peakVolume, totalVolume: formatFiatAmount(totalVolume) });
+            this.setState({ chartData, limitContent, peakVolume, totalVolume: formatToCurrency(totalVolume, min) });
         }
     };
 
@@ -110,7 +111,7 @@ class TradingVolume extends Component {
                     <div className="summary-content-txt">
                         <div>{STRINGS.formatString(
                             STRINGS.SUMMARY.TRADING_VOLUME_TXT_1,
-                            STRINGS.FIAT_FULLNAME
+                            STRINGS[`${BASE_CURRENCY.toUpperCase()}_FULLNAME`]
                             )}
                         </div>
                         <div>{STRINGS.SUMMARY.TRADING_VOLUME_TXT_2}</div>
@@ -131,6 +132,7 @@ class TradingVolume extends Component {
 const mapStateToProps = state => ({
     tradeVolumes: state.user.tradeVolumes,
     pairs: state.app.pairs,
+    coins: state.app.coins,
     prices: state.orderbook.prices,
     activeTheme: state.app.theme
 });

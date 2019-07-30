@@ -1,25 +1,29 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import STRINGS from '../../config/localizedStrings';
 import { CurrencyBall } from '../';
-import { CURRENCIES } from '../../config/constants';
 import {
-	calculatePrice,
-	fiatFormatToCurrency,
-	fiatShortName,
-	fiatSymbol
+	formatToCurrency,
+	calculatePrice
 } from '../../utils/currency';
+import { BASE_CURRENCY } from '../../config/constants';
 
-const CurrencyBallWithPrice = ({ symbol, amount, price, size = 'm' }) => {
-	const { shortName, formatToCurrency } = CURRENCIES[symbol];
+const CurrencyBallWithPrice = ({ symbol, amount, price, size = 'm', coins = {} }) => {
+	const { name, min } = coins[symbol] || {};
+	const baseCoin = coins[BASE_CURRENCY] || {};
+	const currencyShortName = STRINGS[`${symbol.toUpperCase()}_SHORTNAME`]
+		? STRINGS[`${symbol.toUpperCase()}_SHORTNAME`]
+		: name;
 	return (
 		<div className="with_price-block_amount d-flex direction_ltr">
-			<CurrencyBall name={shortName} symbol={symbol} size={size} />
+			<CurrencyBall name={currencyShortName} symbol={symbol} size={size} />
 			<div className="with_price-block_amount-value d-flex">
-				{`${formatToCurrency(amount)}`}
-				{symbol !== fiatSymbol && (
-					<div className="with_price-block_amount-value-fiat d-flex align-items-end">
-						{` ~ ${fiatFormatToCurrency(
-							calculatePrice(amount, price)
-						)} ${fiatShortName}`}
+				{`${formatToCurrency(amount, min)}`}
+				{symbol !== BASE_CURRENCY && (
+					<div className={`with_price-block_amount-value-${BASE_CURRENCY.toLowerCase()} d-flex align-items-end`}>
+						{` ~ ${formatToCurrency(
+							calculatePrice(amount, price), baseCoin.min
+						)} ${STRINGS[`${BASE_CURRENCY.toUpperCase()}_SHORTNAME`]}`}
 					</div>
 				)}
 			</div>
@@ -27,4 +31,8 @@ const CurrencyBallWithPrice = ({ symbol, amount, price, size = 'm' }) => {
 	);
 };
 
-export default CurrencyBallWithPrice;
+const mapStateToProps = (state) => ({
+	coins: state.app.coins
+});
+
+export default connect(mapStateToProps)(CurrencyBallWithPrice);

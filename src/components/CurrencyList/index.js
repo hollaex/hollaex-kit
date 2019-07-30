@@ -4,9 +4,9 @@ import classnames from 'classnames';
 import ReactSVG from 'react-svg';
 import MarketList from './MarketList';
 import STRINGS from '../../config/localizedStrings';
-import  { ICONS } from '../../config/constants';
-import { CURRENCIES } from '../../config/constants';
+import { BASE_CURRENCY, ICONS } from '../../config/constants';
 import { getClasesForLanguage } from '../../utils/string';
+import { formatToCurrency } from '../../utils/currency';
 
 class CurrencyList extends Component {
 	state = {
@@ -33,9 +33,9 @@ class CurrencyList extends Component {
 	};
 
 	render() {
-		const { className, pairs, orderBookData, activeTheme, pair, activeLanguage } = this.props;
+		const { className, pairs, orderBookData, activeTheme, pair, activeLanguage, coins } = this.props;
 		const { markets, focusedSymbol } = this.state;
-		const { formatToCurrency } = CURRENCIES.fiat;
+		const { min } = coins[BASE_CURRENCY] || {};
 		const obj = {};
 		Object.entries(pairs).forEach(([key, pair]) => {
 			obj[pair.pair_base] = '';
@@ -44,7 +44,7 @@ class CurrencyList extends Component {
 		let marketPrice = {};
 		Object.keys(orderBookData).forEach(order => {
 			const symbol = order.split('-')[0];
-			if(orderBookData[order].length && order.includes(STRINGS.FIAT_SHORTNAME_EN.toLowerCase())) marketPrice[symbol] = orderBookData[order][0].price;
+			if(orderBookData[order].length && order.includes(STRINGS[`${BASE_CURRENCY.toUpperCase()}_SHORTNAME_EN`].toLowerCase())) marketPrice[symbol] = orderBookData[order][0].price;
 		});
 		return (
 			<div
@@ -71,12 +71,12 @@ class CurrencyList extends Component {
 							{STRINGS[`${symbol.toUpperCase()}_NAME`]}:
 							<div className="ml-1">
 								{STRINGS.formatString(
-									STRINGS.FIAT_PRICE_FORMAT,
-									formatToCurrency(marketPrice[symbol]),
+									STRINGS[`${BASE_CURRENCY.toUpperCase()}_PRICE_FORMAT`],
+									formatToCurrency(marketPrice[symbol], min),
 									''
 								)}
 							</div>
-							<div className="ml-1 mr-1">{`${STRINGS.FIAT_CURRENCY_SYMBOL}`}</div>
+							<div className="ml-1 mr-1">{`${STRINGS[`${BASE_CURRENCY.toUpperCase()}_CURRENCY_SYMBOL`]}`}</div>
 						</div>
 					)
 				})}
@@ -88,6 +88,7 @@ class CurrencyList extends Component {
 
 const mapStateToProps = (store) => ({
 	pairs: store.app.pairs,
+	coins: store.app.coins,
 	orderBookData: store.orderbook.pairsTrades,
 	activeTheme: store.app.theme,
 	pair: store.app.pair,

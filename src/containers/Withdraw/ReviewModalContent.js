@@ -2,8 +2,8 @@ import React from 'react';
 import math from 'mathjs';
 import ReactSVG from 'react-svg';
 import { Button } from '../../components';
-import { fiatSymbol, fiatFormatToCurrency } from '../../utils/currency';
-import { CURRENCIES, ICONS } from '../../config/constants';
+import { formatToCurrency } from '../../utils/currency';
+import { ICONS, BASE_CURRENCY } from '../../config/constants';
 
 import STRINGS from '../../config/localizedStrings';
 
@@ -26,13 +26,15 @@ const ButtonSection = ({ onClickAccept, onClickCancel }) => {
 };
 
 const ReviewModalContent = ({
+	coins,
 	currency,
 	data,
 	price,
 	onClickAccept,
 	onClickCancel
 }) => {
-	const { formatToCurrency } = CURRENCIES[currency];
+	const { min } = coins[currency || BASE_CURRENCY] || {};
+	const baseCoin = coins[BASE_CURRENCY] || {};
 	const shortName = STRINGS[`${currency.toUpperCase()}_SHORTNAME`];
 	const name = STRINGS[`${currency.toUpperCase()}_NAME`];
 
@@ -42,7 +44,7 @@ const ReviewModalContent = ({
 
 	const cryptoAmountText = STRINGS.formatString(
 		STRINGS[`${currency.toUpperCase()}_PRICE_FORMAT`],
-		formatToCurrency(totalTransaction),
+		formatToCurrency(totalTransaction, min),
 		shortName
 	);
 
@@ -54,7 +56,7 @@ const ReviewModalContent = ({
 				path={ICONS.CHECK_SENDING_BITCOIN}
 				wrapperClassName="review-icon"
 			/>
-			{currency === fiatSymbol ? (
+			{currency === BASE_CURRENCY ? (
 				<div className="d-flex flex-column align-items-center review-info_container">
 					<div className="review-info_message">
 						{STRINGS.WITHDRAW_PAGE.MESSAGE_ABOUT_WITHDRAW}
@@ -63,11 +65,11 @@ const ReviewModalContent = ({
 						<div>{cryptoAmountText}</div>
 						<div className="review-fee_message">
 							{STRINGS.formatString(
-								STRINGS.WITHDRAW_PAGE.MESSAGE_FEE_FIAT,
+								STRINGS.WITHDRAW_PAGE.MESSAGE_FEE_BASE,
 								STRINGS.formatString(
-									STRINGS.FIAT_PRICE_FORMAT,
-									fiatFormatToCurrency(data.fee),
-									STRINGS.FIAT_SHORTNAME
+									STRINGS[`${BASE_CURRENCY.toUpperCase()}_PRICE_FORMAT`],
+									formatToCurrency(data.fee, baseCoin.min),
+									STRINGS[`${BASE_CURRENCY.toUpperCase()}_SHORTNAME`]
 								)
 							)}
 						</div>
@@ -85,9 +87,9 @@ const ReviewModalContent = ({
 								STRINGS.WITHDRAW_PAGE.MESSAGE_FEE,
 								data.fee,
 								STRINGS.formatString(
-									STRINGS.FIAT_PRICE_FORMAT,
-									fiatFormatToCurrency(feePrice),
-									STRINGS.FIAT_SHORTNAME
+									STRINGS[`${BASE_CURRENCY.toUpperCase()}_PRICE_FORMAT`],
+									formatToCurrency(feePrice, baseCoin.min),
+									STRINGS[`${BASE_CURRENCY.toUpperCase()}_SHORTNAME`]
 								)
 							)}
 						</div>
@@ -114,7 +116,8 @@ ReviewModalContent.defaultProps = {
 	data: {},
 	onClickAccept: () => {},
 	onClickCancel: () => {},
-	price: 0
+	price: 0,
+	coins: {}
 };
 
 export default ReviewModalContent;

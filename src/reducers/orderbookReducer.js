@@ -42,7 +42,7 @@ const INITIAL_STATE = {
 	symbol: '',
 	price: 0,
 	prices: {
-		fiat: 1,
+		eur: 1,
 		eth: 1,
 		btc: 1,
 		bch: 1
@@ -259,7 +259,8 @@ export default function reducer(state = INITIAL_STATE, { payload, type }) {
 
 		case 'SET_TRADES_DATA': {
 			const { action, symbol, ...rest } = payload;
-			const { prices, pairs } = state;
+			const { pairs } = state;
+			const prices = { ...state.prices };
 			let pairsTrades = {};
 			if (action === 'partial') {
 				pairsTrades = {
@@ -288,7 +289,7 @@ export default function reducer(state = INITIAL_STATE, { payload, type }) {
 					keyPrice = pairs[symbol].pair_base;
 				}
 
-				if (keyPrice) {
+				if (keyPrice && rest[symbol][0]) {
 					prices[keyPrice] = rest[symbol][0].price;
 				}
 			}

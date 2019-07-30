@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import { Button } from '../../../components';
-import { CURRENCIES } from '../../../config/constants';
 import {
-	calculatePrice,
-	fiatSymbol
+	calculatePrice
 } from '../../../utils/currency';
+import { BASE_CURRENCY } from '../../../config/constants';
 import Currency from './Currency';
 import Arrow from './Arrow';
 import STRINGS from '../../../config/localizedStrings';
@@ -15,7 +14,7 @@ class CurrencySlider extends Component {
 	};
 
 	componentWillMount() {
-		const currency = Object.keys(CURRENCIES)[0];
+		const currency = Object.keys(this.props.coins)[0];
 		const currencyIndex = this.findCurrentCurrencyIndex(currency);
 		this.setcurrentCurrency(currency);
 		this.setcurrentCurrencyIndex(currencyIndex);
@@ -31,7 +30,7 @@ class CurrencySlider extends Component {
 
 	nextCurrency = () => {
 		const { currentCurrency } = this.state;
-		const currencyArray = Object.keys(CURRENCIES);
+		const currencyArray = Object.keys(this.props.coins);
 		const currenciesLength = currencyArray.length;
 		const currencyIndex = this.findCurrentCurrencyIndex(currentCurrency);
 		const currentCurrencyIndex =
@@ -44,7 +43,7 @@ class CurrencySlider extends Component {
 
 	previousCurrency = () => {
 		const { currentCurrency } = this.state;
-		const currencyArray = Object.keys(CURRENCIES);
+		const currencyArray = Object.keys(this.props.coins);
 		const currencyIndex = this.findCurrentCurrencyIndex(currentCurrency);
 		const currentCurrencyIndex =
 			currencyIndex <= 0 ? currencyArray.length - 1 : currencyIndex - 1;
@@ -54,16 +53,16 @@ class CurrencySlider extends Component {
 	};
 
 	findCurrentCurrencyIndex = (currentCurrency) =>
-		Object.keys(CURRENCIES).findIndex(
+		Object.keys(this.props.coins).findIndex(
 			(currency) => currency === currentCurrency
 		);
 
 	render() {
-		const { wallets, balance, prices, navigate } = this.props;
+		const { wallets, balance, prices, navigate, coins } = this.props;
 		const { currentCurrency } = this.state;
 		const balanceValue = balance[`${currentCurrency}_balance`];
-		const balanceFiat =
-			currentCurrency !== fiatSymbol
+		const baseBalance =
+			currentCurrency !== BASE_CURRENCY
 				&& calculatePrice(balanceValue, prices[currentCurrency]);
 
 		return (
@@ -77,7 +76,8 @@ class CurrencySlider extends Component {
 							currency={currentCurrency}
 							balance={balance}
 							balanceValue={balanceValue}
-							balanceText={balanceFiat}
+							balanceText={baseBalance}
+							coins={coins}
 						/>
 					}
 					<div className="d-flex align-items-center arrow-container">
@@ -86,20 +86,20 @@ class CurrencySlider extends Component {
 				</div>
 
 				<div className="mb-4 button-container">
-					{wallets[CURRENCIES[currentCurrency].fullName.toLowerCase()] && (
+					{wallets[STRINGS[`${currentCurrency.toUpperCase()}_FULLNAME`].toLowerCase()] && (
 						<div className="d-flex justify-content-between flew-row ">
 							<Button
 								className="mr-4"
 								label={STRINGS.formatString(
 									STRINGS.RECEIVE_CURRENCY,
-									CURRENCIES[currentCurrency].fullName
+									STRINGS[`${currentCurrency.toUpperCase()}_FULLNAME`]
 								).join('')}
 								onClick={() => navigate(`wallet/${currentCurrency}/deposit`)}
 							/>
 							<Button
 								label={STRINGS.formatString(
 									STRINGS.SEND_CURRENCY,
-									CURRENCIES[currentCurrency].fullName
+									STRINGS[`${currentCurrency.toUpperCase()}_FULLNAME`]
 								).join('')}
 								onClick={() => navigate(`wallet/${currentCurrency}/withdraw`)}
 							/>

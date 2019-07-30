@@ -3,12 +3,12 @@ import ReactSVG from 'react-svg';
 import classnames from 'classnames';
 
 import { Sortable } from '../Sortable';
-import { ICONS, CURRENCIES, BASE_CURRENCY } from '../../config/constants';
+import { ICONS, BASE_CURRENCY } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
-import { formatPercentage, formatAverage } from '../../utils/currency';
+import { formatToCurrency, formatPercentage, formatAverage } from '../../utils/currency';
 
-const Tab = ({ pair = {}, tab, ticker = {}, activePairTab, onTabClick, onTabChange, items, selectedToOpen, selectedToRemove, ...rest }) => {
-    const { formatToCurrency } = CURRENCIES[pair.pair_base || BASE_CURRENCY];
+const Tab = ({ pair = {}, tab, ticker = {}, coins = {}, activePairTab, onTabClick, onTabChange, items, selectedToOpen, selectedToRemove, ...rest }) => {
+    const { min } = coins[pair.pair_base || BASE_CURRENCY] || {};
     const priceDifference = (ticker.close || 0) - (ticker.open || 0);
     const tickerPercent = priceDifference === 0 ? 0 : ((priceDifference / ticker.open) * 100);
     const priceDifferencePercent = isNaN(tickerPercent) ? formatPercentage(0) : formatPercentage(tickerPercent);
@@ -34,9 +34,9 @@ const Tab = ({ pair = {}, tab, ticker = {}, activePairTab, onTabClick, onTabChan
                     <div className="app_bar-currency-txt">
                         {STRINGS[`${pairBase.toUpperCase()}_SHORTNAME`]}/{STRINGS[`${pair2.toUpperCase()}_SHORTNAME`]}:
                     </div>
-                    <div className="title-font ml-1">{`${STRINGS[`${pair2.toUpperCase()}_CURRENCY_SYMBOL`]} ${formatAverage(formatToCurrency(ticker.close))}`}</div>
+                    <div className="title-font ml-1">{`${STRINGS[`${pair2.toUpperCase()}_CURRENCY_SYMBOL`]} ${formatAverage(formatToCurrency(ticker.close, min))}`}</div>
                     <div className={priceDifference < 0 ? "app-price-diff-down app-bar-price_diff_down" : "app-bar-price_diff_up app-price-diff-up"}>
-                        {formatAverage(formatToCurrency(priceDifference))}
+                        {formatAverage(formatToCurrency(priceDifference, min))}
                     </div>
                     <div
                         className={priceDifference < 0

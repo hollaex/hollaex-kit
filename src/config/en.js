@@ -9,6 +9,13 @@ export default {
 	FIAT_CURRENCY_SYMBOL: '€',
 	FIAT_PRICE_FORMAT: '{0} {1}', // 0-> amount  1 -> symbol  600,000 T
 
+	EUR_NAME: 'EURO',
+	EUR_FULLNAME: 'Euro',
+	EUR_SHORTNAME: 'EUR',
+	EUR_SHORTNAME_EN: 'EUR',
+	EUR_CURRENCY_SYMBOL: '€',
+	EUR_PRICE_FORMAT: '{0} {1}', // 0-> amount  1 -> symbol  600,000 T
+
 	BTC_NAME: 'Bitcoin',
 	BTC_FULLNAME: 'Bitcoin',
 	BTC_SHORTNAME: 'BTC',
@@ -36,7 +43,7 @@ export default {
 	LOGOUT_CONFIRM_TEXT: 'Are you sure?. Do you want to logout',
 	ADD_TRADING_PAIR: 'Add Trading Pair',
 	ACTIVE_TRADES: 'You must {0} to access your active trades',
-	CANCEL_FIAT_WITHDRAWAL: 'Cancel {0} Withdrawal',
+	CANCEL_BASE_WITHDRAWAL: 'Cancel {0} Withdrawal',
 	CANCEL_WITHDRAWAL: 'Cancel Withdrawal',
 	CANCEL_WITHDRAWAL_POPUP_CONFIRM: 'Do you want to cancel your pending withdrawal of:',
 	CANT_BE_CANCELLED:'-',
@@ -157,6 +164,7 @@ export default {
 	},
 	DEPOSIT: {
 		CRYPTO_LABELS: {
+			ADDRESS: 'Your {0} receiving address', // new
 			BTC: 'Your Bitcoin receiving address',
 			ETH: 'Your Ethereum receiving address',
 			BCH: 'Your Bitcoin Cash receiving address'
@@ -245,12 +253,7 @@ export default {
 			SEE_HISTORY: 'see history'
 		},
 		DEPOSITS: {
-			FIAT: {
-				TITLE: '{0} Deposit received',
-				SUBTITLE: 'You’ve received your {0} deposit'
-			},
-			BTC: {
-				TITLE_RECEIVED: '{0} Deposit received',
+			TITLE_RECEIVED: '{0} Deposit received',
 				TITLE_INCOMING: 'Incoming {0}',
 				SUBTITLE_RECEIVED: 'You’ve received your {0} deposit',
 				SUBTITLE_INCOMING: 'You have incoming {0}',
@@ -258,27 +261,6 @@ export default {
 					'Your {0} require 1 confirmations before you can begin trading.',
 				INFORMATION_PENDING_2:
 					'This may take 10-30 minutes. We will send an email once your {0} is confirmed on the blockchain.'
-			},
-			ETH: {
-				TITLE_RECEIVED: '{0} Deposit received',
-				TITLE_INCOMING: 'Incoming {0}',
-				SUBTITLE_RECEIVED: 'You’ve received your {0} deposit',
-				SUBTITLE_INCOMING: 'You have incoming {0}',
-				INFORMATION_PENDING_1:
-					'Your {0} require 1 confirmations before you can begin trading.',
-				INFORMATION_PENDING_2:
-					'This may take 10-30 minutes. We will send an email once your {0} is confirmed on the blockchain.'
-			},
-			BCH: {
-				TITLE_RECEIVED: '{0} Deposit received',
-				TITLE_INCOMING: 'Incoming {0}',
-				SUBTITLE_RECEIVED: 'You’ve received your {0} deposit',
-				SUBTITLE_INCOMING: 'You have incoming {0}',
-				INFORMATION_PENDING_1:
-					'Your {0} requires 2 confirmations before you can begin trading.',
-				INFORMATION_PENDING_2:
-					'This may take 10-30 minutes. We will send an email once your {0} is confirmed on the blockchain.'
-			},
 		}
 	},
 	OTP_FORM: {
@@ -405,8 +387,8 @@ export default {
 		GO_BACK: 'Go Back', 
 		BANK_VERIFICATION_TEXT_1: 'You can add up to 3 bank accounts. International bank accounts will require you contacting customer support and will have limited withdrawal limits.', 
 		BANK_VERIFICATION_TEXT_2: 'By verifying your bank account you can obtain the following:', 
-		FIAT_WITHDRAWAL: 'Fiat withdrawal', 
-		FIAT_DEPOSITS: 'Fiat deposits', 
+		BASE_WITHDRAWAL: 'Fiat withdrawal', 
+		BASE_DEPOSITS: 'Fiat deposits', 
 		ADD_ANOTHER_BANK_ACCOUNT: 'Add Another Bank Account', 
 		BANK_NAME: 'Bank Name', 
 		ACCOUNT_NUMBER: 'Account Number', 
@@ -777,6 +759,7 @@ export default {
 		'Type the amount of {0} you wish to withdraw',
 	WITHDRAWALS_FORM_FEE_BTC_LABEL: 'Bitcoin transaction fee (This is Bitcoin mining fee. If you lower that amount there is chance your transaction takes significant time to get confirmed.)',
 	WITHDRAWALS_FORM_FEE_ETH_LABEL: 'Ethereum transaction fee (This is Ethereum mining fee. If you lower that amount there is chance your transaction takes significant time to get confirmed.)', // TODO CHECK
+	WITHDRAWALS_FORM_FEE_COMMON_LABEL: '{0} transaction fee (This is {0} mining fee. If you lower that amount there is chance your transaction takes significant time to get confirmed.)', // new
 	WITHDRAWALS_FORM_FEE_FIAT_LABEL: 'Bank withdrawal fee',
 	WITHDRAWALS_FORM_FEE_PLACEHOLDER:
 		'Type the amount of {0} you wish to use in the fee of the transaction',
@@ -821,12 +804,12 @@ export default {
 			'Please ensure the accuracy of this address since {0} transfers are irreversible',
 		MESSAGE_ABOUT_WITHDRAW: 'You are about to transfer to your bank account',
 		MESSAGE_FEE: 'Transactions fee of {0} ({1}) included',
-		MESSAGE_FEE_FIAT: 'Transactions fee of {0} included',
-		FIAT_MESSAGE_1:
+		MESSAGE_FEE_BASE: 'Transactions fee of {0} included',
+		BASE_MESSAGE_1:
 			'You can only withdraw to a bank account in a name that matches the name registered with your HOLLAEX account.',
-		FIAT_MESSAGE_2: 'Withdrawal min amount',
-		FIAT_MESSAGE_3: 'Daily withdrawal max amount',
-		FIAT_INCREASE_LIMIT: 'Increase your daily limit',
+		BASE_MESSAGE_2: 'Withdrawal min amount',
+		BASE_MESSAGE_3: 'Daily withdrawal max amount',
+		BASE_INCREASE_LIMIT: 'Increase your daily limit',
 		CONFIRM_VIA_EMAIL: 'Confirm via Email',
 		CONFIRM_VIA_EMAIL_1: 'We have sent you a confirmation withdrawal email.',
 		CONFIRM_VIA_EMAIL_2: 'In order to complete the withdrawal process please confirm',
@@ -836,8 +819,8 @@ export default {
 		GO_WITHDRAWAL_HISTORY: 'Go To Withdrawal History'
 
 	},
-	WALLET_BUTTON_FIAT_DEPOSIT: 'deposit',
-	WALLET_BUTTON_FIAT_WITHDRAW: 'withdraw',
+	WALLET_BUTTON_BASE_DEPOSIT: 'deposit',
+	WALLET_BUTTON_BASE_WITHDRAW: 'withdraw',
 	WALLET_BUTTON_CRYPTOCURRENCY_DEPOSIT: 'receive',
 	WALLET_BUTTON_CRYPTOCURRENCY_WITHDRAW: 'send',
 	AVAILABLE_TEXT: 'Available',
@@ -992,8 +975,8 @@ export default {
 		LABEL_LEVEL_3: 'Three',
 		LABEL_MAKER_FEE: 'Maker Fee',
 		LABEL_TAKER_FEE: 'Taker Fee',
-		LABEL_FIAT_DEPOSIT: 'Daily Euro Deposit',
-		LABEL_FIAT_WITHDRAWAL: 'Daily Euro Withdrawal',
+		LABEL_BASE_DEPOSIT: 'Daily Euro Deposit',
+		LABEL_BASE_WITHDRAWAL: 'Daily Euro Withdrawal',
 		LABEL_BTC_DEPOSIT: 'Daily Bitcoin Deposit',
 		LABEL_BTC_WITHDRAWAL: 'Daily Bitcoin Withdrawal',
 		LABEL_ETH_DEPOSIT: 'Daily Ethereum Deposit',
@@ -1075,5 +1058,13 @@ export default {
 		NOMINAL_TRADING_WITH_MONTH: 'Nominal Trading Last {0}',
 		ACCOUNT_AGE_OF_MONTHS: 'Account Age of {0} Months',
 		TRADING_VOLUME_EQUIVALENT: '{0} {1} Trading Volume Equivalent'
+	},
+	REFERRAL_LINK: {
+		TITLE: 'Earn 10% in Commissions', // new
+		INFO_TEXT: 'Earn 1 HEX for every 10 HEX your friends buy.', // new
+		INFO_TEXT_1: 'Commissions are paid periodically to your HEX wallet', // new
+		COPY_FIELD_LABEL: 'Share the link below with friends and earn commissions:', // new
+		REFERRED_USER_COUT: 'You have referred {0} users', // new
+		COPY_LINK_BUTTON: 'COPY REFERRAL LINK' // new
 	}
 };

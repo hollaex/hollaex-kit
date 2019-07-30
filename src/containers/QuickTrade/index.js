@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux';
 import { isMobile } from 'react-device-detect';
 
 import STRINGS from '../../config/localizedStrings';
-import { ICONS, BALANCE_ERROR } from '../../config/constants';
+import { ICONS, BALANCE_ERROR, BASE_CURRENCY } from '../../config/constants';
 
 import {
 	QuickTrade,
@@ -21,7 +21,7 @@ import {
 	changeSymbol,
 	requestQuickTrade
 } from '../../actions/orderbookAction';
-import { formatBtcAmount, formatFiatAmount, calculateBalancePrice } from '../../utils/currency';
+import { formatBtcAmount, calculateBalancePrice, formatToCurrency } from '../../utils/currency';
 import { isLoggedIn } from '../../utils/token';
 import { changePair, setNotification, RISKY_ORDER } from '../../actions/appActions';
 
@@ -182,7 +182,7 @@ class QuickTradeContainer extends Component {
 	};
 
 	render() {
-		const { quoteData, pairData, activeTheme, quickTrade, orderLimits, pairs } = this.props;
+		const { quoteData, pairData, activeTheme, quickTrade, orderLimits, pairs, coins } = this.props;
 		const { showQuickTradeModal, side, pair } = this.state;
 
 		if (!pair || pair !== this.props.pair || !pairData) {
@@ -193,6 +193,7 @@ class QuickTradeContainer extends Component {
 		const { data, order } = quoteData;
 		const end = quoteData.data.exp;
 		const tradeData = isLoggedIn() ? quoteData : quickTrade;
+		const baseCoin = coins[BASE_CURRENCY] || {};
 		return (
 			<div>
 				{isMobile && <MobileBarBack onBackClick={this.onGoBack} />}
@@ -249,8 +250,8 @@ class QuickTradeContainer extends Component {
 											STRINGS.SIDES_VALUES[side],
 											formatBtcAmount(data.size),
 											name,
-											formatFiatAmount(data.price),
-											STRINGS.FIAT_NAME
+											formatToCurrency(data.price, baseCoin.min),
+											STRINGS[`${BASE_CURRENCY.toUpperCase()}_NAME`]
 										)}
 									</div>
 								</Countdown>
@@ -258,6 +259,7 @@ class QuickTradeContainer extends Component {
 									<QuoteResult
 										data={order}
 										name={name}
+										coins={coins}
 										onClose={this.onCloseDialog}
 									/>
 								)
@@ -277,6 +279,7 @@ const mapStateToProps = (store) => {
 		pair,
 		pairData,
 		pairs: store.app.pairs,
+		coins: store.app.coins,
 		quoteData: store.orderbook.quoteData,
 		activeTheme,
 		activeLanguage: store.app.language,

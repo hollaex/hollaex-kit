@@ -94,8 +94,8 @@ $logout--size-difference: 3rem;
 		}
 	}
 	.notification-buttons-wrapper {
-		.button-fiat {
-			background-color: $colors-currencies-fiat;
+		.button-eur {
+			background-color: $colors-currencies-eur;
 		}
 	}
 	.notification-information {
@@ -128,6 +128,29 @@ $logout--size-difference: 3rem;
 	// .new-order-notification.notification-content-wrapper {
 	// 	font-size: $font-size-subhead3;
 	// }
+
+	.invite_friends_wrapper {
+		width: 36rem;
+
+		.user_refer_info {
+			background-color: $colors-info-panel-background;
+			height: 5.5rem;
+		}
+
+		.icon_title-wrapper {
+			.icon_title-svg {
+				height: 8rem;
+				width: 8rem;
+			}
+			.icon_title-svg svg{
+				height: 8rem;
+				width: 8rem;
+			}
+			.icon_title-text.title {
+				font-size: 2rem;
+			}
+		}
+	}
 }
 
 .notification-wrapper {
@@ -195,20 +218,21 @@ $logout--size-difference: 3rem;
 			.check-order-1,
 			.check-order-2,
 			.coin-btc-4,
-			.coin-fiat-4 {
+			.coin-base-4 {
 				stroke: $dark-icon-color;
 			}
 			.market-buy,
 			.check-order-2,
 			.coin-btc-1,
 			.coin-btc-5,
-			.coin-fiat-1,
-			.coin-fiat-5,
+			.coin-base-1,
+			.coin-base-5,
 			.email_sent,
 			.limit-sell-03,
 			.limit-sell-04,
 			.limit-buy-03,
-			.limit-buy-04 {
+			.limit-buy-04,
+			.refer-icon {
 				fill: $dark-icon-color;
 			}
 			.limit-sell-01,
@@ -222,6 +246,12 @@ $logout--size-difference: 3rem;
 			g .wallet-selected-2 {
 				stroke: transparent;
 				fill: $dark-icon-color;
+			}
+		}
+
+		.invite_friends_wrapper {
+			.user_refer_info {
+				background-color: $dark-info-panel-background;
 			}
 		}
 	}

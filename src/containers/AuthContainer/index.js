@@ -2,9 +2,10 @@ import React from 'react';
 import classnames from 'classnames';
 import { isBrowser, isMobile } from 'react-device-detect';
 import { connect } from 'react-redux';
-import { FLEX_CENTER_CLASSES } from '../../config/constants';
+import { FLEX_CENTER_CLASSES, CAPTCHA_SITEKEY } from '../../config/constants';
 import { getClasesForLanguage } from '../../utils/string';
 import { getThemeClass } from '../../utils/theme';
+import { loadReCaptcha } from 'react-recaptcha-v3'
 
 const updateThemeToBody = (theme = 'white') => {
 	// const themeName = theme === 'dark' ? 'dark-auth-body' : 'light-auth-body';
@@ -18,6 +19,7 @@ const AuthContainer = ({ activeLanguage, activeTheme, children }) => {
 	const childWithLanguageClasses = React.Children.map(children, (child) =>
 		React.cloneElement(child, { activeLanguage, languageClasses })
 	);
+	loadReCaptcha(CAPTCHA_SITEKEY)
 	updateThemeToBody(activeTheme);
 	return (
 		<div

@@ -6,7 +6,7 @@ import STRINGS from '../../../config/localizedStrings';
 import { ICONS } from '../../../config/constants';
 
 
-const TraderAccounts = ({ account = {}, activeTheme, limits = [], isAccountDetails = false, onFeesAndLimits, onUpgradeAccount, logout }) => {
+const TraderAccounts = ({ account = {}, activeTheme, isAccountDetails = false, onFeesAndLimits, onUpgradeAccount, logout, onInviteFriends }) => {
     // let limitLevel = limits.filter(obj => obj.verification_level === account.level);
     return (
         <div className="d-flex">
@@ -27,6 +27,14 @@ const TraderAccounts = ({ account = {}, activeTheme, limits = [], isAccountDetai
                         {STRINGS.SUMMARY.VIEW_FEE_STRUCTURE.toUpperCase()}
                     </span>
                 </div>} */}
+                {!isAccountDetails && <div
+                    className="trade-account-link mb-2">
+                    <span
+                        className="pointer"
+                        onClick={onInviteFriends}>
+                        {STRINGS.REFERRAL_LINK.TITLE.toUpperCase()}
+                    </span>
+                </div>}
                 <div
                     className="trade-account-link mb-2">
                     <span

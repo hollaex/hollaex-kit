@@ -4,7 +4,8 @@ import { reduxForm } from 'redux-form';
 import { Accordion, Table, Button } from '../../components';
 import renderFields from '../../components/Form/factoryFields';
 import STRINGS from '../../config/localizedStrings';
-import { formatFiatAmount } from '../../utils/currency';
+import { formatBaseAmount } from '../../utils/currency';
+import { BASE_CURRENCY } from '../../config/constants';
 
 export const generateHeaders = (onAdjustPortfolio) => {
 	return [
@@ -86,7 +87,7 @@ class RiskForm extends Component {
 			{
 				id: 1,
 				percentage: { portfolioPercentage: initialValues.order_portfolio_percentage ? `${initialValues.order_portfolio_percentage}%` : '', popupWarning: initialValues.popup_warning },
-				assetValue: { percentPrice: percentPrice ? `${formatFiatAmount(percentPrice)} ${STRINGS.FIAT_CURRENCY_SYMBOL}` : 0, popupWarning: initialValues.popup_warning },
+				assetValue: { percentPrice: percentPrice ? `${formatBaseAmount(percentPrice)} ${STRINGS[`${BASE_CURRENCY.toUpperCase()}_CURRENCY_SYMBOL`]}` : 0, popupWarning: initialValues.popup_warning },
 				adjust: formFields,
 				warning: initialValues.popup_warning
 			}
@@ -96,7 +97,7 @@ class RiskForm extends Component {
 				title: STRINGS.USER_SETTINGS.CREATE_ORDER_WARING,
 				content: <div>
 					<p>{STRINGS.USER_SETTINGS.RISK_MANAGEMENT.INFO_TEXT}</p>
-					<p>{STRINGS.formatString(STRINGS.USER_SETTINGS.RISK_MANAGEMENT.INFO_TEXT_1, STRINGS.FIAT_FULLNAME, totalAssets).join('')}</p>
+					<p>{STRINGS.formatString(STRINGS.USER_SETTINGS.RISK_MANAGEMENT.INFO_TEXT_1, STRINGS[`${BASE_CURRENCY.toUpperCase()}_FULLNAME`], totalAssets).join('')}</p>
 					<Table
 						rowClassName="pt-2 pb-2"
 						headers={generateHeaders(onAdjustPortfolio)}

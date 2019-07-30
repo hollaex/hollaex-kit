@@ -10,9 +10,10 @@ import { Loader, WarningVerification, MobileBarBack } from '../../components';
 import {
 	ICONS,
 	MIN_VERIFICATION_LEVEL_TO_WITHDRAW,
-	MAX_VERIFICATION_LEVEL_TO_WITHDRAW
+	MAX_VERIFICATION_LEVEL_TO_WITHDRAW,
+	BASE_CURRENCY
 } from '../../config/constants';
-import { fiatSymbol, getCurrencyFromName, roundNumber } from '../../utils/currency';
+import { getCurrencyFromName, roundNumber } from '../../utils/currency';
 import {
 	performWithdraw,
 	requestWithdrawFee
@@ -24,9 +25,9 @@ import { openContactForm } from '../../actions/appActions';
 import WithdrawCryptocurrency from './form';
 import { generateFormValues, generateInitialValues } from './formUtils';
 import {
-	generateFiatInformation,
+	generateBaseInformation,
 	renderExtraInformation,
-	calculateFiatFee
+	calculateBaseFee
 } from './utils';
 
 import { renderInformation, renderTitleSection } from '../Wallet/components';
@@ -56,7 +57,8 @@ class Withdraw extends Component {
 			this.validateRoute(
 				this.props.routeParams.currency,
 				this.props.bank_account,
-				this.props.crypto_wallet
+				this.props.crypto_wallet,
+				this.props.coins
 			);
 		}
 		this.setCurrency(this.props.routeParams.currency);
@@ -68,20 +70,21 @@ class Withdraw extends Component {
 				this.validateRoute(
 					nextProps.routeParams.currency,
 					nextProps.bank_account,
-					nextProps.crypto_wallet
+					nextProps.crypto_wallet,
+					nextProps.coins
 				);
 			}
 		} else if (
 			nextProps.verification_level >= MIN_VERIFICATION_LEVEL_TO_WITHDRAW &&
 			nextProps.verification_level <= MAX_VERIFICATION_LEVEL_TO_WITHDRAW &&
 			(nextProps.activeLanguage !== this.props.activeLanguage ||
-				nextProps.routeParams.currency !== this.props.routeParams.currency ||
-				JSON.stringify(nextProps.btcFee) !== JSON.stringify(this.props.btcFee))
+				nextProps.routeParams.currency !== this.props.routeParams.currency)
 		) {
 			this.generateFormValues(
 				getCurrencyFromName(nextProps.routeParams.currency),
 				nextProps.balance,
-				nextProps.btcFee
+				nextProps.coins,
+				nextProps.verification_level
 			);
 		}
 		if (nextProps.routeParams.currency !== this.props.routeParams.currency) {
@@ -89,13 +92,8 @@ class Withdraw extends Component {
 		}
 	}
 
-	validateRoute = (currency, bank_account, crypto_wallet) => {
-		if (
-			currency === 'fiat' ||
-			(currency === 'eth' && !crypto_wallet.ethereum) ||
-			(currency === 'btc' && !crypto_wallet.bitcoin) || 
-			(currency === 'bch' && !crypto_wallet.bitcoincash) 
-		) {
+	validateRoute = (currency, bank_account, crypto_wallet, coins) => {
+		if (coins[currency] && !crypto_wallet[currency]) {
 			this.props.router.push('/wallet');
 		} else if (currency) {
 			this.setState({ checked: true });
@@ -109,32 +107,35 @@ class Withdraw extends Component {
 				this.validateRoute(
 					this.props.routeParams.currency,
 					this.props.bank_account,
-					this.props.crypto_wallet
+					this.props.crypto_wallet,
+					this.props.coins
 				);
 			});
-			if (currency === 'btc' || currency === 'bch' || currency === 'eth') {
-				this.props.requestWithdrawFee(currency);
-			}
+			// if (currency === 'btc' || currency === 'bch' || currency === 'eth') {
+			// 	this.props.requestWithdrawFee(currency);
+			// }
 
 			this.generateFormValues(
 				getCurrencyFromName(currency),
 				this.props.balance,
-				this.props.btcFee
+				this.props.coins,
+				this.props.verification_level
 			);
 		} else {
 			this.props.router.push('/wallet');
 		}
 	};
 
-	generateFormValues = (currency, balance, fees) => {
+	generateFormValues = (currency, balance, coins, verification_level) => {
 		const balanceAvailable = balance[`${currency}_available`];
 		const formValues = generateFormValues(
 			currency,
 			balanceAvailable,
-			fees,
-			this.onCalculateMax
+			this.onCalculateMax,
+			coins,
+			verification_level
 		);
-		const initialValues = generateInitialValues(currency, fees);
+		const initialValues = generateInitialValues(currency, coins);
 
 		this.setState({ formValues, initialValues });
 	};
@@ -156,8 +157,8 @@ class Withdraw extends Component {
 		const { balance, selectedFee = 0, dispatch } = this.props;
 		const { currency } = this.state;
 		const balanceAvailable = balance[`${currency}_available`];
-		if (currency === fiatSymbol) {
-			const fee = calculateFiatFee(balanceAvailable);
+		if (currency === BASE_CURRENCY) {
+			const fee = calculateBaseFee(balanceAvailable);
 			const amount = math.number(
 				math.subtract(math.fraction(balanceAvailable), math.fraction(fee))
 			);
@@ -186,8 +187,8 @@ class Withdraw extends Component {
 			bank_account,
 			openContactForm,
 			activeLanguage,
-			btcFee,
-			router
+			router,
+			coins
 		} = this.props;
 		const { formValues, initialValues, currency, checked } = this.state;
 		if (!currency || !checked) {
@@ -199,7 +200,7 @@ class Withdraw extends Component {
 		if (
 			verification_level >= MIN_VERIFICATION_LEVEL_TO_WITHDRAW &&
 			verification_level <= MAX_VERIFICATION_LEVEL_TO_WITHDRAW &&
-			(balanceAvailable === undefined || btcFee.loading)
+			(balanceAvailable === undefined)
 		) {
 			return <Loader />;
 		}
@@ -231,7 +232,8 @@ class Withdraw extends Component {
 								currency,
 								balance,
 								openContactForm,
-								generateFiatInformation
+								generateBaseInformation,
+								coins
 							)}
 							<WithdrawCryptocurrency {...formProps} />
 							{renderExtraInformation(currency, bank_account)}
@@ -256,8 +258,10 @@ const mapStateToProps = (store) => ({
 	bank_account: store.user.userData.bank_account,
 	crypto_wallet: store.user.crypto_wallet,
 	activeLanguage: store.app.language,
-	btcFee: store.wallet.btcFee,
-	selectedFee: formValueSelector(FORM_NAME)(store, 'fee')
+	// btcFee: store.wallet.btcFee,
+	selectedFee: formValueSelector(FORM_NAME)(store, 'fee'),
+	coins: store.app.coins,
+	pairs: store.app.pairs
 });
 
 const mapDispatchToProps = (dispatch) => ({

@@ -14,20 +14,19 @@ import MobileSummary from './MobileSummary';
 
 import { IconTitle } from '../../components';
 import { logout } from '../../actions/authAction';
-import { openFeesStructureandLimits, openContactForm, logoutconfirm } from '../../actions/appActions';
-import { requestLimits, requestFees } from '../../actions/userAction';
-import { CURRENCIES, TRADING_ACCOUNT_TYPE } from '../../config/constants';
+import { openFeesStructureandLimits, openContactForm, logoutconfirm, setNotification, NOTIFICATIONS } from '../../actions/appActions';
+import { BASE_CURRENCY, TRADING_ACCOUNT_TYPE } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 import {
+    formatToCurrency,
     formatAverage,
-    formatFiatAmount,
+    formatBaseAmount,
     calculateBalancePrice,
     donutFormatPercentage,
     calculatePrice,
     calculatePricePercentage } from '../../utils/currency';
 import { getLastMonthVolume } from './components/utils';
 
-const FIAT = CURRENCIES.fiat.symbol;
 const default_trader_account = TRADING_ACCOUNT_TYPE.shrimp;
 
 class Summary extends Component {
@@ -59,6 +58,7 @@ class Summary extends Component {
             nextProps.price !== this.props.price ||
             nextProps.orders.length !== this.props.orders.length ||
             nextProps.balance.timestamp !== this.props.balance.timestamp ||
+            JSON.stringify(this.props.prices) !== JSON.stringify(nextProps.prices) ||
             nextProps.activeLanguage !== this.props.activeLanguage
         ) {
             this.calculateSections(nextProps);
@@ -77,20 +77,9 @@ class Summary extends Component {
     }
 
     onFeesAndLimits = tradingAccount => {
-        const { fees, limits, pairs, requestLimits, requestFees } = this.props;
-        if (!limits.fetched && !limits.fetching) {
-            requestLimits();
-        }
-
-        if (!fees.fetched && !fees.fetching) {
-            requestFees();
-        }
         this.props.openFeesStructureandLimits({
-            fees: fees.data,
-            limits: limits.data,
             verification_level: tradingAccount.level,
-            tradingAccount,
-            pairs
+            tradingAccount
         });
     };
 
@@ -102,23 +91,23 @@ class Summary extends Component {
         this.props.openContactForm({ category: 'level' });
     };
 
-    calculateSections = ({ price, balance, orders, prices }) => {
+    calculateSections = ({ price, balance, orders, prices, coins }) => {
         const data = [];
 
         const totalAssets = calculateBalancePrice(balance, prices);
-        Object.keys(CURRENCIES).forEach((currency) => {
-            const { symbol, formatToCurrency } = CURRENCIES[currency];
+        Object.keys(coins).forEach((currency) => {
+            const { symbol, min } = coins[currency] || {};
             const currencyBalance = calculatePrice(balance[`${symbol}_balance`], prices[currency]);
             const balancePercent = calculatePricePercentage(currencyBalance, totalAssets);
             data.push({
-                ...CURRENCIES[currency],
+                ...coins[currency],
                 balance: balancePercent,
-                balanceFormat: formatToCurrency(currencyBalance),
+                balanceFormat: formatToCurrency(currencyBalance, min),
                 balancePercentage: donutFormatPercentage(balancePercent),
             });
         });
 
-        this.setState({ chartData: data, totalAssets: formatAverage(formatFiatAmount(totalAssets)) });
+        this.setState({ chartData: data, totalAssets: formatAverage(formatBaseAmount(totalAssets)) });
     };
 
     setCurrentTradeAccount = user => {
@@ -143,8 +132,12 @@ class Summary extends Component {
         this.setState({ currentTradingAccount, selectedAccount: currentTradingAccount.symbol });
     };
 
+    onInviteFriends = () => {
+        this.props.setNotification(NOTIFICATIONS.INVITE_FRIENDS, { affiliation_code: this.props.user.affiliation_code });
+    };
+
     render() {
-        const { user, balance, activeTheme, fees, limits, pairs, logout } = this.props;
+        const { user, balance, activeTheme, pairs, coins, logout } = this.props;
         const { selectedAccount, currentTradingAccount, chartData, totalAssets, lastMonthVolume } = this.state;
         return (
             <div className="summary-container">
@@ -155,19 +148,18 @@ class Summary extends Component {
                 {isMobile
                     ? <MobileSummary
                         user={user}
-                        fees={fees.data}
-                        limits={limits.data}
                         pairs={pairs}
+                        coins={coins}
                         activeTheme={activeTheme}
                         default_trader_account={default_trader_account}
                         currentTradingAccount={currentTradingAccount}
                         selectedAccount={selectedAccount}
-                        FIAT={FIAT}
                         logout={this.logoutConfirm}
                         balance={balance}
                         chartData={chartData}
                         totalAssets={totalAssets}
                         lastMonthVolume={lastMonthVolume}
+                        onInviteFriends={this.onInviteFriends}
                         onFeesAndLimits={this.onFeesAndLimits}
                         onUpgradeAccount={this.onUpgradeAccount}
                         onAccountTypeChange={this.onAccountTypeChange}
@@ -177,13 +169,13 @@ class Summary extends Component {
                             <div className="summary-section_1 trader-account-wrapper d-flex">
                                 <SummaryBlock title={currentTradingAccount.fullName} >
                                     <TraderAccounts
-                                        fees={fees.data}
-                                        limits={limits.data}
                                         pairs={pairs}
+                                        coins={coins}
                                         activeTheme={activeTheme}
                                         account={currentTradingAccount}
                                         onFeesAndLimits={this.onFeesAndLimits}
-                                        onUpgradeAccount={this.onUpgradeAccount} />
+                                        onUpgradeAccount={this.onUpgradeAccount}
+                                        onInviteFriends={this.onInviteFriends} />
                                 </SummaryBlock>
                             </div>
                             <div className="summary-section_1 requirement-wrapper d-flex">
@@ -198,12 +190,13 @@ class Summary extends Component {
                             <div className="assets-wrapper">
                                 <SummaryBlock
                                     title={STRINGS.SUMMARY.ACCOUNT_ASSETS}
-                                    secondaryTitle={<span><span className="title-font">{totalAssets}</span>{` ${STRINGS.FIAT_FULLNAME}`}</span>} >
+                                    secondaryTitle={<span><span className="title-font">{totalAssets}</span>{` ${STRINGS[`${BASE_CURRENCY.toUpperCase()}_FULLNAME`]}`}</span>} >
                                     <AccountAssets
                                         user={user}
                                         chartData={chartData}
                                         totalAssets={totalAssets}
-                                        balance={balance} />
+                                        balance={balance}
+                                        coins={coins} />
                                 </SummaryBlock>
                             </div>
                             <div className="trading-volume-wrapper">
@@ -211,9 +204,9 @@ class Summary extends Component {
                                     title={STRINGS.SUMMARY.TRADING_VOLUME}
                                     secondaryTitle={<span>
                                         <span className="title-font">
-                                            {` ${formatAverage(formatFiatAmount(lastMonthVolume))}`}
+                                            {` ${formatAverage(formatBaseAmount(lastMonthVolume))}`}
                                         </span>
-                                        {` ${STRINGS.FIAT_FULLNAME} ${STRINGS.formatString(STRINGS.SUMMARY.NOMINAL_TRADING_WITH_MONTH, moment().subtract(1, "month").startOf("month").format('MMMM')).join('')}`}
+                                        {` ${STRINGS[`${BASE_CURRENCY.toUpperCase()}_FULLNAME`]} ${STRINGS.formatString(STRINGS.SUMMARY.NOMINAL_TRADING_WITH_MONTH, moment().subtract(1, "month").startOf("month").format('MMMM')).join('')}`}
                                     </span>
                                     }
                                 >
@@ -228,8 +221,7 @@ class Summary extends Component {
                                 wrapperClassname="w-100" >
                                 <AccountDetails
                                     user={user}
-                                    fees={fees.data}
-                                    limits={limits.data}
+                                    coins={coins}
                                     pairs={pairs}
                                     activeTheme={activeTheme}
                                     currentTradingAccount={currentTradingAccount.symbol}
@@ -249,11 +241,10 @@ class Summary extends Component {
 
 const mapStateToProps = (state) => ({
     pairs: state.app.pairs,
+    coins: state.app.coins,
     user: state.user,
     verification_level: state.user.verification_level,
     balance: state.user.balance,
-    fees: state.user.feeValues,
-    limits: state.user.limits,
     activeTheme: state.app.theme,
     prices: state.orderbook.prices,
     symbol: state.orderbook.symbol,
@@ -266,10 +257,9 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
     logoutconfirm: bindActionCreators(logoutconfirm, dispatch),
 	logout: bindActionCreators(logout, dispatch),
-    requestLimits: bindActionCreators(requestLimits, dispatch),
-    requestFees: bindActionCreators(requestFees, dispatch),
     openFeesStructureandLimits: bindActionCreators(openFeesStructureandLimits, dispatch),
-    openContactForm: bindActionCreators(openContactForm, dispatch)
+    openContactForm: bindActionCreators(openContactForm, dispatch),
+    setNotification: bindActionCreators(setNotification, dispatch)
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Summary);

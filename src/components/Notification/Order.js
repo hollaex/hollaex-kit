@@ -1,9 +1,9 @@
 import React from 'react';
 import math from 'mathjs';
 import { connect } from 'react-redux';
-import { ICONS } from '../../config/constants';
+import { ICONS, BASE_CURRENCY } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
-import { formatBtcAmount, formatFiatAmount } from '../../utils/currency';
+import { formatBtcAmount, formatToCurrency } from '../../utils/currency';
 import {
 	NotificationWraper,
 	NotificationContent,
@@ -53,11 +53,12 @@ export const getTitleAndIcon = (type, { side, filled }) => {
 	return data;
 };
 
-export const generateRows = (type, order, pairs) => {
+export const generateRows = (type, order, pairs, coins) => {
 	const rows = [];
 	const pair = pairs[order.symbol];
 	const basePair = pair.pair_base.toUpperCase();
 	const payPair = pair.pair_2.toUpperCase();
+	const { min } = coins[order.symbol || BASE_CURRENCY] || {};
 
 	if (type === 'order_added' && order.filled === 0) {
 		rows.push({
@@ -72,7 +73,7 @@ export const generateRows = (type, order, pairs) => {
 			label: STRINGS.PRICE,
 			value: STRINGS.formatString(
 				STRINGS[`${payPair}_PRICE_FORMAT`],
-				formatFiatAmount(order.price),
+				formatToCurrency(order.price, min),
 				STRINGS[`${payPair}_SHORTNAME`]
 			)
 		});
@@ -95,7 +96,7 @@ export const generateRows = (type, order, pairs) => {
 			label: STRINGS.PRICE,
 			value: STRINGS.formatString(
 				STRINGS[`${payPair}_PRICE_FORMAT`],
-				formatFiatAmount(order.price),
+				formatToCurrency(order.price, min),
 				STRINGS[`${payPair}_SHORTNAME`]
 			)
 		});
@@ -104,7 +105,7 @@ export const generateRows = (type, order, pairs) => {
 				order.side === SIDE_BUY ? STRINGS.ORDER_SPENT : STRINGS.ORDER_RECEIVED,
 			value: STRINGS.formatString(
 				STRINGS[`${payPair}_PRICE_FORMAT`],
-				formatFiatAmount(orderValue),
+				formatToCurrency(orderValue, min),
 				STRINGS[`${payPair}_SHORTNAME`]
 			)
 		});
@@ -132,9 +133,9 @@ export const OrderDisplay = ({ rows }) => {
 	);
 };
 
-const OrderNotification = ({ type, data, pairs, onClose }) => {
+const OrderNotification = ({ type, data, pairs, coins, onClose }) => {
 	const notificationProps = getTitleAndIcon(type, data);
-	const rows = generateRows(type, data, pairs);
+	const rows = generateRows(type, data, pairs, coins);
 
 	return (
 		<NotificationWraper
@@ -150,7 +151,8 @@ const OrderNotification = ({ type, data, pairs, onClose }) => {
 };
 
 const mapStateToProps = state => ({
-	pairs: state.app.pairs
+	pairs: state.app.pairs,
+	coins: state.app.coins,
 });
 
 export default connect(mapStateToProps)(OrderNotification);

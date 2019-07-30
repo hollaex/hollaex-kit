@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import ReactSVG from 'react-svg';
 
-import { ICONS, CURRENCIES, BASE_CURRENCY } from '../../config/constants';
+import { ICONS, BASE_CURRENCY } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
-import { formatPercentage, formatAverage } from '../../utils/currency';
+import { formatToCurrency, formatPercentage, formatAverage } from '../../utils/currency';
 
 let tickClicked = false;
 
@@ -36,13 +36,13 @@ class TabOverflowList extends Component {
     }
 
     render() {
-        const { selectedTabs, activePairTab, tickers } = this.props;
+        const { selectedTabs, activePairTab, tickers, coins = {} } = this.props;
         return (
             <div id="tab-overflow-list" className="app-bar-add-tab-menu">
                 <div className="app-bar-tab-overflow-content">
                     {Object.keys(selectedTabs).map((pair, index) => {
                         let menu = selectedTabs[pair] || {};
-                        let { formatToCurrency } = CURRENCIES[menu.pair_base || BASE_CURRENCY];
+                        let { min } = coins[menu.pair_base || BASE_CURRENCY] || {};
                         let ticker = tickers[pair] || {};
                         let priceDifference = (ticker.close || 0) - (ticker.open || 0);
                         const tickerPercent = ((priceDifference / ticker.open) * 100);
@@ -60,9 +60,9 @@ class TabOverflowList extends Component {
                                 <div className="app_bar-pair-font">
                                     {STRINGS[`${menu.pair_base.toUpperCase()}_SHORTNAME`]}/{STRINGS[`${menu.pair_2.toUpperCase()}_SHORTNAME`]}:
                                 </div>
-                                <div className="title-font ml-1">{`${STRINGS[`${menu.pair_2.toUpperCase()}_CURRENCY_SYMBOL`]} ${formatAverage(formatToCurrency(ticker.close))}`}</div>
+                                <div className="title-font ml-1">{`${STRINGS[`${menu.pair_2.toUpperCase()}_CURRENCY_SYMBOL`]} ${formatAverage(formatToCurrency(ticker.close, min))}`}</div>
                                 <div className={priceDifference < 0 ? "app-price-diff-down app-bar-price_diff_down" : "app-bar-price_diff_up app-price-diff-up"}>
-                                    {formatAverage(formatToCurrency(priceDifference))}
+                                    {formatAverage(formatToCurrency(priceDifference, min))}
                                 </div>
                                 <div
                                     className={priceDifference < 0

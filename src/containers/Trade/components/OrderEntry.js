@@ -10,9 +10,8 @@ import Form, { FORM_NAME } from './OrderEntryForm';
 import {
 	toFixed,
 	formatNumber,
-	formatFiatAmount,
+	formatBaseAmount,
 	roundNumber,
-	// fiatSymbol,
 	calculatePrice,
 	calculateBalancePrice
 } from '../../../utils/currency';
@@ -127,7 +126,7 @@ class OrderEntry extends Component {
 
 		let orderFees = mathjs
 			.chain(orderPrice)
-			.multiply(fees ? fees.taker_fee : takerFee)
+			.multiply(fees && fees.taker_fee ? fees.taker_fee : takerFee)
 			.divide(100)
 			.done();
 		let outsideFormError = '';
@@ -168,7 +167,7 @@ class OrderEntry extends Component {
 	};
 
 	onSubmit = (values) => {
-		const { min_size, tick_size, settings } = this.props;
+		const { min_size, increment_price, settings } = this.props;
 
 		const order = {
 			...values,
@@ -184,7 +183,7 @@ class OrderEntry extends Component {
 		} else if (values.price) {
 			order.price = formatNumber(
 				values.price,
-				getDecimals(tick_size)
+				getDecimals(increment_price)
 			);
 		}
 
@@ -208,7 +207,7 @@ class OrderEntry extends Component {
 			pair_base,
 			pair_2,
 			min_size,
-			tick_size,
+			increment_price,
 			openCheckOrder,
 			onRiskyTrade,
 			submit,
@@ -227,17 +226,17 @@ class OrderEntry extends Component {
 			orderPrice: orderTotal,
 			orderFees: this.state.orderFees
 		};
-		const orderPriceInFiat = calculatePrice(orderTotal, this.props.prices[pair_2]);
+		const orderPriceInBaseCoin = calculatePrice(orderTotal, this.props.prices[pair_2]);
 		const riskyPrice = ((this.state.totalAssets / 100) * risk.order_portfolio_percentage);
 
 		if (type === 'market') {
 			delete order.price;
 		} else if (price) {
-			order.price = formatNumber(price, getDecimals(tick_size))
+			order.price = formatNumber(price, getDecimals(increment_price))
 		}
 		if (notification.popup_order_confirmation) {
 			openCheckOrder(order, () => {
-				if (risk.popup_warning && riskyPrice < orderPriceInFiat) {
+				if (risk.popup_warning && riskyPrice < orderPriceInBaseCoin) {
 					order['order_portfolio_percentage'] = risk.order_portfolio_percentage
 					onRiskyTrade(order, () => {
 						submit(FORM_NAME);
@@ -246,7 +245,7 @@ class OrderEntry extends Component {
 					submit(FORM_NAME);
 				}
 			});
-		} else if (risk.popup_warning && riskyPrice < orderPriceInFiat) {
+		} else if (risk.popup_warning && riskyPrice < orderPriceInBaseCoin) {
 			order['order_portfolio_percentage'] = risk.order_portfolio_percentage
 			onRiskyTrade(order, () => {
 				submit(FORM_NAME);
@@ -261,7 +260,7 @@ class OrderEntry extends Component {
 
 			min_size,
 			max_size,
-			tick_size,
+			increment_price,
 			min_price,
 			max_price,
 
@@ -326,14 +325,14 @@ class OrderEntry extends Component {
 				type: 'number',
 				placeholder: '0',
 				normalize: normalizeFloat,
-				step: tick_size,
+				step: increment_price,
 				min: min_price,
 				max: max_price,
 				validate: [
 					required,
 					minValue(min_price),
 					maxValue(max_price),
-					step(tick_size)
+					step(increment_price)
 				],
 				currency: STRINGS[`${byuingPair.toUpperCase()}_SHORTNAME`],
 				initializeEffect: priceInitialized
@@ -391,7 +390,7 @@ class OrderEntry extends Component {
 						currency={buyingName}
 						orderPrice={orderPrice}
 						fees={orderFees}
-						formatToCurrency={formatFiatAmount}
+						formatToCurrency={formatBaseAmount}
 					/>
 				</Form>
 			</div>
@@ -403,13 +402,28 @@ const selector = formValueSelector(FORM_NAME);
 
 const mapStateToProps = (state) => {
 	const formValues = selector(state, 'price', 'size', 'side', 'type');
-	const { pair_base, pair_2, max_price, max_size, min_size, min_price, tick_size } = state.app.pairs[state.app.pair];
-	const fees = state.user.fees[state.app.pair];
+	const {
+		pair_base,
+		pair_2,
+		max_price,
+		max_size,
+		min_size,
+		min_price,
+		increment_price,
+		maker_fees = {},
+		taker_fees = {}
+	} = state.app.pairs[state.app.pair];
+
+	const feesData = {
+		maker_fee: maker_fees[state.user.verification_level],
+		taker_fee: taker_fees[state.user.verification_level]
+	};
 
 	return {
 		...formValues,
 		activeLanguage: state.app.language,
-		fees,
+		fees: feesData,
+		feesData,
 		pair: state.app.pair,
 		pair_base,
 		pair_2,
@@ -417,7 +431,7 @@ const mapStateToProps = (state) => {
 		max_size,
 		min_size,
 		min_price,
-		tick_size,
+		increment_price,
 		orderLimits: state.app.orderLimits,
 		prices: state.orderbook.prices,
 		balance: state.user.balance,

@@ -87,8 +87,8 @@ $deactive-tab-border: $boder--width solid $border--color;
 				&.tab-btc {
 					@include tab-active($color-currency-btc--main, $color-currency-btc--secondary, $tab_lines-height);
 				}
-				&.tab-fiat {
-					@include tab-active($color-currency-fiat--main, $color-currency-fiat--secondary, $tab_lines-height);
+				&.tab-eur {
+					@include tab-active($color-currency-eur--main, $color-currency-eur--secondary, $tab_lines-height);
 				}
 			}
 		}

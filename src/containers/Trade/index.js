@@ -7,7 +7,7 @@ import { SubmissionError, change } from 'redux-form';
 import { isMobile } from 'react-device-detect';
 import { Link } from 'react-router';
 
-import { ICONS } from '../../config/constants';
+import { ICONS, BASE_CURRENCY } from '../../config/constants';
 import { IconTitle } from '../../components';
 import {
 	submitOrder,
@@ -194,7 +194,8 @@ class Trade extends Component {
 			activeTheme,
 			settings,
 			orderLimits,
-			pairs
+			pairs,
+			coins
 		} = this.props;
 		const { chartHeight, symbol, activeTab, cancelDelayData, priceInitialized, sizeInitialized } = this.state;
 
@@ -237,7 +238,7 @@ class Trade extends Component {
 				title: STRINGS.RECENT_TRADES,
 				children:   (
 					isLoggedIn() ?
-						<UserTrades pageSize={10} trades={userTrades} pair={pair} pairData={pairData} pairs={pairs} /> :
+						<UserTrades pageSize={10} trades={userTrades} pair={pair} pairData={pairData} pairs={pairs} coins={coins} /> :
 					<div className='text-center'>
 						<IconTitle
 							iconPath={activeTheme ==='dark' ? ICONS.TRADE_HISTORY_DARK: ICONS.TRADE_HISTORY_LIGHT }
@@ -267,11 +268,11 @@ class Trade extends Component {
 			}
 		];
 
-		// TODO get right fiat pair
+		// TODO get right base pair
 		const orderbookProps = {
 			symbol,
 			pairData,
-			fiatSymbol: STRINGS.FIAT_SHORTNAME,
+			baseSymbol: STRINGS[`${BASE_CURRENCY.toUpperCase()}_SHORTNAME`],
 			asks,
 			bids,
 			onPriceClick: this.onPriceClick,
@@ -329,6 +330,7 @@ class Trade extends Component {
 						pair={pair}
 						pairData={pairData}
 						pairs={pairs}
+						coins={coins}
 						goToPair={this.goToPair}
 						userTrades={userTrades}
 						activeTheme={activeTheme}
@@ -451,7 +453,7 @@ Trade.defaultProps = {};
 
 const mapStateToProps = (store) => {
 	const pair = store.app.pair;
-	const pairData = store.app.pairs[pair];
+	const pairData = store.app.pairs[pair] || {};
 	const { asks = [], bids = [] } = store.orderbook.pairsOrderbooks[pair];
 	const tradeHistory = store.orderbook.pairsTrades[pair];
 	const marketPrice = tradeHistory && tradeHistory.length > 0 ? tradeHistory[0].price : 1;
@@ -466,7 +468,12 @@ const mapStateToProps = (store) => {
 	const activeOrders = store.order.activeOrders.filter(
 		({ symbol }) => symbol === pair
 	);
-	const fees = store.user.fees[pair];
+	const makerFee = pairData.maker_fees || {};
+	const takerFee = pairData.taker_fees || {};
+	const feesData = {
+		maker_fee: makerFee[store.user.verification_level],
+		taker_fee: takerFee[store.user.verification_level]
+	};
 	const orderBookLevels = store.user.settings.interface.order_book_levels;
 	const asksFilter = asks.filter(
 		(ask, index) => index < orderBookLevels
@@ -479,6 +486,7 @@ const mapStateToProps = (store) => {
 		pair,
 		pairData,
 		pairs: store.app.pairs,
+		coins: store.app.coins,
 		balance: store.user.balance,
 		orderbookReady: true,
 		tradeHistory,
@@ -489,7 +497,7 @@ const mapStateToProps = (store) => {
 		userTrades,
 		activeLanguage: store.app.language,
 		activeTheme: store.app.theme,
-		fees,
+		fees: feesData,
 		settings: store.user.settings,
 		orderLimits: store.app.orderLimits
 	};

@@ -9,7 +9,8 @@ import {
 	IS_PRO_VERSION,
 	PRO_URL,
 	DEFAULT_VERSION_REDIRECT,
-	ICONS
+	ICONS,
+	BASE_CURRENCY
 } from '../../config/constants';
 import { LinkButton } from './LinkButton';
 import PairTabs from './PairTabs';
@@ -246,7 +247,7 @@ class AppBar extends Component {
 		let pair = '';
 		if (Object.keys(pairs).length) {
 			const { pair_base } = pairs[Object.keys(pairs)[0]];
-			pair = `${pair_base}-${STRINGS.FIAT_SHORTNAME_EN.toLowerCase()}`;
+			pair = `${pair_base}-${STRINGS[`${BASE_CURRENCY.toUpperCase()}_SHORTNAME_EN`].toLowerCase()}`;
 		} else {
 			pair = this.props.pair;
 		}

@@ -1,12 +1,12 @@
 import React from 'react';
 import classnames from 'classnames';
-import { CURRENCIES } from '../../config/constants';
+import { connect } from 'react-redux';
 import STRINGS from '../../config/localizedStrings';
 
-export const CurrencySelector = ({ activeCurrency, changeCurrency }) => {
+const CurrencySelector = ({ activeCurrency, changeCurrency, coins }) => {
 	return (
 		<div className="d-flex currency-selector">
-			{Object.entries(CURRENCIES).map(([currency, values], index) => {
+			{Object.entries(coins).map(([currency, values], index) => {
 				const active = activeCurrency === currency;
 				return (
 					<div
@@ -29,3 +29,9 @@ export const CurrencySelector = ({ activeCurrency, changeCurrency }) => {
 		</div>
 	);
 };
+
+const mapStateToProps = (state) => ({
+	coins: state.app.coins
+});
+
+export default connect(mapStateToProps)(CurrencySelector);
