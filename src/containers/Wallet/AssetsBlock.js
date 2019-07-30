@@ -34,7 +34,7 @@ export const AssetsBlock = ({
 			<tbody>
 				{Object.entries(coins)
 					.filter(([key]) => balance.hasOwnProperty(`${key}_balance`))
-					.map(([key, { min, allowDeposit, allowWithdrawal }]) => {
+					.map(([key, { min, deposit, withdrawal }]) => {
 						const balanceValue = balance[`${key}_balance`];
 						const baseCoin = coins[BASE_CURRENCY] || {}
 						const balanceText =
@@ -71,7 +71,7 @@ export const AssetsBlock = ({
 												useSvg={true}
 												className="csv-action"
 												showActionText={isMobile}
-												disable={!allowDeposit}
+												disable={!deposit}
 											/>
 											<ActionNotification
 												text={STRINGS.WALLET_BUTTON_BASE_WITHDRAW}
@@ -80,7 +80,7 @@ export const AssetsBlock = ({
 												useSvg={true}
 												className="csv-action"
 												showActionText={isMobile}
-												disable={!allowWithdrawal}
+												disable={!withdrawal}
 											/>
 										</div>
 									) : (
@@ -92,7 +92,7 @@ export const AssetsBlock = ({
 												onClick={() => onOpenDialog(key)}
 												className="need-help"
 												useSvg={true}
-												disable={!allowDeposit}
+												disable={!deposit}
 											/>
 										)
 									)}
