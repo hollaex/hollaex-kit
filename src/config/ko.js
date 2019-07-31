@@ -33,6 +33,18 @@ export default {
 	XRP_CURRENCY_SYMBOL: 'XRP',
 	XRP_PRICE_FORMAT: '{0} {1}',
 
+	HEX_NAME: 'HEX', // new
+	HEX_FULLNAME: 'HEX', // new
+	HEX_SHORTNAME: 'HEX', // new
+	HEX_CURRENCY_SYMBOL: 'HEX', // new
+	HEX_PRICE_FORMAT: '{0} {1}', // new
+
+	USDT_NAME: 'USDT', // new
+	USDT_FULLNAME: 'USD Tether', // new
+	USDT_SHORTNAME: 'USDT', // new
+	USDT_CURRENCY_SYMBOL: 'USDT', // new
+	USDT_PRICE_FORMAT: '{0} {1}', // new
+
 	LOGOUT_CONFIRM_TEXT: '로그아웃 하시겠습니까?',
 	ADD_TRADING_PAIR: '거래통화페어 추가',
 	ACTIVE_TRADES: '실제 거래를 이용하기 위해 {0}을 해주시기바랍니다.',

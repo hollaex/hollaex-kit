@@ -40,11 +40,17 @@ export default {
 	XRP_CURRENCY_SYMBOL: 'XRP',
 	XRP_PRICE_FORMAT: '{0} {1}',
 	
-	HEX_NAME: 'Heisenberg', // new
-	HEX_FULLNAME: 'Heisenberg', // new
+	HEX_NAME: 'HEX', // new
+	HEX_FULLNAME: 'HEX', // new
 	HEX_SHORTNAME: 'HEX', // new
 	HEX_CURRENCY_SYMBOL: 'HEX', // new
 	HEX_PRICE_FORMAT: '{0} {1}', // new
+
+	USDT_NAME: 'USDT', // new
+	USDT_FULLNAME: 'USD Tether', // new
+	USDT_SHORTNAME: 'USDT', // new
+	USDT_CURRENCY_SYMBOL: 'USDT', // new
+	USDT_PRICE_FORMAT: '{0} {1}', // new
 
 	LOGOUT_CONFIRM_TEXT: 'Are you sure?. Do you want to logout',
 	ADD_TRADING_PAIR: 'Add Trading Pair',
