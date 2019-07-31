@@ -1,7 +1,7 @@
 export default {
-	APP_TITLE: 'Hollaex',
+	APP_TITLE: 'Hex', // new
 	APP_SUB_TITLE: 'THE DIGITAL FUEL FOR TRADING EXCHANGES', // new
-	APP_NAME: 'hollaex',
+	APP_NAME: 'Hex', // new
 	FIAT_NAME: 'EURO',
 	FIAT_FULLNAME: 'Euro',
 	FIAT_SHORTNAME: 'EUR',
@@ -12,43 +12,49 @@ export default {
 	EUR_NAME: 'EURO',
 	EUR_FULLNAME: 'Euro',
 	EUR_SHORTNAME: 'EUR',
-	EUR_SHORTNAME_EN: 'EUR',
+	EUR_SHORTNAME_EN: 'EUR', // new
 	EUR_CURRENCY_SYMBOL: '€',
 	EUR_PRICE_FORMAT: '{0} {1}', // 0-> amount  1 -> symbol  600,000 T
 
 	BTC_NAME: 'Bitcoin',
 	BTC_FULLNAME: 'Bitcoin',
 	BTC_SHORTNAME: 'BTC',
+	BTC_SHORTNAME_EN: 'BTC', // new
 	BTC_CURRENCY_SYMBOL: 'BTC',
 	BTC_PRICE_FORMAT: '{0} {1}', // 0-> amount  1 -> symbol  6.00245 BTC
 
 	ETH_NAME: 'Ethereum',
 	ETH_FULLNAME: 'Ethereum',
 	ETH_SHORTNAME: 'ETH',
+	ETH_SHORTNAME_EN: 'ETH', // new
 	ETH_CURRENCY_SYMBOL: 'ETH',
 	ETH_PRICE_FORMAT: '{0} {1}', // 0-> amount  1 -> symbol  6.00245 ETH
 
 	BCH_NAME: 'Bitcoin Cash',
 	BCH_FULLNAME: 'BitcoinCash',
 	BCH_SHORTNAME: 'BCH',
+	BCH_SHORTNAME_EN: 'BCH', // new
 	BCH_CURRENCY_SYMBOL: 'BCH',
 	BCH_PRICE_FORMAT: '{0} {1}',
 
 	XRP_NAME: 'Ripple',
 	XRP_FULLNAME: 'Ripple',
 	XRP_SHORTNAME: 'XRP',
+	XRP_SHORTNAME_EN: 'XRP', // new
 	XRP_CURRENCY_SYMBOL: 'XRP',
 	XRP_PRICE_FORMAT: '{0} {1}',
 	
 	HEX_NAME: 'HEX', // new
 	HEX_FULLNAME: 'HEX', // new
 	HEX_SHORTNAME: 'HEX', // new
+	HEX_SHORTNAME_EN: 'HEX', // new
 	HEX_CURRENCY_SYMBOL: 'HEX', // new
 	HEX_PRICE_FORMAT: '{0} {1}', // new
 
 	USDT_NAME: 'USDT', // new
 	USDT_FULLNAME: 'USD Tether', // new
 	USDT_SHORTNAME: 'USDT', // new
+	USDT_SHORTNAME_EN: 'USDT', // new
 	USDT_CURRENCY_SYMBOL: 'USDT', // new
 	USDT_PRICE_FORMAT: '{0} {1}', // new
 
@@ -1087,6 +1093,15 @@ export default {
 	TERMS_OF_SERVICES: { // new
 		TITLE: 'Before you obtain HEX please read and agree to our terms of service',
 		SERVICE_AGREEMENT: 'This agreement was written in English (US). To the extent any translated version of this agreement conflicts with the Korean version, the Korean version controls. Principle Statement of Basic Terms of Use This agreement has the purpose of defining the basic principles between we and individual users. For those of corporate users, you will find the provisions of Article 19 below. If you are a minor or person of limited legal capacity, you cannot be enrolled without the consent of the legal representative, due to the laws of Republic of Korea. If we confirm that a minor or person of limited legal capacity has registered as a user, we may instantly withdraw the membership without the consent of the user. When accessing our mobile page, web page or application in order to use our service, if you fill in the information of your account, password, or other login information, and it is the same with the information provided by you to us, all transactions occurred during that connection period are deemed to be due to your true doctor. Hence, you shall keep security of your account, password and other information, and also shall be held liable for any damages caused due to financial accidents or crimes related to leaks of personal information. Cryptocurrencies have no issuer and as a result no third party (including us) inside or outside of Republic of Korea warrants the value or payment. Therefore, the value of cryptocurrencies may experience large volatility depending on the laws of any state including the Republic of Korea, as well as the national policies, legal interpretation of these laws and the economic environment of each of any state including the Republic of Korea. In addition, the interpretation of laws regarding the exchange of cryptocurrencies is different in various countries and therefore cryptocurrencies have inherent risks different than that of legal currencies: please be aware of this. Coinone Transaction Service are services provided by us to enable exchange between you and other members as well as send cryptocurrency you hold from your Coinone Exchange internal electronic wallet to another external wallet through the blockchain or send coins from an external electronic wallet to your Coinone Exchange electronic wallet. The blockchain technology is currently known to be non-modifiable by a third party, but it may change anytime due to technological advances or other unforeseen circumstances. In the case of a user transacting in a cryptocurrency by using our service, the transactions of the corresponding cryptocurrency are recorded in the Coinone Exchange Service system. The company receives payment in set fees regarding all transactions that occur within the Coinone cryptocurrency',
-		PROCEED: 'PROCEED'
+		PROCEED: 'PROCEED',
+		AGREE_TERMS_LABEL: 'I have read and agree to the Terms of Service',
+		RISK_INVOLVED_LABEL: 'I understand the risks involved',
+		DOWNLOAD_PDF: 'Download the PDF',
+		DEPOSIT_FUNDS: 'Deposit funds into your wallet to obtain HEX',
+		READ_FAG: 'Read the HEX FAQ here: {0}',
+		READ_DOCUMENTATION: 'Read the HEX documentation here: {0}',
+		DOWNLOAD_BUY_HEX: 'Download the PDF to see a visual step-by-step processes on {0}',
+		HOW_TO_BUY: 'how to buy HEX',
+		CONTACT_US: 'Feel free to contact us for more information and any issues by sending us an email to {0}'
 	}
 };

@@ -6,8 +6,54 @@
     }
     .agreement_wrapper {
         font-size: 1rem;
-        background-color: grey;
-        height: 40rem;
+        background-color: $colors-deactivate-color1;
+        height: 35rem;
         overflow-y: scroll;
+    }
+    .download-wrapper {
+        color: $colors-notifications-blue;
+        display: flex;
+        align-items: center;
+        width: fit-content;
+
+        .download_pdf-svg {
+            > div {
+                display: flex;
+                align-items: center;
+            }
+            svg {
+                @include size(1rem);
+            }
+        }
+        .trans-history-1,
+        .trans-history-2,
+        .trans-history-3 {
+            fill: $colors-notifications-blue;
+        }
+        .trans-history-4 {
+            stroke: $colors-notifications-blue;
+        }
+    }
+    .deposit_funds-wrapper {
+        .funds-svg {
+            svg {
+                @include size(2rem);
+            }
+        }
+    }
+}
+
+.dark-theme {
+    .auth_wrapper {
+        color: $dark-link;
+        
+        .trans-history-1,
+        .trans-history-2,
+        .trans-history-3 {
+            fill: $dark-link;
+        }
+        .trans-history-4 {
+            stroke: $dark-link;
+        }
     }
 }

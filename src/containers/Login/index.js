@@ -80,12 +80,12 @@ class Login extends Component {
 	}
 
 	checkLogin = () => {
-		// const termsAccepted = localStorage.getItem('termsAccepted');
-		// if (!termsAccepted) {
-		// 	this.props.router.replace('/terms');
-		// } else {
+		const termsAccepted = localStorage.getItem('termsAccepted');
+		if (!termsAccepted) {
+			this.props.router.replace('/terms');
+		} else {
 			this.redirectToHome();
-		// }
+		}
 	}
 
 	onSubmitLogin = (values) => {
@@ -182,7 +182,7 @@ class Login extends Component {
 						className="w-100 exir-logo"
 						subtitle={STRINGS.formatString(
 							STRINGS.LOGIN.LOGIN_TO,
-							STRINGS.APP_TITLE
+							STRINGS.APP_TITLE.toUpperCase()
 						)}
 						actionProps={{
 							text: STRINGS.LOGIN.CANT_LOGIN,

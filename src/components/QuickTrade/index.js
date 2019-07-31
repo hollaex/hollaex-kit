@@ -24,11 +24,11 @@ import InputBlock from './InputBlock';
 
 const getInitialTab = ( path ) => {
 	let activeTab = -1;
-	if (path === `${STRINGS.BTC_SHORTNAME.toLowerCase()}-${STRINGS[`${BASE_CURRENCY.toUpperCase()}_SHORTNAME_EN`].toLowerCase()}`) {
+	if (path === `${STRINGS.BTC_SHORTNAME.toLowerCase()}-${STRINGS[`${BASE_CURRENCY.toUpperCase()}_SHORTNAME`].toLowerCase()}`) {
 		activeTab = 0;
-	} else if (path === `${STRINGS.ETH_SHORTNAME.toLowerCase()}-${STRINGS[`${BASE_CURRENCY.toUpperCase()}_SHORTNAME_EN`].toLowerCase()}`) {
+	} else if (path === `${STRINGS.ETH_SHORTNAME.toLowerCase()}-${STRINGS[`${BASE_CURRENCY.toUpperCase()}_SHORTNAME`].toLowerCase()}`) {
 		activeTab = 1;
-	} else if (path === `${STRINGS.BCH_SHORTNAME.toLowerCase()}-${STRINGS[`${BASE_CURRENCY.toUpperCase()}_SHORTNAME_EN`].toLowerCase()}`) {
+	} else if (path === `${STRINGS.BCH_SHORTNAME.toLowerCase()}-${STRINGS[`${BASE_CURRENCY.toUpperCase()}_SHORTNAME`].toLowerCase()}`) {
 		activeTab = 2;
 	}
 	
@@ -71,7 +71,7 @@ class QuickTrade extends Component {
 
 	setActiveTab = (activeTab) => {
 		const { currencies } = this.state;
-		browserHistory.push(`/quick-trade/${currencies[activeTab]}-${STRINGS[`${BASE_CURRENCY.toUpperCase()}_SHORTNAME_EN`].toLowerCase()}`)
+		browserHistory.push(`/quick-trade/${currencies[activeTab]}-${STRINGS[`${BASE_CURRENCY.toUpperCase()}_SHORTNAME`].toLowerCase()}`)
 		this.setState({ activeTab });
 	}
 

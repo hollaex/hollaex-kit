@@ -119,6 +119,7 @@ export default (
 		<Route component={AuthContainer} {...noAuthRoutesCommonProps}>
 			<Route path="login" name="Login" component={Login} />
 			<Route path="signup" name="signup" component={Signup} />
+			<Route path="terms" name="terms" component={TermsOfService} />
 		</Route>
 		<Route component={AuthContainer} {...noLoggedUserCommonProps}>
 			<Route
@@ -137,7 +138,6 @@ export default (
 				name="verifyCode"
 				component={VerificationEmailCode}
 			/>
-			<Route path="terms" name="terms" component={TermsOfService} />
 		</Route>
 		<Route component={Container}>
 			<Route path="account" name="Account" component={Account} onEnter={requireAuth}/>

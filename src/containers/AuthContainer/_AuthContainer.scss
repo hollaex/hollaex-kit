@@ -6,8 +6,8 @@ $container--padding-sm: 3rem;
 .light-auth-body {
 	background-image: url($background-image) !important;
 	background-repeat: no-repeat;
-	// background-size: cover;
-	background-size: $background-patter--size;
+	background-size: cover;
+	// background-size: $background-patter--size;
 	position: relative;
 	background-color: #d9dee5;
 
@@ -64,9 +64,9 @@ $container--padding-sm: 3rem;
 	background-image: url($background-image);
 
 	background-repeat: no-repeat;
-	// background-size: contain;
+	background-size: cover;
 	// background-repeat: repeat;
-	background-size: $background-patter--size;
+	// background-size: $background-patter--size;
 	position: relative;
 	overflow-y: scroll;
 	background-color: #d9dee5;
