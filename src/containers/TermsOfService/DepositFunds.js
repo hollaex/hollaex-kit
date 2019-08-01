@@ -9,7 +9,7 @@ const DepositFunds = (props) => {
     return (
         <div className="deposit_funds-wrapper">
             <IconTitle
-                iconPath={ICONS.TRANSACTION_HISTORY}
+                iconPath={ICONS.HEX_COIN_STACK}
                 text={STRINGS.TERMS_OF_SERVICES.DEPOSIT_FUNDS}
                 textType="title"
                 underline={true}
@@ -18,7 +18,7 @@ const DepositFunds = (props) => {
             />
             <div className="mx-3">
                 <div className="d-flex align-items-center my-4">
-                    <ReactSVG path={ICONS.TRANSACTION_HISTORY} wrapperClassName="funds-svg" />
+                    <ReactSVG path={ICONS.HEX_FAQ} wrapperClassName="funds-svg" />
                     <div className="ml-2 font-weight-bold">
                         {STRINGS.formatString(
                             STRINGS.TERMS_OF_SERVICES.READ_FAG,
@@ -30,7 +30,7 @@ const DepositFunds = (props) => {
                     </div>
                 </div>
                 <div className="d-flex align-items-center my-4">
-                    <ReactSVG path={ICONS.TRANSACTION_HISTORY} wrapperClassName="funds-svg" />
+                    <ReactSVG path={ICONS.HEX_DOCS} wrapperClassName="funds-svg" />
                     <div className="ml-2 font-weight-bold">
                         {STRINGS.formatString(
                             STRINGS.TERMS_OF_SERVICES.READ_DOCUMENTATION,
@@ -42,7 +42,7 @@ const DepositFunds = (props) => {
                     </div>
                 </div>
                 <div className="d-flex align-items-center my-4">
-                    <ReactSVG path={ICONS.TRANSACTION_HISTORY} wrapperClassName="funds-svg" />
+                    <ReactSVG path={ICONS.HEX_PDF} wrapperClassName="funds-svg" />
                     <div className="ml-2 font-weight-bold">
                         {STRINGS.formatString(
                             STRINGS.TERMS_OF_SERVICES.DOWNLOAD_BUY_HEX,
@@ -54,13 +54,13 @@ const DepositFunds = (props) => {
                     </div>
                 </div>
                 <div className="d-flex align-items-center my-4">
-                    <ReactSVG path={ICONS.TRANSACTION_HISTORY} wrapperClassName="funds-svg" />
+                    <ReactSVG path={ICONS.HEX_EMAIL} wrapperClassName="funds-svg" />
                     <div className="ml-2 font-weight-bold">
                         {STRINGS.formatString(
                             STRINGS.TERMS_OF_SERVICES.CONTACT_US,
                             <BlueLink
-                                href=""
-                                text={"support@bitholla.com"}
+                                href="mailto:info@bitholla.com"
+                                text={"info@bitholla.com"}
                             />
                         )}
                     </div>

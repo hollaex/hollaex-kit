@@ -351,7 +351,12 @@ export const ICONS = {
 	SETTING_RISK_ICON: `${process.env.PUBLIC_URL}/assets/images/risk-settings-icon.svg`,
 	SETTING_RISK_ADJUST_ICON: `${process.env.PUBLIC_URL}/assets/images/risk-management-pop-adjust.svg`,
 	SETTING_RISK_MANAGE_WARNING_ICON: `${process.env.PUBLIC_URL}/assets/images/risk-manage-pop-warning.svg`,
-	REFER_ICON: `${process.env.PUBLIC_URL}/assets/images/refer-icon.svg`
+	REFER_ICON: `${process.env.PUBLIC_URL}/assets/images/refer-icon.svg`,
+	HEX_COIN_STACK: `${process.env.PUBLIC_URL}/assets/images/HEX-coin-stack.svg`,
+	HEX_DOCS: `${process.env.PUBLIC_URL}/assets/images/HEX-docs.svg`,
+	HEX_EMAIL: `${process.env.PUBLIC_URL}/assets/images/HEX-email.svg`,
+	HEX_FAQ: `${process.env.PUBLIC_URL}/assets/images/HEX-FAQ.svg`,
+	HEX_PDF: `${process.env.PUBLIC_URL}/assets/images/HEX-pdf.svg`,
 };
 
 export const SOCIAL_ICONS = {

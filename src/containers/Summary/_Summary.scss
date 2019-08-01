@@ -69,6 +69,14 @@
                 color: $dark-font-sub-text-color;
             }
         }
+        .trader-account-icon {
+            .account-summary {
+                stroke: $dark-icon-color;
+            }
+            .account-summary1 {
+                fill: $dark-icon-color;
+            }
+        }
     }
 
     .fee-limits-wrapper {

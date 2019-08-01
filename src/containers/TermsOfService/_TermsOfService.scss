@@ -45,7 +45,12 @@
 
 .dark-theme {
     .auth_wrapper {
-        color: $dark-link;
+        .agreement_wrapper {
+            background-color: $colors-deactivate;
+        }
+        .download-wrapper {
+            color: $dark-link;
+        }
         
         .trans-history-1,
         .trans-history-2,
@@ -54,6 +59,16 @@
         }
         .trans-history-4 {
             stroke: $dark-link;
+        }
+        .deposit_funds-wrapper {
+            .funds-svg {
+                .hex-faq,
+                .hex-pdf,
+                .hex-docs,
+                .hex-email {
+                    fill: $dark-icon-color;
+                }
+            }
         }
     }
 }
