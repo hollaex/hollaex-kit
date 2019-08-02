@@ -851,13 +851,13 @@ class Container extends Component {
 								{dialogIsOpen &&
 									this.renderDialogContent(activeNotification, prices, activeTheme)}
 							</Dialog>
-							{!isMobile && (
+							{/* {!isMobile && (
 								<ChatComponent
 									minimized={chatIsClosed}
 									onMinimize={this.minimizeChat}
 									chatIsClosed={chatIsClosed}
 								/>
-							)}
+							)} */}
 						</div>
 						{isMobile && (
 							<div className="app_container-bottom_bar">
