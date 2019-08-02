@@ -40,6 +40,11 @@ const TraderAccounts = ({ account = {}, activeTheme, isAccountDetails = false, o
                         {STRINGS.REFERRAL_LINK.TITLE.toUpperCase()}
                     </span>
                 </div>}
+                {isMobile ?
+                    <div className="trade-account-link my-2" onClick={() => logout()} > 
+                        {STRINGS.LOGOUT.toUpperCase()}
+                    </div> 
+                :'' }
             </div>
         </div>
     );

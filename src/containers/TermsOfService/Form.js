@@ -21,7 +21,7 @@ const Form = ({
 		<form onSubmit={handleSubmit} className="w-100">
 			<div className="w-100">
                 {renderFields(formFields)}
-                <div className="download-wrapper pointer">
+                <div className="download-wrapper pointer mb-3">
                     <ReactSVG path={ICONS.ARROW_TRANSFER_HISTORY_ACTIVE} wrapperClassName="download_pdf-svg" />
                     <div className="ml-2">{STRINGS.TERMS_OF_SERVICES.DOWNLOAD_PDF}</div>
                 </div>

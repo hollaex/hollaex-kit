@@ -1,63 +1,38 @@
-import React, { Component } from 'react';
-import classnames from 'classnames';
+import React from 'react';
 
-import TermsForm from './TermsOfService';
-import DepositFunds from './DepositFunds';
+import TermsForm from './Form';
 import { requiredWithCustomMessage } from '../../components/Form/validations';
-import { FLEX_CENTER_CLASSES } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 
-export default class TermsOfServices extends Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-            isAgreed: false
-        }
+const formFields = {
+    agreeTerms: {
+        type: 'checkbox',
+        fullWidth: true,
+        validate: [requiredWithCustomMessage(STRINGS.VALIDATIONS.ACCEPT_TERMS)],
+        label: STRINGS.TERMS_OF_SERVICES.AGREE_TERMS_LABEL
+    },
+    agreeRisk: {
+        type: 'checkbox',
+        fullWidth: true,
+        validate: [requiredWithCustomMessage(STRINGS.VALIDATIONS.ACCEPT_RISKS)],
+        label: STRINGS.TERMS_OF_SERVICES.RISK_INVOLVED_LABEL
     }
-    
+};
 
-    onSubmitTerms = (formValues) => {
-        if (formValues.agreeTerms && formValues.agreeRisk) {
-            localStorage.setItem('termsAccepted', true);
-            this.setState({ isAgreed: true });
-        }
-    };
-
-    gotoWallet = () => {
-        this.props.router.push('/wallet');
-    };
-
-    render() {
-        const formFields = {
-            agreeTerms: {
-                type: 'checkbox',
-                fullWidth: true,
-                validate: [requiredWithCustomMessage(STRINGS.VALIDATIONS.ACCEPT_TERMS)],
-                label: STRINGS.TERMS_OF_SERVICES.AGREE_TERMS_LABEL
-            },
-            agreeRisk: {
-                type: 'checkbox',
-                fullWidth: true,
-                validate: [requiredWithCustomMessage(STRINGS.VALIDATIONS.ACCEPT_TERMS)],
-                label: STRINGS.TERMS_OF_SERVICES.RISK_INVOLVED_LABEL
-            }
-        };
-        return (
-            <div className={classnames(...FLEX_CENTER_CLASSES, 'flex-column', 'f-1')}>
-                <div
-                    className={classnames(
-                        ...FLEX_CENTER_CLASSES,
-                        'flex-column',
-                        'auth_wrapper',
-                        'w-100'
-                    )}
-                >
-                    {this.state.isAgreed
-                        ? <DepositFunds gotoWallet={this.gotoWallet} />
-                        : <TermsForm formFields={formFields} onSubmitTerms={this.onSubmitTerms} />
-                    }
-                </div>
+const TermsOfServices = ({ onAcceptTerms }) => {
+    return (
+        <div
+            className={'terms_wrapper m-auto'}
+        >
+            <div className='title_wrapper mb-3'>{STRINGS.TERMS_OF_SERVICES.TITLE}</div>
+            <div className='agreement_wrapper mb-3 p-3'>
+                {STRINGS.TERMS_OF_SERVICES.SERVICE_AGREEMENT}
             </div>
-        )
-    }
+            <div className="w-100">
+                <TermsForm formFields={formFields} onSubmit={onAcceptTerms} />
+            </div>
+        </div>
+    )
 }
+
+export default TermsOfServices;

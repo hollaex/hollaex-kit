@@ -68,7 +68,7 @@ import {
 	SnackNotification,
 	SnackDialog
 } from '../../components';
-import { ContactForm, HelpfulResourcesForm, Chat as ChatComponent } from '../';
+import { ContactForm, HelpfulResourcesForm, Chat as ChatComponent, DepositFunds } from '../';
 import ReviewEmailContent from '../Withdraw/ReviewEmailContent';
 import FeesAndLimits from '../Summary/components/FeesAndLimits';
 import SetOrderPortfolio from '../UserSettings/SetOrderPortfolio';
@@ -185,6 +185,13 @@ class Container extends Component {
 		this.setPublicWS();
 		if(isLoggedIn()) {
 			this.setUserSocket(getToken());
+			const dialog_display = localStorage.getItem('deposit_initial_display');
+			if (!dialog_display) {
+				this.props.setNotification(NOTIFICATIONS.DEPOSIT_INFO, { gotoWallet: this.onConfirmEmail })
+			} else {
+				localStorage.removeItem('deposit_initial_display');
+			}
+
 		}
 		this.setState({ appLoaded: true }, () => {
 			this._resetTimer();
@@ -524,7 +531,7 @@ class Container extends Component {
 
 	onConfirmEmail = () => {
 		this.onCloseDialog();
-		this.props.router.push('/wallet');
+		this.goToPage('/wallet');
 	};
 
 	getClassForActivePath = (path) => {
@@ -666,6 +673,15 @@ class Container extends Component {
 						data={rest}
 						onConfirm={data.onConfirm}
 						onBack={this.onCloseDialog}
+					/>
+				);
+			}
+			case NOTIFICATIONS.DEPOSIT_INFO: {
+				const { gotoWallet, ...rest } = data;
+				return (
+					<DepositFunds
+						data={rest}
+						gotoWallet={gotoWallet}
 					/>
 				);
 			}

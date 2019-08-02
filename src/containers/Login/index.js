@@ -6,8 +6,10 @@ import { bindActionCreators } from 'redux';
 import { Link } from 'react-router';
 import { isMobile } from 'react-device-detect';
 
-import { performLogin, setLogoutMessage } from '../../actions/authAction';
+import { performLogin, storeLoginResult, setLogoutMessage } from '../../actions/authAction';
 import LoginForm, { FORM_NAME } from './LoginForm';
+import TermsOfService from '../TermsOfService';
+import DepositFunds from '../TermsOfService/DepositFunds';
 import { Dialog, OtpForm, IconTitle, Notification } from '../../components';
 import { NOTIFICATIONS } from '../../actions/appActions';
 import { errorHandler } from '../../components/OtpForm/utils';
@@ -32,7 +34,10 @@ class Login extends Component {
 	state = {
 		values: {},
 		otpDialogIsOpen: false,
-		logoutDialogIsOpen: false
+		logoutDialogIsOpen: false,
+		termsDialogIsOpen: false,
+		depositDialogIsOpen: false,
+		token: ''
 	};
 	
 	componentDidMount() {
@@ -40,6 +45,7 @@ class Login extends Component {
 			this.setState({ logoutDialogIsOpen: true });
 		}
 	}
+
 	componentWillReceiveProps(nextProps) {
 		if (
 			nextProps.logoutMessage &&
@@ -82,7 +88,8 @@ class Login extends Component {
 	checkLogin = () => {
 		const termsAccepted = localStorage.getItem('termsAccepted');
 		if (!termsAccepted) {
-			this.props.router.replace('/terms');
+			this.setState({ termsDialogIsOpen: true });
+			// this.props.router.replace('/terms');
 		} else {
 			this.redirectToHome();
 		}
@@ -95,6 +102,8 @@ class Login extends Component {
 		}
 		return performLogin(values)
 			.then((res) => {
+				if (res.data.token)
+					this.setState({ token: res.data.token });
 				if (res.data && res.data.callbackUrl)
 					this.redirectToService(res.data.callbackUrl);
 				else
@@ -142,12 +151,21 @@ class Login extends Component {
 		)
 			.then((res) => {
 				this.setState({ otpDialogIsOpen: false });
+				if (res.data.token)
+					this.setState({ token: res.data.token });
 				if (res.data && res.data.callbackUrl)
 					this.redirectToService(res.data.callbackUrl);
 				else
 					this.checkLogin();
 			})
 			.catch(errorHandler);
+	};
+
+	onAcceptTerms = () => {
+		localStorage.setItem('termsAccepted', true);
+		if (this.state.token)
+			storeLoginResult(this.state.token);
+		this.setState({ termsDialogIsOpen: false, depositDialogIsOpen: true });
 	};
 
 	onCloseDialog = () => {
@@ -159,10 +177,15 @@ class Login extends Component {
 		this.setState({ logoutDialogIsOpen: false });
 	};
 
+	gotoWallet = () => {
+		this.props.router.replace('/wallet');
+		this.setState({ depositDialogIsOpen: false });
+		localStorage.setItem('deposit_initial_display', true);
+	};
+
 	render() {
 		const { logoutMessage, activeTheme } = this.props;
-		const { otpDialogIsOpen, logoutDialogIsOpen } = this.state;
-
+		const { otpDialogIsOpen, logoutDialogIsOpen, termsDialogIsOpen, depositDialogIsOpen } = this.state;
 		return (
 			<div className={classnames(...FLEX_CENTER_CLASSES, 'flex-column', 'f-1')}>
 				<div
@@ -205,7 +228,7 @@ class Login extends Component {
 				</div>
 				{!isMobile && <BottomLink />}
 				<Dialog
-					isOpen={otpDialogIsOpen || logoutDialogIsOpen}
+					isOpen={otpDialogIsOpen || logoutDialogIsOpen || termsDialogIsOpen || depositDialogIsOpen}
 					label="otp-modal"
 					onCloseDialog={this.onCloseDialog}
 					shouldCloseOnOverlayClick={otpDialogIsOpen ? false : true}
@@ -223,6 +246,8 @@ class Login extends Component {
 							data={{ message: logoutMessage }}
 						/>
 					)}
+					{termsDialogIsOpen && <TermsOfService onAcceptTerms={this.onAcceptTerms} />}
+					{depositDialogIsOpen && <DepositFunds gotoWallet={this.gotoWallet} />}
 				</Dialog>
 			</div>
 		);

@@ -160,7 +160,7 @@ export default (
 			<Route path="trade/:pair" name="Trade" component={Trade} />
 			<Route path="trade/add/tabs" name="Trade Tabs" component={AddTradeTabs} />
 			<Route path="quick-trade/:pair" name="Quick Trade" component={QuickTrade} />
-			<Route path="chat" name="Chat" component={Chat} onEnter={requireAuth}/>
+			{/* <Route path="chat" name="Chat" component={Chat} onEnter={requireAuth}/> */}
 			<Route
 				path="confirm-withdraw/:token"
 				name="ConfirmWithdraw"

@@ -27,4 +27,5 @@ export { default as Verification } from './Verification';
 export { default as Chat } from './Chat';
 export { default as Summary } from './Summary';
 export { default as AddTradeTabs } from './TradeTabs';
-export { default as TermsOfService } from './TermsOfService'
+export { default as TermsOfService } from './TermsOfService';
+export { default as DepositFunds } from './TermsOfService/DepositFunds';
