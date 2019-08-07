@@ -61,7 +61,7 @@ export const AssetsBlock = ({
 									</Link>
 								</td>
 								<td className="td-wallet">
-									{wallets[STRINGS[`${key.toUpperCase()}_FULLNAME`].toLowerCase()] ||
+									{wallets[key] ||
 									(key === BASE_CURRENCY && bankaccount && bankaccount.verified) ? (
 										<div className="d-flex justify-content-between deposit-withdrawal-wrapper">
 											<ActionNotification
