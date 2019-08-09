@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { isMobile } from 'react-device-detect';
 
-import { CheckTitle, MobileBarTabs } from '../../components';
+import { CheckTitle, MobileBarTabs, Loader } from '../../components';
 import { ICONS } from '../../config/constants';
 import { UserSecurity, UserSettings, Summary, Verification } from '../';
 import STRINGS from '../../config/localizedStrings';
@@ -163,7 +163,7 @@ class Account extends Component {
 		const { activeTab, tabs } = this.state;
 
 		if (!id || activeTab === -1) {
-			return <div>Loading</div>;
+			return <Loader />;
 		}
 
 		return isMobile ? (

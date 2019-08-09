@@ -16,7 +16,8 @@ import {
 	Dialog,
 	SuccessDisplay,
 	OtpForm,
-	IconTitle
+	IconTitle,
+	Loader
 } from '../../components';
 import { errorHandler } from '../../components/OtpForm/utils';
 import ChangePasswordForm, { generateFormValues } from './ChangePasswordForm';
@@ -260,7 +261,7 @@ class UserVerification extends Component {
 
 	render() {
 		if (this.props.user.verification_level === 0) {
-			return <div>Loading</div>;
+			return <Loader />;
 		}
 		const { sections, dialogIsOpen, modalText } = this.state;
 		const { otp, email, otp_enabled } = this.props.user;

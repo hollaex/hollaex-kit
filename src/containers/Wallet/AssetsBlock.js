@@ -34,7 +34,7 @@ export const AssetsBlock = ({
 			<tbody>
 				{Object.entries(coins)
 					.filter(([key]) => balance.hasOwnProperty(`${key}_balance`))
-					.map(([key, { min, deposit, withdrawal }]) => {
+					.map(([key, { min, allow_deposit, allow_withdrawal }]) => {
 						const balanceValue = balance[`${key}_balance`];
 						const baseCoin = coins[BASE_CURRENCY] || {}
 						const balanceText =
@@ -61,7 +61,7 @@ export const AssetsBlock = ({
 									</Link>
 								</td>
 								<td className="td-wallet">
-									{wallets[STRINGS[`${key.toUpperCase()}_FULLNAME`].toLowerCase()] ||
+									{wallets[key] ||
 									(key === BASE_CURRENCY && bankaccount && bankaccount.verified) ? (
 										<div className="d-flex justify-content-between deposit-withdrawal-wrapper">
 											<ActionNotification
@@ -71,7 +71,7 @@ export const AssetsBlock = ({
 												useSvg={true}
 												className="csv-action"
 												showActionText={isMobile}
-												disable={!deposit}
+												disable={!allow_deposit}
 											/>
 											<ActionNotification
 												text={STRINGS.WALLET_BUTTON_BASE_WITHDRAW}
@@ -80,7 +80,7 @@ export const AssetsBlock = ({
 												useSvg={true}
 												className="csv-action"
 												showActionText={isMobile}
-												disable={!withdrawal}
+												disable={!allow_withdrawal}
 											/>
 										</div>
 									) : (
@@ -92,7 +92,7 @@ export const AssetsBlock = ({
 												onClick={() => onOpenDialog(key)}
 												className="need-help"
 												useSvg={true}
-												disable={!deposit}
+												disable={!allow_deposit}
 											/>
 										)
 									)}
