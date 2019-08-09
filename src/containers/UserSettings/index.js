@@ -13,7 +13,7 @@ import {
 	setUsername,
 	setUsernameStore
 } from '../../actions/userAction';
-import { IconTitle, Button, HeaderSection, CustomTabs, CustomMobileTabs, CustomTabBar, MobileTabBar } from '../../components';
+import { IconTitle, Button, HeaderSection, CustomTabs, CustomMobileTabs, CustomTabBar, MobileTabBar, Loader } from '../../components';
 import SettingsForm, { generateFormValues } from './SettingsForm';
 import UsernameForm, { generateUsernameFormValues } from './UsernameForm';
 import LanguageForm, { generateLanguageFormValues } from './LanguageForm';
@@ -298,7 +298,7 @@ class UserSettings extends Component {
 
 	render() {
 		if (this.props.verification_level === 0) {
-			return <div>Loading</div>;
+			return <Loader />;
 		}
 
 		const { activeTab, tabs } = this.state;

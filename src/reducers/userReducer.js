@@ -394,7 +394,8 @@ export default function reducer(state = INITIAL_STATE, action) {
 		case 'CREATE_ADDRESS_FULFILLED':
 			const { address, crypto } = action.payload.data;
 			const { crypto_wallet } = state;
-			crypto_wallet[getCurrencyFromSymbol(crypto)] = address;
+			// crypto_wallet[getCurrencyFromSymbol(crypto)] = address;
+			crypto_wallet[crypto] = address;
 			return {
 				...state,
 				crypto_wallet,
