@@ -99,7 +99,7 @@ const createLocalizedRoutes = ({ router, routeParams}) => {
 
 const NotFound = ({ router }) => {
 	router.replace(
-		IS_PRO_VERSION ? PRO_VERSION_REDIRECT : DEFAULT_VERSION_REDIRECT
+		PRO_VERSION_REDIRECT
 	);
 	return <div />;
 };
@@ -114,7 +114,6 @@ const noLoggedUserCommonProps = {
 
 export default (
 	<Router history={browserHistory}>
-		{!IS_PRO_VERSION ? <Route path="/" name="Home" component={Home} /> : null}
 		<Route path="lang/:locale" component={createLocalizedRoutes} />
 		<Route component={AuthContainer} {...noAuthRoutesCommonProps}>
 			<Route path="login" name="Login" component={Login} />
