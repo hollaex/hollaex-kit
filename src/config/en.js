@@ -85,7 +85,7 @@ export default {
 	HELP_RESOURCE_GUIDE_TEXT: 
 		'Feel free to contact us for more information and any issues by sending us an email to support@bitholla.com',
 	HELP_TELEGRAM_TEXT: 
-		'Check out HollaEx open API documentation:',
+		'Check out HEX open API documentation:',
 	HELP_TELEGRAM_LINK: 'https://apidocs.hollaex.com',
 	NEED_HELP_TEXT: 'Need help',
 	HELP_TEXT: 'help',
@@ -190,7 +190,7 @@ export default {
 		},
 		INFORMATION_MESSAGES: [
 			'Use the bank details below to deposit USD in to your account. Transfers usally take up to 1-2 business day.',
-			'Deposits will only be accepeted from a bank account in a name that matches the name registered with your HOLLAEX account.'
+			'Deposits will only be accepeted from a bank account in a name that matches the name registered with your HEX account.'
 		],
 		INCREASE_LIMIT: 'Want to increase your daily limit?',
 		QR_CODE:
@@ -474,7 +474,7 @@ export default {
 					'IMPORTANT: Enter your name into the fields exactly as it appears on your identity document (full first name, any middle names/initials and full last name(s)). Are you a business? Contact customer support for a corporate account.',
 				TITLE_PERSONAL_INFORMATION: 'Personal Information',
 				TITLE_PHONE: 'Phone',
-				PHONE_VERIFICATION_TXT: 'Providing valid contact details will assist HollaEx greatly in conflict resolution while preventing unwanted transactions on your account.',
+				PHONE_VERIFICATION_TXT: 'Providing valid contact details will assist HEX greatly in conflict resolution while preventing unwanted transactions on your account.',
 				PHONE_VERIFICATION_TXT_1: 'Receive real-time updates for deposits and withdrawals by sharing your mobile phone number.',
 				PHONE_VERIFICATION_TXT_2: 'Further prove your identity and address by sharing your LAN phone number (optional).',
 			}
@@ -550,11 +550,11 @@ export default {
 				},
 				SELFIE: {
 					TITLE: 'Selfie with Photo ID and Note',
-					INFO_TEXT: 'Please provide a photo of you holding your passport or photo ID. In the same picture and have a reference to HollaEx.com’, today\'s date and your signature displayed.Make sure your face is clearly visible and that your ID details are clearly readable.',
+					INFO_TEXT: 'Please provide a photo of you holding your passport or photo ID. In the same picture and have a reference to hex.bitholla.com’, today\'s date and your signature displayed.Make sure your face is clearly visible and that your ID details are clearly readable.',
 					REQUIRED: 'Required:',
 					INSTRUCTION_1: 'Your face clearly visable',
 					INSTRUCTION_2: 'Photo ID clearly readable',
-					INSTRUCTION_3: 'Write the word ‘hollaex.com',
+					INSTRUCTION_3: 'Write the word ‘hex.bitholla.com',
 					INSTRUCTION_4: "Write today's date",
 					INSTRUCTION_5: "Write your signature",
 					WARNING: 'Selfie with a different inconsistent ID with uploaded content will be rejected'
@@ -829,7 +829,7 @@ export default {
 		MESSAGE_FEE: 'Transactions fee of {0} ({1}) included',
 		MESSAGE_FEE_BASE: 'Transactions fee of {0} included',
 		BASE_MESSAGE_1:
-			'You can only withdraw to a bank account in a name that matches the name registered with your HOLLAEX account.',
+			'You can only withdraw to a bank account in a name that matches the name registered with your HEX account.',
 		BASE_MESSAGE_2: 'Withdrawal min amount',
 		BASE_MESSAGE_3: 'Daily withdrawal max amount',
 		BASE_INCREASE_LIMIT: 'Increase your daily limit',
@@ -898,11 +898,11 @@ export default {
 	RESUBMIT: 'Resubmit', 
 	VERIFICATION_NOTIFICATION_SKIP_TITLE: 'Missing Documents!',
 	VERIFICATION_NOTIFICATION_SKIP_TEXT:
-		'To get full access to withdrawal and deposit functions on HOLLAEX you must submit your identity documents in your account page.',
+		'To get full access to withdrawal and deposit functions on HEX you must submit your identity documents in your account page.',
 	VERIFICATION_NOTIFICATION_SUCCESS_TITLE: 'Success!',
 	VERIFICATION_NOTIFICATION_SUCCESS_TEXT:
 		'You will receive an email notification when your information has been processed. Processing can typically take 1-3 days.',
-	VERIFICATION_NOTIFICATION_BUTTON: 'PROCEED TO HOLLAEX',
+	VERIFICATION_NOTIFICATION_BUTTON: 'PROCEED TO HEX',
 	ERROR_USER_ALREADY_VERIFIED: 'User already verified',
 	ERROR_INVALID_CARD_USER: 'Bank or card information provided is incorrect',
 	ERROR_INVALID_CARD_NUMBER: 'Invalid Card number',
@@ -1100,8 +1100,8 @@ export default {
 		RISK_INVOLVED_LABEL: 'I understand the risks involved',
 		DOWNLOAD_PDF: 'Download the PDF',
 		DEPOSIT_FUNDS: 'Deposit funds into your wallet to obtain HEX',
-		READ_FAG: 'Read the HEX FAQ here: {0}',
-		READ_DOCUMENTATION: 'Read the HEX documentation here: {0}',
+		READ_FAG: 'Read HEX FAQ here: {0}',
+		READ_DOCUMENTATION: 'Read HEX whitepaper here: {0}',
 		DOWNLOAD_BUY_HEX: 'Download the PDF to see a visual step-by-step processes on {0}',
 		HOW_TO_BUY: 'how to buy HEX',
 		CONTACT_US: 'Feel free to contact us for more information and any issues by sending us an email to {0}'

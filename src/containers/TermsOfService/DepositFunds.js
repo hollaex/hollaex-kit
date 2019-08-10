@@ -24,8 +24,8 @@ const DepositFunds = (props) => {
                         {STRINGS.formatString(
                             STRINGS.TERMS_OF_SERVICES.READ_FAG,
                             <BlueLink
-                                href="https://HEX-faq.bitholla.com"
-                                text={"https://HEX-faq.bitholla.com"}
+                                href="https://hex.bitholla.com/docs/faq.html"
+                                text={"https://hex.bitholla.com/docs/faq.html"}
                             />
                         )}
                     </div>
@@ -36,8 +36,8 @@ const DepositFunds = (props) => {
                         {STRINGS.formatString(
                             STRINGS.TERMS_OF_SERVICES.READ_DOCUMENTATION,
                             <BlueLink
-                                href="https://hex-docs.bitholla.com"
-                                text={"https://hex-docs.bitholla.com"}
+                                href="https://hex.bitholla.com/docs/whitepaper.html"
+                                text={"https://hex.bitholla.com/docs/whitepaper.html"}
                             />
                         )}
                     </div>

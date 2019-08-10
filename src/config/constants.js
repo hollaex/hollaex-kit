@@ -465,7 +465,7 @@ export const CURRENCIES = {
 };
 
 
-export const DEFAULT_PAIR = 'btc-eur';
+export const DEFAULT_PAIR = 'hex-usdt';
 
 export const FLEX_CENTER_CLASSES = [
 	'd-flex',
