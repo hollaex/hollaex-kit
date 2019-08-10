@@ -108,7 +108,7 @@ export const AssetsBlock = ({
 											)}
 										</div>
 										{!isMobile &&
-											key !== BASE_CURRENCY &&
+											key === 'hex' &&
 											parseFloat(balanceText || 0) > 0 && (
 												<div>
 													{`(≈ ${
@@ -133,10 +133,7 @@ export const AssetsBlock = ({
 							<td />
 							<td />
 							<td>
-								<div className="d-flex">
-									<div className="mr-4">{STRINGS.WALLET_TABLE_TOTAL}</div>
-									<div style={{ direction: 'rtl' }}>{totalAssets}</div>
-								</div>
+								
 							</td>
 						</tr>
 					</tfoot>

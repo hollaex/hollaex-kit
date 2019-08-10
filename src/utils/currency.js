@@ -75,6 +75,10 @@ export const formatCurrency = (amount = 0, currency = BASE_CURRENCY, type = 'sim
 			return numbro(roundNumber(amount, 8)).format(XRP_FULL_FORMAT);
 		case 'eur':
 			return numbro(roundNumber(amount, 8)).format(BASE_FORMAT);
+		case 'usdt':
+			return numbro(roundNumber(amount, 8)).format(BASE_FORMAT);
+		case 'hex':
+			return numbro(roundNumber(amount, 8)).format(BASE_FORMAT);
 		default:
 			return numbro(roundNumber(amount, 8)).format(BASE_FORMAT); 
 	}
