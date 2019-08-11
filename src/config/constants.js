@@ -534,9 +534,10 @@ export const BANK_PAYMENT_LINK = '';
 export const MIN_VERIFICATION_LEVEL_TO_WITHDRAW = 2;
 export const MAX_VERIFICATION_LEVEL_TO_WITHDRAW = 5;
 
-export const BLOCKTRAIL_ENDPOINT = `https://www.blocktrail.com/${
-	NETWORK === 'testnet' ? 't' : ''
-}BTC/tx/`;
+export const BLOCKTRAIL_ENDPOINT =
+	NETWORK === 'testnet' ?
+		`https://testnet.blockchain.com/btc/tx/` :
+		'https://explorer.blockchain.com/btc/tx/';
 
 export const ETHEREUM_ENDPOINT = `https://${
 	NETWORK === 'testnet' ? 'ropsten.etherscan.io' : 'etherscan.io'
@@ -546,6 +547,11 @@ export const BITCOINCOM_ENDPOINT =
 	NETWORK === 'testnet' ? 
 	`https://www.blocktrail.com/tBCC/tx/` :
 	'https://explorer.bitcoin.com/bch/tx/';
+
+export const RIPPLE_ENDPOINT = 
+	NETWORK === 'testnet' ? 
+	`https://xrpscan.com/tx/` : // needs to be fixed
+	'https://xrpscan.com/tx/';
 
 export const BALANCE_ERROR = 'Insufficient balance to perform the order';
 

@@ -6,7 +6,7 @@ import { isMobile } from 'react-device-detect';
 import STRINGS from '../../config/localizedStrings';
 
 import { CurrencyBall } from '../../components';
-import { BLOCKTRAIL_ENDPOINT, ETHEREUM_ENDPOINT, BITCOINCOM_ENDPOINT, BASE_CURRENCY } from '../../config/constants';
+import { BLOCKTRAIL_ENDPOINT, ETHEREUM_ENDPOINT, RIPPLE_ENDPOINT, BITCOINCOM_ENDPOINT, BASE_CURRENCY } from '../../config/constants';
 import { formatTimestamp, isBlockchainTx } from '../../utils/utils';
 import { formatToCurrency } from '../../utils/currency';
 
@@ -99,6 +99,8 @@ export const generateTradeHeaders = (symbol, pairs, coins) => {
 						formatToCurrency(size, min),
 						shortName
 					);
+				} else {
+					return size;
 				}
 			},
 			renderCell: ({ size = 0, ...data }, key, index) => {
@@ -115,6 +117,8 @@ export const generateTradeHeaders = (symbol, pairs, coins) => {
 							)}
 						</td>
 					);
+				} else {
+					return <td key={index}>{size}</td>
 				}
 			}
 		},
@@ -134,6 +138,8 @@ export const generateTradeHeaders = (symbol, pairs, coins) => {
 						),
 						STRINGS[`${pair}_CURRENCY_SYMBOL`]
 					);
+				} else {
+					return calculatePrice(quick, price, size)
 				}
 			},
 			renderCell: ({ price = 0, size = 0, quick, symbol }, key, index) => {
@@ -153,6 +159,8 @@ export const generateTradeHeaders = (symbol, pairs, coins) => {
 							)}
 						</td>
 					);
+				} else {
+					return <td key={index}>{calculatePrice(quick, price, size)}</td>
 				}
 			}
 		},
@@ -172,6 +180,8 @@ export const generateTradeHeaders = (symbol, pairs, coins) => {
 						),
 						STRINGS[`${pair}_CURRENCY_SYMBOL`]
 					);
+				} else {
+					return calculateAmount(quick, price, size)
 				}
 			},
 			renderCell: ({ price = 0, size = 0, quick, symbol }, key, index) => {
@@ -191,6 +201,11 @@ export const generateTradeHeaders = (symbol, pairs, coins) => {
 							)}
 						</td>
 					);
+				} else {
+					return <td>{formatToCurrency(
+								calculateAmount(quick, price, size),
+								0.0001
+							)}</td>
 				}
 			}
 		},
@@ -213,6 +228,8 @@ export const generateTradeHeaders = (symbol, pairs, coins) => {
 						),
 						STRINGS[`${pair.toUpperCase()}_CURRENCY_SYMBOL`]
 					);
+				} else {
+					calculateFeeAmount(fee, quick, price, size, side)
 				}
 			},
 			renderCell: ({ fee, price, size, quick, symbol, side }, key, index) => {
@@ -236,6 +253,8 @@ export const generateTradeHeaders = (symbol, pairs, coins) => {
 							)}
 						</td>
 					);
+				} else {
+					calculateFeeAmount(fee, quick, price, size, side)
 				}
 			}
 		},
@@ -352,7 +371,9 @@ export const generateWithdrawalsHeaders = (symbol, withdrawalPopup, coins = {}) 
 		       	} else {
 					return isBlockchainTx(transaction_id) && currency !== BASE_CURRENCY ?
 						<td key={index}><a target="blank" href={(currency === 'btc' ? BLOCKTRAIL_ENDPOINT : 
-							(currency === 'eth') ? ETHEREUM_ENDPOINT : BITCOINCOM_ENDPOINT) + transaction_id}>{STRINGS.VIEW}</a></td> : <td key={index}></td>;
+							(currency === 'eth') ? ETHEREUM_ENDPOINT : 
+							(currency === 'xrp') ? RIPPLE_ENDPOINT : 
+							BITCOINCOM_ENDPOINT) + transaction_id}>{STRINGS.VIEW}</a></td> : <td key={index}></td>;
 				}
 			}
 		},

@@ -88,6 +88,7 @@ class TVChartContainer extends React.PureComponent {
 				const { increment_price } = this.props.pairData;
 				getChartSymbol(symbolName, increment_price)
 					.then((data) => {
+						console.log(data)
 						onSymbolResolvedCallback(data)
 					})
 				

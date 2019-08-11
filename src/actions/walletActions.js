@@ -96,7 +96,7 @@ export const getUserTrades = ({
 	...rest
 }) => {
 	const query = querystring.stringify({
-		symbol,
+		// symbol,
 		page,
 		limit
 	});
