@@ -1,3 +1,5 @@
+import AGREEMENT from './agreement';
+
 export default {
 	APP_TITLE: 'Hex', // new
 	APP_SUB_TITLE: 'THE DIGITAL FUEL FOR TRADING EXCHANGES', // new
@@ -1093,10 +1095,10 @@ export default {
 		COPY_LINK_BUTTON: 'COPY REFERRAL LINK' // new
 	},
 	TERMS_OF_SERVICES: { // new
-		TITLE: 'Before you obtain HEX please read and agree to our terms of service',
-		SERVICE_AGREEMENT: 'This agreement was written in English (US). To the extent any translated version of this agreement conflicts with the Korean version, the Korean version controls. Principle Statement of Basic Terms of Use This agreement has the purpose of defining the basic principles between we and individual users. For those of corporate users, you will find the provisions of Article 19 below. If you are a minor or person of limited legal capacity, you cannot be enrolled without the consent of the legal representative, due to the laws of Republic of Korea. If we confirm that a minor or person of limited legal capacity has registered as a user, we may instantly withdraw the membership without the consent of the user. When accessing our mobile page, web page or application in order to use our service, if you fill in the information of your account, password, or other login information, and it is the same with the information provided by you to us, all transactions occurred during that connection period are deemed to be due to your true doctor. Hence, you shall keep security of your account, password and other information, and also shall be held liable for any damages caused due to financial accidents or crimes related to leaks of personal information. Cryptocurrencies have no issuer and as a result no third party (including us) inside or outside of Republic of Korea warrants the value or payment. Therefore, the value of cryptocurrencies may experience large volatility depending on the laws of any state including the Republic of Korea, as well as the national policies, legal interpretation of these laws and the economic environment of each of any state including the Republic of Korea. In addition, the interpretation of laws regarding the exchange of cryptocurrencies is different in various countries and therefore cryptocurrencies have inherent risks different than that of legal currencies: please be aware of this. Coinone Transaction Service are services provided by us to enable exchange between you and other members as well as send cryptocurrency you hold from your Coinone Exchange internal electronic wallet to another external wallet through the blockchain or send coins from an external electronic wallet to your Coinone Exchange electronic wallet. The blockchain technology is currently known to be non-modifiable by a third party, but it may change anytime due to technological advances or other unforeseen circumstances. In the case of a user transacting in a cryptocurrency by using our service, the transactions of the corresponding cryptocurrency are recorded in the Coinone Exchange Service system. The company receives payment in set fees regarding all transactions that occur within the Coinone cryptocurrency',
+		TITLE: 'HEX Purchase Agreement',
+		SERVICE_AGREEMENT: AGREEMENT,
 		PROCEED: 'PROCEED',
-		AGREE_TERMS_LABEL: 'I have read and agree to the Terms of Service',
+		AGREE_TERMS_LABEL: 'I have read and agree to the HEX Purchase Agreement',
 		RISK_INVOLVED_LABEL: 'I understand the risks involved',
 		DOWNLOAD_PDF: 'Download the PDF',
 		DEPOSIT_FUNDS: 'Deposit funds into your wallet to obtain HEX',

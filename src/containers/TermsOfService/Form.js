@@ -23,7 +23,7 @@ const Form = ({
                 {renderFields(formFields)}
                 <div className="download-wrapper pointer mb-3">
                     <ReactSVG path={ICONS.ARROW_TRANSFER_HISTORY_ACTIVE} wrapperClassName="download_pdf-svg" />
-                    <div className="ml-2">{STRINGS.TERMS_OF_SERVICES.DOWNLOAD_PDF}</div>
+                    <a href="https://hex.bitholla.com/docs/agreement.pdf" target="_blank"><div className="ml-2">{STRINGS.TERMS_OF_SERVICES.DOWNLOAD_PDF}</div></a>
                 </div>
 				{error && (
 					<div className="warning_text error_text">
