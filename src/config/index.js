@@ -11,11 +11,11 @@ const generateEndpoint = (endpoint, path) => ({
 });
 const VARIABLES = {
 	production: {
-		mainnet: generateEndpoint(LOCALHOST_ENDPOINT, API_PATH_V0),
-		testnet: generateEndpoint(LOCALHOST_ENDPOINT, API_PATH_V0)
+		mainnet: generateEndpoint(PRODUCTION_ENDPOINT, API_PATH_V0),
+		testnet: generateEndpoint(PRODUCTION_ENDPOINT, API_PATH_V0)
 	},
 	development: {
-		mainnet: generateEndpoint(LOCALHOST_ENDPOINT, API_PATH_V0),
+		mainnet: generateEndpoint(PRODUCTION_ENDPOINT, API_PATH_V0),
 		testnet: generateEndpoint(LOCALHOST_ENDPOINT, API_PATH_V0)
 	}
 };
