@@ -26,9 +26,9 @@ export const getChartSymbol = (symbol, tickSize) => {
 	// });
 	return new Promise((resolve) => {
 		resolve({
-			name: `${APP_TITLE.toUpperCase()}:${symbol.toUpperCase()}`,
+			name: `${symbol.toUpperCase()}`,
 			ticker: symbol,
-			exchange: APP_TITLE.toUpperCase(),
+			exchange: 'bitholla'.toUpperCase(),
 			has_intraday: true,
 			has_daily: true,
 			has_weekly_and_monthly: true,
