@@ -36,6 +36,9 @@ $trade-tab-active-dark-title: #b7b5cd;
                     fill: $dark-font-sub-text-1-color !important;
                     stroke-width: 0rem;
                 }
+                .hex_icon {
+                    fill: $dark-font-sub-text-1-color !important;
+                }
             }
         }
         .price-diff-down {
@@ -80,6 +83,9 @@ $trade-tab-active-dark-title: #b7b5cd;
                     .st0 {
                         fill: $dark-font-sub-text-color !important;
                         stroke-width: 0rem;
+                    }
+                    .hex_icon {
+                        fill: $dark-font-sub-text-color !important;
                     }
                 }
             }

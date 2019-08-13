@@ -102,7 +102,7 @@ class QuickTradeContainer extends Component {
 
 	onReviewQuickTrade = () => {
 		const { pair_base, pair_2 } = this.props.pairData;
-		const { settings: { risk = {}, notification = {} }, quoteData: { data = {} }, setNotification, pairData } = this.props;
+		const { settings: { risk = {}, notification = {} }, quoteData: { data = {} }, setNotification, pairData, balance } = this.props;
 
 		if (this.props.quoteData.error === BALANCE_ERROR) {
 			this.props.changeSymbol(this.state.side === 'sell' ? pair_base : pair_2);
@@ -117,7 +117,9 @@ class QuickTradeContainer extends Component {
 				orderPrice: data.price,
 				orderFees: 0
 			};
-			const riskyPrice = ((this.state.totalAssets / 100) * risk.order_portfolio_percentage);
+			// const riskyPrice = ((this.state.totalAssets / 100) * risk.order_portfolio_percentage);
+			const avail_balance = balance[`${pair_base.toLowerCase()}_available`] || 0;
+			const riskyPrice = ((avail_balance / 100) * risk.order_portfolio_percentage);
 			if (risk.popup_warning && data.price > riskyPrice) {
 				order['order_portfolio_percentage'] = risk.order_portfolio_percentage
 				setNotification(RISKY_ORDER, {
@@ -195,7 +197,7 @@ class QuickTradeContainer extends Component {
 		const tradeData = isLoggedIn() ? quoteData : quickTrade;
 		const baseCoin = coins[BASE_CURRENCY] || {};
 		return (
-			<div>
+			<div className='h-100'>
 				{isMobile && <MobileBarBack onBackClick={this.onGoBack} />}
 
 				<div
@@ -203,6 +205,7 @@ class QuickTradeContainer extends Component {
 						'd-flex',
 						'f-1',
 						'quote-container',
+						'h-100',
 						{ 'flex-column': isMobile }
 					)}
 				>

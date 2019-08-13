@@ -82,6 +82,7 @@ const setTokenInApp = (token, setInStore = false) => {
 const cleatTokenInApp = (router, path = '/') => {
 	axios.defaults.headers.common['Authorization'] = {};
 	removeToken();
+	localStorage.removeItem('deposit_initial_display');
 	router.push(path);
 };
 

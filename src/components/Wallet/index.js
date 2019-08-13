@@ -102,7 +102,7 @@ class Wallet extends Component {
 					<DonutChart chartData={chartData} />
 				</div>
 				<Accordion sections={sections} />
-				{BASE_CURRENCY && (
+				{/* {BASE_CURRENCY && (
 					<div className="wallet_section-wrapper wallet_section-total_asset d-flex flex-column">
 						<div className="wallet_section-title">
 							{STRINGS.WALLET.TOTAL_ASSETS}
@@ -112,7 +112,7 @@ class Wallet extends Component {
 							<span>{totalAssets}</span>
 						</div>
 					</div>
-				)}
+				)} */}
 			</div>
 		);
 	}

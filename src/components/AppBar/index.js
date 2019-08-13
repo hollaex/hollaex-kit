@@ -27,7 +27,8 @@ class AppBar extends Component {
 		isAccountMenu: false,
 		selectedMenu: '',
 		securityPending: 0,
-		verificationPending: 0
+		verificationPending: 0,
+		walletPending: 0
 	};
 
 	componentDidMount() {
@@ -36,6 +37,7 @@ class AppBar extends Component {
 		}
 		if (this.props.user) {
 			this.checkVerificationStatus(this.props.user);
+			this.checkWalletStatus(this.props.user, this.props.coins);
 		}
 		if (this.props.isHome && this.props.token) {
 			this.getUserDetails();
@@ -48,8 +50,10 @@ class AppBar extends Component {
 			&& this.props.location.pathname !== nextProps.location.pathname) {
 			this.setActiveMenu(nextProps.location.pathname);
 		}
-		if (JSON.stringify(this.props.user) !== JSON.stringify(nextProps.user)) {
+		if (JSON.stringify(this.props.user) !== JSON.stringify(nextProps.user)
+			|| JSON.stringify(this.props.user) !== JSON.stringify(nextProps.user)) {
 			this.checkVerificationStatus(nextProps.user);
+			this.checkWalletStatus(nextProps.user, nextProps.coins);
 		}
 		if (this.props.token !== nextProps.token && nextProps.token && nextProps.isHome) {
 			this.getUserDetails();
@@ -97,6 +101,18 @@ class AppBar extends Component {
 		}
 	};
 
+	checkWalletStatus = (user, coins) => {
+        let walletPending = 0;
+        if (user.balance) {
+            Object.keys(coins).map(pair => {
+                if (user.balance[`${pair.toLowerCase()}_balance`] <= 0) {
+                    walletPending = 1;
+                }
+            })
+        }
+        this.setState({ walletPending: walletPending > 0 ? 1 : 0 });
+    };
+
 	toogleSymbolSelector = () => {
 		this.setState({ symbolSelectorIsOpen: !this.state.symbolSelectorIsOpen });
 	};
@@ -130,7 +146,7 @@ class AppBar extends Component {
 	);
 
 	renderSplashActions = (token, verifyingToken) => {
-		const { securityPending, verificationPending } = this.state;
+		const { securityPending, walletPending } = this.state;
 		if (verifyingToken) {
 			return <div />;
 		}
@@ -140,8 +156,8 @@ class AppBar extends Component {
 			<div className="d-flex app-bar-account" onClick={this.handleSummary}>
 				<div className="app-bar-account-content mr-2">
 					<ReactSVG path={ICONS.SIDEBAR_ACCOUNT_INACTIVE} wrapperClassName="app-bar-currency-icon" />
-					{!!(securityPending + verificationPending)
-						&& <div className="app-bar-account-notification">{securityPending + verificationPending}</div>
+					{!!(securityPending + walletPending)
+						&& <div className="app-bar-account-notification">{securityPending + walletPending}</div>
 					}
 				</div>
 				<div className="d-flex align-items-center">{STRINGS.ACCOUNT_TEXT}</div>
@@ -242,8 +258,8 @@ class AppBar extends Component {
 			location,
 			pairs
 		} = this.props;
-		const { isAccountMenu, selectedMenu, securityPending, verificationPending } = this.state;
-		const totalPending = securityPending + verificationPending;
+		const { isAccountMenu, selectedMenu, securityPending, walletPending } = this.state;
+		const totalPending = securityPending + walletPending;
 		let pair = '';
 		if (Object.keys(pairs).length) {
 			const { pair_base } = pairs[Object.keys(pairs)[0]];
@@ -320,7 +336,7 @@ class AppBar extends Component {
 					<MenuList
 						selectedMenu={selectedMenu}
 						securityPending={securityPending}
-						verificationPending={verificationPending}
+						walletPending={walletPending}
 						handleMenu={this.handleMenu}
 						logout={logout}
 						activePath={activePath}
@@ -338,7 +354,8 @@ const mapStateToProps = (state, ownProps) => {
 		user: userData,
 		theme: state.app.theme,
 		pair: state.app.pair,
-		pairs: state.app.pairs
+		pairs: state.app.pairs,
+		coins: state.app.coins
 }};
 
 const mapDispatchToProps = (dispatch) => ({

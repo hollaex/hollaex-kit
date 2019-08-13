@@ -187,11 +187,9 @@ class Container extends Component {
 			this.setUserSocket(getToken());
 			const dialog_display = localStorage.getItem('deposit_initial_display');
 			if (!dialog_display) {
-				this.props.setNotification(NOTIFICATIONS.DEPOSIT_INFO, { gotoWallet: this.onConfirmEmail })
-			} else {
-				localStorage.removeItem('deposit_initial_display');
+				this.props.setNotification(NOTIFICATIONS.DEPOSIT_INFO, { gotoWallet: this.onConfirmEmail });
+				localStorage.setItem('deposit_initial_display', true);
 			}
-
 		}
 		this.setState({ appLoaded: true }, () => {
 			this._resetTimer();
@@ -828,7 +826,7 @@ class Container extends Component {
 							<Dialog
 								isOpen={dialogIsOpen}
 								label="hollaex-modal"
-								className="app-dialog"
+								className={classnames("app-dialog", { "app-dialog-flex": activeNotification.type === NOTIFICATIONS.DEPOSIT_INFO })}
 								onCloseDialog={this.onCloseDialog}
 								shouldCloseOnOverlayClick={shouldCloseOnOverlayClick}
 								theme={activeTheme}

@@ -7,9 +7,10 @@
     }
     .agreement_wrapper {
         font-size: 1rem;
-        background-color: $colors-deactivate-color1;
-        height: 35rem;
+        background-color: $colors-terms-background;
+        height: 32rem;
         overflow-y: scroll;
+
     }
     .download-wrapper {
         color: $colors-notifications-blue;
@@ -35,10 +36,13 @@
             stroke: $colors-notifications-blue;
         }
     }
+    .checkfield-wrapper {
+        margin: 0.5rem 0;
+    }
 }
 
 .deposit_funds-wrapper {
-    width: 40rem;
+    width: 42rem;
 
     .funds-svg {
         svg {

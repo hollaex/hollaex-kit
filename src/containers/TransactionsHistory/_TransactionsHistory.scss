@@ -73,6 +73,18 @@ $trade-asks-color-font: $colors-currencies-btc;
 	cursor: pointer;
 }
 
+.transaction-history-wrapper {
+	svg {
+		.trade-history-1,
+		.deposit-history-3,
+		.withdrawals-history-3,
+		.transaction-history-1,
+		.transaction-history-5 {
+			fill: $colors-black;
+		}
+	}
+}
+
 .dark-theme {
 	.csv-action {
 		.action_notification-text {

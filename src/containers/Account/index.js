@@ -129,7 +129,6 @@ class Account extends Component {
 							icon={ICONS.TAB_SUMMARY}
 						/>
 					),
-				notifications: verificationPending ? '!' : '',
 				content: <Verification />
 			},
 			{
@@ -156,6 +155,7 @@ class Account extends Component {
 	openContactForm = (data) => {
 		this.props.openContactForm(data);
 	};
+
 	goToVerification = () => this.props.router.push('/verification');
 
 	render() {

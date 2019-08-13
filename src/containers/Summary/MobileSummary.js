@@ -71,27 +71,6 @@ const MobileSummary = ({
                         coins={coins} />
                 </SummaryBlock>
             </div>
-            <div className="trading-volume-wrapper w-100">
-                <SummaryBlock
-                    title={STRINGS.SUMMARY.TRADING_VOLUME}
-                    secondaryTitle={`${balance[`${BASE_CURRENCY.toLowerCase()}_balance`]} ${STRINGS[`${BASE_CURRENCY.toUpperCase()}_FULLNAME`]}`} >
-                    <TradingVolume user={user} />
-                </SummaryBlock>
-            </div>
-            <SummaryBlock
-                title={STRINGS.SUMMARY.ACCOUNT_DETAILS}
-                secondaryTitle={currentTradingAccount.name}
-                wrapperClassname="w-100" >
-                <AccountDetails
-                    coins={coins}
-                    pairs={pairs}
-                    user={user}
-                    activeTheme={activeTheme}
-                    currentTradingAccount={currentTradingAccount.symbol}
-                    selectedAccount={selectedAccount}
-                    onAccountTypeChange={onAccountTypeChange}
-                    onFeesAndLimits={onFeesAndLimits} />
-            </SummaryBlock>
         </div>
     );
 };

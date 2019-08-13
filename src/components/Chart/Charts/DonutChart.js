@@ -127,7 +127,7 @@ class DonutChart extends Component {
             return '';
         });
         let x = width / 2;
-        let y = (height / 2) - 15;
+        let y = (height / 2) - 11;
 
         return (
             <div id="donut-container" className="w-100 h-100">

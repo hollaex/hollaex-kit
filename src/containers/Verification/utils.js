@@ -1,3 +1,5 @@
+import PhoneNumber from 'awesome-phonenumber';
+
 import { initialCountry, COUNTRIES } from '../../utils/countries';
 
 export const mobileInitialValues = ({ country }) => {
@@ -55,6 +57,16 @@ export const documentInitialValues = ({ nationality, id_data = {} }) => {
 
 export const getCountry = country => {
 	const filterValue = COUNTRIES.filter(data => data.value === country);
+	if (filterValue.length) return filterValue[0];
+	return initialCountry;
+};
+
+export const getCountryFromNumber = (phone = '') => {
+	const number = PhoneNumber(phone);
+	const phoneCode = `+${PhoneNumber.getCountryCodeForRegionCode(
+		number.getRegionCode()
+	)}`;
+	const filterValue = COUNTRIES.filter(data => data.phoneCode === phoneCode);
 	if (filterValue.length) return filterValue[0];
 	return initialCountry;
 };

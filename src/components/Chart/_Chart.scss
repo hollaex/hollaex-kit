@@ -635,6 +635,11 @@
 			color: $dark-font-main-text-color;
 		}
 	}
+	.donut-label-no-price {
+		tspan {
+			fill: $dark-font-sub-text-color;
+		}
+	}
 }
 
 @media (min-width: 1920px) {

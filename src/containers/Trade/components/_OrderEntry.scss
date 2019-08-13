@@ -44,9 +44,9 @@
 	}
 
 	.trade_order_entry-action_selector {
-		border: 1px solid $colors-black;
+		border: 1px solid $theme-color;
 		.active {
-			background-color: $colors-black;
+			background-color: $theme-color;
 			color: white;
 			font-weight: bold;
 		}

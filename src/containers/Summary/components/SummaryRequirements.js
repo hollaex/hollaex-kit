@@ -167,13 +167,13 @@ const SummaryRequirements = ({ user, isAccountDetails = false, contentClassName 
                         )
                     })}
                 </div>
-                {/* {!isAccountDetails && !user.otp_enabled && 
+                {!isAccountDetails && !user.otp_enabled && 
                     <div className="trade-account-link mb-2">
                         <Link to='/security'>
                             {STRINGS.SUMMARY.ACTIVE_2FA_SECURITY.toUpperCase()}
                         </Link>
                     </div>
-                } */}
+                }
                 {(!isAccountDetails && (!address.country ||
                     id_data.status !== 3 ||
                     !phone_number ||

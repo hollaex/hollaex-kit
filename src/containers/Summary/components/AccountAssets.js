@@ -19,7 +19,7 @@ const AccountAssets = ({ chartData = [], totalAssets, balance, coins }) => {
                     <div className="w-100 donut-container">
                         {BASE_CURRENCY && <DonutChart chartData={chartData} />}
                     </div>
-                    <div className="d-flex justify-content-between flex-wrap">
+                    <div className="d-flex justify-content-center flex-wrap">
                         {chartData.map((value, index) => {
                             const { min } = coins[value.symbol || BASE_CURRENCY] || {};
                             let currencyBalance = formatToCurrency(balance[`${value.symbol}_balance`], min);
@@ -37,11 +37,11 @@ const AccountAssets = ({ chartData = [], totalAssets, balance, coins }) => {
                             )}
                         )}
                     </div>
-                    <div className="text-center my-3 title-font">
+                    {/* <div className="text-center my-3 title-font">
                         <span className="total-assets">
                             {STRINGS.formatString(STRINGS.TOTAL_ASSETS_VALUE, STRINGS[`${baseValue.symbol.toUpperCase()}_FULLNAME`], totalAssets)}
                         </span>
-                    </div>
+                    </div> */}
                 </div>
             </div>
         </div>

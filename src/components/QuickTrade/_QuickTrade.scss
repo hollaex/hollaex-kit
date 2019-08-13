@@ -231,6 +231,13 @@ $title-icon--height: 10rem;
 			background-color: $colors-currencies-ltc;
 		}
 	}
+
+	.tab_controller-wrapper {
+		.tab_controller-tabs {
+			display: flex;
+			justify-content: center;
+		}
+	}
 }
 
 @keyframes linear_loading {

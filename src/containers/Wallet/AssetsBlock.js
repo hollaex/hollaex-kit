@@ -18,7 +18,8 @@ export const AssetsBlock = ({
 	wallets,
 	onOpenDialog,
 	bankaccount,
-	navigate
+	navigate,
+	openContactUs
 }) => (
 	<div className="wallet-assets_block">
 		<table className="wallet-assets_block-table">
@@ -92,6 +93,7 @@ export const AssetsBlock = ({
 												onClick={() => onOpenDialog(key)}
 												className="need-help"
 												useSvg={true}
+												showActionText={true}
 												disable={!allow_deposit}
 											/>
 										)
@@ -128,12 +130,11 @@ export const AssetsBlock = ({
 				BASE_CURRENCY && (
 					<tfoot>
 						<tr>
-							<td />
-							<td />
-							<td />
-							<td />
-							<td>
-								
+							<td colSpan={5}>
+								{STRINGS.formatString(
+									STRINGS.WALLET_DEPOSIT_USD,
+									<span className="blue-link pointer" onClick={openContactUs}>{STRINGS.CONTACT_US_TEXT}</span>
+								)}
 							</td>
 						</tr>
 					</tfoot>

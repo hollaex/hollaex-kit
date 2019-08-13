@@ -22,16 +22,25 @@ import InputBlock from './InputBlock';
 
 // const GROUP_CLASSES = [...FLEX_CENTER_CLASSES, 'flex-column'];
 
-const getInitialTab = ( path ) => {
+const getInitialTab = (path, pairs = {}) => {
 	let activeTab = -1;
-	if (path === `${STRINGS.BTC_SHORTNAME.toLowerCase()}-${STRINGS[`${BASE_CURRENCY.toUpperCase()}_SHORTNAME`].toLowerCase()}`) {
-		activeTab = 0;
-	} else if (path === `${STRINGS.ETH_SHORTNAME.toLowerCase()}-${STRINGS[`${BASE_CURRENCY.toUpperCase()}_SHORTNAME`].toLowerCase()}`) {
-		activeTab = 1;
-	} else if (path === `${STRINGS.BCH_SHORTNAME.toLowerCase()}-${STRINGS[`${BASE_CURRENCY.toUpperCase()}_SHORTNAME`].toLowerCase()}`) {
-		activeTab = 2;
-	}
-	
+	const obj = {};
+	Object.entries(pairs).forEach(([key, pair]) => {
+		obj[pair.pair_base] = '';
+	});
+	const pairValues = Object.keys(obj).map((key) => key);
+	pairValues.map((value, index) => {
+		if (path === `${value.toLowerCase()}-${STRINGS[`${BASE_CURRENCY.toUpperCase()}_SHORTNAME`].toLowerCase()}`) {
+			activeTab = index;
+		}
+	});
+	// if (path === `${STRINGS.BTC_SHORTNAME.toLowerCase()}-${STRINGS[`${BASE_CURRENCY.toUpperCase()}_SHORTNAME`].toLowerCase()}`) {
+	// 	activeTab = 0;
+	// } else if (path === `${STRINGS.ETH_SHORTNAME.toLowerCase()}-${STRINGS[`${BASE_CURRENCY.toUpperCase()}_SHORTNAME`].toLowerCase()}`) {
+	// 	activeTab = 1;
+	// } else if (path === `${STRINGS.BCH_SHORTNAME.toLowerCase()}-${STRINGS[`${BASE_CURRENCY.toUpperCase()}_SHORTNAME`].toLowerCase()}`) {
+	// 	activeTab = 2;
+	// }
 	return {
 		activeTab,
 	};
@@ -39,7 +48,7 @@ const getInitialTab = ( path ) => {
 class QuickTrade extends Component {
 	state = {
 		side: STRINGS.SIDES[0].value,
-		value: 0.1,
+		value: 1,
 		symbol: DEFAULT_PAIR,
 		tabs: [],
 		activeTab:-1,
@@ -117,14 +126,14 @@ class QuickTrade extends Component {
 		updateActiveTab = false
 	) => {
 		let activeTab = this.state.activeTab > -1 ? this.state.activeTab : 0;
-		const { theme, pairs } = this.props;
+		const { theme, pairs, symbol } = this.props;
 		const obj = {};
 		Object.entries(pairs).forEach(([key, pair]) => {
 			obj[pair.pair_base] = '';
 		});
 		const symbols = Object.keys(obj).map((key) => key);
 		if (updateActiveTab || this.state.activeTab === -1) {
-			const initialValues = getInitialTab(this.props.symbol);
+			const initialValues = getInitialTab(symbol, pairs);
 			activeTab = initialValues.activeTab;
 		}
 
@@ -149,7 +158,8 @@ class QuickTrade extends Component {
 		const { onReviewQuickTrade, quickTradeData, disabled, orderLimits, pairs } = this.props;
 		const { side, value, symbol, tabs, activeTab } = this.state;
 		const { data, fetching, error } = quickTradeData;
-		const name = STRINGS[`${pairs[symbol].pair_base.toUpperCase()}_NAME`];
+		const symbolObj = pairs[symbol] || {};
+		const name = symbolObj.pair_base ? STRINGS[`${symbolObj.pair_base.toUpperCase()}_NAME`] : '';
 		return (
 			<div className={classnames('quick_trade-wrapper', 'd-flex', 'flex-column')}>
 				<div
@@ -159,7 +169,7 @@ class QuickTrade extends Component {
 						// ...GROUP_CLASSES
 					)}
 				>
-					<ReactSVG path={ isMobile ? ICONS.SIDEBAR_QUICK_TRADING_INACTIVE: ICONS.QUICK_TRADE} wrapperClassName= {isMobile ?'quick_trade-tab-icon' :"quick_trade-icon"} />
+					<ReactSVG path={ICONS.QUICK_TRADE} wrapperClassName= {isMobile ?'quick_trade-tab-icon' :"quick_trade-icon"} />
 					<div className={classnames("title text-capitalize", ...FLEX_CENTER_CLASSES)}>
 						{STRINGS.formatString(
 							STRINGS.QUICK_TRADE_COMPONENT.TRADE_TITLE,

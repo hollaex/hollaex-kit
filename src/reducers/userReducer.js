@@ -113,7 +113,7 @@ const INITIAL_STATE = {
 			public_trade: false
 		},
 		risk: {
-			order_portfolio_percentage: 25,
+			order_portfolio_percentage: 100,
 			popup_warning: true
 		}
 	},
@@ -139,7 +139,8 @@ export default function reducer(state = INITIAL_STATE, action) {
 				bank_account,
 				address,
 				id_data,
-				affiliation_code
+				affiliation_code,
+				phone_number
 			} = action.payload;
 			const userData = extractuserData(action.payload);
 			const fees = action.payload.fees || state.fees;
@@ -166,7 +167,8 @@ export default function reducer(state = INITIAL_STATE, action) {
 				bank_account,
 				address,
 				id_data,
-				affiliation_code
+				affiliation_code,
+				phone_number
 			};
 		}
 		case 'SET_USER_DATA': {

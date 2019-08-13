@@ -115,7 +115,7 @@ $app-bar-pairs-up: green;
 				}
 			}
 		}
-		.security_notification, .verification_notification {
+		.security_notification, .verification_notification, .wallet_notification {
 			color: $colors-notification-inactive-red !important;
 		
 			svg {
@@ -512,7 +512,7 @@ $app-bar-pairs-up: green;
 				}
 			}
 		}
-		.security_notification, .verification_notification {
+		.security_notification, .verification_notification, .wallet_notification {
 			color: $colors-notification-inactive-red;
 			// padding-left: 0;
 		
@@ -690,7 +690,7 @@ $app-bar-pairs-up: green;
 			}
 		}
 	}
-	.security_notification, .verification_notification {
+	.security_notification, .verification_notification, .wallet_notification {
 		color: $colors-notification-inactive-red;
 	
 		svg {

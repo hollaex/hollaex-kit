@@ -80,6 +80,12 @@ $close-button--margin: 1.5rem;
 	}
 }
 
+.app-dialog-flex {
+	.ReactModal__Overlay {
+		z-index: 10000 !important;
+	}
+}
+
 .dark-theme {
 	.ReactModal__Content {
 		background-color: $dark-app-background-color !important;

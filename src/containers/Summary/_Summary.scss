@@ -68,6 +68,16 @@
                 background: repeating-linear-gradient(-45deg, $dark-app-background-color, $dark-app-background-color 2px, $dark-app-light-background 2px, $dark-app-light-background 4px);
                 color: $dark-font-sub-text-color;
             }
+            .coin-price-container {
+                .coin-price {
+                    svg {
+                        .hex_icon {
+                            fill: $dark-icon-color;
+                        }
+                    }
+                }
+            }
+
         }
         .trader-account-icon {
             .account-summary {

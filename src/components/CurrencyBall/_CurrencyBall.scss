@@ -83,6 +83,7 @@ $large-modifier: 2.25;
 	}
 	&.usdt {
 		background-color: $coin-usdt;
+		color: $colors-black;
 	}
 	&.vet {
 		background-color: $coin-vet;
@@ -213,5 +214,9 @@ $large-modifier: 2.25;
 	.currency_ball-wrapper {
 		color: $dark-app-background-color;
 		font-weight: bold;
+
+		&.eth, &.bch, &.xrp, &.hex {
+			color: $colors-white;
+		}
 	}
 }

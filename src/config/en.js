@@ -168,7 +168,8 @@ export default {
 			OPTION_LEVEL: 'Increase user level',
 			OPTION_DEPOSIT: 'Deposit & Withdrawal',
 			OPTION_BUG: 'Report bug', // ToDo:
-			OPTION_PERSONAL_INFO: 'Change personal information' // ToDo:
+			OPTION_PERSONAL_INFO: 'Change personal information', // ToDo:
+			OPTION_BANK_TRANSFER: 'Bank wire transfer' // new
 		},
 		SUBJECT_LABEL: 'Subject',
 		SUBJECT_PLACEHOLDER: 'Type the subject of your issue',
@@ -855,6 +856,7 @@ export default {
 	WALLET_TABLE_AMOUNT_IN: `Amount in {0}`,
 	WALLET_TABLE_TOTAL: 'Grand Total',
 	WALLET_ALL_ASSETS: 'All Assets',
+	WALLET_DEPOSIT_USD: 'If you’d like to deposit USD or other fiat currencies via bank wire transfer {0}.', // new
 	HIDE_TEXT: 'Hide',
 	PAGINATOR_FORMAT: '{0} / {1}',
 	ORDERBOOK_SELLERS: 'Sellers',

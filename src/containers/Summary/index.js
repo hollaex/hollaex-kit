@@ -190,7 +190,7 @@ class Summary extends Component {
                             <div className="assets-wrapper w-100">
                                 <SummaryBlock
                                     title={STRINGS.SUMMARY.ACCOUNT_ASSETS}
-                                    secondaryTitle={<span><span className="title-font">{totalAssets}</span>{` ${STRINGS[`${BASE_CURRENCY.toUpperCase()}_FULLNAME`]}`}</span>}
+                                    // secondaryTitle={<span><span className="title-font">{totalAssets}</span>{` ${STRINGS[`${BASE_CURRENCY.toUpperCase()}_FULLNAME`]}`}</span>}
                                     wrapperClassname="w-100" >
                                     <AccountAssets
                                         user={user}

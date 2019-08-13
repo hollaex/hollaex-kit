@@ -11,7 +11,7 @@ import {
 } from '../../components';
 import { TransactionsHistory } from '../';
 import { changeSymbol } from '../../actions/orderbookAction';
-import { NOTIFICATIONS } from '../../actions/appActions';
+import { NOTIFICATIONS, openContactForm } from '../../actions/appActions';
 import { createAddress, cleanCreateAddress } from '../../actions/userAction';
 import { ICONS, BASE_CURRENCY } from '../../config/constants';
 import { calculateBalancePrice, formatToCurrency } from '../../utils/currency';
@@ -96,6 +96,7 @@ class Wallet extends Component {
 						onOpenDialog={this.onOpenDialog}
 						bankaccount={bankaccount}
 						navigate={this.goToPage}
+						openContactUs={this.openContactUs}
 					/>
 				),
 				isOpen: true,
@@ -156,6 +157,10 @@ class Wallet extends Component {
 
 	setActiveTab = (activeTab) => {
 		this.setState({ activeTab });
+	};
+
+	openContactUs = () => {
+		this.props.openContactForm({ category: 'bank_transfer' });
 	};
 
 	render() {
@@ -238,7 +243,8 @@ const mapStateToProps = (store) => ({
 const mapDispatchToProps = (dispatch) => ({
 	createAddress: bindActionCreators(createAddress, dispatch),
 	cleanCreateAddress: bindActionCreators(cleanCreateAddress, dispatch),
-	changeSymbol: bindActionCreators(changeSymbol, dispatch)
+	changeSymbol: bindActionCreators(changeSymbol, dispatch),
+	openContactForm: bindActionCreators(openContactForm, dispatch)
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Wallet);
