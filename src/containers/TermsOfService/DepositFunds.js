@@ -48,7 +48,7 @@ const DepositFunds = (props) => {
                         {STRINGS.formatString(
                             STRINGS.TERMS_OF_SERVICES.DOWNLOAD_BUY_HEX,
                             <BlueLink
-                                href=""
+                                href="https://hex.bitholla.com/docs/guideline.pdf"
                                 text={STRINGS.TERMS_OF_SERVICES.HOW_TO_BUY}
                             />
                         )}
@@ -60,8 +60,8 @@ const DepositFunds = (props) => {
                         {STRINGS.formatString(
                             STRINGS.TERMS_OF_SERVICES.CONTACT_US,
                             <BlueLink
-                                href="mailto:info@bitholla.com"
-                                text={"info@bitholla.com"}
+                                href="mailto:support@bitholla.com"
+                                text={"support@bitholla.com"}
                             />
                         )}
                     </div>
