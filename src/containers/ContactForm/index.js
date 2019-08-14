@@ -101,14 +101,6 @@ class ContactForm extends Component {
 			validate: [required],
 			fullWidth: true,
 			rows: '2'
-		},
-		attachment: {
-		  type: 'file',
-		  label: STRINGS.CONTACT_FORM.ATTACHMENT_LABEL,
-		  placeholder: STRINGS.CONTACT_FORM.ATTACHMENT_PLACEHOLDER,
-		  fullWidth: true,
-		  multiple: true,
-		  length: 3
 		}
 	});
 
