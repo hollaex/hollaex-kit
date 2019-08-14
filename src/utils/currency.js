@@ -114,20 +114,33 @@ export const formatAverage = (amount = 0) =>
 export const calculatePrice = (value = 0, price = 1) =>
 	math.number(math.multiply(math.fraction(value), math.fraction(price)));
 
-export const calculateBalancePrice = (balance, prices) => {
+export const calculateBalancePrice = (balance, prices, coins = {}) => {
 	let accumulated = math.fraction(0);
-	Object.entries(prices).forEach(([key, value]) => {
+	Object.keys(coins).map((key) => {
+		let price = prices[key] ?  prices[key] : 1;
 		if (balance.hasOwnProperty(`${key}_balance`)) {
 			accumulated = math.add(
 				math.multiply(
 					math.fraction(balance[`${key}_balance`]),
-					math.fraction(value)
+					math.fraction(price)
 				),
 				accumulated
 			);
 		}
 	});
 	return math.number(accumulated);
+	// Object.entries(prices).forEach(([key, value]) => {
+	// 	if (balance.hasOwnProperty(`${key}_balance`)) {
+	// 		accumulated = math.add(
+	// 			math.multiply(
+	// 				math.fraction(balance[`${key}_balance`]),
+	// 				math.fraction(value)
+	// 			),
+	// 			accumulated
+	// 		);
+	// 	}
+	// });
+	// return math.number(accumulated);
 };
 
 export const calculatePricePercentage = (value = 0, total) => {

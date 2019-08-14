@@ -147,6 +147,26 @@ class Account extends Component {
 	};
 
 	setActiveTab = (activeTab) => {
+		let path = '';
+		switch (activeTab) {
+			case 0:
+				path = '/summary';
+				break;
+			case 1:
+				path = '/security';
+				break;
+			case 2:
+				path = '/verification';
+				break;
+			case 3:
+				path = '/settings';
+				break;
+			default:
+				path = '/account';
+		};
+		if (path) {
+			this.props.router.push(path);
+		}
 		this.setState({ activeTab });
 	};
 

@@ -84,8 +84,8 @@ class UserSettings extends Component {
 		this.props.openRiskPortfolioOrderWarning({ onSubmit: (formProps) => this.onSubmitSettings(formProps, 'risk'), initialValues: this.props.settings.risk });
 	};
 
-	calculateSections = ({ balance, prices }) => {
-		const totalAssets = calculateBalancePrice(balance, prices);
+	calculateSections = ({ balance, prices, coins }) => {
+		const totalAssets = calculateBalancePrice(balance, prices, coins);
         this.setState({ totalAssets: totalAssets });
     };
 

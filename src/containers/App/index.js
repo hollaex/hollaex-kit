@@ -507,6 +507,7 @@ class Container extends Component {
 		this.setState({ appLoaded: false }, () => {
 			this.props.logout(typeof message === 'string' ? message : '');
 		});
+		this.onCloseDialog();
 	};
 
 	onOpenDialog = () => {

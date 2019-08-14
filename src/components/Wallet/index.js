@@ -70,7 +70,7 @@ class Wallet extends Component {
 		const baseCoin = coins[BASE_CURRENCY] || {};
 
 		// TODO calculate right price
-		const totalAssets = calculateBalancePrice(balance, prices);
+		const totalAssets = calculateBalancePrice(balance, prices, coins);
 		Object.keys(coins).forEach((currency) => {
 			const { symbol, min } = coins[currency] || {};
 			const currencyBalance = calculatePrice(balance[`${symbol}_balance`], prices[currency]);

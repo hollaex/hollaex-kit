@@ -86,8 +86,8 @@ class OrderEntry extends Component {
 		}
 	}
 
-	calculateSections = ({ balance, prices }) => {
-		const totalAssets = calculateBalancePrice(balance, prices);
+	calculateSections = ({ balance, prices, coins }) => {
+		const totalAssets = calculateBalancePrice(balance, prices, coins);
 		this.setState({ totalAssets });
 	};
 
