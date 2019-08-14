@@ -51,7 +51,7 @@ class AppBar extends Component {
 			this.setActiveMenu(nextProps.location.pathname);
 		}
 		if (JSON.stringify(this.props.user) !== JSON.stringify(nextProps.user)
-			|| JSON.stringify(this.props.user) !== JSON.stringify(nextProps.user)) {
+			|| JSON.stringify(this.props.coins) !== JSON.stringify(nextProps.coins)) {
 			this.checkVerificationStatus(nextProps.user);
 			this.checkWalletStatus(nextProps.user, nextProps.coins);
 		}
@@ -102,15 +102,16 @@ class AppBar extends Component {
 	};
 
 	checkWalletStatus = (user, coins) => {
-        let walletPending = 1;
+        let walletPending = false;
         if (user.balance) {
+			walletPending = true;
             Object.keys(coins).map(pair => {
                 if (user.balance[`${pair.toLowerCase()}_balance`] > 0) {
-                    walletPending = 0;
+                    walletPending = false;
                 }
             })
         }
-        this.setState({ walletPending: walletPending > 0 ? 1 : 0 });
+        this.setState({ walletPending: walletPending ? 1 : 0 });
     };
 
 	toogleSymbolSelector = () => {

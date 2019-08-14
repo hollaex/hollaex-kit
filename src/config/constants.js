@@ -595,7 +595,7 @@ export const DEFAULT_COUNTRY = process.env.REACT_APP_DEFAULT_COUNTRY
 
 export const BASE_CURRENCY = process.env.REACT_APP_BASE_CURRENCY
 	? process.env.REACT_APP_BASE_CURRENCY.toLowerCase()
-	: 'eur';
+	: 'usdt';
 
 export const FEES_LIMIT_SITE_URL = 'https://www.hollaex.com';
 

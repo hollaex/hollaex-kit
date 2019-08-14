@@ -5,10 +5,10 @@ import { Link } from 'react-router';
 import moment from 'moment';
 
 import { Button } from '../../../components';
-import { ICONS, TRADE_ACCOUNT_UPGRADE_MONTH, TRADING_VOLUME_CHART_LIMITS, BASE_CURRENCY } from '../../../config/constants';
+import { ICONS } from '../../../config/constants';
 import STRINGS from '../../../config/localizedStrings';
 
-const SucessStatus = ({ isAccountDetails }) => (
+const SuccessStatus = ({ isAccountDetails }) => (
     <div className="d-flex">
         {isAccountDetails &&
             <div className="requirement-verified mr-2">
@@ -67,23 +67,29 @@ const checkMonth = (currentDate, month) => {
     return diffMonth >= month;
 };
 
-const getRequirements = (user, level, lastMonthVolume) => {
-    const { address, phone_number, id_data = {}, bank_account } = user.userData;
-    const bank_verified = checkBankVerification(bank_account, id_data);
-    const identity = address.country
-        ? id_data.status && id_data.status === 3
-            ? 3 : 1
-        : 1;
+const getRequirements = (user, coins) => {
+    let walletDeposit = false;
+    let hexDeposit = false;
+    if (user.balance) {
+        Object.keys(coins).map(pair => {
+            if (user.balance[`${pair.toLowerCase()}_balance`] > 0) {
+                walletDeposit = true;
+            }
+        })
+        if (user.balance.hex_balance && user.balance.hex_balance > 0) {
+            hexDeposit = true;
+        }
+    }
     const verificationObj = {
         '1': {
             title: STRINGS.USER_VERIFICATION.MAKE_FIRST_DEPOSIT,
-            completed: false,
-            status: 0
+            completed: walletDeposit,
+            status: walletDeposit ? 3 : 0
         },
         '2': {
             title: STRINGS.USER_VERIFICATION.OBTAIN_HEX,
-            completed: false,
-            status: 0
+            completed: hexDeposit,
+            status: hexDeposit ? 3 : 0
         }
     };
     return verificationObj;
@@ -114,7 +120,7 @@ const getAllCompleted = requirement => {
 const getStatusIcon = (reqObj, isAccountDetails) => {
     if (isAccountDetails) {
         return reqObj.completed
-            ? <SucessStatus isAccountDetails={isAccountDetails} />
+            ? <SuccessStatus isAccountDetails={isAccountDetails} />
             : <IncompleteStatus isAccountDetails={isAccountDetails} />;
     } else {
         switch (reqObj.status) {
@@ -125,7 +131,7 @@ const getStatusIcon = (reqObj, isAccountDetails) => {
             case 2:
                 return <RejectedStatus isAccountDetails={isAccountDetails} />;
             case 3:
-                return <SucessStatus isAccountDetails={isAccountDetails} />;
+                return <SuccessStatus isAccountDetails={isAccountDetails} />;
             default:
                 if (reqObj.status === undefined && reqObj.completed === false) {
                     return <IncompleteStatus isAccountDetails={isAccountDetails} />;
@@ -135,10 +141,10 @@ const getStatusIcon = (reqObj, isAccountDetails) => {
     }
 };
 
-const SummaryRequirements = ({ user, isAccountDetails = false, contentClassName = "", verificationLevel, lastMonthVolume, onUpgradeAccount }) => {
+const SummaryRequirements = ({ user, coins, isAccountDetails = false, contentClassName = "", verificationLevel, lastMonthVolume, onUpgradeAccount }) => {
     const { phone_number, address, id_data = {}, bank_account = [] } = user.userData;
     const selectedLevel = isAccountDetails ? verificationLevel || user.verification_level : 2;
-    const requirement = getRequirements(user, selectedLevel, lastMonthVolume);
+    const requirement = getRequirements(user, coins);
     let requirementResolved = getAllCompleted(requirement);
     return (
         <div className="d-flex">
@@ -167,7 +173,7 @@ const SummaryRequirements = ({ user, isAccountDetails = false, contentClassName 
                         )
                     })}
                 </div>
-                {!isAccountDetails && !user.otp_enabled && 
+                {!isAccountDetails && !user.otp_enabled &&
                     <div className="trade-account-link mb-2">
                         <Link to='/security'>
                             {STRINGS.SUMMARY.ACTIVE_2FA_SECURITY.toUpperCase()}

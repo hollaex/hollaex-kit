@@ -114,7 +114,7 @@ const INITIAL_STATE = {
 		},
 		risk: {
 			order_portfolio_percentage: 100,
-			popup_warning: true
+			popup_warning: false
 		}
 	},
 	addressRequest: INITIAL_ADDRESS_OBJECT,

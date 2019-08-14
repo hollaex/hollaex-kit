@@ -181,7 +181,7 @@ class Summary extends Component {
                                 <SummaryBlock
                                     title={STRINGS.SUMMARY.URGENT_REQUIREMENTS}
                                     wrapperClassname="w-100" >
-                                    <SummaryRequirements user={user} lastMonthVolume={lastMonthVolume} contentClassName="requirements-content" />
+                                    <SummaryRequirements user={user} coins={coins} lastMonthVolume={lastMonthVolume} contentClassName="requirements-content" />
                                 </SummaryBlock>
                             </div>
                         </div>
