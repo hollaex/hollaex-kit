@@ -45,7 +45,7 @@ import { checkUserSessionExpired } from './utils/utils';
 
 // Initialize Google analytics
 if (NETWORK === 'mainnet') {
-	ReactGA.initialize('UA-112052696-1');
+	ReactGA.initialize('UA-100799090-1');
 	browserHistory.listen((location) => {
 		ReactGA.set({ page: window.location.pathname });
 		ReactGA.pageview(window.location.pathname);
