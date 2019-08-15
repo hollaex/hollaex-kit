@@ -40,15 +40,16 @@ class AppMenuBar extends Component {
     }
 
     checkWalletStatus = (user, coins) => {
-        let walletPending = 1;
+        let walletPending = false;
         if (user.balance) {
+            walletPending = true;
             Object.keys(coins).map(pair => {
                 if (user.balance[`${pair.toLowerCase()}_balance`] > 0) {
-                    walletPending = 0;
+                    walletPending = false;
                 }
             })
         }
-        this.setState({ walletPending: walletPending > 0 ? 1 : 0 });
+        this.setState({ walletPending: walletPending ? 1 : 0 });
     };
 
     checkVerificationStatus = user => {
