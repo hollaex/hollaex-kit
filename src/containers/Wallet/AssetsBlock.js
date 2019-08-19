@@ -29,7 +29,7 @@ export const AssetsBlock = ({
 					<th>{STRINGS.CURRENCY}</th>
 					<th>{STRINGS.DEPOSIT_WITHDRAW}</th>
 					<th className="td-amount" />
-					<th>{STRINGS.AMOUNT}</th>
+					<th className="text-center">{STRINGS.AMOUNT}</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -101,18 +101,17 @@ export const AssetsBlock = ({
 								</td>
 								<td className="td-amount" />
 								<td className="td-amount">
-									<div className="d-flex">
-										<div className="mr-4">
+									<div>
+										<div className="text-center font-weight-bold">
 											{STRINGS.formatString(
 												STRINGS[`${key.toUpperCase()}_PRICE_FORMAT`],
 												formatToCurrency(balanceValue, min),
 												STRINGS[`${key.toUpperCase()}_CURRENCY_SYMBOL`]
 											)}
 										</div>
-										{!isMobile &&
-											key === 'hex' &&
+										{key === 'hex' &&
 											parseFloat(balanceText || 0) > 0 && (
-												<div>
+												<div className="text-center base-amount">
 													{`(≈ ${
 														STRINGS[
 															`${BASE_CURRENCY.toUpperCase()}_CURRENCY_SYMBOL`
@@ -126,8 +125,7 @@ export const AssetsBlock = ({
 						);
 					})}
 			</tbody>
-			{!isMobile &&
-				BASE_CURRENCY && (
+			{BASE_CURRENCY && (
 					<tfoot>
 						<tr>
 							<td colSpan={5}>

@@ -40,7 +40,7 @@ const MobileSummary = ({
             )}
         >
             <div className="summary-section_1 trader-account-wrapper d-flex w-100">
-                <SummaryBlock title={currentTradingAccount.fullName} wrapperClassname="w-100" >
+                <SummaryBlock title={STRINGS.SUMMARY.TRADER_ACCOUNT_TITLE} wrapperClassname="w-100" >
                     <TraderAccounts
                         coins={coins}
                         pairs={pairs}
@@ -61,8 +61,7 @@ const MobileSummary = ({
             </div>
             <div className="assets-wrapper w-100">
                 <SummaryBlock
-                    title={STRINGS.SUMMARY.ACCOUNT_ASSETS}
-                    secondaryTitle={`${balance[`${BASE_CURRENCY.toLowerCase()}_balance`]} ${STRINGS[`${BASE_CURRENCY.toUpperCase()}_FULLNAME`]}`} >
+                    title={STRINGS.SUMMARY.ACCOUNT_ASSETS} >
                     <AccountAssets
                         user={user}
                         chartData={chartData}

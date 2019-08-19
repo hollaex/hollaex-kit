@@ -172,6 +172,10 @@ $header-margin: 2rem;
 			.td-amount {
 				min-width: 150px !important;
 				direction: ltr;
+
+				.base-amount {
+					color: $colors-deactivate-color2;
+				}
 			}
 		}
 	}
@@ -278,6 +282,9 @@ $header-margin: 2rem;
 					&:not(:first-child) {
 						border-bottom-color: $dark-border-main;
 					}
+				}
+				.base-amount {
+					color: $dark-font-sub-text-1-color;
 				}
 			}
 		}
