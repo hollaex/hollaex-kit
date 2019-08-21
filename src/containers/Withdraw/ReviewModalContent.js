@@ -49,6 +49,7 @@ const ReviewModalContent = ({
 	);
 
 	const feePrice = data.fee ? math.number(math.multiply(data.fee, price)) : 0;
+	const fee = data.fee ? data.fee : 0;
 
 	return (
 		<div className="d-flex flex-column review-wrapper">
@@ -68,7 +69,7 @@ const ReviewModalContent = ({
 								STRINGS.WITHDRAW_PAGE.MESSAGE_FEE_BASE,
 								STRINGS.formatString(
 									STRINGS[`${BASE_CURRENCY.toUpperCase()}_PRICE_FORMAT`],
-									formatToCurrency(data.fee, baseCoin.min),
+									formatToCurrency(fee, baseCoin.min),
 									STRINGS[`${BASE_CURRENCY.toUpperCase()}_SHORTNAME`]
 								)
 							)}
@@ -85,7 +86,7 @@ const ReviewModalContent = ({
 						<div className="review-fee_message">
 							{STRINGS.formatString(
 								STRINGS.WITHDRAW_PAGE.MESSAGE_FEE,
-								data.fee,
+								fee,
 								STRINGS.formatString(
 									STRINGS[`${BASE_CURRENCY.toUpperCase()}_PRICE_FORMAT`],
 									formatToCurrency(feePrice, baseCoin.min),
