@@ -1,0 +1,77 @@
+.controls-wrapper {
+	display: flex;
+	margin-bottom: 16px;
+}
+
+.app-wrapper .ant-alert {
+	margin-bottom: 16px;
+}
+
+.controls-search {
+	flex: 3;
+	flex-direction: column;
+}
+
+.controls-refresh {
+	flex: 1;
+	display: flex;
+	justify-content: flex-end;
+	align-items: flex-end;
+}
+
+.filters-wrapper {
+	display: flex;
+	justify-content: space-between;
+}
+
+.filters-wrapper-filters {
+	flex: 2;
+	display: flex;
+	flex-direction: column;
+}
+
+.filters-wrapper-buttons {
+	flex: 1;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+}
+
+.filter-button {
+	min-width: 50%;
+}
+
+.filters-wrapper-buttons .filter-button:not(:last-child) {
+	margin-bottom: 16px;
+}
+
+.filter-alert {
+	margin-bottom: 8px;
+}
+
+.select-wrapper,
+.input-wrapper {
+	display: flex;
+	margin-bottom: 8px;
+}
+
+.select-label,
+.input-label {
+	flex: 1;
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+	padding-right: 16px;
+}
+
+.select-container,
+.input-container {
+	flex: 3;
+}
+
+.input-description {
+	padding-top: 4px;
+	color: grey;
+	font-size: 0.75em;
+}
