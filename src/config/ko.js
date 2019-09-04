@@ -167,7 +167,7 @@ export default {
 		],
 		INCREASE_LIMIT: '한도 증액이 필요하십니까?',
 		QR_CODE:
-			'이 QR코드는 비트코인 입금주소입니다. 회원님의 계정으로 비트코인을 입금하려는 경우 스캔하시기 바랍니다.',
+			'금액 이체를 위해 이 QR 코드를 스캔해 주시길 바랍니다',
 		NO_DATA: '이용가능한 정보가 없습니다.',
 		FULL_MESSAGE_LIMIT: '{0}: {1} {2} {3}' //  0 -> {Daily deposit max amount}:  1 -> {50,000,000} 2 -> {T} 3 -> {(Want to increase your daily limit?)}
 	},

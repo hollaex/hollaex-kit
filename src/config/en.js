@@ -165,6 +165,7 @@ export default {
 	DEPOSIT: {
 		CRYPTO_LABELS: {
 			ADDRESS: 'Your {0} receiving address', // new
+			DESTINATION_TAG: 'Your {0} destination tag', // new
 			BTC: 'Your Bitcoin receiving address',
 			ETH: 'Your Ethereum receiving address',
 			BCH: 'Your Bitcoin Cash receiving address'
@@ -175,7 +176,7 @@ export default {
 		],
 		INCREASE_LIMIT: 'Want to increase your daily limit?',
 		QR_CODE:
-			'This QR Code can be scanned by the person who wants to send you Bitcoins',
+			'This QR Code can be scanned by the person who wants to send you funds',
 		NO_DATA: 'No information available',
 		FULL_MESSAGE_LIMIT: '{0}: {1} {2} {3}' //  0 -> {Daily deposit max amount}:  1 -> {50,000,000} 2 -> {T} 3 -> {(Want to increase your daily limit?)}
 	},

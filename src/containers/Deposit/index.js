@@ -94,6 +94,11 @@ class Deposit extends Component {
 		if (!id || !currency || !checked) {
 			return <div />;
 		}
+		let mobileCopyAddress = crypto_wallet[`${currency.toLowerCase()}`];
+		if (currency && currency === 'xrp') {
+			const temp = mobileCopyAddress.split(':');
+			mobileCopyAddress = temp[0] ? temp[0] : mobileCopyAddress;
+		 }
 
 		return (
 			<div>
@@ -120,9 +125,7 @@ class Deposit extends Component {
 						{renderContent(currency, crypto_wallet, coins, this.onCopy)}
 						{isMobile && (
 							<CopyToClipboard
-								text={
-									crypto_wallet[`${currency.toLowerCase()}`]
-								}
+								text={mobileCopyAddress}
 								onCopy={() => this.setState({ copied: true })}
 							>
 								<Button
