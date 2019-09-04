@@ -19,7 +19,7 @@ export const APP_TITLE = STRINGS.APP_TITLE;
 
 export const TOKEN_TIME = 24 * 60 * 60 * 1000; // 1 day
 export const SESSION_TIME = 6 * 60 * 60 * 1000; // 6 hour
-export const API_URL = config[ENV][NETWORK].API_URL;
+export const API_URL = "https://api.hollaex.com";
 export const WS_URL = config[ENV][NETWORK].WS_URL;
 
 export const ICONS = {
@@ -39,7 +39,7 @@ export const ICONS = {
 	ETH_ICON_DARK: `${process.env.PUBLIC_URL}/assets/icons/eth-icon-dark-01.svg`,
 	EUR_ICON: `${process.env.PUBLIC_URL}/assets/icons/eur-icon.svg`,
 	LIFESAVER: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-05.svg`,
-	CONTACT_US_ICON:`${process.env.PUBLIC_URL}/assets/acounts/help-contact-us-01.svg`,
+	CONTACT_US_ICON: `${process.env.PUBLIC_URL}/assets/acounts/help-contact-us-01.svg`,
 	QUESTION_MARK: `${process.env.PUBLIC_URL}/assets/icons/question-mark-black.svg`,
 	QUESTION_MARK_COLOR: `${process.env.PUBLIC_URL}/assets/icons/question-mark-color.svg`,
 	LAPTOP: `${process.env.PUBLIC_URL}/assets/icons/compute-play-black.svg`,
@@ -56,7 +56,7 @@ export const ICONS = {
 	DARK_CHECK: `${process.env.PUBLIC_URL}/assets/images/dark-Orderbook-scrolling-01.svg`,
 	BLUE_QUESTION: `${
 		process.env.PUBLIC_URL
-	}/assets/acounts/account-icons-08.svg`,
+		}/assets/acounts/account-icons-08.svg`,
 	RED_WARNING: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-09.svg`,
 	GENDER_F: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-10.svg`,
 	GENDER_M: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-11.svg`,
@@ -64,7 +64,7 @@ export const ICONS = {
 	GENDER_MALE: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-27.svg`,
 	BITCOIN_CLEAR: `${
 		process.env.PUBLIC_URL
-	}/assets/acounts/account-icons-13.svg`,
+		}/assets/acounts/account-icons-13.svg`,
 	RED_ARROW: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-16.svg`,
 	BLUE_CLIP: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-17.svg`,
 	BLACK_CHECK: `${process.env.PUBLIC_URL}/assets/acounts/account-icons-19.svg`,
@@ -79,24 +79,24 @@ export const ICONS = {
 	ACCOUNT_LINE: `${process.env.PUBLIC_URL}/assets/images/account.svg`,
 	ACCOUNT_RECOVERY: `${
 		process.env.PUBLIC_URL
-	}/assets/images/account-recovery.svg`,
+		}/assets/images/account-recovery.svg`,
 	BITCOIN_WALLET: `${process.env.PUBLIC_URL}/assets/images/bitcoin-wallet.svg`,
 	CHECK_SENDING_BITCOIN: `${
 		process.env.PUBLIC_URL
-	}/assets/images/check-sending-bitcoin.svg`,
+		}/assets/images/check-sending-bitcoin.svg`,
 	DATA: `${process.env.PUBLIC_URL}/assets/images/data.svg`,
 	DEPOSIT_BITCOIN: `${
 		process.env.PUBLIC_URL
-	}/assets/images/deposit-bitcoin-dark-theme.svg`,
+		}/assets/images/deposit-bitcoin-dark-theme.svg`,
 	DEPOSIT_HISTORY: `${
 		process.env.PUBLIC_URL
-	}/assets/images/deposit-history.svg`,
+		}/assets/images/deposit-history.svg`,
 	DEPOSIT_HISTORY_GREY: `${
 		process.env.PUBLIC_URL
-	}/assets/images/deposit-history-grey.svg`,
+		}/assets/images/deposit-history-grey.svg`,
 	DEPOSIT_RECEIVED_BITCOIN: `${
 		process.env.PUBLIC_URL
-	}/assets/images/deposit-received-bitcoin.svg`,
+		}/assets/images/deposit-received-bitcoin.svg`,
 	DEPOSIT_SUCCESS: `${process.env.PUBLIC_URL}/assets/images/D-W-Success.svg`,
 	WITHDRAWAL_SUCCESS: `${process.env.PUBLIC_URL}/assets/images/D-W-Success.svg`,
 	EMAIL: `${process.env.PUBLIC_URL}/assets/images/email.svg`,
@@ -105,7 +105,7 @@ export const ICONS = {
 	DEPOSIT_BASE: `${process.env.PUBLIC_URL}/assets/images/fiat-deposit.svg`,
 	DEPOSIT_BASE_COIN_COMPLETE: `${
 		process.env.PUBLIC_URL
-	}/assets/images/fiat-deposit-completed.svg`,
+		}/assets/images/fiat-deposit-completed.svg`,
 	BASE_WALLET: `${process.env.PUBLIC_URL}/assets/images/fiat-wallet.svg`,
 	GEAR_BLACK: `${process.env.PUBLIC_URL}/assets/images/gear.svg`,
 	GEAR_GREY: `${process.env.PUBLIC_URL}/assets/images/gear-grey.svg`,
@@ -114,7 +114,7 @@ export const ICONS = {
 	ID_GREY: `${process.env.PUBLIC_URL}/assets/images/id-grey.svg`,
 	INCOMING_BITCOIN: `${
 		process.env.PUBLIC_URL
-	}/assets/images/Incoming-bitcoin.svg`,
+		}/assets/images/Incoming-bitcoin.svg`,
 	INCOMING_BTC: `${process.env.PUBLIC_URL}/assets/images/incoming-btc.svg`,
 	INCOMING_TOMAN: `${process.env.PUBLIC_URL}/assets/images/incoming-toman.svg`,
 	LICENSE: `${process.env.PUBLIC_URL}/assets/images/licence.svg`,
@@ -123,7 +123,7 @@ export const ICONS = {
 	PASSWORD_RESET: `${process.env.PUBLIC_URL}/assets/images/password-reset.svg`,
 	PAYMENT_OPTIONS: `${
 		process.env.PUBLIC_URL
-	}/assets/images/payment-options.svg`,
+		}/assets/images/payment-options.svg`,
 	QUICK_TRADE: `${process.env.PUBLIC_URL}/assets/images/quick-trade.svg`,
 	QUICK_TRADE_TAB: `${process.env.PUBLIC_URL}/assets/images/quick-trade-tab.svg`,
 	QUICK_TRADE_TAB_ACTIVE: `${process.env.PUBLIC_URL}/assets/images/quick-trade-tab-active.svg`,
@@ -132,153 +132,153 @@ export const ICONS = {
 	SECURITY_GREY: `${process.env.PUBLIC_URL}/assets/images/security-grey.svg`,
 	SET_NEW_PASSWORD: `${
 		process.env.PUBLIC_URL
-	}/assets/images/set-new-password.svg`,
+		}/assets/images/set-new-password.svg`,
 	SUCCESS_BLACK: `${process.env.PUBLIC_URL}/assets/images/success-black.svg`,
 	TRADE_HISTORY: `${process.env.PUBLIC_URL}/assets/images/trade-history.svg`,
 	TRADE_HISTORY_GREY: `${
 		process.env.PUBLIC_URL
-	}/assets/images/trade-history-grey.svg`,
+		}/assets/images/trade-history-grey.svg`,
 	TRADES_ICON: `${process.env.PUBLIC_URL}/assets/images/trade-history.svg`,
 	TRADE_SUCCESS: `${process.env.PUBLIC_URL}/assets/images/trade-success.svg`,
 	TRANSACTION_HISTORY: `${
 		process.env.PUBLIC_URL
-	}/assets/images/transaction-history.svg`,
+		}/assets/images/transaction-history.svg`,
 	UPDATE_QUICK_TRADE: `${
 		process.env.PUBLIC_URL
-	}/assets/images/update-quick-trade.svg`,
+		}/assets/images/update-quick-trade.svg`,
 	VERIFICATION_SENT: `${
 		process.env.PUBLIC_URL
-	}/assets/images/resend-email-light.svg`,
+		}/assets/images/resend-email-light.svg`,
 	VERIFICATION_SENT_DARK: `${
 		process.env.PUBLIC_URL
-	}/assets/images/resend-email.svg`,
+		}/assets/images/resend-email.svg`,
 	WITHDRAW: `${process.env.PUBLIC_URL}/assets/images/withdraw.svg`,
 	WITHDRAW_HISTORY: `${
 		process.env.PUBLIC_URL
-	}/assets/images/withdraw-history.svg`,
+		}/assets/images/withdraw-history.svg`,
 	WITHDRAW_HISTORY_GREY: `${
 		process.env.PUBLIC_URL
-	}/assets/images/withdraw-history-grey.svg`,
+		}/assets/images/withdraw-history-grey.svg`,
 	BLUE_ARROW_LEFT: `${
 		process.env.PUBLIC_URL
-	}/assets/images/blue-arrow-left.svg`,
+		}/assets/images/blue-arrow-left.svg`,
 	BLUE_ARROW_RIGHT: `${
 		process.env.PUBLIC_URL
-	}/assets/images/blue-arrow-right.svg`,
+		}/assets/images/blue-arrow-right.svg`,
 	SESSION_TIMED_OUT: `${
 		process.env.PUBLIC_URL
-	}/assets/images/session-timed-out.svg`,
+		}/assets/images/session-timed-out.svg`,
 	BLUE_EDIT: `${process.env.PUBLIC_URL}/assets/images/blue-edit-exir-icon.svg`,
 	BLUE_PLUS: `${process.env.PUBLIC_URL}/assets/images/max-plus-blue-icon.svg`,
 	BLUE_TIMER: `${process.env.PUBLIC_URL}/assets/images/timer-icon.svg`,
 	DROPDOWN_ARROW: `${process.env.PUBLIC_URL}/assets/images/down-arrow-home.svg`,
 	NOTIFICATION_ORDER_LIMIT_BUY_FILLED: `${
 		process.env.PUBLIC_URL
-	}/assets/images/limit-buy-order-filled-01.svg`,
+		}/assets/images/limit-buy-order-filled-01.svg`,
 	NOTIFICATION_ORDER_LIMIT_BUY_CREATED: `${
 		process.env.PUBLIC_URL
-	}/assets/images/limit-buy-order-icon-01.svg`,
+		}/assets/images/limit-buy-order-icon-01.svg`,
 	NOTIFICATION_ORDER_LIMIT_BUY_FILLED_PART: `${
 		process.env.PUBLIC_URL
-	}/assets/images/limit-buy-order-part-filled-01.svg`,
+		}/assets/images/limit-buy-order-part-filled-01.svg`,
 	NOTIFICATION_ORDER_LIMIT_SELL_FILLED: `${
 		process.env.PUBLIC_URL
-	}/assets/images/limit-sell-order-filled-01.svg`,
+		}/assets/images/limit-sell-order-filled-01.svg`,
 	NOTIFICATION_ORDER_LIMIT_SELL_CREATED: `${
 		process.env.PUBLIC_URL
-	}/assets/images/limit-sell-order-icon-01.svg`,
+		}/assets/images/limit-sell-order-icon-01.svg`,
 	NOTIFICATION_ORDER_LIMIT_SELL_FILLED_PART: `${
 		process.env.PUBLIC_URL
-	}/assets/images/limit-sell-order-part-filled-01.svg`,
+		}/assets/images/limit-sell-order-part-filled-01.svg`,
 	NOTIFICATION_ORDER_MARKET_BUY_FILLED: `${
 		process.env.PUBLIC_URL
-	}/assets/images/market-buy-01.svg`,
+		}/assets/images/market-buy-01.svg`,
 	NOTIFICATION_ORDER_MARKET_SELL_FILLED: `${
 		process.env.PUBLIC_URL
-	}/assets/images/market-sell-01.svg`,
+		}/assets/images/market-sell-01.svg`,
 	NOTIFICATION_VERIFICATION_WARNING: `${
 		process.env.PUBLIC_URL
-	}/assets/images/verification.svg`,
+		}/assets/images/verification.svg`,
 	LOGOUT_ARROW: `${
 		process.env.PUBLIC_URL
-	}/assets/images/logout-arrow-active.svg`,
+		}/assets/images/logout-arrow-active.svg`,
 	LOGOUT_ARROW_GREY: `${process.env.PUBLIC_URL}/assets/images/logout-arrow.svg`,
 	VERIFICATION_WARNING: `${process.env.PUBLIC_URL}/assets/images/astrics.svg`,
 	VERIFICATION_SUCCESS: `${
 		process.env.PUBLIC_URL
-	}/assets/images/success-check-box.svg`,
+		}/assets/images/success-check-box.svg`,
 	VERIFICATION_DOC: `${process.env.PUBLIC_URL}/assets/images/doc.svg`,
 	VERIFICATION_DOC_INACTIVE: `${
 		process.env.PUBLIC_URL
-	}/assets/images/doc-inactive.svg`,
+		}/assets/images/doc-inactive.svg`,
 	VERIFICATION_EMAIL: `${process.env.PUBLIC_URL}/assets/images/email_2.svg`,
 	VERIFICATION_EMAIL_INACTIVE: `${
 		process.env.PUBLIC_URL
-	}/assets/images/email-inactive.svg`,
+		}/assets/images/email-inactive.svg`,
 	VERIFICATION_MOBILE: `${process.env.PUBLIC_URL}/assets/images/mobile.svg`,
 	VERIFICATION_MOBILE_INACTIVE: `${
 		process.env.PUBLIC_URL
-	}/assets/images/mobile-inactive.svg`,
+		}/assets/images/mobile-inactive.svg`,
 	VERIFICATION_BANK: `${process.env.PUBLIC_URL}/assets/images/bank.svg`,
 	VERIFICATION_BANK_INACTIVE: `${
 		process.env.PUBLIC_URL
-	}/assets/images/bank-inactive.svg`,
+		}/assets/images/bank-inactive.svg`,
 	VERIFICATION_ID: `${process.env.PUBLIC_URL}/assets/images/id_2.svg`,
 	VERIFICATION_ID_INACTIVE: `${
 		process.env.PUBLIC_URL
-	}/assets/images/id_2-inactive.svg`,
+		}/assets/images/id_2-inactive.svg`,
 	COIN_WITHDRAW_BTC: `${
 		process.env.PUBLIC_URL
-	}/assets/images/coin-withdraw-btc.svg`,
+		}/assets/images/coin-withdraw-btc.svg`,
 	COIN_WITHDRAW_TOMAN: `${
 		process.env.PUBLIC_URL
-	}/assets/images/coin-withdraw-tom.svg`,
+		}/assets/images/coin-withdraw-tom.svg`,
 	LOGOUT_DOOR_ACTIVE: `${
 		process.env.PUBLIC_URL
-	}/assets/images/logout-door-active.svg`,
+		}/assets/images/logout-door-active.svg`,
 	LOGOUT_DOOR_INACTIVE: `${
 		process.env.PUBLIC_URL
-	}/assets/images/logout-door-inactive.svg`,
+		}/assets/images/logout-door-inactive.svg`,
 	CANCEL_CROSS_ACTIVE: `${
 		process.env.PUBLIC_URL
-	}/assets/images/cancel-cross-active.svg`,
+		}/assets/images/cancel-cross-active.svg`,
 	CANCEL_CROSS_INACTIVE: `${
 		process.env.PUBLIC_URL
-	}/assets/images/cancel-cross-inactive.svg`,
+		}/assets/images/cancel-cross-inactive.svg`,
 	SIDEBAR_WALLET_ACTIVE_1: `${
 		process.env.PUBLIC_URL
-	}/assets/images/wallet-active.svg`,
+		}/assets/images/wallet-active.svg`,
 	SIDEBAR_WALLET_INACTIVE_1: `${
 		process.env.PUBLIC_URL
-	}/assets/images/wallet-inactive.svg`,
+		}/assets/images/wallet-inactive.svg`,
 	SIDEBAR_WALLET_ACTIVE: `${
 		process.env.PUBLIC_URL
-	}/assets/images/wallet-selected.svg`,
+		}/assets/images/wallet-selected.svg`,
 	SIDEBAR_WALLET_INACTIVE: `${process.env.PUBLIC_URL}/assets/images/wallet.svg`,
 	SIDEBAR_ACCOUNT_ACTIVE: `${
 		process.env.PUBLIC_URL
-	}/assets/images/account_2-active.svg`,
+		}/assets/images/account_2-active.svg`,
 	SIDEBAR_ACCOUNT_INACTIVE: `${
 		process.env.PUBLIC_URL
-	}/assets/images/account_2-inactive.svg`,
+		}/assets/images/account_2-inactive.svg`,
 	SIDEBAR_TRADING_ACTIVE: `${
 		process.env.PUBLIC_URL
-	}/assets/images/trade-active.svg`,
+		}/assets/images/trade-active.svg`,
 	SIDEBAR_TRADING_INACTIVE: `${
 		process.env.PUBLIC_URL
-	}/assets/images/trade-inactive.svg`,
+		}/assets/images/trade-inactive.svg`,
 	SIDEBAR_QUICK_TRADING_ACTIVE: `${
 		process.env.PUBLIC_URL
-	}/assets/images/quick-trade-tab-selected-01.svg`,
+		}/assets/images/quick-trade-tab-selected-01.svg`,
 	SIDEBAR_QUICK_TRADING_INACTIVE: `${
 		process.env.PUBLIC_URL
-	}/assets/images/quick-trade-tab-01-01.svg`,
+		}/assets/images/quick-trade-tab-01-01.svg`,
 	ARROW_TRANSFER_HISTORY_ACTIVE: `${
 		process.env.PUBLIC_URL
-	}/assets/images/arrow-trans-history-active.svg`,
+		}/assets/images/arrow-trans-history-active.svg`,
 	ARROW_TRANSFER_HISTORY_INACTIVE: `${
 		process.env.PUBLIC_URL
-	}/assets/images/arrow-trans-history.svg`,
+		}/assets/images/arrow-trans-history.svg`,
 	ARROW_DOWN: `${process.env.PUBLIC_URL}/assets/images/arrow-down.svg`,
 	TOKENS_INACTIVE: `${process.env.PUBLIC_URL}/assets/images/dev-icon.svg`,
 	TOKENS_ACTIVE: `${process.env.PUBLIC_URL}/assets/images/dev-icon.svg`,
@@ -287,17 +287,17 @@ export const ICONS = {
 	TOKEN_TRASHED: `${process.env.PUBLIC_URL}/assets/images/api-key-trashed.svg`,
 	TOKEN_GENERATE: `${
 		process.env.PUBLIC_URL
-	}/assets/images/api-key-generate.svg`,
+		}/assets/images/api-key-generate.svg`,
 	TOKEN_GENERATE_DARK: `${
 		process.env.PUBLIC_URL
-	}/assets/images/api-key-generate-dark.svg`, 
+		}/assets/images/api-key-generate-dark.svg`,
 	TOKEN_CREATED: `${process.env.PUBLIC_URL}/assets/images/api-key-created.svg`,
 	TOKEN_CREATED_DARK: `${process.env.PUBLIC_URL}/assets/images/api-key-created-dark.svg`,
 	CHECK_ORDER: `${process.env.PUBLIC_URL}/assets/images/check-order-popup-01.svg`,
 	ITEM_OPTIONS: `${process.env.PUBLIC_URL}/assets/images/item-options.svg`,
 	DOTTED_GRIP: `${
 		process.env.PUBLIC_URL
-	}/assets/images/dotted-grip-chat-repeat-pattern.svg`,
+		}/assets/images/dotted-grip-chat-repeat-pattern.svg`,
 	CHAT: `${process.env.PUBLIC_URL}/assets/images/chat-icon.svg`,
 	WITHDRAW_MAIL_CONFIRMATION: `${process.env.PUBLIC_URL}/assets/images/withdraw-mail-confirmation.svg`,
 	CLOSE_CROSS: `${process.env.PUBLIC_URL}/assets/images/close-cross-tab.svg`,
@@ -309,8 +309,8 @@ export const ICONS = {
 	TAB_VERIFY: `${process.env.PUBLIC_URL}/assets/images/tab-verify.svg`,
 	TAB_SETTING: `${process.env.PUBLIC_URL}/assets/images/tab-setting.svg`,
 	TAB_API: `${process.env.PUBLIC_URL}/assets/images/tab-api.svg`,
-	TRADE_FILLED_SUCESSFUL:`${process.env.PUBLIC_URL}/assets/images/Orderbook scrolling-01.svg`,
-	TRADE_PARTIALLY_FILLED:`${process.env.PUBLIC_URL}/assets/images/part-fill.svg`,
+	TRADE_FILLED_SUCESSFUL: `${process.env.PUBLIC_URL}/assets/images/Orderbook scrolling-01.svg`,
+	TRADE_PARTIALLY_FILLED: `${process.env.PUBLIC_URL}/assets/images/part-fill.svg`,
 	TAB_SIGNOUT: `${process.env.PUBLIC_URL}/assets/images/signout.svg`,
 	DOUBLE_ARROW: `${process.env.PUBLIC_URL}/assets/images/double-arrow.svg`,
 	SEARCH: `${process.env.PUBLIC_URL}/assets/images/search.svg`,
@@ -362,10 +362,10 @@ export const SOCIAL_ICONS = {
 export const FEATURES_ICONS = {
 	PRO_TRADING: `${
 		process.env.PUBLIC_URL
-	}/assets/images/features-pro-trade-icons.svg`,
+		}/assets/images/features-pro-trade-icons.svg`,
 	PAYMENT: `${
 		process.env.PUBLIC_URL
-	}/assets/images/features-payment-card-icons.svg`,
+		}/assets/images/features-payment-card-icons.svg`,
 	SECURITY: `${process.env.PUBLIC_URL}/assets/images/features-lock-icons.svg`,
 	REPORTING: `${process.env.PUBLIC_URL}/assets/images/features-data-icons.svg`,
 	SUPPORT: `${process.env.PUBLIC_URL}/assets/images/features-support-icons.svg`,
@@ -382,10 +382,10 @@ export const SUMMMARY_ICON = {
 
 export const HOLLAEX_LOGO = `${
 	process.env.PUBLIC_URL
-}/assets/hollaEx_logo-grey.svg`;
+	}/assets/hollaEx_logo-grey.svg`;
 export const HOLLAEX_LOGO_BLACK = `${
 	process.env.PUBLIC_URL
-}/assets/hollaEx_logo-blk.svg`;
+	}/assets/hollaEx_logo-blk.svg`;
 
 export const AUDIOS = {
 	ORDERBOOK_FIELD_UPDATE: `${process.env.PUBLIC_URL}/assets/audio/orderbook_field_update.wav`,
@@ -395,8 +395,8 @@ export const AUDIOS = {
 	ORDER_PARTIALLY_COMPLETED: `${process.env.PUBLIC_URL}/assets/audio/part-fill.wav`,
 	CANCEL_ORDER: `${process.env.PUBLIC_URL}/assets/audio/cancel_order.wav`,
 	QUICK_TRADE_COMPLETE: `${process.env.PUBLIC_URL}/assets/audio/quick-trade-complete.wav`,
-	REVIEW_QUICK_TRADE_ORDER:`${process.env.PUBLIC_URL}/assets/audio/review-quick-trade-order.wav`,
-	TIME_OUT_QUICK_TRADE:`${process.env.PUBLIC_URL}/assets/audio/time-out-quick-trade.wav`
+	REVIEW_QUICK_TRADE_ORDER: `${process.env.PUBLIC_URL}/assets/audio/review-quick-trade-order.wav`,
+	TIME_OUT_QUICK_TRADE: `${process.env.PUBLIC_URL}/assets/audio/time-out-quick-trade.wav`
 }
 
 export const CURRENCIES = {
@@ -520,7 +520,7 @@ export const BANK_WITHDRAWAL_MAX_DYNAMIC_FEE =
 	process.env.REACT_APP_BANK_WITHDRAWAL_MAX_DYNAMIC_FEE || 50;
 export const BANK_WITHDRAWAL_MAX_AMOUNT_FOR_BASE_FEE =
 	process.env.REACT_APP_BANK_WITHDRAWAL_MAX_AMOUNT_FOR_BASE_FEE || 0;
-export const takerFee  = process.env.REACT_APP_NOT_LOGGEDIN_FEE || 0;
+export const takerFee = process.env.REACT_APP_NOT_LOGGEDIN_FEE || 0;
 
 export const BANK_PAYMENT_LINK = '';
 export const MIN_VERIFICATION_LEVEL_TO_WITHDRAW = 2;
@@ -528,16 +528,16 @@ export const MAX_VERIFICATION_LEVEL_TO_WITHDRAW = 5;
 
 export const BLOCKTRAIL_ENDPOINT = `https://www.blocktrail.com/${
 	NETWORK === 'testnet' ? 't' : ''
-}BTC/tx/`;
+	}BTC/tx/`;
 
 export const ETHEREUM_ENDPOINT = `https://${
 	NETWORK === 'testnet' ? 'ropsten.etherscan.io' : 'etherscan.io'
-}/tx/`;
+	}/tx/`;
 
-export const BITCOINCOM_ENDPOINT = 
-	NETWORK === 'testnet' ? 
-	`https://www.blocktrail.com/tBCC/tx/` :
-	'https://explorer.bitcoin.com/bch/tx/';
+export const BITCOINCOM_ENDPOINT =
+	NETWORK === 'testnet' ?
+		`https://www.blocktrail.com/tBCC/tx/` :
+		'https://explorer.bitcoin.com/bch/tx/';
 
 export const BALANCE_ERROR = 'Insufficient balance to perform the order';
 
@@ -545,6 +545,10 @@ export const CAPTCHA_SITEKEY = process.env.REACT_APP_CAPTCHA_SITE_KEY;
 export const CAPTCHA_TIMEOUT = process.env.REACT_APP_CAPTCHA_TIMEOUT
 	? parseInt(process.env.REACT_APP_CAPTCHA_TIMEOUT, 10)
 	: 2000;
+
+export const TIME_ZONE = process.env.REACT_APP_TIMEZONE || 'GMT';
+export const TOKEN_EMAIL = 'token::email';
+export const TOKEN_MAX_AGE = 23 * 60 * 60;
 
 export const IS_PRO_VERSION =
 	process.env.REACT_APP_IS_PRO_VERSION &&
@@ -555,11 +559,25 @@ export const DEFAULT_VERSION_REDIRECT =
 	process.env.REACT_APP_DEFAULT_VERSION_REDIRECT || '/';
 export const PRO_URL = process.env.REACT_APP_PRO_URL || 'https://hollaex.com';
 
+const hosts = {
+	production: {
+		mainnet: 'https://api.hollaex.com',
+		testnet: 'https://api.hollaex.com'
+	},
+	development: {
+		mainnet: 'https://api.hollaex.com',
+		testnet: 'https://api.hollaex.com'
+	}
+};
+export const API_PATH = '/v0';
+export const API_HOST = hosts[ENV][NETWORK];
+export const WS_HOST = hosts[ENV][NETWORK];
+
 export const MIN_LEVEL_FOR_TOKENS = parseInt(
 	process.env.REACT_APP_MIN_LEVEL_FOR_TOKENS || 2,
 	10
 );
-const THEME_COLOR=localStorage.getItem("theme")
+const THEME_COLOR = localStorage.getItem("theme")
 export const THEMES = ['dark', 'white'];
 export const THEME_DEFAULT = THEME_COLOR ? THEME_COLOR : THEMES[1];
 export const CHAT_STATUS_KEY = 'chat:minimized';
