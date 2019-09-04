@@ -315,13 +315,15 @@ export const generateWithdrawalsHeaders = (symbol, withdrawalPopup, coins = {}) 
 					return <td key={index}>{calculateFeeAmount(fee)}</td>;
 				}
 				return (
-					<td key={index}>
+					STRINGS[`${currency.toUpperCase()}_PRICE_FORMAT`]
+					? <td key={index}>
 						{STRINGS.formatString(
 							STRINGS[`${currency.toUpperCase()}_PRICE_FORMAT`],
 							fee,
 							STRINGS[`${currency.toUpperCase()}_CURRENCY_SYMBOL`]
 						)}
 					</td>
+					: <td key={index}>{fee}</td>
 				);
 			}
 		},
