@@ -16,7 +16,7 @@ import {
 } from '../';
 import UserData from './UserData';
 import BankData from './BankData';
-import { isSupport, isAdmin, isKYC } from '../../../utils';
+import { isSupport, isAdmin, isKYC } from '../../../utils/token';
 
 import Flagger from '../Flaguser';
 

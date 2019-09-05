@@ -3,8 +3,14 @@ import { Link } from 'react-router';
 
 import { Layout, Menu, Icon, Row, Col } from 'antd';
 import { PATHS } from '../paths';
-import { isSupport, isSupervisor, isAdmin, isKYC } from '../../../utils';
-import { removeToken, isLoggedIn } from '../../../utils/token';
+import {
+	removeToken,
+	isLoggedIn,
+	isSupport,
+	isSupervisor,
+	isAdmin,
+	isKYC
+} from '../../../utils/token';
 import './index.css';
 
 import MobileDetect from 'mobile-detect';

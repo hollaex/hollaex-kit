@@ -9,7 +9,7 @@ import { requestUser } from './actions';
 
 import UserContent from './UserContent';
 import { ListUsers, FullListUsers } from '../ListUsers';
-import { isSupport } from '../../../utils';
+import { isSupport } from '../../../utils/token';
 
 const INITIAL_STATE = {
 	userInformation: {},

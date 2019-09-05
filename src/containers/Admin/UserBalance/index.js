@@ -4,9 +4,9 @@ import { requestUserBalance } from './actions';
 
 import { SubmissionError } from 'redux-form';
 
-import { isSupport } from '../../../utils';
+import { isSupport } from '../../../utils/token';
 
-import { formatCurrency } from '../../../utils/index';
+import { formatCurrency } from '../../../utils';
 import moment from 'moment';
 
 const INITIAL_STATE = {
@@ -92,8 +92,8 @@ class UserBalance extends Component {
 												{typeof value !== 'number' ? (
 													<span>no data</span>
 												) : (
-														formatCurrency(value)
-													)}{' '}
+													formatCurrency(value)
+												)}{' '}
 											</div>
 										);
 									}

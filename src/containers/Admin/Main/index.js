@@ -3,8 +3,8 @@ import classnames from 'classnames';
 import UserList from './userList';
 import TradingVolume from './tradingVolume';
 import { Table, Spin, Alert, Row, Col } from 'antd';
-import { checkRole, getEmail } from '../../../utils';
-
+import { getEmail } from '../../../utils';
+import { checkRole } from '../../../utils/token';
 import './index.css';
 
 class Main extends Component {
@@ -14,8 +14,7 @@ class Main extends Component {
 		pageDisplay: 'none',
 		loaded: true
 	};
-	componentWillMount() {
-	}
+	componentWillMount() {}
 	setUserListLoading = (userListLoading) => {
 		this.setState({ userListLoading });
 	};
@@ -56,8 +55,8 @@ class Main extends Component {
 				) : loaded ? (
 					this.setState({ pageDisplay: 'block', loaded: false })
 				) : (
-							<div />
-						)}
+					<div />
+				)}
 			</div>
 		);
 	}

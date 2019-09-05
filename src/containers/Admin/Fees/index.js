@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Card, Alert, Spin } from 'antd';
-import { isSupport } from '../../../utils';
+import { isSupport } from '../../../utils/token';
 
 import { getFees } from './actions';
 import { formatCurrency } from '../../../utils';

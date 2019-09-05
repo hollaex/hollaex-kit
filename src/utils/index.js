@@ -13,67 +13,7 @@ import {
 
 const cookies = new Cookies();
 
-// export const getToken = () => cookies.get('token::key');
 export const getEmail = () => cookies.get('token::email');
-
-// export const checkRole = (role = '-') => () => {
-// 	const email = getEmail();
-// 	if (email) {
-// 		return email.indexOf(role) >= 0;
-// 	}
-// 	return true;
-// };
-
-export const checkRole = () => {
-	const token = getToken();
-	if (!token || token === undefined) return '';
-	const roles = jwtDecode(token).scopes;
-	let role = '';
-	if (roles.includes('admin')) {
-		role = 'admin';
-	} else if (roles.includes('supervisor')) {
-		role = 'supervisor';
-	} else if (roles.includes('support')) {
-		role = 'support';
-	} else if (roles.includes('kyc')) {
-		role = 'kyc';
-	}
-	return role;
-};
-
-// const initializeRoles = () => {
-// 	role = checkRole();
-// }
-
-export const isUser = () => {
-	return checkRole() === '';
-};
-export const isKYC = () => {
-	return checkRole() === 'kyc';
-};
-export const isSupport = () => {
-	return checkRole() === 'support';
-};
-export const isSupervisor = () => {
-	return checkRole() === 'supervisor';
-};
-export const isAdmin = () => {
-	return checkRole() === 'admin';
-};
-
-// export const setToken = (token, email) => {
-// 	cookies.set(TOKEN_KEY, token, { maxAge: TOKEN_MAX_AGE });
-// 	if (email) {
-// 		cookies.set(TOKEN_EMAIL, email, { maxAge: TOKEN_MAX_AGE });
-// 	}
-// };
-
-// export const removeToken = () => {
-// 	cookies.remove(TOKEN_KEY);
-// 	cookies.remove(TOKEN_EMAIL);
-// };
-
-export const checkUserLoggedIn = () => (getToken() ? true : false);
 
 export { default as request, requestAuthenticated } from './request';
 

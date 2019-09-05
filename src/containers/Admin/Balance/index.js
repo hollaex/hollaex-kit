@@ -9,7 +9,7 @@ import {
 	validateRange
 } from '../../../components/AdminForm/validations';
 
-import { isSupport } from '../../../utils';
+import { isSupport } from '../../../utils/token';
 
 const CURRENCIES = ['eur', 'btc', 'eth', 'bch', 'xrp'];
 
@@ -38,43 +38,43 @@ const Balance = ({ user_id }) =>
 	isSupport() ? (
 		<div />
 	) : (
-			<div>
-				<Form
-					onSubmit={onSubmit}
-					buttonText="Deposit"
-					fields={{
-						amount: {
-							type: 'number',
-							label: 'Amount',
-							min: 0.00001,
-							max: 100000000,
-							validate: [validateRequired, validatePositiveNumber(0)]
-						},
-						currency: {
-							type: 'select',
-							label: 'Currency',
-							options: CURRENCIES,
-							validate: [validateRequired, validateRange(CURRENCIES)]
-						},
-						type: {
-							type: 'select',
-							label: 'Type',
-							options: TYPES,
-							validate: [validateRequired, validateRange(TYPES)]
-						},
-						description: {
-							type: 'text',
-							label: 'Description'
-						}
-					}}
-					initialValues={{
-						user_id,
-						currency: 'fiat',
-						type: 'deposit',
-						amount: 0
-					}}
-				/>
-			</div>
-		);
+		<div>
+			<Form
+				onSubmit={onSubmit}
+				buttonText="Deposit"
+				fields={{
+					amount: {
+						type: 'number',
+						label: 'Amount',
+						min: 0.00001,
+						max: 100000000,
+						validate: [validateRequired, validatePositiveNumber(0)]
+					},
+					currency: {
+						type: 'select',
+						label: 'Currency',
+						options: CURRENCIES,
+						validate: [validateRequired, validateRange(CURRENCIES)]
+					},
+					type: {
+						type: 'select',
+						label: 'Type',
+						options: TYPES,
+						validate: [validateRequired, validateRange(TYPES)]
+					},
+					description: {
+						type: 'text',
+						label: 'Description'
+					}
+				}}
+				initialValues={{
+					user_id,
+					currency: 'fiat',
+					type: 'deposit',
+					amount: 0
+				}}
+			/>
+		</div>
+	);
 
 export default Balance;
