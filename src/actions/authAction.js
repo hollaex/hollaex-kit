@@ -135,6 +135,7 @@ export function loadToken() {
 
 export const requestVerificationEmail = (data) =>
 	axios.get(`/verify?${querystring.stringify({ ...data, resend: true })}`);
+
 export const requestResetPassword = (values) => {
 	const qs = querystring.stringify(values);
 	return axios.get(`/reset-password?${qs}`);

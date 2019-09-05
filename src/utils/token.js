@@ -24,12 +24,13 @@ export const getTokenTimestamp = () => {
 export const isLoggedIn = () => {
 	let token = getToken();
 	return !!token;
-}
+};
 
 export const decodeToken = (token) => jwtDecode(token);
 
 export const checkRole = () => {
 	const token = getToken();
+	if (!token || token === undefined) return '';
 	const roles = jwtDecode(token).scopes;
 	let role = '';
 	if (roles.includes('admin')) {

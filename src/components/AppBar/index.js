@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Icon } from 'antd';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import classnames from 'classnames';
@@ -17,9 +18,13 @@ import PairTabs from './PairTabs';
 import MenuList from './MenuList';
 import { MobileBarWrapper } from '../';
 import STRINGS from '../../config/localizedStrings';
-import { isLoggedIn } from '../../utils/token';
+import { isLoggedIn, isAdmin } from '../../utils/token';
 import { getMe, setMe } from '../../actions/userAction';
-import { getTickers, setNotification, NOTIFICATIONS } from '../../actions/appActions';
+import {
+	getTickers,
+	setNotification,
+	NOTIFICATIONS
+} from '../../actions/appActions';
 
 class AppBar extends Component {
 	state = {
@@ -42,39 +47,52 @@ class AppBar extends Component {
 		}
 		this.props.getTickers();
 	}
-	
+
 	componentWillReceiveProps(nextProps) {
-		if (this.props.location && nextProps.location
-			&& this.props.location.pathname !== nextProps.location.pathname) {
+		if (
+			this.props.location &&
+			nextProps.location &&
+			this.props.location.pathname !== nextProps.location.pathname
+		) {
 			this.setActiveMenu(nextProps.location.pathname);
 		}
 		if (JSON.stringify(this.props.user) !== JSON.stringify(nextProps.user)) {
 			this.checkVerificationStatus(nextProps.user);
 		}
-		if (this.props.token !== nextProps.token && nextProps.token && nextProps.isHome) {
+		if (
+			this.props.token !== nextProps.token &&
+			nextProps.token &&
+			nextProps.isHome
+		) {
 			this.getUserDetails();
 		}
 	}
 
 	getUserDetails = () => {
-		return this.props.getMe()
+		return this.props
+			.getMe()
 			.then(({ value }) => {
 				if (value && value.data && value.data.id) {
 					this.props.setMe(value.data);
 				}
 			})
-			.catch(err => {
+			.catch((err) => {
 				const message = err.message || JSON.stringify(err);
 				this.props.setNotification(NOTIFICATIONS.ERROR, message);
-			})
+			});
 	};
 
-	checkVerificationStatus = user => {
+	checkVerificationStatus = (user) => {
 		let userData = user.userData || {};
 		if (!Object.keys(userData).length && user.id) {
 			userData = user;
 		}
-		const { phone_number, full_name, id_data = {}, bank_account = [] } = userData;
+		const {
+			phone_number,
+			full_name,
+			id_data = {},
+			bank_account = []
+		} = userData;
 		let securityPending = 0;
 		let verificationPending = 0;
 		if (user.id) {
@@ -90,7 +108,10 @@ class AppBar extends Component {
 			if (!phone_number) {
 				verificationPending += 1;
 			}
-			if (bank_account.filter(acc => acc.status === 0 || acc.status === 2).length === bank_account.length) {
+			if (
+				bank_account.filter((acc) => acc.status === 0 || acc.status === 2)
+					.length === bank_account.length
+			) {
 				verificationPending += 1;
 			}
 			this.setState({ securityPending, verificationPending });
@@ -139,10 +160,15 @@ class AppBar extends Component {
 		return token ? (
 			<div className="d-flex app-bar-account" onClick={this.handleSummary}>
 				<div className="app-bar-account-content mr-2">
-					<ReactSVG path={ICONS.SIDEBAR_ACCOUNT_INACTIVE} wrapperClassName="app-bar-currency-icon" />
-					{!!(securityPending + verificationPending)
-						&& <div className="app-bar-account-notification">{securityPending + verificationPending}</div>
-					}
+					<ReactSVG
+						path={ICONS.SIDEBAR_ACCOUNT_INACTIVE}
+						wrapperClassName="app-bar-currency-icon"
+					/>
+					{!!(securityPending + verificationPending) && (
+						<div className="app-bar-account-notification">
+							{securityPending + verificationPending}
+						</div>
+					)}
 				</div>
 				<div className="d-flex align-items-center">{STRINGS.ACCOUNT_TEXT}</div>
 			</div>
@@ -159,9 +185,7 @@ class AppBar extends Component {
 
 	renderIcon = (isHome, theme) => {
 		return (
-			<div
-				className={classnames('app_bar-icon', 'text-uppercase')}
-			>
+			<div className={classnames('app_bar-icon', 'text-uppercase')}>
 				{isHome ? (
 					<img
 						src={ICONS.LOGO_GREY}
@@ -170,7 +194,10 @@ class AppBar extends Component {
 					/>
 				) : (
 					<Link href={IS_PRO_VERSION ? PRO_URL : DEFAULT_VERSION_REDIRECT}>
-						<ReactSVG path={ICONS.LOGO_BLACK} wrapperClassName="app_bar-icon-logo" />
+						<ReactSVG
+							path={ICONS.LOGO_BLACK}
+							wrapperClassName="app_bar-icon-logo"
+						/>
 					</Link>
 				)}
 			</div>
@@ -179,8 +206,8 @@ class AppBar extends Component {
 
 	handleSummary = () => {
 		this.props.router.push('/summary');
-	}
-	handleMenu = menu => {
+	};
+	handleMenu = (menu) => {
 		if (menu === 'account') {
 			this.props.router.push('/account');
 		} else if (menu === 'security') {
@@ -193,13 +220,15 @@ class AppBar extends Component {
 			this.props.router.push('/settings');
 		} /* else if (menu === 'api') {
 			this.props.router.push('/api');
-		} */ else if (menu === 'summary') {
+		} */ else if (
+			menu === 'summary'
+		) {
 			this.props.router.push('/summary');
 		}
 		this.setState({ selectedMenu: menu, isAccountMenu: false });
 	};
 
-	setActiveMenu = path => {
+	setActiveMenu = (path) => {
 		let selectedMenu = this.state.selectedMenu;
 		switch (path) {
 			case '/account':
@@ -225,7 +254,7 @@ class AppBar extends Component {
 				break;
 			default:
 				break;
-		};
+		}
 		this.setState({ selectedMenu });
 	};
 
@@ -242,12 +271,19 @@ class AppBar extends Component {
 			location,
 			pairs
 		} = this.props;
-		const { isAccountMenu, selectedMenu, securityPending, verificationPending } = this.state;
+		const {
+			isAccountMenu,
+			selectedMenu,
+			securityPending,
+			verificationPending
+		} = this.state;
 		const totalPending = securityPending + verificationPending;
 		let pair = '';
 		if (Object.keys(pairs).length) {
 			const { pair_base } = pairs[Object.keys(pairs)[0]];
-			pair = `${pair_base}-${STRINGS[`${BASE_CURRENCY.toUpperCase()}_SHORTNAME_EN`].toLowerCase()}`;
+			pair = `${pair_base}-${STRINGS[
+				`${BASE_CURRENCY.toUpperCase()}_SHORTNAME_EN`
+			].toLowerCase()}`;
 		} else {
 			pair = this.props.pair;
 		}
@@ -258,7 +294,9 @@ class AppBar extends Component {
 					'd-flex',
 					'app_bar-mobile',
 					'align-items-center',
-					isHome ? 'justify-content-between pl-4 pr-4' : 'justify-content-center'
+					isHome
+						? 'justify-content-between pl-4 pr-4'
+						: 'justify-content-center'
 				)}
 			>
 				<Link to="/">
@@ -267,56 +305,96 @@ class AppBar extends Component {
 				{isHome && this.renderSplashActions(token, verifyingToken)}
 			</MobileBarWrapper>
 		) : (
-			<div className={classnames('app_bar justify-content-between', { 'no-borders': noBorders })}>
+			<div
+				className={classnames('app_bar justify-content-between', {
+					'no-borders': noBorders
+				})}
+			>
 				<div className="d-flex">
 					<div className="d-flex align-items-center justify-content-center h-100">
 						{this.renderIcon(isHome, theme)}
 					</div>
-					{!isHome && <PairTabs activePath={activePath} location={location} router={router} />}
+					{!isHome && (
+						<PairTabs
+							activePath={activePath}
+							location={location}
+							router={router}
+						/>
+					)}
 				</div>
-				{!isHome
-					? isLoggedIn()
-						? <div className="d-flex app-bar-account">
+				{!isHome ? (
+					isLoggedIn() ? (
+						<div className="d-flex app-bar-account">
 							<div className="d-flex app_bar-quicktrade-container">
-									<Link to='/trade/add/tabs'>
+								{isAdmin() ? (
+									<Link to="/admin">
+										<div
+											className={classnames('app_bar-quicktrade', 'd-flex', {
+												'quick_trade-active': location.pathname === '/admin'
+											})}
+										>
+											<Icon type="dashboard" style={{ lineHeight: '22px' }} />
+											<div className="d-flex align-items-center">
+												{STRINGS.ADMIN_DASH}
+											</div>
+										</div>
+									</Link>
+								) : null}
+								<Link to="/trade/add/tabs">
 									<div
-										className={classnames(
-											'app_bar-quicktrade',
-											'd-flex',
-											{ "quick_trade-active": location.pathname === '/trade/add/tabs' })}>
+										className={classnames('app_bar-quicktrade', 'd-flex', {
+											'quick_trade-active':
+												location.pathname === '/trade/add/tabs'
+										})}
+									>
 										<ReactSVG
 											path={ICONS.SIDEBAR_TRADING_ACTIVE}
-												wrapperClassName="quicktrade_icon mx-1" />
-										<div className="d-flex align-items-center">{STRINGS.PRO_TRADE}</div>
+											wrapperClassName="quicktrade_icon mx-1"
+										/>
+										<div className="d-flex align-items-center">
+											{STRINGS.PRO_TRADE}
+										</div>
 									</div>
 								</Link>
 								<Link to={`/quick-trade/${pair}`}>
 									<div
-										className={classnames(
-											'app_bar-quicktrade',
-											'd-flex',
-											{ "quick_trade-active": activePath === 'quick-trade' })}>
+										className={classnames('app_bar-quicktrade', 'd-flex', {
+											'quick_trade-active': activePath === 'quick-trade'
+										})}
+									>
 										<ReactSVG
 											path={ICONS.QUICK_TRADE_TAB_ACTIVE}
-											wrapperClassName="quicktrade_icon" />
-										<div className="d-flex align-items-center">{STRINGS.QUICK_TRADE}</div>
+											wrapperClassName="quicktrade_icon"
+										/>
+										<div className="d-flex align-items-center">
+											{STRINGS.QUICK_TRADE}
+										</div>
 									</div>
 								</Link>
 							</div>
 							<div
-								className={classnames(
-									"app-bar-account-content",
-									{ "account-inactive": activePath !== 'account' && activePath !== 'wallet' }
+								className={classnames('app-bar-account-content', {
+									'account-inactive':
+										activePath !== 'account' && activePath !== 'wallet'
+								})}
+								onClick={this.handleAccountMenu}
+							>
+								<ReactSVG
+									path={ICONS.SIDEBAR_ACCOUNT_INACTIVE}
+									wrapperClassName="app-bar-account-icon"
+								/>
+								{!!totalPending && (
+									<div className="app-bar-account-notification">
+										{totalPending}
+									</div>
 								)}
-								onClick={this.handleAccountMenu} >
-								<ReactSVG path={ICONS.SIDEBAR_ACCOUNT_INACTIVE} wrapperClassName="app-bar-account-icon" />
-								{!!totalPending && <div className="app-bar-account-notification">{totalPending}</div>}
 							</div>
 						</div>
-						: null
-					: this.renderSplashActions(token, verifyingToken)
-				}
-				{isAccountMenu &&
+					) : null
+				) : (
+					this.renderSplashActions(token, verifyingToken)
+				)}
+				{isAccountMenu && (
 					<MenuList
 						selectedMenu={selectedMenu}
 						securityPending={securityPending}
@@ -326,20 +404,24 @@ class AppBar extends Component {
 						activePath={activePath}
 						closeAccountMenu={this.closeAccountMenu}
 					/>
-				}
+				)}
 			</div>
 		);
 	}
 }
 
 const mapStateToProps = (state, ownProps) => {
-	const userData = (!state.user.id && ownProps.user && ownProps.user.id) ? ownProps.user : state.user;
+	const userData =
+		!state.user.id && ownProps.user && ownProps.user.id
+			? ownProps.user
+			: state.user;
 	return {
 		user: userData,
 		theme: state.app.theme,
 		pair: state.app.pair,
 		pairs: state.app.pairs
-}};
+	};
+};
 
 const mapDispatchToProps = (dispatch) => ({
 	getMe: bindActionCreators(getMe, dispatch),
@@ -353,4 +435,7 @@ AppBar.defaultProps = {
 	isHome: false
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(AppBar);
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(AppBar);

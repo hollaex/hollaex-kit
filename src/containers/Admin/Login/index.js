@@ -4,7 +4,8 @@ import { loadReCaptcha } from 'react-recaptcha-v3';
 import { CAPTCHA_SITEKEY } from '../../../config/constants';
 
 import { performLogin } from './actions';
-import { setToken, removeToken, isUser } from '../../../utils';
+import { isUser } from '../../../utils';
+import { setToken, removeToken } from '../../../utils/token';
 import './index.css';
 
 import { AdminHocForm } from '../../../components';
@@ -18,18 +19,18 @@ const Form = AdminHocForm('LOGIN_FORM', 'login-form');
 export default class Login extends Component {
 	componentWillMount = () => {
 		loadReCaptcha(CAPTCHA_SITEKEY);
-	}
+	};
 
 	onSubmit = (values) => {
 		return performLogin(values)
 			.then((body) => {
 				setToken(body.token, values.email);
 				if (!isUser()) {
-					this.props.history.replace('/');
+					this.props.router.replace('/');
 				} else {
 					removeToken();
 					setTimeout(() => {
-						this.props.history.replace('/');
+						this.props.router.replace('/');
 					}, 500);
 					throw { data: { message: 'user not authorized' } };
 				}
@@ -37,7 +38,7 @@ export default class Login extends Component {
 			.catch((err) => {
 				console.log(err.data);
 				setTimeout(() => {
-					this.props.history.replace('/');
+					this.props.router.replace('/');
 				}, 1500);
 				// throw new SubmissionError({ _error: err.data.message })
 			});
