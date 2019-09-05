@@ -26,7 +26,6 @@ class App extends Component {
 
 	componentWillMount() {
 		const { search } = this.props.location;
-		console.log(this.props.location);
 		if (search) {
 			const qs = querystring.parse(search);
 			if (qs.id) {

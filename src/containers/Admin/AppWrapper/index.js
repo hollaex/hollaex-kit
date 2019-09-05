@@ -4,7 +4,7 @@ import { Link } from 'react-router';
 import { Layout, Menu, Icon, Row, Col } from 'antd';
 import { PATHS } from '../paths';
 import { isSupport, isSupervisor, isAdmin, isKYC } from '../../../utils';
-import { removeToken } from '../../../utils/token';
+import { removeToken, isLoggedIn } from '../../../utils/token';
 import './index.css';
 
 import MobileDetect from 'mobile-detect';
@@ -56,8 +56,11 @@ class AppWrapper extends React.Component {
 		} = this.state;
 
 		if (!isLoaded) return null;
-		if (!isAdminUser) {
-			router.replace('/');
+		if (isLoggedIn()) {
+			router.replace('/login');
+		}
+		if (isLoggedIn() && !isAdminUser) {
+			router.replace('/summary');
 		}
 		if (md.phone()) {
 			return (
