@@ -56,7 +56,7 @@ class AppWrapper extends React.Component {
 		} = this.state;
 
 		if (!isLoaded) return null;
-		if (isLoggedIn()) {
+		if (!isLoggedIn()) {
 			router.replace('/login');
 		}
 		if (isLoggedIn() && !isAdminUser) {
