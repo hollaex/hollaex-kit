@@ -11,10 +11,11 @@ import {
 	isAdmin,
 	isKYC
 } from '../../../utils/token';
-import './index.css';
 
 import MobileDetect from 'mobile-detect';
 import MobileSider from './mobileSider';
+import './index.css';
+import 'antd/dist/antd.css';
 
 const md = new MobileDetect(window.navigator.userAgent);
 
@@ -118,7 +119,7 @@ class AppWrapper extends React.Component {
 									true
 							).map(renderMenuItem)}
 							<Menu.Item>
-								<Link to="/">
+								<Link to="/summary">
 									<Icon type="home" />
 									Go To HEX-WEB
 								</Link>

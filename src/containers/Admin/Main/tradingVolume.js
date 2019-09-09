@@ -135,14 +135,12 @@ class TradingVolume extends Component {
 											style={{ stroke: '#41c3f9', fill: 'none' }}
 										/>
 									</Sparklines>
+									<Table columns={VOLUME} dataSource={data} />
 								</div>
 							)}
 							<div className="fees">
 								<BlockchainTransaction />
 							</div>
-						</div>
-						<div className="row-2">
-							<Table columns={VOLUME} dataSource={data} />
 						</div>
 					</div>
 				)}
