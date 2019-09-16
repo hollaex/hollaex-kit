@@ -1,11 +1,11 @@
 .black-header {
 	position: relative;
-	top: -1.5%;
-	left: -0.6%;
+	/* top: -1.5%;
+	left: -0.6%; */
 	font-size: 50px;
 	background-color: black;
 	color: white;
-	width: 120%;
+	/* width: 120%; */
 }
 .black-text {
 	padding-left: 10px;
@@ -27,7 +27,6 @@
 
 .row-1 {
 	display: flex;
-	height: 200px;
 }
 .sparks {
 	flex: 1.5;

@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { getNumOfUsers } from './actions';
 import { Alert } from 'antd';
-import { isAdmin, formatCurrency } from '../../../utils';
-
+import { formatCurrency } from '../../../utils';
+import { isAdmin } from '../../../utils/token';
 class UserList extends Component {
 	state = {
 		numbers: 0,

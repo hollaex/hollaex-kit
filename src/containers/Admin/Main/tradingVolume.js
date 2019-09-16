@@ -5,7 +5,8 @@ import { Sparklines, SparklinesLine, SparklinesBars } from 'react-sparklines';
 import BlockchainTransaction from '../Fees/index';
 
 import Moment from 'react-moment';
-import { isAdmin, isSupport, formatCurrency } from '../../../utils';
+import { formatCurrency } from '../../../utils';
+import { isAdmin, isSupport } from '../../../utils/token';
 
 const Option = Select.Option;
 
@@ -108,7 +109,11 @@ class TradingVolume extends Component {
 									onChange={this.handleChange}
 								>
 									{newPair.map((currency, index) => {
-										return <Option key={index} value={currency}>{currency}</Option>;
+										return (
+											<Option key={index} value={currency}>
+												{currency}
+											</Option>
+										);
 									})}
 								</Select>
 							</Col>
@@ -130,14 +135,12 @@ class TradingVolume extends Component {
 											style={{ stroke: '#41c3f9', fill: 'none' }}
 										/>
 									</Sparklines>
+									<Table columns={VOLUME} dataSource={data} />
 								</div>
 							)}
 							<div className="fees">
 								<BlockchainTransaction />
 							</div>
-						</div>
-						<div className="row-2">
-							<Table columns={VOLUME} dataSource={data} />
 						</div>
 					</div>
 				)}

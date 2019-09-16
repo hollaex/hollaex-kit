@@ -39,38 +39,37 @@ export default {
 	CANCEL_FIAT_WITHDRAWAL: '{0} 출금 취소',
 	CANCEL_WITHDRAWAL: '출금 취소',
 	CANCEL_WITHDRAWAL_POPUP_CONFIRM: '출금 진행중인 거래를 취소하시겠습니까?:',
-	CANT_BE_CANCELLED:'-',
-	ALREADY_CANCELLED:'-',
+	CANT_BE_CANCELLED: '-',
+	ALREADY_CANCELLED: '-',
 	TIMESTAMP_FORMAT: 'YYYY/MM/DD HH:mm:ss A',
 	HOUR_FORMAT: 'HH:mm:ss A',
 	LOGIN_TEXT: '로그인',
-	SIGN_IN:'로그인',
+	SIGN_IN: '로그인',
 	SIGNUP_TEXT: '회원가입',
 	REGISTER_TEXT: '등록',
 	ACCOUNT_TEXT: '계정',
 	CLOSE_TEXT: '닫기',
 	COPY_TEXT: '복사',
-	COPY_SUCCESS_TEXT: '성공적으로 복사되었습니다.', 
-	CANCEL_SUCCESS_TEXT: '성공적으로 취소되었습니다!', 
+	COPY_SUCCESS_TEXT: '성공적으로 복사되었습니다.',
+	CANCEL_SUCCESS_TEXT: '성공적으로 취소되었습니다!',
 	UPLOAD_TEXT: '업로드',
 	ADD_FILES: '파일 추가', // ToDo
 	OR_TEXT: '또는',
 	CONTACT_US_TEXT: '문의하기',
 	HELPFUL_RESOURCES_TEXT: '도움이 필요하신가요?',
-	HELP_RESOURCE_GUIDE_TEXT: 
+	HELP_RESOURCE_GUIDE_TEXT:
 		'문의사항은 support@bitholla.com 로 연락주시기 바랍니다.',
-	HELP_TELEGRAM_TEXT: 
-		'HollaEx의 오픈API 확인하기:',
+	HELP_TELEGRAM_TEXT: 'HollaEx의 오픈API 확인하기:',
 	HELP_TELEGRAM_LINK: 'https://apidocs.hollaex.com',
 	NEED_HELP_TEXT: '도움이 필요하신가요?',
 	HELP_TEXT: 'help',
 	SUCCESS_TEXT: '성공',
 	ERROR_TEXT: '에러',
-	PROCEED: '진행하기', 
+	PROCEED: '진행하기',
 	EDIT_TEXT: '편집',
 	BACK_TEXT: '되돌아가기',
 	NO_OPTIONS: '사용가능한 옵션이 없습니다.',
-	SECONDS: 'seconds',  
+	SECONDS: 'seconds',
 	HOME: {
 		SECTION_1_TITLE: '당신만의 비트코인 거래소를 만들 수 있습니다.',
 		SECTION_1_TEXT_1:
@@ -100,12 +99,12 @@ export default {
 		SECTION_3_BUTTON_1: '데모 보기'
 	},
 	FOOTER: {
-		FOOTER_LEGAL: [
-			'Proudly made in Seoul, South Korea',
-			'비트홀라 주식회사.'
-		],
+		FOOTER_LEGAL: ['Proudly made in Seoul, South Korea', '비트홀라 주식회사.'],
 		FOOTER_LANGUAGE_TEXT: '언어',
-		FOOTER_LANGUAGE_LANGUAGES: [{ key: 'en', label: '영어' }, { key: 'ko', label: '한국어' }],
+		FOOTER_LANGUAGE_LANGUAGES: [
+			{ key: 'en', label: '영어' },
+			{ key: 'ko', label: '한국어' }
+		],
 		FOOTER_COPYRIGHT: 'COPYRIGHT 2018',
 		SECTIONS: {
 			SECTION_1_TITLE: 'ABOUT',
@@ -166,15 +165,14 @@ export default {
 			'반드시 입금자명과 HollaEx계정의 이름이 같아야 입금이 수락이되므로 유의해주시기 바랍니다.'
 		],
 		INCREASE_LIMIT: '한도 증액이 필요하십니까?',
-		QR_CODE:
-			'금액 이체를 위해 이 QR 코드를 스캔해 주시길 바랍니다',
+		QR_CODE: '금액 이체를 위해 이 QR 코드를 스캔해 주시길 바랍니다',
 		NO_DATA: '이용가능한 정보가 없습니다.',
 		FULL_MESSAGE_LIMIT: '{0}: {1} {2} {3}' //  0 -> {Daily deposit max amount}:  1 -> {50,000,000} 2 -> {T} 3 -> {(Want to increase your daily limit?)}
 	},
 	LOGIN: {
 		LOGIN_TO: '{0} 로그인',
-		CANT_LOGIN: "로그인이 안되십니까?",
-		NO_ACCOUNT: "계정이 없으십니까?",
+		CANT_LOGIN: '로그인이 안되십니까?',
+		NO_ACCOUNT: '계정이 없으십니까?',
 		CREATE_ACCOUNT: '계정만들기',
 		HELP: 'Help'
 	},
@@ -202,7 +200,7 @@ export default {
 		MIN_VALUE: '값은 반드시 {0} 또는 이보다 높아야 합니다.',
 		MAX_VALUE: '값은 반드시 {0} 또는 이보다 낮아야 합니다.',
 		INSUFFICIENT_BALANCE: '잔액이 부족합니다.',
-		PASSWORDS_DONT_MATCH: "비밀번호가 일치하지 않습니다.",
+		PASSWORDS_DONT_MATCH: '비밀번호가 일치하지 않습니다.',
 		USER_EXIST: '이미 등록되어있는 이메일주소입니다.',
 		ACCEPT_TERMS: '이용약관 및 개인정보 보호 정책에 동의하지 않으셨습니다.',
 		STEP: '?? Invalid value, step is {0}',
@@ -242,7 +240,7 @@ export default {
 		BUTTONS: {
 			OKAY: 'Okay',
 			START_TRADING: '거래 시작하기',
-			SEE_HISTORY: '거래내역 보기',
+			SEE_HISTORY: '거래내역 보기'
 		},
 		DEPOSITS: {
 			FIAT: {
@@ -278,7 +276,7 @@ export default {
 					'비트코인캐시 거래를 위해서는 블록체인상의 최소 2개의 승인이 필요합니다.',
 				INFORMATION_PENDING_2:
 					'입금완료까지 평균 10~30분 정도 소요되며, 상황에 따라 지연될 수 있습니다. 입금 신청 이후 블록체인 상의 승인이 완료되면 입금완료 이메일을 보내드립니다.'
-			},
+			}
 		}
 	},
 	OTP_FORM: {
@@ -305,7 +303,8 @@ export default {
 		AVAILABLE_TRADING: '출금 가능 자산',
 		ORDERS_PLURAL: '주문',
 		ORDERS_SINGULAR: '주문',
-		HOLD_ORDERS: 'You have {0} open {1}, resulting in a hold of {2} {3} placed on your {4} balance'
+		HOLD_ORDERS:
+			'You have {0} open {1}, resulting in a hold of {2} {3} placed on your {4} balance'
 	},
 	REQUEST_RESET_PASSWORD: {
 		TITLE: '비밀번호 재설정',
@@ -329,7 +328,7 @@ export default {
 	},
 	SIGN_UP: {
 		SIGNUP_TO: '{0}에 가입하기',
-		NO_EMAIL: "이메일을 받지 못하셨나요?",
+		NO_EMAIL: '이메일을 받지 못하셨나요?',
 		REQUEST_EMAIL: '이메일 재요청하기',
 		HAVE_ACCOUNT: '이미 HollaEx 계정이 있으신가요?',
 		GOTO_LOGIN: '로그인 페이지로 이동',
@@ -356,18 +355,19 @@ export default {
 	},
 	VERIFICATION_EMAIL: {
 		INVALID_UUID: '유효하지 않은 코드',
-		TEXT_1: "성공적으로 이메일 인증되었습니다.",
+		TEXT_1: '성공적으로 이메일 인증되었습니다.',
 		TEXT_2: '로그인을 진행해주시기 바랍니다.'
 	},
 	USER_VERIFICATION: {
-		INFO_TXT: '이곳에서 개인정보 및 인증진행상황 등을 확인 하실 수 있습니다.', 
-		INFO_TXT_1: '아래 각 부문에 필요한 정보를 작성해주시기바랍니다. 모든 부문의 작성이 완료된 이후 검토가 진행되며 해당 내용에 문제가 없다면 계정 업그레이드가 승인됩니다.', 
-		INFO_TXT_2: '*은행계좌 및 개인정보는 완전한 검증을 위해 {0}가 요구됩니다.', 
+		INFO_TXT: '이곳에서 개인정보 및 인증진행상황 등을 확인 하실 수 있습니다.',
+		INFO_TXT_1:
+			'아래 각 부문에 필요한 정보를 작성해주시기바랍니다. 모든 부문의 작성이 완료된 이후 검토가 진행되며 해당 내용에 문제가 없다면 계정 업그레이드가 승인됩니다.',
+		INFO_TXT_2: '*은행계좌 및 개인정보는 완전한 검증을 위해 {0}가 요구됩니다.',
 		DOCUMENTATIONS: '문서업로드',
 		COMPLETED: '완료',
 		PENDING_VERIFICATION: '인증진행중',
 		TITLE_EMAIL: '이메일',
-		MY_EMAIL: '나의 이메일', 
+		MY_EMAIL: '나의 이메일',
 		TITLE_USER_DOCUMENTATION: '회원정보',
 		TITLE_ID_DOCUMENTS: '문서업로드',
 		TITLE_BANK_ACCOUNT: '은행계좌',
@@ -385,56 +385,58 @@ export default {
 		TITLE_BANK: '은행계좌',
 		TITLE_BANK_HEADER: '은행 상세정보',
 		CHANGE_VALUE: 'Change value',
-		PENDING_VERIFICATION_PERSONAL_INFORMATION:
-			'개인정보 처리중입니다',
+		PENDING_VERIFICATION_PERSONAL_INFORMATION: '개인정보 처리중입니다',
 		PENDING_VERIFICATION_BANK: '은행 인증이 검토중입니다.',
 		PENDING_VERIFICATION_DOCUMENTS: '문서를  검토중입니다.',
 		GOTO_VERIFICATION: '정보인증하러가기',
-		CONNECT_BANK_ACCOUNT: '은행계좌 연결하기', 
-		ACTIVATE_2FA: '2단계인증(2FA)활성화', 
-		INCOMPLETED: 'Incompleted', 
-		BANK_VERIFICATION: '은행계좌정보', 
-		IDENTITY_VERIFICATION: '회원정보', 
-		PHONE_VERIFICATION: '연락처 인증', 
-		DOCUMENT_VERIFICATION: '본인인증 문서업로드', 
-		START_BANK_VERIFICATION: '은행계좌정보 작성하기', 
-		START_IDENTITY_VERIFICATION: '개인정보 작성하기', 
-		START_PHONE_VERIFICATION: '연락처 인증하기', 
-		START_DOCUMENTATION_SUBMISSION: '문서업로드 시작하기', 
-		GO_BACK: '되돌아가기', 
-		BANK_VERIFICATION_TEXT_1: '은행계좌는 3개까지 추가하실 수 있습니다. 해외은행계좌는 고객센터에 문의하여주시고, 출금한도에 제한이 있습니다.', 
-		BANK_VERIFICATION_TEXT_2: '은행계좌등록을 하시면 아래와 같은 서비스를 이용하실 수 있습니다:', 
-		FIAT_WITHDRAWAL: '원화출금', 
-		FIAT_DEPOSITS: '원화입금', 
-		ADD_ANOTHER_BANK_ACCOUNT: '은행계좌 추가하기', 
-		BANK_NAME: '은행이름', 
-		ACCOUNT_NUMBER: '계좌번호', 
-		CARD_NUMBER: '카드번호', 
-		BANK_VERIFICATION_HELP_TEXT: '{0} 를 완료한 이후 해당 정보인증을 진행 하실 수 있습니다.', 
-		DOCUMENT_SUBMISSION: '문서업로드', 
-		REVIEW_IDENTITY_VERIFICATION: '개인정보 수정하기', 
-		PHONE_DETAILS: '연락처 상세정보', 
-		PHONE_COUNTRY_ORIGIN: '개통국가', 
-		MOBILE_NUMBER: '휴대폰번호r', 
-		DOCUMENT_PROOF_SUBMISSION: '증명문서제출', 
-		START_DOCUMENTATION_RESUBMISSION: '문서 다시제출하기', 
-		SUBMISSION_PENDING_TXT: '*해당 정보는 이미 제출되었습니다. 변경후 다시 제출하면 이전 정보를 덮어쓸 수 있습니다.', 
+		CONNECT_BANK_ACCOUNT: '은행계좌 연결하기',
+		ACTIVATE_2FA: '2단계인증(2FA)활성화',
+		INCOMPLETED: 'Incompleted',
+		BANK_VERIFICATION: '은행계좌정보',
+		IDENTITY_VERIFICATION: '회원정보',
+		PHONE_VERIFICATION: '연락처 인증',
+		DOCUMENT_VERIFICATION: '본인인증 문서업로드',
+		START_BANK_VERIFICATION: '은행계좌정보 작성하기',
+		START_IDENTITY_VERIFICATION: '개인정보 작성하기',
+		START_PHONE_VERIFICATION: '연락처 인증하기',
+		START_DOCUMENTATION_SUBMISSION: '문서업로드 시작하기',
+		GO_BACK: '되돌아가기',
+		BANK_VERIFICATION_TEXT_1:
+			'은행계좌는 3개까지 추가하실 수 있습니다. 해외은행계좌는 고객센터에 문의하여주시고, 출금한도에 제한이 있습니다.',
+		BANK_VERIFICATION_TEXT_2:
+			'은행계좌등록을 하시면 아래와 같은 서비스를 이용하실 수 있습니다:',
+		FIAT_WITHDRAWAL: '원화출금',
+		FIAT_DEPOSITS: '원화입금',
+		ADD_ANOTHER_BANK_ACCOUNT: '은행계좌 추가하기',
+		BANK_NAME: '은행이름',
+		ACCOUNT_NUMBER: '계좌번호',
+		CARD_NUMBER: '카드번호',
+		BANK_VERIFICATION_HELP_TEXT:
+			'{0} 를 완료한 이후 해당 정보인증을 진행 하실 수 있습니다.',
+		DOCUMENT_SUBMISSION: '문서업로드',
+		REVIEW_IDENTITY_VERIFICATION: '개인정보 수정하기',
+		PHONE_DETAILS: '연락처 상세정보',
+		PHONE_COUNTRY_ORIGIN: '개통국가',
+		MOBILE_NUMBER: '휴대폰번호r',
+		DOCUMENT_PROOF_SUBMISSION: '증명문서제출',
+		START_DOCUMENTATION_RESUBMISSION: '문서 다시제출하기',
+		SUBMISSION_PENDING_TXT:
+			'*해당 정보는 이미 제출되었습니다. 변경후 다시 제출하면 이전 정보를 덮어쓸 수 있습니다.',
 		CUSTOMER_SUPPORT_MESSAGE: '고객센터 메세지',
-		DOCUMENT_PENDING_NOTE: '문서가 제출되었으며 검토를 진행중입니다. 기다려주시기바랍니다.', 
-		DOCUMENT_VERIFIED_NOTE: '문서검토가 완료되었습니다.d.', 
-		NOTE_FROM_VERIFICATION_DEPARTMENT: '검증부서로부터의 참고사항', 
-		CODE_EXPIRES_IN: 'Code expires in', 
+		DOCUMENT_PENDING_NOTE:
+			'문서가 제출되었으며 검토를 진행중입니다. 기다려주시기바랍니다.',
+		DOCUMENT_VERIFIED_NOTE: '문서검토가 완료되었습니다.d.',
+		NOTE_FROM_VERIFICATION_DEPARTMENT: '검증부서로부터의 참고사항',
+		CODE_EXPIRES_IN: 'Code expires in',
 		USER_DOCUMENTATION_FORM: {
 			FORM_FIELDS: {
 				FIRST_NAME_LABEL: '이름',
 				FIRST_NAME_PLACEHOLDER:
 					'신분증과 동일하게 이름을 입력해주시기바랍니다.',
 				LAST_NAME_LABEL: '성',
-				LAST_NAME_PLACEHOLDER:
-					'신분증과 동일하게 성을 입력해주시기바랍니다.',
+				LAST_NAME_PLACEHOLDER: '신분증과 동일하게 성을 입력해주시기바랍니다.',
 				FULL_NAME_LABEL: '성명',
-				FULL_NAME_PLACEHOLDER:
-					'신분증과 동일하게 성명을 입력해주시기바랍니다.',
+				FULL_NAME_PLACEHOLDER: '신분증과 동일하게 성명을 입력해주시기바랍니다.',
 				GENDER_LABEL: '성별',
 				GENDER_PLACEHOLDER: '성별을 선택해주시기바랍니다.',
 				GENDER_OPTIONS: {
@@ -442,11 +444,11 @@ export default {
 					WOMAN: '여성'
 				},
 				NATIONALITY_LABEL: '국적',
-				NATIONALITY_PLACEHOLDER:
-					'신분증 상의 국적을 선택해 주시기 바랍니다.',
+				NATIONALITY_PLACEHOLDER: '신분증 상의 국적을 선택해 주시기 바랍니다.',
 				DOB_LABEL: '생년월일',
 				COUNTRY_LABEL: '현재 거주중인 국가',
-				COUNTRY_PLACEHOLDER: '회원님이 현재 거주하고 있는 국가를 선택해주시기 바랍니다.',
+				COUNTRY_PLACEHOLDER:
+					'회원님이 현재 거주하고 있는 국가를 선택해주시기 바랍니다.',
 				CITY_LABEL: '도시',
 				CITY_PLACEHOLDER: '현재 거주중인 도시를 입력해주시기 바랍니다.',
 				ADDRESS_LABEL: '주소',
@@ -454,7 +456,8 @@ export default {
 				POSTAL_CODE_LABEL: '우편번호',
 				POSTAL_CODE_PLACEHOLDER: '우편번호를 입력해주시기 바랍니다.',
 				PHONE_CODE_LABEL: '국가',
-				PHONE_CODE_PLACEHOLDER: '사용중인 휴대폰이 개통된 국가를 선택해주시기 바랍니다.',
+				PHONE_CODE_PLACEHOLDER:
+					'사용중인 휴대폰이 개통된 국가를 선택해주시기 바랍니다.',
 				PHONE_CODE_DISPLAY: '({0}) {1}', // 0 -> (+21)  1 -> South Korea
 				PHONE_NUMBER_LABEL: '휴대폰 번호',
 				PHONE_NUMBER_PLACEHOLDER: '휴대폰 번호를 입력해주시기 바랍니다.',
@@ -467,9 +470,12 @@ export default {
 					'*중요: 회원님의 신분증과 동일하게 성명을 정확히 입력해주시기바랍니다. 기업 계정은 고객센터로 문의해주시기 바랍니다.',
 				TITLE_PERSONAL_INFORMATION: '개인 정보',
 				TITLE_PHONE: '연락처',
-				PHONE_VERIFICATION_TXT: '유효한 세부 연락처를 제공하여 회원님의 계정에서 이뤄질 수 있는 원치않는 거래를 방지하고, HollaEx가 문제를 해결하는데 도움이 될 수 있습니다.',
-				PHONE_VERIFICATION_TXT_1: '휴대폰 번호를 인증하여 회원님의 입출금내역을 실시간으로 제공받을 수 있습니다.',
-				PHONE_VERIFICATION_TXT_2: '선택사항: LAN전화번호를 공유하여 추가적인 인증하실 수 있습니다.',
+				PHONE_VERIFICATION_TXT:
+					'유효한 세부 연락처를 제공하여 회원님의 계정에서 이뤄질 수 있는 원치않는 거래를 방지하고, HollaEx가 문제를 해결하는데 도움이 될 수 있습니다.',
+				PHONE_VERIFICATION_TXT_1:
+					'휴대폰 번호를 인증하여 회원님의 입출금내역을 실시간으로 제공받을 수 있습니다.',
+				PHONE_VERIFICATION_TXT_2:
+					'선택사항: LAN전화번호를 공유하여 추가적인 인증하실 수 있습니다.'
 			}
 		},
 		ID_DOCUMENTS_FORM: {
@@ -477,12 +483,12 @@ export default {
 				ID_TYPE: '신분증 유형을 선택해주시기 바랍니다.',
 				ID_NUMBER: ' 신분증 번호를 입력해주시기 바랍니다.',
 				ISSUED_DATE: '신분증 발급 날짜를 선택해주시기 바랍니다.',
-				EXPIRATION_DATE:
-					'신분증 만료날짜를 입력해주시기바랍니다.',
+				EXPIRATION_DATE: '신분증 만료날짜를 입력해주시기바랍니다.',
 				FRONT: '신분증 복사본을 첨부해주시기바랍니다.',
 				PROOF_OF_RESIDENCY:
 					'현재 거주지 주소를 증명하는 증빙서류를 첨부해주시기 바랍니다.',
-				SELFIE_PHOTO_ID: '메모가 부착된 신분증을 들고 있는 본인의 사진을 첨부해주시기바랍니다.'
+				SELFIE_PHOTO_ID:
+					'메모가 부착된 신분증을 들고 있는 본인의 사진을 첨부해주시기바랍니다.'
 			},
 			FORM_FIELDS: {
 				TYPE_LABEL: '신분증 유형',
@@ -506,22 +512,23 @@ export default {
 				POR_LABEL: '거주지 증빙서류',
 				POR_PLACEHOLDER: '거주지를 증명하는 서류를 첨부해주시기바랍니다.',
 				SELFIE_PHOTO_ID_LABEL: '신분증을 들고있는 본인의 사진',
-				SELFIE_PHOTO_ID_PLACEHOLDER: '메모가 부착된 신분증을 들고 있는 본인의 사진을 첨부해주시기바랍니다.',
+				SELFIE_PHOTO_ID_PLACEHOLDER:
+					'메모가 부착된 신분증을 들고 있는 본인의 사진을 첨부해주시기바랍니다.'
 			},
 			INFORMATION: {
 				IDENTITY_DOCUMENT: 'Identity Document',
 				PROOF_OF_RESIDENCY: '거주지 증빙서류',
 				ID_SECTION: {
 					TITLE: '다음사항을 확인 후 제출하시기 바랍니다.',
-					LIST_ITEM_1:
-						'고화질(컬러이미지, 300dpi 이상의 해상도)의 문서',
+					LIST_ITEM_1: '고화질(컬러이미지, 300dpi 이상의 해상도)의 문서',
 					LIST_ITEM_2: '문서전체가 명백히 보일것(워터마크허용)',
 					LIST_ITEM_3: '유효한 기간내의 파일로 만료 날짜가 선명하게 표시될 것',
 					WARNING_1:
 						'유효한 정부 발급 신분 증명서만 허용됩니다. 고품질의 사진 또는 스캔된 이미지를 제출해주시기바랍니다:',
 					WARNING_2:
 						'회원 본인의 문서가 맞는지 확인하시기 바랍니다. 이유를 불문하고 잘못되거나 위조된 문서를 사용할 시 법적처벌을 받게되며 계좌는 즉시 동결됩니다.',
-					WARNING_3: '신분증명서류를 거주지 증빙서류로 제출하지 마시기 바랍니다.'
+					WARNING_3:
+						'신분증명서류를 거주지 증빙서류로 제출하지 마시기 바랍니다.'
 				},
 				POR: {
 					SECTION_1_TEXT_1:
@@ -534,8 +541,7 @@ export default {
 						'컬러 사진 또는 스캔 이미지가 고화질이다.(최소 300dpi)',
 					SECTION_2_TITLE: '제출가능한 거주지 증빙서류:',
 					SECTION_2_LIST_ITEM_1: '예금증명서',
-					SECTION_2_LIST_ITEM_2:
-						'공공요금 지로용지(전기, 수도, 인터넷 등)',
+					SECTION_2_LIST_ITEM_2: '공공요금 지로용지(전기, 수도, 인터넷 등)',
 					SECTION_2_LIST_ITEM_3:
 						'정부에서 발행한 문서(납세증명서, 주민등록등본 등)',
 					WARNING:
@@ -543,24 +549,24 @@ export default {
 				},
 				SELFIE: {
 					TITLE: '메모가 부착된 신분증을 들고있는 본인의 사진',
-					INFO_TEXT: '아래의 예시를 확인하시어 해당내용을 포함한 주민등록증, 운전면허증,여권 등(사진이 포함된 신분증)을 들고있는 사진을 제출하시기바랍니다. 얼굴이 선명하게 보이고 신분증의 세부정보를 명확하게 읽을 수 있는지 확인해주시기 바랍니다.',
+					INFO_TEXT:
+						'아래의 예시를 확인하시어 해당내용을 포함한 주민등록증, 운전면허증,여권 등(사진이 포함된 신분증)을 들고있는 사진을 제출하시기바랍니다. 얼굴이 선명하게 보이고 신분증의 세부정보를 명확하게 읽을 수 있는지 확인해주시기 바랍니다.',
 					REQUIRED: '필요조건:',
 					INSTRUCTION_1: '얼굴이 선명히 보일것',
 					INSTRUCTION_2: '신분증의 세부정보가 명확히 보일것',
 					INSTRUCTION_3: '메모내용: 직접 쓴 ‘hollaex.com',
-					INSTRUCTION_4: "메모내용: 신청 날짜",
-					INSTRUCTION_5: "메모내용: 가입된 이메일주소 및 본인서명",
-					WARNING: '첨부된 신분증과 일치하지않는 신분증을 포함한 본인의 사진은 허용되지않습니다.'
+					INSTRUCTION_4: '메모내용: 신청 날짜',
+					INSTRUCTION_5: '메모내용: 가입된 이메일주소 및 본인서명',
+					WARNING:
+						'첨부된 신분증과 일치하지않는 신분증을 포함한 본인의 사진은 허용되지않습니다.'
 				}
 			}
 		},
 		BANK_ACCOUNT_FORM: {
 			VALIDATIONS: {
-				ACCOUNT_OWNER:
-					'은행계좌에 등록된 성과 이름을 입력해주시기바랍니다.',
+				ACCOUNT_OWNER: '은행계좌에 등록된 성과 이름을 입력해주시기바랍니다.',
 				ACCOUNT_NUMBER: '은행계좌번호는 50자 이내로 적어주시기바랍니다.',
-				ACCOUNT_NUMBER_MAX_LENGTH:
-					'은행계좌번호는 50자 제한이 있습니다.',
+				ACCOUNT_NUMBER_MAX_LENGTH: '은행계좌번호는 50자 제한이 있습니다.',
 				CARD_NUMBER: '카드번호 형식이 바르지않습니다.'
 			},
 			FORM_FIELDS: {
@@ -571,8 +577,7 @@ export default {
 				ACCOUNT_OWNER_LABEL: '예금주명',
 				ACCOUNT_OWNER_PLACEHOLDER: '예금주명을 입력하세요.',
 				CARD_NUMBER_LABEL: '은행카드번호',
-				CARD_NUMBER_PLACEHOLDER:
-					'은행카드번호를 입력하세요.'
+				CARD_NUMBER_PLACEHOLDER: '은행카드번호를 입력하세요.'
 			}
 		},
 		WARNING: {
@@ -582,7 +587,7 @@ export default {
 			LIST_ITEM_3: '낮은 수수료'
 		}
 	},
-	USER_SETTINGS: { 
+	USER_SETTINGS: {
 		TITLE_TEXT_1: 'HollaEx 사용환경설정을 하실 수 있습니다. ',
 		TITLE_TEXT_2: '설정 후 저장하면 변경내용이 적용됩니다.',
 		TITLE_NOTIFICATION: '알림',
@@ -594,31 +599,36 @@ export default {
 		ORDERBOOK_LEVEL: '주문장 높이(최대20)',
 		SET_TXT: '설정',
 		CREATE_ORDER_WARING: 'Create Order Warning',
-		RISKY_TRADE_DETECTED: 'Risky Trade Detected', 
-		RISKY_WARNING_TEXT_1:'This orders value is over your designated order limit amount you’ve set {0} .', 
-		RISKY_WARNING_TEXT_2:'({0} of portfolio)',  
-		RISKY_WARNING_TEXT_3: ' Please check and verify that you indeed want to make this trade.',  
-		GO_TO_RISK_MANAGMENT: '리스크관리로 가기 GO TO RISK MANAGMENT', 
-		CREATE_ORDER_WARING_TEXT: 'Create a warning pop up when your trade order uses more than {0} of your portfolio',
+		RISKY_TRADE_DETECTED: 'Risky Trade Detected',
+		RISKY_WARNING_TEXT_1:
+			'This orders value is over your designated order limit amount you’ve set {0} .',
+		RISKY_WARNING_TEXT_2: '({0} of portfolio)',
+		RISKY_WARNING_TEXT_3:
+			' Please check and verify that you indeed want to make this trade.',
+		GO_TO_RISK_MANAGMENT: '리스크관리로 가기 GO TO RISK MANAGMENT',
+		CREATE_ORDER_WARING_TEXT:
+			'Create a warning pop up when your trade order uses more than {0} of your portfolio',
 		ORDER_PORTFOLIO_LABEL: 'Portfolio Percentage Amount:',
 		NOTIFICATION_FORM: {
 			TRADE_POPUPS: 'Trade Pop ups',
 			POPUP_ORDER_CONFIRMATION: '주문 실행시 확인요청 팝업',
 			POPUP_ORDER_COMPLETED: '주문 완료시 알림팝업',
-			POPUP_ORDER_PARTIALLY_FILLED: '주문이 부분적으로 채워질 경우 알림팝업',
+			POPUP_ORDER_PARTIALLY_FILLED: '주문이 부분적으로 채워질 경우 알림팝업'
 		},
 		AUDIO_CUE_FORM: {
 			ORDERS_COMPLETED_AUDIO: '하나의 주문이 완전히 채워질 경우 알림사운드재생',
-			ORDERS_PARTIAL_AUDIO: '주문 중 하나가 부분적으로 채워질 경우 알림사운드재생',
+			ORDERS_PARTIAL_AUDIO:
+				'주문 중 하나가 부분적으로 채워질 경우 알림사운드재생',
 			PUBLIC_TRADE_AUDIO: '모든 일반적인 거래에 관한 알림사운드재생'
 		},
 		RISK_MANAGEMENT: {
-			INFO_TEXT: 'Create a warning pop up when a trade order value goes over a set percentage amount of your portfolio',
+			INFO_TEXT:
+				'Create a warning pop up when a trade order value goes over a set percentage amount of your portfolio',
 			INFO_TEXT_1: 'Total assets value in {0}: {1}',
 			PORTFOLIO: 'Percentage of portfolio',
 			TOMAN_ASSET: 'Approximate Value',
-			ADJUST: '(ADJUST PERCENTAGE)',  
-			ACTIVATE_RISK_MANAGMENT: 'Activate Risk Managment', 
+			ADJUST: '(ADJUST PERCENTAGE)',
+			ACTIVATE_RISK_MANAGMENT: 'Activate Risk Managment',
 			WARNING_POP_UP: 'Warning pop ups'
 		}
 	},
@@ -662,7 +672,8 @@ export default {
 				DISABLE: '2단계 인증(2FA) 사용안함'
 			},
 			FORM: {
-				PLACEHOLDER: 'Google Authenticator에서 제공된 OTP를 입력해주시기바랍니다.',
+				PLACEHOLDER:
+					'Google Authenticator에서 제공된 OTP를 입력해주시기바랍니다.',
 				BUTTON: '2단계 인증(2FA)활성화'
 			}
 		},
@@ -705,12 +716,15 @@ export default {
 		sell: '매도'
 	},
 	SIDES: [{ value: 'buy', label: '매수' }, { value: 'sell', label: '매도' }],
-	DEFAULT_TOGGLE_OPTIONS: [{ value: true, label: 'on' }, { value: false, label: 'off' }], 
+	DEFAULT_TOGGLE_OPTIONS: [
+		{ value: true, label: 'on' },
+		{ value: false, label: 'off' }
+	],
 	SIZE: 'Size',
 	PRICE: 'Price',
 	FEE: 'Fee',
 	FEES: 'Fees',
-	LIMIT: 'Limit', 
+	LIMIT: 'Limit',
 	TIME: 'Time',
 	TIMESTAMP: 'Timestamp',
 	MORE: 'More',
@@ -751,6 +765,7 @@ export default {
 	LANGUAGES: [{ key: 'en', label: 'English' }],
 	QUICK_TRADE: '퀵트레이딩',
 	PRO_TRADE: '프로트레이딩',
+	ADMIN_DASH: '어드민페이지',
 	WALLET_TITLE: '지갑',
 	TRADING_MODE_TITLE: '트레이딩 모드',
 	TRADING_TITLE: '거래',
@@ -773,8 +788,10 @@ export default {
 	WITHDRAWALS_FORM_AMOUNT_LABEL: '{0} amount to withdraw',
 	WITHDRAWALS_FORM_AMOUNT_PLACEHOLDER:
 		'Type the amount of {0} you wish to withdraw',
-	WITHDRAWALS_FORM_FEE_BTC_LABEL: 'Bitcoin transaction fee (This is Bitcoin mining fee. If you lower that amount there is chance your transaction takes significant time to get confirmed.)',
-	WITHDRAWALS_FORM_FEE_ETH_LABEL: 'Ethereum transaction fee (This is Ethereum mining fee. If you lower that amount there is chance your transaction takes significant time to get confirmed.)', // TODO CHECK
+	WITHDRAWALS_FORM_FEE_BTC_LABEL:
+		'Bitcoin transaction fee (This is Bitcoin mining fee. If you lower that amount there is chance your transaction takes significant time to get confirmed.)',
+	WITHDRAWALS_FORM_FEE_ETH_LABEL:
+		'Ethereum transaction fee (This is Ethereum mining fee. If you lower that amount there is chance your transaction takes significant time to get confirmed.)', // TODO CHECK
 	WITHDRAWALS_FORM_FEE_FIAT_LABEL: 'Bank withdrawal fee',
 	WITHDRAWALS_FORM_FEE_PLACEHOLDER:
 		'Type the amount of {0} you wish to use in the fee of the transaction',
@@ -788,8 +805,7 @@ export default {
 		'Add this "{0}" code to the bank transation to identify the deposit',
 	DEPOSIT_METHOD: '결제 수단{0}',
 	DEPOSIT_METHOD_DIRECT_PAYMENT: '신용카드',
-	DEPOSIT_METHOD_DIRECT_PAYMENT_MESSAGE_1:
-		'신용카드 결제를 진행합니다.',
+	DEPOSIT_METHOD_DIRECT_PAYMENT_MESSAGE_1: '신용카드 결제를 진행합니다.',
 	DEPOSIT_METHOD_DIRECT_PAYMENT_MESSAGE_2:
 		'결제를 진행하기위해 플랫폼을 떠나게 됩니다.',
 	DEPOSIT_VERIFICATION_WAITING_TITLE: '결제 확인 중',
@@ -801,9 +817,11 @@ export default {
 		'This is the ID of the operation: "{0}", please provide us this ID to help you.',
 	DEPOSIT_VERIFICATION_SUCCESS: '결제 완료',
 	DEPOSIT_VERIFICATION_ERROR: '입금을 진행하는데 오류가 발생하였습니다.',
-	DEPOSIT_VERIFICATION_ERROR_VERIFIED: '입금이 이미 확인되었습니다. The deposit has been already verified',
+	DEPOSIT_VERIFICATION_ERROR_VERIFIED:
+		'입금이 이미 확인되었습니다. The deposit has been already verified',
 	DEPOSIT_VERIFICATION_ERROR_STATUS: '오류상태 Invalid status',
-	DEPOSIT_VERIFICATION_ERROR_USER_MATCH: '결제에 사용된 카드가 회원님께서 등록한 카드정보와 같지 않습니다. 해당 입금은 거절되었으며 한시간 이내로 환불됩니다.',
+	DEPOSIT_VERIFICATION_ERROR_USER_MATCH:
+		'결제에 사용된 카드가 회원님께서 등록한 카드정보와 같지 않습니다. 해당 입금은 거절되었으며 한시간 이내로 환불됩니다.',
 	QUOTE_MESSAGE: '?? You are going to {0} {1} {2} for {3} {4}',
 	QUOTE_BUTTON: 'Accept',
 	QUOTE_REVIEW: 'Review',
@@ -826,13 +844,16 @@ export default {
 		FIAT_MESSAGE_3: '1일 출금가능금액 Daily withdrawal max amount',
 		FIAT_INCREASE_LIMIT: '1일 한도 증액',
 		CONFIRM_VIA_EMAIL: '이메일 승인',
-		CONFIRM_VIA_EMAIL_1: '회원님의 이메일로 출금승인요청 이메일을 전송하였습니다.',
-		CONFIRM_VIA_EMAIL_2: '출금을 진행하기 위하여 출금승인을 확인해주시기 바랍니다.',
+		CONFIRM_VIA_EMAIL_1:
+			'회원님의 이메일로 출금승인요청 이메일을 전송하였습니다.',
+		CONFIRM_VIA_EMAIL_2:
+			'출금을 진행하기 위하여 출금승인을 확인해주시기 바랍니다.',
 		CONFIRM_VIA_EMAIL_3: '?? the withdrawal via your email within 5 minutes.',
-		WITHDRAW_CONFIRM_SUCCESS_1: '회원님의 출금요청이 승인완료되었습니다. our withdrawal is confirmed and sent.',
-		WITHDRAW_CONFIRM_SUCCESS_2: '회원님의 출금 내역은 출금 거래내역에서 확인하실 수 있습니다. If you’d like to view your withdrawal please visit your withdrawal history page.',
+		WITHDRAW_CONFIRM_SUCCESS_1:
+			'회원님의 출금요청이 승인완료되었습니다. our withdrawal is confirmed and sent.',
+		WITHDRAW_CONFIRM_SUCCESS_2:
+			'회원님의 출금 내역은 출금 거래내역에서 확인하실 수 있습니다. If you’d like to view your withdrawal please visit your withdrawal history page.',
 		GO_WITHDRAWAL_HISTORY: '출금내역 보러가기 Go To Withdrawal History'
-
 	},
 	WALLET_BUTTON_FIAT_DEPOSIT: '입금',
 	WALLET_BUTTON_FIAT_WITHDRAW: '출금',
@@ -870,8 +891,7 @@ export default {
 	LOGOUT_ERROR_TOKEN_EXPIRED: '세션이 만료되었습니다.',
 	LOGOUT_ERROR_LOGIN_AGAIN: '다시 로그인하시기바랍니다.', // ip doesnt match
 	LOGOUT_ERROR_INVALID_TOKEN: '잘못된 토큰',
-	LOGOUT_ERROR_INACTIVE:
-		'비활성화 상태가 지속되어 로그아웃되었습니다.',
+	LOGOUT_ERROR_INACTIVE: '비활성화 상태가 지속되어 로그아웃되었습니다.',
 	ORDER_ENTRY_BUTTON: '{0} {1}', // 0 -> buy/sell 1 -> btc/..
 	QUICK_TRADE_OUT_OF_LIMITS: 'Order size is out of the limits',
 	QUICK_TRADE_TOKEN_USED: 'Token has been used',
@@ -887,7 +907,7 @@ export default {
 	NEXT: '다음',
 	SKIP_FOR_NOW: '일단 건너뛰기',
 	SUBMIT: '제출하기',
-	RESUBMIT: '다시 제출하기', 
+	RESUBMIT: '다시 제출하기',
 	VERIFICATION_NOTIFICATION_SKIP_TITLE: 'Missing Documents!',
 	VERIFICATION_NOTIFICATION_SKIP_TEXT:
 		'To get full access to withdrawal and deposit functions on HOLLAEX you must submit your identity documents in your account page.',
@@ -912,8 +932,16 @@ export default {
 	NO_FEE: 'N/A',
 	SETTINGS_LANGUAGE_LABEL: '언어선택 (이메일포함)',
 	SETTINGS_LANGUAGE_OPTIONS: [
-		{ value: 'en', label: 'English', icon: `${process.env.PUBLIC_URL}/assets/flags/selected-en.png` },
-		{ value: 'ko', label: '한국어', icon: `${process.env.PUBLIC_URL}/assets/flags/selected-kr.png` }
+		{
+			value: 'en',
+			label: 'English',
+			icon: `${process.env.PUBLIC_URL}/assets/flags/selected-en.png`
+		},
+		{
+			value: 'ko',
+			label: '한국어',
+			icon: `${process.env.PUBLIC_URL}/assets/flags/selected-kr.png`
+		}
 	],
 	SETTINGS_ORDERPOPUP_LABEL: 'Display order confirmation popup',
 	SETTINGS_ORDERPOPUP_OPTIONS: [
@@ -928,32 +956,37 @@ export default {
 	SETTING_BUTTON: 'save',
 	STRING_WITH_PARENTHESIS: '{0} ({1})',
 	VERIFICATION_NO_WITHDRAW_TITLE: 'Withdrawals disabled',
-	VERIFICATION_NO_WITHDRAW_MESSAGE:
-		'Your account is disabled for withdrawals',
+	VERIFICATION_NO_WITHDRAW_MESSAGE: 'Your account is disabled for withdrawals',
 	UP_TO_MARKET: 'Up to market',
 	DEVELOPER_SECTION: {
 		TITLE: 'API Key',
-		INFORMATION_TEXT: 'API는 지갑잔고, 매수/매도 주문관리, 출금요청, 최근 거래내역 및 주문서, 티커와 같은 시장 자료와 같은 기능을 제공합니다.',
-		ERROR_INACTIVE_OTP: 'API key를 생성하기 위해서는 2단계 인증(2FA)을 마쳐야합니다.',
+		INFORMATION_TEXT:
+			'API는 지갑잔고, 매수/매도 주문관리, 출금요청, 최근 거래내역 및 주문서, 티커와 같은 시장 자료와 같은 기능을 제공합니다.',
+		ERROR_INACTIVE_OTP:
+			'API key를 생성하기 위해서는 2단계 인증(2FA)을 마쳐야합니다.',
 		ENABLE_2FA: '2단계 인증 사용',
 		WARNING_TEXT: '다른사람과 API key를 공유하지 마십시오.',
 		GENERATE_KEY: 'API key 생성',
 		ACTIVE: 'Active',
 		INACTIVE: 'Inactive',
-		INVALID_LEVEL: '이 기능에 접근하기 위해서는 인증 수준을 업그레이드하셔야합니다.' // TODO
+		INVALID_LEVEL:
+			'이 기능에 접근하기 위해서는 인증 수준을 업그레이드하셔야합니다.' // TODO
 	},
 	DEVELOPERS_TOKENS_POPUP: {
 		GENERATE_TITLE: 'API key 생성',
-		GENERATE_TEXT: 'API key 이름을 지정하고 생성하고 난뒤 비공개로 보관하시기바랍니다. 나중에 다시 확인하실 수 없습니다.',
+		GENERATE_TEXT:
+			'API key 이름을 지정하고 생성하고 난뒤 비공개로 보관하시기바랍니다. 나중에 다시 확인하실 수 없습니다.',
 		GENERATE: 'Generate',
 		DELETE_TITLE: 'API key 삭제 Delete API Key',
-		DELETE_TEXT: 'API key를 한번 삭제하면 되돌릴 수 없지만, 언제든지 새로운 API키를 생성할 수 있습니다. API key를 삭제하시겠습니까?',
+		DELETE_TEXT:
+			'API key를 한번 삭제하면 되돌릴 수 없지만, 언제든지 새로운 API키를 생성할 수 있습니다. API key를 삭제하시겠습니까?',
 		DELETE: '삭제 DELETE',
 		FORM_NAME_LABEL: '이름',
 		FORM_LABLE_PLACEHOLDER: 'API키의 이름',
 		API_KEY_LABEL: 'API key',
 		CREATED_TITLE: 'API key 복사하기',
-		CREATED_TEXT_1: '이 API키는 다시 얻을 수 없으므로 복사하여 보관하시기바랍니다.',
+		CREATED_TEXT_1:
+			'이 API키는 다시 얻을 수 없으므로 복사하여 보관하시기바랍니다.',
 		CREATED_TEXT_2: 'API key는 항상 비공개로 유지하십시오.'
 	},
 	DEVELOPERS_TOKENS_TABLE: {
@@ -976,11 +1009,13 @@ export default {
 		JOIN_CHAT: '채팅 닉네임 설정하기'
 	},
 	INVALID_USERNAME: '닉네임은 3~15자로 영문소문자,숫자,_만 사용가능합니다.',
-	USERNAME_TAKEN: '닉네임이 이미 누군가 사용중입니다. 다시 시도하시기 바랍니다.',
+	USERNAME_TAKEN:
+		'닉네임이 이미 누군가 사용중입니다. 다시 시도하시기 바랍니다.',
 	USERNAME_LABEL: '닉네임(채팅명으로 사용됩니다)',
 	USERNAME_PLACEHOLDER: '닉네임',
 	TAB_USERNAME: 'Username',
-	USERNAME_WARNING: '닉네임은 단 한번 변경이 가능합니다. 설정하신 닉네임이 올바른지 다시한번 확인하시기바랍니다.',
+	USERNAME_WARNING:
+		'닉네임은 단 한번 변경이 가능합니다. 설정하신 닉네임이 올바른지 다시한번 확인하시기바랍니다.',
 	USERNAME_CANNOT_BE_CHANGED: '유저명을 변경하실 수 없습니다.',
 	UPGRADE_LEVEL: '계정 레벨 업그레이드',
 	LEVELS: {
@@ -1004,7 +1039,8 @@ export default {
 	WALLET_ADDRESS_TITLE: '{0}지갑 생성하기',
 	WALLET_ADDRESS_GENERATE: '발급',
 	WALLET_ADDRESS_MESSAGE: '지갑을 생성하면 입금 및 출금 주소가 발급됩니다.',
-	WALLET_ADDRESS_ERROR: '주소 발급에 문제가 발생하였습니다. 새로고침후 다시 시도하시기 바랍니다.',
+	WALLET_ADDRESS_ERROR:
+		'주소 발급에 문제가 발생하였습니다. 새로고침후 다시 시도하시기 바랍니다.',
 	DEPOSIT_WITHDRAW: '입금/출금',
 	GENERATE_WALLET: '지갑생성하기',
 	TRADE_TAB_CHART: 'Chart',
@@ -1019,12 +1055,12 @@ export default {
 	QUICK_TRADE_MODE: '퀵트레이드모드',
 	JUST_NOW: 'just now',
 	PAIR: 'Pair',
-	ZERO_ASSET: 'You have zero assets', 
-	DEPOSIT_ASSETS: 'Deposit Assets', 
-	SEARCH_TXT: 'Search', 
-	SEARCH_ASSETS: 'Search Assets', 
-	TOTAL_ASSETS_VALUE: 'Total assets value in {0}: {1}', 
-	SUMMARY: { 
+	ZERO_ASSET: 'You have zero assets',
+	DEPOSIT_ASSETS: 'Deposit Assets',
+	SEARCH_TXT: 'Search',
+	SEARCH_ASSETS: 'Search Assets',
+	TOTAL_ASSETS_VALUE: 'Total assets value in {0}: {1}',
+	SUMMARY: {
 		TITLE: '마이페이지',
 		TINY_PINK_SHRIMP_TRADER: '핑크 쉬림프 트레이더',
 		TINY_PINK_SHRIMP_TRADER_ACCOUNT: '핑크쉬림프 트레이더 계정',
@@ -1039,27 +1075,41 @@ export default {
 		ACCOUNT_ASSETS: '총 자산',
 		ACCOUNT_DETAILS: '레벨 정보',
 		SHRIMP_ACCOUNT_TXT_1: '자 ! 당신의 여정은 시작되었다.',
-		SHRIMP_ACCOUNT_TXT_2: '계속 헤엄쳐라, 당신은 머지않아 무리에서 두각을 나타낼 것이다.',
-		SNAPPER_ACCOUNT_TXT_1: 'Congrats on staying your course through the swell of the market.',
-		SNAPPER_ACCOUNT_TXT_2: '앞으로 Forge through and fight the surge for more crypto treasures ahead.',
-		KRAKEN_ACCOUNT_TXT_1: 'Likelier to crack jokes than hulls, this crustacean has weathered his share of storms!',
-		LEVIATHAN_ACCOUNT_TXT_1: 'Beast from the abyss, seeing through altcoins into unfathomable depths, masters of midnight waters and tidal wave.',
+		SHRIMP_ACCOUNT_TXT_2:
+			'계속 헤엄쳐라, 당신은 머지않아 무리에서 두각을 나타낼 것이다.',
+		SNAPPER_ACCOUNT_TXT_1:
+			'Congrats on staying your course through the swell of the market.',
+		SNAPPER_ACCOUNT_TXT_2:
+			'앞으로 Forge through and fight the surge for more crypto treasures ahead.',
+		KRAKEN_ACCOUNT_TXT_1:
+			'Likelier to crack jokes than hulls, this crustacean has weathered his share of storms!',
+		LEVIATHAN_ACCOUNT_TXT_1:
+			'Beast from the abyss, seeing through altcoins into unfathomable depths, masters of midnight waters and tidal wave.',
 		VIEW_FEE_STRUCTURE: '수수료 구조 및 한도 보기',
 		UPGRADE_ACCOUNT: '계정 업그레이드',
 		ACTIVE_2FA_SECURITY: '2FA 보안 활성화',
 		ACCOUNT_ASSETS_TXT_1: '보유하고계신 모든 자산을 나타냅니다.',
-		ACCOUNT_ASSETS_TXT_2: '많은 자산을 보유함으로서 낮은 거래수수료 및 특별한 뱃지가 포함된 계정 업그레이드가 가능한 자격을 부여받으실 수 있습니다.',
-		TRADING_VOLUME_TXT_1: '회원님의 거래금액은 {0}로 표시됩니다. 매월 말, 한달 동안 거래한 모든 거래내역의 금액이 계산됩니다.',
-		TRADING_VOLUME_TXT_2: '높은 거래금액을 유지하시면 계정 업그레이드가 가능한 자격을 부여받으실 수 있습니다. 특별한 뱃지와 업그레이드 된 특권을 누러보시기바랍니다.',
-		ACCOUNT_DETAILS_TXT_1: '회원님의 계정은 레벨에 따라 뱃지, 거래수수료, 입출금한도를 결정됩니다.',
-		ACCOUNT_DETAILS_TXT_2: '계정유지기간, 활동수준, 총 자산 등을 통해 계정의 업그레이드 가능 여부를 결정하게됩니다.',
-		ACCOUNT_DETAILS_TXT_3: '회원님의 레벨유지를 위해 지속적인 거래활동과 일정금액 이상의 자산예치등의 조건이 유지되어야합니다.',
-		ACCOUNT_DETAILS_TXT_4: '지속적인 거래활동 및 일정수준의 자산의 유지가 되지않을경우 하향조정이 이루어질 수 있습니다.',
+		ACCOUNT_ASSETS_TXT_2:
+			'많은 자산을 보유함으로서 낮은 거래수수료 및 특별한 뱃지가 포함된 계정 업그레이드가 가능한 자격을 부여받으실 수 있습니다.',
+		TRADING_VOLUME_TXT_1:
+			'회원님의 거래금액은 {0}로 표시됩니다. 매월 말, 한달 동안 거래한 모든 거래내역의 금액이 계산됩니다.',
+		TRADING_VOLUME_TXT_2:
+			'높은 거래금액을 유지하시면 계정 업그레이드가 가능한 자격을 부여받으실 수 있습니다. 특별한 뱃지와 업그레이드 된 특권을 누러보시기바랍니다.',
+		ACCOUNT_DETAILS_TXT_1:
+			'회원님의 계정은 레벨에 따라 뱃지, 거래수수료, 입출금한도를 결정됩니다.',
+		ACCOUNT_DETAILS_TXT_2:
+			'계정유지기간, 활동수준, 총 자산 등을 통해 계정의 업그레이드 가능 여부를 결정하게됩니다.',
+		ACCOUNT_DETAILS_TXT_3:
+			'회원님의 레벨유지를 위해 지속적인 거래활동과 일정금액 이상의 자산예치등의 조건이 유지되어야합니다.',
+		ACCOUNT_DETAILS_TXT_4:
+			'지속적인 거래활동 및 일정수준의 자산의 유지가 되지않을경우 하향조정이 이루어질 수 있습니다.',
 		REQUIREMENTS: '필요조건',
 		REQUEST_ACCOUNT_UPGRADE: '계정 업그레이드 요청',
 		FEES_AND_LIMIT: '수수료 및 입출금한도의 구조',
-		FEES_AND_LIMIT_TXT_1: '크립토 트레이더가 된다는 것은 새로운 시작을 의미합니다. 지혜와 의지, 스피드로 무장하여 무한한 바다속으로 뛰어든것입니다. 오직 크립토의 바다 속을 깊이 파고들어야만, 회원님의 운명을 풀 수 있을 것입니다. Only by delving deep within the crypto oceans will you unlock your fortunes.',
-		FEES_AND_LIMIT_TXT_2: '각 계정의 레벨에 따라 수수료와 입출금한도가 다릅니다. 자세한 정보를 확인하기 위해서는 {0}에 방문하시기바랍니다.',
+		FEES_AND_LIMIT_TXT_1:
+			'크립토 트레이더가 된다는 것은 새로운 시작을 의미합니다. 지혜와 의지, 스피드로 무장하여 무한한 바다속으로 뛰어든것입니다. 오직 크립토의 바다 속을 깊이 파고들어야만, 회원님의 운명을 풀 수 있을 것입니다. Only by delving deep within the crypto oceans will you unlock your fortunes.',
+		FEES_AND_LIMIT_TXT_2:
+			'각 계정의 레벨에 따라 수수료와 입출금한도가 다릅니다. 자세한 정보를 확인하기 위해서는 {0}에 방문하시기바랍니다.',
 		DEPOSIT_WITHDRAWAL_ALLOWENCE: '입출금 한도',
 		TRADING_FEE_STRUCTURE: '거래수수료 구조',
 		WITHDRAWAL: '출금',
@@ -1072,11 +1122,13 @@ export default {
 		NOMINAL_TRADING: 'Nominal Trading',
 		NOMINAL_TRADING_WITH_MONTH: '지난 {0} 거래금액',
 		ACCOUNT_AGE_OF_MONTHS: '{0}개월 이상의 계정활동기간',
-		TRADING_VOLUME_EQUIVALENT: '{0} {1} 과 동등한 거래 볼륨량 Trading Volume Equivalent'
+		TRADING_VOLUME_EQUIVALENT:
+			'{0} {1} 과 동등한 거래 볼륨량 Trading Volume Equivalent'
 	},
 	REFERRAL_LINK: {
 		TITLE: '10% 커미션 수익', // new
-		INFO_TEXT: '추천인이 되어 사용자가 10HEX를 매수할 때마다 1HEX의 수익을 얻으실 수 있습니다.', // new
+		INFO_TEXT:
+			'추천인이 되어 사용자가 10HEX를 매수할 때마다 1HEX의 수익을 얻으실 수 있습니다.', // new
 		INFO_TEXT_1: '커미션은 주기적으로 회원님의 HEX지갑에 적립됩니다.', // new
 		COPY_FIELD_LABEL: '아래 추천인 링크를 공유하여 커미션수익을 얻으세요:', // new
 		REFERRED_USER_COUT: ' {0}명의 사용자 추천을 받았습니다.', // new

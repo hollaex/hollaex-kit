@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import io from 'socket.io-client';
 import { Spin } from 'antd';
 import { WS_HOST } from '../../../config/constants';
-import { getToken } from '../../../utils';
+import { getToken } from '../../../utils/token';
 import { Tabs } from 'antd';
 import { Ban } from './ban';
 import { Announcements } from './announcements';
@@ -136,35 +136,35 @@ class Chat extends Component {
 				{!ready ? (
 					<Spin size="large" />
 				) : (
-						<div>
-							<h1>USER CHAT</h1>
-							<Tabs className="chat-tabs">
-								<TabPane tab="Messages" key="messages">
-									<Messages
-										messages={messages.slice().reverse()}
-										deleteMessage={this.deleteMessage}
-										addMessage={this.addMessage}
-										banUser={this.banUser}
-										bannedUsers={bannedUsersUsernames}
-									/>
-								</TabPane>
-								<TabPane tab="Announcements" key="announcements">
-									<Announcements
-										announcements={announcements}
-										deleteAnnouncement={this.deleteAnnouncement}
-										addAnnouncement={this.addAnnouncement}
-									/>
-								</TabPane>
-								<TabPane tab="Banned Users" key="banuser">
-									<Ban
-										bannedUsers={bannedUsers}
-										unbanUser={this.unbanUser}
-										banUser={this.banUser}
-									/>
-								</TabPane>
-							</Tabs>
-						</div>
-					)}
+					<div>
+						<h1>USER CHAT</h1>
+						<Tabs className="chat-tabs">
+							<TabPane tab="Messages" key="messages">
+								<Messages
+									messages={messages.slice().reverse()}
+									deleteMessage={this.deleteMessage}
+									addMessage={this.addMessage}
+									banUser={this.banUser}
+									bannedUsers={bannedUsersUsernames}
+								/>
+							</TabPane>
+							<TabPane tab="Announcements" key="announcements">
+								<Announcements
+									announcements={announcements}
+									deleteAnnouncement={this.deleteAnnouncement}
+									addAnnouncement={this.addAnnouncement}
+								/>
+							</TabPane>
+							<TabPane tab="Banned Users" key="banuser">
+								<Ban
+									bannedUsers={bannedUsers}
+									unbanUser={this.unbanUser}
+									banUser={this.banUser}
+								/>
+							</TabPane>
+						</Tabs>
+					</div>
+				)}
 			</div>
 		);
 	}

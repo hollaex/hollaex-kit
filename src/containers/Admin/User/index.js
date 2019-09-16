@@ -9,7 +9,7 @@ import { requestUser } from './actions';
 
 import UserContent from './UserContent';
 import { ListUsers, FullListUsers } from '../ListUsers';
-import { isSupport } from '../../../utils';
+import { isSupport } from '../../../utils/token';
 
 const INITIAL_STATE = {
 	userInformation: {},
@@ -36,13 +36,14 @@ class App extends Component {
 
 	requestUserData = (values) => {
 		const isSupportUser = isSupport();
+		const { router } = this.props;
 		this.setState({ ...INITIAL_STATE, loading: true });
 		if (values.id) {
-			this.props.history.replace(`/user?id=${values.id}`);
+			router.replace(`/admin/user?id=${values.id}`);
 		} else if (values.email) {
-			this.props.history.replace(`/user?email=${values.email}`);
+			router.replace(`/admin/user?email=${values.email}`);
 		} else {
-			this.props.history.replace(`/user?username=${values.username}`);
+			router.replace(`/admin/user?username=${values.username}`);
 		}
 		return requestUser(values)
 			.then(([userInformation, userImages, userBalance]) => {
@@ -139,38 +140,38 @@ class App extends Component {
 				onChangeUserDataSuccess={this.onChangeUserDataSuccess}
 			/>
 		) : (
-				<div className="app_container-content">
-					<Tabs>
-						<TabPane tab="Search" key="search">
-							<h2>SEARCH FOR USER</h2>
-							<Form
-								onSubmit={this.searchUser}
-								buttonText="Search"
-								fields={{
-									input: {
-										type: 'string',
-										label: 'input',
-										placeholder: 'email or id or username',
-										validate: []
-									}
-								}}
-								initialValues={{ type: 'id' }}
-							/>
-						</TabPane>
+			<div className="app_container-content">
+				<Tabs>
+					<TabPane tab="Search" key="search">
+						<h2>SEARCH FOR USER</h2>
+						<Form
+							onSubmit={this.searchUser}
+							buttonText="Search"
+							fields={{
+								input: {
+									type: 'string',
+									label: 'input',
+									placeholder: 'email or id or username',
+									validate: []
+								}
+							}}
+							initialValues={{ type: 'id' }}
+						/>
+					</TabPane>
 
-						<TabPane tab="User Verification" key="userVerification">
-							<div className="list_users">
-								<ListUsers requestUser={this.requestUserData} />
-							</div>
-						</TabPane>
+					<TabPane tab="User Verification" key="userVerification">
+						<div className="list_users">
+							<ListUsers requestUser={this.requestUserData} />
+						</div>
+					</TabPane>
 
-						<TabPane tab="All Users" key="users">
-							<h2 className="m-top">LIST OF ALL USERS</h2>
-							<FullListUsers requestUser={this.requestUserData} />
-						</TabPane>
-					</Tabs>
-				</div>
-			);
+					<TabPane tab="All Users" key="users">
+						<h2 className="m-top">LIST OF ALL USERS</h2>
+						<FullListUsers requestUser={this.requestUserData} />
+					</TabPane>
+				</Tabs>
+			</div>
+		);
 	}
 }
 

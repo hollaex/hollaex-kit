@@ -61,7 +61,7 @@ class FullListUsers extends Component {
 	render() {
 		const renderLink = (value) => (
 			<Button type="primary" onClick={() => this.requestUser(value)}>
-				<Link to={`user?id=${value}`}>
+				<Link to={`/admin/user?id=${value}`}>
 					GO
 					<Icon type="right" />
 				</Link>
@@ -126,19 +126,19 @@ class FullListUsers extends Component {
 				{loading ? (
 					<Spin size="large" />
 				) : (
-						<div>
-							{error && <p>-{error}-</p>}
-							<CSVLink filename={'users.csv'} data={users} headers={HEADERS}>
-								Download table
+					<div>
+						{error && <p>-{error}-</p>}
+						<CSVLink filename={'users.csv'} data={users} headers={HEADERS}>
+							Download table
 						</CSVLink>
-							<Table
-								columns={COLUMNS}
-								dataSource={users}
-								expandedRowRender={renderRowContent}
-								expandRowByClick={true}
-							/>
-						</div>
-					)}
+						<Table
+							columns={COLUMNS}
+							dataSource={users}
+							expandedRowRender={renderRowContent}
+							expandRowByClick={true}
+						/>
+					</div>
+				)}
 			</div>
 		);
 	}
