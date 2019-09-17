@@ -1,18 +1,18 @@
-import { BASE_CURRENCY } from '../../config/constants';
+// import { BASE_CURRENCY } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 
-const generateBaseDepositTexts = (strings) => ({
-	TITLE: strings.formatString(
-		strings.NOTIFICATIONS.DEPOSITS[BASE_CURRENCY.toUpperCase()].TITLE,
-		strings[`${BASE_CURRENCY.toUpperCase()}_NAME`]
-	),
-	SUBTITLE: strings.formatString(
-		strings.NOTIFICATIONS.DEPOSITS[BASE_CURRENCY.toUpperCase()].SUBTITLE,
-		strings[`${BASE_CURRENCY.toUpperCase()}_FULLNAME`]
-	),
-	INFORMATION_PENDING: [],
-	INFORMATION_COMPLETE: []
-});
+// const generateBaseDepositTexts = (strings) => ({
+// 	TITLE: strings.formatString(
+// 		strings.NOTIFICATIONS.DEPOSITS[BASE_CURRENCY.toUpperCase()].TITLE,
+// 		strings[`${BASE_CURRENCY.toUpperCase()}_NAME`]
+// 	),
+// 	SUBTITLE: strings.formatString(
+// 		strings.NOTIFICATIONS.DEPOSITS[BASE_CURRENCY.toUpperCase()].SUBTITLE,
+// 		strings[`${BASE_CURRENCY.toUpperCase()}_FULLNAME`]
+// 	),
+// 	INFORMATION_PENDING: [],
+// 	INFORMATION_COMPLETE: []
+// });
 
 const generateCryptoDepositTexts = (strings, status, currency) => {
 	const name = strings[`${currency}_NAME`];
@@ -22,11 +22,11 @@ const generateCryptoDepositTexts = (strings, status, currency) => {
 			? strings.formatString(
 					strings.NOTIFICATIONS.DEPOSITS.TITLE_RECEIVED,
 					name
-				)
+			  )
 			: strings.formatString(
 					strings.NOTIFICATIONS.DEPOSITS.TITLE_INCOMING,
 					fullName
-				),
+			  ),
 		SUBTITLE: strings.formatString(
 			status
 				? strings.NOTIFICATIONS.DEPOSITS.SUBTITLE_RECEIVED
@@ -54,10 +54,16 @@ const generateCryptoDepositTexts = (strings, status, currency) => {
 export const getDepositTexts = (currency, status = false) => {
 	let texts = {};
 	let currencySymbol = currency.trim();
-	texts = generateCryptoDepositTexts(STRINGS, status, currencySymbol.toUpperCase());
+	texts = generateCryptoDepositTexts(
+		STRINGS,
+		status,
+		currencySymbol.toUpperCase()
+	);
 	return {
 		title: texts.TITLE,
 		subtitle: texts.SUBTITLE,
-		information: status ? texts.INFORMATION_COMPLETE : texts.INFORMATION_PENDING
+		information: status
+			? texts.INFORMATION_COMPLETE
+			: texts.INFORMATION_PENDING
 	};
 };

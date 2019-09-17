@@ -59,7 +59,6 @@ class UserFees extends Component {
 				});
 			})
 			.catch((error) => {
-				console.log(error.data);
 				const message = error.message;
 				this.setState({
 					loading: false,
@@ -104,7 +103,7 @@ class UserFees extends Component {
 			temporalData[level][`${name}_taker_fee`] = value;
 		});
 
-		keys.map((key) => {
+		keys.forEach((key) => {
 			tableKeys.push({
 				label: key,
 				dataIndex: key,
@@ -149,13 +148,11 @@ class UserFees extends Component {
 				this.requestFees();
 			})
 			.then(openNotification())
-			.catch((err) => {
-				console.log(err);
-			});
+			.catch((err) => {});
 	};
 
 	render() {
-		const { loading, error, activeKey, data } = this.state;
+		const { loading, error, activeKey } = this.state;
 		return (
 			<div className="app_container-content">
 				{loading ? (

@@ -6,7 +6,7 @@ import BlockchainTransaction from '../Fees/index';
 
 import Moment from 'react-moment';
 import { formatCurrency } from '../../../utils';
-import { isAdmin, isSupport } from '../../../utils/token';
+import { isAdmin } from '../../../utils/token';
 
 const Option = Select.Option;
 
@@ -67,14 +67,14 @@ class TradingVolume extends Component {
 					newPair.push(name);
 				});
 				this.setState({ newPair, loadChart: false });
-			})
-			.catch((error) => {
-				const message = error.data ? error.data.message : error.message;
-				// this.setState({
-				//   loading: false,
-				//   error: message
-				// });
 			});
+		// .catch((error) => {
+		// 	const message = error.data ? error.data.message : error.message;
+		// 	this.setState({
+		// 	  loading: false,
+		// 	  error: message
+		// 	});
+		// });
 	};
 
 	handleChange = (selectedPair) => {

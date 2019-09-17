@@ -13,7 +13,6 @@ class UserList extends Component {
 		if (isAdmin()) {
 			getNumOfUsers()
 				.then((data) => {
-					console.log(data);
 					this.setState({
 						numbers: data.data.users
 					});
@@ -21,9 +20,9 @@ class UserList extends Component {
 				})
 				.catch((error) => {
 					const message = error.data ? error.data.message : error.message;
-					// this.setState({
-					//     error: message
-					// });
+					this.setState({
+						error: message
+					});
 					this.props.setUserListLoading();
 				});
 		} else {
@@ -33,7 +32,6 @@ class UserList extends Component {
 
 	render() {
 		const { error, numbers } = this.state;
-		console.log(numbers);
 		return (
 			<div>
 				{error && (

@@ -38,10 +38,6 @@ class Chat extends Component {
 			this.getBannedUsers();
 		});
 
-		chatWs.on('error', (error) => {
-			console.log(error);
-		});
-
 		chatWs.on('message', (message) => {
 			this.setState({ messages: this.state.messages.concat(message) });
 		});

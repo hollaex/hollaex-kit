@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
-import { Table, Spin, Tabs, Input, Select, Button } from 'antd';
+import { Input, Select } from 'antd';
 
-import { requestFees } from './actions';
+// import { requestFees } from './actions';
 
-import { COLUMNS_FEES } from './constants';
-import { performLimitUpdate } from '../Limits/actions';
+// import { COLUMNS_FEES } from './constants';
+// import { performLimitUpdate } from '../Limits/actions';
 // import {SELECT_KEYS} from "../Deposits/utils";
 
-const TabPane = Tabs.TabPane;
+// const TabPane = Tabs.TabPane;
 
 const InputGroup = Input.Group;
 const Option = Select.Option;
@@ -35,7 +35,6 @@ class ChangeFees extends Component {
 		};
 	}
 	// onSearch = (value) => {
-	//     console.log(value);
 	//     // let num = Number(value);
 	//     // performLimitUpdate(this.state.verification_level, { [this.state.update_type] : num })
 	//     //     .then(()=>{this.requestLimits();

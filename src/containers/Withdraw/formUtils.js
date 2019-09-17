@@ -9,10 +9,9 @@ import {
 } from '../../components/Form/validations';
 import { isMobile } from 'react-device-detect';
 import STRINGS from '../../config/localizedStrings';
-import { WITHDRAW_LIMITS, ICONS, BASE_CURRENCY } from '../../config/constants';
+import { ICONS, BASE_CURRENCY } from '../../config/constants';
 
 export const generateInitialValues = (symbol, coins = {}) => {
-	// const { MIN } = WITHDRAW_LIMITS[symbol];
 	const { min, fee } = coins[symbol];
 	const initialValues = {};
 
@@ -38,7 +37,7 @@ export const generateFormValues = (
 	// const { MIN, MAX, STEP = 1 } = WITHDRAW_LIMITS[symbol];
 	const { fullname, min, withdrawal_limits = {} } = coins[symbol];
 	let MAX = withdrawal_limits[verification_level];
-	if (withdrawal_limits[verification_level] === 0) MAX = "";
+	if (withdrawal_limits[verification_level] === 0) MAX = '';
 	if (withdrawal_limits[verification_level] === -1) MAX = 0;
 	const fields = {};
 
@@ -49,7 +48,10 @@ export const generateFormValues = (
 			placeholder: STRINGS.WITHDRAWALS_FORM_ADDRESS_PLACEHOLDER,
 			validate: [
 				required,
-				validAddress(symbol, STRINGS[`WITHDRAWALS_${symbol.toUpperCase()}_INVALID_ADDRESS`])
+				validAddress(
+					symbol,
+					STRINGS[`WITHDRAWALS_${symbol.toUpperCase()}_INVALID_ADDRESS`]
+				)
 			],
 			fullWidth: isMobile
 		};
@@ -122,7 +124,7 @@ export const generateFormValues = (
 			min: min,
 			max: MAX,
 			step: min,
-			validate: [required, minValue(min), MAX ? maxValue(MAX) : ""],
+			validate: [required, minValue(min), MAX ? maxValue(MAX) : ''],
 			normalize: normalizeBTCFee,
 			fullWidth: isMobile
 		};

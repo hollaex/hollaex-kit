@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import classnames from 'classnames';
 import UserList from './userList';
 import TradingVolume from './tradingVolume';
-import { Table, Spin, Alert, Row, Col } from 'antd';
+import { Spin, Row, Col } from 'antd';
 import { getEmail } from '../../../utils';
 import { checkRole } from '../../../utils/token';
 import './index.css';
@@ -23,12 +22,7 @@ class Main extends Component {
 	};
 
 	render() {
-		const {
-			userListLoading,
-			tradingVolumeLoading,
-			pageDisplay,
-			loaded
-		} = this.state;
+		const { userListLoading, pageDisplay, loaded } = this.state;
 		return (
 			<div className="app_container-content">
 				<div className="page" style={{ display: pageDisplay }}>

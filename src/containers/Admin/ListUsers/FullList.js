@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Table, Icon, Spin, Button } from 'antd';
 import { Link } from 'react-router';
 import { CSVLink } from 'react-csv';
-import { formatCurrency, formatDate } from '../../../utils/index';
+import { formatCurrency } from '../../../utils/index';
 import moment from 'moment';
 
 import './index.css';
@@ -45,7 +45,6 @@ class FullListUsers extends Component {
 				});
 			})
 			.catch((error) => {
-				console.log(error.data);
 				const message = error.message;
 				this.setState({
 					loading: false,
@@ -72,7 +71,10 @@ class FullListUsers extends Component {
 			if (value === true) {
 				return (
 					<div>
-						<Icon type={'flag'} style={{ color: 'red', fontSize: '1.5em' }} />
+						<Icon
+							type={'flag'}
+							style={{ color: 'red', fontSize: '1.5em' }}
+						/>
 					</div>
 				);
 			}
@@ -115,7 +117,9 @@ class FullListUsers extends Component {
 
 			return (
 				<div>
-					<div>Created at: {moment(created_at).format('YYYY/MM/DD HH:mm')}</div>
+					<div>
+						Created at: {moment(created_at).format('YYYY/MM/DD HH:mm')}
+					</div>
 				</div>
 			);
 		};
@@ -128,7 +132,11 @@ class FullListUsers extends Component {
 				) : (
 					<div>
 						{error && <p>-{error}-</p>}
-						<CSVLink filename={'users.csv'} data={users} headers={HEADERS}>
+						<CSVLink
+							filename={'users.csv'}
+							data={users}
+							headers={HEADERS}
+						>
 							Download table
 						</CSVLink>
 						<Table

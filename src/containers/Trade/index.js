@@ -35,15 +35,12 @@ import TradeHistory from './components/TradeHistory';
 import MobileTrade from './MobileTrade';
 import MobileChart from './MobileChart';
 import MobileOrders from './MobileOrders';
-import TVChartContainer from './Chart'
+import TVChartContainer from './Chart';
 
 import { ActionNotification, Loader, MobileBarTabs } from '../../components';
 
 import STRINGS from '../../config/localizedStrings';
 import { playBackgroundAudioNotification } from '../../utils/utils';
-
-let priceTimeOut = '';
-let sizeTimeOut = '';
 
 class Trade extends Component {
 	state = {
@@ -55,6 +52,8 @@ class Trade extends Component {
 		priceInitialized: false,
 		sizeInitialized: false
 	};
+	priceTimeOut = '';
+	sizeTimeOut = '';
 
 	componentWillMount() {
 		this.setSymbol(this.props.routeParams.pair);
@@ -84,11 +83,10 @@ class Trade extends Component {
 		return submitOrder(values)
 			.then((body) => {})
 			.catch((err) => {
-				// console.log('error', err);
-				const _error = err.response
-					&& err.response.data
-					? err.response.data.message
-					: err.message;
+				const _error =
+					err.response && err.response.data
+						? err.response.data.message
+						: err.message;
 				throw new SubmissionError({ _error });
 			});
 	};
@@ -141,7 +139,7 @@ class Trade extends Component {
 		this.props.change(FORM_NAME, 'price', price);
 		playBackgroundAudioNotification('orderbook_field_update');
 		this.setState({ priceInitialized: true });
-		priceTimeOut = setTimeout(() => {
+		this.priceTimeOut = setTimeout(() => {
 			this.setState({ priceInitialized: false });
 		}, 1500);
 	};
@@ -150,7 +148,7 @@ class Trade extends Component {
 		this.props.change(FORM_NAME, 'size', size);
 		playBackgroundAudioNotification('orderbook_field_update');
 		this.setState({ sizeInitialized: true });
-		sizeTimeOut = setTimeout(() => {
+		this.sizeTimeOut = setTimeout(() => {
 			this.setState({ sizeInitialized: false });
 		}, 1500);
 	};
@@ -162,21 +160,21 @@ class Trade extends Component {
 	cancelAllOrders = () => {
 		let cancelDelayData = [];
 		this.props.activeOrders.map((order) => {
-			cancelDelayData = [ ...cancelDelayData, order.id ];
+			cancelDelayData = [...cancelDelayData, order.id];
 			return '';
 		});
 		this.setState({ cancelDelayData });
 		setTimeout(() => {
 			this.props.cancelAllOrders(this.state.symbol);
 		}, 700);
-	}
+	};
 
 	handleCancelOrders = (id) => {
 		this.setState({ cancelDelayData: this.state.cancelDelayData.concat(id) });
 		setTimeout(() => {
 			this.props.cancelOrder(id);
 		}, 700);
-	}
+	};
 
 	render() {
 		const {
@@ -197,7 +195,14 @@ class Trade extends Component {
 			pairs,
 			coins
 		} = this.props;
-		const { chartHeight, symbol, activeTab, cancelDelayData, priceInitialized, sizeInitialized } = this.state;
+		const {
+			chartHeight,
+			symbol,
+			activeTab,
+			cancelDelayData,
+			priceInitialized,
+			sizeInitialized
+		} = this.state;
 
 		if (symbol !== pair || !pairData) {
 			return <Loader background={false} />;
@@ -206,42 +211,20 @@ class Trade extends Component {
 		const USER_TABS = [
 			{
 				title: STRINGS.ORDERS,
-				children: isLoggedIn() ? <ActiveOrders cancelDelayData= {cancelDelayData} orders={activeOrders} onCancel={this.handleCancelOrders} /> :
-				<div className='text-center'>
-					<IconTitle
-						iconPath={activeTheme==='white' ? ICONS.ACTIVE_TRADE_LIGHT : ICONS.ACTIVE_TRADE_DARK}
-						textType="title"
-						className="w-100"
-						useSvg={true}
+				children: isLoggedIn() ? (
+					<ActiveOrders
+						cancelDelayData={cancelDelayData}
+						orders={activeOrders}
+						onCancel={this.handleCancelOrders}
 					/>
-					<div>
-						{STRINGS.formatString(
-							STRINGS.ACTIVE_TRADES,
-							<Link to="/login" className={classnames('blue-link', 'dialog-link', 'pointer')} >
-								{STRINGS.SIGN_IN}
-							</Link>
-						)}
-					</div>
-				</div>,
-				titleAction: isLoggedIn() ? (activeOrders.length > 0 && (
-					<ActionNotification
-						text={STRINGS.CANCEL_ALL}
-						iconPath={ICONS.CANCEL_CROSS_ACTIVE}
-						onClick={this.cancelAllOrders}
-						status="information"
-						useSvg={true}
-					/>)
-				
-				) : ''
-			},
-			{
-				title: STRINGS.RECENT_TRADES,
-				children:   (
-					isLoggedIn() ?
-						<UserTrades pageSize={10} trades={userTrades} pair={pair} pairData={pairData} pairs={pairs} coins={coins} /> :
-					<div className='text-center'>
+				) : (
+					<div className="text-center">
 						<IconTitle
-							iconPath={activeTheme ==='dark' ? ICONS.TRADE_HISTORY_DARK: ICONS.TRADE_HISTORY_LIGHT }
+							iconPath={
+								activeTheme === 'white'
+									? ICONS.ACTIVE_TRADE_LIGHT
+									: ICONS.ACTIVE_TRADE_DARK
+							}
 							textType="title"
 							className="w-100"
 							useSvg={true}
@@ -249,14 +232,73 @@ class Trade extends Component {
 						<div>
 							{STRINGS.formatString(
 								STRINGS.ACTIVE_TRADES,
-								<Link to="/login" className={classnames('blue-link', 'dialog-link', 'pointer')} >
+								<Link
+									to="/login"
+									className={classnames(
+										'blue-link',
+										'dialog-link',
+										'pointer'
+									)}
+								>
 									{STRINGS.SIGN_IN}
 								</Link>
 							)}
 						</div>
 					</div>
 				),
-				titleAction:  isLoggedIn() ? (
+				titleAction: isLoggedIn()
+					? activeOrders.length > 0 && (
+							<ActionNotification
+								text={STRINGS.CANCEL_ALL}
+								iconPath={ICONS.CANCEL_CROSS_ACTIVE}
+								onClick={this.cancelAllOrders}
+								status="information"
+								useSvg={true}
+							/>
+					  )
+					: ''
+			},
+			{
+				title: STRINGS.RECENT_TRADES,
+				children: isLoggedIn() ? (
+					<UserTrades
+						pageSize={10}
+						trades={userTrades}
+						pair={pair}
+						pairData={pairData}
+						pairs={pairs}
+						coins={coins}
+					/>
+				) : (
+					<div className="text-center">
+						<IconTitle
+							iconPath={
+								activeTheme === 'dark'
+									? ICONS.TRADE_HISTORY_DARK
+									: ICONS.TRADE_HISTORY_LIGHT
+							}
+							textType="title"
+							className="w-100"
+							useSvg={true}
+						/>
+						<div>
+							{STRINGS.formatString(
+								STRINGS.ACTIVE_TRADES,
+								<Link
+									to="/login"
+									className={classnames(
+										'blue-link',
+										'dialog-link',
+										'pointer'
+									)}
+								>
+									{STRINGS.SIGN_IN}
+								</Link>
+							)}
+						</div>
+					</div>
+				),
+				titleAction: isLoggedIn() ? (
 					<ActionNotification
 						text={STRINGS.TRANSACTION_HISTORY.TITLE}
 						iconPath={ICONS.ARROW_TRANSFER_HISTORY_ACTIVE}
@@ -264,7 +306,9 @@ class Trade extends Component {
 						status="information"
 						useSvg={true}
 					/>
-				) : ''
+				) : (
+					''
+				)
 			}
 		];
 
@@ -362,7 +406,12 @@ class Trade extends Component {
 								'apply_rtl'
 							)}
 						>
-							<TradeBlock isLoggedIn={isLoggedIn()} title={STRINGS.ORDERBOOK} pairData={pairData} pair={pair}>
+							<TradeBlock
+								isLoggedIn={isLoggedIn()}
+								title={STRINGS.ORDERBOOK}
+								pairData={pairData}
+								pair={pair}
+							>
 								{orderbookReady && <Orderbook {...orderbookProps} />}
 							</TradeBlock>
 						</div>
@@ -390,7 +439,11 @@ class Trade extends Component {
 										'apply_rtl'
 									)}
 								>
-									<TradeBlock title={STRINGS.ORDER_ENTRY} pairData={pairData} pair={pair}>
+									<TradeBlock
+										title={STRINGS.ORDER_ENTRY}
+										pairData={pairData}
+										pair={pair}
+									>
 										<OrderEntry
 											submitOrder={this.onSubmitOrder}
 											openCheckOrder={this.openCheckOrder}
@@ -400,7 +453,10 @@ class Trade extends Component {
 											asks={asks}
 											bids={bids}
 											marketPrice={marketPrice}
-											showPopup={settings.notification.popup_order_confirmation}
+											showPopup={
+												settings.notification
+													.popup_order_confirmation
+											}
 											priceInitialized={priceInitialized}
 											sizeInitialized={sizeInitialized}
 										/>
@@ -410,13 +466,17 @@ class Trade extends Component {
 									title={STRINGS.CHART}
 									setRef={this.setChartRef}
 									className="f-1 overflow-x"
-									pairData={pairData} 
+									pairData={pairData}
 									pair={pair}
 								>
-									{pair &&
-										chartHeight > 0 && (
-											<TVChartContainer activeTheme={activeTheme} symbol={symbol} tradeHistory={tradeHistory} pairData={pairData}/>
-										)}
+									{pair && chartHeight > 0 && (
+										<TVChartContainer
+											activeTheme={activeTheme}
+											symbol={symbol}
+											tradeHistory={tradeHistory}
+											pairData={pairData}
+										/>
+									)}
 								</TradeBlock>
 							</div>
 							<div
@@ -427,7 +487,7 @@ class Trade extends Component {
 									'apply_rtl'
 								)}
 							>
-								<TradeBlockTabs content={USER_TABS} /> 
+								<TradeBlockTabs content={USER_TABS} />
 							</div>
 						</div>
 						<div
@@ -439,7 +499,10 @@ class Trade extends Component {
 							)}
 						>
 							<TradeBlock title={STRINGS.PUBLIC_SALES}>
-								<TradeHistory data={tradeHistory} language={activeLanguage} />
+								<TradeHistory
+									data={tradeHistory}
+									language={activeLanguage}
+								/>
 							</TradeBlock>
 						</div>
 					</div>
@@ -456,7 +519,8 @@ const mapStateToProps = (store) => {
 	const pairData = store.app.pairs[pair] || {};
 	const { asks = [], bids = [] } = store.orderbook.pairsOrderbooks[pair];
 	const tradeHistory = store.orderbook.pairsTrades[pair];
-	const marketPrice = tradeHistory && tradeHistory.length > 0 ? tradeHistory[0].price : 1;
+	const marketPrice =
+		tradeHistory && tradeHistory.length > 0 ? tradeHistory[0].price : 1;
 	let count = 0;
 	const userTrades = store.wallet.trades.data.filter(
 		({ symbol }) => symbol === pair && count++ < 10
@@ -475,12 +539,8 @@ const mapStateToProps = (store) => {
 		taker_fee: takerFee[store.user.verification_level]
 	};
 	const orderBookLevels = store.user.settings.interface.order_book_levels;
-	const asksFilter = asks.filter(
-		(ask, index) => index < orderBookLevels
-	);
-	const bidsFilter = bids.filter(
-		(bid, index) => index < orderBookLevels
-	);
+	const asksFilter = asks.filter((ask, index) => index < orderBookLevels);
+	const bidsFilter = bids.filter((bid, index) => index < orderBookLevels);
 
 	return {
 		pair,
@@ -512,4 +572,7 @@ const mapDispatchToProps = (dispatch) => ({
 	change: bindActionCreators(change, dispatch)
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Trade);
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(Trade);

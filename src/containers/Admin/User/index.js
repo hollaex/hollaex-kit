@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { SubmissionError } from 'redux-form';
+// import { SubmissionError } from 'redux-form';
 import querystring from 'query-string';
 import { Spin, notification, Tabs } from 'antd';
 import './index.css';
@@ -9,7 +9,7 @@ import { requestUser } from './actions';
 
 import UserContent from './UserContent';
 import { ListUsers, FullListUsers } from '../ListUsers';
-import { isSupport } from '../../../utils/token';
+// import { isSupport } from '../../../utils/token';
 
 const INITIAL_STATE = {
 	userInformation: {},
@@ -35,7 +35,7 @@ class App extends Component {
 	}
 
 	requestUserData = (values) => {
-		const isSupportUser = isSupport();
+		// const isSupportUser = isSupport();
 		const { router } = this.props;
 		this.setState({ ...INITIAL_STATE, loading: true });
 		if (values.id) {
@@ -61,7 +61,6 @@ class App extends Component {
 				}
 			})
 			.catch((err) => {
-				console.log(err.statusCode, err.status);
 				if (err.status === 403) {
 					// return this.logout();
 				}
@@ -109,7 +108,8 @@ class App extends Component {
 
 	searchUser = ({ type, input }) => {
 		const searchUserdata = input.trim();
-		if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(searchUserdata)) {
+		const REGEX = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
+		if (REGEX.test(searchUserdata)) {
 			this.requestUserData({ email: searchUserdata });
 		} else if (isNaN(input)) {
 			this.requestUserData({ username: searchUserdata });

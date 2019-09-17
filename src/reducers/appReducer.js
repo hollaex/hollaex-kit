@@ -110,7 +110,6 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 		}
 
 		case SET_SNACK_NOTIFICATION:
-			
 			return {
 				...state,
 				snackNotification: {
@@ -122,7 +121,7 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 					content: payload.content ? payload.content : ''
 				}
 			};
-		
+
 		case CLOSE_SNACK_NOTIFICATION:
 			return {
 				...state,
@@ -133,7 +132,10 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 			const { isDialog, ...rest } = payload;
 			let dialogData = [...state.snackNotification.dialogData];
 			if (isDialog) {
-				dialogData = [...dialogData, { ...rest, id: `snack-dialog-${dialogData.length + 1}`}];
+				dialogData = [
+					...dialogData,
+					{ ...rest, id: `snack-dialog-${dialogData.length + 1}` }
+				];
 			}
 			return {
 				...state,
@@ -145,8 +147,12 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 			};
 
 		case CLOSE_SNACK_DIALOG:
-			const dataDialog = state.snackNotification.dialogData.filter((data) => data.id !== payload.dialogId);
-			let openDialog = dataDialog.length ? state.snackNotification.isDialog : false;
+			const dataDialog = state.snackNotification.dialogData.filter(
+				(data) => data.id !== payload.dialogId
+			);
+			let openDialog = dataDialog.length
+				? state.snackNotification.isDialog
+				: false;
 			return {
 				...state,
 				snackNotification: {
@@ -163,7 +169,9 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 			};
 
 		case SET_ANNOUNCEMENT:
-			const announcements = state.announcements.concat(payload.announcements);
+			const announcements = state.announcements.concat(
+				payload.announcements
+			);
 			return {
 				...state,
 				announcements
@@ -198,19 +206,20 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 		case SET_TICKER_FROM_TRADE:
 			let tempTickers = {};
 			let pairs = Object.keys(state.pairs);
-			Object.keys(payload).map(key => {
+			Object.keys(payload).forEach((key) => {
 				if (pairs.includes(key)) {
 					let temp = state.tickers[key] || {};
 					let pairTrade = payload[key][0];
-					let close = pairTrade && pairTrade.price
-						? pairTrade.price
-						: temp.close
+					let close =
+						pairTrade && pairTrade.price
+							? pairTrade.price
+							: temp.close
 							? temp.close
 							: 0;
 					tempTickers[key] = {
 						...temp,
 						close
-					}
+					};
 				}
 			});
 			return {

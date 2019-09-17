@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import { requestTrades } from './actions';
+// import { requestTrades } from './actions';
 // import { SubmissionError } from 'redux-form';
-import querystring from 'query-string';
+// import querystring from 'query-string';
 // import { Spin, notification, Tabs } from 'antd';
-import { AdminHocForm } from '../../../components';
+// import { AdminHocForm } from '../../../components';
 
-import { requestUser, requestUserBalance } from './actions';
+// import { requestUser, requestUserBalance } from './actions';
 
 // import UserContent from './UserContent';
 // import ListUsers from '../ListUsers/index';
@@ -13,20 +13,17 @@ import UserListTrades from './userListTrades';
 // import { isSupport } from '../../../utils';
 // import UserList from "../Main/userList";
 
-const INITIAL_STATE = {
-	userInformation: {},
-	userImages: {},
-	loading: false
-};
+// const INITIAL_STATE = {
+// 	userInformation: {},
+// 	userImages: {},
+// 	loading: false
+// };
 
-const Form = AdminHocForm('USER_REQUEST_FORM');
+// const Form = AdminHocForm('USER_REQUEST_FORM');
 
 class Trades extends Component {
 	componentWillMount() {
 		// requestTrades(1)
-		//     .then((res)=>{
-		//         console.log(res);
-		//     });
 		//
 		// const { search } = this.props.location;
 		// if (search) {
@@ -37,7 +34,7 @@ class Trades extends Component {
 		// }
 	}
 
-	requestTrades(id) { }
+	requestTrades(id) {}
 
 	render() {
 		return (

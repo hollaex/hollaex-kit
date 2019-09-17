@@ -39,7 +39,6 @@ export const Messages = ({
 	banUser,
 	bannedUsers
 }) => {
-	console.log(bannedUsers);
 	return (
 		<div>
 			<InputBox

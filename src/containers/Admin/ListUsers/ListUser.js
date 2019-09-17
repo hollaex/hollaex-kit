@@ -33,7 +33,6 @@ class ListUsers extends Component {
 				});
 			})
 			.catch((error) => {
-				console.log(error.data);
 				const message = error.message;
 				this.setState({
 					loading: false,

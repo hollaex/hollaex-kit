@@ -86,7 +86,6 @@ class Deposits extends Component {
 				});
 			})
 			.catch((error) => {
-				console.log(error.data);
 				const message = error.data ? error.data.message : error.message;
 				this.setState({
 					loading: false,
@@ -113,7 +112,6 @@ class Deposits extends Component {
 					});
 				})
 				.catch((error) => {
-					console.log(error.data);
 					const message = error.data ? error.data.message : error.message;
 					this.setState({
 						loadingItem: false,
@@ -142,7 +140,6 @@ class Deposits extends Component {
 					});
 				})
 				.catch((error) => {
-					console.log(error.data);
 					const message = error.data ? error.data.message : error.message;
 					this.setState({
 						dismissingItem: false,

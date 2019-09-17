@@ -10,7 +10,6 @@ import {
 	UserBalance,
 	Activate,
 	TradeHistory,
-	Deposits,
 	UploadIds,
 	Transactions
 } from '../';
@@ -64,7 +63,9 @@ class UserContent extends Component {
 					</div>
 				</div>
 				<Tabs
-					tabBarExtraContent={<Button onClick={clearData}>Clear user</Button>}
+					tabBarExtraContent={
+						<Button onClick={clearData}>Clear user</Button>
+					}
 				>
 					<TabPane tab="Data" key="data">
 						<div>
