@@ -54,7 +54,7 @@ class Login extends Component {
 	}
 
 	redirectToHome = () => {
-		this.props.router.replace('/account');
+		this.props.router.replace('/admin');
 	};
 
 	redirectToResetPassword = () => {
@@ -62,7 +62,7 @@ class Login extends Component {
 	};
 
 	redirectToService = (url) => {
-		window.location.href = `https://${url}`;
+		window.location.href = `https://${url}/admin`;
 	};
 
 	getServiceParam = () => {
@@ -110,7 +110,8 @@ class Login extends Component {
 					if (_error === 'User is not activated') {
 						error._error = (
 							<div style={{ color: 'black' }}>
-								Account approval is required to access the demo exchange.
+								Account approval is required to access the demo
+								exchange.
 								<br />
 								Please contact us at{' '}
 								<a
@@ -158,7 +159,9 @@ class Login extends Component {
 		const { otpDialogIsOpen, logoutDialogIsOpen } = this.state;
 
 		return (
-			<div className={classnames(...FLEX_CENTER_CLASSES, 'flex-column', 'f-1')}>
+			<div
+				className={classnames(...FLEX_CENTER_CLASSES, 'flex-column', 'f-1')}
+			>
 				<div
 					className={classnames(
 						...FLEX_CENTER_CLASSES,
@@ -193,7 +196,10 @@ class Login extends Component {
 							'w-100'
 						)}
 					>
-						<LoginForm onSubmit={this.onSubmitLogin} theme={activeTheme} />
+						<LoginForm
+							onSubmit={this.onSubmitLogin}
+							theme={activeTheme}
+						/>
 						{isMobile && <BottomLink />}
 					</div>
 				</div>

@@ -10,9 +10,9 @@ import { getToken } from './token';
  *
  * @return {object}          The parsed JSON from the request
  */
-function parseJSON(response) {
+const parseJSON = (response) => {
 	return response.json();
-}
+};
 
 /**
  * Checks if a network request came back fine, and throws an error if not

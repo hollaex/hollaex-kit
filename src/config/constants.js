@@ -20,7 +20,8 @@ export const APP_TITLE = STRINGS.APP_TITLE;
 export const TOKEN_TIME = 24 * 60 * 60 * 1000; // 1 day
 export const SESSION_TIME = 6 * 60 * 60 * 1000; // 6 hour
 
-export const API_URL = config[ENV][NETWORK].API_URL;
+// export const API_URL = config[ENV][NETWORK].API_URL;
+export const API_URL = 'http://10.120.70.85/v0';
 export const WS_URL = config[ENV][NETWORK].WS_URL;
 
 export const ICONS = {
@@ -66,7 +67,9 @@ export const ICONS = {
 		process.env.PUBLIC_URL
 	}/assets/icons/question-mark-color.svg`,
 	LAPTOP: `${process.env.PUBLIC_URL}/assets/icons/compute-play-black.svg`,
-	LAPTOP_COLOR: `${process.env.PUBLIC_URL}/assets/icons/compute-play-color.svg`,
+	LAPTOP_COLOR: `${
+		process.env.PUBLIC_URL
+	}/assets/icons/compute-play-color.svg`,
 	TELEGRAM: `${process.env.PUBLIC_URL}/assets/icons/telegram-black.svg`,
 	TELEGRAM_COLOR: `${process.env.PUBLIC_URL}/assets/icons/telegram-color.svg`,
 	BCH_ICON: `${process.env.PUBLIC_URL}/assets/icons/bch-icon.svg`,
@@ -127,7 +130,9 @@ export const ICONS = {
 		process.env.PUBLIC_URL
 	}/assets/images/deposit-received-bitcoin.svg`,
 	DEPOSIT_SUCCESS: `${process.env.PUBLIC_URL}/assets/images/D-W-Success.svg`,
-	WITHDRAWAL_SUCCESS: `${process.env.PUBLIC_URL}/assets/images/D-W-Success.svg`,
+	WITHDRAWAL_SUCCESS: `${
+		process.env.PUBLIC_URL
+	}/assets/images/D-W-Success.svg`,
 	EMAIL: `${process.env.PUBLIC_URL}/assets/images/email.svg`,
 	EMAIL_SENT: `${process.env.PUBLIC_URL}/assets/images/email-sent.svg`,
 	OTP_DOTS: `${process.env.PUBLIC_URL}/assets/images/f2fa-pin.svg`,
@@ -204,7 +209,9 @@ export const ICONS = {
 	BLUE_EDIT: `${process.env.PUBLIC_URL}/assets/images/blue-edit-exir-icon.svg`,
 	BLUE_PLUS: `${process.env.PUBLIC_URL}/assets/images/max-plus-blue-icon.svg`,
 	BLUE_TIMER: `${process.env.PUBLIC_URL}/assets/images/timer-icon.svg`,
-	DROPDOWN_ARROW: `${process.env.PUBLIC_URL}/assets/images/down-arrow-home.svg`,
+	DROPDOWN_ARROW: `${
+		process.env.PUBLIC_URL
+	}/assets/images/down-arrow-home.svg`,
 	NOTIFICATION_ORDER_LIMIT_BUY_FILLED: `${
 		process.env.PUBLIC_URL
 	}/assets/images/limit-buy-order-filled-01.svg`,
@@ -235,7 +242,9 @@ export const ICONS = {
 	LOGOUT_ARROW: `${
 		process.env.PUBLIC_URL
 	}/assets/images/logout-arrow-active.svg`,
-	LOGOUT_ARROW_GREY: `${process.env.PUBLIC_URL}/assets/images/logout-arrow.svg`,
+	LOGOUT_ARROW_GREY: `${
+		process.env.PUBLIC_URL
+	}/assets/images/logout-arrow.svg`,
 	VERIFICATION_WARNING: `${process.env.PUBLIC_URL}/assets/images/astrics.svg`,
 	VERIFICATION_SUCCESS: `${
 		process.env.PUBLIC_URL
@@ -287,7 +296,9 @@ export const ICONS = {
 	SIDEBAR_WALLET_ACTIVE: `${
 		process.env.PUBLIC_URL
 	}/assets/images/wallet-selected.svg`,
-	SIDEBAR_WALLET_INACTIVE: `${process.env.PUBLIC_URL}/assets/images/wallet.svg`,
+	SIDEBAR_WALLET_INACTIVE: `${
+		process.env.PUBLIC_URL
+	}/assets/images/wallet.svg`,
 	SIDEBAR_ACCOUNT_ACTIVE: `${
 		process.env.PUBLIC_URL
 	}/assets/images/account_2-active.svg`,
@@ -423,7 +434,9 @@ export const ICONS = {
 	SNAPPER: `${
 		process.env.PUBLIC_URL
 	}/assets/images/little-red-snapper-trader.svg`,
-	SHRIMP: `${process.env.PUBLIC_URL}/assets/images/tiny-pink-shrimp-trader.svg`,
+	SHRIMP: `${
+		process.env.PUBLIC_URL
+	}/assets/images/tiny-pink-shrimp-trader.svg`,
 	LEVIATHAN: `${
 		process.env.PUBLIC_URL
 	}/assets/images/black-leviathan-trader.svg`,
@@ -471,7 +484,9 @@ export const FEATURES_ICONS = {
 	}/assets/images/features-payment-card-icons.svg`,
 	SECURITY: `${process.env.PUBLIC_URL}/assets/images/features-lock-icons.svg`,
 	REPORTING: `${process.env.PUBLIC_URL}/assets/images/features-data-icons.svg`,
-	SUPPORT: `${process.env.PUBLIC_URL}/assets/images/features-support-icons.svg`,
+	SUPPORT: `${
+		process.env.PUBLIC_URL
+	}/assets/images/features-support-icons.svg`,
 	LEGAL: `${process.env.PUBLIC_URL}/assets/images/features-legal-icons.svg`
 };
 

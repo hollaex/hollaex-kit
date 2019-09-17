@@ -1,13 +1,8 @@
 import React, { Component } from 'react';
 import { Table, Spin, notification, Input, Select } from 'antd';
 import { CSVLink } from 'react-csv';
-import { formatCurrency } from '../../../utils';
 
 import { requestLimits, performLimitUpdate } from './actions';
-
-const formatNum = (value) => {
-	return <div>{formatCurrency(value)}</div>;
-};
 
 const InputGroup = Input.Group;
 const Option = Select.Option;
@@ -45,14 +40,13 @@ class Limits extends Component {
 		const arr = [COLUMNS_CURRENCY, HEADERS, CURRENCY_KEYS, UPDATE_KEYS];
 		arr.map((arr) => (arr.length = 0));
 		requestLimits()
-			.then(({ data }) => {
-				Object.keys(data[0]).map((name) =>
+			.then((res) => {
+				Object.keys(res[0]).forEach((name) =>
 					name !== 'id' && name !== 'created_at' && name !== 'updated_at'
 						? (COLUMNS_CURRENCY.push({
 								title: name,
 								dataIndex: name,
-								key: name,
-								render: formatNum
+								key: name
 						  }),
 						  HEADERS.push({ label: name, dataIndex: name, key: name }),
 						  name !== 'verification_level'
@@ -60,11 +54,11 @@ class Limits extends Component {
 								: null)
 						: null
 				);
-				data.forEach(({ verification_level: lvl }) => {
+				res.forEach(({ verification_level: lvl }) => {
 					UPDATE_KEYS.push({ value: lvl, label: lvl });
 				});
 				this.setState({
-					limits: data,
+					limits: res,
 					loading: false,
 					fetched: true
 				});
