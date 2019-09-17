@@ -98,7 +98,9 @@ class UserListTrades extends Component {
 							dataSource={users}
 							expandedRowRender={this.renderRowContent}
 							expandRowByClick={true}
-							key={users.id}
+							rowKey={(data) => {
+								return data.id;
+							}}
 						/>
 					</div>
 				)}

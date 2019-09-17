@@ -104,6 +104,9 @@ class BankTransactions extends Component {
 							<Table
 								bordered={true}
 								columns={COLUMNS}
+								rowKey={(data) => {
+									return data.id;
+								}}
 								dataSource={filteredData}
 								expandedRowRender={expandedRowRender}
 								onChange={this.handleChange}

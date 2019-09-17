@@ -84,7 +84,13 @@ class ListUsers extends Component {
 				) : (
 					<div>
 						{error && <p>-{error}-</p>}
-						<Table columns={COLUMNS} dataSource={users} />
+						<Table
+							columns={COLUMNS}
+							dataSource={users}
+							rowKey={(data) => {
+								return data.id;
+							}}
+						/>
 					</div>
 				)}
 			</div>

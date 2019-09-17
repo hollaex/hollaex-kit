@@ -109,7 +109,13 @@ class Limits extends Component {
 						>
 							Download table
 						</CSVLink>
-						<Table columns={COLUMNS_CURRENCY} dataSource={limits} />
+						<Table
+							columns={COLUMNS_CURRENCY}
+							dataSource={limits}
+							rowKey={(data) => {
+								return data.id;
+							}}
+						/>
 						<div>
 							<h2>CHANGE DAILY MAX LIMITS</h2>
 

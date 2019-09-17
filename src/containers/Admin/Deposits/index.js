@@ -221,7 +221,9 @@ class Deposits extends Component {
 								<Filters
 									onChange={this.onChangeQuery}
 									onClick={this.onClickFilters}
-									hasChanges={queryDone !== JSON.stringify(queryParams)}
+									hasChanges={
+										queryDone !== JSON.stringify(queryParams)
+									}
 									params={queryParams}
 									loading={loading}
 									fetched={fetched}
@@ -232,7 +234,8 @@ class Deposits extends Component {
 							<div className="controls-wrapper">
 								<div className="controls-search">
 									<div>
-										Press enter or click on the search icon to perform a search
+										Press enter or click on the search icon to perform
+										a search
 									</div>
 									<InputGroup compact>
 										<Select
@@ -240,13 +243,18 @@ class Deposits extends Component {
 											style={{ width: '25%' }}
 											onSelect={this.onSelect}
 										>
-											{SELECT_KEYS(undefined).map(({ value, label }, index) => (
-												<Option value={value} key={index}>
-													{label}
-												</Option>
-											))}
+											{SELECT_KEYS(undefined).map(
+												({ value, label }, index) => (
+													<Option value={value} key={index}>
+														{label}
+													</Option>
+												)
+											)}
 										</Select>
-										<Search style={{ width: '75%' }} onSearch={this.onSearch} />
+										<Search
+											style={{ width: '75%' }}
+											onSearch={this.onSearch}
+										/>
 									</InputGroup>
 								</div>
 								<div className="controls-refresh">
@@ -300,6 +308,9 @@ class Deposits extends Component {
 									dismissingItem: dismissingItem && index === indexItem
 								};
 							})}
+							rowKey={(data) => {
+								return data.id;
+							}}
 							expandedRowRender={renderRowContent}
 							expandRowByClick={true}
 						/>

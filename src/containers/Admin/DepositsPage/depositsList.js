@@ -71,7 +71,13 @@ class DepositsList extends Component {
 					<div>
 						{error && <p>-{error}-</p>}
 						<h3>Transactions</h3>
-						<Table columns={COLUMNS} dataSource={users} />
+						<Table
+							columns={COLUMNS}
+							dataSource={users}
+							rowKey={(data) => {
+								return data.id;
+							}}
+						/>
 					</div>
 				)}
 			</div>

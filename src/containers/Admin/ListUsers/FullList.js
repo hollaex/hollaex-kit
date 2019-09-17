@@ -144,6 +144,9 @@ class FullListUsers extends Component {
 							dataSource={users}
 							expandedRowRender={renderRowContent}
 							expandRowByClick={true}
+							rowKey={(data) => {
+								return data.id;
+							}}
 						/>
 					</div>
 				)}

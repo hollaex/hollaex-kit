@@ -247,7 +247,10 @@ class Transactions extends Component {
 									...deposit,
 									completeDeposit:
 										index !== indexItem
-											? this.completeDeposit(deposit.transaction_id, index)
+											? this.completeDeposit(
+													deposit.transaction_id,
+													index
+											  )
 											: () => {},
 									dismissDeposit:
 										index !== indexItem
@@ -263,6 +266,9 @@ class Transactions extends Component {
 							})}
 							expandedRowRender={renderRowContent}
 							expandRowByClick={true}
+							rowKey={(data) => {
+								return data.id;
+							}}
 						/>
 					</div>
 				)}

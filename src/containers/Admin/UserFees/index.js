@@ -114,7 +114,11 @@ class UserFees extends Component {
 			temporalData: Object.values(temporalData),
 			headers: Object.entries(keys).map(([key, name]) => {
 				return name === 'verification_level'
-					? { title: 'verification levels', dataIndex: name, key: name + key }
+					? {
+							title: 'verification levels',
+							dataIndex: name,
+							key: name + key
+					  }
 					: key === '1'
 					? { title: 'maker fees', dataIndex: name, key: name + key }
 					: { title: 'taker fees', dataIndex: name, key: name + key };
@@ -181,6 +185,9 @@ class UserFees extends Component {
 										<Table
 											columns={this.state.headers}
 											dataSource={this.state.temporalData}
+											rowKey={(data) => {
+												return data.id;
+											}}
 										/>
 										<h2>CHANGE USER FEES</h2>
 										<ChangeFees

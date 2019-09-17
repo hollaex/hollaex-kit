@@ -65,8 +65,9 @@ class Trade extends Component {
 		}
 	}
 
-	shouldComponentUpdate(nextProps, nextState) {
-		return true;
+	componentWillUnmount() {
+		clearTimeout(this.priceTimeOut);
+		clearTimeout(this.sizeTimeOut);
 	}
 
 	setSymbol = (symbol = '') => {

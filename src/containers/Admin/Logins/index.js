@@ -88,6 +88,9 @@ class Logins extends Component {
 					<Table
 						columns={LOGIN_COLUMNS}
 						dataSource={logins ? logins : 'No Data'}
+						rowKey={(data) => {
+							return data.id;
+						}}
 					/>
 				</Col>
 			</Row>

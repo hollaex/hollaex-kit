@@ -114,6 +114,9 @@ class Audits extends Component {
 						Download table
 					</CSVLink>
 					<Table
+						rowKey={(data) => {
+							return data.id;
+						}}
 						columns={AUDIT_COLUMNS}
 						dataSource={audits ? audits : 'No Data'}
 					/>

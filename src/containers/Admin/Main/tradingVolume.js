@@ -40,20 +40,17 @@ class TradingVolume extends Component {
 		this.getData();
 	}
 
-	getData = (selectedPair) => {
-		getMonthlyTradingVolume(selectedPair == null ? 'btc-eur' : selectedPair)
+	getData = (selectedPair = 'btc-eur') => {
+		let tableData = [],
+			chartData = [];
+		getMonthlyTradingVolume(selectedPair)
 			.then((data) => {
 				const sortedData = data.sort((a, b) => a.date > b.date);
-				const chartData = sortedData.map((obj) => obj.volume);
-				this.setState({
-					chartData
-				});
-				// const tableData = data.sort((a, b) =>  a.date < b.date);
-				// this.setState({data:tableData});
-				const tableData = data.sort((a, b) => {
+				chartData = sortedData.map((obj) => obj.volume);
+
+				tableData = data.sort((a, b) => {
 					return new Date(b.date) - new Date(a.date);
 				});
-				this.setState({ data: tableData });
 				if (isAdmin()) {
 					return requestFees();
 				} else {
@@ -66,27 +63,38 @@ class TradingVolume extends Component {
 				sortedData.forEach(({ name }) => {
 					newPair.push(name);
 				});
-				this.setState({ newPair, loadChart: false });
+				this.setState({
+					data: tableData,
+					chartData,
+					newPair,
+					loadChart: false
+				});
 			});
-		// .catch((error) => {
-		// 	const message = error.data ? error.data.message : error.message;
-		// 	this.setState({
-		// 	  loading: false,
-		// 	  error: message
-		// 	});
-		// });
 	};
 
 	handleChange = (selectedPair) => {
-		this.getData(selectedPair);
-		this.setState({ loadChart: true });
+		this.setState(
+			{
+				loadChart: true
+			},
+			() => {
+				this.getData(selectedPair);
+			}
+		);
 	};
 
 	render() {
 		const { error, data, chartData, newPair, loadChart } = this.state;
+		const Options = newPair.map((currency, index) => {
+			return (
+				<Option key={index} value={currency}>
+					{currency}
+				</Option>
+			);
+		});
 		return (
 			<div className="">
-				{error && (
+				{error !== '' ? (
 					<Alert
 						message="Error"
 						className="m-top"
@@ -95,8 +103,7 @@ class TradingVolume extends Component {
 						showIcon
 						style={{ width: '50%' }}
 					/>
-				)}
-				{data && (
+				) : (
 					<div className="main-container">
 						<Row>
 							<Col span={12}>
@@ -108,13 +115,7 @@ class TradingVolume extends Component {
 									style={{ width: 120 }}
 									onChange={this.handleChange}
 								>
-									{newPair.map((currency, index) => {
-										return (
-											<Option key={index} value={currency}>
-												{currency}
-											</Option>
-										);
-									})}
+									{Options}
 								</Select>
 							</Col>
 						</Row>
@@ -135,7 +136,14 @@ class TradingVolume extends Component {
 											style={{ stroke: '#41c3f9', fill: 'none' }}
 										/>
 									</Sparklines>
-									<Table columns={VOLUME} dataSource={data} />
+									<Table
+										columns={VOLUME}
+										dataSource={data}
+										rowKey={(data, index) => {
+											const key = data.symbol + index;
+											return key;
+										}}
+									/>
 								</div>
 							)}
 							<div className="fees">

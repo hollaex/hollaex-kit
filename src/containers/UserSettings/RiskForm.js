@@ -140,6 +140,9 @@ class RiskForm extends Component {
 							headers={generateHeaders(onAdjustPortfolio)}
 							data={assetData}
 							count={1}
+							rowKey={(data) => {
+								return data.id;
+							}}
 							displayPaginator={false}
 						/>
 					</div>
