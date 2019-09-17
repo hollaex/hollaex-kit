@@ -20,14 +20,14 @@ const AccountAssets = ({ chartData = [], totalAssets, balance, coins }) => {
             </div>
             <div className="d-flex justify-content-between">
                 {chartData.map((value, index) => {
-                    const { min } = coins[value.symbol || BASE_CURRENCY] || {};
+                    const { min, fullname } = coins[value.symbol || BASE_CURRENCY] || {};
                     let currencyBalance = formatToCurrency(balance[`${value.symbol}_balance`], min);
                     return (
                         <div key={index} className="price-content text-center">
                             <div className={classnames("coin-price-container", FLEX_CENTER_CLASSES)}>
                                 <ReactSVG path={ICONS[`${value.symbol.toUpperCase()}_ICON`]} wrapperClassName="coin-price" />
                             </div>
-                            <div className="price-text">{STRINGS[`${value.symbol.toUpperCase()}_FULLNAME`]}:</div>
+                            <div className="price-text">{fullname}:</div>
                             <div className="price-text">
                                 {`${STRINGS[`${value.symbol.toUpperCase()}_CURRENCY_SYMBOL`]} ${formatAverage(currencyBalance)}`}
                             </div>
@@ -38,7 +38,7 @@ const AccountAssets = ({ chartData = [], totalAssets, balance, coins }) => {
             </div>
             <div className="text-center my-3 title-font">
                 <span className="total-assets">
-                    {STRINGS.formatString(STRINGS.TOTAL_ASSETS_VALUE, STRINGS[`${baseValue.symbol.toUpperCase()}_FULLNAME`], totalAssets)}
+                    {STRINGS.formatString(STRINGS.TOTAL_ASSETS_VALUE, baseValue.fullname, totalAssets)}
                 </span>
             </div>
         </div>

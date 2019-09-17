@@ -42,14 +42,15 @@ class Wallet extends Component {
 		}
 	};
 
-	renderWalletHeaderBlock = (symbol, price, balance) => {
+	renderWalletHeaderBlock = (symbol, price, balance, coins) => {
 		const balanceValue = balance[`${symbol}_balance`] || 0;
+		const { fullname } = coins[symbol] || {};
 		return (
 			<div className="wallet-header_block">
 				<div className="wallet-header_block-currency_title">
 					{STRINGS.formatString(
 						STRINGS.CURRENCY_BALANCE_TEXT,
-						STRINGS[`${symbol.toUpperCase()}_FULLNAME`]
+						fullname
 					)}
 					<ActionNotification
 						text={STRINGS.TRADE_HISTORY}
@@ -75,13 +76,13 @@ class Wallet extends Component {
 	};
 
 	render() {
-		const { balance, price } = this.props;
+		const { balance, price, coins } = this.props;
 		const { currency } = this.state;
 		if (!currency) {
 			return <div />;
 		}
 
-		const { depositText, withdrawText } = generateWalletActionsText(currency);
+		const { depositText, withdrawText } = generateWalletActionsText(currency, coins);
 
 		return (
 			<div>
@@ -95,7 +96,7 @@ class Wallet extends Component {
 						textType="title"
 					/>
 					<div className="wallet-container">
-						{this.renderWalletHeaderBlock(currency, price, balance)}
+						{this.renderWalletHeaderBlock(currency, price, balance, coins)}
 						<div
 							className={classnames(...FLEX_CENTER_CLASSES, 'wallet-buttons_action')}
 						>
@@ -111,6 +112,7 @@ class Wallet extends Component {
 }
 
 const mapStateToProps = (store) => ({
+	coins: store.app.coins,
 	price: store.orderbook.price,
 	prices: store.orderbook.prices,
 	balance: store.user.balance,

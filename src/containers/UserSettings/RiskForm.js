@@ -80,9 +80,11 @@ class RiskForm extends Component {
 			pristine,
 			// error,
 			valid,
-			formFields
+			formFields,
+			coins
 		} = this.props;
 		const percentPrice = ((totalAssets / 100) * initialValues.order_portfolio_percentage);
+		const { fullname } = coins[BASE_CURRENCY] || {};
 		const assetData = [
 			{
 				id: 1,
@@ -97,7 +99,7 @@ class RiskForm extends Component {
 				title: STRINGS.USER_SETTINGS.CREATE_ORDER_WARING,
 				content: <div>
 					<p>{STRINGS.USER_SETTINGS.RISK_MANAGEMENT.INFO_TEXT}</p>
-					<p>{STRINGS.formatString(STRINGS.USER_SETTINGS.RISK_MANAGEMENT.INFO_TEXT_1, STRINGS[`${BASE_CURRENCY.toUpperCase()}_FULLNAME`], totalAssets).join('')}</p>
+					<p>{STRINGS.formatString(STRINGS.USER_SETTINGS.RISK_MANAGEMENT.INFO_TEXT_1, fullname, totalAssets).join('')}</p>
 					<Table
 						rowClassName="pt-2 pb-2"
 						headers={generateHeaders(onAdjustPortfolio)}

@@ -36,6 +36,7 @@ export const AssetsBlock = ({
 					.filter(([key]) => balance.hasOwnProperty(`${key}_balance`))
 					.map(([key, { min, allow_deposit, allow_withdrawal }]) => {
 						const balanceValue = balance[`${key}_balance`];
+						const { fullname, symbol = '' } = coins[key] || {};
 						const baseCoin = coins[BASE_CURRENCY] || {}
 						const balanceText =
 							key === BASE_CURRENCY
@@ -49,7 +50,7 @@ export const AssetsBlock = ({
 								<td className="table-icon td-fit">
 									<Link to={`/wallet/${key.toLowerCase()}`}>
 										<CurrencyBall
-											name={STRINGS[`${key.toUpperCase()}_SHORTNAME`]}
+											name={symbol.toUpperCase()}
 											symbol={key}
 											size="s"
 										/>
@@ -57,7 +58,7 @@ export const AssetsBlock = ({
 								</td>
 								<td className="td-name td-fit">
 									<Link to={`/wallet/${key.toLowerCase()}`}>
-										{STRINGS[`${key.toUpperCase()}_FULLNAME`]}
+										{fullname}
 									</Link>
 								</td>
 								<td className="td-wallet">

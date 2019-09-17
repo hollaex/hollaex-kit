@@ -1,49 +1,52 @@
 import { BASE_CURRENCY } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 
-const generateBaseDepositTexts = (strings) => ({
-	TITLE: strings.formatString(
-		strings.NOTIFICATIONS.DEPOSITS[BASE_CURRENCY.toUpperCase()].TITLE,
-		strings[`${BASE_CURRENCY.toUpperCase()}_NAME`]
-	),
-	SUBTITLE: strings.formatString(
-		strings.NOTIFICATIONS.DEPOSITS[BASE_CURRENCY.toUpperCase()].SUBTITLE,
-		strings[`${BASE_CURRENCY.toUpperCase()}_FULLNAME`]
-	),
-	INFORMATION_PENDING: [],
-	INFORMATION_COMPLETE: []
-});
+// const generateBaseDepositTexts = (strings) => ({
+// 	TITLE: strings.formatString(
+// 		strings.NOTIFICATIONS.DEPOSITS[BASE_CURRENCY.toUpperCase()].TITLE,
+// 		strings[`${BASE_CURRENCY.toUpperCase()}_NAME`]
+// 	),
+// 	SUBTITLE: strings.formatString(
+// 		strings.NOTIFICATIONS.DEPOSITS[BASE_CURRENCY.toUpperCase()].SUBTITLE,
+// 		strings[`${BASE_CURRENCY.toUpperCase()}_FULLNAME`]
+// 	),
+// 	INFORMATION_PENDING: [],
+// 	INFORMATION_COMPLETE: []
+// });
 
-const generateCryptoDepositTexts = (strings, status, currency) => {
-	const name = strings[`${currency}_NAME`];
-	const fullName = strings[`${currency}_FULLNAME`];
+const generateCryptoDepositTexts = (strings, status, currency, coins) => {
+	// const name = strings[`${currency}_NAME`];
+	const { fullname } = coins[currency] || {};
 	return {
 		TITLE: status
 			? strings.formatString(
-					strings.NOTIFICATIONS.DEPOSITS.TITLE_RECEIVED,
-					name
-				)
+				strings.NOTIFICATIONS.DEPOSITS.TITLE_RECEIVED,
+				// name
+				fullname
+			)
 			: strings.formatString(
-					strings.NOTIFICATIONS.DEPOSITS.TITLE_INCOMING,
-					fullName
-				),
+				strings.NOTIFICATIONS.DEPOSITS.TITLE_INCOMING,
+				fullname
+			),
 		SUBTITLE: strings.formatString(
 			status
 				? strings.NOTIFICATIONS.DEPOSITS.SUBTITLE_RECEIVED
 				: strings.NOTIFICATIONS.DEPOSITS.SUBTITLE_INCOMING,
-			fullName
+			fullname
 		),
 		INFORMATION_PENDING: [
 			strings
 				.formatString(
 					strings.NOTIFICATIONS.DEPOSITS.INFORMATION_PENDING_1,
-					name
+					fullname
+					// name
 				)
 				.join(''),
 			strings
 				.formatString(
 					strings.NOTIFICATIONS.DEPOSITS.INFORMATION_PENDING_2,
-					name
+					fullname
+					// name
 				)
 				.join('')
 		],
@@ -51,10 +54,10 @@ const generateCryptoDepositTexts = (strings, status, currency) => {
 	};
 };
 
-export const getDepositTexts = (currency, status = false) => {
+export const getDepositTexts = (currency, coins = {}, status = false) => {
 	let texts = {};
 	let currencySymbol = currency.trim();
-	texts = generateCryptoDepositTexts(STRINGS, status, currencySymbol.toUpperCase());
+	texts = generateCryptoDepositTexts(STRINGS, status, currencySymbol.toUpperCase(), coins);
 	return {
 		title: texts.TITLE,
 		subtitle: texts.SUBTITLE,

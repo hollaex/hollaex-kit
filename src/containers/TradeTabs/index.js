@@ -86,12 +86,13 @@ class AddTradeTab extends Component {
     };
 
     getSearchPairs = value => {
-        const { pairs } = this.props;
+        const { pairs, coins } = this.props;
         let result = {};
         let searchValue = value.toLowerCase().trim();
         Object.keys(pairs).map(key => {
             let temp = pairs[key];
-            let cashName = STRINGS[`${temp.pair_base.toUpperCase()}_FULLNAME`].toLowerCase();
+            const { fullname } = coins[temp.pair_base] || {};
+            let cashName = fullname ? fullname.toLowerCase() : '';
             if (key.indexOf(searchValue) !== -1 ||
                 temp.pair_base.indexOf(searchValue) !== -1 ||
                 temp.pair_2.indexOf(searchValue) !== -1 ||
@@ -151,7 +152,8 @@ class AddTradeTab extends Component {
                     <div className="d-flex flex-wrap p-3 my-5">
                         {data.map((key, index) => {
                             let pair = pairs[key];
-                            let { min } = coins[pair.pair_base || BASE_CURRENCY] || {};
+                            let { min, fullname, symbol = '' } = coins[pair.pair_base || BASE_CURRENCY] || {};
+                            const pairTwo = coins[pair.pair_2] || {};
                             let ticker = tickers[key] || {};
                             const priceDifference = (ticker.close || 0) - (ticker.open || 0);
                             const tickerPercent = priceDifference === 0 ? 0 : ((priceDifference / ticker.open) * 100);
@@ -166,10 +168,10 @@ class AddTradeTab extends Component {
                                     </div>
                                     <div className="tabs-pair-details">
                                         <div className="trade_tab-pair-title">
-                                            {STRINGS[`${pair.pair_base.toUpperCase()}_SHORTNAME`]}/{STRINGS[`${pair.pair_2.toUpperCase()}_SHORTNAME`]}
+                                            {symbol.toUpperCase()}/{pairTwo.symbol ? pairTwo.symbol.toUpperCase() : ''}
                                         </div>
                                         <div>
-                                            {STRINGS[`${pair.pair_base.toUpperCase()}_FULLNAME`]}/{STRINGS[`${pair.pair_2.toUpperCase()}_FULLNAME`]}
+                                            {fullname}/{pairTwo.fullname}
                                         </div>
                                         <div>{STRINGS.PRICE}:
                                             <span className="title-font ml-1">

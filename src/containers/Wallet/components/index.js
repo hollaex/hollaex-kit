@@ -48,8 +48,8 @@ export const renderBankInformation = (
 	);
 };
 
-export const renderTitle = (symbol, type = 'withdraw') => {
-	const { withdrawText, depositText } = generateWalletActionsText(symbol, true);
+export const renderTitle = (symbol, type = 'withdraw', coins) => {
+	const { withdrawText, depositText } = generateWalletActionsText(symbol, coins, true);
 	return (
 		<div className="title text-capitalize">
 			{type === 'withdraw' ? withdrawText : depositText}
@@ -57,18 +57,17 @@ export const renderTitle = (symbol, type = 'withdraw') => {
 	);
 };
 
-export const renderAvailableBalanceText = (symbol, balance, coins) => {
-	const { min } = coins[symbol] || {};
-	const shortName = STRINGS[`${symbol.toUpperCase()}_SHORTNAME`];
-	const fullName = STRINGS[`${symbol.toUpperCase()}_FULLNAME`];
-	const available = formatToCurrency(balance[`${symbol}_available`], min);
+export const renderAvailableBalanceText = (currency, balance, coins) => {
+	const { fullname, min, symbol = '' } = coins[currency] || {};
+	const shortName = symbol ? symbol.toUpperCase() : '';
+	const available = formatToCurrency(balance[`${currency}_available`], min);
 
 	return (
 		<div className="text">
 			<p>
 				{STRINGS.formatString(
 					STRINGS.AVAILABLE_BALANCE_TEXT,
-					fullName,
+					fullname,
 					available,
 					shortName
 				)}
@@ -99,7 +98,7 @@ export const renderInformation = (
 	return (
 		<div className="information_block">
 			<div className="information_block-text_wrapper">
-				{renderTitle(symbol, type)}
+				{renderTitle(symbol, type, coins)}
 				{renderAvailableBalanceText(symbol, balance, coins)}
 			</div>
 			{openContactForm && renderNeedHelpAction(openContactForm)}
@@ -107,8 +106,8 @@ export const renderInformation = (
 	);
 };
 
-export const renderTitleSection = (symbol, type, icon) => {
-	const { withdrawText, depositText } = generateWalletActionsText(symbol);
+export const renderTitleSection = (symbol, type, icon, coins) => {
+	const { withdrawText, depositText } = generateWalletActionsText(symbol, coins);
 	const text = type === 'withdraw' ? withdrawText : depositText;
 
 	return <IconTitle text={text} iconPath={icon} textType="title" useSvg={true} />;

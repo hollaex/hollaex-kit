@@ -472,6 +472,7 @@ class Container extends Component {
 				}
 				case 'deposit': {
 					const show = data.status || data.currency !== BASE_CURRENCY;
+					data.coins = this.props.coins;
 					this.props.setNotification(NOTIFICATIONS.DEPOSIT, data, show);
 					break;
 				}
@@ -575,7 +576,8 @@ class Container extends Component {
 						type={type}
 						data={{
 							...data,
-							price: prices[data.currency]
+							price: prices[data.currency],
+							coins: this.props.coins
 						}}
 						onClose={this.onCloseDialog}
 						goToPage={this.goToPage}
@@ -859,6 +861,7 @@ class Container extends Component {
 
 const mapStateToProps = (store) => ({
 	pair: store.app.pair,
+	coins: store.app.coins,
 	symbol: store.orderbook.symbol,
 	prices: store.orderbook.prices,
 	fetchingAuth: store.auth.fetching,

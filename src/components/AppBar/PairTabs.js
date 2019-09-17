@@ -255,13 +255,14 @@ class PairTabs extends Component {
     };
     
     handleSearch = (_, value) => {
-        const { pairs } = this.props;
+        const { pairs, coins } = this.props;
         if (value) {
             let result = {};
             let searchValue = value.toLowerCase().trim();
             Object.keys(pairs).map(key => {
                 let temp = pairs[key];
-                let cashName = STRINGS[`${temp.pair_base.toUpperCase()}_FULLNAME`].toLowerCase();
+                const { fullname } = coins[temp.pair_base.toLowerCase()] || {};
+                let cashName = fullname ? fullname.toLowerCase() : '';
                 if (key.indexOf(searchValue) !== -1 ||
                     temp.pair_base.indexOf(searchValue) !== -1 ||
                     temp.pair_2.indexOf(searchValue) !== -1 ||

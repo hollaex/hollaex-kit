@@ -139,6 +139,7 @@ class Summary extends Component {
     render() {
         const { user, balance, activeTheme, pairs, coins, logout } = this.props;
         const { selectedAccount, currentTradingAccount, chartData, totalAssets, lastMonthVolume } = this.state;
+        const { fullname } = coins[BASE_CURRENCY] || {};
         return (
             <div className="summary-container">
                 {!isMobile && <IconTitle
@@ -190,7 +191,7 @@ class Summary extends Component {
                             <div className="assets-wrapper">
                                 <SummaryBlock
                                     title={STRINGS.SUMMARY.ACCOUNT_ASSETS}
-                                    secondaryTitle={<span><span className="title-font">{totalAssets}</span>{` ${STRINGS[`${BASE_CURRENCY.toUpperCase()}_FULLNAME`]}`}</span>} >
+                                    secondaryTitle={<span><span className="title-font">{totalAssets}</span>{` ${fullname}`}</span>} >
                                     <AccountAssets
                                         user={user}
                                         chartData={chartData}
@@ -206,7 +207,7 @@ class Summary extends Component {
                                         <span className="title-font">
                                             {` ${formatAverage(formatBaseAmount(lastMonthVolume))}`}
                                         </span>
-                                        {` ${STRINGS[`${BASE_CURRENCY.toUpperCase()}_FULLNAME`]} ${STRINGS.formatString(STRINGS.SUMMARY.NOMINAL_TRADING_WITH_MONTH, moment().subtract(1, "month").startOf("month").format('MMMM')).join('')}`}
+                                        {` ${fullname} ${STRINGS.formatString(STRINGS.SUMMARY.NOMINAL_TRADING_WITH_MONTH, moment().subtract(1, "month").startOf("month").format('MMMM')).join('')}`}
                                     </span>
                                     }
                                 >

@@ -50,7 +50,78 @@ const INITIAL_STATE = {
 	pair: '',
 	tickers: {},
 	orderLimits: {},
-	coins: {}
+	coins: {
+		"bch": {
+			"id": 4,
+			"fullname": "Bitcoin Cash",
+			"symbol": "bch",
+			"active": true,
+			"allow_deposit": true,
+			"allow_withdrawal": true,
+			"withdrawal_fee": 0.0001,
+			"min": 0.0001,
+			"max": 100000,
+			"increment_unit": 0.001,
+			"deposit_limits": {},
+			"withdrawal_limits": {}
+		},
+		"xrp": {
+			"id": 5,
+			"fullname": "Ripple",
+			"symbol": "xrp",
+			"active": true,
+			"allow_deposit": true,
+			"allow_withdrawal": true,
+			"withdrawal_fee": 0.0001,
+			"min": 0.0001,
+			"max": 100000,
+			"increment_unit": 0.001,
+			"deposit_limits": {},
+			"withdrawal_limits": {}
+		},
+		"eur": {
+			"id": 1,
+			"fullname": "Euro",
+			"symbol": "eur",
+			"active": true,
+			"allow_deposit": true,
+			"allow_withdrawal": true,
+			"withdrawal_fee": 0.0001,
+			"min": 0.0001,
+			"max": 100000,
+			"increment_unit": 0.0001,
+			"deposit_limits": {},
+			"withdrawal_limits": {}
+		},
+		"btc": {
+			"id": 2,
+			"fullname": "Bitcoin",
+			"symbol": "btc",
+			"active": true,
+			"allow_deposit": true,
+			"allow_withdrawal": true,
+			"withdrawal_fee": 0.0001,
+			"min": 0.0001,
+			"max": 100000,
+			"increment_unit": 0.0001,
+			"deposit_limits": {},
+			"withdrawal_limits": {}
+		},
+		"eth": {
+			"id": 3,
+			"fullname": "Ethereum",
+			"symbol": "eth",
+			"active": true,
+			"allow_deposit": true,
+			"allow_withdrawal": true,
+			"withdrawal_fee": 0.0001,
+			"min": 0.0001,
+			"max": 100000,
+			"increment_unit": 0.001,
+			"deposit_limits": {},
+			"withdrawal_limits": {}
+		}
+	}
 };
 
 const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
@@ -110,7 +181,7 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 		}
 
 		case SET_SNACK_NOTIFICATION:
-			
+
 			return {
 				...state,
 				snackNotification: {
@@ -122,7 +193,7 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 					content: payload.content ? payload.content : ''
 				}
 			};
-		
+
 		case CLOSE_SNACK_NOTIFICATION:
 			return {
 				...state,
@@ -133,7 +204,7 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 			const { isDialog, ...rest } = payload;
 			let dialogData = [...state.snackNotification.dialogData];
 			if (isDialog) {
-				dialogData = [...dialogData, { ...rest, id: `snack-dialog-${dialogData.length + 1}`}];
+				dialogData = [...dialogData, { ...rest, id: `snack-dialog-${dialogData.length + 1}` }];
 			}
 			return {
 				...state,

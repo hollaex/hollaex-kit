@@ -64,6 +64,7 @@ class CurrencySlider extends Component {
 		const baseBalance =
 			currentCurrency !== BASE_CURRENCY
 				&& calculatePrice(balanceValue, prices[currentCurrency]);
+		const { fullname } = coins[currentCurrency] || {};
 
 		return (
 			<div className="d-flex flex-column justify-content-end currency-list-container f-1">
@@ -86,20 +87,20 @@ class CurrencySlider extends Component {
 				</div>
 
 				<div className="mb-4 button-container">
-					{wallets[STRINGS[`${currentCurrency.toUpperCase()}_FULLNAME`].toLowerCase()] && (
+					{wallets[currentCurrency.toLowerCase()] && (
 						<div className="d-flex justify-content-between flew-row ">
 							<Button
 								className="mr-4"
 								label={STRINGS.formatString(
 									STRINGS.RECEIVE_CURRENCY,
-									STRINGS[`${currentCurrency.toUpperCase()}_FULLNAME`]
+									fullname
 								).join('')}
 								onClick={() => navigate(`wallet/${currentCurrency}/deposit`)}
 							/>
 							<Button
 								label={STRINGS.formatString(
 									STRINGS.SEND_CURRENCY,
-									STRINGS[`${currentCurrency.toUpperCase()}_FULLNAME`]
+									fullname
 								).join('')}
 								onClick={() => navigate(`wallet/${currentCurrency}/withdraw`)}
 							/>

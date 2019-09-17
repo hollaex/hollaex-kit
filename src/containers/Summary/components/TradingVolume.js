@@ -35,12 +35,12 @@ class TradingVolume extends Component {
         let peakVolume = this.state.peakVolume;
         const { min } = coins[BASE_CURRENCY] || {};
         const currentMonth = moment().month();
-        let chartMonths = [ ...CHART_MONTHS ];
+        let chartMonths = [...CHART_MONTHS];
         for (let i = 0; i <= currentMonth; i++) {
             let temp = chartMonths.shift();
-            chartMonths = [ ...chartMonths, temp ];
+            chartMonths = [...chartMonths, temp];
         }
-        
+
         if (Object.keys(tradeValues).length) {
             chartMonths.map((obj, key) => {
                 let trade = tradeValues[obj.key];
@@ -104,14 +104,16 @@ class TradingVolume extends Component {
 
     render() {
         const { chartData, limits, limitContent, peakVolume } = this.state;
-        const { tradeVolumes } = this.props;
+        const { tradeVolumes, coins } = this.props;
+        const { fullname } = coins[BASE_CURRENCY] || {};
         return (
             <div className="summary-section_2">
                 <div className="w-100 h-100">
                     <div className="summary-content-txt">
-                        <div>{STRINGS.formatString(
-                            STRINGS.SUMMARY.TRADING_VOLUME_TXT_1,
-                            STRINGS[`${BASE_CURRENCY.toUpperCase()}_FULLNAME`]
+                        <div>
+                            {STRINGS.formatString(
+                                STRINGS.SUMMARY.TRADING_VOLUME_TXT_1,
+                                fullname
                             )}
                         </div>
                         <div>{STRINGS.SUMMARY.TRADING_VOLUME_TXT_2}</div>

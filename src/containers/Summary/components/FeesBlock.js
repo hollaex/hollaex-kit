@@ -4,16 +4,18 @@ import { CurrencyBall } from '../../../components';
 import STRINGS from '../../../config/localizedStrings';
 import { formatPercentage } from '../../../utils/currency';
 
-const getMakerRow = (pairs, pair, level, index) => {
+const getMakerRow = (pairs, coins, pair, level, index) => {
     const { pair_base, pair_2, maker_fees } = pairs[pair];
     const feeData = maker_fees ? maker_fees[level] : 0;
+    const pairBase = coins[pair_base] || { symbol: '' };
+    const pairTwo = coins[pair_2] || {};
     return (
         <tr key={index}>
             <td className="account-limits-coin" rowSpan={2}>
                 <div className='d-flex align-items-center'>
-                    <CurrencyBall name={STRINGS[`${pair_base.toUpperCase()}_SHORTNAME`]} symbol={pair_base} size='m' />
+                    <CurrencyBall name={pairBase.symbol.toUpperCase()} symbol={pair_base} size='m' />
                     <div className="ml-2">
-                        {`${STRINGS[`${pair_base.toUpperCase()}_FULLNAME`]} / ${STRINGS[`${pair_2.toUpperCase()}_FULLNAME`]}`}
+                        {`${pairBase.fullname} / ${pairTwo.fullname}`}
                     </div>
                 </div>
             </td>
@@ -34,17 +36,17 @@ const getTakerRow = (pairs, pair, level, index) => {
     );
 }
 
-const getRows = (pairs, level) => {
+const getRows = (pairs, coins, level) => {
     const rowData = [];
     Object.keys(pairs).map((pair, index) => {
-        rowData.push(getMakerRow(pairs, pair, level, index));
+        rowData.push(getMakerRow(pairs, coins, pair, level, index));
         rowData.push(getTakerRow(pairs, pair, level, index));
         return '';
     });
     return rowData;
 };
 
-const FeesBlock = ({ pairs, level }) => {
+const FeesBlock = ({ pairs, coins, level }) => {
     return (
         <div>
             <table className="account-limits">
@@ -56,7 +58,7 @@ const FeesBlock = ({ pairs, level }) => {
                     </tr>
                 </thead>
                 <tbody className="account-limits-content font-weight-bold">
-                    {getRows(pairs, level)}
+                    {getRows(pairs, coins, level)}
                 </tbody>
             </table>
         </div>

@@ -251,15 +251,16 @@ export const generateTradeHeaders = (symbol, pairs, coins) => {
 	];
 };
 
-export const generateWithdrawalsHeaders = (symbol, withdrawalPopup, coins = {}) => {
+export const generateWithdrawalsHeaders = (symbol, coins = {}, withdrawalPopup) => {
 	return [
 		{
 			label: '',
 			key: 'icon',
 			renderCell: ({ currency }, key, index) => {
+				const { symbol = '' } = coins[currency] || {};
 				return (
 					<td className={classnames('icon-cell')} key={index}>
-						<CurrencyBall name={STRINGS[`${currency.toUpperCase()}_SHORTNAME`]} symbol={currency} size="s" />
+						<CurrencyBall name={symbol.toUpperCase()} symbol={currency} size="s" />
 					</td>
 				);
 			}
@@ -267,11 +268,16 @@ export const generateWithdrawalsHeaders = (symbol, withdrawalPopup, coins = {}) 
 		{
 			label: STRINGS.CURRENCY,
 			key: 'currency',
-			exportToCsv: ({ currency }) =>
-				STRINGS[`${currency.toUpperCase()}_FULLNAME`],
-			renderCell: ({ currency }, key, index) => (
-				<td key={index}>{STRINGS[`${currency.toUpperCase()}_FULLNAME`]}</td>
-			)
+			exportToCsv: ({ currency }) => {
+				const { fullname } = coins[currency] || {};
+				return fullname;
+			},
+			renderCell: ({ currency }, key, index) => {
+				const { fullname } = coins[currency] || {};
+				return (
+					<td key={index}>{fullname}</td>
+				)
+			}
 		},
 		{
 			label: STRINGS.STATUS,
@@ -316,14 +322,14 @@ export const generateWithdrawalsHeaders = (symbol, withdrawalPopup, coins = {}) 
 				}
 				return (
 					STRINGS[`${currency.toUpperCase()}_PRICE_FORMAT`]
-					? <td key={index}>
-						{STRINGS.formatString(
-							STRINGS[`${currency.toUpperCase()}_PRICE_FORMAT`],
-							fee,
-							STRINGS[`${currency.toUpperCase()}_CURRENCY_SYMBOL`]
-						)}
-					</td>
-					: <td key={index}>{fee}</td>
+						? <td key={index}>
+							{STRINGS.formatString(
+								STRINGS[`${currency.toUpperCase()}_PRICE_FORMAT`],
+								fee,
+								STRINGS[`${currency.toUpperCase()}_CURRENCY_SYMBOL`]
+							)}
+						</td>
+						: <td key={index}>{fee}</td>
 				);
 			}
 		},
@@ -340,20 +346,20 @@ export const generateWithdrawalsHeaders = (symbol, withdrawalPopup, coins = {}) 
 			key: 'transaction_id',
 			exportToCsv: ({ transaction_id = '' }) => transaction_id,
 			renderCell: ({ transaction_id = '', currency, status, dismissed, id, amount, type }, key, index) => {
-				if(status===false && dismissed===false && type==='withdrawal') {
-					return isBlockchainTx(transaction_id) ? 
-					<td key={index}>
-						<div 
-							className='withdrawal-cancel'
-							onClick={() => withdrawalPopup(id, amount)}
-							key={id}
-						>
-							{STRINGS.CANCEL} 
-						</div>
-					</td>:''
-		       	} else {
+				if (status === false && dismissed === false && type === 'withdrawal') {
+					return isBlockchainTx(transaction_id) ?
+						<td key={index}>
+							<div
+								className='withdrawal-cancel'
+								onClick={() => withdrawalPopup(id, amount)}
+								key={id}
+							>
+								{STRINGS.CANCEL}
+							</div>
+						</td> : ''
+				} else {
 					return isBlockchainTx(transaction_id) && currency !== BASE_CURRENCY ?
-						<td key={index}><a target="blank" href={(currency === 'btc' ? BLOCKTRAIL_ENDPOINT : 
+						<td key={index}><a target="blank" href={(currency === 'btc' ? BLOCKTRAIL_ENDPOINT :
 							(currency === 'eth') ? ETHEREUM_ENDPOINT : BITCOINCOM_ENDPOINT) + transaction_id}>{STRINGS.VIEW}</a></td> : <td key={index}></td>;
 				}
 			}

@@ -9,7 +9,7 @@ import { BASE_CURRENCY } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 
 const DepositNotification = ({ data, onClose, goToPage, openContactForm }) => {
-	const depositTexts = getDepositTexts(data.currency, data.status);
+	const depositTexts = getDepositTexts(data.currency, data.coins, data.status);
 
 	const headerProps = {
 		text: depositTexts.title,

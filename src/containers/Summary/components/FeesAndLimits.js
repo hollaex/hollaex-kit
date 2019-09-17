@@ -41,6 +41,7 @@ const FeesAndLimits = ({ data, onClose, coins, pairs }) => {
                 <div>
                     <div className="content-title">{STRINGS.SUMMARY.TRADING_FEE_STRUCTURE}</div>
                     <FeesBlock
+                        coins={coins}
                         level={verification_level}
                         pairs={pairs} />
                 </div>

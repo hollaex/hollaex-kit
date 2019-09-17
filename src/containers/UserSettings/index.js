@@ -89,7 +89,7 @@ class UserSettings extends Component {
         this.setState({ totalAssets: totalAssets });
     };
 
-	updateTabs = ({ username = '', settings = {} }, activeTab) => {
+	updateTabs = ({ username = '', settings = {}, coins = {} }, activeTab) => {
 		const formValues = generateFormValues({});
 		const usernameFormValues = generateUsernameFormValues(
 			settings.chat.set_username
@@ -208,6 +208,7 @@ class UserSettings extends Component {
 					),
 				content: activeTab === 5 && (
 					<RiskForm
+						coins={coins}
 						onAdjustPortfolio={this.onAdjustPortfolio}
 						totalAssets={this.state.totalAssets}
 						onSubmit={(formProps) => this.onSubmitSettings(formProps, 'risk')}
@@ -330,6 +331,7 @@ class UserSettings extends Component {
 }
 
 const mapStateToProps = (state) => ({
+	coins: state.app.coins,
 	verification_level: state.user.verification_level,
 	settings: state.user.settings,
 	username: state.user.username,

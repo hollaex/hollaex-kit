@@ -29,6 +29,7 @@ const MobileSummary = ({
     onAccountTypeChange,
     onInviteFriends
 }) => {
+    const { fullname } = coins[BASE_CURRENCY] || {};
     return (
         <div
             className={classnames(
@@ -62,7 +63,7 @@ const MobileSummary = ({
             <div className="assets-wrapper w-100">
                 <SummaryBlock
                     title={STRINGS.SUMMARY.ACCOUNT_ASSETS}
-                    secondaryTitle={`${balance[`${BASE_CURRENCY.toLowerCase()}_balance`]} ${STRINGS[`${BASE_CURRENCY.toUpperCase()}_FULLNAME`]}`} >
+                    secondaryTitle={`${balance[`${BASE_CURRENCY.toLowerCase()}_balance`]} ${fullname}`} >
                     <AccountAssets
                         user={user}
                         chartData={chartData}
@@ -74,7 +75,7 @@ const MobileSummary = ({
             <div className="trading-volume-wrapper w-100">
                 <SummaryBlock
                     title={STRINGS.SUMMARY.TRADING_VOLUME}
-                    secondaryTitle={`${balance[`${BASE_CURRENCY.toLowerCase()}_balance`]} ${STRINGS[`${BASE_CURRENCY.toUpperCase()}_FULLNAME`]}`} >
+                    secondaryTitle={`${balance[`${BASE_CURRENCY.toLowerCase()}_balance`]} ${fullname}`} >
                     <TradingVolume user={user} />
                 </SummaryBlock>
             </div>

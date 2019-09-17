@@ -9,15 +9,14 @@ import {
 } from '../../components/Form/validations';
 import { isMobile } from 'react-device-detect';
 import STRINGS from '../../config/localizedStrings';
-import { WITHDRAW_LIMITS, ICONS, BASE_CURRENCY } from '../../config/constants';
+import { ICONS, BASE_CURRENCY } from '../../config/constants';
 
 export const generateInitialValues = (symbol, coins = {}) => {
-	// const { MIN } = WITHDRAW_LIMITS[symbol];
-	const { min, fee } = coins[symbol];
+	const { min, withdrawal_fee } = coins[symbol];
 	const initialValues = {};
 
 	if (coins[symbol]) {
-		initialValues.fee = fee;
+		initialValues.fee = withdrawal_fee;
 	} else {
 		initialValues.fee = 0;
 	}
@@ -27,6 +26,7 @@ export const generateInitialValues = (symbol, coins = {}) => {
 	}
 	return initialValues;
 };
+
 export const generateFormValues = (
 	symbol,
 	available = 0,
@@ -35,8 +35,7 @@ export const generateFormValues = (
 	verification_level
 ) => {
 	const name = STRINGS[`${symbol.toUpperCase()}_NAME`];
-	// const { MIN, MAX, STEP = 1 } = WITHDRAW_LIMITS[symbol];
-	const { fullname, min, withdrawal_limits = {} } = coins[symbol];
+	const { fullname, min, increment_unit, withdrawal_limits = {} } = coins[symbol];
 	let MAX = withdrawal_limits[verification_level];
 	if (withdrawal_limits[verification_level] === 0) MAX = "";
 	if (withdrawal_limits[verification_level] === -1) MAX = 0;
@@ -81,7 +80,7 @@ export const generateFormValues = (
 		).join(''),
 		min: min,
 		max: MAX,
-		step: min,
+		step: increment_unit,
 		validate: amountValidate,
 		normalize: normalizeBTC,
 		fullWidth: isMobile,

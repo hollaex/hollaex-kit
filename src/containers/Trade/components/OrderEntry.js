@@ -260,6 +260,7 @@ class OrderEntry extends Component {
 
 			min_size,
 			max_size,
+			increment_size,
 			increment_price,
 			min_price,
 			max_price,
@@ -297,7 +298,7 @@ class OrderEntry extends Component {
 				type: 'number',
 				placeholder: '0.00',
 				normalize: normalizeFloat,
-				step: min_size,
+				step: increment_size,
 				min: min_size,
 				max: max_size,
 				validate: [
@@ -409,6 +410,7 @@ const mapStateToProps = (state) => {
 		max_size,
 		min_size,
 		min_price,
+		increment_size,
 		increment_price,
 		maker_fees = {},
 		taker_fees = {}
@@ -430,6 +432,7 @@ const mapStateToProps = (state) => {
 		max_price,
 		max_size,
 		min_size,
+		increment_size,
 		min_price,
 		increment_price,
 		orderLimits: state.app.orderLimits,

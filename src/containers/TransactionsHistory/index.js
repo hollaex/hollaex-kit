@@ -31,7 +31,7 @@ class TransactionsHistory extends Component {
 		activeTab: 0,
 		dialogIsOpen: false,
 		amount: 0,
-		transactionId:0,
+		transactionId: 0,
 		jumpToPage: 0
 	};
 
@@ -53,7 +53,7 @@ class TransactionsHistory extends Component {
 		if (nextProps.activeLanguage !== this.props.activeLanguage) {
 			this.generateHeaders(nextProps.symbol, nextProps.coins);
 		}
-		if((this.props.cancelData.dismissed !== nextProps.cancelData.dismissed) && nextProps.cancelData.dismissed===true) {
+		if ((this.props.cancelData.dismissed !== nextProps.cancelData.dismissed) && nextProps.cancelData.dismissed === true) {
 			this.onCloseDialog()
 			this.requestData(nextProps.symbol);
 
@@ -67,7 +67,7 @@ class TransactionsHistory extends Component {
 	};
 
 	openDialog = () => {
-		this.setState({ dialogIsOpen: true});
+		this.setState({ dialogIsOpen: true });
 	};
 
 	requestData = (symbol) => {
@@ -86,15 +86,15 @@ class TransactionsHistory extends Component {
 	};
 
 	generateHeaders(symbol, coins) {
-		const {withdrawalPopup}=this
+		const { withdrawalPopup } = this
 		const { pairs } = this.props;
 		this.setState({
 			headers: {
 				trades: isMobile
 					? generateTradeHeadersMobile(symbol, pairs, coins)
 					: generateTradeHeaders(symbol, pairs, coins),
-				deposits: generateDepositsHeaders(symbol, coins),
-				withdrawals: generateWithdrawalsHeaders(symbol, withdrawalPopup, coins)
+				deposits: generateDepositsHeaders(symbol, coins, withdrawalPopup),
+				withdrawals: generateWithdrawalsHeaders(symbol, coins, withdrawalPopup)
 			}
 		});
 	}
@@ -102,8 +102,8 @@ class TransactionsHistory extends Component {
 	setActiveTab = (activeTab = 0) => {
 		const { symbol, trades, withdrawals, deposits } = this.props;
 		const { jumpToPage } = this.state
-		if(jumpToPage !== 0 ) {
-			this.setState ({
+		if (jumpToPage !== 0) {
+			this.setState({
 				jumpToPage: 0,
 			})
 		}
@@ -111,19 +111,19 @@ class TransactionsHistory extends Component {
 			if ((trades.page === 1 && trades.fetched === false)
 				|| (withdrawals.page === 1 && withdrawals.fetched === false)
 				|| (deposits.page === 1 && deposits.fetched === false)) {
-					this.requestData(symbol);
-				}
+				this.requestData(symbol);
+			}
 		});
 	};
 	withdrawalPopup = (id, amount) => {
-		if(id) {
-			this.setState({ amount:amount, transactionId:id });
+		if (id) {
+			this.setState({ amount: amount, transactionId: id });
 			this.openDialog()
 		}
 	};
 
 	withdrawalCancel = () => {
-		const {transactionId} =this.state
+		const { transactionId } = this.state
 		this.props.withdrawalCancel(transactionId);
 	}
 	onClose = () => {
@@ -139,22 +139,22 @@ class TransactionsHistory extends Component {
 				if (RECORD_LIMIT === (pageCount * pageTemp)
 					&& apiPageTemp >= trades.page
 					&& trades.isRemaining) {
-						this.props.getUserTrades(symbol, RECORD_LIMIT, trades.page + 1);
-						this.setState({ jumpToPage: pageNumber });
+					this.props.getUserTrades(symbol, RECORD_LIMIT, trades.page + 1);
+					this.setState({ jumpToPage: pageNumber });
 				}
 				break;
 			case 1:
 				if (RECORD_LIMIT === (pageCount * pageTemp)
-						&& apiPageTemp >= deposits.page
-						&& deposits.isRemaining) {
+					&& apiPageTemp >= deposits.page
+					&& deposits.isRemaining) {
 					this.props.getUserDeposits(symbol, RECORD_LIMIT, deposits.page + 1);
 					this.setState({ jumpToPage: pageNumber });
 				}
 				break;
 			case 2:
 				if (RECORD_LIMIT === (pageCount * pageTemp)
-						&& apiPageTemp >= withdrawals.page
-						&& withdrawals.isRemaining) {
+					&& apiPageTemp >= withdrawals.page
+					&& withdrawals.isRemaining) {
 					this.props.getUserWithdrawals(symbol, RECORD_LIMIT, withdrawals.page + 1);
 					this.setState({ jumpToPage: pageNumber });
 				}
@@ -207,10 +207,11 @@ class TransactionsHistory extends Component {
 	};
 
 	render() {
-		const { id, activeTheme } = this.props;
+		const { id, activeTheme, coins } = this.props;
 		const { activeTab, dialogIsOpen, amount } = this.state;
-		const {onCloseDialog} =this;
+		const { onCloseDialog } = this;
 		// const shortName = STRINGS[`${this.props.symbol.toUpperCase()}_SHORTNAME`];
+		const { fullname } = coins[BASE_CURRENCY] || {};
 
 		if (!id) {
 			return <Loader />;
@@ -239,31 +240,31 @@ class TransactionsHistory extends Component {
 							title: isMobile ? (
 								STRINGS.TRANSACTION_HISTORY.TRADES
 							) : (
-								<CheckTitle
-									title={STRINGS.TRANSACTION_HISTORY.TRADES}
-									icon={ICONS.TRADE_HISTORY}
-								/>
-							)
+									<CheckTitle
+										title={STRINGS.TRANSACTION_HISTORY.TRADES}
+										icon={ICONS.TRADE_HISTORY}
+									/>
+								)
 						},
 						{
 							title: isMobile ? (
 								STRINGS.TRANSACTION_HISTORY.DEPOSITS
 							) : (
-								<CheckTitle
-									title={STRINGS.TRANSACTION_HISTORY.DEPOSITS}
-									icon={ICONS.DEPOSIT_HISTORY}
-								/>
-							)
+									<CheckTitle
+										title={STRINGS.TRANSACTION_HISTORY.DEPOSITS}
+										icon={ICONS.DEPOSIT_HISTORY}
+									/>
+								)
 						},
 						{
 							title: isMobile ? (
 								STRINGS.TRANSACTION_HISTORY.WITHDRAWALS
 							) : (
-								<CheckTitle
-									title={STRINGS.TRANSACTION_HISTORY.WITHDRAWALS}
-									icon={ICONS.WITHDRAW_HISTORY}
-								/>
-							)
+									<CheckTitle
+										title={STRINGS.TRANSACTION_HISTORY.WITHDRAWALS}
+										icon={ICONS.WITHDRAW_HISTORY}
+									/>
+								)
 						}
 					]}
 					activeTab={activeTab}
@@ -279,10 +280,10 @@ class TransactionsHistory extends Component {
 				>
 					<div>
 						<IconTitle
-							iconPath={activeTheme ==='dark' ? ICONS.CANCEL_WITHDRAW_DARK: ICONS.CANCEL_WITHDRAW_LIGHT }
+							iconPath={activeTheme === 'dark' ? ICONS.CANCEL_WITHDRAW_DARK : ICONS.CANCEL_WITHDRAW_LIGHT}
 							text={STRINGS.formatString(
 								STRINGS.CANCEL_BASE_WITHDRAWAL,
-								STRINGS[`${BASE_CURRENCY.toUpperCase()}_FULLNAME`]
+								fullname
 							)}
 							textType="title"
 							underline={true}
@@ -290,15 +291,15 @@ class TransactionsHistory extends Component {
 						/>
 						<div>
 							<div className='text-center mt-5 mb-5'>
-								<div>{STRINGS.CANCEL_WITHDRAWAL_POPUP_CONFIRM}</div> 
+								<div>{STRINGS.CANCEL_WITHDRAWAL_POPUP_CONFIRM}</div>
 								<div className={classnames(...GROUP_CLASSES)}>
-									<CurrencyBallWithPrice  symbol={BASE_CURRENCY} amount={amount} price={1} />
+									<CurrencyBallWithPrice symbol={BASE_CURRENCY} amount={amount} price={1} />
 								</div>
 							</div>
 							<div className='w-100 buttons-wrapper d-flex' >
-								<Button label={STRINGS.BACK_TEXT} onClick={this.onClose}/>
+								<Button label={STRINGS.BACK_TEXT} onClick={this.onClose} />
 								<div className='separator' />
-								<Button label={STRINGS.CANCEL_WITHDRAWAL} onClick={this.withdrawalCancel}/>
+								<Button label={STRINGS.CANCEL_WITHDRAWAL} onClick={this.withdrawalCancel} />
 							</div>
 						</div>
 					</div>

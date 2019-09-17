@@ -106,7 +106,7 @@ class Deposit extends Component {
 				</MobileBarBack> }
 				<div className="presentation_container  apply_rtl">
 					{!isMobile &&
-						renderTitleSection(currency, 'deposit', ICONS.DEPOSIT_BITCOIN)}
+						renderTitleSection(currency, 'deposit', ICONS.DEPOSIT_BITCOIN, coins)}
 					<div
 						className={classnames(
 							'inner_container',

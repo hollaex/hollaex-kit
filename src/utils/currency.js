@@ -131,11 +131,11 @@ export const calculatePricePercentage = (value = 0, total) => {
 	return math.number(math.multiply(math.divide(math.fraction(value), math.fraction(priceTotal)), 100));
 };
 
-export const generateWalletActionsText = (symbol, useFullName = false) => {
-	const name = STRINGS[`${symbol.toUpperCase()}_NAME`];
-	const fullName = STRINGS[`${symbol.toUpperCase()}_FULLNAME`];
+export const generateWalletActionsText = (symbol, coins, useFullName = false) => {
+	const { fullname } = coins[symbol] || {};
+	const name = fullname;
 
-	const nameToDisplay = useFullName ? fullName : name;
+	const nameToDisplay = useFullName ? fullname : name;
 
 	const depositText = `${
 		symbol === BASE_CURRENCY
