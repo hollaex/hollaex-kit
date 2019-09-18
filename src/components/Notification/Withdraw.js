@@ -21,9 +21,7 @@ const getTransactionEndpoint = (currency, transaction_id) => {
 };
 const WithdrawNotification = ({ data, onClose }) => {
 	const notificationProps = {
-		icon:
-			ICONS[`COIN_WITHDRAW_BTC`] ||
-			ICONS.COIN_WITHDRAW_BASE,
+		icon: ICONS[`COIN_WITHDRAW_BTC`] || ICONS.COIN_WITHDRAW_BASE,
 		title: STRINGS.SUCCESS_TEXT
 	};
 
@@ -43,6 +41,7 @@ const WithdrawNotification = ({ data, onClose }) => {
 									data.transaction_id
 								)}
 								target="_blank"
+								rel="noopener noreferrer"
 								className="notification-link"
 							>
 								{data.transaction_id}

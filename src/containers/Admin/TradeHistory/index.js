@@ -82,11 +82,13 @@ class TradeHistory extends Component {
 	pageChange = (count, pageSize) => {
 		const { page, limit, isRemaining } = this.state;
 		const pageCount = count % 5 === 0 ? 5 : count % 5;
-		const apiPageTemp = Math.floor(((count) / 5));
-		if (this.props.userId
-			&& limit === (pageSize * pageCount)
-			&& apiPageTemp >= page
-			&& isRemaining) {
+		const apiPageTemp = Math.floor(count / 5);
+		if (
+			this.props.userId &&
+			limit === pageSize * pageCount &&
+			apiPageTemp >= page &&
+			isRemaining
+		) {
 			this.setState({ loading: true });
 			this.handleTrades(this.props.userId, page + 1, limit);
 		}
@@ -116,8 +118,14 @@ class TradeHistory extends Component {
 						</CSVLink>
 						<Table
 							columns={COLUMNS}
+							rowKey={(data) => {
+								return data.id;
+							}}
 							dataSource={tradeHistory ? tradeHistory : 'NO Data'}
-							pagination={{ current: currentTablePage, onChange: this.pageChange }}
+							pagination={{
+								current: currentTablePage,
+								onChange: this.pageChange
+							}}
 						/>
 					</Col>
 				</Row>

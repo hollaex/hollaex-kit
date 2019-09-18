@@ -22,11 +22,11 @@ const COLUMNS = [
 	{ title: 'See Data', dataIndex: 'id', key: 'data', render: renderLink }
 ];
 
-const TRADE_COLUMNS = [
-	{ title: 'Type', dataIndex: 'side', key: 'side' },
-	{ title: 'Symbol', dataIndex: 'symbol', key: 'symbol' }
-	// { title: 'ID', dataIndex: 'id', key: 'id' },
-];
+// const TRADE_COLUMNS = [
+// 	{ title: 'Type', dataIndex: 'side', key: 'side' },
+// 	{ title: 'Symbol', dataIndex: 'symbol', key: 'symbol' }
+// 	// { title: 'ID', dataIndex: 'id', key: 'id' },
+// ];
 
 const refreshPage = (e) => {
 	e.preventDefault();
@@ -58,7 +58,6 @@ class UserListTrades extends Component {
 				loading: false,
 				fetched: true
 			});
-			console.log(this.state.users);
 		});
 	};
 
@@ -92,17 +91,19 @@ class UserListTrades extends Component {
 				{loading ? (
 					<Spin size="large" />
 				) : (
-						<div>
-							{error && <p>-{error}-</p>}
-							<Table
-								columns={COLUMNS}
-								dataSource={users}
-								expandedRowRender={this.renderRowContent}
-								expandRowByClick={true}
-								key={users.id}
-							/>
-						</div>
-					)}
+					<div>
+						{error && <p>-{error}-</p>}
+						<Table
+							columns={COLUMNS}
+							dataSource={users}
+							expandedRowRender={this.renderRowContent}
+							expandRowByClick={true}
+							rowKey={(data) => {
+								return data.id;
+							}}
+						/>
+					</div>
+				)}
 			</div>
 		);
 	}

@@ -14,7 +14,6 @@ import InviteFriends from './InviteFriends';
 import { GenerateApiKey, CreatedApiKey } from './GenerateApiKey';
 
 const generateNotificationContent = ({ type, data, ...rest }) => {
-	// console.log(type, data);
 	switch (type) {
 		case NOTIFICATIONS.DEPOSIT:
 			return <Deposit data={data} {...rest} />;

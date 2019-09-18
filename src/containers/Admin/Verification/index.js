@@ -52,7 +52,6 @@ class Verification extends Component {
 			user_id: this.props.user_id,
 			verification_level: parseInt(values.verification_level, 10)
 		};
-		console.log(postValues);
 		return performVerificationLevelUpdate(postValues)
 			.then(() => {
 				refreshData(postValues);
@@ -63,7 +62,7 @@ class Verification extends Component {
 	};
 
 	onVerify = (refreshData) => (values) => {
-		const { id_data, bank_account } = this.props.userInformation;
+		const { id_data } = this.props.userInformation;
 		const postData = {
 			id_data: {
 				...id_data,
@@ -102,7 +101,7 @@ class Verification extends Component {
 
 	render() {
 		const { userImages, userInformation, refreshData } = this.props;
-		const { id, id_data, bank_account } = userInformation;
+		const { id, id_data } = userInformation;
 		const VERIFICATION_LEVELS =
 			isSupport() || isSupervisor()
 				? VERIFICATION_LEVELS_SUPPORT
@@ -144,24 +143,25 @@ class Verification extends Component {
 											buttonText={'Verify'}
 										/>
 									)}
-									{(!isSupport() || !isSupervisor()) && id_data.status === 1 && (
-										<div>
-											<IDRevokeForm
-												onSubmit={() =>
-													this.onRevoke(refreshData)({
-														user_id: id,
-														message: this.state.note
-													})
-												}
-												buttonText={'Revoke'}
-											/>
-											<Input.TextArea
-												rows={4}
-												value={this.state.note}
-												onChange={this.handleNoteChange}
-											/>
-										</div>
-									)}
+									{(!isSupport() || !isSupervisor()) &&
+										id_data.status === 1 && (
+											<div>
+												<IDRevokeForm
+													onSubmit={() =>
+														this.onRevoke(refreshData)({
+															user_id: id,
+															message: this.state.note
+														})
+													}
+													buttonText={'Revoke'}
+												/>
+												<Input.TextArea
+													rows={4}
+													value={this.state.note}
+													onChange={this.handleNoteChange}
+												/>
+											</div>
+										)}
 								</div>
 							}
 							style={{ width: 300 }}

@@ -12,24 +12,37 @@ import {
 import STRINGS from '../../config/localizedStrings';
 
 const HistoryDisplay = (props) => {
-	const { title, headers, data: { data, count, loading }, filename, withIcon, handleNext, jumpToPage } = props;
+	const {
+		title,
+		headers,
+		data: { data, count, loading },
+		filename,
+		withIcon,
+		handleNext,
+		jumpToPage
+	} = props;
 
 	return (
 		<div className="history_block-wrapper">
-			{!isMobile && <div className="title text-capitalize">
-				{title}
-				{count > 0 && (
-					<CsvDownload data={data} headers={headers} filename={filename}>
-						<ActionNotification
-							text={STRINGS.TRANSACTION_HISTORY.TEXT_DOWNLOAD}
-							iconPath={ICONS.DATA}
-							useSvg={true}
-							className="csv-action"
-						/>
-					</CsvDownload>
-				)}
-			</div>
-			}
+			{!isMobile && (
+				<div className="title text-capitalize">
+					{title}
+					{count > 0 && (
+						<CsvDownload
+							data={data}
+							headers={headers}
+							filename={filename}
+						>
+							<ActionNotification
+								text={STRINGS.TRANSACTION_HISTORY.TEXT_DOWNLOAD}
+								iconPath={ICONS.DATA}
+								useSvg={true}
+								className="csv-action"
+							/>
+						</CsvDownload>
+					)}
+				</div>
+			)}
 			{loading ? (
 				<Loader />
 			) : (
@@ -39,6 +52,9 @@ const HistoryDisplay = (props) => {
 					headers={headers}
 					withIcon={withIcon}
 					pageSize={TABLE_PAGE_SIZE}
+					rowKey={(data) => {
+						return data.id;
+					}}
 					title={title}
 					handleNext={handleNext}
 					jumpToPage={jumpToPage}

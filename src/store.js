@@ -1,5 +1,5 @@
 import { compose, applyMiddleware, createStore } from 'redux';
-import logger from 'redux-logger';
+// import logger from 'redux-logger';
 import thunk from 'redux-thunk';
 import promise from 'redux-promise-middleware';
 import { autoRehydrate } from 'redux-persist';
@@ -14,8 +14,7 @@ if (ENV === 'development') {
 
 const middleware = applyMiddleware(...middlewares);
 
-const composeEnhancers =
-	window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 export default createStore(
 	reducer,

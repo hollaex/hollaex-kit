@@ -13,7 +13,6 @@ const onSubmit = (refreshData) => (values) => {
 
 	return deactivateOtp(postValues)
 		.then((res) => {
-			console.log(res);
 			refreshData({ otp_enabled: false });
 		})
 		.catch((err) => {
@@ -25,10 +24,10 @@ const OTP = ({ user_id, otp_enabled, refreshData }) =>
 	!otp_enabled ? (
 		<div>OTP is disabled</div>
 	) : (
-			<Form
-				onSubmit={() => onSubmit(refreshData)({ user_id })}
-				buttonText="Deactivate"
-			/>
-		);
+		<Form
+			onSubmit={() => onSubmit(refreshData)({ user_id })}
+			buttonText="Deactivate"
+		/>
+	);
 
 export default OTP;

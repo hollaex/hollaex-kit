@@ -5,7 +5,6 @@ import { requestUserLogins } from './actions';
 
 import { SubmissionError } from 'redux-form';
 
-import { formatCurrency } from '../../../utils/index';
 import Moment from 'react-moment';
 
 const INITIAL_STATE = {
@@ -15,9 +14,6 @@ const INITIAL_STATE = {
 
 const formatDate = (value) => {
 	return <Moment format="YYYY/MM/DD HH:mm">{value}</Moment>;
-};
-const formatNum = (value) => {
-	return <div>{formatCurrency(value)}</div>;
 };
 
 const LOGIN_COLUMNS = [
@@ -92,6 +88,9 @@ class Logins extends Component {
 					<Table
 						columns={LOGIN_COLUMNS}
 						dataSource={logins ? logins : 'No Data'}
+						rowKey={(data) => {
+							return data.id;
+						}}
 					/>
 				</Col>
 			</Row>

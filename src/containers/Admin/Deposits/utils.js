@@ -2,7 +2,6 @@ import React from 'react';
 import { Icon, Button, Tooltip } from 'antd';
 import { Link } from 'react-router';
 import { formatCurrency, formatDate } from '../../../utils/index';
-import moment from 'moment';
 
 import { isSupport } from '../../../utils/token';
 
@@ -34,7 +33,10 @@ export const renderDismiss = ({
 	dismissingItem
 }) =>
 	!status ? (
-		<Tooltip placement="bottom" title={dismissed ? 'UNDO DISMISS' : 'DISMISS'}>
+		<Tooltip
+			placement="bottom"
+			title={dismissed ? 'UNDO DISMISS' : 'DISMISS'}
+		>
 			<Button
 				type={dismissed ? 'dashed' : 'primary'}
 				onClick={dismissDeposit}

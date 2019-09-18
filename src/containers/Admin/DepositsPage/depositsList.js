@@ -45,7 +45,6 @@ class DepositsList extends Component {
 
 		requestDeposits()
 			.then((data) => {
-				console.log(data);
 				this.setState({
 					users: data,
 					loading: false,
@@ -53,7 +52,6 @@ class DepositsList extends Component {
 				});
 			})
 			.catch((error) => {
-				console.log(error.data);
 				const message = error.message;
 				this.setState({
 					loading: false,
@@ -70,12 +68,18 @@ class DepositsList extends Component {
 				{loading ? (
 					<Spin size="large" />
 				) : (
-						<div>
-							{error && <p>-{error}-</p>}
-							<h3>Transactions</h3>
-							<Table columns={COLUMNS} dataSource={users} />
-						</div>
-					)}
+					<div>
+						{error && <p>-{error}-</p>}
+						<h3>Transactions</h3>
+						<Table
+							columns={COLUMNS}
+							dataSource={users}
+							rowKey={(data) => {
+								return data.id;
+							}}
+						/>
+					</div>
+				)}
 			</div>
 		);
 	}

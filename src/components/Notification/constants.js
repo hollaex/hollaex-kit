@@ -1,4 +1,4 @@
-import { BASE_CURRENCY } from '../../config/constants';
+// import { BASE_CURRENCY } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 
 // const generateBaseDepositTexts = (strings) => ({
@@ -20,14 +20,14 @@ const generateCryptoDepositTexts = (strings, status, currency, coins) => {
 	return {
 		TITLE: status
 			? strings.formatString(
-				strings.NOTIFICATIONS.DEPOSITS.TITLE_RECEIVED,
-				// name
-				fullname
-			)
+					strings.NOTIFICATIONS.DEPOSITS.TITLE_RECEIVED,
+					// name
+					fullname
+			  )
 			: strings.formatString(
-				strings.NOTIFICATIONS.DEPOSITS.TITLE_INCOMING,
-				fullname
-			),
+					strings.NOTIFICATIONS.DEPOSITS.TITLE_INCOMING,
+					fullname
+			  ),
 		SUBTITLE: strings.formatString(
 			status
 				? strings.NOTIFICATIONS.DEPOSITS.SUBTITLE_RECEIVED
@@ -57,10 +57,17 @@ const generateCryptoDepositTexts = (strings, status, currency, coins) => {
 export const getDepositTexts = (currency, coins = {}, status = false) => {
 	let texts = {};
 	let currencySymbol = currency.trim();
-	texts = generateCryptoDepositTexts(STRINGS, status, currencySymbol.toUpperCase(), coins);
+	texts = generateCryptoDepositTexts(
+		STRINGS,
+		status,
+		currencySymbol.toUpperCase(),
+		coins
+	);
 	return {
 		title: texts.TITLE,
 		subtitle: texts.SUBTITLE,
-		information: status ? texts.INFORMATION_COMPLETE : texts.INFORMATION_PENDING
+		information: status
+			? texts.INFORMATION_COMPLETE
+			: texts.INFORMATION_PENDING
 	};
 };

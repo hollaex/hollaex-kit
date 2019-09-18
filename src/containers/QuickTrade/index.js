@@ -21,11 +21,17 @@ import {
 	changeSymbol,
 	requestQuickTrade
 } from '../../actions/orderbookAction';
-import { formatBtcAmount, calculateBalancePrice, formatToCurrency } from '../../utils/currency';
+import {
+	formatBtcAmount,
+	calculateBalancePrice,
+	formatToCurrency
+} from '../../utils/currency';
 import { isLoggedIn } from '../../utils/token';
-import { changePair, setNotification, RISKY_ORDER } from '../../actions/appActions';
-
-// import { FLEX_CENTER_CLASSES } from '../../config/constants';
+import {
+	changePair,
+	setNotification,
+	RISKY_ORDER
+} from '../../actions/appActions';
 
 import QuoteResult from './QuoteResult';
 
@@ -68,9 +74,13 @@ class QuickTradeContainer extends Component {
 		if (nextProps.routeParams.pair !== this.props.routeParams.pair) {
 			this.changePair(nextProps.routeParams.pair);
 		}
-		if (JSON.stringify(this.props.prices) !== JSON.stringify(nextProps.prices)
-			|| JSON.stringify(this.props.balance) !== JSON.stringify(nextProps.balance)) {
-				this.calculateSections(nextProps);
+		if (
+			JSON.stringify(this.props.prices) !==
+				JSON.stringify(nextProps.prices) ||
+			JSON.stringify(this.props.balance) !==
+				JSON.stringify(nextProps.balance)
+		) {
+			this.calculateSections(nextProps);
 		}
 	}
 
@@ -102,10 +112,17 @@ class QuickTradeContainer extends Component {
 
 	onReviewQuickTrade = () => {
 		const { pair_base, pair_2 } = this.props.pairData;
-		const { settings: { risk = {}, notification = {} }, quoteData: { data = {} }, setNotification, pairData } = this.props;
+		const {
+			settings: { risk = {} },
+			quoteData: { data = {} },
+			setNotification,
+			pairData
+		} = this.props;
 
 		if (this.props.quoteData.error === BALANCE_ERROR) {
-			this.props.changeSymbol(this.state.side === 'sell' ? pair_base : pair_2);
+			this.props.changeSymbol(
+				this.state.side === 'sell' ? pair_base : pair_2
+			);
 			this.props.router.push('deposit');
 		} else {
 			const order = {
@@ -117,9 +134,11 @@ class QuickTradeContainer extends Component {
 				orderPrice: data.price,
 				orderFees: 0
 			};
-			const riskyPrice = ((this.state.totalAssets / 100) * risk.order_portfolio_percentage);
+			const riskyPrice =
+				(this.state.totalAssets / 100) * risk.order_portfolio_percentage;
 			if (risk.popup_warning && data.price > riskyPrice) {
-				order['order_portfolio_percentage'] = risk.order_portfolio_percentage
+				order['order_portfolio_percentage'] =
+					risk.order_portfolio_percentage;
 				setNotification(RISKY_ORDER, {
 					order,
 					onConfirm: () => {
@@ -153,7 +172,9 @@ class QuickTradeContainer extends Component {
 		} else {
 			quote = this.state.quote;
 		}
-		isLoggedIn() ? this.props.requestQuote(quote) : this.props.requestQuickTrade(quote);
+		isLoggedIn()
+			? this.props.requestQuote(quote)
+			: this.props.requestQuickTrade(quote);
 	};
 
 	onClearQuoteInterval = () => {
@@ -174,7 +195,9 @@ class QuickTradeContainer extends Component {
 	};
 
 	renderTimeout = () => (
-		<div className="quote-countdown-wrapper">{STRINGS.QUOTE_EXPIRED_TOKEN}</div>
+		<div className="quote-countdown-wrapper">
+			{STRINGS.QUOTE_EXPIRED_TOKEN}
+		</div>
 	);
 
 	onGoBack = () => {
@@ -182,7 +205,15 @@ class QuickTradeContainer extends Component {
 	};
 
 	render() {
-		const { quoteData, pairData, activeTheme, quickTrade, orderLimits, pairs, coins } = this.props;
+		const {
+			quoteData,
+			pairData,
+			activeTheme,
+			quickTrade,
+			orderLimits,
+			pairs,
+			coins
+		} = this.props;
 		const { showQuickTradeModal, side, pair } = this.state;
 
 		if (!pair || pair !== this.props.pair || !pairData) {
@@ -199,12 +230,9 @@ class QuickTradeContainer extends Component {
 				{isMobile && <MobileBarBack onBackClick={this.onGoBack} />}
 
 				<div
-					className={classnames(
-						'd-flex',
-						'f-1',
-						'quote-container',
-						{ 'flex-column': isMobile }
-					)}
+					className={classnames('d-flex', 'f-1', 'quote-container', {
+						'flex-column': isMobile
+					})}
 				>
 					<QuickTrade
 						onReviewQuickTrade={this.onReviewQuickTrade}
@@ -228,8 +256,8 @@ class QuickTradeContainer extends Component {
 						theme={activeTheme}
 						style={{ 'z-index': 100 }}
 					>
-						{showQuickTradeModal
-							? !order.fetching && !order.completed ? (
+						{showQuickTradeModal ? (
+							!order.fetching && !order.completed ? (
 								<Countdown
 									buttonLabel={STRINGS.QUOTE_BUTTON}
 									onClickButton={this.onExecuteTrade}
@@ -255,15 +283,17 @@ class QuickTradeContainer extends Component {
 										)}
 									</div>
 								</Countdown>
-								) : (
-									<QuoteResult
-										data={order}
-										name={name}
-										coins={coins}
-										onClose={this.onCloseDialog}
-									/>
-								)
-							: <div></div>}
+							) : (
+								<QuoteResult
+									data={order}
+									name={name}
+									coins={coins}
+									onClose={this.onCloseDialog}
+								/>
+							)
+						) : (
+							<div />
+						)}
 					</Dialog>
 				</div>
 			</div>
@@ -274,7 +304,7 @@ class QuickTradeContainer extends Component {
 const mapStateToProps = (store) => {
 	const pair = store.app.pair;
 	const pairData = store.app.pairs[pair];
-	const activeTheme= store.app.theme
+	const activeTheme = store.app.theme;
 	return {
 		pair,
 		pairData,
@@ -301,6 +331,7 @@ const mapDispatchToProps = (dispatch) => ({
 	setNotification: bindActionCreators(setNotification, dispatch)
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(
-	QuickTradeContainer
-);
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(QuickTradeContainer);

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Router, Route, browserHistory, Redirect } from 'react-router';
+import { Router, Route, browserHistory } from 'react-router';
 import ReactGA from 'react-ga';
 
 import {
@@ -144,7 +144,11 @@ export default (
 				name="Reset Password"
 				component={ResetPassword}
 			/>
-			<Route path="verify" name="Verify" component={VerificationEmailRequest} />
+			<Route
+				path="verify"
+				name="Verify"
+				component={VerificationEmailRequest}
+			/>
 			<Route
 				path="verify/:code"
 				name="verifyCode"
@@ -204,13 +208,22 @@ export default (
 				onEnter={requireAuth}
 			/>
 			<Route path="trade/:pair" name="Trade" component={Trade} />
-			<Route path="trade/add/tabs" name="Trade Tabs" component={AddTradeTabs} />
+			<Route
+				path="trade/add/tabs"
+				name="Trade Tabs"
+				component={AddTradeTabs}
+			/>
 			<Route
 				path="quick-trade/:pair"
 				name="Quick Trade"
 				component={QuickTrade}
 			/>
-			<Route path="chat" name="Chat" component={Chat} onEnter={requireAuth} />
+			<Route
+				path="chat"
+				name="Chat"
+				component={Chat}
+				onEnter={requireAuth}
+			/>
 			<Route
 				path="confirm-withdraw/:token"
 				name="ConfirmWithdraw"
@@ -220,7 +233,11 @@ export default (
 		<Route component={AdminContainer}>
 			<Route path="/admin" name="Admin Main" component={Main} />
 			<Route path="/admin/user" name="Admin User" component={User} />
-			<Route path="/admin/wallets" name="Admin Wallets" component={Wallets} />
+			<Route
+				path="/admin/wallets"
+				name="Admin Wallets"
+				component={Wallets}
+			/>
 			<Route
 				path="/admin/withdrawals"
 				name="Admin Withdrawals"

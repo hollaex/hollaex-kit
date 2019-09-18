@@ -8,7 +8,6 @@ const Form = AdminHocForm('ACTIVATION_FORM');
 const onSubmit = (refreshData) => (values) => {
 	return flagUser(values)
 		.then((res) => {
-			console.log(res);
 			refreshData(values);
 		})
 		.catch((err) => {

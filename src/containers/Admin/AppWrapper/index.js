@@ -8,8 +8,7 @@ import {
 	isLoggedIn,
 	isSupport,
 	isSupervisor,
-	isAdmin,
-	isKYC
+	isAdmin
 } from '../../../utils/token';
 
 import MobileDetect from 'mobile-detect';
@@ -55,12 +54,7 @@ class AppWrapper extends React.Component {
 			removeToken();
 			router.replace('/login');
 		};
-		const {
-			isSupportUser,
-			isSupervisorUser,
-			isAdminUser,
-			isLoaded
-		} = this.state;
+		const { isAdminUser, isLoaded } = this.state;
 
 		if (!isLoaded) return null;
 		if (!isLoggedIn()) {

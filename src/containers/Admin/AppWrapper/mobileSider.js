@@ -4,7 +4,7 @@ import { PATHS } from '../index';
 
 import { Layout } from 'antd/lib/index';
 
-const { Content, Sider } = Layout;
+const { Sider } = Layout;
 
 class MobileSider extends Component {
 	state = {
@@ -15,7 +15,6 @@ class MobileSider extends Component {
 		this.setState({
 			collapsed: !this.state.collapsed
 		});
-		console.log('woop');
 	};
 
 	render() {
@@ -26,7 +25,9 @@ class MobileSider extends Component {
 					onClick={this.toggleCollapsed}
 					style={{ marginBottom: 16 }}
 				>
-					<Icon type={this.state.collapsed ? 'menu-unfold' : 'menu-fold'} />
+					<Icon
+						type={this.state.collapsed ? 'menu-unfold' : 'menu-fold'}
+					/>
 				</Button>
 				<Menu
 					defaultSelectedKeys={['1']}

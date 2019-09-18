@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Row, Col, Table, Spin, Card } from 'antd';
+import { Row, Col, Spin, Card } from 'antd';
 import { requestUserBalance } from './actions';
 
 import { SubmissionError } from 'redux-form';
@@ -51,7 +51,12 @@ class UserBalance extends Component {
 	};
 
 	render() {
-		const { userInformation, userBalance, loading, isSupportUser } = this.state;
+		const {
+			userInformation,
+			userBalance,
+			loading,
+			isSupportUser
+		} = this.state;
 
 		if (loading) {
 			return (
@@ -64,13 +69,15 @@ class UserBalance extends Component {
 		return (
 			<Row>
 				<Row gutter={16}>
-					{Object.entries(userInformation.crypto_wallet).map(([key, value]) => (
-						<Col key={key}>
-							<Card title={<h3>{key}</h3>} type="inner">
-								{value}
-							</Card>
-						</Col>
-					))}
+					{Object.entries(userInformation.crypto_wallet).map(
+						([key, value]) => (
+							<Col key={key}>
+								<Card title={<h3>{key}</h3>} type="inner">
+									{value}
+								</Card>
+							</Col>
+						)
+					)}
 				</Row>
 				{!isSupportUser && (
 					<Row gutter={16} style={{ marginTop: 16 }}>

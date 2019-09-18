@@ -5,7 +5,12 @@ import { bindActionCreators } from 'redux';
 import io from 'socket.io-client';
 import EventListener from 'react-event-listener';
 import { debounce } from 'lodash';
-import { WS_URL, ICONS, SESSION_TIME, BASE_CURRENCY } from '../../config/constants';
+import {
+	WS_URL,
+	ICONS,
+	SESSION_TIME,
+	BASE_CURRENCY
+} from '../../config/constants';
 import { isBrowser, isMobile } from 'react-device-detect';
 
 import { logout } from '../../actions/authAction';
@@ -53,7 +58,10 @@ import {
 	getChatMinimized,
 	setChatMinimized
 } from '../../utils/theme';
-import { checkUserSessionExpired, playBackgroundAudioNotification } from '../../utils/utils';
+import {
+	checkUserSessionExpired,
+	playBackgroundAudioNotification
+} from '../../utils/utils';
 import { getToken, getTokenTimestamp, isLoggedIn } from '../../utils/token';
 import {
 	AppBar,
@@ -80,8 +88,6 @@ import {
 	getFontClassForLanguage
 } from '../../utils/string';
 
-let limitTimeOut = null;
-
 class Container extends Component {
 	state = {
 		appLoaded: false,
@@ -93,6 +99,8 @@ class Container extends Component {
 		ordersQueued: [],
 		limitFilledOnOrder: ''
 	};
+
+	limitTimeOut = null;
 
 	componentWillMount() {
 		const chatIsClosed = getChatMinimized();
@@ -160,9 +168,10 @@ class Container extends Component {
 		if (this.state.idleTimer) {
 			clearTimeout(this.state.idleTimer);
 		}
+		clearTimeout(this.limitTimeOut);
 	}
 
-	updateThemeToBody = theme => {
+	updateThemeToBody = (theme) => {
 		const themeName = theme === 'dark' ? 'dark-app-body' : '';
 		if (document.body) {
 			document.body.className = themeName;
@@ -174,7 +183,10 @@ class Container extends Component {
 			clearTimeout(this.idleTimer);
 		}
 		if (this.state.appLoaded) {
-			const idleTimer = setTimeout(() => this.logout('Inactive'), SESSION_TIME); // no activity will log the user out automatically
+			const idleTimer = setTimeout(
+				() => this.logout('Inactive'),
+				SESSION_TIME
+			); // no activity will log the user out automatically
 			this.setState({ idleTimer });
 		}
 	};
@@ -183,7 +195,7 @@ class Container extends Component {
 
 	initSocketConnections = () => {
 		this.setPublicWS();
-		if(isLoggedIn()) {
+		if (isLoggedIn()) {
 			this.setUserSocket(getToken());
 		}
 		this.setState({ appLoaded: true }, () => {
@@ -203,7 +215,6 @@ class Container extends Component {
 		this.setState({ publicSocket });
 
 		publicSocket.on('initial', (data) => {
-			// console.log('initial', data);
 			if (!this.props.pair) {
 				const pair = Object.keys(data.pairs)[0];
 				this.props.changePair(pair);
@@ -224,34 +235,34 @@ class Container extends Component {
 						MAX: data.pairs[pair].max_size,
 						STEP: data.pairs[pair].increment_price
 					}
-				}
+				};
 				return '';
 			});
 			this.props.setOrderLimits(orderLimits);
 		});
 
 		publicSocket.on('orderbook', (data) => {
-			// console.log('orderbook', data);
 			this.props.setOrderbooks(data);
 		});
 
 		publicSocket.on('trades', (data) => {
-			// console.log('trades', data);
 			this.props.setTrades(data);
 			this.props.setTickers(data);
-			if (data.action === "update") {
-				if (this.props.settings.audio
-					&& this.props.settings.audio.public_trade
-					&& this.props.location.pathname.indexOf('/trade/') === 0
-					&& this.props.params.pair) {
+			if (data.action === 'update') {
+				if (
+					this.props.settings.audio &&
+					this.props.settings.audio.public_trade &&
+					this.props.location.pathname.indexOf('/trade/') === 0 &&
+					this.props.params.pair
+				) {
 					playBackgroundAudioNotification('public_trade');
 				}
 			}
 		});
 
 		// publicSocket.on('ticker', (data) => {
-			// console.log('ticker', data);
-			// this.props.setTickers(data);
+
+		// this.props.setTickers(data);
 		// });
 	};
 
@@ -271,13 +282,10 @@ class Container extends Component {
 				error.indexOf('Access Denied') > -1
 			) {
 				this.logout('Token is expired');
-			} else {
-				// console.error(error);
 			}
 		});
 
 		privateSocket.on('user', ({ action, data }) => {
-			// console.log('user', action, data);
 			// if (!data.phone_number) {
 			// 	return this.goToVerificationPage();
 			// }
@@ -288,24 +296,24 @@ class Container extends Component {
 			) {
 				this.props.changeLanguage(data.settings.language);
 			}
-			if (data.settings.interface && data.settings.interface.theme !== this.props.activeTheme) {
+			if (
+				data.settings.interface &&
+				data.settings.interface.theme !== this.props.activeTheme
+			) {
 				this.props.changeTheme(data.settings.interface.theme);
-				localStorage.setItem("theme", data.settings.interface.theme);
+				localStorage.setItem('theme', data.settings.interface.theme);
 			}
 		});
 
 		privateSocket.on('orders', ({ action, data }) => {
-			// console.log('orders', action, data);
 			this.props.setUserOrders(data);
 		});
 
 		privateSocket.on('trades', ({ action, data }) => {
-			// console.log('trades', action, data);
 			// this.props.addUserTrades(data);
 		});
 
 		privateSocket.on('wallet', ({ action, balance }) => {
-			// console.log('wallet', action, balance);
 			this.props.setBalance(balance);
 		});
 
@@ -314,11 +322,13 @@ class Container extends Component {
 				case 'order_queued':
 					// TODO add queued orders to the store
 					// this.props.addOrder(data);
-					this.setState({ ordersQueued: this.state.ordersQueued.concat(data) });
+					this.setState({
+						ordersQueued: this.state.ordersQueued.concat(data)
+					});
 					if (data.type === 'limit') {
 						playBackgroundAudioNotification('orderbook_limit_order');
 						this.setState({ limitFilledOnOrder: data.id });
-						limitTimeOut = setTimeout(() => {
+						this.limitTimeOut = setTimeout(() => {
 							if (this.state.limitFilledOnOrder)
 								this.setState({ limitFilledOnOrder: '' });
 						}, 1000);
@@ -356,7 +366,10 @@ class Container extends Component {
 					// 	filled = order.filled;
 					// }
 					this.props.updateOrder(data);
-					if (this.props.settings.notification && this.props.settings.notification.popup_order_partially_filled) {
+					if (
+						this.props.settings.notification &&
+						this.props.settings.notification.popup_order_partially_filled
+					) {
 						// data.filled = data.filled - filled;
 						if (isMobile) {
 							this.props.setSnackDialog({
@@ -365,13 +378,17 @@ class Container extends Component {
 								data: { order: data, data }
 							});
 						} else {
-							this.props.setNotification(
-								NOTIFICATIONS.ORDERS,
-								{ type, order: data, data }
-							);
+							this.props.setNotification(NOTIFICATIONS.ORDERS, {
+								type,
+								order: data,
+								data
+							});
 						}
 					}
-					if (this.props.settings.audio && this.props.settings.audio.order_partially_completed) {
+					if (
+						this.props.settings.audio &&
+						this.props.settings.audio.order_partially_completed
+					) {
 						playBackgroundAudioNotification('order_partialy_filled');
 					}
 					break;
@@ -385,14 +402,20 @@ class Container extends Component {
 					);
 					break;
 				case 'order_filled': {
-					const ordersDeleted = this.props.orders.filter((order, index) => {
-						return (
-							data.findIndex((deletedOrder) => deletedOrder.id === order.id) >
-							-1
-						);
-					});
+					const ordersDeleted = this.props.orders.filter(
+						(order, index) => {
+							return (
+								data.findIndex(
+									(deletedOrder) => deletedOrder.id === order.id
+								) > -1
+							);
+						}
+					);
 					this.props.removeOrder(data);
-					if (this.props.settings.notification && this.props.settings.notification.popup_order_completed) {
+					if (
+						this.props.settings.notification &&
+						this.props.settings.notification.popup_order_completed
+					) {
 						ordersDeleted.forEach((orderDeleted) => {
 							if (isMobile) {
 								this.props.setSnackDialog({
@@ -417,7 +440,10 @@ class Container extends Component {
 							}
 						});
 					}
-					if (this.props.settings.audio && this.props.settings.audio.order_completed) {
+					if (
+						this.props.settings.audio &&
+						this.props.settings.audio.order_completed
+					) {
 						playBackgroundAudioNotification('order_filled');
 					}
 					break;
@@ -441,14 +467,19 @@ class Container extends Component {
 					if (tradeOrdersIds.size === 1) {
 						const orderIdFromTrade = Array.from(tradeOrdersIds)[0];
 						const { ordersQueued } = this.state;
-						let order = ordersQueued.find(({ id }) => id === orderIdFromTrade);
+						let order = ordersQueued.find(
+							({ id }) => id === orderIdFromTrade
+						);
 						if (!order) {
 							const { orders } = this.props;
 							order = orders.find(({ id }) => id === orderIdFromTrade);
 						}
-						if (order && order.type === 'market'
-							&& this.props.settings.notification
-							&& this.props.settings.notification.popup_order_completed) {
+						if (
+							order &&
+							order.type === 'market' &&
+							this.props.settings.notification &&
+							this.props.settings.notification.popup_order_completed
+						) {
 							if (isMobile) {
 								this.props.setSnackDialog({
 									isDialog: true,
@@ -456,14 +487,21 @@ class Container extends Component {
 									data: { order, data }
 								});
 							} else {
-								this.props.setNotification(NOTIFICATIONS.TRADES, { data, order });
+								this.props.setNotification(NOTIFICATIONS.TRADES, {
+									data,
+									order
+								});
 							}
 						}
 					}
-					if (this.state.limitFilledOnOrder
-						&& data.filter((limit) => limit.id === this.state.limitFilledOnOrder).length
-						&& this.props.settings.audio
-						&& this.props.settings.audio.order_completed) {
+					if (
+						this.state.limitFilledOnOrder &&
+						data.filter(
+							(limit) => limit.id === this.state.limitFilledOnOrder
+						).length &&
+						this.props.settings.audio &&
+						this.props.settings.audio.order_completed
+					) {
 						setTimeout(() => {
 							playBackgroundAudioNotification('order_filled');
 						}, 1000);
@@ -478,9 +516,13 @@ class Container extends Component {
 				}
 				case 'withdrawal': {
 					// TODO FIX when notification is defined
-					// console.log(data, !data.amount);
+
 					const show = data.amount;
-					this.props.setNotification(NOTIFICATIONS.WITHDRAWAL, data, !show);
+					this.props.setNotification(
+						NOTIFICATIONS.WITHDRAWAL,
+						data,
+						!show
+					);
 					break;
 				}
 				default:
@@ -637,10 +679,7 @@ class Container extends Component {
 				);
 			case RISK_PORTFOLIO_ORDER_WARING:
 				return (
-					<SetOrderPortfolio
-						data={data}
-						onClose={this.onCloseDialog}
-					/>
+					<SetOrderPortfolio data={data} onClose={this.onCloseDialog} />
 				);
 			case LOGOUT_CONFORMATION:
 				return (
@@ -680,17 +719,16 @@ class Container extends Component {
 		return this.props.changeLanguage(language);
 	};
 
-	isSocketDataReady(){
-		const {
-			orderbooks,
-			pairsTrades,
-			pair
-		} = this.props;
-		// return (Object.keys(orderbooks).length && orderbooks[pair] && Object.keys(orderbooks[pair]).length && 
+	isSocketDataReady() {
+		const { orderbooks, pairsTrades, pair } = this.props;
+		// return (Object.keys(orderbooks).length && orderbooks[pair] && Object.keys(orderbooks[pair]).length &&
 		// 	Object.keys(pairsTrades).length);
-		return (Object.keys(orderbooks).length && orderbooks[pair] &&
-			Object.keys(pairsTrades).length);
-	};
+		return (
+			Object.keys(orderbooks).length &&
+			orderbooks[pair] &&
+			Object.keys(pairsTrades).length
+		);
+	}
 
 	render() {
 		const {
@@ -706,14 +744,15 @@ class Container extends Component {
 			activeTheme,
 			unreadMessages,
 			router,
-			location,
+			location
 			// user
 		} = this.props;
 		const { dialogIsOpen, appLoaded, chatIsClosed } = this.state;
 		const languageClasses = getClasesForLanguage(activeLanguage, 'array');
 		const fontClass = getFontClassForLanguage(activeLanguage);
 
-		const shouldCloseOnOverlayClick = activeNotification.type !== CONTACT_FORM;
+		const shouldCloseOnOverlayClick =
+			activeNotification.type !== CONTACT_FORM;
 		const activePath = !appLoaded
 			? ''
 			: this.getClassForActivePath(this.props.location.pathname);
@@ -769,16 +808,16 @@ class Container extends Component {
 								/>
 							}
 						/>
-						{isBrowser &&
-							(isMenubar) && 
-								<AppMenuBar router={router} location={location} />}
+						{isBrowser && isMenubar && (
+							<AppMenuBar router={router} location={location} />
+						)}
 						<div
 							className={classnames(
-								"app_container-content",
-								"d-flex",
-								"justify-content-between",
+								'app_container-content',
+								'd-flex',
+								'justify-content-between',
 								{
-									"app_container-secondary-content": isMenubar
+									'app_container-secondary-content': isMenubar
 								}
 							)}
 						>
@@ -793,7 +832,11 @@ class Container extends Component {
 									}
 								)}
 							>
-								{appLoaded && this.isSocketDataReady() ? children : <Loader background={false} />}
+								{appLoaded && this.isSocketDataReady() ? (
+									children
+								) : (
+									<Loader background={false} />
+								)}
 							</div>
 							{isBrowser && (
 								<div className="app_container-sidebar">
@@ -821,10 +864,16 @@ class Container extends Component {
 								showCloseText={
 									!(
 										activeNotification.type === CONTACT_FORM ||
-										activeNotification.type === HELPFUL_RESOURCES_FORM ||
-										activeNotification.type === NOTIFICATIONS.NEW_ORDER ||
-										(activeNotification.type === NOTIFICATIONS.TRADES && !isMobile) ||
-										(activeNotification.type === NOTIFICATIONS.ORDERS && !isMobile) ||
+										activeNotification.type ===
+											HELPFUL_RESOURCES_FORM ||
+										activeNotification.type ===
+											NOTIFICATIONS.NEW_ORDER ||
+										(activeNotification.type ===
+											NOTIFICATIONS.TRADES &&
+											!isMobile) ||
+										(activeNotification.type ===
+											NOTIFICATIONS.ORDERS &&
+											!isMobile) ||
 										activeNotification.type === NOTIFICATIONS.ERROR
 									)
 								}
@@ -835,7 +884,11 @@ class Container extends Component {
 								style={{ 'z-index': 100 }}
 							>
 								{dialogIsOpen &&
-									this.renderDialogContent(activeNotification, prices, activeTheme)}
+									this.renderDialogContent(
+										activeNotification,
+										prices,
+										activeTheme
+									)}
 							</Dialog>
 							{!isMobile && (
 								<ChatComponent
@@ -847,7 +900,11 @@ class Container extends Component {
 						</div>
 						{isMobile && (
 							<div className="app_container-bottom_bar">
-								<SidebarBottom isLogged={isLoggedIn()} activePath={activePath} pair={pair} />
+								<SidebarBottom
+									isLogged={isLoggedIn()}
+									activePath={activePath}
+									pair={pair}
+								/>
 							</div>
 						)}
 					</div>
@@ -892,7 +949,10 @@ const mapDispatchToProps = (dispatch) => ({
 	closeNotification: bindActionCreators(closeNotification, dispatch),
 	closeAllNotification: bindActionCreators(closeAllNotification, dispatch),
 	openContactForm: bindActionCreators(openContactForm, dispatch),
-	openHelpfulResourcesForm: bindActionCreators(openHelpfulResourcesForm, dispatch),
+	openHelpfulResourcesForm: bindActionCreators(
+		openHelpfulResourcesForm,
+		dispatch
+	),
 	setNotification: bindActionCreators(setNotification, dispatch),
 	changeLanguage: bindActionCreators(setLanguage, dispatch),
 	changePair: bindActionCreators(changePair, dispatch),
@@ -908,4 +968,7 @@ const mapDispatchToProps = (dispatch) => ({
 	setCurrencies: bindActionCreators(setCurrencies, dispatch)
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Container);
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(Container);

@@ -38,7 +38,7 @@ class Summary extends Component {
         lastMonthVolume: 0
     };
 
-    
+
     componentDidMount() {
         const { user, tradeVolumes, pairs, prices } = this.props;
 
@@ -137,7 +137,7 @@ class Summary extends Component {
     };
 
     render() {
-        const { user, balance, activeTheme, pairs, coins, logout } = this.props;
+        const { user, balance, activeTheme, pairs, coins } = this.props;
         const { selectedAccount, currentTradingAccount, chartData, totalAssets, lastMonthVolume } = this.state;
         const { fullname } = coins[BASE_CURRENCY] || {};
         return (

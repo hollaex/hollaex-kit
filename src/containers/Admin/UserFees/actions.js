@@ -7,7 +7,6 @@ export const feeUpdate = (id, values) => {
 		method: 'PUT',
 		body: JSON.stringify(values)
 	};
-	console.log(options);
 
 	return requestAuthenticated(`/admin/pairs/fees/${id}`, options);
 };

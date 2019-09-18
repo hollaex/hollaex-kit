@@ -38,7 +38,6 @@ class BankTransactions extends Component {
 	};
 
 	handleChange = (pagination, filters, sorter) => {
-		// console.log('Various parameters', pagination, filters, sorter);
 		this.setState({
 			filteredInfo: filters,
 			sortedInfo: sorter
@@ -85,7 +84,12 @@ class BankTransactions extends Component {
 				<div className="m-top">
 					{loading && <Spin size="large" />}
 					{error && (
-						<Alert message="Error" description={error} type="error" showIcon />
+						<Alert
+							message="Error"
+							description={error}
+							type="error"
+							showIcon
+						/>
 					)}
 					{success && (
 						<div className="w-100">
@@ -100,6 +104,9 @@ class BankTransactions extends Component {
 							<Table
 								bordered={true}
 								columns={COLUMNS}
+								rowKey={(data) => {
+									return data.id;
+								}}
 								dataSource={filteredData}
 								expandedRowRender={expandedRowRender}
 								onChange={this.handleChange}

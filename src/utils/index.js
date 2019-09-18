@@ -2,12 +2,12 @@ import Cookies from 'universal-cookie';
 import math from 'mathjs';
 import numbro from 'numbro';
 import moment from 'moment-timezone';
-import jwtDecode from 'jwt-decode';
-import { getToken, setToken, removeToken } from './token';
+// import jwtDecode from 'jwt-decode';
+// import { getToken, setToken, removeToken } from './token';
 import {
-	TOKEN_KEY,
-	TOKEN_MAX_AGE,
-	TOKEN_EMAIL,
+	// TOKEN_KEY,
+	// TOKEN_MAX_AGE,
+	// TOKEN_EMAIL,
 	TIME_ZONE
 } from '../config/constants';
 

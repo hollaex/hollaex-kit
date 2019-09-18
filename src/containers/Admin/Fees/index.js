@@ -16,12 +16,10 @@ class BlockchainTransaction extends Component {
 		if (!isSupport()) {
 			getFees()
 				.then((data) => {
-					console.log(data);
 					this.setState({
 						loading: false,
 						data
 					});
-					console.log(data);
 				})
 				.catch((error) => {
 					const message = error.data ? error.data.message : error.message;

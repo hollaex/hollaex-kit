@@ -6,10 +6,10 @@ import {
 	validAddress,
 	normalizeBTC,
 	normalizeBTCFee
-} from '../../components/Form/validations';
-import { isMobile } from 'react-device-detect';
-import STRINGS from '../../config/localizedStrings';
-import { ICONS, BASE_CURRENCY } from '../../config/constants';
+} from "../../components/Form/validations";
+import { isMobile } from "react-device-detect";
+import STRINGS from "../../config/localizedStrings";
+import { ICONS, BASE_CURRENCY } from "../../config/constants";
 
 export const generateInitialValues = (symbol, coins = {}) => {
 	const { min, withdrawal_fee } = coins[symbol];
@@ -35,7 +35,9 @@ export const generateFormValues = (
 	verification_level
 ) => {
 	const name = STRINGS[`${symbol.toUpperCase()}_NAME`];
-	const { fullname, min, increment_unit, withdrawal_limits = {} } = coins[symbol];
+	const { fullname, min, increment_unit, withdrawal_limits = {} } = coins[
+		symbol
+	];
 	let MAX = withdrawal_limits[verification_level];
 	if (withdrawal_limits[verification_level] === 0) MAX = "";
 	if (withdrawal_limits[verification_level] === -1) MAX = 0;
@@ -43,12 +45,15 @@ export const generateFormValues = (
 
 	if (symbol !== BASE_CURRENCY) {
 		fields.address = {
-			type: 'text',
+			type: "text",
 			label: STRINGS.WITHDRAWALS_FORM_ADDRESS_LABEL,
 			placeholder: STRINGS.WITHDRAWALS_FORM_ADDRESS_PLACEHOLDER,
 			validate: [
 				required,
-				validAddress(symbol, STRINGS[`WITHDRAWALS_${symbol.toUpperCase()}_INVALID_ADDRESS`])
+				validAddress(
+					symbol,
+					STRINGS[`WITHDRAWALS_${symbol.toUpperCase()}_INVALID_ADDRESS`]
+				)
 			],
 			fullWidth: isMobile
 		};
@@ -72,12 +77,12 @@ export const generateFormValues = (
 	);
 
 	fields.amount = {
-		type: 'number',
+		type: "number",
 		label: STRINGS.formatString(STRINGS.WITHDRAWALS_FORM_AMOUNT_LABEL, name),
 		placeholder: STRINGS.formatString(
 			STRINGS.WITHDRAWALS_FORM_AMOUNT_PLACEHOLDER,
 			name
-		).join(''),
+		).join(""),
 		min: min,
 		max: MAX,
 		step: increment_unit,
@@ -86,9 +91,9 @@ export const generateFormValues = (
 		fullWidth: isMobile,
 		notification: {
 			text: STRINGS.CALCULATE_MAX,
-			status: 'information',
+			status: "information",
 			iconPath: ICONS.BLUE_PLUS,
-			className: 'file_upload_icon',
+			className: "file_upload_icon",
 			useSvg: true,
 			onClick: calculateMax
 		}
@@ -96,7 +101,7 @@ export const generateFormValues = (
 
 	if (coins[symbol]) {
 		fields.fee = {
-			type: 'number',
+			type: "number",
 			// label: STRINGS[`WITHDRAWALS_FORM_FEE_${symbol.toUpperCase()}_LABEL`],
 			label: STRINGS.formatString(
 				STRINGS.WITHDRAWALS_FORM_FEE_COMMON_LABEL,
@@ -105,19 +110,19 @@ export const generateFormValues = (
 			placeholder: STRINGS.formatString(
 				STRINGS.WITHDRAWALS_FORM_FEE_PLACEHOLDER,
 				name
-			).join(''),
+			).join(""),
 			disabled: true,
 			fullWidth: isMobile
 		};
 	} else {
 		fields.fee = {
-			type: 'editable',
-			inputType: 'number',
+			type: "editable",
+			inputType: "number",
 			label: STRINGS[`WITHDRAWALS_FORM_FEE_${symbol.toUpperCase()}_LABEL`],
 			placeholder: STRINGS.formatString(
 				STRINGS.WITHDRAWALS_FORM_FEE_PLACEHOLDER,
 				name
-			).join(''),
+			).join(""),
 			min: min,
 			max: MAX,
 			step: min,
