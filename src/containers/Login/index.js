@@ -54,7 +54,7 @@ class Login extends Component {
 	}
 
 	redirectToHome = () => {
-		this.props.router.replace('/admin');
+		this.props.router.replace('/account');
 	};
 
 	redirectToResetPassword = () => {
@@ -62,7 +62,7 @@ class Login extends Component {
 	};
 
 	redirectToService = (url) => {
-		window.location.href = `https://${url}/admin`;
+		window.location.href = `https://${url}`;
 	};
 
 	getServiceParam = () => {
