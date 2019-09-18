@@ -3,7 +3,7 @@ import math from 'mathjs';
 import ReactSVG from 'react-svg';
 import { Button } from '../../components';
 import { formatToCurrency } from '../../utils/currency';
-import { ICONS, BASE_CURRENCY } from '../../config/constants';
+import { ICONS, BASE_CURRENCY, CURRENCY_PRICE_FORMAT } from '../../config/constants';
 
 import STRINGS from '../../config/localizedStrings';
 
@@ -33,17 +33,16 @@ const ReviewModalContent = ({
 	onClickAccept,
 	onClickCancel
 }) => {
-	const { min } = coins[currency || BASE_CURRENCY] || {};
-	const baseCoin = coins[BASE_CURRENCY] || {};
-	const shortName = STRINGS[`${currency.toUpperCase()}_SHORTNAME`];
-	const name = STRINGS[`${currency.toUpperCase()}_NAME`];
+	const { min, fullname, symbol = '' } = coins[currency || BASE_CURRENCY] || {};
+	const baseCoin = coins[BASE_CURRENCY] || { symbol: '' };
+	const shortName = symbol.toUpperCase();
 
 	const totalTransaction = math.number(
 		math.add(math.fraction(data.amount), math.fraction(data.fee || 0))
 	);
 
 	const cryptoAmountText = STRINGS.formatString(
-		STRINGS[`${currency.toUpperCase()}_PRICE_FORMAT`],
+		CURRENCY_PRICE_FORMAT,
 		formatToCurrency(totalTransaction, min),
 		shortName
 	);
@@ -68,9 +67,9 @@ const ReviewModalContent = ({
 							{STRINGS.formatString(
 								STRINGS.WITHDRAW_PAGE.MESSAGE_FEE_BASE,
 								STRINGS.formatString(
-									STRINGS[`${BASE_CURRENCY.toUpperCase()}_PRICE_FORMAT`],
+									CURRENCY_PRICE_FORMAT,
 									formatToCurrency(fee, baseCoin.min),
-									STRINGS[`${BASE_CURRENCY.toUpperCase()}_SHORTNAME`]
+									baseCoin.symbol.toUpperCase()
 								)
 							)}
 						</div>
@@ -88,9 +87,9 @@ const ReviewModalContent = ({
 								STRINGS.WITHDRAW_PAGE.MESSAGE_FEE,
 								fee,
 								STRINGS.formatString(
-									STRINGS[`${BASE_CURRENCY.toUpperCase()}_PRICE_FORMAT`],
+									CURRENCY_PRICE_FORMAT,
 									formatToCurrency(feePrice, baseCoin.min),
-									STRINGS[`${BASE_CURRENCY.toUpperCase()}_SHORTNAME`]
+									baseCoin.symbol.toUpperCase()
 								)
 							)}
 						</div>
@@ -100,7 +99,7 @@ const ReviewModalContent = ({
 					<div className="warning_text review-info_message">
 						{STRINGS.formatString(
 							STRINGS.WITHDRAW_PAGE.MESSAGE_BTC_WARNING,
-							name
+							fullname
 						)}
 					</div>
 				</div>

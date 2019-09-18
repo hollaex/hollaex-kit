@@ -13,7 +13,7 @@ import { TransactionsHistory } from '../';
 import { changeSymbol } from '../../actions/orderbookAction';
 import { NOTIFICATIONS } from '../../actions/appActions';
 import { createAddress, cleanCreateAddress } from '../../actions/userAction';
-import { ICONS, BASE_CURRENCY } from '../../config/constants';
+import { ICONS, BASE_CURRENCY, CURRENCY_PRICE_FORMAT } from '../../config/constants';
 import { calculateBalancePrice, formatToCurrency } from '../../utils/currency';
 import STRINGS from '../../config/localizedStrings';
 
@@ -63,11 +63,11 @@ class Wallet extends Component {
 
 	calculateTotalAssets = (balance, prices, coins) => {
 		const total = calculateBalancePrice(balance, prices);
-		const { min } = coins[BASE_CURRENCY] || {};
+		const { min, symbol = '' } = coins[BASE_CURRENCY] || {};
 		return STRINGS.formatString(
-			STRINGS[`${BASE_CURRENCY.toUpperCase()}_PRICE_FORMAT`],
+			CURRENCY_PRICE_FORMAT,
 			formatToCurrency(total, min),
-			STRINGS[`${BASE_CURRENCY.toUpperCase()}_CURRENCY_SYMBOL`]
+			symbol.toUpperCase()
 		);
 	};
 

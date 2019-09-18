@@ -27,10 +27,10 @@ const PriceRow = (pairBase, pairTwo, side, onPriceClick, onAmountClick) => (
 	</div>
 );
 
-const calculateSpread = (asks, bids, pair) => {
+const calculateSpread = (asks, bids, pair, coins) => {
 	const lowerAsk = asks.length > 0 ? asks[0][0] : 0;
 	const higherBid = bids.length > 0 ? bids[0][0] : 0;
-	const isNonBasePair = checkNonBasePair(pair);
+	const isNonBasePair = checkNonBasePair(pair, coins);
 	if (lowerAsk && higherBid) {
 		return isNonBasePair ? formatBtcFullAmount(subtract(lowerAsk, higherBid)) : formatBaseAmount(subtract(lowerAsk, higherBid));
 	}
@@ -87,7 +87,7 @@ class Orderbook extends Component {
 	};
 
 	render() {
-		const { asks, bids, pairData, pair } = this.props;
+		const { asks, bids, pairData, pair, coins } = this.props;
 		// const blockStyle = {};
 		const { dataBlockHeight } = this.state;
 		const blockStyle =
@@ -100,6 +100,7 @@ class Orderbook extends Component {
 
 		const pairBase = pairData.pair_base.toUpperCase();
 		const pairTwo = pairData.pair_2.toUpperCase();
+		const { symbol = '' } = coins[pairTwo] || {};
 		return (
 			<div className="trade_orderbook-wrapper d-flex flex-column f-1 apply_rtl">
 				<EventListener target="window" onResize={this.scrollTop} />
@@ -107,7 +108,7 @@ class Orderbook extends Component {
 					<div className="f-1 trade_orderbook-cell">
 						{STRINGS.formatString(
 							STRINGS.PRICE_CURRENCY,
-							STRINGS[`${pairTwo}_CURRENCY_SYMBOL`]
+							symbol.toUpperCase()
 						)}
 					</div>
 					<div className="f-1 trade_orderbook-cell">
@@ -141,8 +142,8 @@ class Orderbook extends Component {
 							<div className="trade_orderbook-spread-text">
 								{STRINGS.formatString(
 									STRINGS.ORDERBOOK_SPREAD_PRICE,
-									calculateSpread(asks, bids, pair),
-									STRINGS[`${pairTwo}_CURRENCY_SYMBOL`]
+									calculateSpread(asks, bids, pair, coins),
+									symbol.toUpperCase()
 								)}
 							</div>
 						)}

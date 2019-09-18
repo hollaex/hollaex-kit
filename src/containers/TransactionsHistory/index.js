@@ -210,7 +210,6 @@ class TransactionsHistory extends Component {
 		const { id, activeTheme, coins } = this.props;
 		const { activeTab, dialogIsOpen, amount } = this.state;
 		const { onCloseDialog } = this;
-		// const shortName = STRINGS[`${this.props.symbol.toUpperCase()}_SHORTNAME`];
 		const { fullname } = coins[BASE_CURRENCY] || {};
 
 		if (!id) {

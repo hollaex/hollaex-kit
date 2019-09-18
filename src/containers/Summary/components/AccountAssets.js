@@ -20,11 +20,16 @@ const AccountAssets = ({ chartData = [], totalAssets, balance, coins }) => {
 				<div>{STRINGS.SUMMARY.ACCOUNT_ASSETS_TXT_2}</div>
 			</div>
 			<div className="w-100 donut-container">
-				{BASE_CURRENCY && <DonutChart chartData={chartData} />}
+				{BASE_CURRENCY && (
+					<DonutChart
+						coins={coins}
+						chartData={chartData}
+					/>
+				)}
 			</div>
 			<div className="d-flex justify-content-between">
 				{chartData.map((value, index) => {
-					const { min, fullname } =
+					const { min, fullname, symbol = '' } =
 						coins[value.symbol || BASE_CURRENCY] || {};
 					let currencyBalance = formatToCurrency(
 						balance[`${value.symbol}_balance`],
@@ -45,11 +50,7 @@ const AccountAssets = ({ chartData = [], totalAssets, balance, coins }) => {
 							</div>
 							<div className="price-text">{fullname}:</div>
 							<div className="price-text">
-								{`${
-									STRINGS[
-										`${value.symbol.toUpperCase()}_CURRENCY_SYMBOL`
-									]
-								} ${formatAverage(currencyBalance)}`}
+								{`${symbol.toUpperCase()} ${formatAverage(currencyBalance)}`}
 							</div>
 							{value.symbol !== BASE_CURRENCY && (
 								<div>{`~${formatAverage(value.balanceFormat)}`}</div>

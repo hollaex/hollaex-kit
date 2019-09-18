@@ -6,7 +6,7 @@ import { isMobile } from 'react-device-detect';
 import STRINGS from '../../config/localizedStrings';
 
 import { CurrencyBall } from '../../components';
-import { BLOCKTRAIL_ENDPOINT, ETHEREUM_ENDPOINT, BITCOINCOM_ENDPOINT, BASE_CURRENCY } from '../../config/constants';
+import { BLOCKTRAIL_ENDPOINT, ETHEREUM_ENDPOINT, BITCOINCOM_ENDPOINT, BASE_CURRENCY, CURRENCY_PRICE_FORMAT } from '../../config/constants';
 import { formatTimestamp, isBlockchainTx } from '../../utils/utils';
 import { formatToCurrency } from '../../utils/currency';
 
@@ -92,10 +92,10 @@ export const generateTradeHeaders = (symbol, pairs, coins) => {
 			exportToCsv: ({ size = 0, ...data }) => {
 				if (pairs[data.symbol]) {
 					const symbol = pairs[data.symbol].pair_base;
-					const { min } = coins[symbol || BASE_CURRENCY] || {};
-					const shortName = STRINGS[`${symbol.toUpperCase()}_SHORTNAME`];
+					const { min, ...rest } = coins[symbol || BASE_CURRENCY] || { symbol: '' };
+					const shortName = rest.symbol.toUpperCase();
 					return STRINGS.formatString(
-						STRINGS[`${symbol.toUpperCase()}_PRICE_FORMAT`],
+						CURRENCY_PRICE_FORMAT,
 						formatToCurrency(size, min),
 						shortName
 					);
@@ -104,12 +104,12 @@ export const generateTradeHeaders = (symbol, pairs, coins) => {
 			renderCell: ({ size = 0, ...data }, key, index) => {
 				if (pairs[data.symbol]) {
 					const symbol = pairs[data.symbol].pair_base;
-					const { min } = coins[symbol || BASE_CURRENCY] || {};
-					const shortName = STRINGS[`${symbol.toUpperCase()}_SHORTNAME`];
+					const { min, ...rest } = coins[symbol || BASE_CURRENCY] || { symbol: '' };
+					const shortName = rest.symbol.toUpperCase();
 					return (
 						<td key={index}>
 							{STRINGS.formatString(
-								STRINGS[`${symbol.toUpperCase()}_PRICE_FORMAT`],
+								CURRENCY_PRICE_FORMAT,
 								formatToCurrency(size, min),
 								shortName
 							)}
@@ -124,32 +124,30 @@ export const generateTradeHeaders = (symbol, pairs, coins) => {
 			exportToCsv: ({ price = 0, size = 0, quick, symbol }) => {
 				if (pairs[symbol]) {
 					const { pair_2 } = pairs[symbol];
-					const { min } = coins[pair_2 || BASE_CURRENCY] || {};
-					const pair = pair_2.toUpperCase();
+					const { min, ...rest } = coins[pair_2 || BASE_CURRENCY] || { symbol: '' };
 					return STRINGS.formatString(
-						STRINGS[`${pair}_PRICE_FORMAT`],
+						CURRENCY_PRICE_FORMAT,
 						formatToCurrency(
 							calculatePrice(quick, price, size),
 							min
 						),
-						STRINGS[`${pair}_CURRENCY_SYMBOL`]
+						rest.symbol.toUpperCase()
 					);
 				}
 			},
 			renderCell: ({ price = 0, size = 0, quick, symbol }, key, index) => {
 				if (pairs[symbol]) {
 					const { pair_2 } = pairs[symbol];
-					const { min } = coins[pair_2 || BASE_CURRENCY] || {};
-					const pair = pair_2.toUpperCase();
+					const { min, ...rest } = coins[pair_2 || BASE_CURRENCY] || { symbol: '' };
 					return (
 						<td key={index}>
 							{STRINGS.formatString(
-								STRINGS[`${pair}_PRICE_FORMAT`],
+								CURRENCY_PRICE_FORMAT,
 								formatToCurrency(
 									calculatePrice(quick, price, size),
 									min
 								),
-								STRINGS[`${pair}_CURRENCY_SYMBOL`]
+								rest.symbol.toUpperCase()
 							)}
 						</td>
 					);
@@ -162,32 +160,30 @@ export const generateTradeHeaders = (symbol, pairs, coins) => {
 			exportToCsv: ({ price = 0, size = 0, quick, symbol }) => {
 				if (pairs[symbol]) {
 					const { pair_2 } = pairs[symbol];
-					const { min } = coins[pair_2 || BASE_CURRENCY] || {};
-					const pair = pair_2.toUpperCase();
+					const { min, ...rest } = coins[pair_2 || BASE_CURRENCY] || { symbol: '' };
 					return STRINGS.formatString(
-						STRINGS[`${pair}_PRICE_FORMAT`],
+						CURRENCY_PRICE_FORMAT,
 						formatToCurrency(
 							calculateAmount(quick, price, size),
 							min
 						),
-						STRINGS[`${pair}_CURRENCY_SYMBOL`]
+						rest.symbol.toUpperCase()
 					);
 				}
 			},
 			renderCell: ({ price = 0, size = 0, quick, symbol }, key, index) => {
 				if (pairs[symbol]) {
 					const { pair_2 } = pairs[symbol];
-					const { min } = coins[pair_2 || BASE_CURRENCY] || {};
-					const pair = pair_2.toUpperCase();
+					const { min, ...rest } = coins[pair_2 || BASE_CURRENCY] || { symbol: '' };
 					return (
 						<td key={index}>
 							{STRINGS.formatString(
-								STRINGS[`${pair}_PRICE_FORMAT`],
+								CURRENCY_PRICE_FORMAT,
 								formatToCurrency(
 									calculateAmount(quick, price, size),
 									min
 								),
-								STRINGS[`${pair}_CURRENCY_SYMBOL`]
+								rest.symbol.toUpperCase()
 							)}
 						</td>
 					);
@@ -204,14 +200,14 @@ export const generateTradeHeaders = (symbol, pairs, coins) => {
 				if (pairs[symbol]) {
 					const { pair_base, pair_2 } = pairs[symbol];
 					const pair = side === 'buy' ? pair_base : pair_2;
-					const { min } = coins[pair || BASE_CURRENCY] || {};
+					const { min, ...rest } = coins[pair || BASE_CURRENCY] || { symbol: '' };
 					return STRINGS.formatString(
-						STRINGS[`${pair.toUpperCase()}_PRICE_FORMAT`],
+						CURRENCY_PRICE_FORMAT,
 						formatToCurrency(
 							calculateFeeAmount(fee, quick, price, size, side),
 							min
 						),
-						STRINGS[`${pair.toUpperCase()}_CURRENCY_SYMBOL`]
+						rest.symbol.toUpperCase()
 					);
 				}
 			},
@@ -222,17 +218,17 @@ export const generateTradeHeaders = (symbol, pairs, coins) => {
 				if (pairs[symbol]) {
 					const { pair_base, pair_2 } = pairs[symbol];
 					const pair = side === 'buy' ? pair_base : pair_2;
-					const { min } = coins[pair || BASE_CURRENCY] || {};
+					const { min, ...rest } = coins[pair || BASE_CURRENCY] || { symbol: '' };
 					return (
 						<td key={index}>
 							{STRINGS.formatString(
-								STRINGS[`${pair.toUpperCase()}_PRICE_FORMAT`],
+								CURRENCY_PRICE_FORMAT,
 								formatToCurrency(
 									calculateFeeAmount(fee, quick, price, size, side),
 									min,
 									true
 								),
-								STRINGS[`${pair.toUpperCase()}_CURRENCY_SYMBOL`]
+								rest.symbol.toUpperCase()
 							)}
 						</td>
 					);
@@ -257,10 +253,10 @@ export const generateWithdrawalsHeaders = (symbol, coins = {}, withdrawalPopup) 
 			label: '',
 			key: 'icon',
 			renderCell: ({ currency }, key, index) => {
-				const { symbol = '' } = coins[currency] || {};
+				const data = coins[currency] || { symbol: '' };
 				return (
 					<td className={classnames('icon-cell')} key={index}>
-						<CurrencyBall name={symbol.toUpperCase()} symbol={currency} size="s" />
+						<CurrencyBall name={data.symbol.toUpperCase()} symbol={currency} size="s" />
 					</td>
 				);
 			}
@@ -294,21 +290,17 @@ export const generateWithdrawalsHeaders = (symbol, coins = {}, withdrawalPopup) 
 			label: STRINGS.AMOUNT,
 			key: 'amount',
 			exportToCsv: ({ amount = 0, fee = 0, currency }) => {
-				const { min } = coins[currency || BASE_CURRENCY] || {};
-				const currencySymbol =
-					STRINGS[`${currency.toUpperCase()}_CURRENCY_SYMBOL`];
-				return `${formatToCurrency(amount - fee, min)} ${currencySymbol}`;
+				const { min, ...rest } = coins[currency || BASE_CURRENCY] || { symbol: '' };
+				return `${formatToCurrency(amount - fee, min)} ${rest.symbol.toUpperCase()}`;
 			},
 			renderCell: ({ amount = 0, fee = 0, currency }, key, index) => {
-				const { min } = coins[currency || BASE_CURRENCY] || {};
-				const currencySymbol =
-					STRINGS[`${currency.toUpperCase()}_CURRENCY_SYMBOL`];
+				const { min, ...rest } = coins[currency || BASE_CURRENCY] || { symbol: '' };
 				return (
 					<td key={index}>{`${formatToCurrency(
 						amount - fee,
 						min,
 						true
-					)} ${currencySymbol}`}</td>
+					)} ${rest.symbol.toUpperCase()}`}</td>
 				);
 			}
 		},
@@ -317,19 +309,21 @@ export const generateWithdrawalsHeaders = (symbol, coins = {}, withdrawalPopup) 
 			key: 'fee',
 			exportToCsv: ({ fee = 0 }) => fee,
 			renderCell: ({ fee, price, size, currency }, key, index) => {
+				const data = coins[currency] || { symbol: '' };
 				if (fee === 0) {
 					return <td key={index}>{calculateFeeAmount(fee)}</td>;
 				}
 				return (
-					STRINGS[`${currency.toUpperCase()}_PRICE_FORMAT`]
-						? <td key={index}>
+					// STRINGS[`${currency.toUpperCase()}_PRICE_FORMAT`]
+						// ? 
+						<td key={index}>
 							{STRINGS.formatString(
-								STRINGS[`${currency.toUpperCase()}_PRICE_FORMAT`],
+								CURRENCY_PRICE_FORMAT,
 								fee,
-								STRINGS[`${currency.toUpperCase()}_CURRENCY_SYMBOL`]
+								data.symbol.toUpperCase()
 							)}
 						</td>
-						: <td key={index}>{fee}</td>
+						// : <td key={index}>{fee}</td>
 				);
 			}
 		},

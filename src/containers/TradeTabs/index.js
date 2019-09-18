@@ -153,7 +153,7 @@ class AddTradeTab extends Component {
                         {data.map((key, index) => {
                             let pair = pairs[key];
                             let { min, fullname, symbol = '' } = coins[pair.pair_base || BASE_CURRENCY] || {};
-                            const pairTwo = coins[pair.pair_2] || {};
+                            const pairTwo = coins[pair.pair_2] || { symbol: '' };
                             let ticker = tickers[key] || {};
                             const priceDifference = (ticker.close || 0) - (ticker.open || 0);
                             const tickerPercent = priceDifference === 0 ? 0 : ((priceDifference / ticker.open) * 100);
@@ -175,7 +175,7 @@ class AddTradeTab extends Component {
                                         </div>
                                         <div>{STRINGS.PRICE}:
                                             <span className="title-font ml-1">
-                                                {`${STRINGS[`${pair.pair_2.toUpperCase()}_CURRENCY_SYMBOL`]} ${formatAverage(formatToCurrency(ticker.close, min))}`}
+                                                {`${pairTwo.symbol.toUpperCase()} ${formatAverage(formatToCurrency(ticker.close, min))}`}
                                             </span>
                                         </div>
                                         <div className="d-flex">
@@ -188,7 +188,7 @@ class AddTradeTab extends Component {
                                                 {`(${priceDifferencePercent})`}
                                             </div>
                                         </div>
-                                        <div>{`${STRINGS.CHART_TEXTS.v}: ${ticker.volume} ${STRINGS[`${pair.pair_base.toUpperCase()}_CURRENCY_SYMBOL`]}`}</div>
+                                        <div>{`${STRINGS.CHART_TEXTS.v}: ${ticker.volume} ${symbol.toUpperCase()}`}</div>
                                     </div>
                                 </div>
                             )

@@ -1,6 +1,6 @@
 import React from 'react';
 import { CurrencyBall } from '../../components';
-import { ICONS, BASE_CURRENCY } from '../../config/constants';
+import { ICONS, BASE_CURRENCY, CURRENCY_PRICE_FORMAT } from '../../config/constants';
 import { Link } from 'react-router';
 import { isMobile } from 'react-device-detect';
 import {
@@ -37,7 +37,7 @@ export const AssetsBlock = ({
 					.map(([key, { min, allow_deposit, allow_withdrawal }]) => {
 						const balanceValue = balance[`${key}_balance`];
 						const { fullname, symbol = '' } = coins[key] || {};
-						const baseCoin = coins[BASE_CURRENCY] || {}
+						const baseCoin = coins[BASE_CURRENCY] || { symbol: '' }
 						const balanceText =
 							key === BASE_CURRENCY
 								? formatToCurrency(balanceValue, min)
@@ -103,9 +103,9 @@ export const AssetsBlock = ({
 									<div className="d-flex">
 										<div className="mr-4">
 											{STRINGS.formatString(
-												STRINGS[`${key.toUpperCase()}_PRICE_FORMAT`],
+												CURRENCY_PRICE_FORMAT,
 												formatToCurrency(balanceValue, min),
-												STRINGS[`${key.toUpperCase()}_CURRENCY_SYMBOL`]
+												symbol.toUpperCase()
 											)}
 										</div>
 										{!isMobile &&
@@ -113,9 +113,7 @@ export const AssetsBlock = ({
 											parseFloat(balanceText || 0) > 0 && (
 												<div>
 													{`(≈ ${
-														STRINGS[
-															`${BASE_CURRENCY.toUpperCase()}_CURRENCY_SYMBOL`
-														]
+														baseCoin.symbol.toUpperCase()
 													} ${balanceText})`}
 												</div>
 											)}

@@ -100,7 +100,7 @@ class RiskForm extends Component {
 		} = this.props;
 		const percentPrice =
 			(totalAssets / 100) * initialValues.order_portfolio_percentage;
-		const { fullname } = coins[BASE_CURRENCY] || {};
+		const { fullname, symbol = '' } = coins[BASE_CURRENCY] || {};
 		const assetData = [
 			{
 				id: 1,
@@ -112,11 +112,7 @@ class RiskForm extends Component {
 				},
 				assetValue: {
 					percentPrice: percentPrice
-						? `${formatBaseAmount(percentPrice)} ${
-								STRINGS[
-									`${BASE_CURRENCY.toUpperCase()}_CURRENCY_SYMBOL`
-								]
-						  }`
+						? `${formatBaseAmount(percentPrice)} ${symbol.toUpperCase()}`
 						: 0,
 					popupWarning: initialValues.popup_warning
 				},

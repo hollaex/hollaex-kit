@@ -246,6 +246,7 @@ class QuickTradeContainer extends Component {
 						}
 						orderLimits={orderLimits}
 						pairs={pairs}
+						coins={coins}
 					/>
 					<Dialog
 						isOpen={!!end && showQuickTradeModal}

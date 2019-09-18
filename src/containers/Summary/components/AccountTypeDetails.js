@@ -37,6 +37,7 @@ const AccountTypeDetails = ({
 					</div>
 					<SummaryRequirements
 						user={user}
+						coins={coins}
 						isAccountDetails={true}
 						verificationLevel={
 							currentAccount.level || user.verification_level

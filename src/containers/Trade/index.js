@@ -208,6 +208,7 @@ class Trade extends Component {
 		if (symbol !== pair || !pairData) {
 			return <Loader background={false} />;
 		}
+		const baseValue = coins[BASE_CURRENCY] || { symbol: '' };
 
 		const USER_TABS = [
 			{
@@ -317,9 +318,10 @@ class Trade extends Component {
 		const orderbookProps = {
 			symbol,
 			pairData,
-			baseSymbol: STRINGS[`${BASE_CURRENCY.toUpperCase()}_SHORTNAME`],
+			baseSymbol: baseValue.symbol.toUpperCase(),
 			asks,
 			bids,
+			coins,
 			onPriceClick: this.onPriceClick,
 			onAmountClick: this.onAmountClick
 		};

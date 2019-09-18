@@ -693,7 +693,10 @@ class Container extends Component {
 				const { onConfirm, ...rest } = data;
 				return (
 					<RiskyOrder
-						data={rest}
+						data={{
+							coins: this.props.coins,
+							...rest
+						}}
 						onConfirm={onConfirm}
 						onClose={this.onCloseDialog}
 					/>

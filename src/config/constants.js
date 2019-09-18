@@ -530,62 +530,7 @@ export const AUDIOS = {
 	}/assets/audio/time-out-quick-trade.wav`
 };
 
-export const CURRENCIES = {
-	btc: {
-		symbol: 'btc',
-		name: STRINGS.BTC_NAME,
-		fullName: STRINGS.BTC_FULLNAME,
-		shortName: STRINGS.BTC_SHORTNAME,
-		currencySymbol: 'B',
-		formatToCurrency: formatBtcAmount,
-		formatToCurrencyFull: formatBtcFullAmount
-	},
-	eth: {
-		symbol: 'eth',
-		name: STRINGS.ETH_NAME,
-		fullName: STRINGS.ETH_FULLNAME,
-		shortName: STRINGS.ETH_SHORTNAME,
-		currencySymbol: 'E',
-		formatToCurrency: formatEthAmount,
-		formatToCurrencyFull: formatEthFullAmount
-	},
-	bch: {
-		symbol: 'bch',
-		name: STRINGS.BCH_NAME,
-		fullName: STRINGS.BCH_FULLNAME,
-		shortName: STRINGS.BCH_SHORTNAME,
-		currencySymbol: 'B',
-		formatToCurrency: formatBtcAmount,
-		formatToCurrencyFull: formatBtcFullAmount
-	},
-	xrp: {
-		symbol: 'xrp',
-		name: STRINGS.XRP_NAME,
-		fullName: STRINGS.XRP_FULLNAME,
-		shortName: STRINGS.XRP_SHORTNAME,
-		currencySymbol: 'R',
-		formatToCurrency: formatXrpAmount,
-		formatToCurrencyFull: formatXrpFullAmount
-	},
-	eur: {
-		symbol: 'eur',
-		name: STRINGS.EUR_NAME,
-		fullName: STRINGS.EUR_FULLNAME,
-		shortName: STRINGS.EUR_SHORTNAME,
-		currencySymbol: STRINGS.EUR_CURRENCY_SYMBOL,
-		formatToCurrency: formatBaseAmount,
-		formatToCurrencyFull: formatBaseAmount
-	},
-	fiat: {
-		symbol: 'fiat',
-		name: STRINGS.FIAT_NAME,
-		fullName: STRINGS.FIAT_FULLNAME,
-		shortName: STRINGS.FIAT_SHORTNAME,
-		currencySymbol: STRINGS.FIAT_CURRENCY_SYMBOL,
-		formatToCurrency: formatBaseAmount,
-		formatToCurrencyFull: formatBaseAmount
-	}
-};
+export const CURRENCY_PRICE_FORMAT = '{0} {1}';
 
 export const DEFAULT_PAIR = 'btc-eur';
 

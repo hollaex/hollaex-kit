@@ -255,7 +255,7 @@ class OrderEntry extends Component {
 		}
 	};
 
-	generateFormValues = (pair = '', byuingPair = '', priceInitialized = false, sizeInitialized = false) => {
+	generateFormValues = (pair = '', buyingPair = '', priceInitialized = false, sizeInitialized = false) => {
 		const {
 
 			min_size,
@@ -264,8 +264,11 @@ class OrderEntry extends Component {
 			increment_price,
 			min_price,
 			max_price,
+			coins
 
 		} = this.props;
+		const { symbol = '' } = coins[pair] || {};
+		const buyData = coins[buyingPair] || { symbol: '' };
 		const formValues = {
 			type: {
 				name: 'type',
@@ -306,7 +309,7 @@ class OrderEntry extends Component {
 					minValue(min_size),
 					maxValue(max_size)
 				],
-				currency: STRINGS[`${pair.toUpperCase()}_SHORTNAME`],
+				currency: symbol.toUpperCase(),
 				initializeEffect: sizeInitialized,
 				parse: (value = '') => {
 					let decimal = getDecimals(min_size);
@@ -335,7 +338,7 @@ class OrderEntry extends Component {
 					maxValue(max_price),
 					step(increment_price)
 				],
-				currency: STRINGS[`${byuingPair.toUpperCase()}_SHORTNAME`],
+				currency: buyData.symbol.toUpperCase(),
 				initializeEffect: priceInitialized
 			}
 		};
@@ -351,7 +354,7 @@ class OrderEntry extends Component {
 	};
 
 	render() {
-		const { balance, type, side, pair_base, pair_2, price } = this.props;
+		const { balance, type, side, pair_base, pair_2, price, coins } = this.props;
 		const {
 			initialValues,
 			formValues,
@@ -359,9 +362,11 @@ class OrderEntry extends Component {
 			orderFees,
 			outsideFormError
 		} = this.state;
+		const pairBase = coins[pair_base] || { symbol: '' };
+		const pairTwo = coins[pair_2] || { symbol: '' };
 
-		const currencyName = STRINGS[`${pair_base.toUpperCase()}_NAME`];
-		const buyingName = STRINGS[`${pair_2.toUpperCase()}_SHORTNAME`];
+		const currencyName = pairBase.fullname;
+		const buyingName = pairTwo.symbol.toUpperCase();
 		if (isLoggedIn() && !balance.hasOwnProperty(`${pair_2}_balance`)) {
 			return <Loader relative={true} background={false} />;
 		}
@@ -440,6 +445,7 @@ const mapStateToProps = (state) => {
 		balance: state.user.balance,
 		user: state.user,
 		settings: state.user.settings,
+		coins: state.app.coins
 	};
 };
 

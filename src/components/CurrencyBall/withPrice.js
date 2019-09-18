@@ -9,10 +9,10 @@ import {
 import { BASE_CURRENCY } from '../../config/constants';
 
 const CurrencyBallWithPrice = ({ symbol, amount, price, size = 'm', coins = {} }) => {
-	const { name, min } = coins[symbol] || {};
-	const baseCoin = coins[BASE_CURRENCY] || {};
-	const currencyShortName = STRINGS[`${symbol.toUpperCase()}_SHORTNAME`]
-		? STRINGS[`${symbol.toUpperCase()}_SHORTNAME`]
+	const { name, min, ...rest } = coins[symbol] || { symbol: '' };
+	const baseCoin = coins[BASE_CURRENCY] || { symbol: '' };
+	const currencyShortName = rest.symbol
+		? rest.symbol.toUpperCase()
 		: name;
 	return (
 		<div className="with_price-block_amount d-flex direction_ltr">
@@ -23,7 +23,7 @@ const CurrencyBallWithPrice = ({ symbol, amount, price, size = 'm', coins = {} }
 					<div className={`with_price-block_amount-value-${BASE_CURRENCY.toLowerCase()} d-flex align-items-end`}>
 						{` ~ ${formatToCurrency(
 							calculatePrice(amount, price), baseCoin.min
-						)} ${STRINGS[`${BASE_CURRENCY.toUpperCase()}_SHORTNAME`]}`}
+						)} ${baseCoin.symbol.toUpperCase()}`}
 					</div>
 				)}
 			</div>

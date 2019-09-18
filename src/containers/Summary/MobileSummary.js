@@ -8,7 +8,7 @@ import AccountAssets from './components/AccountAssets';
 import TradingVolume from './components/TradingVolume';
 import AccountDetails from './components/AccountDetails';
 
-import { BASE_CURRENCY } from '../../config/constants'; 
+import { BASE_CURRENCY } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 
 const MobileSummary = ({
@@ -57,7 +57,11 @@ const MobileSummary = ({
                 <SummaryBlock
                     title={STRINGS.SUMMARY.URGENT_REQUIREMENTS}
                     wrapperClassname="w-100" >
-                    <SummaryRequirements user={user} lastMonthVolume={lastMonthVolume} contentClassName="requirements-content" />
+                    <SummaryRequirements
+                        coins={coins}
+                        user={user}
+                        lastMonthVolume={lastMonthVolume}
+                        contentClassName="requirements-content" />
                 </SummaryBlock>
             </div>
             <div className="assets-wrapper w-100">

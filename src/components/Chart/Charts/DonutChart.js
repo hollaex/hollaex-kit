@@ -4,6 +4,7 @@ import { Link } from 'react-router';
 import classnames from 'classnames';
 
 import STRINGS from '../../../config/localizedStrings';
+import { BASE_CURRENCY } from '../../../config/constants';
 
 const colors_currencies = {
 	eur: '#00a651',
@@ -195,6 +196,7 @@ class DonutChart extends Component {
 				</g>
 			);
 		} else if (data.balance > 0) {
+			const { symbol = '' } = this.props.coins[data.symbol || BASE_CURRENCY] || {};
 			return (
 				<g key={i}>
 					<path
@@ -221,7 +223,7 @@ class DonutChart extends Component {
 								textAnchor="middle"
 								className="donut-label-pair"
 							>
-								{STRINGS[`${data.symbol.toUpperCase()}_SHORTNAME`]}
+								{symbol.toUpperCase()}
 							</text>
 						</Fragment>
 					) : null}

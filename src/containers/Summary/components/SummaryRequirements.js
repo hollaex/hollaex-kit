@@ -88,9 +88,10 @@ const checkMonth = (currentDate, month) => {
 	return diffMonth >= month;
 };
 
-const getRequirements = (user, level, lastMonthVolume) => {
+const getRequirements = (user, level, lastMonthVolume, coins) => {
 	const { address, phone_number, id_data = {}, bank_account } = user.userData;
 	const bank_verified = checkBankVerification(bank_account, id_data);
+	const { symbol = '' } = coins[BASE_CURRENCY] || {};
 	const identity = address.country
 		? id_data.status && id_data.status === 3
 			? 3
@@ -135,7 +136,7 @@ const getRequirements = (user, level, lastMonthVolume) => {
 				title: STRINGS.formatString(
 					STRINGS.SUMMARY.TRADING_VOLUME_EQUIVALENT,
 					TRADING_VOLUME_CHART_LIMITS[0],
-					STRINGS[`${BASE_CURRENCY.toUpperCase()}_CURRENCY_SYMBOL`]
+					symbol.toUpperCase()
 				).join(' '),
 				completed: TRADING_VOLUME_CHART_LIMITS[0] <= lastMonthVolume
 			}
@@ -155,7 +156,7 @@ const getRequirements = (user, level, lastMonthVolume) => {
 				title: STRINGS.formatString(
 					STRINGS.SUMMARY.TRADING_VOLUME_EQUIVALENT,
 					TRADING_VOLUME_CHART_LIMITS[1],
-					STRINGS[`${BASE_CURRENCY.toUpperCase()}_CURRENCY_SYMBOL`]
+					symbol.toUpperCase()
 				).join(' '),
 				completed: TRADING_VOLUME_CHART_LIMITS[1] <= lastMonthVolume
 			}
@@ -217,6 +218,7 @@ const getStatusIcon = (reqObj, isAccountDetails) => {
 };
 
 const SummaryRequirements = ({
+	coins,
 	user,
 	isAccountDetails = false,
 	contentClassName = '',
@@ -233,7 +235,7 @@ const SummaryRequirements = ({
 	const selectedLevel = isAccountDetails
 		? verificationLevel || user.verification_level
 		: 2;
-	const requirement = getRequirements(user, selectedLevel, lastMonthVolume);
+	const requirement = getRequirements(user, selectedLevel, lastMonthVolume, coins);
 	let requirementResolved = getAllCompleted(requirement);
 	return (
 		<div className="d-flex">

@@ -3,11 +3,13 @@ import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
 import { Accordion } from '../';
 import { BASE_CURRENCY } from '../../config/constants';
-import { calculateBalancePrice,
+import {
+	calculateBalancePrice,
 	calculatePrice,
 	calculatePricePercentage,
 	donutFormatPercentage,
-	formatToCurrency } from '../../utils/currency';
+	formatToCurrency
+} from '../../utils/currency';
 import WalletSection from './Section';
 import { DonutChart } from '../../components';
 import STRINGS from '../../config/localizedStrings';
@@ -40,7 +42,7 @@ class Wallet extends Component {
 	}
 
 	generateSection = (symbol, price, balance, orders, coins) => {
-		const { min } = coins[symbol] || {};
+		const { min, ...rest } = coins[symbol] || { symbol: '' };
 		const name = STRINGS[`${symbol.toUpperCase()}_NAME`];
 		return {
 			accordionClassName: 'wallet_section-wrapper',
@@ -49,7 +51,7 @@ class Wallet extends Component {
 			titleInformation: (
 				<div className="wallet_section-title-amount">
 					{formatToCurrency(balance[`${symbol}_balance`], min)}
-					<span className="mx-1">{STRINGS[`${symbol.toUpperCase()}_CURRENCY_SYMBOL`]}</span>
+					<span className="mx-1">{rest.symbol.toUpperCase()}</span>
 				</div>
 			),
 			content: (
@@ -86,7 +88,7 @@ class Wallet extends Component {
 
 		this.setState({ sections, chartData: data, totalAssets: formatToCurrency(totalAssets, baseCoin.min) });
 	};
-	
+
 	goToWallet = () => browserHistory.push('/wallet');
 
 	render() {
@@ -95,11 +97,14 @@ class Wallet extends Component {
 		if (Object.keys(this.props.balance).length === 0) {
 			return <div />;
 		}
+		const { symbol = '' } = this.props.coins[BASE_CURRENCY] || {};
 
 		return (
 			<div className="wallet-wrapper">
 				<div className="donut-container pointer" onClick={this.goToWallet}>
-					<DonutChart chartData={chartData} />
+					<DonutChart
+						coins={this.props.coins}
+						chartData={chartData} />
 				</div>
 				<Accordion sections={sections} />
 				{BASE_CURRENCY && (
@@ -108,7 +113,7 @@ class Wallet extends Component {
 							{STRINGS.WALLET.TOTAL_ASSETS}
 						</div>
 						<div className="wallet_section-total_asset d-flex justify-content-end">
-							{STRINGS[`${BASE_CURRENCY.toUpperCase()}_CURRENCY_SYMBOL`]}
+							{symbol.toUpperCase()}
 							<span>{totalAssets}</span>
 						</div>
 					</div>

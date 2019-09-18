@@ -24,7 +24,8 @@ import {
     calculateBalancePrice,
     donutFormatPercentage,
     calculatePrice,
-    calculatePricePercentage } from '../../utils/currency';
+    calculatePricePercentage
+} from '../../utils/currency';
 import { getLastMonthVolume } from './components/utils';
 
 const default_trader_account = TRADING_ACCOUNT_TYPE.shrimp;
@@ -183,7 +184,11 @@ class Summary extends Component {
                                 <SummaryBlock
                                     title={STRINGS.SUMMARY.URGENT_REQUIREMENTS}
                                     wrapperClassname="w-100" >
-                                    <SummaryRequirements user={user} lastMonthVolume={lastMonthVolume} contentClassName="requirements-content" />
+                                    <SummaryRequirements
+                                        coins={coins}
+                                        user={user}
+                                        lastMonthVolume={lastMonthVolume}
+                                        contentClassName="requirements-content" />
                                 </SummaryBlock>
                             </div>
                         </div>
@@ -257,7 +262,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
     logoutconfirm: bindActionCreators(logoutconfirm, dispatch),
-	logout: bindActionCreators(logout, dispatch),
+    logout: bindActionCreators(logout, dispatch),
     openFeesStructureandLimits: bindActionCreators(openFeesStructureandLimits, dispatch),
     openContactForm: bindActionCreators(openContactForm, dispatch),
     setNotification: bindActionCreators(setNotification, dispatch)

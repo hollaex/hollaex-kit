@@ -182,7 +182,8 @@ class TradingVolume extends Component {
 
 	render() {
 		const { chartData, limits, limitContent, peakVolume } = this.state;
-		const { tradeVolumes } = this.props;
+		const { tradeVolumes, coins } = this.props;
+		const { fullname } = coins[BASE_CURRENCY] || {};
 		return (
 			<div className="summary-section_2">
 				<div className="w-100 h-100">
@@ -190,7 +191,7 @@ class TradingVolume extends Component {
 						<div>
 							{STRINGS.formatString(
 								STRINGS.SUMMARY.TRADING_VOLUME_TXT_1,
-								STRINGS[`${BASE_CURRENCY.toUpperCase()}_FULLNAME`]
+								fullname
 							)}
 						</div>
 						<div>{STRINGS.SUMMARY.TRADING_VOLUME_TXT_2}</div>

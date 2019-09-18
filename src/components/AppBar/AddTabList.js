@@ -81,7 +81,8 @@ class AddTabList extends Component {
                         ? Object.keys(tabMenu).map((pair, index) => {
                             let menu = tabMenu[pair] || {};
                             let ticker = tickers[pair] || {};
-                            let { min } = coins[menu.pair_base || BASE_CURRENCY] || {};
+                            let { min, symbol = '' } = coins[menu.pair_base || BASE_CURRENCY] || {};
+                            let pairTwo = coins[menu.pair_2 || BASE_CURRENCY] || { symbol: '' };
                             const priceDifference = (ticker.close || 0) - (ticker.open || 0);
                             const tickerPercent = priceDifference === 0 ? 0 : ((priceDifference / ticker.open) * 100);
                             const priceDifferencePercent = isNaN(tickerPercent) ? formatPercentage(0) : formatPercentage(tickerPercent);
@@ -98,9 +99,9 @@ class AddTabList extends Component {
                                     </div>
                                     <ReactSVG path={ICONS[`${menu.pair_base.toUpperCase()}_ICON`]} wrapperClassName="app-bar-add-tab-icons" />
                                     <div className="app_bar-pair-font">
-                                        {STRINGS[`${menu.pair_base.toUpperCase()}_SHORTNAME`]}/{STRINGS[`${menu.pair_2.toUpperCase()}_SHORTNAME`]}:
+                                        {symbol.toUpperCase()}/{pairTwo.symbol.toUpperCase()}:
                                     </div>
-                                    <div className="title-font ml-1">{`${STRINGS[`${menu.pair_2.toUpperCase()}_CURRENCY_SYMBOL`]} ${formatAverage(formatToCurrency(ticker.close, min))}`}</div>
+                                    <div className="title-font ml-1">{`${pairTwo.symbol.toUpperCase()} ${formatAverage(formatToCurrency(ticker.close, min))}`}</div>
                                     <div className={priceDifference < 0 ? "app-price-diff-down app-bar-price_diff_down" : "app-bar-price_diff_up app-price-diff-up"}>
                                         {formatAverage(formatToCurrency(priceDifference, min))}
                                     </div>

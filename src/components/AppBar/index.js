@@ -269,7 +269,8 @@ class AppBar extends Component {
 			router,
 			activePath,
 			location,
-			pairs
+			pairs,
+			coins
 		} = this.props;
 		const {
 			isAccountMenu,
@@ -281,9 +282,8 @@ class AppBar extends Component {
 		let pair = '';
 		if (Object.keys(pairs).length) {
 			const { pair_base } = pairs[Object.keys(pairs)[0]];
-			pair = `${pair_base}-${STRINGS[
-				`${BASE_CURRENCY.toUpperCase()}_SHORTNAME_EN`
-			].toLowerCase()}`;
+			const { symbol = '' } = coins[BASE_CURRENCY] || {};
+			pair = `${pair_base}-${symbol.toLowerCase()}`;
 		} else {
 			pair = this.props.pair;
 		}
@@ -419,7 +419,8 @@ const mapStateToProps = (state, ownProps) => {
 		user: userData,
 		theme: state.app.theme,
 		pair: state.app.pair,
-		pairs: state.app.pairs
+		pairs: state.app.pairs,
+		coins: state.app.coins
 	};
 };
 

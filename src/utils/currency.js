@@ -197,7 +197,10 @@ export const getCurrencyFromSymbol = (symbol = '') => {
 	}
 };
 
-export const checkNonBasePair = (pair) => !pair.includes(STRINGS[`${BASE_CURRENCY.toUpperCase()}_SHORTNAME_EN`].toLowerCase());
+export const checkNonBasePair = (pair, coins) => {
+	const { symbol = '' } = coins[BASE_CURRENCY] || {};
+	return !pair.includes(symbol.toLowerCase());
+};
 
 export const toFixed = (exponential) => {
 	if (Math.abs(exponential) < 1.0) {
