@@ -1,6 +1,6 @@
-import React from "react";
-import { Alert } from "antd";
-import { formatCurrency } from "../../../utils";
+import React from 'react';
+import { Alert } from 'antd';
+import { formatCurrency } from '../../../utils';
 
 const UserList = ({ error, numbers }) => {
 	return (
@@ -12,7 +12,7 @@ const UserList = ({ error, numbers }) => {
 					description={error}
 					type="error"
 					showIcon
-					style={{ width: "200%", left: "-100%" }}
+					style={{ width: '200%', left: '-100%' }}
 				/>
 			)}
 			{numbers && (

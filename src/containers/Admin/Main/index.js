@@ -1,24 +1,24 @@
-import React, { Component } from "react";
-import UserList from "./userList";
-import TradingVolume from "./tradingVolume";
-import { Spin, Row, Col } from "antd";
-import { getNumOfUsers, getMonthlyTradingVolume, requestFees } from "./actions";
-import { getEmail } from "../../../utils";
-import { checkRole, isAdmin } from "../../../utils/token";
-import "./index.css";
+import React, { Component } from 'react';
+import UserList from './userList';
+import TradingVolume from './tradingVolume';
+import { Spin, Row, Col } from 'antd';
+import { getNumOfUsers, getMonthlyTradingVolume, requestFees } from './actions';
+import { getEmail } from '../../../utils';
+import { checkRole, isAdmin } from '../../../utils/token';
+import './index.css';
 
 class Main extends Component {
 	state = {
 		userListLoading: true,
 		tradingVolumeLoading: true,
-		pageDisplay: "block",
+		pageDisplay: 'block',
 		numbers: 0,
-		userError: "",
-		selectedPair: "",
+		userError: '',
+		selectedPair: '',
 		tradingData: [],
 		chartData: [],
 		newPair: [],
-		tradingError: ""
+		tradingError: ''
 	};
 
 	componentWillMount() {
@@ -44,12 +44,12 @@ class Main extends Component {
 				});
 		} else {
 			this.setState({
-				userError: "not authorized"
+				userError: 'not authorized'
 			});
 		}
 	};
 
-	getTradingData = (selectedPair = "btc-eur") => {
+	getTradingData = (selectedPair = 'btc-eur') => {
 		let tableData = [],
 			chartData = [];
 		getMonthlyTradingVolume(selectedPair)
@@ -62,7 +62,7 @@ class Main extends Component {
 				if (isAdmin()) {
 					return requestFees();
 				} else {
-					throw new Error("not authorized");
+					throw new Error('not authorized');
 				}
 			})
 			.then((data) => {
@@ -79,7 +79,7 @@ class Main extends Component {
 				});
 			})
 			.catch((err) => {
-				this.setState({ tradingError: "not authorized" });
+				this.setState({ tradingError: 'not authorized' });
 			});
 	};
 

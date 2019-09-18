@@ -1,10 +1,10 @@
-import React from "react";
-import { Table, Select, Alert, Row, Col } from "antd";
-import { Sparklines, SparklinesLine, SparklinesBars } from "react-sparklines";
-import Moment from "react-moment";
+import React from 'react';
+import { Table, Select, Alert, Row, Col } from 'antd';
+import { Sparklines, SparklinesLine, SparklinesBars } from 'react-sparklines';
+import Moment from 'react-moment';
 
-import BlockchainTransaction from "../Fees/index";
-import { formatCurrency } from "../../../utils";
+import BlockchainTransaction from '../Fees/index';
+import { formatCurrency } from '../../../utils';
 
 const Option = Select.Option;
 
@@ -17,12 +17,12 @@ const formatNum = (value) => {
 };
 
 const VOLUME = [
-	{ title: "Date", dataIndex: "date", key: "date", render: formatDate },
-	{ title: "Volume", dataIndex: "volume", key: "volume", render: formatNum },
-	{ title: "High", dataIndex: "high", key: "high", render: formatNum },
-	{ title: "Low", dataIndex: "low", key: "low", render: formatNum },
-	{ title: "Open", dataIndex: "open", key: "open", render: formatNum },
-	{ title: "Close", dataIndex: "close", key: "close", render: formatNum }
+	{ title: 'Date', dataIndex: 'date', key: 'date', render: formatDate },
+	{ title: 'Volume', dataIndex: 'volume', key: 'volume', render: formatNum },
+	{ title: 'High', dataIndex: 'high', key: 'high', render: formatNum },
+	{ title: 'Low', dataIndex: 'low', key: 'low', render: formatNum },
+	{ title: 'Open', dataIndex: 'open', key: 'open', render: formatNum },
+	{ title: 'Close', dataIndex: 'close', key: 'close', render: formatNum }
 ];
 
 const TradingVolume = ({ error, data, chartData, newPair, handleChange }) => {
@@ -35,14 +35,14 @@ const TradingVolume = ({ error, data, chartData, newPair, handleChange }) => {
 	});
 	return (
 		<div className="">
-			{error !== "" ? (
+			{error !== '' ? (
 				<Alert
 					message="Error"
 					className="m-top"
 					description={error}
 					type="error"
 					showIcon
-					style={{ width: "50%" }}
+					style={{ width: '50%' }}
 				/>
 			) : (
 				<div className="main-container">
@@ -65,13 +65,13 @@ const TradingVolume = ({ error, data, chartData, newPair, handleChange }) => {
 							<Sparklines data={chartData}>
 								<SparklinesBars
 									style={{
-										stroke: "white",
-										fill: "#41c3f9",
-										fillOpacity: ".25"
+										stroke: 'white',
+										fill: '#41c3f9',
+										fillOpacity: '.25'
 									}}
 								/>
 								<SparklinesLine
-									style={{ stroke: "#41c3f9", fill: "none" }}
+									style={{ stroke: '#41c3f9', fill: 'none' }}
 								/>
 							</Sparklines>
 							<Table

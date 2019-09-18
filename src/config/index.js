@@ -1,10 +1,10 @@
 const PRODUCTION_ENDPOINT =
-	process.env.REACT_APP_SERVER_ENDPOINT || 'https://api.hollaex.com';
+	process.env.REACT_APP_SERVER_ENDPOINT || "https://api.hollaex.com";
 
 const LOCALHOST_ENDPOINT =
-	process.env.REACT_APP_LOCALHOST_ENDPOINT || 'http://localhost';
+	process.env.REACT_APP_LOCALHOST_ENDPOINT || "http://localhost";
 
-const API_PATH_V0 = '/v0';
+const API_PATH_V0 = "/v0";
 
 const generateEndpoint = (endpoint, path) => ({
 	API_URL: `${endpoint}${path}`,
