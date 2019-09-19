@@ -151,7 +151,9 @@ class DonutChart extends Component {
 	}
 
 	renderSlice = (value, i, width, height) => {
+		let data = value.data;
 		let minViewportSize = Math.min(width, height);
+		let activeSlice = this.state.hoverId === data.symbol;
 		let radius = this.state.isData
 			? (minViewportSize * 0.9) / 3.2
 			: (minViewportSize * 0.9) / 2;
@@ -159,6 +161,11 @@ class DonutChart extends Component {
 		let outerRadius = radius;
 		let labelRadious = radius + 30;
 		let cornerRadius = 0;
+		if (activeSlice) {
+			innerRadius += 5;
+			outerRadius += 5;
+			labelRadious += 5;
+		 }
 		let arcj = arc()
 			.innerRadius(innerRadius)
 			.outerRadius(outerRadius)
@@ -170,7 +177,6 @@ class DonutChart extends Component {
 			hypotenuse = Math.sqrt(x * x + y * y);
 		let valX = (x / hypotenuse) * labelRadious;
 		let valY = (y / hypotenuse) * labelRadious;
-		let data = value.data;
 		if (!this.state.isData) {
 			return (
 				<g key={i}>
@@ -202,12 +208,12 @@ class DonutChart extends Component {
 					<path
 						d={arcj(value)}
 						className={classnames(`chart_${data.symbol}`, {
-							slice_active: this.state.hoverId === data.symbol
+							slice_active: activeSlice
 						})}
 						onMouseOver={() => this.handleHover(data.symbol)}
 						onMouseOut={this.handleOut}
 					/>
-					{this.state.hoverId === data.symbol ? (
+					{activeSlice ? (
 						<Fragment>
 							<text
 								transform={translate(valX, valY)}
