@@ -3,12 +3,13 @@ import React from 'react';
 import { CurrencyBall } from '../../../components';
 import STRINGS from '../../../config/localizedStrings';
 import { formatPercentage } from '../../../utils/currency';
+import { DEFAULT_COIN_DATA } from '../../../config/constants';
 
 const getMakerRow = (pairs, coins, pair, level, index) => {
 	const { pair_base, pair_2, maker_fees } = pairs[pair];
 	const feeData = maker_fees ? maker_fees[level] : 0;
-	const pairBase = coins[pair_base] || { symbol: '' };
-	const pairTwo = coins[pair_2] || {};
+	const pairBase = coins[pair_base] || DEFAULT_COIN_DATA;
+	const pairTwo = coins[pair_2] || DEFAULT_COIN_DATA;
 	return (
 		<tr key={index}>
 			<td className="account-limits-coin" rowSpan={2}>

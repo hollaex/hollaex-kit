@@ -1,7 +1,7 @@
 import React from 'react';
 import math from 'mathjs';
 import STRINGS from '../../config/localizedStrings';
-import { BASE_CURRENCY, CURRENCY_PRICE_FORMAT } from '../../config/constants';
+import { BASE_CURRENCY, CURRENCY_PRICE_FORMAT, DEFAULT_COIN_DATA } from '../../config/constants';
 import { formatToCurrency } from '../../utils/currency';
 
 const TextHolders = ({ ordersOfSymbol, currencySymbol, hold, name }) => {
@@ -25,7 +25,7 @@ const TextHolders = ({ ordersOfSymbol, currencySymbol, hold, name }) => {
 };
 
 const Section = ({ symbol = BASE_CURRENCY, balance, orders, price, coins }) => {
-	const { fullname, min, ...rest } = coins[symbol] || { symbol: '' };
+	const { fullname, min, ...rest } = coins[symbol] || DEFAULT_COIN_DATA;
 	const ordersOfSymbol = orders.filter((order) => {
 		if (symbol === BASE_CURRENCY) {
 			return order.side === 'buy';

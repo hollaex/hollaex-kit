@@ -8,7 +8,7 @@ import AccountAssets from './components/AccountAssets';
 import TradingVolume from './components/TradingVolume';
 import AccountDetails from './components/AccountDetails';
 
-import { BASE_CURRENCY } from '../../config/constants';
+import { BASE_CURRENCY, DEFAULT_COIN_DATA } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 
 const MobileSummary = ({
@@ -29,7 +29,7 @@ const MobileSummary = ({
     onAccountTypeChange,
     onInviteFriends
 }) => {
-    const { fullname } = coins[BASE_CURRENCY] || {};
+    const { fullname } = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
     return (
         <div
             className={classnames(

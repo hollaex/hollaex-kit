@@ -1,7 +1,7 @@
 import React from 'react';
 import math from 'mathjs';
 import { connect } from 'react-redux';
-import { ICONS, BASE_CURRENCY, CURRENCY_PRICE_FORMAT } from '../../config/constants';
+import { ICONS, BASE_CURRENCY, CURRENCY_PRICE_FORMAT, DEFAULT_COIN_DATA } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 import { formatBtcAmount, formatToCurrency } from '../../utils/currency';
 import {
@@ -56,10 +56,10 @@ export const getTitleAndIcon = (type, { side, filled }) => {
 export const generateRows = (type, order, pairs, coins) => {
 	const rows = [];
 	const pair = pairs[order.symbol];
-	const { min } = coins[BASE_CURRENCY] || {};
-	const baseValue = coins[pair.pair_base] || { symbol: '' };
-	const payValue = coins[pair.pair_2] || { symbol: '' };
-	const btcValue = coins['btc'] || { symbol: '' };
+	const { min } = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
+	const baseValue = coins[pair.pair_base] || DEFAULT_COIN_DATA;
+	const payValue = coins[pair.pair_2] || DEFAULT_COIN_DATA;
+	const btcValue = coins['btc'] || DEFAULT_COIN_DATA;
 
 	if (type === 'order_added' && order.filled === 0) {
 		rows.push({

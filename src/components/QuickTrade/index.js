@@ -11,7 +11,8 @@ import {
 	ICONS,
 	DEFAULT_PAIR,
 	FLEX_CENTER_CLASSES,
-	BALANCE_ERROR
+	BALANCE_ERROR,
+	DEFAULT_COIN_DATA
 } from '../../config/constants';
 import { BASE_CURRENCY } from '../../config/constants';
 
@@ -24,9 +25,9 @@ import InputBlock from './InputBlock';
 
 const getInitialTab = (path, symbols, coins) => {
 	let activeTab = -1;
-	const baseCoin = coins[BASE_CURRENCY] || { symbol: '' };
+	const baseCoin = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
 	symbols.map((currency, index) => {
-		const { symbol } = coins[currency] || {};
+		const { symbol } = coins[currency] || DEFAULT_COIN_DATA;
 		if (path === `${symbol.toLowerCase()}-${baseCoin.symbol.toLowerCase()}`) {
 			activeTab = index;
 		}
@@ -134,7 +135,7 @@ class QuickTrade extends Component {
 			if (!icon && theme === 'dark') {
 				icon = ICONS[`${pair.toUpperCase()}_ICON`];
 			}
-			const { fullname = '' } = coins[pair] || {};
+			const { fullname = '' } = coins[pair] || DEFAULT_COIN_DATA;
 			return ({
 				title:
 					<CheckTitle
@@ -152,7 +153,7 @@ class QuickTrade extends Component {
 		const { side, value, symbol, tabs, activeTab } = this.state;
 		const { data, fetching, error } = quickTradeData;
 		const baseCoin = pairs[symbol].pair_base;
-		const { fullname } = coins[baseCoin] || {};
+		const { fullname } = coins[baseCoin] || DEFAULT_COIN_DATA;
 		return (
 			<div className={classnames('quick_trade-wrapper', 'd-flex', 'flex-column')}>
 				<div

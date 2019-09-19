@@ -9,10 +9,10 @@ import {
 } from "../../components/Form/validations";
 import { isMobile } from "react-device-detect";
 import STRINGS from "../../config/localizedStrings";
-import { ICONS, BASE_CURRENCY } from "../../config/constants";
+import { ICONS, BASE_CURRENCY, DEFAULT_COIN_DATA } from "../../config/constants";
 
 export const generateInitialValues = (symbol, coins = {}) => {
-	const { min, withdrawal_fee } = coins[symbol];
+	const { min, withdrawal_fee } = coins[symbol] || DEFAULT_COIN_DATA;
 	const initialValues = {};
 
 	if (coins[symbol]) {
@@ -36,7 +36,7 @@ export const generateFormValues = (
 ) => {
 	const { fullname, min, increment_unit, withdrawal_limits = {} } = coins[
 		symbol
-	] || {};
+	] || DEFAULT_COIN_DATA;
 	let MAX = withdrawal_limits[verification_level];
 	if (withdrawal_limits[verification_level] === 0) MAX = "";
 	if (withdrawal_limits[verification_level] === -1) MAX = 0;

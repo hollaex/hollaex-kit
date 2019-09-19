@@ -1,7 +1,7 @@
 import React from 'react';
 import math from 'mathjs';
 import { connect } from 'react-redux';
-import { ICONS, CURRENCY_PRICE_FORMAT } from '../../config/constants';
+import { ICONS, CURRENCY_PRICE_FORMAT, DEFAULT_COIN_DATA } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 import {
 	NotificationWraper,
@@ -43,8 +43,8 @@ const calculateValues = (data = [], pair, coins = {}) => {
 	let btcAccumulated = math.fraction(0);
 	let baseAccumulated = math.fraction(0);
 	const averages = [];
-	const baseFormat = coins[pair.pair_base] || {};
-	const secondaryFormat = coins[pair.pair_2] || {};
+	const baseFormat = coins[pair.pair_base] || DEFAULT_COIN_DATA;
+	const secondaryFormat = coins[pair.pair_2] || DEFAULT_COIN_DATA;
 	data.forEach(({ size, price, filled, side }) => {
 		let calcSize = size;
 		if (side === SIDE_BUY) {
@@ -67,8 +67,8 @@ const calculateValues = (data = [], pair, coins = {}) => {
 
 export const TradeDisplay = ({ side, data, pairs, coins, ...rest }) => {
 	const pair = data[0] ? pairs[data[0].symbol] : { pair_base: '', pair_2: '' };
-	const baseValue = coins[pair.pair_base] || { symbol: '' };
-	const payValue = coins[pair.pair_2] || { symbol: '' };
+	const baseValue = coins[pair.pair_base] || DEFAULT_COIN_DATA;
+	const payValue = coins[pair.pair_2] || DEFAULT_COIN_DATA;
 
 	const actionText =
 		side === 'sell' ? STRINGS.ORDER_SOLD : STRINGS.ORDER_BOUGHT;

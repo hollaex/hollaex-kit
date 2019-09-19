@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux';
 import { isMobile } from 'react-device-detect';
 
 import STRINGS from '../../config/localizedStrings';
-import { ICONS, BALANCE_ERROR, BASE_CURRENCY } from '../../config/constants';
+import { ICONS, BALANCE_ERROR, BASE_CURRENCY, DEFAULT_COIN_DATA } from '../../config/constants';
 
 import {
 	QuickTrade,
@@ -223,8 +223,8 @@ class QuickTradeContainer extends Component {
 		const { data, order } = quoteData;
 		const end = quoteData.data.exp;
 		const tradeData = isLoggedIn() ? quoteData : quickTrade;
-		const baseCoin = coins[BASE_CURRENCY] || {};
-		const pairCoin = coins[pairData.pair_base] || {};
+		const baseCoin = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
+		const pairCoin = coins[pairData.pair_base] || DEFAULT_COIN_DATA;
 		return (
 			<div>
 				{isMobile && <MobileBarBack onBackClick={this.onGoBack} />}

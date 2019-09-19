@@ -4,7 +4,7 @@ import classnames from 'classnames';
 import ReactSVG from 'react-svg';
 import MarketList from './MarketList';
 import STRINGS from '../../config/localizedStrings';
-import { BASE_CURRENCY, ICONS, CURRENCY_PRICE_FORMAT } from '../../config/constants';
+import { BASE_CURRENCY, ICONS, CURRENCY_PRICE_FORMAT, DEFAULT_COIN_DATA } from '../../config/constants';
 import { getClasesForLanguage } from '../../utils/string';
 import { formatToCurrency } from '../../utils/currency';
 
@@ -35,7 +35,7 @@ class CurrencyList extends Component {
 	render() {
 		const { className, pairs, orderBookData, activeTheme, pair, activeLanguage, coins } = this.props;
 		const { markets, focusedSymbol } = this.state;
-		const { min, symbol = '' } = coins[BASE_CURRENCY] || {};
+		const { min, symbol = '' } = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
 		const obj = {};
 		Object.entries(pairs).forEach(([key, pair]) => {
 			obj[pair.pair_base] = '';
@@ -58,7 +58,7 @@ class CurrencyList extends Component {
 					if (coin === 'bch') {
 						icon = ICONS[`${coin.toUpperCase()}_NAV_ICON`];
 					}
-					const { fullname } = coins[coin] || {};
+					const { fullname } = coins[coin] || DEFAULT_COIN_DATA;
 					return (
 						<div
 							key={index}

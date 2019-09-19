@@ -11,7 +11,8 @@ import {
 	TRADING_VOLUME_CHART_LIMITS,
 	SUMMMARY_ICON,
 	CHART_MONTHS,
-	BASE_CURRENCY
+	BASE_CURRENCY,
+	DEFAULT_COIN_DATA
 } from '../../../config/constants';
 
 class TradingVolume extends Component {
@@ -42,7 +43,7 @@ class TradingVolume extends Component {
 		const chartData = [];
 		let totalVolume = 0;
 		let peakVolume = this.state.peakVolume;
-		const { min } = coins[BASE_CURRENCY] || {};
+		const { min } = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
 		const currentMonth = moment().month();
 		let chartMonths = [...CHART_MONTHS];
 		for (let i = 0; i <= currentMonth; i++) {
@@ -183,7 +184,7 @@ class TradingVolume extends Component {
 	render() {
 		const { chartData, limits, limitContent, peakVolume } = this.state;
 		const { tradeVolumes, coins } = this.props;
-		const { fullname } = coins[BASE_CURRENCY] || {};
+		const { fullname } = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
 		return (
 			<div className="summary-section_2">
 				<div className="w-100 h-100">

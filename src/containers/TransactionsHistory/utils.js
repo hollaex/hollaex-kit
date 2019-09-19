@@ -6,7 +6,7 @@ import { isMobile } from 'react-device-detect';
 import STRINGS from '../../config/localizedStrings';
 
 import { CurrencyBall } from '../../components';
-import { BLOCKTRAIL_ENDPOINT, ETHEREUM_ENDPOINT, BITCOINCOM_ENDPOINT, BASE_CURRENCY, CURRENCY_PRICE_FORMAT } from '../../config/constants';
+import { BLOCKTRAIL_ENDPOINT, ETHEREUM_ENDPOINT, BITCOINCOM_ENDPOINT, BASE_CURRENCY, CURRENCY_PRICE_FORMAT, DEFAULT_COIN_DATA } from '../../config/constants';
 import { formatTimestamp, isBlockchainTx } from '../../utils/utils';
 import { formatToCurrency } from '../../utils/currency';
 
@@ -92,7 +92,7 @@ export const generateTradeHeaders = (symbol, pairs, coins) => {
 			exportToCsv: ({ size = 0, ...data }) => {
 				if (pairs[data.symbol]) {
 					const symbol = pairs[data.symbol].pair_base;
-					const { min, ...rest } = coins[symbol || BASE_CURRENCY] || { symbol: '' };
+					const { min, ...rest } = coins[symbol || BASE_CURRENCY] || DEFAULT_COIN_DATA;
 					const shortName = rest.symbol.toUpperCase();
 					return STRINGS.formatString(
 						CURRENCY_PRICE_FORMAT,
@@ -104,7 +104,7 @@ export const generateTradeHeaders = (symbol, pairs, coins) => {
 			renderCell: ({ size = 0, ...data }, key, index) => {
 				if (pairs[data.symbol]) {
 					const symbol = pairs[data.symbol].pair_base;
-					const { min, ...rest } = coins[symbol || BASE_CURRENCY] || { symbol: '' };
+					const { min, ...rest } = coins[symbol || BASE_CURRENCY] || DEFAULT_COIN_DATA;
 					const shortName = rest.symbol.toUpperCase();
 					return (
 						<td key={index}>
@@ -124,7 +124,7 @@ export const generateTradeHeaders = (symbol, pairs, coins) => {
 			exportToCsv: ({ price = 0, size = 0, quick, symbol }) => {
 				if (pairs[symbol]) {
 					const { pair_2 } = pairs[symbol];
-					const { min, ...rest } = coins[pair_2 || BASE_CURRENCY] || { symbol: '' };
+					const { min, ...rest } = coins[pair_2 || BASE_CURRENCY] || DEFAULT_COIN_DATA;
 					return STRINGS.formatString(
 						CURRENCY_PRICE_FORMAT,
 						formatToCurrency(
@@ -138,7 +138,7 @@ export const generateTradeHeaders = (symbol, pairs, coins) => {
 			renderCell: ({ price = 0, size = 0, quick, symbol }, key, index) => {
 				if (pairs[symbol]) {
 					const { pair_2 } = pairs[symbol];
-					const { min, ...rest } = coins[pair_2 || BASE_CURRENCY] || { symbol: '' };
+					const { min, ...rest } = coins[pair_2 || BASE_CURRENCY] || DEFAULT_COIN_DATA;
 					return (
 						<td key={index}>
 							{STRINGS.formatString(
@@ -160,7 +160,7 @@ export const generateTradeHeaders = (symbol, pairs, coins) => {
 			exportToCsv: ({ price = 0, size = 0, quick, symbol }) => {
 				if (pairs[symbol]) {
 					const { pair_2 } = pairs[symbol];
-					const { min, ...rest } = coins[pair_2 || BASE_CURRENCY] || { symbol: '' };
+					const { min, ...rest } = coins[pair_2 || BASE_CURRENCY] || DEFAULT_COIN_DATA;
 					return STRINGS.formatString(
 						CURRENCY_PRICE_FORMAT,
 						formatToCurrency(
@@ -174,7 +174,7 @@ export const generateTradeHeaders = (symbol, pairs, coins) => {
 			renderCell: ({ price = 0, size = 0, quick, symbol }, key, index) => {
 				if (pairs[symbol]) {
 					const { pair_2 } = pairs[symbol];
-					const { min, ...rest } = coins[pair_2 || BASE_CURRENCY] || { symbol: '' };
+					const { min, ...rest } = coins[pair_2 || BASE_CURRENCY] || DEFAULT_COIN_DATA;
 					return (
 						<td key={index}>
 							{STRINGS.formatString(
@@ -200,7 +200,7 @@ export const generateTradeHeaders = (symbol, pairs, coins) => {
 				if (pairs[symbol]) {
 					const { pair_base, pair_2 } = pairs[symbol];
 					const pair = side === 'buy' ? pair_base : pair_2;
-					const { min, ...rest } = coins[pair || BASE_CURRENCY] || { symbol: '' };
+					const { min, ...rest } = coins[pair || BASE_CURRENCY] || DEFAULT_COIN_DATA;
 					return STRINGS.formatString(
 						CURRENCY_PRICE_FORMAT,
 						formatToCurrency(
@@ -218,7 +218,7 @@ export const generateTradeHeaders = (symbol, pairs, coins) => {
 				if (pairs[symbol]) {
 					const { pair_base, pair_2 } = pairs[symbol];
 					const pair = side === 'buy' ? pair_base : pair_2;
-					const { min, ...rest } = coins[pair || BASE_CURRENCY] || { symbol: '' };
+					const { min, ...rest } = coins[pair || BASE_CURRENCY] || DEFAULT_COIN_DATA;
 					return (
 						<td key={index}>
 							{STRINGS.formatString(
@@ -253,7 +253,7 @@ export const generateWithdrawalsHeaders = (symbol, coins = {}, withdrawalPopup) 
 			label: '',
 			key: 'icon',
 			renderCell: ({ currency }, key, index) => {
-				const data = coins[currency] || { symbol: '' };
+				const data = coins[currency] || DEFAULT_COIN_DATA;
 				return (
 					<td className={classnames('icon-cell')} key={index}>
 						<CurrencyBall name={data.symbol.toUpperCase()} symbol={currency} size="s" />
@@ -265,11 +265,11 @@ export const generateWithdrawalsHeaders = (symbol, coins = {}, withdrawalPopup) 
 			label: STRINGS.CURRENCY,
 			key: 'currency',
 			exportToCsv: ({ currency }) => {
-				const { fullname } = coins[currency] || {};
+				const { fullname } = coins[currency] || DEFAULT_COIN_DATA;
 				return fullname;
 			},
 			renderCell: ({ currency }, key, index) => {
-				const { fullname } = coins[currency] || {};
+				const { fullname } = coins[currency] || DEFAULT_COIN_DATA;
 				return (
 					<td key={index}>{fullname}</td>
 				)
@@ -290,11 +290,11 @@ export const generateWithdrawalsHeaders = (symbol, coins = {}, withdrawalPopup) 
 			label: STRINGS.AMOUNT,
 			key: 'amount',
 			exportToCsv: ({ amount = 0, fee = 0, currency }) => {
-				const { min, ...rest } = coins[currency || BASE_CURRENCY] || { symbol: '' };
+				const { min, ...rest } = coins[currency || BASE_CURRENCY] || DEFAULT_COIN_DATA;
 				return `${formatToCurrency(amount - fee, min)} ${rest.symbol.toUpperCase()}`;
 			},
 			renderCell: ({ amount = 0, fee = 0, currency }, key, index) => {
-				const { min, ...rest } = coins[currency || BASE_CURRENCY] || { symbol: '' };
+				const { min, ...rest } = coins[currency || BASE_CURRENCY] || DEFAULT_COIN_DATA;
 				return (
 					<td key={index}>{`${formatToCurrency(
 						amount - fee,
@@ -309,7 +309,7 @@ export const generateWithdrawalsHeaders = (symbol, coins = {}, withdrawalPopup) 
 			key: 'fee',
 			exportToCsv: ({ fee = 0 }) => fee,
 			renderCell: ({ fee, price, size, currency }, key, index) => {
-				const data = coins[currency] || { symbol: '' };
+				const data = coins[currency] || DEFAULT_COIN_DATA;
 				if (fee === 0) {
 					return <td key={index}>{calculateFeeAmount(fee)}</td>;
 				}

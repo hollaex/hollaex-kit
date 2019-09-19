@@ -5,7 +5,7 @@ import ReactSVG from 'react-svg';
 import classnames from 'classnames';
 
 import { Paginator, SearchBox } from '../../components';
-import { ICONS, BASE_CURRENCY } from '../../config/constants';
+import { ICONS, BASE_CURRENCY, DEFAULT_COIN_DATA } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 import { formatPercentage, formatAverage, formatToCurrency } from '../../utils/currency';
 
@@ -91,7 +91,7 @@ class AddTradeTab extends Component {
         let searchValue = value.toLowerCase().trim();
         Object.keys(pairs).map(key => {
             let temp = pairs[key];
-            const { fullname } = coins[temp.pair_base] || {};
+            const { fullname } = coins[temp.pair_base] || DEFAULT_COIN_DATA;
             let cashName = fullname ? fullname.toLowerCase() : '';
             if (key.indexOf(searchValue) !== -1 ||
                 temp.pair_base.indexOf(searchValue) !== -1 ||
@@ -152,8 +152,8 @@ class AddTradeTab extends Component {
                     <div className="d-flex flex-wrap p-3 my-5">
                         {data.map((key, index) => {
                             let pair = pairs[key];
-                            let { min, fullname, symbol = '' } = coins[pair.pair_base || BASE_CURRENCY] || {};
-                            const pairTwo = coins[pair.pair_2] || { symbol: '' };
+                            let { min, fullname, symbol = '' } = coins[pair.pair_base || BASE_CURRENCY] || DEFAULT_COIN_DATA;
+                            const pairTwo = coins[pair.pair_2] || DEFAULT_COIN_DATA;
                             let ticker = tickers[key] || {};
                             const priceDifference = (ticker.close || 0) - (ticker.open || 0);
                             const tickerPercent = priceDifference === 0 ? 0 : ((priceDifference / ticker.open) * 100);

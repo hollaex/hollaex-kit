@@ -7,7 +7,7 @@ import { SubmissionError, change } from 'redux-form';
 import { isMobile } from 'react-device-detect';
 import { Link } from 'react-router';
 
-import { ICONS, BASE_CURRENCY } from '../../config/constants';
+import { ICONS, BASE_CURRENCY, DEFAULT_COIN_DATA } from '../../config/constants';
 import { IconTitle } from '../../components';
 import {
 	submitOrder,
@@ -208,7 +208,7 @@ class Trade extends Component {
 		if (symbol !== pair || !pairData) {
 			return <Loader background={false} />;
 		}
-		const baseValue = coins[BASE_CURRENCY] || { symbol: '' };
+		const baseValue = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
 
 		const USER_TABS = [
 			{

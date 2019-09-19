@@ -11,7 +11,8 @@ import {
 	PRO_URL,
 	DEFAULT_VERSION_REDIRECT,
 	ICONS,
-	BASE_CURRENCY
+	BASE_CURRENCY,
+	DEFAULT_COIN_DATA
 } from '../../config/constants';
 import { LinkButton } from './LinkButton';
 import PairTabs from './PairTabs';
@@ -285,7 +286,7 @@ class AppBar extends Component {
 		let pair = '';
 		if (Object.keys(pairs).length) {
 			const { pair_base } = pairs[Object.keys(pairs)[0]];
-			const { symbol = '' } = coins[BASE_CURRENCY] || {};
+			const { symbol } = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
 			pair = `${pair_base}-${symbol.toLowerCase()}`;
 		} else {
 			pair = this.props.pair;

@@ -1,5 +1,6 @@
 // import { BASE_CURRENCY } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
+import { DEFAULT_COIN_DATA } from '../../config/constants';
 
 // const generateBaseDepositTexts = (strings) => ({
 // 	TITLE: strings.formatString(
@@ -16,7 +17,7 @@ import STRINGS from '../../config/localizedStrings';
 
 const generateCryptoDepositTexts = (strings, status, currency, coins) => {
 	// const name = strings[`${currency}_NAME`];
-	const { fullname } = coins[currency] || {};
+	const { fullname } = coins[currency] || DEFAULT_COIN_DATA;
 	return {
 		TITLE: status
 			? strings.formatString(

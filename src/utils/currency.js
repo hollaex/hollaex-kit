@@ -1,7 +1,7 @@
 import math from 'mathjs';
 import numbro from 'numbro';
 import STRINGS from '../config/localizedStrings';
-import { BASE_CURRENCY } from '../config/constants';
+import { BASE_CURRENCY, DEFAULT_COIN_DATA } from '../config/constants';
 
 export const BTC_FORMAT = '0,0.[0000]';
 export const ETH_FORMAT = '0,0.[0000]';
@@ -132,7 +132,7 @@ export const calculatePricePercentage = (value = 0, total) => {
 };
 
 export const generateWalletActionsText = (symbol, coins, useFullName = false) => {
-	const { fullname } = coins[symbol] || {};
+	const { fullname } = coins[symbol] || DEFAULT_COIN_DATA;
 	const name = fullname;
 
 	const nameToDisplay = useFullName ? fullname : name;
@@ -198,7 +198,7 @@ export const getCurrencyFromSymbol = (symbol = '') => {
 };
 
 export const checkNonBasePair = (pair, coins) => {
-	const { symbol = '' } = coins[BASE_CURRENCY] || {};
+	const { symbol = '' } = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
 	return !pair.includes(symbol.toLowerCase());
 };
 

@@ -7,12 +7,13 @@ import STRINGS from "../../../config/localizedStrings";
 import {
 	BASE_CURRENCY,
 	ICONS,
-	FLEX_CENTER_CLASSES
+	FLEX_CENTER_CLASSES,
+	DEFAULT_COIN_DATA
 } from "../../../config/constants";
 import { formatAverage, formatToCurrency } from "../../../utils/currency";
 
 const AccountAssets = ({ chartData = [], totalAssets, balance, coins }) => {
-	const baseValue = coins[BASE_CURRENCY] || { symbol: "eur" };
+	const baseValue = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
 	return (
 		<div className="summary-section_2">
 			<div className="summary-content-txt assets-description">

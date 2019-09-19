@@ -3,7 +3,7 @@ import math from 'mathjs';
 import ReactSVG from 'react-svg';
 import { Button } from '../../components';
 import { formatToCurrency } from '../../utils/currency';
-import { ICONS, BASE_CURRENCY, CURRENCY_PRICE_FORMAT } from '../../config/constants';
+import { ICONS, BASE_CURRENCY, CURRENCY_PRICE_FORMAT, DEFAULT_COIN_DATA } from '../../config/constants';
 
 import STRINGS from '../../config/localizedStrings';
 
@@ -33,8 +33,8 @@ const ReviewModalContent = ({
 	onClickAccept,
 	onClickCancel
 }) => {
-	const { min, fullname, symbol = '' } = coins[currency || BASE_CURRENCY] || {};
-	const baseCoin = coins[BASE_CURRENCY] || { symbol: '' };
+	const { min, fullname, symbol = '' } = coins[currency || BASE_CURRENCY] || DEFAULT_COIN_DATA;
+	const baseCoin = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
 	const shortName = symbol.toUpperCase();
 
 	const totalTransaction = math.number(

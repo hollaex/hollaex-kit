@@ -1,7 +1,7 @@
 import React from 'react';
 import EventListener from 'react-event-listener';
 import { connect } from 'react-redux';
-import { ICONS, CURRENCY_PRICE_FORMAT } from '../../config/constants';
+import { ICONS, CURRENCY_PRICE_FORMAT, DEFAULT_COIN_DATA } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 import {
 	NotificationWraper,
@@ -13,8 +13,8 @@ import { formatToCurrency } from '../../utils/currency';
 
 const generateRows = ({ order, pairData }, coins) => {
 	const { type, side, price, size, orderFees, orderPrice } = order;
-	const secondaryFormat = coins[pairData.pair_2] || { symbol: '' };
-	const baseFormat = coins[pairData.pair_base] || { symbol: '' };
+	const secondaryFormat = coins[pairData.pair_2] || DEFAULT_COIN_DATA;
+	const baseFormat = coins[pairData.pair_base] || DEFAULT_COIN_DATA;
 	const rows = [];
 
 	rows.push({

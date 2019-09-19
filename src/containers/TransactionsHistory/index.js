@@ -11,7 +11,7 @@ import {
 } from '../../actions/walletActions';
 
 import { IconTitle, TabController, Loader, CheckTitle, Dialog, Button, CurrencyBallWithPrice } from '../../components';
-import { ICONS, FLEX_CENTER_CLASSES, BASE_CURRENCY } from '../../config/constants';
+import { ICONS, FLEX_CENTER_CLASSES, BASE_CURRENCY, DEFAULT_COIN_DATA } from '../../config/constants';
 import {
 	generateTradeHeaders,
 	generateTradeHeadersMobile,
@@ -210,7 +210,7 @@ class TransactionsHistory extends Component {
 		const { id, activeTheme, coins } = this.props;
 		const { activeTab, dialogIsOpen, amount } = this.state;
 		const { onCloseDialog } = this;
-		const { fullname } = coins[BASE_CURRENCY] || {};
+		const { fullname } = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
 
 		if (!id) {
 			return <Loader />;

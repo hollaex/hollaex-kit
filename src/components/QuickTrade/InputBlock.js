@@ -7,7 +7,7 @@ import { CurrencyBall } from '../../components';
 
 import { minValue, maxValue } from '../../components/Form/validations';
 import { FieldError } from '../../components/Form/FormFields/FieldWrapper';
-import { FLEX_CENTER_CLASSES, DEFAULT_PAIR } from '../../config/constants';
+import { FLEX_CENTER_CLASSES, DEFAULT_PAIR, DEFAULT_COIN_DATA } from '../../config/constants';
 import { translateError } from './utils';
 
 const PLACEHOLDER = '0.00';
@@ -83,7 +83,7 @@ class InputBlock extends Component {
 		const { text, className, error, orderLimits, pairs, coins } = this.props;
 		const { value, errorValue, symbol } = this.state;
 		const pair = pairs[symbol] || {};
-		const baseCoin = coins[pair.pair_base] || {};
+		const baseCoin = coins[pair.pair_base] || DEFAULT_COIN_DATA;
 		const shortName = baseCoin.symbol.toUpperCase();
 		const errorMessage = this.renderErrorMessage(errorValue) || error;
 		return (

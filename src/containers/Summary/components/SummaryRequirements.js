@@ -9,7 +9,8 @@ import {
 	ICONS,
 	TRADE_ACCOUNT_UPGRADE_MONTH,
 	TRADING_VOLUME_CHART_LIMITS,
-	BASE_CURRENCY
+	BASE_CURRENCY,
+	DEFAULT_COIN_DATA
 } from '../../../config/constants';
 import STRINGS from '../../../config/localizedStrings';
 
@@ -91,7 +92,7 @@ const checkMonth = (currentDate, month) => {
 const getRequirements = (user, level, lastMonthVolume, coins) => {
 	const { address, phone_number, id_data = {}, bank_account } = user.userData;
 	const bank_verified = checkBankVerification(bank_account, id_data);
-	const { symbol = '' } = coins[BASE_CURRENCY] || {};
+	const { symbol = '' } = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
 	const identity = address.country
 		? id_data.status && id_data.status === 3
 			? 3

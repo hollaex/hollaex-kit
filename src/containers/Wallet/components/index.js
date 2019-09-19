@@ -2,7 +2,7 @@ import React from 'react';
 import { ActionNotification, IconTitle } from '../../../components';
 import DumbField from '../../../components/Form/FormFields/DumbField';
 import { generateWalletActionsText, formatToCurrency } from '../../../utils/currency';
-import { ICONS } from '../../../config/constants';
+import { ICONS, DEFAULT_COIN_DATA } from '../../../config/constants';
 import STRINGS from '../../../config/localizedStrings';
 
 export const renderDumbField = (data) => <DumbField {...data} />;
@@ -58,7 +58,7 @@ export const renderTitle = (symbol, type = 'withdraw', coins) => {
 };
 
 export const renderAvailableBalanceText = (currency, balance, coins) => {
-	const { fullname, min, symbol = '' } = coins[currency] || {};
+	const { fullname, min, symbol = '' } = coins[currency] || DEFAULT_COIN_DATA;
 	const shortName = symbol ? symbol.toUpperCase() : '';
 	const available = formatToCurrency(balance[`${currency}_available`], min);
 

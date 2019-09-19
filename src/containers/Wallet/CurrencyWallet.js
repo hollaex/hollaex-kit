@@ -11,7 +11,7 @@ import {
 	MobileBarBack
 } from '../../components';
 import { changeSymbol } from '../../actions/orderbookAction';
-import { ICONS, FLEX_CENTER_CLASSES } from '../../config/constants';
+import { ICONS, FLEX_CENTER_CLASSES, DEFAULT_COIN_DATA } from '../../config/constants';
 import {
 	generateWalletActionsText,
 	getCurrencyFromName
@@ -44,7 +44,7 @@ class Wallet extends Component {
 
 	renderWalletHeaderBlock = (symbol, price, balance, coins) => {
 		const balanceValue = balance[`${symbol}_balance`] || 0;
-		const { fullname } = coins[symbol] || {};
+		const { fullname } = coins[symbol] || DEFAULT_COIN_DATA;
 		return (
 			<div className="wallet-header_block">
 				<div className="wallet-header_block-currency_title">

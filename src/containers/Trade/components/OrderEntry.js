@@ -26,7 +26,7 @@ import {
 	normalizeFloat
 } from '../../../components/Form/validations';
 import { Loader } from '../../../components';
-import { takerFee } from '../../../config/constants';
+import { takerFee, DEFAULT_COIN_DATA } from '../../../config/constants';
 
 import STRINGS from '../../../config/localizedStrings';
 import { isLoggedIn } from '../../../utils/token';
@@ -267,8 +267,8 @@ class OrderEntry extends Component {
 			coins
 
 		} = this.props;
-		const { symbol = '' } = coins[pair] || {};
-		const buyData = coins[buyingPair] || { symbol: '' };
+		const { symbol } = coins[pair] || DEFAULT_COIN_DATA;
+		const buyData = coins[buyingPair] || DEFAULT_COIN_DATA;
 		const formValues = {
 			type: {
 				name: 'type',
@@ -362,8 +362,8 @@ class OrderEntry extends Component {
 			orderFees,
 			outsideFormError
 		} = this.state;
-		const pairBase = coins[pair_base] || { symbol: '' };
-		const pairTwo = coins[pair_2] || { symbol: '' };
+		const pairBase = coins[pair_base] || DEFAULT_COIN_DATA;
+		const pairTwo = coins[pair_2] || DEFAULT_COIN_DATA;
 
 		const currencyName = pairBase.fullname;
 		const buyingName = pairTwo.symbol.toUpperCase();

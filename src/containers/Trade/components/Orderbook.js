@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import { subtract } from '../utils';
 import { formatCurrency, formatBaseAmount, formatBtcFullAmount, checkNonBasePair } from '../../../utils/currency';
 import STRINGS from '../../../config/localizedStrings';
+import { DEFAULT_COIN_DATA } from '../../../config/constants';
 
 const PriceRow = (pairBase, pairTwo, side, onPriceClick, onAmountClick) => (
 	[price, amount],
@@ -100,7 +101,7 @@ class Orderbook extends Component {
 
 		const pairBase = pairData.pair_base.toUpperCase();
 		const pairTwo = pairData.pair_2.toUpperCase();
-		const { symbol = '' } = coins[pairTwo] || {};
+		const { symbol } = coins[pairTwo] || DEFAULT_COIN_DATA;
 		return (
 			<div className="trade_orderbook-wrapper d-flex flex-column f-1 apply_rtl">
 				<EventListener target="window" onResize={this.scrollTop} />

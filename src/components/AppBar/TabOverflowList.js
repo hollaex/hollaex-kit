@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import ReactSVG from 'react-svg';
 
-import { ICONS, BASE_CURRENCY } from '../../config/constants';
+import { ICONS, BASE_CURRENCY, DEFAULT_COIN_DATA } from '../../config/constants';
 import { formatToCurrency, formatPercentage, formatAverage } from '../../utils/currency';
 
 let tickClicked = false;
@@ -41,8 +41,8 @@ class TabOverflowList extends Component {
                 <div className="app-bar-tab-overflow-content">
                     {Object.keys(selectedTabs).map((pair, index) => {
                         let menu = selectedTabs[pair] || {};
-                        let { min, symbol = '' } = coins[menu.pair_base || BASE_CURRENCY] || {};
-                        let pairTwo = coins[menu.pair_2 || BASE_CURRENCY] || { symbol: '' };
+                        let { min, symbol = '' } = coins[menu.pair_base || BASE_CURRENCY] || DEFAULT_COIN_DATA;
+                        let pairTwo = coins[menu.pair_2 || BASE_CURRENCY] || DEFAULT_COIN_DATA;
                         let ticker = tickers[pair] || {};
                         let priceDifference = (ticker.close || 0) - (ticker.open || 0);
                         const tickerPercent = ((priceDifference / ticker.open) * 100);

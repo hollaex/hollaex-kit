@@ -5,7 +5,7 @@ import { Accordion, Table, Button } from "../../components";
 import renderFields from "../../components/Form/factoryFields";
 import STRINGS from "../../config/localizedStrings";
 import { formatBaseAmount } from "../../utils/currency";
-import { BASE_CURRENCY } from "../../config/constants";
+import { BASE_CURRENCY, DEFAULT_COIN_DATA } from "../../config/constants";
 
 export const generateHeaders = onAdjustPortfolio => {
 	return [
@@ -100,7 +100,7 @@ class RiskForm extends Component {
 		} = this.props;
 		const percentPrice =
 			(totalAssets / 100) * initialValues.order_portfolio_percentage;
-		const { fullname, symbol = '' } = coins[BASE_CURRENCY] || {};
+		const { fullname, symbol = '' } = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
 		const assetData = [
 			{
 				id: 1,

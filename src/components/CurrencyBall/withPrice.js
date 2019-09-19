@@ -5,11 +5,11 @@ import {
 	formatToCurrency,
 	calculatePrice
 } from '../../utils/currency';
-import { BASE_CURRENCY } from '../../config/constants';
+import { BASE_CURRENCY, DEFAULT_COIN_DATA } from '../../config/constants';
 
 const CurrencyBallWithPrice = ({ symbol, amount, price, size = 'm', coins = {} }) => {
-	const { name, min, ...rest } = coins[symbol] || { symbol: '' };
-	const baseCoin = coins[BASE_CURRENCY] || { symbol: '' };
+	const { name, min, ...rest } = coins[symbol] || DEFAULT_COIN_DATA;
+	const baseCoin = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
 	const currencyShortName = rest.symbol
 		? rest.symbol.toUpperCase()
 		: name;

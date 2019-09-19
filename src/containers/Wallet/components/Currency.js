@@ -1,12 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router';
 import { CurrencyBall } from '../../../components';
-import { BASE_CURRENCY } from '../../../config/constants';
+import { BASE_CURRENCY, DEFAULT_COIN_DATA } from '../../../config/constants';
 import { formatToCurrency } from '../../../utils/currency';
 
 const Currency = ({ currency, balance, balanceValue, balanceText, coins }) => {
-	const { min, symbol = '' } = coins[currency || BASE_CURRENCY] || {};
-	const baseCurrency = coins[BASE_CURRENCY] || {};
+	const { min, symbol = '' } = coins[currency || BASE_CURRENCY] || DEFAULT_COIN_DATA;
+	const baseCurrency = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
 	return (
 		<div className="d-flex justify-content-center align-items-center wallet-currency f-1">
 			<Link to={`/wallet/${currency.toLowerCase()}`}>

@@ -15,7 +15,7 @@ import MobileSummary from './MobileSummary';
 import { IconTitle } from '../../components';
 import { logout } from '../../actions/authAction';
 import { openFeesStructureandLimits, openContactForm, logoutconfirm, setNotification, NOTIFICATIONS } from '../../actions/appActions';
-import { BASE_CURRENCY, TRADING_ACCOUNT_TYPE } from '../../config/constants';
+import { BASE_CURRENCY, TRADING_ACCOUNT_TYPE, DEFAULT_COIN_DATA } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 import {
     formatToCurrency,
@@ -97,7 +97,7 @@ class Summary extends Component {
 
         const totalAssets = calculateBalancePrice(balance, prices);
         Object.keys(coins).forEach((currency) => {
-            const { symbol, min } = coins[currency] || {};
+            const { symbol, min } = coins[currency] || DEFAULT_COIN_DATA;
             const currencyBalance = calculatePrice(balance[`${symbol}_balance`], prices[currency]);
             const balancePercent = calculatePricePercentage(currencyBalance, totalAssets);
             data.push({
@@ -140,7 +140,7 @@ class Summary extends Component {
     render() {
         const { user, balance, activeTheme, pairs, coins } = this.props;
         const { selectedAccount, currentTradingAccount, chartData, totalAssets, lastMonthVolume } = this.state;
-        const { fullname } = coins[BASE_CURRENCY] || {};
+        const { fullname } = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
         return (
             <div className="summary-container">
                 {!isMobile && <IconTitle

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
 import { Accordion } from '../';
-import { BASE_CURRENCY } from '../../config/constants';
+import { BASE_CURRENCY, DEFAULT_COIN_DATA } from '../../config/constants';
 import {
 	calculateBalancePrice,
 	calculatePrice,
@@ -42,7 +42,7 @@ class Wallet extends Component {
 	}
 
 	generateSection = (symbol, price, balance, orders, coins) => {
-		const { min, fullname, ...rest } = coins[symbol] || { symbol: '' };
+		const { min, fullname, ...rest } = coins[symbol] || DEFAULT_COIN_DATA;
 		return {
 			accordionClassName: 'wallet_section-wrapper',
 			title: fullname,
@@ -68,12 +68,12 @@ class Wallet extends Component {
 	calculateSections = ({ price, balance, orders, prices, coins }) => {
 		const sections = [];
 		const data = [];
-		const baseCoin = coins[BASE_CURRENCY] || {};
+		const baseCoin = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
 
 		// TODO calculate right price
 		const totalAssets = calculateBalancePrice(balance, prices);
 		Object.keys(coins).forEach((currency) => {
-			const { symbol, min } = coins[currency] || {};
+			const { symbol, min } = coins[currency] || DEFAULT_COIN_DATA;
 			const currencyBalance = calculatePrice(balance[`${symbol}_balance`], prices[currency]);
 			const balancePercent = calculatePricePercentage(currencyBalance, totalAssets);
 			data.push({

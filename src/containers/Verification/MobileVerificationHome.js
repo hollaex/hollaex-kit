@@ -1,11 +1,11 @@
 import React from 'react';
 
-import { getCountry } from './utils';
+import { getCountryFromNumber } from './utils';
 import { Button, PanelInformationRow } from '../../components';
 import STRINGS from '../../config/localizedStrings';
 
 const MobileVerificationHome = ({ user, setActivePageContent, setActiveTab }) => {
-    const { phone_number, address } = user;
+    const { phone_number } = user;
     if (!phone_number) {
         return (
             <div>
@@ -16,7 +16,7 @@ const MobileVerificationHome = ({ user, setActivePageContent, setActiveTab }) =>
         return <div className="my-3">
             <PanelInformationRow
                 label={STRINGS.USER_VERIFICATION.PHONE_COUNTRY_ORIGIN}
-                information={getCountry(address.country).name}
+                information={getCountryFromNumber(phone_number).name}
                 className="title-font"
                 disable />
             <PanelInformationRow

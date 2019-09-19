@@ -3,12 +3,12 @@ import ReactSVG from 'react-svg';
 import classnames from 'classnames';
 
 import { Sortable } from '../Sortable';
-import { ICONS, BASE_CURRENCY } from '../../config/constants';
+import { ICONS, BASE_CURRENCY, DEFAULT_COIN_DATA } from '../../config/constants';
 import { formatToCurrency, formatPercentage, formatAverage } from '../../utils/currency';
 
 const Tab = ({ pair = {}, tab, ticker = {}, coins = {}, activePairTab, onTabClick, onTabChange, items, selectedToOpen, selectedToRemove, ...rest }) => {
-    const { min, symbol = '' } = coins[pair.pair_base || BASE_CURRENCY] || {};
-    const pairTwo = coins[pair.pair_2 || BASE_CURRENCY] || { symbol: '' };
+    const { min, symbol } = coins[pair.pair_base || BASE_CURRENCY] || DEFAULT_COIN_DATA;
+    const pairTwo = coins[pair.pair_2 || BASE_CURRENCY] || DEFAULT_COIN_DATA;
     const priceDifference = (ticker.close || 0) - (ticker.open || 0);
     const tickerPercent = priceDifference === 0 ? 0 : ((priceDifference / ticker.open) * 100);
     const priceDifferencePercent = isNaN(tickerPercent) ? formatPercentage(0) : formatPercentage(tickerPercent);

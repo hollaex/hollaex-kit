@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { CurrencyBall } from '../../../components';
-import { BASE_CURRENCY } from '../../../config/constants';
+import { BASE_CURRENCY, DEFAULT_COIN_DATA } from '../../../config/constants';
 import STRINGS from '../../../config/localizedStrings';
 import {
     formatBaseAmount,
@@ -19,7 +19,7 @@ const getLimitValue = (limit = -1, format) => {
 };
 
 const getDepositRow = (currency, index, coins, level) => {
-    const { symbol = '', fullname, deposit_limits = {} } = coins[currency] || {};
+    const { symbol = '', fullname, deposit_limits = {} } = coins[currency] || DEFAULT_COIN_DATA;
     const format = currency === BASE_CURRENCY ? formatBaseAmount : formatBtcAmount;
     return (
         <tr key={index}>
@@ -36,7 +36,7 @@ const getDepositRow = (currency, index, coins, level) => {
 };
 
 const getWithdrawalRow = (currency, index, coins, level) => {
-    const { withdrawal_limits = {} } = coins[currency] || {};
+    const { withdrawal_limits = {} } = coins[currency] || DEFAULT_COIN_DATA;
     const format = currency === BASE_CURRENCY ? formatBaseAmount : formatBtcAmount;
     return (
         <tr key={`${index}_1`}>
