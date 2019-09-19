@@ -42,11 +42,10 @@ class Wallet extends Component {
 	}
 
 	generateSection = (symbol, price, balance, orders, coins) => {
-		const { min, ...rest } = coins[symbol] || { symbol: '' };
-		const name = STRINGS[`${symbol.toUpperCase()}_NAME`];
+		const { min, fullname, ...rest } = coins[symbol] || { symbol: '' };
 		return {
 			accordionClassName: 'wallet_section-wrapper',
-			title: name,
+			title: fullname,
 			titleClassName: 'wallet_section-title',
 			titleInformation: (
 				<div className="wallet_section-title-amount">

@@ -7,7 +7,7 @@ import { ICONS, BASE_CURRENCY } from '../../config/constants';
 
 const QuoteResult = ({ name, onClose, coins, ...props }) => {
 	const { fetching, error, data } = props.data;
-	const { min } = coins[BASE_CURRENCY] || {};
+	const { min, fullname } = coins[BASE_CURRENCY] || {};
 	if (fetching) {
 		return <Loader relative={true} background={false} />;
 	} else if (error) {
@@ -34,7 +34,7 @@ const QuoteResult = ({ name, onClose, coins, ...props }) => {
 						formatBtcAmount(data.size),
 						name,
 						formatToCurrency(data.price, min),
-						STRINGS[`${BASE_CURRENCY.toUpperCase()}_NAME`]
+						fullname
 					)}
 				</div>
 				{onClose && <Button label={STRINGS.CLOSE_TEXT} onClick={onClose} />}

@@ -34,10 +34,9 @@ export const generateFormValues = (
 	coins = {},
 	verification_level
 ) => {
-	const name = STRINGS[`${symbol.toUpperCase()}_NAME`];
 	const { fullname, min, increment_unit, withdrawal_limits = {} } = coins[
 		symbol
-	];
+	] || {};
 	let MAX = withdrawal_limits[verification_level];
 	if (withdrawal_limits[verification_level] === 0) MAX = "";
 	if (withdrawal_limits[verification_level] === -1) MAX = 0;
@@ -67,21 +66,21 @@ export const generateFormValues = (
 		amountValidate.push(maxValue(MAX, STRINGS.WITHDRAWALS_MAX_VALUE_ERROR));
 	}
 	// FIX add according fee
-	// amountValidate.push(checkBalance(available, STRINGS.formatString(STRINGS.WITHDRAWALS_LOWER_BALANCE, name), fee));
+	// amountValidate.push(checkBalance(available, STRINGS.formatString(STRINGS.WITHDRAWALS_LOWER_BALANCE, fullname), fee));
 	amountValidate.push(
 		checkBalance(
 			available,
-			STRINGS.formatString(STRINGS.WITHDRAWALS_LOWER_BALANCE, name),
+			STRINGS.formatString(STRINGS.WITHDRAWALS_LOWER_BALANCE, fullname),
 			0
 		)
 	);
 
 	fields.amount = {
 		type: "number",
-		label: STRINGS.formatString(STRINGS.WITHDRAWALS_FORM_AMOUNT_LABEL, name),
+		label: STRINGS.formatString(STRINGS.WITHDRAWALS_FORM_AMOUNT_LABEL, fullname),
 		placeholder: STRINGS.formatString(
 			STRINGS.WITHDRAWALS_FORM_AMOUNT_PLACEHOLDER,
-			name
+			fullname
 		).join(""),
 		min: min,
 		max: MAX,
@@ -109,7 +108,7 @@ export const generateFormValues = (
 			),
 			placeholder: STRINGS.formatString(
 				STRINGS.WITHDRAWALS_FORM_FEE_PLACEHOLDER,
-				name
+				fullname
 			).join(""),
 			disabled: true,
 			fullWidth: isMobile
@@ -121,7 +120,7 @@ export const generateFormValues = (
 			label: STRINGS[`WITHDRAWALS_FORM_FEE_${symbol.toUpperCase()}_LABEL`],
 			placeholder: STRINGS.formatString(
 				STRINGS.WITHDRAWALS_FORM_FEE_PLACEHOLDER,
-				name
+				fullname
 			).join(""),
 			min: min,
 			max: MAX,

@@ -220,11 +220,11 @@ class QuickTradeContainer extends Component {
 			return <Loader background={false} />;
 		}
 
-		const name = STRINGS[`${pairData.pair_base.toUpperCase()}_NAME`];
 		const { data, order } = quoteData;
 		const end = quoteData.data.exp;
 		const tradeData = isLoggedIn() ? quoteData : quickTrade;
 		const baseCoin = coins[BASE_CURRENCY] || {};
+		const pairCoin = coins[pairData.pair_base] || {};
 		return (
 			<div>
 				{isMobile && <MobileBarBack onBackClick={this.onGoBack} />}
@@ -278,16 +278,16 @@ class QuickTradeContainer extends Component {
 											STRINGS.QUOTE_MESSAGE,
 											STRINGS.SIDES_VALUES[side],
 											formatBtcAmount(data.size),
-											name,
+											pairCoin.fullname,
 											formatToCurrency(data.price, baseCoin.min),
-											STRINGS[`${BASE_CURRENCY.toUpperCase()}_NAME`]
+											baseCoin.fullname
 										)}
 									</div>
 								</Countdown>
 							) : (
 								<QuoteResult
 									data={order}
-									name={name}
+									name={pairCoin.fullname}
 									coins={coins}
 									onClose={this.onCloseDialog}
 								/>

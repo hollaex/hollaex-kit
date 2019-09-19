@@ -7,14 +7,16 @@ import { Button, Loader } from '../';
 const GenerateAddressNotification = ({
 	type,
 	data,
+	coins,
 	currency,
 	onBack,
 	onGenerate
 }) => {
 	const { fetching, error } = data;
+	const { fullname } = coins[currency] || {};
 	const title = STRINGS.formatString(
 		STRINGS.WALLET_ADDRESS_TITLE,
-		STRINGS[`${currency.toUpperCase()}_NAME`]
+		fullname
 	);
 	if (fetching) {
 		return (

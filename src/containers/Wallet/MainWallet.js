@@ -166,7 +166,7 @@ class Wallet extends Component {
 			activeTab,
 			mobileTabs
 		} = this.state;
-		const { activeTheme, addressRequest } = this.props;
+		const { activeTheme, addressRequest, coins } = this.props;
 		if (mobileTabs.length === 0) {
 			return <div />;
 		}
@@ -214,6 +214,7 @@ class Wallet extends Component {
 								onGenerate={this.onCreateAddress}
 								currency={selectedCurrency}
 								data={addressRequest}
+								coins={coins}
 							/>
 						)}
 				</Dialog>

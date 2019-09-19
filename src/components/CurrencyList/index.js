@@ -58,6 +58,7 @@ class CurrencyList extends Component {
 					if (coin === 'bch') {
 						icon = ICONS[`${coin.toUpperCase()}_NAV_ICON`];
 					}
+					const { fullname } = coins[coin] || {};
 					return (
 						<div
 							key={index}
@@ -70,7 +71,7 @@ class CurrencyList extends Component {
 							onClick={() => this.loadMarkets(coin)}
 						>
 							<ReactSVG path={icon} wrapperClassName="app_bar_currency-icon ml-2 mr-2" />
-							{STRINGS[`${coin.toUpperCase()}_NAME`]}:
+							{fullname}:
 							<div className="ml-1">
 								{STRINGS.formatString(
 									CURRENCY_PRICE_FORMAT,

@@ -135,20 +135,23 @@ class AppBar extends Component {
 		this.setState({ isAccountMenu: false });
 	};
 
-	renderSymbolOption = ({ symbol, name, currencySymbol, iconPath }, index) => (
-		<div
-			key={index}
-			className="app_bar-currency_option"
-			onClick={() => this.onChangeSymbol(symbol)}
-		>
-			<img
-				alt={symbol}
-				src={iconPath}
-				className="app_bar-currency_display-icon"
-			/>
-			<span>{STRINGS[`${symbol.toUpperCase()}_NAME`]}</span>
-		</div>
-	);
+	renderSymbolOption = ({ symbol, name, currencySymbol, iconPath }, index) => {
+		const { fullname } = this.props.coins[symbol] || {};
+		return (
+			<div
+				key={index}
+				className="app_bar-currency_option"
+				onClick={() => this.onChangeSymbol(symbol)}
+			>
+				<img
+					alt={symbol}
+					src={iconPath}
+					className="app_bar-currency_display-icon"
+				/>
+				<span>{fullname}</span>
+			</div>
+		);
+	}
 
 	renderSplashActions = (token, verifyingToken) => {
 		const { securityPending, verificationPending } = this.state;
@@ -173,14 +176,14 @@ class AppBar extends Component {
 				<div className="d-flex align-items-center">{STRINGS.ACCOUNT_TEXT}</div>
 			</div>
 		) : (
-			<div className={classnames(...WRAPPER_CLASSES)}>
-				<LinkButton
-					path="/login"
-					text={STRINGS.LOGIN_TEXT}
-					buttonClassName="contrast"
-				/>
-			</div>
-		);
+				<div className={classnames(...WRAPPER_CLASSES)}>
+					<LinkButton
+						path="/login"
+						text={STRINGS.LOGIN_TEXT}
+						buttonClassName="contrast"
+					/>
+				</div>
+			);
 	};
 
 	renderIcon = (isHome, theme) => {
@@ -193,13 +196,13 @@ class AppBar extends Component {
 						className="app_bar-icon-logo"
 					/>
 				) : (
-					<Link href={IS_PRO_VERSION ? PRO_URL : DEFAULT_VERSION_REDIRECT}>
-						<ReactSVG
-							path={ICONS.LOGO_BLACK}
-							wrapperClassName="app_bar-icon-logo"
-						/>
-					</Link>
-				)}
+						<Link href={IS_PRO_VERSION ? PRO_URL : DEFAULT_VERSION_REDIRECT}>
+							<ReactSVG
+								path={ICONS.LOGO_BLACK}
+								wrapperClassName="app_bar-icon-logo"
+							/>
+						</Link>
+					)}
 			</div>
 		);
 	};
@@ -305,108 +308,108 @@ class AppBar extends Component {
 				{isHome && this.renderSplashActions(token, verifyingToken)}
 			</MobileBarWrapper>
 		) : (
-			<div
-				className={classnames('app_bar justify-content-between', {
-					'no-borders': noBorders
-				})}
-			>
-				<div className="d-flex">
-					<div className="d-flex align-items-center justify-content-center h-100">
-						{this.renderIcon(isHome, theme)}
+				<div
+					className={classnames('app_bar justify-content-between', {
+						'no-borders': noBorders
+					})}
+				>
+					<div className="d-flex">
+						<div className="d-flex align-items-center justify-content-center h-100">
+							{this.renderIcon(isHome, theme)}
+						</div>
+						{!isHome && (
+							<PairTabs
+								activePath={activePath}
+								location={location}
+								router={router}
+							/>
+						)}
 					</div>
-					{!isHome && (
-						<PairTabs
-							activePath={activePath}
-							location={location}
-							router={router}
-						/>
-					)}
-				</div>
-				{!isHome ? (
-					isLoggedIn() ? (
-						<div className="d-flex app-bar-account">
-							<div className="d-flex app_bar-quicktrade-container">
-								{isAdmin() ? (
-									<Link to="/admin">
+					{!isHome ? (
+						isLoggedIn() ? (
+							<div className="d-flex app-bar-account">
+								<div className="d-flex app_bar-quicktrade-container">
+									{isAdmin() ? (
+										<Link to="/admin">
+											<div
+												className={classnames('app_bar-quicktrade', 'd-flex', {
+													'quick_trade-active': location.pathname === '/admin'
+												})}
+											>
+												<Icon type="dashboard" style={{ lineHeight: '22px' }} />
+												<div className="d-flex align-items-center">
+													{STRINGS.ADMIN_DASH}
+												</div>
+											</div>
+										</Link>
+									) : null}
+									<Link to="/trade/add/tabs">
 										<div
 											className={classnames('app_bar-quicktrade', 'd-flex', {
-												'quick_trade-active': location.pathname === '/admin'
+												'quick_trade-active':
+													location.pathname === '/trade/add/tabs'
 											})}
 										>
-											<Icon type="dashboard" style={{ lineHeight: '22px' }} />
+											<ReactSVG
+												path={ICONS.SIDEBAR_TRADING_ACTIVE}
+												wrapperClassName="quicktrade_icon mx-1"
+											/>
 											<div className="d-flex align-items-center">
-												{STRINGS.ADMIN_DASH}
+												{STRINGS.PRO_TRADE}
 											</div>
 										</div>
 									</Link>
-								) : null}
-								<Link to="/trade/add/tabs">
-									<div
-										className={classnames('app_bar-quicktrade', 'd-flex', {
-											'quick_trade-active':
-												location.pathname === '/trade/add/tabs'
-										})}
-									>
-										<ReactSVG
-											path={ICONS.SIDEBAR_TRADING_ACTIVE}
-											wrapperClassName="quicktrade_icon mx-1"
-										/>
-										<div className="d-flex align-items-center">
-											{STRINGS.PRO_TRADE}
+									<Link to={`/quick-trade/${pair}`}>
+										<div
+											className={classnames('app_bar-quicktrade', 'd-flex', {
+												'quick_trade-active': activePath === 'quick-trade'
+											})}
+										>
+											<ReactSVG
+												path={ICONS.QUICK_TRADE_TAB_ACTIVE}
+												wrapperClassName="quicktrade_icon"
+											/>
+											<div className="d-flex align-items-center">
+												{STRINGS.QUICK_TRADE}
+											</div>
 										</div>
-									</div>
-								</Link>
-								<Link to={`/quick-trade/${pair}`}>
-									<div
-										className={classnames('app_bar-quicktrade', 'd-flex', {
-											'quick_trade-active': activePath === 'quick-trade'
-										})}
-									>
-										<ReactSVG
-											path={ICONS.QUICK_TRADE_TAB_ACTIVE}
-											wrapperClassName="quicktrade_icon"
-										/>
-										<div className="d-flex align-items-center">
-											{STRINGS.QUICK_TRADE}
+									</Link>
+								</div>
+								<div
+									className={classnames('app-bar-account-content', {
+										'account-inactive':
+											activePath !== 'account' && activePath !== 'wallet'
+									})}
+									onClick={this.handleAccountMenu}
+								>
+									<ReactSVG
+										path={ICONS.SIDEBAR_ACCOUNT_INACTIVE}
+										wrapperClassName="app-bar-account-icon"
+									/>
+									{!!totalPending && (
+										<div className="app-bar-account-notification">
+											{totalPending}
 										</div>
-									</div>
-								</Link>
+									)}
+								</div>
 							</div>
-							<div
-								className={classnames('app-bar-account-content', {
-									'account-inactive':
-										activePath !== 'account' && activePath !== 'wallet'
-								})}
-								onClick={this.handleAccountMenu}
-							>
-								<ReactSVG
-									path={ICONS.SIDEBAR_ACCOUNT_INACTIVE}
-									wrapperClassName="app-bar-account-icon"
-								/>
-								{!!totalPending && (
-									<div className="app-bar-account-notification">
-										{totalPending}
-									</div>
-								)}
-							</div>
-						</div>
-					) : null
-				) : (
-					this.renderSplashActions(token, verifyingToken)
-				)}
-				{isAccountMenu && (
-					<MenuList
-						selectedMenu={selectedMenu}
-						securityPending={securityPending}
-						verificationPending={verificationPending}
-						handleMenu={this.handleMenu}
-						logout={logout}
-						activePath={activePath}
-						closeAccountMenu={this.closeAccountMenu}
-					/>
-				)}
-			</div>
-		);
+						) : null
+					) : (
+							this.renderSplashActions(token, verifyingToken)
+						)}
+					{isAccountMenu && (
+						<MenuList
+							selectedMenu={selectedMenu}
+							securityPending={securityPending}
+							verificationPending={verificationPending}
+							handleMenu={this.handleMenu}
+							logout={logout}
+							activePath={activePath}
+							closeAccountMenu={this.closeAccountMenu}
+						/>
+					)}
+				</div>
+			);
 	}
 }
 
