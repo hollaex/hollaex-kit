@@ -6,7 +6,6 @@ import moment from 'moment';
 import { connect } from 'react-redux';
 
 import { ICONS, BAR_CHART_LIMIT_CAPACITY, BASE_CURRENCY } from '../../../config/constants';
-import STRINGS from '../../../config/localizedStrings';
 import { formatToCurrency, formatAverage, formatBtcAmount } from '../../../utils/currency';
 
 function translate(x, y) {

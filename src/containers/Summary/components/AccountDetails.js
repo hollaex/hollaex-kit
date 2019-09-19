@@ -32,6 +32,7 @@ const AccountDetails = ({
 			{isMobile ? (
 				<MobileAccountTypeList
 					user={user}
+					coins={coins}
 					accounts={accounts}
 					activeTheme={activeTheme}
 					selectedAccount={selectedAccount}

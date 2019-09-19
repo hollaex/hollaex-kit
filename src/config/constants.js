@@ -1,14 +1,5 @@
 import config from './index';
-import {
-	formatBtcAmount,
-	formatBtcFullAmount,
-	formatBaseAmount,
-	formatEthAmount,
-	formatEthFullAmount,
-	formatXrpAmount,
-	formatXrpFullAmount,
-	formatNumber
-} from '../utils/currency';
+import { formatNumber } from '../utils/currency';
 
 import STRINGS from './localizedStrings';
 

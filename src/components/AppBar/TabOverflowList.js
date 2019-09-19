@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import ReactSVG from 'react-svg';
 
 import { ICONS, BASE_CURRENCY } from '../../config/constants';
-import STRINGS from '../../config/localizedStrings';
 import { formatToCurrency, formatPercentage, formatAverage } from '../../utils/currency';
 
 let tickClicked = false;

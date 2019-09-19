@@ -7,6 +7,7 @@ import { TRADING_ACCOUNT_TYPE, ICONS, FLEX_CENTER_CLASSES } from '../../config/c
 
 const MobileAccountTypeList = ({
     user,
+    coins,
     accounts,
     activeTheme,
     selectedAccount,
@@ -49,6 +50,7 @@ const MobileAccountTypeList = ({
                             && <div className="my-4">
                                 <AccountTypeDetails
                                     user={user}
+                                    coins={coins}
                                     activeTheme={activeTheme}
                                     selectedAccount={selectedAccount}
                                     lastMonthVolume={lastMonthVolume}

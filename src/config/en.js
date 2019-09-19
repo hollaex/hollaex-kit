@@ -2,43 +2,6 @@ export default {
 	APP_TITLE: 'Hollaex',
 	APP_SUB_TITLE: 'White Label Cryptocurrency Exchange',
 	APP_NAME: 'hollaex',
-	FIAT_NAME: 'EURO',
-	FIAT_FULLNAME: 'Euro',
-	FIAT_SHORTNAME: 'EUR',
-	FIAT_SHORTNAME_EN: 'EUR',
-	FIAT_CURRENCY_SYMBOL: '€',
-	FIAT_PRICE_FORMAT: '{0} {1}', // 0-> amount  1 -> symbol  600,000 T
-
-	EUR_NAME: 'EURO',
-	EUR_FULLNAME: 'Euro',
-	EUR_SHORTNAME: 'EUR',
-	EUR_SHORTNAME_EN: 'EUR',
-	EUR_CURRENCY_SYMBOL: '€',
-	EUR_PRICE_FORMAT: '{0} {1}', // 0-> amount  1 -> symbol  600,000 T
-
-	BTC_NAME: 'Bitcoin',
-	BTC_FULLNAME: 'Bitcoin',
-	BTC_SHORTNAME: 'BTC',
-	BTC_CURRENCY_SYMBOL: 'BTC',
-	BTC_PRICE_FORMAT: '{0} {1}', // 0-> amount  1 -> symbol  6.00245 BTC
-
-	ETH_NAME: 'Ethereum',
-	ETH_FULLNAME: 'Ethereum',
-	ETH_SHORTNAME: 'ETH',
-	ETH_CURRENCY_SYMBOL: 'ETH',
-	ETH_PRICE_FORMAT: '{0} {1}', // 0-> amount  1 -> symbol  6.00245 ETH
-
-	BCH_NAME: 'Bitcoin Cash',
-	BCH_FULLNAME: 'BitcoinCash',
-	BCH_SHORTNAME: 'BCH',
-	BCH_CURRENCY_SYMBOL: 'BCH',
-	BCH_PRICE_FORMAT: '{0} {1}',
-
-	XRP_NAME: 'Ripple',
-	XRP_FULLNAME: 'Ripple',
-	XRP_SHORTNAME: 'XRP',
-	XRP_CURRENCY_SYMBOL: 'XRP',
-	XRP_PRICE_FORMAT: '{0} {1}',
 
 	LOGOUT_CONFIRM_TEXT: 'Are you sure?. Do you want to logout',
 	ADD_TRADING_PAIR: 'Add Trading Pair',

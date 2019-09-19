@@ -2,36 +2,6 @@ export default {
 	APP_TITLE: 'Hollaex',
 	APP_SUB_TITLE: 'White Label Cryptocurrency Exchange',
 	APP_NAME: 'hollaex',
-	FIAT_NAME: '유로',
-	FIAT_FULLNAME: '유로',
-	FIAT_SHORTNAME: 'EUR',
-	FIAT_SHORTNAME_EN: 'EUR',
-	FIAT_CURRENCY_SYMBOL: '€',
-	FIAT_PRICE_FORMAT: '{0} {1}', // 0-> amount  1 -> symbol  600,000 T
-
-	BTC_NAME: '비트코인',
-	BTC_FULLNAME: '비트코인',
-	BTC_SHORTNAME: 'BTC',
-	BTC_CURRENCY_SYMBOL: 'BTC',
-	BTC_PRICE_FORMAT: '{0} {1}', // 0-> amount  1 -> symbol  6.00245 BTC
-
-	ETH_NAME: '이더리움',
-	ETH_FULLNAME: '이더리움',
-	ETH_SHORTNAME: 'ETH',
-	ETH_CURRENCY_SYMBOL: 'ETH',
-	ETH_PRICE_FORMAT: '{0} {1}', // 0-> amount  1 -> symbol  6.00245 ETH
-
-	BCH_NAME: '비트코인캐시',
-	BCH_FULLNAME: '비트코인캐시',
-	BCH_SHORTNAME: 'BCH',
-	BCH_CURRENCY_SYMBOL: 'BCH',
-	BCH_PRICE_FORMAT: '{0} {1}',
-
-	XRP_NAME: '리플',
-	XRP_FULLNAME: '리플',
-	XRP_SHORTNAME: 'XRP',
-	XRP_CURRENCY_SYMBOL: 'XRP',
-	XRP_PRICE_FORMAT: '{0} {1}',
 
 	LOGOUT_CONFIRM_TEXT: '로그아웃 하시겠습니까?',
 	ADD_TRADING_PAIR: '거래통화페어 추가',

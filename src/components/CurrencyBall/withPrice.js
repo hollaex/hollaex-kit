@@ -1,6 +1,5 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import STRINGS from '../../config/localizedStrings';
 import { CurrencyBall } from '../';
 import {
 	formatToCurrency,
