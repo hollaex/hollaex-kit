@@ -87,11 +87,11 @@ class Account extends Component {
 		let verificationPending = false;
 		if (verification_level < 1 && !full_name) {
 			verificationPending = true;
-		} else if (id_data.status !== 3) {
+		} else if (id_data.status === 0 || id_data.status === 2) {
 			verificationPending = true;
 		} else if (!phone_number) {
 			verificationPending = true;
-		} else if (!bank_account.filter(acc => acc.status === 3).length) {
+		} else if (!bank_account.filter(acc => acc.status === 0 || acc.status === 2).length) {
 			verificationPending = true;
 		}
 
