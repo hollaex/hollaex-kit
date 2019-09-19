@@ -5878,8 +5878,7 @@ table th {
   fill-opacity: 0.7; }
 
 .slice_active {
-  fill-opacity: 1;
-  stroke-width: 5; }
+  fill-opacity: 1; }
 
 .chart_btc {
   fill: #f7941e;
@@ -6213,8 +6212,7 @@ table th {
   stroke-width: 1.5; }
 
 .dark-theme .slice_active {
-  fill-opacity: 0.4;
-  stroke-width: 4; }
+  fill-opacity: 0.4; }
 
 .dark-theme .chart_btc {
   fill: #f6921e;
