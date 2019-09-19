@@ -222,8 +222,12 @@ class Container extends Component {
 			this.props.setPairs(data.pairs);
 			this.props.setPairsData(data.pairs);
 			this.props.setCurrencies(data.coins);
-			if (data.coins && !data.coins[BASE_CURRENCY]) {
-				// alert(`You need to set relevant BASE_CURRENCY, now is in ${BASE_CURRENCY}`);
+			const pairWithBase = Object.keys(data.pairs).filter((key) => {
+				let temp = data.pairs[key];
+				return temp.pair_2 === BASE_CURRENCY;
+			});
+			if (!pairWithBase.length) {
+				alert(`You need to set relevant BASE_CURRENCY, now is in ${BASE_CURRENCY}`);
 			}
 			const orderLimits = {};
 			Object.keys(data.pairs).map((pair, index) => {
