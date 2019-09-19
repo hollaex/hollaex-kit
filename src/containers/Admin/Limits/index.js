@@ -3,6 +3,7 @@ import { Table, Spin, notification, Input, Select } from 'antd';
 import { CSVLink } from 'react-csv';
 
 import { requestLimits, performLimitUpdate } from './actions';
+import { UPDATE_KEYS, CURRENCY_KEYS, COLUMNS_CURRENCY } from './constants';
 
 const InputGroup = Input.Group;
 const Option = Select.Option;
@@ -10,13 +11,8 @@ const Search = Input.Search;
 const openNotification = () => {
 	notification.open({
 		message: 'Successfully updated'
-		// description: 'This is the content of the notification. This is the content of the notification. This is the content of the notification.',
 	});
 };
-const COLUMNS_CURRENCY = [],
-	UPDATE_KEYS = [],
-	CURRENCY_KEYS = [],
-	HEADERS = [];
 
 class Limits extends Component {
 	state = {
@@ -37,26 +33,9 @@ class Limits extends Component {
 			loading: true,
 			error: ''
 		});
-		const arr = [COLUMNS_CURRENCY, HEADERS, CURRENCY_KEYS, UPDATE_KEYS];
-		arr.map((arr) => (arr.length = 0));
 		requestLimits()
 			.then((res) => {
-				Object.keys(res[0]).forEach((name) =>
-					name !== 'id' && name !== 'created_at' && name !== 'updated_at'
-						? (COLUMNS_CURRENCY.push({
-								title: name,
-								dataIndex: name,
-								key: name
-						  }),
-						  HEADERS.push({ label: name, dataIndex: name, key: name }),
-						  name !== 'verification_level'
-								? CURRENCY_KEYS.push({ value: name, label: name })
-								: null)
-						: null
-				);
-				res.forEach(({ verification_level: lvl }) => {
-					UPDATE_KEYS.push({ value: lvl, label: lvl });
-				});
+				console.log(res);
 				this.setState({
 					limits: res,
 					loading: false,
@@ -71,16 +50,20 @@ class Limits extends Component {
 				});
 			});
 	};
+
 	onLvlSelect = (value, option) => {
 		this.setState({ verification_level: value });
 	};
+
 	onTypeSelect = (value, option) => {
 		this.setState({ update_type: value });
 	};
+
 	onSearch = (value) => {
 		performLimitUpdate(this.state.verification_level, {
 			[this.state.update_type]: Number(value)
-		}).then(() => {
+		}).then((res) => {
+			console.log(res);
 			this.requestLimits();
 			openNotification();
 		});
@@ -99,7 +82,7 @@ class Limits extends Component {
 						<CSVLink
 							filename={'daily-max-limits.csv'}
 							data={limits}
-							headers={HEADERS}
+							headers={COLUMNS_CURRENCY}
 						>
 							Download table
 						</CSVLink>
@@ -110,7 +93,7 @@ class Limits extends Component {
 								return data.id;
 							}}
 						/>
-						<div>
+						{/* <div>
 							<h2>CHANGE DAILY MAX LIMITS</h2>
 
 							<InputGroup compact>
@@ -144,7 +127,7 @@ class Limits extends Component {
 									onSearch={(value) => this.onSearch(value)}
 								/>
 							</InputGroup>
-						</div>
+						</div> */}
 					</div>
 				)}
 			</div>

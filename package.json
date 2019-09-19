@@ -4,7 +4,7 @@
 	"private": true,
 	"dependencies": {
 		"@material/button": "0.7.0",
-		"antd": "3.6.1",
+		"antd": "3.21.4",
 		"antd-mobile": "2.2.3",
 		"awesome-phonenumber": "2.18.1",
 		"axios": "0.18.1",
