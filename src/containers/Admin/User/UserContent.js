@@ -10,13 +10,12 @@ import {
 	UserBalance,
 	Activate,
 	TradeHistory,
-	Deposits,
 	UploadIds,
 	Transactions
 } from '../';
 import UserData from './UserData';
 import BankData from './BankData';
-import { isSupport, isAdmin, isKYC } from '../../../utils';
+import { isSupport, isAdmin, isKYC } from '../../../utils/token';
 
 import Flagger from '../Flaguser';
 
@@ -64,7 +63,9 @@ class UserContent extends Component {
 					</div>
 				</div>
 				<Tabs
-					tabBarExtraContent={<Button onClick={clearData}>Clear user</Button>}
+					tabBarExtraContent={
+						<Button onClick={clearData}>Clear user</Button>
+					}
 				>
 					<TabPane tab="Data" key="data">
 						<div>

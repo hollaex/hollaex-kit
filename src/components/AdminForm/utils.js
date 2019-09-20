@@ -1,5 +1,5 @@
 import React from 'react';
-import { reduxForm, reset, Field, Modal } from 'redux-form';
+import { Field } from 'redux-form';
 import {
 	renderSelectField,
 	renderNumberField,

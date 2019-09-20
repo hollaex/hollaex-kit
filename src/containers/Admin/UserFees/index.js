@@ -59,7 +59,6 @@ class UserFees extends Component {
 				});
 			})
 			.catch((error) => {
-				console.log(error.data);
 				const message = error.message;
 				this.setState({
 					loading: false,
@@ -104,7 +103,7 @@ class UserFees extends Component {
 			temporalData[level][`${name}_taker_fee`] = value;
 		});
 
-		keys.map((key) => {
+		keys.forEach((key) => {
 			tableKeys.push({
 				label: key,
 				dataIndex: key,
@@ -115,7 +114,11 @@ class UserFees extends Component {
 			temporalData: Object.values(temporalData),
 			headers: Object.entries(keys).map(([key, name]) => {
 				return name === 'verification_level'
-					? { title: 'verification levels', dataIndex: name, key: name + key }
+					? {
+							title: 'verification levels',
+							dataIndex: name,
+							key: name + key
+					  }
 					: key === '1'
 					? { title: 'maker fees', dataIndex: name, key: name + key }
 					: { title: 'taker fees', dataIndex: name, key: name + key };
@@ -149,13 +152,11 @@ class UserFees extends Component {
 				this.requestFees();
 			})
 			.then(openNotification())
-			.catch((err) => {
-				console.log(err);
-			});
+			.catch((err) => {});
 	};
 
 	render() {
-		const { loading, error, activeKey, data } = this.state;
+		const { loading, error, activeKey } = this.state;
 		return (
 			<div className="app_container-content">
 				{loading ? (
@@ -184,6 +185,9 @@ class UserFees extends Component {
 										<Table
 											columns={this.state.headers}
 											dataSource={this.state.temporalData}
+											rowKey={(data) => {
+												return data.id;
+											}}
 										/>
 										<h2>CHANGE USER FEES</h2>
 										<ChangeFees

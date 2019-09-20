@@ -34,7 +34,7 @@ class Login extends Component {
 		otpDialogIsOpen: false,
 		logoutDialogIsOpen: false
 	};
-	
+
 	componentDidMount() {
 		if (this.props.logoutMessage) {
 			this.setState({ logoutDialogIsOpen: true });
@@ -67,17 +67,21 @@ class Login extends Component {
 
 	getServiceParam = () => {
 		let service = '';
-		if (this.props.location
-			&& this.props.location.query
-			&& this.props.location.query.service) {
+		if (
+			this.props.location &&
+			this.props.location.query &&
+			this.props.location.query.service
+		) {
 			service = this.props.location.query.service;
-		} else if (window.location
-			&& window.location.search
-			&& window.location.search.includes('service')) {
+		} else if (
+			window.location &&
+			window.location.search &&
+			window.location.search.includes('service')
+		) {
 			service = window.location.search.split('?service=')[1];
 		}
 		return service;
-	}
+	};
 
 	onSubmitLogin = (values) => {
 		const service = this.getServiceParam();
@@ -88,14 +92,13 @@ class Login extends Component {
 			.then((res) => {
 				if (res.data && res.data.callbackUrl)
 					this.redirectToService(res.data.callbackUrl);
-				else
-					this.redirectToHome();
+				else this.redirectToHome();
 			})
 			.catch((err) => {
-				console.log('err', err);
-				const _error = err.response && err.response.data
-					? err.response.data.message
-					: err.message;
+				const _error =
+					err.response && err.response.data
+						? err.response.data.message
+						: err.message;
 
 				let error = {};
 				this.props.change(FORM_NAME, 'captcha', '');
@@ -107,7 +110,9 @@ class Login extends Component {
 					if (_error === 'User is not activated') {
 						error._error = (
 							<div style={{ color: 'black' }}>
-								Account approval is required to access the demo exchange.<br />
+								Account approval is required to access the demo
+								exchange.
+								<br />
 								Please contact us at{' '}
 								<a
 									style={{ color: 'blue' }}
@@ -135,8 +140,7 @@ class Login extends Component {
 				this.setState({ otpDialogIsOpen: false });
 				if (res.data && res.data.callbackUrl)
 					this.redirectToService(res.data.callbackUrl);
-				else
-					this.redirectToHome();
+				else this.redirectToHome();
 			})
 			.catch(errorHandler);
 	};
@@ -155,7 +159,9 @@ class Login extends Component {
 		const { otpDialogIsOpen, logoutDialogIsOpen } = this.state;
 
 		return (
-			<div className={classnames(...FLEX_CENTER_CLASSES, 'flex-column', 'f-1')}>
+			<div
+				className={classnames(...FLEX_CENTER_CLASSES, 'flex-column', 'f-1')}
+			>
 				<div
 					className={classnames(
 						...FLEX_CENTER_CLASSES,
@@ -190,7 +196,10 @@ class Login extends Component {
 							'w-100'
 						)}
 					>
-						<LoginForm onSubmit={this.onSubmitLogin} theme={activeTheme} />
+						<LoginForm
+							onSubmit={this.onSubmitLogin}
+							theme={activeTheme}
+						/>
 						{isMobile && <BottomLink />}
 					</div>
 				</div>
@@ -230,4 +239,7 @@ const mapDispatchToProps = (dispatch) => ({
 	change: bindActionCreators(change, dispatch)
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Login);
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(Login);

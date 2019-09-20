@@ -41,7 +41,6 @@
 
 .slice_active {
 	fill-opacity: 1;
-	stroke-width: 5;
 }
 
 .chart_btc {
@@ -407,7 +406,6 @@
 	}
 	.slice_active {
 		fill-opacity: 0.4;
-		stroke-width: 4;
 	}
 	.chart_btc {
 		fill: $coin-btc-1;

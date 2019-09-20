@@ -8,7 +8,7 @@ import AccountAssets from './components/AccountAssets';
 import TradingVolume from './components/TradingVolume';
 import AccountDetails from './components/AccountDetails';
 
-import { BASE_CURRENCY } from '../../config/constants'; 
+import { BASE_CURRENCY, DEFAULT_COIN_DATA } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 
 const MobileSummary = ({
@@ -29,6 +29,7 @@ const MobileSummary = ({
     onAccountTypeChange,
     onInviteFriends
 }) => {
+    const { fullname } = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
     return (
         <div
             className={classnames(
@@ -56,13 +57,17 @@ const MobileSummary = ({
                 <SummaryBlock
                     title={STRINGS.SUMMARY.URGENT_REQUIREMENTS}
                     wrapperClassname="w-100" >
-                    <SummaryRequirements user={user} lastMonthVolume={lastMonthVolume} contentClassName="requirements-content" />
+                    <SummaryRequirements
+                        coins={coins}
+                        user={user}
+                        lastMonthVolume={lastMonthVolume}
+                        contentClassName="requirements-content" />
                 </SummaryBlock>
             </div>
             <div className="assets-wrapper w-100">
                 <SummaryBlock
                     title={STRINGS.SUMMARY.ACCOUNT_ASSETS}
-                    secondaryTitle={`${balance[`${BASE_CURRENCY.toLowerCase()}_balance`]} ${STRINGS[`${BASE_CURRENCY.toUpperCase()}_FULLNAME`]}`} >
+                    secondaryTitle={`${balance[`${BASE_CURRENCY.toLowerCase()}_balance`]} ${fullname}`} >
                     <AccountAssets
                         user={user}
                         chartData={chartData}
@@ -74,7 +79,7 @@ const MobileSummary = ({
             <div className="trading-volume-wrapper w-100">
                 <SummaryBlock
                     title={STRINGS.SUMMARY.TRADING_VOLUME}
-                    secondaryTitle={`${balance[`${BASE_CURRENCY.toLowerCase()}_balance`]} ${STRINGS[`${BASE_CURRENCY.toUpperCase()}_FULLNAME`]}`} >
+                    secondaryTitle={`${balance[`${BASE_CURRENCY.toLowerCase()}_balance`]} ${fullname}`} >
                     <TradingVolume user={user} />
                 </SummaryBlock>
             </div>

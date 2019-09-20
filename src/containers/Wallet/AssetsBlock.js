@@ -1,6 +1,6 @@
 import React from 'react';
 import { CurrencyBall } from '../../components';
-import { ICONS, BASE_CURRENCY } from '../../config/constants';
+import { ICONS, BASE_CURRENCY, CURRENCY_PRICE_FORMAT, DEFAULT_COIN_DATA } from '../../config/constants';
 import { Link } from 'react-router';
 import { isMobile } from 'react-device-detect';
 import {
@@ -36,7 +36,8 @@ export const AssetsBlock = ({
 					.filter(([key]) => balance.hasOwnProperty(`${key}_balance`))
 					.map(([key, { min, allow_deposit, allow_withdrawal }]) => {
 						const balanceValue = balance[`${key}_balance`];
-						const baseCoin = coins[BASE_CURRENCY] || {}
+						const { fullname, symbol = '' } = coins[key] || DEFAULT_COIN_DATA;
+						const baseCoin = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
 						const balanceText =
 							key === BASE_CURRENCY
 								? formatToCurrency(balanceValue, min)
@@ -49,7 +50,7 @@ export const AssetsBlock = ({
 								<td className="table-icon td-fit">
 									<Link to={`/wallet/${key.toLowerCase()}`}>
 										<CurrencyBall
-											name={STRINGS[`${key.toUpperCase()}_SHORTNAME`]}
+											name={symbol.toUpperCase()}
 											symbol={key}
 											size="s"
 										/>
@@ -57,7 +58,7 @@ export const AssetsBlock = ({
 								</td>
 								<td className="td-name td-fit">
 									<Link to={`/wallet/${key.toLowerCase()}`}>
-										{STRINGS[`${key.toUpperCase()}_FULLNAME`]}
+										{fullname}
 									</Link>
 								</td>
 								<td className="td-wallet">
@@ -102,9 +103,9 @@ export const AssetsBlock = ({
 									<div className="d-flex">
 										<div className="mr-4">
 											{STRINGS.formatString(
-												STRINGS[`${key.toUpperCase()}_PRICE_FORMAT`],
+												CURRENCY_PRICE_FORMAT,
 												formatToCurrency(balanceValue, min),
-												STRINGS[`${key.toUpperCase()}_CURRENCY_SYMBOL`]
+												symbol.toUpperCase()
 											)}
 										</div>
 										{!isMobile &&
@@ -112,9 +113,7 @@ export const AssetsBlock = ({
 											parseFloat(balanceText || 0) > 0 && (
 												<div>
 													{`(≈ ${
-														STRINGS[
-															`${BASE_CURRENCY.toUpperCase()}_CURRENCY_SYMBOL`
-														]
+														baseCoin.symbol.toUpperCase()
 													} ${balanceText})`}
 												</div>
 											)}

@@ -1,7 +1,7 @@
 import math from 'mathjs';
 import numbro from 'numbro';
 import STRINGS from '../config/localizedStrings';
-import { BASE_CURRENCY } from '../config/constants';
+import { BASE_CURRENCY, DEFAULT_COIN_DATA } from '../config/constants';
 
 export const BTC_FORMAT = '0,0.[0000]';
 export const ETH_FORMAT = '0,0.[0000]';
@@ -131,11 +131,11 @@ export const calculatePricePercentage = (value = 0, total) => {
 	return math.number(math.multiply(math.divide(math.fraction(value), math.fraction(priceTotal)), 100));
 };
 
-export const generateWalletActionsText = (symbol, useFullName = false) => {
-	const name = STRINGS[`${symbol.toUpperCase()}_NAME`];
-	const fullName = STRINGS[`${symbol.toUpperCase()}_FULLNAME`];
+export const generateWalletActionsText = (symbol, coins, useFullName = false) => {
+	const { fullname } = coins[symbol] || DEFAULT_COIN_DATA;
+	const name = fullname;
 
-	const nameToDisplay = useFullName ? fullName : name;
+	const nameToDisplay = useFullName ? fullname : name;
 
 	const depositText = `${
 		symbol === BASE_CURRENCY
@@ -197,7 +197,10 @@ export const getCurrencyFromSymbol = (symbol = '') => {
 	}
 };
 
-export const checkNonBasePair = (pair) => !pair.includes(STRINGS[`${BASE_CURRENCY.toUpperCase()}_SHORTNAME_EN`].toLowerCase());
+export const checkNonBasePair = (pair, coins) => {
+	const { symbol = '' } = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
+	return !pair.includes(symbol.toLowerCase());
+};
 
 export const toFixed = (exponential) => {
 	if (Math.abs(exponential) < 1.0) {

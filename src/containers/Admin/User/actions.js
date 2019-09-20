@@ -1,7 +1,6 @@
 import { all } from 'bluebird';
 import querystring from 'query-string';
 import { requestAuthenticated } from '../../../utils';
-import { isSupport } from '../../../utils';
 
 const toQueryString = (values) => {
 	return querystring.stringify(values);
@@ -43,7 +42,6 @@ export const approveBank = (values) => {
 };
 
 export const rejectBank = (values) => {
-	console.log('values', values);
 	const options = {
 		method: 'POST',
 		body: JSON.stringify(values)

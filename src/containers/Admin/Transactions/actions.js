@@ -20,6 +20,8 @@ export const dismissDeposit = (deposit_id, dismissed) => {
 		method: 'PUT',
 		body: JSON.stringify({ dismissed })
 	};
-	console.log(options);
-	return requestAuthenticated(`/admin/deposits/${deposit_id}/dismiss`, options);
+	return requestAuthenticated(
+		`/admin/deposits/${deposit_id}/dismiss`,
+		options
+	);
 };

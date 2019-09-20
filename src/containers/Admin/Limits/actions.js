@@ -5,8 +5,7 @@ export const performLimitUpdate = (id, values) => {
 		method: 'PUT',
 		body: JSON.stringify(values)
 	};
-
-	return requestAuthenticated(`/admin/limits/${id}`, options);
+	return requestAuthenticated(`/admin/coins/${id}`, options);
 };
 
-export const requestLimits = () => requestAuthenticated('/admin/limits');
+export const requestLimits = () => requestAuthenticated('/admin/coins');

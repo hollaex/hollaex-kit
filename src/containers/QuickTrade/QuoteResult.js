@@ -3,11 +3,11 @@ import { Loader, IconTitle, Button } from '../../components';
 import { formatBtcAmount, formatToCurrency } from '../../utils/currency';
 
 import STRINGS from '../../config/localizedStrings';
-import { ICONS, BASE_CURRENCY } from '../../config/constants';
+import { ICONS, BASE_CURRENCY, DEFAULT_COIN_DATA } from '../../config/constants';
 
 const QuoteResult = ({ name, onClose, coins, ...props }) => {
 	const { fetching, error, data } = props.data;
-	const { min } = coins[BASE_CURRENCY] || {};
+	const { min, fullname } = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
 	if (fetching) {
 		return <Loader relative={true} background={false} />;
 	} else if (error) {
@@ -34,7 +34,7 @@ const QuoteResult = ({ name, onClose, coins, ...props }) => {
 						formatBtcAmount(data.size),
 						name,
 						formatToCurrency(data.price, min),
-						STRINGS[`${BASE_CURRENCY.toUpperCase()}_NAME`]
+						fullname
 					)}
 				</div>
 				{onClose && <Button label={STRINGS.CLOSE_TEXT} onClick={onClose} />}

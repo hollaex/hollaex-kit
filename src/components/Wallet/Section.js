@@ -1,7 +1,7 @@
 import React from 'react';
 import math from 'mathjs';
 import STRINGS from '../../config/localizedStrings';
-import { BASE_CURRENCY } from '../../config/constants';
+import { BASE_CURRENCY, CURRENCY_PRICE_FORMAT, DEFAULT_COIN_DATA } from '../../config/constants';
 import { formatToCurrency } from '../../utils/currency';
 
 const TextHolders = ({ ordersOfSymbol, currencySymbol, hold, name }) => {
@@ -25,7 +25,7 @@ const TextHolders = ({ ordersOfSymbol, currencySymbol, hold, name }) => {
 };
 
 const Section = ({ symbol = BASE_CURRENCY, balance, orders, price, coins }) => {
-	const { name, min } = coins[symbol];
+	const { fullname, min, ...rest } = coins[symbol] || DEFAULT_COIN_DATA;
 	const ordersOfSymbol = orders.filter((order) => {
 		if (symbol === BASE_CURRENCY) {
 			return order.side === 'buy';
@@ -34,10 +34,11 @@ const Section = ({ symbol = BASE_CURRENCY, balance, orders, price, coins }) => {
 		}
 	}).length;
 
-	const amountFormat =
-		symbol === BASE_CURRENCY
-			? STRINGS[`${BASE_CURRENCY.toUpperCase()}_PRICE_FORMAT`]
-			: STRINGS.BTC_PRICE_FORMAT;
+	const amountFormat = CURRENCY_PRICE_FORMAT;
+	// const amountFormat =
+	// 	symbol === BASE_CURRENCY
+	// 		? STRINGS[`${BASE_CURRENCY.toUpperCase()}_PRICE_FORMAT`]
+	// 		: STRINGS.BTC_PRICE_FORMAT;
 	const total = balance[`${symbol}_balance`];
 	const available = balance[`${symbol}_available`];
 	const hold = math.subtract(math.fraction(total), math.fraction(available));
@@ -51,16 +52,16 @@ const Section = ({ symbol = BASE_CURRENCY, balance, orders, price, coins }) => {
 						{STRINGS.formatString(
 							amountFormat,
 							formatToCurrency(total, min),
-							STRINGS[`${symbol.toUpperCase()}_CURRENCY_SYMBOL`]
+							rest.symbol.toUpperCase()
 						)}
 					</div>
 				</div>
 				{ordersOfSymbol > 0 && (
 					<TextHolders
 						ordersOfSymbol={ordersOfSymbol}
-						currencySymbol={STRINGS[`${symbol.toUpperCase()}_CURRENCY_SYMBOL`]}
+						currencySymbol={rest.symbol.toUpperCase()}
 						hold={formatToCurrency(hold, min)}
-						name={STRINGS[`${symbol.toUpperCase()}_SHORTNAME`] || name}
+						name={rest.symbol.toUpperCase() || fullname}
 					/>
 				)}
 				<div className="d-flex flex-column">
@@ -69,7 +70,7 @@ const Section = ({ symbol = BASE_CURRENCY, balance, orders, price, coins }) => {
 						{STRINGS.formatString(
 							amountFormat,
 							formatToCurrency(available, min),
-							STRINGS[`${symbol.toUpperCase()}_CURRENCY_SYMBOL`]
+							rest.symbol.toUpperCase()
 						)}
 					</div>
 				</div>

@@ -26,7 +26,7 @@ import {
 	normalizeFloat
 } from '../../../components/Form/validations';
 import { Loader } from '../../../components';
-import { takerFee } from '../../../config/constants';
+import { takerFee, DEFAULT_COIN_DATA } from '../../../config/constants';
 
 import STRINGS from '../../../config/localizedStrings';
 import { isLoggedIn } from '../../../utils/token';
@@ -255,16 +255,20 @@ class OrderEntry extends Component {
 		}
 	};
 
-	generateFormValues = (pair = '', byuingPair = '', priceInitialized = false, sizeInitialized = false) => {
+	generateFormValues = (pair = '', buyingPair = '', priceInitialized = false, sizeInitialized = false) => {
 		const {
 
 			min_size,
 			max_size,
+			increment_size,
 			increment_price,
 			min_price,
 			max_price,
+			coins
 
 		} = this.props;
+		const { symbol } = coins[pair] || DEFAULT_COIN_DATA;
+		const buyData = coins[buyingPair] || DEFAULT_COIN_DATA;
 		const formValues = {
 			type: {
 				name: 'type',
@@ -297,7 +301,7 @@ class OrderEntry extends Component {
 				type: 'number',
 				placeholder: '0.00',
 				normalize: normalizeFloat,
-				step: min_size,
+				step: increment_size,
 				min: min_size,
 				max: max_size,
 				validate: [
@@ -305,7 +309,7 @@ class OrderEntry extends Component {
 					minValue(min_size),
 					maxValue(max_size)
 				],
-				currency: STRINGS[`${pair.toUpperCase()}_SHORTNAME`],
+				currency: symbol.toUpperCase(),
 				initializeEffect: sizeInitialized,
 				parse: (value = '') => {
 					let decimal = getDecimals(min_size);
@@ -334,7 +338,7 @@ class OrderEntry extends Component {
 					maxValue(max_price),
 					step(increment_price)
 				],
-				currency: STRINGS[`${byuingPair.toUpperCase()}_SHORTNAME`],
+				currency: buyData.symbol.toUpperCase(),
 				initializeEffect: priceInitialized
 			}
 		};
@@ -350,7 +354,7 @@ class OrderEntry extends Component {
 	};
 
 	render() {
-		const { balance, type, side, pair_base, pair_2, price } = this.props;
+		const { balance, type, side, pair_base, pair_2, price, coins } = this.props;
 		const {
 			initialValues,
 			formValues,
@@ -358,9 +362,11 @@ class OrderEntry extends Component {
 			orderFees,
 			outsideFormError
 		} = this.state;
+		const pairBase = coins[pair_base] || DEFAULT_COIN_DATA;
+		const pairTwo = coins[pair_2] || DEFAULT_COIN_DATA;
 
-		const currencyName = STRINGS[`${pair_base.toUpperCase()}_NAME`];
-		const buyingName = STRINGS[`${pair_2.toUpperCase()}_SHORTNAME`];
+		const currencyName = pairBase.fullname;
+		const buyingName = pairTwo.symbol.toUpperCase();
 		if (isLoggedIn() && !balance.hasOwnProperty(`${pair_2}_balance`)) {
 			return <Loader relative={true} background={false} />;
 		}
@@ -409,6 +415,7 @@ const mapStateToProps = (state) => {
 		max_size,
 		min_size,
 		min_price,
+		increment_size,
 		increment_price,
 		maker_fees = {},
 		taker_fees = {}
@@ -430,6 +437,7 @@ const mapStateToProps = (state) => {
 		max_price,
 		max_size,
 		min_size,
+		increment_size,
 		min_price,
 		increment_price,
 		orderLimits: state.app.orderLimits,
@@ -437,6 +445,7 @@ const mapStateToProps = (state) => {
 		balance: state.user.balance,
 		user: state.user,
 		settings: state.user.settings,
+		coins: state.app.coins
 	};
 };
 

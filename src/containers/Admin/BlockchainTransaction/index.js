@@ -18,12 +18,10 @@ class BlockchainTransaction extends Component {
 		this.setState({ error: '', loading: true, data: {} });
 		return checkTransaction(currency, transaction_id, address)
 			.then((data) => {
-				console.log(data);
 				this.setState({ data, loading: false });
 			})
-			.catch(({ data }) => {
-				console.log(data);
-				this.setState({ error: data.message, loading: false });
+			.catch(({ err }) => {
+				this.setState({ error: err.message, loading: false });
 			});
 	};
 

@@ -1,10 +1,9 @@
 import React from 'react';
 import { Icon, Button, Tooltip } from 'antd';
 import { Link } from 'react-router';
-import { formatCurrency } from '../../../utils/index';
-import moment from 'moment';
+import { formatCurrency, formatDate } from '../../../utils/index';
 
-import { formatDate, isSupport } from '../../../utils';
+import { isSupport } from '../../../utils/token';
 
 export const renderBoolean = (value) => (
 	<Icon type={value ? 'check-circle' : 'close-circle-o'} />
@@ -24,8 +23,8 @@ export const renderValidation = ({ status, completeDeposit, updatingItem }) =>
 			</Button>
 		</Tooltip>
 	) : (
-			<ButtonNotAvailable />
-		);
+		<ButtonNotAvailable />
+	);
 
 export const renderDismiss = ({
 	status,
@@ -34,7 +33,10 @@ export const renderDismiss = ({
 	dismissingItem
 }) =>
 	!status ? (
-		<Tooltip placement="bottom" title={dismissed ? 'UNDO DISMISS' : 'DISMISS'}>
+		<Tooltip
+			placement="bottom"
+			title={dismissed ? 'UNDO DISMISS' : 'DISMISS'}
+		>
 			<Button
 				type={dismissed ? 'dashed' : 'primary'}
 				onClick={dismissDeposit}
@@ -45,8 +47,8 @@ export const renderDismiss = ({
 			</Button>
 		</Tooltip>
 	) : (
-			<ButtonNotAvailable />
-		);
+		<ButtonNotAvailable />
+	);
 
 export const renderUser = (id) => (
 	<Tooltip placement="bottom" title={`SEE USER ${id} DETAILS`}>

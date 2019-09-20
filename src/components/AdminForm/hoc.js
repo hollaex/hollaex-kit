@@ -1,6 +1,6 @@
 import React from 'react';
 import renderFields from './utils';
-import { reduxForm, reset, Field } from 'redux-form';
+import { reduxForm, reset } from 'redux-form';
 import { Button } from 'antd';
 
 const Form = (name, className = '', allowPristine = false) => {
@@ -16,7 +16,6 @@ const Form = (name, className = '', allowPristine = false) => {
 		buttonType,
 		small
 	}) => {
-		// console.log(pristine || submitting || !valid, pristine, submitting, valid)
 		return (
 			<form className={className}>
 				{fields && renderFields(fields)}

@@ -81,7 +81,6 @@ class Transactions extends Component {
 				});
 			})
 			.catch((error) => {
-				console.log(error.data);
 				const message = error.data ? error.data.message : error.message;
 				this.setState({
 					loading: false,
@@ -108,7 +107,6 @@ class Transactions extends Component {
 					});
 				})
 				.catch((error) => {
-					console.log(error.data);
 					const message = error.data ? error.data.message : error.message;
 					this.setState({
 						loadingItem: false,
@@ -137,7 +135,6 @@ class Transactions extends Component {
 					});
 				})
 				.catch((error) => {
-					console.log(error.data);
 					const message = error.data ? error.data.message : error.message;
 					this.setState({
 						dismissingItem: false,
@@ -148,12 +145,10 @@ class Transactions extends Component {
 		}
 	};
 	onSelect = (value, option) => {
-		console.log('onSelect', value, option);
 		this.setState({ searchKey: value });
 	};
 
 	onSearch = (value) => {
-		console.log('onSearch', value);
 		if (value) {
 			this.setState({ searchValue: value.trim() });
 			const values = {};
@@ -186,9 +181,7 @@ class Transactions extends Component {
 		} else {
 			delete queryParams[key];
 		}
-		this.setState({ queryParams }, () => {
-			console.log(this.state.queryParams);
-		});
+		this.setState({ queryParams }, () => {});
 	};
 
 	onClickFilters = () => {
@@ -244,8 +237,6 @@ class Transactions extends Component {
 							/>
 						)}
 
-						{console.log(deposits)}
-
 						<CSVLink data={deposits} headers={HEADERS}>
 							Download transactions
 						</CSVLink>
@@ -256,7 +247,10 @@ class Transactions extends Component {
 									...deposit,
 									completeDeposit:
 										index !== indexItem
-											? this.completeDeposit(deposit.transaction_id, index)
+											? this.completeDeposit(
+													deposit.transaction_id,
+													index
+											  )
 											: () => {},
 									dismissDeposit:
 										index !== indexItem
@@ -272,6 +266,9 @@ class Transactions extends Component {
 							})}
 							expandedRowRender={renderRowContent}
 							expandRowByClick={true}
+							rowKey={(data) => {
+								return data.id;
+							}}
 						/>
 					</div>
 				)}

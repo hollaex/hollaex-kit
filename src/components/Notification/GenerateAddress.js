@@ -1,5 +1,5 @@
 import React from 'react';
-import { ICONS } from '../../config/constants';
+import { ICONS, DEFAULT_COIN_DATA } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 import { NotificationWraper, NotificationContent } from './Notification';
 import { Button, Loader } from '../';
@@ -7,14 +7,16 @@ import { Button, Loader } from '../';
 const GenerateAddressNotification = ({
 	type,
 	data,
+	coins,
 	currency,
 	onBack,
 	onGenerate
 }) => {
 	const { fetching, error } = data;
+	const { fullname } = coins[currency] || DEFAULT_COIN_DATA;
 	const title = STRINGS.formatString(
 		STRINGS.WALLET_ADDRESS_TITLE,
-		STRINGS[`${currency.toUpperCase()}_NAME`]
+		fullname
 	);
 	if (fetching) {
 		return (

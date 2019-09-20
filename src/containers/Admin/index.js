@@ -4,7 +4,6 @@ export { default as UserBalance } from './UserBalance';
 export { default as Logins } from './Logins';
 export { default as Audits } from './Audits';
 export { default as AppWrapper } from './AppWrapper';
-export { default as Login } from './Login';
 export { default as Main } from './Main';
 export { default as Balance } from './Balance';
 export { default as Verification } from './Verification';

@@ -6,7 +6,7 @@ import classnames from 'classnames';
 import Tab from './Tab';
 import AddTabList from './AddTabList';
 import TabOverflowList from './TabOverflowList';
-import { DEFAULT_TRADING_PAIRS } from '../../config/constants';
+import { DEFAULT_TRADING_PAIRS, DEFAULT_COIN_DATA } from '../../config/constants';
 import { ICONS } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 
@@ -87,7 +87,7 @@ class PairTabs extends Component {
             clearTimeout(timeOut);
         }
     }
-    
+
 
     initTabs = (pairs, activePair) => {
         let tabs = localStorage.getItem('tabs');
@@ -144,7 +144,7 @@ class PairTabs extends Component {
     onAddTabClick = pair => {
         this.setState({ selectedAddTab: pair });
     };
-    
+
     onTabChange = pair => {
         const { selectedTabs, activeTabs, activePairTab, selectedToOpen } = this.state;
         const { activePath, pairs } = this.props;
@@ -253,15 +253,16 @@ class PairTabs extends Component {
         this.setTabsLocal({ ...sortedTabs, ...this.state.selectedTabs });
         this.setState({ activeTabs: { ...sortedTabs }, selectedTabs: { ...sortedTabs, ...this.state.selectedTabs } });
     };
-    
+
     handleSearch = (_, value) => {
-        const { pairs } = this.props;
+        const { pairs, coins } = this.props;
         if (value) {
             let result = {};
             let searchValue = value.toLowerCase().trim();
             Object.keys(pairs).map(key => {
                 let temp = pairs[key];
-                let cashName = STRINGS[`${temp.pair_base.toUpperCase()}_FULLNAME`].toLowerCase();
+                const { fullname } = coins[temp.pair_base.toLowerCase()] || DEFAULT_COIN_DATA;
+                let cashName = fullname ? fullname.toLowerCase() : '';
                 if (key.indexOf(searchValue) !== -1 ||
                     temp.pair_base.indexOf(searchValue) !== -1 ||
                     temp.pair_2.indexOf(searchValue) !== -1 ||
@@ -292,37 +293,39 @@ class PairTabs extends Component {
             obj[pair.pair_base] = '';
         });
         const symbols = Object.keys(obj).map((key) => key);
+        const TabList = Object.keys(activeTabs).map((tab, index) => {
+            const pair = activeTabs[tab];
+            const ticker = tickers[tab];
+            if (index <= 3) {
+                return (
+                    <Tab
+                        key={index}
+                        tab={tab}
+                        pair={pair}
+                        ticker={ticker}
+                        coins={coins}
+                        selectedToOpen={selectedToOpen}
+                        selectedToRemove={selectedToRemove}
+                        activePairTab={activePairTab}
+                        onSortItems={this.onSortItems}
+                        items={Object.keys(activeTabs)}
+                        sortId={index}
+                        onTabClick={this.onTabClick}
+                        onTabChange={this.onTabChange} />
+                )
+            }
+            return null;
+        })
         return (
             <div className="d-flex h-100">
-                {Object.keys(activeTabs).map((tab, index) => {
-                    const pair = activeTabs[tab];
-                    const ticker = tickers[tab];
-                    if (index <= 3) {
-                        return (
-                            <Tab
-                                key={index}
-                                tab={tab}
-                                pair={pair}
-                                ticker={ticker}
-                                coins={coins}
-                                selectedToOpen={selectedToOpen}
-                                selectedToRemove={selectedToRemove}
-                                activePairTab={activePairTab}
-                                onSortItems={this.onSortItems}
-                                items={Object.keys(activeTabs)}
-                                sortId={index}
-                                onTabClick={this.onTabClick}
-                                onTabChange={this.onTabChange} />
-                        )
-                    }}
-                )}
+                {TabList}
                 <div className={
                     classnames(
-                        'app_bar-pair-content', 
-                        'd-flex', 
-                        'justify-content-between', 
-                        'px-2', 
-                        { 
+                        'app_bar-pair-content',
+                        'd-flex',
+                        'justify-content-between',
+                        'px-2',
+                        {
                             'active-tab-pair': isAddTab || (location.pathname === '/trade/add/tabs' && !Object.keys(selectedTabs).length)
                         })
                     }>
@@ -333,8 +336,8 @@ class PairTabs extends Component {
                         <span onClick={this.openAddTabMenu}>{STRINGS.ADD_TRADING_PAIR}</span>
                     : '' }
                     {isAddTab &&
-                        <AddTabList 
-                            symbols={symbols} 
+                        <AddTabList
+                            symbols={symbols}
                             pairs={pairs}
                             tickers={tickers}
                             coins={coins}

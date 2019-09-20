@@ -1,10 +1,7 @@
 import React from 'react';
 import classnames from 'classnames';
 import STRINGS from '../../config/localizedStrings';
-import {
-	formatBaseAmount,
-	formatBtcAmount
-} from '../../utils/currency';
+import { formatBaseAmount, formatBtcAmount } from '../../utils/currency';
 
 const getLimitValue = (limit = -1, format) => {
 	if (limit === 0) {
@@ -26,7 +23,6 @@ const LevelRow = ({ data = {}, isUserLevel = false }) => {
 		eth_deposit_daily,
 		eth_withdraw_daily
 	} = data;
-	console.log('levelRow', data);
 	return (
 		<tr
 			className={classnames('table-row table-bottom-border', {

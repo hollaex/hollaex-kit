@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { Card, Alert } from 'antd';
-import { isSupport } from '../../../utils';
+import { Card, Alert, Spin } from 'antd';
+import { isSupport } from '../../../utils/token';
 
 import { getFees } from './actions';
 import { formatCurrency } from '../../../utils';
@@ -16,12 +16,10 @@ class BlockchainTransaction extends Component {
 		if (!isSupport()) {
 			getFees()
 				.then((data) => {
-					console.log(data);
 					this.setState({
 						loading: false,
 						data
 					});
-					console.log(data);
 				})
 				.catch((error) => {
 					const message = error.data ? error.data.message : error.message;
@@ -39,10 +37,11 @@ class BlockchainTransaction extends Component {
 
 	render() {
 		const { error, data, loading } = this.state;
+		if (loading) return <Spin size="large" />;
 		return (
 			<div className="app_container-content">
 				{loading && <div />
-					// <Spin size="large" />
+				// <Spin size="large" />
 				}
 				{error && (
 					<Alert
@@ -61,7 +60,10 @@ class BlockchainTransaction extends Component {
 							style={{ textAlign: 'center' }}
 						>
 							{Object.entries(data.fees).map(([currency, amount], index) => (
-								<div key={index} className="list-group-item list-group-item-action">
+								<div
+									key={index}
+									className="list-group-item list-group-item-action"
+								>
 									{currency.toUpperCase()} : {formatCurrency(amount)}
 								</div>
 							))}
@@ -73,7 +75,10 @@ class BlockchainTransaction extends Component {
 							style={{ textAlign: 'center' }}
 						>
 							{Object.entries(data.trades).map(([currency, amount], index) => (
-								<div key={index} className="list-group-item list-group-item-action">
+								<div
+									key={index}
+									className="list-group-item list-group-item-action"
+								>
 									{currency.toUpperCase()} : {formatCurrency(amount)}
 								</div>
 							))}

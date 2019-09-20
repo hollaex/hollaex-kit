@@ -16,8 +16,6 @@ export const completeDeposits = (id, status) => {
 		method: 'PUT',
 		body: JSON.stringify({ status })
 	};
-	console.log(options);
-	console.log(id);
 	return requestAuthenticated(`/admin/deposit/${id}/verify`, options);
 };
 
@@ -26,6 +24,5 @@ export const dismissDeposit = (deposit_id, dismissed) => {
 		method: 'PUT',
 		body: JSON.stringify({ dismissed })
 	};
-	console.log(options);
 	return requestAuthenticated(`/admin/deposits/${deposit_id}/dismiss`, options);
 };

@@ -1,7 +1,7 @@
 import 'whatwg-fetch';
-import { API_PATH, API_HOST } from '../config/constants';
+import { API_URL } from '../config/constants';
 
-import { getToken } from './';
+import { getToken } from './token';
 
 /**
  * Parses the JSON returned by a network request
@@ -10,9 +10,9 @@ import { getToken } from './';
  *
  * @return {object}          The parsed JSON from the request
  */
-function parseJSON(response) {
+const parseJSON = (response) => {
 	return response.json();
-}
+};
 
 /**
  * Checks if a network request came back fine, and throws an error if not
@@ -52,13 +52,13 @@ export const requestAuthenticated = (url, paramOptions, headers) => {
 		method: 'GET',
 		headers: headers
 			? {
-				...headers,
-				authorization: `Bearer ${TOKEN}`
-			}
+					...headers,
+					authorization: `Bearer ${TOKEN}`
+			  }
 			: {
-				'Content-Type': 'application/json',
-				authorization: `Bearer ${TOKEN}`
-			},
+					'Content-Type': 'application/json',
+					authorization: `Bearer ${TOKEN}`
+			  },
 		...paramOptions
 	};
 	return request(url, options);
@@ -73,7 +73,7 @@ export const requestAuthenticated = (url, paramOptions, headers) => {
  * @return {object}           The response data
  */
 const request = (url, options) => {
-	return fetch(`${API_HOST}${API_PATH}${url}`, options)
+	return fetch(`${API_URL}${url}`, options)
 		.then(checkStatus)
 		.then(parseJSON);
 };

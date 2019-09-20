@@ -1,17 +1,7 @@
 import React, { Component } from 'react';
-import { reduxForm, reset, Field, SubmissionError } from 'redux-form';
+import { SubmissionError } from 'redux-form';
 import { updateUserData, approveBank, rejectBank } from './actions';
-import {
-	Card,
-	Button,
-	Modal,
-	Input,
-	Popconfirm,
-	Icon,
-	message,
-	Col,
-	Row
-} from 'antd';
+import { Card, Button, Input, Popconfirm, Icon, message, Col, Row } from 'antd';
 import { ModalForm } from '../../../components';
 
 const Form = ModalForm('BANK_DATA', 'bank_data');
@@ -35,12 +25,12 @@ const Fields = {
 	...BankFields
 };
 
-const generateInitialValues = (initialValues) => {
-	const values = {
-		...initialValues
-	};
-	return values;
-};
+// const generateInitialValues = (initialValues) => {
+// 	const values = {
+// 		...initialValues
+// 	};
+// 	return values;
+// };
 
 class BankData extends Component {
 	constructor() {
@@ -129,9 +119,9 @@ class BankData extends Component {
 	};
 
 	approveBank = (values) => {
-		const newBanks = this.state.bank.filter((b) => {
-			return b.id !== values.bank_id;
-		});
+		// const newBanks = this.state.bank.filter((b) => {
+		// 	return b.id !== values.bank_id;
+		// });
 		approveBank(values)
 			.then((data) => {
 				message.success('Bank approved');
@@ -228,21 +218,22 @@ class BankData extends Component {
 												</div>
 											</div>
 										) : (
-												<Popconfirm
-													title="Are you sure delete this task?"
-													onConfirm={() => this.deleteBank(bank.id)}
-													okText="Yes"
-													cancelText="No"
-												>
-													<a>
-														<Icon
-															type="delete"
-															style={{ fontSize: '20px', color: '#08c' }}
-															theme="outlined"
-														/>
-													</a>
-												</Popconfirm>
-											)
+											<Popconfirm
+												title="Are you sure delete this task?"
+												onConfirm={() => this.deleteBank(bank.id)}
+												okText="Yes"
+												cancelText="No"
+											>
+												<Icon
+													type="delete"
+													style={{
+														fontSize: '20px',
+														color: '#08c'
+													}}
+													theme="outlined"
+												/>
+											</Popconfirm>
+										)
 									}
 									style={{ width: 300 }}
 								>

@@ -224,7 +224,7 @@ class Withdraw extends Component {
 				{isMobile && <MobileBarBack onBackClick={this.onGoBack}>
 				</MobileBarBack> }
 				<div className="presentation_container apply_rtl">
-					{!isMobile && renderTitleSection(currency, 'withdraw', ICONS.WITHDRAW)}
+					{!isMobile && renderTitleSection(currency, 'withdraw', ICONS.WITHDRAW, coins)}
 					{verification_level >= MIN_VERIFICATION_LEVEL_TO_WITHDRAW &&
 					verification_level <= MAX_VERIFICATION_LEVEL_TO_WITHDRAW ? (
 						<div className={classnames('inner_container', 'with_border_top')}>

@@ -2,82 +2,45 @@ export default {
 	APP_TITLE: 'Hollaex',
 	APP_SUB_TITLE: 'White Label Cryptocurrency Exchange',
 	APP_NAME: 'hollaex',
-	FIAT_NAME: 'EURO',
-	FIAT_FULLNAME: 'Euro',
-	FIAT_SHORTNAME: 'EUR',
-	FIAT_SHORTNAME_EN: 'EUR',
-	FIAT_CURRENCY_SYMBOL: '€',
-	FIAT_PRICE_FORMAT: '{0} {1}', // 0-> amount  1 -> symbol  600,000 T
-
-	EUR_NAME: 'EURO',
-	EUR_FULLNAME: 'Euro',
-	EUR_SHORTNAME: 'EUR',
-	EUR_SHORTNAME_EN: 'EUR',
-	EUR_CURRENCY_SYMBOL: '€',
-	EUR_PRICE_FORMAT: '{0} {1}', // 0-> amount  1 -> symbol  600,000 T
-
-	BTC_NAME: 'Bitcoin',
-	BTC_FULLNAME: 'Bitcoin',
-	BTC_SHORTNAME: 'BTC',
-	BTC_CURRENCY_SYMBOL: 'BTC',
-	BTC_PRICE_FORMAT: '{0} {1}', // 0-> amount  1 -> symbol  6.00245 BTC
-
-	ETH_NAME: 'Ethereum',
-	ETH_FULLNAME: 'Ethereum',
-	ETH_SHORTNAME: 'ETH',
-	ETH_CURRENCY_SYMBOL: 'ETH',
-	ETH_PRICE_FORMAT: '{0} {1}', // 0-> amount  1 -> symbol  6.00245 ETH
-
-	BCH_NAME: 'Bitcoin Cash',
-	BCH_FULLNAME: 'BitcoinCash',
-	BCH_SHORTNAME: 'BCH',
-	BCH_CURRENCY_SYMBOL: 'BCH',
-	BCH_PRICE_FORMAT: '{0} {1}',
-
-	XRP_NAME: 'Ripple',
-	XRP_FULLNAME: 'Ripple',
-	XRP_SHORTNAME: 'XRP',
-	XRP_CURRENCY_SYMBOL: 'XRP',
-	XRP_PRICE_FORMAT: '{0} {1}',
 
 	LOGOUT_CONFIRM_TEXT: 'Are you sure?. Do you want to logout',
 	ADD_TRADING_PAIR: 'Add Trading Pair',
 	ACTIVE_TRADES: 'You must {0} to access your active trades',
 	CANCEL_BASE_WITHDRAWAL: 'Cancel {0} Withdrawal',
 	CANCEL_WITHDRAWAL: 'Cancel Withdrawal',
-	CANCEL_WITHDRAWAL_POPUP_CONFIRM: 'Do you want to cancel your pending withdrawal of:',
-	CANT_BE_CANCELLED:'-',
-	ALREADY_CANCELLED:'-',
+	CANCEL_WITHDRAWAL_POPUP_CONFIRM:
+		'Do you want to cancel your pending withdrawal of:',
+	CANT_BE_CANCELLED: '-',
+	ALREADY_CANCELLED: '-',
 	TIMESTAMP_FORMAT: 'YYYY/MM/DD HH:mm:ss A',
 	HOUR_FORMAT: 'HH:mm:ss A',
 	LOGIN_TEXT: 'Login',
-	SIGN_IN:'Sign In',
+	SIGN_IN: 'Sign In',
 	SIGNUP_TEXT: 'Sign Up',
 	REGISTER_TEXT: 'Register',
 	ACCOUNT_TEXT: 'Account',
 	CLOSE_TEXT: 'Close',
 	COPY_TEXT: 'Copy',
-	COPY_SUCCESS_TEXT: 'Successfully Copied', 
-	CANCEL_SUCCESS_TEXT: 'Successfully Cancelled!', 
+	COPY_SUCCESS_TEXT: 'Successfully Copied',
+	CANCEL_SUCCESS_TEXT: 'Successfully Cancelled!',
 	UPLOAD_TEXT: 'Upload',
 	ADD_FILES: 'ADD FILES', // ToDo
 	OR_TEXT: 'Or',
 	CONTACT_US_TEXT: 'Contact us',
 	HELPFUL_RESOURCES_TEXT: 'Helpful resources',
-	HELP_RESOURCE_GUIDE_TEXT: 
+	HELP_RESOURCE_GUIDE_TEXT:
 		'Feel free to contact us for more information and any issues by sending us an email to support@bitholla.com',
-	HELP_TELEGRAM_TEXT: 
-		'Check out HollaEx open API documentation:',
+	HELP_TELEGRAM_TEXT: 'Check out HollaEx open API documentation:',
 	HELP_TELEGRAM_LINK: 'https://apidocs.hollaex.com',
 	NEED_HELP_TEXT: 'Need help',
 	HELP_TEXT: 'help',
 	SUCCESS_TEXT: 'Success',
 	ERROR_TEXT: 'Error',
-	PROCEED: 'PROCEED', 
+	PROCEED: 'PROCEED',
 	EDIT_TEXT: 'Edit',
 	BACK_TEXT: 'Back',
 	NO_OPTIONS: 'No options availables',
-	SECONDS: 'seconds',  
+	SECONDS: 'seconds',
 	HOME: {
 		SECTION_1_TITLE: 'Build your own Bitcoin exchange',
 		SECTION_1_TEXT_1:
@@ -107,12 +70,12 @@ export default {
 		SECTION_3_BUTTON_1: 'View Demo'
 	},
 	FOOTER: {
-		FOOTER_LEGAL: [
-			'Proudly made in Seoul, South Korea',
-			'bitHolla Inc.'
-		],
+		FOOTER_LEGAL: ['Proudly made in Seoul, South Korea', 'bitHolla Inc.'],
 		FOOTER_LANGUAGE_TEXT: 'LANGUAGE',
-		FOOTER_LANGUAGE_LANGUAGES: [{ key: 'en', label: 'English' }, { key: 'ko', label: '한국어' }],
+		FOOTER_LANGUAGE_LANGUAGES: [
+			{ key: 'en', label: 'English' },
+			{ key: 'ko', label: '한국어' }
+		],
 		FOOTER_COPYRIGHT: 'COPYRIGHT 2018',
 		SECTIONS: {
 			SECTION_1_TITLE: 'ABOUT',
@@ -154,7 +117,7 @@ export default {
 		SUBJECT_PLACEHOLDER: 'Type the subject of your issue',
 		DESCRIPTION_LABEL: 'Description',
 		DESCRIPTION_PLACEHOLDER: 'Type in detail what the issue is',
-		ATTACHMENT_LABEL: 'Add attachments(3 max)',  // ToDo:
+		ATTACHMENT_LABEL: 'Add attachments(3 max)', // ToDo:
 		ATTACHMENT_PLACEHOLDER:
 			'Add a file to help communicate your issue. PDF, JPG, PNG and GIF files are accepted',
 		SUCCESS_MESSAGE: 'The email has been seent to our support',
@@ -255,13 +218,13 @@ export default {
 		},
 		DEPOSITS: {
 			TITLE_RECEIVED: '{0} Deposit received',
-				TITLE_INCOMING: 'Incoming {0}',
-				SUBTITLE_RECEIVED: 'You’ve received your {0} deposit',
-				SUBTITLE_INCOMING: 'You have incoming {0}',
-				INFORMATION_PENDING_1:
-					'Your {0} require 1 confirmations before you can begin trading.',
-				INFORMATION_PENDING_2:
-					'This may take 10-30 minutes. We will send an email once your {0} is confirmed on the blockchain.'
+			TITLE_INCOMING: 'Incoming {0}',
+			SUBTITLE_RECEIVED: 'You’ve received your {0} deposit',
+			SUBTITLE_INCOMING: 'You have incoming {0}',
+			INFORMATION_PENDING_1:
+				'Your {0} require 1 confirmations before you can begin trading.',
+			INFORMATION_PENDING_2:
+				'This may take 10-30 minutes. We will send an email once your {0} is confirmed on the blockchain.'
 		}
 	},
 	OTP_FORM: {
@@ -344,14 +307,17 @@ export default {
 		TEXT_2: 'You can now proceed to login'
 	},
 	USER_VERIFICATION: {
-		INFO_TXT: 'Here you can monitor your progress towards verification and an account upgrades.', 
-		INFO_TXT_1: 'Please submit the relevant information needed for each section below.Only when all sections have submissions completed will your information be reviewed and approved for an account upgrade.', 
-		INFO_TXT_2: '* Bank and Identity section require {0} in order to be fully verified.', 
+		INFO_TXT:
+			'Here you can monitor your progress towards verification and an account upgrades.',
+		INFO_TXT_1:
+			'Please submit the relevant information needed for each section below.Only when all sections have submissions completed will your information be reviewed and approved for an account upgrade.',
+		INFO_TXT_2:
+			'* Bank and Identity section require {0} in order to be fully verified.',
 		DOCUMENTATIONS: 'documentations',
 		COMPLETED: 'Completed',
 		PENDING_VERIFICATION: 'Pending verification',
 		TITLE_EMAIL: 'Email',
-		MY_EMAIL: 'My Email', 
+		MY_EMAIL: 'My Email',
 		TITLE_USER_DOCUMENTATION: 'Identification',
 		TITLE_ID_DOCUMENTS: 'Documents',
 		TITLE_BANK_ACCOUNT: 'Bank Account',
@@ -374,40 +340,45 @@ export default {
 		PENDING_VERIFICATION_BANK: 'Your bank details are being verified',
 		PENDING_VERIFICATION_DOCUMENTS: 'Your documents are being verified',
 		GOTO_VERIFICATION: 'Go to verification',
-		CONNECT_BANK_ACCOUNT: 'Connect Bank Account', 
-		ACTIVATE_2FA: 'Activate 2FA', 
-		INCOMPLETED: 'Incompleted', 
-		BANK_VERIFICATION: 'Bank Verification', 
-		IDENTITY_VERIFICATION: 'Identity Verification', 
-		PHONE_VERIFICATION: 'Phone Verification', 
-		DOCUMENT_VERIFICATION: 'Document Verification', 
-		START_BANK_VERIFICATION: 'Start Bank Verification', 
-		START_IDENTITY_VERIFICATION: 'Start Identity Verification', 
-		START_PHONE_VERIFICATION: 'Start Phone Verification', 
-		START_DOCUMENTATION_SUBMISSION: 'Start Documentation Submission', 
-		GO_BACK: 'Go Back', 
-		BANK_VERIFICATION_TEXT_1: 'You can add up to 3 bank accounts. International bank accounts will require you contacting customer support and will have limited withdrawal limits.', 
-		BANK_VERIFICATION_TEXT_2: 'By verifying your bank account you can obtain the following:', 
-		BASE_WITHDRAWAL: 'Fiat withdrawal', 
-		BASE_DEPOSITS: 'Fiat deposits', 
-		ADD_ANOTHER_BANK_ACCOUNT: 'Add Another Bank Account', 
-		BANK_NAME: 'Bank Name', 
-		ACCOUNT_NUMBER: 'Account Number', 
-		CARD_NUMBER: 'Card Number', 
-		BANK_VERIFICATION_HELP_TEXT: 'In order for this section to be verified you must complete the {0} section.', 
-		DOCUMENT_SUBMISSION: 'Document Submission', 
-		REVIEW_IDENTITY_VERIFICATION: 'Review Identity Verification', 
-		PHONE_DETAILS: 'Phone Details', 
-		PHONE_COUNTRY_ORIGIN: 'Phone Country of Origin', 
-		MOBILE_NUMBER: 'Mobile Number', 
-		DOCUMENT_PROOF_SUBMISSION: 'Document Proof Submission', 
-		START_DOCUMENTATION_RESUBMISSION: 'Start Documentation Re-Submission', 
-		SUBMISSION_PENDING_TXT: '*This section has already been submitted. Making changes and resubmitting will overwrite your previous information.', 
+		CONNECT_BANK_ACCOUNT: 'Connect Bank Account',
+		ACTIVATE_2FA: 'Activate 2FA',
+		INCOMPLETED: 'Incompleted',
+		BANK_VERIFICATION: 'Bank Verification',
+		IDENTITY_VERIFICATION: 'Identity Verification',
+		PHONE_VERIFICATION: 'Phone Verification',
+		DOCUMENT_VERIFICATION: 'Document Verification',
+		START_BANK_VERIFICATION: 'Start Bank Verification',
+		START_IDENTITY_VERIFICATION: 'Start Identity Verification',
+		START_PHONE_VERIFICATION: 'Start Phone Verification',
+		START_DOCUMENTATION_SUBMISSION: 'Start Documentation Submission',
+		GO_BACK: 'Go Back',
+		BANK_VERIFICATION_TEXT_1:
+			'You can add up to 3 bank accounts. International bank accounts will require you contacting customer support and will have limited withdrawal limits.',
+		BANK_VERIFICATION_TEXT_2:
+			'By verifying your bank account you can obtain the following:',
+		BASE_WITHDRAWAL: 'Fiat withdrawal',
+		BASE_DEPOSITS: 'Fiat deposits',
+		ADD_ANOTHER_BANK_ACCOUNT: 'Add Another Bank Account',
+		BANK_NAME: 'Bank Name',
+		ACCOUNT_NUMBER: 'Account Number',
+		CARD_NUMBER: 'Card Number',
+		BANK_VERIFICATION_HELP_TEXT:
+			'In order for this section to be verified you must complete the {0} section.',
+		DOCUMENT_SUBMISSION: 'Document Submission',
+		REVIEW_IDENTITY_VERIFICATION: 'Review Identity Verification',
+		PHONE_DETAILS: 'Phone Details',
+		PHONE_COUNTRY_ORIGIN: 'Phone Country of Origin',
+		MOBILE_NUMBER: 'Mobile Number',
+		DOCUMENT_PROOF_SUBMISSION: 'Document Proof Submission',
+		START_DOCUMENTATION_RESUBMISSION: 'Start Documentation Re-Submission',
+		SUBMISSION_PENDING_TXT:
+			'*This section has already been submitted. Making changes and resubmitting will overwrite your previous information.',
 		CUSTOMER_SUPPORT_MESSAGE: 'Customer Support Message',
-		DOCUMENT_PENDING_NOTE: 'Your documents is submitted and is pending for review. Please be patient.', 
-		DOCUMENT_VERIFIED_NOTE: 'Your documents are completed.', 
-		NOTE_FROM_VERIFICATION_DEPARTMENT: 'Note from the verification department', 
-		CODE_EXPIRES_IN: 'Code expires in', 
+		DOCUMENT_PENDING_NOTE:
+			'Your documents is submitted and is pending for review. Please be patient.',
+		DOCUMENT_VERIFIED_NOTE: 'Your documents are completed.',
+		NOTE_FROM_VERIFICATION_DEPARTMENT: 'Note from the verification department',
+		CODE_EXPIRES_IN: 'Code expires in',
 		USER_DOCUMENTATION_FORM: {
 			FORM_FIELDS: {
 				FIRST_NAME_LABEL: 'First name',
@@ -442,7 +413,7 @@ export default {
 				PHONE_CODE_DISPLAY: '({0}) {1}', // 0 -> (+21)  1 -> South Korea
 				PHONE_NUMBER_LABEL: 'Phone number',
 				PHONE_NUMBER_PLACEHOLDER: 'Type your phone number',
-				CONNECTING_LOADING: 'Connecting', 
+				CONNECTING_LOADING: 'Connecting',
 				SMS_SEND: 'Send SMS',
 				SMS_CODE_LABEL: 'SMS Code',
 				SMS_CODE_PLACEHOLDER: 'Input your SMS code'
@@ -452,9 +423,12 @@ export default {
 					'IMPORTANT: Enter your name into the fields exactly as it appears on your identity document (full first name, any middle names/initials and full last name(s)). Are you a business? Contact customer support for a corporate account.',
 				TITLE_PERSONAL_INFORMATION: 'Personal Information',
 				TITLE_PHONE: 'Phone',
-				PHONE_VERIFICATION_TXT: 'Providing valid contact details will assist HollaEx greatly in conflict resolution while preventing unwanted transactions on your account.',
-				PHONE_VERIFICATION_TXT_1: 'Receive real-time updates for deposits and withdrawals by sharing your mobile phone number.',
-				PHONE_VERIFICATION_TXT_2: 'Further prove your identity and address by sharing your LAN phone number (optional).',
+				PHONE_VERIFICATION_TXT:
+					'Providing valid contact details will assist HollaEx greatly in conflict resolution while preventing unwanted transactions on your account.',
+				PHONE_VERIFICATION_TXT_1:
+					'Receive real-time updates for deposits and withdrawals by sharing your mobile phone number.',
+				PHONE_VERIFICATION_TXT_2:
+					'Further prove your identity and address by sharing your LAN phone number (optional).'
 			}
 		},
 		ID_DOCUMENTS_FORM: {
@@ -491,7 +465,8 @@ export default {
 				POR_LABEL: 'Document proving your address',
 				POR_PLACEHOLDER: 'Add a copy of a document that proves your address',
 				SELFIE_PHOTO_ID_LABEL: 'Your Selfie with Photo ID and Note',
-				SELFIE_PHOTO_ID_PLACEHOLDER: 'Add a copy of your Selfie with Photo ID and Note',
+				SELFIE_PHOTO_ID_PLACEHOLDER:
+					'Add a copy of your Selfie with Photo ID and Note'
 			},
 			INFORMATION: {
 				IDENTITY_DOCUMENT: 'Identity Document',
@@ -506,7 +481,8 @@ export default {
 						'Only a valid government-issued identification document is acceptedt; high quality photos or scanned images of these documents are acceptable:',
 					WARNING_2:
 						'Make sure you are uploading your own documents. Any usage of wrong or fake documents will have legal consequences and result in freezing your account immediately.',
-					WARNING_3: 'Please do not submit the identity document as your proof of residence.'
+					WARNING_3:
+						'Please do not submit the identity document as your proof of residence.'
 				},
 				POR: {
 					SECTION_1_TEXT_1:
@@ -528,14 +504,16 @@ export default {
 				},
 				SELFIE: {
 					TITLE: 'Selfie with Photo ID and Note',
-					INFO_TEXT: 'Please provide a photo of you holding your passport or photo ID. In the same picture and have a reference to HollaEx.com’, today\'s date and your signature displayed.Make sure your face is clearly visible and that your ID details are clearly readable.',
+					INFO_TEXT:
+						"Please provide a photo of you holding your passport or photo ID. In the same picture and have a reference to HollaEx.com’, today's date and your signature displayed.Make sure your face is clearly visible and that your ID details are clearly readable.",
 					REQUIRED: 'Required:',
 					INSTRUCTION_1: 'Your face clearly visable',
 					INSTRUCTION_2: 'Photo ID clearly readable',
 					INSTRUCTION_3: 'Write the word ‘hollaex.com',
 					INSTRUCTION_4: "Write today's date",
-					INSTRUCTION_5: "Write your signature",
-					WARNING: 'Selfie with a different inconsistent ID with uploaded content will be rejected'
+					INSTRUCTION_5: 'Write your signature',
+					WARNING:
+						'Selfie with a different inconsistent ID with uploaded content will be rejected'
 				}
 			}
 		},
@@ -543,7 +521,8 @@ export default {
 			VALIDATIONS: {
 				ACCOUNT_OWNER:
 					'Please type your first and last name as associated with your bank account',
-				ACCOUNT_NUMBER: 'Your bank account number should be less than 50 digits',
+				ACCOUNT_NUMBER:
+					'Your bank account number should be less than 50 digits',
 				ACCOUNT_NUMBER_MAX_LENGTH:
 					'Your bank account number has a limit of 50 characters',
 				CARD_NUMBER: 'Your card number has an incorrect format'
@@ -567,8 +546,9 @@ export default {
 			LIST_ITEM_3: 'Lower fees'
 		}
 	},
-	USER_SETTINGS: { 
-		TITLE_TEXT_1: 'Change the settings of your account. From interface, notifcations, username and other customizations.',
+	USER_SETTINGS: {
+		TITLE_TEXT_1:
+			'Change the settings of your account. From interface, notifcations, username and other customizations.',
 		TITLE_TEXT_2: 'Saving your settings will apply the changes and save it.',
 		TITLE_NOTIFICATION: 'Notification',
 		TITLE_INTERFACE: 'Interface',
@@ -579,31 +559,38 @@ export default {
 		ORDERBOOK_LEVEL: 'Orderbook Levels (Max 20)',
 		SET_TXT: 'SET',
 		CREATE_ORDER_WARING: 'Create Order Warning',
-		RISKY_TRADE_DETECTED: 'Risky Trade Detected', 
-		RISKY_WARNING_TEXT_1:'This orders value is over your designated order limit amount you’ve set {0} .', 
-		RISKY_WARNING_TEXT_2:'({0} of portfolio)',  
-		RISKY_WARNING_TEXT_3: ' Please check and verify that you indeed want to make this trade.',  
-		GO_TO_RISK_MANAGMENT: 'GO TO RISK MANAGMENT', 
-		CREATE_ORDER_WARING_TEXT: 'Create a warning pop up when your trade order uses more than {0} of your portfolio',
+		RISKY_TRADE_DETECTED: 'Risky Trade Detected',
+		RISKY_WARNING_TEXT_1:
+			'This orders value is over your designated order limit amount you’ve set {0} .',
+		RISKY_WARNING_TEXT_2: '({0} of portfolio)',
+		RISKY_WARNING_TEXT_3:
+			' Please check and verify that you indeed want to make this trade.',
+		GO_TO_RISK_MANAGMENT: 'GO TO RISK MANAGMENT',
+		CREATE_ORDER_WARING_TEXT:
+			'Create a warning pop up when your trade order uses more than {0} of your portfolio',
 		ORDER_PORTFOLIO_LABEL: 'Portfolio Percentage Amount:',
 		NOTIFICATION_FORM: {
 			TRADE_POPUPS: 'Trade Pop ups',
 			POPUP_ORDER_CONFIRMATION: 'Ask for confirmation before submitting orders',
 			POPUP_ORDER_COMPLETED: 'Show pop up when order has been completed',
-			POPUP_ORDER_PARTIALLY_FILLED: 'Show pop up when order has partially filled',
+			POPUP_ORDER_PARTIALLY_FILLED:
+				'Show pop up when order has partially filled'
 		},
 		AUDIO_CUE_FORM: {
-			ORDERS_COMPLETED_AUDIO: 'Play an audio cue when one of your orders is fully filled',
-			ORDERS_PARTIAL_AUDIO: 'Play an audio cue when one of your orders is partially filled',
+			ORDERS_COMPLETED_AUDIO:
+				'Play an audio cue when one of your orders is fully filled',
+			ORDERS_PARTIAL_AUDIO:
+				'Play an audio cue when one of your orders is partially filled',
 			PUBLIC_TRADE_AUDIO: 'Play an audio cue on every public trade'
 		},
 		RISK_MANAGEMENT: {
-			INFO_TEXT: 'Create a warning pop up when a trade order value goes over a set percentage amount of your portfolio',
+			INFO_TEXT:
+				'Create a warning pop up when a trade order value goes over a set percentage amount of your portfolio',
 			INFO_TEXT_1: 'Total assets value in {0}: {1}',
 			PORTFOLIO: 'Percentage of portfolio',
 			TOMAN_ASSET: 'Approximate Value',
-			ADJUST: '(ADJUST PERCENTAGE)',  
-			ACTIVATE_RISK_MANAGMENT: 'Activate Risk Managment', 
+			ADJUST: '(ADJUST PERCENTAGE)',
+			ACTIVATE_RISK_MANAGMENT: 'Activate Risk Managment',
 			WARNING_POP_UP: 'Warning pop ups'
 		}
 	},
@@ -690,12 +677,15 @@ export default {
 		sell: 'sell'
 	},
 	SIDES: [{ value: 'buy', label: 'buy' }, { value: 'sell', label: 'sell' }],
-	DEFAULT_TOGGLE_OPTIONS: [{ value: true, label: 'on' }, { value: false, label: 'off' }], 
+	DEFAULT_TOGGLE_OPTIONS: [
+		{ value: true, label: 'on' },
+		{ value: false, label: 'off' }
+	],
 	SIZE: 'Size',
 	PRICE: 'Price',
 	FEE: 'Fee',
 	FEES: 'Fees',
-	LIMIT: 'Limit', 
+	LIMIT: 'Limit',
 	TIME: 'Time',
 	TIMESTAMP: 'Timestamp',
 	MORE: 'More',
@@ -736,6 +726,7 @@ export default {
 	LANGUAGES: [{ key: 'en', label: 'English' }],
 	QUICK_TRADE: 'Quick trade',
 	PRO_TRADE: 'Pro trade',
+	ADMIN_DASH: 'Admin Page',
 	WALLET_TITLE: 'Wallet',
 	TRADING_MODE_TITLE: 'Trading Mode',
 	TRADING_TITLE: 'Trading',
@@ -758,9 +749,12 @@ export default {
 	WITHDRAWALS_FORM_AMOUNT_LABEL: '{0} amount to withdraw',
 	WITHDRAWALS_FORM_AMOUNT_PLACEHOLDER:
 		'Type the amount of {0} you wish to withdraw',
-	WITHDRAWALS_FORM_FEE_BTC_LABEL: 'Bitcoin transaction fee (This is Bitcoin mining fee. If you lower that amount there is chance your transaction takes significant time to get confirmed.)',
-	WITHDRAWALS_FORM_FEE_ETH_LABEL: 'Ethereum transaction fee (This is Ethereum mining fee. If you lower that amount there is chance your transaction takes significant time to get confirmed.)', // TODO CHECK
-	WITHDRAWALS_FORM_FEE_COMMON_LABEL: '{0} transaction fee (This is {0} mining fee. If you lower that amount there is chance your transaction takes significant time to get confirmed.)', // new
+	WITHDRAWALS_FORM_FEE_BTC_LABEL:
+		'Bitcoin transaction fee (This is Bitcoin mining fee. If you lower that amount there is chance your transaction takes significant time to get confirmed.)',
+	WITHDRAWALS_FORM_FEE_ETH_LABEL:
+		'Ethereum transaction fee (This is Ethereum mining fee. If you lower that amount there is chance your transaction takes significant time to get confirmed.)', // TODO CHECK
+	WITHDRAWALS_FORM_FEE_COMMON_LABEL:
+		'{0} transaction fee (This is {0} mining fee. If you lower that amount there is chance your transaction takes significant time to get confirmed.)', // new
 	WITHDRAWALS_FORM_FEE_FIAT_LABEL: 'Bank withdrawal fee',
 	WITHDRAWALS_FORM_FEE_PLACEHOLDER:
 		'Type the amount of {0} you wish to use in the fee of the transaction',
@@ -789,7 +783,8 @@ export default {
 	DEPOSIT_VERIFICATION_ERROR: 'There has been an error verifying the deposit.',
 	DEPOSIT_VERIFICATION_ERROR_VERIFIED: 'The deposit has been already verified',
 	DEPOSIT_VERIFICATION_ERROR_STATUS: 'Invalid status',
-	DEPOSIT_VERIFICATION_ERROR_USER_MATCH: 'The card you made the deposit is not the same as your registered card. Therefore your deposit is rejected and your funds will be refunded in less than an hour.',
+	DEPOSIT_VERIFICATION_ERROR_USER_MATCH:
+		'The card you made the deposit is not the same as your registered card. Therefore your deposit is rejected and your funds will be refunded in less than an hour.',
 	QUOTE_MESSAGE: 'You are going to {0} {1} {2} for {3} {4}',
 	QUOTE_BUTTON: 'Accept',
 	QUOTE_REVIEW: 'Review',
@@ -813,12 +808,13 @@ export default {
 		BASE_INCREASE_LIMIT: 'Increase your daily limit',
 		CONFIRM_VIA_EMAIL: 'Confirm via Email',
 		CONFIRM_VIA_EMAIL_1: 'We have sent you a confirmation withdrawal email.',
-		CONFIRM_VIA_EMAIL_2: 'In order to complete the withdrawal process please confirm',
+		CONFIRM_VIA_EMAIL_2:
+			'In order to complete the withdrawal process please confirm',
 		CONFIRM_VIA_EMAIL_3: 'the withdrawal via your email within 5 minutes.',
 		WITHDRAW_CONFIRM_SUCCESS_1: 'Your withdrawal is confirmed and sent.',
-		WITHDRAW_CONFIRM_SUCCESS_2: 'If you’d like to view your withdrawal please visit your withdrawal history page.',
+		WITHDRAW_CONFIRM_SUCCESS_2:
+			'If you’d like to view your withdrawal please visit your withdrawal history page.',
 		GO_WITHDRAWAL_HISTORY: 'Go To Withdrawal History'
-
 	},
 	WALLET_BUTTON_BASE_DEPOSIT: 'deposit',
 	WALLET_BUTTON_BASE_WITHDRAW: 'withdraw',
@@ -873,7 +869,7 @@ export default {
 	NEXT: 'Next',
 	SKIP_FOR_NOW: 'Skip for now',
 	SUBMIT: 'submit',
-	RESUBMIT: 'Resubmit', 
+	RESUBMIT: 'Resubmit',
 	VERIFICATION_NOTIFICATION_SKIP_TITLE: 'Missing Documents!',
 	VERIFICATION_NOTIFICATION_SKIP_TEXT:
 		'To get full access to withdrawal and deposit functions on HOLLAEX you must submit your identity documents in your account page.',
@@ -898,8 +894,16 @@ export default {
 	NO_FEE: 'N/A',
 	SETTINGS_LANGUAGE_LABEL: 'Language preferences (Includes Emails)',
 	SETTINGS_LANGUAGE_OPTIONS: [
-		{ value: 'en', label: 'English', icon: `${process.env.PUBLIC_URL}/assets/flags/selected-en.png` },
-		{ value: 'ko', label: '한국어', icon: `${process.env.PUBLIC_URL}/assets/flags/selected-kr.png` }
+		{
+			value: 'en',
+			label: 'English',
+			icon: `${process.env.PUBLIC_URL}/assets/flags/selected-en.png`
+		},
+		{
+			value: 'ko',
+			label: '한국어',
+			icon: `${process.env.PUBLIC_URL}/assets/flags/selected-kr.png`
+		}
 	],
 	SETTINGS_ORDERPOPUP_LABEL: 'Display order confirmation popup',
 	SETTINGS_ORDERPOPUP_OPTIONS: [
@@ -914,32 +918,37 @@ export default {
 	SETTING_BUTTON: 'save',
 	STRING_WITH_PARENTHESIS: '{0} ({1})',
 	VERIFICATION_NO_WITHDRAW_TITLE: 'Withdrawals disabled',
-	VERIFICATION_NO_WITHDRAW_MESSAGE:
-		'Your account is disabled for withdrawals',
+	VERIFICATION_NO_WITHDRAW_MESSAGE: 'Your account is disabled for withdrawals',
 	UP_TO_MARKET: 'Up to market',
 	DEVELOPER_SECTION: {
 		TITLE: 'API Key',
-		INFORMATION_TEXT: 'The API provides functionality such as getting wallet balances, managing buy/sell orders, requesting withdrawals as well as market data such as recent trades, order book and ticker.',
-		ERROR_INACTIVE_OTP: 'To generate an API key you need to enable 2-factor authentication.',
+		INFORMATION_TEXT:
+			'The API provides functionality such as getting wallet balances, managing buy/sell orders, requesting withdrawals as well as market data such as recent trades, order book and ticker.',
+		ERROR_INACTIVE_OTP:
+			'To generate an API key you need to enable 2-factor authentication.',
 		ENABLE_2FA: 'Enable 2FA',
 		WARNING_TEXT: 'Do not share your API key with others.',
 		GENERATE_KEY: 'Generate API Key',
 		ACTIVE: 'Active',
 		INACTIVE: 'Inactive',
-		INVALID_LEVEL: 'You need to upgrade your verification level to have access this feature' // TODO
+		INVALID_LEVEL:
+			'You need to upgrade your verification level to have access this feature' // TODO
 	},
 	DEVELOPERS_TOKENS_POPUP: {
 		GENERATE_TITLE: 'Generate API Key',
-		GENERATE_TEXT: 'Please name your API key and keep it in private after its generated. You wont be able to retrieve it again later.',
+		GENERATE_TEXT:
+			'Please name your API key and keep it in private after its generated. You wont be able to retrieve it again later.',
 		GENERATE: 'Generate',
 		DELETE_TITLE: 'Delete API Key',
-		DELETE_TEXT: 'Deleting your API key is ireversalable although you can generate a new API key at anytime. Do you want to delete your API key?',
+		DELETE_TEXT:
+			'Deleting your API key is ireversalable although you can generate a new API key at anytime. Do you want to delete your API key?',
 		DELETE: 'DELETE',
 		FORM_NAME_LABEL: 'Name',
 		FORM_LABLE_PLACEHOLDER: 'Name for the Api Key',
 		API_KEY_LABEL: 'API Key',
 		CREATED_TITLE: 'Copy your API Key',
-		CREATED_TEXT_1: 'Please copy your API key as it will be unattainable in the future.',
+		CREATED_TEXT_1:
+			'Please copy your API key as it will be unattainable in the future.',
 		CREATED_TEXT_2: 'Keep your key private.'
 	},
 	DEVELOPERS_TOKENS_TABLE: {
@@ -961,12 +970,14 @@ export default {
 		SIGN_UP_CHAT: 'Sign Up To Chat',
 		JOIN_CHAT: 'Set Username To Chat'
 	},
-	INVALID_USERNAME: 'Username must be between 3 and 15 characters long. Only contains lowercase, numbers and underscore',
+	INVALID_USERNAME:
+		'Username must be between 3 and 15 characters long. Only contains lowercase, numbers and underscore',
 	USERNAME_TAKEN: 'This username has already been taken. Please try another.',
 	USERNAME_LABEL: 'Username (used for chat)',
 	USERNAME_PLACEHOLDER: 'Username',
 	TAB_USERNAME: 'Username',
-	USERNAME_WARNING: 'Your username can only be changed once. Please assure your username is desirable.',
+	USERNAME_WARNING:
+		'Your username can only be changed once. Please assure your username is desirable.',
 	USERNAME_CANNOT_BE_CHANGED: 'Username can not be changed',
 	UPGRADE_LEVEL: 'Upgrade account level',
 	LEVELS: {
@@ -989,8 +1000,10 @@ export default {
 	},
 	WALLET_ADDRESS_TITLE: 'Generate {0} Wallet',
 	WALLET_ADDRESS_GENERATE: 'Generate',
-	WALLET_ADDRESS_MESSAGE: 'When you generate a wallet you create a deposit and withdrawal address.',
-	WALLET_ADDRESS_ERROR: 'Error generating the address, please refresh and try again.',
+	WALLET_ADDRESS_MESSAGE:
+		'When you generate a wallet you create a deposit and withdrawal address.',
+	WALLET_ADDRESS_ERROR:
+		'Error generating the address, please refresh and try again.',
 	DEPOSIT_WITHDRAW: 'Deposit/Withdraw',
 	GENERATE_WALLET: 'Generate Wallet',
 	TRADE_TAB_CHART: 'Chart',
@@ -1005,12 +1018,12 @@ export default {
 	QUICK_TRADE_MODE: 'Quick Trade Mode',
 	JUST_NOW: 'just now',
 	PAIR: 'Pair',
-	ZERO_ASSET: 'You have zero assets', 
-	DEPOSIT_ASSETS: 'Deposit Assets', 
-	SEARCH_TXT: 'Search', 
-	SEARCH_ASSETS: 'Search Assets', 
-	TOTAL_ASSETS_VALUE: 'Total assets value in {0}: {1}', 
-	SUMMARY: { 
+	ZERO_ASSET: 'You have zero assets',
+	DEPOSIT_ASSETS: 'Deposit Assets',
+	SEARCH_TXT: 'Search',
+	SEARCH_ASSETS: 'Search Assets',
+	TOTAL_ASSETS_VALUE: 'Total assets value in {0}: {1}',
+	SUMMARY: {
 		TITLE: 'Summary',
 		TINY_PINK_SHRIMP_TRADER: 'Tiny Pink Shrimp Trader',
 		TINY_PINK_SHRIMP_TRADER_ACCOUNT: 'Tiny Pink Shrimp Trader Account',
@@ -1025,27 +1038,41 @@ export default {
 		ACCOUNT_ASSETS: 'Account Assets',
 		ACCOUNT_DETAILS: 'Account Details',
 		SHRIMP_ACCOUNT_TXT_1: 'Your journey begins here!',
-		SHRIMP_ACCOUNT_TXT_2: 'Keep swimming true, you’ll soon stand out from the rest of the shoal',
-		SNAPPER_ACCOUNT_TXT_1: 'Congrats on staying your course through the swell of the market.',
-		SNAPPER_ACCOUNT_TXT_2: 'Forge through and fight the surge for more crypto treasures ahead.',
-		KRAKEN_ACCOUNT_TXT_1: 'Likelier to crack jokes than hulls, this crustacean has weathered his share of storms!',
-		LEVIATHAN_ACCOUNT_TXT_1: 'Beast from the abyss, seeing through altcoins into unfathomable depths, masters of midnight waters and tidal wave.',
+		SHRIMP_ACCOUNT_TXT_2:
+			'Keep swimming true, you’ll soon stand out from the rest of the shoal',
+		SNAPPER_ACCOUNT_TXT_1:
+			'Congrats on staying your course through the swell of the market.',
+		SNAPPER_ACCOUNT_TXT_2:
+			'Forge through and fight the surge for more crypto treasures ahead.',
+		KRAKEN_ACCOUNT_TXT_1:
+			'Likelier to crack jokes than hulls, this crustacean has weathered his share of storms!',
+		LEVIATHAN_ACCOUNT_TXT_1:
+			'Beast from the abyss, seeing through altcoins into unfathomable depths, masters of midnight waters and tidal wave.',
 		VIEW_FEE_STRUCTURE: 'View Fee Structure and Limits',
 		UPGRADE_ACCOUNT: 'Upgrade Account',
 		ACTIVE_2FA_SECURITY: 'Active 2FA Security',
 		ACCOUNT_ASSETS_TXT_1: 'Displayed is a summary of all your assets.',
-		ACCOUNT_ASSETS_TXT_2: 'Holding a large amounts of assets will entitle you for an account upgrade which includes a unique badge and lower trading fees.',
-		TRADING_VOLUME_TXT_1: 'Your trading volume history is displayed in {0} and is a nominally calculated at the end of every month from all trading pairs.',
-		TRADING_VOLUME_TXT_2: 'High trading activity will entitle you for an account upgrade rewarding you with a unique badge and other perks.',
-		ACCOUNT_DETAILS_TXT_1: 'Your account type determines your account badge, trading fee, deposits and withdrawal limits.',
-		ACCOUNT_DETAILS_TXT_2: 'Your trading account age, activity level and total account assets amount will determine if your account is legable for an upgrade.',
-		ACCOUNT_DETAILS_TXT_3: 'Maintaining your account level requires constant trading and maintaining a certain amount of deposited assets.',
-		ACCOUNT_DETAILS_TXT_4: 'Periodic downgrading of accounts will occur if activity and assets are not maintained.',
+		ACCOUNT_ASSETS_TXT_2:
+			'Holding a large amounts of assets will entitle you for an account upgrade which includes a unique badge and lower trading fees.',
+		TRADING_VOLUME_TXT_1:
+			'Your trading volume history is displayed in {0} and is a nominally calculated at the end of every month from all trading pairs.',
+		TRADING_VOLUME_TXT_2:
+			'High trading activity will entitle you for an account upgrade rewarding you with a unique badge and other perks.',
+		ACCOUNT_DETAILS_TXT_1:
+			'Your account type determines your account badge, trading fee, deposits and withdrawal limits.',
+		ACCOUNT_DETAILS_TXT_2:
+			'Your trading account age, activity level and total account assets amount will determine if your account is legable for an upgrade.',
+		ACCOUNT_DETAILS_TXT_3:
+			'Maintaining your account level requires constant trading and maintaining a certain amount of deposited assets.',
+		ACCOUNT_DETAILS_TXT_4:
+			'Periodic downgrading of accounts will occur if activity and assets are not maintained.',
 		REQUIREMENTS: 'Requirements',
 		REQUEST_ACCOUNT_UPGRADE: 'Request an Account Upgrade',
 		FEES_AND_LIMIT: 'Fee and Limit Structure for',
-		FEES_AND_LIMIT_TXT_1: 'Becoming a crypto trader marks new beginning. Armed with wits, will and speed, dive into the bottomless blue.Only by delving deep within the crypto oceans will you unlock your fortunes.',
-		FEES_AND_LIMIT_TXT_2: 'Each account has its own fees and deposit and withdrawal limits.Please visit the {0} to get more information.',
+		FEES_AND_LIMIT_TXT_1:
+			'Becoming a crypto trader marks new beginning. Armed with wits, will and speed, dive into the bottomless blue.Only by delving deep within the crypto oceans will you unlock your fortunes.',
+		FEES_AND_LIMIT_TXT_2:
+			'Each account has its own fees and deposit and withdrawal limits.Please visit the {0} to get more information.',
 		DEPOSIT_WITHDRAWAL_ALLOWENCE: 'Deposit & withdrawal allowance',
 		TRADING_FEE_STRUCTURE: 'Trading fee structure',
 		WITHDRAWAL: 'Withdrawal',

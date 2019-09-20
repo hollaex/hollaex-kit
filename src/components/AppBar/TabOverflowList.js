@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import ReactSVG from 'react-svg';
 
-import { ICONS, BASE_CURRENCY } from '../../config/constants';
-import STRINGS from '../../config/localizedStrings';
+import { ICONS, BASE_CURRENCY, DEFAULT_COIN_DATA } from '../../config/constants';
 import { formatToCurrency, formatPercentage, formatAverage } from '../../utils/currency';
 
 let tickClicked = false;
@@ -42,7 +41,8 @@ class TabOverflowList extends Component {
                 <div className="app-bar-tab-overflow-content">
                     {Object.keys(selectedTabs).map((pair, index) => {
                         let menu = selectedTabs[pair] || {};
-                        let { min } = coins[menu.pair_base || BASE_CURRENCY] || {};
+                        let { min, symbol = '' } = coins[menu.pair_base || BASE_CURRENCY] || DEFAULT_COIN_DATA;
+                        let pairTwo = coins[menu.pair_2 || BASE_CURRENCY] || DEFAULT_COIN_DATA;
                         let ticker = tickers[pair] || {};
                         let priceDifference = (ticker.close || 0) - (ticker.open || 0);
                         const tickerPercent = ((priceDifference / ticker.open) * 100);
@@ -58,9 +58,9 @@ class TabOverflowList extends Component {
                                 }
                                 <ReactSVG path={ICONS[`${menu.pair_base.toUpperCase()}_ICON`]} wrapperClassName="app-bar-add-tab-icons" />
                                 <div className="app_bar-pair-font">
-                                    {STRINGS[`${menu.pair_base.toUpperCase()}_SHORTNAME`]}/{STRINGS[`${menu.pair_2.toUpperCase()}_SHORTNAME`]}:
+                                    {symbol.toUpperCase()}/{pairTwo.symbol.toUpperCase()}:
                                 </div>
-                                <div className="title-font ml-1">{`${STRINGS[`${menu.pair_2.toUpperCase()}_CURRENCY_SYMBOL`]} ${formatAverage(formatToCurrency(ticker.close, min))}`}</div>
+                                <div className="title-font ml-1">{`${pairTwo.symbol.toUpperCase()} ${formatAverage(formatToCurrency(ticker.close, min))}`}</div>
                                 <div className={priceDifference < 0 ? "app-price-diff-down app-bar-price_diff_down" : "app-bar-price_diff_up app-price-diff-up"}>
                                     {formatAverage(formatToCurrency(priceDifference, min))}
                                 </div>

@@ -25,6 +25,7 @@ const HEADERS = [
 	},
 	{ label: 'Time', dataIndex: 'created_at', key: 'created_at' }
 ];
+
 class Deposits extends Component {
 	state = {
 		deposits: [],
@@ -57,7 +58,7 @@ class Deposits extends Component {
 		// }
 	}
 
-	requestDeposits = (values = {}, queryParams = { type: "deposits" }) => {
+	requestDeposits = (values = {}, queryParams = { type: 'deposits' }) => {
 		if (Object.keys(queryParams).length === 0) {
 			return this.setState({
 				loading: false,
@@ -78,7 +79,6 @@ class Deposits extends Component {
 			...queryParams
 		})
 			.then((data) => {
-				console.log('This is end point response', data);
 				this.setState({
 					deposits: data.data,
 					loading: false,
@@ -86,7 +86,6 @@ class Deposits extends Component {
 				});
 			})
 			.catch((error) => {
-				console.log(error.data);
 				const message = error.data ? error.data.message : error.message;
 				this.setState({
 					loading: false,
@@ -113,7 +112,6 @@ class Deposits extends Component {
 					});
 				})
 				.catch((error) => {
-					console.log(error.data);
 					const message = error.data ? error.data.message : error.message;
 					this.setState({
 						loadingItem: false,
@@ -142,7 +140,6 @@ class Deposits extends Component {
 					});
 				})
 				.catch((error) => {
-					console.log(error.data);
 					const message = error.data ? error.data.message : error.message;
 					this.setState({
 						dismissingItem: false,
@@ -153,12 +150,10 @@ class Deposits extends Component {
 		}
 	};
 	onSelect = (value, option) => {
-		console.log('onSelect', value, option);
 		this.setState({ searchKey: value });
 	};
 
 	onSearch = (value) => {
-		console.log('onSearch', value);
 		if (value) {
 			this.setState({ searchValue: value.trim() });
 			const values = {};
@@ -191,9 +186,7 @@ class Deposits extends Component {
 		} else {
 			delete queryParams[key];
 		}
-		this.setState({ queryParams }, () => {
-			console.log(this.state.queryParams);
-		});
+		this.setState({ queryParams });
 	};
 
 	onClickFilters = () => {
@@ -215,104 +208,114 @@ class Deposits extends Component {
 			queryType
 		} = this.state;
 		const { showFilters } = this.props;
-		console.log('deposits', deposits);
 		const columns = COLUMNS(undefined);
 		return (
 			<div>
 				{loading ? (
 					<Spin size="large" />
 				) : (
-						<div className="app-wrapper">
-							<h1 className="upperCase">{queryType}</h1>
-							<div>
-								{showFilters && (
-									<Filters
-										onChange={this.onChangeQuery}
-										onClick={this.onClickFilters}
-										hasChanges={queryDone !== JSON.stringify(queryParams)}
-										params={queryParams}
-										loading={loading}
-										fetched={fetched}
-									/>
-								)}
-							</div>
-							{!showFilters && (
-								<div className="controls-wrapper">
-									<div className="controls-search">
-										<div>
-											Press enter or click on the search icon to perform a search
+					<div className="app-wrapper">
+						<h1 className="upperCase">{queryType}</h1>
+						<div>
+							{showFilters && (
+								<Filters
+									onChange={this.onChangeQuery}
+									onClick={this.onClickFilters}
+									hasChanges={
+										queryDone !== JSON.stringify(queryParams)
+									}
+									params={queryParams}
+									loading={loading}
+									fetched={fetched}
+								/>
+							)}
+						</div>
+						{!showFilters && (
+							<div className="controls-wrapper">
+								<div className="controls-search">
+									<div>
+										Press enter or click on the search icon to perform
+										a search
 									</div>
-										<InputGroup compact>
-											<Select
-												defaultValue={this.state.searchKey}
-												style={{ width: '25%' }}
-												onSelect={this.onSelect}
-											>
-												{SELECT_KEYS(undefined).map(({ value, label }, index) => (
+									<InputGroup compact>
+										<Select
+											defaultValue={this.state.searchKey}
+											style={{ width: '25%' }}
+											onSelect={this.onSelect}
+										>
+											{SELECT_KEYS(undefined).map(
+												({ value, label }, index) => (
 													<Option value={value} key={index}>
 														{label}
 													</Option>
-												))}
-											</Select>
-											<Search style={{ width: '75%' }} onSearch={this.onSearch} />
-										</InputGroup>
-									</div>
-									<div className="controls-refresh">
-										<Button
-											onClick={this.onRefresh}
-											type="primary"
-											icon="sync"
-											disabled={!searchValue}
-										>
-											Refresh Data
-									</Button>
-									</div>
+												)
+											)}
+										</Select>
+										<Search
+											style={{ width: '75%' }}
+											onSearch={this.onSearch}
+										/>
+									</InputGroup>
 								</div>
-							)}
+								<div className="controls-refresh">
+									<Button
+										onClick={this.onRefresh}
+										type="primary"
+										icon="sync"
+										disabled={!searchValue}
+									>
+										Refresh Data
+									</Button>
+								</div>
+							</div>
+						)}
 
-							{error && (
-								<Alert
-									message={error}
-									type="error"
-									showIcon
-									onClose={this.onCloseErrorAlert}
-									closable={true}
-									closeText="Close"
-								/>
-							)}
-							<CSVLink
-								filename={'deposit/withdrawal.csv'}
-								data={deposits}
-								headers={HEADERS}
-							>
-								Download table
+						{error && (
+							<Alert
+								message={error}
+								type="error"
+								showIcon
+								onClose={this.onCloseErrorAlert}
+								closable={true}
+								closeText="Close"
+							/>
+						)}
+						<CSVLink
+							filename={'deposit/withdrawal.csv'}
+							data={deposits}
+							headers={HEADERS}
+						>
+							Download table
 						</CSVLink>
-							<Table
-								columns={columns}
-								dataSource={deposits.map((deposit, index) => {
-									return {
-										...deposit,
-										completeDeposit:
-											index !== indexItem
-												? this.completeDeposit(deposit.id, index)
-												: () => { },
-										dismissDeposit:
-											index !== indexItem
-												? this.dismissDeposit(
+						<Table
+							columns={columns}
+							dataSource={deposits.map((deposit, index) => {
+								return {
+									...deposit,
+									completeDeposit:
+										index !== indexItem
+											? this.completeDeposit(deposit.id, index)
+											: () => {},
+									dismissDeposit:
+										index !== indexItem
+											? this.dismissDeposit(
 													deposit.id,
 													!deposit.dismissed,
 													index
-												)
-												: () => { },
-										updatingItem: loadingItem && index === indexItem,
-										dismissingItem: dismissingItem && index === indexItem
-									};
-								})}
-								expandedRowRender={renderRowContent}
-								expandRowByClick={true}
-							/>
-						</div>
-					)}
+											  )
+											: () => {},
+									updatingItem: loadingItem && index === indexItem,
+									dismissingItem: dismissingItem && index === indexItem
+								};
+							})}
+							rowKey={(data) => {
+								return data.id;
+							}}
+							expandedRowRender={renderRowContent}
+							expandRowByClick={true}
+						/>
+					</div>
+				)}
 			</div>
 		);
 	}

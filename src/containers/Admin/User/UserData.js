@@ -74,10 +74,8 @@ const onSubmit = (onChangeSuccess) => (values) => {
 	Object.keys(AddressFields).forEach((key) => {
 		submitData.address[key] = values[key];
 	});
-	// console.log(submitData)
 	return updateUserData(submitData)
 		.then((data) => {
-			console.log(data);
 			if (onChangeSuccess) {
 				onChangeSuccess({
 					...values,

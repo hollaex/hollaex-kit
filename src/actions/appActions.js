@@ -92,7 +92,7 @@ export const setSnackDialog = (data = {}) => ({
 
 export const closeSnackDialog = (id) => ({
 	type: CLOSE_SNACK_DIALOG,
-	payload: {dialogId: id}
+	payload: { dialogId: id }
 });
 
 export const openContactForm = (data = {}) =>
@@ -114,14 +114,14 @@ export const setLanguage = (value = DEFAULT_LANGUAGE) => {
 export const sendSupportMail = (values = {}) => {
 	const formData = new FormData();
 	if (values.attachment instanceof Array) {
-		(values.attachment.map((data, key) => {
+		values.attachment.forEach((data, key) => {
 			formData.append(`attachment_${key}`, data);
-		}))
+		});
 	}
 
-	Object.keys(values).map((data, key) => {
+	Object.keys(values).forEach((data, key) => {
 		if (data !== 'attachment') {
-			formData.append(data, values[data])
+			formData.append(data, values[data]);
 		}
 	});
 
@@ -172,18 +172,13 @@ export const changePair = (pair) => ({
 
 export const getTickers = () => {
 	return (dispatch) => {
-		axios
-			.get('/ticker/all')
-			.then((res) => {
-				dispatch({
-					type: SET_TICKERS,
-					payload: res.data
-				});
-			})
-			.catch((err) => {
-				// console.log('err', err);
+		axios.get('/ticker/all').then((res) => {
+			dispatch({
+				type: SET_TICKERS,
+				payload: res.data
 			});
-	}
+		});
+	};
 };
 
 export const setTickers = (data) => ({

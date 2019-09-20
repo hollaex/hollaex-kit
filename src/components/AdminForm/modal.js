@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
+import React from 'react';
 import renderFields from './utils';
 import { reduxForm, reset } from 'redux-form';
-import { Button, Modal } from 'antd';
+import { Modal } from 'antd';
 
 const Form = (name, className = '', allowPristine = false) => {
 	const ModalForm = ({
@@ -19,7 +19,6 @@ const Form = (name, className = '', allowPristine = false) => {
 		small,
 		visible
 	}) => {
-		// console.log(pristine || submitting || !valid, pristine, submitting, valid)
 		return (
 			<form className={className}>
 				<Modal

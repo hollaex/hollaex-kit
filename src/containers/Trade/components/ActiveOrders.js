@@ -5,7 +5,11 @@ import math from 'mathjs';
 import { ICONS } from '../../../config/constants';
 import { Table, ActionNotification } from '../../../components';
 import { formatTimestamp } from '../../../utils/utils';
-import { formatBaseAmount, formatBtcFullAmount, formatBtcAmount } from '../../../utils/currency';
+import {
+	formatBaseAmount,
+	formatBtcFullAmount,
+	formatBtcAmount
+} from '../../../utils/currency';
 import { isMobile } from 'react-device-detect';
 import { subtract } from '../utils';
 import STRINGS from '../../../config/localizedStrings';
@@ -17,7 +21,9 @@ const generateHeaders = (onCancel) => [
 		renderCell: ({ side = '' }, key, index) => {
 			return (
 				<td key={index} className={classnames('cell_box-type')}>
-					<div className={classnames(side)}>{STRINGS.SIDES_VALUES[side]}</div>
+					<div className={classnames(side)}>
+						{STRINGS.SIDES_VALUES[side]}
+					</div>
 				</td>
 			);
 		}
@@ -72,7 +78,10 @@ const generateHeaders = (onCancel) => [
 					.done()
 			);
 			return (
-				<td key={index} className={classnames('cell_box-type', 'fullfilled')}>
+				<td
+					key={index}
+					className={classnames('cell_box-type', 'fullfilled')}
+				>
 					<div className="cell-wrapper">
 						<div className="cell_value-wrapper text_overflow">
 							{STRINGS.formatString(STRINGS.FULLFILLED, fullfilled)}
@@ -108,12 +117,21 @@ const generateHeaders = (onCancel) => [
 	}
 ];
 
-const ActiveOrders = ({ orders, onCancel, maxHeight, height, cancelDelayData }) => {
+const ActiveOrders = ({
+	orders,
+	onCancel,
+	maxHeight,
+	height,
+	cancelDelayData
+}) => {
 	return (
-		<div 
-			className={(height && maxHeight && height > maxHeight)
-				? "trade_active_orders-wrapper trade_active-lg-view"
-				: "trade_active_orders-wrapper"}>
+		<div
+			className={
+				height && maxHeight && height > maxHeight
+					? 'trade_active_orders-wrapper trade_active-lg-view'
+					: 'trade_active_orders-wrapper'
+			}
+		>
 			<Table
 				headers={generateHeaders(onCancel)}
 				cancelDelayData={cancelDelayData}
@@ -121,6 +139,9 @@ const ActiveOrders = ({ orders, onCancel, maxHeight, height, cancelDelayData }) 
 				count={orders.length}
 				showAll={true}
 				displayPaginator={false}
+				rowKey={(data) => {
+					return data.id;
+				}}
 			/>
 		</div>
 	);

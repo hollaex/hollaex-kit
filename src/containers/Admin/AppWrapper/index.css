@@ -23,10 +23,13 @@
 }
 
 .app_container-content {
-	max-width: 1024px;
+	/* max-width: 1024px;
 	margin: 8px auto;
-	flex-direction: column;
+	flex-direction: column; */
 	flex: 1;
+}
+.content-wrapper {
+	margin:24px;
 }
 
 .app_container-sidebar {

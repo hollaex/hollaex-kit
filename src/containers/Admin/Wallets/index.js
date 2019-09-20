@@ -36,7 +36,6 @@ class Wallets extends Component {
 				});
 			})
 			.catch((error) => {
-				console.log(error);
 				const message = error.data ? error.data.message : error.message;
 				this.setState({
 					loading: false,
@@ -53,11 +52,7 @@ class Wallets extends Component {
 				showSweep: true,
 				walletNum: value
 			});
-			requestEthSweep(value).catch((error) => {
-				console.log(error.data);
-				const message = error.message;
-				console.log(message);
-			});
+			requestEthSweep(value);
 		}
 	}
 
@@ -78,66 +73,71 @@ class Wallets extends Component {
 				{loading ? (
 					<Spin size="large" />
 				) : (
-						<div>
-							{error && <p>-{error}-</p>}
-							<h1>USER WALLETS</h1>
-							<Card
-								className="card-title"
-								title="TOTAL BALANCE OF USERS WALLETS"
-								style={{ width: '60%' }}
-							>
-								{!balance ? (
-									<Alert
-										message="Error"
-										className="m-top"
-										description={error}
-										type="error"
-										showIcon
-									/>
-								) : (
-										Object.entries(balance).map(([name, value]) => {
-											return (
-												<p key={name}>
-													{name.toUpperCase()} : {formatCurrency(value)}
-												</p>
-											);
-										})
-									)}
-							</Card>
-							<h1 className="m-top">Ethereum sweep</h1>
-							{showSweep || (
-								<div>
-									<Search
-										placeholder="Number of wallets to sweep"
-										enterButton="Start"
-										size="large"
-										style={{ width: '60%' }}
-										onSearch={(e) => this.onSweep(e)}
-									/>
-								</div>
+					<div>
+						{error && <p>-{error}-</p>}
+						<h1>USER WALLETS</h1>
+						<Card
+							className="card-title"
+							title="TOTAL BALANCE OF USERS WALLETS"
+							style={{ width: '60%' }}
+						>
+							{!balance ? (
+								<Alert
+									message="Error"
+									className="m-top"
+									description={error}
+									type="error"
+									showIcon
+								/>
+							) : (
+								Object.entries(balance).map(([name, value]) => {
+									return (
+										<p key={name}>
+											{name.toUpperCase()} : {formatCurrency(value)}
+										</p>
+									);
+								})
 							)}
-							{showSweep && (
-								<Row>
-									<Col span={4}>
-										<img src="http://gifimage.net/wp-content/uploads/2017/10/broom-sweeping-gif-6.gif" />
-									</Col>
-									<Col span={12}>
-										<h2 className="m-top">
-											Sweeping of {walletNum} wallets initiated on the server.
-											Comeback later
+						</Card>
+						<h1 className="m-top">Ethereum sweep</h1>
+						{showSweep || (
+							<div>
+								<Search
+									placeholder="Number of wallets to sweep"
+									enterButton="Start"
+									size="large"
+									style={{ width: '60%' }}
+									onSearch={(e) => this.onSweep(e)}
+								/>
+							</div>
+						)}
+						{showSweep && (
+							<Row>
+								<Col span={4}>
+									<img
+										src="http://gifimage.net/wp-content/uploads/2017/10/broom-sweeping-gif-6.gif"
+										alt="sweeping"
+									/>
+								</Col>
+								<Col span={12}>
+									<h2 className="m-top">
+										Sweeping of {walletNum} wallets initiated on the
+										server. Comeback later
 									</h2>
-										<Button
-											size="large"
-											type="primary"
-											onClick={() => this.setState({ showSweep: false })}
-										>
-											Sweep again
+									<Button
+										size="large"
+										type="primary"
+										onClick={() =>
+											this.setState({ showSweep: false })
+										}
+									>
+										Sweep again
 									</Button>
-									</Col>
-								</Row>
-							)}
-						</div>
-					)}
+								</Col>
+							</Row>
+						)}
+					</div>
+				)}
 			</div>
 		);
 	}

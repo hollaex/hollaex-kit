@@ -5,7 +5,6 @@ import { requestUserAudits } from './actions';
 
 import { SubmissionError } from 'redux-form';
 
-import { formatCurrency } from '../../../utils/index';
 import Moment from 'react-moment';
 
 const INITIAL_STATE = {
@@ -15,10 +14,6 @@ const INITIAL_STATE = {
 
 const formatDate = (value) => {
 	return <Moment format="YYYY/MM/DD HH:mm">{value}</Moment>;
-};
-
-const formatNum = (value) => {
-	return <div>{formatCurrency(value)}</div>;
 };
 
 const formatDescription = (value) => {
@@ -119,6 +114,9 @@ class Audits extends Component {
 						Download table
 					</CSVLink>
 					<Table
+						rowKey={(data) => {
+							return data.id;
+						}}
 						columns={AUDIT_COLUMNS}
 						dataSource={audits ? audits : 'No Data'}
 					/>

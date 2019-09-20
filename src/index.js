@@ -16,17 +16,8 @@ import './index.css';
 import '../node_modules/rc-tooltip/assets/bootstrap_white.css'; // eslint-disable-line
 
 // import registerServiceWorker from './registerServiceWorker'
-import { version, name } from '../package.json';
-import { ENV, NETWORK, APP_TITLE, API_URL } from './config/constants';
-
-console.log({
-	app: APP_TITLE,
-	name,
-	version,
-	env: ENV,
-	network: NETWORK,
-	endpoint: API_URL
-});
+// import { version, name } from '../package.json';
+// import { ENV, NETWORK, APP_TITLE, API_URL } from './config/constants';
 
 render(
 	<Provider store={store}>

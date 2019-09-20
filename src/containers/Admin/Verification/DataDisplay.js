@@ -18,7 +18,7 @@ export const KEYS_TO_HIDE = [
 
 export const renderRowImages = ([key, value]) => (
 	<div key={key} className="verification_block">
-		<a href={value} target="_blank">
+		<a href={value} target="_blank" rel="noopener noreferrer">
 			{key}
 		</a>
 		<img src={value} alt={key} className="verification_img" key={key} />
@@ -50,10 +50,10 @@ export const renderJSONKey = (key, value) => {
 					{key} : {JSON.stringify(val)}
 				</div>
 			) : (
-					<div>
-						{key} : {val}
-					</div>
-				);
+				<div>
+					{key} : {val}
+				</div>
+			);
 		});
 	} else if (typeof value === 'boolean') {
 		valueText = value ? 'TRUE' : 'FALSE';
@@ -72,7 +72,7 @@ export default ({ renderRow, title, data }) => (
 		{data.message ? (
 			<div>{data.message}</div>
 		) : (
-				Object.entries(data).map(renderRow)
-			)}
+			Object.entries(data).map(renderRow)
+		)}
 	</div>
 );

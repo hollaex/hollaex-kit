@@ -15,7 +15,7 @@ import MobileSummary from './MobileSummary';
 import { IconTitle } from '../../components';
 import { logout } from '../../actions/authAction';
 import { openFeesStructureandLimits, openContactForm, logoutconfirm, setNotification, NOTIFICATIONS } from '../../actions/appActions';
-import { BASE_CURRENCY, TRADING_ACCOUNT_TYPE } from '../../config/constants';
+import { BASE_CURRENCY, TRADING_ACCOUNT_TYPE, DEFAULT_COIN_DATA } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 import {
     formatToCurrency,
@@ -24,7 +24,8 @@ import {
     calculateBalancePrice,
     donutFormatPercentage,
     calculatePrice,
-    calculatePricePercentage } from '../../utils/currency';
+    calculatePricePercentage
+} from '../../utils/currency';
 import { getLastMonthVolume } from './components/utils';
 
 const default_trader_account = TRADING_ACCOUNT_TYPE.shrimp;
@@ -38,7 +39,7 @@ class Summary extends Component {
         lastMonthVolume: 0
     };
 
-    
+
     componentDidMount() {
         const { user, tradeVolumes, pairs, prices } = this.props;
 
@@ -96,7 +97,7 @@ class Summary extends Component {
 
         const totalAssets = calculateBalancePrice(balance, prices);
         Object.keys(coins).forEach((currency) => {
-            const { symbol, min } = coins[currency] || {};
+            const { symbol, min } = coins[currency] || DEFAULT_COIN_DATA;
             const currencyBalance = calculatePrice(balance[`${symbol}_balance`], prices[currency]);
             const balancePercent = calculatePricePercentage(currencyBalance, totalAssets);
             data.push({
@@ -137,8 +138,9 @@ class Summary extends Component {
     };
 
     render() {
-        const { user, balance, activeTheme, pairs, coins, logout } = this.props;
+        const { user, balance, activeTheme, pairs, coins } = this.props;
         const { selectedAccount, currentTradingAccount, chartData, totalAssets, lastMonthVolume } = this.state;
+        const { fullname } = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
         return (
             <div className="summary-container">
                 {!isMobile && <IconTitle
@@ -182,7 +184,11 @@ class Summary extends Component {
                                 <SummaryBlock
                                     title={STRINGS.SUMMARY.URGENT_REQUIREMENTS}
                                     wrapperClassname="w-100" >
-                                    <SummaryRequirements user={user} lastMonthVolume={lastMonthVolume} contentClassName="requirements-content" />
+                                    <SummaryRequirements
+                                        coins={coins}
+                                        user={user}
+                                        lastMonthVolume={lastMonthVolume}
+                                        contentClassName="requirements-content" />
                                 </SummaryBlock>
                             </div>
                         </div>
@@ -190,7 +196,7 @@ class Summary extends Component {
                             <div className="assets-wrapper">
                                 <SummaryBlock
                                     title={STRINGS.SUMMARY.ACCOUNT_ASSETS}
-                                    secondaryTitle={<span><span className="title-font">{totalAssets}</span>{` ${STRINGS[`${BASE_CURRENCY.toUpperCase()}_FULLNAME`]}`}</span>} >
+                                    secondaryTitle={<span><span className="title-font">{totalAssets}</span>{` ${fullname}`}</span>} >
                                     <AccountAssets
                                         user={user}
                                         chartData={chartData}
@@ -206,7 +212,7 @@ class Summary extends Component {
                                         <span className="title-font">
                                             {` ${formatAverage(formatBaseAmount(lastMonthVolume))}`}
                                         </span>
-                                        {` ${STRINGS[`${BASE_CURRENCY.toUpperCase()}_FULLNAME`]} ${STRINGS.formatString(STRINGS.SUMMARY.NOMINAL_TRADING_WITH_MONTH, moment().subtract(1, "month").startOf("month").format('MMMM')).join('')}`}
+                                        {` ${fullname} ${STRINGS.formatString(STRINGS.SUMMARY.NOMINAL_TRADING_WITH_MONTH, moment().subtract(1, "month").startOf("month").format('MMMM')).join('')}`}
                                     </span>
                                     }
                                 >
@@ -256,7 +262,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
     logoutconfirm: bindActionCreators(logoutconfirm, dispatch),
-	logout: bindActionCreators(logout, dispatch),
+    logout: bindActionCreators(logout, dispatch),
     openFeesStructureandLimits: bindActionCreators(openFeesStructureandLimits, dispatch),
     openContactForm: bindActionCreators(openContactForm, dispatch),
     setNotification: bindActionCreators(setNotification, dispatch)

@@ -8,6 +8,7 @@ const TabPane = Tabs.TabPane;
 const DepositsPage = ({
 	currency,
 	type,
+	location,
 	noQueryParams,
 	showFilters,
 	...rest
@@ -60,4 +61,5 @@ DepositsPage.defaultProps = {
 	noQueryParams: false,
 	showFilters: false
 };
+
 export default DepositsPage;
