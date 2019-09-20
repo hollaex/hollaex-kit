@@ -1,7 +1,7 @@
 export default {
-	APP_TITLE: 'Hollaex',
+	APP_TITLE: 'HEX',
 	APP_SUB_TITLE: 'White Label Cryptocurrency Exchange',
-	APP_NAME: 'hollaex',
+	APP_NAME: 'hex',
 
 	LOGOUT_CONFIRM_TEXT: 'Are you sure?. Do you want to logout',
 	ADD_TRADING_PAIR: 'Add Trading Pair',
@@ -30,7 +30,7 @@ export default {
 	HELPFUL_RESOURCES_TEXT: 'Helpful resources',
 	HELP_RESOURCE_GUIDE_TEXT:
 		'Feel free to contact us for more information and any issues by sending us an email to support@bitholla.com',
-	HELP_TELEGRAM_TEXT: 'Check out HollaEx open API documentation:',
+	HELP_TELEGRAM_TEXT: 'Check out HEX open API documentation:',
 	HELP_TELEGRAM_LINK: 'https://apidocs.hollaex.com',
 	NEED_HELP_TEXT: 'Need help',
 	HELP_TEXT: 'help',
@@ -42,11 +42,11 @@ export default {
 	NO_OPTIONS: 'No options availables',
 	SECONDS: 'seconds',
 	HOME: {
-		SECTION_1_TITLE: 'Build your own Bitcoin exchange',
+		SECTION_1_TITLE: 'Build your own digital asset exchange',
 		SECTION_1_TEXT_1:
-			'Build your own scalable Bitcoin exchange with HollaEx and be part of the future finance.',
+			'Build your own scalable digital asset exchange with HEX and be part of the future finance.',
 		SECTION_1_TEXT_2:
-			'We strive to bring the financial technology forward through afforable and simple access to Bitcoin and cryptocurrencies.',
+			'We strive to bring the financial technology forward through afforable and simple access to trading technology.',
 		SECTION_1_BUTTON_1: 'Learn more',
 		SECTION_3_TITLE: 'Features',
 		SECTION_3_CARD_1_TITLE: 'SCALABLE MATCHING ENGINE',
@@ -57,7 +57,7 @@ export default {
 			'Plugins with customizable modules available for bank integration. We know the traditional finace and can help you to make your exchange local',
 		SECTION_3_CARD_3_TITLE: 'STRONG SECURITY',
 		SECTION_3_CARD_3_TEXT:
-			'HollaEx uses the best security practices and the most secure and reliable algorithms for keeping the funds secure. It is our top priority and we took a very special extra care of it.',
+			'HEX uses the best security practices and the most secure and reliable algorithms for keeping the funds secure. It is our top priority and we took a very special extra care of it.',
 		SECTION_3_CARD_4_TITLE: 'ADVANCED REPORTING',
 		SECTION_3_CARD_4_TEXT:
 			'Admin panel with customizable email and reports for notifying support and administrator about the status of the system and transactions.',
@@ -76,7 +76,7 @@ export default {
 			{ key: 'en', label: 'English' },
 			{ key: 'ko', label: '한국어' }
 		],
-		FOOTER_COPYRIGHT: 'COPYRIGHT 2018',
+		FOOTER_COPYRIGHT: 'COPYRIGHT 2019',
 		SECTIONS: {
 			SECTION_1_TITLE: 'ABOUT',
 			SECTION_1_LINK_1: 'About Us',
@@ -135,7 +135,7 @@ export default {
 		},
 		INFORMATION_MESSAGES: [
 			'Use the bank details below to deposit USD in to your account. Transfers usally take up to 1-2 business day.',
-			'Deposits will only be accepeted from a bank account in a name that matches the name registered with your HOLLAEX account.'
+			'Deposits will only be accepeted from a bank account in a name that matches the name registered with your HEX account.'
 		],
 		INCREASE_LIMIT: 'Want to increase your daily limit?',
 		QR_CODE:
@@ -184,28 +184,28 @@ export default {
 		PRIVACY_POLICY: {
 			TITLE: 'Privacy Policy',
 			SUBTITLE:
-				'Last updated April 1, 2017. Replaces the prior version in its entirety.',
+				'Last updated April 1, 2019. Replaces the prior version in its entirety.',
 			TEXTS: [
-				'HollaEx (website: https://www.HollaEx.com) is a Bitcoin-based virtual trading platform that is wholly owned by bitHolla Inc. bitHolla Inc (hereinafter referred to as bitHolla) was incorporated in Seoul South Korea.',
-				'Use of this HollaEx website (“Website”) and the service offered on the Website (“Service”) are governed by the terms contained on this Terms and Conditions page (“Terms”). This agreement entirely constitutes the agreement between the parties. All other information provided on the Website or oral/written statements made are excluded from this agreement; the exchange policy is provided for guidance only and does not constitute a legal agreement between the parties.',
-				'By accessing, viewing or downloading information from the Website and using the Service provided by BitMEX you acknowledge that you have read, understand, and unconditionally agree to be bound by these Terms. BitMEX may at any time, without notice, amend the Terms. You agree to continue to be bound by any amended terms and conditions and that BitMEX has no obligation to notify you of such amendments. You acknowledge that it is your responsibility to check these Terms periodically for changes and that your continued use of the Website and Services offered by BitMEX following the posting of any changes to the Terms indicates your acceptance of any such changes.',
-				'The Website and the copyright in all text, graphics, images, software and any other materials on the Website is owned by BitMEX including all trademarks and other intellectual property rights in respect of materials and Service on the Website. Materials on this Website may only be used for personal use and non-commercial purposes.',
-				'You may display on a computer screen or print extracts from the Website for the above-stated purpose only provided that you retain any copyright and other proprietary notices or any BitMEX trademarks or logos, as shown on the initial printout or download without alteration, addition or deletion. Except as expressly stated herein, you may not without BitMEX’s prior written permission alter, modify, reproduce, distribute or use in any other commercial context any materials from the Website.',
-				'You acknowledge that ‘BitMEX’ and the BitMEX logo are trademarks of HDR Global Trading Limited. You may reproduce such trademarks without alteration on material downloaded from this Website to the extent authorised above, but you may not otherwise use, copy, adapt or erase them.',
+				'HEX Web is a virtual trading platform that is wholly owned by bitHolla Inc. bitHolla Inc (hereinafter referred to as bitHolla) was incorporated in Seoul South Korea.',
+				'Use of this HEX website (“Website”) and the service offered on the Website (“Service”) are governed by the terms contained on this Terms and Conditions page (“Terms”). This agreement entirely constitutes the agreement between the parties. All other information provided on the Website or oral/written statements made are excluded from this agreement; the exchange policy is provided for guidance only and does not constitute a legal agreement between the parties.',
+				'By accessing, viewing or downloading information from the Website and using the Service provided by bitHolla you acknowledge that you have read, understand, and unconditionally agree to be bound by these Terms. bitHolla may at any time, without notice, amend the Terms. You agree to continue to be bound by any amended terms and conditions and that bitHolla has no obligation to notify you of such amendments. You acknowledge that it is your responsibility to check these Terms periodically for changes and that your continued use of the Website and Services offered by bitHolla following the posting of any changes to the Terms indicates your acceptance of any such changes.',
+				'The Website and the copyright in all text, graphics, images, software and any other materials on the Website is owned by bitHolla including all trademarks and other intellectual property rights in respect of materials and Service on the Website. Materials on this Website may only be used for personal use and non-commercial purposes.',
+				'You may display on a computer screen or print extracts from the Website for the above-stated purpose only provided that you retain any copyright and other proprietary notices or any bitHolla trademarks or logos, as shown on the initial printout or download without alteration, addition or deletion. Except as expressly stated herein, you may not without bitHolla’s prior written permission alter, modify, reproduce, distribute or use in any other commercial context any materials from the Website.',
+				'You acknowledge that ‘bitHolla’ and the bitHolla logo are trademarks of bitHolla Inc. You may reproduce such trademarks without alteration on material downloaded from this Website to the extent authorised above, but you may not otherwise use, copy, adapt or erase them.',
 				'You shall not in any circumstances obtain any rights over or in respect of the Website (other than rights to use the Website pursuant to these Terms and any other terms and conditions governing a particular service or section of the Website) or hold yourself out as having any such rights over or in respect of the Website.'
 			]
 		},
 		GENERAL_TERMS: {
 			TITLE: 'General Terms of Service',
 			SUBTITLE:
-				'Last updated April 1, 2017. Replaces the prior version in its entirety.',
+				'Last updated April 1, 2019. Replaces the prior version in its entirety.',
 			TEXTS: [
-				'HollaEx (website: https://www.hollaex.com) is a Bitcoin-based virtual trading platform that is wholly owned by HDR Global Trading Limited. HDR Global Trading Limited (hereinafter referred to as BitMEX) was incorporated under the International Business Companies Act of 1994 of the Republic of Seychelles with a company number of 148707.',
-				'Use of this BitMEX website (“Website”) and the service offered on the Website (“Service”) are governed by the terms contained on this Terms and Conditions page (“Terms”). This agreement entirely constitutes the agreement between the parties. All other information provided on the Website or oral/written statements made are excluded from this agreement; the exchange policy is provided for guidance only and does not constitute a legal agreement between the parties.',
-				'By accessing, viewing or downloading information from the Website and using the Service provided by BitMEX you acknowledge that you have read, understand, and unconditionally agree to be bound by these Terms. BitMEX may at any time, without notice, amend the Terms. You agree to continue to be bound by any amended terms and conditions and that BitMEX has no obligation to notify you of such amendments. You acknowledge that it is your responsibility to check these Terms periodically for changes and that your continued use of the Website and Services offered by BitMEX following the posting of any changes to the Terms indicates your acceptance of any such changes.',
-				'The Website and the copyright in all text, graphics, images, software and any other materials on the Website is owned by BitMEX including all trademarks and other intellectual property rights in respect of materials and Service on the Website. Materials on this Website may only be used for personal use and non-commercial purposes.',
-				'You may display on a computer screen or print extracts from the Website for the above-stated purpose only provided that you retain any copyright and other proprietary notices or any BitMEX trademarks or logos, as shown on the initial printout or download without alteration, addition or deletion. Except as expressly stated herein, you may not without BitMEX’s prior written permission alter, modify, reproduce, distribute or use in any other commercial context any materials from the Website.',
-				'You acknowledge that ‘BitMEX’ and the BitMEX logo are trademarks of HDR Global Trading Limited. You may reproduce such trademarks without alteration on material downloaded from this Website to the extent authorised above, but you may not otherwise use, copy, adapt or erase them.',
+				'HEX Web is a virtual trading platform that is wholly owned by bitHolla Inc. bitHolla Inc (hereinafter referred to as bitHolla) was incorporated in Seoul South Korea.',
+				'Use of this HEX website (“Website”) and the service offered on the Website (“Service”) are governed by the terms contained on this Terms and Conditions page (“Terms”). This agreement entirely constitutes the agreement between the parties. All other information provided on the Website or oral/written statements made are excluded from this agreement; the exchange policy is provided for guidance only and does not constitute a legal agreement between the parties.',
+				'By accessing, viewing or downloading information from the Website and using the Service provided by bitHolla you acknowledge that you have read, understand, and unconditionally agree to be bound by these Terms. bitHolla may at any time, without notice, amend the Terms. You agree to continue to be bound by any amended terms and conditions and that bitHolla has no obligation to notify you of such amendments. You acknowledge that it is your responsibility to check these Terms periodically for changes and that your continued use of the Website and Services offered by bitHolla following the posting of any changes to the Terms indicates your acceptance of any such changes.',
+				'The Website and the copyright in all text, graphics, images, software and any other materials on the Website is owned by bitHolla including all trademarks and other intellectual property rights in respect of materials and Service on the Website. Materials on this Website may only be used for personal use and non-commercial purposes.',
+				'You may display on a computer screen or print extracts from the Website for the above-stated purpose only provided that you retain any copyright and other proprietary notices or any bitHolla trademarks or logos, as shown on the initial printout or download without alteration, addition or deletion. Except as expressly stated herein, you may not without bitHolla’s prior written permission alter, modify, reproduce, distribute or use in any other commercial context any materials from the Website.',
+				'You acknowledge that ‘bitHolla’ and the bitHolla logo are trademarks of bitHolla Inc. You may reproduce such trademarks without alteration on material downloaded from this Website to the extent authorised above, but you may not otherwise use, copy, adapt or erase them.',
 				'You shall not in any circumstances obtain any rights over or in respect of the Website (other than rights to use the Website pursuant to these Terms and any other terms and conditions governing a particular service or section of the Website) or hold yourself out as having any such rights over or in respect of the Website.'
 			]
 		}
@@ -424,7 +424,7 @@ export default {
 				TITLE_PERSONAL_INFORMATION: 'Personal Information',
 				TITLE_PHONE: 'Phone',
 				PHONE_VERIFICATION_TXT:
-					'Providing valid contact details will assist HollaEx greatly in conflict resolution while preventing unwanted transactions on your account.',
+					'Providing valid contact details will assist HEX greatly in conflict resolution while preventing unwanted transactions on your account.',
 				PHONE_VERIFICATION_TXT_1:
 					'Receive real-time updates for deposits and withdrawals by sharing your mobile phone number.',
 				PHONE_VERIFICATION_TXT_2:
@@ -505,11 +505,11 @@ export default {
 				SELFIE: {
 					TITLE: 'Selfie with Photo ID and Note',
 					INFO_TEXT:
-						"Please provide a photo of you holding your passport or photo ID. In the same picture and have a reference to HollaEx.com’, today's date and your signature displayed.Make sure your face is clearly visible and that your ID details are clearly readable.",
+						"Please provide a photo of you holding your passport or photo ID. In the same picture and have a reference to bitholla.com’, today's date and your signature displayed.Make sure your face is clearly visible and that your ID details are clearly readable.",
 					REQUIRED: 'Required:',
 					INSTRUCTION_1: 'Your face clearly visable',
 					INSTRUCTION_2: 'Photo ID clearly readable',
-					INSTRUCTION_3: 'Write the word ‘hollaex.com',
+					INSTRUCTION_3: 'Write the word bitholla.com',
 					INSTRUCTION_4: "Write today's date",
 					INSTRUCTION_5: 'Write your signature',
 					WARNING:
@@ -802,7 +802,7 @@ export default {
 		MESSAGE_FEE: 'Transactions fee of {0} ({1}) included',
 		MESSAGE_FEE_BASE: 'Transactions fee of {0} included',
 		BASE_MESSAGE_1:
-			'You can only withdraw to a bank account in a name that matches the name registered with your HOLLAEX account.',
+			'You can only withdraw to a bank account in a name that matches the name registered with your HEX account.',
 		BASE_MESSAGE_2: 'Withdrawal min amount',
 		BASE_MESSAGE_3: 'Daily withdrawal max amount',
 		BASE_INCREASE_LIMIT: 'Increase your daily limit',
@@ -872,11 +872,11 @@ export default {
 	RESUBMIT: 'Resubmit',
 	VERIFICATION_NOTIFICATION_SKIP_TITLE: 'Missing Documents!',
 	VERIFICATION_NOTIFICATION_SKIP_TEXT:
-		'To get full access to withdrawal and deposit functions on HOLLAEX you must submit your identity documents in your account page.',
+		'To get full access to withdrawal and deposit functions on HEX you must submit your identity documents in your account page.',
 	VERIFICATION_NOTIFICATION_SUCCESS_TITLE: 'Success!',
 	VERIFICATION_NOTIFICATION_SUCCESS_TEXT:
 		'You will receive an email notification when your information has been processed. Processing can typically take 1-3 days.',
-	VERIFICATION_NOTIFICATION_BUTTON: 'PROCEED TO HOLLAEX',
+	VERIFICATION_NOTIFICATION_BUTTON: 'PROCEED TO HEX',
 	ERROR_USER_ALREADY_VERIFIED: 'User already verified',
 	ERROR_INVALID_CARD_USER: 'Bank or card information provided is incorrect',
 	ERROR_INVALID_CARD_NUMBER: 'Invalid Card number',

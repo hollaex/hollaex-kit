@@ -1,5 +1,4 @@
 import config from './index';
-import { formatNumber } from '../utils/currency';
 
 import STRINGS from './localizedStrings';
 
