@@ -576,9 +576,8 @@ export const WITHDRAW_LIMITS = {
 	}
 };
 
-export const DEFAULT_TRADING_PAIRS = process.env.REACT_APP_DEFAULT_TRADING_PAIRS
-	? process.env.REACT_APP_DEFAULT_TRADING_PAIRS.split(',')
-	: ['btc-eur', 'eth-eur'];
+// Default trading pairs (it gets set from the server so it is not important to set these properly)
+export const DEFAULT_TRADING_PAIRS = ['btc-eur', 'eth-eur'];
 
 export const TOKEN_KEY = `${ENV}_${NETWORK}_TOKEN`;
 export const LANGUAGE_KEY = `${ENV}_${NETWORK}_LANGUAGE`;
@@ -592,7 +591,7 @@ export const BANK_WITHDRAWAL_MAX_DYNAMIC_FEE =
 	process.env.REACT_APP_BANK_WITHDRAWAL_MAX_DYNAMIC_FEE || 50;
 export const BANK_WITHDRAWAL_MAX_AMOUNT_FOR_BASE_FEE =
 	process.env.REACT_APP_BANK_WITHDRAWAL_MAX_AMOUNT_FOR_BASE_FEE || 0;
-export const takerFee = process.env.REACT_APP_NOT_LOGGEDIN_FEE || 0;
+export const takerFee = 0;
 
 export const BANK_PAYMENT_LINK = '';
 export const MIN_VERIFICATION_LEVEL_TO_WITHDRAW = 2;
@@ -627,8 +626,7 @@ export const IS_PRO_VERSION =
 	process.env.REACT_APP_IS_PRO_VERSION === 'true';
 export const PRO_VERSION_REDIRECT =
 	process.env.REACT_APP_PRO_VERSION_REDIRECT || '/account';
-export const DEFAULT_VERSION_REDIRECT =
-	process.env.REACT_APP_DEFAULT_VERSION_REDIRECT || '/';
+export const DEFAULT_VERSION_REDIRECT = '/';
 export const PRO_URL = process.env.REACT_APP_PRO_URL || 'https://hollaex.com';
 
 const hosts = {
@@ -645,28 +643,18 @@ export const API_PATH = '/v0';
 export const API_HOST = hosts[ENV][NETWORK];
 export const WS_HOST = hosts[ENV][NETWORK];
 
-export const MIN_LEVEL_FOR_TOKENS = parseInt(
-	process.env.REACT_APP_MIN_LEVEL_FOR_TOKENS || 2,
-	10
-);
+// minimum level for a user to be able to create api tokens
+export const MIN_LEVEL_FOR_TOKENS = 2;
+
 const THEME_COLOR = localStorage.getItem('theme');
 export const THEMES = ['dark', 'white'];
 export const THEME_DEFAULT = THEME_COLOR ? THEME_COLOR : THEMES[1];
 export const CHAT_STATUS_KEY = 'chat:minimized';
 
-export const TRADING_VOLUME_CHART_LIMITS = process.env
-	.REACT_APP_TRADING_VOLUME_CHART_LIMITS
-	? process.env.REACT_APP_TRADING_VOLUME_CHART_LIMITS.split(',').map((data) =>
-			formatNumber(data)
-	  )
-	: [10000, 100000];
-
-export const TRADE_ACCOUNT_UPGRADE_MONTH = process.env
-	.REACT_APP_ACCOUNT_UPGRADE_MONTH
-	? process.env.REACT_APP_ACCOUNT_UPGRADE_MONTH.split(',').map((data) =>
-			formatNumber(data)
-	  )
-	: [3, 6];
+/* these values are used for the chart limits on the summary page */
+export const TRADING_VOLUME_CHART_LIMITS = [10000, 100000];
+export const TRADE_ACCOUNT_UPGRADE_MONTH = [3, 6];
+/*****************************************************************/
 
 export const BAR_CHART_LIMIT_CAPACITY = [340000, 2050000];
 

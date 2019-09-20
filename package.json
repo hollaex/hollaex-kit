@@ -1,7 +1,6 @@
 {
-	"name": "hollaex",
-	"version": "1.18.3",
-	"private": true,
+	"name": "HEX Web",
+	"version": "1.19.0",
 	"dependencies": {
 		"@material/button": "0.7.0",
 		"antd": "3.21.4",
@@ -75,7 +74,7 @@
 	},
 	"devDependencies": {
 		"prettier": "1.16.4",
-		"react-scripts": "^2.1.8"
+		"react-scripts": "2.1.8"
 	},
 	"scripts": {
 		"prettier-commit": "lint-staged",
@@ -86,16 +85,15 @@
 		"start": "npm-run-all -p watch-css start-js",
 		"build": "npm run build-css && react-scripts build",
 		"test": "react-scripts test --env=jsdom",
-		"eject": "react-scripts eject",
-		"deploy-main": "npm run build && aws s3 sync build/ s3://hollaex.com && aws cloudfront create-invalidation --distribution-id E1FPBCJ0EFOPZJ --paths /"
+		"eject": "react-scripts eject"
 	},
 	"description": "Cryptocurrency exchange platfrom",
 	"main": "index.js",
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/bitholla/hollaex.git"
+		"url": "git+https://github.com/bitholla/hex-kit.git"
 	},
-	"homepage": "https://hollaex.com",
+	"homepage": "https://bitholla.com",
 	"prettier": {
 		"tabWidth": 3,
 		"useTabs": true,
