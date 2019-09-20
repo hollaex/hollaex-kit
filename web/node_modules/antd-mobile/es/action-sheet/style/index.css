@@ -1,0 +1,297 @@
+.am-action-sheet-wrap {
+  position: fixed;
+  overflow: auto;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1000;
+  -webkit-overflow-scrolling: touch;
+  outline: 0;
+}
+.am-action-sheet-mask {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+  height: 100%;
+  z-index: 1000;
+}
+.am-action-sheet-mask-hidden {
+  display: none;
+}
+.am-action-sheet-close {
+  display: none;
+}
+.am-action-sheet {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background-color: #fff;
+}
+.am-action-sheet.am-action-sheet-share {
+  background-color: #f2f2f2;
+}
+.am-action-sheet-title,
+.am-action-sheet-message {
+  margin: 15px auto;
+  padding: 0 15px;
+  text-align: center;
+}
+.am-action-sheet-title {
+  font-size: 17px;
+}
+.am-action-sheet-message {
+  color: #888;
+  font-size: 14px;
+}
+.am-action-sheet-button-list {
+  text-align: center;
+  color: #000;
+}
+.am-action-sheet-button-list-item {
+  font-size: 18px;
+  padding: 0;
+  margin: 0;
+  position: relative;
+  height: 50px;
+  line-height: 50px;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  border-top: 1PX solid #ddd;
+}
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
+  html:not([data-scale]) .am-action-sheet-button-list-item {
+    border-top: none;
+  }
+  html:not([data-scale]) .am-action-sheet-button-list-item::before {
+    content: '';
+    position: absolute;
+    background-color: #ddd;
+    display: block;
+    z-index: 1;
+    top: 0;
+    right: auto;
+    bottom: auto;
+    left: 0;
+    width: 100%;
+    height: 1PX;
+    -webkit-transform-origin: 50% 50%;
+        -ms-transform-origin: 50% 50%;
+            transform-origin: 50% 50%;
+    -webkit-transform: scaleY(0.5);
+        -ms-transform: scaleY(0.5);
+            transform: scaleY(0.5);
+  }
+}
+@media (-webkit-min-device-pixel-ratio: 2) and (-webkit-min-device-pixel-ratio: 3), (min-resolution: 2dppx) and (min-resolution: 3dppx) {
+  html:not([data-scale]) .am-action-sheet-button-list-item::before {
+    -webkit-transform: scaleY(0.33);
+        -ms-transform: scaleY(0.33);
+            transform: scaleY(0.33);
+  }
+}
+.am-action-sheet-button-list-item.am-action-sheet-button-list-item-active {
+  background-color: #ddd;
+}
+.am-action-sheet-button-list .am-action-sheet-cancel-button {
+  margin-top: 6px;
+  position: relative;
+}
+.am-action-sheet-button-list .am-action-sheet-cancel-button-mask {
+  position: absolute;
+  top: -6px;
+  left: 0;
+  width: 100%;
+  height: 6px;
+  background-color: #e7e7ed;
+  border-top: 1PX solid #ddd;
+  border-bottom: 1PX solid #ddd;
+}
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
+  html:not([data-scale]) .am-action-sheet-button-list .am-action-sheet-cancel-button-mask {
+    border-top: none;
+  }
+  html:not([data-scale]) .am-action-sheet-button-list .am-action-sheet-cancel-button-mask::before {
+    content: '';
+    position: absolute;
+    background-color: #ddd;
+    display: block;
+    z-index: 1;
+    top: 0;
+    right: auto;
+    bottom: auto;
+    left: 0;
+    width: 100%;
+    height: 1PX;
+    -webkit-transform-origin: 50% 50%;
+        -ms-transform-origin: 50% 50%;
+            transform-origin: 50% 50%;
+    -webkit-transform: scaleY(0.5);
+        -ms-transform: scaleY(0.5);
+            transform: scaleY(0.5);
+  }
+}
+@media (-webkit-min-device-pixel-ratio: 2) and (-webkit-min-device-pixel-ratio: 3), (min-resolution: 2dppx) and (min-resolution: 3dppx) {
+  html:not([data-scale]) .am-action-sheet-button-list .am-action-sheet-cancel-button-mask::before {
+    -webkit-transform: scaleY(0.33);
+        -ms-transform: scaleY(0.33);
+            transform: scaleY(0.33);
+  }
+}
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
+  html:not([data-scale]) .am-action-sheet-button-list .am-action-sheet-cancel-button-mask {
+    border-bottom: none;
+  }
+  html:not([data-scale]) .am-action-sheet-button-list .am-action-sheet-cancel-button-mask::after {
+    content: '';
+    position: absolute;
+    background-color: #ddd;
+    display: block;
+    z-index: 1;
+    top: auto;
+    right: auto;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 1PX;
+    -webkit-transform-origin: 50% 100%;
+        -ms-transform-origin: 50% 100%;
+            transform-origin: 50% 100%;
+    -webkit-transform: scaleY(0.5);
+        -ms-transform: scaleY(0.5);
+            transform: scaleY(0.5);
+  }
+}
+@media (-webkit-min-device-pixel-ratio: 2) and (-webkit-min-device-pixel-ratio: 3), (min-resolution: 2dppx) and (min-resolution: 3dppx) {
+  html:not([data-scale]) .am-action-sheet-button-list .am-action-sheet-cancel-button-mask::after {
+    -webkit-transform: scaleY(0.33);
+        -ms-transform: scaleY(0.33);
+            transform: scaleY(0.33);
+  }
+}
+.am-action-sheet-button-list .am-action-sheet-destructive-button {
+  color: #f4333c;
+}
+.am-action-sheet-share-list {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  position: relative;
+  border-top: 1PX solid #ddd;
+  padding: 21px 0 21px 15px;
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
+}
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
+  html:not([data-scale]) .am-action-sheet-share-list {
+    border-top: none;
+  }
+  html:not([data-scale]) .am-action-sheet-share-list::before {
+    content: '';
+    position: absolute;
+    background-color: #ddd;
+    display: block;
+    z-index: 1;
+    top: 0;
+    right: auto;
+    bottom: auto;
+    left: 0;
+    width: 100%;
+    height: 1PX;
+    -webkit-transform-origin: 50% 50%;
+        -ms-transform-origin: 50% 50%;
+            transform-origin: 50% 50%;
+    -webkit-transform: scaleY(0.5);
+        -ms-transform: scaleY(0.5);
+            transform: scaleY(0.5);
+  }
+}
+@media (-webkit-min-device-pixel-ratio: 2) and (-webkit-min-device-pixel-ratio: 3), (min-resolution: 2dppx) and (min-resolution: 3dppx) {
+  html:not([data-scale]) .am-action-sheet-share-list::before {
+    -webkit-transform: scaleY(0.33);
+        -ms-transform: scaleY(0.33);
+            transform: scaleY(0.33);
+  }
+}
+.am-action-sheet-share-list-item {
+  -webkit-box-flex: 0;
+  -webkit-flex: none;
+      -ms-flex: none;
+          flex: none;
+  margin: 0 12px 0 0;
+}
+.am-action-sheet-share-list-item-icon {
+  margin-bottom: 9px;
+  width: 60px;
+  height: 60px;
+  background-color: #fff;
+  border-radius: 3px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+.am-action-sheet-share-list-item-title {
+  color: #888;
+  font-size: 10px;
+  text-align: center;
+}
+.am-action-sheet-share-cancel-button {
+  height: 50px;
+  line-height: 50px;
+  text-align: center;
+  background-color: #fff;
+  color: #000;
+  font-size: 18px;
+  position: relative;
+  border-top: 1PX solid #ddd;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
+  html:not([data-scale]) .am-action-sheet-share-cancel-button {
+    border-top: none;
+  }
+  html:not([data-scale]) .am-action-sheet-share-cancel-button::before {
+    content: '';
+    position: absolute;
+    background-color: #ddd;
+    display: block;
+    z-index: 1;
+    top: 0;
+    right: auto;
+    bottom: auto;
+    left: 0;
+    width: 100%;
+    height: 1PX;
+    -webkit-transform-origin: 50% 50%;
+        -ms-transform-origin: 50% 50%;
+            transform-origin: 50% 50%;
+    -webkit-transform: scaleY(0.5);
+        -ms-transform: scaleY(0.5);
+            transform: scaleY(0.5);
+  }
+}
+@media (-webkit-min-device-pixel-ratio: 2) and (-webkit-min-device-pixel-ratio: 3), (min-resolution: 2dppx) and (min-resolution: 3dppx) {
+  html:not([data-scale]) .am-action-sheet-share-cancel-button::before {
+    -webkit-transform: scaleY(0.33);
+        -ms-transform: scaleY(0.33);
+            transform: scaleY(0.33);
+  }
+}
+.am-action-sheet-share-cancel-button.am-action-sheet-share-cancel-button-active {
+  background-color: #ddd;
+}

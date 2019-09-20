@@ -1,0 +1,1 @@
+{"ast":null,"code":"var basex = require('base-x');\n\nvar ALPHABET = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz';\nmodule.exports = basex(ALPHABET);","map":null,"metadata":{},"sourceType":"script"}

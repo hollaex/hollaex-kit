@@ -1,0 +1,1 @@
+{"ast":null,"code":"var MediaQueryDispatch = require('./MediaQueryDispatch');\n\nmodule.exports = new MediaQueryDispatch();","map":null,"metadata":{},"sourceType":"script"}

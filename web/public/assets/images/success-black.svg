@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+
+
+<!-- Page 22 -->
+<svg x="0" y="0" width="280" height="280" viewBox="0 0 280 280" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+style="display: block;margin-left: auto;margin-right: auto;">
+<defs>
+
+<style type="text/css"><![CDATA[
+
+.success-black-1{
+fill: #1F1F1E;
+}
+
+
+]]></style>
+
+</defs>
+<path d="M140.2,250.6C81,250.6,33.5,203.1,33.5,143.9C33.5,84.8,81,37.3,140.2,37.3c59.1,0,106.6,47.5,106.6,106.6c0,59.2,-47.5,106.7,-106.6,106.7m0,-220.8C76.9,29.8,26,80.7,26,143.9c0,63.3,50.9,114.2,114.2,114.2c63.2,0,114.1,-50.9,114.1,-114.2C254.3,80.7,203.4,29.8,140.2,29.8Z" class="success-black-1" />
+<path d="M192.8,100c-2.1,0,-4.3,0.9,-6.1,2.7l-64.1,64.1l-29,-29c-3.5,-3.5,-8.8,-3.5,-12.3,0c-3.5,3.5,-3.5,8.8,0,12.3l35.1,35.1c1.8,1.8,3.5,2.7,6.2,2.7c2.6,0,4.4,-0.9,6.1,-2.7L199,115c3.5,-3.6,3.5,-8.8,0,-12.3c-1.8,-1.8,-4,-2.7,-6.2,-2.7Z" class="success-black-1" />
+
+</svg>

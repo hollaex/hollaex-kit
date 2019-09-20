@@ -1,0 +1,1 @@
+{"ast":null,"code":"export var deg2rad = Math.PI / 180;\nexport var rad2deg = 180 / Math.PI;","map":null,"metadata":{},"sourceType":"module"}

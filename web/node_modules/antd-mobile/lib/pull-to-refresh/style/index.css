@@ -1,0 +1,25 @@
+.am-pull-to-refresh-content {
+  -webkit-transform-origin: left top 0;
+      -ms-transform-origin: left top 0;
+          transform-origin: left top 0;
+}
+.am-pull-to-refresh-content-wrapper {
+  overflow: hidden;
+}
+.am-pull-to-refresh-transition {
+  -webkit-transition: -webkit-transform 0.3s;
+  transition: -webkit-transform 0.3s;
+  transition: transform 0.3s;
+  transition: transform 0.3s, -webkit-transform 0.3s;
+}
+.am-pull-to-refresh-indicator {
+  color: grey;
+  text-align: center;
+  height: 25px;
+}
+.am-pull-to-refresh-down .am-pull-to-refresh-indicator {
+  margin-top: -25px;
+}
+.am-pull-to-refresh-up .am-pull-to-refresh-indicator {
+  margin-bottom: -25px;
+}

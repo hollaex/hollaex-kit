@@ -1,0 +1,69 @@
+var __rest = this && this.__rest || function (s, e) {
+    var t = {};
+    for (var p in s) {
+        if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0) t[p] = s[p];
+    }if (s != null && typeof Object.getOwnPropertySymbols === "function") for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+        if (e.indexOf(p[i]) < 0) t[p[i]] = s[p[i]];
+    }return t;
+};
+/* tslint:disable:no-unused-variable */
+import React from 'react';
+/* tslint:enable:no-unused-variable */
+import List from '../list';
+var Item = List.Item;
+
+export default function handleProps(props, isIndexed) {
+    var renderHeader = props.renderHeader,
+        renderFooter = props.renderFooter,
+        renderSectionHeader = props.renderSectionHeader,
+        renderBodyComponent = props.renderBodyComponent,
+        restProps = __rest(props, ["renderHeader", "renderFooter", "renderSectionHeader", "renderBodyComponent"]);
+
+    var listPrefixCls = props.listPrefixCls;
+    var extraProps = {
+        renderHeader: null,
+        renderFooter: null,
+        renderSectionHeader: null,
+        renderBodyComponent: renderBodyComponent || function () {
+            return React.createElement('div', { className: listPrefixCls + '-body' });
+        }
+    };
+    if (renderHeader) {
+        extraProps.renderHeader = function () {
+            return React.createElement(
+                'div',
+                { className: listPrefixCls + '-header' },
+                renderHeader()
+            );
+        };
+    }
+    if (renderFooter) {
+        extraProps.renderFooter = function () {
+            return React.createElement(
+                'div',
+                { className: listPrefixCls + '-footer' },
+                renderFooter()
+            );
+        };
+    }
+    if (renderSectionHeader) {
+        extraProps.renderSectionHeader = isIndexed ? function (sectionData, sectionID) {
+            return React.createElement(
+                'div',
+                null,
+                React.createElement(
+                    Item,
+                    { prefixCls: listPrefixCls },
+                    renderSectionHeader(sectionData, sectionID)
+                )
+            );
+        } : function (sectionData, sectionID) {
+            return React.createElement(
+                Item,
+                { prefixCls: listPrefixCls },
+                renderSectionHeader(sectionData, sectionID)
+            );
+        };
+    }
+    return { restProps: restProps, extraProps: extraProps };
+}

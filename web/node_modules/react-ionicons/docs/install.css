@@ -1,0 +1,34 @@
+.install {
+  padding: 20px;
+}
+
+h2 {
+  padding-bottom: 5px;
+  border-bottom: 1px solid #c9c9c9;
+  font-family: Helvetica, sans-serif;
+  margin-bottom: 30px;
+}
+
+.install p {
+  color: black
+}
+
+.install li {
+  font-family: Helvetica, sans-serif;
+}
+
+pre {
+  padding: 16px;
+  background-color: #f6f8fa;
+  margin-bottom: 30px;
+  line-height: 1.45;
+  overflow: auto;
+}
+
+.install ul {
+  padding-left: 20px;
+}
+
+.install li {
+  margin-bottom: 5px;
+}

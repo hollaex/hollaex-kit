@@ -1,0 +1,1 @@
+{"ast":null,"code":"var indexOf = [].indexOf;\n\nmodule.exports = function (arr, obj) {\n  if (indexOf) return arr.indexOf(obj);\n\n  for (var i = 0; i < arr.length; ++i) {\n    if (arr[i] === obj) return i;\n  }\n\n  return -1;\n};","map":null,"metadata":{},"sourceType":"script"}

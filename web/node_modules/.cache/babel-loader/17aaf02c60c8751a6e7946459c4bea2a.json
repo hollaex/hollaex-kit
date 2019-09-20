@@ -1,0 +1,1 @@
+{"ast":null,"code":"import variance from \"./variance\";\nexport default function (array, f) {\n  var v = variance(array, f);\n  return v ? Math.sqrt(v) : v;\n}","map":null,"metadata":{},"sourceType":"module"}

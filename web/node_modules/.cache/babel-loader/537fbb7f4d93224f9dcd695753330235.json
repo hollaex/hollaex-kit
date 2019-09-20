@@ -1,0 +1,1 @@
+{"ast":null,"code":"import Breadcrumb from './Breadcrumb';\nimport BreadcrumbItem from './BreadcrumbItem';\nimport BreadcrumbSeparator from './BreadcrumbSeparator';\nBreadcrumb.Item = BreadcrumbItem;\nBreadcrumb.Separator = BreadcrumbSeparator;\nexport default Breadcrumb;","map":null,"metadata":{},"sourceType":"module"}

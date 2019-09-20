@@ -1,0 +1,1 @@
+{"ast":null,"code":"'use strict';\n\nmodule.exports = function every(array, predicate) {\n  for (var i = 0; i < array.length; i += 1) {\n    if (!predicate(array[i], i, array)) {\n      return false;\n    }\n  }\n\n  return true;\n};","map":null,"metadata":{},"sourceType":"script"}

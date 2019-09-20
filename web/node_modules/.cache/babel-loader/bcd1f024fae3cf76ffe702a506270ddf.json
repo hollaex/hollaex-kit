@@ -1,0 +1,1 @@
+{"ast":null,"code":"export function formatDate(value, format) {\n  if (!value) {\n    return '';\n  }\n\n  if (Array.isArray(format)) {\n    format = format[0];\n  }\n\n  return value.format(format);\n}","map":null,"metadata":{},"sourceType":"module"}

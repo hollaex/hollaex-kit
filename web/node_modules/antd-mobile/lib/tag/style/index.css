@@ -1,0 +1,123 @@
+.am-tag {
+  display: inline-block;
+  position: relative;
+  font-size: 14px;
+  text-align: center;
+  padding: 0 15px;
+  height: 25px;
+  line-height: 25px;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+.am-tag.am-tag-small {
+  height: 15px;
+  line-height: 15px;
+  padding: 0 5px;
+  font-size: 10px;
+}
+.am-tag-normal {
+  background-color: #fff;
+  color: #888;
+  border: 1PX solid #ddd;
+  border-radius: 3px;
+}
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
+  html:not([data-scale]) .am-tag-normal {
+    position: relative;
+    border: none;
+  }
+  html:not([data-scale]) .am-tag-normal::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 200%;
+    height: 200%;
+    border: 1PX solid #ddd;
+    border-radius: 6px;
+    -webkit-transform-origin: 0 0;
+        -ms-transform-origin: 0 0;
+            transform-origin: 0 0;
+    -webkit-transform: scale(0.5);
+        -ms-transform: scale(0.5);
+            transform: scale(0.5);
+    -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+    pointer-events: none;
+  }
+}
+.am-tag-active {
+  background-color: #fff;
+  color: #108ee9;
+  border: 1PX solid #108ee9;
+  border-radius: 3px;
+}
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
+  html:not([data-scale]) .am-tag-active {
+    position: relative;
+    border: none;
+  }
+  html:not([data-scale]) .am-tag-active::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 200%;
+    height: 200%;
+    border: 1PX solid #108ee9;
+    border-radius: 6px;
+    -webkit-transform-origin: 0 0;
+        -ms-transform-origin: 0 0;
+            transform-origin: 0 0;
+    -webkit-transform: scale(0.5);
+        -ms-transform: scale(0.5);
+            transform: scale(0.5);
+    -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+    pointer-events: none;
+  }
+}
+.am-tag-disabled {
+  color: #bbb;
+  background-color: #ddd;
+  border: 1PX solid #ddd;
+  border-radius: 3px;
+}
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
+  html:not([data-scale]) .am-tag-disabled {
+    position: relative;
+    border: none;
+  }
+  html:not([data-scale]) .am-tag-disabled::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 200%;
+    height: 200%;
+    border: 1PX solid #ddd;
+    border-radius: 6px;
+    -webkit-transform-origin: 0 0;
+        -ms-transform-origin: 0 0;
+            transform-origin: 0 0;
+    -webkit-transform: scale(0.5);
+        -ms-transform: scale(0.5);
+            transform: scale(0.5);
+    -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+    pointer-events: none;
+  }
+}
+.am-tag-close {
+  position: absolute;
+  top: -9px;
+  left: -10px;
+  color: #bbb;
+}
+.am-tag-close-active {
+  color: #888;
+}
+.am-tag-close .am-icon {
+  background-color: #fff;
+  border-radius: 9px;
+}

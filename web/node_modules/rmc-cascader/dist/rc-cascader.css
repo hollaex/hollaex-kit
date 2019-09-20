@@ -1,0 +1,15 @@
+.rmc-cascader {
+  display: -ms-flexbox;
+  display: flex;
+  box-align: center;
+  -ms-flex-align: center;
+      align-items: center;
+  padding: 10px 0;
+}
+.rmc-cascader-item {
+  -ms-flex: 1;
+      flex: 1;
+  text-align: center;
+}
+
+/*# sourceMappingURL=rc-cascader.css.map*/

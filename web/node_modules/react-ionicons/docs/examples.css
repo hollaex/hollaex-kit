@@ -1,0 +1,16 @@
+.examples {
+  padding: 20px
+}
+
+.examplesContainer {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.example {
+  width: 48%;
+  text-align: center;
+  padding: 20px;
+  margin: auto;
+  margin-top: 20px
+}

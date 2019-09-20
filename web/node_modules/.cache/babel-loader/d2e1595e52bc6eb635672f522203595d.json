@@ -1,0 +1,1 @@
+{"ast":null,"code":"var isEvent = function isEvent(candidate) {\n  return !!(candidate && candidate.stopPropagation && candidate.preventDefault);\n};\n\nexport default isEvent;","map":null,"metadata":{},"sourceType":"module"}

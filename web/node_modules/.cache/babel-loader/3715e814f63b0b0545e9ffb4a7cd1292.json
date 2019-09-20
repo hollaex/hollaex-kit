@@ -1,0 +1,1 @@
+{"ast":null,"code":"var $export = require('./_export'); // 19.1.2.2 / 15.2.3.5 Object.create(O [, Properties])\n\n\n$export($export.S, 'Object', {\n  create: require('./_object-create')\n});","map":null,"metadata":{},"sourceType":"script"}

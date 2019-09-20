@@ -1,0 +1,1 @@
+{"ast":null,"code":"import createGetFormSubmitErrors from './selectors/getFormSubmitErrors';\nimport plain from './structure/plain';\nexport default createGetFormSubmitErrors(plain);","map":null,"metadata":{},"sourceType":"module"}

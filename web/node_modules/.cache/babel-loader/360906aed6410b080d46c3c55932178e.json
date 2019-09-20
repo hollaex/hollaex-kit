@@ -1,0 +1,1 @@
+{"ast":null,"code":"export default function (map) {\n  var entries = [];\n\n  for (var key in map) {\n    entries.push({\n      key: key,\n      value: map[key]\n    });\n  }\n\n  return entries;\n}","map":null,"metadata":{},"sourceType":"module"}

@@ -1,0 +1,1 @@
+{"ast":null,"code":"import useQueries from 'history/lib/useQueries';\nimport useBasename from 'history/lib/useBasename';\nexport default function useRouterHistory(createHistory) {\n  return function (options) {\n    var history = useQueries(useBasename(createHistory))(options);\n    return history;\n  };\n}","map":null,"metadata":{},"sourceType":"module"}

@@ -1,0 +1,1 @@
+{"ast":null,"code":"import Tree from './Tree';\nexport default Tree;","map":null,"metadata":{},"sourceType":"module"}

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+
+
+<!-- Page 10 -->
+<svg x="0" y="0" width="280" height="280" viewBox="0 0 280 280" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+style="display: block;margin-left: auto;margin-right: auto;">
+<defs>
+
+<style type="text/css"><![CDATA[
+
+.check-send-btc-1{
+fill: #1F1F1E;
+}
+
+
+]]></style>
+
+</defs>
+<path d="M123,155c-7.4,0,-13.3,-6,-13.3,-13.3c0,-7.4,5.9,-13.3,13.3,-13.3c7.3,0,13.3,5.9,13.3,13.3c0,7.3,-6,13.3,-13.3,13.3M115.1,94.5C51.4,94.5,4.4,126.2,4.4,126.2C53.3,112,90.5,112.3,90.5,112.3c0,0,-8.2,5.7,-8.2,28.3c0,41,42.2,39.4,42.2,39.4c52.9,-6.8,39.6,-55.7,39.6,-55.7l13.5,6.2c13.4,6.2,37.7,25.8,49.1,37.6c-17.1,20.1,-60,22,-60,22c0,0,-1.7,1.8,27.4,1.8c29.1,0,70.4,-18.7,84.6,-27.4c-8.8,-2.6,-99.9,-70,-163.6,-70Z" class="check-send-btc-1" />
+
+</svg>

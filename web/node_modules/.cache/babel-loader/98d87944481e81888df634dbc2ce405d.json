@@ -1,0 +1,1 @@
+{"ast":null,"code":"'use strict';\n\nmodule.exports = function (str) {\n  return encodeURIComponent(str).replace(/[!'()*]/g, function (c) {\n    return '%' + c.charCodeAt(0).toString(16).toUpperCase();\n  });\n};","map":null,"metadata":{},"sourceType":"script"}

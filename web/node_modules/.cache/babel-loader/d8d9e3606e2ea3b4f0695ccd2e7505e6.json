@@ -1,0 +1,1 @@
+{"ast":null,"code":"import createBrowserHistory from 'history/lib/createBrowserHistory';\nimport createRouterHistory from './createRouterHistory';\nexport default createRouterHistory(createBrowserHistory);","map":null,"metadata":{},"sourceType":"module"}

@@ -1,0 +1,1 @@
+{"ast":null,"code":"import createGetFormSyncWarnings from './selectors/getFormSyncWarnings';\nimport plain from './structure/plain';\nexport default createGetFormSyncWarnings(plain);","map":null,"metadata":{},"sourceType":"module"}

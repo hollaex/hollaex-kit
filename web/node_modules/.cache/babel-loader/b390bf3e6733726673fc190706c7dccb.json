@@ -1,0 +1,1 @@
+{"ast":null,"code":"'use strict';\n\nvar $isNaN = Number.isNaN || function (a) {\n  return a !== a;\n};\n\nmodule.exports = Number.isFinite || function (x) {\n  return typeof x === 'number' && !$isNaN(x) && x !== Infinity && x !== -Infinity;\n};","map":null,"metadata":{},"sourceType":"script"}

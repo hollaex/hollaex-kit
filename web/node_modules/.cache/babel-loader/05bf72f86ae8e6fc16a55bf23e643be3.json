@@ -1,0 +1,1 @@
+{"ast":null,"code":"import ReactIcon from '@ant-design/icons-react';\nexport function setTwoToneColor(primaryColor) {\n  return ReactIcon.setTwoToneColors({\n    primaryColor: primaryColor\n  });\n}\nexport function getTwoToneColor() {\n  var colors = ReactIcon.getTwoToneColors();\n  return colors.primaryColor;\n}","map":null,"metadata":{},"sourceType":"module"}

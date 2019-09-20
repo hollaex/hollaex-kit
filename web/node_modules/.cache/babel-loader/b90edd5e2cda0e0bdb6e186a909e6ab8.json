@@ -1,0 +1,1 @@
+{"ast":null,"code":"import locale from '../locale/default';\nexport default locale;","map":null,"metadata":{},"sourceType":"module"}

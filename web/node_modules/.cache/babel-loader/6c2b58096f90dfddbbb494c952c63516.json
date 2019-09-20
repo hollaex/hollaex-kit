@@ -1,0 +1,1 @@
+{"ast":null,"code":"/**\n * Converts an ASCII `string` to an array.\n *\n * @private\n * @param {string} string The string to convert.\n * @returns {Array} Returns the converted array.\n */\nfunction asciiToArray(string) {\n  return string.split('');\n}\n\nmodule.exports = asciiToArray;","map":null,"metadata":{},"sourceType":"script"}

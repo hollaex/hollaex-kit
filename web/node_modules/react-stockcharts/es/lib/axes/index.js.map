@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../../../src/lib/axes/index.js"],"names":["default","XAxis","YAxis"],"mappings":"AAAA,SAASA,WAAWC,KAApB,QAAiC,SAAjC;AACA,SAASD,WAAWE,KAApB,QAAiC,SAAjC","file":"index.js","sourcesContent":["export { default as XAxis } from \"./XAxis\";\nexport { default as YAxis } from \"./YAxis\";\n"]}

@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../../../src/lib/utils/identity.js"],"names":["d"],"mappings":";;AAEA,gBAAe;AAAA,SAAKA,CAAL;AAAA,CAAf","file":"identity.js","sourcesContent":["\n\nexport default d => d;"]}

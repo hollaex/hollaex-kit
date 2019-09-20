@@ -1,0 +1,1 @@
+{"ast":null,"code":"// export this package's api\nimport Upload from './Upload';\nexport default Upload;","map":null,"metadata":{},"sourceType":"module"}

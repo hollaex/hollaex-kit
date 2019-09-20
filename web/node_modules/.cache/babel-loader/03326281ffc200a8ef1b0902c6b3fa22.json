@@ -1,0 +1,1 @@
+{"ast":null,"code":"var camel2hyphen = function camel2hyphen(str) {\n  return str.replace(/[A-Z]/g, function (match) {\n    return '-' + match.toLowerCase();\n  }).toLowerCase();\n};\n\nmodule.exports = camel2hyphen;","map":null,"metadata":{},"sourceType":"script"}

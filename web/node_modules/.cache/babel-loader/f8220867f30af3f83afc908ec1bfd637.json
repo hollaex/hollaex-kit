@@ -1,0 +1,1 @@
+{"ast":null,"code":"import createGetFormSyncErrors from './selectors/getFormSyncErrors';\nimport plain from './structure/plain';\nexport default createGetFormSyncErrors(plain);","map":null,"metadata":{},"sourceType":"module"}

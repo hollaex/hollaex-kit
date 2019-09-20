@@ -1,0 +1,7 @@
+language: node_js
+node_js:
+  - "node" # Specifying node will run using the latest stable Node.js release
+  - 6.11.1 # LTS
+before_install:
+  - "export DISPLAY=:99.0"
+  - "sh -e /etc/init.d/xvfb start"

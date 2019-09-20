@@ -1,0 +1,1 @@
+{"ast":null,"code":"export default function (array, i0, i1) {\n  var m = (i1 == null ? array.length : i1) - (i0 = i0 == null ? 0 : +i0),\n      t,\n      i;\n\n  while (m) {\n    i = Math.random() * m-- | 0;\n    t = array[m + i0];\n    array[m + i0] = array[i + i0];\n    array[i + i0] = t;\n  }\n\n  return array;\n}","map":null,"metadata":{},"sourceType":"module"}

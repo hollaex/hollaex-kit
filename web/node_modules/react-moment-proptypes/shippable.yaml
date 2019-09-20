@@ -1,0 +1,13 @@
+language: node_js
+node_js:
+  - 4.0.0
+
+before_script:
+  - mkdir -p shippable/testresults
+
+script:
+  - ./node_modules/.bin/mocha --recursive --compilers js:babel/register -R xunit > shippable/testresults/nosetests.xml
+
+after_script:
+  - ./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha -- --recursive --compilers js:babel/register -R spec
+  - ./node_modules/.bin/istanbul report cobertura --dir shippable/codecoverage
