@@ -1,0 +1,15 @@
+.jumbo {
+  height: 280px;
+  width: 100%;
+  background: linear-gradient(to bottom, #347eff 0%, #1ea3ff 100%)
+}
+
+.jumboHeader {
+  text-align: center
+}
+
+.jumboHeader h1, p {
+  color: white;
+  font-family: Helvetica, sans-serif;;
+  margin-top: -15px;
+}

@@ -1,0 +1,1 @@
+{"ast":null,"code":"export default {\n  ZERO: 48,\n  NINE: 57,\n  NUMPAD_ZERO: 96,\n  NUMPAD_NINE: 105,\n  BACKSPACE: 8,\n  DELETE: 46,\n  ENTER: 13,\n  ARROW_UP: 38,\n  ARROW_DOWN: 40\n};","map":null,"metadata":{},"sourceType":"module"}

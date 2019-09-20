@@ -1,0 +1,1 @@
+{"ast":null,"code":"export function validProgress(progress) {\n  if (!progress || progress < 0) {\n    return 0;\n  } else if (progress > 100) {\n    return 100;\n  }\n\n  return progress;\n}","map":null,"metadata":{},"sourceType":"module"}

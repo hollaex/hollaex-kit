@@ -1,0 +1,1 @@
+{"ast":null,"code":"import ReactDOM from 'react-dom';\nimport Portalv4 from './Portal';\nimport LegacyPortal from './LegacyPortal';\nvar Portal = void 0;\n\nif (ReactDOM.createPortal) {\n  Portal = Portalv4;\n} else {\n  Portal = LegacyPortal;\n}\n\nexport default Portal;","map":null,"metadata":{},"sourceType":"module"}

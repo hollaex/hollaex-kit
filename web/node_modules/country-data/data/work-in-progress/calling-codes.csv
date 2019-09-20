@@ -1,0 +1,20 @@
+# These are calling codes that have not yet been merged into the countries.csv,
+# as the related country entries do not exist.
+
+XD,+888 // Asia
+XR,+979 // Central Asia
+XT,+800 // Southern Asia
+XS,+808 // Eastern Asia
+XV,+882,+883 // Western Asia
+
+XC,+991 // Americas
+XN,+870 // Carribian
+XP,+878 // South America
+
+QN,+374 // Southern Europe
+
+QS,+252 // Polynesia
+
+XG,+881 // Unclassified
+QY,+90 // ?
+SS,+211 // ?

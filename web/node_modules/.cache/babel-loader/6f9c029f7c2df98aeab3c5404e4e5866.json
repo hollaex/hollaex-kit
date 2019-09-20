@@ -1,0 +1,1 @@
+{"ast":null,"code":"export default function () {\n  var size = 0;\n  this.each(function () {\n    ++size;\n  });\n  return size;\n}","map":null,"metadata":{},"sourceType":"module"}

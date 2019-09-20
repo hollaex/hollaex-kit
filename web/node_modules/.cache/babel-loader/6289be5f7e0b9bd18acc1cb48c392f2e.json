@@ -1,0 +1,1 @@
+{"ast":null,"code":"import ReactDOM from 'react-dom';\n/**\n * Return if a node is a DOM node. Else will return by `findDOMNode`\n */\n\nexport default function findDOMNode(node) {\n  if (node instanceof HTMLElement) {\n    return node;\n  }\n\n  return ReactDOM.findDOMNode(node);\n}","map":null,"metadata":{},"sourceType":"module"}

@@ -1,0 +1,1 @@
+{"ast":null,"code":"import freeGlobal from './_freeGlobal.js';\n/** Detect free variable `self`. */\n\nvar freeSelf = typeof self == 'object' && self && self.Object === Object && self;\n/** Used as a reference to the global object. */\n\nvar root = freeGlobal || freeSelf || Function('return this')();\nexport default root;","map":null,"metadata":{},"sourceType":"module"}

@@ -1,0 +1,1 @@
+{"ast":null,"code":"'use strict';\n\nmodule.exports = function sign(number) {\n  return number >= 0 ? 1 : -1;\n};","map":null,"metadata":{},"sourceType":"script"}

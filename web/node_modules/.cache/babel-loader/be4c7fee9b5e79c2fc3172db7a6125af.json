@@ -1,0 +1,1 @@
+{"ast":null,"code":"import Radio from './radio';\nimport Group from './group';\nimport Button from './radioButton';\nRadio.Button = Button;\nRadio.Group = Group;\nexport { Button, Group };\nexport default Radio;","map":null,"metadata":{},"sourceType":"module"}

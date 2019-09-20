@@ -1,0 +1,1 @@
+{"ast":null,"code":"\"use strict\";\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\nexports[\"default\"] = returnFalse;\n\nfunction returnFalse() {\n  return false;\n}","map":null,"metadata":{},"sourceType":"script"}

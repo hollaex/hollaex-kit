@@ -1,0 +1,244 @@
+$wrapper-margin: 1rem;
+$error-margin: 0.5rem;
+$underline-margin-bottom: 0.25rem;
+$children--padding: 0.4rem;
+$error-icon-size: 1.25rem;
+$valid-icon-size: 1.25rem;
+$outline-height: 1.5px;
+
+.field-wrapper {
+	position: relative;
+	width: 100%;
+	font-size: $font-size-subtext;
+	font-weight: bold;
+	margin: $wrapper-margin 0;
+
+	&.error {
+		color: $error-color;
+	}
+
+	&.inline {
+		display: flex;
+		align-items: flex-end;
+
+		> div {
+			flex: 1;
+
+			&.field-error-content {
+				padding-bottom: $error-margin;
+			}
+		}
+	}
+}
+
+.field-label {
+	margin-bottom: 0.25rem;
+	color: $colors-deactivate-color2;
+	font-weight: normal;
+}
+
+.field-content {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	margin-bottom: $underline-margin-bottom;
+}
+
+.field-children {
+	padding: $children--padding 0 $children--padding/2;
+	position: relative;
+
+	&.custom {
+		padding: 0;
+	}
+
+	.field-valid {
+		position: absolute;
+		@include size($valid-icon-size);
+		svg {
+			@include size($valid-icon-size);
+		}
+		bottom: 0.25rem;
+	}
+}
+
+.field-content-outline {
+	&:before {
+		content: '';
+		height: $outline-height;
+		width: 100%;
+		bottom: 0;
+		position: absolute;
+		transition: 0.3s ease all;
+		background: $form-color-underline;
+	}
+
+	&:after {
+		content: '';
+		height: $outline-height;
+		width: 0;
+		bottom: 0;
+		position: absolute;
+		transition: 0.3s ease all;
+		background: $form-color-underline;
+	}
+
+	&.focused:after {
+		width: 100%;
+		background: $form-color-underline-focus;
+	}
+}
+
+.field-wrapper.error .field-content-outline {
+	&:before {
+		background: $error-color;
+	}
+}
+
+.field-error-content {
+	position: relative;
+	display: flex;
+	align-items: center;
+	height: $error-icon-size;
+
+	&.field-error-hidden {
+		visibility: hidden;
+	}
+}
+
+.field-error-icon {
+	height: $error-icon-size;
+	width: $error-icon-size;
+}
+
+.dumb-field-wrapper {
+	color: $colors-notifications-blue;
+	> .field-content > .field-children {
+		padding-left: 0.25rem;
+	}
+
+	.field-children {
+		padding-bottom: 0;
+	}
+
+	.copy-wrapper {
+		top: 0;
+	}
+}
+
+.field-wrapper {
+	.action_notification-wrapper {
+		.action_notification-svg {
+			svg {
+				@include size(1rem);
+			}
+		}
+	}
+}
+
+.direction_ltr {
+	.field-error-text {
+		padding-left: 0.25rem;
+	}
+
+	.field-children {
+		&.valid > *:not(:last-child) {
+			padding-right: $valid-icon-size;
+		}
+
+		.field-valid {
+			right: 0;
+		}
+	}
+
+	.field-wrapper {
+		&.inline {
+			.field-error-content {
+				margin-left: $error-margin;
+			}
+
+			input {
+				padding-right: 0;
+			}
+
+			.field-valid {
+				right: -$valid-icon-size - 0.5rem;
+			}
+		}
+	}
+}
+
+.direction_rtl {
+	.field-error-text {
+		padding-right: 0.25rem;
+	}
+
+	.field-children {
+		&.valid > *:not(:last-child) {
+			padding-left: $valid-icon-size;
+		}
+
+		.field-valid {
+			left: 0;
+		}
+	}
+	.field-wrapper {
+		&.inline {
+			.field-error-content {
+				margin-right: $error-margin;
+			}
+
+			input {
+				padding-left: 0;
+			}
+
+			.field-valid {
+				left: -$valid-icon-size - 0.5rem;
+			}
+		}
+	}
+}
+
+.dark-theme {
+	.dumb-field-wrapper {
+		color: $dark-link;
+	}
+	.field-label {
+		color: $dark-form-label !important;
+	}
+
+	.field-content-outline {
+		&:before {
+			background: $dark-form-color-underline;
+		}
+
+		&:after {
+			background: $dark-form-color-underline;
+		}
+
+		&.focused:after {
+			background: $dark-form-color-underline-focus;
+		}
+	}
+	.field-valid .icon-check-1 {
+		stroke: $dark-border-main;
+	}
+}
+
+.layout-mobile {
+	$move-side: 1.5rem;
+	&.direction_ltr {
+		.field-wrapper.field-valid.with-notification {
+			.action_notification-wrapper {
+				right: $move-side;
+			}
+		}
+	}
+	&.direction_rtl {
+		.field-wrapper.field-valid.with-notification {
+			.action_notification-wrapper {
+				left: $move-side;
+			}
+		}
+	}
+}

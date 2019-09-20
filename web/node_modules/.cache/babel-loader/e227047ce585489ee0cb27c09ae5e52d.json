@@ -1,0 +1,1 @@
+{"ast":null,"code":"var now = +new Date();\nvar index = 0;\nexport default function uid() {\n  return \"rc-upload-\" + now + \"-\" + ++index;\n}","map":null,"metadata":{},"sourceType":"module"}

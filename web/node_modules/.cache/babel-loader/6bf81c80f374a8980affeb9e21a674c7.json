@@ -1,0 +1,1 @@
+{"ast":null,"code":"import createReducer from './createReducer';\nimport plain from './structure/plain';\nexport default createReducer(plain);","map":null,"metadata":{},"sourceType":"module"}

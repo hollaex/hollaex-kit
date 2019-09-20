@@ -1,0 +1,1 @@
+{"ast":null,"code":"import isEvent from './isEvent';\n\nvar silenceEvent = function silenceEvent(event) {\n  var is = isEvent(event);\n\n  if (is) {\n    event.preventDefault();\n  }\n\n  return is;\n};\n\nexport default silenceEvent;","map":null,"metadata":{},"sourceType":"module"}

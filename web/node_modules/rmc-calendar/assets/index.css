@@ -1,0 +1,371 @@
+.rmc-calendar {
+  font-family: Arial, "Hiragino Sans GB", "Microsoft Yahei", "Microsoft Sans Serif", "WenQuanYi Micro Hei", sans-serif;
+}
+.rmc-calendar-hidden {
+  display: none;
+}
+.rmc-calendar .animate {
+  animation-duration: .3s;
+  animation-fill-mode: both;
+}
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+.rmc-calendar .fade-enter {
+  animation-name: fadeIn;
+}
+.rmc-calendar .fade-leave {
+  animation-name: fadeOut;
+}
+@keyframes slideInUp {
+  0% {
+    transform: translate3d(0, 100%, 0);
+    visibility: visible;
+  }
+  to {
+    transform: translateZ(0);
+  }
+}
+@keyframes slideInDown {
+  0% {
+    transform: translateZ(0);
+    visibility: visible;
+  }
+  to {
+    transform: translate3d(0, 100%, 0);
+  }
+}
+@keyframes slideInLeft {
+  0% {
+    transform: translate3d(100%, 0, 0);
+    visibility: visible;
+  }
+  to {
+    transform: translateZ(0);
+  }
+}
+@keyframes slideInRight {
+  0% {
+    transform: translateZ(0);
+    visibility: visible;
+  }
+  to {
+    transform: translate3d(100%, 0, 0);
+  }
+}
+.rmc-calendar .slideV-enter {
+  animation-name: slideInUp;
+}
+.rmc-calendar .slideV-leave {
+  animation-name: slideInDown;
+}
+.rmc-calendar .slideH-enter {
+  animation-name: slideInLeft;
+}
+.rmc-calendar .slideH-leave {
+  animation-name: slideInRight;
+}
+.rmc-calendar .mask {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 999;
+  background: rgba(0, 0, 0, 0.5);
+}
+.rmc-calendar .content {
+  position: fixed;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-direction: column;
+      flex-direction: column;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 999;
+  background: #fff;
+}
+.rmc-calendar .header {
+  margin: 5px;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-negative: 0;
+      flex-shrink: 0;
+  -ms-flex-align: center;
+      align-items: center;
+}
+.rmc-calendar .header .title {
+  text-align: center;
+  width: 100%;
+  font-weight: 700;
+}
+.rmc-calendar .header .left {
+  position: absolute;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-pack: center;
+      justify-content: center;
+  -ms-flex-align: center;
+      align-items: center;
+  padding: 0 8px;
+  height: 24px;
+  left: 5px;
+  top: 5px;
+  color: #068EEF;
+}
+.rmc-calendar .header .right {
+  position: absolute;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-pack: center;
+      justify-content: center;
+  -ms-flex-align: center;
+      align-items: center;
+  padding: 0 8px;
+  height: 24px;
+  right: 5px;
+  top: 5px;
+  color: #068EEF;
+  font-size: 14px;
+}
+.rmc-calendar .timePicker {
+  border-top: 1px #ccc solid;
+}
+.rmc-calendar .week-panel {
+  background: #fff;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-negative: 0;
+      flex-shrink: 0;
+  padding: 0 2px;
+  border-bottom: 1px #ccc solid;
+}
+.rmc-calendar .week-panel .cell {
+  height: 24px;
+  display: -ms-flexbox;
+  display: flex;
+  width: 14.28571429%;
+  -ms-flex-pack: center;
+      justify-content: center;
+  -ms-flex-align: center;
+      align-items: center;
+}
+.rmc-calendar .week-panel .cell-grey {
+  color: #999;
+}
+.rmc-calendar .date-picker {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-direction: column;
+      flex-direction: column;
+  background: #eee;
+}
+.rmc-calendar .date-picker .wrapper {
+  height: auto;
+  position: relative;
+}
+.rmc-calendar .date-picker .months {
+  background: #fff;
+}
+.rmc-calendar .date-picker .load-tip {
+  position: absolute;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-pack: center;
+      justify-content: center;
+  -ms-flex-align: end;
+      align-items: flex-end;
+  left: 0;
+  right: 0;
+  padding: 10px 0;
+  top: -40px;
+  color: #bbb;
+}
+.rmc-calendar .confirm-panel {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-negative: 0;
+      flex-shrink: 0;
+  -ms-flex-pack: center;
+      justify-content: center;
+  -ms-flex-align: center;
+      align-items: center;
+  background: #eee;
+  padding: 2px 10px;
+  border-top: #E5E4E4 1px solid;
+}
+.rmc-calendar .confirm-panel .info {
+  font-size: 12px;
+}
+.rmc-calendar .confirm-panel .info p {
+  margin: 0;
+}
+.rmc-calendar .confirm-panel .info .grey {
+  color: #999;
+}
+.rmc-calendar .confirm-panel .button {
+  padding: 5px 20px;
+  border-radius: 5px;
+  -ms-flex-item-align: center;
+      -ms-grid-row-align: center;
+      align-self: center;
+  margin: 5px 0 5px auto;
+  color: #fff;
+  font-size: 14px;
+  background: #1A7BE6;
+}
+.rmc-calendar .confirm-panel .button-disable {
+  color: #aaa;
+  background: #d5d5d5;
+}
+.rmc-calendar .confirm-panel .button-full {
+  margin: 5px;
+  width: 100%;
+  text-align: center;
+}
+.rmc-calendar .time-picker {
+  -ms-flex-negative: 0;
+      flex-shrink: 0;
+  text-align: center;
+  background: #fff;
+}
+.rmc-calendar .time-picker .title {
+  font-size: 13px;
+  padding: 5px 0;
+  border-top: #E5E4E4 1px solid;
+  border-bottom: #E5E4E4 1px solid;
+}
+.rmc-calendar .single-month {
+  padding: 10px 2px 0;
+  overflow: hidden;
+}
+.rmc-calendar .single-month .month-title {
+  margin-left: 15px;
+}
+.rmc-calendar .single-month .row {
+  display: -ms-flexbox;
+  display: flex;
+  padding: 3px 0;
+}
+.rmc-calendar .single-month .row .cell {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-direction: column;
+      flex-direction: column;
+  width: 14.28571429%;
+  -ms-flex-pack: center;
+      justify-content: center;
+  -ms-flex-align: center;
+      align-items: center;
+}
+.rmc-calendar .single-month .row .cell .date-wrapper {
+  display: -ms-flexbox;
+  display: flex;
+  height: 35px;
+  width: 100%;
+  -ms-flex-pack: center;
+      justify-content: center;
+  -ms-flex-align: center;
+      align-items: center;
+  margin-bottom: 1px;
+}
+.rmc-calendar .single-month .row .cell .date-wrapper .disable {
+  color: #aaa;
+  background: #eee;
+  border: none;
+  border-radius: 100%;
+}
+.rmc-calendar .single-month .row .cell .date-wrapper .date {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-pack: center;
+      justify-content: center;
+  -ms-flex-align: center;
+      align-items: center;
+  width: 35px;
+  height: 35px;
+  -ms-flex-negative: 0;
+      flex-shrink: 0;
+}
+.rmc-calendar .single-month .row .cell .date-wrapper .grey {
+  color: #999;
+}
+.rmc-calendar .single-month .row .cell .date-wrapper .important {
+  border: 1px #999 solid;
+  border-radius: 100%;
+}
+.rmc-calendar .single-month .row .cell .date-wrapper .left,
+.rmc-calendar .single-month .row .cell .date-wrapper .right {
+  border: none;
+  width: 100%;
+  height: 100%;
+}
+.rmc-calendar .single-month .row .cell .date-wrapper .date-selected {
+  border: none;
+  background: #1a7be6;
+  color: #fff;
+}
+.rmc-calendar .single-month .row .cell .date-wrapper .selected-start {
+  border-radius: 100% 0 0 100%;
+}
+.rmc-calendar .single-month .row .cell .date-wrapper .selected-single {
+  border-radius: 100%;
+}
+.rmc-calendar .single-month .row .cell .date-wrapper .selected-middle {
+  border-radius: 0;
+}
+.rmc-calendar .single-month .row .cell .date-wrapper .selected-end {
+  border-radius: 0 100% 100% 0;
+}
+.rmc-calendar .single-month .row .cell .info {
+  height: 15px;
+  width: 100%;
+  padding: 0 5px;
+  font-size: 12px;
+  color: #999;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  text-align: center;
+}
+.rmc-calendar .single-month .row .cell .date-selected {
+  color: #1a7be6;
+}
+.rmc-calendar .single-month .row + .row {
+  margin-top: 6px;
+}
+.rmc-calendar .single-month .row-xl + .row-xl {
+  margin-top: 21px;
+}
+.rmc-calendar .shortcut-panel {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-direction: row;
+      flex-direction: row;
+  -ms-flex-negative: 0;
+      flex-shrink: 0;
+  -ms-flex-pack: justify;
+      justify-content: space-between;
+  padding: 8px 20px;
+  border-top: #E5E4E4 1px solid;
+}
+.rmc-calendar .shortcut-panel .item {
+  display: inline-block;
+  color: #068EEF;
+  font-size: 14px;
+}

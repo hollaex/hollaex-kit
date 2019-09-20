@@ -1,0 +1,36 @@
+{
+  "name": "react-ionicons-docs",
+  "version": "0.0.1",
+  "description": "react-ionicons page",
+  "main": "index.js",
+  "bin": {
+    "react-ionicons-docs": "index.js"
+  },
+  "scripts": {
+    "postinstall": "npm run build",
+    "start": "lite-server",
+    "build": "webpack",
+    "watch": "webpack -d --watch"
+  },
+  "author": "zamarrowski",
+  "license": "ISC",
+  "devDependencies": {
+    "lite-server": "2.2.2",
+    "babel-core": "6.23.1",
+    "babel-loader": "6.3.2",
+    "babel-preset-es2015": "6.22.0",
+    "babel-preset-react": "6.23.0",
+    "css-loader": "0.26.1",
+    "jsx-loader": "0.13.2",
+    "style-loader": "0.13.1",
+    "file-loader": "0.10.1",
+    "webpack": "2.2.1"
+  },
+  "dependencies": {
+    "material-ui": "0.17.0",
+    "react": "15.4.2",
+    "react-dom": "15.4.2",
+    "react-ionicons": "latest",
+    "react-tap-event-plugin": "2.0.1"
+  }
+}

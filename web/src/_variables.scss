@@ -1,0 +1,316 @@
+$bp-xs: 575px;
+$bp-sm: 767px;
+$bp-md: 991px;
+$bp-lg: 1199px;
+
+$colors-main-black: #212121;
+$colors-deactivate: #797779;
+$colors-deactivate-color1: #cccbcb;
+$colors-deactivate-color2: #777677;
+$colors-deactivate-color3: #f2f2f3;
+$colors-deactivate-color4: #f1f2f2;
+$colors-notifications-red: #ed1c24;
+$colors-notification-inactive-red: #e26171;
+$colors-notifications-blue: #00aeef;
+$colors-notifications-green: #00a651;
+$colors-white: white;
+$colors-black: #000000;
+$colors-info-panel-background: #f5f5f5;
+
+$color-currency-eur--main: #00a651;
+$color-currency-eur--secondary: #52c2b8;
+$color-currency-btc--main: #f15a29;
+$color-currency-btc--secondary: #f7941e;
+
+$colors-currencies-eur: $color-currency-eur--main;
+$colors-currencies-btc: $color-currency-btc--secondary;
+$colors-orderbook-red-light: #ed1c24;
+$colors-currencies-bch: #ec008c;
+$colors-currencies-eth: #2e3192;
+$colors-currencies-ltc: #58595b;
+$colors-currencies-xrp: #2e3192;
+
+// dark theme colors
+$color-sell-btc-light:#ed1c24;
+$color-buy-btc-light:#00a651;
+$colors-username-set-dark: #ff4bb6;
+
+// dark theme colors
+$dark-app-background-color: #1f212a;
+$dark-app-light-background: #2e2f37;
+$dark-app-bar-background-color: #000000;
+$dark-app-line-divider: #b7b5cd;
+$dark-app-link-highlight: #ed507b;
+$dark-box-fields: #353841;
+$dark-inactive-color: #2e2f37;
+$dark-icon-color: #a3a1ca;
+$dark-font-main-text-color: #b6b5cd;
+$dark-font-sub-text-color: #a3a1ca;
+$dark-font-sub-text-1-color: #808184;
+$dark-buy: #29a8e0;
+$dark-sell: #f59121;
+$dark-link: $dark-app-link-highlight;
+$dark-trade-fields: #454162;
+$dark-trade-fill-indicator: #444162;
+$dark-quick-trade-background: #1b1b1f;
+$dark-buy-bids-text: $colors-black;
+$dark-sell-bids-text: $dark-app-background-color;
+$dark-app-logo-color: #808184;
+
+// dark-border-button
+$dark-border-main: $dark-app-line-divider;
+$dark-button-active: #454162;
+$dark-button-text: $dark-font-main-text-color;
+$dark-button-disabled:  $dark-inactive-color;
+$dark-button-text-disabled: #b7b7ce;
+// dark-form-fields
+$dark-form-color-underline: $dark-app-line-divider;
+$dark-form-color-underline-focus: $dark-app-line-divider;
+$dark-form-arrow: $dark-app-line-divider;
+$dark-form-text: $dark-font-sub-text-color;
+$dark-form-placeholder: $dark-font-sub-text-1-color;
+$dark-form-label: $dark-font-main-text-color;
+$dark-form-text-disabled: $dark-inactive-color;
+// dark-tabs
+$dark-tab-active: $dark-app-line-divider;
+$dark-tab-inactive: $dark-inactive-color;
+$dark-tab-notification: $dark-link; // need to check this
+$dark-app-bar-add-tab-menu-background: $dark-box-fields;
+$dark-sidebar-color: $dark-font-sub-text-color;
+$dark-sidebar-color-active: $dark-font-main-text-color;
+$app-modal-background: rgba(35, 31, 32, 0.5);
+$dark-info-panel-background: $dark-box-fields;
+$dar-info-panel-text: $dark-font-sub-text-1-color;
+// main title icons fill(quick trade, deposit, withdrawal)
+$dark-main-title-icon-color-1: $dark-app-bar-background-color;
+$dark-main-title-icon-color-2: $dark-icon-color;
+$dark-main-title-icon-color-3: $dark-icon-color;
+
+$coin-btc: #f7941e;
+$coin-btc-1: #f6921e;
+$coin-bch: #9ec51e;
+$coin-bch-1: #8bc53f;
+$coin-eth: #334DAA;
+$coin-eth-1: #2b388f;
+$coin-xrp: #334DAA;
+$coin-xrp-1: #2b388f;
+$coin-eur: #00a651;
+$coin-eur-1: #00a651;
+$coin-ltc: #58595b;
+$coin-ltc-1: #58595b;
+
+// $coin-eur: #06773d;
+// $coin-eur-1: #06773d;
+$coin-usd: #01592e;
+$coin-usd-1: #01592e;
+$coin-jpy: #ec008c;
+$coin-jpy-1: #e0dfc7;
+$coin-gbp: #f9ee02;
+$coin-gbp-1: #482e6e;
+$coin-chf: #720f15;
+$coin-chf-1: #ed1c24;
+$coin-cad: #e0dfc7;
+$coin-cad-1: #d7ce58;
+$coin-aud: #482e6e;
+$coin-aud-1: #19441f;
+$coin-nzd: #ed1c24;
+$coin-nzd-1: #b3498c;
+$coin-zar: #d7ce58;
+$coin-zar-1: #d8d3a0;
+$coin-hkd: #19441f;
+$coin-hkd-1: #f48f9b;
+$coin-krw: #b3498c;
+$coin-krw-1: #f9ee02;
+$coin-cny: #d8d3a0;
+$coin-cny-1: #ec008c;
+$coin-sgd: #f48f9b;
+$coin-sgd-1: #720f15;
+
+// $coin-btc: #f7941d;
+// $coin-btc-1: #f7941d;
+// $coin-eth: #3e4ea1;
+// $coin-eth-1: #3e4ea1;
+// $coin-ltc: #bcbec0;
+// $coin-ltc-1: #bcbec0;
+// $coin-bch: #8dc541;
+// $coin-bch-1: #8dc541;
+// $coin-xrp: #414042;
+// $coin-xrp-1: #414042;
+
+$coin-hex: #000000;
+$coin-hex-1:#000000;
+$coin-eos: #58595b;
+$coin-eos-1: #58595b;
+$coin-bnb: #f1ba2a;
+$coin-bnb-1: #f1ba2a;
+$coin-link-1: #1b75bc;
+$coin-link: #1b75bc;
+$coin-trx: #a22d25;
+$coin-trx-1: #a22d25;
+$coin-ada: #3667b2;
+$coin-ada-1: #3667b2;
+$coin-matic: #2aaae2;
+$coin-matic-1: #2aaae2;
+$coin-neo: #bcbec0;
+$coin-neo-1: #bcbec0;
+$coin-etc: #009444;
+$coin-etc-1: #009444;
+$coin-xlm: #808285;
+$coin-xlm-1: #808285;
+$coin-xmr: #f15a29;
+$coin-xmr-1: #f15a29;
+$coin-zec: #fbb040;
+$coin-zec-1: #fbb040;
+$coin-one: #939598;
+$coin-one-1: #939598;
+$coin-pax: #163526;
+$coin-pax-1: #163526;
+$coin-usdc: #4d7d91;
+$coin-usdc-1: #4d7d91;
+$coin-usdt: #2bb673;
+$coin-usdt-1: #2bb673;
+$coin-vet: #454c7d;
+$coin-vet-1: #454c7d;
+$coin-btt: #c49a6c;
+$coin-btt-1: #c49a6c;
+$coin-qtum: #96daf7;
+$coin-qtum-1: #96daf7;
+$coin-algo: #594a42;
+$coin-algo-1: #594a42;
+$coin-rvn: #662d91;
+$coin-rvn-1: #662d91;
+$coin-iota: #603913;
+$coin-iota-1: #603913;
+$coin-dash: #417ec1;
+$coin-dash-1: #417ec1;
+$coin-bsv: #a09032;
+$coin-bsv-1: #a09032;
+$coin-ont: #00a79d;
+$coin-ont-1: #00a79d;
+$coin-atom: #796184;
+$coin-atom-1: #796184;
+$coin-celr: #726658;
+$coin-celr-1: #726658;
+$coin-omg: #8e7fbb;
+$coin-omg-1: #8e7fbb;
+$coin-hot: #8b5e3c;
+$coin-hot-1: #8b5e3c;
+
+
+$dark-disabled-main: $dark-inactive-color;
+$dark-disabled-secondary: #2e2f37;
+$dark-trade-row-highlight: #535353;
+$dark-trade-text-highlight: #838383;
+
+$dark-icon-hover: $dark-font-main-text-color;
+$dark-icon-unhover: $dark-icon-color;
+$dark-accordion-arrow-active: $dark-font-main-text-color;
+$dark-accordion-arrow-inactive: $dark-font-sub-text-color;
+
+$app-background-color: white;
+$app-background-color-on-modal: lightgrey;
+$app_bar-border--color: $colors-deactivate;
+$sidebar-border--color: $colors-deactivate;
+$quick-trade--background: #ebf3f1;
+$border-color: $colors-deactivate-color2;
+$error-color: $colors-notifications-red;
+$app-menu-bar-background-color: #F2F2F3;
+$app-menu-bar-border--color: #CCCBCA;
+$app-bar-icon-inactive: #808184;
+$app-bar--quicktrade-active-color: #fff100;
+$app-bar--quicktrade-inactive-color: #ceac20;
+
+$trade-tabs-inactive-color: #808080;
+
+$bitcoin-color-main: $colors-currencies-btc;
+
+$content-display-width: 100rem;
+$app-content-display-width: 75rem;
+$content-display-vertical-margin: 1rem;
+$background-patter--size: 30rem;
+
+$font-size-headline: 4rem;
+$font-size-headline2: 3.5rem;
+$font-size-subhead1: 2.5rem;
+$font-size-subhead2: 1.75rem;
+$font-size-subhead3: 1.25rem;
+$font-size-main: 1rem;
+$font-size-subtext: 0.8rem;
+
+$form-color-underline-focus: $colors-main-black;
+$form-color-underline: $colors-deactivate-color1;
+$form-color-placeholder: $colors-deactivate-color1;
+$form-width-max: $content-display-width / 2;
+
+$en--font-family: 'Open Sans';
+$raleway--font-family: 'Raleway';
+$raleway-extrabold--font-family: 'Raleway Extrabold';
+$raleway-medium--font-family: 'Raleway Medium';
+$raleway-light--font-family: 'Raleway Light';
+$title--font-family: $raleway-extrabold--font-family;
+
+$backgound-pattern: '/assets/pattern-grey.jpg';
+$background-image: '/assets/background.jpg';
+
+// DIALOG
+$dialog-min-width: 25rem;
+$dialog-min-height: 30rem;
+
+// APP BAR
+$navigation_bar-height: 36px;
+$navigation_bar-height-lg: 45px;
+$navigation_bar-action_button: 7.5rem;
+$navigation_bar-font_size: $font-size-subtext;
+
+// APP SECONDARY BAR
+$navigation_bar_secondary-height: 32px;
+
+// FOOTER
+$footer-height: 64px;
+
+// SIDEBAR
+$sidebar-width: 20rem;
+$sidebar-width-lg: 25rem;
+$sidebar-width-md: 18rem;
+$sidebar-sections-padding: 1rem;
+
+$sidebar-borderbottom-color: $colors-deactivate-color2;
+$sidebar-borderbottom-color-active: $colors-deactivate-color2;
+$sidebar-borderbottom-height: 4px;
+
+$btc-color: $colors-currencies-btc;
+
+$currency-color: inherit;
+
+// TAB CONTROLLER
+
+$tab-border-color: $colors-main-black;
+$tab-text-padding: 0 8px 8px;
+$tab-selected-line-height: 4px;
+
+// MOBILE
+$navigation_bar-mobile--height: 4rem;
+$navigation_bar-mobile--background: $colors-main-black;
+$dark-navigation_bar-mobile--background: white;
+$bottom_bar--height: 6rem;
+$bottom-bar--background: $navigation_bar-mobile--background;
+$dark-bottom-bar--background: $dark-navigation_bar-mobile--background;
+$max-content-height-mobile: calc(100vh - #{$navigation_bar-mobile--height + $bottom-bar--height});
+$max-content-height-double-bar-mobile: calc(100vh - #{$navigation_bar-mobile--height * 2 + $bottom-bar--height});
+$max-content-height-home-mobile: calc(100vh - #{$navigation_bar-mobile--height});
+$max-content-height-dialog-mobile: calc(100vh - #{$navigation_bar-mobile--height * 2});
+$max-content-width-mobile: 100vw;
+$table-header-column--font-size: 1rem;
+$regular--font-size: 1.2rem;
+$regular-chat--font-size: 1.5rem;
+$title--font-size: 1.75rem;
+$extra-thick--font-size: 1.5rem;
+$component--margin-bottom: 3rem;
+$input--height: 4.5rem;
+
+// CONTAINERS
+$max-content-height: calc(100vh - #{$navigation_bar-height});
+$max-content-secondary-height: calc(100vh - #{$navigation_bar-height * 2});
+$max-content-height-lg: calc(100vh - #{$navigation_bar-height-lg});
+$max-content-secondary-height-lg: calc(100vh - #{$navigation_bar-height-lg * 2});
+$max-width-content: 50rem;

@@ -1,0 +1,1 @@
+{"ast":null,"code":"import Button from './button';\nimport ButtonGroup from './button-group';\nButton.Group = ButtonGroup;\nexport default Button;","map":null,"metadata":{},"sourceType":"module"}

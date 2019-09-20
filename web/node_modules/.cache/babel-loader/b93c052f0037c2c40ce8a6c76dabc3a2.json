@@ -1,0 +1,1 @@
+{"ast":null,"code":"import OriginTree from './Tree';\nimport TreeNode from './TreeNode';\nvar Tree = OriginTree;\nTree.TreeNode = TreeNode;\nexport { TreeNode };\nexport default Tree;","map":null,"metadata":{},"sourceType":"module"}

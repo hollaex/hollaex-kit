@@ -1,0 +1,1 @@
+{"ast":null,"code":"import Tabs from './Tabs';\nimport TabPane from './TabPane';\nimport TabContent from './TabContent';\nexport default Tabs;\nexport { TabPane, TabContent };","map":null,"metadata":{},"sourceType":"module"}

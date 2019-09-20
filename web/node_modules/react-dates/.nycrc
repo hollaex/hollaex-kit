@@ -1,0 +1,24 @@
+{
+  "extension": [
+    ".js",
+    ".jsx"
+  ],
+  "include": [
+    "src"
+  ],
+  "require": [
+    "@babel/register"
+  ],
+  "reporter": [
+    "text",
+    "lcov"
+  ],
+  "all": true,
+  "check-coverage": true,
+  "statements": 83,
+  "branches": 73,
+  "lines": 83,
+  "functions": 67.8,
+  "sourceMap": false,
+  "instrument": false
+}

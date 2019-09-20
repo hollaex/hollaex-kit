@@ -1,0 +1,1 @@
+{"ast":null,"code":"import createHasSubmitFailed from './selectors/hasSubmitFailed';\nimport plain from './structure/plain';\nexport default createHasSubmitFailed(plain);","map":null,"metadata":{},"sourceType":"module"}

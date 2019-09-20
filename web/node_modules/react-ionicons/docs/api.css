@@ -1,0 +1,16 @@
+.api {
+  padding: 20px;
+}
+
+.api table {
+  display: block;
+  width: 100%;
+  border-spacing: 0;
+  border-collapse: collapse;
+  font-family: sans-serif;
+}
+
+.api table th,td {
+  padding: 6px 13px;
+  border: 1px solid #dfe2e5;
+}

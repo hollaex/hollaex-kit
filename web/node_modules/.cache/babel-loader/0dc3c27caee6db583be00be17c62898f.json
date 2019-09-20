@@ -1,0 +1,1 @@
+{"ast":null,"code":"var global = require('./_global');\n\nvar navigator = global.navigator;\nmodule.exports = navigator && navigator.userAgent || '';","map":null,"metadata":{},"sourceType":"script"}

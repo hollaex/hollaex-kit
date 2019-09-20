@@ -1,0 +1,9 @@
+node_modules
+.DS_Store
+npm-debug.log
+tests_e2e/selenium-debug.log
+tests_e2e/reports
+tests_e2e/screenshots
+tests_e2e/bin
+
+!.gitkeep

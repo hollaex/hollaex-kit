@@ -1,0 +1,1 @@
+{"ast":null,"code":"import createGetFormMeta from './selectors/getFormMeta';\nimport plain from './structure/plain';\nexport default createGetFormMeta(plain);","map":null,"metadata":{},"sourceType":"module"}

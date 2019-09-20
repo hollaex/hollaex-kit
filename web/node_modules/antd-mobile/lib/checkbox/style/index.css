@@ -1,0 +1,119 @@
+.am-checkbox {
+  position: relative;
+  display: inline-block;
+  vertical-align: middle;
+  width: 21px;
+  height: 21px;
+}
+.am-checkbox-inner {
+  position: absolute;
+  right: 0;
+  width: 21px;
+  height: 21px;
+  border: 1px solid #ccc;
+  border-radius: 50%;
+  -webkit-transform: rotate(0deg);
+      -ms-transform: rotate(0deg);
+          transform: rotate(0deg);
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+.am-checkbox-inner:after {
+  position: absolute;
+  display: none;
+  top: 1.5px;
+  right: 6px;
+  z-index: 999;
+  width: 5px;
+  height: 11px;
+  border-style: solid;
+  border-width: 0 1px 1px 0;
+  content: '\0020';
+  -webkit-transform: rotate(45deg);
+      -ms-transform: rotate(45deg);
+          transform: rotate(45deg);
+}
+.am-checkbox-input {
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  border: 0 none;
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+}
+.am-checkbox.am-checkbox-checked .am-checkbox-inner {
+  border-color: #108ee9;
+  background: #108ee9;
+}
+.am-checkbox.am-checkbox-checked .am-checkbox-inner:after {
+  display: block;
+  border-color: #fff;
+}
+.am-checkbox.am-checkbox-disabled {
+  opacity: 0.3;
+}
+.am-checkbox.am-checkbox-disabled.am-checkbox-checked .am-checkbox-inner {
+  border-color: #888;
+  background: none;
+}
+.am-checkbox.am-checkbox-disabled.am-checkbox-checked .am-checkbox-inner:after {
+  border-color: #888;
+}
+.am-list .am-list-item.am-checkbox-item .am-list-thumb {
+  width: 21px;
+  height: 21px;
+}
+.am-list .am-list-item.am-checkbox-item .am-list-thumb .am-checkbox {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 44px;
+}
+.am-list .am-list-item.am-checkbox-item .am-list-thumb .am-checkbox-inner {
+  left: 15px;
+  top: 12px;
+}
+.am-list .am-list-item.am-checkbox-item.am-checkbox-item-disabled .am-list-content {
+  color: #bbb;
+}
+.am-checkbox-agree {
+  position: relative;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: stretch;
+  -webkit-align-items: stretch;
+      -ms-flex-align: stretch;
+          align-items: stretch;
+  margin-left: 15px;
+  padding-top: 9px;
+  padding-bottom: 9px;
+}
+.am-checkbox-agree .am-checkbox {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 30px;
+  height: 100%;
+}
+.am-checkbox-agree .am-checkbox-inner {
+  left: 0;
+  top: 12px;
+}
+.am-checkbox-agree .am-checkbox-agree-label {
+  display: inline-block;
+  font-size: 15px;
+  color: #000;
+  line-height: 1.5;
+  margin-left: 30px;
+  margin-top: 1PX;
+}

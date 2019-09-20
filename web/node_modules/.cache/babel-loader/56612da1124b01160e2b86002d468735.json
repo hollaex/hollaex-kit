@@ -1,0 +1,1 @@
+{"ast":null,"code":"var locale = {\n  placeholder: 'Select time'\n};\nexport default locale;","map":null,"metadata":{},"sourceType":"module"}

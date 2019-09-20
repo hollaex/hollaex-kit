@@ -1,0 +1,1 @@
+{"ast":null,"code":"\"use strict\";\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\nexports[\"default\"] = void 0;\nvar locale = {\n  placeholder: 'Select time'\n};\nvar _default = locale;\nexports[\"default\"] = _default;","map":null,"metadata":{},"sourceType":"script"}

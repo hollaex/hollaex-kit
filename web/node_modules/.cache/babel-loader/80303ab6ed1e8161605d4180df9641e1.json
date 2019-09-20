@@ -1,0 +1,1 @@
+{"ast":null,"code":"'use strict';\n\nmodule.exports = function isPrimitive(value) {\n  return value === null || typeof value !== 'function' && typeof value !== 'object';\n};","map":null,"metadata":{},"sourceType":"script"}

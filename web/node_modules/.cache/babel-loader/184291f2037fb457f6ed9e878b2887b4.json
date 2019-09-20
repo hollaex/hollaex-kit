@@ -1,0 +1,1 @@
+{"ast":null,"code":"import Table from './Table';\nimport Column from './Column';\nimport ColumnGroup from './ColumnGroup';\nimport { INTERNAL_COL_DEFINE } from './utils';\nTable.Column = Column;\nTable.ColumnGroup = ColumnGroup;\nexport default Table;\nexport { Column, ColumnGroup, INTERNAL_COL_DEFINE };","map":null,"metadata":{},"sourceType":"module"}

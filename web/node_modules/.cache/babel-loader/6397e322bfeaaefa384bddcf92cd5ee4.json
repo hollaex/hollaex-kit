@@ -1,0 +1,1 @@
+{"ast":null,"code":"import createFields from './createFields';\nimport plain from './structure/plain';\nexport default createFields(plain);","map":null,"metadata":{},"sourceType":"module"}

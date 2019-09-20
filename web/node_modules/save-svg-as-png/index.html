@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<meta http-equiv="content-type" content="text/html; charset=UTF8">
+<title>saveSvgAsPng</title>
+
+<link href='https://fonts.googleapis.com/css?family=Open+Sans:400italic,400,300,600' rel='stylesheet' type='text/css' />
+<link rel=stylesheet href=bootstrap.min.css />
+<style>
+  @font-face {
+    font-family: 'Stalemate';
+    font-style: normal;
+    font-weight: 400;
+    src: url(stalemate.ttf) format('truetype');
+  }
+
+  input[type="number"]::-webkit-inner-spin-button, input[type="number"]::-webkit-outer-spin-button {
+    padding: 15px;
+  }
+
+  h2, h3 {
+    margin-top: 0;
+  }
+
+  h3 .btn {
+    margin-top: -8px;
+  }
+
+  ul {
+    list-style-type: none;
+    padding: 0;
+  }
+
+  ul li {
+    padding: 30px 20px;
+    border-bottom: 1px dashed gray;
+  }
+
+  svg, img {
+    border: 1px solid lightgray;
+  }
+
+  textarea {
+    width: 100%;
+    height: 100px;
+  }
+
+  button {
+    background-color: lightgray;
+  }
+
+  .error {
+    border: 1px solid red;
+    border-radius: 10px;
+    color: red;
+    padding: 8px 10px;
+  }
+
+  #sized-with-css svg {
+    width: 200px;
+    height: 200px;
+  }
+
+  #selectors-prefixed svg rect {
+    fill: blue;
+  }
+
+  rect.css-styled {
+    fill: green !important;
+  }
+
+  #selectors-prefixed rect.css-styled {
+    fill: green !important;
+  }
+
+  /* Invalid selectors */
+
+  [ng\:cloak] {
+    display: block;
+  }
+
+  ng\:form {
+    display: block;
+  }
+</style>
+
+<script type=text/template id=inline-template>
+  <div class=row>
+    <div class=col-md-6>
+      <h2></h2>
+    </div>
+
+    <div class=col-md-6>
+      <h3>Preview <button class="save btn">Save as PNG</button></h3>
+    </div>
+  </div>
+
+  <div class=row>
+    <div class="canvas col-md-6">
+    </div>
+
+    <div class=col-md-6>
+      <div class=preview></div>
+    </div>
+  </div>
+</script>
+
+<div class=container>
+
+  <!-- Needed to trigger correct custom font rasterization in Chrome -->
+  <span style='font-family: "Stalemate";color:white'>A</span>
+  <h1>saveSvgAsPng</h1>
+  <p>This page tests various features of saveSvgAsPng.</p>
+  <p>You can test your own SVG code in the Sandbox. If something doesn't work as expected, you can <a href="https://github.com/exupero/saveSvgAsPng/issues">file an issue on GitHub</a>.</p>
+
+  <ul>
+    <li id=sandbox>
+      <h2>Sandbox</h2>
+      <p>Paste you SVG below to see how it renders.</p>
+
+      <textarea><svg></svg></textarea>
+      <br/>
+      <button class="render btn">Preview</button>
+      <div class=load-target style="margin-top:20px;"></div>
+
+      <br/>
+      <h3>Preview <button class="save btn">Save as PNG</button></h3>
+      <span class=error style="display:none;"></span>
+      <div class=preview></div>
+    </li>
+
+    <li id=filereader>
+      <div class=row>
+        <div class=col-md-6>
+          <h2>Load from your hard drive</h2>
+        </div>
+
+        <div class=col-md-6>
+          <h3>Preview <button class="save btn">Save as PNG</button></h3>
+        </div>
+      </div>
+
+      <div class=row>
+        <div class=col-md-6>
+          <input type=file id=file name="files[]" />
+          <div class=load-target></div>
+        </div>
+
+        <div class=col-md-6>
+          <div class=preview>No file selected.</div>
+        </div>
+      </div>
+    </li>
+
+    <li id=inline>
+      <svg width=200 height=200>
+        <rect x=50 y=50 width=100 height=100></rect>
+      </svg>
+    </li>
+
+    <li id=embedded-png>
+      <svg width=200 height=200>
+        <image xlink:href=image.png x=50 y=50 width=100 height=100></image>
+      </svg>
+    </li>
+
+    <li id=embedded-svg>
+      <svg width=200 height=200>
+        <image xlink:href=test.svg x=50 y=50 width=100 height=100></image>
+      </svg>
+    </li>
+
+    <li id=sized-with-pixels>
+      <svg width="200px" height="200px">
+        <rect x=50 y=50 width=100 height=100></rect>
+      </svg>
+    </li>
+
+    <li id=sized-with-style>
+      <svg style="width:200px;height:200px;">
+        <rect x=50 y=50 width=100 height=100></rect>
+      </svg>
+    </li>
+
+    <li id=sized-with-css>
+      <svg>
+        <rect x=50 y=50 width=100 height=100></rect>
+      </svg>
+    </li>
+
+    <li id=scaling>
+      <svg width=200 height=200>
+        <rect width=100 height=100></rect>
+        <image xlink:href=image.png x=50 y=50 width=100 height=100></image>
+      </svg>
+    </li>
+
+    <li id=selectors-prefixed>
+      <svg width=200 height=200>
+        <rect x=0 y=50 width=100 height=100></rect>
+        <rect class=css-styled x=100 y=50 width=100 height=100></rect>
+      </svg>
+    </li>
+
+    <li id=modified-style>
+      <svg width=200 height=200>
+        <rect x=0 y=50 width=100 height=100></rect>
+        <rect class=css-styled x=100 y=50 width=100 height=100></rect>
+      </svg>
+    </li>
+
+    <li id=modified-css>
+      <svg width=200 height=200>
+        <rect x=0 y=50 width=100 height=100></rect>
+        <rect class=css-styled x=100 y=50 width=100 height=100></rect>
+      </svg>
+    </li>
+
+    <li id=group>
+      <svg width=200 height=200>
+        <g id=sub-group transform="translate(40,40)">
+          <rect x=10 y=10 width=100 height=100></rect>
+        </g>
+      </svg>
+    </li>
+
+    <li id=percentage-size>
+      <svg width="100%" height="100%">
+        <rect x=25 y=25 width=100 height=100></rect>
+      </svg>
+    </li>
+
+    <li id=background-color>
+      <svg width=200 height=200>
+        <g id=sub-group transform="translate(40,40)">
+          <rect x=10 y=10 width=100 height=100></rect>
+        </g>
+      </svg>
+    </li>
+
+    <li id=pan-and-zoom>
+      <svg width=200 height=200>
+        <g transform="scale(2)">
+          <rect x=10 y=10 width=100 height=100></rect>
+        </g>
+      </svg>
+    </li>
+
+    <li id=unicode>
+      <svg width=200 height=200>
+        <text x=100 y=100 text-anchor=middle dy=14>ö,i,ç,ğ</text>
+      </svg>
+    </li>
+
+    <li id=gradient>
+      <svg width=200 height=200>
+        <defs>
+          <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" style="stop-color:rgb(255,0,255);stop-opacity:1" />
+            <stop offset="100%" style="stop-color:rgb(0,255,255);stop-opacity:1" />
+          </linearGradient>
+        </defs>
+        <line x2="200" y2="200" stroke="url(#grad1)" stroke-width="5px" />
+      </svg>
+    </li>
+
+    <li id=foreign-object>
+      <svg width=200 height=200>
+        <foreignobject x=50 y=50 width=50 height=100>
+          <div>Foreign Object</div>
+        </foreignobject>
+      </svg>
+    </li>
+
+    <li id=xmlns-override>
+      <svg width=200 height=200>
+        <foreignobject x=50 y=50 width=50 height=100>
+          <div xmlns="http://www.w3.org/1999/xhtml">Foreign Object</div>
+        </foreignobject>
+      </svg>
+    </li>
+
+    <li id=opacity>
+      <svg width=200 height=200>
+        <rect x=50 y=50 width=100 height=100 fill="green"></rect>
+        <rect x=60 y=60 width=100 height=100 fill="blue" opacity="0.5"></rect>
+      </svg>
+    </li>
+
+    <li id=entities>
+      <svg width=200 height=200>
+        <text x=50 y=100>&quot;&amp;&cent;&nbsp;&pound;&raquo;&frac14;&Ccedil;</text>
+      </svg>
+    </li>
+
+    <li id=transformed-text>
+      <svg width=200 height=200>
+        <text transform="translate(100,100)rotate(45)">Hello</text>
+      </svg>
+    </li>
+
+    <li id=marker-end>
+      <svg width=200 height=200>
+        <defs>
+          <marker id='head' orient="auto" markerWidth='2' markerHeight='4' refX='0.1' refY='2'>
+            <path d='M0,0 V4 L2,2 Z' fill="red"/>
+          </marker>
+        </defs>
+        <g transform="translate(50,50)">
+          <path id='arrow-line' marker-end='url(#head)' stroke-width='5' fill='none' stroke='black' d='M0,0 C45,45 45,-45 90,0' />
+        </g>
+      </svg>
+    </li>
+
+    <li id=style-background>
+      <svg width="200" height="200" style="background:green">
+      </svg>
+    </li>
+
+    <li id=svg-in-svg>
+      <svg width="200" height="200">
+        <foreignObject x="50" y="50" width="50" height="100">
+          <svg width="50" height="50">
+            <image xlink:href=test.svg width=50 height=50></image>
+          </svg>
+        </foreignObject>
+      </svg>
+    </li>
+
+    <li id=custom-font>
+      <svg width=200 height=200>
+        <text x=100 y=100 text-anchor=middle dy=14 style="font-family:'Stalemate';font-size:36pt;">Custom Fonts</text>
+      </svg>
+      <div style="color:red;">
+        <p>
+          Custom fonts are supported but in a very rudimentary way. Note: if you don't see the demo working,
+          click "Save as PNG" - it should work.
+        </p>
+        <p>Make sure that the custom font is applied to a non-svg element first. This will help browser to rasterize SVG correctly onto canvas.</p>
+        <p>@font-face declaration has to be inside document stylesheets (not in the external `link` tag)</p>
+        <p>Only first `url()` is inlined into svg (don't have multiple urls in the font-face).</p>
+      </div>
+    </li>
+  </ul>
+</div>
+
+<script src=https://code.jquery.com/jquery-latest.js></script>
+<script src=src/saveSvgAsPng.js></script>
+<script src=index.js></script>

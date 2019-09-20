@@ -1,0 +1,1 @@
+{"ast":null,"code":"var $export = require('./_export'); // 19.1.2.4 / 15.2.3.6 Object.defineProperty(O, P, Attributes)\n\n\n$export($export.S + $export.F * !require('./_descriptors'), 'Object', {\n  defineProperty: require('./_object-dp').f\n});","map":null,"metadata":{},"sourceType":"script"}

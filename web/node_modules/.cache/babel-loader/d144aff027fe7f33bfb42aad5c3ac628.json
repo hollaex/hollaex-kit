@@ -1,0 +1,1 @@
+{"ast":null,"code":"import Layout from './layout';\nimport Sider from './Sider';\nLayout.Sider = Sider;\nexport default Layout;","map":null,"metadata":{},"sourceType":"module"}

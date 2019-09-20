@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 19.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="-422.3 271.3 21 21" style="enable-background:new -422.3 271.3 21 21;" xml:space="preserve">
+<style type="text/css">
+	.cancel-cross-1{fill:#292B2C;}
+	.cancel-cross-2{fill:none;stroke:#292B2C;stroke-miterlimit:10;}
+	.cancel-cross-3{fill:none;stroke:#292B2C;stroke-width:0.75;stroke-miterlimit:10;}
+</style>
+<path id="XMLID_97_" class="cancel-cross-1" d="M-919.5,548.2l-2.3,2.7c-0.3-0.2-0.6-0.3-0.9-0.3c-0.5,0-0.9,0.2-1.2,0.6l-1.9-1.4
+	c0.1-0.2,0.1-0.4,0.1-0.6c0-1.1-0.7-1.9-1.7-1.9s-1.7,0.9-1.7,1.9c0,0.6,0.3,1.2,0.7,1.6l-1.6,4.2c-0.1,0-0.2,0-0.3,0
+	c-0.4,0-0.7,0.1-1,0.4l-1.8-1.8c0.1-0.3,0.2-0.6,0.2-0.9c0-1.1-0.7-1.9-1.7-1.9s-1.7,0.9-1.7,1.9c0,0.4,0.1,0.7,0.3,1l-1.9,2.2
+	c-0.1,0.2-0.1,0.4,0,0.6c0.1,0.1,0.2,0.1,0.3,0.1c0.1,0,0.2,0,0.3-0.1l1.9-2.2c0.3,0.2,0.6,0.3,0.9,0.3c0.4,0,0.7-0.1,1-0.4l1.8,1.8
+	c-0.1,0.3-0.2,0.6-0.2,0.9c0,1.1,0.7,1.9,1.7,1.9s1.7-0.9,1.7-1.9c0-0.6-0.3-1.2-0.7-1.6l1.6-4.2c0.1,0,0.2,0,0.3,0
+	c0.5,0,0.9-0.2,1.2-0.6l1.9,1.4c-0.1,0.2-0.1,0.4-0.1,0.6c0,1.1,0.7,1.9,1.7,1.9s1.7-0.9,1.7-1.9c0-0.4-0.1-0.7-0.3-1l2.3-2.7
+	c0.1-0.2,0.1-0.4,0-0.6C-919.2,548.1-919.4,548.1-919.5,548.2z"/>
+<g>
+	<circle id="XMLID_7_" class="cancel-cross-2" cx="-411.8" cy="281.8" r="10"/>
+	<g id="XMLID_4_">
+		<line id="XMLID_6_" class="cancel-cross-3" x1="-415" y1="278.6" x2="-408.6" y2="285"/>
+		<line id="XMLID_5_" class="cancel-cross-3" x1="-415" y1="285" x2="-408.6" y2="278.6"/>
+	</g>
+</g>
+</svg>

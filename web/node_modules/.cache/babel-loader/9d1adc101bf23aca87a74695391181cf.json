@@ -1,0 +1,1 @@
+{"ast":null,"code":"var formatName = function formatName(_ref, name) {\n  var sectionPrefix = _ref._reduxForm.sectionPrefix;\n  return sectionPrefix ? sectionPrefix + \".\" + name : name;\n};\n\nexport default formatName;","map":null,"metadata":{},"sourceType":"module"}

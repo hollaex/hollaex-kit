@@ -1,0 +1,1 @@
+{"ast":null,"code":"import warning from 'warning';\nvar warned = {};\nexport function resetWarned() {\n  warned = {};\n}\nexport default (function (valid, component, message) {\n  if (!valid && !warned[message]) {\n    warning(false, \"[antd: \".concat(component, \"] \").concat(message));\n    warned[message] = true;\n  }\n});","map":null,"metadata":{},"sourceType":"module"}

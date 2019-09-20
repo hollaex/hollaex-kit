@@ -1,0 +1,1 @@
+{"ast":null,"code":"export default function contains(root, n) {\n  var node = n;\n\n  while (node) {\n    if (node === root) {\n      return true;\n    }\n\n    node = node.parentNode;\n  }\n\n  return false;\n}","map":null,"metadata":{},"sourceType":"module"}

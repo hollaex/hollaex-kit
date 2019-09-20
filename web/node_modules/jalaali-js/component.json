@@ -1,0 +1,18 @@
+{
+  "name": "jalaali-js",
+  "version": "1.1.0",
+  "description": "Converts Gregorian and Jalaali calendars to each other",
+  "keywords": [
+    "jalaali",
+    "jalali",
+    "persian",
+    "khorshidi",
+    "shamsi",
+    "calendar",
+    "date"
+  ],
+  "repository": "jalaali/jalaali-js",
+  "scripts": [
+    "index.js"
+  ]
+}

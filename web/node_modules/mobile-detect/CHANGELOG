@@ -1,0 +1,121 @@
+v1.4.2:
+  date: 2018-06-10
+  changes:
+    - use Mobile-Detect@2.8.32
+
+v1.4.1:
+  date: 2017-12-24
+  changes:
+    - use Mobile-Detect@2.8.30
+
+v1.4.0:
+  date: 2017-12-09
+  changes:
+    - use Mobile-Detect@2.8.28
+    - fix #67 (vulnerable to ReDoS)
+
+v1.3.7:
+  date: 2017-09-06
+  changes:
+    - use Mobile-Detect@2.8.26
+
+v1.3.6:
+  date: 2017-04-05
+  changes:
+    - use Mobile-Detect@2.8.25
+
+v1.3.5:
+  date: 2016-11-14
+  changes:
+    - use Mobile-Detect@2.8.24
+    - fix #46 (typings for TypeScript, thanks to @mgroenhoff)
+
+v1.3.4:
+  date: 2016-11-11
+  changes:
+    - use Mobile-Detect@2.8.23
+    - add typings for TypeScript
+
+v1.3.3:
+  date: 2016-07-31
+  changes:
+    - use Mobile-Detect@2.8.22
+    - update dev dependencies (no impact on code)
+    - add licence to source
+    - add runtime version info
+
+v1.3.2:
+  date: 2016-03-31
+  changes:
+    - use Mobile-Detect@2.8.20
+    - exclude tests from npm package
+    - fix #42 (wrong version number in .min.js)
+
+v1.3.1:
+  date: 2015-12-28
+  changes:
+    - use Mobile-Detect@2.8.19
+
+v1.3.0:
+  date: 2015-09-17
+  changes:
+    - use Mobile-Detect@2.8.17
+    - add method 'userAgents()' to handle cases where more than one browser matches
+    - change method 'is()' to reflect that more than one match is possible for patterns
+    - fix #34 is('MobileBot') not working
+    - mitigate #36 ucbrowser detect as safari on android os
+    - disable failing unit-tests (testing particular device matches)
+
+v1.2.1:
+  date: 2015-07-19
+  changes:
+    - use Mobile-Detect@2.8.15
+
+v1.2.0:
+  date: 2015-05-24
+  changes:
+    - fix #28 extend fallback pattern for unknown tablets (http://detectmobilebrowsers.com/)
+
+v1.1.0:
+  date: 2015-05-10
+  changes:
+    - use Mobile-Detect@2.8.13 (fix #27)
+    - fix #26 webpack build error
+
+v1.0.1:
+  date: 2015-04-10
+  changes:
+    - package.json bugfix (full-qualified url to github-repo)
+      This change affects only npm and has no effect on code or Bower.
+      Therefor this version isn't published through CDN.
+
+v1.0.0:
+  date: 2015-03-22
+  changes:
+    - use Mobile-Detect@2.8.12
+    - breaking change: phone() and tablet() won't return 'UnknownMobile' -> have to check mobile() as well (issue #20)
+    - breaking change: fallback detection phone/tablet is now based on smaller screen side (issue #23)
+    - expose internal implementation in case somebody wants to quick fix or monkey-patch the behaviour
+
+v0.4.3:
+  date: 2014-12-08
+  changes:
+    - fix issue #15 (detect crazy Microsoft Mobile OS)
+    - use Mobile-Detect@2.8.11
+
+v0.4.2:
+  date: 2014-10-21
+  changes:
+    - use Mobile-Detect@2.8.5
+
+v0.4.1:
+  date: 2014-10-12
+  changes:
+    - fix issue #10 (optimization: no need to eval code before it's not required)
+    - use Mobile-Detect@2.8.4
+
+v0.4.0:
+  date: 2014-07-15
+  changes:
+    - use Mobile-Detect@2.8.3
+    - add AMD support (thnx to @unclechu)

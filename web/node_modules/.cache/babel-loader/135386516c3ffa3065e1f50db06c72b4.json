@@ -1,0 +1,1 @@
+{"ast":null,"code":"import ascending from \"./ascending\";\nimport bisector from \"./bisector\";\nvar ascendingBisect = bisector(ascending);\nexport var bisectRight = ascendingBisect.right;\nexport var bisectLeft = ascendingBisect.left;\nexport default bisectRight;","map":null,"metadata":{},"sourceType":"module"}

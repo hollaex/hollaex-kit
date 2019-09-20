@@ -1,0 +1,292 @@
+$notification--min-width: 30rem;
+$notification--max-width: 40rem;
+$image--margin: 1rem;
+$image--width: 10rem;
+$logout--size-difference: 3rem;
+
+.notification-wrapper {
+	min-width: $notification--min-width;
+	max-width: $notification--max-width;
+
+	.notification-title-wrapper {
+		height: 15rem;
+		padding: 0.5rem;
+		border-bottom: 1px solid $colors-main-black;
+
+		.notification-title-icon {
+			max-height: 8rem;
+			margin: 2rem 0;
+			svg {
+				@include size(8rem);
+			}
+		}
+
+		.notification-title-text {
+			flex: 0;
+			text-align: center;
+			font-size: $font-size-subhead3;
+		}
+	}
+
+	.notification-content-wrapper {
+		position: relative;
+		font-size: $font-size-main;
+		display: flex;
+		flex-direction: column;
+		flex: 1;
+		.notification-content-title {
+			&.with-border-bottom {
+				border-bottom: 1px solid $colors-main-black;
+			}
+		}
+		&.notification_verification {
+			text-align: center;
+			.notification-content-title {
+				text-transform: capitalize;
+			}
+			.notification-content-information {
+				padding: 1rem;
+			}
+		}
+
+		&.logout-notification,
+		&.contact-form-notification {
+			text-align: center;
+
+			.notification-content-information {
+				margin: 3rem auto;
+			}
+		}
+
+		&.logout-notification {
+			.notification-content-icon {
+				width: $image--width - $logout--size-difference;
+				margin: $image--margin + $logout--size-difference auto;
+			}
+		}
+
+		&.contact-form-notification {
+			.notification-content-title {
+				font-size: $font-size-headline2;
+				text-transform: uppercase;
+				font-weight: normal;
+			}
+		}
+
+		.notification-content-icon {
+			width: $image--width;
+			max-height: $image--width;
+			margin: $image--margin auto;
+		}
+
+		.notification-content-information {
+			width: 100%;
+			margin: 1rem 0;
+			font-weight: bold;
+			.text_disabled {
+				color: $colors-deactivate-color2;
+			}
+		}
+
+		.notification-content-header {
+			position: relative;
+			font-size: $font-size-subtext;
+		}
+	}
+	.notification-buttons-wrapper {
+		.button-eur {
+			background-color: $colors-currencies-eur;
+		}
+	}
+	.notification-information {
+		padding: 1rem 0;
+		font-size: $font-size-subtext;
+	}
+
+	.trade-notification,
+	.new-order-notification,
+	.order-notification {
+		margin: 1rem;
+		.notification-content-icon {
+			margin-top: 0;
+			margin-bottom: 2.5rem;
+		}
+		.notification-content-title {
+			margin: 1rem 0;
+		}
+	}
+
+	.notification-buttons-wrapper .exir-button {
+		font-size: $font-size-main;
+		font-weight: bold;
+	}
+
+	.with_price-block_amount {
+		margin: 3rem 0 4rem;
+		line-height: 3.5rem;
+	}
+	// .new-order-notification.notification-content-wrapper {
+	// 	font-size: $font-size-subhead3;
+	// }
+
+	.invite_friends_wrapper {
+		width: 36rem;
+
+		.user_refer_info {
+			background-color: $colors-info-panel-background;
+			height: 5.5rem;
+		}
+
+		.icon_title-wrapper {
+			.icon_title-svg {
+				height: 8rem;
+				width: 8rem;
+			}
+			.icon_title-svg svg{
+				height: 8rem;
+				width: 8rem;
+			}
+			.icon_title-text.title {
+				font-size: 2rem;
+			}
+		}
+	}
+}
+
+.notification-wrapper {
+	.notification-content-wrapper.notification-withdrawal {
+		.notification-content-icon {
+			width: 80% !important;
+		}
+
+		.notification-link-wrapper {
+			font-size: $font-size-subtext;
+		}
+	}
+}
+
+.direction_ltr {
+	.notification-title-text,
+	.notification-withdrawal .notification-content-title {
+		font-family: $raleway-medium--font-family;
+	}
+}
+
+.dark-theme {
+	.partial-fill {
+		fill: $dark-icon-color;
+	}
+	.limit-trade-tick {
+		fill: $dark-icon-color;
+	}
+	.new-order-notification {
+		svg {
+			fill: $dark-icon-color;
+		}
+
+	}
+	.notification-wrapper {
+		color: $dark-font-sub-text-color;
+
+		.notification-content-title {
+			&.with-border-bottom {
+				border-bottom-color: $dark-border-main;
+			}
+		}
+		.notification-title-wrapper {
+			border-bottom-color: $dark-border-main;
+			.notification-title-icon {
+				svg {
+					.deposit-02,
+					.deposit-complete-01,
+					.deposit-complete-btc-01 {
+						fill: $dark-icon-color;
+					}
+				}
+			}
+			.notification-title-text {
+				color: $dark-font-main-text-color;
+			}
+		}
+
+		.notification-content-information {
+			.text_disabled {
+				color: $dark-font-sub-text-color;
+			}
+		}
+		svg {
+			.check-order-1,
+			.check-order-2,
+			.coin-btc-4,
+			.coin-base-4 {
+				stroke: $dark-icon-color;
+			}
+			.market-buy,
+			.check-order-2,
+			.coin-btc-1,
+			.coin-btc-5,
+			.coin-base-1,
+			.coin-base-5,
+			.email_sent,
+			.limit-sell-03,
+			.limit-sell-04,
+			.limit-buy-03,
+			.limit-buy-04,
+			.refer-icon {
+				fill: $dark-icon-color;
+			}
+			.limit-sell-01,
+			.limit-buy-01,
+			.limit-buy-02,
+			.limit-sell-02,
+			.wallet-selected-2 {
+				stroke: $dark-icon-color;
+				fill: transparent;
+			}
+			g .wallet-selected-2 {
+				stroke: transparent;
+				fill: $dark-icon-color;
+			}
+		}
+
+		.invite_friends_wrapper {
+			.user_refer_info {
+				background-color: $dark-info-panel-background;
+			}
+		}
+	}
+}
+
+.layout-mobile {
+	.notification-wrapper {
+		flex: 1;
+		margin: auto;
+
+		.notification-withdrawal {
+			justify-content: space-evenly;
+		}
+
+		.trade-notification,
+		.order-notification {
+			margin: 0.75rem;
+			flex-direction: row;
+			color: white;
+			.notification-content-icon {
+				margin: 0;
+				padding: 1rem;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				svg {
+					@include size(6rem);
+				}
+				.limit-trade-tick {
+					fill: #BBBDBF;
+				}
+			}
+			.notification-content-title {
+				margin: 0;
+			}
+		}
+	}
+}

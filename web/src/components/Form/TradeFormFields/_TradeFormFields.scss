@@ -1,0 +1,129 @@
+$input--height: 2.5rem;
+$input--background-color: $colors-deactivate-color1;
+$input--border-color: $colors-main-black;
+$input--color: $colors-main-black;
+
+$padding: 0.25rem;
+
+.trade_input-wrapper {
+	display: flex;
+	flex-direction: column;
+	> * {
+		flex: 1;
+		position: relative;
+	}
+
+	.trade_input-label {
+		padding-bottom: 0.25rem;
+	}
+
+	.trade_input-input-wrapper {
+		position: relative;
+		> input {
+			padding: $padding;
+			position: relative;
+			width: 100%;
+			height: $input--height;
+			background: $input--background-color;
+			border: 1px solid $input--border-color;
+			border-radius: 2px;
+			color: $input--color;
+
+			&:focus {
+				outline: none;
+			}
+		}
+	}
+
+	.trade_input-input-currency {
+		@include size($input--height);
+		position: absolute;
+		top: 0;
+		font-weight: bold;
+		color: $input--border-color;
+	}
+
+	.initialize-animation {
+		> input {
+			-webkit-animation-name: bounce; /* Safari 4.0 - 8.0 */
+			-webkit-animation-duration: 5s; /* Safari 4.0 - 8.0 */
+			animation-name: bounce;
+			animation-duration: 5s;
+			border: 1px solid $input--border-color;
+		}
+		/* Safari 4.0 - 8.0 */
+		@-webkit-keyframes bounce {
+			15%  {border-color: $colors-notifications-blue;}
+			75% {border-color: $input--border-color;}
+		}
+		/* Standard syntax */
+		@keyframes bounce {
+			15%  {border-color: $colors-notifications-blue;}
+			75% {border-color: $input--border-color;}
+		}
+	}
+}
+
+.direction_ltr {
+	.trade_input-input-wrapper {
+		> input {
+			padding-right: $input--height;
+		}
+	}
+
+	.trade_input-input-currency {
+		right: 0;
+	}
+}
+
+.direction_rtl {
+	.trade_input-input-wrapper {
+		> input {
+			padding-left: $input--height;
+		}
+	}
+
+	.trade_input-input-currency {
+		left: 0;
+	}
+}
+
+.dark-theme {
+	.trade_input-wrapper {
+		.trade_input-input-wrapper {
+			> input {
+				background: $dark-trade-fields;
+				border-color: $dark-trade-fields;
+				color: $dark-font-main-text-color;
+
+				&:focus {
+					border-color: $dark-border-main;
+				}
+			}
+		}
+
+		.trade_input-input-currency {
+			color: $dark-font-sub-text-color;
+		}
+
+		.initialize-animation {
+			> input {
+				-webkit-animation-name: bounceDark; /* Safari 4.0 - 8.0 */
+				-webkit-animation-duration: 5s; /* Safari 4.0 - 8.0 */
+				animation-name: bounceDark;
+				animation-duration: 5s;
+				border: 1px solid $dark-trade-fields;
+			}
+			/* Safari 4.0 - 8.0 */
+			@-webkit-keyframes bounceDark {
+				15%  {border-color: $dark-link;}
+				75% {border-color: $dark-trade-fields;}
+			}
+			/* Standard syntax */
+			@keyframes bounceDark {
+				15%  {border-color:  $dark-link;}
+				75% {border-color: $dark-trade-fields;}
+			}
+		}
+	}
+}

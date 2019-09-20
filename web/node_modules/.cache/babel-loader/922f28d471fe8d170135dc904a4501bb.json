@@ -1,0 +1,1 @@
+{"ast":null,"code":"// 19.1.2.9 Object.getPrototypeOf(O)\nvar toObject = require('./_to-object');\n\nvar $getPrototypeOf = require('./_object-gpo');\n\nrequire('./_object-sap')('getPrototypeOf', function () {\n  return function getPrototypeOf(it) {\n    return $getPrototypeOf(toObject(it));\n  };\n});","map":null,"metadata":{},"sourceType":"script"}

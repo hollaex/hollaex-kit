@@ -1,0 +1,119 @@
+.am-stepper {
+  position: relative;
+  margin: 0;
+  padding: 2px 0;
+  display: inline-block;
+  -webkit-box-sizing: content-box;
+          box-sizing: content-box;
+  width: 63px;
+  height: 35px;
+  line-height: 35px;
+  font-size: 14px;
+  vertical-align: middle;
+  overflow: hidden;
+}
+.am-stepper-handler-wrap {
+  position: absolute;
+  width: 100%;
+  font-size: 24px;
+}
+.am-stepper-handler,
+.am-stepper-handler-up-inner,
+.am-stepper-handler-down-inner {
+  width: 30px;
+  height: 30px;
+  line-height: 30px;
+}
+.am-stepper-handler {
+  text-align: center;
+  border: 1PX solid #ddd;
+  border-radius: 5px;
+  overflow: hidden;
+  color: #000;
+  position: absolute;
+  display: inline-block;
+  -webkit-box-sizing: content-box;
+          box-sizing: content-box;
+}
+.am-stepper-handler-active {
+  z-index: 2;
+  background-color: #ddd;
+}
+.am-stepper-handler-up-inner,
+.am-stepper-handler-down-inner {
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  right: 2px;
+  color: #000;
+}
+.am-stepper-input-wrap {
+  display: none;
+  width: 100%;
+  height: 30px;
+  line-height: 30px;
+  text-align: center;
+  overflow: hidden;
+}
+.am-stepper-input {
+  display: none;
+  width: 60px;
+  font-size: 16px;
+  color: #000;
+  text-align: center;
+  border: 0;
+  padding: 0;
+  background: none;
+  vertical-align: middle;
+}
+.am-stepper-input[disabled] {
+  opacity: 1;
+  color: #000;
+}
+.am-stepper.showNumber {
+  width: 138px;
+}
+.am-stepper.showNumber .am-stepper-input-wrap {
+  display: inline-block;
+}
+.am-stepper.showNumber .am-stepper-input {
+  display: inline-block;
+}
+.am-stepper.showNumber .am-stepper-handler-down-disabled {
+  right: -1PX;
+}
+.am-stepper-handler-up {
+  cursor: pointer;
+  right: 0;
+}
+.am-stepper-handler-up-inner:before {
+  text-align: center;
+  content: "+";
+}
+.am-stepper-handler-down {
+  cursor: pointer;
+  left: 0;
+}
+.am-stepper-handler-down-inner:before {
+  text-align: center;
+  content: "-";
+}
+.am-stepper-handler-down-disabled,
+.am-stepper-handler-up-disabled {
+  opacity: 0.3;
+}
+.am-stepper-handler-up-disabled .am-stepper-handler-active {
+  background: none;
+}
+.am-stepper-disabled .am-stepper-handler-down,
+.am-stepper-disabled .am-stepper-handler-up {
+  opacity: 0.3;
+  background: none;
+}
+.am-stepper-disabled .am-stepper-handler {
+  opacity: 0.3;
+}
+.am-stepper-disabled .am-stepper-input-wrap {
+  opacity: 0.3;
+}

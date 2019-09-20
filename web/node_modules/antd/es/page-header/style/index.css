@@ -1,0 +1,100 @@
+/* stylelint-disable at-rule-empty-line-before,at-rule-name-space-after,at-rule-no-unknown */
+/* stylelint-disable no-duplicate-selectors */
+/* stylelint-disable */
+/* stylelint-disable declaration-bang-space-before,no-duplicate-selectors,string-no-newline */
+.ant-page-header {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  color: rgba(0, 0, 0, 0.65);
+  font-size: 14px;
+  font-variant: tabular-nums;
+  line-height: 1.5;
+  list-style: none;
+  -webkit-font-feature-settings: 'tnum';
+          font-feature-settings: 'tnum';
+  position: relative;
+  padding: 16px 24px;
+  background: #fff;
+}
+.ant-page-header.ant-page-header-has-footer {
+  padding-bottom: 0;
+}
+.ant-page-header-back {
+  display: inline-block;
+  padding: 4px 0;
+  font-size: 16px;
+  line-height: 100%;
+}
+.ant-page-header-back-button {
+  color: #1890ff;
+  text-decoration: none;
+  outline: none;
+  -webkit-transition: color 0.3s;
+  transition: color 0.3s;
+  color: rgba(0, 0, 0, 0.65);
+  cursor: pointer;
+}
+.ant-page-header-back-button:focus,
+.ant-page-header-back-button:hover {
+  color: #40a9ff;
+}
+.ant-page-header-back-button:active {
+  color: #096dd9;
+}
+.ant-page-header .ant-divider-vertical {
+  height: 14px;
+  margin: 0 12px;
+}
+.ant-breadcrumb + .ant-page-header-heading {
+  margin-top: 12px;
+}
+.ant-page-header-heading {
+  display: inline-block;
+}
+.ant-page-header-heading-title {
+  display: inline-block;
+  padding-right: 12px;
+  color: rgba(0, 0, 0, 0.85);
+  font-weight: bold;
+  font-size: 16px;
+  line-height: 1.4;
+}
+.ant-page-header-heading-sub-title {
+  display: inline-block;
+  padding-right: 12px;
+  color: rgba(0, 0, 0, 0.45);
+  font-size: 14px;
+  line-height: 1.8;
+}
+.ant-page-header-heading-tags {
+  display: inline-block;
+  vertical-align: top;
+}
+.ant-page-header-heading-extra {
+  position: absolute;
+  top: 16px;
+  right: 24px;
+}
+.ant-page-header-heading-extra > * {
+  margin-left: 8px;
+}
+.ant-page-header-heading-extra > *:first-child {
+  margin-left: 0;
+}
+.ant-page-header-content {
+  padding-top: 12px;
+}
+.ant-page-header-footer {
+  margin: 0 -8px;
+  padding-top: 24px;
+}
+.ant-page-header-footer .ant-tabs-bar {
+  margin-bottom: 1px;
+  border-bottom: 0;
+}
+.ant-page-header-footer .ant-tabs-bar .ant-tabs-nav .ant-tabs-tab {
+  padding: 12px 8px;
+  padding-top: 0;
+}

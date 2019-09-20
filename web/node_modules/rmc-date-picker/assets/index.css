@@ -1,0 +1,12 @@
+.rmc-date-picker {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-align: center;
+      align-items: center;
+  padding: 10px 0;
+}
+.rmc-date-picker-item {
+  -ms-flex: 1;
+      flex: 1;
+  text-align: center;
+}

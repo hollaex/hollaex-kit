@@ -1,0 +1,197 @@
+.am-list .am-list-item.am-textarea-item {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: start;
+  -webkit-align-items: flex-start;
+      -ms-flex-align: start;
+          align-items: flex-start;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  min-height: 44px;
+  padding-left: 15px;
+  padding-right: 15px;
+  border-bottom: 1PX solid #ddd;
+}
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
+  html:not([data-scale]) .am-list .am-list-item.am-textarea-item {
+    border-bottom: none;
+  }
+  html:not([data-scale]) .am-list .am-list-item.am-textarea-item::after {
+    content: '';
+    position: absolute;
+    background-color: #ddd;
+    display: block;
+    z-index: 1;
+    top: auto;
+    right: auto;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 1PX;
+    -webkit-transform-origin: 50% 100%;
+        -ms-transform-origin: 50% 100%;
+            transform-origin: 50% 100%;
+    -webkit-transform: scaleY(0.5);
+        -ms-transform: scaleY(0.5);
+            transform: scaleY(0.5);
+  }
+}
+@media (-webkit-min-device-pixel-ratio: 2) and (-webkit-min-device-pixel-ratio: 3), (min-resolution: 2dppx) and (min-resolution: 3dppx) {
+  html:not([data-scale]) .am-list .am-list-item.am-textarea-item::after {
+    -webkit-transform: scaleY(0.33);
+        -ms-transform: scaleY(0.33);
+            transform: scaleY(0.33);
+  }
+}
+.am-list .am-list-item.am-textarea-item.am-textarea-item-single-line {
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+.am-list .am-list-item.am-textarea-item.am-textarea-item-single-line .am-textarea-label {
+  -webkit-align-self: center;
+      -ms-flex-item-align: center;
+          align-self: center;
+}
+.am-list .am-list-item.am-textarea-item.am-textarea-item-single-line .am-textarea-control {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+.am-list .am-list-item.am-textarea-item.am-textarea-item-single-line .am-textarea-control textarea {
+  line-height: 25.5px;
+}
+.am-list .am-list-item.am-textarea-item.am-textarea-item-single-line .am-textarea-clear {
+  margin-top: 0;
+}
+.am-list .am-list-item.am-textarea-item.am-textarea-item-single-line.am-textarea-error .am-textarea-error-extra {
+  margin-top: 0;
+}
+.am-textarea-label {
+  -webkit-align-self: flex-start;
+      -ms-flex-item-align: start;
+          align-self: flex-start;
+  color: #000;
+  text-align: left;
+  min-height: 44px;
+  font-size: 17px;
+  line-height: 44px;
+  margin-left: 0;
+  margin-right: 5px;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.am-textarea-label.am-textarea-label-2 {
+  width: 34px;
+}
+.am-textarea-label.am-textarea-label-3 {
+  width: 51px;
+}
+.am-textarea-label.am-textarea-label-4 {
+  width: 68px;
+}
+.am-textarea-label.am-textarea-label-5 {
+  width: 85px;
+}
+.am-textarea-label.am-textarea-label-6 {
+  width: 102px;
+}
+.am-textarea-label.am-textarea-label-7 {
+  width: 119px;
+}
+.am-textarea-control {
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  padding-top: 10px;
+  padding-bottom: 9px;
+}
+.am-textarea-control textarea {
+  color: #000;
+  font-size: 17px;
+  line-height: 25.5px;
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background-color: transparent;
+  overflow: visible;
+  display: block;
+  resize: none;
+  word-break: break-all;
+  word-wrap: break-word;
+}
+.am-textarea-control textarea::-webkit-input-placeholder {
+  color: #bbb;
+}
+.am-textarea-control textarea:-ms-input-placeholder {
+  color: #bbb;
+}
+.am-textarea-control textarea::-ms-input-placeholder {
+  color: #bbb;
+}
+.am-textarea-control textarea::placeholder {
+  color: #bbb;
+}
+.am-textarea-control textarea:disabled {
+  color: #bbb;
+  background-color: #fff;
+}
+.am-textarea-clear {
+  display: none;
+  width: 21px;
+  height: 21px;
+  margin-top: 12px;
+  border-radius: 50%;
+  overflow: hidden;
+  font-style: normal;
+  color: #fff;
+  background-color: #ccc;
+  background-repeat: no-repeat;
+  background-size: 21px auto;
+  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg%20fill%3D'%23fff'%20width%3D'24'%20height%3D'24'%20viewBox%3D'0%200%2024%2024'%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%3E%3Cpath%20d%3D'M19%206.41L17.59%205%2012%2010.59%206.41%205%205%206.41%2010.59%2012%205%2017.59%206.41%2019%2012%2013.41%2017.59%2019%2019%2017.59%2013.41%2012z'%2F%3E%3Cpath%20d%3D'M0%200h24v24H0z'%20fill%3D'none'%2F%3E%3C%2Fsvg%3E");
+}
+.am-textarea-clear-active {
+  background-color: #108ee9;
+}
+.am-textarea-focus .am-textarea-clear {
+  display: block;
+}
+.am-textarea-has-count {
+  padding-bottom: 14px;
+}
+.am-textarea-count {
+  position: absolute;
+  bottom: 6px;
+  right: 5px;
+  color: #bbb;
+  font-size: 14px;
+}
+.am-textarea-count span {
+  color: #000;
+}
+.am-textarea-error .am-textarea-control textarea {
+  color: #f50;
+}
+.am-textarea-error .am-textarea-error-extra {
+  margin-top: 12px;
+  width: 21px;
+  height: 21px;
+  margin-left: 8px;
+  background-size: 21px 21px;
+  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg%20width%3D'18'%20height%3D'18'%20viewBox%3D'0%200%2018%2018'%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%3E%3Cg%20stroke%3D'none'%20stroke-width%3D'1'%20fill%3D'none'%20fill-rule%3D'evenodd'%3E%3Cg%20transform%3D'translate(-300.000000%2C%20-1207.000000)'%20fill%3D'%23FF5500'%3E%3Cg%20id%3D'exclamation-circle-o'%20transform%3D'translate(300.000000%2C%201207.000000)'%3E%3Cpath%20d%3D'M9%2C16.734375%20C10.0441406%2C16.734375%2011.0566406%2C16.5304688%2012.009375%2C16.1279297%20C12.9304688%2C15.7376953%2013.7566406%2C15.1804687%2014.4685547%2C14.4703125%20C15.1787109%2C13.7601563%2015.7376953%2C12.9322266%2016.1261719%2C12.0111328%20C16.5304688%2C11.0566406%2016.734375%2C10.0441406%2016.734375%2C9%20C16.734375%2C7.95585938%2016.5304688%2C6.94335938%2016.1279297%2C5.990625%20C15.7376953%2C5.06953125%2015.1804687%2C4.24335938%2014.4703125%2C3.53144531%20C13.7601563%2C2.82128906%2012.9322266%2C2.26230469%2012.0111328%2C1.87382813%20C11.0566406%2C1.46953125%2010.0441406%2C1.265625%209%2C1.265625%20C7.95585938%2C1.265625%206.94335938%2C1.46953125%205.990625%2C1.87207031%20C5.06953125%2C2.26230469%204.24335938%2C2.81953125%203.53144531%2C3.5296875%20C2.82128906%2C4.23984375%202.26230469%2C5.06777344%201.87382813%2C5.98886719%20C1.46953125%2C6.94335938%201.265625%2C7.95585938%201.265625%2C9%20C1.265625%2C10.0441406%201.46953125%2C11.0566406%201.87207031%2C12.009375%20C2.26230469%2C12.9304688%202.81953125%2C13.7566406%203.5296875%2C14.4685547%20C4.23984375%2C15.1787109%205.06777344%2C15.7376953%205.98886719%2C16.1261719%20C6.94335938%2C16.5304688%207.95585938%2C16.734375%209%2C16.734375%20L9%2C16.734375%20Z%20M9%2C18%20C4.02890625%2C18%200%2C13.9710937%200%2C9%20C0%2C4.02890625%204.02890625%2C0%209%2C0%20C13.9710937%2C0%2018%2C4.02890625%2018%2C9%20C18%2C13.9710937%2013.9710937%2C18%209%2C18%20L9%2C18%20L9%2C18%20Z%20M9%2C6.75%20C8.61152344%2C6.75%208.296875%2C7.06464844%208.296875%2C7.453125%20L8.296875%2C13.9394531%20C8.296875%2C14.3279297%208.61152344%2C14.6425781%209%2C14.6425781%20C9.38847656%2C14.6425781%209.703125%2C14.3279297%209.703125%2C13.9394531%20L9.703125%2C7.453125%20C9.703125%2C7.06464844%209.38847656%2C6.75%209%2C6.75%20L9%2C6.75%20Z%20M8.20898438%2C4.83398438%20C8.20898438%2C5.27085024%208.56313413%2C5.625%209%2C5.625%20C9.43686587%2C5.625%209.79101562%2C5.27085024%209.79101562%2C4.83398438%20C9.79101562%2C4.39711851%209.43686587%2C4.04296875%209%2C4.04296875%20C8.56313413%2C4.04296875%208.20898438%2C4.39711851%208.20898438%2C4.83398438%20L8.20898438%2C4.83398438%20Z'%20id%3D'Shape'%20transform%3D'translate(9.000000%2C%209.000000)%20scale(1%2C%20-1)%20translate(-9.000000%2C%20-9.000000)%20'%3E%3C%2Fpath%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E");
+}
+.am-textarea-disabled .am-textarea-label {
+  color: #bbb;
+}
+.am-list-body .am-list-item:last-child {
+  border-bottom: 0;
+}
+.am-list-body .am-list-item:last-child:after {
+  display: none !important;
+}

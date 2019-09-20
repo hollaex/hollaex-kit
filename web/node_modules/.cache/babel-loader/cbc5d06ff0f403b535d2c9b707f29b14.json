@@ -1,0 +1,1 @@
+{"ast":null,"code":"var isReactNative = typeof window !== 'undefined' && window.navigator && window.navigator.product && window.navigator.product === 'ReactNative';\nexport default isReactNative;","map":null,"metadata":{},"sourceType":"module"}
