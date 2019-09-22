@@ -1,40 +1,46 @@
-# hollaex
-Hollaex is a Bitcoin exchange. It's using reactjs framework as the front-end javascript frametwork and uses Hollaex server.
+# HEX Web
+HEX Web is a front-end user interface for exchanges build using HEX Kit. It uses ReactJS and communicate with HEX Core server. HEX Web is open source and you are welcome to fork and create your own exchange views.  
 
-## Development
-### Requirements
-You need to have nodejs and npm installed
+[Demo](https://hollaex.com)
 
-### Installation
+## Requirements
+* NodeJS version 8 and higher
+* npm version 6 and higher
+* For windows users you need node-gyp installed.
+
+## Install
+HEX Web uses [create-react-app](https://github.com/facebook/create-react-app) for packaging and SASS for styling. Follow the instructions provided here to launch your web client.  
+
 1. clone the repository
-2. cd hollaex
+2. `cd web`
 3. `npm install`
 
-### Run in your local machine
-2. Hollaex uses sass for styling. You need to generate css files before running the project. `node run build-css` builds all css files from sass styles in `/src` folder.
-3. `npm start` it will also listen to changes in sass files and autogenerates css files in there.
+### Development
+Create and copy `.env` file from `.env.example`. It is used for environment variables and certain fileds you should set for your exchange.  
+Run `npm start` and the client builds and opens on your browser on port `3333` by default. It generates css files from SASS and places them in `/src` folder. During development the project listens for any updates on the code and reloads automatically. You can build css separately by running `node run build-css`.
 
 ## Production
-You can build the project by running `npm run build` and the projects builds the entire client in `/build` folder
+By running `npm run build` the project gets built into `/build` folder and is ready to be deployed without any further configuration. The point of entry is `index.html`.
 
-## Properties to set
-- Build variables:
-  - NODE_ENV `['production', 'development']`
-  - PUBLIC_URL `https://hollaex.com`
-  - REACT_APP_NETWORK `['mainnet', 'testnet']`
-  - REACT_APP_SERVER_ENDPOINT `https://api.hollaex.com`
-  - REACT_APP_CAPTCHA_SITE_KEY `6LcSOUIUAAAAAEbu2RXTpm-hdvQnTcTy12qG2y86`
-- ORDER PRICES
-  - REACT_APP_MIN_PRICE `500`
-  - REACT_APP_MAX_PRICE `50000`
-  - REACT_APP_PRICE_STEP `1`
-- BANK DATA (NOT USED)
-  - REACT_APP_BANK_WITHDRAWAL_BASE_FEE `1`
-  - REACT_APP_BANK_WITHDRAWAL_DYNAMIC_FEE_RATE `0.5`
-  - REACT_APP_BANK_WITHDRAWAL_MAX_DYNAMIC_FEE `50`
-- TOP NAV BAR DEFAULT PAIRS
-  - REACT_APP_DEFAULT_TRADING_PAIRS `btc-eur,eth-eur`
+## Configuration
+HEX Web is fully configurable and has all the constants used in the project in `/src/config/constants.js` where you can modify all variables.  
+Here is a list of common items you can configure:
+### Localization
+All strings used in the project can be found in `/src/config/localizedStrings.js` and we have two samples of `en.js` for English and `ko.js` for Korean by default.
+### Images
+All images and assets used are in `/public` and can be modified by uploading the new image for your own branding. Make sure you keep the file names to avoid mismatches and issues.  
+### Environment variables
+  - `NODE_ENV`: `['production', 'development']` The build procedure automatically identifies the build so you do not need to set this.
+  - `PUBLIC_URL`: `https://bitholla.com` public exchange URL used for static files and assets.
+  - `REACT_APP_PUBLIC_URL`: `https://bitholla.com` Your exchange URL label. Same as above but only this is used within the project code and the other is for the assets.
+  - `REACT_APP_NETWORK`: `['mainnet', 'testnet']` Mainnet referring to the main exchange and testnet to the simulating environment.
+  - `REACT_APP_SERVER_ENDPOINT`: `https://api.bitholla.com` Your HEX Kit server endpoint
+  - `REACT_APP_CAPTCHA_SITE_KEY`: `<Captcha here>` Google v3 recaptcha site key.
+  - `REACT_APP_DEFAULT_LANGUAGE`: `en` default language of the exchange. Follow localization process.
+  - `REACT_APP_DEFAULT_COUNTRY`: `SC` default country of the exchange. Use two letter country [ISO 3166](https://www.iban.com/country-codes)
+  - `REACT_APP_BASE_CURRENCY`: `usdt` This is the coin that is used as the main coin in the exchange and has a trading pair with all the other coins.
 
-## Styles to set for changing new dark theme
+
+## Styles
 1. Modify colors under the `dark theme color` text in variables.scss file.
 2. Change the colors of `DARK_THEME_COLORS` and `DARK_THEME_CHART_COLORS` objects in constants.js file to apply the theme colors inside the charts.
