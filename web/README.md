@@ -41,6 +41,6 @@ All images and assets used are in `/public` and can be modified by uploading the
   - `REACT_APP_BASE_CURRENCY`: `usdt` This is the coin that is used as the main coin in the exchange and has a trading pair with all the other coins.
 
 
-## Styles
+### Styles
 1. Modify colors under the `dark theme color` text in variables.scss file.
 2. Change the colors of `DARK_THEME_COLORS` and `DARK_THEME_CHART_COLORS` objects in constants.js file to apply the theme colors inside the charts.
