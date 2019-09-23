@@ -1,1 +1,0 @@
-{"ast":null,"code":"import deviation from \"../deviation\";\nexport default function (values, min, max) {\n  return Math.ceil((max - min) / (3.5 * deviation(values) * Math.pow(values.length, -1 / 3)));\n}","map":null,"metadata":{},"sourceType":"module"}

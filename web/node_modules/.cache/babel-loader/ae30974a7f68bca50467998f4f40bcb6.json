@@ -1,1 +1,0 @@
-{"ast":null,"code":"export { axisTop, axisRight, axisBottom, axisLeft } from \"./axis\";","map":null,"metadata":{},"sourceType":"module"}

@@ -1,1 +1,0 @@
-{"ast":null,"code":"export default function () {\n  var nodes = new Array(this.size()),\n      i = -1;\n  this.each(function () {\n    nodes[++i] = this;\n  });\n  return nodes;\n}","map":null,"metadata":{},"sourceType":"module"}

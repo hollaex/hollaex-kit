@@ -1,1 +1,0 @@
-{"ast":null,"code":"export default function (values) {\n  return Math.ceil(Math.log(values.length) / Math.LN2) + 1;\n}","map":null,"metadata":{},"sourceType":"module"}

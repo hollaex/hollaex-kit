@@ -1,1 +1,0 @@
-{"ast":null,"code":"export var durationSecond = 1e3;\nexport var durationMinute = 6e4;\nexport var durationHour = 36e5;\nexport var durationDay = 864e5;\nexport var durationWeek = 6048e5;","map":null,"metadata":{},"sourceType":"module"}

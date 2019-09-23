@@ -1,1 +1,0 @@
-{"ast":null,"code":"module.exports = require('./socket');\n/**\n * Exports parser\n *\n * @api public\n *\n */\n\nmodule.exports.parser = require('engine.io-parser');","map":null,"metadata":{},"sourceType":"script"}

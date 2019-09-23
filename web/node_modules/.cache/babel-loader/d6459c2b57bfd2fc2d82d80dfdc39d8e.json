@@ -1,1 +1,0 @@
-{"ast":null,"code":"import Checkbox from './Checkbox';\nimport Group from './Group';\nCheckbox.Group = Group;\nexport default Checkbox;","map":null,"metadata":{},"sourceType":"module"}

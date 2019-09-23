@@ -1,1 +1,0 @@
-{"ast":null,"code":"export default {\n  // Options.jsx\n  items_per_page: '条/页',\n  jump_to: '跳至',\n  jump_to_confirm: '确定',\n  page: '页',\n  // Pagination.jsx\n  prev_page: '上一页',\n  next_page: '下一页',\n  prev_5: '向前 5 页',\n  next_5: '向后 5 页',\n  prev_3: '向前 3 页',\n  next_3: '向后 3 页'\n};","map":null,"metadata":{},"sourceType":"module"}

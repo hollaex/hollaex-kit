@@ -1,1 +1,0 @@
-{"ast":null,"code":"import createReactContext from '@ant-design/create-react-context';\nexport var FormContext = createReactContext({\n  labelAlign: 'right',\n  vertical: false\n});","map":null,"metadata":{},"sourceType":"module"}

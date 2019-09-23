@@ -1,1 +1,0 @@
-{"ast":null,"code":"// 19.1.2.14 Object.keys(O)\nvar toObject = require('./_to-object');\n\nvar $keys = require('./_object-keys');\n\nrequire('./_object-sap')('keys', function () {\n  return function keys(it) {\n    return $keys(toObject(it));\n  };\n});","map":null,"metadata":{},"sourceType":"script"}

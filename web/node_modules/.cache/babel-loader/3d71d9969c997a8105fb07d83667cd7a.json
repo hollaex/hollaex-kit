@@ -1,1 +1,0 @@
-{"ast":null,"code":"module.exports = toArray;\n\nfunction toArray(list, index) {\n  var array = [];\n  index = index || 0;\n\n  for (var i = index || 0; i < list.length; i++) {\n    array[i - index] = list[i];\n  }\n\n  return array;\n}","map":null,"metadata":{},"sourceType":"script"}

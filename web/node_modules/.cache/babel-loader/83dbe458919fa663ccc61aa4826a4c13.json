@@ -1,1 +1,0 @@
-{"ast":null,"code":"import creator from \"./creator\";\nimport select from \"./select\";\nexport default function (name) {\n  return select(creator(name).call(document.documentElement));\n}","map":null,"metadata":{},"sourceType":"module"}
