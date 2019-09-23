@@ -1,8 +1,8 @@
-$trade-bids-color-main: green;
-$trade-bids-color-font: green;
+$trade-bids-color-main: $buy;
+$trade-bids-color-font: $buy;
 $trade-bids-color-disabled: rgba(19, 136, 15, 0.356);
-$trade-asks-color-main: $colors-orderbook-red-light;
-$trade-asks-color-font: $colors-orderbook-red-light;
+$trade-asks-color-main: $sell;
+$trade-asks-color-font: $sell;
 $trade-asks-color-disabled: rgba(248, 7, 67, 0.4);
 
 $font-color--disabled: grey;

@@ -62,7 +62,7 @@ $deactive-tab-border: $boder--width solid $border--color;
 			&.tab-active {
 				font-weight: bold;
 				position: relative;
-				background-color: white;
+				background-color: $app-background-color;
 				&:after {
 					content: '';
 					position: absolute;

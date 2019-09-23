@@ -292,7 +292,7 @@
 }
 
 .bar-tooltip {
-	background-color: $colors-white;
+	background-color: $app-background-color;
 	border: 1px solid $colors-deactivate-color2;
 	color: $colors-deactivate-color2;
 }
@@ -310,7 +310,7 @@
 
 .bar-tooltip:after {
 	border-color: rgba(136, 183, 213, 0);
-	border-right-color: $colors-white;
+	border-right-color: $app-background-color;
 	border-width: 5px;
 	margin-top: -5px;
 }

@@ -189,6 +189,8 @@ table th {
 
 .app_container {
   min-height: 100vh; }
+  .app_container.white-theme {
+    background-color: white; }
   .app_container.dark-theme {
     background: #1f212a !important;
     min-height: 100vh; }
@@ -2533,7 +2535,7 @@ table th {
       color: #000000;
       font-weight: bold; }
     .summary-container .assets-wrapper .total-assets {
-      background: repeating-linear-gradient(-45deg, #fff, #fff 2px, #cccbcb 2px, #cccbcb 4px);
+      background: repeating-linear-gradient(-45deg, white, white 2px, #cccbcb 2px, #cccbcb 4px);
       font-size: 1.2rem;
       font-weight: bold;
       padding: .5rem;
@@ -5055,7 +5057,8 @@ table th {
   max-width: calc(100% - 2.5rem);
   max-height: calc(100% - 2.5rem);
   overflow: auto;
-  border: none !important; }
+  border: none !important;
+  background-color: white; }
   .ReactModal__Content .action_notification-wrapper.close-button {
     margin-top: 1.5rem; }
 
@@ -7387,7 +7390,7 @@ body {
 
 .ReactModal__Body--open #root {
   filter: blur(5px);
-  background: lightgrey; }
+  background: rgba(221, 221, 221, 0.75); }
 
 .form {
   min-width: 25rem;

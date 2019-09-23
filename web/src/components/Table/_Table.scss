@@ -65,25 +65,25 @@ $controllers--color-disabled: $colors-deactivate-color2;
 		@-webkit-keyframes cancelRow {
 			from {}
 			to {
-				color: $colors-white;
-				background-color: $colors-white;
-				border-color: $colors-white;
+				color: $app-background-color;
+				background-color: $app-background-color;
+				border-color: $app-background-color;
 			}
 		}
 		@-moz-keyframes cancelRow {
 			from {}
 			to {
-				color: $colors-white;
-				background-color: $colors-white;
-				border-color: $colors-white;
+				color: $app-background-color;
+				background-color: $app-background-color;
+				border-color: $app-background-color;
 			}
 		}
 		@keyframes cancelRow {
 			from {}
 			to {
-				color: $colors-white;
-				background-color: $colors-white;
-				border-color: $colors-white;
+				color: $app-background-color;
+				background-color: $app-background-color;
+				border-color: $app-background-color;
 			}
 		}		
 	}

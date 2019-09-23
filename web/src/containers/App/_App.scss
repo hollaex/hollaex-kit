@@ -8,6 +8,10 @@ $inner_container-border: 1px solid $colors-main-black;
 	// height: 100%;
 	min-height: 100vh;
 
+	&.white-theme {
+		background-color: $app-background-color;
+	}
+
 	&.dark-theme {
 		background: $dark-app-background-color !important;
 		min-height: 100vh;
