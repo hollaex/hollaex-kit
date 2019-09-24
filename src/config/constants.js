@@ -56,6 +56,8 @@ export const ICONS = {
 	HEX_ICON_DARK: `${process.env.PUBLIC_URL}/assets/icons/hex-icon-dark.svg`,
 	USDT_ICON: `${process.env.PUBLIC_URL}/assets/icons/usdt-icon.svg`,
 	ACCOUNT_SUMMARY: `${process.env.PUBLIC_URL}/assets/icons/account-icon-summary.svg`,
+	REQUEST_HEX_COIN:`${process.env.PUBLIC_URL}/assets/icons/request-hex-coins.svg`,
+	REFERAL_SUCCESS:`${process.env.PUBLIC_URL}/assets/icons/send-request.svg`,
 	CHECK: `${process.env.PUBLIC_URL}/assets/images/Orderbook scrolling-01.svg`,
 	DARK_CHECK: `${process.env.PUBLIC_URL}/assets/images/dark-Orderbook-scrolling-01.svg`,
 	BLUE_QUESTION: `${
@@ -355,6 +357,7 @@ export const ICONS = {
 	REFER_ICON: `${process.env.PUBLIC_URL}/assets/images/refer-icon.svg`,
 	HEX_COIN_STACK: `${process.env.PUBLIC_URL}/assets/images/HEX-coin-stack.svg`,
 	HEX_DOCS: `${process.env.PUBLIC_URL}/assets/images/HEX-docs.svg`,
+	HEX_WAVES: `${process.env.PUBLIC_URL}/assets/images/wave-icon.svg`,
 	HEX_EMAIL: `${process.env.PUBLIC_URL}/assets/images/HEX-email.svg`,
 	HEX_FAQ: `${process.env.PUBLIC_URL}/assets/images/HEX-FAQ.svg`,
 	HEX_PDF: `${process.env.PUBLIC_URL}/assets/images/HEX-pdf.svg`,

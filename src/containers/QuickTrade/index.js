@@ -186,6 +186,7 @@ class QuickTradeContainer extends Component {
 	render() {
 		const { quoteData, pairData, activeTheme, quickTrade, orderLimits, pairs, coins } = this.props;
 		const { showQuickTradeModal, side, pair } = this.state;
+		console.log('pair', pair, this.props.pair);
 
 		if (!pair || pair !== this.props.pair || !pairData) {
 			return <Loader background={false} />;

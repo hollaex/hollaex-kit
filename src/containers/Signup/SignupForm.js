@@ -12,7 +12,7 @@ import STRINGS from '../../config/localizedStrings';
 
 export const FORM_NAME = 'SignForm';
 
-export const generateFormFields = (strings, theme) => ({
+export const generateFormFields = (strings, theme, isReferral = false) => ({
 	email: {
 		type: 'email',
 		validate: [
@@ -22,21 +22,24 @@ export const generateFormFields = (strings, theme) => ({
 		normalize: normalizeEmail,
 		fullWidth: true,
 		label: strings.FORM_FIELDS.EMAIL_LABEL,
-		placeholder: strings.FORM_FIELDS.EMAIL_PLACEHOLDER
+		placeholder: strings.FORM_FIELDS.EMAIL_PLACEHOLDER,
+		disabled: !isReferral
 	},
 	password: {
 		type: 'password',
 		validate: [required, password],
 		fullWidth: true,
 		label: strings.FORM_FIELDS.PASSWORD_LABEL,
-		placeholder: strings.FORM_FIELDS.PASSWORD_PLACEHOLDER
+		placeholder: strings.FORM_FIELDS.PASSWORD_PLACEHOLDER,
+		disabled: !isReferral
 	},
 	password_repeat: {
 		type: 'password',
 		validate: [required],
 		fullWidth: true,
 		label: strings.FORM_FIELDS.PASSWORD_REPEAT_LABEL,
-		placeholder: strings.FORM_FIELDS.PASSWORD_REPEAT_PLACEHOLDER
+		placeholder: strings.FORM_FIELDS.PASSWORD_REPEAT_PLACEHOLDER,
+		disabled: !isReferral
 	},
 	terms: {
 		type: 'checkbox',
@@ -52,7 +55,8 @@ export const generateFormFields = (strings, theme) => ({
 				href="https://bitholla.com/privacy-policy/"
 				text={strings.SIGN_UP.TERMS.policy}
 			/>
-		)
+		),
+		disabled: !isReferral
 	},
 	captcha: {
 		type: 'captcha',

@@ -4,6 +4,7 @@ export { default as UserProfile } from './UserProfile';
 export { default as UserSecurity } from './UserSecurity';
 export { default as UserSettings } from './UserSettings';
 export { default as ContactForm } from './ContactForm';
+export { default as RequestForm } from './RequestForm';
 export { default as HelpfulResourcesForm } from './HelpfulResourcesForm';
 export { default as Account } from './Account';
 export * from './Wallet';

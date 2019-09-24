@@ -160,6 +160,14 @@ export default {
 		TAB_API: 'API',
 		TAB_SIGNOUT: 'Signout'
 	},
+	REQUEST_HEX_ACCESS: { // new
+		REQUEST_TITLE: 'Request {0} Access',
+		REQUEST_INVITE: 'Request Invite',
+		REFERRAL_INVITE_WARNING: 'To access the HEX Exchange you need to get a referral link from a friend or {0}',
+		CATEGORY_PLACEHOLDER: 'Select the category that best suits your issue',
+		INTRODUCTION_LABEL: 'Introduce yourself',
+		INTRODUCTION_PLACEHOLDER: 'Where are you based, are you interested in running an exchange?',
+	},
 	CONTACT_FORM: {
 		CATEGORY_LABEL: 'Category',
 		CATEGORY_PLACEHOLDER: 'Select the category that best suits your issue',
@@ -169,7 +177,8 @@ export default {
 			OPTION_DEPOSIT: 'Deposit & Withdrawal',
 			OPTION_BUG: 'Report bug', // ToDo:
 			OPTION_PERSONAL_INFO: 'Change personal information', // ToDo:
-			OPTION_BANK_TRANSFER: 'Bank wire transfer' // new
+			OPTION_BANK_TRANSFER: 'Bank wire transfer', // new
+			OPTION_REQUEST: 'Request Invite for the HEX Exchange' // new
 		},
 		SUBJECT_LABEL: 'Subject',
 		SUBJECT_PLACEHOLDER: 'Type the subject of your issue',
@@ -277,14 +286,19 @@ export default {
 		},
 		DEPOSITS: {
 			TITLE_RECEIVED: '{0} Deposit received',
-				TITLE_INCOMING: 'Incoming {0}',
-				SUBTITLE_RECEIVED: 'You’ve received your {0} deposit',
-				SUBTITLE_INCOMING: 'You have incoming {0}',
-				INFORMATION_PENDING_1:
-					'Your {0} require 1 confirmations before you can begin trading.',
-				INFORMATION_PENDING_2:
-					'This may take 10-30 minutes. We will send an email once your {0} is confirmed on the blockchain.'
+			TITLE_INCOMING: 'Incoming {0}',
+			SUBTITLE_RECEIVED: 'You’ve received your {0} deposit',
+			SUBTITLE_INCOMING: 'You have incoming {0}',
+			INFORMATION_PENDING_1:
+				'Your {0} require 1 confirmations before you can begin trading.',
+			INFORMATION_PENDING_2:
+				'This may take 10-30 minutes. We will send an email once your {0} is confirmed on the blockchain.'
 		}
+	},
+	REFERAL_SUCCESS: {
+		TITLE: 'Request Sent',
+		BUTTON_TEXT: 'Okay',
+
 	},
 	OTP_FORM: {
 		OTP_FORM_TITLE: 'Enter your authentication code to continue',
@@ -1106,8 +1120,11 @@ export default {
 		DEPOSIT_FUNDS: 'Deposit funds into your wallet to obtain HEX',
 		READ_FAG: 'Read HEX FAQ here: {0}',
 		READ_DOCUMENTATION: 'Read HEX whitepaper here: {0}',
+		READ_WAVES: 'Rules for the coming December Public HEX Wave Auction{0}', // new
 		DOWNLOAD_BUY_HEX: 'Download the PDF to see a visual step-by-step processes on {0}',
 		HOW_TO_BUY: 'how to buy HEX',
-		CONTACT_US: 'Feel free to contact us for more information and any issues by sending us an email to {0}'
+		PUBLIC_SALES: ' Public HEX Wave Auction', // new
+		CONTACT_US: 'Feel free to contact us for more information and any issues by sending us an email to {0}',
+		VISUAL_STEP: 'See a visual step-by-step processes on {0}' // new
 	}
 };

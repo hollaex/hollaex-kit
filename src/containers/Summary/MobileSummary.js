@@ -64,6 +64,7 @@ const MobileSummary = ({
                     title={STRINGS.SUMMARY.ACCOUNT_ASSETS} >
                     <AccountAssets
                         user={user}
+                        activeTheme={activeTheme}
                         chartData={chartData}
                         totalAssets={totalAssets}
                         balance={balance}

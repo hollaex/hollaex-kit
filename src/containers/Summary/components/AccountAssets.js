@@ -7,7 +7,7 @@ import STRINGS from '../../../config/localizedStrings';
 import { BASE_CURRENCY, ICONS, FLEX_CENTER_CLASSES } from '../../../config/constants';
 import { formatAverage, formatToCurrency } from '../../../utils/currency';
 
-const AccountAssets = ({ chartData = [], totalAssets, balance, coins }) => {
+const AccountAssets = ({ chartData = [], totalAssets, activeTheme, balance, coins }) => {
     const baseValue = coins[BASE_CURRENCY] || { symbol: 'eur' };
     return (
         <div>
@@ -26,7 +26,15 @@ const AccountAssets = ({ chartData = [], totalAssets, balance, coins }) => {
                             return (
                                 <div key={index} className="price-content text-center">
                                     <div className={classnames("coin-price-container", FLEX_CENTER_CLASSES)}>
-                                        <ReactSVG path={ICONS[`${value.symbol.toUpperCase()}_ICON`]} wrapperClassName="coin-price" />
+                                        <ReactSVG
+                                            path={
+                                                ICONS[`${value.symbol.toUpperCase()}_ICON${
+                                                activeTheme === 'dark' && ICONS[`${value.symbol.toUpperCase()}_ICON_DARK`]
+                                                    ? '_DARK'
+                                                    : ''
+                                                }`]}
+                                            wrapperClassName="coin-price"
+                                        />
                                     </div>
                                     <div className="price-text">{STRINGS[`${value.symbol.toUpperCase()}_FULLNAME`]}:</div>
                                     <div className="price-text">
@@ -34,7 +42,8 @@ const AccountAssets = ({ chartData = [], totalAssets, balance, coins }) => {
                                     </div>
                                     {value.symbol !== BASE_CURRENCY && <div>{`~${formatAverage(value.balanceFormat)}`}</div>}
                                 </div>
-                            )}
+                            )
+                        }
                         )}
                     </div>
                     {/* <div className="text-center my-3 title-font">

@@ -13,7 +13,7 @@ const InputField = (props) => {
 			{...rest}
 		>
 			<div className={classnames('checkfield-input-wrapper', 'd-flex')}>
-				<input type={type} {...input} className="checkfield-input" />
+				<input type={type} {...input} {...rest} className="checkfield-input" />
 				<div className="checkfield-label field-label">{label}</div>
 			</div>
 		</FieldWrapper>

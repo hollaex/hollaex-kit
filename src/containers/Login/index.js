@@ -15,6 +15,7 @@ import { NOTIFICATIONS } from '../../actions/appActions';
 import { errorHandler } from '../../components/OtpForm/utils';
 import {
 	HOLLAEX_LOGO,
+	HOLLAEX_LOGO_BLACK,
 	FLEX_CENTER_CLASSES,
 	ICONS
 } from '../../config/constants';
@@ -197,7 +198,7 @@ class Login extends Component {
 					)}
 				>
 					<IconTitle
-						iconPath={HOLLAEX_LOGO}
+						iconPath={activeTheme === 'dark' ? HOLLAEX_LOGO_BLACK : HOLLAEX_LOGO}
 						text={STRINGS.LOGIN_TEXT}
 						textType="title"
 						underline={true}

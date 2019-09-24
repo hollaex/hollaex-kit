@@ -71,16 +71,18 @@ $tab_controller-item-min-width: 10rem;
 			color: $disabled-color;
 
 			svg path, svg rect {
-				fill: $disabled-color;
-				stroke: $disabled-color;
+				// this applied with !important for all icons need to fix
+				// fill: $disabled-color;
+				// stroke: $disabled-color;
 			}
 
 			&.tab_item-active {
 				border-top-color: $dark-border-main !important;
 				color: $active-color;
 				svg path, svg rect {
-					fill: $active-color;
-					stroke: $active-color;
+					// this applied with !important for all icons need to fix
+					// fill: $active-color;
+					// stroke: $active-color;
 				}
 			}
 		}

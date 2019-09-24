@@ -194,6 +194,7 @@ class Summary extends Component {
                                     <AccountAssets
                                         user={user}
                                         chartData={chartData}
+                                        activeTheme={activeTheme}
                                         totalAssets={totalAssets}
                                         balance={balance}
                                         coins={coins} />
