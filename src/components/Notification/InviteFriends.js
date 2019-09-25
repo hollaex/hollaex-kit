@@ -23,6 +23,10 @@ class InviteFriends extends Component {
     componentDidMount() {
         this.props.getUserReferralCount();
     }
+
+    handleCopy = () => {
+        this.setState({ copied: true });
+    };
     
     render() {
         const { affiliation_code } = this.props.data;
@@ -49,7 +53,7 @@ class InviteFriends extends Component {
                             fullWidth={true}
                             allowCopy={true}
                             copyOnClick={true}
-                            onCopy={() => {}}
+                            onCopy={this.handleCopy}
                         />
                     </div>
                     <div className="user_refer_info p-4 d-flex align-items-center">
@@ -66,7 +70,7 @@ class InviteFriends extends Component {
 						/>
                         <CopyToClipboard
                             text={referralLink}
-                            onCopy={() => this.setState({ copied: true })}
+                            onCopy={this.handleCopy}
                         >
                             <Button
                                 label={this.state.copied ? STRINGS.SUCCESFUL_COPY : STRINGS.REFERRAL_LINK.COPY_LINK_BUTTON}
