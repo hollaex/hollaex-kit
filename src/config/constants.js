@@ -56,7 +56,6 @@ export const ICONS = {
 	HEX_ICON_DARK: `${process.env.PUBLIC_URL}/assets/icons/hex-icon-dark.svg`,
 	USDT_ICON: `${process.env.PUBLIC_URL}/assets/icons/usdt-icon.svg`,
 	ACCOUNT_SUMMARY: `${process.env.PUBLIC_URL}/assets/icons/account-icon-summary.svg`,
-	REQUEST_HEX_COIN:`${process.env.PUBLIC_URL}/assets/icons/request-hex-coins.svg`,
 	REFERAL_SUCCESS:`${process.env.PUBLIC_URL}/assets/icons/send-request.svg`,
 	CHECK: `${process.env.PUBLIC_URL}/assets/images/Orderbook scrolling-01.svg`,
 	DARK_CHECK: `${process.env.PUBLIC_URL}/assets/images/dark-Orderbook-scrolling-01.svg`,
