@@ -1,4 +1,4 @@
-$row--border-color: $colors-main-black;
+$row--border-color: $border-color;
 $row--border: 1px solid $row--border-color;
 
 $table-cell_box-background: grey;
@@ -89,7 +89,7 @@ $controllers--color-disabled: $colors-deactivate-color2;
 	}
 
 	.cell_box-type {
-		color: white;
+		color: $buy-bids-text;
 		text-transform: capitalize;
 
 		> div {

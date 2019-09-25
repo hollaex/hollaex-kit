@@ -14,7 +14,6 @@ $trade-section-border-disabled--color: grey;
 $trade_title-border--color: black;
 $trade_title-border--size: 0.2rem;
 
-$trade-fullfilled-background-color: grey;
 $trade-font-size: $font-size-subtext;
 
 $side-column--width: 17.5rem;
@@ -78,7 +77,7 @@ $order_entry-column--width-lg: 18rem;
 		}
 
 		&.fullfilled .cell-wrapper {
-			border: 1px solid $trade-fullfilled-background-color;
+			border: 1px solid $trade-fill-indicator;
 			margin: 0;
 			padding: 1px;
 			min-width: 5rem;
@@ -89,13 +88,14 @@ $order_entry-column--width-lg: 18rem;
 				position: relative;
 				width: 100%;
 				color: $colors-main-black;
+				z-index: 2;
 
 				.cell_value-bar {
 					position: absolute;
 					left: 0;
 					top: 0;
 					bottom: 0;
-					background-color: $trade-fullfilled-background-color;
+					background-color: $trade-fill-indicator;
 					z-index: -1;
 				}
 			}

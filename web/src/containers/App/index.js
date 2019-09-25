@@ -418,11 +418,13 @@ class Container extends Component {
 							);
 						}
 					);
+					console.log('order_filled', ordersDeleted);
 					this.props.removeOrder(data);
 					if (
 						this.props.settings.notification &&
 						this.props.settings.notification.popup_order_completed
 					) {
+						console.log('inside--sett');
 						ordersDeleted.forEach((orderDeleted) => {
 							if (isMobile) {
 								this.props.setSnackDialog({
@@ -437,6 +439,7 @@ class Container extends Component {
 									}
 								});
 							} else {
+								console.log('inside notification');
 								this.props.setNotification(NOTIFICATIONS.ORDERS, {
 									type,
 									data: {

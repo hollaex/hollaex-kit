@@ -347,7 +347,7 @@
             border-bottom: none !important;
         }
         .requirement-header {
-            border-bottom: 1px solid $colors-black;
+            border-bottom: 1px solid $border-color;
             color: $colors-black;
             font-weight: bold;
         }
@@ -393,27 +393,27 @@
     }
 
     td {
-        border: 1px solid $colors-black;
+        border: 1px solid $border-color;
     }
     .account-limits {
         margin: 1rem 0;
         width: 100%;
     }
     .account-limits-content {
-        border: 1px solid $colors-black;
+        border: 1px solid $border-color;
     }
     .account-limits-maker {
-        border-left: 1px solid $colors-black;
-        border-right: 1px solid $colors-black;
-        border-top: 1px solid $colors-black;
+        border-left: 1px solid $border-color;
+        border-right: 1px solid $border-color;
+        border-top: 1px solid $border-color;
     }
     .account-limits-taker {
-        border-bottom: 1px solid $colors-black;
-        border-left: 1px solid $colors-black;
-        border-right: 1px solid $colors-black;
+        border-bottom: 1px solid $border-color;
+        border-left: 1px solid $border-color;
+        border-right: 1px solid $border-color;
     }
     .account-limits-coin {
-        border-bottom: 1px solid $colors-black;
+        border-bottom: 1px solid $border-color;
         padding: .25rem .5rem;
         width: 14rem;
     }

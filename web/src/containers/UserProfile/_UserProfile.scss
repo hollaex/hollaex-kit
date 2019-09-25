@@ -94,7 +94,7 @@ $dark-information--color: $dark-link;
 		th {
 			position: relative;
 			&:not(:first-child) {
-				border-bottom: 1px solid $colors-main-black;
+				border-bottom: 1px solid $border-main;
 				padding: 0 0.25rem;
 				min-width: 25%;
 			}

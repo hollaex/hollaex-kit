@@ -41,5 +41,7 @@ All strings used in the project can be found in `/src/config/localizedStrings.js
 All images and assets used are in `/public` and can be modified by uploading the new image for your own branding. Make sure you keep the file names to avoid mismatches and issues.  
 
 ### Styles
-1. Modify colors under the `dark theme color` text in variables.scss file.
-2. Change the colors of `DARK_THEME_COLORS` and `DARK_THEME_CHART_COLORS` objects in constants.js file to apply the theme colors inside the charts.
+### Steps to configure white and dark theme
+1. Modify colors under `colors for white theme` and `colors for dark theme` text in variables.scss file. there is also some common colors that effect in both dark and white theme.
+2. Coin colors also categorized by theme in variables.scss file.
+3. To apply different colors for chart element outline(slice in dount, bar in bar chart) change the `coin-${symbol}-1` and `dark-coin-${symbol}-1`.

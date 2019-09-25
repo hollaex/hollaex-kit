@@ -255,9 +255,9 @@ table th {
   .presentation_container .inner_container {
     position: relative; }
     .presentation_container .inner_container.with_border_top {
-      border-top: 1px solid #212121; }
+      border-top: 1px solid #777677; }
     .presentation_container .inner_container.with_border_bottom {
-      border-bottom: 1px solid #212121; }
+      border-bottom: 1px solid #777677; }
     .presentation_container .inner_container .information_block {
       position: relative;
       margin-bottom: 1rem; }
@@ -1576,17 +1576,17 @@ table th {
   border-top-color: #b7b5cd;
   color: #b6b5cd; }
   .dark-theme .trade_block-wrapper .trade_block-title .trade_block-title-currency-btc {
-    color: #f7941e; }
+    color: #f7941d; }
   .dark-theme .trade_block-wrapper .trade_block-title .trade_block-title-currency-bch {
-    color: #9ec51e; }
+    color: #8dc541; }
   .dark-theme .trade_block-wrapper .trade_block-title .trade_block-title-currency-eth {
-    color: #334DAA; }
+    color: #3e4ea1; }
   .dark-theme .trade_block-wrapper .trade_block-title .trade_block-title-currency-eur {
-    color: #00a651; }
+    color: #06773d; }
   .dark-theme .trade_block-wrapper .trade_block-title .trade_block-title-currency-ltc {
-    color: #58595b; }
+    color: #bcbec0; }
   .dark-theme .trade_block-wrapper .trade_block-title .trade_block-title-currency-xrp {
-    color: #334DAA; }
+    color: #414042; }
   .dark-theme .trade_block-wrapper .trade_block-title .trade_block-title-currency-hex {
     color: #000000; }
   .dark-theme .trade_block-wrapper .trade_block-title .trade_block-title-currency-eos {
@@ -1648,27 +1648,27 @@ table th {
   .dark-theme .trade_block-wrapper .trade_block-title .trade_block-title-currency-usd {
     color: #01592e; }
   .dark-theme .trade_block-wrapper .trade_block-title .trade_block-title-currency-jpy {
-    color: #ec008c; }
-  .dark-theme .trade_block-wrapper .trade_block-title .trade_block-title-currency-gbp {
-    color: #f9ee02; }
-  .dark-theme .trade_block-wrapper .trade_block-title .trade_block-title-currency-chf {
-    color: #720f15; }
-  .dark-theme .trade_block-wrapper .trade_block-title .trade_block-title-currency-cad {
     color: #e0dfc7; }
-  .dark-theme .trade_block-wrapper .trade_block-title .trade_block-title-currency-aud {
+  .dark-theme .trade_block-wrapper .trade_block-title .trade_block-title-currency-gbp {
     color: #482e6e; }
-  .dark-theme .trade_block-wrapper .trade_block-title .trade_block-title-currency-nzd {
+  .dark-theme .trade_block-wrapper .trade_block-title .trade_block-title-currency-chf {
     color: #ed1c24; }
-  .dark-theme .trade_block-wrapper .trade_block-title .trade_block-title-currency-zar {
+  .dark-theme .trade_block-wrapper .trade_block-title .trade_block-title-currency-cad {
     color: #d7ce58; }
-  .dark-theme .trade_block-wrapper .trade_block-title .trade_block-title-currency-hkd {
+  .dark-theme .trade_block-wrapper .trade_block-title .trade_block-title-currency-aud {
     color: #19441f; }
-  .dark-theme .trade_block-wrapper .trade_block-title .trade_block-title-currency-krw {
+  .dark-theme .trade_block-wrapper .trade_block-title .trade_block-title-currency-nzd {
     color: #b3498c; }
-  .dark-theme .trade_block-wrapper .trade_block-title .trade_block-title-currency-cny {
+  .dark-theme .trade_block-wrapper .trade_block-title .trade_block-title-currency-zar {
     color: #d8d3a0; }
-  .dark-theme .trade_block-wrapper .trade_block-title .trade_block-title-currency-sgd {
+  .dark-theme .trade_block-wrapper .trade_block-title .trade_block-title-currency-hkd {
     color: #f48f9b; }
+  .dark-theme .trade_block-wrapper .trade_block-title .trade_block-title-currency-krw {
+    color: #f9ee02; }
+  .dark-theme .trade_block-wrapper .trade_block-title .trade_block-title-currency-cny {
+    color: #ec008c; }
+  .dark-theme .trade_block-wrapper .trade_block-title .trade_block-title-currency-sgd {
+    color: #720f15; }
   .dark-theme .trade_block-wrapper .trade_block-title .trade_block-title-currency {
     color: white; }
   .dark-theme .trade_block-wrapper .trade_block-title .trade_block-icon svg .st0 {
@@ -2100,7 +2100,8 @@ table th {
         padding: 0 0.15rem;
         position: relative;
         width: 100%;
-        color: #212121; }
+        color: #212121;
+        z-index: 2; }
         .trade_active_orders-wrapper .cell_box-type.fullfilled .cell-wrapper > .cell_value-wrapper .cell_value-bar {
           position: absolute;
           left: 0;
@@ -2551,7 +2552,7 @@ table th {
         .summary-container .assets-wrapper .coin-price-container .coin-price svg .eth0, .summary-container .assets-wrapper .coin-price-container .coin-price svg .eth1 {
           fill: #2e3192; }
         .summary-container .assets-wrapper .coin-price-container .coin-price svg .bch-icon {
-          fill: #9ec51e; }
+          fill: #8dc541; }
   .summary-container .trading-volume-wrapper {
     width: 50rem; }
   .summary-container .account-details-wrapper .account-type-container {
@@ -2582,7 +2583,7 @@ table th {
   .summary-container .account-details-wrapper .accounnt-type-menu-last-active {
     border-bottom: none !important; }
   .summary-container .account-details-wrapper .requirement-header {
-    border-bottom: 1px solid #000000;
+    border-bottom: 1px solid #777677;
     color: #000000;
     font-weight: bold; }
   .summary-container .account-details-wrapper .status-header {
@@ -2611,22 +2612,22 @@ table th {
   .fee-limits-wrapper table {
     border-collapse: collapse; }
   .fee-limits-wrapper td {
-    border: 1px solid #000000; }
+    border: 1px solid #777677; }
   .fee-limits-wrapper .account-limits {
     margin: 1rem 0;
     width: 100%; }
   .fee-limits-wrapper .account-limits-content {
-    border: 1px solid #000000; }
+    border: 1px solid #777677; }
   .fee-limits-wrapper .account-limits-maker {
-    border-left: 1px solid #000000;
-    border-right: 1px solid #000000;
-    border-top: 1px solid #000000; }
+    border-left: 1px solid #777677;
+    border-right: 1px solid #777677;
+    border-top: 1px solid #777677; }
   .fee-limits-wrapper .account-limits-taker {
-    border-bottom: 1px solid #000000;
-    border-left: 1px solid #000000;
-    border-right: 1px solid #000000; }
+    border-bottom: 1px solid #777677;
+    border-left: 1px solid #777677;
+    border-right: 1px solid #777677; }
   .fee-limits-wrapper .account-limits-coin {
-    border-bottom: 1px solid #000000;
+    border-bottom: 1px solid #777677;
     padding: .25rem .5rem;
     width: 14rem; }
   .fee-limits-wrapper .account-limits-status {
@@ -3086,7 +3087,7 @@ table th {
   display: flex;
   justify-content: space-between;
   align-content: center;
-  border-top: 2px solid #212121;
+  border-top: 2px solid #777677;
   margin-bottom: 1rem; }
   .tab_controller-tabs .tab_item {
     border-top: 4px solid transparent;
@@ -3101,7 +3102,7 @@ table th {
   .tab_controller-tabs .tab-trade {
     padding: 0 1px 12px !important; }
   .tab_controller-tabs .tab_item-active {
-    border-top: 4px solid #212121;
+    border-top: 4px solid #777677;
     color: #212121; }
     .tab_controller-tabs .tab_item-active svg path {
       opacity: 1; }
@@ -5576,7 +5577,7 @@ table th {
   .currency_ball-wrapper.ltc {
     background-color: #58595b; }
   .currency_ball-wrapper.xrp {
-    background-color: #334DAA; }
+    background-color: #414042; }
   .currency_ball-wrapper.hex {
     background-color: #000000; }
   .currency_ball-wrapper.eos {
@@ -5638,27 +5639,27 @@ table th {
   .currency_ball-wrapper.usd {
     background-color: #01592e; }
   .currency_ball-wrapper.jpy {
-    background-color: #ec008c; }
-  .currency_ball-wrapper.gbp {
-    background-color: #f9ee02; }
-  .currency_ball-wrapper.chf {
-    background-color: #720f15; }
-  .currency_ball-wrapper.cad {
     background-color: #e0dfc7; }
-  .currency_ball-wrapper.aud {
+  .currency_ball-wrapper.gbp {
     background-color: #482e6e; }
-  .currency_ball-wrapper.nzd {
+  .currency_ball-wrapper.chf {
     background-color: #ed1c24; }
-  .currency_ball-wrapper.zar {
+  .currency_ball-wrapper.cad {
     background-color: #d7ce58; }
-  .currency_ball-wrapper.hkd {
+  .currency_ball-wrapper.aud {
     background-color: #19441f; }
-  .currency_ball-wrapper.krw {
+  .currency_ball-wrapper.nzd {
     background-color: #b3498c; }
-  .currency_ball-wrapper.cny {
+  .currency_ball-wrapper.zar {
     background-color: #d8d3a0; }
-  .currency_ball-wrapper.sgd {
+  .currency_ball-wrapper.hkd {
     background-color: #f48f9b; }
+  .currency_ball-wrapper.krw {
+    background-color: #f9ee02; }
+  .currency_ball-wrapper.cny {
+    background-color: #ec008c; }
+  .currency_ball-wrapper.sgd {
+    background-color: #720f15; }
   .currency_ball-wrapper.s {
     font-size: 0.6rem;
     width: 1.8rem;
@@ -5713,8 +5714,8 @@ table th {
     .table-wrapper .table_body-wrapper.with_icon tr td:first-child {
       border: none !important; }
     .table-wrapper .table_body-wrapper tr.table_body-row td {
-      border-top: 1px solid #212121;
-      border-bottom: 1px solid #212121; }
+      border-top: 1px solid #777677;
+      border-bottom: 1px solid #777677; }
     .table-wrapper .table_body-wrapper .cancel-animate, .table-wrapper .table_body-wrapper .cancel-row-color, .table-wrapper .table_body-wrapper .cancel-row-color .cell_box-type .sell, .table-wrapper .table_body-wrapper .cancel-row-color .cell_box-type .buy, .table-wrapper .table_body-wrapper .cancel-row-color .action_notification-wrapper .notification-info, .table-wrapper .table_body-wrapper .cancel-row-color .cell-wrapper, .table-wrapper .table_body-wrapper .cancel-row-color .cell-wrapper .cell_value-wrapper, .table-wrapper .table_body-wrapper .cancel-row-color .cell-wrapper .cell_value-wrapper .cell_value-bar {
       -webkit-animation: cancelRow 1.4s;
       -moz-animation: cancelRow 1.4s;
@@ -5756,7 +5757,7 @@ table th {
 .table_controllers-wrapper {
   margin: 2rem 0;
   color: #212121;
-  border-top: 2px solid #212121;
+  border-top: 2px solid #777677;
   position: relative; }
   .table_controllers-wrapper .disabled {
     cursor: default;
@@ -5884,28 +5885,28 @@ table th {
   fill-opacity: 1; }
 
 .chart_btc {
-  fill: #f7941e;
-  stroke: #f6921e; }
+  fill: #f7941d;
+  stroke: #f7941d; }
 
 .chart_bch {
-  fill: #9ec51e;
-  stroke: #8bc53f; }
+  fill: #8dc541;
+  stroke: #8dc541; }
 
 .chart_eth {
-  fill: #334DAA;
-  stroke: #2b388f; }
+  fill: #3e4ea1;
+  stroke: #3e4ea1; }
 
 .chart_eur {
-  fill: #00a651;
-  stroke: #00a651; }
+  fill: #06773d;
+  stroke: #06773d; }
 
 .chart_ltc {
-  fill: #58595b;
-  stroke: #58595b; }
+  fill: #bcbec0;
+  stroke: #bcbec0; }
 
 .chart_xrp {
-  fill: #334DAA;
-  stroke: #2b388f; }
+  fill: #414042;
+  stroke: #414042; }
 
 .chart_hex {
   fill: #000000;
@@ -6028,47 +6029,47 @@ table th {
   stroke: #01592e; }
 
 .chart_jpy {
-  fill: #ec008c;
+  fill: #e0dfc7;
   stroke: #e0dfc7; }
 
 .chart_gbp {
-  fill: #f9ee02;
+  fill: #482e6e;
   stroke: #482e6e; }
 
 .chart_chf {
-  fill: #720f15;
+  fill: #ed1c24;
   stroke: #ed1c24; }
 
 .chart_cad {
-  fill: #e0dfc7;
+  fill: #d7ce58;
   stroke: #d7ce58; }
 
 .chart_aud {
-  fill: #482e6e;
+  fill: #19441f;
   stroke: #19441f; }
 
 .chart_nzd {
-  fill: #ed1c24;
+  fill: #b3498c;
   stroke: #b3498c; }
 
 .chart_zar {
-  fill: #d7ce58;
+  fill: #d8d3a0;
   stroke: #d8d3a0; }
 
 .chart_hkd {
-  fill: #19441f;
+  fill: #f48f9b;
   stroke: #f48f9b; }
 
 .chart_krw {
-  fill: #b3498c;
+  fill: #f9ee02;
   stroke: #f9ee02; }
 
 .chart_cny {
-  fill: #d8d3a0;
+  fill: #ec008c;
   stroke: #ec008c; }
 
 .chart_sgd {
-  fill: #f48f9b;
+  fill: #720f15;
   stroke: #720f15; }
 
 .bar_wrapper {
@@ -6218,28 +6219,28 @@ table th {
   fill-opacity: 0.4; }
 
 .dark-theme .chart_btc {
-  fill: #f6921e;
-  stroke: #f6921e; }
+  fill: #f7941d;
+  stroke: #f7941d; }
 
 .dark-theme .chart_bch {
-  fill: #8bc53f;
-  stroke: #8bc53f; }
+  fill: #8dc541;
+  stroke: #8dc541; }
 
 .dark-theme .chart_eth {
-  fill: #334DAA;
-  stroke: #334DAA; }
+  fill: #3e4ea1;
+  stroke: #3e4ea1; }
 
 .dark-theme .chart_eur {
-  fill: #00a651;
-  stroke: #00a651; }
+  fill: #06773d;
+  stroke: #06773d; }
 
 .dark-theme .chart_ltc {
-  fill: #58595b;
-  stroke: #58595b; }
+  fill: #bcbec0;
+  stroke: #bcbec0; }
 
 .dark-theme .chart_xrp {
-  fill: #2b388f;
-  stroke: #2b388f; }
+  fill: #414042;
+  stroke: #414042; }
 
 .dark-theme .chart_hex {
   fill: #000000;

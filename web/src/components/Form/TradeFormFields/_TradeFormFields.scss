@@ -1,5 +1,4 @@
 $input--height: 2.5rem;
-$input--background-color: $colors-deactivate-color1;
 $input--border-color: $colors-main-black;
 $input--color: $colors-main-black;
 
@@ -24,7 +23,7 @@ $padding: 0.25rem;
 			position: relative;
 			width: 100%;
 			height: $input--height;
-			background: $input--background-color;
+			background: $trade-fields;
 			border: 1px solid $input--border-color;
 			border-radius: 2px;
 			color: $input--color;

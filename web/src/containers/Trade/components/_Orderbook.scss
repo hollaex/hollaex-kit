@@ -5,7 +5,7 @@
 	}
 	.trade_orderbook-headers {
 		font-weight: bold;
-		border-bottom: 1px solid $colors-main-black;
+		border-bottom: 1px solid $border-main;
 		text-transform: uppercase;
 		min-height: 1.5rem;
 	}
@@ -35,14 +35,14 @@
 		.trade_orderbook-asks > .value-row:first-child {
 			background-color: $trade-asks-color-main;
 			> div {
-				color: white;
+				color: $sell-bids-text;
 			}
 		}
 
 		.trade_orderbook-bids > .value-row:first-child {
 			background-color: $trade-bids-color-main;
 			> div {
-				color: white;
+				color: $buy-bids-text;
 			}
 		}
 	}
