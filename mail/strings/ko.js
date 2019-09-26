@@ -94,8 +94,8 @@ const DEPOSIT = {
 	BODY: {
 		PENDING: {
 			1: (amount, confirmation = 1, currency) =>
-				`회원님의 ${API_NAME} 지갑으로 ${amount} ${currency} 입금이 진행 중입니다. 거래가 승인되고 지갑에 자금이 입금될 때까지 기다려주십시오. 회원님의 거래에는 비트코인 블록체인 상 ${confirmation} 개의 승인이 요구됩니다.`,
-			2: (amount, currency) => `수량: ${amount} ${currency}`,
+				`회원님의 ${API_NAME} 지갑으로 ${amount} ${currency.toUpperCase()} 입금이 진행 중입니다. 거래가 승인되고 지갑에 자금이 입금될 때까지 기다려주십시오. 회원님의 거래에는 비트코인 블록체인 상 ${confirmation} 개의 승인이 요구됩니다.`,
+			2: (amount, currency) => `수량: ${amount} ${currency.toUpperCase()}`,
 			3: '입금 상태: 비트코인 거래 승인 대기중입니다.',
 			4: (txid) => COMMON.TXID(txid),
 			5: COMMON.EXPLORER
@@ -137,9 +137,9 @@ const DEPOSITCANCEL = {
 	GREETING: (name) => COMMON.GREETING(name),
 	BODY: {
 		DEPOSIT: (currency, date, amount) =>
-			`회원님이 ${date}에 ${amount}의 ${currency} 을 입금하신 내역을 찾을 수 없거나 처리 할 수 없습니다. 해당 거래는 시스템에 의해 거부되었습니다.`,
+			`회원님이 ${date}에 ${amount}의 ${currency.toUpperCase()} 을 입금하신 내역을 찾을 수 없거나 처리 할 수 없습니다. 해당 거래는 시스템에 의해 거부되었습니다.`,
 		WITHDRAWAL: (currency, date, amount) =>
-			`회원님이 ${date}에 ${amount}의 ${currency} 을 출금하신 내역을 찾을 수 없거나 처리 할 수 없습니다. 해당 거래는 시스템에 의해 거부되었으며, 보류중인 회원님의 출금금액이 ${API_NAME} 지갑으로 환불됩니다.`,
+			`회원님이 ${date}에 ${amount}의 ${currency.toUpperCase()} 을 출금하신 내역을 찾을 수 없거나 처리 할 수 없습니다. 해당 거래는 시스템에 의해 거부되었으며, 보류중인 회원님의 출금금액이 ${API_NAME} 지갑으로 환불됩니다.`,
 		1: '추가 문의 사항이 있으시다면 이 이메일에 회신해주시기 바랍니다.',
 		2: (txid) => COMMON.TXID(txid),
 		3: (amount) => COMMON.AMOUNT(amount),
@@ -153,19 +153,13 @@ const WITHDRAWAL = {
 		`${currency.toUpperCase()} ${COMMON.WITHDRAWAL}`,
 	GREETING: (name) => COMMON.GREETING(name),
 	BODY: {
-		FIAT: {
-			PENDING: (amount) =>
-				`회원님의 ${amount} 유로 출금이 요청되었습니다. 출금 대기 중이며, 곧 완료될 예정입니다.`,
-			COMPLETED: (amount) =>
-				`회원님의 ${amount} 유로 출금이 완료되어 회원님의 계좌로 이체되었습니다.`,
-			1: (amount) => COMMON.AMOUNT(amount),
-			2: (txid) => COMMON.TXID(txid)
-		},
 		COIN: {
-			1: (amount, address, currency) =>
-				`회원님은 ${amount} ${currency}를 해당 주소 ${address}로 출금하였습니다.`,
-			2: (txid) => COMMON.TXID(txid),
-			3: COMMON.EXPLORER
+			PENDING: (amount, address, currency) =>
+				`회원님의 ${amount} ${currency.toUpperCase()} 출금이 해당 주소 ${address}로 요청되었습니다. 출금 대기 중이며, 곧 완료될 예정입니다.`,
+			COMPLETED: (amount, address, currency) =>
+				`회원님의 ${amount} ${currency.toUpperCase()}를 해당 주소 ${address}로  출금이 완료되어 회원님의 계좌로 이체되었습니다.`,
+			1: (txid) => COMMON.TXID(txid),
+			2: COMMON.EXPLORER
 		},
 		FEE: (fee) => COMMON.FEE(fee)
 	},
@@ -178,7 +172,7 @@ const WITHDRAWALREQUEST = {
 	GREETING: (name) => COMMON.GREETING(name),
 	BODY: {
 		1: (currency, amount, address) =>
-			`회원님은 ${address} 로 ${amount} 의 ${currency}을 출금요청하였습니다.`,
+			`회원님은 ${address} 로 ${amount} 의 ${currency.toUpperCase()}을 출금요청하였습니다.`,
 		2: (amount) => COMMON.AMOUNT(amount),
 		3: (fee) => COMMON.FEE(fee),
 		4: (address) => `주소: ${address}`,
@@ -223,12 +217,12 @@ const USERVERIFICATION = {
 	}
 };
 
-const DEPOSITDOUBLESPENT = {
+const SUSPICIOUSDEPOSIT = {
 	TITLE: '이중 지출',
 	BODY: {
-		1: 'Double spent transaction',
-		2: (email) =>
-			`The client with email ${email} has received a BTC deposit that is double spent.`,
+		1: 'Suspicious Deposit',
+		2: (email, currency) =>
+			`The client with email ${email} has received a ${currency.toUpperCase()} deposit that is suspicious.`,
 		3: (txid) => COMMON.TXID(txid),
 		4: 'Transaction data:',
 		5: (data) => `${JSON.stringify(data)}`
@@ -240,10 +234,10 @@ const SMS = {
 		`Your verification code is ${code}`
 	,
 	deposit: (currency, amount) =>
-		`Your ${currency} deposit for amount ${amount} is confirmed and deposited to your wallet`
+		`Your ${currency.toUpperCase()} deposit for amount ${amount} is confirmed and deposited to your wallet`
 	,
 	withdrawal: (currency, amount) =>
-		`Your ${currency} withdrawal for amount ${amount} is confirmed`
+		`Your ${currency.toUpperCase()} withdrawal for amount ${amount} is confirmed`
 };
 
 module.exports = {
@@ -261,7 +255,7 @@ module.exports = {
 	WITHDRAWAL,
 	WITHDRAWALREQUEST,
 	USERVERIFICATION,
-	DEPOSITDOUBLESPENT,
+	SUSPICIOUSDEPOSIT,
 	CONTACTFORM,
 	SMS
 };
