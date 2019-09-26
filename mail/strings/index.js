@@ -15,7 +15,7 @@ const MAILTYPE = {
 	DEPOSIT: 'deposit',
 	WITHDRAWAL: 'withdrawal',
 	CONTACT_FORM: 'contactForm',
-	DEPOSIT_DOUBLE_SPENT: 'depositDoubleSpent',
+	SUSPICIOUS_DEPOSIT: 'suspiciousDeposit',
 	USER_VERIFICATION: 'userVerification'
 };
 

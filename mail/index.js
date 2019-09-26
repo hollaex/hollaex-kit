@@ -71,7 +71,7 @@ const sendEmail = (
 			to.BccAddresses = BCC_ADDRESSES;
 			break;
 		}
-		case MAILTYPE.DEPOSIT_DOUBLE_SPENT: {
+		case MAILTYPE.SUSPICIOUS_DEPOSIT: {
 			if (!SEND_EMAIL_TO_SUPPORT) return;
 			to.ToAddresses = [MASTER_EMAIL];
 			break;
