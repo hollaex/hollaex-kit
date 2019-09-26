@@ -1,1 +1,0 @@
-{"ast":null,"code":"var baseProperty = require('./_baseProperty');\n/**\n * Gets the size of an ASCII `string`.\n *\n * @private\n * @param {string} string The string inspect.\n * @returns {number} Returns the string size.\n */\n\n\nvar asciiSize = baseProperty('length');\nmodule.exports = asciiSize;","map":null,"metadata":{},"sourceType":"script"}

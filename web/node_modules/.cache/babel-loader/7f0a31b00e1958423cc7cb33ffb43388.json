@@ -1,1 +1,0 @@
-{"ast":null,"code":"\"use strict\";\n\nexports.__esModule = true;\n\nexports.default = function (obj, keys) {\n  var target = {};\n\n  for (var i in obj) {\n    if (keys.indexOf(i) >= 0) continue;\n    if (!Object.prototype.hasOwnProperty.call(obj, i)) continue;\n    target[i] = obj[i];\n  }\n\n  return target;\n};","map":null,"metadata":{},"sourceType":"script"}

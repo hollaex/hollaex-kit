@@ -1,1 +1,0 @@
-{"ast":null,"code":"// @flow\n'use strict';\n\nvar key = '__global_unique_id__';\n\nmodule.exports = function () {\n  return global[key] = (global[key] || 0) + 1;\n};","map":null,"metadata":{},"sourceType":"script"}

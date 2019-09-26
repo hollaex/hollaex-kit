@@ -1,1 +1,0 @@
-{"ast":null,"code":"import Upload from './Upload';\nimport Dragger from './Dragger';\nUpload.Dragger = Dragger;\nexport default Upload;","map":null,"metadata":{},"sourceType":"module"}

@@ -1,1 +1,0 @@
-{"ast":null,"code":"import OriginTypography from './Typography';\nimport Text from './Text';\nimport Title from './Title';\nimport Paragraph from './Paragraph';\nvar Typography = OriginTypography;\nTypography.Text = Text;\nTypography.Title = Title;\nTypography.Paragraph = Paragraph;\nexport default Typography;","map":null,"metadata":{},"sourceType":"module"}

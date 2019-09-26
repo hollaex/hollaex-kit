@@ -1,1 +1,0 @@
-{"ast":null,"code":"export default function (array, indexes) {\n  var i = indexes.length,\n      permutes = new Array(i);\n\n  while (i--) {\n    permutes[i] = array[indexes[i]];\n  }\n\n  return permutes;\n}","map":null,"metadata":{},"sourceType":"module"}

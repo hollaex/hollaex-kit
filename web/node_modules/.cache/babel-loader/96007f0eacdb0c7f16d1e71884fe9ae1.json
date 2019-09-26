@@ -1,1 +1,0 @@
-{"ast":null,"code":"export default {\n  /**\n   * LEFT\n   */\n  LEFT: 37,\n  // also NUM_WEST\n\n  /**\n   * UP\n   */\n  UP: 38,\n  // also NUM_NORTH\n\n  /**\n   * RIGHT\n   */\n  RIGHT: 39,\n  // also NUM_EAST\n\n  /**\n   * DOWN\n   */\n  DOWN: 40 // also NUM_SOUTH\n\n};","map":null,"metadata":{},"sourceType":"module"}

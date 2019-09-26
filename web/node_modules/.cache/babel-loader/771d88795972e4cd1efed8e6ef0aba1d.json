@@ -1,1 +1,0 @@
-{"ast":null,"code":"require('../../modules/es6.symbol');\n\nrequire('../../modules/es6.object.to-string');\n\nrequire('../../modules/es7.symbol.async-iterator');\n\nrequire('../../modules/es7.symbol.observable');\n\nmodule.exports = require('../../modules/_core').Symbol;","map":null,"metadata":{},"sourceType":"script"}

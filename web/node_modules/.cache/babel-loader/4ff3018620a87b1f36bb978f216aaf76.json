@@ -1,1 +1,0 @@
-{"ast":null,"code":"import _extends from \"babel-runtime/helpers/extends\";\n\nfunction omit(obj, fields) {\n  var shallowCopy = _extends({}, obj);\n\n  for (var i = 0; i < fields.length; i++) {\n    var key = fields[i];\n    delete shallowCopy[key];\n  }\n\n  return shallowCopy;\n}\n\nexport default omit;","map":null,"metadata":{},"sourceType":"module"}

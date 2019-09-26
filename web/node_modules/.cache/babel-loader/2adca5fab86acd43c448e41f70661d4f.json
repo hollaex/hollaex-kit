@@ -1,1 +1,0 @@
-{"ast":null,"code":"var Option = function Option() {\n  return null;\n};\n\nexport default Option;","map":null,"metadata":{},"sourceType":"module"}

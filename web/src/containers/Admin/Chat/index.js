@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import io from 'socket.io-client';
 import { Spin } from 'antd';
-import { WS_HOST } from '../../../config/constants';
+import { WS_URL } from '../../../config/constants';
 import { getToken } from '../../../utils/token';
 import { Tabs } from 'antd';
 import { Ban } from './ban';
@@ -27,7 +27,7 @@ class Chat extends Component {
 	}
 
 	connectToChat = (token) => {
-		const chatWs = io(`${WS_HOST}/chat`, {
+		const chatWs = io(`${WS_URL}/chat`, {
 			query: {
 				token: `Bearer ${token}`
 			}

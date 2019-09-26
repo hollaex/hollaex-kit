@@ -1,1 +1,0 @@
-{"ast":null,"code":"import Provider from './components/Provider';\nimport connectAdvanced from './components/connectAdvanced';\nimport { ReactReduxContext } from './components/Context';\nimport connect from './connect/connect';\nexport { Provider, connectAdvanced, ReactReduxContext, connect };","map":null,"metadata":{},"sourceType":"module"}

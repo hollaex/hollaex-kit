@@ -1,1 +1,0 @@
-{"ast":null,"code":"import Collapse from './Collapse';\nexport default Collapse;\nexport var Panel = Collapse.Panel;","map":null,"metadata":{},"sourceType":"module"}

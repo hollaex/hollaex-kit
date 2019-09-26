@@ -1,1 +1,0 @@
-{"ast":null,"code":"/**\n * Gets the keys for an object.\n *\n * @return {Array} keys\n * @api private\n */\nmodule.exports = Object.keys || function keys(obj) {\n  var arr = [];\n  var has = Object.prototype.hasOwnProperty;\n\n  for (var i in obj) {\n    if (has.call(obj, i)) {\n      arr.push(i);\n    }\n  }\n\n  return arr;\n};","map":null,"metadata":{},"sourceType":"script"}

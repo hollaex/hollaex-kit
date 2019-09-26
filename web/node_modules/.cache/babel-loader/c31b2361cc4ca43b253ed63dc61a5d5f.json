@@ -1,1 +1,0 @@
-{"ast":null,"code":"import { version } from '../../package.json';\nexport default version;","map":null,"metadata":{},"sourceType":"module"}

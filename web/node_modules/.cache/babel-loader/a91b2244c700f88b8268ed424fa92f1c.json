@@ -1,1 +1,0 @@
-{"ast":null,"code":"export default function (array, f) {\n  if (f == null) f = pair;\n  var i = 0,\n      n = array.length - 1,\n      p = array[0],\n      pairs = new Array(n < 0 ? 0 : n);\n\n  while (i < n) {\n    pairs[i] = f(p, p = array[++i]);\n  }\n\n  return pairs;\n}\nexport function pair(a, b) {\n  return [a, b];\n}","map":null,"metadata":{},"sourceType":"module"}

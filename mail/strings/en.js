@@ -1,10 +1,12 @@
 'use strict';
 
+const { API_NAME, SUPPORT_EMAIL } = require('../../constants');
+
 const COMMON = {
 	GREETING: (name) => `Dear ${name}`,
 	CLOSING: {
 		1: 'Regards',
-		2: 'HollaEx team'
+		2: `${API_NAME} team`
 	},
 	IP_ADDRESS: (ip) => `IP Address: ${ip}`,
 	IP_REQUEST_FROM: (ip) => `Request initiated from: ${ip}`,
@@ -20,19 +22,12 @@ const COMMON = {
 	EXPLORER:
 		'You can find the status of your transaction on blockchain through these Block Explorers:',
 	DEPOSIT: 'Deposit',
-	WITHDRAWAL: 'Withdrawal',
-	EUR: 'Euro',
-	BTC: 'Bitcoin',
-	ETH: 'Ethereum',
-	BCH: 'Bitcoin Cash',
-	XRP: 'Ripple'
+	WITHDRAWAL: 'Withdrawal'
 };
 
 const FOOTER = {
 	FOLLOW_US: 'Follow us on',
 	NEED_HELP: 'Need help? Just reply to this email',
-	EXIR: 'HollaEx',
-	BITHOLLA: 'BITHOLLA',
 	PRIVACY_POLICY: 'Privacy policy',
 	TERMS: 'Terms and conditions',
 	INVITE_YOUR_FRIENDS: 'Invite your friends',
@@ -43,9 +38,9 @@ const SIGNUP = {
 	TITLE: 'Sign Up',
 	GREETING: (name) => COMMON.GREETING(name),
 	BODY: {
-		1: `Thank you for registering on HollaEx, a bitHolla product.
+		1: `Thank you for registering on ${API_NAME}.
 		Our sales team will review your application and will get back to you as soon as possible.
-		If you have any questions, feel free to contact us at <a href="mailto:support@bitholla.com">support@bitholla.com</a>`,
+		If you have any questions, feel free to contact us at <a href="mailto:${SUPPORT_EMAIL}">${SUPPORT_EMAIL}</a>`,
 		2: 'Please click on the button below to proceed with your registration.',
 		3: 'Activate My Account'
 	},
@@ -56,13 +51,13 @@ const WELCOME = {
 	TITLE: 'Welcome',
 	GREETING: (name) => COMMON.GREETING(name),
 	BODY: {
-		1: 'Thank you for choosing HollaEx - Cryptocurrency Exchange, where beginners and professionals can trade fast and easy.',
+		1: `Thank you for signing up to ${API_NAME}.`,
 		2: (account, deposit) => `
-		To being tradeing, you must first deposit cryptocurrency or fund money to your account.
+		To being trading, you must first deposit cryptocurrency or fund money to your account.
 		Please go to your ${account} and visit the ${deposit} page.`,
 		3: 'account',
 		4: 'deposit',
-		5: 'If you have any questions or concerns, please contact us at support@bitholla.com.'
+		5: `If you have any questions or concerns, please contact us at ${SUPPORT_EMAIL}.`
 	},
 	CLOSING: COMMON.CLOSING
 };
@@ -95,12 +90,12 @@ const RESETPASSWORD = {
 };
 
 const DEPOSIT = {
-	TITLE: (currency) => `${COMMON[currency.toUpperCase()]} ${COMMON.DEPOSIT}`,
+	TITLE: (currency) => `${currency.toUpperCase()} ${COMMON.DEPOSIT}`,
 	GREETING: (name) => COMMON.GREETING(name),
 	BODY: {
 		PENDING: {
 			1: (amount, confirmation = 1, currency) =>
-				`You have a new deposit for ${amount} ${currency} pending in your HollaEx wallet. Please wait until the transaction is confirmed and your funds will be available in your wallet. Your transaction require ${confirmation} confirmation(s) on blockchain.`,
+				`You have a new deposit for ${amount} ${currency} pending in your ${API_NAME} wallet. Please wait until the transaction is confirmed and your funds will be available in your wallet. Your transaction require ${confirmation} confirmation(s) on blockchain.`,
 			2: (amount, currency) => `Amount: ${amount} ${currency}`,
 			3: 'Status of deposit: Pending for confirmation.',
 			4: (txid) => COMMON.TXID(txid),
@@ -108,9 +103,9 @@ const DEPOSIT = {
 		},
 		COMPLETED: (amount, currency) =>
 			`Your ${
-				COMMON[currency.toUpperCase()]
+				currency.toUpperCase()
 			} deposit for ${amount} ${currency.toUpperCase()} is confirmed and completed and it is available in your ${
-				COMMON[currency.toUpperCase()]
+				currency.toUpperCase()
 			} wallet.`
 	},
 	CLOSING: COMMON.CLOSING
@@ -139,7 +134,7 @@ const ACCOUNTUPGRADE = {
 
 const DEPOSITCANCEL = {
 	TITLE: (currency, type) =>
-		`${COMMON[currency.toUpperCase()]} ${
+		`${currency.toUpperCase()} ${
 			COMMON[type.toUpperCase()]
 		} rejected`,
 	GREETING: (name) => COMMON.GREETING(name),
@@ -147,7 +142,7 @@ const DEPOSITCANCEL = {
 		DEPOSIT: (currency, date, amount) =>
 			`We were not able to find or process your ${currency} deposit made on ${date} for ${amount}. Thus, the transaction is rejected by our system.`,
 		WITHDRAWAL: (currency, date, amount) =>
-			`We were not able to find or process your ${currency} withdrawal made on ${date} for ${amount}. Thus the transaction is rejected by our system and your pending withdrawal amount is credited back to your EXIR wallet.`,
+			`We were not able to find or process your ${currency} withdrawal made on ${date} for ${amount}. Thus the transaction is rejected by our system and your pending withdrawal amount is credited back to your ${API_NAME} wallet.`,
 		1: 'If you have any further inquiries, you can reply to this email',
 		2: (txid) => COMMON.TXID(txid),
 		3: (amount) => COMMON.AMOUNT(amount),
@@ -158,7 +153,7 @@ const DEPOSITCANCEL = {
 
 const WITHDRAWAL = {
 	TITLE: (currency) =>
-		`${COMMON[currency.toUpperCase()]} ${COMMON.WITHDRAWAL}`,
+		`${currency.toUpperCase()} ${COMMON.WITHDRAWAL}`,
 	GREETING: (name) => COMMON.GREETING(name),
 	BODY: {
 		FIAT: {
@@ -182,7 +177,7 @@ const WITHDRAWAL = {
 
 const WITHDRAWALREQUEST = {
 	TITLE: (currency) =>
-		`${COMMON[currency.toUpperCase()]} ${COMMON.WITHDRAWAL} Request`,
+		`${currency.toUpperCase()} ${COMMON.WITHDRAWAL} Request`,
 	GREETING: (name) => COMMON.GREETING(name),
 	BODY: {
 		1: (currency, amount, address) =>

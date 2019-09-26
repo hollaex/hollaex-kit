@@ -1,1 +1,0 @@
-{"ast":null,"code":"import root from './_root.js';\n/** Built-in value references. */\n\nvar Symbol = root.Symbol;\nexport default Symbol;","map":null,"metadata":{},"sourceType":"module"}

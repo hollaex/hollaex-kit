@@ -1,1 +1,0 @@
-{"ast":null,"code":"var isNumeric = function isNumeric(value) {\n  return !isNaN(parseFloat(value)) && isFinite(value);\n};\n\nexport default isNumeric;","map":null,"metadata":{},"sourceType":"module"}
