@@ -95,8 +95,8 @@ const DEPOSIT = {
 	BODY: {
 		PENDING: {
 			1: (amount, confirmation = 1, currency) =>
-				`You have a new deposit for ${amount} ${currency} pending in your ${API_NAME} wallet. Please wait until the transaction is confirmed and your funds will be available in your wallet. Your transaction require ${confirmation} confirmation(s) on blockchain.`,
-			2: (amount, currency) => `Amount: ${amount} ${currency}`,
+				`You have a new deposit for ${amount} ${currency.toUpperCase()} pending in your ${API_NAME} wallet. Please wait until the transaction is confirmed and your funds will be available in your wallet. Your transaction require ${confirmation} confirmation(s) on blockchain.`,
+			2: (amount, currency) => `Amount: ${amount} ${currency.toUpperCase()}`,
 			3: 'Status of deposit: Pending for confirmation.',
 			4: (txid) => COMMON.TXID(txid),
 			5: COMMON.EXPLORER
@@ -140,9 +140,9 @@ const DEPOSITCANCEL = {
 	GREETING: (name) => COMMON.GREETING(name),
 	BODY: {
 		DEPOSIT: (currency, date, amount) =>
-			`We were not able to find or process your ${currency} deposit made on ${date} for ${amount}. Thus, the transaction is rejected by our system.`,
+			`We were not able to find or process your ${currency.toUpperCase()} deposit made on ${date} for ${amount}. Thus, the transaction is rejected by our system.`,
 		WITHDRAWAL: (currency, date, amount) =>
-			`We were not able to find or process your ${currency} withdrawal made on ${date} for ${amount}. Thus the transaction is rejected by our system and your pending withdrawal amount is credited back to your ${API_NAME} wallet.`,
+			`We were not able to find or process your ${currency.toUpperCase()} withdrawal made on ${date} for ${amount}. Thus the transaction is rejected by our system and your pending withdrawal amount is credited back to your ${API_NAME} wallet.`,
 		1: 'If you have any further inquiries, you can reply to this email',
 		2: (txid) => COMMON.TXID(txid),
 		3: (amount) => COMMON.AMOUNT(amount),
@@ -166,7 +166,7 @@ const WITHDRAWAL = {
 		},
 		COIN: {
 			1: (amount, address, currency) =>
-				`You made a withdrawal for ${amount} ${currency} to the address ${address}`,
+				`You made a withdrawal for ${amount} ${currency.toUpperCase()} to the address ${address}`,
 			2: (txid) => COMMON.TXID(txid),
 			3: COMMON.EXPLORER
 		},
@@ -181,7 +181,7 @@ const WITHDRAWALREQUEST = {
 	GREETING: (name) => COMMON.GREETING(name),
 	BODY: {
 		1: (currency, amount, address) =>
-			`You have made a ${currency} withdrawal request of ${amount} to ${address}`,
+			`You have made a ${currency.toUpperCase()} withdrawal request of ${amount} to ${address}`,
 		2: (amount) => COMMON.AMOUNT(amount),
 		3: (fee) => COMMON.FEE(fee),
 		4: (address) => `Address: ${address}`,
@@ -228,12 +228,12 @@ const USERVERIFICATION = {
 	}
 };
 
-const DEPOSITDOUBLESPENT = {
-	TITLE: 'Deposit double spent',
+const SUSPICIOUSDEPOSIT = {
+	TITLE: 'Suspicious Deposit',
 	BODY: {
-		1: 'Double spent transaction',
-		2: (email) =>
-			`The client with email ${email} has received a BTC deposit that is double spent.`,
+		1: 'Suspicious Deposit',
+		2: (email, currency) =>
+			`The client with email ${email} has received a ${currency.toUpperCase()} deposit that is suspicious.`,
 		3: (txid) => COMMON.TXID(txid),
 		4: 'Transaction data:',
 		5: (data) => `${JSON.stringify(data)}`
@@ -245,10 +245,10 @@ const SMS = {
 		`Your verification code is ${code}`
 	,
 	deposit: (currency, amount) =>
-		`Your ${currency} deposit for amount ${amount} is confirmed and deposited to your wallet`
+		`Your ${currency.toUpperCase()} deposit for amount ${amount} is confirmed and deposited to your wallet`
 	,
 	withdrawal: (currency, amount) =>
-		`Your ${currency} withdrawal for amount ${amount} is confirmed`
+		`Your ${currency.toUpperCase()} withdrawal for amount ${amount} is confirmed`
 };
 
 module.exports = {
@@ -266,7 +266,7 @@ module.exports = {
 	WITHDRAWAL,
 	WITHDRAWALREQUEST,
 	USERVERIFICATION,
-	DEPOSITDOUBLESPENT,
+	SUSPICIOUSDEPOSIT,
 	CONTACTFORM,
 	SMS
 };
