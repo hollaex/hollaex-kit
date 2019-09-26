@@ -153,19 +153,13 @@ const WITHDRAWAL = {
 		`${currency.toUpperCase()} ${COMMON.WITHDRAWAL}`,
 	GREETING: (name) => COMMON.GREETING(name),
 	BODY: {
-		FIAT: {
-			PENDING: (amount) =>
-				`회원님의 ${amount} 유로 출금이 요청되었습니다. 출금 대기 중이며, 곧 완료될 예정입니다.`,
-			COMPLETED: (amount) =>
-				`회원님의 ${amount} 유로 출금이 완료되어 회원님의 계좌로 이체되었습니다.`,
-			1: (amount) => COMMON.AMOUNT(amount),
-			2: (txid) => COMMON.TXID(txid)
-		},
 		COIN: {
-			1: (amount, address, currency) =>
-				`회원님은 ${amount} ${currency.toUpperCase()}를 해당 주소 ${address}로 출금하였습니다.`,
-			2: (txid) => COMMON.TXID(txid),
-			3: COMMON.EXPLORER
+			PENDING: (amount, address, currency) =>
+				`회원님의 ${amount} ${currency.toUpperCase()} 출금이 해당 주소 ${address}로 요청되었습니다. 출금 대기 중이며, 곧 완료될 예정입니다.`,
+			COMPLETED: (amount, address, currency) =>
+				`회원님의 ${amount} ${currency.toUpperCase()}를 해당 주소 ${address}로  출금이 완료되어 회원님의 계좌로 이체되었습니다.`,
+			1: (txid) => COMMON.TXID(txid),
+			2: COMMON.EXPLORER
 		},
 		FEE: (fee) => COMMON.FEE(fee)
 	},

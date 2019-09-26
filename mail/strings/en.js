@@ -156,19 +156,13 @@ const WITHDRAWAL = {
 		`${currency.toUpperCase()} ${COMMON.WITHDRAWAL}`,
 	GREETING: (name) => COMMON.GREETING(name),
 	BODY: {
-		FIAT: {
-			PENDING: (amount) =>
-				`You made a withdrawal request for ${amount} Euro. Your withdrawal status is pending and will be processed shortly.`,
-			COMPLETED: (amount) =>
-				`Your withdrawal request for ${amount} Euro is processed and transferred to your bank account.`,
-			1: (amount) => COMMON.AMOUNT(amount),
-			2: (txid) => COMMON.TXID(txid)
-		},
 		COIN: {
-			1: (amount, address, currency) =>
-				`You made a withdrawal for ${amount} ${currency.toUpperCase()} to the address ${address}`,
-			2: (txid) => COMMON.TXID(txid),
-			3: COMMON.EXPLORER
+			PENDING: (amount, address, currency) =>
+				`You made a withdrawal request for ${amount} ${currency.toUpperCase()} to the address ${address}. Your withdrawal status is pending and will be processed shortly.`,
+			COMPLETED: (amount, address, currency) =>
+				`Your withdrawal request for ${amount} ${currency.toUpperCase()} is processed and transferred to the address ${address}.`,
+			1: (txid) => COMMON.TXID(txid),
+			2: COMMON.EXPLORER
 		},
 		FEE: (fee) => COMMON.FEE(fee)
 	},
