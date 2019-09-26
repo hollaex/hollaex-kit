@@ -306,8 +306,8 @@ $notification-size: 1.5rem;
 				border: 1px solid $dark-border-main !important;
 				color: $dark-tab-active !important;
 				svg path, svg rect {
-					// fill: $dark-tab-active;
-					// stroke: $dark-tab-active;
+					fill: $dark-tab-active;
+					stroke: $dark-tab-active;
 				}
 			}
 		}

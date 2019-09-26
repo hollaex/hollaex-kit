@@ -438,7 +438,7 @@ class Trade extends Component {
 								'apply_rtl'
 							)}
 						>
-							<TradeBlock title={STRINGS.PUBLIC_SALES}>
+							<TradeBlock title={STRINGS.PUBLIC_SALES} pairData={pairData} pair={pair}>
 								<TradeHistory data={tradeHistory} language={activeLanguage} />
 							</TradeBlock>
 						</div>

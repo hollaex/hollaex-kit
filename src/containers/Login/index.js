@@ -117,7 +117,10 @@ class Login extends Component {
 					: err.message;
 
 				let error = {};
-				this.props.change(FORM_NAME, 'captcha', '');
+
+				setTimeout(() => {
+					this.props.change(FORM_NAME, 'captcha', '');
+				}, 5000);
 
 				if (_error.toLowerCase().indexOf('otp') > -1) {
 					this.setState({ values, otpDialogIsOpen: true });

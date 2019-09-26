@@ -122,7 +122,7 @@ class AddTradeTab extends Component {
             <div className="trade_tabs-container">
                 <div className="mb-5">
                     <img
-                        src={activeTheme === 'dark' ? ICONS.LOGO_GREY : ICONS.LOGO_BLACK}
+                        src={activeTheme === 'dark' ? ICONS.LOGO_BLACK : ICONS.LOGO_GREY}
                         alt="app logo"
                         className="app-icon d-flex" />
                     <div className="text-center trade-tab-app-title">{STRINGS.APP_SUB_TITLE.toUpperCase()}</div>
@@ -156,13 +156,15 @@ class AddTradeTab extends Component {
                             const priceDifference = (ticker.close || 0) - (ticker.open || 0);
                             const tickerPercent = priceDifference === 0 ? 0 : ((priceDifference / ticker.open) * 100);
                             const priceDifferencePercent = isNaN(tickerPercent) ? formatPercentage(0) : formatPercentage(tickerPercent);
+                            let icon = ICONS[`${pair.pair_base.toUpperCase()}_ICON${activeTheme === 'dark' ? '_DARK' : ''}`]
+                            console.log('');
                             return (
                                 <div
                                     key={index}
                                     className={classnames("d-flex", "trade-tab-list", "pointer", { "active-tab": index === 0 })}
                                     onClick={() => this.handleClick(key)}>
                                     <div className="px-2">
-                                        <ReactSVG path={ICONS[`${pair.pair_base.toUpperCase()}_ICON`]} wrapperClassName="trade_tab-icons" />
+                                        <ReactSVG path={icon} wrapperClassName="trade_tab-icons" />
                                     </div>
                                     <div className="tabs-pair-details">
                                         <div className="trade_tab-pair-title">

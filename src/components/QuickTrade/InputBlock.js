@@ -85,7 +85,6 @@ class InputBlock extends Component {
 	render() {
 		const { text, className, error, orderLimits } = this.props;
 		const { value, errorValue, symbol } = this.state;
-		console.log('symbol---------', symbol);
 		const shortName = STRINGS[`${symbol.toUpperCase()}_SHORTNAME`];
 		const errorMessage = this.renderErrorMessage(errorValue) || error;
 		return (

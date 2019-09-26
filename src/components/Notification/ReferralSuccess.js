@@ -17,6 +17,10 @@ const ReferalSuccess = (props) => {
                 useSvg={true}
                 className="w-100"
             />
+            <div className="my-4 ml-2">
+                <label>{STRINGS.TERMS_OF_SERVICES.WARNING_TXT}</label>
+                <label>{STRINGS.TERMS_OF_SERVICES.WARNING_TXT1}</label>
+            </div>
             <div className="mx-3">
                 <div className="d-flex align-items-center my-4">
                     <ReactSVG path={ICONS.HEX_FAQ} wrapperClassName="funds-svg" />

@@ -66,12 +66,12 @@ export default {
 	CANCEL_BASE_WITHDRAWAL: 'Cancel {0} Withdrawal',
 	CANCEL_WITHDRAWAL: 'Cancel Withdrawal',
 	CANCEL_WITHDRAWAL_POPUP_CONFIRM: 'Do you want to cancel your pending withdrawal of:',
-	CANT_BE_CANCELLED:'-',
-	ALREADY_CANCELLED:'-',
+	CANT_BE_CANCELLED: '-',
+	ALREADY_CANCELLED: '-',
 	TIMESTAMP_FORMAT: 'YYYY/MM/DD HH:mm:ss A',
 	HOUR_FORMAT: 'HH:mm:ss A',
 	LOGIN_TEXT: 'Login',
-	SIGN_IN:'Sign In',
+	SIGN_IN: 'Sign In',
 	SIGNUP_TEXT: 'Sign Up',
 	REGISTER_TEXT: 'Register',
 	ACCOUNT_TEXT: 'Account',
@@ -606,7 +606,7 @@ export default {
 			LIST_ITEM_3: 'Lower fees'
 		}
 	},
-	USER_SETTINGS: { 
+	USER_SETTINGS: {
 		TITLE_TEXT_1: 'Change the settings of your account. From interface, notifcations, username and other customizations.',
 		TITLE_TEXT_2: 'Saving your settings will apply the changes and save it.',
 		TITLE_NOTIFICATION: 'Notification',
@@ -618,11 +618,11 @@ export default {
 		ORDERBOOK_LEVEL: 'Orderbook Levels (Max 20)',
 		SET_TXT: 'SET',
 		CREATE_ORDER_WARING: 'Create Order Warning',
-		RISKY_TRADE_DETECTED: 'Risky Trade Detected', 
-		RISKY_WARNING_TEXT_1:'This orders value is over your designated order limit amount you’ve set {0} .', 
-		RISKY_WARNING_TEXT_2:'({0} of portfolio)',  
-		RISKY_WARNING_TEXT_3: ' Please check and verify that you indeed want to make this trade.',  
-		GO_TO_RISK_MANAGMENT: 'GO TO RISK MANAGMENT', 
+		RISKY_TRADE_DETECTED: 'Risky Trade Detected',
+		RISKY_WARNING_TEXT_1: 'This orders value is over your designated order limit amount you’ve set {0} .',
+		RISKY_WARNING_TEXT_2: '({0} of portfolio)',
+		RISKY_WARNING_TEXT_3: ' Please check and verify that you indeed want to make this trade.',
+		GO_TO_RISK_MANAGMENT: 'GO TO RISK MANAGMENT',
 		CREATE_ORDER_WARING_TEXT: 'Create a warning pop up when your trade order uses more than {0} of your portfolio',
 		ORDER_PORTFOLIO_LABEL: 'Portfolio Percentage Amount:',
 		NOTIFICATION_FORM: {
@@ -641,8 +641,8 @@ export default {
 			INFO_TEXT_1: 'Total assets value in {0}: {1}',
 			PORTFOLIO: 'Percentage of portfolio',
 			TOMAN_ASSET: 'Approximate Value',
-			ADJUST: '(ADJUST PERCENTAGE)',  
-			ACTIVATE_RISK_MANAGMENT: 'Activate Risk Managment', 
+			ADJUST: '(ADJUST PERCENTAGE)',
+			ACTIVATE_RISK_MANAGMENT: 'Activate Risk Managment',
 			WARNING_POP_UP: 'Warning pop ups'
 		}
 	},
@@ -1125,6 +1125,8 @@ export default {
 		HOW_TO_BUY: 'how to buy HEX',
 		PUBLIC_SALES: ' Public HEX Wave Auction', // new
 		CONTACT_US: 'Feel free to contact us for more information and any issues by sending us an email to {0}',
-		VISUAL_STEP: 'See a visual step-by-step processes on {0}' // new
+		VISUAL_STEP: 'See a visual step-by-step processes on {0}', // new
+		WARNING_TXT: 'We will review your request and send further instructions to your email on how to access the HEX exchange.', // new
+		WARNING_TXT1: 'In the mean time you can firmilerize yourself with the HEX network with the resources below' // new
 	}
 };

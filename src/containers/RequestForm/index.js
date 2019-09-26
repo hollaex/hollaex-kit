@@ -84,7 +84,7 @@ class RequestForm extends Component {
             validate: [required],
             fullWidth: true
         },
-        Introduce_yourself: {
+        Description: {
             type: 'textarea',
             label: STRINGS.REQUEST_HEX_ACCESS.INTRODUCTION_LABEL,
             placeholder: STRINGS.REQUEST_HEX_ACCESS.INTRODUCTION_PLACEHOLDER,
@@ -95,7 +95,7 @@ class RequestForm extends Component {
     });
 
     render() {
-        const { onClose, email, text, initialValues } = this.props;
+        const { onClose, email, initialValues } = this.props;
         const { submitted } = this.state;
         if (submitted) {
             return (

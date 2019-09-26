@@ -72,8 +72,16 @@ $tab_controller-item-min-width: 10rem;
 
 			svg path, svg rect {
 				// this applied with !important for all icons need to fix
-				// fill: $disabled-color;
-				// stroke: $disabled-color;
+				fill: $disabled-color;
+				stroke: $disabled-color;
+			}
+			svg {
+				.hex-icon-1 {
+					fill: #000000 !important;
+				}
+				.hex-icon {
+					fill: #ffffff !important;
+				}
 			}
 
 			&.tab_item-active {
@@ -81,8 +89,16 @@ $tab_controller-item-min-width: 10rem;
 				color: $active-color;
 				svg path, svg rect {
 					// this applied with !important for all icons need to fix
-					// fill: $active-color;
-					// stroke: $active-color;
+					fill: $active-color;
+					stroke: $active-color;
+				}
+				svg {
+					.hex-icon-1 {
+						fill: #000000 !important;
+					}
+					.hex-icon {
+						fill: #ffffff !important;
+					}
 				}
 			}
 		}
