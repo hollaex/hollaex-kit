@@ -6,7 +6,6 @@ const {
 	DEFAULT_LANGUAGE,
 	LOGO_BLACK_PATH,
 	BITHOLLA_LOGO_BLACK,
-	API_NAME,
 	EMAIL_ICONS
 } = require('../../../constants');
 const styles = require('./styles');
@@ -24,14 +23,14 @@ const footerTemplate = (language = DEFAULT_LANGUAGE, domain = DOMAIN) => {
 	return `
 			<div style="${styles.footer}">
 				<div style="float: left">
-					<a style="${styles.link}" href="https://hollaex.com">${
+					<a style="${styles.link}" href="${domain}">${
 		FOOTER.PRIVACY_POLICY
 	}</a>
 					|
-					<a style="${styles.link}" href="https://hollaex.com">${FOOTER.TERMS}</a>
+					<a style="${styles.link}" href="${domain}">${FOOTER.TERMS}</a>
 					<p>${FOOTER.INVITE_YOUR_FRIENDS} <a style="${
 		styles.link_blue
-	}" href="${domain}">hollaex.com</a><p>
+	}" href="${domain}">${domain}</a><p>
 				</div>
 				<div style="float: right; font-size: 8px; text-align: right;">
 					<div>
