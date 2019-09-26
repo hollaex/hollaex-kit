@@ -1,1 +1,0 @@
-{"ast":null,"code":"export default function triggerEvent(el, type) {\n  if ('createEvent' in document) {\n    // modern browsers, IE9+\n    var e = document.createEvent('HTMLEvents');\n    e.initEvent(type, false, true);\n    el.dispatchEvent(e);\n  }\n}","map":null,"metadata":{},"sourceType":"module"}

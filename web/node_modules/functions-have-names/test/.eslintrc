@@ -1,6 +1,0 @@
-{
-	"rules": {
-		"func-name-matching": 0,
-		"max-statements": 0,
-	}
-}

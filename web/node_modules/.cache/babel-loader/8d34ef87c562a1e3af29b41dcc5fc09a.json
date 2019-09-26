@@ -1,1 +1,0 @@
-{"ast":null,"code":"import { Selection, root } from \"./selection/index\";\nexport default function (selector) {\n  return typeof selector === \"string\" ? new Selection([document.querySelectorAll(selector)], [document.documentElement]) : new Selection([selector == null ? [] : selector], root);\n}","map":null,"metadata":{},"sourceType":"module"}

@@ -1,1 +1,0 @@
-{"ast":null,"code":"import sourceEvent from \"./sourceEvent\";\nimport point from \"./point\";\nexport default function (node) {\n  var event = sourceEvent();\n  if (event.changedTouches) event = event.changedTouches[0];\n  return point(node, event);\n}","map":null,"metadata":{},"sourceType":"module"}

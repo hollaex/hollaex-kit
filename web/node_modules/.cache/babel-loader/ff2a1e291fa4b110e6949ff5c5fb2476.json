@@ -1,1 +1,0 @@
-{"ast":null,"code":"import createHashHistory from 'history/lib/createHashHistory';\nimport createRouterHistory from './createRouterHistory';\nexport default createRouterHistory(createHashHistory);","map":null,"metadata":{},"sourceType":"module"}

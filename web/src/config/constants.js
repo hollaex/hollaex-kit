@@ -10,8 +10,8 @@ export const APP_TITLE = STRINGS.APP_TITLE;
 export const TOKEN_TIME = 24 * 60 * 60 * 1000; // 1 day
 export const SESSION_TIME = 6 * 60 * 60 * 1000; // 6 hour
 
-export const API_URL = config[ENV][NETWORK].API_URL;
-export const WS_URL = config[ENV][NETWORK].WS_URL;
+export const API_URL = config[NETWORK].API_URL;
+export const WS_URL = config[NETWORK].WS_URL;
 
 export const ICONS = {
 	LOGO_GREY: `${process.env.PUBLIC_URL}/assets/hollaEx_logo-grey.svg`,
@@ -576,7 +576,7 @@ export const WITHDRAW_LIMITS = {
 };
 
 // Default trading pairs (it gets set from the server so it is not important to set these properly)
-export const DEFAULT_TRADING_PAIRS = ['btc-eur', 'eth-eur'];
+export const DEFAULT_TRADING_PAIRS = ['hex-usdt'];
 
 export const TOKEN_KEY = `${ENV}_${NETWORK}_TOKEN`;
 export const LANGUAGE_KEY = `${ENV}_${NETWORK}_LANGUAGE`;
@@ -611,7 +611,8 @@ export const BITCOINCOM_ENDPOINT =
 
 export const BALANCE_ERROR = 'Insufficient balance to perform the order';
 
-export const CAPTCHA_SITEKEY = process.env.REACT_APP_CAPTCHA_SITE_KEY;
+export const CAPTCHA_SITEKEY = process.env.REACT_APP_CAPTCHA_SITE_KEY
+	|| '6LeuOKoUAAAAAGVoZcSWXJH60GHt4crvIaNXn1YA'; // default recaptcha v3
 export const CAPTCHA_TIMEOUT = process.env.REACT_APP_CAPTCHA_TIMEOUT
 	? parseInt(process.env.REACT_APP_CAPTCHA_TIMEOUT, 10)
 	: 2000;
@@ -627,20 +628,6 @@ export const PRO_VERSION_REDIRECT =
 	process.env.REACT_APP_PRO_VERSION_REDIRECT || '/account';
 export const DEFAULT_VERSION_REDIRECT = '/';
 export const PRO_URL = process.env.REACT_APP_PRO_URL || 'https://hollaex.com';
-
-const hosts = {
-	production: {
-		mainnet: 'https://api.hollaex.com',
-		testnet: 'https://api.hollaex.com'
-	},
-	development: {
-		mainnet: 'https://api.hollaex.com',
-		testnet: 'https://api.hollaex.com'
-	}
-};
-export const API_PATH = '/v0';
-export const API_HOST = hosts[ENV][NETWORK];
-export const WS_HOST = hosts[ENV][NETWORK];
 
 // minimum level for a user to be able to create api tokens
 export const MIN_LEVEL_FOR_TOKENS = 2;
@@ -663,7 +650,7 @@ export const DEFAULT_COUNTRY = process.env.REACT_APP_DEFAULT_COUNTRY
 
 export const BASE_CURRENCY = process.env.REACT_APP_BASE_CURRENCY
 	? process.env.REACT_APP_BASE_CURRENCY.toLowerCase()
-	: 'eur';
+	: 'usdt';
 
 export const FEES_LIMIT_SITE_URL = 'https://www.hollaex.com';
 

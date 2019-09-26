@@ -1,1 +1,0 @@
-{"ast":null,"code":"import OptGroup from './OptGroup';\nimport Option from './Option';\nimport SelectPropTypes from './PropTypes';\nimport Select from './Select';\nSelect.Option = Option;\nSelect.OptGroup = OptGroup;\nexport { Option, OptGroup, SelectPropTypes };\nexport default Select;","map":null,"metadata":{},"sourceType":"module"}

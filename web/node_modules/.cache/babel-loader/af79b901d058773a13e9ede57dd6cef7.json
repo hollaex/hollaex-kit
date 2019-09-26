@@ -1,1 +1,0 @@
-{"ast":null,"code":"module.exports = isPromise;\n\nfunction isPromise(obj) {\n  return !!obj && (typeof obj === 'object' || typeof obj === 'function') && typeof obj.then === 'function';\n}","map":null,"metadata":{},"sourceType":"script"}

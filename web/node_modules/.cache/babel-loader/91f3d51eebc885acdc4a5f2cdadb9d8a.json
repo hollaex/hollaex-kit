@@ -1,1 +1,0 @@
-{"ast":null,"code":"import React from 'react';\nexport default function toArray(children) {\n  var ret = [];\n  React.Children.forEach(children, function (c) {\n    ret.push(c);\n  });\n  return ret;\n}","map":null,"metadata":{},"sourceType":"module"}

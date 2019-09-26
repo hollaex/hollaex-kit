@@ -1,1 +1,0 @@
-{"ast":null,"code":"import { event } from \"./selection/on\";\nexport default function () {\n  var current = event,\n      source;\n\n  while (source = current.sourceEvent) {\n    current = source;\n  }\n\n  return current;\n}","map":null,"metadata":{},"sourceType":"module"}

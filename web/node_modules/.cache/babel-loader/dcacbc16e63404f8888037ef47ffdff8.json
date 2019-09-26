@@ -1,1 +1,0 @@
-{"ast":null,"code":"import Line from './Line';\nimport Circle from './Circle';\nexport { Line, Circle };\nexport default {\n  Line: Line,\n  Circle: Circle\n};","map":null,"metadata":{},"sourceType":"module"}

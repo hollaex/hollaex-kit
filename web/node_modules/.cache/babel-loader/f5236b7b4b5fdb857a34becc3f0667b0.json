@@ -1,1 +1,0 @@
-{"ast":null,"code":"import React from 'react';\n\nvar MentionContent = function MentionContent(_ref) {\n  var children = _ref.children;\n  return React.createElement('span', {\n    style: {\n      backgroundColor: '#e6f3ff'\n    }\n  }, children);\n};\n\nexport default MentionContent;","map":null,"metadata":{},"sourceType":"module"}

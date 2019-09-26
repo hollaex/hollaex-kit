@@ -25,10 +25,6 @@ By running `npm run build` the project gets built into `/build` folder and is re
 ## Configuration
 HEX Web is fully configurable and has all the constants used in the project in `/src/config/constants.js` where you can modify all variables.  
 Here is a list of common items you can configure:
-### Localization
-All strings used in the project can be found in `/src/config/localizedStrings.js` and we have two samples of `en.js` for English and `ko.js` for Korean by default.
-### Images
-All images and assets used are in `/public` and can be modified by uploading the new image for your own branding. Make sure you keep the file names to avoid mismatches and issues.  
 ### Environment variables
   - `NODE_ENV`: `['production', 'development']` The build procedure automatically identifies the build so you do not need to set this.
   - `PUBLIC_URL`: `https://bitholla.com` public exchange URL used for static files and assets.
@@ -39,8 +35,11 @@ All images and assets used are in `/public` and can be modified by uploading the
   - `REACT_APP_DEFAULT_LANGUAGE`: `en` default language of the exchange. Follow localization process.
   - `REACT_APP_DEFAULT_COUNTRY`: `SC` default country of the exchange. Use two letter country [ISO 3166](https://www.iban.com/country-codes)
   - `REACT_APP_BASE_CURRENCY`: `usdt` This is the coin that is used as the main coin in the exchange and has a trading pair with all the other coins.
+### Localization
+All strings used in the project can be found in `/src/config/localizedStrings.js` and we have two samples of `en.js` for English and `ko.js` for Korean by default.
+### Images
+All images and assets used are in `/public` and can be modified by uploading the new image for your own branding. Make sure you keep the file names to avoid mismatches and issues.  
 
-
-## Styles
+### Styles
 1. Modify colors under the `dark theme color` text in variables.scss file.
 2. Change the colors of `DARK_THEME_COLORS` and `DARK_THEME_CHART_COLORS` objects in constants.js file to apply the theme colors inside the charts.
