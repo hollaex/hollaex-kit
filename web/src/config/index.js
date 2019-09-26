@@ -4,7 +4,7 @@ const PRODUCTION_ENDPOINT =
 const LOCALHOST_ENDPOINT =
 	process.env.REACT_APP_LOCALHOST_ENDPOINT || "http://localhost";
 
-import { API_PATH } from './constants';
+const API_PATH = '/v1';
 
 const generateEndpoint = (endpoint, path) => ({
 	API_URL: `${endpoint}${path}`,

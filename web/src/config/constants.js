@@ -13,8 +13,6 @@ export const SESSION_TIME = 6 * 60 * 60 * 1000; // 6 hour
 export const API_URL = config[NETWORK].API_URL;
 export const WS_URL = config[NETWORK].WS_URL;
 
-export const API_PATH = '/v1';
-
 export const ICONS = {
 	LOGO_GREY: `${process.env.PUBLIC_URL}/assets/hollaEx_logo-grey.svg`,
 	LOGO_BLACK: `${process.env.PUBLIC_URL}/assets/hollaEx_logo-blk.svg`,
@@ -652,7 +650,7 @@ export const DEFAULT_COUNTRY = process.env.REACT_APP_DEFAULT_COUNTRY
 
 export const BASE_CURRENCY = process.env.REACT_APP_BASE_CURRENCY
 	? process.env.REACT_APP_BASE_CURRENCY.toLowerCase()
-	: 'eur';
+	: 'usdt';
 
 export const FEES_LIMIT_SITE_URL = 'https://www.hollaex.com';
 
