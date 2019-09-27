@@ -50,7 +50,6 @@ export const Filters = ({
 		coinOptions.push({ value: data, text: data.toUpperCase() });
 	});
 	const fieldProps = getFilters(coinOptions);
-	console.log('fieldProps', fieldProps);
 	const allowQuery = !loading && hasChanges && Object.keys(params).length > 0;
 	return (
 		<div>

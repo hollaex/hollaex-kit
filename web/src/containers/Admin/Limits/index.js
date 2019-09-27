@@ -35,7 +35,6 @@ class Limits extends Component {
 		});
 		requestLimits()
 			.then((res) => {
-				console.log(res);
 				this.setState({
 					limits: res.data,
 					loading: false,
@@ -63,7 +62,6 @@ class Limits extends Component {
 		performLimitUpdate(this.state.verification_level, {
 			[this.state.update_type]: Number(value)
 		}).then((res) => {
-			console.log(res);
 			this.requestLimits();
 			openNotification();
 		});
@@ -71,7 +69,6 @@ class Limits extends Component {
 
 	render() {
 		const { limits, loading, error } = this.state;
-		console.log('limits', limits);
 		return (
 			<div className="app_container-content">
 				{loading ? (
