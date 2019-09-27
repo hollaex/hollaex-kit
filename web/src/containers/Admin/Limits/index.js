@@ -37,7 +37,7 @@ class Limits extends Component {
 			.then((res) => {
 				console.log(res);
 				this.setState({
-					limits: res,
+					limits: res.data,
 					loading: false,
 					fetched: true
 				});
@@ -71,6 +71,7 @@ class Limits extends Component {
 
 	render() {
 		const { limits, loading, error } = this.state;
+		console.log('limits', limits);
 		return (
 			<div className="app_container-content">
 				{loading ? (

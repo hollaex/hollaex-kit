@@ -16,12 +16,38 @@ import {
 import UserData from './UserData';
 import BankData from './BankData';
 import { isSupport, isAdmin, isKYC } from '../../../utils/token';
+import { requestFees } from './actions';
 
 import Flagger from '../Flaguser';
 
 const TabPane = Tabs.TabPane;
 
 class UserContent extends Component {
+	constructor(props) {
+		super(props)
+		this.state = {
+			pairs: []
+		}
+	}
+	
+	componentDidMount() {
+		if (isAdmin()) {
+			requestFees()
+				.then((response) => {
+					const newPair = [];
+					const sortedData = response.data.sort((a, b) => a.id - b.id);
+					sortedData.forEach(({ pair_base }) => {
+						if (!newPair.includes(pair_base)) {
+							newPair.push(pair_base);
+						}
+					});
+					this.setState({ pairs: newPair });
+				})
+				.catch((err) => {
+				})
+		}
+	}
+	
 	render() {
 		const {
 			userInformation,
@@ -33,6 +59,7 @@ class UserContent extends Component {
 		} = this.props;
 		const { id, activated, otp_enabled, flagged } = userInformation;
 		const isSupportUser = isSupport();
+		const { pairs } = this.state;
 		return (
 			<div className="app_container-content">
 				<div className="d-flex justify-content-between">
@@ -96,7 +123,7 @@ class UserContent extends Component {
 					)}
 					{isAdmin() && (
 						<TabPane tab="Funding" key="deposit">
-							<Balance user_id={id} />
+							<Balance user_id={id} pairs={pairs} />
 						</TabPane>
 					)}
 					{!isSupportUser && !isKYC() && (

@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 // import { SubmissionError } from 'redux-form';
 import querystring from 'query-string';
 import { Spin, notification, Tabs } from 'antd';
+import { connect } from 'react-redux';
+
 import './index.css';
 import { AdminHocForm } from '../../../components';
 
@@ -167,7 +169,7 @@ class App extends Component {
 
 					<TabPane tab="All Users" key="users">
 						<h2 className="m-top">LIST OF ALL USERS</h2>
-						<FullListUsers requestUser={this.requestUserData} />
+						<FullListUsers coins={this.props.coins} requestUser={this.requestUserData} />
 					</TabPane>
 				</Tabs>
 			</div>
@@ -175,4 +177,8 @@ class App extends Component {
 	}
 }
 
-export default App;
+const mapStateToProps = (state) => ({
+	coins: state.app.coins
+});
+
+export default connect(mapStateToProps)(App);

@@ -1,6 +1,6 @@
 import { requestAuthenticated } from '../../../utils';
 
-export const requestFees = () => requestAuthenticated('/admin/pairs/fees');
+export const requestFees = () => requestAuthenticated('/admin/pairs');
 
 export const feeUpdate = (id, values) => {
 	const options = {

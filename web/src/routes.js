@@ -40,7 +40,8 @@ import {
 	BlockchainTransaction,
 	AdminChat,
 	Wallets,
-	UserFees
+	UserFees,
+	PATHS
 } from './containers';
 
 import store from './store';
@@ -124,6 +125,19 @@ const noAuthRoutesCommonProps = {
 const noLoggedUserCommonProps = {
 	onEnter: logOutUser
 };
+
+function withAdminProps(Component, key) {
+	let adminProps = {};
+	PATHS.map((data) => {
+		const { pathProps = {}, routeKey, ...rest } = data;
+		if (routeKey === key) {
+			adminProps = { ...rest, ...pathProps };
+		}
+	});
+	return function(matchProps) {
+	  return <Component {...adminProps} {...matchProps} />
+	}
+  }
 
 export default (
 	<Router history={browserHistory}>
@@ -232,30 +246,30 @@ export default (
 		</Route>
 		<Route component={AdminContainer}>
 			<Route path="/admin" name="Admin Main" component={Main} />
-			<Route path="/admin/user" name="Admin User" component={User} />
+			<Route path="/admin/user" name="Admin User" component={withAdminProps(User, 'user')} />
 			<Route
 				path="/admin/wallets"
 				name="Admin Wallets"
-				component={Wallets}
+				component={withAdminProps(Wallets, 'wallets')}
 			/>
 			<Route
 				path="/admin/withdrawals"
 				name="Admin Withdrawals"
-				component={DepositsPage}
+				component={withAdminProps(DepositsPage, 'withdrawal')}
 			/>
 			<Route
 				path="/admin/deposits"
 				name="Admin Deposits"
-				component={DepositsPage}
+				component={withAdminProps(DepositsPage, 'deposit')}
 			/>
 			<Route
 				path="/admin/blockchain"
 				name="Admin BlockchainTransaction"
 				component={BlockchainTransaction}
 			/>
-			<Route path="/admin/fees" name="Admin Fees" component={UserFees} />
-			<Route path="/admin/limits" name="Admin Limits" component={Limits} />
-			<Route path="/admin/chat" name="Admin Chats" component={AdminChat} />
+			<Route path="/admin/fees" name="Admin Fees" component={withAdminProps(UserFees, 'fees')} />
+			<Route path="/admin/limits" name="Admin Limits" component={withAdminProps(Limits, 'limits')} />
+			<Route path="/admin/chat" name="Admin Chats" component={withAdminProps(AdminChat, 'chat')} />
 		</Route>
 		<Route
 			path="privacy-policy"
