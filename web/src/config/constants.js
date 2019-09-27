@@ -10,8 +10,8 @@ export const APP_TITLE = STRINGS.APP_TITLE;
 export const TOKEN_TIME = 24 * 60 * 60 * 1000; // 1 day
 export const SESSION_TIME = 6 * 60 * 60 * 1000; // 6 hour
 
-export const API_URL = config[NETWORK].API_URL;
-export const WS_URL = config[NETWORK].WS_URL;
+export const API_URL = config[ENV].API_URL;
+export const WS_URL = config[ENV].WS_URL;
 
 export const ICONS = {
 	LOGO_GREY: `${process.env.PUBLIC_URL}/assets/hollaEx_logo-grey.svg`,
