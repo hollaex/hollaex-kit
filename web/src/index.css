@@ -242,7 +242,8 @@ table th {
   .app_container .app_container-sidebar {
     min-width: 20rem;
     max-width: 20rem;
-    border-left: 1px solid #777677; }
+    border-left: 1px solid #777677;
+    padding: 0; }
 
 .layout-mobile .presentation_container {
   padding-top: 4rem !important; }

@@ -50,7 +50,8 @@ import {
 	RISK_PORTFOLIO_ORDER_WARING,
 	RISKY_ORDER,
 	setSnackDialog,
-	LOGOUT_CONFORMATION
+	LOGOUT_CONFORMATION,
+	setValidBaseCurrency
 } from '../../actions/appActions';
 
 import {
@@ -226,9 +227,8 @@ class Container extends Component {
 				let temp = data.pairs[key];
 				return temp.pair_2 === BASE_CURRENCY;
 			});
-			if (!pairWithBase.length) {
-				alert(`You need to set relevant BASE_CURRENCY, now is in ${BASE_CURRENCY}`);
-			}
+			const isValidPair = pairWithBase.length > 0;
+			this.props.setValidBaseCurrency(isValidPair);
 			const orderLimits = {};
 			Object.keys(data.pairs).map((pair, index) => {
 				orderLimits[pair] = {
@@ -978,7 +978,8 @@ const mapDispatchToProps = (dispatch) => ({
 	setChatUnreadMessages: bindActionCreators(setChatUnreadMessages, dispatch),
 	setOrderLimits: bindActionCreators(setOrderLimits, dispatch),
 	setSnackDialog: bindActionCreators(setSnackDialog, dispatch),
-	setCurrencies: bindActionCreators(setCurrencies, dispatch)
+	setCurrencies: bindActionCreators(setCurrencies, dispatch),
+	setValidBaseCurrency: bindActionCreators(setValidBaseCurrency, dispatch)
 });
 
 export default connect(

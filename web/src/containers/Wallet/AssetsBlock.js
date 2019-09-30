@@ -18,7 +18,8 @@ export const AssetsBlock = ({
 	wallets,
 	onOpenDialog,
 	bankaccount,
-	navigate
+	navigate,
+	isValidBase
 }) => (
 	<div className="wallet-assets_block">
 		<table className="wallet-assets_block-table">
@@ -124,7 +125,8 @@ export const AssetsBlock = ({
 					})}
 			</tbody>
 			{!isMobile &&
-				BASE_CURRENCY && (
+				BASE_CURRENCY &&
+				isValidBase && (
 					<tfoot>
 						<tr>
 							<td />

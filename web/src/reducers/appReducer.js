@@ -14,7 +14,8 @@ import {
 	SET_UNREAD,
 	SET_ORDER_LIMITS,
 	SET_TICKER_FROM_TRADE,
-	SET_CURRENCIES
+	SET_CURRENCIES,
+	SET_VALID_BASE_CURRENCY
 } from '../actions/appActions';
 import { THEME_DEFAULT } from '../config/constants';
 import { getLanguage } from '../utils/string';
@@ -121,7 +122,8 @@ const INITIAL_STATE = {
 			deposit_limits: {},
 			withdrawal_limits: {}
 		}
-	}
+	},
+	isValidBase: false
 };
 
 const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
@@ -305,6 +307,11 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 				...state,
 				orderLimits: payload
 			};
+		case SET_VALID_BASE_CURRENCY:
+			return {
+				...state,
+				isValidBase: payload.isValidBase
+			}
 		default:
 			return state;
 	}

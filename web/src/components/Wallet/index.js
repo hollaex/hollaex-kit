@@ -92,6 +92,7 @@ class Wallet extends Component {
 
 	render() {
 		const { sections, totalAssets, chartData } = this.state;
+		const { isValidBase } = this.props;
 
 		if (Object.keys(this.props.balance).length === 0) {
 			return <div />;
@@ -106,7 +107,7 @@ class Wallet extends Component {
 						chartData={chartData} />
 				</div>
 				<Accordion sections={sections} />
-				{BASE_CURRENCY && (
+				{BASE_CURRENCY && isValidBase ? (
 					<div className="wallet_section-wrapper wallet_section-total_asset d-flex flex-column">
 						<div className="wallet_section-title">
 							{STRINGS.WALLET.TOTAL_ASSETS}
@@ -116,7 +117,7 @@ class Wallet extends Component {
 							<span>{totalAssets}</span>
 						</div>
 					</div>
-				)}
+				) : null}
 			</div>
 		);
 	}
@@ -130,7 +131,8 @@ const mapStateToProps = (state, ownProps) => ({
 	orders: state.order.activeOrders,
 	user_id: state.user.id,
 	activeLanguage: state.app.language,
-	coins: state.app.coins
+	coins: state.app.coins,
+	isValidBase: state.app.isValidBase
 });
 
 export default connect(mapStateToProps)(Wallet);
