@@ -44,7 +44,7 @@ class BlockchainTransaction extends Component {
 		});
 		return (
 			<div className="app_container-content">
-				<h1> CHECK BLOCKCHAIN TRANSACTIONS </h1>
+				<h1> Check Vault transaction status </h1>
 				<Form
 					onSubmit={this.onSubmit}
 					buttonText="Check"
