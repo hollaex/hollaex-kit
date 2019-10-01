@@ -144,13 +144,13 @@ class Chat extends Component {
 									bannedUsers={bannedUsersUsernames}
 								/>
 							</TabPane>
-							<TabPane tab="Announcements" key="announcements">
+							{/* <TabPane tab="Announcements" key="announcements">
 								<Announcements
 									announcements={announcements}
 									deleteAnnouncement={this.deleteAnnouncement}
 									addAnnouncement={this.addAnnouncement}
 								/>
-							</TabPane>
+							</TabPane> */}
 							<TabPane tab="Banned Users" key="banuser">
 								<Ban
 									bannedUsers={bannedUsers}

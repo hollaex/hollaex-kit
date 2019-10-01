@@ -119,6 +119,9 @@ class Container extends Component {
 		}
 		this._resetTimer();
 		this.updateThemeToBody(this.props.activeTheme);
+		if (this.props.location && this.props.location.pathname) {
+				this.checkPath(this.props.location.pathname);
+		}
 	}
 
 	componentWillReceiveProps(nextProps) {
@@ -155,6 +158,10 @@ class Container extends Component {
 		if (this.props.activeTheme !== nextProps.activeTheme) {
 			this.updateThemeToBody(nextProps.activeTheme);
 		}
+		if (this.props.location && nextProps.location
+            && this.props.location.pathname !== nextProps.location.pathname) {
+				this.checkPath(nextProps.location.pathname);
+		}
 	}
 
 	componentWillUnmount() {
@@ -170,6 +177,25 @@ class Container extends Component {
 			clearTimeout(this.state.idleTimer);
 		}
 		clearTimeout(this.limitTimeOut);
+	}
+
+	checkPath = (path) => {
+		var sheet = document.createElement('style')
+		if ((path === 'login') || (path === 'signup')) {
+			sheet.innerHTML = ".grecaptcha-badge { display: unset !important;}";
+			sheet.id = 'addCap'
+			if (document.getElementById('rmvCap') !== null) {
+				document.body.removeChild(document.getElementById('rmvCap'));
+			}
+		}
+		else {
+			sheet.innerHTML = ".grecaptcha-badge { display: none !important;}";
+			sheet.id = 'rmvCap'
+			if (document.getElementById('addCap') !== null) {
+				document.body.removeChild(document.getElementById('addCap'));
+			}
+		}
+		document.body.appendChild(sheet);
 	}
 
 	updateThemeToBody = (theme) => {
@@ -418,13 +444,11 @@ class Container extends Component {
 							);
 						}
 					);
-					console.log('order_filled', ordersDeleted);
 					this.props.removeOrder(data);
 					if (
 						this.props.settings.notification &&
 						this.props.settings.notification.popup_order_completed
 					) {
-						console.log('inside--sett');
 						ordersDeleted.forEach((orderDeleted) => {
 							if (isMobile) {
 								this.props.setSnackDialog({
@@ -439,7 +463,6 @@ class Container extends Component {
 									}
 								});
 							} else {
-								console.log('inside notification');
 								this.props.setNotification(NOTIFICATIONS.ORDERS, {
 									type,
 									data: {

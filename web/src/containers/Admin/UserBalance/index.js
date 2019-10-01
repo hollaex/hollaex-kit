@@ -86,7 +86,7 @@ class UserBalance extends Component {
 								{Object.entries(userBalance).map(([key, value]) => {
 									if (key === 'created_at' || key === 'updated_at') {
 										return (
-											<div>
+											<div key={key}>
 												{' '}
 												<strong>{key}</strong> :{' '}
 												{moment(value).format('YYYY/MM/DD HH:mm')}{' '}
@@ -94,7 +94,7 @@ class UserBalance extends Component {
 										);
 									} else {
 										return (
-											<div>
+											<div key={key}>
 												<strong>{key}</strong> :{' '}
 												{typeof value !== 'number' ? (
 													<span>no data</span>
