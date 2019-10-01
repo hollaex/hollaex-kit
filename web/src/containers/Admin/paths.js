@@ -1,13 +1,3 @@
-// import {
-// 	Chat,
-// 	User,
-// 	Main,
-// 	Limits,
-// 	DepositsPage as Deposits,
-// 	BlockchainTransaction,
-// 	UserFees,
-// 	Wallets,
-// } from './';
 
 import { APP_TITLE } from '../../config/constants';
 
@@ -21,35 +11,22 @@ export const PATHS = [
 	{
 		path: '/admin/user',
 		// component: User,
-		label: 'USER',
+		label: 'User',
 		routeKey: 'user'
 	},
 	{
 		path: '/admin/wallets',
 		// component: Wallets,
-		label: 'WALLETS',
+		label: 'Wallets',
 		hideIfSupport: true,
 		hideIfSupervisor: true,
 		hideIfKYC: true,
 		routeKey: 'wallets'
 	},
 	{
-		path: '/admin/withdrawals',
-		// component: Deposits,
-		label: 'WITHDRAWALS',
-		pathProps: {
-			type: 'withdrawal',
-			showFilters: true
-		},
-		hideIfSupport: true,
-		hideIfKYC: true,
-		hideIfSupervisor: false,
-		routeKey: 'withdrawal'
-	},
-	{
 		path: '/admin/deposits',
 		// component: Deposits,
-		label: 'DEPOSITS',
+		label: 'Deposits',
 		hideIfSupport: true,
 		hideIfKYC: true,
 		hideIfSupervisor: false,
@@ -60,15 +37,22 @@ export const PATHS = [
 		routeKey: 'deposit'
 	},
 	{
-		path: '/admin/blockchain',
-		// component: BlockchainTransaction,
-		label: 'CHECK BLOCKCHAIN TX',
-		routeKey: 'blockChain'
+		path: '/admin/withdrawals',
+		// component: Deposits,
+		label: 'Withdrawals',
+		pathProps: {
+			type: 'withdrawal',
+			showFilters: true
+		},
+		hideIfSupport: true,
+		hideIfKYC: true,
+		hideIfSupervisor: false,
+		routeKey: 'withdrawal'
 	},
 	{
 		path: '/admin/fees',
 		// component: UserFees,
-		label: 'USER FEES',
+		label: 'Trading Pairs',
 		hideIfSupport: true,
 		hideIfKYC: true,
 		hideIfSupervisor: true,
@@ -77,7 +61,7 @@ export const PATHS = [
 	{
 		path: '/admin/limits',
 		// component: Limits,
-		label: 'LIMITS',
+		label: 'Coins',
 		hideIfSupport: true,
 		hideIfKYC: true,
 		hideIfSupervisor: true,
@@ -86,10 +70,16 @@ export const PATHS = [
 	{
 		path: '/admin/chat',
 		// component: Chat,
-		label: 'CHAT',
+		label: 'Chat',
 		hideIfSupport: false,
 		hideIfKYC: true,
 		hideIfSupervisor: false,
 		routeKey: 'Chat'
-	}
+	},
+	{
+		path: '/admin/blockchain',
+		// component: BlockchainTransaction,
+		label: 'Vault',
+		routeKey: 'blockChain'
+	},
 ];

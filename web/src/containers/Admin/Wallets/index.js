@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import { Spin } from 'antd';
-import { requestTotalBalance, requestEthSweep } from './actions';
-import { Card, Alert, Input, Button, Row, Col } from 'antd';
+import { requestTotalBalance } from './actions';
+import { Card, Alert } from 'antd';
 import { formatCurrency } from '../../../utils';
 
-const Search = Input.Search;
 
 class Wallets extends Component {
 	state = {
@@ -44,20 +43,8 @@ class Wallets extends Component {
 			});
 	};
 
-	onSweep(value) {
-		if (value === '') {
-			return null;
-		} else {
-			this.setState({
-				showSweep: true,
-				walletNum: value
-			});
-			requestEthSweep(value);
-		}
-	}
-
 	render() {
-		const { balance, loading, error, showSweep, walletNum } = this.state;
+		const { balance, loading, error } = this.state;
 
 		return (
 			<div className="app_container-content">
@@ -99,43 +86,6 @@ class Wallets extends Component {
 								})
 							)}
 						</Card>
-						<h1 className="m-top">Ethereum sweep</h1>
-						{showSweep || (
-							<div>
-								<Search
-									placeholder="Number of wallets to sweep"
-									enterButton="Start"
-									size="large"
-									style={{ width: '60%' }}
-									onSearch={(e) => this.onSweep(e)}
-								/>
-							</div>
-						)}
-						{showSweep && (
-							<Row>
-								<Col span={4}>
-									<img
-										src="http://gifimage.net/wp-content/uploads/2017/10/broom-sweeping-gif-6.gif"
-										alt="sweeping"
-									/>
-								</Col>
-								<Col span={12}>
-									<h2 className="m-top">
-										Sweeping of {walletNum} wallets initiated on the
-										server. Comeback later
-									</h2>
-									<Button
-										size="large"
-										type="primary"
-										onClick={() =>
-											this.setState({ showSweep: false })
-										}
-									>
-										Sweep again
-									</Button>
-								</Col>
-							</Row>
-						)}
 					</div>
 				)}
 			</div>
