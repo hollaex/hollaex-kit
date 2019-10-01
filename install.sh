@@ -17,10 +17,10 @@ EOF
 
 if [[ -d "$HOME/.hex-cli" ]] || [[ -d "$HOME/.hollaex-cli" ]]; then
     echo "You already installed previous version of hex-cli."
-    echo "Are you sure you want to replace existing one to latest? (y/N)"
+    echo "Are you sure you want to replace existing one to latest? (Y/n)"
     REPLACE_EXISTING_TO_LATEST=true
 else
-    echo "Are you sure you want to proceed to install hex-cli? (y/N)"
+    echo "Are you sure you want to proceed to install hex-cli? (Y/n)"
 fi
 
 read answer
