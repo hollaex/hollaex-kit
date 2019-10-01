@@ -16,40 +16,16 @@ import {
 import UserData from './UserData';
 import BankData from './BankData';
 import { isSupport, isAdmin, isKYC } from '../../../utils/token';
-import { requestFees } from './actions';
 
 import Flagger from '../Flaguser';
 
 const TabPane = Tabs.TabPane;
 
 class UserContent extends Component {
-	constructor(props) {
-		super(props)
-		this.state = {
-			pairs: []
-		}
-	}
-	
-	componentDidMount() {
-		if (isAdmin()) {
-			requestFees()
-				.then((response) => {
-					const newPair = [];
-					const sortedData = response.data.sort((a, b) => a.id - b.id);
-					sortedData.forEach(({ pair_base }) => {
-						if (!newPair.includes(pair_base)) {
-							newPair.push(pair_base);
-						}
-					});
-					this.setState({ pairs: newPair });
-				})
-				.catch((err) => {
-				})
-		}
-	}
 	
 	render() {
 		const {
+			coins,
 			userInformation,
 			userImages,
 			clearData,
@@ -59,7 +35,8 @@ class UserContent extends Component {
 		} = this.props;
 		const { id, activated, otp_enabled, flagged } = userInformation;
 		const isSupportUser = isSupport();
-		const { pairs } = this.state;
+		const pairs = Object.keys(coins) || [];
+
 		return (
 			<div className="app_container-content">
 				<div className="d-flex justify-content-between">

@@ -122,6 +122,7 @@ class App extends Component {
 
 	render() {
 		const { userInformation, userImages, userBalance, loading } = this.state;
+		const { coins } = this.props;
 
 		if (loading) {
 			return (
@@ -133,6 +134,7 @@ class App extends Component {
 
 		return userInformation && userInformation.id ? (
 			<UserContent
+				coins={coins}
 				userBalance={userBalance}
 				userInformation={userInformation}
 				userImages={userImages}
@@ -169,7 +171,7 @@ class App extends Component {
 
 					<TabPane tab="All Users" key="users">
 						<h2 className="m-top">LIST OF ALL USERS</h2>
-						<FullListUsers coins={this.props.coins} requestUser={this.requestUserData} />
+						<FullListUsers coins={coins} requestUser={this.requestUserData} />
 					</TabPane>
 				</Tabs>
 			</div>

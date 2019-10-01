@@ -53,5 +53,3 @@ export const requestUser = (values) => {
 	const promises = [requestUserData(values), requestUserImages(values)];
 	return all(promises);
 };
-
-export const requestFees = () => requestAuthenticated('/admin/pairs');
