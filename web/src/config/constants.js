@@ -5,6 +5,8 @@ import STRINGS from './localizedStrings';
 export const ENV = process.env.NODE_ENV || 'development';
 export const NETWORK = process.env.REACT_APP_NETWORK || 'testnet';
 
+export const EXCHANGE_NAME = process.env.REACT_APP_EXCHANGE_NAME || 'HEX Exchange';
+
 export const APP_TITLE = STRINGS.APP_TITLE;
 
 export const TOKEN_TIME = 24 * 60 * 60 * 1000; // 1 day
