@@ -5,7 +5,7 @@ import STRINGS from './localizedStrings';
 export const ENV = process.env.NODE_ENV || 'development';
 export const NETWORK = process.env.REACT_APP_NETWORK || 'testnet';
 
-export const APP_TITLE = STRINGS.APP_TITLE;
+export const APP_TITLE = process.env.REACT_APP_EXCHANGE_NAME || STRINGS.APP_TITLE;
 
 export const TOKEN_TIME = 24 * 60 * 60 * 1000; // 1 day
 export const SESSION_TIME = 6 * 60 * 60 * 1000; // 6 hour
