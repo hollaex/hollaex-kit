@@ -1,3 +1,7 @@
+import React from 'react';
+import ReactSVG from "react-svg";
+
+import { ICONS } from '../../../config/constants';
 // export const COLUMNS_CURRENCY = [
 // 	{
 // 		title: 'Verification Level',
@@ -49,70 +53,271 @@ export const CURRENCY_KEYS = [
 	{ value: 'max', label: 'max' }
 ];
 
-const returnArray = (obj) => {
+const returnArray = (obj, data, keyIndex, handleClick) => {
 	const keys = Object.keys(obj);
-	return keys.map((index) => ` ${obj[index]} `);
+	return (<div className="d-flex" onClick={() => handleClick(obj, data, keyIndex)}>
+		<div>{keys.map((index) => ` ${obj[index]} `)}</div>
+		<div>
+			<ReactSVG path={ICONS.EDIT_ICON} wrapperClassName="edit_icon mx-2" />
+		</div>
+	</div>);
 };
 
-export const COLUMNS_CURRENCY = [
+export const getCurrencyColumns = (handleClick) => [
 	{
 		title: 'fullname',
 		dataIndex: 'fullname',
-		key: 'fullname'
+		key: 'fullname',
+		render: (v, data) => (<div className="d-flex" onClick={() => handleClick(v, data, 'fullname')}>
+			<div>{v}</div>
+			<div>
+				<ReactSVG path={ICONS.EDIT_ICON} wrapperClassName="edit_icon mx-2" />
+			</div>
+		</div>)
 	},
 	{
 		title: 'symbol',
 		dataIndex: 'symbol',
-		key: 'symbol'
+		key: 'symbol',
+		render: (v, data) => (<div className="d-flex" onClick={() => handleClick(v, data, 'symbol')}>
+			<div>{v}</div>
+			<div>
+				<ReactSVG path={ICONS.EDIT_ICON} wrapperClassName="edit_icon mx-2" />
+			</div>
+		</div>)
 	},
 	{
 		title: 'active',
 		dataIndex: 'active',
 		key: 'active',
-		render: (v) => (v ? 'active' : 'inactive')
+		render: (v, data) => (<div className="d-flex" onClick={() => handleClick(v, data, 'active')}>
+			<div>{v ? 'active' : 'inactive'}</div>
+			<div>
+				<ReactSVG path={ICONS.EDIT_ICON} wrapperClassName="edit_icon mx-2" />
+			</div>
+		</div>)
 	},
 	{
 		title: 'allow_deposit',
 		dataIndex: 'allow_deposit',
 		key: 'allow_deposit',
-		render: (v) => (v ? 'allow' : 'inallow')
+		render: (v, data) => (<div className="d-flex" onClick={() => handleClick(v, data, 'allow_deposit')}>
+			<div>{v ? 'allow' : 'inallow'}</div>
+			<div>
+				<ReactSVG path={ICONS.EDIT_ICON} wrapperClassName="edit_icon mx-2" />
+			</div>
+		</div>)
 	},
 	{
 		title: 'allow_withdrawal',
 		dataIndex: 'allow_withdrawal',
 		key: 'allow_withdrawal',
-		render: (v) => (v ? 'allow' : 'inallow')
+		render: (v, data) => (<div className="d-flex" onClick={() => handleClick(v, data, 'allow_withdrawal')}>
+			<div>{v ? 'allow' : 'inallow'}</div>
+			<div>
+				<ReactSVG path={ICONS.EDIT_ICON} wrapperClassName="edit_icon mx-2" />
+			</div>
+		</div>)
 	},
 	{
 		title: 'withdrawal_fee',
 		dataIndex: 'withdrawal_fee',
-		key: 'withdrawal_fee'
+		key: 'withdrawal_fee',
+		render: (v, data) => (<div className="d-flex" onClick={() => handleClick(v, data, 'withdrawal_fee')}>
+			<div>{v}</div>
+			<div>
+				<ReactSVG path={ICONS.EDIT_ICON} wrapperClassName="edit_icon mx-2" />
+			</div>
+		</div>)
 	},
 	{
 		title: 'min',
 		dataIndex: 'min',
-		key: 'min'
+		key: 'min',
+		render: (v, data) => (<div className="d-flex" onClick={() => handleClick(v, data, 'min')}>
+			<div>{v}</div>
+			<div>
+				<ReactSVG path={ICONS.EDIT_ICON} wrapperClassName="edit_icon mx-2" />
+			</div>
+		</div>)
 	},
 	{
 		title: 'max',
 		dataIndex: 'max',
-		key: 'max'
+		key: 'max',
+		render: (v, data) => (<div className="d-flex" onClick={() => handleClick(v, data, 'max')}>
+			<div>{v}</div>
+			<div>
+				<ReactSVG path={ICONS.EDIT_ICON} wrapperClassName="edit_icon mx-2" />
+			</div>
+		</div>)
 	},
 	{
 		title: 'increment_unit',
 		dataIndex: 'increment_unit',
-		key: 'increment_unit'
+		key: 'increment_unit',
+		render: (v, data) => (<div className="d-flex" onClick={() => handleClick(v, data, 'increment_unit')}>
+			<div>{v}</div>
+			<div>
+				<ReactSVG path={ICONS.EDIT_ICON} wrapperClassName="edit_icon mx-2" />
+			</div>
+		</div>)
 	},
 	{
 		title: 'deposit_limits',
 		dataIndex: 'deposit_limits',
 		key: 'deposit_limits',
-		render: (d) => returnArray(d)
+		render: (d, data) => returnArray(d, data, 'deposit_limits', handleClick)
 	},
 	{
 		title: 'withdrawal_limits',
 		dataIndex: 'withdrawal_limits',
 		key: 'withdrawal_limits',
-		render: (d) => returnArray(d)
+		render: (d, data) => returnArray(d, data, 'withdrawal_limits', handleClick)
 	}
 ];
+
+export const COINS_FORM_FIELDS = {
+	'fullname': {
+		fullname: {
+			type: 'text',
+			label: 'fullname'
+		}
+	},
+	'symbol': {
+		symbol: {
+			type: 'text',
+			label: 'symbol'
+		}
+	},
+	'active': {
+		active: {
+			type: 'select',
+			label: 'active',
+			options: [
+				{ label: 'active', value: 'true' },
+				{ label: 'inactive', value: 'false' }
+			]
+		}
+	},
+	'allow_deposit': {
+		allow_deposit: {
+			type: 'select',
+			label: 'allow deposit',
+			options: [
+				{ label: 'allow', value: 'true' },
+				{ label: 'disallow', value: 'false' }
+			]
+		}
+	},
+	'allow_withdrawal': {
+		allow_withdrawal: {
+			type: 'select',
+			label: 'allow withdrawal',
+			options: [
+				{ label: 'allow', value: 'true' },
+				{ label: 'disallow', value: 'false' }
+			]
+		}
+	},
+	'withdrawal_fee': {
+		withdrawal_fee: {
+			type: 'number',
+			label: 'withdrawal fee',
+		}
+	},
+	'min': {
+		min: {
+			type: 'number',
+			label: 'min',
+		}
+	},
+	'max': {
+		max: {
+			type: 'number',
+			label: 'max',
+		}
+	},
+	'increment_unit': {
+		increment_unit: {
+			type: 'number',
+			label: 'increment unit',
+		}
+	},
+	'deposit_limits': {
+		1: {
+			deposit_limits_1: {
+				type: 'number',
+				label: ''
+			}
+		},
+		2: {
+			deposit_limits_2: {
+				type: 'number',
+				label: ''
+			}
+		},
+		3: {
+			deposit_limits_3: {
+				type: 'number',
+				label: ''
+			}
+		},
+		4: {
+			deposit_limits_4: {
+				type: 'number',
+				label: ''
+			}
+		},
+		5: {
+			deposit_limits_5: {
+				type: 'number',
+				label: ''
+			}
+		},
+		6: {
+			deposit_limits_6: {
+				type: 'number',
+				label: ''
+			}
+		}
+	},
+	'withdrawal_limits': {
+		1: {
+			withdrawal_limits_1: {
+				type: 'number',
+				label: ''
+			}
+		},
+		2: {
+			withdrawal_limits_2: {
+				type: 'number',
+				label: ''
+			}
+		},
+		3: {
+			withdrawal_limits_3: {
+				type: 'number',
+				label: ''
+			}
+		},
+		4: {
+			withdrawal_limits_4: {
+				type: 'number',
+				label: ''
+			}
+		},
+		5: {
+			withdrawal_limits_5: {
+				type: 'number',
+				label: ''
+			}
+		},
+		6: {
+			withdrawal_limits_6: {
+				type: 'number',
+				label: ''
+			}
+		}
+	}
+};

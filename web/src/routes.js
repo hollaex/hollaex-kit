@@ -134,10 +134,10 @@ function withAdminProps(Component, key) {
 			adminProps = { ...rest, ...pathProps };
 		}
 	});
-	return function(matchProps) {
-	  return <Component {...adminProps} {...matchProps} />
+	return function (matchProps) {
+		return <Component {...adminProps} {...matchProps} />
 	}
-  }
+}
 
 export default (
 	<Router history={browserHistory}>

@@ -122,7 +122,7 @@ class App extends Component {
 
 	render() {
 		const { userInformation, userImages, userBalance, loading } = this.state;
-		const { coins } = this.props;
+		const { coins, config } = this.props;
 
 		if (loading) {
 			return (
@@ -135,6 +135,7 @@ class App extends Component {
 		return userInformation && userInformation.id ? (
 			<UserContent
 				coins={coins}
+				config={config}
 				userBalance={userBalance}
 				userInformation={userInformation}
 				userImages={userImages}
@@ -180,7 +181,8 @@ class App extends Component {
 }
 
 const mapStateToProps = (state) => ({
-	coins: state.app.coins
+	coins: state.app.coins,
+	config: state.app.config
 });
 
 export default connect(mapStateToProps)(App);

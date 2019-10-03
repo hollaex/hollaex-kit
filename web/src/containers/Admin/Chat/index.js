@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import io from 'socket.io-client';
+import { connect } from 'react-redux';
 import { Spin } from 'antd';
 import { WS_URL } from '../../../config/constants';
 import { getToken } from '../../../utils/token';
@@ -70,7 +71,8 @@ class Chat extends Component {
 		this.setState({ chatWs });
 	};
 
-	addMessage = (message, username = 'admin') => {
+	addMessage = (message) => {
+		const { username } = this.props;
 		this.state.chatWs.emit('message', {
 			message,
 			username
@@ -165,5 +167,8 @@ class Chat extends Component {
 		);
 	}
 }
+const mapStateToProps = (store) => ({
+	username : store.user.username
+});
 
-export default Chat;
+export default connect(mapStateToProps)(Chat);

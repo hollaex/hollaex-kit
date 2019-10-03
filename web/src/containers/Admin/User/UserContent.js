@@ -26,6 +26,7 @@ class UserContent extends Component {
 	render() {
 		const {
 			coins,
+			config,
 			userInformation,
 			userImages,
 			clearData,
@@ -127,6 +128,7 @@ class UserContent extends Component {
 					)}
 					<TabPane tab="Verification" key="verification">
 						<Verification
+							config={config}
 							user_id={userInformation.id}
 							userImages={userImages}
 							userInformation={userInformation}

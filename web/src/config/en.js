@@ -1094,5 +1094,7 @@ export default {
 		COPY_FIELD_LABEL: 'Share the link below with friends and earn commissions:', // new
 		REFERRED_USER_COUT: 'You have referred {0} users', // new
 		COPY_LINK_BUTTON: 'COPY REFERRAL LINK' // new
-	}
+	},
+	USER_LEVEL: 'User level', // new
+	LIMIT_AMOUNT: 'Limit amount', // new
 };

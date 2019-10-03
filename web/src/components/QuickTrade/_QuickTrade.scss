@@ -231,6 +231,14 @@ $title-icon--height: 10rem;
 			background-color: $colors-currencies-ltc;
 		}
 	}
+	.mobile_dropdown-section {
+		.mobile-drop-down {
+			color:$colors-main-black;
+			.option {
+				color:$dark-disabled-main;
+			}
+		}
+	}
 }
 
 @keyframes linear_loading {
@@ -320,6 +328,15 @@ $title-icon--height: 10rem;
 			background-color: $dark-app-background-color;
 			color: $dark-font-main-text-color;
 		}
+		.mobile_dropdown-section {
+			.mobile-drop-down {
+				color:$dark-font-main-text-color;	
+				.option {
+					background: $dark-app-background-color;
+					color:$colors-deactivate-color2;	
+				}
+			}
+		}
 	}
 
 	svg {
@@ -342,4 +359,7 @@ $title-icon--height: 10rem;
 	.quick_trade-wrapper {
 		margin-top: -24px;
 	}
+}
+.mobile_dropdown-section {
+	border-top: solid;
 }

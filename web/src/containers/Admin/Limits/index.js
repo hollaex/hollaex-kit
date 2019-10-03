@@ -2,12 +2,16 @@ import React, { Component } from 'react';
 import { Table, Spin, notification, Input, Select } from 'antd';
 import { CSVLink } from 'react-csv';
 
+import UserLimitForm from './UserLimitForm';
 import { requestLimits, performLimitUpdate } from './actions';
-import { UPDATE_KEYS, CURRENCY_KEYS, COLUMNS_CURRENCY } from './constants';
+import { UPDATE_KEYS, CURRENCY_KEYS, COINS_FORM_FIELDS, getCurrencyColumns } from './constants';
+import { ModalForm } from '../../../components';
+import './index.css';
 
 const InputGroup = Input.Group;
 const Option = Select.Option;
 const Search = Input.Search;
+const Form = ModalForm('EditLimits', '');
 const openNotification = () => {
 	notification.open({
 		message: 'Successfully updated'
@@ -21,11 +25,21 @@ class Limits extends Component {
 		loading: false,
 		error: '',
 		verification_level: null,
-		update_type: ''
+		update_type: '',
+		columnsCsv: [],
+		isEdit: false,
+		editData: {},
+		Fields: {},
+		initialValues: {},
+		isCustomContent: false
 	};
 
 	componentWillMount() {
 		this.requestLimits();
+		// setTimeout(() => {
+		// 	const COLUMNS_CURRENCY_CSV = getCurrencyColumns(this.handleEdit, true);
+		// 	this.setState({ columnsCsv: COLUMNS_CURRENCY_CSV });
+		// }, 5000);
 	}
 
 	requestLimits = () => {
@@ -67,31 +81,93 @@ class Limits extends Component {
 		});
 	};
 
+	handleEdit = (value, data, keyIndex) => {
+		const Fields = COINS_FORM_FIELDS[keyIndex];
+		let initialValues = {};
+		if (typeof data[keyIndex] === 'object') {
+			const temp = data[keyIndex];
+			Object.keys(temp).map(key => {
+				initialValues[`${keyIndex}_${key}`] = temp[key];
+			});
+		} else {
+			initialValues[keyIndex] = `${data[keyIndex]}`;
+		}
+		const isCustomContent = keyIndex === 'withdrawal_limits' || keyIndex === 'deposit_limits'
+			? true
+			: false;
+		this.setState({
+			isEdit: true,
+			editData: { keyIndex, data },
+			Fields,
+			initialValues,
+			isCustomContent
+		});
+	};
+
+	onCancel = () => {
+		this.setState({ isEdit: false });
+	};
+
+	onSubmit = (rowData) => (values) => {
+		const { keyIndex, data } = rowData;
+		let formProps = {};
+		if (keyIndex === 'active' || keyIndex === 'allow_deposit' || keyIndex === 'allow_withdrawal') {
+			formProps[keyIndex] = values[keyIndex] === 'true' ? true : false;
+		} else if (keyIndex === 'deposit_limits' || keyIndex === 'withdrawal_limits') {
+			const loopData = data[keyIndex];
+			const tempData = {};
+			if (Object.keys(loopData).length) {
+				Object.keys(loopData).map(key => {
+					tempData[key] = parseFloat(values[`${keyIndex}_${key}`]);
+				});
+				formProps[keyIndex] = tempData;
+			}
+		} else if (keyIndex === 'withdrawal_fee'
+			|| keyIndex === 'min'
+			|| keyIndex === 'max'
+			|| keyIndex === 'increment_unit') {
+			formProps[keyIndex] = parseFloat(values[keyIndex]);
+		} else {
+			formProps[keyIndex] = values[keyIndex];
+		}
+		if (data.id) {
+			performLimitUpdate(data.id, { ...formProps, currency: data.symbol })
+				.then((res) => {
+					this.requestLimits();
+					this.onCancel();
+					openNotification();
+				})
+				.catch((error) => {
+				});
+		}
+	};
+
 	render() {
-		const { limits, loading, error } = this.state;
+		const { limits, loading, error, isEdit, editData, Fields, initialValues, isCustomContent } = this.state;
+		const COLUMNS_CURRENCY = getCurrencyColumns(this.handleEdit);
 		return (
 			<div className="app_container-content">
 				{loading ? (
 					<Spin size="large" />
 				) : (
-					<div>
-						{error && <p>-{error}-</p>}
-						<h1>DAILY MAX LIMITS</h1>
-						<CSVLink
-							filename={'daily-max-limits.csv'}
-							data={limits}
-							headers={COLUMNS_CURRENCY}
-						>
-							Download table
+						<div>
+							{error && <p>-{error}-</p>}
+							<h1>DAILY MAX LIMITS</h1>
+							<CSVLink
+								filename={'daily-max-limits.csv'}
+								data={limits}
+								headers={COLUMNS_CURRENCY}
+							>
+								Download table
 						</CSVLink>
-						<Table
-							columns={COLUMNS_CURRENCY}
-							dataSource={limits}
-							rowKey={(data) => {
-								return data.id;
-							}}
-						/>
-						{/* <div>
+							<Table
+								columns={COLUMNS_CURRENCY}
+								dataSource={limits}
+								rowKey={(data) => {
+									return data.id;
+								}}
+							/>
+							{/* <div>
 							<h2>CHANGE DAILY MAX LIMITS</h2>
 
 							<InputGroup compact>
@@ -126,8 +202,18 @@ class Limits extends Component {
 								/>
 							</InputGroup>
 						</div> */}
-					</div>
-				)}
+						</div>
+					)}
+				<Form
+					visible={isEdit}
+					title={editData.keyIndex}
+					okText='Save'
+					fields={Fields}
+					CustomRenderContent={isCustomContent ? UserLimitForm : null}
+					initialValues={initialValues}
+					onSubmit={this.onSubmit(editData)}
+					onCancel={this.onCancel}
+				/>
 			</div>
 		);
 	}

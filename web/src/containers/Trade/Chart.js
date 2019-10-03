@@ -302,7 +302,7 @@ class TVChartContainer extends React.PureComponent {
 	}
 
 	componentWillUnmount() {
-		if (this.tvWidget !== null) {
+		if (this.tvWidget !== null && this.tvWidget._ready) {
 			this.tvWidget.remove();
 			this.tvWidget = null;
 		}

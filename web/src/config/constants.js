@@ -453,7 +453,8 @@ export const ICONS = {
 	SETTING_RISK_MANAGE_WARNING_ICON: `${
 		process.env.PUBLIC_URL
 	}/assets/images/risk-manage-pop-warning.svg`,
-	REFER_ICON: `${process.env.PUBLIC_URL}/assets/images/refer-icon.svg`
+	REFER_ICON: `${process.env.PUBLIC_URL}/assets/images/refer-icon.svg`,
+	EDIT_ICON: `${process.env.PUBLIC_URL}/assets/images/edit-icon.svg`
 };
 
 export const SOCIAL_ICONS = {

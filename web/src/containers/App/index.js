@@ -51,7 +51,8 @@ import {
 	RISKY_ORDER,
 	setSnackDialog,
 	LOGOUT_CONFORMATION,
-	setValidBaseCurrency
+	setValidBaseCurrency,
+	setConfig
 } from '../../actions/appActions';
 
 import {
@@ -249,6 +250,7 @@ class Container extends Component {
 			this.props.setPairs(data.pairs);
 			this.props.setPairsData(data.pairs);
 			this.props.setCurrencies(data.coins);
+			this.props.setConfig(data.config);
 			const pairWithBase = Object.keys(data.pairs).filter((key) => {
 				let temp = data.pairs[key];
 				return temp.pair_2 === BASE_CURRENCY;
@@ -967,7 +969,8 @@ const mapStateToProps = (store) => ({
 	unreadMessages: store.app.chatUnreadMessages,
 	orderbooks: store.orderbook.pairsOrderbooks,
 	pairsTrades: store.orderbook.pairsTrades,
-	settings: store.user.settings
+	settings: store.user.settings,
+	config: store.app.config
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -1002,7 +1005,8 @@ const mapDispatchToProps = (dispatch) => ({
 	setOrderLimits: bindActionCreators(setOrderLimits, dispatch),
 	setSnackDialog: bindActionCreators(setSnackDialog, dispatch),
 	setCurrencies: bindActionCreators(setCurrencies, dispatch),
-	setValidBaseCurrency: bindActionCreators(setValidBaseCurrency, dispatch)
+	setValidBaseCurrency: bindActionCreators(setValidBaseCurrency, dispatch),
+	setConfig: bindActionCreators(setConfig, dispatch)
 });
 
 export default connect(
