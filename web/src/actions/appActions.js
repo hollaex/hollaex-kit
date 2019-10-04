@@ -42,6 +42,8 @@ export const RISK_PORTFOLIO_ORDER_WARING = 'RISK_PORTFOLIO_ORDER_WARING';
 export const RISKY_ORDER = 'RISKY_ORDER';
 export const LOGOUT_CONFORMATION = 'LOGOUT_CONFORMATION';
 export const SET_CURRENCIES = 'SET_CURRENCIES';
+export const SET_CONFIG = 'SET_CONFIG';
+export const SET_VALID_BASE_CURRENCY = 'SET_VALID_BASE_CURRENCY';
 
 export const USER_TYPES = {
 	USER_TYPE_NORMAL: 'normal',
@@ -195,6 +197,19 @@ export const setCurrencies = (coins) => ({
 	type: SET_CURRENCIES,
 	payload: {
 		coins
+	}
+});
+export const setConfig = (config) => ({
+	type: SET_CONFIG,
+	payload: {
+		config
+	}
+});
+
+export const setValidBaseCurrency = (isValidBase) => ({
+	type: SET_VALID_BASE_CURRENCY,
+	payload: {
+		isValidBase
 	}
 });
 

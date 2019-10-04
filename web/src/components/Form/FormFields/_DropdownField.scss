@@ -28,7 +28,7 @@ $dropdown-option--padding: 0.25rem;
 	position: absolute;
 	top: 100%;
 	width: 100%;
-	background: white;
+	background: $app-background-color;
 	z-index: 10000;
 	max-height: $dropdown-menu--max-height;
 	overflow-y: auto;

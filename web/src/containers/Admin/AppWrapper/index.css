@@ -26,7 +26,8 @@
 	/* max-width: 1024px;
 	margin: 8px auto;
 	flex-direction: column; */
-	flex: 1;
+	width: 100%;
+	/* flex: 1; */
 }
 .content-wrapper {
 	margin:24px;

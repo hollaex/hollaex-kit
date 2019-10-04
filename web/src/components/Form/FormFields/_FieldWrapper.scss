@@ -33,7 +33,7 @@ $outline-height: 1.5px;
 
 .field-label {
 	margin-bottom: 0.25rem;
-	color: $colors-deactivate-color2;
+	color: $form-label;
 	font-weight: normal;
 }
 
@@ -112,7 +112,7 @@ $outline-height: 1.5px;
 }
 
 .dumb-field-wrapper {
-	color: $colors-notifications-blue;
+	color: $link;
 	> .field-content > .field-children {
 		padding-left: 0.25rem;
 	}

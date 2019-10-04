@@ -1,5 +1,8 @@
 import React from 'react';
 import { Tabs } from 'antd';
+import { connect } from 'react-redux';
+
+import { BASE_CURRENCY } from '../../../config/constants';
 import { Deposits } from '../';
 import './index.css';
 
@@ -11,12 +14,16 @@ const DepositsPage = ({
 	location,
 	noQueryParams,
 	showFilters,
+	coins,
 	...rest
 }) => {
 	const queryParams = {};
+	const currencies = Object.keys(coins);
 	if (!noQueryParams) {
 		if (currency) {
 			queryParams.currency = currency;
+		} else if(currencies[0]){
+			queryParams.currency = currencies[0];
 		}
 		if (type) {
 			queryParams.type = type;
@@ -34,8 +41,9 @@ const DepositsPage = ({
 						queryParams={queryParams}
 						showFilters={false}
 						noQueryParams={noQueryParams}
+						coins={coins}
 						initialData={{
-							currency: 'fiat',
+							currency: currencies[0] ? currencies[0] : BASE_CURRENCY,
 							status: 'false',
 							dismissed: 'false',
 							rejected: 'false'
@@ -45,6 +53,7 @@ const DepositsPage = ({
 
 				<TabPane tab="Transactions" key="transactions">
 					<Deposits
+						coins={coins}
 						queryParams={queryParams}
 						showFilters={showFilters}
 						noQueryParams={noQueryParams}
@@ -55,6 +64,10 @@ const DepositsPage = ({
 	);
 };
 
+const mapStateToProps = (state) => ({
+	coins: state.app.coins
+});
+
 DepositsPage.defaultProps = {
 	currency: '',
 	type: '',
@@ -62,4 +75,4 @@ DepositsPage.defaultProps = {
 	showFilters: false
 };
 
-export default DepositsPage;
+export default connect(mapStateToProps)(DepositsPage);

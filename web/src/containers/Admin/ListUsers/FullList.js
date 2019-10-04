@@ -9,7 +9,7 @@ import './index.css';
 
 import { requestFullUsers } from './actions';
 
-import { HEADERS } from './constants';
+import { generateHeaders } from './constants';
 
 // const renderBoolean = (value) => <Icon type={value ? 'check-circle-o' : 'close-circle'}/>;
 
@@ -125,6 +125,8 @@ class FullListUsers extends Component {
 		};
 
 		const { users, loading, error } = this.state;
+		const { coins } = this.props;
+		const HEADERS = generateHeaders(coins);
 		return (
 			<div className="app_container-content">
 				{loading ? (

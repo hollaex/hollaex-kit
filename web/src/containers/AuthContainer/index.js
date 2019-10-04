@@ -13,14 +13,35 @@ const updateThemeToBody = (theme = 'white') => {
 		// document.body.className = themeName;
 	}
 };
+const checkPath = (path) => {
+	var sheet = document.createElement('style')
+	if ((path === '/login') || (path === '/signup')) {
+		sheet.innerHTML = ".grecaptcha-badge { display: unset !important;}";
+		sheet.id = 'addCap'
+		if (document.getElementById('rmvCap') !== null) {
+			document.body.removeChild(document.getElementById('rmvCap'));
+		}
+	}
+	else {
+		sheet.innerHTML = ".grecaptcha-badge { display: none !important;}";
+		sheet.id = 'rmvCap'
+		if (document.getElementById('addCap') !== null) {
+			document.body.removeChild(document.getElementById('addCap'));
+		}
+	}
+	document.body.appendChild(sheet);
+}
 
-const AuthContainer = ({ activeLanguage, activeTheme, children }) => {
+const AuthContainer = ({ activeLanguage, activeTheme, children, ...rest }) => {
 	const languageClasses = getClasesForLanguage(activeLanguage);
 	const childWithLanguageClasses = React.Children.map(children, (child) =>
 		React.cloneElement(child, { activeLanguage, languageClasses })
 	);
-	loadReCaptcha(CAPTCHA_SITEKEY)
+	loadReCaptcha(CAPTCHA_SITEKEY);
 	updateThemeToBody(activeTheme);
+	if (rest.location && rest.location.pathname) {
+		checkPath(rest.location.pathname);
+	};
 	return (
 		<div
 			className={classnames(

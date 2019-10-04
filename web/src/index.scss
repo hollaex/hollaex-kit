@@ -45,7 +45,7 @@ body {
 
 .ReactModal__Body--open #root {
 	filter: blur(5px);
-	background: $app-background-color-on-modal;
+	background: $app-modal-background;
 }
 
 .form {

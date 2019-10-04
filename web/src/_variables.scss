@@ -3,19 +3,22 @@ $bp-sm: 767px;
 $bp-md: 991px;
 $bp-lg: 1199px;
 
+// common colors
 $colors-main-black: #212121;
+$colors-white: white;
+$colors-black: #000000;
+// common colors for deactivate and disabled look
 $colors-deactivate: #797779;
 $colors-deactivate-color1: #cccbcb;
 $colors-deactivate-color2: #777677;
 $colors-deactivate-color3: #f2f2f3;
 $colors-deactivate-color4: #f1f2f2;
+
 $colors-notifications-red: #ed1c24;
 $colors-notification-inactive-red: #e26171;
 $colors-notifications-blue: #00aeef;
 $colors-notifications-green: #00a651;
-$colors-white: white;
-$colors-black: #000000;
-$colors-info-panel-background: #f5f5f5;
+$error-color: $colors-notifications-red;
 
 $color-currency-eur--main: #00a651;
 $color-currency-eur--secondary: #52c2b8;
@@ -24,21 +27,59 @@ $color-currency-btc--secondary: #f7941e;
 
 $colors-currencies-eur: $color-currency-eur--main;
 $colors-currencies-btc: $color-currency-btc--secondary;
-$colors-orderbook-red-light: #ed1c24;
+// $colors-orderbook-red-light: #ed1c24;
 $colors-currencies-bch: #ec008c;
 $colors-currencies-eth: #2e3192;
 $colors-currencies-ltc: #58595b;
 $colors-currencies-xrp: #2e3192;
 
-// dark theme colors
+// colors for white theme
+$app-background-color: white;
+$app-light-background: #F2F2F3;
+$quick-trade-background: #ebf3f1;
+$app-modal-background: rgba(221, 221, 221, 0.75);
+$app-bar-background-color: $colors-black;
+$app-line-divider: $colors-main-black;
+$box-fields: #f0f1f1;
+$buy: green;
+$sell: $colors-notifications-red;
 $color-sell-btc-light:#ed1c24;
 $color-buy-btc-light:#00a651;
-$colors-username-set-dark: #ff4bb6;
+$link: $colors-notifications-blue;
+$trade-fields: $colors-deactivate-color1;
+$trade-fill-indicator: grey;
+$buy-bids-text: $colors-white;
+$sell-bids-text: $colors-white;
+$app-logo-color: $colors-white;
+$sidebar-border--color: $colors-deactivate;
+$border-color: $colors-deactivate-color2;
+$border-main: $colors-main-black;
+// white form field colors
+$form-color-underline-focus: $colors-main-black;
+$form-color-underline: $colors-deactivate-color1;
+$form-color-placeholder: $colors-deactivate-color1;
+$form-arrow: $colors-main-black;
+$form-label: $colors-deactivate-color2;
+$form-text-disabled: $colors-deactivate;
+// White theme tabs
+$tab-active: $colors-main-black;
+$tab-inactive: $colors-deactivate-color2;
+$sidebar-color: $colors-deactivate-color2;
+$sidebar-color-active: $colors-main-black;
+$info-panel-background: #f5f5f5;
+$info-panel-text: #777677;
+$icon-hover: $colors-main-black;
+$icon-unhover: $colors-deactivate-color2;
+$trade-tabs-inactive-color: #808080;
+$bitcoin-color-main: $colors-currencies-btc;
 
-// dark theme colors
+// colors for dark theme
+$colors-username-set-dark: #ff4bb6;
 $dark-app-background-color: #1f212a;
 $dark-app-light-background: #2e2f37;
-$dark-app-bar-background-color: #000000;
+$dark-quick-trade-background: #1b1b1f;
+$dark-app-modal-background: rgba(35, 31, 32, 0.5);
+$dark-app-bar-background-color: $colors-black;
 $dark-app-line-divider: #b7b5cd;
 $dark-app-link-highlight: #ed507b;
 $dark-box-fields: #353841;
@@ -52,11 +93,9 @@ $dark-sell: #f59121;
 $dark-link: $dark-app-link-highlight;
 $dark-trade-fields: #454162;
 $dark-trade-fill-indicator: #444162;
-$dark-quick-trade-background: #1b1b1f;
 $dark-buy-bids-text: $colors-black;
 $dark-sell-bids-text: $dark-app-background-color;
 $dark-app-logo-color: #808184;
-
 // dark-border-button
 $dark-border-main: $dark-app-line-divider;
 $dark-button-active: #454162;
@@ -75,68 +114,71 @@ $dark-form-text-disabled: $dark-inactive-color;
 $dark-tab-active: $dark-app-line-divider;
 $dark-tab-inactive: $dark-inactive-color;
 $dark-tab-notification: $dark-link; // need to check this
-$dark-app-bar-add-tab-menu-background: $dark-box-fields;
 $dark-sidebar-color: $dark-font-sub-text-color;
 $dark-sidebar-color-active: $dark-font-main-text-color;
-$app-modal-background: rgba(35, 31, 32, 0.5);
 $dark-info-panel-background: $dark-box-fields;
 $dar-info-panel-text: $dark-font-sub-text-1-color;
+$dark-disabled-main: $dark-inactive-color;
+$dark-disabled-secondary: #2e2f37;
+$dark-trade-row-highlight: #535353;
+$dark-trade-text-highlight: #838383;
+$dark-icon-hover: $dark-font-main-text-color;
+$dark-icon-unhover: $dark-icon-color;
+$dark-accordion-arrow-active: $dark-font-main-text-color;
+$dark-accordion-arrow-inactive: $dark-font-sub-text-color;
+
 // main title icons fill(quick trade, deposit, withdrawal)
 $dark-main-title-icon-color-1: $dark-app-bar-background-color;
 $dark-main-title-icon-color-2: $dark-icon-color;
 $dark-main-title-icon-color-3: $dark-icon-color;
 
-$coin-btc: #f7941e;
-$coin-btc-1: #f6921e;
-$coin-bch: #9ec51e;
-$coin-bch-1: #8bc53f;
-$coin-eth: #334DAA;
-$coin-eth-1: #2b388f;
-$coin-xrp: #334DAA;
-$coin-xrp-1: #2b388f;
-$coin-eur: #00a651;
-$coin-eur-1: #00a651;
-$coin-ltc: #58595b;
-$coin-ltc-1: #58595b;
+// common colors for app bar
+$dark-app-bar-add-tab-menu-background: $dark-box-fields;
+// $app-menu-bar-border--color: #CCCBCA;
+$app-bar-icon-inactive: #808184;
+$app-bar--quicktrade-active-color: #fff100;
+$app-bar--quicktrade-inactive-color: #ceac20;
 
-// $coin-eur: #06773d;
-// $coin-eur-1: #06773d;
+
+// coins for white theme
+// fiat coins
+$coin-eur: #06773d;
+$coin-eur-1: #06773d;
 $coin-usd: #01592e;
 $coin-usd-1: #01592e;
-$coin-jpy: #ec008c;
+$coin-jpy: #e0dfc7;
 $coin-jpy-1: #e0dfc7;
-$coin-gbp: #f9ee02;
+$coin-gbp: #482e6e;
 $coin-gbp-1: #482e6e;
-$coin-chf: #720f15;
+$coin-chf: #ed1c24;
 $coin-chf-1: #ed1c24;
-$coin-cad: #e0dfc7;
+$coin-cad: #d7ce58;
 $coin-cad-1: #d7ce58;
-$coin-aud: #482e6e;
+$coin-aud: #19441f;
 $coin-aud-1: #19441f;
-$coin-nzd: #ed1c24;
+$coin-nzd: #b3498c;
 $coin-nzd-1: #b3498c;
-$coin-zar: #d7ce58;
+$coin-zar: #d8d3a0;
 $coin-zar-1: #d8d3a0;
-$coin-hkd: #19441f;
+$coin-hkd: #f48f9b;
 $coin-hkd-1: #f48f9b;
-$coin-krw: #b3498c;
+$coin-krw: #f9ee02;
 $coin-krw-1: #f9ee02;
-$coin-cny: #d8d3a0;
+$coin-cny: #ec008c;
 $coin-cny-1: #ec008c;
-$coin-sgd: #f48f9b;
+$coin-sgd: #720f15;
 $coin-sgd-1: #720f15;
-
-// $coin-btc: #f7941d;
-// $coin-btc-1: #f7941d;
-// $coin-eth: #3e4ea1;
-// $coin-eth-1: #3e4ea1;
-// $coin-ltc: #bcbec0;
-// $coin-ltc-1: #bcbec0;
-// $coin-bch: #8dc541;
-// $coin-bch-1: #8dc541;
-// $coin-xrp: #414042;
-// $coin-xrp-1: #414042;
-
+// crypto coins
+$coin-btc: #f7941d;
+$coin-btc-1: #f7941d;
+$coin-eth: #3e4ea1;
+$coin-eth-1: #3e4ea1;
+$coin-ltc: #bcbec0;
+$coin-ltc-1: #bcbec0;
+$coin-bch: #8dc541;
+$coin-bch-1: #8dc541;
+$coin-xrp: #414042;
+$coin-xrp-1: #414042;
 $coin-hex: #000000;
 $coin-hex-1:#000000;
 $coin-eos: #58595b;
@@ -196,33 +238,103 @@ $coin-omg-1: #8e7fbb;
 $coin-hot: #8b5e3c;
 $coin-hot-1: #8b5e3c;
 
-
-$dark-disabled-main: $dark-inactive-color;
-$dark-disabled-secondary: #2e2f37;
-$dark-trade-row-highlight: #535353;
-$dark-trade-text-highlight: #838383;
-
-$dark-icon-hover: $dark-font-main-text-color;
-$dark-icon-unhover: $dark-icon-color;
-$dark-accordion-arrow-active: $dark-font-main-text-color;
-$dark-accordion-arrow-inactive: $dark-font-sub-text-color;
-
-$app-background-color: white;
-$app-background-color-on-modal: lightgrey;
-$app_bar-border--color: $colors-deactivate;
-$sidebar-border--color: $colors-deactivate;
-$quick-trade--background: #ebf3f1;
-$border-color: $colors-deactivate-color2;
-$error-color: $colors-notifications-red;
-$app-menu-bar-background-color: #F2F2F3;
-$app-menu-bar-border--color: #CCCBCA;
-$app-bar-icon-inactive: #808184;
-$app-bar--quicktrade-active-color: #fff100;
-$app-bar--quicktrade-inactive-color: #ceac20;
-
-$trade-tabs-inactive-color: #808080;
-
-$bitcoin-color-main: $colors-currencies-btc;
+// coins for dark theme
+// fiat coins
+$dark-coin-eur: #06773d;
+$dark-coin-eur-1: #06773d;
+$dark-coin-usd: #01592e;
+$dark-coin-usd-1: #01592e;
+$dark-coin-jpy: #e0dfc7;
+$dark-coin-jpy-1: #e0dfc7;
+$dark-coin-gbp: #482e6e;
+$dark-coin-gbp-1: #482e6e;
+$dark-coin-chf: #ed1c24;
+$dark-coin-chf-1: #ed1c24;
+$dark-coin-cad: #d7ce58;
+$dark-coin-cad-1: #d7ce58;
+$dark-coin-aud: #19441f;
+$dark-coin-aud-1: #19441f;
+$dark-coin-nzd: #b3498c;
+$dark-coin-nzd-1: #b3498c;
+$dark-coin-zar: #d8d3a0;
+$dark-coin-zar-1: #d8d3a0;
+$dark-coin-hkd: #f48f9b;
+$dark-coin-hkd-1: #f48f9b;
+$dark-coin-krw: #f9ee02;
+$dark-coin-krw-1: #f9ee02;
+$dark-coin-cny: #ec008c;
+$dark-coin-cny-1: #ec008c;
+$dark-coin-sgd: #720f15;
+$dark-coin-sgd-1: #720f15;
+// crypto coins
+$dark-coin-btc: #f7941d;
+$dark-coin-btc-1: #f7941d;
+$dark-coin-eth: #3e4ea1;
+$dark-coin-eth-1: #3e4ea1;
+$dark-coin-ltc: #bcbec0;
+$dark-coin-ltc-1: #bcbec0;
+$dark-coin-bch: #8dc541;
+$dark-coin-bch-1: #8dc541;
+$dark-coin-xrp: #414042;
+$dark-coin-xrp-1: #414042;
+$dark-coin-hex: #000000;
+$dark-coin-hex-1:#000000;
+$dark-coin-eos: #58595b;
+$dark-coin-eos-1: #58595b;
+$dark-coin-bnb: #f1ba2a;
+$dark-coin-bnb-1: #f1ba2a;
+$dark-coin-link-1: #1b75bc;
+$dark-coin-link: #1b75bc;
+$dark-coin-trx: #a22d25;
+$dark-coin-trx-1: #a22d25;
+$dark-coin-ada: #3667b2;
+$dark-coin-ada-1: #3667b2;
+$dark-coin-matic: #2aaae2;
+$dark-coin-matic-1: #2aaae2;
+$dark-coin-neo: #bcbec0;
+$dark-coin-neo-1: #bcbec0;
+$dark-coin-etc: #009444;
+$dark-coin-etc-1: #009444;
+$dark-coin-xlm: #808285;
+$dark-coin-xlm-1: #808285;
+$dark-coin-xmr: #f15a29;
+$dark-coin-xmr-1: #f15a29;
+$dark-coin-zec: #fbb040;
+$dark-coin-zec-1: #fbb040;
+$dark-coin-one: #939598;
+$dark-coin-one-1: #939598;
+$dark-coin-pax: #163526;
+$dark-coin-pax-1: #163526;
+$dark-coin-usdc: #4d7d91;
+$dark-coin-usdc-1: #4d7d91;
+$dark-coin-usdt: #2bb673;
+$dark-coin-usdt-1: #2bb673;
+$dark-coin-vet: #454c7d;
+$dark-coin-vet-1: #454c7d;
+$dark-coin-btt: #c49a6c;
+$dark-coin-btt-1: #c49a6c;
+$dark-coin-qtum: #96daf7;
+$dark-coin-qtum-1: #96daf7;
+$dark-coin-algo: #594a42;
+$dark-coin-algo-1: #594a42;
+$dark-coin-rvn: #662d91;
+$dark-coin-rvn-1: #662d91;
+$dark-coin-iota: #603913;
+$dark-coin-iota-1: #603913;
+$dark-coin-dash: #417ec1;
+$dark-coin-dash-1: #417ec1;
+$dark-coin-bsv: #a09032;
+$dark-coin-bsv-1: #a09032;
+$dark-coin-ont: #00a79d;
+$dark-coin-ont-1: #00a79d;
+$dark-coin-atom: #796184;
+$dark-coin-atom-1: #796184;
+$dark-coin-celr: #726658;
+$dark-coin-celr-1: #726658;
+$dark-coin-omg: #8e7fbb;
+$dark-coin-omg-1: #8e7fbb;
+$dark-coin-hot: #8b5e3c;
+$dark-coin-hot-1: #8b5e3c;
 
 $content-display-width: 100rem;
 $app-content-display-width: 75rem;
@@ -237,9 +349,6 @@ $font-size-subhead3: 1.25rem;
 $font-size-main: 1rem;
 $font-size-subtext: 0.8rem;
 
-$form-color-underline-focus: $colors-main-black;
-$form-color-underline: $colors-deactivate-color1;
-$form-color-placeholder: $colors-deactivate-color1;
 $form-width-max: $content-display-width / 2;
 
 $en--font-family: 'Open Sans';

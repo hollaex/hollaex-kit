@@ -91,6 +91,7 @@ class Wallet extends Component {
 						prices={prices}
 						coins={coins}
 						totalAssets={totalAssets}
+						isValidBase={this.props.isValidBase}
 						changeSymbol={changeSymbol}
 						wallets={wallets}
 						onOpenDialog={this.onOpenDialog}
@@ -233,7 +234,8 @@ const mapStateToProps = (store) => ({
 	activeTheme: store.app.theme,
 	activeLanguage: store.app.language,
 	bankaccount: store.user.userData.bank_account,
-	wallets: store.user.crypto_wallet
+	wallets: store.user.crypto_wallet,
+	isValidBase: store.app.isValidBase
 });
 
 const mapDispatchToProps = (dispatch) => ({

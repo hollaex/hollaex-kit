@@ -17,18 +17,24 @@ const Form = (name, className = '', allowPristine = false) => {
 		buttonText,
 		buttonType,
 		small,
-		visible
+		visible,
+		okText = "Create",
+		initialValues,
+		CustomRenderContent
 	}) => {
 		return (
 			<form className={className}>
 				<Modal
 					visible={visible}
 					title={title}
-					okText="Create"
+					okText={okText}
 					onCancel={onCancel}
 					onOk={handleSubmit(onSubmit)}
 				>
-					{fields && renderFields(fields)}
+					{CustomRenderContent
+						? <CustomRenderContent fields={fields} />
+						: fields && renderFields(fields)
+					}
 					{error && (
 						<div>
 							<strong>{error}</strong>

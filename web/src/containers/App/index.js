@@ -50,7 +50,9 @@ import {
 	RISK_PORTFOLIO_ORDER_WARING,
 	RISKY_ORDER,
 	setSnackDialog,
-	LOGOUT_CONFORMATION
+	LOGOUT_CONFORMATION,
+	setValidBaseCurrency,
+	setConfig
 } from '../../actions/appActions';
 
 import {
@@ -118,6 +120,9 @@ class Container extends Component {
 		}
 		this._resetTimer();
 		this.updateThemeToBody(this.props.activeTheme);
+		if (this.props.location && this.props.location.pathname) {
+				this.checkPath(this.props.location.pathname);
+		}
 	}
 
 	componentWillReceiveProps(nextProps) {
@@ -154,6 +159,10 @@ class Container extends Component {
 		if (this.props.activeTheme !== nextProps.activeTheme) {
 			this.updateThemeToBody(nextProps.activeTheme);
 		}
+		if (this.props.location && nextProps.location
+            && this.props.location.pathname !== nextProps.location.pathname) {
+				this.checkPath(nextProps.location.pathname);
+		}
 	}
 
 	componentWillUnmount() {
@@ -169,6 +178,25 @@ class Container extends Component {
 			clearTimeout(this.state.idleTimer);
 		}
 		clearTimeout(this.limitTimeOut);
+	}
+
+	checkPath = (path) => {
+		var sheet = document.createElement('style')
+		if ((path === 'login') || (path === 'signup')) {
+			sheet.innerHTML = ".grecaptcha-badge { display: unset !important;}";
+			sheet.id = 'addCap'
+			if (document.getElementById('rmvCap') !== null) {
+				document.body.removeChild(document.getElementById('rmvCap'));
+			}
+		}
+		else {
+			sheet.innerHTML = ".grecaptcha-badge { display: none !important;}";
+			sheet.id = 'rmvCap'
+			if (document.getElementById('addCap') !== null) {
+				document.body.removeChild(document.getElementById('addCap'));
+			}
+		}
+		document.body.appendChild(sheet);
 	}
 
 	updateThemeToBody = (theme) => {
@@ -222,13 +250,13 @@ class Container extends Component {
 			this.props.setPairs(data.pairs);
 			this.props.setPairsData(data.pairs);
 			this.props.setCurrencies(data.coins);
+			this.props.setConfig(data.config);
 			const pairWithBase = Object.keys(data.pairs).filter((key) => {
 				let temp = data.pairs[key];
 				return temp.pair_2 === BASE_CURRENCY;
 			});
-			if (!pairWithBase.length) {
-				alert(`You need to set relevant BASE_CURRENCY, now is in ${BASE_CURRENCY}`);
-			}
+			const isValidPair = pairWithBase.length > 0;
+			this.props.setValidBaseCurrency(isValidPair);
 			const orderLimits = {};
 			Object.keys(data.pairs).map((pair, index) => {
 				orderLimits[pair] = {
@@ -941,7 +969,8 @@ const mapStateToProps = (store) => ({
 	unreadMessages: store.app.chatUnreadMessages,
 	orderbooks: store.orderbook.pairsOrderbooks,
 	pairsTrades: store.orderbook.pairsTrades,
-	settings: store.user.settings
+	settings: store.user.settings,
+	config: store.app.config
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -975,7 +1004,9 @@ const mapDispatchToProps = (dispatch) => ({
 	setChatUnreadMessages: bindActionCreators(setChatUnreadMessages, dispatch),
 	setOrderLimits: bindActionCreators(setOrderLimits, dispatch),
 	setSnackDialog: bindActionCreators(setSnackDialog, dispatch),
-	setCurrencies: bindActionCreators(setCurrencies, dispatch)
+	setCurrencies: bindActionCreators(setCurrencies, dispatch),
+	setValidBaseCurrency: bindActionCreators(setValidBaseCurrency, dispatch),
+	setConfig: bindActionCreators(setConfig, dispatch)
 });
 
 export default connect(

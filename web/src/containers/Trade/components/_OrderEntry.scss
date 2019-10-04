@@ -47,7 +47,7 @@
 		border: 1px solid $theme-color;
 		.active {
 			background-color: $theme-color;
-			color: white;
+			color: $sell-bids-text;
 			font-weight: bold;
 		}
 	}
@@ -81,7 +81,7 @@
 		.trade_order_entry-form-action {
 			margin-top: 0.5rem;
 			background-color: $theme-color !important;
-			color: white;
+			color: $buy-bids-text;
 			font-weight: bold;
 
 			&:disabled {

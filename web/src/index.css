@@ -189,6 +189,8 @@ table th {
 
 .app_container {
   min-height: 100vh; }
+  .app_container.white-theme {
+    background-color: white; }
   .app_container.dark-theme {
     background: #1f212a !important;
     min-height: 100vh; }
@@ -240,7 +242,8 @@ table th {
   .app_container .app_container-sidebar {
     min-width: 20rem;
     max-width: 20rem;
-    border-left: 1px solid #777677; }
+    border-left: 1px solid #777677;
+    padding: 0; }
 
 .layout-mobile .presentation_container {
   padding-top: 4rem !important; }
@@ -253,9 +256,9 @@ table th {
   .presentation_container .inner_container {
     position: relative; }
     .presentation_container .inner_container.with_border_top {
-      border-top: 1px solid #212121; }
+      border-top: 1px solid #777677; }
     .presentation_container .inner_container.with_border_bottom {
-      border-bottom: 1px solid #212121; }
+      border-bottom: 1px solid #777677; }
     .presentation_container .inner_container .information_block {
       position: relative;
       margin-bottom: 1rem; }
@@ -1574,17 +1577,17 @@ table th {
   border-top-color: #b7b5cd;
   color: #b6b5cd; }
   .dark-theme .trade_block-wrapper .trade_block-title .trade_block-title-currency-btc {
-    color: #f7941e; }
+    color: #f7941d; }
   .dark-theme .trade_block-wrapper .trade_block-title .trade_block-title-currency-bch {
-    color: #9ec51e; }
+    color: #8dc541; }
   .dark-theme .trade_block-wrapper .trade_block-title .trade_block-title-currency-eth {
-    color: #334DAA; }
+    color: #3e4ea1; }
   .dark-theme .trade_block-wrapper .trade_block-title .trade_block-title-currency-eur {
-    color: #00a651; }
+    color: #06773d; }
   .dark-theme .trade_block-wrapper .trade_block-title .trade_block-title-currency-ltc {
-    color: #58595b; }
+    color: #bcbec0; }
   .dark-theme .trade_block-wrapper .trade_block-title .trade_block-title-currency-xrp {
-    color: #334DAA; }
+    color: #414042; }
   .dark-theme .trade_block-wrapper .trade_block-title .trade_block-title-currency-hex {
     color: #000000; }
   .dark-theme .trade_block-wrapper .trade_block-title .trade_block-title-currency-eos {
@@ -1646,32 +1649,32 @@ table th {
   .dark-theme .trade_block-wrapper .trade_block-title .trade_block-title-currency-usd {
     color: #01592e; }
   .dark-theme .trade_block-wrapper .trade_block-title .trade_block-title-currency-jpy {
-    color: #ec008c; }
-  .dark-theme .trade_block-wrapper .trade_block-title .trade_block-title-currency-gbp {
-    color: #f9ee02; }
-  .dark-theme .trade_block-wrapper .trade_block-title .trade_block-title-currency-chf {
-    color: #720f15; }
-  .dark-theme .trade_block-wrapper .trade_block-title .trade_block-title-currency-cad {
     color: #e0dfc7; }
-  .dark-theme .trade_block-wrapper .trade_block-title .trade_block-title-currency-aud {
+  .dark-theme .trade_block-wrapper .trade_block-title .trade_block-title-currency-gbp {
     color: #482e6e; }
-  .dark-theme .trade_block-wrapper .trade_block-title .trade_block-title-currency-nzd {
+  .dark-theme .trade_block-wrapper .trade_block-title .trade_block-title-currency-chf {
     color: #ed1c24; }
-  .dark-theme .trade_block-wrapper .trade_block-title .trade_block-title-currency-zar {
+  .dark-theme .trade_block-wrapper .trade_block-title .trade_block-title-currency-cad {
     color: #d7ce58; }
-  .dark-theme .trade_block-wrapper .trade_block-title .trade_block-title-currency-hkd {
+  .dark-theme .trade_block-wrapper .trade_block-title .trade_block-title-currency-aud {
     color: #19441f; }
-  .dark-theme .trade_block-wrapper .trade_block-title .trade_block-title-currency-krw {
+  .dark-theme .trade_block-wrapper .trade_block-title .trade_block-title-currency-nzd {
     color: #b3498c; }
-  .dark-theme .trade_block-wrapper .trade_block-title .trade_block-title-currency-cny {
+  .dark-theme .trade_block-wrapper .trade_block-title .trade_block-title-currency-zar {
     color: #d8d3a0; }
-  .dark-theme .trade_block-wrapper .trade_block-title .trade_block-title-currency-sgd {
+  .dark-theme .trade_block-wrapper .trade_block-title .trade_block-title-currency-hkd {
     color: #f48f9b; }
+  .dark-theme .trade_block-wrapper .trade_block-title .trade_block-title-currency-krw {
+    color: #f9ee02; }
+  .dark-theme .trade_block-wrapper .trade_block-title .trade_block-title-currency-cny {
+    color: #ec008c; }
+  .dark-theme .trade_block-wrapper .trade_block-title .trade_block-title-currency-sgd {
+    color: #720f15; }
   .dark-theme .trade_block-wrapper .trade_block-title .trade_block-title-currency {
     color: white; }
   .dark-theme .trade_block-wrapper .trade_block-title .trade_block-icon svg .st0 {
     fill: #b6b5cd !important; }
-  .dark-theme .trade_block-wrapper .trade_block-title .trade_block-icon svg .bch-icon {
+  .dark-theme .trade_block-wrapper .trade_block-title .trade_block-icon svg .bch-icon, .dark-theme .trade_block-wrapper .trade_block-title .trade_block-icon svg .xrp-icon {
     fill: #b6b5cd !important; }
 
 .dark-theme .trade_block_tabs-wrapper .trade_block-title .trade_block-title-items {
@@ -2098,7 +2101,8 @@ table th {
         padding: 0 0.15rem;
         position: relative;
         width: 100%;
-        color: #212121; }
+        color: #212121;
+        z-index: 2; }
         .trade_active_orders-wrapper .cell_box-type.fullfilled .cell-wrapper > .cell_value-wrapper .cell_value-bar {
           position: absolute;
           left: 0;
@@ -2533,7 +2537,7 @@ table th {
       color: #000000;
       font-weight: bold; }
     .summary-container .assets-wrapper .total-assets {
-      background: repeating-linear-gradient(-45deg, #fff, #fff 2px, #cccbcb 2px, #cccbcb 4px);
+      background: repeating-linear-gradient(-45deg, white, white 2px, #cccbcb 2px, #cccbcb 4px);
       font-size: 1.2rem;
       font-weight: bold;
       padding: .5rem;
@@ -2549,7 +2553,7 @@ table th {
         .summary-container .assets-wrapper .coin-price-container .coin-price svg .eth0, .summary-container .assets-wrapper .coin-price-container .coin-price svg .eth1 {
           fill: #2e3192; }
         .summary-container .assets-wrapper .coin-price-container .coin-price svg .bch-icon {
-          fill: #9ec51e; }
+          fill: #8dc541; }
   .summary-container .trading-volume-wrapper {
     width: 50rem; }
   .summary-container .account-details-wrapper .account-type-container {
@@ -2580,7 +2584,7 @@ table th {
   .summary-container .account-details-wrapper .accounnt-type-menu-last-active {
     border-bottom: none !important; }
   .summary-container .account-details-wrapper .requirement-header {
-    border-bottom: 1px solid #000000;
+    border-bottom: 1px solid #777677;
     color: #000000;
     font-weight: bold; }
   .summary-container .account-details-wrapper .status-header {
@@ -2609,22 +2613,22 @@ table th {
   .fee-limits-wrapper table {
     border-collapse: collapse; }
   .fee-limits-wrapper td {
-    border: 1px solid #000000; }
+    border: 1px solid #777677; }
   .fee-limits-wrapper .account-limits {
     margin: 1rem 0;
     width: 100%; }
   .fee-limits-wrapper .account-limits-content {
-    border: 1px solid #000000; }
+    border: 1px solid #777677; }
   .fee-limits-wrapper .account-limits-maker {
-    border-left: 1px solid #000000;
-    border-right: 1px solid #000000;
-    border-top: 1px solid #000000; }
+    border-left: 1px solid #777677;
+    border-right: 1px solid #777677;
+    border-top: 1px solid #777677; }
   .fee-limits-wrapper .account-limits-taker {
-    border-bottom: 1px solid #000000;
-    border-left: 1px solid #000000;
-    border-right: 1px solid #000000; }
+    border-bottom: 1px solid #777677;
+    border-left: 1px solid #777677;
+    border-right: 1px solid #777677; }
   .fee-limits-wrapper .account-limits-coin {
-    border-bottom: 1px solid #000000;
+    border-bottom: 1px solid #777677;
     padding: .25rem .5rem;
     width: 14rem; }
   .fee-limits-wrapper .account-limits-status {
@@ -2696,7 +2700,7 @@ table th {
       color: #808184 !important; }
   .dark-theme .trade_tabs-container .trade_tab-pair-title {
     color: #808184; }
-  .dark-theme .trade_tabs-container .trade_tab-icons svg .btc0, .dark-theme .trade_tabs-container .trade_tab-icons svg .btc1, .dark-theme .trade_tabs-container .trade_tab-icons svg .eth0, .dark-theme .trade_tabs-container .trade_tab-icons svg .eth1, .dark-theme .trade_tabs-container .trade_tab-icons svg .bch-icon {
+  .dark-theme .trade_tabs-container .trade_tab-icons svg .btc0, .dark-theme .trade_tabs-container .trade_tab-icons svg .btc1, .dark-theme .trade_tabs-container .trade_tab-icons svg .eth0, .dark-theme .trade_tabs-container .trade_tab-icons svg .eth1, .dark-theme .trade_tabs-container .trade_tab-icons svg .bch-icon, .dark-theme .trade_tabs-container .trade_tab-icons svg .xrp-icon {
     fill: #808184 !important; }
   .dark-theme .trade_tabs-container .trade_tab-icons svg .st0 {
     fill: #808184 !important;
@@ -2741,7 +2745,7 @@ table th {
       color: #a3a1ca; }
       .dark-theme .trade_tabs-container .trade-tab-list:hover .trade_tab-pair-title {
         color: #a3a1ca !important; }
-      .dark-theme .trade_tabs-container .trade-tab-list:hover svg .btc0, .dark-theme .trade_tabs-container .trade-tab-list:hover svg .btc1, .dark-theme .trade_tabs-container .trade-tab-list:hover svg .eth0, .dark-theme .trade_tabs-container .trade-tab-list:hover svg .eth1, .dark-theme .trade_tabs-container .trade-tab-list:hover svg .bch-icon {
+      .dark-theme .trade_tabs-container .trade-tab-list:hover svg .btc0, .dark-theme .trade_tabs-container .trade-tab-list:hover svg .btc1, .dark-theme .trade_tabs-container .trade-tab-list:hover svg .eth0, .dark-theme .trade_tabs-container .trade-tab-list:hover svg .eth1, .dark-theme .trade_tabs-container .trade-tab-list:hover svg .bch-icon, .dark-theme .trade_tabs-container .trade-tab-list:hover svg .xrp-icon {
         fill: #a3a1ca !important; }
       .dark-theme .trade_tabs-container .trade-tab-list:hover svg .st0 {
         fill: #a3a1ca !important;
@@ -2784,7 +2788,7 @@ table th {
     width: 15rem; }
   .trade_tabs-container .trade_tab-icons {
     width: 5rem; }
-    .trade_tabs-container .trade_tab-icons svg .btc0, .trade_tabs-container .trade_tab-icons svg .btc1, .trade_tabs-container .trade_tab-icons svg .eth0, .trade_tabs-container .trade_tab-icons svg .eth1, .trade_tabs-container .trade_tab-icons svg .bch-icon {
+    .trade_tabs-container .trade_tab-icons svg .btc0, .trade_tabs-container .trade_tab-icons svg .btc1, .trade_tabs-container .trade_tab-icons svg .eth0, .trade_tabs-container .trade_tab-icons svg .eth1, .trade_tabs-container .trade_tab-icons svg .bch-icon, .trade_tabs-container .trade_tab-icons svg .xrp-icon {
       fill: #808080 !important; }
     .trade_tabs-container .trade_tab-icons svg .st0 {
       fill: #808080 !important;
@@ -2841,7 +2845,7 @@ table th {
       right: .5rem; }
       .trade_tabs-container .trade-tab-list:hover .trade_tab-pair-title {
         color: #000000 !important; }
-      .trade_tabs-container .trade-tab-list:hover svg .btc0, .trade_tabs-container .trade-tab-list:hover svg .btc1, .trade_tabs-container .trade-tab-list:hover svg .eth0, .trade_tabs-container .trade-tab-list:hover svg .eth1, .trade_tabs-container .trade-tab-list:hover svg .bch-icon {
+      .trade_tabs-container .trade-tab-list:hover svg .btc0, .trade_tabs-container .trade-tab-list:hover svg .btc1, .trade_tabs-container .trade-tab-list:hover svg .eth0, .trade_tabs-container .trade-tab-list:hover svg .eth1, .trade_tabs-container .trade-tab-list:hover svg .bch-icon, .trade_tabs-container .trade-tab-list:hover svg .xrp-icon {
         fill: #000000 !important; }
       .trade_tabs-container .trade-tab-list:hover svg .st0 {
         fill: #000000 !important;
@@ -3084,7 +3088,7 @@ table th {
   display: flex;
   justify-content: space-between;
   align-content: center;
-  border-top: 2px solid #212121;
+  border-top: 2px solid #777677;
   margin-bottom: 1rem; }
   .tab_controller-tabs .tab_item {
     border-top: 4px solid transparent;
@@ -3099,7 +3103,7 @@ table th {
   .tab_controller-tabs .tab-trade {
     padding: 0 1px 12px !important; }
   .tab_controller-tabs .tab_item-active {
-    border-top: 4px solid #212121;
+    border-top: 4px solid #777677;
     color: #212121; }
     .tab_controller-tabs .tab_item-active svg path {
       opacity: 1; }
@@ -3138,7 +3142,7 @@ table th {
     background-color: #1f212a !important;
     border-left: 1px solid #2e2f37 !important;
     color: #b6b5cd !important; }
-    .dark-theme .app_bar .active-tab-pair svg .btc0, .dark-theme .app_bar .active-tab-pair svg .btc1, .dark-theme .app_bar .active-tab-pair svg .eth0, .dark-theme .app_bar .active-tab-pair svg .eth1, .dark-theme .app_bar .active-tab-pair svg .bch-icon {
+    .dark-theme .app_bar .active-tab-pair svg .btc0, .dark-theme .app_bar .active-tab-pair svg .btc1, .dark-theme .app_bar .active-tab-pair svg .eth0, .dark-theme .app_bar .active-tab-pair svg .eth1, .dark-theme .app_bar .active-tab-pair svg .bch-icon, .dark-theme .app_bar .active-tab-pair svg .xrp-icon {
       fill: #b6b5cd; }
     .dark-theme .app_bar .active-tab-pair svg .tab-close, .dark-theme .app_bar .active-tab-pair svg .plus, .dark-theme .app_bar .active-tab-pair svg .double-arrow {
       stroke: #b6b5cd; }
@@ -3343,7 +3347,7 @@ table th {
     border-left: 1px solid white;
     color: #000000;
     top: 1px; }
-    .app_bar .active-tab-pair svg .btc0, .app_bar .active-tab-pair svg .btc1, .app_bar .active-tab-pair svg .eth0, .app_bar .active-tab-pair svg .eth1, .app_bar .active-tab-pair svg .bch-icon {
+    .app_bar .active-tab-pair svg .btc0, .app_bar .active-tab-pair svg .btc1, .app_bar .active-tab-pair svg .eth0, .app_bar .active-tab-pair svg .eth1, .app_bar .active-tab-pair svg .bch-icon, .app_bar .active-tab-pair svg .xrp-icon {
       fill: #212121; }
     .app_bar .active-tab-pair svg .tab-close, .app_bar .active-tab-pair svg .plus, .app_bar .active-tab-pair svg .double-arrow {
       stroke: #212121; }
@@ -3366,7 +3370,7 @@ table th {
   .app_bar .app-bar-account-icon {
     margin: .5rem .3rem 0 .3rem;
     width: 1.5rem; }
-  .app_bar .app_bar-pair-content .btc0, .app_bar .app_bar-pair-content .btc1, .app_bar .app_bar-pair-content .eth0, .app_bar .app_bar-pair-content .eth1, .app_bar .app_bar-pair-content .bch-icon, .app_bar .app-bar-tab-close .btc0, .app_bar .app-bar-tab-close .btc1, .app_bar .app-bar-tab-close .eth0, .app_bar .app-bar-tab-close .eth1, .app_bar .app-bar-tab-close .bch-icon, .app_bar .app-bar-currency-icon .btc0, .app_bar .app-bar-currency-icon .btc1, .app_bar .app-bar-currency-icon .eth0, .app_bar .app-bar-currency-icon .eth1, .app_bar .app-bar-currency-icon .bch-icon, .app_bar .app-bar-account-icon svg .btc0, .app_bar .app-bar-account-icon svg .btc1, .app_bar .app-bar-account-icon svg .eth0, .app_bar .app-bar-account-icon svg .eth1, .app_bar .app-bar-account-icon svg .bch-icon {
+  .app_bar .app_bar-pair-content .btc0, .app_bar .app_bar-pair-content .btc1, .app_bar .app_bar-pair-content .eth0, .app_bar .app_bar-pair-content .eth1, .app_bar .app_bar-pair-content .bch-icon, .app_bar .app_bar-pair-content .xrp-icon, .app_bar .app-bar-tab-close .btc0, .app_bar .app-bar-tab-close .btc1, .app_bar .app-bar-tab-close .eth0, .app_bar .app-bar-tab-close .eth1, .app_bar .app-bar-tab-close .bch-icon, .app_bar .app-bar-tab-close .xrp-icon, .app_bar .app-bar-currency-icon .btc0, .app_bar .app-bar-currency-icon .btc1, .app_bar .app-bar-currency-icon .eth0, .app_bar .app-bar-currency-icon .eth1, .app_bar .app-bar-currency-icon .bch-icon, .app_bar .app-bar-currency-icon .xrp-icon, .app_bar .app-bar-account-icon svg .btc0, .app_bar .app-bar-account-icon svg .btc1, .app_bar .app-bar-account-icon svg .eth0, .app_bar .app-bar-account-icon svg .eth1, .app_bar .app-bar-account-icon svg .bch-icon, .app_bar .app-bar-account-icon svg .xrp-icon {
     fill: #808184; }
   .app_bar .app_bar-pair-content .tab-close, .app_bar .app_bar-pair-content .plus, .app_bar .app-bar-tab-close .tab-close, .app_bar .app-bar-tab-close .plus, .app_bar .app-bar-currency-icon .tab-close, .app_bar .app-bar-currency-icon .plus, .app_bar .app-bar-account-icon svg .tab-close, .app_bar .app-bar-account-icon svg .plus {
     stroke: #808184; }
@@ -3697,7 +3701,8 @@ table th {
       .app-bar-add-tab-menu .app-bar-add-tab-content-list:hover svg .btc1,
       .app-bar-add-tab-menu .app-bar-add-tab-content-list:hover svg .eth0,
       .app-bar-add-tab-menu .app-bar-add-tab-content-list:hover svg .eth1,
-      .app-bar-add-tab-menu .app-bar-add-tab-content-list:hover svg .bch-icon {
+      .app-bar-add-tab-menu .app-bar-add-tab-content-list:hover svg .bch-icon,
+      .app-bar-add-tab-menu .app-bar-add-tab-content-list:hover svg .xrp-icon {
         fill: #b6b5cd !important; }
       .app-bar-add-tab-menu .app-bar-add-tab-content-list:hover svg .st0 {
         fill: #b6b5cd !important;
@@ -3710,7 +3715,7 @@ table th {
   .app-bar-add-tab-menu .app-bar-add-tab-icons {
     width: 1.2rem;
     margin: .3rem .3rem 0 .3rem; }
-  .app-bar-add-tab-menu .app-bar-tab-setting svg .btc0, .app-bar-add-tab-menu .app-bar-tab-setting svg .btc1, .app-bar-add-tab-menu .app-bar-tab-setting svg .eth0, .app-bar-add-tab-menu .app-bar-tab-setting svg .eth1, .app-bar-add-tab-menu .app-bar-tab-setting svg .bch-icon, .app-bar-add-tab-menu .app-bar-add-tab-icons svg .btc0, .app-bar-add-tab-menu .app-bar-add-tab-icons svg .btc1, .app-bar-add-tab-menu .app-bar-add-tab-icons svg .eth0, .app-bar-add-tab-menu .app-bar-add-tab-icons svg .eth1, .app-bar-add-tab-menu .app-bar-add-tab-icons svg .bch-icon {
+  .app-bar-add-tab-menu .app-bar-tab-setting svg .btc0, .app-bar-add-tab-menu .app-bar-tab-setting svg .btc1, .app-bar-add-tab-menu .app-bar-tab-setting svg .eth0, .app-bar-add-tab-menu .app-bar-tab-setting svg .eth1, .app-bar-add-tab-menu .app-bar-tab-setting svg .bch-icon, .app-bar-add-tab-menu .app-bar-tab-setting svg .xrp-icon, .app-bar-add-tab-menu .app-bar-add-tab-icons svg .btc0, .app-bar-add-tab-menu .app-bar-add-tab-icons svg .btc1, .app-bar-add-tab-menu .app-bar-add-tab-icons svg .eth0, .app-bar-add-tab-menu .app-bar-add-tab-icons svg .eth1, .app-bar-add-tab-menu .app-bar-add-tab-icons svg .bch-icon, .app-bar-add-tab-menu .app-bar-add-tab-icons svg .xrp-icon {
     fill: #808184 !important; }
   .app-bar-add-tab-menu .app-bar-tab-setting svg .plus, .app-bar-add-tab-menu .app-bar-tab-setting svg .minus, .app-bar-add-tab-menu .app-bar-add-tab-icons svg .plus, .app-bar-add-tab-menu .app-bar-add-tab-icons svg .minus {
     stroke: #808184 !important;
@@ -5055,7 +5060,8 @@ table th {
   max-width: calc(100% - 2.5rem);
   max-height: calc(100% - 2.5rem);
   overflow: auto;
-  border: none !important; }
+  border: none !important;
+  background-color: white; }
   .ReactModal__Content .action_notification-wrapper.close-button {
     margin-top: 1.5rem; }
 
@@ -5573,7 +5579,7 @@ table th {
   .currency_ball-wrapper.ltc {
     background-color: #58595b; }
   .currency_ball-wrapper.xrp {
-    background-color: #334DAA; }
+    background-color: #414042; }
   .currency_ball-wrapper.hex {
     background-color: #000000; }
   .currency_ball-wrapper.eos {
@@ -5635,27 +5641,27 @@ table th {
   .currency_ball-wrapper.usd {
     background-color: #01592e; }
   .currency_ball-wrapper.jpy {
-    background-color: #ec008c; }
-  .currency_ball-wrapper.gbp {
-    background-color: #f9ee02; }
-  .currency_ball-wrapper.chf {
-    background-color: #720f15; }
-  .currency_ball-wrapper.cad {
     background-color: #e0dfc7; }
-  .currency_ball-wrapper.aud {
+  .currency_ball-wrapper.gbp {
     background-color: #482e6e; }
-  .currency_ball-wrapper.nzd {
+  .currency_ball-wrapper.chf {
     background-color: #ed1c24; }
-  .currency_ball-wrapper.zar {
+  .currency_ball-wrapper.cad {
     background-color: #d7ce58; }
-  .currency_ball-wrapper.hkd {
+  .currency_ball-wrapper.aud {
     background-color: #19441f; }
-  .currency_ball-wrapper.krw {
+  .currency_ball-wrapper.nzd {
     background-color: #b3498c; }
-  .currency_ball-wrapper.cny {
+  .currency_ball-wrapper.zar {
     background-color: #d8d3a0; }
-  .currency_ball-wrapper.sgd {
+  .currency_ball-wrapper.hkd {
     background-color: #f48f9b; }
+  .currency_ball-wrapper.krw {
+    background-color: #f9ee02; }
+  .currency_ball-wrapper.cny {
+    background-color: #ec008c; }
+  .currency_ball-wrapper.sgd {
+    background-color: #720f15; }
   .currency_ball-wrapper.s {
     font-size: 0.6rem;
     width: 1.8rem;
@@ -5710,8 +5716,8 @@ table th {
     .table-wrapper .table_body-wrapper.with_icon tr td:first-child {
       border: none !important; }
     .table-wrapper .table_body-wrapper tr.table_body-row td {
-      border-top: 1px solid #212121;
-      border-bottom: 1px solid #212121; }
+      border-top: 1px solid #777677;
+      border-bottom: 1px solid #777677; }
     .table-wrapper .table_body-wrapper .cancel-animate, .table-wrapper .table_body-wrapper .cancel-row-color, .table-wrapper .table_body-wrapper .cancel-row-color .cell_box-type .sell, .table-wrapper .table_body-wrapper .cancel-row-color .cell_box-type .buy, .table-wrapper .table_body-wrapper .cancel-row-color .action_notification-wrapper .notification-info, .table-wrapper .table_body-wrapper .cancel-row-color .cell-wrapper, .table-wrapper .table_body-wrapper .cancel-row-color .cell-wrapper .cell_value-wrapper, .table-wrapper .table_body-wrapper .cancel-row-color .cell-wrapper .cell_value-wrapper .cell_value-bar {
       -webkit-animation: cancelRow 1.4s;
       -moz-animation: cancelRow 1.4s;
@@ -5753,7 +5759,7 @@ table th {
 .table_controllers-wrapper {
   margin: 2rem 0;
   color: #212121;
-  border-top: 2px solid #212121;
+  border-top: 2px solid #777677;
   position: relative; }
   .table_controllers-wrapper .disabled {
     cursor: default;
@@ -5881,28 +5887,28 @@ table th {
   fill-opacity: 1; }
 
 .chart_btc {
-  fill: #f7941e;
-  stroke: #f6921e; }
+  fill: #f7941d;
+  stroke: #f7941d; }
 
 .chart_bch {
-  fill: #9ec51e;
-  stroke: #8bc53f; }
+  fill: #8dc541;
+  stroke: #8dc541; }
 
 .chart_eth {
-  fill: #334DAA;
-  stroke: #2b388f; }
+  fill: #3e4ea1;
+  stroke: #3e4ea1; }
 
 .chart_eur {
-  fill: #00a651;
-  stroke: #00a651; }
+  fill: #06773d;
+  stroke: #06773d; }
 
 .chart_ltc {
-  fill: #58595b;
-  stroke: #58595b; }
+  fill: #bcbec0;
+  stroke: #bcbec0; }
 
 .chart_xrp {
-  fill: #334DAA;
-  stroke: #2b388f; }
+  fill: #414042;
+  stroke: #414042; }
 
 .chart_hex {
   fill: #000000;
@@ -6025,47 +6031,47 @@ table th {
   stroke: #01592e; }
 
 .chart_jpy {
-  fill: #ec008c;
+  fill: #e0dfc7;
   stroke: #e0dfc7; }
 
 .chart_gbp {
-  fill: #f9ee02;
+  fill: #482e6e;
   stroke: #482e6e; }
 
 .chart_chf {
-  fill: #720f15;
+  fill: #ed1c24;
   stroke: #ed1c24; }
 
 .chart_cad {
-  fill: #e0dfc7;
+  fill: #d7ce58;
   stroke: #d7ce58; }
 
 .chart_aud {
-  fill: #482e6e;
+  fill: #19441f;
   stroke: #19441f; }
 
 .chart_nzd {
-  fill: #ed1c24;
+  fill: #b3498c;
   stroke: #b3498c; }
 
 .chart_zar {
-  fill: #d7ce58;
+  fill: #d8d3a0;
   stroke: #d8d3a0; }
 
 .chart_hkd {
-  fill: #19441f;
+  fill: #f48f9b;
   stroke: #f48f9b; }
 
 .chart_krw {
-  fill: #b3498c;
+  fill: #f9ee02;
   stroke: #f9ee02; }
 
 .chart_cny {
-  fill: #d8d3a0;
+  fill: #ec008c;
   stroke: #ec008c; }
 
 .chart_sgd {
-  fill: #f48f9b;
+  fill: #720f15;
   stroke: #720f15; }
 
 .bar_wrapper {
@@ -6215,28 +6221,28 @@ table th {
   fill-opacity: 0.4; }
 
 .dark-theme .chart_btc {
-  fill: #f6921e;
-  stroke: #f6921e; }
+  fill: #f7941d;
+  stroke: #f7941d; }
 
 .dark-theme .chart_bch {
-  fill: #8bc53f;
-  stroke: #8bc53f; }
+  fill: #8dc541;
+  stroke: #8dc541; }
 
 .dark-theme .chart_eth {
-  fill: #334DAA;
-  stroke: #334DAA; }
+  fill: #3e4ea1;
+  stroke: #3e4ea1; }
 
 .dark-theme .chart_eur {
-  fill: #00a651;
-  stroke: #00a651; }
+  fill: #06773d;
+  stroke: #06773d; }
 
 .dark-theme .chart_ltc {
-  fill: #58595b;
-  stroke: #58595b; }
+  fill: #bcbec0;
+  stroke: #bcbec0; }
 
 .dark-theme .chart_xrp {
-  fill: #2b388f;
-  stroke: #2b388f; }
+  fill: #414042;
+  stroke: #414042; }
 
 .dark-theme .chart_hex {
   fill: #000000;
@@ -6593,6 +6599,10 @@ foreignObject {
       background-color: #2e3192; }
     .quick_trade-wrapper .input_block-content.loading.ltc::after {
       background-color: #58595b; }
+  .quick_trade-wrapper .mobile_dropdown-section .mobile-drop-down {
+    color: #212121; }
+    .quick_trade-wrapper .mobile_dropdown-section .mobile-drop-down .option {
+      color: #2e2f37; }
 
 @keyframes linear_loading {
   0% {
@@ -6641,6 +6651,11 @@ foreignObject {
   .dark-theme .quick_trade-wrapper .input_block-inputbox {
     background-color: #1f212a;
     color: #b6b5cd; }
+  .dark-theme .quick_trade-wrapper .mobile_dropdown-section .mobile-drop-down {
+    color: #b6b5cd; }
+    .dark-theme .quick_trade-wrapper .mobile_dropdown-section .mobile-drop-down .option {
+      background: #1f212a;
+      color: #777677; }
 
 .dark-theme svg .quick-trade-1 {
   stroke: #a3a1ca; }
@@ -6656,6 +6671,9 @@ foreignObject {
 
 .layout-mobile .quick_trade-wrapper {
   margin-top: -24px; }
+
+.mobile_dropdown-section {
+  border-top: solid; }
 
 .legal-container {
   width: 100%; }
@@ -6922,11 +6940,11 @@ foreignObject {
   font-weight: bold;
   padding-right: 2rem; }
 
-.layout-mobile .with_arrow_trade:after {
+.with_arrow_trade:after {
   border-left-color: #212121 !important;
   border-right-color: #212121 !important; }
 
-.layout-mobile .direction_ltr .with_arrow_trade:after {
+.direction_ltr .with_arrow_trade:after {
   content: "";
   display: block;
   position: relative;
@@ -6939,7 +6957,7 @@ foreignObject {
   transform: rotate(90deg);
   left: -1.5rem; }
 
-.layout-mobile .direction_rtl .with_arrow_trade:after {
+.direction_rtl .with_arrow_trade:after {
   transform: rotate(90deg);
   content: "";
   display: block;
@@ -6952,7 +6970,7 @@ foreignObject {
   margin-left: -0.5rem;
   right: -1rem; }
 
-.layout-mobile .dark-theme .with_arrow_trade:after {
+.dark-theme .with_arrow_trade:after {
   border-left-color: #b6b5cd !important;
   border-right-color: #b6b5cd !important; }
 
@@ -7387,7 +7405,7 @@ body {
 
 .ReactModal__Body--open #root {
   filter: blur(5px);
-  background: lightgrey; }
+  background: rgba(221, 221, 221, 0.75); }
 
 .form {
   min-width: 25rem;

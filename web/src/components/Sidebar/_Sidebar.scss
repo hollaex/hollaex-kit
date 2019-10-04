@@ -36,17 +36,17 @@ $row--size: calc(#{$row--height} - #{$sidebar-sections-padding});
 	.sidebar-row--right-icon {
 		@include size(1.5rem);
 		&.icon--help {
-			@include hover-icon($colors-main-black, $colors-deactivate-color2);
+			@include hover-icon($icon-hover, $icon-unhover);
 			circle {
 				fill: transparent;
 				stroke: transparent;
 			}
 		}
 		&.icon--logout {
-			@include hover-icon($colors-main-black, $colors-deactivate-color2);
+			@include hover-icon($icon-hover, $icon-unhover);
 		}
 		&.icon--chat {
-			@include hover-icon($colors-main-black, $colors-deactivate-color2);
+			@include hover-icon($icon-hover, $icon-unhover);
 		}
 
 		> div,
