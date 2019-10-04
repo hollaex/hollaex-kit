@@ -12,4 +12,4 @@ export const getMonthlyTradingVolume = (pair) => {
 };
 export const getNumOfUsers = () => requestAuthenticated('/admin/stats');
 
-export const requestFees = () => requestAuthenticated('/admin/pairs/fees');
+export const requestFees = () => requestAuthenticated('/admin/pairs');

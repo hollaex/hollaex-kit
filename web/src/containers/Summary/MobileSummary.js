@@ -1,5 +1,6 @@
 import React from 'react';
 import classnames from 'classnames';
+import moment from 'moment';
 
 import SummaryBlock from './components/SummaryBlock';
 import TraderAccounts from './components/TraderAccounts';
@@ -9,6 +10,7 @@ import TradingVolume from './components/TradingVolume';
 import AccountDetails from './components/AccountDetails';
 
 import { BASE_CURRENCY, DEFAULT_COIN_DATA } from '../../config/constants';
+import { formatAverage, formatBaseAmount } from '../../utils/currency';
 import STRINGS from '../../config/localizedStrings';
 
 const MobileSummary = ({
@@ -23,6 +25,7 @@ const MobileSummary = ({
     chartData,
     logout,
     totalAssets,
+    isValidBase,
     lastMonthVolume,
     onFeesAndLimits,
     onUpgradeAccount,
@@ -67,7 +70,16 @@ const MobileSummary = ({
             <div className="assets-wrapper w-100">
                 <SummaryBlock
                     title={STRINGS.SUMMARY.ACCOUNT_ASSETS}
-                    secondaryTitle={`${balance[`${BASE_CURRENCY.toLowerCase()}_balance`]} ${fullname}`} >
+                    secondaryTitle={
+                        BASE_CURRENCY && isValidBase ?
+                            <span>
+                                <span className="title-font">
+                                    {totalAssets}
+                                </span>
+                                {` ${fullname}`}
+                            </span>
+                            : null
+                    } >
                     <AccountAssets
                         user={user}
                         chartData={chartData}
@@ -79,7 +91,13 @@ const MobileSummary = ({
             <div className="trading-volume-wrapper w-100">
                 <SummaryBlock
                     title={STRINGS.SUMMARY.TRADING_VOLUME}
-                    secondaryTitle={`${balance[`${BASE_CURRENCY.toLowerCase()}_balance`]} ${fullname}`} >
+                    secondaryTitle={<span>
+                        <span className="title-font">
+                            {` ${formatAverage(formatBaseAmount(lastMonthVolume))}`}
+                        </span>
+                        {` ${fullname} ${STRINGS.formatString(STRINGS.SUMMARY.NOMINAL_TRADING_WITH_MONTH, moment().subtract(1, "month").startOf("month").format('MMMM')).join('')}`}
+                    </span>
+                    } >
                     <TradingVolume user={user} />
                 </SummaryBlock>
             </div>

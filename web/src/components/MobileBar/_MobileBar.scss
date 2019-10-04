@@ -37,7 +37,7 @@ $mobile-notification-size: 1.75rem;
 		&:after {
 			content: '';
 			bottom: 0;
-			@include css-triangle(white, 'up', 1rem);
+			@include css-triangle($app-background-color, 'up', 1rem);
 		}
 	}
 

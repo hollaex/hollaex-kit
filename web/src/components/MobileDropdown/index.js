@@ -8,7 +8,7 @@ export const MobileDropdown = ({ options = [], onChange, className }) => (
 			onChange={onChange}
 		>
 			{Object.entries(options).map(([key, value]) => (
-				<option key={key} value={value}>
+				<option className="option" key={key} value={value}>
 					{value.toUpperCase()}
 				</option>
 			))}

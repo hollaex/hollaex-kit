@@ -1,4 +1,4 @@
-$row--border-color: $colors-main-black;
+$row--border-color: $border-color;
 $row--border: 1px solid $row--border-color;
 
 $table-cell_box-background: grey;
@@ -65,31 +65,31 @@ $controllers--color-disabled: $colors-deactivate-color2;
 		@-webkit-keyframes cancelRow {
 			from {}
 			to {
-				color: $colors-white;
-				background-color: $colors-white;
-				border-color: $colors-white;
+				color: $app-background-color;
+				background-color: $app-background-color;
+				border-color: $app-background-color;
 			}
 		}
 		@-moz-keyframes cancelRow {
 			from {}
 			to {
-				color: $colors-white;
-				background-color: $colors-white;
-				border-color: $colors-white;
+				color: $app-background-color;
+				background-color: $app-background-color;
+				border-color: $app-background-color;
 			}
 		}
 		@keyframes cancelRow {
 			from {}
 			to {
-				color: $colors-white;
-				background-color: $colors-white;
-				border-color: $colors-white;
+				color: $app-background-color;
+				background-color: $app-background-color;
+				border-color: $app-background-color;
 			}
 		}		
 	}
 
 	.cell_box-type {
-		color: white;
+		color: $buy-bids-text;
 		text-transform: capitalize;
 
 		> div {

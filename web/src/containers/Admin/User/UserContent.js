@@ -22,8 +22,11 @@ import Flagger from '../Flaguser';
 const TabPane = Tabs.TabPane;
 
 class UserContent extends Component {
+	
 	render() {
 		const {
+			coins,
+			config,
 			userInformation,
 			userImages,
 			clearData,
@@ -33,6 +36,8 @@ class UserContent extends Component {
 		} = this.props;
 		const { id, activated, otp_enabled, flagged } = userInformation;
 		const isSupportUser = isSupport();
+		const pairs = Object.keys(coins) || [];
+
 		return (
 			<div className="app_container-content">
 				<div className="d-flex justify-content-between">
@@ -96,7 +101,7 @@ class UserContent extends Component {
 					)}
 					{isAdmin() && (
 						<TabPane tab="Funding" key="deposit">
-							<Balance user_id={id} />
+							<Balance user_id={id} pairs={pairs} />
 						</TabPane>
 					)}
 					{!isSupportUser && !isKYC() && (
@@ -123,6 +128,7 @@ class UserContent extends Component {
 					)}
 					<TabPane tab="Verification" key="verification">
 						<Verification
+							config={config}
 							user_id={userInformation.id}
 							userImages={userImages}
 							userInformation={userInformation}

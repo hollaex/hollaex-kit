@@ -7,7 +7,7 @@ $large-modifier: 2.25;
 	font-family: $raleway-medium--font-family !important;
 	text-transform: uppercase;
 	border-radius: 50%;
-	color: white;
+	color: $app-background-color;
 	font-weight: bold;
 
 	&.btc {

@@ -130,7 +130,7 @@ $title-icon--height: 10rem;
 				height: 1px;
 				width: 100%;
 				position: absolute;
-				background-color: $colors-main-black;
+				background-color: $border-main;
 				left: 0;
 				right: 0;
 				top: 50%;
@@ -167,7 +167,7 @@ $title-icon--height: 10rem;
 	}
 
 	.input_block-content {
-		border-bottom: $input-bottom_line--height solid $colors-main-black;
+		border-bottom: $input-bottom_line--height solid $border-main;
 		width: 100%;
 		&.has_error {
 			border-bottom-color: $error-color;
@@ -229,6 +229,14 @@ $title-icon--height: 10rem;
 
 		&.loading.ltc::after {
 			background-color: $colors-currencies-ltc;
+		}
+	}
+	.mobile_dropdown-section {
+		.mobile-drop-down {
+			color:$colors-main-black;
+			.option {
+				color:$dark-disabled-main;
+			}
 		}
 	}
 }
@@ -320,6 +328,15 @@ $title-icon--height: 10rem;
 			background-color: $dark-app-background-color;
 			color: $dark-font-main-text-color;
 		}
+		.mobile_dropdown-section {
+			.mobile-drop-down {
+				color:$dark-font-main-text-color;	
+				.option {
+					background: $dark-app-background-color;
+					color:$colors-deactivate-color2;	
+				}
+			}
+		}
 	}
 
 	svg {
@@ -342,4 +359,7 @@ $title-icon--height: 10rem;
 	.quick_trade-wrapper {
 		margin-top: -24px;
 	}
+}
+.mobile_dropdown-section {
+	border-top: solid;
 }

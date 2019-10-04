@@ -8,7 +8,7 @@
 	align-items: center;
 
 	.notification-info {
-		color: $colors-notifications-blue;
+		color: $link;
 	}
 
 	.notification-warning {
@@ -63,17 +63,17 @@
 	}
 		.cancel-cross-2 {
 			fill:none;
-			stroke:$colors-notifications-blue;
+			stroke: $link;
 		}
 		.trans-history-1,
 		.trans-history-2,
 		.trans-history-3,
 		.cancel-cross-1	{
-			fill: $colors-notifications-blue
+			fill: $link;
 		}
 		.trans-history-4,
 		.cancel-cross-3 {
-			stroke: $colors-notifications-blue;
+			stroke: $link;
 		}
 }
 
@@ -204,7 +204,7 @@
 		}
 	}
 	.action_notification-text {
-		color: $colors-notifications-blue;
+		color: $link;
 	}
 	
 

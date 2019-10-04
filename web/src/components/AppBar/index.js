@@ -285,13 +285,13 @@ class AppBar extends Component {
 		const totalPending = securityPending + verificationPending;
 		let pair = '';
 		if (Object.keys(pairs).length) {
-			const { pair_base } = pairs[Object.keys(pairs)[0]];
-			const { symbol } = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
-			pair = `${pair_base}-${symbol.toLowerCase()}`;
+			// const { pair_base } = pairs[Object.keys(pairs)[0]];
+			// const { symbol } = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
+			// pair = `${pair_base}-${symbol.toLowerCase()}`;
+			pair = Object.keys(pairs)[0];
 		} else {
 			pair = this.props.pair;
 		}
-
 		return isMobile ? (
 			<MobileBarWrapper
 				className={classnames(

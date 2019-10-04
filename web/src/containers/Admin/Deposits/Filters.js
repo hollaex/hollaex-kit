@@ -3,18 +3,12 @@ import { Button, Alert } from 'antd';
 import { SelectValue } from './SelectValues';
 import { FilterInput } from './FilterInput';
 
-const FILTERS = [
+const getFilters = (coinOptions) => [
 	{
 		label: 'Currency',
 		placeholder: 'Currency',
 		key: 'currency',
-		options: [
-			{ value: 'btc', text: 'BTC' },
-			{ value: 'bch', text: 'BCH' },
-			{ value: 'eth', text: 'ETH' },
-			{ value: 'xrp', text: 'XRP' },
-			{ value: 'fiat', text: 'Fiat' }
-		]
+		options: coinOptions
 	},
 	// {
 	// 	label: 'Type',
@@ -43,6 +37,7 @@ const FILTERS = [
 ];
 
 export const Filters = ({
+	coins,
 	onChange,
 	params,
 	onClick,
@@ -50,6 +45,11 @@ export const Filters = ({
 	fetched,
 	hasChanges
 }) => {
+	const coinOptions = [];
+	Object.keys(coins).map((data) => {
+		coinOptions.push({ value: data, text: data.toUpperCase() });
+	});
+	const fieldProps = getFilters(coinOptions);
 	const allowQuery = !loading && hasChanges && Object.keys(params).length > 0;
 	return (
 		<div>
@@ -69,7 +69,7 @@ export const Filters = ({
 			)}
 			<div className="filters-wrapper">
 				<div className="filters-wrapper-filters">
-					{FILTERS.map(({ key, ...rest }) => (
+					{fieldProps.map(({ key, ...rest }) => (
 						<SelectValue
 							key={key}
 							value={params[key]}
