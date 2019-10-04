@@ -42,9 +42,9 @@ export default {
 	NO_OPTIONS: 'No options availables',
 	SECONDS: 'seconds',
 	HOME: {
-		SECTION_1_TITLE: 'Build your own digital asset exchange',
+		SECTION_1_TITLE: 'Welcome to HEX Exchange Kit!',
 		SECTION_1_TEXT_1:
-			'Build your own scalable digital asset exchange with HEX and be part of the future finance.',
+			'Build your own scalable digital asset exchange with HEX Kit and be part of the future of finance.',
 		SECTION_1_TEXT_2:
 			'We strive to bring the financial technology forward through afforable and simple access to trading technology.',
 		SECTION_1_BUTTON_1: 'Learn more',
