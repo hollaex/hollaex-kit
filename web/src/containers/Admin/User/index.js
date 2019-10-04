@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 // import { SubmissionError } from 'redux-form';
 import querystring from 'query-string';
 import { Spin, notification, Tabs } from 'antd';
+import { connect } from 'react-redux';
+
 import './index.css';
 import { AdminHocForm } from '../../../components';
 
@@ -120,6 +122,7 @@ class App extends Component {
 
 	render() {
 		const { userInformation, userImages, userBalance, loading } = this.state;
+		const { coins, config } = this.props;
 
 		if (loading) {
 			return (
@@ -131,6 +134,8 @@ class App extends Component {
 
 		return userInformation && userInformation.id ? (
 			<UserContent
+				coins={coins}
+				config={config}
 				userBalance={userBalance}
 				userInformation={userInformation}
 				userImages={userImages}
@@ -167,7 +172,7 @@ class App extends Component {
 
 					<TabPane tab="All Users" key="users">
 						<h2 className="m-top">LIST OF ALL USERS</h2>
-						<FullListUsers requestUser={this.requestUserData} />
+						<FullListUsers coins={coins} requestUser={this.requestUserData} />
 					</TabPane>
 				</Tabs>
 			</div>
@@ -175,4 +180,9 @@ class App extends Component {
 	}
 }
 
-export default App;
+const mapStateToProps = (state) => ({
+	coins: state.app.coins,
+	config: state.app.config
+});
+
+export default connect(mapStateToProps)(App);

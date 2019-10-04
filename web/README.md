@@ -31,6 +31,7 @@ Here is a list of common items you can configure:
   - `REACT_APP_PUBLIC_URL`: `https://bitholla.com` Your exchange URL label. Same as above but only this is used within the project code and the other is for the assets.
   - `REACT_APP_NETWORK`: `['mainnet', 'testnet']` Mainnet referring to the main exchange and testnet to the simulating environment.
   - `REACT_APP_SERVER_ENDPOINT`: `https://api.bitholla.com` Your HEX Kit server endpoint
+  - `REACT_APP_EXCHANGE_NAME`: `HEX Exchange` Exchange name
   - `REACT_APP_CAPTCHA_SITE_KEY`: `<Captcha here>` Google v3 recaptcha site key.
   - `REACT_APP_DEFAULT_LANGUAGE`: `en` default language of the exchange. Follow localization process.
   - `REACT_APP_DEFAULT_COUNTRY`: `SC` default country of the exchange. Use two letter country [ISO 3166](https://www.iban.com/country-codes)
@@ -41,5 +42,7 @@ All strings used in the project can be found in `/src/config/localizedStrings.js
 All images and assets used are in `/public` and can be modified by uploading the new image for your own branding. Make sure you keep the file names to avoid mismatches and issues.  
 
 ### Styles
-1. Modify colors under the `dark theme color` text in variables.scss file.
-2. Change the colors of `DARK_THEME_COLORS` and `DARK_THEME_CHART_COLORS` objects in constants.js file to apply the theme colors inside the charts.
+### Steps to configure white and dark theme
+1. Modify colors under `colors for white theme` and `colors for dark theme` text in variables.scss file. there is also some common colors that effect in both dark and white theme.
+2. Coin colors also categorized by theme in variables.scss file.
+3. To apply different colors for chart element outline(slice in dount, bar in bar chart) change the `coin-${symbol}-1` and `dark-coin-${symbol}-1`.

@@ -29,9 +29,7 @@ import {
 
 const VERIFICATION_LEVELS_SUPPORT = ['1', '2', '3'];
 const VERIFICATION_LEVELS_ADMIN = VERIFICATION_LEVELS_SUPPORT.concat([
-	'4',
-	'5',
-	'6'
+	'4', '5', '6'
 ]);
 
 const IDForm = AdminHocForm('ID_DATA_FORM');
@@ -100,12 +98,21 @@ class Verification extends Component {
 	};
 
 	render() {
-		const { userImages, userInformation, refreshData } = this.props;
+		const { userImages, userInformation, refreshData, config } = this.props;
 		const { id, id_data } = userInformation;
-		const VERIFICATION_LEVELS =
+		let VERIFICATION_LEVELS =
 			isSupport() || isSupervisor()
 				? VERIFICATION_LEVELS_SUPPORT
 				: VERIFICATION_LEVELS_ADMIN;
+		if (config.tiers) {
+			const temp = [];
+			VERIFICATION_LEVELS_ADMIN.map(level => {
+				if (parseInt(level) <= parseInt(config.tiers)) {
+					temp.push(level);
+				}
+			});
+			VERIFICATION_LEVELS = temp;
+		}
 		return (
 			<div>
 				<div className="verification_data_container">

@@ -5,13 +5,13 @@ import STRINGS from './localizedStrings';
 export const ENV = process.env.NODE_ENV || 'development';
 export const NETWORK = process.env.REACT_APP_NETWORK || 'testnet';
 
-export const APP_TITLE = STRINGS.APP_TITLE;
+export const APP_TITLE = process.env.REACT_APP_EXCHANGE_NAME || STRINGS.APP_TITLE;
 
 export const TOKEN_TIME = 24 * 60 * 60 * 1000; // 1 day
 export const SESSION_TIME = 6 * 60 * 60 * 1000; // 6 hour
 
-export const API_URL = config[NETWORK].API_URL;
-export const WS_URL = config[NETWORK].WS_URL;
+export const API_URL = config[ENV].API_URL;
+export const WS_URL = config[ENV].WS_URL;
 
 export const ICONS = {
 	LOGO_GREY: `${process.env.PUBLIC_URL}/assets/hollaEx_logo-grey.svg`,
@@ -453,7 +453,8 @@ export const ICONS = {
 	SETTING_RISK_MANAGE_WARNING_ICON: `${
 		process.env.PUBLIC_URL
 	}/assets/images/risk-manage-pop-warning.svg`,
-	REFER_ICON: `${process.env.PUBLIC_URL}/assets/images/refer-icon.svg`
+	REFER_ICON: `${process.env.PUBLIC_URL}/assets/images/refer-icon.svg`,
+	EDIT_ICON: `${process.env.PUBLIC_URL}/assets/images/edit-icon.svg`
 };
 
 export const SOCIAL_ICONS = {
@@ -699,9 +700,15 @@ export const CHART_MONTHS = [
 ];
 
 export const DARK_THEME_COLORS = {
-	dark_border_main: '#b7b5cd',
-	dark_sub_text: '#a3a1ca',
-	dark_sub_text_1: '#808184'
+	border_main: '#b7b5cd',
+	sub_text: '#a3a1ca',
+	sub_text_1: '#808184'
+};
+
+export const WHITE_THEME_COLORS = {
+	border_main: '#000000',
+	sub_text: '#000000',
+	sub_text_1: '#000000'
 };
 
 export const DARK_THEME_CHART_COLORS = {
@@ -714,4 +721,15 @@ export const DARK_THEME_CHART_COLORS = {
 	SELL_CANDLE: '#f69321',
 	BUY_VOLUME: '#29abe2',
 	SELL_VOLUME: '#f69321'
+};
+export const WHITE_THEME_CHART_COLORS = {
+	SELL: 'red',
+	BUY: 'green',
+	LINE: 'black',
+	FILL: 'green',
+	AXIS: '#4D4D4D',
+	BUY_CANDLE: 'green',
+	SELL_CANDLE: '#ed1c24',
+	BUY_VOLUME: 'lightgreen',
+	SELL_VOLUME: '#ed1c24'
 };

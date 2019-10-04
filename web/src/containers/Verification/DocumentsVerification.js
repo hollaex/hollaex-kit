@@ -141,7 +141,7 @@ class DocumentsVerification extends Component {
 				type: {
 					type: 'hidden'
 				},
-				proofOfResidency: {
+				proof_of_residency: {
 					type: 'file',
 					label:
 						STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS.SELFIE_PHOTO_ID_LABEL,

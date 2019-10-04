@@ -4,7 +4,7 @@ $app-bar--arrow-size: 0.4rem;
 $notification-size: 1.5rem;
 $app-menu-notification-size: 1.2rem;
 $app-bar-add-tab-red: #ff0000;
-$app-bar-pairs-up: green;
+$app-bar-pairs-up: $buy;
 
 .dark-theme {
 	.app_bar {
@@ -26,7 +26,7 @@ $app-bar-pairs-up: green;
 			color: $dark-font-main-text-color !important;
 
 			svg {
-				.btc0, .btc1, .eth0, .eth1, .bch-icon {
+				.btc0, .btc1, .eth0, .eth1, .bch-icon, .xrp-icon {
 					fill: $dark-font-main-text-color;
 				}
 				.tab-close, .plus, .double-arrow {
@@ -158,7 +158,7 @@ $app-bar-pairs-up: green;
 	display: flex;
 	font-size: $navigation_bar-font_size;
 	font-weight: bold;
-	background: $colors-black;
+	background: $app-bar-background-color;
 
 	&.no-borders {
 		border-bottom: none;
@@ -179,7 +179,7 @@ $app-bar-pairs-up: green;
 
 	.app_bar-icon-logo svg {
 		.logo-black {
-			fill: $colors-white;
+			fill: $app-logo-color;
 		}
 	}
 
@@ -318,13 +318,13 @@ $app-bar-pairs-up: green;
 	}
 
 	.active-tab-pair {
-		background-color: $colors-white;
+		background-color: $app-background-color;
 		border-left: 1px solid $colors-white;
 		color: $colors-black;
 		top: 1px;
 
 		svg {
-			.btc0, .btc1, .eth0, .eth1, .bch-icon {
+			.btc0, .btc1, .eth0, .eth1, .bch-icon, .xrp-icon {
 				fill: $colors-main-black;
 			}
 			.tab-close, .plus, .double-arrow {
@@ -338,8 +338,8 @@ $app-bar-pairs-up: green;
 	}
 
 	.active-tab-overflow {
-		background-color: $colors-white;
-		border-left: 1px solid $colors-white;
+		background-color: $app-background-color;
+		border-left: 1px solid $app-background-color;
 		color: $colors-black;
 		top: 1px;
 
@@ -366,7 +366,7 @@ $app-bar-pairs-up: green;
 	}
 
 	.app_bar-pair-content, .app-bar-tab-close, .app-bar-currency-icon, .app-bar-account-icon svg {
-		.btc0, .btc1, .eth0, .eth1, .bch-icon {
+		.btc0, .btc1, .eth0, .eth1, .bch-icon, .xrp-icon {
 			fill: $app-bar-icon-inactive;
 		}
 		.tab-close, .plus {
@@ -391,7 +391,7 @@ $app-bar-pairs-up: green;
 	}
 
 	.app-price-diff-down {
-		color: $colors-notifications-red;
+		color: $sell;
 	}
 
 	.app-price-diff-up {
@@ -625,7 +625,7 @@ $app-bar-pairs-up: green;
 }
 
 .app-menu-bar {
-	background: $app-menu-bar-background-color;
+	background: $app-light-background;
 	display: flex;
 	font-size: $navigation_bar-font_size;
 	height: $navigation_bar-height;
@@ -653,7 +653,7 @@ $app-bar-pairs-up: green;
 	}
 
 	.active-menu {
-		background-color: $colors-white;
+		background-color: $app-background-color;
 		color: $colors-main-black;
 		height: 2.5rem;
 		position: relative;
@@ -815,7 +815,8 @@ $app-bar-pairs-up: green;
 				.btc1,
 				.eth0,
 				.eth1,
-				.bch-icon {
+				.bch-icon,
+				.xrp-icon {
 					fill: $dark-font-main-text-color !important;
 				}
 				.st0 {
@@ -841,7 +842,7 @@ $app-bar-pairs-up: green;
 
 	.app-bar-tab-setting, .app-bar-add-tab-icons {
 		svg {
-			.btc0, .btc1, .eth0, .eth1, .bch-icon {
+			.btc0, .btc1, .eth0, .eth1, .bch-icon, .xrp-icon {
 				fill: $dark-font-sub-text-1-color !important;
 			}
 			.plus, .minus {

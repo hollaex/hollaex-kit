@@ -11,8 +11,6 @@ import {
 
 import { isSupport } from '../../../utils/token';
 
-const CURRENCIES = ['eur', 'btc', 'eth', 'bch', 'xrp'];
-
 const TYPES = ['deposit', 'withdrawal'];
 
 const Form = AdminHocForm('BALANCE_UPDATE_FORM');
@@ -34,7 +32,7 @@ const onSubmit = (values) => {
 		});
 };
 
-const Balance = ({ user_id }) =>
+const Balance = ({ user_id, pairs = [] }) =>
 	isSupport() ? (
 		<div />
 	) : (
@@ -53,8 +51,8 @@ const Balance = ({ user_id }) =>
 					currency: {
 						type: 'select',
 						label: 'Currency',
-						options: CURRENCIES,
-						validate: [validateRequired, validateRange(CURRENCIES)]
+						options: pairs,
+						validate: [validateRequired, validateRange(pairs)]
 					},
 					type: {
 						type: 'select',
@@ -69,7 +67,7 @@ const Balance = ({ user_id }) =>
 				}}
 				initialValues={{
 					user_id,
-					currency: 'fiat',
+					currency: pairs[0] ? pairs[0] : '',
 					type: 'deposit',
 					amount: 0
 				}}

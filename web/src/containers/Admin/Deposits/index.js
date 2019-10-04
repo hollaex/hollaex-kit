@@ -43,19 +43,23 @@ class Deposits extends Component {
 	};
 
 	componentWillMount() {
-		const { initialData } = this.props;
-		this.requestDeposits(initialData);
+		const { initialData, queryParams } = this.props;
+		if (Object.keys(queryParams).length) {
+			this.requestDeposits(initialData, queryParams);
+		} else {
+			this.requestDeposits(initialData);
+		}
 	}
 
 	componentWillReceiveProps(nextProps) {
-		// if (
-		// 	nextProps.queryParams.currency !== this.props.queryParams.currency ||
-		// 	nextProps.queryParams.type !== this.props.queryParams.type
-		// ) {
-		// 	const { initialData, queryParams } = nextProps;
-		// 	this.requestDeposits(initialData, queryParams);
-		// 	this.onRefresh(false);
-		// }
+		if (
+			nextProps.queryParams.currency !== this.props.queryParams.currency ||
+			nextProps.queryParams.type !== this.props.queryParams.type
+		) {
+			const { initialData, queryParams } = nextProps;
+			this.requestDeposits(initialData, queryParams);
+			this.onRefresh(false);
+		}
 	}
 
 	requestDeposits = (values = {}, queryParams = { type: 'deposits' }) => {
@@ -207,7 +211,7 @@ class Deposits extends Component {
 			queryDone,
 			queryType
 		} = this.state;
-		const { showFilters } = this.props;
+		const { showFilters, coins } = this.props;
 		const columns = COLUMNS(undefined);
 		return (
 			<div>
@@ -219,6 +223,7 @@ class Deposits extends Component {
 						<div>
 							{showFilters && (
 								<Filters
+									coins={coins}
 									onChange={this.onChangeQuery}
 									onClick={this.onClickFilters}
 									hasChanges={

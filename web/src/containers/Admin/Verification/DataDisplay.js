@@ -38,7 +38,7 @@ export const renderJSONKey = (key, value) => {
 	} else if (key === 'settings') {
 		valueText = Object.entries(value).map(([key, val]) => {
 			return (
-				<div>
+				<div key={`${key}_`}>
 					{key} : {JSON.stringify(val)}
 				</div>
 			);
@@ -46,11 +46,11 @@ export const renderJSONKey = (key, value) => {
 	} else if (typeof value === 'object' && value !== null) {
 		valueText = Object.entries(value).map(([key, val]) => {
 			return typeof val === 'boolean' ? (
-				<div>
+				<div key={`${key}_1`}>
 					{key} : {JSON.stringify(val)}
 				</div>
 			) : (
-				<div>
+				<div key={`${key}_2`}> 
 					{key} : {val}
 				</div>
 			);

@@ -8,7 +8,7 @@ import {
 	OHLCChildren,
 	FORMAT_Y_TICK
 } from './utils';
-import { DARK_THEME_CHART_COLORS } from '../../config/constants';
+import { DARK_THEME_CHART_COLORS, WHITE_THEME_CHART_COLORS } from '../../config/constants';
 
 const FONT_SIZE = isMobile ? 10 : 6;
 
@@ -40,7 +40,7 @@ export const DARK_COLORS = {
 
 const THEME_COLORS = {
 	dark: DARK_THEME_CHART_COLORS,
-	white: COLORS
+	white: WHITE_THEME_CHART_COLORS
 };
 
 export const fillIndicator = (theme = 'white') => ({ close, open }) =>

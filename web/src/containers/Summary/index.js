@@ -138,7 +138,7 @@ class Summary extends Component {
     };
 
     render() {
-        const { user, balance, activeTheme, pairs, coins } = this.props;
+        const { user, balance, activeTheme, pairs, coins, isValidBase } = this.props;
         const { selectedAccount, currentTradingAccount, chartData, totalAssets, lastMonthVolume } = this.state;
         const { fullname } = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
         return (
@@ -159,6 +159,7 @@ class Summary extends Component {
                         logout={this.logoutConfirm}
                         balance={balance}
                         chartData={chartData}
+                        isValidBase={isValidBase}
                         totalAssets={totalAssets}
                         lastMonthVolume={lastMonthVolume}
                         onInviteFriends={this.onInviteFriends}
@@ -196,7 +197,17 @@ class Summary extends Component {
                             <div className="assets-wrapper">
                                 <SummaryBlock
                                     title={STRINGS.SUMMARY.ACCOUNT_ASSETS}
-                                    secondaryTitle={<span><span className="title-font">{totalAssets}</span>{` ${fullname}`}</span>} >
+                                    secondaryTitle={
+                                        BASE_CURRENCY && isValidBase ?
+                                            <span>
+                                                <span className="title-font">
+                                                    {totalAssets}
+                                                </span>
+                                                {` ${fullname}`}
+                                            </span>
+                                            : null
+                                    }
+                                >
                                     <AccountAssets
                                         user={user}
                                         chartData={chartData}
@@ -257,7 +268,8 @@ const mapStateToProps = (state) => ({
     price: state.orderbook.price,
     orders: state.order.activeOrders,
     activeLanguage: state.app.language,
-    tradeVolumes: state.user.tradeVolumes
+    tradeVolumes: state.user.tradeVolumes,
+    isValidBase: state.app.isValidBase
 });
 
 const mapDispatchToProps = (dispatch) => ({

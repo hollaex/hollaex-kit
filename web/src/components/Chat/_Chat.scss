@@ -1,4 +1,4 @@
-$chat-message-box-light--background-color: #f0f1f1;
+$chat-message-box-light--background-color: $box-fields;
 $chat-wrapper-light--background-color: white;
 $chat-message-box-dark--background-color: $dark-box-fields;
 $chat-wrapper-dark--background-color: $dark-app-light-background;
@@ -85,7 +85,7 @@ $mobile-regular--font-size: 1.5rem;
 	.username-to-chat {
 		cursor: pointer;
 		padding: 0.7rem !important;
-		color:$colors-notifications-blue !important;
+		color: $link !important;
 		font-size: 1rem !important;
 		font-family: "Open Sans"!important;
 	}

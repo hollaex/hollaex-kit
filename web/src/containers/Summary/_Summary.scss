@@ -185,7 +185,7 @@
         margin-right: 1rem;
     }
     .trade-account-link {
-        color: $colors-notifications-blue;
+        color: $link;
         font-weight: bold;
     }
     .summary-section_1 {
@@ -272,14 +272,14 @@
             font-weight: bold;
         }
         .total-assets {
-            background: repeating-linear-gradient(-45deg, #fff, #fff 2px, #cccbcb 2px, #cccbcb 4px);
+            background: repeating-linear-gradient(-45deg, $app-background-color, $app-background-color 2px, #cccbcb 2px, #cccbcb 4px);
             font-size: 1.2rem;
             font-weight: bold;
             padding: .5rem;
             color: $colors-black;
         }
         .asset-changes {
-            background-color: $colors-notifications-blue;
+            background-color: $link;
         }
         .coin-price-container {
             height: 3.5rem;
@@ -318,7 +318,7 @@
         }
         .account-type-menu {
             border-top: 1px solid $colors-deactivate;
-            color: $colors-notifications-blue;
+            color: $link;
             cursor: pointer;
             font-weight: bold;
             padding: .5rem 0;
@@ -347,7 +347,7 @@
             border-bottom: none !important;
         }
         .requirement-header {
-            border-bottom: 1px solid $colors-black;
+            border-bottom: 1px solid $border-color;
             color: $colors-black;
             font-weight: bold;
         }
@@ -362,7 +362,7 @@
     width: 36rem;
 
     .fee-limits-link {
-        color: $colors-notifications-blue;
+        color: $link;
         cursor: pointer;
         font-weight: bold;
     }
@@ -393,27 +393,27 @@
     }
 
     td {
-        border: 1px solid $colors-black;
+        border: 1px solid $border-color;
     }
     .account-limits {
         margin: 1rem 0;
         width: 100%;
     }
     .account-limits-content {
-        border: 1px solid $colors-black;
+        border: 1px solid $border-color;
     }
     .account-limits-maker {
-        border-left: 1px solid $colors-black;
-        border-right: 1px solid $colors-black;
-        border-top: 1px solid $colors-black;
+        border-left: 1px solid $border-color;
+        border-right: 1px solid $border-color;
+        border-top: 1px solid $border-color;
     }
     .account-limits-taker {
-        border-bottom: 1px solid $colors-black;
-        border-left: 1px solid $colors-black;
-        border-right: 1px solid $colors-black;
+        border-bottom: 1px solid $border-color;
+        border-left: 1px solid $border-color;
+        border-right: 1px solid $border-color;
     }
     .account-limits-coin {
-        border-bottom: 1px solid $colors-black;
+        border-bottom: 1px solid $border-color;
         padding: .25rem .5rem;
         width: 14rem;
     }

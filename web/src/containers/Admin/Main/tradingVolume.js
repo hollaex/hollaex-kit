@@ -25,7 +25,7 @@ const VOLUME = [
 	{ title: 'Close', dataIndex: 'close', key: 'close', render: formatNum }
 ];
 
-const TradingVolume = ({ error, data, chartData, newPair, handleChange }) => {
+const TradingVolume = ({ error, data, chartData, newPair, handleChange, selectedPair }) => {
 	const Options = newPair.map((currency, index) => {
 		return (
 			<Option key={index} value={currency}>
@@ -52,7 +52,7 @@ const TradingVolume = ({ error, data, chartData, newPair, handleChange }) => {
 						</Col>
 						<Col span={12} pull={1}>
 							<Select
-								defaultValue="btc-eur"
+								defaultValue={selectedPair}
 								style={{ width: 120 }}
 								onChange={handleChange}
 							>

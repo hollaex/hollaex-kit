@@ -9,6 +9,7 @@ import './index.css';
 
 class Main extends Component {
 	state = {
+		pairLoading: true,
 		userListLoading: true,
 		tradingVolumeLoading: true,
 		pageDisplay: 'block',
@@ -18,12 +19,13 @@ class Main extends Component {
 		tradingData: [],
 		chartData: [],
 		newPair: [],
-		tradingError: ''
+		tradingError: '',
+		pairError: ''
 	};
 
 	componentWillMount() {
+		this.getPairsData();
 		this.getUserData();
-		this.getTradingData();
 	}
 
 	getUserData = () => {
@@ -49,7 +51,41 @@ class Main extends Component {
 		}
 	};
 
-	getTradingData = (selectedPair = 'btc-eur') => {
+	getPairsData = () => {
+		if (isAdmin()) {
+			requestFees()
+				.then((data) => {
+					const newPair = [];
+					const sortedData = data.data.sort((a, b) => a.id - b.id);
+					sortedData.forEach(({ name }) => {
+						newPair.push(name);
+					});
+					if (newPair.length) {
+						this.getTradingData(newPair[0]);
+						this.setState({
+							selectedPair: newPair[0],
+							newPair,
+							pairLoading: false
+						});
+					} else {
+						this.setState({ pairError: 'Invalid pair' });
+					}
+				})
+				.catch((error) => {
+					const message = error.data ? error.data.message : error.message;
+					this.setState({
+						pairError: message,
+						pairLoading: false
+					});
+				});
+		} else {
+			this.setState({
+				userError: 'not authorized'
+			});
+		}
+	};
+
+	getTradingData = (selectedPair = this.state.selectedPair) => {
 		let tableData = [],
 			chartData = [];
 		getMonthlyTradingVolume(selectedPair)
@@ -60,23 +96,14 @@ class Main extends Component {
 					return new Date(b.date) - new Date(a.date);
 				});
 				if (isAdmin()) {
-					return requestFees();
+					this.setState({
+						tradingData: tableData,
+						chartData,
+						tradingVolumeLoading: false
+					});
 				} else {
 					throw new Error('not authorized');
 				}
-			})
-			.then((data) => {
-				const newPair = [];
-				const sortedData = data.data.sort((a, b) => a.id > b.id);
-				sortedData.forEach(({ name }) => {
-					newPair.push(name);
-				});
-				this.setState({
-					tradingData: tableData,
-					chartData,
-					newPair,
-					tradingVolumeLoading: false
-				});
 			})
 			.catch((err) => {
 				this.setState({ tradingError: 'not authorized' });
@@ -84,7 +111,7 @@ class Main extends Component {
 	};
 
 	handleChange = (selectedPair) => {
-		this.setState({ tradingVolumeLoading: true }, () => {
+		this.setState({ tradingVolumeLoading: true, selectedPair }, () => {
 			this.getTradingData(selectedPair);
 		});
 	};
@@ -99,11 +126,16 @@ class Main extends Component {
 			tradingData,
 			chartData,
 			newPair,
-			tradingError
+			tradingError,
+			pairLoading,
+			selectedPair,
+			pairError
 		} = this.state;
-		if (userListLoading && tradingVolumeLoading) {
+		if (userListLoading || tradingVolumeLoading || pairLoading) {
 			return <Spin size="large" className="m-top" />;
 		}
+		let error = pairError ? pairError : '';
+		error = !error && tradingError ? tradingError : '';
 		return (
 			<div className="app_container-content">
 				<div className="page" style={{ display: pageDisplay }}>
@@ -122,10 +154,11 @@ class Main extends Component {
 						<UserList numbers={numbers} error={userError} />
 					</div>
 					<TradingVolume
-						error={tradingError}
+						error={error}
 						data={tradingData}
 						chartData={chartData}
 						newPair={newPair}
+						selectedPair={selectedPair}
 						handleChange={this.handleChange}
 					/>
 				</div>

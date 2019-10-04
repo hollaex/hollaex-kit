@@ -2,7 +2,7 @@ import React from 'react';
 import { CheckboxButton, IconTitle } from '../../components';
 import QRCode from 'qrcode.react';
 import OTPForm from './OTPForm';
-import { ICONS } from '../../config/constants';
+import { APP_TITLE, ICONS } from '../../config/constants';
 
 import STRINGS from '../../config/localizedStrings';
 
@@ -25,7 +25,7 @@ export const renderOTPForm = (secret, email, activateOTP) => (
 			<div className="d-flex justify-content-center otp_form-section-content">
 				<div className="qr-code-wrapper d-flex justify-content-center align-items-center">
 					<QRCode
-						value={`otpauth://totp/HOLLAEX-${email}?secret=${secret}`}
+						value={`otpauth://totp/${APP_TITLE}-${email}?secret=${secret}`}
 						size={150}
 					/>
 				</div>

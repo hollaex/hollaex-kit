@@ -41,3 +41,4 @@ export { default as Fees } from './Admin/Fees';
 export { default as AdminChat } from './Admin/Chat';
 export { default as Wallets } from './Admin/Wallets';
 export { default as UserFees } from './Admin/UserFees';
+export { PATHS } from './Admin/paths';

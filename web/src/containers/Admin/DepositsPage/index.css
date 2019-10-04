@@ -56,9 +56,10 @@ body {
 
 .content-wrapper {
 	background-color: white;
-	padding: 8px;
+	padding: 20px;
 	min-height: 500px;
-	flex: 1;
+	/* flex: 1; */
+	width: 100%;
 	display: flex;
 	top: -13px;
 	position: relative;

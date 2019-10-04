@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Table, Alert } from 'antd';
+import { connect } from 'react-redux';
 
 import './index.css';
 
@@ -201,7 +202,7 @@ class Transactions extends Component {
 			queryParams,
 			queryDone
 		} = this.state;
-		const { showFilters } = this.props;
+		const { showFilters, coins } = this.props;
 
 		const {
 			hideUserColumn,
@@ -213,6 +214,7 @@ class Transactions extends Component {
 				<div>
 					{showFilters && (
 						<Filters
+							coins={coins}
 							onChange={this.onChangeQuery}
 							onClick={this.onClickFilters}
 							hasChanges={queryDone !== JSON.stringify(queryParams)}
@@ -277,4 +279,8 @@ class Transactions extends Component {
 	}
 }
 
-export default Transactions;
+const mapStateToProps = (state) => ({
+	coins: state.app.coins
+});
+
+export default connect(mapStateToProps)(Transactions);
