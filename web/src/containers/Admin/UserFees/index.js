@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { Table, Spin, Tabs, notification } from 'antd';
+import { CSVLink } from 'react-csv';
+
 import ChangeFees from './changeFees';
 import { requestFees, feeUpdate } from './actions';
-import { CSVLink } from 'react-csv';
 
 // import {SELECT_KEYS} from "../Deposits/utils";
 
@@ -32,6 +34,12 @@ class UserFees extends Component {
 
 	componentWillMount() {
 		this.requestFees();
+	}
+
+	componentDidUpdate(prevProps) {
+		if (JSON.stringify(prevProps.config) !== JSON.stringify(this.props.config)) {
+			this.renderData(this.state.data[this.state.selectedIndex]);
+		}
 	}
 
 	requestFees = () => {
@@ -72,6 +80,7 @@ class UserFees extends Component {
 		const keys = [];
 		const tableKeys = [];
 		const temporalData = {};
+		const { config = {} } = this.props;
 
 		keys.push('verification_level');
 
@@ -87,20 +96,24 @@ class UserFees extends Component {
 		keys.push(`${name}_taker_fee`);
 
 		Object.entries(maker_fees).forEach(([level, value]) => {
-			if (!temporalData[level]) {
-				temporalData[level] = {
-					verification_level: parseInt(level, 10)
-				};
+			if (parseInt(level, 10) <= parseInt(config.tiers, 10)) {
+				if (!temporalData[level]) {
+					temporalData[level] = {
+						verification_level: parseInt(level, 10)
+					};
+				}
+				temporalData[level][`${name}_maker_fee`] = value;
 			}
-			temporalData[level][`${name}_maker_fee`] = value;
 		});
 		Object.entries(taker_fees).forEach(([level, value]) => {
-			if (!temporalData[level]) {
-				temporalData[level] = {
-					verification_level: parseInt(level, 10)
-				};
+			if (parseInt(level, 10) <= parseInt(config.tiers, 10)) {
+				if (!temporalData[level]) {
+					temporalData[level] = {
+						verification_level: parseInt(level, 10)
+					};
+				}
+				temporalData[level][`${name}_taker_fee`] = value;
 			}
-			temporalData[level][`${name}_taker_fee`] = value;
 		});
 
 		keys.forEach((key) => {
@@ -206,4 +219,8 @@ class UserFees extends Component {
 	}
 }
 
-export default UserFees;
+const mapStateToProps = (state) => ({
+	config: state.app.config
+});
+
+export default connect(mapStateToProps)(UserFees);

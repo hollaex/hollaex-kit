@@ -454,7 +454,9 @@ export const ICONS = {
 		process.env.PUBLIC_URL
 	}/assets/images/risk-manage-pop-warning.svg`,
 	REFER_ICON: `${process.env.PUBLIC_URL}/assets/images/refer-icon.svg`,
-	EDIT_ICON: `${process.env.PUBLIC_URL}/assets/images/edit-icon.svg`
+	EDIT_ICON: `${process.env.PUBLIC_URL}/assets/images/edit-icon.svg`,
+	DEFAULT_ICON:`${process.env.PUBLIC_URL}/assets/icons/missing-coin-light.svg`,
+	DEFAULT_ICON_DARK:`${process.env.PUBLIC_URL}/assets/icons/missing-coin-dark.svg`
 };
 
 export const SOCIAL_ICONS = {

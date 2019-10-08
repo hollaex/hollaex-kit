@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { Table, Spin, notification, Input, Select } from 'antd';
 import { CSVLink } from 'react-csv';
+import { connect } from 'react-redux';
 
 import UserLimitForm from './UserLimitForm';
 import { requestLimits, performLimitUpdate } from './actions';
-import { UPDATE_KEYS, CURRENCY_KEYS, COINS_FORM_FIELDS, getCurrencyColumns } from './constants';
+import { UPDATE_KEYS, CURRENCY_KEYS, getCoinsFormFields, getCurrencyColumns } from './constants';
 import { ModalForm } from '../../../components';
 import './index.css';
 
@@ -82,12 +83,15 @@ class Limits extends Component {
 	};
 
 	handleEdit = (value, data, keyIndex) => {
-		const Fields = COINS_FORM_FIELDS[keyIndex];
+		const { config = {} } = this.props;
+		const formFields = getCoinsFormFields(config);
+		const Fields = formFields[keyIndex];
 		let initialValues = {};
 		if (typeof data[keyIndex] === 'object') {
 			const temp = data[keyIndex];
 			Object.keys(temp).map(key => {
-				initialValues[`${keyIndex}_${key}`] = temp[key];
+				if (key <= parseInt((config.tiers || 0), 10))
+					initialValues[`${keyIndex}_${key}`] = temp[key];
 			});
 		} else {
 			initialValues[keyIndex] = `${data[keyIndex]}`;
@@ -166,6 +170,7 @@ class Limits extends Component {
 								rowKey={(data) => {
 									return data.id;
 								}}
+								scroll={{ x: true }}
 							/>
 							{/* <div>
 							<h2>CHANGE DAILY MAX LIMITS</h2>
@@ -219,4 +224,8 @@ class Limits extends Component {
 	}
 }
 
-export default Limits;
+const mapStateToProps = (state) => ({
+	config: state.app.config
+});
+
+export default connect(mapStateToProps)(Limits);
