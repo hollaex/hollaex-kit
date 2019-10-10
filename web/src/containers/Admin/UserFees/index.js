@@ -4,7 +4,7 @@ import { Table, Spin, Tabs, notification } from 'antd';
 import { CSVLink } from 'react-csv';
 
 import ChangeFees from './changeFees';
-import { requestFees, feeUpdate } from './actions';
+import { feeUpdate } from './actions';
 
 // import {SELECT_KEYS} from "../Deposits/utils";
 
@@ -27,60 +27,40 @@ class UserFees extends Component {
 		temporalData: [],
 		headers: [],
 		newTab: [],
-		selectedIndex: 0,
-		data: [],
+		selectedKey: '',
+		tabData: [],
 		activeKey: 0
 	};
 
 	componentWillMount() {
-		this.requestFees();
+		if (Object.keys(this.props.pairs).length)
+			this.constructData(this.props.pairs);
 	}
 
 	componentDidUpdate(prevProps) {
-		if (JSON.stringify(prevProps.config) !== JSON.stringify(this.props.config)) {
-			this.renderData(this.state.data[this.state.selectedIndex]);
+		if (JSON.stringify(prevProps.pairs) !== JSON.stringify(this.props.pairs)
+			|| JSON.stringify(prevProps.config) !== JSON.stringify(this.props.config)) {
+			this.constructData(this.props.pairs, this.props.config);
 		}
 	}
 
-	requestFees = () => {
-		this.setState({
-			loading: true,
-			error: ''
-		});
-
-		requestFees()
-			.then((data) => {
-				const newTab = [];
-				const sortedData = data.data.sort((a, b) => a.id > b.id);
-
-				this.renderData(sortedData[this.state.selectedIndex]);
-
-				sortedData.forEach(({ name }) => {
-					newTab.push(name);
-				});
-
-				this.setState({
-					newTab,
-					data: sortedData,
-					loading: false,
-					fetched: true
-				});
-			})
-			.catch((error) => {
-				const message = error.message;
-				this.setState({
-					loading: false,
-					error: message
-				});
+	constructData = (pairs = {}, config = {}) => {
+		const sortedData = Object.keys(pairs).sort((a, b) => pairs[a].id - pairs[b].id);
+		const selectedKey = this.state.selectedKey ? this.state.selectedKey : sortedData[0];
+		if (sortedData.length) {
+			this.renderData(pairs[selectedKey], config);
+			this.setState({
+				tabData: sortedData,
+				selectedKey
 			});
+		}
 	};
 
-	renderData = (data) => {
+	renderData = (data, config) => {
 		const headers = [];
 		const keys = [];
 		const tableKeys = [];
 		const temporalData = {};
-		const { config = {} } = this.props;
 
 		keys.push('verification_level');
 
@@ -94,26 +74,18 @@ class UserFees extends Component {
 		keys.push(`${name}_maker_fee`);
 		headers.push(name.toUpperCase());
 		keys.push(`${name}_taker_fee`);
-
-		Object.entries(maker_fees).forEach(([level, value]) => {
-			if (parseInt(level, 10) <= parseInt(config.tiers, 10)) {
-				if (!temporalData[level]) {
-					temporalData[level] = {
-						verification_level: parseInt(level, 10)
-					};
-				}
-				temporalData[level][`${name}_maker_fee`] = value;
+		const verifyLevels = [];
+		for(var count = 1; count <= parseInt((config.tiers || 0), 10); count++) {
+			verifyLevels.push(count);
+		}
+		verifyLevels.map(level => {
+			if (!temporalData[level]) {
+				temporalData[level] = {
+					verification_level: level
+				};
 			}
-		});
-		Object.entries(taker_fees).forEach(([level, value]) => {
-			if (parseInt(level, 10) <= parseInt(config.tiers, 10)) {
-				if (!temporalData[level]) {
-					temporalData[level] = {
-						verification_level: parseInt(level, 10)
-					};
-				}
-				temporalData[level][`${name}_taker_fee`] = value;
-			}
+			temporalData[level][`${name}_maker_fee`] = maker_fees[level];
+			temporalData[level][`${name}_taker_fee`] = taker_fees[level];
 		});
 
 		keys.forEach((key) => {
@@ -142,8 +114,8 @@ class UserFees extends Component {
 	};
 
 	changeIndex = (activeKey) => {
-		this.setState({ selectedIndex: activeKey }, () => {
-			this.renderData(this.state.data[this.state.selectedIndex]);
+		this.setState({ selectedKey: activeKey }, () => {
+			this.renderData(this.props.pairs[this.state.selectedKey], this.props.config);
 		});
 	};
 
@@ -156,20 +128,25 @@ class UserFees extends Component {
 	};
 
 	onSearch = (value) => {
-		const { newTab, activeKey, fee_type, verification_level } = this.state;
+		const { fee_type, verification_level, selectedKey } = this.state;
+		const data = this.props.pairs[selectedKey] || {};
+		const levels = data[fee_type];
+		levels[verification_level] = Number(value);
 
-		feeUpdate(newTab[activeKey], {
-			[fee_type]: { [verification_level]: Number(value) }
+		feeUpdate(selectedKey, {
+			[fee_type]: { ...levels }
 		})
 			.then((res) => {
-				this.requestFees();
+				console.log('res', res);
+				// this.requestFees();
 			})
 			.then(openNotification())
 			.catch((err) => {});
 	};
 
 	render() {
-		const { loading, error, activeKey } = this.state;
+		const { loading, error, tabData, selectedKey } = this.state;
+		const { config = {} } = this.props;
 		return (
 			<div className="app_container-content">
 				{loading ? (
@@ -180,14 +157,13 @@ class UserFees extends Component {
 						<h1>USER FEES</h1>
 						<Tabs
 							onChange={(activeKey) => {
-								this.setState({ activeKey });
 								this.changeIndex(activeKey);
 							}}
-							activeKey={String(activeKey)}
+							activeKey={selectedKey}
 						>
-							{this.state.newTab.map((tab, index) => {
+							{tabData.map((tab, index) => {
 								return (
-									<TabPane tab={tab.toUpperCase()} key={index}>
+									<TabPane tab={tab.toUpperCase()} key={tab}>
 										<CSVLink
 											filename={'daily-max-limits.csv'}
 											data={this.state.tableData}
@@ -204,6 +180,7 @@ class UserFees extends Component {
 										/>
 										<h2>CHANGE USER FEES</h2>
 										<ChangeFees
+											config={config}
 											onLvlSelect={this.onLvlSelect}
 											onFeeSelect={this.onFeeSelect}
 											onSearch={this.onSearch}
@@ -220,7 +197,8 @@ class UserFees extends Component {
 }
 
 const mapStateToProps = (state) => ({
-	config: state.app.config
+	config: state.app.config,
+	pairs: state.app.pairs
 });
 
 export default connect(mapStateToProps)(UserFees);

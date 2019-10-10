@@ -38,7 +38,7 @@ class AddTabList extends Component {
         } else {
             Object.keys(pairs).map(key => {
                 let temp = pairs[key];
-                if (temp && temp.pair_base === selectedTabMenu){
+                if (temp && temp.pair_base === selectedTabMenu) {
                     tabMenu[key] = temp;
                 }
                 return key;
@@ -83,8 +83,8 @@ class AddTabList extends Component {
                             let ticker = tickers[pair] || {};
                             let { min, symbol = '' } = coins[menu.pair_base || BASE_CURRENCY] || DEFAULT_COIN_DATA;
                             let pairTwo = coins[menu.pair_2 || BASE_CURRENCY] || DEFAULT_COIN_DATA;
-                            const priceDifference = (ticker.close || 0) - (ticker.open || 0);
-                            const tickerPercent = priceDifference === 0 ? 0 : ((priceDifference / ticker.open) * 100);
+                            const priceDifference = ticker.open === 0 ? 0 : ((ticker.close || 0) - (ticker.open || 0));
+                            const tickerPercent = priceDifference === 0 || ticker.open === 0 ? 0 : ((priceDifference / ticker.open) * 100);
                             const priceDifferencePercent = isNaN(tickerPercent) ? formatPercentage(0) : formatPercentage(tickerPercent);
                             return (
                                 <div

@@ -44,6 +44,11 @@ class ChangeFees extends Component {
 	// };
 
 	render() {
+		const levels = [];
+		for(let i = 1; i <= this.props.config.tiers; i++) {
+			levels.push({ value: `${i}`, label: `${i}` });
+		}
+
 		return (
 			<div>
 				{this.props.name}
@@ -53,7 +58,7 @@ class ChangeFees extends Component {
 						style={{ width: '22%' }}
 						onSelect={(e) => this.props.onLvlSelect(e)}
 					>
-						{UPDATE_KEYS.map(({ value, label }, index) => (
+						{levels.map(({ value, label }, index) => (
 							<Option value={value} key={index}>
 								{label}
 							</Option>

@@ -44,9 +44,9 @@ class TabOverflowList extends Component {
                         let { min, symbol = '' } = coins[menu.pair_base || BASE_CURRENCY] || DEFAULT_COIN_DATA;
                         let pairTwo = coins[menu.pair_2 || BASE_CURRENCY] || DEFAULT_COIN_DATA;
                         let ticker = tickers[pair] || {};
-                        let priceDifference = (ticker.close || 0) - (ticker.open || 0);
-                        const tickerPercent = ((priceDifference / ticker.open) * 100);
-                        let priceDifferencePercent = tickerPercent==='NaN' ? formatPercentage(tickerPercent) : formatPercentage(0);
+                        const priceDifference = ticker.open === 0 ? 0 : ((ticker.close || 0) - (ticker.open || 0));
+                        const tickerPercent = priceDifference === 0 || ticker.open === 0 ? 0 : ((priceDifference / ticker.open) * 100);
+                        let priceDifferencePercent = tickerPercent === 'NaN' ? formatPercentage(tickerPercent) : formatPercentage(0);
                         return (
                             <div
                                 key={index}
