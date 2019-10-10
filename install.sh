@@ -1,5 +1,5 @@
 #!/bin/bash
 
-echo "Pulling hex-cli from Github..."
-curl -L https://raw.githubusercontent.com/bitholla/hex-cli/master/install.sh | bash
+echo "Pulling HollaEx CLI from Github..."
+curl -L https://raw.githubusercontent.com/bitholla/hollaex-cli/master/install.sh | bash
 
