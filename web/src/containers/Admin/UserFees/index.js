@@ -32,11 +32,11 @@ class UserFees extends Component {
 		activeKey: 0
 	};
 
-	componentWillMount() {
+	componentDidMount() {
 		if (Object.keys(this.props.pairs).length)
-			this.constructData(this.props.pairs);
+			this.constructData(this.props.pairs, this.props.config);
 	}
-
+	
 	componentDidUpdate(prevProps) {
 		if (JSON.stringify(prevProps.pairs) !== JSON.stringify(this.props.pairs)
 			|| JSON.stringify(prevProps.config) !== JSON.stringify(this.props.config)) {
@@ -129,15 +129,14 @@ class UserFees extends Component {
 
 	onSearch = (value) => {
 		const { fee_type, verification_level, selectedKey } = this.state;
-		const data = this.props.pairs[selectedKey] || {};
-		const levels = data[fee_type];
+		const takerData = this.props.pairs[selectedKey] || {};
+		const levels = { ...takerData[fee_type] };
 		levels[verification_level] = Number(value);
 
 		feeUpdate(selectedKey, {
 			[fee_type]: { ...levels }
 		})
 			.then((res) => {
-				console.log('res', res);
 				// this.requestFees();
 			})
 			.then(openNotification())
