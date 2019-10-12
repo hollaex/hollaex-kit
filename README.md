@@ -23,8 +23,12 @@ curl -L https://raw.githubusercontent.com/bitholla/HollaEx-cli/master/install.sh
 
 hollaex init
 ```
+Read more on our [Docs](https://docs.bitholla.com/hollaex-kit/get-started)!
 
-## Resources
+## Community
+Join us on the [Forum](https://forum.bitholla.com) and feel free to raise and ask any questions
+
+## Useful Resources
 
 bitHolla Site: https://bitholla.com
 Documentation: https://docs.bitholla.com
@@ -32,6 +36,3 @@ HollaEx CLI (Command Line Interface): https://github.com/bitholla/hollaex-cli
 Vault API Explorer: https://api.bitholla.com/docs
 HollaEx Whitepaper: https://hollaex.com/docs/whitepaper.html
 HollaEx Official Marketplace: https://hollaex.com
-
-
-bitHolla Forum for Q/A: https://forum.bitholla.com
