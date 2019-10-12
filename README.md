@@ -13,6 +13,8 @@ HollaEx Kit provides simple (but powerful) CLI tool to help exchange operators s
 
 ```
 git clone https://github.com/bitholla/hollaex-kit.git
+```
+```
 bash install.sh
 ```
 
@@ -20,19 +22,35 @@ OR
 
 ```
 curl -L https://raw.githubusercontent.com/bitholla/HollaEx-cli/master/install.sh | bash
-
+```
+```
 hollaex init
 ```
 Read more on our [Docs](https://docs.bitholla.com/hollaex-kit/get-started)!
 
 ## Community
-Join us on the [Forum](https://forum.bitholla.com) and feel free to raise and ask any questions
+Join us on the [Forum](https://forum.bitholla.com) and feel free to raise any topic and ask questions from our active community.
+
+
+[![alt text][1.2]][1]
+[![alt text][2.2]][2]
+[![alt text][3.2]][3]
+<!-- icons without padding -->
+
+[1.2]: http://i.imgur.com/wWzX9uB.png (twitter icon without padding)
+[2.2]: http://i.imgur.com/fep1WsG.png (facebook icon without padding)
+[3.2]: http://i.imgur.com/9I6NRUm.png (github icon without padding)
+
+[1]: http://www.twitter.com/bitholla
+[2]: http://www.facebook.com/bitholla
+[3]: http://www.github.com/bitholla
+
 
 ## Useful Resources
 
-bitHolla Site: https://bitholla.com
-Documentation: https://docs.bitholla.com
-HollaEx CLI (Command Line Interface): https://github.com/bitholla/hollaex-cli
-Vault API Explorer: https://api.bitholla.com/docs
-HollaEx Whitepaper: https://hollaex.com/docs/whitepaper.html
-HollaEx Official Marketplace: https://hollaex.com
+- bitHolla Site: https://bitholla.com
+- Documentation: https://docs.bitholla.com
+- HollaEx CLI (Command Line Interface): https://github.com/bitholla/hollaex-cli
+- Vault API Explorer: https://api.bitholla.com/docs
+- HollaEx Whitepaper: https://hollaex.com/docs/whitepaper.html
+- HollaEx Official Marketplace: https://hollaex.com
