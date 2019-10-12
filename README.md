@@ -11,19 +11,15 @@ HollaEx CLI: Command Line Interface for interacting and deploying your exchange.
 HollaEx Kit provides simple (but powerful) CLI tool to help exchange operators setup and operate their exchange. Get started by install HollaEx CLI and following the [documentation](https://docs.bitholla.com) to start your own exchange.
 
 
-```
+```console
 git clone https://github.com/bitholla/hollaex-kit.git
-```
-```
 bash install.sh
 ```
 
 OR
 
-```
-curl -L https://raw.githubusercontent.com/bitholla/HollaEx-cli/master/install.sh | bash
-```
-```
+```console
+curl -L https://raw.githubusercontent.com/bitholla/hollaex-cli/master/install.sh | bash
 hollaex init
 ```
 Read more on our [Docs](https://docs.bitholla.com/hollaex-kit/get-started)!
@@ -49,7 +45,9 @@ Join us on the [Forum](https://forum.bitholla.com) and feel free to raise any to
 ## Useful Resources
 
 - bitHolla Site: https://bitholla.com
+- Exchange Dashboard: https://dash.bitholla.com
 - Documentation: https://docs.bitholla.com
+- Forum: https://forum.bitholla.com
 - HollaEx CLI (Command Line Interface): https://github.com/bitholla/hollaex-cli
 - Vault API Explorer: https://api.bitholla.com/docs
 - HollaEx Whitepaper: https://hollaex.com/docs/whitepaper.html
