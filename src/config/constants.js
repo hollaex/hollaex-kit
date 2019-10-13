@@ -558,7 +558,7 @@ export const RIPPLE_ENDPOINT =
 
 export const BALANCE_ERROR = 'Insufficient balance to perform the order';
 
-export const CAPTCHA_SITEKEY = process.env.REACT_APP_CAPTCHA_SITE_KEY;
+export const CAPTCHA_SITEKEY = process.env.REACT_APP_CAPTCHA_SITE_KEY || '6LfgB6kUAAAAAAJI6CNSHdLrjDn8iFmZGxQDrcER';
 export const CAPTCHA_TIMEOUT = process.env.REACT_APP_CAPTCHA_TIMEOUT
 	? parseInt(process.env.REACT_APP_CAPTCHA_TIMEOUT, 10)
 	: 2000;

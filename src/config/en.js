@@ -1,9 +1,9 @@
 import AGREEMENT from './agreement';
 
 export default {
-	APP_TITLE: 'Hex', // new
+	APP_TITLE: 'HollaEx', // new
 	APP_SUB_TITLE: 'THE DIGITAL FUEL FOR TRADING EXCHANGES', // new
-	APP_NAME: 'Hex', // new
+	APP_NAME: 'HollaEx', // new
 	FIAT_NAME: 'EURO',
 	FIAT_FULLNAME: 'Euro',
 	FIAT_SHORTNAME: 'EUR',
@@ -47,7 +47,7 @@ export default {
 	XRP_PRICE_FORMAT: '{0} {1}',
 	
 	HEX_NAME: 'HEX', // new
-	HEX_FULLNAME: 'HEX', // new
+	HEX_FULLNAME: 'HollaEx Token', // new
 	HEX_SHORTNAME: 'HEX', // new
 	HEX_SHORTNAME_EN: 'HEX', // new
 	HEX_CURRENCY_SYMBOL: 'HEX', // new
@@ -87,7 +87,7 @@ export default {
 	HELP_RESOURCE_GUIDE_TEXT: 
 		'Feel free to contact us for more information and any issues by sending us an email to support@bitholla.com',
 	HELP_TELEGRAM_TEXT: 
-		'Check out HEX open API documentation:',
+		'Check out HollaEx open API documentation:',
 	HELP_TELEGRAM_LINK: 'https://apidocs.hollaex.com',
 	NEED_HELP_TEXT: 'Need help',
 	HELP_TEXT: 'help',
@@ -163,7 +163,7 @@ export default {
 	REQUEST_HEX_ACCESS: { // new
 		REQUEST_TITLE: 'Request {0} Access',
 		REQUEST_INVITE: 'Request Invite',
-		REFERRAL_INVITE_WARNING: 'To access the HEX Exchange you need to get a referral link from a friend or {0}',
+		REFERRAL_INVITE_WARNING: 'To access the HollaEx official Exchange you need to get a referral link from a friend or {0}',
 		CATEGORY_PLACEHOLDER: 'Select the category that best suits your issue',
 		INTRODUCTION_LABEL: 'Introduce yourself',
 		INTRODUCTION_PLACEHOLDER: 'Where are you based, are you interested in running an exchange?',
@@ -178,7 +178,7 @@ export default {
 			OPTION_BUG: 'Report bug', // ToDo:
 			OPTION_PERSONAL_INFO: 'Change personal information', // ToDo:
 			OPTION_BANK_TRANSFER: 'Bank wire transfer', // new
-			OPTION_REQUEST: 'Request Invite for the HEX Exchange' // new
+			OPTION_REQUEST: 'Request Invite for the HollaEx Exchange' // new
 		},
 		SUBJECT_LABEL: 'Subject',
 		SUBJECT_PLACEHOLDER: 'Type the subject of your issue',
@@ -202,7 +202,7 @@ export default {
 		},
 		INFORMATION_MESSAGES: [
 			'Use the bank details below to deposit USD in to your account. Transfers usally take up to 1-2 business day.',
-			'Deposits will only be accepeted from a bank account in a name that matches the name registered with your HEX account.'
+			'Deposits will only be accepeted from a bank account in a name that matches the name registered with your HollaEx account.'
 		],
 		INCREASE_LIMIT: 'Want to increase your daily limit?',
 		QR_CODE:
@@ -491,7 +491,7 @@ export default {
 					'IMPORTANT: Enter your name into the fields exactly as it appears on your identity document (full first name, any middle names/initials and full last name(s)). Are you a business? Contact customer support for a corporate account.',
 				TITLE_PERSONAL_INFORMATION: 'Personal Information',
 				TITLE_PHONE: 'Phone',
-				PHONE_VERIFICATION_TXT: 'Providing valid contact details will assist HEX greatly in conflict resolution while preventing unwanted transactions on your account.',
+				PHONE_VERIFICATION_TXT: 'Providing valid contact details will assist HollaEx greatly in conflict resolution while preventing unwanted transactions on your account.',
 				PHONE_VERIFICATION_TXT_1: 'Receive real-time updates for deposits and withdrawals by sharing your mobile phone number.',
 				PHONE_VERIFICATION_TXT_2: 'Further prove your identity and address by sharing your LAN phone number (optional).',
 			}
@@ -567,11 +567,11 @@ export default {
 				},
 				SELFIE: {
 					TITLE: 'Selfie with Photo ID and Note',
-					INFO_TEXT: 'Please provide a photo of you holding your passport or photo ID. In the same picture and have a reference to hex.bitholla.com’, today\'s date and your signature displayed.Make sure your face is clearly visible and that your ID details are clearly readable.',
+					INFO_TEXT: 'Please provide a photo of you holding your passport or photo ID. In the same picture and have a reference to hollaex.com’, today\'s date and your signature displayed.Make sure your face is clearly visible and that your ID details are clearly readable.',
 					REQUIRED: 'Required:',
 					INSTRUCTION_1: 'Your face clearly visable',
 					INSTRUCTION_2: 'Photo ID clearly readable',
-					INSTRUCTION_3: 'Write the word ‘hex.bitholla.com',
+					INSTRUCTION_3: 'Write the word ‘hollaex.com',
 					INSTRUCTION_4: "Write today's date",
 					INSTRUCTION_5: "Write your signature",
 					WARNING: 'Selfie with a different inconsistent ID with uploaded content will be rejected'
@@ -846,7 +846,7 @@ export default {
 		MESSAGE_FEE: 'Transactions fee of {0} ({1}) included',
 		MESSAGE_FEE_BASE: 'Transactions fee of {0} included',
 		BASE_MESSAGE_1:
-			'You can only withdraw to a bank account in a name that matches the name registered with your HEX account.',
+			'You can only withdraw to a bank account in a name that matches the name registered with your HollaEx account.',
 		BASE_MESSAGE_2: 'Withdrawal min amount',
 		BASE_MESSAGE_3: 'Daily withdrawal max amount',
 		BASE_INCREASE_LIMIT: 'Increase your daily limit',
@@ -916,11 +916,11 @@ export default {
 	RESUBMIT: 'Resubmit', 
 	VERIFICATION_NOTIFICATION_SKIP_TITLE: 'Missing Documents!',
 	VERIFICATION_NOTIFICATION_SKIP_TEXT:
-		'To get full access to withdrawal and deposit functions on HEX you must submit your identity documents in your account page.',
+		'To get full access to withdrawal and deposit functions on HollaEx you must submit your identity documents in your account page.',
 	VERIFICATION_NOTIFICATION_SUCCESS_TITLE: 'Success!',
 	VERIFICATION_NOTIFICATION_SUCCESS_TEXT:
 		'You will receive an email notification when your information has been processed. Processing can typically take 1-3 days.',
-	VERIFICATION_NOTIFICATION_BUTTON: 'PROCEED TO HEX',
+	VERIFICATION_NOTIFICATION_BUTTON: 'PROCEED TO HollaEx Exchange',
 	ERROR_USER_ALREADY_VERIFIED: 'User already verified',
 	ERROR_INVALID_CARD_USER: 'Bank or card information provided is incorrect',
 	ERROR_INVALID_CARD_NUMBER: 'Invalid Card number',
@@ -1052,8 +1052,8 @@ export default {
 	TOTAL_ASSETS_VALUE: 'Total assets value in {0}: {1}', 
 	SUMMARY: { 
 		TITLE: 'Summary',
-		TRADER_ACCOUNT_TITLE: 'Account - Presale Period', // new
-		TRADER_ACCOUNT_TXT_1: 'Your account is in the presale period of {0}, this means you can obtain {0} for {1} per {0}. All deposit will be converted to {0} once the transaction has cleared',
+		TRADER_ACCOUNT_TITLE: 'Account', // new
+		TRADER_ACCOUNT_TXT_1: 'Join HAP (HollaEx Affiliation Program) by submiting this form to us. If you are eligible and accepted into HAP, you can receive up to 10% in referrals.',
 		TINY_PINK_SHRIMP_TRADER: 'Tiny Pink Shrimp Trader',
 		TINY_PINK_SHRIMP_TRADER_ACCOUNT: 'Tiny Pink Shrimp Trader Account',
 		LITTLE_RED_SNAPPER_TRADER: 'Little Red Snapper Trader',
@@ -1103,7 +1103,7 @@ export default {
 		TRADING_VOLUME_EQUIVALENT: '{0} {1} Trading Volume Equivalent'
 	},
 	REFERRAL_LINK: {
-		TITLE: 'Earn 10% in Commissions', // new
+		TITLE: 'APPLY FOR HAP Referral Code', // new
 		INFO_TEXT: 'Earn 1 HEX for every 10 HEX your friends buy.', // new
 		INFO_TEXT_1: 'Commissions are paid periodically to your HEX wallet', // new
 		COPY_FIELD_LABEL: 'Share the link below with friends and earn commissions:', // new
@@ -1111,22 +1111,22 @@ export default {
 		COPY_LINK_BUTTON: 'COPY REFERRAL LINK' // new
 	},
 	TERMS_OF_SERVICES: { // new
-		TITLE: 'HEX Purchase Agreement',
+		TITLE: 'HollaEx Token Purchase Agreement',
 		SERVICE_AGREEMENT: AGREEMENT,
 		PROCEED: 'PROCEED',
-		AGREE_TERMS_LABEL: 'I have read and agree to the HEX Purchase Agreement',
+		AGREE_TERMS_LABEL: 'I have read and agree to the HollaEx Token Purchase Agreement',
 		RISK_INVOLVED_LABEL: 'I understand the risks involved',
 		DOWNLOAD_PDF: 'Download the PDF',
-		DEPOSIT_FUNDS: 'Deposit funds into your wallet to obtain HEX',
-		READ_FAG: 'Read HEX FAQ here: {0}',
-		READ_DOCUMENTATION: 'Read HEX whitepaper here: {0}',
-		READ_WAVES: 'Rules for the coming December Public HEX Wave Auction{0}', // new
+		DEPOSIT_FUNDS: 'Deposit funds into your wallet to obtain HollaEx Token (HEX)',
+		READ_FAG: 'Read HollaEx FAQ here: {0}',
+		READ_DOCUMENTATION: 'Read HollaEx whitepaper here: {0}',
+		READ_WAVES: 'Rules for the coming December Public Wave Auction{0}', // new
 		DOWNLOAD_BUY_HEX: 'Download the PDF to see a visual step-by-step processes on {0}',
 		HOW_TO_BUY: 'how to buy HEX',
-		PUBLIC_SALES: ' Public HEX Wave Auction', // new
+		PUBLIC_SALES: ' Public Wave Auction', // new
 		CONTACT_US: 'Feel free to contact us for more information and any issues by sending us an email to {0}',
 		VISUAL_STEP: 'See a visual step-by-step processes on {0}', // new
-		WARNING_TXT: 'We will review your request and send further instructions to your email on how to access the HEX exchange.', // new
-		WARNING_TXT1: 'In the mean time you can firmilerize yourself with the HEX network with the resources below' // new
+		WARNING_TXT: 'We will review your request and send further instructions to your email on how to access the HollaEx exchange.', // new
+		WARNING_TXT1: 'In the mean time you can firmilerize yourself with the HollaEx network with the resources below' // new
 	}
 };

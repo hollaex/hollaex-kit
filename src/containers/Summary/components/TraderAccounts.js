@@ -34,11 +34,15 @@ const TraderAccounts = ({ account = {}, activeTheme, isAccountDetails = false, o
                 </div>} */}
                 {!isAccountDetails && <div
                     className="trade-account-link mb-2">
-                    <span
-                        className="pointer"
-                        onClick={onInviteFriends}>
-                        {STRINGS.REFERRAL_LINK.TITLE.toUpperCase()}
-                    </span>
+                    <a 
+                        href="https://forms.gle/MnxUAL9hz3uDyN798"
+                        target="blank">
+                        <span
+                            className="pointer"
+                            onClick={onInviteFriends}>
+                            {STRINGS.REFERRAL_LINK.TITLE.toUpperCase()}
+                        </span>
+                    </a>
                 </div>}
                 {isMobile ?
                     <div className="trade-account-link my-2" onClick={() => logout()} > 
