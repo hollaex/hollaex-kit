@@ -298,16 +298,12 @@ class AppWrapper extends React.Component {
 						>
 							{PATHS.filter(
 								({ hideIfSupport, hideIfSupervisor, hideIfKYC }) =>
-									// isAdminUser ||
-									// (isSupportUser && !hideIfSupport) ||
-									// (isSupervisorUser && !hideIfSupervisor) ||
-									// (isKYC() && !hideIfKYC)
 									true
 							).map(renderMenuItem)}
 							<Menu.Item>
 								<Link to="/summary">
 									<Icon type="home" />
-									Go To HEX-WEB
+									Go To HollaEx-WEB
 								</Link>
 							</Menu.Item>
 							<Menu.Item key="logout">
