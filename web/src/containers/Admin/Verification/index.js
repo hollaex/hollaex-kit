@@ -106,11 +106,9 @@ class Verification extends Component {
 				: VERIFICATION_LEVELS_ADMIN;
 		if (config.tiers) {
 			const temp = [];
-			VERIFICATION_LEVELS_ADMIN.map(level => {
-				if (parseInt(level) <= parseInt(config.tiers)) {
-					temp.push(level);
-				}
-			});
+			for (let level = 1; level <= config.tiers; level++) {
+				temp.push(level.toString());
+			}
 			VERIFICATION_LEVELS = temp;
 		}
 		return (

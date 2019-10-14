@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Layout, Menu, Icon, Row, Col } from 'antd';
+import { Layout, Menu, Icon, Row, Col, Spin } from 'antd';
 import io from 'socket.io-client';
 import { debounce } from 'lodash';
 
@@ -121,7 +121,7 @@ class AppWrapper extends React.Component {
 		if (isLoggedIn()) {
 			this.setUserSocket(getToken());
 		}
-		this.setState({ isLoaded: true }, () => {
+		this.setState({ appLoaded: true }, () => {
 			this._resetTimer();
 		});
 	};
@@ -130,7 +130,7 @@ class AppWrapper extends React.Component {
 		if (this.state.idleTimer) {
 			clearTimeout(this.idleTimer);
 		}
-		if (this.state.isLoaded) {
+		if (this.state.appLoaded) {
 			const idleTimer = setTimeout(
 				() => this.logout('Inactive'),
 				SESSION_TIME
@@ -224,6 +224,11 @@ class AppWrapper extends React.Component {
 		});
 	};
 
+	isSocketDataReady = () => {
+		const { pairs } = this.props;
+		return Object.keys(pairs).length;
+	};
+
 	logout = (message = '') => {
 		this.setState({ appLoaded: false }, () => {
 			this.props.logout(typeof message === 'string' ? message : '');
@@ -236,7 +241,7 @@ class AppWrapper extends React.Component {
 			removeToken();
 			router.replace('/login');
 		};
-		const { isAdminUser, isLoaded } = this.state;
+		const { isAdminUser, isLoaded, appLoaded } = this.state;
 
 		if (!isLoaded) return null;
 		if (!isLoggedIn()) {
@@ -269,7 +274,12 @@ class AppWrapper extends React.Component {
 						<Col span={16}>
 							<Layout>
 								<Content style={{ marginLeft: 50, marginTop: 0 }}>
-									<div className="content-wrapper">{children}</div>
+									<div className="content-wrapper">
+										{appLoaded && this.isSocketDataReady()
+											? children
+											: <Spin size="large" className="m-top" />
+										}
+									</div>
 								</Content>
 							</Layout>
 						</Col>
@@ -310,7 +320,12 @@ class AppWrapper extends React.Component {
 					</Sider>
 					<Layout>
 						<Content>
-							<div className="content-wrapper">{children}</div>
+							<div className="content-wrapper">
+								{appLoaded && this.isSocketDataReady()
+									? children
+									: <Spin size="large" className="m-top" />
+								}
+							</div>
 						</Content>
 					</Layout>
 				</Layout>

@@ -85,7 +85,8 @@ const MobileSummary = ({
                         chartData={chartData}
                         totalAssets={totalAssets}
                         balance={balance}
-                        coins={coins} />
+                        coins={coins}
+                        activeTheme={activeTheme} />
                 </SummaryBlock>
             </div>
             <div className="trading-volume-wrapper w-100">

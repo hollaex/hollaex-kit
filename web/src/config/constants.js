@@ -235,7 +235,9 @@ export const ICONS = {
 	SETTING_RISK_MANAGE_WARNING_ICON:
 		'/assets/images/risk-manage-pop-warning.svg',
 	REFER_ICON: '/assets/images/refer-icon.svg',
-	EDIT_ICON: '/assets/images/edit-icon.svg'
+	EDIT_ICON: '/assets/images/edit-icon.svg',
+	DEFAULT_ICON:`/assets/icons/missing-coin-light.svg`,
+	DEFAULT_ICON_DARK:`/assets/icons/missing-coin-dark.svg`
 };
 
 export const SOCIAL_ICONS = {
@@ -412,6 +414,7 @@ export const BASE_CURRENCY = process.env.REACT_APP_BASE_CURRENCY
 	: 'usdt';
 
 export const FEES_LIMIT_SITE_URL = 'https://www.hollaex.com';
+export const API_DOCS_URL = 'https://docs.bitholla.com/';
 
 export const TRADING_ACCOUNT_TYPE = {
 	shrimp: {

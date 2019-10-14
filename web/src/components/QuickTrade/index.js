@@ -9,7 +9,6 @@ import MobileDropdownWrapper from '../../containers/Trade/components/MobileDropd
 import STRINGS from '../../config/localizedStrings';
 import {
 	ICONS,
-	DEFAULT_PAIR,
 	FLEX_CENTER_CLASSES,
 	BALANCE_ERROR,
 	DEFAULT_COIN_DATA
@@ -41,17 +40,21 @@ class QuickTrade extends Component {
 	state = {
 		side: STRINGS.SIDES[0].value,
 		value: 0.1,
-		symbol: DEFAULT_PAIR,
+		symbol: '',
 		tabs: [],
 		activeTab: -1,
 		currencies: []
 	};
 
-	componentDidMount() {
-		if (this.props.symbol !== BASE_CURRENCY) {
+	componentWillMount() {
+		if (this.props.symbol) {
 			this.onChangeSymbol(this.props.symbol);
-		} else {
-			this.onChangeSymbol(DEFAULT_PAIR);
+		}
+	}
+
+	componentDidMount() {
+		if (this.props.symbol) {
+			this.onChangeSymbol(this.props.symbol);
 		}
 		if (this.props.onChangeSide) {
 			this.props.onChangeSide(this.state.side);

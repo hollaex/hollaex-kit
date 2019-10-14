@@ -1097,4 +1097,9 @@ export default {
 	},
 	USER_LEVEL: 'User level', // new
 	LIMIT_AMOUNT: 'Limit amount', // new
+	COINS: 'Coins', // new
+	PAIRS: 'Pairs', // new
+	NOTE_FOR_EDIT_COIN: 'Note: For adding and removing {0} please refer to the{1}.', // new
+	REFER_DOCS_LINK: 'docs', // new
+	RESTART_TO_APPLY: 'You need to restart your exchange for apply these changes.'
 };

@@ -6,7 +6,6 @@ import { bindActionCreators } from 'redux';
 import { isBrowser, isMobile } from 'react-device-detect';
 
 import { AppBar, Footer } from '../../components';
-import { DEFAULT_PAIR } from '../../config/constants';
 // import { requestQuickTrade } from '../../actions/orderbookAction';
 import { setLanguage } from '../../actions/appActions';
 import { logout } from '../../actions/authAction';
@@ -81,6 +80,7 @@ class Home extends Component {
 		const {
 			token,
 			verifyToken,
+			pair,
 			// symbol,
 			// quickTradeData,
 			// requestQuickTrade,
@@ -138,7 +138,7 @@ class Home extends Component {
 					<Section3
 						style={style}
 						token={token}
-						onClickDemo={this.goTo(`trade/${DEFAULT_PAIR}`)}
+						onClickDemo={pair ? this.goTo(`trade/${pair}`) : this.goTo('trade/add/tabs')}
 					/>
 					<Footer
 						onChangeLanguage={this.onChangeLanguage}
@@ -151,6 +151,7 @@ class Home extends Component {
 }
 
 const mapStateToProps = (store) => ({
+	pair: store.app.pair,
 	token: store.auth.token,
 	verifyToken: store.auth.verifyToken,
 	estimatedValue: 100,
