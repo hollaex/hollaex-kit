@@ -29,7 +29,6 @@ export const CURRENCY_KEYS = [
 ];
 
 const returnArray = (obj, data, keyIndex, handleClick) => {
-	const keys = Object.keys(obj);
 	return (<div className="d-flex" onClick={() => handleClick(obj, data, keyIndex)}>
 		{/* <div>{keys.map((index) => ` ${obj[index]} `)}</div> */}
 		<div className="blue-link pointer">{STRINGS.VIEW}</div>
@@ -155,7 +154,6 @@ export const getCurrencyColumns = (handleClick) => [
 
 const getDepositWithdrawFields = (userTier, key, onchange, customValue) => {
 	const userFields = {};
-	const levels='';
 	userTier.map((level) => {
 		userFields[level] = {
 			[`${key}_${level}`]: {
@@ -168,6 +166,7 @@ const getDepositWithdrawFields = (userTier, key, onchange, customValue) => {
 				onChange: (event) => onchange(event, level)
 			}
 		}
+		return 0;
 	});
 	return userFields;
 };

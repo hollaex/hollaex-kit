@@ -133,6 +133,7 @@ function withAdminProps(Component, key) {
 		if (routeKey === key) {
 			adminProps = { ...rest, ...pathProps };
 		}
+		return 0;
 	});
 	return function (matchProps) {
 		return <Component {...adminProps} {...matchProps} />

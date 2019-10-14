@@ -1,19 +1,16 @@
 import React, { Component } from 'react';
-import { Table, Spin, notification, Input, Select } from 'antd';
+import { Table, Spin, notification } from 'antd';
 import { CSVLink } from 'react-csv';
 import { connect } from 'react-redux';
 
 import UserLimitForm from './UserLimitForm';
 import { performLimitUpdate } from './actions';
 import STRINGS from '../../../config/localizedStrings';
-import { UPDATE_KEYS, CURRENCY_KEYS, getCoinsFormFields, getCurrencyColumns } from './constants';
+import { getCoinsFormFields, getCurrencyColumns } from './constants';
 import { API_DOCS_URL } from '../../../config/constants';
 import { ModalForm, BlueLink } from '../../../components';
 import './index.css';
 
-const InputGroup = Input.Group;
-const Option = Select.Option;
-const Search = Input.Search;
 const Form = ModalForm('EditLimits', '');
 const openNotification = () => {
 	notification.open({
@@ -66,7 +63,7 @@ class Limits extends Component {
 	requestLimits = (coins) => {
 		const sortedData = Object.keys(coins).sort((a, b) => coins[a].id - coins[b].id);
 		let limits = [];
-		sortedData.map(coin => {
+		sortedData.forEach(coin => {
 			if (coins[coin]) {
 				limits = [ ...limits, coins[coin] ];
 			}
@@ -98,7 +95,7 @@ class Limits extends Component {
 			customLevels = [...customLevels, level];
 		} else if (isData) {
 			const temp = [];
-			customLevels.map(key => {
+			customLevels.forEach(key => {
 				if (key !== level) {
 					temp.push(key)
 				}
@@ -117,7 +114,7 @@ class Limits extends Component {
 		let customLevels = [];
 		if (typeof data[keyIndex] === 'object') {
 			const temp = data[keyIndex];
-			Object.keys(temp).map(key => {
+			Object.keys(temp).forEach(key => {
 				if (key <= parseInt((config.tiers || 0), 10))
 					if (temp[key] === 0 || temp[key] === -1) {
 						initialValues[`${keyIndex}_${key}`] = `${temp[key]}`;
@@ -157,7 +154,7 @@ class Limits extends Component {
 			const loopData = data[keyIndex];
 			const tempData = {};
 			if (Object.keys(loopData).length) {
-				Object.keys(loopData).map(key => {
+				Object.keys(loopData).forEach(key => {
 					if (key <= parseInt((this.props.config.tiers || 0), 10)) {
 						let levelValue = parseFloat(values[`${keyIndex}_${key}`]);
 						if ((levelValue !== 0 || levelValue !== -1) && values[`${keyIndex}_${key}_custom`]) {

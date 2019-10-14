@@ -10,15 +10,6 @@ const getFilters = (coinOptions) => [
 		key: 'currency',
 		options: coinOptions
 	},
-	// {
-	// 	label: 'Type',
-	// 	placeholder: 'Type',
-	// 	key: 'type',
-	// 	options: [
-	// 		{ value: 'deposit', text: 'Deposits' },
-	// 		{ value: 'withdrawal', text: 'Withdrawals' }
-	// 	]
-	// },
 	{
 		label: 'Status',
 		placeholder: 'Status',
@@ -46,7 +37,7 @@ export const Filters = ({
 	hasChanges
 }) => {
 	const coinOptions = [];
-	Object.keys(coins).map((data) => {
+	Object.keys(coins).forEach((data) => {
 		coinOptions.push({ value: data, text: data.toUpperCase() });
 	});
 	const fieldProps = getFilters(coinOptions);

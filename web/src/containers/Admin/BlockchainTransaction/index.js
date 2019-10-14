@@ -39,7 +39,7 @@ class BlockchainTransaction extends Component {
 	render() {
 		const { error, data, loading } = this.state;
 		const coinOptions = [];
-		Object.keys(this.props.coins).map((data) => {
+		Object.keys(this.props.coins).forEach((data) => {
 			let temp = this.props.coins[data];
 			if (temp) {
 				coinOptions.push({

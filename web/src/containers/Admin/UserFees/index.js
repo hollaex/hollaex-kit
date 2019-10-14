@@ -81,7 +81,7 @@ class UserFees extends Component {
 		for(var count = 1; count <= parseInt((config.tiers || 0), 10); count++) {
 			verifyLevels.push(count);
 		}
-		verifyLevels.map(level => {
+		verifyLevels.forEach(level => {
 			if (!temporalData[level]) {
 				temporalData[level] = {
 					verification_level: level
