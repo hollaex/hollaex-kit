@@ -261,7 +261,7 @@ class TVChartContainer extends React.PureComponent {
 				activeTheme === 'white'
 					? { backgroundColor: '#ffffff' }
 					: { backgroundColor: '#1f212a' },
-			custom_css_url: `${process.env.PUBLIC_URL}/css/chart.css`,
+			custom_css_url: `${process.env.REACT_APP_PUBLIC_URL}/css/chart.css`,
 			overrides: getThemeOverrides(activeTheme)
 		};
 
