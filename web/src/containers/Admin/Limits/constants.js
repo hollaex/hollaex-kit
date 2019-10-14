@@ -179,20 +179,26 @@ export const getCurrencyColumns = (handleClick) => [
 	}
 ];
 
-const getDepositWithdrawFields = (userTier, key) => {
+const getDepositWithdrawFields = (userTier, key, onchange, customValue) => {
 	const userFields = {};
+	const levels='';
 	userTier.map((level) => {
 		userFields[level] = {
 			[`${key}_${level}`]: {
-				type: 'number',
-				label: ''
+				type: 'select',
+				options: [
+					{ label: 'unlimited', value: '0' },
+					{ label: 'disabled', value: '-1' },
+					{ label: 'custom', value: '1'}
+				],
+				onChange: (event) => onchange(event, level)
 			}
 		}
 	});
 	return userFields;
 };
 
-export const getCoinsFormFields = (config = {}) => {
+export const getCoinsFormFields = (config = {}, onchange, customValue) => {
 	const userLevels = [];
 	const tiers = config.tiers ? parseInt(config.tiers) : 4;
 	for (var i = 1; i <= tiers; i++) {
@@ -217,7 +223,7 @@ export const getCoinsFormFields = (config = {}) => {
 				label: 'active',
 				options: [
 					{ label: 'active', value: 'true' },
-					{ label: 'inactive', value: 'false' }
+					{ label: 'deactive', value: 'false' }
 				]
 			}
 		},
@@ -265,7 +271,7 @@ export const getCoinsFormFields = (config = {}) => {
 				label: 'increment unit',
 			}
 		},
-		'deposit_limits': getDepositWithdrawFields(userLevels, 'deposit_limits'),
-		'withdrawal_limits': getDepositWithdrawFields(userLevels, 'withdrawal_limits')
+		'deposit_limits': getDepositWithdrawFields(userLevels, 'deposit_limits',onchange, customValue),
+		'withdrawal_limits': getDepositWithdrawFields(userLevels, 'withdrawal_limits',onchange, customValue)
 	})
 };

@@ -153,7 +153,6 @@ class AppWrapper extends React.Component {
 		this.setState({ publicSocket });
 
 		publicSocket.on('initial', (data) => {
-			console.log('initial', data);
 			if (!this.props.pair) {
 				const pair = Object.keys(data.pairs)[0];
 				this.props.changePair(pair);
