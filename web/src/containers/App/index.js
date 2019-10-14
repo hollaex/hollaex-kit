@@ -5,11 +5,15 @@ import { bindActionCreators } from 'redux';
 import io from 'socket.io-client';
 import EventListener from 'react-event-listener';
 import { debounce } from 'lodash';
+import moment from 'moment';
+import STRINGS from '../../config/localizedStrings';
 import {
 	WS_URL,
 	ICONS,
 	SESSION_TIME,
-	BASE_CURRENCY
+	BASE_CURRENCY,
+	FLEX_CENTER_CLASSES,
+	EXCHANGE_EXPIRY_DAYS
 } from '../../config/constants';
 import { isBrowser, isMobile } from 'react-device-detect';
 
@@ -52,7 +56,8 @@ import {
 	setSnackDialog,
 	LOGOUT_CONFORMATION,
 	setValidBaseCurrency,
-	setConfig
+	setConfig,
+	setInfo
 } from '../../actions/appActions';
 
 import {
@@ -251,6 +256,7 @@ class Container extends Component {
 			this.props.setPairsData(data.pairs);
 			this.props.setCurrencies(data.coins);
 			this.props.setConfig(data.config);
+			this.props.setInfo(data.info);
 			const pairWithBase = Object.keys(data.pairs).filter((key) => {
 				let temp = data.pairs[key];
 				return temp.pair_2 === BASE_CURRENCY;
@@ -653,7 +659,7 @@ class Container extends Component {
 						type={type}
 						data={{
 							...data,
-							price: prices[data.currency],
+							// price: prices[data.currency],
 							coins: this.props.coins
 						}}
 						onClose={this.onCloseDialog}
@@ -782,7 +788,8 @@ class Container extends Component {
 			activeTheme,
 			unreadMessages,
 			router,
-			location
+			location,
+			info
 			// user
 		} = this.props;
 		const { dialogIsOpen, appLoaded, chatIsClosed } = this.state;
@@ -795,6 +802,7 @@ class Container extends Component {
 			? ''
 			: this.getClassForActivePath(this.props.location.pathname);
 		const isMenubar = activePath === 'account' || activePath === 'wallet';
+		const expiryDays = EXCHANGE_EXPIRY_DAYS - moment().diff(info.created_at, 'days');
 		return (
 			<div
 				className={classnames(
@@ -846,6 +854,22 @@ class Container extends Component {
 								/>
 							}
 						/>
+						{info.is_trial
+							? <div className={classnames(
+								'w-100',
+								'p-1',
+								...FLEX_CENTER_CLASSES,
+								'exchange-trial'
+								)}>
+								{STRINGS.formatString(
+										STRINGS.TRIAL_EXCHANGE_MSG,
+										STRINGS.APP_TITLE,
+										expiryDays
+									)
+								}
+								</div>
+							: null
+						}
 						{isBrowser && isMenubar && (
 							<AppMenuBar router={router} location={location} />
 						)}
@@ -970,7 +994,8 @@ const mapStateToProps = (store) => ({
 	orderbooks: store.orderbook.pairsOrderbooks,
 	pairsTrades: store.orderbook.pairsTrades,
 	settings: store.user.settings,
-	config: store.app.config
+	config: store.app.config,
+	info: store.app.info
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -1006,7 +1031,8 @@ const mapDispatchToProps = (dispatch) => ({
 	setSnackDialog: bindActionCreators(setSnackDialog, dispatch),
 	setCurrencies: bindActionCreators(setCurrencies, dispatch),
 	setValidBaseCurrency: bindActionCreators(setValidBaseCurrency, dispatch),
-	setConfig: bindActionCreators(setConfig, dispatch)
+	setConfig: bindActionCreators(setConfig, dispatch),
+	setInfo: bindActionCreators(setInfo, dispatch)
 });
 
 export default connect(

@@ -1,0 +1,19 @@
+.expired_exchange_wrapper {
+    padding: 2rem;
+
+    .flex-cloumn{
+        flex-direction: column;
+    }
+    .expired_img_icon {
+        width: 7rem;
+        height: 3.7rem;
+        margin-top: 15rem;
+    }
+    .expired_text{
+        font-size: 2rem;
+        font-weight: bold;
+    }
+    .expired_button {
+        padding: 2rem 3rem;
+    }
+}

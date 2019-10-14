@@ -244,6 +244,8 @@ table th {
     max-width: 20rem;
     border-left: 1px solid #777677;
     padding: 0; }
+  .app_container .exchange-warning {
+    background-color: #FFF100; }
 
 .layout-mobile .presentation_container {
   padding-top: 4rem !important; }
@@ -417,6 +419,18 @@ table th {
 
 .dark-auth-body {
   background: #2e2f37 !important; }
+
+.exchange-warning {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  z-index: 2; }
+
+.exchange-expired {
+  background-color: #ed1c24 !important; }
+
+.exchange-trial {
+  background-color: #FFF100; }
 
 .layout-mobile.auth-wrapper .link_wrapper {
   font-size: 1.2rem; }
@@ -860,6 +874,10 @@ table th {
   background: url("/assets/background.jpg");
   background-repeat: no-repeat;
   background-size: cover; }
+  .home_container .exchange-expired {
+    background-color: #ed1c24 !important; }
+  .home_container .exchange-warning {
+    background-color: #FFF100; }
   .home_container .quick_trade-section {
     background-color: #ebf3f1;
     border: 1px solid #cccbcb; }
@@ -2893,6 +2911,20 @@ table th {
 .dark-theme .toggle-wrapper {
   border-top: 1px solid #2e2f37;
   border-bottom: 1px solid #2e2f37; }
+
+.expired_exchange_wrapper {
+  padding: 2rem; }
+  .expired_exchange_wrapper .flex-cloumn {
+    flex-direction: column; }
+  .expired_exchange_wrapper .expired_img_icon {
+    width: 7rem;
+    height: 3.7rem;
+    margin-top: 15rem; }
+  .expired_exchange_wrapper .expired_text {
+    font-size: 2rem;
+    font-weight: bold; }
+  .expired_exchange_wrapper .expired_button {
+    padding: 2rem 3rem; }
 
 .sidebar-container {
   display: flex;

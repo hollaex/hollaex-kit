@@ -5,6 +5,7 @@ import { SubmissionError, change } from 'redux-form';
 import { bindActionCreators } from 'redux';
 import { Link } from 'react-router';
 import { isMobile } from 'react-device-detect';
+import moment from 'moment';
 
 import { performLogin, setLogoutMessage } from '../../actions/authAction';
 import LoginForm, { FORM_NAME } from './LoginForm';
@@ -14,7 +15,8 @@ import { errorHandler } from '../../components/OtpForm/utils';
 import {
 	HOLLAEX_LOGO,
 	FLEX_CENTER_CLASSES,
-	ICONS
+	ICONS,
+	EXCHANGE_EXPIRY_DAYS
 } from '../../config/constants';
 
 import STRINGS from '../../config/localizedStrings';
@@ -83,6 +85,8 @@ class Login extends Component {
 		return service;
 	};
 
+	checkExpiryExchange = () => this.props.router.replace('/expired-exchange');
+
 	onSubmitLogin = (values) => {
 		const service = this.getServiceParam();
 		if (service) {
@@ -90,7 +94,9 @@ class Login extends Component {
 		}
 		return performLogin(values)
 			.then((res) => {
-				if (res.data && res.data.callbackUrl)
+				if (this.props.info.is_trial && moment().diff(this.props.info.created_at, 'days') > EXCHANGE_EXPIRY_DAYS)
+					this.checkExpiryExchange();
+				else if (res.data && res.data.callbackUrl)
 					this.redirectToService(res.data.callbackUrl);
 				else this.redirectToHome();
 			})
@@ -138,7 +144,9 @@ class Login extends Component {
 		)
 			.then((res) => {
 				this.setState({ otpDialogIsOpen: false });
-				if (res.data && res.data.callbackUrl)
+				if (this.props.info.is_trial && moment().diff(this.props.info.created_at, 'days') > EXCHANGE_EXPIRY_DAYS)
+					this.checkExpiryExchange();
+				else if (res.data && res.data.callbackUrl)
 					this.redirectToService(res.data.callbackUrl);
 				else this.redirectToHome();
 			})
@@ -231,7 +239,8 @@ class Login extends Component {
 
 const mapStateToProps = (store) => ({
 	activeTheme: store.app.theme,
-	logoutMessage: store.auth.logoutMessage
+	logoutMessage: store.auth.logoutMessage,
+	info: store.app.info
 });
 
 const mapDispatchToProps = (dispatch) => ({
