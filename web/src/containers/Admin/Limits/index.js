@@ -5,8 +5,10 @@ import { connect } from 'react-redux';
 
 import UserLimitForm from './UserLimitForm';
 import { performLimitUpdate } from './actions';
+import STRINGS from '../../../config/localizedStrings';
 import { UPDATE_KEYS, CURRENCY_KEYS, getCoinsFormFields, getCurrencyColumns } from './constants';
-import { ModalForm } from '../../../components';
+import { API_DOCS_URL } from '../../../config/constants';
+import { ModalForm, BlueLink } from '../../../components';
 import './index.css';
 
 const InputGroup = Input.Group;
@@ -35,7 +37,8 @@ class Limits extends Component {
 		isCustomContent: false,
 		Level_value: '',
 		customLevels: [],
-		customValue: ''
+		customValue: '',
+		isApplyChanges: false
 	};
 
 	componentWillMount() {
@@ -155,11 +158,13 @@ class Limits extends Component {
 			const tempData = {};
 			if (Object.keys(loopData).length) {
 				Object.keys(loopData).map(key => {
-					let levelValue = parseFloat(values[`${keyIndex}_${key}`]);
-					if ((levelValue !== 0 || levelValue !== -1) && values[`${keyIndex}_${key}_custom`]) {
-						levelValue = values[`${keyIndex}_${key}_custom`];
+					if (key <= parseInt((this.props.config.tiers || 0), 10)) {
+						let levelValue = parseFloat(values[`${keyIndex}_${key}`]);
+						if ((levelValue !== 0 || levelValue !== -1) && values[`${keyIndex}_${key}_custom`]) {
+							levelValue = values[`${keyIndex}_${key}_custom`];
+						}
+						tempData[key] = parseFloat(levelValue);
 					}
-					tempData[key] = parseFloat(levelValue);
 				});
 				formProps[keyIndex] = tempData;
 			}
@@ -177,6 +182,10 @@ class Limits extends Component {
 					// this.requestLimits();
 					this.onCancel();
 					openNotification();
+					this.setState({ isApplyChanges: true });
+					setTimeout(() => {
+						this.setState({ isApplyChanges: false });
+					}, 5000);
 				})
 				.catch((error) => {
 				});
@@ -184,7 +193,7 @@ class Limits extends Component {
 	};
 
 	render() {
-		const { limits, loading, error, isEdit, editData, Fields, initialValues, isCustomContent, customLevels } = this.state;
+		const { limits, loading, error, isEdit, editData, Fields, initialValues, isCustomContent, customLevels, isApplyChanges } = this.state;
 		const COLUMNS_CURRENCY = getCurrencyColumns(this.handleEdit);
 		return (
 			<div className="app_container-content">
@@ -200,7 +209,7 @@ class Limits extends Component {
 								headers={COLUMNS_CURRENCY}
 							>
 								Download table
-						</CSVLink>
+							</CSVLink>
 							<Table
 								columns={COLUMNS_CURRENCY}
 								dataSource={limits}
@@ -209,6 +218,19 @@ class Limits extends Component {
 								}}
 								scroll={{ x: true }}
 							/>
+							<div className="mb-3">
+								{STRINGS.formatString(
+									STRINGS.NOTE_FOR_EDIT_COIN,
+									STRINGS.COINS,
+									<BlueLink
+										href={API_DOCS_URL}
+										text={STRINGS.REFER_DOCS_LINK}
+									/>
+								)}
+							</div>
+							{isApplyChanges && <div className="mb-3">
+								{STRINGS.RESTART_TO_APPLY}
+							</div>}
 							{/* <div>
 							<h2>CHANGE DAILY MAX LIMITS</h2>
 

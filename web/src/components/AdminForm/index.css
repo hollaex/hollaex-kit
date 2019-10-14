@@ -186,6 +186,3 @@ body {
 .ant-upload-list {
 	flex: 1;
 }
-.ant-select-selection--single{
-	width: 10rem !important;
-}

@@ -5,6 +5,9 @@ import { CSVLink } from 'react-csv';
 
 import ChangeFees from './changeFees';
 import { feeUpdate } from './actions';
+import { BlueLink } from '../../../components';
+import { API_DOCS_URL } from '../../../config/constants';
+import STRINGS from '../../../config/localizedStrings';
 
 // import {SELECT_KEYS} from "../Deposits/utils";
 
@@ -177,6 +180,16 @@ class UserFees extends Component {
 												return data.id;
 											}}
 										/>
+										<div className="mb-3">
+											{STRINGS.formatString(
+												STRINGS.NOTE_FOR_EDIT_COIN,
+												STRINGS.PAIRS,
+												<BlueLink
+													href={API_DOCS_URL}
+													text={STRINGS.REFER_DOCS_LINK}
+												/>
+											)}
+										</div>
 										<h2>CHANGE USER FEES</h2>
 										<ChangeFees
 											config={config}

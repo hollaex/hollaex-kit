@@ -656,6 +656,7 @@ export const BASE_CURRENCY = process.env.REACT_APP_BASE_CURRENCY
 	: 'usdt';
 
 export const FEES_LIMIT_SITE_URL = 'https://www.hollaex.com';
+export const API_DOCS_URL = 'https://docs.bitholla.com/';
 
 export const TRADING_ACCOUNT_TYPE = {
 	shrimp: {
