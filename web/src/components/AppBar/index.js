@@ -350,7 +350,7 @@ class AppBar extends Component {
 													'quick_trade-active': location.pathname === '/admin'
 												})}
 											>
-												<Icon type="dashboard" style={{ lineHeight: '22px' }} />
+												<Icon type="dashboard" style={{ position: 'relative', top: '2.5px' }} />
 												<div className="d-flex align-items-center">
 													{STRINGS.ADMIN_DASH}
 												</div>
