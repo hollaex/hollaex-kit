@@ -4,7 +4,7 @@ import { ICONS, BASE_CURRENCY, CURRENCY_PRICE_FORMAT, DEFAULT_COIN_DATA } from '
 import { Link } from 'react-router';
 import { isMobile } from 'react-device-detect';
 import {
-	calculatePrice,
+	// calculatePrice,
 	formatToCurrency
 } from '../../utils/currency';
 import { ActionNotification } from '../../components';
@@ -38,14 +38,14 @@ export const AssetsBlock = ({
 						.map(([key, { min, allow_deposit, allow_withdrawal }]) => {
 							const balanceValue = balance[`${key}_balance`];
 							const { fullname, symbol = '' } = coins[key] || DEFAULT_COIN_DATA;
-							const baseCoin = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
-							const balanceText =
-								key === BASE_CURRENCY
-									? formatToCurrency(balanceValue, min)
-									: formatToCurrency(
-										calculatePrice(balanceValue, prices[key]),
-										baseCoin.min
-									);
+							// const baseCoin = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
+							// const balanceText =
+							// 	key === BASE_CURRENCY
+							// 		? formatToCurrency(balanceValue, min)
+							// 		: formatToCurrency(
+							// 			calculatePrice(balanceValue, prices[key]),
+							// 			baseCoin.min
+							// 		);
 							return (
 								<tr className="table-row table-bottom-border" key={key}>
 									<td className="table-icon td-fit">

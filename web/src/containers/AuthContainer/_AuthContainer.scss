@@ -22,6 +22,21 @@ $container--padding-sm: 3rem;
 	background: $dark-app-light-background !important;
 }
 
+.exchange-warning {
+	position: absolute;
+	top: 0;
+	width: 100%;
+	z-index: 2;
+}
+
+.exchange-expired {
+	background-color: $colors-notifications-red !important;
+}
+
+.exchange-trial {
+	background-color: #FFF100;
+}
+
 .layout-mobile {
 	&.auth-wrapper {
 		.link_wrapper {

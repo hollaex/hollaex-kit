@@ -2,8 +2,8 @@ import config from './index';
 
 import STRINGS from './localizedStrings';
 
-export const ENV = process.env.NODE_ENV || 'development';
-export const NETWORK = process.env.REACT_APP_NETWORK || 'testnet';
+export const ENV = process.env.NODE_ENV || 'production';
+export const NETWORK = process.env.REACT_APP_NETWORK || 'mainnet';
 
 export const APP_TITLE =
 	process.env.REACT_APP_EXCHANGE_NAME || STRINGS.APP_TITLE;
@@ -236,8 +236,9 @@ export const ICONS = {
 		'/assets/images/risk-manage-pop-warning.svg',
 	REFER_ICON: '/assets/images/refer-icon.svg',
 	EDIT_ICON: '/assets/images/edit-icon.svg',
-	DEFAULT_ICON:`/assets/icons/missing-coin-light.svg`,
-	DEFAULT_ICON_DARK:`/assets/icons/missing-coin-dark.svg`
+	DEFAULT_ICON: '/assets/icons/missing-coin-light.svg',
+	DEFAULT_ICON_DARK: '/assets/icons/missing-coin-dark.svg',
+	EXPIRED_ICON: '/assets/images/expired.svg'
 };
 
 export const SOCIAL_ICONS = {
@@ -415,6 +416,8 @@ export const BASE_CURRENCY = process.env.REACT_APP_BASE_CURRENCY
 
 export const FEES_LIMIT_SITE_URL = 'https://www.hollaex.com';
 export const API_DOCS_URL = 'https://docs.bitholla.com/';
+export const EXCHANGE_URL = 'https://dash.bitholla.com/';
+export const EXCHANGE_EXPIRY_DAYS = 15;
 
 export const TRADING_ACCOUNT_TYPE = {
 	shrimp: {

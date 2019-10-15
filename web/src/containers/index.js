@@ -27,6 +27,7 @@ export { default as Verification } from './Verification';
 export { default as Chat } from './Chat';
 export { default as Summary } from './Summary';
 export { default as AddTradeTabs } from './TradeTabs';
+export { default as ExpiredExchange } from './ExpiredExchange';
 
 // ADMIN PAGE
 export { default as User } from './Admin/User';
