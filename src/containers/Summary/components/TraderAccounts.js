@@ -3,7 +3,7 @@ import ReactSVG from 'react-svg';
 import { isMobile } from 'react-device-detect';
 
 import STRINGS from '../../../config/localizedStrings';
-import { ICONS, BASE_CURRENCY } from '../../../config/constants';
+import { ICONS } from '../../../config/constants';
 
 
 const TraderAccounts = ({ account = {}, activeTheme, isAccountDetails = false, onFeesAndLimits, onUpgradeAccount, logout, onInviteFriends }) => {
@@ -39,7 +39,7 @@ const TraderAccounts = ({ account = {}, activeTheme, isAccountDetails = false, o
                         target="blank">
                         <span
                             className="pointer"
-                            onClick={onInviteFriends}>
+                            {/*onClick={onInviteFriends}>*/}
                             {STRINGS.REFERRAL_LINK.TITLE.toUpperCase()}
                         </span>
                     </a>
