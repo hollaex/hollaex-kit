@@ -81,7 +81,10 @@ class AppBar extends Component {
 	}
 
 	checkExchangeExpiry = (info) => {
-		if (info.is_trial && moment().diff(info.created_at, 'days') > EXCHANGE_EXPIRY_DAYS) {
+		if (!Object.keys(info).length
+			|| (info.is_trial
+				&& moment().diff(info.created_at, 'days') > EXCHANGE_EXPIRY_DAYS)
+		) {
 			this.props.router.push('/expired-exchange');
 		}
 	};

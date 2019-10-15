@@ -94,7 +94,9 @@ class Login extends Component {
 		}
 		return performLogin(values)
 			.then((res) => {
-				if (this.props.info.is_trial && moment().diff(this.props.info.created_at, 'days') > EXCHANGE_EXPIRY_DAYS)
+				if (!Object.keys(this.props.info).length
+					|| (this.props.info.is_trial
+						&& moment().diff(this.props.info.created_at, 'days') > EXCHANGE_EXPIRY_DAYS))
 					this.checkExpiryExchange();
 				else if (res.data && res.data.callbackUrl)
 					this.redirectToService(res.data.callbackUrl);
@@ -144,7 +146,9 @@ class Login extends Component {
 		)
 			.then((res) => {
 				this.setState({ otpDialogIsOpen: false });
-				if (this.props.info.is_trial && moment().diff(this.props.info.created_at, 'days') > EXCHANGE_EXPIRY_DAYS)
+				if (!Object.keys(this.props.info).length
+					|| (this.props.info.is_trial
+						&& moment().diff(this.props.info.created_at, 'days') > EXCHANGE_EXPIRY_DAYS))
 					this.checkExpiryExchange();
 				else if (res.data && res.data.callbackUrl)
 					this.redirectToService(res.data.callbackUrl);

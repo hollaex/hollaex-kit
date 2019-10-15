@@ -96,7 +96,9 @@ class Home extends Component {
 			info
 		} = this.props;
 		const { style } = this.state;
-		const isExpired = moment().diff(info.created_at, 'days') > EXCHANGE_EXPIRY_DAYS ? true : false;
+		const isExpired = (!Object.keys(info).length
+			|| moment().diff(info.created_at, 'days') > EXCHANGE_EXPIRY_DAYS)
+			? true : false;
 		const expiryDays = EXCHANGE_EXPIRY_DAYS - moment().diff(info.created_at, 'days');
 		return (
 			<div
@@ -120,7 +122,7 @@ class Home extends Component {
 					router={router}
 					logout={this.onLogout}
 				/>
-				{info.is_trial
+				{info.is_trial || !Object.keys(info).length
 					? <div className={classnames(
 						'w-100',
 						'p-1',
@@ -129,7 +131,7 @@ class Home extends Component {
 							'exchange-trial': info.is_trial,
 							'exchange-expired': isExpired,
 						}
-						)}>
+					)}>
 						{isExpired
 							? STRINGS.EXPIRY_EXCHANGE_MSG
 							: STRINGS.formatString(
@@ -138,7 +140,7 @@ class Home extends Component {
 								expiryDays
 							)
 						}
-						</div>
+					</div>
 					: null
 				}
 				<div

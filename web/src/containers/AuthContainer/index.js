@@ -61,10 +61,14 @@ class AuthContainer extends Component {
 		let isWarning = false;
 		if (rest.location && rest.location.pathname) {
 			checkPath(rest.location.pathname);
-			isWarning = ((rest.location.pathname === '/login' || rest.location.pathname === '/signup') && info.is_trial)
-				? true : false;
+			isWarning = ((rest.location.pathname === '/login' || rest.location.pathname === '/signup')
+				&& (!Object.keys(info).length || info.is_trial))
+					? true : false;
 		};
-		const isExpired = moment().diff(info.created_at, 'days') > EXCHANGE_EXPIRY_DAYS ? true : false;
+		const isExpired = (!Object.keys(info).length
+			|| moment().diff(info.created_at, 'days') > EXCHANGE_EXPIRY_DAYS)
+			? true
+			: false;
 		const expiryDays = EXCHANGE_EXPIRY_DAYS - moment().diff(info.created_at, 'days');
 		return (
 			<div className="w-100 h-100">
@@ -77,7 +81,7 @@ class AuthContainer extends Component {
 							'exchange-trial': isWarning,
 							'exchange-expired': isExpired,
 						}
-						)}>
+					)}>
 						{isExpired
 							? STRINGS.EXPIRY_EXCHANGE_MSG
 							: STRINGS.formatString(
@@ -86,7 +90,7 @@ class AuthContainer extends Component {
 								expiryDays
 							)
 						}
-						</div>
+					</div>
 					: null
 				}
 				<div
