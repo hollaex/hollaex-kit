@@ -38,7 +38,7 @@ const TraderAccounts = ({ account = {}, activeTheme, isAccountDetails = false, o
                         href="https://forms.gle/MnxUAL9hz3uDyN798"
                         target="blank">
                         <span
-                            className="pointer"
+                            className="pointer">
                             {/*onClick={onInviteFriends}>*/}
                             {STRINGS.REFERRAL_LINK.TITLE.toUpperCase()}
                         </span>
