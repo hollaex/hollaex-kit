@@ -20,7 +20,7 @@ class ChangeFees extends Component {
 
 	render() {
 		const levels = [];
-		for(let i = 1; i <= this.props.config.tiers; i++) {
+		for (let i = 1; i <= this.props.config.tiers; i++) {
 			levels.push({ value: `${i}`, label: `${i}` });
 		}
 
@@ -51,7 +51,7 @@ class ChangeFees extends Component {
 						))}
 					</Select>
 					<Search
-						placeholder="Update amount"
+						placeholder="Update fees(%)"
 						enterButton="Save changes"
 						size="default"
 						style={{ width: '40%' }}
