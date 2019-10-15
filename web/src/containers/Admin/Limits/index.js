@@ -34,8 +34,7 @@ class Limits extends Component {
 		isCustomContent: false,
 		Level_value: '',
 		customLevels: [],
-		customValue: '',
-		isApplyChanges: false
+		customValue: ''
 	};
 
 	componentWillMount() {
@@ -191,10 +190,6 @@ class Limits extends Component {
 				.then((res) => {
 					this.onCancel();
 					openNotification();
-					this.setState({ isApplyChanges: true });
-					setTimeout(() => {
-						this.setState({ isApplyChanges: false });
-					}, 5000);
 				})
 				.catch((error) => {
 				});
@@ -202,7 +197,7 @@ class Limits extends Component {
 	};
 
 	render() {
-		const { limits, loading, error, isEdit, editData, Fields, initialValues, isCustomContent, customLevels, isApplyChanges } = this.state;
+		const { limits, loading, error, isEdit, editData, Fields, initialValues, isCustomContent, customLevels } = this.state;
 		const COLUMNS_CURRENCY = getCurrencyColumns(this.handleEdit);
 		return (
 			<div className="app_container-content">
@@ -237,9 +232,6 @@ class Limits extends Component {
 									/>
 								)}
 							</div>
-							{isApplyChanges && <div className="mb-3">
-								{STRINGS.RESTART_TO_APPLY}
-							</div>}
 							{/* <div>
 							<h2>CHANGE Coins</h2>
 
