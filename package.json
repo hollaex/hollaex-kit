@@ -1,5 +1,5 @@
 {
-	"name": "HEX",
+	"name": "HollaEx Exchange",
 	"version": "1.19.0",
 	"private": true,
 	"dependencies": {
@@ -73,12 +73,12 @@
 		"prettier": "./node_modules/prettier/bin-prettier.js --write \"src/**/*.{js,json,css,scss,md}\"",
 		"build-css": "node-sass-chokidar src/ -o src/",
 		"watch-css": "npm run build-css && node-sass-chokidar src/ -o src/ --watch --recursive",
-		"start-js": "react-scripts start",
+		"start-js": "react-scripts --max_old_space_size=4096 start",
 		"start": "npm-run-all -p watch-css start-js",
-		"build": "npm run build-css && react-scripts build",
+		"build": "npm run build-css && react-scripts --max_old_space_size=4096 build",
 		"test": "react-scripts test --env=jsdom",
 		"eject": "react-scripts eject",
-		"deploy-main": "npm run build && aws s3 sync build/ s3://hex.bitholla.com && aws cloudfront create-invalidation --distribution-id E1SLEPJ68HM3XD --paths /"
+		"deploy-main": "npm run build && aws s3 sync build/ s3://hollaex.com && aws cloudfront create-invalidation --distribution-id E1FPBCJ0EFOPZJ --paths /"
 	},
 	"description": "Cryptocurrency exchange platfrom",
 	"main": "index.js",
