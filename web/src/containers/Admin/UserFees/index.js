@@ -118,6 +118,7 @@ class UserFees extends Component {
 
 	changeIndex = (activeKey) => {
 		this.setState({ selectedKey: activeKey }, () => {
+			console.log(this.props.pairs[this.state.selectedKey]);
 			this.renderData(this.props.pairs[this.state.selectedKey], this.props.config);
 		});
 	};
@@ -140,7 +141,7 @@ class UserFees extends Component {
 			[fee_type]: { ...levels }
 		})
 			.then((res) => {
-				// this.requestFees();
+				this.renderData(res, this.props.config);
 			})
 			.then(openNotification())
 			.catch((err) => { });

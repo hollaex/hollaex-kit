@@ -65,9 +65,10 @@ class Limits extends Component {
 		let limits = [];
 		sortedData.forEach(coin => {
 			if (coins[coin]) {
-				limits = [ ...limits, coins[coin] ];
+				limits = [...limits, coins[coin]];
 			}
 		});
+		console.log(limits);
 		this.setState({ limits });
 	};
 
@@ -119,10 +120,10 @@ class Limits extends Component {
 					if (temp[key] === 0 || temp[key] === -1) {
 						initialValues[`${keyIndex}_${key}`] = `${temp[key]}`;
 					}
-					 else {
+					else {
 						initialValues[`${keyIndex}_${key}`] = `1`;
 						initialValues[`${keyIndex}_${key}_custom`] = `${temp[key]}`;
-						customLevels = [ ...customLevels, parseInt(key, 10) ];
+						customLevels = [...customLevels, parseInt(key, 10)];
 					}
 			});
 		} else {
@@ -157,7 +158,7 @@ class Limits extends Component {
 				Object.keys(loopData).forEach(key => {
 					if (key <= parseInt((this.props.config.tiers || 0), 10)) {
 						let levelValue = parseFloat(values[`${keyIndex}_${key}`]);
-						if ((levelValue !== 0 || levelValue !== -1) && values[`${keyIndex}_${key}_custom`]) {
+						if ((levelValue >= 1) && values[`${keyIndex}_${key}_custom`]) {
 							levelValue = values[`${keyIndex}_${key}_custom`];
 						}
 						tempData[key] = parseFloat(levelValue);
@@ -176,7 +177,18 @@ class Limits extends Component {
 		if (data.id) {
 			performLimitUpdate(data.id, { ...formProps, currency: data.symbol })
 				.then((res) => {
-					// this.requestLimits();
+					const newData = this.state.limits.map((item) => {
+						if (item.id === res.id) {
+							return res;
+						}
+						return item;
+					})
+					this.setState({
+						limits: newData
+					})
+					return;
+				})
+				.then((res) => {
 					this.onCancel();
 					openNotification();
 					this.setState({ isApplyChanges: true });
@@ -199,7 +211,7 @@ class Limits extends Component {
 				) : (
 						<div>
 							{error && <p>-{error}-</p>}
-							<h1>DAILY MAX LIMITS</h1>
+							<h1>Coins</h1>
 							<CSVLink
 								filename={'daily-max-limits.csv'}
 								data={limits}
@@ -229,7 +241,7 @@ class Limits extends Component {
 								{STRINGS.RESTART_TO_APPLY}
 							</div>}
 							{/* <div>
-							<h2>CHANGE DAILY MAX LIMITS</h2>
+							<h2>CHANGE Coins</h2>
 
 							<InputGroup compact>
 								<Select
