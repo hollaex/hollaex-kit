@@ -4,7 +4,7 @@ export const generateHeaders = (coins = {}) => {
 		{ label: 'Name', key: 'name' },
 		{ label: 'Email', key: 'email' }
 	];
-	Object.keys(coins).map(coin => {
+	Object.keys(coins).forEach(coin => {
 		headers.push({ label: coin, key: `${coin}_balance` });
 	});
 	headers.push({ label: 'created at', key: 'created_at' });

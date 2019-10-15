@@ -7,6 +7,10 @@ import { validateRequired } from '../../../components/AdminForm/validations';
 import { checkTransaction } from './actions';
 
 const Form = AdminHocForm('TRANSACTION_FORM', 'transaction-form');
+const SERVER_TYPES = [
+	{ label: 'mainnet', value: '0' },
+	{ label: 'testnet', value: '1' }
+];
 
 class BlockchainTransaction extends Component {
 	state = {
@@ -15,9 +19,10 @@ class BlockchainTransaction extends Component {
 		error: ''
 	};
 
-	onSubmit = ({ currency, transaction_id = '', address = '' }) => {
+	onSubmit = ({ currency, transaction_id = '', address = '', is_testnet = false }) => {
+		const testnet = is_testnet === '0' ? false :  true;
 		this.setState({ error: '', loading: true, data: {} });
-		return checkTransaction(currency, transaction_id, address)
+		return checkTransaction(currency, transaction_id, address, testnet)
 			.then((data) => {
 				this.setState({ data, loading: false });
 			})
@@ -34,7 +39,7 @@ class BlockchainTransaction extends Component {
 	render() {
 		const { error, data, loading } = this.state;
 		const coinOptions = [];
-		Object.keys(this.props.coins).map((data) => {
+		Object.keys(this.props.coins).forEach((data) => {
 			let temp = this.props.coins[data];
 			if (temp) {
 				coinOptions.push({
@@ -48,6 +53,7 @@ class BlockchainTransaction extends Component {
 				<Form
 					onSubmit={this.onSubmit}
 					buttonText="Check"
+					initialValues={this.props.initialValues}
 					fields={{
 						currency: {
 							type: 'select',
@@ -66,6 +72,11 @@ class BlockchainTransaction extends Component {
 							type: 'input',
 							placeholder: 'Address',
 							prefix: <Icon type="qrcode" />
+						},
+						is_testnet: {
+							type: 'select',
+							options: SERVER_TYPES,
+							validate: [validateRequired]
 						}
 					}}
 				/>
@@ -100,5 +111,9 @@ class BlockchainTransaction extends Component {
 const mapStateToProps = (state) => ({
 	coins: state.app.coins
 });
+
+BlockchainTransaction.defaultProps = {
+	initialValues: { is_testnet: '0' }
+};
 
 export default connect(mapStateToProps)(BlockchainTransaction);

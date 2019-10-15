@@ -18,7 +18,7 @@ const CurrencyBallWithPrice = ({ symbol, amount, price, size = 'm', coins = {} }
 			<CurrencyBall name={currencyShortName} symbol={symbol} size={size} />
 			<div className="with_price-block_amount-value d-flex">
 				{`${formatToCurrency(amount, min)}`}
-				{symbol !== BASE_CURRENCY && (
+				{symbol !== BASE_CURRENCY && price && (
 					<div className={`with_price-block_amount-value-${BASE_CURRENCY.toLowerCase()} d-flex align-items-end`}>
 						{` ~ ${formatToCurrency(
 							calculatePrice(amount, price), baseCoin.min

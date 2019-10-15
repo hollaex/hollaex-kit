@@ -6,7 +6,6 @@ import { WS_URL } from '../../../config/constants';
 import { getToken } from '../../../utils/token';
 import { Tabs } from 'antd';
 import { Ban } from './ban';
-import { Announcements } from './announcements';
 import { Messages } from './messages';
 
 import './index.css';
@@ -124,7 +123,6 @@ class Chat extends Component {
 		const {
 			ready,
 			messages,
-			announcements,
 			bannedUsers,
 			bannedUsersUsernames
 		} = this.state;

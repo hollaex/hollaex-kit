@@ -4,9 +4,16 @@
 }
 .verification_label {
     display: flex;
-    flex: 1
+    flex: 1;
+}
+.verification_amount{
+    flex: 2 1 !important;
 }
 .verification_content {
     display: flex;
-    flex: 2
+    flex: 1 1;
+}
+.verification_text{
+    display: flex;
+    flex: 1
 }

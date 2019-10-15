@@ -20,7 +20,8 @@ const Form = (name, className = '', allowPristine = false) => {
 		visible,
 		okText = "Create",
 		initialValues,
-		CustomRenderContent
+		CustomRenderContent,
+		customLevels
 	}) => {
 		return (
 			<form className={className}>
@@ -32,7 +33,7 @@ const Form = (name, className = '', allowPristine = false) => {
 					onOk={handleSubmit(onSubmit)}
 				>
 					{CustomRenderContent
-						? <CustomRenderContent fields={fields} />
+						? <CustomRenderContent fields={fields} customLevels={customLevels} />
 						: fields && renderFields(fields)
 					}
 					{error && (

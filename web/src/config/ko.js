@@ -905,12 +905,12 @@ export default {
 		{
 			value: 'en',
 			label: 'English',
-			icon: `${process.env.PUBLIC_URL}/assets/flags/selected-en.png`
+			icon: `${process.env.REACT_APP_PUBLIC_URL}/assets/flags/selected-en.png`
 		},
 		{
 			value: 'ko',
 			label: '한국어',
-			icon: `${process.env.PUBLIC_URL}/assets/flags/selected-kr.png`
+			icon: `${process.env.REACT_APP_PUBLIC_URL}/assets/flags/selected-kr.png`
 		}
 	],
 	SETTINGS_ORDERPOPUP_LABEL: 'Display order confirmation popup',

@@ -1,7 +1,7 @@
 export default {
-	APP_TITLE: 'HEX',
+	APP_TITLE: 'HollaEx',
 	APP_SUB_TITLE: 'White Label Cryptocurrency Exchange',
-	APP_NAME: 'hex',
+	APP_NAME: 'HollaEx',
 
 	LOGOUT_CONFIRM_TEXT: 'Are you sure?. Do you want to logout',
 	ADD_TRADING_PAIR: 'Add Trading Pair',
@@ -30,7 +30,7 @@ export default {
 	HELPFUL_RESOURCES_TEXT: 'Helpful resources',
 	HELP_RESOURCE_GUIDE_TEXT:
 		'Feel free to contact us for more information and any issues by sending us an email to support@bitholla.com',
-	HELP_TELEGRAM_TEXT: 'Check out HEX open API documentation:',
+	HELP_TELEGRAM_TEXT: 'Check out HollaEx open API documentation:',
 	HELP_TELEGRAM_LINK: 'https://apidocs.hollaex.com',
 	NEED_HELP_TEXT: 'Need help',
 	HELP_TEXT: 'help',
@@ -42,9 +42,9 @@ export default {
 	NO_OPTIONS: 'No options availables',
 	SECONDS: 'seconds',
 	HOME: {
-		SECTION_1_TITLE: 'Welcome to HEX Exchange Kit!',
+		SECTION_1_TITLE: 'Welcome to HollaEx Exchange Kit!',
 		SECTION_1_TEXT_1:
-			'Build your own scalable digital asset exchange with HEX Kit and be part of the future of finance.',
+			'Build your own scalable digital asset exchange with HollaEx Kit and be part of the future of finance.',
 		SECTION_1_TEXT_2:
 			'We strive to bring the financial technology forward through afforable and simple access to trading technology.',
 		SECTION_1_BUTTON_1: 'Learn more',
@@ -57,7 +57,7 @@ export default {
 			'Plugins with customizable modules available for bank integration. We know the traditional finace and can help you to make your exchange local',
 		SECTION_3_CARD_3_TITLE: 'STRONG SECURITY',
 		SECTION_3_CARD_3_TEXT:
-			'HEX uses the best security practices and the most secure and reliable algorithms for keeping the funds secure. It is our top priority and we took a very special extra care of it.',
+			'HollaEx uses the best security practices and the most secure and reliable algorithms for keeping the funds secure. It is our top priority and we took a very special extra care of it.',
 		SECTION_3_CARD_4_TITLE: 'ADVANCED REPORTING',
 		SECTION_3_CARD_4_TEXT:
 			'Admin panel with customizable email and reports for notifying support and administrator about the status of the system and transactions.',
@@ -80,15 +80,18 @@ export default {
 		SECTIONS: {
 			SECTION_1_TITLE: 'ABOUT',
 			SECTION_1_LINK_1: 'About Us',
-			SECTION_1_LINK_2: 'Compliance',
+			SECTION_1_LINK_2: 'Terms of Use',
 			SECTION_1_LINK_3: 'Privacy Policy',
 			SECTION_2_TITLE: 'INFORMATION',
 			SECTION_2_LINK_1: 'Blog',
 			SECTION_2_LINK_2: 'Contact Us',
 			SECTION_2_LINK_3: 'Career',
 			SECTION_3_TITLE: 'DEVELOPERS',
-			SECTION_3_LINK_1: 'API Explorer',
-			SECTION_3_LINK_2: 'Server Status'
+			SECTION_3_LINK_1: 'Documentation',
+			SECTION_3_LINK_2: 'Forum',
+			SECTION_3_LINK_3: 'GitHub',
+			SECTION_3_LINK_4: 'Library',
+			SECTION_3_LINK_5: 'API doc'
 		}
 	},
 	ACCOUNTS: {
@@ -135,7 +138,7 @@ export default {
 		},
 		INFORMATION_MESSAGES: [
 			'Use the bank details below to deposit USD in to your account. Transfers usally take up to 1-2 business day.',
-			'Deposits will only be accepeted from a bank account in a name that matches the name registered with your HEX account.'
+			'Deposits will only be accepeted from a bank account in a name that matches the name registered with your HollaEx account.'
 		],
 		INCREASE_LIMIT: 'Want to increase your daily limit?',
 		QR_CODE:
@@ -186,8 +189,8 @@ export default {
 			SUBTITLE:
 				'Last updated April 1, 2019. Replaces the prior version in its entirety.',
 			TEXTS: [
-				'HEX Web is a virtual trading platform that is wholly owned by bitHolla Inc. bitHolla Inc (hereinafter referred to as bitHolla) was incorporated in Seoul South Korea.',
-				'Use of this HEX website (“Website”) and the service offered on the Website (“Service”) are governed by the terms contained on this Terms and Conditions page (“Terms”). This agreement entirely constitutes the agreement between the parties. All other information provided on the Website or oral/written statements made are excluded from this agreement; the exchange policy is provided for guidance only and does not constitute a legal agreement between the parties.',
+				'HollaEx Web is a virtual trading platform that is wholly owned by bitHolla Inc. bitHolla Inc (hereinafter referred to as bitHolla) was incorporated in Seoul South Korea.',
+				'Use of this HollaEx website (“Website”) and the service offered on the Website (“Service”) are governed by the terms contained on this Terms and Conditions page (“Terms”). This agreement entirely constitutes the agreement between the parties. All other information provided on the Website or oral/written statements made are excluded from this agreement; the exchange policy is provided for guidance only and does not constitute a legal agreement between the parties.',
 				'By accessing, viewing or downloading information from the Website and using the Service provided by bitHolla you acknowledge that you have read, understand, and unconditionally agree to be bound by these Terms. bitHolla may at any time, without notice, amend the Terms. You agree to continue to be bound by any amended terms and conditions and that bitHolla has no obligation to notify you of such amendments. You acknowledge that it is your responsibility to check these Terms periodically for changes and that your continued use of the Website and Services offered by bitHolla following the posting of any changes to the Terms indicates your acceptance of any such changes.',
 				'The Website and the copyright in all text, graphics, images, software and any other materials on the Website is owned by bitHolla including all trademarks and other intellectual property rights in respect of materials and Service on the Website. Materials on this Website may only be used for personal use and non-commercial purposes.',
 				'You may display on a computer screen or print extracts from the Website for the above-stated purpose only provided that you retain any copyright and other proprietary notices or any bitHolla trademarks or logos, as shown on the initial printout or download without alteration, addition or deletion. Except as expressly stated herein, you may not without bitHolla’s prior written permission alter, modify, reproduce, distribute or use in any other commercial context any materials from the Website.',
@@ -200,8 +203,8 @@ export default {
 			SUBTITLE:
 				'Last updated April 1, 2019. Replaces the prior version in its entirety.',
 			TEXTS: [
-				'HEX Web is a virtual trading platform that is wholly owned by bitHolla Inc. bitHolla Inc (hereinafter referred to as bitHolla) was incorporated in Seoul South Korea.',
-				'Use of this HEX website (“Website”) and the service offered on the Website (“Service”) are governed by the terms contained on this Terms and Conditions page (“Terms”). This agreement entirely constitutes the agreement between the parties. All other information provided on the Website or oral/written statements made are excluded from this agreement; the exchange policy is provided for guidance only and does not constitute a legal agreement between the parties.',
+				'HollaEx Web is a virtual trading platform that is wholly owned by bitHolla Inc. bitHolla Inc (hereinafter referred to as bitHolla) was incorporated in Seoul South Korea.',
+				'Use of this HollaEx website (“Website”) and the service offered on the Website (“Service”) are governed by the terms contained on this Terms and Conditions page (“Terms”). This agreement entirely constitutes the agreement between the parties. All other information provided on the Website or oral/written statements made are excluded from this agreement; the exchange policy is provided for guidance only and does not constitute a legal agreement between the parties.',
 				'By accessing, viewing or downloading information from the Website and using the Service provided by bitHolla you acknowledge that you have read, understand, and unconditionally agree to be bound by these Terms. bitHolla may at any time, without notice, amend the Terms. You agree to continue to be bound by any amended terms and conditions and that bitHolla has no obligation to notify you of such amendments. You acknowledge that it is your responsibility to check these Terms periodically for changes and that your continued use of the Website and Services offered by bitHolla following the posting of any changes to the Terms indicates your acceptance of any such changes.',
 				'The Website and the copyright in all text, graphics, images, software and any other materials on the Website is owned by bitHolla including all trademarks and other intellectual property rights in respect of materials and Service on the Website. Materials on this Website may only be used for personal use and non-commercial purposes.',
 				'You may display on a computer screen or print extracts from the Website for the above-stated purpose only provided that you retain any copyright and other proprietary notices or any bitHolla trademarks or logos, as shown on the initial printout or download without alteration, addition or deletion. Except as expressly stated herein, you may not without bitHolla’s prior written permission alter, modify, reproduce, distribute or use in any other commercial context any materials from the Website.',
@@ -424,7 +427,7 @@ export default {
 				TITLE_PERSONAL_INFORMATION: 'Personal Information',
 				TITLE_PHONE: 'Phone',
 				PHONE_VERIFICATION_TXT:
-					'Providing valid contact details will assist HEX greatly in conflict resolution while preventing unwanted transactions on your account.',
+					'Providing valid contact details will assist HollaEx greatly in conflict resolution while preventing unwanted transactions on your account.',
 				PHONE_VERIFICATION_TXT_1:
 					'Receive real-time updates for deposits and withdrawals by sharing your mobile phone number.',
 				PHONE_VERIFICATION_TXT_2:
@@ -802,7 +805,7 @@ export default {
 		MESSAGE_FEE: 'Transactions fee of {0} ({1}) included',
 		MESSAGE_FEE_BASE: 'Transactions fee of {0} included',
 		BASE_MESSAGE_1:
-			'You can only withdraw to a bank account in a name that matches the name registered with your HEX account.',
+			'You can only withdraw to a bank account in a name that matches the name registered with your HollaEx account.',
 		BASE_MESSAGE_2: 'Withdrawal min amount',
 		BASE_MESSAGE_3: 'Daily withdrawal max amount',
 		BASE_INCREASE_LIMIT: 'Increase your daily limit',
@@ -872,11 +875,11 @@ export default {
 	RESUBMIT: 'Resubmit',
 	VERIFICATION_NOTIFICATION_SKIP_TITLE: 'Missing Documents!',
 	VERIFICATION_NOTIFICATION_SKIP_TEXT:
-		'To get full access to withdrawal and deposit functions on HEX you must submit your identity documents in your account page.',
+		'To get full access to withdrawal and deposit functions on HollaEx you must submit your identity documents in your account page.',
 	VERIFICATION_NOTIFICATION_SUCCESS_TITLE: 'Success!',
 	VERIFICATION_NOTIFICATION_SUCCESS_TEXT:
 		'You will receive an email notification when your information has been processed. Processing can typically take 1-3 days.',
-	VERIFICATION_NOTIFICATION_BUTTON: 'PROCEED TO HEX',
+	VERIFICATION_NOTIFICATION_BUTTON: 'PROCEED TO HollaEx',
 	ERROR_USER_ALREADY_VERIFIED: 'User already verified',
 	ERROR_INVALID_CARD_USER: 'Bank or card information provided is incorrect',
 	ERROR_INVALID_CARD_NUMBER: 'Invalid Card number',
@@ -897,12 +900,12 @@ export default {
 		{
 			value: 'en',
 			label: 'English',
-			icon: `${process.env.PUBLIC_URL}/assets/flags/selected-en.png`
+			icon: `${process.env.REACT_APP_PUBLIC_URL}/assets/flags/selected-en.png`
 		},
 		{
 			value: 'ko',
 			label: '한국어',
-			icon: `${process.env.PUBLIC_URL}/assets/flags/selected-kr.png`
+			icon: `${process.env.REACT_APP_PUBLIC_URL}/assets/flags/selected-kr.png`
 		}
 	],
 	SETTINGS_ORDERPOPUP_LABEL: 'Display order confirmation popup',
@@ -1088,13 +1091,23 @@ export default {
 		TRADING_VOLUME_EQUIVALENT: '{0} {1} Trading Volume Equivalent'
 	},
 	REFERRAL_LINK: {
-		TITLE: 'Earn 10% in Commissions', // new
-		INFO_TEXT: 'Earn 1 HEX for every 10 HEX your friends buy.', // new
-		INFO_TEXT_1: 'Commissions are paid periodically to your HEX wallet', // new
+		TITLE: 'Invite your friend', // new
+		INFO_TEXT: 'Refer your friends by giving out this link.', // new
+		INFO_TEXT_1: 'Send thm this affiliation link and get them onboard', // new
 		COPY_FIELD_LABEL: 'Share the link below with friends and earn commissions:', // new
 		REFERRED_USER_COUT: 'You have referred {0} users', // new
 		COPY_LINK_BUTTON: 'COPY REFERRAL LINK' // new
 	},
 	USER_LEVEL: 'User level', // new
 	LIMIT_AMOUNT: 'Limit amount', // new
+	COINS: 'Coins', // new
+	PAIRS: 'Pairs', // new
+	NOTE_FOR_EDIT_COIN: 'Note: For adding and removing {0} please refer to the{1}.', // new
+	REFER_DOCS_LINK: 'docs', // new
+	RESTART_TO_APPLY: 'You need to restart your exchange for apply these changes.', // new
+	TRIAL_EXCHANGE_MSG: 'You are using a trial version of {0} and it will expire in {1} days.', // new
+	EXPIRY_EXCHANGE_MSG: 'Your exchange has expired. Go to dash.bitholla.com to activate it again.', // new
+	EXPIRED_INFO_1: 'Your HollaEx trial has ended.', // new
+	EXPIRED_INFO_2: 'Collateralize your exchange to activate it again.', // new
+	EXPIRED_BUTTON_TXT: 'ACTIVATE EXCHANGE' // new
 };

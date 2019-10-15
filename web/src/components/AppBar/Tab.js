@@ -9,8 +9,8 @@ import { formatToCurrency, formatPercentage, formatAverage } from '../../utils/c
 const Tab = ({ pair = {}, tab, ticker = {}, coins = {}, activePairTab, onTabClick, onTabChange, items, selectedToOpen, selectedToRemove, ...rest }) => {
     const { min, symbol } = coins[pair.pair_base || BASE_CURRENCY] || DEFAULT_COIN_DATA;
     const pairTwo = coins[pair.pair_2 || BASE_CURRENCY] || DEFAULT_COIN_DATA;
-    const priceDifference = (ticker.close || 0) - (ticker.open || 0);
-    const tickerPercent = priceDifference === 0 ? 0 : ((priceDifference / ticker.open) * 100);
+    const priceDifference = ticker.open === 0 ? 0 : ((ticker.close || 0) - (ticker.open || 0));
+    const tickerPercent = priceDifference === 0 || ticker.open === 0 ? 0 : ((priceDifference / ticker.open) * 100);
     const priceDifferencePercent = isNaN(tickerPercent) ? formatPercentage(0) : formatPercentage(tickerPercent);
     return (
         <div

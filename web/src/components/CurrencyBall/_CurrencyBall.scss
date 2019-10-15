@@ -7,19 +7,30 @@ $large-modifier: 2.25;
 	font-family: $raleway-medium--font-family !important;
 	text-transform: uppercase;
 	border-radius: 50%;
-	color: $app-background-color;
 	font-weight: bold;
+	color: $app-background-color;
 
+	&.default-coin {
+		border:1px solid $colors-black;
+		color: $colors-black;
+	}
+	
 	&.btc {
 		background-color: $colors-currencies-btc;
+		border : none !important;
+		color: $app-background-color !important;
 	}
 
 	&.eur {
 		background-color: $colors-currencies-eur;
+		border : none !important;
+		color: $app-background-color !important;
 	}
 
 	&.bch {
 		background-color: $colors-currencies-bch;
+		border : none !important;
+		color: $app-background-color !important;
 	}
 
 	// &.xrp {
@@ -28,136 +39,224 @@ $large-modifier: 2.25;
 
 	&.eth {
 		background-color: $colors-currencies-eth;
+		border : none !important;
+		color: $app-background-color !important;
 	}
 
 	&.ltc {
 		background-color: $colors-currencies-ltc;
+		border : none !important;
+		color: $app-background-color !important;
 	}
 	&.xrp {
 		background-color: $coin-xrp;
+		border : none !important;
+		color: $app-background-color !important;
 	}
 	&.hex {
 		background-color: $coin-hex;
+		border : none !important;
+		color: $app-background-color !important;
 	}
 	&.eos {
 		background-color: $coin-eos;
+		border : none !important;
+		color: $app-background-color !important;
 	}
 	&.bnb {
 		background-color: $coin-bnb;
+		border : none !important;
+		color: $app-background-color !important;
 	}
 	&.link {
 		background-color: $coin-link;
+		border : none !important;
+		color: $app-background-color !important;
 	}
 	&.trx {
 		background-color: $coin-trx;
+		border : none !important;
+		color: $app-background-color !important;
 	}
 	&.ada {
 		background-color: $coin-ada;
+		border : none !important;
+		color: $app-background-color !important;
 	}
 	&.matic {
 		background-color: $coin-matic;
+		border : none !important;
+		color: $app-background-color !important;
 	}
 	&.neo {
 		background-color: $coin-neo;
+		border : none !important;
+		color: $app-background-color !important;
 	}
 	&.etc {
 		background-color: $coin-etc;
+		border : none !important;
+		color: $app-background-color !important;
 	}
 	&.xlm {
 		background-color: $coin-xlm;
+		border : none !important;
+		color: $app-background-color !important;
 	}
 	&.xmr {
 		background-color: $coin-xmr;
+		border : none !important;
+		color: $app-background-color !important;
 	}
 	&.zec {
 		background-color: $coin-zec;
+		border : none !important;
+		color: $app-background-color !important;
 	}
 	&.one {
 		background-color: $coin-one;
+		border : none !important;
+		color: $app-background-color !important;
 	}
 	&.pax {
 		background-color: $coin-pax;
+		border : none !important;
+		color: $app-background-color !important;
 	}
 	&.usdc {
 		background-color: $coin-usdc;
+		border : none !important;
+		color: $app-background-color !important;
 	}
 	&.usdt {
 		background-color: $coin-usdt;
+		border : none !important;
+		color: $app-background-color !important;
 	}
 	&.vet {
 		background-color: $coin-vet;
+		border : none !important;
+		color: $app-background-color !important;
 	}
 	&.btt {
 		background-color: $coin-btt;
+		border : none !important;
+		color: $app-background-color !important;
 	}
 	&.qtum {
 		background-color: $coin-qtum;
+		border : none !important;
+		color: $app-background-color !important;
 	}
 	&.algo {
 		background-color: $coin-algo;
+		border : none !important;
+		color: $app-background-color !important;
 	}
 	&.rvn {
 		background-color: $coin-rvn;
+		border : none !important;
+		color: $app-background-color !important;
 	}
 	&.iota {
 		background-color: $coin-iota;
+		border : none !important;
+		color: $app-background-color !important;
 	}
 	&.dash {
 		background-color: $coin-dash;
+		border : none !important;
+		color: $app-background-color !important;
 	}
 	&.bsv {
 		background-color: $coin-bsv;
+		border : none !important;
+		color: $app-background-color !important;
 	}
 	&.ont {
 		background-color: $coin-ont;
+		border : none !important;
+		color: $app-background-color !important;
 	}
 	&.atom {
 		background-color: $coin-atom;
+		border : none !important;
+		color: $app-background-color !important;
 	}
 	&.celr {
 		background-color: $coin-celr;
+		border : none !important;
+		color: $app-background-color !important;
 	}
 	&.omg {
 		background-color: $coin-omg;
+		border : none !important;
+		color: $app-background-color !important;
 	}
 	&.hot {
 		background-color: $coin-hot;
+		border : none !important;
+		color: $app-background-color !important;
 	}
 	&.usd {
 		background-color: $coin-usd;
+		border : none !important;
+		color: $app-background-color !important;
 	}
 	&.jpy {
 		background-color: $coin-jpy;
+		border : none !important;
+		color: $app-background-color !important;
 	}
 	&.gbp {
 		background-color: $coin-gbp;
+		border : none !important;
+		color: $app-background-color !important;
 	}
 	&.chf {
 		background-color: $coin-chf;
+		border : none !important;
+		color: $app-background-color !important;
 	}
 	&.cad {
 		background-color: $coin-cad;
+		border : none !important;
+		color: $app-background-color !important;
 	}
 	&.aud {
 		background-color: $coin-aud;
+		border : none !important;
+		color: $app-background-color !important;
 	}
 	&.nzd {
 		background-color: $coin-nzd;
+		border : none !important;
+		color: $app-background-color !important;
 	}
 	&.zar {
 		background-color: $coin-zar;
+		border : none !important;
+		color: $app-background-color !important;
 	}
 	&.hkd {
 		background-color: $coin-hkd;
+		border : none !important;
+		color: $app-background-color !important;
 	}
 	&.krw {
 		background-color: $coin-krw;
+		border : none !important;
+		color: $app-background-color !important;
 	}
 	&.cny {
 		background-color: $coin-cny;
+		border : none !important;
+		color: $app-background-color !important;
 	}
 	&.sgd {
 		background-color: $coin-sgd;
+		border : none !important;
+		color: $app-background-color !important;
 	}
 
 	&.s {
@@ -213,5 +312,10 @@ $large-modifier: 2.25;
 	.currency_ball-wrapper {
 		color: $dark-app-background-color;
 		font-weight: bold;
+
+		&.default-coin{
+			border:1px solid $colors-white;
+			color: $colors-white;
+		}
 	}
 }

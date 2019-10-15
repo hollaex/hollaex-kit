@@ -2,33 +2,8 @@ import React from 'react';
 import ReactSVG from "react-svg";
 
 import { ICONS } from '../../../config/constants';
-// export const COLUMNS_CURRENCY = [
-// 	{
-// 		title: 'Verification Level',
-// 		dataIndex: 'verification_level',
-// 		key: 'verification_level'
-// 	},
-// 	{
-// 		title: 'BTC Withdrawal Max Daily',
-// 		dataIndex: 'btc_withdraw_daily',
-// 		key: 'btc_withdraw_daily'
-// 	},
-// 	{
-// 		title: 'BTC Deposit Max Daily',
-// 		dataIndex: 'btc_deposit_daily',
-// 		key: 'btc_deposit_daily'
-// 	},
-// 	{
-// 		title: 'FIAT Withdrawal Max Daily',
-// 		dataIndex: 'fiat_withdraw_daily',
-// 		key: 'fiat_withdraw_daily'
-// 	},
-// 	{
-// 		title: 'FIAT Deposit Max Daily',
-// 		dataIndex: 'fiat_deposit_daily',
-// 		key: 'fiat_deposit_daily'
-// 	}
-// ];
+import STRINGS from '../../../config/localizedStrings';
+
 
 export const COLUMNS_FEES = [
 	{
@@ -54,11 +29,11 @@ export const CURRENCY_KEYS = [
 ];
 
 const returnArray = (obj, data, keyIndex, handleClick) => {
-	const keys = Object.keys(obj);
 	return (<div className="d-flex" onClick={() => handleClick(obj, data, keyIndex)}>
-		<div>{keys.map((index) => ` ${obj[index]} `)}</div>
+		{/* <div>{keys.map((index) => ` ${obj[index]} `)}</div> */}
+		<div className="blue-link pointer">{STRINGS.VIEW}</div>
 		<div>
-			<ReactSVG path={ICONS.EDIT_ICON} wrapperClassName="edit_icon mx-2" />
+			{/* <ReactSVG path={ICONS.EDIT_ICON} wrapperClassName="edit_icon mx-2" /> */}
 		</div>
 	</div>);
 };
@@ -177,147 +152,99 @@ export const getCurrencyColumns = (handleClick) => [
 	}
 ];
 
-export const COINS_FORM_FIELDS = {
-	'fullname': {
-		fullname: {
-			type: 'text',
-			label: 'fullname'
+const getDepositWithdrawFields = (userTier, key, onchange, customValue) => {
+	const userFields = {};
+	userTier.map((level) => {
+		userFields[level] = {
+			[`${key}_${level}`]: {
+				type: 'select',
+				options: [
+					{ label: 'unlimited', value: '0' },
+					{ label: 'disabled', value: '-1' },
+					{ label: 'custom', value: '1'}
+				],
+				onChange: (event) => onchange(event, level)
+			}
 		}
-	},
-	'symbol': {
-		symbol: {
-			type: 'text',
-			label: 'symbol'
-		}
-	},
-	'active': {
-		active: {
-			type: 'select',
-			label: 'active',
-			options: [
-				{ label: 'active', value: 'true' },
-				{ label: 'inactive', value: 'false' }
-			]
-		}
-	},
-	'allow_deposit': {
-		allow_deposit: {
-			type: 'select',
-			label: 'allow deposit',
-			options: [
-				{ label: 'allow', value: 'true' },
-				{ label: 'disallow', value: 'false' }
-			]
-		}
-	},
-	'allow_withdrawal': {
-		allow_withdrawal: {
-			type: 'select',
-			label: 'allow withdrawal',
-			options: [
-				{ label: 'allow', value: 'true' },
-				{ label: 'disallow', value: 'false' }
-			]
-		}
-	},
-	'withdrawal_fee': {
-		withdrawal_fee: {
-			type: 'number',
-			label: 'withdrawal fee',
-		}
-	},
-	'min': {
-		min: {
-			type: 'number',
-			label: 'min',
-		}
-	},
-	'max': {
-		max: {
-			type: 'number',
-			label: 'max',
-		}
-	},
-	'increment_unit': {
-		increment_unit: {
-			type: 'number',
-			label: 'increment unit',
-		}
-	},
-	'deposit_limits': {
-		1: {
-			deposit_limits_1: {
-				type: 'number',
-				label: ''
+		return 0;
+	});
+	return userFields;
+};
+
+export const getCoinsFormFields = (config = {}, onchange, customValue) => {
+	const userLevels = [];
+	const tiers = config.tiers ? parseInt(config.tiers) : 4;
+	for (var i = 1; i <= tiers; i++) {
+		userLevels.push(i)
+	};
+	return ({
+		'fullname': {
+			fullname: {
+				type: 'text',
+				label: 'fullname'
 			}
 		},
-		2: {
-			deposit_limits_2: {
-				type: 'number',
-				label: ''
+		'symbol': {
+			symbol: {
+				type: 'text',
+				label: 'symbol'
 			}
 		},
-		3: {
-			deposit_limits_3: {
-				type: 'number',
-				label: ''
+		'active': {
+			active: {
+				type: 'select',
+				label: 'active',
+				options: [
+					{ label: 'active', value: 'true' },
+					{ label: 'deactive', value: 'false' }
+				]
 			}
 		},
-		4: {
-			deposit_limits_4: {
-				type: 'number',
-				label: ''
+		'allow_deposit': {
+			allow_deposit: {
+				type: 'select',
+				label: 'allow deposit',
+				options: [
+					{ label: 'allow', value: 'true' },
+					{ label: 'disallow', value: 'false' }
+				]
 			}
 		},
-		5: {
-			deposit_limits_5: {
-				type: 'number',
-				label: ''
+		'allow_withdrawal': {
+			allow_withdrawal: {
+				type: 'select',
+				label: 'allow withdrawal',
+				options: [
+					{ label: 'allow', value: 'true' },
+					{ label: 'disallow', value: 'false' }
+				]
 			}
 		},
-		6: {
-			deposit_limits_6: {
+		'withdrawal_fee': {
+			withdrawal_fee: {
 				type: 'number',
-				label: ''
-			}
-		}
-	},
-	'withdrawal_limits': {
-		1: {
-			withdrawal_limits_1: {
-				type: 'number',
-				label: ''
+				label: 'withdrawal fee',
 			}
 		},
-		2: {
-			withdrawal_limits_2: {
+		'min': {
+			min: {
 				type: 'number',
-				label: ''
+				label: 'min',
 			}
 		},
-		3: {
-			withdrawal_limits_3: {
+		'max': {
+			max: {
 				type: 'number',
-				label: ''
+				label: 'max',
 			}
 		},
-		4: {
-			withdrawal_limits_4: {
+		'increment_unit': {
+			increment_unit: {
 				type: 'number',
-				label: ''
+				label: 'increment unit',
 			}
 		},
-		5: {
-			withdrawal_limits_5: {
-				type: 'number',
-				label: ''
-			}
-		},
-		6: {
-			withdrawal_limits_6: {
-				type: 'number',
-				label: ''
-			}
-		}
-	}
+		'deposit_limits': getDepositWithdrawFields(userLevels, 'deposit_limits',onchange, customValue),
+		'withdrawal_limits': getDepositWithdrawFields(userLevels, 'withdrawal_limits',onchange, customValue)
+	})
 };

@@ -36,6 +36,14 @@ const DepositsPage = ({
 	return (
 		<div className="app_container-content">
 			<Tabs>
+				<TabPane tab="Transactions" key="transactions">
+					<Deposits
+						coins={coins}
+						queryParams={queryParams}
+						showFilters={showFilters}
+						noQueryParams={noQueryParams}
+					/>
+				</TabPane>
 				<TabPane tab="Validate" key="validate">
 					<Deposits
 						queryParams={queryParams}
@@ -48,15 +56,6 @@ const DepositsPage = ({
 							dismissed: 'false',
 							rejected: 'false'
 						}}
-					/>
-				</TabPane>
-
-				<TabPane tab="Transactions" key="transactions">
-					<Deposits
-						coins={coins}
-						queryParams={queryParams}
-						showFilters={showFilters}
-						noQueryParams={noQueryParams}
 					/>
 				</TabPane>
 			</Tabs>

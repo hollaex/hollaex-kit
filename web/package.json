@@ -1,5 +1,5 @@
 {
-	"name": "hex-web",
+	"name": "hollaex-web",
 	"version": "1.19.0",
 	"dependencies": {
 		"@material/button": "0.7.0",
@@ -81,9 +81,9 @@
 		"prettier": "./node_modules/prettier/bin-prettier.js --write \"src/**/*.{js,json,css,scss,md}\"",
 		"build-css": "node-sass-chokidar src/ -o src/",
 		"watch-css": "npm run build-css && node-sass-chokidar src/ -o src/ --watch --recursive",
-		"start-js": "react-scripts start",
+		"start-js": "react-scripts --max_old_space_size=4096 start",
 		"start": "npm-run-all -p watch-css start-js",
-		"build": "npm run build-css && react-scripts build",
+		"build": "npm run build-css && react-scripts --max_old_space_size=4096 build",
 		"test": "react-scripts test --env=jsdom",
 		"eject": "react-scripts eject"
 	},
@@ -91,7 +91,7 @@
 	"main": "index.js",
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/bitholla/hex-kit.git"
+		"url": "git+https://github.com/bitholla/hollaex-kit.git"
 	},
 	"homepage": "https://bitholla.com",
 	"prettier": {
@@ -109,7 +109,6 @@
 		]
 	},
 	"author": "bitHolla Inc",
-	"license": "All rights reserved to bitHolla Inc.",
 	"browserslist": [
 		">0.2%",
 		"not dead",
