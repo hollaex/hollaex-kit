@@ -46,7 +46,7 @@ export const Filters = ({
 	hasChanges
 }) => {
 	const coinOptions = [];
-	Object.keys(coins).map((data) => {
+	Object.keys(coins).forEach((data) => {
 		coinOptions.push({ value: data, text: data.toUpperCase() });
 	});
 	const fieldProps = getFilters(coinOptions);

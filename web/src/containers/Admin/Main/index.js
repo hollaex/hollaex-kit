@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
+import { Spin, Row, Col } from 'antd';
+import { connect } from 'react-redux';
+
 import UserList from './userList';
 import TradingVolume from './tradingVolume';
-import { Spin, Row, Col } from 'antd';
-import { getNumOfUsers, getMonthlyTradingVolume, requestFees } from './actions';
+import { getNumOfUsers, getMonthlyTradingVolume } from './actions';
 import { getEmail } from '../../../utils';
 import { checkRole, isAdmin } from '../../../utils/token';
 import './index.css';
@@ -24,8 +26,20 @@ class Main extends Component {
 	};
 
 	componentWillMount() {
-		this.getPairsData();
+		this.getPairsData(this.props.pairs);
 		this.getUserData();
+	}
+
+	componentDidMount() {
+		if (Object.keys(this.props.pairs).length) {
+			this.getPairsData(this.props.pairs);
+		}
+	}
+
+	componentDidUpdate(prevProps) {
+		if (JSON.stringify(prevProps.pairs) !== JSON.stringify(this.props.pairs)) {
+			this.getPairsData(this.props.pairs);
+		}
 	}
 
 	getUserData = () => {
@@ -51,33 +65,19 @@ class Main extends Component {
 		}
 	};
 
-	getPairsData = () => {
+	getPairsData = (pairs) => {
 		if (isAdmin()) {
-			requestFees()
-				.then((data) => {
-					const newPair = [];
-					const sortedData = data.data.sort((a, b) => a.id - b.id);
-					sortedData.forEach(({ name }) => {
-						newPair.push(name);
-					});
-					if (newPair.length) {
-						this.getTradingData(newPair[0]);
-						this.setState({
-							selectedPair: newPair[0],
-							newPair,
-							pairLoading: false
-						});
-					} else {
-						this.setState({ pairError: 'Invalid pair' });
-					}
-				})
-				.catch((error) => {
-					const message = error.data ? error.data.message : error.message;
-					this.setState({
-						pairError: message,
-						pairLoading: false
-					});
+			const newPair = Object.keys(pairs).sort((a, b) => pairs[a].id - pairs[b].id);
+			if (newPair.length) {
+				this.getTradingData(newPair[0]);
+				this.setState({
+					selectedPair: newPair[0],
+					newPair,
+					pairLoading: false
 				});
+			} else {
+				this.setState({ pairError: 'Invalid pair' });
+			}
 		} else {
 			this.setState({
 				userError: 'not authorized'
@@ -167,4 +167,8 @@ class Main extends Component {
 	}
 }
 
-export default Main;
+const mapStateToProps = (state) => ({
+	pairs: state.app.pairs
+});
+
+export default connect(mapStateToProps)(Main);

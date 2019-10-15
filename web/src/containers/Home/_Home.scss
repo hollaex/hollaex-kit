@@ -26,6 +26,14 @@ $no-background--color: white;
 
 	.home_container-content {
 	}
+	
+	.exchange-expired {
+		background-color: $colors-notifications-red !important;
+	}
+	
+	.exchange-warning {
+		background-color: #FFF100;
+	}
 
 	.quick_trade-section {
 		background-color: $quick-trade-background;

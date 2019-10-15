@@ -1,26 +1,9 @@
 import React, { Component } from 'react';
 import { Input, Select } from 'antd';
 
-// import { requestFees } from './actions';
-
-// import { COLUMNS_FEES } from './constants';
-// import { performLimitUpdate } from '../Limits/actions';
-// import {SELECT_KEYS} from "../Deposits/utils";
-
-// const TabPane = Tabs.TabPane;
-
 const InputGroup = Input.Group;
 const Option = Select.Option;
 const Search = Input.Search;
-
-const UPDATE_KEYS = [
-	{ value: '1', label: '1' },
-	{ value: '2', label: '2' },
-	{ value: '3', label: '3' },
-	{ value: '4', label: '4' },
-	{ value: '5', label: '5' },
-	{ value: '6', label: '6' }
-];
 
 const CURRENCY_KEYS = [
 	{ value: 'taker_fees', label: 'Taker fees' },
@@ -34,16 +17,13 @@ class ChangeFees extends Component {
 			john: props.name
 		};
 	}
-	// onSearch = (value) => {
-	//     // let num = Number(value);
-	//     // performLimitUpdate(this.state.verification_level, { [this.state.update_type] : num })
-	//     //     .then(()=>{this.requestLimits();
-	//     //             openNotification();
-	//     //         }
-	//     //     );
-	// };
 
 	render() {
+		const levels = [];
+		for (let i = 1; i <= this.props.config.tiers; i++) {
+			levels.push({ value: `${i}`, label: `${i}` });
+		}
+
 		return (
 			<div>
 				{this.props.name}
@@ -53,7 +33,7 @@ class ChangeFees extends Component {
 						style={{ width: '22%' }}
 						onSelect={(e) => this.props.onLvlSelect(e)}
 					>
-						{UPDATE_KEYS.map(({ value, label }, index) => (
+						{levels.map(({ value, label }, index) => (
 							<Option value={value} key={index}>
 								{label}
 							</Option>
@@ -71,7 +51,7 @@ class ChangeFees extends Component {
 						))}
 					</Select>
 					<Search
-						placeholder="Update amount"
+						placeholder="Update fees(%)"
 						enterButton="Save changes"
 						size="default"
 						style={{ width: '40%' }}

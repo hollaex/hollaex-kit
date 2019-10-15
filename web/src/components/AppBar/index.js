@@ -6,13 +6,13 @@ import classnames from 'classnames';
 import { Link } from 'react-router';
 import ReactSVG from 'react-svg';
 import { isMobile } from 'react-device-detect';
+import moment from 'moment';
 import {
 	IS_PRO_VERSION,
 	PRO_URL,
 	DEFAULT_VERSION_REDIRECT,
 	ICONS,
-	BASE_CURRENCY,
-	DEFAULT_COIN_DATA
+	EXCHANGE_EXPIRY_DAYS
 } from '../../config/constants';
 import { LinkButton } from './LinkButton';
 import PairTabs from './PairTabs';
@@ -46,6 +46,9 @@ class AppBar extends Component {
 		if (this.props.isHome && this.props.token) {
 			this.getUserDetails();
 		}
+		if ((this.props.isHome && this.props.token) || !this.props.isHome) {
+			this.checkExchangeExpiry(this.props.info);
+		}
 		this.props.getTickers();
 	}
 
@@ -68,6 +71,23 @@ class AppBar extends Component {
 			this.getUserDetails();
 		}
 	}
+
+	componentDidUpdate(prevProps) {
+		if (JSON.stringify(this.props.info) !== JSON.stringify(prevProps.info)) {
+			if ((this.props.isHome && this.props.token) || !this.props.isHome) {
+				this.checkExchangeExpiry(this.props.info);
+			}
+		}
+	}
+
+	checkExchangeExpiry = (info) => {
+		if (!Object.keys(info).length
+			|| (info.is_trial
+				&& moment().diff(info.created_at, 'days') > EXCHANGE_EXPIRY_DAYS)
+		) {
+			this.props.router.push('/expired-exchange');
+		}
+	};
 
 	getUserDetails = () => {
 		return this.props
@@ -274,7 +294,6 @@ class AppBar extends Component {
 			activePath,
 			location,
 			pairs,
-			coins
 		} = this.props;
 		const {
 			isAccountMenu,
@@ -285,9 +304,6 @@ class AppBar extends Component {
 		const totalPending = securityPending + verificationPending;
 		let pair = '';
 		if (Object.keys(pairs).length) {
-			// const { pair_base } = pairs[Object.keys(pairs)[0]];
-			// const { symbol } = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
-			// pair = `${pair_base}-${symbol.toLowerCase()}`;
 			pair = Object.keys(pairs)[0];
 		} else {
 			pair = this.props.pair;
@@ -337,7 +353,7 @@ class AppBar extends Component {
 													'quick_trade-active': location.pathname === '/admin'
 												})}
 											>
-												<Icon type="dashboard" style={{ lineHeight: '22px' }} />
+												<Icon type="dashboard" style={{ position: 'relative', top: '2.5px' }} />
 												<div className="d-flex align-items-center">
 													{STRINGS.ADMIN_DASH}
 												</div>
@@ -424,7 +440,8 @@ const mapStateToProps = (state, ownProps) => {
 		theme: state.app.theme,
 		pair: state.app.pair,
 		pairs: state.app.pairs,
-		coins: state.app.coins
+		coins: state.app.coins,
+		info: state.app.info
 	};
 };
 

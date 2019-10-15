@@ -47,7 +47,16 @@ class TVChartContainer extends React.PureComponent {
 		super(props);
 		this.state = {
 			subs: {},
-			lastBar: {}
+			lastBar: {
+				close: 0,
+				high: 0,
+				isBarClosed: false,
+				isLastBar: true,
+				low: 0,
+				open: 0,
+				time: new Date().getTime(),
+				volume: 0,
+			}
 		};
 	}
 
@@ -64,7 +73,7 @@ class TVChartContainer extends React.PureComponent {
 				exchange,
 				symbolType,
 				onResultReadyCallback
-			) => {},
+			) => { },
 			resolveSymbol: (
 				symbolName,
 				onSymbolResolvedCallback,
@@ -99,7 +108,7 @@ class TVChartContainer extends React.PureComponent {
 
 				// onResolveErrorCallback('Not feeling it today')
 			},
-			getBars: function(
+			getBars: function (
 				symbolInfo,
 				resolution,
 				from,
@@ -189,7 +198,7 @@ class TVChartContainer extends React.PureComponent {
 			) => {
 				//optional
 			},
-			getServerTime: (cb) => {}
+			getServerTime: (cb) => { }
 		};
 	}
 
@@ -252,7 +261,7 @@ class TVChartContainer extends React.PureComponent {
 				activeTheme === 'white'
 					? { backgroundColor: '#ffffff' }
 					: { backgroundColor: '#1f212a' },
-			custom_css_url: `${process.env.PUBLIC_URL}/css/chart.css`,
+			custom_css_url: `${process.env.REACT_APP_PUBLIC_URL}/css/chart.css`,
 			overrides: getThemeOverrides(activeTheme)
 		};
 
@@ -295,6 +304,8 @@ class TVChartContainer extends React.PureComponent {
 		} else if (
 			nextProps.tradeHistory &&
 			nextProps.tradeHistory.length &&
+			this.props.tradeHistory &&
+			this.props.tradeHistory.length !== nextProps.tradeHistory.length &&
 			this.state.sub
 		) {
 			this.updateBar(nextProps.tradeHistory[0]);
@@ -331,9 +342,9 @@ class TVChartContainer extends React.PureComponent {
 			// create a new candle, use last close as open
 			_lastBar = {
 				time: rounded,
-				open: lastBar.close,
-				high: lastBar.close,
-				low: lastBar.close,
+				open: lastBar.close ? lastBar.close : 0,
+				high: lastBar.close ? lastBar.close : 0,
+				low: lastBar.close ? lastBar.close : 0,
 				close: data.price,
 				volume: data.size
 			};
@@ -345,8 +356,16 @@ class TVChartContainer extends React.PureComponent {
 				lastBar.high = data.price;
 			}
 
-			lastBar.volume += data.size;
+			lastBar.volume = lastBar.volume ? (lastBar.volume + data.size) : data.size;
 			lastBar.close = data.price;
+			if (!lastBar.low) lastBar.low = 0;
+			if (!lastBar.close) lastBar.close = 0;
+			if (!lastBar.high) lastBar.high = 0;
+			if (!lastBar.open) lastBar.open = 0;
+			if (!lastBar.time) lastBar.time = new Date().getTime();
+			if (!lastBar.volume) lastBar.volume = 0;
+			if (lastBar.isBarClosed === undefined) lastBar.isBarClosed = false;
+			if (lastBar.isLastBar === undefined) lastBar.isLastBar = true;
 			_lastBar = lastBar;
 		}
 		sub.listener(_lastBar);

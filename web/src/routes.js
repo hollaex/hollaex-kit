@@ -41,7 +41,8 @@ import {
 	AdminChat,
 	Wallets,
 	UserFees,
-	PATHS
+	PATHS,
+	ExpiredExchange
 } from './containers';
 
 import store from './store';
@@ -133,6 +134,7 @@ function withAdminProps(Component, key) {
 		if (routeKey === key) {
 			adminProps = { ...rest, ...pathProps };
 		}
+		return 0;
 	});
 	return function (matchProps) {
 		return <Component {...adminProps} {...matchProps} />
@@ -283,6 +285,7 @@ export default (
 			content="terms"
 			onEnter={requireAuth}
 		/>
+		<Route path="expired-exchange" component={ExpiredExchange}/>
 		<Route path="*" component={NotFound} />
 	</Router>
 );

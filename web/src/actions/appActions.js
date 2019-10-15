@@ -43,6 +43,7 @@ export const RISKY_ORDER = 'RISKY_ORDER';
 export const LOGOUT_CONFORMATION = 'LOGOUT_CONFORMATION';
 export const SET_CURRENCIES = 'SET_CURRENCIES';
 export const SET_CONFIG = 'SET_CONFIG';
+export const SET_INFO = 'SET_INFO';
 export const SET_VALID_BASE_CURRENCY = 'SET_VALID_BASE_CURRENCY';
 
 export const USER_TYPES = {
@@ -199,10 +200,18 @@ export const setCurrencies = (coins) => ({
 		coins
 	}
 });
+
 export const setConfig = (config) => ({
 	type: SET_CONFIG,
 	payload: {
 		config
+	}
+});
+
+export const setInfo = (info) => ({
+	type: SET_INFO,
+	payload: {
+		info
 	}
 });
 
@@ -221,3 +230,14 @@ export const openRiskPortfolioOrderWarning = (data = {}) =>
 
 export const logoutconfirm = (data = {}) =>
 	setNotification(LOGOUT_CONFORMATION, data, true);
+
+export const getExchangeInfo = () => {
+	return (dispatch) => {
+		axios.get('/constant').then((res) => {
+			dispatch({
+				type: SET_INFO,
+				payload: { info: res.data.info }
+			});
+		});
+	};
+};

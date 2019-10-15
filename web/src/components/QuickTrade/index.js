@@ -4,54 +4,39 @@ import ReactSVG from 'react-svg';
 import { debounce } from 'lodash';
 import { browserHistory } from 'react-router';
 import { isMobile } from 'react-device-detect';
-import { Button, TabController, CheckTitle } from '../../components';
+import { Button } from '../../components';
 import MobileDropdownWrapper from '../../containers/Trade/components/MobileDropdownWrapper';
 import STRINGS from '../../config/localizedStrings';
 import {
 	ICONS,
-	DEFAULT_PAIR,
 	FLEX_CENTER_CLASSES,
 	BALANCE_ERROR,
 	DEFAULT_COIN_DATA
 } from '../../config/constants';
-import { BASE_CURRENCY } from '../../config/constants';
 
 import ToogleButton from './ToogleButton';
 import ReviewBlock from './ReviewBlock';
 import InputBlock from './InputBlock';
 
-
-// const GROUP_CLASSES = [...FLEX_CENTER_CLASSES, 'flex-column'];
-
-const getInitialTab = (path, symbols, coins) => {
-	let activeTab = -1;
-	const baseCoin = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
-	symbols.map((currency, index) => {
-		const { symbol } = coins[currency] || DEFAULT_COIN_DATA;
-		if (path === `${symbol.toLowerCase()}-${baseCoin.symbol.toLowerCase()}`) {
-			activeTab = index;
-		}
-	});
-
-	return {
-		activeTab,
-	};
-};
 class QuickTrade extends Component {
 	state = {
 		side: STRINGS.SIDES[0].value,
 		value: 0.1,
-		symbol: DEFAULT_PAIR,
+		symbol: '',
 		tabs: [],
 		activeTab: -1,
 		currencies: []
 	};
 
-	componentDidMount() {
-		if (this.props.symbol !== BASE_CURRENCY) {
+	componentWillMount() {
+		if (this.props.symbol) {
 			this.onChangeSymbol(this.props.symbol);
-		} else {
-			this.onChangeSymbol(DEFAULT_PAIR);
+		}
+	}
+
+	componentDidMount() {
+		if (this.props.symbol) {
+			this.onChangeSymbol(this.props.symbol);
 		}
 		if (this.props.onChangeSide) {
 			this.props.onChangeSide(this.state.side);
