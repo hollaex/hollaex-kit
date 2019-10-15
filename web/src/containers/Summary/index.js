@@ -15,7 +15,7 @@ import MobileSummary from './MobileSummary';
 import { IconTitle } from '../../components';
 import { logout } from '../../actions/authAction';
 import { openFeesStructureandLimits, openContactForm, logoutconfirm, setNotification, NOTIFICATIONS } from '../../actions/appActions';
-import { BASE_CURRENCY, TRADING_ACCOUNT_TYPE, DEFAULT_COIN_DATA } from '../../config/constants';
+import { BASE_CURRENCY, DEFAULT_COIN_DATA } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 import {
     formatToCurrency,
@@ -28,12 +28,10 @@ import {
 } from '../../utils/currency';
 import { getLastMonthVolume } from './components/utils';
 
-const default_trader_account = TRADING_ACCOUNT_TYPE.shrimp;
-
 class Summary extends Component {
     state = {
-        selectedAccount: default_trader_account.symbol,
-        currentTradingAccount: default_trader_account,
+        selectedAccount: '',
+        currentTradingAccount: this.props.verification_level,
         chartData: [],
         totalAssets: '',
         lastMonthVolume: 0
@@ -79,8 +77,7 @@ class Summary extends Component {
 
     onFeesAndLimits = tradingAccount => {
         this.props.openFeesStructureandLimits({
-            verification_level: tradingAccount.level,
-            tradingAccount
+            verification_level: tradingAccount
         });
     };
 
@@ -113,34 +110,20 @@ class Summary extends Component {
 
     setCurrentTradeAccount = user => {
         let currentTradingAccount = this.state.currentTradingAccount;
-        switch (user.verification_level) {
-            case 1:
-                currentTradingAccount = TRADING_ACCOUNT_TYPE.shrimp;
-                break;
-            case 2:
-                currentTradingAccount = TRADING_ACCOUNT_TYPE.snapper;
-                break;
-            case 3:
-                currentTradingAccount = TRADING_ACCOUNT_TYPE.kraken;
-                break;
-            case 4:
-                currentTradingAccount = TRADING_ACCOUNT_TYPE.leviathan;
-                break;
-            default:
-                currentTradingAccount = TRADING_ACCOUNT_TYPE.leviathan;
-                break;
-        }
-        this.setState({ currentTradingAccount, selectedAccount: currentTradingAccount.symbol });
-    };
+        if (user.verification_level) {
+            this.setState({ currentTradingAccount, selectedAccount: user.verification_level });
+        };
+    }
 
     onInviteFriends = () => {
         this.props.setNotification(NOTIFICATIONS.INVITE_FRIENDS, { affiliation_code: this.props.user.affiliation_code });
     };
 
     render() {
-        const { user, balance, activeTheme, pairs, coins, isValidBase } = this.props;
-        const { selectedAccount, currentTradingAccount, chartData, totalAssets, lastMonthVolume } = this.state;
+        const { user, balance, activeTheme, pairs, coins, isValidBase, verification_level, config_level } = this.props;
+        const { selectedAccount, chartData, totalAssets, lastMonthVolume } = this.state;
         const { fullname } = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
+        const Title = STRINGS.formatString(STRINGS.SUMMARY.LEVEL_OF_ACCOUNT, verification_level);
         return (
             <div className="summary-container">
                 {!isMobile && <IconTitle
@@ -152,9 +135,8 @@ class Summary extends Component {
                         user={user}
                         pairs={pairs}
                         coins={coins}
+                        config={config_level}
                         activeTheme={activeTheme}
-                        default_trader_account={default_trader_account}
-                        currentTradingAccount={currentTradingAccount}
                         selectedAccount={selectedAccount}
                         logout={this.logoutConfirm}
                         balance={balance}
@@ -166,19 +148,20 @@ class Summary extends Component {
                         onFeesAndLimits={this.onFeesAndLimits}
                         onUpgradeAccount={this.onUpgradeAccount}
                         onAccountTypeChange={this.onAccountTypeChange}
+                        verification_level={verification_level}
                     />
                     : (<div>
                         <div className="d-flex align-items-center">
                             <div className="summary-section_1 trader-account-wrapper d-flex">
-                                <SummaryBlock title={currentTradingAccount.fullName} >
+                                <SummaryBlock title={Title} >
                                     <TraderAccounts
                                         pairs={pairs}
                                         coins={coins}
                                         activeTheme={activeTheme}
-                                        account={currentTradingAccount}
                                         onFeesAndLimits={this.onFeesAndLimits}
                                         onUpgradeAccount={this.onUpgradeAccount}
-                                        onInviteFriends={this.onInviteFriends} />
+                                        onInviteFriends={this.onInviteFriends}
+                                        verification_level={verification_level} />
                                 </SummaryBlock>
                             </div>
                             <div className="summary-section_1 requirement-wrapper d-flex">
@@ -213,8 +196,8 @@ class Summary extends Component {
                                         chartData={chartData}
                                         totalAssets={totalAssets}
                                         balance={balance}
-                                        coins={coins} 
-                                        activeTheme={activeTheme}/>
+                                        coins={coins}
+                                        activeTheme={activeTheme} />
                                 </SummaryBlock>
                             </div>
                             <div className="trading-volume-wrapper">
@@ -235,19 +218,20 @@ class Summary extends Component {
                         <div className="d-flex align-items-center">
                             <SummaryBlock
                                 title={STRINGS.SUMMARY.ACCOUNT_DETAILS}
-                                secondaryTitle={currentTradingAccount.name}
+                                secondaryTitle={Title}
                                 wrapperClassname="w-100" >
                                 <AccountDetails
                                     user={user}
                                     coins={coins}
                                     pairs={pairs}
                                     activeTheme={activeTheme}
-                                    currentTradingAccount={currentTradingAccount.symbol}
                                     selectedAccount={selectedAccount}
                                     lastMonthVolume={lastMonthVolume}
                                     onAccountTypeChange={this.onAccountTypeChange}
                                     onFeesAndLimits={this.onFeesAndLimits}
-                                    onUpgradeAccount={this.onUpgradeAccount} />
+                                    onUpgradeAccount={this.onUpgradeAccount}
+                                    config={config_level}
+                                    verification_level={verification_level} />
                             </SummaryBlock>
                         </div>
                     </div>)
@@ -270,7 +254,9 @@ const mapStateToProps = (state) => ({
     orders: state.order.activeOrders,
     activeLanguage: state.app.language,
     tradeVolumes: state.user.tradeVolumes,
-    isValidBase: state.app.isValidBase
+    isValidBase: state.app.isValidBase,
+    config: state.app.config,
+    config_level: state.app.config_level
 });
 
 const mapDispatchToProps = (dispatch) => ({

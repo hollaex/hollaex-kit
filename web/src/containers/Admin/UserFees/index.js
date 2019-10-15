@@ -1,17 +1,19 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Table, Spin, Tabs, notification } from 'antd';
+import { Table, Spin, notification } from 'antd';
 import { CSVLink } from 'react-csv';
 
-import ChangeFees from './changeFees';
+// import ChangeFees from './changeFees';
+import UserFeesForm from './UserFeesForm';
 import { feeUpdate } from './actions';
-import { BlueLink } from '../../../components';
+import { getPairsColumns, getPairsFormFields } from './constants';
+import { ModalForm, BlueLink } from '../../../components';
 import { API_DOCS_URL } from '../../../config/constants';
 import STRINGS from '../../../config/localizedStrings';
 
 // import {SELECT_KEYS} from "../Deposits/utils";
 
-const TabPane = Tabs.TabPane;
+const Form = ModalForm('EditFees', '');
 
 const openNotification = () => {
 	notification.open({
@@ -32,7 +34,12 @@ class UserFees extends Component {
 		newTab: [],
 		selectedKey: '',
 		tabData: [],
-		activeKey: 0
+		activeKey: 0,
+		fees: [],
+		isEdit: false,
+		editData: {},
+		initialValues: {},
+		isCustomContent: false
 	};
 
 	componentDidMount() {
@@ -47,79 +54,17 @@ class UserFees extends Component {
 		}
 	}
 
-	constructData = (pairs = {}, config = {}) => {
+	constructData = (pairs = {}) => {
 		const sortedData = Object.keys(pairs).sort((a, b) => pairs[a].id - pairs[b].id);
-		const selectedKey = this.state.selectedKey ? this.state.selectedKey : sortedData[0];
 		if (sortedData.length) {
-			this.renderData(pairs[selectedKey], config);
+			let fees = [];
+			sortedData.forEach((key) => {
+				fees = [...fees, pairs[key]];
+			});
 			this.setState({
-				tabData: sortedData,
-				selectedKey
+				fees
 			});
 		}
-	};
-
-	renderData = (data, config) => {
-		const headers = [];
-		const keys = [];
-		const tableKeys = [];
-		const temporalData = {};
-
-		keys.push('verification_level');
-
-		const { name, maker_fees, taker_fees } = data;
-		temporalData[name] = {
-			name,
-			taker_fees,
-			maker_fees
-		};
-		headers.push(name.toUpperCase());
-		keys.push(`${name}_maker_fee`);
-		headers.push(name.toUpperCase());
-		keys.push(`${name}_taker_fee`);
-		const verifyLevels = [];
-		for (var count = 1; count <= parseInt((config.tiers || 0), 10); count++) {
-			verifyLevels.push(count);
-		}
-		verifyLevels.forEach(level => {
-			if (!temporalData[level]) {
-				temporalData[level] = {
-					verification_level: level
-				};
-			}
-			temporalData[level][`${name}_maker_fee`] = maker_fees[level];
-			temporalData[level][`${name}_taker_fee`] = taker_fees[level];
-		});
-
-		keys.forEach((key) => {
-			tableKeys.push({
-				label: key,
-				dataIndex: key,
-				key: key
-			});
-		});
-		this.setState({
-			temporalData: Object.values(temporalData),
-			headers: Object.entries(keys).map(([key, name]) => {
-				return name === 'verification_level'
-					? {
-						title: 'verification levels',
-						dataIndex: name,
-						key: name + key
-					}
-					: key === '1'
-						? { title: 'maker fees', dataIndex: name, key: name + key, render: d => (d === undefined ? null : `${d}%`) }
-						: { title: 'taker fees', dataIndex: name, key: name + key, render: d => (d === undefined ? null : `${d}%`) };
-			}),
-			tableData: Object.values(temporalData),
-			tableKeys
-		});
-	};
-
-	changeIndex = (activeKey) => {
-		this.setState({ selectedKey: activeKey }, () => {
-			this.renderData(this.props.pairs[this.state.selectedKey], this.props.config);
-		});
 	};
 
 	onLvlSelect = (value) => {
@@ -146,9 +91,78 @@ class UserFees extends Component {
 			.catch((err) => { });
 	};
 
-	render() {
-		const { loading, error, tabData, selectedKey } = this.state;
+	handleClick = (value, data, keyIndex) => {
 		const { config = {} } = this.props;
+		const formFields = getPairsFormFields(config);
+		const Fields = formFields[keyIndex];
+		let initialValues = {};
+		if (typeof data[keyIndex] === 'object') {
+			const temp = data[keyIndex];
+			Object.keys(temp).forEach(key => {
+				if (key <= parseInt((config.tiers || 0), 10))
+					initialValues[`${keyIndex}_${key}`] = temp[key];
+			});
+		} else {
+			initialValues[keyIndex] = `${data[keyIndex]}`;
+		}
+		const isCustomContent = keyIndex === 'maker_fees' || keyIndex === 'taker_fees'
+			? true
+			: false;
+
+		this.setState({
+			isEdit: true,
+			Fields,
+			editData: { keyIndex, data },
+			initialValues,
+			isCustomContent
+		});
+	};
+	
+	onCancel = () => {
+		this.setState({ isEdit: false });
+	};
+
+	onSubmit = (rowData) => (values) => {
+		const { keyIndex, data } = rowData;
+		let formProps = {};
+		if (keyIndex === 'active') {
+			formProps[keyIndex] = values[keyIndex] === 'true' ? true : false;
+		} else if (keyIndex === 'taker_fees' || keyIndex === 'maker_fees') {
+			const loopData = data[keyIndex];
+			const tempData = {};
+			if (Object.keys(loopData).length) {
+				Object.keys(loopData).forEach(key => {
+					if (key <= parseInt((this.props.config.tiers || 0), 10)) {
+						let levelValue = parseFloat(values[`${keyIndex}_${key}`]);
+						tempData[key] = levelValue;
+					}
+				});
+				formProps[keyIndex] = tempData;
+			}
+		} else if (keyIndex === 'increment_price'
+			|| keyIndex === 'increment_size'
+			|| keyIndex === 'max_price'
+			|| keyIndex === 'max_size'
+			|| keyIndex === 'min_price'
+			|| keyIndex === 'min_size') {
+			formProps[keyIndex] = parseFloat(values[keyIndex]);
+		} else {
+			formProps[keyIndex] = values[keyIndex];
+		}
+		if (data.id) {
+			feeUpdate(data.name, formProps)
+				.then((res) => {
+					this.onCancel();
+					// this.requestFees();
+				})
+				.then(openNotification())
+				.catch((err) => { });
+		}
+	};
+
+	render() {
+		const { loading, error, fees, isEdit, editData, Fields, initialValues, isCustomContent } = this.state;
+		const pairColumns = getPairsColumns(this.handleClick);
 		return (
 			<div className="app_container-content">
 				{loading ? (
@@ -157,52 +171,50 @@ class UserFees extends Component {
 						<div>
 							{error && <p>-{error}-</p>}
 							<h1>Trading Pairs</h1>
-							<Tabs
-								onChange={(activeKey) => {
-									this.changeIndex(activeKey);
-								}}
-								activeKey={selectedKey}
+							<CSVLink
+								filename={'daily-max-limits.csv'}
+								data={fees}
+								headers={pairColumns}
 							>
-								{tabData.map((tab, index) => {
-									return (
-										<TabPane tab={tab.toUpperCase()} key={tab}>
-											<CSVLink
-												filename={'daily-max-limits.csv'}
-												data={this.state.tableData}
-												headers={this.state.tableKeys}
-											>
-												Download table
-										</CSVLink>
-											<Table
-												columns={this.state.headers}
-												dataSource={this.state.temporalData}
-												rowKey={(data) => {
-													return data.id;
-												}}
-											/>
-											<div className="mb-3">
-												{STRINGS.formatString(
-													STRINGS.NOTE_FOR_EDIT_COIN,
-													STRINGS.PAIRS,
-													<BlueLink
-														href={API_DOCS_URL}
-														text={STRINGS.REFER_DOCS_LINK}
-													/>
-												)}
-											</div>
-											<h2>CHANGE USER FEES</h2>
-											<ChangeFees
-												config={config}
-												onLvlSelect={this.onLvlSelect}
-												onFeeSelect={this.onFeeSelect}
-												onSearch={this.onSearch}
-											/>
-										</TabPane>
-									);
-								})}
-							</Tabs>
+								Download table
+							</CSVLink>
+							<Table
+								columns={pairColumns}
+								dataSource={fees}
+								rowKey={(data) => {
+									return data.id;
+								}}
+								scroll={{ x: true }}
+							/>
+							<div className="mb-3">
+								{STRINGS.formatString(
+									STRINGS.NOTE_FOR_EDIT_COIN,
+									STRINGS.PAIRS,
+									<BlueLink
+										href={API_DOCS_URL}
+										text={STRINGS.REFER_DOCS_LINK}
+									/>
+								)}
+							</div>
+							{/* <h2>CHANGE USER FEES</h2>
+							<ChangeFees
+								config={config}
+								onLvlSelect={this.onLvlSelect}
+								onFeeSelect={this.onFeeSelect}
+								onSearch={this.onSearch}
+							/> */}
 						</div>
 					)}
+				<Form
+					visible={isEdit}
+					title={editData.keyIndex}
+					okText='Save'
+					fields={Fields}
+					CustomRenderContent={isCustomContent ? UserFeesForm : null}
+					initialValues={initialValues}
+					onSubmit={this.onSubmit(editData)}
+					onCancel={this.onCancel}
+				/>
 			</div>
 		);
 	}

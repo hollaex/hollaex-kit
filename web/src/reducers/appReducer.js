@@ -127,6 +127,7 @@ const INITIAL_STATE = {
 	},
 	isValidBase: false,
 	config: {},
+	config_level: [],
 	info: {}
 };
 
@@ -319,7 +320,8 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 		case SET_CONFIG:
 			return {
 				...state,
-				config: payload.config
+				config: payload.config,
+				config_level: payload.config_level
 			};
 		case SET_INFO:
 			return {

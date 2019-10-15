@@ -1071,9 +1071,9 @@ export default {
 			'Periodic downgrading of accounts will occur if activity and assets are not maintained.',
 		REQUIREMENTS: 'Requirements',
 		REQUEST_ACCOUNT_UPGRADE: 'Request an Account Upgrade',
-		FEES_AND_LIMIT: 'Fee and Limit Structure for',
+		FEES_AND_LIMIT: 'Fee and Limit Structure for {0}',
 		FEES_AND_LIMIT_TXT_1:
-			'Becoming a crypto trader marks new beginning. Armed with wits, will and speed, dive into the bottomless blue.Only by delving deep within the crypto oceans will you unlock your fortunes.',
+			'Becoming a crypto trader marks new beginning. Armed with wits,will and speed only by taking risks and trading will you be allowed to update your account.',
 		FEES_AND_LIMIT_TXT_2:
 			'Each account has its own fees and deposit and withdrawal limits.Please visit the {0} to get more information.',
 		DEPOSIT_WITHDRAWAL_ALLOWENCE: 'Deposit & withdrawal allowance',
@@ -1085,10 +1085,18 @@ export default {
 		WEBSITE: 'website',
 		VIP_TRADER_ACCOUNT_ELIGIBLITY: 'VIP Trader Account Upgrade Eligibility',
 		PRO_TRADER_ACCOUNT_ELIGIBLITY: 'Pro Trader Account Upgrade Eligibility',
+		TRADER_ACCOUNT_ELIGIBILITY: 'Level {0} Account Legibility Eligibility',
 		NOMINAL_TRADING: 'Nominal Trading',
 		NOMINAL_TRADING_WITH_MONTH: 'Nominal Trading Last {0}',
 		ACCOUNT_AGE_OF_MONTHS: 'Account Age of {0} Months',
-		TRADING_VOLUME_EQUIVALENT: '{0} {1} Trading Volume Equivalent'
+		TRADING_VOLUME_EQUIVALENT: '{0} {1} Trading Volume Equivalent',
+		LEVEL_OF_ACCOUNT: 'Level {0} Account',
+		LEVEL_TXT_DEFAULT:'Add your level description here',
+		LEVEL_1_TXT: 'Your trading journey begins here! Profits await.Upgrades your account to unlock withdrawals and favorable fees by verifying your account.',
+		LEVEL_2_TXT: 'Congrats on getting your account verified. Keep trading and apply for an account upgrade to get lower trading fees and larger withdrawal and deposit limits.',
+		LEVEL_3_TXT: 'You’ve come far comrade and have traded well.Keep trading and reach the highest rank and enjoy even lower fees and higher limits.',
+		LEVEL_4_TXT: 'You are a masters trader and have reached the peek. To maintain your rank keep your trading volume high and healthy.',
+		CURRENT_TXT:'Current'
 	},
 	REFERRAL_LINK: {
 		TITLE: 'Invite your friend', // new
@@ -1100,6 +1108,7 @@ export default {
 	},
 	USER_LEVEL: 'User level', // new
 	LIMIT_AMOUNT: 'Limit amount', // new
+	FEE_AMOUNT: 'Fee amount', // new
 	COINS: 'Coins', // new
 	PAIRS: 'Pairs', // new
 	NOTE_FOR_EDIT_COIN: 'Note: For adding and removing {0} please refer to the{1}.', // new

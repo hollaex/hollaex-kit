@@ -152,7 +152,7 @@ export const getCurrencyColumns = (handleClick) => [
 	}
 ];
 
-const getDepositWithdrawFields = (userTier, key, onchange, customValue) => {
+const getDepositWithdrawFields = (userTier, key, onchange) => {
 	const userFields = {};
 	userTier.map((level) => {
 		userFields[level] = {
@@ -171,7 +171,7 @@ const getDepositWithdrawFields = (userTier, key, onchange, customValue) => {
 	return userFields;
 };
 
-export const getCoinsFormFields = (config = {}, onchange, customValue) => {
+export const getCoinsFormFields = (config = {}, onchange) => {
 	const userLevels = [];
 	const tiers = config.tiers ? parseInt(config.tiers) : 4;
 	for (var i = 1; i <= tiers; i++) {
@@ -244,7 +244,7 @@ export const getCoinsFormFields = (config = {}, onchange, customValue) => {
 				label: 'increment unit',
 			}
 		},
-		'deposit_limits': getDepositWithdrawFields(userLevels, 'deposit_limits',onchange, customValue),
-		'withdrawal_limits': getDepositWithdrawFields(userLevels, 'withdrawal_limits',onchange, customValue)
+		'deposit_limits': getDepositWithdrawFields(userLevels, 'deposit_limits', onchange),
+		'withdrawal_limits': getDepositWithdrawFields(userLevels, 'withdrawal_limits', onchange)
 	})
 };

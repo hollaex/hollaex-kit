@@ -2381,6 +2381,12 @@ table th {
   color: #a3a1ca; }
   .dark-theme .summary-container .trade-account-link {
     color: #ed507b; }
+  .dark-theme .summary-container .trader-wrapper-icon svg path {
+    fill: white; }
+  .dark-theme .summary-container .trader-account-icon svg path {
+    fill: #2e2f37; }
+  .dark-theme .summary-container .trader-account-icon svg polygon {
+    fill: #2e2f37; }
   .dark-theme .summary-container .summary-block_wrapper {
     border-top: 0.2rem solid #b7b5cd; }
     .dark-theme .summary-container .summary-block_wrapper .summary-block-title {
@@ -2402,7 +2408,12 @@ table th {
     .dark-theme .summary-container .account-details-wrapper .account-type-menu-active .account-current {
       color: #b6b5cd;
       text-transform: lowercase; }
-    .dark-theme .summary-container .account-details-wrapper .account-type-menu-active .requirements-content-text,
+    .dark-theme .summary-container .account-details-wrapper .account-type-menu-active .requirements-content-text svg path,
+    .dark-theme .summary-container .account-details-wrapper .account-type-menu-active .trader-account-icon svg path {
+      fill: #a3a1ca; }
+    .dark-theme .summary-container .account-details-wrapper .account-type-menu-active .requirements-content-text svg polygon,
+    .dark-theme .summary-container .account-details-wrapper .account-type-menu-active .trader-account-icon svg polygon {
+      fill: #a3a1ca; }
     .dark-theme .summary-container .account-details-wrapper .account-type-menu-active .account-details-content {
       color: #a3a1ca; }
   .dark-theme .summary-container .account-details-wrapper .accounnt-type-menu-last-active {
@@ -2417,6 +2428,9 @@ table th {
   .dark-theme .summary-container .assets-wrapper .total-assets {
     background: repeating-linear-gradient(-45deg, #1f212a, #1f212a 2px, #2e2f37 2px, #2e2f37 4px);
     color: #a3a1ca; }
+  .dark-theme .summary-container .assets-wrapper .coin-price-container .coin-price svg .missing-coin {
+    fill: white;
+    stroke: white; }
 
 .dark-theme .fee-limits-wrapper .fee-limits-link {
   color: #ed507b; }
@@ -2492,9 +2506,20 @@ table th {
     .summary-container .trader-account-wrapper .trade-account-secondary-txt {
       margin: auto 0;
       width: 55%; }
-  .summary-container .trader-account-icon {
-    width: 7rem;
+  .summary-container .trader-wrapper-icon {
+    width: 5rem;
     margin-right: 1rem; }
+    .summary-container .trader-wrapper-icon svg path {
+      fill: #000000; }
+    .summary-container .trader-wrapper-icon svg polygon {
+      fill: #000000; }
+  .summary-container .trader-account-icon {
+    width: 5rem;
+    margin-right: 1rem; }
+    .summary-container .trader-account-icon svg path {
+      fill: #BBBDBF; }
+    .summary-container .trader-account-icon svg polygon {
+      fill: #BBBDBF; }
   .summary-container .trade-account-link {
     color: #00aeef;
     font-weight: bold; }
@@ -2599,6 +2624,10 @@ table th {
     .summary-container .account-details-wrapper .account-type-menu-active .account-current {
       color: #000000;
       text-transform: lowercase; }
+    .summary-container .account-details-wrapper .account-type-menu-active .trader-account-icon svg path {
+      fill: #000000; }
+    .summary-container .account-details-wrapper .account-type-menu-active .trader-account-icon svg polygon {
+      fill: #000000; }
   .summary-container .account-details-wrapper .accounnt-type-menu-last-active {
     border-bottom: none !important; }
   .summary-container .account-details-wrapper .requirement-header {
