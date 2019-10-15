@@ -1,11 +1,16 @@
-import React from 'react';
+import React, { Component } from 'react';
 import classnames from 'classnames';
 import { isBrowser, isMobile } from 'react-device-detect';
 import { connect } from 'react-redux';
-import { FLEX_CENTER_CLASSES, CAPTCHA_SITEKEY } from '../../config/constants';
+import { loadReCaptcha } from 'react-recaptcha-v3';
+import { bindActionCreators } from 'redux';
+import moment from 'moment';
+
+import { FLEX_CENTER_CLASSES, CAPTCHA_SITEKEY, EXCHANGE_EXPIRY_DAYS } from '../../config/constants';
+import STRINGS from '../../config/localizedStrings';
 import { getClasesForLanguage } from '../../utils/string';
 import { getThemeClass } from '../../utils/theme';
-import { loadReCaptcha } from 'react-recaptcha-v3'
+import { getExchangeInfo } from '../../actions/appActions';
 
 const updateThemeToBody = (theme = 'white') => {
 	// const themeName = theme === 'dark' ? 'dark-auth-body' : 'light-auth-body';
@@ -32,40 +37,92 @@ const checkPath = (path) => {
 	document.body.appendChild(sheet);
 }
 
-const AuthContainer = ({ activeLanguage, activeTheme, children, ...rest }) => {
-	const languageClasses = getClasesForLanguage(activeLanguage);
-	const childWithLanguageClasses = React.Children.map(children, (child) =>
-		React.cloneElement(child, { activeLanguage, languageClasses })
-	);
-	loadReCaptcha(CAPTCHA_SITEKEY);
-	updateThemeToBody(activeTheme);
-	if (rest.location && rest.location.pathname) {
-		checkPath(rest.location.pathname);
-	};
-	return (
-		<div
-			className={classnames(
-				'auth-wrapper',
-				'w-100',
-				'h-100',
-				getThemeClass(activeTheme),
-				{
-					'layout-mobile': isMobile,
-					'layout-desktop': isBrowser
-				},
-				...FLEX_CENTER_CLASSES
-			)}
-		>
-			<div className={classnames('auth-container', 'f-1', languageClasses)}>
-				{childWithLanguageClasses}
+class AuthContainer extends Component {
+	constructor(props) {
+		super(props)
+		this.state = {
+			isExpired: false,
+			isTrial: false
+		}
+	}
+
+	componentDidMount() {
+		this.props.getExchangeInfo();
+	}
+
+	render() {
+		const { activeLanguage, activeTheme, children, info, ...rest } = this.props;
+		const languageClasses = getClasesForLanguage(activeLanguage);
+		const childWithLanguageClasses = React.Children.map(children, (child) =>
+			React.cloneElement(child, { activeLanguage, languageClasses })
+		);
+		loadReCaptcha(CAPTCHA_SITEKEY);
+		updateThemeToBody(activeTheme);
+		let isWarning = false;
+		if (rest.location && rest.location.pathname) {
+			checkPath(rest.location.pathname);
+			isWarning = ((rest.location.pathname === '/login' || rest.location.pathname === '/signup')
+				&& (!Object.keys(info).length || info.is_trial))
+					? true : false;
+		};
+		const isExpired = (!Object.keys(info).length
+			|| moment().diff(info.created_at, 'days') > EXCHANGE_EXPIRY_DAYS)
+			? true
+			: false;
+		const expiryDays = EXCHANGE_EXPIRY_DAYS - moment().diff(info.created_at, 'days');
+		return (
+			<div className="w-100 h-100">
+				{isWarning
+					? <div className={classnames(
+						'exchange-warning',
+						'p-1',
+						...FLEX_CENTER_CLASSES,
+						{
+							'exchange-trial': isWarning,
+							'exchange-expired': isExpired,
+						}
+					)}>
+						{isExpired
+							? STRINGS.EXPIRY_EXCHANGE_MSG
+							: STRINGS.formatString(
+								STRINGS.TRIAL_EXCHANGE_MSG,
+								STRINGS.APP_TITLE,
+								expiryDays
+							)
+						}
+					</div>
+					: null
+				}
+				<div
+					className={classnames(
+						'auth-wrapper',
+						'w-100',
+						'h-100',
+						getThemeClass(activeTheme),
+						{
+							'layout-mobile': isMobile,
+							'layout-desktop': isBrowser
+						},
+						...FLEX_CENTER_CLASSES
+					)}
+				>
+					<div className={classnames('auth-container', 'f-1', languageClasses)}>
+						{childWithLanguageClasses}
+					</div>
+				</div>
 			</div>
-		</div>
-	);
-};
+		);
+	}
+}
 
 const mapStateToProps = (store) => ({
 	activeLanguage: store.app.language,
-	activeTheme: store.app.theme
+	activeTheme: store.app.theme,
+	info: store.app.info
 });
 
-export default connect(mapStateToProps)(AuthContainer);
+const mapDispatchToProps = dispatch => ({
+	getExchangeInfo: bindActionCreators(getExchangeInfo, dispatch)
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(AuthContainer);

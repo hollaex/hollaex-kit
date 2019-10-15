@@ -1104,5 +1104,10 @@ export default {
 	PAIRS: 'Pairs', // new
 	NOTE_FOR_EDIT_COIN: 'Note: For adding and removing {0} please refer to the{1}.', // new
 	REFER_DOCS_LINK: 'docs', // new
-	RESTART_TO_APPLY: 'You need to restart your exchange for apply these changes.'
+	RESTART_TO_APPLY: 'You need to restart your exchange for apply these changes.', // new
+	TRIAL_EXCHANGE_MSG: 'You are using a trial version of {0} and it will expire in {1} days.', // new
+	EXPIRY_EXCHANGE_MSG: 'Your exchange has expired. Go to dash.bitholla.com to activate it again.', // new
+	EXPIRED_INFO_1: 'Your HollaEx trial has ended.', // new
+	EXPIRED_INFO_2: 'Collateralize your exchange to activate it again.', // new
+	EXPIRED_BUTTON_TXT: 'ACTIVATE EXCHANGE' // new
 };
