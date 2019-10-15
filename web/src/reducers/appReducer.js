@@ -16,7 +16,8 @@ import {
 	SET_TICKER_FROM_TRADE,
 	SET_CURRENCIES,
 	SET_VALID_BASE_CURRENCY,
-	SET_CONFIG
+	SET_CONFIG,
+	SET_INFO
 } from '../actions/appActions';
 import { THEME_DEFAULT } from '../config/constants';
 import { getLanguage } from '../utils/string';
@@ -125,7 +126,8 @@ const INITIAL_STATE = {
 		}
 	},
 	isValidBase: false,
-	config: {}
+	config: {},
+	info: {}
 };
 
 const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
@@ -318,6 +320,11 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 			return {
 				...state,
 				config: payload.config
+			};
+		case SET_INFO:
+			return {
+				...state,
+				info: payload.info
 			};
 		default:
 			return state;

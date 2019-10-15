@@ -4,10 +4,13 @@ import { connect } from 'react-redux';
 import EventListener from 'react-event-listener';
 import { bindActionCreators } from 'redux';
 import { isBrowser, isMobile } from 'react-device-detect';
+import moment from 'moment';
 
 import { AppBar, Footer } from '../../components';
+import STRINGS from '../../config/localizedStrings';
+import { FLEX_CENTER_CLASSES, EXCHANGE_EXPIRY_DAYS } from '../../config/constants';
 // import { requestQuickTrade } from '../../actions/orderbookAction';
-import { setLanguage } from '../../actions/appActions';
+import { setLanguage, getExchangeInfo } from '../../actions/appActions';
 import { logout } from '../../actions/authAction';
 import { getClasesForLanguage } from '../../utils/string';
 
@@ -25,6 +28,10 @@ class Home extends Component {
 			minHeight: MIN_HEIGHT
 		}
 	};
+
+	componentDidMount() {
+		this.props.getExchangeInfo();
+	}
 
 	setContainerRef = (el) => {
 		if (el) {
@@ -85,9 +92,14 @@ class Home extends Component {
 			// quickTradeData,
 			// requestQuickTrade,
 			activeLanguage,
-			router
+			router,
+			info
 		} = this.props;
 		const { style } = this.state;
+		const isExpired = (!Object.keys(info).length
+			|| moment().diff(info.created_at, 'days') > EXCHANGE_EXPIRY_DAYS)
+			? true : false;
+		const expiryDays = EXCHANGE_EXPIRY_DAYS - moment().diff(info.created_at, 'days');
 		return (
 			<div
 				className={classnames(
@@ -110,6 +122,27 @@ class Home extends Component {
 					router={router}
 					logout={this.onLogout}
 				/>
+				{info.is_trial || !Object.keys(info).length
+					? <div className={classnames(
+						'w-100',
+						'p-1',
+						...FLEX_CENTER_CLASSES,
+						{
+							'exchange-trial': info.is_trial,
+							'exchange-expired': isExpired,
+						}
+					)}>
+						{isExpired
+							? STRINGS.EXPIRY_EXCHANGE_MSG
+							: STRINGS.formatString(
+								STRINGS.TRIAL_EXCHANGE_MSG,
+								STRINGS.APP_TITLE,
+								expiryDays
+							)
+						}
+					</div>
+					: null
+				}
 				<div
 					className={classnames(
 						'app_container-content',
@@ -157,13 +190,15 @@ const mapStateToProps = (store) => ({
 	estimatedValue: 100,
 	// symbol: store.orderbook.symbol,
 	// quickTradeData: store.orderbook.quickTrade,
-	activeLanguage: store.app.language
+	activeLanguage: store.app.language,
+	info: store.app.info
 });
 
 const mapDispatchToProps = (dispatch) => ({
 	// requestQuickTrade: bindActionCreators(requestQuickTrade, dispatch),
 	changeLanguage: bindActionCreators(setLanguage, dispatch),
-	logout: bindActionCreators(logout, dispatch)
+	logout: bindActionCreators(logout, dispatch),
+	getExchangeInfo: bindActionCreators(getExchangeInfo, dispatch)
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);

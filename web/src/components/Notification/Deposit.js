@@ -48,7 +48,7 @@ const DepositNotification = ({ data, onClose, goToPage, openContactForm }) => {
 				<CurrencyBallWithPrice
 					symbol={data.currency}
 					amount={data.amount}
-					price={data.price || 1}
+					// price={data.price || 1}
 				/>
 			</div>
 			<div className="notification-buttons-wrapper d-flex">
