@@ -16,35 +16,35 @@ $large-modifier: 2.25;
 	}
 	
 	&.btc {
-		background-color: $colors-currencies-btc;
+		background-color: $coin-btc;
 		border : none !important;
 		color: $app-background-color !important;
 	}
 
 	&.eur {
-		background-color: $colors-currencies-eur;
+		background-color: $coin-eur;
 		border : none !important;
 		color: $app-background-color !important;
 	}
 
 	&.bch {
-		background-color: $colors-currencies-bch;
+		background-color: $coin-bch;
 		border : none !important;
 		color: $app-background-color !important;
 	}
 
 	// &.xrp {
-	// 	background-color: $colors-currencies-xrp;
+	// 	background-color: $coin-xrp;
 	// }
 
 	&.eth {
-		background-color: $colors-currencies-eth;
+		background-color: $coin-eth;
 		border : none !important;
 		color: $app-background-color !important;
 	}
 
 	&.ltc {
-		background-color: $colors-currencies-ltc;
+		background-color: $coin-ltc;
 		border : none !important;
 		color: $app-background-color !important;
 	}

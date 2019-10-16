@@ -8,21 +8,17 @@
         }
         .trader-wrapper-icon{
             svg{
-                path{
-                    fill:$colors-white
-                }
+               .level_icon {
+                   fill: #a3a1ca;
+               }
             }
         }
         
     .trader-account-icon {
         svg{
-            path{
+            .level_icon {
                 fill: #2e2f37;
             }
-            polygon{
-                fill: #2e2f37;
-            }
-           
         }
     }
         .summary-block_wrapper {
@@ -66,10 +62,7 @@
                 .requirements-content-text,
                 .trader-account-icon {
                     svg{
-                        path{
-                            fill:#a3a1ca
-                        }
-                        polygon{
+                       .level_icon {
                             fill:#a3a1ca
                         }
                     }
@@ -222,11 +215,8 @@
         width: 5rem;
         margin-right: 1rem;
         svg{
-            path{
+            .level_icon{
                 fill:$colors-black;
-            }
-            polygon{
-                fill:$colors-black
             }
         }
     }
@@ -348,10 +338,10 @@
     
                 svg {
                     .btc0, .btc1 {
-                        fill: $colors-currencies-btc;
+                        fill: $coin-btc;
                     }
                     .eth0, .eth1 {
-                        fill: $colors-currencies-eth;
+                        fill: $coin-eth;
                     }
                     .bch-icon {
                         fill: $coin-bch;

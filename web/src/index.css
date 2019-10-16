@@ -195,25 +195,25 @@ table th {
     background: #1f212a !important;
     min-height: 100vh; }
   .app_container.btc .app_bar .app_bar-controllers {
-    background-color: #f7941e; }
+    background-color: #f7941d; }
   .app_container.btc.wallet .sidebar-container .sidebar-actions, .app_container.btc.trade .sidebar-container .sidebar-actions, .app_container.btc.quick-trade .sidebar-container .sidebar-actions {
-    border-color: #f7941e; }
+    border-color: #f7941d; }
   .app_container.eur .app_bar .app_bar-controllers {
-    background-color: #00a651; }
+    background-color: #06773d; }
   .app_container.eur.wallet .sidebar-container .sidebar-actions, .app_container.eur.trade .sidebar-container .sidebar-actions, .app_container.eur.quick-trade .sidebar-container .sidebar-actions {
-    border-color: #00a651; }
+    border-color: #06773d; }
   .app_container.bch .app_bar .app_bar-controllers {
-    background-color: #ec008c; }
+    background-color: #8dc541; }
   .app_container.bch.wallet .sidebar-container .sidebar-actions, .app_container.bch.trade .sidebar-container .sidebar-actions, .app_container.bch.quick-trade .sidebar-container .sidebar-actions {
-    border-color: #ec008c; }
+    border-color: #8dc541; }
   .app_container.eth .app_bar .app_bar-controllers {
-    background-color: #2e3192; }
+    background-color: #3e4ea1; }
   .app_container.eth.wallet .sidebar-container .sidebar-actions, .app_container.eth.trade .sidebar-container .sidebar-actions, .app_container.eth.quick-trade .sidebar-container .sidebar-actions {
-    border-color: #2e3192; }
+    border-color: #3e4ea1; }
   .app_container.ltc .app_bar .app_bar-controllers {
-    background-color: #58595b; }
+    background-color: #bcbec0; }
   .app_container.ltc.wallet .sidebar-container .sidebar-actions, .app_container.ltc.trade .sidebar-container .sidebar-actions, .app_container.ltc.quick-trade .sidebar-container .sidebar-actions {
-    border-color: #58595b; }
+    border-color: #bcbec0; }
   .app_container.layout-desktop .app_container-content {
     min-height: calc(100vh - 36px);
     max-height: calc(100vh - 36px); }
@@ -2381,11 +2381,9 @@ table th {
   color: #a3a1ca; }
   .dark-theme .summary-container .trade-account-link {
     color: #ed507b; }
-  .dark-theme .summary-container .trader-wrapper-icon svg path {
-    fill: white; }
-  .dark-theme .summary-container .trader-account-icon svg path {
-    fill: #2e2f37; }
-  .dark-theme .summary-container .trader-account-icon svg polygon {
+  .dark-theme .summary-container .trader-wrapper-icon svg .level_icon {
+    fill: #a3a1ca; }
+  .dark-theme .summary-container .trader-account-icon svg .level_icon {
     fill: #2e2f37; }
   .dark-theme .summary-container .summary-block_wrapper {
     border-top: 0.2rem solid #b7b5cd; }
@@ -2408,11 +2406,8 @@ table th {
     .dark-theme .summary-container .account-details-wrapper .account-type-menu-active .account-current {
       color: #b6b5cd;
       text-transform: lowercase; }
-    .dark-theme .summary-container .account-details-wrapper .account-type-menu-active .requirements-content-text svg path,
-    .dark-theme .summary-container .account-details-wrapper .account-type-menu-active .trader-account-icon svg path {
-      fill: #a3a1ca; }
-    .dark-theme .summary-container .account-details-wrapper .account-type-menu-active .requirements-content-text svg polygon,
-    .dark-theme .summary-container .account-details-wrapper .account-type-menu-active .trader-account-icon svg polygon {
+    .dark-theme .summary-container .account-details-wrapper .account-type-menu-active .requirements-content-text svg .level_icon,
+    .dark-theme .summary-container .account-details-wrapper .account-type-menu-active .trader-account-icon svg .level_icon {
       fill: #a3a1ca; }
     .dark-theme .summary-container .account-details-wrapper .account-type-menu-active .account-details-content {
       color: #a3a1ca; }
@@ -2509,9 +2504,7 @@ table th {
   .summary-container .trader-wrapper-icon {
     width: 5rem;
     margin-right: 1rem; }
-    .summary-container .trader-wrapper-icon svg path {
-      fill: #000000; }
-    .summary-container .trader-wrapper-icon svg polygon {
+    .summary-container .trader-wrapper-icon svg .level_icon {
       fill: #000000; }
   .summary-container .trader-account-icon {
     width: 5rem;
@@ -2592,9 +2585,9 @@ table th {
       .summary-container .assets-wrapper .coin-price-container .coin-price {
         width: 3rem; }
         .summary-container .assets-wrapper .coin-price-container .coin-price svg .btc0, .summary-container .assets-wrapper .coin-price-container .coin-price svg .btc1 {
-          fill: #f7941e; }
+          fill: #f7941d; }
         .summary-container .assets-wrapper .coin-price-container .coin-price svg .eth0, .summary-container .assets-wrapper .coin-price-container .coin-price svg .eth1 {
-          fill: #2e3192; }
+          fill: #3e4ea1; }
         .summary-container .assets-wrapper .coin-price-container .coin-price svg .bch-icon {
           fill: #8dc541; }
   .summary-container .trading-volume-wrapper {
@@ -4430,7 +4423,7 @@ table th {
       position: relative;
       font-size: 0.8rem; }
   .notification-wrapper .notification-buttons-wrapper .button-eur {
-    background-color: #00a651; }
+    background-color: #06773d; }
   .notification-wrapper .notification-information {
     padding: 1rem 0;
     font-size: 0.8rem; }
@@ -5536,7 +5529,8 @@ table th {
   .dark-theme .icon_title-wrapper .icon_title-svg svg .warning-icon,
   .dark-theme .icon_title-wrapper .icon_title-svg svg .risk-order-warning,
   .dark-theme .icon_title-wrapper .icon_title-svg svg .coin-btc-1,
-  .dark-theme .icon_title-wrapper .icon_title-svg svg .coin-btc-5 {
+  .dark-theme .icon_title-wrapper .icon_title-svg svg .coin-btc-5,
+  .dark-theme .icon_title-wrapper .icon_title-svg svg .level_icon {
     fill: #a3a1ca; }
   .dark-theme .icon_title-wrapper .icon_title-svg svg .dots-1,
   .dark-theme .icon_title-wrapper .icon_title-svg svg .coin-btc-4 {
@@ -5633,23 +5627,23 @@ table th {
     border: 1px solid #000000;
     color: #000000; }
   .currency_ball-wrapper.btc {
-    background-color: #f7941e;
+    background-color: #f7941d;
     border: none !important;
     color: white !important; }
   .currency_ball-wrapper.eur {
-    background-color: #00a651;
+    background-color: #06773d;
     border: none !important;
     color: white !important; }
   .currency_ball-wrapper.bch {
-    background-color: #ec008c;
+    background-color: #8dc541;
     border: none !important;
     color: white !important; }
   .currency_ball-wrapper.eth {
-    background-color: #2e3192;
+    background-color: #3e4ea1;
     border: none !important;
     color: white !important; }
   .currency_ball-wrapper.ltc {
-    background-color: #58595b;
+    background-color: #bcbec0;
     border: none !important;
     color: white !important; }
   .currency_ball-wrapper.xrp {
@@ -6748,18 +6742,18 @@ foreignObject {
         height: 2px;
         width: 100px;
         position: absolute;
-        background-color: #00a651;
+        background-color: #06773d;
         bottom: -2px;
         left: 0;
         right: 0; }
     .quick_trade-wrapper .input_block-content.loading.btc::after {
-      background-color: #f7941e; }
+      background-color: #f7941d; }
     .quick_trade-wrapper .input_block-content.loading.bch::after {
-      background-color: #ec008c; }
+      background-color: #8dc541; }
     .quick_trade-wrapper .input_block-content.loading.eth::after {
-      background-color: #2e3192; }
+      background-color: #3e4ea1; }
     .quick_trade-wrapper .input_block-content.loading.ltc::after {
-      background-color: #58595b; }
+      background-color: #bcbec0; }
   .quick_trade-wrapper .mobile_dropdown-section .mobile-drop-down {
     color: #212121; }
     .quick_trade-wrapper .mobile_dropdown-section .mobile-drop-down .option {
