@@ -360,6 +360,7 @@ export const ICONS = {
 	HEX_EMAIL: `${process.env.PUBLIC_URL}/assets/images/HEX-email.svg`,
 	HEX_FAQ: `${process.env.PUBLIC_URL}/assets/images/HEX-FAQ.svg`,
 	HEX_PDF: `${process.env.PUBLIC_URL}/assets/images/HEX-pdf.svg`,
+	STAKETOKEN_ICON:`${process.env.PUBLIC_URL}/assets/images/stake.svg`
 };
 
 export const SOCIAL_ICONS = {

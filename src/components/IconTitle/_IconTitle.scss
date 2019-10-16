@@ -34,8 +34,9 @@ $title--margin: 1rem;
 	.icon_title-text {
 		font-size: $font-size-subhead3;
 		margin: $title--margin;
+		font-weight: bold;
 		&.title {
-			font-size: $font-size-headline2;
+			font-size: $font-size-headline;
 			text-transform: capitalize;
 		}
 	}

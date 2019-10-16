@@ -183,7 +183,7 @@ class Container extends Component {
 
 	initSocketConnections = () => {
 		this.setPublicWS();
-		if(isLoggedIn()) {
+		if (isLoggedIn()) {
 			this.setUserSocket(getToken());
 			const dialog_display = localStorage.getItem('deposit_initial_display');
 			if (!dialog_display) {
@@ -255,8 +255,8 @@ class Container extends Component {
 		});
 
 		// publicSocket.on('ticker', (data) => {
-			// console.log('ticker', data);
-			// this.props.setTickers(data);
+		// console.log('ticker', data);
+		// this.props.setTickers(data);
 		// });
 	};
 
@@ -675,6 +675,17 @@ class Container extends Component {
 					/>
 				);
 			}
+			case NOTIFICATIONS.STAKE_TOKEN: {
+				const { onConfirm, ...rest } = data;
+				return (
+					<Notification
+						type={type}
+						data={rest}
+						onConfirm={data.onConfirm}
+						onBack={this.onCloseDialog}
+					/>
+				);
+			}
 			case NOTIFICATIONS.DEPOSIT_INFO: {
 				const { gotoWallet, ...rest } = data;
 				return (
@@ -693,7 +704,7 @@ class Container extends Component {
 		return this.props.changeLanguage(language);
 	};
 
-	isSocketDataReady(){
+	isSocketDataReady() {
 		const {
 			orderbooks,
 			pairsTrades,
@@ -783,8 +794,8 @@ class Container extends Component {
 							}
 						/>
 						{isBrowser &&
-							(isMenubar) && 
-								<AppMenuBar router={router} location={location} />}
+							(isMenubar) &&
+							<AppMenuBar router={router} location={location} />}
 						<div
 							className={classnames(
 								"app_container-content",

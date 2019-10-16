@@ -16,7 +16,6 @@ const MobileSummary = ({
     pairs,
     coins,
     activeTheme,
-    default_trader_account,
     currentTradingAccount,
     selectedAccount,
     balance,
@@ -27,7 +26,8 @@ const MobileSummary = ({
     onFeesAndLimits,
     onUpgradeAccount,
     onAccountTypeChange,
-    onInviteFriends
+    onInviteFriends,
+    onStakeToken
 }) => {
     return (
         <div
@@ -49,7 +49,8 @@ const MobileSummary = ({
                         account={currentTradingAccount}
                         onInviteFriends={onInviteFriends}
                         onFeesAndLimits={onFeesAndLimits}
-                        onUpgradeAccount={onUpgradeAccount} />
+                        onUpgradeAccount={onUpgradeAccount}
+                        onStakeToken={onStakeToken}/>
                 </SummaryBlock>
             </div>
             <div className="summary-section_1 requirement-wrapper d-flex w-100">

@@ -125,10 +125,6 @@ $logout--size-difference: 3rem;
 		margin: 3rem 0 4rem;
 		line-height: 3.5rem;
 	}
-	// .new-order-notification.notification-content-wrapper {
-	// 	font-size: $font-size-subhead3;
-	// }
-
 	.invite_friends_wrapper {
 		margin: auto;
 		width: 36rem;
@@ -136,6 +132,14 @@ $logout--size-difference: 3rem;
 		.user_refer_info {
 			background-color: $colors-info-panel-background;
 			height: 5.5rem;
+			justify-content: space-between;
+			.separator_line {
+				border-left: 2px solid #BBBDBF;
+				height: 3rem;
+			}
+			.application_txt {
+				font-size: inherit;
+			}
 		}
 
 		.icon_title-wrapper {
@@ -150,6 +154,11 @@ $logout--size-difference: 3rem;
 			.icon_title-text.title {
 				font-size: 2rem;
 			}
+		}
+	}
+	svg {
+		.stake_icon {
+			fill: #777677;
 		}
 	}
 }
@@ -253,6 +262,15 @@ $logout--size-difference: 3rem;
 		.invite_friends_wrapper {
 			.user_refer_info {
 				background-color: $dark-info-panel-background;
+				.separator_line {
+					border-left: 2px solid $dark-icon-color;
+					height: 3rem;
+				}
+			}
+			svg {
+				.stake_icon {
+					fill: $dark-icon-color;
+				}
 			}
 		}
 	}
