@@ -85,7 +85,7 @@ class UserFees extends Component {
 			[fee_type]: { ...levels }
 		})
 			.then((res) => {
-				// this.requestFees();
+				this.renderData(res, this.props.config);
 			})
 			.then(openNotification())
 			.catch((err) => { });
