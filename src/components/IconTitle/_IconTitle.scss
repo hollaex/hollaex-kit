@@ -1,4 +1,5 @@
 $tab_controller-title-img-size: 5rem;
+$tab_controller-title-img-size-mobile: 8rem;
 $tab_controller-title-margin: 16px;
 $tab_controller-item-min-width: 4rem;
 $title--margin: 1rem;
@@ -70,6 +71,23 @@ $title--margin: 1rem;
 		}
 		&.underline:after {
 			background: $dark-border-main;
+		}
+	}
+}
+
+
+.layout-mobile {
+	.icon_title-wrapper {
+		.auth_logo-wrapper {
+			// @include size($tab_controller-title-img-size-mobile);
+			height: 7rem !important;
+			width: 7rem !important;
+		}
+		
+		.auth_logo-wrapper svg {
+			// @include size($tab_controller-title-img-size-mobile);
+			height: 8rem !important;
+			width: 15rem !important;
 		}
 	}
 }

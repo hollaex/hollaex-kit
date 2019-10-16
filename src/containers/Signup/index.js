@@ -144,6 +144,7 @@ class Signup extends Component {
 						underline={true}
 						useSvg={true}
 						className="w-100 exir-logo"
+						imageWrapperClassName="auth_logo-wrapper"
 						subtitle={STRINGS.formatString(
 							STRINGS.SIGN_UP.SIGNUP_TO,
 							STRINGS.APP_TITLE
