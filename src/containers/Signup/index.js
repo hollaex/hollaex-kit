@@ -138,7 +138,7 @@ class Signup extends Component {
 					)}
 				>
 					<IconTitle
-						iconPath={activeTheme === 'dark' ? HOLLAEX_LOGO_BLACK : HOLLAEX_LOGO}
+						iconPath={HOLLAEX_LOGO}
 						text={STRINGS.SIGNUP_TEXT}
 						textType="title"
 						underline={true}

@@ -114,7 +114,7 @@ class VerifyEmailRequest extends Component {
 					)}
 				>
 					<IconTitle
-						iconPath={activeTheme === 'dark' ? HOLLAEX_LOGO_BLACK : HOLLAEX_LOGO}
+						iconPath={HOLLAEX_LOGO}
 						text={STRINGS.VERIFICATION_EMAIL_REQUEST.TITLE}
 						textType="title"
 						underline={true}

@@ -201,7 +201,7 @@ class Login extends Component {
 					)}
 				>
 					<IconTitle
-						iconPath={activeTheme === 'dark' ? HOLLAEX_LOGO_BLACK : HOLLAEX_LOGO}
+						iconPath={HOLLAEX_LOGO}
 						text={STRINGS.LOGIN_TEXT}
 						textType="title"
 						underline={true}

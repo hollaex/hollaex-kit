@@ -122,7 +122,7 @@ class AddTradeTab extends Component {
             <div className="trade_tabs-container">
                 <div className="mb-5">
                     <img
-                        src={activeTheme === 'dark' ? ICONS.LOGO_BLACK : ICONS.LOGO_GREY}
+                        src={activeTheme === 'dark' ? ICONS.LOGO_GREY : ICONS.LOGO_BLACK}
                         alt="app logo"
                         className="app-icon d-flex" />
                     <div className="text-center trade-tab-app-title">{STRINGS.APP_SUB_TITLE.toUpperCase()}</div>
