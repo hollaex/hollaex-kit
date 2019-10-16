@@ -2,9 +2,9 @@
 HollaEx Kit is a full exchange launcher kit for building and running an exchange platfrom where you can list and trade any digital assets for your users.
 
 HollaEx Kit has 3 main components:
-HollaEx Core: HollaEx Core is a [docker image](https://cloud.docker.com/u/bitholla/repository/docker/bitholla/hollaex-core) which includes trading matching engine, real-time data stream, user management and general RESTful API management.
-HollaEx Web: Front-end Web application for user interface
-HollaEx CLI: Command Line Interface for interacting and deploying your exchange.
+- HollaEx Core: HollaEx Core is a [docker image](https://cloud.docker.com/u/bitholla/repository/docker/bitholla/hollaex-core) which includes trading matching engine, real-time data stream, user management and general RESTful API management.
+- HollaEx Web: Front-end Web application for user interface
+- HollaEx CLI: Command Line Interface for interacting and deploying your exchange.
 
 ## Get Started
 
