@@ -2942,11 +2942,18 @@ table th {
     width: 7rem;
     height: 3.7rem;
     margin-top: 15rem; }
+    .expired_exchange_wrapper .expired_img_icon svg .expired_icon {
+      fill: #777677; }
   .expired_exchange_wrapper .expired_text {
     font-size: 2rem;
     font-weight: bold; }
   .expired_exchange_wrapper .expired_button {
     padding: 2rem 3rem; }
+
+.dark-theme {
+  background-color: #1f212a; }
+  .dark-theme .expired_exchange_wrapper .expired_img_icon svg .expired_icon {
+    fill: #a3a1ca; }
 
 .sidebar-container {
   display: flex;
