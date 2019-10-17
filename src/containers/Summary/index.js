@@ -91,10 +91,6 @@ class Summary extends Component {
         this.props.openContactForm({ category: 'level' });
     };
 
-    handleDashLink = () => {
-        window.location.assign('https://dash.bitholla.com');
-    };
-
     calculateSections = ({ price, balance, orders, prices, coins }) => {
         const data = [];
         const totalAssets = calculateBalancePrice(balance, prices, coins);
@@ -136,11 +132,11 @@ class Summary extends Component {
     };
 
     onInviteFriends = () => {
-        this.props.setNotification(NOTIFICATIONS.INVITE_FRIENDS, { affiliation_code: this.props.user.affiliation_code, check: true });
+        this.props.setNotification(NOTIFICATIONS.INVITE_FRIENDS, { affiliation_code: this.props.user.affiliation_code});
     };
 
     onStakeToken = () => {
-        this.props.setNotification(NOTIFICATIONS.STAKE_TOKEN, { handleDashLink: this.handleDashLink });
+        this.props.setNotification(NOTIFICATIONS.STAKE_TOKEN);
     };
 
     render() {

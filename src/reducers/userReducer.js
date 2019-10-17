@@ -121,7 +121,8 @@ const INITIAL_STATE = {
 	limits: INITIAL_LIMIT_OBJECT,
 	feeValues: INITIAL_FEES_OBJECT,
 	tradeVolumes: INITIAL_TRADE_VOLUME_OBJECT,
-	affiliation: {}
+	affiliation: {},
+	is_hap: false
 };
 
 export default function reducer(state = INITIAL_STATE, action) {
@@ -140,7 +141,8 @@ export default function reducer(state = INITIAL_STATE, action) {
 				address,
 				id_data,
 				affiliation_code,
-				phone_number
+				phone_number,
+				is_hap
 			} = action.payload;
 			const userData = extractuserData(action.payload);
 			const fees = action.payload.fees || state.fees;
@@ -168,7 +170,8 @@ export default function reducer(state = INITIAL_STATE, action) {
 				address,
 				id_data,
 				affiliation_code,
-				phone_number
+				phone_number,
+				is_hap
 			};
 		}
 		case 'SET_USER_DATA': {

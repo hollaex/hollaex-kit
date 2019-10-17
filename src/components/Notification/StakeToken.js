@@ -4,8 +4,7 @@ import Button from '../Button';
 import { ICONS } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 
-const StakeToken = ({ data, onBack }) => {
-    const { handleDashLink } = data;
+const StakeToken = ({ onBack }) => {
     return (
         <div className='invite_friends_wrapper'>
             <IconTitle
@@ -27,10 +26,15 @@ const StakeToken = ({ data, onBack }) => {
                         className="mr-5"
                         onClick={onBack}
                     />
-                    <Button
-                        label={STRINGS.STAKE_TOKEN.BUTTON_TXT}
-                        onClick={handleDashLink}
-                    />
+                    <a
+                        className="exir-button mdc-button mdc-button--unelevated exir-button-font"
+                        href="https://dash.bitholla.com"
+                        target='blank'>
+                        <Button
+                            label={STRINGS.STAKE_TOKEN.BUTTON_TXT}
+                            onClick={() => { }}
+                        />
+                    </a>
                 </div>
             </div>
         </div>
