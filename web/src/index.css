@@ -3339,6 +3339,8 @@ table th {
       fill: #000000 !important;
       stroke: #808184 !important;
       stroke-width: 3 !important; }
+    .app_bar .app_bar-quicktrade svg .admin-dash {
+      fill: #808184 !important; }
   .app_bar .quick_trade-active {
     border: 1px solid white;
     color: white; }

@@ -1085,7 +1085,7 @@ export default {
 		WEBSITE: 'website',
 		VIP_TRADER_ACCOUNT_ELIGIBLITY: 'VIP Trader Account Upgrade Eligibility',
 		PRO_TRADER_ACCOUNT_ELIGIBLITY: 'Pro Trader Account Upgrade Eligibility',
-		TRADER_ACCOUNT_ELIGIBILITY: 'Level {0} Account Legibility Eligibility',
+		TRADER_ACCOUNT_ELIGIBILITY: 'Level {0} Account Eligibility',
 		NOMINAL_TRADING: 'Nominal Trading',
 		NOMINAL_TRADING_WITH_MONTH: 'Nominal Trading Last {0}',
 		ACCOUNT_AGE_OF_MONTHS: 'Account Age of {0} Months',

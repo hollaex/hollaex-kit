@@ -128,7 +128,7 @@ const INITIAL_STATE = {
 	isValidBase: false,
 	config: {},
 	config_level: [],
-	info: {}
+	info: { is_trial: false }
 };
 
 const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
