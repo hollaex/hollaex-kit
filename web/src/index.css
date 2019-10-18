@@ -7360,8 +7360,8 @@ foreignObject {
     background-color: #1f212a; }
   .dark-theme .chat-wrapper .user-icon {
     width: 2rem; }
-    .dark-theme .chat-wrapper .user-icon svg .chat-lvl-4 {
-      fill: #000000; }
+    .dark-theme .chat-wrapper .user-icon svg .level_icon {
+      fill: white; }
   .dark-theme .chat-wrapper .chat-message .message-content .message {
     color: #808184; }
   .dark-theme .chat-wrapper .chat-message .item-options .item-options-wrapper .item-option {
