@@ -31,10 +31,12 @@ $container--padding-sm: 3rem;
 
 .exchange-expired {
 	background-color: $colors-notifications-red !important;
+	color: $colors-white !important;
 }
 
 .exchange-trial {
 	background-color: #FFF100;
+	color: $colors-black;
 }
 
 .layout-mobile {
@@ -97,6 +99,12 @@ $container--padding-sm: 3rem;
 		.auth_wrapper {
 			background-color: $app-background-color;
 			padding: $container--padding $container--padding $container--padding * 1.5;
+
+			.icon_title-svg {
+				.hollaEX_logo_gray {
+					fill: $colors-black;
+				}
+			}
 		}
 
 		.auth_form-wrapper {
@@ -182,6 +190,12 @@ $container--padding-sm: 3rem;
 		.auth-container {
 			.auth_wrapper {
 				background-color: $dark-app-background-color;
+
+				.icon_title-svg {
+					.hollaEX_logo_gray {
+						fill: $colors-white;
+					}
+				}
 			}
 		}
 	}

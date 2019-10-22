@@ -243,10 +243,12 @@ export const logoutconfirm = (data = {}) =>
 export const getExchangeInfo = () => {
 	return (dispatch) => {
 		axios.get('/constant').then((res) => {
-			dispatch({
-				type: SET_INFO,
-				payload: { info: res.data.info }
-			});
+			if (res && res.data && res.data.info) {
+				dispatch({
+					type: SET_INFO,
+					payload: { info: res.data.info }
+				});
+			}
 		});
 	};
 };

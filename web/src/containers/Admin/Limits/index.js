@@ -67,7 +67,6 @@ class Limits extends Component {
 				limits = [...limits, coins[coin]];
 			}
 		});
-		console.log(limits);
 		this.setState({ limits });
 	};
 

@@ -45,42 +45,27 @@ export const getPairsColumns = (handleClick) => [
 		title: 'name',
 		dataIndex: 'name',
 		key: 'name',
-		render: (v, data) => (<div className="d-flex" onClick={() => handleClick(v, data, 'name')}>
-			<div>{v}</div>
-			<div>
-				<ReactSVG path={ICONS.EDIT_ICON} wrapperClassName="edit_icon mx-2" />
-			</div>
-		</div>)
+		render: (v, data) => (<div>{v}</div>)
 	},
 	{
 		title: 'pair_base',
 		dataIndex: 'pair_base',
 		key: 'pair_base',
-		render: (v, data) => (<div className="d-flex" onClick={() => handleClick(v, data, 'pair_base')}>
-			<div>{v}</div>
-			<div>
-				<ReactSVG path={ICONS.EDIT_ICON} wrapperClassName="edit_icon mx-2" />
-			</div>
-		</div>)
+		render: (v, data) => (<div>{v}</div>)
 	},
 	{
 		title: 'pair_2',
 		dataIndex: 'pair_2',
 		key: 'pair_2',
-		render: (v, data) => (<div className="d-flex" onClick={() => handleClick(v, data, 'pair_2')}>
-			<div>{v}</div>
-			<div>
-				<ReactSVG path={ICONS.EDIT_ICON} wrapperClassName="edit_icon mx-2" />
-			</div>
-		</div>)
+		render: (v, data) => (<div>{v}</div>)
 	},
 	{
 		title: 'active',
 		dataIndex: 'active',
 		key: 'active',
-		render: (v, data) => (<div className="d-flex" onClick={() => handleClick(v, data, 'active')}>
+		render: (v, data) => (<div className="d-flex">
 			<div>{v ? 'active' : 'inactive'}</div>
-			<div>
+			<div className="pointer" onClick={() => handleClick(v, data, 'active')}>
 				<ReactSVG path={ICONS.EDIT_ICON} wrapperClassName="edit_icon mx-2" />
 			</div>
 		</div>)
@@ -89,9 +74,9 @@ export const getPairsColumns = (handleClick) => [
 		title: 'increment_price',
 		dataIndex: 'increment_price',
 		key: 'increment_price',
-		render: (v, data) => (<div className="d-flex" onClick={() => handleClick(v, data, 'increment_price')}>
+		render: (v, data) => (<div className="d-flex">
 			<div>{v}</div>
-			<div>
+			<div className="pointer" onClick={() => handleClick(v, data, 'increment_price')}>
 				<ReactSVG path={ICONS.EDIT_ICON} wrapperClassName="edit_icon mx-2" />
 			</div>
 		</div>)
@@ -100,9 +85,9 @@ export const getPairsColumns = (handleClick) => [
 		title: 'increment_size',
 		dataIndex: 'increment_size',
 		key: 'increment_size',
-		render: (v, data) => (<div className="d-flex" onClick={() => handleClick(v, data, 'increment_size')}>
+		render: (v, data) => (<div className="d-flex">
 			<div>{v}</div>
-			<div>
+			<div className="pointer" onClick={() => handleClick(v, data, 'increment_size')}>
 				<ReactSVG path={ICONS.EDIT_ICON} wrapperClassName="edit_icon mx-2" />
 			</div>
 		</div>)
@@ -111,9 +96,9 @@ export const getPairsColumns = (handleClick) => [
 		title: 'max_price',
 		dataIndex: 'max_price',
 		key: 'max_price',
-		render: (v, data) => (<div className="d-flex" onClick={() => handleClick(v, data, 'max_price')}>
+		render: (v, data) => (<div className="d-flex">
 			<div>{v}</div>
-			<div>
+			<div className="pointer" onClick={() => handleClick(v, data, 'max_price')}>
 				<ReactSVG path={ICONS.EDIT_ICON} wrapperClassName="edit_icon mx-2" />
 			</div>
 		</div>)
@@ -122,9 +107,9 @@ export const getPairsColumns = (handleClick) => [
 		title: 'max_size',
 		dataIndex: 'max_size',
 		key: 'max_size',
-		render: (v, data) => (<div className="d-flex" onClick={() => handleClick(v, data, 'max_size')}>
+		render: (v, data) => (<div className="d-flex">
 			<div>{v}</div>
-			<div>
+			<div className="pointer" onClick={() => handleClick(v, data, 'max_size')}>
 				<ReactSVG path={ICONS.EDIT_ICON} wrapperClassName="edit_icon mx-2" />
 			</div>
 		</div>)
@@ -133,9 +118,9 @@ export const getPairsColumns = (handleClick) => [
 		title: 'min_price',
 		dataIndex: 'min_price',
 		key: 'min_price',
-		render: (v, data) => (<div className="d-flex" onClick={() => handleClick(v, data, 'min_price')}>
+		render: (v, data) => (<div className="d-flex">
 			<div>{v}</div>
-			<div>
+			<div className="pointer" onClick={() => handleClick(v, data, 'min_price')}>
 				<ReactSVG path={ICONS.EDIT_ICON} wrapperClassName="edit_icon mx-2" />
 			</div>
 		</div>)
@@ -144,9 +129,9 @@ export const getPairsColumns = (handleClick) => [
 		title: 'min_size',
 		dataIndex: 'min_size',
 		key: 'min_size',
-		render: (v, data) => (<div className="d-flex" onClick={() => handleClick(v, data, 'min_size')}>
+		render: (v, data) => (<div className="d-flex">
 			<div>{v}</div>
-			<div>
+			<div className="pointer" onClick={() => handleClick(v, data, 'min_size')}>
 				<ReactSVG path={ICONS.EDIT_ICON} wrapperClassName="edit_icon mx-2" />
 			</div>
 		</div>)
@@ -155,16 +140,16 @@ export const getPairsColumns = (handleClick) => [
 		title: 'maker_fees',
 		dataIndex: 'maker_fees',
 		key: 'maker_fees',
-		render: (v, data) => (<div className="d-flex" onClick={() => handleClick(v, data, 'maker_fees')}>
-			<div className="blue-link pointer">{STRINGS.VIEW}</div>
+		render: (v, data) => (<div className="d-flex">
+			<div className="blue-link pointer" onClick={() => handleClick(v, data, 'maker_fees')}>{STRINGS.VIEW}</div>
 		</div>)
 	},
 	{
 		title: 'taker_fees',
 		dataIndex: 'taker_fees',
 		key: 'taker_fees',
-		render: (v, data) => (<div className="d-flex" onClick={() => handleClick(v, data, 'taker_fees')}>
-			<div className="blue-link pointer">{STRINGS.VIEW}</div>
+		render: (v, data) => (<div className="d-flex">
+			<div className="blue-link pointer" onClick={() => handleClick(v, data, 'taker_fees')}>{STRINGS.VIEW}</div>
 		</div>)
 	}
 ];
