@@ -6,13 +6,13 @@ const { createRequest } = require('./utils');
 class HollaEx {
 	constructor(
 		opts = {
-			apiURL: 'https://api.hollaex.com',
-			baseURL: '/v0',
+			apiURL: 'https://api.demo.bitholla.com',
+			baseURL: '/v1',
 			accessToken: ''
 		}
 	) {
-		this._url = opts.apiURL + opts.baseURL || 'https://api.hollaex.com/v0';
-		this._wsUrl = opts.apiURL || 'https://api.hollaex.com';
+		this._url = opts.apiURL + opts.baseURL || 'https://api.demo.bitholla.com/v1';
+		this._wsUrl = opts.apiURL || 'https://api.demo.bitholla.com';
 		this._accessToken = opts.accessToken || '';
 		this._headers = {
 			'content-type': 'application/json',
@@ -106,7 +106,7 @@ class HollaEx {
 			'GET',
 			`${
 				this._url
-			}/user/deposits?limit=${limit}&page=${page}&currency=${currency}&orderBy=${orderBy}&order=${order}`,
+			}/user/deposits?limit=${limit}&page=${page}&currency=${currency}&order_by=${orderBy}&order=${order}`,
 			this._headers
 		);
 	}
@@ -126,7 +126,7 @@ class HollaEx {
 			'GET',
 			`${
 				this._url
-			}/user/withdrawals?limit=${limit}&page=${page}&currency=${currency}&orderBy=${orderBy}&order=${order}`,
+			}/user/withdrawals?limit=${limit}&page=${page}&currency=${currency}&order_by=${orderBy}&order=${order}`,
 			this._headers
 		);
 	}
