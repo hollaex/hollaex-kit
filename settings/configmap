@@ -2,7 +2,9 @@
 #### All HollaEx CLI commands rely on ENVIRONMENT_EXCHANGE_NAME below. DO NOT MODIFY IT. ####
 #########################################################################################
 
-ENVIRONMENT_EXCHANGE_NAME=my-hollaex-exchange
+ENVIRONMENT_EXCHANGE_NAME=hollaex
+
+ENVIRONMENT_DUMMY_VALUE=WAZZUP
 
 ################################
 #### GENERAL CONFIGURATIONS ####
