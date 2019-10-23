@@ -1,15 +1,20 @@
 .expired_exchange_wrapper {
     padding: 2rem;
 
-    .flex-cloumn{
+    .flex-cloumn {
         flex-direction: column;
     }
     .expired_img_icon {
         width: 7rem;
         height: 3.7rem;
         margin-top: 15rem;
+        svg{
+            .expired_icon{
+                fill: #777677;
+            }
+        }
     }
-    .expired_text{
+    .expired_text {
         font-size: 2rem;
         font-weight: bold;
     }
@@ -17,3 +22,17 @@
         padding: 2rem 3rem;
     }
 }
+.dark-theme {
+    background-color: $dark-app-background-color;
+    .expired_exchange_wrapper {
+        .expired_img_icon {
+            svg {
+                .expired_icon {
+                 
+                    fill: $dark-icon-color;
+                }
+            }
+        }
+    }
+}
+

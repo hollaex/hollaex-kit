@@ -34,7 +34,7 @@ class Limits extends Component {
 		isCustomContent: false,
 		Level_value: '',
 		customLevels: [],
-		customValue: ''
+		isApplyChanges: false
 	};
 
 	componentWillMount() {
@@ -67,7 +67,6 @@ class Limits extends Component {
 				limits = [...limits, coins[coin]];
 			}
 		});
-		console.log(limits);
 		this.setState({ limits });
 	};
 
@@ -107,8 +106,7 @@ class Limits extends Component {
 
 	handleEdit = (value, data, keyIndex) => {
 		const { config = {} } = this.props;
-		const { customValue } = this.state;
-		const formFields = getCoinsFormFields(config, this.onchange, customValue);
+		const formFields = getCoinsFormFields(config, this.onchange);
 		const Fields = formFields[keyIndex];
 		let initialValues = {};
 		let customLevels = [];

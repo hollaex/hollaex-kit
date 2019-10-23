@@ -195,25 +195,25 @@ table th {
     background: #1f212a !important;
     min-height: 100vh; }
   .app_container.btc .app_bar .app_bar-controllers {
-    background-color: #f7941e; }
+    background-color: #f7941d; }
   .app_container.btc.wallet .sidebar-container .sidebar-actions, .app_container.btc.trade .sidebar-container .sidebar-actions, .app_container.btc.quick-trade .sidebar-container .sidebar-actions {
-    border-color: #f7941e; }
+    border-color: #f7941d; }
   .app_container.eur .app_bar .app_bar-controllers {
-    background-color: #00a651; }
+    background-color: #06773d; }
   .app_container.eur.wallet .sidebar-container .sidebar-actions, .app_container.eur.trade .sidebar-container .sidebar-actions, .app_container.eur.quick-trade .sidebar-container .sidebar-actions {
-    border-color: #00a651; }
+    border-color: #06773d; }
   .app_container.bch .app_bar .app_bar-controllers {
-    background-color: #ec008c; }
+    background-color: #8dc541; }
   .app_container.bch.wallet .sidebar-container .sidebar-actions, .app_container.bch.trade .sidebar-container .sidebar-actions, .app_container.bch.quick-trade .sidebar-container .sidebar-actions {
-    border-color: #ec008c; }
+    border-color: #8dc541; }
   .app_container.eth .app_bar .app_bar-controllers {
-    background-color: #2e3192; }
+    background-color: #3e4ea1; }
   .app_container.eth.wallet .sidebar-container .sidebar-actions, .app_container.eth.trade .sidebar-container .sidebar-actions, .app_container.eth.quick-trade .sidebar-container .sidebar-actions {
-    border-color: #2e3192; }
+    border-color: #3e4ea1; }
   .app_container.ltc .app_bar .app_bar-controllers {
-    background-color: #58595b; }
+    background-color: #bcbec0; }
   .app_container.ltc.wallet .sidebar-container .sidebar-actions, .app_container.ltc.trade .sidebar-container .sidebar-actions, .app_container.ltc.quick-trade .sidebar-container .sidebar-actions {
-    border-color: #58595b; }
+    border-color: #bcbec0; }
   .app_container.layout-desktop .app_container-content {
     min-height: calc(100vh - 36px);
     max-height: calc(100vh - 36px); }
@@ -427,10 +427,12 @@ table th {
   z-index: 2; }
 
 .exchange-expired {
-  background-color: #ed1c24 !important; }
+  background-color: #ed1c24 !important;
+  color: white !important; }
 
 .exchange-trial {
-  background-color: #FFF100; }
+  background-color: #FFF100;
+  color: #000000; }
 
 .layout-mobile.auth-wrapper .link_wrapper {
   font-size: 1.2rem; }
@@ -472,6 +474,8 @@ table th {
     .auth-wrapper .auth-container .auth_wrapper {
       background-color: white;
       padding: 4rem 4rem 6rem; }
+      .auth-wrapper .auth-container .auth_wrapper .icon_title-svg .hollaEX_logo_gray {
+        fill: #000000; }
     .auth-wrapper .auth-container .auth_form-wrapper {
       margin-top: 2rem;
       position: relative; }
@@ -523,6 +527,8 @@ table th {
     background-color: transparent; }
   .dark-theme.auth-wrapper .auth-container .auth_wrapper {
     background-color: #1f212a; }
+    .dark-theme.auth-wrapper .auth-container .auth_wrapper .icon_title-svg .hollaEX_logo_gray {
+      fill: white; }
 
 .dark-theme .exir-logo-01,
 .dark-theme .account-recovery-1,
@@ -875,9 +881,11 @@ table th {
   background-repeat: no-repeat;
   background-size: cover; }
   .home_container .exchange-expired {
-    background-color: #ed1c24 !important; }
+    background-color: #ed1c24 !important;
+    color: white !important; }
   .home_container .exchange-warning {
-    background-color: #FFF100; }
+    background-color: #FFF100;
+    color: #000000; }
   .home_container .quick_trade-section {
     background-color: #ebf3f1;
     border: 1px solid #cccbcb; }
@@ -2381,6 +2389,10 @@ table th {
   color: #a3a1ca; }
   .dark-theme .summary-container .trade-account-link {
     color: #ed507b; }
+  .dark-theme .summary-container .trader-wrapper-icon svg .level_icon {
+    fill: #a3a1ca; }
+  .dark-theme .summary-container .trader-account-icon svg .level_icon {
+    fill: #2e2f37; }
   .dark-theme .summary-container .summary-block_wrapper {
     border-top: 0.2rem solid #b7b5cd; }
     .dark-theme .summary-container .summary-block_wrapper .summary-block-title {
@@ -2402,7 +2414,9 @@ table th {
     .dark-theme .summary-container .account-details-wrapper .account-type-menu-active .account-current {
       color: #b6b5cd;
       text-transform: lowercase; }
-    .dark-theme .summary-container .account-details-wrapper .account-type-menu-active .requirements-content-text,
+    .dark-theme .summary-container .account-details-wrapper .account-type-menu-active .requirements-content-text svg .level_icon,
+    .dark-theme .summary-container .account-details-wrapper .account-type-menu-active .trader-account-icon svg .level_icon {
+      fill: #a3a1ca; }
     .dark-theme .summary-container .account-details-wrapper .account-type-menu-active .account-details-content {
       color: #a3a1ca; }
   .dark-theme .summary-container .account-details-wrapper .accounnt-type-menu-last-active {
@@ -2417,6 +2431,9 @@ table th {
   .dark-theme .summary-container .assets-wrapper .total-assets {
     background: repeating-linear-gradient(-45deg, #1f212a, #1f212a 2px, #2e2f37 2px, #2e2f37 4px);
     color: #a3a1ca; }
+  .dark-theme .summary-container .assets-wrapper .coin-price-container .coin-price svg .missing-coin {
+    fill: white;
+    stroke: white; }
 
 .dark-theme .fee-limits-wrapper .fee-limits-link {
   color: #ed507b; }
@@ -2492,9 +2509,18 @@ table th {
     .summary-container .trader-account-wrapper .trade-account-secondary-txt {
       margin: auto 0;
       width: 55%; }
-  .summary-container .trader-account-icon {
-    width: 7rem;
+  .summary-container .trader-wrapper-icon {
+    width: 5rem;
     margin-right: 1rem; }
+    .summary-container .trader-wrapper-icon svg .level_icon {
+      fill: #000000; }
+  .summary-container .trader-account-icon {
+    width: 5rem;
+    margin-right: 1rem; }
+    .summary-container .trader-account-icon svg path {
+      fill: #BBBDBF; }
+    .summary-container .trader-account-icon svg polygon {
+      fill: #BBBDBF; }
   .summary-container .trade-account-link {
     color: #00aeef;
     font-weight: bold; }
@@ -2567,11 +2593,13 @@ table th {
       .summary-container .assets-wrapper .coin-price-container .coin-price {
         width: 3rem; }
         .summary-container .assets-wrapper .coin-price-container .coin-price svg .btc0, .summary-container .assets-wrapper .coin-price-container .coin-price svg .btc1 {
-          fill: #f7941e; }
+          fill: #f7941d; }
         .summary-container .assets-wrapper .coin-price-container .coin-price svg .eth0, .summary-container .assets-wrapper .coin-price-container .coin-price svg .eth1 {
-          fill: #2e3192; }
+          fill: #3e4ea1; }
         .summary-container .assets-wrapper .coin-price-container .coin-price svg .bch-icon {
           fill: #8dc541; }
+        .summary-container .assets-wrapper .coin-price-container .coin-price svg .xrp-icon {
+          fill: #414042; }
   .summary-container .trading-volume-wrapper {
     width: 50rem; }
   .summary-container .account-details-wrapper .account-type-container {
@@ -2599,6 +2627,10 @@ table th {
     .summary-container .account-details-wrapper .account-type-menu-active .account-current {
       color: #000000;
       text-transform: lowercase; }
+    .summary-container .account-details-wrapper .account-type-menu-active .trader-account-icon svg path {
+      fill: #000000; }
+    .summary-container .account-details-wrapper .account-type-menu-active .trader-account-icon svg polygon {
+      fill: #000000; }
   .summary-container .account-details-wrapper .accounnt-type-menu-last-active {
     border-bottom: none !important; }
   .summary-container .account-details-wrapper .requirement-header {
@@ -2920,11 +2952,18 @@ table th {
     width: 7rem;
     height: 3.7rem;
     margin-top: 15rem; }
+    .expired_exchange_wrapper .expired_img_icon svg .expired_icon {
+      fill: #777677; }
   .expired_exchange_wrapper .expired_text {
     font-size: 2rem;
     font-weight: bold; }
   .expired_exchange_wrapper .expired_button {
     padding: 2rem 3rem; }
+
+.dark-theme {
+  background-color: #1f212a; }
+  .dark-theme .expired_exchange_wrapper .expired_img_icon svg .expired_icon {
+    fill: #a3a1ca; }
 
 .sidebar-container {
   display: flex;
@@ -3310,6 +3349,8 @@ table th {
       fill: #000000 !important;
       stroke: #808184 !important;
       stroke-width: 3 !important; }
+    .app_bar .app_bar-quicktrade svg .admin-dash {
+      fill: #808184 !important; }
   .app_bar .quick_trade-active {
     border: 1px solid white;
     color: white; }
@@ -4401,7 +4442,7 @@ table th {
       position: relative;
       font-size: 0.8rem; }
   .notification-wrapper .notification-buttons-wrapper .button-eur {
-    background-color: #00a651; }
+    background-color: #06773d; }
   .notification-wrapper .notification-information {
     padding: 1rem 0;
     font-size: 0.8rem; }
@@ -5507,13 +5548,22 @@ table th {
   .dark-theme .icon_title-wrapper .icon_title-svg svg .warning-icon,
   .dark-theme .icon_title-wrapper .icon_title-svg svg .risk-order-warning,
   .dark-theme .icon_title-wrapper .icon_title-svg svg .coin-btc-1,
-  .dark-theme .icon_title-wrapper .icon_title-svg svg .coin-btc-5 {
+  .dark-theme .icon_title-wrapper .icon_title-svg svg .coin-btc-5,
+  .dark-theme .icon_title-wrapper .icon_title-svg svg .level_icon {
     fill: #a3a1ca; }
   .dark-theme .icon_title-wrapper .icon_title-svg svg .dots-1,
   .dark-theme .icon_title-wrapper .icon_title-svg svg .coin-btc-4 {
     stroke: #a3a1ca; }
   .dark-theme .icon_title-wrapper.underline:after {
     background: #b7b5cd; }
+
+.layout-mobile .icon_title-wrapper .auth_logo-wrapper {
+  height: 7rem !important;
+  width: 7rem !important; }
+
+.layout-mobile .icon_title-wrapper .auth_logo-wrapper svg {
+  height: 8rem !important;
+  width: 15rem !important; }
 
 .otp_form-wrapper {
   width: 30rem; }
@@ -5604,193 +5654,193 @@ table th {
     border: 1px solid #000000;
     color: #000000; }
   .currency_ball-wrapper.btc {
-    background-color: #f7941e;
+    background-color: #f7941d;
     border: none !important;
-    color: white !important; }
+    color: #000000; }
   .currency_ball-wrapper.eur {
-    background-color: #00a651;
+    background-color: #06773d;
     border: none !important;
-    color: white !important; }
+    color: white; }
   .currency_ball-wrapper.bch {
-    background-color: #ec008c;
+    background-color: #8dc541;
     border: none !important;
-    color: white !important; }
+    color: #000000; }
   .currency_ball-wrapper.eth {
-    background-color: #2e3192;
+    background-color: #3e4ea1;
     border: none !important;
-    color: white !important; }
+    color: white; }
   .currency_ball-wrapper.ltc {
-    background-color: #58595b;
+    background-color: #bcbec0;
     border: none !important;
-    color: white !important; }
+    color: #000000; }
   .currency_ball-wrapper.xrp {
     background-color: #414042;
     border: none !important;
-    color: white !important; }
+    color: white; }
   .currency_ball-wrapper.hex {
     background-color: #000000;
     border: none !important;
-    color: white !important; }
+    color: white; }
   .currency_ball-wrapper.eos {
     background-color: #58595b;
     border: none !important;
-    color: white !important; }
+    color: white; }
   .currency_ball-wrapper.bnb {
     background-color: #f1ba2a;
     border: none !important;
-    color: white !important; }
+    color: #000000; }
   .currency_ball-wrapper.link {
     background-color: #1b75bc;
     border: none !important;
-    color: white !important; }
+    color: white; }
   .currency_ball-wrapper.trx {
     background-color: #a22d25;
     border: none !important;
-    color: white !important; }
+    color: white; }
   .currency_ball-wrapper.ada {
     background-color: #3667b2;
     border: none !important;
-    color: white !important; }
+    color: white; }
   .currency_ball-wrapper.matic {
     background-color: #2aaae2;
     border: none !important;
-    color: white !important; }
+    color: white; }
   .currency_ball-wrapper.neo {
     background-color: #bcbec0;
     border: none !important;
-    color: white !important; }
+    color: #000000; }
   .currency_ball-wrapper.etc {
     background-color: #009444;
     border: none !important;
-    color: white !important; }
+    color: #000000; }
   .currency_ball-wrapper.xlm {
     background-color: #808285;
     border: none !important;
-    color: white !important; }
+    color: white; }
   .currency_ball-wrapper.xmr {
     background-color: #f15a29;
     border: none !important;
-    color: white !important; }
+    color: white; }
   .currency_ball-wrapper.zec {
     background-color: #fbb040;
     border: none !important;
-    color: white !important; }
+    color: #000000; }
   .currency_ball-wrapper.one {
     background-color: #939598;
     border: none !important;
-    color: white !important; }
+    color: white; }
   .currency_ball-wrapper.pax {
     background-color: #163526;
     border: none !important;
-    color: white !important; }
+    color: white; }
   .currency_ball-wrapper.usdc {
     background-color: #4d7d91;
     border: none !important;
-    color: white !important; }
+    color: white; }
   .currency_ball-wrapper.usdt {
     background-color: #2bb673;
     border: none !important;
-    color: white !important; }
+    color: white; }
   .currency_ball-wrapper.vet {
     background-color: #454c7d;
     border: none !important;
-    color: white !important; }
+    color: white; }
   .currency_ball-wrapper.btt {
     background-color: #c49a6c;
     border: none !important;
-    color: white !important; }
+    color: white; }
   .currency_ball-wrapper.qtum {
     background-color: #96daf7;
     border: none !important;
-    color: white !important; }
+    color: #000000; }
   .currency_ball-wrapper.algo {
     background-color: #594a42;
     border: none !important;
-    color: white !important; }
+    color: white; }
   .currency_ball-wrapper.rvn {
     background-color: #662d91;
     border: none !important;
-    color: white !important; }
+    color: white; }
   .currency_ball-wrapper.iota {
     background-color: #603913;
     border: none !important;
-    color: white !important; }
+    color: white; }
   .currency_ball-wrapper.dash {
     background-color: #417ec1;
     border: none !important;
-    color: white !important; }
+    color: white; }
   .currency_ball-wrapper.bsv {
     background-color: #a09032;
     border: none !important;
-    color: white !important; }
+    color: white; }
   .currency_ball-wrapper.ont {
     background-color: #00a79d;
     border: none !important;
-    color: white !important; }
+    color: white; }
   .currency_ball-wrapper.atom {
     background-color: #796184;
     border: none !important;
-    color: white !important; }
+    color: white; }
   .currency_ball-wrapper.celr {
     background-color: #726658;
     border: none !important;
-    color: white !important; }
+    color: white; }
   .currency_ball-wrapper.omg {
     background-color: #8e7fbb;
     border: none !important;
-    color: white !important; }
+    color: white; }
   .currency_ball-wrapper.hot {
     background-color: #8b5e3c;
     border: none !important;
-    color: white !important; }
+    color: white; }
   .currency_ball-wrapper.usd {
     background-color: #01592e;
     border: none !important;
-    color: white !important; }
+    color: white; }
   .currency_ball-wrapper.jpy {
     background-color: #e0dfc7;
     border: none !important;
-    color: white !important; }
+    color: #000000; }
   .currency_ball-wrapper.gbp {
     background-color: #482e6e;
     border: none !important;
-    color: white !important; }
+    color: white; }
   .currency_ball-wrapper.chf {
     background-color: #ed1c24;
     border: none !important;
-    color: white !important; }
+    color: white; }
   .currency_ball-wrapper.cad {
     background-color: #d7ce58;
     border: none !important;
-    color: white !important; }
+    color: #000000; }
   .currency_ball-wrapper.aud {
     background-color: #19441f;
     border: none !important;
-    color: white !important; }
+    color: white; }
   .currency_ball-wrapper.nzd {
     background-color: #b3498c;
     border: none !important;
-    color: white !important; }
+    color: white; }
   .currency_ball-wrapper.zar {
     background-color: #d8d3a0;
     border: none !important;
-    color: white !important; }
+    color: #000000; }
   .currency_ball-wrapper.hkd {
     background-color: #f48f9b;
     border: none !important;
-    color: white !important; }
+    color: #000000; }
   .currency_ball-wrapper.krw {
     background-color: #f9ee02;
     border: none !important;
-    color: white !important; }
+    color: #000000; }
   .currency_ball-wrapper.cny {
     background-color: #ec008c;
     border: none !important;
-    color: white !important; }
+    color: white; }
   .currency_ball-wrapper.sgd {
     background-color: #720f15;
     border: none !important;
-    color: white !important; }
+    color: white; }
   .currency_ball-wrapper.s {
     font-size: 0.6rem;
     width: 1.8rem;
@@ -6719,18 +6769,18 @@ foreignObject {
         height: 2px;
         width: 100px;
         position: absolute;
-        background-color: #00a651;
+        background-color: #06773d;
         bottom: -2px;
         left: 0;
         right: 0; }
     .quick_trade-wrapper .input_block-content.loading.btc::after {
-      background-color: #f7941e; }
+      background-color: #f7941d; }
     .quick_trade-wrapper .input_block-content.loading.bch::after {
-      background-color: #ec008c; }
+      background-color: #8dc541; }
     .quick_trade-wrapper .input_block-content.loading.eth::after {
-      background-color: #2e3192; }
+      background-color: #3e4ea1; }
     .quick_trade-wrapper .input_block-content.loading.ltc::after {
-      background-color: #58595b; }
+      background-color: #bcbec0; }
   .quick_trade-wrapper .mobile_dropdown-section .mobile-drop-down {
     color: #212121; }
     .quick_trade-wrapper .mobile_dropdown-section .mobile-drop-down .option {
@@ -7322,8 +7372,8 @@ foreignObject {
     background-color: #1f212a; }
   .dark-theme .chat-wrapper .user-icon {
     width: 2rem; }
-    .dark-theme .chat-wrapper .user-icon svg .chat-lvl-4 {
-      fill: #000000; }
+    .dark-theme .chat-wrapper .user-icon svg .level_icon {
+      fill: white; }
   .dark-theme .chat-wrapper .chat-message .message-content .message {
     color: #808184; }
   .dark-theme .chat-wrapper .chat-message .item-options .item-options-wrapper .item-option {

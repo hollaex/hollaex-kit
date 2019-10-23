@@ -6,42 +6,37 @@ import STRINGS from '../../../config/localizedStrings';
 import { ICONS } from '../../../config/constants';
 
 const TraderAccounts = ({
-	account = {},
-	activeTheme,
 	isAccountDetails = false,
 	onFeesAndLimits,
 	onUpgradeAccount,
 	logout,
-	onInviteFriends
+	onInviteFriends,
+	verification_level,
+	selectedAccount
 }) => {
-	// let limitLevel = limits.filter(obj => obj.verification_level === account.level);
+	const level = selectedAccount ? selectedAccount : verification_level;
+	const Title = STRINGS.formatString(STRINGS.SUMMARY.LEVEL_OF_ACCOUNT, verification_level)
 	return (
 		<div className="d-flex">
 			<div>
 				<ReactSVG
-					path={ICONS[account.symbol.toUpperCase()]}
-					wrapperClassName="trader-account-icon"
+					path={ICONS[`LEVEL_ACCOUNT_ICON_${verification_level}`]
+						? ICONS[`LEVEL_ACCOUNT_ICON_${verification_level}`]
+						: ICONS.LEVEL_ACCOUNT_ICON_4}
+					wrapperClassName='trader-wrapper-icon'
 				/>
 			</div>
 			<div className="trade-account-secondary-txt summary-content-txt">
 				{isAccountDetails && (
 					<div className="summary-block-title mb-3">
-						{account.fullName}
+						{Title}
 					</div>
 				)}
 				<div className="account-details-content">
 					<div className="mb-2">
-						{
-							STRINGS.SUMMARY[
-								`${account.symbol.toUpperCase()}_ACCOUNT_TXT_1`
-							]
-						}
-					</div>
-					<div className="mb-2">
-						{
-							STRINGS.SUMMARY[
-								`${account.symbol.toUpperCase()}_ACCOUNT_TXT_2`
-							]
+						{STRINGS.SUMMARY[`LEVEL_${verification_level}_TXT`]
+							? STRINGS.SUMMARY[`LEVEL_${verification_level}_TXT`]
+							: STRINGS.SUMMARY.LEVEL_TXT_DEFAULT
 						}
 					</div>
 				</div>
@@ -63,12 +58,12 @@ const TraderAccounts = ({
 				<div className="trade-account-link mb-2">
 					<span
 						className="pointer"
-						onClick={() => onFeesAndLimits(account)}
+						onClick={() => onFeesAndLimits(level)}
 					>
 						{STRINGS.SUMMARY.VIEW_FEE_STRUCTURE.toUpperCase()}
 					</span>
 				</div>
-				{!isAccountDetails && account.level >= 1 && account.level < 4 && (
+				{!isAccountDetails && verification_level.level >= 1 && verification_level.level < 4 && (
 					<div className="trade-account-link mb-2">
 						<span className="pointer" onClick={onUpgradeAccount}>
 							{STRINGS.SUMMARY.UPGRADE_ACCOUNT.toUpperCase()}

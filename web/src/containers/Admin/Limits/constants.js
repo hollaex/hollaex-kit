@@ -29,9 +29,9 @@ export const CURRENCY_KEYS = [
 ];
 
 const returnArray = (obj, data, keyIndex, handleClick) => {
-	return (<div className="d-flex" onClick={() => handleClick(obj, data, keyIndex)}>
+	return (<div className="d-flex">
 		{/* <div>{keys.map((index) => ` ${obj[index]} `)}</div> */}
-		<div className="blue-link pointer">{STRINGS.VIEW}</div>
+		<div className="blue-link pointer" onClick={() => handleClick(obj, data, keyIndex)}>{STRINGS.VIEW}</div>
 		<div>
 			{/* <ReactSVG path={ICONS.EDIT_ICON} wrapperClassName="edit_icon mx-2" /> */}
 		</div>
@@ -43,9 +43,9 @@ export const getCurrencyColumns = (handleClick) => [
 		title: 'fullname',
 		dataIndex: 'fullname',
 		key: 'fullname',
-		render: (v, data) => (<div className="d-flex" onClick={() => handleClick(v, data, 'fullname')}>
+		render: (v, data) => (<div className="d-flex">
 			<div>{v}</div>
-			<div>
+			<div className="pointer" onClick={() => handleClick(v, data, 'fullname')}>
 				<ReactSVG path={ICONS.EDIT_ICON} wrapperClassName="edit_icon mx-2" />
 			</div>
 		</div>)
@@ -54,9 +54,9 @@ export const getCurrencyColumns = (handleClick) => [
 		title: 'symbol',
 		dataIndex: 'symbol',
 		key: 'symbol',
-		render: (v, data) => (<div className="d-flex" onClick={() => handleClick(v, data, 'symbol')}>
+		render: (v, data) => (<div className="d-flex">
 			<div>{v}</div>
-			<div>
+			<div className="pointer" onClick={() => handleClick(v, data, 'symbol')}>
 				<ReactSVG path={ICONS.EDIT_ICON} wrapperClassName="edit_icon mx-2" />
 			</div>
 		</div>)
@@ -65,9 +65,9 @@ export const getCurrencyColumns = (handleClick) => [
 		title: 'active',
 		dataIndex: 'active',
 		key: 'active',
-		render: (v, data) => (<div className="d-flex" onClick={() => handleClick(v, data, 'active')}>
+		render: (v, data) => (<div className="d-flex">
 			<div>{v ? 'active' : 'inactive'}</div>
-			<div>
+			<div className="pointer" onClick={() => handleClick(v, data, 'active')}>
 				<ReactSVG path={ICONS.EDIT_ICON} wrapperClassName="edit_icon mx-2" />
 			</div>
 		</div>)
@@ -76,9 +76,9 @@ export const getCurrencyColumns = (handleClick) => [
 		title: 'allow_deposit',
 		dataIndex: 'allow_deposit',
 		key: 'allow_deposit',
-		render: (v, data) => (<div className="d-flex" onClick={() => handleClick(v, data, 'allow_deposit')}>
+		render: (v, data) => (<div className="d-flex">
 			<div>{v ? 'allow' : 'inallow'}</div>
-			<div>
+			<div className="pointer" onClick={() => handleClick(v, data, 'allow_deposit')}>
 				<ReactSVG path={ICONS.EDIT_ICON} wrapperClassName="edit_icon mx-2" />
 			</div>
 		</div>)
@@ -87,9 +87,9 @@ export const getCurrencyColumns = (handleClick) => [
 		title: 'allow_withdrawal',
 		dataIndex: 'allow_withdrawal',
 		key: 'allow_withdrawal',
-		render: (v, data) => (<div className="d-flex" onClick={() => handleClick(v, data, 'allow_withdrawal')}>
+		render: (v, data) => (<div className="d-flex">
 			<div>{v ? 'allow' : 'inallow'}</div>
-			<div>
+			<div className="pointer" onClick={() => handleClick(v, data, 'allow_withdrawal')}>
 				<ReactSVG path={ICONS.EDIT_ICON} wrapperClassName="edit_icon mx-2" />
 			</div>
 		</div>)
@@ -98,9 +98,9 @@ export const getCurrencyColumns = (handleClick) => [
 		title: 'withdrawal_fee',
 		dataIndex: 'withdrawal_fee',
 		key: 'withdrawal_fee',
-		render: (v, data) => (<div className="d-flex" onClick={() => handleClick(v, data, 'withdrawal_fee')}>
+		render: (v, data) => (<div className="d-flex">
 			<div>{v}</div>
-			<div>
+			<div className="pointer" onClick={() => handleClick(v, data, 'withdrawal_fee')}>
 				<ReactSVG path={ICONS.EDIT_ICON} wrapperClassName="edit_icon mx-2" />
 			</div>
 		</div>)
@@ -109,9 +109,9 @@ export const getCurrencyColumns = (handleClick) => [
 		title: 'min',
 		dataIndex: 'min',
 		key: 'min',
-		render: (v, data) => (<div className="d-flex" onClick={() => handleClick(v, data, 'min')}>
+		render: (v, data) => (<div className="d-flex">
 			<div>{v}</div>
-			<div>
+			<div className="pointer" onClick={() => handleClick(v, data, 'min')}>
 				<ReactSVG path={ICONS.EDIT_ICON} wrapperClassName="edit_icon mx-2" />
 			</div>
 		</div>)
@@ -120,9 +120,9 @@ export const getCurrencyColumns = (handleClick) => [
 		title: 'max',
 		dataIndex: 'max',
 		key: 'max',
-		render: (v, data) => (<div className="d-flex" onClick={() => handleClick(v, data, 'max')}>
+		render: (v, data) => (<div className="d-flex">
 			<div>{v}</div>
-			<div>
+			<div className="pointer" onClick={() => handleClick(v, data, 'max')}>
 				<ReactSVG path={ICONS.EDIT_ICON} wrapperClassName="edit_icon mx-2" />
 			</div>
 		</div>)
@@ -131,9 +131,9 @@ export const getCurrencyColumns = (handleClick) => [
 		title: 'increment_unit',
 		dataIndex: 'increment_unit',
 		key: 'increment_unit',
-		render: (v, data) => (<div className="d-flex" onClick={() => handleClick(v, data, 'increment_unit')}>
+		render: (v, data) => (<div className="d-flex">
 			<div>{v}</div>
-			<div>
+			<div className="pointer" onClick={() => handleClick(v, data, 'increment_unit')}>
 				<ReactSVG path={ICONS.EDIT_ICON} wrapperClassName="edit_icon mx-2" />
 			</div>
 		</div>)
@@ -152,7 +152,7 @@ export const getCurrencyColumns = (handleClick) => [
 	}
 ];
 
-const getDepositWithdrawFields = (userTier, key, onchange, customValue) => {
+const getDepositWithdrawFields = (userTier, key, onchange) => {
 	const userFields = {};
 	userTier.map((level) => {
 		userFields[level] = {
@@ -171,7 +171,7 @@ const getDepositWithdrawFields = (userTier, key, onchange, customValue) => {
 	return userFields;
 };
 
-export const getCoinsFormFields = (config = {}, onchange, customValue) => {
+export const getCoinsFormFields = (config = {}, onchange) => {
 	const userLevels = [];
 	const tiers = config.tiers ? parseInt(config.tiers) : 4;
 	for (var i = 1; i <= tiers; i++) {
@@ -244,7 +244,7 @@ export const getCoinsFormFields = (config = {}, onchange, customValue) => {
 				label: 'increment unit',
 			}
 		},
-		'deposit_limits': getDepositWithdrawFields(userLevels, 'deposit_limits',onchange, customValue),
-		'withdrawal_limits': getDepositWithdrawFields(userLevels, 'withdrawal_limits',onchange, customValue)
+		'deposit_limits': getDepositWithdrawFields(userLevels, 'deposit_limits', onchange),
+		'withdrawal_limits': getDepositWithdrawFields(userLevels, 'withdrawal_limits', onchange)
 	})
 };

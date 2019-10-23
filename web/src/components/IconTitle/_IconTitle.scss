@@ -58,7 +58,8 @@ $title--margin: 1rem;
 			.warning-icon,
 			.risk-order-warning,
 			.coin-btc-1,
-			.coin-btc-5 {
+			.coin-btc-5,
+			.level_icon {
 				fill: $dark-icon-color;
 			}
 			.dots-1,
@@ -68,6 +69,21 @@ $title--margin: 1rem;
 		}
 		&.underline:after {
 			background: $dark-border-main;
+		}
+	}
+}
+
+
+.layout-mobile {
+	.icon_title-wrapper {
+		.auth_logo-wrapper {
+			height: 7rem !important;
+			width: 7rem !important;
+		}
+		
+		.auth_logo-wrapper svg {
+			height: 8rem !important;
+			width: 15rem !important;
 		}
 	}
 }

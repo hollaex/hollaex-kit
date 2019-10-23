@@ -119,6 +119,7 @@ class VerifyEmailRequest extends Component {
 						textType="title"
 						underline={true}
 						useSvg={true}
+						imageWrapperClassName="auth_logo-wrapper"
 						className="w-100 exir-logo"
 					/>
 					<div

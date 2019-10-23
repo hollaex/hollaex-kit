@@ -269,8 +269,8 @@ export default (
 				name="Admin BlockchainTransaction"
 				component={BlockchainTransaction}
 			/>
-			<Route path="/admin/fees" name="Admin Fees" component={withAdminProps(UserFees, 'fees')} />
-			<Route path="/admin/limits" name="Admin Limits" component={withAdminProps(Limits, 'limits')} />
+			<Route path="/admin/pair" name="Admin Pairs" component={withAdminProps(UserFees, 'pair')} />
+			<Route path="/admin/coin" name="Admin Coins" component={withAdminProps(Limits, 'coin')} />
 			<Route path="/admin/chat" name="Admin Chats" component={withAdminProps(AdminChat, 'chat')} />
 		</Route>
 		<Route
