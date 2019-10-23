@@ -134,7 +134,7 @@ class BarChart extends Component {
                                 .attr("xlink:href", content.icon)
                                 .attr('class', 'limit_contnet-icon')
                                 .attr('x', width + 15)
-                                .attr('y', scale)
+                                .attr('y', scale + 5)
                                 .attr('viewBox', '0 0 1024 1024')
                                 .attr('width', '3rem');
                         }

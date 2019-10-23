@@ -29,10 +29,12 @@ $no-background--color: white;
 	
 	.exchange-expired {
 		background-color: $colors-notifications-red !important;
+		color: $colors-white !important;
 	}
 	
 	.exchange-warning {
 		background-color: #FFF100;
+		color: $colors-black;
 	}
 
 	.quick_trade-section {

@@ -2,19 +2,18 @@ import React from 'react';
 import classnames from 'classnames';
 import { isMobile } from 'react-device-detect';
 import ReactSVG from 'react-svg';
+import STRINGS from '../../../config/localizedStrings';
 
 import {
-	TRADING_ACCOUNT_TYPE,
 	ICONS,
 	FLEX_CENTER_CLASSES
 } from '../../../config/constants';
 
 const AccountTypesList = ({
-	accounts,
-	activeTheme,
 	selectedAccount,
-	currentTradingAccount,
-	onAccountTypeChange
+	onAccountTypeChange,
+	verification_level,
+	config
 }) => {
 	return (
 		<div
@@ -22,30 +21,31 @@ const AccountTypesList = ({
 				'mobile-account-type': isMobile
 			})}
 		>
-			{accounts.map((key, index) => {
-				let account = TRADING_ACCOUNT_TYPE[key];
+			{config.map((key, index) => {
 				return (
 					<div
 						key={index}
 						className={classnames('d-flex', 'account-type-menu', {
 							'account-type-menu-active': selectedAccount === key,
 							'accounnt-type-menu-last-active':
-								index === accounts.length - 1
+								index === config.length - 1
 						})}
 						onClick={() => onAccountTypeChange(key)}
 					>
 						<div className="mr-4">
-							<ReactSVG
-								path={ICONS[key.toUpperCase()]}
-								wrapperClassName="account-type-icon"
-							/>
-						</div>
+                            <ReactSVG
+                               	path={ICONS[`LEVEL_ACCOUNT_ICON_${key}`] ? ICONS[`LEVEL_ACCOUNT_ICON_${key}`] : ICONS.LEVEL_ACCOUNT_ICON_4}
+                                wrapperClassName="trader-account-icon"
+                            />
+                        </div>
 						<div className={classnames(FLEX_CENTER_CLASSES)}>
-							{account.name}
-							{key === currentTradingAccount && (
+							<div className={classnames(FLEX_CENTER_CLASSES)}>
+								{STRINGS.formatString(STRINGS.SUMMARY.LEVEL_OF_ACCOUNT, key)}
+							</div>
+							{key === verification_level && (
 								<div className="account-current summary-content-txt ml-2">
-									{' '}
-									(current){' '}
+									{' ('}
+									{STRINGS.SUMMARY.CURRENT_TXT}{')'}
 								</div>
 							)}
 						</div>

@@ -5,7 +5,6 @@ import AccountTypesList from './AccountTypesList';
 import AccountTypeDetails from './AccountTypeDetails';
 import MobileAccountTypeList from '../MobileAccountTypeList';
 
-import { TRADING_ACCOUNT_TYPE } from '../../../config/constants';
 import STRINGS from '../../../config/localizedStrings';
 
 const AccountDetails = ({
@@ -16,11 +15,11 @@ const AccountDetails = ({
 	selectedAccount,
 	lastMonthVolume,
 	onAccountTypeChange,
-	currentTradingAccount,
 	onFeesAndLimits,
-	onUpgradeAccount
+	onUpgradeAccount,
+	config,
+	verification_level,
 }) => {
-	const accounts = Object.keys(TRADING_ACCOUNT_TYPE);
 	return (
 		<div className="account-details-wrapper summary-content-txt">
 			<div>
@@ -33,37 +32,36 @@ const AccountDetails = ({
 				<MobileAccountTypeList
 					user={user}
 					coins={coins}
-					accounts={accounts}
+					config={config}
 					activeTheme={activeTheme}
 					selectedAccount={selectedAccount}
 					lastMonthVolume={lastMonthVolume}
-					currentTradingAccount={currentTradingAccount}
 					onAccountTypeChange={onAccountTypeChange}
 					onFeesAndLimits={onFeesAndLimits}
 					onUpgradeAccount={onUpgradeAccount}
+					verification_level={verification_level}
 				/>
 			) : (
 				<div className="d-flex align-items-center mt-5">
 					<AccountTypesList
-						accounts={accounts}
 						activeTheme={activeTheme}
 						selectedAccount={selectedAccount}
-						currentTradingAccount={currentTradingAccount}
 						onAccountTypeChange={onAccountTypeChange}
+						config={config}
+						verification_level={verification_level}
 					/>
 					<AccountTypeDetails
 						className="w-50"
 						user={user}
 						coins={coins}
 						pairs={pairs}
-						accounts={accounts}
 						activeTheme={activeTheme}
 						selectedAccount={selectedAccount}
 						lastMonthVolume={lastMonthVolume}
-						currentTradingAccount={currentTradingAccount}
 						onAccountTypeChange={onAccountTypeChange}
 						onFeesAndLimits={onFeesAndLimits}
 						onUpgradeAccount={onUpgradeAccount}
+						verification_level={verification_level}
 					/>
 				</div>
 			)}

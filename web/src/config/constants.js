@@ -166,6 +166,7 @@ export const ICONS = {
 	SIDEBAR_QUICK_TRADING_ACTIVE:
 		'/assets/images/quick-trade-tab-selected-01.svg',
 	SIDEBAR_QUICK_TRADING_INACTIVE: '/assets/images/quick-trade-tab-01-01.svg',
+	SIDEBAR_ADMIN_DASH_ACTIVE: '/assets/images/admin-dash-icon.svg',
 	ARROW_TRANSFER_HISTORY_ACTIVE:
 		'/assets/images/arrow-trans-history-active.svg',
 	ARROW_TRANSFER_HISTORY_INACTIVE: '/assets/images/arrow-trans-history.svg',
@@ -238,7 +239,11 @@ export const ICONS = {
 	EDIT_ICON: '/assets/images/edit-icon.svg',
 	DEFAULT_ICON: '/assets/icons/missing-coin-light.svg',
 	DEFAULT_ICON_DARK: '/assets/icons/missing-coin-dark.svg',
-	EXPIRED_ICON: '/assets/images/expired.svg'
+	EXPIRED_ICON: '/assets/images/expired.svg',
+	LEVEL_ACCOUNT_ICON_1: '/assets/images/level-1.svg',
+	LEVEL_ACCOUNT_ICON_2: '/assets/images/level-2.svg',
+	LEVEL_ACCOUNT_ICON_3: '/assets/images/level-3.svg',
+	LEVEL_ACCOUNT_ICON_4: '/assets/images/level-4.svg'
 };
 
 export const SOCIAL_ICONS = {
@@ -259,11 +264,14 @@ export const FEATURES_ICONS = {
 };
 
 export const SUMMMARY_ICON = {
-	KRAKEN: '/assets/summary/kraken.png',
-	SNAPPER: '/assets/summary/snapper.png',
-	SHRIMP: '/assets/summary/shrimp.png',
-	LEVIATHAN: '/assets/summary/leviathan.png',
-	LEVIATHAN_DARK: '/assets/summary/leviathan_dark.png'
+	LEVEL_1: '/assets/summary/level-1.png',
+	LEVEL_1_DARK: '/assets/summary/level-1-dark.png',
+	LEVEL_2: '/assets/summary/level-2.png',
+	LEVEL_2_DARK: '/assets/summary/level-2-dark.png',
+	LEVEL_3: '/assets/summary/level-3.png',
+	LEVEL_3_DARK: '/assets/summary/level-3-dark.png',
+	LEVEL_4: '/assets/summary/level-4.png',
+	LEVEL_4_DARK: '/assets/summary/level-4-dark.png'
 };
 
 export const HOLLAEX_LOGO = '/assets/hollaEx_logo-grey.svg';
@@ -419,32 +427,32 @@ export const API_DOCS_URL = 'https://docs.bitholla.com/';
 export const EXCHANGE_URL = 'https://dash.bitholla.com/';
 export const EXCHANGE_EXPIRY_DAYS = 15;
 
-export const TRADING_ACCOUNT_TYPE = {
-	shrimp: {
-		symbol: 'shrimp',
-		name: STRINGS.SUMMARY.TINY_PINK_SHRIMP_TRADER,
-		fullName: STRINGS.SUMMARY.TINY_PINK_SHRIMP_TRADER_ACCOUNT,
-		level: 1
-	},
-	snapper: {
-		symbol: 'snapper',
-		name: STRINGS.SUMMARY.LITTLE_RED_SNAPPER_TRADER,
-		fullName: STRINGS.SUMMARY.LITTLE_RED_SNAPPER_TRADER_ACCOUNT,
-		level: 2
-	},
-	kraken: {
-		symbol: 'kraken',
-		name: STRINGS.SUMMARY.CUNNING_BLUE_KRAKEN_TRADING,
-		fullName: STRINGS.SUMMARY.CUNNING_BLUE_KRAKEN_TRADING_ACCOUNT,
-		level: 3
-	},
-	leviathan: {
-		symbol: 'leviathan',
-		name: STRINGS.SUMMARY.BLACK_LEVIATHAN_TRADING,
-		fullName: STRINGS.SUMMARY.BLACK_LEVIATHAN_TRADING_ACCOUNT,
-		level: 4
-	}
-};
+// export const TRADING_ACCOUNT_TYPE = {
+// 	shrimp: {
+// 		symbol: 'shrimp',
+// 		name: STRINGS.SUMMARY.TINY_PINK_SHRIMP_TRADER,
+// 		fullName: STRINGS.SUMMARY.TINY_PINK_SHRIMP_TRADER_ACCOUNT,
+// 		level: 1
+// 	},
+// 	snapper: {
+// 		symbol: 'snapper',
+// 		name: STRINGS.SUMMARY.LITTLE_RED_SNAPPER_TRADER,
+// 		fullName: STRINGS.SUMMARY.LITTLE_RED_SNAPPER_TRADER_ACCOUNT,
+// 		level: 2
+// 	},
+// 	kraken: {
+// 		symbol: 'kraken',
+// 		name: STRINGS.SUMMARY.CUNNING_BLUE_KRAKEN_TRADING,
+// 		fullName: STRINGS.SUMMARY.CUNNING_BLUE_KRAKEN_TRADING_ACCOUNT,
+// 		level: 3
+// 	},
+// 	leviathan: {
+// 		symbol: 'leviathan',
+// 		name: STRINGS.SUMMARY.BLACK_LEVIATHAN_TRADING,
+// 		fullName: STRINGS.SUMMARY.BLACK_LEVIATHAN_TRADING_ACCOUNT,
+// 		level: 4
+// 	}
+// };
 
 export const MAX_NUMBER_BANKS = 3;
 

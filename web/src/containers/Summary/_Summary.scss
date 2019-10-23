@@ -6,6 +6,21 @@
         .trade-account-link {
             color: $dark-link;
         }
+        .trader-wrapper-icon{
+            svg{
+               .level_icon {
+                   fill: #a3a1ca;
+               }
+            }
+        }
+        
+    .trader-account-icon {
+        svg{
+            .level_icon {
+                fill: #2e2f37;
+            }
+        }
+    }
         .summary-block_wrapper {
             border-top: .2rem solid $dark-app-line-divider;
 
@@ -45,6 +60,13 @@
                     text-transform: lowercase;
                 }
                 .requirements-content-text,
+                .trader-account-icon {
+                    svg{
+                       .level_icon {
+                            fill:#a3a1ca
+                        }
+                    }
+                }
                 .account-details-content {
                     color: $dark-font-sub-text-color;
                 }
@@ -67,6 +89,16 @@
             .total-assets {
                 background: repeating-linear-gradient(-45deg, $dark-app-background-color, $dark-app-background-color 2px, $dark-app-light-background 2px, $dark-app-light-background 4px);
                 color: $dark-font-sub-text-color;
+            }
+            .coin-price-container {
+                .coin-price {
+                    svg{
+                        .missing-coin {
+                            fill:$colors-white;
+                            stroke:$colors-white;
+                        }
+                    }
+                }
             }
         }
     }
@@ -179,10 +211,27 @@
             width: 55%;
         }
     }
+    .trader-wrapper-icon{
+        width: 5rem;
+        margin-right: 1rem;
+        svg{
+            .level_icon{
+                fill:$colors-black;
+            }
+        }
+    }
 
     .trader-account-icon {
-        width: 7rem;
+        width: 5rem;
         margin-right: 1rem;
+        svg{
+            path{
+            fill:#BBBDBF;
+            }
+            polygon{
+                fill:#BBBDBF
+            }
+        }
     }
     .trade-account-link {
         color: $link;
@@ -289,13 +338,16 @@
     
                 svg {
                     .btc0, .btc1 {
-                        fill: $colors-currencies-btc;
+                        fill: $coin-btc;
                     }
                     .eth0, .eth1 {
-                        fill: $colors-currencies-eth;
+                        fill: $coin-eth;
                     }
                     .bch-icon {
                         fill: $coin-bch;
+                    }
+                    .xrp-icon {
+                        fill: $coin-xrp;
                     }
                 }
             }
@@ -340,6 +392,16 @@
             .account-current {
                 color: $colors-black;
                 text-transform: lowercase;
+            }
+            .trader-account-icon{
+                svg{
+                    path{
+                        fill:#000000;
+                    }
+                    polygon{
+                        fill: #000000;
+                         }
+                }
             }
         }
 
