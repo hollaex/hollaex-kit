@@ -44,7 +44,9 @@ export const RISK_PORTFOLIO_ORDER_WARING = 'RISK_PORTFOLIO_ORDER_WARING';
 export const RISKY_ORDER = 'RISKY_ORDER';
 export const LOGOUT_CONFORMATION = 'LOGOUT_CONFORMATION';
 export const SET_CURRENCIES = 'SET_CURRENCIES';
-export const REQUEST_HEX_ACCESS = 'REQUEST_HEX_ACCESS'
+export const REQUEST_HEX_ACCESS = 'REQUEST_HEX_ACCESS';
+export const SET_CONFIG = 'SET_CONFIG';
+export const SET_VALID_BASE_CURRENCY = 'SET_VALID_BASE_CURRENCY';
 
 export const USER_TYPES = {
 	USER_TYPE_NORMAL: 'normal',
@@ -95,7 +97,7 @@ export const setSnackDialog = (data = {}) => ({
 
 export const closeSnackDialog = (id) => ({
 	type: CLOSE_SNACK_DIALOG,
-	payload: {dialogId: id}
+	payload: { dialogId: id }
 });
 
 export const openContactForm = (data = {}) =>
@@ -117,14 +119,14 @@ export const setLanguage = (value = DEFAULT_LANGUAGE) => {
 export const sendSupportMail = (values = {}) => {
 	const formData = new FormData();
 	if (values.attachment instanceof Array) {
-		(values.attachment.map((data, key) => {
+		values.attachment.forEach((data, key) => {
 			formData.append(`attachment_${key}`, data);
-		}))
+		});
 	}
 
-	Object.keys(values).map((data, key) => {
+	Object.keys(values).forEach((data, key) => {
 		if (data !== 'attachment') {
-			formData.append(data, values[data])
+			formData.append(data, values[data]);
 		}
 	});
 
@@ -203,6 +205,29 @@ export const setCurrencies = (coins) => ({
 	type: SET_CURRENCIES,
 	payload: {
 		coins
+	}
+});
+
+export const setConfig = (config) => {
+	let config_level = [];
+	if (config) {
+		for (let i = 1; i <= parseInt(config.tiers, 10); i++) {
+			config_level = [...config_level, i]
+		}
+	}
+	return {
+		type: SET_CONFIG,
+		payload: {
+			config,
+			config_level
+		}
+	}
+};
+
+export const setValidBaseCurrency = (isValidBase) => ({
+	type: SET_VALID_BASE_CURRENCY,
+	payload: {
+		isValidBase
 	}
 });
 

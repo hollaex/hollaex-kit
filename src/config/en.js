@@ -734,7 +734,7 @@ export default {
 	PRICE: 'Price',
 	FEE: 'Fee',
 	FEES: 'Fees',
-	LIMIT: 'Limit', 
+	LIMIT: 'Limit',
 	TIME: 'Time',
 	TIMESTAMP: 'Timestamp',
 	MORE: 'More',
@@ -775,6 +775,7 @@ export default {
 	LANGUAGES: [{ key: 'en', label: 'English' }],
 	QUICK_TRADE: 'Quick trade',
 	PRO_TRADE: 'Pro trade',
+	ADMIN_DASH: 'Admin Page', // new
 	WALLET_TITLE: 'Wallet',
 	TRADING_MODE_TITLE: 'Trading Mode',
 	TRADING_TITLE: 'Trading',
@@ -1128,5 +1129,13 @@ export default {
 		VISUAL_STEP: 'See a visual step-by-step processes on {0}', // new
 		WARNING_TXT: 'We will review your request and send further instructions to your email on how to access the HollaEx exchange.', // new
 		WARNING_TXT1: 'In the mean time you can firmilerize yourself with the HollaEx network with the resources below' // new
-	}
+	},
+	USER_LEVEL: 'User level', // new
+	LIMIT_AMOUNT: 'Limit amount', // new
+	FEE_AMOUNT: 'Fee amount', // new
+	COINS: 'Coins', // new
+	PAIRS: 'Pairs', // new
+	NOTE_FOR_EDIT_COIN: 'Note: For adding and removing {0} please refer to the{1}.', // new
+	REFER_DOCS_LINK: 'docs', // new
+	RESTART_TO_APPLY: 'You need to restart your exchange for apply these changes.', // new
 };

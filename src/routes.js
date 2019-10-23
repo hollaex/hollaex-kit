@@ -32,7 +32,19 @@ import {
 	// UserSettings,
 	WithdrawConfirmation,
 	AddTradeTabs,
-	TermsOfService
+	TermsOfService,
+	// ADMIN
+	User,
+	AppWrapper as AdminContainer,
+	Main,
+	DepositsPage,
+	Limits,
+	BlockchainTransaction,
+	AdminChat,
+	Wallets,
+	UserFees,
+	PATHS,
+	ExpiredExchange
 } from './containers';
 
 import store from './store';
@@ -91,11 +103,11 @@ const logOutUser = () => {
 	}
 };
 
-const createLocalizedRoutes = ({ router, routeParams}) => {
+const createLocalizedRoutes = ({ router, routeParams }) => {
 	store.dispatch(setLanguage(routeParams.locale));
 	router.replace('/');
 	return <div />;
-}
+};
 
 const NotFound = ({ router }) => {
 	router.replace(
@@ -111,6 +123,20 @@ const noAuthRoutesCommonProps = {
 const noLoggedUserCommonProps = {
 	onEnter: logOutUser
 };
+
+function withAdminProps(Component, key) {
+	let adminProps = {};
+	PATHS.map((data) => {
+		const { pathProps = {}, routeKey, ...rest } = data;
+		if (routeKey === key) {
+			adminProps = { ...rest, ...pathProps };
+		}
+		return 0;
+	});
+	return function (matchProps) {
+		return <Component {...adminProps} {...matchProps} />
+	}
+}
 
 export default (
 	<Router history={browserHistory}>
@@ -165,6 +191,33 @@ export default (
 				name="ConfirmWithdraw"
 				component={WithdrawConfirmation}
 			/>
+		</Route>
+		<Route component={AdminContainer}>
+			<Route path="/admin" name="Admin Main" component={Main} />
+			<Route path="/admin/user" name="Admin User" component={withAdminProps(User, 'user')} />
+			<Route
+				path="/admin/wallets"
+				name="Admin Wallets"
+				component={withAdminProps(Wallets, 'wallets')}
+			/>
+			<Route
+				path="/admin/withdrawals"
+				name="Admin Withdrawals"
+				component={withAdminProps(DepositsPage, 'withdrawal')}
+			/>
+			<Route
+				path="/admin/deposits"
+				name="Admin Deposits"
+				component={withAdminProps(DepositsPage, 'deposit')}
+			/>
+			<Route
+				path="/admin/blockchain"
+				name="Admin BlockchainTransaction"
+				component={BlockchainTransaction}
+			/>
+			<Route path="/admin/pair" name="Admin Pairs" component={withAdminProps(UserFees, 'pair')} />
+			<Route path="/admin/coin" name="Admin Coins" component={withAdminProps(Limits, 'coin')} />
+			<Route path="/admin/chat" name="Admin Chats" component={withAdminProps(AdminChat, 'chat')} />
 		</Route>
 		<Route path="privacy-policy" component={Legal} content="legal" onEnter={requireAuth}/>
 		<Route path="general-terms" component={Legal} content="terms" onEnter={requireAuth}/>

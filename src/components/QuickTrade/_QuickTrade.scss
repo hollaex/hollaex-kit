@@ -208,7 +208,7 @@ $title-icon--height: 10rem;
 				height: $input-bottom_line--height;
 				width: $input-bottom_line--animation--width;
 				position: absolute;
-				background-color: $colors-currencies-eur;
+				background-color: $coin-eur;
 				bottom: -$input-bottom_line--height;
 				left: 0;
 				right: 0;
@@ -216,19 +216,19 @@ $title-icon--height: 10rem;
 		}
 
 		&.loading.btc::after {
-			background-color: $colors-currencies-btc;
+			background-color: $coin-btc;
 		}
 
 		&.loading.bch::after {
-			background-color: $colors-currencies-bch;
+			background-color: $coin-bch;
 		}
 
 		&.loading.eth::after {
-			background-color: $colors-currencies-eth;
+			background-color: $coin-eth;
 		}
 
 		&.loading.ltc::after {
-			background-color: $colors-currencies-ltc;
+			background-color: $coin-ltc;
 		}
 	}
 
