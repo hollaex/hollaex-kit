@@ -14,7 +14,7 @@ import { formatAverage, formatToCurrency } from "../../../utils/currency";
 
 const AccountAssets = ({ chartData = [], totalAssets, balance, coins, activeTheme }) => {
 	const baseValue = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
-	const Default_Icon = activeTheme === 'white' ? ICONS.DEFAULT_ICON : ICONS.DEFAULT_ICON_DARK;
+	// const Default_Icon = activeTheme === 'white' ? ICONS.DEFAULT_ICON : ICONS.DEFAULT_ICON_DARK;
 	return (
 		<div className="summary-section_2">
 			<div className="summary-content-txt assets-description">
@@ -46,7 +46,10 @@ const AccountAssets = ({ chartData = [], totalAssets, balance, coins, activeThem
 								)}
 							>
 								<ReactSVG
-									path={ICONS[`${value.symbol.toUpperCase()}_ICON`] ? ICONS[`${value.symbol.toUpperCase()}_ICON`] : Default_Icon}
+									path={
+										ICONS[`${value.symbol.toUpperCase()}_ICON`]
+											? ICONS[`${value.symbol.toUpperCase()}_ICON`]
+											: ICONS.DEFAULT_ICON}
 									wrapperClassName="coin-price"
 								/>
 							</div>

@@ -93,18 +93,19 @@ class TradingVolume extends Component {
 			TRADING_VOLUME_CHART_LIMITS.map((_, index) => {
 				if (index === 0) {
 					limitContent.push({
-						icon: SUMMMARY_ICON.KRAKEN,
-						text: STRINGS.SUMMARY.PRO_TRADER_ACCOUNT_ELIGIBLITY
+						icon: SUMMMARY_ICON[activeTheme === 'dark' ? 'LEVEL_3_DARK' : 'LEVEL_3'],
+						text: STRINGS.formatString(
+							STRINGS.SUMMARY.TRADER_ACCOUNT_ELIGIBILITY,
+							3
+						)
 					});
-				} else if (index === 1 && activeTheme === 'dark') {
+				} else if (index === 1) {
 					limitContent.push({
-						icon: SUMMMARY_ICON.LEVIATHAN_DARK,
-						text: STRINGS.SUMMARY.VIP_TRADER_ACCOUNT_ELIGIBLITY
-					});
-				} else {
-					limitContent.push({
-						icon: SUMMMARY_ICON.LEVIATHAN,
-						text: STRINGS.SUMMARY.VIP_TRADER_ACCOUNT_ELIGIBLITY
+						icon: SUMMMARY_ICON[activeTheme === 'dark' ? 'LEVEL_4_DARK' : 'LEVEL_4'],
+						text: STRINGS.formatString(
+							STRINGS.SUMMARY.TRADER_ACCOUNT_ELIGIBILITY,
+							4
+						)
 					});
 				}
 				return index;
@@ -153,18 +154,19 @@ class TradingVolume extends Component {
 				TRADING_VOLUME_CHART_LIMITS.map((_, index) => {
 					if (index === 0) {
 						limitContent.push({
-							icon: SUMMMARY_ICON.KRAKEN,
-							text: STRINGS.SUMMARY.PRO_TRADER_ACCOUNT_ELIGIBLITY
+							icon: SUMMMARY_ICON[activeTheme === 'dark' ? 'LEVEL_3_DARK' : 'LEVEL_3'],
+							text: STRINGS.formatString(
+								STRINGS.SUMMARY.TRADER_ACCOUNT_ELIGIBILITY,
+								3
+							).join('')
 						});
-					} else if (index === 1 && activeTheme === 'dark') {
+					} else if (index === 1) {
 						limitContent.push({
-							icon: SUMMMARY_ICON.LEVIATHAN_DARK,
-							text: STRINGS.SUMMARY.VIP_TRADER_ACCOUNT_ELIGIBLITY
-						});
-					} else {
-						limitContent.push({
-							icon: SUMMMARY_ICON.LEVIATHAN,
-							text: STRINGS.SUMMARY.VIP_TRADER_ACCOUNT_ELIGIBLITY
+							icon: SUMMMARY_ICON[activeTheme === 'dark' ? 'LEVEL_4_DARK' : 'LEVEL_4'],
+							text: STRINGS.formatString(
+								STRINGS.SUMMARY.TRADER_ACCOUNT_ELIGIBILITY,
+								4
+							).join('')
 						});
 					}
 					return index;

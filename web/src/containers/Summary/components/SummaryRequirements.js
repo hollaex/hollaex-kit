@@ -89,7 +89,7 @@ const checkMonth = (currentDate, month) => {
 	return diffMonth >= month;
 };
 
-const getRequirements = (user, level, lastMonthVolume, coins) => {
+export const getRequirements = (user, level, lastMonthVolume, coins) => {
 	const { address, phone_number, id_data = {}, bank_account } = user.userData;
 	const bank_verified = checkBankVerification(bank_account, id_data);
 	const { symbol = '' } = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
@@ -163,7 +163,7 @@ const getRequirements = (user, level, lastMonthVolume, coins) => {
 			}
 		}
 	};
-	return verificationObj[`level_${level}`];
+	return verificationObj[`level_${level}`] || {};
 };
 
 const getStatusClass = (status_code, completed) => {

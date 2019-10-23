@@ -201,12 +201,21 @@ export const setCurrencies = (coins) => ({
 	}
 });
 
-export const setConfig = (config) => ({
-	type: SET_CONFIG,
-	payload: {
-		config
+export const setConfig = (config) => {
+	let config_level = [];
+	if (config) {
+		for (let i = 1; i <= parseInt(config.tiers, 10); i++) {
+			config_level = [...config_level, i]
+		}
 	}
-});
+	return {
+		type: SET_CONFIG,
+		payload: {
+			config,
+			config_level
+		}
+	}
+};
 
 export const setInfo = (info) => ({
 	type: SET_INFO,
@@ -234,10 +243,12 @@ export const logoutconfirm = (data = {}) =>
 export const getExchangeInfo = () => {
 	return (dispatch) => {
 		axios.get('/constant').then((res) => {
-			dispatch({
-				type: SET_INFO,
-				payload: { info: res.data.info }
-			});
+			if (res && res.data && res.data.info) {
+				dispatch({
+					type: SET_INFO,
+					payload: { info: res.data.info }
+				});
+			}
 		});
 	};
 };

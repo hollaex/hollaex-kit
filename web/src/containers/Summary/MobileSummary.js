@@ -17,9 +17,8 @@ const MobileSummary = ({
     user,
     pairs,
     coins,
+    config,
     activeTheme,
-    default_trader_account,
-    currentTradingAccount,
     selectedAccount,
     balance,
     chartData,
@@ -30,9 +29,11 @@ const MobileSummary = ({
     onFeesAndLimits,
     onUpgradeAccount,
     onAccountTypeChange,
-    onInviteFriends
+    onInviteFriends,
+    verification_level
 }) => {
     const { fullname } = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
+    const Title = STRINGS.formatString(STRINGS.SUMMARY.LEVEL_OF_ACCOUNT,verification_level);
     return (
         <div
             className={classnames(
@@ -44,16 +45,16 @@ const MobileSummary = ({
             )}
         >
             <div className="summary-section_1 trader-account-wrapper d-flex w-100">
-                <SummaryBlock title={currentTradingAccount.fullName} wrapperClassname="w-100" >
+                <SummaryBlock title={Title} wrapperClassname="w-100" >
                     <TraderAccounts
                         coins={coins}
                         pairs={pairs}
                         logout={logout}
                         activeTheme={activeTheme}
-                        account={currentTradingAccount}
                         onInviteFriends={onInviteFriends}
                         onFeesAndLimits={onFeesAndLimits}
-                        onUpgradeAccount={onUpgradeAccount} />
+                        onUpgradeAccount={onUpgradeAccount}
+                        verification_level={verification_level} />
                 </SummaryBlock>
             </div>
             <div className="summary-section_1 requirement-wrapper d-flex w-100">
@@ -104,17 +105,18 @@ const MobileSummary = ({
             </div>
             <SummaryBlock
                 title={STRINGS.SUMMARY.ACCOUNT_DETAILS}
-                secondaryTitle={currentTradingAccount.name}
+                secondaryTitle={Title}
                 wrapperClassname="w-100" >
                 <AccountDetails
                     coins={coins}
+                    config={config}
                     pairs={pairs}
                     user={user}
                     activeTheme={activeTheme}
-                    currentTradingAccount={currentTradingAccount.symbol}
                     selectedAccount={selectedAccount}
                     onAccountTypeChange={onAccountTypeChange}
-                    onFeesAndLimits={onFeesAndLimits} />
+                    onFeesAndLimits={onFeesAndLimits}
+                    verification_level={verification_level} />
             </SummaryBlock>
         </div>
     );

@@ -18,23 +18,23 @@ $inner_container-border: 1px solid $border-color;
 	}
 
 	&.btc {
-		@include currency-color($btc-color);
+		@include currency-color($coin-btc);
 	}
 
 	&.eur {
-		@include currency-color($colors-currencies-eur);
+		@include currency-color($coin-eur);
 	}
 
 	&.bch {
-		@include currency-color($colors-currencies-bch);
+		@include currency-color($coin-bch);
 	}
 
 	&.eth {
-		@include currency-color($colors-currencies-eth);
+		@include currency-color($coin-eth);
 	}
 
 	&.ltc {
-		@include currency-color($colors-currencies-ltc);
+		@include currency-color($coin-ltc);
 	}
 
 	&.layout-desktop {

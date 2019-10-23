@@ -96,10 +96,10 @@ class Home extends Component {
 			info
 		} = this.props;
 		const { style } = this.state;
-		const isExpired = (!Object.keys(info).length
-			|| moment().diff(info.created_at, 'days') > EXCHANGE_EXPIRY_DAYS)
+		const isExpired = (info && (!Object.keys(info).length
+			|| moment().diff(info.created_at, 'days') > EXCHANGE_EXPIRY_DAYS))
 			? true : false;
-		const expiryDays = EXCHANGE_EXPIRY_DAYS - moment().diff(info.created_at, 'days');
+		const expiryDays = info && info.created_at ? EXCHANGE_EXPIRY_DAYS - moment().diff(info.created_at, 'days') : 0;
 		return (
 			<div
 				className={classnames(

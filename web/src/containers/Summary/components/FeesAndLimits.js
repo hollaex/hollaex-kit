@@ -9,12 +9,19 @@ import { ICONS, FEES_LIMIT_SITE_URL } from "../../../config/constants";
 import STRINGS from "../../../config/localizedStrings";
 
 const FeesAndLimits = ({ data, onClose, coins, pairs }) => {
-	const { tradingAccount, verification_level } = data;
+	const { verification_level } = data;
+	const LEVEL_OF_ACCOUNT = STRINGS.formatString(STRINGS.SUMMARY.LEVEL_OF_ACCOUNT, verification_level);
 	return (
 		<div className="fee-limits-wrapper">
 			<IconTitle
-				text={`${STRINGS.SUMMARY.FEES_AND_LIMIT} ${tradingAccount.fullName}`}
-				iconPath={ICONS[tradingAccount.symbol.toUpperCase()]}
+				text={
+					STRINGS.formatString(
+						STRINGS.SUMMARY.FEES_AND_LIMIT,
+						LEVEL_OF_ACCOUNT
+					)}
+				iconPath={ICONS[`LEVEL_ACCOUNT_ICON_${verification_level}`]
+					? ICONS[`LEVEL_ACCOUNT_ICON_${verification_level}`]
+					: ICONS.LEVEL_ACCOUNT_ICON_4}
 				textType="title"
 				useSvg={true}
 				underline={true}
