@@ -5617,10 +5617,9 @@ table th {
     height: 5rem; }
   .icon_title-wrapper .icon_title-text {
     font-size: 1.25rem;
-    margin: 1rem;
-    font-weight: bold; }
+    margin: 1rem; }
     .icon_title-wrapper .icon_title-text.title {
-      font-size: 4rem;
+      font-size: 3.5rem;
       text-transform: capitalize; }
 
 .direction_ltr .icon_title-wrapper {
