@@ -7,7 +7,7 @@ import { CurrencyBall } from '../../components';
 
 import { minValue, maxValue } from '../../components/Form/validations';
 import { FieldError } from '../../components/Form/FormFields/FieldWrapper';
-import { FLEX_CENTER_CLASSES, DEFAULT_PAIR } from '../../config/constants';
+import { FLEX_CENTER_CLASSES } from '../../config/constants';
 
 import STRINGS from '../../config/localizedStrings';
 
@@ -25,8 +25,14 @@ const generateStyle = (value) => {
 class InputBlock extends Component {
 	state = {
 		value: '',
-		symbol: DEFAULT_PAIR
+		symbol: ''
 	};
+
+	componentWillMount() {
+		if (this.props.symbol) {
+			this.setState({ symbol: this.props.symbol })
+		}
+	}
 
 	componentDidMount() {
 		if (this.props.initialValue) {

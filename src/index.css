@@ -6873,9 +6873,10 @@ foreignObject {
       background-color: #3e4ea1; }
     .quick_trade-wrapper .input_block-content.loading.ltc::after {
       background-color: #bcbec0; }
-  .quick_trade-wrapper .tab_controller-wrapper .tab_controller-tabs {
-    display: flex;
-    justify-content: center; }
+  .quick_trade-wrapper .mobile_dropdown-section .mobile-drop-down {
+    color: #212121; }
+    .quick_trade-wrapper .mobile_dropdown-section .mobile-drop-down .option {
+      color: #2e2f37; }
 
 @keyframes linear_loading {
   0% {
@@ -6924,9 +6925,14 @@ foreignObject {
   .dark-theme .quick_trade-wrapper .input_block-inputbox {
     background-color: #1f212a;
     color: #b6b5cd; }
+  .dark-theme .quick_trade-wrapper .mobile_dropdown-section .mobile-drop-down {
+    color: #b6b5cd; }
+    .dark-theme .quick_trade-wrapper .mobile_dropdown-section .mobile-drop-down .option {
+      background: #1f212a;
+      color: #777677; }
 
 .dark-theme svg .quick-trade-1 {
-  fill: #a3a1ca; }
+  stroke: #a3a1ca; }
 
 .dark-theme svg .quick-trade-2 {
   fill: #000000; }
@@ -6939,6 +6945,9 @@ foreignObject {
 
 .layout-mobile .quick_trade-wrapper {
   margin-top: -24px; }
+
+.mobile_dropdown-section {
+  border-top: solid; }
 
 .legal-container {
   width: 100%; }
@@ -7200,16 +7209,16 @@ foreignObject {
   appearance: none;
   text-indent: 1px;
   text-overflow: '';
-  color: #000000;
+  color: #f59121;
   font-size: 2rem;
   font-weight: bold;
   padding-right: 2rem; }
 
-.layout-mobile .with_arrow_trade:after {
+.with_arrow_trade:after {
   border-left-color: #212121 !important;
   border-right-color: #212121 !important; }
 
-.layout-mobile .direction_ltr .with_arrow_trade:after {
+.direction_ltr .with_arrow_trade:after {
   content: "";
   display: block;
   position: relative;
@@ -7222,7 +7231,7 @@ foreignObject {
   transform: rotate(90deg);
   left: -1.5rem; }
 
-.layout-mobile .direction_rtl .with_arrow_trade:after {
+.direction_rtl .with_arrow_trade:after {
   transform: rotate(90deg);
   content: "";
   display: block;
@@ -7235,12 +7244,9 @@ foreignObject {
   margin-left: -0.38rem;
   right: -1rem; }
 
-.layout-mobile .dark-theme .with_arrow_trade:after {
+.dark-theme .with_arrow_trade:after {
   border-left-color: #b6b5cd !important;
   border-right-color: #b6b5cd !important; }
-
-.dark-theme .mobile-drop-down {
-  color: #777677; }
 
 .layout-mobile .chat-wrapper {
   position: relative;

@@ -3,14 +3,15 @@ import ReactSVG from 'react-svg';
 import classnames from 'classnames';
 
 import { Sortable } from '../Sortable';
-import { ICONS, BASE_CURRENCY } from '../../config/constants';
+import { ICONS, BASE_CURRENCY, DEFAULT_COIN_DATA } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 import { formatToCurrency, formatPercentage, formatAverage } from '../../utils/currency';
 
 const Tab = ({ pair = {}, tab, ticker = {}, coins = {}, activePairTab, onTabClick, onTabChange, items, selectedToOpen, selectedToRemove, ...rest }) => {
-    const { min } = coins[pair.pair_base || BASE_CURRENCY] || {};
-    const priceDifference = (ticker.close || 0) - (ticker.open || 0);
-    const tickerPercent = priceDifference === 0 ? 0 : ((priceDifference / ticker.open) * 100);
+    const { min, symbol } = coins[pair.pair_base || BASE_CURRENCY] || DEFAULT_COIN_DATA;
+    const pairTwo = coins[pair.pair_2 || BASE_CURRENCY] || DEFAULT_COIN_DATA;
+    const priceDifference = ticker.open === 0 ? 0 : ((ticker.close || 0) - (ticker.open || 0));
+    const tickerPercent = priceDifference === 0 || ticker.open === 0 ? 0 : ((priceDifference / ticker.open) * 100);
     const priceDifferencePercent = isNaN(tickerPercent) ? formatPercentage(0) : formatPercentage(tickerPercent);
     const pairBase = pair.pair_base || '';
     const pair2 = pair.pair_2 || '';
@@ -32,7 +33,7 @@ const Tab = ({ pair = {}, tab, ticker = {}, coins = {}, activePairTab, onTabClic
                 {...rest}>
                 <div className="app_bar-pair-font d-flex align-items-center justify-content-between">
                     <div className="app_bar-currency-txt">
-                        {STRINGS[`${pairBase.toUpperCase()}_SHORTNAME`]}/{STRINGS[`${pair2.toUpperCase()}_SHORTNAME`]}:
+                        {symbol.toUpperCase()}/{pairTwo.symbol.toUpperCase()}:
                     </div>
                     <div className="title-font ml-1">{`${STRINGS[`${pair2.toUpperCase()}_CURRENCY_SYMBOL`]} ${formatAverage(formatToCurrency(ticker.close, min))}`}</div>
                     <div className={priceDifference < 0 ? "app-price-diff-down app-bar-price_diff_down" : "app-bar-price_diff_up app-price-diff-up"}>
@@ -41,7 +42,7 @@ const Tab = ({ pair = {}, tab, ticker = {}, coins = {}, activePairTab, onTabClic
                     <div
                         className={priceDifference < 0
                             ? "title-font ml-1 app-price-diff-down" : "title-font ml-1 app-price-diff-up"}>
-                            {`(${priceDifferencePercent})`}
+                        {`(${priceDifferencePercent})`}
                     </div>
                 </div>
             </div>

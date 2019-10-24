@@ -346,7 +346,13 @@ export const CURRENCIES = {
 	}
 };
 
-
+export const CURRENCY_PRICE_FORMAT = '{0} {1}';
+// this DEFAULT_COIN_PAIR to prevent from error while irrelevant BASE_CURRENCY
+export const DEFAULT_COIN_DATA = {
+	fullname: '',
+	symbol: '',
+	min: 0.001
+};
 export const DEFAULT_PAIR = 'hex-usdt';
 
 export const FLEX_CENTER_CLASSES = [

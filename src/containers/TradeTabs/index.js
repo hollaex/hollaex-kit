@@ -153,8 +153,8 @@ class AddTradeTab extends Component {
                             let pair = pairs[key];
                             let { min } = coins[pair.pair_base || BASE_CURRENCY] || {};
                             let ticker = tickers[key] || {};
-                            const priceDifference = (ticker.close || 0) - (ticker.open || 0);
-                            const tickerPercent = priceDifference === 0 ? 0 : ((priceDifference / ticker.open) * 100);
+                            const priceDifference = ticker.open === 0 ? 0 : ((ticker.close || 0) - (ticker.open || 0));
+                            const tickerPercent = priceDifference === 0 || ticker.open === 0 ? 0 : ((priceDifference / ticker.open) * 100);
                             const priceDifferencePercent = isNaN(tickerPercent) ? formatPercentage(0) : formatPercentage(tickerPercent);
                             let icon = ICONS[`${pair.pair_base.toUpperCase()}_ICON${activeTheme === 'dark' ? '_DARK' : ''}`]
                             console.log('');

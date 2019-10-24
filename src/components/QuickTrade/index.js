@@ -4,12 +4,11 @@ import ReactSVG from 'react-svg';
 import { debounce } from 'lodash';
 import { browserHistory } from 'react-router';
 import { isMobile } from 'react-device-detect';
-import {Button, TabController, CheckTitle } from '../../components';
-
+import { Button, CheckTitle } from '../../components';
+import MobileDropdownWrapper from '../../containers/Trade/components/MobileDropdownWrapper';
 import STRINGS from '../../config/localizedStrings';
 import {
 	ICONS,
-	DEFAULT_PAIR,
 	FLEX_CENTER_CLASSES,
 	BALANCE_ERROR
 } from '../../config/constants';
@@ -49,19 +48,22 @@ class QuickTrade extends Component {
 	state = {
 		side: STRINGS.SIDES[0].value,
 		value: 1,
-		symbol: DEFAULT_PAIR,
+		symbol: '',
 		tabs: [],
-		activeTab:-1,
+		activeTab: -1,
 		currencies: []
 	};
+
+	componentWillMount() {
+		if (this.props.symbol) {
+			this.onChangeSymbol(this.props.symbol);
+		}
+	}
 
 	componentDidMount() {
 		if (this.props.symbol !== BASE_CURRENCY) {
 			this.updateTabs()
 			this.onChangeSymbol(this.props.symbol);
-		} else {
-			this.updateTabs()
-			this.onChangeSymbol(DEFAULT_PAIR);
 		}
 		if (this.props.onChangeSide) {
 			this.updateTabs()
@@ -107,6 +109,10 @@ class QuickTrade extends Component {
 		if (this.props.onChangeSide) {
 			this.props.onChangeSide(side);
 		}
+	};
+
+	goToPair = (pair) => {
+		browserHistory.push(`/quick-trade/${pair}`)
 	};
 
 	onChangeValue = (value) => {
@@ -169,7 +175,7 @@ class QuickTrade extends Component {
 						// ...GROUP_CLASSES
 					)}
 				>
-					<ReactSVG path={ICONS.QUICK_TRADE} wrapperClassName= {isMobile ?'quick_trade-tab-icon' :"quick_trade-icon"} />
+					<ReactSVG path={ICONS.QUICK_TRADE} wrapperClassName={isMobile ? 'quick_trade-tab-icon' : "quick_trade-icon"} />
 					<div className={classnames("title text-capitalize", ...FLEX_CENTER_CLASSES)}>
 						{STRINGS.formatString(
 							STRINGS.QUICK_TRADE_COMPONENT.TRADE_TITLE,
@@ -184,14 +190,10 @@ class QuickTrade extends Component {
 						// ...GROUP_CLASSES
 					)}
 				>
-					<div className="apply_rtl">
-						<TabController
-							quicktrade={true}
-							activeTab={activeTab}
-							setActiveTab={this.setActiveTab}
-							tabs={tabs}
-							className="account-tab"
-						/>
+					<div className='mobile_dropdown-section d-flex justify-content-center align-items-center '>
+						<div className='my-5'>
+							<MobileDropdownWrapper goToPair={this.goToPair} />
+						</div>
 					</div>
 					<div>
 						<ToogleButton
@@ -263,8 +265,8 @@ class QuickTrade extends Component {
 }
 
 QuickTrade.defaultProps = {
-	onRequestMarketValue: () => {},
-	onReviewQuickTrade: () => {},
+	onRequestMarketValue: () => { },
+	onReviewQuickTrade: () => { },
 	estimatedValue: 0,
 	disabled: false
 };

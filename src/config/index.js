@@ -3,7 +3,7 @@ const PRODUCTION_ENDPOINT =
 
 const LOCALHOST_ENDPOINT = 'https://api.demo.hollaex.com';
 
-const API_PATH_V0 = '/v0';
+const API_PATH_V0 = '/v1';
 
 const generateEndpoint = (endpoint, path) => ({
 	API_URL: `${endpoint}${path}`,

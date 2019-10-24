@@ -263,8 +263,7 @@ class AppBar extends Component {
 		const totalPending = securityPending + walletPending;
 		let pair = '';
 		if (Object.keys(pairs).length) {
-			const { pair_base } = pairs[Object.keys(pairs)[0]];
-			pair = `${pair_base}-${STRINGS[`${BASE_CURRENCY.toUpperCase()}_SHORTNAME`].toLowerCase()}`;
+			pair = Object.keys(pairs)[0];
 		} else {
 			pair = this.props.pair;
 		}
