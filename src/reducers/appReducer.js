@@ -14,7 +14,9 @@ import {
 	SET_UNREAD,
 	SET_ORDER_LIMITS,
 	SET_TICKER_FROM_TRADE,
-	SET_CURRENCIES
+	SET_CURRENCIES,
+	SET_VALID_BASE_CURRENCY,
+	SET_CONFIG,
 } from '../actions/appActions';
 import { THEME_DEFAULT } from '../config/constants';
 import { getLanguage } from '../utils/string';
@@ -50,7 +52,9 @@ const INITIAL_STATE = {
 	pair: '',
 	tickers: {},
 	orderLimits: {},
-	coins: {}
+	coins: {},
+	config: {},
+	config_level: []
 };
 
 const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
@@ -198,7 +202,7 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 		case SET_TICKER_FROM_TRADE:
 			let tempTickers = {};
 			let pairs = Object.keys(state.pairs);
-			Object.keys(payload).map(key => {
+			Object.keys(payload).forEach((key) => {
 				if (pairs.includes(key)) {
 					let temp = state.tickers[key] || {};
 					let pairTrade = payload[key][0];
@@ -210,7 +214,7 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 					tempTickers[key] = {
 						...temp,
 						close
-					}
+					};
 				}
 			});
 			return {
@@ -224,6 +228,17 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 			return {
 				...state,
 				orderLimits: payload
+			};
+		case SET_VALID_BASE_CURRENCY:
+			return {
+				...state,
+				isValidBase: payload.isValidBase
+			};
+		case SET_CONFIG:
+			return {
+				...state,
+				config: payload.config,
+				config_level: payload.config_level
 			};
 		default:
 			return state;

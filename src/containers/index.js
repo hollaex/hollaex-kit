@@ -30,3 +30,18 @@ export { default as Summary } from './Summary';
 export { default as AddTradeTabs } from './TradeTabs';
 export { default as TermsOfService } from './TermsOfService';
 export { default as DepositFunds } from './TermsOfService/DepositFunds';
+
+// ADMIN PAGE
+export { default as User } from './Admin/User';
+export { default as AppWrapper } from './Admin/AppWrapper';
+export { default as Main } from './Admin/Main';
+export { default as DepositsPage } from './Admin/DepositsPage';
+export { default as Limits } from './Admin/Limits';
+export {
+	default as BlockchainTransaction
+} from './Admin/BlockchainTransaction';
+export { default as Fees } from './Admin/Fees';
+export { default as AdminChat } from './Admin/Chat';
+export { default as Wallets } from './Admin/Wallets';
+export { default as UserFees } from './Admin/UserFees';
+export { PATHS } from './Admin/paths';

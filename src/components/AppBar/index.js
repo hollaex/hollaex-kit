@@ -17,7 +17,7 @@ import PairTabs from './PairTabs';
 import MenuList from './MenuList';
 import { MobileBarWrapper } from '../';
 import STRINGS from '../../config/localizedStrings';
-import { isLoggedIn } from '../../utils/token';
+import { isLoggedIn, isAdmin } from '../../utils/token';
 import { getMe, setMe } from '../../actions/userAction';
 import { getTickers, setNotification, NOTIFICATIONS } from '../../actions/appActions';
 
@@ -295,7 +295,24 @@ class AppBar extends Component {
 					? isLoggedIn()
 						? <div className="d-flex app-bar-account">
 							<div className="d-flex app_bar-quicktrade-container">
-									<Link to='/trade/add/tabs'>
+								{isAdmin() ? (
+										<Link to="/admin">
+											<div
+												className={classnames('app_bar-quicktrade', 'd-flex', {
+													'quick_trade-active': location.pathname === '/admin'
+												})}
+											>
+												<ReactSVG
+													path={ICONS.SIDEBAR_ADMIN_DASH_ACTIVE}
+													wrapperClassName="quicktrade_icon mx-1"
+												/>
+												<div className="d-flex align-items-center">
+													{STRINGS.ADMIN_DASH}
+												</div>
+											</div>
+										</Link>
+									) : null}
+								<Link to='/trade/add/tabs'>
 									<div
 										className={classnames(
 											'app_bar-quicktrade',
