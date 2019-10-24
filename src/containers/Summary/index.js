@@ -24,7 +24,8 @@ import {
     calculateBalancePrice,
     donutFormatPercentage,
     calculatePrice,
-    calculatePricePercentage } from '../../utils/currency';
+    calculatePricePercentage
+} from '../../utils/currency';
 import { getLastMonthVolume } from './components/utils';
 
 const default_trader_account = TRADING_ACCOUNT_TYPE.shrimp;
@@ -38,7 +39,6 @@ class Summary extends Component {
         lastMonthVolume: 0
     };
 
-    
     componentDidMount() {
         const { user, tradeVolumes, pairs, prices } = this.props;
 
@@ -132,7 +132,11 @@ class Summary extends Component {
     };
 
     onInviteFriends = () => {
-        this.props.setNotification(NOTIFICATIONS.INVITE_FRIENDS, { affiliation_code: this.props.user.affiliation_code });
+        this.props.setNotification(NOTIFICATIONS.INVITE_FRIENDS, { affiliation_code: this.props.user.affiliation_code});
+    };
+
+    onStakeToken = () => {
+        this.props.setNotification(NOTIFICATIONS.STAKE_TOKEN);
     };
 
     render() {
@@ -159,6 +163,7 @@ class Summary extends Component {
                         totalAssets={totalAssets}
                         lastMonthVolume={lastMonthVolume}
                         onInviteFriends={this.onInviteFriends}
+                        onStakeToken={this.onStakeToken}
                         onFeesAndLimits={this.onFeesAndLimits}
                         onUpgradeAccount={this.onUpgradeAccount}
                         onAccountTypeChange={this.onAccountTypeChange}
@@ -174,7 +179,8 @@ class Summary extends Component {
                                         account={currentTradingAccount}
                                         onFeesAndLimits={this.onFeesAndLimits}
                                         onUpgradeAccount={this.onUpgradeAccount}
-                                        onInviteFriends={this.onInviteFriends} />
+                                        onInviteFriends={this.onInviteFriends}
+                                        onStakeToken={this.onStakeToken} />
                                 </SummaryBlock>
                             </div>
                             <div className="summary-section_1 requirement-wrapper d-flex">
@@ -225,7 +231,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
     logoutconfirm: bindActionCreators(logoutconfirm, dispatch),
-	logout: bindActionCreators(logout, dispatch),
+    logout: bindActionCreators(logout, dispatch),
     openFeesStructureandLimits: bindActionCreators(openFeesStructureandLimits, dispatch),
     openContactForm: bindActionCreators(openContactForm, dispatch),
     setNotification: bindActionCreators(setNotification, dispatch)

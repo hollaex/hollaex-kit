@@ -246,6 +246,7 @@ export const ICONS = {
 	HEX_FAQ: '/assets/images/HEX-FAQ.svg',
 	HEX_PDF: '/assets/images/HEX-pdf.svg',
 	EDIT_ICON: '/assets/images/edit-icon.svg',
+	STAKETOKEN_ICON: '/assets/images/stake.svg'
 };
 
 export const SOCIAL_ICONS = {

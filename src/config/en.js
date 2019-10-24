@@ -1054,7 +1054,9 @@ export default {
 	SUMMARY: { 
 		TITLE: 'Summary',
 		TRADER_ACCOUNT_TITLE: 'Account', // new
-		TRADER_ACCOUNT_TXT_1: 'Join HAP (HollaEx Affiliation Program) by submiting this form to us. If you are eligible and accepted into HAP, you can receive up to 10% in referrals.',
+		// TRADER_ACCOUNT_TXT_1: 'Join HAP (HollaEx Affiliation Program) by submiting this form to us. If you are eligible and accepted into HAP, you can receive up to 10% in referrals.',
+		TRADER_ACCOUNT_TXT_1: 'Earn up to 10% in commisions through distributing the HollaEx Kit. Alternatively you can earn ', // new
+		TRADER_ACCOUNT_TXT_2: 'HEX daily through staking your HEX token when running your own exchange.', // new
 		TINY_PINK_SHRIMP_TRADER: 'Tiny Pink Shrimp Trader',
 		TINY_PINK_SHRIMP_TRADER_ACCOUNT: 'Tiny Pink Shrimp Trader Account',
 		LITTLE_RED_SNAPPER_TRADER: 'Little Red Snapper Trader',
@@ -1104,12 +1106,27 @@ export default {
 		TRADING_VOLUME_EQUIVALENT: '{0} {1} Trading Volume Equivalent'
 	},
 	REFERRAL_LINK: {
-		TITLE: 'APPLY FOR HAP Referral Code', // new
+		// TITLE: 'APPLY FOR HAP Referral Code', // new
+		TITLE: 'EARN 10% IN COMISSIONS', // new
 		INFO_TEXT: 'Earn 1 HEX for every 10 HEX your friends buy.', // new
 		INFO_TEXT_1: 'Commissions are paid periodically to your HEX wallet', // new
 		COPY_FIELD_LABEL: 'Share the link below with friends and earn commissions:', // new
 		REFERRED_USER_COUT: 'You have referred {0} users', // new
-		COPY_LINK_BUTTON: 'COPY REFERRAL LINK' // new
+		COPY_LINK_BUTTON: 'COPY REFERRAL LINK', // new
+		APPLICATION_TXT: 'To become a HollaEx Kit distributor please fill out an application.', // new
+		TOTAL_REFERRAL: 'Total bought from referrals:', // new
+		PENDINF_REFERRAL: 'Commissions Pending:', // new
+		EARN_REFERRAL: 'Commissions Earnt:', // new
+		HEX_COUNT: '{0} HEX', // new
+		APPLY_BUTTON: 'APPLY', // new
+
+	},
+	STAKE_TOKEN: {
+		TITLE: 'Stake HEX Token', // new
+		INFO_TXT1: 'For every user of the HollaEx Exchange Kit there are HEX tokens collateralized to run the exchange software.', // new
+		INFO_TXT2: 'You can collateralize your HEX token in a similar fashion to staking and earn HEX not sold during the HEX Wave Auction.', // new
+		INFO_TXT3: 'Simply go to dash.bitholla.com and collateralize your own exchange today and earn free HEX', // new
+		BUTTON_TXT: 'GO TO DASH' // new
 	},
 	TERMS_OF_SERVICES: { // new
 		TITLE: 'HollaEx Token Purchase Agreement',

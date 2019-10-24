@@ -6,7 +6,7 @@ import STRINGS from '../../../config/localizedStrings';
 import { ICONS } from '../../../config/constants';
 
 
-const TraderAccounts = ({ account = {}, activeTheme, isAccountDetails = false, onFeesAndLimits, onUpgradeAccount, logout, onInviteFriends }) => {
+const TraderAccounts = ({ account = {}, activeTheme, isAccountDetails = false, onFeesAndLimits, onUpgradeAccount, logout, onInviteFriends, onStakeToken }) => {
     // let limitLevel = limits.filter(obj => obj.verification_level === account.level);
     return (
         <div className="d-flex">
@@ -17,38 +17,33 @@ const TraderAccounts = ({ account = {}, activeTheme, isAccountDetails = false, o
                 {isAccountDetails && <div className="summary-block-title mb-3">{account.fullName}</div>}
                 <div className="account-details-content">
                     <div className="mb-2">
-                        {STRINGS.formatString(
-                            STRINGS.SUMMARY.TRADER_ACCOUNT_TXT_1,
-                            STRINGS.HEX_SHORTNAME,
-                            '$0.10'
-                        )}
+                        <div> {STRINGS.SUMMARY.TRADER_ACCOUNT_TXT_1}</div>
+                        <div> {STRINGS.SUMMARY.TRADER_ACCOUNT_TXT_2}</div>
                     </div>
                 </div>
-                {/* {!!limitLevel.length && <div
-                    className="trade-account-link mb-2">
-                    <span
-                        className="pointer"
-                        onClick={() => onFeesAndLimits(account)}>
-                        {STRINGS.SUMMARY.VIEW_FEE_STRUCTURE.toUpperCase()}
-                    </span>
-                </div>} */}
-                {!isAccountDetails && <div
-                    className="trade-account-link mb-2">
-                    <a 
-                        href="https://forms.gle/MnxUAL9hz3uDyN798"
-                        target="blank">
+                {!isAccountDetails && <div>
+
+                    <div className="trade-account-link mb-2">
                         <span
-                            className="pointer">
-                            {/*onClick={onInviteFriends}>*/}
+                            className="pointer" onClick={onInviteFriends}>
                             {STRINGS.REFERRAL_LINK.TITLE.toUpperCase()}
                         </span>
-                    </a>
-                </div>}
+
+                    </div>
+                    <div className="trade-account-link mb-2">
+                        <span
+                            className="pointer" onClick={onStakeToken}>
+                            {STRINGS.STAKE_TOKEN.TITLE.toUpperCase()}
+                        </span>
+
+                    </div>
+                </div>
+                }
                 {isMobile ?
-                    <div className="trade-account-link my-2" onClick={() => logout()} > 
+                    <div className="trade-account-link my-2" onClick={() => logout()} >
                         {STRINGS.LOGOUT.toUpperCase()}
-                    </div> 
-                :'' }
+                    </div>
+                    : ''}
             </div>
         </div>
     );
