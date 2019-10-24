@@ -2707,7 +2707,7 @@ table th {
   .summary-container .trader-account-wrapper {
     font-size: 0.9rem; }
   .summary-container .summary-section_1 {
-    height: 21rem !important; }
+    height: 23rem !important; }
   .summary-container .summary-section_2 {
     height: 44rem !important; }
   .fee-limits-wrapper .content-txt {
@@ -4532,7 +4532,13 @@ table th {
     width: 36rem; }
     .notification-wrapper .invite_friends_wrapper .user_refer_info {
       background-color: #f5f5f5;
-      height: 5.5rem; }
+      height: 5.5rem;
+      justify-content: space-between; }
+      .notification-wrapper .invite_friends_wrapper .user_refer_info .separator_line {
+        border-left: 2px solid #BBBDBF;
+        height: 3rem; }
+      .notification-wrapper .invite_friends_wrapper .user_refer_info .application_txt {
+        font-size: inherit; }
     .notification-wrapper .invite_friends_wrapper .icon_title-wrapper .icon_title-svg {
       height: 8rem;
       width: 8rem; }
@@ -4541,6 +4547,8 @@ table th {
       width: 8rem; }
     .notification-wrapper .invite_friends_wrapper .icon_title-wrapper .icon_title-text.title {
       font-size: 2rem; }
+  .notification-wrapper svg .stake_icon {
+    fill: #777677; }
 
 .notification-wrapper .notification-content-wrapper.notification-withdrawal .notification-content-icon {
   width: 80% !important; }
@@ -4605,6 +4613,11 @@ table th {
     fill: #a3a1ca; }
   .dark-theme .notification-wrapper .invite_friends_wrapper .user_refer_info {
     background-color: #353841; }
+    .dark-theme .notification-wrapper .invite_friends_wrapper .user_refer_info .separator_line {
+      border-left: 2px solid #a3a1ca;
+      height: 3rem; }
+  .dark-theme .notification-wrapper .invite_friends_wrapper svg .stake_icon {
+    fill: #a3a1ca; }
 
 .layout-mobile .notification-wrapper {
   flex: 1;
