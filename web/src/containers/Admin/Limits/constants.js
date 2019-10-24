@@ -54,12 +54,7 @@ export const getCurrencyColumns = (handleClick) => [
 		title: 'symbol',
 		dataIndex: 'symbol',
 		key: 'symbol',
-		render: (v, data) => (<div className="d-flex">
-			<div>{v}</div>
-			<div className="pointer" onClick={() => handleClick(v, data, 'symbol')}>
-				<ReactSVG path={ICONS.EDIT_ICON} wrapperClassName="edit_icon mx-2" />
-			</div>
-		</div>)
+		render: (v, data) => (<div>{v}</div>)
 	},
 	{
 		title: 'active',
