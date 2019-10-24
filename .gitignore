@@ -22,3 +22,6 @@ web/yarn-debug.log*
 web/yarn-error.log*
 
 web/src/**/*.css
+
+templates/local/nginx/conf.d/*
+templates/kubernetes/config/*
