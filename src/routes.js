@@ -84,7 +84,7 @@ if (token) {
 function requireAuth(nextState, replace) {
 	if (!isLoggedIn()) {
 		replace({
-			pathname: '/login'
+			pathname: '/trade/hex-usdt'
 		});
 	}
 }
@@ -92,7 +92,7 @@ function requireAuth(nextState, replace) {
 function loggedIn(nextState, replace) {
 	if (isLoggedIn()) {
 		replace({
-			pathname: '/account'
+			pathname: '/trade/hex-usdt'
 		});
 	}
 }

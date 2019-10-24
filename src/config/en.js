@@ -1140,7 +1140,7 @@ export default {
 		READ_DOCUMENTATION: 'Read HollaEx whitepaper here: {0}',
 		READ_WAVES: 'Rules for the coming December Public Wave Auction{0}', // new
 		DOWNLOAD_BUY_HEX: 'Download the PDF to see a visual step-by-step processes on {0}',
-		HOW_TO_BUY: 'how to buy HEX',
+		HOW_TO_BUY: 'how to buy HollaEx Token (HEX)',
 		PUBLIC_SALES: ' Public Wave Auction', // new
 		CONTACT_US: 'Feel free to contact us for more information and any issues by sending us an email to {0}',
 		VISUAL_STEP: 'See a visual step-by-step processes on {0}', // new
