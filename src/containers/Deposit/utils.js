@@ -1,7 +1,7 @@
 import React from 'react';
 import QRCode from 'qrcode.react';
 import classnames from 'classnames';
-import { BASE_CURRENCY } from '../../config/constants';
+import { BASE_CURRENCY, DEFAULT_COIN_DATA } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 
 import { isMobile } from 'react-device-detect';
@@ -68,7 +68,7 @@ const renderBTCContent = (label = '', address = '', onCopy, copyOnClick, destina
 
 export const renderContent = (symbol, crypto_wallet = {}, coins = {}, onCopy) => {
    if (coins[symbol] && symbol !== BASE_CURRENCY) {
-      const { fullname } = coins[symbol];
+      const { fullname } = coins[symbol] || DEFAULT_COIN_DATA;
       let address = crypto_wallet[symbol];
       let destinationAddress = '';
       if (symbol === 'xrp') {

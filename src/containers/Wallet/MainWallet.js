@@ -13,7 +13,7 @@ import { TransactionsHistory } from '../';
 import { changeSymbol } from '../../actions/orderbookAction';
 import { NOTIFICATIONS, openContactForm } from '../../actions/appActions';
 import { createAddress, cleanCreateAddress } from '../../actions/userAction';
-import { ICONS, BASE_CURRENCY } from '../../config/constants';
+import { ICONS, BASE_CURRENCY, CURRENCY_PRICE_FORMAT, DEFAULT_COIN_DATA } from '../../config/constants';
 import { calculateBalancePrice, formatToCurrency } from '../../utils/currency';
 import STRINGS from '../../config/localizedStrings';
 
@@ -62,12 +62,12 @@ class Wallet extends Component {
 	}
 
 	calculateTotalAssets = (balance, prices, coins) => {
-		const total = calculateBalancePrice(balance, prices, coins);
-		const { min } = coins[BASE_CURRENCY] || {};
+		const total = calculateBalancePrice(balance, prices);
+		const { min, symbol = '' } = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
 		return STRINGS.formatString(
-			STRINGS[`${BASE_CURRENCY.toUpperCase()}_PRICE_FORMAT`],
+			CURRENCY_PRICE_FORMAT,
 			formatToCurrency(total, min),
-			STRINGS[`${BASE_CURRENCY.toUpperCase()}_CURRENCY_SYMBOL`]
+			symbol.toUpperCase()
 		);
 	};
 
@@ -171,7 +171,7 @@ class Wallet extends Component {
 			activeTab,
 			mobileTabs
 		} = this.state;
-		const { activeTheme, addressRequest } = this.props;
+		const { activeTheme, addressRequest, coins } = this.props;
 		if (mobileTabs.length === 0) {
 			return <div />;
 		}
@@ -219,6 +219,7 @@ class Wallet extends Component {
 								onGenerate={this.onCreateAddress}
 								currency={selectedCurrency}
 								data={addressRequest}
+								coins={coins}
 							/>
 						)}
 				</Dialog>

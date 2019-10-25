@@ -4,61 +4,6 @@ export default {
 	APP_TITLE: 'HollaEx', // new
 	APP_SUB_TITLE: 'THE DIGITAL FUEL FOR TRADING EXCHANGES', // new
 	APP_NAME: 'HollaEx', // new
-	FIAT_NAME: 'EURO',
-	FIAT_FULLNAME: 'Euro',
-	FIAT_SHORTNAME: 'EUR',
-	FIAT_SHORTNAME_EN: 'EUR',
-	FIAT_CURRENCY_SYMBOL: '€',
-	FIAT_PRICE_FORMAT: '{0} {1}', // 0-> amount  1 -> symbol  600,000 T
-
-	EUR_NAME: 'EURO',
-	EUR_FULLNAME: 'Euro',
-	EUR_SHORTNAME: 'EUR',
-	EUR_SHORTNAME_EN: 'EUR', // new
-	EUR_CURRENCY_SYMBOL: '€',
-	EUR_PRICE_FORMAT: '{0} {1}', // 0-> amount  1 -> symbol  600,000 T
-
-	BTC_NAME: 'Bitcoin',
-	BTC_FULLNAME: 'Bitcoin',
-	BTC_SHORTNAME: 'BTC',
-	BTC_SHORTNAME_EN: 'BTC', // new
-	BTC_CURRENCY_SYMBOL: 'BTC',
-	BTC_PRICE_FORMAT: '{0} {1}', // 0-> amount  1 -> symbol  6.00245 BTC
-
-	ETH_NAME: 'Ethereum',
-	ETH_FULLNAME: 'Ethereum',
-	ETH_SHORTNAME: 'ETH',
-	ETH_SHORTNAME_EN: 'ETH', // new
-	ETH_CURRENCY_SYMBOL: 'ETH',
-	ETH_PRICE_FORMAT: '{0} {1}', // 0-> amount  1 -> symbol  6.00245 ETH
-
-	BCH_NAME: 'Bitcoin Cash',
-	BCH_FULLNAME: 'BitcoinCash',
-	BCH_SHORTNAME: 'BCH',
-	BCH_SHORTNAME_EN: 'BCH', // new
-	BCH_CURRENCY_SYMBOL: 'BCH',
-	BCH_PRICE_FORMAT: '{0} {1}',
-
-	XRP_NAME: 'Ripple',
-	XRP_FULLNAME: 'Ripple',
-	XRP_SHORTNAME: 'XRP',
-	XRP_SHORTNAME_EN: 'XRP', // new
-	XRP_CURRENCY_SYMBOL: 'XRP',
-	XRP_PRICE_FORMAT: '{0} {1}',
-	
-	HEX_NAME: 'HEX', // new
-	HEX_FULLNAME: 'HollaEx Token', // new
-	HEX_SHORTNAME: 'HEX', // new
-	HEX_SHORTNAME_EN: 'HEX', // new
-	HEX_CURRENCY_SYMBOL: 'HEX', // new
-	HEX_PRICE_FORMAT: '{0} {1}', // new
-
-	USDT_NAME: 'USDT', // new
-	USDT_FULLNAME: 'USD Tether', // new
-	USDT_SHORTNAME: 'USDT', // new
-	USDT_SHORTNAME_EN: 'USDT', // new
-	USDT_CURRENCY_SYMBOL: 'USDT', // new
-	USDT_PRICE_FORMAT: '{0} {1}', // new
 
 	LOGOUT_CONFIRM_TEXT: 'Are you sure?. Do you want to logout',
 	ADD_TRADING_PAIR: 'Add Trading Pair',

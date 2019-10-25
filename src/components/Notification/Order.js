@@ -1,7 +1,7 @@
 import React from 'react';
 import math from 'mathjs';
 import { connect } from 'react-redux';
-import { ICONS, BASE_CURRENCY } from '../../config/constants';
+import { ICONS, BASE_CURRENCY, CURRENCY_PRICE_FORMAT, DEFAULT_COIN_DATA } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 import { formatBtcAmount, formatToCurrency } from '../../utils/currency';
 import {
@@ -56,25 +56,26 @@ export const getTitleAndIcon = (type, { side, filled }) => {
 export const generateRows = (type, order, pairs, coins) => {
 	const rows = [];
 	const pair = pairs[order.symbol];
-	const basePair = pair.pair_base.toUpperCase();
-	const payPair = pair.pair_2.toUpperCase();
-	const { min } = coins[order.symbol || BASE_CURRENCY] || {};
+	const { min } = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
+	const baseValue = coins[pair.pair_base] || DEFAULT_COIN_DATA;
+	const payValue = coins[pair.pair_2] || DEFAULT_COIN_DATA;
+	const btcValue = coins['btc'] || DEFAULT_COIN_DATA;
 
 	if (type === 'order_added' && order.filled === 0) {
 		rows.push({
 			label: STRINGS.SIZE,
 			value: STRINGS.formatString(
-				STRINGS[`${basePair}_PRICE_FORMAT`],
+				CURRENCY_PRICE_FORMAT,
 				formatBtcAmount(order.size),
-				STRINGS[`${basePair}_SHORTNAME`]
+				baseValue.symbol.toUpperCase()
 			)
 		});
 		rows.push({
 			label: STRINGS.PRICE,
 			value: STRINGS.formatString(
-				STRINGS[`${payPair}_PRICE_FORMAT`],
+				CURRENCY_PRICE_FORMAT,
 				formatToCurrency(order.price, min),
-				STRINGS[`${payPair}_SHORTNAME`]
+				payValue.symbol.toUpperCase()
 			)
 		});
 	} else {
@@ -87,26 +88,26 @@ export const generateRows = (type, order, pairs, coins) => {
 			label:
 				order.side === SIDE_BUY ? STRINGS.ORDER_BOUGHT : STRINGS.ORDER_SOLD,
 			value: STRINGS.formatString(
-				STRINGS[`${basePair}_PRICE_FORMAT`],
+				CURRENCY_PRICE_FORMAT,
 				formatBtcAmount(order.filled),
-				STRINGS[`${basePair}_SHORTNAME`]
+				baseValue.symbol.toUpperCase()
 			)
 		});
 		rows.push({
 			label: STRINGS.PRICE,
 			value: STRINGS.formatString(
-				STRINGS[`${payPair}_PRICE_FORMAT`],
+				CURRENCY_PRICE_FORMAT,
 				formatToCurrency(order.price, min),
-				STRINGS[`${payPair}_SHORTNAME`]
+				payValue.symbol.toUpperCase()
 			)
 		});
 		rows.push({
 			label:
 				order.side === SIDE_BUY ? STRINGS.ORDER_SPENT : STRINGS.ORDER_RECEIVED,
 			value: STRINGS.formatString(
-				STRINGS[`${payPair}_PRICE_FORMAT`],
+				CURRENCY_PRICE_FORMAT,
 				formatToCurrency(orderValue, min),
-				STRINGS[`${payPair}_SHORTNAME`]
+				payValue.symbol.toUpperCase()
 			)
 		});
 
@@ -114,9 +115,9 @@ export const generateRows = (type, order, pairs, coins) => {
 			rows.push({
 				label: STRINGS.REMAINING,
 				value: STRINGS.formatString(
-					STRINGS.BTC_PRICE_FORMAT,
+					CURRENCY_PRICE_FORMAT,
 					formatBtcAmount(remaining),
-					STRINGS.BTC_SHORTNAME
+					btcValue.symbol.toUpperCase()
 				)
 			});
 		}

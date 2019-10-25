@@ -26,7 +26,6 @@ const LevelRow = ({ data = {}, isUserLevel = false }) => {
 		eth_deposit_daily,
 		eth_withdraw_daily
 	} = data;
-	console.log('levelRow', data);
 	return (
 		<tr
 			className={classnames('table-row table-bottom-border', {

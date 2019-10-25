@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
 import { scaleLinear, scaleBand } from 'd3-scale';
-import { axisBottom, axisRight} from 'd3-axis';
+import { axisBottom, axisRight } from 'd3-axis';
 import * as d3 from 'd3-selection';
 import moment from 'moment';
 import { connect } from 'react-redux';
 
-import { ICONS, BAR_CHART_LIMIT_CAPACITY, BASE_CURRENCY } from '../../../config/constants';
-import STRINGS from '../../../config/localizedStrings';
+import { ICONS, BAR_CHART_LIMIT_CAPACITY, BASE_CURRENCY, DEFAULT_COIN_DATA } from '../../../config/constants';
 import { formatToCurrency, formatAverage, formatBtcAmount } from '../../../utils/currency';
 
 function translate(x, y) {
@@ -56,7 +55,7 @@ class BarChart extends Component {
                 .domain([0, upperLimit]);
             const xScale = scaleBand()
                 .range([0, width])
-                .domain(chartData.map((s) => s.month ))
+                .domain(chartData.map((s) => s.month))
                 .padding(0.2);
             chart.append('g')
                 .attr('class', 'bar_yAxis')
@@ -184,8 +183,8 @@ class BarChart extends Component {
                             })
                             .attr('width', xScale.bandwidth())
                             .on("mouseover", (d) => {
-                                let currencyFormat = this.props.coins[pair] || {};
-                                let baseFormat = this.props.coins[BASE_CURRENCY] || {};
+                                let currencyFormat = this.props.coins[pair] || DEFAULT_COIN_DATA;
+                                let baseFormat = this.props.coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
                                 let volume = currencyFormat
                                     ? formatToCurrency(d.pairVolume[pair], currencyFormat.min)
                                     : formatBtcAmount(d.pairVolume[pair]);
@@ -198,7 +197,7 @@ class BarChart extends Component {
                                     .text(`${pair.toUpperCase()}: ${formatAverage(volume)}`);
                                 tooltip.append('div')
                                     .attr('class', 'tool_tip-pair-price')
-                                    .text(`~ ${STRINGS[`${BASE_CURRENCY.toUpperCase()}_SHORTNAME`]}: ${formatAverage(formatToCurrency(d.pairWisePrice[pair], baseFormat.min))}`);
+                                    .text(`~ ${baseFormat.symbol.toUpperCase()}: ${formatAverage(formatToCurrency(d.pairWisePrice[pair], baseFormat.min))}`);
                             })
                             .on("mousemove", function () {
                                 return tooltip.style("top", (d3.event.pageY - 10) + "px")
@@ -213,7 +212,7 @@ class BarChart extends Component {
             });
         }
     };
-    
+
     render() {
         return (
             <div id="bar-container" className="bar_wrapper w-100">

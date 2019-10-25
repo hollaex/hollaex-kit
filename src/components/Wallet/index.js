@@ -2,12 +2,14 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
 import { Accordion } from '../';
-import { BASE_CURRENCY } from '../../config/constants';
-import { calculateBalancePrice,
+import { BASE_CURRENCY, DEFAULT_COIN_DATA } from '../../config/constants';
+import {
+	calculateBalancePrice,
 	calculatePrice,
 	calculatePricePercentage,
 	donutFormatPercentage,
-	formatToCurrency } from '../../utils/currency';
+	formatToCurrency
+} from '../../utils/currency';
 import WalletSection from './Section';
 import { DonutChart } from '../../components';
 import STRINGS from '../../config/localizedStrings';
@@ -40,16 +42,15 @@ class Wallet extends Component {
 	}
 
 	generateSection = (symbol, price, balance, orders, coins) => {
-		const { min } = coins[symbol] || {};
-		const name = STRINGS[`${symbol.toUpperCase()}_NAME`];
+		const { min, fullname, ...rest } = coins[symbol] || DEFAULT_COIN_DATA;
 		return {
 			accordionClassName: 'wallet_section-wrapper',
-			title: name,
+			title: fullname,
 			titleClassName: 'wallet_section-title',
 			titleInformation: (
 				<div className="wallet_section-title-amount">
 					{formatToCurrency(balance[`${symbol}_balance`], min)}
-					<span className="mx-1">{STRINGS[`${symbol.toUpperCase()}_CURRENCY_SYMBOL`]}</span>
+					<span className="mx-1">{rest.symbol.toUpperCase()}</span>
 				</div>
 			),
 			content: (
@@ -67,12 +68,12 @@ class Wallet extends Component {
 	calculateSections = ({ price, balance, orders, prices, coins }) => {
 		const sections = [];
 		const data = [];
-		const baseCoin = coins[BASE_CURRENCY] || {};
+		const baseCoin = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
 
 		// TODO calculate right price
 		const totalAssets = calculateBalancePrice(balance, prices, coins);
 		Object.keys(coins).forEach((currency) => {
-			const { symbol, min } = coins[currency] || {};
+			const { symbol, min } = coins[currency] || DEFAULT_COIN_DATA;
 			const currencyBalance = calculatePrice(balance[`${symbol}_balance`], prices[currency]);
 			const balancePercent = calculatePricePercentage(currencyBalance, totalAssets);
 			data.push({
@@ -86,29 +87,31 @@ class Wallet extends Component {
 
 		this.setState({ sections, chartData: data, totalAssets: formatToCurrency(totalAssets, baseCoin.min) });
 	};
-	
+
 	goToWallet = () => browserHistory.push('/wallet');
 
 	render() {
 		const { sections, totalAssets, chartData } = this.state;
+		// const { isValidBase } = this.props;
 
 		if (Object.keys(this.props.balance).length === 0) {
 			return <div />;
 		}
+		// const { symbol = '' } = this.props.coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
 
 		return (
 			<div className="wallet-wrapper">
 				<div className="donut-container pointer" onClick={this.goToWallet}>
-					<DonutChart chartData={chartData} />
+					<DonutChart chartData={chartData} coins={this.props.coins} />
 				</div>
 				<Accordion sections={sections} />
-				{/* {BASE_CURRENCY && (
+				{/* {BASE_CURRENCY && isValidBase && (
 					<div className="wallet_section-wrapper wallet_section-total_asset d-flex flex-column">
 						<div className="wallet_section-title">
 							{STRINGS.WALLET.TOTAL_ASSETS}
 						</div>
 						<div className="wallet_section-total_asset d-flex justify-content-end">
-							{STRINGS[`${BASE_CURRENCY.toUpperCase()}_CURRENCY_SYMBOL`]}
+							{symbol.toUpperCase()}
 							<span>{totalAssets}</span>
 						</div>
 					</div>
@@ -126,7 +129,8 @@ const mapStateToProps = (state, ownProps) => ({
 	orders: state.order.activeOrders,
 	user_id: state.user.id,
 	activeLanguage: state.app.language,
-	coins: state.app.coins
+	coins: state.app.coins,
+	isValidBase: state.app.isValidBase
 });
 
 export default connect(mapStateToProps)(Wallet);

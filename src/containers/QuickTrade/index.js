@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux';
 import { isMobile } from 'react-device-detect';
 
 import STRINGS from '../../config/localizedStrings';
-import { ICONS, BALANCE_ERROR, BASE_CURRENCY } from '../../config/constants';
+import { ICONS, BALANCE_ERROR, BASE_CURRENCY, DEFAULT_COIN_DATA } from '../../config/constants';
 
 import {
 	QuickTrade,
@@ -21,9 +21,17 @@ import {
 	changeSymbol,
 	requestQuickTrade
 } from '../../actions/orderbookAction';
-import { formatBtcAmount, calculateBalancePrice, formatToCurrency } from '../../utils/currency';
+import {
+	formatBtcAmount,
+	calculateBalancePrice,
+	formatToCurrency
+} from '../../utils/currency';
 import { isLoggedIn } from '../../utils/token';
-import { changePair, setNotification, RISKY_ORDER } from '../../actions/appActions';
+import {
+	changePair,
+	setNotification,
+	RISKY_ORDER
+} from '../../actions/appActions';
 
 // import { FLEX_CENTER_CLASSES } from '../../config/constants';
 
@@ -184,18 +192,26 @@ class QuickTradeContainer extends Component {
 	};
 
 	render() {
-		const { quoteData, pairData, activeTheme, quickTrade, orderLimits, pairs, coins } = this.props;
+		const {
+			quoteData,
+			pairData,
+			activeTheme,
+			quickTrade,
+			orderLimits,
+			pairs,
+			coins
+		} = this.props;
 		const { showQuickTradeModal, side, pair } = this.state;
 
 		if (!pair || pair !== this.props.pair || !pairData) {
 			return <Loader background={false} />;
 		}
 
-		const name = STRINGS[`${pairData.pair_base.toUpperCase()}_NAME`];
 		const { data, order } = quoteData;
 		const end = quoteData.data.exp;
 		const tradeData = isLoggedIn() ? quoteData : quickTrade;
-		const baseCoin = coins[BASE_CURRENCY] || {};
+		const baseCoin = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
+		const pairCoin = coins[pairData.pair_base] || DEFAULT_COIN_DATA;
 		return (
 			<div className='h-100'>
 				{isMobile && <MobileBarBack onBackClick={this.onGoBack} />}
@@ -221,6 +237,7 @@ class QuickTradeContainer extends Component {
 						}
 						orderLimits={orderLimits}
 						pairs={pairs}
+						coins={coins}
 					/>
 					<Dialog
 						isOpen={!!end && showQuickTradeModal}
@@ -231,8 +248,8 @@ class QuickTradeContainer extends Component {
 						theme={activeTheme}
 						style={{ 'z-index': 100 }}
 					>
-						{showQuickTradeModal
-							? !order.fetching && !order.completed ? (
+						{showQuickTradeModal ? (
+							!order.fetching && !order.completed ? (
 								<Countdown
 									buttonLabel={STRINGS.QUOTE_BUTTON}
 									onClickButton={this.onExecuteTrade}
@@ -252,21 +269,23 @@ class QuickTradeContainer extends Component {
 											STRINGS.QUOTE_MESSAGE,
 											STRINGS.SIDES_VALUES[side],
 											formatBtcAmount(data.size),
-											name,
+											pairCoin.fullname,
 											formatToCurrency(data.price, baseCoin.min),
-											STRINGS[`${BASE_CURRENCY.toUpperCase()}_NAME`]
+											baseCoin.fullname
 										)}
 									</div>
 								</Countdown>
-								) : (
-									<QuoteResult
-										data={order}
-										name={name}
-										coins={coins}
-										onClose={this.onCloseDialog}
-									/>
-								)
-							: <div></div>}
+							) : (
+								<QuoteResult
+									data={order}
+									name={pairCoin.fullname}
+									coins={coins}
+									onClose={this.onCloseDialog}
+								/>
+							)
+						) : (
+							<div />
+						)}
 					</Dialog>
 				</div>
 			</div>
@@ -277,7 +296,7 @@ class QuickTradeContainer extends Component {
 const mapStateToProps = (store) => {
 	const pair = store.app.pair;
 	const pairData = store.app.pairs[pair];
-	const activeTheme= store.app.theme
+	const activeTheme = store.app.theme;
 	return {
 		pair,
 		pairData,

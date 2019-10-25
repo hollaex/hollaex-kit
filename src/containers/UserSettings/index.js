@@ -17,7 +17,7 @@ import { IconTitle, Button, HeaderSection, CustomTabs, CustomMobileTabs, CustomT
 import SettingsForm, { generateFormValues } from './SettingsForm';
 import UsernameForm, { generateUsernameFormValues } from './UsernameForm';
 import LanguageForm, { generateLanguageFormValues } from './LanguageForm';
-import  NotificationForm, { generateNotificationFormValues } from './NotificationForm';
+import NotificationForm, { generateNotificationFormValues } from './NotificationForm';
 import AudioCueForm, { generateAudioCueFormValues } from './AudioForm';
 import RiskForm, { generateWarningFormValues } from './RiskForm';
 
@@ -32,13 +32,13 @@ class UserSettings extends Component {
 		dialogIsOpen: false,
 		modalText: '',
 		activeTab: 0,
-        totalAssets: ''
+		totalAssets: ''
 	};
 
 	componentDidMount() {
-        const { user } = this.props;
+		const { user } = this.props;
 
-        if (user.id) {
+		if (user.id) {
 			this.calculateSections(this.props);
 		}
 		if (this.props.location.query && this.props.location.query.tab) {
@@ -59,37 +59,37 @@ class UserSettings extends Component {
 		}
 		if (JSON.stringify(this.props.location.query) !== JSON.stringify(nextProps.location.query)
 			&& nextProps.location.query && nextProps.location.query.tab) {
-				this.setState({ activeTab: parseInt(nextProps.location.query.tab, 10) }, () => {
-					this.updateTabs(nextProps, this.state.activeTab);
-				});
+			this.setState({ activeTab: parseInt(nextProps.location.query.tab, 10) }, () => {
+				this.updateTabs(nextProps, this.state.activeTab);
+			});
 		}
 	}
-	
+
 	componentWillUpdate(nextProps, nextState) {
 		if (
-            nextProps.user.id !== this.props.user.id ||
-            nextProps.price !== this.props.price ||
-            nextProps.orders.length !== this.props.orders.length ||
-            nextProps.balance.timestamp !== this.props.balance.timestamp ||
-            nextProps.activeLanguage !== this.props.activeLanguage
-        ) {
-            this.calculateSections(nextProps);
-        }
+			nextProps.user.id !== this.props.user.id ||
+			nextProps.price !== this.props.price ||
+			nextProps.orders.length !== this.props.orders.length ||
+			nextProps.balance.timestamp !== this.props.balance.timestamp ||
+			nextProps.activeLanguage !== this.props.activeLanguage
+		) {
+			this.calculateSections(nextProps);
+		}
 		if (this.state.activeTab !== nextState.activeTab && this.state.activeTab !== -1) {
 			this.updateTabs(nextProps, nextState.activeTab);
 		}
 	}
-	
+
 	onAdjustPortfolio = () => {
 		this.props.openRiskPortfolioOrderWarning({ onSubmit: (formProps) => this.onSubmitSettings(formProps, 'risk'), initialValues: this.props.settings.risk });
 	};
 
 	calculateSections = ({ balance, prices, coins }) => {
 		const totalAssets = calculateBalancePrice(balance, prices, coins);
-        this.setState({ totalAssets: totalAssets });
-    };
+		this.setState({ totalAssets: totalAssets });
+	};
 
-	updateTabs = ({ username = '', settings = {} }, activeTab) => {
+	updateTabs = ({ username = '', settings = {} ,coins = {} }, activeTab) => {
 		const formValues = generateFormValues({});
 		const usernameFormValues = generateUsernameFormValues(
 			settings.chat.set_username
@@ -208,6 +208,7 @@ class UserSettings extends Component {
 					),
 				content: activeTab === 5 && (
 					<RiskForm
+						coins={coins}
 						onAdjustPortfolio={this.onAdjustPortfolio}
 						totalAssets={this.state.totalAssets}
 						onSubmit={(formProps) => this.onSubmitSettings(formProps, 'risk')}
@@ -292,7 +293,7 @@ class UserSettings extends Component {
 			this.removeQueryString();
 		}
 	};
-	removeQueryString=() => {
+	removeQueryString = () => {
 		browserHistory.push('/settings');
 	}
 
@@ -330,6 +331,7 @@ class UserSettings extends Component {
 }
 
 const mapStateToProps = (state) => ({
+	coins: state.app.coins,
 	verification_level: state.user.verification_level,
 	settings: state.user.settings,
 	username: state.user.username,
@@ -337,8 +339,8 @@ const mapStateToProps = (state) => ({
 	balance: state.user.balance,
 	prices: state.orderbook.prices,
 	user: state.user,
-    price: state.orderbook.price,
-    orders: state.order.activeOrders,
+	price: state.orderbook.price,
+	orders: state.order.activeOrders,
 });
 
 const mapDispatchToProps = (dispatch) => ({

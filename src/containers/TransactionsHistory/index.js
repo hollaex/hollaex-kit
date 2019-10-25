@@ -11,7 +11,7 @@ import {
 } from '../../actions/walletActions';
 
 import { IconTitle, TabController, Loader, CheckTitle, Dialog, Button, CurrencyBallWithPrice } from '../../components';
-import { ICONS, FLEX_CENTER_CLASSES, BASE_CURRENCY } from '../../config/constants';
+import { ICONS, FLEX_CENTER_CLASSES, BASE_CURRENCY, DEFAULT_COIN_DATA } from '../../config/constants';
 import {
 	generateTradeHeaders,
 	generateTradeHeadersMobile,
@@ -31,7 +31,7 @@ class TransactionsHistory extends Component {
 		activeTab: 0,
 		dialogIsOpen: false,
 		amount: 0,
-		transactionId:0,
+		transactionId: 0,
 		jumpToPage: 0
 	};
 
@@ -53,7 +53,7 @@ class TransactionsHistory extends Component {
 		if (nextProps.activeLanguage !== this.props.activeLanguage) {
 			this.generateHeaders(nextProps.symbol, nextProps.coins);
 		}
-		if((this.props.cancelData.dismissed !== nextProps.cancelData.dismissed) && nextProps.cancelData.dismissed===true) {
+		if ((this.props.cancelData.dismissed !== nextProps.cancelData.dismissed) && nextProps.cancelData.dismissed === true) {
 			this.onCloseDialog()
 			this.requestData(nextProps.symbol);
 
@@ -67,7 +67,7 @@ class TransactionsHistory extends Component {
 	};
 
 	openDialog = () => {
-		this.setState({ dialogIsOpen: true});
+		this.setState({ dialogIsOpen: true });
 	};
 
 	requestData = (symbol) => {
@@ -93,8 +93,8 @@ class TransactionsHistory extends Component {
 				trades: isMobile
 					? generateTradeHeadersMobile(symbol, pairs, coins)
 					: generateTradeHeaders(symbol, pairs, coins),
-				deposits: generateDepositsHeaders(symbol, coins),
-				withdrawals: generateWithdrawalsHeaders(symbol, withdrawalPopup, coins)
+				deposits: generateDepositsHeaders(symbol, coins, withdrawalPopup),
+				withdrawals: generateWithdrawalsHeaders(symbol, coins, withdrawalPopup)
 			}
 		});
 	}
@@ -207,10 +207,10 @@ class TransactionsHistory extends Component {
 	};
 
 	render() {
-		const { id, activeTheme } = this.props;
+		const { id, activeTheme, coins } = this.props;
 		const { activeTab, dialogIsOpen, amount } = this.state;
-		const {onCloseDialog} =this;
-		// const shortName = STRINGS[`${this.props.symbol.toUpperCase()}_SHORTNAME`];
+		const { onCloseDialog } = this;
+		const { fullname } = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
 
 		if (!id) {
 			return <Loader />;
@@ -279,10 +279,10 @@ class TransactionsHistory extends Component {
 				>
 					<div>
 						<IconTitle
-							iconPath={activeTheme ==='dark' ? ICONS.CANCEL_WITHDRAW_DARK: ICONS.CANCEL_WITHDRAW_LIGHT }
+							iconPath={activeTheme === 'dark' ? ICONS.CANCEL_WITHDRAW_DARK : ICONS.CANCEL_WITHDRAW_LIGHT}
 							text={STRINGS.formatString(
 								STRINGS.CANCEL_BASE_WITHDRAWAL,
-								STRINGS[`${BASE_CURRENCY.toUpperCase()}_FULLNAME`]
+								fullname
 							)}
 							textType="title"
 							underline={true}
@@ -290,15 +290,15 @@ class TransactionsHistory extends Component {
 						/>
 						<div>
 							<div className='text-center mt-5 mb-5'>
-								<div>{STRINGS.CANCEL_WITHDRAWAL_POPUP_CONFIRM}</div> 
+								<div>{STRINGS.CANCEL_WITHDRAWAL_POPUP_CONFIRM}</div>
 								<div className={classnames(...GROUP_CLASSES)}>
-									<CurrencyBallWithPrice  symbol={BASE_CURRENCY} amount={amount} price={1} />
+									<CurrencyBallWithPrice symbol={BASE_CURRENCY} amount={amount} price={1} />
 								</div>
 							</div>
 							<div className='w-100 buttons-wrapper d-flex' >
-								<Button label={STRINGS.BACK_TEXT} onClick={this.onClose}/>
+								<Button label={STRINGS.BACK_TEXT} onClick={this.onClose} />
 								<div className='separator' />
-								<Button label={STRINGS.CANCEL_WITHDRAWAL} onClick={this.withdrawalCancel}/>
+								<Button label={STRINGS.CANCEL_WITHDRAWAL} onClick={this.withdrawalCancel} />
 							</div>
 						</div>
 					</div>

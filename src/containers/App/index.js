@@ -658,7 +658,10 @@ class Container extends Component {
 				const { onConfirm, ...rest } = data;
 				return (
 					<RiskyOrder
-						data={rest}
+						data={{
+							coins: this.props.coins,
+							...rest
+						}}
 						onConfirm={onConfirm}
 						onClose={this.onCloseDialog}
 					/>
@@ -884,6 +887,7 @@ class Container extends Component {
 }
 
 const mapStateToProps = (store) => ({
+	coins: store.app.coins,
 	pair: store.app.pair,
 	symbol: store.orderbook.symbol,
 	prices: store.orderbook.prices,

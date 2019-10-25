@@ -3,22 +3,33 @@ import React from 'react';
 import { CurrencyBall } from '../../../components';
 import STRINGS from '../../../config/localizedStrings';
 import { formatPercentage } from '../../../utils/currency';
+import { DEFAULT_COIN_DATA } from '../../../config/constants';
 
-const getMakerRow = (pairs, pair, level, index) => {
+const getMakerRow = (pairs, pair, level, index, coins) => {
     const { pair_base, pair_2, maker_fees } = pairs[pair];
     const feeData = maker_fees ? maker_fees[level] : 0;
+    const pairBase = coins[pair_base] || DEFAULT_COIN_DATA;
+    const pairTwo = coins[pair_2] || DEFAULT_COIN_DATA;
     return (
         <tr key={index}>
             <td className="account-limits-coin" rowSpan={2}>
-                <div className='d-flex align-items-center'>
-                    <CurrencyBall name={STRINGS[`${pair_base.toUpperCase()}_SHORTNAME`]} symbol={pair_base} size='m' />
+                <div className="d-flex align-items-center">
+                    <CurrencyBall
+                        name={pairBase.symbol.toUpperCase()}
+                        symbol={pair_base}
+                        size="m"
+                    />
                     <div className="ml-2">
-                        {`${STRINGS[`${pair_base.toUpperCase()}_FULLNAME`]} / ${STRINGS[`${pair_2.toUpperCase()}_FULLNAME`]}`}
+                        {`${pairBase.fullname} / ${pairTwo.fullname}`}
                     </div>
                 </div>
             </td>
-            <td className="account-limits-maker account-limits-status">{STRINGS.SUMMARY.MAKER}:</td>
-            <td className="account-limits-maker account-limits-value">{formatPercentage(feeData)}</td>
+            <td className="account-limits-maker account-limits-status">
+                {STRINGS.SUMMARY.MAKER}:
+			</td>
+            <td className="account-limits-maker account-limits-value">
+                {formatPercentage(feeData)}
+            </td>
         </tr>
     );
 }
@@ -34,17 +45,18 @@ const getTakerRow = (pairs, pair, level, index) => {
     );
 }
 
-const getRows = (pairs, level) => {
+const getRows = (pairs, level, coins) => {
     const rowData = [];
     Object.keys(pairs).map((pair, index) => {
-        rowData.push(getMakerRow(pairs, pair, level, index));
+        rowData.push(getMakerRow(pairs, coins, pair, level, index));
         rowData.push(getTakerRow(pairs, pair, level, index));
         return '';
     });
     return rowData;
 };
 
-const FeesBlock = ({ pairs, level }) => {
+
+const FeesBlock = ({ pairs, level, coins }) => {
     return (
         <div>
             <table className="account-limits">
@@ -56,7 +68,7 @@ const FeesBlock = ({ pairs, level }) => {
                     </tr>
                 </thead>
                 <tbody className="account-limits-content font-weight-bold">
-                    {getRows(pairs, level)}
+                    {getRows(pairs, level, coins)}
                 </tbody>
             </table>
         </div>

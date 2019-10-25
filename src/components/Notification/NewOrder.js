@@ -1,7 +1,7 @@
 import React from 'react';
 import EventListener from 'react-event-listener';
 import { connect } from 'react-redux';
-import { ICONS } from '../../config/constants';
+import { ICONS, CURRENCY_PRICE_FORMAT, DEFAULT_COIN_DATA } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 import {
 	NotificationWraper,
@@ -13,10 +13,8 @@ import { formatToCurrency } from '../../utils/currency';
 
 const generateRows = ({ order, pairData }, coins) => {
 	const { type, side, price, size, orderFees, orderPrice } = order;
-	const secondaryCurrency = pairData.pair_2.toUpperCase();
-	const secondaryFormat = coins[pairData.pair_2] || {};
-	const baseCurrency = pairData.pair_base.toUpperCase();
-	const baseFormat = coins[pairData.pair_base] || {};
+	const secondaryFormat = coins[pairData.pair_2] || DEFAULT_COIN_DATA;
+	const baseFormat = coins[pairData.pair_base] || DEFAULT_COIN_DATA;
 	const rows = [];
 
 	rows.push({
@@ -35,9 +33,9 @@ const generateRows = ({ order, pairData }, coins) => {
 	rows.push({
 		label: STRINGS.SIZE,
 		value: STRINGS.formatString(
-			STRINGS[`${baseCurrency}_PRICE_FORMAT`],
+			CURRENCY_PRICE_FORMAT,
 			formatToCurrency(size, baseFormat.min),
-			STRINGS[`${baseCurrency}_CURRENCY_SYMBOL`]
+			baseFormat.symbol.toUpperCase()
 		)
 	});
 
@@ -45,9 +43,9 @@ const generateRows = ({ order, pairData }, coins) => {
 		rows.push({
 			label: STRINGS.PRICE,
 			value: STRINGS.formatString(
-				STRINGS[`${baseCurrency}_PRICE_FORMAT`],
+				CURRENCY_PRICE_FORMAT,
 				formatToCurrency(price, secondaryFormat.min),
-				STRINGS[`${secondaryCurrency}_CURRENCY_SYMBOL`]
+				secondaryFormat.symbol.toUpperCase()
 			)
 		});
 	}
@@ -55,18 +53,18 @@ const generateRows = ({ order, pairData }, coins) => {
 	rows.push({
 		label: STRINGS.FEE,
 		value: STRINGS.formatString(
-			STRINGS[`${baseCurrency}_PRICE_FORMAT`],
+			CURRENCY_PRICE_FORMAT,
 			formatToCurrency(orderFees, secondaryFormat.min),
-			STRINGS[`${secondaryCurrency}_CURRENCY_SYMBOL`]
+			secondaryFormat.symbol.toUpperCase()
 		)
 	});
 
 	rows.push({
 		label: STRINGS.TOTAL_ORDER,
 		value: STRINGS.formatString(
-			STRINGS[`${baseCurrency}_PRICE_FORMAT`],
+			CURRENCY_PRICE_FORMAT,
 			formatToCurrency(orderPrice, secondaryFormat.min),
-			STRINGS[`${secondaryCurrency}_CURRENCY_SYMBOL`]
+			secondaryFormat.symbol.toUpperCase()
 		)
 	});
 

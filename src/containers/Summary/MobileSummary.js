@@ -8,7 +8,7 @@ import AccountAssets from './components/AccountAssets';
 import TradingVolume from './components/TradingVolume';
 import AccountDetails from './components/AccountDetails';
 
-import { BASE_CURRENCY } from '../../config/constants'; 
+import { BASE_CURRENCY, DEFAULT_COIN_DATA } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 
 const MobileSummary = ({
@@ -27,8 +27,10 @@ const MobileSummary = ({
     onUpgradeAccount,
     onAccountTypeChange,
     onInviteFriends,
-    onStakeToken
+    onStakeToken,
+    isValidBase
 }) => {
+    const { fullname } = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
     return (
         <div
             className={classnames(
@@ -40,7 +42,7 @@ const MobileSummary = ({
             )}
         >
             <div className="summary-section_1 trader-account-wrapper d-flex w-100">
-                <SummaryBlock title={STRINGS.SUMMARY.TRADER_ACCOUNT_TITLE} wrapperClassname="w-100" >
+                <SummaryBlock title={currentTradingAccount.fullName} wrapperClassname="w-100" >
                     <TraderAccounts
                         coins={coins}
                         pairs={pairs}
@@ -50,7 +52,7 @@ const MobileSummary = ({
                         onInviteFriends={onInviteFriends}
                         onFeesAndLimits={onFeesAndLimits}
                         onUpgradeAccount={onUpgradeAccount}
-                        onStakeToken={onStakeToken}/>
+                        onStakeToken={onStakeToken} />
                 </SummaryBlock>
             </div>
             <div className="summary-section_1 requirement-wrapper d-flex w-100">

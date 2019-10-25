@@ -5,7 +5,7 @@ import ReactSVG from 'react-svg';
 import classnames from 'classnames';
 
 import { Paginator, SearchBox } from '../../components';
-import { ICONS, BASE_CURRENCY } from '../../config/constants';
+import { ICONS, BASE_CURRENCY, DEFAULT_COIN_DATA } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 import { formatPercentage, formatAverage, formatToCurrency } from '../../utils/currency';
 
@@ -86,12 +86,13 @@ class AddTradeTab extends Component {
     };
 
     getSearchPairs = value => {
-        const { pairs } = this.props;
+        const { pairs, coins } = this.props;
         let result = {};
         let searchValue = value.toLowerCase().trim();
         Object.keys(pairs).map(key => {
             let temp = pairs[key];
-            let cashName = STRINGS[`${temp.pair_base.toUpperCase()}_FULLNAME`].toLowerCase();
+            const { fullname } = coins[temp.pair_base] || DEFAULT_COIN_DATA;
+            let cashName = fullname ? fullname.toLowerCase() : '';
             if (key.indexOf(searchValue) !== -1 ||
                 temp.pair_base.indexOf(searchValue) !== -1 ||
                 temp.pair_2.indexOf(searchValue) !== -1 ||
@@ -151,31 +152,31 @@ class AddTradeTab extends Component {
                     <div className="d-flex flex-wrap p-3 my-5">
                         {data.map((key, index) => {
                             let pair = pairs[key];
-                            let { min } = coins[pair.pair_base || BASE_CURRENCY] || {};
+                            let { min, fullname, symbol = '' } = coins[pair.pair_base || BASE_CURRENCY] || DEFAULT_COIN_DATA;
+                            const pairTwo = coins[pair.pair_2] || DEFAULT_COIN_DATA;
                             let ticker = tickers[key] || {};
                             const priceDifference = ticker.open === 0 ? 0 : ((ticker.close || 0) - (ticker.open || 0));
                             const tickerPercent = priceDifference === 0 || ticker.open === 0 ? 0 : ((priceDifference / ticker.open) * 100);
                             const priceDifferencePercent = isNaN(tickerPercent) ? formatPercentage(0) : formatPercentage(tickerPercent);
-                            let icon = ICONS[`${pair.pair_base.toUpperCase()}_ICON${activeTheme === 'dark' ? '_DARK' : ''}`]
-                            console.log('');
+                            let icon = ICONS[`${pair.pair_base.toUpperCase()}_ICON${activeTheme === 'dark' ? '_DARK' : ''}`];
                             return (
                                 <div
                                     key={index}
                                     className={classnames("d-flex", "trade-tab-list", "pointer", { "active-tab": index === 0 })}
                                     onClick={() => this.handleClick(key)}>
                                     <div className="px-2">
-                                        <ReactSVG path={icon} wrapperClassName="trade_tab-icons" />
+                                        <ReactSVG path={ICONS[`${pair.pair_base.toUpperCase()}_ICON`]} wrapperClassName="trade_tab-icons" />
                                     </div>
                                     <div className="tabs-pair-details">
                                         <div className="trade_tab-pair-title">
-                                            {STRINGS[`${pair.pair_base.toUpperCase()}_SHORTNAME`]}/{STRINGS[`${pair.pair_2.toUpperCase()}_SHORTNAME`]}
+                                            {symbol.toUpperCase()}/{pairTwo.symbol ? pairTwo.symbol.toUpperCase() : ''}
                                         </div>
                                         <div>
-                                            {STRINGS[`${pair.pair_base.toUpperCase()}_FULLNAME`]}/{STRINGS[`${pair.pair_2.toUpperCase()}_FULLNAME`]}
+                                            {fullname}/{pairTwo.fullname}
                                         </div>
                                         <div>{STRINGS.PRICE}:
                                             <span className="title-font ml-1">
-                                                {`${STRINGS[`${pair.pair_2.toUpperCase()}_CURRENCY_SYMBOL`]} ${formatAverage(formatToCurrency(ticker.close, min))}`}
+                                                {`${pairTwo.symbol.toUpperCase()} ${formatAverage(formatToCurrency(ticker.close, min))}`}
                                             </span>
                                         </div>
                                         <div className="d-flex">
@@ -188,7 +189,7 @@ class AddTradeTab extends Component {
                                                 {`(${priceDifferencePercent})`}
                                             </div>
                                         </div>
-                                        <div>{`${STRINGS.CHART_TEXTS.v}: ${ticker.volume} ${STRINGS[`${pair.pair_base.toUpperCase()}_CURRENCY_SYMBOL`]}`}</div>
+                                        <div>{`${STRINGS.CHART_TEXTS.v}: ${ticker.volume} ${symbol.toUpperCase()}`}</div>
                                     </div>
                                 </div>
                             )

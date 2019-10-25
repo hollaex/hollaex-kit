@@ -1,7 +1,7 @@
 import React from 'react';
 import math from 'mathjs';
 import { connect } from 'react-redux';
-import { ICONS } from '../../config/constants';
+import { ICONS, CURRENCY_PRICE_FORMAT, DEFAULT_COIN_DATA } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 import {
 	NotificationWraper,
@@ -43,8 +43,8 @@ const calculateValues = (data = [], pair, coins = {}) => {
 	let btcAccumulated = math.fraction(0);
 	let baseAccumulated = math.fraction(0);
 	const averages = [];
-	const baseFormat = coins[pair.pair_base] || {};
-	const secondaryFormat = coins[pair.pair_2] || {};
+	const baseFormat = coins[pair.pair_base] || DEFAULT_COIN_DATA;
+	const secondaryFormat = coins[pair.pair_2] || DEFAULT_COIN_DATA;
 	data.forEach(({ size, price, filled, side }) => {
 		let calcSize = size;
 		if (side === SIDE_BUY) {
@@ -67,8 +67,8 @@ const calculateValues = (data = [], pair, coins = {}) => {
 
 export const TradeDisplay = ({ side, data, pairs, coins, ...rest }) => {
 	const pair = data[0] ? pairs[data[0].symbol] : { pair_base: '', pair_2: '' };
-	const basePair = pair.pair_base.toUpperCase();
-	const payPair = pair.pair_2.toUpperCase();
+	const baseValue = coins[pair.pair_base] || DEFAULT_COIN_DATA;
+	const payValue = coins[pair.pair_2] || DEFAULT_COIN_DATA;
 
 	const actionText =
 		side === 'sell' ? STRINGS.ORDER_SOLD : STRINGS.ORDER_BOUGHT;
@@ -80,25 +80,25 @@ export const TradeDisplay = ({ side, data, pairs, coins, ...rest }) => {
 			<InformationRow
 				label={actionText}
 				value={STRINGS.formatString(
-					STRINGS[`${basePair}_PRICE_FORMAT`],
+					CURRENCY_PRICE_FORMAT,
 					btc,
-					STRINGS[`${basePair}_SHORTNAME`]
+					baseValue.symbol.toUpperCase()
 				)}
 			/>
 			<InformationRow
 				label={STRINGS.ORDER_AVERAGE_PRICE}
 				value={STRINGS.formatString(
-					STRINGS[`${payPair}_PRICE_FORMAT`],
+					CURRENCY_PRICE_FORMAT,
 					average,
-					STRINGS[`${payPair}_SHORTNAME`]
+					payValue.symbol.toUpperCase()
 				)}
 			/>
 			<InformationRow
 				label={resultText}
 				value={STRINGS.formatString(
-					STRINGS[`${payPair}_PRICE_FORMAT`],
+					CURRENCY_PRICE_FORMAT,
 					base,
-					STRINGS[`${payPair}_SHORTNAME`]
+					payValue.symbol.toUpperCase()
 				)}
 			/>
 		</NotificationContent>

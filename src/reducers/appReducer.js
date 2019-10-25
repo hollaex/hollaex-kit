@@ -54,7 +54,8 @@ const INITIAL_STATE = {
 	orderLimits: {},
 	coins: {},
 	config: {},
-	config_level: []
+	config_level: [],
+	isValidBase: false,
 };
 
 const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
@@ -227,7 +228,7 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 		case SET_ORDER_LIMITS:
 			return {
 				...state,
-				orderLimits: payload
+		        		orderLimits: payload
 			};
 		case SET_VALID_BASE_CURRENCY:
 			return {

@@ -15,7 +15,7 @@ import MobileSummary from './MobileSummary';
 import { IconTitle } from '../../components';
 import { logout } from '../../actions/authAction';
 import { openFeesStructureandLimits, openContactForm, logoutconfirm, setNotification, NOTIFICATIONS } from '../../actions/appActions';
-import { BASE_CURRENCY, TRADING_ACCOUNT_TYPE } from '../../config/constants';
+import { BASE_CURRENCY, TRADING_ACCOUNT_TYPE, DEFAULT_COIN_DATA } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 import {
     formatToCurrency,
@@ -95,7 +95,7 @@ class Summary extends Component {
         const data = [];
         const totalAssets = calculateBalancePrice(balance, prices, coins);
         Object.keys(coins).forEach((currency) => {
-            const { symbol, min } = coins[currency] || {};
+            const { symbol, min } = coins[currency] || DEFAULT_COIN_DATA;
             const currencyBalance = calculatePrice(balance[`${symbol}_balance`], prices[currency]);
             const balancePercent = calculatePricePercentage(currencyBalance, totalAssets);
             data.push({
@@ -132,7 +132,7 @@ class Summary extends Component {
     };
 
     onInviteFriends = () => {
-        this.props.setNotification(NOTIFICATIONS.INVITE_FRIENDS, { affiliation_code: this.props.user.affiliation_code});
+        this.props.setNotification(NOTIFICATIONS.INVITE_FRIENDS, { affiliation_code: this.props.user.affiliation_code });
     };
 
     onStakeToken = () => {
@@ -140,8 +140,9 @@ class Summary extends Component {
     };
 
     render() {
-        const { user, balance, activeTheme, pairs, coins, logout } = this.props;
+        const { user, balance, activeTheme, pairs, coins, logout, isValidBase } = this.props;
         const { selectedAccount, currentTradingAccount, chartData, totalAssets, lastMonthVolume } = this.state;
+        const { fullname } = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
         return (
             <div className="summary-container">
                 {!isMobile && <IconTitle
@@ -160,6 +161,7 @@ class Summary extends Component {
                         logout={this.logoutConfirm}
                         balance={balance}
                         chartData={chartData}
+                        isValidBase={isValidBase}
                         totalAssets={totalAssets}
                         lastMonthVolume={lastMonthVolume}
                         onInviteFriends={this.onInviteFriends}
@@ -171,7 +173,7 @@ class Summary extends Component {
                     : (<div>
                         <div className="d-flex align-items-center">
                             <div className="summary-section_1 trader-account-wrapper d-flex">
-                                <SummaryBlock title={STRINGS.SUMMARY.TRADER_ACCOUNT_TITLE} >
+                                <SummaryBlock title={currentTradingAccount.fullName} >
                                     <TraderAccounts
                                         pairs={pairs}
                                         coins={coins}
@@ -195,7 +197,16 @@ class Summary extends Component {
                             <div className="assets-wrapper w-100">
                                 <SummaryBlock
                                     title={STRINGS.SUMMARY.ACCOUNT_ASSETS}
-                                    // secondaryTitle={<span><span className="title-font">{totalAssets}</span>{` ${STRINGS[`${BASE_CURRENCY.toUpperCase()}_FULLNAME`]}`}</span>}
+                                    // secondaryTitle={
+                                    //     BASE_CURRENCY && isValidBase ?
+                                    //         <span>
+                                    //             <span className="title-font">
+                                    //                 {totalAssets}
+                                    //             </span>
+                                    //             {` ${fullname}`}
+                                    //         </span>
+                                    //         : null
+                                    // }
                                     wrapperClassname="w-100" >
                                     <AccountAssets
                                         user={user}
@@ -226,7 +237,8 @@ const mapStateToProps = (state) => ({
     price: state.orderbook.price,
     orders: state.order.activeOrders,
     activeLanguage: state.app.language,
-    tradeVolumes: state.user.tradeVolumes
+    tradeVolumes: state.user.tradeVolumes,
+    isValidBase: state.app.isValidBase
 });
 
 const mapDispatchToProps = (dispatch) => ({

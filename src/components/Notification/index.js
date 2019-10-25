@@ -44,7 +44,6 @@ const generateNotificationContent = ({ type, data, ...rest }) => {
 		case NOTIFICATIONS.INVITE_FRIENDS:
 			return <InviteFriends data={data} {...rest} />;
 		case NOTIFICATIONS.STAKE_TOKEN:
-			console.log("on referal",data)
 			return <Staketoken data={data} {...rest} />;
 		default:
 			break;

@@ -3833,6 +3833,7 @@ table th {
       .app-bar-add-tab-menu .app-bar-add-tab-content-list:hover svg .eth0,
       .app-bar-add-tab-menu .app-bar-add-tab-content-list:hover svg .eth1,
       .app-bar-add-tab-menu .app-bar-add-tab-content-list:hover svg .bch-icon,
+      .app-bar-add-tab-menu .app-bar-add-tab-content-list:hover svg .xrp-icon,
       .app-bar-add-tab-menu .app-bar-add-tab-content-list:hover svg .hex-icon {
         fill: #b6b5cd !important; }
       .app-bar-add-tab-menu .app-bar-add-tab-content-list:hover svg .st0 {

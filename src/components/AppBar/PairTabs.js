@@ -6,7 +6,7 @@ import classnames from 'classnames';
 import Tab from './Tab';
 import AddTabList from './AddTabList';
 import TabOverflowList from './TabOverflowList';
-import { DEFAULT_TRADING_PAIRS } from '../../config/constants';
+import { DEFAULT_TRADING_PAIRS, DEFAULT_COIN_DATA } from '../../config/constants';
 import { ICONS } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 
@@ -255,13 +255,14 @@ class PairTabs extends Component {
     };
     
     handleSearch = (_, value) => {
-        const { pairs } = this.props;
+        const { pairs, coins } = this.props;
         if (value) {
             let result = {};
             let searchValue = value.toLowerCase().trim();
             Object.keys(pairs).map(key => {
                 let temp = pairs[key];
-                let cashName = STRINGS[`${temp.pair_base.toUpperCase()}_FULLNAME`].toLowerCase();
+                const { fullname } = coins[temp.pair_base.toLowerCase()] || DEFAULT_COIN_DATA;
+                let cashName = fullname ? fullname.toLowerCase() : '';
                 if (key.indexOf(searchValue) !== -1 ||
                     temp.pair_base.indexOf(searchValue) !== -1 ||
                     temp.pair_2.indexOf(searchValue) !== -1 ||

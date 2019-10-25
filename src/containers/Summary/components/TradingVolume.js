@@ -7,7 +7,7 @@ import STRINGS from '../../../config/localizedStrings';
 import { getTradeVolume } from '../../../actions/userAction';
 import { BarChart } from '../../../components';
 import { calculatePrice, formatToCurrency } from '../../../utils/currency';
-import { TRADING_VOLUME_CHART_LIMITS, SUMMMARY_ICON, CHART_MONTHS, BASE_CURRENCY } from '../../../config/constants';
+import { TRADING_VOLUME_CHART_LIMITS, SUMMMARY_ICON, CHART_MONTHS, BASE_CURRENCY, DEFAULT_COIN_DATA } from '../../../config/constants';
 
 class TradingVolume extends Component {
     state = {
@@ -33,14 +33,14 @@ class TradingVolume extends Component {
         const chartData = [];
         let totalVolume = 0;
         let peakVolume = this.state.peakVolume;
-        const { min } = coins[BASE_CURRENCY] || {};
+        const { min } = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
         const currentMonth = moment().month();
-        let chartMonths = [ ...CHART_MONTHS ];
+        let chartMonths = [...CHART_MONTHS];
         for (let i = 0; i <= currentMonth; i++) {
             let temp = chartMonths.shift();
-            chartMonths = [ ...chartMonths, temp ];
+            chartMonths = [...chartMonths, temp];
         }
-        
+
         if (Object.keys(tradeValues).length) {
             chartMonths.map((obj, key) => {
                 let trade = tradeValues[obj.key];
@@ -53,8 +53,8 @@ class TradingVolume extends Component {
                     let pairWisePrice = {};
                     let pairVolume = {};
                     Object.keys(trade).map((pair) => {
-                        let pairValue = pairs[pair] || {};
-                        let volumeObj = trade[pair] || {};
+                        let pairValue = pairs[pair] || DEFAULT_COIN_DATA;
+                        let volumeObj = trade[pair] || DEFAULT_COIN_DATA;
                         let pairPrice = calculatePrice(volumeObj.volume, prices[pairValue.pair_base]);
                         pairWisePrice[pairValue.pair_base] = pairPrice;
                         pairVolume[pairValue.pair_base] = volumeObj.volume;
@@ -104,15 +104,16 @@ class TradingVolume extends Component {
 
     render() {
         const { chartData, limits, limitContent, peakVolume } = this.state;
-        const { tradeVolumes } = this.props;
+        const { tradeVolumes, coins } = this.props;
+        const { fullname } = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
         return (
             <div className="summary-section_2">
                 <div className="w-100 h-100">
                     <div className="summary-content-txt">
                         <div>{STRINGS.formatString(
                             STRINGS.SUMMARY.TRADING_VOLUME_TXT_1,
-                            STRINGS[`${BASE_CURRENCY.toUpperCase()}_FULLNAME`]
-                            )}
+                            fullname
+                        )}
                         </div>
                         <div>{STRINGS.SUMMARY.TRADING_VOLUME_TXT_2}</div>
                     </div>

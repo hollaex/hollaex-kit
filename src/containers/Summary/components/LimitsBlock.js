@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { CurrencyBall } from '../../../components';
-import { BASE_CURRENCY } from '../../../config/constants';
+import { BASE_CURRENCY, DEFAULT_COIN_DATA } from '../../../config/constants';
 import STRINGS from '../../../config/localizedStrings';
 import {
     formatBaseAmount,
@@ -19,14 +19,14 @@ const getLimitValue = (limit = -1, format) => {
 };
 
 const getDepositRow = (currency, index, coins, level) => {
-    const { symbol, deposit_limits = {} } = coins[currency] || {};
+    const { symbol = '', fullname, deposit_limits = {} } = coins[currency] || DEFAULT_COIN_DATA;
     const format = currency === BASE_CURRENCY ? formatBaseAmount : formatBtcAmount;
     return (
         <tr key={index}>
             <td className="account-limits-coin" rowSpan={2}>
                 <div className='d-flex align-items-center'>
-                    <CurrencyBall name={STRINGS[`${symbol.toUpperCase()}_SHORTNAME`]} symbol={symbol} size='m' />
-                    <div className="ml-2">{STRINGS[`${symbol.toUpperCase()}_FULLNAME`]}</div>
+                    <CurrencyBall name={symbol.toUpperCase()} symbol={symbol} size='m' />
+                    <div className="ml-2">{fullname}</div>
                 </div>
             </td>
             <td className="account-limits-maker account-limits-status">{STRINGS.SUMMARY.DEPOSIT}:</td>
@@ -36,7 +36,7 @@ const getDepositRow = (currency, index, coins, level) => {
 };
 
 const getWithdrawalRow = (currency, index, coins, level) => {
-    const { withdrawal_limits = {} } = coins[currency] || {};
+    const { withdrawal_limits = {} } = coins[currency] || DEFAULT_COIN_DATA;
     const format = currency === BASE_CURRENCY ? formatBaseAmount : formatBtcAmount;
     return (
         <tr key={`${index}_1`}>
@@ -45,6 +45,7 @@ const getWithdrawalRow = (currency, index, coins, level) => {
         </tr>
     );
 };
+
 
 const getRows = (coins, level) => {
     const rowData = [];

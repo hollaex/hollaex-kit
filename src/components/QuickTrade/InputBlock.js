@@ -7,10 +7,7 @@ import { CurrencyBall } from '../../components';
 
 import { minValue, maxValue } from '../../components/Form/validations';
 import { FieldError } from '../../components/Form/FormFields/FieldWrapper';
-import { FLEX_CENTER_CLASSES } from '../../config/constants';
-
-import STRINGS from '../../config/localizedStrings';
-
+import { FLEX_CENTER_CLASSES, DEFAULT_PAIR, DEFAULT_COIN_DATA } from '../../config/constants';
 import { translateError } from './utils';
 
 const PLACEHOLDER = '0.00';
@@ -25,7 +22,7 @@ const generateStyle = (value) => {
 class InputBlock extends Component {
 	state = {
 		value: '',
-		symbol: ''
+		symbol: DEFAULT_PAIR
 	};
 
 	componentWillMount() {
@@ -89,9 +86,11 @@ class InputBlock extends Component {
 	};
 
 	render() {
-		const { text, className, error, orderLimits } = this.props;
+		const { text, className, error, orderLimits, pairs, coins } = this.props;
 		const { value, errorValue, symbol } = this.state;
-		const shortName = STRINGS[`${symbol.toUpperCase()}_SHORTNAME`];
+		const pair = pairs[symbol] || DEFAULT_COIN_DATA;
+		const baseCoin = coins[pair.pair_base] || DEFAULT_COIN_DATA;
+		const shortName = baseCoin.symbol.toUpperCase();
 		const errorMessage = this.renderErrorMessage(errorValue) || error;
 		return (
 			<div
@@ -123,7 +122,7 @@ class InputBlock extends Component {
 						)}
 					>
 						<CurrencyBall
-							symbol={symbol}
+							symbol={pair.pair_base}
 							name={shortName}
 							size="s"
 							className="input_block-currency_ball"

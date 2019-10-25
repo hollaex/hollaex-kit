@@ -10,36 +10,26 @@ import STRINGS from '../../config/localizedStrings';
 import {
 	ICONS,
 	FLEX_CENTER_CLASSES,
-	BALANCE_ERROR
+	BALANCE_ERROR,
+	DEFAULT_COIN_DATA,
+	BASE_CURRENCY,
+	DEFAULT_PAIR
 } from '../../config/constants';
-import { BASE_CURRENCY } from '../../config/constants';
-
 import ToogleButton from './ToogleButton';
 import ReviewBlock from './ReviewBlock';
 import InputBlock from './InputBlock';
 
-
 // const GROUP_CLASSES = [...FLEX_CENTER_CLASSES, 'flex-column'];
-
-const getInitialTab = (path, pairs = {}) => {
+const getInitialTab = (path, symbols, coins) => {
 	let activeTab = -1;
-	const obj = {};
-	Object.entries(pairs).forEach(([key, pair]) => {
-		obj[pair.pair_base] = '';
-	});
-	const pairValues = Object.keys(obj).map((key) => key);
-	pairValues.map((value, index) => {
-		if (path === `${value.toLowerCase()}-${STRINGS[`${BASE_CURRENCY.toUpperCase()}_SHORTNAME`].toLowerCase()}`) {
+	const baseCoin = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
+	symbols.map((currency, index) => {
+		const { symbol } = coins[currency] || DEFAULT_COIN_DATA;
+		if (path === `${symbol.toLowerCase()}-${baseCoin.symbol.toLowerCase()}`) {
 			activeTab = index;
 		}
 	});
-	// if (path === `${STRINGS.BTC_SHORTNAME.toLowerCase()}-${STRINGS[`${BASE_CURRENCY.toUpperCase()}_SHORTNAME`].toLowerCase()}`) {
-	// 	activeTab = 0;
-	// } else if (path === `${STRINGS.ETH_SHORTNAME.toLowerCase()}-${STRINGS[`${BASE_CURRENCY.toUpperCase()}_SHORTNAME`].toLowerCase()}`) {
-	// 	activeTab = 1;
-	// } else if (path === `${STRINGS.BCH_SHORTNAME.toLowerCase()}-${STRINGS[`${BASE_CURRENCY.toUpperCase()}_SHORTNAME`].toLowerCase()}`) {
-	// 	activeTab = 2;
-	// }
+
 	return {
 		activeTab,
 	};
@@ -48,7 +38,7 @@ class QuickTrade extends Component {
 	state = {
 		side: STRINGS.SIDES[0].value,
 		value: 1,
-		symbol: '',
+		symbol: DEFAULT_PAIR,
 		tabs: [],
 		activeTab: -1,
 		currencies: []
@@ -82,7 +72,8 @@ class QuickTrade extends Component {
 
 	setActiveTab = (activeTab) => {
 		const { currencies } = this.state;
-		browserHistory.push(`/quick-trade/${currencies[activeTab]}-${STRINGS[`${BASE_CURRENCY.toUpperCase()}_SHORTNAME`].toLowerCase()}`)
+		const { symbol = '' } = this.props.coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
+		browserHistory.push(`/quick-trade/${currencies[activeTab]}-${symbol.toLowerCase()}`)
 		this.setState({ activeTab });
 	}
 
@@ -132,14 +123,14 @@ class QuickTrade extends Component {
 		updateActiveTab = false
 	) => {
 		let activeTab = this.state.activeTab > -1 ? this.state.activeTab : 0;
-		const { theme, pairs, symbol } = this.props;
+		const { theme, pairs, coins } = this.props;
 		const obj = {};
 		Object.entries(pairs).forEach(([key, pair]) => {
 			obj[pair.pair_base] = '';
 		});
 		const symbols = Object.keys(obj).map((key) => key);
 		if (updateActiveTab || this.state.activeTab === -1) {
-			const initialValues = getInitialTab(symbol, pairs);
+			const initialValues = getInitialTab(this.props.symbol, symbols, coins);
 			activeTab = initialValues.activeTab;
 		}
 
@@ -148,10 +139,11 @@ class QuickTrade extends Component {
 			if (!icon && theme === 'dark') {
 				icon = ICONS[`${pair.toUpperCase()}_ICON`];
 			}
+			const { fullname = '' } = coins[pair] || DEFAULT_COIN_DATA;
 			return ({
 				title:
 					<CheckTitle
-						title={STRINGS[`${pair.toUpperCase()}_NAME`]}
+						title={fullname}
 						icon={icon}
 					/>
 			});
@@ -161,11 +153,11 @@ class QuickTrade extends Component {
 	};
 
 	render() {
-		const { onReviewQuickTrade, quickTradeData, disabled, orderLimits, pairs } = this.props;
+		const { onReviewQuickTrade, quickTradeData, disabled, orderLimits, pairs, coins } = this.props;
 		const { side, value, symbol, tabs, activeTab } = this.state;
 		const { data, fetching, error } = quickTradeData;
-		const symbolObj = pairs[symbol] || {};
-		const name = symbolObj.pair_base ? STRINGS[`${symbolObj.pair_base.toUpperCase()}_NAME`] : '';
+		const baseCoin = pairs[symbol].pair_base;
+		const { fullname } = coins[baseCoin] || DEFAULT_COIN_DATA;
 		return (
 			<div className={classnames('quick_trade-wrapper', 'd-flex', 'flex-column')}>
 				<div
@@ -215,13 +207,15 @@ class QuickTrade extends Component {
 						initialValue={value}
 						text={STRINGS.formatString(
 							STRINGS.QUICK_TRADE_COMPONENT.INPUT,
-							name,
+							fullname,
 							STRINGS.SIDES_VALUES[side]
 						)}
 						symbol={symbol}
 						className={classnames({ loading: fetching })}
 						error={error}
 						orderLimits={orderLimits}
+						pairs={pairs}
+						coins={coins}
 					/>
 				</div>
 				<div

@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react';
 import { pie, arc } from 'd3-shape';
 import { Link } from 'react-router';
 import classnames from 'classnames';
-
+import { BASE_CURRENCY, DEFAULT_COIN_DATA } from '../../../config/constants';
 import STRINGS from '../../../config/localizedStrings';
 
 const colors_currencies = {
@@ -183,6 +183,7 @@ class DonutChart extends Component {
                 </g>
             );
         } else if (data.balance > 0) {
+            const { symbol = '' } = this.props.coins[data.symbol || BASE_CURRENCY] || DEFAULT_COIN_DATA;
             return (
                 <g key={i}>
                     <path
@@ -201,8 +202,9 @@ class DonutChart extends Component {
                             <text transform={translate(valX, valY - 12)}
                                 dy="20px"
                                 textAnchor="middle"
-                                className="donut-label-pair">
-                                {STRINGS[`${data.symbol.toUpperCase()}_SHORTNAME`]}
+                                className="donut-label-pair"
+                            >
+                                {symbol.toUpperCase()}
                             </text>
                         </Fragment>
                         : null

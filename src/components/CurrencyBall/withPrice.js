@@ -6,20 +6,20 @@ import {
 	formatToCurrency,
 	calculatePrice
 } from '../../utils/currency';
-import { BASE_CURRENCY } from '../../config/constants';
+import { BASE_CURRENCY, DEFAULT_COIN_DATA } from '../../config/constants';
 
 const CurrencyBallWithPrice = ({ symbol, amount, price, size = 'm', coins = {} }) => {
-	const { name, min } = coins[symbol] || {};
-	const baseCoin = coins[BASE_CURRENCY] || {};
-	const currencyShortName = STRINGS[`${symbol.toUpperCase()}_SHORTNAME`]
-		? STRINGS[`${symbol.toUpperCase()}_SHORTNAME`]
+	const { name, min, ...rest } = coins[symbol] || DEFAULT_COIN_DATA;
+	const baseCoin = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
+	const currencyShortName = rest.symbol
+		? rest.symbol.toUpperCase()
 		: name;
 	return (
 		<div className="with_price-block_amount d-flex direction_ltr">
 			<CurrencyBall name={currencyShortName} symbol={symbol} size={size} />
 			<div className="with_price-block_amount-value d-flex">
 				{`${formatToCurrency(amount, min)}`}
-				{symbol !== BASE_CURRENCY && (
+				{symbol !== BASE_CURRENCY && price && (
 					<div className={`with_price-block_amount-value-${BASE_CURRENCY.toLowerCase()} d-flex align-items-end`}>
 						
 					</div>

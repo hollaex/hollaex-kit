@@ -79,8 +79,8 @@ class AddTabList extends Component {
                     </div>
                     {Object.keys(tabMenu).length
                         ? Object.keys(tabMenu).map((pair, index) => {
-                            let menu = tabMenu[pair] || {};
-                            let ticker = tickers[pair] || {};
+                            let menu = tabMenu[pair] || DEFAULT_COIN_DATA;
+                            let ticker = tickers[pair] || DEFAULT_COIN_DATA;
                             let { min, symbol = '' } = coins[menu.pair_base || BASE_CURRENCY] || DEFAULT_COIN_DATA;
                             let pairTwo = coins[menu.pair_2 || BASE_CURRENCY] || DEFAULT_COIN_DATA;
                             const priceDifference = ticker.open === 0 ? 0 : ((ticker.close || 0) - (ticker.open || 0));
@@ -92,16 +92,16 @@ class AddTabList extends Component {
                                     className="app-bar-add-tab-content-list d-flex align-items-center"
                                     onClick={() => this.handleChange(pair)}>
                                     <div>
-                                        {selectedTabs[pair]
+                                        {selectedTabs[pair] 
                                             ? <ReactSVG path={ICONS.TAB_MINUS} wrapperClassName="app-bar-tab-setting" />
                                             : <ReactSVG path={ICONS.TAB_PLUS} wrapperClassName="app-bar-tab-setting" />
                                         }
                                     </div>
-                                    <ReactSVG path={ICONS[`${menu.pair_base.toUpperCase()}_ICON_DARK`]} wrapperClassName="app-bar-add-tab-icons" />
+                                    <ReactSVG path={ICONS[`${menu.pair_base.toUpperCase()}_ICON`]} wrapperClassName="app-bar-add-tab-icons" />
                                     <div className="app_bar-pair-font">
                                         {symbol.toUpperCase()}/{pairTwo.symbol.toUpperCase()}:
                                     </div>
-                                    <div className="title-font ml-1">{`${STRINGS[`${menu.pair_2.toUpperCase()}_CURRENCY_SYMBOL`]} ${formatAverage(formatToCurrency(ticker.close, min))}`}</div>
+                                    <div className="title-font ml-1">{`${pairTwo.symbol.toUpperCase()} ${formatAverage(formatToCurrency(ticker.close, min))}`}</div>
                                     <div className={priceDifference < 0 ? "app-price-diff-down app-bar-price_diff_down" : "app-bar-price_diff_up app-price-diff-up"}>
                                         {formatAverage(formatToCurrency(priceDifference, min))}
                                     </div>
