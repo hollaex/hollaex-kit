@@ -47,7 +47,7 @@
 		border: 1px solid $theme-color;
 		.active {
 			background-color: $theme-color;
-			color: white;
+			color: $sell-bids-text;
 			font-weight: bold;
 		}
 	}
@@ -81,7 +81,7 @@
 		.trade_order_entry-form-action {
 			margin-top: 0.5rem;
 			background-color: $theme-color !important;
-			color: white;
+			color: $colors-white;
 			font-weight: bold;
 
 			&:disabled {
@@ -106,10 +106,10 @@
 
 .trade_order_entry-wrapper {
 	&.order_side-selector-sell {
-		@include entry_form($colors-black, #cccccc);
+		@include entry_form($color-sell-btc-light, $trade-asks-color-disabled);
 	}
 	&.order_side-selector-buy {
-		@include entry_form($colors-black, #cccccc);
+		@include entry_form($color-buy-btc-light, $trade-bids-color-disabled);
 	}
 }
 

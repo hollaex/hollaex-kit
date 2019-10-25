@@ -12,8 +12,7 @@ import {
 	FLEX_CENTER_CLASSES,
 	BALANCE_ERROR,
 	DEFAULT_COIN_DATA,
-	BASE_CURRENCY,
-	DEFAULT_PAIR
+	BASE_CURRENCY
 } from '../../config/constants';
 import ToogleButton from './ToogleButton';
 import ReviewBlock from './ReviewBlock';
@@ -38,7 +37,7 @@ class QuickTrade extends Component {
 	state = {
 		side: STRINGS.SIDES[0].value,
 		value: 1,
-		symbol: DEFAULT_PAIR,
+		symbol: '',
 		tabs: [],
 		activeTab: -1,
 		currencies: []

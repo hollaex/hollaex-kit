@@ -1,11 +1,11 @@
-$trade-bids-color-main: $color-buy;
+$trade-bids-color-main: $buy;
 $trade-order-bids-color-font: #878787;
-$trade-bids-color-font: $color-buy;
-$trade-bids-color-disabled: rgba(19, 136, 15, 0.356);
-$trade-asks-color-main: $color-sell;
+$trade-bids-color-font: $buy;
+$trade-bids-color-disabled: #cccccc;
+$trade-asks-color-main: $sell;
 $trade-order-asks-color-font: $colors-black;
-$trade-asks-color-font: $color-sell;
-$trade-asks-color-disabled: rgba(248, 7, 67, 0.4);
+$trade-asks-color-font: $sell;
+$trade-asks-color-disabled: #cccccc;
 
 $font-color--disabled: grey;
 $font-color--acitve: black;
@@ -16,8 +16,6 @@ $trade-section-border-disabled--color: grey;
 $trade_title-border--color: black;
 $trade_title-border--size: 0.2rem;
 
-$trade-fullfilled-background-color: $colors-black;
-$trade-fullfilled-text-color: #878787;
 $trade-font-size: $font-size-subtext;
 
 $side-column--width: 17.5rem;
@@ -85,7 +83,7 @@ $order_entry-column--width-lg: 18rem;
 		}
 
 		&.fullfilled .cell-wrapper {
-			border: 1px solid $trade-fullfilled-background-color;
+			border: 1px solid $trade-fill-indicator;
 			margin: 0;
 			padding: 1px;
 			min-width: 5rem;
@@ -95,14 +93,15 @@ $order_entry-column--width-lg: 18rem;
 				padding: 0 0.15rem;
 				position: relative;
 				width: 100%;
-				color: $trade-fullfilled-text-color;
+				color: $trade-fill-indicator-text;
+				z-index: 2;
 
 				.cell_value-bar {
 					position: absolute;
 					left: 0;
 					top: 0;
 					bottom: 0;
-					background-color: $trade-fullfilled-background-color;
+					background-color: $trade-fill-indicator;
 					z-index: -1;
 				}
 			}

@@ -82,7 +82,7 @@ $container--padding-sm: 3rem;
 		z-index: 1;
 
 		.auth_wrapper {
-			background-color: white;
+			background-color: $app-background-color;
 			padding: $container--padding $container--padding $container--padding * 1.5;
 
 			.icon_title-svg {

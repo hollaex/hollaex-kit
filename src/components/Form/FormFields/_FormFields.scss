@@ -36,7 +36,7 @@ $placeholder--font-weight: bold;
 	content: '';
 	height: 0;
 	width: 0;
-	border-bottom: 0.25rem solid $colors-main-black;
+	border-bottom: 0.25rem solid $form-arrow;
 	border-top: 0.25rem solid transparent;
 	position: absolute;
 	bottom: 0.35rem;
@@ -202,7 +202,7 @@ $placeholder--font-weight: bold;
 			height: 1px;
 			width: 100%;
 			position: absolute;
-			background-color: $colors-main-black;
+			background-color: $border-main;
 			left: 0;
 			right: 0;
 			top: 50%;
@@ -212,7 +212,7 @@ $placeholder--font-weight: bold;
 
 .direction_ltr {
 	.dropdown-triangle:after {
-		border-right: 0.25rem solid $colors-main-black;
+		border-right: 0.25rem solid $form-arrow;
 		border-left: 0.25rem solid transparent;
 		right: 0px;
 	}
@@ -225,7 +225,7 @@ $placeholder--font-weight: bold;
 .direction_rtl {
 	.dropdown-triangle:after {
 		border-right: 0.25rem solid transparent;
-		border-left: 0.25rem solid $colors-main-black;
+		border-left: 0.25rem solid $form-arrow;
 		left: 0px;
 	}
 

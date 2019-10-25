@@ -62,7 +62,7 @@ $deactive-tab-border: $boder--width solid $border--color;
 			&.tab-active {
 				font-weight: bold;
 				position: relative;
-				background-color: white;
+				background-color: $app-background-color;
 				&:after {
 					content: '';
 					position: absolute;
@@ -116,7 +116,7 @@ $deactive-tab-border: $boder--width solid $border--color;
 
 					svg path {
 						fill: transparent;
-						stroke: $colors-deactivate-color2;
+						stroke: $sidebar-color;
 					}
 				}
 				.sidebar_hub-section-title {
@@ -141,8 +141,8 @@ $deactive-tab-border: $boder--width solid $border--color;
 				.sidebar_hub-section-header {
 					.sidebar_hub-section-icon {
 						svg path {
-							fill: $colors-main-black;
-							stroke: $colors-main-black;
+							fill: $sidebar-color-active;
+							stroke: $sidebar-color-active;
 						}
 					}
 					.sidebar_hub-section-title {
@@ -154,7 +154,7 @@ $deactive-tab-border: $boder--width solid $border--color;
 		}
 	}
 
-	@include bottom-border($colors-main-black, $bottom_line-height);
+	@include bottom-border($border-main, $bottom_line-height);
 
 	.sign_up-btn,  .log_in-btn{
 		background: $colors-white !important;

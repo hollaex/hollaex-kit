@@ -255,9 +255,9 @@ table th {
   .presentation_container .inner_container {
     position: relative; }
     .presentation_container .inner_container.with_border_top {
-      border-top: 1px solid #212121; }
+      border-top: 1px solid #777677; }
     .presentation_container .inner_container.with_border_bottom {
-      border-bottom: 1px solid #212121; }
+      border-bottom: 1px solid #777677; }
     .presentation_container .inner_container .information_block {
       position: relative;
       margin-bottom: 1rem; }
@@ -1997,7 +1997,7 @@ table th {
     .trade_orderbook-wrapper .trade_orderbook-content .trade_orderbook-asks > .value-row:first-child > div {
       color: white; }
   .trade_orderbook-wrapper .trade_orderbook-content .trade_orderbook-bids > .value-row:first-child {
-    background-color: #d1d4dc; }
+    background-color: #878787; }
     .trade_orderbook-wrapper .trade_orderbook-content .trade_orderbook-bids > .value-row:first-child > div {
       color: #000000; }
   .trade_orderbook-wrapper .trade_asks-limit_bar .orderbook-limit_bar-wrapper {
@@ -2079,7 +2079,7 @@ table th {
 
 .ask,
 .buy {
-  color: #d1d4dc; }
+  color: #878787; }
 
 .bid,
 .sell {
@@ -2105,7 +2105,7 @@ table th {
     .trade_active_orders-wrapper .cell_box-type > div {
       margin: 0; }
     .trade_active_orders-wrapper .cell_box-type .buy {
-      background-color: #d1d4dc;
+      background-color: #878787;
       color: #000000;
       font-weight: bold; }
     .trade_active_orders-wrapper .cell_box-type .sell {
@@ -2122,7 +2122,8 @@ table th {
         padding: 0 0.15rem;
         position: relative;
         width: 100%;
-        color: #878787; }
+        color: #878787;
+        z-index: 2; }
         .trade_active_orders-wrapper .cell_box-type.fullfilled .cell-wrapper > .cell_value-wrapper .cell_value-bar {
           position: absolute;
           left: 0;
@@ -2562,7 +2563,7 @@ table th {
       color: #000000;
       font-weight: bold; }
     .summary-container .assets-wrapper .total-assets {
-      background: repeating-linear-gradient(-45deg, #fff, #fff 2px, #cccbcb 2px, #cccbcb 4px);
+      background: repeating-linear-gradient(-45deg, white, white 2px, #cccbcb 2px, #cccbcb 4px);
       font-size: 1.2rem;
       font-weight: bold;
       padding: .5rem;
@@ -2611,7 +2612,7 @@ table th {
   .summary-container .account-details-wrapper .accounnt-type-menu-last-active {
     border-bottom: none !important; }
   .summary-container .account-details-wrapper .requirement-header {
-    border-bottom: 1px solid #000000;
+    border-bottom: 1px solid #777677;
     color: #000000;
     font-weight: bold; }
   .summary-container .account-details-wrapper .status-header {
@@ -2640,22 +2641,22 @@ table th {
   .fee-limits-wrapper table {
     border-collapse: collapse; }
   .fee-limits-wrapper td {
-    border: 1px solid #000000; }
+    border: 1px solid #777677; }
   .fee-limits-wrapper .account-limits {
     margin: 1rem 0;
     width: 100%; }
   .fee-limits-wrapper .account-limits-content {
-    border: 1px solid #000000; }
+    border: 1px solid #777677; }
   .fee-limits-wrapper .account-limits-maker {
-    border-left: 1px solid #000000;
-    border-right: 1px solid #000000;
-    border-top: 1px solid #000000; }
+    border-left: 1px solid #777677;
+    border-right: 1px solid #777677;
+    border-top: 1px solid #777677; }
   .fee-limits-wrapper .account-limits-taker {
-    border-bottom: 1px solid #000000;
-    border-left: 1px solid #000000;
-    border-right: 1px solid #000000; }
+    border-bottom: 1px solid #777677;
+    border-left: 1px solid #777677;
+    border-right: 1px solid #777677; }
   .fee-limits-wrapper .account-limits-coin {
-    border-bottom: 1px solid #000000;
+    border-bottom: 1px solid #777677;
     padding: .25rem .5rem;
     width: 14rem; }
   .fee-limits-wrapper .account-limits-status {
@@ -3206,7 +3207,7 @@ table th {
   display: flex;
   justify-content: space-between;
   align-content: center;
-  border-top: 2px solid #212121;
+  border-top: 2px solid #777677;
   margin-bottom: 1rem; }
   .tab_controller-tabs .tab_item {
     border-top: 4px solid transparent;
@@ -3221,7 +3222,7 @@ table th {
   .tab_controller-tabs .tab-trade {
     padding: 0 1px 12px !important; }
   .tab_controller-tabs .tab_item-active {
-    border-top: 4px solid #212121;
+    border-top: 4px solid #777677;
     color: #212121; }
     .tab_controller-tabs .tab_item-active svg path {
       opacity: 1; }
@@ -5210,7 +5211,8 @@ table th {
   max-width: calc(100% - 2.5rem);
   max-height: calc(100% - 2.5rem);
   overflow: auto;
-  border: none !important; }
+  border: none !important;
+  background-color: white; }
   .ReactModal__Content .action_notification-wrapper.close-button {
     margin-top: 1.5rem; }
 
@@ -5386,7 +5388,7 @@ table th {
   height: 0;
   border-top: 0.38rem solid transparent;
   border-bottom: 0.38rem solid transparent;
-  border-left: 0.38rem solid #cccbcb;
+  border-left: 0.38rem solid #777677;
   margin-right: -0.38rem;
   right: -0.38rem;
   top: calc(50% - 0.5rem); }
@@ -5405,7 +5407,7 @@ table th {
   height: 0;
   border-top: 0.38rem solid transparent;
   border-bottom: 0.38rem solid transparent;
-  border-right: 0.38rem solid #cccbcb;
+  border-right: 0.38rem solid #777677;
   margin-left: -0.38rem;
   left: -0.38rem;
   top: calc(50% - 0.6rem); }
@@ -5986,8 +5988,8 @@ table th {
     .table-wrapper .table_body-wrapper.with_icon tr td:first-child {
       border: none !important; }
     .table-wrapper .table_body-wrapper tr.table_body-row td {
-      border-top: 1px solid #212121;
-      border-bottom: 1px solid #212121; }
+      border-top: 1px solid #777677;
+      border-bottom: 1px solid #777677; }
     .table-wrapper .table_body-wrapper .cancel-animate, .table-wrapper .table_body-wrapper .cancel-row-color, .table-wrapper .table_body-wrapper .cancel-row-color .cell_box-type .sell, .table-wrapper .table_body-wrapper .cancel-row-color .cell_box-type .buy, .table-wrapper .table_body-wrapper .cancel-row-color .action_notification-wrapper .notification-info, .table-wrapper .table_body-wrapper .cancel-row-color .cell-wrapper, .table-wrapper .table_body-wrapper .cancel-row-color .cell-wrapper .cell_value-wrapper, .table-wrapper .table_body-wrapper .cancel-row-color .cell-wrapper .cell_value-wrapper .cell_value-bar {
       -webkit-animation: cancelRow 1.4s;
       -moz-animation: cancelRow 1.4s;
@@ -6015,7 +6017,7 @@ table th {
     background-color: white;
     border-color: white; } }
   .table-wrapper .cell_box-type {
-    color: white;
+    color: #000000;
     text-transform: capitalize; }
     .table-wrapper .cell_box-type > div {
       padding: 0.15rem 0.25rem; }
@@ -6029,7 +6031,7 @@ table th {
 .table_controllers-wrapper {
   margin: 2rem 0;
   color: #212121;
-  border-top: 2px solid #212121;
+  border-top: 2px solid #777677;
   position: relative; }
   .table_controllers-wrapper .disabled {
     cursor: default;
@@ -7680,7 +7682,7 @@ body {
 
 .ReactModal__Body--open #root {
   filter: blur(5px);
-  background: lightgrey; }
+  background: rgba(221, 221, 221, 0.75); }
 
 .form {
   min-width: 25rem;

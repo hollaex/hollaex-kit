@@ -11,7 +11,7 @@ $logout--size-difference: 3rem;
 	.notification-title-wrapper {
 		height: 15rem;
 		padding: 0.5rem;
-		border-bottom: 1px solid $colors-main-black;
+		border-bottom: 1px solid $border-main;
 
 		.notification-title-icon {
 			max-height: 8rem;
@@ -36,7 +36,7 @@ $logout--size-difference: 3rem;
 		flex: 1;
 		.notification-content-title {
 			&.with-border-bottom {
-				border-bottom: 1px solid $colors-main-black;
+				border-bottom: 1px solid $border-main;
 			}
 		}
 		&.notification_verification {
@@ -130,7 +130,7 @@ $logout--size-difference: 3rem;
 		width: 36rem;
 
 		.user_refer_info {
-			background-color: $colors-info-panel-background;
+			background-color: $info-panel-background;
 			height: 5.5rem;
 			justify-content: space-between;
 			.separator_line {

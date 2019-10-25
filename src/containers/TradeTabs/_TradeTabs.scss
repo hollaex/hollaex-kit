@@ -1,5 +1,4 @@
 $trade-tab--arrow-size: 0.4rem;
-$trade-tab-pairs-up: green;
 $trade-tab-dark-pair-content: #a3a1c9;
 $trade-tab-active-dark-title: #b7b5cd;
 
@@ -113,12 +112,12 @@ $trade-tab-active-dark-title: #b7b5cd;
     }
 
     .trade_tabs-content {
-        border-top: 2px solid $colors-main-black;
+        border-top: 2px solid $border-main;
         font-size: .8rem;
     }
 
     .trade_tabs-link {
-        color: $colors-notifications-blue;
+        color: $link;
         margin: .5rem 0;
         padding: 0 .5rem;
         text-transform: uppercase;
@@ -129,7 +128,7 @@ $trade-tab-active-dark-title: #b7b5cd;
     }
 
     .trade_tabs-search-field {
-        background-color: $colors-white;
+        background-color: $app-background-color;
         color: $colors-deactivate-color1;
         margin: 0;
         padding-right: .5rem;
@@ -168,11 +167,11 @@ $trade-tab-active-dark-title: #b7b5cd;
     }
 
     .price-diff-down {
-		color: $colors-notifications-red;
+		color: $app-bar-pairs-down;
 	}
 
 	.price-diff-up {
-		color: $trade-tab-pairs-up;
+		color: $app-bar-pairs-up;
 	}
 
 	.trade-tab-price_diff_up {
@@ -180,7 +179,7 @@ $trade-tab-active-dark-title: #b7b5cd;
 	}
 
 	.trade-tab-price_diff_up:before {
-		@include css-triangle($trade-tab-pairs-up, 'up', $trade-tab--arrow-size);
+		@include css-triangle($app-bar-pairs-up, 'up', $trade-tab--arrow-size);
 		display: inline-block;
 		margin-bottom: 0.2rem;
 		margin-right: 0.5rem;
@@ -193,7 +192,7 @@ $trade-tab-active-dark-title: #b7b5cd;
 	}
 
 	.trade-tab-price_diff_down:before {
-		@include css-triangle($colors-notifications-red, 'down', $trade-tab--arrow-size);
+		@include css-triangle($app-bar-pairs-down, 'down', $trade-tab--arrow-size);
 		display: inline-block;
 		margin-right: 0.5rem;
 		position: relative;
