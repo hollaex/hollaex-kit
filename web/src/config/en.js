@@ -16,7 +16,7 @@ export default {
 	HOUR_FORMAT: 'HH:mm:ss A',
 	LOGIN_TEXT: 'Login',
 	SIGN_IN: 'Sign In',
-	SIGNUP_TEXT: 'Sign Up',
+	SIGNUP_TEXT: 'Sign Upppppppp',
 	REGISTER_TEXT: 'Register',
 	ACCOUNT_TEXT: 'Account',
 	CLOSE_TEXT: 'Close',
