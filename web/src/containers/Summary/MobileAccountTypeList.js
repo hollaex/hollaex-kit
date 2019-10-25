@@ -2,25 +2,25 @@ import React from 'react';
 import classnames from 'classnames';
 import ReactSVG from 'react-svg';
 
+import STRINGS from '../../config/localizedStrings';
 import AccountTypeDetails from './components/AccountTypeDetails';
-import { TRADING_ACCOUNT_TYPE, ICONS, FLEX_CENTER_CLASSES } from '../../config/constants';
+import { ICONS, FLEX_CENTER_CLASSES } from '../../config/constants';
 
 const MobileAccountTypeList = ({
     user,
     coins,
-    accounts,
+    config,
     activeTheme,
     selectedAccount,
-    currentTradingAccount,
     lastMonthVolume,
     onAccountTypeChange,
     onFeesAndLimits,
-    onUpgradeAccount
+    onUpgradeAccount,
+    verification_level
 }) => {
     return (
         <div className="mobile-account-type my-4">
-            {accounts.map((key, index) => {
-                let account = TRADING_ACCOUNT_TYPE[key];
+            {config.map((key, index) => {
                 return (
                     <div
                         key={index}
@@ -29,7 +29,7 @@ const MobileAccountTypeList = ({
                                 "account-type-menu",
                                 {
                                     "account-type-menu-active": selectedAccount === key,
-                                    "accounnt-type-menu-last-active": index === (accounts.length - 1)
+                                    "accounnt-type-menu-last-active": index === (config.length - 1)
                                 }
                             )
                         }
@@ -37,12 +37,17 @@ const MobileAccountTypeList = ({
                     >
                         <div className="d-flex">
                             <div className="mr-4">
-                                <ReactSVG path={ICONS[key.toUpperCase()]} wrapperClassName="account-type-icon" />
+                                <ReactSVG
+                                    path={ICONS[`LEVEL_ACCOUNT_ICON_${key}`]
+                                        ? ICONS[`LEVEL_ACCOUNT_ICON_${key}`]
+                                        : ICONS.LEVEL_ACCOUNT_ICON_4}
+                                    wrapperClassName="trader-account-icon"
+                                />
                             </div>
                             <div className={classnames(FLEX_CENTER_CLASSES)}>
-                                {account.name}
-                                {(key === currentTradingAccount) &&
-                                    <div className="account-current summary-content-txt ml-2"> (current) </div>
+                                {STRINGS.formatString(STRINGS.SUMMARY.LEVEL_OF_ACCOUNT, key)}
+                                {(key === verification_level) &&
+                                    <div className="account-current summary-content-txt ml-2"> {`(${STRINGS.SUMMARY.CURRENT_TXT})`} </div>
                                 }
                             </div>
                         </div>

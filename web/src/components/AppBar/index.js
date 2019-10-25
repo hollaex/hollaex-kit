@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Icon } from 'antd';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import classnames from 'classnames';
@@ -353,7 +352,10 @@ class AppBar extends Component {
 													'quick_trade-active': location.pathname === '/admin'
 												})}
 											>
-												<Icon type="dashboard" style={{ position: 'relative', top: '2.5px' }} />
+												<ReactSVG
+													path={ICONS.SIDEBAR_ADMIN_DASH_ACTIVE}
+													wrapperClassName="quicktrade_icon mx-1"
+												/>
 												<div className="d-flex align-items-center">
 													{STRINGS.ADMIN_DASH}
 												</div>
