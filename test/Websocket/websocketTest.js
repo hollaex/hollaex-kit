@@ -31,7 +31,7 @@ describe('Socket testing', () => {
 				this.orderbook = result[1][symbolPair];
 				this.firstAsk = this.orderbook.asks[0];
 				this.firstBid = this.orderbook.bids[0];
-				this.fiat = this.balance['fiat_available'];
+				this.eur = this.balance['eur_available'];
 				this.btc = this.balance['btc_available'];
 
 				await sleep(1000);
@@ -115,7 +115,7 @@ describe('Socket testing', () => {
 		});
 
 		it('Market taker creates an order that is immediately filled', async () => {
-			if (0.0001 * (this.firstBid[0] + 1) <= this.fiat && 0.0001 <= this.btc) {
+			if (0.0001 * (this.firstBid[0] + 1) <= this.eur && 0.0001 <= this.btc) {
 				this.logs = [];
 				await client
 					.createOrder(symbolPair, 'buy', 0.0001, 'limit', this.firstBid[0] + 1)
@@ -156,7 +156,7 @@ describe('Socket testing', () => {
 		});
 
 		it('Market taker creates an order that is immediately partially filled', async () => {
-			if (0.0001 * (this.firstBid[0] + 1) <= this.fiat && 0.0001 <= this.btc) {
+			if (0.0001 * (this.firstBid[0] + 1) <= this.eur && 0.0001 <= this.btc) {
 				this.logs = [];
 				await client
 					.createOrder(symbolPair, 'buy', 0.0001, 'limit', this.firstBid[0] + 1)
@@ -221,7 +221,7 @@ describe('Socket testing', () => {
 		});
 
 		it('Market taker creates a market order', async () => {
-			if (0.0001 * (this.firstBid[0] + 1) <= this.fiat && 0.0001 <= this.btc) {
+			if (0.0001 * (this.firstBid[0] + 1) <= this.eur && 0.0001 <= this.btc) {
 				this.logs = [];
 				await client
 					.createOrder(symbolPair, 'buy', 0.0001, 'limit', this.firstBid[0] + 1)

@@ -280,7 +280,7 @@ describe('Private functions', () => {
 		});
 		// it('Get error when requesting a BTC amount that is larger than 10', (done) => {
 		// 	client
-		// 		.requestWithdrawal('btc', 11, SAMPLE_BTC_RECEIVING_ADDRESS)
+		// 		.requestWithdrawal('btc', constants.coins.btc.max * 1.01, SAMPLE_BTC_RECEIVING_ADDRESS)
 		// 		.then((data) => console.log(data))
 		// 		.catch((err) => {
 		// 			expect(err.response.body).to.include(
@@ -291,7 +291,7 @@ describe('Private functions', () => {
 		// });
 		// it('Get error when requesting a ETH amount that is larger than 50', (done) => {
 		// 	client
-		// 		.requestWithdrawal('eth', 51, SAMPLE_ETH_RECEIVING_ADDRESS)
+		// 		.requestWithdrawal('eth', constants.coins.eth.max * 1.01, SAMPLE_ETH_RECEIVING_ADDRESS)
 		// 		.catch((err) => {
 		// 			expect(err.response.body).to.include(
 		// 				'Exceeded max amount for a withdrawal: 50'
@@ -299,26 +299,26 @@ describe('Private functions', () => {
 		// 			done();
 		// 		});
 		// });
-		it('Get error when requesting a BTC amount that is lower than min', (done) => {
-			client
-				.requestWithdrawal('btc', constants.coins.btc.min - 0.0001, SAMPLE_BTC_RECEIVING_ADDRESS)
-				.catch((err) => {
-					expect(err.response.body).to.include(
-						'Amount should be bigger than'
-					);
-					done();
-				});
-		});
-		it('Get error when requesting a ETH amount that is lower than min', (done) => {
-			client
-				.requestWithdrawal('eth', constants.coins.eth.min - 0.00001, SAMPLE_ETH_RECEIVING_ADDRESS)
-				.catch((err) => {
-					expect(err.response.body).to.include(
-						'Amount should be bigger than'
-					);
-					done();
-				});
-		});
+		// it('Get error when requesting a BTC amount that is lower than min', (done) => {
+		// 	client
+		// 		.requestWithdrawal('btc', constants.coins.btc.min * 0.99, SAMPLE_BTC_RECEIVING_ADDRESS)
+		// 		.catch((err) => {
+		// 			expect(err.response.body).to.include(
+		// 				'Amount should be bigger than'
+		// 			);
+		// 			done();
+		// 		});
+		// });
+		// it('Get error when requesting a ETH amount that is lower than min', (done) => {
+		// 	client
+		// 		.requestWithdrawal('eth', constants.coins.eth.min * 0.99, SAMPLE_ETH_RECEIVING_ADDRESS)
+		// 		.catch((err) => {
+		// 			expect(err.response.body).to.include(
+		// 				'Amount should be bigger than'
+		// 			);
+		// 			done();
+		// 		});
+		// });
 	});
 
 	describe('#getUserTrade(symbol, limit, page)', () => {
