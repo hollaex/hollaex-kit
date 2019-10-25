@@ -23,5 +23,11 @@ web/yarn-error.log*
 
 web/src/**/*.css
 
+#HollaEx CLI related
 templates/local/nginx/conf.d/*
+templates/local/logs/*
+templates/local/*.yaml
+templates/local/*.env.local
+templates/local/letsencrypt/*
+
 templates/kubernetes/config/*
