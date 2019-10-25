@@ -1,6 +1,6 @@
 export default {
-	APP_TITLE: 'HollaExxxx',
-	APP_SUB_TITLE: 'White Label Cryptocurrency Exchangeeeee',
+	APP_TITLE: 'HollaEx',
+	APP_SUB_TITLE: 'White Label Cryptocurrency Exchange',
 	APP_NAME: 'HollaEx',
 
 	LOGOUT_CONFIRM_TEXT: 'Are you sure?. Do you want to logout',
