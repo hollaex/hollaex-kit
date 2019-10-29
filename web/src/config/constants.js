@@ -274,8 +274,8 @@ export const SUMMMARY_ICON = {
 	LEVEL_4_DARK: '/assets/summary/level-4-dark.png'
 };
 
-export const HOLLAEX_LOGO = '/assets/hollaEx_logo-grey.svg';
-export const HOLLAEX_LOGO_BLACK = '/assets/hollaEx_logo-blk.svg';
+export const HOLLAEX_LOGO = process.env.LOGO_PATH || '/assets/hollaEx_logo-grey.svg';
+export const HOLLAEX_LOGO_BLACK = process.env.LOGO_BLACK_PATH || '/assets/hollaEx_logo-blk.svg';
 
 export const AUDIOS = {
 	ORDERBOOK_FIELD_UPDATE: '/assets/audio/orderbook_field_update.wav',
