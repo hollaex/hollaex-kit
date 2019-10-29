@@ -13,6 +13,7 @@ import { FLEX_CENTER_CLASSES, EXCHANGE_EXPIRY_DAYS } from '../../config/constant
 import { setLanguage, getExchangeInfo } from '../../actions/appActions';
 import { logout } from '../../actions/authAction';
 import { getClasesForLanguage } from '../../utils/string';
+import { getThemeClass } from '../../utils/theme';
 
 import Section1 from './Section1';
 // import Section2 from './Section2';
@@ -93,7 +94,8 @@ class Home extends Component {
 			// requestQuickTrade,
 			activeLanguage,
 			router,
-			info
+			info,
+			activeTheme
 		} = this.props;
 		const { style } = this.state;
 		const isExpired = (info && (!Object.keys(info).length
@@ -107,6 +109,7 @@ class Home extends Component {
 					'home_container',
 					'app_background',
 					getClasesForLanguage(activeLanguage),
+					getThemeClass(activeTheme),
 					{
 						'layout-mobile': isMobile,
 						'layout-desktop': isBrowser
@@ -191,7 +194,8 @@ const mapStateToProps = (store) => ({
 	// symbol: store.orderbook.symbol,
 	// quickTradeData: store.orderbook.quickTrade,
 	activeLanguage: store.app.language,
-	info: store.app.info
+	info: store.app.info,
+	activeTheme: store.app.theme
 });
 
 const mapDispatchToProps = (dispatch) => ({
