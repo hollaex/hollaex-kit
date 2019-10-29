@@ -1,13 +1,13 @@
 
 .dark-theme {
     .summary-container {
-        color: $dark-font-sub-text-color;
 
         .trade-account-link {
             color: $dark-link;
         }
         .summary-block_wrapper {
             border-top: .2rem solid $dark-app-line-divider;
+            color: $dark-font-sub-text-color;
 
             .summary-block-title {
                 color: $dark-font-main-text-color;
@@ -163,14 +163,14 @@
 }
 
 .summary-container {
-    color: $colors-deactivate-color2;
     height: inherit;
     max-width: 100%;
     margin: 1rem auto;
     width: 75rem;
-
+    
     .summary-block_wrapper {
         border-top: .2rem solid $colors-black;
+        color: $colors-deactivate-color2;
         // margin: 0 .5rem;
         padding: .5rem;
         

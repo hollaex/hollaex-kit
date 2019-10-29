@@ -10,6 +10,7 @@ import { AppBar, Footer } from '../../components';
 import { setLanguage } from '../../actions/appActions';
 import { logout } from '../../actions/authAction';
 import { getClasesForLanguage } from '../../utils/string';
+import { getThemeClass } from '../../utils/theme';
 
 import Section1 from './Section1';
 // import Section2 from './Section2';
@@ -85,7 +86,8 @@ class Home extends Component {
 			// quickTradeData,
 			// requestQuickTrade,
 			activeLanguage,
-			router
+			router,
+			activeTheme
 		} = this.props;
 		const { style } = this.state;
 		return (
@@ -95,6 +97,7 @@ class Home extends Component {
 					'home_container',
 					'app_background',
 					getClasesForLanguage(activeLanguage),
+					getThemeClass(activeTheme),
 					{
 						'layout-mobile': isMobile,
 						'layout-desktop': isBrowser
@@ -157,7 +160,8 @@ const mapStateToProps = (store) => ({
 	estimatedValue: 100,
 	// symbol: store.orderbook.symbol,
 	// quickTradeData: store.orderbook.quickTrade,
-	activeLanguage: store.app.language
+	activeLanguage: store.app.language,
+	activeTheme: store.app.theme
 });
 
 const mapDispatchToProps = (dispatch) => ({

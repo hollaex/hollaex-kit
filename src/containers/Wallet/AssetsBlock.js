@@ -63,8 +63,7 @@ export const AssetsBlock = ({
 									</Link>
 								</td>
 								<td className="td-wallet">
-									{wallets[key] ||
-									(key === BASE_CURRENCY && bankaccount && bankaccount.verified) ? (
+									{wallets[key] ? (
 										<div className="d-flex justify-content-between deposit-withdrawal-wrapper">
 											<ActionNotification
 												text={STRINGS.WALLET_BUTTON_BASE_DEPOSIT}
@@ -86,18 +85,16 @@ export const AssetsBlock = ({
 											/>
 										</div>
 									) : (
-										key !== BASE_CURRENCY && (
-											<ActionNotification
-												text={STRINGS.GENERATE_WALLET}
-												status="information"
-												iconPath={ICONS.BLUE_PLUS}
-												onClick={() => onOpenDialog(key)}
-												className="need-help"
-												useSvg={true}
-												showActionText={true}
-												disable={!allow_deposit}
-											/>
-										)
+										<ActionNotification
+											text={STRINGS.GENERATE_WALLET}
+											status="information"
+											iconPath={ICONS.BLUE_PLUS}
+											onClick={() => onOpenDialog(key)}
+											className="need-help"
+											useSvg={true}
+											showActionText={true}
+											disable={!allow_deposit}
+										/>
 									)}
 								</td>
 								<td className="td-amount" />

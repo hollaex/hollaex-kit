@@ -190,7 +190,8 @@ table th {
 .app_container {
   min-height: 100vh; }
   .app_container.white-theme {
-    background-color: white; }
+    background-color: white;
+    color: #212121; }
   .app_container.dark-theme {
     background: #1f212a !important;
     min-height: 100vh; }
@@ -440,6 +441,8 @@ table th {
   position: relative;
   overflow-y: scroll;
   background-color: #d9dee5; }
+  .auth-wrapper.white-theme {
+    color: #212121; }
   .auth-wrapper .auth-container {
     max-width: 575px;
     max-height: 100vh;
@@ -2251,6 +2254,7 @@ table th {
     color: #29a8e0;
     font-weight: bold; }
   .verification_container .header-content {
+    color: #777677;
     font-size: .8rem; }
   .verification_container .content-text {
     font-size: 0.8rem; }
@@ -2380,52 +2384,64 @@ table th {
 .dark-theme svg .coin-base-4 {
   stroke: #2e2f37; }
 
-.dark-theme .summary-container {
+.dark-theme .summary-container .trade-account-link {
+  color: #ed507b; }
+
+.dark-theme .summary-container .summary-block_wrapper {
+  border-top: 0.2rem solid #b7b5cd;
   color: #a3a1ca; }
-  .dark-theme .summary-container .trade-account-link {
-    color: #ed507b; }
-  .dark-theme .summary-container .summary-block_wrapper {
-    border-top: 0.2rem solid #b7b5cd; }
-    .dark-theme .summary-container .summary-block_wrapper .summary-block-title {
-      color: #b6b5cd; }
-  .dark-theme .summary-container .requirement-wrapper .requirement-doc-icon svg .verification-doc {
-    fill: #a3a1ca; }
-  .dark-theme .summary-container .requirement-incomplete {
-    color: #808184; }
-  .dark-theme .summary-container .account-details-wrapper .account-type-menu {
-    border-top: 1px solid #b7b5cd;
-    color: #ed507b; }
-    .dark-theme .summary-container .account-details-wrapper .account-type-menu .account-current {
-      color: #a3a1ca;
-      text-transform: lowercase; }
-  .dark-theme .summary-container .account-details-wrapper .account-type-menu-active {
-    border-top: 2px solid #b6b5cd;
-    border-bottom: 1.5px solid #b6b5cd;
+  .dark-theme .summary-container .summary-block_wrapper .summary-block-title {
     color: #b6b5cd; }
-    .dark-theme .summary-container .account-details-wrapper .account-type-menu-active .account-current {
-      color: #b6b5cd;
-      text-transform: lowercase; }
-    .dark-theme .summary-container .account-details-wrapper .account-type-menu-active .requirements-content-text,
-    .dark-theme .summary-container .account-details-wrapper .account-type-menu-active .account-details-content {
-      color: #a3a1ca; }
-  .dark-theme .summary-container .account-details-wrapper .accounnt-type-menu-last-active {
-    border-bottom: none !important; }
-  .dark-theme .summary-container .account-details-wrapper .requirement-header {
-    border-bottom: 1px solid #b7b5cd;
-    color: #b6b5cd; }
-  .dark-theme .summary-container .assets-wrapper .asset-changes {
-    background-color: #ed507b; }
-  .dark-theme .summary-container .assets-wrapper .price-text {
+
+.dark-theme .summary-container .requirement-wrapper .requirement-doc-icon svg .verification-doc {
+  fill: #a3a1ca; }
+
+.dark-theme .summary-container .requirement-incomplete {
+  color: #808184; }
+
+.dark-theme .summary-container .account-details-wrapper .account-type-menu {
+  border-top: 1px solid #b7b5cd;
+  color: #ed507b; }
+  .dark-theme .summary-container .account-details-wrapper .account-type-menu .account-current {
+    color: #a3a1ca;
+    text-transform: lowercase; }
+
+.dark-theme .summary-container .account-details-wrapper .account-type-menu-active {
+  border-top: 2px solid #b6b5cd;
+  border-bottom: 1.5px solid #b6b5cd;
+  color: #b6b5cd; }
+  .dark-theme .summary-container .account-details-wrapper .account-type-menu-active .account-current {
+    color: #b6b5cd;
+    text-transform: lowercase; }
+  .dark-theme .summary-container .account-details-wrapper .account-type-menu-active .requirements-content-text,
+  .dark-theme .summary-container .account-details-wrapper .account-type-menu-active .account-details-content {
     color: #a3a1ca; }
-  .dark-theme .summary-container .assets-wrapper .total-assets {
-    background: repeating-linear-gradient(-45deg, #1f212a, #1f212a 2px, #2e2f37 2px, #2e2f37 4px);
-    color: #a3a1ca; }
-  .dark-theme .summary-container .assets-wrapper .coin-price-container .coin-price svg .hex_icon {
-    fill: #a3a1ca; }
-  .dark-theme .summary-container .trader-account-icon .account-summary {
-    stroke: #a3a1ca; }
-  .dark-theme .summary-container .trader-account-icon .account-summary1 {
-    fill: #a3a1ca; }
+
+.dark-theme .summary-container .account-details-wrapper .accounnt-type-menu-last-active {
+  border-bottom: none !important; }
+
+.dark-theme .summary-container .account-details-wrapper .requirement-header {
+  border-bottom: 1px solid #b7b5cd;
+  color: #b6b5cd; }
+
+.dark-theme .summary-container .assets-wrapper .asset-changes {
+  background-color: #ed507b; }
+
+.dark-theme .summary-container .assets-wrapper .price-text {
+  color: #a3a1ca; }
+
+.dark-theme .summary-container .assets-wrapper .total-assets {
+  background: repeating-linear-gradient(-45deg, #1f212a, #1f212a 2px, #2e2f37 2px, #2e2f37 4px);
+  color: #a3a1ca; }
+
+.dark-theme .summary-container .assets-wrapper .coin-price-container .coin-price svg .hex_icon {
+  fill: #a3a1ca; }
+
+.dark-theme .summary-container .trader-account-icon .account-summary {
+  stroke: #a3a1ca; }
+
+.dark-theme .summary-container .trader-account-icon .account-summary1 {
+  fill: #a3a1ca; }
 
 .dark-theme .fee-limits-wrapper .fee-limits-link {
   color: #ed507b; }
@@ -2479,13 +2495,13 @@ table th {
   margin: 3rem auto; }
 
 .summary-container {
-  color: #777677;
   height: inherit;
   max-width: 100%;
   margin: 1rem auto;
   width: 75rem; }
   .summary-container .summary-block_wrapper {
     border-top: 0.2rem solid #000000;
+    color: #777677;
     padding: .5rem; }
     .summary-container .summary-block_wrapper .summary-block-title {
       color: #000000;
