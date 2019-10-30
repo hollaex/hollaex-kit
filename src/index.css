@@ -1692,7 +1692,7 @@ table th {
     color: white; }
   .dark-theme .trade_block-wrapper .trade_block-title .trade_block-icon svg .st0 {
     fill: #b6b5cd !important; }
-  .dark-theme .trade_block-wrapper .trade_block-title .trade_block-icon svg .bch-icon, .dark-theme .trade_block-wrapper .trade_block-title .trade_block-icon svg .btc1, .dark-theme .trade_block-wrapper .trade_block-title .trade_block-icon svg .btc0, .dark-theme .trade_block-wrapper .trade_block-title .trade_block-icon svg .xrp-icon, .dark-theme .trade_block-wrapper .trade_block-title .trade_block-icon svg .hex-icon, .dark-theme .trade_block-wrapper .trade_block-title .trade_block-icon svg .default-icon {
+  .dark-theme .trade_block-wrapper .trade_block-title .trade_block-icon svg .bch-icon, .dark-theme .trade_block-wrapper .trade_block-title .trade_block-icon svg .btc1, .dark-theme .trade_block-wrapper .trade_block-title .trade_block-icon svg .btc0, .dark-theme .trade_block-wrapper .trade_block-title .trade_block-icon svg .eth0, .dark-theme .trade_block-wrapper .trade_block-title .trade_block-icon svg .eth1, .dark-theme .trade_block-wrapper .trade_block-title .trade_block-icon svg .xrp-icon, .dark-theme .trade_block-wrapper .trade_block-title .trade_block-icon svg .hex-icon, .dark-theme .trade_block-wrapper .trade_block-title .trade_block-icon svg .default-icon {
     fill: #b6b5cd !important; }
 
 .dark-theme .trade_block_tabs-wrapper .trade_block-title .trade_block-title-items {
