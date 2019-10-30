@@ -37,12 +37,12 @@ export const SidebarBottom = ({ activePath = 'x', pair = '', isLogged }) => {
 					iconPath={ICONS.SIDEBAR_TRADING_ACTIVE}
 					active={activePath === 'trade'}
 				/>
-				{/* <SidebarButtom
+				<SidebarButtom
 					path={`/chat`}
 					title={STRINGS.USER_SETTINGS.TITLE_CHAT}
 					iconPath={ICONS.CHAT}
 					active={activePath === 'chat'}
-				/> */}
+				/>
 				<SidebarButtom
 					path="/wallet"
 					title={STRINGS.WALLET_TITLE}

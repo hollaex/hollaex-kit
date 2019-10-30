@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Icon } from 'antd';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import classnames from 'classnames';
@@ -119,7 +118,7 @@ class AppBar extends Component {
         let walletPending = false;
         if (user.balance) {
 			walletPending = true;
-            Object.keys(coins).map(pair => {
+            Object.keys(coins).forEach(pair => {
                 if (user.balance[`${pair.toLowerCase()}_balance`] > 0) {
                     walletPending = false;
                 }

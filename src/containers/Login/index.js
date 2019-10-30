@@ -15,7 +15,6 @@ import { NOTIFICATIONS } from '../../actions/appActions';
 import { errorHandler } from '../../components/OtpForm/utils';
 import {
 	HOLLAEX_LOGO,
-	HOLLAEX_LOGO_BLACK,
 	FLEX_CENTER_CLASSES,
 	ICONS
 } from '../../config/constants';

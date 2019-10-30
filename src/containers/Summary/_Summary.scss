@@ -74,6 +74,9 @@
                         .hex_icon {
                             fill: $dark-icon-color;
                         }
+                        .default-icon{
+                            fill: $dark-font-sub-text-color !important;
+                        }
                     }
                 }
             }
@@ -306,16 +309,19 @@
     
                 svg {
                     .btc0, .btc1 {
-                        fill: $colors-currencies-btc;
+                        fill: $coin-btc;
                     }
                     .eth0, .eth1 {
-                        fill: $colors-currencies-eth;
+                        fill: $coin-eth;
                     }
                     .bch-icon {
                         fill: $coin-bch;
                     }
                     .xrp-icon {
                         fill: $coin-xrp;
+                    }
+                    .default-icon{
+                        fill: $colors-black !important;
                     }
                 }
             }

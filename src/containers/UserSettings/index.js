@@ -5,7 +5,13 @@ import { SubmissionError } from 'redux-form';
 import { isMobile } from 'react-device-detect';
 import { browserHistory } from 'react-router';
 
-import { setLanguage, changeTheme, openContactForm, openRiskPortfolioOrderWarning, closeNotification } from '../../actions/appActions';
+import {
+	setLanguage,
+	changeTheme,
+	openContactForm,
+	openRiskPortfolioOrderWarning,
+	closeNotification
+} from '../../actions/appActions';
 import { logout } from '../../actions/authAction';
 import {
 	updateUser,
@@ -13,7 +19,16 @@ import {
 	setUsername,
 	setUsernameStore
 } from '../../actions/userAction';
-import { IconTitle, Button, HeaderSection, CustomTabs, CustomMobileTabs, CustomTabBar, MobileTabBar, Loader } from '../../components';
+import {
+	IconTitle,
+	// Button,
+	HeaderSection,
+	CustomTabs,
+	CustomMobileTabs,
+	CustomTabBar,
+	MobileTabBar,
+	Loader
+} from '../../components';
 import SettingsForm, { generateFormValues } from './SettingsForm';
 import UsernameForm, { generateUsernameFormValues } from './UsernameForm';
 import LanguageForm, { generateLanguageFormValues } from './LanguageForm';

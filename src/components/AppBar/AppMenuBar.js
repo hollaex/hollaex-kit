@@ -43,7 +43,7 @@ class AppMenuBar extends Component {
         let walletPending = false;
         if (user.balance) {
             walletPending = true;
-            Object.keys(coins).map(pair => {
+            Object.keys(coins).forEach(pair => {
                 if (user.balance[`${pair.toLowerCase()}_balance`] > 0) {
                     walletPending = false;
                 }

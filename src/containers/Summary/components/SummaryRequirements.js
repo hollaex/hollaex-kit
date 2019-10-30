@@ -2,9 +2,9 @@ import React from 'react';
 import ReactSvg from 'react-svg';
 import classnames from 'classnames';
 import { Link } from 'react-router';
-import moment from 'moment';
+// import moment from 'moment';
 
-import { Button } from '../../../components';
+// import { Button } from '../../../components';
 import { ICONS } from '../../../config/constants';
 import STRINGS from '../../../config/localizedStrings';
 
@@ -42,36 +42,36 @@ const RejectedStatus = ({ isAccountDetails }) => (
     </div>
 );
 
-const checkBankVerification = (bank_account = [], id_data) => {
-    let bank_status = 0;
-    if (bank_account.length) {
-        if (bank_account.filter(data => data.status === 3).length) {
-            bank_status = 3;
-        } else if (bank_account.filter(data => data.status === 1).length) {
-            bank_status = 1;
-        } else if (bank_account.filter(data => data.status === 2).length) {
-            bank_status = 2;
-        }
-        if (id_data.status !== 3) {
-            bank_status = 1;
-        }
-        if (bank_account.length === bank_account.filter(data => data.status === 0).length) {
-            bank_status = 0;
-        }
-    }
-    return bank_status;
-};
+// const checkBankVerification = (bank_account = [], id_data) => {
+//     let bank_status = 0;
+//     if (bank_account.length) {
+//         if (bank_account.filter(data => data.status === 3).length) {
+//             bank_status = 3;
+//         } else if (bank_account.filter(data => data.status === 1).length) {
+//             bank_status = 1;
+//         } else if (bank_account.filter(data => data.status === 2).length) {
+//             bank_status = 2;
+//         }
+//         if (id_data.status !== 3) {
+//             bank_status = 1;
+//         }
+//         if (bank_account.length === bank_account.filter(data => data.status === 0).length) {
+//             bank_status = 0;
+//         }
+//     }
+//     return bank_status;
+// };
 
-const checkMonth = (currentDate, month) => {
-    const diffMonth = moment().diff(moment(currentDate), 'months');
-    return diffMonth >= month;
-};
+// const checkMonth = (currentDate, month) => {
+//     const diffMonth = moment().diff(moment(currentDate), 'months');
+//     return diffMonth >= month;
+// };
 
 const getRequirements = (user, coins) => {
     let walletDeposit = false;
     let hexDeposit = false;
     if (user.balance) {
-        Object.keys(coins).map(pair => {
+        Object.keys(coins).forEach(pair => {
             if (user.balance[`${pair.toLowerCase()}_balance`] > 0) {
                 walletDeposit = true;
             }
@@ -113,9 +113,9 @@ const getStatusClass = (status_code, completed) => {
     }
 };
 
-const getAllCompleted = requirement => {
-    return Object.keys(requirement).length === Object.keys(requirement).filter(key => requirement[key].completed).length;
-};
+// const getAllCompleted = requirement => {
+//     return Object.keys(requirement).length === Object.keys(requirement).filter(key => requirement[key].completed).length;
+// };
 
 const getStatusIcon = (reqObj, isAccountDetails) => {
     if (isAccountDetails) {
@@ -143,9 +143,9 @@ const getStatusIcon = (reqObj, isAccountDetails) => {
 
 const SummaryRequirements = ({ user, coins, isAccountDetails = false, contentClassName = "", verificationLevel, lastMonthVolume, onUpgradeAccount }) => {
     const { phone_number, address, id_data = {}, bank_account = [] } = user.userData;
-    const selectedLevel = isAccountDetails ? verificationLevel || user.verification_level : 2;
+    // const selectedLevel = isAccountDetails ? verificationLevel || user.verification_level : 2;
     const requirement = getRequirements(user, coins);
-    let requirementResolved = getAllCompleted(requirement);
+    // let requirementResolved = getAllCompleted(requirement);
     return (
         <div className="d-flex">
             {!isAccountDetails && <div>

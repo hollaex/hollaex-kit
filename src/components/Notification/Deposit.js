@@ -9,7 +9,7 @@ import { BASE_CURRENCY } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 
 const DepositNotification = ({ data, onClose, goToPage, openContactForm }) => {
-	const depositTexts = getDepositTexts(data.currency, data.status);
+	const depositTexts = getDepositTexts(data.currency, data.coins, data.status);
 
 	const headerProps = {
 		text: depositTexts.title,
@@ -48,7 +48,7 @@ const DepositNotification = ({ data, onClose, goToPage, openContactForm }) => {
 				<CurrencyBallWithPrice
 					symbol={data.currency}
 					amount={data.amount}
-					price={data.price || 1}
+					// price={data.price || 1}
 				/>
 			</div>
 			<div className="notification-buttons-wrapper d-flex">

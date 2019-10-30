@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { APP_TITLE } from '../config/constants';
+// import { APP_TITLE } from '../config/constants';
 
 export const getChartConfig = () => {
 	// return axios({

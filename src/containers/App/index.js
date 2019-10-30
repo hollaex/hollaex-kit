@@ -45,7 +45,8 @@ import {
 	RISK_PORTFOLIO_ORDER_WARING,
 	RISKY_ORDER,
 	setSnackDialog,
-	LOGOUT_CONFORMATION
+	LOGOUT_CONFORMATION,
+	setValidBaseCurrency
 } from '../../actions/appActions';
 
 import {
@@ -80,8 +81,6 @@ import {
 	getFontClassForLanguage
 } from '../../utils/string';
 
-let limitTimeOut = null;
-
 class Container extends Component {
 	state = {
 		appLoaded: false,
@@ -93,6 +92,8 @@ class Container extends Component {
 		ordersQueued: [],
 		limitFilledOnOrder: ''
 	};
+
+	limitTimeOut = null;
 
 	componentWillMount() {
 		const chatIsClosed = getChatMinimized();
@@ -110,6 +111,9 @@ class Container extends Component {
 		}
 		this._resetTimer();
 		this.updateThemeToBody(this.props.activeTheme);
+		if (this.props.location && this.props.location.pathname) {
+			this.checkPath(this.props.location.pathname);
+		}
 	}
 
 	componentWillReceiveProps(nextProps) {
@@ -146,6 +150,10 @@ class Container extends Component {
 		if (this.props.activeTheme !== nextProps.activeTheme) {
 			this.updateThemeToBody(nextProps.activeTheme);
 		}
+		if (this.props.location && nextProps.location
+            && this.props.location.pathname !== nextProps.location.pathname) {
+				this.checkPath(nextProps.location.pathname);
+		}
 	}
 
 	componentWillUnmount() {
@@ -160,6 +168,25 @@ class Container extends Component {
 		if (this.state.idleTimer) {
 			clearTimeout(this.state.idleTimer);
 		}
+		clearTimeout(this.limitTimeOut);
+	}
+
+	checkPath = (path) => {
+		var sheet = document.createElement('style')
+		if ((path === 'login') || (path === 'signup')) {
+			sheet.innerHTML = ".grecaptcha-badge { display: unset !important;}";
+			sheet.id = 'addCap'
+			if (document.getElementById('rmvCap') !== null) {
+				document.body.removeChild(document.getElementById('rmvCap'));
+			}
+		} else {
+			sheet.innerHTML = ".grecaptcha-badge { display: none !important;}";
+			sheet.id = 'rmvCap'
+			if (document.getElementById('addCap') !== null) {
+				document.body.removeChild(document.getElementById('addCap'));
+			}
+		}
+		document.body.appendChild(sheet);
 	}
 
 	updateThemeToBody = theme => {
@@ -216,6 +243,12 @@ class Container extends Component {
 			this.props.setPairs(data.pairs);
 			this.props.setPairsData(data.pairs);
 			this.props.setCurrencies(data.coins);
+			const pairWithBase = Object.keys(data.pairs).filter((key) => {
+				let temp = data.pairs[key];
+				return temp.pair_2 === BASE_CURRENCY;
+			});
+			const isValidPair = pairWithBase.length > 0;
+			this.props.setValidBaseCurrency(isValidPair);
 			const orderLimits = {};
 			Object.keys(data.pairs).map((pair, index) => {
 				orderLimits[pair] = {
@@ -323,7 +356,7 @@ class Container extends Component {
 					if (data.type === 'limit') {
 						playBackgroundAudioNotification('orderbook_limit_order');
 						this.setState({ limitFilledOnOrder: data.id });
-						limitTimeOut = setTimeout(() => {
+						this.limitTimeOut = setTimeout(() => {
 							if (this.state.limitFilledOnOrder)
 								this.setState({ limitFilledOnOrder: '' });
 						}, 1000);
@@ -864,13 +897,13 @@ class Container extends Component {
 								{dialogIsOpen &&
 									this.renderDialogContent(activeNotification, prices, activeTheme)}
 							</Dialog>
-							{/* {!isMobile && (
+							{!isMobile && (
 								<ChatComponent
 									minimized={chatIsClosed}
 									onMinimize={this.minimizeChat}
 									chatIsClosed={chatIsClosed}
 								/>
-							)} */}
+							)}
 						</div>
 						{isMobile && (
 							<div className="app_container-bottom_bar">
@@ -932,7 +965,8 @@ const mapDispatchToProps = (dispatch) => ({
 	setChatUnreadMessages: bindActionCreators(setChatUnreadMessages, dispatch),
 	setOrderLimits: bindActionCreators(setOrderLimits, dispatch),
 	setSnackDialog: bindActionCreators(setSnackDialog, dispatch),
-	setCurrencies: bindActionCreators(setCurrencies, dispatch)
+	setCurrencies: bindActionCreators(setCurrencies, dispatch),
+	setValidBaseCurrency: bindActionCreators(setValidBaseCurrency, dispatch)
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Container);

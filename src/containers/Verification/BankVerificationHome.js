@@ -13,6 +13,45 @@ const BankVerificationHome = ({ user, setActivePageContent, setActiveTab }) => {
         </div>;
     } else {
         const lastVerified = bank_account[bank_account.length - 1];
+        const List = bank_account.map((account, index) => {
+			if (account.status !== 0) {
+				return (
+					<div key={index} className="d-flex my-4">
+						{account.status === 1 && (
+							<div className="d-flex align-items-center mr-3">
+								<ReactSVG
+									path={ICONS.PENDING_TIMER}
+									wrapperClassName="account-pending-icon"
+								/>
+							</div>
+						)}
+						<div className="w-100">
+							<PanelInformationRow
+								label={STRINGS.USER_VERIFICATION.BANK_NAME}
+								information={account.bank_name}
+								className="title-font"
+								disable
+							/>
+							<div className="d-flex">
+								<PanelInformationRow
+									label={STRINGS.USER_VERIFICATION.ACCOUNT_NUMBER}
+									information={account.account_number}
+									className="mr-3 title-font"
+									disable
+								/>
+								<PanelInformationRow
+									label={STRINGS.USER_VERIFICATION.CARD_NUMBER}
+									information={account.card_number}
+									className="title-font"
+									disable
+								/>
+							</div>
+						</div>
+					</div>
+				);
+			}
+			return null;
+		});
         return (
             <div>
                 <div className="font-weight-bold text-lowercase">
@@ -23,36 +62,12 @@ const BankVerificationHome = ({ user, setActivePageContent, setActiveTab }) => {
                         </span>)
                     }
                 </div>
-                {bank_account.map((account, index) => {
-                    if (account.status !== 0) {
-                        return <div key={index} className="d-flex my-4">
-                            {account.status === 1 && <div className="d-flex align-items-center mr-3">
-                                <ReactSVG path={ICONS.PENDING_TIMER} wrapperClassName="account-pending-icon" />
-                            </div>}
-                            <div className="w-100">
-                                <PanelInformationRow
-                                    label={STRINGS.USER_VERIFICATION.BANK_NAME}
-                                    information={account.bank_name}
-                                    className="title-font"
-                                    disable />
-                                <div className="d-flex">
-                                    <PanelInformationRow
-                                        label={STRINGS.USER_VERIFICATION.ACCOUNT_NUMBER}
-                                        information={account.account_number}
-                                        className="mr-3 title-font"
-                                        disable />
-                                    <PanelInformationRow
-                                        label={STRINGS.USER_VERIFICATION.CARD_NUMBER}
-                                        information={account.card_number}
-                                        className="title-font"
-                                        disable />
-                                </div>
-                            </div>
-                        </div>
-                    }
-                })}
-                {lastVerified.status === 3 && MAX_NUMBER_BANKS > bank_account.length
-                    ? <Button label={STRINGS.USER_VERIFICATION.ADD_ANOTHER_BANK_ACCOUNT} onClick={() => setActivePageContent(1)} />
+                {List}
+                {lastVerified.status === 3 &&
+                MAX_NUMBER_BANKS > bank_account.length
+                    ? <Button
+                        label={STRINGS.USER_VERIFICATION.ADD_ANOTHER_BANK_ACCOUNT}
+                        onClick={() => setActivePageContent(1)} />
                     : null}
             </div>
         );

@@ -48,7 +48,7 @@ class DonutChart extends Component {
     checkData = (data = []) => {
         let largerValue = 0;
         let largerId = '';
-        data.map((value) => {
+        data.forEach((value) => {
             if (parseFloat(value.balancePercentage) > largerValue) {
                 largerId = value.symbol;
                 largerValue = parseFloat(value.balancePercentage);

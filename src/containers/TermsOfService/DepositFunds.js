@@ -1,9 +1,8 @@
 import React from 'react';
 import ReactSVG from 'react-svg';
-import classnames from 'classnames';
 
 import { IconTitle, BlueLink, Button } from '../../components';
-import { ICONS, FLEX_CENTER_CLASSES } from '../../config/constants';
+import { ICONS } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 
 const DepositFunds = (props) => {

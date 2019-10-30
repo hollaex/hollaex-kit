@@ -5,10 +5,10 @@ import SummaryBlock from './components/SummaryBlock';
 import TraderAccounts from './components/TraderAccounts';
 import SummaryRequirements from './components/SummaryRequirements';
 import AccountAssets from './components/AccountAssets';
-import TradingVolume from './components/TradingVolume';
-import AccountDetails from './components/AccountDetails';
+// import TradingVolume from './components/TradingVolume';
+// import AccountDetails from './components/AccountDetails';
 
-import { BASE_CURRENCY, DEFAULT_COIN_DATA } from '../../config/constants';
+// import { BASE_CURRENCY, DEFAULT_COIN_DATA } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 
 const MobileSummary = ({
@@ -30,7 +30,7 @@ const MobileSummary = ({
     onStakeToken,
     isValidBase
 }) => {
-    const { fullname } = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
+    // const { fullname } = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
     return (
         <div
             className={classnames(

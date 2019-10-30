@@ -32,7 +32,10 @@ class CaptchaField extends Component {
 	};
 
 	render() {
-		const { language, theme = 'light' } = this.props;
+		const {
+			language,
+			// theme = 'light'
+		} = this.props;
 		const { ready, active } = this.state;
 		return (
 			active && (

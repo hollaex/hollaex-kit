@@ -52,8 +52,8 @@ class ChatMessageWithText extends Component {
 						{verification_level === 3 || verification_level >= 4
 							? <ReactSVG
 								path={verification_level >= 4
-									? ICONS.CHAT_ICON_LVL_4
-									: ICONS[`CHAT_ICON_LVL_${verification_level}`]
+									? ICONS.LEVEL_ACCOUNT_ICON_4
+									: ICONS[`LEVEL_ACCOUNT_ICON_${verification_level}`]
 								}
 								wrapperClassName="user-icon mr-1" />
 							: <div className="user-icon mr-1"></div>}
@@ -112,10 +112,10 @@ class ChatMessageWithImage extends Component {
 				<div className="d-flex">
 					<div className="mx-2">
 						{verification_level === 3 || verification_level === 4
-							? <ReactSVG 
-								path={ verification_level >= 4
-									? ICONS.CHAT_ICON_LVL_4
-									: ICONS[`CHAT_ICON_LVL_${verification_level}`]
+							? <ReactSVG
+								path={verification_level >= 4
+									? ICONS.LEVEL_ACCOUNT_ICON_4
+									: ICONS[`LEVEL_ACCOUNT_ICON_${verification_level}`]
 								}
 								wrapperClassName="user-icon mr-1" />
 							: <div className="user-icon mr-1"></div>}

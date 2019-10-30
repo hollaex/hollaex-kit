@@ -1,6 +1,6 @@
 import PhoneNumber from 'awesome-phonenumber';
 import { DEFAULT_LANGUAGE, THEME_DEFAULT } from '../config/constants';
-import { getCurrencyFromSymbol } from '../utils/currency';
+// import { getCurrencyFromSymbol } from '../utils/currency';
 import { constructSettings } from '../utils/utils';
 
 const USER_DATA_KEYS = [
