@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Table, Spin, notification } from 'antd';
 import { CSVLink } from 'react-csv';
-
+import { bindActionCreators } from 'redux';
 // import ChangeFees from './changeFees';
 import UserFeesForm from './UserFeesForm';
 import { feeUpdate } from './actions';
@@ -10,6 +10,8 @@ import { getPairsColumns, getPairsFormFields } from './constants';
 import { ModalForm, BlueLink } from '../../../components';
 import { API_DOCS_URL } from '../../../config/constants';
 import STRINGS from '../../../config/localizedStrings';
+
+import { setPairs } from '../../../actions/appActions';
 
 // import {SELECT_KEYS} from "../Deposits/utils";
 
@@ -48,14 +50,18 @@ class UserFees extends Component {
 	}
 
 	componentDidUpdate(prevProps) {
-		if (JSON.stringify(prevProps.pairs) !== JSON.stringify(this.props.pairs)
-			|| JSON.stringify(prevProps.config) !== JSON.stringify(this.props.config)) {
+		if (
+			JSON.stringify(prevProps.pairs) !== JSON.stringify(this.props.pairs) ||
+			JSON.stringify(prevProps.config) !== JSON.stringify(this.props.config)
+		) {
 			this.constructData(this.props.pairs, this.props.config);
 		}
 	}
 
 	constructData = (pairs = {}) => {
-		const sortedData = Object.keys(pairs).sort((a, b) => pairs[a].id - pairs[b].id);
+		const sortedData = Object.keys(pairs).sort(
+			(a, b) => pairs[a].id - pairs[b].id
+		);
 		if (sortedData.length) {
 			let fees = [];
 			sortedData.forEach((key) => {
@@ -88,7 +94,7 @@ class UserFees extends Component {
 				this.renderData(res, this.props.config);
 			})
 			.then(openNotification())
-			.catch((err) => { });
+			.catch((err) => {});
 	};
 
 	handleClick = (value, data, keyIndex) => {
@@ -98,16 +104,15 @@ class UserFees extends Component {
 		let initialValues = {};
 		if (typeof data[keyIndex] === 'object') {
 			const temp = data[keyIndex];
-			Object.keys(temp).forEach(key => {
-				if (key <= parseInt((config.tiers || 0), 10))
+			Object.keys(temp).forEach((key) => {
+				if (key <= parseInt(config.tiers || 0, 10))
 					initialValues[`${keyIndex}_${key}`] = temp[key];
 			});
 		} else {
 			initialValues[keyIndex] = `${data[keyIndex]}`;
 		}
-		const isCustomContent = keyIndex === 'maker_fees' || keyIndex === 'taker_fees'
-			? true
-			: false;
+		const isCustomContent =
+			keyIndex === 'maker_fees' || keyIndex === 'taker_fees' ? true : false;
 
 		this.setState({
 			isEdit: true,
@@ -117,7 +122,7 @@ class UserFees extends Component {
 			isCustomContent
 		});
 	};
-	
+
 	onCancel = () => {
 		this.setState({ isEdit: false });
 	};
@@ -131,20 +136,22 @@ class UserFees extends Component {
 			const loopData = data[keyIndex];
 			const tempData = {};
 			if (Object.keys(loopData).length) {
-				Object.keys(loopData).forEach(key => {
-					if (key <= parseInt((this.props.config.tiers || 0), 10)) {
+				Object.keys(loopData).forEach((key) => {
+					if (key <= parseInt(this.props.config.tiers || 0, 10)) {
 						let levelValue = parseFloat(values[`${keyIndex}_${key}`]);
 						tempData[key] = levelValue;
 					}
 				});
 				formProps[keyIndex] = tempData;
 			}
-		} else if (keyIndex === 'increment_price'
-			|| keyIndex === 'increment_size'
-			|| keyIndex === 'max_price'
-			|| keyIndex === 'max_size'
-			|| keyIndex === 'min_price'
-			|| keyIndex === 'min_size') {
+		} else if (
+			keyIndex === 'increment_price' ||
+			keyIndex === 'increment_size' ||
+			keyIndex === 'max_price' ||
+			keyIndex === 'max_size' ||
+			keyIndex === 'min_price' ||
+			keyIndex === 'min_size'
+		) {
 			formProps[keyIndex] = parseFloat(values[keyIndex]);
 		} else {
 			formProps[keyIndex] = values[keyIndex];
@@ -152,63 +159,81 @@ class UserFees extends Component {
 		if (data.id) {
 			feeUpdate(data.name, formProps)
 				.then((res) => {
+					console.log(res);
+					const newData = this.state.fees.map((item) => {
+						if (item.id === res.id) {
+							return res;
+						}
+						return item;
+					});
+					console.log(newData);
+					this.props.setPairs(newData);
 					this.onCancel();
 					// this.requestFees();
 				})
 				.then(openNotification())
-				.catch((err) => { });
+				.catch((err) => {});
 		}
 	};
 
 	render() {
-		const { loading, error, fees, isEdit, editData, Fields, initialValues, isCustomContent } = this.state;
+		const {
+			loading,
+			error,
+			fees,
+			isEdit,
+			editData,
+			Fields,
+			initialValues,
+			isCustomContent
+		} = this.state;
 		const pairColumns = getPairsColumns(this.handleClick);
 		return (
 			<div className="app_container-content">
 				{loading ? (
 					<Spin size="large" />
 				) : (
-						<div>
-							{error && <p>-{error}-</p>}
-							<h1>Trading Pairs</h1>
-							<CSVLink
-								filename={'daily-max-limits.csv'}
-								data={fees}
-								headers={pairColumns}
-							>
-								Download table
-							</CSVLink>
-							<Table
-								columns={pairColumns}
-								dataSource={fees}
-								rowKey={(data) => {
-									return data.id;
-								}}
-								scroll={{ x: true }}
-							/>
-							<div className="mb-3">
-								{STRINGS.formatString(
-									STRINGS.NOTE_FOR_EDIT_COIN,
-									STRINGS.PAIRS,
-									<BlueLink
-										href={API_DOCS_URL}
-										text={STRINGS.REFER_DOCS_LINK}
-									/>
-								)}
-							</div>
-							{/* <h2>CHANGE USER FEES</h2>
+					<div>
+						{error && <p>-{error}-</p>}
+						<h1>Trading Pairs</h1>
+						<CSVLink
+							filename={'daily-max-limits.csv'}
+							data={fees}
+							headers={pairColumns}
+						>
+							Download table
+						</CSVLink>
+						<Table
+							columns={pairColumns}
+							dataSource={fees}
+							rowKey={(data) => {
+								return data.id;
+							}}
+							scroll={{ x: true }}
+						/>
+						<div className="mb-3">
+							{STRINGS.formatString(
+								STRINGS.NOTE_FOR_EDIT_COIN,
+								STRINGS.PAIRS,
+								<BlueLink
+									href={API_DOCS_URL}
+									text={STRINGS.REFER_DOCS_LINK}
+								/>
+							)}
+						</div>
+						{/* <h2>CHANGE USER FEES</h2>
 							<ChangeFees
 								config={config}
 								onLvlSelect={this.onLvlSelect}
 								onFeeSelect={this.onFeeSelect}
 								onSearch={this.onSearch}
 							/> */}
-						</div>
-					)}
+					</div>
+				)}
 				<Form
 					visible={isEdit}
 					title={editData.keyIndex}
-					okText='Save'
+					okText="Save"
 					fields={Fields}
 					CustomRenderContent={isCustomContent ? UserFeesForm : null}
 					initialValues={initialValues}
@@ -225,4 +250,11 @@ const mapStateToProps = (state) => ({
 	pairs: state.app.pairs
 });
 
-export default connect(mapStateToProps)(UserFees);
+const mapDispatchToProps = (dispatch) => ({
+	setPairs: bindActionCreators(setPairs, dispatch)
+});
+
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(UserFees);
