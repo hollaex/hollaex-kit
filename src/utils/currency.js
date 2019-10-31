@@ -51,7 +51,10 @@ export const getFormat = (min = 0, fullFormat) => {
 		return { digit: 8, format: '0,0.[00000000]' };
 	} else if (min % 1) {
 		let point = min.toString().split('.')[1];
-		let res = point.split('').map(val => 0).join('');
+		let res = point
+			.split('')
+			.map((val) => 0)
+			.join('');
 		return { digit: point.length, format: `0,0.[${res}]` };
 	} else {
 		return { digit: 4, format: `0,0.[0000]` };
@@ -63,7 +66,11 @@ export const formatToCurrency = (amount = 0, min = 0, fullFormat = false) => {
 	return numbro(roundNumber(amount, formatObj.digit)).format(formatObj.format);
 };
 
-export const formatCurrency = (amount = 0, currency = BASE_CURRENCY, type = 'simple') => {
+export const formatCurrency = (
+	amount = 0,
+	currency = BASE_CURRENCY,
+	type = 'simple'
+) => {
 	switch (currency.toLowerCase()) {
 		case 'btc':
 			return numbro(roundNumber(amount, 8)).format(BTC_FULL_FORMAT);
@@ -80,9 +87,9 @@ export const formatCurrency = (amount = 0, currency = BASE_CURRENCY, type = 'sim
 		case 'hex':
 			return numbro(roundNumber(amount, 8)).format(BASE_FORMAT);
 		default:
-			return numbro(roundNumber(amount, 8)).format(BASE_FORMAT); 
+			return numbro(roundNumber(amount, 8)).format(BASE_FORMAT);
 	}
-}
+};
 export const formatPercentage = (value = 0) =>
 	numbro(math.number(value / 100)).format(PERCENTAGE_FORMAT);
 export const donutFormatPercentage = (value = 0) =>
@@ -117,7 +124,7 @@ export const calculatePrice = (value = 0, price = 1) =>
 export const calculateBalancePrice = (balance, prices, coins = {}) => {
 	let accumulated = math.fraction(0);
 	Object.keys(coins).forEach((key) => {
-		let price = prices[key] ?  prices[key] : 1;
+		let price = prices[key] ? prices[key] : 1;
 		if (balance.hasOwnProperty(`${key}_balance`)) {
 			accumulated = math.add(
 				math.multiply(
@@ -145,10 +152,19 @@ export const calculateBalancePrice = (balance, prices, coins = {}) => {
 
 export const calculatePricePercentage = (value = 0, total) => {
 	const priceTotal = total ? total : 1;
-	return math.number(math.multiply(math.divide(math.fraction(value), math.fraction(priceTotal)), 100));
+	return math.number(
+		math.multiply(
+			math.divide(math.fraction(value), math.fraction(priceTotal)),
+			100
+		)
+	);
 };
 
-export const generateWalletActionsText = (symbol, coins, useFullName = false) => {
+export const generateWalletActionsText = (
+	symbol,
+	coins,
+	useFullName = false
+) => {
 	const { fullname } = coins[symbol] || DEFAULT_COIN_DATA;
 	const name = fullname;
 
@@ -188,6 +204,10 @@ export const getCurrencyFromName = (name = '') => {
 		case 'eur':
 		case 'euro':
 			return 'eur';
+		case 'hex':
+			return 'hex';
+		case 'usdt':
+			return 'usdt';
 		default:
 			return '';
 	}
@@ -209,6 +229,10 @@ export const getCurrencyFromSymbol = (symbol = '') => {
 		case 'eur':
 		case 'euro':
 			return 'euro';
+		case 'hex':
+			return 'hex';
+		case 'usdt':
+			return 'usdt';
 		default:
 			return '';
 	}
@@ -224,16 +248,16 @@ export const toFixed = (exponential) => {
 		let e = parseInt(exponential.toString().split('e-')[1], 10);
 		if (e) {
 			exponential *= Math.pow(10, e - 1);
-			exponential = '0.' + (new Array(e)).join('0') + exponential.toString().substring(2);
+			exponential =
+				'0.' + new Array(e).join('0') + exponential.toString().substring(2);
 		}
 	} else {
 		let e = parseInt(exponential.toString().split('+')[1], 10);
 		if (e > 20) {
 			e -= 20;
 			exponential /= Math.pow(10, e);
-			exponential += (new Array(e + 1)).join('0');
+			exponential += new Array(e + 1).join('0');
 		}
 	}
 	return exponential;
-}
-
+};
