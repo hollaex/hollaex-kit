@@ -4,8 +4,8 @@ import { reduxForm } from "redux-form";
 import { Accordion, Table, Button } from "../../components";
 import renderFields from "../../components/Form/factoryFields";
 import STRINGS from "../../config/localizedStrings";
-import { formatBaseAmount } from "../../utils/currency";
-import { BASE_CURRENCY, DEFAULT_COIN_DATA } from "../../config/constants";
+// import { formatBaseAmount } from "../../utils/currency";
+// import { BASE_CURRENCY, DEFAULT_COIN_DATA } from "../../config/constants";
 
 export const generateHeaders = (onAdjustPortfolio) => {
 	return [
@@ -88,8 +88,8 @@ class RiskForm extends Component {
 	render() {
 		const {
 			onAdjustPortfolio,
-			totalAssets,
-			percentageOfPortfolio,
+			// totalAssets,
+			// percentageOfPortfolio,
 			initialValues = {},
 			handleSubmit,
 			submitting,
@@ -97,11 +97,11 @@ class RiskForm extends Component {
 			// error,
 			valid,
 			formFields,
-			coins
+			// coins
 		} = this.props;
-		const percentPrice =
-			(totalAssets / 100) * initialValues.order_portfolio_percentage;
-		const { fullname, symbol = '' } = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
+		// const percentPrice =
+		// 	(totalAssets / 100) * initialValues.order_portfolio_percentage;
+		// const { fullname, symbol = '' } = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
 		const assetData = [
 			{
 				id: 1,

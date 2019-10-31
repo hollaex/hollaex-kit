@@ -1,12 +1,5 @@
 import config from './index';
 import {
-	formatBtcAmount,
-	formatBtcFullAmount,
-	formatBaseAmount,
-	formatEthAmount,
-	formatEthFullAmount,
-	formatXrpAmount,
-	formatXrpFullAmount,
 	formatNumber
 } from '../utils/currency';
 
@@ -246,7 +239,13 @@ export const ICONS = {
 	HEX_FAQ: '/assets/images/HEX-FAQ.svg',
 	HEX_PDF: '/assets/images/HEX-pdf.svg',
 	EDIT_ICON: '/assets/images/edit-icon.svg',
-	STAKETOKEN_ICON: '/assets/images/stake.svg'
+	STAKETOKEN_ICON: '/assets/images/stake.svg',
+	DEFAULT_ICON: '/assets/icons/missing-coin-light.svg',
+	DEFAULT_ICON_DARK: '/assets/icons/missing-coin-dark.svg',
+	LEVEL_ACCOUNT_ICON_1: '/assets/images/level-1.svg',
+	LEVEL_ACCOUNT_ICON_2: '/assets/images/level-2.svg',
+	LEVEL_ACCOUNT_ICON_3: '/assets/images/level-3.svg',
+	LEVEL_ACCOUNT_ICON_4: '/assets/images/level-4.svg'
 };
 
 export const SOCIAL_ICONS = {

@@ -32,7 +32,6 @@ class Form extends Component {
             pristine,
             error,
             valid,
-            initialValues,
             formFields
         } = this.props 
         return(

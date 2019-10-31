@@ -44,6 +44,7 @@ const WithdrawNotification = ({ data, onClose }) => {
 								)}
 								target="_blank"
 								className="notification-link"
+								rel="noopener noreferrer"
 							>
 								{data.transaction_id}
 							</a>

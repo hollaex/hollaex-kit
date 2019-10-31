@@ -28,7 +28,7 @@ $trade-tab-active-dark-title: #b7b5cd;
         }
         .trade_tab-icons {
             svg {
-                .btc0, .btc1, .eth0, .eth1, .bch-icon, .xrp-icon, .hex_icon {
+                .btc0, .btc1, .eth0, .eth1, .bch-icon, .xrp-icon, .hex_icon, .default-icon {
                     fill: $dark-font-sub-text-1-color !important;
                 }
                 .st0 {
@@ -76,7 +76,7 @@ $trade-tab-active-dark-title: #b7b5cd;
                 }
 
                 svg {
-                    .btc0, .btc1, .eth0, .eth1, .bch-icon, .xrp-icon, .hex-icon {
+                    .btc0, .btc1, .eth0, .eth1, .bch-icon, .xrp-icon, .hex-icon, .default-icon {
                         fill: $dark-font-sub-text-color !important;
                     }
                     .st0 {
@@ -151,7 +151,7 @@ $trade-tab-active-dark-title: #b7b5cd;
         width: 5rem;
 
         svg {
-            .btc0, .btc1, .eth0, .eth1, .bch-icon, .xrp-icon {
+            .btc0, .btc1, .eth0, .eth1, .bch-icon, .xrp-icon, .default-icon {
                 fill: $trade-tabs-inactive-color !important;
             }
             .st0 {
@@ -216,7 +216,7 @@ $trade-tab-active-dark-title: #b7b5cd;
             }
 
             svg {
-                .btc0, .btc1, .eth0, .eth1, .bch-icon, .xrp-icon {
+                .btc0, .btc1, .eth0, .eth1, .bch-icon, .xrp-icon, .default-icon {
                     fill: $colors-black !important;
                 }
                 .st0 {

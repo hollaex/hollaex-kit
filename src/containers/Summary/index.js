@@ -2,20 +2,30 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { isMobile } from 'react-device-detect';
-import moment from 'moment';
+// import moment from 'moment';
 
 import SummaryBlock from './components/SummaryBlock';
 import TraderAccounts from './components/TraderAccounts';
 import SummaryRequirements from './components/SummaryRequirements';
 import AccountAssets from './components/AccountAssets';
-import TradingVolume from './components/TradingVolume';
-import AccountDetails from './components/AccountDetails';
+// import TradingVolume from './components/TradingVolume';
+// import AccountDetails from './components/AccountDetails';
 import MobileSummary from './MobileSummary';
 
 import { IconTitle } from '../../components';
 import { logout } from '../../actions/authAction';
-import { openFeesStructureandLimits, openContactForm, logoutconfirm, setNotification, NOTIFICATIONS } from '../../actions/appActions';
-import { BASE_CURRENCY, TRADING_ACCOUNT_TYPE, DEFAULT_COIN_DATA } from '../../config/constants';
+import {
+    openFeesStructureandLimits,
+    openContactForm,
+    logoutconfirm,
+    setNotification,
+    NOTIFICATIONS
+} from '../../actions/appActions';
+import {
+    // BASE_CURRENCY,
+    TRADING_ACCOUNT_TYPE,
+    DEFAULT_COIN_DATA
+} from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 import {
     formatToCurrency,
@@ -140,9 +150,9 @@ class Summary extends Component {
     };
 
     render() {
-        const { user, balance, activeTheme, pairs, coins, logout, isValidBase } = this.props;
+        const { user, balance, activeTheme, pairs, coins, isValidBase } = this.props;
         const { selectedAccount, currentTradingAccount, chartData, totalAssets, lastMonthVolume } = this.state;
-        const { fullname } = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
+        // const { fullname } = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
         return (
             <div className="summary-container">
                 {!isMobile && <IconTitle
@@ -173,7 +183,7 @@ class Summary extends Component {
                     : (<div>
                         <div className="d-flex align-items-center">
                             <div className="summary-section_1 trader-account-wrapper d-flex">
-                                <SummaryBlock title={currentTradingAccount.fullName} >
+                                <SummaryBlock title={STRINGS.SUMMARY.TRADER_ACCOUNT_TITLE} >
                                     <TraderAccounts
                                         pairs={pairs}
                                         coins={coins}

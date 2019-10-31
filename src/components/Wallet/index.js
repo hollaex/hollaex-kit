@@ -12,7 +12,7 @@ import {
 } from '../../utils/currency';
 import WalletSection from './Section';
 import { DonutChart } from '../../components';
-import STRINGS from '../../config/localizedStrings';
+// import STRINGS from '../../config/localizedStrings';
 
 class Wallet extends Component {
 	state = {
@@ -91,7 +91,7 @@ class Wallet extends Component {
 	goToWallet = () => browserHistory.push('/wallet');
 
 	render() {
-		const { sections, totalAssets, chartData } = this.state;
+		const { sections, chartData } = this.state;
 		// const { isValidBase } = this.props;
 
 		if (Object.keys(this.props.balance).length === 0) {

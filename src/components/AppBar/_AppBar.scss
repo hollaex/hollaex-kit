@@ -820,7 +820,8 @@ $app-bar-pairs-up: green;
 				.eth1,
 				.bch-icon,
 				.xrp-icon,
-				.hex-icon {
+				.hex-icon,
+				.default-icon {
 					fill: $dark-font-main-text-color !important;
 				}
 				.st0 {
@@ -846,7 +847,7 @@ $app-bar-pairs-up: green;
 
 	.app-bar-tab-setting, .app-bar-add-tab-icons {
 		svg {
-			.btc0, .btc1, .eth0, .eth1, .bch-icon, .xrp-icon {
+			.btc0, .btc1, .eth0, .eth1, .bch-icon, .xrp-icon, .hex-icon, .default-icon {
 				fill: $dark-font-sub-text-1-color !important;
 			}
 			.plus, .minus {
@@ -863,10 +864,7 @@ $app-bar-pairs-up: green;
 			.hex-icon-1 {
 				fill: #000000 !important;
 			}
-			.hex-icon {
-				fill: #a4a6ab !important;
-			}
-			
+
 		}
 
 		.app-price-diff-down {

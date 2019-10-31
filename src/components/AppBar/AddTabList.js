@@ -97,7 +97,13 @@ class AddTabList extends Component {
                                             : <ReactSVG path={ICONS.TAB_PLUS} wrapperClassName="app-bar-tab-setting" />
                                         }
                                     </div>
-                                    <ReactSVG path={ICONS[`${menu.pair_base.toUpperCase()}_ICON`]} wrapperClassName="app-bar-add-tab-icons" />
+                                    <ReactSVG
+                                        path={
+                                            ICONS[`${menu.pair_base.toUpperCase()}_ICON`]
+                                                ? ICONS[`${menu.pair_base.toUpperCase()}_ICON`]
+                                                : ICONS.DEFAULT_ICON
+                                        }
+                                        wrapperClassName="app-bar-add-tab-icons" />
                                     <div className="app_bar-pair-font">
                                         {symbol.toUpperCase()}/{pairTwo.symbol.toUpperCase()}:
                                     </div>

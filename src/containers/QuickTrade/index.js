@@ -110,7 +110,7 @@ class QuickTradeContainer extends Component {
 
 	onReviewQuickTrade = () => {
 		const { pair_base, pair_2 } = this.props.pairData;
-		const { settings: { risk = {}, notification = {} }, quoteData: { data = {} }, setNotification, pairData, balance } = this.props;
+		const { settings: { risk = {} }, quoteData: { data = {} }, setNotification, pairData, balance } = this.props;
 
 		if (this.props.quoteData.error === BALANCE_ERROR) {
 			this.props.changeSymbol(this.state.side === 'sell' ? pair_base : pair_2);

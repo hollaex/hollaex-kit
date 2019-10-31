@@ -111,7 +111,12 @@ const Footer = ({
 								)}
 							>
 								{LINKS.map(({ link, text }, indexLink) => (
-									<a href={link || '#'} key={indexLink} target="_blank">
+									<a
+										href={link || '#'}
+										key={indexLink}
+										target="_blank"
+										rel="noopener noreferrer"
+									>
 										{text}
 									</a>
 								))}

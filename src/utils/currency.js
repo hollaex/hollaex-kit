@@ -116,7 +116,7 @@ export const calculatePrice = (value = 0, price = 1) =>
 
 export const calculateBalancePrice = (balance, prices, coins = {}) => {
 	let accumulated = math.fraction(0);
-	Object.keys(coins).map((key) => {
+	Object.keys(coins).forEach((key) => {
 		let price = prices[key] ?  prices[key] : 1;
 		if (balance.hasOwnProperty(`${key}_balance`)) {
 			accumulated = math.add(

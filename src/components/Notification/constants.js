@@ -1,4 +1,4 @@
-import { BASE_CURRENCY } from '../../config/constants';
+// import { BASE_CURRENCY } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 import { DEFAULT_COIN_DATA } from '../../config/constants';
 

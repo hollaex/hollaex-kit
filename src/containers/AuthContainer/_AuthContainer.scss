@@ -76,6 +76,11 @@ $container--padding-sm: 3rem;
 		// width: 100%;
 		// height: 100%;
 	// }
+
+	&.white-theme {
+		color: $colors-main-black;
+	}
+
 	.auth-container {
 		max-width: $content-wrapper--max-width;
 		max-height: 100vh;

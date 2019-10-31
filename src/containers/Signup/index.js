@@ -13,7 +13,6 @@ import { RequestForm } from '../';
 import { IconTitle, Dialog, MobileBarBack, BlueLink } from '../../components';
 import {
 	HOLLAEX_LOGO,
-	HOLLAEX_LOGO_BLACK,
 	FLEX_CENTER_CLASSES,
 	ICONS
 } from '../../config/constants';

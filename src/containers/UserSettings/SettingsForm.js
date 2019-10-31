@@ -11,7 +11,7 @@ const orderbook_level_step = 1;
 const orderbook_level_min = 1;
 const orderbook_level_max = 20;
 
-export const generateFormValues = ({}) => ({
+export const generateFormValues = () => ({
 	theme: {
 		type: 'select',
 		label: STRINGS.SETTINGS_THEME_LABEL,
@@ -54,7 +54,6 @@ class Form extends Component{
 			pristine,
 			error,
 			valid,
-			initialValues,
 			formFields
 		} = this.props;
 		return (

@@ -4,42 +4,39 @@ import ReactSVG from 'react-svg';
 import { debounce } from 'lodash';
 import { browserHistory } from 'react-router';
 import { isMobile } from 'react-device-detect';
-import { Button, CheckTitle } from '../../components';
+import { Button } from '../../components';
 import MobileDropdownWrapper from '../../containers/Trade/components/MobileDropdownWrapper';
 import STRINGS from '../../config/localizedStrings';
 import {
 	ICONS,
 	FLEX_CENTER_CLASSES,
 	BALANCE_ERROR,
-	DEFAULT_COIN_DATA,
-	BASE_CURRENCY
+	DEFAULT_COIN_DATA
 } from '../../config/constants';
 import ToogleButton from './ToogleButton';
 import ReviewBlock from './ReviewBlock';
 import InputBlock from './InputBlock';
 
 // const GROUP_CLASSES = [...FLEX_CENTER_CLASSES, 'flex-column'];
-const getInitialTab = (path, symbols, coins) => {
-	let activeTab = -1;
-	const baseCoin = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
-	symbols.map((currency, index) => {
-		const { symbol } = coins[currency] || DEFAULT_COIN_DATA;
-		if (path === `${symbol.toLowerCase()}-${baseCoin.symbol.toLowerCase()}`) {
-			activeTab = index;
-		}
-	});
+// const getInitialTab = (path, symbols, coins) => {
+// 	let activeTab = -1;
+// 	const baseCoin = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
+// 	symbols.map((currency, index) => {
+// 		const { symbol } = coins[currency] || DEFAULT_COIN_DATA;
+// 		if (path === `${symbol.toLowerCase()}-${baseCoin.symbol.toLowerCase()}`) {
+// 			activeTab = index;
+// 		}
+// 	});
 
-	return {
-		activeTab,
-	};
-};
+// 	return {
+// 		activeTab,
+// 	};
+// };
 class QuickTrade extends Component {
 	state = {
 		side: STRINGS.SIDES[0].value,
 		value: 1,
 		symbol: '',
-		tabs: [],
-		activeTab: -1,
 		currencies: []
 	};
 
@@ -50,12 +47,10 @@ class QuickTrade extends Component {
 	}
 
 	componentDidMount() {
-		if (this.props.symbol !== BASE_CURRENCY) {
-			this.updateTabs()
+		if (this.props.symbol) {
 			this.onChangeSymbol(this.props.symbol);
 		}
 		if (this.props.onChangeSide) {
-			this.updateTabs()
 			this.props.onChangeSide(this.state.side);
 		}
 	}
@@ -64,16 +59,8 @@ class QuickTrade extends Component {
 		if (
 			nextProps.symbol !== this.props.symbol
 		) {
-			this.updateTabs()
 			this.onChangeSymbol(nextProps.symbol);
 		}
-	}
-
-	setActiveTab = (activeTab) => {
-		const { currencies } = this.state;
-		const { symbol = '' } = this.props.coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
-		browserHistory.push(`/quick-trade/${currencies[activeTab]}-${symbol.toLowerCase()}`)
-		this.setState({ activeTab });
 	}
 
 	onChangeSymbol = (symbol) => {
@@ -118,42 +105,9 @@ class QuickTrade extends Component {
 
 	requestValue = debounce(this.props.onRequestMarketValue, 250);
 
-	updateTabs = (
-		updateActiveTab = false
-	) => {
-		let activeTab = this.state.activeTab > -1 ? this.state.activeTab : 0;
-		const { theme, pairs, coins } = this.props;
-		const obj = {};
-		Object.entries(pairs).forEach(([key, pair]) => {
-			obj[pair.pair_base] = '';
-		});
-		const symbols = Object.keys(obj).map((key) => key);
-		if (updateActiveTab || this.state.activeTab === -1) {
-			const initialValues = getInitialTab(this.props.symbol, symbols, coins);
-			activeTab = initialValues.activeTab;
-		}
-
-		const tabs = symbols.map(pair => {
-			let icon = ICONS[`${pair.toUpperCase()}_ICON${theme === 'dark' ? '_DARK' : ''}`];
-			if (!icon && theme === 'dark') {
-				icon = ICONS[`${pair.toUpperCase()}_ICON`];
-			}
-			const { fullname = '' } = coins[pair] || DEFAULT_COIN_DATA;
-			return ({
-				title:
-					<CheckTitle
-						title={fullname}
-						icon={icon}
-					/>
-			});
-		});
-
-		this.setState({ tabs, activeTab, currencies: symbols });
-	};
-
 	render() {
 		const { onReviewQuickTrade, quickTradeData, disabled, orderLimits, pairs, coins } = this.props;
-		const { side, value, symbol, tabs, activeTab } = this.state;
+		const { side, value, symbol } = this.state;
 		const { data, fetching, error } = quickTradeData;
 		const baseCoin = pairs[symbol].pair_base;
 		const { fullname } = coins[baseCoin] || DEFAULT_COIN_DATA;

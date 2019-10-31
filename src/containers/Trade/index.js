@@ -42,9 +42,6 @@ import { ActionNotification, Loader, MobileBarTabs } from '../../components';
 import STRINGS from '../../config/localizedStrings';
 import { playBackgroundAudioNotification } from '../../utils/utils';
 
-let priceTimeOut = '';
-let sizeTimeOut = '';
-
 class Trade extends Component {
 	state = {
 		activeTab: 0,
@@ -55,6 +52,8 @@ class Trade extends Component {
 		priceInitialized: false,
 		sizeInitialized: false
 	};
+	priceTimeOut = '';
+	sizeTimeOut = '';
 
 	componentWillMount() {
 		this.setSymbol(this.props.routeParams.pair);
@@ -66,8 +65,17 @@ class Trade extends Component {
 		}
 	}
 
-	shouldComponentUpdate(nextProps, nextState) {
-		return true;
+	// shouldComponentUpdate(nextProps, nextState) {
+	// 	return true;
+	// }
+
+	componentWillUnmount() {
+		if (this.priceTimeOut) {
+			clearTimeout(this.priceTimeOut);
+		}
+		if (this.sizeTimeOut) {
+			clearTimeout(this.sizeTimeOut);
+		}
 	}
 
 	setSymbol = (symbol = '') => {
@@ -141,7 +149,7 @@ class Trade extends Component {
 		this.props.change(FORM_NAME, 'price', price);
 		playBackgroundAudioNotification('orderbook_field_update');
 		this.setState({ priceInitialized: true });
-		priceTimeOut = setTimeout(() => {
+		this.priceTimeOut = setTimeout(() => {
 			this.setState({ priceInitialized: false });
 		}, 1500);
 	};
@@ -150,7 +158,7 @@ class Trade extends Component {
 		this.props.change(FORM_NAME, 'size', size);
 		playBackgroundAudioNotification('orderbook_field_update');
 		this.setState({ sizeInitialized: true });
-		sizeTimeOut = setTimeout(() => {
+		this.sizeTimeOut = setTimeout(() => {
 			this.setState({ sizeInitialized: false });
 		}, 1500);
 	};

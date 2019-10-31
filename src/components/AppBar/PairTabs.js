@@ -293,30 +293,33 @@ class PairTabs extends Component {
             obj[pair.pair_base] = '';
         });
         const symbols = Object.keys(obj).map((key) => key);
+        const TabList = Object.keys(activeTabs).map((tab, index) => {
+            const pair = activeTabs[tab];
+            const ticker = tickers[tab];
+            if (index <= 3) {
+                return (
+                    <Tab
+                        key={index}
+                        tab={tab}
+                        pair={pair}
+                        ticker={ticker}
+                        coins={coins}
+                        selectedToOpen={selectedToOpen}
+                        selectedToRemove={selectedToRemove}
+                        activePairTab={activePairTab}
+                        onSortItems={this.onSortItems}
+                        items={Object.keys(activeTabs)}
+                        sortId={index}
+                        onTabClick={this.onTabClick}
+                        onTabChange={this.onTabChange} />
+                )
+            }
+            return null;
+        })
+
         return (
             <div className="d-flex h-100">
-                {Object.keys(activeTabs).map((tab, index) => {
-                    const pair = activeTabs[tab];
-                    const ticker = tickers[tab];
-                    if (index <= 3) {
-                        return (
-                            <Tab
-                                key={index}
-                                tab={tab}
-                                pair={pair}
-                                ticker={ticker}
-                                coins={coins}
-                                selectedToOpen={selectedToOpen}
-                                selectedToRemove={selectedToRemove}
-                                activePairTab={activePairTab}
-                                onSortItems={this.onSortItems}
-                                items={Object.keys(activeTabs)}
-                                sortId={index}
-                                onTabClick={this.onTabClick}
-                                onTabChange={this.onTabChange} />
-                        )
-                    }}
-                )}
+                {TabList}
                 <div className={
                     classnames(
                         'app_bar-pair-content', 

@@ -84,16 +84,16 @@ class Account extends Component {
 			activeTab = initialValues.activeTab;
 			activeDevelopers = initialValues.activeDevelopers;
 		}
-		let verificationPending = false;
-		if (verification_level < 1 && !full_name) {
-			verificationPending = true;
-		} else if (id_data.status !== 3) {
-			verificationPending = true;
-		} else if (!phone_number) {
-			verificationPending = true;
-		} else if (!bank_account.filter(acc => acc.status === 3).length) {
-			verificationPending = true;
-		}
+		// let verificationPending = false;
+		// if (verification_level < 1 && !full_name) {
+		// 	verificationPending = true;
+		// } else if (id_data.status === 0 || id_data.status === 2) {
+		// 	verificationPending = true;
+		// } else if (!phone_number) {
+		// 	verificationPending = true;
+		// } else if (!bank_account.filter(acc => acc.status === 0 || acc.status === 2).length) {
+		// 	verificationPending = true;
+		// }
 
 		const tabs = [
 			{
