@@ -1001,7 +1001,7 @@ export default {
 		TRADER_ACCOUNT_TITLE: 'Account', // new
 		// TRADER_ACCOUNT_TXT_1: 'Join HAP (HollaEx Affiliation Program) by submiting this form to us. If you are eligible and accepted into HAP, you can receive up to 10% in referrals.',
 		TRADER_ACCOUNT_TXT_1: 'Earn up to 10% in commisions through distributing the HollaEx Kit. Alternatively you can earn ', // new
-		TRADER_ACCOUNT_TXT_2: 'HEX daily through staking your HEX token when running your own exchange.', // new
+		TRADER_ACCOUNT_TXT_2: 'daily through staking your HollaEx token when running your own exchange.', // new
 		TINY_PINK_SHRIMP_TRADER: 'Tiny Pink Shrimp Trader',
 		TINY_PINK_SHRIMP_TRADER_ACCOUNT: 'Tiny Pink Shrimp Trader Account',
 		LITTLE_RED_SNAPPER_TRADER: 'Little Red Snapper Trader',
