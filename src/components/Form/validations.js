@@ -32,17 +32,17 @@ export const password = (value = '') =>
 		: undefined;
 
 export const username = (value = '') =>
-	!usernameRegEx.test(value)
-		? STRINGS.INVALID_USERNAME
-		: undefined;
+	!usernameRegEx.test(value) ? STRINGS.INVALID_USERNAME : undefined;
 
 export const validAddress = (symbol = '', message) => {
-	const currency = symbol.toUpperCase();
+	let currency = symbol.toUpperCase();
+	if (currency === 'HEX') {
+		currency = 'ETH';
+	}
 	return (address) => {
 		let valid = WAValidator.validate(address, currency, NETWORK);
 		// in case of bitcoin cash new addresses and new bitcoin addresses
 		if (!valid) {
-			console.log(currency);
 			switch (currency) {
 				// case 'BTC':
 				// 	address = BAValidator(address).address;
@@ -55,14 +55,13 @@ export const validAddress = (symbol = '', message) => {
 					try {
 						bchaddr.toLegacyAddress(address);
 						valid = true;
-					}
-					catch (err) {
+					} catch (err) {
 						valid = false;
 					}
 					break;
 				default:
 					break;
-			};
+			}
 		}
 		return !valid
 			? message ||
@@ -95,7 +94,7 @@ export const checkBalance = (available, message, fee = 0) => (value = 0) => {
 						math.fraction(value),
 						math.multiply(math.fraction(value), math.fraction(fee))
 					)
-				)
+			  )
 			: value;
 
 	if (operation > available) {
@@ -180,8 +179,9 @@ export const checkMarketPrice = (
 
 	if (type === 'limit' && math.larger(remaining, 0)) {
 		accumulated = math.add(accumulated, math.multiply(remaining, orderPrice));
-	} if (type === 'market' && math.larger(remaining, 0)) {
-		return -roundNumber(accumulated)
+	}
+	if (type === 'market' && math.larger(remaining, 0)) {
+		return -roundNumber(accumulated);
 	}
 	return roundNumber(accumulated);
 };
@@ -218,7 +218,8 @@ export const normalizeFloat = (value) => {
 	}
 };
 export const normalizeBTC = (value = 0) => (value ? roundNumber(value, 8) : '');
-export const normalizeBTCFee = (value = 0) => (value ? roundNumber(value, 4) : '');
+export const normalizeBTCFee = (value = 0) =>
+	value ? roundNumber(value, 4) : '';
 
 export const validateOtp = (message = STRINGS.OTP_FORM.ERROR_INVALID) => (
 	value = ''
