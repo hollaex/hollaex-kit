@@ -39,8 +39,8 @@ const Section = ({ symbol = BASE_CURRENCY, balance, orders, price, coins }) => {
 	// 	symbol === BASE_CURRENCY
 	// 		? STRINGS[`${BASE_CURRENCY.toUpperCase()}_PRICE_FORMAT`]
 	// 		: STRINGS.BTC_PRICE_FORMAT;
-	const total = balance[`${symbol}_balance`];
-	const available = balance[`${symbol}_available`];
+	const total = balance[`${symbol}_balance`] || 0;
+	const available = balance[`${symbol}_available`] || 0;
 	const hold = math.subtract(math.fraction(total), math.fraction(available));
 
 	return (
