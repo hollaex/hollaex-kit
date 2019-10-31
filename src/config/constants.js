@@ -1,7 +1,5 @@
 import config from './index';
-import {
-	formatNumber
-} from '../utils/currency';
+import { formatNumber } from '../utils/currency';
 
 import STRINGS from './localizedStrings';
 
@@ -49,7 +47,7 @@ export const ICONS = {
 	HEX_ICON_DARK: '/assets/icons/hex-icon-dark.svg',
 	USDT_ICON: '/assets/icons/usdt-icon.svg',
 	ACCOUNT_SUMMARY: '/assets/icons/account-icon-summary.svg',
-	REFERAL_SUCCESS:'/assets/icons/send-request.svg',
+	REFERAL_SUCCESS: '/assets/icons/send-request.svg',
 	CHECK: '/assets/images/Orderbook scrolling-01.svg',
 	DARK_CHECK: '/assets/images/dark-Orderbook-scrolling-01.svg',
 	BLUE_QUESTION: '/assets/acounts/account-icons-08.svg',
@@ -126,12 +124,18 @@ export const ICONS = {
 	BLUE_PLUS: '/assets/images/max-plus-blue-icon.svg',
 	BLUE_TIMER: '/assets/images/timer-icon.svg',
 	DROPDOWN_ARROW: '/assets/images/down-arrow-home.svg',
-	NOTIFICATION_ORDER_LIMIT_BUY_FILLED: '/assets/images/limit-buy-order-filled-01.svg',
-	NOTIFICATION_ORDER_LIMIT_BUY_CREATED: '/assets/images/limit-buy-order-icon-01.svg',
-	NOTIFICATION_ORDER_LIMIT_BUY_FILLED_PART: '/assets/images/limit-buy-order-part-filled-01.svg',
-	NOTIFICATION_ORDER_LIMIT_SELL_FILLED: '/assets/images/limit-sell-order-filled-01.svg',
-	NOTIFICATION_ORDER_LIMIT_SELL_CREATED: '/assets/images/limit-sell-order-icon-01.svg',
-	NOTIFICATION_ORDER_LIMIT_SELL_FILLED_PART: '/assets/images/limit-sell-order-part-filled-01.svg',
+	NOTIFICATION_ORDER_LIMIT_BUY_FILLED:
+		'/assets/images/limit-buy-order-filled-01.svg',
+	NOTIFICATION_ORDER_LIMIT_BUY_CREATED:
+		'/assets/images/limit-buy-order-icon-01.svg',
+	NOTIFICATION_ORDER_LIMIT_BUY_FILLED_PART:
+		'/assets/images/limit-buy-order-part-filled-01.svg',
+	NOTIFICATION_ORDER_LIMIT_SELL_FILLED:
+		'/assets/images/limit-sell-order-filled-01.svg',
+	NOTIFICATION_ORDER_LIMIT_SELL_CREATED:
+		'/assets/images/limit-sell-order-icon-01.svg',
+	NOTIFICATION_ORDER_LIMIT_SELL_FILLED_PART:
+		'/assets/images/limit-sell-order-part-filled-01.svg',
 	NOTIFICATION_ORDER_MARKET_BUY_FILLED: '/assets/images/market-buy-01.svg',
 	NOTIFICATION_ORDER_MARKET_SELL_FILLED: '/assets/images/market-sell-01.svg',
 	NOTIFICATION_VERIFICATION_WARNING: '/assets/images/verification.svg',
@@ -163,10 +167,12 @@ export const ICONS = {
 	SIDEBAR_ACCOUNT_INACTIVE: '/assets/images/account_2-inactive.svg',
 	SIDEBAR_TRADING_ACTIVE: '/assets/images/trade-active.svg',
 	SIDEBAR_TRADING_INACTIVE: '/assets/images/trade-inactive.svg',
-	SIDEBAR_QUICK_TRADING_ACTIVE: '/assets/images/quick-trade-tab-selected-01.svg',
+	SIDEBAR_QUICK_TRADING_ACTIVE:
+		'/assets/images/quick-trade-tab-selected-01.svg',
 	SIDEBAR_QUICK_TRADING_INACTIVE: '/assets/images/quick-trade-tab-01-01.svg',
 	SIDEBAR_ADMIN_DASH_ACTIVE: '/assets/images/admin-dash-icon.svg',
-	ARROW_TRANSFER_HISTORY_ACTIVE: '/assets/images/arrow-trans-history-active.svg',
+	ARROW_TRANSFER_HISTORY_ACTIVE:
+		'/assets/images/arrow-trans-history-active.svg',
 	ARROW_TRANSFER_HISTORY_INACTIVE: '/assets/images/arrow-trans-history.svg',
 	ARROW_DOWN: '/assets/images/arrow-down.svg',
 	TOKENS_INACTIVE: '/assets/images/dev-icon.svg',
@@ -199,7 +205,8 @@ export const ICONS = {
 	SEARCH: '/assets/images/search.svg',
 	VERIFICATION_DOC_STATUS: '/assets/images/verification-doc-status.svg',
 	VERIFICATION_PENDING: '/assets/images/verification-pending-orange.svg',
-	VERIFICATION_REJECTED: '/assets/images/verification-rejected-yellow-cross.svg',
+	VERIFICATION_REJECTED:
+		'/assets/images/verification-rejected-yellow-cross.svg',
 	VERIFICATION_INCOMPLETE: '/assets/images/verification-attention-red.svg',
 	VERIFICATION_VERIFIED: '/assets/images/verification-green-tick.svg',
 	VERIFICATION_EMAIL_NEW: '/assets/images/verification-email.svg',
@@ -230,7 +237,8 @@ export const ICONS = {
 	SETTING_AUDIO_ICON: '/assets/images/audio-settings-icon.svg',
 	SETTING_RISK_ICON: '/assets/images/risk-settings-icon.svg',
 	SETTING_RISK_ADJUST_ICON: '/assets/images/risk-management-pop-adjust.svg',
-	SETTING_RISK_MANAGE_WARNING_ICON: '/assets/images/risk-manage-pop-warning.svg',
+	SETTING_RISK_MANAGE_WARNING_ICON:
+		'/assets/images/risk-manage-pop-warning.svg',
 	REFER_ICON: '/assets/images/refer-icon.svg',
 	HEX_COIN_STACK: '/assets/images/HEX-coin-stack.svg',
 	HEX_DOCS: '/assets/images/HEX-docs.svg',
@@ -339,7 +347,7 @@ export const WITHDRAW_LIMITS = {
 		MIN: process.env.REACT_APP_WITHDRAWAL_XRP_MIN || 0.1,
 		MAX: process.env.REACT_APP_WITHDRAWAL_XRP_MAX || 100000,
 		STEP: process.env.REACT_APP_WITHDRAWAL_XRP_STEP || 0.1
-	},
+	}
 };
 
 export const DEFAULT_TRADING_PAIRS = process.env.REACT_APP_DEFAULT_TRADING_PAIRS
@@ -358,34 +366,79 @@ export const BANK_WITHDRAWAL_MAX_DYNAMIC_FEE =
 	process.env.REACT_APP_BANK_WITHDRAWAL_MAX_DYNAMIC_FEE || 50;
 export const BANK_WITHDRAWAL_MAX_AMOUNT_FOR_BASE_FEE =
 	process.env.REACT_APP_BANK_WITHDRAWAL_MAX_AMOUNT_FOR_BASE_FEE || 0;
-export const takerFee  = process.env.REACT_APP_NOT_LOGGEDIN_FEE || 0;
+export const takerFee = process.env.REACT_APP_NOT_LOGGEDIN_FEE || 0;
 
 export const BANK_PAYMENT_LINK = '';
 export const MIN_VERIFICATION_LEVEL_TO_WITHDRAW = 2;
 export const MAX_VERIFICATION_LEVEL_TO_WITHDRAW = 5;
 
 export const BLOCKTRAIL_ENDPOINT =
-	NETWORK === 'testnet' ?
-		`https://testnet.blockchain.com/btc/tx/` :
-		'https://explorer.blockchain.com/btc/tx/';
+	NETWORK === 'testnet'
+		? `https://testnet.blockchain.com/btc/tx/`
+		: 'https://explorer.blockchain.com/btc/tx/';
 
 export const ETHEREUM_ENDPOINT = `https://${
 	NETWORK === 'testnet' ? 'ropsten.etherscan.io' : 'etherscan.io'
 }/tx/`;
 
-export const BITCOINCOM_ENDPOINT = 
-	NETWORK === 'testnet' ? 
-	`https://www.blocktrail.com/tBCC/tx/` :
-	'https://explorer.bitcoin.com/bch/tx/';
+export const BITCOINCOM_ENDPOINT =
+	NETWORK === 'testnet'
+		? `https://www.blocktrail.com/tBCC/tx/`
+		: 'https://explorer.bitcoin.com/bch/tx/';
 
-export const RIPPLE_ENDPOINT = 
-	NETWORK === 'testnet' ? 
-	`https://xrpscan.com/tx/` : // needs to be fixed
-	'https://xrpscan.com/tx/';
+export const RIPPLE_ENDPOINT =
+	NETWORK === 'testnet'
+		? `https://xrpscan.com/tx/` // needs to be fixed
+		: 'https://xrpscan.com/tx/';
+
+export const EXPLORERS_ENDPOINT = (currency) => {
+	let endpoint = '';
+	switch (currency) {
+		case 'eth':
+			endpoint =
+				NETWORK === 'testnet'
+					? 'https://ropsten.etherscan.io/address/'
+					: 'https://etherscan.io/address/';
+			break;
+		case 'btc':
+			endpoint =
+				NETWORK === 'testnet'
+					? 'https://live.blockcypher.com/btc-test/tx/'
+					: 'https://live.blockcypher.com/btc/tx/';
+			break;
+		case 'xrp':
+			endpoint =
+				NETWORK === 'testnet'
+					? 'https://test.bithomp.com/explorer/'
+					: 'https://bithomp.com/explorer/';
+			break;
+		case 'bch':
+			endpoint =
+				NETWORK === 'testnet'
+					? 'https://explorer.bitcoin.com/tbch/tx/'
+					: 'https://explorer.bitcoin.com/bch/tx/';
+			break;
+		case 'hex':
+			endpoint =
+				NETWORK === 'testnet'
+					? 'https://ropsten.etherscan.io/address/'
+					: 'https://etherscan.io/address/';
+			break;
+		default:
+			endpoint =
+				NETWORK === 'testnet'
+					? 'https://ropsten.etherscan.io/address/'
+					: 'https://etherscan.io/address/';
+			break;
+	}
+	return endpoint;
+};
 
 export const BALANCE_ERROR = 'Insufficient balance to perform the order';
 
-export const CAPTCHA_SITEKEY = process.env.REACT_APP_CAPTCHA_SITE_KEY || '6LfgB6kUAAAAAAJI6CNSHdLrjDn8iFmZGxQDrcER';
+export const CAPTCHA_SITEKEY =
+	process.env.REACT_APP_CAPTCHA_SITE_KEY ||
+	'6LfgB6kUAAAAAAJI6CNSHdLrjDn8iFmZGxQDrcER';
 export const CAPTCHA_TIMEOUT = process.env.REACT_APP_CAPTCHA_TIMEOUT
 	? parseInt(process.env.REACT_APP_CAPTCHA_TIMEOUT, 10)
 	: 2000;
@@ -402,17 +455,23 @@ export const MIN_LEVEL_FOR_TOKENS = parseInt(
 	process.env.REACT_APP_MIN_LEVEL_FOR_TOKENS || 2,
 	10
 );
-const THEME_COLOR=localStorage.getItem("theme")
+const THEME_COLOR = localStorage.getItem('theme');
 export const THEMES = ['dark', 'white'];
 export const THEME_DEFAULT = THEME_COLOR ? THEME_COLOR : THEMES[1];
 export const CHAT_STATUS_KEY = 'chat:minimized';
 
-export const TRADING_VOLUME_CHART_LIMITS = process.env.REACT_APP_TRADING_VOLUME_CHART_LIMITS
-	? process.env.REACT_APP_TRADING_VOLUME_CHART_LIMITS.split(',').map(data => formatNumber(data))
+export const TRADING_VOLUME_CHART_LIMITS = process.env
+	.REACT_APP_TRADING_VOLUME_CHART_LIMITS
+	? process.env.REACT_APP_TRADING_VOLUME_CHART_LIMITS.split(',').map((data) =>
+			formatNumber(data)
+	  )
 	: [10000, 100000];
 
-export const TRADE_ACCOUNT_UPGRADE_MONTH = process.env.REACT_APP_ACCOUNT_UPGRADE_MONTH
-	? process.env.REACT_APP_ACCOUNT_UPGRADE_MONTH.split(',').map(data => formatNumber(data))
+export const TRADE_ACCOUNT_UPGRADE_MONTH = process.env
+	.REACT_APP_ACCOUNT_UPGRADE_MONTH
+	? process.env.REACT_APP_ACCOUNT_UPGRADE_MONTH.split(',').map((data) =>
+			formatNumber(data)
+	  )
 	: [3, 6];
 
 export const BAR_CHART_LIMIT_CAPACITY = [340000, 2050000];
@@ -469,7 +528,7 @@ export const CHART_MONTHS = [
 	{ key: 9, value: 'Sep' },
 	{ key: 10, value: 'Oct' },
 	{ key: 11, value: 'Nov' },
-	{ key: 12, value: 'Dec' },
+	{ key: 12, value: 'Dec' }
 ];
 
 export const DARK_THEME_COLORS = {

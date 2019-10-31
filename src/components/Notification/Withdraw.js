@@ -3,6 +3,7 @@ import { NotificationWraper, NotificationContent } from './Notification';
 import {
 	ICONS,
 	BLOCKTRAIL_ENDPOINT,
+	EXPLORERS_ENDPOINT,
 	ETHEREUM_ENDPOINT
 } from '../../config/constants';
 import { Button } from '../';
@@ -19,11 +20,10 @@ const getTransactionEndpoint = (currency, transaction_id) => {
 			return transaction_id;
 	}
 };
+
 const WithdrawNotification = ({ data, onClose }) => {
 	const notificationProps = {
-		icon:
-			ICONS[`COIN_WITHDRAW_BTC`] ||
-			ICONS.COIN_WITHDRAW_BASE,
+		icon: ICONS[`COIN_WITHDRAW_BTC`] || ICONS.COIN_WITHDRAW_BASE,
 		title: STRINGS.SUCCESS_TEXT
 	};
 
@@ -38,10 +38,7 @@ const WithdrawNotification = ({ data, onClose }) => {
 						<span>{STRINGS.WITHDRAW_NOTIFICATION_TRANSACTION_ID}</span>
 						<div className="notification-link-wrapper">
 							<a
-								href={getTransactionEndpoint(
-									data.currency,
-									data.transaction_id
-								)}
+								href={EXPLORERS_ENDPOINT(data.currency) + data.transaction_id}
 								target="_blank"
 								className="notification-link"
 								rel="noopener noreferrer"
