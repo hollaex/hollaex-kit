@@ -392,9 +392,7 @@ export const CAPTCHA_TIMEOUT = process.env.REACT_APP_CAPTCHA_TIMEOUT
 	: 2000;
 
 export const TIME_ZONE = process.env.REACT_APP_TIMEZONE || 'GMT';
-export const IS_PRO_VERSION =
-	process.env.REACT_APP_IS_PRO_VERSION &&
-	process.env.REACT_APP_IS_PRO_VERSION === 'true';
+export const IS_PRO_VERSION = true;
 export const PRO_VERSION_REDIRECT =
 	process.env.REACT_APP_PRO_VERSION_REDIRECT || '/account';
 export const DEFAULT_VERSION_REDIRECT =
