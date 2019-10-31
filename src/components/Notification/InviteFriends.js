@@ -65,12 +65,12 @@ class InviteFriends extends Component {
                             STRINGS.REFERRAL_LINK.REFERRED_USER_COUT,
                             affiliationCount
                         )}
-                        <div className="separator_line"></div>
+                        {/*<div className="separator_line"></div>
                         <div className='application_txt'>
                             <div>{STRINGS.REFERRAL_LINK.TOTAL_REFERRAL} {STRINGS.formatString(STRINGS.REFERRAL_LINK.HEX_COUNT, 10)}</div>
                             <div>{STRINGS.REFERRAL_LINK.PENDINF_REFERRAL}{STRINGS.formatString(STRINGS.REFERRAL_LINK.HEX_COUNT, affiliationCount)}</div>
                             <div>{STRINGS.REFERRAL_LINK.EARN_REFERRAL}{STRINGS.formatString(STRINGS.REFERRAL_LINK.HEX_COUNT, affiliationCount)}</div>
-                        </div>
+                        </div>*/}
                     </div>
                     <div className="d-flex my-5">
                         <Button

@@ -1067,9 +1067,9 @@ export default {
 
 	},
 	STAKE_TOKEN: {
-		TITLE: 'Stake HEX Token', // new
-		INFO_TXT1: 'For every user of the HollaEx Exchange Kit there are HEX tokens collateralized to run the exchange software.', // new
-		INFO_TXT2: 'You can collateralize your HEX token in a similar fashion to staking and earn HEX not sold during the HEX Wave Auction.', // new
+		TITLE: 'Stake HollaEx Token', // new
+		INFO_TXT1: 'For every user of the HollaEx Exchange Kit there are HollaEx tokens collateralized to run the exchange software.', // new
+		INFO_TXT2: 'You can collateralize your HollaEx token in a similar fashion to staking and earn HEX not sold during the Wave Auction.', // new
 		INFO_TXT3: 'Simply go to dash.bitholla.com and collateralize your own exchange today and earn free HEX', // new
 		BUTTON_TXT: 'GO TO DASH' // new
 	},
