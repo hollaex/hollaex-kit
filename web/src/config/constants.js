@@ -380,8 +380,8 @@ export const EXPLORERS_ENDPOINT = (currency) => {
 		case 'btc':
 			endpoint =
 				NETWORK === 'testnet'
-					? 'https://live.blockcypher.com/btc-test/address/'
-					: 'https://live.blockcypher.com/btc/block/';
+					? 'https://live.blockcypher.com/btc-test/tx/'
+					: 'https://live.blockcypher.com/btc/tx/';
 			break;
 		case 'xrp':
 			endpoint =
@@ -404,8 +404,8 @@ export const EXPLORERS_ENDPOINT = (currency) => {
 		default:
 			endpoint =
 				NETWORK === 'testnet'
-					? 'https://live.blockcypher.com/btc-test/address/'
-					: 'https://live.blockcypher.com/btc/block/';
+					? 'https://ropsten.etherscan.io/address/'
+					: 'https://etherscan.io/address/';
 			break;
 	}
 	return endpoint;
