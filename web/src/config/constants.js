@@ -374,8 +374,8 @@ export const EXPLORERS_ENDPOINT = (currency) => {
 		case 'eth':
 			endpoint =
 				NETWORK === 'testnet'
-					? 'https://ropsten.etherscan.io/address/'
-					: 'https://etherscan.io/address/';
+					? 'https://ropsten.etherscan.io/tx/'
+					: 'https://etherscan.io/tx/';
 			break;
 		case 'btc':
 			endpoint =
@@ -398,14 +398,14 @@ export const EXPLORERS_ENDPOINT = (currency) => {
 		case 'hex':
 			endpoint =
 				NETWORK === 'testnet'
-					? 'https://ropsten.etherscan.io/address/'
-					: 'https://etherscan.io/address/';
+					? 'https://ropsten.etherscan.io/tx/'
+					: 'https://etherscan.io/tx/';
 			break;
 		default:
 			endpoint =
 				NETWORK === 'testnet'
-					? 'https://ropsten.etherscan.io/address/'
-					: 'https://etherscan.io/address/';
+					? 'https://ropsten.etherscan.io/tx/'
+					: 'https://etherscan.io/tx/';
 			break;
 	}
 	return endpoint;
