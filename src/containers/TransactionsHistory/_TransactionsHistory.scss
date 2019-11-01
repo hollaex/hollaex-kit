@@ -69,9 +69,10 @@ $trade-asks-color-font: $colors-currencies-btc;
 	}
 }
 
-.withdrawal-cancel {
+.btn-tx, .withdrawal-cancel {
 	cursor: pointer;
 }
+
 
 .transaction-history-wrapper {
 	svg {
