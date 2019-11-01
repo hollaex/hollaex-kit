@@ -1,6 +1,6 @@
 import React from 'react';
 import classnames from 'classnames';
-import { BASE_CURRENCY, DEFAULT_COIN_DATA } from '../../config/constants';
+import { DEFAULT_COIN_DATA } from '../../config/constants';
 import { CurrencyBallWithPrice } from '../../components';
 
 const ReviewBlock = ({ text, value, symbol, pairs, coins }) => {
