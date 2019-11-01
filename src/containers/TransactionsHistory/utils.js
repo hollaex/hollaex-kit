@@ -7,11 +7,7 @@ import STRINGS from '../../config/localizedStrings';
 
 import { CurrencyBall } from '../../components';
 import {
-	BLOCKTRAIL_ENDPOINT,
-	ETHEREUM_ENDPOINT,
-	RIPPLE_ENDPOINT,
 	EXPLORERS_ENDPOINT,
-	BITCOINCOM_ENDPOINT,
 	BASE_CURRENCY,
 	CURRENCY_PRICE_FORMAT,
 	DEFAULT_COIN_DATA
@@ -376,7 +372,7 @@ export const generateWithdrawalsHeaders = (
 							fee,
 							data.symbol.toUpperCase()
 						)}
-					</td> /*: <td key={index}>{fee}</td>*/
+					</td> /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/
 					// : <td key={index}>{fee}</td>
 				) /*: <td key={index}>{fee}</td>*/);
 			}
@@ -399,7 +395,8 @@ export const generateWithdrawalsHeaders = (
 				index
 			) => {
 				if (status === false && dismissed === false && type === 'withdrawal') {
-					return isBlockchainTx(transaction_id) ? (
+					// Pending Status
+					return (
 						<td key={index}>
 							<div
 								className="withdrawal-cancel"
@@ -409,10 +406,16 @@ export const generateWithdrawalsHeaders = (
 								{STRINGS.CANCEL}
 							</div>
 						</td>
-					) : (
-						''
 					);
+				} else if (
+					status === false &&
+					dismissed === true &&
+					type === 'withdrawal'
+				) {
+					// Canceled Status
+					return <td />;
 				} else {
+					// Completed Status
 					return isBlockchainTx(transaction_id) &&
 						currency !== BASE_CURRENCY ? (
 						<td key={index}>
