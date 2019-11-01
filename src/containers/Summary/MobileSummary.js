@@ -12,6 +12,7 @@ import AccountAssets from './components/AccountAssets';
 import STRINGS from '../../config/localizedStrings';
 
 const MobileSummary = ({
+    is_hap,
     user,
     pairs,
     coins,
@@ -44,6 +45,7 @@ const MobileSummary = ({
             <div className="summary-section_1 trader-account-wrapper d-flex w-100">
                 <SummaryBlock title={currentTradingAccount.fullName} wrapperClassname="w-100" >
                     <TraderAccounts
+                        is_hap={is_hap}
                         coins={coins}
                         pairs={pairs}
                         logout={logout}

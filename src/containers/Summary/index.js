@@ -161,6 +161,7 @@ class Summary extends Component {
                 />}
                 {isMobile
                     ? <MobileSummary
+                        is_hap={is_hap}
                         user={user}
                         pairs={pairs}
                         coins={coins}
