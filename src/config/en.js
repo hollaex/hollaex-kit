@@ -1048,7 +1048,9 @@ export default {
 		NOMINAL_TRADING: 'Nominal Trading',
 		NOMINAL_TRADING_WITH_MONTH: 'Nominal Trading Last {0}',
 		ACCOUNT_AGE_OF_MONTHS: 'Account Age of {0} Months',
-		TRADING_VOLUME_EQUIVALENT: '{0} {1} Trading Volume Equivalent'
+		TRADING_VOLUME_EQUIVALENT: '{0} {1} Trading Volume Equivalent',
+		HAP_ACCOUNT:'HAP Account',
+		HAP_ACCOUNT_TXT :'Your account is a verified HollaEx affiliate program account. You can now earn 10% bonus for every person you invite that buys HEX.'
 	},
 	REFERRAL_LINK: {
 		// TITLE: 'APPLY FOR HAP Referral Code', // new

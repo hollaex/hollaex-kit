@@ -6,19 +6,24 @@ import STRINGS from '../../../config/localizedStrings';
 import { ICONS } from '../../../config/constants';
 
 
-const TraderAccounts = ({ account = {}, activeTheme, isAccountDetails = false, onFeesAndLimits, onUpgradeAccount, logout, onInviteFriends, onStakeToken }) => {
+const TraderAccounts = ({ account = {}, activeTheme, isAccountDetails = false, onFeesAndLimits, onUpgradeAccount, logout, onInviteFriends, onStakeToken, is_hap }) => {
     // let limitLevel = limits.filter(obj => obj.verification_level === account.level);
     return (
         <div className="d-flex">
             <div>
-                <ReactSVG path={ICONS.ACCOUNT_SUMMARY} wrapperClassName="trader-account-icon" />
+                <ReactSVG path={is_hap === true ? ICONS.HAP_ACCOUNT_ICON : ICONS.ACCOUNT_SUMMARY} wrapperClassName="trader-account-icon" />
             </div>
             <div className="trade-account-secondary-txt summary-content-txt">
                 {isAccountDetails && <div className="summary-block-title mb-3">{account.fullName}</div>}
                 <div className="account-details-content">
-                    <div className="mb-2">
-                        <div> {STRINGS.SUMMARY.TRADER_ACCOUNT_TXT_1}</div>
-                        <div> {STRINGS.SUMMARY.TRADER_ACCOUNT_TXT_2}</div>
+                    <div className="mb-2">{
+                        is_hap
+                            ? <div>{STRINGS.SUMMARY.HAP_ACCOUNT_TXT}</div>
+                            : <div>
+                                <div> {STRINGS.SUMMARY.TRADER_ACCOUNT_TXT_1}</div>
+                                <div> {STRINGS.SUMMARY.TRADER_ACCOUNT_TXT_2}</div>
+                            </div>
+                    }
                     </div>
                 </div>
                 {!isAccountDetails && <div>

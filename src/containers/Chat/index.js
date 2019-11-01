@@ -127,7 +127,9 @@ class Chat extends Component {
 				const { to } = this.state;
 				const chatMessage = {
 					username,
-					userType: USER_TYPES.USER_TYPE_NORMAL,
+					userType: this.props.is_hap
+						? USER_TYPES.USER_TYPE_HAP
+						: USER_TYPES.USER_TYPE_NORMAL,
 					to,
 					message,
 					type: MESSAGE_TYPES.MESSAGE_TYPE_NORMAL
@@ -200,6 +202,7 @@ const mapStateToProps = (store) => ({
 	userInitialized: store.user.fetched,
 	unreadMessages: store.app.chatUnreadMessages,
 	set_username: store.user.settings.chat.set_username,
+	is_hap: store.user.is_hap
 });
 
 const mapDispatchToProps = (dispatch) => ({

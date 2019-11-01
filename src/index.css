@@ -2447,6 +2447,9 @@ table th {
 .dark-theme .summary-container .trader-account-icon .account-summary1 {
   fill: #a3a1ca; }
 
+.dark-theme .summary-container .trader-account-icon svg .hap-icon {
+  fill: #a3a1ca; }
+
 .dark-theme .fee-limits-wrapper .fee-limits-link {
   color: #ed507b; }
 
@@ -2524,6 +2527,8 @@ table th {
   .summary-container .trader-account-icon {
     width: 7rem;
     margin-right: 1rem; }
+    .summary-container .trader-account-icon svg .hap-icon {
+      fill: #777677; }
   .summary-container .trade-account-link {
     color: #0000ff;
     font-weight: bold; }
@@ -7491,7 +7496,9 @@ foreignObject {
     .dark-theme .chat-wrapper .user-icon svg .chat-lvl-4 {
       fill: #000000; }
     .dark-theme .chat-wrapper .user-icon svg .level_icon {
-      fill: white; }
+      fill: #a3a1ca; }
+    .dark-theme .chat-wrapper .user-icon svg .hap-icon {
+      fill: #a3a1ca; }
   .dark-theme .chat-wrapper .chat-message .message-content .message {
     color: #808184; }
   .dark-theme .chat-wrapper .chat-message .item-options .item-options-wrapper .item-option {

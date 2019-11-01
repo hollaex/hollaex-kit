@@ -89,6 +89,11 @@
             .account-summary1 {
                 fill: $dark-icon-color;
             }
+            svg {
+                .hap-icon {
+                      fill: $dark-icon-color;
+                }
+            }
         }
     }
 
@@ -204,6 +209,11 @@
     .trader-account-icon {
         width: 7rem;
         margin-right: 1rem;
+        svg {
+            .hap-icon {
+                fill: $colors-deactivate-color2;
+            }
+        }
     }
     .trade-account-link {
         color: $link;

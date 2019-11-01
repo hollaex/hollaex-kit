@@ -150,7 +150,7 @@ class Summary extends Component {
     };
 
     render() {
-        const { user, balance, activeTheme, pairs, coins, isValidBase } = this.props;
+        const { user, balance, activeTheme, pairs, coins, isValidBase, is_hap } = this.props;
         const { selectedAccount, currentTradingAccount, chartData, totalAssets, lastMonthVolume } = this.state;
         // const { fullname } = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
         return (
@@ -183,7 +183,7 @@ class Summary extends Component {
                     : (<div>
                         <div className="d-flex align-items-center">
                             <div className="summary-section_1 trader-account-wrapper d-flex">
-                                <SummaryBlock title={STRINGS.SUMMARY.TRADER_ACCOUNT_TITLE} >
+                                <SummaryBlock title={is_hap ? STRINGS.SUMMARY.HAP_ACCOUNT : STRINGS.SUMMARY.TRADER_ACCOUNT_TITLE} >
                                     <TraderAccounts
                                         pairs={pairs}
                                         coins={coins}
@@ -192,7 +192,8 @@ class Summary extends Component {
                                         onFeesAndLimits={this.onFeesAndLimits}
                                         onUpgradeAccount={this.onUpgradeAccount}
                                         onInviteFriends={this.onInviteFriends}
-                                        onStakeToken={this.onStakeToken} />
+                                        onStakeToken={this.onStakeToken}
+                                        is_hap={is_hap} />
                                 </SummaryBlock>
                             </div>
                             <div className="summary-section_1 requirement-wrapper d-flex">
@@ -248,7 +249,8 @@ const mapStateToProps = (state) => ({
     orders: state.order.activeOrders,
     activeLanguage: state.app.language,
     tradeVolumes: state.user.tradeVolumes,
-    isValidBase: state.app.isValidBase
+    isValidBase: state.app.isValidBase,
+    is_hap: state.user.is_hap
 });
 
 const mapDispatchToProps = (dispatch) => ({
