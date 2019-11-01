@@ -1,4 +1,4 @@
-import jwtDecode  from 'jwt-decode';
+import jwtDecode from 'jwt-decode';
 import { TOKEN_KEY } from '../config/constants';
 
 const TOKEN_TIME_KEY = 'time';
@@ -24,7 +24,7 @@ export const getTokenTimestamp = () => {
 export const isLoggedIn = () => {
 	let token = getToken();
 	return !!token;
-}
+};
 
 export const decodeToken = (token) => jwtDecode(token);
 
@@ -58,5 +58,11 @@ export const isSupervisor = () => {
 	return checkRole() === 'supervisor';
 };
 export const isAdmin = () => {
-	return checkRole() === 'admin';
+	const role = checkRole();
+	return (
+		role === 'admin' ||
+		role === 'kyc' ||
+		role === 'support' ||
+		role === 'supervisor'
+	);
 };
