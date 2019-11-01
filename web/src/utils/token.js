@@ -58,5 +58,11 @@ export const isSupervisor = () => {
 	return checkRole() === 'supervisor';
 };
 export const isAdmin = () => {
-	return checkRole() === 'admin';
+	const role = checkRole();
+	return (
+		role === 'admin' ||
+		role === 'kyc' ||
+		role === 'support' ||
+		role === 'supervisor'
+	);
 };

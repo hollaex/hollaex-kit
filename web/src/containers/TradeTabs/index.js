@@ -5,7 +5,7 @@ import ReactSVG from 'react-svg';
 import classnames from 'classnames';
 
 import { Paginator, SearchBox } from '../../components';
-import { ICONS, BASE_CURRENCY, DEFAULT_COIN_DATA } from '../../config/constants';
+import { ICONS, BASE_CURRENCY, DEFAULT_COIN_DATA, HOLLAEX_LOGO, HOLLAEX_LOGO_BLACK } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 import { formatPercentage, formatAverage, formatToCurrency } from '../../utils/currency';
 
@@ -123,7 +123,7 @@ class AddTradeTab extends Component {
             <div className="trade_tabs-container">
                 <div className="mb-5">
                     <img
-                        src={activeTheme === 'dark' ? ICONS.LOGO_GREY : ICONS.LOGO_BLACK}
+                        src={activeTheme === 'dark' ? HOLLAEX_LOGO : HOLLAEX_LOGO_BLACK}
                         alt="app logo"
                         className="app-icon d-flex" />
                     <div className="text-center trade-tab-app-title">{STRINGS.APP_SUB_TITLE.toUpperCase()}</div>
