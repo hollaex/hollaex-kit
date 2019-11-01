@@ -1385,7 +1385,7 @@ table th {
   width: 2rem;
   height: 2rem; }
 
-.withdrawal-cancel {
+.btn-tx, .withdrawal-cancel {
   cursor: pointer; }
 
 .transaction-history-wrapper svg .trade-history-1,
