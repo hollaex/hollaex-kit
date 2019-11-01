@@ -375,7 +375,7 @@ export const generateWithdrawalsHeaders = (
 							fee,
 							data.symbol.toUpperCase()
 						)}
-					</td> /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/
+					</td> /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/
 					// : <td key={index}>{fee}</td>
 				) /*: <td key={index}>{fee}</td>*/);
 			}
@@ -410,7 +410,8 @@ export const generateWithdrawalsHeaders = (
 					dismissed === false &&
 					type === 'withdrawal'
 				) {
-					return isBlockchainTx(transaction_id) ? (
+					// Pending Status
+					return (
 						<td key={index}>
 							<div
 								className="withdrawal-cancel"
@@ -420,10 +421,16 @@ export const generateWithdrawalsHeaders = (
 								{STRINGS.CANCEL}
 							</div>
 						</td>
-					) : (
-						''
 					);
+				} else if (
+					status === false &&
+					dismissed === true &&
+					type === 'withdrawal'
+				) {
+					// Canceled Status
+					return <td />;
 				} else {
+					// Completed Status
 					return isBlockchainTx(transaction_id) &&
 						currency !== BASE_CURRENCY ? (
 						<td key={index}>
