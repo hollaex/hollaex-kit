@@ -1,4 +1,5 @@
 import React from 'react';
+import { notification, Icon } from 'antd';
 import classnames from 'classnames';
 import mathjs from 'mathjs';
 import { isMobile } from 'react-device-detect';
@@ -14,6 +15,11 @@ import {
 } from '../../config/constants';
 import { formatTimestamp, isBlockchainTx } from '../../utils/utils';
 import { formatToCurrency } from '../../utils/currency';
+
+notification.config({
+	placement: 'topLeft',
+	duration: 3
+});
 
 const calculateFeeAmount = (
 	fee = 0,
@@ -107,6 +113,8 @@ export const generateTradeHeaders = (symbol, pairs, coins) => {
 						formatToCurrency(size, min),
 						shortName
 					);
+				} else {
+					return size;
 				}
 			},
 			renderCell: ({ size = 0, ...data }, key, index) => {
@@ -124,6 +132,8 @@ export const generateTradeHeaders = (symbol, pairs, coins) => {
 							)}
 						</td>
 					);
+				} else {
+					return <td key={index}>{size}</td>;
 				}
 			}
 		},
@@ -140,6 +150,8 @@ export const generateTradeHeaders = (symbol, pairs, coins) => {
 						formatToCurrency(calculatePrice(quick, price, size), min),
 						rest.symbol.toUpperCase()
 					);
+				} else {
+					return calculatePrice(quick, price, size);
 				}
 			},
 			renderCell: ({ price = 0, size = 0, quick, symbol }, key, index) => {
@@ -159,6 +171,8 @@ export const generateTradeHeaders = (symbol, pairs, coins) => {
 							)}
 						</td>
 					);
+				} else {
+					return <td key={index}>{calculatePrice(quick, price, size)}</td>;
 				}
 			}
 		},
@@ -175,6 +189,8 @@ export const generateTradeHeaders = (symbol, pairs, coins) => {
 						formatToCurrency(calculateAmount(quick, price, size), min),
 						rest.symbol.toUpperCase()
 					);
+				} else {
+					return calculateAmount(quick, price, size);
 				}
 			},
 			renderCell: ({ price = 0, size = 0, quick, symbol }, key, index) => {
@@ -191,6 +207,15 @@ export const generateTradeHeaders = (symbol, pairs, coins) => {
 									min
 								),
 								rest.symbol.toUpperCase()
+							)}
+						</td>
+					);
+				} else {
+					return (
+						<td>
+							{formatToCurrency(
+								calculateAmount(quick, price, size),
+								0.0001
 							)}
 						</td>
 					);
@@ -224,6 +249,8 @@ export const generateTradeHeaders = (symbol, pairs, coins) => {
 						),
 						rest.symbol.toUpperCase()
 					);
+				} else {
+					calculateFeeAmount(fee, quick, price, size, side);
 				}
 			},
 			renderCell: (
@@ -252,6 +279,8 @@ export const generateTradeHeaders = (symbol, pairs, coins) => {
 							)}
 						</td>
 					);
+				} else {
+					calculateFeeAmount(fee, quick, price, size, side);
 				}
 			}
 		},
@@ -375,7 +404,7 @@ export const generateWithdrawalsHeaders = (
 							fee,
 							data.symbol.toUpperCase()
 						)}
-					</td> /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/
+					</td> /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/
 					// : <td key={index}>{fee}</td>
 				) /*: <td key={index}>{fee}</td>*/);
 			}
@@ -428,7 +457,27 @@ export const generateWithdrawalsHeaders = (
 					type === 'withdrawal'
 				) {
 					// Canceled Status
-					return <td />;
+					return (
+						<td
+							className="btn-tx"
+							key={index}
+							onClick={() => {
+								notification.open({
+									message: 'Transaction ID',
+									description: transaction_id,
+									icon: (
+										<Icon
+											type="info-circle"
+											theme="twoTone"
+											style={{ color: '#0000ff' }}
+										/>
+									)
+								});
+							}}
+						>
+							{STRINGS.VIEW}
+						</td>
+					);
 				} else {
 					// Completed Status
 					return isBlockchainTx(transaction_id) &&
@@ -442,7 +491,25 @@ export const generateWithdrawalsHeaders = (
 							</a>
 						</td>
 					) : (
-						<td key={index} />
+						<td
+							className="btn-tx"
+							key={index}
+							onClick={() => {
+								notification.open({
+									message: 'Transaction ID',
+									description: transaction_id,
+									icon: (
+										<Icon
+											type="info-circle"
+											theme="twoTone"
+											style={{ color: '#0000ff' }}
+										/>
+									)
+								});
+							}}
+						>
+							{STRINGS.VIEW}
+						</td>
 					);
 				}
 			}
