@@ -343,7 +343,10 @@ $mobile-regular--font-size: 1.5rem;
 					fill: $colors-black;
 				}
 			    .level_icon {
-					fill: $colors-white;
+						fill: $dark-icon-color;
+				}
+				.hap-icon{
+					fill: $dark-icon-color;
 				}
 			}
 		}

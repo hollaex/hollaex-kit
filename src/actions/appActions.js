@@ -51,7 +51,8 @@ export const SET_VALID_BASE_CURRENCY = 'SET_VALID_BASE_CURRENCY';
 
 export const USER_TYPES = {
 	USER_TYPE_NORMAL: 'normal',
-	USER_TYPE_ADMIN: 'admin'
+	USER_TYPE_ADMIN: 'admin',
+	USER_TYPE_HAP: 'hap'
 };
 
 export const MESSAGE_TYPES = {

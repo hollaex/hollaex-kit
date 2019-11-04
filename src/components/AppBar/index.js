@@ -10,7 +10,6 @@ import {
 	PRO_URL,
 	DEFAULT_VERSION_REDIRECT,
 	ICONS,
-	BASE_CURRENCY,
 	DEFAULT_COIN_DATA
 } from '../../config/constants';
 import { LinkButton } from './LinkButton';
@@ -274,16 +273,13 @@ class AppBar extends Component {
 			router,
 			activePath,
 			location,
-			pairs,
-			coins
+			pairs
 		} = this.props;
 		const { isAccountMenu, selectedMenu, securityPending, walletPending } = this.state;
 		const totalPending = securityPending + walletPending;
 		let pair = '';
 		if (Object.keys(pairs).length) {
-			const { pair_base } = pairs[Object.keys(pairs)[0]];
-			const { symbol } = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
-			pair = `${pair_base}-${symbol.toLowerCase()}`;
+			pair = pair = Object.keys(pairs)[0];
 		} else {
 			pair = this.props.pair;
 		}

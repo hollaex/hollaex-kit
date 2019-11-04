@@ -29,7 +29,8 @@ class InviteFriends extends Component {
     };
 
     render() {
-        const { affiliation_code, is_hap } = this.props.data;
+        const { affiliation_code } = this.props.data;
+        const { is_hap } = this.props;
         const referralLink = `${process.env.REACT_APP_PUBLIC_URL}/signup?affiliation_code=${affiliation_code}`;
         const affiliationCount = this.props.affiliation.count ? this.props.affiliation.count : 0;
         return (
