@@ -43,7 +43,7 @@ const MobileSummary = ({
             )}
         >
             <div className="summary-section_1 trader-account-wrapper d-flex w-100">
-                <SummaryBlock title={currentTradingAccount.fullName} wrapperClassname="w-100" >
+                <SummaryBlock title={is_hap ? STRINGS.SUMMARY.HAP_ACCOUNT : STRINGS.SUMMARY.TRADER_ACCOUNT_TITLE} wrapperClassname="w-100" >
                     <TraderAccounts
                         is_hap={is_hap}
                         coins={coins}
