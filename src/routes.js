@@ -5,7 +5,7 @@ import ReactGA from 'react-ga';
 import {
 	NETWORK,
 	// IS_PRO_VERSION,
-	PRO_VERSION_REDIRECT,
+	PRO_VERSION_REDIRECT
 	// DEFAULT_VERSION_REDIRECT
 } from './config/constants';
 
@@ -15,6 +15,7 @@ import {
 	MainWallet,
 	CurrencyWallet,
 	Login,
+	Logout,
 	Signup,
 	VerificationEmailRequest,
 	VerificationEmailCode,
@@ -43,7 +44,7 @@ import {
 	AdminChat,
 	Wallets,
 	UserFees,
-	PATHS,
+	PATHS
 	// ExpiredExchange
 } from './containers';
 
@@ -51,7 +52,12 @@ import store from './store';
 import { verifyToken } from './actions/authAction';
 import { setLanguage } from './actions/appActions';
 
-import { isLoggedIn, getToken, removeToken, getTokenTimestamp } from './utils/token';
+import {
+	isLoggedIn,
+	getToken,
+	removeToken,
+	getTokenTimestamp
+} from './utils/token';
 import { getLanguage, getInterfaceLanguage } from './utils/string';
 import { checkUserSessionExpired } from './utils/utils';
 
@@ -103,6 +109,13 @@ const logOutUser = () => {
 	}
 };
 
+const setLogout = (nextState, replace) => {
+	removeToken();
+	replace({
+		pathname: '/trade/hex-usdt'
+	});
+};
+
 const createLocalizedRoutes = ({ router, routeParams }) => {
 	store.dispatch(setLanguage(routeParams.locale));
 	router.replace('/');
@@ -110,9 +123,7 @@ const createLocalizedRoutes = ({ router, routeParams }) => {
 };
 
 const NotFound = ({ router }) => {
-	router.replace(
-		PRO_VERSION_REDIRECT
-	);
+	router.replace(PRO_VERSION_REDIRECT);
 	return <div />;
 };
 
@@ -133,9 +144,9 @@ function withAdminProps(Component, key) {
 		}
 		return 0;
 	});
-	return function (matchProps) {
-		return <Component {...adminProps} {...matchProps} />
-	}
+	return function(matchProps) {
+		return <Component {...adminProps} {...matchProps} />;
+	};
 }
 
 export default (
@@ -165,17 +176,51 @@ export default (
 			/>
 		</Route>
 		<Route component={Container}>
-			<Route path="account" name="Account" component={Account} onEnter={requireAuth}/>
-			<Route path="account/settings/username" name="username" component={Account} />
+			<Route
+				path="account"
+				name="Account"
+				component={Account}
+				onEnter={requireAuth}
+			/>
+			<Route
+				path="account/settings/username"
+				name="username"
+				component={Account}
+			/>
 			<Route path="security" name="Security" component={Account} />
 			<Route path="developers" name="Developers" component={Account} />
 			<Route path="settings" name="Settings" component={Account} />
 			<Route path="summary" name="Summary" component={Account} />
-			<Route path="verification" name="Verification" component={Account} onEnter={requireAuth} />
-			<Route path="wallet" name="Wallet" component={MainWallet} onEnter={requireAuth}/>
-			<Route path="wallet/:currency" name="Wallet" component={CurrencyWallet} onEnter={requireAuth}/>
-			<Route path="wallet/:currency/deposit" name="Deposit" component={Deposit} onEnter={requireAuth}/>
-			<Route path="wallet/:currency/withdraw" name="Withdraw" component={Withdraw} onEnter={requireAuth}/>
+			<Route
+				path="verification"
+				name="Verification"
+				component={Account}
+				onEnter={requireAuth}
+			/>
+			<Route
+				path="wallet"
+				name="Wallet"
+				component={MainWallet}
+				onEnter={requireAuth}
+			/>
+			<Route
+				path="wallet/:currency"
+				name="Wallet"
+				component={CurrencyWallet}
+				onEnter={requireAuth}
+			/>
+			<Route
+				path="wallet/:currency/deposit"
+				name="Deposit"
+				component={Deposit}
+				onEnter={requireAuth}
+			/>
+			<Route
+				path="wallet/:currency/withdraw"
+				name="Withdraw"
+				component={Withdraw}
+				onEnter={requireAuth}
+			/>
 			<Route
 				path="transactions"
 				name="Transactions"
@@ -184,17 +229,26 @@ export default (
 			/>
 			<Route path="trade/:pair" name="Trade" component={Trade} />
 			<Route path="trade/add/tabs" name="Trade Tabs" component={AddTradeTabs} />
-			<Route path="quick-trade/:pair" name="Quick Trade" component={QuickTrade} />
-			<Route path="chat" name="Chat" component={Chat} onEnter={requireAuth}/>
+			<Route
+				path="quick-trade/:pair"
+				name="Quick Trade"
+				component={QuickTrade}
+			/>
+			<Route path="chat" name="Chat" component={Chat} onEnter={requireAuth} />
 			<Route
 				path="confirm-withdraw/:token"
 				name="ConfirmWithdraw"
 				component={WithdrawConfirmation}
 			/>
+			<Route path="logout" name="LogOut" onEnter={setLogout} />
 		</Route>
 		<Route component={AdminContainer}>
 			<Route path="/admin" name="Admin Main" component={Main} />
-			<Route path="/admin/user" name="Admin User" component={withAdminProps(User, 'user')} />
+			<Route
+				path="/admin/user"
+				name="Admin User"
+				component={withAdminProps(User, 'user')}
+			/>
 			<Route
 				path="/admin/wallets"
 				name="Admin Wallets"
@@ -215,12 +269,34 @@ export default (
 				name="Admin BlockchainTransaction"
 				component={BlockchainTransaction}
 			/>
-			<Route path="/admin/pair" name="Admin Pairs" component={withAdminProps(UserFees, 'pair')} />
-			<Route path="/admin/coin" name="Admin Coins" component={withAdminProps(Limits, 'coin')} />
-			<Route path="/admin/chat" name="Admin Chats" component={withAdminProps(AdminChat, 'chat')} />
+			<Route
+				path="/admin/pair"
+				name="Admin Pairs"
+				component={withAdminProps(UserFees, 'pair')}
+			/>
+			<Route
+				path="/admin/coin"
+				name="Admin Coins"
+				component={withAdminProps(Limits, 'coin')}
+			/>
+			<Route
+				path="/admin/chat"
+				name="Admin Chats"
+				component={withAdminProps(AdminChat, 'chat')}
+			/>
 		</Route>
-		<Route path="privacy-policy" component={Legal} content="legal" onEnter={requireAuth}/>
-		<Route path="general-terms" component={Legal} content="terms" onEnter={requireAuth}/>
+		<Route
+			path="privacy-policy"
+			component={Legal}
+			content="legal"
+			onEnter={requireAuth}
+		/>
+		<Route
+			path="general-terms"
+			component={Legal}
+			content="terms"
+			onEnter={requireAuth}
+		/>
 		<Route path="*" component={NotFound} />
 	</Router>
 );
