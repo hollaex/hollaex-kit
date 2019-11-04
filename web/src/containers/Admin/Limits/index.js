@@ -2,13 +2,16 @@ import React, { Component } from 'react';
 import { Table, Spin, notification } from 'antd';
 import { CSVLink } from 'react-csv';
 import { connect } from 'react-redux';
-
+import { bindActionCreators } from 'redux';
 import UserLimitForm from './UserLimitForm';
 import { performLimitUpdate } from './actions';
 import STRINGS from '../../../config/localizedStrings';
 import { getCoinsFormFields, getCurrencyColumns } from './constants';
 import { API_DOCS_URL } from '../../../config/constants';
 import { ModalForm, BlueLink } from '../../../components';
+
+import { setCurrencies } from '../../../actions/appActions';
+
 import './index.css';
 
 const Form = ModalForm('EditLimits', '');
@@ -54,15 +57,19 @@ class Limits extends Component {
 	}
 
 	componentDidUpdate(prevProps, prevState) {
-		if (JSON.stringify(prevProps.coins) !== JSON.stringify(this.props.coins)) {
+		if (
+			JSON.stringify(prevProps.coins) !== JSON.stringify(this.props.coins)
+		) {
 			this.requestLimits(this.props.coins);
 		}
 	}
 
 	requestLimits = (coins) => {
-		const sortedData = Object.keys(coins).sort((a, b) => coins[a].id - coins[b].id);
+		const sortedData = Object.keys(coins).sort(
+			(a, b) => coins[a].id - coins[b].id
+		);
 		let limits = [];
-		sortedData.forEach(coin => {
+		sortedData.forEach((coin) => {
 			if (coins[coin]) {
 				limits = [...limits, coins[coin]];
 			}
@@ -89,20 +96,20 @@ class Limits extends Component {
 
 	onchange = (event, level) => {
 		let customLevels = [...this.state.customLevels];
-		const isData = customLevels.filter(val => val === level).length;
+		const isData = customLevels.filter((val) => val === level).length;
 		if (parseInt(event, 10) === 1 && !isData) {
 			customLevels = [...customLevels, level];
 		} else if (isData) {
 			const temp = [];
-			customLevels.forEach(key => {
+			customLevels.forEach((key) => {
 				if (key !== level) {
-					temp.push(key)
+					temp.push(key);
 				}
 			});
 			customLevels = temp;
 		}
 		this.setState({ customLevels });
-	}
+	};
 
 	handleEdit = (value, data, keyIndex) => {
 		const { config = {} } = this.props;
@@ -112,12 +119,11 @@ class Limits extends Component {
 		let customLevels = [];
 		if (typeof data[keyIndex] === 'object') {
 			const temp = data[keyIndex];
-			Object.keys(temp).forEach(key => {
-				if (key <= parseInt((config.tiers || 0), 10))
+			Object.keys(temp).forEach((key) => {
+				if (key <= parseInt(config.tiers || 0, 10))
 					if (temp[key] === 0 || temp[key] === -1) {
 						initialValues[`${keyIndex}_${key}`] = `${temp[key]}`;
-					}
-					else {
+					} else {
 						initialValues[`${keyIndex}_${key}`] = `1`;
 						initialValues[`${keyIndex}_${key}_custom`] = `${temp[key]}`;
 						customLevels = [...customLevels, parseInt(key, 10)];
@@ -126,9 +132,10 @@ class Limits extends Component {
 		} else {
 			initialValues[keyIndex] = `${data[keyIndex]}`;
 		}
-		const isCustomContent = keyIndex === 'withdrawal_limits' || keyIndex === 'deposit_limits'
-			? true
-			: false;
+		const isCustomContent =
+			keyIndex === 'withdrawal_limits' || keyIndex === 'deposit_limits'
+				? true
+				: false;
 		this.setState({
 			isEdit: true,
 			editData: { keyIndex, data },
@@ -146,16 +153,23 @@ class Limits extends Component {
 	onSubmit = (rowData) => (values) => {
 		const { keyIndex, data } = rowData;
 		let formProps = {};
-		if (keyIndex === 'active' || keyIndex === 'allow_deposit' || keyIndex === 'allow_withdrawal') {
+		if (
+			keyIndex === 'active' ||
+			keyIndex === 'allow_deposit' ||
+			keyIndex === 'allow_withdrawal'
+		) {
 			formProps[keyIndex] = values[keyIndex] === 'true' ? true : false;
-		} else if (keyIndex === 'deposit_limits' || keyIndex === 'withdrawal_limits') {
+		} else if (
+			keyIndex === 'deposit_limits' ||
+			keyIndex === 'withdrawal_limits'
+		) {
 			const loopData = data[keyIndex];
 			const tempData = {};
 			if (Object.keys(loopData).length) {
-				Object.keys(loopData).forEach(key => {
-					if (key <= parseInt((this.props.config.tiers || 0), 10)) {
+				Object.keys(loopData).forEach((key) => {
+					if (key <= parseInt(this.props.config.tiers || 0, 10)) {
 						let levelValue = parseFloat(values[`${keyIndex}_${key}`]);
-						if ((levelValue >= 1) && values[`${keyIndex}_${key}_custom`]) {
+						if (levelValue >= 1 && values[`${keyIndex}_${key}_custom`]) {
 							levelValue = values[`${keyIndex}_${key}_custom`];
 						}
 						tempData[key] = parseFloat(levelValue);
@@ -163,10 +177,12 @@ class Limits extends Component {
 				});
 				formProps[keyIndex] = tempData;
 			}
-		} else if (keyIndex === 'withdrawal_fee'
-			|| keyIndex === 'min'
-			|| keyIndex === 'max'
-			|| keyIndex === 'increment_unit') {
+		} else if (
+			keyIndex === 'withdrawal_fee' ||
+			keyIndex === 'min' ||
+			keyIndex === 'max' ||
+			keyIndex === 'increment_unit'
+		) {
 			formProps[keyIndex] = parseFloat(values[keyIndex]);
 		} else {
 			formProps[keyIndex] = values[keyIndex];
@@ -179,58 +195,68 @@ class Limits extends Component {
 							return res;
 						}
 						return item;
-					})
+					});
+					this.props.setCurrencies(newData);
 					this.setState({
 						limits: newData
-					})
+					});
 					return;
 				})
 				.then((res) => {
 					this.onCancel();
 					openNotification();
 				})
-				.catch((error) => {
-				});
+				.catch((error) => {});
 		}
 	};
 
 	render() {
-		const { limits, loading, error, isEdit, editData, Fields, initialValues, isCustomContent, customLevels } = this.state;
+		const {
+			limits,
+			loading,
+			error,
+			isEdit,
+			editData,
+			Fields,
+			initialValues,
+			isCustomContent,
+			customLevels
+		} = this.state;
 		const COLUMNS_CURRENCY = getCurrencyColumns(this.handleEdit);
 		return (
 			<div className="app_container-content">
 				{loading ? (
 					<Spin size="large" />
 				) : (
-						<div>
-							{error && <p>-{error}-</p>}
-							<h1>Coins</h1>
-							<CSVLink
-								filename={'daily-max-limits.csv'}
-								data={limits}
-								headers={COLUMNS_CURRENCY}
-							>
-								Download table
-							</CSVLink>
-							<Table
-								columns={COLUMNS_CURRENCY}
-								dataSource={limits}
-								rowKey={(data) => {
-									return data.id;
-								}}
-								scroll={{ x: true }}
-							/>
-							<div className="mb-3">
-								{STRINGS.formatString(
-									STRINGS.NOTE_FOR_EDIT_COIN,
-									STRINGS.COINS,
-									<BlueLink
-										href={API_DOCS_URL}
-										text={STRINGS.REFER_DOCS_LINK}
-									/>
-								)}
-							</div>
-							{/* <div>
+					<div>
+						{error && <p>-{error}-</p>}
+						<h1>Coins</h1>
+						<CSVLink
+							filename={'daily-max-limits.csv'}
+							data={limits}
+							headers={COLUMNS_CURRENCY}
+						>
+							Download table
+						</CSVLink>
+						<Table
+							columns={COLUMNS_CURRENCY}
+							dataSource={limits}
+							rowKey={(data) => {
+								return data.id;
+							}}
+							scroll={{ x: true }}
+						/>
+						<div className="mb-3">
+							{STRINGS.formatString(
+								STRINGS.NOTE_FOR_EDIT_COIN,
+								STRINGS.COINS,
+								<BlueLink
+									href={API_DOCS_URL}
+									text={STRINGS.REFER_DOCS_LINK}
+								/>
+							)}
+						</div>
+						{/* <div>
 							<h2>CHANGE Coins</h2>
 
 							<InputGroup compact>
@@ -265,12 +291,12 @@ class Limits extends Component {
 								/>
 							</InputGroup>
 						</div> */}
-						</div>
-					)}
+					</div>
+				)}
 				<Form
 					visible={isEdit}
 					title={editData.keyIndex}
-					okText='Save'
+					okText="Save"
 					fields={Fields}
 					CustomRenderContent={isCustomContent ? UserLimitForm : null}
 					customLevels={customLevels}
@@ -288,4 +314,11 @@ const mapStateToProps = (state) => ({
 	coins: state.app.coins
 });
 
-export default connect(mapStateToProps)(Limits);
+const mapDispatchToProps = (dispatch) => ({
+	setCurrencies: bindActionCreators(setCurrencies, dispatch)
+});
+
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(Limits);

@@ -396,8 +396,8 @@ export default {
 				GENDER_LABEL: 'Gender',
 				GENDER_PLACEHOLDER: 'Type what gender your are',
 				GENDER_OPTIONS: {
-					MAN: 'Man',
-					WOMAN: 'Woman'
+					MAN: 'Male',
+					WOMAN: 'Female'
 				},
 				NATIONALITY_LABEL: 'Nationality',
 				NATIONALITY_PLACEHOLDER:

@@ -29,7 +29,7 @@ class Expired extends Component {
     render() {
         const { activeTheme } = this.props;
         return (
-            <div className={classnames(getThemeClass(activeTheme), 'w-100', 'h-100')}>
+            <div className={classnames(getThemeClass(activeTheme), 'app_container', 'w-100', 'h-100')}>
                 <div className={classnames("expired_exchange_wrapper", "h-100", "flex-column", ...FLEX_CENTER_CLASSES)}>
                     <div>
                         <ReactSvg path={ICONS.EXPIRED_ICON} wrapperClassName="expired_img_icon" />

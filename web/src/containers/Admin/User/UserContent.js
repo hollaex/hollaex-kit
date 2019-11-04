@@ -22,7 +22,6 @@ import Flagger from '../Flaguser';
 const TabPane = Tabs.TabPane;
 
 class UserContent extends Component {
-	
 	render() {
 		const {
 			coins,
@@ -68,9 +67,7 @@ class UserContent extends Component {
 					</div>
 				</div>
 				<Tabs
-					tabBarExtraContent={
-						<Button onClick={clearData}>Clear user</Button>
-					}
+					tabBarExtraContent={<Button onClick={clearData}>Back</Button>}
 				>
 					<TabPane tab="Data" key="data">
 						<div>

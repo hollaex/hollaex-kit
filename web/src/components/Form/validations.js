@@ -35,7 +35,10 @@ export const username = (value = '') =>
 	!usernameRegEx.test(value) ? STRINGS.INVALID_USERNAME : undefined;
 
 export const validAddress = (symbol = '', message) => {
-	const currency = symbol.toUpperCase();
+	let currency = symbol.toUpperCase();
+	if (currency === 'HEX') {
+		currency = 'ETH';
+	}
 	return (address) => {
 		let valid = WAValidator.validate(address, currency, NETWORK);
 		// in case of bitcoin cash new addresses and new bitcoin addresses
