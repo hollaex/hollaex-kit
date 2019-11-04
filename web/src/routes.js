@@ -106,6 +106,13 @@ const logOutUser = () => {
 	}
 };
 
+const setLogout = (nextState, replace) => {
+	removeToken();
+	replace({
+		pathname: '/trade/hex-usdt'
+	});
+};
+
 const createLocalizedRoutes = ({ router, routeParams }) => {
 	store.dispatch(setLanguage(routeParams.locale));
 	router.replace('/');
@@ -136,9 +143,9 @@ function withAdminProps(Component, key) {
 		}
 		return 0;
 	});
-	return function (matchProps) {
-		return <Component {...adminProps} {...matchProps} />
-	}
+	return function(matchProps) {
+		return <Component {...adminProps} {...matchProps} />;
+	};
 }
 
 export default (
@@ -245,10 +252,15 @@ export default (
 				name="ConfirmWithdraw"
 				component={WithdrawConfirmation}
 			/>
+			<Route path="logout" name="LogOut" onEnter={setLogout} />
 		</Route>
 		<Route component={AdminContainer}>
 			<Route path="/admin" name="Admin Main" component={Main} />
-			<Route path="/admin/user" name="Admin User" component={withAdminProps(User, 'user')} />
+			<Route
+				path="/admin/user"
+				name="Admin User"
+				component={withAdminProps(User, 'user')}
+			/>
 			<Route
 				path="/admin/wallets"
 				name="Admin Wallets"
@@ -269,9 +281,21 @@ export default (
 				name="Admin BlockchainTransaction"
 				component={BlockchainTransaction}
 			/>
-			<Route path="/admin/pair" name="Admin Pairs" component={withAdminProps(UserFees, 'pair')} />
-			<Route path="/admin/coin" name="Admin Coins" component={withAdminProps(Limits, 'coin')} />
-			<Route path="/admin/chat" name="Admin Chats" component={withAdminProps(AdminChat, 'chat')} />
+			<Route
+				path="/admin/pair"
+				name="Admin Pairs"
+				component={withAdminProps(UserFees, 'pair')}
+			/>
+			<Route
+				path="/admin/coin"
+				name="Admin Coins"
+				component={withAdminProps(Limits, 'coin')}
+			/>
+			<Route
+				path="/admin/chat"
+				name="Admin Chats"
+				component={withAdminProps(AdminChat, 'chat')}
+			/>
 		</Route>
 		<Route
 			path="privacy-policy"
@@ -285,7 +309,7 @@ export default (
 			content="terms"
 			onEnter={requireAuth}
 		/>
-		<Route path="expired-exchange" component={ExpiredExchange}/>
+		<Route path="expired-exchange" component={ExpiredExchange} />
 		<Route path="*" component={NotFound} />
 	</Router>
 );
