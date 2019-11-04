@@ -10,7 +10,10 @@ import { ICONS, BALANCE_ERROR } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 import { getCurrencyFromName } from '../../utils/currency';
 
-import { openContactForm, setSnackNotification } from '../../actions/appActions';
+import {
+	openContactForm,
+	setSnackNotification
+} from '../../actions/appActions';
 
 import { Button, MobileBarBack } from '../../components';
 import { renderInformation, renderTitleSection } from '../Wallet/components';
@@ -90,23 +93,21 @@ class Deposit extends Component {
 	render() {
 		const { id, crypto_wallet, openContactForm, balance, coins } = this.props;
 		const { currency, checked, copied } = this.state;
-
 		if (!id || !currency || !checked) {
 			return <div />;
 		}
-		let mobileCopyAddress = crypto_wallet[`${currency.toLowerCase()}`];
-		if (currency && currency === 'xrp') {
-			const temp = mobileCopyAddress.split(':');
-			mobileCopyAddress = temp[0] ? temp[0] : mobileCopyAddress;
-		 }
-
+		console.log(crypto_wallet, currency);
 		return (
 			<div>
-				{isMobile && <MobileBarBack onBackClick={this.onGoBack}>
-				</MobileBarBack> }
+				{isMobile && <MobileBarBack onBackClick={this.onGoBack} />}
 				<div className="presentation_container  apply_rtl">
 					{!isMobile &&
-						renderTitleSection(currency, 'deposit', ICONS.DEPOSIT_BITCOIN, coins)}
+						renderTitleSection(
+							currency,
+							'deposit',
+							ICONS.DEPOSIT_BITCOIN,
+							coins
+						)}
 					<div
 						className={classnames(
 							'inner_container',
@@ -125,12 +126,16 @@ class Deposit extends Component {
 						{renderContent(currency, crypto_wallet, coins, this.onCopy)}
 						{isMobile && (
 							<CopyToClipboard
-								text={mobileCopyAddress}
+								text={crypto_wallet[`${currency.toLowerCase()}`]}
 								onCopy={() => this.setState({ copied: true })}
 							>
 								<Button
 									onClick={this.onCopy}
-									label={copied ? STRINGS.SUCCESFUL_COPY : STRINGS.COPY_ADDRESS}
+									label={
+										copied
+											? STRINGS.SUCCESFUL_COPY
+											: STRINGS.COPY_ADDRESS
+									}
 								/>
 							</CopyToClipboard>
 						)}
@@ -153,7 +158,9 @@ const mapStateToProps = (store) => ({
 const mapDispatchToProps = (dispatch) => ({
 	openContactForm: bindActionCreators(openContactForm, dispatch),
 	setSnackNotification: bindActionCreators(setSnackNotification, dispatch)
-
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Deposit);
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(Deposit);
