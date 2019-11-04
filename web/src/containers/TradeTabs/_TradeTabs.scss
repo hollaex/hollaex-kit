@@ -64,6 +64,12 @@ $trade-tab-active-dark-title: #b7b5cd;
         
         .trade-tab-list {
             border: 1px solid $dark-app-background-color;
+
+            svg {
+                .hex-icon-1 {
+                    fill: $colors-black !important;
+                }
+            }
             &:hover {
                 border: 1px solid $trade-tab-dark-pair-content;
                 color: $dark-font-sub-text-color;
@@ -73,7 +79,7 @@ $trade-tab-active-dark-title: #b7b5cd;
                 }
 
                 svg {
-                    .btc0, .btc1, .eth0, .eth1, .bch-icon, .xrp-icon {
+                    .btc0, .btc1, .eth0, .eth1, .bch-icon, .xrp-icon, .hex-icon {
                         fill: $dark-font-sub-text-color !important;
                     }
                     .st0 {
@@ -145,7 +151,7 @@ $trade-tab-active-dark-title: #b7b5cd;
         width: 5rem;
 
         svg {
-            .btc0, .btc1, .eth0, .eth1, .bch-icon, .xrp-icon {
+            .btc0, .btc1, .eth0, .eth1, .bch-icon, .xrp-icon, .hex-icon {
                 fill: $trade-tabs-inactive-color !important;
             }
             .st0 {
@@ -197,6 +203,12 @@ $trade-tab-active-dark-title: #b7b5cd;
         border: 1px solid $app-background-color;
         padding: 1rem 0;
         margin: 2rem 1.5rem;
+
+        svg {
+            .hex-icon-1 {
+                fill: $app-background-color !important;
+            }
+        }
         
         &:hover {
             border: 1px solid $colors-black;
@@ -210,7 +222,7 @@ $trade-tab-active-dark-title: #b7b5cd;
             }
 
             svg {
-                .btc0, .btc1, .eth0, .eth1, .bch-icon, .xrp-icon {
+                .btc0, .btc1, .eth0, .eth1, .bch-icon, .xrp-icon, .hex-icon {
                     fill: $colors-black !important;
                 }
                 .st0 {

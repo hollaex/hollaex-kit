@@ -91,6 +91,11 @@ $container--padding-sm: 3rem;
 		height: 100%;
 		background-color: rgba(241, 242, 242, 0.6);
 	}
+
+	&.white-theme {
+		color: $colors-main-black;
+	}
+
 	.auth-container {
 		max-width: $content-wrapper--max-width;
 		max-height: 100vh;

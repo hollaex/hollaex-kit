@@ -1,6 +1,6 @@
 {
 	"name": "hollaex-web",
-	"version": "1.19.0",
+	"version": "1.19.3",
 	"dependencies": {
 		"@material/button": "0.7.0",
 		"antd": "3.21.4",
