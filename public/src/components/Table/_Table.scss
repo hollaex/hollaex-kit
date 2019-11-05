@@ -1,0 +1,232 @@
+$row--border-color: $border-color;
+$row--border: 1px solid $row--border-color;
+
+$table-cell_box-background: grey;
+$table--margin: 2rem;
+$controllers--color-active: $colors-notifications-blue;
+$controllers--color-disabled: $colors-deactivate-color2;
+
+.table-wrapper {
+	width: 100%;
+	margin: $table--margin 0 $table--margin;
+
+	tr {
+		height: 2rem;
+	}
+
+	th,
+	td {
+		padding: 0.25rem;
+	}
+
+	th {
+		font-weight: bold;
+	}
+
+	.table_body-wrapper {
+		font-size: $font-size-subtext;
+
+		&.with_icon tr td:first-child {
+			border: none !important;
+		}
+
+		tr.table_body-row td {
+			border-top: $row--border;
+			border-bottom: $row--border;
+		}
+		.cancel-row-color {
+			@extend .cancel-animate;
+			.cell_box-type {
+				.sell, .buy {
+					@extend .cancel-animate;
+				}
+			}
+			.action_notification-wrapper .notification-info {
+				@extend .cancel-animate;
+			}
+			.cell-wrapper {
+				@extend .cancel-animate;
+				.cell_value-wrapper {
+					@extend .cancel-animate;
+					.cell_value-bar {
+						@extend .cancel-animate;
+					}
+				}
+			}
+		}
+
+		.cancel-animate {
+			-webkit-animation: cancelRow 1.4s;
+			-moz-animation:    cancelRow 1.4s;
+			-o-animation:      cancelRow 1.4s;
+			animation:         cancelRow 1.4s;
+		}
+		
+		@-webkit-keyframes cancelRow {
+			from {}
+			to {
+				color: $app-background-color;
+				background-color: $app-background-color;
+				border-color: $app-background-color;
+			}
+		}
+		@-moz-keyframes cancelRow {
+			from {}
+			to {
+				color: $app-background-color;
+				background-color: $app-background-color;
+				border-color: $app-background-color;
+			}
+		}
+		@keyframes cancelRow {
+			from {}
+			to {
+				color: $app-background-color;
+				background-color: $app-background-color;
+				border-color: $app-background-color;
+			}
+		}		
+	}
+
+	.cell_box-type {
+		color: $buy-bids-text;
+		text-transform: capitalize;
+
+		> div {
+			padding: 0.15rem 0.25rem;
+		}
+	}
+}
+
+.layout-mobile {
+	.table_controllers-wrapper { 
+		font-size: $regular--font-size;
+
+		.action_notification-wrapper {
+			.action_notification-svg {
+				svg {
+					height: 2rem;
+					width: 2rem;
+				}
+			}
+		}
+	}
+}
+
+.table_controllers-wrapper {
+	margin: 2rem 0;
+	color: $colors-main-black;
+	border-top: 2px solid $row--border-color;
+	position: relative;
+
+	.disabled {
+		cursor: default;
+		pointer-events: none;
+		.action_notification-wrapper {
+			.notification-info {
+				color: $colors-deactivate-color1;
+			}
+			.action_notification-svg {
+				.arrow-1 {
+					fill: $colors-deactivate-color1;
+				}
+			}
+		}
+	}
+}
+
+.direction_ltr {
+	.cell_box-type {
+		> div {
+			margin-right: 0.5rem;
+		}
+	}
+	.table_header-wrapper {
+		font-family: $title--font-family;
+	}
+}
+
+.direction_rtl {
+	.cell_box-type {
+		> div {
+			margin-left: 0.5rem;
+		}
+	}
+}
+
+.dark-theme {
+	.table-wrapper {
+		color: $dark-font-main-text-color;
+		.table_body-wrapper {
+			color: $dark-font-sub-text-color;
+			tr.table_body-row td {
+				border-top-color: $dark-border-main;
+				border-bottom-color: $dark-border-main;
+			}
+			.cancel-animate {
+				-webkit-animation: cancelRowDark 1.4s;
+				-moz-animation:    cancelRowDark 1.4s;
+				-o-animation:      cancelRowDark 1.4s;
+				animation:         cancelRowDark 1.4s;
+			}
+			
+			@-webkit-keyframes cancelRowDark {
+				from {}
+				to {
+					color: $dark-app-background-color;
+					background-color: $dark-app-background-color;
+					border-color: $dark-app-background-color;
+				}
+			}
+			@-moz-keyframes cancelRowDark {
+				from {}
+				to {
+					color: $dark-app-background-color;
+					background-color: $dark-app-background-color;
+					border-color: $dark-app-background-color;
+				}
+			}
+			@keyframes cancelRowDark {
+				from {}
+				to {
+					color: $dark-app-background-color;
+					background-color: $dark-app-background-color;
+					border-color: $dark-app-background-color;
+				}
+			}
+		}
+		.cell_box-type {
+			.sell {
+				background-color: $dark-sell !important;
+				color: $dark-sell-bids-text !important;
+			}
+			
+			.buy {
+				background-color: $dark-buy !important;
+				color: $dark-buy-bids-text !important;
+			}
+		}
+	}
+
+	.table_controllers-wrapper {
+		color: $dark-font-sub-text-color;
+		border-top-color: $dark-border-main;
+
+		.disabled {
+			.action_notification-wrapper {
+				.notification-info {
+					color: $dark-font-sub-text-1-color;;
+				}
+				.action_notification-svg {
+					.arrow-1 {
+						fill: $dark-font-sub-text-1-color;;
+					}
+				}
+			}
+		}
+	}
+
+	.no-data {
+		color: $dark-font-sub-text-color;
+	}
+}

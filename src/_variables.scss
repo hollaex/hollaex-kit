@@ -16,10 +16,9 @@ $colors-deactivate-color4: #f1f2f2;
 
 $colors-notifications-red: #ed1c24;
 $colors-notification-inactive-red: #e26171;
-$colors-notifications-blue: #0000ff;
+$colors-notifications-blue: #00aeef;
 $colors-notifications-green: #00a651;
 $error-color: $colors-notifications-red;
-$colors-info-panel-background: #f5f5f5;
 
 $color-currency-eur--main: #00a651;
 $color-currency-eur--secondary: #52c2b8;
@@ -33,7 +32,6 @@ $colors-currencies-bch: #ec008c;
 $colors-currencies-eth: #2e3192;
 $colors-currencies-ltc: #58595b;
 $colors-currencies-xrp: #2e3192;
-$colors-terms-background: #f7f7f7;
 
 // colors for white theme
 $app-background-color: white;
@@ -43,15 +41,14 @@ $app-modal-background: rgba(221, 221, 221, 0.75);
 $app-bar-background-color: $colors-black;
 $app-line-divider: $colors-main-black;
 $box-fields: #f0f1f1;
-$buy: #878787;
-$sell: $colors-black;
-$color-sell-btc-light: $colors-black;
-$color-buy-btc-light: $colors-black;
+$buy: green;
+$sell: $colors-notifications-red;
+$color-sell-btc-light:#ed1c24;
+$color-buy-btc-light:#00a651;
 $link: $colors-notifications-blue;
 $trade-fields: $colors-deactivate-color1;
-$trade-fill-indicator: $colors-black;
-$trade-fill-indicator-text: #878787;
-$buy-bids-text: $colors-black;
+$trade-fill-indicator: grey;
+$buy-bids-text: $colors-white;
 $sell-bids-text: $colors-white;
 $app-logo-color: $colors-white;
 $sidebar-border--color: $colors-deactivate;
@@ -76,11 +73,7 @@ $icon-unhover: $colors-deactivate-color2;
 $trade-tabs-inactive-color: #808080;
 $bitcoin-color-main: $colors-currencies-btc;
 
-
-$color-buy: #d1d4dc;
-$color-sell: $colors-black;
-
-// dark theme colors
+// colors for dark theme
 $colors-username-set-dark: #ff4bb6;
 $dark-app-background-color: #1f212a;
 $dark-app-light-background: #2e2f37;
@@ -139,21 +132,12 @@ $dark-main-title-icon-color-1: $dark-app-bar-background-color;
 $dark-main-title-icon-color-2: $dark-icon-color;
 $dark-main-title-icon-color-3: $dark-icon-color;
 
-$app-background-color-on-modal: lightgrey;
-$app_bar-border--color: $colors-deactivate;
-
-$app-menu-bar-background-color: #F2F2F3;
-
 // common colors for app bar
 $dark-app-bar-add-tab-menu-background: $dark-box-fields;
 // $app-menu-bar-border--color: #CCCBCA;
 $app-bar-icon-inactive: #808184;
 $app-bar--quicktrade-active-color: #fff100;
 $app-bar--quicktrade-inactive-color: #ceac20;
-$app-bar-pairs-up: green;
-$app-bar-pairs-down: $colors-notifications-red;
-$dark-app-bar-pairs-up: $dark-buy;
-$dark-app-bar-pairs-down: $dark-sell;
 
 
 // coins for white theme
@@ -446,11 +430,10 @@ $dark-coin-hot: #8b5e3c;
 $dark-coin-hot-1: #8b5e3c;
 $dark-coin-hot-text: $colors-white;
 
-
 $content-display-width: 100rem;
 $app-content-display-width: 75rem;
 $content-display-vertical-margin: 1rem;
-$background-patter--size: 70rem 65rem;
+$background-patter--size: 30rem;
 
 $font-size-headline: 4rem;
 $font-size-headline2: 3.5rem;
@@ -460,9 +443,6 @@ $font-size-subhead3: 1.25rem;
 $font-size-main: 1rem;
 $font-size-subtext: 0.8rem;
 
-$form-color-underline-focus: $colors-main-black;
-$form-color-underline: $colors-deactivate-color1;
-$form-color-placeholder: $colors-deactivate-color1;
 $form-width-max: $content-display-width / 2;
 
 $en--font-family: 'Open Sans';
@@ -473,7 +453,7 @@ $raleway-light--font-family: 'Raleway Light';
 $title--font-family: $raleway-extrabold--font-family;
 
 $backgound-pattern: '/assets/pattern-grey.jpg';
-$background-image: '/assets/hex-background-pattern.png';
+$background-image: '/assets/background.png';
 
 // DIALOG
 $dialog-min-width: 25rem;

@@ -1,0 +1,136 @@
+@import '~antd/dist/antd.css';
+
+@media screen {
+	.ant-layout-content {
+		margin-left: 200px;
+		background-color: white;
+	}
+}
+
+.ant-tabs-tab-next-icon:before,
+.ant-tabs-tab-prev-icon:before {
+	color: #2593fc;
+	width: 20px;
+	border: solid;
+	border-color: #2593fc;
+	border-width: thin;
+	border-radius: 25px;
+}
+
+.App {
+	text-align: center;
+}
+
+body {
+	margin: 0;
+	padding: 0;
+	font-family: 'Helvetica';
+}
+
+.pointer {
+	cursor: pointer;
+}
+
+.flex-content {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.flex-column {
+	flex-direction: column;
+}
+
+.flex-1 {
+	flex: 1;
+}
+
+.ant-layout {
+	min-height: 100vh;
+}
+
+.ant-layout-content {
+	padding: 16px;
+	display: flex;
+}
+
+.content-wrapper {
+	background-color: white;
+	padding: 20px;
+	min-height: 500px;
+	/* flex: 1; */
+	width: 100%;
+	display: flex;
+	top: -13px;
+	position: relative;
+}
+
+.ant-layout-sider {
+	overflow: auto;
+	height: 100vh;
+	position: fixed;
+	left: 0;
+}
+
+.ant-layout-content {
+	margin-left: 200px;
+	background-color: white;
+}
+
+.ant-menu-item {
+	width: 100%;
+}
+
+.ant-menu {
+	background-color: black;
+}
+
+.ant-menu-item:first-child {
+	font-size: 18.5px;
+	font-weight: bold;
+}
+
+.ant-menu-item:last-child {
+	font-size: 18px;
+	font-weight: bold;
+}
+
+.ant-layout-sider {
+	max-width: 213px !important;
+	width: 213px !important;
+}
+
+.ant-layout-sider-children {
+	display: flex;
+	background-color: black;
+}
+
+.ant-menu.ant-menu-dark .ant-menu-item-selected {
+	background-color: inherit !important;
+}
+
+.w-100 {
+	width: 100%;
+	max-width: 100%;
+}
+
+.w-50 {
+	width: 50%;
+	max-width: 50%;
+}
+
+.m-top {
+	margin-top: 16px;
+}
+
+.m-bottom {
+	margin-bottom: 16px;
+}
+
+.d-flex {
+	display: flex;
+}
+
+.justify-content-between {
+	justify-content: space-between;
+}

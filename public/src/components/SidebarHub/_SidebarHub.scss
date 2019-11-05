@@ -1,0 +1,294 @@
+$tab_lines-height: 6px;
+$bottom_line-height: 4px;
+$font-color: $colors-deactivate-color2;
+$border--color: $sidebar-border--color;
+$border-active--color: $colors-main-black;
+$boder--width: 1px;
+$icon--height: 2rem;
+$content--margin: 2rem;
+$section--bottom-margin: 1.5rem;
+
+$trade-button--color: $colors-main-black;
+
+$deactive-tab-border: $boder--width solid $border--color;
+
+@mixin tab-active($main-color, $secondary-color, $height) {
+	.tab-colors {
+		height: $height;
+		position: relative;
+		background-color: $secondary-color;
+
+		&:before {
+			content: '';
+			position: absolute;
+			top: 0;
+			width: 100%;
+			height: $height / 2;
+			background-color: $main-color;
+		}
+	}
+}
+
+@mixin bottom-border($color, $height) {
+	border-bottom: $height solid $color;
+}
+
+.sidebar_hub-wrapper {
+	overflow-y: scroll;
+
+	.currency-selector {
+		.tab-action {
+			height: $navigation_bar-height;
+
+			.tab-colors {
+				height: $tab_lines-height;
+			}
+			&.not-active {
+				background-color: $colors-deactivate-color4;
+				position: relative;
+				color: $font-color;
+
+				&:after {
+					content: '';
+					position: absolute;
+					height: $boder--width;
+					bottom: 0;
+					right: -$boder--width;
+					left: -$boder--width;
+					border-bottom: $deactive-tab-border;
+					background-color: $border--color;
+				}
+			}
+			&.tab-active {
+				font-weight: bold;
+				position: relative;
+				background-color: $app-background-color;
+				&:after {
+					content: '';
+					position: absolute;
+					width: 100%;
+					height: 100%;
+					border-right: $deactive-tab-border;
+					border-left: $deactive-tab-border;
+				}
+
+				&:first-child {
+					&:after {
+						border-left: none;
+					}
+				}
+
+				&:last-child {
+					&:after {
+						border-right: none;
+					}
+				}
+
+				&.tab-btc {
+					@include tab-active($color-currency-btc--main, $color-currency-btc--secondary, $tab_lines-height);
+				}
+				&.tab-eur {
+					@include tab-active($color-currency-eur--main, $color-currency-eur--secondary, $tab_lines-height);
+				}
+			}
+		}
+	}
+
+	.sidebar_hub-content {
+		margin: $content--margin;
+		.sidebar_hub-section {
+			border-top: $deactive-tab-border;
+
+			&:not(:last-child) {
+				margin-bottom: $section--bottom-margin;
+			}
+
+			> div:nth-child(n + 2) {
+				margin-top: 1rem;
+			}
+
+			.sidebar_hub-section-header {
+				padding: 0.5rem 0.25rem;
+
+				.sidebar_hub-section-icon {
+					width: $icon--height;
+					height: $icon--height;
+
+					svg path {
+						fill: transparent;
+						stroke: $sidebar-color;
+					}
+				}
+				.sidebar_hub-section-title {
+					font-size: $font-size-subhead3;
+					margin: 0 0.5rem;
+					// display: flex;
+					// align-items: center;
+					color: $font-color;
+				}
+			}
+
+			.sidebar_hub-section-content {
+				.accordion_wrapper .accordion_section {
+					border-color: $colors-deactivate-color2;
+				}
+			}
+
+			&.section-active {
+				border-top-width: $boder--width * 2;
+				border-color: $colors-main-black;
+
+				.sidebar_hub-section-header {
+					.sidebar_hub-section-icon {
+						svg path {
+							fill: $sidebar-color-active;
+							stroke: $sidebar-color-active;
+						}
+					}
+					.sidebar_hub-section-title {
+						color: $colors-main-black;
+						font-weight: bold;
+					}
+				}
+			}
+		}
+	}
+
+	@include bottom-border($border-main, $bottom_line-height);
+
+	.sign_up-btn,  .log_in-btn{
+		background: $colors-white !important;
+		color: $trade-button--color !important;
+		border: 1px solid $border--color
+	}
+
+	.sidebar_hub-trade {
+		.sidebar_hub-button {
+			&.not-active {
+				background: $colors-white !important;
+				color: $trade-button--color !important;
+				border: 1px solid $border--color;
+			}
+			&.active {
+				// background: $colors-currencies-btc !important;
+				background: $trade-button--color !important;
+				border: 1px solid $trade-button--color;
+			}
+		}
+	}
+}
+
+.active-wallet,
+.active-trade,
+.active-quick-trade {
+	.wallet_section-total_asset,
+	.wallet_section-title {
+		color: $colors-main-black;
+	}
+}
+
+.direction_ltr {
+	.sidebar_hub-wrapper .currency-selector {
+		flex-direction: row;
+	}
+}
+
+.direction_rtl {
+	.sidebar_hub-wrapper .currency-selector {
+		flex-direction: row-reverse;
+	}
+}
+@media only screen and (max-width: 991px) {
+	.sidebar_hub-wrapper {
+		// display: none;
+		.sidebar_hub-trade {
+			flex-direction: column;
+			.separator {
+				height: 1rem;
+				width: 100%;
+			}
+		}
+	}
+}
+
+.dark-theme {
+	.sidebar_hub-wrapper {
+		.sidebar_hub-content {
+			.sign_up-btn,  .log_in-btn{
+				background: #20212a !important;
+				color: $dark-font-main-text-color !important;
+				border: 1px solid $border--color
+			}
+			.sidebar_hub-section {
+				border-top-color: $dark-app-line-divider;
+
+				.sidebar_hub-section-header {
+
+					.sidebar_hub-section-icon {
+						svg path {
+							fill: transparent;
+							stroke: $dark-sidebar-color;
+						}
+					}
+					.sidebar_hub-section-title {
+						color: $dark-sidebar-color;
+					}
+				}
+
+				.sidebar_hub-section-content {
+					.accordion_wrapper .accordion_section {
+						border-color: $dark-app-line-divider;
+					}
+				}
+
+				&.section-active {
+					border-color: $dark-app-line-divider;
+
+					.sidebar_hub-section-header {
+						.sidebar_hub-section-icon {
+							svg path {
+								fill: $dark-sidebar-color-active;
+								stroke: $dark-sidebar-color-active;
+							}
+						}
+						.sidebar_hub-section-title {
+							color: $dark-sidebar-color-active;
+						}
+					}
+				}
+			}
+		}
+
+		.sidebar_hub-trade {
+			.sidebar_hub-button {
+				border: none;
+				&.not-active {
+					background: $dark-disabled-main !important;
+					color: $dark-font-main-text-color !important;
+				}
+				&.active {
+					background: $dark-button-active !important;
+				}
+			}
+		}
+
+		.currency-selector {
+			.tab-action {
+				&.tab-active {
+					background: $dark-app-background-color !important;
+					color: $dark-font-main-text-color;
+				}
+				&.not-active {
+					background: $dark-disabled-main !important;
+					color: $dark-font-main-text-color;
+				}
+			}
+		}
+	}
+}
+
+.dark-theme {
+	.sidebar_hub-wrapper {
+		@include bottom-border($dark-border-main, $bottom_line-height);
+	}
+}
