@@ -167,6 +167,9 @@ class QuickTrade extends Component {
 					<ReviewBlock
 						text={STRINGS.QUICK_TRADE_COMPONENT.TOTAL_COST}
 						value={data.price || 0}
+						symbol={symbol}
+						pairs={pairs}
+						coins={coins}
 					/>
 				</div>
 				<div

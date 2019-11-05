@@ -1703,7 +1703,7 @@ table th {
     color: white; }
   .dark-theme .trade_block-wrapper .trade_block-title .trade_block-icon svg .st0 {
     fill: #b6b5cd !important; }
-  .dark-theme .trade_block-wrapper .trade_block-title .trade_block-icon svg .bch-icon, .dark-theme .trade_block-wrapper .trade_block-title .trade_block-icon svg .xrp-icon, .dark-theme .trade_block-wrapper .trade_block-title .trade_block-icon svg .hex-icon {
+  .dark-theme .trade_block-wrapper .trade_block-title .trade_block-icon svg .btc0, .dark-theme .trade_block-wrapper .trade_block-title .trade_block-icon svg .btc1, .dark-theme .trade_block-wrapper .trade_block-title .trade_block-icon svg .eth0, .dark-theme .trade_block-wrapper .trade_block-title .trade_block-icon svg .eth1, .dark-theme .trade_block-wrapper .trade_block-title .trade_block-icon svg .bch-icon, .dark-theme .trade_block-wrapper .trade_block-title .trade_block-icon svg .xrp-icon, .dark-theme .trade_block-wrapper .trade_block-title .trade_block-icon svg .hex-icon, .dark-theme .trade_block-wrapper .trade_block-title .trade_block-icon svg .default-icon {
     fill: #b6b5cd !important; }
 
 .dark-theme .trade_block_tabs-wrapper .trade_block-title .trade_block-title-items {
@@ -2108,6 +2108,15 @@ table th {
 .trade_active-lg-view {
   max-height: 17vh; }
 
+.trade_post-wrapper .trade_post_icon {
+  width: 4rem; }
+
+.trade_post-wrapper .post_header {
+  font-weight: bold; }
+
+.trade_post-wrapper .trade_announcement {
+  font-size: 1.5rem; }
+
 .trade_active_orders-wrapper {
   overflow-y: auto;
   flex: 1; }
@@ -2184,6 +2193,12 @@ table th {
     z-index: 2; }
     .dark-theme .trade_active_orders-wrapper .cell_box-type.fullfilled .cell-wrapper > .cell_value-wrapper .cell_value-bar {
       background-color: #444162; }
+
+.dark-theme .trade_post-wrapper .trade_post_icon svg .announcement {
+  fill: white; }
+
+.dark-theme .trade_post-wrapper .post_header {
+  color: white; }
 
 .quote-container {
   background-color: #ebf3f1;
@@ -2451,6 +2466,9 @@ table th {
   fill: white;
   stroke: white; }
 
+.dark-theme .summary-container .assets-wrapper .coin-price-container .coin-price svg .default-icon {
+  fill: #a3a1ca !important; }
+
 .dark-theme .fee-limits-wrapper .fee-limits-link {
   color: #ed507b; }
 
@@ -2616,6 +2634,8 @@ table th {
           fill: #8dc541; }
         .summary-container .assets-wrapper .coin-price-container .coin-price svg .xrp-icon {
           fill: #414042; }
+        .summary-container .assets-wrapper .coin-price-container .coin-price svg .default-icon {
+          fill: #000000 !important; }
   .summary-container .trading-volume-wrapper {
     width: 50rem; }
   .summary-container .account-details-wrapper .account-type-container {
@@ -2766,7 +2786,7 @@ table th {
       color: #808184 !important; }
   .dark-theme .trade_tabs-container .trade_tab-pair-title {
     color: #808184; }
-  .dark-theme .trade_tabs-container .trade_tab-icons svg .btc0, .dark-theme .trade_tabs-container .trade_tab-icons svg .btc1, .dark-theme .trade_tabs-container .trade_tab-icons svg .eth0, .dark-theme .trade_tabs-container .trade_tab-icons svg .eth1, .dark-theme .trade_tabs-container .trade_tab-icons svg .bch-icon, .dark-theme .trade_tabs-container .trade_tab-icons svg .xrp-icon {
+  .dark-theme .trade_tabs-container .trade_tab-icons svg .btc0, .dark-theme .trade_tabs-container .trade_tab-icons svg .btc1, .dark-theme .trade_tabs-container .trade_tab-icons svg .eth0, .dark-theme .trade_tabs-container .trade_tab-icons svg .eth1, .dark-theme .trade_tabs-container .trade_tab-icons svg .bch-icon, .dark-theme .trade_tabs-container .trade_tab-icons svg .xrp-icon, .dark-theme .trade_tabs-container .trade_tab-icons svg .default-icon {
     fill: #808184 !important; }
   .dark-theme .trade_tabs-container .trade_tab-icons svg .st0 {
     fill: #808184 !important;
@@ -2813,7 +2833,7 @@ table th {
       color: #a3a1ca; }
       .dark-theme .trade_tabs-container .trade-tab-list:hover .trade_tab-pair-title {
         color: #a3a1ca !important; }
-      .dark-theme .trade_tabs-container .trade-tab-list:hover svg .btc0, .dark-theme .trade_tabs-container .trade-tab-list:hover svg .btc1, .dark-theme .trade_tabs-container .trade-tab-list:hover svg .eth0, .dark-theme .trade_tabs-container .trade-tab-list:hover svg .eth1, .dark-theme .trade_tabs-container .trade-tab-list:hover svg .bch-icon, .dark-theme .trade_tabs-container .trade-tab-list:hover svg .xrp-icon, .dark-theme .trade_tabs-container .trade-tab-list:hover svg .hex-icon {
+      .dark-theme .trade_tabs-container .trade-tab-list:hover svg .btc0, .dark-theme .trade_tabs-container .trade-tab-list:hover svg .btc1, .dark-theme .trade_tabs-container .trade-tab-list:hover svg .eth0, .dark-theme .trade_tabs-container .trade-tab-list:hover svg .eth1, .dark-theme .trade_tabs-container .trade-tab-list:hover svg .bch-icon, .dark-theme .trade_tabs-container .trade-tab-list:hover svg .xrp-icon, .dark-theme .trade_tabs-container .trade-tab-list:hover svg .hex-icon, .dark-theme .trade_tabs-container .trade-tab-list:hover svg .default-icon {
         fill: #a3a1ca !important; }
       .dark-theme .trade_tabs-container .trade-tab-list:hover svg .st0 {
         fill: #a3a1ca !important;
@@ -2856,7 +2876,7 @@ table th {
     width: 15rem; }
   .trade_tabs-container .trade_tab-icons {
     width: 5rem; }
-    .trade_tabs-container .trade_tab-icons svg .btc0, .trade_tabs-container .trade_tab-icons svg .btc1, .trade_tabs-container .trade_tab-icons svg .eth0, .trade_tabs-container .trade_tab-icons svg .eth1, .trade_tabs-container .trade_tab-icons svg .bch-icon, .trade_tabs-container .trade_tab-icons svg .xrp-icon, .trade_tabs-container .trade_tab-icons svg .hex-icon {
+    .trade_tabs-container .trade_tab-icons svg .btc0, .trade_tabs-container .trade_tab-icons svg .btc1, .trade_tabs-container .trade_tab-icons svg .eth0, .trade_tabs-container .trade_tab-icons svg .eth1, .trade_tabs-container .trade_tab-icons svg .bch-icon, .trade_tabs-container .trade_tab-icons svg .xrp-icon, .trade_tabs-container .trade_tab-icons svg .hex-icon, .trade_tabs-container .trade_tab-icons svg .default-icon {
       fill: #808080 !important; }
     .trade_tabs-container .trade_tab-icons svg .st0 {
       fill: #808080 !important;
@@ -2915,7 +2935,7 @@ table th {
       right: .5rem; }
       .trade_tabs-container .trade-tab-list:hover .trade_tab-pair-title {
         color: #000000 !important; }
-      .trade_tabs-container .trade-tab-list:hover svg .btc0, .trade_tabs-container .trade-tab-list:hover svg .btc1, .trade_tabs-container .trade-tab-list:hover svg .eth0, .trade_tabs-container .trade-tab-list:hover svg .eth1, .trade_tabs-container .trade-tab-list:hover svg .bch-icon, .trade_tabs-container .trade-tab-list:hover svg .xrp-icon, .trade_tabs-container .trade-tab-list:hover svg .hex-icon {
+      .trade_tabs-container .trade-tab-list:hover svg .btc0, .trade_tabs-container .trade-tab-list:hover svg .btc1, .trade_tabs-container .trade-tab-list:hover svg .eth0, .trade_tabs-container .trade-tab-list:hover svg .eth1, .trade_tabs-container .trade-tab-list:hover svg .bch-icon, .trade_tabs-container .trade-tab-list:hover svg .xrp-icon, .trade_tabs-container .trade-tab-list:hover svg .hex-icon, .trade_tabs-container .trade-tab-list:hover svg .default-icon {
         fill: #000000 !important; }
       .trade_tabs-container .trade-tab-list:hover svg .st0 {
         fill: #000000 !important;
@@ -3796,7 +3816,8 @@ table th {
       .app-bar-add-tab-menu .app-bar-add-tab-content-list:hover svg .eth1,
       .app-bar-add-tab-menu .app-bar-add-tab-content-list:hover svg .bch-icon,
       .app-bar-add-tab-menu .app-bar-add-tab-content-list:hover svg .xrp-icon,
-      .app-bar-add-tab-menu .app-bar-add-tab-content-list:hover svg .hex-icon {
+      .app-bar-add-tab-menu .app-bar-add-tab-content-list:hover svg .hex-icon,
+      .app-bar-add-tab-menu .app-bar-add-tab-content-list:hover svg .default-icon {
         fill: #b6b5cd !important; }
       .app-bar-add-tab-menu .app-bar-add-tab-content-list:hover svg .st0 {
         fill: #b6b5cd !important;
@@ -3809,7 +3830,7 @@ table th {
   .app-bar-add-tab-menu .app-bar-add-tab-icons {
     width: 1.2rem;
     margin: .3rem .3rem 0 .3rem; }
-  .app-bar-add-tab-menu .app-bar-tab-setting svg .btc0, .app-bar-add-tab-menu .app-bar-tab-setting svg .btc1, .app-bar-add-tab-menu .app-bar-tab-setting svg .eth0, .app-bar-add-tab-menu .app-bar-tab-setting svg .eth1, .app-bar-add-tab-menu .app-bar-tab-setting svg .bch-icon, .app-bar-add-tab-menu .app-bar-tab-setting svg .xrp-icon, .app-bar-add-tab-menu .app-bar-tab-setting svg .hex-icon, .app-bar-add-tab-menu .app-bar-add-tab-icons svg .btc0, .app-bar-add-tab-menu .app-bar-add-tab-icons svg .btc1, .app-bar-add-tab-menu .app-bar-add-tab-icons svg .eth0, .app-bar-add-tab-menu .app-bar-add-tab-icons svg .eth1, .app-bar-add-tab-menu .app-bar-add-tab-icons svg .bch-icon, .app-bar-add-tab-menu .app-bar-add-tab-icons svg .xrp-icon, .app-bar-add-tab-menu .app-bar-add-tab-icons svg .hex-icon {
+  .app-bar-add-tab-menu .app-bar-tab-setting svg .btc0, .app-bar-add-tab-menu .app-bar-tab-setting svg .btc1, .app-bar-add-tab-menu .app-bar-tab-setting svg .eth0, .app-bar-add-tab-menu .app-bar-tab-setting svg .eth1, .app-bar-add-tab-menu .app-bar-tab-setting svg .bch-icon, .app-bar-add-tab-menu .app-bar-tab-setting svg .xrp-icon, .app-bar-add-tab-menu .app-bar-tab-setting svg .hex-icon, .app-bar-add-tab-menu .app-bar-tab-setting svg .default-icon, .app-bar-add-tab-menu .app-bar-add-tab-icons svg .btc0, .app-bar-add-tab-menu .app-bar-add-tab-icons svg .btc1, .app-bar-add-tab-menu .app-bar-add-tab-icons svg .eth0, .app-bar-add-tab-menu .app-bar-add-tab-icons svg .eth1, .app-bar-add-tab-menu .app-bar-add-tab-icons svg .bch-icon, .app-bar-add-tab-menu .app-bar-add-tab-icons svg .xrp-icon, .app-bar-add-tab-menu .app-bar-add-tab-icons svg .hex-icon, .app-bar-add-tab-menu .app-bar-add-tab-icons svg .default-icon {
     fill: #808184 !important; }
   .app-bar-add-tab-menu .app-bar-tab-setting svg .plus, .app-bar-add-tab-menu .app-bar-tab-setting svg .minus, .app-bar-add-tab-menu .app-bar-add-tab-icons svg .plus, .app-bar-add-tab-menu .app-bar-add-tab-icons svg .minus {
     stroke: #808184 !important;

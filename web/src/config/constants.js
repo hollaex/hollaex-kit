@@ -244,7 +244,8 @@ export const ICONS = {
 	LEVEL_ACCOUNT_ICON_1: '/assets/images/level-1.svg',
 	LEVEL_ACCOUNT_ICON_2: '/assets/images/level-2.svg',
 	LEVEL_ACCOUNT_ICON_3: '/assets/images/level-3.svg',
-	LEVEL_ACCOUNT_ICON_4: '/assets/images/level-4.svg'
+	LEVEL_ACCOUNT_ICON_4: '/assets/images/level-4.svg',
+	TRADE_ANNOUNCEMENT: '/assets/images/annoucement.svg'
 };
 
 export const SOCIAL_ICONS = {
