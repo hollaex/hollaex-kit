@@ -106,7 +106,7 @@ class HollaEx {
 			'GET',
 			`${
 				this._url
-			}/user/deposits?limit=${limit}&page=${page}&currency=${currency}&orderBy=${orderBy}&order=${order}`,
+			}/user/deposits?limit=${limit}&page=${page}&currency=${currency}&order_by=${orderBy}&order=${order}`,
 			this._headers
 		);
 	}
@@ -126,7 +126,7 @@ class HollaEx {
 			'GET',
 			`${
 				this._url
-			}/user/withdrawals?limit=${limit}&page=${page}&currency=${currency}&orderBy=${orderBy}&order=${order}`,
+			}/user/withdrawals?limit=${limit}&page=${page}&currency=${currency}&order_by=${orderBy}&order=${order}`,
 			this._headers
 		);
 	}
@@ -285,20 +285,6 @@ class Socket extends EventEmitter {
 						this.emit(event, data);
 					});
 					break;
-				// case 'chart':
-				// 	if (symbol) {
-				// 		ioLink = io(`${url}/chart`, { query: { symbol } });
-				// 	} else {
-				// 		ioLink = io(`${url}/chart`);
-				// 	}
-				// 	listeners.push(ioLink);
-				// 	listeners[listeners.length - 1].on('data', (data) => {
-				// 		this.emit(event, data);
-				// 	});
-				// 	listeners[listeners.length - 1].on('ticker', (data) => {
-				// 		this.emit(event, data);
-				// 	});
-				// 	break;
 				case 'user':
 					ioLink = io(`${url}/user`, {
 						query: { token: `Bearer ${accessToken}` }
@@ -328,27 +314,13 @@ class Socket extends EventEmitter {
 					listeners[listeners.length - 1].on('orderbook', (data) => {
 						this.emit('orderbook', data);
 					});
-					// listeners[listeners.length - 1].on('ticker', (data) => {
-					// 	this.emit('ticker', data);
-					// });
 					listeners[listeners.length - 1].on('trades', (data) => {
 						this.emit('trades', data);
 					});
 
-					// ioLink = io(`${url}/chart`);
-
-					// listeners.push(ioLink);
-					// listeners[listeners.length - 1].on('data', (data) => {
-					// 	this.emit(event, data);
-					// });
-					// listeners[listeners.length - 1].on('ticker', (data) => {
-					// 	this.emit(event, data);
-					// });
-
 					ioLink = io(`${url}/user`, {
 						query: { token: `Bearer ${accessToken}` }
 					});
-
 					listeners.push(ioLink);
 					listeners[listeners.length - 1].on('user', (data) => {
 						this.emit('userInfo', data);
