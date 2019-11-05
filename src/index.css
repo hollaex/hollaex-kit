@@ -159,7 +159,7 @@ table th {
   font-family: "Raleway"; }
 
 .blue-link {
-  color: #0000ff !important; }
+  color: #00aeef !important; }
 
 .dark-theme .blue-link {
   color: #ed507b !important; }
@@ -603,7 +603,7 @@ table th {
   .information_section .information_svg {
     fill: #777677; }
   .information_section .information_change {
-    color: #0000ff;
+    color: #00aeef;
     width: fit-content; }
   .information_section > div:not(:first-child) {
     margin-top: 0.75rem; }
@@ -690,7 +690,7 @@ table th {
   .dark-theme .information_section .information_svg {
     fill: #ed507b; }
   .dark-theme .information_section .information_change {
-    color: #0000ff; }
+    color: #00aeef; }
 
 .dark-theme .user-limits .user-limits-table th {
   color: #b6b5cd; }
@@ -866,7 +866,7 @@ table th {
   padding: 0 0.25rem; }
 
 .dialog-link {
-  color: #0000ff;
+  color: #00aeef;
   padding: 0 0.25rem; }
 
 .signup-modal-wrapper {
@@ -1264,7 +1264,7 @@ table th {
   padding: 0.5rem;
   font-size: 0.8rem; }
   .extra_information-wrapper .link {
-    color: #0000ff;
+    color: #00aeef;
     padding: 0 0.25rem; }
 
 .deposit_info-wrapper > div {
@@ -1431,7 +1431,7 @@ table th {
 .trade-container {
   flex: 1; }
   .trade-container .dialog-link {
-    color: #0000ff;
+    color: #00aeef;
     padding: 0 0.25rem; }
   .trade-container .trade-col_main_wrapper .trade-main_content {
     flex: 6;
@@ -2539,7 +2539,7 @@ table th {
     .summary-container .trader-account-icon svg polygon {
       fill: #BBBDBF; }
   .summary-container .trade-account-link {
-    color: #0000ff;
+    color: #00aeef;
     font-weight: bold; }
   .summary-container .summary-section_1 {
     height: 16rem; }
@@ -2604,7 +2604,7 @@ table th {
       padding: .5rem;
       color: #000000; }
     .summary-container .assets-wrapper .asset-changes {
-      background-color: #0000ff; }
+      background-color: #00aeef; }
     .summary-container .assets-wrapper .coin-price-container {
       height: 3.5rem; }
       .summary-container .assets-wrapper .coin-price-container .coin-price {
@@ -2627,7 +2627,7 @@ table th {
     width: 4rem; }
   .summary-container .account-details-wrapper .account-type-menu {
     border-top: 1px solid #797779;
-    color: #0000ff;
+    color: #00aeef;
     cursor: pointer;
     font-weight: bold;
     padding: .5rem 0;
@@ -2660,7 +2660,7 @@ table th {
 .fee-limits-wrapper {
   width: 36rem; }
   .fee-limits-wrapper .fee-limits-link {
-    color: #0000ff;
+    color: #00aeef;
     cursor: pointer;
     font-weight: bold; }
   .fee-limits-wrapper .content-txt {
@@ -2837,7 +2837,7 @@ table th {
     border-top: 2px solid #212121;
     font-size: .8rem; }
   .trade_tabs-container .trade_tabs-link {
-    color: #0000ff;
+    color: #00aeef;
     margin: .5rem 0;
     padding: 0 .5rem;
     text-transform: uppercase; }
@@ -4733,7 +4733,7 @@ table th {
   width: 1.25rem; }
 
 .dumb-field-wrapper {
-  color: #0000ff; }
+  color: #00aeef; }
   .dumb-field-wrapper > .field-content > .field-children {
     padding-left: 0.25rem; }
   .dumb-field-wrapper .field-children {
@@ -5033,13 +5033,13 @@ table th {
 
 @-webkit-keyframes bounce {
   15% {
-    border-color: #0000ff; }
+    border-color: #00aeef; }
   75% {
     border-color: #212121; } }
 
 @keyframes bounce {
   15% {
-    border-color: #0000ff; }
+    border-color: #00aeef; }
   75% {
     border-color: #212121; } }
 
@@ -5413,7 +5413,7 @@ table th {
   display: flex;
   align-items: center; }
   .action_notification-wrapper .notification-info {
-    color: #0000ff; }
+    color: #00aeef; }
   .action_notification-wrapper .notification-warning {
     color: #ed1c24; }
   .action_notification-wrapper .notification-success {
@@ -5444,15 +5444,15 @@ table th {
     height: 1rem; }
   .action_notification-wrapper .cancel-cross-2 {
     fill: none;
-    stroke: #0000ff; }
+    stroke: #00aeef; }
   .action_notification-wrapper .trans-history-1,
   .action_notification-wrapper .trans-history-2,
   .action_notification-wrapper .trans-history-3,
   .action_notification-wrapper .cancel-cross-1 {
-    fill: #0000ff; }
+    fill: #00aeef; }
   .action_notification-wrapper .trans-history-4,
   .action_notification-wrapper .cancel-cross-3 {
-    stroke: #0000ff; }
+    stroke: #00aeef; }
 
 .direction_ltr .action_notification-wrapper {
   font-family: "Raleway Medium" !important; }
@@ -5529,7 +5529,7 @@ table th {
   color: #ed507b; }
 
 .layout-mobile .action_notification-text {
-  color: #0000ff; }
+  color: #00aeef; }
 
 .icon_title-wrapper {
   margin-top: 2.5rem;
@@ -7231,7 +7231,7 @@ foreignObject {
   .chat-wrapper .username-to-chat {
     cursor: pointer;
     padding: 0.7rem !important;
-    color: #0000ff !important;
+    color: #00aeef !important;
     font-size: 1rem !important;
     font-family: "Open Sans" !important; }
   .chat-wrapper .nondraggable {
