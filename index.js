@@ -7,11 +7,11 @@ class HollaEx {
 	constructor(
 		opts = {
 			apiURL: 'https://api.hollaex.com',
-			baseURL: '/v0',
+			baseURL: '/v1',
 			accessToken: ''
 		}
 	) {
-		this._url = opts.apiURL + opts.baseURL || 'https://api.hollaex.com/v0';
+		this._url = opts.apiURL + opts.baseURL || 'https://api.hollaex.com/v1';
 		this._wsUrl = opts.apiURL || 'https://api.hollaex.com';
 		this._accessToken = opts.accessToken || '';
 		this._headers = {
