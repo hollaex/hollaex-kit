@@ -1,4 +1,4 @@
-@mixin entry_form($theme-color, $theme-color-disabled) {
+@mixin entry_form($theme-color, $theme-color-disabled, $theme-text-color: white) {
 	flex: 1;
 	$row-height: 2.5rem;
 	color: $font-color--disabled;
@@ -81,7 +81,7 @@
 		.trade_order_entry-form-action {
 			margin-top: 0.5rem;
 			background-color: $theme-color !important;
-			color: $buy-bids-text;
+			color: $colors-white;
 			font-weight: bold;
 
 			&:disabled {

@@ -1096,7 +1096,8 @@ export default {
 		LEVEL_2_TXT: 'Congrats on getting your account verified. Keep trading and apply for an account upgrade to get lower trading fees and larger withdrawal and deposit limits.',
 		LEVEL_3_TXT: 'You’ve come far comrade and have traded well.Keep trading and reach the highest rank and enjoy even lower fees and higher limits.',
 		LEVEL_4_TXT: 'You are a masters trader and have reached the peek. To maintain your rank keep your trading volume high and healthy.',
-		CURRENT_TXT:'Current'
+		CURRENT_TXT: 'Current',
+		TRADER_ACCOUNT_HEX_TEXT: 'Earn up to 10% in commissions through distributing the HollaEx Kit. Alternatively you can earn HEX daily through staking your HEX token when running your own exchange'
 	},
 	REFERRAL_LINK: {
 		TITLE: 'Invite your friend', // new

@@ -303,7 +303,7 @@
     .assets-wrapper {
         font-size: .8rem;
         margin-right: 1.5rem;
-        width: 25rem;
+        // width: 25rem;
 
         .assets-description {
             width: 86%;
@@ -311,6 +311,9 @@
         .donut-container {
             height: 23rem;
             width: 100%;
+        }
+        .donut-container-hex {
+            height: 40rem;
         }
         .price-content {
             padding: 0 .5rem;
@@ -351,6 +354,13 @@
                 }
             }
         }
+    }
+
+    .asset_wrapper_width {
+        width: 25rem;
+    }
+    .hex_asset_wrapper_width {
+        width: 100% !important;
     }
 
     .trading-volume-wrapper {
@@ -520,7 +530,17 @@
             font-size: 1rem;
         }
 
-        .assets-wrapper,
+        .asset_wrapper_width {
+            width: 35% !important;
+        }
+
+        .hex_asset_wrapper_width {
+            width: 100% !important;
+        }
+
+        .assets-wrapper {
+            font-size: 1rem;
+        }
         .trader-account-wrapper {
             font-size: 1rem;
             width: 35% !important;

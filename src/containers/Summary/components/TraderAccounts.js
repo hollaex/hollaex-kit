@@ -3,7 +3,7 @@ import ReactSVG from 'react-svg';
 import { isMobile } from 'react-device-detect';
 
 import STRINGS from '../../../config/localizedStrings';
-import { ICONS } from '../../../config/constants';
+import { ICONS, SHOW_SUMMARY_ACCOUNT_DETAILS } from '../../../config/constants';
 
 const TraderAccounts = ({
 	isAccountDetails = false,
@@ -34,9 +34,11 @@ const TraderAccounts = ({
 				)}
 				<div className="account-details-content">
 					<div className="mb-2">
-						{STRINGS.SUMMARY[`LEVEL_${verification_level}_TXT`]
+						{SHOW_SUMMARY_ACCOUNT_DETAILS
 							? STRINGS.SUMMARY[`LEVEL_${verification_level}_TXT`]
-							: STRINGS.SUMMARY.LEVEL_TXT_DEFAULT
+								? STRINGS.SUMMARY[`LEVEL_${verification_level}_TXT`]
+								: STRINGS.SUMMARY.LEVEL_TXT_DEFAULT
+							: STRINGS.SUMMARY.TRADER_ACCOUNT_HEX_TEXT
 						}
 					</div>
 				</div>

@@ -159,7 +159,7 @@ table th {
   font-family: "Raleway"; }
 
 .blue-link {
-  color: #00aeef !important; }
+  color: #0000ff !important; }
 
 .dark-theme .blue-link {
   color: #ed507b !important; }
@@ -603,7 +603,7 @@ table th {
   .information_section .information_svg {
     fill: #777677; }
   .information_section .information_change {
-    color: #00aeef;
+    color: #0000ff;
     width: fit-content; }
   .information_section > div:not(:first-child) {
     margin-top: 0.75rem; }
@@ -690,7 +690,7 @@ table th {
   .dark-theme .information_section .information_svg {
     fill: #ed507b; }
   .dark-theme .information_section .information_change {
-    color: #00aeef; }
+    color: #0000ff; }
 
 .dark-theme .user-limits .user-limits-table th {
   color: #b6b5cd; }
@@ -866,7 +866,7 @@ table th {
   padding: 0 0.25rem; }
 
 .dialog-link {
-  color: #00aeef;
+  color: #0000ff;
   padding: 0 0.25rem; }
 
 .signup-modal-wrapper {
@@ -1264,7 +1264,7 @@ table th {
   padding: 0.5rem;
   font-size: 0.8rem; }
   .extra_information-wrapper .link {
-    color: #00aeef;
+    color: #0000ff;
     padding: 0 0.25rem; }
 
 .deposit_info-wrapper > div {
@@ -1431,7 +1431,7 @@ table th {
 .trade-container {
   flex: 1; }
   .trade-container .dialog-link {
-    color: #00aeef;
+    color: #0000ff;
     padding: 0 0.25rem; }
   .trade-container .trade-col_main_wrapper .trade-main_content {
     flex: 6;
@@ -1740,9 +1740,9 @@ table th {
         width: 100%;
         height: 3px; }
   .trade_order_entry-wrapper.order_side-selector-sell .trade_order_entry-action_selector {
-    border: 1px solid #ed1c24; }
+    border: 1px solid #000000; }
     .trade_order_entry-wrapper.order_side-selector-sell .trade_order_entry-action_selector .active {
-      background-color: #ed1c24;
+      background-color: #000000;
       color: white;
       font-weight: bold; }
   .trade_order_entry-wrapper.order_side-selector-sell .trade_order_entry-review {
@@ -1761,11 +1761,11 @@ table th {
     margin-bottom: 0.5rem; }
   .trade_order_entry-wrapper.order_side-selector-sell .trade_order_entry-form_inputs-wrapper .trade_order_entry-form-action {
     margin-top: 0.5rem;
-    background-color: #ed1c24 !important;
+    background-color: #000000 !important;
     color: white;
     font-weight: bold; }
     .trade_order_entry-wrapper.order_side-selector-sell .trade_order_entry-form_inputs-wrapper .trade_order_entry-form-action:disabled {
-      background-color: rgba(248, 7, 67, 0.4) !important;
+      background-color: #cccccc !important;
       color: #808184 !important; }
   .trade_order_entry-wrapper.order_side-selector-sell .trade_order_entry-form_inputs-wrapper .warning_text {
     margin-top: 0.25rem; }
@@ -1797,9 +1797,9 @@ table th {
         width: 100%;
         height: 3px; }
   .trade_order_entry-wrapper.order_side-selector-buy .trade_order_entry-action_selector {
-    border: 1px solid #00a651; }
+    border: 1px solid #000000; }
     .trade_order_entry-wrapper.order_side-selector-buy .trade_order_entry-action_selector .active {
-      background-color: #00a651;
+      background-color: #000000;
       color: white;
       font-weight: bold; }
   .trade_order_entry-wrapper.order_side-selector-buy .trade_order_entry-review {
@@ -1818,11 +1818,11 @@ table th {
     margin-bottom: 0.5rem; }
   .trade_order_entry-wrapper.order_side-selector-buy .trade_order_entry-form_inputs-wrapper .trade_order_entry-form-action {
     margin-top: 0.5rem;
-    background-color: #00a651 !important;
+    background-color: #000000 !important;
     color: white;
     font-weight: bold; }
     .trade_order_entry-wrapper.order_side-selector-buy .trade_order_entry-form_inputs-wrapper .trade_order_entry-form-action:disabled {
-      background-color: rgba(19, 136, 15, 0.356) !important;
+      background-color: #cccccc !important;
       color: #808184 !important; }
   .trade_order_entry-wrapper.order_side-selector-buy .trade_order_entry-form_inputs-wrapper .warning_text {
     margin-top: 0.25rem; }
@@ -2009,29 +2009,29 @@ table th {
   .trade_orderbook-wrapper .trade_orderbook-content .trade_orderbook-bids .value-row {
     min-height: 1.5rem; }
   .trade_orderbook-wrapper .trade_orderbook-content .trade_orderbook-asks > .value-row:first-child {
-    background-color: #ed1c24; }
+    background-color: #000000; }
     .trade_orderbook-wrapper .trade_orderbook-content .trade_orderbook-asks > .value-row:first-child > div {
       color: white; }
   .trade_orderbook-wrapper .trade_orderbook-content .trade_orderbook-bids > .value-row:first-child {
-    background-color: green; }
+    background-color: #878787; }
     .trade_orderbook-wrapper .trade_orderbook-content .trade_orderbook-bids > .value-row:first-child > div {
-      color: white; }
+      color: #000000; }
   .trade_orderbook-wrapper .trade_asks-limit_bar .orderbook-limit_bar-wrapper {
-    color: #ed1c24; }
+    color: #000000; }
     .trade_orderbook-wrapper .trade_asks-limit_bar .orderbook-limit_bar-wrapper .orderbook-limit_bar-line {
-      background-color: #ed1c24; }
+      background-color: #000000; }
   .trade_orderbook-wrapper .trade_orderbook-asks .trade_orderbook-cell-price {
-    color: #ed1c24; }
+    color: #000000; }
     .trade_orderbook-wrapper .trade_orderbook-asks .trade_orderbook-cell-price .orderbook-limit_bar-line {
-      background-color: #ed1c24; }
+      background-color: #000000; }
   .trade_orderbook-wrapper .trade_orderbook-bids .trade_orderbook-cell-price {
-    color: green; }
+    color: #878787; }
     .trade_orderbook-wrapper .trade_orderbook-bids .trade_orderbook-cell-price .orderbook-limit_bar-line {
-      background-color: green; }
+      background-color: #878787; }
   .trade_orderbook-wrapper .trade_bids-limit_bar .orderbook-limit_bar-wrapper {
-    color: green; }
+    color: #878787; }
     .trade_orderbook-wrapper .trade_bids-limit_bar .orderbook-limit_bar-wrapper .orderbook-limit_bar-line {
-      background-color: green; }
+      background-color: #878787; }
   .trade_orderbook-wrapper .orderbook-limit_bar-wrapper .orderbook-limit_bar-line {
     height: 2px; }
   .trade_orderbook-wrapper .orderbook-limit_bar-wrapper .orderbook-limit_bar-text {
@@ -2091,17 +2091,17 @@ table th {
 
 .ask,
 .buy {
-  color: #ed1c24; }
+  color: #000000; }
 
 .bid,
 .sell {
-  color: green; }
+  color: #878787; }
 
 .trade_history-row.sell {
-  color: #ed1c24; }
+  color: #000000; }
 
 .trade_history-row.buy {
-  color: green; }
+  color: #878787; }
 
 .layout-mobile .trade_active_orders-wrapper {
   max-height: 35vh !important; }
@@ -2118,11 +2118,11 @@ table th {
       color: white !important;
       margin: 0; }
     .trade_active_orders-wrapper .cell_box-type .buy {
-      background-color: green; }
+      background-color: #878787; }
     .trade_active_orders-wrapper .cell_box-type .sell {
-      background-color: #ed1c24; }
+      background-color: #000000; }
     .trade_active_orders-wrapper .cell_box-type.fullfilled .cell-wrapper {
-      border: 1px solid grey;
+      border: 1px solid #000000;
       margin: 0;
       padding: 1px;
       min-width: 5rem;
@@ -2138,7 +2138,7 @@ table th {
           left: 0;
           top: 0;
           bottom: 0;
-          background-color: grey;
+          background-color: #000000;
           z-index: -1; }
 
 .direction_ltr .trade_active_orders-wrapper .cell_box-type {
@@ -2539,7 +2539,7 @@ table th {
     .summary-container .trader-account-icon svg polygon {
       fill: #BBBDBF; }
   .summary-container .trade-account-link {
-    color: #00aeef;
+    color: #0000ff;
     font-weight: bold; }
   .summary-container .summary-section_1 {
     height: 16rem; }
@@ -2585,13 +2585,14 @@ table th {
     font-weight: bold; }
   .summary-container .assets-wrapper {
     font-size: .8rem;
-    margin-right: 1.5rem;
-    width: 25rem; }
+    margin-right: 1.5rem; }
     .summary-container .assets-wrapper .assets-description {
       width: 86%; }
     .summary-container .assets-wrapper .donut-container {
       height: 23rem;
       width: 100%; }
+    .summary-container .assets-wrapper .donut-container-hex {
+      height: 40rem; }
     .summary-container .assets-wrapper .price-content {
       padding: 0 .5rem; }
     .summary-container .assets-wrapper .price-text {
@@ -2604,7 +2605,7 @@ table th {
       padding: .5rem;
       color: #000000; }
     .summary-container .assets-wrapper .asset-changes {
-      background-color: #00aeef; }
+      background-color: #0000ff; }
     .summary-container .assets-wrapper .coin-price-container {
       height: 3.5rem; }
       .summary-container .assets-wrapper .coin-price-container .coin-price {
@@ -2617,6 +2618,10 @@ table th {
           fill: #8dc541; }
         .summary-container .assets-wrapper .coin-price-container .coin-price svg .xrp-icon {
           fill: #414042; }
+  .summary-container .asset_wrapper_width {
+    width: 25rem; }
+  .summary-container .hex_asset_wrapper_width {
+    width: 100% !important; }
   .summary-container .trading-volume-wrapper {
     width: 50rem; }
   .summary-container .account-details-wrapper .account-type-container {
@@ -2627,7 +2632,7 @@ table th {
     width: 4rem; }
   .summary-container .account-details-wrapper .account-type-menu {
     border-top: 1px solid #797779;
-    color: #00aeef;
+    color: #0000ff;
     cursor: pointer;
     font-weight: bold;
     padding: .5rem 0;
@@ -2660,7 +2665,7 @@ table th {
 .fee-limits-wrapper {
   width: 36rem; }
   .fee-limits-wrapper .fee-limits-link {
-    color: #00aeef;
+    color: #0000ff;
     cursor: pointer;
     font-weight: bold; }
   .fee-limits-wrapper .content-txt {
@@ -2725,7 +2730,12 @@ table th {
       font-size: 1.2rem; }
     .summary-container .summary-content-txt {
       font-size: 1rem; }
-    .summary-container .assets-wrapper,
+    .summary-container .asset_wrapper_width {
+      width: 35% !important; }
+    .summary-container .hex_asset_wrapper_width {
+      width: 100% !important; }
+    .summary-container .assets-wrapper {
+      font-size: 1rem; }
     .summary-container .trader-account-wrapper {
       font-size: 1rem;
       width: 35% !important; }
@@ -2837,7 +2847,7 @@ table th {
     border-top: 2px solid #212121;
     font-size: .8rem; }
   .trade_tabs-container .trade_tabs-link {
-    color: #00aeef;
+    color: #0000ff;
     margin: .5rem 0;
     padding: 0 .5rem;
     text-transform: uppercase; }
@@ -2866,9 +2876,9 @@ table th {
     font-size: 1.75rem;
     font-weight: bold; }
   .trade_tabs-container .price-diff-down {
-    color: #ed1c24; }
+    color: #000000; }
   .trade_tabs-container .price-diff-up {
-    color: green; }
+    color: #878787; }
   .trade_tabs-container .trade-tab-price_diff_up {
     margin: auto 0; }
   .trade_tabs-container .trade-tab-price_diff_up:before {
@@ -2879,7 +2889,7 @@ table th {
     height: 0;
     border-left: 0.4rem solid transparent;
     border-right: 0.4rem solid transparent;
-    border-bottom: 0.4rem solid green;
+    border-bottom: 0.4rem solid #878787;
     margin-bottom: 0rem;
     display: inline-block;
     margin-bottom: 0.2rem;
@@ -3476,9 +3486,9 @@ table th {
   .app_bar .app_bar-currency-txt {
     font-weight: 600; }
   .app_bar .app-price-diff-down {
-    color: #ed1c24; }
+    color: #000000; }
   .app_bar .app-price-diff-up {
-    color: green; }
+    color: #878787; }
   .app_bar .app-bar-price_diff_up {
     margin-left: 0.5rem; }
   .app_bar .app-bar-price_diff_up:before {
@@ -3489,7 +3499,7 @@ table th {
     height: 0;
     border-left: 0.4rem solid transparent;
     border-right: 0.4rem solid transparent;
-    border-bottom: 0.4rem solid green;
+    border-bottom: 0.4rem solid #878787;
     margin-bottom: 0rem;
     display: inline-block;
     margin-bottom: 0.2rem;
@@ -3825,7 +3835,7 @@ table th {
   .app-bar-add-tab-menu .app-bar-tab-setting .app-price-diff-down, .app-bar-add-tab-menu .app-bar-add-tab-icons .app-price-diff-down {
     color: #ff0000; }
   .app-bar-add-tab-menu .app-bar-tab-setting .app-price-diff-up, .app-bar-add-tab-menu .app-bar-add-tab-icons .app-price-diff-up {
-    color: green; }
+    color: #878787; }
 
 @media (min-width: 1920px) {
   .app_bar {
@@ -4733,7 +4743,7 @@ table th {
   width: 1.25rem; }
 
 .dumb-field-wrapper {
-  color: #00aeef; }
+  color: #0000ff; }
   .dumb-field-wrapper > .field-content > .field-children {
     padding-left: 0.25rem; }
   .dumb-field-wrapper .field-children {
@@ -5033,13 +5043,13 @@ table th {
 
 @-webkit-keyframes bounce {
   15% {
-    border-color: #00aeef; }
+    border-color: #0000ff; }
   75% {
     border-color: #212121; } }
 
 @keyframes bounce {
   15% {
-    border-color: #00aeef; }
+    border-color: #0000ff; }
   75% {
     border-color: #212121; } }
 
@@ -5413,7 +5423,7 @@ table th {
   display: flex;
   align-items: center; }
   .action_notification-wrapper .notification-info {
-    color: #00aeef; }
+    color: #0000ff; }
   .action_notification-wrapper .notification-warning {
     color: #ed1c24; }
   .action_notification-wrapper .notification-success {
@@ -5444,15 +5454,15 @@ table th {
     height: 1rem; }
   .action_notification-wrapper .cancel-cross-2 {
     fill: none;
-    stroke: #00aeef; }
+    stroke: #0000ff; }
   .action_notification-wrapper .trans-history-1,
   .action_notification-wrapper .trans-history-2,
   .action_notification-wrapper .trans-history-3,
   .action_notification-wrapper .cancel-cross-1 {
-    fill: #00aeef; }
+    fill: #0000ff; }
   .action_notification-wrapper .trans-history-4,
   .action_notification-wrapper .cancel-cross-3 {
-    stroke: #00aeef; }
+    stroke: #0000ff; }
 
 .direction_ltr .action_notification-wrapper {
   font-family: "Raleway Medium" !important; }
@@ -5529,7 +5539,7 @@ table th {
   color: #ed507b; }
 
 .layout-mobile .action_notification-text {
-  color: #00aeef; }
+  color: #0000ff; }
 
 .icon_title-wrapper {
   margin-top: 2.5rem;
@@ -5951,7 +5961,7 @@ table th {
     background-color: white;
     border-color: white; } }
   .table-wrapper .cell_box-type {
-    color: white;
+    color: #000000;
     text-transform: capitalize; }
     .table-wrapper .cell_box-type > div {
       padding: 0.15rem 0.25rem; }
@@ -7231,7 +7241,7 @@ foreignObject {
   .chat-wrapper .username-to-chat {
     cursor: pointer;
     padding: 0.7rem !important;
-    color: #00aeef !important;
+    color: #0000ff !important;
     font-size: 1rem !important;
     font-family: "Open Sans" !important; }
   .chat-wrapper .nondraggable {

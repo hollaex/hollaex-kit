@@ -538,3 +538,6 @@ export const WHITE_THEME_CHART_COLORS = {
 	BUY_VOLUME: 'lightgreen',
 	SELL_VOLUME: '#ed1c24'
 };
+
+export const SHOW_SUMMARY_ACCOUNT_DETAILS = false;
+export const SHOW_TOTAL_ASSETS = false;

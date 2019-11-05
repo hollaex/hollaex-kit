@@ -16,7 +16,7 @@ $colors-deactivate-color4: #f1f2f2;
 
 $colors-notifications-red: #ed1c24;
 $colors-notification-inactive-red: #e26171;
-$colors-notifications-blue: #00aeef;
+$colors-notifications-blue: #0000ff;
 $colors-notifications-green: #00a651;
 $error-color: $colors-notifications-red;
 
@@ -32,6 +32,7 @@ $colors-currencies-bch: #ec008c;
 $colors-currencies-eth: #2e3192;
 $colors-currencies-ltc: #58595b;
 $colors-currencies-xrp: #2e3192;
+$colors-terms-background: #f7f7f7;
 
 // colors for white theme
 $app-background-color: white;
@@ -41,14 +42,15 @@ $app-modal-background: rgba(221, 221, 221, 0.75);
 $app-bar-background-color: $colors-black;
 $app-line-divider: $colors-main-black;
 $box-fields: #f0f1f1;
-$buy: green;
-$sell: $colors-notifications-red;
-$color-sell-btc-light:#ed1c24;
-$color-buy-btc-light:#00a651;
+$buy: #878787;
+$sell: $colors-black;
+$color-sell-btc-light: $colors-black;
+$color-buy-btc-light: $colors-black;
 $link: $colors-notifications-blue;
 $trade-fields: $colors-deactivate-color1;
-$trade-fill-indicator: grey;
-$buy-bids-text: $colors-white;
+$trade-fill-indicator: $colors-black;
+$trade-fill-indicator-text: #878787;
+$buy-bids-text: $colors-black;
 $sell-bids-text: $colors-white;
 $app-logo-color: $colors-white;
 $sidebar-border--color: $colors-deactivate;

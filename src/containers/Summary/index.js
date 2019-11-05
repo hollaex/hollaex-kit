@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { isMobile } from 'react-device-detect';
 import moment from 'moment';
+import classnames from 'classnames';
 
 import SummaryBlock from './components/SummaryBlock';
 import TraderAccounts from './components/TraderAccounts';
@@ -15,7 +16,12 @@ import MobileSummary from './MobileSummary';
 import { IconTitle } from '../../components';
 import { logout } from '../../actions/authAction';
 import { openFeesStructureandLimits, openContactForm, logoutconfirm, setNotification, NOTIFICATIONS } from '../../actions/appActions';
-import { BASE_CURRENCY, DEFAULT_COIN_DATA } from '../../config/constants';
+import {
+    BASE_CURRENCY,
+    DEFAULT_COIN_DATA,
+    SHOW_SUMMARY_ACCOUNT_DETAILS,
+    SHOW_TOTAL_ASSETS
+} from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 import {
     formatToCurrency,
@@ -177,11 +183,19 @@ class Summary extends Component {
                             </div>
                         </div>
                         <div className="d-flex align-items-center">
-                            <div className="assets-wrapper">
+                            <div
+                                className={
+                                    classnames(
+                                        "assets-wrapper",
+                                        "asset_wrapper_width",
+                                        {
+                                            'hex_asset_wrapper_width': !SHOW_SUMMARY_ACCOUNT_DETAILS,
+                                        }
+                                    )}>
                                 <SummaryBlock
                                     title={STRINGS.SUMMARY.ACCOUNT_ASSETS}
                                     secondaryTitle={
-                                        BASE_CURRENCY && isValidBase ?
+                                        SHOW_TOTAL_ASSETS && BASE_CURRENCY && isValidBase ?
                                             <span>
                                                 <span className="title-font">
                                                     {totalAssets}
@@ -190,6 +204,7 @@ class Summary extends Component {
                                             </span>
                                             : null
                                     }
+                                    wrapperClassname={classnames({ 'w-100': !SHOW_SUMMARY_ACCOUNT_DETAILS })}
                                 >
                                     <AccountAssets
                                         user={user}
@@ -200,40 +215,46 @@ class Summary extends Component {
                                         activeTheme={activeTheme} />
                                 </SummaryBlock>
                             </div>
-                            <div className="trading-volume-wrapper">
-                                <SummaryBlock
-                                    title={STRINGS.SUMMARY.TRADING_VOLUME}
-                                    secondaryTitle={<span>
-                                        <span className="title-font">
-                                            {` ${formatAverage(formatBaseAmount(lastMonthVolume))}`}
+                            {SHOW_SUMMARY_ACCOUNT_DETAILS
+                                ? <div className="trading-volume-wrapper">
+                                    <SummaryBlock
+                                        title={STRINGS.SUMMARY.TRADING_VOLUME}
+                                        secondaryTitle={<span>
+                                            <span className="title-font">
+                                                {` ${formatAverage(formatBaseAmount(lastMonthVolume))}`}
+                                            </span>
+                                            {` ${fullname} ${STRINGS.formatString(STRINGS.SUMMARY.NOMINAL_TRADING_WITH_MONTH, moment().subtract(1, "month").startOf("month").format('MMMM')).join('')}`}
                                         </span>
-                                        {` ${fullname} ${STRINGS.formatString(STRINGS.SUMMARY.NOMINAL_TRADING_WITH_MONTH, moment().subtract(1, "month").startOf("month").format('MMMM')).join('')}`}
-                                    </span>
-                                    }
-                                >
-                                    <TradingVolume user={user} />
+                                        }
+                                    >
+                                        <TradingVolume user={user} />
+                                    </SummaryBlock>
+                                </div>
+                                : null
+                            }
+                        </div>
+                        {SHOW_SUMMARY_ACCOUNT_DETAILS
+                            ? <div className="d-flex align-items-center">
+                                <SummaryBlock
+                                    title={STRINGS.SUMMARY.ACCOUNT_DETAILS}
+                                    secondaryTitle={Title}
+                                    wrapperClassname="w-100" >
+                                    <AccountDetails
+                                        user={user}
+                                        coins={coins}
+                                        pairs={pairs}
+                                        activeTheme={activeTheme}
+                                        selectedAccount={selectedAccount}
+                                        lastMonthVolume={lastMonthVolume}
+                                        onAccountTypeChange={this.onAccountTypeChange}
+                                        onFeesAndLimits={this.onFeesAndLimits}
+                                        onUpgradeAccount={this.onUpgradeAccount}
+                                        config={config_level}
+                                        verification_level={verification_level} />
                                 </SummaryBlock>
                             </div>
-                        </div>
-                        <div className="d-flex align-items-center">
-                            <SummaryBlock
-                                title={STRINGS.SUMMARY.ACCOUNT_DETAILS}
-                                secondaryTitle={Title}
-                                wrapperClassname="w-100" >
-                                <AccountDetails
-                                    user={user}
-                                    coins={coins}
-                                    pairs={pairs}
-                                    activeTheme={activeTheme}
-                                    selectedAccount={selectedAccount}
-                                    lastMonthVolume={lastMonthVolume}
-                                    onAccountTypeChange={this.onAccountTypeChange}
-                                    onFeesAndLimits={this.onFeesAndLimits}
-                                    onUpgradeAccount={this.onUpgradeAccount}
-                                    config={config_level}
-                                    verification_level={verification_level} />
-                            </SummaryBlock>
-                        </div>
+                            : null
+                        }
                     </div>)
                 }
             </div>
