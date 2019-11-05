@@ -5,7 +5,7 @@ const ACCESS_TOKEN = process.env.ACCESS_TOKEN || '';
 const client = new HollaEx({ accessToken: ACCESS_TOKEN });
 
 client
-	.getTicker('btc-eur')
+	.getTicker('hex-usdt')
 	.then((res) => {
 		let data = JSON.parse(res);
 		console.log('The volume is', data.volume);
@@ -21,7 +21,7 @@ client
 	symbols : btc-eur, eth-btc, eth-eur
 */
 
-const socket1 = client.connect('trades:bch-eur');
+const socket1 = client.connect('trades:hex-usdt');
 
 socket1.on('trades', (data) => {
 	console.log(data);
