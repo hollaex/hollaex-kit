@@ -11,6 +11,7 @@ import ContactForm from './ContactForm';
 import NewOrder from './NewOrder';
 import GenerateAddressNotification from './GenerateAddress';
 import InviteFriends from './InviteFriends';
+import StakeToken from './StakeToken';
 import { GenerateApiKey, CreatedApiKey } from './GenerateApiKey';
 
 const generateNotificationContent = ({ type, data, ...rest }) => {
@@ -39,6 +40,8 @@ const generateNotificationContent = ({ type, data, ...rest }) => {
 			return <GenerateAddressNotification data={data} {...rest} />;
 		case NOTIFICATIONS.INVITE_FRIENDS:
 			return <InviteFriends data={data} {...rest} />;
+		case NOTIFICATIONS.STAKE_TOKEN:
+			return <StakeToken data={data} {...rest} />;
 		default:
 			break;
 	}

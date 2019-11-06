@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
 import { Accordion } from '../';
-import { BASE_CURRENCY, DEFAULT_COIN_DATA } from '../../config/constants';
+import { BASE_CURRENCY, DEFAULT_COIN_DATA, IS_HEX } from '../../config/constants';
 import {
 	calculateBalancePrice,
 	calculatePrice,
@@ -109,7 +109,7 @@ class Wallet extends Component {
 		if (Object.keys(this.props.balance).length === 0) {
 			return <div />;
 		}
-		// const { symbol = '' } = this.props.coins[BASE_CURRENCY] || {};
+		const { symbol = '' } = this.props.coins[BASE_CURRENCY] || {};
 
 		return (
 			<div className="wallet-wrapper">
@@ -117,7 +117,7 @@ class Wallet extends Component {
 					<DonutChart coins={this.props.coins} chartData={chartData} />
 				</div>
 				<Accordion sections={sections} />
-				{/* {BASE_CURRENCY && isValidBase ? (
+				{BASE_CURRENCY && isValidBase && !IS_HEX ? (
 					<div className="wallet_section-wrapper wallet_section-total_asset d-flex flex-column">
 						<div className="wallet_section-title">
 							{STRINGS.WALLET.TOTAL_ASSETS}
@@ -127,7 +127,7 @@ class Wallet extends Component {
 							<span>{totalAssets}</span>
 						</div>
 					</div>
-				) : null} */}
+				) : null}
 			</div>
 		);
 	}

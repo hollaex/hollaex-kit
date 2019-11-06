@@ -2131,7 +2131,7 @@ table th {
         padding: 0 0.15rem;
         position: relative;
         width: 100%;
-        color: #212121;
+        color: #878787;
         z-index: 2; }
         .trade_active_orders-wrapper .cell_box-type.fullfilled .cell-wrapper > .cell_value-wrapper .cell_value-bar {
           position: absolute;
@@ -2394,6 +2394,15 @@ table th {
   color: #ed507b; }
 
 .dark-theme .summary-container .trader-wrapper-icon svg .level_icon {
+  fill: #a3a1ca; }
+
+.dark-theme .summary-container .trader-wrapper-icon svg .account-summary {
+  stroke: #a3a1ca; }
+
+.dark-theme .summary-container .trader-wrapper-icon svg .account-summary1 {
+  fill: #a3a1ca; }
+
+.dark-theme .summary-container .trader-wrapper-icon svg .hap-icon {
   fill: #a3a1ca; }
 
 .dark-theme .summary-container .trader-account-icon svg .level_icon {
@@ -2878,7 +2887,7 @@ table th {
   .trade_tabs-container .price-diff-down {
     color: #000000; }
   .trade_tabs-container .price-diff-up {
-    color: #878787; }
+    color: green; }
   .trade_tabs-container .trade-tab-price_diff_up {
     margin: auto 0; }
   .trade_tabs-container .trade-tab-price_diff_up:before {
@@ -3311,11 +3320,12 @@ table th {
     .dark-theme .app-menu-bar .notification svg .tab-summary0, .dark-theme .app-menu-bar .notification svg .tab-wallet0, .dark-theme .app-menu-bar .notification svg .tab-setting0, .dark-theme .app-menu-bar .notification svg .tab-verify0,
     .dark-theme .app-menu-bar .notification svg .tab-security0, .dark-theme .app-menu-bar .notification svg .tab-api0 {
       fill: #ed1c24 !important; }
-  .dark-theme .app-menu-bar .security_notification, .dark-theme .app-menu-bar .verification_notification {
+  .dark-theme .app-menu-bar .security_notification, .dark-theme .app-menu-bar .verification_notification, .dark-theme .app-menu-bar .wallet_notification {
     color: #e26171 !important; }
     .dark-theme .app-menu-bar .security_notification svg .tab-summary0, .dark-theme .app-menu-bar .security_notification svg .tab-wallet0, .dark-theme .app-menu-bar .security_notification svg .tab-setting0, .dark-theme .app-menu-bar .security_notification svg .tab-verify0,
     .dark-theme .app-menu-bar .security_notification svg .tab-security0, .dark-theme .app-menu-bar .security_notification svg .tab-api0, .dark-theme .app-menu-bar .verification_notification svg .tab-summary0, .dark-theme .app-menu-bar .verification_notification svg .tab-wallet0, .dark-theme .app-menu-bar .verification_notification svg .tab-setting0, .dark-theme .app-menu-bar .verification_notification svg .tab-verify0,
-    .dark-theme .app-menu-bar .verification_notification svg .tab-security0, .dark-theme .app-menu-bar .verification_notification svg .tab-api0 {
+    .dark-theme .app-menu-bar .verification_notification svg .tab-security0, .dark-theme .app-menu-bar .verification_notification svg .tab-api0, .dark-theme .app-menu-bar .wallet_notification svg .tab-summary0, .dark-theme .app-menu-bar .wallet_notification svg .tab-wallet0, .dark-theme .app-menu-bar .wallet_notification svg .tab-setting0, .dark-theme .app-menu-bar .wallet_notification svg .tab-verify0,
+    .dark-theme .app-menu-bar .wallet_notification svg .tab-security0, .dark-theme .app-menu-bar .wallet_notification svg .tab-api0 {
       fill: #e26171 !important; }
 
 .dark-theme .app_bar-icon .app_bar-icon-logo svg .logo-black {
@@ -3486,9 +3496,9 @@ table th {
   .app_bar .app_bar-currency-txt {
     font-weight: 600; }
   .app_bar .app-price-diff-down {
-    color: #000000; }
+    color: #ed1c24; }
   .app_bar .app-price-diff-up {
-    color: #878787; }
+    color: green; }
   .app_bar .app-bar-price_diff_up {
     margin-left: 0.5rem; }
   .app_bar .app-bar-price_diff_up:before {
@@ -3499,7 +3509,7 @@ table th {
     height: 0;
     border-left: 0.4rem solid transparent;
     border-right: 0.4rem solid transparent;
-    border-bottom: 0.4rem solid #878787;
+    border-bottom: 0.4rem solid green;
     margin-bottom: 0rem;
     display: inline-block;
     margin-bottom: 0.2rem;
@@ -3581,11 +3591,12 @@ table th {
       .app_bar .app-bar-account-menu .notification svg .tab-summary0, .app_bar .app-bar-account-menu .notification svg .tab-wallet0, .app_bar .app-bar-account-menu .notification svg .tab-setting0, .app_bar .app-bar-account-menu .notification svg .tab-verify0,
       .app_bar .app-bar-account-menu .notification svg .tab-security0, .app_bar .app-bar-account-menu .notification svg .tab-api0 {
         fill: #ed1c24; }
-    .app_bar .app-bar-account-menu .security_notification, .app_bar .app-bar-account-menu .verification_notification {
+    .app_bar .app-bar-account-menu .security_notification, .app_bar .app-bar-account-menu .verification_notification, .app_bar .app-bar-account-menu .wallet_notification {
       color: #e26171; }
       .app_bar .app-bar-account-menu .security_notification svg .tab-summary0, .app_bar .app-bar-account-menu .security_notification svg .tab-wallet0, .app_bar .app-bar-account-menu .security_notification svg .tab-setting0, .app_bar .app-bar-account-menu .security_notification svg .tab-verify0,
       .app_bar .app-bar-account-menu .security_notification svg .tab-security0, .app_bar .app-bar-account-menu .security_notification svg .tab-api0, .app_bar .app-bar-account-menu .verification_notification svg .tab-summary0, .app_bar .app-bar-account-menu .verification_notification svg .tab-wallet0, .app_bar .app-bar-account-menu .verification_notification svg .tab-setting0, .app_bar .app-bar-account-menu .verification_notification svg .tab-verify0,
-      .app_bar .app-bar-account-menu .verification_notification svg .tab-security0, .app_bar .app-bar-account-menu .verification_notification svg .tab-api0 {
+      .app_bar .app-bar-account-menu .verification_notification svg .tab-security0, .app_bar .app-bar-account-menu .verification_notification svg .tab-api0, .app_bar .app-bar-account-menu .wallet_notification svg .tab-summary0, .app_bar .app-bar-account-menu .wallet_notification svg .tab-wallet0, .app_bar .app-bar-account-menu .wallet_notification svg .tab-setting0, .app_bar .app-bar-account-menu .wallet_notification svg .tab-verify0,
+      .app_bar .app-bar-account-menu .wallet_notification svg .tab-security0, .app_bar .app-bar-account-menu .wallet_notification svg .tab-api0 {
         fill: #e26171; }
     .app_bar .app-bar-account-menu .app-bar-account-menu-notification {
       position: absolute;
@@ -3602,13 +3613,13 @@ table th {
       font-size: .8rem;
       line-height: 1;
       font-weight: bold; }
-    .app_bar .app-bar-account-menu .security_selected {
+    .app_bar .app-bar-account-menu .security_selected,
+    .app_bar .app-bar-account-menu .verification_selected,
+    .app_bar .app-bar-account-menu .wallet_selected {
       background-color: #ed1c24 !important; }
-    .app_bar .app-bar-account-menu .verification_selected {
-      background-color: #ed1c24 !important; }
-    .app_bar .app-bar-account-menu .verification_selected_inactive {
-      background-color: #e26171 !important; }
-    .app_bar .app-bar-account-menu .security_selected_inactive {
+    .app_bar .app-bar-account-menu .security_selected_inactive,
+    .app_bar .app-bar-account-menu .verification_selected_inactive,
+    .app_bar .app-bar-account-menu .wallet_selected_inactive {
       background-color: #e26171 !important; }
     .app_bar .app-bar-account-menu .app-bar-account-list-notification {
       position: relative;
@@ -3709,11 +3720,12 @@ table th {
     .app-menu-bar .notification svg .tab-summary0, .app-menu-bar .notification svg .tab-wallet0, .app-menu-bar .notification svg .tab-setting0, .app-menu-bar .notification svg .tab-verify0,
     .app-menu-bar .notification svg .tab-security0, .app-menu-bar .notification svg .tab-api0 {
       fill: #ed1c24; }
-  .app-menu-bar .security_notification, .app-menu-bar .verification_notification {
+  .app-menu-bar .security_notification, .app-menu-bar .verification_notification, .app-menu-bar .wallet_notification {
     color: #e26171; }
     .app-menu-bar .security_notification svg .tab-summary0, .app-menu-bar .security_notification svg .tab-wallet0, .app-menu-bar .security_notification svg .tab-setting0, .app-menu-bar .security_notification svg .tab-verify0,
     .app-menu-bar .security_notification svg .tab-security0, .app-menu-bar .security_notification svg .tab-api0, .app-menu-bar .verification_notification svg .tab-summary0, .app-menu-bar .verification_notification svg .tab-wallet0, .app-menu-bar .verification_notification svg .tab-setting0, .app-menu-bar .verification_notification svg .tab-verify0,
-    .app-menu-bar .verification_notification svg .tab-security0, .app-menu-bar .verification_notification svg .tab-api0 {
+    .app-menu-bar .verification_notification svg .tab-security0, .app-menu-bar .verification_notification svg .tab-api0, .app-menu-bar .wallet_notification svg .tab-summary0, .app-menu-bar .wallet_notification svg .tab-wallet0, .app-menu-bar .wallet_notification svg .tab-setting0, .app-menu-bar .wallet_notification svg .tab-verify0,
+    .app-menu-bar .wallet_notification svg .tab-security0, .app-menu-bar .wallet_notification svg .tab-api0 {
       fill: #e26171; }
   .app-menu-bar .app-menu-bar-icon-notification {
     position: absolute;
@@ -3835,7 +3847,7 @@ table th {
   .app-bar-add-tab-menu .app-bar-tab-setting .app-price-diff-down, .app-bar-add-tab-menu .app-bar-add-tab-icons .app-price-diff-down {
     color: #ff0000; }
   .app-bar-add-tab-menu .app-bar-tab-setting .app-price-diff-up, .app-bar-add-tab-menu .app-bar-add-tab-icons .app-price-diff-up {
-    color: #878787; }
+    color: green; }
 
 @media (min-width: 1920px) {
   .app_bar {
@@ -4562,7 +4574,8 @@ table th {
   .dark-theme .notification-wrapper svg .limit-sell-04,
   .dark-theme .notification-wrapper svg .limit-buy-03,
   .dark-theme .notification-wrapper svg .limit-buy-04,
-  .dark-theme .notification-wrapper svg .refer-icon {
+  .dark-theme .notification-wrapper svg .refer-icon,
+  .dark-theme .notification-wrapper svg .stake_icon {
     fill: #a3a1ca; }
   .dark-theme .notification-wrapper svg .limit-sell-01,
   .dark-theme .notification-wrapper svg .limit-buy-01,

@@ -20,7 +20,8 @@ import {
     BASE_CURRENCY,
     DEFAULT_COIN_DATA,
     SHOW_SUMMARY_ACCOUNT_DETAILS,
-    SHOW_TOTAL_ASSETS
+    SHOW_TOTAL_ASSETS,
+    IS_HEX
 } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 import {
@@ -125,11 +126,18 @@ class Summary extends Component {
         this.props.setNotification(NOTIFICATIONS.INVITE_FRIENDS, { affiliation_code: this.props.user.affiliation_code });
     };
 
+    onStakeToken = () => {
+        this.props.setNotification(NOTIFICATIONS.STAKE_TOKEN);
+    };
+
     render() {
         const { user, balance, activeTheme, pairs, coins, isValidBase, verification_level, config_level } = this.props;
         const { selectedAccount, chartData, totalAssets, lastMonthVolume } = this.state;
         const { fullname } = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
-        const Title = STRINGS.formatString(STRINGS.SUMMARY.LEVEL_OF_ACCOUNT, verification_level);
+        let traderAccTitle = STRINGS.formatString(STRINGS.SUMMARY.LEVEL_OF_ACCOUNT, verification_level);
+        if (IS_HEX) {
+            traderAccTitle = user.is_hap ? STRINGS.SUMMARY.HAP_ACCOUNT : STRINGS.SUMMARY.TRADER_ACCOUNT_TITLE
+        }
         return (
             <div className="summary-container">
                 {!isMobile && <IconTitle
@@ -150,24 +158,28 @@ class Summary extends Component {
                         isValidBase={isValidBase}
                         totalAssets={totalAssets}
                         lastMonthVolume={lastMonthVolume}
+                        traderAccTitle={traderAccTitle}
                         onInviteFriends={this.onInviteFriends}
                         onFeesAndLimits={this.onFeesAndLimits}
                         onUpgradeAccount={this.onUpgradeAccount}
                         onAccountTypeChange={this.onAccountTypeChange}
                         verification_level={verification_level}
+                        onStakeToken={this.onStakeToken}
                     />
                     : (<div>
                         <div className="d-flex align-items-center">
                             <div className="summary-section_1 trader-account-wrapper d-flex">
-                                <SummaryBlock title={Title} >
+                                <SummaryBlock title={traderAccTitle} >
                                     <TraderAccounts
+                                        user={user}
                                         pairs={pairs}
                                         coins={coins}
                                         activeTheme={activeTheme}
                                         onFeesAndLimits={this.onFeesAndLimits}
                                         onUpgradeAccount={this.onUpgradeAccount}
                                         onInviteFriends={this.onInviteFriends}
-                                        verification_level={verification_level} />
+                                        verification_level={verification_level}
+                                        onStakeToken={this.onStakeToken} />
                                 </SummaryBlock>
                             </div>
                             <div className="summary-section_1 requirement-wrapper d-flex">
@@ -237,7 +249,7 @@ class Summary extends Component {
                             ? <div className="d-flex align-items-center">
                                 <SummaryBlock
                                     title={STRINGS.SUMMARY.ACCOUNT_DETAILS}
-                                    secondaryTitle={Title}
+                                    secondaryTitle={traderAccTitle}
                                     wrapperClassname="w-100" >
                                     <AccountDetails
                                         user={user}
@@ -265,7 +277,7 @@ class Summary extends Component {
 const mapStateToProps = (state) => ({
     pairs: state.app.pairs,
     coins: state.app.coins,
-    user: state.user,
+    user: state.user || {},
     verification_level: state.user.verification_level,
     balance: state.user.balance,
     activeTheme: state.app.theme,

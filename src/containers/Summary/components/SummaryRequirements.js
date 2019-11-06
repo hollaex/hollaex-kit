@@ -10,7 +10,8 @@ import {
 	TRADE_ACCOUNT_UPGRADE_MONTH,
 	TRADING_VOLUME_CHART_LIMITS,
 	BASE_CURRENCY,
-	DEFAULT_COIN_DATA
+	DEFAULT_COIN_DATA,
+	IS_HEX
 } from '../../../config/constants';
 import STRINGS from '../../../config/localizedStrings';
 
@@ -35,11 +36,11 @@ const IncompleteStatus = ({ isAccountDetails }) => (
 				{STRINGS.USER_VERIFICATION.INCOMPLETED.toUpperCase()}
 			</div>
 		) : (
-			<ReactSvg
-				path={ICONS.VERIFICATION_INCOMPLETE}
-				wrapperClassName="requirement-stauts"
-			/>
-		)}
+				<ReactSvg
+					path={ICONS.VERIFICATION_INCOMPLETE}
+					wrapperClassName="requirement-stauts"
+				/>
+			)}
 	</div>
 );
 
@@ -166,6 +167,34 @@ export const getRequirements = (user, level, lastMonthVolume, coins) => {
 	return verificationObj[`level_${level}`] || {};
 };
 
+const getHexRequirements = (user, coins) => {
+	let walletDeposit = false;
+	let hexDeposit = false;
+	if (user.balance) {
+		Object.keys(coins).forEach(pair => {
+			if (user.balance[`${pair.toLowerCase()}_balance`] > 0) {
+				walletDeposit = true;
+			}
+		})
+		if (user.balance.hex_balance && user.balance.hex_balance > 0) {
+			hexDeposit = true;
+		}
+	}
+	const verificationObj = {
+		'1': {
+			title: STRINGS.USER_VERIFICATION.MAKE_FIRST_DEPOSIT,
+			completed: walletDeposit,
+			status: walletDeposit ? 3 : 0
+		},
+		'2': {
+			title: STRINGS.USER_VERIFICATION.OBTAIN_HEX,
+			completed: hexDeposit,
+			status: hexDeposit ? 3 : 0
+		}
+	};
+	return verificationObj;
+};
+
 const getStatusClass = (status_code, completed) => {
 	switch (status_code) {
 		case 0:
@@ -197,8 +226,8 @@ const getStatusIcon = (reqObj, isAccountDetails) => {
 		return reqObj.completed ? (
 			<SucessStatus isAccountDetails={isAccountDetails} />
 		) : (
-			<IncompleteStatus isAccountDetails={isAccountDetails} />
-		);
+				<IncompleteStatus isAccountDetails={isAccountDetails} />
+			);
 	} else {
 		switch (reqObj.status) {
 			case 0:
@@ -236,7 +265,9 @@ const SummaryRequirements = ({
 	const selectedLevel = isAccountDetails
 		? verificationLevel || user.verification_level
 		: 2;
-	const requirement = getRequirements(user, selectedLevel, lastMonthVolume, coins);
+	const requirement = IS_HEX
+		? getHexRequirements(user, coins)
+		: getRequirements(user, selectedLevel, lastMonthVolume, coins);
 	let requirementResolved = getAllCompleted(requirement);
 	return (
 		<div className="d-flex">
@@ -285,18 +316,27 @@ const SummaryRequirements = ({
 						</Link>
 					</div>
 				)}
-				{!isAccountDetails &&
-				(!address.country ||
-					id_data.status !== 3 ||
-					!phone_number ||
-					!bank_account.filter((acc) => acc.status === 3).length) ? (
-					<div className="trade-account-link mb-2">
-						<Link to="/verification">
-							{STRINGS.USER_VERIFICATION.GOTO_VERIFICATION.toUpperCase()}
+				{!isAccountDetails && !IS_HEX &&
+					(!address.country ||
+						id_data.status !== 3 ||
+						!phone_number ||
+						!bank_account.filter((acc) => acc.status === 3).length) ? (
+						<div className="trade-account-link mb-2">
+							<Link to="/verification">
+								{STRINGS.USER_VERIFICATION.GOTO_VERIFICATION.toUpperCase()}
+							</Link>
+						</div>
+					) : null
+				}
+				{IS_HEX
+					? <div className="trade-account-link mb-2">
+						<Link to="/wallet">
+							{STRINGS.USER_VERIFICATION.GOTO_WALLET.toUpperCase()}
 						</Link>
 					</div>
-				) : null}
-				{isAccountDetails ? (
+					: null
+				}
+				{!IS_HEX && isAccountDetails ? (
 					<div className="mt-2">
 						<Button
 							label={STRINGS.SUMMARY.REQUEST_ACCOUNT_UPGRADE}

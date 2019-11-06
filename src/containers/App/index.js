@@ -754,6 +754,17 @@ class Container extends Component {
 					/>
 				);
 			}
+			case NOTIFICATIONS.STAKE_TOKEN: {
+				const { onConfirm, ...rest } = data;
+				return (
+					<Notification
+						type={type}
+						data={rest}
+						onConfirm={data.onConfirm}
+						onBack={this.onCloseDialog}
+					/>
+				);
+			}
 			default:
 				return <div />;
 		}

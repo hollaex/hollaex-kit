@@ -3,14 +3,15 @@ import { connect } from 'react-redux';
 import ReactSVG from 'react-svg';
 import classnames from 'classnames';
 
-import { ICONS } from '../../config/constants';
+import { ICONS, IS_HEX } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
- 
+
 class AppMenuBar extends Component {
     state = {
         activeMenu: '',
         securityPending: 0,
-        verificationPending: 0
+        verificationPending: 0,
+        walletPending: 0
     };
 
     componentDidMount() {
@@ -19,6 +20,7 @@ class AppMenuBar extends Component {
         }
         if (this.props.user && this.props.user.id) {
             this.checkVerificationStatus(this.props.user);
+            this.checkWalletStatus(this.props.user, this.props.coins);
         }
     }
 
@@ -29,6 +31,7 @@ class AppMenuBar extends Component {
         }
         if (JSON.stringify(this.props.user) !== JSON.stringify(nextProps.user)) {
             this.checkVerificationStatus(nextProps.user);
+            this.checkWalletStatus(nextProps.user, nextProps.coins);
         }
         if (this.props.activeLanguage !== nextProps.activeLanguage) {
             this.setActiveMenu(nextProps.location.pathname);
@@ -58,6 +61,19 @@ class AppMenuBar extends Component {
         this.setState({ securityPending, verificationPending });
     };
 
+    checkWalletStatus = (user, coins) => {
+        let walletPending = false;
+        if (user.balance) {
+            walletPending = true;
+            Object.keys(coins).forEach(pair => {
+                if (user.balance[`${pair.toLowerCase()}_balance`] > 0) {
+                    walletPending = false;
+                }
+            })
+        }
+        this.setState({ walletPending: walletPending ? 1 : 0 });
+    };
+
     handleMenuChange = menu => {
         if (menu === 'account') {
             this.props.router.push('/account');
@@ -72,8 +88,8 @@ class AppMenuBar extends Component {
         } /* else if (menu === 'api') {
 			this.props.router.push('/api');
 		} */else if (menu === 'summary') {
-			this.props.router.push('/summary');
-		}
+            this.props.router.push('/summary');
+        }
         this.setState({ activeMenu: menu });
     };
 
@@ -107,7 +123,7 @@ class AppMenuBar extends Component {
     };
 
     render() {
-        const { activeMenu, securityPending, verificationPending } = this.state;
+        const { activeMenu, securityPending, verificationPending, walletPending } = this.state;
         return (
             <div className="d-flex justify-content-between">
                 <div className="app-menu-bar d-flex align-items-end justify-content-center title-font">
@@ -120,27 +136,64 @@ class AppMenuBar extends Component {
                         </div>
                     </div>
                     <div
-                        className={classnames("app-menu-bar-content d-flex", { 'active-menu': activeMenu === 'wallet' })}
+                        className={
+                            classnames(
+                                "app-menu-bar-content d-flex",
+                                {
+                                    'notification': !!walletPending && IS_HEX,
+                                    'active-menu': activeMenu === 'wallet'
+                                })
+                        }
                         onClick={() => this.handleMenuChange('wallet')}>
                         <div className="app-menu-bar-content-item d-flex">
+                            {!!walletPending && IS_HEX &&
+                                <div
+                                    className="app-menu-bar-icon-notification">
+                                    {walletPending}
+                                </div>
+                            }
                             <ReactSVG path={ICONS.TAB_WALLET} wrapperClassName="app-menu-bar-icon" />
                             {STRINGS.ACCOUNTS.TAB_WALLET}
                         </div>
                     </div>
                     <div
-                        className={classnames('app-menu-bar-content d-flex', { 'notification': !!securityPending, 'active-menu': activeMenu === 'security' })}
+                        className={
+                            classnames(
+                                'app-menu-bar-content d-flex',
+                                {
+                                    'notification': !!securityPending,
+                                    'active-menu': activeMenu === 'security'
+                                })
+                        }
                         onClick={() => this.handleMenuChange('security')}>
                         <div className="app-menu-bar-content-item d-flex">
-                            {!!securityPending && <div className="app-menu-bar-icon-notification">{securityPending}</div>}
+                            {!!securityPending &&
+                                <div
+                                    className="app-menu-bar-icon-notification">
+                                    {securityPending}
+                                </div>
+                            }
                             <ReactSVG path={ICONS.TAB_SECURITY} wrapperClassName="app-menu-bar-icon" />
                             {STRINGS.ACCOUNTS.TAB_SECURITY}
                         </div>
                     </div>
                     <div
-                        className={classnames('app-menu-bar-content d-flex', { 'notification': !!verificationPending, 'active-menu': activeMenu === 'verification' })}
+                        className={
+                            classnames(
+                                'app-menu-bar-content d-flex',
+                                {
+                                    'notification': !!verificationPending && !IS_HEX,
+                                    'active-menu': activeMenu === 'verification'
+                                })
+                        }
                         onClick={() => this.handleMenuChange('verification')}>
                         <div className="app-menu-bar-content-item d-flex">
-                            {!!verificationPending && <div className="app-menu-bar-icon-notification">{verificationPending}</div>}
+                            {!!verificationPending && !IS_HEX &&
+                                <div
+                                    className="app-menu-bar-icon-notification">
+                                    {verificationPending}
+                                </div>
+                            }
                             <ReactSVG path={ICONS.TAB_VERIFY} wrapperClassName="app-menu-bar-icon" />
                             {STRINGS.ACCOUNTS.TAB_VERIFICATION}
                         </div>
@@ -170,6 +223,7 @@ class AppMenuBar extends Component {
 
 const mapStateToProps = (state) => ({
     user: state.user,
+    coins: state.app.coins,
     activeLanguage: state.app.language
 });
 

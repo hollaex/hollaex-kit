@@ -4,7 +4,8 @@ import {
 	ICONS,
 	BASE_CURRENCY,
 	CURRENCY_PRICE_FORMAT,
-	DEFAULT_COIN_DATA
+	DEFAULT_COIN_DATA,
+	IS_HEX
 } from '../../config/constants';
 import { Link } from 'react-router';
 import { isMobile } from 'react-device-detect';
@@ -21,7 +22,8 @@ export const AssetsBlock = ({
 	onOpenDialog,
 	bankaccount,
 	navigate,
-	isValidBase
+	isValidBase,
+	openContactUs
 }) => (
 	<div className="wallet-assets_block">
 		<table className="wallet-assets_block-table">
@@ -119,22 +121,34 @@ export const AssetsBlock = ({
 						);
 					})}
 			</tbody>
-			{!isMobile && BASE_CURRENCY && isValidBase && (
-				<tfoot>
+			{BASE_CURRENCY && IS_HEX
+				? <tfoot>
 					<tr>
-						<td />
-						<td />
-						<td />
-						<td />
-						<td>
-							<div className="d-flex">
-								<div className="mr-4">{STRINGS.WALLET_TABLE_TOTAL}</div>
-								<div style={{ direction: 'rtl' }}>{totalAssets}</div>
-							</div>
+						<td colSpan={5}>
+							{STRINGS.formatString(
+								STRINGS.WALLET_DEPOSIT_USD,
+								<span className="blue-link pointer" onClick={openContactUs}>{STRINGS.CONTACT_US_TEXT}</span>
+							)}
 						</td>
 					</tr>
 				</tfoot>
-			)}
+				: !isMobile && BASE_CURRENCY && isValidBase
+					? (<tfoot>
+						<tr>
+							<td />
+							<td />
+							<td />
+							<td />
+							<td>
+								<div className="d-flex">
+									<div className="mr-4">{STRINGS.WALLET_TABLE_TOTAL}</div>
+									<div style={{ direction: 'rtl' }}>{totalAssets}</div>
+								</div>
+							</td>
+						</tr>
+					</tfoot>
+					) : null
+			}
 		</table>
 	</div>
 );

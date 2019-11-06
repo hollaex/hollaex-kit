@@ -4,7 +4,6 @@ $app-bar--arrow-size: 0.4rem;
 $notification-size: 1.5rem;
 $app-menu-notification-size: 1.2rem;
 $app-bar-add-tab-red: #ff0000;
-$app-bar-pairs-up: $buy;
 
 .dark-theme {
 	.app_bar {
@@ -53,11 +52,11 @@ $app-bar-pairs-up: $buy;
 		}
 
 		.app-price-diff-down {
-			color: $dark-sell;
+			color: $dark-app-bar-pairs-down;
 		}
 
 		.app-price-diff-up {
-			color: $dark-buy;
+			color: $dark-app-bar-pairs-up;
 		}
 
 		.app-bar-price_diff_up:before {
@@ -115,7 +114,7 @@ $app-bar-pairs-up: $buy;
 				}
 			}
 		}
-		.security_notification, .verification_notification {
+		.security_notification, .verification_notification, .wallet_notification {
 			color: $colors-notification-inactive-red !important;
 		
 			svg {
@@ -394,7 +393,7 @@ $app-bar-pairs-up: $buy;
 	}
 
 	.app-price-diff-down {
-		color: $sell;
+		color: $app-bar-pairs-down;
 	}
 
 	.app-price-diff-up {
@@ -515,7 +514,7 @@ $app-bar-pairs-up: $buy;
 				}
 			}
 		}
-		.security_notification, .verification_notification {
+		.security_notification, .verification_notification, .wallet_notification {
 			color: $colors-notification-inactive-red;
 			// padding-left: 0;
 		
@@ -543,16 +542,14 @@ $app-bar-pairs-up: $buy;
 			line-height: 1;
 			font-weight: bold;
 		}
-		.security_selected {
+		.security_selected,
+		.verification_selected,
+		.wallet_selected {
 			background-color: $colors-notifications-red !important;
 		}
-		.verification_selected {
-			background-color: $colors-notifications-red !important;
-		}
-		.verification_selected_inactive {
-			background-color: $colors-notification-inactive-red !important;
-		}
-		.security_selected_inactive {
+		.security_selected_inactive,
+		.verification_selected_inactive,
+		.wallet_selected_inactive {
 			background-color: $colors-notification-inactive-red !important;
 		}
 
@@ -693,7 +690,7 @@ $app-bar-pairs-up: $buy;
 			}
 		}
 	}
-	.security_notification, .verification_notification {
+	.security_notification, .verification_notification, .wallet_notification {
 		color: $colors-notification-inactive-red;
 	
 		svg {

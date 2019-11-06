@@ -7,8 +7,17 @@
         .trader-wrapper-icon{
             svg{
                .level_icon {
-                   fill: #a3a1ca;
+                   fill: $dark-icon-color;
                }
+               .account-summary {
+                    stroke: $dark-icon-color;
+                }
+                .account-summary1 {
+                    fill: $dark-icon-color;
+                }
+                .hap-icon {
+                    fill: $dark-icon-color;
+                }
             }
         }
         
