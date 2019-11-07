@@ -92,7 +92,9 @@ export const generateTradeHeaders = (symbol, pairs, coins) => {
 			renderCell: ({ side = '' }, key, index) => {
 				return (
 					<td key={index} className={classnames('cell_box-type')}>
-						<div className={classnames(side)}>{STRINGS.SIDES_VALUES[side]}</div>
+						<div className={classnames(side)}>
+							{STRINGS.SIDES_VALUES[side]}
+						</div>
 					</td>
 				);
 			}
@@ -161,7 +163,10 @@ export const generateTradeHeaders = (symbol, pairs, coins) => {
 						<td key={index}>
 							{STRINGS.formatString(
 								CURRENCY_PRICE_FORMAT,
-								formatToCurrency(calculatePrice(quick, price, size), min),
+								formatToCurrency(
+									calculatePrice(quick, price, size),
+									min
+								),
 								rest.symbol.toUpperCase()
 							)}
 						</td>
@@ -197,7 +202,10 @@ export const generateTradeHeaders = (symbol, pairs, coins) => {
 						<td key={index}>
 							{STRINGS.formatString(
 								CURRENCY_PRICE_FORMAT,
-								formatToCurrency(calculateAmount(quick, price, size), min),
+								formatToCurrency(
+									calculateAmount(quick, price, size),
+									min
+								),
 								rest.symbol.toUpperCase()
 							)}
 						</td>
@@ -205,7 +213,10 @@ export const generateTradeHeaders = (symbol, pairs, coins) => {
 				} else {
 					return (
 						<td>
-							{formatToCurrency(calculateAmount(quick, price, size), 0.0001)}
+							{formatToCurrency(
+								calculateAmount(quick, price, size),
+								0.0001
+							)}
 						</td>
 					);
 				}
@@ -214,7 +225,14 @@ export const generateTradeHeaders = (symbol, pairs, coins) => {
 		{
 			label: STRINGS.FEE,
 			key: 'fee',
-			exportToCsv: ({ fee = 0, price = 0, size = 0, quick, symbol, side }) => {
+			exportToCsv: ({
+				fee = 0,
+				price = 0,
+				size = 0,
+				quick,
+				symbol,
+				side
+			}) => {
 				if (!fee) {
 					return calculateFeeAmount(fee);
 				}
@@ -235,7 +253,11 @@ export const generateTradeHeaders = (symbol, pairs, coins) => {
 					calculateFeeAmount(fee, quick, price, size, side);
 				}
 			},
-			renderCell: ({ fee, price, size, quick, symbol, side }, key, index) => {
+			renderCell: (
+				{ fee, price, size, quick, symbol, side },
+				key,
+				index
+			) => {
 				if (!fee) {
 					return <td key={index}> {calculateFeeAmount(fee)}</td>;
 				}
@@ -315,7 +337,11 @@ export const generateWithdrawalsHeaders = (
 		{
 			label: STRINGS.STATUS,
 			key: 'status',
-			exportToCsv: ({ status = false, dismissed = false, rejected = false }) =>
+			exportToCsv: ({
+				status = false,
+				dismissed = false,
+				rejected = false
+			}) =>
 				status
 					? STRINGS.COMPLETE
 					: dismissed || rejected
@@ -378,7 +404,7 @@ export const generateWithdrawalsHeaders = (
 							fee,
 							data.symbol.toUpperCase()
 						)}
-					</td> /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/
+					</td> /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/ /*: <td key={index}>{fee}</td>*/
 					// : <td key={index}>{fee}</td>
 				) /*: <td key={index}>{fee}</td>*/);
 			}
@@ -396,11 +422,23 @@ export const generateWithdrawalsHeaders = (
 			key: 'transaction_id',
 			exportToCsv: ({ transaction_id = '' }) => transaction_id,
 			renderCell: (
-				{ transaction_id = '', currency, status, dismissed, id, amount, type },
+				{
+					transaction_id = '',
+					currency,
+					status,
+					dismissed,
+					id,
+					amount,
+					type
+				},
 				key,
 				index
 			) => {
-				if (status === false && dismissed === false && type === 'withdrawal') {
+				if (
+					status === false &&
+					dismissed === false &&
+					type === 'withdrawal'
+				) {
 					// Pending Status
 					return (
 						<td key={index}>

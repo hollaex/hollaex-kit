@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
 import { Accordion } from '../';
-import { BASE_CURRENCY, DEFAULT_COIN_DATA } from '../../config/constants';
+import { BASE_CURRENCY, DEFAULT_COIN_DATA, IS_HEX } from '../../config/constants';
 import {
 	calculateBalancePrice,
 	calculatePrice,
@@ -12,7 +12,7 @@ import {
 } from '../../utils/currency';
 import WalletSection from './Section';
 import { DonutChart } from '../../components';
-// import STRINGS from '../../config/localizedStrings';
+import STRINGS from '../../config/localizedStrings';
 
 class Wallet extends Component {
 	state = {
@@ -74,38 +74,50 @@ class Wallet extends Component {
 		const totalAssets = calculateBalancePrice(balance, prices, coins);
 		Object.keys(coins).forEach((currency) => {
 			const { symbol, min } = coins[currency] || DEFAULT_COIN_DATA;
-			const currencyBalance = calculatePrice(balance[`${symbol}_balance`], prices[currency]);
-			const balancePercent = calculatePricePercentage(currencyBalance, totalAssets);
+			const currencyBalance = calculatePrice(
+				balance[`${symbol}_balance`],
+				prices[currency]
+			);
+			const balancePercent = calculatePricePercentage(
+				currencyBalance,
+				totalAssets
+			);
 			data.push({
 				...coins[currency],
 				balance: balancePercent,
 				balanceFormat: formatToCurrency(currencyBalance, min),
 				balancePercentage: donutFormatPercentage(balancePercent)
 			});
-			sections.push(this.generateSection(symbol, price, balance, orders, coins));
+			sections.push(
+				this.generateSection(symbol, price, balance, orders, coins)
+			);
 		});
 
-		this.setState({ sections, chartData: data, totalAssets: formatToCurrency(totalAssets, baseCoin.min) });
+		this.setState({
+			sections,
+			chartData: data,
+			totalAssets: formatToCurrency(totalAssets, baseCoin.min)
+		});
 	};
 
 	goToWallet = () => browserHistory.push('/wallet');
 
 	render() {
-		const { sections, chartData } = this.state;
-		// const { isValidBase } = this.props;
+		const { sections, totalAssets, chartData } = this.state;
+		const { isValidBase } = this.props;
 
 		if (Object.keys(this.props.balance).length === 0) {
 			return <div />;
 		}
-		// const { symbol = '' } = this.props.coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
+		const { symbol = '' } = this.props.coins[BASE_CURRENCY] || {};
 
 		return (
 			<div className="wallet-wrapper">
 				<div className="donut-container pointer" onClick={this.goToWallet}>
-					<DonutChart chartData={chartData} coins={this.props.coins} />
+					<DonutChart coins={this.props.coins} chartData={chartData} />
 				</div>
 				<Accordion sections={sections} />
-				{/* {BASE_CURRENCY && isValidBase && (
+				{BASE_CURRENCY && isValidBase && !IS_HEX ? (
 					<div className="wallet_section-wrapper wallet_section-total_asset d-flex flex-column">
 						<div className="wallet_section-title">
 							{STRINGS.WALLET.TOTAL_ASSETS}
@@ -115,7 +127,7 @@ class Wallet extends Component {
 							<span>{totalAssets}</span>
 						</div>
 					</div>
-				)} */}
+				) : null}
 			</div>
 		);
 	}

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
 import { Scrollbars } from 'react-custom-scrollbars';
-import { cloneDeep } from 'lodash';
+import  { cloneDeep } from 'lodash';
 import { ChatMessage } from './';
 import { Loader } from '../';
 import { isLoggedIn } from '../../utils/token';
@@ -14,7 +14,7 @@ class ChatMessageList extends Component {
 	};
 
 	componentDidUpdate(prevProps) {
-		if (this.shouldScroll(prevProps)) {
+		if(this.shouldScroll(prevProps)) {
 			this.scrollbarsRef.scrollToBottom();
 		}
 	}
@@ -51,7 +51,7 @@ class ChatMessageList extends Component {
 		this.setState({
 			containerHeight: this.scrollbarsRef.container.clientHeight
 		});
-		if (isMobile) {
+		if(isMobile){
 			this.scrollbarsRef.scrollToBottom();
 		}
 	}
@@ -63,8 +63,7 @@ class ChatMessageList extends Component {
 			chatInitialized,
 			userInitialized,
 			usernameInitalized,
-			removeMessage,
-			is_hap
+			removeMessage
 		} = this.props;
 
 		return (
@@ -90,35 +89,33 @@ class ChatMessageList extends Component {
 				onUpdate={this.scrollUpdate}
 			>
 				{(chatInitialized && usernameInitalized) ||
-					(!usernameInitalized && userInitialized) ||
-					(chatInitialized && !isLoggedIn()) ? (
-						messages.map(({ id, username, to, messageType, message, timestamp, verification_level }, index) => (
-							<ChatMessage
-								key={index}
-								id={id}
-								username={username}
-								ownMessage={username === this.props.username}
-								to={to}
-								userType={userType}
-								verification_level={verification_level}
-								messageType={messageType}
-								messageContent={message}
-								removeMessage={removeMessage}
-								timestamp={timestamp}
-								is_hap={is_hap}
-							/>
-						))
-					) : (
-						<Loader />
-					)}
+				(!usernameInitalized && userInitialized) ||
+				(chatInitialized && !isLoggedIn()) ? (
+					messages.map(({ id, username, to, messageType, message, timestamp, verification_level }, index) => (
+						<ChatMessage
+							key={index}
+							id={id}
+							username={username}
+							ownMessage={username === this.props.username}
+							to={to}
+							userType={userType}
+							verification_level={verification_level}
+							messageType={messageType}
+							messageContent={message}
+							removeMessage={removeMessage}
+							timestamp={timestamp}
+						/>
+					))
+				) : (
+					<Loader />
+				)}
 			</Scrollbars>
 		);
 	}
 }
 
 const mapStateToProps = (store) => ({
-	activeTheme: store.app.theme,
-	is_hap: store.user.is_hap
+	activeTheme: store.app.theme
 });
 
 export default connect(mapStateToProps)(ChatMessageList);

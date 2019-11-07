@@ -87,7 +87,7 @@ class PairTabs extends Component {
             clearTimeout(timeOut);
         }
     }
-    
+
 
     initTabs = (pairs, activePair) => {
         let tabs = localStorage.getItem('tabs');
@@ -144,7 +144,7 @@ class PairTabs extends Component {
     onAddTabClick = pair => {
         this.setState({ selectedAddTab: pair });
     };
-    
+
     onTabChange = pair => {
         const { selectedTabs, activeTabs, activePairTab, selectedToOpen } = this.state;
         const { activePath, pairs } = this.props;
@@ -253,7 +253,7 @@ class PairTabs extends Component {
         this.setTabsLocal({ ...sortedTabs, ...this.state.selectedTabs });
         this.setState({ activeTabs: { ...sortedTabs }, selectedTabs: { ...sortedTabs, ...this.state.selectedTabs } });
     };
-    
+
     handleSearch = (_, value) => {
         const { pairs, coins } = this.props;
         if (value) {
@@ -316,17 +316,16 @@ class PairTabs extends Component {
             }
             return null;
         })
-
         return (
             <div className="d-flex h-100">
                 {TabList}
                 <div className={
                     classnames(
-                        'app_bar-pair-content', 
-                        'd-flex', 
-                        'justify-content-between', 
-                        'px-2', 
-                        { 
+                        'app_bar-pair-content',
+                        'd-flex',
+                        'justify-content-between',
+                        'px-2',
+                        {
                             'active-tab-pair': isAddTab || (location.pathname === '/trade/add/tabs' && !Object.keys(selectedTabs).length)
                         })
                     }>
@@ -337,8 +336,8 @@ class PairTabs extends Component {
                         <span onClick={this.openAddTabMenu}>{STRINGS.ADD_TRADING_PAIR}</span>
                     : '' }
                     {isAddTab &&
-                        <AddTabList 
-                            symbols={symbols} 
+                        <AddTabList
+                            symbols={symbols}
                             pairs={pairs}
                             tickers={tickers}
                             coins={coins}

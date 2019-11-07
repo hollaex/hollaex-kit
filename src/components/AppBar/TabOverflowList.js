@@ -18,7 +18,7 @@ class TabOverflowList extends Component {
             event.target !== element &&
             !element.contains(event.target) &&
             !tickClicked) {
-            this.props.closeOverflowMenu();
+                this.props.closeOverflowMenu();
         }
         if (tickClicked) {
             tickClicked = false;
@@ -40,10 +40,10 @@ class TabOverflowList extends Component {
             <div id="tab-overflow-list" className="app-bar-add-tab-menu">
                 <div className="app-bar-tab-overflow-content">
                     {Object.keys(selectedTabs).map((pair, index) => {
-                        let menu = selectedTabs[pair] || DEFAULT_COIN_DATA;
+                        let menu = selectedTabs[pair] || {};
                         let { min, symbol = '' } = coins[menu.pair_base || BASE_CURRENCY] || DEFAULT_COIN_DATA;
                         let pairTwo = coins[menu.pair_2 || BASE_CURRENCY] || DEFAULT_COIN_DATA;
-                        let ticker = tickers[pair] || DEFAULT_COIN_DATA;
+                        let ticker = tickers[pair] || {};
                         const priceDifference = ticker.open === 0 ? 0 : ((ticker.close || 0) - (ticker.open || 0));
                         const tickerPercent = priceDifference === 0 || ticker.open === 0 ? 0 : ((priceDifference / ticker.open) * 100);
                         let priceDifferencePercent = tickerPercent === 'NaN' ? formatPercentage(tickerPercent) : formatPercentage(0);
@@ -56,13 +56,7 @@ class TabOverflowList extends Component {
                                     ? <ReactSVG path={ICONS.BLACK_CHECK} wrapperClassName="app-bar-tab-setting" />
                                     : <div className="app-bar-tab-setting"> </div>
                                 }
-                                <ReactSVG
-                                    path={
-                                        ICONS[`${menu.pair_base.toUpperCase()}_ICON`]
-                                            ? ICONS[`${menu.pair_base.toUpperCase()}_ICON`]
-                                            : ICONS.DEFAULT_ICON
-                                    }
-                                    wrapperClassName="app-bar-add-tab-icons" />
+                                <ReactSVG path={ICONS[`${menu.pair_base.toUpperCase()}_ICON`]} wrapperClassName="app-bar-add-tab-icons" />
                                 <div className="app_bar-pair-font">
                                     {symbol.toUpperCase()}/{pairTwo.symbol.toUpperCase()}:
                                 </div>

@@ -131,7 +131,11 @@ class Deposit extends Component {
 							>
 								<Button
 									onClick={this.onCopy}
-									label={copied ? STRINGS.SUCCESFUL_COPY : STRINGS.COPY_ADDRESS}
+									label={
+										copied
+											? STRINGS.SUCCESFUL_COPY
+											: STRINGS.COPY_ADDRESS
+									}
 								/>
 							</CopyToClipboard>
 						)}

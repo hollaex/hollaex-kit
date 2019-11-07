@@ -84,16 +84,16 @@ class Account extends Component {
 			activeTab = initialValues.activeTab;
 			activeDevelopers = initialValues.activeDevelopers;
 		}
-		// let verificationPending = false;
-		// if (verification_level < 1 && !full_name) {
-		// 	verificationPending = true;
-		// } else if (id_data.status === 0 || id_data.status === 2) {
-		// 	verificationPending = true;
-		// } else if (!phone_number) {
-		// 	verificationPending = true;
-		// } else if (!bank_account.filter(acc => acc.status === 0 || acc.status === 2).length) {
-		// 	verificationPending = true;
-		// }
+		let verificationPending = false;
+		if (verification_level < 1 && !full_name) {
+			verificationPending = true;
+		} else if (id_data.status === 0 || id_data.status === 2) {
+			verificationPending = true;
+		} else if (!phone_number) {
+			verificationPending = true;
+		} else if (!bank_account.filter(acc => acc.status === 0 || acc.status === 2).length) {
+			verificationPending = true;
+		}
 
 		const tabs = [
 			{
@@ -129,6 +129,7 @@ class Account extends Component {
 							icon={ICONS.TAB_SUMMARY}
 						/>
 					),
+				notifications: verificationPending ? '!' : '',
 				content: <Verification />
 			},
 			{
@@ -147,26 +148,6 @@ class Account extends Component {
 	};
 
 	setActiveTab = (activeTab) => {
-		let path = '';
-		switch (activeTab) {
-			case 0:
-				path = '/summary';
-				break;
-			case 1:
-				path = '/security';
-				break;
-			case 2:
-				path = '/verification';
-				break;
-			case 3:
-				path = '/settings';
-				break;
-			default:
-				path = '/account';
-		};
-		if (path) {
-			this.props.router.push(path);
-		}
 		this.setState({ activeTab });
 	};
 
@@ -175,7 +156,6 @@ class Account extends Component {
 	openContactForm = (data) => {
 		this.props.openContactForm(data);
 	};
-
 	goToVerification = () => this.props.router.push('/verification');
 
 	render() {

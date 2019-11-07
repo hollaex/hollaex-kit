@@ -1,57 +1,114 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import ReactSVG from 'react-svg';
 import { isMobile } from 'react-device-detect';
 
 import STRINGS from '../../../config/localizedStrings';
-import { ICONS } from '../../../config/constants';
+import { ICONS, IS_HEX } from '../../../config/constants';
 
-
-const TraderAccounts = ({ account = {}, activeTheme, isAccountDetails = false, onFeesAndLimits, onUpgradeAccount, logout, onInviteFriends, onStakeToken, is_hap }) => {
-    // let limitLevel = limits.filter(obj => obj.verification_level === account.level);
-    return (
-        <div className="d-flex">
-            <div>
-                <ReactSVG path={is_hap === true ? ICONS.HAP_ACCOUNT_ICON : ICONS.ACCOUNT_SUMMARY} wrapperClassName="trader-account-icon" />
-            </div>
-            <div className="trade-account-secondary-txt summary-content-txt">
-                {isAccountDetails && <div className="summary-block-title mb-3">{account.fullName}</div>}
-                <div className="account-details-content">
-                    <div className="mb-2">{
-                        is_hap
-                            ? <div>{STRINGS.SUMMARY.HAP_ACCOUNT_TXT}</div>
-                            : <div>
-                                <div> {STRINGS.SUMMARY.TRADER_ACCOUNT_TXT_1}</div>
-                                <div> {STRINGS.SUMMARY.TRADER_ACCOUNT_TXT_2}</div>
-                            </div>
-                    }
-                    </div>
-                </div>
-                {!isAccountDetails && <div>
-
-                    <div className="trade-account-link mb-2">
-                        <span
-                            className="pointer" onClick={onInviteFriends}>
-                            {STRINGS.REFERRAL_LINK.TITLE.toUpperCase()}
-                        </span>
-
-                    </div>
-                    <div className="trade-account-link mb-2">
-                        <span
-                            className="pointer" onClick={onStakeToken}>
-                            {STRINGS.STAKE_TOKEN.TITLE.toUpperCase()}
-                        </span>
-
-                    </div>
-                </div>
-                }
-                {isMobile ?
-                    <div className="trade-account-link my-2" onClick={() => logout()} >
-                        {STRINGS.LOGOUT.toUpperCase()}
-                    </div>
-                    : ''}
-            </div>
-        </div>
-    );
+const TraderAccounts = ({
+	user = {},
+	isAccountDetails = false,
+	onFeesAndLimits,
+	onUpgradeAccount,
+	logout,
+	onInviteFriends,
+	verification_level,
+	selectedAccount,
+	onStakeToken
+}) => {
+	const level = selectedAccount ? selectedAccount : verification_level;
+	const Title = STRINGS.formatString(STRINGS.SUMMARY.LEVEL_OF_ACCOUNT, verification_level);
+	let description = STRINGS.SUMMARY[`LEVEL_${verification_level}_TXT`]
+		? STRINGS.SUMMARY[`LEVEL_${verification_level}_TXT`]
+		: STRINGS.SUMMARY.LEVEL_TXT_DEFAULT;
+	let icon = ICONS[`LEVEL_ACCOUNT_ICON_${verification_level}`]
+		? ICONS[`LEVEL_ACCOUNT_ICON_${verification_level}`]
+		: ICONS.LEVEL_ACCOUNT_ICON_4;
+	if (IS_HEX) {
+		description = user.is_hap
+			? STRINGS.SUMMARY.HAP_ACCOUNT_TXT
+			: STRINGS.SUMMARY.TRADER_ACCOUNT_HEX_TEXT;
+		icon = user.is_hap === true
+			? ICONS.HAP_ACCOUNT_ICON
+			: ICONS.ACCOUNT_SUMMARY;
+	}
+	return (
+		<div className="d-flex">
+			<div>
+				<ReactSVG
+					path={icon}
+					wrapperClassName='trader-wrapper-icon'
+				/>
+			</div>
+			<div className="trade-account-secondary-txt summary-content-txt">
+				{isAccountDetails && (
+					<div className="summary-block-title mb-3">
+						{Title}
+					</div>
+				)}
+				<div className="account-details-content">
+					<div className="mb-2">
+						{description}
+					</div>
+				</div>
+				{/* {!!limitLevel.length && <div
+                    className="trade-account-link mb-2">
+                    <span
+                        className="pointer"
+                        onClick={() => onFeesAndLimits(account)}>
+                        {STRINGS.SUMMARY.VIEW_FEE_STRUCTURE.toUpperCase()}
+                    </span>
+                </div>} */}
+				{!isAccountDetails && (<Fragment>
+					<div className="trade-account-link mb-2">
+						<span className="pointer" onClick={onInviteFriends}>
+							{(IS_HEX
+								? STRINGS.REFERRAL_LINK.HEX_TITLE
+								: STRINGS.REFERRAL_LINK.TITLE).toUpperCase()
+							}
+						</span>
+					</div>
+					{IS_HEX
+						? <div className="trade-account-link mb-2">
+							<span
+								className="pointer" onClick={onStakeToken}>
+								{STRINGS.STAKE_TOKEN.TITLE.toUpperCase()}
+							</span>
+						</div>
+						: null
+					}
+				</Fragment>
+				)}
+				{!IS_HEX
+					? <Fragment>
+						<div className="trade-account-link mb-2">
+							<span
+								className="pointer"
+								onClick={() => onFeesAndLimits(level)}
+							>
+								{STRINGS.SUMMARY.VIEW_FEE_STRUCTURE.toUpperCase()}
+							</span>
+						</div>
+						{!isAccountDetails && verification_level.level >= 1 && verification_level.level < 4 && (
+							<div className="trade-account-link mb-2">
+								<span className="pointer" onClick={onUpgradeAccount}>
+									{STRINGS.SUMMARY.UPGRADE_ACCOUNT.toUpperCase()}
+								</span>
+							</div>
+						)}
+					</Fragment>
+					: null
+				}
+				{!isAccountDetails && isMobile ? (
+					<div className="trade-account-link my-2" onClick={() => logout()}>
+						{STRINGS.LOGOUT.toUpperCase()}
+					</div>
+				) : (
+						''
+					)}
+			</div>
+		</div>
+	);
 };
 
 export default TraderAccounts;

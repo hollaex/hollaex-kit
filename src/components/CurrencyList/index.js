@@ -83,7 +83,7 @@ class CurrencyList extends Component {
 						</div>
 					)
 				})}
-				{focusedSymbol && <MarketList markets={markets} />}
+				{focusedSymbol && <MarketList markets={markets}  />}
 			</div>
 		);
 	}

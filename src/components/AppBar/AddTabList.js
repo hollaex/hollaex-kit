@@ -45,7 +45,7 @@ class AddTabList extends Component {
             });
         }
         const selectedtabPairs = Object.keys(selectedTabs);
-
+    
         return (
             <div id="add-tab-list-menu" className={classnames("app-bar-add-tab-menu", { "tab-menu-left": !selectedtabPairs.length })}>
                 <div className="app-bar-tab-menu d-flex justify-content-between">
@@ -79,8 +79,8 @@ class AddTabList extends Component {
                     </div>
                     {Object.keys(tabMenu).length
                         ? Object.keys(tabMenu).map((pair, index) => {
-                            let menu = tabMenu[pair] || DEFAULT_COIN_DATA;
-                            let ticker = tickers[pair] || DEFAULT_COIN_DATA;
+                            let menu = tabMenu[pair] || {};
+                            let ticker = tickers[pair] || {};
                             let { min, symbol = '' } = coins[menu.pair_base || BASE_CURRENCY] || DEFAULT_COIN_DATA;
                             let pairTwo = coins[menu.pair_2 || BASE_CURRENCY] || DEFAULT_COIN_DATA;
                             const priceDifference = ticker.open === 0 ? 0 : ((ticker.close || 0) - (ticker.open || 0));
@@ -97,13 +97,7 @@ class AddTabList extends Component {
                                             : <ReactSVG path={ICONS.TAB_PLUS} wrapperClassName="app-bar-tab-setting" />
                                         }
                                     </div>
-                                    <ReactSVG
-                                        path={
-                                            ICONS[`${menu.pair_base.toUpperCase()}_ICON`]
-                                                ? ICONS[`${menu.pair_base.toUpperCase()}_ICON`]
-                                                : ICONS.DEFAULT_ICON
-                                        }
-                                        wrapperClassName="app-bar-add-tab-icons" />
+                                    <ReactSVG path={ICONS[`${menu.pair_base.toUpperCase()}_ICON`]} wrapperClassName="app-bar-add-tab-icons" />
                                     <div className="app_bar-pair-font">
                                         {symbol.toUpperCase()}/{pairTwo.symbol.toUpperCase()}:
                                     </div>
@@ -117,8 +111,7 @@ class AddTabList extends Component {
                                         {`(${priceDifferencePercent})`}
                                     </div>
                                 </div>
-                            )
-                        }
+                            )}
                         )
                         : <div className="app-bar-add-tab-content-list d-flex align-items-center">
                             No data...

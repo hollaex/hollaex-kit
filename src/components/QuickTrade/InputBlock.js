@@ -88,7 +88,7 @@ class InputBlock extends Component {
 	render() {
 		const { text, className, error, orderLimits, pairs, coins } = this.props;
 		const { value, errorValue, symbol } = this.state;
-		const pair = pairs[symbol] || DEFAULT_COIN_DATA;
+		const pair = pairs[symbol] || {};
 		const baseCoin = coins[pair.pair_base] || DEFAULT_COIN_DATA;
 		const shortName = baseCoin.symbol.toUpperCase();
 		const errorMessage = this.renderErrorMessage(errorValue) || error;

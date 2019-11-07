@@ -26,8 +26,6 @@ export const NOTIFICATIONS = {
 	WITHDRAWAL_EMAIL_CONFIRMATION: 'WITHDRAWAL_EMAIL_CONFIRMATION',
 	INVITE_FRIENDS: 'INVITE_FRIENDS',
 	STAKE_TOKEN:'STAKE_TOKEN',
-	DEPOSIT_INFO: 'DEPOSIT_INFO',
-	HEX_SUCCESS_ACCESS :'HEX_SUCCESS_ACCESS'
 };
 export const CONTACT_FORM = 'CONTACT_FORM';
 export const HELPFUL_RESOURCES_FORM = 'HELPFUL_RESOURCES_FORM';
@@ -45,14 +43,13 @@ export const RISK_PORTFOLIO_ORDER_WARING = 'RISK_PORTFOLIO_ORDER_WARING';
 export const RISKY_ORDER = 'RISKY_ORDER';
 export const LOGOUT_CONFORMATION = 'LOGOUT_CONFORMATION';
 export const SET_CURRENCIES = 'SET_CURRENCIES';
-export const REQUEST_HEX_ACCESS = 'REQUEST_HEX_ACCESS';
 export const SET_CONFIG = 'SET_CONFIG';
+export const SET_INFO = 'SET_INFO';
 export const SET_VALID_BASE_CURRENCY = 'SET_VALID_BASE_CURRENCY';
 
 export const USER_TYPES = {
 	USER_TYPE_NORMAL: 'normal',
-	USER_TYPE_ADMIN: 'admin',
-	USER_TYPE_HAP: 'hap'
+	USER_TYPE_ADMIN: 'admin'
 };
 
 export const MESSAGE_TYPES = {
@@ -179,18 +176,13 @@ export const changePair = (pair) => ({
 
 export const getTickers = () => {
 	return (dispatch) => {
-		axios
-			.get('/ticker/all')
-			.then((res) => {
-				dispatch({
-					type: SET_TICKERS,
-					payload: res.data
-				});
-			})
-			.catch((err) => {
-				// console.log('err', err);
+		axios.get('/ticker/all').then((res) => {
+			dispatch({
+				type: SET_TICKERS,
+				payload: res.data
 			});
-	}
+		});
+	};
 };
 
 export const setTickers = (data) => ({
@@ -226,6 +218,13 @@ export const setConfig = (config) => {
 	}
 };
 
+export const setInfo = (info) => ({
+	type: SET_INFO,
+	payload: {
+		info
+	}
+});
+
 export const setValidBaseCurrency = (isValidBase) => ({
 	type: SET_VALID_BASE_CURRENCY,
 	payload: {
@@ -241,3 +240,16 @@ export const openRiskPortfolioOrderWarning = (data = {}) =>
 
 export const logoutconfirm = (data = {}) =>
 	setNotification(LOGOUT_CONFORMATION, data, true);
+
+export const getExchangeInfo = () => {
+	return (dispatch) => {
+		axios.get('/constant').then((res) => {
+			if (res && res.data && res.data.info) {
+				dispatch({
+					type: SET_INFO,
+					payload: { info: res.data.info }
+				});
+			}
+		});
+	};
+};

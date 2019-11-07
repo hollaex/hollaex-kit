@@ -1,5 +1,5 @@
 import axios from 'axios';
-// import { APP_TITLE } from '../config/constants';
+import { APP_TITLE } from '../config/constants';
 
 export const getChartConfig = () => {
 	// return axios({
@@ -26,9 +26,9 @@ export const getChartSymbol = (symbol, tickSize) => {
 	// });
 	return new Promise((resolve) => {
 		resolve({
-			name: `${symbol.toUpperCase()}`,
+			name: `${APP_TITLE.toUpperCase()}:${symbol.toUpperCase()}`,
 			ticker: symbol,
-			exchange: 'hollaex'.toUpperCase(),
+			exchange: APP_TITLE.toUpperCase(),
 			has_intraday: true,
 			has_daily: true,
 			has_weekly_and_monthly: true,

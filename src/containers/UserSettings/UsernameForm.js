@@ -22,9 +22,12 @@ export const generateUsernameFormValues = (disabled = false) => ({
 
 class Form extends Component {
 	componentDidUpdate(prevProps) {
-        if (JSON.stringify(this.props.initialValues) !== JSON.stringify(prevProps.initialValues)) {
-            this.props.initialize(this.props.initialValues)
-        }
+		if (
+			JSON.stringify(this.props.initialValues) !==
+			JSON.stringify(prevProps.initialValues)
+		) {
+			this.props.initialize(this.props.initialValues);
+		}
 	}
 
 	render() {
@@ -36,17 +39,25 @@ class Form extends Component {
 			valid,
 			formFields
 		} = this.props;
-		return(
+		return (
 			<form onSubmit={handleSubmit}>
 				{renderFields(formFields)}
-				{error && <div className="warning_text">{getErrorLocalized(error)}</div>}
-				{!formFields.username.disabled && <FieldError className="warning_text mb-4" displayError={true} error={STRINGS.USERNAME_WARNING} />}
+				{error && (
+					<div className="warning_text">{getErrorLocalized(error)}</div>
+				)}
+				{!formFields.username.disabled && (
+					<FieldError
+						className="warning_text mb-4"
+						displayError={true}
+						error={STRINGS.USERNAME_WARNING}
+					/>
+				)}
 				<Button
 					label={STRINGS.SETTING_BUTTON}
 					disabled={pristine || submitting || !valid}
 				/>
 			</form>
-		)
+		);
 	}
 }
 export default reduxForm({

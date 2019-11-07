@@ -26,6 +26,7 @@ export const generateInitialValues = (symbol, coins = {}) => {
 	}
 	return initialValues;
 };
+
 export const generateFormValues = (
 	symbol,
 	available = 0,

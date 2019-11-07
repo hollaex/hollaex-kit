@@ -13,30 +13,18 @@ import {
 	BALANCE_ERROR,
 	DEFAULT_COIN_DATA
 } from '../../config/constants';
+
 import ToogleButton from './ToogleButton';
 import ReviewBlock from './ReviewBlock';
 import InputBlock from './InputBlock';
 
-// const GROUP_CLASSES = [...FLEX_CENTER_CLASSES, 'flex-column'];
-// const getInitialTab = (path, symbols, coins) => {
-// 	let activeTab = -1;
-// 	const baseCoin = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
-// 	symbols.map((currency, index) => {
-// 		const { symbol } = coins[currency] || DEFAULT_COIN_DATA;
-// 		if (path === `${symbol.toLowerCase()}-${baseCoin.symbol.toLowerCase()}`) {
-// 			activeTab = index;
-// 		}
-// 	});
-
-// 	return {
-// 		activeTab,
-// 	};
-// };
 class QuickTrade extends Component {
 	state = {
 		side: STRINGS.SIDES[0].value,
-		value: 1,
+		value: 0.1,
 		symbol: '',
+		tabs: [],
+		activeTab: -1,
 		currencies: []
 	};
 
@@ -62,7 +50,6 @@ class QuickTrade extends Component {
 			this.onChangeSymbol(nextProps.symbol);
 		}
 	}
-
 	onChangeSymbol = (symbol) => {
 		this.setState({ symbol });
 		this.requestValue({
@@ -71,7 +58,9 @@ class QuickTrade extends Component {
 			side: this.state.side
 		});
 	};
-
+	goToPair = (pair) => {
+		browserHistory.push(`/quick-trade/${pair}`)
+	};
 	onToogleSide = () => {
 		const SIDES = STRINGS.SIDES;
 
@@ -86,10 +75,6 @@ class QuickTrade extends Component {
 		if (this.props.onChangeSide) {
 			this.props.onChangeSide(side);
 		}
-	};
-
-	goToPair = (pair) => {
-		browserHistory.push(`/quick-trade/${pair}`)
 	};
 
 	onChangeValue = (value) => {
@@ -120,7 +105,7 @@ class QuickTrade extends Component {
 						// ...GROUP_CLASSES
 					)}
 				>
-					<ReactSVG path={ICONS.QUICK_TRADE} wrapperClassName={isMobile ? 'quick_trade-tab-icon' : "quick_trade-icon"} />
+					<ReactSVG path={ isMobile ? ICONS.SIDEBAR_QUICK_TRADING_INACTIVE: ICONS.QUICK_TRADE} wrapperClassName= {isMobile ?'quick_trade-tab-icon' :"quick_trade-icon"} />
 					<div className={classnames("title text-capitalize", ...FLEX_CENTER_CLASSES)}>
 						{STRINGS.formatString(
 							STRINGS.QUICK_TRADE_COMPONENT.TRADE_TITLE,
@@ -180,9 +165,6 @@ class QuickTrade extends Component {
 					)}
 				>
 					<ReviewBlock
-						symbol={symbol}
-						pairs={pairs}
-						coins={coins}
 						text={STRINGS.QUICK_TRADE_COMPONENT.TOTAL_COST}
 						value={data.price || 0}
 					/>
@@ -215,8 +197,8 @@ class QuickTrade extends Component {
 }
 
 QuickTrade.defaultProps = {
-	onRequestMarketValue: () => { },
-	onReviewQuickTrade: () => { },
+	onRequestMarketValue: () => {},
+	onReviewQuickTrade: () => {},
 	estimatedValue: 0,
 	disabled: false
 };

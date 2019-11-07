@@ -3,7 +3,12 @@ import { reduxForm } from 'redux-form';
 import { isMobile } from 'react-device-detect';
 import renderFields from '../../components/Form/factoryFields';
 import { Button } from '../../components';
-import { required, minValue, maxValue, step } from '../../components/Form/validations';
+import {
+	required,
+	minValue,
+	maxValue,
+	step
+} from '../../components/Form/validations';
 import { getErrorLocalized } from '../../utils/errors';
 import STRINGS from '../../config/localizedStrings';
 
@@ -29,7 +34,7 @@ export const generateFormValues = () => ({
 		step: orderbook_level_step,
 		min: orderbook_level_min,
 		max: orderbook_level_max,
-		fullWidth: isMobile,
+		fullWidth: isMobile
 		// notification: {
 		// 		status: 'information',
 		// 		iconPath: ICONS.BLUE_PLUS,
@@ -40,12 +45,15 @@ export const generateFormValues = () => ({
 	}
 });
 
-class Form extends Component{
+class Form extends Component {
 	componentDidUpdate(prevProps) {
-        if (JSON.stringify(this.props.initialValues) !== JSON.stringify(prevProps.initialValues)) {
-            this.props.initialize(this.props.initialValues)
-        }
-    }
+		if (
+			JSON.stringify(this.props.initialValues) !==
+			JSON.stringify(prevProps.initialValues)
+		) {
+			this.props.initialize(this.props.initialValues);
+		}
+	}
 
 	render() {
 		const {
@@ -59,7 +67,9 @@ class Form extends Component{
 		return (
 			<form onSubmit={handleSubmit}>
 				{renderFields(formFields)}
-				{error && <div className="warning_text">{getErrorLocalized(error)}</div>}
+				{error && (
+					<div className="warning_text">{getErrorLocalized(error)}</div>
+				)}
 				<Button
 					label={STRINGS.SETTING_BUTTON}
 					disabled={pristine || submitting || !valid}
@@ -67,7 +77,7 @@ class Form extends Component{
 			</form>
 		);
 	}
-} 
+}
 
 export default reduxForm({
 	form: 'SettingsForm'

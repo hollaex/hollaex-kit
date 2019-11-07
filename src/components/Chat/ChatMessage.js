@@ -42,7 +42,7 @@ class ChatMessageWithText extends Component {
 	};
 
 	render() {
-		const { username, to, messageContent, ownMessage, timestamp, verification_level, is_hap } = this.props;
+		const { username, to, messageContent, ownMessage, timestamp, verification_level } = this.props;
 		const { maxLines } = this.state;
 		return (
 			<div className={classnames('nonmobile')}>
@@ -51,10 +51,9 @@ class ChatMessageWithText extends Component {
 					<div className="mx-2">
 						{verification_level === 3 || verification_level >= 4
 							? <ReactSVG
-								path={ownMessage && is_hap ? ICONS.HAP_ACCOUNT_ICON :
-									verification_level >= 4
-										? ICONS.LEVEL_ACCOUNT_ICON_4
-										: ICONS[`LEVEL_ACCOUNT_ICON_${verification_level}`]
+								path={verification_level >= 4
+									? ICONS.LEVEL_ACCOUNT_ICON_4
+									: ICONS[`LEVEL_ACCOUNT_ICON_${verification_level}`]
 								}
 								wrapperClassName="user-icon mr-1" />
 							: <div className="user-icon mr-1"></div>}
@@ -67,14 +66,14 @@ class ChatMessageWithText extends Component {
 						{ownMessage ? (
 							<div className="d-inline message">{messageContent}</div>
 						) : (
-								<TruncateMarkup
-									className="d-inline message"
-									lines={maxLines}
-									ellipsis={<ReadMore onClick={() => this.showMore()} />}
-								>
-									<div className="d-inline message">{messageContent}</div>
-								</TruncateMarkup>
-							)}
+							<TruncateMarkup
+								className="d-inline message"
+								lines={maxLines}
+								ellipsis={<ReadMore onClick={() => this.showMore()} />}
+							>
+								<div className="d-inline message">{messageContent}</div>
+							</TruncateMarkup>
+						)}
 					</div>
 				</div>
 			</div>
@@ -92,16 +91,7 @@ class ChatMessageWithImage extends Component {
 	};
 
 	render() {
-		const {
-			username,
-			to,
-			messageType,
-			messageContent,
-			timestamp,
-			verification_level,
-			ownMessage,
-			is_hap
-		} = this.props;
+		const { username, to, messageType, messageContent, timestamp, verification_level } = this.props;
 		const { hideImage } = this.state;
 
 		return (
@@ -122,8 +112,8 @@ class ChatMessageWithImage extends Component {
 				<div className="d-flex">
 					<div className="mx-2">
 						{verification_level === 3 || verification_level === 4
-							? <ReactSVG
-								path={ownMessage && is_hap ? ICONS.HAP_ACCOUNT_ICON : verification_level >= 4
+							? <ReactSVG 
+								path={ verification_level >= 4
 									? ICONS.LEVEL_ACCOUNT_ICON_4
 									: ICONS[`LEVEL_ACCOUNT_ICON_${verification_level}`]
 								}
@@ -172,8 +162,7 @@ export class ChatMessage extends Component {
 			messageContent,
 			ownMessage,
 			timestamp,
-			verification_level,
-			is_hap
+			verification_level
 		} = this.props;
 		const { showOptions } = this.state;
 		const imageType = messageType === 'image';
@@ -195,23 +184,20 @@ export class ChatMessage extends Component {
 							username={username}
 							to={to}
 							messageContent={messageContent}
-							ownMessage={ownMessage}
 							messageType={messageType}
 							timestamp={timestamp}
 							verification_level={verification_level}
-							is_hap={is_hap}
 						/>
 					) : (
-							<ChatMessageWithText
-								username={username}
-								to={to}
-								messageContent={messageContent}
-								ownMessage={ownMessage}
-								timestamp={timestamp}
-								verification_level={verification_level}
-								is_hap={is_hap}
-							/>
-						)}
+						<ChatMessageWithText
+							username={username}
+							to={to}
+							messageContent={messageContent}
+							ownMessage={ownMessage}
+							timestamp={timestamp}
+							verification_level={verification_level}
+						/>
+					)}
 				</div>
 				<div className="d-flex">
 					{userType === USER_TYPES.USER_TYPE_ADMIN && (

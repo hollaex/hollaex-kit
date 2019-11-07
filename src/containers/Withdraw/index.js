@@ -222,29 +222,29 @@ class Withdraw extends Component {
 		return (
 			<div>
 				{isMobile && <MobileBarBack onBackClick={this.onGoBack}>
-				</MobileBarBack>}
+				</MobileBarBack> }
 				<div className="presentation_container apply_rtl">
 					{!isMobile && renderTitleSection(currency, 'withdraw', ICONS.WITHDRAW, coins)}
 					{/* // This commented code can be used if you want to enforce user to have a verified bank account before doing the withdrawal
 					{verification_level >= MIN_VERIFICATION_LEVEL_TO_WITHDRAW &&
-						verification_level <= MAX_VERIFICATION_LEVEL_TO_WITHDRAW ? ( */}
-							<div className={classnames('inner_container', 'with_border_top')}>
-								{renderInformation(
-									currency,
-									balance,
-									openContactForm,
-									generateBaseInformation,
-									coins
-								)}
-								<WithdrawCryptocurrency {...formProps} />
-								{renderExtraInformation(currency, bank_account)}
-							</div>
-						{/* // This commented code can be used if you want to enforce user to have a verified bank account before doing the withdrawal
+					verification_level <= MAX_VERIFICATION_LEVEL_TO_WITHDRAW ? ( */}
+						<div className={classnames('inner_container', 'with_border_top')}>
+							{renderInformation(
+								currency,
+								balance,
+								openContactForm,
+								generateBaseInformation,
+								coins
+							)}
+							<WithdrawCryptocurrency {...formProps} />
+							{renderExtraInformation(currency, bank_account)}
+						</div>
+					{/* // This commented code can be used if you want to enforce user to have a verified bank account before doing the withdrawal
 						) : (
-							<div className={classnames('inner_container', 'with_border_top')}>
-								<WarningVerification level={verification_level} />
-							</div>
-						)} */}
+						<div className={classnames('inner_container', 'with_border_top')}>
+							<WarningVerification level={verification_level} />
+						</div>
+					)} */}
 				</div>
 			</div>
 		);

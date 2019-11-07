@@ -12,7 +12,7 @@ import STRINGS from '../../config/localizedStrings';
 
 export const FORM_NAME = 'SignForm';
 
-export const generateFormFields = (strings, theme, isReferral = false) => ({
+export const generateFormFields = (strings, theme) => ({
 	email: {
 		type: 'email',
 		validate: [
@@ -22,24 +22,21 @@ export const generateFormFields = (strings, theme, isReferral = false) => ({
 		normalize: normalizeEmail,
 		fullWidth: true,
 		label: strings.FORM_FIELDS.EMAIL_LABEL,
-		placeholder: strings.FORM_FIELDS.EMAIL_PLACEHOLDER,
-		disabled: !isReferral
+		placeholder: strings.FORM_FIELDS.EMAIL_PLACEHOLDER
 	},
 	password: {
 		type: 'password',
 		validate: [required, password],
 		fullWidth: true,
 		label: strings.FORM_FIELDS.PASSWORD_LABEL,
-		placeholder: strings.FORM_FIELDS.PASSWORD_PLACEHOLDER,
-		disabled: !isReferral
+		placeholder: strings.FORM_FIELDS.PASSWORD_PLACEHOLDER
 	},
 	password_repeat: {
 		type: 'password',
 		validate: [required],
 		fullWidth: true,
 		label: strings.FORM_FIELDS.PASSWORD_REPEAT_LABEL,
-		placeholder: strings.FORM_FIELDS.PASSWORD_REPEAT_PLACEHOLDER,
-		disabled: !isReferral
+		placeholder: strings.FORM_FIELDS.PASSWORD_REPEAT_PLACEHOLDER
 	},
 	terms: {
 		type: 'checkbox',
@@ -48,15 +45,14 @@ export const generateFormFields = (strings, theme, isReferral = false) => ({
 		label: strings.formatString(
 			strings.SIGN_UP.TERMS.text,
 			<BlueLink
-				href="https://bitholla.com/terms-of-use/"
+				href="https://www.hollaex.com/terms_privacy/"
 				text={strings.SIGN_UP.TERMS.terms}
 			/>,
 			<BlueLink
-				href="https://bitholla.com/privacy-policy/"
+				href="https://www.hollaex.com/terms_privacy/"
 				text={strings.SIGN_UP.TERMS.policy}
 			/>
-		),
-		disabled: !isReferral
+		)
 	},
 	captcha: {
 		type: 'captcha',

@@ -5,18 +5,18 @@ import { SubmissionError, change } from 'redux-form';
 import { bindActionCreators } from 'redux';
 import { Link } from 'react-router';
 import { isMobile } from 'react-device-detect';
+import moment from 'moment';
 
-import { performLogin, storeLoginResult, setLogoutMessage } from '../../actions/authAction';
+import { performLogin, setLogoutMessage } from '../../actions/authAction';
 import LoginForm, { FORM_NAME } from './LoginForm';
-import TermsOfService from '../TermsOfService';
-import DepositFunds from '../TermsOfService/DepositFunds';
 import { Dialog, OtpForm, IconTitle, Notification } from '../../components';
 import { NOTIFICATIONS } from '../../actions/appActions';
 import { errorHandler } from '../../components/OtpForm/utils';
 import {
 	HOLLAEX_LOGO,
 	FLEX_CENTER_CLASSES,
-	ICONS
+	ICONS,
+	EXCHANGE_EXPIRY_DAYS
 } from '../../config/constants';
 
 import STRINGS from '../../config/localizedStrings';
@@ -34,18 +34,14 @@ class Login extends Component {
 	state = {
 		values: {},
 		otpDialogIsOpen: false,
-		logoutDialogIsOpen: false,
-		termsDialogIsOpen: false,
-		depositDialogIsOpen: false,
-		token: ''
+		logoutDialogIsOpen: false
 	};
-	
+
 	componentDidMount() {
 		if (this.props.logoutMessage) {
 			this.setState({ logoutDialogIsOpen: true });
 		}
 	}
-
 	componentWillReceiveProps(nextProps) {
 		if (
 			nextProps.logoutMessage &&
@@ -73,27 +69,23 @@ class Login extends Component {
 
 	getServiceParam = () => {
 		let service = '';
-		if (this.props.location
-			&& this.props.location.query
-			&& this.props.location.query.service) {
+		if (
+			this.props.location &&
+			this.props.location.query &&
+			this.props.location.query.service
+		) {
 			service = this.props.location.query.service;
-		} else if (window.location
-			&& window.location.search
-			&& window.location.search.includes('service')) {
+		} else if (
+			window.location &&
+			window.location.search &&
+			window.location.search.includes('service')
+		) {
 			service = window.location.search.split('?service=')[1];
 		}
 		return service;
-	}
+	};
 
-	checkLogin = () => {
-		const termsAccepted = localStorage.getItem('termsAccepted');
-		if (!termsAccepted) {
-			this.setState({ termsDialogIsOpen: true });
-			// this.props.router.replace('/terms');
-		} else {
-			this.redirectToHome();
-		}
-	}
+	checkExpiryExchange = () => this.props.router.replace('/expired-exchange');
 
 	onSubmitLogin = (values) => {
 		const service = this.getServiceParam();
@@ -102,24 +94,22 @@ class Login extends Component {
 		}
 		return performLogin(values)
 			.then((res) => {
-				if (res.data.token)
-					this.setState({ token: res.data.token });
-				if (res.data && res.data.callbackUrl)
+				if (!Object.keys(this.props.info).length
+					|| (this.props.info.is_trial
+						&& moment().diff(this.props.info.created_at, 'days') > EXCHANGE_EXPIRY_DAYS))
+					this.checkExpiryExchange();
+				else if (res.data && res.data.callbackUrl)
 					this.redirectToService(res.data.callbackUrl);
-				else
-					this.checkLogin();
+				else this.redirectToHome();
 			})
 			.catch((err) => {
-				console.log('err', err);
-				const _error = err.response && err.response.data
-					? err.response.data.message
-					: err.message;
+				const _error =
+					err.response && err.response.data
+						? err.response.data.message
+						: err.message;
 
 				let error = {};
-
-				setTimeout(() => {
-					this.props.change(FORM_NAME, 'captcha', '');
-				}, 5000);
+				this.props.change(FORM_NAME, 'captcha', '');
 
 				if (_error.toLowerCase().indexOf('otp') > -1) {
 					this.setState({ values, otpDialogIsOpen: true });
@@ -128,7 +118,9 @@ class Login extends Component {
 					if (_error === 'User is not activated') {
 						error._error = (
 							<div style={{ color: 'black' }}>
-								Account approval is required to access the demo exchange.<br />
+								Account approval is required to access the demo
+								exchange.
+								<br />
 								Please contact us at{' '}
 								<a
 									style={{ color: 'blue' }}
@@ -154,21 +146,15 @@ class Login extends Component {
 		)
 			.then((res) => {
 				this.setState({ otpDialogIsOpen: false });
-				if (res.data.token)
-					this.setState({ token: res.data.token });
-				if (res.data && res.data.callbackUrl)
+				if (!Object.keys(this.props.info).length
+					|| (this.props.info.is_trial
+						&& moment().diff(this.props.info.created_at, 'days') > EXCHANGE_EXPIRY_DAYS))
+					this.checkExpiryExchange();
+				else if (res.data && res.data.callbackUrl)
 					this.redirectToService(res.data.callbackUrl);
-				else
-					this.checkLogin();
+				else this.redirectToHome();
 			})
 			.catch(errorHandler);
-	};
-
-	onAcceptTerms = () => {
-		localStorage.setItem('termsAccepted', true);
-		if (this.state.token)
-			storeLoginResult(this.state.token);
-		this.setState({ termsDialogIsOpen: false, depositDialogIsOpen: true });
 	};
 
 	onCloseDialog = () => {
@@ -180,17 +166,14 @@ class Login extends Component {
 		this.setState({ logoutDialogIsOpen: false });
 	};
 
-	gotoWallet = () => {
-		this.props.router.replace('/wallet');
-		this.setState({ depositDialogIsOpen: false });
-		localStorage.setItem('deposit_initial_display', true);
-	};
-
 	render() {
 		const { logoutMessage, activeTheme } = this.props;
-		const { otpDialogIsOpen, logoutDialogIsOpen, termsDialogIsOpen, depositDialogIsOpen } = this.state;
+		const { otpDialogIsOpen, logoutDialogIsOpen } = this.state;
+
 		return (
-			<div className={classnames(...FLEX_CENTER_CLASSES, 'flex-column', 'f-1')}>
+			<div
+				className={classnames(...FLEX_CENTER_CLASSES, 'flex-column', 'f-1')}
+			>
 				<div
 					className={classnames(
 						...FLEX_CENTER_CLASSES,
@@ -209,7 +192,7 @@ class Login extends Component {
 						imageWrapperClassName="auth_logo-wrapper"
 						subtitle={STRINGS.formatString(
 							STRINGS.LOGIN.LOGIN_TO,
-							STRINGS.APP_TITLE.toUpperCase()
+							STRINGS.APP_TITLE
 						)}
 						actionProps={{
 							text: STRINGS.LOGIN.CANT_LOGIN,
@@ -226,13 +209,16 @@ class Login extends Component {
 							'w-100'
 						)}
 					>
-						<LoginForm onSubmit={this.onSubmitLogin} theme={activeTheme} />
+						<LoginForm
+							onSubmit={this.onSubmitLogin}
+							theme={activeTheme}
+						/>
 						{isMobile && <BottomLink />}
 					</div>
 				</div>
 				{!isMobile && <BottomLink />}
 				<Dialog
-					isOpen={otpDialogIsOpen || logoutDialogIsOpen || termsDialogIsOpen || depositDialogIsOpen}
+					isOpen={otpDialogIsOpen || logoutDialogIsOpen}
 					label="otp-modal"
 					onCloseDialog={this.onCloseDialog}
 					shouldCloseOnOverlayClick={otpDialogIsOpen ? false : true}
@@ -250,8 +236,6 @@ class Login extends Component {
 							data={{ message: logoutMessage }}
 						/>
 					)}
-					{termsDialogIsOpen && <TermsOfService onAcceptTerms={this.onAcceptTerms} />}
-					{depositDialogIsOpen && <DepositFunds gotoWallet={this.gotoWallet} />}
 				</Dialog>
 			</div>
 		);
@@ -260,7 +244,8 @@ class Login extends Component {
 
 const mapStateToProps = (store) => ({
 	activeTheme: store.app.theme,
-	logoutMessage: store.auth.logoutMessage
+	logoutMessage: store.auth.logoutMessage,
+	info: store.app.info
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -268,4 +253,7 @@ const mapDispatchToProps = (dispatch) => ({
 	change: bindActionCreators(change, dispatch)
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Login);
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(Login);

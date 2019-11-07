@@ -84,6 +84,9 @@ $inner_container-border: 1px solid $border-color;
 		border-left: 1px solid $colors-deactivate-color2;
 		padding: 0;
 	}
+	.exchange-warning {
+		background-color: #FFF100;
+	}
 }
 
 .layout-mobile {

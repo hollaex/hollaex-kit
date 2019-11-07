@@ -28,15 +28,12 @@ $trade-tab-active-dark-title: #b7b5cd;
         }
         .trade_tab-icons {
             svg {
-                .btc0, .btc1, .eth0, .eth1, .bch-icon, .xrp-icon, .hex_icon, .default-icon {
+                .btc0, .btc1, .eth0, .eth1, .bch-icon, .xrp-icon {
                     fill: $dark-font-sub-text-1-color !important;
                 }
                 .st0 {
                     fill: $dark-font-sub-text-1-color !important;
                     stroke-width: 0rem;
-                }
-                .hex_icon {
-                    fill: $dark-font-sub-text-1-color !important;
                 }
             }
         }
@@ -67,6 +64,12 @@ $trade-tab-active-dark-title: #b7b5cd;
         
         .trade-tab-list {
             border: 1px solid $dark-app-background-color;
+
+            svg {
+                .hex-icon-1 {
+                    fill: $colors-black !important;
+                }
+            }
             &:hover {
                 border: 1px solid $trade-tab-dark-pair-content;
                 color: $dark-font-sub-text-color;
@@ -76,15 +79,12 @@ $trade-tab-active-dark-title: #b7b5cd;
                 }
 
                 svg {
-                    .btc0, .btc1, .eth0, .eth1, .bch-icon, .xrp-icon, .hex-icon, .default-icon {
+                    .btc0, .btc1, .eth0, .eth1, .bch-icon, .xrp-icon, .hex-icon {
                         fill: $dark-font-sub-text-color !important;
                     }
                     .st0 {
                         fill: $dark-font-sub-text-color !important;
                         stroke-width: 0rem;
-                    }
-                    .hex_icon {
-                        fill: $dark-font-sub-text-color !important;
                     }
                 }
             }
@@ -102,7 +102,7 @@ $trade-tab-active-dark-title: #b7b5cd;
 
     .app-icon {
         margin: 1rem auto;
-        width: 11rem;
+        width: 8rem;
     }
 
     .trade-tab-app-title {
@@ -151,7 +151,7 @@ $trade-tab-active-dark-title: #b7b5cd;
         width: 5rem;
 
         svg {
-            .btc0, .btc1, .eth0, .eth1, .bch-icon, .xrp-icon, .default-icon {
+            .btc0, .btc1, .eth0, .eth1, .bch-icon, .xrp-icon, .hex-icon {
                 fill: $trade-tabs-inactive-color !important;
             }
             .st0 {
@@ -167,7 +167,7 @@ $trade-tab-active-dark-title: #b7b5cd;
     }
 
     .price-diff-down {
-		color: $app-bar-pairs-down;
+		color: $sell;
 	}
 
 	.price-diff-up {
@@ -179,7 +179,7 @@ $trade-tab-active-dark-title: #b7b5cd;
 	}
 
 	.trade-tab-price_diff_up:before {
-		@include css-triangle($app-bar-pairs-up, 'up', $trade-tab--arrow-size);
+		@include css-triangle($buy, 'up', $trade-tab--arrow-size);
 		display: inline-block;
 		margin-bottom: 0.2rem;
 		margin-right: 0.5rem;
@@ -192,7 +192,7 @@ $trade-tab-active-dark-title: #b7b5cd;
 	}
 
 	.trade-tab-price_diff_down:before {
-		@include css-triangle($app-bar-pairs-down, 'down', $trade-tab--arrow-size);
+		@include css-triangle($colors-notifications-red, 'down', $trade-tab--arrow-size);
 		display: inline-block;
 		margin-right: 0.5rem;
 		position: relative;
@@ -203,6 +203,12 @@ $trade-tab-active-dark-title: #b7b5cd;
         border: 1px solid $app-background-color;
         padding: 1rem 0;
         margin: 2rem 1.5rem;
+
+        svg {
+            .hex-icon-1 {
+                fill: $app-background-color !important;
+            }
+        }
         
         &:hover {
             border: 1px solid $colors-black;
@@ -216,7 +222,7 @@ $trade-tab-active-dark-title: #b7b5cd;
             }
 
             svg {
-                .btc0, .btc1, .eth0, .eth1, .bch-icon, .xrp-icon, .default-icon {
+                .btc0, .btc1, .eth0, .eth1, .bch-icon, .xrp-icon, .hex-icon {
                     fill: $colors-black !important;
                 }
                 .st0 {

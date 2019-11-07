@@ -1,5 +1,4 @@
 $tab_controller-title-img-size: 5rem;
-$tab_controller-title-img-size-mobile: 8rem;
 $tab_controller-title-margin: 16px;
 $tab_controller-item-min-width: 4rem;
 $title--margin: 1rem;
@@ -34,7 +33,6 @@ $title--margin: 1rem;
 	.icon_title-text {
 		font-size: $font-size-subhead3;
 		margin: $title--margin;
-
 		&.title {
 			font-size: $font-size-headline2;
 			text-transform: capitalize;
@@ -61,8 +59,7 @@ $title--margin: 1rem;
 			.risk-order-warning,
 			.coin-btc-1,
 			.coin-btc-5,
-			.hex-coin-stack,
-			.send-request {
+			.level_icon {
 				fill: $dark-icon-color;
 			}
 			.dots-1,
@@ -80,13 +77,11 @@ $title--margin: 1rem;
 .layout-mobile {
 	.icon_title-wrapper {
 		.auth_logo-wrapper {
-			// @include size($tab_controller-title-img-size-mobile);
 			height: 7rem !important;
 			width: 7rem !important;
 		}
 		
 		.auth_logo-wrapper svg {
-			// @include size($tab_controller-title-img-size-mobile);
 			height: 8rem !important;
 			width: 15rem !important;
 		}

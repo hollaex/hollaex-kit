@@ -32,7 +32,6 @@ const getMessage = (message = '') => {
 };
 
 const LogoutNotification = ({ data, onClose }) => {
-	// console.log(data);
 	return (
 		<NotificationWraper
 			title={STRINGS.LOGOUT_TITLE}

@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import IconTitle from '../IconTitle';
 import DumbField from '../Form/FormFields/DumbField';
 import Button from '../Button';
-import { ICONS } from '../../config/constants';
+import { ICONS, IS_HEX, AFFILIATION_APPLY_URL } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 import { getUserReferralCount } from '../../actions/userAction';
 
@@ -24,17 +24,13 @@ class InviteFriends extends Component {
         this.props.getUserReferralCount();
     }
 
-    handleCopy = () => {
-        this.setState({ copied: true });
-    };
-
     render() {
         const { affiliation_code } = this.props.data;
-        const { is_hap } = this.props;
+        const { affiliation, is_hap } = this.props;
         const referralLink = `${process.env.REACT_APP_PUBLIC_URL}/signup?affiliation_code=${affiliation_code}`;
-        const affiliationCount = this.props.affiliation.count ? this.props.affiliation.count : 0;
+        const affiliationCount = affiliation.count ? affiliation.count : 0;
         return (
-            <div className='invite_friends_wrapper'>
+            <div className='invite_friends_wrapper mx-auto'>
                 <IconTitle
                     text={STRINGS.REFERRAL_LINK.TITLE}
                     iconPath={ICONS.REFER_ICON}
@@ -49,7 +45,7 @@ class InviteFriends extends Component {
                     </div>
                     <div className='my-4'>
                         {
-                            is_hap ?
+                            (!IS_HEX || is_hap) ?
                                 <RenderDumbField
                                     label={STRINGS.REFERRAL_LINK.COPY_FIELD_LABEL}
                                     value={referralLink}
@@ -66,12 +62,6 @@ class InviteFriends extends Component {
                             STRINGS.REFERRAL_LINK.REFERRED_USER_COUT,
                             affiliationCount
                         )}
-                        {/*<div className="separator_line"></div>
-                        <div className='application_txt'>
-                            <div>{STRINGS.REFERRAL_LINK.TOTAL_REFERRAL} {STRINGS.formatString(STRINGS.REFERRAL_LINK.HEX_COUNT, 10)}</div>
-                            <div>{STRINGS.REFERRAL_LINK.PENDINF_REFERRAL}{STRINGS.formatString(STRINGS.REFERRAL_LINK.HEX_COUNT, affiliationCount)}</div>
-                            <div>{STRINGS.REFERRAL_LINK.EARN_REFERRAL}{STRINGS.formatString(STRINGS.REFERRAL_LINK.HEX_COUNT, affiliationCount)}</div>
-                        </div>*/}
                     </div>
                     <div className="d-flex my-5">
                         <Button
@@ -79,7 +69,7 @@ class InviteFriends extends Component {
                             className="mr-5"
                             onClick={this.props.onBack}
                         />
-                        {is_hap ?
+                        {(!IS_HEX || is_hap) ?
                             <CopyToClipboard
                                 text={referralLink}
                                 onCopy={this.handleCopy}>
@@ -91,7 +81,7 @@ class InviteFriends extends Component {
                             :
                             <a
                                 className="exir-button mdc-button mdc-button--unelevated exir-button-font"
-                                href="https://docs.google.com/forms/d/1xf1mHxiTW6YUKVEqvfMJZqygiFxm1P6aUDS7uXe5Ouc/viewform?ts=5d9da3d5&edit_requested=true"
+                                href={AFFILIATION_APPLY_URL}
                                 target='blank'>
                                 <Button
                                     label={STRINGS.REFERRAL_LINK.APPLY_BUTTON}

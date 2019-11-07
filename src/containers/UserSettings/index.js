@@ -21,7 +21,6 @@ import {
 } from '../../actions/userAction';
 import {
 	IconTitle,
-	// Button,
 	HeaderSection,
 	CustomTabs,
 	CustomMobileTabs,
@@ -32,7 +31,9 @@ import {
 import SettingsForm, { generateFormValues } from './SettingsForm';
 import UsernameForm, { generateUsernameFormValues } from './UsernameForm';
 import LanguageForm, { generateLanguageFormValues } from './LanguageForm';
-import NotificationForm, { generateNotificationFormValues } from './NotificationForm';
+import NotificationForm, {
+	generateNotificationFormValues
+} from './NotificationForm';
 import AudioCueForm, { generateAudioCueFormValues } from './AudioForm';
 import RiskForm, { generateWarningFormValues } from './RiskForm';
 
@@ -57,9 +58,12 @@ class UserSettings extends Component {
 			this.calculateSections(this.props);
 		}
 		if (this.props.location.query && this.props.location.query.tab) {
-			this.setState({ activeTab: parseInt(this.props.location.query.tab, 10) }, () => {
-				this.updateTabs(this.props, this.state.activeTab);
-			});
+			this.setState(
+				{ activeTab: parseInt(this.props.location.query.tab, 10) },
+				() => {
+					this.updateTabs(this.props, this.state.activeTab);
+				}
+			);
 		} else {
 			this.updateTabs(this.props, this.state.activeTab);
 		}
@@ -69,14 +73,24 @@ class UserSettings extends Component {
 		if (nextProps.activeLanguage !== this.props.activeLanguage) {
 			this.updateTabs(this.props, this.state.activeTab);
 		}
-		if (JSON.stringify(this.props.settings) !== JSON.stringify(nextProps.settings)) {
+		if (
+			JSON.stringify(this.props.settings) !==
+			JSON.stringify(nextProps.settings)
+		) {
 			this.updateTabs(nextProps, this.state.activeTab);
 		}
-		if (JSON.stringify(this.props.location.query) !== JSON.stringify(nextProps.location.query)
-			&& nextProps.location.query && nextProps.location.query.tab) {
-			this.setState({ activeTab: parseInt(nextProps.location.query.tab, 10) }, () => {
-				this.updateTabs(nextProps, this.state.activeTab);
-			});
+		if (
+			JSON.stringify(this.props.location.query) !==
+				JSON.stringify(nextProps.location.query) &&
+			nextProps.location.query &&
+			nextProps.location.query.tab
+		) {
+			this.setState(
+				{ activeTab: parseInt(nextProps.location.query.tab, 10) },
+				() => {
+					this.updateTabs(nextProps, this.state.activeTab);
+				}
+			);
 		}
 	}
 
@@ -90,21 +104,27 @@ class UserSettings extends Component {
 		) {
 			this.calculateSections(nextProps);
 		}
-		if (this.state.activeTab !== nextState.activeTab && this.state.activeTab !== -1) {
+		if (
+			this.state.activeTab !== nextState.activeTab &&
+			this.state.activeTab !== -1
+		) {
 			this.updateTabs(nextProps, nextState.activeTab);
 		}
 	}
 
 	onAdjustPortfolio = () => {
-		this.props.openRiskPortfolioOrderWarning({ onSubmit: (formProps) => this.onSubmitSettings(formProps, 'risk'), initialValues: this.props.settings.risk });
+		this.props.openRiskPortfolioOrderWarning({
+			onSubmit: (formProps) => this.onSubmitSettings(formProps, 'risk'),
+			initialValues: this.props.settings.risk
+		});
 	};
 
-	calculateSections = ({ balance, prices, coins }) => {
-		const totalAssets = calculateBalancePrice(balance, prices, coins);
+	calculateSections = ({ balance, prices }) => {
+		const totalAssets = calculateBalancePrice(balance, prices);
 		this.setState({ totalAssets: totalAssets });
 	};
 
-	updateTabs = ({ username = '', settings = {} ,coins = {} }, activeTab) => {
+	updateTabs = ({ username = '', settings = {}, coins = {} }, activeTab) => {
 		const formValues = generateFormValues({});
 		const usernameFormValues = generateUsernameFormValues(
 			settings.chat.set_username
@@ -122,67 +142,77 @@ class UserSettings extends Component {
 						icon={ICONS.SETTING_NOTIFICATION_ICON}
 					/>
 				) : (
-						<CustomTabs
-							title={STRINGS.USER_SETTINGS.TITLE_NOTIFICATION}
-							icon={ICONS.SETTING_NOTIFICATION_ICON}
-						/>
-					),
+					<CustomTabs
+						title={STRINGS.USER_SETTINGS.TITLE_NOTIFICATION}
+						icon={ICONS.SETTING_NOTIFICATION_ICON}
+					/>
+				),
 				content: activeTab === 0 && (
 					<NotificationForm
-						onSubmit={(formProps) => this.onSubmitSettings(formProps, 'notification')}
+						onSubmit={(formProps) =>
+							this.onSubmitSettings(formProps, 'notification')
+						}
 						formFields={notificationFormValues}
 						initialValues={settings.notification}
 					/>
 				)
-			}, {
+			},
+			{
 				title: isMobile ? (
 					<CustomMobileTabs
 						title={STRINGS.USER_SETTINGS.TITLE_INTERFACE}
 						icon={ICONS.SETTING_INTERFACE_ICON}
 					/>
 				) : (
-						<CustomTabs
-							title={STRINGS.USER_SETTINGS.TITLE_INTERFACE}
-							icon={ICONS.SETTING_INTERFACE_ICON}
-						/>
-					),
+					<CustomTabs
+						title={STRINGS.USER_SETTINGS.TITLE_INTERFACE}
+						icon={ICONS.SETTING_INTERFACE_ICON}
+					/>
+				),
 				content: activeTab === 1 && (
 					<SettingsForm
-						onSubmit={(formProps) => this.onSubmitSettings(formProps, 'interface')}
+						onSubmit={(formProps) =>
+							this.onSubmitSettings(formProps, 'interface')
+						}
 						formFields={formValues}
 						initialValues={settings.interface}
 					/>
 				)
-			}, {
+			},
+			{
 				title: isMobile ? (
 					<CustomMobileTabs
 						title={STRINGS.USER_SETTINGS.TITLE_LANGUAGE}
 						icon={ICONS.SETTING_LANGUAGE_ICON}
 					/>
 				) : (
-						<CustomTabs
-							title={STRINGS.USER_SETTINGS.TITLE_LANGUAGE}
-							icon={ICONS.SETTING_LANGUAGE_ICON}
-						/>
-					),
+					<CustomTabs
+						title={STRINGS.USER_SETTINGS.TITLE_LANGUAGE}
+						icon={ICONS.SETTING_LANGUAGE_ICON}
+					/>
+				),
 				content: activeTab === 2 && (
 					<LanguageForm
-						onSubmit={(formProps) => this.onSubmitSettings(formProps, 'language')}
+						onSubmit={(formProps) =>
+							this.onSubmitSettings(formProps, 'language')
+						}
 						formFields={languageFormValue}
-						initialValues={settings} />
+						initialValues={settings}
+					/>
 				)
-			}, {
+			},
+			{
 				title: isMobile ? (
 					<CustomMobileTabs
 						title={STRINGS.USER_SETTINGS.TITLE_CHAT}
 						icon={ICONS.SETTING_CHAT_ICON}
 					/>
 				) : (
-						<CustomTabs
-							title={STRINGS.USER_SETTINGS.TITLE_CHAT}
-							icon={ICONS.SETTING_CHAT_ICON}
-						/>
-					),
+					<CustomTabs
+						title={STRINGS.USER_SETTINGS.TITLE_CHAT}
+						icon={ICONS.SETTING_CHAT_ICON}
+					/>
+				),
 				content: activeTab === 3 && (
 					<UsernameForm
 						onSubmit={this.onSubmitUsername}
@@ -190,45 +220,52 @@ class UserSettings extends Component {
 						initialValues={{ username }}
 					/>
 				)
-			}, {
+			},
+			{
 				title: isMobile ? (
 					<CustomMobileTabs
 						title={STRINGS.USER_SETTINGS.TITLE_AUDIO_CUE}
 						icon={ICONS.SETTING_AUDIO_ICON}
 					/>
 				) : (
-						<CustomTabs
-							title={STRINGS.USER_SETTINGS.TITLE_AUDIO_CUE}
-							icon={ICONS.SETTING_AUDIO_ICON}
-						/>
-					),
+					<CustomTabs
+						title={STRINGS.USER_SETTINGS.TITLE_AUDIO_CUE}
+						icon={ICONS.SETTING_AUDIO_ICON}
+					/>
+				),
 				content: activeTab === 4 && (
 					<AudioCueForm
-						onSubmit={(formProps) => this.onSubmitSettings(formProps, 'audio')}
+						onSubmit={(formProps) =>
+							this.onSubmitSettings(formProps, 'audio')
+						}
 						formFields={audioFormValues}
 						initialValues={settings.audio}
 					/>
 				)
-			}, {
+			},
+			{
 				title: isMobile ? (
 					<CustomMobileTabs
 						title={STRINGS.USER_SETTINGS.TITLE_MANAGE_RISK}
 						icon={ICONS.SETTING_RISK_ICON}
 					/>
 				) : (
-						<CustomTabs
-							title={STRINGS.USER_SETTINGS.TITLE_MANAGE_RISK}
-							icon={ICONS.SETTING_RISK_ICON}
-						/>
-					),
+					<CustomTabs
+						title={STRINGS.USER_SETTINGS.TITLE_MANAGE_RISK}
+						icon={ICONS.SETTING_RISK_ICON}
+					/>
+				),
 				content: activeTab === 5 && (
 					<RiskForm
 						coins={coins}
 						onAdjustPortfolio={this.onAdjustPortfolio}
 						totalAssets={this.state.totalAssets}
-						onSubmit={(formProps) => this.onSubmitSettings(formProps, 'risk')}
+						onSubmit={(formProps) =>
+							this.onSubmitSettings(formProps, 'risk')
+						}
 						formFields={warningFormValues}
-						initialValues={settings.risk} />
+						initialValues={settings.risk}
+					/>
 				)
 			}
 		];
@@ -236,7 +273,12 @@ class UserSettings extends Component {
 		this.setState({ tabs });
 	};
 
-	renderContent = (tabs, activeTab) => tabs[activeTab] && tabs[activeTab].content ? tabs[activeTab].content : <div></div>;
+	renderContent = (tabs, activeTab) =>
+		tabs[activeTab] && tabs[activeTab].content ? (
+			tabs[activeTab].content
+		) : (
+			<div />
+		);
 
 	onSubmitSettings = (formProps, formKey) => {
 		let settings = {};
@@ -261,20 +303,20 @@ class UserSettings extends Component {
 				settings.risk = formProps;
 				break;
 			default:
-		};
+		}
 		return updateUser({ settings })
 			.then(({ data }) => {
 				this.props.setUserData(data);
 				this.props.changeLanguage(data.settings.language);
 				this.props.changeTheme(data.settings.interface.theme);
 				this.props.closeNotification();
-				localStorage.setItem("theme", data.settings.interface.theme);
+				localStorage.setItem('theme', data.settings.interface.theme);
 			})
 			.catch((err) => {
-				// console.log(err.response.data);
-				const _error = err.response && err.response.data
-					? err.response.data.message
-					: err.message;
+				const _error =
+					err.response && err.response.data
+						? err.response.data.message
+						: err.message;
 				throw new SubmissionError({ _error });
 			});
 	};
@@ -286,10 +328,10 @@ class UserSettings extends Component {
 				this.onSubmitSettings({ set_username: true }, 'chat');
 			})
 			.catch((err) => {
-				// console.log(err.response.data);
-				const _error = err.response && err.response.data
-					? err.response.data.message
-					: err.message;
+				const _error =
+					err.response && err.response.data
+						? err.response.data.message
+						: err.message;
 				throw new SubmissionError({ username: _error });
 			});
 	};
@@ -310,7 +352,7 @@ class UserSettings extends Component {
 	};
 	removeQueryString = () => {
 		browserHistory.push('/settings');
-	}
+	};
 
 	render() {
 		if (this.props.verification_level === 0) {
@@ -318,30 +360,47 @@ class UserSettings extends Component {
 		}
 
 		const { activeTab, tabs } = this.state;
-		return <div className="presentation_container apply_rtl verification_container">
-			{!isMobile && <IconTitle
-				text={STRINGS.ACCOUNTS.TAB_SETTINGS}
-				textType="title"
-			/>}
-			<HeaderSection
-				title={STRINGS.ACCOUNTS.TAB_SETTINGS}
-				openContactForm={this.openContactForm}>
-				<div className="header-content">
-					<div>{STRINGS.USER_SETTINGS.TITLE_TEXT_1}</div>
-					<div className="mb-3">{STRINGS.USER_SETTINGS.TITLE_TEXT_2}</div>
-				</div>
-			</HeaderSection>
-			{!isMobile
-				? <CustomTabBar activeTab={activeTab} setActiveTab={this.setActiveTab} tabs={tabs} />
-				: <MobileTabBar activeTab={activeTab} renderContent={this.renderContent} setActiveTab={this.setActiveTab} tabs={tabs} />
-			}
-			{!isMobile ? this.renderContent(tabs, activeTab) : null}
-			{isMobile &&
-				<div className="my-4">
-					{/* <Button label={STRINGS.ACCOUNTS.TAB_SIGNOUT} onClick={this.logout} /> */}
-				</div>
-			}
-		</div>;
+		return (
+			<div className="presentation_container apply_rtl verification_container">
+				{!isMobile && (
+					<IconTitle
+						text={STRINGS.ACCOUNTS.TAB_SETTINGS}
+						textType="title"
+					/>
+				)}
+				<HeaderSection
+					title={STRINGS.ACCOUNTS.TAB_SETTINGS}
+					openContactForm={this.openContactForm}
+				>
+					<div className="header-content">
+						<div>{STRINGS.USER_SETTINGS.TITLE_TEXT_1}</div>
+						<div className="mb-3">
+							{STRINGS.USER_SETTINGS.TITLE_TEXT_2}
+						</div>
+					</div>
+				</HeaderSection>
+				{!isMobile ? (
+					<CustomTabBar
+						activeTab={activeTab}
+						setActiveTab={this.setActiveTab}
+						tabs={tabs}
+					/>
+				) : (
+					<MobileTabBar
+						activeTab={activeTab}
+						renderContent={this.renderContent}
+						setActiveTab={this.setActiveTab}
+						tabs={tabs}
+					/>
+				)}
+				{!isMobile ? this.renderContent(tabs, activeTab) : null}
+				{isMobile && (
+					<div className="my-4">
+						{/* <Button label={STRINGS.ACCOUNTS.TAB_SIGNOUT} onClick={this.logout} /> */}
+					</div>
+				)}
+			</div>
+		);
 	}
 }
 
@@ -355,7 +414,7 @@ const mapStateToProps = (state) => ({
 	prices: state.orderbook.prices,
 	user: state.user,
 	price: state.orderbook.price,
-	orders: state.order.activeOrders,
+	orders: state.order.activeOrders
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -364,9 +423,15 @@ const mapDispatchToProps = (dispatch) => ({
 	changeLanguage: bindActionCreators(setLanguage, dispatch),
 	changeTheme: bindActionCreators(changeTheme, dispatch),
 	openContactForm: bindActionCreators(openContactForm, dispatch),
-	openRiskPortfolioOrderWarning: bindActionCreators(openRiskPortfolioOrderWarning, dispatch),
+	openRiskPortfolioOrderWarning: bindActionCreators(
+		openRiskPortfolioOrderWarning,
+		dispatch
+	),
 	closeNotification: bindActionCreators(closeNotification, dispatch),
 	logout: bindActionCreators(logout, dispatch)
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(UserSettings);
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(UserSettings);

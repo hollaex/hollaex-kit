@@ -78,10 +78,6 @@ class ContactForm extends Component {
 				{
 					value: 'personal',
 					label: STRINGS.CONTACT_FORM.CATEGORY_OPTIONS.OPTION_PERSONAL_INFO
-				},
-				{
-					value: 'bank_transfer',
-					label: STRINGS.CONTACT_FORM.CATEGORY_OPTIONS.OPTION_BANK_TRANSFER
 				}
 			],
 			validate: [required],
@@ -101,6 +97,14 @@ class ContactForm extends Component {
 			validate: [required],
 			fullWidth: true,
 			rows: '2'
+		},
+		attachment: {
+		  type: 'file',
+		  label: STRINGS.CONTACT_FORM.ATTACHMENT_LABEL,
+		  placeholder: STRINGS.CONTACT_FORM.ATTACHMENT_PLACEHOLDER,
+		  fullWidth: true,
+		  multiple: true,
+		  length: 3
 		}
 	});
 

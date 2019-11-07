@@ -86,8 +86,8 @@ class OrderEntry extends Component {
 		}
 	}
 
-	calculateSections = ({ balance, prices, coins }) => {
-		const totalAssets = calculateBalancePrice(balance, prices, coins);
+	calculateSections = ({ balance, prices }) => {
+		const totalAssets = calculateBalancePrice(balance, prices);
 		this.setState({ totalAssets });
 	};
 
@@ -211,8 +211,7 @@ class OrderEntry extends Component {
 			openCheckOrder,
 			onRiskyTrade,
 			submit,
-			settings: { risk = {}, notification = {} },
-			balance
+			settings: { risk = {}, notification = {} }
 		} = this.props;
 		const orderTotal = mathjs.add(
 			mathjs.fraction(this.state.orderPrice),
@@ -228,9 +227,7 @@ class OrderEntry extends Component {
 			orderFees: this.state.orderFees
 		};
 		const orderPriceInBaseCoin = calculatePrice(orderTotal, this.props.prices[pair_2]);
-		const avail_balance = balance[`${pair_base.toLowerCase()}_available`] || 0;
-		// const riskyPrice = ((this.state.totalAssets / 100) * risk.order_portfolio_percentage);
-		const riskyPrice = ((avail_balance / 100) * risk.order_portfolio_percentage);
+		const riskyPrice = ((this.state.totalAssets / 100) * risk.order_portfolio_percentage);
 
 		if (type === 'market') {
 			delete order.price;

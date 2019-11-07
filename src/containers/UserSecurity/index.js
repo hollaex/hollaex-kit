@@ -129,7 +129,9 @@ class UserVerification extends Component {
 				notification: {
 					// text: STRINGS.DEVELOPER_SECTION[otp_enabled ? 'ACTIVE' : 'INACTIVE'],
 					status: otp_enabled ? 'success' : 'disabled',
-					iconPath: otp_enabled ? ICONS.TOKENS_ACTIVE : ICONS.TOKENS_INACTIVE, // TODO check
+					iconPath: otp_enabled
+						? ICONS.TOKENS_ACTIVE
+						: ICONS.TOKENS_INACTIVE, // TODO check
 					allowClick: true
 				}
 			}
@@ -158,7 +160,6 @@ class UserVerification extends Component {
 				});
 			})
 			.catch((err) => {
-				// console.log(err.response.data);
 				const _error = err.response.data
 					? err.response.data.message
 					: err.message;
@@ -175,11 +176,11 @@ class UserVerification extends Component {
 				this.accordion.closeAll();
 				this.setState({
 					dialogIsOpen: true,
-					modalText: STRINGS.ACCOUNT_SECURITY.CHANGE_PASSWORD.DIALOG.SUCCESS
+					modalText:
+						STRINGS.ACCOUNT_SECURITY.CHANGE_PASSWORD.DIALOG.SUCCESS
 				});
 			})
 			.catch((err) => {
-				// console.log(err.response.data);
 				const _error = err.response.data
 					? err.response.data.message
 					: err.message;
@@ -235,7 +236,6 @@ class UserVerification extends Component {
 		email,
 		modalText
 	) => {
-		// console.log(requested, activated, secret, error, otp_enabled, email, modalText)
 		if (error) {
 			return (
 				<SuccessDisplay
@@ -267,10 +267,12 @@ class UserVerification extends Component {
 		const { otp, email, otp_enabled } = this.props.user;
 		return (
 			<div>
-				{!isMobile && <IconTitle
-					text={STRINGS.ACCOUNTS.TAB_SECURITY}
-					textType="title"
-				/>}
+				{!isMobile && (
+					<IconTitle
+						text={STRINGS.ACCOUNTS.TAB_SECURITY}
+						textType="title"
+					/>
+				)}
 				<Accordion sections={sections} ref={this.setRef} />
 				<Dialog
 					isOpen={dialogIsOpen && !otp.requesting}
@@ -301,4 +303,7 @@ const mapDispatchToProps = (dispatch) => ({
 	otpSetActivated: (active) => dispatch(otpSetActivated(active))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(UserVerification);
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(UserVerification);

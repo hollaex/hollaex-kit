@@ -46,7 +46,6 @@ const getWithdrawalRow = (currency, index, coins, level) => {
     );
 };
 
-
 const getRows = (coins, level) => {
     const rowData = [];
     Object.keys(coins).map((currency, index) => {

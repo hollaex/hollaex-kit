@@ -32,15 +32,14 @@ class CaptchaField extends Component {
 	};
 
 	render() {
-		const {
-			language,
-			// theme = 'light'
-		} = this.props;
+		const { language } = this.props;
 		const { ready, active } = this.state;
 		return (
 			active && (
 				<div
-					className={classnames('field-wrapper', 'captcha-wrapper', { hidden: !ready })}
+					className={classnames('field-wrapper', 'captcha-wrapper', {
+						hidden: !ready
+					})}
 				>
 					<ReCaptcha
 						ref={this.setRef}

@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
-import ReactSVG from 'react-svg';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import { isMobile } from 'react-device-detect';
@@ -9,8 +8,8 @@ import { bindActionCreators } from 'redux';
 import { performSignup } from '../../actions/authAction';
 import SignupForm, { generateFormFields, FORM_NAME } from './SignupForm';
 import SignupSuccess from './SignupSuccess';
-import { RequestForm } from '../';
-import { IconTitle, Dialog, MobileBarBack, BlueLink } from '../../components';
+import { ContactForm } from '../';
+import { IconTitle, Dialog, MobileBarBack } from '../../components';
 import {
 	HOLLAEX_LOGO,
 	FLEX_CENTER_CLASSES,
@@ -38,18 +37,8 @@ const BottomLinks = () => (
 class Signup extends Component {
 	state = {
 		success: false,
-		showContactForm: false,
-		isReferral: false
+		showContactForm: false
 	};
-
-
-	componentDidMount() {
-		const affiliation_code = this.getReferralCode();
-		if (affiliation_code) {
-			this.setState({ isReferral: true });
-		}
-	}
-
 
 	getReferralCode = () => {
 		let affiliation_code = '';
@@ -76,10 +65,7 @@ class Signup extends Component {
 			})
 			.catch((error) => {
 				const errors = {};
-				setTimeout(() => {
-					this.props.change(FORM_NAME, 'captcha', '');
-				}, 5000);
-
+				this.props.change(FORM_NAME, 'captcha', '');
 				if (error.response.status === 409) {
 					errors.email = STRINGS.VALIDATIONS.USER_EXIST;
 				} else if (error.response) {
@@ -110,20 +96,20 @@ class Signup extends Component {
 	};
 
 	onBackActiveEmail = () => {
-		this.setState({ success: false });
+				this.setState({ success: false });
 	};
 
 	render() {
 		const { languageClasses, activeTheme } = this.props;
-		const { success, showContactForm, isReferral } = this.state;
+		const { success, showContactForm } = this.state;
 
 		if (success) {
 			return <div>
-				{isMobile && <MobileBarBack onBackClick={this.onBackActiveEmail} />}
-				<SignupSuccess activeTheme={activeTheme} /></div>
+			{isMobile  && <MobileBarBack onBackClick={this.onBackActiveEmail} />}
+			<SignupSuccess activeTheme={activeTheme} /></div>
 		}
 
-		const formFields = generateFormFields(STRINGS, activeTheme, isReferral);
+		const formFields = generateFormFields(STRINGS, activeTheme);
 
 		return (
 			<div className={classnames(...FLEX_CENTER_CLASSES, 'flex-column', 'f-1')}>
@@ -149,29 +135,12 @@ class Signup extends Component {
 							STRINGS.APP_TITLE
 						)}
 						actionProps={{
-							text: STRINGS.REQUEST_HEX_ACCESS.REQUEST_INVITE,
+							text: STRINGS.HELP_TEXT,
 							iconPath: ICONS.BLUE_QUESTION,
 							onClick: this.onOpenDialog,
 							useSvg: true
 						}}
 					/>
-					{!isReferral
-						? <div className={classnames(' signup-warning', 'flex-row', 'd-flex', 'justify-content:space-between')}>
-							<div className={classnames('d-flex')}>
-								<ReactSVG path={ICONS.VERIFICATION_INCOMPLETE} wrapperClassName={'warning-icon'} />
-							</div>
-							<div className="signup-warning-text">
-								{STRINGS.formatString(
-									STRINGS.REQUEST_HEX_ACCESS.REFERRAL_INVITE_WARNING,
-									<BlueLink
-										onClick={this.onOpenDialog}
-										text={STRINGS.REQUEST_HEX_ACCESS.REQUEST_INVITE.toLowerCase()}
-									/>
-								)}
-							</div>
-						</div>
-						: null
-					}
 					<div
 						className={classnames(
 							...FLEX_CENTER_CLASSES,
@@ -198,8 +167,7 @@ class Signup extends Component {
 					showCloseText={false}
 					theme={activeTheme}
 				>
-					<RequestForm
-						initialValues={{ category: 'request_Hex_Invite' }}
+					<ContactForm
 						onSubmitSuccess={this.onCloseDialog}
 						onClose={this.onCloseDialog}
 					/>

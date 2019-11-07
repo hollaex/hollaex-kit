@@ -25,16 +25,13 @@ const generateHeaders = () => {
 	{
 		key: 'size',
 		label: STRINGS.SIZE,
-		renderCell: ({ size = 0, side }, index) => (
-			<div className={classnames('trade_history-row', side)}>{size}</div>
-		)
+		renderCell: ({ size = 0 }, index) => size
 	},
 	{
 		key: 'timestamp',
 		label: STRINGS.TIME,
-		renderCell: ({ timestamp, side }, index) => (
-			<div className={classnames('trade_history-row', side)}>{formatTimestamp(timestamp, STRINGS.HOUR_FORMAT)}</div>
-		)
+		renderCell: ({ timestamp }, index) =>
+			formatTimestamp(timestamp, STRINGS.HOUR_FORMAT)
 	}
 ];
 }

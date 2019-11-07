@@ -95,8 +95,14 @@ class ApiKey extends Component {
 						) : (
 							<Table
 								rowClassName="pt-2 pb-2"
-								headers={generateHeaders(this.onClickRevokeToken, otp_enabled)}
+								headers={generateHeaders(
+									this.onClickRevokeToken,
+									otp_enabled
+								)}
 								data={tokens}
+								rowKey={(data) => {
+									return data.id;
+								}}
 								count={tokens.length}
 							/>
 						)
@@ -143,4 +149,7 @@ const mapDispatchToProps = (dispatch) => ({
 	tokenRevoked: bindActionCreators(tokenRevoked, dispatch)
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(ApiKey);
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(ApiKey);

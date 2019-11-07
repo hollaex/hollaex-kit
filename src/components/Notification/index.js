@@ -11,8 +11,7 @@ import ContactForm from './ContactForm';
 import NewOrder from './NewOrder';
 import GenerateAddressNotification from './GenerateAddress';
 import InviteFriends from './InviteFriends';
-import ReferralSuccess from './ReferralSuccess';
-import Staketoken from './StakeToken';
+import StakeToken from './StakeToken';
 import { GenerateApiKey, CreatedApiKey } from './GenerateApiKey';
 
 const generateNotificationContent = ({ type, data, ...rest }) => {
@@ -31,8 +30,6 @@ const generateNotificationContent = ({ type, data, ...rest }) => {
 			return <Verification data={data} />;
 		case NOTIFICATIONS.CONTACT_FORM:
 			return <ContactForm {...rest} data={data} />;
-		case NOTIFICATIONS.HEX_SUCCESS_ACCESS:
-			return <ReferralSuccess {...rest} data={data} />;
 		case NOTIFICATIONS.NEW_ORDER:
 			return <NewOrder data={data} {...rest} />;
 		case NOTIFICATIONS.GENERATE_API_KEY:
@@ -44,7 +41,7 @@ const generateNotificationContent = ({ type, data, ...rest }) => {
 		case NOTIFICATIONS.INVITE_FRIENDS:
 			return <InviteFriends data={data} {...rest} />;
 		case NOTIFICATIONS.STAKE_TOKEN:
-			return <Staketoken data={data} {...rest} />;
+			return <StakeToken data={data} {...rest} />;
 		default:
 			break;
 	}

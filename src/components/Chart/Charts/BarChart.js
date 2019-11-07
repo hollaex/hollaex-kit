@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { scaleLinear, scaleBand } from 'd3-scale';
-import { axisBottom, axisRight } from 'd3-axis';
+import { axisBottom, axisRight} from 'd3-axis';
 import * as d3 from 'd3-selection';
 import moment from 'moment';
 import { connect } from 'react-redux';
 
-import { ICONS, BAR_CHART_LIMIT_CAPACITY, BASE_CURRENCY, DEFAULT_COIN_DATA } from '../../../config/constants';
+import { ICONS, BAR_CHART_LIMIT_CAPACITY, BASE_CURRENCY } from '../../../config/constants';
 import { formatToCurrency, formatAverage, formatBtcAmount } from '../../../utils/currency';
 
 function translate(x, y) {
@@ -55,7 +55,7 @@ class BarChart extends Component {
                 .domain([0, upperLimit]);
             const xScale = scaleBand()
                 .range([0, width])
-                .domain(chartData.map((s) => s.month))
+                .domain(chartData.map((s) => s.month ))
                 .padding(0.2);
             chart.append('g')
                 .attr('class', 'bar_yAxis')
@@ -134,7 +134,7 @@ class BarChart extends Component {
                                 .attr("xlink:href", content.icon)
                                 .attr('class', 'limit_contnet-icon')
                                 .attr('x', width + 15)
-                                .attr('y', scale)
+                                .attr('y', scale + 5)
                                 .attr('viewBox', '0 0 1024 1024')
                                 .attr('width', '3rem');
                         }
@@ -183,8 +183,8 @@ class BarChart extends Component {
                             })
                             .attr('width', xScale.bandwidth())
                             .on("mouseover", (d) => {
-                                let currencyFormat = this.props.coins[pair] || DEFAULT_COIN_DATA;
-                                let baseFormat = this.props.coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
+                                let currencyFormat = this.props.coins[pair] || {};
+                                let baseFormat = this.props.coins[BASE_CURRENCY] || { symbol: '' };
                                 let volume = currencyFormat
                                     ? formatToCurrency(d.pairVolume[pair], currencyFormat.min)
                                     : formatBtcAmount(d.pairVolume[pair]);
@@ -212,7 +212,7 @@ class BarChart extends Component {
             });
         }
     };
-
+    
     render() {
         return (
             <div id="bar-container" className="bar_wrapper w-100">

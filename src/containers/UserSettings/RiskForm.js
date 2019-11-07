@@ -4,10 +4,10 @@ import { reduxForm } from "redux-form";
 import { Accordion, Table, Button } from "../../components";
 import renderFields from "../../components/Form/factoryFields";
 import STRINGS from "../../config/localizedStrings";
-// import { formatBaseAmount } from "../../utils/currency";
-// import { BASE_CURRENCY, DEFAULT_COIN_DATA } from "../../config/constants";
+import { formatBaseAmount } from "../../utils/currency";
+import { BASE_CURRENCY, DEFAULT_COIN_DATA, IS_HEX } from "../../config/constants";
 
-export const generateHeaders = (onAdjustPortfolio) => {
+export const generateHeaders = onAdjustPortfolio => {
 	return [
 		{
 			label: STRINGS.USER_SETTINGS.RISK_MANAGEMENT.PORTFOLIO,
@@ -27,7 +27,7 @@ export const generateHeaders = (onAdjustPortfolio) => {
 									: "ml-2 deactive_risk_data"
 							}
 							onClick={
-								percentage.popupWarning ? onAdjustPortfolio : () => {}
+								percentage.popupWarning ? onAdjustPortfolio : () => { }
 							}
 						>
 							{STRINGS.USER_SETTINGS.RISK_MANAGEMENT.ADJUST}
@@ -36,22 +36,24 @@ export const generateHeaders = (onAdjustPortfolio) => {
 				</td>
 			)
 		},
-		// {
-		// 	label: STRINGS.USER_SETTINGS.RISK_MANAGEMENT.TOMAN_ASSET,
-		// 	key: "assetValue",
-		// 	renderCell: ({ id, assetValue }, key, index) => (
-		// 		<td key={`${key}-${id}-assetValue.percentPrice`}>
-		// 			<span
-		// 				className={
-		// 					assetValue.popupWarning ? "" : "deactive_risk_data"
-		// 				}
-		// 			>
-		// 				{" "}
-		// 				{assetValue.percentPrice}
-		// 			</span>
-		// 		</td>
-		// 	)
-		// },
+		!IS_HEX
+			? {
+				label: STRINGS.USER_SETTINGS.RISK_MANAGEMENT.TOMAN_ASSET,
+				key: "assetValue",
+				renderCell: ({ id, assetValue }, key, index) => (
+					<td key={`${key}-${id}-assetValue.percentPrice`}>
+						<span
+							className={
+								assetValue.popupWarning ? "" : "deactive_risk_data"
+							}
+						>
+							{" "}
+							{assetValue.percentPrice}
+						</span>
+					</td>
+				)
+			}
+			: {},
 		{
 			label: STRINGS.USER_SETTINGS.RISK_MANAGEMENT.ACTIVATE_RISK_MANAGMENT,
 			key: "adjust",
@@ -88,8 +90,7 @@ class RiskForm extends Component {
 	render() {
 		const {
 			onAdjustPortfolio,
-			// totalAssets,
-			// percentageOfPortfolio,
+			totalAssets,
 			initialValues = {},
 			handleSubmit,
 			submitting,
@@ -97,11 +98,11 @@ class RiskForm extends Component {
 			// error,
 			valid,
 			formFields,
-			// coins
+			coins
 		} = this.props;
-		// const percentPrice =
-		// 	(totalAssets / 100) * initialValues.order_portfolio_percentage;
-		// const { fullname, symbol = '' } = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
+		const percentPrice =
+			(totalAssets / 100) * initialValues.order_portfolio_percentage;
+		const { fullname, symbol = '' } = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
 		const assetData = [
 			{
 				id: 1,
@@ -111,12 +112,12 @@ class RiskForm extends Component {
 						: "",
 					popupWarning: initialValues.popup_warning
 				},
-				// assetValue: {
-				// 	percentPrice: percentPrice
-				// 		? `${formatBaseAmount(percentPrice)} ${symbol.toUpperCase()}`
-				// 		: 0,
-				// 	popupWarning: initialValues.popup_warning
-				// },
+				assetValue: {
+					percentPrice: percentPrice
+						? `${formatBaseAmount(percentPrice)} ${symbol.toUpperCase()}`
+						: 0,
+					popupWarning: initialValues.popup_warning
+				},
 				adjust: formFields,
 				warning: initialValues.popup_warning
 			}
@@ -127,13 +128,16 @@ class RiskForm extends Component {
 				content: (
 					<div>
 						<p>{STRINGS.USER_SETTINGS.RISK_MANAGEMENT.INFO_TEXT}</p>
-						{/* <p>
-							{STRINGS.formatString(
-								STRINGS.USER_SETTINGS.RISK_MANAGEMENT.INFO_TEXT_1,
-								fullname,
-								totalAssets
-							).join("")}
-						</p> */}
+						{!IS_HEX
+							? <p>
+								{STRINGS.formatString(
+									STRINGS.USER_SETTINGS.RISK_MANAGEMENT.INFO_TEXT_1,
+									fullname,
+									totalAssets
+								).join("")}
+							</p>
+							: null
+						}
 						<Table
 							rowClassName="pt-2 pb-2"
 							headers={generateHeaders(onAdjustPortfolio)}

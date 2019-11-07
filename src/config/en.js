@@ -1,16 +1,15 @@
-import AGREEMENT from './agreement';
-
 export default {
-	APP_TITLE: 'HollaEx', // new
-	APP_SUB_TITLE: 'THE DIGITAL FUEL FOR TRADING EXCHANGES', // new
-	APP_NAME: 'HollaEx', // new
+	APP_TITLE: 'HollaEx',
+	APP_SUB_TITLE: 'White Label Cryptocurrency Exchange',
+	APP_NAME: 'HollaEx',
 
 	LOGOUT_CONFIRM_TEXT: 'Are you sure?. Do you want to logout',
 	ADD_TRADING_PAIR: 'Add Trading Pair',
 	ACTIVE_TRADES: 'You must {0} to access your active trades',
 	CANCEL_BASE_WITHDRAWAL: 'Cancel {0} Withdrawal',
 	CANCEL_WITHDRAWAL: 'Cancel Withdrawal',
-	CANCEL_WITHDRAWAL_POPUP_CONFIRM: 'Do you want to cancel your pending withdrawal of:',
+	CANCEL_WITHDRAWAL_POPUP_CONFIRM:
+		'Do you want to cancel your pending withdrawal of:',
 	CANT_BE_CANCELLED: '-',
 	ALREADY_CANCELLED: '-',
 	TIMESTAMP_FORMAT: 'YYYY/MM/DD HH:mm:ss A',
@@ -22,33 +21,32 @@ export default {
 	ACCOUNT_TEXT: 'Account',
 	CLOSE_TEXT: 'Close',
 	COPY_TEXT: 'Copy',
-	COPY_SUCCESS_TEXT: 'Successfully Copied', 
-	CANCEL_SUCCESS_TEXT: 'Successfully Cancelled!', 
+	COPY_SUCCESS_TEXT: 'Successfully Copied',
+	CANCEL_SUCCESS_TEXT: 'Successfully Cancelled!',
 	UPLOAD_TEXT: 'Upload',
 	ADD_FILES: 'ADD FILES', // ToDo
 	OR_TEXT: 'Or',
 	CONTACT_US_TEXT: 'Contact us',
 	HELPFUL_RESOURCES_TEXT: 'Helpful resources',
-	HELP_RESOURCE_GUIDE_TEXT: 
+	HELP_RESOURCE_GUIDE_TEXT:
 		'Feel free to contact us for more information and any issues by sending us an email to support@bitholla.com',
-	HELP_TELEGRAM_TEXT: 
-		'Check out HollaEx open API documentation:',
+	HELP_TELEGRAM_TEXT: 'Check out HollaEx open API documentation:',
 	HELP_TELEGRAM_LINK: 'https://apidocs.hollaex.com',
 	NEED_HELP_TEXT: 'Need help',
 	HELP_TEXT: 'help',
 	SUCCESS_TEXT: 'Success',
 	ERROR_TEXT: 'Error',
-	PROCEED: 'PROCEED', 
+	PROCEED: 'PROCEED',
 	EDIT_TEXT: 'Edit',
 	BACK_TEXT: 'Back',
 	NO_OPTIONS: 'No options availables',
-	SECONDS: 'seconds',  
+	SECONDS: 'seconds',
 	HOME: {
-		SECTION_1_TITLE: 'Build your own Bitcoin exchange',
+		SECTION_1_TITLE: 'Welcome to HollaEx Exchange Kit!',
 		SECTION_1_TEXT_1:
-			'Build your own scalable Bitcoin exchange with HollaEx and be part of the future finance.',
+			'Build your own scalable digital asset exchange with HollaEx Kit and be part of the future of finance.',
 		SECTION_1_TEXT_2:
-			'We strive to bring the financial technology forward through afforable and simple access to Bitcoin and cryptocurrencies.',
+			'We strive to bring the financial technology forward through afforable and simple access to trading technology.',
 		SECTION_1_BUTTON_1: 'Learn more',
 		SECTION_3_TITLE: 'Features',
 		SECTION_3_CARD_1_TITLE: 'SCALABLE MATCHING ENGINE',
@@ -72,25 +70,28 @@ export default {
 		SECTION_3_BUTTON_1: 'View Demo'
 	},
 	FOOTER: {
-		FOOTER_LEGAL: [
-			'Proudly made in Seoul, South Korea',
-			'bitHolla Inc.'
-		],
+		FOOTER_LEGAL: ['Proudly made in Seoul, South Korea', 'bitHolla Inc.'],
 		FOOTER_LANGUAGE_TEXT: 'LANGUAGE',
-		FOOTER_LANGUAGE_LANGUAGES: [{ key: 'en', label: 'English' }, { key: 'ko', label: '한국어' }],
-		FOOTER_COPYRIGHT: 'COPYRIGHT 2018',
+		FOOTER_LANGUAGE_LANGUAGES: [
+			{ key: 'en', label: 'English' },
+			{ key: 'ko', label: '한국어' }
+		],
+		FOOTER_COPYRIGHT: 'COPYRIGHT 2019',
 		SECTIONS: {
 			SECTION_1_TITLE: 'ABOUT',
 			SECTION_1_LINK_1: 'About Us',
-			SECTION_1_LINK_2: 'Compliance',
+			SECTION_1_LINK_2: 'Terms of Use',
 			SECTION_1_LINK_3: 'Privacy Policy',
 			SECTION_2_TITLE: 'INFORMATION',
 			SECTION_2_LINK_1: 'Blog',
 			SECTION_2_LINK_2: 'Contact Us',
 			SECTION_2_LINK_3: 'Career',
 			SECTION_3_TITLE: 'DEVELOPERS',
-			SECTION_3_LINK_1: 'API Explorer',
-			SECTION_3_LINK_2: 'Server Status'
+			SECTION_3_LINK_1: 'Documentation',
+			SECTION_3_LINK_2: 'Forum',
+			SECTION_3_LINK_3: 'GitHub',
+			SECTION_3_LINK_4: 'Library',
+			SECTION_3_LINK_5: 'API doc'
 		}
 	},
 	ACCOUNTS: {
@@ -105,14 +106,6 @@ export default {
 		TAB_API: 'API',
 		TAB_SIGNOUT: 'Signout'
 	},
-	REQUEST_HEX_ACCESS: { // new
-		REQUEST_TITLE: 'Request {0} Access',
-		REQUEST_INVITE: 'Request Invite',
-		REFERRAL_INVITE_WARNING: 'To access the HollaEx official Exchange you need to get a referral link from a friend or {0}',
-		CATEGORY_PLACEHOLDER: 'Select the category that best suits your issue',
-		INTRODUCTION_LABEL: 'Introduce yourself',
-		INTRODUCTION_PLACEHOLDER: 'Where are you based, are you interested in running an exchange?',
-	},
 	CONTACT_FORM: {
 		CATEGORY_LABEL: 'Category',
 		CATEGORY_PLACEHOLDER: 'Select the category that best suits your issue',
@@ -121,15 +114,13 @@ export default {
 			OPTION_LEVEL: 'Increase user level',
 			OPTION_DEPOSIT: 'Deposit & Withdrawal',
 			OPTION_BUG: 'Report bug', // ToDo:
-			OPTION_PERSONAL_INFO: 'Change personal information', // ToDo:
-			OPTION_BANK_TRANSFER: 'Bank wire transfer', // new
-			OPTION_REQUEST: 'Request Invite for the HollaEx Exchange' // new
+			OPTION_PERSONAL_INFO: 'Change personal information' // ToDo:
 		},
 		SUBJECT_LABEL: 'Subject',
 		SUBJECT_PLACEHOLDER: 'Type the subject of your issue',
 		DESCRIPTION_LABEL: 'Description',
 		DESCRIPTION_PLACEHOLDER: 'Type in detail what the issue is',
-		ATTACHMENT_LABEL: 'Add attachments(3 max)',  // ToDo:
+		ATTACHMENT_LABEL: 'Add attachments(3 max)', // ToDo:
 		ATTACHMENT_PLACEHOLDER:
 			'Add a file to help communicate your issue. PDF, JPG, PNG and GIF files are accepted',
 		SUCCESS_MESSAGE: 'The email has been seent to our support',
@@ -189,7 +180,6 @@ export default {
 		PASSWORDS_DONT_MATCH: "Password don't match",
 		USER_EXIST: 'Email has already been registered',
 		ACCEPT_TERMS: 'You have not agreed to the Terms of use and Privacy Policy',
-		ACCEPT_RISKS: 'You have not agreed to the Risk Involved', // new
 		STEP: 'Invalid value, step is {0}',
 		ONLY_NUMBERS: 'Value can contain only numbers'
 	},
@@ -197,28 +187,28 @@ export default {
 		PRIVACY_POLICY: {
 			TITLE: 'Privacy Policy',
 			SUBTITLE:
-				'Last updated April 1, 2017. Replaces the prior version in its entirety.',
+				'Last updated April 1, 2019. Replaces the prior version in its entirety.',
 			TEXTS: [
-				'HollaEx (website: https://www.HollaEx.com) is a Bitcoin-based virtual trading platform that is wholly owned by bitHolla Inc. bitHolla Inc (hereinafter referred to as bitHolla) was incorporated in Seoul South Korea.',
+				'HollaEx Web is a virtual trading platform that is wholly owned by bitHolla Inc. bitHolla Inc (hereinafter referred to as bitHolla) was incorporated in Seoul South Korea.',
 				'Use of this HollaEx website (“Website”) and the service offered on the Website (“Service”) are governed by the terms contained on this Terms and Conditions page (“Terms”). This agreement entirely constitutes the agreement between the parties. All other information provided on the Website or oral/written statements made are excluded from this agreement; the exchange policy is provided for guidance only and does not constitute a legal agreement between the parties.',
-				'By accessing, viewing or downloading information from the Website and using the Service provided by BitMEX you acknowledge that you have read, understand, and unconditionally agree to be bound by these Terms. BitMEX may at any time, without notice, amend the Terms. You agree to continue to be bound by any amended terms and conditions and that BitMEX has no obligation to notify you of such amendments. You acknowledge that it is your responsibility to check these Terms periodically for changes and that your continued use of the Website and Services offered by BitMEX following the posting of any changes to the Terms indicates your acceptance of any such changes.',
-				'The Website and the copyright in all text, graphics, images, software and any other materials on the Website is owned by BitMEX including all trademarks and other intellectual property rights in respect of materials and Service on the Website. Materials on this Website may only be used for personal use and non-commercial purposes.',
-				'You may display on a computer screen or print extracts from the Website for the above-stated purpose only provided that you retain any copyright and other proprietary notices or any BitMEX trademarks or logos, as shown on the initial printout or download without alteration, addition or deletion. Except as expressly stated herein, you may not without BitMEX’s prior written permission alter, modify, reproduce, distribute or use in any other commercial context any materials from the Website.',
-				'You acknowledge that ‘BitMEX’ and the BitMEX logo are trademarks of HDR Global Trading Limited. You may reproduce such trademarks without alteration on material downloaded from this Website to the extent authorised above, but you may not otherwise use, copy, adapt or erase them.',
+				'By accessing, viewing or downloading information from the Website and using the Service provided by bitHolla you acknowledge that you have read, understand, and unconditionally agree to be bound by these Terms. bitHolla may at any time, without notice, amend the Terms. You agree to continue to be bound by any amended terms and conditions and that bitHolla has no obligation to notify you of such amendments. You acknowledge that it is your responsibility to check these Terms periodically for changes and that your continued use of the Website and Services offered by bitHolla following the posting of any changes to the Terms indicates your acceptance of any such changes.',
+				'The Website and the copyright in all text, graphics, images, software and any other materials on the Website is owned by bitHolla including all trademarks and other intellectual property rights in respect of materials and Service on the Website. Materials on this Website may only be used for personal use and non-commercial purposes.',
+				'You may display on a computer screen or print extracts from the Website for the above-stated purpose only provided that you retain any copyright and other proprietary notices or any bitHolla trademarks or logos, as shown on the initial printout or download without alteration, addition or deletion. Except as expressly stated herein, you may not without bitHolla’s prior written permission alter, modify, reproduce, distribute or use in any other commercial context any materials from the Website.',
+				'You acknowledge that ‘bitHolla’ and the bitHolla logo are trademarks of bitHolla Inc. You may reproduce such trademarks without alteration on material downloaded from this Website to the extent authorised above, but you may not otherwise use, copy, adapt or erase them.',
 				'You shall not in any circumstances obtain any rights over or in respect of the Website (other than rights to use the Website pursuant to these Terms and any other terms and conditions governing a particular service or section of the Website) or hold yourself out as having any such rights over or in respect of the Website.'
 			]
 		},
 		GENERAL_TERMS: {
 			TITLE: 'General Terms of Service',
 			SUBTITLE:
-				'Last updated April 1, 2017. Replaces the prior version in its entirety.',
+				'Last updated April 1, 2019. Replaces the prior version in its entirety.',
 			TEXTS: [
-				'HollaEx (website: https://www.hollaex.com) is a Bitcoin-based virtual trading platform that is wholly owned by HDR Global Trading Limited. HDR Global Trading Limited (hereinafter referred to as BitMEX) was incorporated under the International Business Companies Act of 1994 of the Republic of Seychelles with a company number of 148707.',
-				'Use of this BitMEX website (“Website”) and the service offered on the Website (“Service”) are governed by the terms contained on this Terms and Conditions page (“Terms”). This agreement entirely constitutes the agreement between the parties. All other information provided on the Website or oral/written statements made are excluded from this agreement; the exchange policy is provided for guidance only and does not constitute a legal agreement between the parties.',
-				'By accessing, viewing or downloading information from the Website and using the Service provided by BitMEX you acknowledge that you have read, understand, and unconditionally agree to be bound by these Terms. BitMEX may at any time, without notice, amend the Terms. You agree to continue to be bound by any amended terms and conditions and that BitMEX has no obligation to notify you of such amendments. You acknowledge that it is your responsibility to check these Terms periodically for changes and that your continued use of the Website and Services offered by BitMEX following the posting of any changes to the Terms indicates your acceptance of any such changes.',
-				'The Website and the copyright in all text, graphics, images, software and any other materials on the Website is owned by BitMEX including all trademarks and other intellectual property rights in respect of materials and Service on the Website. Materials on this Website may only be used for personal use and non-commercial purposes.',
-				'You may display on a computer screen or print extracts from the Website for the above-stated purpose only provided that you retain any copyright and other proprietary notices or any BitMEX trademarks or logos, as shown on the initial printout or download without alteration, addition or deletion. Except as expressly stated herein, you may not without BitMEX’s prior written permission alter, modify, reproduce, distribute or use in any other commercial context any materials from the Website.',
-				'You acknowledge that ‘BitMEX’ and the BitMEX logo are trademarks of HDR Global Trading Limited. You may reproduce such trademarks without alteration on material downloaded from this Website to the extent authorised above, but you may not otherwise use, copy, adapt or erase them.',
+				'HollaEx Web is a virtual trading platform that is wholly owned by bitHolla Inc. bitHolla Inc (hereinafter referred to as bitHolla) was incorporated in Seoul South Korea.',
+				'Use of this HollaEx website (“Website”) and the service offered on the Website (“Service”) are governed by the terms contained on this Terms and Conditions page (“Terms”). This agreement entirely constitutes the agreement between the parties. All other information provided on the Website or oral/written statements made are excluded from this agreement; the exchange policy is provided for guidance only and does not constitute a legal agreement between the parties.',
+				'By accessing, viewing or downloading information from the Website and using the Service provided by bitHolla you acknowledge that you have read, understand, and unconditionally agree to be bound by these Terms. bitHolla may at any time, without notice, amend the Terms. You agree to continue to be bound by any amended terms and conditions and that bitHolla has no obligation to notify you of such amendments. You acknowledge that it is your responsibility to check these Terms periodically for changes and that your continued use of the Website and Services offered by bitHolla following the posting of any changes to the Terms indicates your acceptance of any such changes.',
+				'The Website and the copyright in all text, graphics, images, software and any other materials on the Website is owned by bitHolla including all trademarks and other intellectual property rights in respect of materials and Service on the Website. Materials on this Website may only be used for personal use and non-commercial purposes.',
+				'You may display on a computer screen or print extracts from the Website for the above-stated purpose only provided that you retain any copyright and other proprietary notices or any bitHolla trademarks or logos, as shown on the initial printout or download without alteration, addition or deletion. Except as expressly stated herein, you may not without bitHolla’s prior written permission alter, modify, reproduce, distribute or use in any other commercial context any materials from the Website.',
+				'You acknowledge that ‘bitHolla’ and the bitHolla logo are trademarks of bitHolla Inc. You may reproduce such trademarks without alteration on material downloaded from this Website to the extent authorised above, but you may not otherwise use, copy, adapt or erase them.',
 				'You shall not in any circumstances obtain any rights over or in respect of the Website (other than rights to use the Website pursuant to these Terms and any other terms and conditions governing a particular service or section of the Website) or hold yourself out as having any such rights over or in respect of the Website.'
 			]
 		}
@@ -239,11 +229,6 @@ export default {
 			INFORMATION_PENDING_2:
 				'This may take 10-30 minutes. We will send an email once your {0} is confirmed on the blockchain.'
 		}
-	},
-	REFERAL_SUCCESS: {
-		TITLE: 'Request Sent',
-		BUTTON_TEXT: 'Okay',
-
 	},
 	OTP_FORM: {
 		OTP_FORM_TITLE: 'Enter your authentication code to continue',
@@ -325,9 +310,12 @@ export default {
 		TEXT_2: 'You can now proceed to login'
 	},
 	USER_VERIFICATION: {
-		INFO_TXT: 'Here you can monitor your progress towards verification and an account upgrades.', 
-		INFO_TXT_1: 'Please submit the relevant information needed for each section below.Only when all sections have submissions completed will your information be reviewed and approved for an account upgrade.', 
-		INFO_TXT_2: '* Bank and Identity section require {0} in order to be fully verified.', 
+		INFO_TXT:
+			'Here you can monitor your progress towards verification and an account upgrades.',
+		INFO_TXT_1:
+			'Please submit the relevant information needed for each section below.Only when all sections have submissions completed will your information be reviewed and approved for an account upgrade.',
+		INFO_TXT_2:
+			'* Bank and Identity section require {0} in order to be fully verified.',
 		DOCUMENTATIONS: 'documentations',
 		COMPLETED: 'Completed',
 		PENDING_VERIFICATION: 'Pending verification',
@@ -358,40 +346,45 @@ export default {
 		PENDING_VERIFICATION_DOCUMENTS: 'Your documents are being verified',
 		GOTO_VERIFICATION: 'Go to verification',
 		GOTO_WALLET: 'Go to wallet', // new
-		CONNECT_BANK_ACCOUNT: 'Connect Bank Account', 
-		ACTIVATE_2FA: 'Activate 2FA', 
-		INCOMPLETED: 'Incompleted', 
-		BANK_VERIFICATION: 'Bank Verification', 
-		IDENTITY_VERIFICATION: 'Identity Verification', 
-		PHONE_VERIFICATION: 'Phone Verification', 
-		DOCUMENT_VERIFICATION: 'Document Verification', 
-		START_BANK_VERIFICATION: 'Start Bank Verification', 
-		START_IDENTITY_VERIFICATION: 'Start Identity Verification', 
-		START_PHONE_VERIFICATION: 'Start Phone Verification', 
-		START_DOCUMENTATION_SUBMISSION: 'Start Documentation Submission', 
-		GO_BACK: 'Go Back', 
-		BANK_VERIFICATION_TEXT_1: 'You can add up to 3 bank accounts. International bank accounts will require you contacting customer support and will have limited withdrawal limits.', 
-		BANK_VERIFICATION_TEXT_2: 'By verifying your bank account you can obtain the following:', 
-		BASE_WITHDRAWAL: 'Fiat withdrawal', 
-		BASE_DEPOSITS: 'Fiat deposits', 
-		ADD_ANOTHER_BANK_ACCOUNT: 'Add Another Bank Account', 
-		BANK_NAME: 'Bank Name', 
-		ACCOUNT_NUMBER: 'Account Number', 
-		CARD_NUMBER: 'Card Number', 
-		BANK_VERIFICATION_HELP_TEXT: 'In order for this section to be verified you must complete the {0} section.', 
-		DOCUMENT_SUBMISSION: 'Document Submission', 
-		REVIEW_IDENTITY_VERIFICATION: 'Review Identity Verification', 
-		PHONE_DETAILS: 'Phone Details', 
-		PHONE_COUNTRY_ORIGIN: 'Phone Country of Origin', 
-		MOBILE_NUMBER: 'Mobile Number', 
-		DOCUMENT_PROOF_SUBMISSION: 'Document Proof Submission', 
-		START_DOCUMENTATION_RESUBMISSION: 'Start Documentation Re-Submission', 
-		SUBMISSION_PENDING_TXT: '*This section has already been submitted. Making changes and resubmitting will overwrite your previous information.', 
+		CONNECT_BANK_ACCOUNT: 'Connect Bank Account',
+		ACTIVATE_2FA: 'Activate 2FA',
+		INCOMPLETED: 'Incompleted',
+		BANK_VERIFICATION: 'Bank Verification',
+		IDENTITY_VERIFICATION: 'Identity Verification',
+		PHONE_VERIFICATION: 'Phone Verification',
+		DOCUMENT_VERIFICATION: 'Document Verification',
+		START_BANK_VERIFICATION: 'Start Bank Verification',
+		START_IDENTITY_VERIFICATION: 'Start Identity Verification',
+		START_PHONE_VERIFICATION: 'Start Phone Verification',
+		START_DOCUMENTATION_SUBMISSION: 'Start Documentation Submission',
+		GO_BACK: 'Go Back',
+		BANK_VERIFICATION_TEXT_1:
+			'You can add up to 3 bank accounts. International bank accounts will require you contacting customer support and will have limited withdrawal limits.',
+		BANK_VERIFICATION_TEXT_2:
+			'By verifying your bank account you can obtain the following:',
+		BASE_WITHDRAWAL: 'Fiat withdrawal',
+		BASE_DEPOSITS: 'Fiat deposits',
+		ADD_ANOTHER_BANK_ACCOUNT: 'Add Another Bank Account',
+		BANK_NAME: 'Bank Name',
+		ACCOUNT_NUMBER: 'Account Number',
+		CARD_NUMBER: 'Card Number',
+		BANK_VERIFICATION_HELP_TEXT:
+			'In order for this section to be verified you must complete the {0} section.',
+		DOCUMENT_SUBMISSION: 'Document Submission',
+		REVIEW_IDENTITY_VERIFICATION: 'Review Identity Verification',
+		PHONE_DETAILS: 'Phone Details',
+		PHONE_COUNTRY_ORIGIN: 'Phone Country of Origin',
+		MOBILE_NUMBER: 'Mobile Number',
+		DOCUMENT_PROOF_SUBMISSION: 'Document Proof Submission',
+		START_DOCUMENTATION_RESUBMISSION: 'Start Documentation Re-Submission',
+		SUBMISSION_PENDING_TXT:
+			'*This section has already been submitted. Making changes and resubmitting will overwrite your previous information.',
 		CUSTOMER_SUPPORT_MESSAGE: 'Customer Support Message',
-		DOCUMENT_PENDING_NOTE: 'Your documents is submitted and is pending for review. Please be patient.', 
-		DOCUMENT_VERIFIED_NOTE: 'Your documents are completed.', 
-		NOTE_FROM_VERIFICATION_DEPARTMENT: 'Note from the verification department', 
-		CODE_EXPIRES_IN: 'Code expires in', 
+		DOCUMENT_PENDING_NOTE:
+			'Your documents is submitted and is pending for review. Please be patient.',
+		DOCUMENT_VERIFIED_NOTE: 'Your documents are completed.',
+		NOTE_FROM_VERIFICATION_DEPARTMENT: 'Note from the verification department',
+		CODE_EXPIRES_IN: 'Code expires in',
 		USER_DOCUMENTATION_FORM: {
 			FORM_FIELDS: {
 				FIRST_NAME_LABEL: 'First name',
@@ -406,8 +399,8 @@ export default {
 				GENDER_LABEL: 'Gender',
 				GENDER_PLACEHOLDER: 'Type what gender your are',
 				GENDER_OPTIONS: {
-					MAN: 'Man',
-					WOMAN: 'Woman'
+					MAN: 'Male',
+					WOMAN: 'Female'
 				},
 				NATIONALITY_LABEL: 'Nationality',
 				NATIONALITY_PLACEHOLDER:
@@ -426,7 +419,7 @@ export default {
 				PHONE_CODE_DISPLAY: '({0}) {1}', // 0 -> (+21)  1 -> South Korea
 				PHONE_NUMBER_LABEL: 'Phone number',
 				PHONE_NUMBER_PLACEHOLDER: 'Type your phone number',
-				CONNECTING_LOADING: 'Connecting', 
+				CONNECTING_LOADING: 'Connecting',
 				SMS_SEND: 'Send SMS',
 				SMS_CODE_LABEL: 'SMS Code',
 				SMS_CODE_PLACEHOLDER: 'Input your SMS code'
@@ -436,9 +429,12 @@ export default {
 					'IMPORTANT: Enter your name into the fields exactly as it appears on your identity document (full first name, any middle names/initials and full last name(s)). Are you a business? Contact customer support for a corporate account.',
 				TITLE_PERSONAL_INFORMATION: 'Personal Information',
 				TITLE_PHONE: 'Phone',
-				PHONE_VERIFICATION_TXT: 'Providing valid contact details will assist HollaEx greatly in conflict resolution while preventing unwanted transactions on your account.',
-				PHONE_VERIFICATION_TXT_1: 'Receive real-time updates for deposits and withdrawals by sharing your mobile phone number.',
-				PHONE_VERIFICATION_TXT_2: 'Further prove your identity and address by sharing your LAN phone number (optional).',
+				PHONE_VERIFICATION_TXT:
+					'Providing valid contact details will assist HollaEx greatly in conflict resolution while preventing unwanted transactions on your account.',
+				PHONE_VERIFICATION_TXT_1:
+					'Receive real-time updates for deposits and withdrawals by sharing your mobile phone number.',
+				PHONE_VERIFICATION_TXT_2:
+					'Further prove your identity and address by sharing your LAN phone number (optional).'
 			}
 		},
 		ID_DOCUMENTS_FORM: {
@@ -475,7 +471,8 @@ export default {
 				POR_LABEL: 'Document proving your address',
 				POR_PLACEHOLDER: 'Add a copy of a document that proves your address',
 				SELFIE_PHOTO_ID_LABEL: 'Your Selfie with Photo ID and Note',
-				SELFIE_PHOTO_ID_PLACEHOLDER: 'Add a copy of your Selfie with Photo ID and Note',
+				SELFIE_PHOTO_ID_PLACEHOLDER:
+					'Add a copy of your Selfie with Photo ID and Note'
 			},
 			INFORMATION: {
 				IDENTITY_DOCUMENT: 'Identity Document',
@@ -490,7 +487,8 @@ export default {
 						'Only a valid government-issued identification document is acceptedt; high quality photos or scanned images of these documents are acceptable:',
 					WARNING_2:
 						'Make sure you are uploading your own documents. Any usage of wrong or fake documents will have legal consequences and result in freezing your account immediately.',
-					WARNING_3: 'Please do not submit the identity document as your proof of residence.'
+					WARNING_3:
+						'Please do not submit the identity document as your proof of residence.'
 				},
 				POR: {
 					SECTION_1_TEXT_1:
@@ -512,14 +510,16 @@ export default {
 				},
 				SELFIE: {
 					TITLE: 'Selfie with Photo ID and Note',
-					INFO_TEXT: 'Please provide a photo of you holding your passport or photo ID. In the same picture and have a reference to hollaex.com’, today\'s date and your signature displayed.Make sure your face is clearly visible and that your ID details are clearly readable.',
+					INFO_TEXT:
+						"Please provide a photo of you holding your passport or photo ID. In the same picture and have a reference to bitholla.com’, today's date and your signature displayed.Make sure your face is clearly visible and that your ID details are clearly readable.",
 					REQUIRED: 'Required:',
 					INSTRUCTION_1: 'Your face clearly visable',
 					INSTRUCTION_2: 'Photo ID clearly readable',
-					INSTRUCTION_3: 'Write the word ‘hollaex.com',
+					INSTRUCTION_3: 'Write the word bitholla.com',
 					INSTRUCTION_4: "Write today's date",
-					INSTRUCTION_5: "Write your signature",
-					WARNING: 'Selfie with a different inconsistent ID with uploaded content will be rejected'
+					INSTRUCTION_5: 'Write your signature',
+					WARNING:
+						'Selfie with a different inconsistent ID with uploaded content will be rejected'
 				}
 			}
 		},
@@ -527,7 +527,8 @@ export default {
 			VALIDATIONS: {
 				ACCOUNT_OWNER:
 					'Please type your first and last name as associated with your bank account',
-				ACCOUNT_NUMBER: 'Your bank account number should be less than 50 digits',
+				ACCOUNT_NUMBER:
+					'Your bank account number should be less than 50 digits',
 				ACCOUNT_NUMBER_MAX_LENGTH:
 					'Your bank account number has a limit of 50 characters',
 				CARD_NUMBER: 'Your card number has an incorrect format'
@@ -552,7 +553,8 @@ export default {
 		}
 	},
 	USER_SETTINGS: {
-		TITLE_TEXT_1: 'Change the settings of your account. From interface, notifcations, username and other customizations.',
+		TITLE_TEXT_1:
+			'Change the settings of your account. From interface, notifcations, username and other customizations.',
 		TITLE_TEXT_2: 'Saving your settings will apply the changes and save it.',
 		TITLE_NOTIFICATION: 'Notification',
 		TITLE_INTERFACE: 'Interface',
@@ -564,25 +566,32 @@ export default {
 		SET_TXT: 'SET',
 		CREATE_ORDER_WARING: 'Create Order Warning',
 		RISKY_TRADE_DETECTED: 'Risky Trade Detected',
-		RISKY_WARNING_TEXT_1: 'This orders value is over your designated order limit amount you’ve set {0} .',
+		RISKY_WARNING_TEXT_1:
+			'This orders value is over your designated order limit amount you’ve set {0} .',
 		RISKY_WARNING_TEXT_2: '({0} of portfolio)',
-		RISKY_WARNING_TEXT_3: ' Please check and verify that you indeed want to make this trade.',
+		RISKY_WARNING_TEXT_3:
+			' Please check and verify that you indeed want to make this trade.',
 		GO_TO_RISK_MANAGMENT: 'GO TO RISK MANAGMENT',
-		CREATE_ORDER_WARING_TEXT: 'Create a warning pop up when your trade order uses more than {0} of your portfolio',
+		CREATE_ORDER_WARING_TEXT:
+			'Create a warning pop up when your trade order uses more than {0} of your portfolio',
 		ORDER_PORTFOLIO_LABEL: 'Portfolio Percentage Amount:',
 		NOTIFICATION_FORM: {
 			TRADE_POPUPS: 'Trade Pop ups',
 			POPUP_ORDER_CONFIRMATION: 'Ask for confirmation before submitting orders',
 			POPUP_ORDER_COMPLETED: 'Show pop up when order has been completed',
-			POPUP_ORDER_PARTIALLY_FILLED: 'Show pop up when order has partially filled',
+			POPUP_ORDER_PARTIALLY_FILLED:
+				'Show pop up when order has partially filled'
 		},
 		AUDIO_CUE_FORM: {
-			ORDERS_COMPLETED_AUDIO: 'Play an audio cue when one of your orders is fully filled',
-			ORDERS_PARTIAL_AUDIO: 'Play an audio cue when one of your orders is partially filled',
+			ORDERS_COMPLETED_AUDIO:
+				'Play an audio cue when one of your orders is fully filled',
+			ORDERS_PARTIAL_AUDIO:
+				'Play an audio cue when one of your orders is partially filled',
 			PUBLIC_TRADE_AUDIO: 'Play an audio cue on every public trade'
 		},
 		RISK_MANAGEMENT: {
-			INFO_TEXT: 'Create a warning pop up when a trade order value goes over a set percentage amount of your portfolio',
+			INFO_TEXT:
+				'Create a warning pop up when a trade order value goes over a set percentage amount of your portfolio',
 			INFO_TEXT_1: 'Total assets value in {0}: {1}',
 			PORTFOLIO: 'Percentage of portfolio',
 			TOMAN_ASSET: 'Approximate Value',
@@ -674,7 +683,10 @@ export default {
 		sell: 'sell'
 	},
 	SIDES: [{ value: 'buy', label: 'buy' }, { value: 'sell', label: 'sell' }],
-	DEFAULT_TOGGLE_OPTIONS: [{ value: true, label: 'on' }, { value: false, label: 'off' }], 
+	DEFAULT_TOGGLE_OPTIONS: [
+		{ value: true, label: 'on' },
+		{ value: false, label: 'off' }
+	],
 	SIZE: 'Size',
 	PRICE: 'Price',
 	FEE: 'Fee',
@@ -720,7 +732,7 @@ export default {
 	LANGUAGES: [{ key: 'en', label: 'English' }],
 	QUICK_TRADE: 'Quick trade',
 	PRO_TRADE: 'Pro trade',
-	ADMIN_DASH: 'Admin Page', // new
+	ADMIN_DASH: 'Admin Page',
 	WALLET_TITLE: 'Wallet',
 	TRADING_MODE_TITLE: 'Trading Mode',
 	TRADING_TITLE: 'Trading',
@@ -743,9 +755,12 @@ export default {
 	WITHDRAWALS_FORM_AMOUNT_LABEL: '{0} amount to withdraw',
 	WITHDRAWALS_FORM_AMOUNT_PLACEHOLDER:
 		'Type the amount of {0} you wish to withdraw',
-	WITHDRAWALS_FORM_FEE_BTC_LABEL: 'Bitcoin transaction fee (This is Bitcoin mining fee. If you lower that amount there is chance your transaction takes significant time to get confirmed.)',
-	WITHDRAWALS_FORM_FEE_ETH_LABEL: 'Ethereum transaction fee (This is Ethereum mining fee. If you lower that amount there is chance your transaction takes significant time to get confirmed.)', // TODO CHECK
-	WITHDRAWALS_FORM_FEE_COMMON_LABEL: '{0} transaction fee (This is {0} mining fee. If you lower that amount there is chance your transaction takes significant time to get confirmed.)', // new
+	WITHDRAWALS_FORM_FEE_BTC_LABEL:
+		'Bitcoin transaction fee (This is Bitcoin mining fee. If you lower that amount there is chance your transaction takes significant time to get confirmed.)',
+	WITHDRAWALS_FORM_FEE_ETH_LABEL:
+		'Ethereum transaction fee (This is Ethereum mining fee. If you lower that amount there is chance your transaction takes significant time to get confirmed.)', // TODO CHECK
+	WITHDRAWALS_FORM_FEE_COMMON_LABEL:
+		'{0} transaction fee (This is {0} mining fee. If you lower that amount there is chance your transaction takes significant time to get confirmed.)', // new
 	WITHDRAWALS_FORM_FEE_FIAT_LABEL: 'Bank withdrawal fee',
 	WITHDRAWALS_FORM_FEE_PLACEHOLDER:
 		'Type the amount of {0} you wish to use in the fee of the transaction',
@@ -774,7 +789,8 @@ export default {
 	DEPOSIT_VERIFICATION_ERROR: 'There has been an error verifying the deposit.',
 	DEPOSIT_VERIFICATION_ERROR_VERIFIED: 'The deposit has been already verified',
 	DEPOSIT_VERIFICATION_ERROR_STATUS: 'Invalid status',
-	DEPOSIT_VERIFICATION_ERROR_USER_MATCH: 'The card you made the deposit is not the same as your registered card. Therefore your deposit is rejected and your funds will be refunded in less than an hour.',
+	DEPOSIT_VERIFICATION_ERROR_USER_MATCH:
+		'The card you made the deposit is not the same as your registered card. Therefore your deposit is rejected and your funds will be refunded in less than an hour.',
 	QUOTE_MESSAGE: 'You are going to {0} {1} {2} for {3} {4}',
 	QUOTE_BUTTON: 'Accept',
 	QUOTE_REVIEW: 'Review',
@@ -798,12 +814,13 @@ export default {
 		BASE_INCREASE_LIMIT: 'Increase your daily limit',
 		CONFIRM_VIA_EMAIL: 'Confirm via Email',
 		CONFIRM_VIA_EMAIL_1: 'We have sent you a confirmation withdrawal email.',
-		CONFIRM_VIA_EMAIL_2: 'In order to complete the withdrawal process please confirm',
+		CONFIRM_VIA_EMAIL_2:
+			'In order to complete the withdrawal process please confirm',
 		CONFIRM_VIA_EMAIL_3: 'the withdrawal via your email within 5 minutes.',
 		WITHDRAW_CONFIRM_SUCCESS_1: 'Your withdrawal is confirmed and sent.',
-		WITHDRAW_CONFIRM_SUCCESS_2: 'If you’d like to view your withdrawal please visit your withdrawal history page.',
+		WITHDRAW_CONFIRM_SUCCESS_2:
+			'If you’d like to view your withdrawal please visit your withdrawal history page.',
 		GO_WITHDRAWAL_HISTORY: 'Go To Withdrawal History'
-
 	},
 	WALLET_BUTTON_BASE_DEPOSIT: 'deposit',
 	WALLET_BUTTON_BASE_WITHDRAW: 'withdraw',
@@ -859,14 +876,14 @@ export default {
 	NEXT: 'Next',
 	SKIP_FOR_NOW: 'Skip for now',
 	SUBMIT: 'submit',
-	RESUBMIT: 'Resubmit', 
+	RESUBMIT: 'Resubmit',
 	VERIFICATION_NOTIFICATION_SKIP_TITLE: 'Missing Documents!',
 	VERIFICATION_NOTIFICATION_SKIP_TEXT:
 		'To get full access to withdrawal and deposit functions on HollaEx you must submit your identity documents in your account page.',
 	VERIFICATION_NOTIFICATION_SUCCESS_TITLE: 'Success!',
 	VERIFICATION_NOTIFICATION_SUCCESS_TEXT:
 		'You will receive an email notification when your information has been processed. Processing can typically take 1-3 days.',
-	VERIFICATION_NOTIFICATION_BUTTON: 'PROCEED TO HollaEx Exchange',
+	VERIFICATION_NOTIFICATION_BUTTON: 'PROCEED TO HollaEx',
 	ERROR_USER_ALREADY_VERIFIED: 'User already verified',
 	ERROR_INVALID_CARD_USER: 'Bank or card information provided is incorrect',
 	ERROR_INVALID_CARD_NUMBER: 'Invalid Card number',
@@ -884,8 +901,16 @@ export default {
 	NO_FEE: 'N/A',
 	SETTINGS_LANGUAGE_LABEL: 'Language preferences (Includes Emails)',
 	SETTINGS_LANGUAGE_OPTIONS: [
-		{ value: 'en', label: 'English', icon: `${process.env.PUBLIC_URL}/assets/flags/selected-en.png` },
-		{ value: 'ko', label: '한국어', icon: `${process.env.PUBLIC_URL}/assets/flags/selected-kr.png` }
+		{
+			value: 'en',
+			label: 'English',
+			icon: `${process.env.REACT_APP_PUBLIC_URL}/assets/flags/selected-en.png`
+		},
+		{
+			value: 'ko',
+			label: '한국어',
+			icon: `${process.env.REACT_APP_PUBLIC_URL}/assets/flags/selected-kr.png`
+		}
 	],
 	SETTINGS_ORDERPOPUP_LABEL: 'Display order confirmation popup',
 	SETTINGS_ORDERPOPUP_OPTIONS: [
@@ -900,32 +925,37 @@ export default {
 	SETTING_BUTTON: 'save',
 	STRING_WITH_PARENTHESIS: '{0} ({1})',
 	VERIFICATION_NO_WITHDRAW_TITLE: 'Withdrawals disabled',
-	VERIFICATION_NO_WITHDRAW_MESSAGE:
-		'Your account is disabled for withdrawals',
+	VERIFICATION_NO_WITHDRAW_MESSAGE: 'Your account is disabled for withdrawals',
 	UP_TO_MARKET: 'Up to market',
 	DEVELOPER_SECTION: {
 		TITLE: 'API Key',
-		INFORMATION_TEXT: 'The API provides functionality such as getting wallet balances, managing buy/sell orders, requesting withdrawals as well as market data such as recent trades, order book and ticker.',
-		ERROR_INACTIVE_OTP: 'To generate an API key you need to enable 2-factor authentication.',
+		INFORMATION_TEXT:
+			'The API provides functionality such as getting wallet balances, managing buy/sell orders, requesting withdrawals as well as market data such as recent trades, order book and ticker.',
+		ERROR_INACTIVE_OTP:
+			'To generate an API key you need to enable 2-factor authentication.',
 		ENABLE_2FA: 'Enable 2FA',
 		WARNING_TEXT: 'Do not share your API key with others.',
 		GENERATE_KEY: 'Generate API Key',
 		ACTIVE: 'Active',
 		INACTIVE: 'Inactive',
-		INVALID_LEVEL: 'You need to upgrade your verification level to have access this feature' // TODO
+		INVALID_LEVEL:
+			'You need to upgrade your verification level to have access this feature' // TODO
 	},
 	DEVELOPERS_TOKENS_POPUP: {
 		GENERATE_TITLE: 'Generate API Key',
-		GENERATE_TEXT: 'Please name your API key and keep it in private after its generated. You wont be able to retrieve it again later.',
+		GENERATE_TEXT:
+			'Please name your API key and keep it in private after its generated. You wont be able to retrieve it again later.',
 		GENERATE: 'Generate',
 		DELETE_TITLE: 'Delete API Key',
-		DELETE_TEXT: 'Deleting your API key is ireversalable although you can generate a new API key at anytime. Do you want to delete your API key?',
+		DELETE_TEXT:
+			'Deleting your API key is ireversalable although you can generate a new API key at anytime. Do you want to delete your API key?',
 		DELETE: 'DELETE',
 		FORM_NAME_LABEL: 'Name',
 		FORM_LABLE_PLACEHOLDER: 'Name for the Api Key',
 		API_KEY_LABEL: 'API Key',
 		CREATED_TITLE: 'Copy your API Key',
-		CREATED_TEXT_1: 'Please copy your API key as it will be unattainable in the future.',
+		CREATED_TEXT_1:
+			'Please copy your API key as it will be unattainable in the future.',
 		CREATED_TEXT_2: 'Keep your key private.'
 	},
 	DEVELOPERS_TOKENS_TABLE: {
@@ -947,12 +977,14 @@ export default {
 		SIGN_UP_CHAT: 'Sign Up To Chat',
 		JOIN_CHAT: 'Set Username To Chat'
 	},
-	INVALID_USERNAME: 'Username must be between 3 and 15 characters long. Only contains lowercase, numbers and underscore',
+	INVALID_USERNAME:
+		'Username must be between 3 and 15 characters long. Only contains lowercase, numbers and underscore',
 	USERNAME_TAKEN: 'This username has already been taken. Please try another.',
 	USERNAME_LABEL: 'Username (used for chat)',
 	USERNAME_PLACEHOLDER: 'Username',
 	TAB_USERNAME: 'Username',
-	USERNAME_WARNING: 'Your username can only be changed once. Please assure your username is desirable.',
+	USERNAME_WARNING:
+		'Your username can only be changed once. Please assure your username is desirable.',
 	USERNAME_CANNOT_BE_CHANGED: 'Username can not be changed',
 	UPGRADE_LEVEL: 'Upgrade account level',
 	LEVELS: {
@@ -975,8 +1007,10 @@ export default {
 	},
 	WALLET_ADDRESS_TITLE: 'Generate {0} Wallet',
 	WALLET_ADDRESS_GENERATE: 'Generate',
-	WALLET_ADDRESS_MESSAGE: 'When you generate a wallet you create a deposit and withdrawal address.',
-	WALLET_ADDRESS_ERROR: 'Error generating the address, please refresh and try again.',
+	WALLET_ADDRESS_MESSAGE:
+		'When you generate a wallet you create a deposit and withdrawal address.',
+	WALLET_ADDRESS_ERROR:
+		'Error generating the address, please refresh and try again.',
 	DEPOSIT_WITHDRAW: 'Deposit/Withdraw',
 	GENERATE_WALLET: 'Generate Wallet',
 	TRADE_TAB_CHART: 'Chart',
@@ -991,17 +1025,13 @@ export default {
 	QUICK_TRADE_MODE: 'Quick Trade Mode',
 	JUST_NOW: 'just now',
 	PAIR: 'Pair',
-	ZERO_ASSET: 'You have zero assets', 
-	DEPOSIT_ASSETS: 'Deposit Assets', 
-	SEARCH_TXT: 'Search', 
-	SEARCH_ASSETS: 'Search Assets', 
-	TOTAL_ASSETS_VALUE: 'Total assets value in {0}: {1}', 
-	SUMMARY: { 
+	ZERO_ASSET: 'You have zero assets',
+	DEPOSIT_ASSETS: 'Deposit Assets',
+	SEARCH_TXT: 'Search',
+	SEARCH_ASSETS: 'Search Assets',
+	TOTAL_ASSETS_VALUE: 'Total assets value in {0}: {1}',
+	SUMMARY: {
 		TITLE: 'Summary',
-		TRADER_ACCOUNT_TITLE: 'Account', // new
-		// TRADER_ACCOUNT_TXT_1: 'Join HAP (HollaEx Affiliation Program) by submiting this form to us. If you are eligible and accepted into HAP, you can receive up to 10% in referrals.',
-		TRADER_ACCOUNT_TXT_1: 'Earn up to 10% in commisions through distributing the HollaEx Kit. Alternatively you can earn ', // new
-		TRADER_ACCOUNT_TXT_2: 'daily through staking your HollaEx token when running your own exchange.', // new
 		TINY_PINK_SHRIMP_TRADER: 'Tiny Pink Shrimp Trader',
 		TINY_PINK_SHRIMP_TRADER_ACCOUNT: 'Tiny Pink Shrimp Trader Account',
 		LITTLE_RED_SNAPPER_TRADER: 'Little Red Snapper Trader',
@@ -1015,27 +1045,41 @@ export default {
 		ACCOUNT_ASSETS: 'Account Assets',
 		ACCOUNT_DETAILS: 'Account Details',
 		SHRIMP_ACCOUNT_TXT_1: 'Your journey begins here!',
-		SHRIMP_ACCOUNT_TXT_2: 'Keep swimming true, you’ll soon stand out from the rest of the shoal',
-		SNAPPER_ACCOUNT_TXT_1: 'Congrats on staying your course through the swell of the market.',
-		SNAPPER_ACCOUNT_TXT_2: 'Forge through and fight the surge for more crypto treasures ahead.',
-		KRAKEN_ACCOUNT_TXT_1: 'Likelier to crack jokes than hulls, this crustacean has weathered his share of storms!',
-		LEVIATHAN_ACCOUNT_TXT_1: 'Beast from the abyss, seeing through altcoins into unfathomable depths, masters of midnight waters and tidal wave.',
+		SHRIMP_ACCOUNT_TXT_2:
+			'Keep swimming true, you’ll soon stand out from the rest of the shoal',
+		SNAPPER_ACCOUNT_TXT_1:
+			'Congrats on staying your course through the swell of the market.',
+		SNAPPER_ACCOUNT_TXT_2:
+			'Forge through and fight the surge for more crypto treasures ahead.',
+		KRAKEN_ACCOUNT_TXT_1:
+			'Likelier to crack jokes than hulls, this crustacean has weathered his share of storms!',
+		LEVIATHAN_ACCOUNT_TXT_1:
+			'Beast from the abyss, seeing through altcoins into unfathomable depths, masters of midnight waters and tidal wave.',
 		VIEW_FEE_STRUCTURE: 'View Fee Structure and Limits',
 		UPGRADE_ACCOUNT: 'Upgrade Account',
 		ACTIVE_2FA_SECURITY: 'Active 2FA Security',
 		ACCOUNT_ASSETS_TXT_1: 'Displayed is a summary of all your assets.',
-		ACCOUNT_ASSETS_TXT_2: 'Holding a large amounts of assets will entitle you for an account upgrade which includes a unique badge and lower trading fees.',
-		TRADING_VOLUME_TXT_1: 'Your trading volume history is displayed in {0} and is a nominally calculated at the end of every month from all trading pairs.',
-		TRADING_VOLUME_TXT_2: 'High trading activity will entitle you for an account upgrade rewarding you with a unique badge and other perks.',
-		ACCOUNT_DETAILS_TXT_1: 'Your account type determines your account badge, trading fee, deposits and withdrawal limits.',
-		ACCOUNT_DETAILS_TXT_2: 'Your trading account age, activity level and total account assets amount will determine if your account is legable for an upgrade.',
-		ACCOUNT_DETAILS_TXT_3: 'Maintaining your account level requires constant trading and maintaining a certain amount of deposited assets.',
-		ACCOUNT_DETAILS_TXT_4: 'Periodic downgrading of accounts will occur if activity and assets are not maintained.',
+		ACCOUNT_ASSETS_TXT_2:
+			'Holding a large amounts of assets will entitle you for an account upgrade which includes a unique badge and lower trading fees.',
+		TRADING_VOLUME_TXT_1:
+			'Your trading volume history is displayed in {0} and is a nominally calculated at the end of every month from all trading pairs.',
+		TRADING_VOLUME_TXT_2:
+			'High trading activity will entitle you for an account upgrade rewarding you with a unique badge and other perks.',
+		ACCOUNT_DETAILS_TXT_1:
+			'Your account type determines your account badge, trading fee, deposits and withdrawal limits.',
+		ACCOUNT_DETAILS_TXT_2:
+			'Your trading account age, activity level and total account assets amount will determine if your account is legable for an upgrade.',
+		ACCOUNT_DETAILS_TXT_3:
+			'Maintaining your account level requires constant trading and maintaining a certain amount of deposited assets.',
+		ACCOUNT_DETAILS_TXT_4:
+			'Periodic downgrading of accounts will occur if activity and assets are not maintained.',
 		REQUIREMENTS: 'Requirements',
 		REQUEST_ACCOUNT_UPGRADE: 'Request an Account Upgrade',
-		FEES_AND_LIMIT: 'Fee and Limit Structure for',
-		FEES_AND_LIMIT_TXT_1: 'Becoming a crypto trader marks new beginning. Armed with wits, will and speed, dive into the bottomless blue.Only by delving deep within the crypto oceans will you unlock your fortunes.',
-		FEES_AND_LIMIT_TXT_2: 'Each account has its own fees and deposit and withdrawal limits.Please visit the {0} to get more information.',
+		FEES_AND_LIMIT: 'Fee and Limit Structure for {0}',
+		FEES_AND_LIMIT_TXT_1:
+			'Becoming a crypto trader marks new beginning. Armed with wits,will and speed only by taking risks and trading will you be allowed to update your account.',
+		FEES_AND_LIMIT_TXT_2:
+			'Each account has its own fees and deposit and withdrawal limits.Please visit the {0} to get more information.',
 		DEPOSIT_WITHDRAWAL_ALLOWENCE: 'Deposit & withdrawal allowance',
 		TRADING_FEE_STRUCTURE: 'Trading fee structure',
 		WITHDRAWAL: 'Withdrawal',
@@ -1045,28 +1089,39 @@ export default {
 		WEBSITE: 'website',
 		VIP_TRADER_ACCOUNT_ELIGIBLITY: 'VIP Trader Account Upgrade Eligibility',
 		PRO_TRADER_ACCOUNT_ELIGIBLITY: 'Pro Trader Account Upgrade Eligibility',
+		TRADER_ACCOUNT_ELIGIBILITY: 'Level {0} Account Eligibility',
 		NOMINAL_TRADING: 'Nominal Trading',
 		NOMINAL_TRADING_WITH_MONTH: 'Nominal Trading Last {0}',
 		ACCOUNT_AGE_OF_MONTHS: 'Account Age of {0} Months',
 		TRADING_VOLUME_EQUIVALENT: '{0} {1} Trading Volume Equivalent',
-		HAP_ACCOUNT:'HAP Account',
-		HAP_ACCOUNT_TXT :'Your account is a verified HollaEx affiliate program account. You can now earn 10% bonus for every person you invite that buys HEX.'
+		LEVEL_OF_ACCOUNT: 'Level {0} Account',
+		LEVEL_TXT_DEFAULT:'Add your level description here',
+		LEVEL_1_TXT: 'Your trading journey begins here! Profits await.Upgrades your account to unlock withdrawals and favorable fees by verifying your account.',
+		LEVEL_2_TXT: 'Congrats on getting your account verified. Keep trading and apply for an account upgrade to get lower trading fees and larger withdrawal and deposit limits.',
+		LEVEL_3_TXT: 'You’ve come far comrade and have traded well.Keep trading and reach the highest rank and enjoy even lower fees and higher limits.',
+		LEVEL_4_TXT: 'You are a masters trader and have reached the peek. To maintain your rank keep your trading volume high and healthy.',
+		CURRENT_TXT: 'Current',
+		TRADER_ACCOUNT_HEX_TEXT: 'Earn up to 10% in commissions through distributing the HollaEx Kit. Alternatively you can earn HEX daily through staking your HEX token when running your own exchange.',
+		TRADER_ACCOUNT_TITLE: 'Account', // new
+		HAP_ACCOUNT:'HAP Account', // new
+		HAP_ACCOUNT_TXT :'Your account is a verified HollaEx affiliate program account. You can now earn 10% bonus for every person you invite that buys HEX.' // new
 	},
 	REFERRAL_LINK: {
-		// TITLE: 'APPLY FOR HAP Referral Code', // new
-		TITLE: 'EARN 10% IN COMISSIONS', // new
-		INFO_TEXT: 'Earn 1 HEX for every 10 HEX your friends buy.', // new
-		INFO_TEXT_1: 'Commissions are paid periodically to your HEX wallet', // new
+		TITLE: 'Invite your friend', // new
+		INFO_TEXT: 'Refer your friends by giving out this link.', // new
+		INFO_TEXT_1: 'Send thm this affiliation link and get them onboard', // new
 		COPY_FIELD_LABEL: 'Share the link below with friends and earn commissions:', // new
 		REFERRED_USER_COUT: 'You have referred {0} users', // new
 		COPY_LINK_BUTTON: 'COPY REFERRAL LINK', // new
+		HEX_TITLE: 'EARN 10% IN COMMISSIONS', // new
+		HEX_INFO_TEXT: 'Earn 1 HEX for every 10 HEX your friends buy.', // new
+		HEX_INFO_TEXT_1: 'Commissions are paid periodically to your HEX wallet', // new
 		APPLICATION_TXT: 'To become a HollaEx Kit distributor please fill out an application.', // new
 		TOTAL_REFERRAL: 'Total bought from referrals:', // new
-		PENDINF_REFERRAL: 'Commissions Pending:', // new
+		PENDING_REFERRAL: 'Commissions Pending:', // new
 		EARN_REFERRAL: 'Commissions Earnt:', // new
 		HEX_COUNT: '{0} HEX', // new
 		APPLY_BUTTON: 'APPLY', // new
-
 	},
 	STAKE_TOKEN: {
 		TITLE: 'Stake HollaEx Token', // new
@@ -1074,25 +1129,6 @@ export default {
 		INFO_TXT2: 'You can collateralize your HollaEx token in a similar fashion to staking and earn HEX not sold during the Wave Auction.', // new
 		INFO_TXT3: 'Simply go to dash.bitholla.com and collateralize your own exchange today and earn free HEX', // new
 		BUTTON_TXT: 'GO TO DASH' // new
-	},
-	TERMS_OF_SERVICES: { // new
-		TITLE: 'HollaEx Token Purchase Agreement',
-		SERVICE_AGREEMENT: AGREEMENT,
-		PROCEED: 'PROCEED',
-		AGREE_TERMS_LABEL: 'I have read and agree to the HollaEx Token Purchase Agreement',
-		RISK_INVOLVED_LABEL: 'I understand the risks involved',
-		DOWNLOAD_PDF: 'Download the PDF',
-		DEPOSIT_FUNDS: 'Deposit funds into your wallet to obtain HollaEx Token (HEX)',
-		READ_FAG: 'Read HollaEx FAQ here: {0}',
-		READ_DOCUMENTATION: 'Read HollaEx whitepaper here: {0}',
-		READ_WAVES: 'Rules for the coming December Public Wave Auction{0}', // new
-		DOWNLOAD_BUY_HEX: 'Download the PDF to see a visual step-by-step processes on {0}',
-		HOW_TO_BUY: 'how to buy HollaEx Token (HEX)',
-		PUBLIC_SALES: ' Public Wave Auction', // new
-		CONTACT_US: 'Feel free to contact us for more information and any issues by sending us an email to {0}',
-		VISUAL_STEP: 'See a visual step-by-step processes on {0}', // new
-		WARNING_TXT: 'We will review your request and send further instructions to your email on how to access the HollaEx exchange.', // new
-		WARNING_TXT1: 'In the mean time you can firmilerize yourself with the HollaEx network with the resources below' // new
 	},
 	USER_LEVEL: 'User level', // new
 	LIMIT_AMOUNT: 'Limit amount', // new
@@ -1102,4 +1138,9 @@ export default {
 	NOTE_FOR_EDIT_COIN: 'Note: For adding and removing {0} please refer to the{1}.', // new
 	REFER_DOCS_LINK: 'docs', // new
 	RESTART_TO_APPLY: 'You need to restart your exchange for apply these changes.', // new
+	TRIAL_EXCHANGE_MSG: 'You are using a trial version of {0} and it will expire in {1} days.', // new
+	EXPIRY_EXCHANGE_MSG: 'Your exchange has expired. Go to dash.bitholla.com to activate it again.', // new
+	EXPIRED_INFO_1: 'Your HollaEx trial has ended.', // new
+	EXPIRED_INFO_2: 'Collateralize your exchange to activate it again.', // new
+	EXPIRED_BUTTON_TXT: 'ACTIVATE EXCHANGE' // new
 };

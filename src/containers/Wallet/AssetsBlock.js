@@ -1,12 +1,15 @@
 import React from 'react';
 import { CurrencyBall } from '../../components';
-import { ICONS, BASE_CURRENCY, CURRENCY_PRICE_FORMAT, DEFAULT_COIN_DATA } from '../../config/constants';
+import {
+	ICONS,
+	BASE_CURRENCY,
+	CURRENCY_PRICE_FORMAT,
+	DEFAULT_COIN_DATA,
+	IS_HEX
+} from '../../config/constants';
 import { Link } from 'react-router';
 import { isMobile } from 'react-device-detect';
-import {
-	calculatePrice,
-	formatToCurrency
-} from '../../utils/currency';
+import { calculatePrice, formatToCurrency } from '../../utils/currency';
 import { ActionNotification } from '../../components';
 import STRINGS from '../../config/localizedStrings';
 
@@ -19,6 +22,7 @@ export const AssetsBlock = ({
 	onOpenDialog,
 	bankaccount,
 	navigate,
+	isValidBase,
 	openContactUs
 }) => (
 	<div className="wallet-assets_block">
@@ -29,7 +33,7 @@ export const AssetsBlock = ({
 					<th>{STRINGS.CURRENCY}</th>
 					<th>{STRINGS.DEPOSIT_WITHDRAW}</th>
 					<th className="td-amount" />
-					<th className="text-center">{STRINGS.AMOUNT}</th>
+					<th>{STRINGS.AMOUNT}</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -45,7 +49,7 @@ export const AssetsBlock = ({
 								: formatToCurrency(
 										calculatePrice(balanceValue, prices[key]),
 										baseCoin.min
-									);
+								  );
 						return (
 							<tr className="table-row table-bottom-border" key={key}>
 								<td className="table-icon td-fit">
@@ -58,9 +62,7 @@ export const AssetsBlock = ({
 									</Link>
 								</td>
 								<td className="td-name td-fit">
-									<Link to={`/wallet/${key.toLowerCase()}`}>
-										{fullname}
-									</Link>
+									<Link to={`/wallet/${key.toLowerCase()}`}>{fullname}</Link>
 								</td>
 								<td className="td-wallet">
 									{wallets[key] ? (
@@ -92,7 +94,6 @@ export const AssetsBlock = ({
 											onClick={() => onOpenDialog(key)}
 											className="need-help"
 											useSvg={true}
-											showActionText={true}
 											disable={!allow_deposit}
 										/>
 									)}
@@ -103,16 +104,15 @@ export const AssetsBlock = ({
 										<div className="mr-4">
 											{STRINGS.formatString(
 												CURRENCY_PRICE_FORMAT,
-												formatToCurrency(balanceValue, min),
+												formatToCurrency(balanceValue, min, true),
 												symbol.toUpperCase()
 											)}
 										</div>
-										{key === 'hex' &&
+										{!isMobile &&
+											key !== BASE_CURRENCY &&
 											parseFloat(balanceText || 0) > 0 && (
-												<div className="text-center base-amount">
-													{`(≈ ${
-														baseCoin.symbol.toUpperCase()
-													} ${balanceText})`}
+												<div>
+													{`(≈ ${baseCoin.symbol.toUpperCase()} ${balanceText})`}
 												</div>
 											)}
 									</div>
@@ -121,18 +121,34 @@ export const AssetsBlock = ({
 						);
 					})}
 			</tbody>
-			{BASE_CURRENCY && (
-					<tfoot>
+			{BASE_CURRENCY && IS_HEX
+				? <tfoot>
+					<tr>
+						<td colSpan={5}>
+							{STRINGS.formatString(
+								STRINGS.WALLET_DEPOSIT_USD,
+								<span className="blue-link pointer" onClick={openContactUs}>{STRINGS.CONTACT_US_TEXT}</span>
+							)}
+						</td>
+					</tr>
+				</tfoot>
+				: !isMobile && BASE_CURRENCY && isValidBase
+					? (<tfoot>
 						<tr>
-							<td colSpan={5}>
-								{STRINGS.formatString(
-									STRINGS.WALLET_DEPOSIT_USD,
-									<span className="blue-link pointer" onClick={openContactUs}>{STRINGS.CONTACT_US_TEXT}</span>
-								)}
+							<td />
+							<td />
+							<td />
+							<td />
+							<td>
+								<div className="d-flex">
+									<div className="mr-4">{STRINGS.WALLET_TABLE_TOTAL}</div>
+									<div style={{ direction: 'rtl' }}>{totalAssets}</div>
+								</div>
 							</td>
 						</tr>
 					</tfoot>
-				)}
+					) : null
+			}
 		</table>
 	</div>
 );

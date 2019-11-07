@@ -339,14 +339,8 @@ $mobile-regular--font-size: 1.5rem;
 			width: 2rem;
 
 			svg {
-				.chat-lvl-4 {
-					fill: $colors-black;
-				}
-			    .level_icon {
-						fill: $dark-icon-color;
-				}
-				.hap-icon{
-					fill: $dark-icon-color;
+				.level_icon {
+					fill: $colors-white;
 				}
 			}
 		}
@@ -372,7 +366,7 @@ $mobile-regular--font-size: 1.5rem;
 			}
 
 			.username {
-				color: white;
+				color: $colors-white;
 			}
 		}
 		.username-to-chat {

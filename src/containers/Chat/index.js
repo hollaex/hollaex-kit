@@ -73,7 +73,6 @@ class Chat extends Component {
 
 		chatWs.on('error', (error) => {
 			this.isInitializing(false);
-			console.log(error);
 		});
 
 		chatWs.on('message', (message) => {
@@ -84,7 +83,7 @@ class Chat extends Component {
 			const messages = this.state.messages.concat(newMessage);
 			const unreadMessages = this.props.minimized
 				? this.props.unreadMessages +
-					(messages.length - this.state.messages.length)
+				  (messages.length - this.state.messages.length)
 				: 0;
 			this.props.setChatUnreadMessages(unreadMessages);
 			this.setState({ messages });
@@ -127,9 +126,7 @@ class Chat extends Component {
 				const { to } = this.state;
 				const chatMessage = {
 					username,
-					userType: this.props.is_hap
-						? USER_TYPES.USER_TYPE_HAP
-						: USER_TYPES.USER_TYPE_NORMAL,
+					userType: USER_TYPES.USER_TYPE_NORMAL,
 					to,
 					message,
 					type: MESSAGE_TYPES.MESSAGE_TYPE_NORMAL
@@ -201,8 +198,7 @@ const mapStateToProps = (store) => ({
 	userType: store.auth.userType,
 	userInitialized: store.user.fetched,
 	unreadMessages: store.app.chatUnreadMessages,
-	set_username: store.user.settings.chat.set_username,
-	is_hap: store.user.is_hap
+	set_username: store.user.settings.chat.set_username
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -211,4 +207,7 @@ const mapDispatchToProps = (dispatch) => ({
 	dispatch
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Chat);
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(Chat);

@@ -31,7 +31,7 @@
 }
 
 .deposite-asset {
-	fill: $link;
+	fill: $dark-buy;
 	font-weight: bold;
 }
 
@@ -41,7 +41,6 @@
 
 .slice_active {
 	fill-opacity: 1;
-	stroke-width: 5;
 }
 
 .chart_btc {
@@ -407,7 +406,6 @@
 	}
 	.slice_active {
 		fill-opacity: 0.4;
-		stroke-width: 4;
 	}
 	.chart_btc {
 		fill: $dark-coin-btc;
@@ -633,11 +631,6 @@
 		}
 		.limit_content-text {
 			color: $dark-font-main-text-color;
-		}
-	}
-	.donut-label-no-price {
-		tspan {
-			fill: $dark-font-sub-text-color;
 		}
 	}
 }

@@ -46,7 +46,6 @@ export const validAddress = (symbol = '', message) => {
 			switch (currency) {
 				// case 'BTC':
 				// 	address = BAValidator(address).address;
-				// 	console.log(address)
 				// 	if (address) {
 				// 		valid = true;
 				// 	}

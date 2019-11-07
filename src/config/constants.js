@@ -1,21 +1,20 @@
 import config from './index';
-import { formatNumber } from '../utils/currency';
 
 import STRINGS from './localizedStrings';
 
-export const ENV = process.env.NODE_ENV || 'development';
-export const NETWORK = process.env.REACT_APP_NETWORK || 'testnet';
+export const ENV = process.env.NODE_ENV || 'production';
+export const NETWORK = process.env.REACT_APP_NETWORK || 'mainnet';
 
-export const APP_TITLE = STRINGS.APP_TITLE;
+export const APP_TITLE =
+	process.env.REACT_APP_EXCHANGE_NAME || STRINGS.APP_TITLE;
 
 export const TOKEN_TIME = 24 * 60 * 60 * 1000; // 1 day
 export const SESSION_TIME = 6 * 60 * 60 * 1000; // 6 hour
-export const API_URL = config[ENV][NETWORK].API_URL;
-export const WS_URL = config[ENV][NETWORK].WS_URL;
+
+export const API_URL = config[ENV].API_URL;
+export const WS_URL = config[ENV].WS_URL;
 
 export const ICONS = {
-	LOGO_GREY: '/assets/hollaEx_logo-grey.svg',
-	LOGO_BLACK: '/assets/hollaEx_logo-blk.svg',
 	TRADE_HISTORY_DARK: '/assets/icons/trade-history-dark.svg',
 	TRADE_HISTORY_LIGHT: '/assets/icons/trade-history-light.svg',
 	ACTIVE_TRADE_DARK: '/assets/icons/active-trade-dark.svg',
@@ -43,11 +42,9 @@ export const ICONS = {
 	XRP_ICON: '/assets/icons/xrp-icon-01.svg',
 	XRP_ICON_DARK: '/assets/icons/xrp-icon-01.svg',
 	XRP_NAV_ICON: '/assets/icons/xrp-icon-01.svg',
+	KRW_ICON: '/assets/icons/krw-icon-01.svg',
 	HEX_ICON: '/assets/icons/hex-icon.svg',
 	HEX_ICON_DARK: '/assets/icons/hex-icon-dark.svg',
-	USDT_ICON: '/assets/icons/usdt-icon.svg',
-	ACCOUNT_SUMMARY: '/assets/icons/account-icon-summary.svg',
-	REFERAL_SUCCESS: '/assets/icons/send-request.svg',
 	CHECK: '/assets/images/Orderbook scrolling-01.svg',
 	DARK_CHECK: '/assets/images/dark-Orderbook-scrolling-01.svg',
 	BLUE_QUESTION: '/assets/acounts/account-icons-08.svg',
@@ -240,21 +237,17 @@ export const ICONS = {
 	SETTING_RISK_MANAGE_WARNING_ICON:
 		'/assets/images/risk-manage-pop-warning.svg',
 	REFER_ICON: '/assets/images/refer-icon.svg',
-	HEX_COIN_STACK: '/assets/images/HEX-coin-stack.svg',
-	HEX_DOCS: '/assets/images/HEX-docs.svg',
-	HEX_WAVES: '/assets/images/wave-icon.svg',
-	HEX_EMAIL: '/assets/images/HEX-email.svg',
-	HEX_FAQ: '/assets/images/HEX-FAQ.svg',
-	HEX_PDF: '/assets/images/HEX-pdf.svg',
 	EDIT_ICON: '/assets/images/edit-icon.svg',
 	STAKETOKEN_ICON: '/assets/images/stake.svg',
 	DEFAULT_ICON: '/assets/icons/missing-coin-light.svg',
 	DEFAULT_ICON_DARK: '/assets/icons/missing-coin-dark.svg',
+	EXPIRED_ICON: '/assets/images/expired.svg',
 	LEVEL_ACCOUNT_ICON_1: '/assets/images/level-1.svg',
 	LEVEL_ACCOUNT_ICON_2: '/assets/images/level-2.svg',
 	LEVEL_ACCOUNT_ICON_3: '/assets/images/level-3.svg',
 	LEVEL_ACCOUNT_ICON_4: '/assets/images/level-4.svg',
-	HAP_ACCOUNT_ICON: '/assets/icons/hap-account-icon.svg'
+	HAP_ACCOUNT_ICON: '/assets/icons/hap-account-icon.svg',
+	ACCOUNT_SUMMARY: '/assets/icons/account-icon-summary.svg'
 };
 
 export const SOCIAL_ICONS = {
@@ -275,15 +268,20 @@ export const FEATURES_ICONS = {
 };
 
 export const SUMMMARY_ICON = {
-	KRAKEN: '/assets/summary/kraken.png',
-	SNAPPER: '/assets/summary/snapper.png',
-	SHRIMP: '/assets/summary/shrimp.png',
-	LEVIATHAN: '/assets/summary/leviathan.png',
-	LEVIATHAN_DARK: '/assets/summary/leviathan_dark.png'
+	LEVEL_1: '/assets/summary/level-1.png',
+	LEVEL_1_DARK: '/assets/summary/level-1-dark.png',
+	LEVEL_2: '/assets/summary/level-2.png',
+	LEVEL_2_DARK: '/assets/summary/level-2-dark.png',
+	LEVEL_3: '/assets/summary/level-3.png',
+	LEVEL_3_DARK: '/assets/summary/level-3-dark.png',
+	LEVEL_4: '/assets/summary/level-4.png',
+	LEVEL_4_DARK: '/assets/summary/level-4-dark.png'
 };
 
-export const HOLLAEX_LOGO = '/assets/hollaEx_logo-grey.svg';
-export const HOLLAEX_LOGO_BLACK = '/assets/hollaEx_logo-blk.svg';
+export const HOLLAEX_LOGO =
+	process.env.LOGO_PATH || '/assets/hollaEx_logo-grey.svg';
+export const HOLLAEX_LOGO_BLACK =
+	process.env.LOGO_BLACK_PATH || '/assets/hollaEx_logo-blk.svg';
 
 export const AUDIOS = {
 	ORDERBOOK_FIELD_UPDATE: '/assets/audio/orderbook_field_update.wav',
@@ -304,7 +302,8 @@ export const DEFAULT_COIN_DATA = {
 	symbol: '',
 	min: 0.001
 };
-// export const DEFAULT_PAIR = 'hex-usdt';
+
+export const DEFAULT_PAIR = 'btc-eur';
 
 export const FLEX_CENTER_CLASSES = [
 	'd-flex',
@@ -351,9 +350,8 @@ export const WITHDRAW_LIMITS = {
 	}
 };
 
-export const DEFAULT_TRADING_PAIRS = process.env.REACT_APP_DEFAULT_TRADING_PAIRS
-	? process.env.REACT_APP_DEFAULT_TRADING_PAIRS.split(',')
-	: ['btc-eur', 'eth-eur'];
+// Default trading pairs (it gets set from the server so it is not important to set these properly)
+export const DEFAULT_TRADING_PAIRS = ['hex-usdt'];
 
 export const TOKEN_KEY = `${ENV}_${NETWORK}_TOKEN`;
 export const LANGUAGE_KEY = `${ENV}_${NETWORK}_LANGUAGE`;
@@ -367,30 +365,11 @@ export const BANK_WITHDRAWAL_MAX_DYNAMIC_FEE =
 	process.env.REACT_APP_BANK_WITHDRAWAL_MAX_DYNAMIC_FEE || 50;
 export const BANK_WITHDRAWAL_MAX_AMOUNT_FOR_BASE_FEE =
 	process.env.REACT_APP_BANK_WITHDRAWAL_MAX_AMOUNT_FOR_BASE_FEE || 0;
-export const takerFee = process.env.REACT_APP_NOT_LOGGEDIN_FEE || 0;
+export const takerFee = 0;
 
 export const BANK_PAYMENT_LINK = '';
 export const MIN_VERIFICATION_LEVEL_TO_WITHDRAW = 2;
 export const MAX_VERIFICATION_LEVEL_TO_WITHDRAW = 5;
-
-export const BLOCKTRAIL_ENDPOINT =
-	NETWORK === 'testnet'
-		? `https://testnet.blockchain.com/btc/tx/`
-		: 'https://explorer.blockchain.com/btc/tx/';
-
-export const ETHEREUM_ENDPOINT = `https://${
-	NETWORK === 'testnet' ? 'ropsten.etherscan.io' : 'etherscan.io'
-}/tx/`;
-
-export const BITCOINCOM_ENDPOINT =
-	NETWORK === 'testnet'
-		? `https://www.blocktrail.com/tBCC/tx/`
-		: 'https://explorer.bitcoin.com/bch/tx/';
-
-export const RIPPLE_ENDPOINT =
-	NETWORK === 'testnet'
-		? `https://xrpscan.com/tx/` // needs to be fixed
-		: 'https://xrpscan.com/tx/';
 
 export const EXPLORERS_ENDPOINT = (currency) => {
 	let endpoint = '';
@@ -439,41 +418,35 @@ export const BALANCE_ERROR = 'Insufficient balance to perform the order';
 
 export const CAPTCHA_SITEKEY =
 	process.env.REACT_APP_CAPTCHA_SITE_KEY ||
-	'6LfgB6kUAAAAAAJI6CNSHdLrjDn8iFmZGxQDrcER';
+	'6LfgB6kUAAAAAAJI6CNSHdLrjDn8iFmZGxQDrcER'; // default recaptcha v3
 export const CAPTCHA_TIMEOUT = process.env.REACT_APP_CAPTCHA_TIMEOUT
 	? parseInt(process.env.REACT_APP_CAPTCHA_TIMEOUT, 10)
 	: 2000;
 
 export const TIME_ZONE = process.env.REACT_APP_TIMEZONE || 'GMT';
-export const IS_PRO_VERSION = true;
+export const TOKEN_EMAIL = 'token::email';
+export const TOKEN_MAX_AGE = 23 * 60 * 60;
+
+export const IS_PRO_VERSION =
+	process.env.REACT_APP_IS_PRO_VERSION &&
+	process.env.REACT_APP_IS_PRO_VERSION === 'true';
 export const PRO_VERSION_REDIRECT =
 	process.env.REACT_APP_PRO_VERSION_REDIRECT || '/account';
-export const DEFAULT_VERSION_REDIRECT =
-	process.env.REACT_APP_DEFAULT_VERSION_REDIRECT || '/';
+export const DEFAULT_VERSION_REDIRECT = '/';
 export const PRO_URL = process.env.REACT_APP_PRO_URL || 'https://hollaex.com';
 
-export const MIN_LEVEL_FOR_TOKENS = parseInt(
-	process.env.REACT_APP_MIN_LEVEL_FOR_TOKENS || 2,
-	10
-);
+// minimum level for a user to be able to create api tokens
+export const MIN_LEVEL_FOR_TOKENS = 2;
+
 const THEME_COLOR = localStorage.getItem('theme');
 export const THEMES = ['dark', 'white'];
 export const THEME_DEFAULT = THEME_COLOR ? THEME_COLOR : THEMES[1];
 export const CHAT_STATUS_KEY = 'chat:minimized';
 
-export const TRADING_VOLUME_CHART_LIMITS = process.env
-	.REACT_APP_TRADING_VOLUME_CHART_LIMITS
-	? process.env.REACT_APP_TRADING_VOLUME_CHART_LIMITS.split(',').map((data) =>
-			formatNumber(data)
-	  )
-	: [10000, 100000];
-
-export const TRADE_ACCOUNT_UPGRADE_MONTH = process.env
-	.REACT_APP_ACCOUNT_UPGRADE_MONTH
-	? process.env.REACT_APP_ACCOUNT_UPGRADE_MONTH.split(',').map((data) =>
-			formatNumber(data)
-	  )
-	: [3, 6];
+/* these values are used for the chart limits on the summary page */
+export const TRADING_VOLUME_CHART_LIMITS = [10000, 100000];
+export const TRADE_ACCOUNT_UPGRADE_MONTH = [3, 6];
+/*****************************************************************/
 
 export const BAR_CHART_LIMIT_CAPACITY = [340000, 2050000];
 
@@ -487,33 +460,36 @@ export const BASE_CURRENCY = process.env.REACT_APP_BASE_CURRENCY
 
 export const FEES_LIMIT_SITE_URL = 'https://www.hollaex.com';
 export const API_DOCS_URL = 'https://docs.bitholla.com/';
+export const EXCHANGE_URL = 'https://dash.bitholla.com/';
+export const EXCHANGE_EXPIRY_DAYS = 15;
+export const AFFILIATION_APPLY_URL = 'https://docs.google.com/forms/d/1xf1mHxiTW6YUKVEqvfMJZqygiFxm1P6aUDS7uXe5Ouc/viewform?ts=5d9da3d5&edit_requested=true';
 
-export const TRADING_ACCOUNT_TYPE = {
-	shrimp: {
-		symbol: 'shrimp',
-		name: STRINGS.SUMMARY.TINY_PINK_SHRIMP_TRADER,
-		fullName: STRINGS.SUMMARY.TINY_PINK_SHRIMP_TRADER_ACCOUNT,
-		level: 1
-	},
-	snapper: {
-		symbol: 'snapper',
-		name: STRINGS.SUMMARY.LITTLE_RED_SNAPPER_TRADER,
-		fullName: STRINGS.SUMMARY.LITTLE_RED_SNAPPER_TRADER_ACCOUNT,
-		level: 2
-	},
-	kraken: {
-		symbol: 'kraken',
-		name: STRINGS.SUMMARY.CUNNING_BLUE_KRAKEN_TRADING,
-		fullName: STRINGS.SUMMARY.CUNNING_BLUE_KRAKEN_TRADING_ACCOUNT,
-		level: 3
-	},
-	leviathan: {
-		symbol: 'leviathan',
-		name: STRINGS.SUMMARY.BLACK_LEVIATHAN_TRADING,
-		fullName: STRINGS.SUMMARY.BLACK_LEVIATHAN_TRADING_ACCOUNT,
-		level: 4
-	}
-};
+// export const TRADING_ACCOUNT_TYPE = {
+// 	shrimp: {
+// 		symbol: 'shrimp',
+// 		name: STRINGS.SUMMARY.TINY_PINK_SHRIMP_TRADER,
+// 		fullName: STRINGS.SUMMARY.TINY_PINK_SHRIMP_TRADER_ACCOUNT,
+// 		level: 1
+// 	},
+// 	snapper: {
+// 		symbol: 'snapper',
+// 		name: STRINGS.SUMMARY.LITTLE_RED_SNAPPER_TRADER,
+// 		fullName: STRINGS.SUMMARY.LITTLE_RED_SNAPPER_TRADER_ACCOUNT,
+// 		level: 2
+// 	},
+// 	kraken: {
+// 		symbol: 'kraken',
+// 		name: STRINGS.SUMMARY.CUNNING_BLUE_KRAKEN_TRADING,
+// 		fullName: STRINGS.SUMMARY.CUNNING_BLUE_KRAKEN_TRADING_ACCOUNT,
+// 		level: 3
+// 	},
+// 	leviathan: {
+// 		symbol: 'leviathan',
+// 		name: STRINGS.SUMMARY.BLACK_LEVIATHAN_TRADING,
+// 		fullName: STRINGS.SUMMARY.BLACK_LEVIATHAN_TRADING_ACCOUNT,
+// 		level: 4
+// 	}
+// };
 
 export const MAX_NUMBER_BANKS = 3;
 
@@ -566,3 +542,7 @@ export const WHITE_THEME_CHART_COLORS = {
 	BUY_VOLUME: 'lightgreen',
 	SELL_VOLUME: '#ed1c24'
 };
+
+export const SHOW_SUMMARY_ACCOUNT_DETAILS = false;
+export const SHOW_TOTAL_ASSETS = false;
+export const IS_HEX = true;

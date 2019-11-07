@@ -86,7 +86,7 @@ class TransactionsHistory extends Component {
 	};
 
 	generateHeaders(symbol, coins) {
-		const {withdrawalPopup}=this
+		const { withdrawalPopup } = this
 		const { pairs } = this.props;
 		this.setState({
 			headers: {
@@ -102,8 +102,8 @@ class TransactionsHistory extends Component {
 	setActiveTab = (activeTab = 0) => {
 		const { symbol, trades, withdrawals, deposits } = this.props;
 		const { jumpToPage } = this.state
-		if(jumpToPage !== 0 ) {
-			this.setState ({
+		if (jumpToPage !== 0) {
+			this.setState({
 				jumpToPage: 0,
 			})
 		}
@@ -111,19 +111,19 @@ class TransactionsHistory extends Component {
 			if ((trades.page === 1 && trades.fetched === false)
 				|| (withdrawals.page === 1 && withdrawals.fetched === false)
 				|| (deposits.page === 1 && deposits.fetched === false)) {
-					this.requestData(symbol);
-				}
+				this.requestData(symbol);
+			}
 		});
 	};
 	withdrawalPopup = (id, amount) => {
-		if(id) {
-			this.setState({ amount:amount, transactionId:id });
+		if (id) {
+			this.setState({ amount: amount, transactionId: id });
 			this.openDialog()
 		}
 	};
 
 	withdrawalCancel = () => {
-		const {transactionId} =this.state
+		const { transactionId } = this.state
 		this.props.withdrawalCancel(transactionId);
 	}
 	onClose = () => {
@@ -139,22 +139,22 @@ class TransactionsHistory extends Component {
 				if (RECORD_LIMIT === (pageCount * pageTemp)
 					&& apiPageTemp >= trades.page
 					&& trades.isRemaining) {
-						this.props.getUserTrades(symbol, RECORD_LIMIT, trades.page + 1);
-						this.setState({ jumpToPage: pageNumber });
+					this.props.getUserTrades(symbol, RECORD_LIMIT, trades.page + 1);
+					this.setState({ jumpToPage: pageNumber });
 				}
 				break;
 			case 1:
 				if (RECORD_LIMIT === (pageCount * pageTemp)
-						&& apiPageTemp >= deposits.page
-						&& deposits.isRemaining) {
+					&& apiPageTemp >= deposits.page
+					&& deposits.isRemaining) {
 					this.props.getUserDeposits(symbol, RECORD_LIMIT, deposits.page + 1);
 					this.setState({ jumpToPage: pageNumber });
 				}
 				break;
 			case 2:
 				if (RECORD_LIMIT === (pageCount * pageTemp)
-						&& apiPageTemp >= withdrawals.page
-						&& withdrawals.isRemaining) {
+					&& apiPageTemp >= withdrawals.page
+					&& withdrawals.isRemaining) {
 					this.props.getUserWithdrawals(symbol, RECORD_LIMIT, withdrawals.page + 1);
 					this.setState({ jumpToPage: pageNumber });
 				}
@@ -239,31 +239,31 @@ class TransactionsHistory extends Component {
 							title: isMobile ? (
 								STRINGS.TRANSACTION_HISTORY.TRADES
 							) : (
-								<CheckTitle
-									title={STRINGS.TRANSACTION_HISTORY.TRADES}
-									icon={ICONS.TRADE_HISTORY}
-								/>
-							)
+									<CheckTitle
+										title={STRINGS.TRANSACTION_HISTORY.TRADES}
+										icon={ICONS.TRADE_HISTORY}
+									/>
+								)
 						},
 						{
 							title: isMobile ? (
 								STRINGS.TRANSACTION_HISTORY.DEPOSITS
 							) : (
-								<CheckTitle
-									title={STRINGS.TRANSACTION_HISTORY.DEPOSITS}
-									icon={ICONS.DEPOSIT_HISTORY}
-								/>
-							)
+									<CheckTitle
+										title={STRINGS.TRANSACTION_HISTORY.DEPOSITS}
+										icon={ICONS.DEPOSIT_HISTORY}
+									/>
+								)
 						},
 						{
 							title: isMobile ? (
 								STRINGS.TRANSACTION_HISTORY.WITHDRAWALS
 							) : (
-								<CheckTitle
-									title={STRINGS.TRANSACTION_HISTORY.WITHDRAWALS}
-									icon={ICONS.WITHDRAW_HISTORY}
-								/>
-							)
+									<CheckTitle
+										title={STRINGS.TRANSACTION_HISTORY.WITHDRAWALS}
+										icon={ICONS.WITHDRAW_HISTORY}
+									/>
+								)
 						}
 					]}
 					activeTab={activeTab}

@@ -1,6 +1,5 @@
 import PhoneNumber from 'awesome-phonenumber';
 import { DEFAULT_LANGUAGE, THEME_DEFAULT } from '../config/constants';
-// import { getCurrencyFromSymbol } from '../utils/currency';
 import { constructSettings } from '../utils/utils';
 
 const USER_DATA_KEYS = [
@@ -105,7 +104,7 @@ const INITIAL_STATE = {
 			order_book_levels: 10
 		},
 		chat: {
-			set_username: false,
+			set_username: false
 		},
 		audio: {
 			order_completed: true,
@@ -113,8 +112,8 @@ const INITIAL_STATE = {
 			public_trade: false
 		},
 		risk: {
-			order_portfolio_percentage: 100,
-			popup_warning: false
+			order_portfolio_percentage: 25,
+			popup_warning: true
 		}
 	},
 	addressRequest: INITIAL_ADDRESS_OBJECT,
@@ -146,7 +145,10 @@ export default function reducer(state = INITIAL_STATE, action) {
 			} = action.payload;
 			const userData = extractuserData(action.payload);
 			const fees = action.payload.fees || state.fees;
-			const settings = constructSettings(state.settings, action.payload.settings);
+			const settings = constructSettings(
+				state.settings,
+				action.payload.settings
+			);
 			return {
 				...state,
 				fetching: false,
@@ -177,7 +179,10 @@ export default function reducer(state = INITIAL_STATE, action) {
 		case 'SET_USER_DATA': {
 			const userData = extractuserData(action.payload);
 			const fees = action.payload.fees || state.fees;
-			const settings = constructSettings(state.settings, action.payload.settings);
+			const settings = constructSettings(
+				state.settings,
+				action.payload.settings
+			);
 			return {
 				...state,
 				userData: {
@@ -296,7 +301,11 @@ export default function reducer(state = INITIAL_STATE, action) {
 		case 'DEACTIVATE_OTP_REJECTED':
 			return { ...state, fetching: false, error: action.payload.response };
 		case 'DEACTIVATE_OTP_FULFILLED':
-			return { ...state, fetching: false, deactivateOtp: action.payload.data };
+			return {
+				...state,
+				fetching: false,
+				deactivateOtp: action.payload.data
+			};
 		case 'REQUEST_TOKENS_PENDING':
 			return { ...state, fetching: true, error: null, tokens: [] };
 		case 'REQUEST_TOKENS_REJECTED':

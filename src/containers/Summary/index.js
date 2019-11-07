@@ -2,29 +2,26 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { isMobile } from 'react-device-detect';
-// import moment from 'moment';
+import moment from 'moment';
+import classnames from 'classnames';
 
 import SummaryBlock from './components/SummaryBlock';
 import TraderAccounts from './components/TraderAccounts';
 import SummaryRequirements from './components/SummaryRequirements';
 import AccountAssets from './components/AccountAssets';
-// import TradingVolume from './components/TradingVolume';
-// import AccountDetails from './components/AccountDetails';
+import TradingVolume from './components/TradingVolume';
+import AccountDetails from './components/AccountDetails';
 import MobileSummary from './MobileSummary';
 
 import { IconTitle } from '../../components';
 import { logout } from '../../actions/authAction';
+import { openFeesStructureandLimits, openContactForm, logoutconfirm, setNotification, NOTIFICATIONS } from '../../actions/appActions';
 import {
-    openFeesStructureandLimits,
-    openContactForm,
-    logoutconfirm,
-    setNotification,
-    NOTIFICATIONS
-} from '../../actions/appActions';
-import {
-    // BASE_CURRENCY,
-    TRADING_ACCOUNT_TYPE,
-    DEFAULT_COIN_DATA
+    BASE_CURRENCY,
+    DEFAULT_COIN_DATA,
+    SHOW_SUMMARY_ACCOUNT_DETAILS,
+    SHOW_TOTAL_ASSETS,
+    IS_HEX
 } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 import {
@@ -38,16 +35,15 @@ import {
 } from '../../utils/currency';
 import { getLastMonthVolume } from './components/utils';
 
-const default_trader_account = TRADING_ACCOUNT_TYPE.shrimp;
-
 class Summary extends Component {
     state = {
-        selectedAccount: default_trader_account.symbol,
-        currentTradingAccount: default_trader_account,
+        selectedAccount: '',
+        currentTradingAccount: this.props.verification_level,
         chartData: [],
         totalAssets: '',
         lastMonthVolume: 0
     };
+
 
     componentDidMount() {
         const { user, tradeVolumes, pairs, prices } = this.props;
@@ -88,8 +84,7 @@ class Summary extends Component {
 
     onFeesAndLimits = tradingAccount => {
         this.props.openFeesStructureandLimits({
-            verification_level: tradingAccount.level,
-            tradingAccount
+            verification_level: tradingAccount
         });
     };
 
@@ -103,7 +98,8 @@ class Summary extends Component {
 
     calculateSections = ({ price, balance, orders, prices, coins }) => {
         const data = [];
-        const totalAssets = calculateBalancePrice(balance, prices, coins);
+
+        const totalAssets = calculateBalancePrice(balance, prices);
         Object.keys(coins).forEach((currency) => {
             const { symbol, min } = coins[currency] || DEFAULT_COIN_DATA;
             const currencyBalance = calculatePrice(balance[`${symbol}_balance`], prices[currency]);
@@ -121,25 +117,10 @@ class Summary extends Component {
 
     setCurrentTradeAccount = user => {
         let currentTradingAccount = this.state.currentTradingAccount;
-        switch (user.verification_level) {
-            case 1:
-                currentTradingAccount = TRADING_ACCOUNT_TYPE.shrimp;
-                break;
-            case 2:
-                currentTradingAccount = TRADING_ACCOUNT_TYPE.snapper;
-                break;
-            case 3:
-                currentTradingAccount = TRADING_ACCOUNT_TYPE.kraken;
-                break;
-            case 4:
-                currentTradingAccount = TRADING_ACCOUNT_TYPE.leviathan;
-                break;
-            default:
-                currentTradingAccount = TRADING_ACCOUNT_TYPE.leviathan;
-                break;
-        }
-        this.setState({ currentTradingAccount, selectedAccount: currentTradingAccount.symbol });
-    };
+        if (user.verification_level) {
+            this.setState({ currentTradingAccount, selectedAccount: user.verification_level });
+        };
+    }
 
     onInviteFriends = () => {
         this.props.setNotification(NOTIFICATIONS.INVITE_FRIENDS, { affiliation_code: this.props.user.affiliation_code });
@@ -150,9 +131,13 @@ class Summary extends Component {
     };
 
     render() {
-        const { user, balance, activeTheme, pairs, coins, isValidBase, is_hap } = this.props;
-        const { selectedAccount, currentTradingAccount, chartData, totalAssets, lastMonthVolume } = this.state;
-        // const { fullname } = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
+        const { user, balance, activeTheme, pairs, coins, isValidBase, verification_level, config_level } = this.props;
+        const { selectedAccount, chartData, totalAssets, lastMonthVolume } = this.state;
+        const { fullname } = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
+        let traderAccTitle = STRINGS.formatString(STRINGS.SUMMARY.LEVEL_OF_ACCOUNT, verification_level);
+        if (IS_HEX) {
+            traderAccTitle = user.is_hap ? STRINGS.SUMMARY.HAP_ACCOUNT : STRINGS.SUMMARY.TRADER_ACCOUNT_TITLE
+        }
         return (
             <div className="summary-container">
                 {!isMobile && <IconTitle
@@ -161,13 +146,11 @@ class Summary extends Component {
                 />}
                 {isMobile
                     ? <MobileSummary
-                        is_hap={is_hap}
                         user={user}
                         pairs={pairs}
                         coins={coins}
+                        config={config_level}
                         activeTheme={activeTheme}
-                        default_trader_account={default_trader_account}
-                        currentTradingAccount={currentTradingAccount}
                         selectedAccount={selectedAccount}
                         logout={this.logoutConfirm}
                         balance={balance}
@@ -175,61 +158,115 @@ class Summary extends Component {
                         isValidBase={isValidBase}
                         totalAssets={totalAssets}
                         lastMonthVolume={lastMonthVolume}
+                        traderAccTitle={traderAccTitle}
                         onInviteFriends={this.onInviteFriends}
-                        onStakeToken={this.onStakeToken}
                         onFeesAndLimits={this.onFeesAndLimits}
                         onUpgradeAccount={this.onUpgradeAccount}
                         onAccountTypeChange={this.onAccountTypeChange}
+                        verification_level={verification_level}
+                        onStakeToken={this.onStakeToken}
                     />
                     : (<div>
                         <div className="d-flex align-items-center">
                             <div className="summary-section_1 trader-account-wrapper d-flex">
-                                <SummaryBlock title={is_hap ? STRINGS.SUMMARY.HAP_ACCOUNT : STRINGS.SUMMARY.TRADER_ACCOUNT_TITLE} >
+                                <SummaryBlock title={traderAccTitle} >
                                     <TraderAccounts
+                                        user={user}
                                         pairs={pairs}
                                         coins={coins}
                                         activeTheme={activeTheme}
-                                        account={currentTradingAccount}
                                         onFeesAndLimits={this.onFeesAndLimits}
                                         onUpgradeAccount={this.onUpgradeAccount}
                                         onInviteFriends={this.onInviteFriends}
-                                        onStakeToken={this.onStakeToken}
-                                        is_hap={is_hap} />
+                                        verification_level={verification_level}
+                                        onStakeToken={this.onStakeToken} />
                                 </SummaryBlock>
                             </div>
                             <div className="summary-section_1 requirement-wrapper d-flex">
                                 <SummaryBlock
                                     title={STRINGS.SUMMARY.URGENT_REQUIREMENTS}
                                     wrapperClassname="w-100" >
-                                    <SummaryRequirements user={user} coins={coins} lastMonthVolume={lastMonthVolume} contentClassName="requirements-content" />
+                                    <SummaryRequirements
+                                        coins={coins}
+                                        user={user}
+                                        lastMonthVolume={lastMonthVolume}
+                                        contentClassName="requirements-content" />
                                 </SummaryBlock>
                             </div>
                         </div>
                         <div className="d-flex align-items-center">
-                            <div className="assets-wrapper w-100">
+                            <div
+                                className={
+                                    classnames(
+                                        "assets-wrapper",
+                                        "asset_wrapper_width",
+                                        {
+                                            'hex_asset_wrapper_width': !SHOW_SUMMARY_ACCOUNT_DETAILS,
+                                        }
+                                    )}>
                                 <SummaryBlock
                                     title={STRINGS.SUMMARY.ACCOUNT_ASSETS}
-                                    // secondaryTitle={
-                                    //     BASE_CURRENCY && isValidBase ?
-                                    //         <span>
-                                    //             <span className="title-font">
-                                    //                 {totalAssets}
-                                    //             </span>
-                                    //             {` ${fullname}`}
-                                    //         </span>
-                                    //         : null
-                                    // }
-                                    wrapperClassname="w-100" >
+                                    secondaryTitle={
+                                        SHOW_TOTAL_ASSETS && BASE_CURRENCY && isValidBase ?
+                                            <span>
+                                                <span className="title-font">
+                                                    {totalAssets}
+                                                </span>
+                                                {` ${fullname}`}
+                                            </span>
+                                            : null
+                                    }
+                                    wrapperClassname={classnames({ 'w-100': !SHOW_SUMMARY_ACCOUNT_DETAILS })}
+                                >
                                     <AccountAssets
                                         user={user}
                                         chartData={chartData}
-                                        activeTheme={activeTheme}
                                         totalAssets={totalAssets}
                                         balance={balance}
-                                        coins={coins} />
+                                        coins={coins}
+                                        activeTheme={activeTheme} />
                                 </SummaryBlock>
                             </div>
+                            {SHOW_SUMMARY_ACCOUNT_DETAILS
+                                ? <div className="trading-volume-wrapper">
+                                    <SummaryBlock
+                                        title={STRINGS.SUMMARY.TRADING_VOLUME}
+                                        secondaryTitle={<span>
+                                            <span className="title-font">
+                                                {` ${formatAverage(formatBaseAmount(lastMonthVolume))}`}
+                                            </span>
+                                            {` ${fullname} ${STRINGS.formatString(STRINGS.SUMMARY.NOMINAL_TRADING_WITH_MONTH, moment().subtract(1, "month").startOf("month").format('MMMM')).join('')}`}
+                                        </span>
+                                        }
+                                    >
+                                        <TradingVolume user={user} />
+                                    </SummaryBlock>
+                                </div>
+                                : null
+                            }
                         </div>
+                        {SHOW_SUMMARY_ACCOUNT_DETAILS
+                            ? <div className="d-flex align-items-center">
+                                <SummaryBlock
+                                    title={STRINGS.SUMMARY.ACCOUNT_DETAILS}
+                                    secondaryTitle={traderAccTitle}
+                                    wrapperClassname="w-100" >
+                                    <AccountDetails
+                                        user={user}
+                                        coins={coins}
+                                        pairs={pairs}
+                                        activeTheme={activeTheme}
+                                        selectedAccount={selectedAccount}
+                                        lastMonthVolume={lastMonthVolume}
+                                        onAccountTypeChange={this.onAccountTypeChange}
+                                        onFeesAndLimits={this.onFeesAndLimits}
+                                        onUpgradeAccount={this.onUpgradeAccount}
+                                        config={config_level}
+                                        verification_level={verification_level} />
+                                </SummaryBlock>
+                            </div>
+                            : null
+                        }
                     </div>)
                 }
             </div>
@@ -240,7 +277,7 @@ class Summary extends Component {
 const mapStateToProps = (state) => ({
     pairs: state.app.pairs,
     coins: state.app.coins,
-    user: state.user,
+    user: state.user || {},
     verification_level: state.user.verification_level,
     balance: state.user.balance,
     activeTheme: state.app.theme,
@@ -251,7 +288,8 @@ const mapStateToProps = (state) => ({
     activeLanguage: state.app.language,
     tradeVolumes: state.user.tradeVolumes,
     isValidBase: state.app.isValidBase,
-    is_hap: state.user.is_hap
+    config: state.app.config,
+    config_level: state.app.config_level
 });
 
 const mapDispatchToProps = (dispatch) => ({

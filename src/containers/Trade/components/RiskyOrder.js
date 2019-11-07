@@ -2,12 +2,12 @@ import React from 'react';
 import { Link } from 'react-router';
 
 import { IconTitle, Button } from '../../../components';
-import { ICONS, DEFAULT_COIN_DATA } from '../../../config/constants';
+import { ICONS } from '../../../config/constants';
 import STRINGS from '../../../config/localizedStrings';
 import { formatBaseAmount } from '../../../utils/currency';
 
 const RiskyOrder = ({ data, onConfirm, onClose }) => {
-    const { symbol = '' } = data.coins[data.pairData.pair_2] || DEFAULT_COIN_DATA;
+    const { symbol = '' } = data.coins[data.pairData.pair_2] || {};
     return (
         <div className="risky-trade-wrapper">
             <IconTitle

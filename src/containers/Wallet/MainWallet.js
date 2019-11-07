@@ -13,7 +13,12 @@ import { TransactionsHistory } from '../';
 import { changeSymbol } from '../../actions/orderbookAction';
 import { NOTIFICATIONS, openContactForm } from '../../actions/appActions';
 import { createAddress, cleanCreateAddress } from '../../actions/userAction';
-import { ICONS, BASE_CURRENCY, CURRENCY_PRICE_FORMAT, DEFAULT_COIN_DATA } from '../../config/constants';
+import {
+	ICONS,
+	BASE_CURRENCY,
+	CURRENCY_PRICE_FORMAT,
+	DEFAULT_COIN_DATA
+} from '../../config/constants';
 import { calculateBalancePrice, formatToCurrency } from '../../utils/currency';
 import STRINGS from '../../config/localizedStrings';
 
@@ -118,13 +123,16 @@ class Wallet extends Component {
 		const mobileTabs = [
 			{
 				title: STRINGS.WALLET_TAB_WALLET,
-				content: <MobileWallet sections={sections}
-				wallets={wallets}
-				balance={balance}
-				prices={prices}
-				navigate={this.goToPage}
-				coins={coins}
-			/>
+				content: (
+					<MobileWallet
+						sections={sections}
+						wallets={wallets}
+						balance={balance}
+						prices={prices}
+						navigate={this.goToPage}
+						coins={coins}
+					/>
+				)
 			},
 			{
 				title: STRINGS.WALLET_TAB_TRANSACTIONS,
@@ -212,17 +220,16 @@ class Wallet extends Component {
 					showCloseText={true}
 					style={{ 'z-index': 100 }}
 				>
-					{dialogIsOpen &&
-						selectedCurrency && (
-							<Notification
-								type={NOTIFICATIONS.GENERATE_ADDRESS}
-								onBack={this.onCloseDialog}
-								onGenerate={this.onCreateAddress}
-								currency={selectedCurrency}
-								data={addressRequest}
-								coins={coins}
-							/>
-						)}
+					{dialogIsOpen && selectedCurrency && (
+						<Notification
+							type={NOTIFICATIONS.GENERATE_ADDRESS}
+							onBack={this.onCloseDialog}
+							onGenerate={this.onCreateAddress}
+							currency={selectedCurrency}
+							data={addressRequest}
+							coins={coins}
+						/>
+					)}
 				</Dialog>
 			</div>
 		);
@@ -250,4 +257,7 @@ const mapDispatchToProps = (dispatch) => ({
 	openContactForm: bindActionCreators(openContactForm, dispatch)
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Wallet);
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(Wallet);

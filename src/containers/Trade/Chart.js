@@ -8,7 +8,6 @@ import {
 	getChartHistory
 } from '../../actions/chartAction';
 
-
 function getThemeOverrides(theme = 'white') {
 	if (theme === 'white') {
 		return WHITE_THEME;
@@ -31,17 +30,17 @@ class TVChartContainer extends React.PureComponent {
 		autosize: true,
 		studiesOverrides: {},
 		time_frames: [
-			{ text: "1D", resolution: "1" },
-			{ text: "5D", resolution: "5" },
-			{ text: "3M", resolution: "60" },
-			{ text: "6M", resolution: "120" },
-			{ text: "1m", resolution: "30" },
+			{ text: '1D', resolution: '1' },
+			{ text: '5D', resolution: '5' },
+			{ text: '3M', resolution: '60' },
+			{ text: '6M', resolution: '120' },
+			{ text: '1m', resolution: '30' },
 			// { text: "YTD", resolution: "YTD" },
-			{ text: "1Y", resolution: "D" },
-			{ text: "3Y", resolution: "D" },
-			{ text: "5Y", resolution: "W" },
+			{ text: '1Y', resolution: 'D' },
+			{ text: '3Y', resolution: 'D' },
+			{ text: '5Y', resolution: 'W' }
 			// { text: "ALL", resolution: "ALL" },
-		],
+		]
 	};
 
 	constructor(props) {
@@ -56,7 +55,7 @@ class TVChartContainer extends React.PureComponent {
 				low: 0,
 				open: 0,
 				time: new Date().getTime(),
-				volume: 0
+				volume: 0,
 			}
 		};
 	}
@@ -64,11 +63,10 @@ class TVChartContainer extends React.PureComponent {
 	componentWillMount() {
 		var that = this;
 		this.chartConfig = {
-			onReady: cb => {
-				getChartConfig()
-					.then((data) => {
-						cb(data)
-					})
+			onReady: (cb) => {
+				getChartConfig().then((data) => {
+					cb(data);
+				});
 			},
 			searchSymbols: (
 				userInput,
@@ -104,13 +102,11 @@ class TVChartContainer extends React.PureComponent {
 				// 	symbol_stub.pricescale = 100
 				// }
 				const { increment_price } = this.props.pairData;
-				getChartSymbol(symbolName, increment_price)
-					.then((data) => {
-						onSymbolResolvedCallback(data)
-					});
+				getChartSymbol(symbolName, increment_price).then((data) => {
+					onSymbolResolvedCallback(data);
+				});
 
 				// onResolveErrorCallback('Not feeling it today')
-
 			},
 			getBars: function (
 				symbolInfo,
@@ -150,11 +146,10 @@ class TVChartContainer extends React.PureComponent {
 						} else {
 							onHistoryCallback(data, { noData: true });
 						}
-					}).catch(err => {
-						console.log({ err })
-						onErrorCallback(err)
 					})
-
+					.catch((err) => {
+						onErrorCallback(err);
+					});
 			},
 			subscribeBars: (
 				symbolInfo,
@@ -266,7 +261,7 @@ class TVChartContainer extends React.PureComponent {
 				activeTheme === 'white'
 					? { backgroundColor: '#ffffff' }
 					: { backgroundColor: '#1f212a' },
-			custom_css_url: `${process.env.PUBLIC_URL}/css/chart.css`,
+			custom_css_url: `${process.env.REACT_APP_PUBLIC_URL}/css/chart.css`,
 			overrides: getThemeOverrides(activeTheme)
 		};
 

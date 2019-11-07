@@ -16,6 +16,7 @@ import { DEFAULT_COIN_DATA } from '../../config/constants';
 // });
 
 const generateCryptoDepositTexts = (strings, status, currency, coins) => {
+	// const name = strings[`${currency}_NAME`];
 	const { fullname } = coins[currency] || DEFAULT_COIN_DATA;
 	return {
 		TITLE: status
@@ -39,12 +40,14 @@ const generateCryptoDepositTexts = (strings, status, currency, coins) => {
 				.formatString(
 					strings.NOTIFICATIONS.DEPOSITS.INFORMATION_PENDING_1,
 					fullname
+					// name
 				)
 				.join(''),
 			strings
 				.formatString(
 					strings.NOTIFICATIONS.DEPOSITS.INFORMATION_PENDING_2,
 					fullname
+					// name
 				)
 				.join('')
 		],

@@ -57,7 +57,6 @@
 	}
 
 	.trade_orderbook-asks {
-		color: $trade-order-asks-color-font;
 		.trade_orderbook-cell-price {
 			color: $trade-asks-color-main;
 			.orderbook-limit_bar-line {
@@ -67,19 +66,18 @@
 	}
 
 	.trade_orderbook-bids {
-		color: $trade-order-bids-color-font;
 		.trade_orderbook-cell-price {
-			color: $trade-order-bids-color-font;
+			color: $trade-bids-color-main;
 			.orderbook-limit_bar-line {
-				background-color: $trade-order-bids-color-font;
+				background-color: $trade-bids-color-main;
 			}
 		}
 	}
 	.trade_bids-limit_bar {
 		.orderbook-limit_bar-wrapper {
-			color: $trade-order-bids-color-font;
+			color: $trade-bids-color-main;
 			.orderbook-limit_bar-line {
-				background-color: $trade-order-bids-color-font;
+				background-color: $trade-bids-color-main;
 			}
 		}
 	}

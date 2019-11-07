@@ -17,6 +17,7 @@ import {
 	SET_CURRENCIES,
 	SET_VALID_BASE_CURRENCY,
 	SET_CONFIG,
+	SET_INFO
 } from '../actions/appActions';
 import { THEME_DEFAULT } from '../config/constants';
 import { getLanguage } from '../utils/string';
@@ -52,10 +53,82 @@ const INITIAL_STATE = {
 	pair: '',
 	tickers: {},
 	orderLimits: {},
-	coins: {},
+	coins: {
+		bch: {
+			id: 4,
+			fullname: 'Bitcoin Cash',
+			symbol: 'bch',
+			active: true,
+			allow_deposit: true,
+			allow_withdrawal: true,
+			withdrawal_fee: 0.0001,
+			min: 0.0001,
+			max: 100000,
+			increment_unit: 0.001,
+			deposit_limits: {},
+			withdrawal_limits: {}
+		},
+		xrp: {
+			id: 5,
+			fullname: 'Ripple',
+			symbol: 'xrp',
+			active: true,
+			allow_deposit: true,
+			allow_withdrawal: true,
+			withdrawal_fee: 0.0001,
+			min: 0.0001,
+			max: 100000,
+			increment_unit: 0.001,
+			deposit_limits: {},
+			withdrawal_limits: {}
+		},
+		eur: {
+			id: 1,
+			fullname: 'Euro',
+			symbol: 'eur',
+			active: true,
+			allow_deposit: true,
+			allow_withdrawal: true,
+			withdrawal_fee: 0.0001,
+			min: 0.0001,
+			max: 100000,
+			increment_unit: 0.0001,
+			deposit_limits: {},
+			withdrawal_limits: {}
+		},
+		btc: {
+			id: 2,
+			fullname: 'Bitcoin',
+			symbol: 'btc',
+			active: true,
+			allow_deposit: true,
+			allow_withdrawal: true,
+			withdrawal_fee: 0.0001,
+			min: 0.0001,
+			max: 100000,
+			increment_unit: 0.0001,
+			deposit_limits: {},
+			withdrawal_limits: {}
+		},
+		eth: {
+			id: 3,
+			fullname: 'Ethereum',
+			symbol: 'eth',
+			active: true,
+			allow_deposit: true,
+			allow_withdrawal: true,
+			withdrawal_fee: 0.0001,
+			min: 0.0001,
+			max: 100000,
+			increment_unit: 0.001,
+			deposit_limits: {},
+			withdrawal_limits: {}
+		}
+	},
+	isValidBase: false,
 	config: {},
 	config_level: [],
-	isValidBase: false,
+	info: { is_trial: false }
 };
 
 const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
@@ -115,7 +188,6 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 		}
 
 		case SET_SNACK_NOTIFICATION:
-			
 			return {
 				...state,
 				snackNotification: {
@@ -127,7 +199,7 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 					content: payload.content ? payload.content : ''
 				}
 			};
-		
+
 		case CLOSE_SNACK_NOTIFICATION:
 			return {
 				...state,
@@ -138,7 +210,10 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 			const { isDialog, ...rest } = payload;
 			let dialogData = [...state.snackNotification.dialogData];
 			if (isDialog) {
-				dialogData = [...dialogData, { ...rest, id: `snack-dialog-${dialogData.length + 1}`}];
+				dialogData = [
+					...dialogData,
+					{ ...rest, id: `snack-dialog-${dialogData.length + 1}` }
+				];
 			}
 			return {
 				...state,
@@ -150,8 +225,12 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 			};
 
 		case CLOSE_SNACK_DIALOG:
-			const dataDialog = state.snackNotification.dialogData.filter((data) => data.id !== payload.dialogId);
-			let openDialog = dataDialog.length ? state.snackNotification.isDialog : false;
+			const dataDialog = state.snackNotification.dialogData.filter(
+				(data) => data.id !== payload.dialogId
+			);
+			let openDialog = dataDialog.length
+				? state.snackNotification.isDialog
+				: false;
 			return {
 				...state,
 				snackNotification: {
@@ -168,7 +247,9 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 			};
 
 		case SET_ANNOUNCEMENT:
-			const announcements = state.announcements.concat(payload.announcements);
+			const announcements = state.announcements.concat(
+				payload.announcements
+			);
 			return {
 				...state,
 				announcements
@@ -207,9 +288,10 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 				if (pairs.includes(key)) {
 					let temp = state.tickers[key] || {};
 					let pairTrade = payload[key][0];
-					let close = pairTrade && pairTrade.price
-						? pairTrade.price
-						: temp.close
+					let close =
+						pairTrade && pairTrade.price
+							? pairTrade.price
+							: temp.close
 							? temp.close
 							: 0;
 					tempTickers[key] = {
@@ -228,7 +310,7 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 		case SET_ORDER_LIMITS:
 			return {
 				...state,
-		        		orderLimits: payload
+				orderLimits: payload
 			};
 		case SET_VALID_BASE_CURRENCY:
 			return {
@@ -240,6 +322,11 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 				...state,
 				config: payload.config,
 				config_level: payload.config_level
+			};
+		case SET_INFO:
+			return {
+				...state,
+				info: payload.info
 			};
 		default:
 			return state;

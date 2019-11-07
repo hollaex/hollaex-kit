@@ -21,7 +21,7 @@ const CurrencySelector = ({ activeCurrency, changeCurrency, coins }) => {
 					>
 						<div className="tab-colors w-100" />
 						<div className="f-1 d-flex justify-content-center align-items-center w-100">
-							{STRINGS[`${currency.toUpperCase()}_NAME`]}
+							{values.fullname}
 						</div>
 					</div>
 				);

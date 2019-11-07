@@ -4,9 +4,9 @@ import ReactGA from 'react-ga';
 
 import {
 	NETWORK,
-	// IS_PRO_VERSION,
-	PRO_VERSION_REDIRECT
-	// DEFAULT_VERSION_REDIRECT
+	IS_PRO_VERSION,
+	PRO_VERSION_REDIRECT,
+	DEFAULT_VERSION_REDIRECT
 } from './config/constants';
 
 import {
@@ -15,11 +15,10 @@ import {
 	MainWallet,
 	CurrencyWallet,
 	Login,
-	Logout,
 	Signup,
 	VerificationEmailRequest,
 	VerificationEmailCode,
-	// Home,
+	Home,
 	Deposit,
 	Withdraw,
 	TransactionsHistory,
@@ -30,10 +29,8 @@ import {
 	ResetPassword,
 	QuickTrade,
 	Chat,
-	// UserSettings,
 	WithdrawConfirmation,
 	AddTradeTabs,
-	TermsOfService,
 	// ADMIN
 	User,
 	AppWrapper as AdminContainer,
@@ -44,8 +41,8 @@ import {
 	AdminChat,
 	Wallets,
 	UserFees,
-	PATHS
-	// ExpiredExchange
+	PATHS,
+	ExpiredExchange
 } from './containers';
 
 import store from './store';
@@ -63,7 +60,7 @@ import { checkUserSessionExpired } from './utils/utils';
 
 // Initialize Google analytics
 if (NETWORK === 'mainnet') {
-	ReactGA.initialize('UA-100799090-1');
+	ReactGA.initialize('UA-112052696-1');
 	browserHistory.listen((location) => {
 		ReactGA.set({ page: window.location.pathname });
 		ReactGA.pageview(window.location.pathname);
@@ -90,7 +87,7 @@ if (token) {
 function requireAuth(nextState, replace) {
 	if (!isLoggedIn()) {
 		replace({
-			pathname: '/trade/hex-usdt'
+			pathname: '/login'
 		});
 	}
 }
@@ -98,7 +95,7 @@ function requireAuth(nextState, replace) {
 function loggedIn(nextState, replace) {
 	if (isLoggedIn()) {
 		replace({
-			pathname: '/trade/hex-usdt'
+			pathname: '/account'
 		});
 	}
 }
@@ -123,7 +120,9 @@ const createLocalizedRoutes = ({ router, routeParams }) => {
 };
 
 const NotFound = ({ router }) => {
-	router.replace(PRO_VERSION_REDIRECT);
+	router.replace(
+		IS_PRO_VERSION ? PRO_VERSION_REDIRECT : DEFAULT_VERSION_REDIRECT
+	);
 	return <div />;
 };
 
@@ -151,11 +150,11 @@ function withAdminProps(Component, key) {
 
 export default (
 	<Router history={browserHistory}>
+		{!IS_PRO_VERSION ? <Route path="/" name="Home" component={Home} /> : null}
 		<Route path="lang/:locale" component={createLocalizedRoutes} />
 		<Route component={AuthContainer} {...noAuthRoutesCommonProps}>
 			<Route path="login" name="Login" component={Login} />
 			<Route path="signup" name="signup" component={Signup} />
-			<Route path="terms" name="terms" component={TermsOfService} />
 		</Route>
 		<Route component={AuthContainer} {...noLoggedUserCommonProps}>
 			<Route
@@ -168,7 +167,11 @@ export default (
 				name="Reset Password"
 				component={ResetPassword}
 			/>
-			<Route path="verify" name="Verify" component={VerificationEmailRequest} />
+			<Route
+				path="verify"
+				name="Verify"
+				component={VerificationEmailRequest}
+			/>
 			<Route
 				path="verify/:code"
 				name="verifyCode"
@@ -228,13 +231,22 @@ export default (
 				onEnter={requireAuth}
 			/>
 			<Route path="trade/:pair" name="Trade" component={Trade} />
-			<Route path="trade/add/tabs" name="Trade Tabs" component={AddTradeTabs} />
+			<Route
+				path="trade/add/tabs"
+				name="Trade Tabs"
+				component={AddTradeTabs}
+			/>
 			<Route
 				path="quick-trade/:pair"
 				name="Quick Trade"
 				component={QuickTrade}
 			/>
-			<Route path="chat" name="Chat" component={Chat} onEnter={requireAuth} />
+			<Route
+				path="chat"
+				name="Chat"
+				component={Chat}
+				onEnter={requireAuth}
+			/>
 			<Route
 				path="confirm-withdraw/:token"
 				name="ConfirmWithdraw"
@@ -297,6 +309,7 @@ export default (
 			content="terms"
 			onEnter={requireAuth}
 		/>
+		<Route path="expired-exchange" component={ExpiredExchange} />
 		<Route path="*" component={NotFound} />
 	</Router>
 );
