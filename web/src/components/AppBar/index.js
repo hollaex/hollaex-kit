@@ -13,7 +13,8 @@ import {
 	ICONS,
 	HOLLAEX_LOGO,
 	HOLLAEX_LOGO_BLACK,
-	EXCHANGE_EXPIRY_DAYS
+	EXCHANGE_EXPIRY_DAYS,
+	IS_HEX
 } from '../../config/constants';
 import { LinkButton } from './LinkButton';
 import PairTabs from './PairTabs';
@@ -34,7 +35,8 @@ class AppBar extends Component {
 		isAccountMenu: false,
 		selectedMenu: '',
 		securityPending: 0,
-		verificationPending: 0
+		verificationPending: 0,
+		walletPending: 0
 	};
 
 	componentDidMount() {
@@ -43,6 +45,7 @@ class AppBar extends Component {
 		}
 		if (this.props.user) {
 			this.checkVerificationStatus(this.props.user);
+			this.checkWalletStatus(this.props.user, this.props.coins);
 		}
 		if (this.props.isHome && this.props.token) {
 			this.getUserDetails();
@@ -63,6 +66,7 @@ class AppBar extends Component {
 		}
 		if (JSON.stringify(this.props.user) !== JSON.stringify(nextProps.user)) {
 			this.checkVerificationStatus(nextProps.user);
+			this.checkWalletStatus(nextProps.user, nextProps.coins);
 		}
 		if (
 			this.props.token !== nextProps.token &&
@@ -141,6 +145,19 @@ class AppBar extends Component {
 		}
 	};
 
+	checkWalletStatus = (user, coins) => {
+        let walletPending = false;
+        if (user.balance) {
+			walletPending = true;
+            Object.keys(coins).forEach(pair => {
+                if (user.balance[`${pair.toLowerCase()}_balance`] > 0) {
+                    walletPending = false;
+                }
+            })
+        }
+        this.setState({ walletPending: walletPending ? 1 : 0 });
+    };
+
 	toogleSymbolSelector = () => {
 		this.setState({ symbolSelectorIsOpen: !this.state.symbolSelectorIsOpen });
 	};
@@ -177,10 +194,14 @@ class AppBar extends Component {
 	};
 
 	renderSplashActions = (token, verifyingToken) => {
-		const { securityPending, verificationPending } = this.state;
+		const { securityPending, verificationPending, walletPending } = this.state;
 		if (verifyingToken) {
 			return <div />;
 		}
+
+		const totalPending = IS_HEX
+			? securityPending + walletPending
+			: securityPending + verificationPending;
 
 		const WRAPPER_CLASSES = ['app_bar-controllers-splash', 'd-flex'];
 		return token ? (
@@ -190,9 +211,9 @@ class AppBar extends Component {
 						path={ICONS.SIDEBAR_ACCOUNT_INACTIVE}
 						wrapperClassName="app-bar-currency-icon"
 					/>
-					{!!(securityPending + verificationPending) && (
+					{!!(totalPending) && (
 						<div className="app-bar-account-notification">
-							{securityPending + verificationPending}
+							{totalPending}
 						</div>
 					)}
 				</div>
@@ -303,9 +324,12 @@ class AppBar extends Component {
 			isAccountMenu,
 			selectedMenu,
 			securityPending,
-			verificationPending
+			verificationPending,
+			walletPending
 		} = this.state;
-		const totalPending = securityPending + verificationPending;
+		const totalPending = IS_HEX
+			? securityPending + walletPending
+			: securityPending + verificationPending;
 		let pair = '';
 		if (Object.keys(pairs).length) {
 			pair = Object.keys(pairs)[0];
@@ -441,6 +465,7 @@ class AppBar extends Component {
 						selectedMenu={selectedMenu}
 						securityPending={securityPending}
 						verificationPending={verificationPending}
+						walletPending={walletPending}
 						handleMenu={this.handleMenu}
 						logout={logout}
 						activePath={activePath}

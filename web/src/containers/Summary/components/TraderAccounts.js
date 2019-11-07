@@ -1,28 +1,42 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import ReactSVG from 'react-svg';
 import { isMobile } from 'react-device-detect';
 
 import STRINGS from '../../../config/localizedStrings';
-import { ICONS, SHOW_SUMMARY_ACCOUNT_DETAILS } from '../../../config/constants';
+import { ICONS, IS_HEX } from '../../../config/constants';
 
 const TraderAccounts = ({
+	user = {},
 	isAccountDetails = false,
 	onFeesAndLimits,
 	onUpgradeAccount,
 	logout,
 	onInviteFriends,
 	verification_level,
-	selectedAccount
+	selectedAccount,
+	onStakeToken
 }) => {
 	const level = selectedAccount ? selectedAccount : verification_level;
-	const Title = STRINGS.formatString(STRINGS.SUMMARY.LEVEL_OF_ACCOUNT, verification_level)
+	const Title = STRINGS.formatString(STRINGS.SUMMARY.LEVEL_OF_ACCOUNT, verification_level);
+	let description = STRINGS.SUMMARY[`LEVEL_${verification_level}_TXT`]
+		? STRINGS.SUMMARY[`LEVEL_${verification_level}_TXT`]
+		: STRINGS.SUMMARY.LEVEL_TXT_DEFAULT;
+	let icon = ICONS[`LEVEL_ACCOUNT_ICON_${verification_level}`]
+		? ICONS[`LEVEL_ACCOUNT_ICON_${verification_level}`]
+		: ICONS.LEVEL_ACCOUNT_ICON_4;
+	if (IS_HEX) {
+		description = user.is_hap
+			? STRINGS.SUMMARY.HAP_ACCOUNT_TXT
+			: STRINGS.SUMMARY.TRADER_ACCOUNT_HEX_TEXT;
+		icon = user.is_hap === true
+			? ICONS.HAP_ACCOUNT_ICON
+			: ICONS.ACCOUNT_SUMMARY;
+	}
 	return (
 		<div className="d-flex">
 			<div>
 				<ReactSVG
-					path={ICONS[`LEVEL_ACCOUNT_ICON_${verification_level}`]
-						? ICONS[`LEVEL_ACCOUNT_ICON_${verification_level}`]
-						: ICONS.LEVEL_ACCOUNT_ICON_4}
+					path={icon}
 					wrapperClassName='trader-wrapper-icon'
 				/>
 			</div>
@@ -34,12 +48,7 @@ const TraderAccounts = ({
 				)}
 				<div className="account-details-content">
 					<div className="mb-2">
-						{SHOW_SUMMARY_ACCOUNT_DETAILS
-							? STRINGS.SUMMARY[`LEVEL_${verification_level}_TXT`]
-								? STRINGS.SUMMARY[`LEVEL_${verification_level}_TXT`]
-								: STRINGS.SUMMARY.LEVEL_TXT_DEFAULT
-							: STRINGS.SUMMARY.TRADER_ACCOUNT_HEX_TEXT
-						}
+						{description}
 					</div>
 				</div>
 				{/* {!!limitLevel.length && <div
@@ -50,35 +59,53 @@ const TraderAccounts = ({
                         {STRINGS.SUMMARY.VIEW_FEE_STRUCTURE.toUpperCase()}
                     </span>
                 </div>} */}
-				{!isAccountDetails && (
+				{!isAccountDetails && (<Fragment>
 					<div className="trade-account-link mb-2">
 						<span className="pointer" onClick={onInviteFriends}>
-							{STRINGS.REFERRAL_LINK.TITLE.toUpperCase()}
+							{(IS_HEX
+								? STRINGS.REFERRAL_LINK.HEX_TITLE
+								: STRINGS.REFERRAL_LINK.TITLE).toUpperCase()
+							}
 						</span>
 					</div>
+					{IS_HEX
+						? <div className="trade-account-link mb-2">
+							<span
+								className="pointer" onClick={onStakeToken}>
+								{STRINGS.STAKE_TOKEN.TITLE.toUpperCase()}
+							</span>
+						</div>
+						: null
+					}
+				</Fragment>
 				)}
-				<div className="trade-account-link mb-2">
-					<span
-						className="pointer"
-						onClick={() => onFeesAndLimits(level)}
-					>
-						{STRINGS.SUMMARY.VIEW_FEE_STRUCTURE.toUpperCase()}
-					</span>
-				</div>
-				{!isAccountDetails && verification_level.level >= 1 && verification_level.level < 4 && (
-					<div className="trade-account-link mb-2">
-						<span className="pointer" onClick={onUpgradeAccount}>
-							{STRINGS.SUMMARY.UPGRADE_ACCOUNT.toUpperCase()}
-						</span>
-						{isMobile ? (
-							<div className="my-2" onClick={() => logout()}>
-								{STRINGS.LOGOUT.toUpperCase()}
+				{!IS_HEX
+					? <Fragment>
+						<div className="trade-account-link mb-2">
+							<span
+								className="pointer"
+								onClick={() => onFeesAndLimits(level)}
+							>
+								{STRINGS.SUMMARY.VIEW_FEE_STRUCTURE.toUpperCase()}
+							</span>
+						</div>
+						{!isAccountDetails && verification_level.level >= 1 && verification_level.level < 4 && (
+							<div className="trade-account-link mb-2">
+								<span className="pointer" onClick={onUpgradeAccount}>
+									{STRINGS.SUMMARY.UPGRADE_ACCOUNT.toUpperCase()}
+								</span>
 							</div>
-						) : (
-							''
 						)}
+					</Fragment>
+					: null
+				}
+				{!isAccountDetails && isMobile ? (
+					<div className="trade-account-link my-2" onClick={() => logout()}>
+						{STRINGS.LOGOUT.toUpperCase()}
 					</div>
-				)}
+				) : (
+						''
+					)}
 			</div>
 		</div>
 	);

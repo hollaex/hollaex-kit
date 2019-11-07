@@ -321,6 +321,8 @@ export default {
 		PENDING_VERIFICATION: 'Pending verification',
 		TITLE_EMAIL: 'Email',
 		MY_EMAIL: 'My Email',
+		MAKE_FIRST_DEPOSIT: 'Make first deposit', // new
+		OBTAIN_HEX: 'Obtain HEX', // new
 		TITLE_USER_DOCUMENTATION: 'Identification',
 		TITLE_ID_DOCUMENTS: 'Documents',
 		TITLE_BANK_ACCOUNT: 'Bank Account',
@@ -343,6 +345,7 @@ export default {
 		PENDING_VERIFICATION_BANK: 'Your bank details are being verified',
 		PENDING_VERIFICATION_DOCUMENTS: 'Your documents are being verified',
 		GOTO_VERIFICATION: 'Go to verification',
+		GOTO_WALLET: 'Go to wallet', // new
 		CONNECT_BANK_ACCOUNT: 'Connect Bank Account',
 		ACTIVATE_2FA: 'Activate 2FA',
 		INCOMPLETED: 'Incompleted',
@@ -830,6 +833,7 @@ export default {
 	WALLET_TABLE_AMOUNT_IN: `Amount in {0}`,
 	WALLET_TABLE_TOTAL: 'Grand Total',
 	WALLET_ALL_ASSETS: 'All Assets',
+	WALLET_DEPOSIT_USD: 'If you’d like to deposit USD or other fiat currencies via bank wire transfer {0}.', // new
 	HIDE_TEXT: 'Hide',
 	PAGINATOR_FORMAT: '{0} / {1}',
 	ORDERBOOK_SELLERS: 'Sellers',
@@ -1097,7 +1101,10 @@ export default {
 		LEVEL_3_TXT: 'You’ve come far comrade and have traded well.Keep trading and reach the highest rank and enjoy even lower fees and higher limits.',
 		LEVEL_4_TXT: 'You are a masters trader and have reached the peek. To maintain your rank keep your trading volume high and healthy.',
 		CURRENT_TXT: 'Current',
-		TRADER_ACCOUNT_HEX_TEXT: 'Earn up to 10% in commissions through distributing the HollaEx Kit. Alternatively you can earn HEX daily through staking your HEX token when running your own exchange'
+		TRADER_ACCOUNT_HEX_TEXT: 'Earn up to 10% in commissions through distributing the HollaEx Kit. Alternatively you can earn HEX daily through staking your HEX token when running your own exchange.',
+		TRADER_ACCOUNT_TITLE: 'Account', // new
+		HAP_ACCOUNT:'HAP Account', // new
+		HAP_ACCOUNT_TXT :'Your account is a verified HollaEx affiliate program account. You can now earn 10% bonus for every person you invite that buys HEX.' // new
 	},
 	REFERRAL_LINK: {
 		TITLE: 'Invite your friend', // new
@@ -1105,7 +1112,23 @@ export default {
 		INFO_TEXT_1: 'Send thm this affiliation link and get them onboard', // new
 		COPY_FIELD_LABEL: 'Share the link below with friends and earn commissions:', // new
 		REFERRED_USER_COUT: 'You have referred {0} users', // new
-		COPY_LINK_BUTTON: 'COPY REFERRAL LINK' // new
+		COPY_LINK_BUTTON: 'COPY REFERRAL LINK', // new
+		HEX_TITLE: 'EARN 10% IN COMMISSIONS', // new
+		HEX_INFO_TEXT: 'Earn 1 HEX for every 10 HEX your friends buy.', // new
+		HEX_INFO_TEXT_1: 'Commissions are paid periodically to your HEX wallet', // new
+		APPLICATION_TXT: 'To become a HollaEx Kit distributor please fill out an application.', // new
+		TOTAL_REFERRAL: 'Total bought from referrals:', // new
+		PENDING_REFERRAL: 'Commissions Pending:', // new
+		EARN_REFERRAL: 'Commissions Earnt:', // new
+		HEX_COUNT: '{0} HEX', // new
+		APPLY_BUTTON: 'APPLY', // new
+	},
+	STAKE_TOKEN: {
+		TITLE: 'Stake HollaEx Token', // new
+		INFO_TXT1: 'For every user of the HollaEx Exchange Kit there are HollaEx tokens collateralized to run the exchange software.', // new
+		INFO_TXT2: 'You can collateralize your HollaEx token in a similar fashion to staking and earn HEX not sold during the Wave Auction.', // new
+		INFO_TXT3: 'Simply go to dash.bitholla.com and collateralize your own exchange today and earn free HEX', // new
+		BUTTON_TXT: 'GO TO DASH' // new
 	},
 	USER_LEVEL: 'User level', // new
 	LIMIT_AMOUNT: 'Limit amount', // new

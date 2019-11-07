@@ -238,13 +238,16 @@ export const ICONS = {
 		'/assets/images/risk-manage-pop-warning.svg',
 	REFER_ICON: '/assets/images/refer-icon.svg',
 	EDIT_ICON: '/assets/images/edit-icon.svg',
+	STAKETOKEN_ICON: '/assets/images/stake.svg',
 	DEFAULT_ICON: '/assets/icons/missing-coin-light.svg',
 	DEFAULT_ICON_DARK: '/assets/icons/missing-coin-dark.svg',
 	EXPIRED_ICON: '/assets/images/expired.svg',
 	LEVEL_ACCOUNT_ICON_1: '/assets/images/level-1.svg',
 	LEVEL_ACCOUNT_ICON_2: '/assets/images/level-2.svg',
 	LEVEL_ACCOUNT_ICON_3: '/assets/images/level-3.svg',
-	LEVEL_ACCOUNT_ICON_4: '/assets/images/level-4.svg'
+	LEVEL_ACCOUNT_ICON_4: '/assets/images/level-4.svg',
+	HAP_ACCOUNT_ICON: '/assets/icons/hap-account-icon.svg',
+	ACCOUNT_SUMMARY: '/assets/icons/account-icon-summary.svg'
 };
 
 export const SOCIAL_ICONS = {
@@ -459,6 +462,7 @@ export const FEES_LIMIT_SITE_URL = 'https://www.hollaex.com';
 export const API_DOCS_URL = 'https://docs.bitholla.com/';
 export const EXCHANGE_URL = 'https://dash.bitholla.com/';
 export const EXCHANGE_EXPIRY_DAYS = 15;
+export const AFFILIATION_APPLY_URL = 'https://docs.google.com/forms/d/1xf1mHxiTW6YUKVEqvfMJZqygiFxm1P6aUDS7uXe5Ouc/viewform?ts=5d9da3d5&edit_requested=true';
 
 // export const TRADING_ACCOUNT_TYPE = {
 // 	shrimp: {
@@ -541,3 +545,4 @@ export const WHITE_THEME_CHART_COLORS = {
 
 export const SHOW_SUMMARY_ACCOUNT_DETAILS = false;
 export const SHOW_TOTAL_ASSETS = false;
+export const IS_HEX = true;
