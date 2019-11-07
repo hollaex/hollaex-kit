@@ -83,7 +83,7 @@ import {
 	SnackNotification,
 	SnackDialog
 } from '../../components';
-import { ContactForm, HelpfulResourcesForm, Chat as ChatComponent } from '../';
+import { ContactForm, HelpfulResourcesForm, Chat as ChatComponent, DepositFunds } from '../';
 import ReviewEmailContent from '../Withdraw/ReviewEmailContent';
 import FeesAndLimits from '../Summary/components/FeesAndLimits';
 import SetOrderPortfolio from '../UserSettings/SetOrderPortfolio';
@@ -230,6 +230,11 @@ class Container extends Component {
 		this.setPublicWS();
 		if (isLoggedIn()) {
 			this.setUserSocket(getToken());
+			const dialog_display = localStorage.getItem('deposit_initial_display');
+			if (!dialog_display) {
+				this.props.setNotification(NOTIFICATIONS.DEPOSIT_INFO, { gotoWallet: this.onConfirmEmail });
+				localStorage.setItem('deposit_initial_display', true);
+			}
 		}
 		this.setState({ appLoaded: true }, () => {
 			this._resetTimer();
@@ -765,6 +770,15 @@ class Container extends Component {
 					/>
 				);
 			}
+			case NOTIFICATIONS.DEPOSIT_INFO: {
+				const { gotoWallet, ...rest } = data;
+				return (
+					<DepositFunds
+						data={rest}
+						gotoWallet={gotoWallet}
+					/>
+				);
+			}
 			default:
 				return <div />;
 		}
@@ -930,7 +944,14 @@ class Container extends Component {
 							<Dialog
 								isOpen={dialogIsOpen}
 								label="hollaex-modal"
-								className="app-dialog"
+								className={
+									classnames(
+										"app-dialog",
+										{
+											"app-dialog-flex": activeNotification.type === NOTIFICATIONS.DEPOSIT_INFO 
+										}
+									)
+								}
 								onCloseDialog={this.onCloseDialog}
 								shouldCloseOnOverlayClick={shouldCloseOnOverlayClick}
 								theme={activeTheme}

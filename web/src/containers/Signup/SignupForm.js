@@ -45,11 +45,11 @@ export const generateFormFields = (strings, theme) => ({
 		label: strings.formatString(
 			strings.SIGN_UP.TERMS.text,
 			<BlueLink
-				href="https://www.hollaex.com/terms_privacy/"
+				href="https://bitholla.com/terms-of-use/"
 				text={strings.SIGN_UP.TERMS.terms}
 			/>,
 			<BlueLink
-				href="https://www.hollaex.com/terms_privacy/"
+				href="https://bitholla.com/privacy-policy/"
 				text={strings.SIGN_UP.TERMS.policy}
 			/>
 		)

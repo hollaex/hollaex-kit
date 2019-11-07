@@ -135,7 +135,7 @@ class DonutChart extends Component {
 			return '';
 		});
 		let x = width / 2;
-		let y = height / 2 - 15;
+		let y = height / 2 - 11;
 
 		return (
 			<div id="donut-container" className="w-100 h-100">
@@ -195,7 +195,7 @@ class DonutChart extends Component {
 						className="donut-label-no-price"
 						textAnchor="middle"
 					>
-						<Link to="/wallet" className="deposite-asset">
+						<Link to="/wallet" className="deposit-asset">
 							{STRINGS.DEPOSIT_ASSETS.toUpperCase()}
 						</Link>
 					</text>

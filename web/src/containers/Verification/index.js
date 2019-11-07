@@ -63,7 +63,7 @@ class Verification extends Component {
 	}
 
 	componentWillReceiveProps(nextProps) {
-		if(nextProps.user !== this.props.user) {
+		if(JSON.stringify(nextProps.user) !== JSON.stringify(this.props.user)) {
 			this.setUserData(nextProps.user);
 		}
 		if (nextProps.activeLanguage !== this.props.activeLanguage) {
@@ -73,7 +73,7 @@ class Verification extends Component {
 
 	componentWillUpdate(nextProps, nextState) {
 		if (this.state.activeTab !== nextState.activeTab && this.state.activeTab !== -1) {
-			this.updateTabs(this.state.user, this.props.activeLanguage, nextState.activeTab);
+			this.updateTabs(nextState.user, nextProps.activeLanguage, nextState.activeTab);
 		}
 	}
 	

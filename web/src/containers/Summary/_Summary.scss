@@ -22,9 +22,9 @@
         }
         
         .trader-account-icon {
-            svg{
+            svg {
                 .level_icon {
-                    fill: #2e2f37;
+                    fill: $dark-inactive-color;
                 }
             }
         }
@@ -71,7 +71,10 @@
                 .trader-account-icon {
                     svg{
                        .level_icon {
-                            fill:#a3a1ca
+                            fill: $dark-icon-color;
+                        }
+                        .default-icon{
+                            fill: $dark-font-sub-text-color !important;
                         }
                     }
                 }
@@ -223,8 +226,9 @@
         width: 5rem;
         margin-right: 1rem;
         svg{
-            .level_icon{
-                fill:$colors-black;
+            .level_icon,
+            .hap-icon {
+                fill: $colors-black;
             }
         }
     }
@@ -232,14 +236,6 @@
     .trader-account-icon {
         width: 5rem;
         margin-right: 1rem;
-        svg{
-            path{
-            fill:#BBBDBF;
-            }
-            polygon{
-                fill:#BBBDBF
-            }
-        }
     }
     .trade-account-link {
         color: $link;
@@ -360,6 +356,9 @@
                     .xrp-icon {
                         fill: $coin-xrp;
                     }
+                    .default-icon{
+                        fill: $colors-black !important;
+                    }
                 }
             }
         }
@@ -413,12 +412,9 @@
             }
             .trader-account-icon{
                 svg{
-                    path{
-                        fill:#000000;
+                    .level_icon {
+                        fill: $colors-black;
                     }
-                    polygon{
-                        fill: #000000;
-                         }
                 }
             }
         }

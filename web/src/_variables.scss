@@ -75,6 +75,10 @@ $icon-unhover: $colors-deactivate-color2;
 $trade-tabs-inactive-color: #808080;
 $bitcoin-color-main: $colors-currencies-btc;
 
+// this is for transaction history- ToDo: need to customize for common theme
+$color-buy: #d1d4dc;
+$color-sell: $colors-black;
+
 // colors for dark theme
 $colors-username-set-dark: #ff4bb6;
 $dark-app-background-color: #1f212a;

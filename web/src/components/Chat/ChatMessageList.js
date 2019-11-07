@@ -63,7 +63,8 @@ class ChatMessageList extends Component {
 			chatInitialized,
 			userInitialized,
 			usernameInitalized,
-			removeMessage
+			removeMessage,
+			is_hap
 		} = this.props;
 
 		return (
@@ -104,6 +105,7 @@ class ChatMessageList extends Component {
 							messageContent={message}
 							removeMessage={removeMessage}
 							timestamp={timestamp}
+							is_hap={is_hap}
 						/>
 					))
 				) : (
@@ -115,7 +117,8 @@ class ChatMessageList extends Component {
 }
 
 const mapStateToProps = (store) => ({
-	activeTheme: store.app.theme
+	activeTheme: store.app.theme,
+	is_hap: store.user.is_hap
 });
 
 export default connect(mapStateToProps)(ChatMessageList);

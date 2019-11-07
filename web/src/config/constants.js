@@ -247,7 +247,14 @@ export const ICONS = {
 	LEVEL_ACCOUNT_ICON_3: '/assets/images/level-3.svg',
 	LEVEL_ACCOUNT_ICON_4: '/assets/images/level-4.svg',
 	HAP_ACCOUNT_ICON: '/assets/icons/hap-account-icon.svg',
-	ACCOUNT_SUMMARY: '/assets/icons/account-icon-summary.svg'
+	ACCOUNT_SUMMARY: '/assets/icons/account-icon-summary.svg',
+	HEX_COIN_STACK: '/assets/images/HEX-coin-stack.svg',
+	HEX_DOCS: '/assets/images/HEX-docs.svg',
+	HEX_WAVES: '/assets/images/wave-icon.svg',
+	HEX_EMAIL: '/assets/images/HEX-email.svg',
+	HEX_FAQ: '/assets/images/HEX-FAQ.svg',
+	HEX_PDF: '/assets/images/HEX-pdf.svg',
+	REFERRAL_SUCCESS: '/assets/icons/send-request.svg'
 };
 
 export const SOCIAL_ICONS = {

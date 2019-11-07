@@ -8,33 +8,36 @@
 	appearance: none;
 	text-indent: 1px;
 	text-overflow: '';
-	color: $dark-sell;
+	color: $color-sell;
 	font-size: 2rem;
 	font-weight: bold;
 	padding-right: 2rem;
 }
-	.with_arrow_trade:after  {	
-		border-left-color: $colors-main-black !important;
-		border-right-color: $colors-main-black !important;
+.with_arrow_trade:after  {	
+	border-left-color: $colors-main-black !important;
+	border-right-color: $colors-main-black !important;
+}
+.direction_ltr {
+	.with_arrow_trade:after {
+		@include css-triangle($dark-accordion-arrow-active, 'right', 0.9rem, relative);
+		transform: rotate(90deg);
+		left: -1.5rem;
 	}
-	.direction_ltr {
-		.with_arrow_trade:after {
-			@include css-triangle($dark-accordion-arrow-active, 'right', 0.9rem, relative);
-			transform: rotate(90deg);
-			left: -1.5rem;
-		}
-		
+	
+}
+.direction_rtl {
+	.with_arrow_trade:after {
+		transform: rotate(90deg);
+		@include css-triangle($dark-accordion-arrow-active, 'left', $accordion_arrow-size, relative);
+		right: -1rem;
 	}
-	.direction_rtl {
-		.with_arrow_trade:after {
-			transform: rotate(90deg);
-			@include css-triangle($dark-accordion-arrow-active, 'left', $accordion_arrow-size, relative);
-			right: -1rem;
-		}
+}
+.dark-theme {
+	.with_arrow_trade:after {
+		border-left-color: $dark-font-main-text-color !important;
+		border-right-color: $dark-font-main-text-color !important;
 	}
-	.dark-theme {
-		.with_arrow_trade:after {
-			border-left-color: $dark-font-main-text-color !important;
-			border-right-color: $dark-font-main-text-color !important;
-		}
+	.mobile-drop-down {
+		color: $dark-sell;
 	}
+}

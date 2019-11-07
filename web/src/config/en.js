@@ -1,3 +1,5 @@
+import AGREEMENT from './agreement';
+
 export default {
 	APP_TITLE: 'HollaEx',
 	APP_SUB_TITLE: 'White Label Cryptocurrency Exchange',
@@ -106,6 +108,14 @@ export default {
 		TAB_API: 'API',
 		TAB_SIGNOUT: 'Signout'
 	},
+	REQUEST_HEX_ACCESS: { // new
+		REQUEST_TITLE: 'Request HEX Access',
+		REQUEST_INVITE: 'Request Invite',
+		REFERRAL_INVITE_WARNING: 'To access the HollaEx official Exchange you need to get a referral link from a friend or {0}',
+		CATEGORY_PLACEHOLDER: 'Select the category that best suits your issue',
+		INTRODUCTION_LABEL: 'Introduce yourself',
+		INTRODUCTION_PLACEHOLDER: 'Where are you based, are you interested in running an exchange?',
+	},
 	CONTACT_FORM: {
 		CATEGORY_LABEL: 'Category',
 		CATEGORY_PLACEHOLDER: 'Select the category that best suits your issue',
@@ -114,7 +124,9 @@ export default {
 			OPTION_LEVEL: 'Increase user level',
 			OPTION_DEPOSIT: 'Deposit & Withdrawal',
 			OPTION_BUG: 'Report bug', // ToDo:
-			OPTION_PERSONAL_INFO: 'Change personal information' // ToDo:
+			OPTION_PERSONAL_INFO: 'Change personal information', // ToDo:
+			OPTION_BANK_TRANSFER: 'Bank wire transfer', // new
+			OPTION_REQUEST: 'Request Invite for the HollaEx Exchange' // new
 		},
 		SUBJECT_LABEL: 'Subject',
 		SUBJECT_PLACEHOLDER: 'Type the subject of your issue',
@@ -229,6 +241,10 @@ export default {
 			INFORMATION_PENDING_2:
 				'This may take 10-30 minutes. We will send an email once your {0} is confirmed on the blockchain.'
 		}
+	},
+	REFERRAL_SUCCESS: {
+		TITLE: 'Request Sent',
+		BUTTON_TEXT: 'Okay'
 	},
 	OTP_FORM: {
 		OTP_FORM_TITLE: 'Enter your authentication code to continue',
@@ -1129,6 +1145,25 @@ export default {
 		INFO_TXT2: 'You can collateralize your HollaEx token in a similar fashion to staking and earn HEX not sold during the Wave Auction.', // new
 		INFO_TXT3: 'Simply go to dash.bitholla.com and collateralize your own exchange today and earn free HEX', // new
 		BUTTON_TXT: 'GO TO DASH' // new
+	},
+	TERMS_OF_SERVICES: { // new
+		TITLE: 'HollaEx Token Purchase Agreement',
+		SERVICE_AGREEMENT: AGREEMENT,
+		PROCEED: 'PROCEED',
+		AGREE_TERMS_LABEL: 'I have read and agree to the HollaEx Token Purchase Agreement',
+		RISK_INVOLVED_LABEL: 'I understand the risks involved',
+		DOWNLOAD_PDF: 'Download the PDF',
+		DEPOSIT_FUNDS: 'Deposit funds into your wallet to obtain HollaEx Token (HEX)',
+		READ_FAG: 'Read HollaEx FAQ here: {0}',
+		READ_DOCUMENTATION: 'Read HollaEx whitepaper here: {0}',
+		READ_WAVES: 'Rules for the coming December Public Wave Auction{0}', // new
+		DOWNLOAD_BUY_HEX: 'Download the PDF to see a visual step-by-step processes on {0}',
+		HOW_TO_BUY: 'how to buy HollaEx Token (HEX)',
+		PUBLIC_SALES: ' Public Wave Auction', // new
+		CONTACT_US: 'Feel free to contact us for more information and any issues by sending us an email to {0}',
+		VISUAL_STEP: 'See a visual step-by-step processes on {0}', // new
+		WARNING_TXT: 'We will review your request and send further instructions to your email on how to access the HollaEx exchange.', // new
+		WARNING_TXT1: 'In the mean time you can firmilerize yourself with the HollaEx network with the resources below' // new
 	},
 	USER_LEVEL: 'User level', // new
 	LIMIT_AMOUNT: 'Limit amount', // new

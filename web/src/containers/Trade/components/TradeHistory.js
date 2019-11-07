@@ -3,10 +3,9 @@ import classnames from 'classnames';
 import { connect } from 'react-redux';
 
 import { DisplayTable } from '../../../components';
-
 import { formatTimestamp } from '../../../utils/utils';
-
 import STRINGS from '../../../config/localizedStrings';
+import { IS_HEX } from '../../../config/constants';
 
 const generateHeaders = () => {
 	return [
@@ -25,13 +24,26 @@ const generateHeaders = () => {
 	{
 		key: 'size',
 		label: STRINGS.SIZE,
-		renderCell: ({ size = 0 }, index) => size
+		renderCell: ({ size = 0, side }, index) => IS_HEX
+			? <div
+				className={classnames('trade_history-row', side)}
+				key={`size-${index}`}
+			>
+				{size}
+			</div>
+			: size
 	},
 	{
 		key: 'timestamp',
 		label: STRINGS.TIME,
-		renderCell: ({ timestamp }, index) =>
-			formatTimestamp(timestamp, STRINGS.HOUR_FORMAT)
+		renderCell: ({ timestamp, side }, index) => IS_HEX
+			? <div
+				className={classnames('trade_history-row', side)}
+				key={`timestamp-${index}`}
+			>
+				{formatTimestamp(timestamp, STRINGS.HOUR_FORMAT)}
+			</div>
+			: formatTimestamp(timestamp, STRINGS.HOUR_FORMAT)
 	}
 ];
 }
