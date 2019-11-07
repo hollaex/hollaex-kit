@@ -1,15 +1,16 @@
 # See https://help.github.com/ignore-files/ for more about ignoring files.
 
 # dependencies
-/node_modules
+node_modules
 
 # testing
-/coverage
+web/coverage
 
 # production
-/build
+build
 
 # misc
+<<<<<<< HEAD
 .DS_Store
 .env
 .env.local
@@ -22,3 +23,26 @@ yarn-debug.log*
 yarn-error.log*
 
 # src/**/*.css
+=======
+web/.DS_Store
+web/.env
+web/.env.local
+web/.env.development.local
+web/.env.test.local
+web/.env.production.local
+
+web/npm-debug.log*
+web/yarn-debug.log*
+web/yarn-error.log*
+
+web/src/**/*.css
+
+#HollaEx CLI related
+templates/local/nginx/conf.d/*
+templates/local/logs/*
+templates/local/*.yaml
+templates/local/*.env.local
+templates/local/letsencrypt/*
+
+templates/kubernetes/config/*
+>>>>>>> bfa7b52856eb0d940e74d48730e39b09d1849ee2
