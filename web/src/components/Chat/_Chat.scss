@@ -295,6 +295,11 @@ $mobile-regular--font-size: 1.5rem;
 		}
 		.user-icon {
 			width: 2rem;
+			svg {
+				.level_icon {
+					fill: $colors-black;
+				}
+			}
 		}
 	}
 
@@ -339,7 +344,7 @@ $mobile-regular--font-size: 1.5rem;
 			width: 2rem;
 
 			svg {
-				.level_icon {
+				.level_icon, .hap-icon {
 					fill: $colors-white;
 				}
 			}

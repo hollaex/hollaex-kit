@@ -53,15 +53,22 @@ export function verifyVerificationCode(data) {
 
 export const performLogin = (values) =>
 	axios.post('/login', values).then((res) => {
-		if (res.data.token) {
-			setTokenInApp(res.data.token, true);
-			store.dispatch({
-				type: 'VERIFY_TOKEN_FULFILLED',
-				payload: res.data.token
-			});
+		const termsAccepted = localStorage.getItem('termsAccepted');
+		if (termsAccepted) {
+			storeLoginResult(res.data.token);
 		}
 		return res;
 	});
+
+export const storeLoginResult = token => {
+	if (token) {
+		setTokenInApp(token, true);
+		store.dispatch({
+			type: 'VERIFY_TOKEN_FULFILLED',
+			payload: token
+		});
+	}
+}
 
 export const performSignup = (values) => axios.post('/signup', values);
 
@@ -75,6 +82,7 @@ const setTokenInApp = (token, setInStore = false) => {
 const cleatTokenInApp = (router, path = '/') => {
 	axios.defaults.headers.common['Authorization'] = {};
 	removeToken();
+	localStorage.removeItem('deposit_initial_display');
 	router.push(path);
 };
 

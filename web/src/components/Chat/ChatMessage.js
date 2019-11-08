@@ -3,7 +3,7 @@ import classnames from 'classnames';
 import moment from 'moment';
 import STRINGS from '../../config/localizedStrings';
 import TruncateMarkup from 'react-truncate-markup';
-import { ICONS } from '../../config/constants';
+import { ICONS, IS_HEX } from '../../config/constants';
 import { USER_TYPES } from '../../actions/appActions';
 import ReactSVG from 'react-svg';
 
@@ -42,8 +42,22 @@ class ChatMessageWithText extends Component {
 	};
 
 	render() {
-		const { username, to, messageContent, ownMessage, timestamp, verification_level } = this.props;
+		const {
+			username,
+			to,
+			messageContent,
+			ownMessage,
+			timestamp,
+			verification_level,
+			is_hap
+		} = this.props;
 		const { maxLines } = this.state;
+		let icon = verification_level >= 4
+			? ICONS.LEVEL_ACCOUNT_ICON_4
+			: ICONS[`LEVEL_ACCOUNT_ICON_${verification_level}`];
+		if (IS_HEX && ownMessage && is_hap) {
+			icon = ICONS.HAP_ACCOUNT_ICON;
+		}
 		return (
 			<div className={classnames('nonmobile')}>
 				<Timestamp timestamp={timestamp} />
@@ -51,10 +65,7 @@ class ChatMessageWithText extends Component {
 					<div className="mx-2">
 						{verification_level === 3 || verification_level >= 4
 							? <ReactSVG
-								path={verification_level >= 4
-									? ICONS.LEVEL_ACCOUNT_ICON_4
-									: ICONS[`LEVEL_ACCOUNT_ICON_${verification_level}`]
-								}
+								path={icon}
 								wrapperClassName="user-icon mr-1" />
 							: <div className="user-icon mr-1"></div>}
 					</div>
@@ -91,8 +102,23 @@ class ChatMessageWithImage extends Component {
 	};
 
 	render() {
-		const { username, to, messageType, messageContent, timestamp, verification_level } = this.props;
+		const {
+			username,
+			to,
+			messageType,
+			messageContent,
+			timestamp,
+			verification_level,
+			ownMessage,
+			is_hap
+		} = this.props;
 		const { hideImage } = this.state;
+		let icon = verification_level >= 4
+			? ICONS.LEVEL_ACCOUNT_ICON_4
+			: ICONS[`LEVEL_ACCOUNT_ICON_${verification_level}`];
+		if (IS_HEX && ownMessage && is_hap) {
+			icon = ICONS.HAP_ACCOUNT_ICON;
+		}
 
 		return (
 			<div>
@@ -113,10 +139,7 @@ class ChatMessageWithImage extends Component {
 					<div className="mx-2">
 						{verification_level === 3 || verification_level === 4
 							? <ReactSVG 
-								path={ verification_level >= 4
-									? ICONS.LEVEL_ACCOUNT_ICON_4
-									: ICONS[`LEVEL_ACCOUNT_ICON_${verification_level}`]
-								}
+								path={icon}
 								wrapperClassName="user-icon mr-1" />
 							: <div className="user-icon mr-1"></div>}
 					</div>
@@ -162,7 +185,8 @@ export class ChatMessage extends Component {
 			messageContent,
 			ownMessage,
 			timestamp,
-			verification_level
+			verification_level,
+			is_hap
 		} = this.props;
 		const { showOptions } = this.state;
 		const imageType = messageType === 'image';
@@ -184,9 +208,11 @@ export class ChatMessage extends Component {
 							username={username}
 							to={to}
 							messageContent={messageContent}
+							ownMessage={ownMessage}
 							messageType={messageType}
 							timestamp={timestamp}
 							verification_level={verification_level}
+							is_hap={is_hap}
 						/>
 					) : (
 						<ChatMessageWithText
@@ -196,6 +222,7 @@ export class ChatMessage extends Component {
 							ownMessage={ownMessage}
 							timestamp={timestamp}
 							verification_level={verification_level}
+							is_hap={is_hap}
 						/>
 					)}
 				</div>

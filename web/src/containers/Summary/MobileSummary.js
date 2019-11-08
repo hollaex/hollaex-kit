@@ -9,7 +9,12 @@ import AccountAssets from './components/AccountAssets';
 import TradingVolume from './components/TradingVolume';
 import AccountDetails from './components/AccountDetails';
 
-import { BASE_CURRENCY, DEFAULT_COIN_DATA, SHOW_SUMMARY_ACCOUNT_DETAILS } from '../../config/constants';
+import {
+	BASE_CURRENCY,
+	DEFAULT_COIN_DATA,
+	SHOW_SUMMARY_ACCOUNT_DETAILS,
+	SHOW_TOTAL_ASSETS
+} from '../../config/constants';
 import { formatAverage, formatBaseAmount } from '../../utils/currency';
 import STRINGS from '../../config/localizedStrings';
 
@@ -76,7 +81,7 @@ const MobileSummary = ({
 				<SummaryBlock
 					title={STRINGS.SUMMARY.ACCOUNT_ASSETS}
 					secondaryTitle={
-						BASE_CURRENCY && isValidBase ?
+						SHOW_TOTAL_ASSETS && BASE_CURRENCY && isValidBase ?
 							<span>
 								<span className="title-font">
 									{totalAssets}

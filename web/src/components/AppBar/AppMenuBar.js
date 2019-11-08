@@ -29,7 +29,8 @@ class AppMenuBar extends Component {
             && this.props.location.pathname !== nextProps.location.pathname) {
             this.setActiveMenu(nextProps.location.pathname);
         }
-        if (JSON.stringify(this.props.user) !== JSON.stringify(nextProps.user)) {
+        if (JSON.stringify(this.props.user) !== JSON.stringify(nextProps.user)
+            || JSON.stringify(this.props.coins) !== JSON.stringify(nextProps.coins)) {
             this.checkVerificationStatus(nextProps.user);
             this.checkWalletStatus(nextProps.user, nextProps.coins);
         }

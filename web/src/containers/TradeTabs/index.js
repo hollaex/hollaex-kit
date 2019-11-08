@@ -164,7 +164,13 @@ class AddTradeTab extends Component {
                                     className={classnames("d-flex", "trade-tab-list", "pointer", { "active-tab": index === 0 })}
                                     onClick={() => this.handleClick(key)}>
                                     <div className="px-2">
-                                        <ReactSVG path={ICONS[`${pair.pair_base.toUpperCase()}_ICON`]} wrapperClassName="trade_tab-icons" />
+                                        <ReactSVG
+                                            path={
+                                                ICONS[`${pair.pair_base.toUpperCase()}_ICON`]
+                                                    ? ICONS[`${pair.pair_base.toUpperCase()}_ICON`]
+                                                    : ICONS.DEFAULT_ICON
+                                            }
+                                            wrapperClassName="trade_tab-icons" />
                                     </div>
                                     <div className="tabs-pair-details">
                                         <div className="trade_tab-pair-title">

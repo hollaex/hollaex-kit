@@ -57,6 +57,7 @@
 	}
 
 	.trade_orderbook-asks {
+		color: $trade-order-asks-color-font;
 		.trade_orderbook-cell-price {
 			color: $trade-asks-color-main;
 			.orderbook-limit_bar-line {
@@ -66,10 +67,11 @@
 	}
 
 	.trade_orderbook-bids {
+		color: $trade-order-bids-color-font;
 		.trade_orderbook-cell-price {
-			color: $trade-bids-color-main;
+			color: $trade-order-bids-color-font;
 			.orderbook-limit_bar-line {
-				background-color: $trade-bids-color-main;
+				background-color: $trade-order-bids-color-font;
 			}
 		}
 	}

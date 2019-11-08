@@ -7,8 +7,10 @@ import { Link } from 'react-router';
 import { isMobile } from 'react-device-detect';
 import moment from 'moment';
 
-import { performLogin, setLogoutMessage } from '../../actions/authAction';
+import { performLogin, storeLoginResult, setLogoutMessage } from '../../actions/authAction';
 import LoginForm, { FORM_NAME } from './LoginForm';
+import TermsOfService from '../TermsOfService';
+import DepositFunds from '../TermsOfService/DepositFunds';
 import { Dialog, OtpForm, IconTitle, Notification } from '../../components';
 import { NOTIFICATIONS } from '../../actions/appActions';
 import { errorHandler } from '../../components/OtpForm/utils';
@@ -34,7 +36,10 @@ class Login extends Component {
 	state = {
 		values: {},
 		otpDialogIsOpen: false,
-		logoutDialogIsOpen: false
+		logoutDialogIsOpen: false,
+		termsDialogIsOpen: false,
+		depositDialogIsOpen: false,
+		token: ''
 	};
 
 	componentDidMount() {
@@ -87,6 +92,15 @@ class Login extends Component {
 
 	checkExpiryExchange = () => this.props.router.replace('/expired-exchange');
 
+	checkLogin = () => {
+		const termsAccepted = localStorage.getItem('termsAccepted');
+		if (!termsAccepted) {
+			this.setState({ termsDialogIsOpen: true });
+		} else {
+			this.redirectToHome();
+		}
+	};
+
 	onSubmitLogin = (values) => {
 		const service = this.getServiceParam();
 		if (service) {
@@ -94,13 +108,15 @@ class Login extends Component {
 		}
 		return performLogin(values)
 			.then((res) => {
+				if (res.data.token)
+					this.setState({ token: res.data.token });
 				if (!Object.keys(this.props.info).length
 					|| (this.props.info.is_trial
 						&& moment().diff(this.props.info.created_at, 'days') > EXCHANGE_EXPIRY_DAYS))
 					this.checkExpiryExchange();
 				else if (res.data && res.data.callbackUrl)
 					this.redirectToService(res.data.callbackUrl);
-				else this.redirectToHome();
+				else this.checkLogin();
 			})
 			.catch((err) => {
 				const _error =
@@ -146,15 +162,24 @@ class Login extends Component {
 		)
 			.then((res) => {
 				this.setState({ otpDialogIsOpen: false });
+				if (res.data.token)
+					this.setState({ token: res.data.token });
 				if (!Object.keys(this.props.info).length
 					|| (this.props.info.is_trial
 						&& moment().diff(this.props.info.created_at, 'days') > EXCHANGE_EXPIRY_DAYS))
 					this.checkExpiryExchange();
 				else if (res.data && res.data.callbackUrl)
 					this.redirectToService(res.data.callbackUrl);
-				else this.redirectToHome();
+				else this.checkLogin();
 			})
 			.catch(errorHandler);
+	};
+
+	onAcceptTerms = () => {
+		localStorage.setItem('termsAccepted', true);
+		if (this.state.token)
+			storeLoginResult(this.state.token);
+		this.setState({ termsDialogIsOpen: false, depositDialogIsOpen: true });
 	};
 
 	onCloseDialog = () => {
@@ -166,9 +191,15 @@ class Login extends Component {
 		this.setState({ logoutDialogIsOpen: false });
 	};
 
+	gotoWallet = () => {
+		this.props.router.replace('/wallet');
+		this.setState({ depositDialogIsOpen: false });
+		localStorage.setItem('deposit_initial_display', true);
+	};
+
 	render() {
 		const { logoutMessage, activeTheme } = this.props;
-		const { otpDialogIsOpen, logoutDialogIsOpen } = this.state;
+		const { otpDialogIsOpen, logoutDialogIsOpen, termsDialogIsOpen, depositDialogIsOpen } = this.state;
 
 		return (
 			<div
@@ -218,7 +249,7 @@ class Login extends Component {
 				</div>
 				{!isMobile && <BottomLink />}
 				<Dialog
-					isOpen={otpDialogIsOpen || logoutDialogIsOpen}
+					isOpen={otpDialogIsOpen || logoutDialogIsOpen || termsDialogIsOpen || depositDialogIsOpen}
 					label="otp-modal"
 					onCloseDialog={this.onCloseDialog}
 					shouldCloseOnOverlayClick={otpDialogIsOpen ? false : true}
@@ -236,6 +267,8 @@ class Login extends Component {
 							data={{ message: logoutMessage }}
 						/>
 					)}
+					{termsDialogIsOpen && <TermsOfService onAcceptTerms={this.onAcceptTerms} />}
+					{depositDialogIsOpen && <DepositFunds gotoWallet={this.gotoWallet} />}
 				</Dialog>
 			</div>
 		);

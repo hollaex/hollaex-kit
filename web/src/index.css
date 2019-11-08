@@ -865,6 +865,16 @@ table th {
 .terms_label-wrapper {
   padding: 0 0.25rem; }
 
+.signup-warning {
+  margin-top: 1.5rem; }
+
+.warning-icon {
+  width: 1.5rem;
+  margin-right: 1rem; }
+
+.signup-warning-text {
+  color: #ed1c24; }
+
 .dialog-link {
   color: #0000ff;
   padding: 0 0.25rem; }
@@ -1385,11 +1395,13 @@ table th {
 
 .cell_box-type .withdraw,
 .cell_box-type .sell {
-  background-color: #ed1c24; }
+  background-color: #000000;
+  color: white; }
 
 .cell_box-type .deposit,
 .cell_box-type .buy {
-  background-color: #00a651; }
+  background-color: #d1d4dc;
+  color: #000000; }
 
 .amount_text .positive {
   color: #00a651; }
@@ -1404,8 +1416,15 @@ table th {
   width: 2rem;
   height: 2rem; }
 
-.withdrawal-cancel {
+.btn-tx, .withdrawal-cancel {
   cursor: pointer; }
+
+.transaction-history-wrapper svg .trade-history-1,
+.transaction-history-wrapper svg .deposit-history-3,
+.transaction-history-wrapper svg .withdrawals-history-3,
+.transaction-history-wrapper svg .transaction-history-1,
+.transaction-history-wrapper svg .transaction-history-5 {
+  fill: #000000; }
 
 .dark-theme .csv-action .action_notification-text {
   color: #ed507b !important; }
@@ -1704,7 +1723,7 @@ table th {
     color: white; }
   .dark-theme .trade_block-wrapper .trade_block-title .trade_block-icon svg .st0 {
     fill: #b6b5cd !important; }
-  .dark-theme .trade_block-wrapper .trade_block-title .trade_block-icon svg .bch-icon, .dark-theme .trade_block-wrapper .trade_block-title .trade_block-icon svg .xrp-icon, .dark-theme .trade_block-wrapper .trade_block-title .trade_block-icon svg .hex-icon {
+  .dark-theme .trade_block-wrapper .trade_block-title .trade_block-icon svg .bch-icon, .dark-theme .trade_block-wrapper .trade_block-title .trade_block-icon svg .btc1, .dark-theme .trade_block-wrapper .trade_block-title .trade_block-icon svg .btc0, .dark-theme .trade_block-wrapper .trade_block-title .trade_block-icon svg .xrp-icon, .dark-theme .trade_block-wrapper .trade_block-title .trade_block-icon svg .hex-icon, .dark-theme .trade_block-wrapper .trade_block-title .trade_block-icon svg .default-icon {
     fill: #b6b5cd !important; }
 
 .dark-theme .trade_block_tabs-wrapper .trade_block-title .trade_block-title-items {
@@ -2020,14 +2039,18 @@ table th {
     color: #000000; }
     .trade_orderbook-wrapper .trade_asks-limit_bar .orderbook-limit_bar-wrapper .orderbook-limit_bar-line {
       background-color: #000000; }
-  .trade_orderbook-wrapper .trade_orderbook-asks .trade_orderbook-cell-price {
+  .trade_orderbook-wrapper .trade_orderbook-asks {
     color: #000000; }
-    .trade_orderbook-wrapper .trade_orderbook-asks .trade_orderbook-cell-price .orderbook-limit_bar-line {
-      background-color: #000000; }
-  .trade_orderbook-wrapper .trade_orderbook-bids .trade_orderbook-cell-price {
+    .trade_orderbook-wrapper .trade_orderbook-asks .trade_orderbook-cell-price {
+      color: #000000; }
+      .trade_orderbook-wrapper .trade_orderbook-asks .trade_orderbook-cell-price .orderbook-limit_bar-line {
+        background-color: #000000; }
+  .trade_orderbook-wrapper .trade_orderbook-bids {
     color: #878787; }
-    .trade_orderbook-wrapper .trade_orderbook-bids .trade_orderbook-cell-price .orderbook-limit_bar-line {
-      background-color: #878787; }
+    .trade_orderbook-wrapper .trade_orderbook-bids .trade_orderbook-cell-price {
+      color: #878787; }
+      .trade_orderbook-wrapper .trade_orderbook-bids .trade_orderbook-cell-price .orderbook-limit_bar-line {
+        background-color: #878787; }
   .trade_orderbook-wrapper .trade_bids-limit_bar .orderbook-limit_bar-wrapper {
     color: #878787; }
     .trade_orderbook-wrapper .trade_bids-limit_bar .orderbook-limit_bar-wrapper .orderbook-limit_bar-line {
@@ -2437,6 +2460,9 @@ table th {
   .dark-theme .summary-container .account-details-wrapper .account-type-menu-active .requirements-content-text svg .level_icon,
   .dark-theme .summary-container .account-details-wrapper .account-type-menu-active .trader-account-icon svg .level_icon {
     fill: #a3a1ca; }
+  .dark-theme .summary-container .account-details-wrapper .account-type-menu-active .requirements-content-text svg .default-icon,
+  .dark-theme .summary-container .account-details-wrapper .account-type-menu-active .trader-account-icon svg .default-icon {
+    fill: #a3a1ca !important; }
   .dark-theme .summary-container .account-details-wrapper .account-type-menu-active .account-details-content {
     color: #a3a1ca; }
 
@@ -2538,15 +2564,12 @@ table th {
   .summary-container .trader-wrapper-icon {
     width: 5rem;
     margin-right: 1rem; }
-    .summary-container .trader-wrapper-icon svg .level_icon {
+    .summary-container .trader-wrapper-icon svg .level_icon,
+    .summary-container .trader-wrapper-icon svg .hap-icon {
       fill: #000000; }
   .summary-container .trader-account-icon {
     width: 5rem;
     margin-right: 1rem; }
-    .summary-container .trader-account-icon svg path {
-      fill: #BBBDBF; }
-    .summary-container .trader-account-icon svg polygon {
-      fill: #BBBDBF; }
   .summary-container .trade-account-link {
     color: #0000ff;
     font-weight: bold; }
@@ -2627,6 +2650,8 @@ table th {
           fill: #8dc541; }
         .summary-container .assets-wrapper .coin-price-container .coin-price svg .xrp-icon {
           fill: #414042; }
+        .summary-container .assets-wrapper .coin-price-container .coin-price svg .default-icon {
+          fill: #000000 !important; }
   .summary-container .asset_wrapper_width {
     width: 25rem; }
   .summary-container .hex_asset_wrapper_width {
@@ -2658,9 +2683,7 @@ table th {
     .summary-container .account-details-wrapper .account-type-menu-active .account-current {
       color: #000000;
       text-transform: lowercase; }
-    .summary-container .account-details-wrapper .account-type-menu-active .trader-account-icon svg path {
-      fill: #000000; }
-    .summary-container .account-details-wrapper .account-type-menu-active .trader-account-icon svg polygon {
+    .summary-container .account-details-wrapper .account-type-menu-active .trader-account-icon svg .level_icon {
       fill: #000000; }
   .summary-container .account-details-wrapper .accounnt-type-menu-last-active {
     border-bottom: none !important; }
@@ -2786,7 +2809,7 @@ table th {
       color: #808184 !important; }
   .dark-theme .trade_tabs-container .trade_tab-pair-title {
     color: #808184; }
-  .dark-theme .trade_tabs-container .trade_tab-icons svg .btc0, .dark-theme .trade_tabs-container .trade_tab-icons svg .btc1, .dark-theme .trade_tabs-container .trade_tab-icons svg .eth0, .dark-theme .trade_tabs-container .trade_tab-icons svg .eth1, .dark-theme .trade_tabs-container .trade_tab-icons svg .bch-icon, .dark-theme .trade_tabs-container .trade_tab-icons svg .xrp-icon {
+  .dark-theme .trade_tabs-container .trade_tab-icons svg .btc0, .dark-theme .trade_tabs-container .trade_tab-icons svg .btc1, .dark-theme .trade_tabs-container .trade_tab-icons svg .eth0, .dark-theme .trade_tabs-container .trade_tab-icons svg .eth1, .dark-theme .trade_tabs-container .trade_tab-icons svg .bch-icon, .dark-theme .trade_tabs-container .trade_tab-icons svg .xrp-icon, .dark-theme .trade_tabs-container .trade_tab-icons svg .default-icon {
     fill: #808184 !important; }
   .dark-theme .trade_tabs-container .trade_tab-icons svg .st0 {
     fill: #808184 !important;
@@ -2833,7 +2856,7 @@ table th {
       color: #a3a1ca; }
       .dark-theme .trade_tabs-container .trade-tab-list:hover .trade_tab-pair-title {
         color: #a3a1ca !important; }
-      .dark-theme .trade_tabs-container .trade-tab-list:hover svg .btc0, .dark-theme .trade_tabs-container .trade-tab-list:hover svg .btc1, .dark-theme .trade_tabs-container .trade-tab-list:hover svg .eth0, .dark-theme .trade_tabs-container .trade-tab-list:hover svg .eth1, .dark-theme .trade_tabs-container .trade-tab-list:hover svg .bch-icon, .dark-theme .trade_tabs-container .trade-tab-list:hover svg .xrp-icon, .dark-theme .trade_tabs-container .trade-tab-list:hover svg .hex-icon {
+      .dark-theme .trade_tabs-container .trade-tab-list:hover svg .btc0, .dark-theme .trade_tabs-container .trade-tab-list:hover svg .btc1, .dark-theme .trade_tabs-container .trade-tab-list:hover svg .eth0, .dark-theme .trade_tabs-container .trade-tab-list:hover svg .eth1, .dark-theme .trade_tabs-container .trade-tab-list:hover svg .bch-icon, .dark-theme .trade_tabs-container .trade-tab-list:hover svg .xrp-icon, .dark-theme .trade_tabs-container .trade-tab-list:hover svg .hex-icon, .dark-theme .trade_tabs-container .trade-tab-list:hover svg .default-icon {
         fill: #a3a1ca !important; }
       .dark-theme .trade_tabs-container .trade-tab-list:hover svg .st0 {
         fill: #a3a1ca !important;
@@ -2876,7 +2899,7 @@ table th {
     width: 15rem; }
   .trade_tabs-container .trade_tab-icons {
     width: 5rem; }
-    .trade_tabs-container .trade_tab-icons svg .btc0, .trade_tabs-container .trade_tab-icons svg .btc1, .trade_tabs-container .trade_tab-icons svg .eth0, .trade_tabs-container .trade_tab-icons svg .eth1, .trade_tabs-container .trade_tab-icons svg .bch-icon, .trade_tabs-container .trade_tab-icons svg .xrp-icon, .trade_tabs-container .trade_tab-icons svg .hex-icon {
+    .trade_tabs-container .trade_tab-icons svg .btc0, .trade_tabs-container .trade_tab-icons svg .btc1, .trade_tabs-container .trade_tab-icons svg .eth0, .trade_tabs-container .trade_tab-icons svg .eth1, .trade_tabs-container .trade_tab-icons svg .bch-icon, .trade_tabs-container .trade_tab-icons svg .xrp-icon, .trade_tabs-container .trade_tab-icons svg .hex-icon, .trade_tabs-container .trade_tab-icons svg .default-icon {
       fill: #808080 !important; }
     .trade_tabs-container .trade_tab-icons svg .st0 {
       fill: #808080 !important;
@@ -2935,7 +2958,7 @@ table th {
       right: .5rem; }
       .trade_tabs-container .trade-tab-list:hover .trade_tab-pair-title {
         color: #000000 !important; }
-      .trade_tabs-container .trade-tab-list:hover svg .btc0, .trade_tabs-container .trade-tab-list:hover svg .btc1, .trade_tabs-container .trade-tab-list:hover svg .eth0, .trade_tabs-container .trade-tab-list:hover svg .eth1, .trade_tabs-container .trade-tab-list:hover svg .bch-icon, .trade_tabs-container .trade-tab-list:hover svg .xrp-icon, .trade_tabs-container .trade-tab-list:hover svg .hex-icon {
+      .trade_tabs-container .trade-tab-list:hover svg .btc0, .trade_tabs-container .trade-tab-list:hover svg .btc1, .trade_tabs-container .trade-tab-list:hover svg .eth0, .trade_tabs-container .trade-tab-list:hover svg .eth1, .trade_tabs-container .trade-tab-list:hover svg .bch-icon, .trade_tabs-container .trade-tab-list:hover svg .xrp-icon, .trade_tabs-container .trade-tab-list:hover svg .hex-icon, .trade_tabs-container .trade-tab-list:hover svg .default-icon {
         fill: #000000 !important; }
       .trade_tabs-container .trade-tab-list:hover svg .st0 {
         fill: #000000 !important;
@@ -3004,6 +3027,92 @@ table th {
   background-color: #1f212a; }
   .dark-theme .expired_exchange_wrapper .expired_img_icon svg .expired_icon {
     fill: #a3a1ca; }
+
+.terms_wrapper {
+  width: 40rem; }
+  .terms_wrapper .title_wrapper {
+    font-size: 2rem;
+    font-weight: bold; }
+  .terms_wrapper .agreement_wrapper {
+    font-size: 1rem;
+    background-color: #f7f7f7;
+    height: 32rem;
+    overflow-y: scroll; }
+  .terms_wrapper .download-wrapper {
+    color: #0000ff;
+    display: flex;
+    align-items: center;
+    width: fit-content; }
+    .terms_wrapper .download-wrapper .download_pdf-svg > div {
+      display: flex;
+      align-items: center; }
+    .terms_wrapper .download-wrapper .download_pdf-svg svg {
+      width: 1rem;
+      height: 1rem; }
+    .terms_wrapper .download-wrapper .trans-history-1,
+    .terms_wrapper .download-wrapper .trans-history-2,
+    .terms_wrapper .download-wrapper .trans-history-3 {
+      fill: #0000ff; }
+    .terms_wrapper .download-wrapper .trans-history-4 {
+      stroke: #0000ff; }
+  .terms_wrapper .checkfield-wrapper {
+    margin: 0.5rem 0; }
+
+.deposit_funds-wrapper {
+  width: 42rem; }
+  .deposit_funds-wrapper .funds-svg svg {
+    width: 2rem;
+    height: 2rem; }
+  .deposit_funds-wrapper .icon_title-wrapper .icon_title-svg {
+    width: 8rem;
+    height: 8rem; }
+    .deposit_funds-wrapper .icon_title-wrapper .icon_title-svg svg {
+      width: 8rem;
+      height: 8rem; }
+
+.dark-theme .terms_wrapper .agreement_wrapper {
+  background-color: #797779; }
+
+.dark-theme .terms_wrapper .download-wrapper {
+  color: #ed507b; }
+
+.dark-theme .terms_wrapper .trans-history-1,
+.dark-theme .terms_wrapper .trans-history-2,
+.dark-theme .terms_wrapper .trans-history-3 {
+  fill: #ed507b; }
+
+.dark-theme .terms_wrapper .trans-history-4 {
+  stroke: #ed507b; }
+
+.dark-theme .deposit_funds-wrapper .funds-svg .hex-faq,
+.dark-theme .deposit_funds-wrapper .funds-svg .hex-pdf,
+.dark-theme .deposit_funds-wrapper .funds-svg .hex-docs,
+.dark-theme .deposit_funds-wrapper .funds-svg .hex-email,
+.dark-theme .deposit_funds-wrapper .funds-svg .wave-icon {
+  fill: #a3a1ca; }
+
+.contact_form-wrapper {
+  min-width: 30rem; }
+  .contact_form-wrapper .icon_title-wrapper .icon_title-text.title {
+    text-transform: capitalize;
+    margin: 1.5rem auto; }
+  .contact_form-wrapper .icon_title-wrapper .icon_title-image {
+    height: 6rem;
+    width: 6rem; }
+  .contact_form-wrapper .field-wrapper {
+    margin: 1rem 0; }
+  .contact_form-wrapper .buttons-wrapper {
+    margin-top: 1.5rem; }
+
+.dark-theme svg .contact-1 {
+  fill: #a3a1ca; }
+
+.dark-theme .contact-us-icon {
+  fill: #a3a1ca; }
+
+.layout-mobile .contact_form-wrapper {
+  min-width: auto;
+  flex: 1; }
 
 .sidebar-container {
   display: flex;
@@ -3819,7 +3928,8 @@ table th {
       .app-bar-add-tab-menu .app-bar-add-tab-content-list:hover svg .eth1,
       .app-bar-add-tab-menu .app-bar-add-tab-content-list:hover svg .bch-icon,
       .app-bar-add-tab-menu .app-bar-add-tab-content-list:hover svg .xrp-icon,
-      .app-bar-add-tab-menu .app-bar-add-tab-content-list:hover svg .hex-icon {
+      .app-bar-add-tab-menu .app-bar-add-tab-content-list:hover svg .hex-icon,
+      .app-bar-add-tab-menu .app-bar-add-tab-content-list:hover svg .default-icon {
         fill: #b6b5cd !important; }
       .app-bar-add-tab-menu .app-bar-add-tab-content-list:hover svg .st0 {
         fill: #b6b5cd !important;
@@ -3832,7 +3942,7 @@ table th {
   .app-bar-add-tab-menu .app-bar-add-tab-icons {
     width: 1.2rem;
     margin: .3rem .3rem 0 .3rem; }
-  .app-bar-add-tab-menu .app-bar-tab-setting svg .btc0, .app-bar-add-tab-menu .app-bar-tab-setting svg .btc1, .app-bar-add-tab-menu .app-bar-tab-setting svg .eth0, .app-bar-add-tab-menu .app-bar-tab-setting svg .eth1, .app-bar-add-tab-menu .app-bar-tab-setting svg .bch-icon, .app-bar-add-tab-menu .app-bar-tab-setting svg .xrp-icon, .app-bar-add-tab-menu .app-bar-tab-setting svg .hex-icon, .app-bar-add-tab-menu .app-bar-add-tab-icons svg .btc0, .app-bar-add-tab-menu .app-bar-add-tab-icons svg .btc1, .app-bar-add-tab-menu .app-bar-add-tab-icons svg .eth0, .app-bar-add-tab-menu .app-bar-add-tab-icons svg .eth1, .app-bar-add-tab-menu .app-bar-add-tab-icons svg .bch-icon, .app-bar-add-tab-menu .app-bar-add-tab-icons svg .xrp-icon, .app-bar-add-tab-menu .app-bar-add-tab-icons svg .hex-icon {
+  .app-bar-add-tab-menu .app-bar-tab-setting svg .btc0, .app-bar-add-tab-menu .app-bar-tab-setting svg .btc1, .app-bar-add-tab-menu .app-bar-tab-setting svg .eth0, .app-bar-add-tab-menu .app-bar-tab-setting svg .eth1, .app-bar-add-tab-menu .app-bar-tab-setting svg .bch-icon, .app-bar-add-tab-menu .app-bar-tab-setting svg .xrp-icon, .app-bar-add-tab-menu .app-bar-tab-setting svg .hex-icon, .app-bar-add-tab-menu .app-bar-tab-setting svg .default-icon, .app-bar-add-tab-menu .app-bar-add-tab-icons svg .btc0, .app-bar-add-tab-menu .app-bar-add-tab-icons svg .btc1, .app-bar-add-tab-menu .app-bar-add-tab-icons svg .eth0, .app-bar-add-tab-menu .app-bar-add-tab-icons svg .eth1, .app-bar-add-tab-menu .app-bar-add-tab-icons svg .bch-icon, .app-bar-add-tab-menu .app-bar-add-tab-icons svg .xrp-icon, .app-bar-add-tab-menu .app-bar-add-tab-icons svg .hex-icon, .app-bar-add-tab-menu .app-bar-add-tab-icons svg .default-icon {
     fill: #808184 !important; }
   .app-bar-add-tab-menu .app-bar-tab-setting svg .plus, .app-bar-add-tab-menu .app-bar-tab-setting svg .minus, .app-bar-add-tab-menu .app-bar-add-tab-icons svg .plus, .app-bar-add-tab-menu .app-bar-add-tab-icons svg .minus {
     stroke: #808184 !important;
@@ -5219,6 +5329,9 @@ table th {
 .app-dialog .ReactModal__Overlay {
   z-index: 110 !important; }
 
+.app-dialog-flex .ReactModal__Overlay {
+  z-index: 10000 !important; }
+
 .dark-theme .ReactModal__Content {
   background-color: #1f212a !important; }
 
@@ -5468,6 +5581,13 @@ table th {
   .action_notification-wrapper .cancel-cross-2 {
     fill: none;
     stroke: #0000ff; }
+  .action_notification-wrapper .icon-clip-1,
+  .action_notification-wrapper .icon-plus-1,
+  .action_notification-wrapper .icon-edit-1,
+  .action_notification-wrapper .icon-help-1,
+  .action_notification-wrapper .icon-copy-1,
+  .action_notification-wrapper .icon-tamer-01,
+  .action_notification-wrapper .arrow-1,
   .action_notification-wrapper .trans-history-1,
   .action_notification-wrapper .trans-history-2,
   .action_notification-wrapper .trans-history-3,
@@ -5596,7 +5716,9 @@ table th {
   .dark-theme .icon_title-wrapper .icon_title-svg svg .risk-order-warning,
   .dark-theme .icon_title-wrapper .icon_title-svg svg .coin-btc-1,
   .dark-theme .icon_title-wrapper .icon_title-svg svg .coin-btc-5,
-  .dark-theme .icon_title-wrapper .icon_title-svg svg .level_icon {
+  .dark-theme .icon_title-wrapper .icon_title-svg svg .level_icon,
+  .dark-theme .icon_title-wrapper .icon_title-svg svg .hex-coin-stack,
+  .dark-theme .icon_title-wrapper .icon_title-svg svg .send-request {
     fill: #a3a1ca; }
   .dark-theme .icon_title-wrapper .icon_title-svg svg .dots-1,
   .dark-theme .icon_title-wrapper .icon_title-svg svg .coin-btc-4 {
@@ -5613,7 +5735,7 @@ table th {
   width: 15rem !important; }
 
 .otp_form-wrapper {
-  width: 30rem; }
+  width: 38rem; }
 
 .otp_form-title-wrapper {
   border-top: 1px solid #212121;
@@ -6105,8 +6227,8 @@ table th {
   font-size: 1rem;
   font-weight: bold; }
 
-.deposite-asset {
-  fill: #29a8e0;
+.deposit-asset {
+  fill: #0000ff;
   font-weight: bold; }
 
 .chart_btc, .chart_bch, .chart_eth, .chart_eur, .chart_ltc, .chart_xrp {
@@ -6390,7 +6512,7 @@ table th {
 .dark-theme .ohlc_wrapper tspan {
   fill: #a3a1ca; }
 
-.dark-theme .deposite-asset {
+.dark-theme .deposit-asset {
   fill: #ed507b; }
 
 .dark-theme .donut-label-pair, .dark-theme .donut-label-percentage {
@@ -6668,6 +6790,9 @@ table th {
 
 .dark-theme .bar_wrapper .limit_content-text {
   color: #b6b5cd; }
+
+.dark-theme .donut-label-no-price tspan {
+  fill: #a3a1ca; }
 
 @media (min-width: 1920px) {
   .donut-label-pair {
@@ -7164,7 +7289,7 @@ foreignObject {
   appearance: none;
   text-indent: 1px;
   text-overflow: '';
-  color: #f59121;
+  color: #000000;
   font-size: 2rem;
   font-weight: bold;
   padding-right: 2rem; }
@@ -7202,6 +7327,9 @@ foreignObject {
 .dark-theme .with_arrow_trade:after {
   border-left-color: #b6b5cd !important;
   border-right-color: #b6b5cd !important; }
+
+.dark-theme .mobile-drop-down {
+  color: #f59121; }
 
 .layout-mobile .chat-wrapper {
   position: relative;
@@ -7390,6 +7518,8 @@ foreignObject {
               color: white; }
     .chat-wrapper .chat-message-list .user-icon {
       width: 2rem; }
+      .chat-wrapper .chat-message-list .user-icon svg .level_icon {
+        fill: #000000; }
   .chat-wrapper .chat-footer {
     min-height: 3rem;
     margin-top: 0.5rem;
@@ -7419,7 +7549,7 @@ foreignObject {
     background-color: #1f212a; }
   .dark-theme .chat-wrapper .user-icon {
     width: 2rem; }
-    .dark-theme .chat-wrapper .user-icon svg .level_icon {
+    .dark-theme .chat-wrapper .user-icon svg .level_icon, .dark-theme .chat-wrapper .user-icon svg .hap-icon {
       fill: white; }
   .dark-theme .chat-wrapper .chat-message .message-content .message {
     color: #808184; }

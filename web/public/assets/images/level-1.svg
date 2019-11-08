@@ -2,6 +2,9 @@
 <!-- Generator: Adobe Illustrator 23.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
 <svg version="1.2" baseProfile="tiny" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
 	 x="0px" y="0px" viewBox="0 0 50 50" xml:space="preserve">
+<style type="text/css">
+	.level_icon{fill:#BBBDBF;}
+</style>
 <polygon class="level_icon" points="24.6,15.9 26,20.1 30.4,20.1 26.9,22.8 28.2,27 24.6,24.4 21.1,27 22.4,22.8 18.8,20.1 23.3,20.1 "/>
 <path class="level_icon" d="M42.7,23.5h-2.9c-0.1,0.6-0.2,1.2-0.4,1.9h-5.6l0.3,1.5v-0.1h9.1v0.1l1-1.5h-2C42.4,24.7,42.6,24.1,42.7,23.5z"/>
 <path class="level_icon" d="M43.1,20.3h-2.9c0,0.4-0.1,0.9-0.2,1.5h-4.6l-1.2,1.4h11.3l1-1.4H43C43,21.2,43.1,20.7,43.1,20.3z"/>
