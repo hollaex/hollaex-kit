@@ -3,11 +3,20 @@
 	.trade_orderbook-cell {
 		padding: 0 0.25rem;
 	}
+
+	.last-wave{
+		color: $colors-deactivate-color1
+	}
+
 	.trade_orderbook-headers {
 		font-weight: bold;
 		border-bottom: 1px solid $border-main;
 		text-transform: uppercase;
 		min-height: 1.5rem;
+
+		.waves-icon {
+			width: 2rem;
+		}
 	}
 
 	.trade_orderbook-content {
@@ -117,6 +126,14 @@ $limit-bar-side--padding: 0.5rem;
 		.trade_orderbook-headers {
 			color: $dark-font-sub-text-color;
 			border-bottom-color: $dark-border-main;
+
+			.waves-icon {
+				svg{
+					.newWave-icon {
+						fill: $dark-icon-color !important;
+					}
+				}
+			}
 		}
 
 		.trade_orderbook-content {

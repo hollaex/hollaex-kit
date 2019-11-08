@@ -1032,6 +1032,7 @@ export default {
 	TRADE_TAB_CHART: 'Chart',
 	TRADE_TAB_TRADE: 'Trade',
 	TRADE_TAB_ORDERS: 'Orders',
+	TRADE_TAB_POSTS: 'Posts', // new
 	WALLET_TAB_WALLET: 'Wallet',
 	WALLET_TAB_TRANSACTIONS: 'Transactions',
 	RECEIVE_CURRENCY: 'Receive {0}',
@@ -1163,7 +1164,32 @@ export default {
 		CONTACT_US: 'Feel free to contact us for more information and any issues by sending us an email to {0}',
 		VISUAL_STEP: 'See a visual step-by-step processes on {0}', // new
 		WARNING_TXT: 'We will review your request and send further instructions to your email on how to access the HollaEx exchange.', // new
-		WARNING_TXT1: 'In the mean time you can firmilerize yourself with the HollaEx network with the resources below' // new
+		WARNING_TXT1: 'In the mean time you can firmilerize yourself with the HollaEx network with the resources below', // new
+		HEX_ORDER_TXT_1: 'To start trading the HollaEx token (HEX) you must login', // new
+		HEX_ORDER_TXT_2: 'The HollaEx token is distributed through a Wave Auction where at random times daily there will be random amount of HollaEx token sold to the highest bidders on the orderbook.', // new
+		HEX_ORDER_TXT_3: '{0} to join the Wave Auction or {1}' , // new
+		HEX_TITLE: 'HEX', //new
+		HEX_TRADE_TXT_1:'Login to see your recent trades', //new
+		HEX_TRADE_TXT_2:'You can {0} to see your recent trade history', //new
+		LOGIN_HERE:'login here'
+	},
+	WAVES: { // new
+		NEXT_WAVE: "Next Wave :",
+		WAVE_AMOUNT: "Amount in Wave :",
+		FLOOR: "Floor :",
+		LAST_WAVE: "Last wave:",
+	},
+	TYPES_OF_POSTS: { // new
+		TITLE: 'POSTS',
+		ANNOUNCEMEN: "Announcement",
+		SYSTEM_UPDATE: "System Update",
+		LAST_WAVE: "Last Wave",
+		ANNOUNCEMENT_TXT: 'Free HEX will be distributed to all wallets that apply',
+		SYSTEM_UPDATE_TIME: 'Time: 12:31 PM, December 19th, 2019	',
+		SYSTEM_UPDATE_DURATION: '1 hour',
+		LAST_WAVE_AMOUNT: '100, 213 HEX',
+		LAST_WAVE_REDISTRIBUTED: ' 11, 211',
+		LAST_WAVE_TIME: ' 12: 31 PM, December 19th, 2019'
 	},
 	USER_LEVEL: 'User level', // new
 	LIMIT_AMOUNT: 'Limit amount', // new
@@ -1177,5 +1203,10 @@ export default {
 	EXPIRY_EXCHANGE_MSG: 'Your exchange has expired. Go to dash.bitholla.com to activate it again.', // new
 	EXPIRED_INFO_1: 'Your HollaEx trial has ended.', // new
 	EXPIRED_INFO_2: 'Collateralize your exchange to activate it again.', // new
-	EXPIRED_BUTTON_TXT: 'ACTIVATE EXCHANGE' // new
+	EXPIRED_BUTTON_TXT: 'ACTIVATE EXCHANGE', // new
+	TRADE_POSTS: { // new
+		ANNOUNCEMENT: 'Announcement',
+		DEFAULT_ANNOUNCEMENT: 'This page posts public announcements about your exchange! {0}',
+		LEARN_MORE: 'Learn more'
+	}
 };

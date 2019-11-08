@@ -254,7 +254,11 @@ export const ICONS = {
 	HEX_EMAIL: '/assets/images/HEX-email.svg',
 	HEX_FAQ: '/assets/images/HEX-FAQ.svg',
 	HEX_PDF: '/assets/images/HEX-pdf.svg',
-	REFERRAL_SUCCESS: '/assets/icons/send-request.svg'
+	REFERRAL_SUCCESS: '/assets/icons/send-request.svg',
+	INCOMING_WAVE:'/assets/images/incoming-wave.svg',
+	TRADE_ANNOUNCEMENT: '/assets/images/announcement.svg',
+	HEX_LOGO_LIGHT:'/assets/icons/HEX-logo-light.svg',
+	HEX_LOGO_DARK:'/assets/icons/HEX-logo-dark.svg',
 };
 
 export const SOCIAL_ICONS = {

@@ -95,7 +95,7 @@ $deactive-tab-border: $boder--width solid $border--color;
 	}
 
 	.sidebar_hub-content {
-		margin: $content--margin;
+		margin: $section--bottom-margin $content--margin;
 		.sidebar_hub-section {
 			border-top: $deactive-tab-border;
 

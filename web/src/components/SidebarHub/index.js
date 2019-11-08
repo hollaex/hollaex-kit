@@ -65,13 +65,16 @@ class SidebarHub extends Component {
 							/>
 						</div>
 					)}
-					<Section
-						title={STRINGS.TRADING_TITLE}
-						icon={ICONS.SIDEBAR_TRADING_ACTIVE}
-						childrenClassName="d-flex sidebar_hub-trade"
-						active={activePath === 'trade' || activePath === 'quick-trade'}
-						path={`/trade/add/tabs`}
-					/>
+					{isLogged
+						? <Section
+							title={STRINGS.TRADING_TITLE}
+							icon={ICONS.SIDEBAR_TRADING_ACTIVE}
+							childrenClassName="d-flex sidebar_hub-trade"
+							active={activePath === 'trade' || activePath === 'quick-trade'}
+							path={`/trade/add/tabs`}
+						/>
+						: null
+					}
 					{/* <ButtonLink
 							label={STRINGS.PRO_TRADE}
 							className={classnames('sidebar_hub-button f-1', {

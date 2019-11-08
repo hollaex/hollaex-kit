@@ -5,10 +5,8 @@ import classnames from 'classnames';
 import { bindActionCreators } from 'redux';
 import { SubmissionError, change } from 'redux-form';
 import { isMobile } from 'react-device-detect';
-import { Link } from 'react-router';
 
 import { ICONS, BASE_CURRENCY, DEFAULT_COIN_DATA } from '../../config/constants';
-import { IconTitle } from '../../components';
 import {
 	submitOrder,
 	cancelOrder,
@@ -35,6 +33,9 @@ import TradeHistory from './components/TradeHistory';
 import MobileTrade from './MobileTrade';
 import MobileChart from './MobileChart';
 import MobileOrders from './MobileOrders';
+import MobilePosts from './MobilePosts';
+import LogoutInfoOrder from './components/LogoutInfoOrder';
+import LogoutInfoTrade from './components/LogoutInfoTrade';
 import TVChartContainer from './Chart';
 
 import { ActionNotification, Loader, MobileBarTabs } from '../../components';
@@ -220,33 +221,7 @@ class Trade extends Component {
 						onCancel={this.handleCancelOrders}
 					/>
 				) : (
-					<div className="text-center">
-						<IconTitle
-							iconPath={
-								activeTheme === 'white'
-									? ICONS.ACTIVE_TRADE_LIGHT
-									: ICONS.ACTIVE_TRADE_DARK
-							}
-							textType="title"
-							className="w-100"
-							useSvg={true}
-						/>
-						<div>
-							{STRINGS.formatString(
-								STRINGS.ACTIVE_TRADES,
-								<Link
-									to="/login"
-									className={classnames(
-										'blue-link',
-										'dialog-link',
-										'pointer'
-									)}
-								>
-									{STRINGS.SIGN_IN}
-								</Link>
-							)}
-						</div>
-					</div>
+					<LogoutInfoOrder activeTheme={activeTheme}/>
 				),
 				titleAction: isLoggedIn()
 					? activeOrders.length > 0 && (
@@ -272,33 +247,7 @@ class Trade extends Component {
 						coins={coins}
 					/>
 				) : (
-					<div className="text-center">
-						<IconTitle
-							iconPath={
-								activeTheme === 'dark'
-									? ICONS.TRADE_HISTORY_DARK
-									: ICONS.TRADE_HISTORY_LIGHT
-							}
-							textType="title"
-							className="w-100"
-							useSvg={true}
-						/>
-						<div>
-							{STRINGS.formatString(
-								STRINGS.ACTIVE_TRADES,
-								<Link
-									to="/login"
-									className={classnames(
-										'blue-link',
-										'dialog-link',
-										'pointer'
-									)}
-								>
-									{STRINGS.SIGN_IN}
-								</Link>
-							)}
-						</div>
-					</div>
+					<LogoutInfoTrade />
 				),
 				titleAction: isLoggedIn() ? (
 					<ActionNotification
@@ -380,6 +329,15 @@ class Trade extends Component {
 						coins={coins}
 						goToPair={this.goToPair}
 						userTrades={userTrades}
+						activeTheme={activeTheme}
+					/>
+				)
+			},
+			{
+				title: STRINGS.TRADE_TAB_POSTS,
+				content: (
+					<MobilePosts
+						isLoggedIn={isLoggedIn()}
 						activeTheme={activeTheme}
 					/>
 				)

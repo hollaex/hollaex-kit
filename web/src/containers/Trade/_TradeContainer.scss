@@ -18,6 +18,10 @@
 			> * {
 				flex: 1 !important;
 			}
+			
+			.hex-logo{
+				width: 7rem;
+			}
 		}
 	}
 
@@ -40,6 +44,10 @@
 	.table-wrapper {
 		margin: 0;
 	}
+}
+.hex-order-heading{
+    font-weight: bold;
+    font-size: 1.1rem;
 }
 
 .layout-mobile {
@@ -126,6 +134,10 @@
 			font-size: $regular--font-size;
 		}
 	}
+	.hex-logo{
+		width: 7rem;
+	}
+	
 }
 
 @media (min-width: 1920px) {
