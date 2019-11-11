@@ -1,0 +1,165 @@
+$footer-wrapper--margin-top: 4rem;
+$footer-wrapper--margin: 1rem;
+$footer-wrapper--margin-bottom: $footer-wrapper--margin * 2;
+$footer-wrapper--border-color: $colors-deactivate-color2;
+$footer-social-icon--dimension: 2rem;
+$footer-icons--side-margin: 1.5rem;
+$footer--background-color: white;
+
+.tradefooter-container {
+	padding: $footer-wrapper--margin-top $footer-wrapper--margin $footer-wrapper--margin;
+	border-top: 1px solid $footer-wrapper--border-color;
+	font-size: $font-size-subtext;
+	background-color: $app-background-color;
+
+	// &.white-theme {
+	// 	background-color: $app-background-color;
+	// }
+	
+	.footer-row-content {
+		margin-bottom: $footer-wrapper--margin-bottom;
+
+		.footer-links-section {
+			margin-left: 17rem;
+			.footer-links-group {
+				margin: 0 $footer-wrapper--margin;
+
+				.footer-links-section--title {
+					font-weight: bold;
+					margin-bottom: 0.25rem;
+					text-transform: uppercase;
+				}
+
+				.footer-links-section--list {
+				      	width: 8rem;
+                    .footer-public-links-icon{
+                        width:11px
+					}
+					.social_icon{
+						width: 1rem;
+						margin-right: 1px;
+					}
+				}
+				
+			}
+		}
+		.footer_separter{
+			border-left: 1px solid $footer-wrapper--border-color;
+			height: 11.5rem;
+			.footer-txt{
+				width: 75%
+			}
+			.footer-logo{
+				width:9rem;
+			}
+			svg{
+				.hollaEX_logo_gray
+				{
+					fill:$colors-black;
+				}
+			}
+		}
+		.footer-public-texts {
+			.footer-public-texts-text {
+				line-height: $font-size-subtext * 2;
+				font-weight: bold;
+			}
+		}
+		.footer-public-links {
+			justify-content: flex-end;
+			align-items: center;
+			margin-top: $footer-wrapper--margin;
+
+			.footer-public-links-icon {
+				@include size($footer-social-icon--dimension);
+				margin: 0 $footer-icons--side-margin;
+			}
+		}
+	}
+
+	.footer-row-bottom {
+		border-top: 1px solid $footer-wrapper--border-color;
+		text-align: center;
+		.footer-row-language {
+			padding-left: 0.25rem;
+			&.active {
+				font-weight: bold;
+			}
+		}
+	}
+}
+
+
+.direction_ltr {
+	.tradefooter-container {
+		.footer-row-content {
+			.footer-public-texts {
+				text-align: right;
+			}
+
+			.footer-public-links {
+				&:first-child .footer-public-links-icon {
+					margin-left: 0;
+				}
+
+				&:last-child .footer-public-links-icon {
+					margin-right: 0;
+				}
+			}
+		}
+	}
+}
+
+.direction_rtl {
+	.tradefooter-container {
+		.footer-row-content {
+			.footer-public-texts {
+				text-align: left;
+			}
+
+			.footer-public-links {
+				&:first-child .footer-public-links-icon {
+					margin-right: 0;
+				}
+
+				&:last-child .footer-public-links-icon {
+					margin-left: 0;
+				}
+			}
+		}
+	}
+}
+
+@media screen and (max-width: $bp-md) {
+	.tradefooter-container {
+		.footer-row-content {
+			flex-direction: column;
+			> div:not(:last-child) {
+				margin-bottom: $footer-wrapper--margin-bottom;
+			}
+
+			.footer-public-texts {
+				text-align: center !important;
+			}
+			.footer-public-links {
+				justify-content: center;
+				.footer-public-links-icon {
+					margin: 0 $footer-icons--side-margin !important;
+				}
+			}
+		}
+	}
+}
+.dark-theme {
+	background: $dark-app-background-color !important;
+	.footer_separter{
+		.footer-logo{
+			svg{
+				.hollaEX_logo_gray{
+					fill:$colors-white;
+				}
+			}
+	    }
+    }
+}
+

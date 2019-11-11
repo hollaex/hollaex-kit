@@ -190,10 +190,26 @@ export default (
 				name="username"
 				component={Account}
 			/>
-			<Route path="security" name="Security" component={Account} />
-			<Route path="developers" name="Developers" component={Account} />
-			<Route path="settings" name="Settings" component={Account} />
-			<Route path="summary" name="Summary" component={Account} />
+			<Route
+				path="security"
+				name="Security"
+				component={Account}
+				onEnter={requireAuth} />
+			<Route
+				path="developers"
+				name="Developers"
+				component={Account}
+				onEnter={requireAuth} />
+			<Route
+				path="settings"
+				name="Settings"
+				component={Account}
+				onEnter={requireAuth} />
+			<Route
+				path="summary"
+				name="Summary"
+				component={Account}
+				onEnter={requireAuth} />
 			<Route
 				path="verification"
 				name="Verification"

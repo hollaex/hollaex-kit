@@ -2027,7 +2027,7 @@ table th {
     text-transform: uppercase;
     min-height: 1.5rem; }
     .trade_orderbook-wrapper .trade_orderbook-headers .waves-icon {
-      width: 2rem; }
+      width: 3rem; }
   .trade_orderbook-wrapper .trade_orderbook-content .trade_orderbook-spread {
     flex: 0;
     min-height: 2rem;
@@ -2148,7 +2148,7 @@ table th {
   max-height: 17vh; }
 
 .trade_post-wrapper .trade_post_icon {
-  width: 4rem; }
+  width: 2rem; }
 
 .trade_post-wrapper .post_header {
   font-weight: bold; }
@@ -3153,8 +3153,10 @@ table th {
     flex: 0; }
   .sidebar-container .sidebar-notifications {
     flex: 1;
-    height: auto;
-    overflow-y: auto; }
+    overflow-y: scroll; }
+    .sidebar-container .sidebar-notifications .sidebar-title {
+      font-size: 1.25rem;
+      font-weight: bold; }
 
 .sidebar-notifications-wrapper {
   overflow-y: scroll; }
@@ -4757,6 +4759,32 @@ table th {
     .layout-mobile .notification-wrapper .trade-notification .notification-content-title,
     .layout-mobile .notification-wrapper .order-notification .notification-content-title {
       margin: 0; }
+
+.layout-mobile .trade_active_orders-wrapper {
+  max-height: 35vh !important; }
+
+.trade_post_icon {
+  width: 1.5rem; }
+  .trade_post_icon svg .wave-icon {
+    fill: #000000; }
+
+.post_header {
+  font-weight: bold; }
+
+.trade_announcement {
+  font-size: 1.5rem; }
+
+.dark-theme .trade_post_icon svg .announcement {
+  fill: white; }
+
+.dark-theme .trade_post_icon svg .settings {
+  fill: white; }
+
+.dark-theme .trade_post_icon svg .wave-icon {
+  fill: white; }
+
+.dark-theme .post_header {
+  color: white; }
 
 .dropdown-content .dropdown-option {
   padding: 0; }
@@ -7765,6 +7793,117 @@ foreignObject {
 
 .layout-mobile .snack_dialog-wrapper .notification-content-mobile-wrapper {
   font-size: 1rem !important; }
+
+.layout-mobile .trade_active_orders-wrapper {
+  max-height: 35vh !important; }
+
+.trade_post_icon {
+  width: 1.5rem; }
+  .trade_post_icon svg .wave-icon {
+    fill: #000000; }
+
+.post_header {
+  font-weight: bold; }
+
+.trade_announcement {
+  font-size: 1.5rem; }
+
+.dark-theme .trade_post_icon svg .announcement {
+  fill: white; }
+
+.dark-theme .trade_post_icon svg .settings {
+  fill: white; }
+
+.dark-theme .trade_post_icon svg .wave-icon {
+  fill: white; }
+
+.dark-theme .post_header {
+  color: white; }
+
+.tradefooter-container {
+  padding: 4rem 1rem 1rem;
+  border-top: 1px solid #777677;
+  font-size: 0.8rem;
+  background-color: white; }
+  .tradefooter-container .footer-row-content {
+    margin-bottom: 2rem; }
+    .tradefooter-container .footer-row-content .footer-links-section {
+      margin-left: 17rem; }
+      .tradefooter-container .footer-row-content .footer-links-section .footer-links-group {
+        margin: 0 1rem; }
+        .tradefooter-container .footer-row-content .footer-links-section .footer-links-group .footer-links-section--title {
+          font-weight: bold;
+          margin-bottom: 0.25rem;
+          text-transform: uppercase; }
+        .tradefooter-container .footer-row-content .footer-links-section .footer-links-group .footer-links-section--list {
+          width: 8rem; }
+          .tradefooter-container .footer-row-content .footer-links-section .footer-links-group .footer-links-section--list .footer-public-links-icon {
+            width: 11px; }
+          .tradefooter-container .footer-row-content .footer-links-section .footer-links-group .footer-links-section--list .social_icon {
+            width: 1rem;
+            margin-right: 1px; }
+    .tradefooter-container .footer-row-content .footer_separter {
+      border-left: 1px solid #777677;
+      height: 11.5rem; }
+      .tradefooter-container .footer-row-content .footer_separter .footer-txt {
+        width: 75%; }
+      .tradefooter-container .footer-row-content .footer_separter .footer-logo {
+        width: 9rem; }
+      .tradefooter-container .footer-row-content .footer_separter svg .hollaEX_logo_gray {
+        fill: #000000; }
+    .tradefooter-container .footer-row-content .footer-public-texts .footer-public-texts-text {
+      line-height: 1.6rem;
+      font-weight: bold; }
+    .tradefooter-container .footer-row-content .footer-public-links {
+      justify-content: flex-end;
+      align-items: center;
+      margin-top: 1rem; }
+      .tradefooter-container .footer-row-content .footer-public-links .footer-public-links-icon {
+        width: 2rem;
+        height: 2rem;
+        margin: 0 1.5rem; }
+  .tradefooter-container .footer-row-bottom {
+    border-top: 1px solid #777677;
+    text-align: center; }
+    .tradefooter-container .footer-row-bottom .footer-row-language {
+      padding-left: 0.25rem; }
+      .tradefooter-container .footer-row-bottom .footer-row-language.active {
+        font-weight: bold; }
+
+.direction_ltr .tradefooter-container .footer-row-content .footer-public-texts {
+  text-align: right; }
+
+.direction_ltr .tradefooter-container .footer-row-content .footer-public-links:first-child .footer-public-links-icon {
+  margin-left: 0; }
+
+.direction_ltr .tradefooter-container .footer-row-content .footer-public-links:last-child .footer-public-links-icon {
+  margin-right: 0; }
+
+.direction_rtl .tradefooter-container .footer-row-content .footer-public-texts {
+  text-align: left; }
+
+.direction_rtl .tradefooter-container .footer-row-content .footer-public-links:first-child .footer-public-links-icon {
+  margin-right: 0; }
+
+.direction_rtl .tradefooter-container .footer-row-content .footer-public-links:last-child .footer-public-links-icon {
+  margin-left: 0; }
+
+@media screen and (max-width: 991px) {
+  .tradefooter-container .footer-row-content {
+    flex-direction: column; }
+    .tradefooter-container .footer-row-content > div:not(:last-child) {
+      margin-bottom: 2rem; }
+    .tradefooter-container .footer-row-content .footer-public-texts {
+      text-align: center !important; }
+    .tradefooter-container .footer-row-content .footer-public-links {
+      justify-content: center; }
+      .tradefooter-container .footer-row-content .footer-public-links .footer-public-links-icon {
+        margin: 0 1.5rem !important; } }
+
+.dark-theme {
+  background: #1f212a !important; }
+  .dark-theme .footer_separter .footer-logo svg .hollaEX_logo_gray {
+    fill: white; }
 
 html {
   font-size: 12px !important;
