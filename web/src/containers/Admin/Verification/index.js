@@ -145,7 +145,7 @@ class Verification extends Component {
 													user_id: id
 												})
 											}
-											buttonText={'Verify'}
+											buttonText={'Approve'}
 										/>
 									)}
 									{(!isSupport() || !isSupervisor()) &&
@@ -158,7 +158,7 @@ class Verification extends Component {
 															message: this.state.note
 														})
 													}
-													buttonText={'Revoke'}
+													buttonText={'Reject'}
 												/>
 												<Input.TextArea
 													rows={4}
