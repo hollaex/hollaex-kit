@@ -396,8 +396,8 @@ export default {
 				GENDER_LABEL: 'Gender',
 				GENDER_PLACEHOLDER: 'Type what gender your are',
 				GENDER_OPTIONS: {
-					MAN: 'Man',
-					WOMAN: 'Woman'
+					MAN: 'Male',
+					WOMAN: 'Female'
 				},
 				NATIONALITY_LABEL: 'Nationality',
 				NATIONALITY_PLACEHOLDER:
@@ -1012,6 +1012,7 @@ export default {
 	TRADE_TAB_CHART: 'Chart',
 	TRADE_TAB_TRADE: 'Trade',
 	TRADE_TAB_ORDERS: 'Orders',
+	TRADE_TAB_POSTS: 'Posts', // new
 	WALLET_TAB_WALLET: 'Wallet',
 	WALLET_TAB_TRANSACTIONS: 'Transactions',
 	RECEIVE_CURRENCY: 'Receive {0}',
@@ -1118,5 +1119,10 @@ export default {
 	EXPIRY_EXCHANGE_MSG: 'Your exchange has expired. Go to dash.bitholla.com to activate it again.', // new
 	EXPIRED_INFO_1: 'Your HollaEx trial has ended.', // new
 	EXPIRED_INFO_2: 'Collateralize your exchange to activate it again.', // new
-	EXPIRED_BUTTON_TXT: 'ACTIVATE EXCHANGE' // new
+	EXPIRED_BUTTON_TXT: 'ACTIVATE EXCHANGE', // new
+	TRADE_POSTS: { // new
+		ANNOUNCEMENT: 'Announcement',
+		DEFAULT_ANNOUNCEMENT: 'This page posts public announcements about your exchange! {0}',
+		LEARN_MORE: 'Learn more'
+	}
 };

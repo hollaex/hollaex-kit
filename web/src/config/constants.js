@@ -15,8 +15,6 @@ export const API_URL = config[ENV].API_URL;
 export const WS_URL = config[ENV].WS_URL;
 
 export const ICONS = {
-	LOGO_GREY: '/assets/hollaEx_logo-grey.svg',
-	LOGO_BLACK: '/assets/hollaEx_logo-blk.svg',
 	TRADE_HISTORY_DARK: '/assets/icons/trade-history-dark.svg',
 	TRADE_HISTORY_LIGHT: '/assets/icons/trade-history-light.svg',
 	ACTIVE_TRADE_DARK: '/assets/icons/active-trade-dark.svg',
@@ -44,6 +42,9 @@ export const ICONS = {
 	XRP_ICON: '/assets/icons/xrp-icon-01.svg',
 	XRP_ICON_DARK: '/assets/icons/xrp-icon-01.svg',
 	XRP_NAV_ICON: '/assets/icons/xrp-icon-01.svg',
+	KRW_ICON: '/assets/icons/krw-icon-01.svg',
+	HEX_ICON: '/assets/icons/hex-icon.svg',
+	HEX_ICON_DARK: '/assets/icons/hex-icon-dark.svg',
 	CHECK: '/assets/images/Orderbook scrolling-01.svg',
 	DARK_CHECK: '/assets/images/dark-Orderbook-scrolling-01.svg',
 	BLUE_QUESTION: '/assets/acounts/account-icons-08.svg',
@@ -243,7 +244,8 @@ export const ICONS = {
 	LEVEL_ACCOUNT_ICON_1: '/assets/images/level-1.svg',
 	LEVEL_ACCOUNT_ICON_2: '/assets/images/level-2.svg',
 	LEVEL_ACCOUNT_ICON_3: '/assets/images/level-3.svg',
-	LEVEL_ACCOUNT_ICON_4: '/assets/images/level-4.svg'
+	LEVEL_ACCOUNT_ICON_4: '/assets/images/level-4.svg',
+	TRADE_ANNOUNCEMENT: '/assets/images/annoucement.svg'
 };
 
 export const SOCIAL_ICONS = {
@@ -274,8 +276,10 @@ export const SUMMMARY_ICON = {
 	LEVEL_4_DARK: '/assets/summary/level-4-dark.png'
 };
 
-export const HOLLAEX_LOGO = process.env.LOGO_PATH || '/assets/hollaEx_logo-grey.svg';
-export const HOLLAEX_LOGO_BLACK = process.env.LOGO_BLACK_PATH || '/assets/hollaEx_logo-blk.svg';
+export const HOLLAEX_LOGO =
+	process.env.LOGO_PATH || '/assets/hollaEx_logo-grey.svg';
+export const HOLLAEX_LOGO_BLACK =
+	process.env.LOGO_BLACK_PATH || '/assets/hollaEx_logo-blk.svg';
 
 export const AUDIOS = {
 	ORDERBOOK_FIELD_UPDATE: '/assets/audio/orderbook_field_update.wav',
@@ -365,18 +369,48 @@ export const BANK_PAYMENT_LINK = '';
 export const MIN_VERIFICATION_LEVEL_TO_WITHDRAW = 2;
 export const MAX_VERIFICATION_LEVEL_TO_WITHDRAW = 5;
 
-export const BLOCKTRAIL_ENDPOINT = `https://www.blocktrail.com/${
-	NETWORK === 'testnet' ? 't' : ''
-}BTC/tx/`;
-
-export const ETHEREUM_ENDPOINT = `https://${
-	NETWORK === 'testnet' ? 'ropsten.etherscan.io' : 'etherscan.io'
-}/tx/`;
-
-export const BITCOINCOM_ENDPOINT =
-	NETWORK === 'testnet'
-		? 'https://www.blocktrail.com/tBCC/tx/'
-		: 'https://explorer.bitcoin.com/bch/tx/';
+export const EXPLORERS_ENDPOINT = (currency) => {
+	let endpoint = '';
+	switch (currency) {
+		case 'eth':
+			endpoint =
+				NETWORK === 'testnet'
+					? 'https://ropsten.etherscan.io/tx/'
+					: 'https://etherscan.io/tx/';
+			break;
+		case 'btc':
+			endpoint =
+				NETWORK === 'testnet'
+					? 'https://live.blockcypher.com/btc-test/tx/'
+					: 'https://live.blockcypher.com/btc/tx/';
+			break;
+		case 'xrp':
+			endpoint =
+				NETWORK === 'testnet'
+					? 'https://test.bithomp.com/explorer/'
+					: 'https://bithomp.com/explorer/';
+			break;
+		case 'bch':
+			endpoint =
+				NETWORK === 'testnet'
+					? 'https://explorer.bitcoin.com/tbch/tx/'
+					: 'https://explorer.bitcoin.com/bch/tx/';
+			break;
+		case 'hex':
+			endpoint =
+				NETWORK === 'testnet'
+					? 'https://ropsten.etherscan.io/tx/'
+					: 'https://etherscan.io/tx/';
+			break;
+		default:
+			endpoint =
+				NETWORK === 'testnet'
+					? 'https://ropsten.etherscan.io/tx/'
+					: 'https://etherscan.io/tx/';
+			break;
+	}
+	return endpoint;
+};
 
 export const BALANCE_ERROR = 'Insufficient balance to perform the order';
 

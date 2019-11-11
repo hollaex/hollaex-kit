@@ -1,8 +1,6 @@
 
 .dark-theme {
     .summary-container {
-        color: $dark-font-sub-text-color;
-
         .trade-account-link {
             color: $dark-link;
         }
@@ -14,15 +12,16 @@
             }
         }
         
-    .trader-account-icon {
-        svg{
-            .level_icon {
-                fill: #2e2f37;
+        .trader-account-icon {
+            svg{
+                .level_icon {
+                    fill: #2e2f37;
+                }
             }
         }
-    }
         .summary-block_wrapper {
             border-top: .2rem solid $dark-app-line-divider;
+            color: $dark-font-sub-text-color;
 
             .summary-block-title {
                 color: $dark-font-main-text-color;
@@ -96,6 +95,9 @@
                         .missing-coin {
                             fill:$colors-white;
                             stroke:$colors-white;
+                        }
+                        .default-icon {
+                            fill: $dark-font-sub-text-color !important;
                         }
                     }
                 }
@@ -177,7 +179,6 @@
 }
 
 .summary-container {
-    color: $colors-deactivate-color2;
     height: inherit;
     max-width: 100%;
     margin: 1rem auto;
@@ -185,6 +186,7 @@
 
     .summary-block_wrapper {
         border-top: .2rem solid $colors-black;
+        color: $colors-deactivate-color2;
         // margin: 0 .5rem;
         padding: .5rem;
         
@@ -348,6 +350,9 @@
                     }
                     .xrp-icon {
                         fill: $coin-xrp;
+                    }
+                    .default-icon {
+                        fill: $colors-black !important;
                     }
                 }
             }

@@ -97,7 +97,7 @@ class App extends Component {
 
 	clearData = () => {
 		this.setState(INITIAL_STATE);
-		this.props.history.replace('/user');
+		this.props.router.replace('/admin/user');
 	};
 
 	onChangeUserDataSuccess = (userInformation) => {
@@ -172,7 +172,10 @@ class App extends Component {
 
 					<TabPane tab="All Users" key="users">
 						<h2 className="m-top">LIST OF ALL USERS</h2>
-						<FullListUsers coins={coins} requestUser={this.requestUserData} />
+						<FullListUsers
+							coins={coins}
+							requestUser={this.requestUserData}
+						/>
 					</TabPane>
 				</Tabs>
 			</div>

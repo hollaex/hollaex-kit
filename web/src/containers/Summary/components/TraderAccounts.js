@@ -68,15 +68,17 @@ const TraderAccounts = ({
 						<span className="pointer" onClick={onUpgradeAccount}>
 							{STRINGS.SUMMARY.UPGRADE_ACCOUNT.toUpperCase()}
 						</span>
-						{isMobile ? (
+					</div>
+				)}
+				{!isAccountDetails && isMobile
+					? (
+						<div className="trade-account-link mb-2">
 							<div className="my-2" onClick={() => logout()}>
 								{STRINGS.LOGOUT.toUpperCase()}
 							</div>
-						) : (
-							''
-						)}
-					</div>
-				)}
+						</div>
+					) : (null)
+				}
 			</div>
 		</div>
 	);

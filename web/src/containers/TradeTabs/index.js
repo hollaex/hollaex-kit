@@ -5,7 +5,7 @@ import ReactSVG from 'react-svg';
 import classnames from 'classnames';
 
 import { Paginator, SearchBox } from '../../components';
-import { ICONS, BASE_CURRENCY, DEFAULT_COIN_DATA } from '../../config/constants';
+import { ICONS, BASE_CURRENCY, DEFAULT_COIN_DATA, HOLLAEX_LOGO, HOLLAEX_LOGO_BLACK } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 import { formatPercentage, formatAverage, formatToCurrency } from '../../utils/currency';
 
@@ -123,7 +123,7 @@ class AddTradeTab extends Component {
             <div className="trade_tabs-container">
                 <div className="mb-5">
                     <img
-                        src={activeTheme === 'dark' ? ICONS.LOGO_GREY : ICONS.LOGO_BLACK}
+                        src={activeTheme === 'dark' ? HOLLAEX_LOGO : HOLLAEX_LOGO_BLACK}
                         alt="app logo"
                         className="app-icon d-flex" />
                     <div className="text-center trade-tab-app-title">{STRINGS.APP_SUB_TITLE.toUpperCase()}</div>
@@ -155,8 +155,12 @@ class AddTradeTab extends Component {
                             let { min, fullname, symbol = '' } = coins[pair.pair_base || BASE_CURRENCY] || DEFAULT_COIN_DATA;
                             const pairTwo = coins[pair.pair_2] || DEFAULT_COIN_DATA;
                             let ticker = tickers[key] || {};
-                            const priceDifference = (ticker.close || 0) - (ticker.open || 0);
-                            const tickerPercent = priceDifference === 0 ? 0 : ((priceDifference / ticker.open) * 100);
+                            const priceDifference = ticker.open === 0
+                                ? 0
+                                : ((ticker.close || 0) - (ticker.open || 0));
+                            const tickerPercent = priceDifference === 0 || ticker.open === 0
+                                ? 0
+                                : ((priceDifference / ticker.open) * 100);
                             const priceDifferencePercent = isNaN(tickerPercent) ? formatPercentage(0) : formatPercentage(tickerPercent);
                             return (
                                 <div
@@ -164,7 +168,13 @@ class AddTradeTab extends Component {
                                     className={classnames("d-flex", "trade-tab-list", "pointer", { "active-tab": index === 0 })}
                                     onClick={() => this.handleClick(key)}>
                                     <div className="px-2">
-                                        <ReactSVG path={ICONS[`${pair.pair_base.toUpperCase()}_ICON`]} wrapperClassName="trade_tab-icons" />
+                                        <ReactSVG
+                                            path={
+                                                ICONS[`${pair.pair_base.toUpperCase()}_ICON`]
+                                                    ? ICONS[`${pair.pair_base.toUpperCase()}_ICON`]
+                                                    : ICONS.DEFAULT_ICON
+                                            }
+                                            wrapperClassName="trade_tab-icons" />
                                     </div>
                                     <div className="tabs-pair-details">
                                         <div className="trade_tab-pair-title">

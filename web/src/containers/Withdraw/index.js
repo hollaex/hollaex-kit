@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { formValueSelector, change } from 'redux-form';
 import { isMobile } from 'react-device-detect';
 
-import { Loader, WarningVerification, MobileBarBack } from '../../components';
+import { Loader, MobileBarBack } from '../../components';
 import {
 	ICONS,
 	MIN_VERIFICATION_LEVEL_TO_WITHDRAW,
@@ -225,8 +225,9 @@ class Withdraw extends Component {
 				</MobileBarBack> }
 				<div className="presentation_container apply_rtl">
 					{!isMobile && renderTitleSection(currency, 'withdraw', ICONS.WITHDRAW, coins)}
+					{/* // This commented code can be used if you want to enforce user to have a verified bank account before doing the withdrawal
 					{verification_level >= MIN_VERIFICATION_LEVEL_TO_WITHDRAW &&
-					verification_level <= MAX_VERIFICATION_LEVEL_TO_WITHDRAW ? (
+					verification_level <= MAX_VERIFICATION_LEVEL_TO_WITHDRAW ? ( */}
 						<div className={classnames('inner_container', 'with_border_top')}>
 							{renderInformation(
 								currency,
@@ -238,11 +239,12 @@ class Withdraw extends Component {
 							<WithdrawCryptocurrency {...formProps} />
 							{renderExtraInformation(currency, bank_account)}
 						</div>
-					) : (
+					{/* // This commented code can be used if you want to enforce user to have a verified bank account before doing the withdrawal
+						) : (
 						<div className={classnames('inner_container', 'with_border_top')}>
 							<WarningVerification level={verification_level} />
 						</div>
-					)}
+					)} */}
 				</div>
 			</div>
 		);

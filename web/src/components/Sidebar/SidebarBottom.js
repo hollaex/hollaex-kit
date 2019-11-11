@@ -4,6 +4,7 @@ import ReactSVG from 'react-svg';
 import classnames from 'classnames';
 import STRINGS from '../../config/localizedStrings';
 import { ICONS } from '../../config/constants';
+import { ButtonLink } from '../../components';
 
 
 const SidebarButtom = ({ title= '', path = '', iconPath = '', active = false }) => {
@@ -49,7 +50,23 @@ export const SidebarBottom = ({ activePath = 'x', pair = '', isLogged }) => {
 					iconPath={ICONS.SIDEBAR_WALLET_ACTIVE}
 					active={activePath === 'wallet'}
 				/>
-			</div>: 
-			<div></div>
+			</div> :
+			<div className="d-flex w-100 p-4">
+				<div className="w-50">
+					<ButtonLink
+						link={'/signup'}
+						type="button"
+						label={STRINGS.SIGNUP_TEXT}
+					/>
+				</div>
+				<div className="separator" />
+				<div className="w-50">
+					<ButtonLink
+						link={'/login'}
+						type="button"
+						label={STRINGS.LOGIN_TEXT}
+					/>
+				</div>
+			</div>
 	);
 };
