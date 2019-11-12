@@ -431,11 +431,9 @@ export const EXPLORERS_ENDPOINT = (currency) => {
 export const BALANCE_ERROR = 'Insufficient balance to perform the order';
 
 export const CAPTCHA_SITEKEY =
-	'6LeuOKoUAAAAAGVoZcSWXJH60GHt4crvIaNXn1YA' ||
+	process.env.REACT_APP_CAPTCHA_SITE_KEY ||
 	'6LfgB6kUAAAAAAJI6CNSHdLrjDn8iFmZGxQDrcER'; // default recaptcha v3
-// export const CAPTCHA_SITEKEY =
-// 	process.env.REACT_APP_CAPTCHA_SITE_KEY ||
-// 	'6LfgB6kUAAAAAAJI6CNSHdLrjDn8iFmZGxQDrcER'; // default recaptcha v3
+
 export const CAPTCHA_TIMEOUT = process.env.REACT_APP_CAPTCHA_TIMEOUT
 	? parseInt(process.env.REACT_APP_CAPTCHA_TIMEOUT, 10)
 	: 2000;

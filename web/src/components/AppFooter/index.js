@@ -1,10 +1,9 @@
 import React from 'react';
 import classnames from 'classnames';
-import Reactsvg from 'react-svg'
+import ReactSvg from 'react-svg'
 import { SOCIAL_ICONS } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 import { HOLLAEX_LOGO } from '../../config/constants';
-import { getThemeClass } from '../../utils/theme';
 
 // const LINKS = [
 //     {
@@ -26,9 +25,7 @@ const generateSectionsText = (strings) => {
             TITLE: SECTIONS.SECTION_4_TITLE,
             LINKS: [
                 { text: SECTIONS.SECTION_4_LINK_1, link: 'https://dash.bitholla.com/login/' },
-                { text: SECTIONS.SECTION_4_LINK_2, link: 'https://dash.bitholla.com/signup' },
-                { text: SECTIONS.SECTION_4_LINK_3, link: 'https://bitholla.com/contact' },
-                { text: SECTIONS.SECTION_4_LINK_4, link: 'https://bitholla.com/terms-of-use/' },
+                { text: SECTIONS.SECTION_4_LINK_2, link: 'https://dash.bitholla.com/signup' }
             ]
         },
         {
@@ -98,17 +95,16 @@ const generateSectionsText = (strings) => {
     ];
 };
 
-const TradeFooter = ({
+const AppFooter = ({
     className,
     theme
 }) => {
     return (
         <div
             className={classnames(
-                'tradefooter-container',
+                'app_footer-container',
                 'd-flex',
                 'flex-column',
-                getThemeClass(theme),
                 className
             )}
         >
@@ -175,7 +171,7 @@ const TradeFooter = ({
                     <div className="footer_separter" >
                         <div className="ml-3">
                             <div className="mb-2">
-                                <Reactsvg path={HOLLAEX_LOGO} wrapperClassName="footer-logo" />
+                                <ReactSvg path={HOLLAEX_LOGO} wrapperClassName="footer-logo" />
                             </div>
                             <div className="footer-txt">
                                 {STRINGS.formatString(STRINGS.FOOTER.HEX_DESCRIPTION,
@@ -212,10 +208,10 @@ const TradeFooter = ({
     );
 };
 
-TradeFooter.defaultProps = {
+AppFooter.defaultProps = {
     className: '',
     onChangeLanguage: () => () => { },
     activeLanguage: ''
 };
 
-export default TradeFooter;
+export default AppFooter;

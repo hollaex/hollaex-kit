@@ -89,7 +89,7 @@ import FeesAndLimits from '../Summary/components/FeesAndLimits';
 import SetOrderPortfolio from '../UserSettings/SetOrderPortfolio';
 import LogoutConfirmation from '../Summary/components/LogoutConfirmation';
 import RiskyOrder from '../Trade/components/RiskyOrder';
-import TradeFooter from '../../components/TradeFooter';
+import AppFooter from '../../components/AppFooter';
 
 import {
 	getClasesForLanguage,
@@ -1011,9 +1011,13 @@ class Container extends Component {
 					<SnackNotification />
 					<SnackDialog />
 				</div>
-				{!isMobile && (
-					<TradeFooter theme={activeTheme} />
-				)}
+				<div className={classnames(
+						getThemeClass(activeTheme)
+					)}>
+					{!isMobile && (
+						<AppFooter theme={activeTheme} />
+					)}
+				</div>
 			</div>
 		);
 	}

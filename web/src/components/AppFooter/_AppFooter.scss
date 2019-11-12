@@ -6,15 +6,11 @@ $footer-social-icon--dimension: 2rem;
 $footer-icons--side-margin: 1.5rem;
 $footer--background-color: white;
 
-.tradefooter-container {
+.app_footer-container {
 	padding: $footer-wrapper--margin-top $footer-wrapper--margin $footer-wrapper--margin;
 	border-top: 1px solid $footer-wrapper--border-color;
 	font-size: $font-size-subtext;
 	background-color: $app-background-color;
-
-	// &.white-theme {
-	// 	background-color: $app-background-color;
-	// }
 	
 	.footer-row-content {
 		margin-bottom: $footer-wrapper--margin-bottom;
@@ -89,9 +85,8 @@ $footer--background-color: white;
 	}
 }
 
-
 .direction_ltr {
-	.tradefooter-container {
+	.app_footer-container {
 		.footer-row-content {
 			.footer-public-texts {
 				text-align: right;
@@ -111,7 +106,7 @@ $footer--background-color: white;
 }
 
 .direction_rtl {
-	.tradefooter-container {
+	.app_footer-container {
 		.footer-row-content {
 			.footer-public-texts {
 				text-align: left;
@@ -131,7 +126,7 @@ $footer--background-color: white;
 }
 
 @media screen and (max-width: $bp-md) {
-	.tradefooter-container {
+	.app_footer-container {
 		.footer-row-content {
 			flex-direction: column;
 			> div:not(:last-child) {
@@ -150,16 +145,21 @@ $footer--background-color: white;
 		}
 	}
 }
+
 .dark-theme {
-	background: $dark-app-background-color !important;
-	.footer_separter{
-		.footer-logo{
-			svg{
-				.hollaEX_logo_gray{
-					fill:$colors-white;
+	.app_footer-container {
+		background-color: $dark-app-background-color;
+		.footer-row-content {
+			.footer_separter {
+				.footer-logo {
+					svg {
+						.hollaEX_logo_gray {
+							fill: $colors-white;
+						}
+					}
 				}
 			}
-	    }
-    }
+		}
+	}
 }
 

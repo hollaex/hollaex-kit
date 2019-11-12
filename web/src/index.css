@@ -894,6 +894,10 @@ table th {
   background: url("/assets/background.png");
   background-repeat: no-repeat;
   background-size: cover; }
+  .home_container .home_container-content .app_footer-container {
+    background-color: white !important; }
+    .home_container .home_container-content .app_footer-container .footer-row-content .footer_separter .footer-logo svg .hollaEX_logo_gray {
+      fill: #000000; }
   .home_container .exchange-expired {
     background-color: #ed1c24 !important;
     color: white !important; }
@@ -7820,89 +7824,89 @@ foreignObject {
 .dark-theme .post_header {
   color: white; }
 
-.tradefooter-container {
+.app_footer-container {
   padding: 4rem 1rem 1rem;
   border-top: 1px solid #777677;
   font-size: 0.8rem;
   background-color: white; }
-  .tradefooter-container .footer-row-content {
+  .app_footer-container .footer-row-content {
     margin-bottom: 2rem; }
-    .tradefooter-container .footer-row-content .footer-links-section {
+    .app_footer-container .footer-row-content .footer-links-section {
       margin-left: 17rem; }
-      .tradefooter-container .footer-row-content .footer-links-section .footer-links-group {
+      .app_footer-container .footer-row-content .footer-links-section .footer-links-group {
         margin: 0 1rem; }
-        .tradefooter-container .footer-row-content .footer-links-section .footer-links-group .footer-links-section--title {
+        .app_footer-container .footer-row-content .footer-links-section .footer-links-group .footer-links-section--title {
           font-weight: bold;
           margin-bottom: 0.25rem;
           text-transform: uppercase; }
-        .tradefooter-container .footer-row-content .footer-links-section .footer-links-group .footer-links-section--list {
+        .app_footer-container .footer-row-content .footer-links-section .footer-links-group .footer-links-section--list {
           width: 8rem; }
-          .tradefooter-container .footer-row-content .footer-links-section .footer-links-group .footer-links-section--list .footer-public-links-icon {
+          .app_footer-container .footer-row-content .footer-links-section .footer-links-group .footer-links-section--list .footer-public-links-icon {
             width: 11px; }
-          .tradefooter-container .footer-row-content .footer-links-section .footer-links-group .footer-links-section--list .social_icon {
+          .app_footer-container .footer-row-content .footer-links-section .footer-links-group .footer-links-section--list .social_icon {
             width: 1rem;
             margin-right: 1px; }
-    .tradefooter-container .footer-row-content .footer_separter {
+    .app_footer-container .footer-row-content .footer_separter {
       border-left: 1px solid #777677;
       height: 11.5rem; }
-      .tradefooter-container .footer-row-content .footer_separter .footer-txt {
+      .app_footer-container .footer-row-content .footer_separter .footer-txt {
         width: 75%; }
-      .tradefooter-container .footer-row-content .footer_separter .footer-logo {
+      .app_footer-container .footer-row-content .footer_separter .footer-logo {
         width: 9rem; }
-      .tradefooter-container .footer-row-content .footer_separter svg .hollaEX_logo_gray {
+      .app_footer-container .footer-row-content .footer_separter svg .hollaEX_logo_gray {
         fill: #000000; }
-    .tradefooter-container .footer-row-content .footer-public-texts .footer-public-texts-text {
+    .app_footer-container .footer-row-content .footer-public-texts .footer-public-texts-text {
       line-height: 1.6rem;
       font-weight: bold; }
-    .tradefooter-container .footer-row-content .footer-public-links {
+    .app_footer-container .footer-row-content .footer-public-links {
       justify-content: flex-end;
       align-items: center;
       margin-top: 1rem; }
-      .tradefooter-container .footer-row-content .footer-public-links .footer-public-links-icon {
+      .app_footer-container .footer-row-content .footer-public-links .footer-public-links-icon {
         width: 2rem;
         height: 2rem;
         margin: 0 1.5rem; }
-  .tradefooter-container .footer-row-bottom {
+  .app_footer-container .footer-row-bottom {
     border-top: 1px solid #777677;
     text-align: center; }
-    .tradefooter-container .footer-row-bottom .footer-row-language {
+    .app_footer-container .footer-row-bottom .footer-row-language {
       padding-left: 0.25rem; }
-      .tradefooter-container .footer-row-bottom .footer-row-language.active {
+      .app_footer-container .footer-row-bottom .footer-row-language.active {
         font-weight: bold; }
 
-.direction_ltr .tradefooter-container .footer-row-content .footer-public-texts {
+.direction_ltr .app_footer-container .footer-row-content .footer-public-texts {
   text-align: right; }
 
-.direction_ltr .tradefooter-container .footer-row-content .footer-public-links:first-child .footer-public-links-icon {
+.direction_ltr .app_footer-container .footer-row-content .footer-public-links:first-child .footer-public-links-icon {
   margin-left: 0; }
 
-.direction_ltr .tradefooter-container .footer-row-content .footer-public-links:last-child .footer-public-links-icon {
+.direction_ltr .app_footer-container .footer-row-content .footer-public-links:last-child .footer-public-links-icon {
   margin-right: 0; }
 
-.direction_rtl .tradefooter-container .footer-row-content .footer-public-texts {
+.direction_rtl .app_footer-container .footer-row-content .footer-public-texts {
   text-align: left; }
 
-.direction_rtl .tradefooter-container .footer-row-content .footer-public-links:first-child .footer-public-links-icon {
+.direction_rtl .app_footer-container .footer-row-content .footer-public-links:first-child .footer-public-links-icon {
   margin-right: 0; }
 
-.direction_rtl .tradefooter-container .footer-row-content .footer-public-links:last-child .footer-public-links-icon {
+.direction_rtl .app_footer-container .footer-row-content .footer-public-links:last-child .footer-public-links-icon {
   margin-left: 0; }
 
 @media screen and (max-width: 991px) {
-  .tradefooter-container .footer-row-content {
+  .app_footer-container .footer-row-content {
     flex-direction: column; }
-    .tradefooter-container .footer-row-content > div:not(:last-child) {
+    .app_footer-container .footer-row-content > div:not(:last-child) {
       margin-bottom: 2rem; }
-    .tradefooter-container .footer-row-content .footer-public-texts {
+    .app_footer-container .footer-row-content .footer-public-texts {
       text-align: center !important; }
-    .tradefooter-container .footer-row-content .footer-public-links {
+    .app_footer-container .footer-row-content .footer-public-links {
       justify-content: center; }
-      .tradefooter-container .footer-row-content .footer-public-links .footer-public-links-icon {
+      .app_footer-container .footer-row-content .footer-public-links .footer-public-links-icon {
         margin: 0 1.5rem !important; } }
 
-.dark-theme {
-  background: #1f212a !important; }
-  .dark-theme .footer_separter .footer-logo svg .hollaEX_logo_gray {
+.dark-theme .app_footer-container {
+  background-color: #1f212a; }
+  .dark-theme .app_footer-container .footer-row-content .footer_separter .footer-logo svg .hollaEX_logo_gray {
     fill: white; }
 
 html {

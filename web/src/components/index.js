@@ -52,3 +52,4 @@ export { default as SnackDialog } from './SnackNotification/SnackDialog';
 
 export { default as AdminHocForm } from './AdminForm/hoc';
 export { default as ModalForm } from './AdminForm/modal';
+export { default as AppFooter } from './AppFooter';

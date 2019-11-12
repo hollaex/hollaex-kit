@@ -25,6 +25,21 @@ $no-background--color: white;
 	// background-size: $background-patter--size;
 
 	.home_container-content {
+		.app_footer-container {
+			background-color: $no-background--color !important;
+			
+			.footer-row-content {
+				.footer_separter {
+					.footer-logo {
+						svg {
+							.hollaEX_logo_gray {
+								fill: $colors-black;
+							}
+						}
+					}
+				}
+			}
+		}
 	}
 	
 	.exchange-expired {
