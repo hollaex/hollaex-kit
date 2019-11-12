@@ -176,10 +176,13 @@ class Home extends Component {
 						token={token}
 						onClickDemo={pair ? this.goTo(`trade/${pair}`) : this.goTo('trade/add/tabs')}
 					/>
-					<AppFooter
-						onChangeLanguage={this.onChangeLanguage}
-						activeLanguage={activeLanguage}
-					/>
+					{!isMobile
+						? <AppFooter
+							onChangeLanguage={this.onChangeLanguage}
+							activeLanguage={activeLanguage}
+						/>
+						: null
+					}
 				</div>
 			</div>
 		);

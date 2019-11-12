@@ -33,7 +33,7 @@ class PairTabs extends Component {
             let tabs = localStorage.getItem('tabs');
             if (tabs !== null && tabs !== '' && !JSON.parse(tabs).length
                 && location.pathname.indexOf('/trade/') === 0) {
-                this.setNoTabs();
+                // this.setNoTabs();
             }
             active = router.params.pair;
             this.setState({ activePairTab: router.params.pair, selectedToOpen: router.params.pair });
@@ -112,7 +112,7 @@ class PairTabs extends Component {
                 }
                 return key;
             });
-            if (activePair && !tempTabs[activePair] && tabs.length) {
+            if (activePair && !tempTabs[activePair]) {
                 const temp = pairs[activePair];
                 const pairKeys = Object.keys(tempTabs);
                 if (pairKeys.length < 4) {

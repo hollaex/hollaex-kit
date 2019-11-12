@@ -185,6 +185,10 @@ $container--padding-sm: 3rem;
 	}
 }
 
+.footer-wrapper {
+	position: absolute;
+}
+
 .dark-theme {
 	&.auth-wrapper {
 		background: $dark-app-light-background;

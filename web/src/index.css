@@ -525,6 +525,9 @@ table th {
   .auth-wrapper .link_wrapper {
     margin: 1.5rem 0 0; }
 
+.footer-wrapper {
+  position: absolute; }
+
 .dark-theme.auth-wrapper {
   background: #2e2f37; }
   .dark-theme.auth-wrapper:before {
