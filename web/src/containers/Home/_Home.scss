@@ -26,9 +26,24 @@ $no-background--color: white;
 
 	.home_container-content {
 		.app_footer-container {
-			background-color: $no-background--color !important;
+			background-color: $footer-background-color !important;
 			
 			.footer-row-content {
+				.footer-links-section {
+					.footer-links-group {
+						.footer-links-section--title {
+							color: $colors-black;
+						}
+						.footer-links-section--list {
+							.link-section {
+								&:hover {
+									color: $colors-black;
+								}
+							}
+		
+						}
+					}
+				}
 				.footer_separter {
 					.footer-logo {
 						svg {

@@ -24,8 +24,8 @@ const generateSectionsText = (strings) => {
         {
             TITLE: SECTIONS.SECTION_4_TITLE,
             LINKS: [
-                { text: SECTIONS.SECTION_4_LINK_1, link: 'https://dash.bitholla.com/login/' },
-                { text: SECTIONS.SECTION_4_LINK_2, link: 'https://dash.bitholla.com/signup' }
+                { text: SECTIONS.SECTION_4_LINK_1, link: 'https://hollaex.com/login/' },
+                { text: SECTIONS.SECTION_4_LINK_2, link: 'https://hollaex.com/signup' }
             ]
         },
         {
@@ -123,51 +123,53 @@ const AppFooter = ({
                         'footer-links-section'
                     )}
                 >
-                    {generateSectionsText(STRINGS).map(({ TITLE, LINKS }, index) => (
-                        <div
-                            key={index}
-                            className={classnames(
-                                'd-flex',
-                                'flex-column',
-                                'footer-links-group'
-                            )}
-                        >
-                            <div className="footer-links-section--title">{TITLE}</div>
+                    <div className="d-flex f-1">
+                        {generateSectionsText(STRINGS).map(({ TITLE, LINKS }, index) => (
                             <div
+                                key={index}
                                 className={classnames(
                                     'd-flex',
                                     'flex-column',
-                                    'footer-links-section--list'
+                                    'footer-links-group'
                                 )}
                             >
-                                {LINKS.map(({ link, text, icon }, indexLink) => (
-                                    <div key={indexLink}>
-                                        <a
-                                            href={link || '#'}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                        >
-                                            <div className={classnames(
-                                                'd-flex',
-                                                'flex-row')}>
-                                                {icon ?
-                                                    <img
-                                                        src={icon}
-                                                        className="social_icon"
-                                                        alt="social_icons"
-                                                    /> : null
-                                                }
+                                <div className="footer-links-section--title">{TITLE}</div>
+                                <div
+                                    className={classnames(
+                                        'd-flex',
+                                        'flex-column',
+                                        'footer-links-section--list'
+                                    )}
+                                >
+                                    {LINKS.map(({ link, text, icon }, indexLink) => (
+                                        <div key={indexLink} className="link-section">
+                                            <a
+                                                href={link || '#'}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                            >
+                                                <div className={classnames(
+                                                    'd-flex',
+                                                    'flex-row')}>
+                                                    {icon ?
+                                                        <img
+                                                            src={icon}
+                                                            className="social_icon"
+                                                            alt="social_icons"
+                                                        /> : null
+                                                    }
 
-                                                <div >
-                                                    {text}
+                                                    <div >
+                                                        {text}
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </a>
-                                    </div>
-                                ))}
+                                            </a>
+                                        </div>
+                                    ))}
+                                </div>
                             </div>
-                        </div>
-                    ))}
+                        ))}
+                    </div>
                     <div className="footer_separter" >
                         <div className="ml-3">
                             <div className="mb-2">

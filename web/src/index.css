@@ -898,7 +898,11 @@ table th {
   background-repeat: no-repeat;
   background-size: cover; }
   .home_container .home_container-content .app_footer-container {
-    background-color: white !important; }
+    background-color: #efefef !important; }
+    .home_container .home_container-content .app_footer-container .footer-row-content .footer-links-section .footer-links-group .footer-links-section--title {
+      color: #000000; }
+    .home_container .home_container-content .app_footer-container .footer-row-content .footer-links-section .footer-links-group .footer-links-section--list .link-section:hover {
+      color: #000000; }
     .home_container .home_container-content .app_footer-container .footer-row-content .footer_separter .footer-logo svg .hollaEX_logo_gray {
       fill: #000000; }
   .home_container .exchange-expired {
@@ -7831,29 +7835,29 @@ foreignObject {
   padding: 4rem 1rem 1rem;
   border-top: 1px solid #777677;
   font-size: 0.8rem;
-  background-color: white; }
+  background-color: #efefef; }
   .app_footer-container .footer-row-content {
     margin-bottom: 2rem; }
     .app_footer-container .footer-row-content .footer-links-section {
-      margin-left: 17rem; }
+      width: 60%; }
       .app_footer-container .footer-row-content .footer-links-section .footer-links-group {
         margin: 0 1rem; }
         .app_footer-container .footer-row-content .footer-links-section .footer-links-group .footer-links-section--title {
+          color: #000000;
           font-weight: bold;
           margin-bottom: 0.25rem;
           text-transform: uppercase; }
         .app_footer-container .footer-row-content .footer-links-section .footer-links-group .footer-links-section--list {
           width: 8rem; }
-          .app_footer-container .footer-row-content .footer-links-section .footer-links-group .footer-links-section--list .footer-public-links-icon {
-            width: 11px; }
           .app_footer-container .footer-row-content .footer-links-section .footer-links-group .footer-links-section--list .social_icon {
             width: 1rem;
-            margin-right: 1px; }
+            margin-right: 0.25rem; }
+          .app_footer-container .footer-row-content .footer-links-section .footer-links-group .footer-links-section--list .link-section {
+            margin-top: 0.25rem; }
+            .app_footer-container .footer-row-content .footer-links-section .footer-links-group .footer-links-section--list .link-section:hover {
+              color: #000000; }
     .app_footer-container .footer-row-content .footer_separter {
-      border-left: 1px solid #777677;
-      height: 11.5rem; }
-      .app_footer-container .footer-row-content .footer_separter .footer-txt {
-        width: 75%; }
+      border-left: 1px solid #777677; }
       .app_footer-container .footer-row-content .footer_separter .footer-logo {
         width: 9rem; }
       .app_footer-container .footer-row-content .footer_separter svg .hollaEX_logo_gray {
@@ -7905,10 +7909,25 @@ foreignObject {
     .app_footer-container .footer-row-content .footer-public-links {
       justify-content: center; }
       .app_footer-container .footer-row-content .footer-public-links .footer-public-links-icon {
-        margin: 0 1.5rem !important; } }
+        margin: 0 1.5rem !important; }
+    .app_footer-container .footer-row-content .footer-links-section {
+      width: 70%; } }
+
+@media screen and (min-width: 1920px) {
+  .app_footer-container .footer-row-content .footer-links-section {
+    width: 50%; } }
+
+@media screen and (max-width: 767px) {
+  .app_footer-container .footer-row-content .footer-links-section {
+    width: 80%; } }
 
 .dark-theme .app_footer-container {
-  background-color: #1f212a; }
+  background-color: #000000;
+  color: #808184; }
+  .dark-theme .app_footer-container .footer-row-content .footer-links-section .footer-links-group .footer-links-section--title {
+    color: white; }
+  .dark-theme .app_footer-container .footer-row-content .footer-links-section .footer-links-group .footer-links-section--list .link-section:hover {
+    color: white; }
   .dark-theme .app_footer-container .footer-row-content .footer_separter .footer-logo svg .hollaEX_logo_gray {
     fill: white; }
 
