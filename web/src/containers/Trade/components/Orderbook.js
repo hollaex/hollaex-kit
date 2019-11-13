@@ -114,29 +114,29 @@ class Orderbook extends Component {
 							<span className="mr-2">
 								{STRINGS.WAVES.NEXT_WAVE}
 							</span>
-							{`2 / 5000000`}
+							{`TBA`}
 						</div>
 						<div className=" f-1 trade_orderbook-cell mb-2">
 							<span className="mr-2">
 								{STRINGS.WAVES.WAVE_AMOUNT}
 							</span>
-							{`500,000 HEX`}
+							{`TBA HEX`}
 						</div>
 						<div className=" f-1 trade_orderbook-cell mb-2">
 							<span className="mr-2">
 								{STRINGS.WAVES.FLOOR}
 							</span>
-							{`2 / 5000000`}
+							{`0.2`}
 						</div>
 						<div className=" f-1 trade_orderbook-cell last-wave mb-2">
 							<span className="mr-2">
 								{STRINGS.WAVES.LAST_WAVE}
 							</span>
-							{`500,000 HEX`}
+							{`N/A`}
 						</div>
 						<div className=" f-1 trade_orderbook-cell mb-3">
 							<a
-								href={"https://drive.google.com/file/d/15gILXIVpVMQtRGpty9GNLdhOZTdidT2U/view"}
+								href={"https://hollaex.com/docs/wave-auction.pdf"}
 								target="_blank"
 								rel="noopener noreferrer"
 								className="blue-link pointer">

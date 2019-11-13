@@ -184,7 +184,7 @@ const AppFooter = ({
                                         className="blue-link pointer"
                                     > {STRINGS.FOOTER.CLICK_HERE} </a>,
                                     <a
-                                        href={'https://drive.google.com/file/d/15gILXIVpVMQtRGpty9GNLdhOZTdidT2U/view'}
+                                        href={'https://hollaex.com/docs/wave-auction.pdf'}
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         className="blue-link pointer">
