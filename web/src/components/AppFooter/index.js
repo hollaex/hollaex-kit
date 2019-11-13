@@ -12,13 +12,13 @@ import { HOLLAEX_LOGO } from '../../config/constants';
 //         type: 'facebook'
 //     },
 //     {
-//         icon: SOCIAL_ICONS.TWIITER,
+//         icon: SOCIAL_ICONS.TWITTER,
 //         link: 'https://twitter.com/bitholla',
 //         type: 'twitter'
 //     },
 // ];
 
-const generateSectionsText = (strings) => {
+const generateSectionsText = (strings, theme) => {
     const { SECTIONS } = strings.FOOTER;
     return [
         {
@@ -80,7 +80,9 @@ const generateSectionsText = (strings) => {
             LINKS: [
                 {
                     text: SECTIONS.SECTION_6_LINK_1,
-                    icon: SOCIAL_ICONS.TWIITER,
+                    icon: theme === 'dark'
+                        ? SOCIAL_ICONS.TWITTER_DARK
+                        : SOCIAL_ICONS.TWITTER,
                     link: ' https://twitter.com/hollaex'
                 },
                 {
@@ -124,7 +126,7 @@ const AppFooter = ({
                     )}
                 >
                     <div className="d-flex f-1">
-                        {generateSectionsText(STRINGS).map(({ TITLE, LINKS }, index) => (
+                        {generateSectionsText(STRINGS, theme).map(({ TITLE, LINKS }, index) => (
                             <div
                                 key={index}
                                 className={classnames(

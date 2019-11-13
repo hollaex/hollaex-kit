@@ -265,7 +265,8 @@ export const ICONS = {
 
 export const SOCIAL_ICONS = {
 	FACEBOOK: '/assets/icons/social-grey-icons.svg',
-	TWIITER: '/assets/icons/social-grey-icons02.svg',
+	TWITTER: '/assets/icons/social-grey-icons02.svg',
+	TWITTER_DARK: '/assets/icons/twitter-dark.svg',
 	INSTAGRAM: '/assets/icons/social-grey-icons03.svg',
 	TELEGRAM: '/assets/icons/social-grey-icons04.svg',
 	TELEGRAM_BLUE: '/assets/icons/telegram.svg',

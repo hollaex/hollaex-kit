@@ -7841,7 +7841,8 @@ foreignObject {
     .app_footer-container .footer-row-content .footer-links-section {
       width: 60%; }
       .app_footer-container .footer-row-content .footer-links-section .footer-links-group {
-        margin: 0 1rem; }
+        margin: 0 1rem;
+        font-size: 1rem; }
         .app_footer-container .footer-row-content .footer-links-section .footer-links-group .footer-links-section--title {
           color: #000000;
           font-weight: bold;
@@ -7922,7 +7923,7 @@ foreignObject {
     width: 80%; } }
 
 .dark-theme .app_footer-container {
-  background-color: #000000;
+  background-color: #0f1114;
   color: #808184; }
   .dark-theme .app_footer-container .footer-row-content .footer-links-section .footer-links-group .footer-links-section--title {
     color: white; }

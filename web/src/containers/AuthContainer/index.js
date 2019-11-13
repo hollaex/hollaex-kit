@@ -114,7 +114,7 @@ class AuthContainer extends Component {
 				{!isMobile
 					? (
 						<div className={classnames('footer-wrapper', getThemeClass(activeTheme))}>
-							<AppFooter />
+							<AppFooter theme={activeTheme} />
 						</div>
 					)
 					: null

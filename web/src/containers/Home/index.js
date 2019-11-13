@@ -178,6 +178,7 @@ class Home extends Component {
 					/>
 					{!isMobile
 						? <AppFooter
+							theme={activeTheme}
 							onChangeLanguage={this.onChangeLanguage}
 							activeLanguage={activeLanguage}
 						/>
