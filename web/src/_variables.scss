@@ -75,7 +75,7 @@ $icon-unhover: $colors-deactivate-color2;
 $trade-tabs-inactive-color: #808080;
 $bitcoin-color-main: $colors-currencies-btc;
 // White theme footer
-$footer-background-color: #efefef;
+$footer-background-color: $colors-black;
 
 // this is for transaction history- ToDo: need to customize for common theme
 $color-buy: #d1d4dc;
@@ -87,7 +87,7 @@ $dark-app-background-color: #1f212a;
 $dark-app-light-background: #2e2f37;
 $dark-quick-trade-background: #1b1b1f;
 $dark-app-modal-background: rgba(35, 31, 32, 0.5);
-$dark-app-bar-background-color: $colors-black;
+$dark-app-bar-background-color: #0f1114;
 $dark-app-line-divider: #b7b5cd;
 $dark-app-link-highlight: #ed507b;
 $dark-box-fields: #353841;

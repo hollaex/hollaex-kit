@@ -80,9 +80,7 @@ const generateSectionsText = (strings, theme) => {
             LINKS: [
                 {
                     text: SECTIONS.SECTION_6_LINK_1,
-                    icon: theme === 'dark'
-                        ? SOCIAL_ICONS.TWITTER_DARK
-                        : SOCIAL_ICONS.TWITTER,
+                    icon: SOCIAL_ICONS.TWITTER_DARK,
                     link: ' https://twitter.com/hollaex'
                 },
                 {

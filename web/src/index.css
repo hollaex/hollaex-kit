@@ -526,7 +526,7 @@ table th {
     margin: 1.5rem 0 0; }
 
 .footer-wrapper {
-  position: absolute; }
+  position: relative; }
 
 .dark-theme.auth-wrapper {
   background: #2e2f37; }
@@ -897,14 +897,6 @@ table th {
   background: url("/assets/background.png");
   background-repeat: no-repeat;
   background-size: cover; }
-  .home_container .home_container-content .app_footer-container {
-    background-color: #efefef !important; }
-    .home_container .home_container-content .app_footer-container .footer-row-content .footer-links-section .footer-links-group .footer-links-section--title {
-      color: #000000; }
-    .home_container .home_container-content .app_footer-container .footer-row-content .footer-links-section .footer-links-group .footer-links-section--list .link-section:hover {
-      color: #000000; }
-    .home_container .home_container-content .app_footer-container .footer-row-content .footer_separter .footer-logo svg .hollaEX_logo_gray {
-      fill: #000000; }
   .home_container .exchange-expired {
     background-color: #ed1c24 !important;
     color: white !important; }
@@ -1211,7 +1203,7 @@ table th {
   margin: 2rem 0; }
 
 .dark-theme svg .withdraw-1 {
-  fill: #000000; }
+  fill: #0f1114; }
 
 .dark-theme svg .withdraw-2 {
   fill: #a3a1ca; }
@@ -1342,7 +1334,7 @@ table th {
   margin: 1rem; }
 
 .dark-theme svg .deposit-bitcoin-1 {
-  fill: #000000; }
+  fill: #0f1114; }
 
 .dark-theme svg .deposit-bitcoin-2 {
   fill: #a3a1ca; }
@@ -1456,7 +1448,7 @@ table th {
   stroke: #a3a1ca; }
 
 .dark-theme svg .transaction-history-5 {
-  fill: #000000; }
+  fill: #0f1114; }
 
 .trade-container {
   flex: 1; }
@@ -3395,7 +3387,7 @@ table th {
   padding-top: 0 !important; }
 
 .dark-theme .app_bar {
-  background: #000000 !important;
+  background: #0f1114 !important;
   color: #b6b5cd !important; }
   .dark-theme .app_bar > div:not(:first-child) {
     border-left-color: #b7b5cd !important; }
@@ -3924,7 +3916,7 @@ table th {
   height: .5px; }
 
 .app-bar-add-tab-menu {
-  background-color: #000000;
+  background-color: #0f1114;
   border: 1px solid white;
   color: #808184;
   display: block;
@@ -3938,7 +3930,7 @@ table th {
   -moz-box-shadow: 0px 4px 6px 1px rgba(0, 0, 0, 0.4);
   box-shadow: 0px 4px 6px 1px rgba(0, 0, 0, 0.4); }
   .app-bar-add-tab-menu .app-bar-tab-menu-list {
-    background-color: #000000;
+    background-color: #0f1114;
     color: #808184;
     font-size: .8rem;
     height: 2.5rem;
@@ -7084,7 +7076,7 @@ foreignObject {
   stroke: #a3a1ca; }
 
 .dark-theme svg .quick-trade-2 {
-  fill: #000000; }
+  fill: #0f1114; }
 
 .dark-theme svg .quick-trade-3 {
   stroke: #a3a1ca; }
@@ -7262,7 +7254,7 @@ foreignObject {
 
 .dark-theme .mobile-bar {
   color: #797779 !important;
-  background: #000000 !important; }
+  background: #0f1114 !important; }
 
 .dark-theme .mobile-bar-tab.active {
   position: relative;
@@ -7835,7 +7827,8 @@ foreignObject {
   padding: 4rem 1rem 1rem;
   border-top: 1px solid #777677;
   font-size: 0.8rem;
-  background-color: #efefef; }
+  background-color: #000000;
+  color: white; }
   .app_footer-container .footer-row-content {
     margin-bottom: 2rem; }
     .app_footer-container .footer-row-content .footer-links-section {
@@ -7844,25 +7837,26 @@ foreignObject {
         margin: 0 1rem;
         font-size: 1rem; }
         .app_footer-container .footer-row-content .footer-links-section .footer-links-group .footer-links-section--title {
-          color: #000000;
           font-weight: bold;
           margin-bottom: 0.25rem;
           text-transform: uppercase; }
         .app_footer-container .footer-row-content .footer-links-section .footer-links-group .footer-links-section--list {
-          width: 8rem; }
+          min-width: 8rem; }
           .app_footer-container .footer-row-content .footer-links-section .footer-links-group .footer-links-section--list .social_icon {
             width: 1rem;
             margin-right: 0.25rem; }
           .app_footer-container .footer-row-content .footer-links-section .footer-links-group .footer-links-section--list .link-section {
             margin-top: 0.25rem; }
             .app_footer-container .footer-row-content .footer-links-section .footer-links-group .footer-links-section--list .link-section:hover {
-              color: #000000; }
+              color: grey; }
     .app_footer-container .footer-row-content .footer_separter {
       border-left: 1px solid #777677; }
+      .app_footer-container .footer-row-content .footer_separter .footer-txt {
+        width: 25rem; }
       .app_footer-container .footer-row-content .footer_separter .footer-logo {
         width: 9rem; }
       .app_footer-container .footer-row-content .footer_separter svg .hollaEX_logo_gray {
-        fill: #000000; }
+        fill: white; }
     .app_footer-container .footer-row-content .footer-public-texts .footer-public-texts-text {
       line-height: 1.6rem;
       font-weight: bold; }
@@ -7920,7 +7914,9 @@ foreignObject {
 
 @media screen and (max-width: 767px) {
   .app_footer-container .footer-row-content .footer-links-section {
-    width: 80%; } }
+    width: 80%; }
+  .app_footer-container .footer-row-content .footer_separter .footer-txt {
+    width: 30rem; } }
 
 .dark-theme .app_footer-container {
   background-color: #0f1114;
