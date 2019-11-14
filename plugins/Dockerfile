@@ -6,7 +6,8 @@ COPY . /app/plugins
 
 WORKDIR /app/plugins
 
-RUN for d in ./*/ ; do (cd "$d" && npm install); done
+RUN npm install -g express && \
+    for d in ./*/ ; do (cd "$d" && npm install); done
 
 WORKDIR /app
 
