@@ -1,11 +1,13 @@
-FROM node:10.15.3-alpine
+FROM bitholla/hollaex-core:1.19.9
 
 EXPOSE 10011
 
-COPY . /app
+COPY . /app/plugins
 
-WORKDIR /app
+WORKDIR /app/plugins
 
 RUN for d in ./*/ ; do (cd "$d" && npm install); done
 
-CMD node index.js
+WORKDIR /app
+
+CMD node /app/index.js
