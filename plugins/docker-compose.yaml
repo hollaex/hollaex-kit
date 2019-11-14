@@ -1,0 +1,14 @@
+# Test docker-compose.yaml for Dev
+
+version: '3'
+services:
+  hollaex-dev-server:
+    image: bitholla/plugins-controller:dev
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file:
+      - ../settings/configmap
+    ports:
+      - 10011:10011
+
