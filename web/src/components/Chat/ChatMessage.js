@@ -7,6 +7,23 @@ import { ICONS } from '../../config/constants';
 import { USER_TYPES } from '../../actions/appActions';
 import ReactSVG from 'react-svg';
 
+moment.updateLocale('en', {
+    relativeTime : {
+        s: '1 S',
+        ss: '%d S',
+        m:  "1 M",
+        mm: "%d M",
+        h:  "1 H",
+        hh: "%d H",
+        d:  "1 D",
+        dd: "%d D",
+        M:  "1 MO",
+        MM: "%d MO",
+        y:  "1 Y",
+        yy: "%d Y"
+    }
+});
+
 const MAX_LINES = 5;
 
 const MESSAGE_OPTIONS = {
@@ -28,7 +45,7 @@ const Timestamp = ({ timestamp }) => (
 	<div className="timestamp">
 		{Math.abs(moment().diff(timestamp)) < TIME_LIMIT
 			? STRINGS.JUST_NOW
-			: moment(timestamp).fromNow()}
+			: moment(timestamp).fromNow(true)}
 	</div>
 );
 

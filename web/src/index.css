@@ -7407,6 +7407,21 @@ foreignObject {
       font-size: 0.9rem;
       resize: none;
       overflow: hidden; }
+    .chat-wrapper .chat-footer .chat-emoji-icon {
+      width: 2rem; }
+      .chat-wrapper .chat-footer .chat-emoji-icon svg .emoji-face-icon {
+        fill: #b6b4cc; }
+    .chat-wrapper .chat-footer .emoji-container {
+      width: 23rem !important;
+      height: 15rem;
+      overflow-y: scroll; }
+      .chat-wrapper .chat-footer .emoji-container .emoji-mart-emoji {
+        background-color: white;
+        border: none; }
+        .chat-wrapper .chat-footer .emoji-container .emoji-mart-emoji span {
+          cursor: pointer; }
+      .chat-wrapper .chat-footer .emoji-container button:focus {
+        outline: none !important; }
 
 .dark-theme .chat-wrapper {
   background-color: #2e2f37; }
@@ -7440,6 +7455,8 @@ foreignObject {
     color: #b6b5cd; }
     .dark-theme .chat-wrapper .chat-footer .chat-message-box::placeholder {
       color: #808184; }
+  .dark-theme .chat-wrapper .chat-footer .emoji-container .emoji-mart-emoji {
+    background-color: #2e2f37; }
 
 .elapsed-timer-wrapper {
   font-size: 0.8rem;

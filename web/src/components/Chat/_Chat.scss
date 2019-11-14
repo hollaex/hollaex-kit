@@ -9,6 +9,7 @@ $chat-own-message--color: #ef3ba5;
 $chat-other-message--color: white;
 $chat-element-action--color: #2798c7;
 $unread-messages-border--color: #b9b500;
+$chat-emoji-face-icon--color: #b6b4cc;
 $chat-message--font-size: 1.2rem;
 $chat-username--font-size: 1.2rem;
 $mobile-regular--font-size: 1.5rem;
@@ -320,6 +321,33 @@ $mobile-regular--font-size: 1.5rem;
 			resize: none;
 			overflow: hidden;
 		}
+		.chat-emoji-icon {
+			width: 2rem;
+
+			svg {
+				.emoji-face-icon {
+					fill: $chat-emoji-face-icon--color;
+				}
+			}
+		}
+		.emoji-container {
+			width: 23rem !important;
+			height: 15rem;
+			overflow-y: scroll;
+
+			.emoji-mart-emoji {
+				background-color: $chat-wrapper-light--background-color;
+				border: none;
+				span {
+					cursor: pointer;
+				}
+			}
+			button {
+				&:focus {
+					outline: none !important;
+				}
+			}
+		}
 	}
 }
 
@@ -384,6 +412,11 @@ $mobile-regular--font-size: 1.5rem;
 				
 				&::placeholder {
 					color: $dark-font-sub-text-1-color;
+				}
+			}
+			.emoji-container {
+				.emoji-mart-emoji {
+					background-color: $chat-wrapper-dark--background-color;
 				}
 			}
 		}
