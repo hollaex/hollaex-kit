@@ -30,7 +30,7 @@ export const ChatMessageBox = ({
 			onKeyPress={sendMessage}
 		/>
 		<div
-			className="d-flex align-items-center justify-content-center"
+			className="d-flex align-items-center justify-content-center chat-emoji-wrapper"
 			onClick={handleEmojiBox}>
 			<ReactSvg path={ICONS.CHAT_EMOJI} wrapperClassName="chat-emoji-icon" />
 		</div>

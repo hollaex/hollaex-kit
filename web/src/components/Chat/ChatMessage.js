@@ -63,7 +63,6 @@ class ChatMessageWithText extends Component {
 		const { maxLines } = this.state;
 		return (
 			<div className={classnames('nonmobile')}>
-				<Timestamp timestamp={timestamp} />
 				<div className="d-flex">
 					<div className="mx-2">
 						{verification_level === 3 || verification_level >= 4
@@ -75,22 +74,30 @@ class ChatMessageWithText extends Component {
 								wrapperClassName="user-icon mr-1" />
 							: <div className="user-icon mr-1"></div>}
 					</div>
-					<div>
-						<div className="d-flex mr-1 own-message username">
-							{`${username}:`}
-						</div>
-						{to && <div className="mr-1">{`${to}:`}</div>}
+					<div className='d-flex flex-1'>
 						{ownMessage ? (
-							<div className="d-inline message">{messageContent}</div>
+							<div className="mr-1 my-1 own-message username ">
+								<span >
+									{`${username}:`}
+								</span>
+								<span className="d-inline message">{messageContent}</span>
+							</div>
+
 						) : (
-							<TruncateMarkup
-								className="d-inline message"
-								lines={maxLines}
-								ellipsis={<ReadMore onClick={() => this.showMore()} />}
-							>
-								<div className="d-inline message">{messageContent}</div>
-							</TruncateMarkup>
-						)}
+								<div className="mr-1 my-1 username">
+									<span >
+										{`${username}:`}
+									</span>
+									<TruncateMarkup
+										className="d-inline message"
+										lines={maxLines}
+										ellipsis={<ReadMore onClick={() => this.showMore()} />}
+									>
+										<span className="d-inline message">{messageContent}</span>
+									</TruncateMarkup>
+								</div>
+							)}
+						<Timestamp timestamp={timestamp} />
 					</div>
 				</div>
 			</div>

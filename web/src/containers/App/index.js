@@ -847,6 +847,7 @@ class Container extends Component {
 							goToDashboard={this.goToDashboard}
 							logout={this.logout}
 							activePath={activePath}
+							onHelp={openHelpfulResourcesForm}
 							rightChildren={
 								<CurrencyList
 									className="horizontal-currency-list justify-content-end"

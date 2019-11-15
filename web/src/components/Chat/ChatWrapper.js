@@ -1,5 +1,5 @@
 import React from 'react';
-import Draggable from 'react-draggable';
+// import Draggable from 'react-draggable';
 import classnames from 'classnames';
 import { ChatHeader, ChatMessageList, ChatFooter } from './';
 import { isMobile } from 'react-device-detect';
@@ -32,10 +32,10 @@ export const ChatWrapper = ({
 		chatInitialized && usernameInitalized && userInitialized;
 
 	return (
-		<Draggable
-			disabled={!userInitialized || minimized || isMobile}
-			cancel=".nondraggable"
-		>
+		// <Draggable
+		// 	disabled={!userInitialized || minimized || isMobile}
+		// 	cancel=".nondraggable"
+		// >
 			<div
 				className={classnames(
 					'd-flex',
@@ -75,6 +75,6 @@ export const ChatWrapper = ({
 					/>
 				</div>
 			</div>
-		</Draggable>
+		// </Draggable>
 	);
 };

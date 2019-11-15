@@ -1,9 +1,9 @@
 import React from 'react';
 import classnames from 'classnames';
 
-export const MinimalizeChat = ({ onClick }) => (
+export const MinimalizeChat = ({ minimized, onClick }) => (
 	<div className={classnames('d-flex', 'minimize-button')} onClick={onClick}>
-		<div className="minimize-button-content" />
+		<div className={minimized ? "maximize-arrow" : "minimize-button-content"} />
 	</div>
 );
 
@@ -22,6 +22,6 @@ export const ChatHeader = ({
 		)}
 	>
 		<div className="d-flex chat-header-icon" />
-		{!minimized && <MinimalizeChat onClick={minimizeChat} />}
+		<MinimalizeChat minimized={minimized} onClick={minimizeChat} />
 	</div>
 );

@@ -1,18 +1,24 @@
 $chat-message-box-light--background-color: $box-fields;
 $chat-wrapper-light--background-color: white;
-$chat-message-box-dark--background-color: $dark-box-fields;
+$chat-message-box-dark--background-color: #0f1114;
 $chat-wrapper-dark--background-color: $dark-app-light-background;
 $chat-message-light--font-color: #999999;
-$chat-message-dark--font-color: $dark-font-sub-text-1-color;
+$chat-message-dark--font-color: #808080;
 $chat-wrapper--border-color: #282829;
-$chat-own-message--color: #ef3ba5;
+$chat-own-message--color: #d19f00;
 $chat-other-message--color: white;
 $chat-element-action--color: #2798c7;
 $unread-messages-border--color: #b9b500;
 $chat-emoji-face-icon--color: #b6b4cc;
-$chat-message--font-size: 1.2rem;
+$chat-message--font-size: 1rem;
 $chat-username--font-size: 1.2rem;
 $mobile-regular--font-size: 1.5rem;
+$odd-child-background: #e6e6e6;
+$chat-message-content-color: #b6b4cc;
+$chat-top-theme-icon: #b6b4cc;
+$chat-message-content-light: #4f4f4f;
+$emoji-content-background: #cecece;
+$dark-emoji-content-background: #454848;
 
 .layout-mobile {
 	.chat-wrapper {
@@ -33,6 +39,7 @@ $mobile-regular--font-size: 1.5rem;
 				.message-content {
 					.username {
 						font-size: $mobile-regular--font-size;
+					    width: 100%;
 					}
 
 					.message {
@@ -57,6 +64,19 @@ $mobile-regular--font-size: 1.5rem;
 				font-size: $regular-chat--font-size;
 				padding: 1rem 0.5rem;
 			}
+			.emoji-container {
+				width: 100% !important;
+			}
+			.chat-emoji-wrapper { 
+				background-color: $colors-white;
+				.chat-emoji-icon {
+					svg{
+						.emoji-face-icon {
+							fill: $chat-message-content-color;
+						}
+					}
+				}
+			}
 		}
 	}
 }
@@ -65,8 +85,8 @@ $mobile-regular--font-size: 1.5rem;
 	position: fixed;
 	background-color: $chat-wrapper-light--background-color;
 	height: 35rem;
-	right: 0.5rem;
-	bottom: 3rem;
+	right: 1rem;
+	bottom: 0;
 	color: $chat-message-light--font-color;
 	z-index: 100;
 	-webkit-box-shadow: 1px 0px 3px 0px rgba(0, 0, 0, 0.29);
@@ -79,6 +99,7 @@ $mobile-regular--font-size: 1.5rem;
 		font-size: 0.7rem;
 		min-width: 3.2rem;
 		text-align: right;
+		margin-right: 0.3rem;
 	}
 	.chat-username-footer{
 		border-top: 1px solid gray;
@@ -114,10 +135,18 @@ $mobile-regular--font-size: 1.5rem;
 	}
 
 	&.minimized {
-		> .chat-header,
+		height: 2.5rem;
+
 		.chat-footer,
 		.chat-message-list {
 			display: none !important;
+		}
+		.chat-header {
+			border-top: 1px solid $colors-black;
+			width: 23rem;
+		}
+		.minimize-button {
+			padding: 0.5rem;
 		}
 	}
 
@@ -132,6 +161,15 @@ $mobile-regular--font-size: 1.5rem;
 			width: 100%;
 			height: 100%;
 			border-bottom: 1px solid $chat-message-light--font-color;
+		}
+
+		.maximize-arrow {
+			border: solid $chat-message-light--font-color;
+			border-width: 0 3px 3px 0;
+			display: inline-block;
+			padding: 3px;
+			transform: rotate(-135deg);
+			-webkit-transform: rotate(-135deg);
 		}
 
 		&:hover {
@@ -157,7 +195,7 @@ $mobile-regular--font-size: 1.5rem;
 		padding-bottom: 0.75rem;
 		font-weight: bold;
 		padding: 0.5rem 1rem;
-
+		background-color: $colors-white;
 		.chat-header-icon {
 			flex: 1;
 			background-image: url('/assets/images/dotted-grip-chat-repeat-pattern.svg');
@@ -170,23 +208,34 @@ $mobile-regular--font-size: 1.5rem;
 
 	.chat-message-list {
 		width: 23rem !important;
+		background-color: $odd-child-background;
 		flex: 1;
 
 		> div {
 			&:first-child {
-				padding: 0.5rem;
+				// padding: 0.5rem;
 			}
 			padding: 0.5rem 0;
+		}
+		.view{
+			> div{
+				&:nth-child(odd){
+					background-color: $odd-child-background;
+				}
+				&:nth-child(even){
+					background-color: $box-fields;
+				}
+			}
 		}
 		.chat-message {
 			font-weight: bold;
 			color: $chat-other-message--color;
-			margin-bottom: 0.8rem;
+			padding-bottom: 0.5rem;
 			word-break: break-all;
 			.message-content {
 				width: 100%;
 				.message {
-					color: $chat-message-light--font-color;
+					color: $chat-message-content-light;
 					word-break: break-word;
 					line-height: 1.1rem;
 					font-size: $chat-message--font-size;
@@ -199,8 +248,9 @@ $mobile-regular--font-size: 1.5rem;
 				}
 				.nonmobile {
 					.own-message {
-						line-height: 1.1rem;
+						line-height: 1.2rem;
 						word-break: keep-all;
+						color: $chat-own-message--color;
 					}
 				}
 			}
@@ -211,7 +261,6 @@ $mobile-regular--font-size: 1.5rem;
 					font-weight: bold;
 				}
 			}
-
 
 			.message-content {
 				span {
@@ -257,6 +306,7 @@ $mobile-regular--font-size: 1.5rem;
 				font-weight: bold;
 				font-size: $chat-username--font-size;
 				margin-bottom: 0.5rem;
+				width: 100%;
 			}
 
 			.item-options {
@@ -301,7 +351,6 @@ $mobile-regular--font-size: 1.5rem;
 
 	.chat-footer {
 		min-height: 3rem;
-		margin-top: 0.5rem;
 		width: 100%;
 		padding: 0;
 		button {
@@ -310,7 +359,7 @@ $mobile-regular--font-size: 1.5rem;
 		.chat-message-box {
 			outline: none !important;
 			border: none;
-			background-color: $chat-message-box-light--background-color;
+			background-color: $colors-white;
 			width: 100%;
 			height: 100%;
 			min-height: 3rem;
@@ -320,13 +369,21 @@ $mobile-regular--font-size: 1.5rem;
 			font-size: 0.9rem;
 			resize: none;
 			overflow: hidden;
-		}
-		.chat-emoji-icon {
-			width: 2rem;
+		    padding-left: 10px;
 
-			svg {
-				.emoji-face-icon {
-					fill: $chat-emoji-face-icon--color;
+			&::placeholder {
+				color: $chat-message-content-color;
+			}
+		}
+		.chat-emoji-wrapper { 
+			background-color: $colors-white;
+
+			.chat-emoji-icon {
+				width: 2rem;
+				svg {
+					.emoji-face-icon {
+						fill: $chat-message-content-color;
+					}
 				}
 			}
 		}
@@ -334,9 +391,10 @@ $mobile-regular--font-size: 1.5rem;
 			width: 23rem !important;
 			height: 15rem;
 			overflow-y: scroll;
+			background-color: $emoji-content-background;
 
 			.emoji-mart-emoji {
-				background-color: $chat-wrapper-light--background-color;
+				background-color: $emoji-content-background;
 				border: none;
 				span {
 					cursor: pointer;
@@ -354,6 +412,12 @@ $mobile-regular--font-size: 1.5rem;
 .dark-theme {
 	.chat-wrapper {
 		background-color: $chat-wrapper-dark--background-color;
+
+		&.minimized {
+			.chat-header {
+				border-top: 1px solid $colors-white;
+			}
+		}
 		.chat-username-footer{
 			border-top: 1px solid gray
 		}
@@ -361,6 +425,9 @@ $mobile-regular--font-size: 1.5rem;
 	
 			&:hover {
 				background-color: $dark-app-background-color;
+			}
+			.minimize-button-content{
+				border-bottom: 1px solid $chat-top-theme-icon;
 			}
 		}
 		.user-icon {
@@ -372,12 +439,30 @@ $mobile-regular--font-size: 1.5rem;
 				}
 			}
 		}
+		.chat-message-list{
+			background-color:$dark-app-light-background;
+			.view{
+				> div{
+					&:nth-child(odd){
+						background-color: $dark-app-light-background
+					}
+					&:nth-child(even){
+						background-color: $dark-box-fields
+					}
+				}
+			}
+		}
 		.chat-message {
 			.message-content {
 				.message {
-					color: $chat-message-dark--font-color;
+					color: $chat-message-content-color;
+				}	
+				.nonmobile {
+					.own-message {
+						color: #ffff00;
+					}
 				}
-			}
+		}
 
 			.item-options {
 				.item-options-wrapper {
@@ -405,18 +490,40 @@ $mobile-regular--font-size: 1.5rem;
 			font-family: "Open Sans"!important;
 			
 		}
+		.chat-header {
+			background-color: $chat-message-box-dark--background-color;
+
+			.chat-header-icon {
+				svg {
+					.dotted-grip-0 {
+						fill: $chat-message-content-color
+					}
+				}
+			}
+		}
 		.chat-footer {
 			.chat-message-box {
 				background-color: $chat-message-box-dark--background-color;
-				color: $dark-font-main-text-color;
+				color: $chat-message-content-color;
 				
 				&::placeholder {
-					color: $dark-font-sub-text-1-color;
+					color: $chat-message-content-color;
 				}
 			}
 			.emoji-container {
+				background-color: $dark-emoji-content-background;
 				.emoji-mart-emoji {
-					background-color: $chat-wrapper-dark--background-color;
+					background-color: $dark-emoji-content-background;
+				}
+			}
+			.chat-emoji-wrapper {
+				background-color: $chat-message-box-dark--background-color;
+				.chat-emoji-icon {
+				    svg {
+				     	.emoji-face-icon {
+					    	fill: $chat-message-content-color;
+						}
+					}
 				}
 			}
 		}
