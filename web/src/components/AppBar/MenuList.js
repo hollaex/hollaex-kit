@@ -4,9 +4,9 @@ import classnames from 'classnames';
 
 import STRINGS from '../../config/localizedStrings';
 import { ICONS } from '../../config/constants';
-import { Help } from '../Sidebar/rows'
-import { Dialog } from '../../components';
-import { HelpfulResourcesForm } from '../../containers'
+// import { Help } from '../Sidebar/rows'
+// import { Dialog } from '../../components';
+// import { HelpfulResourcesForm } from '../../containers'
 
 class MenuList extends Component {
 

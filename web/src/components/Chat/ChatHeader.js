@@ -1,5 +1,6 @@
 import React from 'react';
 import classnames from 'classnames';
+import STRINGS from '../../config/localizedStrings';
 
 export const MinimalizeChat = ({ minimized, onClick }) => (
 	<div className={classnames('d-flex', 'minimize-button')} onClick={onClick}>
@@ -11,17 +12,22 @@ export const ChatHeader = ({
 	title,
 	chatWrapperInitialized,
 	minimized,
-	minimizeChat
+	minimizeChat,
+	unreadMessages
 }) => (
-	<div
-		className={classnames(
-			'd-flex',
-			'justify-content-between',
-			'align-items-center',
-			'chat-header'
-		)}
-	>
-		<div className="d-flex chat-header-icon" />
-		<MinimalizeChat minimized={minimized} onClick={minimizeChat} />
-	</div>
-);
+		<div
+			className={classnames(
+				'd-flex',
+				'justify-content-between',
+				'align-items-center',
+				'chat-header'
+			)}
+		>
+			{minimized ?
+				<div>{STRINGS.formatString(STRINGS.CHAT.TROLLBOX, unreadMessages)}</div>
+				:
+				<div className="d-flex chat-header-icon" />}
+			<MinimalizeChat minimized={minimized} onClick={minimizeChat} />
+
+		</div>
+	);

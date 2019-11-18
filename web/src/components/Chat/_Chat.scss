@@ -19,6 +19,8 @@ $chat-top-theme-icon: #b6b4cc;
 $chat-message-content-light: #4f4f4f;
 $emoji-content-background: #cecece;
 $dark-emoji-content-background: #454848;
+$dark-emoji-content-top-background: #525656;
+$light-emoji-content-top-background: #dbdbdb;
 
 .layout-mobile {
 	.chat-wrapper {
@@ -87,12 +89,13 @@ $dark-emoji-content-background: #454848;
 	height: 35rem;
 	right: 1rem;
 	bottom: 0;
-	color: $chat-message-light--font-color;
+	color: $chat-message-light--font-color !important;
 	z-index: 100;
 	-webkit-box-shadow: 1px 0px 3px 0px rgba(0, 0, 0, 0.29);
 	-moz-box-shadow: 1px 0px 3px 0px rgba(0, 0, 0, 0.29);
 	box-shadow: 1px 0px 3px 0px rgba(0, 0, 0, 0.29);
 	font-family: 'Roboto-Light';
+	border: 1px solid #f0f1f1 !important;
 
 	.timestamp {
 		color: $chat-message-dark--font-color;
@@ -217,12 +220,12 @@ $dark-emoji-content-background: #454848;
 			}
 			padding: 0.5rem 0;
 		}
-		.view{
-			> div{
-				&:nth-child(odd){
+		.view {
+			> div {
+				&:nth-child(odd) {
 					background-color: $odd-child-background;
 				}
-				&:nth-child(even){
+				&:nth-child(even) {
 					background-color: $box-fields;
 				}
 			}
@@ -392,7 +395,41 @@ $dark-emoji-content-background: #454848;
 			height: 15rem;
 			overflow-y: scroll;
 			background-color: $emoji-content-background;
+			.chat-category {
+				border-bottom: 1px solid grey;
+				background-color: $light-emoji-content-top-background;
+				width: 23rem;
+				.top-background	{
+					.emoji-mart-emoji {
+						background-color: $light-emoji-content-top-background;
+					}
+				}
+				.cross-icon-back {
+					width: 2rem;
+					svg {
+						.cancel-cross-2 {
+							stroke: $light-emoji-content-top-background;
+						}
+					}
+				}
+			
+				.activeEmoji {
+					border-bottom:2px solid $colors-notifications-blue;
+				}
 
+				.emoji-mart-emoji {
+					background-color: $emoji-content-background;
+					border: none;
+					span {
+						cursor: pointer;
+					}
+				}
+				button {
+					&:focus {
+						outline: none !important;
+					}
+				}
+			}
 			.emoji-mart-emoji {
 				background-color: $emoji-content-background;
 				border: none;
@@ -411,6 +448,7 @@ $dark-emoji-content-background: #454848;
 
 .dark-theme {
 	.chat-wrapper {
+		border: 1px solid $dark-box-fields !important;
 		background-color: $chat-wrapper-dark--background-color;
 
 		&.minimized {
@@ -462,7 +500,7 @@ $dark-emoji-content-background: #454848;
 						color: #ffff00;
 					}
 				}
-		}
+			}
 
 			.item-options {
 				.item-options-wrapper {
@@ -512,6 +550,23 @@ $dark-emoji-content-background: #454848;
 			}
 			.emoji-container {
 				background-color: $dark-emoji-content-background;
+
+				.chat-category{
+					background-color: $dark-emoji-content-top-background;
+					border-bottom: 1px solid grey;
+					.top-background	{
+						.emoji-mart-emoji {
+							background-color: $dark-emoji-content-top-background!important
+						}
+					}
+					.cross-icon-back {
+						svg{
+							.cancel-cross-2{
+								stroke: $dark-emoji-content-top-background;
+							}
+						}
+					}
+				}
 				.emoji-mart-emoji {
 					background-color: $dark-emoji-content-background;
 				}

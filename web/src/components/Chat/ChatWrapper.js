@@ -50,6 +50,7 @@ export const ChatWrapper = ({
 						title={minimized && unreadMessages > 0 ? unreadMessages : title}
 						minimizeChat={minimizeChat}
 						minimized={minimized}
+						unreadMessages={unreadMessages}
 					/>
 				)}
 				<div className="d-flex flex-column nondraggable">

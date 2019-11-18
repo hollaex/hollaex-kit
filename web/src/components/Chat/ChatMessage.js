@@ -59,7 +59,14 @@ class ChatMessageWithText extends Component {
 	};
 
 	render() {
-		const { username, to, messageContent, ownMessage, timestamp, verification_level } = this.props;
+		const {
+			username,
+			// to,
+			messageContent,
+			ownMessage,
+			timestamp,
+			verification_level
+		} = this.props;
 		const { maxLines } = this.state;
 		return (
 			<div className={classnames('nonmobile')}>

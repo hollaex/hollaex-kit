@@ -22,7 +22,8 @@ class Chat extends Component {
 		chatSocketInitializing: false,
 		to: '',
 		messages: [],
-		showEmojiBox: false
+		showEmojiBox: false,
+		unreadMessages: 0
 	};
 
 	componentWillMount() {
@@ -87,7 +88,7 @@ class Chat extends Component {
 				  (messages.length - this.state.messages.length)
 				: 0;
 			this.props.setChatUnreadMessages(unreadMessages);
-			this.setState({ messages });
+			this.setState({ messages, unreadMessages });
 		});
 
 		chatWs.on('announcement', (announcement) => {
