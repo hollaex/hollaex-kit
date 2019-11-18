@@ -14,7 +14,7 @@ plugins.forEach((plugin) => {
 	}
 });
 
-app.get('/', (req, res) => {
+app.get('/plugins', (req, res) => {
 	res.send('Welcome to HollaEx plugin');
 });
 
