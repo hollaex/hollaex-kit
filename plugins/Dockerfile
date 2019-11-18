@@ -11,4 +11,6 @@ RUN npm install -g express && \
 
 WORKDIR /app
 
-CMD node /app/index.js
+RUN ls -al && cd plugins && ls -al 
+
+ENTRYPOINT ["node", "/app/plugins/index.js"]
