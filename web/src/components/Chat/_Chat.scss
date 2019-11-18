@@ -395,10 +395,12 @@ $light-emoji-content-top-background: #dbdbdb;
 			height: 15rem;
 			overflow-y: scroll;
 			background-color: $emoji-content-background;
+
 			.chat-category {
 				border-bottom: 1px solid grey;
 				background-color: $light-emoji-content-top-background;
-				width: 23rem;
+				width: 100%;
+
 				.top-background	{
 					.emoji-mart-emoji {
 						background-color: $light-emoji-content-top-background;
@@ -551,9 +553,10 @@ $light-emoji-content-top-background: #dbdbdb;
 			.emoji-container {
 				background-color: $dark-emoji-content-background;
 
-				.chat-category{
+				.chat-category {
 					background-color: $dark-emoji-content-top-background;
 					border-bottom: 1px solid grey;
+
 					.top-background	{
 						.emoji-mart-emoji {
 							background-color: $dark-emoji-content-top-background!important

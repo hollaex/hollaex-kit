@@ -7451,7 +7451,7 @@ foreignObject {
       .chat-wrapper .chat-footer .emoji-container .chat-category {
         border-bottom: 1px solid grey;
         background-color: #dbdbdb;
-        width: 23rem; }
+        width: 100%; }
         .chat-wrapper .chat-footer .emoji-container .chat-category .top-background .emoji-mart-emoji {
           background-color: #dbdbdb; }
         .chat-wrapper .chat-footer .emoji-container .chat-category .cross-icon-back {
