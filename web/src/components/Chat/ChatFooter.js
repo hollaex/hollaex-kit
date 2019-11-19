@@ -28,8 +28,7 @@ class ChatFooter extends Component {
 			set_username,
 			showEmojiBox = false,
 			handleEmojiBox,
-			onEmojiSelect,
-			handleTextFocus
+			onEmojiSelect
 		} = this.props;
 		const selectedEmojis = customEmojis.filter((data) => data.id === this.state.selectedCategory)
 		return (
@@ -44,11 +43,10 @@ class ChatFooter extends Component {
 						sendMessage={sendMessage}
 						setChatBoxRef={setChatBoxRef}
 						handleEmojiBox={handleEmojiBox}
-						handleTextFocus={handleTextFocus}
 					/>
 				)}
 				{showEmojiBox && (
-					<div className="d-flex flex-wrap emoji-container">
+					<div className="emoji-container">
 						<div className="d-flex justify-content-between chat-category">
 							<div className="d-flex flex-wrap">
 								{customEmojis.map(((emoji, index) => {
@@ -62,6 +60,7 @@ class ChatFooter extends Component {
 															: { id: emoji.id, skin: emoji.skin }
 													}
 													size={18}
+													set="google"
 													onClick={() => this.onClickEmoji(emoji.id)}
 												/>
 											</div>
@@ -70,17 +69,16 @@ class ChatFooter extends Component {
 									)
 								}))}
 							</div>
-							<div onClick={handleTextFocus}>
+							<div className="emoji-close" onClick={handleEmojiBox}>
 								<ReactSVG
 									path={ICONS.CANCEL_CROSS_ACTIVE}
 									wrapperClassName="cross-icon-back"
 								/>
 							</div>
 						</div>
-						{selectedEmojis.map((emoji, key) => {
-							return <div key={key} className="d-flex flex-wrap">
-								{emoji.emojis.map((emoji, index) => {
-									return (
+						<div className="d-flex flex-wrap align-content-start py-2 emoji-content">
+							{selectedEmojis.map((emoji, key) => {
+								return emoji.emojis.map((emoji, index) => (
 										<div key={index} className="pointer" >
 											<Emoji
 												emoji={
@@ -89,14 +87,14 @@ class ChatFooter extends Component {
 														: { id: emoji.id }
 												}
 												size={18}
+												set="google"
 												onClick={onEmojiSelect} />
 										</div>
 									)
-								})}
-							</div>
-						})
-						}
-
+								)
+							})
+							}
+						</div>
 					</div>
 				)}
 			</div>

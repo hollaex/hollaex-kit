@@ -22,12 +22,14 @@ export const ChatHeader = ({
 				'align-items-center',
 				'chat-header'
 			)}
+			onClick={
+				minimized
+					? minimizeChat
+					: () => { }
+			}
 		>
-			{minimized ?
-				<div>{STRINGS.formatString(STRINGS.CHAT.TROLLBOX, unreadMessages)}</div>
-				:
-				<div className="d-flex chat-header-icon" />}
+			<div>{STRINGS.formatString(STRINGS.CHAT.TROLLBOX, unreadMessages)}</div>
+			{/* <div className="d-flex chat-header-icon" /> */}
 			<MinimalizeChat minimized={minimized} onClick={minimizeChat} />
-
 		</div>
 	);

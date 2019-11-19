@@ -7,7 +7,7 @@ import ReactSvg from 'react-svg';
 import { ICONS } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 
-const MAX_LENGTH = 400;
+const MAX_LENGTH = 480;
 
 export const ChatMessageBox = ({
 	value,
@@ -15,8 +15,7 @@ export const ChatMessageBox = ({
 	sendMessage,
 	setChatBoxRef,
 	set_username,
-	handleEmojiBox,
-	handleTextFocus
+	handleEmojiBox
 }) => (
 	set_username?
 	<div className={classnames('d-flex')} style={{flex:1}}>
@@ -26,7 +25,6 @@ export const ChatMessageBox = ({
 			maxLength={MAX_LENGTH}
 			className="chat-message-box"
 			placeholder={STRINGS.CHAT.CHAT_MESSAGE_BOX_PLACEHOLDER}
-			onFocus={handleTextFocus}
 			onKeyPress={sendMessage}
 		/>
 		<div

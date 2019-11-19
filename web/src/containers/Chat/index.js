@@ -158,15 +158,12 @@ class Chat extends Component {
 		this.setState({ showEmojiBox: !this.state.showEmojiBox });
 	};
 
-	handleTextFocus = () => {
-		this.setState({ showEmojiBox: false });
-	};
-
 	onEmojiSelect = (emoji) => {
 		let value = this.chatMessageBox.value;
 		if (emoji.native) {
 			this.chatMessageBox.value = value + emoji.native;
 		}
+		this.chatMessageBox.focus();
 	};
 
 	render() {
@@ -207,7 +204,6 @@ class Chat extends Component {
 				handleEmojiBox={this.handleEmojiBox}
 				removeMessage={this.removeMessage}
 				onEmojiSelect={this.onEmojiSelect}
-				handleTextFocus={this.handleTextFocus}
 			/>
 		);
 	}

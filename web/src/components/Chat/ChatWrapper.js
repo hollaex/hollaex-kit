@@ -22,8 +22,7 @@ export const ChatWrapper = ({
 	set_username,
 	showEmojiBox,
 	handleEmojiBox,
-	onEmojiSelect,
-	handleTextFocus
+	onEmojiSelect
 }) => {
 	const chatInitialized =
 		chatSocketInitialized && !chatSocketInitializing ? true : false;
@@ -72,7 +71,6 @@ export const ChatWrapper = ({
 						showEmojiBox={showEmojiBox}
 						handleEmojiBox={handleEmojiBox}
 						onEmojiSelect={onEmojiSelect}
-						handleTextFocus={handleTextFocus}
 					/>
 				</div>
 			</div>

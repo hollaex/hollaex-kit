@@ -93,7 +93,11 @@ function requireAuth(nextState, replace) {
 }
 
 function loggedIn(nextState, replace) {
-	if (isLoggedIn()) {
+	let service = nextState.location.query
+		&& nextState.location.query.service
+			? nextState.location.query.service
+			: '';
+	if (isLoggedIn() && !service) {
 		replace({
 			pathname: '/account'
 		});
