@@ -24,7 +24,8 @@ class ChatMessageList extends Component {
 		return ((lastMsg && ((this.scrollbarsRef.getValues().top > 0.95) || (this.props.username === lastMsg.username)))  || 
 		(!isMobile && prevProps.chatIsClosed && (prevProps.chatIsClosed !== this.props.chatIsClosed)) ||
 		(!prevProps.chatInitialized && (prevProps.chatInitialized !== this.props.chatInitialized)) ||
-		(!prevProps.userInitialized && (prevProps.userInitialized !== this.props.userInitialized)))
+		(!prevProps.userInitialized && (prevProps.userInitialized !== this.props.userInitialized)) ||
+		(prevProps.showEmojiBox !== this.props.showEmojiBox))
 	}
 	scrollToBottom = () => {
 		if (
@@ -63,7 +64,8 @@ class ChatMessageList extends Component {
 			chatInitialized,
 			userInitialized,
 			usernameInitalized,
-			removeMessage
+			removeMessage,
+			onCloseEmoji
 		} = this.props;
 
 		return (
@@ -104,6 +106,7 @@ class ChatMessageList extends Component {
 							messageContent={message}
 							removeMessage={removeMessage}
 							timestamp={timestamp}
+							onCloseEmoji={onCloseEmoji}
 						/>
 					))
 				) : (

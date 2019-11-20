@@ -36,7 +36,10 @@ class UserContent extends Component {
 		const { id, activated, otp_enabled, flagged } = userInformation;
 		const isSupportUser = isSupport();
 		const pairs = Object.keys(coins) || [];
-
+		const verificationInitialValues = {};
+		if (userInformation.verification_level) {
+			verificationInitialValues.verification_level = userInformation.verification_level;
+		}
 		return (
 			<div className="app_container-content">
 				<div className="d-flex justify-content-between">
@@ -129,6 +132,7 @@ class UserContent extends Component {
 							user_id={userInformation.id}
 							userImages={userImages}
 							userInformation={userInformation}
+							verificationInitialValues={verificationInitialValues}
 							refreshData={refreshData}
 						/>
 					</TabPane>
