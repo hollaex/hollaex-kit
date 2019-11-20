@@ -1,7 +1,7 @@
 import React from 'react';
 import QRCode from 'qrcode.react';
 import classnames from 'classnames';
-import { BASE_CURRENCY, DEFAULT_COIN_DATA } from '../../config/constants';
+import { DEFAULT_COIN_DATA } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 
 import { isMobile } from 'react-device-detect';

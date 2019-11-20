@@ -971,7 +971,8 @@ export default {
 		HIDE_IMAGE: 'Hide Image',
 		CHAT_MESSAGE_BOX_PLACEHOLDER: 'Message',
 		SIGN_UP_CHAT: 'Sign Up To Chat',
-		JOIN_CHAT: 'Set Username To Chat'
+		JOIN_CHAT: 'Set Username To Chat',
+		TROLLBOX:'Trollbox ({0})'
 	},
 	INVALID_USERNAME:
 		'Username must be between 3 and 15 characters long. Only contains lowercase, numbers and underscore',

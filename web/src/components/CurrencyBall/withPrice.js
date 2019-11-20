@@ -1,8 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { CurrencyBall } from '../';
-import { formatToCurrency, calculatePrice } from '../../utils/currency';
-import { BASE_CURRENCY, DEFAULT_COIN_DATA } from '../../config/constants';
+import { formatToCurrency } from '../../utils/currency';
+import { DEFAULT_COIN_DATA } from '../../config/constants';
 
 const CurrencyBallWithPrice = ({
 	symbol,
@@ -12,7 +12,6 @@ const CurrencyBallWithPrice = ({
 	coins = {}
 }) => {
 	const { name, min, ...rest } = coins[symbol] || DEFAULT_COIN_DATA;
-	const baseCoin = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
 	const currencyShortName = rest.symbol ? rest.symbol.toUpperCase() : name;
 	return (
 		<div className="with_price-block_amount d-flex direction_ltr">

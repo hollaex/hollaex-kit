@@ -21,7 +21,9 @@ class Chat extends Component {
 		chatSocketInitialized: false,
 		chatSocketInitializing: false,
 		to: '',
-		messages: []
+		messages: [],
+		showEmojiBox: false,
+		unreadMessages: 0
 	};
 
 	componentWillMount() {
@@ -86,7 +88,7 @@ class Chat extends Component {
 				  (messages.length - this.state.messages.length)
 				: 0;
 			this.props.setChatUnreadMessages(unreadMessages);
-			this.setState({ messages });
+			this.setState({ messages, unreadMessages });
 		});
 
 		chatWs.on('announcement', (announcement) => {
@@ -152,6 +154,18 @@ class Chat extends Component {
 		this.state.chatWs.emit('deleteMessage', id);
 	};
 
+	handleEmojiBox = () => {
+		this.setState({ showEmojiBox: !this.state.showEmojiBox });
+	};
+
+	onEmojiSelect = (emoji) => {
+		let value = this.chatMessageBox.value;
+		if (emoji.native) {
+			this.chatMessageBox.value = value + emoji.native;
+		}
+		this.chatMessageBox.focus();
+	};
+
 	render() {
 		const {
 			username,
@@ -166,7 +180,8 @@ class Chat extends Component {
 			messages,
 			chatSocketInitialized,
 			chatSocketInitializing,
-			unreadMessages
+			unreadMessages,
+			showEmojiBox
 		} = this.state;
 
 		return (
@@ -185,7 +200,10 @@ class Chat extends Component {
 				minimizeChat={onMinimize}
 				chatIsClosed={chatIsClosed}
 				set_username={set_username}
+				showEmojiBox={showEmojiBox}
+				handleEmojiBox={this.handleEmojiBox}
 				removeMessage={this.removeMessage}
+				onEmojiSelect={this.onEmojiSelect}
 			/>
 		);
 	}

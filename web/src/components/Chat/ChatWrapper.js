@@ -1,5 +1,5 @@
 import React from 'react';
-import Draggable from 'react-draggable';
+// import Draggable from 'react-draggable';
 import classnames from 'classnames';
 import { ChatHeader, ChatMessageList, ChatFooter } from './';
 import { isMobile } from 'react-device-detect';
@@ -19,7 +19,10 @@ export const ChatWrapper = ({
 	userType,
 	removeMessage,
 	chatIsClosed,
-	set_username
+	set_username,
+	showEmojiBox,
+	handleEmojiBox,
+	onEmojiSelect
 }) => {
 	const chatInitialized =
 		chatSocketInitialized && !chatSocketInitializing ? true : false;
@@ -28,10 +31,10 @@ export const ChatWrapper = ({
 		chatInitialized && usernameInitalized && userInitialized;
 
 	return (
-		<Draggable
-			disabled={!userInitialized || minimized || isMobile}
-			cancel=".nondraggable"
-		>
+		// <Draggable
+		// 	disabled={!userInitialized || minimized || isMobile}
+		// 	cancel=".nondraggable"
+		// >
 			<div
 				className={classnames(
 					'd-flex',
@@ -46,6 +49,7 @@ export const ChatWrapper = ({
 						title={minimized && unreadMessages > 0 ? unreadMessages : title}
 						minimizeChat={minimizeChat}
 						minimized={minimized}
+						unreadMessages={unreadMessages}
 					/>
 				)}
 				<div className="d-flex flex-column nondraggable">
@@ -64,9 +68,12 @@ export const ChatWrapper = ({
 						chatWrapperInitialized={chatWrapperInitialized}
 						sendMessage={sendMessage}
 						setChatBoxRef={setChatBoxRef}
+						showEmojiBox={showEmojiBox}
+						handleEmojiBox={handleEmojiBox}
+						onEmojiSelect={onEmojiSelect}
 					/>
 				</div>
 			</div>
-		</Draggable>
+		// </Draggable>
 	);
 };
