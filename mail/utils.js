@@ -68,10 +68,33 @@ const getCountryFromIp = (ip) => {
 	}`;
 };
 
+const nodemailer = require('nodemailer');
+const {
+	SMTP_SERVER,
+	SMTP_PORT,
+	SMTP_USER,
+	SMTP_PASSWORD
+} = require('../constants');
+
+const transport = nodemailer.createTransport({
+	host: SMTP_SERVER,
+	port: SMTP_PORT,
+	auth: {
+		user: SMTP_USER,
+		pass: SMTP_PASSWORD
+	},
+	logger: true,
+});
+
+const sendSMTPEmail = (params) => {
+	return transport.sendMail(params);
+};
+
 module.exports = {
 	sendAwsEmail,
 	sendAwsRawEmail,
 	formatDate,
 	formatTimezone,
-	getCountryFromIp
+	getCountryFromIp,
+	sendSMTPEmail
 };
