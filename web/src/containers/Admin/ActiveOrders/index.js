@@ -19,7 +19,7 @@ const formatNum = (value) => {
 
 const renderUser = (v, data) => {
     return (
-        <div>
+        <div className="blue-link">
             <Link to={`/admin/user?id=${v}`}>
                 <div>{data.created_by}</div>
             </Link>
@@ -29,7 +29,10 @@ const renderUser = (v, data) => {
 
 const COLUMNS = [
     {
-        title: 'User ID', dataIndex: 'created_by', key: 'id', render: (v, data) => renderUser(v, data)
+        title: 'User ID',
+        dataIndex: 'created_by',
+        key: 'id',
+        render: (v, data) => renderUser(v, data)
     },
     { title: 'Side', dataIndex: 'side', key: 'side' },
     { title: 'Symbol', dataIndex: 'symbol', key: 'symbol' },
