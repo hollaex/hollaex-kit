@@ -20,7 +20,7 @@ import DataDisplay, {
 
 import './index.css';
 
-import { isSupport, isSupervisor, isAdmin } from '../../../utils/token';
+import { isSupport, isSupervisor } from '../../../utils/token';
 import {
 	formatTimestampGregorian,
 	formatTimestampFarsi,

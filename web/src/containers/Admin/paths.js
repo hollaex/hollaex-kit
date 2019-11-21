@@ -50,6 +50,14 @@ export const PATHS = [
 		routeKey: 'withdrawal'
 	},
 	{
+		path: '/admin/activeorders',
+		label: 'Active Orders',
+		hideIfSupport: true,
+		hideIfKYC: true,
+		hideIfSupervisor: true,
+		routeKey: 'orders'
+	},
+	{
 		path: '/admin/pair',
 		// component: UserFees,
 		label: 'Trading Pairs',

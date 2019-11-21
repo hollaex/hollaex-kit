@@ -1,23 +1,11 @@
 import React, { Component } from 'react';
 import { Row, Col, Table, Spin } from 'antd';
 import { CSVLink } from 'react-csv';
-import { requestTrades } from './actions';
-
 import { SubmissionError } from 'redux-form';
-
-import { formatCurrency } from '../../../utils/index';
 import Moment from 'react-moment';
 
-const INITIAL_STATE = {
-	tradeHistory: '',
-	loading: true,
-	total: 0,
-	page: 1,
-	pageSize: 10,
-	limit: 50,
-	currentTablePage: 1,
-	isRemaining: true
-};
+import { requestOrders } from './action'
+import { formatCurrency } from '../../../utils/index';
 
 const formatDate = (value) => {
 	return <Moment format="YYYY/MM/DD HH:mm">{value}</Moment>;
@@ -27,11 +15,11 @@ const formatNum = (value) => {
 };
 
 const COLUMNS = [
-	{ title: 'Side', dataIndex: 'side', key: 'side' },
+	{ title: 'Side', dataIndex: 'side' },
 	{ title: 'Symbol', dataIndex: 'symbol', key: 'symbol' },
 	{ title: 'Size', dataIndex: 'size', key: 'size', render: formatNum },
 	{ title: 'Price', dataIndex: 'price', key: 'price', render: formatNum },
-	{ title: 'Fee', dataIndex: 'fee', key: 'fee', render: formatNum },
+	{ title: 'Filled', dataIndex: 'filled', key: 'filled', render: formatNum },
 	{
 		title: 'Time',
 		dataIndex: 'timestamp',
@@ -45,25 +33,37 @@ const SCV_COLUMNS = [
 	{ label: 'Symbol', dataIndex: 'symbol', key: 'symbol' },
 	{ label: 'Size', dataIndex: 'size', key: 'size' },
 	{ label: 'Price', dataIndex: 'price', key: 'price' },
-	{ label: 'Fee', dataIndex: 'fee', key: 'fee' },
+	{ label: 'Filled', dataIndex: 'filled', key: 'filled' },
 	{ label: 'Time', dataIndex: 'timestamp', key: 'timestamp' }
 ];
 
-class TradeHistory extends Component {
-	state = INITIAL_STATE;
+class UserOrders extends Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			Orders: '',
+			loading: true,
+			total: 0,
+			page: 1,
+			pageSize: 10,
+			limit: 50,
+			currentTablePage: 1,
+			isRemaining: true
+		};
+	}
 
-	componentWillMount = () => {
+	componentDidMount = () => {
 		if (this.props.userId) {
 			this.handleTrades(this.props.userId, this.state.page, this.state.limit);
 		}
 	};
 
 	handleTrades = (userId, page, limit) => {
-		requestTrades(userId, page, limit)
+		requestOrders(userId, page, limit)
 			.then((res) => {
 				if (res) {
 					this.setState({
-						tradeHistory: [...this.state.tradeHistory, ...res.data],
+						Orders: [...this.state.Orders, ...res.data],
 						loading: false,
 						total: res.count,
 						page: res.page,
@@ -96,7 +96,7 @@ class TradeHistory extends Component {
 	};
 
 	render() {
-		const { tradeHistory, currentTablePage, loading } = this.state;
+		const { Orders, currentTablePage, loading } = this.state;
 		if (loading) {
 			return (
 				<div className="app_container-content">
@@ -110,18 +110,18 @@ class TradeHistory extends Component {
 				<Row gutter={16} style={{ marginTop: 16 }}>
 					<Col>
 						<CSVLink
-							filename={'trade-history.csv'}
-							data={tradeHistory ? tradeHistory : 'NO Data'}
+							filename={'user-orders.csv'}
+							data={Orders ? Orders : 'NO Data'}
 							headers={SCV_COLUMNS}
 						>
 							Download table
 						</CSVLink>
 						<Table
 							columns={COLUMNS}
-							rowKey={(data, index) => {
-								return `${data.symbol}_${index}`;
+							rowKey={(data) => {
+								return data.id;
 							}}
-							dataSource={tradeHistory ? tradeHistory : 'NO Data'}
+							dataSource={Orders ? Orders : 'NO Data'}
 							pagination={{
 								current: currentTablePage,
 								onChange: this.pageChange
@@ -134,4 +134,4 @@ class TradeHistory extends Component {
 	}
 }
 
-export default TradeHistory;
+export default UserOrders;

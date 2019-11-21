@@ -11,7 +11,8 @@ import {
 	Activate,
 	TradeHistory,
 	UploadIds,
-	Transactions
+	Transactions,
+	UserOrders
 } from '../';
 import UserData from './UserData';
 import BankData from './BankData';
@@ -92,6 +93,11 @@ class UserContent extends Component {
 					{!isSupportUser && !isKYC() && (
 						<TabPane tab="Balance" key="balance">
 							<UserBalance userData={userInformation} />
+						</TabPane>
+					)}
+					{!isSupportUser && !isKYC() && (
+						<TabPane tab="Orders" key="orders">
+							<UserOrders userId={userInformation.id} />
 						</TabPane>
 					)}
 					{!isSupportUser && !isKYC() && (

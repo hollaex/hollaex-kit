@@ -7366,7 +7366,7 @@ foreignObject {
       .chat-wrapper .chat-message-list .chat-message .message-content span.toggle-content {
         position: relative;
         cursor: pointer;
-        color: #2798c7; }
+        color: #00aeef; }
         .chat-wrapper .chat-message-list .chat-message .message-content span.toggle-content::before {
           display: inline-block;
           content: '\00bb';
@@ -7377,7 +7377,7 @@ foreignObject {
           content: '';
           bottom: 0;
           left: 0.2rem;
-          border-bottom: 1px dotted #2798c7;
+          border-bottom: 1px dotted #00aeef;
           width: 100%; }
       .chat-wrapper .chat-message-list .chat-message .message-content .show .toggle-content::before {
         -webkit-transform: rotate(90deg);
@@ -7515,6 +7515,10 @@ foreignObject {
       background-color: #353841; }
   .dark-theme .chat-wrapper .chat-message .message-content .message {
     color: #b6b4cc; }
+  .dark-theme .chat-wrapper .chat-message .message-content span.toggle-content {
+    color: #ed507b; }
+  .dark-theme .chat-wrapper .chat-message .message-content span::after {
+    border-bottom: 1px dotted #ed507b !important; }
   .dark-theme .chat-wrapper .chat-message .message-content .nonmobile .own-message {
     color: #ffff00; }
   .dark-theme .chat-wrapper .chat-message .item-options .item-options-wrapper .item-option {
