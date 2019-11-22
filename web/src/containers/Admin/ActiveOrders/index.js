@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Tabs, Row, Col, Table } from 'antd';
+import { Tabs, Row, Col, Table, Tooltip, Button } from 'antd';
 import { CSVLink } from 'react-csv';
 import { SubmissionError } from 'redux-form';
 import Moment from 'react-moment';
@@ -17,15 +17,15 @@ const formatNum = (value) => {
     return <div>{formatCurrency(value)}</div>;
 };
 
-const renderUser = (v, data) => {
-    return (
-        <div className="blue-link">
-            <Link to={`/admin/user?id=${v}`}>
-                <div>{data.created_by}</div>
+const renderUser = (id) => (
+    <Tooltip placement="bottom" title={`SEE USER ${id} DETAILS`}>
+        <Button type="primary">
+            <Link to={`/admin/user?id=${id}`}>
+                {id}
             </Link>
-        </div>
-    )
-};
+        </Button>
+    </Tooltip>
+);
 
 const COLUMNS = [
     {

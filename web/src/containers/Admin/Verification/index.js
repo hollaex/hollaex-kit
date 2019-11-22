@@ -130,7 +130,7 @@ class Verification extends Component {
 			roleInitialValues,
 			verificationInitialValues
 		} = this.props;
-		const { id, id_data } = userInformation;
+		const { id, id_data, is_admin } = userInformation;
 		let VERIFICATION_LEVELS =
 			isSupport() || isSupervisor()
 				? VERIFICATION_LEVELS_SUPPORT
@@ -177,7 +177,8 @@ class Verification extends Component {
 									label: 'role',
 									validate: [
 										validateRequired
-									]
+									],
+									disabled: is_admin
 								}
 							}}
 						/>
@@ -271,9 +272,9 @@ class Verification extends Component {
 }
 
 Verification.defaultProps = {
-	roleInitialValues: {
-		role: 'user'
-	},
+	// roleInitialValues: {
+	// 	role: 'user'
+	// },
 	verificationInitialValues: {}
 };
 

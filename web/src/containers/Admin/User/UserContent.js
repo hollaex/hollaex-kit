@@ -34,12 +34,34 @@ class UserContent extends Component {
 			refreshAllData,
 			onChangeUserDataSuccess
 		} = this.props;
-		const { id, activated, otp_enabled, flagged } = userInformation;
+		const {
+			id,
+			activated,
+			otp_enabled,
+			flagged,
+			verification_level,
+			is_admin,
+			is_support,
+			is_supervisor,
+			is_kyc
+		} = userInformation;
 		const isSupportUser = isSupport();
 		const pairs = Object.keys(coins) || [];
 		const verificationInitialValues = {};
-		if (userInformation.verification_level) {
-			verificationInitialValues.verification_level = userInformation.verification_level;
+		const roleInitialValues = {};
+		if (verification_level) {
+			verificationInitialValues.verification_level = verification_level;
+		}
+		if (is_admin) {
+			roleInitialValues.role = 'admin';
+		} else if (is_support) {
+			roleInitialValues.role = 'support';
+		} else if (is_supervisor) {
+			roleInitialValues.role = 'supervisor';
+		} else if (is_kyc) {
+			roleInitialValues.role = 'kyc';
+		} else {
+			roleInitialValues.role = 'user';
 		}
 		return (
 			<div className="app_container-content">
@@ -139,6 +161,7 @@ class UserContent extends Component {
 							userImages={userImages}
 							userInformation={userInformation}
 							verificationInitialValues={verificationInitialValues}
+							roleInitialValues={roleInitialValues}
 							refreshData={refreshData}
 						/>
 					</TabPane>

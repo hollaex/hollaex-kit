@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Row, Col, Table, Spin } from 'antd';
+import { Row, Col, Table, Spin, Button, Tooltip } from 'antd';
 import { CSVLink } from 'react-csv';
 import { SubmissionError } from 'redux-form';
 import Moment from 'react-moment';
@@ -13,8 +13,14 @@ const formatDate = (value) => {
 const formatNum = (value) => {
 	return <div>{formatCurrency(value)}</div>;
 };
-
-const COLUMNS = [
+// export const renderUser = (id) => (
+// 	<Tooltip placement="bottom" title={`SEE USER ${id} DETAILS`}>
+// 		<Button type="primary">
+// 			<Link to={`/admin/user?id=${id}`}>{id}</Link>
+// 		</Button>
+// 	</Tooltip>
+// );
+const getColumns = (onCancel) => [
 	{ title: 'Side', dataIndex: 'side' },
 	{ title: 'Symbol', dataIndex: 'symbol', key: 'symbol' },
 	{ title: 'Size', dataIndex: 'size', key: 'size', render: formatNum },
@@ -25,6 +31,18 @@ const COLUMNS = [
 		dataIndex: 'timestamp',
 		key: 'timestamp',
 		render: formatDate
+	},
+	{
+		title: 'Cancel order',
+		dataIndex: '',
+		key: '',
+		render: (e) => (
+			<Tooltip placement="bottom" title={`Cancel order`}>
+				<Button type="primary" onClick={() => onCancel(e)}>
+					Cancel
+				</Button>
+			</Tooltip>
+		)
 	}
 ];
 
@@ -95,6 +113,10 @@ class UserOrders extends Component {
 		this.setState({ currentTablePage: count });
 	};
 
+	onCancelOrder = (order) => {
+		// TODO: need to add cancel order api here
+	};
+
 	render() {
 		const { Orders, currentTablePage, loading } = this.state;
 		if (loading) {
@@ -104,6 +126,7 @@ class UserOrders extends Component {
 				</div>
 			);
 		}
+		let COLUMNS = getColumns(this.onCancelOrder);
 
 		return (
 			<Row>
