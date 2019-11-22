@@ -6,13 +6,13 @@ const { createRequest } = require('./utils');
 class HollaEx {
 	constructor(
 		opts = {
-			apiURL: 'https://api.demo.bitholla.com',
+			apiURL: 'https://api.hollaex.com',
 			baseURL: '/v1',
 			accessToken: ''
 		}
 	) {
-		this._url = opts.apiURL + opts.baseURL || 'https://api.demo.bitholla.com/v1';
-		this._wsUrl = opts.apiURL || 'https://api.demo.bitholla.com';
+		this._url = opts.apiURL + opts.baseURL || 'https://api.hollaex.com/v1';
+		this._wsUrl = opts.apiURL || 'https://api.hollaex.com';
 		this._accessToken = opts.accessToken || '';
 		this._headers = {
 			'content-type': 'application/json',
@@ -26,7 +26,7 @@ class HollaEx {
 
 	/**
 	 * Retrieve last, high, low, open and close price and volume within last 24 hours
-	 * @param {string} symbol - The currency pair symbol e.g. 'btc-eur'
+	 * @param {string} symbol - The currency pair symbol e.g. 'hex-usdt'
 	 * @return {string} A stringified JSON object with keys high(number), low(number), open(number), close(number), volume(number), last(number)
 	 */
 	getTicker(symbol) {
@@ -39,7 +39,7 @@ class HollaEx {
 
 	/**
 	 * Retrieve orderbook containing lists of up to the last 20 bids and asks
-	 * @param {string} symbol - The currency pair symbol e.g. 'btc-eur', leave empty to get orderbook for all symbol-pairs
+	 * @param {string} symbol - The currency pair symbol e.g. 'hex-usdt', leave empty to get orderbook for all symbol-pairs
 	 * @return {string} A stringified JSON object with the symbol-pairs as keys where the values are objects with keys bids(array of active buy orders), asks(array of active sell orders), and timestamp(string)
 	 */
 	getOrderbook(symbol = '') {
@@ -52,7 +52,7 @@ class HollaEx {
 
 	/**
 	 * Retrieve list of up to the last 50 trades
-	 * @param {string} symbol - The currency pair symbol e.g. 'btc-eur', leave empty to get trades for all symbol-pairs
+	 * @param {string} symbol - The currency pair symbol e.g. 'hex-usdt', leave empty to get trades for all symbol-pairs
 	 * @return {string} A stringified JSON object with the symbol-pairs as keys where the values are arrays of objects with keys size(number), price(number), side(string), and timestamp(string)
 	 */
 	getTrade(symbol = '') {
@@ -86,7 +86,7 @@ class HollaEx {
 
 	/**
 	 * Retrieve user's wallet balance
-	 * @return {string} A stringified JSON object with the keys updated_at(string), fiat_balance(number), fiat_pending(number), fiat_available(number), btc_balance, btc_pending, btc_available, eth_balance, eth_pending, eth_available, bch_balance, bch_pending, bch_available
+	 * @return {string} A stringified JSON object with the keys updated_at(string), usdt_balance(number), usdt_pending(number), usdt_available(number), hex_balance, hex_pending, hex_available, eth_balance, eth_pending, eth_available, bch_balance, bch_pending, bch_available
 	 */
 	getBalance() {
 		return createRequest('GET', `${this._url}/user/balance`, this._headers);
@@ -199,7 +199,7 @@ class HollaEx {
 
 	/**
 	 * Retrieve information of all the user's active orders
-	 * @param {string} symbol - The currency pair symbol to filter by e.g. 'btc-eur', leave empty to retrieve information of orders of all symbols
+	 * @param {string} symbol - The currency pair symbol to filter by e.g. 'hex-usdt', leave empty to retrieve information of orders of all symbols
 	 * @return {string} A stringified JSON array of objects containing the user's active orders
 	 */
 	getAllOrder(symbol = '') {
@@ -212,7 +212,7 @@ class HollaEx {
 
 	/**
 	 * Create a new order
-	 * @param {string} symbol - The currency pair symbol e.g. 'btc-eur'
+	 * @param {string} symbol - The currency pair symbol e.g. 'hex-usdt'
 	 * @param {string} side - The side of the order e.g. 'buy', 'sell'
 	 * @param {number} size - The amount of currency to order
 	 * @param {string} type - The type of order to create e.g. 'market', 'limit'
@@ -239,7 +239,7 @@ class HollaEx {
 
 	/**
 	 * Cancel all the user's active orders, can filter by currency pair symbol
-	 * @param {string} symbol - The currency pair symbol to filter by e.g. 'btc-eur', leave empty to cancel orders of all symbols
+	 * @param {string} symbol - The currency pair symbol to filter by e.g. 'hex-usdt', leave empty to cancel orders of all symbols
 	 * @return {string} A stringified JSON array of objects containing the cancelled orders
 	 */
 	cancelAllOrder(symbol = '') {
