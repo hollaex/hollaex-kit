@@ -156,6 +156,11 @@ class Chat extends Component {
 
 	handleEmojiBox = () => {
 		this.setState({ showEmojiBox: !this.state.showEmojiBox });
+		this.chatMessageBox.focus();
+	};
+
+	onCloseEmoji = () => {
+		this.setState({ showEmojiBox: false });
 	};
 
 	onEmojiSelect = (emoji) => {
@@ -204,6 +209,7 @@ class Chat extends Component {
 				handleEmojiBox={this.handleEmojiBox}
 				removeMessage={this.removeMessage}
 				onEmojiSelect={this.onEmojiSelect}
+				onCloseEmoji={this.onCloseEmoji}
 			/>
 		);
 	}

@@ -42,7 +42,8 @@ import {
 	Wallets,
 	UserFees,
 	PATHS,
-	ExpiredExchange
+	ExpiredExchange,
+	AdminOrders
 } from './containers';
 
 import store from './store';
@@ -299,6 +300,11 @@ export default (
 				path="/admin/chat"
 				name="Admin Chats"
 				component={withAdminProps(AdminChat, 'chat')}
+			/>
+			<Route
+				path="/admin/activeorders"
+				name="Admin Orders"
+				component={withAdminProps(AdminOrders, 'orders')}
 			/>
 		</Route>
 		<Route
