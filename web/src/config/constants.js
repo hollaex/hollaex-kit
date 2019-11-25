@@ -257,6 +257,7 @@ export const ICONS = {
 	REFERRAL_SUCCESS: '/assets/icons/send-request.svg',
 	INCOMING_WAVE:'/assets/images/incoming-wave.svg',
 	TRADE_ANNOUNCEMENT: '/assets/images/announcement.svg',
+	CHAT_EMOJI: '/assets/icons/emoji-face-icon.svg',
 	TRADE_SETTINGS:'/assets/images/spanner.svg',
 	TRADE_WAVES:'/assets/images/wave-icon.svg',
 	HEX_LOGO_LIGHT:'/assets/icons/HEX-logo-light.svg',

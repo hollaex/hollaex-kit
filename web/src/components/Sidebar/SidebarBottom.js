@@ -50,8 +50,8 @@ export const SidebarBottom = ({ activePath = 'x', pair = '', isLogged }) => {
 					iconPath={ICONS.SIDEBAR_WALLET_ACTIVE}
 					active={activePath === 'wallet'}
 				/>
-			</div>
-			: <div className="d-flex w-100 p-4">
+			</div> :
+			<div className="d-flex w-100 p-4">
 				<div className="w-50">
 					<ButtonLink
 						link={'/signup'}

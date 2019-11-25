@@ -39,7 +39,8 @@ import {
 	Wallets,
 	UserFees,
 	PATHS,
-	ExpiredExchange
+	ExpiredExchange,
+	AdminOrders
 } from './containers';
 
 import store from './store';
@@ -90,7 +91,11 @@ function requireAuth(nextState, replace) {
 }
 
 function loggedIn(nextState, replace) {
-	if (isLoggedIn()) {
+	let service = nextState.location.query
+		&& nextState.location.query.service
+			? nextState.location.query.service
+			: '';
+	if (isLoggedIn() && !service) {
 		replace({
 			pathname: '/trade/hex-usdt'
 		});
@@ -307,6 +312,11 @@ export default (
 				path="/admin/chat"
 				name="Admin Chats"
 				component={withAdminProps(AdminChat, 'chat')}
+			/>
+			<Route
+				path="/admin/activeorders"
+				name="Admin Orders"
+				component={withAdminProps(AdminOrders, 'orders')}
 			/>
 		</Route>
 		<Route

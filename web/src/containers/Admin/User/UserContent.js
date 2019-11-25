@@ -11,7 +11,8 @@ import {
 	Activate,
 	TradeHistory,
 	UploadIds,
-	Transactions
+	Transactions,
+	UserOrders
 } from '../';
 import UserData from './UserData';
 import BankData from './BankData';
@@ -33,10 +34,35 @@ class UserContent extends Component {
 			refreshAllData,
 			onChangeUserDataSuccess
 		} = this.props;
-		const { id, activated, otp_enabled, flagged } = userInformation;
+		const {
+			id,
+			activated,
+			otp_enabled,
+			flagged,
+			verification_level,
+			is_admin,
+			is_support,
+			is_supervisor,
+			is_kyc
+		} = userInformation;
 		const isSupportUser = isSupport();
 		const pairs = Object.keys(coins) || [];
-
+		const verificationInitialValues = {};
+		const roleInitialValues = {};
+		if (verification_level) {
+			verificationInitialValues.verification_level = verification_level;
+		}
+		if (is_admin) {
+			roleInitialValues.role = 'admin';
+		} else if (is_support) {
+			roleInitialValues.role = 'support';
+		} else if (is_supervisor) {
+			roleInitialValues.role = 'supervisor';
+		} else if (is_kyc) {
+			roleInitialValues.role = 'kyc';
+		} else {
+			roleInitialValues.role = 'user';
+		}
 		return (
 			<div className="app_container-content">
 				<div className="d-flex justify-content-between">
@@ -92,6 +118,11 @@ class UserContent extends Component {
 						</TabPane>
 					)}
 					{!isSupportUser && !isKYC() && (
+						<TabPane tab="Orders" key="orders">
+							<UserOrders userId={userInformation.id} />
+						</TabPane>
+					)}
+					{!isSupportUser && !isKYC() && (
 						<TabPane tab="Trade history" key="trade">
 							<TradeHistory userId={userInformation.id} />
 						</TabPane>
@@ -129,6 +160,8 @@ class UserContent extends Component {
 							user_id={userInformation.id}
 							userImages={userImages}
 							userInformation={userInformation}
+							verificationInitialValues={verificationInitialValues}
+							roleInitialValues={roleInitialValues}
 							refreshData={refreshData}
 						/>
 					</TabPane>

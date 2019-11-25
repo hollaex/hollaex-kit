@@ -78,7 +78,9 @@ class QuickTradeContainer extends Component {
 			JSON.stringify(this.props.prices) !==
 				JSON.stringify(nextProps.prices) ||
 			JSON.stringify(this.props.balance) !==
-				JSON.stringify(nextProps.balance)
+				JSON.stringify(nextProps.balance) ||
+			JSON.stringify(this.props.coins) !==
+				JSON.stringify(nextProps.coins)
 		) {
 			this.calculateSections(nextProps);
 		}
@@ -105,8 +107,8 @@ class QuickTradeContainer extends Component {
 		}
 	};
 
-	calculateSections = ({ balance, prices }) => {
-		const totalAssets = calculateBalancePrice(balance, prices);
+	calculateSections = ({ balance, prices, coins }) => {
+		const totalAssets = calculateBalancePrice(balance, prices, coins);
 		this.setState({ totalAssets });
 	};
 

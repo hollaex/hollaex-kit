@@ -34,7 +34,8 @@ class Wallet extends Component {
 			nextProps.price !== this.props.price ||
 			nextProps.orders.length !== this.props.orders.length ||
 			nextProps.balance.timestamp !== this.props.balance.timestamp ||
-			JSON.stringify(this.props.prices) !== JSON.stringify(nextProps.prices) ||
+			JSON.stringify(this.props.prices) !==
+				JSON.stringify(nextProps.prices) ||
 			nextProps.activeLanguage !== this.props.activeLanguage
 		) {
 			this.calculateSections(nextProps);

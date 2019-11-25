@@ -81,13 +81,14 @@ class OrderEntry extends Component {
 			this.generateFormValues(nextProps.pair, '', nextProps.priceInitialized, nextProps.sizeInitialized);
 		}
 		if (JSON.stringify(this.props.prices) !== JSON.stringify(nextProps.prices) ||
-			JSON.stringify(this.props.balance) !== JSON.stringify(nextProps.balance)) {
+			JSON.stringify(this.props.balance) !== JSON.stringify(nextProps.balance) ||
+			JSON.stringify(this.props.coins) !== JSON.stringify(nextProps.coins)) {
 			this.calculateSections(nextProps);
 		}
 	}
 
-	calculateSections = ({ balance, prices }) => {
-		const totalAssets = calculateBalancePrice(balance, prices);
+	calculateSections = ({ balance, prices, coins }) => {
+		const totalAssets = calculateBalancePrice(balance, prices, coins);
 		this.setState({ totalAssets });
 	};
 

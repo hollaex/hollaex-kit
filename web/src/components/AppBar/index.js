@@ -318,7 +318,8 @@ class AppBar extends Component {
 			router,
 			activePath,
 			location,
-			pairs
+			pairs,
+			onHelp
 		} = this.props;
 		const {
 			isAccountMenu,
@@ -470,6 +471,7 @@ class AppBar extends Component {
 						logout={logout}
 						activePath={activePath}
 						closeAccountMenu={this.closeAccountMenu}
+						onHelp={onHelp}
 					/>
 				)}
 			</div>

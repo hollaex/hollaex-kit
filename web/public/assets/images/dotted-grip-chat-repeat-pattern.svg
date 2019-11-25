@@ -3,7 +3,7 @@
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 viewBox="0 0 6.4 10" style="enable-background:new 0 0 6.4 10;" xml:space="preserve">
 <style type="text/css">
-	.dotted-grip-0{fill:#979797;}
+	.dotted-grip-0 {fill: #999999; }
 </style>
 <g id="XMLID_1_">
 	<circle id="XMLID_1420_" class="dotted-grip-0" cx="5.1" cy="5" r="1"/>

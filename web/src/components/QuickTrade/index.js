@@ -170,6 +170,9 @@ class QuickTrade extends Component {
 						coins={coins}
 						text={STRINGS.QUICK_TRADE_COMPONENT.TOTAL_COST}
 						value={data.price || 0}
+						symbol={symbol}
+						pairs={pairs}
+						coins={coins}
 					/>
 				</div>
 				<div

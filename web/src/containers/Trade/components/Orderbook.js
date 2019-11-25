@@ -102,7 +102,7 @@ class Orderbook extends Component {
 
 		const pairBase = pairData.pair_base.toUpperCase();
 		const pairTwo = pairData.pair_2.toUpperCase();
-		const { symbol } = coins[pairTwo] || DEFAULT_COIN_DATA;
+		const { symbol } = coins[pairData.pair_2] || DEFAULT_COIN_DATA;
 		return (
 			<div className="trade_orderbook-wrapper d-flex flex-column f-1 apply_rtl">
 				<div className="trade_orderbook-headers d-flex">

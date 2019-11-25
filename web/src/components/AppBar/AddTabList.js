@@ -45,7 +45,7 @@ class AddTabList extends Component {
             });
         }
         const selectedtabPairs = Object.keys(selectedTabs);
-    
+
         return (
             <div id="add-tab-list-menu" className={classnames("app-bar-add-tab-menu", { "tab-menu-left": !selectedtabPairs.length })}>
                 <div className="app-bar-tab-menu d-flex justify-content-between">
@@ -92,7 +92,7 @@ class AddTabList extends Component {
                                     className="app-bar-add-tab-content-list d-flex align-items-center"
                                     onClick={() => this.handleChange(pair)}>
                                     <div>
-                                        {selectedTabs[pair] 
+                                        {selectedTabs[pair]
                                             ? <ReactSVG path={ICONS.TAB_MINUS} wrapperClassName="app-bar-tab-setting" />
                                             : <ReactSVG path={ICONS.TAB_PLUS} wrapperClassName="app-bar-tab-setting" />
                                         }
@@ -117,7 +117,8 @@ class AddTabList extends Component {
                                         {`(${priceDifferencePercent})`}
                                     </div>
                                 </div>
-                            )}
+                            )
+                        }
                         )
                         : <div className="app-bar-add-tab-content-list d-flex align-items-center">
                             No data...

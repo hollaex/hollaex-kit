@@ -30,7 +30,15 @@ class MenuList extends Component {
     }
 
     render() {
-        const { selectedMenu, handleMenu, securityPending, verificationPending, walletPending, activePath } = this.props;
+        const {
+            selectedMenu,
+            handleMenu,
+            securityPending,
+            verificationPending,
+            walletPending,
+            activePath,
+            onHelp
+        } = this.props;
         return (
             <div id="tab-account-menu" className="app-bar-account-menu">
                 <div
@@ -135,6 +143,13 @@ class MenuList extends Component {
                     <div className="notification-content"></div>
                     <ReactSVG path={ICONS.TAB_SETTING} wrapperClassName="app-bar-account-list-icon" />
                     {STRINGS.ACCOUNTS.TAB_SETTINGS}
+                </div>
+                <div
+                    className={classnames("app-bar-account-menu-list d-flex", { 'menu-active': activePath === 'account' && selectedMenu === 'help' })}
+                    onClick={() => onHelp()}>
+                    <div className="notification-content"></div>
+                    <ReactSVG path={ICONS.SIDEBAR_HELP} wrapperClassName="app-bar-account-list-icon" />
+                    {STRINGS.LOGIN.HELP}
                 </div>
                 {/* <div 
                     className={classnames("app-bar-account-menu-list d-flex", { 'menu-active': selectedMenu === 'api' })}

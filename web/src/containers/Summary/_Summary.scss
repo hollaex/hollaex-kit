@@ -108,6 +108,9 @@
                             fill:$colors-white;
                             stroke:$colors-white;
                         }
+                        .default-icon {
+                            fill: $dark-font-sub-text-color !important;
+                        }
                     }
                 }
             }
@@ -356,7 +359,7 @@
                     .xrp-icon {
                         fill: $coin-xrp;
                     }
-                    .default-icon{
+                    .default-icon {
                         fill: $colors-black !important;
                     }
                 }

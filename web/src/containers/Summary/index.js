@@ -65,6 +65,7 @@ class Summary extends Component {
             nextProps.orders.length !== this.props.orders.length ||
             nextProps.balance.timestamp !== this.props.balance.timestamp ||
             JSON.stringify(this.props.prices) !== JSON.stringify(nextProps.prices) ||
+            JSON.stringify(this.props.coins) !== JSON.stringify(nextProps.coins) ||
             nextProps.activeLanguage !== this.props.activeLanguage
         ) {
             this.calculateSections(nextProps);
@@ -99,7 +100,7 @@ class Summary extends Component {
     calculateSections = ({ price, balance, orders, prices, coins }) => {
         const data = [];
 
-        const totalAssets = calculateBalancePrice(balance, prices);
+        const totalAssets = calculateBalancePrice(balance, prices, coins);
         Object.keys(coins).forEach((currency) => {
             const { symbol, min } = coins[currency] || DEFAULT_COIN_DATA;
             const currencyBalance = calculatePrice(balance[`${symbol}_balance`], prices[currency]);

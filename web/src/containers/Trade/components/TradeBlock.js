@@ -18,7 +18,7 @@ const TradeBlock = ({
 }) => {
 	const pairs = pair ? pair.split('-').map(curr => curr.toUpperCase()) : [];
 	const { pair_base } = pairData;
-	let ICON_PATH = pair_base ? ICONS[`${pair_base.toUpperCase()}_ICON${activeTheme === 'dark' ? '_DARK':''}`] : ``;
+	let ICON_PATH = pair_base ? ICONS[`${pair_base.toUpperCase()}_ICON${activeTheme === 'dark' ? '_DARK' : ''}`] : ``;
 	return (
 		<div
 			className={classnames(
@@ -32,8 +32,8 @@ const TradeBlock = ({
 			<div className="trade_block-title">
 				<div className='d-flex justify-content-between'>
 					<div className='d-flex'>
-						{pairs.length ?
-							<ReactSVG
+						{pairs.length
+							? <ReactSVG
 								path={
 									ICON_PATH
 										? ICON_PATH
@@ -52,7 +52,7 @@ const TradeBlock = ({
 			</div>
 			<div
 				ref={setRef}
-				className={classnames('trade_block-content', isLoggedIn ? 'd-flex': '', {
+				className={classnames('trade_block-content', isLoggedIn ? 'd-flex' : '', {
 					'overflow-y': overflowY,
 					'flex-column': alignChildY
 				})}
