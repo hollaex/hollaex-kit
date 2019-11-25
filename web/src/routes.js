@@ -4,9 +4,7 @@ import ReactGA from 'react-ga';
 
 import {
 	NETWORK,
-	IS_PRO_VERSION,
 	PRO_VERSION_REDIRECT,
-	DEFAULT_VERSION_REDIRECT
 } from './config/constants';
 
 import {
@@ -18,7 +16,6 @@ import {
 	Signup,
 	VerificationEmailRequest,
 	VerificationEmailCode,
-	Home,
 	Deposit,
 	Withdraw,
 	TransactionsHistory,
@@ -87,7 +84,7 @@ if (token) {
 function requireAuth(nextState, replace) {
 	if (!isLoggedIn()) {
 		replace({
-			pathname: '/login'
+			pathname: '/trade/hex-usdt'
 		});
 	}
 }
@@ -95,7 +92,7 @@ function requireAuth(nextState, replace) {
 function loggedIn(nextState, replace) {
 	if (isLoggedIn()) {
 		replace({
-			pathname: '/account'
+			pathname: '/trade/hex-usdt'
 		});
 	}
 }
@@ -121,7 +118,7 @@ const createLocalizedRoutes = ({ router, routeParams }) => {
 
 const NotFound = ({ router }) => {
 	router.replace(
-		IS_PRO_VERSION ? PRO_VERSION_REDIRECT : DEFAULT_VERSION_REDIRECT
+		PRO_VERSION_REDIRECT
 	);
 	return <div />;
 };
@@ -150,7 +147,6 @@ function withAdminProps(Component, key) {
 
 export default (
 	<Router history={browserHistory}>
-		{!IS_PRO_VERSION ? <Route path="/" name="Home" component={Home} /> : null}
 		<Route path="lang/:locale" component={createLocalizedRoutes} />
 		<Route component={AuthContainer} {...noAuthRoutesCommonProps}>
 			<Route path="login" name="Login" component={Login} />
@@ -190,10 +186,26 @@ export default (
 				name="username"
 				component={Account}
 			/>
-			<Route path="security" name="Security" component={Account} />
-			<Route path="developers" name="Developers" component={Account} />
-			<Route path="settings" name="Settings" component={Account} />
-			<Route path="summary" name="Summary" component={Account} />
+			<Route
+				path="security"
+				name="Security"
+				component={Account}
+				onEnter={requireAuth} />
+			<Route
+				path="developers"
+				name="Developers"
+				component={Account}
+				onEnter={requireAuth} />
+			<Route
+				path="settings"
+				name="Settings"
+				component={Account}
+				onEnter={requireAuth} />
+			<Route
+				path="summary"
+				name="Summary"
+				component={Account}
+				onEnter={requireAuth} />
 			<Route
 				path="verification"
 				name="Verification"

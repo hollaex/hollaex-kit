@@ -65,7 +65,7 @@ class SidebarHub extends Component {
 							/>
 						</div>
 					)}
-					{isLogged
+					{/* {isLogged
 						? <Section
 							title={STRINGS.TRADING_TITLE}
 							icon={ICONS.SIDEBAR_TRADING_ACTIVE}
@@ -74,7 +74,7 @@ class SidebarHub extends Component {
 							path={`/trade/add/tabs`}
 						/>
 						: null
-					}
+					} */}
 					{/* <ButtonLink
 							label={STRINGS.PRO_TRADE}
 							className={classnames('sidebar_hub-button f-1', {

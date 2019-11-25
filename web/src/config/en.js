@@ -78,12 +78,13 @@ export default {
 			{ key: 'en', label: 'English' },
 			{ key: 'ko', label: '한국어' }
 		],
-		FOOTER_COPYRIGHT: 'COPYRIGHT 2019',
+		FOOTER_COPYRIGHT: '	Copyright 2019 ⓒ bitHolla. All rights reserved',
 		SECTIONS: {
 			SECTION_1_TITLE: 'ABOUT',
 			SECTION_1_LINK_1: 'About Us',
 			SECTION_1_LINK_2: 'Terms of Use',
 			SECTION_1_LINK_3: 'Privacy Policy',
+			SECTION_1_LINK_4: 'Contact Us',
 			SECTION_2_TITLE: 'INFORMATION',
 			SECTION_2_LINK_1: 'Blog',
 			SECTION_2_LINK_2: 'Contact Us',
@@ -93,8 +94,26 @@ export default {
 			SECTION_3_LINK_2: 'Forum',
 			SECTION_3_LINK_3: 'GitHub',
 			SECTION_3_LINK_4: 'Library',
-			SECTION_3_LINK_5: 'API doc'
-		}
+			SECTION_3_LINK_5: 'API doc',
+			SECTION_3_LINK_6: 'API',
+			SECTION_3_LINK_7: 'Developer tools',
+			SECTION_3_LINK_8: 'Server Status',
+			SECTION_4_TITLE:'EXCHANGE',
+			SECTION_4_LINK_1: 'Login',
+			SECTION_4_LINK_2: 'Register',
+			SECTION_4_LINK_3: 'Contact Us',
+			SECTION_4_LINK_4: 'Terms of Use',
+			SECTION_5_TITLE:'RESOURCES',
+			SECTION_5_LINK_1: 'HollaEx Whitepaper',
+			SECTION_5_LINK_2: 'HollaEx Token (HEX) ',
+			SECTION_5_LINK_3: 'HollaEx Kit',
+			SECTION_6_TITLE:'SOCIAL',
+			SECTION_6_LINK_1: 'Twitter',
+			SECTION_6_LINK_2: 'Telegram'
+		},
+		HEX_DESCRIPTION: 'HollaEx is a crypto currency exchange that lists popular crypto assets. The HollaEx token is traded on the HollaEx exchange through a wave auction system for more information on how the auction works {0}. The HollaEx exchange is an exchange run and operated by bitHolla and is a live example of the HollaEx Kit which is do-it-yourself exchange software kit that allows anyone to run there own exchange exactly like this one. To start your own exchange like this {1}.',
+		CLICK_HERE: 'click here',
+		VISIT_HERE: 'visit here'
 	},
 	ACCOUNTS: {
 		TITLE: 'Account',
@@ -1206,7 +1225,10 @@ export default {
 	EXPIRED_BUTTON_TXT: 'ACTIVATE EXCHANGE', // new
 	TRADE_POSTS: { // new
 		ANNOUNCEMENT: 'Announcement',
+		ANNOUNCEMNT_TXT:'Public wave auction is starting from December 18th, 2019 1pm UTC. You can deposit and start placing bids at anytime.',
+		ANNOUNCEMNT_TXT_1:'Earn HEX with HAP program by introducing your friends to hollaex.com. Apply here today.',
 		DEFAULT_ANNOUNCEMENT: 'This page posts public announcements about your exchange! {0}',
-		LEARN_MORE: 'Learn more'
+		ANNOUNCEMENT_TXT_2:'Free HEX will be distributed to all wallets that {0}.',
+		LEARN_MORE: 'Learn more',
 	}
 };

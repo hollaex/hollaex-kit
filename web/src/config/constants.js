@@ -257,15 +257,19 @@ export const ICONS = {
 	REFERRAL_SUCCESS: '/assets/icons/send-request.svg',
 	INCOMING_WAVE:'/assets/images/incoming-wave.svg',
 	TRADE_ANNOUNCEMENT: '/assets/images/announcement.svg',
+	TRADE_SETTINGS:'/assets/images/spanner.svg',
+	TRADE_WAVES:'/assets/images/wave-icon.svg',
 	HEX_LOGO_LIGHT:'/assets/icons/HEX-logo-light.svg',
 	HEX_LOGO_DARK:'/assets/icons/HEX-logo-dark.svg',
 };
 
 export const SOCIAL_ICONS = {
 	FACEBOOK: '/assets/icons/social-grey-icons.svg',
-	TWIITER: '/assets/icons/social-grey-icons02.svg',
+	TWITTER: '/assets/icons/social-grey-icons02.svg',
+	TWITTER_DARK: '/assets/icons/twitter-dark.svg',
 	INSTAGRAM: '/assets/icons/social-grey-icons03.svg',
 	TELEGRAM: '/assets/icons/social-grey-icons04.svg',
+	TELEGRAM_BLUE: '/assets/icons/telegram.svg',
 	GOOGLE: '/assets/icons/google.png'
 };
 
@@ -430,6 +434,7 @@ export const BALANCE_ERROR = 'Insufficient balance to perform the order';
 export const CAPTCHA_SITEKEY =
 	process.env.REACT_APP_CAPTCHA_SITE_KEY ||
 	'6LfgB6kUAAAAAAJI6CNSHdLrjDn8iFmZGxQDrcER'; // default recaptcha v3
+
 export const CAPTCHA_TIMEOUT = process.env.REACT_APP_CAPTCHA_TIMEOUT
 	? parseInt(process.env.REACT_APP_CAPTCHA_TIMEOUT, 10)
 	: 2000;

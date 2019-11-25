@@ -2,31 +2,32 @@ import React, { Component } from 'react';
 import classnames from 'classnames';
 import EventListener from 'react-event-listener';
 import { connect } from 'react-redux';
+import ReactSvg from 'react-svg';
 
 import { subtract } from '../utils';
 import { formatCurrency, formatBaseAmount, formatBtcFullAmount, checkNonBasePair } from '../../../utils/currency';
-import STRINGS from '../../../config/localizedStrings';
-import { DEFAULT_COIN_DATA } from '../../../config/constants';
+import STRINGS from '../../../config/localizedStrings'
+import { DEFAULT_COIN_DATA, ICONS } from '../../../config/constants';
 
 const PriceRow = (pairBase, pairTwo, side, onPriceClick, onAmountClick) => (
 	[price, amount],
 	index
 ) => (
-	<div key={`${side}-${price}`} className="d-flex value-row align-items-center">
-		<div
-			className={`f-1 trade_orderbook-cell trade_orderbook-cell-price ${side} pointer`}
-			onClick={onPriceClick(price)}
-		>
-			{formatCurrency(price, pairTwo, true)}
+		<div key={`${side}-${price}`} className="d-flex value-row align-items-center">
+			<div
+				className={`f-1 trade_orderbook-cell trade_orderbook-cell-price ${side} pointer`}
+				onClick={onPriceClick(price)}
+			>
+				{formatCurrency(price, pairTwo, true)}
+			</div>
+			<div
+				className="f-1 trade_orderbook-cell trade_orderbook-cell-amount pointer"
+				onClick={onAmountClick(amount)}
+			>
+				{formatCurrency(amount, pairBase, true)}
+			</div>
 		</div>
-		<div
-			className="f-1 trade_orderbook-cell trade_orderbook-cell-amount pointer"
-			onClick={onAmountClick(amount)}
-		>
-			{formatCurrency(amount, pairBase, true)}
-		</div>
-	</div>
-);
+	);
 
 const calculateSpread = (asks, bids, pair, coins) => {
 	const lowerAsk = asks.length > 0 ? asks[0][0] : 0;
@@ -94,9 +95,9 @@ class Orderbook extends Component {
 		const blockStyle =
 			dataBlockHeight > 0
 				? {
-						// maxHeight: dataBlockHeight,
-						minHeight: dataBlockHeight
-					}
+					// maxHeight: dataBlockHeight,
+					minHeight: dataBlockHeight
+				}
 				: {};
 
 		const pairBase = pairData.pair_base.toUpperCase();
@@ -104,6 +105,46 @@ class Orderbook extends Component {
 		const { symbol } = coins[pairTwo] || DEFAULT_COIN_DATA;
 		return (
 			<div className="trade_orderbook-wrapper d-flex flex-column f-1 apply_rtl">
+				<div className="trade_orderbook-headers d-flex">
+					<div>
+						<ReactSvg path={ICONS.INCOMING_WAVE} wrapperClassName="waves-icon" />
+					</div>
+					<div className="ml-3" >
+						<div className=" f-1 trade_orderbook-cell mb-2">
+							<span className="mr-2">
+								{STRINGS.WAVES.NEXT_WAVE}
+							</span>
+							{`TBA`}
+						</div>
+						<div className=" f-1 trade_orderbook-cell mb-2">
+							<span className="mr-2">
+								{STRINGS.WAVES.WAVE_AMOUNT}
+							</span>
+							{`TBA HEX`}
+						</div>
+						<div className=" f-1 trade_orderbook-cell mb-2">
+							<span className="mr-2">
+								{STRINGS.WAVES.FLOOR}
+							</span>
+							{`0.2`}
+						</div>
+						<div className=" f-1 trade_orderbook-cell last-wave mb-2">
+							<span className="mr-2">
+								{STRINGS.WAVES.LAST_WAVE}
+							</span>
+							{`N/A`}
+						</div>
+						<div className=" f-1 trade_orderbook-cell mb-3">
+							<a
+								href={"https://hollaex.com/docs/wave-auction.pdf"}
+								target="_blank"
+								rel="noopener noreferrer"
+								className="blue-link pointer">
+								{STRINGS.HOME.SECTION_1_BUTTON_1}
+							</a>
+						</div>
+					</div>
+				</div>
 				<EventListener target="window" onResize={this.scrollTop} />
 				<div className="trade_orderbook-headers d-flex">
 					<div className="f-1 trade_orderbook-cell">
@@ -173,8 +214,8 @@ Orderbook.defaultProps = {
 	asks: [],
 	bids: [],
 	ready: false,
-	onPriceClick: () => {},
-	onAmountClick: () => {}
+	onPriceClick: () => { },
+	onAmountClick: () => { }
 };
 
 const mapStateToProps = (store) => ({

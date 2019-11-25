@@ -1,0 +1,214 @@
+$footer-wrapper--margin-top: 4rem;
+$footer-wrapper--margin: 1rem;
+$footer-wrapper--margin-bottom: $footer-wrapper--margin * 2;
+$footer-wrapper--border-color: $colors-deactivate-color2;
+$footer-social-icon--dimension: 2rem;
+$footer-icons--side-margin: 1.5rem;
+
+.app_footer-container {
+	padding: $footer-wrapper--margin-top $footer-wrapper--margin $footer-wrapper--margin;
+	border-top: 1px solid $footer-wrapper--border-color;
+	font-size: $font-size-subtext;
+	background-color: $footer-background-color;
+	color: $colors-white;
+	
+	.footer-row-content {
+		margin-bottom: $footer-wrapper--margin-bottom;
+
+		.footer-links-section {
+			width: 60%;
+			.footer-links-group {
+				margin: 0 $footer-wrapper--margin;
+				font-size: $font-size-main;
+
+				.footer-links-section--title {
+					font-weight: bold;
+					margin-bottom: 0.25rem;
+					text-transform: uppercase;
+				}
+
+				.footer-links-section--list {
+					min-width: 8rem;
+
+					.social_icon {
+						width: 1rem;
+						margin-right: 0.25rem;
+					}
+					.link-section {
+						margin-top: 0.25rem;
+						&:hover {
+							color: grey;
+						}
+					}
+
+				}
+				
+			}
+		}
+		.footer_separter {
+			border-left: 1px solid $footer-wrapper--border-color;
+			.footer-txt {
+				width: 25rem;
+			}
+			.footer-logo {
+				width: 9rem;
+			}
+			svg {
+				.hollaEX_logo_gray {
+					fill: $colors-white;
+				}
+			}
+		}
+		.footer-public-texts {
+			.footer-public-texts-text {
+				line-height: $font-size-subtext * 2;
+				font-weight: bold;
+			}
+		}
+		.footer-public-links {
+			justify-content: flex-end;
+			align-items: center;
+			margin-top: $footer-wrapper--margin;
+
+			.footer-public-links-icon {
+				@include size($footer-social-icon--dimension);
+				margin: 0 $footer-icons--side-margin;
+			}
+		}
+	}
+
+	.footer-row-bottom {
+		border-top: 1px solid $footer-wrapper--border-color;
+		text-align: center;
+		.footer-row-language {
+			padding-left: 0.25rem;
+			&.active {
+				font-weight: bold;
+			}
+		}
+	}
+}
+
+.direction_ltr {
+	.app_footer-container {
+		.footer-row-content {
+			.footer-public-texts {
+				text-align: right;
+			}
+
+			.footer-public-links {
+				&:first-child .footer-public-links-icon {
+					margin-left: 0;
+				}
+
+				&:last-child .footer-public-links-icon {
+					margin-right: 0;
+				}
+			}
+		}
+	}
+}
+
+.direction_rtl {
+	.app_footer-container {
+		.footer-row-content {
+			.footer-public-texts {
+				text-align: left;
+			}
+
+			.footer-public-links {
+				&:first-child .footer-public-links-icon {
+					margin-right: 0;
+				}
+
+				&:last-child .footer-public-links-icon {
+					margin-left: 0;
+				}
+			}
+		}
+	}
+}
+
+@media screen and (max-width: $bp-md) {
+	.app_footer-container {
+		.footer-row-content {
+			flex-direction: column;
+			> div:not(:last-child) {
+				margin-bottom: $footer-wrapper--margin-bottom;
+			}
+
+			.footer-public-texts {
+				text-align: center !important;
+			}
+			.footer-public-links {
+				justify-content: center;
+				.footer-public-links-icon {
+					margin: 0 $footer-icons--side-margin !important;
+				}
+			}
+			.footer-links-section {
+				width: 70%;
+			}
+		}
+	}
+}
+
+@media screen and (min-width: 1920px) {
+	.app_footer-container {
+		.footer-row-content {
+			.footer-links-section {
+				width: 50%;
+			}
+		}
+	}
+}
+
+@media screen and (max-width: $bp-sm) {
+	.app_footer-container {
+		.footer-row-content {
+			.footer-links-section {
+				width: 80%;
+			}
+			.footer_separter {
+				.footer-txt {
+					width: 30rem;
+				}
+			}
+		}
+	}
+}
+
+.dark-theme {
+	.app_footer-container {
+		background-color: $dark-footer-background-color;
+		color: $dark-font-sub-text-1-color;
+
+		.footer-row-content {
+			.footer-links-section {
+				.footer-links-group {
+					.footer-links-section--title {
+						color: $colors-white;
+					}
+					.footer-links-section--list {
+						.link-section {
+							&:hover {
+								color: $colors-white;
+							}
+						}
+	
+					}
+				}
+			}
+			.footer_separter {
+				.footer-logo {
+					svg {
+						.hollaEX_logo_gray {
+							fill: $colors-white;
+						}
+					}
+				}
+			}
+		}
+	}
+}
+

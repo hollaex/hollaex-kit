@@ -11,8 +11,12 @@
 
 	.sidebar-notifications {
 		flex: 1;
-		height: auto;
-		overflow-y: auto;
+		overflow-y: scroll;
+		
+		.sidebar-title {
+			font-size: $font-size-subhead3;;
+			font-weight: bold;
+		}
 	}
 }
 

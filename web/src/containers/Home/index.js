@@ -6,7 +6,7 @@ import { bindActionCreators } from 'redux';
 import { isBrowser, isMobile } from 'react-device-detect';
 import moment from 'moment';
 
-import { AppBar, Footer } from '../../components';
+import { AppBar, AppFooter } from '../../components';
 import STRINGS from '../../config/localizedStrings';
 import { FLEX_CENTER_CLASSES, EXCHANGE_EXPIRY_DAYS } from '../../config/constants';
 // import { requestQuickTrade } from '../../actions/orderbookAction';
@@ -176,10 +176,14 @@ class Home extends Component {
 						token={token}
 						onClickDemo={pair ? this.goTo(`trade/${pair}`) : this.goTo('trade/add/tabs')}
 					/>
-					<Footer
-						onChangeLanguage={this.onChangeLanguage}
-						activeLanguage={activeLanguage}
-					/>
+					{!isMobile
+						? <AppFooter
+							theme={activeTheme}
+							onChangeLanguage={this.onChangeLanguage}
+							activeLanguage={activeLanguage}
+						/>
+						: null
+					}
 				</div>
 			</div>
 		);
