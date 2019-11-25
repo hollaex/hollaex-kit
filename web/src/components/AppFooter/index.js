@@ -178,13 +178,13 @@ const AppFooter = ({
                             <div className="footer-txt">
                                 {STRINGS.formatString(STRINGS.FOOTER.HEX_DESCRIPTION,
                                     <a
-                                        href={'https://bitholla.com/hollaex-kit/'}
+                                        href={'https://hollaex.com/docs/wave-auction.pdf'}
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         className="blue-link pointer"
                                     > {STRINGS.FOOTER.CLICK_HERE} </a>,
                                     <a
-                                        href={'https://hollaex.com/docs/wave-auction.pdf'}
+                                        href={'https://bitholla.com/hollaex-kit/'}
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         className="blue-link pointer">

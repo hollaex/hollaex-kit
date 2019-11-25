@@ -2,7 +2,7 @@ import AGREEMENT from './agreement';
 
 export default {
 	APP_TITLE: 'HollaEx',
-	APP_SUB_TITLE: 'White Label Cryptocurrency Exchange',
+	APP_SUB_TITLE: 'Official HollaEx Exchange', // new
 	APP_NAME: 'HollaEx',
 
 	LOGOUT_CONFIRM_TEXT: 'Are you sure?. Do you want to logout',
@@ -78,7 +78,7 @@ export default {
 			{ key: 'en', label: 'English' },
 			{ key: 'ko', label: '한국어' }
 		],
-		FOOTER_COPYRIGHT: '	Copyright 2019 ⓒ bitHolla. All rights reserved',
+		FOOTER_COPYRIGHT: '	Copyright 2019 ⓒ HollaEx Foundation. All rights reserved',
 		SECTIONS: {
 			SECTION_1_TITLE: 'ABOUT',
 			SECTION_1_LINK_1: 'About Us',
