@@ -7455,7 +7455,6 @@ foreignObject {
   .chat-wrapper .chat-username-footer {
     border-top: 1px solid gray; }
   .chat-wrapper .username-to-chat {
-    cursor: pointer;
     padding: 0.7rem !important;
     color: #0000ff !important;
     font-size: 1rem !important;
@@ -7688,6 +7687,8 @@ foreignObject {
             border-radius: 20%; }
       .chat-wrapper .chat-footer .emoji-container button:focus {
         outline: none !important; }
+    .chat-wrapper .chat-footer .separator {
+      width: 1rem; }
 
 .dark-theme .chat-wrapper {
   border: 1px solid #353841 !important;
@@ -7728,7 +7729,6 @@ foreignObject {
   .dark-theme .chat-wrapper .chat-message .username {
     color: white; }
   .dark-theme .chat-wrapper .username-to-chat {
-    cursor: pointer;
     padding: 0.7rem !important;
     color: #ff4bb6 !important;
     font-size: 1rem !important;

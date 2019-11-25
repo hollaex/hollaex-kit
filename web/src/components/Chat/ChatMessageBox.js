@@ -33,8 +33,9 @@ export const ChatMessageBox = ({
 			<ReactSvg path={ICONS.CHAT_EMOJI} wrapperClassName="chat-emoji-icon" />
 		</div>
 	</div>:
-	<div className={classnames('d-flex', 'username-to-chat')} >
+	<div className={classnames('d-flex justify-content-center', 'username-to-chat')} >
 		<Link
+		className="pointer"
 		to={'/account/settings/username?tab=3'}
 		>
 			SET USERNAME TO CHAT
