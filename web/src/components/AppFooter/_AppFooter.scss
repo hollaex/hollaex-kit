@@ -58,6 +58,9 @@ $footer-icons--side-margin: 1.5rem;
 					fill: $colors-white;
 				}
 			}
+			.blue-link {
+				color: #00aeef !important;
+			}
 		}
 		.footer-public-texts {
 			.footer-public-texts-text {
@@ -206,6 +209,9 @@ $footer-icons--side-margin: 1.5rem;
 							fill: $colors-white;
 						}
 					}
+				}
+				.blue-link {
+					color: $dark-link !important;
 				}
 			}
 		}

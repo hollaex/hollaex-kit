@@ -7985,6 +7985,8 @@ foreignObject {
         width: 9rem; }
       .app_footer-container .footer-row-content .footer_separter svg .hollaEX_logo_gray {
         fill: white; }
+      .app_footer-container .footer-row-content .footer_separter .blue-link {
+        color: #00aeef !important; }
     .app_footer-container .footer-row-content .footer-public-texts .footer-public-texts-text {
       line-height: 1.6rem;
       font-weight: bold; }
@@ -8055,6 +8057,8 @@ foreignObject {
     color: white; }
   .dark-theme .app_footer-container .footer-row-content .footer_separter .footer-logo svg .hollaEX_logo_gray {
     fill: white; }
+  .dark-theme .app_footer-container .footer-row-content .footer_separter .blue-link {
+    color: #ed507b !important; }
 
 html {
   font-size: 12px !important;
