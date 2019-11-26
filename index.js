@@ -7,11 +7,11 @@ class HollaEx {
 	constructor(
 		opts = {
 			apiURL: 'https://api.hollaex.com',
-			baseURL: '/v0',
+			baseURL: '/v1',
 			accessToken: ''
 		}
 	) {
-		this._url = opts.apiURL + opts.baseURL || 'https://api.hollaex.com/v0';
+		this._url = opts.apiURL + opts.baseURL || 'https://api.hollaex.com/v1';
 		this._wsUrl = opts.apiURL || 'https://api.hollaex.com';
 		this._accessToken = opts.accessToken || '';
 		this._headers = {
@@ -26,7 +26,7 @@ class HollaEx {
 
 	/**
 	 * Retrieve last, high, low, open and close price and volume within last 24 hours
-	 * @param {string} symbol - The currency pair symbol e.g. 'btc-eur'
+	 * @param {string} symbol - The currency pair symbol e.g. 'hex-usdt'
 	 * @return {string} A stringified JSON object with keys high(number), low(number), open(number), close(number), volume(number), last(number)
 	 */
 	getTicker(symbol) {
@@ -39,7 +39,7 @@ class HollaEx {
 
 	/**
 	 * Retrieve orderbook containing lists of up to the last 20 bids and asks
-	 * @param {string} symbol - The currency pair symbol e.g. 'btc-eur', leave empty to get orderbook for all symbol-pairs
+	 * @param {string} symbol - The currency pair symbol e.g. 'hex-usdt', leave empty to get orderbook for all symbol-pairs
 	 * @return {string} A stringified JSON object with the symbol-pairs as keys where the values are objects with keys bids(array of active buy orders), asks(array of active sell orders), and timestamp(string)
 	 */
 	getOrderbook(symbol = '') {
@@ -52,7 +52,7 @@ class HollaEx {
 
 	/**
 	 * Retrieve list of up to the last 50 trades
-	 * @param {string} symbol - The currency pair symbol e.g. 'btc-eur', leave empty to get trades for all symbol-pairs
+	 * @param {string} symbol - The currency pair symbol e.g. 'hex-usdt', leave empty to get trades for all symbol-pairs
 	 * @return {string} A stringified JSON object with the symbol-pairs as keys where the values are arrays of objects with keys size(number), price(number), side(string), and timestamp(string)
 	 */
 	getTrade(symbol = '') {
@@ -86,7 +86,7 @@ class HollaEx {
 
 	/**
 	 * Retrieve user's wallet balance
-	 * @return {string} A stringified JSON object with the keys updated_at(string), fiat_balance(number), fiat_pending(number), fiat_available(number), btc_balance, btc_pending, btc_available, eth_balance, eth_pending, eth_available, bch_balance, bch_pending, bch_available
+	 * @return {string} A stringified JSON object with the keys updated_at(string), usdt_balance(number), usdt_pending(number), usdt_available(number), hex_balance, hex_pending, hex_available, eth_balance, eth_pending, eth_available, bch_balance, bch_pending, bch_available
 	 */
 	getBalance() {
 		return createRequest('GET', `${this._url}/user/balance`, this._headers);
@@ -106,7 +106,7 @@ class HollaEx {
 			'GET',
 			`${
 				this._url
-			}/user/deposits?limit=${limit}&page=${page}&currency=${currency}&orderBy=${orderBy}&order=${order}`,
+			}/user/deposits?limit=${limit}&page=${page}&currency=${currency}&order_by=${orderBy}&order=${order}`,
 			this._headers
 		);
 	}
@@ -126,7 +126,7 @@ class HollaEx {
 			'GET',
 			`${
 				this._url
-			}/user/withdrawals?limit=${limit}&page=${page}&currency=${currency}&orderBy=${orderBy}&order=${order}`,
+			}/user/withdrawals?limit=${limit}&page=${page}&currency=${currency}&order_by=${orderBy}&order=${order}`,
 			this._headers
 		);
 	}
@@ -199,7 +199,7 @@ class HollaEx {
 
 	/**
 	 * Retrieve information of all the user's active orders
-	 * @param {string} symbol - The currency pair symbol to filter by e.g. 'btc-eur', leave empty to retrieve information of orders of all symbols
+	 * @param {string} symbol - The currency pair symbol to filter by e.g. 'hex-usdt', leave empty to retrieve information of orders of all symbols
 	 * @return {string} A stringified JSON array of objects containing the user's active orders
 	 */
 	getAllOrder(symbol = '') {
@@ -212,7 +212,7 @@ class HollaEx {
 
 	/**
 	 * Create a new order
-	 * @param {string} symbol - The currency pair symbol e.g. 'btc-eur'
+	 * @param {string} symbol - The currency pair symbol e.g. 'hex-usdt'
 	 * @param {string} side - The side of the order e.g. 'buy', 'sell'
 	 * @param {number} size - The amount of currency to order
 	 * @param {string} type - The type of order to create e.g. 'market', 'limit'
@@ -239,7 +239,7 @@ class HollaEx {
 
 	/**
 	 * Cancel all the user's active orders, can filter by currency pair symbol
-	 * @param {string} symbol - The currency pair symbol to filter by e.g. 'btc-eur', leave empty to cancel orders of all symbols
+	 * @param {string} symbol - The currency pair symbol to filter by e.g. 'hex-usdt', leave empty to cancel orders of all symbols
 	 * @return {string} A stringified JSON array of objects containing the cancelled orders
 	 */
 	cancelAllOrder(symbol = '') {
@@ -285,20 +285,6 @@ class Socket extends EventEmitter {
 						this.emit(event, data);
 					});
 					break;
-				// case 'chart':
-				// 	if (symbol) {
-				// 		ioLink = io(`${url}/chart`, { query: { symbol } });
-				// 	} else {
-				// 		ioLink = io(`${url}/chart`);
-				// 	}
-				// 	listeners.push(ioLink);
-				// 	listeners[listeners.length - 1].on('data', (data) => {
-				// 		this.emit(event, data);
-				// 	});
-				// 	listeners[listeners.length - 1].on('ticker', (data) => {
-				// 		this.emit(event, data);
-				// 	});
-				// 	break;
 				case 'user':
 					ioLink = io(`${url}/user`, {
 						query: { token: `Bearer ${accessToken}` }
@@ -328,27 +314,13 @@ class Socket extends EventEmitter {
 					listeners[listeners.length - 1].on('orderbook', (data) => {
 						this.emit('orderbook', data);
 					});
-					// listeners[listeners.length - 1].on('ticker', (data) => {
-					// 	this.emit('ticker', data);
-					// });
 					listeners[listeners.length - 1].on('trades', (data) => {
 						this.emit('trades', data);
 					});
 
-					// ioLink = io(`${url}/chart`);
-
-					// listeners.push(ioLink);
-					// listeners[listeners.length - 1].on('data', (data) => {
-					// 	this.emit(event, data);
-					// });
-					// listeners[listeners.length - 1].on('ticker', (data) => {
-					// 	this.emit(event, data);
-					// });
-
 					ioLink = io(`${url}/user`, {
 						query: { token: `Bearer ${accessToken}` }
 					});
-
 					listeners.push(ioLink);
 					listeners[listeners.length - 1].on('user', (data) => {
 						this.emit('userInfo', data);
