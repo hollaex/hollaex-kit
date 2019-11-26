@@ -21,6 +21,7 @@ export default {
 	SIGNUP_TEXT: 'Sign Up',
 	REGISTER_TEXT: 'Register',
 	ACCOUNT_TEXT: 'Account',
+	HOME_TEXT: 'Home',
 	CLOSE_TEXT: 'Close',
 	COPY_TEXT: 'Copy',
 	COPY_SUCCESS_TEXT: 'Successfully Copied',
@@ -43,6 +44,7 @@ export default {
 	BACK_TEXT: 'Back',
 	NO_OPTIONS: 'No options availables',
 	SECONDS: 'seconds',
+	VIEW_MARKET: 'view market', // new
 	HOME: {
 		SECTION_1_TITLE: 'Welcome to HollaEx Exchange Kit!',
 		SECTION_1_TEXT_1:

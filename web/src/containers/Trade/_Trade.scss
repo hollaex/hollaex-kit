@@ -119,6 +119,13 @@ $order_entry-column--width-lg: 18rem;
 	}
 }
 
+.quick-trade-tab {
+	border: 1px solid $colors-black;
+	border-radius: 9px;
+	vertical-align: middle;
+	text-align: center;
+}
+
 .direction_ltr {
 	.trade_active_orders-wrapper {
 		.cell_box-type {
@@ -210,5 +217,8 @@ $order_entry-column--width-lg: 18rem;
 		.post_header {
 			color: $colors-white;
 		}
+	}
+	.quick-trade-tab {
+		border: 1px solid grey;
 	}
 }

@@ -635,6 +635,8 @@ class Container extends Component {
 				return 'trade';
 			case '/chat':
 				return 'chat';
+			case '/home':
+				return 'home';
 			default:
 		}
 		if (path.indexOf('/trade/') === 0) {

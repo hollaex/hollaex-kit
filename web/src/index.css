@@ -2182,6 +2182,12 @@ table th {
           background-color: #000000;
           z-index: -1; }
 
+.quick-trade-tab {
+  border: 1px solid #000000;
+  border-radius: 9px;
+  vertical-align: middle;
+  text-align: center; }
+
 .direction_ltr .trade_active_orders-wrapper .cell_box-type {
   padding-left: 0; }
   .direction_ltr .trade_active_orders-wrapper .cell_box-type.fullfilled .cell-wrapper > .cell_value-wrapper .cell_value-bar {
@@ -2232,6 +2238,9 @@ table th {
 
 .dark-theme .trade_post-wrapper .post_header {
   color: white; }
+
+.dark-theme .quick-trade-tab {
+  border: 1px solid grey; }
 
 .quote-container {
   background-color: #ebf3f1;
@@ -3140,6 +3149,23 @@ table th {
 .layout-mobile .contact_form-wrapper {
   min-width: auto;
   flex: 1; }
+
+.layout-mobile.home_container-mobile {
+  padding: 1rem; }
+  .layout-mobile.home_container-mobile .app-icon {
+    margin: 1rem auto;
+    width: 10rem; }
+  .layout-mobile.home_container-mobile .trade-tab-app-title {
+    font-family: "Raleway Light";
+    letter-spacing: .3rem;
+    font-size: .8rem; }
+  .layout-mobile.home_container-mobile .market-button {
+    background-color: white !important;
+    border: 1px solid #000000;
+    color: #000000; }
+  .layout-mobile.home_container-mobile .post-wrapper {
+    max-height: 45rem;
+    overflow-y: auto; }
 
 .sidebar-container {
   display: flex;
@@ -7987,7 +8013,8 @@ foreignObject {
     .app_footer-container .footer-row-content .footer_separter {
       border-left: 1px solid #777677; }
       .app_footer-container .footer-row-content .footer_separter .footer-txt {
-        width: 25rem; }
+        width: 25rem;
+        margin-left: 10px; }
       .app_footer-container .footer-row-content .footer_separter .footer-logo {
         width: 9rem; }
       .app_footer-container .footer-row-content .footer_separter svg .hollaEX_logo_gray {
@@ -8066,6 +8093,29 @@ foreignObject {
     fill: white; }
   .dark-theme .app_footer-container .footer-row-content .footer_separter .blue-link {
     color: #ed507b !important; }
+
+.layout-mobile .app_footer-container .footer-row-content .footer-links-section {
+  width: 100%; }
+  .layout-mobile .app_footer-container .footer-row-content .footer-links-section .footer-links-group {
+    margin-left: 3rem;
+    margin-bottom: 3rem !important; }
+    .layout-mobile .app_footer-container .footer-row-content .footer-links-section .footer-links-group .footer-links-section--list .link-section {
+      margin-top: 0.25rem; }
+      .layout-mobile .app_footer-container .footer-row-content .footer-links-section .footer-links-group .footer-links-section--list .link-section:hover {
+        color: grey; }
+  .layout-mobile .app_footer-container .footer-row-content .footer-links-section .footer_separter {
+    border-left: none !important;
+    border-top: 1px solid white !important; }
+    .layout-mobile .app_footer-container .footer-row-content .footer-links-section .footer_separter .footer-txt {
+      width: 37rem; }
+    .layout-mobile .app_footer-container .footer-row-content .footer-links-section .footer_separter .footer-logo {
+      width: 9rem;
+      margin-left: 14rem;
+      margin-top: 11px; }
+    .layout-mobile .app_footer-container .footer-row-content .footer-links-section .footer_separter svg .hollaEX_logo_gray {
+      fill: white; }
+    .layout-mobile .app_footer-container .footer-row-content .footer-links-section .footer_separter .blue-link {
+      color: #00aeef !important; }
 
 html {
   font-size: 12px !important;

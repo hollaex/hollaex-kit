@@ -1,6 +1,7 @@
 import React from 'react';
 import classnames from 'classnames';
 import ReactSvg from 'react-svg'
+import { isMobile } from 'react-device-detect';
 import { SOCIAL_ICONS } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 import { HOLLAEX_LOGO } from '../../config/constants';
@@ -123,7 +124,7 @@ const AppFooter = ({
                         'footer-links-section'
                     )}
                 >
-                    <div className="d-flex f-1">
+                    <div className={classnames('d-flex', 'flex-1', {'flex-column': isMobile } )}>
                         {generateSectionsText(STRINGS, theme).map(({ TITLE, LINKS }, index) => (
                             <div
                                 key={index}
@@ -169,35 +170,31 @@ const AppFooter = ({
                                 </div>
                             </div>
                         ))}
-                    </div>
-                    <div className="footer_separter" >
+                  <div className="footer_separter" >
                         <div className="ml-3">
-                            <div className="mb-2">
-                                <ReactSvg path={HOLLAEX_LOGO} wrapperClassName="footer-logo" />
-                            </div>
-                            <div className="footer-txt">
-                                {STRINGS.formatString(STRINGS.FOOTER.HEX_DESCRIPTION,
-                                    <a
-                                        href={'https://hollaex.com/docs/wave-auction.pdf'}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="blue-link pointer"
-                                    > {STRINGS.FOOTER.CLICK_HERE} </a>,
-                                    <a
-                                        href={'https://bitholla.com/hollaex-kit/'}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="blue-link pointer">
-                                        {STRINGS.FOOTER.VISIT_HERE}
-                                    </a>
-                                )}
+                                    <ReactSvg path={HOLLAEX_LOGO} wrapperClassName="footer-logo" />
+                                </div>
+                                <div className="footer-txt">
+                                    {STRINGS.formatString(STRINGS.FOOTER.HEX_DESCRIPTION,
+                                        <a
+                                            href={'https://hollaex.com/docs/wave-auction.pdf'}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="blue-link pointer"
+                                        > {STRINGS.FOOTER.CLICK_HERE} </a>,
+                                        <a
+                                            href={'https://bitholla.com/hollaex-kit/'}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="blue-link pointer">
+                                            {STRINGS.FOOTER.VISIT_HERE}
+                                        </a>
+                                    )}
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-
-
-            </div>
             <div
                 className={classnames(
                     'footer-row-bottom',

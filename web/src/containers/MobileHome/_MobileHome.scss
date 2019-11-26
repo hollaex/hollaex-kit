@@ -1,0 +1,27 @@
+.layout-mobile {
+    &.home_container-mobile {
+        padding: 1rem;
+
+        .app-icon {
+            margin: 1rem auto;
+            width: 10rem;
+        }
+
+        .trade-tab-app-title {
+            font-family: "Raleway Light";
+            letter-spacing: .3rem;
+            font-size: .8rem;
+        }
+
+        .market-button {
+            background-color: $colors-white !important;
+            border: 1px solid $colors-black;
+            color: $colors-black;
+        }
+
+        .post-wrapper {
+            max-height: 45rem;
+            overflow-y: auto;
+        }
+    }
+}
