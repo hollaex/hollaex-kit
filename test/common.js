@@ -5,7 +5,7 @@ require('dotenv').load();
 
 const ACCESS_TOKEN = process.env.ACCESS_TOKEN;
 const client = new HollaEx({ accessToken: ACCESS_TOKEN });
-const symbolPair = 'btc-eur';
+const symbolPair = 'hex-usdt';
 
 module.exports = {
 	expect,
