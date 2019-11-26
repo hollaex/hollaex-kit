@@ -216,11 +216,8 @@ table th {
   .app_container.ltc.wallet .sidebar-container .sidebar-actions, .app_container.ltc.trade .sidebar-container .sidebar-actions, .app_container.ltc.quick-trade .sidebar-container .sidebar-actions {
     border-color: #bcbec0; }
   .app_container.layout-desktop .app_container-content {
-    min-height: calc(100vh - 36px);
-    max-height: calc(100vh - 36px); }
-  .app_container.layout-desktop .app_container-secondary-content {
-    min-height: calc(100vh - 72px) !important;
-    max-height: calc(100vh - 72px) !important; }
+    height: auto;
+    flex: 1; }
   .app_container.layout-mobile .app_container-content {
     min-height: calc(100vh - 10rem);
     max-height: calc(100vh - 10rem);
@@ -359,13 +356,7 @@ table th {
     max-width: 25rem !important; }
   .app_container .app_container-sidebar {
     min-width: 25rem;
-    max-width: 25rem; }
-  .app_container.layout-desktop .app_container-content {
-    min-height: calc(100vh - 45px) !important;
-    max-height: calc(100vh - 45px) !important; }
-  .app_container.layout-desktop .app_container-secondary-content {
-    min-height: calc(100vh - 90px) !important;
-    max-height: calc(100vh - 90px) !important; } }
+    max-width: 25rem; } }
 
 @media screen and (max-width: 1096px) {
   .font-small,
@@ -5500,18 +5491,28 @@ table th {
   .accordion_wrapper .accordion_section .accordion_section_title {
     padding: 0.5rem 0;
     position: relative; }
+    .accordion_wrapper .accordion_section .accordion_section_title .sidebar_hub-section-icon {
+      height: 1.5rem;
+      width: 1.5rem;
+      margin-right: 0.5rem; }
+      .accordion_wrapper .accordion_section .accordion_section_title .sidebar_hub-section-icon svg path {
+        fill: transparent;
+        stroke: #777677; }
+    .accordion_wrapper .accordion_section .accordion_section_title.accordion_section--open .accordion_section_content {
+      margin-bottom: 1.5rem; }
+    .accordion_wrapper .accordion_section .accordion_section_title.accordion_section--open .accordion_section_content_text {
+      color: #212121; }
+      .accordion_wrapper .accordion_section .accordion_section_title.accordion_section--open .accordion_section_content_text.with_arrow:after {
+        border-left-color: #212121 !important;
+        border-right-color: #212121 !important; }
+    .accordion_wrapper .accordion_section .accordion_section_title.accordion_section--open .sidebar_hub-section-icon svg path {
+      fill: #212121;
+      stroke: #212121; }
   .accordion_wrapper .accordion_section .accordion_section_content_text {
     position: relative;
     color: #777677; }
     .accordion_wrapper .accordion_section .accordion_section_content_text .accordion_section_content_text-subtitle {
       color: #cccbcb; }
-  .accordion_wrapper .accordion_section.accordion_section--open .accordion_section_content {
-    margin-bottom: 1.5rem; }
-  .accordion_wrapper .accordion_section.accordion_section--open .accordion_section_content_text {
-    color: #212121; }
-    .accordion_wrapper .accordion_section.accordion_section--open .accordion_section_content_text.with_arrow:after {
-      border-left-color: #212121 !important;
-      border-right-color: #212121 !important; }
   .accordion_wrapper .accordion_section.disabled {
     color: #777677; }
   .accordion_wrapper .accordion_section:last-child {
@@ -5536,7 +5537,7 @@ table th {
   right: -0.5rem;
   top: calc(50% - 0.5rem); }
 
-.direction_ltr .accordion_wrapper .accordion_section.accordion_section--open .accordion_section_content_text:after {
+.direction_ltr .accordion_wrapper .accordion_section .accordion_section_title.accordion_section--open .accordion_section_content_text:after {
   transform: rotate(90deg); }
 
 .direction_ltr .accordion_wrapper .accordion_section.disabled .accordion_section_content_text:after {
@@ -5555,7 +5556,7 @@ table th {
   left: -0.5rem;
   top: calc(50% - 0.6rem); }
 
-.direction_rtl .accordion_wrapper .accordion_section.accordion_section--open .accordion_section_content_text:after {
+.direction_rtl .accordion_wrapper .accordion_section .accordion_section_title.accordion_section--open .accordion_section_content_text:after {
   transform: rotate(-90deg); }
 
 .direction_rtl .accordion_wrapper .accordion_section.disabled .accordion_section_content_text:after {
@@ -5569,11 +5570,17 @@ table th {
     color: #b6b5cd; }
     .dark-theme .accordion_wrapper .accordion_section .accordion_section_content_text .accordion_section_content_text-subtitle {
       color: #454162; }
-  .dark-theme .accordion_wrapper .accordion_section.accordion_section--open .accordion_section_content_text {
+  .dark-theme .accordion_wrapper .accordion_section .accordion_section_title .sidebar_hub-section-icon svg path {
+    fill: transparent;
+    stroke: #a3a1ca; }
+  .dark-theme .accordion_wrapper .accordion_section .accordion_section_title.accordion_section--open .accordion_section_content_text {
     color: #b6b5cd; }
-    .dark-theme .accordion_wrapper .accordion_section.accordion_section--open .accordion_section_content_text.with_arrow:after {
+    .dark-theme .accordion_wrapper .accordion_section .accordion_section_title.accordion_section--open .accordion_section_content_text.with_arrow:after {
       border-left-color: #b6b5cd !important;
       border-right-color: #b6b5cd !important; }
+  .dark-theme .accordion_wrapper .accordion_section .accordion_section_title.accordion_section--open .sidebar_hub-section-icon svg path {
+    fill: #a3a1ca;
+    stroke: #a3a1ca; }
   .dark-theme .accordion_wrapper .accordion_section.disabled {
     color: #2e2f37; }
   .dark-theme .accordion_wrapper .accordion_section:last-child {
