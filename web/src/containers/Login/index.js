@@ -61,7 +61,7 @@ class Login extends Component {
 	}
 
 	redirectToHome = () => {
-		this.props.router.replace('/account');
+		this.props.router.replace('/home');
 	};
 
 	redirectToResetPassword = () => {

@@ -3157,22 +3157,23 @@ table th {
   min-width: auto;
   flex: 1; }
 
-.layout-mobile.home_container-mobile {
-  padding: 1rem; }
-  .layout-mobile.home_container-mobile .app-icon {
-    margin: 1rem auto;
-    width: 10rem; }
-  .layout-mobile.home_container-mobile .trade-tab-app-title {
-    font-family: "Raleway Light";
-    letter-spacing: .3rem;
-    font-size: .8rem; }
-  .layout-mobile.home_container-mobile .market-button {
-    background-color: white !important;
-    border: 1px solid #000000;
-    color: #000000; }
-  .layout-mobile.home_container-mobile .post-wrapper {
-    max-height: 45rem;
-    overflow-y: auto; }
+.layout-mobile.home_container-mobile .app-icon {
+  margin: 1rem auto;
+  width: 10rem; }
+
+.layout-mobile.home_container-mobile .trade-tab-app-title {
+  font-family: "Raleway Light";
+  letter-spacing: .3rem;
+  font-size: .8rem; }
+
+.layout-mobile.home_container-mobile .market-button {
+  background-color: white !important;
+  border: 1px solid #000000;
+  color: #000000; }
+
+.layout-mobile.home_container-mobile .post-wrapper {
+  max-height: 45rem;
+  overflow-y: auto; }
 
 .sidebar-container {
   display: flex;
@@ -8011,11 +8012,9 @@ foreignObject {
         .app_footer-container .footer-row-content .footer-links-section .footer-links-group .footer-links-section--title {
           font-weight: bold;
           margin-bottom: 0.25rem;
-          text-transform: uppercase;
-          font-size: 12px; }
+          text-transform: uppercase; }
         .app_footer-container .footer-row-content .footer-links-section .footer-links-group .footer-links-section--list {
-          min-width: 8rem;
-          font-size: 12px; }
+          min-width: 8rem; }
           .app_footer-container .footer-row-content .footer-links-section .footer-links-group .footer-links-section--list .social_icon {
             width: 1rem;
             margin-right: 0.25rem; }
@@ -8026,11 +8025,13 @@ foreignObject {
     .app_footer-container .footer-row-content .footer_separter {
       border-left: 1px solid #777677; }
       .app_footer-container .footer-row-content .footer_separter .footer-txt {
-        width: 25rem; }
+        width: 25rem;
+        margin-left: 1rem; }
       .app_footer-container .footer-row-content .footer_separter .footer-logo {
-        width: 9rem; }
+        width: 9rem;
+        margin-left: 1rem; }
       .app_footer-container .footer-row-content .footer_separter svg .hollaEX_logo_gray {
-        fill: #808080; }
+        fill: white; }
       .app_footer-container .footer-row-content .footer_separter .blue-link {
         color: #00aeef !important; }
     .app_footer-container .footer-row-content .footer-public-texts .footer-public-texts-text {
@@ -8102,7 +8103,7 @@ foreignObject {
   .dark-theme .app_footer-container .footer-row-content .footer-links-section .footer-links-group .footer-links-section--list .link-section:hover {
     color: white; }
   .dark-theme .app_footer-container .footer-row-content .footer_separter .footer-logo svg .hollaEX_logo_gray {
-    fill: #808080; }
+    fill: #808080 !important; }
   .dark-theme .app_footer-container .footer-row-content .footer_separter .blue-link {
     color: #ed507b !important; }
 
@@ -8110,7 +8111,8 @@ foreignObject {
   width: 100%; }
   .layout-mobile .app_footer-container .footer-row-content .footer-links-section .footer-links-group {
     margin-left: 3rem;
-    margin-bottom: 3rem !important; }
+    margin-bottom: 3rem !important;
+    font-size: 12px; }
     .layout-mobile .app_footer-container .footer-row-content .footer-links-section .footer-links-group .footer-links-section--list .link-section {
       margin-top: 0.25rem; }
       .layout-mobile .app_footer-container .footer-row-content .footer-links-section .footer-links-group .footer-links-section--list .link-section:hover {
@@ -8126,9 +8128,10 @@ foreignObject {
       width: 37rem; }
     .layout-mobile .app_footer-container .footer-row-content .footer-links-section .footer_separter .footer-logo {
       width: 9rem;
-      margin-top: 11px; }
+      margin-top: 11px;
+      margin-bottom: 1rem; }
     .layout-mobile .app_footer-container .footer-row-content .footer-links-section .footer_separter svg .hollaEX_logo_gray {
-      fill: #808080; }
+      fill: white; }
     .layout-mobile .app_footer-container .footer-row-content .footer-links-section .footer_separter .blue-link {
       color: #00aeef !important; }
 

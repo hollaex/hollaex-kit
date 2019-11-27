@@ -28,13 +28,11 @@ $footer-logo-color: $trade-tabs-inactive-color;
 					font-weight: bold;
 					margin-bottom: 0.25rem;
 					text-transform: uppercase;
-					font-size: $footer-content-size;
 				}
 
 				.footer-links-section--list {
 					min-width: 8rem;
-					font-size: $footer-content-size;
-
+					
 					.social_icon {
 						width: 1rem;
 						margin-right: 0.25rem;
@@ -54,13 +52,15 @@ $footer-logo-color: $trade-tabs-inactive-color;
 			border-left: 1px solid $footer-wrapper--border-color;
 			.footer-txt {
 				width: 25rem;
+				margin-left: 1rem;
 			}
 			.footer-logo {
 				width: 9rem;
+				margin-left: 1rem;
 			}
 			svg {
 				.hollaEX_logo_gray {
-					fill: $footer-logo-color;
+					fill: $colors-white;
 				}
 			}
 			.blue-link {
@@ -211,7 +211,7 @@ $footer-logo-color: $trade-tabs-inactive-color;
 				.footer-logo {
 					svg {
 						.hollaEX_logo_gray {
-							fill: $footer-logo-color;
+							fill: $footer-logo-color !important;
 						}
 					}
 				}
@@ -226,10 +226,11 @@ $footer-logo-color: $trade-tabs-inactive-color;
 	.app_footer-container {
 		.footer-row-content {
 			.footer-links-section {
-				width:100%;
+				width: 100%;
 				.footer-links-group {
 					margin-left: 3rem;
 					margin-bottom:3rem !important;
+					font-size: $footer-content-size;
 					.footer-links-section--list {
 						.link-section {
 							margin-top: 0.25rem;
@@ -253,10 +254,11 @@ $footer-logo-color: $trade-tabs-inactive-color;
 					.footer-logo {
 						width: 9rem;
 						margin-top: 11px;
+						margin-bottom: $footer-wrapper--margin;
 					}
 					svg {
 						.hollaEX_logo_gray {
-							fill: $footer-logo-color;
+							fill: $colors-white;
 						}
 					}
 					.blue-link {
