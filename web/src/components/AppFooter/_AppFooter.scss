@@ -4,6 +4,8 @@ $footer-wrapper--margin-bottom: $footer-wrapper--margin * 2;
 $footer-wrapper--border-color: $colors-deactivate-color2;
 $footer-social-icon--dimension: 2rem;
 $footer-icons--side-margin: 1.5rem;
+$footer-content-size: 12px;
+$footer-logo-color: $trade-tabs-inactive-color;
 
 .app_footer-container {
 	padding: $footer-wrapper--margin-top $footer-wrapper--margin $footer-wrapper--margin;
@@ -20,15 +22,18 @@ $footer-icons--side-margin: 1.5rem;
 			.footer-links-group {
 				margin: 0 $footer-wrapper--margin;
 				font-size: $font-size-main;
+				align-self: 'center';
 
 				.footer-links-section--title {
 					font-weight: bold;
 					margin-bottom: 0.25rem;
 					text-transform: uppercase;
+					font-size: $footer-content-size;
 				}
 
 				.footer-links-section--list {
 					min-width: 8rem;
+					font-size: $footer-content-size;
 
 					.social_icon {
 						width: 1rem;
@@ -49,14 +54,13 @@ $footer-icons--side-margin: 1.5rem;
 			border-left: 1px solid $footer-wrapper--border-color;
 			.footer-txt {
 				width: 25rem;
-				margin-left: 10px;
 			}
 			.footer-logo {
 				width: 9rem;
 			}
 			svg {
 				.hollaEX_logo_gray {
-					fill: $colors-white;
+					fill: $footer-logo-color;
 				}
 			}
 			.blue-link {
@@ -207,7 +211,7 @@ $footer-icons--side-margin: 1.5rem;
 				.footer-logo {
 					svg {
 						.hollaEX_logo_gray {
-							fill: $colors-white;
+							fill: $footer-logo-color;
 						}
 					}
 				}
@@ -238,17 +242,21 @@ $footer-icons--side-margin: 1.5rem;
 				.footer_separter {
 					border-left: none !important;
 					border-top: 1px solid white !important;
+					.footer-content {
+						display: flex;
+						flex-direction: column;
+						align-items: center;
+					}
 					.footer-txt {
 						width: 37rem;
 					}
 					.footer-logo {
 						width: 9rem;
-						margin-left: 14rem;
 						margin-top: 11px;
 					}
 					svg {
 						.hollaEX_logo_gray {
-							fill: $colors-white;
+							fill: $footer-logo-color;
 						}
 					}
 					.blue-link {
@@ -256,7 +264,12 @@ $footer-icons--side-margin: 1.5rem;
 					}
 				}
 			}
-				
+			.blue-link {
+				color: #00aeef !important;
+			}
+		}
+		.footer-links-group {
+			margin: 10rem
 		}
 	}
 }

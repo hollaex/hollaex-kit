@@ -23,7 +23,7 @@ export const SidebarBottom = ({ activePath = 'x', pair = '', isLogged }) => {
 				<SidebarButtom
 					path={"/home"} 
 					title= {STRINGS.HOME_TEXT}
-					iconPath={ICONS.SIDEBAR_ACCOUNT_ACTIVE}
+					iconPath={ICONS.SIDEBAR_HOME_ACTIVE}
 					active={ activePath === 'home' }
 				/>
 				<SidebarButtom

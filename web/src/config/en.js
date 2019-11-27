@@ -35,7 +35,7 @@ export default {
 		'Feel free to contact us for more information and any issues by sending us an email to support@bitholla.com',
 	HELP_TELEGRAM_TEXT: 'Check out HollaEx open API documentation:',
 	HELP_TELEGRAM_LINK: 'https://apidocs.hollaex.com',
-	NEED_HELP_TEXT: 'Need help',
+	NEED_HELP_TEXT: 'Need help ?', // new
 	HELP_TEXT: 'help',
 	SUCCESS_TEXT: 'Success',
 	ERROR_TEXT: 'Error',
@@ -45,6 +45,8 @@ export default {
 	NO_OPTIONS: 'No options availables',
 	SECONDS: 'seconds',
 	VIEW_MARKET: 'view market', // new
+	GO_TRADE:'Go Trade', // new
+	VIEW_INFO:'View info page', // new
 	HOME: {
 		SECTION_1_TITLE: 'Welcome to HollaEx Exchange Kit!',
 		SECTION_1_TEXT_1:

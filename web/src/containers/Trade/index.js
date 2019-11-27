@@ -33,7 +33,6 @@ import TradeHistory from './components/TradeHistory';
 import MobileTrade from './MobileTrade';
 import MobileChart from './MobileChart';
 import MobileOrders from './MobileOrders';
-import MobilePosts from './MobilePosts';
 import LogoutInfoOrder from './components/LogoutInfoOrder';
 import LogoutInfoTrade from './components/LogoutInfoTrade';
 import TVChartContainer from './Chart';
@@ -329,15 +328,6 @@ class Trade extends Component {
 						coins={coins}
 						goToPair={this.goToPair}
 						userTrades={userTrades}
-						activeTheme={activeTheme}
-					/>
-				)
-			},
-			{
-				title: STRINGS.TRADE_TAB_POSTS,
-				content: (
-					<MobilePosts
-						isLoggedIn={isLoggedIn()}
 						activeTheme={activeTheme}
 					/>
 				)

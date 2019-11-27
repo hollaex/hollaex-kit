@@ -170,8 +170,9 @@ const AppFooter = ({
                                 </div>
                             </div>
                         ))}
-                  <div className="footer_separter" >
-                        <div className="ml-3">
+                        <div className="footer_separter" >
+                            <div className="footer-content">
+                                <div>
                                     <ReactSvg path={HOLLAEX_LOGO} wrapperClassName="footer-logo" />
                                 </div>
                                 <div className="footer-txt">
@@ -195,6 +196,7 @@ const AppFooter = ({
                         </div>
                     </div>
                 </div>
+            </div>
             <div
                 className={classnames(
                     'footer-row-bottom',

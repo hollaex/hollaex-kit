@@ -2145,7 +2145,11 @@ table th {
   width: 2rem; }
 
 .trade_post-wrapper .post_header {
-  font-weight: bold; }
+  font-weight: bold;
+  font-size: 12px; }
+
+.trade_post-wrapper .post-content {
+  font-size: 12px; }
 
 .trade_post-wrapper .trade_announcement {
   font-size: 1.5rem; }
@@ -2238,6 +2242,9 @@ table th {
 
 .dark-theme .trade_post-wrapper .post_header {
   color: white; }
+
+.dark-theme .trade_post-wrapper .post-content {
+  font-size: 12px; }
 
 .dark-theme .quick-trade-tab {
   border: 1px solid grey; }
@@ -3232,6 +3239,9 @@ table th {
       .sidebar-bottom-wrapper .sidebar-bottom-button.active .sidebar-bottom-icon svg {
         fill: #212121;
         stroke: #212121; }
+        .sidebar-bottom-wrapper .sidebar-bottom-button.active .sidebar-bottom-icon svg .home-icon {
+          fill: #212121;
+          stroke: #212121; }
     .sidebar-bottom-wrapper .sidebar-bottom-button .bottom-bar-text {
       font-size: 12px;
       text-align: center;
@@ -7996,13 +8006,16 @@ foreignObject {
       width: 60%; }
       .app_footer-container .footer-row-content .footer-links-section .footer-links-group {
         margin: 0 1rem;
-        font-size: 1rem; }
+        font-size: 1rem;
+        align-self: 'center'; }
         .app_footer-container .footer-row-content .footer-links-section .footer-links-group .footer-links-section--title {
           font-weight: bold;
           margin-bottom: 0.25rem;
-          text-transform: uppercase; }
+          text-transform: uppercase;
+          font-size: 12px; }
         .app_footer-container .footer-row-content .footer-links-section .footer-links-group .footer-links-section--list {
-          min-width: 8rem; }
+          min-width: 8rem;
+          font-size: 12px; }
           .app_footer-container .footer-row-content .footer-links-section .footer-links-group .footer-links-section--list .social_icon {
             width: 1rem;
             margin-right: 0.25rem; }
@@ -8013,12 +8026,11 @@ foreignObject {
     .app_footer-container .footer-row-content .footer_separter {
       border-left: 1px solid #777677; }
       .app_footer-container .footer-row-content .footer_separter .footer-txt {
-        width: 25rem;
-        margin-left: 10px; }
+        width: 25rem; }
       .app_footer-container .footer-row-content .footer_separter .footer-logo {
         width: 9rem; }
       .app_footer-container .footer-row-content .footer_separter svg .hollaEX_logo_gray {
-        fill: white; }
+        fill: #808080; }
       .app_footer-container .footer-row-content .footer_separter .blue-link {
         color: #00aeef !important; }
     .app_footer-container .footer-row-content .footer-public-texts .footer-public-texts-text {
@@ -8090,7 +8102,7 @@ foreignObject {
   .dark-theme .app_footer-container .footer-row-content .footer-links-section .footer-links-group .footer-links-section--list .link-section:hover {
     color: white; }
   .dark-theme .app_footer-container .footer-row-content .footer_separter .footer-logo svg .hollaEX_logo_gray {
-    fill: white; }
+    fill: #808080; }
   .dark-theme .app_footer-container .footer-row-content .footer_separter .blue-link {
     color: #ed507b !important; }
 
@@ -8106,16 +8118,25 @@ foreignObject {
   .layout-mobile .app_footer-container .footer-row-content .footer-links-section .footer_separter {
     border-left: none !important;
     border-top: 1px solid white !important; }
+    .layout-mobile .app_footer-container .footer-row-content .footer-links-section .footer_separter .footer-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center; }
     .layout-mobile .app_footer-container .footer-row-content .footer-links-section .footer_separter .footer-txt {
       width: 37rem; }
     .layout-mobile .app_footer-container .footer-row-content .footer-links-section .footer_separter .footer-logo {
       width: 9rem;
-      margin-left: 14rem;
       margin-top: 11px; }
     .layout-mobile .app_footer-container .footer-row-content .footer-links-section .footer_separter svg .hollaEX_logo_gray {
-      fill: white; }
+      fill: #808080; }
     .layout-mobile .app_footer-container .footer-row-content .footer-links-section .footer_separter .blue-link {
       color: #00aeef !important; }
+
+.layout-mobile .app_footer-container .footer-row-content .blue-link {
+  color: #00aeef !important; }
+
+.layout-mobile .app_footer-container .footer-links-group {
+  margin: 10rem; }
 
 html {
   font-size: 12px !important;

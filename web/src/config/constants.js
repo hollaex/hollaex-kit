@@ -162,6 +162,8 @@ export const ICONS = {
 	SIDEBAR_WALLET_INACTIVE: '/assets/images/wallet.svg',
 	SIDEBAR_ACCOUNT_ACTIVE: '/assets/images/account_2-active.svg',
 	SIDEBAR_ACCOUNT_INACTIVE: '/assets/images/account_2-inactive.svg',
+	SIDEBAR_HOME_ACTIVE: '/assets/images/home-active.svg', // new
+	SIDEBAR_HOME_ACTIVE_INACTIVE: '/assets/images/home-tab-inactive.svg', // new
 	SIDEBAR_TRADING_ACTIVE: '/assets/images/trade-active.svg',
 	SIDEBAR_TRADING_INACTIVE: '/assets/images/trade-inactive.svg',
 	SIDEBAR_QUICK_TRADING_ACTIVE:

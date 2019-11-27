@@ -1015,8 +1015,12 @@ class Container extends Component {
 					<SnackDialog />
 				</div>
 				<div className={classnames(
-						getThemeClass(activeTheme)
-					)}>
+					getThemeClass(activeTheme),
+					{
+						'layout-mobile': isMobile,
+						'layout-desktop': isBrowser
+					}
+				)}>
 					{!isMobile && (
 						<AppFooter theme={activeTheme} />
 					)}
