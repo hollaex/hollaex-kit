@@ -23,7 +23,7 @@ import {
 } from '../../actions/verificationActions';
 import { logout } from '../../actions/authAction';
 
-import BankVerification from './BankVerification';
+// import BankVerification from './BankVerification';
 import { isBrowser, isMobile } from 'react-device-detect';
 import VerificationHome from './VerificationHome';
 import IdentityVerification from './IdentityVerification';
@@ -38,7 +38,7 @@ import { ContactForm } from '../';
 import { NOTIFICATIONS } from '../../actions/appActions';
 import { setMe } from '../../actions/userAction';
 import { getThemeClass } from '../../utils/theme';
-import BankVerificationHome from './BankVerificationHome';
+// import BankVerificationHome from './BankVerificationHome';
 import IdentityVerificationHome from './IdentityVerificationHome';
 import MobileVerificationHome from './MobileVerificationHome';
 import DocumentsVerificationHome from './DocumentsVerificationHome';
@@ -117,7 +117,7 @@ class Verification extends Component {
 		if (activeTab === -1) {
 			return;
 		}
-		const { email, bank_account, address, id_data, phone_number } = user;
+		const { email, address, id_data, phone_number } = user;
 		const identity_status = address.country 
 			? id_data.status && id_data.status === 3
 					? 3 : 1

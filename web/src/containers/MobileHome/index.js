@@ -90,7 +90,7 @@ class Home extends Component {
 							</div>
 							<div className="text-center mt-5">
 								{STRINGS.NEED_HELP_TEXT}
-								<a href="https://info.hollaex.com" target="_blank" className="blue-link">
+								<a href="https://info.hollaex.com" target="_blank" className="blue-link" rel="noopener noreferrer">
 									&nbsp;{STRINGS.VIEW_INFO}
 								</a>
 							</div>

@@ -54,11 +54,16 @@ class Chat extends Component {
 
 	initializeChatWs = (token = '') => {
 		this.isInitializing(true);
-		const chatWs = io.connect(`${WS_URL}/chat`, {
-			query: {
-				token: token ? `Bearer ${token}` : ''
-			}
-		});
+		let chatWs = '';
+		if (token) {
+			chatWs = io.connect(`${WS_URL}/chat`, {
+				query: {
+					token: token ? `Bearer ${token}` : ''
+				}
+			});
+		} else {
+			chatWs = io.connect(`${WS_URL}/chat`);
+		}
 
 		this.setState({ chatWs });
 
