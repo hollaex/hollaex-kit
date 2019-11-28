@@ -56,7 +56,7 @@ class Home extends Component {
 							<div className="text-center">
 								{STRINGS.SIGN_UP.HAVE_ACCOUNT}
 								<Link to="/login" className="blue-link">
-									{STRINGS.SIGN_UP.GOTO_LOGIN}
+									&nbsp;{STRINGS.SIGN_UP.GOTO_LOGIN}
 								</Link>
 							</div>
 						</div>
@@ -90,8 +90,8 @@ class Home extends Component {
 							</div>
 							<div className="text-center mt-5">
 								{STRINGS.NEED_HELP_TEXT}
-								<a href="info.hollaex.com" target="_blank" className="blue-link">
-									{STRINGS.VIEW_INFO}
+								<a href="https://info.hollaex.com" target="_blank" className="blue-link">
+									&nbsp;{STRINGS.VIEW_INFO}
 								</a>
 							</div>
 						</div>

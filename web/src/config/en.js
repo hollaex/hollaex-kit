@@ -2,7 +2,7 @@ import AGREEMENT from './agreement';
 
 export default {
 	APP_TITLE: 'HollaEx',
-	APP_SUB_TITLE: 'Official HollaEx Exchange', // new
+	APP_SUB_TITLE: 'Open Crypto Exchange', // new
 	APP_NAME: 'HollaEx',
 
 	LOGOUT_CONFIRM_TEXT: 'Are you sure?. Do you want to logout',
@@ -35,7 +35,7 @@ export default {
 		'Feel free to contact us for more information and any issues by sending us an email to support@bitholla.com',
 	HELP_TELEGRAM_TEXT: 'Check out HollaEx open API documentation:',
 	HELP_TELEGRAM_LINK: 'https://apidocs.hollaex.com',
-	NEED_HELP_TEXT: 'Need help ?', // new
+	NEED_HELP_TEXT: 'Need help?', // new
 	HELP_TEXT: 'help',
 	SUCCESS_TEXT: 'Success',
 	ERROR_TEXT: 'Error',
@@ -363,7 +363,7 @@ export default {
 		MAKE_FIRST_DEPOSIT: 'Make first deposit', // new
 		OBTAIN_HEX: 'Obtain HEX', // new
 		TITLE_USER_DOCUMENTATION: 'Identification',
-		TITLE_ID_DOCUMENTS: 'Documents',
+		TITLE_ID_DOCUMENTS: 'Upload',
 		TITLE_BANK_ACCOUNT: 'Bank Account',
 		TITLE_MOBILE_PHONE: 'Mobile Phone',
 		TITLE_PERSONAL_INFORMATION: 'Personal Information',
@@ -1230,8 +1230,8 @@ export default {
 	EXPIRED_BUTTON_TXT: 'ACTIVATE EXCHANGE', // new
 	TRADE_POSTS: { // new
 		ANNOUNCEMENT: 'Announcement',
-		ANNOUNCEMNT_TXT:'Public wave auction is starting from December 18th, 2019 1pm UTC. You can deposit and start placing bids at anytime.',
-		ANNOUNCEMNT_TXT_1:'Earn HEX with HAP program by introducing your friends to hollaex.com. Apply here today.',
+		ANNOUNCEMNT_TXT: 'Public wave auction is starting from December 18th, 2019 1pm UTC. You can deposit and start placing bids at anytime and purchase HEX.',
+		ANNOUNCEMNT_TXT_1: 'Earn HEX with HAP program by introducing your friends to hollaex.com. Apply today.',
 		DEFAULT_ANNOUNCEMENT: 'This page posts public announcements about your exchange! {0}',
 		ANNOUNCEMENT_TXT_2:'Free HEX will be distributed to all wallets that {0}.',
 		LEARN_MORE: 'Learn more',

@@ -118,22 +118,6 @@ class Verification extends Component {
 			return;
 		}
 		const { email, bank_account, address, id_data, phone_number } = user;
-		let bank_status = 0;
-		if (bank_account.length) {
-			if (bank_account.filter(data => data.status === 3).length) {
-				bank_status = 3;
-			} else if (bank_account.filter(data => data.status === 1).length) {
-				bank_status = 1;
-			} else if (bank_account.filter(data => data.status === 2).length) {
-				bank_status = 2;
-			}
-			if (id_data.status !== 3) {
-				bank_status = 1;
-			}
-			if (bank_account.length === bank_account.filter(data => data.status === 0).length) {
-				bank_status = 0;
-			}
-		}
 		const identity_status = address.country 
 			? id_data.status && id_data.status === 3
 					? 3 : 1
@@ -162,27 +146,6 @@ class Verification extends Component {
 							disable
 						/>
 					</div>
-				)
-			},
-			{
-				title: isMobile ? (
-					<CustomMobileTabs
-						title={STRINGS.USER_VERIFICATION.TITLE_BANK}
-						icon={ICONS.VERIFICATION_BANK_NEW}
-						statusCode={bank_status}
-					/>
-				) : (
-					<CustomTabs
-						title={STRINGS.USER_VERIFICATION.TITLE_BANK}
-						icon={ICONS.VERIFICATION_BANK_NEW}
-						statusCode={bank_status}
-					/>
-				),
-				content: (<BankVerificationHome
-							user={user}
-							setActiveTab={this.setActiveTab}
-							setActivePageContent={this.setActivePageContent}
-						/>
 				)
 			},
 			{
@@ -297,13 +260,6 @@ class Verification extends Component {
 						openContactForm={this.openContactForm}
 						setActiveTab={this.setActiveTab}
 						renderContent={this.renderContent} />;
-			case 1:
-				return <BankVerification
-						icon={ICONS.VERIFICATION_BANK_NEW}
-						openContactForm={this.openContactForm}
-						setActivePageContent={this.setActivePageContent}
-						setActiveTab={this.setActiveTab}
-						moveToNextStep={this.goNextTab} />
 			case 2:
 				return <IdentityVerification
 						icon={ICONS.VERIFICATION_BANK_NEW}
