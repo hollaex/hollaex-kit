@@ -45,6 +45,7 @@ export const ICONS = {
 	KRW_ICON: '/assets/icons/krw-icon-01.svg',
 	HEX_ICON: '/assets/icons/hex-icon.svg',
 	HEX_ICON_DARK: '/assets/icons/hex-icon-dark.svg',
+	USDT_ICON: '/assets/icons/usdt-icon.svg',
 	CHECK: '/assets/images/Orderbook scrolling-01.svg',
 	DARK_CHECK: '/assets/images/dark-Orderbook-scrolling-01.svg',
 	BLUE_QUESTION: '/assets/acounts/account-icons-08.svg',
@@ -162,6 +163,8 @@ export const ICONS = {
 	SIDEBAR_WALLET_INACTIVE: '/assets/images/wallet.svg',
 	SIDEBAR_ACCOUNT_ACTIVE: '/assets/images/account_2-active.svg',
 	SIDEBAR_ACCOUNT_INACTIVE: '/assets/images/account_2-inactive.svg',
+	SIDEBAR_HOME_ACTIVE: '/assets/images/home-active.svg', // new
+	SIDEBAR_HOME_ACTIVE_INACTIVE: '/assets/images/home-tab-inactive.svg', // new
 	SIDEBAR_TRADING_ACTIVE: '/assets/images/trade-active.svg',
 	SIDEBAR_TRADING_INACTIVE: '/assets/images/trade-inactive.svg',
 	SIDEBAR_QUICK_TRADING_ACTIVE:

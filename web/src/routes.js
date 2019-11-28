@@ -1,6 +1,7 @@
 import React from 'react';
 import { Router, Route, browserHistory } from 'react-router';
 import ReactGA from 'react-ga';
+import { isMobile } from 'react-device-detect';
 
 import {
 	NETWORK,
@@ -40,7 +41,8 @@ import {
 	UserFees,
 	PATHS,
 	ExpiredExchange,
-	AdminOrders
+	AdminOrders,
+	MobileHome
 } from './containers';
 
 import store from './store';
@@ -84,21 +86,33 @@ if (token) {
 
 function requireAuth(nextState, replace) {
 	if (!isLoggedIn()) {
-		replace({
-			pathname: '/trade/hex-usdt'
-		});
+		if (isMobile) {
+			replace({
+				pathname: '/'
+			});
+		} else {
+			replace({
+				pathname: '/trade/hex-usdt'
+			});
+		}
 	}
 }
 
 function loggedIn(nextState, replace) {
 	let service = nextState.location.query
 		&& nextState.location.query.service
-			? nextState.location.query.service
-			: '';
+		? nextState.location.query.service
+		: '';
 	if (isLoggedIn() && !service) {
-		replace({
-			pathname: '/trade/hex-usdt'
-		});
+		if (isMobile) {
+			replace({
+				pathname: '/home'
+			});
+		} else {
+			replace({
+				pathname: '/trade/hex-usdt'
+			});
+		}
 	}
 }
 
@@ -145,13 +159,14 @@ function withAdminProps(Component, key) {
 		}
 		return 0;
 	});
-	return function(matchProps) {
+	return function (matchProps) {
 		return <Component {...adminProps} {...matchProps} />;
 	};
 }
 
 export default (
 	<Router history={browserHistory}>
+		{isMobile ? <Route path="/" name="Home" component={MobileHome} {...noAuthRoutesCommonProps} /> : null}
 		<Route path="lang/:locale" component={createLocalizedRoutes} />
 		<Route component={AuthContainer} {...noAuthRoutesCommonProps}>
 			<Route path="login" name="Login" component={Login} />
@@ -180,6 +195,15 @@ export default (
 			/>
 		</Route>
 		<Route component={Container}>
+			{isMobile
+				? <Route
+					path="/home"
+					name="Home"
+					component={MobileHome}
+					onEnter={requireAuth}
+				/>
+				: null
+			}
 			<Route
 				path="account"
 				name="Account"

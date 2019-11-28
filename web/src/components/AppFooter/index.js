@@ -1,6 +1,7 @@
 import React from 'react';
 import classnames from 'classnames';
 import ReactSvg from 'react-svg'
+import { isMobile } from 'react-device-detect';
 import { SOCIAL_ICONS } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 import { HOLLAEX_LOGO } from '../../config/constants';
@@ -24,7 +25,7 @@ const generateSectionsText = (strings, theme) => {
         {
             TITLE: SECTIONS.SECTION_4_TITLE,
             LINKS: [
-                { text: SECTIONS.SECTION_4_LINK_1, link: 'https://hollaex.com/login/' },
+                { text: SECTIONS.SECTION_4_LINK_1, link: 'https://hollaex.com/login' },
                 { text: SECTIONS.SECTION_4_LINK_2, link: 'https://hollaex.com/signup' }
             ]
         },
@@ -33,11 +34,11 @@ const generateSectionsText = (strings, theme) => {
             LINKS: [
                 {
                     text: SECTIONS.SECTION_1_LINK_4,
-                    link: 'https://bitholla.com/contact'
+                    link: 'https://info.hollaex.com/hc/en-us/sections/360006299774-Contact-Us'
                 },
                 {
                     text: SECTIONS.SECTION_1_LINK_2,
-                    link: 'https://bitholla.com/terms-of-use/'
+                    link: 'https://info.hollaex.com/hc/en-us/articles/360038833974-Terms-of-Service'
                 },
             ]
         },
@@ -67,7 +68,7 @@ const generateSectionsText = (strings, theme) => {
                 },
                 {
                     text: SECTIONS.SECTION_5_LINK_2,
-                    link: 'http://hollaex.com/hex'
+                    link: 'http://bitholla.com/hex'
                 },
                 {
                     text: SECTIONS.SECTION_5_LINK_3,
@@ -123,7 +124,7 @@ const AppFooter = ({
                         'footer-links-section'
                     )}
                 >
-                    <div className="d-flex f-1">
+                    <div className={classnames('d-flex', 'flex-1', {'flex-column': isMobile } )}>
                         {generateSectionsText(STRINGS, theme).map(({ TITLE, LINKS }, index) => (
                             <div
                                 key={index}
@@ -169,34 +170,32 @@ const AppFooter = ({
                                 </div>
                             </div>
                         ))}
-                    </div>
-                    <div className="footer_separter" >
-                        <div className="ml-3">
-                            <div className="mb-2">
-                                <ReactSvg path={HOLLAEX_LOGO} wrapperClassName="footer-logo" />
-                            </div>
-                            <div className="footer-txt">
-                                {STRINGS.formatString(STRINGS.FOOTER.HEX_DESCRIPTION,
-                                    <a
-                                        href={'https://hollaex.com/docs/wave-auction.pdf'}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="blue-link pointer"
-                                    > {STRINGS.FOOTER.CLICK_HERE} </a>,
-                                    <a
-                                        href={'https://bitholla.com/hollaex-kit/'}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="blue-link pointer">
-                                        {STRINGS.FOOTER.VISIT_HERE}
-                                    </a>
-                                )}
+                        <div className="footer_separter" >
+                            <div className="footer-content">
+                                <div>
+                                    <ReactSvg path={HOLLAEX_LOGO} wrapperClassName="footer-logo" />
+                                </div>
+                                <div className="footer-txt">
+                                    {STRINGS.formatString(STRINGS.FOOTER.HEX_DESCRIPTION,
+                                        <a
+                                            href={'https://hollaex.com/docs/wave-auction.pdf'}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="blue-link pointer"
+                                        > {STRINGS.FOOTER.CLICK_HERE} </a>,
+                                        <a
+                                            href={'https://bitholla.com/hollaex-kit/'}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="blue-link pointer">
+                                            {STRINGS.FOOTER.VISIT_HERE}
+                                        </a>
+                                    )}
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-
-
             </div>
             <div
                 className={classnames(

@@ -635,6 +635,8 @@ class Container extends Component {
 				return 'trade';
 			case '/chat':
 				return 'chat';
+			case '/home':
+				return 'home';
 			default:
 		}
 		if (path.indexOf('/trade/') === 0) {
@@ -732,7 +734,11 @@ class Container extends Component {
 				return (
 					<LogoutConfirmation
 						data={data}
-						onConfirm={this.logout}
+						onConfirm={() => {
+								this.logout();
+								this.onCloseDialog();
+							}
+						}
 						onClose={this.onCloseDialog}
 					/>
 				);
@@ -1013,8 +1019,12 @@ class Container extends Component {
 					<SnackDialog />
 				</div>
 				<div className={classnames(
-						getThemeClass(activeTheme)
-					)}>
+					getThemeClass(activeTheme),
+					{
+						'layout-mobile': isMobile,
+						'layout-desktop': isBrowser
+					}
+				)}>
 					{!isMobile && (
 						<AppFooter theme={activeTheme} />
 					)}

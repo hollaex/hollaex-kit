@@ -40,13 +40,15 @@ $inner_container-border: 1px solid $border-color;
 
 	&.layout-desktop {
 		.app_container-content {
-			min-height: $max-content-height;
-			max-height: $max-content-height;
+			height: auto;
+			flex: 1;
+			// min-height: $max-content-height;
+			// max-height: $max-content-height;
 		}
-		.app_container-secondary-content {
-			min-height: $max-content-secondary-height !important;
-			max-height: $max-content-secondary-height !important;
-		}
+		// .app_container-secondary-content {
+			// min-height: $max-content-secondary-height !important;
+			// max-height: $max-content-secondary-height !important;
+		// }
 	}
 
 	&.layout-mobile {
@@ -248,16 +250,16 @@ $inner_container-border: 1px solid $border-color;
 			min-width: $sidebar-width-lg;
 			max-width: $sidebar-width-lg;
 		}
-		&.layout-desktop {
-			.app_container-content {
-				min-height: $max-content-height-lg !important;
-				max-height: $max-content-height-lg !important;
-			}
-			.app_container-secondary-content {
-				min-height: $max-content-secondary-height-lg !important;
-				max-height: $max-content-secondary-height-lg !important;
-			}
-		}
+		// &.layout-desktop {
+		// 	.app_container-content {
+		// 		min-height: $max-content-height-lg !important;
+		// 		max-height: $max-content-height-lg !important;
+		// 	}
+		// 	.app_container-secondary-content {
+		// 		min-height: $max-content-secondary-height-lg !important;
+		// 		max-height: $max-content-secondary-height-lg !important;
+		// 	}
+		// }
 	}
 }
 

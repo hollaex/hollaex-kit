@@ -17,6 +17,7 @@ $trade_title-border--color: black;
 $trade_title-border--size: 0.2rem;
 
 $trade-font-size: $font-size-subtext;
+$trade-post-font-size:12px;
 
 $side-column--width: 17.5rem;
 $side-column--width-sm: 16rem;
@@ -68,6 +69,10 @@ $order_entry-column--width-lg: 18rem;
 
 	.post_header {
 		font-weight: bold;
+		font-size: $trade-post-font-size;
+	}
+	.post-content{
+		font-size: $trade-post-font-size;
 	}
 	.trade_announcement {
 		font-size: 1.5rem;
@@ -117,6 +122,13 @@ $order_entry-column--width-lg: 18rem;
 			}
 		}
 	}
+}
+
+.quick-trade-tab {
+	border: 1px solid $colors-black;
+	border-radius: 9px;
+	vertical-align: middle;
+	text-align: center;
 }
 
 .direction_ltr {
@@ -210,5 +222,11 @@ $order_entry-column--width-lg: 18rem;
 		.post_header {
 			color: $colors-white;
 		}
+		.post-content{
+			font-size: $trade-post-font-size;
+		}
+	}
+	.quick-trade-tab {
+		border: 1px solid grey;
 	}
 }

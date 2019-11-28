@@ -216,11 +216,8 @@ table th {
   .app_container.ltc.wallet .sidebar-container .sidebar-actions, .app_container.ltc.trade .sidebar-container .sidebar-actions, .app_container.ltc.quick-trade .sidebar-container .sidebar-actions {
     border-color: #bcbec0; }
   .app_container.layout-desktop .app_container-content {
-    min-height: calc(100vh - 36px);
-    max-height: calc(100vh - 36px); }
-  .app_container.layout-desktop .app_container-secondary-content {
-    min-height: calc(100vh - 72px) !important;
-    max-height: calc(100vh - 72px) !important; }
+    height: auto;
+    flex: 1; }
   .app_container.layout-mobile .app_container-content {
     min-height: calc(100vh - 10rem);
     max-height: calc(100vh - 10rem);
@@ -359,13 +356,7 @@ table th {
     max-width: 25rem !important; }
   .app_container .app_container-sidebar {
     min-width: 25rem;
-    max-width: 25rem; }
-  .app_container.layout-desktop .app_container-content {
-    min-height: calc(100vh - 45px) !important;
-    max-height: calc(100vh - 45px) !important; }
-  .app_container.layout-desktop .app_container-secondary-content {
-    min-height: calc(100vh - 90px) !important;
-    max-height: calc(100vh - 90px) !important; } }
+    max-width: 25rem; } }
 
 @media screen and (max-width: 1096px) {
   .font-small,
@@ -2154,7 +2145,11 @@ table th {
   width: 2rem; }
 
 .trade_post-wrapper .post_header {
-  font-weight: bold; }
+  font-weight: bold;
+  font-size: 12px; }
+
+.trade_post-wrapper .post-content {
+  font-size: 12px; }
 
 .trade_post-wrapper .trade_announcement {
   font-size: 1.5rem; }
@@ -2190,6 +2185,12 @@ table th {
           bottom: 0;
           background-color: #000000;
           z-index: -1; }
+
+.quick-trade-tab {
+  border: 1px solid #000000;
+  border-radius: 9px;
+  vertical-align: middle;
+  text-align: center; }
 
 .direction_ltr .trade_active_orders-wrapper .cell_box-type {
   padding-left: 0; }
@@ -2241,6 +2242,12 @@ table th {
 
 .dark-theme .trade_post-wrapper .post_header {
   color: white; }
+
+.dark-theme .trade_post-wrapper .post-content {
+  font-size: 12px; }
+
+.dark-theme .quick-trade-tab {
+  border: 1px solid grey; }
 
 .quote-container {
   background-color: #ebf3f1;
@@ -3150,6 +3157,24 @@ table th {
   min-width: auto;
   flex: 1; }
 
+.layout-mobile.home_container-mobile .app-icon {
+  margin: 1rem auto;
+  width: 10rem; }
+
+.layout-mobile.home_container-mobile .trade-tab-app-title {
+  font-family: "Raleway Light";
+  letter-spacing: .3rem;
+  font-size: .8rem; }
+
+.layout-mobile.home_container-mobile .market-button {
+  background-color: white !important;
+  border: 1px solid #000000;
+  color: #000000; }
+
+.layout-mobile.home_container-mobile .post-wrapper {
+  max-height: 45rem;
+  overflow-y: auto; }
+
 .sidebar-container {
   display: flex;
   flex-direction: column;
@@ -3215,6 +3240,9 @@ table th {
       .sidebar-bottom-wrapper .sidebar-bottom-button.active .sidebar-bottom-icon svg {
         fill: #212121;
         stroke: #212121; }
+        .sidebar-bottom-wrapper .sidebar-bottom-button.active .sidebar-bottom-icon svg .home-icon {
+          fill: #212121;
+          stroke: #212121; }
     .sidebar-bottom-wrapper .sidebar-bottom-button .bottom-bar-text {
       font-size: 12px;
       text-align: center;
@@ -5500,18 +5528,28 @@ table th {
   .accordion_wrapper .accordion_section .accordion_section_title {
     padding: 0.5rem 0;
     position: relative; }
+    .accordion_wrapper .accordion_section .accordion_section_title .sidebar_hub-section-icon {
+      height: 1.5rem;
+      width: 1.5rem;
+      margin-right: 0.5rem; }
+      .accordion_wrapper .accordion_section .accordion_section_title .sidebar_hub-section-icon svg path {
+        fill: transparent;
+        stroke: #777677; }
+    .accordion_wrapper .accordion_section .accordion_section_title.accordion_section--open .accordion_section_content {
+      margin-bottom: 1.5rem; }
+    .accordion_wrapper .accordion_section .accordion_section_title.accordion_section--open .accordion_section_content_text {
+      color: #212121; }
+      .accordion_wrapper .accordion_section .accordion_section_title.accordion_section--open .accordion_section_content_text.with_arrow:after {
+        border-left-color: #212121 !important;
+        border-right-color: #212121 !important; }
+    .accordion_wrapper .accordion_section .accordion_section_title.accordion_section--open .sidebar_hub-section-icon svg path {
+      fill: #212121;
+      stroke: #212121; }
   .accordion_wrapper .accordion_section .accordion_section_content_text {
     position: relative;
     color: #777677; }
     .accordion_wrapper .accordion_section .accordion_section_content_text .accordion_section_content_text-subtitle {
       color: #cccbcb; }
-  .accordion_wrapper .accordion_section.accordion_section--open .accordion_section_content {
-    margin-bottom: 1.5rem; }
-  .accordion_wrapper .accordion_section.accordion_section--open .accordion_section_content_text {
-    color: #212121; }
-    .accordion_wrapper .accordion_section.accordion_section--open .accordion_section_content_text.with_arrow:after {
-      border-left-color: #212121 !important;
-      border-right-color: #212121 !important; }
   .accordion_wrapper .accordion_section.disabled {
     color: #777677; }
   .accordion_wrapper .accordion_section:last-child {
@@ -5536,7 +5574,7 @@ table th {
   right: -0.5rem;
   top: calc(50% - 0.5rem); }
 
-.direction_ltr .accordion_wrapper .accordion_section.accordion_section--open .accordion_section_content_text:after {
+.direction_ltr .accordion_wrapper .accordion_section .accordion_section_title.accordion_section--open .accordion_section_content_text:after {
   transform: rotate(90deg); }
 
 .direction_ltr .accordion_wrapper .accordion_section.disabled .accordion_section_content_text:after {
@@ -5555,7 +5593,7 @@ table th {
   left: -0.5rem;
   top: calc(50% - 0.6rem); }
 
-.direction_rtl .accordion_wrapper .accordion_section.accordion_section--open .accordion_section_content_text:after {
+.direction_rtl .accordion_wrapper .accordion_section .accordion_section_title.accordion_section--open .accordion_section_content_text:after {
   transform: rotate(-90deg); }
 
 .direction_rtl .accordion_wrapper .accordion_section.disabled .accordion_section_content_text:after {
@@ -5569,11 +5607,17 @@ table th {
     color: #b6b5cd; }
     .dark-theme .accordion_wrapper .accordion_section .accordion_section_content_text .accordion_section_content_text-subtitle {
       color: #454162; }
-  .dark-theme .accordion_wrapper .accordion_section.accordion_section--open .accordion_section_content_text {
+  .dark-theme .accordion_wrapper .accordion_section .accordion_section_title .sidebar_hub-section-icon svg path {
+    fill: transparent;
+    stroke: #a3a1ca; }
+  .dark-theme .accordion_wrapper .accordion_section .accordion_section_title.accordion_section--open .accordion_section_content_text {
     color: #b6b5cd; }
-    .dark-theme .accordion_wrapper .accordion_section.accordion_section--open .accordion_section_content_text.with_arrow:after {
+    .dark-theme .accordion_wrapper .accordion_section .accordion_section_title.accordion_section--open .accordion_section_content_text.with_arrow:after {
       border-left-color: #b6b5cd !important;
       border-right-color: #b6b5cd !important; }
+  .dark-theme .accordion_wrapper .accordion_section .accordion_section_title.accordion_section--open .sidebar_hub-section-icon svg path {
+    fill: #a3a1ca;
+    stroke: #a3a1ca; }
   .dark-theme .accordion_wrapper .accordion_section.disabled {
     color: #2e2f37; }
   .dark-theme .accordion_wrapper .accordion_section:last-child {
@@ -7963,7 +8007,8 @@ foreignObject {
       width: 60%; }
       .app_footer-container .footer-row-content .footer-links-section .footer-links-group {
         margin: 0 1rem;
-        font-size: 1rem; }
+        font-size: 1rem;
+        align-self: 'center'; }
         .app_footer-container .footer-row-content .footer-links-section .footer-links-group .footer-links-section--title {
           font-weight: bold;
           margin-bottom: 0.25rem;
@@ -7980,9 +8025,11 @@ foreignObject {
     .app_footer-container .footer-row-content .footer_separter {
       border-left: 1px solid #777677; }
       .app_footer-container .footer-row-content .footer_separter .footer-txt {
-        width: 25rem; }
+        width: 25rem;
+        margin-left: 1rem; }
       .app_footer-container .footer-row-content .footer_separter .footer-logo {
-        width: 9rem; }
+        width: 9rem;
+        margin-left: 1rem; }
       .app_footer-container .footer-row-content .footer_separter svg .hollaEX_logo_gray {
         fill: white; }
       .app_footer-container .footer-row-content .footer_separter .blue-link {
@@ -8056,9 +8103,43 @@ foreignObject {
   .dark-theme .app_footer-container .footer-row-content .footer-links-section .footer-links-group .footer-links-section--list .link-section:hover {
     color: white; }
   .dark-theme .app_footer-container .footer-row-content .footer_separter .footer-logo svg .hollaEX_logo_gray {
-    fill: white; }
+    fill: #808080 !important; }
   .dark-theme .app_footer-container .footer-row-content .footer_separter .blue-link {
     color: #ed507b !important; }
+
+.layout-mobile .app_footer-container .footer-row-content .footer-links-section {
+  width: 100%; }
+  .layout-mobile .app_footer-container .footer-row-content .footer-links-section .footer-links-group {
+    margin-left: 3rem;
+    margin-bottom: 3rem !important;
+    font-size: 12px; }
+    .layout-mobile .app_footer-container .footer-row-content .footer-links-section .footer-links-group .footer-links-section--list .link-section {
+      margin-top: 0.25rem; }
+      .layout-mobile .app_footer-container .footer-row-content .footer-links-section .footer-links-group .footer-links-section--list .link-section:hover {
+        color: grey; }
+  .layout-mobile .app_footer-container .footer-row-content .footer-links-section .footer_separter {
+    border-left: none !important;
+    border-top: 1px solid white !important; }
+    .layout-mobile .app_footer-container .footer-row-content .footer-links-section .footer_separter .footer-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center; }
+    .layout-mobile .app_footer-container .footer-row-content .footer-links-section .footer_separter .footer-txt {
+      width: 37rem; }
+    .layout-mobile .app_footer-container .footer-row-content .footer-links-section .footer_separter .footer-logo {
+      width: 9rem;
+      margin-top: 11px;
+      margin-bottom: 1rem; }
+    .layout-mobile .app_footer-container .footer-row-content .footer-links-section .footer_separter svg .hollaEX_logo_gray {
+      fill: white; }
+    .layout-mobile .app_footer-container .footer-row-content .footer-links-section .footer_separter .blue-link {
+      color: #00aeef !important; }
+
+.layout-mobile .app_footer-container .footer-row-content .blue-link {
+  color: #00aeef !important; }
+
+.layout-mobile .app_footer-container .footer-links-group {
+  margin: 10rem; }
 
 html {
   font-size: 12px !important;

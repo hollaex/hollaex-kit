@@ -47,3 +47,4 @@ export { default as Wallets } from './Admin/Wallets';
 export { default as UserFees } from './Admin/UserFees';
 export { PATHS } from './Admin/paths';
 export { default as AdminOrders } from './Admin/ActiveOrders';
+export { default as MobileHome } from './MobileHome';
