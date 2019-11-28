@@ -115,7 +115,6 @@ $light-emoji-content-top-background: #dbdbdb;
 		border-top: 1px solid gray;
 	}
 	.username-to-chat {
-		cursor: pointer;
 		padding: 0.7rem !important;
 		color: $link !important;
 		font-size: 1rem !important;
@@ -227,9 +226,9 @@ $light-emoji-content-top-background: #dbdbdb;
 		flex: 1;
 
 		> div {
-			&:first-child {
+			// &:first-child {
 				// padding: 0.5rem;
-			}
+			// }
 			padding: 0.5rem 0;
 		}
 		.view {
@@ -361,6 +360,11 @@ $light-emoji-content-top-background: #dbdbdb;
 		}
 		.user-icon {
 			width: 1.5rem;
+			svg {
+				.level_icon {
+					fill: $colors-black;
+				}
+			}
 		}
 	}
 
@@ -482,6 +486,9 @@ $light-emoji-content-top-background: #dbdbdb;
 				}
 			}
 		}
+		.separator {
+			width: 1rem;
+		}
 	}
 }
 
@@ -514,7 +521,7 @@ $light-emoji-content-top-background: #dbdbdb;
 		}
 		.user-icon {
 			svg {
-				.level_icon {
+				.level_icon, .hap-icon {
 					fill: $colors-white;
 				}
 			}
@@ -571,7 +578,6 @@ $light-emoji-content-top-background: #dbdbdb;
 			}
 		}
 		.username-to-chat {
-			cursor: pointer;
 			padding: 0.7rem !important;
 			color:$colors-username-set-dark !important;
 			font-size: 1rem !important;

@@ -11,7 +11,7 @@ import {
 	USER_TYPES,
 	MESSAGE_TYPES
 } from '../../actions/appActions';
-import { getToken, isLoggedIn } from '../../utils/token';
+import { getToken } from '../../utils/token';
 
 const ENTER_KEY = 'Enter';
 
@@ -27,7 +27,8 @@ class Chat extends Component {
 	};
 
 	componentWillMount() {
-		if (!this.props.fetchingAuth && isLoggedIn()) {
+		// if (!this.props.fetchingAuth && isLoggedIn()) {
+		if (!this.props.fetchingAuth) {
 			this.initializeChatWs(getToken());
 		}
 	}
@@ -37,7 +38,8 @@ class Chat extends Component {
 			!nextProps.fetchingAuth &&
 			nextProps.fetchingAuth !== this.props.fetchingAuth
 		) {
-			if (!this.state.chatWs && isLoggedIn()) {
+			// if (!this.state.chatWs && isLoggedIn()) {
+			if (!this.state.chatWs) {
 				this.initializeChatWs(getToken());
 			}
 		}
@@ -52,11 +54,16 @@ class Chat extends Component {
 
 	initializeChatWs = (token = '') => {
 		this.isInitializing(true);
-		const chatWs = io.connect(`${WS_URL}/chat`, {
-			query: {
-				token: token ? `Bearer ${token}` : ''
-			}
-		});
+		let chatWs = '';
+		if (token) {
+			chatWs = io.connect(`${WS_URL}/chat`, {
+				query: {
+					token: token ? `Bearer ${token}` : ''
+				}
+			});
+		} else {
+			chatWs = io.connect(`${WS_URL}/chat`);
+		}
 
 		this.setState({ chatWs });
 
@@ -201,7 +208,8 @@ class Chat extends Component {
 				setChatBoxRef={this.setChatBoxRef}
 				sendMessage={this.sendMessage}
 				userInitialized={userInitialized}
-				minimized={minimized || !userInitialized || !chatSocketInitialized}
+				// minimized={minimized || !userInitialized || !chatSocketInitialized}
+				minimized={minimized}
 				minimizeChat={onMinimize}
 				chatIsClosed={chatIsClosed}
 				set_username={set_username}

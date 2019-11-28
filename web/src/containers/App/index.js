@@ -726,7 +726,11 @@ class Container extends Component {
 				return (
 					<LogoutConfirmation
 						data={data}
-						onConfirm={this.logout}
+						onConfirm={() => {
+								this.logout();
+								this.onCloseDialog();
+							}
+						}
 						onClose={this.onCloseDialog}
 					/>
 				);
