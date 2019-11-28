@@ -72,7 +72,7 @@ const generateSectionsText = (strings, theme) => {
                 },
                 {
                     text: SECTIONS.SECTION_5_LINK_3,
-                    link: 'https://bitholla.com/hollaex-kit/'
+                    link: 'https://github.com/bitholla/hollaex-kit'
                 },
             ]
         },
