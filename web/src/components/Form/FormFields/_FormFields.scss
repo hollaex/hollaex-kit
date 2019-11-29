@@ -245,7 +245,7 @@ $placeholder--font-weight: bold;
 
 .dark-theme {
 	.input_field-input {
-		color: $dark-form-text !important;
+		color: $colors-white !important;
 		&::placeholder {
 			color: $dark-form-placeholder !important;
 		}

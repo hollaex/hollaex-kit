@@ -85,8 +85,8 @@
 			font-weight: bold;
 
 			&:disabled {
-				background-color: $theme-color-disabled !important;
-				color: $dark-font-sub-text-1-color !important;
+				background-color: $dark-button-disabled !important;
+				color: $dark-button-text-disabled !important;
 			}
 		}
 
@@ -160,6 +160,7 @@
 
 		.trade_order_entry-action_selector {
 			color: $dark-font-sub-text-1-color;
+			border: 1px solid $dark-border-main !important;
 		}
 
 		.trade_order_entry-selector {

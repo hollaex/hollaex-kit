@@ -89,7 +89,7 @@ $close-button--margin: 1.5rem;
 
 .dark-theme {
 	.ReactModal__Content {
-		background-color: $dark-app-background-color !important;
+		background-color: $dark-auth-container-background !important;
 	}
 	.ReactModal__Overlay {
 		background-color: $dark-app-modal-background !important;
@@ -106,6 +106,12 @@ $close-button--margin: 1.5rem;
 			.action_notification-image {
 				fill: $dark-font-main-text-color;
 			}
+		}
+	}
+	.exir-button {
+		&.disabled {
+			background-color: #535353 !important;
+			color: gray !important;
 		}
 	}
 }

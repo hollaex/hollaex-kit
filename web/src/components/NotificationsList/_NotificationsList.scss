@@ -37,6 +37,9 @@
 		}
 	}
 	.post_header {
-		color: $colors-white;
+		color: $dark-font-main-text-color;
+	}
+	.post-content {
+		color: $dark-font-sub-text-color;
 	}
 }

@@ -220,9 +220,10 @@ $order_entry-column--width-lg: 18rem;
 			}
 		}
 		.post_header {
-			color: $colors-white;
+			color: $dark-font-main-text-color;
 		}
 		.post-content{
+			color: $dark-font-sub-text-color;
 			font-size: $trade-post-font-size;
 		}
 	}

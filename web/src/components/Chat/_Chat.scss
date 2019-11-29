@@ -13,7 +13,6 @@ $chat-emoji-face-icon--color: #b6b4cc;
 $chat-message--font-size: 1rem;
 $chat-username--font-size: 1.2rem;
 $mobile-regular--font-size: 1.5rem;
-$odd-child-background: #e6e6e6;
 $chat-message-content-color: #b6b4cc;
 $chat-top-theme-icon: #b6b4cc;
 $chat-message-content-light: #4f4f4f;
@@ -102,7 +101,7 @@ $light-emoji-content-top-background: #dbdbdb;
 	-moz-box-shadow: 1px 0px 3px 0px rgba(0, 0, 0, 0.29);
 	box-shadow: 1px 0px 3px 0px rgba(0, 0, 0, 0.29);
 	font-family: "Open Sans" !important;
-	border: 1px solid #f0f1f1 !important;
+	border: 1px solid $chat-box-border !important;
 
 	.timestamp {
 		color: $chat-message-dark--font-color;
@@ -222,7 +221,7 @@ $light-emoji-content-top-background: #dbdbdb;
 
 	.chat-message-list {
 		width: 23rem !important;
-		background-color: $odd-child-background;
+		background-color: $chat-message-background-odd;
 		flex: 1;
 
 		> div {
@@ -234,10 +233,10 @@ $light-emoji-content-top-background: #dbdbdb;
 		.view {
 			> div {
 				&:nth-child(odd) {
-					background-color: $odd-child-background;
+					background-color: $chat-message-background-odd;
 				}
 				&:nth-child(even) {
-					background-color: $box-fields;
+					background-color: $chat-message-background-even;
 				}
 			}
 		}
@@ -249,7 +248,7 @@ $light-emoji-content-top-background: #dbdbdb;
 			.message-content {
 				width: 100%;
 				.message {
-					color: $chat-message-content-light;
+					color: $chat-message-color;
 					word-break: break-word;
 					line-height: 1.1rem;
 					font-size: $chat-message--font-size;
@@ -466,7 +465,7 @@ $light-emoji-content-top-background: #dbdbdb;
 				}
 			}
 			.emoji-content {
-				height: 100%;
+				height: 13rem;
 				overflow-y: scroll;
 			}
 			.emoji-mart-emoji {
@@ -494,16 +493,24 @@ $light-emoji-content-top-background: #dbdbdb;
 
 .dark-theme {
 	.chat-wrapper {
-		border: 1px solid $dark-box-fields !important;
+		border: 1px solid $dark-chat-box-border !important;
 		background-color: $chat-wrapper-dark--background-color;
 
 		&.minimized {
 			.chat-header {
-				border-top: 1px solid $colors-white;
+				border-top: 1px solid $dark-link;
 			}
 			.minimize-button {
 				&:hover {
 					background-color: $chat-message-box-dark--background-color;
+				}
+				.maximize-arrow{
+					border: solid $trade-tabs-inactive-color;
+					border-width: 0 3px 3px 0;
+					display: inline-block;
+					padding: 3px;
+					transform: rotate(-135deg);
+					-webkit-transform: rotate(-135deg);
 				}
 			}
 		}
@@ -516,7 +523,7 @@ $light-emoji-content-top-background: #dbdbdb;
 				background-color: $dark-app-background-color;
 			}
 			.minimize-button-content{
-				border-bottom: 2px solid $chat-top-theme-icon;
+				border-bottom: 2px solid $trade-tabs-inactive-color;
 			}
 		}
 		.user-icon {
@@ -526,15 +533,15 @@ $light-emoji-content-top-background: #dbdbdb;
 				}
 			}
 		}
-		.chat-message-list{
-			background-color:$dark-app-light-background;
+		.chat-message-list {
+			background-color: $dark-app-light-background;
 			.view{
 				> div{
 					&:nth-child(odd){
-						background-color: $dark-app-light-background
+						background-color: $dark-chat-message-background-odd;
 					}
 					&:nth-child(even){
-						background-color: $dark-box-fields
+						background-color: $dark-chat-message-background-even;
 					}
 				}
 			}
@@ -542,7 +549,7 @@ $light-emoji-content-top-background: #dbdbdb;
 		.chat-message {
 			.message-content {
 				.message {
-					color: $chat-message-content-color;
+					color: $dark-chat-message-color;
 				}	
 				span {
 					&.toggle-content {
@@ -586,6 +593,7 @@ $light-emoji-content-top-background: #dbdbdb;
 		}
 		.chat-header {
 			background-color: $chat-message-box-dark--background-color;
+			color: white;
 
 			.chat-header-icon {
 				svg {
@@ -598,7 +606,7 @@ $light-emoji-content-top-background: #dbdbdb;
 		.chat-footer {
 			.chat-message-box {
 				background-color: $chat-message-box-dark--background-color;
-				color: $chat-message-content-color;
+				color: $trade-tabs-inactive-color;
 				
 				&::placeholder {
 					color: $chat-message-content-color;
@@ -648,7 +656,7 @@ $light-emoji-content-top-background: #dbdbdb;
 				.chat-emoji-icon {
 				    svg {
 				     	.emoji-face-icon {
-					    	fill: $chat-message-content-color;
+					    	fill: $trade-tabs-inactive-color;
 						}
 					}
 				}

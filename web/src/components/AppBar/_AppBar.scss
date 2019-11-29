@@ -21,7 +21,8 @@ $app-bar-add-tab-red: #ff0000;
 
 		.active-tab-pair {
 			background-color: $dark-app-background-color !important;
-			border-left: 1px solid $dark-inactive-color !important;
+			border-left: 1px solid $dark-border-main !important;
+			border-right: 1px solid $dark-border-main !important;
 			color: $dark-font-main-text-color !important;
 
 			svg {
@@ -80,6 +81,15 @@ $app-bar-add-tab-red: #ff0000;
 	.app-menu-bar {
 		background: $dark-app-light-background !important;
 		border-bottom: 1px solid $dark-app-line-divider;
+
+		.app-menu-bar-content {
+			svg {
+				.tab-summary0, .tab-wallet0, .tab-setting0, .tab-verify0,
+				.tab-security0, .tab-api0 {
+					fill: $app-bar-icon-inactive !important;
+				}
+			}
+		}
 		
 		.active-menu {
 			background: $dark-app-background-color !important;
@@ -158,6 +168,7 @@ $app-bar-add-tab-red: #ff0000;
 	font-size: $navigation_bar-font_size;
 	font-weight: bold;
 	background: $app-bar-background-color;
+	border-bottom: 1px solid $dark-app-line-divider;
 
 	&.no-borders {
 		border-bottom: none;
@@ -747,7 +758,7 @@ $app-bar-add-tab-red: #ff0000;
 	padding-right: .5rem;
 
 	&::placeholder {
-		color: $dark-inactive-color !important;
+		color: $app-bar-menu-list-color !important;
 	}
 }
 
@@ -756,9 +767,9 @@ $app-bar-add-tab-red: #ff0000;
 }
 
 .app-bar-add-tab-menu {
-	background-color: $dark-app-bar-background-color;
-	border: 1px solid $colors-white;
-	color: $dark-font-sub-text-1-color;
+	background-color: $colors-black;
+	border: 1px solid #535353;
+	color: $app-bar-menu-list-color;
 	display: block;
 	min-width: 22rem;
 	min-height: 8rem;
@@ -771,8 +782,8 @@ $app-bar-add-tab-red: #ff0000;
 	box-shadow: 0px 4px 6px 1px rgba(0, 0, 0, 0.4);
 
 	.app-bar-tab-menu-list {
-		background-color: $dark-app-bar-background-color;
-		color: $dark-font-sub-text-1-color;
+		background-color: $colors-black;
+		color: $app-bar-menu-list-color;
 		font-size: .8rem;
 		height: 2.5rem;
 		padding: .5rem .8rem;
@@ -786,7 +797,7 @@ $app-bar-add-tab-red: #ff0000;
 
 	.app-bar-add-tab-content {
 		background-color: $dark-app-bar-add-tab-menu-background;
-		color: $dark-font-sub-text-1-color;
+		color: $app-bar-menu-list-color;
 		font-size: .8rem;
 		overflow-y: scroll;
 		padding: .3rem 0;
@@ -796,18 +807,18 @@ $app-bar-add-tab-red: #ff0000;
 	
 	.app-bar-tab-overflow-content {
 		background-color: $dark-app-bar-add-tab-menu-background;
-		color: $dark-font-sub-text-1-color;
+		color: $app-bar-menu-list-color;
 		font-size: .8rem;
 		overflow-y: scroll;
 		padding: .3rem 0;
 	}
 
 	.app-bar-add-tab-content-list {
-		color: $dark-font-sub-text-1-color;
+		color: $app-bar-menu-list-color;
 		height: 2.2rem;
 		
 		&:hover {
-			background-color: $dark-app-light-background;
+			background-color: $dark-app-bar-tab-active-menu-list-background;
 			color: $dark-font-main-text-color;
 
 			svg {
@@ -845,10 +856,10 @@ $app-bar-add-tab-red: #ff0000;
 	.app-bar-tab-setting, .app-bar-add-tab-icons {
 		svg {
 			.btc0, .btc1, .eth0, .eth1, .bch-icon, .xrp-icon, .hex-icon, .default-icon {
-				fill: $dark-font-sub-text-1-color !important;
+				fill: $app-bar-menu-list-color !important;
 			}
 			.plus, .minus {
-				stroke: $dark-font-sub-text-1-color !important;
+				stroke: $app-bar-menu-list-color !important;
 				stroke-width: .2rem;
 			}
 			.st0 {

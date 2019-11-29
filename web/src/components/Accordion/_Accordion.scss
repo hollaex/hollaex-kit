@@ -181,10 +181,14 @@ $main-text--color: $colors-deactivate-color2;
 			color: $dark-font-sub-text-color;
 		}
 		.accordion_section_content_text {
-			color: $dark-font-main-text-color;
+			color: $dark-font-sub-text-color;
 
 			.accordion_section_content_text-subtitle {
 				color: $dark-button-active;
+			}
+			&.with_arrow:after {
+				border-left-color: $dark-font-sub-text-color !important;
+				border-right-color: $dark-font-sub-text-color !important;
 			}
 		}
 		.accordion_section_title {
@@ -196,7 +200,7 @@ $main-text--color: $colors-deactivate-color2;
 			}
 			&.accordion_section--open {
 				.accordion_section_content_text {
-					color: $dark-font-main-text-color;
+					color: $dark-font-main-text-color !important;
 					&.with_arrow:after {
 						border-left-color: $dark-font-main-text-color !important;
 						border-right-color: $dark-font-main-text-color !important;
@@ -204,8 +208,8 @@ $main-text--color: $colors-deactivate-color2;
 				}
 				.sidebar_hub-section-icon {
 					svg path {
-						fill: $dark-icon-color;
-						stroke: $dark-icon-color;
+						fill: $dark-font-main-text-color;
+						stroke: $dark-font-main-text-color;
 					}				
 				}
 			}

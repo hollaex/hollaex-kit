@@ -37,7 +37,9 @@ $colors-terms-background: #f7f7f7; // for Hollaex
 // colors for white theme
 $app-background-color: white;
 $app-light-background: #F2F2F3;
+$auth-container-background: $app-background-color;
 $quick-trade-background: #ebf3f1;
+$quick-trade-container: $colors-white;
 $app-modal-background: rgba(221, 221, 221, 0.75);
 $app-bar-background-color: $colors-black;
 $app-line-divider: $colors-main-black;
@@ -76,6 +78,11 @@ $trade-tabs-inactive-color: #808080;
 $bitcoin-color-main: $colors-currencies-btc;
 // White theme footer
 $footer-background-color: $colors-black;
+// white chat color
+$chat-message-background-even: $box-fields;
+$chat-message-background-odd: #e6e6e6;
+$chat-message-color: #4f4f4f;
+$chat-box-border: #f0f1f1;
 
 // this is for transaction history- ToDo: need to customize for common theme
 $color-buy: #d1d4dc;
@@ -83,22 +90,24 @@ $color-sell: $colors-black;
 
 // colors for dark theme
 $colors-username-set-dark: #ff4bb6;
-$dark-app-background-color: #1f212a;
+$dark-app-background-color: #202020;
 $dark-app-light-background: #2e2f37;
-$dark-quick-trade-background: #1b1b1f;
+$dark-auth-container-background: #333333;
+$dark-quick-trade-background: $dark-app-background-color;
+$dark-quick-trade-container: #333333;
 $dark-app-modal-background: rgba(35, 31, 32, 0.5);
 $dark-app-bar-background-color: #0f1114;
-$dark-app-line-divider: #b7b5cd;
+$dark-app-line-divider: #535353;
 $dark-app-link-highlight: #ed507b;
 $dark-box-fields: #353841;
 $dark-inactive-color: #2e2f37;
-$dark-icon-color: #a3a1ca;
-$dark-font-main-text-color: #b6b5cd;
-$dark-font-sub-text-color: #a3a1ca;
-$dark-font-sub-text-1-color: #808184;
-$dark-buy: #29a8e0;
-$dark-sell: #f59121;
-$dark-link: $dark-app-link-highlight;
+$dark-icon-color: $colors-white;
+$dark-font-main-text-color: $colors-white;
+$dark-font-sub-text-color: #808080;
+$dark-font-sub-text-1-color: #808080;
+$dark-buy: #00A69C;
+$dark-sell: #EE4036;
+$dark-link: #0066B4;
 $dark-trade-fields: #454162;
 $dark-trade-fill-indicator: #444162;
 $dark-buy-bids-text: $colors-black;
@@ -106,16 +115,16 @@ $dark-sell-bids-text: $dark-app-background-color;
 $dark-app-logo-color: #808184;
 // dark-border-button
 $dark-border-main: $dark-app-line-divider;
-$dark-button-active: #454162;
+$dark-button-active: #0066B4;
 $dark-button-text: $dark-font-main-text-color;
-$dark-button-disabled:  $dark-inactive-color;
-$dark-button-text-disabled: #b7b7ce;
+$dark-button-disabled: #333333;
+$dark-button-text-disabled: #535353;
 // dark-form-fields
 $dark-form-color-underline: $dark-app-line-divider;
 $dark-form-color-underline-focus: $dark-app-line-divider;
 $dark-form-arrow: $dark-app-line-divider;
 $dark-form-text: $dark-font-sub-text-color;
-$dark-form-placeholder: $dark-font-sub-text-1-color;
+$dark-form-placeholder: #808080;
 $dark-form-label: $dark-font-main-text-color;
 $dark-form-text-disabled: $dark-inactive-color;
 // dark-tabs
@@ -137,6 +146,11 @@ $dark-accordion-arrow-inactive: $dark-font-sub-text-color;
 
 // dark theme footer
 $dark-footer-background-color: #0f1114;
+// colors for chat
+$dark-chat-message-background-even: #202020;
+$dark-chat-message-background-odd: #333333;
+$dark-chat-message-color: #98CCB2;
+$dark-chat-box-border: #2B2B2B;
 
 // main title icons fill(quick trade, deposit, withdrawal)
 $dark-main-title-icon-color-1: $dark-app-bar-background-color;
@@ -144,9 +158,11 @@ $dark-main-title-icon-color-2: $dark-icon-color;
 $dark-main-title-icon-color-3: $dark-icon-color;
 
 // common colors for app bar
-$dark-app-bar-add-tab-menu-background: $dark-box-fields;
+$dark-app-bar-add-tab-menu-background: #202020;
+$dark-app-bar-tab-active-menu-list-background: #333333;
+$app-bar-menu-list-color: #808080;
 // $app-menu-bar-border--color: #CCCBCA;
-$app-bar-icon-inactive: #808184;
+$app-bar-icon-inactive: #808080;
 $app-bar--quicktrade-active-color: #fff100;
 $app-bar--quicktrade-inactive-color: #ceac20;
 $app-bar-pairs-up: green;
@@ -469,6 +485,7 @@ $title--font-family: $raleway-extrabold--font-family;
 
 $backgound-pattern: '/assets/pattern-grey.jpg';
 $background-image: '/assets/background.png';
+$dark-background-image: '/assets/dark-background.jpg';
 
 // DIALOG
 $dialog-min-width: 25rem;

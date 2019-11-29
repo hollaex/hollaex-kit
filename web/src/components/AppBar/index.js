@@ -337,6 +337,7 @@ class AppBar extends Component {
 		} else {
 			pair = this.props.pair;
 		}
+		let disableBorder = noBorders || (activePath !== 'trade' && activePath !== 'quick-trade');
 		return isMobile ? (
 			<MobileBarWrapper
 				className={classnames(
@@ -356,7 +357,7 @@ class AppBar extends Component {
 		) : (
 			<div
 				className={classnames('app_bar justify-content-between', {
-					'no-borders': noBorders
+					'no-borders': disableBorder
 				})}
 			>
 				<div className="d-flex">

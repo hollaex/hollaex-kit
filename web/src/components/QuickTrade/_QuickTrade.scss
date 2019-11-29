@@ -45,7 +45,7 @@ $title-icon--height: 10rem;
 	min-width: $wrapper--min-width;
 	max-width: $wrapper--max-width;
 	padding: $wrapper--padding;
-	background-color: white;
+	background-color: $quick-trade-container;
 	margin: 3rem auto;
 	height: fit-content;
 
@@ -262,7 +262,7 @@ $title-icon--height: 10rem;
 
 .dark-theme {
 	.quick_trade-wrapper {
-		background-color: $dark-quick-trade-background;
+		background-color: $dark-quick-trade-container;
 
 		.title,
 		.input_block-title {
@@ -282,7 +282,7 @@ $title-icon--height: 10rem;
 				}
 			}
 			.input_block-inputbox {
-				background-color: $dark-quick-trade-background;
+				background-color: $dark-quick-trade-container;
 			}
 		}
 
@@ -325,14 +325,14 @@ $title-icon--height: 10rem;
 			}
 		}
 		.input_block-inputbox {
-			background-color: $dark-app-background-color;
+			background-color: $dark-quick-trade-container;
 			color: $dark-font-main-text-color;
 		}
 		.mobile_dropdown-section {
 			.mobile-drop-down {
 				color:$dark-font-main-text-color;	
 				.option {
-					background: $dark-app-background-color;
+					background: $dark-quick-trade-background;
 					color:$colors-deactivate-color2;	
 				}
 			}
