@@ -2,13 +2,13 @@
     &.home_container-mobile {
         .app-icon {
             margin: 1rem auto;
-            width: 10rem;
+            width: 15rem;
         }
 
         .trade-tab-app-title {
             font-family: "Raleway Light";
             letter-spacing: .3rem;
-            font-size: .8rem;
+            font-size: 1.2rem;
         }
 
         .market-button {
@@ -20,6 +20,9 @@
         .post-wrapper {
             max-height: 45rem;
             overflow-y: auto;
+        }
+        .exir-button {
+            font-size: 1.2rem;
         }
     }
 }

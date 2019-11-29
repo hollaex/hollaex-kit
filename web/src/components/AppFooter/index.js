@@ -143,7 +143,7 @@ const AppFooter = ({
                                     )}
                                 >
                                     {LINKS.map(({ link, text, icon }, indexLink) => (
-                                        <div key={indexLink} className="link-section">
+                                        <div key={indexLink} className="link-section d-flex">
                                             <a
                                                 href={link || '#'}
                                                 target="_blank"
@@ -151,18 +151,20 @@ const AppFooter = ({
                                             >
                                                 <div className={classnames(
                                                     'd-flex',
+                                                    'f-1',
                                                     'flex-row')}>
-                                                    {icon ?
-                                                        <img
-                                                            src={icon}
-                                                            className="social_icon"
-                                                            alt="social_icons"
-                                                        /> : null
-                                                    }
-
-                                                    <div >
-                                                        {text}
+                                                    <div>
+                                                        {icon ?
+                                                            <img
+                                                                src={icon}
+                                                                className="social_icon"
+                                                                alt="social_icons"
+                                                            /> : null
+                                                        }
                                                     </div>
+                                                    <span>
+                                                        {text}
+                                                    </span>
                                                 </div>
                                             </a>
                                         </div>

@@ -3159,12 +3159,12 @@ table th {
 
 .layout-mobile.home_container-mobile .app-icon {
   margin: 1rem auto;
-  width: 10rem; }
+  width: 15rem; }
 
 .layout-mobile.home_container-mobile .trade-tab-app-title {
   font-family: "Raleway Light";
   letter-spacing: .3rem;
-  font-size: .8rem; }
+  font-size: 1.2rem; }
 
 .layout-mobile.home_container-mobile .market-button {
   background-color: white !important;
@@ -3174,6 +3174,9 @@ table th {
 .layout-mobile.home_container-mobile .post-wrapper {
   max-height: 45rem;
   overflow-y: auto; }
+
+.layout-mobile.home_container-mobile .exir-button {
+  font-size: 1.2rem; }
 
 .sidebar-container {
   display: flex;
