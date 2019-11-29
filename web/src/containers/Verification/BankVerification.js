@@ -58,25 +58,6 @@ class BankVerification extends Component {
 			maxLength: 50,
 			fullWidth: isMobile
 		};
-		formFields.card_number = {
-			type: 'text',
-			label:
-				STRINGS.USER_VERIFICATION.BANK_ACCOUNT_FORM.FORM_FIELDS
-					.CARD_NUMBER_LABEL,
-			placeholder:
-				STRINGS.USER_VERIFICATION.BANK_ACCOUNT_FORM.FORM_FIELDS
-					.CARD_NUMBER_PLACEHOLDER,
-			validate: [
-				required,
-				onlyNumbers,
-				exactLength(
-					16,
-					STRINGS.USER_VERIFICATION.BANK_ACCOUNT_FORM.VALIDATIONS.CARD_NUMBER
-				)
-			],
-			maxLength: 16,
-			fullWidth: isMobile
-		};
 		this.setState({ formFields });
 	};
 

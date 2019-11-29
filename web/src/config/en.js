@@ -315,14 +315,14 @@ export default {
 		INFO_TXT_1:
 			'Please submit the relevant information needed for each section below.Only when all sections have submissions completed will your information be reviewed and approved for an account upgrade.',
 		INFO_TXT_2:
-			'* Bank and Identity section require {0} in order to be fully verified.',
-		DOCUMENTATIONS: 'documentations',
+			'* Verification for the identity section require you to {0} certain documents.',
+		DOCUMENTATIONS: 'upload',
 		COMPLETED: 'Completed',
 		PENDING_VERIFICATION: 'Pending verification',
 		TITLE_EMAIL: 'Email',
 		MY_EMAIL: 'My Email',
 		TITLE_USER_DOCUMENTATION: 'Identification',
-		TITLE_ID_DOCUMENTS: 'Documents',
+		TITLE_ID_DOCUMENTS: 'Upload',
 		TITLE_BANK_ACCOUNT: 'Bank Account',
 		TITLE_MOBILE_PHONE: 'Mobile Phone',
 		TITLE_PERSONAL_INFORMATION: 'Personal Information',
@@ -444,7 +444,7 @@ export default {
 				FRONT: 'Please upload a scan of your photo identity document',
 				PROOF_OF_RESIDENCY:
 					'Please upload a scan of document proving the address you current reside',
-				SELFIE_PHOTO_ID: 'Please upload a selfie with photo id and note'
+				SELFIE_PHOTO_ID: 'Please upload a selfie with passport and note'
 			},
 			FORM_FIELDS: {
 				TYPE_LABEL: 'ID Document Type',
@@ -453,23 +453,23 @@ export default {
 					ID: 'ID',
 					PASSPORT: 'Passport'
 				},
-				ID_NUMBER_LABEL: 'ID Document Number',
+				ID_NUMBER_LABEL: 'Passport Number',
 				ID_NUMBER_PLACEHOLDER: 'Type the documents number',
 				ID_PASSPORT_NUMBER_LABEL: 'Passport Number',
 				ID_PASSPORT_NUMBER_PLACEHOLDER: 'Type your passport number',
-				ISSUED_DATE_LABEL: 'ID Document Issue Date',
-				EXPIRATION_DATE_LABEL: 'ID Document Expiration Date',
-				FRONT_LABEL: 'Photo ID Document',
-				FRONT_PLACEHOLDER: 'Add a copy of your photo ID document',
-				BACK_LABEL: 'Back Side of Photo ID Document',
+				ISSUED_DATE_LABEL: 'Passport Issue Date',
+				EXPIRATION_DATE_LABEL: 'Passport Expiration Date',
+				FRONT_LABEL: 'Passport Scan',
+				FRONT_PLACEHOLDER: 'Add a copy of your passport',
+				BACK_LABEL: 'Back Side of passport scan',
 				BACK_PLACEHOLDER: 'Add a copy of the backside of your ID document',
 				PASSPORT_LABEL: 'Passport Document',
 				PASSPORT_PLACEHOLDER: 'Add a copy of your Passport document',
 				POR_LABEL: 'Document proving your address',
 				POR_PLACEHOLDER: 'Add a copy of a document that proves your address',
-				SELFIE_PHOTO_ID_LABEL: 'Your Selfie with Photo ID and Note',
+				SELFIE_PHOTO_ID_LABEL: 'Your Selfie with Passport and Note',
 				SELFIE_PHOTO_ID_PLACEHOLDER:
-					'Add a copy of your Selfie with Photo ID and Note'
+					'Add a copy of your Selfie with Passport and Note'
 			},
 			INFORMATION: {
 				IDENTITY_DOCUMENT: 'Identity Document',
@@ -506,13 +506,13 @@ export default {
 						'We cannot accept the address on your submitted identity document as a valid proof of residence.'
 				},
 				SELFIE: {
-					TITLE: 'Selfie with Photo ID and Note',
+					TITLE: 'Selfie with Passport and Note',
 					INFO_TEXT:
 						"Please provide a photo of you holding your passport or photo ID. In the same picture and have a reference to bitholla.com’, today's date and your signature displayed.Make sure your face is clearly visible and that your ID details are clearly readable.",
 					REQUIRED: 'Required:',
 					INSTRUCTION_1: 'Your face clearly visable',
-					INSTRUCTION_2: 'Photo ID clearly readable',
-					INSTRUCTION_3: 'Write the word bitholla.com',
+					INSTRUCTION_2: 'Passport clearly readable',
+					INSTRUCTION_3: 'Write the word hollaex.com',
 					INSTRUCTION_4: "Write today's date",
 					INSTRUCTION_5: 'Write your signature',
 					WARNING:
