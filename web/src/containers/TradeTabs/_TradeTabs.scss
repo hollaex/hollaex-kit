@@ -71,19 +71,19 @@ $trade-tab-active-dark-title: #b7b5cd;
                 }
             }
             &:hover {
-                border: 1px solid $trade-tab-dark-pair-content;
-                color: $dark-font-sub-text-color;
+                border: 1px solid $dark-font-main-text-color;
+                color: $dark-font-main-text-color;
 
                 .trade_tab-pair-title {
-                    color: $dark-font-sub-text-color !important;
+                    color: $dark-font-main-text-color !important;
                 }
 
                 svg {
                     .btc0, .btc1, .eth0, .eth1, .bch-icon, .xrp-icon, .hex-icon, .default-icon {
-                        fill: $dark-font-sub-text-color !important;
+                        fill: $dark-font-main-text-color !important;
                     }
                     .st0 {
-                        fill: $dark-font-sub-text-color !important;
+                        fill: $dark-font-main-text-color !important;
                         stroke-width: 0rem;
                     }
                 }

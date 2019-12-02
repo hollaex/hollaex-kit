@@ -2908,14 +2908,14 @@ table th {
     .dark-theme .trade_tabs-container .trade-tab-list svg .hex-icon-1 {
       fill: #000000 !important; }
     .dark-theme .trade_tabs-container .trade-tab-list:hover {
-      border: 1px solid #a3a1c9;
-      color: #808080; }
+      border: 1px solid white;
+      color: white; }
       .dark-theme .trade_tabs-container .trade-tab-list:hover .trade_tab-pair-title {
-        color: #808080 !important; }
+        color: white !important; }
       .dark-theme .trade_tabs-container .trade-tab-list:hover svg .btc0, .dark-theme .trade_tabs-container .trade-tab-list:hover svg .btc1, .dark-theme .trade_tabs-container .trade-tab-list:hover svg .eth0, .dark-theme .trade_tabs-container .trade-tab-list:hover svg .eth1, .dark-theme .trade_tabs-container .trade-tab-list:hover svg .bch-icon, .dark-theme .trade_tabs-container .trade-tab-list:hover svg .xrp-icon, .dark-theme .trade_tabs-container .trade-tab-list:hover svg .hex-icon, .dark-theme .trade_tabs-container .trade-tab-list:hover svg .default-icon {
-        fill: #808080 !important; }
+        fill: white !important; }
       .dark-theme .trade_tabs-container .trade-tab-list:hover svg .st0 {
-        fill: #808080 !important;
+        fill: white !important;
         stroke-width: 0rem; }
 
 .trade_tabs-container {
