@@ -195,7 +195,7 @@ $main-text--color: $colors-deactivate-color2;
 			.sidebar_hub-section-icon {
 				svg path {
 					fill: transparent;
-					stroke: $dark-icon-color;
+					stroke: $dark-icon-unhover;
 				}				
 			}
 			&.accordion_section--open {

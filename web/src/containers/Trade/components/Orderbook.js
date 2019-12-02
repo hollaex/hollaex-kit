@@ -103,48 +103,60 @@ class Orderbook extends Component {
 		const pairBase = pairData.pair_base.toUpperCase();
 		const pairTwo = pairData.pair_2.toUpperCase();
 		const { symbol } = coins[pairData.pair_2] || DEFAULT_COIN_DATA;
+		console.log('pair', pair);
 		return (
 			<div className="trade_orderbook-wrapper d-flex flex-column f-1 apply_rtl">
-				<div className="trade_orderbook-headers d-flex">
-					<div>
-						<ReactSvg path={ICONS.INCOMING_WAVE} wrapperClassName="waves-icon" />
+				{pair === 'hex-usdt'
+					? <div className="trade_orderbook-headers d-flex">
+						<div>
+							<ReactSvg path={ICONS.INCOMING_WAVE} wrapperClassName="waves-icon" />
+						</div>
+						<div className="ml-3" >
+							<div className=" f-1 trade_orderbook-cell mb-2">
+								<span className="wave-header mr-2">
+									{STRINGS.WAVES.NEXT_WAVE}
+								</span>
+								<span className="wave-content">
+									{`TBA`}
+								</span>
+							</div>
+							<div className=" f-1 trade_orderbook-cell mb-2">
+								<span className="wave-header mr-2">
+									{STRINGS.WAVES.WAVE_AMOUNT}
+								</span>
+								<span className="wave-content">
+									{`TBA HEX`}
+								</span>
+							</div>
+							<div className=" f-1 trade_orderbook-cell mb-2">
+								<span className="wave-header mr-2">
+									{STRINGS.WAVES.FLOOR}
+								</span>
+								<span className="wave-content">
+									{`0.2`}
+								</span>
+							</div>
+							<div className=" f-1 trade_orderbook-cell mb-2">
+								<span className="wave-header mr-2">
+									{STRINGS.WAVES.LAST_WAVE}
+								</span>
+								<span className="wave-content">
+									{`N/A`}
+								</span>
+							</div>
+							<div className=" f-1 trade_orderbook-cell mb-3">
+								<a
+									href={"https://drive.google.com/file/d/15gILXIVpVMQtRGpty9GNLdhOZTdidT2U/view"}
+									target="_blank"
+									rel="noopener noreferrer"
+									className="blue-link pointer">
+									{STRINGS.HOME.SECTION_1_BUTTON_1}
+								</a>
+							</div>
+						</div>
 					</div>
-					<div className="ml-3" >
-						<div className=" f-1 trade_orderbook-cell mb-2">
-							<span className="mr-2">
-								{STRINGS.WAVES.NEXT_WAVE}
-							</span>
-							{`TBA`}
-						</div>
-						<div className=" f-1 trade_orderbook-cell mb-2">
-							<span className="mr-2">
-								{STRINGS.WAVES.WAVE_AMOUNT}
-							</span>
-							{`TBA HEX`}
-						</div>
-						<div className=" f-1 trade_orderbook-cell mb-2">
-							<span className="mr-2">
-								{STRINGS.WAVES.FLOOR}
-							</span>
-							{`0.2`}
-						</div>
-						<div className=" f-1 trade_orderbook-cell last-wave mb-2">
-							<span className="mr-2">
-								{STRINGS.WAVES.LAST_WAVE}
-							</span>
-							{`N/A`}
-						</div>
-						<div className=" f-1 trade_orderbook-cell mb-3">
-							<a
-								href={"https://hollaex.com/docs/wave-auction.pdf"}
-								target="_blank"
-								rel="noopener noreferrer"
-								className="blue-link pointer">
-								{STRINGS.HOME.SECTION_1_BUTTON_1}
-							</a>
-						</div>
-					</div>
-				</div>
+					: null
+				}
 				<EventListener target="window" onResize={this.scrollTop} />
 				<div className="trade_orderbook-headers d-flex">
 					<div className="f-1 trade_orderbook-cell">

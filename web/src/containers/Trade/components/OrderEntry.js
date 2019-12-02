@@ -325,7 +325,8 @@ class OrderEntry extends Component {
 						result = decValue.toString().substring(0, (decValue.toString().length - (valueDecimal - decimal)));
 					}
 					return result;
-				}
+				},
+				setRef: this.props.setSizeRef
 			},
 			price: {
 				name: 'price',
@@ -343,7 +344,8 @@ class OrderEntry extends Component {
 					step(increment_price)
 				],
 				currency: buyData.symbol.toUpperCase(),
-				initializeEffect: priceInitialized
+				initializeEffect: priceInitialized,
+				setRef: this.props.setPriceRef
 			}
 		};
 

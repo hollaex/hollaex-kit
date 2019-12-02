@@ -1,14 +1,13 @@
 $footer-wrapper--margin-top: 4rem;
 $footer-wrapper--margin: 1rem;
 $footer-wrapper--margin-bottom: $footer-wrapper--margin * 2;
-$footer-wrapper--border-color: $colors-deactivate-color2;
+$footer-wrapper--border-color: $dark-border-main;
 $footer-social-icon--dimension: 2rem;
 $footer-icons--side-margin: 1.5rem;
 $footer-content-size: 12px;
 $footer-logo-color: $trade-tabs-inactive-color;
 
 .app_footer-container {
-	padding: $footer-wrapper--margin-top $footer-wrapper--margin $footer-wrapper--margin;
 	border-top: 1px solid $footer-wrapper--border-color;
 	font-size: $font-size-subtext;
 	background-color: $footer-background-color;
@@ -16,6 +15,7 @@ $footer-logo-color: $trade-tabs-inactive-color;
 	
 	.footer-row-content {
 		margin-bottom: $footer-wrapper--margin-bottom;
+		padding: $footer-wrapper--margin-top $footer-wrapper--margin 0;
 
 		.footer-links-section {
 			width: 60%;
@@ -88,6 +88,7 @@ $footer-logo-color: $trade-tabs-inactive-color;
 	.footer-row-bottom {
 		border-top: 1px solid $footer-wrapper--border-color;
 		text-align: center;
+		padding-bottom: $footer-wrapper--margin;
 		.footer-row-language {
 			padding-left: 0.25rem;
 			&.active {

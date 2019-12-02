@@ -182,11 +182,11 @@
 
 			.trade_order_entry-action_selector {
 				.active {
-					color: $dark-sell-bids-text !important;
+					color: $dark-sell-asks-text !important;
 				}
 			}
 			.trade_order_entry-form-action {
-				color: $dark-sell-bids-text !important;
+				color: $dark-sell-asks-text !important;
 			}
 		}
 		&.order_side-selector-buy {

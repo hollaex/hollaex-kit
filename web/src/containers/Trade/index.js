@@ -50,7 +50,9 @@ class Trade extends Component {
 		symbol: '',
 		cancelDelayData: [],
 		priceInitialized: false,
-		sizeInitialized: false
+		sizeInitialized: false,
+		priceRef: '',
+		sizeRef: ''
 	};
 	priceTimeOut = '';
 	sizeTimeOut = '';
@@ -142,7 +144,10 @@ class Trade extends Component {
 		this.setState({ priceInitialized: true });
 		this.priceTimeOut = setTimeout(() => {
 			this.setState({ priceInitialized: false });
-		}, 1500);
+			if (this.state.priceRef) {
+				this.state.priceRef.focus();
+			}
+		}, 800);
 	};
 
 	onAmountClick = (size) => {
@@ -151,7 +156,19 @@ class Trade extends Component {
 		this.setState({ sizeInitialized: true });
 		this.sizeTimeOut = setTimeout(() => {
 			this.setState({ sizeInitialized: false });
-		}, 1500);
+			if (this.state.sizeRef)
+				this.state.sizeRef.focus();
+		}, 800);
+	};
+
+	setPriceRef = (priceRef) => {
+		if (priceRef)
+			this.setState({ priceRef });
+	};
+	
+	setSizeRef = (sizeRef) => {
+		if (sizeRef)
+			this.setState({ sizeRef });
 	};
 
 	setActiveTab = (activeTab) => {
@@ -309,6 +326,8 @@ class Trade extends Component {
 						pair={pair}
 						priceInitialized={priceInitialized}
 						sizeInitialized={sizeInitialized}
+						setPriceRef={this.setPriceRef}
+						setSizeRef={this.setSizeRef}
 					/>
 				)
 			},
@@ -410,6 +429,8 @@ class Trade extends Component {
 											}
 											priceInitialized={priceInitialized}
 											sizeInitialized={sizeInitialized}
+											setPriceRef={this.setPriceRef}
+											setSizeRef={this.setSizeRef}
 										/>
 									</TradeBlock>
 								</div>

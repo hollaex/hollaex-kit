@@ -33,10 +33,12 @@ $colors-currencies-eth: #2e3192;
 $colors-currencies-ltc: #58595b;
 $colors-currencies-xrp: #2e3192;
 $colors-terms-background: #f7f7f7; // for Hollaex
+$dark-colors-terms-background: #191919; // for Hollaex
 
 // colors for white theme
 $app-background-color: white;
 $app-light-background: #F2F2F3;
+$app-sidebar-background: white;
 $auth-container-background: $app-background-color;
 $quick-trade-background: #ebf3f1;
 $quick-trade-container: $colors-white;
@@ -50,6 +52,7 @@ $color-sell-btc-light: $colors-black; // for Hollaex
 $color-buy-btc-light: $colors-black; // for Hollaex
 $link: $colors-notifications-blue;
 $trade-fields: $colors-deactivate-color1;
+$trade-fields-border: $colors-main-black;
 $trade-fill-indicator: $colors-black; // for Hollaex
 $trade-fill-indicator-text: #878787; // for Hollaex
 $buy-bids-text: $colors-black; // for Hollaex
@@ -92,6 +95,7 @@ $color-sell: $colors-black;
 $colors-username-set-dark: #ff4bb6;
 $dark-app-background-color: #202020;
 $dark-app-light-background: #2e2f37;
+$dark-app-sidebar-background: #333333;
 $dark-auth-container-background: #333333;
 $dark-quick-trade-background: $dark-app-background-color;
 $dark-quick-trade-container: #333333;
@@ -108,11 +112,12 @@ $dark-font-sub-text-1-color: #808080;
 $dark-buy: #00A69C;
 $dark-sell: #EE4036;
 $dark-link: #0066B4;
-$dark-trade-fields: #454162;
+$dark-trade-fields: #191919;
+$dark-trade-fields-border: #2B2B2B;
 $dark-trade-fill-indicator: #444162;
 $dark-buy-bids-text: $colors-black;
-$dark-sell-bids-text: $dark-app-background-color;
-$dark-app-logo-color: #808184;
+$dark-sell-asks-text: $colors-white;
+$dark-app-logo-color: $colors-white;
 // dark-border-button
 $dark-border-main: $dark-app-line-divider;
 $dark-button-active: #0066B4;
@@ -121,15 +126,15 @@ $dark-button-disabled: #333333;
 $dark-button-text-disabled: #535353;
 // dark-form-fields
 $dark-form-color-underline: $dark-app-line-divider;
-$dark-form-color-underline-focus: $dark-app-line-divider;
+$dark-form-color-underline-focus: $colors-white;
 $dark-form-arrow: $dark-app-line-divider;
 $dark-form-text: $dark-font-sub-text-color;
 $dark-form-placeholder: #808080;
 $dark-form-label: $dark-font-main-text-color;
 $dark-form-text-disabled: $dark-inactive-color;
 // dark-tabs
-$dark-tab-active: $dark-app-line-divider;
-$dark-tab-inactive: $dark-inactive-color;
+$dark-tab-active: $dark-font-main-text-color;
+$dark-tab-inactive: $dark-font-sub-text-color;
 $dark-tab-notification: $dark-link; // need to check this
 $dark-sidebar-color: $dark-font-sub-text-color;
 $dark-sidebar-color-active: $dark-font-main-text-color;
@@ -140,7 +145,7 @@ $dark-disabled-secondary: #2e2f37;
 $dark-trade-row-highlight: #535353;
 $dark-trade-text-highlight: #838383;
 $dark-icon-hover: $dark-font-main-text-color;
-$dark-icon-unhover: $dark-icon-color;
+$dark-icon-unhover: #808080;
 $dark-accordion-arrow-active: $dark-font-main-text-color;
 $dark-accordion-arrow-inactive: $dark-font-sub-text-color;
 

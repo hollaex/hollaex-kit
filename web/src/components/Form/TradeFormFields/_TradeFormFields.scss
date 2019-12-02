@@ -24,7 +24,7 @@ $padding: 0.25rem;
 			width: 100%;
 			height: $input--height;
 			background: $trade-fields;
-			border: 1px solid $input--border-color;
+			border: 1px solid $trade-fields-border;
 			border-radius: 2px;
 			color: $input--color;
 
@@ -45,9 +45,9 @@ $padding: 0.25rem;
 	.initialize-animation {
 		> input {
 			-webkit-animation-name: bounce; /* Safari 4.0 - 8.0 */
-			-webkit-animation-duration: 5s; /* Safari 4.0 - 8.0 */
+			-webkit-animation-duration: 3s; /* Safari 4.0 - 8.0 */
 			animation-name: bounce;
-			animation-duration: 5s;
+			animation-duration: 3s;
 			border: 1px solid $input--border-color;
 		}
 		/* Safari 4.0 - 8.0 */
@@ -92,11 +92,12 @@ $padding: 0.25rem;
 		.trade_input-input-wrapper {
 			> input {
 				background: $dark-trade-fields;
-				border-color: $dark-trade-fields;
-				color: $dark-font-main-text-color;
+				border-color: $dark-trade-fields-border;
+				color: $dark-font-sub-text-color;
 
 				&:focus {
-					border-color: $dark-border-main;
+					border-color: $dark-font-main-text-color;
+					color: $dark-font-main-text-color;
 				}
 			}
 		}
@@ -108,9 +109,9 @@ $padding: 0.25rem;
 		.initialize-animation {
 			> input {
 				-webkit-animation-name: bounceDark; /* Safari 4.0 - 8.0 */
-				-webkit-animation-duration: 5s; /* Safari 4.0 - 8.0 */
+				-webkit-animation-duration: 3s; /* Safari 4.0 - 8.0 */
 				animation-name: bounceDark;
-				animation-duration: 5s;
+				animation-duration: 3s;
 				border: 1px solid $dark-trade-fields;
 			}
 			/* Safari 4.0 - 8.0 */

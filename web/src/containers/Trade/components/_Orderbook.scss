@@ -4,8 +4,12 @@
 		padding: 0 0.25rem;
 	}
 
-	.last-wave{
-		color: $colors-deactivate-color1
+	.wave-header {
+		color: $dark-font-main-text-color;
+	}
+
+	.wave-content {
+		color: $dark-font-sub-text-color;
 	}
 
 	.trade_orderbook-headers {
@@ -146,7 +150,7 @@ $limit-bar-side--padding: 0.5rem;
 			.trade_orderbook-asks > .value-row:first-child {
 				background-color: $dark-sell;
 				> div {
-					color: $dark-sell-bids-text;
+					color: $dark-sell-asks-text;
 				}
 			}
 

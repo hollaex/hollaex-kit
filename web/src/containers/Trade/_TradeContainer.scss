@@ -45,9 +45,13 @@
 		margin: 0;
 	}
 }
-.hex-order-heading{
+.hex-order-heading {
     font-weight: bold;
     font-size: 1.1rem;
+}
+
+.hex-order-content {
+	color: $dark-font-sub-text-color;
 }
 
 .layout-mobile {

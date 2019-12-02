@@ -18,17 +18,19 @@ const LogoutInfoOrder = ({ activeTheme }) => {
             <div className="hex-order-heading">
                 {STRINGS.TERMS_OF_SERVICES.HEX_ORDER_TXT_1}
             </div>
-            <div className="my-2">
-                {STRINGS.TERMS_OF_SERVICES.HEX_ORDER_TXT_2}
-            </div>
-            <div className="my-2">
-                {STRINGS.formatString(
-                    STRINGS.TERMS_OF_SERVICES.HEX_ORDER_TXT_3,
-                    SIGN_IN,
-                    <Link to="/login" className={classnames('blue-link', 'dialog-link', 'pointer')} >
-                        {STRINGS.TERMS_OF_SERVICES.LOGIN_HERE} </Link>
+            <div className="hex-order-content">
+                <div className="my-2">
+                    {STRINGS.TERMS_OF_SERVICES.HEX_ORDER_TXT_2}
+                </div>
+                <div className="my-2">
+                    {STRINGS.formatString(
+                        STRINGS.TERMS_OF_SERVICES.HEX_ORDER_TXT_3,
+                        SIGN_IN,
+                        <Link to="/login" className={classnames('blue-link', 'dialog-link', 'pointer')} >
+                            {STRINGS.TERMS_OF_SERVICES.LOGIN_HERE} </Link>
 
-                )}
+                    )}
+                </div>
             </div>
         </div>
     )

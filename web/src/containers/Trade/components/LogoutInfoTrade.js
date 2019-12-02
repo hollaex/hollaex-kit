@@ -7,7 +7,7 @@ const LogoutInfoTrade = () => {
     return (
         <div className='text-center my-5'>
             <div className="hex-order-heading my-3">{STRINGS.TERMS_OF_SERVICES.HEX_TRADE_TXT_1}</div>
-            <div className=" my-3">
+            <div className="hex-order-content my-3">
                 {STRINGS.formatString(
                     STRINGS.TERMS_OF_SERVICES.HEX_TRADE_TXT_2,
                     <Link to="/login" className={classnames('blue-link', 'dialog-link', 'pointer')} >

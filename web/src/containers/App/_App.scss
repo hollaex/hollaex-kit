@@ -83,6 +83,7 @@ $inner_container-border: 1px solid $border-color;
 	.app_container-sidebar {
 		min-width: $sidebar-width;
 		max-width: $sidebar-width;
+		background-color: $app-sidebar-background;
 		border-left: 1px solid $colors-deactivate-color2;
 		padding: 0;
 	}
@@ -159,6 +160,7 @@ $inner_container-border: 1px solid $border-color;
 
 	.app_container {
 		.app_container-sidebar {
+			background-color: $dark-app-sidebar-background;
 			border-left: 1px solid $dark-app-line-divider;
 		}
 	}

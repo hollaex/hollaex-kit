@@ -49,7 +49,18 @@ const MobilePosts = () => {
                                     <div className="post_header">{STRINGS.TRADE_POSTS.ANNOUNCEMENT}</div>
                                     <div className="post-content">{moment('2019-11-13').format('MMMM DD, YYYY')}</div>
                                     <div className="post-content">
-                                        {STRINGS.TRADE_POSTS.ANNOUNCEMNT_TXT_1}
+                                        {STRINGS.formatString(
+                                            STRINGS.TRADE_POSTS.ANNOUNCEMNT_TXT_1,
+                                            <span>
+                                                <a
+                                                    href={"https://docs.google.com/forms/u/2/d/1xf1mHxiTW6YUKVEqvfMJZqygiFxm1P6aUDS7uXe5Ouc/edit"}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    className="blue-link pointer">
+                                                        {STRINGS.TRADE_POSTS.APPLY_TODAY}
+                                                </a>
+                                            </span>
+                                        )}
                                     </div>
                                 </div>
                             </div>

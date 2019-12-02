@@ -7,16 +7,16 @@
         .trader-wrapper-icon{
             svg{
                .level_icon {
-                   fill: $dark-icon-color;
+                   fill: $dark-icon-unhover;
                }
                .account-summary {
-                    stroke: $dark-icon-color;
+                    stroke: $dark-icon-unhover;
                 }
                 .account-summary1 {
-                    fill: $dark-icon-color;
+                    fill: $dark-icon-unhover;
                 }
                 .hap-icon {
-                    fill: $dark-icon-color;
+                    fill: $dark-icon-unhover;
                 }
             }
         }
@@ -40,7 +40,7 @@
             .requirement-doc-icon {
                 svg {
                     .verification-doc {
-                        fill: $dark-icon-color;
+                        fill: $dark-icon-unhover;
                     }
                 }
             }

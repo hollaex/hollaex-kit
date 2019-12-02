@@ -1231,9 +1231,10 @@ export default {
 	TRADE_POSTS: { // new
 		ANNOUNCEMENT: 'Announcement',
 		ANNOUNCEMNT_TXT: 'Public wave auction is starting from December 18th, 2019 1pm UTC. You can deposit and start placing bids at anytime and purchase HEX.',
-		ANNOUNCEMNT_TXT_1: 'Earn HEX with HAP program by introducing your friends to hollaex.com. Apply today.',
+		ANNOUNCEMNT_TXT_1: 'Earn HEX with HAP program by introducing your friends to hollaex.com. {0}.',
 		DEFAULT_ANNOUNCEMENT: 'This page posts public announcements about your exchange! {0}',
 		ANNOUNCEMENT_TXT_2:'Free HEX will be distributed to all wallets that {0}.',
 		LEARN_MORE: 'Learn more',
+		APPLY_TODAY: 'Apply today' // new
 	}
 };

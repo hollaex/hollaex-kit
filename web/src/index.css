@@ -240,6 +240,7 @@ table th {
   .app_container .app_container-sidebar {
     min-width: 20rem;
     max-width: 20rem;
+    background-color: white;
     border-left: 1px solid #777677;
     padding: 0; }
   .app_container .exchange-warning {
@@ -281,6 +282,7 @@ table th {
   color: #808080; }
 
 .dark-theme .app_container .app_container-sidebar {
+  background-color: #333333;
   border-left: 1px solid #535353; }
 
 .dark-theme svg .leviathan-trader0 {
@@ -840,7 +842,7 @@ table th {
   color: #808080 !important; }
 
 .dark-theme .otp_form-wrapper .otp_form-section-wrapper svg path {
-  fill: #535353; }
+  fill: white; }
 
 .dark-theme .tokens-icon-svg path, .dark-theme .tokens-icon-svg rect {
   fill: #808080; }
@@ -1478,6 +1480,9 @@ table th {
   font-weight: bold;
   font-size: 1.1rem; }
 
+.hex-order-content {
+  color: #808080; }
+
 .layout-mobile .trade_order_entry-wrapper.order_side-selector-sell .trade_order_entry-form-action, .layout-mobile .trade_order_entry-wrapper.order_side-selector-buy .trade_order_entry-form-action {
   height: 4.5rem !important; }
 
@@ -1952,9 +1957,9 @@ table th {
     .dark-theme .trade_order_entry-wrapper.order_side-selector-sell .trade_order_entry-form_fields-wrapper {
       margin-bottom: 0.5rem !important; }
     .dark-theme .trade_order_entry-wrapper.order_side-selector-sell .trade_order_entry-action_selector .active {
-      color: #202020 !important; }
+      color: white !important; }
     .dark-theme .trade_order_entry-wrapper.order_side-selector-sell .trade_order_entry-form-action {
-      color: #202020 !important; }
+      color: white !important; }
   .dark-theme .trade_order_entry-wrapper.order_side-selector-buy {
     flex: 1;
     color: grey; }
@@ -2018,8 +2023,10 @@ table th {
   height: 84vh; }
   .trade_orderbook-wrapper .trade_orderbook-cell {
     padding: 0 0.25rem; }
-  .trade_orderbook-wrapper .last-wave {
-    color: #cccbcb; }
+  .trade_orderbook-wrapper .wave-header {
+    color: white; }
+  .trade_orderbook-wrapper .wave-content {
+    color: #808080; }
   .trade_orderbook-wrapper .trade_orderbook-headers {
     font-weight: bold;
     border-bottom: 1px solid #212121;
@@ -2092,7 +2099,7 @@ table th {
 .dark-theme .trade_orderbook-wrapper .trade_orderbook-content .trade_orderbook-asks > .value-row:first-child {
   background-color: #EE4036; }
   .dark-theme .trade_orderbook-wrapper .trade_orderbook-content .trade_orderbook-asks > .value-row:first-child > div {
-    color: #202020; }
+    color: white; }
 
 .dark-theme .trade_orderbook-wrapper .trade_orderbook-content .trade_orderbook-bids > .value-row:first-child {
   background-color: #00A69C; }
@@ -2368,10 +2375,10 @@ table th {
   color: #808080 !important; }
 
 .dark-theme .title-inactive {
-  color: #2e2f37 !important; }
+  color: #808080 !important; }
 
 .dark-theme .astrics-1 {
-  fill: #2e2f37; }
+  fill: #808080; }
 
 .dark-theme .verification_container .link-content {
   color: #0066B4; }
@@ -2399,7 +2406,7 @@ table th {
   max-height: calc(100vh - 10rem); }
 
 .dark-theme .account-svg-1 {
-  fill: #2e2f37; }
+  fill: #808080; }
 
 .help-wrapper {
   min-width: 30rem;
@@ -2442,37 +2449,37 @@ table th {
 
 .dark-theme svg .check-order-1,
 .dark-theme svg .check-order-2 {
-  stroke: #2e2f37; }
+  stroke: #808080; }
 
 .dark-theme svg .check-order-2 {
-  fill: #2e2f37; }
+  fill: #808080; }
 
 .dark-theme svg .coin-btc-1 {
-  fill: #2e2f37; }
+  fill: #808080; }
 
 .dark-theme svg .coin-btc-4 {
-  stroke: #2e2f37; }
+  stroke: #808080; }
 
 .dark-theme svg .coin-base-1 {
-  fill: #2e2f37; }
+  fill: #808080; }
 
 .dark-theme svg .coin-base-4 {
-  stroke: #2e2f37; }
+  stroke: #808080; }
 
 .dark-theme .summary-container .trade-account-link {
   color: #0066B4; }
 
 .dark-theme .summary-container .trader-wrapper-icon svg .level_icon {
-  fill: white; }
+  fill: #808080; }
 
 .dark-theme .summary-container .trader-wrapper-icon svg .account-summary {
-  stroke: white; }
+  stroke: #808080; }
 
 .dark-theme .summary-container .trader-wrapper-icon svg .account-summary1 {
-  fill: white; }
+  fill: #808080; }
 
 .dark-theme .summary-container .trader-wrapper-icon svg .hap-icon {
-  fill: white; }
+  fill: #808080; }
 
 .dark-theme .summary-container .trader-account-icon svg .level_icon {
   fill: #2e2f37; }
@@ -2484,7 +2491,7 @@ table th {
     color: white; }
 
 .dark-theme .summary-container .requirement-wrapper .requirement-doc-icon svg .verification-doc {
-  fill: white; }
+  fill: #808080; }
 
 .dark-theme .summary-container .requirement-incomplete {
   color: #808080; }
@@ -3120,7 +3127,7 @@ table th {
       height: 8rem; }
 
 .dark-theme .terms_wrapper .agreement_wrapper {
-  background-color: #797779; }
+  background-color: #191919; }
 
 .dark-theme .terms_wrapper .download-wrapper {
   color: #0066B4; }
@@ -3290,20 +3297,20 @@ table th {
     fill: white !important;
     stroke: white !important; }
   .dark-theme .sidebar-row .sidebar-row--right-icon.icon--help svg path {
-    fill: white !important;
-    stroke: white !important; }
+    fill: #808080 !important;
+    stroke: #808080 !important; }
   .dark-theme .sidebar-row .sidebar-row--right-icon.icon--logout:hover svg path {
     fill: white !important;
     stroke: white !important; }
   .dark-theme .sidebar-row .sidebar-row--right-icon.icon--logout svg path {
-    fill: white !important;
-    stroke: white !important; }
+    fill: #808080 !important;
+    stroke: #808080 !important; }
   .dark-theme .sidebar-row .sidebar-row--right-icon.icon--chat:hover svg path {
     fill: white !important;
     stroke: white !important; }
   .dark-theme .sidebar-row .sidebar-row--right-icon.icon--chat svg path {
-    fill: white !important;
-    stroke: white !important; }
+    fill: #808080 !important;
+    stroke: #808080 !important; }
 
 .footer-container {
   padding: 4rem 1rem 1rem;
@@ -3418,10 +3425,10 @@ table th {
       stroke: #777677 !important; }
     .dark-theme .tab_controller-tabs .tab_item.tab_item-active {
       border-top-color: #535353 !important;
-      color: #535353 !important; }
+      color: white !important; }
       .dark-theme .tab_controller-tabs .tab_item.tab_item-active svg path, .dark-theme .tab_controller-tabs .tab_item.tab_item-active svg rect {
-        fill: #535353 !important;
-        stroke: #535353 !important; }
+        fill: white !important;
+        stroke: white !important; }
 
 .layout-mobile .transaction-history-wrapper {
   padding-top: 0 !important; }
@@ -3517,7 +3524,7 @@ table th {
       fill: #e26171 !important; }
 
 .dark-theme .app_bar-icon .app_bar-icon-logo svg .logo-black {
-  fill: #808184; }
+  fill: white; }
 
 .dark-theme .app_bar-mobile {
   background-color: #000000; }
@@ -4291,16 +4298,16 @@ table th {
     color: #808080; }
 
 .dark-theme .custom-tab-wrapper .tab_item {
-  color: #2e2f37; }
+  color: #808080; }
   .dark-theme .custom-tab-wrapper .tab_item svg path, .dark-theme .custom-tab-wrapper .tab_item svg rect {
-    fill: #2e2f37;
-    stroke: #2e2f37; }
+    fill: #808080;
+    stroke: #808080; }
   .dark-theme .custom-tab-wrapper .tab_item.tab_item-active {
-    border: 1px solid #535353 !important;
-    color: #535353 !important; }
+    border: 1px solid white !important;
+    color: white !important; }
     .dark-theme .custom-tab-wrapper .tab_item.tab_item-active svg path, .dark-theme .custom-tab-wrapper .tab_item.tab_item-active svg rect {
-      fill: #535353;
-      stroke: #535353; }
+      fill: white;
+      stroke: white; }
 
 .dark-theme .mobile_tab-wrapper {
   color: #0066B4;
@@ -4582,7 +4589,7 @@ table th {
       width: 100%; } }
 
 .dark-theme .sidebar_hub-wrapper .sidebar_hub-content .sign_up-btn, .dark-theme .sidebar_hub-wrapper .sidebar_hub-content .log_in-btn {
-  background: #20212a !important;
+  background: #0066B4 !important;
   color: white !important;
   border: 1px solid #797779; }
 
@@ -4602,6 +4609,9 @@ table th {
       stroke: white; }
     .dark-theme .sidebar_hub-wrapper .sidebar_hub-content .sidebar_hub-section.section-active .sidebar_hub-section-header .sidebar_hub-section-title {
       color: white; }
+
+.dark-theme .sidebar_hub-wrapper .sidebar_hub-content .icon_title-wrapper .icon_title-svg svg .st0 {
+  fill: #808080; }
 
 .dark-theme .sidebar_hub-wrapper .sidebar_hub-trade .sidebar_hub-button {
   border: none; }
@@ -5036,7 +5046,7 @@ table th {
   background: #535353; }
 
 .dark-theme .field-content-outline.focused:after {
-  background: #535353; }
+  background: white; }
 
 .dark-theme .field-valid .icon-check-1 {
   stroke: #535353; }
@@ -5267,10 +5277,10 @@ table th {
     .trade_input-wrapper .initialize-animation > input {
       -webkit-animation-name: bounce;
       /* Safari 4.0 - 8.0 */
-      -webkit-animation-duration: 5s;
+      -webkit-animation-duration: 3s;
       /* Safari 4.0 - 8.0 */
       animation-name: bounce;
-      animation-duration: 5s;
+      animation-duration: 3s;
       border: 1px solid #212121; }
 
 @-webkit-keyframes bounce {
@@ -5298,11 +5308,12 @@ table th {
   left: 0; }
 
 .dark-theme .trade_input-wrapper .trade_input-input-wrapper > input {
-  background: #454162;
-  border-color: #454162;
-  color: white; }
+  background: #191919;
+  border-color: #2B2B2B;
+  color: #808080; }
   .dark-theme .trade_input-wrapper .trade_input-input-wrapper > input:focus {
-    border-color: #535353; }
+    border-color: white;
+    color: white; }
 
 .dark-theme .trade_input-wrapper .trade_input-input-currency {
   color: #808080; }
@@ -5313,23 +5324,23 @@ table th {
   .dark-theme .trade_input-wrapper .initialize-animation > input {
     -webkit-animation-name: bounceDark;
     /* Safari 4.0 - 8.0 */
-    -webkit-animation-duration: 5s;
+    -webkit-animation-duration: 3s;
     /* Safari 4.0 - 8.0 */
     animation-name: bounceDark;
-    animation-duration: 5s;
-    border: 1px solid #454162; }
+    animation-duration: 3s;
+    border: 1px solid #191919; }
 
 @-webkit-keyframes bounceDark {
   15% {
     border-color: #0066B4; }
   75% {
-    border-color: #454162; } }
+    border-color: #191919; } }
 
 @keyframes bounceDark {
   15% {
     border-color: #0066B4; }
   75% {
-    border-color: #454162; } }
+    border-color: #191919; } }
 
 .exir-button {
   width: 100%;
@@ -5633,7 +5644,7 @@ table th {
       border-right-color: #808080 !important; }
   .dark-theme .accordion_wrapper .accordion_section .accordion_section_title .sidebar_hub-section-icon svg path {
     fill: transparent;
-    stroke: white; }
+    stroke: #808080; }
   .dark-theme .accordion_wrapper .accordion_section .accordion_section_title.accordion_section--open .accordion_section_content_text {
     color: white !important; }
     .dark-theme .accordion_wrapper .accordion_section .accordion_section_title.accordion_section--open .accordion_section_content_text.with_arrow:after {
@@ -6296,7 +6307,7 @@ table th {
     border-color: #202020; } }
   .dark-theme .table-wrapper .cell_box-type .sell {
     background-color: #EE4036 !important;
-    color: #202020 !important; }
+    color: white !important; }
   .dark-theme .table-wrapper .cell_box-type .buy {
     background-color: #00A69C !important;
     color: #000000 !important; }
@@ -8031,13 +8042,13 @@ foreignObject {
   color: #808080; }
 
 .app_footer-container {
-  padding: 4rem 1rem 1rem;
-  border-top: 1px solid #777677;
+  border-top: 1px solid #535353;
   font-size: 0.8rem;
   background-color: #000000;
   color: white; }
   .app_footer-container .footer-row-content {
-    margin-bottom: 2rem; }
+    margin-bottom: 2rem;
+    padding: 4rem 1rem 0; }
     .app_footer-container .footer-row-content .footer-links-section {
       width: 60%; }
       .app_footer-container .footer-row-content .footer-links-section .footer-links-group {
@@ -8058,7 +8069,7 @@ foreignObject {
             .app_footer-container .footer-row-content .footer-links-section .footer-links-group .footer-links-section--list .link-section:hover {
               color: grey; }
     .app_footer-container .footer-row-content .footer_separter {
-      border-left: 1px solid #777677; }
+      border-left: 1px solid #535353; }
       .app_footer-container .footer-row-content .footer_separter .footer-txt {
         width: 25rem;
         margin-left: 1rem; }
@@ -8081,8 +8092,9 @@ foreignObject {
         height: 2rem;
         margin: 0 1.5rem; }
   .app_footer-container .footer-row-bottom {
-    border-top: 1px solid #777677;
-    text-align: center; }
+    border-top: 1px solid #535353;
+    text-align: center;
+    padding-bottom: 1rem; }
     .app_footer-container .footer-row-bottom .footer-row-language {
       padding-left: 0.25rem; }
       .app_footer-container .footer-row-bottom .footer-row-language.active {
