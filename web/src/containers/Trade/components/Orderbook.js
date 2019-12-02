@@ -103,7 +103,6 @@ class Orderbook extends Component {
 		const pairBase = pairData.pair_base.toUpperCase();
 		const pairTwo = pairData.pair_2.toUpperCase();
 		const { symbol } = coins[pairData.pair_2] || DEFAULT_COIN_DATA;
-		console.log('pair', pair);
 		return (
 			<div className="trade_orderbook-wrapper d-flex flex-column f-1 apply_rtl">
 				{pair === 'hex-usdt'
