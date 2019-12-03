@@ -34,7 +34,7 @@ const generateSectionsText = (strings, theme) => {
             LINKS: [
                 {
                     text: SECTIONS.SECTION_1_LINK_4,
-                    link: 'https://info.hollaex.com/hc/en-us/sections/360006299774-Contact-Us'
+                    link: 'https://info.hollaex.com/hc/en-us/articles/360039155994-Contact-Us'
                 },
                 {
                     text: SECTIONS.SECTION_1_LINK_2,
@@ -55,7 +55,7 @@ const generateSectionsText = (strings, theme) => {
                 },
                 {
                     text: SECTIONS.SECTION_3_LINK_8,
-                    link: 'https://status.bitholla.com/'
+                    link: 'https://status.hollaex.com'
                 },
             ]
         },
@@ -180,7 +180,7 @@ const AppFooter = ({
                                 <div className="footer-txt">
                                     {STRINGS.formatString(STRINGS.FOOTER.HEX_DESCRIPTION,
                                         <a
-                                            href={'https://drive.google.com/file/d/15gILXIVpVMQtRGpty9GNLdhOZTdidT2U/view'}
+                                            href={'https://hollaex.com/docs/wave-auction.pdf'}
                                             target="_blank"
                                             rel="noopener noreferrer"
                                             className="blue-link pointer"
