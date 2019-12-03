@@ -1,3 +1,5 @@
+import AGREEMENT from './agreement';
+
 export default {
 	APP_TITLE: 'HollaEx',
 	APP_SUB_TITLE: 'White Label Cryptocurrency Exchange',
@@ -46,7 +48,7 @@ export default {
 		SECTION_1_TEXT_1:
 			'Build your own scalable digital asset exchange with HollaEx Kit and be part of the future of finance.',
 		SECTION_1_TEXT_2:
-			'We strive to bring the financial technology forward through afforable and simple access to trading technology.',
+			'We strive to bring the financial technology forward through affordable and simple access to trading technology.',
 		SECTION_1_BUTTON_1: 'Learn more',
 		SECTION_3_TITLE: 'Features',
 		SECTION_3_CARD_1_TITLE: 'SCALABLE MATCHING ENGINE',
@@ -54,7 +56,7 @@ export default {
 			'High performance and scalable order matching engine using the most efficient algorithms',
 		SECTION_3_CARD_2_TITLE: 'BANK INTEGRATION',
 		SECTION_3_CARD_2_TEXT:
-			'Plugins with customizable modules available for bank integration. We know the traditional finace and can help you to make your exchange local',
+			'Plugins with customizable modules available for bank integration. We know the traditional finance and can help you to make your exchange local',
 		SECTION_3_CARD_3_TITLE: 'STRONG SECURITY',
 		SECTION_3_CARD_3_TEXT:
 			'HollaEx uses the best security practices and the most secure and reliable algorithms for keeping the funds secure. It is our top priority and we took a very special extra care of it.',
@@ -66,7 +68,7 @@ export default {
 			'We can take an extra care for your needs and have an online professional to help with your issues and inquiries.',
 		SECTION_3_CARD_6_TITLE: 'KYC INTEGRATION',
 		SECTION_3_CARD_6_TEXT:
-			'Flexible and integratable modules to apply KYC and user verification methods in diffrente jurisdiction.',
+			'Flexible and integrable modules to apply KYC and user verification methods in different jurisdiction.',
 		SECTION_3_BUTTON_1: 'View Demo'
 	},
 	FOOTER: {
@@ -290,17 +292,17 @@ export default {
 		}
 	},
 	VERIFICATION_TEXTS: {
-		TITLE: 'verification sent',
-		TEXT_1: 'Check your email and click the link to verifiy yourself.',
+		TITLE: 'Email sent',
+		TEXT_1: 'Check your email and click the link to verifiy your email.',
 		TEXT_2:
 			'If you have not received any email verification and you have checked your junk mail then you can try clicking resend below.'
 	},
 	VERIFICATION_EMAIL_REQUEST: {
-		TITLE: 'Activation Email Request',
+		TITLE: 'Resend Email Request',
 		BUTTON: 'Request Email'
 	},
 	VERIFICATION_EMAIL_REQUEST_SUCCESS: {
-		TITLE: 'Verification reset send',
+		TITLE: 'Resent Email',
 		TEXT_1:
 			'If after a few minutes you still have not received an email verification then please contact us below.'
 	},
@@ -441,7 +443,7 @@ export default {
 				ISSUED_DATE: 'Please select the date in which your document was issued',
 				EXPIRATION_DATE:
 					'Please select the date when your document will expire',
-				FRONT: 'Please upload a scan of your photo identity document',
+				FRONT: 'Please upload a scan of your passport',
 				PROOF_OF_RESIDENCY:
 					'Please upload a scan of document proving the address you current reside',
 				SELFIE_PHOTO_ID: 'Please upload a selfie with passport and note'
@@ -453,23 +455,23 @@ export default {
 					ID: 'ID',
 					PASSPORT: 'Passport'
 				},
-				ID_NUMBER_LABEL: 'Passport Number',
+				ID_NUMBER_LABEL: 'ID Document Number',
 				ID_NUMBER_PLACEHOLDER: 'Type the documents number',
 				ID_PASSPORT_NUMBER_LABEL: 'Passport Number',
 				ID_PASSPORT_NUMBER_PLACEHOLDER: 'Type your passport number',
-				ISSUED_DATE_LABEL: 'Passport Issue Date',
-				EXPIRATION_DATE_LABEL: 'Passport Expiration Date',
-				FRONT_LABEL: 'Passport Scan',
+				ISSUED_DATE_LABEL: 'ID Document Issue Date',
+				EXPIRATION_DATE_LABEL: 'ID Document Expiration Date',
+				FRONT_LABEL: 'Passport',
 				FRONT_PLACEHOLDER: 'Add a copy of your passport',
-				BACK_LABEL: 'Back Side of passport scan',
-				BACK_PLACEHOLDER: 'Add a copy of the backside of your ID document',
+				BACK_LABEL: 'Back Side of passport',
+				BACK_PLACEHOLDER: 'Add a copy of the backside of your ID (if applicable)',
 				PASSPORT_LABEL: 'Passport Document',
 				PASSPORT_PLACEHOLDER: 'Add a copy of your Passport document',
 				POR_LABEL: 'Document proving your address',
 				POR_PLACEHOLDER: 'Add a copy of a document that proves your address',
-				SELFIE_PHOTO_ID_LABEL: 'Your Selfie with Passport and Note',
+				SELFIE_PHOTO_ID_LABEL: 'Your Selfie with passport and Note',
 				SELFIE_PHOTO_ID_PLACEHOLDER:
-					'Add a copy of your Selfie with Passport and Note'
+					'Add a copy of your Selfie with passport and Note'
 			},
 			INFORMATION: {
 				IDENTITY_DOCUMENT: 'Identity Document',
@@ -506,9 +508,9 @@ export default {
 						'We cannot accept the address on your submitted identity document as a valid proof of residence.'
 				},
 				SELFIE: {
-					TITLE: 'Selfie with Passport and Note',
+					TITLE: 'Selfie with passport and Note',
 					INFO_TEXT:
-						"Please provide a photo of you holding your passport or photo ID. In the same picture and have a reference to bitholla.com’, today's date and your signature displayed.Make sure your face is clearly visible and that your ID details are clearly readable.",
+						"Please provide a photo of you holding your passport or passport. In the same picture and have a reference to bitholla.com’, today's date and your signature displayed.Make sure your face is clearly visible and that your ID details are clearly readable.",
 					REQUIRED: 'Required:',
 					INSTRUCTION_1: 'Your face clearly visable',
 					INSTRUCTION_2: 'Passport clearly readable',
@@ -972,7 +974,7 @@ export default {
 		CHAT_MESSAGE_BOX_PLACEHOLDER: 'Message',
 		SIGN_UP_CHAT: 'Sign Up To Chat',
 		JOIN_CHAT: 'Set Username To Chat',
-		TROLLBOX:'Trollbox ({0})'
+		TROLLBOX:'Trollbox ({0})' // new
 	},
 	INVALID_USERNAME:
 		'Username must be between 3 and 15 characters long. Only contains lowercase, numbers and underscore',
