@@ -5,11 +5,7 @@
 	}
 
 	.wave-header {
-		color: $dark-font-main-text-color;
-	}
-
-	.wave-content {
-		color: $dark-font-sub-text-color;
+		color: $colors-black;
 	}
 
 	.trade_orderbook-headers {
@@ -127,6 +123,15 @@ $limit-bar-side--padding: 0.5rem;
 
 .dark-theme {
 	.trade_orderbook-wrapper {
+		.wave-header {
+			color: $colors-black;
+			color: $dark-font-main-text-color;
+		}
+	
+		.wave-content {
+			color: $colors-deactivate-color1;
+			color: $dark-font-sub-text-color;
+		}
 		.trade_orderbook-headers {
 			color: $dark-font-sub-text-color;
 			border-bottom-color: $dark-border-main;
