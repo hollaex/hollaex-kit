@@ -2024,9 +2024,7 @@ table th {
   .trade_orderbook-wrapper .trade_orderbook-cell {
     padding: 0 0.25rem; }
   .trade_orderbook-wrapper .wave-header {
-    color: white; }
-  .trade_orderbook-wrapper .wave-content {
-    color: #808080; }
+    color: #000000; }
   .trade_orderbook-wrapper .trade_orderbook-headers {
     font-weight: bold;
     border-bottom: 1px solid #212121;
@@ -2084,6 +2082,14 @@ table th {
 
 .direction_rtl .orderbook-limit_bar-wrapper .orderbook-limit_bar-text {
   padding-right: 0.5rem; }
+
+.dark-theme .trade_orderbook-wrapper .wave-header {
+  color: #000000;
+  color: white; }
+
+.dark-theme .trade_orderbook-wrapper .wave-content {
+  color: #cccbcb;
+  color: #808080; }
 
 .dark-theme .trade_orderbook-wrapper .trade_orderbook-headers {
   color: #808080;

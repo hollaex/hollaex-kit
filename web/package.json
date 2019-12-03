@@ -1,6 +1,6 @@
 {
 	"name": "hollaex",
-	"version": "1.20.0",
+	"version": "1.20.1",
 	"private": true,
 	"dependencies": {
 		"@material/button": "^0.7.0",
