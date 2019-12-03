@@ -3,8 +3,8 @@ import { connect } from 'react-redux';
 import { reduxForm, SubmissionError } from 'redux-form';
 import {
 	required,
-	exactLength,
-	onlyNumbers,
+	// exactLength,
+	// onlyNumbers,
 	maxLength
 } from '../../components/Form/validations';
 import renderFields from '../../components/Form/factoryFields';

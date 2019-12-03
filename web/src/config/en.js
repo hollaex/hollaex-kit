@@ -1,4 +1,4 @@
-import AGREEMENT from './agreement';
+// import AGREEMENT from './agreement';
 
 export default {
 	APP_TITLE: 'HollaEx',
