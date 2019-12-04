@@ -1,23 +1,27 @@
 const io = require('socket.io-client');
 const EventEmitter = require('events');
-
-const { createRequest } = require('./utils');
+const moment = require('moment');
+const { createRequest, createSignature } = require('./utils');
 
 class HollaEx {
 	constructor(
 		opts = {
 			apiURL: 'https://api.hollaex.com',
 			baseURL: '/v1',
-			accessToken: ''
+			apiKey: '',
+			apiSecret: '',
+			apiExpiresAfter: 60
 		}
 	) {
 		this._url = opts.apiURL + opts.baseURL || 'https://api.hollaex.com/v1';
 		this._wsUrl = opts.apiURL || 'https://api.hollaex.com';
-		this._accessToken = opts.accessToken || '';
+		this._baseUrl = opts.baseURL || '/v1';
+		this.apiSecret = opts.apiSecret;
+		this.apiExpiresAfter = opts.apiExpiresAfter || 60;
 		this._headers = {
 			'content-type': 'application/json',
 			Accept: 'application/json',
-			Authorization: 'Bearer ' + this._accessToken
+			'api-key': opts.apiKey,
 		};
 	}
 
@@ -81,7 +85,19 @@ class HollaEx {
 	 * @return {string} A stringified JSON object showing user's information such as id, email, bank_account, crypto_wallet, balance, etc
 	 */
 	getUser() {
-		return createRequest('GET', `${this._url}/user`, this._headers);
+		const verb = 'GET';
+		const path = this._baseUrl + '/user';
+		const apiExpires = moment().unix() + this.apiExpiresAfter;
+		const signature = createSignature(this.apiSecret, verb, path, apiExpires);
+		return createRequest(
+			verb,
+			`${this._url}/user`,
+			{
+				...this._headers,
+				'api-signature': signature,
+				'api-expires': apiExpires
+			}
+		);
 	}
 
 	/**
