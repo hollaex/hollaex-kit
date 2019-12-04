@@ -28,7 +28,7 @@ export default {
 	CONTACT_US_TEXT: '문의하기',
 	HELPFUL_RESOURCES_TEXT: '도움이 필요하신가요?',
 	HELP_RESOURCE_GUIDE_TEXT:
-		'문의사항은 support@bitholla.com 로 연락주시기 바랍니다.',
+		'문의사항은 support@hollaex.com 로 연락주시기 바랍니다.',
 	HELP_TELEGRAM_TEXT: 'HollaEx의 오픈API 확인하기:',
 	HELP_TELEGRAM_LINK: 'https://apidocs.hollaex.com',
 	NEED_HELP_TEXT: '도움이 필요하신가요?',

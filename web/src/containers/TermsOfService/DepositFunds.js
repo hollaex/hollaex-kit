@@ -59,8 +59,8 @@ const DepositFunds = (props) => {
                         {STRINGS.formatString(
                             STRINGS.TERMS_OF_SERVICES.CONTACT_US,
                             <BlueLink
-                                href="mailto:support@bitholla.com"
-                                text={"support@bitholla.com"}
+                                href="mailto:support@hollaex.com"
+                                text={"support@hollaex.com"}
                             />
                         )}
                     </div>

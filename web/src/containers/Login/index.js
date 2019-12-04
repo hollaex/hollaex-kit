@@ -140,10 +140,10 @@ class Login extends Component {
 								Please contact us at{' '}
 								<a
 									style={{ color: 'blue' }}
-									href="mailto:support@bitholla.com?Subject=Approval%20request"
+									href="mailto:support@hollaex.com?Subject=Approval%20request"
 									target="_top"
 								>
-									support@bitholla.com
+									support@hollaex.com
 								</a>{' '}
 								with your use case for approval access
 							</div>
