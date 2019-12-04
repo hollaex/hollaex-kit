@@ -22,7 +22,7 @@ const createSignature = (secret = '', verb, path, expires, data = '') => {
 	return signature;
 };
 
-const generateHeader = (headers, secret, verb, path, expiresAfter, data) => {
+const generateHeaders = (headers, secret, verb, path, expiresAfter, data) => {
 	const expires = moment().unix() + expiresAfter;
 	const signature = createSignature(secret, verb, path, expires, data);
 	const header = {
@@ -36,5 +36,5 @@ const generateHeader = (headers, secret, verb, path, expiresAfter, data) => {
 module.exports = {
 	createRequest,
 	createSignature,
-	generateHeader
+	generateHeaders
 };

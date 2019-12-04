@@ -1,7 +1,7 @@
 const io = require('socket.io-client');
 const EventEmitter = require('events');
 const moment = require('moment');
-const { createRequest, createSignature, generateHeader } = require('./utils');
+const { createRequest, createSignature, generateHeaders } = require('./utils');
 
 class HollaEx {
 	constructor(
@@ -88,7 +88,7 @@ class HollaEx {
 	getUser() {
 		const verb = 'GET';
 		const path = this._baseUrl + '/user';
-		const headers = generateHeader(this._headers, this.apiSecret, verb, path, this.apiExpiresAfter);
+		const headers = generateHeaders(this._headers, this.apiSecret, verb, path, this.apiExpiresAfter);
 		return createRequest(
 			verb,
 			`${this._url}/user`,
@@ -103,7 +103,7 @@ class HollaEx {
 	getBalance() {
 		const verb = 'GET';
 		const path = this._baseUrl + '/user/balance';
-		const headers = generateHeader(this._headers, this.apiSecret, verb, path, this.apiExpiresAfter);
+		const headers = generateHeaders(this._headers, this.apiSecret, verb, path, this.apiExpiresAfter);
 		return createRequest(
 			verb,
 			`${this._url}/user/balance`,
@@ -123,7 +123,7 @@ class HollaEx {
 	getDeposit(currency, limit = 50, page = 1, orderBy, order = 'asc') {
 		const verb = 'GET';
 		const path = this._baseUrl + `/user/deposits?limit=${limit}&page=${page}&currency=${currency}&order_by=${orderBy}&order=${order}`;
-		const headers = generateHeader(this._headers, this.apiSecret, verb, path, this.apiExpiresAfter);
+		const headers = generateHeaders(this._headers, this.apiSecret, verb, path, this.apiExpiresAfter);
 		return createRequest(
 			verb,
 			`${
@@ -146,7 +146,7 @@ class HollaEx {
 	getWithdrawal(currency, limit = 50, page = 1, orderBy, order = 'asc') {
 		const verb = 'GET';
 		const path = this._baseUrl + `/user/withdrawals?limit=${limit}&page=${page}&currency=${currency}&order_by=${orderBy}&order=${order}`;
-		const headers = generateHeader(this._headers, this.apiSecret, verb, path, this.apiExpiresAfter);
+		const headers = generateHeaders(this._headers, this.apiSecret, verb, path, this.apiExpiresAfter);
 		return createRequest(
 			verb,
 			`${
@@ -183,7 +183,7 @@ class HollaEx {
 		const verb = 'POST';
 		const path = this._baseUrl + '/user/request-withdrawal';
 		const data = { currency, amount, address, fee: 0 };
-		const headers = generateHeader(this._headers, this.apiSecret, verb, path, this.apiExpiresAfter, data);
+		const headers = generateHeaders(this._headers, this.apiSecret, verb, path, this.apiExpiresAfter, data);
 		return createRequest(
 			verb,
 			`${this._url}/user/request-withdrawal`,
@@ -206,7 +206,7 @@ class HollaEx {
 			queryString += `&symbol=${symbol}`;
 		}
 		const path = this._baseUrl + `/user/trades${queryString}`;
-		const headers = generateHeader(this._headers, this.apiSecret, verb, path, this.apiExpiresAfter);
+		const headers = generateHeaders(this._headers, this.apiSecret, verb, path, this.apiExpiresAfter);
 		return createRequest(
 			verb,
 			`${this._url}/user/trades${queryString}`,
@@ -223,7 +223,7 @@ class HollaEx {
 	getOrder(orderId) {
 		const verb = 'GET';
 		const path = this._baseUrl + `/user/orders/${orderId}`;
-		const headers = generateHeader(this._headers, this.apiSecret, verb, path, this.apiExpiresAfter);
+		const headers = generateHeaders(this._headers, this.apiSecret, verb, path, this.apiExpiresAfter);
 		return createRequest(
 			verb,
 			`${this._url}/user/orders/${orderId}`,
@@ -239,7 +239,7 @@ class HollaEx {
 	getAllOrder(symbol = '') {
 		const verb = 'GET';
 		const path = this._baseUrl + `/user/orders?symbol=${symbol}`;
-		const headers = generateHeader(this._headers, this.apiSecret, verb, path, this.apiExpiresAfter);
+		const headers = generateHeaders(this._headers, this.apiSecret, verb, path, this.apiExpiresAfter);
 		return createRequest(
 			verb,
 			`${this._url}/user/orders?symbol=${symbol}`,
@@ -260,7 +260,7 @@ class HollaEx {
 		const verb = 'POST';
 		const path = this._baseUrl + '/order';
 		const data = { symbol, side, size, type, price };
-		const headers = generateHeader(this._headers, this.apiSecret, verb, path, this.apiExpiresAfter, data);
+		const headers = generateHeaders(this._headers, this.apiSecret, verb, path, this.apiExpiresAfter, data);
 		return createRequest(verb, `${this._url}/order`, headers, data);
 	}
 
@@ -272,7 +272,7 @@ class HollaEx {
 	cancelOrder(orderId) {
 		const verb = 'DELETE';
 		const path = this._baseUrl + `/user/orders/${orderId}`;
-		const headers = generateHeader(this._headers, this.apiSecret, verb, path, this.apiExpiresAfter);
+		const headers = generateHeaders(this._headers, this.apiSecret, verb, path, this.apiExpiresAfter);
 		return createRequest(
 			verb,
 			`${this._url}/user/orders/${orderId}`,
@@ -288,7 +288,7 @@ class HollaEx {
 	cancelAllOrder(symbol = '') {
 		const verb = 'DELETE';
 		const path = this._baseUrl + `/user/orders?symbol=${symbol}`;
-		const headers = generateHeader(this._headers, this.apiSecret, verb, path, this.apiExpiresAfter);
+		const headers = generateHeaders(this._headers, this.apiSecret, verb, path, this.apiExpiresAfter);
 		return createRequest(
 			verb,
 			`${this._url}/user/orders?symbol=${symbol}`,
