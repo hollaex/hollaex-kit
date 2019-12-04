@@ -12,7 +12,7 @@ class HollaEx {
 			apiExpiresAfter: 60
 		}
 	) {
-		this._url = 'http://localhost:8080/v1';
+		this._url = opts.apiURL + opts.baseURL || 'https://api.hollaex.com/v1';
 		this._wsUrl = opts.apiURL || 'https://api.hollaex.com';
 		this._baseUrl = opts.baseURL || '/v1';
 		this.apiSecret = opts.apiSecret;
