@@ -412,7 +412,7 @@ table th {
     background-color: rgba(241, 242, 242, 0.6); }
 
 .dark-auth-body {
-  background: #2e2f37 !important; }
+  background: #2b2b2b !important; }
 
 .exchange-warning {
   position: absolute;
@@ -522,7 +522,7 @@ table th {
   position: relative; }
 
 .dark-theme.auth-wrapper {
-  background: #2e2f37;
+  background: #2b2b2b;
   background: url("/assets/dark-background.jpg"); }
   .dark-theme.auth-wrapper:before {
     background-color: transparent; }
@@ -1769,7 +1769,7 @@ table th {
         background: black;
         left: 0;
         width: 100%;
-        height: 3px; }
+        height: 5px; }
   .trade_order_entry-wrapper.order_side-selector-sell .trade_order_entry-action_selector {
     border: 1px solid #000000; }
     .trade_order_entry-wrapper.order_side-selector-sell .trade_order_entry-action_selector .active {
@@ -1796,8 +1796,8 @@ table th {
     color: white;
     font-weight: bold; }
     .trade_order_entry-wrapper.order_side-selector-sell .trade_order_entry-form_inputs-wrapper .trade_order_entry-form-action:disabled {
-      background-color: #333333 !important;
-      color: #535353 !important; }
+      background-color: #cccccc !important;
+      color: #808080 !important; }
   .trade_order_entry-wrapper.order_side-selector-sell .trade_order_entry-form_inputs-wrapper .warning_text {
     margin-top: 0.25rem; }
   .trade_order_entry-wrapper.order_side-selector-sell .trade_order_entry-form_inputs-wrapper .form-error {
@@ -1826,7 +1826,7 @@ table th {
         background: black;
         left: 0;
         width: 100%;
-        height: 3px; }
+        height: 5px; }
   .trade_order_entry-wrapper.order_side-selector-buy .trade_order_entry-action_selector {
     border: 1px solid #000000; }
     .trade_order_entry-wrapper.order_side-selector-buy .trade_order_entry-action_selector .active {
@@ -1853,8 +1853,8 @@ table th {
     color: white;
     font-weight: bold; }
     .trade_order_entry-wrapper.order_side-selector-buy .trade_order_entry-form_inputs-wrapper .trade_order_entry-form-action:disabled {
-      background-color: #333333 !important;
-      color: #535353 !important; }
+      background-color: #cccccc !important;
+      color: #808080 !important; }
   .trade_order_entry-wrapper.order_side-selector-buy .trade_order_entry-form_inputs-wrapper .warning_text {
     margin-top: 0.25rem; }
   .trade_order_entry-wrapper.order_side-selector-buy .trade_order_entry-form_inputs-wrapper .form-error {
@@ -1921,7 +1921,7 @@ table th {
           background: black;
           left: 0;
           width: 100%;
-          height: 3px; }
+          height: 5px; }
     .dark-theme .trade_order_entry-wrapper.order_side-selector-sell .trade_order_entry-action_selector {
       border: 1px solid #EE4036; }
       .dark-theme .trade_order_entry-wrapper.order_side-selector-sell .trade_order_entry-action_selector .active {
@@ -1949,7 +1949,7 @@ table th {
       font-weight: bold; }
       .dark-theme .trade_order_entry-wrapper.order_side-selector-sell .trade_order_entry-form_inputs-wrapper .trade_order_entry-form-action:disabled {
         background-color: #333333 !important;
-        color: #535353 !important; }
+        color: #808080 !important; }
     .dark-theme .trade_order_entry-wrapper.order_side-selector-sell .trade_order_entry-form_inputs-wrapper .warning_text {
       margin-top: 0.25rem; }
     .dark-theme .trade_order_entry-wrapper.order_side-selector-sell .trade_order_entry-form_inputs-wrapper .form-error {
@@ -1981,7 +1981,7 @@ table th {
           background: black;
           left: 0;
           width: 100%;
-          height: 3px; }
+          height: 5px; }
     .dark-theme .trade_order_entry-wrapper.order_side-selector-buy .trade_order_entry-action_selector {
       border: 1px solid #00A69C; }
       .dark-theme .trade_order_entry-wrapper.order_side-selector-buy .trade_order_entry-action_selector .active {
@@ -2009,7 +2009,7 @@ table th {
       font-weight: bold; }
       .dark-theme .trade_order_entry-wrapper.order_side-selector-buy .trade_order_entry-form_inputs-wrapper .trade_order_entry-form-action:disabled {
         background-color: #333333 !important;
-        color: #535353 !important; }
+        color: #808080 !important; }
     .dark-theme .trade_order_entry-wrapper.order_side-selector-buy .trade_order_entry-form_inputs-wrapper .warning_text {
       margin-top: 0.25rem; }
     .dark-theme .trade_order_entry-wrapper.order_side-selector-buy .trade_order_entry-form_inputs-wrapper .form-error {
@@ -2539,7 +2539,7 @@ table th {
   color: #808080; }
 
 .dark-theme .summary-container .assets-wrapper .total-assets {
-  background: repeating-linear-gradient(-45deg, #202020, #202020 2px, #2e2f37 2px, #2e2f37 4px);
+  background: repeating-linear-gradient(-45deg, #202020, #202020 2px, #2b2b2b 2px, #2b2b2b 4px);
   color: #808080; }
 
 .dark-theme .summary-container .assets-wrapper .coin-price-container .coin-price svg .missing-coin {
@@ -3500,7 +3500,7 @@ table th {
     top: calc(50% - 0.6rem); }
 
 .dark-theme .app-menu-bar {
-  background: #2e2f37 !important;
+  background: #2b2b2b !important;
   border-bottom: 1px solid #535353; }
   .dark-theme .app-menu-bar .app-menu-bar-content svg .tab-summary0, .dark-theme .app-menu-bar .app-menu-bar-content svg .tab-wallet0, .dark-theme .app-menu-bar .app-menu-bar-content svg .tab-setting0, .dark-theme .app-menu-bar .app-menu-bar-content svg .tab-verify0,
   .dark-theme .app-menu-bar .app-menu-bar-content svg .tab-security0, .dark-theme .app-menu-bar .app-menu-bar-content svg .tab-api0 {
@@ -5269,7 +5269,8 @@ table th {
       border-radius: 2px;
       color: #212121; }
       .trade_input-wrapper .trade_input-input-wrapper > input:focus {
-        outline: none; }
+        outline: none;
+        border: 1.5px solid #212121; }
   .trade_input-wrapper .trade_input-input-currency {
     width: 2.5rem;
     height: 2.5rem;
@@ -7777,7 +7778,7 @@ foreignObject {
 
 .dark-theme .chat-wrapper {
   border: 1px solid #2B2B2B !important;
-  background-color: #2e2f37; }
+  background-color: #2b2b2b; }
   .dark-theme .chat-wrapper.minimized .chat-header {
     border-top: 1px solid #0066B4; }
   .dark-theme .chat-wrapper.minimized .minimize-button:hover {
@@ -7798,7 +7799,7 @@ foreignObject {
   .dark-theme .chat-wrapper .user-icon svg .level_icon, .dark-theme .chat-wrapper .user-icon svg .hap-icon {
     fill: white; }
   .dark-theme .chat-wrapper .chat-message-list {
-    background-color: #2e2f37; }
+    background-color: #2b2b2b; }
     .dark-theme .chat-wrapper .chat-message-list .view > div:nth-child(odd) {
       background-color: #333333; }
     .dark-theme .chat-wrapper .chat-message-list .view > div:nth-child(even) {
