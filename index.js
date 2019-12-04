@@ -1,7 +1,6 @@
 const io = require('socket.io-client');
 const EventEmitter = require('events');
-const moment = require('moment');
-const { createRequest, createSignature } = require('./utils');
+const { createRequest, createSignature, generateHeader } = require('./utils');
 
 class HollaEx {
 	constructor(
@@ -13,7 +12,7 @@ class HollaEx {
 			apiExpiresAfter: 60
 		}
 	) {
-		this._url = opts.apiURL + opts.baseURL || 'https://api.hollaex.com/v1';
+		this._url = 'http://localhost:8080/v1';
 		this._wsUrl = opts.apiURL || 'https://api.hollaex.com';
 		this._baseUrl = opts.baseURL || '/v1';
 		this.apiSecret = opts.apiSecret;
@@ -87,16 +86,11 @@ class HollaEx {
 	getUser() {
 		const verb = 'GET';
 		const path = this._baseUrl + '/user';
-		const apiExpires = moment().unix() + this.apiExpiresAfter;
-		const signature = createSignature(this.apiSecret, verb, path, apiExpires);
+		const headers = generateHeader(this._headers, this.apiSecret, verb, path, this.apiExpiresAfter);
 		return createRequest(
 			verb,
 			`${this._url}/user`,
-			{
-				...this._headers,
-				'api-signature': signature,
-				'api-expires': apiExpires
-			}
+			headers
 		);
 	}
 
@@ -105,7 +99,14 @@ class HollaEx {
 	 * @return {string} A stringified JSON object with the keys updated_at(string), usdt_balance(number), usdt_pending(number), usdt_available(number), hex_balance, hex_pending, hex_available, eth_balance, eth_pending, eth_available, bch_balance, bch_pending, bch_available
 	 */
 	getBalance() {
-		return createRequest('GET', `${this._url}/user/balance`, this._headers);
+		const verb = 'GET';
+		const path = this._baseUrl + '/user/balance';
+		const headers = generateHeader(this._headers, this.apiSecret, verb, path, this.apiExpiresAfter);
+		return createRequest(
+			verb,
+			`${this._url}/user/balance`,
+			headers
+		);
 	}
 
 	/**
@@ -118,12 +119,15 @@ class HollaEx {
 	 * @return {string} A stringified JSON object with the keys count(total number of user's deposits) and data(array of deposits as objects with keys id(number), type(string), amount(number), transaction_id(string), currency(string), created_at(string), status(boolean), fee(number), dismissed(boolean), rejected(boolean), description(string))
 	 */
 	getDeposit(currency, limit = 50, page = 1, orderBy, order = 'asc') {
+		const verb = 'GET';
+		const path = this._baseUrl + `/user/deposits?limit=${limit}&page=${page}&currency=${currency}&order_by=${orderBy}&order=${order}`;
+		const headers = generateHeader(this._headers, this.apiSecret, verb, path, this.apiExpiresAfter);
 		return createRequest(
-			'GET',
+			verb,
 			`${
 				this._url
 			}/user/deposits?limit=${limit}&page=${page}&currency=${currency}&order_by=${orderBy}&order=${order}`,
-			this._headers
+			headers
 		);
 	}
 
@@ -138,12 +142,15 @@ class HollaEx {
 	 * @return {string} A stringified JSON object with the keys count(total number of user's withdrawals) and data(array of withdrawals as objects with keys id(number), type(string), amount(number), transaction_id(string), currency(string), created_at(string), status(boolean), fee(number), dismissed(boolean), rejected(boolean), description(string))
 	 */
 	getWithdrawal(currency, limit = 50, page = 1, orderBy, order = 'asc') {
+		const verb = 'GET';
+		const path = this._baseUrl + `/user/withdrawals?limit=${limit}&page=${page}&currency=${currency}&order_by=${orderBy}&order=${order}`;
+		const headers = generateHeader(this._headers, this.apiSecret, verb, path, this.apiExpiresAfter);
 		return createRequest(
-			'GET',
+			verb,
 			`${
 				this._url
 			}/user/withdrawals?limit=${limit}&page=${page}&currency=${currency}&order_by=${orderBy}&order=${order}`,
-			this._headers
+			headers
 		);
 	}
 
@@ -171,11 +178,14 @@ class HollaEx {
 	 * @return {string} A stringified JSON object {message:"Success"}
 	 */
 	requestWithdrawal(currency, amount, address) {
-		let data = { currency, amount, address, fee: 0 };
+		const verb = 'POST';
+		const path = this._baseUrl + '/user/request-withdrawal';
+		const data = { currency, amount, address, fee: 0 };
+		const headers = generateHeader(this._headers, this.apiSecret, verb, path, this.apiExpiresAfter, data);
 		return createRequest(
-			'POST',
+			verb,
 			`${this._url}/user/request-withdrawal`,
-			this._headers,
+			headers,
 			data
 		);
 	}
@@ -188,14 +198,17 @@ class HollaEx {
 	 * @return {string} A stringified JSON object with the keys count(total number of user's completed trades) and data(array of up to the user's last 50 completed trades as objects with keys side(string), symbol(string), size(number), price(number), timestamp(string), and fee(number))
 	 */
 	getUserTrade(symbol, limit = 50, page = 1) {
+		const verb = 'GET';
 		let queryString = `?limit=${limit}&page=${page}`;
 		if (symbol) {
 			queryString += `&symbol=${symbol}`;
 		}
+		const path = this._baseUrl + `/user/trades${queryString}`;
+		const headers = generateHeader(this._headers, this.apiSecret, verb, path, this.apiExpiresAfter);
 		return createRequest(
-			'GET',
+			verb,
 			`${this._url}/user/trades${queryString}`,
-			this._headers
+			headers
 		);
 	}
 
@@ -206,10 +219,13 @@ class HollaEx {
 	 * @return {string} The selected order as a stringified JSON object with keys created_at(string), title(string), symbol(string), side(string), size(number), type(string), price(number), id(string), created_by(number), filled(number)
 	 */
 	getOrder(orderId) {
+		const verb = 'GET';
+		const path = this._baseUrl + `/user/orders/${orderId}`;
+		const headers = generateHeader(this._headers, this.apiSecret, verb, path, this.apiExpiresAfter);
 		return createRequest(
-			'GET',
+			verb,
 			`${this._url}/user/orders/${orderId}`,
-			this._headers
+			headers
 		);
 	}
 
@@ -219,10 +235,13 @@ class HollaEx {
 	 * @return {string} A stringified JSON array of objects containing the user's active orders
 	 */
 	getAllOrder(symbol = '') {
+		const verb = 'GET';
+		const path = this._baseUrl + `/user/orders?symbol=${symbol}`;
+		const headers = generateHeader(this._headers, this.apiSecret, verb, path, this.apiExpiresAfter);
 		return createRequest(
-			'GET',
+			verb,
 			`${this._url}/user/orders?symbol=${symbol}`,
-			this._headers
+			headers
 		);
 	}
 
@@ -236,8 +255,11 @@ class HollaEx {
 	 * @return {string} The new order as a stringified JSON object with keys symbol(string), side(string), size(number), type(string), price(number), id(string), created_by(number), and filled(number)
 	 */
 	createOrder(symbol, side, size, type, price) {
-		let data = { symbol, side, size, type, price };
-		return createRequest('POST', `${this._url}/order`, this._headers, data);
+		const verb = 'POST';
+		const path = this._baseUrl + '/order';
+		const data = { symbol, side, size, type, price };
+		const headers = generateHeader(this._headers, this.apiSecret, verb, path, this.apiExpiresAfter, data);
+		return createRequest(verb, `${this._url}/order`, headers, data);
 	}
 
 	/**
@@ -246,10 +268,13 @@ class HollaEx {
 	 * @return {string} The cancelled order as a stringified JSON object with keys symbol(string), side(string), size(number), type(string), price(number), id(string), created_by(number), and filled(number)
 	 */
 	cancelOrder(orderId) {
+		const verb = 'DELETE';
+		const path = this._baseUrl + `/user/orders/${orderId}`;
+		const headers = generateHeader(this._headers, this.apiSecret, verb, path, this.apiExpiresAfter);
 		return createRequest(
-			'DELETE',
+			verb,
 			`${this._url}/user/orders/${orderId}`,
-			this._headers
+			headers
 		);
 	}
 
@@ -259,10 +284,13 @@ class HollaEx {
 	 * @return {string} A stringified JSON array of objects containing the cancelled orders
 	 */
 	cancelAllOrder(symbol = '') {
+		const verb = 'DELETE';
+		const path = this._baseUrl + `/user/orders?symbol=${symbol}`;
+		const headers = generateHeader(this._headers, this.apiSecret, verb, path, this.apiExpiresAfter);
 		return createRequest(
-			'DELETE',
+			verb,
 			`${this._url}/user/orders?symbol=${symbol}`,
-			this._headers
+			headers
 		);
 	}
 
