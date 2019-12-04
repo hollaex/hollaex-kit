@@ -10,7 +10,7 @@ const IdentityVerificationHome = ({ user, setActivePageContent, setActiveTab }) 
     if (!address.country) {
         return (
             <div>
-                <Button label={STRINGS.USER_VERIFICATION.START_IDENTITY_VERIFICATION} onClick={() => setActivePageContent(2)} />
+                <Button label={STRINGS.USER_VERIFICATION.START_IDENTITY_VERIFICATION} onClick={() => setActivePageContent(1)} />
             </div>
         );
     } else {
@@ -19,7 +19,7 @@ const IdentityVerificationHome = ({ user, setActivePageContent, setActiveTab }) 
                 <div className="font-weight-bold text-lowercase">
                     {STRINGS.formatString(
                         STRINGS.USER_VERIFICATION.BANK_VERIFICATION_HELP_TEXT,
-                        <span className="verification_link pointer" onClick={(e) => setActiveTab(4, e)}>
+                        <span className="verification_link pointer" onClick={(e) => setActiveTab(3, e)}>
                             {STRINGS.USER_VERIFICATION.DOCUMENT_SUBMISSION}
                         </span>)
                     }
@@ -82,7 +82,7 @@ const IdentityVerificationHome = ({ user, setActivePageContent, setActiveTab }) 
                     ? null
                     :<Button
                         label={STRINGS.USER_VERIFICATION.REVIEW_IDENTITY_VERIFICATION}
-                        onClick={() => setActivePageContent(2)} />
+                        onClick={() => setActivePageContent(1)} />
                 }
             </div>
         );

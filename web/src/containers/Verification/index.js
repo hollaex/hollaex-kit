@@ -260,7 +260,7 @@ class Verification extends Component {
 						openContactForm={this.openContactForm}
 						setActiveTab={this.setActiveTab}
 						renderContent={this.renderContent} />;
-			case 2:
+			case 1:
 				return <IdentityVerification
 						icon={ICONS.VERIFICATION_BANK_NEW}
 						fullName={user.full_name}
@@ -270,7 +270,7 @@ class Verification extends Component {
 						openContactForm={this.openContactForm}
 						setActivePageContent={this.setActivePageContent}
 						setActiveTab={this.setActiveTab} />
-			case 3:
+			case 2:
 				return <MobileVerification
 						initialValues={mobileInitialValues(user.address)}
 						moveToNextStep={this.goNextTab}
@@ -279,7 +279,7 @@ class Verification extends Component {
 						setActiveTab={this.setActiveTab}
 						setActivePageContent={this.setActivePageContent}
 					/>
-			case 4:
+			case 3:
 				return <DocumentsVerification
 						nationality={user.nationality}
 						idData={user.id_data}

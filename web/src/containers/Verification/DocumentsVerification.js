@@ -187,7 +187,7 @@ class DocumentsVerification extends Component {
 
 	onGoBack = () => {
 		this.props.setActivePageContent(0);
-		this.props.setActiveTab(4);
+		this.props.setActiveTab(3);
 	};
 
 	render() {
