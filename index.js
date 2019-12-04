@@ -1,5 +1,6 @@
 const io = require('socket.io-client');
 const EventEmitter = require('events');
+const moment = require('moment');
 const { createRequest, createSignature, generateHeader } = require('./utils');
 
 class HollaEx {
@@ -12,9 +13,10 @@ class HollaEx {
 			apiExpiresAfter: 60
 		}
 	) {
-		this._url = opts.apiURL + opts.baseURL || 'https://api.hollaex.com/v1';
+		this._url = 'http://localhost:8080/v1';
 		this._wsUrl = opts.apiURL || 'https://api.hollaex.com';
 		this._baseUrl = opts.baseURL || '/v1';
+		this.apiKey = opts.apiKey;
 		this.apiSecret = opts.apiSecret;
 		this.apiExpiresAfter = opts.apiExpiresAfter || 60;
 		this._headers = {
@@ -300,7 +302,9 @@ class HollaEx {
 	 * @return {class} A new socket class that listens to the hollaEx websocket server and emits the event being passed
 	 */
 	connect(events) {
-		return new Socket(events, this._wsUrl, this._accessToken);
+		const apiExpires = moment().unix() + this.apiExpiresAfter;
+		const signature = createSignature(this.apiSecret, 'CONNECT', '/socket', apiExpires);
+		return new Socket(events, this._wsUrl, this.apiKey, signature, apiExpires);
 	}
 }
 
@@ -308,7 +312,7 @@ class HollaEx {
 Websocket
 *******************/
 class Socket extends EventEmitter {
-	constructor(events = '', url, accessToken) {
+	constructor(events = '', url, apiKey, apiSignature, apiExpires) {
 		super();
 		if (!Array.isArray(events)) {
 			let listeners = [];
@@ -331,7 +335,11 @@ class Socket extends EventEmitter {
 					break;
 				case 'user':
 					ioLink = io(`${url}/user`, {
-						query: { token: `Bearer ${accessToken}` }
+						query: {
+							'api-key': apiKey,
+							'api-signature': apiSignature,
+							'api-expires': apiExpires
+						}
 					});
 
 					listeners.push(ioLink);
@@ -363,7 +371,11 @@ class Socket extends EventEmitter {
 					});
 
 					ioLink = io(`${url}/user`, {
-						query: { token: `Bearer ${accessToken}` }
+						query: {
+							'api-key': apiKey,
+							'api-signature': apiSignature,
+							'api-expires': apiExpires
+						}
 					});
 					listeners.push(ioLink);
 					listeners[listeners.length - 1].on('user', (data) => {
