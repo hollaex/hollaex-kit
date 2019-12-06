@@ -100,8 +100,7 @@ const MobileSummary = ({
 				</SummaryBlock>
 			</div>
 			{SHOW_SUMMARY_ACCOUNT_DETAILS
-				? <Fragment>
-					<div className="trading-volume-wrapper w-100">
+				? <div className="trading-volume-wrapper w-100">
 						<SummaryBlock
 							title={STRINGS.SUMMARY.TRADING_VOLUME}
 							secondaryTitle={<span>
@@ -117,24 +116,24 @@ const MobileSummary = ({
 							<TradingVolume user={user} />
 						</SummaryBlock>
 					</div>
-					<SummaryBlock
-						title={STRINGS.SUMMARY.ACCOUNT_DETAILS}
-						secondaryTitle={traderAccTitle}
-						wrapperClassname="w-100" >
-						<AccountDetails
-							coins={coins}
-							config={config}
-							pairs={pairs}
-							user={user}
-							activeTheme={activeTheme}
-							selectedAccount={selectedAccount}
-							onAccountTypeChange={onAccountTypeChange}
-							onFeesAndLimits={onFeesAndLimits}
-							verification_level={verification_level} />
-					</SummaryBlock>
-				</Fragment>
-				: null
-			}
+					: null
+				}
+				<SummaryBlock
+					title={STRINGS.SUMMARY.ACCOUNT_DETAILS}
+					secondaryTitle={traderAccTitle}
+					wrapperClassname="w-100" >
+					<AccountDetails
+						coins={coins}
+						config={config}
+						pairs={pairs}
+						user={user}
+						activeTheme={activeTheme}
+						selectedAccount={selectedAccount}
+						onAccountTypeChange={onAccountTypeChange}
+						onFeesAndLimits={onFeesAndLimits}
+						verification_level={verification_level} />
+				</SummaryBlock>
+				
 		</div>
 	);
 };

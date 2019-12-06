@@ -37,10 +37,15 @@ const AccountTypeDetails = ({
 				selectedAccount={currentAccount}
 			/>
 			{
-				currentAccount > 1 && Object.keys(requirement).length ? (
+				Object.keys(requirement).length ? (
 					<div>
 						<div className="requirement-header d-flex justify-content-between">
-							<div>{STRINGS.SUMMARY.REQUIREMENTS}</div>
+							<div>
+								{selectedLevel === 3
+									? STRINGS.SUMMARY.ONE_REQUIREMENT
+									: STRINGS.SUMMARY.REQUIREMENTS
+								}
+							</div>
 							<div className="status-header">{STRINGS.STATUS}</div>
 						</div>
 						<SummaryRequirements

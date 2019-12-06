@@ -2,15 +2,10 @@ import React from 'react';
 import ReactSvg from 'react-svg';
 import classnames from 'classnames';
 import { Link } from 'react-router';
-import moment from 'moment';
 
 import { Button } from '../../../components';
 import {
 	ICONS,
-	TRADE_ACCOUNT_UPGRADE_MONTH,
-	TRADING_VOLUME_CHART_LIMITS,
-	BASE_CURRENCY,
-	DEFAULT_COIN_DATA,
 	IS_HEX
 } from '../../../config/constants';
 import STRINGS from '../../../config/localizedStrings';
@@ -62,45 +57,51 @@ const RejectedStatus = ({ isAccountDetails }) => (
 	</div>
 );
 
-const checkBankVerification = (bank_account = [], id_data) => {
-	let bank_status = 0;
-	if (bank_account.length) {
-		if (bank_account.filter((data) => data.status === 3).length) {
-			bank_status = 3;
-		} else if (bank_account.filter((data) => data.status === 1).length) {
-			bank_status = 1;
-		} else if (bank_account.filter((data) => data.status === 2).length) {
-			bank_status = 2;
-		}
-		if (id_data.status !== 3) {
-			bank_status = 1;
-		}
-		if (
-			bank_account.length ===
-			bank_account.filter((data) => data.status === 0).length
-		) {
-			bank_status = 0;
-		}
-	}
-	return bank_status;
-};
+// const checkBankVerification = (bank_account = [], id_data) => {
+// 	let bank_status = 0;
+// 	if (bank_account.length) {
+// 		if (bank_account.filter((data) => data.status === 3).length) {
+// 			bank_status = 3;
+// 		} else if (bank_account.filter((data) => data.status === 1).length) {
+// 			bank_status = 1;
+// 		} else if (bank_account.filter((data) => data.status === 2).length) {
+// 			bank_status = 2;
+// 		}
+// 		if (id_data.status !== 3) {
+// 			bank_status = 1;
+// 		}
+// 		if (
+// 			bank_account.length ===
+// 			bank_account.filter((data) => data.status === 0).length
+// 		) {
+// 			bank_status = 0;
+// 		}
+// 	}
+// 	return bank_status;
+// };
 
-const checkMonth = (currentDate, month) => {
-	const diffMonth = moment().diff(moment(currentDate), 'months');
-	return diffMonth >= month;
-};
+// const checkMonth = (currentDate, month) => {
+// 	const diffMonth = moment().diff(moment(currentDate), 'months');
+// 	return diffMonth >= month;
+// };
 
 export const getRequirements = (user, level, lastMonthVolume, coins) => {
-	const { address, phone_number, id_data = {}, bank_account } = user.userData;
-	const bank_verified = checkBankVerification(bank_account, id_data);
-	const { symbol = '' } = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
+	const { address, phone_number, id_data = {} } = user.userData;
+	// const bank_verified = checkBankVerification(bank_account, id_data);
+	// const { symbol = '' } = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
 	const identity = address.country
 		? id_data.status && id_data.status === 3
 			? 3
 			: 1
 		: 1;
 	const verificationObj = {
-		level_1: {},
+		level_1: {
+			'1': {
+				title: STRINGS.SUMMARY.EMAIL_VERIFICATION,
+				completed: user.email ? true : false,
+				status: user.email ? 3 : 0
+			}
+		},
 		level_2: {
 			'1': {
 				title: STRINGS.USER_VERIFICATION.TITLE_USER_DOCUMENTATION,
@@ -108,7 +109,7 @@ export const getRequirements = (user, level, lastMonthVolume, coins) => {
 				status: identity
 			},
 			'2': {
-				title: STRINGS.USER_VERIFICATION.TITLE_ID_DOCUMENTS,
+				title: STRINGS.SUMMARY.DOCUMENTS,
 				completed: id_data.status === 3,
 				status: id_data.status
 			},
@@ -116,84 +117,71 @@ export const getRequirements = (user, level, lastMonthVolume, coins) => {
 				title: STRINGS.USER_VERIFICATION.TITLE_MOBILE,
 				completed: !!phone_number,
 				status: phone_number ? 3 : 0
-			},
-			'4': {
-				title: STRINGS.USER_VERIFICATION.CONNECT_BANK_ACCOUNT,
-				completed: bank_verified === 3 ? true : false,
-				status: bank_verified
 			}
 		},
 		level_3: {
 			'1': {
 				title: STRINGS.formatString(
-					STRINGS.SUMMARY.ACCOUNT_AGE_OF_MONTHS,
-					TRADE_ACCOUNT_UPGRADE_MONTH[0]
-				).join(' '),
-				completed: checkMonth(
-					user.created_at,
-					TRADE_ACCOUNT_UPGRADE_MONTH[0]
-				)
+					STRINGS.SUMMARY.HAP_TEXT,
+					<span className="blue-link pointer">{`(${STRINGS.APPLY_HERE})`}</span>
+				),
+				completed: false
 			},
 			'2': {
 				title: STRINGS.formatString(
-					STRINGS.SUMMARY.TRADING_VOLUME_EQUIVALENT,
-					TRADING_VOLUME_CHART_LIMITS[0],
-					symbol.toUpperCase()
-				).join(' '),
-				completed: TRADING_VOLUME_CHART_LIMITS[0] <= lastMonthVolume
+					STRINGS.SUMMARY.LOCK_AN_EXCHANGE,
+					<span className="blue-link pointer">{`(${STRINGS.TRADE_POSTS.LEARN_MORE})`}</span>
+				),
+				completed: false
+			},
+			'3': {
+				title: STRINGS.formatString(
+					STRINGS.SUMMARY.WALLET_SUBSCRIPTION_USERS,
+					<span className="blue-link pointer">{`(${STRINGS.TRADE_POSTS.LEARN_MORE})`}</span>
+				),
+				completed: false
 			}
 		},
 		level_4: {
 			'1': {
 				title: STRINGS.formatString(
-					STRINGS.SUMMARY.ACCOUNT_AGE_OF_MONTHS,
-					TRADE_ACCOUNT_UPGRADE_MONTH[1]
+					STRINGS.SUMMARY.TRADE_OVER_BTC,
+					100
 				).join(' '),
-				completed: checkMonth(
-					user.created_at,
-					TRADE_ACCOUNT_UPGRADE_MONTH[1]
-				)
-			},
-			'2': {
-				title: STRINGS.formatString(
-					STRINGS.SUMMARY.TRADING_VOLUME_EQUIVALENT,
-					TRADING_VOLUME_CHART_LIMITS[1],
-					symbol.toUpperCase()
-				).join(' '),
-				completed: TRADING_VOLUME_CHART_LIMITS[1] <= lastMonthVolume
+				completed: false
 			}
 		}
 	};
 	return verificationObj[`level_${level}`] || {};
 };
 
-const getHexRequirements = (user, coins) => {
-	let walletDeposit = false;
-	let hexDeposit = false;
-	if (user.balance) {
-		Object.keys(coins).forEach(pair => {
-			if (user.balance[`${pair.toLowerCase()}_balance`] > 0) {
-				walletDeposit = true;
-			}
-		})
-		if (user.balance.hex_balance && user.balance.hex_balance > 0) {
-			hexDeposit = true;
-		}
-	}
-	const verificationObj = {
-		'1': {
-			title: STRINGS.USER_VERIFICATION.MAKE_FIRST_DEPOSIT,
-			completed: walletDeposit,
-			status: walletDeposit ? 3 : 0
-		},
-		'2': {
-			title: STRINGS.USER_VERIFICATION.OBTAIN_HEX,
-			completed: hexDeposit,
-			status: hexDeposit ? 3 : 0
-		}
-	};
-	return verificationObj;
-};
+// const getHexRequirements = (user, coins) => {
+// 	let walletDeposit = false;
+// 	let hexDeposit = false;
+// 	if (user.balance) {
+// 		Object.keys(coins).forEach(pair => {
+// 			if (user.balance[`${pair.toLowerCase()}_balance`] > 0) {
+// 				walletDeposit = true;
+// 			}
+// 		})
+// 		if (user.balance.hex_balance && user.balance.hex_balance > 0) {
+// 			hexDeposit = true;
+// 		}
+// 	}
+// 	const verificationObj = {
+// 		'1': {
+// 			title: STRINGS.USER_VERIFICATION.MAKE_FIRST_DEPOSIT,
+// 			completed: walletDeposit,
+// 			status: walletDeposit ? 3 : 0
+// 		},
+// 		'2': {
+// 			title: STRINGS.USER_VERIFICATION.OBTAIN_HEX,
+// 			completed: hexDeposit,
+// 			status: hexDeposit ? 3 : 0
+// 		}
+// 	};
+// 	return verificationObj;
+// };
 
 const getStatusClass = (status_code, completed) => {
 	switch (status_code) {
@@ -265,9 +253,7 @@ const SummaryRequirements = ({
 	const selectedLevel = isAccountDetails
 		? verificationLevel || user.verification_level
 		: 2;
-	const requirement = IS_HEX
-		? getHexRequirements(user, coins)
-		: getRequirements(user, selectedLevel, lastMonthVolume, coins);
+	const requirement = getRequirements(user, selectedLevel, lastMonthVolume, coins);
 	let requirementResolved = getAllCompleted(requirement);
 	return (
 		<div className="d-flex">
@@ -303,7 +289,7 @@ const SummaryRequirements = ({
 									}
 								)}
 							>
-								<div>{`${step}. ${reqObj.title}`}</div>
+							<div className="requirement-step">{step}. {reqObj.title}</div>
 								<div>{getStatusIcon(reqObj, isAccountDetails)}</div>
 							</div>
 						);
@@ -328,7 +314,7 @@ const SummaryRequirements = ({
 						</div>
 					) : null
 				}
-				{IS_HEX
+				{IS_HEX && !isAccountDetails
 					? <div className="trade-account-link mb-2">
 						<Link to="/wallet">
 							{STRINGS.USER_VERIFICATION.GOTO_WALLET.toUpperCase()}
@@ -336,7 +322,7 @@ const SummaryRequirements = ({
 					</div>
 					: null
 				}
-				{!IS_HEX && isAccountDetails ? (
+				{selectedLevel !== 1 && isAccountDetails ? (
 					<div className="mt-2">
 						<Button
 							label={STRINGS.SUMMARY.REQUEST_ACCOUNT_UPGRADE}

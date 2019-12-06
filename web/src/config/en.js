@@ -47,6 +47,7 @@ export default {
 	VIEW_MARKET: 'view market', // new
 	GO_TRADE:'Go Trade', // new
 	VIEW_INFO:'View info page', // new
+	APPLY_HERE: 'Apply Here', // new
 	HOME: {
 		SECTION_1_TITLE: 'Welcome to HollaEx Exchange Kit!',
 		SECTION_1_TEXT_1:
@@ -1115,6 +1116,7 @@ export default {
 		ACCOUNT_DETAILS_TXT_4:
 			'Periodic downgrading of accounts will occur if activity and assets are not maintained.',
 		REQUIREMENTS: 'Requirements',
+		ONE_REQUIREMENT: 'One Requirement only:', // new
 		REQUEST_ACCOUNT_UPGRADE: 'Request an Account Upgrade',
 		FEES_AND_LIMIT: 'Fee and Limit Structure for {0}',
 		FEES_AND_LIMIT_TXT_1:
@@ -1137,15 +1139,27 @@ export default {
 		TRADING_VOLUME_EQUIVALENT: '{0} {1} Trading Volume Equivalent',
 		LEVEL_OF_ACCOUNT: 'Level {0} Account',
 		LEVEL_TXT_DEFAULT:'Add your level description here',
-		LEVEL_1_TXT: 'Your trading journey begins here! Profits await.Upgrades your account to unlock withdrawals and favorable fees by verifying your account.',
-		LEVEL_2_TXT: 'Congrats on getting your account verified. Keep trading and apply for an account upgrade to get lower trading fees and larger withdrawal and deposit limits.',
-		LEVEL_3_TXT: 'You’ve come far comrade and have traded well.Keep trading and reach the highest rank and enjoy even lower fees and higher limits.',
-		LEVEL_4_TXT: 'You are a masters trader and have reached the peek. To maintain your rank keep your trading volume high and healthy.',
+		LEVEL_1_TXT: 'Your journey starts here young crypto trader! To obtain bonsues you can verify your identification and also get larger deposit and withdraw limits with reduced trading fees.', // new
+		LEVEL_2_TXT: 'This is where things get real! Reduced trading fees and large deposit and withdrawal limits. To get to level 3 you must learn about HollaEx ecosystem here.', // new
+		LEVEL_3_TXT: 'You’ve made it! The level 3 account is a rare account only for exchange operators, HEX stakers, Vault users or HollaEx Ambassador Program (HEX). Enjoy large limits and enjoy zero maker fees.', // new
+		LEVEL_4_TXT: 'The Whale trader account with the zero fees! To obtain the level 4 account you must have a trading volumes above 100 BTC in the last month.', // new
+		LEVEL_5_TXT: 'You’ve made it! The level 5 account is a rare account only for exchange operators, HEX stakers, Vault users or HollaEx Ambassador Program (HEX). Enjoy large limits and enjoy zero maker fees.', // new
+		LEVEL_6_TXT: 'Trade over 60 BTC worth in the last month and have balance of over 200,000 HEX and enjoy even lower trading fees.', // new
+		LEVEL_7_TXT: 'Trade over 70 BTC worth in the last month and have balance of over 300,000 HEX and enjoy even lower trading fees', // new
+		LEVEL_8_TXT: 'Trade over 80 BTC worth in the last month and have balance of over 500,000 HEX and enjoy extra low trading fees!', // new
+		LEVEL_9_TXT: 'Trade over 90 BTC worth in the last month and have balance of over 500,000 HEX and enjoy extra low trading fees!', // new
+		LEVEL_10_TXT: 'The Whale trader account with the zero fees! To obtain level 10 account you must have a trading volumes above 100 BTC in the previous month.', // new
 		CURRENT_TXT: 'Current',
-		TRADER_ACCOUNT_HEX_TEXT: 'Earn up to 10% in commissions through distributing the HollaEx Kit. Alternatively you can earn HEX daily through staking your HEX token when running your own exchange.',
-		TRADER_ACCOUNT_TITLE: 'Account', // new
-		HAP_ACCOUNT:'HAP Account', // new
-		HAP_ACCOUNT_TXT :'Your account is a verified HollaEx affiliate program account. You can now earn 10% bonus for every person you invite that buys HEX.' // new
+		TRADER_ACCOUNT_HEX_TEXT: 'Your account is in the presale period of HEX, this means you can obtain HEX for $0.10 per HEX. All deposit will be converted to HEX once the transaction has cleared.',
+		TRADER_ACCOUNT_TITLE: 'Account - Presale Period', // new
+		HAP_ACCOUNT: 'HAP Account', // new
+		HAP_ACCOUNT_TXT: 'Your account is a verified HollaEx affiliate program account. You can now earn 10% bonus for every person you invite that buys HEX.', // new
+		EMAIL_VERIFICATION: 'Email Verification', // new
+		DOCUMENTS: 'Documents', // new
+		HAP_TEXT: 'HollaEx Ambassador Program (HAP) {0}', // new
+		LOCK_AN_EXCHANGE: 'Lock an Exchange {0}', // new
+		WALLET_SUBSCRIPTION_USERS: 'Vault Subscription users {0}', // new
+		TRADE_OVER_BTC: 'Trade over {0} BTC' // new
 	},
 	REFERRAL_LINK: {
 		TITLE: 'Invite your friend', // new

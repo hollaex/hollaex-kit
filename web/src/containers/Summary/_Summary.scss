@@ -24,7 +24,7 @@
         .trader-account-icon {
             svg {
                 .level_icon {
-                    fill: $dark-inactive-color;
+                    fill: $dark-icon-unhover;
                 }
             }
         }
@@ -88,6 +88,11 @@
             .requirement-header {
                 border-bottom: 1px solid $dark-border-main;
                 color: $dark-font-main-text-color;
+            }
+            .requirements-content-text {
+                .requirement-step {
+                    color: $dark-font-main-text-color;
+                }
             }
         }
         .assets-wrapper {

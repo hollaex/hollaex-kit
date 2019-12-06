@@ -24,14 +24,14 @@ const TraderAccounts = ({
 	let icon = ICONS[`LEVEL_ACCOUNT_ICON_${verification_level}`]
 		? ICONS[`LEVEL_ACCOUNT_ICON_${verification_level}`]
 		: ICONS.LEVEL_ACCOUNT_ICON_4;
-	if (IS_HEX) {
-		description = user.is_hap
-			? STRINGS.SUMMARY.HAP_ACCOUNT_TXT
-			: STRINGS.SUMMARY.TRADER_ACCOUNT_HEX_TEXT;
-		icon = user.is_hap === true
-			? ICONS.HAP_ACCOUNT_ICON
-			: ICONS.ACCOUNT_SUMMARY;
-	}
+	// if (!isAccountDetails) {
+	// 	description = user.is_hap
+	// 		? STRINGS.SUMMARY.HAP_ACCOUNT_TXT
+	// 		: STRINGS.SUMMARY.TRADER_ACCOUNT_HEX_TEXT;
+	// 	icon = user.is_hap === true
+	// 		? ICONS.HAP_ACCOUNT_ICON
+	// 		: ICONS.ACCOUNT_SUMMARY;
+	// }
 	return (
 		<div className="d-flex">
 			<div>
@@ -79,26 +79,24 @@ const TraderAccounts = ({
 					}
 				</Fragment>
 				)}
-				{!IS_HEX
-					? <Fragment>
-						<div className="trade-account-link mb-2">
-							<span
-								className="pointer"
-								onClick={() => onFeesAndLimits(level)}
-							>
-								{STRINGS.SUMMARY.VIEW_FEE_STRUCTURE.toUpperCase()}
-							</span>
-						</div>
-						{!isAccountDetails && verification_level.level >= 1 && verification_level.level < 4 && (
-							<div className="trade-account-link mb-2">
-								<span className="pointer" onClick={onUpgradeAccount}>
-									{STRINGS.SUMMARY.UPGRADE_ACCOUNT.toUpperCase()}
-								</span>
-							</div>
-						)}
-					</Fragment>
+				{isAccountDetails
+					? <div className="trade-account-link mb-2">
+						<span
+							className="pointer"
+							onClick={() => onFeesAndLimits(level)}
+						>
+							{STRINGS.SUMMARY.VIEW_FEE_STRUCTURE.toUpperCase()}
+						</span>
+					</div>
 					: null
 				}
+				{!IS_HEX && !isAccountDetails && verification_level.level >= 1 && verification_level.level < 4 && (
+					<div className="trade-account-link mb-2">
+						<span className="pointer" onClick={onUpgradeAccount}>
+							{STRINGS.SUMMARY.UPGRADE_ACCOUNT.toUpperCase()}
+						</span>
+					</div>
+				)}
 				{!isAccountDetails && isMobile ? (
 					<div className="trade-account-link my-2" onClick={() => logout()}>
 						{STRINGS.LOGOUT.toUpperCase()}

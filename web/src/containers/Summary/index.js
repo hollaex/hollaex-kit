@@ -136,9 +136,9 @@ class Summary extends Component {
         const { selectedAccount, chartData, totalAssets, lastMonthVolume } = this.state;
         const { fullname } = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
         let traderAccTitle = STRINGS.formatString(STRINGS.SUMMARY.LEVEL_OF_ACCOUNT, verification_level);
-        if (IS_HEX) {
-            traderAccTitle = user.is_hap ? STRINGS.SUMMARY.HAP_ACCOUNT : STRINGS.SUMMARY.TRADER_ACCOUNT_TITLE
-        }
+        // if (IS_HEX) {
+        //     traderAccTitle = user.is_hap ? STRINGS.SUMMARY.HAP_ACCOUNT : STRINGS.SUMMARY.TRADER_ACCOUNT_TITLE
+        // }
         return (
             <div className="summary-container">
                 {!isMobile && <IconTitle
@@ -246,28 +246,25 @@ class Summary extends Component {
                                 : null
                             }
                         </div>
-                        {SHOW_SUMMARY_ACCOUNT_DETAILS
-                            ? <div className="d-flex align-items-center">
-                                <SummaryBlock
-                                    title={STRINGS.SUMMARY.ACCOUNT_DETAILS}
-                                    secondaryTitle={traderAccTitle}
-                                    wrapperClassname="w-100" >
-                                    <AccountDetails
-                                        user={user}
-                                        coins={coins}
-                                        pairs={pairs}
-                                        activeTheme={activeTheme}
-                                        selectedAccount={selectedAccount}
-                                        lastMonthVolume={lastMonthVolume}
-                                        onAccountTypeChange={this.onAccountTypeChange}
-                                        onFeesAndLimits={this.onFeesAndLimits}
-                                        onUpgradeAccount={this.onUpgradeAccount}
-                                        config={config_level}
-                                        verification_level={verification_level} />
-                                </SummaryBlock>
-                            </div>
-                            : null
-                        }
+                        <div className="d-flex align-items-center">
+                            <SummaryBlock
+                                title={STRINGS.SUMMARY.ACCOUNT_DETAILS}
+                                secondaryTitle={traderAccTitle}
+                                wrapperClassname="w-100" >
+                                <AccountDetails
+                                    user={user}
+                                    coins={coins}
+                                    pairs={pairs}
+                                    activeTheme={activeTheme}
+                                    selectedAccount={selectedAccount}
+                                    lastMonthVolume={lastMonthVolume}
+                                    onAccountTypeChange={this.onAccountTypeChange}
+                                    onFeesAndLimits={this.onFeesAndLimits}
+                                    onUpgradeAccount={this.onUpgradeAccount}
+                                    config={config_level}
+                                    verification_level={verification_level} />
+                            </SummaryBlock>
+                        </div>
                     </div>)
                 }
             </div>
