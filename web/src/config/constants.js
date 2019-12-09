@@ -45,6 +45,8 @@ export const ICONS = {
 	KRW_ICON: '/assets/icons/krw-icon-01.svg',
 	HEX_ICON: '/assets/icons/hex-icon.svg',
 	HEX_ICON_DARK: '/assets/icons/hex-icon-dark.svg',
+	XMR_ICON: '/assets/icons/xmr-icon.svg',
+	XMR_ICON_DARK: '/assets/icons/xmr-icon-dark.svg',
 	USDT_ICON: '/assets/icons/usdt-icon.svg',
 	CHECK: '/assets/images/Orderbook scrolling-01.svg',
 	DARK_CHECK: '/assets/images/dark-Orderbook-scrolling-01.svg',
