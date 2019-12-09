@@ -37,11 +37,27 @@ export const generateHeaders = (revokeToken, otp_enabled) => {
 		},
 		{
 			label: STRINGS.DEVELOPERS_TOKENS_TABLE.API_KEY,
-			key: 'apikey',
+			key: 'apiKey',
 			className: 'text-center tokens-tokenkey',
-			renderCell: ({ id, token }, key, index) => (
-				<td key={`${key}-${id}-token`} className="text-center tokens-tokenkey">
-					{token}
+			renderCell: ({ id, apiKey }, key, index) => (
+				<td
+					key={`${key}-${id}-token`}
+					className="text-center tokens-tokenkey"
+				>
+					{apiKey}
+				</td>
+			)
+		},
+		{
+			label: STRINGS.DEVELOPERS_TOKENS_TABLE.SECRET,
+			key: 'secret',
+			className: 'text-center tokens-tokenkey',
+			renderCell: ({ id, secret }, key, index) => (
+				<td
+					key={`${key}-${id}-secret`}
+					className="text-center tokens-tokenkey"
+				>
+					{secret}
 				</td>
 			)
 		},
@@ -70,7 +86,9 @@ export const generateHeaders = (revokeToken, otp_enabled) => {
 							'token-no-otp': !revoked && !otp_enabled
 						}
 					)}
-					onClick={!revoked && otp_enabled ? () => revokeToken(id) : () => {}}
+					onClick={
+						!revoked && otp_enabled ? () => revokeToken(id) : () => {}
+					}
 				>
 					{revoked ? (
 						STRINGS.DEVELOPERS_TOKENS_TABLE.REVOKED

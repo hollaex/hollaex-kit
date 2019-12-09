@@ -36,11 +36,6 @@ const DocumentsVerificationHome = ({ user, setActivePageContent, onTipOpen, onTi
             }
             {id_data.status === 1 && <div className="my-3">
                 <PanelInformationRow
-                    label={STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS.TYPE_LABEL}
-                    information={id_data.type}
-                    className="title-font"
-                    disable />
-                <PanelInformationRow
                     label={STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS.ID_NUMBER_LABEL}
                     information={id_data.number}
                     className="title-font"

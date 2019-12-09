@@ -33,8 +33,11 @@ class DonutChart extends Component {
 	};
 
 	componentDidMount() {
-		const donutContainer = document.getElementById('donut-container');
-		const rect = donutContainer.getBoundingClientRect();
+		const donutContainer = document.getElementById(this.props.id);
+		let rect = {};
+		if (donutContainer) {
+			rect = donutContainer.getBoundingClientRect();
+		}
 		const checkFilter = this.checkData(this.props.chartData);
 		this.setState({
 			width: rect.width,
@@ -138,7 +141,7 @@ class DonutChart extends Component {
 		let y = height / 2 - 15;
 
 		return (
-			<div id="donut-container" className="w-100 h-100">
+			<div id={this.props.id} className="w-100 h-100">
 				<svg width="100%" height="100%">
 					<g transform={translate(x, y)}>
 						{sortedData.map((value, i) => {
@@ -195,7 +198,7 @@ class DonutChart extends Component {
 						className="donut-label-no-price"
 						textAnchor="middle"
 					>
-						<Link to="/wallet" className="deposite-asset">
+						<Link to="/wallet" className="deposit-asset">
 							{STRINGS.DEPOSIT_ASSETS.toUpperCase()}
 						</Link>
 					</text>
@@ -240,5 +243,9 @@ class DonutChart extends Component {
 		}
 	};
 }
+
+DonutChart.defaultProps = {
+	id: "donut-container"
+};
 
 export default DonutChart;

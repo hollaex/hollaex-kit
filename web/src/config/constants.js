@@ -45,6 +45,7 @@ export const ICONS = {
 	KRW_ICON: '/assets/icons/krw-icon-01.svg',
 	HEX_ICON: '/assets/icons/hex-icon.svg',
 	HEX_ICON_DARK: '/assets/icons/hex-icon-dark.svg',
+	USDT_ICON: '/assets/icons/usdt-icon.svg',
 	CHECK: '/assets/images/Orderbook scrolling-01.svg',
 	DARK_CHECK: '/assets/images/dark-Orderbook-scrolling-01.svg',
 	BLUE_QUESTION: '/assets/acounts/account-icons-08.svg',
@@ -245,7 +246,8 @@ export const ICONS = {
 	LEVEL_ACCOUNT_ICON_2: '/assets/images/level-2.svg',
 	LEVEL_ACCOUNT_ICON_3: '/assets/images/level-3.svg',
 	LEVEL_ACCOUNT_ICON_4: '/assets/images/level-4.svg',
-	TRADE_ANNOUNCEMENT: '/assets/images/annoucement.svg'
+	TRADE_ANNOUNCEMENT: '/assets/images/annoucement.svg',
+	CHAT_EMOJI: '/assets/icons/emoji-face-icon.svg',
 };
 
 export const SOCIAL_ICONS = {

@@ -726,7 +726,11 @@ class Container extends Component {
 				return (
 					<LogoutConfirmation
 						data={data}
-						onConfirm={this.logout}
+						onConfirm={() => {
+								this.logout();
+								this.onCloseDialog();
+							}
+						}
 						onClose={this.onCloseDialog}
 					/>
 				);
@@ -847,6 +851,7 @@ class Container extends Component {
 							goToDashboard={this.goToDashboard}
 							logout={this.logout}
 							activePath={activePath}
+							onHelp={openHelpfulResourcesForm}
 							rightChildren={
 								<CurrencyList
 									className="horizontal-currency-list justify-content-end"
