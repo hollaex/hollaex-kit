@@ -45,6 +45,8 @@ export const ICONS = {
 	KRW_ICON: '/assets/icons/krw-icon-01.svg',
 	HEX_ICON: '/assets/icons/hex-icon-dark.svg',
 	HEX_ICON_DARK: '/assets/icons/hex-icon-dark.svg',
+	XMR_ICON: '/assets/icons/xmr-icon.svg',
+	XMR_ICON_DARK: '/assets/icons/xmr-icon-dark.svg',
 	USDT_ICON: '/assets/icons/usdt-icon.svg',
 	CHECK: '/assets/images/Orderbook scrolling-01.svg',
 	DARK_CHECK: '/assets/images/dark-Orderbook-scrolling-01.svg',
@@ -271,6 +273,7 @@ export const ICONS = {
 	TRADE_WAVES:'/assets/images/wave-icon.svg',
 	HEX_LOGO_LIGHT:'/assets/icons/HEX-logo-light.svg',
 	HEX_LOGO_DARK:'/assets/icons/HEX-logo-dark.svg',
+	BONUS_OFFERING:'/assets/icons/bonus_offering.svg',
 };
 
 export const SOCIAL_ICONS = {

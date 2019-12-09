@@ -261,7 +261,7 @@ class Container extends Component {
 			this.props.setPairs(data.pairs);
 			this.props.setPairsData(data.pairs);
 			this.props.setCurrencies(data.coins);
-			if (data.config) this.props.setConfig(data.config);
+			if (data.config) this.props.setConfig({ ...data.config, tiers: 10});
 			if (data.info) this.props.setInfo(data.info);
 			const pairWithBase = Object.keys(data.pairs).filter((key) => {
 				let temp = data.pairs[key];

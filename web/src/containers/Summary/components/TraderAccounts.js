@@ -37,7 +37,11 @@ const TraderAccounts = ({
 			<div>
 				<ReactSVG
 					path={icon}
-					wrapperClassName='trader-wrapper-icon'
+					wrapperClassName={
+						isAccountDetails
+						? 'trader-wrapper-icon trader-acc-detail-icon'
+						: 'trader-wrapper-icon'
+					}
 				/>
 			</div>
 			<div className="trade-account-secondary-txt summary-content-txt">

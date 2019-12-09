@@ -114,7 +114,7 @@ class Wallet extends Component {
 
 		return (
 			<div className="wallet-wrapper">
-				<div className="donut-container pointer" onClick={this.goToWallet}>
+				<div className="donut-container">
 					<DonutChart id="side-bar-donut" coins={this.props.coins} chartData={chartData} />
 				</div>
 				<Accordion sections={sections} />

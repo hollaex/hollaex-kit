@@ -4,7 +4,7 @@ import moment from 'moment';
 
 import SummaryBlock from './components/SummaryBlock';
 import TraderAccounts from './components/TraderAccounts';
-import SummaryRequirements from './components/SummaryRequirements';
+import RewardsBonus from './components/RewardsBonus';
 import AccountAssets from './components/AccountAssets';
 import TradingVolume from './components/TradingVolume';
 import AccountDetails from './components/AccountDetails';
@@ -70,10 +70,12 @@ const MobileSummary = ({
 				<SummaryBlock
 					title={STRINGS.SUMMARY.URGENT_REQUIREMENTS}
 					wrapperClassname="w-100" >
-					<SummaryRequirements
+					<RewardsBonus
 						coins={coins}
 						user={user}
+						balance={balance}
 						lastMonthVolume={lastMonthVolume}
+						onUpgradeAccount={onUpgradeAccount}
 						contentClassName="requirements-content" />
 				</SummaryBlock>
 			</div>
@@ -127,6 +129,7 @@ const MobileSummary = ({
 						config={config}
 						pairs={pairs}
 						user={user}
+						balance={balance}
 						activeTheme={activeTheme}
 						selectedAccount={selectedAccount}
 						onAccountTypeChange={onAccountTypeChange}

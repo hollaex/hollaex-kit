@@ -11,6 +11,7 @@ import SummaryRequirements from './components/SummaryRequirements';
 import AccountAssets from './components/AccountAssets';
 import TradingVolume from './components/TradingVolume';
 import AccountDetails from './components/AccountDetails';
+import RewardsBonus from './components/RewardsBonus';
 import MobileSummary from './MobileSummary';
 
 import { IconTitle } from '../../components';
@@ -185,12 +186,14 @@ class Summary extends Component {
                             </div>
                             <div className="summary-section_1 requirement-wrapper d-flex">
                                 <SummaryBlock
-                                    title={STRINGS.SUMMARY.URGENT_REQUIREMENTS}
+                                    title={STRINGS.SUMMARY.REWARDS_BONUS}
                                     wrapperClassname="w-100" >
-                                    <SummaryRequirements
+                                    <RewardsBonus
                                         coins={coins}
                                         user={user}
+                                        balance={balance}
                                         lastMonthVolume={lastMonthVolume}
+                                        onUpgradeAccount={this.onUpgradeAccount}
                                         contentClassName="requirements-content" />
                                 </SummaryBlock>
                             </div>
@@ -255,6 +258,7 @@ class Summary extends Component {
                                     user={user}
                                     coins={coins}
                                     pairs={pairs}
+                                    balance={balance}
                                     activeTheme={activeTheme}
                                     selectedAccount={selectedAccount}
                                     lastMonthVolume={lastMonthVolume}

@@ -21,7 +21,6 @@ export const verifySmsCode = ({ code = '', phone = '' }) => {
 
 export const verifyBankData = (values) => {
 	const body = {
-		card_number: values.card_number,
 		bank_name: values.bank_name,
 		account_number: values.account_number,
 	};

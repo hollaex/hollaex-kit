@@ -11,6 +11,7 @@ import STRINGS from "../../../config/localizedStrings";
 const FeesAndLimits = ({ data, onClose, coins, pairs }) => {
 	const { verification_level } = data;
 	const LEVEL_OF_ACCOUNT = STRINGS.formatString(STRINGS.SUMMARY.LEVEL_OF_ACCOUNT, verification_level);
+	console.log('coins', coins, pairs);
 	return (
 		<div className="fee-limits-wrapper">
 			<IconTitle
@@ -43,15 +44,9 @@ const FeesAndLimits = ({ data, onClose, coins, pairs }) => {
 					</div>
 				</div>
 				<div>
-					<div className="content-title">
-						{STRINGS.SUMMARY.DEPOSIT_WITHDRAWAL_ALLOWENCE}
-					</div>
 					<LimitsBlock coins={coins} level={verification_level} />
 				</div>
 				<div>
-					<div className="content-title">
-						{STRINGS.SUMMARY.TRADING_FEE_STRUCTURE}
-					</div>
 					<FeesBlock
 						coins={coins}
 						level={verification_level}

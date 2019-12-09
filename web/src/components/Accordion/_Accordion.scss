@@ -1,7 +1,7 @@
 $accordion-border: 1px solid $app-line-divider;
 $accordion_content-padding: 0;
 $accordion_content-margin-bottom: 1.5rem;
-$accordion_arrow-size: 0.5rem;
+$accordion_arrow-size: 0.7rem;
 $title--padding: 0.5rem;
 $title--font-size: $font-size-subhead3;
 $main-text--color: $colors-deactivate-color2;
@@ -87,8 +87,14 @@ $main-text--color: $colors-deactivate-color2;
 			.accordion_section_content_text {
 				color: $colors-main-black;
 				&.with_arrow:after {
+					border: solid $colors-main-black  !important;
 					border-left-color: $colors-main-black !important;
 					border-right-color: $colors-main-black !important;
+					border-width: 1px 0 0 1px !important;
+					display: inline-block;
+					padding: 2px;
+					margin-right: -0.7rem;
+					position: absolute;
 				}
 			}
 			.sidebar_hub-section-icon {
@@ -96,6 +102,9 @@ $main-text--color: $colors-deactivate-color2;
 					fill: $sidebar-color-active;
 					stroke: $sidebar-color-active;
 				}				
+			}
+			.wallet_section-title-amount {
+				color: $colors-main-black !important;
 			}
 		}
 	}
@@ -131,14 +140,22 @@ $main-text--color: $colors-deactivate-color2;
 	.accordion_wrapper .accordion_section {
 		.accordion_section_content_text {
 			&.with_arrow:after {
-				@include css-triangle($main-text--color, 'right', $accordion_arrow-size);
+				border: solid $trade-tabs-inactive-color !important;
+				border-width: 1px 0 0 1px !important;
+				display: inline-block !important;
+				padding: 3px !important;
+				transform: rotate(131deg)!important;
+				content: '';
+				margin-right: -0.6rem;
+				position: absolute;
+				// @include css-triangle($main-text--color, 'right', $accordion_arrow-size);
 				right: -$accordion_arrow-size;
-				top: calc(50% - 0.5rem);
+				top: calc(50% - 0.3rem);
 			}
 		}
 		.accordion_section_title {
 			&.accordion_section--open .accordion_section_content_text:after {
-				transform: rotate(90deg);
+				transform: rotate(-135deg)!important;
 			}
 		}
 
@@ -155,14 +172,20 @@ $main-text--color: $colors-deactivate-color2;
 	.accordion_wrapper .accordion_section {
 		.accordion_section_content_text {
 			&.with_arrow:after {
-				@include css-triangle($main-text--color, 'left', $accordion_arrow-size);
-				left: -$accordion_arrow-size;
-				top: calc(50% - 0.6rem);
+				border: solid $trade-tabs-inactive-color ;
+				border-width: 1px 0 0 1px !important;
+				display: inline-block !important;
+				padding: 3px !important;
+				transform: rotate(131deg)!important;
+				content: '';
+				// @include css-triangle($main-text--color, 'right', $accordion_arrow-size);
+				right: -$accordion_arrow-size;
+				top: calc(50% - 0.3rem);
 			}
 		}
 		.accordion_section_title {
 			&.accordion_section--open .accordion_section_content_text:after {
-				transform: rotate(-90deg);
+				transform: rotate(-135deg)!important;
 			}
 		}
 
@@ -202,8 +225,12 @@ $main-text--color: $colors-deactivate-color2;
 				.accordion_section_content_text {
 					color: $dark-font-main-text-color !important;
 					&.with_arrow:after {
-						border-left-color: $dark-font-main-text-color !important;
-						border-right-color: $dark-font-main-text-color !important;
+						border: solid $dark-font-main-text-color !important;
+						border-left-color:$dark-font-main-text-color !important;
+						border-right-color:$dark-font-main-text-color !important;
+						border-width: 1px 0 0 1px !important;
+						display: inline-block;
+						padding: 2px;
 					}
 				}
 				.sidebar_hub-section-icon {
@@ -211,6 +238,9 @@ $main-text--color: $colors-deactivate-color2;
 						fill: $dark-font-main-text-color;
 						stroke: $dark-font-main-text-color;
 					}				
+				}
+				.wallet_section-title-amount{
+					color: $dark-font-main-text-color !important;
 				}
 			}
 		}

@@ -1650,13 +1650,7 @@ table th {
   .dark-theme .trade_block-wrapper .trade_block-title .trade_block-title-currency-xrp {
     color: #414042; }
   .dark-theme .trade_block-wrapper .trade_block-title .trade_block-title-currency-hex {
-    background-color: white;
-    color: #000000;
-    height: 1rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: auto 0; }
+    color: #000000; }
   .dark-theme .trade_block-wrapper .trade_block-title .trade_block-title-currency-eos {
     color: #58595b; }
   .dark-theme .trade_block-wrapper .trade_block-title .trade_block-title-currency-bnb {
@@ -1741,7 +1735,15 @@ table th {
     color: white; }
   .dark-theme .trade_block-wrapper .trade_block-title .trade_block-icon svg .st0 {
     fill: white !important; }
-  .dark-theme .trade_block-wrapper .trade_block-title .trade_block-icon svg .btc0, .dark-theme .trade_block-wrapper .trade_block-title .trade_block-icon svg .btc1, .dark-theme .trade_block-wrapper .trade_block-title .trade_block-icon svg .eth0, .dark-theme .trade_block-wrapper .trade_block-title .trade_block-icon svg .eth1, .dark-theme .trade_block-wrapper .trade_block-title .trade_block-icon svg .bch-icon, .dark-theme .trade_block-wrapper .trade_block-title .trade_block-icon svg .xrp-icon, .dark-theme .trade_block-wrapper .trade_block-title .trade_block-icon svg .hex-icon, .dark-theme .trade_block-wrapper .trade_block-title .trade_block-icon svg .default-icon {
+  .dark-theme .trade_block-wrapper .trade_block-title .trade_block-icon svg .btc0,
+  .dark-theme .trade_block-wrapper .trade_block-title .trade_block-icon svg .btc1,
+  .dark-theme .trade_block-wrapper .trade_block-title .trade_block-icon svg .eth0,
+  .dark-theme .trade_block-wrapper .trade_block-title .trade_block-icon svg .eth1,
+  .dark-theme .trade_block-wrapper .trade_block-title .trade_block-icon svg .bch-icon,
+  .dark-theme .trade_block-wrapper .trade_block-title .trade_block-icon svg .xrp-icon,
+  .dark-theme .trade_block-wrapper .trade_block-title .trade_block-icon svg .hex-icon,
+  .dark-theme .trade_block-wrapper .trade_block-title .trade_block-icon svg .xmr-icon,
+  .dark-theme .trade_block-wrapper .trade_block-title .trade_block-icon svg .default-icon {
     fill: white !important; }
 
 .dark-theme .trade_block_tabs-wrapper .trade_block-title .trade_block-title-items {
@@ -2487,11 +2489,15 @@ table th {
 .dark-theme .summary-container .trader-wrapper-icon svg .account-summary {
   stroke: #808080; }
 
+.dark-theme .summary-container .trader-wrapper-icon svg .bonus-offer-icon,
 .dark-theme .summary-container .trader-wrapper-icon svg .account-summary1 {
   fill: #808080; }
 
 .dark-theme .summary-container .trader-wrapper-icon svg .hap-icon {
   fill: #808080; }
+
+.dark-theme .summary-container .trader-acc-detail-icon svg .level_icon {
+  fill: white !important; }
 
 .dark-theme .summary-container .trader-account-icon svg .level_icon {
   fill: #808080; }
@@ -2570,10 +2576,12 @@ table th {
   color: white; }
 
 .dark-theme .fee-limits-wrapper table {
-  border-collapse: collapse; }
-
-.dark-theme .fee-limits-wrapper td {
+  border-collapse: collapse;
   border: 1px solid #535353; }
+
+.dark-theme .fee-limits-wrapper td, .dark-theme .fee-limits-wrapper th {
+  border: 1px solid #535353;
+  text-align: center; }
 
 .dark-theme .fee-limits-wrapper .account-limits-coin {
   border-bottom-color: #535353; }
@@ -2590,6 +2598,9 @@ table th {
   border-bottom-color: #535353;
   border-left-color: #535353;
   border-right-color: #535353; }
+
+.dark-theme .fee-limits-wrapper .icon_title-wrapper .icon_title-svg svg .level_icon {
+  fill: #808080; }
 
 .direction_ltr .summary-container .trader-account-icon {
   margin-right: 1rem; }
@@ -2645,7 +2656,7 @@ table th {
     color: #0000ff;
     font-weight: bold; }
   .summary-container .summary-section_1 {
-    height: 16rem; }
+    height: 20rem; }
   .summary-container .summary-section_2 {
     height: 40rem; }
   .summary-container .requirements-content-text {
@@ -2721,6 +2732,8 @@ table th {
           fill: #8dc541; }
         .summary-container .assets-wrapper .coin-price-container .coin-price svg .xrp-icon {
           fill: #414042; }
+        .summary-container .assets-wrapper .coin-price-container .coin-price svg .xmr-icon {
+          fill: #f15a29; }
         .summary-container .assets-wrapper .coin-price-container .coin-price svg .default-icon {
           fill: #000000 !important; }
   .summary-container .asset_wrapper_width {
@@ -2783,11 +2796,14 @@ table th {
   .fee-limits-wrapper .icon_title-wrapper .icon_title-svg svg {
     height: 8rem;
     width: 8rem; }
+    .fee-limits-wrapper .icon_title-wrapper .icon_title-svg svg .level_icon {
+      fill: #000000; }
   .fee-limits-wrapper .icon_title-wrapper .icon_title-text.title {
     font-size: 2rem; }
   .fee-limits-wrapper table {
-    border-collapse: collapse; }
-  .fee-limits-wrapper td {
+    border-collapse: collapse;
+    border: 1px solid #777677; }
+  .fee-limits-wrapper td, .fee-limits-wrapper th {
     border: 1px solid #777677; }
   .fee-limits-wrapper .account-limits {
     margin: 1rem 0;
@@ -2807,13 +2823,12 @@ table th {
     padding: .25rem .5rem;
     width: 14rem; }
   .fee-limits-wrapper .account-limits-status {
-    width: 6rem;
     padding: .25rem .5rem; }
   .fee-limits-wrapper .account-limits-value {
     padding: .25rem 1rem; }
   .fee-limits-wrapper .limit-head-currency {
     font-weight: normal !important;
-    padding: .25rem .5rem .25rem 3rem; }
+    padding: .25rem .5rem; }
   .fee-limits-wrapper .limit-head {
     font-weight: normal !important;
     padding: .25rem 1rem; }
@@ -2846,7 +2861,7 @@ table th {
     .summary-container .requirement-wrapper {
       width: 65% !important; }
     .summary-container .summary-section_1 {
-      height: 19rem !important; }
+      height: 23rem !important; }
     .summary-container .summary-section_2 {
       height: 43rem !important; }
   .fee-limits-wrapper .content-txt {
@@ -2859,7 +2874,7 @@ table th {
   .summary-container .trader-account-wrapper {
     font-size: 0.9rem; }
   .summary-container .summary-section_1 {
-    height: 21rem !important; }
+    height: 25rem !important; }
   .summary-container .summary-section_2 {
     height: 44rem !important; }
   .fee-limits-wrapper .content-txt {
@@ -2880,7 +2895,14 @@ table th {
       color: #808080 !important; }
   .dark-theme .trade_tabs-container .trade_tab-pair-title {
     color: #808080; }
-  .dark-theme .trade_tabs-container .trade_tab-icons svg .btc0, .dark-theme .trade_tabs-container .trade_tab-icons svg .btc1, .dark-theme .trade_tabs-container .trade_tab-icons svg .eth0, .dark-theme .trade_tabs-container .trade_tab-icons svg .eth1, .dark-theme .trade_tabs-container .trade_tab-icons svg .bch-icon, .dark-theme .trade_tabs-container .trade_tab-icons svg .xrp-icon, .dark-theme .trade_tabs-container .trade_tab-icons svg .default-icon {
+  .dark-theme .trade_tabs-container .trade_tab-icons svg .btc0,
+  .dark-theme .trade_tabs-container .trade_tab-icons svg .btc1,
+  .dark-theme .trade_tabs-container .trade_tab-icons svg .eth0,
+  .dark-theme .trade_tabs-container .trade_tab-icons svg .eth1,
+  .dark-theme .trade_tabs-container .trade_tab-icons svg .bch-icon,
+  .dark-theme .trade_tabs-container .trade_tab-icons svg .xrp-icon,
+  .dark-theme .trade_tabs-container .trade_tab-icons svg .xmr-icon,
+  .dark-theme .trade_tabs-container .trade_tab-icons svg .default-icon {
     fill: #808080 !important; }
   .dark-theme .trade_tabs-container .trade_tab-icons svg .st0 {
     fill: #808080 !important;
@@ -2927,7 +2949,15 @@ table th {
       color: white; }
       .dark-theme .trade_tabs-container .trade-tab-list:hover .trade_tab-pair-title {
         color: white !important; }
-      .dark-theme .trade_tabs-container .trade-tab-list:hover svg .btc0, .dark-theme .trade_tabs-container .trade-tab-list:hover svg .btc1, .dark-theme .trade_tabs-container .trade-tab-list:hover svg .eth0, .dark-theme .trade_tabs-container .trade-tab-list:hover svg .eth1, .dark-theme .trade_tabs-container .trade-tab-list:hover svg .bch-icon, .dark-theme .trade_tabs-container .trade-tab-list:hover svg .xrp-icon, .dark-theme .trade_tabs-container .trade-tab-list:hover svg .hex-icon, .dark-theme .trade_tabs-container .trade-tab-list:hover svg .default-icon {
+      .dark-theme .trade_tabs-container .trade-tab-list:hover svg .btc0,
+      .dark-theme .trade_tabs-container .trade-tab-list:hover svg .btc1,
+      .dark-theme .trade_tabs-container .trade-tab-list:hover svg .eth0,
+      .dark-theme .trade_tabs-container .trade-tab-list:hover svg .eth1,
+      .dark-theme .trade_tabs-container .trade-tab-list:hover svg .bch-icon,
+      .dark-theme .trade_tabs-container .trade-tab-list:hover svg .xrp-icon,
+      .dark-theme .trade_tabs-container .trade-tab-list:hover svg .hex-icon,
+      .dark-theme .trade_tabs-container .trade-tab-list:hover svg .xmr-icon,
+      .dark-theme .trade_tabs-container .trade-tab-list:hover svg .default-icon {
         fill: white !important; }
       .dark-theme .trade_tabs-container .trade-tab-list:hover svg .st0 {
         fill: white !important;
@@ -2970,7 +3000,15 @@ table th {
     width: 15rem; }
   .trade_tabs-container .trade_tab-icons {
     width: 5rem; }
-    .trade_tabs-container .trade_tab-icons svg .btc0, .trade_tabs-container .trade_tab-icons svg .btc1, .trade_tabs-container .trade_tab-icons svg .eth0, .trade_tabs-container .trade_tab-icons svg .eth1, .trade_tabs-container .trade_tab-icons svg .bch-icon, .trade_tabs-container .trade_tab-icons svg .xrp-icon, .trade_tabs-container .trade_tab-icons svg .hex-icon, .trade_tabs-container .trade_tab-icons svg .default-icon {
+    .trade_tabs-container .trade_tab-icons svg .btc0,
+    .trade_tabs-container .trade_tab-icons svg .btc1,
+    .trade_tabs-container .trade_tab-icons svg .eth0,
+    .trade_tabs-container .trade_tab-icons svg .eth1,
+    .trade_tabs-container .trade_tab-icons svg .bch-icon,
+    .trade_tabs-container .trade_tab-icons svg .xrp-icon,
+    .trade_tabs-container .trade_tab-icons svg .hex-icon,
+    .trade_tabs-container .trade_tab-icons svg .xmr-icon,
+    .trade_tabs-container .trade_tab-icons svg .default-icon {
       fill: #808080 !important; }
     .trade_tabs-container .trade_tab-icons svg .st0 {
       fill: #808080 !important;
@@ -3029,7 +3067,15 @@ table th {
       right: .5rem; }
       .trade_tabs-container .trade-tab-list:hover .trade_tab-pair-title {
         color: #000000 !important; }
-      .trade_tabs-container .trade-tab-list:hover svg .btc0, .trade_tabs-container .trade-tab-list:hover svg .btc1, .trade_tabs-container .trade-tab-list:hover svg .eth0, .trade_tabs-container .trade-tab-list:hover svg .eth1, .trade_tabs-container .trade-tab-list:hover svg .bch-icon, .trade_tabs-container .trade-tab-list:hover svg .xrp-icon, .trade_tabs-container .trade-tab-list:hover svg .hex-icon, .trade_tabs-container .trade-tab-list:hover svg .default-icon {
+      .trade_tabs-container .trade-tab-list:hover svg .btc0,
+      .trade_tabs-container .trade-tab-list:hover svg .btc1,
+      .trade_tabs-container .trade-tab-list:hover svg .eth0,
+      .trade_tabs-container .trade-tab-list:hover svg .eth1,
+      .trade_tabs-container .trade-tab-list:hover svg .bch-icon,
+      .trade_tabs-container .trade-tab-list:hover svg .xrp-icon,
+      .trade_tabs-container .trade-tab-list:hover svg .hex-icon,
+      .trade_tabs-container .trade-tab-list:hover svg .xmr-icon,
+      .trade_tabs-container .trade-tab-list:hover svg .default-icon {
         fill: #000000 !important; }
       .trade_tabs-container .trade-tab-list:hover svg .st0 {
         fill: #000000 !important;
@@ -3460,7 +3506,14 @@ table th {
     border-left: 1px solid #535353 !important;
     border-right: 1px solid #535353 !important;
     color: white !important; }
-    .dark-theme .app_bar .active-tab-pair svg .btc0, .dark-theme .app_bar .active-tab-pair svg .btc1, .dark-theme .app_bar .active-tab-pair svg .eth0, .dark-theme .app_bar .active-tab-pair svg .eth1, .dark-theme .app_bar .active-tab-pair svg .bch-icon, .dark-theme .app_bar .active-tab-pair svg .xrp-icon, .dark-theme .app_bar .active-tab-pair svg .hex-icon {
+    .dark-theme .app_bar .active-tab-pair svg .btc0,
+    .dark-theme .app_bar .active-tab-pair svg .btc1,
+    .dark-theme .app_bar .active-tab-pair svg .eth0,
+    .dark-theme .app_bar .active-tab-pair svg .eth1,
+    .dark-theme .app_bar .active-tab-pair svg .bch-icon,
+    .dark-theme .app_bar .active-tab-pair svg .xrp-icon,
+    .dark-theme .app_bar .active-tab-pair svg .hex-icon,
+    .dark-theme .app_bar .active-tab-pair svg .xmr-icon {
       fill: white; }
     .dark-theme .app_bar .active-tab-pair svg .tab-close, .dark-theme .app_bar .active-tab-pair svg .plus, .dark-theme .app_bar .active-tab-pair svg .double-arrow {
       stroke: white; }
@@ -3672,7 +3725,14 @@ table th {
     border-left: 1px solid white;
     color: #000000;
     top: 1px; }
-    .app_bar .active-tab-pair svg .btc0, .app_bar .active-tab-pair svg .btc1, .app_bar .active-tab-pair svg .eth0, .app_bar .active-tab-pair svg .eth1, .app_bar .active-tab-pair svg .bch-icon, .app_bar .active-tab-pair svg .xrp-icon, .app_bar .active-tab-pair svg .hex-icon {
+    .app_bar .active-tab-pair svg .btc0,
+    .app_bar .active-tab-pair svg .btc1,
+    .app_bar .active-tab-pair svg .eth0,
+    .app_bar .active-tab-pair svg .eth1,
+    .app_bar .active-tab-pair svg .bch-icon,
+    .app_bar .active-tab-pair svg .xrp-icon,
+    .app_bar .active-tab-pair svg .hex-icon,
+    .app_bar .active-tab-pair svg .xmr-icon {
       fill: #212121; }
     .app_bar .active-tab-pair svg .tab-close, .app_bar .active-tab-pair svg .plus, .app_bar .active-tab-pair svg .double-arrow {
       stroke: #212121; }
@@ -3695,7 +3755,35 @@ table th {
   .app_bar .app-bar-account-icon {
     margin: .5rem .3rem 0 .3rem;
     width: 1.5rem; }
-  .app_bar .app_bar-pair-content .btc0, .app_bar .app_bar-pair-content .btc1, .app_bar .app_bar-pair-content .eth0, .app_bar .app_bar-pair-content .eth1, .app_bar .app_bar-pair-content .bch-icon, .app_bar .app_bar-pair-content .xrp-icon, .app_bar .app_bar-pair-content .hex-icon, .app_bar .app-bar-tab-close .btc0, .app_bar .app-bar-tab-close .btc1, .app_bar .app-bar-tab-close .eth0, .app_bar .app-bar-tab-close .eth1, .app_bar .app-bar-tab-close .bch-icon, .app_bar .app-bar-tab-close .xrp-icon, .app_bar .app-bar-tab-close .hex-icon, .app_bar .app-bar-currency-icon .btc0, .app_bar .app-bar-currency-icon .btc1, .app_bar .app-bar-currency-icon .eth0, .app_bar .app-bar-currency-icon .eth1, .app_bar .app-bar-currency-icon .bch-icon, .app_bar .app-bar-currency-icon .xrp-icon, .app_bar .app-bar-currency-icon .hex-icon, .app_bar .app-bar-account-icon svg .btc0, .app_bar .app-bar-account-icon svg .btc1, .app_bar .app-bar-account-icon svg .eth0, .app_bar .app-bar-account-icon svg .eth1, .app_bar .app-bar-account-icon svg .bch-icon, .app_bar .app-bar-account-icon svg .xrp-icon, .app_bar .app-bar-account-icon svg .hex-icon {
+  .app_bar .app_bar-pair-content .btc0,
+  .app_bar .app_bar-pair-content .btc1,
+  .app_bar .app_bar-pair-content .eth0,
+  .app_bar .app_bar-pair-content .eth1,
+  .app_bar .app_bar-pair-content .bch-icon,
+  .app_bar .app_bar-pair-content .xrp-icon,
+  .app_bar .app_bar-pair-content .hex-icon,
+  .app_bar .app_bar-pair-content .xmr-icon, .app_bar .app-bar-tab-close .btc0,
+  .app_bar .app-bar-tab-close .btc1,
+  .app_bar .app-bar-tab-close .eth0,
+  .app_bar .app-bar-tab-close .eth1,
+  .app_bar .app-bar-tab-close .bch-icon,
+  .app_bar .app-bar-tab-close .xrp-icon,
+  .app_bar .app-bar-tab-close .hex-icon,
+  .app_bar .app-bar-tab-close .xmr-icon, .app_bar .app-bar-currency-icon .btc0,
+  .app_bar .app-bar-currency-icon .btc1,
+  .app_bar .app-bar-currency-icon .eth0,
+  .app_bar .app-bar-currency-icon .eth1,
+  .app_bar .app-bar-currency-icon .bch-icon,
+  .app_bar .app-bar-currency-icon .xrp-icon,
+  .app_bar .app-bar-currency-icon .hex-icon,
+  .app_bar .app-bar-currency-icon .xmr-icon, .app_bar .app-bar-account-icon svg .btc0,
+  .app_bar .app-bar-account-icon svg .btc1,
+  .app_bar .app-bar-account-icon svg .eth0,
+  .app_bar .app-bar-account-icon svg .eth1,
+  .app_bar .app-bar-account-icon svg .bch-icon,
+  .app_bar .app-bar-account-icon svg .xrp-icon,
+  .app_bar .app-bar-account-icon svg .hex-icon,
+  .app_bar .app-bar-account-icon svg .xmr-icon {
     fill: #808080; }
   .app_bar .app_bar-pair-content .tab-close, .app_bar .app_bar-pair-content .plus, .app_bar .app-bar-tab-close .tab-close, .app_bar .app-bar-tab-close .plus, .app_bar .app-bar-currency-icon .tab-close, .app_bar .app-bar-currency-icon .plus, .app_bar .app-bar-account-icon svg .tab-close, .app_bar .app-bar-account-icon svg .plus {
     stroke: #808080; }
@@ -4031,6 +4119,7 @@ table th {
       .app-bar-add-tab-menu .app-bar-add-tab-content-list:hover svg .bch-icon,
       .app-bar-add-tab-menu .app-bar-add-tab-content-list:hover svg .xrp-icon,
       .app-bar-add-tab-menu .app-bar-add-tab-content-list:hover svg .hex-icon,
+      .app-bar-add-tab-menu .app-bar-add-tab-content-list:hover svg .xmr-icon,
       .app-bar-add-tab-menu .app-bar-add-tab-content-list:hover svg .default-icon {
         fill: white !important; }
       .app-bar-add-tab-menu .app-bar-add-tab-content-list:hover svg .st0 {
@@ -4044,7 +4133,23 @@ table th {
   .app-bar-add-tab-menu .app-bar-add-tab-icons {
     width: 1.2rem;
     margin: .3rem .3rem 0 .3rem; }
-  .app-bar-add-tab-menu .app-bar-tab-setting svg .btc0, .app-bar-add-tab-menu .app-bar-tab-setting svg .btc1, .app-bar-add-tab-menu .app-bar-tab-setting svg .eth0, .app-bar-add-tab-menu .app-bar-tab-setting svg .eth1, .app-bar-add-tab-menu .app-bar-tab-setting svg .bch-icon, .app-bar-add-tab-menu .app-bar-tab-setting svg .xrp-icon, .app-bar-add-tab-menu .app-bar-tab-setting svg .hex-icon, .app-bar-add-tab-menu .app-bar-tab-setting svg .default-icon, .app-bar-add-tab-menu .app-bar-add-tab-icons svg .btc0, .app-bar-add-tab-menu .app-bar-add-tab-icons svg .btc1, .app-bar-add-tab-menu .app-bar-add-tab-icons svg .eth0, .app-bar-add-tab-menu .app-bar-add-tab-icons svg .eth1, .app-bar-add-tab-menu .app-bar-add-tab-icons svg .bch-icon, .app-bar-add-tab-menu .app-bar-add-tab-icons svg .xrp-icon, .app-bar-add-tab-menu .app-bar-add-tab-icons svg .hex-icon, .app-bar-add-tab-menu .app-bar-add-tab-icons svg .default-icon {
+  .app-bar-add-tab-menu .app-bar-tab-setting svg .btc0,
+  .app-bar-add-tab-menu .app-bar-tab-setting svg .btc1,
+  .app-bar-add-tab-menu .app-bar-tab-setting svg .eth0,
+  .app-bar-add-tab-menu .app-bar-tab-setting svg .eth1,
+  .app-bar-add-tab-menu .app-bar-tab-setting svg .bch-icon,
+  .app-bar-add-tab-menu .app-bar-tab-setting svg .xrp-icon,
+  .app-bar-add-tab-menu .app-bar-tab-setting svg .hex-icon,
+  .app-bar-add-tab-menu .app-bar-tab-setting svg .xmr-icon,
+  .app-bar-add-tab-menu .app-bar-tab-setting svg .default-icon, .app-bar-add-tab-menu .app-bar-add-tab-icons svg .btc0,
+  .app-bar-add-tab-menu .app-bar-add-tab-icons svg .btc1,
+  .app-bar-add-tab-menu .app-bar-add-tab-icons svg .eth0,
+  .app-bar-add-tab-menu .app-bar-add-tab-icons svg .eth1,
+  .app-bar-add-tab-menu .app-bar-add-tab-icons svg .bch-icon,
+  .app-bar-add-tab-menu .app-bar-add-tab-icons svg .xrp-icon,
+  .app-bar-add-tab-menu .app-bar-add-tab-icons svg .hex-icon,
+  .app-bar-add-tab-menu .app-bar-add-tab-icons svg .xmr-icon,
+  .app-bar-add-tab-menu .app-bar-add-tab-icons svg .default-icon {
     fill: #808080 !important; }
   .app-bar-add-tab-menu .app-bar-tab-setting svg .plus, .app-bar-add-tab-menu .app-bar-tab-setting svg .minus, .app-bar-add-tab-menu .app-bar-add-tab-icons svg .plus, .app-bar-add-tab-menu .app-bar-add-tab-icons svg .minus {
     stroke: #808080 !important;
@@ -5588,11 +5693,19 @@ table th {
     .accordion_wrapper .accordion_section .accordion_section_title.accordion_section--open .accordion_section_content_text {
       color: #212121; }
       .accordion_wrapper .accordion_section .accordion_section_title.accordion_section--open .accordion_section_content_text.with_arrow:after {
+        border: solid #212121 !important;
         border-left-color: #212121 !important;
-        border-right-color: #212121 !important; }
+        border-right-color: #212121 !important;
+        border-width: 1px 0 0 1px !important;
+        display: inline-block;
+        padding: 2px;
+        margin-right: -0.7rem;
+        position: absolute; }
     .accordion_wrapper .accordion_section .accordion_section_title.accordion_section--open .sidebar_hub-section-icon svg path {
       fill: #212121;
       stroke: #212121; }
+    .accordion_wrapper .accordion_section .accordion_section_title.accordion_section--open .wallet_section-title-amount {
+      color: #212121 !important; }
   .accordion_wrapper .accordion_section .accordion_section_content_text {
     position: relative;
     color: #777677; }
@@ -5610,39 +5723,35 @@ table th {
     margin: 0 0.5rem; }
 
 .direction_ltr .accordion_wrapper .accordion_section .accordion_section_content_text.with_arrow:after {
-  content: "";
-  display: block;
+  border: solid #808080 !important;
+  border-width: 1px 0 0 1px !important;
+  display: inline-block !important;
+  padding: 3px !important;
+  transform: rotate(131deg) !important;
+  content: '';
+  margin-right: -0.6rem;
   position: absolute;
-  width: 0;
-  height: 0;
-  border-top: 0.5rem solid transparent;
-  border-bottom: 0.5rem solid transparent;
-  border-left: 0.5rem solid #777677;
-  margin-right: -0.5rem;
-  right: -0.5rem;
-  top: calc(50% - 0.5rem); }
+  right: -0.7rem;
+  top: calc(50% - 0.3rem); }
 
 .direction_ltr .accordion_wrapper .accordion_section .accordion_section_title.accordion_section--open .accordion_section_content_text:after {
-  transform: rotate(90deg); }
+  transform: rotate(-135deg) !important; }
 
 .direction_ltr .accordion_wrapper .accordion_section.disabled .accordion_section_content_text:after {
   border-left-color: #777677; }
 
 .direction_rtl .accordion_wrapper .accordion_section .accordion_section_content_text.with_arrow:after {
-  content: "";
-  display: block;
-  position: absolute;
-  width: 0;
-  height: 0;
-  border-top: 0.5rem solid transparent;
-  border-bottom: 0.5rem solid transparent;
-  border-right: 0.5rem solid #777677;
-  margin-left: -0.5rem;
-  left: -0.5rem;
-  top: calc(50% - 0.6rem); }
+  border: solid #808080;
+  border-width: 1px 0 0 1px !important;
+  display: inline-block !important;
+  padding: 3px !important;
+  transform: rotate(131deg) !important;
+  content: '';
+  right: -0.7rem;
+  top: calc(50% - 0.3rem); }
 
 .direction_rtl .accordion_wrapper .accordion_section .accordion_section_title.accordion_section--open .accordion_section_content_text:after {
-  transform: rotate(-90deg); }
+  transform: rotate(-135deg) !important; }
 
 .direction_rtl .accordion_wrapper .accordion_section.disabled .accordion_section_content_text:after {
   border-right-color: #777677; }
@@ -5664,11 +5773,17 @@ table th {
   .dark-theme .accordion_wrapper .accordion_section .accordion_section_title.accordion_section--open .accordion_section_content_text {
     color: white !important; }
     .dark-theme .accordion_wrapper .accordion_section .accordion_section_title.accordion_section--open .accordion_section_content_text.with_arrow:after {
+      border: solid white !important;
       border-left-color: white !important;
-      border-right-color: white !important; }
+      border-right-color: white !important;
+      border-width: 1px 0 0 1px !important;
+      display: inline-block;
+      padding: 2px; }
   .dark-theme .accordion_wrapper .accordion_section .accordion_section_title.accordion_section--open .sidebar_hub-section-icon svg path {
     fill: white;
     stroke: white; }
+  .dark-theme .accordion_wrapper .accordion_section .accordion_section_title.accordion_section--open .wallet_section-title-amount {
+    color: white !important; }
   .dark-theme .accordion_wrapper .accordion_section.disabled {
     color: #2e2f37; }
   .dark-theme .accordion_wrapper .accordion_section:last-child {
@@ -5680,10 +5795,10 @@ table th {
   position: absolute;
   width: 0;
   height: 0;
-  border-top: 0.5rem solid transparent;
-  border-bottom: 0.5rem solid transparent;
-  border-left: 0.5rem solid white;
-  margin-right: -0.5rem; }
+  border-top: 0.7rem solid transparent;
+  border-bottom: 0.7rem solid transparent;
+  border-left: 0.7rem solid white;
+  margin-right: -0.7rem; }
 
 .dark-theme .direction_ltr .accordion_wrapper .accordion_section.disabled .accordion_section_content_text:after {
   border-left-color: #808080; }
@@ -5694,10 +5809,10 @@ table th {
   position: absolute;
   width: 0;
   height: 0;
-  border-top: 0.5rem solid transparent;
-  border-bottom: 0.5rem solid transparent;
-  border-right: 0.5rem solid white;
-  margin-left: -0.5rem; }
+  border-top: 0.7rem solid transparent;
+  border-bottom: 0.7rem solid transparent;
+  border-right: 0.7rem solid white;
+  margin-left: -0.7rem; }
 
 .dark-theme .direction_rtl .accordion_wrapper .accordion_section.disabled .accordion_section_content_text:after {
   border-right-color: #808080; }
@@ -6378,6 +6493,11 @@ table th {
   font-size: .8rem;
   font-weight: bold; }
 
+.donut-label-link {
+  font-size: .7rem;
+  font-weight: bold;
+  fill: #0000ff; }
+
 .donut-label-no-price {
   font-size: .7rem;
   font-weight: bold; }
@@ -6672,6 +6792,9 @@ table th {
   fill: #808080; }
 
 .dark-theme .deposit-asset {
+  fill: #0066B4; }
+
+.dark-theme .donut-label-link {
   fill: #0066B4; }
 
 .dark-theme .donut-label-pair, .dark-theme .donut-label-percentage {
@@ -7477,10 +7600,10 @@ foreignObject {
   position: relative;
   width: 0;
   height: 0;
-  border-top: 0.5rem solid transparent;
-  border-bottom: 0.5rem solid transparent;
-  border-right: 0.5rem solid white;
-  margin-left: -0.5rem;
+  border-top: 0.7rem solid transparent;
+  border-bottom: 0.7rem solid transparent;
+  border-right: 0.7rem solid white;
+  margin-left: -0.7rem;
   right: -1rem; }
 
 .dark-theme .with_arrow_trade:after {

@@ -53,7 +53,7 @@ export default {
 		SECTION_1_TEXT_1:
 			'Build your own scalable digital asset exchange with HollaEx Kit and be part of the future of finance.',
 		SECTION_1_TEXT_2:
-			'We strive to bring the financial technology forward through afforable and simple access to trading technology.',
+			'We strive to bring the financial technology forward through affordable and simple access to trading technology.',
 		SECTION_1_BUTTON_1: 'Learn more',
 		SECTION_3_TITLE: 'Features',
 		SECTION_3_CARD_1_TITLE: 'SCALABLE MATCHING ENGINE',
@@ -61,7 +61,7 @@ export default {
 			'High performance and scalable order matching engine using the most efficient algorithms',
 		SECTION_3_CARD_2_TITLE: 'BANK INTEGRATION',
 		SECTION_3_CARD_2_TEXT:
-			'Plugins with customizable modules available for bank integration. We know the traditional finace and can help you to make your exchange local',
+			'Plugins with customizable modules available for bank integration. We know the traditional finance and can help you to make your exchange local',
 		SECTION_3_CARD_3_TITLE: 'STRONG SECURITY',
 		SECTION_3_CARD_3_TEXT:
 			'HollaEx uses the best security practices and the most secure and reliable algorithms for keeping the funds secure. It is our top priority and we took a very special extra care of it.',
@@ -73,7 +73,7 @@ export default {
 			'We can take an extra care for your needs and have an online professional to help with your issues and inquiries.',
 		SECTION_3_CARD_6_TITLE: 'KYC INTEGRATION',
 		SECTION_3_CARD_6_TEXT:
-			'Flexible and integratable modules to apply KYC and user verification methods in diffrente jurisdiction.',
+			'Flexible and integrable modules to apply KYC and user verification methods in different jurisdiction.',
 		SECTION_3_BUTTON_1: 'View Demo'
 	},
 	FOOTER: {
@@ -83,7 +83,8 @@ export default {
 			{ key: 'en', label: 'English' },
 			{ key: 'ko', label: '한국어' }
 		],
-		FOOTER_COPYRIGHT: '	Copyright 2019 ⓒ HollaEx Foundation. All rights reserved',
+		FOOTER_COPYRIGHT:
+			'	Copyright 2019 ⓒ HollaEx Foundation. All rights reserved',
 		SECTIONS: {
 			SECTION_1_TITLE: 'ABOUT',
 			SECTION_1_LINK_1: 'About Us',
@@ -103,20 +104,21 @@ export default {
 			SECTION_3_LINK_6: 'API',
 			SECTION_3_LINK_7: 'Developer tools',
 			SECTION_3_LINK_8: 'Server Status',
-			SECTION_4_TITLE:'EXCHANGE',
+			SECTION_4_TITLE: 'EXCHANGE',
 			SECTION_4_LINK_1: 'Login',
 			SECTION_4_LINK_2: 'Register',
 			SECTION_4_LINK_3: 'Contact Us',
 			SECTION_4_LINK_4: 'Terms of Use',
-			SECTION_5_TITLE:'RESOURCES',
+			SECTION_5_TITLE: 'RESOURCES',
 			SECTION_5_LINK_1: 'HollaEx Whitepaper',
 			SECTION_5_LINK_2: 'HollaEx Token (HEX) ',
 			SECTION_5_LINK_3: 'HollaEx Kit',
-			SECTION_6_TITLE:'SOCIAL',
+			SECTION_6_TITLE: 'SOCIAL',
 			SECTION_6_LINK_1: 'Twitter',
 			SECTION_6_LINK_2: 'Telegram'
 		},
-		HEX_DESCRIPTION: 'HollaEx is an open crypto currency exchange built based on HollaEx Kit technology developed and managed by bitHolla and is a live example of HollaEx exchange software kit that allows anyone to run there own exchange exactly like this one. To start your own exchange like this {1}. The HollaEx Token is the native token of HollaEx and is traded on the HollaEx exchange through a wave auction system. For more information on how the auction works {0}',
+		HEX_DESCRIPTION:
+			'HollaEx is an open crypto currency exchange built based on HollaEx Kit technology developed and managed by bitHolla and is a live example of HollaEx exchange software kit that allows anyone to run there own exchange exactly like this one. To start your own exchange like this {1}. The HollaEx Token is the native token of HollaEx and is traded on the HollaEx exchange through a wave auction system. For more information on how the auction works {0}',
 		CLICK_HERE: 'click here',
 		VISIT_HERE: 'visit here'
 	},
@@ -132,13 +134,16 @@ export default {
 		TAB_API: 'API',
 		TAB_SIGNOUT: 'Signout'
 	},
-	REQUEST_HEX_ACCESS: { // new
+	REQUEST_HEX_ACCESS: {
+		// new
 		REQUEST_TITLE: 'Request HEX Access',
 		REQUEST_INVITE: 'Request Invite',
-		REFERRAL_INVITE_WARNING: 'To access the HollaEx official Exchange you need to get a referral link from a friend or {0}',
+		REFERRAL_INVITE_WARNING:
+			'To access the HollaEx official Exchange you need to get a referral link from a friend or {0}',
 		CATEGORY_PLACEHOLDER: 'Select the category that best suits your issue',
 		INTRODUCTION_LABEL: 'Introduce yourself',
-		INTRODUCTION_PLACEHOLDER: 'Where are you based, are you interested in running an exchange?',
+		INTRODUCTION_PLACEHOLDER:
+			'Where are you based, are you interested in running an exchange?'
 	},
 	CONTACT_FORM: {
 		CATEGORY_LABEL: 'Category',
@@ -330,17 +335,17 @@ export default {
 		}
 	},
 	VERIFICATION_TEXTS: {
-		TITLE: 'verification sent',
-		TEXT_1: 'Check your email and click the link to verifiy yourself.',
+		TITLE: 'Email sent',
+		TEXT_1: 'Check your email and click the link to verifiy your email.',
 		TEXT_2:
 			'If you have not received any email verification and you have checked your junk mail then you can try clicking resend below.'
 	},
 	VERIFICATION_EMAIL_REQUEST: {
-		TITLE: 'Activation Email Request',
+		TITLE: 'Resend Email Request',
 		BUTTON: 'Request Email'
 	},
 	VERIFICATION_EMAIL_REQUEST_SUCCESS: {
-		TITLE: 'Verification reset send',
+		TITLE: 'Resent Email',
 		TEXT_1:
 			'If after a few minutes you still have not received an email verification then please contact us below.'
 	},
@@ -355,8 +360,8 @@ export default {
 		INFO_TXT_1:
 			'Please submit the relevant information needed for each section below.Only when all sections have submissions completed will your information be reviewed and approved for an account upgrade.',
 		INFO_TXT_2:
-			'* Bank and Identity section require {0} in order to be fully verified.',
-		DOCUMENTATIONS: 'documentations',
+			'* Verification for the identity section require you to {0} certain documents.',
+		DOCUMENTATIONS: 'upload',
 		COMPLETED: 'Completed',
 		PENDING_VERIFICATION: 'Pending verification',
 		TITLE_EMAIL: 'Email',
@@ -484,10 +489,10 @@ export default {
 				ISSUED_DATE: 'Please select the date in which your document was issued',
 				EXPIRATION_DATE:
 					'Please select the date when your document will expire',
-				FRONT: 'Please upload a scan of your photo identity document',
+				FRONT: 'Please upload a scan of your passport',
 				PROOF_OF_RESIDENCY:
 					'Please upload a scan of document proving the address you current reside',
-				SELFIE_PHOTO_ID: 'Please upload a selfie with photo id and note'
+				SELFIE_PHOTO_ID: 'Please upload a selfie with passport and note'
 			},
 			FORM_FIELDS: {
 				TYPE_LABEL: 'ID Document Type',
@@ -502,17 +507,18 @@ export default {
 				ID_PASSPORT_NUMBER_PLACEHOLDER: 'Type your passport number',
 				ISSUED_DATE_LABEL: 'ID Document Issue Date',
 				EXPIRATION_DATE_LABEL: 'ID Document Expiration Date',
-				FRONT_LABEL: 'Photo ID Document',
-				FRONT_PLACEHOLDER: 'Add a copy of your photo ID document',
-				BACK_LABEL: 'Back Side of Photo ID Document',
-				BACK_PLACEHOLDER: 'Add a copy of the backside of your ID document',
+				FRONT_LABEL: 'Passport',
+				FRONT_PLACEHOLDER: 'Add a copy of your passport',
+				BACK_LABEL: 'Back Side of passport',
+				BACK_PLACEHOLDER:
+					'Add a copy of the backside of your ID (if applicable)',
 				PASSPORT_LABEL: 'Passport Document',
 				PASSPORT_PLACEHOLDER: 'Add a copy of your Passport document',
 				POR_LABEL: 'Document proving your address',
 				POR_PLACEHOLDER: 'Add a copy of a document that proves your address',
-				SELFIE_PHOTO_ID_LABEL: 'Your Selfie with Photo ID and Note',
+				SELFIE_PHOTO_ID_LABEL: 'Your Selfie with passport and Note',
 				SELFIE_PHOTO_ID_PLACEHOLDER:
-					'Add a copy of your Selfie with Photo ID and Note'
+					'Add a copy of your Selfie with passport and Note'
 			},
 			INFORMATION: {
 				IDENTITY_DOCUMENT: 'Identity Document',
@@ -549,7 +555,7 @@ export default {
 						'We cannot accept the address on your submitted identity document as a valid proof of residence.'
 				},
 				SELFIE: {
-					TITLE: 'Selfie with Photo ID and Note',
+					TITLE: 'Selfie with passport and Note',
 					INFO_TEXT:
 						"Please provide a photo of you holding your passport or photo ID. In the same picture and have a reference to hollaex.com’, today's date and your signature displayed.Make sure your face is clearly visible and that your ID details are clearly readable.",
 					REQUIRED: 'Required:',
@@ -873,7 +879,8 @@ export default {
 	WALLET_TABLE_AMOUNT_IN: `Amount in {0}`,
 	WALLET_TABLE_TOTAL: 'Grand Total',
 	WALLET_ALL_ASSETS: 'All Assets',
-	WALLET_DEPOSIT_USD: 'If you’d like to deposit USD or other fiat currencies via bank wire transfer {0}.', // new
+	WALLET_DEPOSIT_USD:
+		'If you’d like to deposit USD or other fiat currencies via bank wire transfer {0}.', // new
 	HIDE_TEXT: 'Hide',
 	PAGINATOR_FORMAT: '{0} / {1}',
 	ORDERBOOK_SELLERS: 'Sellers',
@@ -993,6 +1000,7 @@ export default {
 		FORM_NAME_LABEL: 'Name',
 		FORM_LABLE_PLACEHOLDER: 'Name for the Api Key',
 		API_KEY_LABEL: 'API Key',
+		SECRET_KEY_LABEL: 'SECRET Key',
 		CREATED_TITLE: 'Copy your API Key',
 		CREATED_TEXT_1:
 			'Please copy your API key as it will be unattainable in the future.',
@@ -1001,6 +1009,7 @@ export default {
 	DEVELOPERS_TOKENS_TABLE: {
 		NAME: 'Name',
 		API_KEY: 'API Key',
+		SECRET: 'Secret',
 		CREATED: 'Date Generated',
 		REVOKE: 'Revoke',
 		REVOKED: 'Revoked',
@@ -1016,7 +1025,7 @@ export default {
 		CHAT_MESSAGE_BOX_PLACEHOLDER: 'Message',
 		SIGN_UP_CHAT: 'Sign Up To Chat',
 		JOIN_CHAT: 'Set Username To Chat',
-		TROLLBOX:'Trollbox ({0})'
+		TROLLBOX: 'Trollbox ({0})' // new
 	},
 	INVALID_USERNAME:
 		'Username must be between 3 and 15 characters long. Only contains lowercase, numbers and underscore',
@@ -1139,10 +1148,10 @@ export default {
 		TRADING_VOLUME_EQUIVALENT: '{0} {1} Trading Volume Equivalent',
 		LEVEL_OF_ACCOUNT: 'Level {0} Account',
 		LEVEL_TXT_DEFAULT:'Add your level description here',
-		LEVEL_1_TXT: 'Your journey starts here young crypto trader! To obtain bonsues you can verify your identification and also get larger deposit and withdraw limits with reduced trading fees.', // new
-		LEVEL_2_TXT: 'This is where things get real! Reduced trading fees and large deposit and withdrawal limits. To get to level 3 you must learn about HollaEx ecosystem here.', // new
-		LEVEL_3_TXT: 'You’ve made it! The level 3 account is a rare account only for exchange operators, HEX stakers, Vault users or HollaEx Ambassador Program (HEX). Enjoy large limits and enjoy zero maker fees.', // new
-		LEVEL_4_TXT: 'The Whale trader account with the zero fees! To obtain the level 4 account you must have a trading volumes above 100 BTC in the last month.', // new
+		LEVEL_1_TXT: 'Your journey starts here young crypto trader! To obtain bonuses you can verify your identification and also get larger deposit and withdraw limits with reduced trading fees.', // new
+		LEVEL_2_TXT: 'Simply trade over $3,000 USDT worth of HEX last month and have balance of over 8,000 HEX and enjoy lower trading fees.', // new
+		LEVEL_3_TXT: 'This is where things get real! Enjoy reduced trading fees and large deposit and withdrawal limits. To get to level 3 you must complete your verification', // new
+		LEVEL_4_TXT: 'Simply trade over $3,000 USDT worth of HEX last month and have balance of over 10,000 HEX and enjoy lower trading fees.', // new
 		LEVEL_5_TXT: 'You’ve made it! The level 5 account is a rare account only for exchange operators, HEX stakers, Vault users or HollaEx Ambassador Program (HEX). Enjoy large limits and enjoy zero maker fees.', // new
 		LEVEL_6_TXT: 'Trade over 60 BTC worth in the last month and have balance of over 200,000 HEX and enjoy even lower trading fees.', // new
 		LEVEL_7_TXT: 'Trade over 70 BTC worth in the last month and have balance of over 300,000 HEX and enjoy even lower trading fees', // new
@@ -1159,7 +1168,18 @@ export default {
 		HAP_TEXT: 'HollaEx Ambassador Program (HAP) {0}', // new
 		LOCK_AN_EXCHANGE: 'Lock an Exchange {0}', // new
 		WALLET_SUBSCRIPTION_USERS: 'Vault Subscription users {0}', // new
-		TRADE_OVER_BTC: 'Trade over {0} BTC' // new
+		TRADE_OVER_HEX: 'Trade over {0} worth of HEX', // new
+		TRADE_OVER_BTC: 'Trade over {0} BTC worth', // new
+		HEX_IN_WALLET: '{0} HEX in wallet', // new
+		REWARDS_BONUS: 'Rewards and Bonuses', // new
+		COMPLETE_TASK_DESC: 'Complete tasks and earn bonuses worth over $10,000.', // new
+		TASKS: 'Tasks', // new
+		MAKE_FIRST_DEPOSIT: 'Make your first deposit receive 1 HEX', // new
+		BUY_FIRST_HEX: 'Buy your first HEX and receive a bonus of 5 HEX', // new
+		COMPLETE_ACC_VERIFICATION: 'Complete account verification and get a 20 HEX bonus', // new
+		INVITE_USER: 'Invite user and enjoy 30% off your trading fees', // new
+		JOIN_HAP: 'Join HAP and earn 10% for every HollaEx Kit you sell', // new
+		EARN_RUNNING_EXCHANGE: 'Earn passive income for running your own exchange' // new
 	},
 	REFERRAL_LINK: {
 		TITLE: 'Invite your friend', // new
@@ -1171,57 +1191,71 @@ export default {
 		HEX_TITLE: 'EARN 10% IN COMMISSIONS', // new
 		HEX_INFO_TEXT: 'Earn 1 HEX for every 10 HEX your friends buy.', // new
 		HEX_INFO_TEXT_1: 'Commissions are paid periodically to your HEX wallet', // new
-		APPLICATION_TXT: 'To become a HollaEx Kit distributor please fill out an application.', // new
+		APPLICATION_TXT:
+			'To become a HollaEx Kit distributor please fill out an application.', // new
 		TOTAL_REFERRAL: 'Total bought from referrals:', // new
 		PENDING_REFERRAL: 'Commissions Pending:', // new
 		EARN_REFERRAL: 'Commissions Earnt:', // new
 		HEX_COUNT: '{0} HEX', // new
-		APPLY_BUTTON: 'APPLY', // new
+		APPLY_BUTTON: 'APPLY' // new
 	},
 	STAKE_TOKEN: {
 		TITLE: 'Stake HollaEx Token', // new
-		INFO_TXT1: 'For every user of the HollaEx Exchange Kit there are HollaEx tokens collateralized to run the exchange software.', // new
-		INFO_TXT2: 'You can collateralize your HollaEx token in a similar fashion to staking and earn HEX not sold during the Wave Auction.', // new
-		INFO_TXT3: 'Simply go to dash.bitholla.com and collateralize your own exchange today and earn free HEX', // new
+		INFO_TXT1:
+			'For every user of the HollaEx Exchange Kit there are HollaEx tokens collateralized to run the exchange software.', // new
+		INFO_TXT2:
+			'You can collateralize your HollaEx token in a similar fashion to staking and earn HEX not sold during the Wave Auction.', // new
+		INFO_TXT3:
+			'Simply go to dash.bitholla.com and collateralize your own exchange today and earn free HEX', // new
 		BUTTON_TXT: 'GO TO DASH' // new
 	},
-	TERMS_OF_SERVICES: { // new
+	TERMS_OF_SERVICES: {
+		// new
 		TITLE: 'HollaEx Token Purchase Agreement',
 		SERVICE_AGREEMENT: AGREEMENT,
 		PROCEED: 'PROCEED',
-		AGREE_TERMS_LABEL: 'I have read and agree to the HollaEx Token Purchase Agreement',
+		AGREE_TERMS_LABEL:
+			'I have read and agree to the HollaEx Token Purchase Agreement',
 		RISK_INVOLVED_LABEL: 'I understand the risks involved',
 		DOWNLOAD_PDF: 'Download the PDF',
-		DEPOSIT_FUNDS: 'Deposit funds into your wallet to obtain HollaEx Token (HEX)',
+		DEPOSIT_FUNDS:
+			'Deposit funds into your wallet to obtain HollaEx Token (HEX)',
 		READ_FAG: 'Read HollaEx FAQ here: {0}',
 		READ_DOCUMENTATION: 'Read HollaEx whitepaper here: {0}',
 		READ_WAVES: 'Rules for the coming December Public Wave Auction{0}', // new
-		DOWNLOAD_BUY_HEX: 'Download the PDF to see a visual step-by-step processes on {0}',
+		DOWNLOAD_BUY_HEX:
+			'Download the PDF to see a visual step-by-step processes on {0}',
 		HOW_TO_BUY: 'how to buy HollaEx Token (HEX)',
 		PUBLIC_SALES: ' Public Wave Auction', // new
-		CONTACT_US: 'Feel free to contact us for more information and any issues by sending us an email to {0}',
+		CONTACT_US:
+			'Feel free to contact us for more information and any issues by sending us an email to {0}',
 		VISUAL_STEP: 'See a visual step-by-step processes on {0}', // new
-		WARNING_TXT: 'We will review your request and send further instructions to your email on how to access the HollaEx exchange.', // new
-		WARNING_TXT1: 'In the mean time you can firmilerize yourself with the HollaEx network with the resources below', // new
+		WARNING_TXT:
+			'We will review your request and send further instructions to your email on how to access the HollaEx exchange.', // new
+		WARNING_TXT1:
+			'In the mean time you can firmilerize yourself with the HollaEx network with the resources below', // new
 		HEX_ORDER_TXT_1: 'To start trading the HollaEx token (HEX) you must login', // new
-		HEX_ORDER_TXT_2: 'The HollaEx token is distributed through a Wave Auction where at random times daily there will be random amount of HollaEx token sold to the highest bidders on the orderbook.', // new
-		HEX_ORDER_TXT_3: '{0} to join the Wave Auction or {1}' , // new
+		HEX_ORDER_TXT_2:
+			'The HollaEx token is distributed through a Wave Auction where at random times daily there will be random amount of HollaEx token sold to the highest bidders on the orderbook.', // new
+		HEX_ORDER_TXT_3: '{0} to join the Wave Auction or {1}', // new
 		HEX_TITLE: 'HEX', //new
-		HEX_TRADE_TXT_1:'Login to see your recent trades', //new
-		HEX_TRADE_TXT_2:'You can {0} to see your recent trade history', //new
-		LOGIN_HERE:'login here'
+		HEX_TRADE_TXT_1: 'Login to see your recent trades', //new
+		HEX_TRADE_TXT_2: 'You can {0} to see your recent trade history', //new
+		LOGIN_HERE: 'login here'
 	},
-	WAVES: { // new
-		NEXT_WAVE: "Next Wave :",
-		WAVE_AMOUNT: "Amount in Wave :",
-		FLOOR: "Floor :",
-		LAST_WAVE: "Last wave:",
+	WAVES: {
+		// new
+		NEXT_WAVE: 'Next Wave :',
+		WAVE_AMOUNT: 'Amount in Wave :',
+		FLOOR: 'Floor :',
+		LAST_WAVE: 'Last wave:'
 	},
-	TYPES_OF_POSTS: { // new
+	TYPES_OF_POSTS: {
+		// new
 		TITLE: 'POSTS',
-		ANNOUNCEMEN: "Announcement",
-		SYSTEM_UPDATE: "System Update",
-		LAST_WAVE: "Last Wave",
+		ANNOUNCEMEN: 'Announcement',
+		SYSTEM_UPDATE: 'System Update',
+		LAST_WAVE: 'Last Wave',
 		ANNOUNCEMENT_TXT: 'Free HEX will be distributed to all wallets that apply',
 		SYSTEM_UPDATE_TIME: 'Time: 12:31 PM, December 19th, 2019	',
 		SYSTEM_UPDATE_DURATION: '1 hour',
@@ -1234,21 +1268,30 @@ export default {
 	FEE_AMOUNT: 'Fee amount', // new
 	COINS: 'Coins', // new
 	PAIRS: 'Pairs', // new
-	NOTE_FOR_EDIT_COIN: 'Note: For adding and removing {0} please refer to the{1}.', // new
+	NOTE_FOR_EDIT_COIN:
+		'Note: For adding and removing {0} please refer to the{1}.', // new
 	REFER_DOCS_LINK: 'docs', // new
-	RESTART_TO_APPLY: 'You need to restart your exchange for apply these changes.', // new
-	TRIAL_EXCHANGE_MSG: 'You are using a trial version of {0} and it will expire in {1} days.', // new
-	EXPIRY_EXCHANGE_MSG: 'Your exchange has expired. Go to dash.bitholla.com to activate it again.', // new
+	RESTART_TO_APPLY:
+		'You need to restart your exchange for apply these changes.', // new
+	TRIAL_EXCHANGE_MSG:
+		'You are using a trial version of {0} and it will expire in {1} days.', // new
+	EXPIRY_EXCHANGE_MSG:
+		'Your exchange has expired. Go to dash.bitholla.com to activate it again.', // new
 	EXPIRED_INFO_1: 'Your HollaEx trial has ended.', // new
 	EXPIRED_INFO_2: 'Collateralize your exchange to activate it again.', // new
 	EXPIRED_BUTTON_TXT: 'ACTIVATE EXCHANGE', // new
-	TRADE_POSTS: { // new
+	TRADE_POSTS: {
+		// new
 		ANNOUNCEMENT: 'Announcement',
-		ANNOUNCEMNT_TXT: 'Public wave auction is starting from December 18th, 2019 1pm UTC. You can deposit and start placing bids at anytime and purchase HEX.',
-		ANNOUNCEMNT_TXT_1: 'Earn HEX with HAP program by introducing your friends to hollaex.com. {0}.',
-		DEFAULT_ANNOUNCEMENT: 'This page posts public announcements about your exchange! {0}',
-		ANNOUNCEMENT_TXT_2:'Free HEX will be distributed to all wallets that {0}.',
+		ANNOUNCEMNT_TXT:
+			'Public wave auction is starting from December 18th, 2019 1pm UTC. You can deposit and start placing bids at anytime and purchase HEX.',
+		ANNOUNCEMNT_TXT_1:
+			'Earn HEX with HAP program by introducing your friends to hollaex.com. {0}.',
+		DEFAULT_ANNOUNCEMENT:
+			'This page posts public announcements about your exchange! {0}',
+		ANNOUNCEMENT_TXT_2: 'Free HEX will be distributed to all wallets that {0}.',
 		LEARN_MORE: 'Learn more',
 		APPLY_TODAY: 'Apply today' // new
-	}
+	},
+	OPEN_WALLET: 'Open wallet' // new
 };

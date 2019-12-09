@@ -6,12 +6,13 @@
         }
         .trader-wrapper-icon{
             svg{
-               .level_icon {
-                   fill: $dark-icon-unhover;
-               }
-               .account-summary {
-                    stroke: $dark-icon-unhover;
+                .level_icon {
+                    fill: $dark-icon-unhover;
                 }
+                .account-summary {
+                   stroke: $dark-icon-unhover;
+                }
+                .bonus-offer-icon,
                 .account-summary1 {
                     fill: $dark-icon-unhover;
                 }
@@ -20,7 +21,13 @@
                 }
             }
         }
-        
+        .trader-acc-detail-icon {
+            svg {
+                .level_icon {
+                    fill: $dark-icon-color !important;
+                }
+            }
+        }
         .trader-account-icon {
             svg {
                 .level_icon {
@@ -136,9 +143,11 @@
         }
         table {
             border-collapse: collapse;
-        }
-        td {
             border: 1px solid $dark-border-main;
+        }
+        td, th {
+            border: 1px solid $dark-border-main;
+            text-align: center;
         }
         .account-limits-coin {
             border-bottom-color: $dark-border-main;
@@ -155,6 +164,14 @@
             border-bottom-color: $dark-border-main;
             border-left-color: $dark-border-main;
             border-right-color: $dark-border-main;
+        }
+        .icon_title-wrapper {
+            .icon_title-svg svg {
+    
+                .level_icon {
+                    fill: $dark-icon-unhover;
+                }
+            }
         }
     }
 }
@@ -250,7 +267,7 @@
         font-weight: bold;
     }
     .summary-section_1 {
-        height: 16rem;
+        height: 20rem;
     }
     .summary-section_2 {
         height: 40rem;
@@ -364,6 +381,9 @@
                     .xrp-icon {
                         fill: $coin-xrp;
                     }
+                    .xmr-icon {
+                        fill: $coin-xmr;
+                    }
                     .default-icon {
                         fill: $colors-black !important;
                     }
@@ -463,9 +483,13 @@
             height: 8rem;
             width: 8rem;
         }
-        .icon_title-svg svg{
+        .icon_title-svg svg {
             height: 8rem;
             width: 8rem;
+
+            .level_icon {
+                fill: $colors-black;
+            }
         }
         .icon_title-text.title {
             font-size: 2rem;
@@ -474,9 +498,10 @@
 
     table {
         border-collapse: collapse;
+        border: 1px solid $border-color;
     }
 
-    td {
+    td, th {
         border: 1px solid $border-color;
     }
     .account-limits {
@@ -502,7 +527,7 @@
         width: 14rem;
     }
     .account-limits-status {
-        width: 6rem;
+        // width: 6rem;
         padding: .25rem .5rem;
     }
     .account-limits-value {
@@ -510,7 +535,7 @@
     }
     .limit-head-currency {
         font-weight: normal !important;
-        padding: .25rem .5rem .25rem 3rem;
+        padding: .25rem .5rem;
     }
     .limit-head {
         font-weight: normal !important;
@@ -563,7 +588,7 @@
             width: 65% !important;
         }
         .summary-section_1 {
-            height: 19rem !important;
+            height: 23rem !important;
         }
         .summary-section_2 {
             height: 43rem !important;
@@ -584,7 +609,7 @@
             font-size: 0.9rem;
         }
         .summary-section_1 {
-            height: 21rem !important;
+            height: 25rem !important;
         }
         .summary-section_2 {
             height: 44rem !important;

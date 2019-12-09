@@ -16,7 +16,8 @@ const AccountTypeDetails = ({
 	lastMonthVolume,
 	onFeesAndLimits,
 	onUpgradeAccount,
-	verification_level
+	verification_level,
+	balance
 }) => {
 	let isAccountDetails = true;
 	const currentAccount = selectedAccount;
@@ -52,6 +53,7 @@ const AccountTypeDetails = ({
 							user={user}
 							coins={coins}
 							isAccountDetails={true}
+							balance={balance}
 							verificationLevel={currentAccount}
 							lastMonthVolume={lastMonthVolume}
 							onUpgradeAccount={onUpgradeAccount}

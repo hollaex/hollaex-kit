@@ -19,39 +19,37 @@ const getLimitValue = (limit = -1, format) => {
 };
 
 const getDepositRow = (currency, index, coins, level) => {
-    const { symbol = '', fullname, deposit_limits = {} } = coins[currency] || DEFAULT_COIN_DATA;
+    const { symbol = '', fullname, deposit_limits = {}, withdrawal_limits = {} } = coins[currency] || DEFAULT_COIN_DATA;
     const format = currency === BASE_CURRENCY ? formatBaseAmount : formatBtcAmount;
     return (
         <tr key={index}>
-            <td className="account-limits-coin" rowSpan={2}>
+            <td className="account-limits-coin">
                 <div className='d-flex align-items-center'>
                     <CurrencyBall name={symbol.toUpperCase()} symbol={symbol} size='m' />
                     <div className="ml-2">{fullname}</div>
                 </div>
             </td>
-            <td className="account-limits-maker account-limits-status">{STRINGS.SUMMARY.DEPOSIT}:</td>
             <td className="account-limits-maker account-limits-value">{getLimitValue(deposit_limits[level], format)}</td>
+            <td className="account-limits-maker account-limits-value">{getLimitValue(withdrawal_limits[level], format)}</td>
         </tr>
     );
 };
 
-const getWithdrawalRow = (currency, index, coins, level) => {
-    const { withdrawal_limits = {} } = coins[currency] || DEFAULT_COIN_DATA;
-    const format = currency === BASE_CURRENCY ? formatBaseAmount : formatBtcAmount;
-    return (
-        <tr key={`${index}_1`}>
-            <td className="account-limits-taker account-limits-status">{STRINGS.SUMMARY.WITHDRAWAL}:</td>
-            <td className="account-limits-taker account-limits-value">{getLimitValue(withdrawal_limits[level], format)}</td>
-        </tr>
-    );
-};
+// const getWithdrawalRow = (currency, index, coins, level) => {
+//     const { withdrawal_limits = {} } = coins[currency] || DEFAULT_COIN_DATA;
+//     const format = currency === BASE_CURRENCY ? formatBaseAmount : formatBtcAmount;
+//     return (
+//         <tr key={`${index}_1`}>
+//             <td className="account-limits-taker account-limits-status">{STRINGS.SUMMARY.WITHDRAWAL}:</td>
+//             <td className="account-limits-taker account-limits-value">{getLimitValue(withdrawal_limits[level], format)}</td>
+//         </tr>
+//     );
+// };
 
 const getRows = (coins, level) => {
     const rowData = [];
-    Object.keys(coins).map((currency, index) => {
+    Object.keys(coins).forEach((currency, index) => {
         rowData.push(getDepositRow(currency, index, coins, level));
-        rowData.push(getWithdrawalRow(currency, index, coins, level));
-        return '';
     });
     return rowData;
 };
@@ -62,9 +60,14 @@ const LimitsBlock = ({ level, coins }) => {
             <table className="account-limits">
                 <thead>
                     <tr>
+                        <th className="limit-head-currency content-title" colSpan={3}>
+                            {STRINGS.SUMMARY.DEPOSIT_WITHDRAWAL_ALLOWENCE}
+                        </th>
+                    </tr>
+                    <tr>
                         <th className="limit-head-currency">{STRINGS.CURRENCY}</th>
-                        <th></th>
-                        <th className="limit-head">{STRINGS.LIMIT}</th>
+                        <th className="limit-head-currency">{STRINGS.SUMMARY.DEPOSIT}</th>
+                        <th className="limit-head-currency">{STRINGS.SUMMARY.WITHDRAWAL}</th>
                     </tr>
                 </thead>
                 <tbody className="account-limits-content font-weight-bold">
