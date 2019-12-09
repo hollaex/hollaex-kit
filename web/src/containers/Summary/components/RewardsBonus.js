@@ -1,0 +1,62 @@
+import React from 'react';
+import ReactSVG from 'react-svg';
+import classnames from 'classnames';
+import { isMobile } from 'react-device-detect';
+
+import SummaryRequirements from './SummaryRequirements';
+import { ICONS } from '../../../config/constants';
+import STRINGS from '../../../config/localizedStrings';
+
+const RewardsBonus = ({
+    user,
+    coins,
+    balance,
+    lastMonthVolume,
+    onUpgradeAccount
+}) => {
+    return (
+        <div
+            className={
+                classnames(
+                    "account-details-wrapper w-75",
+                    { "w-100": isMobile }
+                )
+            }>
+            <div className="d-flex">
+                <ReactSVG
+                    path={ICONS.BONUS_OFFERING}
+                    wrapperClassName='trader-wrapper-icon'
+                />
+                <div>
+                    {STRINGS.SUMMARY.COMPLETE_TASK_DESC}
+                    <div className="mt-2">
+                        <a
+                            className="blue-link pointer font-weight-bold"
+                            href="">
+                            {STRINGS.TRADE_POSTS.LEARN_MORE.toUpperCase()}
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div className="requirement-header d-flex justify-content-between">
+                <div>
+                    {STRINGS.SUMMARY.TASKS}
+                </div>
+                <div className="status-header">{STRINGS.STATUS}</div>
+            </div>
+            <div>
+                <SummaryRequirements
+                    user={user}
+                    isBonusSection={true}
+                    coins={coins}
+                    balance={balance}
+                    lastMonthVolume={lastMonthVolume}
+                    onUpgradeAccount={onUpgradeAccount}
+                    contentClassName="w-100"
+                />
+            </div>
+        </div>
+    )
+}
+
+export default RewardsBonus;
