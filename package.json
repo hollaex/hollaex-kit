@@ -4,8 +4,8 @@
 	"description": "",
 	"main": "index.js",
 	"dependencies": {
-		"lodash": "4.17.11",
 		"moment": "2.24.0",
+		"lodash": "4.17.13",
 		"request": "2.88.0",
 		"request-promise": "4.2.2",
 		"socket.io-client": "2.2.0"
