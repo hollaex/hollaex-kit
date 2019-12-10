@@ -10,18 +10,22 @@ const HollaEx = require('hollaex-node-lib');
 var client = new HollaEx();
 ```
 
-You can pass your Access_Token generated from the site as follows:
+You can pass your `apiKey` and `apiSecret` generated from the site as follows:
 
 ```node
-var client = new HollaEx({ accessToken: MY_ACCESS_TOKEN });
+var client = new HollaEx({ apiKey: <MY_API_KEY>, apiSecret: <MY_API_SECRET> });
 ```
+
+You can also pass the field `apiExpiresAfter` which is the length of time in seconds each request is valid for. The default value is `60`.
 
 There is a list of functions you can call which will be added later and they are not at this point implemented yet.
 
-### getTicker
+> - **Note**: v1 has a new authentication mechanism using HMAC signature. HollaEx previously was using JSON Web Token (JWT) which is now changed to HMAC authentication.
+
+### Example:
 
 ```node
-var client = new HollaEx({ accessToken: MY_ACCESS_TOKEN });
+var client = new HollaEx({ apiKey: <MY_API_KEY>, apiSecret: <MY_API_SECRET> });
 client
 	.getTicker('hex-usdt')
 	.then((res) => {
@@ -32,6 +36,8 @@ client
 		console.log(err);
 	});
 ```
+
+### Available functions:
 
 | Command             | Parameters                                                                                                                                                                         | Description                                                                                                                                                            |
 | ------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
