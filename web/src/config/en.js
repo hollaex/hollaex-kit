@@ -703,12 +703,12 @@ export default {
 	ORDERBOOK: 'Order book',
 	CANCEL: 'Cancel',
 	CANCEL_ALL: 'Cancel All',
-	GO_TRADE_HISTORY: 'Go to Trade History',
+	GO_TRADE_HISTORY: 'Go to Transaction History',
 	ORDER_ENTRY: 'order entry',
-	TRADE_HISTORY: 'trade history',
+	TRADE_HISTORY: 'transaction history',
 	CHART: 'price chart',
 	ORDERS: 'my active orders',
-	TRADES: 'my trade history',
+	TRADES: 'my transaction history',
 	RECENT_TRADES: 'my recent trades', // ToDo
 	PUBLIC_SALES: 'public sales', // ToDo
 	REMAINING: 'Remaining',
