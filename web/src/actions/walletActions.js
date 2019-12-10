@@ -90,13 +90,11 @@ export const addUserTrades = (trades) => ({
 });
 
 export const getUserTrades = ({
-	symbol = 'btc',
 	limit = 50,
 	page = 1,
 	...rest
 }) => {
 	const query = querystring.stringify({
-		symbol,
 		page,
 		limit
 	});
@@ -127,9 +125,8 @@ export const getUserTrades = ({
 	};
 };
 
-export const getUserDeposits = ({ symbol = 'btc', limit = 50, page = 1, ...rest }) => {
+export const getUserDeposits = ({ limit = 50, page = 1, ...rest }) => {
 	const query = querystring.stringify({
-		symbol,
 		page,
 		limit
 	});
@@ -160,9 +157,8 @@ export const getUserDeposits = ({ symbol = 'btc', limit = 50, page = 1, ...rest 
 	};
 };
 
-export const getUserWithdrawals = ({ symbol = 'btc', limit = 50, page = 1, ...rest }) => {
+export const getUserWithdrawals = ({ limit = 50, page = 1, ...rest }) => {
 	const query = querystring.stringify({
-		symbol,
 		page,
 		limit
 	});
