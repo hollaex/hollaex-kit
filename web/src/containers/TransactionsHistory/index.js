@@ -326,8 +326,8 @@ const mapStateToProps = (store) => ({
 
 const mapDispatchToProps = (dispatch) => ({
 	getUserTrades: (symbol, limit, page = 1) => dispatch(getUserTrades({ symbol, limit, page })),
-	getUserDeposits: (symbol, limit, page = 1) => dispatch(getUserDeposits({ symbol, limit, page })),
-	getUserWithdrawals: (symbol, limit, page = 1) => dispatch(getUserWithdrawals({ symbol, limit, page })),
+	getUserDeposits: (coin, limit, page = 1) => dispatch(getUserDeposits({ coin, limit, page })),
+	getUserWithdrawals: (coin, limit, page = 1) => dispatch(getUserWithdrawals({ coin, limit, page })),
 	withdrawalCancel: (transactionId) => dispatch(withdrawalCancel({ transactionId }))
 });
 

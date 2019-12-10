@@ -5110,8 +5110,11 @@ table th {
     padding-left: 0.25rem; }
   .dumb-field-wrapper .field-children {
     padding-bottom: 0; }
+  .dumb-field-wrapper .address-line {
+    word-break: break-all; }
   .dumb-field-wrapper .copy-wrapper {
-    top: 0; }
+    top: 0;
+    position: unset; }
 
 .field-wrapper .action_notification-wrapper .action_notification-svg svg {
   width: 1rem;
