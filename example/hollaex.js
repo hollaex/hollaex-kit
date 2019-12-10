@@ -1,8 +1,9 @@
 const HollaEx = require('../index');
 require('dotenv').load();
 
-const ACCESS_TOKEN = process.env.ACCESS_TOKEN || '';
-const client = new HollaEx({ accessToken: ACCESS_TOKEN });
+const API_KEY = process.env.API_KEY || '';
+const API_SECRET = process.env.API_SECRET || '';
+const client = new HollaEx({ apiKey: API_KEY, apiSecret: API_SECRET });
 
 client
 	.getTicker('hex-usdt')
