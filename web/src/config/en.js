@@ -117,7 +117,7 @@ export default {
 			SECTION_6_LINK_2: 'Telegram'
 		},
 		HEX_DESCRIPTION:
-			'HollaEx is an open crypto currency exchange built based on HollaEx Kit technology developed and managed by bitHolla and is a live example of HollaEx exchange software kit that allows anyone to run there own exchange exactly like this one. To start your own exchange like this {1}. The HollaEx Token is the native token of HollaEx and is traded on the HollaEx exchange through a wave auction system. For more information on how the auction works {0}',
+			'HollaEx is an open cryptocurrency exchange built based on HollaEx Kit technology developed and managed by bitHolla and is a live example of HollaEx exchange software kit that allows anyone to run there own exchange exactly like this one. To start your own exchange like this {1}. The HollaEx Token is the native token of HollaEx and is traded on the HollaEx exchange through a wave auction system. For more information on how the auction works {0}',
 		CLICK_HERE: 'click here',
 		VISIT_HERE: 'visit here'
 	},
