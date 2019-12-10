@@ -66,7 +66,7 @@ class ApiKey extends Component {
 		return generateToken({ otp_code, name })
 			.then(({ data }) => {
 				this.props.tokenGenerated(data);
-				return data.token;
+				return data;
 			})
 			.catch(errorHandler);
 	};
@@ -90,7 +90,7 @@ class ApiKey extends Component {
 				)}
 				<div>
 					{!fetching ? (
-						!otp_enabled && tokens.length === 0 ? (
+						!otp_enabled && tokens.count === 0 ? (
 							<div />
 						) : (
 							<Table
@@ -99,11 +99,11 @@ class ApiKey extends Component {
 									this.onClickRevokeToken,
 									otp_enabled
 								)}
-								data={tokens}
+								data={tokens.data}
 								rowKey={(data) => {
 									return data.id;
 								}}
-								count={tokens.length}
+								count={tokens.count}
 							/>
 						)
 					) : (

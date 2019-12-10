@@ -181,7 +181,8 @@ export default {
 		INSUFFICIENT_BALANCE: 'Insufficient balance',
 		PASSWORDS_DONT_MATCH: "Password don't match",
 		USER_EXIST: 'Email has already been registered',
-		ACCEPT_TERMS: 'You have not agreed to the Terms of use and Privacy Policy',
+		ACCEPT_TERMS:
+			'You have not agreed to the Terms of use and Privacy Policy',
 		STEP: 'Invalid value, step is {0}',
 		ONLY_NUMBERS: 'Value can contain only numbers'
 	},
@@ -382,7 +383,8 @@ export default {
 		DOCUMENT_PENDING_NOTE:
 			'Your documents is submitted and is pending for review. Please be patient.',
 		DOCUMENT_VERIFIED_NOTE: 'Your documents are completed.',
-		NOTE_FROM_VERIFICATION_DEPARTMENT: 'Note from the verification department',
+		NOTE_FROM_VERIFICATION_DEPARTMENT:
+			'Note from the verification department',
 		CODE_EXPIRES_IN: 'Code expires in',
 		USER_DOCUMENTATION_FORM: {
 			FORM_FIELDS: {
@@ -414,7 +416,8 @@ export default {
 				POSTAL_CODE_LABEL: 'Postal code',
 				POSTAL_CODE_PLACEHOLDER: 'Type your postal code',
 				PHONE_CODE_LABEL: 'Country',
-				PHONE_CODE_PLACEHOLDER: 'Select the country your phone is connected to',
+				PHONE_CODE_PLACEHOLDER:
+					'Select the country your phone is connected to',
 				PHONE_CODE_DISPLAY: '({0}) {1}', // 0 -> (+21)  1 -> South Korea
 				PHONE_NUMBER_LABEL: 'Phone number',
 				PHONE_NUMBER_PLACEHOLDER: 'Type your phone number',
@@ -440,7 +443,8 @@ export default {
 			VALIDATIONS: {
 				ID_TYPE: 'Please select a type of identity document',
 				ID_NUMBER: 'Please type your documents number',
-				ISSUED_DATE: 'Please select the date in which your document was issued',
+				ISSUED_DATE:
+					'Please select the date in which your document was issued',
 				EXPIRATION_DATE:
 					'Please select the date when your document will expire',
 				FRONT: 'Please upload a scan of your passport',
@@ -464,11 +468,13 @@ export default {
 				FRONT_LABEL: 'Passport',
 				FRONT_PLACEHOLDER: 'Add a copy of your passport',
 				BACK_LABEL: 'Back Side of passport',
-				BACK_PLACEHOLDER: 'Add a copy of the backside of your ID (if applicable)',
+				BACK_PLACEHOLDER:
+					'Add a copy of the backside of your ID (if applicable)',
 				PASSPORT_LABEL: 'Passport Document',
 				PASSPORT_PLACEHOLDER: 'Add a copy of your Passport document',
 				POR_LABEL: 'Document proving your address',
-				POR_PLACEHOLDER: 'Add a copy of a document that proves your address',
+				POR_PLACEHOLDER:
+					'Add a copy of a document that proves your address',
 				SELFIE_PHOTO_ID_LABEL: 'Your Selfie with passport and Note',
 				SELFIE_PHOTO_ID_PLACEHOLDER:
 					'Add a copy of your Selfie with passport and Note'
@@ -480,7 +486,8 @@ export default {
 					TITLE: 'Please make sure that your submitted documents are:',
 					LIST_ITEM_1:
 						'HIGH QUALITY (colour images, 300dpi resolution or higher).',
-					LIST_ITEM_2: 'VISIBLE IN THEIR ENTIRETY (watermarks are permitted).',
+					LIST_ITEM_2:
+						'VISIBLE IN THEIR ENTIRETY (watermarks are permitted).',
 					LIST_ITEM_3: 'VALID, with the expiry date clearly visible.',
 					WARNING_1:
 						'Only a valid government-issued identification document is acceptedt; high quality photos or scanned images of these documents are acceptable:',
@@ -576,7 +583,8 @@ export default {
 		ORDER_PORTFOLIO_LABEL: 'Portfolio Percentage Amount:',
 		NOTIFICATION_FORM: {
 			TRADE_POPUPS: 'Trade Pop ups',
-			POPUP_ORDER_CONFIRMATION: 'Ask for confirmation before submitting orders',
+			POPUP_ORDER_CONFIRMATION:
+				'Ask for confirmation before submitting orders',
 			POPUP_ORDER_COMPLETED: 'Show pop up when order has been completed',
 			POPUP_ORDER_PARTIALLY_FILLED:
 				'Show pop up when order has partially filled'
@@ -796,7 +804,8 @@ export default {
 	QUOTE_COUNTDOWN_MESSAGE: 'You have {0} seconds to perform the trade',
 	QUOTE_EXPIRED_TOKEN: 'The quote token has expired.',
 	QUOTE_SUCCESS_REVIEW_TITLE: 'Quick Trade',
-	QUOTE_SUCCESS_REVIEW_MESSAGE: 'You have successfully {0} {1} {2} for {3} {4}', // you have successfully buy 1 btc from x toman
+	QUOTE_SUCCESS_REVIEW_MESSAGE:
+		'You have successfully {0} {1} {2} for {3} {4}', // you have successfully buy 1 btc from x toman
 	COUNTDOWN_ERROR_MESSAGE: 'Countdown is finished',
 	WITHDRAW_PAGE: {
 		BANK_TO_WITHDRAW: 'Bank to Withdraw to',
@@ -902,12 +911,16 @@ export default {
 		{
 			value: 'en',
 			label: 'English',
-			icon: `${process.env.REACT_APP_PUBLIC_URL}/assets/flags/selected-en.png`
+			icon: `${
+				process.env.REACT_APP_PUBLIC_URL
+			}/assets/flags/selected-en.png`
 		},
 		{
 			value: 'ko',
 			label: '한국어',
-			icon: `${process.env.REACT_APP_PUBLIC_URL}/assets/flags/selected-kr.png`
+			icon: `${
+				process.env.REACT_APP_PUBLIC_URL
+			}/assets/flags/selected-kr.png`
 		}
 	],
 	SETTINGS_ORDERPOPUP_LABEL: 'Display order confirmation popup',
@@ -951,6 +964,7 @@ export default {
 		FORM_NAME_LABEL: 'Name',
 		FORM_LABLE_PLACEHOLDER: 'Name for the Api Key',
 		API_KEY_LABEL: 'API Key',
+		SECRET_KEY_LABEL: 'SECRET Key',
 		CREATED_TITLE: 'Copy your API Key',
 		CREATED_TEXT_1:
 			'Please copy your API key as it will be unattainable in the future.',
@@ -959,6 +973,7 @@ export default {
 	DEVELOPERS_TOKENS_TABLE: {
 		NAME: 'Name',
 		API_KEY: 'API Key',
+		SECRET: 'Secret',
 		CREATED: 'Date Generated',
 		REVOKE: 'Revoke',
 		REVOKED: 'Revoked',
@@ -974,7 +989,7 @@ export default {
 		CHAT_MESSAGE_BOX_PLACEHOLDER: 'Message',
 		SIGN_UP_CHAT: 'Sign Up To Chat',
 		JOIN_CHAT: 'Set Username To Chat',
-		TROLLBOX:'Trollbox ({0})' // new
+		TROLLBOX: 'Trollbox ({0})' // new
 	},
 	INVALID_USERNAME:
 		'Username must be between 3 and 15 characters long. Only contains lowercase, numbers and underscore',
@@ -1037,7 +1052,8 @@ export default {
 		LITTLE_RED_SNAPPER_TRADER: 'Little Red Snapper Trader',
 		LITTLE_RED_SNAPPER_TRADER_ACCOUNT: 'Little Red Snapper Trader Account',
 		CUNNING_BLUE_KRAKEN_TRADING: 'Cunning Blue Kraken Trading',
-		CUNNING_BLUE_KRAKEN_TRADING_ACCOUNT: 'Cunning Blue Kraken Trading Account',
+		CUNNING_BLUE_KRAKEN_TRADING_ACCOUNT:
+			'Cunning Blue Kraken Trading Account',
 		BLACK_LEVIATHAN_TRADING: 'Black Leviathan Trading',
 		BLACK_LEVIATHAN_TRADING_ACCOUNT: 'Black Leviathan Trading Account',
 		URGENT_REQUIREMENTS: 'Urgent Requirements',
@@ -1095,18 +1111,23 @@ export default {
 		ACCOUNT_AGE_OF_MONTHS: 'Account Age of {0} Months',
 		TRADING_VOLUME_EQUIVALENT: '{0} {1} Trading Volume Equivalent',
 		LEVEL_OF_ACCOUNT: 'Level {0} Account',
-		LEVEL_TXT_DEFAULT:'Add your level description here',
-		LEVEL_1_TXT: 'Your trading journey begins here! Profits await.Upgrades your account to unlock withdrawals and favorable fees by verifying your account.',
-		LEVEL_2_TXT: 'Congrats on getting your account verified. Keep trading and apply for an account upgrade to get lower trading fees and larger withdrawal and deposit limits.',
-		LEVEL_3_TXT: 'You’ve come far comrade and have traded well.Keep trading and reach the highest rank and enjoy even lower fees and higher limits.',
-		LEVEL_4_TXT: 'You are a masters trader and have reached the peek. To maintain your rank keep your trading volume high and healthy.',
-		CURRENT_TXT:'Current'
+		LEVEL_TXT_DEFAULT: 'Add your level description here',
+		LEVEL_1_TXT:
+			'Your trading journey begins here! Profits await.Upgrades your account to unlock withdrawals and favorable fees by verifying your account.',
+		LEVEL_2_TXT:
+			'Congrats on getting your account verified. Keep trading and apply for an account upgrade to get lower trading fees and larger withdrawal and deposit limits.',
+		LEVEL_3_TXT:
+			'You’ve come far comrade and have traded well.Keep trading and reach the highest rank and enjoy even lower fees and higher limits.',
+		LEVEL_4_TXT:
+			'You are a masters trader and have reached the peek. To maintain your rank keep your trading volume high and healthy.',
+		CURRENT_TXT: 'Current'
 	},
 	REFERRAL_LINK: {
 		TITLE: 'Invite your friend', // new
 		INFO_TEXT: 'Refer your friends by giving out this link.', // new
 		INFO_TEXT_1: 'Send thm this affiliation link and get them onboard', // new
-		COPY_FIELD_LABEL: 'Share the link below with friends and earn commissions:', // new
+		COPY_FIELD_LABEL:
+			'Share the link below with friends and earn commissions:', // new
 		REFERRED_USER_COUT: 'You have referred {0} users', // new
 		COPY_LINK_BUTTON: 'COPY REFERRAL LINK' // new
 	},
@@ -1115,17 +1136,23 @@ export default {
 	FEE_AMOUNT: 'Fee amount', // new
 	COINS: 'Coins', // new
 	PAIRS: 'Pairs', // new
-	NOTE_FOR_EDIT_COIN: 'Note: For adding and removing {0} please refer to the{1}.', // new
+	NOTE_FOR_EDIT_COIN:
+		'Note: For adding and removing {0} please refer to the{1}.', // new
 	REFER_DOCS_LINK: 'docs', // new
-	RESTART_TO_APPLY: 'You need to restart your exchange for apply these changes.', // new
-	TRIAL_EXCHANGE_MSG: 'You are using a trial version of {0} and it will expire in {1} days.', // new
-	EXPIRY_EXCHANGE_MSG: 'Your exchange has expired. Go to dash.bitholla.com to activate it again.', // new
+	RESTART_TO_APPLY:
+		'You need to restart your exchange for apply these changes.', // new
+	TRIAL_EXCHANGE_MSG:
+		'You are using a trial version of {0} and it will expire in {1} days.', // new
+	EXPIRY_EXCHANGE_MSG:
+		'Your exchange has expired. Go to dash.bitholla.com to activate it again.', // new
 	EXPIRED_INFO_1: 'Your HollaEx trial has ended.', // new
 	EXPIRED_INFO_2: 'Collateralize your exchange to activate it again.', // new
 	EXPIRED_BUTTON_TXT: 'ACTIVATE EXCHANGE', // new
-	TRADE_POSTS: { // new
+	TRADE_POSTS: {
+		// new
 		ANNOUNCEMENT: 'Announcement',
-		DEFAULT_ANNOUNCEMENT: 'This page posts public announcements about your exchange! {0}',
+		DEFAULT_ANNOUNCEMENT:
+			'This page posts public announcements about your exchange! {0}',
 		LEARN_MORE: 'Learn more'
 	}
 };

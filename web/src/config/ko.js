@@ -69,7 +69,10 @@ export default {
 		SECTION_3_BUTTON_1: '데모 보기'
 	},
 	FOOTER: {
-		FOOTER_LEGAL: ['Proudly made in Seoul, South Korea', '비트홀라 주식회사.'],
+		FOOTER_LEGAL: [
+			'Proudly made in Seoul, South Korea',
+			'비트홀라 주식회사.'
+		],
 		FOOTER_LANGUAGE_TEXT: '언어',
 		FOOTER_LANGUAGE_LANGUAGES: [
 			{ key: 'en', label: '영어' },
@@ -332,7 +335,8 @@ export default {
 		INFO_TXT: '이곳에서 개인정보 및 인증진행상황 등을 확인 하실 수 있습니다.',
 		INFO_TXT_1:
 			'아래 각 부문에 필요한 정보를 작성해주시기바랍니다. 모든 부문의 작성이 완료된 이후 검토가 진행되며 해당 내용에 문제가 없다면 계정 업그레이드가 승인됩니다.',
-		INFO_TXT_2: '*은행계좌 및 개인정보는 완전한 검증을 위해 {0}가 요구됩니다.',
+		INFO_TXT_2:
+			'*은행계좌 및 개인정보는 완전한 검증을 위해 {0}가 요구됩니다.',
 		DOCUMENTATIONS: '문서업로드',
 		COMPLETED: '완료',
 		PENDING_VERIFICATION: '인증진행중',
@@ -404,9 +408,11 @@ export default {
 				FIRST_NAME_PLACEHOLDER:
 					'신분증과 동일하게 이름을 입력해주시기바랍니다.',
 				LAST_NAME_LABEL: '성',
-				LAST_NAME_PLACEHOLDER: '신분증과 동일하게 성을 입력해주시기바랍니다.',
+				LAST_NAME_PLACEHOLDER:
+					'신분증과 동일하게 성을 입력해주시기바랍니다.',
 				FULL_NAME_LABEL: '성명',
-				FULL_NAME_PLACEHOLDER: '신분증과 동일하게 성명을 입력해주시기바랍니다.',
+				FULL_NAME_PLACEHOLDER:
+					'신분증과 동일하게 성명을 입력해주시기바랍니다.',
 				GENDER_LABEL: '성별',
 				GENDER_PLACEHOLDER: '성별을 선택해주시기바랍니다.',
 				GENDER_OPTIONS: {
@@ -414,7 +420,8 @@ export default {
 					WOMAN: '여성'
 				},
 				NATIONALITY_LABEL: '국적',
-				NATIONALITY_PLACEHOLDER: '신분증 상의 국적을 선택해 주시기 바랍니다.',
+				NATIONALITY_PLACEHOLDER:
+					'신분증 상의 국적을 선택해 주시기 바랍니다.',
 				DOB_LABEL: '생년월일',
 				COUNTRY_LABEL: '현재 거주중인 국가',
 				COUNTRY_PLACEHOLDER:
@@ -422,7 +429,8 @@ export default {
 				CITY_LABEL: '도시',
 				CITY_PLACEHOLDER: '현재 거주중인 도시를 입력해주시기 바랍니다.',
 				ADDRESS_LABEL: '주소',
-				ADDRESS_PLACEHOLDER: '현재 거주중인 곳의 주소를 입력해주시기 바랍니다.',
+				ADDRESS_PLACEHOLDER:
+					'현재 거주중인 곳의 주소를 입력해주시기 바랍니다.',
 				POSTAL_CODE_LABEL: '우편번호',
 				POSTAL_CODE_PLACEHOLDER: '우편번호를 입력해주시기 바랍니다.',
 				PHONE_CODE_LABEL: '국가',
@@ -492,7 +500,8 @@ export default {
 					TITLE: '다음사항을 확인 후 제출하시기 바랍니다.',
 					LIST_ITEM_1: '고화질(컬러이미지, 300dpi 이상의 해상도)의 문서',
 					LIST_ITEM_2: '문서전체가 명백히 보일것(워터마크허용)',
-					LIST_ITEM_3: '유효한 기간내의 파일로 만료 날짜가 선명하게 표시될 것',
+					LIST_ITEM_3:
+						'유효한 기간내의 파일로 만료 날짜가 선명하게 표시될 것',
 					WARNING_1:
 						'유효한 정부 발급 신분 증명서만 허용됩니다. 고품질의 사진 또는 스캔된 이미지를 제출해주시기바랍니다:',
 					WARNING_2:
@@ -511,7 +520,8 @@ export default {
 						'컬러 사진 또는 스캔 이미지가 고화질이다.(최소 300dpi)',
 					SECTION_2_TITLE: '제출가능한 거주지 증빙서류:',
 					SECTION_2_LIST_ITEM_1: '예금증명서',
-					SECTION_2_LIST_ITEM_2: '공공요금 지로용지(전기, 수도, 인터넷 등)',
+					SECTION_2_LIST_ITEM_2:
+						'공공요금 지로용지(전기, 수도, 인터넷 등)',
 					SECTION_2_LIST_ITEM_3:
 						'정부에서 발행한 문서(납세증명서, 주민등록등본 등)',
 					WARNING:
@@ -534,7 +544,8 @@ export default {
 		},
 		BANK_ACCOUNT_FORM: {
 			VALIDATIONS: {
-				ACCOUNT_OWNER: '은행계좌에 등록된 성과 이름을 입력해주시기바랍니다.',
+				ACCOUNT_OWNER:
+					'은행계좌에 등록된 성과 이름을 입력해주시기바랍니다.',
 				ACCOUNT_NUMBER: '은행계좌번호는 50자 이내로 적어주시기바랍니다.',
 				ACCOUNT_NUMBER_MAX_LENGTH: '은행계좌번호는 50자 제한이 있습니다.',
 				CARD_NUMBER: '카드번호 형식이 바르지않습니다.'
@@ -586,7 +597,8 @@ export default {
 			POPUP_ORDER_PARTIALLY_FILLED: '주문이 부분적으로 채워질 경우 알림팝업'
 		},
 		AUDIO_CUE_FORM: {
-			ORDERS_COMPLETED_AUDIO: '하나의 주문이 완전히 채워질 경우 알림사운드재생',
+			ORDERS_COMPLETED_AUDIO:
+				'하나의 주문이 완전히 채워질 경우 알림사운드재생',
 			ORDERS_PARTIAL_AUDIO:
 				'주문 중 하나가 부분적으로 채워질 경우 알림사운드재생',
 			PUBLIC_TRADE_AUDIO: '모든 일반적인 거래에 관한 알림사운드재생'
@@ -798,7 +810,8 @@ export default {
 	QUOTE_COUNTDOWN_MESSAGE: 'You have {0} seconds to perform the trade',
 	QUOTE_EXPIRED_TOKEN: 'The quote token has expired.',
 	QUOTE_SUCCESS_REVIEW_TITLE: '퀵트레이드',
-	QUOTE_SUCCESS_REVIEW_MESSAGE: 'You have successfully {0} {1} {2} for {3} {4}', // you have successfully buy 1 btc from x toman
+	QUOTE_SUCCESS_REVIEW_MESSAGE:
+		'You have successfully {0} {1} {2} for {3} {4}', // you have successfully buy 1 btc from x toman
 	COUNTDOWN_ERROR_MESSAGE: 'Countdown is finished',
 	WITHDRAW_PAGE: {
 		BANK_TO_WITHDRAW: 'Bank to Withdraw to',
@@ -905,12 +918,16 @@ export default {
 		{
 			value: 'en',
 			label: 'English',
-			icon: `${process.env.REACT_APP_PUBLIC_URL}/assets/flags/selected-en.png`
+			icon: `${
+				process.env.REACT_APP_PUBLIC_URL
+			}/assets/flags/selected-en.png`
 		},
 		{
 			value: 'ko',
 			label: '한국어',
-			icon: `${process.env.REACT_APP_PUBLIC_URL}/assets/flags/selected-kr.png`
+			icon: `${
+				process.env.REACT_APP_PUBLIC_URL
+			}/assets/flags/selected-kr.png`
 		}
 	],
 	SETTINGS_ORDERPOPUP_LABEL: 'Display order confirmation popup',
@@ -954,14 +971,17 @@ export default {
 		FORM_NAME_LABEL: '이름',
 		FORM_LABLE_PLACEHOLDER: 'API키의 이름',
 		API_KEY_LABEL: 'API key',
+		SECRET_KEY_LABE: 'SECRET Key',
 		CREATED_TITLE: 'API key 복사하기',
 		CREATED_TEXT_1:
 			'이 API키는 다시 얻을 수 없으므로 복사하여 보관하시기바랍니다.',
-		CREATED_TEXT_2: 'API key는 항상 비공개로 유지하십시오.'
+		CREATED_TEXT_2: 'API key는 항상 비공개로 유지하십시오.',
+		SECRET_KEY_LABEL: 'Secret Key'
 	},
 	DEVELOPERS_TOKENS_TABLE: {
 		NAME: 'Name',
 		API_KEY: 'API Key',
+		SECRET: 'Secret',
 		CREATED: 'Date Generated',
 		REVOKE: 'Revoke',
 		REVOKED: 'Revoked',
