@@ -20,6 +20,8 @@ You can also pass the field `apiExpiresAfter` which is the length of time in sec
 
 There is a list of functions you can call which will be added later and they are not at this point implemented yet.
 
+> - **Note**: v1 has a new authentication mechanism using HMAC signature. HollaEx previously was using JSON Web Token (JWT) which is now changed to HMAC authentication.
+
 ### Example:
 
 ```node
