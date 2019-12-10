@@ -87,14 +87,8 @@ $main-text--color: $colors-deactivate-color2;
 			.accordion_section_content_text {
 				color: $colors-main-black;
 				&.with_arrow:after {
-					border: solid $colors-main-black  !important;
 					border-left-color: $colors-main-black !important;
-					border-right-color: $colors-main-black !important;
-					border-width: 1px 0 0 1px !important;
-					display: inline-block;
-					padding: 2px;
-					margin-right: -0.7rem;
-					position: absolute;
+					border-top-color: $colors-main-black !important;
 				}
 			}
 			.sidebar_hub-section-icon {
@@ -141,14 +135,13 @@ $main-text--color: $colors-deactivate-color2;
 		.accordion_section_content_text {
 			&.with_arrow:after {
 				border: solid $trade-tabs-inactive-color !important;
-				border-width: 1px 0 0 1px !important;
+				border-width: 2px 0 0 2px !important;
 				display: inline-block !important;
 				padding: 3px !important;
 				transform: rotate(131deg)!important;
 				content: '';
 				margin-right: -0.6rem;
 				position: absolute;
-				// @include css-triangle($main-text--color, 'right', $accordion_arrow-size);
 				right: -$accordion_arrow-size;
 				top: calc(50% - 0.3rem);
 			}
@@ -173,12 +166,11 @@ $main-text--color: $colors-deactivate-color2;
 		.accordion_section_content_text {
 			&.with_arrow:after {
 				border: solid $trade-tabs-inactive-color ;
-				border-width: 1px 0 0 1px !important;
+				border-width: 2px 0 0 2px !important;
 				display: inline-block !important;
 				padding: 3px !important;
 				transform: rotate(131deg)!important;
 				content: '';
-				// @include css-triangle($main-text--color, 'right', $accordion_arrow-size);
 				right: -$accordion_arrow-size;
 				top: calc(50% - 0.3rem);
 			}
@@ -191,7 +183,7 @@ $main-text--color: $colors-deactivate-color2;
 
 		&.disabled {
 			.accordion_section_content_text:after {
-				border-right-color: $colors-deactivate-color2;
+				border-top-color: $colors-deactivate-color2;
 			}
 		}
 	}
@@ -211,7 +203,7 @@ $main-text--color: $colors-deactivate-color2;
 			}
 			&.with_arrow:after {
 				border-left-color: $dark-font-sub-text-color !important;
-				border-right-color: $dark-font-sub-text-color !important;
+				border-top-color: $dark-font-sub-text-color !important;
 			}
 		}
 		.accordion_section_title {
@@ -225,12 +217,8 @@ $main-text--color: $colors-deactivate-color2;
 				.accordion_section_content_text {
 					color: $dark-font-main-text-color !important;
 					&.with_arrow:after {
-						border: solid $dark-font-main-text-color !important;
 						border-left-color:$dark-font-main-text-color !important;
-						border-right-color:$dark-font-main-text-color !important;
-						border-width: 1px 0 0 1px !important;
-						display: inline-block;
-						padding: 2px;
+						border-top-color:$dark-font-main-text-color !important;
 					}
 				}
 				.sidebar_hub-section-icon {
@@ -279,7 +267,7 @@ $main-text--color: $colors-deactivate-color2;
 
 			&.disabled {
 				.accordion_section_content_text:after {
-					border-right-color: $dark-accordion-arrow-inactive;
+					border-top-color: $dark-accordion-arrow-inactive;
 				}
 			}
 		}

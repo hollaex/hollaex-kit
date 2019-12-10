@@ -7,11 +7,12 @@ import classnames from 'classnames';
 
 import SummaryBlock from './components/SummaryBlock';
 import TraderAccounts from './components/TraderAccounts';
-import SummaryRequirements from './components/SummaryRequirements';
+// import SummaryRequirements from './components/SummaryRequirements';
 import AccountAssets from './components/AccountAssets';
 import TradingVolume from './components/TradingVolume';
 import AccountDetails from './components/AccountDetails';
 import RewardsBonus from './components/RewardsBonus';
+import AccountWaveAuction from './components/AccountWaveAuction';
 import MobileSummary from './MobileSummary';
 
 import { IconTitle } from '../../components';
@@ -20,7 +21,7 @@ import { openFeesStructureandLimits, openContactForm, logoutconfirm, setNotifica
 import {
     BASE_CURRENCY,
     DEFAULT_COIN_DATA,
-    SHOW_SUMMARY_ACCOUNT_DETAILS,
+    // SHOW_SUMMARY_ACCOUNT_DETAILS,
     SHOW_TOTAL_ASSETS,
     IS_HEX
 } from '../../config/constants';
@@ -203,10 +204,7 @@ class Summary extends Component {
                                 className={
                                     classnames(
                                         "assets-wrapper",
-                                        "asset_wrapper_width",
-                                        {
-                                            'hex_asset_wrapper_width': !SHOW_SUMMARY_ACCOUNT_DETAILS,
-                                        }
+                                        "asset_wrapper_width"
                                     )}>
                                 <SummaryBlock
                                     title={STRINGS.SUMMARY.ACCOUNT_ASSETS}
@@ -220,7 +218,7 @@ class Summary extends Component {
                                             </span>
                                             : null
                                     }
-                                    wrapperClassname={classnames({ 'w-100': !SHOW_SUMMARY_ACCOUNT_DETAILS })}
+                                    // wrapperClassname={classnames({ 'w-100': !SHOW_SUMMARY_ACCOUNT_DETAILS })}
                                 >
                                     <AccountAssets
                                         user={user}
@@ -231,23 +229,28 @@ class Summary extends Component {
                                         activeTheme={activeTheme} />
                                 </SummaryBlock>
                             </div>
-                            {SHOW_SUMMARY_ACCOUNT_DETAILS
-                                ? <div className="trading-volume-wrapper">
-                                    <SummaryBlock
-                                        title={STRINGS.SUMMARY.TRADING_VOLUME}
-                                        secondaryTitle={<span>
+                            <div className="trading-volume-wrapper">
+                                <SummaryBlock
+                                    title={IS_HEX
+                                        ? STRINGS.SUMMARY.HEX_WAVE_AUCTION
+                                        : STRINGS.SUMMARY.TRADING_VOLUME
+                                    }
+                                    secondaryTitle={IS_HEX
+                                        ? ''
+                                        : <span>
                                             <span className="title-font">
                                                 {` ${formatAverage(formatBaseAmount(lastMonthVolume))}`}
                                             </span>
                                             {` ${fullname} ${STRINGS.formatString(STRINGS.SUMMARY.NOMINAL_TRADING_WITH_MONTH, moment().subtract(1, "month").startOf("month").format('MMMM')).join('')}`}
                                         </span>
-                                        }
-                                    >
-                                        <TradingVolume user={user} />
-                                    </SummaryBlock>
-                                </div>
-                                : null
-                            }
+                                    }
+                                >
+                                    {IS_HEX
+                                        ? <AccountWaveAuction user={user} />
+                                        : <TradingVolume user={user} />
+                                    }
+                                </SummaryBlock>
+                            </div>
                         </div>
                         <div className="d-flex align-items-center">
                             <SummaryBlock

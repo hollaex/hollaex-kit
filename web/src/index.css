@@ -2564,6 +2564,12 @@ table th {
 .dark-theme .summary-container .assets-wrapper .coin-price-container .coin-price svg .default-icon {
   fill: #808080 !important; }
 
+.dark-theme .summary-container .trading-volume-wrapper .wave-auction-icon svg .newWave-icon {
+  fill: #808080; }
+
+.dark-theme .summary-container .trading-volume-wrapper .wave-action-phase {
+  border-top: 1px solid #535353; }
+
 .dark-theme .fee-limits-wrapper .fee-limits-link {
   color: #0066B4; }
 
@@ -2742,6 +2748,10 @@ table th {
     width: 100% !important; }
   .summary-container .trading-volume-wrapper {
     width: 50rem; }
+    .summary-container .trading-volume-wrapper .wave-auction-icon {
+      width: 1.5rem; }
+    .summary-container .trading-volume-wrapper .wave-action-phase {
+      border-top: 1px solid #000000; }
   .summary-container .account-details-wrapper .account-type-container {
     width: 30%; }
   .summary-container .account-details-wrapper .mobile-account-type {
@@ -5696,14 +5706,8 @@ table th {
     .accordion_wrapper .accordion_section .accordion_section_title.accordion_section--open .accordion_section_content_text {
       color: #212121; }
       .accordion_wrapper .accordion_section .accordion_section_title.accordion_section--open .accordion_section_content_text.with_arrow:after {
-        border: solid #212121 !important;
         border-left-color: #212121 !important;
-        border-right-color: #212121 !important;
-        border-width: 1px 0 0 1px !important;
-        display: inline-block;
-        padding: 2px;
-        margin-right: -0.7rem;
-        position: absolute; }
+        border-top-color: #212121 !important; }
     .accordion_wrapper .accordion_section .accordion_section_title.accordion_section--open .sidebar_hub-section-icon svg path {
       fill: #212121;
       stroke: #212121; }
@@ -5727,7 +5731,7 @@ table th {
 
 .direction_ltr .accordion_wrapper .accordion_section .accordion_section_content_text.with_arrow:after {
   border: solid #808080 !important;
-  border-width: 1px 0 0 1px !important;
+  border-width: 2px 0 0 2px !important;
   display: inline-block !important;
   padding: 3px !important;
   transform: rotate(131deg) !important;
@@ -5745,7 +5749,7 @@ table th {
 
 .direction_rtl .accordion_wrapper .accordion_section .accordion_section_content_text.with_arrow:after {
   border: solid #808080;
-  border-width: 1px 0 0 1px !important;
+  border-width: 2px 0 0 2px !important;
   display: inline-block !important;
   padding: 3px !important;
   transform: rotate(131deg) !important;
@@ -5757,7 +5761,7 @@ table th {
   transform: rotate(-135deg) !important; }
 
 .direction_rtl .accordion_wrapper .accordion_section.disabled .accordion_section_content_text:after {
-  border-right-color: #777677; }
+  border-top-color: #777677; }
 
 .dark-theme .accordion_wrapper .accordion_section {
   border-top-color: #535353; }
@@ -5769,19 +5773,15 @@ table th {
       color: #0066B4; }
     .dark-theme .accordion_wrapper .accordion_section .accordion_section_content_text.with_arrow:after {
       border-left-color: #808080 !important;
-      border-right-color: #808080 !important; }
+      border-top-color: #808080 !important; }
   .dark-theme .accordion_wrapper .accordion_section .accordion_section_title .sidebar_hub-section-icon svg path {
     fill: transparent;
     stroke: #808080; }
   .dark-theme .accordion_wrapper .accordion_section .accordion_section_title.accordion_section--open .accordion_section_content_text {
     color: white !important; }
     .dark-theme .accordion_wrapper .accordion_section .accordion_section_title.accordion_section--open .accordion_section_content_text.with_arrow:after {
-      border: solid white !important;
       border-left-color: white !important;
-      border-right-color: white !important;
-      border-width: 1px 0 0 1px !important;
-      display: inline-block;
-      padding: 2px; }
+      border-top-color: white !important; }
   .dark-theme .accordion_wrapper .accordion_section .accordion_section_title.accordion_section--open .sidebar_hub-section-icon svg path {
     fill: white;
     stroke: white; }
@@ -5818,7 +5818,7 @@ table th {
   margin-left: -0.7rem; }
 
 .dark-theme .direction_rtl .accordion_wrapper .accordion_section.disabled .accordion_section_content_text:after {
-  border-right-color: #808080; }
+  border-top-color: #808080; }
 
 .action_notification-wrapper {
   position: absolute;

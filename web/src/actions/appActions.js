@@ -49,6 +49,7 @@ export const SET_CONFIG = 'SET_CONFIG';
 export const REQUEST_HEX_ACCESS = 'REQUEST_HEX_ACCESS';
 export const SET_INFO = 'SET_INFO';
 export const SET_VALID_BASE_CURRENCY = 'SET_VALID_BASE_CURRENCY';
+export const SET_WAVE_AUCTION = 'SET_WAVE_AUCTION';
 
 export const USER_TYPES = {
 	USER_TYPE_NORMAL: 'normal',
@@ -253,6 +254,19 @@ export const getExchangeInfo = () => {
 					type: SET_INFO,
 					payload: { info: res.data.info }
 				});
+			}
+		});
+	};
+};
+
+export const getWaveAuction = () => {
+	return (dispatch) => {
+		axios.get('/wave').then((res) => {
+			if (res && res.data && res.data.data) {
+				// dispatch({
+				// 	type: SET_WAVE_AUCTION,
+				// 	payload: { data: res.data.data }
+				// });
 			}
 		});
 	};

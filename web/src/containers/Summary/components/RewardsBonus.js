@@ -31,8 +31,9 @@ const RewardsBonus = ({
                     {STRINGS.SUMMARY.COMPLETE_TASK_DESC}
                     <div className="mt-2">
                         <a
+                            target="blank"
                             className="blue-link pointer font-weight-bold"
-                            href="">
+                            href="https://hollaex.com/">
                             {STRINGS.TRADE_POSTS.LEARN_MORE.toUpperCase()}
                         </a>
                     </div>

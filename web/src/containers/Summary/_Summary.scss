@@ -127,6 +127,18 @@
                 }
             }
         }
+        .trading-volume-wrapper {
+            .wave-auction-icon {
+                svg {
+                    .newWave-icon {
+                        fill: $dark-icon-unhover;
+                    }
+                }
+            }
+            .wave-action-phase {
+                border-top: 1px solid $dark-app-line-divider;
+            }
+        }
     }
 
     .fee-limits-wrapper {
@@ -401,6 +413,14 @@
 
     .trading-volume-wrapper {
         width: 50rem;
+
+        .wave-auction-icon {
+            width: 1.5rem;;
+        }
+
+        .wave-action-phase {
+            border-top: 1px solid $colors-black;
+        }
     }
     .account-details-wrapper {
 

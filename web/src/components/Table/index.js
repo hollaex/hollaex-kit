@@ -66,8 +66,10 @@ class Table extends Component {
 		const { showAll, pageSize } = this.props;
 		const initItem = page * pageSize;
 		if (showAll) {
+			console.log('page--1', page);
 			this.setState({ page: 1, data: allData, headers });
 		} else if (initItem < count) {
+			console.log('page--2', page);
 			const data = allData.slice(initItem, initItem + pageSize);
 			this.setState({ page, data, headers });
 		}

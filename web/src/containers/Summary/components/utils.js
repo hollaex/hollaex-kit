@@ -1,6 +1,10 @@
+import React from 'react';
 import moment from 'moment';
+import ReactSvg from 'react-svg';
+
 import { calculatePrice } from '../../../utils/currency';
 import STRINGS from '../../../config/localizedStrings';
+import { BASE_CURRENCY, ICONS } from '../../../config/constants';
 
 export const getHexRequirements = (user, coins) => {
 	let walletDeposit = false;
@@ -151,3 +155,64 @@ export const getLastMonthVolume = (tradeData = {}, prices = {}, pairs = {}) => {
 	}
 	return total;
 };
+
+export const generateWaveHeaders = (onCancel) => [
+	{
+		label: STRINGS.SUMMARY.WAVE_NUMBER,
+		key: 'id',
+		renderCell: ({ serial = 0 }, key, index) => {
+			return (
+				<td key={index}>
+					<div className="d-flex">
+						<ReactSvg
+							path={ICONS.INCOMING_WAVE}
+							wrapperClassName="wave-auction-icon"
+						/>
+						<div className="ml-1">{serial}</div>
+					</div>
+				</td>
+			);
+		}
+	},
+	{
+		label: STRINGS.AMOUNT,
+		key: 'amount',
+		renderCell: ({ amount = '' }, key, index) => {
+			return <td key={index}>{amount}</td>;
+		}
+	},
+	{
+		label: STRINGS.FILLED,
+		key: 'filled',
+		renderCell: ({ filled = 0 }, key, index) => {
+			return <td key={index}>{filled}</td>;
+		}
+	},
+	{
+		label: STRINGS.formatString(
+			STRINGS.LOWEST_PRICE,
+			BASE_CURRENCY.toUpperCase()
+		).join(''),
+		key: 'low',
+		renderCell: ({ low = 0 }, key, index) => {
+			return <td key={index}>{low}</td>;
+		}
+	},
+	{
+		label: STRINGS.PHASE,
+		key: 'phase',
+		renderCell: ({ phase = 0 }, key, index) => {
+			return <td key={index}>{phase}</td>;
+		}
+	},
+	{
+		label: STRINGS.STATUS,
+		key: 'status',
+		renderCell: ({ status = '', updated_at = '' }, key, index) => {
+			let statusTxt = status === true ? STRINGS.USER_VERIFICATION.COMPLETED : STRINGS.INCOMING
+			return status === 'TBA'
+				? <td key={index}>{status}</td>
+				:<td key={index}>{`${statusTxt} (${updated_at})`}</td>;
+		}
+	}
+];

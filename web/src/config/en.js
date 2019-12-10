@@ -760,6 +760,10 @@ export default {
 	PUBLIC_SALES: 'public sales', // ToDo
 	REMAINING: 'Remaining',
 	FULLFILLED: '{0} % Fullfilled',
+	FILLED: 'Filled', // new
+	LOWEST_PRICE: 'Lowest Price ({0})', // new
+	PHASE: 'Phase', // new
+	INCOMING: 'Incoming', // new
 	PRICE_CURRENCY: 'PRICE ({0})',
 	AMOUNT_SYMBOL: 'AMOUNT ({0})',
 	MARKET_PRICE: 'Market Price',
@@ -1179,7 +1183,14 @@ export default {
 		COMPLETE_ACC_VERIFICATION: 'Complete account verification and get a 20 HEX bonus', // new
 		INVITE_USER: 'Invite user and enjoy 30% off your trading fees', // new
 		JOIN_HAP: 'Join HAP and earn 10% for every HollaEx Kit you sell', // new
-		EARN_RUNNING_EXCHANGE: 'Earn passive income for running your own exchange' // new
+		EARN_RUNNING_EXCHANGE: 'Earn passive income for running your own exchange', // new
+		HEX_WAVE_AUCTION: 'HEX Wave Auction Data', // new
+		HEX_WAVE_DESC_1: 'The distribution of the HollaEx token (HEX) is done through a Wave Auction.', // new
+		HEX_WAVE_DESC_2: 'The Wave Auction sells a random amount of HEX at random times to the highest bidders on the orderbook', // new
+		HEX_WAVE_DESC_3: 'Below displays the historic data on the Wave Auction history', // new
+		WAVE_AUCTION_PHASE: 'Wave Auction Phase {0}', // new
+		LEARN_MORE_WAVE_AUCTION: 'Learn more about the Wave Auction', // new
+		WAVE_NUMBER: 'Wave Number' // new
 	},
 	REFERRAL_LINK: {
 		TITLE: 'Invite your friend', // new

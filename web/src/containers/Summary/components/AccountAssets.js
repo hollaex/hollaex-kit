@@ -18,7 +18,7 @@ const AccountAssets = ({ chartData = [], totalAssets, balance, coins, activeThem
 	const baseValue = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
 	// const Default_Icon = activeTheme === 'white' ? ICONS.DEFAULT_ICON : ICONS.DEFAULT_ICON_DARK;
 	return (
-		<div className={classnames({"summary-section_2": SHOW_SUMMARY_ACCOUNT_DETAILS})}>
+		<div className="summary-section_2">
 			<div className="summary-content-txt assets-description">
 				<div>{STRINGS.SUMMARY.ACCOUNT_ASSETS_TXT_1}</div>
 				{SHOW_SUMMARY_ACCOUNT_DETAILS
@@ -31,10 +31,7 @@ const AccountAssets = ({ chartData = [], totalAssets, balance, coins, activeThem
 					<div
 						className={
 							classnames(
-								"w-100 donut-container",
-								{
-									"donut-container-hex": !SHOW_SUMMARY_ACCOUNT_DETAILS
-								}
+								"w-100 donut-container"
 							)
 						}>
 						{BASE_CURRENCY && (
