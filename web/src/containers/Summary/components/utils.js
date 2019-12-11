@@ -1,6 +1,8 @@
 import React from 'react';
 import moment from 'moment';
 import ReactSvg from 'react-svg';
+import { Link } from 'react-router';
+import classnames from 'classnames';
 
 import { calculatePrice } from '../../../utils/currency';
 import STRINGS from '../../../config/localizedStrings';
@@ -160,15 +162,22 @@ export const generateWaveHeaders = (onCancel) => [
 	{
 		label: STRINGS.SUMMARY.WAVE_NUMBER,
 		key: 'id',
-		renderCell: ({ serial = 0 }, key, index) => {
+		renderCell: ({ no = 0, status = '' }, key, index) => {
 			return (
-				<td key={index}>
+				<td
+					key={index}
+					className={
+						classnames({
+							"wave-phase-completed": status === true,
+							"wave-phase-pending": status === false
+						})
+					}>
 					<div className="d-flex">
 						<ReactSvg
 							path={ICONS.INCOMING_WAVE}
 							wrapperClassName="wave-auction-icon"
 						/>
-						<div className="ml-1">{serial}</div>
+						<div className="ml-1">{no}</div>
 					</div>
 				</td>
 			);
@@ -177,15 +186,33 @@ export const generateWaveHeaders = (onCancel) => [
 	{
 		label: STRINGS.AMOUNT,
 		key: 'amount',
-		renderCell: ({ amount = '' }, key, index) => {
-			return <td key={index}>{amount}</td>;
+		renderCell: ({ amount = '', status = '' }, key, index) => {
+			return <td
+				key={index}
+				className={
+					classnames({
+						"wave-phase-completed": status === true,
+						"wave-phase-pending": status === false
+					})
+				}>
+					{amount}
+			</td>;
 		}
 	},
 	{
 		label: STRINGS.FILLED,
 		key: 'filled',
-		renderCell: ({ filled = 0 }, key, index) => {
-			return <td key={index}>{filled}</td>;
+		renderCell: ({ filled = 0, status="" }, key, index) => {
+			return <td
+				key={index}
+				className={
+					classnames({
+						"wave-phase-completed": status === true,
+						"wave-phase-pending": status === false
+					})
+				}>
+					{filled}
+			</td>;
 		}
 	},
 	{
@@ -194,25 +221,54 @@ export const generateWaveHeaders = (onCancel) => [
 			BASE_CURRENCY.toUpperCase()
 		).join(''),
 		key: 'low',
-		renderCell: ({ low = 0 }, key, index) => {
-			return <td key={index}>{low}</td>;
+		renderCell: ({ low = 0, status = '' }, key, index) => {
+			return status === 'TBA'
+				? <td key={index}>{low}</td>
+				:status === true
+					? <td key={index} className="wave-phase-completed">{low}</td>
+					: <td key={index} className="wave-phase-pending">{STRINGS.PENDING}</td>;
 		}
 	},
 	{
 		label: STRINGS.PHASE,
 		key: 'phase',
-		renderCell: ({ phase = 0 }, key, index) => {
-			return <td key={index}>{phase}</td>;
+		renderCell: ({ phase = 0, status = '' }, key, index) => {
+			return <td
+				key={index}
+				className={
+					classnames({
+						"wave-phase-completed": status === true,
+						"wave-phase-pending": status === false
+					})
+				}>
+					{phase}
+			</td>;
 		}
 	},
 	{
 		label: STRINGS.STATUS,
 		key: 'status',
 		renderCell: ({ status = '', updated_at = '' }, key, index) => {
-			let statusTxt = status === true ? STRINGS.USER_VERIFICATION.COMPLETED : STRINGS.INCOMING
+			let statusTxt = status === true ? STRINGS.USER_VERIFICATION.COMPLETED : STRINGS.INCOMING;
+			let updated = status === true
+				? `(${updated_at})`
+				: <Link
+					className="blue-link"
+					to="/trade/hex-usdt">
+						({STRINGS.GO_TRADE})
+				</Link>
 			return status === 'TBA'
 				? <td key={index}>{status}</td>
-				:<td key={index}>{`${statusTxt} (${updated_at})`}</td>;
+				: <td
+					key={index}
+					className={
+						classnames({
+							"wave-phase-completed": status === true,
+							"wave-phase-pending": status === false
+						})
+					}>
+						{statusTxt} {updated}
+				</td>;
 		}
 	}
 ];

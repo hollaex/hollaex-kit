@@ -53,7 +53,7 @@ class AccountWaveAuction extends Component {
         let waveData = [];
         phase.forEach(key => {
             let filteredData = this.props.wave.filter(data => data.phase === key);
-            console.log('filteredData', filteredData);
+            filteredData.sort((a, b) => a.no - b.no);
             if (filteredData.length < 10) {
                 let count = 10 - filteredData.length;
                 while (count > 0) {
@@ -63,11 +63,14 @@ class AccountWaveAuction extends Component {
             } else if (filteredData.length > 10) {
                 filteredData = filteredData.slice(0, 10);
             }
-            const temp = filteredData.map((data, index) => ({ ...data, serial: index + 1 }));
-            waveData = [ ...waveData, ...temp ];
+            waveData = [ ...waveData, ...filteredData ];
         });
         const headers = generateWaveHeaders();
         this.setState({ waveData, headers, phase, currentPhase: phase[0] || 1 });
+    };
+
+    handlePhase = (size, page) => {
+        this.setState({ currentPhase: this.state.phase[page] });
     };
 
     render() {
@@ -99,6 +102,8 @@ class AccountWaveAuction extends Component {
                         headers={headers}
                         data={waveData}
                         count={waveData.length}
+                        handleNext={this.handlePhase}
+                        handlePrevious={this.handlePhase}
                     />
                 </div>
             </div>

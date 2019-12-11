@@ -131,12 +131,15 @@
             .wave-auction-icon {
                 svg {
                     .newWave-icon {
-                        fill: $dark-icon-unhover;
+                        fill: $dark-icon-color;
                     }
                 }
             }
             .wave-action-phase {
                 border-top: 1px solid $dark-app-line-divider;
+            }
+            .wave-phase-pending {
+                color: $colors-white;
             }
         }
     }
@@ -216,11 +219,14 @@
     .confirm-text {
         font-size: 2rem;
     }
-}
-
-.layout-mobile {
     .fee-limits-wrapper {
         margin: 3rem auto;
+    }
+    .summary-container {
+        .summary-section_1,
+        .summary-section_2 {
+            height: auto !important;
+        }
     }
 }
 
@@ -420,6 +426,13 @@
 
         .wave-action-phase {
             border-top: 1px solid $colors-black;
+        }
+        .wave-phase-completed {
+            color: $colors-wave-phase-completed;
+        }
+        .wave-phase-pending {
+            color: $colors-black;
+            font-weight: bold;
         }
     }
     .account-details-wrapper {

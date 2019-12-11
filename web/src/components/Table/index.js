@@ -35,7 +35,7 @@ class Table extends Component {
 				nextProps.count
 			);
 		} else {
-			this.goToPage(0, nextProps.data, nextProps.headers, nextProps.count);
+			// this.goToPage(0, nextProps.data, nextProps.headers, nextProps.count);
 		}
 	}
 
@@ -44,6 +44,7 @@ class Table extends Component {
 	// }
 
 	goToPreviousPage = () => {
+		this.props.handlePrevious(this.props.pageSize, this.state.page - 1);
 		this.goToPage(
 			this.state.page - 1,
 			this.props.data,
@@ -66,10 +67,8 @@ class Table extends Component {
 		const { showAll, pageSize } = this.props;
 		const initItem = page * pageSize;
 		if (showAll) {
-			console.log('page--1', page);
 			this.setState({ page: 1, data: allData, headers });
 		} else if (initItem < count) {
-			console.log('page--2', page);
 			const data = allData.slice(initItem, initItem + pageSize);
 			this.setState({ page, data, headers });
 		}
@@ -119,6 +118,7 @@ Table.defaultProps = {
 	title: '',
 	cancelDelayData: [],
 	handleNext: () => {},
+	handlePrevious: () => {},
 	jumpToPage: 0
 };
 

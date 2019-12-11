@@ -8,11 +8,12 @@ import RewardsBonus from './components/RewardsBonus';
 import AccountAssets from './components/AccountAssets';
 import TradingVolume from './components/TradingVolume';
 import AccountDetails from './components/AccountDetails';
+import AccountWaveAuction from './components/AccountWaveAuction';
 
 import {
 	BASE_CURRENCY,
 	DEFAULT_COIN_DATA,
-	SHOW_SUMMARY_ACCOUNT_DETAILS,
+	IS_HEX,
 	SHOW_TOTAL_ASSETS
 } from '../../config/constants';
 import { formatAverage, formatBaseAmount } from '../../utils/currency';
@@ -101,25 +102,30 @@ const MobileSummary = ({
 						activeTheme={activeTheme} />
 				</SummaryBlock>
 			</div>
-			{SHOW_SUMMARY_ACCOUNT_DETAILS
-				? <div className="trading-volume-wrapper w-100">
-						<SummaryBlock
-							title={STRINGS.SUMMARY.TRADING_VOLUME}
-							secondaryTitle={<span>
-								<span className="title-font">
-									{` ${formatAverage(formatBaseAmount(lastMonthVolume))}`}
-								</span>
-								{` ${fullname} ${STRINGS.formatString(
-									STRINGS.SUMMARY.NOMINAL_TRADING_WITH_MONTH,
-									moment().subtract(1, "month").startOf("month").format('MMMM')
-								).join('')}`}
+			<div className="trading-volume-wrapper w-100">
+				<SummaryBlock
+					title={IS_HEX
+						? STRINGS.SUMMARY.HEX_WAVE_AUCTION
+						: STRINGS.SUMMARY.TRADING_VOLUME
+					}
+					secondaryTitle={IS_HEX
+						? ''
+						: <span>
+							<span className="title-font">
+								{` ${formatAverage(formatBaseAmount(lastMonthVolume))}`}
 							</span>
-							} >
-							<TradingVolume user={user} />
-						</SummaryBlock>
-					</div>
-					: null
-				}
+							{` ${fullname} ${STRINGS.formatString(
+								STRINGS.SUMMARY.NOMINAL_TRADING_WITH_MONTH,
+								moment().subtract(1, "month").startOf("month").format('MMMM')
+							).join('')}`}
+						</span>
+					}>
+					{IS_HEX
+						? <AccountWaveAuction user={user} />
+						: <TradingVolume user={user} />
+					}
+				</SummaryBlock>
+			</div>
 				<SummaryBlock
 					title={STRINGS.SUMMARY.ACCOUNT_DETAILS}
 					secondaryTitle={traderAccTitle}

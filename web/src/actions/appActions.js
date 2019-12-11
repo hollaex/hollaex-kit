@@ -263,10 +263,10 @@ export const getWaveAuction = () => {
 	return (dispatch) => {
 		axios.get('/wave').then((res) => {
 			if (res && res.data && res.data.data) {
-				// dispatch({
-				// 	type: SET_WAVE_AUCTION,
-				// 	payload: { data: res.data.data }
-				// });
+				dispatch({
+					type: SET_WAVE_AUCTION,
+					payload: { data: res.data.data }
+				});
 			}
 		});
 	};

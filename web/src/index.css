@@ -2565,10 +2565,13 @@ table th {
   fill: #808080 !important; }
 
 .dark-theme .summary-container .trading-volume-wrapper .wave-auction-icon svg .newWave-icon {
-  fill: #808080; }
+  fill: white; }
 
 .dark-theme .summary-container .trading-volume-wrapper .wave-action-phase {
   border-top: 1px solid #535353; }
+
+.dark-theme .summary-container .trading-volume-wrapper .wave-phase-pending {
+  color: white; }
 
 .dark-theme .fee-limits-wrapper .fee-limits-link {
   color: #0066B4; }
@@ -2625,6 +2628,10 @@ table th {
 
 .layout-mobile .fee-limits-wrapper {
   margin: 3rem auto; }
+
+.layout-mobile .summary-container .summary-section_1,
+.layout-mobile .summary-container .summary-section_2 {
+  height: auto !important; }
 
 .summary-container {
   height: inherit;
@@ -2752,6 +2759,11 @@ table th {
       width: 1.5rem; }
     .summary-container .trading-volume-wrapper .wave-action-phase {
       border-top: 1px solid #000000; }
+    .summary-container .trading-volume-wrapper .wave-phase-completed {
+      color: #808000; }
+    .summary-container .trading-volume-wrapper .wave-phase-pending {
+      color: #000000;
+      font-weight: bold; }
   .summary-container .account-details-wrapper .account-type-container {
     width: 30%; }
   .summary-container .account-details-wrapper .mobile-account-type {
@@ -6339,6 +6351,8 @@ table th {
     padding: 0.25rem; }
   .table-wrapper th {
     font-weight: bold; }
+  .table-wrapper .table_header-wrapper {
+    color: #000000; }
   .table-wrapper .table_body-wrapper {
     font-size: 0.8rem; }
     .table-wrapper .table_body-wrapper.with_icon tr td:first-child {
@@ -6408,6 +6422,8 @@ table th {
 
 .dark-theme .table-wrapper {
   color: white; }
+  .dark-theme .table-wrapper .table_header-wrapper {
+    color: white; }
   .dark-theme .table-wrapper .table_body-wrapper {
     color: #808080; }
     .dark-theme .table-wrapper .table_body-wrapper tr.table_body-row td {
