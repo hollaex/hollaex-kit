@@ -187,30 +187,45 @@ export const generateWalletActionsText = (
 	};
 };
 
-export const getCurrencyFromName = (name = '') => {
-	switch (name.toLowerCase()) {
-		case 'btc':
-		case 'bitcoin':
-			return 'btc';
-		case 'eth':
-		case 'ethereum':
-			return 'eth';
-		case 'bch':
-		case 'bitcoincash':
-			return 'bch';
-		case 'xrp':
-		case 'ripple':
-			return 'xrp';
-		case 'eur':
-		case 'euro':
-			return 'eur';
-		case 'hex':
-			return 'hex';
-		case 'usdt':
-			return 'usdt';
-		default:
-			return '';
-	}
+export const getCurrencyFromName = (name = '', coins) => {
+	let currency = '';
+	Object.keys(coins).forEach((key) => {
+		let coinData = coins[key];
+		if((coinData.fullname &&
+			coinData.fullname.toLowerCase() === name.toLowerCase()) ||
+			(coinData.symbol &&
+				coinData.symbol.toLowerCase() === name.toLowerCase())) {
+				currency = coinData.symbol
+			}
+	});
+
+	return currency;
+	// switch (name.toLowerCase()) {
+	// 	case 'btc':
+	// 	case 'bitcoin':
+	// 		return 'btc';
+	// 	case 'eth':
+	// 	case 'ethereum':
+	// 		return 'eth';
+	// 	case 'bch':
+	// 	case 'bitcoincash':
+	// 		return 'bch';
+	// 	case 'xrp':
+	// 	case 'ripple':
+	// 		return 'xrp';
+	// 	case 'eur':
+	// 	case 'euro':
+	// 		return 'eur';
+	// 	case 'hex':
+	// 		return 'hex';
+	// 	case 'usdt':
+	// 		return 'usdt';
+	// 	case 'xmr':
+	// 	case 'monero':
+	// 		return 'xmr';
+	// 	default:
+	// 		return '';
+	// }
 };
 
 export const getCurrencyFromSymbol = (symbol = '') => {
