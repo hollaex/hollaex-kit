@@ -9,7 +9,7 @@ import EmailRequestForm, { generateFormFields } from './EmailRequestForm';
 import EmailRequestSuccess from './EmailRequestSuccess';
 import { IconTitle, Dialog, MobileBarBack } from '../../components';
 import { ContactForm } from '../';
-import { HOLLAEX_LOGO, FLEX_CENTER_CLASSES } from '../../config/constants';
+import { HOLLAEX_LOGO, FLEX_CENTER_CLASSES, SUPPORT_HELP_URL } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 
 const BottomLink = () => (
@@ -49,7 +49,10 @@ class VerifyEmailRequest extends Component {
 	};
 
 	onOpenDialog = () => {
-		this.setState({ showContactForm: true });
+		if (window) {
+			window.open(SUPPORT_HELP_URL, '_blank');
+		}
+		// this.setState({ showContactForm: true });
 	};
 
 	onCloseDialog = () => {

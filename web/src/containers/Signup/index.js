@@ -13,7 +13,8 @@ import { IconTitle, Dialog, MobileBarBack } from '../../components';
 import {
 	HOLLAEX_LOGO,
 	FLEX_CENTER_CLASSES,
-	ICONS
+	ICONS,
+	SUPPORT_HELP_URL
 } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 
@@ -97,7 +98,10 @@ class Signup extends Component {
 	};
 
 	onOpenDialog = () => {
-		this.setState({ showContactForm: true });
+		if (window) {
+			window.open(SUPPORT_HELP_URL, '_blank');
+		}
+		// this.setState({ showContactForm: true });
 	};
 
 	onCloseDialog = () => {
