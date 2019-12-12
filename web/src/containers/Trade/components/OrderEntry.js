@@ -212,7 +212,8 @@ class OrderEntry extends Component {
 			openCheckOrder,
 			onRiskyTrade,
 			submit,
-			settings: { risk = {}, notification = {} }
+			settings: { risk = {}, notification = {} },
+			balance
 		} = this.props;
 		const orderTotal = mathjs.add(
 			mathjs.fraction(this.state.orderPrice),
@@ -228,7 +229,14 @@ class OrderEntry extends Component {
 			orderFees: this.state.orderFees
 		};
 		const orderPriceInBaseCoin = calculatePrice(orderTotal, this.props.prices[pair_2]);
-		const riskyPrice = ((this.state.totalAssets / 100) * risk.order_portfolio_percentage);
+		let avail_balance = 0;
+		if (side === 'buy') {
+			avail_balance = balance[`${pair_2.toLowerCase()}_available`];
+		} else {
+			avail_balance = balance[`${pair_base.toLowerCase()}_available`];
+		}
+		// const riskyPrice = ((this.state.totalAssets / 100) * risk.order_portfolio_percentage);
+		const riskyPrice = ((avail_balance / 100) * risk.order_portfolio_percentage);
 
 		if (type === 'market') {
 			delete order.price;
