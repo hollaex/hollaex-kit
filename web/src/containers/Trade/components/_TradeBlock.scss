@@ -271,7 +271,15 @@ $tabs-title--margin: 2rem;
 					.st0 {
 						fill: $dark-font-main-text-color !important;
 					}
-					.btc0, .btc1, .eth0, .eth1, .bch-icon, .xrp-icon, .hex-icon, .default-icon {
+					.btc0,
+					.btc1,
+					.eth0,
+					.eth1,
+					.bch-icon,
+					.xrp-icon,
+					.hex-icon,
+					.xmr-icon,
+					.default-icon {
 						fill: $dark-font-main-text-color !important;
 					}
 				}

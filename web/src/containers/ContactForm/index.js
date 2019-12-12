@@ -38,7 +38,7 @@ class ContactForm extends Component {
 				// }
 			})
 			.catch((err) => {
-				const _error = err.response.data
+				const _error = err.response && err.response.data
 					? err.response.data.message
 					: err.message;
 				throw new SubmissionError({ _error });

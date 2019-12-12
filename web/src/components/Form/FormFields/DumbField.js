@@ -41,13 +41,15 @@ const DumbField = ({
 			{...rest}
 		>
 			<FieldContent {...props}>
-				{copyOnClick
-					? <CopyToClipboard text={value}>
-						<div className="pointer" onClick={onCopy}>{value}</div>
-					</CopyToClipboard>
-					: value
-				}
-				{value && allowCopy && renderCopy(value, onCopy)}
+				<div className="d-flex justify-content-between">
+					{copyOnClick
+						? <CopyToClipboard text={value}>
+							<div className="pointer address-line" onClick={onCopy}>{value}</div>
+						</CopyToClipboard>
+						: value
+					}
+					{value && allowCopy && renderCopy(value, onCopy)}
+				</div>
 			</FieldContent>
 		</FieldWrapper>
 	);

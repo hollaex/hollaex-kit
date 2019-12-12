@@ -39,19 +39,6 @@ class DocumentsVerification extends Component {
 		// const FRONT_TYPE = 'PASSPORT';
 		const formFields = {
 			idDocument: {
-				type: {
-					type: 'text',
-					label:
-						STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS.TYPE_LABEL,
-					placeholder:
-						STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS.TYPE_PLACEHOLDER,
-					validate: [
-						requiredWithCustomMessage(
-							STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.VALIDATIONS.ID_TYPE
-						)
-					],
-					fullWidth: isMobile
-				},
 				number: {
 					type: 'text',
 					label:

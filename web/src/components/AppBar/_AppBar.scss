@@ -26,7 +26,14 @@ $app-bar-add-tab-red: #ff0000;
 			color: $dark-font-main-text-color !important;
 
 			svg {
-				.btc0, .btc1, .eth0, .eth1, .bch-icon, .xrp-icon, .hex-icon {
+				.btc0,
+				.btc1,
+				.eth0,
+				.eth1,
+				.bch-icon,
+				.xrp-icon,
+				.hex-icon,
+				.xmr-icon {
 					fill: $dark-font-main-text-color;
 				}
 				.tab-close, .plus, .double-arrow {
@@ -337,7 +344,14 @@ $app-bar-add-tab-red: #ff0000;
 		top: 1px;
 
 		svg {
-			.btc0, .btc1, .eth0, .eth1, .bch-icon, .xrp-icon, .hex-icon {
+			.btc0,
+			.btc1,
+			.eth0,
+			.eth1,
+			.bch-icon,
+			.xrp-icon,
+			.hex-icon,
+			.xmr-icon {
 				fill: $colors-main-black;
 			}
 			.tab-close, .plus, .double-arrow {
@@ -379,7 +393,14 @@ $app-bar-add-tab-red: #ff0000;
 	}
 
 	.app_bar-pair-content, .app-bar-tab-close, .app-bar-currency-icon, .app-bar-account-icon svg {
-		.btc0, .btc1, .eth0, .eth1, .bch-icon, .xrp-icon, .hex-icon {
+		.btc0,
+		.btc1,
+		.eth0,
+		.eth1,
+		.bch-icon,
+		.xrp-icon,
+		.hex-icon,
+		.xmr-icon {
 			fill: $app-bar-icon-inactive;
 		}
 		.tab-close, .plus {
@@ -829,6 +850,7 @@ $app-bar-add-tab-red: #ff0000;
 				.bch-icon,
 				.xrp-icon,
 				.hex-icon,
+				.xmr-icon,
 				.default-icon {
 					fill: $dark-font-main-text-color !important;
 				}
@@ -855,7 +877,15 @@ $app-bar-add-tab-red: #ff0000;
 
 	.app-bar-tab-setting, .app-bar-add-tab-icons {
 		svg {
-			.btc0, .btc1, .eth0, .eth1, .bch-icon, .xrp-icon, .hex-icon, .default-icon {
+			.btc0,
+			.btc1,
+			.eth0,
+			.eth1,
+			.bch-icon,
+			.xrp-icon,
+			.hex-icon,
+			.xmr-icon,
+			.default-icon {
 				fill: $app-bar-menu-list-color !important;
 			}
 			.plus, .minus {

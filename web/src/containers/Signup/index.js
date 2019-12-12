@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
-import ReactSVG from 'react-svg';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import { isMobile } from 'react-device-detect';
@@ -9,12 +8,13 @@ import { bindActionCreators } from 'redux';
 import { performSignup } from '../../actions/authAction';
 import SignupForm, { generateFormFields, FORM_NAME } from './SignupForm';
 import SignupSuccess from './SignupSuccess';
-import { RequestForm } from '../';
-import { IconTitle, Dialog, MobileBarBack, BlueLink } from '../../components';
+import { ContactForm } from '../';
+import { IconTitle, Dialog, MobileBarBack } from '../../components';
 import {
 	HOLLAEX_LOGO,
 	FLEX_CENTER_CLASSES,
-	ICONS
+	ICONS,
+	SUPPORT_HELP_URL
 } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 
@@ -98,7 +98,10 @@ class Signup extends Component {
 	};
 
 	onOpenDialog = () => {
-		this.setState({ showContactForm: true });
+		if (window) {
+			window.open(SUPPORT_HELP_URL, '_blank');
+		}
+		// this.setState({ showContactForm: true });
 	};
 
 	onCloseDialog = () => {
@@ -149,29 +152,12 @@ class Signup extends Component {
 							STRINGS.APP_TITLE
 						)}
 						actionProps={{
-							text: STRINGS.REQUEST_HEX_ACCESS.REQUEST_INVITE,
+							text: STRINGS.HELP_TEXT,
 							iconPath: ICONS.BLUE_QUESTION,
 							onClick: this.onOpenDialog,
 							useSvg: true
 						}}
 					/>
-					{!isReferral
-						? <div className={classnames(' signup-warning', 'flex-row', 'd-flex', 'justify-content:space-between')}>
-							<div className={classnames('d-flex')}>
-								<ReactSVG path={ICONS.VERIFICATION_INCOMPLETE} wrapperClassName={'warning-icon'} />
-							</div>
-							<div className="signup-warning-text">
-								{STRINGS.formatString(
-									STRINGS.REQUEST_HEX_ACCESS.REFERRAL_INVITE_WARNING,
-									<BlueLink
-										onClick={this.onOpenDialog}
-										text={STRINGS.REQUEST_HEX_ACCESS.REQUEST_INVITE.toLowerCase()}
-									/>
-								)}
-							</div>
-						</div>
-						: null
-					}
 					<div
 						className={classnames(
 							...FLEX_CENTER_CLASSES,
@@ -198,8 +184,7 @@ class Signup extends Component {
 					showCloseText={false}
 					theme={activeTheme}
 				>
-					<RequestForm
-						initialValues={{ category: 'request_Hex_Invite' }}
+					<ContactForm
 						onSubmitSuccess={this.onCloseDialog}
 						onClose={this.onCloseDialog}
 					/>
