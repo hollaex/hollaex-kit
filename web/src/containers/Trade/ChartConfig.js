@@ -69,7 +69,7 @@ export const WHITE_THEME = {
 	"mainSeriesProperties.baselineStyle.priceSource": "close",
 	"mainSeriesProperties.baselineStyle.transparency": 50,
 	"mainSeriesProperties.baselineStyle.baseLevelPercentage": 50
-}
+};
 
 export const DARK_THEME = {
 	"paneProperties.background": "#202020",
@@ -143,4 +143,16 @@ export const DARK_THEME = {
 	"mainSeriesProperties.baselineStyle.priceSource": "close",
 	"mainSeriesProperties.baselineStyle.transparency": 50,
 	"mainSeriesProperties.baselineStyle.baseLevelPercentage": 50
-}
+};
+
+export const VOLUME_WHITE = {
+	"volume.volume.color.0": "#d1d4dc",
+	"volume.volume.color.1": "#000000",
+	"volume.volume.transparency": 50,
+};
+
+export const VOLUME_DARK = {
+	"volume.volume.color.0": "#00A69C",
+	"volume.volume.color.1": "#EE4036",
+	"volume.volume.transparency": 50,
+};
