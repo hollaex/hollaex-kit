@@ -48,12 +48,6 @@ const BankVerificationHome = ({ user, setActivePageContent, setActiveTab }) => {
 									className="mr-3 title-font"
 									disable
 								/>
-								<PanelInformationRow
-									label={STRINGS.USER_VERIFICATION.CARD_NUMBER}
-									information={account.card_number}
-									className="title-font"
-									disable
-								/>
 							</div>
 						</div>
 					</div>

@@ -121,8 +121,13 @@ $outline-height: 1.5px;
 		padding-bottom: 0;
 	}
 
+	.address-line {
+		word-break: break-all;
+	}
+
 	.copy-wrapper {
 		top: 0;
+		position: unset;
 	}
 }
 

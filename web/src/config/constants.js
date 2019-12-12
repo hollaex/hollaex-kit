@@ -45,6 +45,8 @@ export const ICONS = {
 	KRW_ICON: '/assets/icons/krw-icon-01.svg',
 	HEX_ICON: '/assets/icons/hex-icon.svg',
 	HEX_ICON_DARK: '/assets/icons/hex-icon-dark.svg',
+	XMR_ICON: '/assets/icons/xmr-icon.svg',
+	XMR_ICON_DARK: '/assets/icons/xmr-icon-dark.svg',
 	USDT_ICON: '/assets/icons/usdt-icon.svg',
 	CHECK: '/assets/images/Orderbook scrolling-01.svg',
 	DARK_CHECK: '/assets/images/dark-Orderbook-scrolling-01.svg',
@@ -483,6 +485,7 @@ export const API_DOCS_URL = 'https://docs.bitholla.com/';
 export const EXCHANGE_URL = 'https://dash.bitholla.com/';
 export const EXCHANGE_EXPIRY_DAYS = 15;
 export const AFFILIATION_APPLY_URL = 'https://docs.google.com/forms/d/1xf1mHxiTW6YUKVEqvfMJZqygiFxm1P6aUDS7uXe5Ouc/viewform?ts=5d9da3d5&edit_requested=true';
+export const SUPPORT_HELP_URL = 'https://info.hollaex.com/hc/en-us/requests/new';
 
 // export const TRADING_ACCOUNT_TYPE = {
 // 	shrimp: {
