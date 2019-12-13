@@ -5,14 +5,8 @@ const app = express();
 
 const PORT = process.env.PLUGIN_PORT || 10011;
 
-const PLUGINS = process.env.PLUGINS || '';
+const PLUGINS = process.env.ENVIRONMENT_PLUGINS || 'bank';
 const plugins = PLUGINS.split(',');
-
-plugins.forEach((plugin) => {
-	if (plugin) {
-		require('./' + plugin);
-	}
-});
 
 app.get('/plugins', (req, res) => {
 	res.send('Welcome to HollaEx plugin');
@@ -21,3 +15,9 @@ app.get('/plugins', (req, res) => {
 app.listen(PORT);
 
 module.exports = app;
+
+plugins.forEach((plugin) => {
+	if (plugin) {
+		require('./' + plugin);
+	}
+});
