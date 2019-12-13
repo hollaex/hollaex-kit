@@ -1426,6 +1426,13 @@ table th {
 .transaction-history-wrapper svg .transaction-history-5 {
   fill: #000000; }
 
+.display_table-wrapper .display_table-cell {
+  min-height: 1.2rem !important;
+  padding: 0 0.1rem !important; }
+
+.display_table-wrapper:first-child .display_table-body {
+  padding-top: 0.1rem !important; }
+
 .dark-theme .csv-action .action_notification-text {
   color: #0066B4 !important; }
 
@@ -1462,7 +1469,8 @@ table th {
     .trade-container .trade-col_main_wrapper .trade-tabs_content > * {
       flex: 1 !important; }
     .trade-container .trade-col_main_wrapper .trade-tabs_content .hex-logo {
-      width: 7rem; }
+      width: 3rem;
+      height: 3rem; }
   .trade-container .trade-col_side_wrapper {
     flex: 0;
     min-width: 17.5rem;
@@ -1546,7 +1554,8 @@ table th {
   font-size: 1.2rem; }
 
 .layout-mobile .hex-logo {
-  width: 7rem; }
+  width: 3rem;
+  height: 3rem; }
 
 @media (min-width: 1920px) {
   .trade-container .trade-col_side_wrapper {
@@ -2167,6 +2176,16 @@ table th {
 .trade_history-row.buy {
   color: #878787; }
 
+.trade_history-row .trade_history-icon {
+  width: 1rem;
+  margin-right: 3px; }
+  .trade_history-row .trade_history-icon.sell svg .up-icon,
+  .trade_history-row .trade_history-icon.sell svg .down-icon {
+    fill: #000000; }
+  .trade_history-row .trade_history-icon.buy svg .up-icon,
+  .trade_history-row .trade_history-icon.buy svg .down-icon {
+    fill: #878787; }
+
 .layout-mobile .trade_active_orders-wrapper {
   max-height: 35vh !important; }
 
@@ -2247,6 +2266,14 @@ table th {
 
 .dark-theme .trade_history-row.buy {
   color: #00A69C; }
+
+.dark-theme .trade_history-row .trade_history-icon.sell svg .up-icon,
+.dark-theme .trade_history-row .trade_history-icon.sell svg .down-icon {
+  fill: #EE4036; }
+
+.dark-theme .trade_history-row .trade_history-icon.buy svg .up-icon,
+.dark-theme .trade_history-row .trade_history-icon.buy svg .down-icon {
+  fill: #00A69C; }
 
 .dark-theme .cancel-cross-1 {
   fill: #808080; }
