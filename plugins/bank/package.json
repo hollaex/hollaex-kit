@@ -1,0 +1,10 @@
+{
+	"name": "bank",
+	"version": "0.1.0",
+	"dependencies": {
+		"lodash": "4.17.5",
+		"pg": "6.4.2",
+		"pg-hstore": "2.3.2",
+		"sequelize": "4.37.7"
+	}
+}
