@@ -57,7 +57,7 @@ class Deposit extends Component {
 	}
 
 	setCurrency = (currencyName) => {
-		const currency = getCurrencyFromName(currencyName);
+		const currency = getCurrencyFromName(currencyName, this.props.coins);
 		if (currency) {
 			this.setState({ currency, checked: false }, () => {
 				this.validateRoute(
@@ -96,7 +96,6 @@ class Deposit extends Component {
 		if (!id || !currency || !checked) {
 			return <div />;
 		}
-		console.log(crypto_wallet, currency);
 		return (
 			<div>
 				{isMobile && <MobileBarBack onBackClick={this.onGoBack} />}

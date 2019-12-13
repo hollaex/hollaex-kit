@@ -53,10 +53,17 @@ export const PopupInfo = ({ type }) => {
 };
 
 export const TokenCreatedInfo = ({ token }) => {
-	const props = {
+	const props_api_key = {
 		label: STRINGS.DEVELOPERS_TOKENS_POPUP.API_KEY_LABEL,
 		className: 'token-value-input',
-		value: token,
+		value: token.tokenKey,
+		fullWidth: true,
+		allowCopy: true
+	};
+	const props_secret_key = {
+		label: STRINGS.DEVELOPERS_TOKENS_POPUP.SECRET_KEY_LABEL,
+		className: 'token-value-input',
+		value: token.secret,
 		fullWidth: true,
 		allowCopy: true
 	};
@@ -71,7 +78,10 @@ export const TokenCreatedInfo = ({ token }) => {
 				{STRINGS.DEVELOPERS_TOKENS_POPUP.CREATED_TEXT_2}
 			</div>
 			<div className="mt-4">
-				<DumbField {...props} />
+				<DumbField {...props_api_key} />
+			</div>
+			<div className="mt-4">
+				<DumbField {...props_secret_key} />
 			</div>
 		</div>
 	);

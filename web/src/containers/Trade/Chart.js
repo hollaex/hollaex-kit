@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { widget } from '../../charting_library/charting_library.min';
-import { WHITE_THEME, DARK_THEME } from './ChartConfig';
+import { WHITE_THEME, DARK_THEME, VOLUME_WHITE, VOLUME_DARK } from './ChartConfig';
 import { getLanguage } from '../../utils/string';
 import {
 	getChartConfig,
@@ -14,7 +14,15 @@ function getThemeOverrides(theme = 'white') {
 	} else {
 		return DARK_THEME;
 	}
-}
+};
+
+function getStudiesOverrides(theme = 'white') {
+	if (theme === 'white') {
+		return VOLUME_WHITE;
+	} else {
+		return VOLUME_DARK;
+	}
+};
 
 class TVChartContainer extends React.PureComponent {
 	static defaultProps = {
@@ -253,7 +261,7 @@ class TVChartContainer extends React.PureComponent {
 			user_id: this.props.userId,
 			fullscreen: this.props.fullscreen,
 			autosize: this.props.autosize,
-			studies_overrides: this.props.studiesOverrides,
+			studies_overrides: getStudiesOverrides(activeTheme),
 			favorites: {
 				chartTypes: ['Area', 'Candles', 'Bars']
 			},
