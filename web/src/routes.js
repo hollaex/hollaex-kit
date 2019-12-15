@@ -4,7 +4,6 @@ import ReactGA from 'react-ga';
 import { isMobile } from 'react-device-detect';
 
 import {
-	NETWORK,
 	PRO_VERSION_REDIRECT,
 } from './config/constants';
 
