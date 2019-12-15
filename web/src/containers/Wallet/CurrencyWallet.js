@@ -34,7 +34,7 @@ class Wallet extends Component {
 	}
 
 	setCurrency = (currencyName) => {
-		const currency = getCurrencyFromName(currencyName);
+		const currency = getCurrencyFromName(currencyName, this.props.coins);
 		if (currency) {
 			this.setState({ currency });
 		} else {
