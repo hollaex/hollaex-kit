@@ -36,31 +36,36 @@ export const username = (value = '') =>
 
 export const validAddress = (symbol = '', message) => {
 	let currency = symbol.toUpperCase();
-	if (currency === 'HEX') {
-		currency = 'ETH';
-	}
 	return (address) => {
-		let valid = WAValidator.validate(address, currency, NETWORK);
-		// in case of bitcoin cash new addresses and new bitcoin addresses
-		if (!valid) {
-			switch (currency) {
-				// case 'BTC':
-				// 	address = BAValidator(address).address;
-				// 	if (address) {
-				// 		valid = true;
-				// 	}
-				// 	break;
-				case 'BCH':
-					try {
-						bchaddr.toLegacyAddress(address);
-						valid = true;
-					} catch (err) {
-						valid = false;
-					}
-					break;
-				default:
-					break;
-			}
+		let valid = true
+		switch (currency) {
+			case 'BTC':
+				valid = WAValidator.validate(address, currency, NETWORK);
+				break;
+			case 'BCH':
+				try {
+					bchaddr.toLegacyAddress(address);
+					valid = true;
+				} catch (err) {
+					valid = false;
+				}
+				break;
+			case 'ETH':
+				valid = WAValidator.validate(address, currency, NETWORK);
+				break;
+			case 'HEX':
+				valid = WAValidator.validate(address, 'eth', NETWORK);
+				break;
+			case 'USDT':
+				valid = WAValidator.validate(address, 'eth', NETWORK);
+				break;
+			case 'XRP':
+				valid = WAValidator.validate(address, currency, NETWORK);
+				break;
+			default:
+				valid = true
+				break;
+			
 		}
 		return !valid
 			? message ||

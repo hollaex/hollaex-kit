@@ -404,6 +404,12 @@ export const EXPLORERS_ENDPOINT = (currency) => {
 					? 'https://ropsten.etherscan.io/tx/'
 					: 'https://etherscan.io/tx/';
 			break;
+		case 'xmr':
+			endpoint =
+				NETWORK === 'testnet'
+					? 'https://moneroblocks.info/tx/'
+					: 'https://moneroblocks.info/tx/';
+			break;
 		default:
 			endpoint =
 				NETWORK === 'testnet'
