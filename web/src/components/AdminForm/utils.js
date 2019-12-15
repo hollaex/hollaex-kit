@@ -5,7 +5,6 @@ import {
 	renderNumberField,
 	renderDateField,
 	renderRangeField,
-	renderFarsiDateField,
 	renderInputField
 } from './fields';
 import { FileField } from './FileField';
@@ -33,9 +32,6 @@ const renderFields = (fields) => {
 						break;
 					case 'date':
 						component = renderDateField;
-						break;
-					case 'date-farsi':
-						component = renderFarsiDateField;
 						break;
 					case 'range':
 						component = renderRangeField;

@@ -234,7 +234,7 @@ class DocumentsVerification extends Component {
 							</HeaderSection>
 							<div className="my-2">
 								<img
-									src={activeLanguage === 'en' ? ICONS.SELF_KYC_ID_EN : ICONS.SELF_KYC_ID_FA}
+									src={activeLanguage === 'en' ? ICONS.SELF_KYC_ID_EN : ICONS.SELF_KYC_ID_EN}
 									className="verification_document-sample"
 									alt="document-sample" />
 							</div>
