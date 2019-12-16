@@ -233,7 +233,8 @@ $title-icon--height: 10rem;
 	}
 	.mobile_dropdown-section {
 		.mobile-drop-down {
-			color:$colors-main-black;
+			color: $colors-main-black;
+			z-index: 1;
 			.option {
 				color:$dark-disabled-main;
 			}
@@ -331,6 +332,7 @@ $title-icon--height: 10rem;
 		.mobile_dropdown-section {
 			.mobile-drop-down {
 				color:$dark-font-main-text-color;	
+				z-index: 1;
 				.option {
 					background: $dark-quick-trade-background;
 					color:$colors-deactivate-color2;	
