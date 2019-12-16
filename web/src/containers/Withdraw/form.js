@@ -95,7 +95,7 @@ class Form extends Component {
 			// this.props.submit();
 			const values = this.props.data;
 			return this.props
-				.onSubmit({
+				.onSubmitWithdrawReq({
 					...values,
 					amount: math.eval(values.amount),
 					fee: values.fee ? math.eval(values.fee) : 0,
@@ -124,7 +124,7 @@ class Form extends Component {
 	onSubmitOtp = ({ otp_code = '' }) => {
 		const values = this.props.data;
 		return this.props
-			.onSubmit({
+			.onSubmitWithdrawReq({
 				...values,
 				amount: math.eval(values.amount),
 				fee: values.fee ? math.eval(values.fee) : 0,
