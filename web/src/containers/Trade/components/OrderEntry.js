@@ -12,7 +12,6 @@ import {
 	formatNumber,
 	formatBaseAmount,
 	roundNumber,
-	calculatePrice,
 	calculateBalancePrice
 } from '../../../utils/currency';
 import { getDecimals, playBackgroundAudioNotification } from '../../../utils/utils';
@@ -228,10 +227,16 @@ class OrderEntry extends Component {
 			orderPrice: orderTotal,
 			orderFees: this.state.orderFees
 		};
-		const orderPriceInBaseCoin = calculatePrice(orderTotal, this.props.prices[pair_2]);
-		const avail_balance = balance[`${pair_base.toLowerCase()}_available`] || 0;
-		// const riskyPrice = ((this.state.totalAssets / 100) * risk.order_portfolio_percentage);
-		const riskyPrice = ((avail_balance / 100) * risk.order_portfolio_percentage);
+		// const orderPriceInBaseCoin = calculatePrice(orderTotal, this.props.prices[pair_2]);
+		let avail_balance = 0;
+		if (side === 'buy') {
+			avail_balance = balance[`${pair_2.toLowerCase()}_available`];
+		} else {
+			avail_balance = balance[`${pair_base.toLowerCase()}_available`];
+		}
+		// const riskySize = ((this.state.totalAssets / 100) * risk.order_portfolio_percentage);
+		let riskySize = ((avail_balance / 100) * risk.order_portfolio_percentage);
+		riskySize = formatNumber(riskySize, getDecimals(min_size));
 
 		if (type === 'market') {
 			delete order.price;
@@ -240,7 +245,7 @@ class OrderEntry extends Component {
 		}
 		if (notification.popup_order_confirmation) {
 			openCheckOrder(order, () => {
-				if (risk.popup_warning && riskyPrice < orderPriceInBaseCoin) {
+				if (risk.popup_warning && riskySize <= size) {
 					order['order_portfolio_percentage'] = risk.order_portfolio_percentage
 					onRiskyTrade(order, () => {
 						submit(FORM_NAME);
@@ -249,7 +254,7 @@ class OrderEntry extends Component {
 					submit(FORM_NAME);
 				}
 			});
-		} else if (risk.popup_warning && riskyPrice < orderPriceInBaseCoin) {
+		} else if (risk.popup_warning && riskySize <= size) {
 			order['order_portfolio_percentage'] = risk.order_portfolio_percentage
 			onRiskyTrade(order, () => {
 				submit(FORM_NAME);

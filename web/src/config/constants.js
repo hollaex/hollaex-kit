@@ -432,6 +432,12 @@ export const EXPLORERS_ENDPOINT = (currency) => {
 					? 'https://ropsten.etherscan.io/tx/'
 					: 'https://etherscan.io/tx/';
 			break;
+		case 'xmr':
+			endpoint =
+				NETWORK === 'testnet'
+					? 'https://moneroblocks.info/tx/'
+					: 'https://moneroblocks.info/tx/';
+			break;
 		default:
 			endpoint =
 				NETWORK === 'testnet'
@@ -492,6 +498,7 @@ export const API_DOCS_URL = 'https://docs.bitholla.com/';
 export const EXCHANGE_URL = 'https://dash.bitholla.com/';
 export const EXCHANGE_EXPIRY_DAYS = 15;
 export const AFFILIATION_APPLY_URL = 'https://docs.google.com/forms/d/1xf1mHxiTW6YUKVEqvfMJZqygiFxm1P6aUDS7uXe5Ouc/viewform?ts=5d9da3d5&edit_requested=true';
+export const SUPPORT_HELP_URL = 'https://info.hollaex.com/hc/en-us/requests/new';
 
 // export const TRADING_ACCOUNT_TYPE = {
 // 	shrimp: {

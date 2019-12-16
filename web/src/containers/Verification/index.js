@@ -14,7 +14,7 @@ import {
 	// MobileBarTabs,
 	PanelInformationRow
 } from '../../components';
-import { ICONS } from '../../config/constants';
+import { ICONS, SUPPORT_HELP_URL } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 import {
 	requestSmsCode,
@@ -303,7 +303,10 @@ class Verification extends Component {
 	};
 
 	openContactForm = () => {
-		this.setState({ dialogIsOpen: true, dialogType: 'contact' });
+		if (window) {
+			window.open(SUPPORT_HELP_URL, '_blank');
+		}
+		// this.setState({ dialogIsOpen: true, dialogType: 'contact' });
 	};
 	renderDialogContent = (type) => {
 		switch (type) {

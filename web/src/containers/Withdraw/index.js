@@ -207,7 +207,7 @@ class Withdraw extends Component {
 
 		const formProps = {
 			currency,
-			onSubmit: this.onSubmitWithdraw(currency),
+			onSubmitWithdrawReq: this.onSubmitWithdraw(currency),
 			onOpenDialog: this.onOpenDialog,
 			otp_enabled,
 			openContactForm,

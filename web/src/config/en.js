@@ -805,12 +805,8 @@ export default {
 	WITHDRAWALS_FORM_AMOUNT_LABEL: '{0} amount to withdraw',
 	WITHDRAWALS_FORM_AMOUNT_PLACEHOLDER:
 		'Type the amount of {0} you wish to withdraw',
-	WITHDRAWALS_FORM_FEE_BTC_LABEL:
-		'Bitcoin transaction fee (This is Bitcoin mining fee. If you lower that amount there is chance your transaction takes significant time to get confirmed.)',
-	WITHDRAWALS_FORM_FEE_ETH_LABEL:
-		'Ethereum transaction fee (This is Ethereum mining fee. If you lower that amount there is chance your transaction takes significant time to get confirmed.)', // TODO CHECK
 	WITHDRAWALS_FORM_FEE_COMMON_LABEL:
-		'{0} transaction fee (This is {0} mining fee. If you lower that amount there is chance your transaction takes significant time to get confirmed.)', // new
+		'{0} transaction fee (This is {0} mining fee)', // new
 	WITHDRAWALS_FORM_FEE_FIAT_LABEL: 'Bank withdrawal fee',
 	WITHDRAWALS_FORM_FEE_PLACEHOLDER:
 		'Type the amount of {0} you wish to use in the fee of the transaction',
@@ -884,7 +880,7 @@ export default {
 	WALLET_TABLE_TOTAL: 'Grand Total',
 	WALLET_ALL_ASSETS: 'All Assets',
 	WALLET_DEPOSIT_USD:
-		'If you’d like to deposit USD or other fiat currencies via bank wire transfer {0}.', // new
+		'For fiat currency D/W in different countries and other wallet inquiries {0}.', // new
 	HIDE_TEXT: 'Hide',
 	PAGINATOR_FORMAT: '{0} / {1}',
 	ORDERBOOK_SELLERS: 'Sellers',
