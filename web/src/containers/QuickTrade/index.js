@@ -138,7 +138,12 @@ class QuickTradeContainer extends Component {
 				orderFees: 0
 			};
 			// const riskyPrice = ((this.state.totalAssets / 100) * risk.order_portfolio_percentage);
-			const avail_balance = balance[`${pair_base.toLowerCase()}_available`] || 0;
+			let avail_balance = 0;
+			if (data.side === 'buy') {
+				avail_balance = balance[`${pair_2.toLowerCase()}_available`];
+			} else {
+				avail_balance = balance[`${pair_base.toLowerCase()}_available`];
+			}
 			const riskyPrice = ((avail_balance / 100) * risk.order_portfolio_percentage);
 			if (risk.popup_warning && data.price > riskyPrice) {
 				order['order_portfolio_percentage'] =

@@ -49,6 +49,27 @@ $order_entry-column--width-lg: 18rem;
 	&.buy {
 		color: $trade-order-bids-color-font;
 	}
+	.trade_history-icon{
+		width: 1rem;
+		margin-right: 3px;
+		&.sell {
+			svg {
+				.up-icon,
+				.down-icon {
+					fill: $trade-order-asks-color-font;
+				}
+			}
+		}
+
+		&.buy {
+			svg {
+				.up-icon,
+				.down-icon {
+					fill: $trade-order-bids-color-font;
+				}
+			}
+		}
+	}
 }
 
 .layout-mobile{
@@ -178,6 +199,25 @@ $order_entry-column--width-lg: 18rem;
 
 		&.buy {
 			color: $dark-buy;
+		}
+		.trade_history-icon {
+			&.sell {
+				svg {
+					.up-icon,
+					.down-icon {
+						fill: $dark-sell;
+					}
+				}
+			}
+
+			&.buy {
+				svg {
+					.up-icon,
+					.down-icon {
+						fill: $dark-buy;
+					}
+				}
+			}
 		}
 	}
 

@@ -267,6 +267,8 @@ export const ICONS = {
 	TRADE_WAVES:'/assets/images/wave-icon.svg',
 	HEX_LOGO_LIGHT:'/assets/icons/HEX-logo-light.svg',
 	HEX_LOGO_DARK:'/assets/icons/HEX-logo-dark.svg',
+	UP_ARROW:'/assets/images/buy-trade.svg',
+	DOWN_ARROW:'/assets/images/sell-trade.svg'
 };
 
 export const SOCIAL_ICONS = {
