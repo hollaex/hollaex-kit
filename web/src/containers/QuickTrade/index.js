@@ -144,8 +144,8 @@ class QuickTradeContainer extends Component {
 			} else {
 				avail_balance = balance[`${pair_base.toLowerCase()}_available`];
 			}
-			const riskyPrice = ((avail_balance / 100) * risk.order_portfolio_percentage);
-			if (risk.popup_warning && data.price > riskyPrice) {
+			const riskySize = ((avail_balance / 100) * risk.order_portfolio_percentage);
+			if (risk.popup_warning && data.size >= riskySize) {
 				order['order_portfolio_percentage'] =
 					risk.order_portfolio_percentage;
 				setNotification(RISKY_ORDER, {
