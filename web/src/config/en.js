@@ -1261,7 +1261,7 @@ export default {
 		// new
 		ANNOUNCEMENT: 'Announcement',
 		ANNOUNCEMNT_TXT_3:
-			'Public launch is rescheduled to January 1st 2020. All wallets except USDT are open for deposits and withdrawals now and you can signup using the referral link.',
+			'Public launch and Wave Auction is rescheduled to January 1st 2020. Wallet deposit and withdrawals are now open.',
 		ANNOUNCEMNT_TXT_2:
 			'Public wave auction is starting from December 18th, 2019 1pm UTC. You can deposit and start placing bids at anytime and purchase HEX.',
 		ANNOUNCEMNT_TXT_1:
