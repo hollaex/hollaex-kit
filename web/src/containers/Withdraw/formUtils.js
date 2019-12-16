@@ -9,7 +9,7 @@ import {
 } from "../../components/Form/validations";
 import { isMobile } from "react-device-detect";
 import STRINGS from "../../config/localizedStrings";
-import { ICONS, BASE_CURRENCY, DEFAULT_COIN_DATA } from "../../config/constants";
+import { ICONS, DEFAULT_COIN_DATA } from "../../config/constants";
 
 export const generateInitialValues = (symbol, coins = {}) => {
 	const { min, withdrawal_fee } = coins[symbol] || DEFAULT_COIN_DATA;
@@ -42,21 +42,21 @@ export const generateFormValues = (
 	if (withdrawal_limits[verification_level] === -1) MAX = 0;
 	const fields = {};
 
-	if (symbol !== BASE_CURRENCY) {
-		fields.address = {
-			type: "text",
-			label: STRINGS.WITHDRAWALS_FORM_ADDRESS_LABEL,
-			placeholder: STRINGS.WITHDRAWALS_FORM_ADDRESS_PLACEHOLDER,
-			validate: [
-				required,
-				validAddress(
-					symbol,
-					STRINGS[`WITHDRAWALS_${symbol.toUpperCase()}_INVALID_ADDRESS`]
-				)
-			],
-			fullWidth: isMobile
-		};
-	}
+
+	fields.address = {
+		type: "text",
+		label: STRINGS.WITHDRAWALS_FORM_ADDRESS_LABEL,
+		placeholder: STRINGS.WITHDRAWALS_FORM_ADDRESS_PLACEHOLDER,
+		validate: [
+			required,
+			validAddress(
+				symbol,
+				STRINGS[`WITHDRAWALS_${symbol.toUpperCase()}_INVALID_ADDRESS`]
+			)
+		],
+		fullWidth: isMobile
+	};
+	
 
 	const amountValidate = [required];
 	if (min) {
