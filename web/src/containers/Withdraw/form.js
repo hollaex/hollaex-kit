@@ -159,7 +159,6 @@ class Form extends Component {
 
 	render() {
 		const {
-			handleSubmit,
 			submitting,
 			pristine,
 			error,
@@ -177,7 +176,7 @@ class Form extends Component {
 		const { dialogIsOpen, dialogOtpOpen } = this.state;
 
 		return (
-			<form onSubmit={handleSubmit}>
+			<form>
 				{renderFields(formValues)}
 				{error && <div className="warning_text">{error}</div>}
 				<Button
