@@ -159,7 +159,6 @@ class Form extends Component {
 
 	render() {
 		const {
-			handleSubmit,
 			submitting,
 			pristine,
 			error,
