@@ -177,7 +177,7 @@ class Form extends Component {
 		const { dialogIsOpen, dialogOtpOpen } = this.state;
 
 		return (
-			<form onSubmit={handleSubmit}>
+			<form>
 				{renderFields(formValues)}
 				{error && <div className="warning_text">{error}</div>}
 				<Button
