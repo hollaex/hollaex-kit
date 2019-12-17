@@ -67,7 +67,7 @@ export const getRequirements = (user, level, balance = {}, coins) => {
 	const { address, phone_number, id_data = {} } = user.userData;
 	// const bank_verified = checkBankVerification(bank_account, id_data);
 	// const { symbol = '' } = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
-	const hex_balance = balance.hex_balance || 0;
+	const xht_balance = balance.xht_balance || 0;
 	const identity = address.country
 		? id_data.status && id_data.status === 3
 			? 3
@@ -92,9 +92,9 @@ export const getRequirements = (user, level, balance = {}, coins) => {
 			'2': {
 				title: STRINGS.formatString(
 					STRINGS.SUMMARY.HEX_IN_WALLET,
-					'8,000'
+					'5,000'
 				),
-				completed: hex_balance >= 8000
+				completed: xht_balance >= 5000
 			}
 		},
 		level_3: {
@@ -118,7 +118,7 @@ export const getRequirements = (user, level, balance = {}, coins) => {
 			'1': {
 				title: STRINGS.formatString(
 					STRINGS.SUMMARY.TRADE_OVER_HEX,
-					'$ 3,000'
+					'$10,000'
 				),
 				completed: false
 			},
@@ -127,7 +127,7 @@ export const getRequirements = (user, level, balance = {}, coins) => {
 					STRINGS.SUMMARY.HEX_IN_WALLET,
 					'10,000'
 				),
-				completed: hex_balance >= 10000
+				completed: xht_balance >= 10000
 			}
 		},
 		level_5: {
@@ -171,24 +171,24 @@ export const getRequirements = (user, level, balance = {}, coins) => {
 		level_6: {
 			'1': {
 				title: STRINGS.formatString(
-					STRINGS.SUMMARY.TRADE_OVER_BTC,
-					60
+					STRINGS.SUMMARY.TRADE_OVER_HEX,
+					'$300,000'
 				),
 				completed: false
 			},
 			'2': {
 				title: STRINGS.formatString(
 					STRINGS.SUMMARY.HEX_IN_WALLET,
-					'200,000'
+					'100,000'
 				),
-				completed: hex_balance >= 200000
+				completed: xht_balance >= 100000
 			}
 		},
 		level_7: {
 			'1': {
 				title: STRINGS.formatString(
-					STRINGS.SUMMARY.TRADE_OVER_BTC,
-					70
+					STRINGS.SUMMARY.TRADE_OVER_HEX,
+					'$500,000'
 				),
 				completed: false
 			},
@@ -197,14 +197,14 @@ export const getRequirements = (user, level, balance = {}, coins) => {
 					STRINGS.SUMMARY.HEX_IN_WALLET,
 					'300,000'
 				),
-				completed: hex_balance >= 300000
+				completed: xht_balance >= 300000
 			}
 		},
 		level_8: {
 			'1': {
 				title: STRINGS.formatString(
-					STRINGS.SUMMARY.TRADE_OVER_BTC,
-					80
+					STRINGS.SUMMARY.TRADE_OVER_HEX,
+					'$600,000'
 				),
 				completed: false
 			},
@@ -213,40 +213,30 @@ export const getRequirements = (user, level, balance = {}, coins) => {
 					STRINGS.SUMMARY.HEX_IN_WALLET,
 					'400,000'
 				),
-				completed: hex_balance >= 400000
+				completed: xht_balance >= 400000
 			}
 		},
 		level_9: {
 			'1': {
 				title: STRINGS.formatString(
-					STRINGS.SUMMARY.TRADE_OVER_BTC,
-					90
+					STRINGS.SUMMARY.TRADE_OVER_HEX,
+					'$2,000,000'
 				),
 				completed: false
 			},
 			'2': {
 				title: STRINGS.formatString(
 					STRINGS.SUMMARY.HEX_IN_WALLET,
-					'450,000'
+					'1,000,000'
 				),
-				completed: hex_balance >= 450000
+				completed: xht_balance >= 1000000
 			}
 		},
 		level_10: {
 			'1': {
-				title: STRINGS.formatString(
-					STRINGS.SUMMARY.TRADE_OVER_BTC,
-					100
-				),
+				title: STRINGS.CONTACT_US_TEXT,
 				completed: false
 			},
-			'2': {
-				title: STRINGS.formatString(
-					STRINGS.SUMMARY.HEX_IN_WALLET,
-					'500,000'
-				),
-				completed: hex_balance >= 500000
-			}
 		}
 	};
 	return verificationObj[`level_${level}`] || {};

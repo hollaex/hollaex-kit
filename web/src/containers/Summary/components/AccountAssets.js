@@ -26,8 +26,8 @@ const AccountAssets = ({ chartData = [], totalAssets, balance, coins, activeThem
 					: null
 				}
 			</div>
-			<div className="d-flex align-items-center justify-content-center">
-				<div className={classnames({ 'w-50': !SHOW_SUMMARY_ACCOUNT_DETAILS })}>
+			<div className="d-flex align-items-center justify-content-center h-100">
+				<div className={classnames({ 'w-75': !SHOW_SUMMARY_ACCOUNT_DETAILS })}>
 					<div
 						className={
 							classnames(
