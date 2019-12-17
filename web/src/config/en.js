@@ -1148,16 +1148,16 @@ export default {
 		TRADING_VOLUME_EQUIVALENT: '{0} {1} Trading Volume Equivalent',
 		LEVEL_OF_ACCOUNT: 'Level {0} Account',
 		LEVEL_TXT_DEFAULT:'Add your level description here',
-		LEVEL_1_TXT: 'Your journey starts here young crypto trader! To obtain bonuses you can verify your identification and also get larger deposit and withdraw limits with reduced trading fees.', // new
-		LEVEL_2_TXT: 'Simply trade over $3,000 USDT worth of HEX last month and have balance of over 8,000 HEX and enjoy lower trading fees.', // new
-		LEVEL_3_TXT: 'This is where things get real! Enjoy reduced trading fees and large deposit and withdrawal limits. To get to level 3 you must complete your verification', // new
-		LEVEL_4_TXT: 'Simply trade over $3,000 USDT worth of HEX last month and have balance of over 10,000 HEX and enjoy lower trading fees.', // new
-		LEVEL_5_TXT: 'You’ve made it! The level 5 account is a rare account only for exchange operators, HEX stakers, Vault users or HollaEx Ambassador Program (HEX). Enjoy large limits and enjoy zero maker fees.', // new
-		LEVEL_6_TXT: 'Trade over 60 BTC worth in the last month and have balance of over 200,000 HEX and enjoy even lower trading fees.', // new
-		LEVEL_7_TXT: 'Trade over 70 BTC worth in the last month and have balance of over 300,000 HEX and enjoy even lower trading fees', // new
-		LEVEL_8_TXT: 'Trade over 80 BTC worth in the last month and have balance of over 500,000 HEX and enjoy extra low trading fees!', // new
-		LEVEL_9_TXT: 'Trade over 90 BTC worth in the last month and have balance of over 500,000 HEX and enjoy extra low trading fees!', // new
-		LEVEL_10_TXT: 'The Whale trader account with the zero fees! To obtain level 10 account you must have a trading volumes above 100 BTC in the previous month.', // new
+		LEVEL_1_TXT: 'Your journey starts here young crypto trader! To obtain bonsues you can verify your identiﬁcation and also get larger deposit and withdraw limits with reduced trading fees.', // new
+		LEVEL_2_TXT: 'Simply trade over $3,000 USDT worth or have balance of over 5,000 XHT and enjoy lower trading fees.', // new
+		LEVEL_3_TXT: 'This is where things get real! Enjoy reduced trading fees and large deposit and withdrawal limits. To get to level 3 you must complete your veriﬁcation', // new
+		LEVEL_4_TXT: 'Simply trade over $10,000 USDT worth or have balance of over 10,000 XHT and enjoy lower trading fees.', // new
+		LEVEL_5_TXT: 'You’ve made it! The level 5 account is a rare account only for exchange operators, Vault users or HollaEx Ambassador Program (HAP). Enjoy large limits and enjoy zero maker fees.', // new
+		LEVEL_6_TXT: 'Simply trade over $300,000 USDT worth or have balance of over 100,000 XHT and enjoy lower trading fees. Increased withdraw amount.', // new
+		LEVEL_7_TXT: 'Simply trade over $500,000 USDT worth or have balance of over 300,000 XHT and enjoy lower trading fees. Increased withdraw amount.', // new
+		LEVEL_8_TXT: 'Simply trade over $600,000 USDT worth or have balance of over 400,000 XHT and enjoy lower trading fees.', // new
+		LEVEL_9_TXT: 'Simply trade over $2,000,000 USDT worth or have balance of over 1,000,000 XHT and enjoy lower trading fees.', // new
+		LEVEL_10_TXT: 'The whale trader account that earns you money back for market making. To obtain this special account please get in touch with us.', // new
 		CURRENT_TXT: 'Current',
 		TRADER_ACCOUNT_HEX_TEXT: 'Your account is in the presale period of HEX, this means you can obtain HEX for $0.10 per HEX. All deposit will be converted to HEX once the transaction has cleared.',
 		TRADER_ACCOUNT_TITLE: 'Account - Presale Period', // new
@@ -1168,9 +1168,9 @@ export default {
 		HAP_TEXT: 'HollaEx Ambassador Program (HAP) {0}', // new
 		LOCK_AN_EXCHANGE: 'Lock an Exchange {0}', // new
 		WALLET_SUBSCRIPTION_USERS: 'Vault Subscription users {0}', // new
-		TRADE_OVER_HEX: 'Trade over {0} worth of HEX', // new
+		TRADE_OVER_HEX: 'Trade over {0} USDT worth', // new
 		TRADE_OVER_BTC: 'Trade over {0} BTC worth', // new
-		HEX_IN_WALLET: '{0} HEX in wallet', // new
+		HEX_IN_WALLET: '{0} XHT in wallet', // new
 		REWARDS_BONUS: 'Rewards and Bonuses', // new
 		COMPLETE_TASK_DESC: 'Complete tasks and earn bonuses worth over $10,000.', // new
 		TASKS: 'Tasks', // new
