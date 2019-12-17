@@ -26,7 +26,7 @@ function getStudiesOverrides(theme = 'white') {
 
 class TVChartContainer extends React.PureComponent {
 	static defaultProps = {
-		symbol: 'eth-eur', // the trading tab we are in should be passed here
+		symbol: 'xht-usdt', // the trading tab we are in should be passed here
 		interval: 'D',
 		containerId: 'tv_chart_container',
 		libraryPath: '/charting_library/',
