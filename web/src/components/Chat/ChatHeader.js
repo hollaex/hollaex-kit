@@ -13,7 +13,8 @@ export const ChatHeader = ({
 	chatWrapperInitialized,
 	minimized,
 	minimizeChat,
-	unreadMessages
+	unreadMessages,
+	onCloseEmoji
 }) => (
 		<div
 			className={classnames(
@@ -24,8 +25,11 @@ export const ChatHeader = ({
 			)}
 			onClick={
 				minimized
-					? minimizeChat
-					: () => { }
+					? () => {
+						minimizeChat();
+						onCloseEmoji();
+					}
+					: onCloseEmoji
 			}
 		>
 			<div>{STRINGS.formatString(STRINGS.CHAT.TROLLBOX, unreadMessages)}</div>

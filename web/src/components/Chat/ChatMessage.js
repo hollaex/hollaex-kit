@@ -71,7 +71,7 @@ class ChatMessageWithText extends Component {
 		return (
 			<div className={classnames('nonmobile')}>
 				<div className="d-flex">
-					<div className="mx-2">
+					<div className="mx-2 my-1">
 						{verification_level === 3 || verification_level >= 4
 							? <ReactSVG
 								path={verification_level >= 4
@@ -195,7 +195,8 @@ export class ChatMessage extends Component {
 			messageContent,
 			ownMessage,
 			timestamp,
-			verification_level
+			verification_level,
+			onCloseEmoji
 		} = this.props;
 		const { showOptions } = this.state;
 		const imageType = messageType === 'image';
@@ -210,6 +211,7 @@ export class ChatMessage extends Component {
 					'justify-content-between',
 					ownMessage && 'user'
 				)}
+				onClick={onCloseEmoji}
 			>
 				<div className={classnames('message-content', messageType)}>
 					{imageType ? (

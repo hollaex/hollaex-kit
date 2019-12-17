@@ -22,8 +22,8 @@ class Wallet extends Component {
 	};
 
 	componentDidMount() {
-		const { user_id, symbol, price } = this.props;
-		if (user_id && symbol && price) {
+		const { user_id, symbol, prices } = this.props;
+		if (user_id && symbol && prices) {
 			this.calculateSections(this.props);
 		}
 	}
@@ -115,7 +115,7 @@ class Wallet extends Component {
 		return (
 			<div className="wallet-wrapper">
 				<div className="donut-container pointer" onClick={this.goToWallet}>
-					<DonutChart coins={this.props.coins} chartData={chartData} />
+					<DonutChart id="side-bar-donut" coins={this.props.coins} chartData={chartData} />
 				</div>
 				<Accordion sections={sections} />
 				{BASE_CURRENCY && isValidBase ? (

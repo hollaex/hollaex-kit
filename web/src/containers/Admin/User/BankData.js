@@ -14,10 +14,6 @@ const BankFields = {
 	account_number: {
 		type: 'text',
 		label: 'Account Number'
-	},
-	card_number: {
-		type: 'text',
-		label: 'Card Number'
 	}
 };
 
@@ -239,7 +235,6 @@ class BankData extends Component {
 								>
 									<p>{bank.bank_name}</p>
 									<p>{bank.account_number}</p>
-									<p>{bank.card_number}</p>
 								</Card>
 							</Col>
 						);

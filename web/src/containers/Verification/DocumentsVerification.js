@@ -39,19 +39,6 @@ class DocumentsVerification extends Component {
 		// const FRONT_TYPE = 'PASSPORT';
 		const formFields = {
 			idDocument: {
-				type: {
-					type: 'text',
-					label:
-						STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS.TYPE_LABEL,
-					placeholder:
-						STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.FORM_FIELDS.TYPE_PLACEHOLDER,
-					validate: [
-						requiredWithCustomMessage(
-							STRINGS.USER_VERIFICATION.ID_DOCUMENTS_FORM.VALIDATIONS.ID_TYPE
-						)
-					],
-					fullWidth: isMobile
-				},
 				number: {
 					type: 'text',
 					label:
@@ -247,7 +234,7 @@ class DocumentsVerification extends Component {
 							</HeaderSection>
 							<div className="my-2">
 								<img
-									src={activeLanguage === 'en' ? ICONS.SELF_KYC_ID_EN : ICONS.SELF_KYC_ID_FA}
+									src={activeLanguage === 'en' ? ICONS.SELF_KYC_ID_EN : ICONS.SELF_KYC_ID_EN}
 									className="verification_document-sample"
 									alt="document-sample" />
 							</div>

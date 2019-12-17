@@ -81,13 +81,14 @@ class OrderEntry extends Component {
 			this.generateFormValues(nextProps.pair, '', nextProps.priceInitialized, nextProps.sizeInitialized);
 		}
 		if (JSON.stringify(this.props.prices) !== JSON.stringify(nextProps.prices) ||
-			JSON.stringify(this.props.balance) !== JSON.stringify(nextProps.balance)) {
+			JSON.stringify(this.props.balance) !== JSON.stringify(nextProps.balance) ||
+			JSON.stringify(this.props.coins) !== JSON.stringify(nextProps.coins)) {
 			this.calculateSections(nextProps);
 		}
 	}
 
-	calculateSections = ({ balance, prices }) => {
-		const totalAssets = calculateBalancePrice(balance, prices);
+	calculateSections = ({ balance, prices, coins }) => {
+		const totalAssets = calculateBalancePrice(balance, prices, coins);
 		this.setState({ totalAssets });
 	};
 
@@ -211,7 +212,8 @@ class OrderEntry extends Component {
 			openCheckOrder,
 			onRiskyTrade,
 			submit,
-			settings: { risk = {}, notification = {} }
+			settings: { risk = {}, notification = {} },
+			balance
 		} = this.props;
 		const orderTotal = mathjs.add(
 			mathjs.fraction(this.state.orderPrice),
@@ -227,7 +229,14 @@ class OrderEntry extends Component {
 			orderFees: this.state.orderFees
 		};
 		const orderPriceInBaseCoin = calculatePrice(orderTotal, this.props.prices[pair_2]);
-		const riskyPrice = ((this.state.totalAssets / 100) * risk.order_portfolio_percentage);
+		let avail_balance = 0;
+		if (side === 'buy') {
+			avail_balance = balance[`${pair_2.toLowerCase()}_available`];
+		} else {
+			avail_balance = balance[`${pair_base.toLowerCase()}_available`];
+		}
+		// const riskyPrice = ((this.state.totalAssets / 100) * risk.order_portfolio_percentage);
+		const riskyPrice = ((avail_balance / 100) * risk.order_portfolio_percentage);
 
 		if (type === 'market') {
 			delete order.price;

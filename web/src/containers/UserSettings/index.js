@@ -100,7 +100,8 @@ class UserSettings extends Component {
 			nextProps.price !== this.props.price ||
 			nextProps.orders.length !== this.props.orders.length ||
 			nextProps.balance.timestamp !== this.props.balance.timestamp ||
-			nextProps.activeLanguage !== this.props.activeLanguage
+			nextProps.activeLanguage !== this.props.activeLanguage ||
+			JSON.stringify(this.props.coins) !== JSON.stringify(nextProps.coins)
 		) {
 			this.calculateSections(nextProps);
 		}
@@ -119,8 +120,8 @@ class UserSettings extends Component {
 		});
 	};
 
-	calculateSections = ({ balance, prices }) => {
-		const totalAssets = calculateBalancePrice(balance, prices);
+	calculateSections = ({ balance, prices, coins }) => {
+		const totalAssets = calculateBalancePrice(balance, prices, coins);
 		this.setState({ totalAssets: totalAssets });
 	};
 

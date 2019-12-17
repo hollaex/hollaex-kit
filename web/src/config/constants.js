@@ -45,6 +45,7 @@ export const ICONS = {
 	KRW_ICON: '/assets/icons/krw-icon-01.svg',
 	HEX_ICON: '/assets/icons/hex-icon.svg',
 	HEX_ICON_DARK: '/assets/icons/hex-icon-dark.svg',
+	USDT_ICON: '/assets/icons/usdt-icon.svg',
 	CHECK: '/assets/images/Orderbook scrolling-01.svg',
 	DARK_CHECK: '/assets/images/dark-Orderbook-scrolling-01.svg',
 	BLUE_QUESTION: '/assets/acounts/account-icons-08.svg',
@@ -214,7 +215,6 @@ export const ICONS = {
 	PENDING_TIMER: '/assets/images/pending-timer.svg',
 	VOLUME_PENDING: '/assets/images/volume-pending-icon.svg',
 	VOLUME_PENDING_DARK: '/assets/images/volume-pending-dark.svg',
-	SELF_KYC_ID_FA: '/assets/self-kyc-id-note-persian.png',
 	SELF_KYC_ID_EN: '/assets/self-kyc-id-note-english.png',
 	CHAT_ICON_LVL_3: '/assets/images/kraken-chat-lvl-3.svg',
 	CHAT_ICON_LVL_4: '/assets/images/whale-chat-lvl-4.svg',
@@ -402,6 +402,12 @@ export const EXPLORERS_ENDPOINT = (currency) => {
 				NETWORK === 'testnet'
 					? 'https://ropsten.etherscan.io/tx/'
 					: 'https://etherscan.io/tx/';
+			break;
+		case 'xmr':
+			endpoint =
+				NETWORK === 'testnet'
+					? 'https://moneroblocks.info/tx/'
+					: 'https://moneroblocks.info/tx/';
 			break;
 		default:
 			endpoint =

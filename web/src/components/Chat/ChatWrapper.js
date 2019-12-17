@@ -22,7 +22,8 @@ export const ChatWrapper = ({
 	set_username,
 	showEmojiBox,
 	handleEmojiBox,
-	onEmojiSelect
+	onEmojiSelect,
+	onCloseEmoji
 }) => {
 	const chatInitialized =
 		chatSocketInitialized && !chatSocketInitializing ? true : false;
@@ -50,6 +51,7 @@ export const ChatWrapper = ({
 						minimizeChat={minimizeChat}
 						minimized={minimized}
 						unreadMessages={unreadMessages}
+						onCloseEmoji={onCloseEmoji}
 					/>
 				)}
 				<div className="d-flex flex-column nondraggable">
@@ -60,8 +62,10 @@ export const ChatWrapper = ({
 						username={username}
 						userType={userType}
 						messages={messages}
+						showEmojiBox={showEmojiBox}
 						removeMessage={removeMessage}
 						chatIsClosed={chatIsClosed}
+						onCloseEmoji={onCloseEmoji}
 					/>
 					<ChatFooter
 						set_username={set_username}

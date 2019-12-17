@@ -67,7 +67,7 @@ class Wallet extends Component {
 	}
 
 	calculateTotalAssets = (balance, prices, coins) => {
-		const total = calculateBalancePrice(balance, prices);
+		const total = calculateBalancePrice(balance, prices, coins);
 		const { min, symbol = '' } = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
 		return STRINGS.formatString(
 			CURRENCY_PRICE_FORMAT,
