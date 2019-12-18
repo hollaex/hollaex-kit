@@ -41,8 +41,8 @@ const COLUMNS = [
     { title: 'Filled', dataIndex: 'filled', key: 'filled', render: formatNum },
     {
         title: 'Time',
-        dataIndex: 'timestamp',
-        key: 'timestamp',
+        dataIndex: 'updated_at',
+        key: 'updated_at',
         render: formatDate
     }
 ];
@@ -53,39 +53,68 @@ const SCV_COLUMNS = [
     { label: 'Size', dataIndex: 'size', key: 'size' },
     { label: 'Price', dataIndex: 'price', key: 'price' },
     { label: 'Filled', dataIndex: 'filled', key: 'filled' },
-    { label: 'Time', dataIndex: 'timestamp', key: 'timestamp' }
+    { label: 'Time', dataIndex: 'updated_at', key: 'updated_at' }
 ];
 
 class ActiveOrders extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            Orders: [],
-            loading: true,
-            total: 0,
-            page: 0,
+            buyOrders: {
+                data: [],
+                loading: true,
+                total: 0,
+                page: 1,
+                isRemaining: true
+            },
+            sellOrders: {
+                data: [],
+                loading: true,
+                total: 0,
+                page: 1,
+                isRemaining: true
+            },
             pageSize: 10,
             limit: 50,
-            currentTablePage: 1,
-            isRemaining: true
+            buyCurrentTablePage: 1,
+            sellCurrentTablePage: 1,
+            activeTab: 'buy'
         };
     }
 
     componentDidMount() {
-        this.handleTrades();
+        this.handleTrades('buy');
+        this.handleTrades('sell');
     }
 
-    handleTrades = () => {
-        requestActiveOrders()
+    handleTrades = (side, page = 1, limit = this.state.limit) => {
+        requestActiveOrders({ side, page, limit })
             .then((res) => {
                 if (res) {
-                    this.setState({
-                        Orders: [...this.state.Orders, ...res.data],
-                        loading: false,
-                        total: res.count,
-                        page: res.page,
-                        isRemaining: res.isRemaining
-                    });
+                    if (side === 'buy') {
+                        this.setState({
+                            buyOrders: {
+                                ...this.state.buyOrders,
+                                data: [ ...this.state.buyOrders.data, ...res.data ],
+                                loading: false,
+                                total: res.count,
+                                page: res.page,
+                                isRemaining: res.isRemaining
+                            }
+                        });
+                    } else {
+                        this.setState({
+                            sellOrders: {
+                                ...this.state.sellOrders,
+                                data: [ ...this.state.sellOrders.data, ...res.data ],
+                                loading: false,
+                                total: res.count,
+                                page: res.page,
+                                isRemaining: res.isRemaining
+                            }
+                        });
+
+                    }
                 }
             })
             .catch((err) => {
@@ -97,39 +126,62 @@ class ActiveOrders extends Component {
     };
 
     pageChange = (count, pageSize) => {
-        const { page, limit, isRemaining } = this.state;
+        const { buyOrders = {}, sellOrders = {}, limit } = this.state;
         const pageCount = count % 5 === 0 ? 5 : count % 5;
         const apiPageTemp = Math.floor(count / 5);
-        if (
-            this.props.userId &&
-            limit === pageSize * pageCount &&
+        const page = this.state.activeTab === 'buy' ? buyOrders.page : sellOrders.page;
+        const isRemaining = this.state.activeTab === 'buy' ? buyOrders.isRemaining : sellOrders.isRemaining;
+        if (limit === pageSize * pageCount &&
             apiPageTemp >= page &&
             isRemaining
         ) {
-            this.setState({ loading: true });
+            if (this.state.activeTab === 'buy') {
+                this.setState({
+                    buyOrders: {
+                        ...this.state.buyOrders,
+                        loading: true
+                    }
+                });
+                this.handleTrades('buy', buyOrders.page + 1, limit);
+            } else {                
+                this.setState({
+                    sellOrders: {
+                        ...this.state.sellOrders,
+                        loading: true
+                    }
+                });
+                this.handleTrades('sell', sellOrders.page + 1, limit);
+            }
         }
-        this.setState({ currentTablePage: count });
+        if (this.state.activeTab === 'buy') {
+            this.setState({ buyCurrentTablePage: count });
+        } else {
+            this.setState({ sellCurrentTablePage: count });
+        }
+    };
+
+    tabChange = (activeTab) => {
+        this.setState({ activeTab });
     };
 
     render() {
         const {
-            Orders,
-            // currentTablePage
+            buyOrders = {},
+            sellOrders = {},
+            buyCurrentTablePage,
+            sellCurrentTablePage
         } = this.state;
-
-        const Bids = Orders.filter(Bids => Bids.side === 'buy');
-        const Asks = Orders.filter(asks => asks.side === 'sell');
 
         return (
             <div className="app_container-content" >
-                <Tabs>
-                    <TabPane tab="Bids" key="transactions">
+                <Tabs onChange={this.tabChange}>
+                    <TabPane tab="Bids" key="buy">
                         <Row>
                             <Row gutter={16} style={{ marginTop: 16 }}>
                                 <Col>
                                     <CSVLink
                                         filename={'active-orders-bids.csv'}
-                                        data={Bids}
+                                        data={buyOrders.data}
                                         headers={SCV_COLUMNS}
                                     >
                                         Download table
@@ -139,23 +191,23 @@ class ActiveOrders extends Component {
                                         rowKey={(data) => {
                                             return data.id;
                                         }}
-                                        dataSource={Bids}
-                                        // pagination={{
-                                        //     current: currentTablePage,
-                                        //     onChange: this.pageChange
-                                        // }}
+                                        dataSource={buyOrders.data}
+                                        pagination={{
+                                            current: buyCurrentTablePage,
+                                            onChange: this.pageChange
+                                        }}
                                     />
                                 </Col>
                             </Row>
                         </Row>
                     </TabPane>
-                    <TabPane tab="Asks" key="validate">
+                    <TabPane tab="Asks" key="sell">
                         <Row>
                             <Row gutter={16} style={{ marginTop: 16 }}>
                                 <Col>
                                     <CSVLink
                                         filename={'active-orders-asks.csv'}
-                                        data={Asks}
+                                        data={sellOrders.data}
                                         headers={SCV_COLUMNS}
                                     >
                                         Download table
@@ -165,11 +217,11 @@ class ActiveOrders extends Component {
                                         rowKey={(data) => {
                                             return data.id;
                                         }}
-                                        dataSource={Asks}
-                                        // pagination={{
-                                        //     current: currentTablePage,
-                                        //     onChange: this.pageChange
-                                        // }}
+                                        dataSource={sellOrders.data}
+                                        pagination={{
+                                            current: sellCurrentTablePage,
+                                            onChange: this.pageChange
+                                        }}
                                     />
                                 </Col>
                             </Row>
