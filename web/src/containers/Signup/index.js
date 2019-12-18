@@ -52,6 +52,11 @@ class Signup extends Component {
 		}
 	}
 
+	componentWillUnmount() {
+		if (errorTimeOut) {
+			clearTimeout(errorTimeOut);
+		}
+	}
 
 	getReferralCode = () => {
 		let affiliation_code = '';
@@ -78,7 +83,7 @@ class Signup extends Component {
 			})
 			.catch((error) => {
 				const errors = {};
-				setTimeout(() => {
+				errorTimeOut = setTimeout(() => {
 					this.props.change(FORM_NAME, 'captcha', '');
 				}, 5000);
 
