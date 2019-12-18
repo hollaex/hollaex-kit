@@ -26,7 +26,7 @@ export const getChartSymbol = (symbol, tickSize) => {
 	// });
 	return new Promise((resolve) => {
 		resolve({
-			name: `${APP_TITLE.toUpperCase()}:${symbol.toUpperCase()}`,
+			name: `${symbol.toUpperCase()}`,
 			ticker: symbol,
 			exchange: APP_TITLE.toUpperCase(),
 			has_intraday: true,

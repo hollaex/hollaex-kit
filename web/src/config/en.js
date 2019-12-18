@@ -1260,7 +1260,9 @@ export default {
 	TRADE_POSTS: {
 		// new
 		ANNOUNCEMENT: 'Announcement',
-		ANNOUNCEMNT_TXT:
+		ANNOUNCEMNT_TXT_3:
+			'Public launch and Wave Auction is rescheduled to January 1st 2020. Wallet deposit and withdrawals are now open.',
+		ANNOUNCEMNT_TXT_2:
 			'Public wave auction is starting from December 18th, 2019 1pm UTC. You can deposit and start placing bids at anytime and purchase HEX.',
 		ANNOUNCEMNT_TXT_1:
 			'Earn HEX with HAP program by introducing your friends to hollaex.com. {0}.',
