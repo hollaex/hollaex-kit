@@ -113,8 +113,9 @@ class Verification extends Component {
 			role: values
 		};
 		return performUserRoleUpdate(postValues)
-			.then(() => {
-				// refreshData(postValues);
+			.then((response) => {
+				const { email, ...res } = response;
+				refreshData({ ...res, user_id: this.props.user_id });
 			})
 			.catch((err) => {
 				throw new SubmissionError({ _error: err.data.message });
