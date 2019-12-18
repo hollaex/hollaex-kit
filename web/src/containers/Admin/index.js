@@ -22,4 +22,4 @@ export { default as Transactions } from './Transactions';
 export { default as UserFees } from './UserFees';
 export { default as Trades } from './Trades';
 export { PATHS } from './paths';
-export { default as UserOrders } from './UserOrders';
+export { default as ActiveOrders } from './ActiveOrders';

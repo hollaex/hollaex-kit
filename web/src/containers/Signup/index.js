@@ -17,6 +17,8 @@ import {
 } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 
+let errorTimeOut = null;
+
 const BottomLinks = () => (
 	<div className={classnames('f-1', 'link_wrapper', 'multi_links')}>
 		<div>
@@ -39,6 +41,12 @@ class Signup extends Component {
 		success: false,
 		showContactForm: false
 	};
+
+	componentWillUnmount() {
+		if (errorTimeOut) {
+			clearTimeout(errorTimeOut);
+		}
+	}
 
 	getReferralCode = () => {
 		let affiliation_code = '';
@@ -65,7 +73,9 @@ class Signup extends Component {
 			})
 			.catch((error) => {
 				const errors = {};
-				this.props.change(FORM_NAME, 'captcha', '');
+				errorTimeOut = setTimeout(() => {
+					this.props.change(FORM_NAME, 'captcha', '');
+				}, 5000);
 				if (error.response.status === 409) {
 					errors.email = STRINGS.VALIDATIONS.USER_EXIST;
 				} else if (error.response) {
