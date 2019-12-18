@@ -1,7 +1,6 @@
 import React from 'react';
 import { InputNumber, Input, DatePicker, Select } from 'antd';
 import moment from 'moment';
-import { formatTimestampFarsi, DATETIME_FORMAT_FA } from '../../utils/date';
 import './index.css';
 
 const dateFormat = 'YYYY/MM/DD';

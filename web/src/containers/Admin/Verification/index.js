@@ -23,9 +23,7 @@ import './index.css';
 import { isSupport, isSupervisor } from '../../../utils/token';
 import {
 	formatTimestampGregorian,
-	formatTimestampFarsi,
 	DATETIME_FORMAT,
-	DATETIME_FORMAT_FA
 } from '../../../utils/date';
 
 const VERIFICATION_LEVELS_SUPPORT = ['1', '2', '3'];
@@ -231,11 +229,6 @@ class Verification extends Component {
 										id_data.issued_date,
 										DATETIME_FORMAT
 									)}{' '}
-									-{' '}
-									{formatTimestampFarsi(
-										id_data.issued_date,
-										DATETIME_FORMAT_FA
-									)}
 								</p>
 							)}
 							{id_data.expiration_date && (
@@ -245,11 +238,6 @@ class Verification extends Component {
 										id_data.expiration_date,
 										DATETIME_FORMAT
 									)}{' '}
-									-{' '}
-									{formatTimestampFarsi(
-										id_data.expiration_date,
-										DATETIME_FORMAT_FA
-									)}
 								</p>
 							)}
 						</Card>
@@ -273,9 +261,6 @@ class Verification extends Component {
 }
 
 Verification.defaultProps = {
-	// roleInitialValues: {
-	// 	role: 'user'
-	// },
 	verificationInitialValues: {}
 };
 

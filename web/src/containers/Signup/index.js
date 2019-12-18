@@ -18,6 +18,8 @@ import {
 } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 
+let errorTimeOut = null;
+
 const BottomLinks = () => (
 	<div className={classnames('f-1', 'link_wrapper', 'multi_links')}>
 		<div>
