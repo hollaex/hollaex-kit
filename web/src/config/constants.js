@@ -45,6 +45,7 @@ export const ICONS = {
 	KRW_ICON: '/assets/icons/krw-icon-01.svg',
 	HEX_ICON: '/assets/icons/hex-icon.svg',
 	HEX_ICON_DARK: '/assets/icons/hex-icon-dark.svg',
+	USDT_ICON: '/assets/icons/usdt-icon.svg',
 	CHECK: '/assets/images/Orderbook scrolling-01.svg',
 	DARK_CHECK: '/assets/images/dark-Orderbook-scrolling-01.svg',
 	BLUE_QUESTION: '/assets/acounts/account-icons-08.svg',
@@ -214,7 +215,6 @@ export const ICONS = {
 	PENDING_TIMER: '/assets/images/pending-timer.svg',
 	VOLUME_PENDING: '/assets/images/volume-pending-icon.svg',
 	VOLUME_PENDING_DARK: '/assets/images/volume-pending-dark.svg',
-	SELF_KYC_ID_FA: '/assets/self-kyc-id-note-persian.png',
 	SELF_KYC_ID_EN: '/assets/self-kyc-id-note-english.png',
 	CHAT_ICON_LVL_3: '/assets/images/kraken-chat-lvl-3.svg',
 	CHAT_ICON_LVL_4: '/assets/images/whale-chat-lvl-4.svg',
@@ -244,7 +244,9 @@ export const ICONS = {
 	LEVEL_ACCOUNT_ICON_1: '/assets/images/level-1.svg',
 	LEVEL_ACCOUNT_ICON_2: '/assets/images/level-2.svg',
 	LEVEL_ACCOUNT_ICON_3: '/assets/images/level-3.svg',
-	LEVEL_ACCOUNT_ICON_4: '/assets/images/level-4.svg'
+	LEVEL_ACCOUNT_ICON_4: '/assets/images/level-4.svg',
+	TRADE_ANNOUNCEMENT: '/assets/images/annoucement.svg',
+	CHAT_EMOJI: '/assets/icons/emoji-face-icon.svg',
 };
 
 export const SOCIAL_ICONS = {
@@ -276,9 +278,9 @@ export const SUMMMARY_ICON = {
 };
 
 export const HOLLAEX_LOGO =
-	process.env.LOGO_PATH || '/assets/hollaEx_logo-grey.svg';
+	process.env.REACT_APP_LOGO_PATH || '/assets/hollaEx_logo-grey.svg';
 export const HOLLAEX_LOGO_BLACK =
-	process.env.LOGO_BLACK_PATH || '/assets/hollaEx_logo-blk.svg';
+	process.env.REACT_APP_LOGO_BLACK_PATH || '/assets/hollaEx_logo-blk.svg';
 
 export const AUDIOS = {
 	ORDERBOOK_FIELD_UPDATE: '/assets/audio/orderbook_field_update.wav',
@@ -348,7 +350,7 @@ export const WITHDRAW_LIMITS = {
 };
 
 // Default trading pairs (it gets set from the server so it is not important to set these properly)
-export const DEFAULT_TRADING_PAIRS = ['hex-usdt'];
+export const DEFAULT_TRADING_PAIRS = ['xht-usdt'];
 
 export const TOKEN_KEY = `${ENV}_${NETWORK}_TOKEN`;
 export const LANGUAGE_KEY = `${ENV}_${NETWORK}_LANGUAGE`;
@@ -395,11 +397,17 @@ export const EXPLORERS_ENDPOINT = (currency) => {
 					? 'https://explorer.bitcoin.com/tbch/tx/'
 					: 'https://explorer.bitcoin.com/bch/tx/';
 			break;
-		case 'hex':
+		case 'xht':
 			endpoint =
 				NETWORK === 'testnet'
 					? 'https://ropsten.etherscan.io/tx/'
 					: 'https://etherscan.io/tx/';
+			break;
+		case 'xmr':
+			endpoint =
+				NETWORK === 'testnet'
+					? 'https://moneroblocks.info/tx/'
+					: 'https://moneroblocks.info/tx/';
 			break;
 		default:
 			endpoint =

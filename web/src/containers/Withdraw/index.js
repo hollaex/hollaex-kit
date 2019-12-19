@@ -81,7 +81,7 @@ class Withdraw extends Component {
 				nextProps.routeParams.currency !== this.props.routeParams.currency)
 		) {
 			this.generateFormValues(
-				getCurrencyFromName(nextProps.routeParams.currency),
+				getCurrencyFromName(nextProps.routeParams.currency, nextProps.coins),
 				nextProps.balance,
 				nextProps.coins,
 				nextProps.verification_level
@@ -101,7 +101,7 @@ class Withdraw extends Component {
 	};
 
 	setCurrency = (currencyName) => {
-		const currency = getCurrencyFromName(currencyName);
+		const currency = getCurrencyFromName(currencyName, this.props.coins);
 		if (currency) {
 			this.setState({ currency, checked: false }, () => {
 				this.validateRoute(
@@ -116,7 +116,7 @@ class Withdraw extends Component {
 			// }
 
 			this.generateFormValues(
-				getCurrencyFromName(currency),
+				currency,
 				this.props.balance,
 				this.props.coins,
 				this.props.verification_level
@@ -207,7 +207,7 @@ class Withdraw extends Component {
 
 		const formProps = {
 			currency,
-			onSubmit: this.onSubmitWithdraw(currency),
+			onSubmitWithdrawReq: this.onSubmitWithdraw(currency),
 			onOpenDialog: this.onOpenDialog,
 			otp_enabled,
 			openContactForm,

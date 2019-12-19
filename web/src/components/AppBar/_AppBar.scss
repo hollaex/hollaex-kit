@@ -820,7 +820,8 @@ $app-bar-pairs-up: $buy;
 				.eth1,
 				.bch-icon,
 				.xrp-icon,
-				.hex-icon {
+				.hex-icon,
+				.default-icon {
 					fill: $dark-font-main-text-color !important;
 				}
 				.st0 {
@@ -846,7 +847,7 @@ $app-bar-pairs-up: $buy;
 
 	.app-bar-tab-setting, .app-bar-add-tab-icons {
 		svg {
-			.btc0, .btc1, .eth0, .eth1, .bch-icon, .xrp-icon, .hex-icon {
+			.btc0, .btc1, .eth0, .eth1, .bch-icon, .xrp-icon, .hex-icon, .default-icon {
 				fill: $dark-font-sub-text-1-color !important;
 			}
 			.plus, .minus {

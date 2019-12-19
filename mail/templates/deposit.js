@@ -1,8 +1,6 @@
 'use strict';
 
 const { CONFIRMATION, EXPLORERS, CURRENCIES } = require('../../constants');
-const PENDING = 'PENDING';
-const COMPLETED = 'COMPLETED';
 
 const fetchMessage = (email, data, language, domain) => {
 	return {
@@ -29,40 +27,30 @@ const html = (email, data, language, domain) => {
 				}>${explorer.name}</a></li>`;
 			});
 		}
-		if (data.status === PENDING) {
-			result += `
-                <p>
-                    ${DEPOSIT.BODY.PENDING[1](
-						data.amount,
-						CONFIRMATION[data.currency],
-						data.currency.toUpperCase()
-					)}
-                </p>
-                <p>
-                    ${DEPOSIT.BODY.PENDING[2](
-						data.amount,
-						data.currency.toUpperCase()
-					)}
-					<br />
-                    ${DEPOSIT.BODY.PENDING[3]}${
-						data.transaction_id ? '<br />' : ''
-					}
-                    ${data.transaction_id
-						? DEPOSIT.BODY.PENDING[4](data.transaction_id)
-						: ''
-					}
-                </p>
-                	${DEPOSIT.BODY.PENDING[5]}
-                <ul>${explorers}</ul>
-            `;
-		} else if (data.status === COMPLETED) {
-			result += `
-				<p>${DEPOSIT.BODY.COMPLETED(
+
+		result += `
+			<p>
+				${DEPOSIT.BODY[data.status](
 					data.amount,
-					data.currency
-				)}</p>
-			`;
-		}
+					CONFIRMATION[data.currency],
+					data.currency.toUpperCase()
+				)}
+			</p>
+			<p>
+				${DEPOSIT.BODY[1](
+					data.amount,
+					data.currency.toUpperCase()
+				)}
+				<br />
+				${DEPOSIT.BODY[2](data.status)}
+				${data.transaction_id ? '<br />' : ''}
+				${data.transaction_id ? DEPOSIT.BODY[3](data.address) : ''}
+				${data.transaction_id ? '<br />' : ''}
+				${data.transaction_id ? DEPOSIT.BODY[4](data.transaction_id) : ''}
+			</p>
+			${data.transaction_id ? DEPOSIT.BODY[5] : ''}
+			<ul>${data.transaction_id ? explorers : ''}</ul>
+		`;
 	} else {
 		result += '';
 	}
@@ -81,20 +69,17 @@ const text = (email, data, language, domain) => {
 	const { DEPOSIT } = require(`../strings/${language}`);
 	let result = `${DEPOSIT.GREETING(email)}`;
 	if (CURRENCIES.includes(data.currency)) {
-		if (data.status === PENDING) {
-			result += `
-				${DEPOSIT.BODY.PENDING[1](
-					data.amount,
-					CONFIRMATION[data.currency],
-					data.currency.toUpperCase()
-				)}
-				${DEPOSIT.BODY.PENDING[2](data.amount, data.currency.toUpperCase())}
-				${DEPOSIT.BODY.PENDING[3]}
-				${data.transaction_id ? DEPOSIT.BODY.PENDING[4](data.transaction_id) : ''}
-      		`;
-		} else if (data.status === COMPLETED) {
-			result += DEPOSIT.BODY.COMPLETED(data.amount, data.currency);
-		}
+		result += `
+			${DEPOSIT.BODY[data.status](
+				data.amount,
+				CONFIRMATION[data.currency],
+				data.currency.toUpperCase()
+			)}
+			${DEPOSIT.BODY[1](data.amount, data.currency.toUpperCase())}
+			${DEPOSIT.BODY[2](data.status)}
+			${data.transaction_id ? DEPOSIT.BODY[3](data.address) : ''}
+			${data.transaction_id ? DEPOSIT.BODY[4](data.transaction_id) : ''}
+		`;
 	} else {
 		result += '';
 	}

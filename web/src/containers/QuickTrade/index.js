@@ -78,7 +78,9 @@ class QuickTradeContainer extends Component {
 			JSON.stringify(this.props.prices) !==
 				JSON.stringify(nextProps.prices) ||
 			JSON.stringify(this.props.balance) !==
-				JSON.stringify(nextProps.balance)
+				JSON.stringify(nextProps.balance) ||
+			JSON.stringify(this.props.coins) !==
+				JSON.stringify(nextProps.coins)
 		) {
 			this.calculateSections(nextProps);
 		}
@@ -105,8 +107,8 @@ class QuickTradeContainer extends Component {
 		}
 	};
 
-	calculateSections = ({ balance, prices }) => {
-		const totalAssets = calculateBalancePrice(balance, prices);
+	calculateSections = ({ balance, prices, coins }) => {
+		const totalAssets = calculateBalancePrice(balance, prices, coins);
 		this.setState({ totalAssets });
 	};
 
@@ -116,7 +118,8 @@ class QuickTradeContainer extends Component {
 			settings: { risk = {} },
 			quoteData: { data = {} },
 			setNotification,
-			pairData
+			pairData,
+			balance
 		} = this.props;
 
 		if (this.props.quoteData.error === BALANCE_ERROR) {
@@ -134,9 +137,15 @@ class QuickTradeContainer extends Component {
 				orderPrice: data.price,
 				orderFees: 0
 			};
-			const riskyPrice =
-				(this.state.totalAssets / 100) * risk.order_portfolio_percentage;
-			if (risk.popup_warning && data.price > riskyPrice) {
+			// const riskyPrice = ((this.state.totalAssets / 100) * risk.order_portfolio_percentage);
+			let avail_balance = 0;
+			if (data.side === 'buy') {
+				avail_balance = balance[`${pair_2.toLowerCase()}_available`];
+			} else {
+				avail_balance = balance[`${pair_base.toLowerCase()}_available`];
+			}
+			const riskySize = ((avail_balance / 100) * risk.order_portfolio_percentage);
+			if (risk.popup_warning && data.size >= riskySize) {
 				order['order_portfolio_percentage'] =
 					risk.order_portfolio_percentage;
 				setNotification(RISKY_ORDER, {

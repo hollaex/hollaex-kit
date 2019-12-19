@@ -36,6 +36,22 @@ class App extends Component {
 		}
 	}
 
+	componentDidUpdate(prevProps) {
+		if (this.props.location.search !== prevProps.location.search) {
+			if (this.props.location.search) {
+				const qs = querystring.parse(this.props.location.search);
+				if (qs.id) {
+					this.requestUserData(qs);
+				}
+			} else {
+				this.setState({
+					userInformation: {},
+					userImages: {}
+				});
+			}
+		}
+	}
+
 	requestUserData = (values) => {
 		// const isSupportUser = isSupport();
 		const { router } = this.props;

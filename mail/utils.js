@@ -68,10 +68,17 @@ const getCountryFromIp = (ip) => {
 	}`;
 };
 
+const { transport } = require('../config/nodemailer');
+
+const sendSMTPEmail = (params) => {
+	return transport.sendMail(params);
+};
+
 module.exports = {
 	sendAwsEmail,
 	sendAwsRawEmail,
 	formatDate,
 	formatTimezone,
-	getCountryFromIp
+	getCountryFromIp,
+	sendSMTPEmail
 };

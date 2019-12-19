@@ -155,8 +155,12 @@ class AddTradeTab extends Component {
                             let { min, fullname, symbol = '' } = coins[pair.pair_base || BASE_CURRENCY] || DEFAULT_COIN_DATA;
                             const pairTwo = coins[pair.pair_2] || DEFAULT_COIN_DATA;
                             let ticker = tickers[key] || {};
-                            const priceDifference = (ticker.close || 0) - (ticker.open || 0);
-                            const tickerPercent = priceDifference === 0 ? 0 : ((priceDifference / ticker.open) * 100);
+                            const priceDifference = ticker.open === 0
+                                ? 0
+                                : ((ticker.close || 0) - (ticker.open || 0));
+                            const tickerPercent = priceDifference === 0 || ticker.open === 0
+                                ? 0
+                                : ((priceDifference / ticker.open) * 100);
                             const priceDifferencePercent = isNaN(tickerPercent) ? formatPercentage(0) : formatPercentage(tickerPercent);
                             return (
                                 <div
@@ -164,7 +168,13 @@ class AddTradeTab extends Component {
                                     className={classnames("d-flex", "trade-tab-list", "pointer", { "active-tab": index === 0 })}
                                     onClick={() => this.handleClick(key)}>
                                     <div className="px-2">
-                                        <ReactSVG path={ICONS[`${pair.pair_base.toUpperCase()}_ICON`]} wrapperClassName="trade_tab-icons" />
+                                        <ReactSVG
+                                            path={
+                                                ICONS[`${pair.pair_base.toUpperCase()}_ICON`]
+                                                    ? ICONS[`${pair.pair_base.toUpperCase()}_ICON`]
+                                                    : ICONS.DEFAULT_ICON
+                                            }
+                                            wrapperClassName="trade_tab-icons" />
                                     </div>
                                     <div className="tabs-pair-details">
                                         <div className="trade_tab-pair-title">

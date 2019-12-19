@@ -53,7 +53,7 @@ export const renderDismiss = ({
 export const renderUser = (id) => (
 	<Tooltip placement="bottom" title={`SEE USER ${id} DETAILS`}>
 		<Button type="primary">
-			<Link to={`user?id=${id}`}>{id}</Link>
+			<Link to={`/admin/user?id=${id}`}>{id}</Link>
 		</Button>
 	</Tooltip>
 );

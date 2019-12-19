@@ -12,7 +12,7 @@ const INITIAL_STATE = {
 	tradeHistory: '',
 	loading: true,
 	total: 0,
-	page: 0,
+	page: 1,
 	pageSize: 10,
 	limit: 50,
 	currentTablePage: 1,
@@ -54,7 +54,7 @@ class TradeHistory extends Component {
 
 	componentWillMount = () => {
 		if (this.props.userId) {
-			this.handleTrades(this.props.userId);
+			this.handleTrades(this.props.userId, this.state.page, this.state.limit);
 		}
 	};
 
@@ -118,8 +118,8 @@ class TradeHistory extends Component {
 						</CSVLink>
 						<Table
 							columns={COLUMNS}
-							rowKey={(data) => {
-								return data.id;
+							rowKey={(data, index) => {
+								return `${data.symbol}_${index}`;
 							}}
 							dataSource={tradeHistory ? tradeHistory : 'NO Data'}
 							pagination={{

@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { NotificationsList, SidebarHub } from '../';
-import { Help, Chat } from './rows';
 
 const Sidebar = ({
 	isLogged,
@@ -28,7 +27,7 @@ const Sidebar = ({
 			<div className="sidebar-notifications">
 				<NotificationsList />
 			</div>: '' }
-			{isLogged ?
+			{/* {isLogged ?
 			<div className="sidebar-row d-flex">
 				<Chat
 					className="f-1 title-font text-capitalize justify-content-center"
@@ -37,8 +36,8 @@ const Sidebar = ({
 					chatIsClosed={chatIsClosed}
 				/>
 				<Help className="f-8" onHelp={help} />
-				{/* <Logout className="f-0" onLogout={logout} /> */}
-			</div> : ''}
+				<Logout className="f-0" onLogout={logout} />
+			</div> : ''} */}
 		</div>
 	);
 };

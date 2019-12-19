@@ -2,9 +2,7 @@ import React from 'react';
 import { isDate } from 'moment';
 import {
 	formatTimestampGregorian,
-	formatTimestampFarsi,
-	DATETIME_FORMAT,
-	DATETIME_FORMAT_FA
+	DATETIME_FORMAT
 } from '../../../utils/date';
 export const KEYS_TO_HIDE = [
 	'email',
@@ -34,7 +32,7 @@ export const renderJSONKey = (key, value) => {
 		valueText = `${formatTimestampGregorian(
 			value,
 			DATETIME_FORMAT
-		)} - ${formatTimestampFarsi(value, DATETIME_FORMAT_FA)}`;
+		)}`;
 	} else if (key === 'settings') {
 		valueText = Object.entries(value).map(([key, val]) => {
 			return (

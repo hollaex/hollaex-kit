@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { SubmissionError } from 'redux-form';
 import {
 	performVerificationLevelUpdate,
+	performUserRoleUpdate,
 	verifyData,
 	revokeData
 } from './actions';
@@ -22,9 +23,7 @@ import './index.css';
 import { isSupport, isSupervisor } from '../../../utils/token';
 import {
 	formatTimestampGregorian,
-	formatTimestampFarsi,
 	DATETIME_FORMAT,
-	DATETIME_FORMAT_FA
 } from '../../../utils/date';
 
 const VERIFICATION_LEVELS_SUPPORT = ['1', '2', '3'];
@@ -32,10 +31,19 @@ const VERIFICATION_LEVELS_ADMIN = VERIFICATION_LEVELS_SUPPORT.concat([
 	'4', '5', '6'
 ]);
 
+const ROLE = [
+	{ label: 'admin', value: 'admin' },
+	{ label: 'support', value: 'support' },
+	{ label: 'supervisor', value: 'supervisor' },
+	{ label: 'kyc', value: 'kyc' },
+	{ label: 'user', value: 'user' }
+];
+
 const IDForm = AdminHocForm('ID_DATA_FORM');
 const IDRevokeForm = AdminHocForm('ID_DATA_REVOKE_FORM');
 // const BankRevokeForm = HocForm('BANK_DATA_REVOKE_FORM');
 const VerificationForm = AdminHocForm('VERIFICATION_FORM');
+const UserRoleForm = AdminHocForm('USER_ROLE_FORM');
 
 class Verification extends Component {
 	constructor(props) {
@@ -97,9 +105,31 @@ class Verification extends Component {
 		this.setState({ note: event.target.value });
 	};
 
+	onRoleChange = (refreshData) => (values) => {
+		const postValues = {
+			user_id: this.props.user_id,
+			role: values
+		};
+		return performUserRoleUpdate(postValues)
+			.then((response) => {
+				const { email, ...res } = response;
+				refreshData({ ...res, user_id: this.props.user_id });
+			})
+			.catch((err) => {
+				throw new SubmissionError({ _error: err.data.message });
+			});
+	};
+
 	render() {
-		const { userImages, userInformation, refreshData, config } = this.props;
-		const { id, id_data } = userInformation;
+		const {
+			userImages,
+			userInformation,
+			refreshData,
+			config,
+			roleInitialValues,
+			verificationInitialValues
+		} = this.props;
+		const { id, id_data, is_admin } = userInformation;
 		let VERIFICATION_LEVELS =
 			isSupport() || isSupervisor()
 				? VERIFICATION_LEVELS_SUPPORT
@@ -118,6 +148,7 @@ class Verification extends Component {
 						<VerificationForm
 							onSubmit={this.onSubmit(refreshData)}
 							buttonText="Update"
+							initialValues={verificationInitialValues}
 							fields={{
 								verification_level: {
 									type: 'select',
@@ -129,6 +160,24 @@ class Verification extends Component {
 											VERIFICATION_LEVELS.map((value) => `${value}`)
 										)
 									]
+								}
+							}}
+						/>
+					</Card>
+					<Card title="Role" style={{ width: 300 }}>
+						<UserRoleForm
+							onSubmit={this.onRoleChange(refreshData)}
+							buttonText="Update"
+							initialValues={roleInitialValues}
+							fields={{
+								role: {
+									type: 'select',
+									options: ROLE,
+									label: 'role',
+									validate: [
+										validateRequired
+									],
+									disabled: is_admin
 								}
 							}}
 						/>
@@ -145,7 +194,7 @@ class Verification extends Component {
 													user_id: id
 												})
 											}
-											buttonText={'Verify'}
+											buttonText={'Approve'}
 										/>
 									)}
 									{(!isSupport() || !isSupervisor()) &&
@@ -158,7 +207,7 @@ class Verification extends Component {
 															message: this.state.note
 														})
 													}
-													buttonText={'Revoke'}
+													buttonText={'Reject'}
 												/>
 												<Input.TextArea
 													rows={4}
@@ -180,11 +229,6 @@ class Verification extends Component {
 										id_data.issued_date,
 										DATETIME_FORMAT
 									)}{' '}
-									-{' '}
-									{formatTimestampFarsi(
-										id_data.issued_date,
-										DATETIME_FORMAT_FA
-									)}
 								</p>
 							)}
 							{id_data.expiration_date && (
@@ -194,11 +238,6 @@ class Verification extends Component {
 										id_data.expiration_date,
 										DATETIME_FORMAT
 									)}{' '}
-									-{' '}
-									{formatTimestampFarsi(
-										id_data.expiration_date,
-										DATETIME_FORMAT_FA
-									)}
 								</p>
 							)}
 						</Card>
@@ -220,4 +259,9 @@ class Verification extends Component {
 		);
 	}
 }
+
+Verification.defaultProps = {
+	verificationInitialValues: {}
+};
+
 export default Verification;

@@ -1,7 +1,7 @@
 const PRODUCTION_ENDPOINT =
-	process.env.REACT_APP_SERVER_ENDPOINT || "https://api.hollaex.com";
+	process.env.REACT_APP_SERVER_ENDPOINT || 'https://api.hollaex.com';
 
-const DEVELOPMENT_ENDPOINT = "https://api.demo.bitholla.com";
+const DEVELOPMENT_ENDPOINT = 'http://localhost';
 
 const API_PATH = '/v1';
 

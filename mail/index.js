@@ -1,6 +1,6 @@
 'use strict';
 
-const { sendAwsEmail, formatDate, getCountryFromIp } = require('./utils');
+const { sendAwsEmail, formatDate, getCountryFromIp, sendSMTPEmail } = require('./utils');
 const payloadTemplate = require('./templates/helpers/payloadTemplate');
 const { loggerEmail } = require('../config/logger');
 const {
@@ -58,7 +58,7 @@ const sendEmail = (
 		}
 		case MAILTYPE.DEPOSIT:
 		case MAILTYPE.WITHDRAWAL: {
-			if (data.status) data.status = getStatusText(data.status);
+			data.status = getStatusText(data.status);
 			if (data.phoneNumber && data.status)
 				sendSMSDeposit(
 					type,
@@ -97,13 +97,12 @@ const sendEmail = (
 };
 
 const send = (params) => {
-	return sendAwsEmail(params)
-		.then((result) => {
-			loggerEmail.debug('email/send', result);
-			return result;
+	return sendSMTPEmail(params)
+		.then((info) => {
+			return info;
 		})
-		.catch((err) => {
-			loggerEmail.error('email/send catch', err);
+		.catch((error) => {
+			loggerEmail.error('mail/index/sendSTMPEmail', error);
 		});
 };
 

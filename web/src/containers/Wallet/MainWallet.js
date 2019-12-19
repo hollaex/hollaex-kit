@@ -11,9 +11,14 @@ import {
 } from '../../components';
 import { TransactionsHistory } from '../';
 import { changeSymbol } from '../../actions/orderbookAction';
-import { NOTIFICATIONS } from '../../actions/appActions';
+import { NOTIFICATIONS, openContactForm } from '../../actions/appActions';
 import { createAddress, cleanCreateAddress } from '../../actions/userAction';
-import { ICONS, BASE_CURRENCY, CURRENCY_PRICE_FORMAT, DEFAULT_COIN_DATA } from '../../config/constants';
+import {
+	ICONS,
+	BASE_CURRENCY,
+	CURRENCY_PRICE_FORMAT,
+	DEFAULT_COIN_DATA
+} from '../../config/constants';
 import { calculateBalancePrice, formatToCurrency } from '../../utils/currency';
 import STRINGS from '../../config/localizedStrings';
 
@@ -62,7 +67,7 @@ class Wallet extends Component {
 	}
 
 	calculateTotalAssets = (balance, prices, coins) => {
-		const total = calculateBalancePrice(balance, prices);
+		const total = calculateBalancePrice(balance, prices, coins);
 		const { min, symbol = '' } = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
 		return STRINGS.formatString(
 			CURRENCY_PRICE_FORMAT,
@@ -97,6 +102,7 @@ class Wallet extends Component {
 						onOpenDialog={this.onOpenDialog}
 						bankaccount={bankaccount}
 						navigate={this.goToPage}
+						openContactUs={this.openContactUs}
 					/>
 				),
 				isOpen: true,
@@ -117,13 +123,16 @@ class Wallet extends Component {
 		const mobileTabs = [
 			{
 				title: STRINGS.WALLET_TAB_WALLET,
-				content: <MobileWallet sections={sections}
-				wallets={wallets}
-				balance={balance}
-				prices={prices}
-				navigate={this.goToPage}
-				coins={coins}
-			/>
+				content: (
+					<MobileWallet
+						sections={sections}
+						wallets={wallets}
+						balance={balance}
+						prices={prices}
+						navigate={this.goToPage}
+						coins={coins}
+					/>
+				)
 			},
 			{
 				title: STRINGS.WALLET_TAB_TRANSACTIONS,
@@ -157,6 +166,10 @@ class Wallet extends Component {
 
 	setActiveTab = (activeTab) => {
 		this.setState({ activeTab });
+	};
+
+	openContactUs = () => {
+		this.props.openContactForm({ category: 'bank_transfer' });
 	};
 
 	render() {
@@ -207,17 +220,16 @@ class Wallet extends Component {
 					showCloseText={true}
 					style={{ 'z-index': 100 }}
 				>
-					{dialogIsOpen &&
-						selectedCurrency && (
-							<Notification
-								type={NOTIFICATIONS.GENERATE_ADDRESS}
-								onBack={this.onCloseDialog}
-								onGenerate={this.onCreateAddress}
-								currency={selectedCurrency}
-								data={addressRequest}
-								coins={coins}
-							/>
-						)}
+					{dialogIsOpen && selectedCurrency && (
+						<Notification
+							type={NOTIFICATIONS.GENERATE_ADDRESS}
+							onBack={this.onCloseDialog}
+							onGenerate={this.onCreateAddress}
+							currency={selectedCurrency}
+							data={addressRequest}
+							coins={coins}
+						/>
+					)}
 				</Dialog>
 			</div>
 		);
@@ -241,7 +253,11 @@ const mapStateToProps = (store) => ({
 const mapDispatchToProps = (dispatch) => ({
 	createAddress: bindActionCreators(createAddress, dispatch),
 	cleanCreateAddress: bindActionCreators(cleanCreateAddress, dispatch),
-	changeSymbol: bindActionCreators(changeSymbol, dispatch)
+	changeSymbol: bindActionCreators(changeSymbol, dispatch),
+	openContactForm: bindActionCreators(openContactForm, dispatch)
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Wallet);
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(Wallet);

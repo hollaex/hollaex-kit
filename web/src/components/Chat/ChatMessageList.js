@@ -24,7 +24,8 @@ class ChatMessageList extends Component {
 		return ((lastMsg && ((this.scrollbarsRef.getValues().top > 0.95) || (this.props.username === lastMsg.username)))  || 
 		(!isMobile && prevProps.chatIsClosed && (prevProps.chatIsClosed !== this.props.chatIsClosed)) ||
 		(!prevProps.chatInitialized && (prevProps.chatInitialized !== this.props.chatInitialized)) ||
-		(!prevProps.userInitialized && (prevProps.userInitialized !== this.props.userInitialized)))
+		(!prevProps.userInitialized && (prevProps.userInitialized !== this.props.userInitialized)) ||
+		(prevProps.showEmojiBox !== this.props.showEmojiBox))
 	}
 	scrollToBottom = () => {
 		if (
@@ -56,6 +57,52 @@ class ChatMessageList extends Component {
 		}
 	}
 
+	constructData = message => {
+		let keyIndex = [];
+		let obj = {};
+		let keyLength = message.split('').filter((char, key) => {
+			if (char === '`') {
+				if (obj.start === undefined) obj.start = key;
+				else if (!obj.end) {
+					obj.end = key;
+					keyIndex.push(obj);
+					obj = {};
+				}
+				return true;
+			}
+			return false;
+		});
+		if (!keyLength.length || keyLength.length === 1) {
+			return message;
+		}
+		let msgData = [];
+		keyIndex.forEach((idx, count, arr) => {
+			let start = idx.start + 1;
+			let end = idx.end;
+			let preStart = count === 0 ? 0 : (arr[count - 1].end + 1);
+			let prevEnd = idx.start;
+			msgData.push(message.substring(preStart, prevEnd));
+			if (message.substring(start, end).includes('http')) {
+				msgData.push(
+					<a
+						key={start}
+						className="blue-link"
+						target="_blank"
+						rel="noopener noreferrer"
+						href={message.substring(start, end)}>
+						{message.substring(start, end)}
+					</a>
+				);
+			} else {
+				msgData.push(<span key={start} className="blue-link">{message.substring(start, end)}</span>);
+			}
+			if (arr.length === count + 1) {
+				msgData.push(message.substring(end + 1, message.length));
+			}
+		});
+		return message.includes('`') ? msgData : message;
+	}
+
 	render() {
 		const {
 			messages,
@@ -63,7 +110,8 @@ class ChatMessageList extends Component {
 			chatInitialized,
 			userInitialized,
 			usernameInitalized,
-			removeMessage
+			removeMessage,
+			onCloseEmoji
 		} = this.props;
 
 		return (
@@ -91,21 +139,25 @@ class ChatMessageList extends Component {
 				{(chatInitialized && usernameInitalized) ||
 				(!usernameInitalized && userInitialized) ||
 				(chatInitialized && !isLoggedIn()) ? (
-					messages.map(({ id, username, to, messageType, message, timestamp, verification_level }, index) => (
-						<ChatMessage
-							key={index}
-							id={id}
-							username={username}
-							ownMessage={username === this.props.username}
-							to={to}
-							userType={userType}
-							verification_level={verification_level}
-							messageType={messageType}
-							messageContent={message}
-							removeMessage={removeMessage}
-							timestamp={timestamp}
-						/>
-					))
+					messages.map(({ id, username, to, messageType, message, timestamp, verification_level }, index) => {
+						let msgContent = this.constructData(message);
+						return (
+							<ChatMessage
+								key={index}
+								id={id}
+								username={username}
+								ownMessage={username === this.props.username}
+								to={to}
+								userType={userType}
+								verification_level={verification_level}
+								messageType={messageType}
+								messageContent={msgContent}
+								removeMessage={removeMessage}
+								timestamp={timestamp}
+								onCloseEmoji={onCloseEmoji}
+							/>
+						)
+					})
 				) : (
 					<Loader />
 				)}

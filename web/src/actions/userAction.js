@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { maskToken } from '../utils/string';
 
 export function getMe() {
 	return {
@@ -110,10 +109,10 @@ export const otpSetActivated = (active = true) =>
 	active
 		? {
 				type: 'ACTIVATE_OTP'
-			}
+		  }
 		: {
 				type: 'REVOKE_OTP'
-			};
+		  };
 
 export function userIdentity(data) {
 	return (dispatch) => {
@@ -214,18 +213,17 @@ export const requestTokens = () => {
 };
 
 export const generateToken = (values) => axios.post(`/user/tokens`, values);
-export const tokenGenerated = ({ token, ...rest }) => ({
+export const tokenGenerated = (token) => ({
 	type: 'TOKEN_GENERATED',
 	payload: {
-		token: {
-			...rest,
-			token: maskToken(token)
-		}
+		token
 	}
 });
 
-export const revokeToken = (id, otp_code) =>
-	axios.delete(`/user/tokens/${id}?otp_code=${otp_code}`);
+export const revokeToken = (id, otp_code = '') =>
+	axios.delete(`/user/tokens`, {
+		data: { token_id: id, otp_code: otp_code }
+	});
 export const tokenRevoked = (token) => ({
 	type: 'TOKEN_REVOKED',
 	payload: {
