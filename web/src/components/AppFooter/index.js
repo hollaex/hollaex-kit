@@ -178,7 +178,7 @@ const AppFooter = ({
                                     <ReactSvg path={HOLLAEX_LOGO} wrapperClassName="footer-logo" />
                                 </div>
                                 <div className="footer-txt">
-                                    {STRINGS.formatString(STRINGS.FOOTER.HEX_DESCRIPTION,
+                                    {STRINGS.formatString(STRINGS.FOOTER.XHT_DESCRIPTION,
                                         <a
                                             href={'https://hollaex.com/docs/wave-auction.pdf'}
                                             target="_blank"

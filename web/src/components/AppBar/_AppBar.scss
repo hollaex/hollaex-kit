@@ -32,7 +32,7 @@ $app-bar-add-tab-red: #ff0000;
 				.eth1,
 				.bch-icon,
 				.xrp-icon,
-				.hex-icon,
+				.xht-icon,
 				.xmr-icon {
 					fill: $dark-font-main-text-color;
 				}
@@ -350,7 +350,7 @@ $app-bar-add-tab-red: #ff0000;
 			.eth1,
 			.bch-icon,
 			.xrp-icon,
-			.hex-icon,
+			.xht-icon,
 			.xmr-icon {
 				fill: $colors-main-black;
 			}
@@ -399,7 +399,7 @@ $app-bar-add-tab-red: #ff0000;
 		.eth1,
 		.bch-icon,
 		.xrp-icon,
-		.hex-icon,
+		.xht-icon,
 		.xmr-icon {
 			fill: $app-bar-icon-inactive;
 		}
@@ -849,7 +849,7 @@ $app-bar-add-tab-red: #ff0000;
 				.eth1,
 				.bch-icon,
 				.xrp-icon,
-				.hex-icon,
+				.xht-icon,
 				.xmr-icon,
 				.default-icon {
 					fill: $dark-font-main-text-color !important;
@@ -883,7 +883,7 @@ $app-bar-add-tab-red: #ff0000;
 			.eth1,
 			.bch-icon,
 			.xrp-icon,
-			.hex-icon,
+			.xht-icon,
 			.xmr-icon,
 			.default-icon {
 				fill: $app-bar-menu-list-color !important;
@@ -899,7 +899,7 @@ $app-bar-add-tab-red: #ff0000;
 			.icon-check-1 {
 				stroke: $colors-white;
 			}
-			.hex-icon-1 {
+			.xht-icon-1 {
 				fill: $dark-app-background-color !important;
 			}
 		}

@@ -5,7 +5,7 @@ import { Accordion, Table, Button } from "../../components";
 import renderFields from "../../components/Form/factoryFields";
 import STRINGS from "../../config/localizedStrings";
 import { formatBaseAmount } from "../../utils/currency";
-import { BASE_CURRENCY, DEFAULT_COIN_DATA, IS_HEX } from "../../config/constants";
+import { BASE_CURRENCY, DEFAULT_COIN_DATA, IS_XHT } from "../../config/constants";
 
 export const generateHeaders = onAdjustPortfolio => {
 	return [
@@ -36,7 +36,7 @@ export const generateHeaders = onAdjustPortfolio => {
 				</td>
 			)
 		},
-		!IS_HEX
+		!IS_XHT
 			? {
 				label: STRINGS.USER_SETTINGS.RISK_MANAGEMENT.TOMAN_ASSET,
 				key: "assetValue",
@@ -128,7 +128,7 @@ class RiskForm extends Component {
 				content: (
 					<div>
 						<p>{STRINGS.USER_SETTINGS.RISK_MANAGEMENT.INFO_TEXT}</p>
-						{!IS_HEX
+						{!IS_XHT
 							? <p>
 								{STRINGS.formatString(
 									STRINGS.USER_SETTINGS.RISK_MANAGEMENT.INFO_TEXT_1,

@@ -3,7 +3,7 @@ import ReactSVG from 'react-svg';
 import classnames from 'classnames';
 
 import STRINGS from '../../config/localizedStrings';
-import { ICONS, IS_HEX } from '../../config/constants';
+import { ICONS, IS_XHT } from '../../config/constants';
 
 class MenuList extends Component {
 
@@ -52,7 +52,7 @@ class MenuList extends Component {
                     className={
                         classnames(
                             "app-bar-account-menu-list d-flex",
-                            !!walletPending && IS_HEX
+                            !!walletPending && IS_XHT
                                 ? {
                                     'menu-notification-active': activePath === 'wallet' && selectedMenu === 'wallet',
                                     'wallet_notification': selectedMenu !== 'wallet'
@@ -64,7 +64,7 @@ class MenuList extends Component {
                     }
                     onClick={() => handleMenu('wallet')}>
                     <div className="notification-content">
-                        {!!walletPending && IS_HEX &&
+                        {!!walletPending && IS_XHT &&
                             <div
                                 className={
                                     selectedMenu === 'wallet'
@@ -111,7 +111,7 @@ class MenuList extends Component {
                     className={
                         classnames(
                             'app-bar-account-menu-list d-flex',
-                            !!verificationPending && !IS_HEX
+                            !!verificationPending && !IS_XHT
                                 ? {
                                     'menu-notification-active': activePath === 'account' && selectedMenu === 'verification',
                                     'verification_notification': selectedMenu !== 'verification'
@@ -123,7 +123,7 @@ class MenuList extends Component {
                     }
                     onClick={() => handleMenu('verification')}>
                     <div className="notification-content">
-                        {!!verificationPending && !IS_HEX &&
+                        {!!verificationPending && !IS_XHT &&
                             <div
                                 className={
                                     selectedMenu === 'verification'

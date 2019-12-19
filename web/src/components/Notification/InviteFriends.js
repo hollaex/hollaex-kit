@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import IconTitle from '../IconTitle';
 import DumbField from '../Form/FormFields/DumbField';
 import Button from '../Button';
-import { ICONS, IS_HEX, AFFILIATION_APPLY_URL } from '../../config/constants';
+import { ICONS, IS_XHT, AFFILIATION_APPLY_URL } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 import { getUserReferralCount } from '../../actions/userAction';
 
@@ -45,7 +45,7 @@ class InviteFriends extends Component {
                     </div>
                     <div className='my-4'>
                         {
-                            (!IS_HEX || is_hap) ?
+                            (!IS_XHT || is_hap) ?
                                 <RenderDumbField
                                     label={STRINGS.REFERRAL_LINK.COPY_FIELD_LABEL}
                                     value={referralLink}
@@ -69,7 +69,7 @@ class InviteFriends extends Component {
                             className="mr-5"
                             onClick={this.props.onBack}
                         />
-                        {(!IS_HEX || is_hap) ?
+                        {(!IS_XHT || is_hap) ?
                             <CopyToClipboard
                                 text={referralLink}
                                 onCopy={this.handleCopy}>
