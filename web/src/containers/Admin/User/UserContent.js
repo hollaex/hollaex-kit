@@ -12,7 +12,7 @@ import {
 	TradeHistory,
 	UploadIds,
 	Transactions,
-	UserOrders
+	ActiveOrders
 } from '../';
 import UserData from './UserData';
 import BankData from './BankData';
@@ -119,7 +119,7 @@ class UserContent extends Component {
 					)}
 					{!isSupportUser && !isKYC() && (
 						<TabPane tab="Orders" key="orders">
-							<UserOrders userId={userInformation.id} />
+							<ActiveOrders userId={userInformation.id} />
 						</TabPane>
 					)}
 					{!isSupportUser && !isKYC() && (
