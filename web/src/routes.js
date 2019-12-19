@@ -4,7 +4,6 @@ import ReactGA from 'react-ga';
 import { isMobile } from 'react-device-detect';
 
 import {
-	NETWORK,
 	PRO_VERSION_REDIRECT,
 } from './config/constants';
 
@@ -58,14 +57,13 @@ import {
 import { getLanguage, getInterfaceLanguage } from './utils/string';
 import { checkUserSessionExpired } from './utils/utils';
 
-// Initialize Google analytics
-if (NETWORK === 'mainnet') {
-	ReactGA.initialize('UA-112052696-1');
-	browserHistory.listen((location) => {
-		ReactGA.set({ page: window.location.pathname });
-		ReactGA.pageview(window.location.pathname);
-	});
-}
+
+ReactGA.initialize('UA-154626247-1');
+browserHistory.listen((location) => {
+	ReactGA.set({ page: window.location.pathname });
+	ReactGA.pageview(window.location.pathname);
+});
+
 
 let lang = getLanguage();
 if (!lang) {

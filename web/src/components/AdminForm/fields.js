@@ -1,7 +1,6 @@
 import React from 'react';
 import { InputNumber, Input, DatePicker, Select } from 'antd';
 import moment from 'moment';
-import { formatTimestampFarsi, DATETIME_FORMAT_FA } from '../../utils/date';
 import './index.css';
 
 const dateFormat = 'YYYY/MM/DD';
@@ -90,36 +89,6 @@ export const renderDateField = ({
 				disabled={disabled}
 				placeholder={placeholder}
 			/>
-			{touched &&
-				((error && <span className="red-text">{error}</span>) ||
-					(warning && <span className="red-text">{warning}</span>))}
-		</div>
-	</div>
-);
-
-export const renderFarsiDateField = ({
-	input,
-	label,
-	placeholder,
-	meta: { touched, error, warning },
-	disabled = false
-}) => (
-	<div className="input_field">
-		{label && <label>{label}</label>}
-		<div>
-			<div className="date-wrapper-farsi">
-				<div className="date-wrapper-farsi-value">
-					{formatTimestampFarsi(input.value || new Date(), DATETIME_FORMAT_FA)}
-				</div>
-				<DatePicker
-					className="date-wrapper-farsi-selector"
-					defaultValue={moment(input.value || new Date(), dateFormat)}
-					onChange={input.onChange}
-					format={dateFormat}
-					disabled={disabled}
-					placeholder={placeholder}
-				/>
-			</div>
 			{touched &&
 				((error && <span className="red-text">{error}</span>) ||
 					(warning && <span className="red-text">{warning}</span>))}

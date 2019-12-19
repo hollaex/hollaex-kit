@@ -26,12 +26,6 @@ const html = (email, data, language, domain) => {
 					data.transaction_id
 				}>${explorer.name}</a></li>`;
 			});
-		} else {
-			EXPLORERS['eth'].forEach((explorer) => {
-				explorers += `<li><a href=${explorer.baseUrl}${explorer.txPath}/${
-					data.transaction_id
-				}>${explorer.name}</a></li>`;
-			});
 		}
 
 		result += `

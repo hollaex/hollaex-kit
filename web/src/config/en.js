@@ -800,12 +800,8 @@ export default {
 	WITHDRAWALS_FORM_AMOUNT_LABEL: '{0} amount to withdraw',
 	WITHDRAWALS_FORM_AMOUNT_PLACEHOLDER:
 		'Type the amount of {0} you wish to withdraw',
-	WITHDRAWALS_FORM_FEE_BTC_LABEL:
-		'Bitcoin transaction fee (This is Bitcoin mining fee. If you lower that amount there is chance your transaction takes significant time to get confirmed.)',
-	WITHDRAWALS_FORM_FEE_ETH_LABEL:
-		'Ethereum transaction fee (This is Ethereum mining fee. If you lower that amount there is chance your transaction takes significant time to get confirmed.)', // TODO CHECK
 	WITHDRAWALS_FORM_FEE_COMMON_LABEL:
-		'{0} transaction fee (This is {0} mining fee. If you lower that amount there is chance your transaction takes significant time to get confirmed.)', // new
+		'{0} transaction fee (This is {0} mining fee)', // new
 	WITHDRAWALS_FORM_FEE_FIAT_LABEL: 'Bank withdrawal fee',
 	WITHDRAWALS_FORM_FEE_PLACEHOLDER:
 		'Type the amount of {0} you wish to use in the fee of the transaction',
@@ -879,7 +875,7 @@ export default {
 	WALLET_TABLE_TOTAL: 'Grand Total',
 	WALLET_ALL_ASSETS: 'All Assets',
 	WALLET_DEPOSIT_USD:
-		'If you’d like to deposit USD or other fiat currencies via bank wire transfer {0}.', // new
+		'For fiat currency D/W in different countries and other wallet inquiries {0}.', // new
 	HIDE_TEXT: 'Hide',
 	PAGINATOR_FORMAT: '{0} / {1}',
 	ORDERBOOK_SELLERS: 'Sellers',
@@ -887,7 +883,6 @@ export default {
 	ORDERBOOK_SPREAD: '{0} spread', // 0 -> 660,000 T
 	ORDERBOOK_SPREAD_PRICE: '{0} {1}', //// 0-> amount  1 -> symbol  600,000 T
 	CALCULATE_MAX: 'Max',
-	DATEFIELD_TOOGLE_DATE_PE: 'تاریخ شمسی‌',
 	DATEFIELD_TOOGLE_DATE_GR: 'Gregorian calendar',
 	VERIFICATION_WARNING_TITLE: 'Verification you bank details',
 	VERIFICATION_WARNING_MESSAGE:
@@ -1264,7 +1259,9 @@ export default {
 	TRADE_POSTS: {
 		// new
 		ANNOUNCEMENT: 'Announcement',
-		ANNOUNCEMNT_TXT:
+		ANNOUNCEMNT_TXT_3:
+			'Public launch and Wave Auction is rescheduled to January 1st 2020. Wallet deposit and withdrawals are now open.',
+		ANNOUNCEMNT_TXT_2:
 			'Public wave auction is starting from December 18th, 2019 1pm UTC. You can deposit and start placing bids at anytime and purchase HEX.',
 		ANNOUNCEMNT_TXT_1:
 			'Earn HEX with HAP program by introducing your friends to hollaex.com. {0}.',
