@@ -76,6 +76,15 @@ $order_entry-column--width-lg: 18rem;
 	.trade_active_orders-wrapper {
 		max-height: 35vh !important;
 	}
+	.trade_block-content{
+		.trade_history-wrapper{
+			.display_table-wrapper{
+				.display_table-cell {
+					min-height: 1.4rem !important;
+				}
+			} 
+		}
+	}
 }
 
 .trade_active-lg-view {
