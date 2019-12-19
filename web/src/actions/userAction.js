@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { maskToken } from '../utils/string';
 
 export function getMe() {
 	return {
