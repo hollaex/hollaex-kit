@@ -27,7 +27,7 @@ $tabs-title--margin: 2rem;
 
 .trade_block-wrapper {
 	padding: 1rem;
-	flex: auto;
+	flex: 1;
 
 	.trade_block-title {
 		border-top: $trade_title-border--size solid $trade_title-border--color;
@@ -134,9 +134,9 @@ $tabs-title--margin: 2rem;
 			.trade_block-title-currency-xrp {
 				color: $dark-coin-xrp;
 			}
-			.trade_block-title-currency-hex {
+			.trade_block-title-currency-xht {
 				background-color: $colors-white;
-				color: $dark-coin-hex;
+				color: $dark-coin-xht;
 				height: 1rem;
 				display: flex;
 				align-items: center;
@@ -277,7 +277,7 @@ $tabs-title--margin: 2rem;
 					.eth1,
 					.bch-icon,
 					.xrp-icon,
-					.hex-icon,
+					.xht-icon,
 					.xmr-icon,
 					.default-icon {
 						fill: $dark-font-main-text-color !important;

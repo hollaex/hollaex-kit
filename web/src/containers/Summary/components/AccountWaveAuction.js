@@ -78,9 +78,9 @@ class AccountWaveAuction extends Component {
         return (
             <div className="summary-section_2">
                 <div className="summary-content-txt mb-1">
-                    <div>{STRINGS.SUMMARY.HEX_WAVE_DESC_1}</div>
-                    <div>{STRINGS.SUMMARY.HEX_WAVE_DESC_2}</div>
-                    <div>{STRINGS.SUMMARY.HEX_WAVE_DESC_3}</div>
+                    <div>{STRINGS.SUMMARY.XHT_WAVE_DESC_1}</div>
+                    <div>{STRINGS.SUMMARY.XHT_WAVE_DESC_2}</div>
+                    <div>{STRINGS.SUMMARY.XHT_WAVE_DESC_3}</div>
                     <a
                         className="blue-link"
                         target="blank"

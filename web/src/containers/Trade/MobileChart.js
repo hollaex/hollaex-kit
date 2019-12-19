@@ -57,7 +57,7 @@ class MobileChart extends Component {
 					alignChildTitle={true}
 					tailHead={
 						<div className="quick-trade-tab p-1 mt-1">
-							<Link to="/quick-trade/hex-usdt">
+							<Link to="/quick-trade/xht-usdt">
 								{STRINGS.QUICK_TRADE}
 							</Link>
 						</div>

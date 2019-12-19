@@ -19,8 +19,8 @@ class RequestForm extends Component {
     onSubmit = (values) => {
         const formProps = {
             ...values,
-            subject: 'HEX referral request',
-            description: 'HEX referral request'
+            subject: 'XHT referral request',
+            description: 'XHT referral request'
         }
         return sendSupportMail(formProps)
             .then((data) => {
@@ -50,7 +50,7 @@ class RequestForm extends Component {
         category: {
             type: 'select',
             label: STRINGS.CONTACT_FORM.CATEGORY_LABEL,
-            placeholder: STRINGS.REQUEST_HEX_ACCESS.CATEGORY_PLACEHOLDER,
+            placeholder: STRINGS.REQUEST_XHT_ACCESS.CATEGORY_PLACEHOLDER,
             options: [
                 {
                     value: 'verify',
@@ -77,7 +77,7 @@ class RequestForm extends Component {
                     label: STRINGS.CONTACT_FORM.CATEGORY_OPTIONS.OPTION_BANK_TRANSFER
                 },
                 {
-                    value: 'request_Hex_Invite',
+                    value: 'request_Xht_Invite',
                     label: STRINGS.CONTACT_FORM.CATEGORY_OPTIONS.OPTION_REQUEST
                 },
             ],
@@ -86,8 +86,8 @@ class RequestForm extends Component {
         },
         Description: {
             type: 'textarea',
-            label: STRINGS.REQUEST_HEX_ACCESS.INTRODUCTION_LABEL,
-            placeholder: STRINGS.REQUEST_HEX_ACCESS.INTRODUCTION_PLACEHOLDER,
+            label: STRINGS.REQUEST_XHT_ACCESS.INTRODUCTION_LABEL,
+            placeholder: STRINGS.REQUEST_XHT_ACCESS.INTRODUCTION_PLACEHOLDER,
             validate: [required],
             fullWidth: true,
             rows: '2'
@@ -99,7 +99,7 @@ class RequestForm extends Component {
         const { submitted } = this.state;
         if (submitted) {
             return (
-                <Notification type={NOTIFICATIONS.HEX_SUCCESS_ACCESS} onClose={onClose} />
+                <Notification type={NOTIFICATIONS.XHT_SUCCESS_ACCESS} onClose={onClose} />
             );
         }
 
@@ -107,8 +107,8 @@ class RequestForm extends Component {
         return (
             <div className="contact_form-wrapper">
                 <IconTitle
-                    iconPath={ICONS.HEX_COIN_STACK}
-                    text={STRINGS.REQUEST_HEX_ACCESS.REQUEST_TITLE}
+                    iconPath={ICONS.XHT_COIN_STACK}
+                    text={STRINGS.REQUEST_XHT_ACCESS.REQUEST_TITLE}
                     textType="title"
                     underline={true}
                     className="w-100"

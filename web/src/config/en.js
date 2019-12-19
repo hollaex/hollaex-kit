@@ -117,7 +117,7 @@ export default {
 			SECTION_6_LINK_1: 'Twitter',
 			SECTION_6_LINK_2: 'Telegram'
 		},
-		HEX_DESCRIPTION:
+		XHT_DESCRIPTION:
 			'HollaEx is an open cryptocurrency exchange built based on HollaEx Kit technology developed and managed by bitHolla and is a live example of HollaEx exchange software kit that allows anyone to run there own exchange exactly like this one. To start your own exchange like this {1}. The HollaEx Token is the native token of HollaEx and is traded on the HollaEx exchange through a wave auction system. For more information on how the auction works {0}',
 		CLICK_HERE: 'click here',
 		VISIT_HERE: 'visit here'
@@ -134,7 +134,7 @@ export default {
 		TAB_API: 'API',
 		TAB_SIGNOUT: 'Signout'
 	},
-	REQUEST_HEX_ACCESS: {
+	REQUEST_XHT_ACCESS: {
 		// new
 		REQUEST_TITLE: 'Request Access',
 		REQUEST_INVITE: 'Request Invite',
@@ -367,7 +367,7 @@ export default {
 		TITLE_EMAIL: 'Email',
 		MY_EMAIL: 'My Email',
 		MAKE_FIRST_DEPOSIT: 'Make first deposit', // new
-		OBTAIN_HEX: 'Obtain XHT', // new
+		OBTAIN_XHT: 'Obtain XHT', // new
 		TITLE_USER_DOCUMENTATION: 'Identification',
 		TITLE_ID_DOCUMENTS: 'Upload',
 		TITLE_BANK_ACCOUNT: 'Bank Account',
@@ -1158,31 +1158,31 @@ export default {
 		LEVEL_9_TXT: 'Simply trade over $2,000,000 USDT worth or have balance of over 1,000,000 XHT and enjoy lower trading fees.', // new
 		LEVEL_10_TXT: 'The whale trader account that earns you money back for market making. To obtain this special account please get in touch with us.', // new
 		CURRENT_TXT: 'Current',
-		TRADER_ACCOUNT_HEX_TEXT: 'Your account is in the presale period of HEX, this means you can obtain HEX for $0.10 per HEX. All deposit will be converted to HEX once the transaction has cleared.',
+		TRADER_ACCOUNT_XHT_TEXT: 'Your account is in the presale period of XHT, this means you can obtain XHT for $0.10 per XHT. All deposit will be converted to XHT once the transaction has cleared.',
 		TRADER_ACCOUNT_TITLE: 'Account - Presale Period', // new
 		HAP_ACCOUNT: 'HAP Account', // new
-		HAP_ACCOUNT_TXT: 'Your account is a verified HollaEx affiliate program account. You can now earn 10% bonus for every person you invite that buys HEX.', // new
+		HAP_ACCOUNT_TXT: 'Your account is a verified HollaEx affiliate program account. You can now earn 10% bonus for every person you invite that buys XHT.', // new
 		EMAIL_VERIFICATION: 'Email Verification', // new
 		DOCUMENTS: 'Documents', // new
 		HAP_TEXT: 'HollaEx Ambassador Program (HAP) {0}', // new
 		LOCK_AN_EXCHANGE: 'Lock an Exchange {0}', // new
 		WALLET_SUBSCRIPTION_USERS: 'Vault Subscription users {0}', // new
-		TRADE_OVER_HEX: 'Trade over {0} USDT worth', // new
+		TRADE_OVER_XHT: 'Trade over {0} USDT worth', // new
 		TRADE_OVER_BTC: 'Trade over {0} BTC worth', // new
-		HEX_IN_WALLET: '{0} XHT in wallet', // new
+		XHT_IN_WALLET: '{0} XHT in wallet', // new
 		REWARDS_BONUS: 'Rewards and Bonuses', // new
 		COMPLETE_TASK_DESC: 'Complete tasks and earn bonuses worth over $10,000.', // new
 		TASKS: 'Tasks', // new
-		MAKE_FIRST_DEPOSIT: 'Make your first deposit receive 1 HEX', // new
-		BUY_FIRST_HEX: 'Buy your first HEX and receive a bonus of 5 HEX', // new
-		COMPLETE_ACC_VERIFICATION: 'Complete account verification and get a 20 HEX bonus', // new
+		MAKE_FIRST_DEPOSIT: 'Make your first deposit receive 1 XHT', // new
+		BUY_FIRST_XHT: 'Buy your first XHT and receive a bonus of 5 XHT', // new
+		COMPLETE_ACC_VERIFICATION: 'Complete account verification and get a 20 XHT bonus', // new
 		INVITE_USER: 'Invite user and enjoy 30% off your trading fees', // new
 		JOIN_HAP: 'Join HAP and earn 10% for every HollaEx Kit you sell', // new
 		EARN_RUNNING_EXCHANGE: 'Earn passive income for running your own exchange', // new
-		HEX_WAVE_AUCTION: 'HEX Wave Auction Data', // new
-		HEX_WAVE_DESC_1: 'The distribution of the HollaEx token (HEX) is done through a Wave Auction.', // new
-		HEX_WAVE_DESC_2: 'The Wave Auction sells a random amount of HEX at random times to the highest bidders on the orderbook', // new
-		HEX_WAVE_DESC_3: 'Below displays the historic data on the Wave Auction history', // new
+		XHT_WAVE_AUCTION: 'XHT Wave Auction Data', // new
+		XHT_WAVE_DESC_1: 'The distribution of the HollaEx token (XHT) is done through a Wave Auction.', // new
+		XHT_WAVE_DESC_2: 'The Wave Auction sells a random amount of XHT at random times to the highest bidders on the orderbook', // new
+		XHT_WAVE_DESC_3: 'Below displays the historic data on the Wave Auction history', // new
 		WAVE_AUCTION_PHASE: 'Wave Auction Phase {0}', // new
 		LEARN_MORE_WAVE_AUCTION: 'Learn more about the Wave Auction', // new
 		WAVE_NUMBER: 'Wave Number' // new
@@ -1194,15 +1194,15 @@ export default {
 		COPY_FIELD_LABEL: 'Share the link below with friends and earn commissions:', // new
 		REFERRED_USER_COUT: 'You have referred {0} users', // new
 		COPY_LINK_BUTTON: 'COPY REFERRAL LINK', // new
-		HEX_TITLE: 'EARN 10% IN COMMISSIONS', // new
-		HEX_INFO_TEXT: 'Earn commissions by inviting your friends.', // new
-		HEX_INFO_TEXT_1: 'Commissions are paid periodically to your wallet', // new
+		XHT_TITLE: 'EARN 10% IN COMMISSIONS', // new
+		XHT_INFO_TEXT: 'Earn commissions by inviting your friends.', // new
+		XHT_INFO_TEXT_1: 'Commissions are paid periodically to your wallet', // new
 		APPLICATION_TXT:
 			'To become a HollaEx Kit distributor please fill out an application.', // new
 		TOTAL_REFERRAL: 'Total bought from referrals:', // new
 		PENDING_REFERRAL: 'Commissions Pending:', // new
 		EARN_REFERRAL: 'Commissions Earnt:', // new
-		HEX_COUNT: '{0} XHT', // new
+		XHT_COUNT: '{0} XHT', // new
 		APPLY_BUTTON: 'APPLY' // new
 	},
 	STAKE_TOKEN: {
@@ -1229,7 +1229,7 @@ export default {
 		READ_FAG: 'Read HollaEx FAQ here: {0}',
 		READ_DOCUMENTATION: 'Read HollaEx whitepaper here: {0}',
 		READ_WAVES: 'Rules for the coming December Public Wave Auction{0}', // new
-		DOWNLOAD_BUY_HEX:
+		DOWNLOAD_BUY_XHT:
 			'Download the PDF to see a visual step-by-step processes on {0}',
 		HOW_TO_BUY: 'how to buy HollaEx Token (XHT)',
 		PUBLIC_SALES: ' Public Wave Auction', // new
@@ -1240,13 +1240,13 @@ export default {
 			'We will review your request and send further instructions to your email on how to access the HollaEx exchange.', // new
 		WARNING_TXT1:
 			'In the mean time you can firmilerize yourself with the HollaEx network with the resources below', // new
-		HEX_ORDER_TXT_1: 'To start trading the HollaEx token (XHT) you must login', // new
-		HEX_ORDER_TXT_2:
+		XHT_ORDER_TXT_1: 'To start trading the HollaEx token (XHT) you must login', // new
+		XHT_ORDER_TXT_2:
 			'The HollaEx token is distributed through a Wave Auction where at random times daily there will be random amount of HollaEx token sold to the highest bidders on the orderbook.', // new
-		HEX_ORDER_TXT_3: '{0} to join the Wave Auction or {1}', // new
-		HEX_TITLE: 'XHT', //new
-		HEX_TRADE_TXT_1: 'Login to see your recent trades', //new
-		HEX_TRADE_TXT_2: 'You can {0} to see your recent trade history', //new
+		XHT_ORDER_TXT_3: '{0} to join the Wave Auction or {1}', // new
+		XHT_TITLE: 'XHT', //new
+		XHT_TRADE_TXT_1: 'Login to see your recent trades', //new
+		XHT_TRADE_TXT_2: 'You can {0} to see your recent trade history', //new
 		LOGIN_HERE: 'login here'
 	},
 	WAVES: {

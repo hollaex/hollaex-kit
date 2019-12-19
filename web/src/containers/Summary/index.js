@@ -23,7 +23,7 @@ import {
     DEFAULT_COIN_DATA,
     // SHOW_SUMMARY_ACCOUNT_DETAILS,
     SHOW_TOTAL_ASSETS,
-    IS_HEX
+    IS_XHT
 } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 import {
@@ -138,7 +138,7 @@ class Summary extends Component {
         const { selectedAccount, chartData, totalAssets, lastMonthVolume } = this.state;
         const { fullname } = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
         let traderAccTitle = STRINGS.formatString(STRINGS.SUMMARY.LEVEL_OF_ACCOUNT, verification_level);
-        // if (IS_HEX) {
+        // if (IS_XHT) {
         //     traderAccTitle = user.is_hap ? STRINGS.SUMMARY.HAP_ACCOUNT : STRINGS.SUMMARY.TRADER_ACCOUNT_TITLE
         // }
         return (
@@ -231,11 +231,11 @@ class Summary extends Component {
                             </div>
                             <div className="trading-volume-wrapper">
                                 <SummaryBlock
-                                    title={IS_HEX
-                                        ? STRINGS.SUMMARY.HEX_WAVE_AUCTION
+                                    title={IS_XHT
+                                        ? STRINGS.SUMMARY.XHT_WAVE_AUCTION
                                         : STRINGS.SUMMARY.TRADING_VOLUME
                                     }
-                                    secondaryTitle={IS_HEX
+                                    secondaryTitle={IS_XHT
                                         ? ''
                                         : <span>
                                             <span className="title-font">
@@ -245,7 +245,7 @@ class Summary extends Component {
                                         </span>
                                     }
                                 >
-                                    {IS_HEX
+                                    {IS_XHT
                                         ? <AccountWaveAuction user={user} />
                                         : <TradingVolume user={user} />
                                     }

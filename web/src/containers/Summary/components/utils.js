@@ -8,17 +8,17 @@ import { calculatePrice } from '../../../utils/currency';
 import STRINGS from '../../../config/localizedStrings';
 import { BASE_CURRENCY, ICONS } from '../../../config/constants';
 
-export const getHexRequirements = (user, coins) => {
+export const getXhtRequirements = (user, coins) => {
 	let walletDeposit = false;
-	let hexDeposit = false;
+	let xhtDeposit = false;
 	if (user.balance) {
 		Object.keys(coins).forEach(pair => {
 			if (user.balance[`${pair.toLowerCase()}_balance`] > 0) {
 				walletDeposit = true;
 			}
 		})
-		if (user.balance.hex_balance && user.balance.hex_balance > 0) {
-			hexDeposit = true;
+		if (user.balance.xht_balance && user.balance.xht_balance > 0) {
+			xhtDeposit = true;
 		}
 	}
 	const verificationObj = {
@@ -28,9 +28,9 @@ export const getHexRequirements = (user, coins) => {
 			status: walletDeposit ? 3 : 0
 		},
 		'2': {
-			title: STRINGS.USER_VERIFICATION.OBTAIN_HEX,
-			completed: hexDeposit,
-			status: hexDeposit ? 3 : 0
+			title: STRINGS.USER_VERIFICATION.OBTAIN_XHT,
+			completed: xhtDeposit,
+			status: xhtDeposit ? 3 : 0
 		}
 	};
 	return verificationObj;
@@ -67,7 +67,7 @@ export const getBonusRequirements = (user, coins) => {
 			: 1
 		: 1;
 	let walletDeposit = false;
-	let hexDeposit = false;
+	let xhtDeposit = false;
 	let accVerified = !!phone_number && identity === 3
 	if (user.balance) {
 		Object.keys(coins).forEach(pair => {
@@ -75,8 +75,8 @@ export const getBonusRequirements = (user, coins) => {
 				walletDeposit = true;
 			}
 		});
-		if (user.balance.hex_balance && user.balance.hex_balance > 0) {
-			hexDeposit = true;
+		if (user.balance.xht_balance && user.balance.xht_balance > 0) {
+			xhtDeposit = true;
 		}
 	}
 	const verificationObj = {
@@ -86,9 +86,9 @@ export const getBonusRequirements = (user, coins) => {
 			status: walletDeposit ? 3 : 0
 		},
 		'2': {
-			title: STRINGS.SUMMARY.BUY_FIRST_HEX,
-			completed: hexDeposit,
-			status: hexDeposit ? 3 : 0
+			title: STRINGS.SUMMARY.BUY_FIRST_XHT,
+			completed: xhtDeposit,
+			status: xhtDeposit ? 3 : 0
 		},
 		'3': {
 			title: STRINGS.SUMMARY.COMPLETE_ACC_VERIFICATION,
@@ -254,7 +254,7 @@ export const generateWaveHeaders = (onCancel) => [
 				? `(${updated_at})`
 				: <Link
 					className="blue-link"
-					to="/trade/hex-usdt">
+					to="/trade/xht-usdt">
 						({STRINGS.GO_TRADE})
 				</Link>
 			return status === 'TBA'

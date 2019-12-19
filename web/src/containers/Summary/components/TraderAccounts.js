@@ -3,7 +3,7 @@ import ReactSVG from 'react-svg';
 import { isMobile } from 'react-device-detect';
 
 import STRINGS from '../../../config/localizedStrings';
-import { ICONS, IS_HEX } from '../../../config/constants';
+import { ICONS, IS_XHT } from '../../../config/constants';
 
 const TraderAccounts = ({
 	user = {},
@@ -27,7 +27,7 @@ const TraderAccounts = ({
 	// if (!isAccountDetails) {
 	// 	description = user.is_hap
 	// 		? STRINGS.SUMMARY.HAP_ACCOUNT_TXT
-	// 		: STRINGS.SUMMARY.TRADER_ACCOUNT_HEX_TEXT;
+	// 		: STRINGS.SUMMARY.TRADER_ACCOUNT_XHT_TEXT;
 	// 	icon = user.is_hap === true
 	// 		? ICONS.HAP_ACCOUNT_ICON
 	// 		: ICONS.ACCOUNT_SUMMARY;
@@ -66,13 +66,13 @@ const TraderAccounts = ({
 				{!isAccountDetails && (<Fragment>
 					<div className="trade-account-link mb-2">
 						<span className="pointer" onClick={onInviteFriends}>
-							{(IS_HEX
-								? STRINGS.REFERRAL_LINK.HEX_TITLE
+							{(IS_XHT
+								? STRINGS.REFERRAL_LINK.XHT_TITLE
 								: STRINGS.REFERRAL_LINK.TITLE).toUpperCase()
 							}
 						</span>
 					</div>
-					{IS_HEX
+					{IS_XHT
 						? <div className="trade-account-link mb-2">
 							<span
 								className="pointer" onClick={onStakeToken}>
@@ -94,7 +94,7 @@ const TraderAccounts = ({
 					</div>
 					: null
 				}
-				{!IS_HEX && !isAccountDetails && verification_level.level >= 1 && verification_level.level < 4 && (
+				{!IS_XHT && !isAccountDetails && verification_level.level >= 1 && verification_level.level < 4 && (
 					<div className="trade-account-link mb-2">
 						<span className="pointer" onClick={onUpgradeAccount}>
 							{STRINGS.SUMMARY.UPGRADE_ACCOUNT.toUpperCase()}

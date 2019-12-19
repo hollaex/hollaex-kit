@@ -13,7 +13,7 @@ import AccountWaveAuction from './components/AccountWaveAuction';
 import {
 	BASE_CURRENCY,
 	DEFAULT_COIN_DATA,
-	IS_HEX,
+	IS_XHT,
 	SHOW_TOTAL_ASSETS
 } from '../../config/constants';
 import { formatAverage, formatBaseAmount } from '../../utils/currency';
@@ -104,11 +104,11 @@ const MobileSummary = ({
 			</div>
 			<div className="trading-volume-wrapper w-100">
 				<SummaryBlock
-					title={IS_HEX
-						? STRINGS.SUMMARY.HEX_WAVE_AUCTION
+					title={IS_XHT
+						? STRINGS.SUMMARY.XHT_WAVE_AUCTION
 						: STRINGS.SUMMARY.TRADING_VOLUME
 					}
-					secondaryTitle={IS_HEX
+					secondaryTitle={IS_XHT
 						? ''
 						: <span>
 							<span className="title-font">
@@ -120,7 +120,7 @@ const MobileSummary = ({
 							).join('')}`}
 						</span>
 					}>
-					{IS_HEX
+					{IS_XHT
 						? <AccountWaveAuction user={user} />
 						: <TradingVolume user={user} />
 					}

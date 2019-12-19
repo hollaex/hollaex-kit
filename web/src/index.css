@@ -1468,7 +1468,7 @@ table th {
     height: 30vh; }
     .trade-container .trade-col_main_wrapper .trade-tabs_content > * {
       flex: 1 !important; }
-    .trade-container .trade-col_main_wrapper .trade-tabs_content .hex-logo {
+    .trade-container .trade-col_main_wrapper .trade-tabs_content .xht-logo {
       width: 3rem;
       height: 3rem; }
   .trade-container .trade-col_side_wrapper {
@@ -1484,11 +1484,11 @@ table th {
   .trade-container .table-wrapper {
     margin: 0; }
 
-.hex-order-heading {
+.xht-order-heading {
   font-weight: bold;
   font-size: 1.1rem; }
 
-.hex-order-content {
+.xht-order-content {
   color: #808080; }
 
 .layout-mobile .trade_order_entry-wrapper.order_side-selector-sell .trade_order_entry-form-action, .layout-mobile .trade_order_entry-wrapper.order_side-selector-buy .trade_order_entry-form-action {
@@ -1553,7 +1553,7 @@ table th {
   margin-bottom: 0.5rem;
   font-size: 1.2rem; }
 
-.layout-mobile .hex-logo {
+.layout-mobile .xht-logo {
   width: 3rem;
   height: 3rem; }
 
@@ -1590,7 +1590,7 @@ table th {
 
 .trade_block-wrapper {
   padding: 1rem;
-  flex: auto; }
+  flex: 1; }
   .trade_block-wrapper .trade_block-title {
     border-top: 0.2rem solid black;
     text-transform: uppercase;
@@ -1658,7 +1658,7 @@ table th {
     color: #bcbec0; }
   .dark-theme .trade_block-wrapper .trade_block-title .trade_block-title-currency-xrp {
     color: #414042; }
-  .dark-theme .trade_block-wrapper .trade_block-title .trade_block-title-currency-hex {
+  .dark-theme .trade_block-wrapper .trade_block-title .trade_block-title-currency-xht {
     background-color: white;
     color: #000000;
     height: 1rem;
@@ -1756,7 +1756,7 @@ table th {
   .dark-theme .trade_block-wrapper .trade_block-title .trade_block-icon svg .eth1,
   .dark-theme .trade_block-wrapper .trade_block-title .trade_block-icon svg .bch-icon,
   .dark-theme .trade_block-wrapper .trade_block-title .trade_block-icon svg .xrp-icon,
-  .dark-theme .trade_block-wrapper .trade_block-title .trade_block-icon svg .hex-icon,
+  .dark-theme .trade_block-wrapper .trade_block-title .trade_block-icon svg .xht-icon,
   .dark-theme .trade_block-wrapper .trade_block-title .trade_block-icon svg .xmr-icon,
   .dark-theme .trade_block-wrapper .trade_block-title .trade_block-icon svg .default-icon {
     fill: white !important; }
@@ -2751,7 +2751,7 @@ table th {
     .summary-container .assets-wrapper .donut-container {
       height: 23rem;
       width: 100%; }
-    .summary-container .assets-wrapper .donut-container-hex {
+    .summary-container .assets-wrapper .donut-container-xht {
       height: 40rem; }
     .summary-container .assets-wrapper .price-content {
       padding: 0 .5rem; }
@@ -2784,7 +2784,7 @@ table th {
           fill: #000000 !important; }
   .summary-container .asset_wrapper_width {
     width: 25rem; }
-  .summary-container .hex_asset_wrapper_width {
+  .summary-container .xht_asset_wrapper_width {
     width: 100% !important; }
   .summary-container .trading-volume-wrapper {
     width: 50rem; }
@@ -2905,7 +2905,7 @@ table th {
       font-size: 1rem; }
     .summary-container .asset_wrapper_width {
       width: 35% !important; }
-    .summary-container .hex_asset_wrapper_width {
+    .summary-container .xht_asset_wrapper_width {
       width: 100% !important; }
     .summary-container .assets-wrapper {
       font-size: 1rem; }
@@ -2997,7 +2997,7 @@ table th {
     top: calc(50% - 0.6rem); }
   .dark-theme .trade_tabs-container .trade-tab-list {
     border: 1px solid #202020; }
-    .dark-theme .trade_tabs-container .trade-tab-list svg .hex-icon-1 {
+    .dark-theme .trade_tabs-container .trade-tab-list svg .xht-icon-1 {
       fill: #000000 !important; }
     .dark-theme .trade_tabs-container .trade-tab-list:hover {
       border: 1px solid white;
@@ -3010,7 +3010,7 @@ table th {
       .dark-theme .trade_tabs-container .trade-tab-list:hover svg .eth1,
       .dark-theme .trade_tabs-container .trade-tab-list:hover svg .bch-icon,
       .dark-theme .trade_tabs-container .trade-tab-list:hover svg .xrp-icon,
-      .dark-theme .trade_tabs-container .trade-tab-list:hover svg .hex-icon,
+      .dark-theme .trade_tabs-container .trade-tab-list:hover svg .xht-icon,
       .dark-theme .trade_tabs-container .trade-tab-list:hover svg .xmr-icon,
       .dark-theme .trade_tabs-container .trade-tab-list:hover svg .default-icon {
         fill: white !important; }
@@ -3061,7 +3061,7 @@ table th {
     .trade_tabs-container .trade_tab-icons svg .eth1,
     .trade_tabs-container .trade_tab-icons svg .bch-icon,
     .trade_tabs-container .trade_tab-icons svg .xrp-icon,
-    .trade_tabs-container .trade_tab-icons svg .hex-icon,
+    .trade_tabs-container .trade_tab-icons svg .xht-icon,
     .trade_tabs-container .trade_tab-icons svg .xmr-icon,
     .trade_tabs-container .trade_tab-icons svg .default-icon {
       fill: #808080 !important; }
@@ -3112,7 +3112,7 @@ table th {
     border: 1px solid white;
     padding: 1rem 0;
     margin: 2rem 1.5rem; }
-    .trade_tabs-container .trade-tab-list svg .hex-icon-1 {
+    .trade_tabs-container .trade-tab-list svg .xht-icon-1 {
       fill: white !important; }
     .trade_tabs-container .trade-tab-list:hover {
       border: 1px solid #000000;
@@ -3128,7 +3128,7 @@ table th {
       .trade_tabs-container .trade-tab-list:hover svg .eth1,
       .trade_tabs-container .trade-tab-list:hover svg .bch-icon,
       .trade_tabs-container .trade-tab-list:hover svg .xrp-icon,
-      .trade_tabs-container .trade-tab-list:hover svg .hex-icon,
+      .trade_tabs-container .trade-tab-list:hover svg .xht-icon,
       .trade_tabs-container .trade-tab-list:hover svg .xmr-icon,
       .trade_tabs-container .trade-tab-list:hover svg .default-icon {
         fill: #000000 !important; }
@@ -3256,10 +3256,10 @@ table th {
 .dark-theme .terms_wrapper .trans-history-4 {
   stroke: #0066B4; }
 
-.dark-theme .deposit_funds-wrapper .funds-svg .hex-faq,
-.dark-theme .deposit_funds-wrapper .funds-svg .hex-pdf,
-.dark-theme .deposit_funds-wrapper .funds-svg .hex-docs,
-.dark-theme .deposit_funds-wrapper .funds-svg .hex-email,
+.dark-theme .deposit_funds-wrapper .funds-svg .xht-faq,
+.dark-theme .deposit_funds-wrapper .funds-svg .xht-pdf,
+.dark-theme .deposit_funds-wrapper .funds-svg .xht-docs,
+.dark-theme .deposit_funds-wrapper .funds-svg .xht-email,
 .dark-theme .deposit_funds-wrapper .funds-svg .wave-icon {
   fill: white; }
 
@@ -3577,7 +3577,7 @@ table th {
     .dark-theme .app_bar .active-tab-pair svg .eth1,
     .dark-theme .app_bar .active-tab-pair svg .bch-icon,
     .dark-theme .app_bar .active-tab-pair svg .xrp-icon,
-    .dark-theme .app_bar .active-tab-pair svg .hex-icon,
+    .dark-theme .app_bar .active-tab-pair svg .xht-icon,
     .dark-theme .app_bar .active-tab-pair svg .xmr-icon {
       fill: white; }
     .dark-theme .app_bar .active-tab-pair svg .tab-close, .dark-theme .app_bar .active-tab-pair svg .plus, .dark-theme .app_bar .active-tab-pair svg .double-arrow {
@@ -3796,7 +3796,7 @@ table th {
     .app_bar .active-tab-pair svg .eth1,
     .app_bar .active-tab-pair svg .bch-icon,
     .app_bar .active-tab-pair svg .xrp-icon,
-    .app_bar .active-tab-pair svg .hex-icon,
+    .app_bar .active-tab-pair svg .xht-icon,
     .app_bar .active-tab-pair svg .xmr-icon {
       fill: #212121; }
     .app_bar .active-tab-pair svg .tab-close, .app_bar .active-tab-pair svg .plus, .app_bar .active-tab-pair svg .double-arrow {
@@ -3826,28 +3826,28 @@ table th {
   .app_bar .app_bar-pair-content .eth1,
   .app_bar .app_bar-pair-content .bch-icon,
   .app_bar .app_bar-pair-content .xrp-icon,
-  .app_bar .app_bar-pair-content .hex-icon,
+  .app_bar .app_bar-pair-content .xht-icon,
   .app_bar .app_bar-pair-content .xmr-icon, .app_bar .app-bar-tab-close .btc0,
   .app_bar .app-bar-tab-close .btc1,
   .app_bar .app-bar-tab-close .eth0,
   .app_bar .app-bar-tab-close .eth1,
   .app_bar .app-bar-tab-close .bch-icon,
   .app_bar .app-bar-tab-close .xrp-icon,
-  .app_bar .app-bar-tab-close .hex-icon,
+  .app_bar .app-bar-tab-close .xht-icon,
   .app_bar .app-bar-tab-close .xmr-icon, .app_bar .app-bar-currency-icon .btc0,
   .app_bar .app-bar-currency-icon .btc1,
   .app_bar .app-bar-currency-icon .eth0,
   .app_bar .app-bar-currency-icon .eth1,
   .app_bar .app-bar-currency-icon .bch-icon,
   .app_bar .app-bar-currency-icon .xrp-icon,
-  .app_bar .app-bar-currency-icon .hex-icon,
+  .app_bar .app-bar-currency-icon .xht-icon,
   .app_bar .app-bar-currency-icon .xmr-icon, .app_bar .app-bar-account-icon svg .btc0,
   .app_bar .app-bar-account-icon svg .btc1,
   .app_bar .app-bar-account-icon svg .eth0,
   .app_bar .app-bar-account-icon svg .eth1,
   .app_bar .app-bar-account-icon svg .bch-icon,
   .app_bar .app-bar-account-icon svg .xrp-icon,
-  .app_bar .app-bar-account-icon svg .hex-icon,
+  .app_bar .app-bar-account-icon svg .xht-icon,
   .app_bar .app-bar-account-icon svg .xmr-icon {
     fill: #808080; }
   .app_bar .app_bar-pair-content .tab-close, .app_bar .app_bar-pair-content .plus, .app_bar .app-bar-tab-close .tab-close, .app_bar .app-bar-tab-close .plus, .app_bar .app-bar-currency-icon .tab-close, .app_bar .app-bar-currency-icon .plus, .app_bar .app-bar-account-icon svg .tab-close, .app_bar .app-bar-account-icon svg .plus {
@@ -4183,7 +4183,7 @@ table th {
       .app-bar-add-tab-menu .app-bar-add-tab-content-list:hover svg .eth1,
       .app-bar-add-tab-menu .app-bar-add-tab-content-list:hover svg .bch-icon,
       .app-bar-add-tab-menu .app-bar-add-tab-content-list:hover svg .xrp-icon,
-      .app-bar-add-tab-menu .app-bar-add-tab-content-list:hover svg .hex-icon,
+      .app-bar-add-tab-menu .app-bar-add-tab-content-list:hover svg .xht-icon,
       .app-bar-add-tab-menu .app-bar-add-tab-content-list:hover svg .xmr-icon,
       .app-bar-add-tab-menu .app-bar-add-tab-content-list:hover svg .default-icon {
         fill: white !important; }
@@ -4204,7 +4204,7 @@ table th {
   .app-bar-add-tab-menu .app-bar-tab-setting svg .eth1,
   .app-bar-add-tab-menu .app-bar-tab-setting svg .bch-icon,
   .app-bar-add-tab-menu .app-bar-tab-setting svg .xrp-icon,
-  .app-bar-add-tab-menu .app-bar-tab-setting svg .hex-icon,
+  .app-bar-add-tab-menu .app-bar-tab-setting svg .xht-icon,
   .app-bar-add-tab-menu .app-bar-tab-setting svg .xmr-icon,
   .app-bar-add-tab-menu .app-bar-tab-setting svg .default-icon, .app-bar-add-tab-menu .app-bar-add-tab-icons svg .btc0,
   .app-bar-add-tab-menu .app-bar-add-tab-icons svg .btc1,
@@ -4212,7 +4212,7 @@ table th {
   .app-bar-add-tab-menu .app-bar-add-tab-icons svg .eth1,
   .app-bar-add-tab-menu .app-bar-add-tab-icons svg .bch-icon,
   .app-bar-add-tab-menu .app-bar-add-tab-icons svg .xrp-icon,
-  .app-bar-add-tab-menu .app-bar-add-tab-icons svg .hex-icon,
+  .app-bar-add-tab-menu .app-bar-add-tab-icons svg .xht-icon,
   .app-bar-add-tab-menu .app-bar-add-tab-icons svg .xmr-icon,
   .app-bar-add-tab-menu .app-bar-add-tab-icons svg .default-icon {
     fill: #808080 !important; }
@@ -4224,7 +4224,7 @@ table th {
     stroke-width: 0rem; }
   .app-bar-add-tab-menu .app-bar-tab-setting svg .icon-check-1, .app-bar-add-tab-menu .app-bar-add-tab-icons svg .icon-check-1 {
     stroke: white; }
-  .app-bar-add-tab-menu .app-bar-tab-setting svg .hex-icon-1, .app-bar-add-tab-menu .app-bar-add-tab-icons svg .hex-icon-1 {
+  .app-bar-add-tab-menu .app-bar-tab-setting svg .xht-icon-1, .app-bar-add-tab-menu .app-bar-add-tab-icons svg .xht-icon-1 {
     fill: #202020 !important; }
   .app-bar-add-tab-menu .app-bar-tab-setting .app-price-diff-down, .app-bar-add-tab-menu .app-bar-add-tab-icons .app-price-diff-down {
     color: #ff0000; }
@@ -6049,7 +6049,7 @@ table th {
   .dark-theme .icon_title-wrapper .icon_title-svg svg .coin-btc-1,
   .dark-theme .icon_title-wrapper .icon_title-svg svg .coin-btc-5,
   .dark-theme .icon_title-wrapper .icon_title-svg svg .level_icon,
-  .dark-theme .icon_title-wrapper .icon_title-svg svg .hex-coin-stack,
+  .dark-theme .icon_title-wrapper .icon_title-svg svg .xht-coin-stack,
   .dark-theme .icon_title-wrapper .icon_title-svg svg .send-request {
     fill: white; }
   .dark-theme .icon_title-wrapper .icon_title-svg svg .dots-1,
@@ -6178,7 +6178,7 @@ table th {
     background-color: #414042;
     border: none !important;
     color: white !important; }
-  .currency_ball-wrapper.hex {
+  .currency_ball-wrapper.xht {
     background-color: #000000;
     border: none !important;
     color: white !important; }
@@ -6602,7 +6602,7 @@ table th {
   fill: #414042;
   stroke: #414042; }
 
-.chart_hex {
+.chart_xht {
   fill: #000000;
   stroke: #000000; }
 
@@ -6868,7 +6868,7 @@ table th {
 .dark-theme .chart_eur,
 .dark-theme .chart_ltc,
 .dark-theme .chart_xrp,
-.dark-theme .chart_hex,
+.dark-theme .chart_xht,
 .dark-theme .chart_eos,
 .dark-theme .chart_bnb,
 .dark-theme .chart_link,
@@ -6939,7 +6939,7 @@ table th {
   fill: #414042;
   stroke: #414042; }
 
-.dark-theme .chart_hex {
+.dark-theme .chart_xht {
   fill: #000000;
   stroke: #000000; }
 

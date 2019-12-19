@@ -73,7 +73,7 @@ $trade-tab-active-dark-title: #b7b5cd;
             border: 1px solid $dark-app-background-color;
 
             svg {
-                .hex-icon-1 {
+                .xht-icon-1 {
                     fill: $colors-black !important;
                 }
             }
@@ -92,7 +92,7 @@ $trade-tab-active-dark-title: #b7b5cd;
                     .eth1,
                     .bch-icon,
                     .xrp-icon,
-                    .hex-icon,
+                    .xht-icon,
                     .xmr-icon,
                     .default-icon {
                         fill: $dark-font-main-text-color !important;
@@ -172,7 +172,7 @@ $trade-tab-active-dark-title: #b7b5cd;
             .eth1,
             .bch-icon,
             .xrp-icon,
-            .hex-icon,
+            .xht-icon,
             .xmr-icon,
             .default-icon {
                 fill: $trade-tabs-inactive-color !important;
@@ -228,7 +228,7 @@ $trade-tab-active-dark-title: #b7b5cd;
         margin: 2rem 1.5rem;
 
         svg {
-            .hex-icon-1 {
+            .xht-icon-1 {
                 fill: $app-background-color !important;
             }
         }
@@ -251,7 +251,7 @@ $trade-tab-active-dark-title: #b7b5cd;
                 .eth1,
                 .bch-icon,
                 .xrp-icon,
-                .hex-icon,
+                .xht-icon,
                 .xmr-icon,
                 .default-icon {
                     fill: $colors-black !important;

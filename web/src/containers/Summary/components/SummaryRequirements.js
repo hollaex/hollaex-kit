@@ -6,7 +6,7 @@ import { Link } from 'react-router';
 import { Button } from '../../../components';
 import {
 	ICONS,
-	IS_HEX
+	IS_XHT
 } from '../../../config/constants';
 import STRINGS from '../../../config/localizedStrings';
 import { getBonusRequirements } from './utils';
@@ -84,14 +84,14 @@ export const getRequirements = (user, level, balance = {}, coins) => {
 		level_2: {
 			'1': {
 				title: STRINGS.formatString(
-					STRINGS.SUMMARY.TRADE_OVER_HEX,
+					STRINGS.SUMMARY.TRADE_OVER_XHT,
 					'$ 3,000'
 				),
 				completed: false
 			},
 			'2': {
 				title: STRINGS.formatString(
-					STRINGS.SUMMARY.HEX_IN_WALLET,
+					STRINGS.SUMMARY.XHT_IN_WALLET,
 					'5,000'
 				),
 				completed: xht_balance >= 5000
@@ -117,14 +117,14 @@ export const getRequirements = (user, level, balance = {}, coins) => {
 		level_4: {
 			'1': {
 				title: STRINGS.formatString(
-					STRINGS.SUMMARY.TRADE_OVER_HEX,
+					STRINGS.SUMMARY.TRADE_OVER_XHT,
 					'$10,000'
 				),
 				completed: false
 			},
 			'2': {
 				title: STRINGS.formatString(
-					STRINGS.SUMMARY.HEX_IN_WALLET,
+					STRINGS.SUMMARY.XHT_IN_WALLET,
 					'10,000'
 				),
 				completed: xht_balance >= 10000
@@ -171,14 +171,14 @@ export const getRequirements = (user, level, balance = {}, coins) => {
 		level_6: {
 			'1': {
 				title: STRINGS.formatString(
-					STRINGS.SUMMARY.TRADE_OVER_HEX,
+					STRINGS.SUMMARY.TRADE_OVER_XHT,
 					'$300,000'
 				),
 				completed: false
 			},
 			'2': {
 				title: STRINGS.formatString(
-					STRINGS.SUMMARY.HEX_IN_WALLET,
+					STRINGS.SUMMARY.XHT_IN_WALLET,
 					'100,000'
 				),
 				completed: xht_balance >= 100000
@@ -187,14 +187,14 @@ export const getRequirements = (user, level, balance = {}, coins) => {
 		level_7: {
 			'1': {
 				title: STRINGS.formatString(
-					STRINGS.SUMMARY.TRADE_OVER_HEX,
+					STRINGS.SUMMARY.TRADE_OVER_XHT,
 					'$500,000'
 				),
 				completed: false
 			},
 			'2': {
 				title: STRINGS.formatString(
-					STRINGS.SUMMARY.HEX_IN_WALLET,
+					STRINGS.SUMMARY.XHT_IN_WALLET,
 					'300,000'
 				),
 				completed: xht_balance >= 300000
@@ -203,14 +203,14 @@ export const getRequirements = (user, level, balance = {}, coins) => {
 		level_8: {
 			'1': {
 				title: STRINGS.formatString(
-					STRINGS.SUMMARY.TRADE_OVER_HEX,
+					STRINGS.SUMMARY.TRADE_OVER_XHT,
 					'$600,000'
 				),
 				completed: false
 			},
 			'2': {
 				title: STRINGS.formatString(
-					STRINGS.SUMMARY.HEX_IN_WALLET,
+					STRINGS.SUMMARY.XHT_IN_WALLET,
 					'400,000'
 				),
 				completed: xht_balance >= 400000
@@ -219,14 +219,14 @@ export const getRequirements = (user, level, balance = {}, coins) => {
 		level_9: {
 			'1': {
 				title: STRINGS.formatString(
-					STRINGS.SUMMARY.TRADE_OVER_HEX,
+					STRINGS.SUMMARY.TRADE_OVER_XHT,
 					'$2,000,000'
 				),
 				completed: false
 			},
 			'2': {
 				title: STRINGS.formatString(
-					STRINGS.SUMMARY.HEX_IN_WALLET,
+					STRINGS.SUMMARY.XHT_IN_WALLET,
 					'1,000,000'
 				),
 				completed: xht_balance >= 1000000
@@ -365,7 +365,7 @@ const SummaryRequirements = ({
 						</Link>
 					</div>
 				)}
-				{!isAccountDetails && !isBonusSection && !IS_HEX &&
+				{!isAccountDetails && !isBonusSection && !IS_XHT &&
 					(!address.country ||
 						id_data.status !== 3 ||
 						!phone_number ||
@@ -377,7 +377,7 @@ const SummaryRequirements = ({
 						</div>
 					) : null
 				}
-				{IS_HEX && !isBonusSection && !isAccountDetails
+				{IS_XHT && !isBonusSection && !isAccountDetails
 					? <div className="trade-account-link mb-2">
 						<Link to="/wallet">
 							{STRINGS.USER_VERIFICATION.GOTO_WALLET.toUpperCase()}

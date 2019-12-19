@@ -53,7 +53,7 @@ export const validAddress = (symbol = '', message) => {
 			case 'ETH':
 				valid = WAValidator.validate(address, currency, NETWORK);
 				break;
-			case 'HEX':
+			case 'XHT':
 				valid = WAValidator.validate(address, 'eth', NETWORK);
 				break;
 			case 'USDT':

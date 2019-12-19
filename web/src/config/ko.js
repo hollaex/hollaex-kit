@@ -115,7 +115,7 @@ export default {
 			SECTION_6_LINK_1: '트위터',
 			SECTION_6_LINK_2: '텔레그램'
 		},
-		HEX_DESCRIPTION:
+		XHT_DESCRIPTION:
 			'HollaEx는 비트홀라에서 개발 및 관리하는 HollaEx Kit기술에 기반하여 만들어진 오픈 암호화폐 거래소입니다. HollaEx 소프트웨어 Kit으로 만들어진 실시간 운영되고있는 거래소로 누구나 이와 같은 거래소를 직접 운영할 수 있다는 것을 보여주는 예입니다. 자신만의 거래소를 시작하기위해 {1}를 참조하시기바랍니다. HollaEx토큰은 HollaEx의 네이티브 토큰으로 웨이브옥션 시스템을 통해 HollaEx거래소에서 거래됩니다. 옥션이 어떻게 작동하는지 자세한 내용은 {0}에서 확인하실 수 있습니다.',
 		CLICK_HERE: '이곳을 클릭하세요.',
 		VISIT_HERE: '방문하기'
@@ -132,7 +132,7 @@ export default {
 		TAB_API: 'API',
 		TAB_SIGNOUT: '로그아웃'
 	},
-	REQUEST_HEX_ACCESS: {
+	REQUEST_XHT_ACCESS: {
 		// new
 		REQUEST_TITLE: 'HollaEx링크 요청하기',
 		REQUEST_INVITE: '초대요청',
@@ -364,7 +364,7 @@ export default {
 		TITLE_EMAIL: '이메일',
 		MY_EMAIL: '나의 이메일',
 		MAKE_FIRST_DEPOSIT: '첫 입금하기', // new
-		OBTAIN_HEX: 'XHT 받기', // new
+		OBTAIN_XHT: 'XHT 받기', // new
 		TITLE_USER_DOCUMENTATION: 'Identification', // not used
 		TITLE_ID_DOCUMENTS: '업로드',
 		TITLE_BANK_ACCOUNT: '은행계좌',
@@ -1145,7 +1145,7 @@ export default {
 		LEVEL_4_TXT:
 			'You are a masters trader and have reached the peek. To maintain your rank keep your trading volume high and healthy.',
 		CURRENT_TXT: 'Current',
-		TRADER_ACCOUNT_HEX_TEXT:
+		TRADER_ACCOUNT_XHT_TEXT:
 			'Earn up to 10% in commissions through distributing the HollaEx Kit. Alternatively you can earn XHT daily through staking your XHT token when running your own exchange.',
 		TRADER_ACCOUNT_TITLE: 'Account', // new
 		HAP_ACCOUNT: 'HAP Account', // new
@@ -1159,15 +1159,15 @@ export default {
 		COPY_FIELD_LABEL: 'Share the link below with friends and earn commissions:', // new
 		REFERRED_USER_COUT: 'You have referred {0} users', // new
 		COPY_LINK_BUTTON: 'COPY REFERRAL LINK', // new
-		HEX_TITLE: 'EARN 10% IN COMMISSIONS', // new
-		HEX_INFO_TEXT: 'Earn 1 XHT for every 10 XHT your friends buy.', // new
-		HEX_INFO_TEXT_1: 'Commissions are paid periodically to your XHT wallet', // new
+		XHT_TITLE: 'EARN 10% IN COMMISSIONS', // new
+		XHT_INFO_TEXT: 'Earn 1 XHT for every 10 XHT your friends buy.', // new
+		XHT_INFO_TEXT_1: 'Commissions are paid periodically to your XHT wallet', // new
 		APPLICATION_TXT:
 			'To become a HollaEx Kit distributor please fill out an application.', // new
 		TOTAL_REFERRAL: 'Total bought from referrals:', // new
 		PENDING_REFERRAL: 'Commissions Pending:', // new
 		EARN_REFERRAL: 'Commissions Earnt:', // new
-		HEX_COUNT: '{0} XHT', // new
+		XHT_COUNT: '{0} XHT', // new
 		APPLY_BUTTON: 'APPLY' // new
 	},
 	STAKE_TOKEN: {
@@ -1194,7 +1194,7 @@ export default {
 		READ_FAG: 'Read HollaEx FAQ here: {0}',
 		READ_DOCUMENTATION: 'Read HollaEx whitepaper here: {0}',
 		READ_WAVES: 'Rules for the coming December Public Wave Auction{0}', // new
-		DOWNLOAD_BUY_HEX:
+		DOWNLOAD_BUY_XHT:
 			'Download the PDF to see a visual step-by-step processes on {0}',
 		HOW_TO_BUY: 'how to buy HollaEx Token (XHT)',
 		PUBLIC_SALES: ' Public Wave Auction', // new
@@ -1205,13 +1205,13 @@ export default {
 			'We will review your request and send further instructions to your email on how to access the HollaEx exchange.', // new
 		WARNING_TXT1:
 			'In the mean time you can firmilerize yourself with the HollaEx network with the resources below', // new
-		HEX_ORDER_TXT_1: 'To start trading the HollaEx token (XHT) you must login', // new
-		HEX_ORDER_TXT_2:
+		XHT_ORDER_TXT_1: 'To start trading the HollaEx token (XHT) you must login', // new
+		XHT_ORDER_TXT_2:
 			'The HollaEx token is distributed through a Wave Auction where at random times daily there will be random amount of HollaEx token sold to the highest bidders on the orderbook.', // new
-		HEX_ORDER_TXT_3: '{0} to join the Wave Auction or {1}', // new
-		HEX_TITLE: 'XHT', //new
-		HEX_TRADE_TXT_1: 'Login to see your recent trades', //new
-		HEX_TRADE_TXT_2: 'You can {0} to see your recent trade history', //new
+		XHT_ORDER_TXT_3: '{0} to join the Wave Auction or {1}', // new
+		XHT_TITLE: 'XHT', //new
+		XHT_TRADE_TXT_1: 'Login to see your recent trades', //new
+		XHT_TRADE_TXT_2: 'You can {0} to see your recent trade history', //new
 		LOGIN_HERE: 'login here'
 	},
 	WAVES: {

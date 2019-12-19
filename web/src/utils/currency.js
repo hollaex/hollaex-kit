@@ -218,8 +218,8 @@ export const getCurrencyFromName = (name = '', coins) => {
 	// 	case 'eur':
 	// 	case 'euro':
 	// 		return 'eur';
-	// 	case 'hex':
-	// 		return 'hex';
+	// 	case 'xht':
+	// 		return 'xht';
 	// 	case 'usdt':
 	// 		return 'usdt';
 	// 	case 'xmr':
@@ -247,7 +247,7 @@ export const getCurrencyFromSymbol = (symbol = '') => {
 		case 'euro':
 			return 'euro';
 		case 'xht':
-			return 'hex';
+			return 'xht';
 		case 'usdt':
 			return 'usdt';
 		default:
