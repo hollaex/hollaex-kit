@@ -84,7 +84,9 @@ export const formatCurrency = (
 			return numbro(roundNumber(amount, 8)).format(BASE_FORMAT);
 		case 'usdt':
 			return numbro(roundNumber(amount, 8)).format(BASE_FORMAT);
-		case 'hex':
+		case 'xht':
+			return numbro(roundNumber(amount, 8)).format(BASE_FORMAT);
+		case 'xmr':
 			return numbro(roundNumber(amount, 8)).format(BASE_FORMAT);
 		default:
 			return numbro(roundNumber(amount, 8)).format(BASE_FORMAT);
@@ -244,12 +246,12 @@ export const getCurrencyFromSymbol = (symbol = '') => {
 		case 'eur':
 		case 'euro':
 			return 'euro';
-		case 'hex':
+		case 'xht':
 			return 'hex';
 		case 'usdt':
 			return 'usdt';
 		default:
-			return '';
+			return symbol.toLowerCase();
 	}
 };
 
