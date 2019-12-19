@@ -20,9 +20,27 @@
         .post-wrapper {
             max-height: 45rem;
             overflow-y: auto;
+            border-top: 0.4rem solid $colors-black !important;
+            
+            .post-title {
+                font-size: $title--font-size;
+                font-weight: bold;
+                text-transform: uppercase;
+            }
         }
         .exir-button {
             font-size: 1.2rem;
+        }
+    }
+}
+
+.dark-theme {
+    &.home_container-mobile {
+        .post-wrapper {
+            border-top-color: $dark-border-main !important;
+            .post-title {
+                color: $dark-font-main-text-color;
+            }
         }
     }
 }

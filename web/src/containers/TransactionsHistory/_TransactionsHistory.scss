@@ -85,6 +85,15 @@ $trade-asks-color-font: $colors-currencies-btc;
 		}
 	}
 }
+.display_table-wrapper{
+	.display_table-cell {
+		min-height: 1.2rem !important;
+		padding: 0 0.1rem !important;
+	}
+	&:first-child .display_table-body {
+		padding-top: 0.1rem !important;
+	}
+} 
 
 .dark-theme {
 	.csv-action {

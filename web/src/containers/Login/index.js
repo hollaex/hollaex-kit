@@ -23,6 +23,8 @@ import {
 
 import STRINGS from '../../config/localizedStrings';
 
+let errorTimeOut = null;
+
 const BottomLink = () => (
 	<div className={classnames('f-1', 'link_wrapper')}>
 		{STRINGS.LOGIN.NO_ACCOUNT}
@@ -58,6 +60,9 @@ class Login extends Component {
 
 	componentWillUnmount() {
 		this.props.setLogoutMessage();
+		if (errorTimeOut) {
+			clearTimeout(errorTimeOut);
+		}
 	}
 
 	redirectToHome = () => {
@@ -125,7 +130,9 @@ class Login extends Component {
 						: err.message;
 
 				let error = {};
-				this.props.change(FORM_NAME, 'captcha', '');
+				errorTimeOut = setTimeout(() => {
+					this.props.change(FORM_NAME, 'captcha', '');
+				}, 5000);
 
 				if (_error.toLowerCase().indexOf('otp') > -1) {
 					this.setState({ values, otpDialogIsOpen: true });

@@ -26,6 +26,20 @@ const MobilePosts = () => {
             >
                 {
                     <div>
+                         <div>
+                            <div className="d-flex my-2">
+                                <div className="mr-2 ml-1">
+                                    <ReactSvg path={ICONS.TRADE_ANNOUNCEMENT} wrapperClassName="trade_post_icon" />
+                                </div>
+                                <div>
+                                    <div className="post_header">{STRINGS.TRADE_POSTS.ANNOUNCEMENT}</div>
+                                    <div className="post-content">{moment('2019-12-16').format('MMMM DD, YYYY')}</div>
+                                    <div className="post-content">
+                                        {STRINGS.TRADE_POSTS.ANNOUNCEMNT_TXT_3}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <div>
                             <div className="d-flex my-2">
                                 <div className="mr-2 ml-1">
@@ -35,7 +49,7 @@ const MobilePosts = () => {
                                     <div className="post_header">{STRINGS.TRADE_POSTS.ANNOUNCEMENT}</div>
                                     <div className="post-content">{moment('2019-11-28').format('MMMM DD, YYYY')}</div>
                                     <div className="post-content">
-                                        {STRINGS.TRADE_POSTS.ANNOUNCEMNT_TXT}
+                                        {STRINGS.TRADE_POSTS.ANNOUNCEMNT_TXT_2}
                                     </div>
                                 </div>
                             </div>

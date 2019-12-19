@@ -135,7 +135,13 @@ $tabs-title--margin: 2rem;
 				color: $dark-coin-xrp;
 			}
 			.trade_block-title-currency-hex {
+				background-color: $colors-white;
 				color: $dark-coin-hex;
+				height: 1rem;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				margin: auto 0;
 			}
 			.trade_block-title-currency-eos {
 				color: $dark-coin-eos;

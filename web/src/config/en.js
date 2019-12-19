@@ -111,7 +111,7 @@ export default {
 			SECTION_4_LINK_4: 'Terms of Use',
 			SECTION_5_TITLE: 'RESOURCES',
 			SECTION_5_LINK_1: 'HollaEx Whitepaper',
-			SECTION_5_LINK_2: 'HollaEx Token (HEX) ',
+			SECTION_5_LINK_2: 'HollaEx Token (XHT) ',
 			SECTION_5_LINK_3: 'HollaEx Kit',
 			SECTION_6_TITLE: 'SOCIAL',
 			SECTION_6_LINK_1: 'Twitter',
@@ -136,7 +136,7 @@ export default {
 	},
 	REQUEST_HEX_ACCESS: {
 		// new
-		REQUEST_TITLE: 'Request HEX Access',
+		REQUEST_TITLE: 'Request Access',
 		REQUEST_INVITE: 'Request Invite',
 		REFERRAL_INVITE_WARNING:
 			'To access the HollaEx official Exchange you need to get a referral link from a friend or {0}',
@@ -367,7 +367,7 @@ export default {
 		TITLE_EMAIL: 'Email',
 		MY_EMAIL: 'My Email',
 		MAKE_FIRST_DEPOSIT: 'Make first deposit', // new
-		OBTAIN_HEX: 'Obtain HEX', // new
+		OBTAIN_HEX: 'Obtain XHT', // new
 		TITLE_USER_DOCUMENTATION: 'Identification',
 		TITLE_ID_DOCUMENTS: 'Upload',
 		TITLE_BANK_ACCOUNT: 'Bank Account',
@@ -888,7 +888,6 @@ export default {
 	ORDERBOOK_SPREAD: '{0} spread', // 0 -> 660,000 T
 	ORDERBOOK_SPREAD_PRICE: '{0} {1}', //// 0-> amount  1 -> symbol  600,000 T
 	CALCULATE_MAX: 'Max',
-	DATEFIELD_TOOGLE_DATE_PE: 'تاریخ شمسی‌',
 	DATEFIELD_TOOGLE_DATE_GR: 'Gregorian calendar',
 	VERIFICATION_WARNING_TITLE: 'Verification you bank details',
 	VERIFICATION_WARNING_MESSAGE:
@@ -1196,14 +1195,14 @@ export default {
 		REFERRED_USER_COUT: 'You have referred {0} users', // new
 		COPY_LINK_BUTTON: 'COPY REFERRAL LINK', // new
 		HEX_TITLE: 'EARN 10% IN COMMISSIONS', // new
-		HEX_INFO_TEXT: 'Earn 1 HEX for every 10 HEX your friends buy.', // new
-		HEX_INFO_TEXT_1: 'Commissions are paid periodically to your HEX wallet', // new
+		HEX_INFO_TEXT: 'Earn commissions by inviting your friends.', // new
+		HEX_INFO_TEXT_1: 'Commissions are paid periodically to your wallet', // new
 		APPLICATION_TXT:
 			'To become a HollaEx Kit distributor please fill out an application.', // new
 		TOTAL_REFERRAL: 'Total bought from referrals:', // new
 		PENDING_REFERRAL: 'Commissions Pending:', // new
 		EARN_REFERRAL: 'Commissions Earnt:', // new
-		HEX_COUNT: '{0} HEX', // new
+		HEX_COUNT: '{0} XHT', // new
 		APPLY_BUTTON: 'APPLY' // new
 	},
 	STAKE_TOKEN: {
@@ -1211,9 +1210,9 @@ export default {
 		INFO_TXT1:
 			'For every user of the HollaEx Exchange Kit there are HollaEx tokens collateralized to run the exchange software.', // new
 		INFO_TXT2:
-			'You can collateralize your HollaEx token in a similar fashion to staking and earn HEX not sold during the Wave Auction.', // new
+			'You can collateralize your HollaEx token in a similar fashion to staking and earn XHT not sold during the Wave Auction.', // new
 		INFO_TXT3:
-			'Simply go to dash.bitholla.com and collateralize your own exchange today and earn free HEX', // new
+			'Simply go to dash.bitholla.com and collateralize your own exchange today and earn free XHT', // new
 		BUTTON_TXT: 'GO TO DASH' // new
 	},
 	TERMS_OF_SERVICES: {
@@ -1226,13 +1225,13 @@ export default {
 		RISK_INVOLVED_LABEL: 'I understand the risks involved',
 		DOWNLOAD_PDF: 'Download the PDF',
 		DEPOSIT_FUNDS:
-			'Deposit funds into your wallet to obtain HollaEx Token (HEX)',
+			'Deposit funds into your wallet to obtain HollaEx Token (XHT)',
 		READ_FAG: 'Read HollaEx FAQ here: {0}',
 		READ_DOCUMENTATION: 'Read HollaEx whitepaper here: {0}',
 		READ_WAVES: 'Rules for the coming December Public Wave Auction{0}', // new
 		DOWNLOAD_BUY_HEX:
 			'Download the PDF to see a visual step-by-step processes on {0}',
-		HOW_TO_BUY: 'how to buy HollaEx Token (HEX)',
+		HOW_TO_BUY: 'how to buy HollaEx Token (XHT)',
 		PUBLIC_SALES: ' Public Wave Auction', // new
 		CONTACT_US:
 			'Feel free to contact us for more information and any issues by sending us an email to {0}',
@@ -1241,11 +1240,11 @@ export default {
 			'We will review your request and send further instructions to your email on how to access the HollaEx exchange.', // new
 		WARNING_TXT1:
 			'In the mean time you can firmilerize yourself with the HollaEx network with the resources below', // new
-		HEX_ORDER_TXT_1: 'To start trading the HollaEx token (HEX) you must login', // new
+		HEX_ORDER_TXT_1: 'To start trading the HollaEx token (XHT) you must login', // new
 		HEX_ORDER_TXT_2:
 			'The HollaEx token is distributed through a Wave Auction where at random times daily there will be random amount of HollaEx token sold to the highest bidders on the orderbook.', // new
 		HEX_ORDER_TXT_3: '{0} to join the Wave Auction or {1}', // new
-		HEX_TITLE: 'HEX', //new
+		HEX_TITLE: 'XHT', //new
 		HEX_TRADE_TXT_1: 'Login to see your recent trades', //new
 		HEX_TRADE_TXT_2: 'You can {0} to see your recent trade history', //new
 		LOGIN_HERE: 'login here'
@@ -1263,10 +1262,10 @@ export default {
 		ANNOUNCEMEN: 'Announcement',
 		SYSTEM_UPDATE: 'System Update',
 		LAST_WAVE: 'Last Wave',
-		ANNOUNCEMENT_TXT: 'Free HEX will be distributed to all wallets that apply',
+		ANNOUNCEMENT_TXT: 'Free XHT will be distributed to all wallets that apply',
 		SYSTEM_UPDATE_TIME: 'Time: 12:31 PM, December 19th, 2019	',
 		SYSTEM_UPDATE_DURATION: '1 hour',
-		LAST_WAVE_AMOUNT: '100, 213 HEX',
+		LAST_WAVE_AMOUNT: '100, 213 XHT',
 		LAST_WAVE_REDISTRIBUTED: ' 11, 211',
 		LAST_WAVE_TIME: ' 12: 31 PM, December 19th, 2019'
 	},
@@ -1293,12 +1292,12 @@ export default {
 		ANNOUNCEMNT_TXT_3:
 			'Public launch and Wave Auction is rescheduled to January 1st 2020. Wallet deposit and withdrawals are now open.',
 		ANNOUNCEMNT_TXT_2:
-			'Public wave auction is starting from December 18th, 2019 1pm UTC. You can deposit and start placing bids at anytime and purchase HEX.',
+			'Public wave auction is starting from December 18th, 2019 1pm UTC. You can deposit and start placing bids at anytime and purchase XHT.',
 		ANNOUNCEMNT_TXT_1:
-			'Earn HEX with HAP program by introducing your friends to hollaex.com. {0}.',
+			'Earn XHT with HAP program by introducing your friends to hollaex.com. {0}.',
 		DEFAULT_ANNOUNCEMENT:
 			'This page posts public announcements about your exchange! {0}',
-		ANNOUNCEMENT_TXT_2: 'Free HEX will be distributed to all wallets that {0}.',
+		ANNOUNCEMENT_TXT_2: 'Free XHT will be distributed to all wallets that {0}.',
 		LEARN_MORE: 'Learn more',
 		APPLY_TODAY: 'Apply today' // new
 	},

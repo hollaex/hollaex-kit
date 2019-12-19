@@ -6,8 +6,7 @@ import { isBrowser, isMobile } from 'react-device-detect';
 
 import STRINGS from '../../config/localizedStrings';
 import { FLEX_CENTER_CLASSES, HOLLAEX_LOGO, HOLLAEX_LOGO_BLACK } from '../../config/constants';
-import { ButtonLink, AppFooter } from '../../components';
-import MobilePosts from '../Trade/MobilePosts';
+import { ButtonLink, AppFooter, NotificationsList } from '../../components';
 import { getClasesForLanguage } from '../../utils/string';
 import { getThemeClass } from '../../utils/theme';
 import { isLoggedIn } from '../../utils/token';
@@ -96,8 +95,9 @@ class Home extends Component {
 							</div>
 						</div>
 					}
-					<div className="post-wrapper">
-						<MobilePosts />
+					<div className="post-wrapper mt-4 mx-3">
+						<div className="post-title">{STRINGS.TRADE_TAB_POSTS}</div>
+						<NotificationsList />
 					</div>
 				</div>
 				<div>

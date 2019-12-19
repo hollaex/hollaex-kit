@@ -219,7 +219,6 @@ export const ICONS = {
 	PENDING_TIMER: '/assets/images/pending-timer.svg',
 	VOLUME_PENDING: '/assets/images/volume-pending-icon.svg',
 	VOLUME_PENDING_DARK: '/assets/images/volume-pending-dark.svg',
-	SELF_KYC_ID_FA: '/assets/self-kyc-id-note-persian.png',
 	SELF_KYC_ID_EN: '/assets/self-kyc-id-note-english.png',
 	CHAT_ICON_LVL_3: '/assets/images/kraken-chat-lvl-3.svg',
 	CHAT_ICON_LVL_4: '/assets/images/whale-chat-lvl-4.svg',
@@ -274,6 +273,8 @@ export const ICONS = {
 	HEX_LOGO_LIGHT:'/assets/icons/HEX-logo-light.svg',
 	HEX_LOGO_DARK:'/assets/icons/HEX-logo-dark.svg',
 	BONUS_OFFERING:'/assets/icons/bonus_offering.svg',
+	UP_ARROW:'/assets/images/buy-trade.svg',
+	DOWN_ARROW:'/assets/images/sell-trade.svg'
 };
 
 export const SOCIAL_ICONS = {
@@ -450,9 +451,7 @@ export const EXPLORERS_ENDPOINT = (currency) => {
 
 export const BALANCE_ERROR = 'Insufficient balance to perform the order';
 
-export const CAPTCHA_SITEKEY =
-	process.env.REACT_APP_CAPTCHA_SITE_KEY ||
-	'6LfgB6kUAAAAAAJI6CNSHdLrjDn8iFmZGxQDrcER'; // default recaptcha v3
+export const CAPTCHA_SITEKEY = '6LfgB6kUAAAAAAJI6CNSHdLrjDn8iFmZGxQDrcER'; // default recaptcha v3
 
 export const CAPTCHA_TIMEOUT = process.env.REACT_APP_CAPTCHA_TIMEOUT
 	? parseInt(process.env.REACT_APP_CAPTCHA_TIMEOUT, 10)

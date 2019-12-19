@@ -2,12 +2,12 @@ import React, { Component } from 'react';
 import classnames from 'classnames';
 import EventListener from 'react-event-listener';
 import { connect } from 'react-redux';
-import ReactSvg from 'react-svg';
 
+import UpComingWave from './UpComingWave';
 import { subtract } from '../utils';
 import { formatCurrency, formatBaseAmount, formatBtcFullAmount, checkNonBasePair } from '../../../utils/currency';
-import STRINGS from '../../../config/localizedStrings'
-import { DEFAULT_COIN_DATA, ICONS } from '../../../config/constants';
+import STRINGS from '../../../config/localizedStrings';
+import { DEFAULT_COIN_DATA } from '../../../config/constants';
 
 const PriceRow = (pairBase, pairTwo, side, onPriceClick, onAmountClick) => (
 	[price, amount],
@@ -106,54 +106,7 @@ class Orderbook extends Component {
 		return (
 			<div className="trade_orderbook-wrapper d-flex flex-column f-1 apply_rtl">
 				{pair === 'hex-usdt'
-					? <div className="trade_orderbook-headers d-flex">
-						<div>
-							<ReactSvg path={ICONS.INCOMING_WAVE} wrapperClassName="waves-icon" />
-						</div>
-						<div className="ml-3" >
-							<div className=" f-1 trade_orderbook-cell mb-2">
-								<span className="wave-header mr-2">
-									{STRINGS.WAVES.NEXT_WAVE}
-								</span>
-								<span className="wave-content">
-									{`TBA`}
-								</span>
-							</div>
-							<div className=" f-1 trade_orderbook-cell mb-2">
-								<span className="wave-header mr-2">
-									{STRINGS.WAVES.WAVE_AMOUNT}
-								</span>
-								<span className="wave-content">
-									{`TBA HEX`}
-								</span>
-							</div>
-							<div className=" f-1 trade_orderbook-cell mb-2">
-								<span className="wave-header mr-2">
-									{STRINGS.WAVES.FLOOR}
-								</span>
-								<span className="wave-content">
-									{`0.2`}
-								</span>
-							</div>
-							<div className=" f-1 trade_orderbook-cell mb-2">
-								<span className="wave-header mr-2">
-									{STRINGS.WAVES.LAST_WAVE}
-								</span>
-								<span className="wave-content">
-									{`N/A`}
-								</span>
-							</div>
-							<div className=" f-1 trade_orderbook-cell mb-3">
-								<a
-									href={"https://hollaex.com/docs/wave-auction.pdf"}
-									target="_blank"
-									rel="noopener noreferrer"
-									className="blue-link pointer">
-									{STRINGS.HOME.SECTION_1_BUTTON_1}
-								</a>
-							</div>
-						</div>
-					</div>
+					? <UpComingWave pairBase={pairBase} />
 					: null
 				}
 				<EventListener target="window" onResize={this.scrollTop} />

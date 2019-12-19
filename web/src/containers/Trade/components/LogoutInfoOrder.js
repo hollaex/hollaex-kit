@@ -13,7 +13,7 @@ const LogoutInfoOrder = ({ activeTheme }) => {
     return (
         <div className='text-center'>
             <div className={'flex-row d-flex justify-content-center'}>
-                <ReactSVG path={activeTheme === 'white' ? ICONS.HEX_LOGO_LIGHT : ICONS.HEX_LOGO_DARK} wrapperClassName="hex-logo" />
+                <ReactSVG path={ICONS.HEX_ICON_DARK} wrapperClassName="hex-logo" />
             </div>
             <div className="hex-order-heading">
                 {STRINGS.TERMS_OF_SERVICES.HEX_ORDER_TXT_1}
