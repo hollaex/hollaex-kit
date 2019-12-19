@@ -350,7 +350,7 @@ export const WITHDRAW_LIMITS = {
 };
 
 // Default trading pairs (it gets set from the server so it is not important to set these properly)
-export const DEFAULT_TRADING_PAIRS = ['hex-usdt'];
+export const DEFAULT_TRADING_PAIRS = ['xht-usdt'];
 
 export const TOKEN_KEY = `${ENV}_${NETWORK}_TOKEN`;
 export const LANGUAGE_KEY = `${ENV}_${NETWORK}_LANGUAGE`;
@@ -397,7 +397,7 @@ export const EXPLORERS_ENDPOINT = (currency) => {
 					? 'https://explorer.bitcoin.com/tbch/tx/'
 					: 'https://explorer.bitcoin.com/bch/tx/';
 			break;
-		case 'hex':
+		case 'xht':
 			endpoint =
 				NETWORK === 'testnet'
 					? 'https://ropsten.etherscan.io/tx/'
