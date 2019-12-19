@@ -110,13 +110,13 @@ export default {
 			SECTION_4_LINK_4: 'Terms of Use',
 			SECTION_5_TITLE: 'RESOURCES',
 			SECTION_5_LINK_1: 'HollaEx Whitepaper',
-			SECTION_5_LINK_2: 'HollaEx Token (HEX) ',
+			SECTION_5_LINK_2: 'HollaEx Token (XHT) ',
 			SECTION_5_LINK_3: 'HollaEx Kit',
 			SECTION_6_TITLE: 'SOCIAL',
 			SECTION_6_LINK_1: 'Twitter',
 			SECTION_6_LINK_2: 'Telegram'
 		},
-		HEX_DESCRIPTION:
+		XHT_DESCRIPTION:
 			'HollaEx is an open cryptocurrency exchange built based on HollaEx Kit technology developed and managed by bitHolla and is a live example of HollaEx exchange software kit that allows anyone to run there own exchange exactly like this one. To start your own exchange like this {1}. The HollaEx Token is the native token of HollaEx and is traded on the HollaEx exchange through a wave auction system. For more information on how the auction works {0}',
 		CLICK_HERE: 'click here',
 		VISIT_HERE: 'visit here'
@@ -133,9 +133,9 @@ export default {
 		TAB_API: 'API',
 		TAB_SIGNOUT: 'Signout'
 	},
-	REQUEST_HEX_ACCESS: {
+	REQUEST_XHT_ACCESS: {
 		// new
-		REQUEST_TITLE: 'Request HEX Access',
+		REQUEST_TITLE: 'Request Access',
 		REQUEST_INVITE: 'Request Invite',
 		REFERRAL_INVITE_WARNING:
 			'To access the HollaEx official Exchange you need to get a referral link from a friend or {0}',
@@ -366,7 +366,7 @@ export default {
 		TITLE_EMAIL: 'Email',
 		MY_EMAIL: 'My Email',
 		MAKE_FIRST_DEPOSIT: 'Make first deposit', // new
-		OBTAIN_HEX: 'Obtain HEX', // new
+		OBTAIN_XHT: 'Obtain XHT', // new
 		TITLE_USER_DOCUMENTATION: 'Identification',
 		TITLE_ID_DOCUMENTS: 'Upload',
 		TITLE_BANK_ACCOUNT: 'Bank Account',
@@ -800,12 +800,8 @@ export default {
 	WITHDRAWALS_FORM_AMOUNT_LABEL: '{0} amount to withdraw',
 	WITHDRAWALS_FORM_AMOUNT_PLACEHOLDER:
 		'Type the amount of {0} you wish to withdraw',
-	WITHDRAWALS_FORM_FEE_BTC_LABEL:
-		'Bitcoin transaction fee (This is Bitcoin mining fee. If you lower that amount there is chance your transaction takes significant time to get confirmed.)',
-	WITHDRAWALS_FORM_FEE_ETH_LABEL:
-		'Ethereum transaction fee (This is Ethereum mining fee. If you lower that amount there is chance your transaction takes significant time to get confirmed.)', // TODO CHECK
 	WITHDRAWALS_FORM_FEE_COMMON_LABEL:
-		'{0} transaction fee (This is {0} mining fee. If you lower that amount there is chance your transaction takes significant time to get confirmed.)', // new
+		'{0} transaction fee (This is {0} mining fee)', // new
 	WITHDRAWALS_FORM_FEE_FIAT_LABEL: 'Bank withdrawal fee',
 	WITHDRAWALS_FORM_FEE_PLACEHOLDER:
 		'Type the amount of {0} you wish to use in the fee of the transaction',
@@ -879,7 +875,7 @@ export default {
 	WALLET_TABLE_TOTAL: 'Grand Total',
 	WALLET_ALL_ASSETS: 'All Assets',
 	WALLET_DEPOSIT_USD:
-		'If you’d like to deposit USD or other fiat currencies via bank wire transfer {0}.', // new
+		'For fiat currency D/W in different countries and other wallet inquiries {0}.', // new
 	HIDE_TEXT: 'Hide',
 	PAGINATOR_FORMAT: '{0} / {1}',
 	ORDERBOOK_SELLERS: 'Sellers',
@@ -887,7 +883,6 @@ export default {
 	ORDERBOOK_SPREAD: '{0} spread', // 0 -> 660,000 T
 	ORDERBOOK_SPREAD_PRICE: '{0} {1}', //// 0-> amount  1 -> symbol  600,000 T
 	CALCULATE_MAX: 'Max',
-	DATEFIELD_TOOGLE_DATE_PE: 'تاریخ شمسی‌',
 	DATEFIELD_TOOGLE_DATE_GR: 'Gregorian calendar',
 	VERIFICATION_WARNING_TITLE: 'Verification you bank details',
 	VERIFICATION_WARNING_MESSAGE:
@@ -1155,12 +1150,12 @@ export default {
 		LEVEL_4_TXT:
 			'You are a masters trader and have reached the peek. To maintain your rank keep your trading volume high and healthy.',
 		CURRENT_TXT: 'Current',
-		TRADER_ACCOUNT_HEX_TEXT:
-			'Earn up to 10% in commissions through distributing the HollaEx Kit. Alternatively you can earn HEX daily through staking your HEX token when running your own exchange.',
+		TRADER_ACCOUNT_XHT_TEXT:
+			'Earn up to 10% in commissions through distributing the HollaEx Kit. Alternatively you can earn XHT daily through staking your HollaEx token when running your own exchange.',
 		TRADER_ACCOUNT_TITLE: 'Account', // new
 		HAP_ACCOUNT: 'HAP Account', // new
 		HAP_ACCOUNT_TXT:
-			'Your account is a verified HollaEx affiliate program account. You can now earn 10% bonus for every person you invite that buys HEX.' // new
+			'Your account is a verified HollaEx affiliate program account. You can now earn trading commissions for every person you invite to the platform' // new
 	},
 	REFERRAL_LINK: {
 		TITLE: 'Invite your friend', // new
@@ -1169,15 +1164,15 @@ export default {
 		COPY_FIELD_LABEL: 'Share the link below with friends and earn commissions:', // new
 		REFERRED_USER_COUT: 'You have referred {0} users', // new
 		COPY_LINK_BUTTON: 'COPY REFERRAL LINK', // new
-		HEX_TITLE: 'EARN 10% IN COMMISSIONS', // new
-		HEX_INFO_TEXT: 'Earn 1 HEX for every 10 HEX your friends buy.', // new
-		HEX_INFO_TEXT_1: 'Commissions are paid periodically to your HEX wallet', // new
+		XHT_TITLE: 'EARN 10% IN COMMISSIONS', // new
+		XHT_INFO_TEXT: 'Earn commissions by inviting your friends.', // new
+		XHT_INFO_TEXT_1: 'Commissions are paid periodically to your wallet', // new
 		APPLICATION_TXT:
 			'To become a HollaEx Kit distributor please fill out an application.', // new
 		TOTAL_REFERRAL: 'Total bought from referrals:', // new
 		PENDING_REFERRAL: 'Commissions Pending:', // new
 		EARN_REFERRAL: 'Commissions Earnt:', // new
-		HEX_COUNT: '{0} HEX', // new
+		XHT_COUNT: '{0} XHT', // new
 		APPLY_BUTTON: 'APPLY' // new
 	},
 	STAKE_TOKEN: {
@@ -1185,9 +1180,9 @@ export default {
 		INFO_TXT1:
 			'For every user of the HollaEx Exchange Kit there are HollaEx tokens collateralized to run the exchange software.', // new
 		INFO_TXT2:
-			'You can collateralize your HollaEx token in a similar fashion to staking and earn HEX not sold during the Wave Auction.', // new
+			'You can collateralize your HollaEx token in a similar fashion to staking and earn XHT not sold during the Wave Auction.', // new
 		INFO_TXT3:
-			'Simply go to dash.bitholla.com and collateralize your own exchange today and earn free HEX', // new
+			'Simply go to dash.bitholla.com and collateralize your own exchange today and earn free XHT', // new
 		BUTTON_TXT: 'GO TO DASH' // new
 	},
 	TERMS_OF_SERVICES: {
@@ -1200,13 +1195,13 @@ export default {
 		RISK_INVOLVED_LABEL: 'I understand the risks involved',
 		DOWNLOAD_PDF: 'Download the PDF',
 		DEPOSIT_FUNDS:
-			'Deposit funds into your wallet to obtain HollaEx Token (HEX)',
+			'Deposit funds into your wallet to obtain HollaEx Token (XHT)',
 		READ_FAG: 'Read HollaEx FAQ here: {0}',
 		READ_DOCUMENTATION: 'Read HollaEx whitepaper here: {0}',
 		READ_WAVES: 'Rules for the coming December Public Wave Auction{0}', // new
-		DOWNLOAD_BUY_HEX:
+		DOWNLOAD_BUY_XHT:
 			'Download the PDF to see a visual step-by-step processes on {0}',
-		HOW_TO_BUY: 'how to buy HollaEx Token (HEX)',
+		HOW_TO_BUY: 'how to buy HollaEx Token (XHT)',
 		PUBLIC_SALES: ' Public Wave Auction', // new
 		CONTACT_US:
 			'Feel free to contact us for more information and any issues by sending us an email to {0}',
@@ -1215,13 +1210,13 @@ export default {
 			'We will review your request and send further instructions to your email on how to access the HollaEx exchange.', // new
 		WARNING_TXT1:
 			'In the mean time you can firmilerize yourself with the HollaEx network with the resources below', // new
-		HEX_ORDER_TXT_1: 'To start trading the HollaEx token (HEX) you must login', // new
-		HEX_ORDER_TXT_2:
+		XHT_ORDER_TXT_1: 'To start trading the HollaEx token (XHT) you must login', // new
+		XHT_ORDER_TXT_2:
 			'The HollaEx token is distributed through a Wave Auction where at random times daily there will be random amount of HollaEx token sold to the highest bidders on the orderbook.', // new
-		HEX_ORDER_TXT_3: '{0} to join the Wave Auction or {1}', // new
-		HEX_TITLE: 'HEX', //new
-		HEX_TRADE_TXT_1: 'Login to see your recent trades', //new
-		HEX_TRADE_TXT_2: 'You can {0} to see your recent trade history', //new
+		XHT_ORDER_TXT_3: '{0} to join the Wave Auction or {1}', // new
+		XHT_TITLE: 'XHT', //new
+		XHT_TRADE_TXT_1: 'Login to see your recent trades', //new
+		XHT_TRADE_TXT_2: 'You can {0} to see your recent trade history', //new
 		LOGIN_HERE: 'login here'
 	},
 	WAVES: {
@@ -1237,10 +1232,10 @@ export default {
 		ANNOUNCEMEN: 'Announcement',
 		SYSTEM_UPDATE: 'System Update',
 		LAST_WAVE: 'Last Wave',
-		ANNOUNCEMENT_TXT: 'Free HEX will be distributed to all wallets that apply',
+		ANNOUNCEMENT_TXT: 'Free XHT will be distributed to all wallets that apply',
 		SYSTEM_UPDATE_TIME: 'Time: 12:31 PM, December 19th, 2019	',
 		SYSTEM_UPDATE_DURATION: '1 hour',
-		LAST_WAVE_AMOUNT: '100, 213 HEX',
+		LAST_WAVE_AMOUNT: '100, 213 XHT',
 		LAST_WAVE_REDISTRIBUTED: ' 11, 211',
 		LAST_WAVE_TIME: ' 12: 31 PM, December 19th, 2019'
 	},
@@ -1264,13 +1259,15 @@ export default {
 	TRADE_POSTS: {
 		// new
 		ANNOUNCEMENT: 'Announcement',
-		ANNOUNCEMNT_TXT:
-			'Public wave auction is starting from December 18th, 2019 1pm UTC. You can deposit and start placing bids at anytime and purchase HEX.',
+		ANNOUNCEMNT_TXT_3:
+			'Public launch and Wave Auction is rescheduled to January 1st 2020. Wallet deposit and withdrawals are now open.',
+		ANNOUNCEMNT_TXT_2:
+			'Public wave auction is starting from December 18th, 2019 1pm UTC. You can deposit and start placing bids at anytime and purchase XHT.',
 		ANNOUNCEMNT_TXT_1:
-			'Earn HEX with HAP program by introducing your friends to hollaex.com. {0}.',
+			'Earn XHT with HAP program by introducing your friends to hollaex.com. {0}.',
 		DEFAULT_ANNOUNCEMENT:
 			'This page posts public announcements about your exchange! {0}',
-		ANNOUNCEMENT_TXT_2: 'Free HEX will be distributed to all wallets that {0}.',
+		ANNOUNCEMENT_TXT_2: 'Free XHT will be distributed to all wallets that {0}.',
 		LEARN_MORE: 'Learn more',
 		APPLY_TODAY: 'Apply today' // new
 	}

@@ -105,7 +105,7 @@ class Orderbook extends Component {
 		const { symbol } = coins[pairData.pair_2] || DEFAULT_COIN_DATA;
 		return (
 			<div className="trade_orderbook-wrapper d-flex flex-column f-1 apply_rtl">
-				{pair === 'hex-usdt'
+				{pair === 'xht-usdt'
 					? <div className="trade_orderbook-headers d-flex">
 						<div>
 							<ReactSvg path={ICONS.INCOMING_WAVE} wrapperClassName="waves-icon" />
@@ -124,7 +124,7 @@ class Orderbook extends Component {
 									{STRINGS.WAVES.WAVE_AMOUNT}
 								</span>
 								<span className="wave-content">
-									{`TBA HEX`}
+									{`TBA XHT`}
 								</span>
 							</div>
 							<div className=" f-1 trade_orderbook-cell mb-2">

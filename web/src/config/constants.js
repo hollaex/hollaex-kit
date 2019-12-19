@@ -43,8 +43,8 @@ export const ICONS = {
 	XRP_ICON_DARK: '/assets/icons/xrp-icon-01.svg',
 	XRP_NAV_ICON: '/assets/icons/xrp-icon-01.svg',
 	KRW_ICON: '/assets/icons/krw-icon-01.svg',
-	HEX_ICON: '/assets/icons/hex-icon.svg',
-	HEX_ICON_DARK: '/assets/icons/hex-icon-dark.svg',
+	XHT_ICON: '/assets/icons/xht-icon.svg',
+	XHT_ICON_DARK: '/assets/icons/xht-icon-dark.svg',
 	XMR_ICON: '/assets/icons/xmr-icon.svg',
 	XMR_ICON_DARK: '/assets/icons/xmr-icon-dark.svg',
 	USDT_ICON: '/assets/icons/usdt-icon.svg',
@@ -219,7 +219,6 @@ export const ICONS = {
 	PENDING_TIMER: '/assets/images/pending-timer.svg',
 	VOLUME_PENDING: '/assets/images/volume-pending-icon.svg',
 	VOLUME_PENDING_DARK: '/assets/images/volume-pending-dark.svg',
-	SELF_KYC_ID_FA: '/assets/self-kyc-id-note-persian.png',
 	SELF_KYC_ID_EN: '/assets/self-kyc-id-note-english.png',
 	CHAT_ICON_LVL_3: '/assets/images/kraken-chat-lvl-3.svg',
 	CHAT_ICON_LVL_4: '/assets/images/whale-chat-lvl-4.svg',
@@ -253,20 +252,20 @@ export const ICONS = {
 	LEVEL_ACCOUNT_ICON_4: '/assets/images/level-4.svg',
 	HAP_ACCOUNT_ICON: '/assets/icons/hap-account-icon.svg',
 	ACCOUNT_SUMMARY: '/assets/icons/account-icon-summary.svg',
-	HEX_COIN_STACK: '/assets/images/HEX-coin-stack.svg',
-	HEX_DOCS: '/assets/images/HEX-docs.svg',
-	HEX_WAVES: '/assets/images/wave-icon.svg',
-	HEX_EMAIL: '/assets/images/HEX-email.svg',
-	HEX_FAQ: '/assets/images/HEX-FAQ.svg',
-	HEX_PDF: '/assets/images/HEX-pdf.svg',
+	XHT_COIN_STACK: '/assets/images/XHT-coin-stack.svg',
+	XHT_DOCS: '/assets/images/XHT-docs.svg',
+	XHT_WAVES: '/assets/images/wave-icon.svg',
+	XHT_EMAIL: '/assets/images/XHT-email.svg',
+	XHT_FAQ: '/assets/images/XHT-FAQ.svg',
+	XHT_PDF: '/assets/images/XHT-pdf.svg',
 	REFERRAL_SUCCESS: '/assets/icons/send-request.svg',
 	INCOMING_WAVE:'/assets/images/incoming-wave.svg',
 	TRADE_ANNOUNCEMENT: '/assets/images/announcement.svg',
 	CHAT_EMOJI: '/assets/icons/emoji-face-icon.svg',
 	TRADE_SETTINGS:'/assets/images/spanner.svg',
 	TRADE_WAVES:'/assets/images/wave-icon.svg',
-	HEX_LOGO_LIGHT:'/assets/icons/HEX-logo-light.svg',
-	HEX_LOGO_DARK:'/assets/icons/HEX-logo-dark.svg',
+	XHT_LOGO_LIGHT:'/assets/icons/XHT-logo-light.svg',
+	XHT_LOGO_DARK:'/assets/icons/XHT-logo-dark.svg',
 	UP_ARROW:'/assets/images/buy-trade.svg',
 	DOWN_ARROW:'/assets/images/sell-trade.svg'
 };
@@ -374,7 +373,7 @@ export const WITHDRAW_LIMITS = {
 };
 
 // Default trading pairs (it gets set from the server so it is not important to set these properly)
-export const DEFAULT_TRADING_PAIRS = ['hex-usdt'];
+export const DEFAULT_TRADING_PAIRS = ['xht-usdt'];
 
 export const TOKEN_KEY = `${ENV}_${NETWORK}_TOKEN`;
 export const LANGUAGE_KEY = `${ENV}_${NETWORK}_LANGUAGE`;
@@ -421,11 +420,17 @@ export const EXPLORERS_ENDPOINT = (currency) => {
 					? 'https://explorer.bitcoin.com/tbch/tx/'
 					: 'https://explorer.bitcoin.com/bch/tx/';
 			break;
-		case 'hex':
+		case 'xht':
 			endpoint =
 				NETWORK === 'testnet'
 					? 'https://ropsten.etherscan.io/tx/'
 					: 'https://etherscan.io/tx/';
+			break;
+		case 'xmr':
+			endpoint =
+				NETWORK === 'testnet'
+					? 'https://moneroblocks.info/tx/'
+					: 'https://moneroblocks.info/tx/';
 			break;
 		default:
 			endpoint =
@@ -570,4 +575,4 @@ export const WHITE_THEME_CHART_COLORS = {
 
 export const SHOW_SUMMARY_ACCOUNT_DETAILS = false;
 export const SHOW_TOTAL_ASSETS = false;
-export const IS_HEX = true;
+export const IS_XHT = true;

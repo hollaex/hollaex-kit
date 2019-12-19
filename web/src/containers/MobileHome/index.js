@@ -40,7 +40,7 @@ class Home extends Component {
 						<div className="w-100">
 							<div className="mt-3 mb-5">
 								<ButtonLink
-									link={'/trade/hex-usdt'}
+									link={'/trade/xht-usdt'}
 									type="button"
 									className="market-button"
 									label={STRINGS.VIEW_MARKET.toUpperCase()}
@@ -65,7 +65,7 @@ class Home extends Component {
 						<div className="w-100">
 							<div className="mt-3 mb-3">
 								<ButtonLink
-									link={'/trade/hex-usdt'}
+									link={'/trade/xht-usdt'}
 									type="button"
 									label={STRINGS.GO_TRADE.toUpperCase()}
 								/>

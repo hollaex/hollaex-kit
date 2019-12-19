@@ -14,7 +14,7 @@ import {
 	HOLLAEX_LOGO,
 	HOLLAEX_LOGO_BLACK,
 	EXCHANGE_EXPIRY_DAYS,
-	IS_HEX
+	IS_XHT
 } from '../../config/constants';
 import { LinkButton } from './LinkButton';
 import PairTabs from './PairTabs';
@@ -199,7 +199,7 @@ class AppBar extends Component {
 			return <div />;
 		}
 
-		const totalPending = IS_HEX
+		const totalPending = IS_XHT
 			? securityPending + walletPending
 			: securityPending + verificationPending;
 
@@ -328,7 +328,7 @@ class AppBar extends Component {
 			verificationPending,
 			walletPending
 		} = this.state;
-		const totalPending = IS_HEX
+		const totalPending = IS_XHT
 			? securityPending + walletPending
 			: securityPending + verificationPending;
 		let pair = '';

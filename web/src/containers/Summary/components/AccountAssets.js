@@ -33,7 +33,7 @@ const AccountAssets = ({ chartData = [], totalAssets, balance, coins, activeThem
 							classnames(
 								"w-100 donut-container",
 								{
-									"donut-container-hex": !SHOW_SUMMARY_ACCOUNT_DETAILS
+									"donut-container-xht": !SHOW_SUMMARY_ACCOUNT_DETAILS
 								}
 							)
 						}>

@@ -5,7 +5,7 @@ import ReactSVG from 'react-svg';
 import { DisplayTable } from '../../../components';
 import { formatTimestamp } from '../../../utils/utils';
 import STRINGS from '../../../config/localizedStrings';
-import { IS_HEX, ICONS } from '../../../config/constants';
+import { IS_XHT, ICONS } from '../../../config/constants';
 
 const generateHeaders = () => {
 	return [
@@ -39,7 +39,7 @@ const generateHeaders = () => {
 		{
 			key: 'size',
 			label: STRINGS.SIZE,
-			renderCell: ({ size = 0, side }, index) => IS_HEX
+			renderCell: ({ size = 0, side }, index) => IS_XHT
 				? <div
 					className={classnames('trade_history-row', side)}
 					key={`size-${index}`}
@@ -51,7 +51,7 @@ const generateHeaders = () => {
 		{
 			key: 'timestamp',
 			label: STRINGS.TIME,
-			renderCell: ({ timestamp, side }, index) => IS_HEX
+			renderCell: ({ timestamp, side }, index) => IS_XHT
 				? <div
 					className={classnames('trade_history-row', side)}
 					key={`timestamp-${index}`}
