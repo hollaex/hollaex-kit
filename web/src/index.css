@@ -2189,6 +2189,9 @@ table th {
 .layout-mobile .trade_active_orders-wrapper {
   max-height: 35vh !important; }
 
+.layout-mobile .trade_block-content .trade_history-wrapper .display_table-wrapper .display_table-cell {
+  min-height: 1.4rem !important; }
+
 .trade_active-lg-view {
   max-height: 17vh; }
 
@@ -7580,6 +7583,150 @@ foreignObject {
   font-weight: bold;
   padding-right: 2rem; }
 
+.mobile-drop-down.default-coin, .drop-down.default-coin, .option.default-coin {
+  color: #000000 !important; }
+
+.mobile-drop-down.btc, .drop-down.btc, .option.btc {
+  color: #f7941d !important; }
+
+.mobile-drop-down.eur, .drop-down.eur, .option.eur {
+  color: #06773d !important; }
+
+.mobile-drop-down.bch, .drop-down.bch, .option.bch {
+  color: #8dc541 !important; }
+
+.mobile-drop-down.eth, .drop-down.eth, .option.eth {
+  color: #3e4ea1 !important; }
+
+.mobile-drop-down.ltc, .drop-down.ltc, .option.ltc {
+  color: #bcbec0 !important; }
+
+.mobile-drop-down.xrp, .drop-down.xrp, .option.xrp {
+  color: #414042 !important; }
+
+.mobile-drop-down.xht, .drop-down.xht, .option.xht {
+  color: #000000 !important; }
+
+.mobile-drop-down.eos, .drop-down.eos, .option.eos {
+  color: #58595b !important; }
+
+.mobile-drop-down.bnb, .drop-down.bnb, .option.bnb {
+  color: #f1ba2a !important; }
+
+.mobile-drop-down.link, .drop-down.link, .option.link {
+  color: #1b75bc !important; }
+
+.mobile-drop-down.trx, .drop-down.trx, .option.trx {
+  color: #a22d25 !important; }
+
+.mobile-drop-down.ada, .drop-down.ada, .option.ada {
+  color: #3667b2 !important; }
+
+.mobile-drop-down.matic, .drop-down.matic, .option.matic {
+  color: #2aaae2 !important; }
+
+.mobile-drop-down.neo, .drop-down.neo, .option.neo {
+  color: #bcbec0 !important; }
+
+.mobile-drop-down.etc, .drop-down.etc, .option.etc {
+  color: #009444 !important; }
+
+.mobile-drop-down.xlm, .drop-down.xlm, .option.xlm {
+  color: #808285 !important; }
+
+.mobile-drop-down.xmr, .drop-down.xmr, .option.xmr {
+  color: #f15a29 !important; }
+
+.mobile-drop-down.zec, .drop-down.zec, .option.zec {
+  color: #fbb040 !important; }
+
+.mobile-drop-down.one, .drop-down.one, .option.one {
+  color: #939598 !important; }
+
+.mobile-drop-down.pax, .drop-down.pax, .option.pax {
+  color: #163526 !important; }
+
+.mobile-drop-down.usdc, .drop-down.usdc, .option.usdc {
+  color: #4d7d91 !important; }
+
+.mobile-drop-down.usdt, .drop-down.usdt, .option.usdt {
+  color: #2bb673 !important; }
+
+.mobile-drop-down.vet, .drop-down.vet, .option.vet {
+  color: #454c7d !important; }
+
+.mobile-drop-down.btt, .drop-down.btt, .option.btt {
+  color: #c49a6c !important; }
+
+.mobile-drop-down.qtum, .drop-down.qtum, .option.qtum {
+  color: #96daf7 !important; }
+
+.mobile-drop-down.algo, .drop-down.algo, .option.algo {
+  color: #594a42 !important; }
+
+.mobile-drop-down.rvn, .drop-down.rvn, .option.rvn {
+  color: #662d91 !important; }
+
+.mobile-drop-down.iota, .drop-down.iota, .option.iota {
+  color: #603913 !important; }
+
+.mobile-drop-down.dash, .drop-down.dash, .option.dash {
+  color: #417ec1 !important; }
+
+.mobile-drop-down.bsv, .drop-down.bsv, .option.bsv {
+  color: #a09032 !important; }
+
+.mobile-drop-down.ont, .drop-down.ont, .option.ont {
+  color: #00a79d !important; }
+
+.mobile-drop-down.atom, .drop-down.atom, .option.atom {
+  color: #796184 !important; }
+
+.mobile-drop-down.celr, .drop-down.celr, .option.celr {
+  color: #726658 !important; }
+
+.mobile-drop-down.omg, .drop-down.omg, .option.omg {
+  color: #8e7fbb !important; }
+
+.mobile-drop-down.hot, .drop-down.hot, .option.hot {
+  color: #8b5e3c !important; }
+
+.mobile-drop-down.usd, .drop-down.usd, .option.usd {
+  color: #01592e !important; }
+
+.mobile-drop-down.jpy, .drop-down.jpy, .option.jpy {
+  color: #e0dfc7 !important; }
+
+.mobile-drop-down.gbp, .drop-down.gbp, .option.gbp {
+  color: #482e6e !important; }
+
+.mobile-drop-down.chf, .drop-down.chf, .option.chf {
+  color: #ed1c24 !important; }
+
+.mobile-drop-down.cad, .drop-down.cad, .option.cad {
+  color: #d7ce58 !important; }
+
+.mobile-drop-down.aud, .drop-down.aud, .option.aud {
+  color: #19441f !important; }
+
+.mobile-drop-down.nzd, .drop-down.nzd, .option.nzd {
+  color: #b3498c !important; }
+
+.mobile-drop-down.zar, .drop-down.zar, .option.zar {
+  color: #d8d3a0 !important; }
+
+.mobile-drop-down.hkd, .drop-down.hkd, .option.hkd {
+  color: #f48f9b !important; }
+
+.mobile-drop-down.krw, .drop-down.krw, .option.krw {
+  color: #f9ee02 !important; }
+
+.mobile-drop-down.cny, .drop-down.cny, .option.cny {
+  color: #ec008c !important; }
+
+.mobile-drop-down.sgd, .drop-down.sgd, .option.sgd {
+  color: #720f15 !important; }
+
 .with_arrow_trade:after {
   border-left-color: #212121 !important;
   border-right-color: #212121 !important; }
@@ -7616,6 +7763,14 @@ foreignObject {
 
 .dark-theme .mobile-drop-down {
   color: #EE4036; }
+
+.dark-theme .drop-down.xht, .dark-theme .option.xht {
+  border: none !important;
+  color: white !important; }
+
+.dark-theme .drop-down .option, .dark-theme .option .option {
+  background: #202020;
+  border: 1px solid red !important; }
 
 .layout-mobile .chat-wrapper {
   position: relative;
