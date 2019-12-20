@@ -3777,6 +3777,14 @@ table th {
   .app_bar .app-bar-account-icon {
     margin: .5rem .3rem 0 .3rem;
     width: 1.5rem; }
+  .app_bar .app-bar-account-moon-icon {
+    margin: .2rem .3rem 0 .3rem;
+    width: 1rem; }
+  .app_bar .app-bar-account-moon-content {
+    height: 1.6rem;
+    border: 1px solid #808080;
+    border-radius: 5px;
+    background: #0f1114; }
   .app_bar .app_bar-pair-content .btc0,
   .app_bar .app_bar-pair-content .btc1,
   .app_bar .app_bar-pair-content .eth0,
