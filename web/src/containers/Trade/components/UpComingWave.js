@@ -11,7 +11,8 @@ class UpComingWave extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            waveData: {}
+            waveData: {},
+            lastWave: {}
         }
     }
     
@@ -40,7 +41,8 @@ class UpComingWave extends Component {
             updated_at: "TBA"
         };
         const { wave = [] } = this.props;
-        this.setState({ waveData: wave.length ? wave[0] : defaultWave });
+        let lastWave = wave.length > 1 ? wave[1] : defaultWave;
+        this.setState({ waveData: wave.length ? wave[0] : defaultWave, lastWave });
     };
     
     render() {
@@ -55,7 +57,7 @@ class UpComingWave extends Component {
                             {STRINGS.WAVES.NEXT_WAVE}
                         </span>
                         <span className="wave-content">
-                            {`TBA`}
+                            {this.state.waveData.no}
                         </span>
                     </div>
                     <div className=" f-1 trade_orderbook-cell mb-2">
@@ -79,7 +81,7 @@ class UpComingWave extends Component {
                             {STRINGS.WAVES.LAST_WAVE}
                         </span>
                         <span className="wave-content">
-                            {`N/A`}
+                            {this.state.lastWave.amount}
                         </span>
                     </div>
                     <div className=" f-1 trade_orderbook-cell mb-3">
