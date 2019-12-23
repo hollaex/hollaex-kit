@@ -1770,6 +1770,12 @@ table th {
 
 .trade_history-wrapper {
   height: 85vh; }
+  .trade_history-wrapper .display_table-wrapper .display_table-header :nth-child(2) {
+    text-align: center; }
+  .trade_history-wrapper .display_table-wrapper .display_table-body .display_table-cell :nth-child(2) {
+    text-align: center; }
+  .trade_history-wrapper .display_table-wrapper .display_table-body .display_table-cell div {
+    overflow: unset !important; }
 
 .trade_order_entry-wrapper.order_side-selector-sell {
   flex: 1;
@@ -1804,6 +1810,8 @@ table th {
     line-height: 1.5rem; }
     .trade_order_entry-wrapper.order_side-selector-sell .trade_order_entry-review .text-price {
       color: black; }
+    .trade_order_entry-wrapper.order_side-selector-sell .trade_order_entry-review .blue-link {
+      color: #0000ff; }
   .trade_order_entry-wrapper.order_side-selector-sell .trade_order_entry-action_selector,
   .trade_order_entry-wrapper.order_side-selector-sell .trade_order_entry-form-action {
     height: 2.5rem; }
@@ -1861,6 +1869,8 @@ table th {
     line-height: 1.5rem; }
     .trade_order_entry-wrapper.order_side-selector-buy .trade_order_entry-review .text-price {
       color: black; }
+    .trade_order_entry-wrapper.order_side-selector-buy .trade_order_entry-review .blue-link {
+      color: #0000ff; }
   .trade_order_entry-wrapper.order_side-selector-buy .trade_order_entry-action_selector,
   .trade_order_entry-wrapper.order_side-selector-buy .trade_order_entry-form-action {
     height: 2.5rem; }
@@ -1911,6 +1921,8 @@ table th {
     border-top-color: #535353 !important; }
     .dark-theme .trade_order_entry-wrapper .trade_order_entry-review .text-price {
       color: white !important; }
+    .dark-theme .trade_order_entry-wrapper .trade_order_entry-review .blue-link {
+      color: #0066B4 !important; }
   .dark-theme .trade_order_entry-wrapper .exir-button-font.active {
     color: #202020 !important; }
   .dark-theme .trade_order_entry-wrapper .trade_order_entry-action_selector {
@@ -1956,6 +1968,8 @@ table th {
       line-height: 1.5rem; }
       .dark-theme .trade_order_entry-wrapper.order_side-selector-sell .trade_order_entry-review .text-price {
         color: black; }
+      .dark-theme .trade_order_entry-wrapper.order_side-selector-sell .trade_order_entry-review .blue-link {
+        color: #0000ff; }
     .dark-theme .trade_order_entry-wrapper.order_side-selector-sell .trade_order_entry-action_selector,
     .dark-theme .trade_order_entry-wrapper.order_side-selector-sell .trade_order_entry-form-action {
       height: 2.5rem; }
@@ -2016,6 +2030,8 @@ table th {
       line-height: 1.5rem; }
       .dark-theme .trade_order_entry-wrapper.order_side-selector-buy .trade_order_entry-review .text-price {
         color: black; }
+      .dark-theme .trade_order_entry-wrapper.order_side-selector-buy .trade_order_entry-review .blue-link {
+        color: #0000ff; }
     .dark-theme .trade_order_entry-wrapper.order_side-selector-buy .trade_order_entry-action_selector,
     .dark-theme .trade_order_entry-wrapper.order_side-selector-buy .trade_order_entry-form-action {
       height: 2.5rem; }

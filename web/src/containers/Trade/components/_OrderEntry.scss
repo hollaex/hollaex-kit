@@ -58,6 +58,9 @@
 		.text-price {
 			color: $font-color--acitve;
 		}
+		.blue-link {
+			color: $link;
+		}
 	}
 
 	.trade_order_entry-action_selector,
@@ -152,6 +155,9 @@
 			border-top-color: $dark-border-main !important;
 			.text-price {
 				color: $dark-font-main-text-color !important;
+			}
+			.blue-link {
+				color: $dark-link !important;
 			}
 		}
 		.exir-button-font.active {

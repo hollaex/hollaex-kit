@@ -968,6 +968,7 @@ export default {
 	VERIFICATION_NO_WITHDRAW_TITLE: 'Withdrawals disabled',
 	VERIFICATION_NO_WITHDRAW_MESSAGE: 'Your account is disabled for withdrawals',
 	UP_TO_MARKET: 'Up to market',
+	VIEW_MY_FEES: 'View my fees', // new
 	DEVELOPER_SECTION: {
 		TITLE: 'API Key',
 		INFORMATION_TEXT:

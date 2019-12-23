@@ -301,4 +301,23 @@ $tabs-title--margin: 2rem;
 
 .trade_history-wrapper {
 	height: 85vh;
+
+	.display_table-wrapper {
+		.display_table-header {
+			:nth-child(2) {
+				text-align: center;
+			}
+		}
+
+		.display_table-body {
+			.display_table-cell {
+				:nth-child(2) {
+					text-align: center;
+				}
+				div {
+					overflow: unset !important;
+				}
+			}
+		}
+	}
 }
