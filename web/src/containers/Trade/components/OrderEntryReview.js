@@ -37,17 +37,7 @@ const Review = ({
 			<div className={classnames(...ROW_CLASSNAMES)}>
 				<div>{STRINGS.FEES}:</div>
 				<div className="text-price">
-					{upToMarket
-						? renderAmount(formatToCurrency(fees), currency)
-						: STRINGS.UP_TO_MARKET}
-				</div>
-			</div>
-			<div className={classnames(...ROW_CLASSNAMES)}>
-				<div>{STRINGS.TOTAL_ORDER}:</div>
-				<div className="text-price">
-					{upToMarket
-						? renderAmount(formatToCurrency(orderAmountReceived), currency)
-						: STRINGS.UP_TO_MARKET}
+					{STRINGS.UP_TO_MARKET}
 				</div>
 			</div>
 		</div>
