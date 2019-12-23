@@ -26,8 +26,10 @@ import { getMe, setMe } from '../../actions/userAction';
 import {
 	getTickers,
 	setNotification,
+	changeTheme,
 	NOTIFICATIONS
 } from '../../actions/appActions';
+import { updateUser, setUserData } from '../../actions/userAction';
 
 class AppBar extends Component {
 	state = {
@@ -171,6 +173,28 @@ class AppBar extends Component {
 		this.setState({ isAccountMenu: !this.state.isAccountMenu });
 	};
 
+	handleTheme = (theme) => {
+		const settings = {}
+		if (theme === 'dark') {
+			settings.interface = {'theme': 'white' }
+		}
+		else {
+			settings.interface = { 'theme': 'dark' }
+		}
+		return updateUser({settings})
+			.then(({ data }) => {
+			   this.props.setUserData(data);
+				this.props.changeTheme(data.settings.interface.theme)
+				localStorage.setItem('theme',data.settings.interface.theme)
+			})
+			.catch((err) => {
+				const error = { _error: err.message };
+				if (err.response && err.response.data) {
+					error._error = err.response.data.message;
+				}
+			});
+	};
+
 	closeAccountMenu = () => {
 		this.setState({ isAccountMenu: false });
 	};
@@ -232,7 +256,7 @@ class AppBar extends Component {
 		);
 	};
 
-	renderIcon = (isHome, theme) => {
+	renderIcon = (isHome) => {
 		return (
 			<div className={classnames('app_bar-icon', 'text-uppercase')}>
 				{isHome ? (
@@ -376,6 +400,16 @@ class AppBar extends Component {
 					isLoggedIn() ? (
 						<div className="d-flex app-bar-account">
 							<div className="d-flex app_bar-quicktrade-container">
+								<div
+									className={'app-bar-account-content app-bar-account-moon-content'}
+									onClick={() => this.handleTheme(theme)}
+
+								>
+									<ReactSVG
+										path={ICONS.MOON_THEME}
+										wrapperClassName="app-bar-account-moon-icon"
+									/>
+								</div>
 								{isAdmin() ? (
 									<Link to="/admin">
 										<div
@@ -499,7 +533,9 @@ const mapDispatchToProps = (dispatch) => ({
 	getMe: bindActionCreators(getMe, dispatch),
 	setMe: bindActionCreators(setMe, dispatch),
 	setNotification: bindActionCreators(setNotification, dispatch),
-	getTickers: bindActionCreators(getTickers, dispatch)
+	getTickers: bindActionCreators(getTickers, dispatch),
+	changeTheme: bindActionCreators(changeTheme, dispatch),
+	setUserData:bindActionCreators(setUserData, dispatch)
 });
 
 AppBar.defaultProps = {

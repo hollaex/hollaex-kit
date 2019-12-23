@@ -5,7 +5,7 @@ import classnames from 'classnames';
 import STRINGS from '../../../config/localizedStrings';
 const LogoutInfoTrade = () => {
     return (
-        <div className='text-center my-5'>
+        <div className='text-center my-3'>
             <div className="xht-order-heading my-3">{STRINGS.TERMS_OF_SERVICES.XHT_TRADE_TXT_1}</div>
             <div className="xht-order-content my-3">
                 {STRINGS.formatString(
