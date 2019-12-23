@@ -1,4 +1,5 @@
 import React from 'react';
+import classnames from 'classnames';
 
 import { NotificationsList, SidebarHub } from '../';
 import STRINGS from '../../config/localizedStrings';
@@ -13,7 +14,8 @@ const Sidebar = ({
 	pair,
 	chatIsClosed,
 	theme,
-	unreadMessages = 0
+	unreadMessages = 0,
+	sidebarFitHeight = false
 }) => {
 	const sidebarHubProps = {
 		activePath,
@@ -22,7 +24,13 @@ const Sidebar = ({
 		theme
 	};
 	return (
-		<div className="sidebar-container apply_rtl">
+		<div className={
+			classnames(
+				"sidebar-container apply_rtl",
+				{
+					'sidebar-fit-to-screen': sidebarFitHeight
+				}
+			)}>
 			<SidebarHub {...sidebarHubProps} />
 			<div className="sidebar-notifications m-3">
 				<div className="ml-3 my-3 sidebar-title">

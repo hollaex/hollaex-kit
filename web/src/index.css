@@ -3274,6 +3274,9 @@ table th {
 .layout-mobile.home_container-mobile .exir-button {
   font-size: 1.2rem; }
 
+.sidebar-fit-to-screen {
+  height: 100vh !important; }
+
 .sidebar-container {
   display: flex;
   flex-direction: column;
@@ -3394,6 +3397,12 @@ table th {
   .dark-theme .sidebar-row .sidebar-row--right-icon.icon--chat svg path {
     fill: #808080 !important;
     stroke: #808080 !important; }
+
+@media screen and (max-height: 600px) {
+  .sidebar-container .sidebar_hub-wrapper {
+    max-height: 35rem !important; }
+  .sidebar-container .sidebar-notifications {
+    min-height: 20rem; } }
 
 .footer-container {
   padding: 4rem 1rem 1rem;
