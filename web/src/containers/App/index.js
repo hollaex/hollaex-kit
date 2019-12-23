@@ -808,12 +808,16 @@ class Container extends Component {
 	};
 
 	isSocketDataReady() {
-		const { orderbooks, pairsTrades, pair } = this.props;
+		const { orderbooks, pairsTrades, pair, router } = this.props;
+		let pairTemp = pair;
 		// return (Object.keys(orderbooks).length && orderbooks[pair] && Object.keys(orderbooks[pair]).length &&
 		// 	Object.keys(pairsTrades).length);
+		if (router && router.params && router.params.pair) {
+			pairTemp = router.params.pair;
+		}
 		return (
 			Object.keys(orderbooks).length &&
-			orderbooks[pair] &&
+			orderbooks[pairTemp] &&
 			Object.keys(pairsTrades).length
 		);
 	}
