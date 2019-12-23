@@ -4,7 +4,6 @@ import { Link } from 'react-router';
 import { IconTitle, Button } from '../../../components';
 import { ICONS } from '../../../config/constants';
 import STRINGS from '../../../config/localizedStrings';
-import { formatBaseAmount } from '../../../utils/currency';
 
 const RiskyOrder = ({ data, onConfirm, onClose }) => {
     const { symbol = '' } = data.coins[data.pairData.pair_2] || {};
@@ -42,15 +41,6 @@ const RiskyOrder = ({ data, onConfirm, onClose }) => {
                 </div>
                 : null
             }
-            {data.order.orderFees
-                ? <div className="mb-2" >
-                    {STRINGS.FEE}: {formatBaseAmount(data.order.orderFees)} {symbol.toUpperCase()}
-                </div>
-                : null
-            }
-            <div className="mb-2" >
-                {STRINGS.TOTAL_ORDER}: {formatBaseAmount(data.order.orderPrice)} {symbol.toUpperCase()}
-            </div>
             <div className="d-flex mt-3">
                 <Button
                     label={STRINGS.BACK_TEXT}
