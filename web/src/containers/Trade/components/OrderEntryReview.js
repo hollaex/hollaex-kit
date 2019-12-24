@@ -17,10 +17,10 @@ const Review = ({
 	formatToCurrency,
 	type
 }) => {
-	const orderAmountReceived = math.add(
-		math.fraction(orderPrice),
-		math.fraction(fees)
-	);
+	// const orderAmountReceived = math.add(
+	// 	math.fraction(orderPrice),
+	// 	math.fraction(fees)
+	// );
 	const upToMarket = !math.smaller(orderPrice, 0);
 	return (
 		<div className="trade_order_entry-review d-flex flex-column">

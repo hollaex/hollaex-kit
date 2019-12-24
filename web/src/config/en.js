@@ -943,6 +943,7 @@ export default {
 	CHECK_ORDER: 'Check and confirm your order',
 	CHECK_ORDER_TYPE: '{0} {1}', // 0 -> maker/limit  1 -> sell/buy
 	CONFIRM_TEXT: 'Confirm',
+	GOTO_XHT_MARKET: 'Go to XHT market', // new
 	INVALID_CAPTCHA: 'Invalid captcha',
 	NO_FEE: 'N/A',
 	SETTINGS_LANGUAGE_LABEL: 'Language preferences (Includes Emails)',
@@ -1251,10 +1252,11 @@ export default {
 	},
 	WAVES: {
 		// new
-		NEXT_WAVE: 'Next Wave :',
-		WAVE_AMOUNT: 'Amount in Wave :',
-		FLOOR: 'Floor :',
-		LAST_WAVE: 'Last wave:'
+		TITLE: 'Wave Info',
+		NEXT_WAVE: 'Next Wave',
+		WAVE_AMOUNT: 'Amount in Wave',
+		FLOOR: 'Floor',
+		LAST_WAVE: 'Last wave'
 	},
 	TYPES_OF_POSTS: {
 		// new

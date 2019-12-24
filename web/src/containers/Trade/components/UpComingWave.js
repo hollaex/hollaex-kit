@@ -54,7 +54,7 @@ class UpComingWave extends Component {
                 <div className="ml-3" >
                     <div className=" f-1 trade_orderbook-cell mb-2">
                         <span className="wave-header mr-2">
-                            {STRINGS.WAVES.NEXT_WAVE}
+                            {`${STRINGS.WAVES.NEXT_WAVE}:`}
                         </span>
                         <span className="wave-content">
                             {this.state.waveData.no}
@@ -62,7 +62,7 @@ class UpComingWave extends Component {
                     </div>
                     <div className=" f-1 trade_orderbook-cell mb-2">
                         <span className="wave-header mr-2">
-                            {STRINGS.WAVES.WAVE_AMOUNT}
+                            {`${STRINGS.WAVES.WAVE_AMOUNT}:`}
                         </span>
                         <span className="wave-content">
                             {`${this.state.waveData.amount} ${this.props.pairBase}`}
@@ -70,7 +70,7 @@ class UpComingWave extends Component {
                     </div>
                     <div className=" f-1 trade_orderbook-cell mb-2">
                         <span className="wave-header mr-2">
-                            {STRINGS.WAVES.FLOOR}
+                            {`${STRINGS.WAVES.FLOOR}:`}
                         </span>
                         <span className="wave-content">
                             {this.state.waveData.floor}
@@ -78,7 +78,7 @@ class UpComingWave extends Component {
                     </div>
                     <div className=" f-1 trade_orderbook-cell mb-2">
                         <span className="wave-header mr-2">
-                            {STRINGS.WAVES.LAST_WAVE}
+                            {`${STRINGS.WAVES.LAST_WAVE}:`}
                         </span>
                         <span className="wave-content">
                             {this.state.lastWave.amount}

@@ -1216,10 +1216,11 @@ export default {
 	},
 	WAVES: {
 		// new
-		NEXT_WAVE: 'Next Wave :',
-		WAVE_AMOUNT: 'Amount in Wave :',
-		FLOOR: 'Floor :',
-		LAST_WAVE: 'Last wave:'
+		NEXT_WAVE: 'Next Wave',
+		WAVE_AMOUNT: 'Amount in Wave',
+		FLOOR: 'Floor',
+		LAST_WAVE: 'Last wave',
+		FILLED: 'Filled'
 	},
 	TYPES_OF_POSTS: {
 		// new

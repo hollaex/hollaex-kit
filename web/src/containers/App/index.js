@@ -586,6 +586,7 @@ class Container extends Component {
 	goToAccountPage = () => this.goToPage('/account');
 	goToVerificationPage = () => this.goToPage('/verification');
 	goToDashboard = () => this.goToPage('/');
+	goToXHTTrade = () => this.goToPage('/trade/xht-usdt');
 
 	logout = (message = '') => {
 		this.setState({ appLoaded: false }, () => {
@@ -782,6 +783,17 @@ class Container extends Component {
 					<DepositFunds
 						data={rest}
 						gotoWallet={gotoWallet}
+					/>
+				);
+			}
+			case NOTIFICATIONS.WAVE_NOTIFICATION: {
+				const { onConfirm, ...rest } = data;
+				return (
+					<Notification
+						type={type}
+						data={rest}
+						onConfirm={this.goToXHTTrade}
+						onBack={this.onCloseDialog}
 					/>
 				);
 			}
