@@ -396,10 +396,8 @@ $app-bar-add-tab-red: #ff0000;
 		width: 1rem;
 	}
 	.app-bar-account-moon-content {
-		height: 1.6rem;
-		border: 1px solid #808080;
+		border: 1px solid $app-bar-icon-inactive;
 		border-radius: 5px;
-		background: #0f1114;
 	}
 
 	.app_bar-pair-content, .app-bar-tab-close, .app-bar-currency-icon, .app-bar-account-icon svg {
