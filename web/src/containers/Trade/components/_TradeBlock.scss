@@ -19,9 +19,21 @@ $tabs-title--margin: 2rem;
 				font-size: $regular--font-size;
 			}
 		}
+		.trade_block-title {
+			.action_notification-wrapper {
+				.action_notification-text {
+					font-size: $font-size-mobile-txt!important;
+				}
+			}
+		}
 	}
 	.trade_history-wrapper {
 		height: 38vh;
+		.display_table-wrapper {
+			.display_table-body {
+				font-size: $font-size-mobile-txt;	
+			}
+		}
 	}
 }
 

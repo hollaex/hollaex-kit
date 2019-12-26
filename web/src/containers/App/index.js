@@ -432,8 +432,12 @@ class Container extends Component {
 						if (isMobile) {
 							this.props.setSnackDialog({
 								isDialog: true,
-								type: 'trade',
-								data: { order: data, data }
+								type: 'order',
+								data: {
+									type,
+									order: data,
+									data
+								}
 							});
 						} else {
 							this.props.setNotification(NOTIFICATIONS.ORDERS, {

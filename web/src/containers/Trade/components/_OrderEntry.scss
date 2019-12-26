@@ -142,6 +142,47 @@
 }
 
 .layout-mobile {
+	.trade_order_entry-selector{
+		font-size: $font-size-mobile-txt!important;
+	}
+	.trade_orderbook-bids {
+		.trade_orderbook-cell {
+			font-size: $font-size-mobile-txt!important;
+		}
+	}
+	.trade_input-wrapper {
+		.trade_input-label {
+			font-size: $font-size-mobile-innertxt!important;
+		}
+		.trade_input-input-wrapper {
+			> input{
+				font-size: $font-size-mobile-txt!important;
+			}
+		}
+	}
+	.trade_order_entry-review {
+		> div {
+			font-size: $font-size-mobile-innertxt!important;
+		}
+	}
+	.exir-button{
+		font-size: $font-size-mobile-txt!important;
+	}
+	.trade_orderbook-wrapper {
+		.trade_orderbook-headers {
+			.trade_orderbook-cell {
+				font-size: $font-size-mobile-innertxt!important;
+			}
+		}
+		.trade_asks-limit_bar {
+			.orderbook-limit_bar-wrapper {
+				.orderbook-limit_bar-text {
+					font-size: $font-size-mobile-innertxt!important;
+				}
+			}
+		}
+	}
+
     .risky-trade-wrapper {
         margin: auto;
     }
