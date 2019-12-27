@@ -319,10 +319,9 @@ class Container extends Component {
 			}
 		});
 
-		// publicSocket.on('ticker', (data) => {
-
-		// this.props.setTickers(data);
-		// });
+		publicSocket.on('wave', (data) => {
+			console.log('wave', data)
+		});
 	};
 
 	setUserSocket = (token) => {
@@ -433,8 +432,12 @@ class Container extends Component {
 						if (isMobile) {
 							this.props.setSnackDialog({
 								isDialog: true,
-								type: 'trade',
-								data: { order: data, data }
+								type: 'order',
+								data: {
+									type,
+									order: data,
+									data
+								}
 							});
 						} else {
 							this.props.setNotification(NOTIFICATIONS.ORDERS, {
@@ -808,12 +811,16 @@ class Container extends Component {
 	};
 
 	isSocketDataReady() {
-		const { orderbooks, pairsTrades, pair } = this.props;
+		const { orderbooks, pairsTrades, pair, router } = this.props;
+		let pairTemp = pair;
 		// return (Object.keys(orderbooks).length && orderbooks[pair] && Object.keys(orderbooks[pair]).length &&
 		// 	Object.keys(pairsTrades).length);
+		if (router && router.params && router.params.pair) {
+			pairTemp = router.params.pair;
+		}
 		return (
 			Object.keys(orderbooks).length &&
-			orderbooks[pair] &&
+			orderbooks[pairTemp] &&
 			Object.keys(pairsTrades).length
 		);
 	}

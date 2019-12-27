@@ -168,7 +168,7 @@ export const CustomMobileTabs = ({ title, icon, statusCode = -1 }) => {
 					statusText.toLowerCase()
 				)}
 			>
-				{!!statusText ? <div>{statusText}</div> : null}
+				{!!statusText ? <div className='status_txt'>{statusText}</div> : null}
 				{!!statusIcon ? statusIcon : null}
 			</div>
 		</div>

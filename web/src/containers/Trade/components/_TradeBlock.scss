@@ -19,9 +19,21 @@ $tabs-title--margin: 2rem;
 				font-size: $regular--font-size;
 			}
 		}
+		.trade_block-title {
+			.action_notification-wrapper {
+				.action_notification-text {
+					font-size: $font-size-mobile-txt!important;
+				}
+			}
+		}
 	}
 	.trade_history-wrapper {
 		height: 38vh;
+		.display_table-wrapper {
+			.display_table-body {
+				font-size: $font-size-mobile-txt;	
+			}
+		}
 	}
 }
 
@@ -301,4 +313,23 @@ $tabs-title--margin: 2rem;
 
 .trade_history-wrapper {
 	height: 85vh;
+
+	.display_table-wrapper {
+		.display_table-header {
+			:nth-child(2) {
+				text-align: center;
+			}
+		}
+
+		.display_table-body {
+			.display_table-cell {
+				:nth-child(2) {
+					text-align: center;
+				}
+				div {
+					overflow: unset !important;
+				}
+			}
+		}
+	}
 }

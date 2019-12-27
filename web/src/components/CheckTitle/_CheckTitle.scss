@@ -366,3 +366,10 @@ $notification-size: 1.5rem;
 		border-bottom: 2px solid $dark-font-main-text-color !important;
 	}
 }
+.layout-mobile{
+	.mobile_tab-wrapper {
+		.status_txt{
+			font-size:$font-size-mobile-txt;
+		}
+	}
+}
