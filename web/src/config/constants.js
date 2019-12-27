@@ -302,9 +302,9 @@ export const SUMMMARY_ICON = {
 };
 
 export const HOLLAEX_LOGO =
-	process.env.LOGO_PATH || '/assets/hollaEx_logo-grey.svg';
+	process.env.REACT_APP_LOGO_PATH || '/assets/hollaEx_logo-grey.svg';
 export const HOLLAEX_LOGO_BLACK =
-	process.env.LOGO_BLACK_PATH || '/assets/hollaEx_logo-blk.svg';
+	process.env.REACT_APP_LOGO_BLACK_PATH || '/assets/hollaEx_logo-blk.svg';
 
 export const AUDIOS = {
 	ORDERBOOK_FIELD_UPDATE: '/assets/audio/orderbook_field_update.wav',

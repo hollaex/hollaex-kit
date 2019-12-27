@@ -38,7 +38,8 @@ class Withdraw extends Component {
 	state = {
 		formValues: {},
 		initialValues: {},
-		checked: false
+		checked: false,
+		isControlChecked: true
 	};
 
 	componentWillMount() {
@@ -92,6 +93,17 @@ class Withdraw extends Component {
 		}
 	}
 
+	componentDidUpdate(prevProps, prevState) {
+		if (this.state.isControlChecked !== prevState.isControlChecked) {
+			this.generateFormValues(
+				getCurrencyFromName(this.props.routeParams.currency, this.props.coins),
+				this.props.balance,
+				this.props.coins,
+				this.props.verification_level
+			);
+		}
+	}
+
 	validateRoute = (currency, bank_account, crypto_wallet, coins) => {
 		if (coins[currency] && !crypto_wallet[currency]) {
 			this.props.router.push('/wallet');
@@ -133,7 +145,9 @@ class Withdraw extends Component {
 			balanceAvailable,
 			this.onCalculateMax,
 			coins,
-			verification_level
+			verification_level,
+			this.destinationTagCheckCallback,
+			this.state.isControlChecked
 		);
 		const initialValues = generateInitialValues(currency, coins);
 
@@ -141,8 +155,13 @@ class Withdraw extends Component {
 	};
 
 	onSubmitWithdraw = (currency) => (values) => {
+		const { destination_tag, ...rest } = values;
+		let address = rest.address;
+		if (destination_tag && this.state.isControlChecked)
+			address = `${rest.address}:${destination_tag}`;
 		return performWithdraw(currency, {
-			...values,
+			...rest,
+			address,
 			amount: math.eval(values.amount),
 			fee: values.fee ? math.eval(values.fee) : 0,
 			currency
@@ -176,6 +195,10 @@ class Withdraw extends Component {
 
 	onGoBack = () => {
 		this.props.router.push('/wallet');
+	};
+
+	destinationTagCheckCallback = value => {
+		this.setState({ isControlChecked: value });
 	};
 
 	render() {

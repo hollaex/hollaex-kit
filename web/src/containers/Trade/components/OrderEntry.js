@@ -312,7 +312,7 @@ class OrderEntry extends Component {
 				placeholder: '0.00',
 				normalize: normalizeFloat,
 				step: increment_size,
-				min: min_size,
+				min: increment_size,
 				max: max_size,
 				validate: [
 					required,
