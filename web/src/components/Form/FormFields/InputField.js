@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import classnames from 'classnames';
 import FieldWrapper from './FieldWrapper';
 
@@ -21,13 +21,32 @@ const InputField = (props) => {
 		options,
 		hideCheck,
 		outlineClassName,
+		checkControl = false,
+		checkControlCallback,
 		...rest
 	} = props;
 	const displayError = touched && error && !active;
+	const [ disableField, setDisableField ] = useState(true);
+
 	// const displayCheck = !fullWidth && input.value && !displayError && !active;
 	return (
 		<FieldWrapper {...props}>
 			<div style={{display: 'flex'}}>
+				{checkControl
+					? <div className={'d-flex align-items-center mr-2'}>
+						<input
+							type="checkbox"
+							name="checkControl"
+							className="checkfield-input"
+							checked={disableField}
+							disabled={rest.disabled}
+							onChange={(e) => {
+								checkControlCallback(e.target.checked)
+								setDisableField(e.target.checked);
+							}} />
+					</div>
+					: null
+				}
 				{options && renderIcon(options)}
 				<input
 					placeholder={placeholder}
@@ -35,6 +54,7 @@ const InputField = (props) => {
 						error: displayError
 					})}
 					type={type}
+					disabled={!disableField}
 					{...input}
 					{...rest}
 				/>

@@ -227,7 +227,7 @@ const WithdrawForm = reduxForm({
 })(Form);
 
 const mapStateToForm = (state) => ({
-	data: selector(state, 'address', 'amount', 'fee'),
+	data: selector(state, 'address', 'destination_tag', 'amount', 'fee'),
 	activeTheme: state.app.theme,
 	coins: state.app.coins
 });

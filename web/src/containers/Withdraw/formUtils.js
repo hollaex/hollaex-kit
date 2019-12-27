@@ -32,7 +32,9 @@ export const generateFormValues = (
 	available = 0,
 	calculateMax,
 	coins = {},
-	verification_level
+	verification_level,
+	checkControlCallback,
+	checkControlChecked
 ) => {
 	const { fullname, min, increment_unit, withdrawal_limits = {} } = coins[
 		symbol
@@ -56,6 +58,21 @@ export const generateFormValues = (
 			],
 			fullWidth: isMobile
 		};
+		if (symbol === 'xrp') {
+			fields.destination_tag = {
+				type: "text",
+				label: STRINGS.WITHDRAWALS_FORM_DESTINATION_TAG_LABEL,
+				placeholder: STRINGS.WITHDRAWALS_FORM_DESTINATION_TAG_PLACEHOLDER,
+				fullWidth: isMobile,
+				checkControl: true,
+				checkControlCallback: checkControlCallback
+			};
+			if (checkControlChecked) {
+				fields.destination_tag.validate = [
+					required
+				];
+			}
+		}
 	}
 
 	const amountValidate = [required];
