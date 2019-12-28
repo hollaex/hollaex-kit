@@ -68,7 +68,7 @@ const generateSectionsText = (strings, theme) => {
                 },
                 {
                     text: SECTIONS.SECTION_5_LINK_2,
-                    link: 'http://bitholla.com/hex'
+                    link: 'http://bitholla.com/xht'
                 },
                 {
                     text: SECTIONS.SECTION_5_LINK_3,
