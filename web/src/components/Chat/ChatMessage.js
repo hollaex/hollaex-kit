@@ -110,7 +110,6 @@ class ChatMessageWithText extends Component {
 									</TruncateMarkup>
 								</div>
 							)}
-						<Timestamp timestamp={timestamp} />
 					</div>
 				</div>
 			</div>
