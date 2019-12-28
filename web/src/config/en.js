@@ -1152,7 +1152,7 @@ export default {
 		LEVEL_2_TXT: 'Simply trade over $3,000 USDT worth or have balance of over 5,000 XHT and enjoy lower trading fees.', // new
 		LEVEL_3_TXT: 'This is where things get real! Enjoy reduced trading fees and large deposit and withdrawal limits. To get to level 3 you must complete your veriﬁcation', // new
 		LEVEL_4_TXT: 'Simply trade over $10,000 USDT worth or have balance of over 10,000 XHT and enjoy lower trading fees.', // new
-		LEVEL_5_TXT: 'You’ve made it! The level 5 account is a rare account only for exchange operators, Vault users or HollaEx Ambassador Program (HAP). Enjoy large limits and enjoy zero maker fees.', // new
+		LEVEL_5_TXT: 'You’ve made it! The level 5 account is a rare account only for exchange operators, Vault users or HollaEx Affiliate Program (HAP). Enjoy large limits and enjoy zero maker fees.', // new
 		LEVEL_6_TXT: 'Simply trade over $300,000 USDT worth or have balance of over 100,000 XHT and enjoy lower trading fees. Increased withdraw amount.', // new
 		LEVEL_7_TXT: 'Simply trade over $500,000 USDT worth or have balance of over 300,000 XHT and enjoy lower trading fees. Increased withdraw amount.', // new
 		LEVEL_8_TXT: 'Simply trade over $600,000 USDT worth or have balance of over 400,000 XHT and enjoy lower trading fees.', // new
@@ -1165,7 +1165,7 @@ export default {
 		HAP_ACCOUNT_TXT: 'Your account is a verified HollaEx affiliate program account. You can now earn 10% bonus for every person you invite that buys XHT.', // new
 		EMAIL_VERIFICATION: 'Email Verification', // new
 		DOCUMENTS: 'Documents', // new
-		HAP_TEXT: 'HollaEx Ambassador Program (HAP) {0}', // new
+		HAP_TEXT: 'HollaEx Affiliate Program (HAP) {0}', // new
 		LOCK_AN_EXCHANGE: 'Lock an Exchange {0}', // new
 		WALLET_SUBSCRIPTION_USERS: 'Vault Subscription users {0}', // new
 		TRADE_OVER_XHT: 'Trade over {0} USDT worth', // new
@@ -1190,12 +1190,12 @@ export default {
 	},
 	REFERRAL_LINK: {
 		TITLE: 'Invite your friend', // new
-		INFO_TEXT: 'Refer your friends by giving out this link.', // new
-		INFO_TEXT_1: 'Send thm this affiliation link and get them onboard', // new
+		INFO_TEXT: 'Refer your friends by giving out this link. Your friends will receive {0}% discount by signing up through your link.', // new
+		INFO_TEXT_1: '{0}% of trading fees collected from those you refer will be monthly credited to your account.', // new
 		COPY_FIELD_LABEL: 'Share the link below with friends and earn commissions:', // new
 		REFERRED_USER_COUT: 'You have referred {0} users', // new
 		COPY_LINK_BUTTON: 'COPY REFERRAL LINK', // new
-		XHT_TITLE: 'EARN 10% IN COMMISSIONS', // new
+		XHT_TITLE: 'MY REFERRALS', // new
 		XHT_INFO_TEXT: 'Earn commissions by inviting your friends.', // new
 		XHT_INFO_TEXT_1: 'Commissions are paid periodically to your wallet', // new
 		APPLICATION_TXT:
@@ -1209,12 +1209,12 @@ export default {
 	STAKE_TOKEN: {
 		TITLE: 'Stake HollaEx Token', // new
 		INFO_TXT1:
-			'For every user of the HollaEx Exchange Kit there are HollaEx tokens collateralized to run the exchange software.', // new
+			'HollaEx tokens (XHT) are required to be collateralized (staked) to run the HollaEx Kit exchange software.', // new
 		INFO_TXT2:
-			'You can collateralize your HollaEx token in a similar fashion to staking and earn XHT not sold during the Wave Auction.', // new
+			'You can collateralize your HollaEx token in a similar fashion and earn XHT not sold during the Wave Auction.', // new
 		INFO_TXT3:
 			'Simply go to dash.bitholla.com and collateralize your own exchange today and earn free XHT', // new
-		BUTTON_TXT: 'GO TO DASH' // new
+		BUTTON_TXT: 'FIND OUT MORE' // new
 	},
 	TERMS_OF_SERVICES: {
 		// new

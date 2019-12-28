@@ -136,7 +136,7 @@ export const getRequirements = (user, level, balance = {}, coins) => {
 					STRINGS.SUMMARY.HAP_TEXT,
 					<a
 						className="blue-link pointer"
-						href="https://hollaex.com/"
+						href="https://forms.gle/JsCjUqMEEkZmoDzj6"
 						target="blank">
 							{`(${STRINGS.APPLY_HERE})`}
 					</a>
@@ -148,7 +148,7 @@ export const getRequirements = (user, level, balance = {}, coins) => {
 					STRINGS.SUMMARY.LOCK_AN_EXCHANGE,
 					<a
 						className="blue-link pointer"
-						href="https://hollaex.com/"
+						href="https://dash.bitholla.com/"
 						target="blank">
 							{`(${STRINGS.TRADE_POSTS.LEARN_MORE})`}
 					</a>
@@ -160,7 +160,7 @@ export const getRequirements = (user, level, balance = {}, coins) => {
 					STRINGS.SUMMARY.WALLET_SUBSCRIPTION_USERS,
 					<a
 						className="blue-link pointer"
-						href="https://hollaex.com/"
+						href="https://dash.bitholla.com/"
 						target="blank">
 							{`(${STRINGS.TRADE_POSTS.LEARN_MORE})`}
 					</a>

@@ -132,7 +132,7 @@
   background: #212121; }
 
 .font-small {
-  font-size: 0.8rem; }
+  font-size: 0.9rem; }
 
 .font-title {
   font-size: 1.75rem; }
@@ -266,7 +266,7 @@ table th {
       .presentation_container .inner_container .information_block .information_block-text_wrapper .title {
         font-size: 1rem; }
       .presentation_container .inner_container .information_block .information_block-text_wrapper .text {
-        font-size: 0.8rem;
+        font-size: 0.9rem;
         color: #777677; }
         .presentation_container .inner_container .information_block .information_block-text_wrapper .text > p {
           margin: 0.5rem 0; }
@@ -597,7 +597,7 @@ table th {
     -webkit-transform-origin: 0 0; } }
 
 .information_section {
-  font-size: 0.8rem;
+  font-size: 0.9rem;
   color: #777677;
   padding: 0 0 0.5rem; }
   .information_section .information_svg {
@@ -619,7 +619,7 @@ table th {
 
 .user-limits .user-limits-table {
   width: 100%;
-  font-size: 0.8rem; }
+  font-size: 0.9rem; }
   .user-limits .user-limits-table thead tr,
   .user-limits .user-limits-table tfoot tr {
     height: 3.5rem;
@@ -744,9 +744,9 @@ table th {
       font-size: 1rem;
       font-weight: bold; }
     .otp_form-wrapper .otp_form-section-wrapper .otp_form-section-text {
-      font-size: 0.8rem; }
+      font-size: 0.9rem; }
     .otp_form-wrapper .otp_form-section-wrapper .otp_secret {
-      font-size: 0.8rem;
+      font-size: 0.9rem;
       background-color: #cccbcb;
       padding: 0.25rem 0.5rem; }
   .otp_form-wrapper .otp_form-fields-wrapper {
@@ -799,7 +799,7 @@ table th {
   border-bottom: 1px solid #212121; }
 
 .popup_info-wrapper .popup_info-text {
-  font-size: 0.8rem; }
+  font-size: 0.9rem; }
 
 .token-no-otp {
   color: #cccbcb;
@@ -942,7 +942,7 @@ table th {
       width: 4rem;
       height: 4rem; }
     .home_container .home-card-container .home-card-text-container {
-      font-size: 0.8rem; }
+      font-size: 0.9rem; }
       .home_container .home-card-container .home-card-text-container .home-card-title {
         margin: 0.5rem 0 0.25rem;
         font-weight: bold;
@@ -960,7 +960,7 @@ table th {
   .home_container .buttons-section--button {
     width: 15rem;
     height: 36px;
-    font-size: 0.8rem;
+    font-size: 0.9rem;
     border: 1px solid #212121;
     margin: 0 1rem;
     text-align: center;
@@ -1051,7 +1051,7 @@ table th {
       width: 14rem; }
   .wallet-container .wallet-assets_block .wallet-assets_block-table {
     width: 100%;
-    font-size: 0.8rem; }
+    font-size: 0.9rem; }
     .wallet-container .wallet-assets_block .wallet-assets_block-table thead tr,
     .wallet-container .wallet-assets_block .wallet-assets_block-table tfoot tr {
       height: 3.5rem;
@@ -1190,7 +1190,7 @@ table th {
 
 .review-wrapper .review-info_message {
   padding: 0.5rem;
-  font-size: 0.8rem;
+  font-size: 0.9rem;
   font-weight: bold; }
 
 .review-wrapper .button-separator {
@@ -1272,7 +1272,7 @@ table th {
 .extra_information-wrapper {
   margin-top: 1rem;
   padding: 0.5rem;
-  font-size: 0.8rem; }
+  font-size: 0.9rem; }
   .extra_information-wrapper .link {
     color: #0000ff;
     padding: 0 0.25rem; }
@@ -1292,7 +1292,7 @@ table th {
       height: 11rem !important; }
   .qr_code-wrapper .qr-text {
     display: flex;
-    font-size: 0.8rem;
+    font-size: 0.9rem;
     padding-top: 0.25rem;
     margin-left: 1rem; }
     .qr_code-wrapper .qr-text:before {
@@ -1311,7 +1311,7 @@ table th {
 .review-wrapper {
   min-width: 575px; }
   .review-wrapper .review-section {
-    font-size: 0.8rem; }
+    font-size: 0.9rem; }
   .review-wrapper .review-title {
     font-size: 1.75rem;
     margin-bottom: 0.5rem; }
@@ -1352,7 +1352,7 @@ table th {
   .dark-theme .qr_code-wrapper .qr-text {
     color: #808080;
     display: flex;
-    font-size: 0.8rem;
+    font-size: 0.9rem;
     padding-top: 0.25rem;
     margin-left: 1rem; }
     .dark-theme .qr_code-wrapper .qr-text:before {
@@ -1609,7 +1609,7 @@ table th {
       margin-top: 0.1rem; }
   .trade_block-wrapper .trade_block-content {
     flex: auto;
-    font-size: 0.8rem;
+    font-size: 0.9rem;
     overflow-y: scroll;
     height: 100%; }
 
@@ -2659,7 +2659,7 @@ table th {
     .summary-container .summary-block_wrapper .summary-title-icon {
       width: 2rem; }
   .summary-container .summary-content-txt {
-    font-size: 0.8rem; }
+    font-size: 0.9rem; }
   .summary-container .trader-account-wrapper {
     margin-right: 1.5rem;
     width: 25rem; }
@@ -2717,7 +2717,7 @@ table th {
     justify-content: center;
     -ms-flex-align: center;
     align-items: center;
-    font-size: 0.8rem;
+    font-size: 0.9rem;
     line-height: 1;
     font-weight: bold; }
   .summary-container .assets-wrapper {
@@ -2817,7 +2817,7 @@ table th {
     cursor: pointer;
     font-weight: bold; }
   .fee-limits-wrapper .content-txt {
-    font-size: 0.8rem; }
+    font-size: 0.9rem; }
   .fee-limits-wrapper .content-title {
     font-size: 1rem;
     font-weight: bold;
@@ -3434,7 +3434,7 @@ table th {
 .footer-container {
   padding: 4rem 1rem 1rem;
   border-top: 1px solid #777677;
-  font-size: 0.8rem;
+  font-size: 0.9rem;
   background: white; }
   .footer-container .footer-row-content {
     margin-bottom: 2rem; }
@@ -3445,7 +3445,7 @@ table th {
         margin-bottom: 0.25rem;
         text-transform: uppercase; }
     .footer-container .footer-row-content .footer-public-texts .footer-public-texts-text {
-      line-height: 1.6rem;
+      line-height: 1.8rem;
       font-weight: bold; }
     .footer-container .footer-row-content .footer-public-links {
       justify-content: flex-end;
@@ -3666,7 +3666,7 @@ table th {
   min-height: 36px;
   height: 36px;
   display: flex;
-  font-size: 0.8rem;
+  font-size: 0.9rem;
   font-weight: bold;
   background: #000000;
   border-bottom: 1px solid #535353; }
@@ -4038,7 +4038,7 @@ table th {
 .app-menu-bar {
   background: #F2F2F3;
   display: flex;
-  font-size: 0.8rem;
+  font-size: 0.9rem;
   height: 36px;
   min-height: 36px;
   position: relative;
@@ -4359,7 +4359,7 @@ table th {
   padding-top: 0.5rem;
   position: relative; }
   .header_title-wrapper .header_title-children {
-    font-size: 0.8rem;
+    font-size: 0.9rem;
     color: #777677;
     padding: 0.5rem 0; }
   .header_title-wrapper .header_title-icon {
@@ -4529,7 +4529,7 @@ table th {
   border-bottom: 2px solid white !important; }
 
 .wallet_section-wrapper {
-  font-size: 0.8rem;
+  font-size: 0.9rem;
   padding: 0.25rem 0; }
   .wallet_section-wrapper .wallet_section-content > * {
     margin-bottom: 0.5rem; }
@@ -4546,13 +4546,13 @@ table th {
 .wallet_section-title {
   text-transform: uppercase;
   color: #777677;
-  font-size: 0.8rem; }
+  font-size: 0.9rem; }
   .wallet_section-title > * {
     margin: 0.5rem; }
 
 .wallet_section-title-amount {
   color: #777677;
-  font-size: 0.8rem; }
+  font-size: 0.9rem; }
 
 .wallet_section-total_asset {
   font-size: 1rem;
@@ -4864,12 +4864,12 @@ table th {
         color: #777677; }
     .notification-wrapper .notification-content-wrapper .notification-content-header {
       position: relative;
-      font-size: 0.8rem; }
+      font-size: 0.9rem; }
   .notification-wrapper .notification-buttons-wrapper .button-eur {
     background-color: #06773d; }
   .notification-wrapper .notification-information {
     padding: 1rem 0;
-    font-size: 0.8rem; }
+    font-size: 0.9rem; }
   .notification-wrapper .trade-notification,
   .notification-wrapper .new-order-notification,
   .notification-wrapper .order-notification {
@@ -4907,7 +4907,7 @@ table th {
   width: 80% !important; }
 
 .notification-wrapper .notification-content-wrapper.notification-withdrawal .notification-link-wrapper {
-  font-size: 0.8rem; }
+  font-size: 0.9rem; }
 
 .direction_ltr .notification-title-text,
 .direction_ltr .notification-withdrawal .notification-content-title {
@@ -5087,7 +5087,7 @@ table th {
 .field-wrapper {
   position: relative;
   width: 100%;
-  font-size: 0.8rem;
+  font-size: 0.9rem;
   font-weight: bold;
   margin: 1rem 0; }
   .field-wrapper.error {
@@ -5293,7 +5293,7 @@ table th {
     margin-left: 1rem; }
 
 .placeholder {
-  font-size: 0.8rem;
+  font-size: 0.9rem;
   font-weight: bold;
   color: #cccbcb; }
 
@@ -5325,7 +5325,7 @@ table th {
   padding: 0 1rem;
   text-transform: uppercase;
   padding: 0 0.5rem;
-  font-size: 0.8rem;
+  font-size: 0.9rem;
   color: #777677;
   height: 22px;
   font-family: "Raleway Medium"; }
@@ -5526,7 +5526,7 @@ table th {
 
 .exir-button {
   width: 100%;
-  font-size: 0.8rem;
+  font-size: 0.9rem;
   padding: 0 4px;
   background-color: #212121 !important; }
   .exir-button.button-success {
@@ -5771,7 +5771,7 @@ table th {
   .accordion_wrapper .accordion_section:last-child {
     border-bottom: 1px solid #212121; }
   .accordion_wrapper .accordion_section .accordion_section_content {
-    font-size: 0.8rem;
+    font-size: 0.9rem;
     padding: 0; }
   .accordion_wrapper .accordion_section .action_notification-wrapper {
     top: calc(50% - 0.625rem);
@@ -5888,7 +5888,7 @@ table th {
   .action_notification-wrapper .relative {
     position: relative; }
   .action_notification-wrapper .action_notification-text {
-    font-size: 0.8rem;
+    font-size: 0.9rem;
     text-transform: uppercase; }
   .action_notification-wrapper .action_notification-image {
     width: 1rem;
@@ -6390,7 +6390,7 @@ table th {
   .table-wrapper .table_header-wrapper {
     color: #000000; }
   .table-wrapper .table_body-wrapper {
-    font-size: 0.8rem; }
+    font-size: 0.9rem; }
     .table-wrapper .table_body-wrapper.with_icon tr td:first-child {
       border: none !important; }
     .table-wrapper .table_body-wrapper tr.table_body-row td {
@@ -6538,9 +6538,9 @@ table th {
   x: 0;
   y: 0; }
   .ohlc_wrapper .ohlc_data_wrapper .ohlc_label {
-    font-size: 0.8rem; }
+    font-size: 0.9rem; }
   .ohlc_wrapper .ohlc_data_wrapper .ohlc_value {
-    font-size: 0.8rem;
+    font-size: 0.9rem;
     font-weight: bold;
     padding-left: 0.25rem; }
 
@@ -7189,7 +7189,7 @@ foreignObject {
     padding: 0 1rem;
     text-transform: uppercase;
     padding: 0 0.5rem;
-    font-size: 0.8rem;
+    font-size: 0.9rem;
     color: #777677;
     height: 22px;
     font-family: "Raleway Medium"; }
@@ -7399,7 +7399,7 @@ foreignObject {
     width: 100%; }
   .legal-content-wrapper .legal-subtitle,
   .legal-content-wrapper .legal-content {
-    font-size: 0.8rem; }
+    font-size: 0.9rem; }
 
 @media screen and (max-width: 767px) {
   .legal-container .legal-content-wrapper {
@@ -8243,7 +8243,7 @@ foreignObject {
 
 .app_footer-container {
   border-top: 1px solid #535353;
-  font-size: 0.8rem;
+  font-size: 0.9rem;
   background-color: #000000;
   color: white; }
   .app_footer-container .footer-row-content {
@@ -8281,7 +8281,7 @@ foreignObject {
       .app_footer-container .footer-row-content .footer_separter .blue-link {
         color: #00aeef !important; }
     .app_footer-container .footer-row-content .footer-public-texts .footer-public-texts-text {
-      line-height: 1.6rem;
+      line-height: 1.8rem;
       font-weight: bold; }
     .app_footer-container .footer-row-content .footer-public-links {
       justify-content: flex-end;
