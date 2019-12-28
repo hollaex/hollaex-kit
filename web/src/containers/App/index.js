@@ -307,10 +307,9 @@ class Container extends Component {
 			}
 		});
 
-		// publicSocket.on('ticker', (data) => {
-
-		// this.props.setTickers(data);
-		// });
+		publicSocket.on('wave', (data) => {
+			console.log('wave', data)
+		});
 	};
 
 	setUserSocket = (token) => {
