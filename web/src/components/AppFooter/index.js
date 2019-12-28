@@ -180,7 +180,7 @@ const AppFooter = ({
                                 <div className="footer-txt">
                                     {STRINGS.formatString(STRINGS.FOOTER.XHT_DESCRIPTION,
                                         <a
-                                            href={'https://hollaex.com/docs/wave-auction.pdf'}
+                                            href={'https://info.hollaex.com/hc/en-us/articles/360040098633-What-is-the-Wave-Auction-'}
                                             target="_blank"
                                             rel="noopener noreferrer"
                                             className="blue-link pointer"

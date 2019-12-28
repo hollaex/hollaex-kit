@@ -145,7 +145,7 @@ class Orderbook extends Component {
 							</div>
 							<div className=" f-1 trade_orderbook-cell mb-3">
 								<a
-									href={"https://hollaex.com/docs/wave-auction.pdf"}
+									href={"https://info.hollaex.com/hc/en-us/articles/360040098633-What-is-the-Wave-Auction-"}
 									target="_blank"
 									rel="noopener noreferrer"
 									className="blue-link pointer">

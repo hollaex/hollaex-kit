@@ -27,8 +27,7 @@ const TradeBlock = ({
 				'd-flex',
 				'flex-column',
 				className,
-				'apply_rtl',
-				'mb-5'
+				'apply_rtl'
 			)}
 		>
 			<div className="trade_block-title">

@@ -267,7 +267,8 @@ export const ICONS = {
 	XHT_LOGO_LIGHT:'/assets/icons/XHT-logo-light.svg',
 	XHT_LOGO_DARK:'/assets/icons/XHT-logo-dark.svg',
 	UP_ARROW:'/assets/images/buy-trade.svg',
-	DOWN_ARROW:'/assets/images/sell-trade.svg'
+	DOWN_ARROW:'/assets/images/sell-trade.svg',
+	MOON_THEME:'/assets/icons/moon-theme.svg'
 };
 
 export const SOCIAL_ICONS = {
@@ -576,3 +577,4 @@ export const WHITE_THEME_CHART_COLORS = {
 export const SHOW_SUMMARY_ACCOUNT_DETAILS = false;
 export const SHOW_TOTAL_ASSETS = false;
 export const IS_XHT = true;
+export const FIT_SCREEN_HEIGHT = ['trade'];

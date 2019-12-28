@@ -29,6 +29,7 @@ import { takerFee, DEFAULT_COIN_DATA } from '../../../config/constants';
 
 import STRINGS from '../../../config/localizedStrings';
 import { isLoggedIn } from '../../../utils/token';
+import { openFeesStructureandLimits } from '../../../actions/appActions';
 
 class OrderEntry extends Component {
 	state = {
@@ -364,6 +365,14 @@ class OrderEntry extends Component {
 		}
 	};
 
+	onFeeStructureAndLimits = () => {
+		if (this.props.user && this.props.user.verification_level) {
+			this.props.openFeesStructureandLimits({
+				verification_level: this.props.user.verification_level
+			});
+		}
+	};
+
 	render() {
 		const { balance, type, side, pair_base, pair_2, price, coins } = this.props;
 		const {
@@ -408,6 +417,7 @@ class OrderEntry extends Component {
 						orderPrice={orderPrice}
 						fees={orderFees}
 						formatToCurrency={formatBaseAmount}
+						onFeeStructureAndLimits={this.onFeeStructureAndLimits}
 					/>
 				</Form>
 			</div>
@@ -462,7 +472,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => ({
 	submit: bindActionCreators(submit, dispatch),
-	change: bindActionCreators(change, dispatch)
+	change: bindActionCreators(change, dispatch),
+	openFeesStructureandLimits: bindActionCreators(openFeesStructureandLimits, dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(OrderEntry);
