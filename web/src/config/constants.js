@@ -466,7 +466,7 @@ export const DEFAULT_VERSION_REDIRECT = '/';
 export const PRO_URL = process.env.REACT_APP_PRO_URL || 'https://hollaex.com';
 
 // minimum level for a user to be able to create api tokens
-export const MIN_LEVEL_FOR_TOKENS = 2;
+export const MIN_LEVEL_FOR_TOKENS = 1;
 
 const THEME_COLOR = localStorage.getItem('theme');
 export const THEMES = ['dark', 'white'];
