@@ -1,7 +1,7 @@
 const PRODUCTION_ENDPOINT =
 	process.env.REACT_APP_SERVER_ENDPOINT || 'https://api.hollaex.com';
 
-const DEVELOPMENT_ENDPOINT = 'http://172.30.1.52';
+const DEVELOPMENT_ENDPOINT = 'http://localhost';
 
 const API_PATH = '/v1';
 
