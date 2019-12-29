@@ -1149,14 +1149,14 @@ export default {
 		LEVEL_OF_ACCOUNT: 'Level {0} Account',
 		LEVEL_TXT_DEFAULT:'Add your level description here',
 		LEVEL_1_TXT: 'Your journey starts here young crypto trader! To obtain bonsues you can verify your identiﬁcation and also get larger deposit and withdraw limits with reduced trading fees.', // new
-		LEVEL_2_TXT: 'Simply trade over $3,000 USDT worth or have balance of over 5,000 XHT and enjoy lower trading fees.', // new
+		LEVEL_2_TXT: 'Simply trade monthly over $3,000 USDT worth or have balance of over 5,000 XHT and enjoy lower trading fees.', // new
 		LEVEL_3_TXT: 'This is where things get real! Enjoy reduced trading fees and large deposit and withdrawal limits. To get to level 3 you must complete your veriﬁcation', // new
-		LEVEL_4_TXT: 'Simply trade over $10,000 USDT worth or have balance of over 10,000 XHT and enjoy lower trading fees.', // new
+		LEVEL_4_TXT: 'Simply trade monthly over $10,000 USDT worth or have balance of over 10,000 XHT and enjoy lower trading fees.', // new
 		LEVEL_5_TXT: 'You’ve made it! The level 5 account is a rare account only for exchange operators, Vault users or HollaEx Affiliate Program (HAP). Enjoy large limits and enjoy zero maker fees.', // new
-		LEVEL_6_TXT: 'Simply trade over $300,000 USDT worth or have balance of over 100,000 XHT and enjoy lower trading fees. Increased withdraw amount.', // new
-		LEVEL_7_TXT: 'Simply trade over $500,000 USDT worth or have balance of over 300,000 XHT and enjoy lower trading fees. Increased withdraw amount.', // new
-		LEVEL_8_TXT: 'Simply trade over $600,000 USDT worth or have balance of over 400,000 XHT and enjoy lower trading fees.', // new
-		LEVEL_9_TXT: 'Simply trade over $2,000,000 USDT worth or have balance of over 1,000,000 XHT and enjoy lower trading fees.', // new
+		LEVEL_6_TXT: 'Simply trade monthly over $300,000 USDT worth or have balance of over 100,000 XHT and enjoy lower trading fees. Increased withdraw amount.', // new
+		LEVEL_7_TXT: 'Simply trade monthly over $500,000 USDT worth or have balance of over 300,000 XHT and enjoy lower trading fees. Increased withdraw amount.', // new
+		LEVEL_8_TXT: 'Simply trade monthly over $600,000 USDT worth or have balance of over 400,000 XHT and enjoy lower trading fees.', // new
+		LEVEL_9_TXT: 'Simply trade monthly over $2,000,000 USDT worth or have balance of over 1,000,000 XHT and enjoy lower trading fees.', // new
 		LEVEL_10_TXT: 'The whale trader account that earns you money back for market making. To obtain this special account please get in touch with us.', // new
 		CURRENT_TXT: 'Current',
 		TRADER_ACCOUNT_XHT_TEXT: 'Your account is in the presale period of XHT, this means you can obtain XHT for $0.10 per XHT. All deposit will be converted to XHT once the transaction has cleared.',
@@ -1177,7 +1177,7 @@ export default {
 		MAKE_FIRST_DEPOSIT: 'Make your first deposit receive 1 XHT', // new
 		BUY_FIRST_XHT: 'Buy your first XHT and receive a bonus of 5 XHT', // new
 		COMPLETE_ACC_VERIFICATION: 'Complete account verification and get a 20 XHT bonus', // new
-		INVITE_USER: 'Invite user and enjoy 30% off your trading fees', // new
+		INVITE_USER: 'Invite users and enjoy commissions from their trade', // new
 		JOIN_HAP: 'Join HAP and earn 10% for every HollaEx Kit you sell', // new
 		EARN_RUNNING_EXCHANGE: 'Earn passive income for running your own exchange', // new
 		XHT_WAVE_AUCTION: 'XHT Wave Auction Data', // new
@@ -1293,8 +1293,8 @@ export default {
 		ANNOUNCEMENT: 'Announcement',
 		ANNOUNCEMNT_TXT_3:
 			'Public launch and Wave Auction is rescheduled to January 1st 2020. Wallet deposit and withdrawals are now open.',
-		ANNOUNCEMNT_TXT_2:
-			'Public wave auction is starting from December 18th, 2019 1pm UTC. You can deposit and start placing bids at anytime and purchase XHT.',
+		ANNOUNCEMNT_TXT_4:
+			'Happy new year Hollaers. We are making a new mark starting from 2020 with launch of the most open trading platform with the help of you all.',
 		ANNOUNCEMNT_TXT_1:
 			'Earn XHT with HAP program by introducing your friends to hollaex.com. {0}.',
 		DEFAULT_ANNOUNCEMENT:

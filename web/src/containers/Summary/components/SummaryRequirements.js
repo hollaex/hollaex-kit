@@ -148,7 +148,7 @@ export const getRequirements = (user, level, balance = {}, coins) => {
 					STRINGS.SUMMARY.LOCK_AN_EXCHANGE,
 					<a
 						className="blue-link pointer"
-						href="https://dash.bitholla.com/"
+						href="https://info.hollaex.com/hc/en-us/articles/360040097453-How-can-I-stake-collateralize-HollaEx-Token-XHT"
 						target="blank">
 							{`(${STRINGS.TRADE_POSTS.LEARN_MORE})`}
 					</a>
@@ -160,7 +160,7 @@ export const getRequirements = (user, level, balance = {}, coins) => {
 					STRINGS.SUMMARY.WALLET_SUBSCRIPTION_USERS,
 					<a
 						className="blue-link pointer"
-						href="https://dash.bitholla.com/"
+						href="https://info.hollaex.com/hc/en-us/articles/360041341013-Vault-subscription"
 						target="blank">
 							{`(${STRINGS.TRADE_POSTS.LEARN_MORE})`}
 					</a>

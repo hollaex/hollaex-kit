@@ -67,7 +67,6 @@ export const getBonusRequirements = (user, coins) => {
 			: 1
 		: 1;
 	let walletDeposit = false;
-	let xhtDeposit = false;
 	let accVerified = !!phone_number && identity === 3
 	if (user.balance) {
 		Object.keys(coins).forEach(pair => {
@@ -75,9 +74,6 @@ export const getBonusRequirements = (user, coins) => {
 				walletDeposit = true;
 			}
 		});
-		if (user.balance.xht_balance && user.balance.xht_balance > 0) {
-			xhtDeposit = true;
-		}
 	}
 	const verificationObj = {
 		'1': {
@@ -86,26 +82,21 @@ export const getBonusRequirements = (user, coins) => {
 			status: walletDeposit ? 3 : 0
 		},
 		'2': {
-			title: STRINGS.SUMMARY.BUY_FIRST_XHT,
-			completed: xhtDeposit,
-			status: xhtDeposit ? 3 : 0
-		},
-		'3': {
 			title: STRINGS.SUMMARY.COMPLETE_ACC_VERIFICATION,
 			completed: accVerified,
 			status: accVerified ? 3 : 0
 		},
-		'4': {
+		'3': {
 			title: STRINGS.SUMMARY.INVITE_USER,
 			completed: false,
 			status: 0
 		},
-		'5': {
+		'4': {
 			title: STRINGS.SUMMARY.JOIN_HAP,
 			completed: user.is_hap,
 			status: user.is_hap ? 3 : 0
 		},
-		'6': {
+		'5': {
 			title: STRINGS.SUMMARY.EARN_RUNNING_EXCHANGE,
 			completed: false,
 			status: 0

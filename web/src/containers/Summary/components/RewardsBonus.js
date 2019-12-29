@@ -33,7 +33,7 @@ const RewardsBonus = ({
                         <a
                             target="blank"
                             className="blue-link pointer font-weight-bold"
-                            href="https://hollaex.com/">
+                            href="https://info.hollaex.com/hc/en-us/articles/360041337953-Rewards-and-bonuses-in-HollaEx">
                             {STRINGS.TRADE_POSTS.LEARN_MORE.toUpperCase()}
                         </a>
                     </div>
