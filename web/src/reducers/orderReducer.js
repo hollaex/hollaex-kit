@@ -31,9 +31,12 @@ export default function reducer(state = INITIAL_STATE, action) {
 					...order
 				};
 				return { ...state, activeOrders };
+			} else {
+				if (!order.created_at) {
+					order.created_at = new Date();
+				}
+				return { ...state, activeOrders: [order].concat(state.activeOrders) };
 			}
-			// do nothing
-			break;
 		}
 
 		case 'REMOVE_ORDER': {
