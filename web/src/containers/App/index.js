@@ -243,11 +243,11 @@ class Container extends Component {
 		this.setPublicWS();
 		if (isLoggedIn()) {
 			this.setUserSocket(getToken());
-			const dialog_display = localStorage.getItem('deposit_initial_display');
-			if (!dialog_display) {
-				this.props.setNotification(NOTIFICATIONS.DEPOSIT_INFO, { gotoWallet: this.onConfirmEmail });
-				localStorage.setItem('deposit_initial_display', true);
-			}
+			// const dialog_display = localStorage.getItem('deposit_initial_display');
+			// if (!dialog_display) {
+			// 	this.props.setNotification(NOTIFICATIONS.DEPOSIT_INFO, { gotoWallet: this.onConfirmEmail });
+			// 	localStorage.setItem('deposit_initial_display', true);
+			// }
 		}
 		this.setState({ appLoaded: true }, () => {
 			this._resetTimer();
