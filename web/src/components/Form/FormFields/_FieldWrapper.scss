@@ -170,6 +170,11 @@ $outline-height: 1.5px;
 				right: -$valid-icon-size - 0.5rem;
 			}
 		}
+		.action_notification-wrapper {
+			&.with-tick-icon {
+				right: $valid-icon-size;
+			}
+		}
 	}
 }
 
@@ -199,6 +204,11 @@ $outline-height: 1.5px;
 
 			.field-valid {
 				left: -$valid-icon-size - 0.5rem;
+			}
+		}
+		.action_notification-wrapper {
+			&.with-tick-icon {
+				left: $valid-icon-size;
 			}
 		}
 	}

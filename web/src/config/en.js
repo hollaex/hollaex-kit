@@ -759,6 +759,7 @@ export default {
 	WITHDRAWALS_BUTTON_TEXT: 'review withdrawal',
 	WITHDRAWALS_FORM_ADDRESS_LABEL: 'Destination address',
 	WITHDRAWALS_FORM_ADDRESS_PLACEHOLDER: 'Type the address',
+	WITHDRAWALS_FORM_INCLUDE_DESTINATION_TAG: 'Include destination tag', // new
 	WITHDRAWALS_FORM_DESTINATION_TAG_LABEL: 'Destination tag', // new
 	WITHDRAWALS_FORM_DESTINATION_TAG_PLACEHOLDER: 'Type the destination address', // new
 	WITHDRAWALS_FORM_AMOUNT_LABEL: '{0} amount to withdraw',
