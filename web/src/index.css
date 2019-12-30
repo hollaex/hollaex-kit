@@ -4786,6 +4786,9 @@ table th {
 .direction_ltr .field-wrapper.inline .field-valid {
   right: -1.75rem; }
 
+.direction_ltr .field-wrapper .action_notification-wrapper.with-tick-icon {
+  right: 1.25rem; }
+
 .direction_rtl .field-error-text {
   padding-right: 0.25rem; }
 
@@ -4803,6 +4806,9 @@ table th {
 
 .direction_rtl .field-wrapper.inline .field-valid {
   left: -1.75rem; }
+
+.direction_rtl .field-wrapper .action_notification-wrapper.with-tick-icon {
+  left: 1.25rem; }
 
 .dark-theme .dumb-field-wrapper {
   color: #ed507b; }
@@ -4831,6 +4837,12 @@ table th {
 .input_icon {
   margin-right: .25rem;
   width: 1.2rem; }
+
+.custom-field-width {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  width: 50%; }
 
 .input_field-input {
   width: 100%;
