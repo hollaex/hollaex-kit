@@ -68,7 +68,7 @@ const generateSectionsText = (strings, theme) => {
                 },
                 {
                     text: SECTIONS.SECTION_5_LINK_2,
-                    link: 'http://bitholla.com/hex'
+                    link: 'http://bitholla.com/xht'
                 },
                 {
                     text: SECTIONS.SECTION_5_LINK_3,
@@ -180,7 +180,7 @@ const AppFooter = ({
                                 <div className="footer-txt">
                                     {STRINGS.formatString(STRINGS.FOOTER.XHT_DESCRIPTION,
                                         <a
-                                            href={'https://hollaex.com/docs/wave-auction.pdf'}
+                                            href={'https://info.hollaex.com/hc/en-us/articles/360040098633-What-is-the-Wave-Auction-'}
                                             target="_blank"
                                             rel="noopener noreferrer"
                                             className="blue-link pointer"

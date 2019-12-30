@@ -16,6 +16,152 @@
 .with_arrow_trade{
 	margin-top: -5px;
 }
+.mobile-drop-down,.drop-down,.option {
+	&.default-coin {
+		color: $colors-black !important;
+	}
+	&.btc {
+		color: $coin-btc !important;
+	}
+	&.eur {
+		color: $coin-eur !important;
+	}
+	&.bch {
+		color: $coin-bch !important;
+	}
+	&.eth {
+		color: $coin-eth !important;
+	}
+	&.ltc {
+		color: $coin-ltc !important;
+	}
+	&.xrp {
+		color: $coin-xrp !important;
+	}
+	&.xht {
+		color: $coin-xht !important;
+	}
+	&.eos {
+		color: $coin-eos !important;
+	}
+	&.bnb {
+		color: $coin-bnb !important;
+	}
+	&.link {
+		color: $coin-link !important;
+	}
+	&.trx {
+		color: $coin-trx !important;
+	}
+	&.ada {
+		color: $coin-ada !important;
+	}
+	&.matic {
+		color: $coin-matic !important;
+	}
+	&.neo {
+		color: $coin-neo !important;
+	}
+	&.etc {
+		color: $coin-etc !important;
+	}
+	&.xlm {
+		color: $coin-xlm !important;
+	}
+	&.xmr {
+		color: $coin-xmr !important;
+	}
+	&.zec {
+		color: $coin-zec !important;
+	}
+	&.one {
+		color: $coin-one !important;
+	}
+	&.pax {
+		color: $coin-pax !important;
+	}
+	&.usdc {
+		color: $coin-usdc !important;
+	}
+	&.usdt {
+		color: $coin-usdt !important;
+	}
+	&.vet {
+		color: $coin-vet !important;
+	}
+	&.btt {
+		color: $coin-btt !important;
+	}
+	&.qtum {
+		color: $coin-qtum !important;
+	}
+	&.algo {
+		color: $coin-algo !important;
+	}
+	&.rvn {
+		color: $coin-rvn !important;
+	}
+	&.iota {
+		color: $coin-iota !important;
+	}
+	&.dash {
+		color: $coin-dash !important;
+	}
+	&.bsv {
+		color: $coin-bsv !important;
+	}
+	&.ont {
+		color: $coin-ont !important;
+	}
+	&.atom {
+		color: $coin-atom !important;
+	}
+	&.celr {
+		color: $coin-celr !important;
+	}
+	&.omg {
+		color: $coin-omg !important;
+	}
+	&.hot {
+		color: $coin-hot !important;
+	}
+	&.usd {
+		color: $coin-usd !important;
+	}
+	&.jpy {
+		color: $coin-jpy !important;
+	}
+	&.gbp {
+		color: $coin-gbp !important;
+	}
+	&.chf {
+		color: $coin-chf !important;
+	}
+	&.cad {
+		color: $coin-cad !important;
+	}
+	&.aud {
+		color: $coin-aud !important;
+	}
+	&.nzd {
+		color: $coin-nzd !important;
+	}
+	&.zar {
+		color: $coin-zar !important;
+	}
+	&.hkd {
+		color: $coin-hkd !important;
+	}
+	&.krw {
+		color: $coin-krw !important;
+	}
+	&.cny {
+		color: $coin-cny !important;
+	}
+	&.sgd {
+		color: $coin-sgd !important;
+	}
+}
 .with_arrow_trade:after  {	
 	border-bottom-color: $colors-main-black !important;
 	border-right-color: $colors-main-black !important;
@@ -51,5 +197,15 @@
 	}
 	.mobile-drop-down {
 		color: $dark-sell;
+	}
+	.drop-down, .option{
+		&.xht {
+			border : none !important;
+			color: $colors-white !important;
+		}
+		.option{
+			background: $dark-quick-trade-background;
+			border:1px solid red!important
+		}
 	}
 }

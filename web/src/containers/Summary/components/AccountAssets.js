@@ -13,6 +13,7 @@ import {
 	SHOW_SUMMARY_ACCOUNT_DETAILS,
 } from "../../../config/constants";
 import { formatAverage, formatToCurrency } from "../../../utils/currency";
+import { isMobile } from "react-device-detect";
 
 const AccountAssets = ({ chartData = [], totalAssets, balance, coins, activeTheme }) => {
 	const baseValue = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
@@ -27,7 +28,11 @@ const AccountAssets = ({ chartData = [], totalAssets, balance, coins, activeThem
 				}
 			</div>
 			<div className="d-flex align-items-center justify-content-center h-100">
-				<div className={classnames({ 'w-75': !SHOW_SUMMARY_ACCOUNT_DETAILS })}>
+				<div className={
+					classnames({
+						'w-75': !SHOW_SUMMARY_ACCOUNT_DETAILS && !isMobile,
+						'w-100': isMobile
+					})}>
 					<div
 						className={
 							classnames(
@@ -41,48 +46,51 @@ const AccountAssets = ({ chartData = [], totalAssets, balance, coins, activeThem
 							/>
 						)}
 					</div>
-					<div
-						className={
-							classnames(
-								"d-flex",
-								{
-									"justify-content-between": SHOW_SUMMARY_ACCOUNT_DETAILS,
-									"justify-content-center": !SHOW_SUMMARY_ACCOUNT_DETAILS
-								}
-							)}>
-						{chartData.map((value, index) => {
-							const { min, fullname, symbol = '' } =
-								coins[value.symbol || BASE_CURRENCY] || {};
-							let currencyBalance = formatToCurrency(
-								balance[`${value.symbol}_balance`],
-								min
-							);
-							return (
-								<div key={index} className="price-content text-center">
-									<div
-										className={classnames(
-											"coin-price-container",
-											FLEX_CENTER_CLASSES
+					<div>
+						<div
+							className={
+								classnames(
+									"d-flex",
+									{
+										"justify-content-between": SHOW_SUMMARY_ACCOUNT_DETAILS,
+										"justify-content-center": !SHOW_SUMMARY_ACCOUNT_DETAILS,
+										"flex-wrap": isMobile
+									}
+								)}>
+							{chartData.map((value, index) => {
+								const { min, fullname, symbol = '' } =
+									coins[value.symbol || BASE_CURRENCY] || {};
+								let currencyBalance = formatToCurrency(
+									balance[`${value.symbol}_balance`],
+									min
+								);
+								return (
+									<div key={index} className="price-content text-center">
+										<div
+											className={classnames(
+												"coin-price-container",
+												FLEX_CENTER_CLASSES
+											)}
+										>
+											<ReactSVG
+												path={
+													ICONS[`${value.symbol.toUpperCase()}_ICON`]
+														? ICONS[`${value.symbol.toUpperCase()}_ICON`]
+														: ICONS.DEFAULT_ICON}
+												wrapperClassName="coin-price"
+											/>
+										</div>
+										<div className="price-text">{fullname}:</div>
+										<div className="price-text">
+											{`${symbol.toUpperCase()} ${formatAverage(currencyBalance)}`}
+										</div>
+										{value.symbol !== BASE_CURRENCY && (
+											<div className="price-text">{`~${formatAverage(value.balanceFormat)}`}</div>
 										)}
-									>
-										<ReactSVG
-											path={
-												ICONS[`${value.symbol.toUpperCase()}_ICON`]
-													? ICONS[`${value.symbol.toUpperCase()}_ICON`]
-													: ICONS.DEFAULT_ICON}
-											wrapperClassName="coin-price"
-										/>
 									</div>
-									<div className="price-text">{fullname}:</div>
-									<div className="price-text">
-										{`${symbol.toUpperCase()} ${formatAverage(currencyBalance)}`}
-									</div>
-									{value.symbol !== BASE_CURRENCY && (
-										<div>{`~${formatAverage(value.balanceFormat)}`}</div>
-									)}
-								</div>
-							);
-						})}
+								);
+							})}
+						</div>
 					</div>
 				</div>
 			</div>

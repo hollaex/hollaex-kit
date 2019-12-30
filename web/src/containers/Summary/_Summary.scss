@@ -213,9 +213,12 @@
 }
 
 .layout-mobile {
-    .logout-wrapper {
-        margin: 0 auto;
+    .fee-limits-wrapper {
+        margin: 3rem auto;
     }
+	.logout-wrapper {
+	        margin: 0 auto;
+	 }
     .confirm-text {
         font-size: 2rem;
     }
@@ -223,9 +226,31 @@
         margin: 3rem auto;
     }
     .summary-container {
+        .trader-account-wrapper{
+            .summary-block_wrapper{
+                .trade-account-secondary-txt{
+                    width: 100%;
+                    .account-details-content{
+                        font-size: $font-size-mobile-txt;
+                    }
+                    .trade-account-link{
+                        font-size: $font-size-mobile-txt;
+                    }
+                }
+            }
+        }
         .summary-section_1,
         .summary-section_2 {
             height: auto !important;
+        }
+        .summary-content-txt{
+            font-size: $font-size-mobile-txt !important;
+            // width: 17rem;
+        }
+        .assets-wrapper {
+            .price-text {
+                font-size: $font-size-mobile-txt !important;
+            }
         }
     }
 }

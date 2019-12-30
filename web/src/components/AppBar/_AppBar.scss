@@ -391,6 +391,14 @@ $app-bar-add-tab-red: #ff0000;
 		margin: .5rem .3rem 0 .3rem;
 		width: 1.5rem;
 	}
+	.app-bar-account-moon-icon{
+		margin: .2rem .3rem 0 .3rem;
+		width: 1rem;
+	}
+	.app-bar-account-moon-content {
+		border: 1px solid $app-bar-icon-inactive;
+		border-radius: 5px;
+	}
 
 	.app_bar-pair-content, .app-bar-tab-close, .app-bar-currency-icon, .app-bar-account-icon svg {
 		.btc0,

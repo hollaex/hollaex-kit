@@ -359,7 +359,31 @@ $title-icon--height: 10rem;
 
 .layout-mobile {
 	.quick_trade-wrapper {
-		margin-top: -24px;
+		margin-top: 0;
+		margin-bottom: 0;
+	}
+	.quick_trade-section_wrapper {
+		.toogle_button-wrapper {
+			.toogle-content {
+				font-size:$font-size-mobile-txt!important;
+			}
+		}
+		.input_block-wrapper {
+			.input_block-content {
+				.input_block-title{
+					font-size:$font-size-mobile-txt!important;
+				}
+			}
+			.field-error-content{
+				width:auto;
+				font-size:$font-size-mobile-innertxt;
+			}
+		}
+		.review-block-wrapper{
+			.input_block-title {
+				font-size:$font-size-mobile-txt;
+			}
+		}
 	}
 }
 .mobile_dropdown-section {

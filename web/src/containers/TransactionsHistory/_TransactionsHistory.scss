@@ -19,7 +19,7 @@ $trade-asks-color-font: $colors-currencies-btc;
 	}
 	.display_table-wrapper{
 		.display_table-cell {
-			min-height: 2rem;
+			min-height: 2rem !important;
 		}
 	} 
 }

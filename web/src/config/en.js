@@ -802,6 +802,8 @@ export default {
 	WITHDRAWALS_BUTTON_TEXT: 'review withdrawal',
 	WITHDRAWALS_FORM_ADDRESS_LABEL: 'Destination address',
 	WITHDRAWALS_FORM_ADDRESS_PLACEHOLDER: 'Type the address',
+	WITHDRAWALS_FORM_DESTINATION_TAG_LABEL: 'Destination tag', // new
+	WITHDRAWALS_FORM_DESTINATION_TAG_PLACEHOLDER: 'Type the destination address', // new
 	WITHDRAWALS_FORM_AMOUNT_LABEL: '{0} amount to withdraw',
 	WITHDRAWALS_FORM_AMOUNT_PLACEHOLDER:
 		'Type the amount of {0} you wish to withdraw',
@@ -951,12 +953,12 @@ export default {
 		{
 			value: 'en',
 			label: 'English',
-			icon: `${process.env.REACT_APP_PUBLIC_URL}/assets/flags/selected-en.png`
+			icon: '/assets/flags/selected-en.png'
 		},
 		{
 			value: 'ko',
 			label: '한국어',
-			icon: `${process.env.REACT_APP_PUBLIC_URL}/assets/flags/selected-kr.png`
+			icon: '/assets/flags/selected-kr.png'
 		}
 	],
 	SETTINGS_ORDERPOPUP_LABEL: 'Display order confirmation popup',
@@ -974,6 +976,7 @@ export default {
 	VERIFICATION_NO_WITHDRAW_TITLE: 'Withdrawals disabled',
 	VERIFICATION_NO_WITHDRAW_MESSAGE: 'Your account is disabled for withdrawals',
 	UP_TO_MARKET: 'Up to market',
+	VIEW_MY_FEES: 'View my fees', // new
 	DEVELOPER_SECTION: {
 		TITLE: 'API Key',
 		INFORMATION_TEXT:

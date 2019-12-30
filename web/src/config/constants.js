@@ -274,7 +274,8 @@ export const ICONS = {
 	XHT_LOGO_DARK:'/assets/icons/XHT-logo-dark.svg',
 	BONUS_OFFERING:'/assets/icons/bonus_offering.svg',
 	UP_ARROW:'/assets/images/buy-trade.svg',
-	DOWN_ARROW:'/assets/images/sell-trade.svg'
+	DOWN_ARROW:'/assets/images/sell-trade.svg',
+	MOON_THEME:'/assets/icons/moon-theme.svg'
 };
 
 export const SOCIAL_ICONS = {
@@ -308,9 +309,9 @@ export const SUMMMARY_ICON = {
 };
 
 export const HOLLAEX_LOGO =
-	process.env.LOGO_PATH || '/assets/hollaEx_logo-grey.svg';
+	process.env.REACT_APP_LOGO_PATH || '/assets/hollaEx_logo-grey.svg';
 export const HOLLAEX_LOGO_BLACK =
-	process.env.LOGO_BLACK_PATH || '/assets/hollaEx_logo-blk.svg';
+	process.env.REACT_APP_LOGO_BLACK_PATH || '/assets/hollaEx_logo-blk.svg';
 
 export const AUDIOS = {
 	ORDERBOOK_FIELD_UPDATE: '/assets/audio/orderbook_field_update.wav',
@@ -470,7 +471,7 @@ export const DEFAULT_VERSION_REDIRECT = '/';
 export const PRO_URL = process.env.REACT_APP_PRO_URL || 'https://hollaex.com';
 
 // minimum level for a user to be able to create api tokens
-export const MIN_LEVEL_FOR_TOKENS = 2;
+export const MIN_LEVEL_FOR_TOKENS = 1;
 
 const THEME_COLOR = localStorage.getItem('theme');
 export const THEMES = ['dark', 'white'];
@@ -581,3 +582,4 @@ export const WHITE_THEME_CHART_COLORS = {
 export const SHOW_SUMMARY_ACCOUNT_DETAILS = false;
 export const SHOW_TOTAL_ASSETS = false;
 export const IS_XHT = true;
+export const FIT_SCREEN_HEIGHT = ['trade'];

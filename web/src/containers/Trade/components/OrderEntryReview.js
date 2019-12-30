@@ -15,7 +15,8 @@ const Review = ({
 	currency,
 	price,
 	formatToCurrency,
-	type
+	type,
+	onFeeStructureAndLimits
 }) => {
 	// const orderAmountReceived = math.add(
 	// 	math.fraction(orderPrice),
@@ -36,8 +37,8 @@ const Review = ({
 			</div>
 			<div className={classnames(...ROW_CLASSNAMES)}>
 				<div>{STRINGS.FEES}:</div>
-				<div className="text-price">
-					{STRINGS.UP_TO_MARKET}
+				<div className="text-price blue-link pointer" onClick={onFeeStructureAndLimits}>
+					{STRINGS.VIEW_MY_FEES}
 				</div>
 			</div>
 		</div>

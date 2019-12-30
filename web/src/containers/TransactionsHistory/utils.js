@@ -112,7 +112,7 @@ export const generateTradeHeaders = (symbol, pairs, coins) => {
 						CURRENCY_PRICE_FORMAT,
 						formatToCurrency(size, min),
 						shortName
-					);
+					).join('');
 				} else {
 					return size;
 				}
@@ -149,7 +149,7 @@ export const generateTradeHeaders = (symbol, pairs, coins) => {
 						CURRENCY_PRICE_FORMAT,
 						formatToCurrency(calculatePrice(quick, price, size), min),
 						rest.symbol.toUpperCase()
-					);
+					).join('');
 				} else {
 					return calculatePrice(quick, price, size);
 				}
@@ -188,7 +188,7 @@ export const generateTradeHeaders = (symbol, pairs, coins) => {
 						CURRENCY_PRICE_FORMAT,
 						formatToCurrency(calculateAmount(quick, price, size), min),
 						rest.symbol.toUpperCase()
-					);
+					).join('');
 				} else {
 					return calculateAmount(quick, price, size);
 				}
@@ -248,7 +248,7 @@ export const generateTradeHeaders = (symbol, pairs, coins) => {
 							min
 						),
 						rest.symbol.toUpperCase()
-					);
+					).join('');
 				} else {
 					calculateFeeAmount(fee, quick, price, size, side);
 				}

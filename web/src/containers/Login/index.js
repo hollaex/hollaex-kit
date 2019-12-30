@@ -10,7 +10,6 @@ import moment from 'moment';
 import { performLogin, storeLoginResult, setLogoutMessage } from '../../actions/authAction';
 import LoginForm, { FORM_NAME } from './LoginForm';
 import TermsOfService from '../TermsOfService';
-import DepositFunds from '../TermsOfService/DepositFunds';
 import { Dialog, OtpForm, IconTitle, Notification } from '../../components';
 import { NOTIFICATIONS } from '../../actions/appActions';
 import { errorHandler } from '../../components/OtpForm/utils';
@@ -186,7 +185,8 @@ class Login extends Component {
 		localStorage.setItem('termsAccepted', true);
 		if (this.state.token)
 			storeLoginResult(this.state.token);
-		this.setState({ termsDialogIsOpen: false, depositDialogIsOpen: true });
+		this.setState({ termsDialogIsOpen: false})
+		this.redirectToHome();
 	};
 
 	onCloseDialog = () => {
@@ -206,7 +206,7 @@ class Login extends Component {
 
 	render() {
 		const { logoutMessage, activeTheme } = this.props;
-		const { otpDialogIsOpen, logoutDialogIsOpen, termsDialogIsOpen, depositDialogIsOpen } = this.state;
+		const { otpDialogIsOpen, logoutDialogIsOpen, termsDialogIsOpen } = this.state;
 
 		return (
 			<div
@@ -256,7 +256,7 @@ class Login extends Component {
 				</div>
 				{!isMobile && <BottomLink />}
 				<Dialog
-					isOpen={otpDialogIsOpen || logoutDialogIsOpen || termsDialogIsOpen || depositDialogIsOpen}
+					isOpen={otpDialogIsOpen || logoutDialogIsOpen || termsDialogIsOpen }
 					label="otp-modal"
 					onCloseDialog={this.onCloseDialog}
 					shouldCloseOnOverlayClick={otpDialogIsOpen ? false : true}
@@ -275,7 +275,7 @@ class Login extends Component {
 						/>
 					)}
 					{termsDialogIsOpen && <TermsOfService onAcceptTerms={this.onAcceptTerms} />}
-					{depositDialogIsOpen && <DepositFunds gotoWallet={this.gotoWallet} />}
+					{/* {depositDialogIsOpen && <DepositFunds gotoWallet={this.gotoWallet} />} */}
 				</Dialog>
 			</div>
 		);
