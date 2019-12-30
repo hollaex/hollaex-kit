@@ -68,7 +68,7 @@ class Form extends Component {
 		) {
 			const fee = calculateBaseFee(nextProps.data.amount);
 			if (fee !== nextProps.data.fee) {
-				nextProps.change('fee', fee);
+				// nextProps.change('fee', fee);
 			}
 		}
 	}
