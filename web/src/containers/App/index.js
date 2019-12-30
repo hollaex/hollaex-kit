@@ -321,6 +321,9 @@ class Container extends Component {
 
 		publicSocket.on('wave', (data) => {
 			console.log('wave', data)
+			this.props.setNotification(NOTIFICATIONS.WAVE_NOTIFICATION, {
+				wave: data
+			});
 		});
 	};
 
@@ -807,7 +810,10 @@ class Container extends Component {
 				return (
 					<Notification
 						type={type}
-						data={rest}
+						data={{
+							pair: this.props.pair,
+							...rest
+						}}
 						onConfirm={this.goToXHTTrade}
 						onBack={this.onCloseDialog}
 					/>

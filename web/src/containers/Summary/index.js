@@ -23,7 +23,8 @@ import {
     DEFAULT_COIN_DATA,
     // SHOW_SUMMARY_ACCOUNT_DETAILS,
     SHOW_TOTAL_ASSETS,
-    IS_XHT
+    IS_XHT,
+    UPGRADE_ACC_URL
 } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 import {
@@ -36,6 +37,7 @@ import {
     calculatePricePercentage
 } from '../../utils/currency';
 import { getLastMonthVolume } from './components/utils';
+import { getUserReferralCount } from '../../actions/userAction';
 
 class Summary extends Component {
     state = {
@@ -53,6 +55,7 @@ class Summary extends Component {
         if (user.id) {
             this.calculateSections(this.props);
             this.setCurrentTradeAccount(user);
+            this.props.getUserReferralCount();
         }
         if (tradeVolumes.fetched) {
             let lastMonthVolume = getLastMonthVolume(tradeVolumes.data, prices, pairs);
@@ -79,15 +82,20 @@ class Summary extends Component {
             let lastMonthVolume = getLastMonthVolume(nextProps.tradeVolumes.data, nextProps.prices, nextProps.pairs);
             this.setState({ lastMonthVolume });
         }
+        if (nextProps.user.id !== this.props.user.id
+            && nextProps.user.id) {
+                this.props.getUserReferralCount();
+        }
     }
 
     logoutConfirm = () => {
         this.props.logoutconfirm()
     }
 
-    onFeesAndLimits = tradingAccount => {
+    onFeesAndLimits = (tradingAccount, discount) => {
         this.props.openFeesStructureandLimits({
-            verification_level: tradingAccount
+            verification_level: tradingAccount,
+            discount: discount
         });
     };
 
@@ -96,7 +104,10 @@ class Summary extends Component {
     };
 
     onUpgradeAccount = () => {
-        this.props.openContactForm({ category: 'level' });
+        // this.props.openContactForm({ category: 'level' });
+        if (window) {
+            window.open(UPGRADE_ACC_URL, '_blank');
+        }
     };
 
     calculateSections = ({ price, balance, orders, prices, coins }) => {
@@ -134,7 +145,17 @@ class Summary extends Component {
     };
 
     render() {
-        const { user, balance, activeTheme, pairs, coins, isValidBase, verification_level, config_level } = this.props;
+        const {
+            user,
+            balance,
+            activeTheme,
+            pairs,
+            coins,
+            isValidBase,
+            verification_level,
+            config_level,
+            affiliation
+        } = this.props;
         const { selectedAccount, chartData, totalAssets, lastMonthVolume } = this.state;
         const { fullname } = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
         let traderAccTitle = STRINGS.formatString(STRINGS.SUMMARY.LEVEL_OF_ACCOUNT, verification_level);
@@ -162,6 +183,7 @@ class Summary extends Component {
                         totalAssets={totalAssets}
                         lastMonthVolume={lastMonthVolume}
                         traderAccTitle={traderAccTitle}
+                        affiliation={affiliation}
                         onInviteFriends={this.onInviteFriends}
                         onFeesAndLimits={this.onFeesAndLimits}
                         onUpgradeAccount={this.onUpgradeAccount}
@@ -194,6 +216,7 @@ class Summary extends Component {
                                         user={user}
                                         balance={balance}
                                         lastMonthVolume={lastMonthVolume}
+                                        affiliation={affiliation}
                                         onUpgradeAccount={this.onUpgradeAccount}
                                         contentClassName="requirements-content" />
                                 </SummaryBlock>
@@ -294,7 +317,8 @@ const mapStateToProps = (state) => ({
     tradeVolumes: state.user.tradeVolumes,
     isValidBase: state.app.isValidBase,
     config: state.app.config,
-    config_level: state.app.config_level
+    config_level: state.app.config_level,
+    affiliation: state.user.affiliation
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -302,7 +326,8 @@ const mapDispatchToProps = (dispatch) => ({
     logout: bindActionCreators(logout, dispatch),
     openFeesStructureandLimits: bindActionCreators(openFeesStructureandLimits, dispatch),
     openContactForm: bindActionCreators(openContactForm, dispatch),
-    setNotification: bindActionCreators(setNotification, dispatch)
+    setNotification: bindActionCreators(setNotification, dispatch),
+    getUserReferralCount: bindActionCreators(getUserReferralCount, dispatch)
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Summary);

@@ -1,15 +1,12 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
-import { Link } from 'react-router';
 import { isBrowser, isMobile } from 'react-device-detect';
 
 import STRINGS from '../../config/localizedStrings';
-import { FLEX_CENTER_CLASSES, HOLLAEX_LOGO, HOLLAEX_LOGO_BLACK } from '../../config/constants';
-import { ButtonLink, AppFooter, NotificationsList } from '../../components';
+import { AppFooter, NotificationsList } from '../../components';
 import { getClasesForLanguage } from '../../utils/string';
 import { getThemeClass } from '../../utils/theme';
-import { isLoggedIn } from '../../utils/token';
 
 class Home extends Component {
 	render() {
@@ -26,16 +23,7 @@ class Home extends Component {
 				}
 			)}>
 				<div className="p-5">
-					<div className={classnames(FLEX_CENTER_CLASSES, 'my-5', 'flex-column')}>
-						<div className="my-5 f-1">
-							<img
-								src={activeTheme === 'dark' ? HOLLAEX_LOGO : HOLLAEX_LOGO_BLACK}
-								alt="app logo"
-								className="app-icon d-flex" />
-							<div className="text-center trade-tab-app-title">{STRINGS.APP_SUB_TITLE.toUpperCase()}</div>
-						</div>
-					</div>
-					{!isLoggedIn() ?
+					{/* {!isLoggedIn() ?
 						<div className="w-100">
 							<div className="mt-3 mb-5">
 								<ButtonLink
@@ -94,9 +82,9 @@ class Home extends Component {
 								</a>
 							</div>
 						</div>
-					}
+					} */}
 					<div className="post-wrapper mt-4 mx-3">
-						<div className="post-title">{STRINGS.TRADE_TAB_POSTS}</div>
+						<div className="post-title mb-3">{STRINGS.TRADE_TAB_POSTS}</div>
 						<NotificationsList />
 					</div>
 				</div>

@@ -69,7 +69,7 @@ const WaveNotification = ({ type, data, coins, pairs, onBack, onConfirm }) => {
 	return (
 		<NotificationWraper
 			title={STRINGS.WAVES.TITLE}
-			icon={ICONS.CHECK_ORDER}
+			icon={ICONS.INCOMING_WAVE}
 			className="new-order-notification"
 		>
 			<EventListener target="document" onKeydown={onKeydown} />

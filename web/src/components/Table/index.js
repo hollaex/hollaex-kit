@@ -34,9 +34,10 @@ class Table extends Component {
 				nextProps.headers,
 				nextProps.count
 			);
-		} else {
-			// this.goToPage(0, nextProps.data, nextProps.headers, nextProps.count);
+		} else if (JSON.stringify(nextProps.data) !== JSON.stringify(this.props.data)) {
+			this.goToPage(0, nextProps.data, nextProps.headers, nextProps.count);
 		}
+
 	}
 
 	// setPageSize = (pageSize = 10) => {

@@ -5,12 +5,16 @@ import STRINGS from '../../../config/localizedStrings';
 import { formatPercentage } from '../../../utils/currency';
 import { DEFAULT_COIN_DATA } from '../../../config/constants';
 
-const getMakerRow = (pairs, coins, pair, level, index) => {
+const getMakerRow = (pairs, coins, pair, level, index, discount) => {
 	const { pair_base, pair_2, maker_fees, taker_fees } = pairs[pair];
-	const makersData = maker_fees ? maker_fees[level] : 0;
-	const takersData = taker_fees ? taker_fees[level] : 0;
+	const makersFee = maker_fees ? maker_fees[level] : 0;
+	const takersFee = taker_fees ? taker_fees[level] : 0;
 	const pairBase = coins[pair_base] || DEFAULT_COIN_DATA;
 	const pairTwo = coins[pair_2] || DEFAULT_COIN_DATA;
+	const makersData = discount
+		? (makersFee - (makersFee * discount / 100)) : makersFee;
+	const takersData = discount
+		? (takersFee - (takersFee * discount / 100)) : takersFee;
 	return (
 		<tr key={index}>
 			<td className="account-limits-coin">
@@ -26,10 +30,16 @@ const getMakerRow = (pairs, coins, pair, level, index) => {
 				</div>
 			</td>
 			<td className="account-limits-maker account-limits-value">
-				{formatPercentage(makersData)}
+				{level
+					? formatPercentage(makersData)
+					: 'N/A'
+				}
 			</td>
 			<td className="account-limits-maker account-limits-value">
-				{formatPercentage(takersData)}
+				{level
+					? formatPercentage(takersData)
+					: 'N/A'
+				}
 			</td>
 		</tr>
 	);
@@ -50,16 +60,16 @@ const getMakerRow = (pairs, coins, pair, level, index) => {
 // 	);
 // };
 
-const getRows = (pairs, level, coins) => {
+const getRows = (pairs, level, coins, discount) => {
 	const rowData = [];
 	Object.keys(pairs).map((pair, index) => {
-		rowData.push(getMakerRow(pairs, coins, pair, level, index));
+		rowData.push(getMakerRow(pairs, coins, pair, level, index, discount));
 		return '';
 	});
 	return rowData;
 };
 
-const FeesBlock = ({ pairs, coins, level }) => {
+const FeesBlock = ({ pairs, coins, level, discount }) => {
 	return (
 		<div>
 			<table className="account-limits">
@@ -76,7 +86,7 @@ const FeesBlock = ({ pairs, coins, level }) => {
 					</tr>
 				</thead>
 				<tbody className="account-limits-content font-weight-bold">
-					{getRows(pairs, level, coins)}
+					{getRows(pairs, level, coins, discount)}
 				</tbody>
 			</table>
 		</div>

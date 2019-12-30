@@ -647,7 +647,7 @@ export default {
 		}
 	},
 	TRANSACTION_HISTORY: {
-		TITLE: 'Transactions  History',
+		TITLE: 'History',
 		TITLE_TRADES: 'Trades  History',
 		TITLE_DEPOSITS: 'Deposits  History',
 		TITLE_WITHDRAWALS: 'Withdrawals  History',
@@ -1189,7 +1189,9 @@ export default {
 		XHT_WAVE_DESC_3: 'Below displays the historic data on the Wave Auction history', // new
 		WAVE_AUCTION_PHASE: 'Wave Auction Phase {0}', // new
 		LEARN_MORE_WAVE_AUCTION: 'Learn more about the Wave Auction', // new
-		WAVE_NUMBER: 'Wave Number' // new
+		WAVE_NUMBER: 'Wave Number', // new
+		DISCOUNT: '( {0}% discount )', // new
+		MY_FEES_LIMITS: ' My Fees and Limits' // new
 	},
 	REFERRAL_LINK: {
 		TITLE: 'Invite your friend', // new
@@ -1306,5 +1308,6 @@ export default {
 		LEARN_MORE: 'Learn more',
 		APPLY_TODAY: 'Apply today' // new
 	},
-	OPEN_WALLET: 'Open wallet' // new
+	OPEN_WALLET: 'Open wallet', // new
+	AGO: 'ago', // new
 };

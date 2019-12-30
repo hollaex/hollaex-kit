@@ -8,8 +8,10 @@ import {
     formatBtcAmount
 } from '../../../utils/currency';
 
-const getLimitValue = (limit = -1, format) => {
-    if (limit === 0) {
+const getLimitValue = (limit, format) => {
+    if (limit === undefined || limit === null || limit === '') {
+        return 'N/A';
+    } else if (limit === 0) {
         return STRINGS.LEVELS.UNLIMITED;
     } else if (limit === -1) {
         return STRINGS.LEVELS.BLOCKED;

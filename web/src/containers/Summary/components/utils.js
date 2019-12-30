@@ -59,7 +59,7 @@ export const checkBankVerification = (bank_account = [], id_data) => {
 	return bank_status;
 };
 
-export const getBonusRequirements = (user, coins) => {
+export const getBonusRequirements = (user, coins, affiliation = {}) => {
 	const { address, phone_number, id_data = {} } = user.userData;
 	const identity = address.country
 		? id_data.status && id_data.status === 3
@@ -88,8 +88,8 @@ export const getBonusRequirements = (user, coins) => {
 		},
 		'3': {
 			title: STRINGS.SUMMARY.INVITE_USER,
-			completed: false,
-			status: 0
+			completed: !!affiliation.count,
+			status: affiliation.count ? 3: 0
 		},
 		'4': {
 			title: STRINGS.SUMMARY.JOIN_HAP,

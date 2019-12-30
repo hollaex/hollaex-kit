@@ -38,7 +38,8 @@ const MobileSummary = ({
 	onAccountTypeChange,
 	onInviteFriends,
 	verification_level,
-	onStakeToken
+	onStakeToken,
+	affiliation
 }) => {
 	const { fullname } = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
 	// const Title = STRINGS.formatString(STRINGS.SUMMARY.LEVEL_OF_ACCOUNT,verification_level);
@@ -76,6 +77,7 @@ const MobileSummary = ({
 						user={user}
 						balance={balance}
 						lastMonthVolume={lastMonthVolume}
+						affiliation={affiliation}
 						onUpgradeAccount={onUpgradeAccount}
 						contentClassName="requirements-content" />
 				</SummaryBlock>
@@ -140,6 +142,7 @@ const MobileSummary = ({
 						selectedAccount={selectedAccount}
 						onAccountTypeChange={onAccountTypeChange}
 						onFeesAndLimits={onFeesAndLimits}
+						onUpgradeAccount={onUpgradeAccount}
 						verification_level={verification_level} />
 				</SummaryBlock>
 				

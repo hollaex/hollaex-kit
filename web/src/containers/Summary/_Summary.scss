@@ -252,6 +252,11 @@
                 font-size: $font-size-mobile-txt !important;
             }
         }
+        .account-details-wrapper { 
+            .account-type-menu {
+                height: auto !important
+            }
+        }
     }
 }
 
@@ -302,7 +307,7 @@
     }
 
     .trader-account-icon {
-        width: 5rem;
+        width: 4.5rem;
         margin-right: 1rem;
     }
     .trade-account-link {
@@ -476,7 +481,7 @@
             color: $link;
             cursor: pointer;
             font-weight: bold;
-            padding: .5rem 0;
+            // padding: .5rem 0;
             text-transform: uppercase;
 
             .account-current {

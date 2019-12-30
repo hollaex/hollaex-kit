@@ -72,6 +72,15 @@ const TraderAccounts = ({
 							}
 						</span>
 					</div>
+					<div className="trade-account-link mb-2">
+						<span
+							className="pointer"
+							onClick={() => onFeesAndLimits(level, user.discount)}
+						>
+							{STRINGS.SUMMARY.MY_FEES_LIMITS.toUpperCase()}
+						</span>
+					</div>
+
 					{IS_XHT
 						? <div className="trade-account-link mb-2">
 							<span
@@ -87,7 +96,7 @@ const TraderAccounts = ({
 					? <div className="trade-account-link mb-2">
 						<span
 							className="pointer"
-							onClick={() => onFeesAndLimits(level)}
+							onClick={() => onFeesAndLimits(level, user.discount)}
 						>
 							{STRINGS.SUMMARY.VIEW_FEE_STRUCTURE.toUpperCase()}
 						</span>

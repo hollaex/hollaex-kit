@@ -141,7 +141,8 @@ export default function reducer(state = INITIAL_STATE, action) {
 				id_data,
 				affiliation_code,
 				phone_number,
-				is_hap
+				is_hap,
+				discount
 			} = action.payload;
 			const userData = extractuserData(action.payload);
 			const fees = action.payload.fees || state.fees;
@@ -173,7 +174,8 @@ export default function reducer(state = INITIAL_STATE, action) {
 				id_data,
 				affiliation_code,
 				phone_number,
-				is_hap
+				is_hap,
+				discount
 			};
 		}
 		case 'SET_USER_DATA': {

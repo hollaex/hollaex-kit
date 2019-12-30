@@ -11,6 +11,7 @@ const RewardsBonus = ({
     user,
     coins,
     balance,
+    affiliation,
     lastMonthVolume,
     onUpgradeAccount
 }) => {
@@ -52,6 +53,7 @@ const RewardsBonus = ({
                     coins={coins}
                     balance={balance}
                     lastMonthVolume={lastMonthVolume}
+                    affiliation={affiliation}
                     onUpgradeAccount={onUpgradeAccount}
                     contentClassName="w-100"
                 />

@@ -167,6 +167,8 @@ export const ICONS = {
 	SIDEBAR_ACCOUNT_INACTIVE: '/assets/images/account_2-inactive.svg',
 	SIDEBAR_HOME_ACTIVE: '/assets/images/home-active.svg', // new
 	SIDEBAR_HOME_ACTIVE_INACTIVE: '/assets/images/home-tab-inactive.svg', // new
+	SIDEBAR_POST_ACTIVE: '/assets/images/post-active.svg',
+	SIDEBAR_POST_INACTIVE: '/assets/imagespost-inactive.svg',
 	SIDEBAR_TRADING_ACTIVE: '/assets/images/trade-active.svg',
 	SIDEBAR_TRADING_INACTIVE: '/assets/images/trade-inactive.svg',
 	SIDEBAR_QUICK_TRADING_ACTIVE:
@@ -452,7 +454,9 @@ export const EXPLORERS_ENDPOINT = (currency) => {
 
 export const BALANCE_ERROR = 'Insufficient balance to perform the order';
 
-export const CAPTCHA_SITEKEY = '6LfgB6kUAAAAAAJI6CNSHdLrjDn8iFmZGxQDrcER'; // default recaptcha v3
+export const CAPTCHA_SITEKEY =
+	process.env.REACT_APP_CAPTCHA_SITE_KEY ||
+	'6LfgB6kUAAAAAAJI6CNSHdLrjDn8iFmZGxQDrcER'; // default recaptcha v3; // default recaptcha v3
 
 export const CAPTCHA_TIMEOUT = process.env.REACT_APP_CAPTCHA_TIMEOUT
 	? parseInt(process.env.REACT_APP_CAPTCHA_TIMEOUT, 10)
@@ -499,6 +503,7 @@ export const EXCHANGE_URL = 'https://dash.bitholla.com/';
 export const EXCHANGE_EXPIRY_DAYS = 15;
 export const AFFILIATION_APPLY_URL = 'https://docs.google.com/forms/d/1xf1mHxiTW6YUKVEqvfMJZqygiFxm1P6aUDS7uXe5Ouc/viewform?ts=5d9da3d5&edit_requested=true';
 export const SUPPORT_HELP_URL = 'https://info.hollaex.com/hc/en-us/requests/new';
+export const UPGRADE_ACC_URL = 'https://info.hollaex.com/hc/en-us/articles/360040859954-Upgrading-account-level';
 
 // export const TRADING_ACCOUNT_TYPE = {
 // 	shrimp: {

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import ReactSvg from 'react-svg';
+import moment from 'moment';
 
 import { ICONS } from '../../../config/constants';
 import { getWaveAuction } from '../../../actions/appActions';
@@ -41,7 +42,13 @@ class UpComingWave extends Component {
             updated_at: "TBA"
         };
         const { wave = [] } = this.props;
+		var now = moment(new Date());
         let lastWave = wave.length > 1 ? wave[1] : defaultWave;
+        if (lastWave.created_at) {
+            const lastWaveDifference = moment.duration(now.diff(moment(lastWave.created_at)));
+            const lastWaveTime = lastWaveDifference.format("hh[h]:mm[m]:ss[s]");
+            lastWave = { ...lastWave, created_at: lastWaveTime };
+        }
         this.setState({ waveData: wave.length ? wave[0] : defaultWave, lastWave });
     };
     
@@ -81,7 +88,7 @@ class UpComingWave extends Component {
                             {`${STRINGS.WAVES.LAST_WAVE}:`}
                         </span>
                         <span className="wave-content">
-                            {this.state.lastWave.amount}
+                            {this.state.lastWave.created_at}
                         </span>
                     </div>
                     <div className=" f-1 trade_orderbook-cell mb-3">

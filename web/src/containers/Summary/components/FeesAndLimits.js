@@ -9,17 +9,19 @@ import { ICONS, FEES_LIMIT_SITE_URL } from "../../../config/constants";
 import STRINGS from "../../../config/localizedStrings";
 
 const FeesAndLimits = ({ data, onClose, coins, pairs }) => {
-	const { verification_level } = data;
+	const { verification_level, discount = 0 } = data;
 	const LEVEL_OF_ACCOUNT = STRINGS.formatString(STRINGS.SUMMARY.LEVEL_OF_ACCOUNT, verification_level);
-	console.log('coins', coins, pairs);
+	const Discount_percentage = discount > 0 ? STRINGS.formatString(STRINGS.SUMMARY.DISCOUNT, discount) : null
 	return (
 		<div className="fee-limits-wrapper">
 			<IconTitle
 				text={
-					STRINGS.formatString(
+					<label>{STRINGS.formatString(
 						STRINGS.SUMMARY.FEES_AND_LIMIT,
 						LEVEL_OF_ACCOUNT
-					)}
+					)} {Discount_percentage}
+					</label>
+				}
 				iconPath={ICONS[`LEVEL_ACCOUNT_ICON_${verification_level}`]
 					? ICONS[`LEVEL_ACCOUNT_ICON_${verification_level}`]
 					: ICONS.LEVEL_ACCOUNT_ICON_4}
@@ -51,6 +53,7 @@ const FeesAndLimits = ({ data, onClose, coins, pairs }) => {
 						coins={coins}
 						level={verification_level}
 						pairs={pairs}
+						discount={discount}
 					/>
 				</div>
 			</div>

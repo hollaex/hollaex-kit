@@ -28,6 +28,7 @@ const AccountTypeDetails = ({
 	return (
 		<div className={classnames(className, 'mx-auto')}>
 			<TraderAccounts
+				user={user}
 				coins={coins}
 				pairs={pairs}
 				activeTheme={activeTheme}

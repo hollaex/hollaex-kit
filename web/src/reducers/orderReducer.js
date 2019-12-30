@@ -17,7 +17,10 @@ export default function reducer(state = INITIAL_STATE, action) {
 			if (!newOrder.created_at) {
 				newOrder.created_at = new Date();
 			}
-			return { ...state, activeOrders: [newOrder].concat(state.activeOrders) };
+			return {
+				...state,
+				activeOrders: [newOrder].concat(state.activeOrders)
+			};
 
 		case 'UPDATE_ORDER': {
 			let { order } = action.payload;
@@ -35,7 +38,10 @@ export default function reducer(state = INITIAL_STATE, action) {
 				if (!order.created_at) {
 					order.created_at = new Date();
 				}
-				return { ...state, activeOrders: [order].concat(state.activeOrders) };
+				return {
+					...state,
+					activeOrders: [order].concat(state.activeOrders)
+				};
 			}
 		}
 

@@ -260,13 +260,13 @@ const getStatusClass = (status_code, completed) => {
 	}
 };
 
-const getAllCompleted = (requirement) => {
-	return (
-		Object.keys(requirement).length ===
-		Object.keys(requirement).filter((key) => requirement[key].completed)
-			.length
-	);
-};
+// const getAllCompleted = (requirement) => {
+// 	return (
+// 		Object.keys(requirement).length ===
+// 		Object.keys(requirement).filter((key) => requirement[key].completed)
+// 			.length
+// 	);
+// };
 
 const getStatusIcon = (reqObj, isAccountDetails) => {
 	if (isAccountDetails) {
@@ -303,7 +303,8 @@ const SummaryRequirements = ({
 	verificationLevel,
 	lastMonthVolume,
 	onUpgradeAccount,
-	balance
+	balance,
+	affiliation
 }) => {
 	const {
 		phone_number,
@@ -315,9 +316,9 @@ const SummaryRequirements = ({
 		? verificationLevel || user.verification_level
 		: 2;
 	const requirement = isBonusSection
-		? getBonusRequirements(user, coins)
+		? getBonusRequirements(user, coins, affiliation)
 		: getRequirements(user, selectedLevel, balance, coins);
-	let requirementResolved = getAllCompleted(requirement);
+	// let requirementResolved = getAllCompleted(requirement);
 	return (
 		<div className="d-flex">
 			{(!isAccountDetails && !isBonusSection) ? (
@@ -389,7 +390,7 @@ const SummaryRequirements = ({
 					<div className="mt-2">
 						<Button
 							label={STRINGS.SUMMARY.REQUEST_ACCOUNT_UPGRADE}
-							disabled={!requirementResolved}
+							// disabled={!requirementResolved}
 							onClick={onUpgradeAccount}
 						/>
 					</div>

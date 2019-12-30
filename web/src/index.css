@@ -2705,6 +2705,9 @@ table th {
 .layout-mobile .summary-container .assets-wrapper .price-text {
   font-size: 12px !important; }
 
+.layout-mobile .summary-container .account-details-wrapper .account-type-menu {
+  height: auto !important; }
+
 .summary-container {
   height: inherit;
   max-width: 100%;
@@ -2735,7 +2738,7 @@ table th {
     .summary-container .trader-wrapper-icon svg .hap-icon {
       fill: #000000; }
   .summary-container .trader-account-icon {
-    width: 5rem;
+    width: 4.5rem;
     margin-right: 1rem; }
   .summary-container .trade-account-link {
     color: #0000ff;
@@ -2847,7 +2850,6 @@ table th {
     color: #0000ff;
     cursor: pointer;
     font-weight: bold;
-    padding: .5rem 0;
     text-transform: uppercase; }
     .summary-container .account-details-wrapper .account-type-menu .account-current {
       color: #777677;
@@ -3440,7 +3442,7 @@ table th {
       .sidebar-bottom-wrapper .sidebar-bottom-button.active .sidebar-bottom-icon svg {
         fill: #212121;
         stroke: #212121; }
-        .sidebar-bottom-wrapper .sidebar-bottom-button.active .sidebar-bottom-icon svg .home-icon {
+        .sidebar-bottom-wrapper .sidebar-bottom-button.active .sidebar-bottom-icon svg .post-icon {
           fill: #212121;
           stroke: #212121; }
     .sidebar-bottom-wrapper .sidebar-bottom-button .bottom-bar-text {
@@ -3689,6 +3691,10 @@ table th {
     margin-right: 0.5rem;
     position: relative;
     top: calc(50% - 0.6rem); }
+  .dark-theme .app_bar .app-bar-account-moon-icon svg .moon-icon {
+    fill: white; }
+  .dark-theme .app_bar .app-bar-account-moon-content {
+    background-color: #202020; }
 
 .dark-theme .app-menu-bar {
   background: #2b2b2b !important;
@@ -3887,9 +3893,12 @@ table th {
   .app_bar .app-bar-account-moon-icon {
     margin: .2rem .3rem 0 .3rem;
     width: 1rem; }
+    .app_bar .app-bar-account-moon-icon svg .moon-icon {
+      fill: #000000; }
   .app_bar .app-bar-account-moon-content {
     border: 1px solid #808080;
-    border-radius: 5px; }
+    border-radius: 5px;
+    background-color: white; }
   .app_bar .app_bar-pair-content .btc0,
   .app_bar .app_bar-pair-content .btc1,
   .app_bar .app_bar-pair-content .eth0,
@@ -5001,6 +5010,8 @@ table th {
 
 .dark-theme .new-order-notification svg {
   fill: white; }
+  .dark-theme .new-order-notification svg .newWave-icon {
+    fill: white; }
 
 .dark-theme .notification-wrapper {
   color: #808080; }
