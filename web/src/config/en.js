@@ -45,8 +45,9 @@ export default {
 	NO_OPTIONS: 'No options availables',
 	SECONDS: 'seconds',
 	VIEW_MARKET: 'view market', // new
-	GO_TRADE: 'Go Trade', // new
-	VIEW_INFO: 'View info page', // new
+	GO_TRADE:'Go Trade', // new
+	VIEW_INFO:'View info page', // new
+	APPLY_HERE: 'Apply Here', // new
 	HOME: {
 		SECTION_1_TITLE: 'Welcome to HollaEx Exchange Kit!',
 		SECTION_1_TEXT_1:
@@ -500,8 +501,8 @@ export default {
 					ID: 'ID',
 					PASSPORT: 'Passport'
 				},
-				ID_NUMBER_LABEL: 'ID Document Number',
-				ID_NUMBER_PLACEHOLDER: 'Type the documents number',
+				ID_NUMBER_LABEL: 'Passport Number',
+				ID_NUMBER_PLACEHOLDER: 'Type your passport number',
 				ID_PASSPORT_NUMBER_LABEL: 'Passport Number',
 				ID_PASSPORT_NUMBER_PLACEHOLDER: 'Type your passport number',
 				ISSUED_DATE_LABEL: 'ID Document Issue Date',
@@ -529,11 +530,11 @@ export default {
 					LIST_ITEM_2: 'VISIBLE IN THEIR ENTIRETY (watermarks are permitted).',
 					LIST_ITEM_3: 'VALID, with the expiry date clearly visible.',
 					WARNING_1:
-						'Only a valid government-issued identification document is acceptedt; high quality photos or scanned images of these documents are acceptable:',
+						'Only a valid passport is acceptedt; high quality photos or scanned images of these documents are acceptable:',
 					WARNING_2:
 						'Make sure you are uploading your own documents. Any usage of wrong or fake documents will have legal consequences and result in freezing your account immediately.',
 					WARNING_3:
-						'Please do not submit the identity document as your proof of residence.'
+						'Please do not submit the passport as your proof of residence.'
 				},
 				POR: {
 					SECTION_1_TEXT_1:
@@ -556,15 +557,15 @@ export default {
 				SELFIE: {
 					TITLE: 'Selfie with passport and Note',
 					INFO_TEXT:
-						"Please provide a photo of you holding your passport or photo ID. In the same picture and have a reference to hollaex.com’, today's date and your signature displayed.Make sure your face is clearly visible and that your ID details are clearly readable.",
+						"Please provide a photo of you holding your passport. In the same picture and have a reference to hollaex.com’, today's date and your signature displayed.Make sure your face is clearly visible and that your ID details are clearly readable.",
 					REQUIRED: 'Required:',
 					INSTRUCTION_1: 'Your face clearly visable',
-					INSTRUCTION_2: 'Photo ID clearly readable',
+					INSTRUCTION_2: 'Passport clearly readable',
 					INSTRUCTION_3: 'Write the word hollaex.com',
 					INSTRUCTION_4: "Write today's date",
 					INSTRUCTION_5: 'Write your signature',
 					WARNING:
-						'Selfie with a different inconsistent ID with uploaded content will be rejected'
+						'Selfie with a different passport with uploaded content will be rejected'
 				}
 			}
 		},
@@ -646,7 +647,7 @@ export default {
 		}
 	},
 	TRANSACTION_HISTORY: {
-		TITLE: 'Transactions  History',
+		TITLE: 'History',
 		TITLE_TRADES: 'Trades  History',
 		TITLE_DEPOSITS: 'Deposits  History',
 		TITLE_WITHDRAWALS: 'Withdrawals  History',
@@ -759,6 +760,10 @@ export default {
 	PUBLIC_SALES: 'public sales', // ToDo
 	REMAINING: 'Remaining',
 	FULLFILLED: '{0} % Fullfilled',
+	FILLED: 'Filled', // new
+	LOWEST_PRICE: 'Lowest Price ({0})', // new
+	PHASE: 'Phase', // new
+	INCOMING: 'Incoming', // new
 	PRICE_CURRENCY: 'PRICE ({0})',
 	AMOUNT_SYMBOL: 'AMOUNT ({0})',
 	MARKET_PRICE: 'Market Price',
@@ -940,6 +945,7 @@ export default {
 	CHECK_ORDER: 'Check and confirm your order',
 	CHECK_ORDER_TYPE: '{0} {1}', // 0 -> maker/limit  1 -> sell/buy
 	CONFIRM_TEXT: 'Confirm',
+	GOTO_XHT_MARKET: 'Go to XHT market', // new
 	INVALID_CAPTCHA: 'Invalid captcha',
 	NO_FEE: 'N/A',
 	SETTINGS_LANGUAGE_LABEL: 'Language preferences (Includes Emails)',
@@ -1122,6 +1128,7 @@ export default {
 		ACCOUNT_DETAILS_TXT_4:
 			'Periodic downgrading of accounts will occur if activity and assets are not maintained.',
 		REQUIREMENTS: 'Requirements',
+		ONE_REQUIREMENT: 'One Requirement only:', // new
 		REQUEST_ACCOUNT_UPGRADE: 'Request an Account Upgrade',
 		FEES_AND_LIMIT: 'Fee and Limit Structure for {0}',
 		FEES_AND_LIMIT_TXT_1:
@@ -1143,50 +1150,76 @@ export default {
 		ACCOUNT_AGE_OF_MONTHS: 'Account Age of {0} Months',
 		TRADING_VOLUME_EQUIVALENT: '{0} {1} Trading Volume Equivalent',
 		LEVEL_OF_ACCOUNT: 'Level {0} Account',
-		LEVEL_TXT_DEFAULT: 'Add your level description here',
-		LEVEL_1_TXT:
-			'Your trading journey begins here! Profits await.Upgrades your account to unlock withdrawals and favorable fees by verifying your account.',
-		LEVEL_2_TXT:
-			'Congrats on getting your account verified. Keep trading and apply for an account upgrade to get lower trading fees and larger withdrawal and deposit limits.',
-		LEVEL_3_TXT:
-			'You’ve come far comrade and have traded well.Keep trading and reach the highest rank and enjoy even lower fees and higher limits.',
-		LEVEL_4_TXT:
-			'You are a masters trader and have reached the peek. To maintain your rank keep your trading volume high and healthy.',
+		LEVEL_TXT_DEFAULT:'Add your level description here',
+		LEVEL_1_TXT: 'Your journey starts here young crypto trader! To obtain bonuses you can verify your identiﬁcation and also get larger deposit and withdraw limits with reduced trading fees.', // new
+		LEVEL_2_TXT: 'Simply trade monthly over $3,000 USDT worth or have balance of over 5,000 XHT and enjoy lower trading fees.', // new
+		LEVEL_3_TXT: 'This is where things get real! Enjoy reduced trading fees and large deposit and withdrawal limits. To get to level 3 you must complete your veriﬁcation', // new
+		LEVEL_4_TXT: 'Simply trade monthly over $10,000 USDT worth or have balance of over 10,000 XHT and enjoy lower trading fees.', // new
+		LEVEL_5_TXT: 'You’ve made it! The level 5 account is a rare account only for exchange operators, Vault users or HollaEx Affiliate Program (HAP). Enjoy large limits and enjoy zero maker fees.', // new
+		LEVEL_6_TXT: 'Simply trade monthly over $300,000 USDT worth or have balance of over 100,000 XHT and enjoy lower trading fees. Increased withdraw amount.', // new
+		LEVEL_7_TXT: 'Simply trade monthly over $500,000 USDT worth or have balance of over 300,000 XHT and enjoy lower trading fees. Increased withdraw amount.', // new
+		LEVEL_8_TXT: 'Simply trade monthly over $600,000 USDT worth or have balance of over 400,000 XHT and enjoy lower trading fees.', // new
+		LEVEL_9_TXT: 'Simply trade monthly over $2,000,000 USDT worth or have balance of over 1,000,000 XHT and enjoy lower trading fees.', // new
+		LEVEL_10_TXT: 'The whale trader account that earns you money back for market making. To obtain this special account please get in touch with us.', // new
 		CURRENT_TXT: 'Current',
-		TRADER_ACCOUNT_XHT_TEXT:
-			'Earn up to 10% in commissions through distributing the HollaEx Kit. Alternatively you can earn XHT daily through staking your HollaEx token when running your own exchange.',
-		TRADER_ACCOUNT_TITLE: 'Account', // new
+		TRADER_ACCOUNT_XHT_TEXT: 'Your account is in the presale period of XHT, this means you can obtain XHT for $0.10 per XHT. All deposit will be converted to XHT once the transaction has cleared.',
+		TRADER_ACCOUNT_TITLE: 'Account - Presale Period', // new
 		HAP_ACCOUNT: 'HAP Account', // new
-		HAP_ACCOUNT_TXT:
-			'Your account is a verified HollaEx affiliate program account. You can now earn trading commissions for every person you invite to the platform' // new
+		HAP_ACCOUNT_TXT: 'Your account is a verified HollaEx affiliate program account. You can now earn 10% bonus for every person you invite that buys XHT.', // new
+		EMAIL_VERIFICATION: 'Email Verification', // new
+		DOCUMENTS: 'Documents', // new
+		HAP_TEXT: 'HollaEx Affiliate Program (HAP) {0}', // new
+		LOCK_AN_EXCHANGE: 'Lock an Exchange {0}', // new
+		WALLET_SUBSCRIPTION_USERS: 'Vault Subscription users {0}', // new
+		TRADE_OVER_XHT: 'Trade over {0} USDT worth', // new
+		TRADE_OVER_BTC: 'Trade over {0} BTC worth', // new
+		XHT_IN_WALLET: '{0} XHT in wallet', // new
+		REWARDS_BONUS: 'Rewards and Bonuses', // new
+		COMPLETE_TASK_DESC: 'Complete tasks and earn bonuses worth over $10,000.', // new
+		TASKS: 'Tasks', // new
+		MAKE_FIRST_DEPOSIT: 'Make your first deposit receive 1 XHT', // new
+		BUY_FIRST_XHT: 'Buy your first XHT and receive a bonus of 5 XHT', // new
+		COMPLETE_ACC_VERIFICATION: 'Complete account verification and get a 20 XHT bonus', // new
+		INVITE_USER: 'Invite users and enjoy commissions from their trade', // new
+		JOIN_HAP: 'Join HAP and earn 10% for every HollaEx Kit you sell', // new
+		EARN_RUNNING_EXCHANGE: 'Earn passive income for running your own exchange', // new
+		XHT_WAVE_AUCTION: 'XHT Wave Auction Data', // new
+		XHT_WAVE_DESC_1: 'The distribution of the HollaEx token (XHT) is done through a Wave Auction.', // new
+		XHT_WAVE_DESC_2: 'The Wave Auction sells a random amount of XHT at random times to the highest bidders on the orderbook', // new
+		XHT_WAVE_DESC_3: 'Below displays the historic data on the Wave Auction history', // new
+		WAVE_AUCTION_PHASE: 'Wave Auction Phase {0}', // new
+		LEARN_MORE_WAVE_AUCTION: 'Learn more about the Wave Auction', // new
+		WAVE_NUMBER: 'Wave Number', // new
+		DISCOUNT: '( {0}% discount )', // new
+		MY_FEES_LIMITS: ' My Fees and Limits' // new
 	},
 	REFERRAL_LINK: {
 		TITLE: 'Invite your friend', // new
-		INFO_TEXT: 'Refer your friends by giving out this link.', // new
-		INFO_TEXT_1: 'Send thm this affiliation link and get them onboard', // new
+		INFO_TEXT: 'Refer your friends by giving out this link. Your friends will receive {0}% discount by signing up through your link.', // new
+		INFO_TEXT_1: '{0}% of trading fees collected from those you refer will be monthly credited to your account.', // new
 		COPY_FIELD_LABEL: 'Share the link below with friends and earn commissions:', // new
 		REFERRED_USER_COUT: 'You have referred {0} users', // new
 		COPY_LINK_BUTTON: 'COPY REFERRAL LINK', // new
-		XHT_TITLE: 'EARN 10% IN COMMISSIONS', // new
+		XHT_TITLE: 'MY REFERRALS', // new
 		XHT_INFO_TEXT: 'Earn commissions by inviting your friends.', // new
 		XHT_INFO_TEXT_1: 'Commissions are paid periodically to your wallet', // new
 		APPLICATION_TXT:
 			'To become a HollaEx Kit distributor please fill out an application.', // new
 		TOTAL_REFERRAL: 'Total bought from referrals:', // new
 		PENDING_REFERRAL: 'Commissions Pending:', // new
-		EARN_REFERRAL: 'Commissions Earnt:', // new
+		EARN_REFERRAL: 'Commissions Earn:', // new
 		XHT_COUNT: '{0} XHT', // new
 		APPLY_BUTTON: 'APPLY' // new
 	},
 	STAKE_TOKEN: {
 		TITLE: 'Stake HollaEx Token', // new
 		INFO_TXT1:
-			'For every user of the HollaEx Exchange Kit there are HollaEx tokens collateralized to run the exchange software.', // new
+			'HollaEx tokens (XHT) are required to be collateralized (staked) to run the HollaEx Kit exchange software.', // new
 		INFO_TXT2:
-			'You can collateralize your HollaEx token in a similar fashion to staking and earn XHT not sold during the Wave Auction.', // new
+			'You can collateralize your HollaEx token in a similar fashion and earn XHT not sold during the Wave Auction.', // new
 		INFO_TXT3:
 			'Simply go to dash.bitholla.com and collateralize your own exchange today and earn free XHT', // new
-		BUTTON_TXT: 'GO TO DASH' // new
+		BUTTON_TXT: 'FIND OUT MORE' // new
 	},
 	TERMS_OF_SERVICES: {
 		// new
@@ -1224,10 +1257,11 @@ export default {
 	},
 	WAVES: {
 		// new
-		NEXT_WAVE: 'Next Wave :',
-		WAVE_AMOUNT: 'Amount in Wave :',
-		FLOOR: 'Floor :',
-		LAST_WAVE: 'Last wave:'
+		TITLE: 'Wave Info',
+		NEXT_WAVE: 'Next Wave',
+		WAVE_AMOUNT: 'Amount in Wave',
+		FLOOR: 'Floor',
+		LAST_WAVE: 'Last wave'
 	},
 	TYPES_OF_POSTS: {
 		// new
@@ -1264,8 +1298,8 @@ export default {
 		ANNOUNCEMENT: 'Announcement',
 		ANNOUNCEMNT_TXT_3:
 			'Public launch and Wave Auction is rescheduled to January 1st 2020. Wallet deposit and withdrawals are now open.',
-		ANNOUNCEMNT_TXT_2:
-			'Public wave auction is starting from December 18th, 2019 1pm UTC. You can deposit and start placing bids at anytime and purchase XHT.',
+		ANNOUNCEMNT_TXT_4:
+			'Happy new year Hollaers. We are making a new mark starting from 2020 with launch of the most open trading platform with the help of you all.',
 		ANNOUNCEMNT_TXT_1:
 			'Earn XHT with HAP program by introducing your friends to hollaex.com. {0}.',
 		DEFAULT_ANNOUNCEMENT:
@@ -1273,5 +1307,7 @@ export default {
 		ANNOUNCEMENT_TXT_2: 'Free XHT will be distributed to all wallets that {0}.',
 		LEARN_MORE: 'Learn more',
 		APPLY_TODAY: 'Apply today' // new
-	}
+	},
+	OPEN_WALLET: 'Open wallet', // new
+	AGO: 'ago', // new
 };

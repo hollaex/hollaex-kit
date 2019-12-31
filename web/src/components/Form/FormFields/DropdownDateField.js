@@ -86,7 +86,12 @@ class DropdownDateField extends Component {
 			month: moment.months(),
 			day: range(1, date.daysInMonth() + 1)
 		};
-
+		display.ko = {
+			...limits.en,
+			month: moment.months(),
+			day: range(1, date.daysInMonth() + 1)
+		};
+		console.log(display);
 		moment.locale(language);
 		this.setState({ display, date, unixtime: date.valueOf(), language });
 	};
@@ -109,6 +114,7 @@ class DropdownDateField extends Component {
 	};
 
 	renderFields = (date, options, valid = false, formats, disabled) => {
+		console.log(formats);
 		return (
 			<div className="datefield-values-wrapper">
 				{FIELDS.map(({ key, format }, index) => {
@@ -131,7 +137,11 @@ class DropdownDateField extends Component {
 
 	render() {
 		const { display, date, language } = this.state;
-		const { meta: { invalid }, disabled = false } = this.props;
+		console.log(display, display[language]);
+		const {
+			meta: { invalid },
+			disabled = false
+		} = this.props;
 		return (
 			<FieldWrapper
 				{...this.props}
@@ -144,7 +154,7 @@ class DropdownDateField extends Component {
 						date,
 						display[language],
 						!invalid,
-						FORMATS[language],
+						FORMATS['en'],
 						disabled
 					)}
 			</FieldWrapper>

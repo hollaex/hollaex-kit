@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import IconTitle from '../IconTitle';
 import DumbField from '../Form/FormFields/DumbField';
 import Button from '../Button';
-import { ICONS, IS_XHT, AFFILIATION_APPLY_URL } from '../../config/constants';
+import { ICONS } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 import { getUserReferralCount } from '../../actions/userAction';
 
@@ -29,6 +29,7 @@ class InviteFriends extends Component {
         const { affiliation, is_hap } = this.props;
         const referralLink = `${process.env.REACT_APP_PUBLIC_URL}/signup?affiliation_code=${affiliation_code}`;
         const affiliationCount = affiliation.count ? affiliation.count : 0;
+        const discount = is_hap ? 30 : 10;
         return (
             <div className='invite_friends_wrapper mx-auto'>
                 <IconTitle
@@ -40,22 +41,19 @@ class InviteFriends extends Component {
                 />
                 <div>
                     <div className='my-2'>
-                        <div>{STRINGS.REFERRAL_LINK.INFO_TEXT}</div>
-                        <div>{STRINGS.REFERRAL_LINK.INFO_TEXT_1}</div>
+                        <div>{STRINGS.formatString(STRINGS.REFERRAL_LINK.INFO_TEXT, discount)}</div>
+                        <div>{STRINGS.formatString(STRINGS.REFERRAL_LINK.INFO_TEXT_1, discount)}</div>
                     </div>
                     <div className='my-4'>
-                        {
-                            (!IS_XHT || is_hap) ?
-                                <RenderDumbField
-                                    label={STRINGS.REFERRAL_LINK.COPY_FIELD_LABEL}
-                                    value={referralLink}
-                                    fullWidth={true}
-                                    allowCopy={true}
-                                    copyOnClick={true}
-                                    onCopy={this.handleCopy}
-                                />
-                                : <div className='mt-2'>{STRINGS.REFERRAL_LINK.APPLICATION_TXT}</div>
-                        }
+                        <RenderDumbField
+                            label={STRINGS.REFERRAL_LINK.COPY_FIELD_LABEL}
+                            value={referralLink}
+                            fullWidth={true}
+                            allowCopy={true}
+                            copyOnClick={true}
+                            onCopy={this.handleCopy}
+                        />
+                        
                     </div>
                     <div className="user_refer_info p-4 d-flex align-items-center">
                         {STRINGS.formatString(
@@ -69,7 +67,6 @@ class InviteFriends extends Component {
                             className="mr-5"
                             onClick={this.props.onBack}
                         />
-                        {(!IS_XHT || is_hap) ?
                             <CopyToClipboard
                                 text={referralLink}
                                 onCopy={this.handleCopy}>
@@ -78,17 +75,6 @@ class InviteFriends extends Component {
                                     onClick={() => { }}
                                 />
                             </CopyToClipboard>
-                            :
-                            <a
-                                className="exir-button mdc-button mdc-button--unelevated exir-button-font"
-                                href={AFFILIATION_APPLY_URL}
-                                target='blank'>
-                                <Button
-                                    label={STRINGS.REFERRAL_LINK.APPLY_BUTTON}
-                                    onClick={() => { }}
-                                />
-                            </a>
-                        }
                     </div>
                 </div>
             </div>

@@ -28,7 +28,7 @@ const StakeToken = ({ onBack }) => {
                     />
                     <a
                         className="exir-button mdc-button mdc-button--unelevated exir-button-font"
-                        href="https://dash.bitholla.com"
+                        href="https://info.hollaex.com/hc/en-us/articles/360040097453-How-can-I-stake-collateralize-HollaEx-Token-XHT"
                         target='blank'>
                         <Button
                             label={STRINGS.STAKE_TOKEN.BUTTON_TXT}

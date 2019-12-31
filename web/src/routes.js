@@ -86,7 +86,7 @@ function requireAuth(nextState, replace) {
 	if (!isLoggedIn()) {
 		if (isMobile) {
 			replace({
-				pathname: '/'
+				pathname: '/login'
 			});
 		} else {
 			replace({
@@ -102,15 +102,15 @@ function loggedIn(nextState, replace) {
 		? nextState.location.query.service
 		: '';
 	if (isLoggedIn() && !service) {
-		if (isMobile) {
-			replace({
-				pathname: '/home'
-			});
-		} else {
+		// if (isMobile) {
+		// 	replace({
+		// 		pathname: '/home'
+		// 	});
+		// } else {
 			replace({
 				pathname: '/trade/xht-usdt'
 			});
-		}
+		// }
 	}
 }
 
@@ -164,9 +164,9 @@ function withAdminProps(Component, key) {
 
 export default (
 	<Router history={browserHistory}>
-		{isMobile ? <Route path="/" name="Home" component={MobileHome} {...noAuthRoutesCommonProps} /> : null}
 		<Route path="lang/:locale" component={createLocalizedRoutes} />
 		<Route component={AuthContainer} {...noAuthRoutesCommonProps}>
+	    	{isMobile ? <Route path="/" name="Login" component={Login} {...noAuthRoutesCommonProps} /> : null}
 			<Route path="login" name="Login" component={Login} />
 			<Route path="signup" name="signup" component={Signup} />
 		</Route>

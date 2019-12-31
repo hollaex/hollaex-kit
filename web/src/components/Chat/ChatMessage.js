@@ -64,7 +64,7 @@ class ChatMessageWithText extends Component {
 			to,
 			messageContent,
 			ownMessage,
-			timestamp,
+			// timestamp,
 			verification_level,
 			is_hap
 		} = this.props;
@@ -110,7 +110,6 @@ class ChatMessageWithText extends Component {
 									</TruncateMarkup>
 								</div>
 							)}
-						<Timestamp timestamp={timestamp} />
 					</div>
 				</div>
 			</div>

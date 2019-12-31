@@ -7,10 +7,12 @@ import classnames from 'classnames';
 
 import SummaryBlock from './components/SummaryBlock';
 import TraderAccounts from './components/TraderAccounts';
-import SummaryRequirements from './components/SummaryRequirements';
+// import SummaryRequirements from './components/SummaryRequirements';
 import AccountAssets from './components/AccountAssets';
 import TradingVolume from './components/TradingVolume';
 import AccountDetails from './components/AccountDetails';
+import RewardsBonus from './components/RewardsBonus';
+import AccountWaveAuction from './components/AccountWaveAuction';
 import MobileSummary from './MobileSummary';
 
 import { IconTitle } from '../../components';
@@ -19,9 +21,10 @@ import { openFeesStructureandLimits, openContactForm, logoutconfirm, setNotifica
 import {
     BASE_CURRENCY,
     DEFAULT_COIN_DATA,
-    SHOW_SUMMARY_ACCOUNT_DETAILS,
+    // SHOW_SUMMARY_ACCOUNT_DETAILS,
     SHOW_TOTAL_ASSETS,
-    IS_XHT
+    IS_XHT,
+    UPGRADE_ACC_URL
 } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 import {
@@ -34,6 +37,7 @@ import {
     calculatePricePercentage
 } from '../../utils/currency';
 import { getLastMonthVolume } from './components/utils';
+import { getUserReferralCount } from '../../actions/userAction';
 
 class Summary extends Component {
     state = {
@@ -51,6 +55,7 @@ class Summary extends Component {
         if (user.id) {
             this.calculateSections(this.props);
             this.setCurrentTradeAccount(user);
+            this.props.getUserReferralCount();
         }
         if (tradeVolumes.fetched) {
             let lastMonthVolume = getLastMonthVolume(tradeVolumes.data, prices, pairs);
@@ -77,15 +82,20 @@ class Summary extends Component {
             let lastMonthVolume = getLastMonthVolume(nextProps.tradeVolumes.data, nextProps.prices, nextProps.pairs);
             this.setState({ lastMonthVolume });
         }
+        if (nextProps.user.id !== this.props.user.id
+            && nextProps.user.id) {
+                this.props.getUserReferralCount();
+        }
     }
 
     logoutConfirm = () => {
         this.props.logoutconfirm()
     }
 
-    onFeesAndLimits = tradingAccount => {
+    onFeesAndLimits = (tradingAccount, discount) => {
         this.props.openFeesStructureandLimits({
-            verification_level: tradingAccount
+            verification_level: tradingAccount,
+            discount: discount
         });
     };
 
@@ -94,7 +104,10 @@ class Summary extends Component {
     };
 
     onUpgradeAccount = () => {
-        this.props.openContactForm({ category: 'level' });
+        // this.props.openContactForm({ category: 'level' });
+        if (window) {
+            window.open(UPGRADE_ACC_URL, '_blank');
+        }
     };
 
     calculateSections = ({ price, balance, orders, prices, coins }) => {
@@ -132,13 +145,23 @@ class Summary extends Component {
     };
 
     render() {
-        const { user, balance, activeTheme, pairs, coins, isValidBase, verification_level, config_level } = this.props;
+        const {
+            user,
+            balance,
+            activeTheme,
+            pairs,
+            coins,
+            isValidBase,
+            verification_level,
+            config_level,
+            affiliation
+        } = this.props;
         const { selectedAccount, chartData, totalAssets, lastMonthVolume } = this.state;
         const { fullname } = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
         let traderAccTitle = STRINGS.formatString(STRINGS.SUMMARY.LEVEL_OF_ACCOUNT, verification_level);
-        if (IS_XHT) {
-            traderAccTitle = user.is_hap ? STRINGS.SUMMARY.HAP_ACCOUNT : STRINGS.SUMMARY.TRADER_ACCOUNT_TITLE
-        }
+        // if (IS_XHT) {
+        //     traderAccTitle = user.is_hap ? STRINGS.SUMMARY.HAP_ACCOUNT : STRINGS.SUMMARY.TRADER_ACCOUNT_TITLE
+        // }
         return (
             <div className="summary-container">
                 {!isMobile && <IconTitle
@@ -160,6 +183,7 @@ class Summary extends Component {
                         totalAssets={totalAssets}
                         lastMonthVolume={lastMonthVolume}
                         traderAccTitle={traderAccTitle}
+                        affiliation={affiliation}
                         onInviteFriends={this.onInviteFriends}
                         onFeesAndLimits={this.onFeesAndLimits}
                         onUpgradeAccount={this.onUpgradeAccount}
@@ -185,12 +209,15 @@ class Summary extends Component {
                             </div>
                             <div className="summary-section_1 requirement-wrapper d-flex">
                                 <SummaryBlock
-                                    title={STRINGS.SUMMARY.URGENT_REQUIREMENTS}
+                                    title={STRINGS.SUMMARY.REWARDS_BONUS}
                                     wrapperClassname="w-100" >
-                                    <SummaryRequirements
+                                    <RewardsBonus
                                         coins={coins}
                                         user={user}
+                                        balance={balance}
                                         lastMonthVolume={lastMonthVolume}
+                                        affiliation={affiliation}
+                                        onUpgradeAccount={this.onUpgradeAccount}
                                         contentClassName="requirements-content" />
                                 </SummaryBlock>
                             </div>
@@ -200,10 +227,7 @@ class Summary extends Component {
                                 className={
                                     classnames(
                                         "assets-wrapper",
-                                        "asset_wrapper_width",
-                                        {
-                                            'xht_asset_wrapper_width': !SHOW_SUMMARY_ACCOUNT_DETAILS,
-                                        }
+                                        "asset_wrapper_width"
                                     )}>
                                 <SummaryBlock
                                     title={STRINGS.SUMMARY.ACCOUNT_ASSETS}
@@ -217,7 +241,7 @@ class Summary extends Component {
                                             </span>
                                             : null
                                     }
-                                    wrapperClassname={classnames({ 'w-100': !SHOW_SUMMARY_ACCOUNT_DETAILS })}
+                                    // wrapperClassname={classnames({ 'w-100': !SHOW_SUMMARY_ACCOUNT_DETAILS })}
                                 >
                                     <AccountAssets
                                         user={user}
@@ -228,46 +252,49 @@ class Summary extends Component {
                                         activeTheme={activeTheme} />
                                 </SummaryBlock>
                             </div>
-                            {SHOW_SUMMARY_ACCOUNT_DETAILS
-                                ? <div className="trading-volume-wrapper">
-                                    <SummaryBlock
-                                        title={STRINGS.SUMMARY.TRADING_VOLUME}
-                                        secondaryTitle={<span>
+                            <div className="trading-volume-wrapper">
+                                <SummaryBlock
+                                    title={IS_XHT
+                                        ? STRINGS.SUMMARY.XHT_WAVE_AUCTION
+                                        : STRINGS.SUMMARY.TRADING_VOLUME
+                                    }
+                                    secondaryTitle={IS_XHT
+                                        ? ''
+                                        : <span>
                                             <span className="title-font">
                                                 {` ${formatAverage(formatBaseAmount(lastMonthVolume))}`}
                                             </span>
                                             {` ${fullname} ${STRINGS.formatString(STRINGS.SUMMARY.NOMINAL_TRADING_WITH_MONTH, moment().subtract(1, "month").startOf("month").format('MMMM')).join('')}`}
                                         </span>
-                                        }
-                                    >
-                                        <TradingVolume user={user} />
-                                    </SummaryBlock>
-                                </div>
-                                : null
-                            }
-                        </div>
-                        {SHOW_SUMMARY_ACCOUNT_DETAILS
-                            ? <div className="d-flex align-items-center">
-                                <SummaryBlock
-                                    title={STRINGS.SUMMARY.ACCOUNT_DETAILS}
-                                    secondaryTitle={traderAccTitle}
-                                    wrapperClassname="w-100" >
-                                    <AccountDetails
-                                        user={user}
-                                        coins={coins}
-                                        pairs={pairs}
-                                        activeTheme={activeTheme}
-                                        selectedAccount={selectedAccount}
-                                        lastMonthVolume={lastMonthVolume}
-                                        onAccountTypeChange={this.onAccountTypeChange}
-                                        onFeesAndLimits={this.onFeesAndLimits}
-                                        onUpgradeAccount={this.onUpgradeAccount}
-                                        config={config_level}
-                                        verification_level={verification_level} />
+                                    }
+                                >
+                                    {IS_XHT
+                                        ? <AccountWaveAuction user={user} />
+                                        : <TradingVolume user={user} />
+                                    }
                                 </SummaryBlock>
                             </div>
-                            : null
-                        }
+                        </div>
+                        <div className="d-flex align-items-center">
+                            <SummaryBlock
+                                title={STRINGS.SUMMARY.ACCOUNT_DETAILS}
+                                secondaryTitle={traderAccTitle}
+                                wrapperClassname="w-100" >
+                                <AccountDetails
+                                    user={user}
+                                    coins={coins}
+                                    pairs={pairs}
+                                    balance={balance}
+                                    activeTheme={activeTheme}
+                                    selectedAccount={selectedAccount}
+                                    lastMonthVolume={lastMonthVolume}
+                                    onAccountTypeChange={this.onAccountTypeChange}
+                                    onFeesAndLimits={this.onFeesAndLimits}
+                                    onUpgradeAccount={this.onUpgradeAccount}
+                                    config={config_level}
+                                    verification_level={verification_level} />
+                            </SummaryBlock>
+                        </div>
                     </div>)
                 }
             </div>
@@ -290,7 +317,8 @@ const mapStateToProps = (state) => ({
     tradeVolumes: state.user.tradeVolumes,
     isValidBase: state.app.isValidBase,
     config: state.app.config,
-    config_level: state.app.config_level
+    config_level: state.app.config_level,
+    affiliation: state.user.affiliation
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -298,7 +326,8 @@ const mapDispatchToProps = (dispatch) => ({
     logout: bindActionCreators(logout, dispatch),
     openFeesStructureandLimits: bindActionCreators(openFeesStructureandLimits, dispatch),
     openContactForm: bindActionCreators(openContactForm, dispatch),
-    setNotification: bindActionCreators(setNotification, dispatch)
+    setNotification: bindActionCreators(setNotification, dispatch),
+    getUserReferralCount: bindActionCreators(getUserReferralCount, dispatch)
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Summary);
