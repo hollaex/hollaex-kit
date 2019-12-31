@@ -167,6 +167,8 @@ export const ICONS = {
 	SIDEBAR_ACCOUNT_INACTIVE: '/assets/images/account_2-inactive.svg',
 	SIDEBAR_HOME_ACTIVE: '/assets/images/home-active.svg', // new
 	SIDEBAR_HOME_ACTIVE_INACTIVE: '/assets/images/home-tab-inactive.svg', // new
+	SIDEBAR_POST_ACTIVE: '/assets/images/post-active.svg',
+	SIDEBAR_POST_INACTIVE: '/assets/imagespost-inactive.svg',
 	SIDEBAR_TRADING_ACTIVE: '/assets/images/trade-active.svg',
 	SIDEBAR_TRADING_INACTIVE: '/assets/images/trade-inactive.svg',
 	SIDEBAR_QUICK_TRADING_ACTIVE:
@@ -250,6 +252,12 @@ export const ICONS = {
 	LEVEL_ACCOUNT_ICON_2: '/assets/images/level-2.svg',
 	LEVEL_ACCOUNT_ICON_3: '/assets/images/level-3.svg',
 	LEVEL_ACCOUNT_ICON_4: '/assets/images/level-4.svg',
+	LEVEL_ACCOUNT_ICON_5: '/assets/images/level-5.svg',
+	LEVEL_ACCOUNT_ICON_6: '/assets/images/level-6.svg',
+	LEVEL_ACCOUNT_ICON_7: '/assets/images/level-7.svg',
+	LEVEL_ACCOUNT_ICON_8: '/assets/images/level-8.svg',
+	LEVEL_ACCOUNT_ICON_9: '/assets/images/level-9.svg',
+	LEVEL_ACCOUNT_ICON_10: '/assets/images/level-10.svg',
 	HAP_ACCOUNT_ICON: '/assets/icons/hap-account-icon.svg',
 	ACCOUNT_SUMMARY: '/assets/icons/account-icon-summary.svg',
 	XHT_COIN_STACK: '/assets/images/XHT-coin-stack.svg',
@@ -266,6 +274,7 @@ export const ICONS = {
 	TRADE_WAVES:'/assets/images/wave-icon.svg',
 	XHT_LOGO_LIGHT:'/assets/icons/XHT-logo-light.svg',
 	XHT_LOGO_DARK:'/assets/icons/XHT-logo-dark.svg',
+	BONUS_OFFERING:'/assets/icons/bonus_offering.svg',
 	UP_ARROW:'/assets/images/buy-trade.svg',
 	DOWN_ARROW:'/assets/images/sell-trade.svg',
 	MOON_THEME:'/assets/icons/moon-theme.svg'
@@ -447,7 +456,7 @@ export const BALANCE_ERROR = 'Insufficient balance to perform the order';
 
 export const CAPTCHA_SITEKEY =
 	process.env.REACT_APP_CAPTCHA_SITE_KEY ||
-	'6LfgB6kUAAAAAAJI6CNSHdLrjDn8iFmZGxQDrcER'; // default recaptcha v3
+	'6LfgB6kUAAAAAAJI6CNSHdLrjDn8iFmZGxQDrcER'; // default recaptcha v3; // default recaptcha v3
 
 export const CAPTCHA_TIMEOUT = process.env.REACT_APP_CAPTCHA_TIMEOUT
 	? parseInt(process.env.REACT_APP_CAPTCHA_TIMEOUT, 10)
@@ -494,6 +503,7 @@ export const EXCHANGE_URL = 'https://dash.bitholla.com/';
 export const EXCHANGE_EXPIRY_DAYS = 15;
 export const AFFILIATION_APPLY_URL = 'https://docs.google.com/forms/d/1xf1mHxiTW6YUKVEqvfMJZqygiFxm1P6aUDS7uXe5Ouc/viewform?ts=5d9da3d5&edit_requested=true';
 export const SUPPORT_HELP_URL = 'https://info.hollaex.com/hc/en-us/requests/new';
+export const UPGRADE_ACC_URL = 'https://info.hollaex.com/hc/en-us/articles/360040859954-Upgrading-account-level';
 
 // export const TRADING_ACCOUNT_TYPE = {
 // 	shrimp: {

@@ -24,20 +24,24 @@ const TraderAccounts = ({
 	let icon = ICONS[`LEVEL_ACCOUNT_ICON_${verification_level}`]
 		? ICONS[`LEVEL_ACCOUNT_ICON_${verification_level}`]
 		: ICONS.LEVEL_ACCOUNT_ICON_4;
-	if (IS_XHT) {
-		description = user.is_hap
-			? STRINGS.SUMMARY.HAP_ACCOUNT_TXT
-			: STRINGS.SUMMARY.TRADER_ACCOUNT_XHT_TEXT;
-		icon = user.is_hap === true
-			? ICONS.HAP_ACCOUNT_ICON
-			: ICONS.ACCOUNT_SUMMARY;
-	}
+	// if (!isAccountDetails) {
+	// 	description = user.is_hap
+	// 		? STRINGS.SUMMARY.HAP_ACCOUNT_TXT
+	// 		: STRINGS.SUMMARY.TRADER_ACCOUNT_XHT_TEXT;
+	// 	icon = user.is_hap === true
+	// 		? ICONS.HAP_ACCOUNT_ICON
+	// 		: ICONS.ACCOUNT_SUMMARY;
+	// }
 	return (
 		<div className="d-flex">
 			<div>
 				<ReactSVG
 					path={icon}
-					wrapperClassName='trader-wrapper-icon'
+					wrapperClassName={
+						isAccountDetails
+						? 'trader-wrapper-icon trader-acc-detail-icon'
+						: 'trader-wrapper-icon'
+					}
 				/>
 			</div>
 			<div className="trade-account-secondary-txt summary-content-txt">
@@ -68,6 +72,15 @@ const TraderAccounts = ({
 							}
 						</span>
 					</div>
+					<div className="trade-account-link mb-2">
+						<span
+							className="pointer"
+							onClick={() => onFeesAndLimits(level, user.discount)}
+						>
+							{STRINGS.SUMMARY.MY_FEES_LIMITS.toUpperCase()}
+						</span>
+					</div>
+
 					{IS_XHT
 						? <div className="trade-account-link mb-2">
 							<span
@@ -79,26 +92,24 @@ const TraderAccounts = ({
 					}
 				</Fragment>
 				)}
-				{!IS_XHT
-					? <Fragment>
-						<div className="trade-account-link mb-2">
-							<span
-								className="pointer"
-								onClick={() => onFeesAndLimits(level)}
-							>
-								{STRINGS.SUMMARY.VIEW_FEE_STRUCTURE.toUpperCase()}
-							</span>
-						</div>
-						{!isAccountDetails && verification_level.level >= 1 && verification_level.level < 4 && (
-							<div className="trade-account-link mb-2">
-								<span className="pointer" onClick={onUpgradeAccount}>
-									{STRINGS.SUMMARY.UPGRADE_ACCOUNT.toUpperCase()}
-								</span>
-							</div>
-						)}
-					</Fragment>
+				{isAccountDetails
+					? <div className="trade-account-link mb-2">
+						<span
+							className="pointer"
+							onClick={() => onFeesAndLimits(level, user.discount)}
+						>
+							{STRINGS.SUMMARY.VIEW_FEE_STRUCTURE.toUpperCase()}
+						</span>
+					</div>
 					: null
 				}
+				{!IS_XHT && !isAccountDetails && verification_level.level >= 1 && verification_level.level < 4 && (
+					<div className="trade-account-link mb-2">
+						<span className="pointer" onClick={onUpgradeAccount}>
+							{STRINGS.SUMMARY.UPGRADE_ACCOUNT.toUpperCase()}
+						</span>
+					</div>
+				)}
 				{!isAccountDetails && isMobile ? (
 					<div className="trade-account-link my-2" onClick={() => logout()}>
 						{STRINGS.LOGOUT.toUpperCase()}

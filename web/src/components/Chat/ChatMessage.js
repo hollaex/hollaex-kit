@@ -64,7 +64,7 @@ class ChatMessageWithText extends Component {
 			to,
 			messageContent,
 			ownMessage,
-			timestamp,
+			// timestamp,
 			verification_level,
 			is_hap
 		} = this.props;

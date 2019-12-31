@@ -6,12 +6,13 @@
         }
         .trader-wrapper-icon{
             svg{
-               .level_icon {
-                   fill: $dark-icon-unhover;
-               }
-               .account-summary {
-                    stroke: $dark-icon-unhover;
+                .level_icon {
+                    fill: $dark-icon-unhover;
                 }
+                .account-summary {
+                   stroke: $dark-icon-unhover;
+                }
+                .bonus-offer-icon,
                 .account-summary1 {
                     fill: $dark-icon-unhover;
                 }
@@ -20,11 +21,17 @@
                 }
             }
         }
-        
+        .trader-acc-detail-icon {
+            svg {
+                .level_icon {
+                    fill: $dark-icon-color !important;
+                }
+            }
+        }
         .trader-account-icon {
             svg {
                 .level_icon {
-                    fill: $dark-inactive-color;
+                    fill: $dark-icon-unhover;
                 }
             }
         }
@@ -89,6 +96,11 @@
                 border-bottom: 1px solid $dark-border-main;
                 color: $dark-font-main-text-color;
             }
+            .requirements-content-text {
+                .requirement-step {
+                    color: $dark-font-main-text-color;
+                }
+            }
         }
         .assets-wrapper {
             .asset-changes {
@@ -115,6 +127,21 @@
                 }
             }
         }
+        .trading-volume-wrapper {
+            .wave-auction-icon {
+                svg {
+                    .newWave-icon {
+                        fill: $dark-icon-color;
+                    }
+                }
+            }
+            .wave-action-phase {
+                border-top: 1px solid $dark-app-line-divider;
+            }
+            .wave-phase-pending {
+                color: $colors-white;
+            }
+        }
     }
 
     .fee-limits-wrapper {
@@ -131,9 +158,11 @@
         }
         table {
             border-collapse: collapse;
-        }
-        td {
             border: 1px solid $dark-border-main;
+        }
+        td, th {
+            border: 1px solid $dark-border-main;
+            text-align: center;
         }
         .account-limits-coin {
             border-bottom-color: $dark-border-main;
@@ -150,6 +179,14 @@
             border-bottom-color: $dark-border-main;
             border-left-color: $dark-border-main;
             border-right-color: $dark-border-main;
+        }
+        .icon_title-wrapper {
+            .icon_title-svg svg {
+    
+                .level_icon {
+                    fill: $dark-icon-unhover;
+                }
+            }
         }
     }
 }
@@ -184,31 +221,40 @@
 	 }
     .confirm-text {
         font-size: 2rem;
-     }
+    }
+    .fee-limits-wrapper {
+        margin: 3rem auto;
+    }
     .summary-container {
         .trader-account-wrapper{
             .summary-block_wrapper{
                 .trade-account-secondary-txt{
-                    width:100%;
+                    width: 100%;
                     .account-details-content{
                         font-size: $font-size-mobile-txt;
                     }
                     .trade-account-link{
-                    font-size: $font-size-mobile-txt;
+                        font-size: $font-size-mobile-txt;
                     }
                 }
             }
         }
-        .summary-section_1 {
-            height: auto!important;
+        .summary-section_1,
+        .summary-section_2 {
+            height: auto !important;
         }
         .summary-content-txt{
-            font-size: $font-size-mobile-txt!important;
-            width: 17rem;
+            font-size: $font-size-mobile-txt !important;
+            // width: 17rem;
         }
         .assets-wrapper {
             .price-text {
-                font-size: $font-size-mobile-txt!important;
+                font-size: $font-size-mobile-txt !important;
+            }
+        }
+        .account-details-wrapper { 
+            .account-type-menu {
+                height: auto !important
             }
         }
     }
@@ -261,7 +307,7 @@
     }
 
     .trader-account-icon {
-        width: 5rem;
+        width: 4.5rem;
         margin-right: 1rem;
     }
     .trade-account-link {
@@ -269,7 +315,7 @@
         font-weight: bold;
     }
     .summary-section_1 {
-        height: 16rem;
+        height: 20rem;
     }
     .summary-section_2 {
         height: 40rem;
@@ -403,6 +449,21 @@
 
     .trading-volume-wrapper {
         width: 50rem;
+
+        .wave-auction-icon {
+            width: 1.5rem;;
+        }
+
+        .wave-action-phase {
+            border-top: 1px solid $colors-black;
+        }
+        .wave-phase-completed {
+            color: $colors-wave-phase-completed;
+        }
+        .wave-phase-pending {
+            color: $colors-black;
+            font-weight: bold;
+        }
     }
     .account-details-wrapper {
 
@@ -420,7 +481,7 @@
             color: $link;
             cursor: pointer;
             font-weight: bold;
-            padding: .5rem 0;
+            // padding: .5rem 0;
             text-transform: uppercase;
 
             .account-current {
@@ -485,9 +546,13 @@
             height: 8rem;
             width: 8rem;
         }
-        .icon_title-svg svg{
+        .icon_title-svg svg {
             height: 8rem;
             width: 8rem;
+
+            .level_icon {
+                fill: $colors-black;
+            }
         }
         .icon_title-text.title {
             font-size: 2rem;
@@ -496,9 +561,10 @@
 
     table {
         border-collapse: collapse;
+        border: 1px solid $border-color;
     }
 
-    td {
+    td, th {
         border: 1px solid $border-color;
     }
     .account-limits {
@@ -524,7 +590,7 @@
         width: 14rem;
     }
     .account-limits-status {
-        width: 6rem;
+        // width: 6rem;
         padding: .25rem .5rem;
     }
     .account-limits-value {
@@ -532,7 +598,7 @@
     }
     .limit-head-currency {
         font-weight: normal !important;
-        padding: .25rem .5rem .25rem 3rem;
+        padding: .25rem .5rem;
     }
     .limit-head {
         font-weight: normal !important;
@@ -585,7 +651,7 @@
             width: 65% !important;
         }
         .summary-section_1 {
-            height: 19rem !important;
+            height: 23rem !important;
         }
         .summary-section_2 {
             height: 43rem !important;
@@ -606,7 +672,7 @@
             font-size: 0.9rem;
         }
         .summary-section_1 {
-            height: 21rem !important;
+            height: 25rem !important;
         }
         .summary-section_2 {
             height: 44rem !important;

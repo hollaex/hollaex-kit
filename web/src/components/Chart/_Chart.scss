@@ -19,6 +19,11 @@
 	font-size: .8rem;
 	font-weight: bold;
 }
+.donut-label-link {
+	font-size: .7rem;
+	font-weight: bold;
+	fill: $colors-notifications-blue;
+}
 
 .donut-label-no-price {
 	font-size: .7rem;
@@ -347,6 +352,9 @@
 	}
 
 	.deposit-asset {
+		fill: $dark-link;
+	}
+	.donut-label-link {
 		fill: $dark-link;
 	}
 

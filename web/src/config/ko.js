@@ -1155,11 +1155,11 @@ export default {
 	REFERRAL_LINK: {
 		TITLE: '친구초대하기 Invite your friend', // new
 		INFO_TEXT: 'Refer your friends by giving out this link.', // new
-		INFO_TEXT_1: 'Send thm this affiliation link and get them onboard', // new
+		INFO_TEXT_1: 'Share this referral link and get your friends onboard.', // new
 		COPY_FIELD_LABEL: 'Share the link below with friends and earn commissions:', // new
 		REFERRED_USER_COUT: 'You have referred {0} users', // new
 		COPY_LINK_BUTTON: 'COPY REFERRAL LINK', // new
-		XHT_TITLE: 'EARN 10% IN COMMISSIONS', // new
+		XHT_TITLE: 'MY REFERRALS', // new
 		XHT_INFO_TEXT: 'Earn 1 XHT for every 10 XHT your friends buy.', // new
 		XHT_INFO_TEXT_1: 'Commissions are paid periodically to your XHT wallet', // new
 		APPLICATION_TXT:
@@ -1216,10 +1216,11 @@ export default {
 	},
 	WAVES: {
 		// new
-		NEXT_WAVE: 'Next Wave :',
-		WAVE_AMOUNT: 'Amount in Wave :',
-		FLOOR: 'Floor :',
-		LAST_WAVE: 'Last wave:'
+		NEXT_WAVE: 'Next Wave',
+		WAVE_AMOUNT: 'Amount in Wave',
+		FLOOR: 'Floor',
+		LAST_WAVE: 'Last wave',
+		FILLED: 'Filled'
 	},
 	TYPES_OF_POSTS: {
 		// new

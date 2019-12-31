@@ -13,6 +13,9 @@
 	font-weight: bold;
 	padding-right: 2rem;
 }
+.with_arrow_trade{
+	margin-top: -5px;
+}
 .mobile-drop-down,.drop-down,.option {
 	&.default-coin {
 		color: $colors-black !important;
@@ -160,14 +163,23 @@
 	}
 }
 .with_arrow_trade:after  {	
-	border-left-color: $colors-main-black !important;
+	border-bottom-color: $colors-main-black !important;
 	border-right-color: $colors-main-black !important;
 }
 .direction_ltr {
 	.with_arrow_trade:after {
-		@include css-triangle($dark-accordion-arrow-active, 'right', 0.9rem, relative);
-		transform: rotate(90deg);
+	    border: solid grey;
+		border-width: 0px 2px 2px 0;
+		display: inline-block;
+		content: '';
+		padding: 3px;
+		height: 1rem;
+		width: 1rem;
+		transform: rotate(46deg);
 		left: -1.5rem;
+		position: relative;
+		top: 0.1rem;	
+		z-index: 0;
 	}
 	
 }
@@ -180,7 +192,7 @@
 }
 .dark-theme {
 	.with_arrow_trade:after {
-		border-left-color: $dark-font-main-text-color !important;
+		border-bottom-color: $dark-font-main-text-color !important;
 		border-right-color: $dark-font-main-text-color !important;
 	}
 	.mobile-drop-down {

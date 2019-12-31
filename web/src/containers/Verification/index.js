@@ -29,7 +29,11 @@ import VerificationHome from './VerificationHome';
 import IdentityVerification from './IdentityVerification';
 import MobileVerification from './MobileVerification';
 import DocumentsVerification from './DocumentsVerification';
-import { mobileInitialValues, identityInitialValues, documentInitialValues } from './utils';
+import {
+	mobileInitialValues,
+	identityInitialValues,
+	documentInitialValues
+} from './utils';
 import {
 	getClasesForLanguage,
 	getFontClassForLanguage
@@ -57,13 +61,13 @@ class Verification extends Component {
 	};
 
 	componentDidMount() {
-		if(this.props.user) {
+		if (this.props.user) {
 			this.setUserData(this.props.user);
 		}
 	}
 
 	componentWillReceiveProps(nextProps) {
-		if(JSON.stringify(nextProps.user) !== JSON.stringify(this.props.user)) {
+		if (JSON.stringify(nextProps.user) !== JSON.stringify(this.props.user)) {
 			this.setUserData(nextProps.user);
 		}
 		if (nextProps.activeLanguage !== this.props.activeLanguage) {
@@ -72,11 +76,18 @@ class Verification extends Component {
 	}
 
 	componentWillUpdate(nextProps, nextState) {
-		if (this.state.activeTab !== nextState.activeTab && this.state.activeTab !== -1) {
-			this.updateTabs(nextState.user, nextProps.activeLanguage, nextState.activeTab);
+		if (
+			this.state.activeTab !== nextState.activeTab &&
+			this.state.activeTab !== -1
+		) {
+			this.updateTabs(
+				nextState.user,
+				nextProps.activeLanguage,
+				nextState.activeTab
+			);
 		}
 	}
-	
+
 	setUserData = (user = {}) => {
 		const activeTab = this.calculateActiveTab(user);
 		if (activeTab > 4) {
@@ -89,22 +100,19 @@ class Verification extends Component {
 
 	calculateActiveTab = ({
 		email,
-		bank_account,
 		address,
 		phone_number,
 		id_data,
 		full_name
 	}) => {
 		if (!email) {
-			return 0
-		} else if (!bank_account.length) {
-			return 1;
+			return 0;
 		} else if (!address.country) {
-			return 2;
+			return 1;
 		} else if (!phone_number) {
-			return 3;
+			return 2;
 		} else if (!id_data.provided) {
-			return 4;
+			return 3;
 		}
 		return 0;
 	};
@@ -118,10 +126,11 @@ class Verification extends Component {
 			return;
 		}
 		const { email, address, id_data, phone_number } = user;
-		const identity_status = address.country 
+		const identity_status = address.country
 			? id_data.status && id_data.status === 3
-					? 3 : 1
-				: 1;
+				? 3
+				: 1
+			: 1;
 		const tabs = [
 			{
 				title: isMobile ? (
@@ -142,7 +151,7 @@ class Verification extends Component {
 						<PanelInformationRow
 							label={STRINGS.USER_VERIFICATION.MY_EMAIL}
 							information={email}
-							className={"title-font"}
+							className={'title-font'}
 							disable
 						/>
 					</div>
@@ -162,26 +171,40 @@ class Verification extends Component {
 						statusCode={identity_status}
 					/>
 				),
-				content: (<IdentityVerificationHome
+				content: (
+					<IdentityVerificationHome
 						user={user}
 						setActiveTab={this.setActiveTab}
-						setActivePageContent={this.setActivePageContent} />)
+						setActivePageContent={this.setActivePageContent}
+					/>
+				)
 			},
 			{
 				title: isMobile ? (
 					<CustomMobileTabs
-						title={STRINGS.USER_VERIFICATION.USER_DOCUMENTATION_FORM.INFORMATION.TITLE_PHONE}
+						title={
+							STRINGS.USER_VERIFICATION.USER_DOCUMENTATION_FORM.INFORMATION
+								.TITLE_PHONE
+						}
 						icon={ICONS.VERIFICATION_PHONE_NEW}
 						statusCode={!phone_number ? 0 : 3}
 					/>
 				) : (
 					<CustomTabs
-						title={STRINGS.USER_VERIFICATION.USER_DOCUMENTATION_FORM.INFORMATION.TITLE_PHONE}
+						title={
+							STRINGS.USER_VERIFICATION.USER_DOCUMENTATION_FORM.INFORMATION
+								.TITLE_PHONE
+						}
 						icon={ICONS.VERIFICATION_PHONE_NEW}
 						statusCode={!phone_number ? 0 : 3}
 					/>
 				),
-				content: (<MobileVerificationHome user={user} setActivePageContent={this.setActivePageContent} />)
+				content: (
+					<MobileVerificationHome
+						user={user}
+						setActivePageContent={this.setActivePageContent}
+					/>
+				)
 			},
 			{
 				title: isMobile ? (
@@ -197,7 +220,12 @@ class Verification extends Component {
 						statusCode={id_data.status}
 					/>
 				),
-				content: (<DocumentsVerificationHome user={user} setActivePageContent={this.setActivePageContent} />)
+				content: (
+					<DocumentsVerificationHome
+						user={user}
+						setActivePageContent={this.setActivePageContent}
+					/>
+				)
 			}
 		];
 
@@ -207,9 +235,7 @@ class Verification extends Component {
 	goNextTab = (type, data) => {
 		let user = { ...this.state.user };
 		if (type === 'bank') {
-			user.bank_account = [
-				...data.bank_data
-			];
+			user.bank_account = [...data.bank_data];
 		} else if (type === 'identity') {
 			user = {
 				...this.state.user,
@@ -242,7 +268,7 @@ class Verification extends Component {
 		this.setState({ activeTab });
 	};
 
-	setActivePageContent = activePage => {
+	setActivePageContent = (activePage) => {
 		this.setState({ activePage });
 	};
 
@@ -253,15 +279,19 @@ class Verification extends Component {
 		const { activeLanguage } = this.props;
 		switch (activePage) {
 			case 0:
-				return <VerificationHome
+				return (
+					<VerificationHome
 						activeTab={activeTab}
 						tabProps={tabProps}
 						tabs={tabs}
 						openContactForm={this.openContactForm}
 						setActiveTab={this.setActiveTab}
-						renderContent={this.renderContent} />;
+						renderContent={this.renderContent}
+					/>
+				);
 			case 1:
-				return <IdentityVerification
+				return (
+					<IdentityVerification
 						icon={ICONS.VERIFICATION_BANK_NEW}
 						fullName={user.full_name}
 						moveToNextStep={this.goNextTab}
@@ -269,9 +299,12 @@ class Verification extends Component {
 						initialValues={identityInitialValues(user)}
 						openContactForm={this.openContactForm}
 						setActivePageContent={this.setActivePageContent}
-						setActiveTab={this.setActiveTab} />
+						setActiveTab={this.setActiveTab}
+					/>
+				);
 			case 2:
-				return <MobileVerification
+				return (
+					<MobileVerification
 						initialValues={mobileInitialValues(user.address)}
 						moveToNextStep={this.goNextTab}
 						activeLanguage={activeLanguage}
@@ -279,8 +312,10 @@ class Verification extends Component {
 						setActiveTab={this.setActiveTab}
 						setActivePageContent={this.setActivePageContent}
 					/>
+				);
 			case 3:
-				return <DocumentsVerification
+				return (
+					<DocumentsVerification
 						nationality={user.nationality}
 						idData={user.id_data}
 						initialValues={documentInitialValues(user)}
@@ -291,6 +326,7 @@ class Verification extends Component {
 						setActiveTab={this.setActiveTab}
 						setActivePageContent={this.setActivePageContent}
 					/>
+				);
 			default:
 				return;
 		}
@@ -320,7 +356,7 @@ class Verification extends Component {
 			case 'contact':
 				return (
 					<ContactForm
-						initialValues={{category: 'verify'}}
+						initialValues={{ category: 'verify' }}
 						onSubmitSuccess={this.onCloseDialog}
 						onClose={this.onCloseDialog}
 					/>
@@ -335,7 +371,7 @@ class Verification extends Component {
 	render() {
 		const { activeLanguage, activeTheme } = this.props;
 		const { activeTab, tabs, dialogIsOpen, dialogType } = this.state;
-
+		console.log(activeTab);
 		if (activeTab === -1 && tabs.length > 0) {
 			return (
 				<div className="app_container">
@@ -413,4 +449,7 @@ const mapDispatchToProps = (dispatch) => ({
 	logout: bindActionCreators(logout, dispatch)
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Verification);
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(Verification);

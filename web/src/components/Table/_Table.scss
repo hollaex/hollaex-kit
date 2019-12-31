@@ -23,6 +23,10 @@ $controllers--color-disabled: $colors-deactivate-color2;
 		font-weight: bold;
 	}
 
+	.table_header-wrapper {
+		color: $colors-black;
+	}
+
 	.table_body-wrapper {
 		font-size: $font-size-subtext;
 
@@ -157,6 +161,9 @@ $controllers--color-disabled: $colors-deactivate-color2;
 .dark-theme {
 	.table-wrapper {
 		color: $dark-font-main-text-color;
+		.table_header-wrapper {
+			color: $dark-font-main-text-color;
+		}
 		.table_body-wrapper {
 			color: $dark-font-sub-text-color;
 			tr.table_body-row td {

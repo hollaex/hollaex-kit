@@ -81,7 +81,7 @@ class DonutChart extends Component {
 	render() {
 		const { width, height, isData } = this.state;
 		const data = isData ? this.props.chartData : [{ balance: 100 }];
-		let pieJ = pie().value(function(d) {
+		let pieJ = pie().value(function (d) {
 			return d.balance;
 		});
 		const pieData = [];
@@ -168,7 +168,7 @@ class DonutChart extends Component {
 			innerRadius += 5;
 			outerRadius += 5;
 			labelRadious += 5;
-		 }
+		}
 		let arcj = arc()
 			.innerRadius(innerRadius)
 			.outerRadius(outerRadius)
@@ -233,6 +233,11 @@ class DonutChart extends Component {
 								className="donut-label-pair"
 							>
 								{symbol.toUpperCase()}
+							</text>
+							<text dy="5px" textAnchor="middle" className="donut-label-link">
+								<Link to="/wallet" className="deposit-asset">
+									{STRINGS.OPEN_WALLET.toUpperCase()}
+								</Link>
 							</text>
 						</Fragment>
 					) : null}

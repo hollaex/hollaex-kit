@@ -17,9 +17,9 @@ export const NotificationItem = (props) => {
 					<div>
 						<div className="post_header">{STRINGS.TRADE_POSTS.ANNOUNCEMENT}</div>
 						<div className="post-content">
-							<div>{moment('2019-12-16').format('MMMM DD, YYYY')}</div>
+							<div>{moment('2019-12-30').format('MMMM DD, YYYY')}</div>
 							<div>
-								{STRINGS.TRADE_POSTS.ANNOUNCEMNT_TXT_3}
+								{STRINGS.TRADE_POSTS.ANNOUNCEMNT_TXT_4}
 							</div>
 						</div>
 					</div>
@@ -33,9 +33,9 @@ export const NotificationItem = (props) => {
 					<div>
 						<div className="post_header">{STRINGS.TRADE_POSTS.ANNOUNCEMENT}</div>
 						<div className="post-content">
-							<div>{moment('2019-11-28').format('MMMM DD, YYYY')}</div>
+							<div>{moment('2019-12-16').format('MMMM DD, YYYY')}</div>
 							<div>
-								{STRINGS.TRADE_POSTS.ANNOUNCEMNT_TXT_2}
+								{STRINGS.TRADE_POSTS.ANNOUNCEMNT_TXT_3}
 							</div>
 						</div>
 					</div>

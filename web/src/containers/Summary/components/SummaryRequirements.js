@@ -2,18 +2,14 @@ import React from 'react';
 import ReactSvg from 'react-svg';
 import classnames from 'classnames';
 import { Link } from 'react-router';
-import moment from 'moment';
 
 import { Button } from '../../../components';
 import {
 	ICONS,
-	TRADE_ACCOUNT_UPGRADE_MONTH,
-	TRADING_VOLUME_CHART_LIMITS,
-	BASE_CURRENCY,
-	DEFAULT_COIN_DATA,
 	IS_XHT
 } from '../../../config/constants';
 import STRINGS from '../../../config/localizedStrings';
+import { getBonusRequirements } from './utils';
 
 const SucessStatus = ({ isAccountDetails }) => (
 	<div className="d-flex">
@@ -62,53 +58,53 @@ const RejectedStatus = ({ isAccountDetails }) => (
 	</div>
 );
 
-const checkBankVerification = (bank_account = [], id_data) => {
-	let bank_status = 0;
-	if (bank_account.length) {
-		if (bank_account.filter((data) => data.status === 3).length) {
-			bank_status = 3;
-		} else if (bank_account.filter((data) => data.status === 1).length) {
-			bank_status = 1;
-		} else if (bank_account.filter((data) => data.status === 2).length) {
-			bank_status = 2;
-		}
-		if (id_data.status !== 3) {
-			bank_status = 1;
-		}
-		if (
-			bank_account.length ===
-			bank_account.filter((data) => data.status === 0).length
-		) {
-			bank_status = 0;
-		}
-	}
-	return bank_status;
-};
+// const checkMonth = (currentDate, month) => {
+// 	const diffMonth = moment().diff(moment(currentDate), 'months');
+// 	return diffMonth >= month;
+// };
 
-const checkMonth = (currentDate, month) => {
-	const diffMonth = moment().diff(moment(currentDate), 'months');
-	return diffMonth >= month;
-};
-
-export const getRequirements = (user, level, lastMonthVolume, coins) => {
-	const { address, phone_number, id_data = {}, bank_account } = user.userData;
-	const bank_verified = checkBankVerification(bank_account, id_data);
-	const { symbol = '' } = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
+export const getRequirements = (user, level, balance = {}, coins) => {
+	const { address, phone_number, id_data = {} } = user.userData;
+	// const bank_verified = checkBankVerification(bank_account, id_data);
+	// const { symbol = '' } = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
+	const xht_balance = balance.xht_balance || 0;
 	const identity = address.country
 		? id_data.status && id_data.status === 3
 			? 3
 			: 1
 		: 1;
 	const verificationObj = {
-		level_1: {},
+		level_1: {
+			'1': {
+				title: STRINGS.SUMMARY.EMAIL_VERIFICATION,
+				completed: user.email ? true : false,
+				status: user.email ? 3 : 0
+			}
+		},
 		level_2: {
+			'1': {
+				title: STRINGS.formatString(
+					STRINGS.SUMMARY.TRADE_OVER_XHT,
+					'$ 3,000'
+				),
+				completed: false
+			},
+			'2': {
+				title: STRINGS.formatString(
+					STRINGS.SUMMARY.XHT_IN_WALLET,
+					'5,000'
+				),
+				completed: xht_balance >= 5000
+			}
+		},
+		level_3: {
 			'1': {
 				title: STRINGS.USER_VERIFICATION.TITLE_USER_DOCUMENTATION,
 				completed: identity === 3 ? true : false,
 				status: identity
 			},
 			'2': {
-				title: STRINGS.USER_VERIFICATION.TITLE_ID_DOCUMENTS,
+				title: STRINGS.SUMMARY.DOCUMENTS,
 				completed: id_data.status === 3,
 				status: id_data.status
 			},
@@ -116,83 +112,134 @@ export const getRequirements = (user, level, lastMonthVolume, coins) => {
 				title: STRINGS.USER_VERIFICATION.TITLE_MOBILE,
 				completed: !!phone_number,
 				status: phone_number ? 3 : 0
-			},
-			'4': {
-				title: STRINGS.USER_VERIFICATION.CONNECT_BANK_ACCOUNT,
-				completed: bank_verified === 3 ? true : false,
-				status: bank_verified
-			}
-		},
-		level_3: {
-			'1': {
-				title: STRINGS.formatString(
-					STRINGS.SUMMARY.ACCOUNT_AGE_OF_MONTHS,
-					TRADE_ACCOUNT_UPGRADE_MONTH[0]
-				).join(' '),
-				completed: checkMonth(
-					user.created_at,
-					TRADE_ACCOUNT_UPGRADE_MONTH[0]
-				)
-			},
-			'2': {
-				title: STRINGS.formatString(
-					STRINGS.SUMMARY.TRADING_VOLUME_EQUIVALENT,
-					TRADING_VOLUME_CHART_LIMITS[0],
-					symbol.toUpperCase()
-				).join(' '),
-				completed: TRADING_VOLUME_CHART_LIMITS[0] <= lastMonthVolume
 			}
 		},
 		level_4: {
 			'1': {
 				title: STRINGS.formatString(
-					STRINGS.SUMMARY.ACCOUNT_AGE_OF_MONTHS,
-					TRADE_ACCOUNT_UPGRADE_MONTH[1]
-				).join(' '),
-				completed: checkMonth(
-					user.created_at,
-					TRADE_ACCOUNT_UPGRADE_MONTH[1]
-				)
+					STRINGS.SUMMARY.TRADE_OVER_XHT,
+					'$10,000'
+				),
+				completed: false
 			},
 			'2': {
 				title: STRINGS.formatString(
-					STRINGS.SUMMARY.TRADING_VOLUME_EQUIVALENT,
-					TRADING_VOLUME_CHART_LIMITS[1],
-					symbol.toUpperCase()
-				).join(' '),
-				completed: TRADING_VOLUME_CHART_LIMITS[1] <= lastMonthVolume
+					STRINGS.SUMMARY.XHT_IN_WALLET,
+					'10,000'
+				),
+				completed: xht_balance >= 10000
 			}
+		},
+		level_5: {
+			'1': {
+				title: STRINGS.formatString(
+					STRINGS.SUMMARY.HAP_TEXT,
+					<a
+						className="blue-link pointer"
+						href="https://forms.gle/JsCjUqMEEkZmoDzj6"
+						target="blank">
+							{`(${STRINGS.APPLY_HERE})`}
+					</a>
+				),
+				completed: user.is_hap
+			},
+			'2': {
+				title: STRINGS.formatString(
+					STRINGS.SUMMARY.LOCK_AN_EXCHANGE,
+					<a
+						className="blue-link pointer"
+						href="https://info.hollaex.com/hc/en-us/articles/360040097453-How-can-I-stake-collateralize-HollaEx-Token-XHT"
+						target="blank">
+							{`(${STRINGS.TRADE_POSTS.LEARN_MORE})`}
+					</a>
+				),
+				completed: false
+			},
+			'3': {
+				title: STRINGS.formatString(
+					STRINGS.SUMMARY.WALLET_SUBSCRIPTION_USERS,
+					<a
+						className="blue-link pointer"
+						href="https://info.hollaex.com/hc/en-us/articles/360041341013-Vault-subscription"
+						target="blank">
+							{`(${STRINGS.TRADE_POSTS.LEARN_MORE})`}
+					</a>
+				),
+				completed: false
+			}
+		},
+		level_6: {
+			'1': {
+				title: STRINGS.formatString(
+					STRINGS.SUMMARY.TRADE_OVER_XHT,
+					'$300,000'
+				),
+				completed: false
+			},
+			'2': {
+				title: STRINGS.formatString(
+					STRINGS.SUMMARY.XHT_IN_WALLET,
+					'100,000'
+				),
+				completed: xht_balance >= 100000
+			}
+		},
+		level_7: {
+			'1': {
+				title: STRINGS.formatString(
+					STRINGS.SUMMARY.TRADE_OVER_XHT,
+					'$500,000'
+				),
+				completed: false
+			},
+			'2': {
+				title: STRINGS.formatString(
+					STRINGS.SUMMARY.XHT_IN_WALLET,
+					'300,000'
+				),
+				completed: xht_balance >= 300000
+			}
+		},
+		level_8: {
+			'1': {
+				title: STRINGS.formatString(
+					STRINGS.SUMMARY.TRADE_OVER_XHT,
+					'$600,000'
+				),
+				completed: false
+			},
+			'2': {
+				title: STRINGS.formatString(
+					STRINGS.SUMMARY.XHT_IN_WALLET,
+					'400,000'
+				),
+				completed: xht_balance >= 400000
+			}
+		},
+		level_9: {
+			'1': {
+				title: STRINGS.formatString(
+					STRINGS.SUMMARY.TRADE_OVER_XHT,
+					'$2,000,000'
+				),
+				completed: false
+			},
+			'2': {
+				title: STRINGS.formatString(
+					STRINGS.SUMMARY.XHT_IN_WALLET,
+					'1,000,000'
+				),
+				completed: xht_balance >= 1000000
+			}
+		},
+		level_10: {
+			'1': {
+				title: STRINGS.CONTACT_US_TEXT,
+				completed: false
+			},
 		}
 	};
 	return verificationObj[`level_${level}`] || {};
-};
-
-const getXhtRequirements = (user, coins) => {
-	let walletDeposit = false;
-	let xhtDeposit = false;
-	if (user.balance) {
-		Object.keys(coins).forEach(pair => {
-			if (user.balance[`${pair.toLowerCase()}_balance`] > 0) {
-				walletDeposit = true;
-			}
-		})
-		if (user.balance.xht_balance && user.balance.xht_balance > 0) {
-			xhtDeposit = true;
-		}
-	}
-	const verificationObj = {
-		'1': {
-			title: STRINGS.USER_VERIFICATION.MAKE_FIRST_DEPOSIT,
-			completed: walletDeposit,
-			status: walletDeposit ? 3 : 0
-		},
-		'2': {
-			title: STRINGS.USER_VERIFICATION.OBTAIN_XHT,
-			completed: xhtDeposit,
-			status: xhtDeposit ? 3 : 0
-		}
-	};
-	return verificationObj;
 };
 
 const getStatusClass = (status_code, completed) => {
@@ -213,13 +260,13 @@ const getStatusClass = (status_code, completed) => {
 	}
 };
 
-const getAllCompleted = (requirement) => {
-	return (
-		Object.keys(requirement).length ===
-		Object.keys(requirement).filter((key) => requirement[key].completed)
-			.length
-	);
-};
+// const getAllCompleted = (requirement) => {
+// 	return (
+// 		Object.keys(requirement).length ===
+// 		Object.keys(requirement).filter((key) => requirement[key].completed)
+// 			.length
+// 	);
+// };
 
 const getStatusIcon = (reqObj, isAccountDetails) => {
 	if (isAccountDetails) {
@@ -251,10 +298,13 @@ const SummaryRequirements = ({
 	coins,
 	user,
 	isAccountDetails = false,
+	isBonusSection = false,
 	contentClassName = '',
 	verificationLevel,
 	lastMonthVolume,
-	onUpgradeAccount
+	onUpgradeAccount,
+	balance,
+	affiliation
 }) => {
 	const {
 		phone_number,
@@ -265,20 +315,20 @@ const SummaryRequirements = ({
 	const selectedLevel = isAccountDetails
 		? verificationLevel || user.verification_level
 		: 2;
-	const requirement = IS_XHT
-		? getXhtRequirements(user, coins)
-		: getRequirements(user, selectedLevel, lastMonthVolume, coins);
-	let requirementResolved = getAllCompleted(requirement);
+	const requirement = isBonusSection
+		? getBonusRequirements(user, coins, affiliation)
+		: getRequirements(user, selectedLevel, balance, coins);
+	// let requirementResolved = getAllCompleted(requirement);
 	return (
 		<div className="d-flex">
-			{!isAccountDetails && (
+			{(!isAccountDetails && !isBonusSection) ? (
 				<div>
 					<ReactSvg
 						path={ICONS.VERIFICATION_DOC_STATUS}
 						wrapperClassName="requirement-doc-icon"
 					/>
 				</div>
-			)}
+			) : null }
 			<div
 				className={classnames(
 					contentClassName,
@@ -303,20 +353,20 @@ const SummaryRequirements = ({
 									}
 								)}
 							>
-								<div>{`${step}. ${reqObj.title}`}</div>
-								<div>{getStatusIcon(reqObj, isAccountDetails)}</div>
+							<div className="requirement-step">{step}. {reqObj.title}</div>
+								<div>{getStatusIcon(reqObj, isAccountDetails || isBonusSection)}</div>
 							</div>
 						);
 					})}
 				</div>
-				{!isAccountDetails && !user.otp_enabled && (
+				{!isAccountDetails && !isBonusSection && !user.otp_enabled && (
 					<div className="trade-account-link mb-2">
 						<Link to="/security">
 							{STRINGS.SUMMARY.ACTIVE_2FA_SECURITY.toUpperCase()}
 						</Link>
 					</div>
 				)}
-				{!isAccountDetails && !IS_XHT &&
+				{!isAccountDetails && !isBonusSection && !IS_XHT &&
 					(!address.country ||
 						id_data.status !== 3 ||
 						!phone_number ||
@@ -328,7 +378,7 @@ const SummaryRequirements = ({
 						</div>
 					) : null
 				}
-				{IS_XHT
+				{IS_XHT && !isBonusSection && !isAccountDetails
 					? <div className="trade-account-link mb-2">
 						<Link to="/wallet">
 							{STRINGS.USER_VERIFICATION.GOTO_WALLET.toUpperCase()}
@@ -336,11 +386,11 @@ const SummaryRequirements = ({
 					</div>
 					: null
 				}
-				{!IS_XHT && isAccountDetails ? (
+				{selectedLevel !== 1 && !isBonusSection && isAccountDetails ? (
 					<div className="mt-2">
 						<Button
 							label={STRINGS.SUMMARY.REQUEST_ACCOUNT_UPGRADE}
-							disabled={!requirementResolved}
+							// disabled={!requirementResolved}
 							onClick={onUpgradeAccount}
 						/>
 					</div>
