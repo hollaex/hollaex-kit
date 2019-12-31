@@ -5,7 +5,7 @@ import {
 	BASE_CURRENCY,
 	CURRENCY_PRICE_FORMAT,
 	DEFAULT_COIN_DATA,
-	IS_HEX
+	IS_XHT
 } from '../../config/constants';
 import { Link } from 'react-router';
 import { isMobile } from 'react-device-detect';
@@ -121,7 +121,7 @@ export const AssetsBlock = ({
 						);
 					})}
 			</tbody>
-			{BASE_CURRENCY && IS_HEX
+			{BASE_CURRENCY && IS_XHT
 				? <tfoot>
 					<tr>
 						<td colSpan={5}>

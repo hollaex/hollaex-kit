@@ -11,7 +11,7 @@ import {
 	TRADING_VOLUME_CHART_LIMITS,
 	BASE_CURRENCY,
 	DEFAULT_COIN_DATA,
-	IS_HEX
+	IS_XHT
 } from '../../../config/constants';
 import STRINGS from '../../../config/localizedStrings';
 
@@ -167,17 +167,17 @@ export const getRequirements = (user, level, lastMonthVolume, coins) => {
 	return verificationObj[`level_${level}`] || {};
 };
 
-const getHexRequirements = (user, coins) => {
+const getXhtRequirements = (user, coins) => {
 	let walletDeposit = false;
-	let hexDeposit = false;
+	let xhtDeposit = false;
 	if (user.balance) {
 		Object.keys(coins).forEach(pair => {
 			if (user.balance[`${pair.toLowerCase()}_balance`] > 0) {
 				walletDeposit = true;
 			}
 		})
-		if (user.balance.hex_balance && user.balance.hex_balance > 0) {
-			hexDeposit = true;
+		if (user.balance.xht_balance && user.balance.xht_balance > 0) {
+			xhtDeposit = true;
 		}
 	}
 	const verificationObj = {
@@ -187,9 +187,9 @@ const getHexRequirements = (user, coins) => {
 			status: walletDeposit ? 3 : 0
 		},
 		'2': {
-			title: STRINGS.USER_VERIFICATION.OBTAIN_HEX,
-			completed: hexDeposit,
-			status: hexDeposit ? 3 : 0
+			title: STRINGS.USER_VERIFICATION.OBTAIN_XHT,
+			completed: xhtDeposit,
+			status: xhtDeposit ? 3 : 0
 		}
 	};
 	return verificationObj;
@@ -265,8 +265,8 @@ const SummaryRequirements = ({
 	const selectedLevel = isAccountDetails
 		? verificationLevel || user.verification_level
 		: 2;
-	const requirement = IS_HEX
-		? getHexRequirements(user, coins)
+	const requirement = IS_XHT
+		? getXhtRequirements(user, coins)
 		: getRequirements(user, selectedLevel, lastMonthVolume, coins);
 	let requirementResolved = getAllCompleted(requirement);
 	return (
@@ -316,7 +316,7 @@ const SummaryRequirements = ({
 						</Link>
 					</div>
 				)}
-				{!isAccountDetails && !IS_HEX &&
+				{!isAccountDetails && !IS_XHT &&
 					(!address.country ||
 						id_data.status !== 3 ||
 						!phone_number ||
@@ -328,7 +328,7 @@ const SummaryRequirements = ({
 						</div>
 					) : null
 				}
-				{IS_HEX
+				{IS_XHT
 					? <div className="trade-account-link mb-2">
 						<Link to="/wallet">
 							{STRINGS.USER_VERIFICATION.GOTO_WALLET.toUpperCase()}
@@ -336,7 +336,7 @@ const SummaryRequirements = ({
 					</div>
 					: null
 				}
-				{!IS_HEX && isAccountDetails ? (
+				{!IS_XHT && isAccountDetails ? (
 					<div className="mt-2">
 						<Button
 							label={STRINGS.SUMMARY.REQUEST_ACCOUNT_UPGRADE}

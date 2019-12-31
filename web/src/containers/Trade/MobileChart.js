@@ -35,6 +35,7 @@ class MobileChart extends Component {
 			symbol
 		} = this.props;
 		const { chartHeight } = this.state;
+		const pairValue = pair || 'xht-usdt';
 		return (
 			<div
 				className={classnames(
@@ -57,7 +58,7 @@ class MobileChart extends Component {
 					alignChildTitle={true}
 					tailHead={
 						<div className="quick-trade-tab p-1 mt-1">
-							<Link to="/quick-trade/hex-usdt">
+							<Link to={`/quick-trade/${pairValue}`}>
 								{STRINGS.QUICK_TRADE}
 							</Link>
 						</div>

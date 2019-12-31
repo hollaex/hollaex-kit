@@ -50,24 +50,6 @@ const generateRows = ({ order, pairData }, coins) => {
 		});
 	}
 
-	rows.push({
-		label: STRINGS.FEE,
-		value: STRINGS.formatString(
-			CURRENCY_PRICE_FORMAT,
-			formatToCurrency(orderFees, secondaryFormat.min),
-			secondaryFormat.symbol.toUpperCase()
-		)
-	});
-
-	rows.push({
-		label: STRINGS.TOTAL_ORDER,
-		value: STRINGS.formatString(
-			CURRENCY_PRICE_FORMAT,
-			formatToCurrency(orderPrice, secondaryFormat.min),
-			secondaryFormat.symbol.toUpperCase()
-		)
-	});
-
 	return rows;
 };
 

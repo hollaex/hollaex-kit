@@ -13,6 +13,7 @@ class MobileDropdownWrapper extends Component {
 
 	render() {
 		const { pair, pairs } = this.props;
+		const { pair_base } = pairs[pair];
 		const pairsArray = Object.keys(pairs).map((key) =>
 			key.toString().replace('-', '/')
 		);
@@ -24,6 +25,8 @@ class MobileDropdownWrapper extends Component {
 			<MobileDropdown
 				onChange={(e) => this.onChangePair(e)}
 				options={uniqArray}
+				pairs={pairs}
+				pair={pair_base}
 				className="mobile-drop-down"
 			/>
 		);

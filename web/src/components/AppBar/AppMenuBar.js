@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import ReactSVG from 'react-svg';
 import classnames from 'classnames';
 
-import { ICONS, IS_HEX } from '../../config/constants';
+import { ICONS, IS_XHT } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 
 class AppMenuBar extends Component {
@@ -141,13 +141,13 @@ class AppMenuBar extends Component {
                             classnames(
                                 "app-menu-bar-content d-flex",
                                 {
-                                    'notification': !!walletPending && IS_HEX,
+                                    'notification': !!walletPending && IS_XHT,
                                     'active-menu': activeMenu === 'wallet'
                                 })
                         }
                         onClick={() => this.handleMenuChange('wallet')}>
                         <div className="app-menu-bar-content-item d-flex">
-                            {!!walletPending && IS_HEX &&
+                            {!!walletPending && IS_XHT &&
                                 <div
                                     className="app-menu-bar-icon-notification">
                                     {walletPending}
@@ -183,13 +183,13 @@ class AppMenuBar extends Component {
                             classnames(
                                 'app-menu-bar-content d-flex',
                                 {
-                                    'notification': !!verificationPending && !IS_HEX,
+                                    'notification': !!verificationPending && !IS_XHT,
                                     'active-menu': activeMenu === 'verification'
                                 })
                         }
                         onClick={() => this.handleMenuChange('verification')}>
                         <div className="app-menu-bar-content-item d-flex">
-                            {!!verificationPending && !IS_HEX &&
+                            {!!verificationPending && !IS_XHT &&
                                 <div
                                     className="app-menu-bar-icon-notification">
                                     {verificationPending}

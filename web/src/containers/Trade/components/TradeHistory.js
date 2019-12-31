@@ -5,9 +5,10 @@ import ReactSVG from 'react-svg';
 import { DisplayTable } from '../../../components';
 import { formatTimestamp } from '../../../utils/utils';
 import STRINGS from '../../../config/localizedStrings';
-import { IS_HEX, ICONS } from '../../../config/constants';
-
-const generateHeaders = () => {
+import { IS_XHT, ICONS } from '../../../config/constants';
+import { roundNumber } from '../../../utils/currency';
+import { getDecimals } from '../../../utils/utils';
+const generateHeaders = (pairs) => {
 	return [
 		{
 			key: 'price',
@@ -39,19 +40,25 @@ const generateHeaders = () => {
 		{
 			key: 'size',
 			label: STRINGS.SIZE,
-			renderCell: ({ size = 0, side }, index) => IS_HEX
-				? <div
-					className={classnames('trade_history-row', side)}
-					key={`size-${index}`}
-				>
-					{size}
-				</div>
-				: size
+			renderCell: ({ size = 0, side }, index) => { 
+				const { min_size } = pairs;
+				const minSize = roundNumber(size, getDecimals(min_size));
+				return (
+					IS_XHT
+						? <div
+							className={classnames('trade_history-row', side)}
+							key={`size-${index}`}
+						>
+							{minSize}
+						</div>
+						: minSize
+				)
+			}
 		},
 		{
 			key: 'timestamp',
 			label: STRINGS.TIME,
-			renderCell: ({ timestamp, side }, index) => IS_HEX
+			renderCell: ({ timestamp, side }, index) => IS_XHT
 				? <div
 					className={classnames('trade_history-row', side)}
 					key={`timestamp-${index}`}
@@ -90,7 +97,7 @@ class TradeHistory extends Component {
 	}
 
 	calculateHeaders = () => {
-		const headers = generateHeaders();
+		const headers = generateHeaders(this.props.pairs[this.props.pair]);
 		this.setState({ headers });
 	};
 
@@ -120,7 +127,8 @@ TradeHistory.defaultProps = {
 };
 
 const mapStateToProps = (store) => ({
-	pair: store.app.pair
+	pair: store.app.pair,
+	pairs: store.app.pairs
 });
 
 export default connect(mapStateToProps)(TradeHistory);

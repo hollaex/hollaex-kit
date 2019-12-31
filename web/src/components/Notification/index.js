@@ -31,7 +31,7 @@ const generateNotificationContent = ({ type, data, ...rest }) => {
 			return <Verification data={data} />;
 		case NOTIFICATIONS.CONTACT_FORM:
 			return <ContactForm {...rest} data={data} />;
-		case NOTIFICATIONS.HEX_SUCCESS_ACCESS:
+		case NOTIFICATIONS.XHT_SUCCESS_ACCESS:
 			return <ReferralSuccess {...rest} data={data} />;
 		case NOTIFICATIONS.NEW_ORDER:
 			return <NewOrder data={data} {...rest} />;

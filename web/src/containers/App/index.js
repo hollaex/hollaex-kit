@@ -13,7 +13,8 @@ import {
 	SESSION_TIME,
 	BASE_CURRENCY,
 	FLEX_CENTER_CLASSES,
-	EXCHANGE_EXPIRY_DAYS
+	EXCHANGE_EXPIRY_DAYS,
+	FIT_SCREEN_HEIGHT
 } from '../../config/constants';
 import { isBrowser, isMobile } from 'react-device-detect';
 
@@ -105,7 +106,8 @@ class Container extends Component {
 		privateSocket: undefined,
 		idleTimer: undefined,
 		ordersQueued: [],
-		limitFilledOnOrder: ''
+		limitFilledOnOrder: '',
+		sidebarFitHeight: false
 	};
 
 	limitTimeOut = null;
@@ -128,6 +130,7 @@ class Container extends Component {
 		this.updateThemeToBody(this.props.activeTheme);
 		if (this.props.location && this.props.location.pathname) {
 				this.checkPath(this.props.location.pathname);
+				this.handleFitHeight(this.props.location.pathname);
 		}
 	}
 
@@ -168,6 +171,7 @@ class Container extends Component {
 		if (this.props.location && nextProps.location
             && this.props.location.pathname !== nextProps.location.pathname) {
 				this.checkPath(nextProps.location.pathname);
+				this.handleFitHeight(nextProps.location.pathname);
 		}
 	}
 
@@ -205,6 +209,14 @@ class Container extends Component {
 		document.body.appendChild(sheet);
 	}
 
+	handleFitHeight = (path) => {
+		let pathname = this.getClassForActivePath(path);
+		if (path.indexOf('/trade/add/tabs') !== -1) {
+			pathname = '/trade/add/tabs'
+		}
+		this.setState({ sidebarFitHeight: FIT_SCREEN_HEIGHT.includes(pathname) });
+	};
+
 	updateThemeToBody = (theme) => {
 		const themeName = theme === 'dark' ? 'dark-app-body' : '';
 		if (document.body) {
@@ -231,11 +243,11 @@ class Container extends Component {
 		this.setPublicWS();
 		if (isLoggedIn()) {
 			this.setUserSocket(getToken());
-			const dialog_display = localStorage.getItem('deposit_initial_display');
-			if (!dialog_display) {
-				this.props.setNotification(NOTIFICATIONS.DEPOSIT_INFO, { gotoWallet: this.onConfirmEmail });
-				localStorage.setItem('deposit_initial_display', true);
-			}
+			// const dialog_display = localStorage.getItem('deposit_initial_display');
+			// if (!dialog_display) {
+			// 	this.props.setNotification(NOTIFICATIONS.DEPOSIT_INFO, { gotoWallet: this.onConfirmEmail });
+			// 	localStorage.setItem('deposit_initial_display', true);
+			// }
 		}
 		this.setState({ appLoaded: true }, () => {
 			this._resetTimer();
@@ -307,10 +319,9 @@ class Container extends Component {
 			}
 		});
 
-		// publicSocket.on('ticker', (data) => {
-
-		// this.props.setTickers(data);
-		// });
+		publicSocket.on('wave', (data) => {
+			console.log('wave', data)
+		});
 	};
 
 	setUserSocket = (token) => {
@@ -421,8 +432,12 @@ class Container extends Component {
 						if (isMobile) {
 							this.props.setSnackDialog({
 								isDialog: true,
-								type: 'trade',
-								data: { order: data, data }
+								type: 'order',
+								data: {
+									type,
+									order: data,
+									data
+								}
 							});
 						} else {
 							this.props.setNotification(NOTIFICATIONS.ORDERS, {
@@ -796,12 +811,16 @@ class Container extends Component {
 	};
 
 	isSocketDataReady() {
-		const { orderbooks, pairsTrades, pair } = this.props;
+		const { orderbooks, pairsTrades, pair, router } = this.props;
+		let pairTemp = pair;
 		// return (Object.keys(orderbooks).length && orderbooks[pair] && Object.keys(orderbooks[pair]).length &&
 		// 	Object.keys(pairsTrades).length);
+		if (router && router.params && router.params.pair) {
+			pairTemp = router.params.pair;
+		}
 		return (
 			Object.keys(orderbooks).length &&
-			orderbooks[pair] &&
+			orderbooks[pairTemp] &&
 			Object.keys(pairsTrades).length
 		);
 	}
@@ -824,7 +843,7 @@ class Container extends Component {
 			info
 			// user
 		} = this.props;
-		const { dialogIsOpen, appLoaded, chatIsClosed } = this.state;
+		const { dialogIsOpen, appLoaded, chatIsClosed, sidebarFitHeight } = this.state;
 		const languageClasses = getClasesForLanguage(activeLanguage, 'array');
 		const fontClass = getFontClassForLanguage(activeLanguage);
 
@@ -950,6 +969,7 @@ class Container extends Component {
 											minimizeChat={this.minimizeChat}
 											chatIsClosed={chatIsClosed}
 											unreadMessages={unreadMessages}
+											sidebarFitHeight={sidebarFitHeight}
 										/>
 									</div>
 								)}

@@ -3,7 +3,7 @@ import classnames from 'classnames';
 import moment from 'moment';
 import STRINGS from '../../config/localizedStrings';
 import TruncateMarkup from 'react-truncate-markup';
-import { ICONS, IS_HEX } from '../../config/constants';
+import { ICONS, IS_XHT } from '../../config/constants';
 import { USER_TYPES } from '../../actions/appActions';
 import ReactSVG from 'react-svg';
 
@@ -72,7 +72,7 @@ class ChatMessageWithText extends Component {
 		let icon = verification_level >= 4
 			? ICONS.LEVEL_ACCOUNT_ICON_4
 			: ICONS[`LEVEL_ACCOUNT_ICON_${verification_level}`];
-		if (IS_HEX && ownMessage && is_hap) {
+		if (IS_XHT && ownMessage && is_hap) {
 			icon = ICONS.HAP_ACCOUNT_ICON;
 		}
 		return (
@@ -142,7 +142,7 @@ class ChatMessageWithImage extends Component {
 		let icon = verification_level >= 4
 			? ICONS.LEVEL_ACCOUNT_ICON_4
 			: ICONS[`LEVEL_ACCOUNT_ICON_${verification_level}`];
-		if (IS_HEX && ownMessage && is_hap) {
+		if (IS_XHT && ownMessage && is_hap) {
 			icon = ICONS.HAP_ACCOUNT_ICON;
 		}
 

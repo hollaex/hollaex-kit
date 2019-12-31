@@ -26,7 +26,7 @@ const Currency = ({ currency, balance, balanceValue, balanceText, coins }) => {
 						<span className="d-flex align-items-end balance-small pb-4">
 							{BASE_CURRENCY &&
 								`${
-									symbol.toUpperCase()
+									BASE_CURRENCY.toUpperCase()
 								}	${formatToCurrency(balanceText, baseCurrency.min)}`}
 						</span>
 					)}

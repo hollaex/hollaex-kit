@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
+import moment from 'moment';
 import { connect } from 'react-redux';
 import { isMobile } from 'react-device-detect';
 
@@ -178,7 +179,7 @@ class TransactionsHistory extends Component {
 				props.title = `${STRINGS.TRANSACTION_HISTORY.TITLE_TRADES}`;
 				props.headers = headers.trades;
 				props.data = trades;
-				props.filename = `${symbol}-transfers_history`;
+				props.filename = `trade-history-${moment().unix()}`;
 				props.withIcon = false;
 				props.handleNext = this.handleNext;
 				props.jumpToPage = this.state.jumpToPage;
@@ -187,7 +188,7 @@ class TransactionsHistory extends Component {
 				props.title = STRINGS.TRANSACTION_HISTORY.TITLE_DEPOSITS;
 				props.headers = headers.deposits;
 				props.data = deposits;
-				props.filename = `${symbol}-deposits_history`;
+				props.filename = `deposit-history-${moment().unix()}`;
 				props.handleNext = this.handleNext;
 				props.jumpToPage = this.state.jumpToPage;
 				break;
@@ -195,7 +196,7 @@ class TransactionsHistory extends Component {
 				props.title = STRINGS.TRANSACTION_HISTORY.TITLE_WITHDRAWALS;
 				props.headers = headers.withdrawals;
 				props.data = withdrawals;
-				props.filename = `${symbol}-withdrawals_history`;
+				props.filename = `withdrawal-history-${moment().unix()}`;
 				props.handleNext = this.handleNext;
 				props.jumpToPage = this.state.jumpToPage;
 				break;

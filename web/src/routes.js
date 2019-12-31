@@ -90,7 +90,7 @@ function requireAuth(nextState, replace) {
 			});
 		} else {
 			replace({
-				pathname: '/trade/hex-usdt'
+				pathname: '/trade/xht-usdt'
 			});
 		}
 	}
@@ -108,7 +108,7 @@ function loggedIn(nextState, replace) {
 			});
 		} else {
 			replace({
-				pathname: '/trade/hex-usdt'
+				pathname: '/trade/xht-usdt'
 			});
 		}
 	}
@@ -123,7 +123,7 @@ const logOutUser = () => {
 const setLogout = (nextState, replace) => {
 	removeToken();
 	replace({
-		pathname: '/trade/hex-usdt'
+		pathname: '/trade/xht-usdt'
 	});
 };
 

@@ -22,7 +22,7 @@ const ReferralSuccess = (props) => {
             </div>
             <div className="mx-3">
                 <div className="d-flex align-items-center my-4">
-                    <ReactSVG path={ICONS.HEX_FAQ} wrapperClassName="funds-svg" />
+                    <ReactSVG path={ICONS.XHT_FAQ} wrapperClassName="funds-svg" />
                     <div className="ml-2 font-weight-bold">
                         {STRINGS.formatString(
                             STRINGS.TERMS_OF_SERVICES.READ_FAG,
@@ -34,7 +34,7 @@ const ReferralSuccess = (props) => {
                     </div>
                 </div>
                 <div className="d-flex align-items-center my-4">
-                    <ReactSVG path={ICONS.HEX_DOCS} wrapperClassName="funds-svg" />
+                    <ReactSVG path={ICONS.XHT_DOCS} wrapperClassName="funds-svg" />
                     <div className="ml-2 font-weight-bold">
                         {STRINGS.formatString(
                             STRINGS.TERMS_OF_SERVICES.READ_DOCUMENTATION,
@@ -46,7 +46,7 @@ const ReferralSuccess = (props) => {
                     </div>
                 </div>
                 <div className="d-flex align-items-center my-4">
-                    <ReactSVG path={ICONS.HEX_WAVES} wrapperClassName="funds-svg" />
+                    <ReactSVG path={ICONS.XHT_WAVES} wrapperClassName="funds-svg" />
                     <div className="ml-2 font-weight-bold">
                         {STRINGS.formatString(
                             STRINGS.TERMS_OF_SERVICES.READ_WAVES,
@@ -58,7 +58,7 @@ const ReferralSuccess = (props) => {
                     </div>
                 </div>
                 <div className="d-flex align-items-center my-4">
-                    <ReactSVG path={ICONS.HEX_PDF} wrapperClassName="funds-svg" />
+                    <ReactSVG path={ICONS.XHT_PDF} wrapperClassName="funds-svg" />
                     <div className="ml-2 font-weight-bold">
                         {STRINGS.formatString(
                             STRINGS.TERMS_OF_SERVICES.VISUAL_STEP,
@@ -70,7 +70,7 @@ const ReferralSuccess = (props) => {
                     </div>
                 </div>
                 <div className="d-flex align-items-center my-4">
-                    <ReactSVG path={ICONS.HEX_EMAIL} wrapperClassName="funds-svg" />
+                    <ReactSVG path={ICONS.XHT_EMAIL} wrapperClassName="funds-svg" />
                     <div className="ml-2 font-weight-bold">
                         {STRINGS.formatString(
                             STRINGS.TERMS_OF_SERVICES.CONTACT_US,
