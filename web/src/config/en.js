@@ -501,8 +501,8 @@ export default {
 					ID: 'ID',
 					PASSPORT: 'Passport'
 				},
-				ID_NUMBER_LABEL: 'ID Document Number',
-				ID_NUMBER_PLACEHOLDER: 'Type the documents number',
+				ID_NUMBER_LABEL: 'Passport Number',
+				ID_NUMBER_PLACEHOLDER: 'Type your passport number',
 				ID_PASSPORT_NUMBER_LABEL: 'Passport Number',
 				ID_PASSPORT_NUMBER_PLACEHOLDER: 'Type your passport number',
 				ISSUED_DATE_LABEL: 'ID Document Issue Date',
@@ -530,11 +530,11 @@ export default {
 					LIST_ITEM_2: 'VISIBLE IN THEIR ENTIRETY (watermarks are permitted).',
 					LIST_ITEM_3: 'VALID, with the expiry date clearly visible.',
 					WARNING_1:
-						'Only a valid government-issued identification document is acceptedt; high quality photos or scanned images of these documents are acceptable:',
+						'Only a valid passport is acceptedt; high quality photos or scanned images of these documents are acceptable:',
 					WARNING_2:
 						'Make sure you are uploading your own documents. Any usage of wrong or fake documents will have legal consequences and result in freezing your account immediately.',
 					WARNING_3:
-						'Please do not submit the identity document as your proof of residence.'
+						'Please do not submit the passport as your proof of residence.'
 				},
 				POR: {
 					SECTION_1_TEXT_1:
@@ -557,15 +557,15 @@ export default {
 				SELFIE: {
 					TITLE: 'Selfie with passport and Note',
 					INFO_TEXT:
-						"Please provide a photo of you holding your passport or photo ID. In the same picture and have a reference to hollaex.com’, today's date and your signature displayed.Make sure your face is clearly visible and that your ID details are clearly readable.",
+						"Please provide a photo of you holding your passport. In the same picture and have a reference to hollaex.com’, today's date and your signature displayed.Make sure your face is clearly visible and that your ID details are clearly readable.",
 					REQUIRED: 'Required:',
 					INSTRUCTION_1: 'Your face clearly visable',
-					INSTRUCTION_2: 'Photo ID clearly readable',
+					INSTRUCTION_2: 'Passport clearly readable',
 					INSTRUCTION_3: 'Write the word hollaex.com',
 					INSTRUCTION_4: "Write today's date",
 					INSTRUCTION_5: 'Write your signature',
 					WARNING:
-						'Selfie with a different inconsistent ID with uploaded content will be rejected'
+						'Selfie with a different passport with uploaded content will be rejected'
 				}
 			}
 		},
@@ -1151,7 +1151,7 @@ export default {
 		TRADING_VOLUME_EQUIVALENT: '{0} {1} Trading Volume Equivalent',
 		LEVEL_OF_ACCOUNT: 'Level {0} Account',
 		LEVEL_TXT_DEFAULT:'Add your level description here',
-		LEVEL_1_TXT: 'Your journey starts here young crypto trader! To obtain bonsues you can verify your identiﬁcation and also get larger deposit and withdraw limits with reduced trading fees.', // new
+		LEVEL_1_TXT: 'Your journey starts here young crypto trader! To obtain bonuses you can verify your identiﬁcation and also get larger deposit and withdraw limits with reduced trading fees.', // new
 		LEVEL_2_TXT: 'Simply trade monthly over $3,000 USDT worth or have balance of over 5,000 XHT and enjoy lower trading fees.', // new
 		LEVEL_3_TXT: 'This is where things get real! Enjoy reduced trading fees and large deposit and withdrawal limits. To get to level 3 you must complete your veriﬁcation', // new
 		LEVEL_4_TXT: 'Simply trade monthly over $10,000 USDT worth or have balance of over 10,000 XHT and enjoy lower trading fees.', // new
@@ -1207,7 +1207,7 @@ export default {
 			'To become a HollaEx Kit distributor please fill out an application.', // new
 		TOTAL_REFERRAL: 'Total bought from referrals:', // new
 		PENDING_REFERRAL: 'Commissions Pending:', // new
-		EARN_REFERRAL: 'Commissions Earnt:', // new
+		EARN_REFERRAL: 'Commissions Earn:', // new
 		XHT_COUNT: '{0} XHT', // new
 		APPLY_BUTTON: 'APPLY' // new
 	},
