@@ -21,12 +21,6 @@ export const SidebarBottom = ({ activePath = 'x', pair = '', isLogged }) => {
 		isLogged ?
 			<div className="sidebar-bottom-wrapper d-flex justify-content-between">
 				<SidebarButtom
-					path={"/home"} 
-					title= {STRINGS.HOME_TEXT}
-					iconPath={ICONS.SIDEBAR_HOME_ACTIVE}
-					active={ activePath === 'home' }
-				/>
-				<SidebarButtom
 					path={"/account"} 
 					title= {STRINGS.ACCOUNT_TEXT}
 					iconPath={ICONS.SIDEBAR_ACCOUNT_ACTIVE}
@@ -55,6 +49,12 @@ export const SidebarBottom = ({ activePath = 'x', pair = '', isLogged }) => {
 					title={STRINGS.WALLET_TITLE}
 					iconPath={ICONS.SIDEBAR_WALLET_ACTIVE}
 					active={activePath === 'wallet'}
+				/>
+				<SidebarButtom
+					path={"/home"} 
+					title= {STRINGS.TRADE_TAB_POSTS}
+					iconPath={ICONS.SIDEBAR_POST_ACTIVE}
+					active={ activePath === 'home' }
 				/>
 			</div> :
 			<div className="d-flex w-100 p-4">

@@ -182,6 +182,10 @@ $logout--size-difference: 3rem;
 	.new-order-notification {
 		svg {
 			fill: $dark-icon-color;
+
+			.newWave-icon {
+				fill: $dark-icon-color;
+			}
 		}
 
 	}

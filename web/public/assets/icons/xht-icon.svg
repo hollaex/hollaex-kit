@@ -3,12 +3,14 @@
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 viewBox="0 0 77.5 71.5" style="enable-background:new 0 0 77.5 71.5;" xml:space="preserve">
 <style type="text/css">
-	.xht-icon{fill:#000000;}
+	.xht-icon{fill:#FFFFFF !important;}
+	.xht-icon-1{fill:#000000 !important;}
 </style>
-<g>
-	<path class="xht-icon" d="M47.5,12.3l19.4,23.6L47.5,59.5h-18L10.2,35.9l19.4-23.6H47.5 M49.1,9H28L5.9,35.9L28,62.8h21.2l22-26.9L49.1,9L49.1,9z"/>
-	<path class="xht-icon" d="M45.7,54H31.4L16.6,35.9l14.9-18.1h14.3l14.9,18.1L45.7,54z M32,52.9h13.2l13.9-17L45.1,19H32L18,35.9L32,52.9z"/>
-	<path class="xht-icon" d="M41.9,44.5h-6.8l-0.1-0.1l-6.9-8.5l7-8.6h6.8l0.1,0.1l6.9,8.5L41.9,44.5z M35.5,43.9h6.2l6.5-8l-6.6-8h-6.2l-6.6,8
-		L35.5,43.9z"/>
-</g>
+<path class="xht-icon-1" d="M49.1,9H28L5.9,35.9L28,62.8h21.2l22-26.9L49.1,9L49.1,9z"/>
+<path class="xht-icon" d="M45.3,53H31.7l-14-17.1l14.1-17.1h13.5l14.1,17.1L45.3,53z M32.3,52h12.5L58,35.9L44.8,19.8H32.3L19.1,35.9
+	L32.3,52z"/>
+<path class="xht-icon" d="M41.8,44h-6.4l-0.1-0.1l-6.6-8l6.6-8.1h6.4l0.1,0.1l6.6,8L41.8,44z M35.6,43.5h5.9l6.2-7.6l-6.2-7.6h-5.9
+	l-6.2,7.6L35.6,43.5z"/>
+<path class="xht-icon" d="M47.1,13.5l18.4,22.4L47.1,58.3H30L11.7,35.9L30,13.5H47.1 M48.5,10.4h-20L7.6,35.9l20.9,25.5h20l20.9-25.5
+	L48.5,10.4L48.5,10.4z"/>
 </svg>

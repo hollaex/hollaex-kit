@@ -1,6 +1,6 @@
 {
 	"name": "hollaex",
-	"version": "1.20.7",
+	"version": "1.20.10",
 	"private": true,
 	"dependencies": {
 		"@material/button": "^0.7.0",
@@ -88,7 +88,7 @@
 		"build": "npm run build-css && react-scripts --max_old_space_size=4096 build",
 		"test": "react-scripts test --env=jsdom",
 		"eject": "react-scripts eject",
-		"deploy-main": "npm run build && aws s3 sync build/ s3://hollaex.com && aws cloudfront create-invalidation --distribution-id E1FPBCJ0EFOPZJ --paths / && docker run --rm -e WEBHOOK_URL=https://hooks.slack.com/services/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 -e RELEASE_VERSION=\" v$npm_package_version\" -e DRONE_REPO_NAME='HollaEx' bitholla/devops-tools:drone_partymaker-0.1.4"
+		"deploy-main": "npm run build && aws s3 sync build/ s3://pro.hollaex.com && aws cloudfront create-invalidation --distribution-id E2J08KR60FNXW2 --paths / && docker run --rm -e WEBHOOK_URL=https://hooks.slack.com/services/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 -e RELEASE_VERSION=\" v$npm_package_version\" -e DRONE_REPO_NAME='HollaEx' bitholla/devops-tools:drone_partymaker-0.1.4"
 	},
 	"description": "Cryptocurrency exchange platfrom",
 	"main": "index.js",

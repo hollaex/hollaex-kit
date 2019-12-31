@@ -134,14 +134,14 @@ export default {
 	},
 	REQUEST_XHT_ACCESS: {
 		// new
-		REQUEST_TITLE: 'HollaEx링크 요청하기',
+		REQUEST_TITLE: '접근링크요청',
 		REQUEST_INVITE: '초대요청',
 		REFERRAL_INVITE_WARNING:
 			'HollaEx 공식 거래소에 접근하기 위해서 친구 또는 {0}에서 링크를 받아야합니다.',
-		CATEGORY_PLACEHOLDER: '본인에게 맞는 카테고리를 선택하시기바랍니다.',
+		CATEGORY_PLACEHOLDER: '회원님에게 해당하는 카테고리를 선택하시기바랍니다.',
 		INTRODUCTION_LABEL: '자기소개',
 		INTRODUCTION_PLACEHOLDER:
-			'어디에 살고계십니까? 거래소 운영에 관심이 있으십니까?'
+			'베이스가 어디십니까? 거래소 운영에 관심이 있으십니까?'
 	},
 	CONTACT_FORM: {
 		CATEGORY_LABEL: '문의 유형',
@@ -366,7 +366,7 @@ export default {
 		MAKE_FIRST_DEPOSIT: '첫 입금하기', // new
 		OBTAIN_XHT: 'XHT 받기', // new
 		TITLE_USER_DOCUMENTATION: 'Identification', // not used
-		TITLE_ID_DOCUMENTS: '업로드',
+		TITLE_ID_DOCUMENTS: '정보업로드',
 		TITLE_BANK_ACCOUNT: '은행계좌',
 		TITLE_MOBILE_PHONE: '휴대폰',
 		TITLE_PERSONAL_INFORMATION: '개인정보',
@@ -394,11 +394,11 @@ export default {
 		BANK_VERIFICATION: '은행인증',
 		IDENTITY_VERIFICATION: '개인정보확인',
 		PHONE_VERIFICATION: '휴대폰인증',
-		DOCUMENT_VERIFICATION: '인증문서업로드',
+		DOCUMENT_VERIFICATION: '개인정보제출',
 		START_BANK_VERIFICATION: '은행인증시작하기',
 		START_IDENTITY_VERIFICATION: '개인정보작성하기',
 		START_PHONE_VERIFICATION: '휴대폰 인증시작하기 ',
-		START_DOCUMENTATION_SUBMISSION: '인증문서업로드 시작하기',
+		START_DOCUMENTATION_SUBMISSION: '문서업로드 시작하기',
 		GO_BACK: '되돌아가기',
 		BANK_VERIFICATION_TEXT_1:
 			'은행계좌는 3개까지 추가하실 수 있습니다. 해외은행계좌는 고객센터에 문의하여주시고, 출금한도에 제한이 있습니다.',
@@ -416,8 +416,8 @@ export default {
 		REVIEW_IDENTITY_VERIFICATION: '개인정보 수정하기',
 		PHONE_DETAILS: '연락처 상세정보',
 		PHONE_COUNTRY_ORIGIN: '개통국가',
-		MOBILE_NUMBER: '휴대폰번호r',
-		DOCUMENT_PROOF_SUBMISSION: '인증문서제출',
+		MOBILE_NUMBER: '휴대폰번호',
+		DOCUMENT_PROOF_SUBMISSION: '개인정보인증',
 		START_DOCUMENTATION_RESUBMISSION: '문서 다시제출하기',
 		SUBMISSION_PENDING_TXT:
 			'*해당 정보는 이미 제출되었습니다. 변경사항 수정 후 다시 제출하시면 변경된 정보로 저장됩니다.',
@@ -500,23 +500,23 @@ export default {
 					ID: '주민등록증,신분증',
 					PASSPORT: '여권'
 				},
-				ID_NUMBER_LABEL: 'ID Document Number',
-				ID_NUMBER_PLACEHOLDER: 'Type the documents number',
+				ID_NUMBER_LABEL: '여권번호',
+				ID_NUMBER_PLACEHOLDER: '여권번호를 입력해주시기바랍니다.',
 				ID_PASSPORT_NUMBER_LABEL: '여권번호',
 				ID_PASSPORT_NUMBER_PLACEHOLDER: '여권번호를 입력해주시기바랍니다',
 				ISSUED_DATE_LABEL: '발급일',
 				EXPIRATION_DATE_LABEL: '기간만료일',
-				FRONT_LABEL: '신분증(앞면)',
-				FRONT_PLACEHOLDER: '신분증(앞면)사본을 첨부해주시기바랍니다.',
+				FRONT_LABEL: '여권사본',
+				FRONT_PLACEHOLDER: '여권의 사본을 첨부해주시기바랍니다.',
 				BACK_LABEL: '신분증(뒷면)',
 				BACK_PLACEHOLDER: '신분증(뒷면)사본을 첨부해주시기바랍니다',
 				PASSPORT_LABEL: '여권',
 				PASSPORT_PLACEHOLDER: '여권사본을 첨부해주시기바랍니다.',
 				POR_LABEL: '거주지 증빙서류',
 				POR_PLACEHOLDER: '거주지를 증명하는 서류를 첨부해주시기바랍니다.',
-				SELFIE_PHOTO_ID_LABEL: '신분증을 들고있는 본인의 사진',
+				SELFIE_PHOTO_ID_LABEL: '여권을 들고있는 본인의 사진',
 				SELFIE_PHOTO_ID_PLACEHOLDER:
-					'메모가 부착된 신분증을 들고 있는 본인의 사진을 첨부해주시기바랍니다.'
+					'메모가 부착된 여권을 들고 있는 본인의 사진을 첨부해주시기바랍니다.'
 			},
 			INFORMATION: {
 				IDENTITY_DOCUMENT: 'Identity Document',
@@ -528,42 +528,42 @@ export default {
 					LIST_ITEM_3:
 						'유효한 기간내의 파일로 만료 날짜가 선명하게 표시될 것',
 					WARNING_1:
-						'유효한 정부 발급 신분 증명서만 허용됩니다. 고품질의 사진 또는 스캔된 이미지를 제출해주시기바랍니다:',
+						'유효한 여권만 허용됩니다. 고품질의 사진 또는 스캔된 이미지를 제출해주시기바랍니다:',
 					WARNING_2:
 						'회원 본인의 문서가 맞는지 확인하시기 바랍니다. 이유를 불문하고 잘못되거나 위조된 문서를 사용할 시 법적처벌을 받게되며 계좌는 즉시 동결됩니다.',
 					WARNING_3:
-						'신분증명서류를 거주지 증빙서류로 제출하지 마시기 바랍니다.'
+						'여권을 거주지 증빙서류로 제출하실 수 없습니다.'
 				},
 				POR: {
 					SECTION_1_TEXT_1:
-						'본인인증 검토시에 지연을 방지하기 위해 다음의 내용을 확인해주시기 바랍니다:',
+						'본인인증 검토과정의 지연을 방지하기 위해 다음의 내용을 확인해주시기 바랍니다:',
 					SECTION_1_TEXT_2:
-						'이름, 주소, 발급 날짜 및 발급인 등의 정보가 선명하게 보인다.',
+						'이름, 주소, 발급 날짜 및 발급인 등의 정보가 선명하게 보일것',
 					SECTION_1_TEXT_3:
-						'거주지 증빙서류의 발급일로부터 3개월이 지나지 않았다.',
+						'거증빙서류의 발급일로부터 3개월이 지나지 않은것.',
 					SECTION_1_TEXT_4:
-						'컬러 사진 또는 스캔 이미지가 고화질이다.(최소 300dpi)',
+						'컬러 사진 또는 스캔 이미지가 고화질일것  (최소 300dpi)',
 					SECTION_2_TITLE: '제출가능한 거주지 증빙서류:',
-					SECTION_2_LIST_ITEM_1: '예금증명서',
+					SECTION_2_LIST_ITEM_1: '정부에서 발행한 문서(납세증명서, 주민등록등본 등)',
 					SECTION_2_LIST_ITEM_2:
 						'공공요금 지로용지(전기, 수도, 인터넷 등)',
 					SECTION_2_LIST_ITEM_3:
-						'정부에서 발행한 문서(납세증명서, 주민등록등본 등)',
+						'예금증명서',
 					WARNING:
-						'신분증명서류로 제출된 신분증의 주소를 거주지 증빙서류로 사용할 수 없습니다.'
+						'신분증 상에 나타난 주소를 거주지 증빙서류로 사용할 수 없습니다.'
 				},
 				SELFIE: {
-					TITLE: '메모가 부착된 신분증을 들고있는 본인의 사진',
+					TITLE: '메모가 부착된 여권을 들고있는 본인의 사진',
 					INFO_TEXT:
-						'아래의 예시를 확인하시어 해당내용을 포함한 주민등록증, 운전면허증,여권 등(사진이 포함된 신분증)을 들고있는 사진을 제출하시기바랍니다. 얼굴이 선명하게 보이고 신분증의 세부정보를 명확하게 읽을 수 있는지 확인해주시기 바랍니다.',
+						'아래의 예시를 확인하시어 해당내용을 포함한 메모가 부착된 여권을 들고있는 사진을 제출하시기바랍니다. 얼굴이 선명하게 보이고 여권의 세부정보를 명확하게 읽을 수 있어야합니다.',
 					REQUIRED: '필요조건:',
 					INSTRUCTION_1: '얼굴이 선명히 보일것',
-					INSTRUCTION_2: '신분증의 세부정보가 명확히 보일것',
+					INSTRUCTION_2: '여권의 세부정보가 명확히 보일것',
 					INSTRUCTION_3: '메모내용: 직접 쓴 ‘hollaex.com',
 					INSTRUCTION_4: '메모내용: 신청 날짜',
-					INSTRUCTION_5: '메모내용: 가입된 이메일주소 및 본인서명',
+					INSTRUCTION_5: '메모내용: 본인서명',
 					WARNING:
-						'첨부된 신분증과 일치하지않는 신분증을 포함한 본인의 사진은 허용되지않습니다.'
+						'첨부된 여권과 일치하지 않을 경우 거절됩니다.'
 				}
 			}
 		},
@@ -911,8 +911,8 @@ export default {
 	NO: 'No',
 	NEXT: 'Next',
 	SKIP_FOR_NOW: 'Skip for now',
-	SUBMIT: 'submit',
-	RESUBMIT: 'Resubmit',
+	SUBMIT: '제출하기',
+	RESUBMIT: '다시제출하기',
 	VERIFICATION_NOTIFICATION_SKIP_TITLE: 'Missing Documents!',
 	VERIFICATION_NOTIFICATION_SKIP_TEXT:
 		'To get full access to withdrawal and deposit functions on HollaEx you must submit your identity documents in your account page.',
@@ -1106,13 +1106,13 @@ export default {
 		TRADING_VOLUME_TXT_2:
 			'높은 거래금액을 유지하시면 계정 업그레이드가 가능한 자격을 부여받으실 수 있습니다. 특별한 뱃지와 업그레이드 된 특권을 누러보시기바랍니다.',
 		ACCOUNT_DETAILS_TXT_1:
-			'회원님의 계정은 레벨에 따라 뱃지, 거래수수료, 입출금한도를 결정됩니다.',
+			'계정은 회원님의 레벨에 따라 뱃지, 거래수수료, 입출금한도가 다르게 결정됩니다.',
 		ACCOUNT_DETAILS_TXT_2:
-			'계정유지기간, 활동수준, 총 자산 등을 통해 계정의 업그레이드 가능 여부를 결정하게됩니다.',
+			'계정유지기간, 활동수준, 총 자산금액 등을 통해 계정의 업그레이드 가능 여부가 결정됩니다.',
 		ACCOUNT_DETAILS_TXT_3:
-			'회원님의 레벨유지를 위해 지속적인 거래활동과 일정금액 이상의 자산예치등의 조건이 유지되어야합니다.',
+			'레벨을 계속 유지하기 위해서는 지속적인 거래활동과 일정금액 이상의 자산예치등의 조건이 유지되어야합니다.',
 		ACCOUNT_DETAILS_TXT_4:
-			'지속적인 거래활동 및 일정수준의 자산의 유지가 되지않을경우 하향조정이 이루어질 수 있습니다.',
+			'해당 레벨에 필요한 일정한 거래활동 및 일정수준의 자산유지가 되지않을경우 레벨 하향조정이 이루어질 수 있습니다.',
 		REQUIREMENTS: '필요조건',
 		REQUEST_ACCOUNT_UPGRADE: '계정 업그레이드 요청',
 		FEES_AND_LIMIT: ' {0}의 수수료 및 입출금한도 구조',
@@ -1124,61 +1124,87 @@ export default {
 		TRADING_FEE_STRUCTURE: '거래수수료 구조',
 		WITHDRAWAL: '출금',
 		DEPOSIT: '입금',
-		TAKER: 'Taker',
-		MAKER: 'Maker',
+		TAKER: '테이커',
+		MAKER: '메이커',
 		WEBSITE: '웹사이트',
 		VIP_TRADER_ACCOUNT_ELIGIBLITY: 'VIP 트레이더레벨 업그레이드자격',
 		PRO_TRADER_ACCOUNT_ELIGIBLITY: '프로 트레이더레벨 업그레이드자격',
 		TRADER_ACCOUNT_ELIGIBILITY: '{0}레벨 자격',
-		NOMINAL_TRADING: 'Nominal Trading',
-		NOMINAL_TRADING_WITH_MONTH: 'Nominal Trading Last {0}',
-		ACCOUNT_AGE_OF_MONTHS: 'Account Age of {0} Months',
-		TRADING_VOLUME_EQUIVALENT: '{0} {1} Trading Volume Equivalent',
-		LEVEL_OF_ACCOUNT: 'Level {0} Account',
-		LEVEL_TXT_DEFAULT: 'Add your level description here',
-		LEVEL_1_TXT:
-			'Your trading journey begins here! Profits await.Upgrades your account to unlock withdrawals and favorable fees by verifying your account.',
-		LEVEL_2_TXT:
-			'축하합니다. 계정 인증되었습니다. 계속 거래하시어 레벨 업그레이드하시면 낮은 거래 수수료와 높은 입출금한도등의 혜택을 받으실 수 있습니다.',
-		LEVEL_3_TXT:
-			'You’ve come far comrade and have traded well.Keep trading and reach the highest rank and enjoy even lower fees and higher limits.',
-		LEVEL_4_TXT:
-			'You are a masters trader and have reached the peek. To maintain your rank keep your trading volume high and healthy.',
-		CURRENT_TXT: 'Current',
-		TRADER_ACCOUNT_XHT_TEXT:
-			'Earn up to 10% in commissions through distributing the HollaEx Kit. Alternatively you can earn XHT daily through staking your XHT token when running your own exchange.',
-		TRADER_ACCOUNT_TITLE: 'Account', // new
-		HAP_ACCOUNT: 'HAP Account', // new
-		HAP_ACCOUNT_TXT:
-			'Your account is a verified HollaEx affiliate program account. You can now earn 10% bonus for every person you invite that buys XHT.' // new
+		NOMINAL_TRADING: '명목상의 거래',
+		NOMINAL_TRADING_WITH_MONTH: '지난 {0}의 명목상의 거래',
+		ACCOUNT_AGE_OF_MONTHS: '계정활동기간 {0} 개월',
+		TRADING_VOLUME_EQUIVALENT: '{0} {1} 거래볼륨 등가',
+		LEVEL_OF_ACCOUNT: '레벨 {0} 계정',
+		LEVEL_TXT_DEFAULT: '이곳에 레벨 설명을 추가하세요.',
+		LEVEL_1_TXT: '크립토 트레이더로서의 여정이 이곳에서 시작되었습니다. 회원님의 개인정보인증을 통해 보너스도 받고 입출금한도 증액 및 수수료인하를 받으실 수 있습니다.', // new
+		LEVEL_2_TXT: '월 3,000USDT 이상의 거래를 하거나 5,000XHT 이상의 잔고를 유지하시고 보다 낮아진 수수료를 즐겨보시기바랍니다.', // new
+		LEVEL_3_TXT: '개인정보 인증을 완료하여 레벨 3에 도달하실 수 있습니다. 거래수수료 인하 및 늘어난 입출금한도! 진짜 트레이더가 될 준비가 되셨습니다.', // new
+		LEVEL_4_TXT: '월 10,000USDT 이상의 거래를 하거나 10,000XHT 이상의 잔고를 유지하시고 보다 저렴한 수수료를 즐기시기바랍니다..', // new
+		LEVEL_5_TXT: '해내셨네요! 레벨 5 계정은 오직 거래소 운영자, Vault사용자 또는 HollaEx Affiliate Program(HAP) 회원들에게만 적용되는 특별한 레벨입니다. 입출금한도는 더 높아졌고 메이커 수수료는 무료로 이용하실 수 있습니다.', // new
+		LEVEL_6_TXT: '월 300,000USDT 이상의 거래를 하거나 100,000XHT 이상의 잔고를 유지하시고 더 낮아진 수수료를 즐기시기바랍니다. 출금액이 증가되었습니다. ', // new
+		LEVEL_7_TXT: '월 500,000USDT 이상의 거래를 하거나 300,000XHT 이상의 잔고를 유지하시고 더 낮아진 수수료를 즐기시기바랍니다. 출금액이 증가되었습니다.', // new
+		LEVEL_8_TXT: '월 600,000USDT 이상의 거래를 하거나 400,000XHT 이상의 잔고를 유지하시고 더 낮아진 수수료를 즐기시기바랍니다.', // new
+		LEVEL_9_TXT: '월 2,000,000USDT 이상의 거래를 하거나 1,000,000XHT 이상의 잔고를 유지하시고 더 낮아진 수수료를 즐기시기바랍니다.', // new
+		LEVEL_10_TXT: '웨일스 트레이더 계정은 마켓메이킹을 통해 이익을 얻을 수 있는 계정입니다. 이 특별 계정을 얻기 위해선 저희에게 연락해주시기바랍니다.', // new
+		CURRENT_TXT: '현재',
+		TRADER_ACCOUNT_XHT_TEXT: '회원님의 계정은 XHT 사전판매 그룹에 속해있으며 이는 1XHT를 $0,10에 얻는다는 것을 의미합니다. 모든 입금액은 거래가 종료되면 XHT로 전환됩니다.',
+		TRADER_ACCOUNT_TITLE: '계정 - 사전판매기간', // new
+		HAP_ACCOUNT: 'HAP 계정', // new
+		HAP_ACCOUNT_TXT: '회원님의 계정은 인증된 HollaEx 가입프로그램(HAP) 계정입니다. 이제 XHT 구매를 원하는 모든 사람을 초대하여 10%의 보너스를 얻으시기바랍니다.', // new
+		EMAIL_VERIFICATION: '이메일 인증', // new
+		DOCUMENTS: '문서', // new
+		HAP_TEXT: 'HollaEx 가입프로그램 (HAP) {0}', // new
+		LOCK_AN_EXCHANGE: '거래소잠금 {0}', // new
+		WALLET_SUBSCRIPTION_USERS: 'Vault 가입사용자 {0}', // new
+		TRADE_OVER_XHT: '{0} USDT 이상의 거래', // new
+		TRADE_OVER_BTC: '{0} BTC 이상의 거래', // new
+		XHT_IN_WALLET: '{0} XHT 지갑', // new
+		REWARDS_BONUS: '리워드와 보너스', // new
+		COMPLETE_TASK_DESC: '테스크를 완료하고 $10,000이상의 보너스를 획득하세요.', // new
+		TASKS: '테스크', // new
+		MAKE_FIRST_DEPOSIT: '첫 입금을 하고 1XHT를 받으세요.', // new
+		BUY_FIRST_XHT: 'XHT 첫 구매를 통해 보너스 5 XHT를 받으세요.', // new
+		COMPLETE_ACC_VERIFICATION: '개인정보인증을 완료하시고 보너스 20XHT를 받으세요.', // new
+		INVITE_USER: '사용자를 초대하고 그들의 거래에서 커미션을 받으세요.', // new
+		JOIN_HAP: 'HAP에 가입하시어 판매하는 모든 HollaEx Kit에 대해 10%의 이익을 얻어보세요.', // new
+		EARN_RUNNING_EXCHANGE: '자신의 거래소를 운영하면  Earn passive income for running your own exchange', // new
+		XHT_WAVE_AUCTION: 'XHT 웨이브옥션 데이터', // new
+		XHT_WAVE_DESC_1: 'HollaEx 토큰(XHT)의 배포는 웨이브옥션을 통해 이루어집니다.', // new
+		XHT_WAVE_DESC_2: '웨이브 옥션은 XHT 수량과 시간이 랜덤으로 정해지며 주문서에서 가장 높은 가격을 호가한 매수자에게 판매됩니다.', // new
+		XHT_WAVE_DESC_3: '아래에서 웨이브옥션의 내역이 기록된 것을 확인해보세요.', // new
+		WAVE_AUCTION_PHASE: '웨이브옥션 단계 {0}', // new
+		LEARN_MORE_WAVE_AUCTION: '웨이브옥션에 대해 자세히 알아보기', // new
+		WAVE_NUMBER: '웨이브 번호', // new
+		DISCOUNT: '( {0}% 할인 )', // new
+		MY_FEES_LIMITS: ' 나의 수수료와 한도' // ne
 	},
 	REFERRAL_LINK: {
-		TITLE: '친구초대하기 Invite your friend', // new
-		INFO_TEXT: 'Refer your friends by giving out this link.', // new
-		INFO_TEXT_1: 'Send thm this affiliation link and get them onboard', // new
-		COPY_FIELD_LABEL: 'Share the link below with friends and earn commissions:', // new
-		REFERRED_USER_COUT: 'You have referred {0} users', // new
-		COPY_LINK_BUTTON: 'COPY REFERRAL LINK', // new
-		XHT_TITLE: 'EARN 10% IN COMMISSIONS', // new
-		XHT_INFO_TEXT: 'Earn 1 XHT for every 10 XHT your friends buy.', // new
-		XHT_INFO_TEXT_1: 'Commissions are paid periodically to your XHT wallet', // new
+		TITLE: '친구초대하기', // new
+		INFO_TEXT: '링크를 공유하여 친구에게 추천하세요. 이 링크를 통해 가입함으로써 회원님의 친구는 {0}% 할인을 받게됩니다.', // new
+		INFO_TEXT_1: '회원님의 추천으로 가입하여 거래하신 분의 거래 수수료의 {0}%가 매달 회원님의 계정으로 입금됩니다.', // new
+		COPY_FIELD_LABEL: '아래 링크를 공유하여 커미션을 받으세요:', // new
+		REFERRED_USER_COUT: '{0} 명의 추천을 받음', // new
+		COPY_LINK_BUTTON: '추천인 링크 복사하기', // new
+		XHT_TITLE: '나의 추천', // new
+		XHT_INFO_TEXT: '친구를 초대하여 커미션 수익을 얻으세요.', // new
+		XHT_INFO_TEXT_1: '커미션 수익은 주기적으로 회원님의 지갑으로 입금됩니다.', // new
 		APPLICATION_TXT:
-			'To become a HollaEx Kit distributor please fill out an application.', // new
+			'HollaEx Kit 배급자가 되려면 지원서를 작성해주시기바랍니다.', // new
 		TOTAL_REFERRAL: 'Total bought from referrals:', // new
 		PENDING_REFERRAL: 'Commissions Pending:', // new
-		EARN_REFERRAL: 'Commissions Earnt:', // new
+		EARN_REFERRAL: 'Commissions Earn:', // new
 		XHT_COUNT: '{0} XHT', // new
 		APPLY_BUTTON: 'APPLY' // new
 	},
 	STAKE_TOKEN: {
 		TITLE: 'Stake HollaEx Token', // new
 		INFO_TXT1:
-			'For every user of the HollaEx Exchange Kit there are HollaEx tokens collateralized to run the exchange software.', // new
+			'HollaEx tokens (XHT) are required to be collateralized (staked) to run the HollaEx Kit exchange software.', // new
 		INFO_TXT2:
-			'You can collateralize your HollaEx token in a similar fashion to staking and earn XHT not sold during the Wave Auction.', // new
+			'You can collateralize your HollaEx token in a similar fashion and earn XHT not sold during the Wave Auction.', // new
 		INFO_TXT3:
 			'Simply go to dash.bitholla.com and collateralize your own exchange today and earn free XHT', // new
-		BUTTON_TXT: 'GO TO DASH' // new
+		BUTTON_TXT: 'FIND OUT MORE' // new
 	},
 	TERMS_OF_SERVICES: {
 		// new
@@ -1216,10 +1242,11 @@ export default {
 	},
 	WAVES: {
 		// new
-		NEXT_WAVE: 'Next Wave :',
-		WAVE_AMOUNT: 'Amount in Wave :',
-		FLOOR: 'Floor :',
-		LAST_WAVE: 'Last wave:'
+		TITLE: 'Wave Info',
+		NEXT_WAVE: 'Next Wave',
+		WAVE_AMOUNT: 'Amount in Wave',
+		FLOOR: 'Floor',
+		LAST_WAVE: 'Last wave'
 	},
 	TYPES_OF_POSTS: {
 		// new
@@ -1256,8 +1283,8 @@ export default {
 		ANNOUNCEMENT: 'Announcement',
 		ANNOUNCEMNT_TXT_3:
 			'Public launch and Wave Auction is rescheduled to January 1st 2020. Wallet deposit and withdrawals are now open.',
-		ANNOUNCEMNT_TXT_2:
-			'Public wave auction is starting from December 18th, 2019 1pm UTC. You can deposit and start placing bids at anytime and purchase XHT.',
+		ANNOUNCEMNT_TXT_4:
+			'Happy new year Hollaers. We are making a new mark starting from 2020 with launch of the most open trading platform with the help of you all.',
 		ANNOUNCEMNT_TXT_1:
 			'Earn XHT with HAP program by introducing your friends to hollaex.com. {0}.',
 		DEFAULT_ANNOUNCEMENT:
@@ -1265,6 +1292,7 @@ export default {
 		ANNOUNCEMENT_TXT_2: 'Free XHT will be distributed to all wallets that {0}.',
 		LEARN_MORE: 'Learn more',
 		APPLY_TODAY: 'Apply today' // new
-	}
+	},
+	OPEN_WALLET: 'Open wallet', // new
+	AGO: 'ago', // new
 };
-

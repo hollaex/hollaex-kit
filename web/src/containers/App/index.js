@@ -321,6 +321,9 @@ class Container extends Component {
 
 		publicSocket.on('wave', (data) => {
 			console.log('wave', data)
+			this.props.setNotification(NOTIFICATIONS.WAVE_NOTIFICATION, {
+				wave: data
+			});
 		});
 	};
 
@@ -602,6 +605,7 @@ class Container extends Component {
 	goToAccountPage = () => this.goToPage('/account');
 	goToVerificationPage = () => this.goToPage('/verification');
 	goToDashboard = () => this.goToPage('/');
+	goToXHTTrade = () => this.goToPage('/trade/xht-usdt');
 
 	logout = (message = '') => {
 		this.setState({ appLoaded: false }, () => {
@@ -798,6 +802,20 @@ class Container extends Component {
 					<DepositFunds
 						data={rest}
 						gotoWallet={gotoWallet}
+					/>
+				);
+			}
+			case NOTIFICATIONS.WAVE_NOTIFICATION: {
+				const { onConfirm, ...rest } = data;
+				return (
+					<Notification
+						type={type}
+						data={{
+							pair: this.props.pair,
+							...rest
+						}}
+						onConfirm={this.goToXHTTrade}
+						onBack={this.onCloseDialog}
 					/>
 				);
 			}

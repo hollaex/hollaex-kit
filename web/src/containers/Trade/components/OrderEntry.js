@@ -366,11 +366,10 @@ class OrderEntry extends Component {
 	};
 
 	onFeeStructureAndLimits = () => {
-		if (this.props.user && this.props.user.verification_level) {
-			this.props.openFeesStructureandLimits({
-				verification_level: this.props.user.verification_level
-			});
-		}
+		this.props.openFeesStructureandLimits({
+			verification_level: this.props.user.verification_level,
+			discount: this.props.user.discount || 0
+		});
 	};
 
 	render() {

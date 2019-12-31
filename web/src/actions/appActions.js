@@ -27,7 +27,8 @@ export const NOTIFICATIONS = {
 	INVITE_FRIENDS: 'INVITE_FRIENDS',
 	STAKE_TOKEN:'STAKE_TOKEN',
 	DEPOSIT_INFO: 'DEPOSIT_INFO',
-	XHT_SUCCESS_ACCESS :'XHT_SUCCESS_ACCESS'
+	XHT_SUCCESS_ACCESS :'XHT_SUCCESS_ACCESS',
+	WAVE_NOTIFICATION: 'WAVE_NOTIFICATION'
 };
 export const CONTACT_FORM = 'CONTACT_FORM';
 export const HELPFUL_RESOURCES_FORM = 'HELPFUL_RESOURCES_FORM';
@@ -49,6 +50,7 @@ export const SET_CONFIG = 'SET_CONFIG';
 export const REQUEST_XHT_ACCESS = 'REQUEST_XHT_ACCESS';
 export const SET_INFO = 'SET_INFO';
 export const SET_VALID_BASE_CURRENCY = 'SET_VALID_BASE_CURRENCY';
+export const SET_WAVE_AUCTION = 'SET_WAVE_AUCTION';
 
 export const USER_TYPES = {
 	USER_TYPE_NORMAL: 'normal',
@@ -256,6 +258,19 @@ export const getExchangeInfo = () => {
 				dispatch({
 					type: SET_INFO,
 					payload: { info: res.data.info }
+				});
+			}
+		});
+	};
+};
+
+export const getWaveAuction = () => {
+	return (dispatch) => {
+		axios.get('/wave').then((res) => {
+			if (res && res.data && res.data.data) {
+				dispatch({
+					type: SET_WAVE_AUCTION,
+					payload: { data: res.data.data }
 				});
 			}
 		});
