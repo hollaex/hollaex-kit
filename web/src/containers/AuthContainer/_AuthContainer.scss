@@ -193,6 +193,7 @@ $container--padding-sm: 3rem;
 	&.auth-wrapper {
 		background: $dark-app-light-background;
 		background: url($dark-background-image);
+		background-size: cover;
 		&:before {
 			background-color: transparent;
 		}
