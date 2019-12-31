@@ -373,7 +373,7 @@ class Trade extends Component {
 						activeOrders={activeOrders}
 						cancelOrder={this.handleCancelOrders}
 						cancelDelayData={cancelDelayData}
-						cancelAllOrders={cancelAllOrders}
+						cancelAllOrders={this.cancelAllOrders}
 						goToTransactionsHistory={this.goToTransactionsHistory}
 						pair={pair}
 						pairData={pairData}

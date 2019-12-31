@@ -63,8 +63,11 @@ class Verification extends Component {
 	}
 
 	componentWillReceiveProps(nextProps) {
-		if(nextProps.user !== this.props.user) {
-			this.setUserData(nextProps.user);
+		if (nextProps.user.email !== this.props.user.email ||
+			nextProps.user.phone_number !== this.props.user.phone_number ||
+			JSON.stringify(nextProps.user.address) !== JSON.stringify(this.props.user.address) ||
+			JSON.stringify(nextProps.user.id_data) !== JSON.stringify(this.props.user.id_data)) {
+				this.setUserData(nextProps.user);
 		}
 		if (nextProps.activeLanguage !== this.props.activeLanguage) {
 			this.updateTabs(this.state.user, nextProps.activeLanguage);

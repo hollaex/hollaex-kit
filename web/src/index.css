@@ -833,6 +833,9 @@ table th {
 .dark-theme .otp_form-wrapper .otp_form-section-title {
   color: #b6b5cd; }
 
+.dark-theme .otp_form-wrapper .otp_form-section-wrapper {
+  border-top-color: #b6b5cd; }
+
 .dark-theme .otp_form-wrapper .otp_form-section-text {
   color: #a3a1ca; }
 

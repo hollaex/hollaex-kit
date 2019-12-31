@@ -68,16 +68,16 @@ class ChatMessageWithText extends Component {
 			verification_level
 		} = this.props;
 		const { maxLines } = this.state;
+		let icon = ICONS[`LEVEL_ACCOUNT_ICON_${verification_level}`]
+			? ICONS[`LEVEL_ACCOUNT_ICON_${verification_level}`]
+			: ICONS.LEVEL_ACCOUNT_ICON_4;
 		return (
 			<div className={classnames('nonmobile')}>
 				<div className="d-flex">
 					<div className="mx-2 my-1">
-						{verification_level === 3 || verification_level >= 4
+						{verification_level >= 3
 							? <ReactSVG
-								path={verification_level >= 4
-									? ICONS.LEVEL_ACCOUNT_ICON_4
-									: ICONS[`LEVEL_ACCOUNT_ICON_${verification_level}`]
-								}
+								path={icon}
 								wrapperClassName="user-icon mr-1" />
 							: <div className="user-icon mr-1"></div>}
 					</div>
