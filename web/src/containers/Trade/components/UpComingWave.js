@@ -44,7 +44,7 @@ class UpComingWave extends Component {
         const { wave = [] } = this.props;
 		var now = moment(new Date());
         let lastWave = wave.length > 1 ? wave[1] : defaultWave;
-        if (lastWave.created_at) {
+        if (lastWave.created_at && lastWave.created_at !== 'TBA') {
             const lastWaveDifference = moment.duration(now.diff(moment(lastWave.created_at)));
             const lastWaveTime = lastWaveDifference.format("hh[h]:mm[m]:ss[s]");
             lastWave = { ...lastWave, created_at: lastWaveTime };
