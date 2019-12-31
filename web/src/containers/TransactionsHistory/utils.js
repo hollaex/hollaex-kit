@@ -71,7 +71,7 @@ const calculatePrice = (isQuick = false, price, size) => {
 	return price;
 };
 
-export const generateTradeHeaders = (symbol, pairs, coins) => {
+export const generateTradeHeaders = (symbol, pairs, coins, discount) => {
 	return [
 		{
 			label: STRINGS.PAIR,
@@ -233,8 +233,11 @@ export const generateTradeHeaders = (symbol, pairs, coins) => {
 				symbol,
 				side
 			}) => {
-				if (!fee) {
-					return calculateFeeAmount(fee);
+				let feeData =  discount
+					? (fee - (fee * discount / 100))
+					: fee;
+				if (!feeData) {
+					return calculateFeeAmount(feeData);
 				}
 				if (pairs[symbol]) {
 					const { pair_base, pair_2 } = pairs[symbol];
@@ -244,13 +247,13 @@ export const generateTradeHeaders = (symbol, pairs, coins) => {
 					return STRINGS.formatString(
 						CURRENCY_PRICE_FORMAT,
 						formatToCurrency(
-							calculateFeeAmount(fee, quick, price, size, side),
+							calculateFeeAmount(feeData, quick, price, size, side),
 							min
 						),
 						rest.symbol.toUpperCase()
 					).join('');
 				} else {
-					calculateFeeAmount(fee, quick, price, size, side);
+					calculateFeeAmount(feeData, quick, price, size, side);
 				}
 			},
 			renderCell: (
@@ -258,8 +261,11 @@ export const generateTradeHeaders = (symbol, pairs, coins) => {
 				key,
 				index
 			) => {
-				if (!fee) {
-					return <td key={index}> {calculateFeeAmount(fee)}</td>;
+				let feeData =  discount
+					? (fee - (fee * discount / 100))
+					: fee;
+				if (!feeData) {
+					return <td key={index}> {calculateFeeAmount(feeData)}</td>;
 				}
 				if (pairs[symbol]) {
 					const { pair_base, pair_2 } = pairs[symbol];
@@ -271,7 +277,7 @@ export const generateTradeHeaders = (symbol, pairs, coins) => {
 							{STRINGS.formatString(
 								CURRENCY_PRICE_FORMAT,
 								formatToCurrency(
-									calculateFeeAmount(fee, quick, price, size, side),
+									calculateFeeAmount(feeData, quick, price, size, side),
 									min,
 									true
 								),
@@ -280,7 +286,7 @@ export const generateTradeHeaders = (symbol, pairs, coins) => {
 						</td>
 					);
 				} else {
-					calculateFeeAmount(fee, quick, price, size, side);
+					calculateFeeAmount(feeData, quick, price, size, side);
 				}
 			}
 		},
@@ -527,16 +533,16 @@ export const filterData = (symbol, { count = 0, data = [] }) => {
 	};
 };
 
-export const generateTradeHeadersMobile = (symbol, pairs, coins) => {
+export const generateTradeHeadersMobile = (symbol, pairs, coins, discount) => {
 	const KEYS = ['pair', 'side', 'size', 'price', 'fee', 'timestamp'];
-	return generateTradeHeaders(symbol, pairs, coins).filter(
+	return generateTradeHeaders(symbol, pairs, coins, discount).filter(
 		({ key }) => KEYS.indexOf(key) > -1
 	);
 };
 
-export const generateLessTradeHeaders = (symbol, pairs, coins) => {
+export const generateLessTradeHeaders = (symbol, pairs, coins, discount) => {
 	const KEYS = ['side', 'price', 'amount', 'fee', 'timestamp'];
-	return generateTradeHeaders(symbol, pairs, coins).filter(
+	return generateTradeHeaders(symbol, pairs, coins, discount).filter(
 		({ key }) => KEYS.indexOf(key) > -1
 	);
 };
