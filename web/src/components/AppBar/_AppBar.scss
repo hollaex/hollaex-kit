@@ -86,12 +86,12 @@ $app-bar-add-tab-red: #ff0000;
 		.app-bar-account-moon-icon{
 			svg {
 				.moon-icon {
-				  fill: $colors-white;
+				  fill: $colors-black;
 				}
 			}
 		}
 		.app-bar-account-moon-content {
-			background-color: $dark-app-background-color;
+			background-color: $colors-white;
 		}
 	}
 
@@ -406,14 +406,14 @@ $app-bar-add-tab-red: #ff0000;
 		width: 1rem;
 		svg {
 			.moon-icon {
-              fill: $colors-black;
+              fill: $colors-white;
 			}
 		}
 	}
 	.app-bar-account-moon-content {
 		border: 1px solid $app-bar-icon-inactive;
 		border-radius: 5px;
-		background-color: $colors-white;
+		background-color: $dark-app-background-color;
 	}
 
 	.app_bar-pair-content, .app-bar-tab-close, .app-bar-currency-icon, .app-bar-account-icon svg {
