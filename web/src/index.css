@@ -523,7 +523,8 @@ table th {
 
 .dark-theme.auth-wrapper {
   background: #2b2b2b;
-  background: url("/assets/dark-background.jpg"); }
+  background: url("/assets/dark-background.jpg");
+  background-size: cover; }
   .dark-theme.auth-wrapper:before {
     background-color: transparent; }
   .dark-theme.auth-wrapper .auth-container .auth_wrapper {
@@ -830,6 +831,9 @@ table th {
   border-bottom: 1px solid white; }
   .dark-theme .logout-menu-wrapper .logout-icon .tab-signout {
     fill: white; }
+
+.dark-theme .otp_form-section-wrapper {
+  border-top: 1px solid white; }
 
 .dark-theme .otp_form-wrapper .otp_form-section-title {
   color: white; }
