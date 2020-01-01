@@ -366,7 +366,7 @@ export default {
 		MAKE_FIRST_DEPOSIT: '첫 입금하기', // new
 		OBTAIN_XHT: 'XHT 받기', // new
 		TITLE_USER_DOCUMENTATION: 'Identification', // not used
-		TITLE_ID_DOCUMENTS: '정보업로드',
+		TITLE_ID_DOCUMENTS: '문서업로드',
 		TITLE_BANK_ACCOUNT: '은행계좌',
 		TITLE_MOBILE_PHONE: '휴대폰',
 		TITLE_PERSONAL_INFORMATION: '개인정보',
@@ -935,7 +935,7 @@ export default {
 	CONFIRM_TEXT: 'Confirm',
 	INVALID_CAPTCHA: 'Invalid captcha',
 	NO_FEE: 'N/A',
-	SETTINGS_LANGUAGE_LABEL: 'Language preferences (Includes Emails)',
+	SETTINGS_LANGUAGE_LABEL: '언어설정 (이메일수신포함)',
 	SETTINGS_LANGUAGE_OPTIONS: [
 		{
 			value: 'en',
@@ -1165,9 +1165,9 @@ export default {
 		MAKE_FIRST_DEPOSIT: '첫 입금을 하고 1XHT를 받으세요.', // new
 		BUY_FIRST_XHT: 'XHT 첫 구매를 통해 보너스 5 XHT를 받으세요.', // new
 		COMPLETE_ACC_VERIFICATION: '개인정보인증을 완료하시고 보너스 20XHT를 받으세요.', // new
-		INVITE_USER: '사용자를 초대하고 그들의 거래에서 커미션을 받으세요.', // new
-		JOIN_HAP: 'HAP에 가입하시어 판매하는 모든 HollaEx Kit에 대해 10%의 이익을 얻어보세요.', // new
-		EARN_RUNNING_EXCHANGE: '자신의 거래소를 운영하면  Earn passive income for running your own exchange', // new
+		INVITE_USER: '사용자를 초대하고 그들의 거래를 통해서 커미션을 받으세요.', // new
+		JOIN_HAP: 'HAP에 가입하시어 판매하는 모든 HollaEx Kit에 대해 10%의 이익을 얻으세요.', // new
+		EARN_RUNNING_EXCHANGE: '자신의 거래소를 실행하여 지분증명으로 이익을 얻으세요.', // new
 		XHT_WAVE_AUCTION: 'XHT 웨이브옥션 데이터', // new
 		XHT_WAVE_DESC_1: 'HollaEx 토큰(XHT)의 배포는 웨이브옥션을 통해 이루어집니다.', // new
 		XHT_WAVE_DESC_2: '웨이브 옥션은 XHT 수량과 시간이 랜덤으로 정해지며 주문서에서 가장 높은 가격을 호가한 매수자에게 판매됩니다.', // new
@@ -1197,48 +1197,48 @@ export default {
 		APPLY_BUTTON: 'APPLY' // new
 	},
 	STAKE_TOKEN: {
-		TITLE: 'Stake HollaEx Token', // new
+		TITLE: 'HollaEx토큰 지분증명', // new
 		INFO_TXT1:
-			'HollaEx tokens (XHT) are required to be collateralized (staked) to run the HollaEx Kit exchange software.', // new
+			'HollaEx Kit 거래소 소프트웨어를 실행하기 위해 HollaEx 토큰(XHT)이 담보로 요구됩니다.', // new
 		INFO_TXT2:
-			'You can collateralize your HollaEx token in a similar fashion and earn XHT not sold during the Wave Auction.', // new
+			'비슷한 방식으로 HollaEx 토큰을 담보로 웨이브옥션 기간동안 팔리지않은 XHT를 얻을 수 있습니다.', // new
 		INFO_TXT3:
-			'Simply go to dash.bitholla.com and collateralize your own exchange today and earn free XHT', // new
-		BUTTON_TXT: 'FIND OUT MORE' // new
+			'간단하게 dash.bitholla.com를 방문하여 당신의 거래소를 실행하고 이를 담보로 XHT를 무료로 받으세요.', // new
+		BUTTON_TXT: '자세히알아보기' // new
 	},
 	TERMS_OF_SERVICES: {
 		// new
-		TITLE: 'HollaEx Token Purchase Agreement',
+		TITLE: 'HollaEx 토큰 구매 계약',
 		SERVICE_AGREEMENT: AGREEMENT,
-		PROCEED: 'PROCEED',
+		PROCEED: '진행하기',
 		AGREE_TERMS_LABEL:
-			'I have read and agree to the HollaEx Token Purchase Agreement',
-		RISK_INVOLVED_LABEL: 'I understand the risks involved',
-		DOWNLOAD_PDF: 'Download the PDF',
+			'나는 HollaEx 토큰 구매 계약서를 읽었으며 해당 내용에 동의합니다.',
+		RISK_INVOLVED_LABEL: '나는 이와 관련된 위험이 있는 것을 이해합니다.',
+		DOWNLOAD_PDF: 'PDF 다운로드',
 		DEPOSIT_FUNDS:
-			'Deposit funds into your wallet to obtain HollaEx Token (XHT)',
-		READ_FAG: 'Read HollaEx FAQ here: {0}',
-		READ_DOCUMENTATION: 'Read HollaEx whitepaper here: {0}',
-		READ_WAVES: 'Rules for the coming December Public Wave Auction{0}', // new
+			'HollaEx 토큰(XHT)을 얻기 위해 지갑에 입금을 하시기바랍니다.',
+		READ_FAG: 'HollaEx FAQ 보기 : {0}',
+		READ_DOCUMENTATION: 'HollaEx whitepaper 보기: {0}',
+		READ_WAVES: '웨이브옥션 규정보기 {0}', // new
 		DOWNLOAD_BUY_XHT:
-			'Download the PDF to see a visual step-by-step processes on {0}',
-		HOW_TO_BUY: 'how to buy HollaEx Token (XHT)',
-		PUBLIC_SALES: ' Public Wave Auction', // new
+			'PDF를 다운로드하여 {0} 단계별 프로세스를 확인하시기바랍니다.',
+		HOW_TO_BUY: 'HollaEx 토큰(XHT)을 어떻게 살수있나요?',
+		PUBLIC_SALES: '공개 웨이브옥션', // new
 		CONTACT_US:
-			'Feel free to contact us for more information and any issues by sending us an email to {0}',
-		VISUAL_STEP: 'See a visual step-by-step processes on {0}', // new
+			'문의사항이 있으시다면 {0}으로 언제든지 메일주시기바랍니다.',
+		VISUAL_STEP: '{0}에 대한 시각적인 단계별 프로세스보기', // new
 		WARNING_TXT:
-			'We will review your request and send further instructions to your email on how to access the HollaEx exchange.', // new
+			'회원님의 요청을 검토한 이후 HollaEx거래소에 접근하는 법에 대한 추가 설명을 이메일로 보내드리도록하겠습니다.', // new
 		WARNING_TXT1:
-			'In the mean time you can firmilerize yourself with the HollaEx network with the resources below', // new
-		XHT_ORDER_TXT_1: 'To start trading the HollaEx token (XHT) you must login', // new
+			'그 동안 아래의 지원을 통해 HollaEx 네트워크에 대해 더 알아보실 수 있습니다.', // new
+		XHT_ORDER_TXT_1: 'HollaEx 토큰(XHT) 거래를 위해선 로그인이 필요합니다.', // new
 		XHT_ORDER_TXT_2:
-			'The HollaEx token is distributed through a Wave Auction where at random times daily there will be random amount of HollaEx token sold to the highest bidders on the orderbook.', // new
-		XHT_ORDER_TXT_3: '{0} to join the Wave Auction or {1}', // new
+			'HollaEx 토큰은 매일 랜덤으로 정해진 수량이 랜덤으로 정해진 시간에 주문서에서 가장 높은 금액을 호가한 매수자에게 판매되는 웨이브옥션을 통해 배포됩니다.', // new
+		XHT_ORDER_TXT_3: '{0} 웨이브옥션에 가입 또는 {1}', // new
 		XHT_TITLE: 'XHT', //new
-		XHT_TRADE_TXT_1: 'Login to see your recent trades', //new
-		XHT_TRADE_TXT_2: 'You can {0} to see your recent trade history', //new
-		LOGIN_HERE: 'login here'
+		XHT_TRADE_TXT_1: '최근 거래를 보기위해 로그인하세요.', //new
+		XHT_TRADE_TXT_2: '최근 거래 내역을 보기위해 {0} 할 수 있습니다.', //new
+		LOGIN_HERE: '로그인하기'
 	},
 	WAVES: {
 		// new
@@ -1261,38 +1261,38 @@ export default {
 		LAST_WAVE_REDISTRIBUTED: ' 11, 211',
 		LAST_WAVE_TIME: ' 12: 31 PM, December 19th, 2019'
 	},
-	USER_LEVEL: 'User level', // new
-	LIMIT_AMOUNT: 'Limit amount', // new
-	FEE_AMOUNT: 'Fee amount', // new
-	COINS: 'Coins', // new
-	PAIRS: 'Pairs', // new
+	USER_LEVEL: '사용자 레벨', // new
+	LIMIT_AMOUNT: '한도액', // new
+	FEE_AMOUNT: '수수료액', // new
+	COINS: '코인', // new
+	PAIRS: '페어', // new
 	NOTE_FOR_EDIT_COIN:
-		'Note: For adding and removing {0} please refer to the{1}.', // new
-	REFER_DOCS_LINK: 'docs', // new
+		'참고: {0}의 추가 및 삭제를 위해 {1}를 참조하십시오.', // new
+	REFER_DOCS_LINK: '문서', // new
 	RESTART_TO_APPLY:
-		'You need to restart your exchange for apply these changes.', // new
+		'변경사항을 적용하기 위해서 거래소를 다시 시작하셔야합니다.', // new
 	TRIAL_EXCHANGE_MSG:
-		'You are using a trial version of {0} and it will expire in {1} days.', // new
+		'회원님은 {0}의 테스트 버전을 사용중이며 {1}일 뒤에 만료됩니다.', // new
 	EXPIRY_EXCHANGE_MSG:
-		'Your exchange has expired. Go to dash.bitholla.com to activate it again.', // new
-	EXPIRED_INFO_1: 'Your HollaEx trial has ended.', // new
-	EXPIRED_INFO_2: 'Collateralize your exchange to activate it again.', // new
-	EXPIRED_BUTTON_TXT: 'ACTIVATE EXCHANGE', // new
+		'회원님의 거래소 기한이 만료되었습니다. 다시 활성화하기위해 dash.bitholla.com로 이동하시기바랍니다.', // new
+	EXPIRED_INFO_1: 'HollaEx 테스트 버전이 만료되었습니다.', // new
+	EXPIRED_INFO_2: '거래소를 다시 활성화하려면 담보가 필요합니다.', // new
+	EXPIRED_BUTTON_TXT: '거래소 활성화하기', // new
 	TRADE_POSTS: {
 		// new
-		ANNOUNCEMENT: 'Announcement',
+		ANNOUNCEMENT: '공지사항',
 		ANNOUNCEMNT_TXT_3:
-			'Public launch and Wave Auction is rescheduled to January 1st 2020. Wallet deposit and withdrawals are now open.',
+			'웨이브옥션과 HollaEx 공개오픈은 2020년 1월1일로 재조정되었습니다. 지갑과 입출금은 현재도 이용가능합니다.',
 		ANNOUNCEMNT_TXT_4:
-			'Happy new year Hollaers. We are making a new mark starting from 2020 with launch of the most open trading platform with the help of you all.',
+			'홀러즈 여러분! 새해복 많이받으시기바랍니다. 드디어 2020년부터 런칭하는 가장 개방적인 거래 플랫폼의 시작에 많은 활동부탁드립니다.',
 		ANNOUNCEMNT_TXT_1:
-			'Earn XHT with HAP program by introducing your friends to hollaex.com. {0}.',
+			'친구들을 hollaex.com에 소개하여 HAP프로그램과 함께 XHT를 얻으세요. {0}.',
 		DEFAULT_ANNOUNCEMENT:
-			'This page posts public announcements about your exchange! {0}',
-		ANNOUNCEMENT_TXT_2: 'Free XHT will be distributed to all wallets that {0}.',
-		LEARN_MORE: 'Learn more',
-		APPLY_TODAY: 'Apply today' // new
+			'이 페이지는 포스트는 회원님의 거래소의 공지사항입니다! {0}',
+		ANNOUNCEMENT_TXT_2: '{0}의 모든 지갑에 무료 XHT가 배포됩니다.',
+		LEARN_MORE: '더 알아보기',
+		APPLY_TODAY: '지금신청하기' // new
 	},
-	OPEN_WALLET: 'Open wallet', // new
+	OPEN_WALLET: '오픈 지갑', // new
 	AGO: 'ago', // new
 };

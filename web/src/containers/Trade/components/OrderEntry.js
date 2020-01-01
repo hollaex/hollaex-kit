@@ -373,7 +373,7 @@ class OrderEntry extends Component {
 	};
 
 	render() {
-		const { balance, type, side, pair_base, pair_2, price, coins } = this.props;
+		const { balance, type, side, pair_base, pair_2, price, coins, size } = this.props;
 		const {
 			initialValues,
 			formValues,
@@ -411,6 +411,7 @@ class OrderEntry extends Component {
 				>
 					<Review
 						price={price}
+						size={size}
 						type={type}
 						currency={buyingName}
 						orderPrice={orderPrice}
