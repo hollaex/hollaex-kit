@@ -22,6 +22,7 @@ const InputField = (props) => {
 		hideCheck,
 		outlineClassName,
 		checkControl = false,
+		checkLabel,
 		checkControlCallback,
 		...rest
 	} = props;
@@ -30,10 +31,15 @@ const InputField = (props) => {
 
 	// const displayCheck = !fullWidth && input.value && !displayError && !active;
 	return (
-		<FieldWrapper {...props}>
-			<div style={{display: 'flex'}}>
-				{checkControl
-					? <div className={'d-flex align-items-center mr-2'}>
+		<div className={classnames({"d-flex": checkControl })}>
+			{checkControl
+				? <FieldWrapper
+					className="custom-field-width mr-2"
+					hideCheck={true}
+					hideUnderline={true}
+					fullWidth={true}
+					>
+					<div className={'d-flex align-items-center'}>
 						<input
 							type="checkbox"
 							name="checkControl"
@@ -44,22 +50,29 @@ const InputField = (props) => {
 								checkControlCallback(e.target.checked)
 								setDisableField(e.target.checked);
 							}} />
+						<span>
+							{checkLabel}
+						</span>
 					</div>
-					: null
-				}
-				{options && renderIcon(options)}
-				<input
-					placeholder={placeholder}
-					className={classnames('input_field-input', {
-						error: displayError
-					})}
-					type={type}
-					disabled={!disableField}
-					{...input}
-					{...rest}
-				/>
-			</div>
-		</FieldWrapper>
+				</FieldWrapper>
+				: null
+			}
+			<FieldWrapper {...props}>
+				<div style={{display: 'flex'}}>
+					{options && renderIcon(options)}
+					<input
+						placeholder={placeholder}
+						className={classnames('input_field-input', {
+							error: displayError
+						})}
+						type={type}
+						disabled={!disableField}
+						{...input}
+						{...rest}
+					/>
+				</div>
+			</FieldWrapper>
+		</div>
 	);
 };
 

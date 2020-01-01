@@ -505,8 +505,8 @@ export default {
 				ID_NUMBER_PLACEHOLDER: 'Type your passport number',
 				ID_PASSPORT_NUMBER_LABEL: 'Passport Number',
 				ID_PASSPORT_NUMBER_PLACEHOLDER: 'Type your passport number',
-				ISSUED_DATE_LABEL: 'ID Document Issue Date',
-				EXPIRATION_DATE_LABEL: 'ID Document Expiration Date',
+				ISSUED_DATE_LABEL: 'Passport Issue Date',
+				EXPIRATION_DATE_LABEL: 'Passport Expiration Date',
 				FRONT_LABEL: 'Passport',
 				FRONT_PLACEHOLDER: 'Add a copy of your passport',
 				BACK_LABEL: 'Back Side of passport',
@@ -1245,7 +1245,7 @@ export default {
 		WARNING_TXT:
 			'We will review your request and send further instructions to your email on how to access the HollaEx exchange.', // new
 		WARNING_TXT1:
-			'In the mean time you can firmilerize yourself with the HollaEx network with the resources below', // new
+			'In the mean time you can familiarize yourself with the HollaEx network with the resources below', // new
 		XHT_ORDER_TXT_1: 'To start trading the HollaEx token (XHT) you must login', // new
 		XHT_ORDER_TXT_2:
 			'The HollaEx token is distributed through a Wave Auction where at random times daily there will be random amount of HollaEx token sold to the highest bidders on the orderbook.', // new

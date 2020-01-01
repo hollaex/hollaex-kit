@@ -30,6 +30,7 @@ import {
 	NOTIFICATIONS
 } from '../../actions/appActions';
 import { updateUser, setUserData } from '../../actions/userAction';
+import ThemeSwitcher from './ThemeSwitcher';
 
 class AppBar extends Component {
 	state = {
@@ -38,7 +39,9 @@ class AppBar extends Component {
 		selectedMenu: '',
 		securityPending: 0,
 		verificationPending: 0,
-		walletPending: 0
+		walletPending: 0,
+		selected: '',
+		options: [{ value: 'white' }, { value: 'dark' }]
 	};
 
 	componentDidMount() {
@@ -56,6 +59,14 @@ class AppBar extends Component {
 			this.checkExchangeExpiry(this.props.info);
 		}
 		this.props.getTickers();
+		if (this.props.theme) {
+			this.setState({
+				selected: this.props.theme === this.state.options[0].value
+					? this.state.options[0].value
+					: this.state.options[1].value
+			});
+		}
+
 	}
 
 	componentWillReceiveProps(nextProps) {
@@ -85,6 +96,13 @@ class AppBar extends Component {
 				this.checkExchangeExpiry(this.props.info);
 			}
 		}
+		if (prevProps.theme !== this.props.theme) {
+			let selected = this.props.theme === this.state.options[0].value
+				? this.state.options[0].value
+				: this.state.options[1].value;
+			this.setState({ selected });
+		}
+
 	}
 
 	checkExchangeExpiry = (info) => {
@@ -173,26 +191,30 @@ class AppBar extends Component {
 		this.setState({ isAccountMenu: !this.state.isAccountMenu });
 	};
 
-	handleTheme = (theme) => {
+	handleTheme = (selected) => {
 		const settings = {}
-		if (theme === 'dark') {
-			settings.interface = {'theme': 'white' }
+		if (!isLoggedIn()) {
+			this.props.changeTheme(selected)
+			localStorage.setItem('theme', selected)
+		} else {
+			if (selected === 'white') {
+				settings.interface = { 'theme': 'white' }
+			} else {
+				settings.interface = { 'theme': 'dark' }
+			}
+			return updateUser({ settings })
+				.then(({ data }) => {
+					this.props.setUserData(data);
+					this.props.changeTheme(data.settings.interface.theme)
+					localStorage.setItem('theme', data.settings.interface.theme)
+				})
+				.catch((err) => {
+					const error = { _error: err.message };
+					if (err.response && err.response.data) {
+						error._error = err.response.data.message;
+					}
+				});
 		}
-		else {
-			settings.interface = { 'theme': 'dark' }
-		}
-		return updateUser({settings})
-			.then(({ data }) => {
-			   this.props.setUserData(data);
-				this.props.changeTheme(data.settings.interface.theme)
-				localStorage.setItem('theme',data.settings.interface.theme)
-			})
-			.catch((err) => {
-				const error = { _error: err.message };
-				if (err.response && err.response.data) {
-					error._error = err.response.data.message;
-				}
-			});
 	};
 
 	closeAccountMenu = () => {
@@ -331,6 +353,15 @@ class AppBar extends Component {
 		this.setState({ selectedMenu });
 	};
 
+	onToggle = () => {
+		const { options } = this.state;
+		const selected = this.state.selected === options[0].value
+			? options[1].value
+			: options[0].value;
+		this.setState({ selected });
+		this.handleTheme(selected);
+	};
+
 	render() {
 		const {
 			noBorders,
@@ -362,6 +393,7 @@ class AppBar extends Component {
 			pair = this.props.pair;
 		}
 		let disableBorder = noBorders || (activePath !== 'trade' && activePath !== 'quick-trade');
+		const { selected, options } = this.state;
 		return isMobile ? (
 			<MobileBarWrapper
 				className={classnames(
@@ -396,20 +428,15 @@ class AppBar extends Component {
 						/>
 					)}
 				</div>
+				{!isLoggedIn() ?
+					<ThemeSwitcher selected={selected} options={options} toggle={this.onToggle} />
+					: null
+				}
 				{!isHome ? (
 					isLoggedIn() ? (
 						<div className="d-flex app-bar-account">
 							<div className="d-flex app_bar-quicktrade-container">
-								<div
-									className={'app-bar-account-content app-bar-account-moon-content'}
-									onClick={() => this.handleTheme(theme)}
-
-								>
-									<ReactSVG
-										path={ICONS.MOON_THEME}
-										wrapperClassName="app-bar-account-moon-icon"
-									/>
-								</div>
+								<ThemeSwitcher selected={selected} options={options} toggle={this.onToggle} />
 								{isAdmin() ? (
 									<Link to="/admin">
 										<div
@@ -535,7 +562,7 @@ const mapDispatchToProps = (dispatch) => ({
 	setNotification: bindActionCreators(setNotification, dispatch),
 	getTickers: bindActionCreators(getTickers, dispatch),
 	changeTheme: bindActionCreators(changeTheme, dispatch),
-	setUserData:bindActionCreators(setUserData, dispatch)
+	setUserData: bindActionCreators(setUserData, dispatch)
 });
 
 AppBar.defaultProps = {
