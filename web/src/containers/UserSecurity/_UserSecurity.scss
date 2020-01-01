@@ -177,6 +177,9 @@ $padding-input: 4rem;
 		.otp_form-section-title {
 			color: $dark-font-main-text-color;
 		}
+		.otp_form-section-wrapper {
+			border-top-color: $dark-font-main-text-color;
+		}
 		.otp_form-section-text {
 			color: $dark-font-sub-text-color;
 		}

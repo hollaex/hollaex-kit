@@ -211,7 +211,8 @@ class Trade extends Component {
 			settings,
 			orderLimits,
 			pairs,
-			coins
+			coins,
+			discount
 		} = this.props;
 		const {
 			chartHeight,
@@ -261,6 +262,7 @@ class Trade extends Component {
 						pairData={pairData}
 						pairs={pairs}
 						coins={coins}
+						discount={discount}
 					/>
 				) : (
 					<LogoutInfoTrade />
@@ -339,7 +341,7 @@ class Trade extends Component {
 						activeOrders={activeOrders}
 						cancelOrder={this.handleCancelOrders}
 						cancelDelayData={cancelDelayData}
-						cancelAllOrders={cancelAllOrders}
+						cancelAllOrders={this.cancelAllOrders}
 						goToTransactionsHistory={this.goToTransactionsHistory}
 						pair={pair}
 						pairData={pairData}
@@ -534,7 +536,8 @@ const mapStateToProps = (store) => {
 		activeTheme: store.app.theme,
 		fees: feesData,
 		settings: store.user.settings,
-		orderLimits: store.app.orderLimits
+		orderLimits: store.app.orderLimits,
+		discount: store.user.discount || 0
 	};
 };
 
