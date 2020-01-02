@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 
 import UpComingWave from './UpComingWave';
 import { subtract } from '../utils';
-import { formatCurrency, formatBaseAmount, formatBtcFullAmount, checkNonBasePair } from '../../../utils/currency';
+import { formatCurrency, formatBtcFullAmount } from '../../../utils/currency';
 import STRINGS from '../../../config/localizedStrings';
 import { DEFAULT_COIN_DATA } from '../../../config/constants';
 
@@ -32,9 +32,8 @@ const PriceRow = (pairBase, pairTwo, side, onPriceClick, onAmountClick) => (
 const calculateSpread = (asks, bids, pair, coins) => {
 	const lowerAsk = asks.length > 0 ? asks[0][0] : 0;
 	const higherBid = bids.length > 0 ? bids[0][0] : 0;
-	const isNonBasePair = checkNonBasePair(pair, coins);
 	if (lowerAsk && higherBid) {
-		return isNonBasePair ? formatBtcFullAmount(subtract(lowerAsk, higherBid)) : formatBaseAmount(subtract(lowerAsk, higherBid));
+		return formatBtcFullAmount(subtract(lowerAsk, higherBid));
 	}
 	return '-';
 };

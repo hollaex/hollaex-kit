@@ -44,7 +44,7 @@ const AccountDetails = ({
 					verification_level={verification_level}
 				/>
 			) : (
-				<div className="d-flex align-items-center mt-5">
+				<div className="d-flex align-items-center mt-3">
 					<AccountTypesList
 						activeTheme={activeTheme}
 						selectedAccount={selectedAccount}

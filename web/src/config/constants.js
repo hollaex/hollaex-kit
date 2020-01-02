@@ -589,3 +589,4 @@ export const SHOW_SUMMARY_ACCOUNT_DETAILS = false;
 export const SHOW_TOTAL_ASSETS = false;
 export const IS_XHT = true;
 export const FIT_SCREEN_HEIGHT = ['trade'];
+export const SIMPLE_FORMAT_MIN = '0.1';

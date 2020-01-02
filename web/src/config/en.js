@@ -1130,11 +1130,11 @@ export default {
 		REQUIREMENTS: 'Requirements',
 		ONE_REQUIREMENT: 'One Requirement only:', // new
 		REQUEST_ACCOUNT_UPGRADE: 'Request an Account Upgrade',
-		FEES_AND_LIMIT: 'Fee and Limit Structure for {0}',
+		FEES_AND_LIMIT: '{0} Fee & Limit Structure', // new
 		FEES_AND_LIMIT_TXT_1:
-			'Becoming a crypto trader marks new beginning. Armed with wits,will and speed only by taking risks and trading will you be allowed to update your account.',
+			'Becoming a crypto trader marks new beginning. Armed with wits, will and speed only by taking risks and trading will you be allowed to update your account.',
 		FEES_AND_LIMIT_TXT_2:
-			'Each account has its own fees and deposit and withdrawal limits.Please visit the {0} to get more information.',
+			'Each account has its own fees and deposit and withdrawal limits. Please visit the {0} to get more information.',
 		DEPOSIT_WITHDRAWAL_ALLOWENCE: 'Deposit & withdrawal allowance',
 		TRADING_FEE_STRUCTURE: 'Trading fee structure',
 		WITHDRAWAL: 'Withdrawal',
