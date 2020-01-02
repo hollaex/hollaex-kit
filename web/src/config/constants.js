@@ -546,3 +546,4 @@ export const WHITE_THEME_CHART_COLORS = {
 	BUY_VOLUME: 'lightgreen',
 	SELL_VOLUME: '#ed1c24'
 };
+export const SIMPLE_FORMAT_MIN = '0.1';

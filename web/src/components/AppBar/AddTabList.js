@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import ReactSVG from 'react-svg';
 import classnames from 'classnames';
 
-import { ICONS, BASE_CURRENCY, DEFAULT_COIN_DATA } from '../../config/constants';
+import { ICONS, BASE_CURRENCY, DEFAULT_COIN_DATA, SIMPLE_FORMAT_MIN } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
-import { formatToCurrency, formatPercentage, formatAverage } from '../../utils/currency';
+import { donutFormatPercentage, formatToSimple } from '../../utils/currency';
 import SearchBox from './SearchBox';
 
 class AddTabList extends Component {
@@ -81,11 +81,13 @@ class AddTabList extends Component {
                         ? Object.keys(tabMenu).map((pair, index) => {
                             let menu = tabMenu[pair] || {};
                             let ticker = tickers[pair] || {};
-                            let { min, symbol = '' } = coins[menu.pair_base || BASE_CURRENCY] || DEFAULT_COIN_DATA;
+                            let { symbol = '' } = coins[menu.pair_base || BASE_CURRENCY] || DEFAULT_COIN_DATA;
                             let pairTwo = coins[menu.pair_2 || BASE_CURRENCY] || DEFAULT_COIN_DATA;
                             const priceDifference = ticker.open === 0 ? 0 : ((ticker.close || 0) - (ticker.open || 0));
                             const tickerPercent = priceDifference === 0 || ticker.open === 0 ? 0 : ((priceDifference / ticker.open) * 100);
-                            const priceDifferencePercent = isNaN(tickerPercent) ? formatPercentage(0) : formatPercentage(tickerPercent);
+                            const priceDifferencePercent = isNaN(tickerPercent)
+                                ? donutFormatPercentage(0)
+                                : donutFormatPercentage(tickerPercent);
                             return (
                                 <div
                                     key={index}
@@ -107,14 +109,19 @@ class AddTabList extends Component {
                                     <div className="app_bar-pair-font">
                                         {symbol.toUpperCase()}/{pairTwo.symbol.toUpperCase()}:
                                     </div>
-                                    <div className="title-font ml-1">{`${pairTwo.symbol.toUpperCase()} ${formatAverage(formatToCurrency(ticker.close, min))}`}</div>
-                                    <div className={priceDifference < 0 ? "app-price-diff-down app-bar-price_diff_down" : "app-bar-price_diff_up app-price-diff-up"}>
-                                        {formatAverage(formatToCurrency(priceDifference, min))}
+                                    <div className="title-font ml-1">{formatToSimple(ticker.close, SIMPLE_FORMAT_MIN)}</div>
+                                    <div
+                                        className={
+                                            priceDifference < 0
+                                                ? "app-price-diff-down app-bar-price_diff_down"
+                                                : "app-bar-price_diff_up app-price-diff-up"
+                                        }>
+                                        {/* {formatAverage(formatToCurrency(priceDifference, min))} */}
                                     </div>
                                     <div
                                         className={priceDifference < 0
-                                            ? "title-font ml-1 app-price-diff-down" : "title-font ml-1 app-price-diff-up"}>
-                                        {`(${priceDifferencePercent})`}
+                                            ? "title-font app-price-diff-down" : "title-font app-price-diff-up"}>
+                                        {priceDifferencePercent}
                                     </div>
                                 </div>
                             )
