@@ -797,7 +797,7 @@ table th {
 .popup_info-wrapper .popup_info-title {
   font-family: "Raleway";
   font-size: 1.25rem;
-  border-bottom: 1px solid #212121; }
+  border-bottom: 1px solid #777677; }
 
 .popup_info-wrapper .popup_info-text {
   font-size: 0.9rem; }
@@ -2214,6 +2214,9 @@ table th {
 .dark-theme .trade_orderbook-wrapper .trade_orderbook-cell-amount {
   color: #808080; }
 
+.layout-mobile .trade_orderbook-wrapper .trade_orderbook-content .trade_orderbook-bids .value-row .trade_orderbook-cell {
+  font-size: 1.5rem !important; }
+
 .ask,
 .buy {
   color: #000000; }
@@ -2684,16 +2687,19 @@ table th {
   width: 32rem; }
 
 .layout-mobile .fee-limits-wrapper {
-  margin: 3rem auto; }
+  margin: 1rem auto 3rem; }
+  .layout-mobile .fee-limits-wrapper .icon_title-wrapper .icon_title-svg {
+    height: 12rem;
+    width: 12rem; }
+  .layout-mobile .fee-limits-wrapper .icon_title-wrapper .icon_title-svg svg {
+    height: 12rem;
+    width: 12rem; }
 
 .layout-mobile .logout-wrapper {
   margin: 0 auto; }
 
 .layout-mobile .confirm-text {
   font-size: 2rem; }
-
-.layout-mobile .fee-limits-wrapper {
-  margin: 3rem auto; }
 
 .layout-mobile .summary-container .trader-account-wrapper .summary-block_wrapper .trade-account-secondary-txt {
   width: 100%; }
@@ -2711,6 +2717,9 @@ table th {
 
 .layout-mobile .summary-container .assets-wrapper .price-text {
   font-size: 12px !important; }
+
+.layout-mobile .summary-container .assets-wrapper .donut-container {
+  height: 30rem; }
 
 .layout-mobile .summary-container .account-details-wrapper .account-type-menu {
   height: auto !important; }
@@ -2743,6 +2752,11 @@ table th {
     margin-right: 1rem; }
     .summary-container .trader-wrapper-icon svg .level_icon,
     .summary-container .trader-wrapper-icon svg .hap-icon {
+      fill: #000000; }
+  .summary-container .trader-acc-detail-icon {
+    width: 8rem;
+    margin-right: 1rem; }
+    .summary-container .trader-acc-detail-icon svg .level_icon {
       fill: #000000; }
   .summary-container .trader-account-icon {
     width: 4.5rem;
@@ -2841,6 +2855,8 @@ table th {
       width: 1.5rem; }
     .summary-container .trading-volume-wrapper .wave-action-phase {
       border-top: 1px solid #000000; }
+      .summary-container .trading-volume-wrapper .wave-action-phase .table-wrapper {
+        margin: 0.5rem 0 2rem; }
     .summary-container .trading-volume-wrapper .wave-phase-completed {
       color: #808000; }
     .summary-container .trading-volume-wrapper .wave-phase-pending {
@@ -2882,7 +2898,7 @@ table th {
     width: 6rem; }
 
 .fee-limits-wrapper {
-  width: 36rem; }
+  width: 38rem; }
   .fee-limits-wrapper .fee-limits-link {
     color: #0000ff;
     cursor: pointer;
@@ -2893,16 +2909,20 @@ table th {
     font-size: 1rem;
     font-weight: bold;
     margin: 1.5rem 0; }
-  .fee-limits-wrapper .icon_title-wrapper .icon_title-svg {
-    height: 8rem;
-    width: 8rem; }
-  .fee-limits-wrapper .icon_title-wrapper .icon_title-svg svg {
-    height: 8rem;
-    width: 8rem; }
-    .fee-limits-wrapper .icon_title-wrapper .icon_title-svg svg .level_icon {
-      fill: #000000; }
-  .fee-limits-wrapper .icon_title-wrapper .icon_title-text.title {
-    font-size: 2rem; }
+  .fee-limits-wrapper .icon_title-wrapper {
+    margin-top: 1rem; }
+    .fee-limits-wrapper .icon_title-wrapper .icon_title-svg {
+      height: 11rem;
+      width: 12rem; }
+    .fee-limits-wrapper .icon_title-wrapper .icon_title-svg svg {
+      height: 12rem;
+      width: 12rem; }
+      .fee-limits-wrapper .icon_title-wrapper .icon_title-svg svg .level_icon {
+        fill: #000000; }
+    .fee-limits-wrapper .icon_title-wrapper .icon_title-text {
+      margin: 0; }
+      .fee-limits-wrapper .icon_title-wrapper .icon_title-text.title {
+        font-size: 2rem; }
   .fee-limits-wrapper table {
     border-collapse: collapse;
     border: 1px solid #777677; }
@@ -3897,22 +3917,24 @@ table th {
     margin: .2rem .3rem 0 .3rem;
     width: 1rem; }
     .app_bar .app-bar-account-moon-icon svg .moon-icon {
-      fill: white; }
+      fill: #808080; }
     .app_bar .app-bar-account-moon-icon svg .sun-icon {
-      fill: white; }
+      fill: #808080; }
   .app_bar .app-bar-account-moon-content {
     border-radius: 5px; }
   .app_bar .toggle_button-wrapper .toggle-content {
     color: white;
-    border: 1px solid #808080;
     border-radius: .35rem;
     padding: 0px 0.1rem; }
-    .app_bar .toggle_button-wrapper .toggle-content .selected {
-      color: white; }
+    .app_bar .toggle_button-wrapper .toggle-content .dark .moon-icon {
+      fill: white; }
+    .app_bar .toggle_button-wrapper .toggle-content .white .sun-icon {
+      fill: white; }
     .app_bar .toggle_button-wrapper .toggle-content .toggle-action_button {
       border-color: white;
       width: 34px;
-      height: 75.5%; }
+      height: 75.5%;
+      margin: 0; }
       .app_bar .toggle_button-wrapper .toggle-content .toggle-action_button.left .toggle-action_button-display {
         right: calc(100% - 14px); }
       .app_bar .toggle_button-wrapper .toggle-content .toggle-action_button.right .toggle-action_button-display {
@@ -8183,7 +8205,7 @@ foreignObject {
               background-color: #535353;
               color: white; }
     .chat-wrapper .chat-message-list .user-icon {
-      width: 1.5rem; }
+      width: 2.5rem; }
       .chat-wrapper .chat-message-list .user-icon svg .level_icon {
         fill: #000000; }
   .chat-wrapper .chat-footer {

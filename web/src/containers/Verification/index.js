@@ -374,7 +374,6 @@ class Verification extends Component {
 	render() {
 		const { activeLanguage, activeTheme } = this.props;
 		const { activeTab, tabs, dialogIsOpen, dialogType } = this.state;
-		console.log(activeTab);
 		if (activeTab === -1 && tabs.length > 0) {
 			return (
 				<div className="app_container">

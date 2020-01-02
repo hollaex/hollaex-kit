@@ -13,7 +13,7 @@ const SummaryBlock = (props) => {
 	} = props;
 	return (
 		<div className={classnames(wrapperClassname, 'summary-block_wrapper')}>
-			<div className="d-flex align-items-center mb-3">
+			<div className="d-flex align-items-center mb-2">
 				{icon && (
 					<div>
 						{useSvg ? (
