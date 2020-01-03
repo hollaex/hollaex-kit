@@ -12,11 +12,11 @@ export const getXhtRequirements = (user, coins) => {
 	let walletDeposit = false;
 	let xhtDeposit = false;
 	if (user.balance) {
-		Object.keys(coins).forEach(pair => {
+		Object.keys(coins).forEach((pair) => {
 			if (user.balance[`${pair.toLowerCase()}_balance`] > 0) {
 				walletDeposit = true;
 			}
-		})
+		});
 		if (user.balance.xht_balance && user.balance.xht_balance > 0) {
 			xhtDeposit = true;
 		}
@@ -67,9 +67,9 @@ export const getBonusRequirements = (user, coins, affiliation = {}) => {
 			: 1
 		: 1;
 	let walletDeposit = false;
-	let accVerified = !!phone_number && identity === 3
+	let accVerified = !!phone_number && identity === 3;
 	if (user.balance) {
-		Object.keys(coins).forEach(pair => {
+		Object.keys(coins).forEach((pair) => {
 			if (user.balance[`${pair.toLowerCase()}_balance`] > 0) {
 				walletDeposit = true;
 			}
@@ -89,7 +89,7 @@ export const getBonusRequirements = (user, coins, affiliation = {}) => {
 		'3': {
 			title: STRINGS.SUMMARY.INVITE_USER,
 			completed: !!affiliation.count,
-			status: affiliation.count ? 3: 0
+			status: affiliation.count ? 3 : 0
 		},
 		'4': {
 			title: STRINGS.SUMMARY.JOIN_HAP,
@@ -157,12 +157,11 @@ export const generateWaveHeaders = (onCancel) => [
 			return (
 				<td
 					key={index}
-					className={
-						classnames({
-							"wave-phase-completed": status === true,
-							"wave-phase-pending": status === false
-						})
-					}>
+					className={classnames({
+						'wave-phase-completed': status === true,
+						'wave-phase-pending': status === false
+					})}
+				>
 					<div className="d-flex">
 						<ReactSvg
 							path={ICONS.INCOMING_WAVE}
@@ -178,32 +177,34 @@ export const generateWaveHeaders = (onCancel) => [
 		label: STRINGS.AMOUNT,
 		key: 'amount',
 		renderCell: ({ amount = '', status = '' }, key, index) => {
-			return <td
-				key={index}
-				className={
-					classnames({
-						"wave-phase-completed": status === true,
-						"wave-phase-pending": status === false
-					})
-				}>
+			return (
+				<td
+					key={index}
+					className={classnames({
+						'wave-phase-completed': status === true,
+						'wave-phase-pending': status === false
+					})}
+				>
 					{amount}
-			</td>;
+				</td>
+			);
 		}
 	},
 	{
 		label: STRINGS.FILLED,
 		key: 'filled',
-		renderCell: ({ filled = 0, status="" }, key, index) => {
-			return <td
-				key={index}
-				className={
-					classnames({
-						"wave-phase-completed": status === true,
-						"wave-phase-pending": status === false
-					})
-				}>
+		renderCell: ({ filled = 0, status = '' }, key, index) => {
+			return (
+				<td
+					key={index}
+					className={classnames({
+						'wave-phase-completed': status === true,
+						'wave-phase-pending': status === false
+					})}
+				>
 					{filled}
-			</td>;
+				</td>
+			);
 		}
 	},
 	{
@@ -213,53 +214,65 @@ export const generateWaveHeaders = (onCancel) => [
 		).join(''),
 		key: 'low',
 		renderCell: ({ low = 0, status = '' }, key, index) => {
-			return status === 'TBA'
-				? <td key={index}>{low}</td>
-				:status === true
-					? <td key={index} className="wave-phase-completed">{low}</td>
-					: <td key={index} className="wave-phase-pending">{STRINGS.PENDING}</td>;
+			return status === 'TBA' ? (
+				<td key={index}>{low}</td>
+			) : status === true ? (
+				<td key={index} className="wave-phase-completed">
+					{low}
+				</td>
+			) : (
+				<td key={index} className="wave-phase-pending">
+					{STRINGS.PENDING}
+				</td>
+			);
 		}
 	},
 	{
 		label: STRINGS.PHASE,
 		key: 'phase',
 		renderCell: ({ phase = 0, status = '' }, key, index) => {
-			return <td
-				key={index}
-				className={
-					classnames({
-						"wave-phase-completed": status === true,
-						"wave-phase-pending": status === false
-					})
-				}>
+			return (
+				<td
+					key={index}
+					className={classnames({
+						'wave-phase-completed': status === true,
+						'wave-phase-pending': status === false
+					})}
+				>
 					{phase}
-			</td>;
+				</td>
+			);
 		}
 	},
 	{
 		label: STRINGS.STATUS,
 		key: 'status',
 		renderCell: ({ status = '', updated_at = '' }, key, index) => {
-			let statusTxt = status === true ? STRINGS.USER_VERIFICATION.COMPLETED : STRINGS.INCOMING;
-			let updated = status === true
-				? `(${updated_at})`
-				: <Link
-					className="blue-link"
-					to="/trade/xht-usdt">
+			let statusTxt =
+				status === true
+					? STRINGS.USER_VERIFICATION.COMPLETED
+					: STRINGS.INCOMING;
+			let updated =
+				status === true ? (
+					`(${moment(updated_at).format('MMMM Do YYYY, hh:mm:ss')})`
+				) : (
+					<Link className="blue-link" to="/trade/xht-usdt">
 						({STRINGS.GO_TRADE})
-				</Link>
-			return status === 'TBA'
-				? <td key={index}>{status}</td>
-				: <td
+					</Link>
+				);
+			return status === 'TBA' ? (
+				<td key={index}>{status}</td>
+			) : (
+				<td
 					key={index}
-					className={
-						classnames({
-							"wave-phase-completed": status === true,
-							"wave-phase-pending": status === false
-						})
-					}>
-						{statusTxt} {updated}
-				</td>;
+					className={classnames({
+						'wave-phase-completed': status === true,
+						'wave-phase-pending': status === false
+					})}
+				>
+					{statusTxt} {updated}
+				</td>
+			);
 		}
 	}
 ];
