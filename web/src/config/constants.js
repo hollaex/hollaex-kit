@@ -277,7 +277,8 @@ export const ICONS = {
 	BONUS_OFFERING:'/assets/icons/bonus_offering.svg',
 	UP_ARROW:'/assets/images/buy-trade.svg',
 	DOWN_ARROW:'/assets/images/sell-trade.svg',
-	MOON_THEME:'/assets/icons/moon-theme.svg'
+	MOON_THEME:'/assets/icons/moon-theme.svg',
+	SUN_THEME:'/assets/icons/sun-theme.svg'
 };
 
 export const SOCIAL_ICONS = {
@@ -588,3 +589,4 @@ export const SHOW_SUMMARY_ACCOUNT_DETAILS = false;
 export const SHOW_TOTAL_ASSETS = false;
 export const IS_XHT = true;
 export const FIT_SCREEN_HEIGHT = ['trade'];
+export const SIMPLE_FORMAT_MIN = '0.1';

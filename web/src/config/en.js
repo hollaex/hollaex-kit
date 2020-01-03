@@ -84,14 +84,14 @@ export default {
 			{ key: 'ko', label: '한국어' }
 		],
 		FOOTER_COPYRIGHT:
-			'	Copyright 2019 ⓒ HollaEx Foundation. All rights reserved',
+			'	Copyright {0} ⓒ HollaEx Foundation. All rights reserved',
 		SECTIONS: {
 			SECTION_1_TITLE: 'ABOUT',
 			SECTION_1_LINK_1: 'About Us',
 			SECTION_1_LINK_2: 'Terms of Use',
 			SECTION_1_LINK_3: 'Privacy Policy',
 			SECTION_1_LINK_4: 'Contact Us',
-			SECTION_2_TITLE: 'INFORMATION',
+			SECTION_2_TITLE: 'Information',
 			SECTION_2_LINK_1: 'Blog',
 			SECTION_2_LINK_2: 'Contact Us',
 			SECTION_2_LINK_3: 'Career',
@@ -113,12 +113,13 @@ export default {
 			SECTION_5_LINK_1: 'HollaEx Whitepaper',
 			SECTION_5_LINK_2: 'HollaEx Token (XHT) ',
 			SECTION_5_LINK_3: 'HollaEx Kit',
+			SECTION_5_LINK_4: 'FAQ', // new
 			SECTION_6_TITLE: 'SOCIAL',
 			SECTION_6_LINK_1: 'Twitter',
 			SECTION_6_LINK_2: 'Telegram'
 		},
 		XHT_DESCRIPTION:
-			'HollaEx is an open cryptocurrency exchange built based on HollaEx Kit technology developed and managed by bitHolla and is a live example of HollaEx exchange software kit that allows anyone to run there own exchange exactly like this one. To start your own exchange like this {1}. The HollaEx Token is the native token of HollaEx and is traded on the HollaEx exchange through a wave auction system. For more information on how the auction works {0}',
+			'HollaEx is an open cryptocurrency exchange built based on HollaEx Kit technology developed and managed by bitHolla and is a live example of HollaEx exchange software kit that allows anyone to run their own exchange exactly like this one. To start your own exchange like this {1}. The HollaEx Token is the native token of HollaEx and is traded on the HollaEx exchange through a wave auction system. For more information on how the auction works {0}',
 		CLICK_HERE: 'click here',
 		VISIT_HERE: 'visit here'
 	},
@@ -505,8 +506,8 @@ export default {
 				ID_NUMBER_PLACEHOLDER: 'Type your passport number',
 				ID_PASSPORT_NUMBER_LABEL: 'Passport Number',
 				ID_PASSPORT_NUMBER_PLACEHOLDER: 'Type your passport number',
-				ISSUED_DATE_LABEL: 'ID Document Issue Date',
-				EXPIRATION_DATE_LABEL: 'ID Document Expiration Date',
+				ISSUED_DATE_LABEL: 'Passport Issue Date',
+				EXPIRATION_DATE_LABEL: 'Passport Expiration Date',
 				FRONT_LABEL: 'Passport',
 				FRONT_PLACEHOLDER: 'Add a copy of your passport',
 				BACK_LABEL: 'Back Side of passport',
@@ -630,9 +631,9 @@ export default {
 		},
 		AUDIO_CUE_FORM: {
 			ORDERS_COMPLETED_AUDIO:
-				'Play an audio cue when one of your orders is fully filled',
+				'Play an audio cue when your order has been filled',
 			ORDERS_PARTIAL_AUDIO:
-				'Play an audio cue when one of your orders is partially filled',
+				'Play an audio cue when your order has been partially filled',
 			PUBLIC_TRADE_AUDIO: 'Play an audio cue on every public trade'
 		},
 		RISK_MANAGEMENT: {
@@ -802,7 +803,6 @@ export default {
 	WITHDRAWALS_BUTTON_TEXT: 'review withdrawal',
 	WITHDRAWALS_FORM_ADDRESS_LABEL: 'Destination address',
 	WITHDRAWALS_FORM_ADDRESS_PLACEHOLDER: 'Type the address',
-	WITHDRAWALS_FORM_INCLUDE_DESTINATION_TAG: 'Include destination tag', // new
 	WITHDRAWALS_FORM_DESTINATION_TAG_LABEL: 'Destination tag', // new
 	WITHDRAWALS_FORM_DESTINATION_TAG_PLACEHOLDER: 'Type the destination address', // new
 	WITHDRAWALS_FORM_AMOUNT_LABEL: '{0} amount to withdraw',
@@ -1131,11 +1131,11 @@ export default {
 		REQUIREMENTS: 'Requirements',
 		ONE_REQUIREMENT: 'One Requirement only:', // new
 		REQUEST_ACCOUNT_UPGRADE: 'Request an Account Upgrade',
-		FEES_AND_LIMIT: 'Fee and Limit Structure for {0}',
+		FEES_AND_LIMIT: '{0} Fee & Limit Structure', // new
 		FEES_AND_LIMIT_TXT_1:
-			'Becoming a crypto trader marks new beginning. Armed with wits,will and speed only by taking risks and trading will you be allowed to update your account.',
+			'Becoming a crypto trader marks new beginning. Armed with wits, will and speed only by taking risks and trading will you be allowed to update your account.',
 		FEES_AND_LIMIT_TXT_2:
-			'Each account has its own fees and deposit and withdrawal limits.Please visit the {0} to get more information.',
+			'Each account has its own fees and deposit and withdrawal limits. Please visit the {0} to get more information.',
 		DEPOSIT_WITHDRAWAL_ALLOWENCE: 'Deposit & withdrawal allowance',
 		TRADING_FEE_STRUCTURE: 'Trading fee structure',
 		WITHDRAWAL: 'Withdrawal',
@@ -1246,7 +1246,7 @@ export default {
 		WARNING_TXT:
 			'We will review your request and send further instructions to your email on how to access the HollaEx exchange.', // new
 		WARNING_TXT1:
-			'In the mean time you can firmilerize yourself with the HollaEx network with the resources below', // new
+			'In the mean time you can familiarize yourself with the HollaEx network with the resources below', // new
 		XHT_ORDER_TXT_1: 'To start trading the HollaEx token (XHT) you must login', // new
 		XHT_ORDER_TXT_2:
 			'The HollaEx token is distributed through a Wave Auction where at random times daily there will be random amount of HollaEx token sold to the highest bidders on the orderbook.', // new

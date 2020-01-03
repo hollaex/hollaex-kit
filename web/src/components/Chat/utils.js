@@ -3373,6 +3373,34 @@ export const customEmojis = [
                 text: '',
                 emoticons: [],
                 skin: 3
+            },
+            {
+                id: "crescent_moon",
+                colons: '',
+                text: '',
+                emoticons: [],
+                skin: 3
+            },
+            {
+                id: "full_moon",
+                colons: '',
+                text: '',
+                emoticons: [],
+                skin: 3
+            },
+            {
+                id: "new_moon_with_face",
+                colons: '',
+                text: '',
+                emoticons: [],
+                skin: 3
+            },
+            {
+                id: "last_quarter_moon_with_face",
+                colons: '',
+                text: '',
+                emoticons: [],
+                skin: 3
             }
         ]
     },
