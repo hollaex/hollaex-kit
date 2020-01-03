@@ -250,6 +250,11 @@ $app-bar-add-tab-red: #ff0000;
 			}
 		}
 	}
+	.overflow{
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		overflow: hidden;
+	}
 
 	.quick_trade-active {
 		border: 1px solid $colors-white;
