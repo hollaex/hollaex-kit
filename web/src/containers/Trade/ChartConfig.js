@@ -1,7 +1,7 @@
-const UP_COLOR_WHITE = "#D6FFE7";
-const DOWN_COLOR_WHITE = "#ED1C24";
-const UP_COLOR_DARK = "#6D9EEB";
-const DOWN_COLOR_DARK = "#FF9800";
+const UP_COLOR_WHITE = "#d1d4dc";
+const DOWN_COLOR_WHITE = "#000000";
+const UP_COLOR_DARK = "#00A69C";
+const DOWN_COLOR_DARK = "#EE4036";
 
 
 export const WHITE_THEME = {
@@ -10,7 +10,7 @@ export const WHITE_THEME = {
 	"paneProperties.horzGridProperties.color": "#E6ECEF",
 	// "paneProperties.crossHairProperties.color": "#1f212a",
 	"symbolWatermarkProperties.transparency": 90,
-	"symbolWatermarkProperties.color": '#1f212a',
+	"symbolWatermarkProperties.color": '#202020',
 	"scalesProperties.textColor": "#292b2c",
 	"scalesProperties.backgroundColor": "#ffffff",
 	// Candles-property
@@ -77,14 +77,14 @@ export const WHITE_THEME = {
 };
 
 export const DARK_THEME = {
-	"paneProperties.background": "#1F212A",
-	"paneProperties.vertGridProperties.color": "#34416D",
-	"paneProperties.horzGridProperties.color": "#0C1D51",
+	"paneProperties.background": "#202020",
+	"paneProperties.vertGridProperties.color": "#535353",
+	"paneProperties.horzGridProperties.color": "#535353",
 	// "paneProperties.crossHairProperties.color": "#aaaaaa",
 	"symbolWatermarkProperties.transparency": 90,
-	"symbolWatermarkProperties.color": '#aaaaaa',
-	"scalesProperties.textColor": "#AAA",
-	"scalesProperties.backgroundColor": "#000000",
+	"symbolWatermarkProperties.color": '#808080',
+	"scalesProperties.textColor": "#808080",
+	"scalesProperties.backgroundColor": "#202020",
 
 	// Candles-property
 	"mainSeriesProperties.candleStyle.upColor": UP_COLOR_DARK,

@@ -3,10 +3,7 @@ import ReactSVG from 'react-svg';
 import classnames from 'classnames';
 
 import STRINGS from '../../config/localizedStrings';
-import { ICONS } from '../../config/constants';
-// import { Help } from '../Sidebar/rows'
-// import { Dialog } from '../../components';
-// import { HelpfulResourcesForm } from '../../containers'
+import { ICONS, IS_XHT } from '../../config/constants';
 
 class MenuList extends Component {
 
@@ -38,6 +35,7 @@ class MenuList extends Component {
             handleMenu,
             securityPending,
             verificationPending,
+            walletPending,
             activePath,
             onHelp
         } = this.props;
@@ -51,9 +49,32 @@ class MenuList extends Component {
                     {STRINGS.ACCOUNTS.TAB_SUMMARY}
                 </div>
                 <div
-                    className={classnames("app-bar-account-menu-list d-flex", { 'menu-active': activePath === 'wallet' && selectedMenu === 'wallet' })}
+                    className={
+                        classnames(
+                            "app-bar-account-menu-list d-flex",
+                            !!walletPending && IS_XHT
+                                ? {
+                                    'menu-notification-active': activePath === 'wallet' && selectedMenu === 'wallet',
+                                    'wallet_notification': selectedMenu !== 'wallet'
+                                }
+                                : {
+                                    'menu-active': activePath === 'wallet' && selectedMenu === 'wallet'
+                                }
+                        )
+                    }
                     onClick={() => handleMenu('wallet')}>
-                    <div className="notification-content"></div>
+                    <div className="notification-content">
+                        {!!walletPending && IS_XHT &&
+                            <div
+                                className={
+                                    selectedMenu === 'wallet'
+                                        ? "app-bar-account-list-notification wallet_selected"
+                                        : "app-bar-account-list-notification wallet_selected_inactive"
+                                } >
+                                {walletPending}
+                            </div>
+                        }
+                    </div>
                     <ReactSVG path={ICONS.TAB_WALLET} wrapperClassName="app-bar-account-list-icon" />
                     {STRINGS.ACCOUNTS.TAB_WALLET}
                 </div>
@@ -90,18 +111,19 @@ class MenuList extends Component {
                     className={
                         classnames(
                             'app-bar-account-menu-list d-flex',
-                            !!verificationPending
+                            !!verificationPending && !IS_XHT
                                 ? {
                                     'menu-notification-active': activePath === 'account' && selectedMenu === 'verification',
                                     'verification_notification': selectedMenu !== 'verification'
                                 }
                                 : {
                                     'menu-active': activePath === 'account' && selectedMenu === 'verification'
-                                })
+                                }
+                        )
                     }
                     onClick={() => handleMenu('verification')}>
                     <div className="notification-content">
-                        {!!verificationPending &&
+                        {!!verificationPending && !IS_XHT &&
                             <div
                                 className={
                                     selectedMenu === 'verification'

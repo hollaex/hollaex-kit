@@ -8,7 +8,7 @@ import {
 	normalizeBTCFee
 } from "../../components/Form/validations";
 import STRINGS from "../../config/localizedStrings";
-import { ICONS, BASE_CURRENCY, DEFAULT_COIN_DATA } from "../../config/constants";
+import { ICONS, DEFAULT_COIN_DATA } from "../../config/constants";
 
 export const generateInitialValues = (symbol, coins = {}) => {
 	const { min, withdrawal_fee } = coins[symbol] || DEFAULT_COIN_DATA;
@@ -43,35 +43,34 @@ export const generateFormValues = (
 	if (withdrawal_limits[verification_level] === -1) MAX = 0;
 	const fields = {};
 
-	if (symbol !== BASE_CURRENCY) {
-		fields.address = {
+
+	fields.address = {
+		type: "text",
+		label: STRINGS.WITHDRAWALS_FORM_ADDRESS_LABEL,
+		placeholder: STRINGS.WITHDRAWALS_FORM_ADDRESS_PLACEHOLDER,
+		validate: [
+			required,
+			validAddress(
+				symbol,
+				STRINGS[`WITHDRAWALS_${symbol.toUpperCase()}_INVALID_ADDRESS`]
+			)
+		],
+		fullWidth: true
+	};
+	if (symbol === 'xrp') {
+		fields.destination_tag = {
 			type: "text",
-			label: STRINGS.WITHDRAWALS_FORM_ADDRESS_LABEL,
-			placeholder: STRINGS.WITHDRAWALS_FORM_ADDRESS_PLACEHOLDER,
-			validate: [
-				required,
-				validAddress(
-					symbol,
-					STRINGS[`WITHDRAWALS_${symbol.toUpperCase()}_INVALID_ADDRESS`]
-				)
-			],
-			fullWidth: true
+			label: STRINGS.WITHDRAWALS_FORM_DESTINATION_TAG_LABEL,
+			placeholder: STRINGS.WITHDRAWALS_FORM_DESTINATION_TAG_PLACEHOLDER,
+			fullWidth: true,
+			checkControl: true,
+			checkLabel: STRINGS.WITHDRAWALS_FORM_INCLUDE_DESTINATION_TAG,
+			checkControlCallback: checkControlCallback
 		};
-		if (symbol === 'xrp') {
-			fields.destination_tag = {
-				type: "text",
-				label: STRINGS.WITHDRAWALS_FORM_DESTINATION_TAG_LABEL,
-				placeholder: STRINGS.WITHDRAWALS_FORM_DESTINATION_TAG_PLACEHOLDER,
-				fullWidth: true,
-				checkControl: true,
-				checkLabel: STRINGS.WITHDRAWALS_FORM_INCLUDE_DESTINATION_TAG,
-				checkControlCallback: checkControlCallback
-			};
-			if (checkControlChecked) {
-				fields.destination_tag.validate = [
-					required
-				];
-			}
+		if (checkControlChecked) {
+			fields.destination_tag.validate = [
+				required
+			];
 		}
 	}
 

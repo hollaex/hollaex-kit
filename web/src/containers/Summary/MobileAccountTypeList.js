@@ -16,7 +16,8 @@ const MobileAccountTypeList = ({
     onAccountTypeChange,
     onFeesAndLimits,
     onUpgradeAccount,
-    verification_level
+    verification_level,
+    balance
 }) => {
     return (
         <div className="mobile-account-type my-4">
@@ -59,6 +60,7 @@ const MobileAccountTypeList = ({
                                 <AccountTypeDetails
                                     user={user}
                                     coins={coins}
+                                    balance={balance}
                                     activeTheme={activeTheme}
                                     selectedAccount={selectedAccount}
                                     lastMonthVolume={lastMonthVolume}

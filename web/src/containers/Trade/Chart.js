@@ -26,7 +26,7 @@ function getStudiesOverrides(theme = 'white') {
 
 class TVChartContainer extends React.PureComponent {
 	static defaultProps = {
-		symbol: 'eth-eur', // the trading tab we are in should be passed here
+		symbol: 'xht-usdt', // the trading tab we are in should be passed here
 		interval: 'D',
 		containerId: 'tv_chart_container',
 		libraryPath: '/charting_library/',
@@ -222,7 +222,7 @@ class TVChartContainer extends React.PureComponent {
 			symbol: symbol,
 			// BEWARE: no trailing slash is expected in feed URL
 			theme: activeTheme === 'white' ? 'light' : 'dark',
-			toolbar_bg: activeTheme === 'white' ? '#ffffff' : '#1f212a',
+			toolbar_bg: activeTheme === 'white' ? '#ffffff' : '#202020',
 			datafeed: this.chartConfig,
 			interval: interval,
 			container_id: containerId,
@@ -268,7 +268,7 @@ class TVChartContainer extends React.PureComponent {
 			loading_screen:
 				activeTheme === 'white'
 					? { backgroundColor: '#ffffff' }
-					: { backgroundColor: '#1f212a' },
+					: { backgroundColor: '#202020' },
 			custom_css_url: `${process.env.REACT_APP_PUBLIC_URL}/css/chart.css`,
 			overrides: getThemeOverrides(activeTheme)
 		};

@@ -59,7 +59,9 @@ $title--margin: 1rem;
 			.risk-order-warning,
 			.coin-btc-1,
 			.coin-btc-5,
-			.level_icon {
+			.level_icon,
+			.xht-coin-stack,
+			.send-request {
 				fill: $dark-icon-color;
 			}
 			.dots-1,
@@ -68,7 +70,7 @@ $title--margin: 1rem;
 			}
 		}
 		&.underline:after {
-			background: $dark-border-main;
+			background: $dark-trade-row-highlight;
 		}
 	}
 }

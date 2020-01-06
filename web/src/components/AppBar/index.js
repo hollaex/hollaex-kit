@@ -13,7 +13,8 @@ import {
 	ICONS,
 	HOLLAEX_LOGO,
 	HOLLAEX_LOGO_BLACK,
-	EXCHANGE_EXPIRY_DAYS
+	EXCHANGE_EXPIRY_DAYS,
+	IS_XHT
 } from '../../config/constants';
 import { LinkButton } from './LinkButton';
 import PairTabs from './PairTabs';
@@ -25,8 +26,11 @@ import { getMe, setMe } from '../../actions/userAction';
 import {
 	getTickers,
 	setNotification,
+	changeTheme,
 	NOTIFICATIONS
 } from '../../actions/appActions';
+import { updateUser, setUserData } from '../../actions/userAction';
+import ThemeSwitcher from './ThemeSwitcher';
 
 class AppBar extends Component {
 	state = {
@@ -34,7 +38,10 @@ class AppBar extends Component {
 		isAccountMenu: false,
 		selectedMenu: '',
 		securityPending: 0,
-		verificationPending: 0
+		verificationPending: 0,
+		walletPending: 0,
+		selected: '',
+		options: [{ value: 'white' }, { value: 'dark' }]
 	};
 
 	componentDidMount() {
@@ -43,6 +50,7 @@ class AppBar extends Component {
 		}
 		if (this.props.user) {
 			this.checkVerificationStatus(this.props.user);
+			this.checkWalletStatus(this.props.user, this.props.coins);
 		}
 		if (this.props.isHome && this.props.token) {
 			this.getUserDetails();
@@ -51,6 +59,14 @@ class AppBar extends Component {
 			this.checkExchangeExpiry(this.props.info);
 		}
 		this.props.getTickers();
+		if (this.props.theme) {
+			this.setState({
+				selected: this.props.theme === this.state.options[0].value
+					? this.state.options[0].value
+					: this.state.options[1].value
+			});
+		}
+
 	}
 
 	componentWillReceiveProps(nextProps) {
@@ -63,6 +79,7 @@ class AppBar extends Component {
 		}
 		if (JSON.stringify(this.props.user) !== JSON.stringify(nextProps.user)) {
 			this.checkVerificationStatus(nextProps.user);
+			this.checkWalletStatus(nextProps.user, nextProps.coins);
 		}
 		if (
 			this.props.token !== nextProps.token &&
@@ -79,6 +96,13 @@ class AppBar extends Component {
 				this.checkExchangeExpiry(this.props.info);
 			}
 		}
+		if (prevProps.theme !== this.props.theme) {
+			let selected = this.props.theme === this.state.options[0].value
+				? this.state.options[0].value
+				: this.state.options[1].value;
+			this.setState({ selected });
+		}
+
 	}
 
 	checkExchangeExpiry = (info) => {
@@ -141,6 +165,19 @@ class AppBar extends Component {
 		}
 	};
 
+	checkWalletStatus = (user, coins) => {
+        let walletPending = false;
+        if (user.balance) {
+			walletPending = true;
+            Object.keys(coins).forEach(pair => {
+                if (user.balance[`${pair.toLowerCase()}_balance`] > 0) {
+                    walletPending = false;
+                }
+            })
+        }
+        this.setState({ walletPending: walletPending ? 1 : 0 });
+    };
+
 	toogleSymbolSelector = () => {
 		this.setState({ symbolSelectorIsOpen: !this.state.symbolSelectorIsOpen });
 	};
@@ -152,6 +189,32 @@ class AppBar extends Component {
 
 	handleAccountMenu = () => {
 		this.setState({ isAccountMenu: !this.state.isAccountMenu });
+	};
+
+	handleTheme = (selected) => {
+		const settings = {}
+		if (!isLoggedIn()) {
+			this.props.changeTheme(selected)
+			localStorage.setItem('theme', selected)
+		} else {
+			if (selected === 'white') {
+				settings.interface = { 'theme': 'white' }
+			} else {
+				settings.interface = { 'theme': 'dark' }
+			}
+			return updateUser({ settings })
+				.then(({ data }) => {
+					this.props.setUserData(data);
+					this.props.changeTheme(data.settings.interface.theme)
+					localStorage.setItem('theme', data.settings.interface.theme)
+				})
+				.catch((err) => {
+					const error = { _error: err.message };
+					if (err.response && err.response.data) {
+						error._error = err.response.data.message;
+					}
+				});
+		}
 	};
 
 	closeAccountMenu = () => {
@@ -177,10 +240,14 @@ class AppBar extends Component {
 	};
 
 	renderSplashActions = (token, verifyingToken) => {
-		const { securityPending, verificationPending } = this.state;
+		const { securityPending, verificationPending, walletPending } = this.state;
 		if (verifyingToken) {
 			return <div />;
 		}
+
+		const totalPending = IS_XHT
+			? securityPending + walletPending
+			: securityPending + verificationPending;
 
 		const WRAPPER_CLASSES = ['app_bar-controllers-splash', 'd-flex'];
 		return token ? (
@@ -190,9 +257,9 @@ class AppBar extends Component {
 						path={ICONS.SIDEBAR_ACCOUNT_INACTIVE}
 						wrapperClassName="app-bar-currency-icon"
 					/>
-					{!!(securityPending + verificationPending) && (
+					{!!(totalPending) && (
 						<div className="app-bar-account-notification">
-							{securityPending + verificationPending}
+							{totalPending}
 						</div>
 					)}
 				</div>
@@ -211,7 +278,7 @@ class AppBar extends Component {
 		);
 	};
 
-	renderIcon = (isHome, theme) => {
+	renderIcon = (isHome) => {
 		return (
 			<div className={classnames('app_bar-icon', 'text-uppercase')}>
 				{isHome ? (
@@ -286,6 +353,15 @@ class AppBar extends Component {
 		this.setState({ selectedMenu });
 	};
 
+	onToggle = () => {
+		const { options } = this.state;
+		const selected = this.state.selected === options[0].value
+			? options[1].value
+			: options[0].value;
+		this.setState({ selected });
+		this.handleTheme(selected);
+	};
+
 	render() {
 		const {
 			noBorders,
@@ -304,15 +380,20 @@ class AppBar extends Component {
 			isAccountMenu,
 			selectedMenu,
 			securityPending,
-			verificationPending
+			verificationPending,
+			walletPending
 		} = this.state;
-		const totalPending = securityPending + verificationPending;
+		const totalPending = IS_XHT
+			? securityPending + walletPending
+			: securityPending + verificationPending;
 		let pair = '';
 		if (Object.keys(pairs).length) {
 			pair = Object.keys(pairs)[0];
 		} else {
 			pair = this.props.pair;
 		}
+		let disableBorder = noBorders || (activePath !== 'trade' && activePath !== 'quick-trade');
+		const { selected, options } = this.state;
 		return isMobile ? (
 			<MobileBarWrapper
 				className={classnames(
@@ -332,7 +413,7 @@ class AppBar extends Component {
 		) : (
 			<div
 				className={classnames('app_bar justify-content-between', {
-					'no-borders': noBorders
+					'no-borders': disableBorder
 				})}
 			>
 				<div className="d-flex">
@@ -347,10 +428,15 @@ class AppBar extends Component {
 						/>
 					)}
 				</div>
+				{!isLoggedIn() ?
+					<ThemeSwitcher selected={selected} options={options} toggle={this.onToggle} />
+					: null
+				}
 				{!isHome ? (
 					isLoggedIn() ? (
 						<div className="d-flex app-bar-account">
 							<div className="d-flex app_bar-quicktrade-container">
+								<ThemeSwitcher selected={selected} options={options} toggle={this.onToggle} />
 								{isAdmin() ? (
 									<Link to="/admin">
 										<div
@@ -442,6 +528,7 @@ class AppBar extends Component {
 						selectedMenu={selectedMenu}
 						securityPending={securityPending}
 						verificationPending={verificationPending}
+						walletPending={walletPending}
 						handleMenu={this.handleMenu}
 						logout={logout}
 						activePath={activePath}
@@ -473,7 +560,9 @@ const mapDispatchToProps = (dispatch) => ({
 	getMe: bindActionCreators(getMe, dispatch),
 	setMe: bindActionCreators(setMe, dispatch),
 	setNotification: bindActionCreators(setNotification, dispatch),
-	getTickers: bindActionCreators(getTickers, dispatch)
+	getTickers: bindActionCreators(getTickers, dispatch),
+	changeTheme: bindActionCreators(changeTheme, dispatch),
+	setUserData: bindActionCreators(setUserData, dispatch)
 });
 
 AppBar.defaultProps = {

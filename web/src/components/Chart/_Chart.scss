@@ -19,6 +19,11 @@
 	font-size: .8rem;
 	font-weight: bold;
 }
+.donut-label-link {
+	font-size: .7rem;
+	font-weight: bold;
+	fill: $colors-notifications-blue;
+}
 
 .donut-label-no-price {
 	font-size: .7rem;
@@ -31,7 +36,7 @@
 }
 
 .deposit-asset {
-	fill: $dark-buy;
+	fill: $link;
 	font-weight: bold;
 }
 
@@ -67,9 +72,9 @@
 	fill: $coin-xrp;
 	stroke: $coin-xrp-1;
 }
-.chart_hex {
-    fill: $coin-hex;
-    stroke: $coin-hex-1;
+.chart_xht {
+    fill: $coin-xht;
+    stroke: $coin-xht-1;
 }
 .chart_eos {
     fill: $coin-eos;
@@ -349,6 +354,9 @@
 	.deposit-asset {
 		fill: $dark-link;
 	}
+	.donut-label-link {
+		fill: $dark-link;
+	}
 
 	.donut-label-pair, .donut-label-percentage {
 		fill: $dark-font-sub-text-color;
@@ -360,7 +368,7 @@
 	.chart_eur,
 	.chart_ltc,
 	.chart_xrp,
-	.chart_hex,
+	.chart_xht,
 	.chart_eos,
 	.chart_bnb,
 	.chart_link,
@@ -431,9 +439,9 @@
 		fill: $dark-coin-xrp;
 		stroke: $dark-coin-xrp-1;
 	}
-	.chart_hex {
-		fill: $dark-coin-hex;
-		stroke: $dark-coin-hex-1;
+	.chart_xht {
+		fill: $dark-coin-xht;
+		stroke: $dark-coin-xht-1;
 	}
 	.chart_eos {
 		fill: $dark-coin-eos;
@@ -631,6 +639,11 @@
 		}
 		.limit_content-text {
 			color: $dark-font-main-text-color;
+		}
+	}
+	.donut-label-no-price {
+		tspan {
+			fill: $dark-font-sub-text-color;
 		}
 	}
 }

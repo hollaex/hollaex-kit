@@ -9,7 +9,7 @@ const MobileVerificationHome = ({ user, setActivePageContent, setActiveTab }) =>
     if (!phone_number) {
         return (
             <div>
-                <Button label={STRINGS.USER_VERIFICATION.START_PHONE_VERIFICATION} onClick={() => setActivePageContent(3)} />
+                <Button label={STRINGS.USER_VERIFICATION.START_PHONE_VERIFICATION} onClick={() => setActivePageContent(2)} />
             </div>
         );
     } else {

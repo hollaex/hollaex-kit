@@ -13,7 +13,8 @@ import {
 	SESSION_TIME,
 	BASE_CURRENCY,
 	FLEX_CENTER_CLASSES,
-	EXCHANGE_EXPIRY_DAYS
+	EXCHANGE_EXPIRY_DAYS,
+	FIT_SCREEN_HEIGHT
 } from '../../config/constants';
 import { isBrowser, isMobile } from 'react-device-detect';
 
@@ -83,12 +84,13 @@ import {
 	SnackNotification,
 	SnackDialog
 } from '../../components';
-import { ContactForm, HelpfulResourcesForm, Chat as ChatComponent } from '../';
+import { ContactForm, HelpfulResourcesForm, Chat as ChatComponent, DepositFunds } from '../';
 import ReviewEmailContent from '../Withdraw/ReviewEmailContent';
 import FeesAndLimits from '../Summary/components/FeesAndLimits';
 import SetOrderPortfolio from '../UserSettings/SetOrderPortfolio';
 import LogoutConfirmation from '../Summary/components/LogoutConfirmation';
 import RiskyOrder from '../Trade/components/RiskyOrder';
+import AppFooter from '../../components/AppFooter';
 
 import {
 	getClasesForLanguage,
@@ -104,7 +106,8 @@ class Container extends Component {
 		privateSocket: undefined,
 		idleTimer: undefined,
 		ordersQueued: [],
-		limitFilledOnOrder: ''
+		limitFilledOnOrder: '',
+		sidebarFitHeight: false
 	};
 
 	limitTimeOut = null;
@@ -127,6 +130,7 @@ class Container extends Component {
 		this.updateThemeToBody(this.props.activeTheme);
 		if (this.props.location && this.props.location.pathname) {
 				this.checkPath(this.props.location.pathname);
+				this.handleFitHeight(this.props.location.pathname);
 		}
 	}
 
@@ -167,6 +171,7 @@ class Container extends Component {
 		if (this.props.location && nextProps.location
             && this.props.location.pathname !== nextProps.location.pathname) {
 				this.checkPath(nextProps.location.pathname);
+				this.handleFitHeight(nextProps.location.pathname);
 		}
 	}
 
@@ -204,6 +209,14 @@ class Container extends Component {
 		document.body.appendChild(sheet);
 	}
 
+	handleFitHeight = (path) => {
+		let pathname = this.getClassForActivePath(path);
+		if (path.indexOf('/trade/add/tabs') !== -1) {
+			pathname = '/trade/add/tabs'
+		}
+		this.setState({ sidebarFitHeight: FIT_SCREEN_HEIGHT.includes(pathname) });
+	};
+
 	updateThemeToBody = (theme) => {
 		const themeName = theme === 'dark' ? 'dark-app-body' : '';
 		if (document.body) {
@@ -230,6 +243,11 @@ class Container extends Component {
 		this.setPublicWS();
 		if (isLoggedIn()) {
 			this.setUserSocket(getToken());
+			// const dialog_display = localStorage.getItem('deposit_initial_display');
+			// if (!dialog_display) {
+			// 	this.props.setNotification(NOTIFICATIONS.DEPOSIT_INFO, { gotoWallet: this.onConfirmEmail });
+			// 	localStorage.setItem('deposit_initial_display', true);
+			// }
 		}
 		this.setState({ appLoaded: true }, () => {
 			this._resetTimer();
@@ -301,10 +319,12 @@ class Container extends Component {
 			}
 		});
 
-		// publicSocket.on('ticker', (data) => {
-
-		// this.props.setTickers(data);
-		// });
+		publicSocket.on('wave', (data) => {
+			console.log('wave', data)
+			this.props.setNotification(NOTIFICATIONS.WAVE_NOTIFICATION, {
+				wave: data
+			});
+		});
 	};
 
 	setUserSocket = (token) => {
@@ -415,8 +435,12 @@ class Container extends Component {
 						if (isMobile) {
 							this.props.setSnackDialog({
 								isDialog: true,
-								type: 'trade',
-								data: { order: data, data }
+								type: 'order',
+								data: {
+									type,
+									order: data,
+									data
+								}
 							});
 						} else {
 							this.props.setNotification(NOTIFICATIONS.ORDERS, {
@@ -581,6 +605,7 @@ class Container extends Component {
 	goToAccountPage = () => this.goToPage('/account');
 	goToVerificationPage = () => this.goToPage('/verification');
 	goToDashboard = () => this.goToPage('/');
+	goToXHTTrade = () => this.goToPage('/trade/xht-usdt');
 
 	logout = (message = '') => {
 		this.setState({ appLoaded: false }, () => {
@@ -629,6 +654,8 @@ class Container extends Component {
 				return 'trade';
 			case '/chat':
 				return 'chat';
+			case '/home':
+				return 'home';
 			default:
 		}
 		if (path.indexOf('/trade/') === 0) {
@@ -758,6 +785,40 @@ class Container extends Component {
 					/>
 				);
 			}
+			case NOTIFICATIONS.STAKE_TOKEN: {
+				const { onConfirm, ...rest } = data;
+				return (
+					<Notification
+						type={type}
+						data={rest}
+						onConfirm={data.onConfirm}
+						onBack={this.onCloseDialog}
+					/>
+				);
+			}
+			case NOTIFICATIONS.DEPOSIT_INFO: {
+				const { gotoWallet, ...rest } = data;
+				return (
+					<DepositFunds
+						data={rest}
+						gotoWallet={gotoWallet}
+					/>
+				);
+			}
+			case NOTIFICATIONS.WAVE_NOTIFICATION: {
+				const { onConfirm, ...rest } = data;
+				return (
+					<Notification
+						type={type}
+						data={{
+							pair: this.props.pair,
+							...rest
+						}}
+						onConfirm={this.goToXHTTrade}
+						onBack={this.onCloseDialog}
+					/>
+				);
+			}
 			default:
 				return <div />;
 		}
@@ -768,12 +829,16 @@ class Container extends Component {
 	};
 
 	isSocketDataReady() {
-		const { orderbooks, pairsTrades, pair } = this.props;
+		const { orderbooks, pairsTrades, pair, router } = this.props;
+		let pairTemp = pair;
 		// return (Object.keys(orderbooks).length && orderbooks[pair] && Object.keys(orderbooks[pair]).length &&
 		// 	Object.keys(pairsTrades).length);
+		if (router && router.params && router.params.pair) {
+			pairTemp = router.params.pair;
+		}
 		return (
 			Object.keys(orderbooks).length &&
-			orderbooks[pair] &&
+			orderbooks[pairTemp] &&
 			Object.keys(pairsTrades).length
 		);
 	}
@@ -796,7 +861,7 @@ class Container extends Component {
 			info
 			// user
 		} = this.props;
-		const { dialogIsOpen, appLoaded, chatIsClosed } = this.state;
+		const { dialogIsOpen, appLoaded, chatIsClosed, sidebarFitHeight } = this.state;
 		const languageClasses = getClasesForLanguage(activeLanguage, 'array');
 		const fontClass = getFontClassForLanguage(activeLanguage);
 
@@ -808,23 +873,9 @@ class Container extends Component {
 		const isMenubar = activePath === 'account' || activePath === 'wallet';
 		const expiryDays = EXCHANGE_EXPIRY_DAYS - moment().diff(info.created_at, 'days');
 		return (
-			<div
-				className={classnames(
-					getThemeClass(activeTheme),
-					activePath,
-					symbol,
-					fontClass,
-					languageClasses[0],
-					{
-						'layout-mobile': isMobile,
-						'layout-desktop': isBrowser
-					}
-				)}
-			>
+			<div>
 				<div
 					className={classnames(
-						'app_container',
-						'd-flex',
 						getThemeClass(activeTheme),
 						activePath,
 						symbol,
@@ -836,148 +887,186 @@ class Container extends Component {
 						}
 					)}
 				>
-					<EventListener
-						target="window"
-						onResize={this.resetTimer}
-						onScroll={this.resetTimer}
-						onMouseMove={this.resetTimer}
-						onClick={this.resetTimer}
-						onKeyPress={this.resetTimer}
-					/>
-					<div className="d-flex flex-column f-1">
-						<AppBar
-							router={router}
-							location={location}
-							goToDashboard={this.goToDashboard}
-							logout={this.logout}
-							activePath={activePath}
-							onHelp={openHelpfulResourcesForm}
-							rightChildren={
-								<CurrencyList
-									className="horizontal-currency-list justify-content-end"
-									activeLanguage={activeLanguage}
-								/>
+					<div
+						className={classnames(
+							'app_container',
+							'd-flex',
+							getThemeClass(activeTheme),
+							activePath,
+							symbol,
+							fontClass,
+							languageClasses[0],
+							{
+								'layout-mobile': isMobile,
+								'layout-desktop': isBrowser
 							}
-						/>
-						{info.is_trial
-							? <div className={classnames(
-								'w-100',
-								'p-1',
-								...FLEX_CENTER_CLASSES,
-								'exchange-trial'
-								)}>
-								{STRINGS.formatString(
-										STRINGS.TRIAL_EXCHANGE_MSG,
-										STRINGS.APP_TITLE,
-										expiryDays
-									)
-								}
-								</div>
-							: null
-						}
-						{isBrowser && isMenubar && (
-							<AppMenuBar router={router} location={location} />
 						)}
-						<div
-							className={classnames(
-								'app_container-content',
-								'd-flex',
-								'justify-content-between',
-								{
-									'app_container-secondary-content': isMenubar
+					>
+						<EventListener
+							target="window"
+							onResize={this.resetTimer}
+							onScroll={this.resetTimer}
+							onMouseMove={this.resetTimer}
+							onClick={this.resetTimer}
+							onKeyPress={this.resetTimer}
+						/>
+						<div className="d-flex flex-column f-1">
+							<AppBar
+								router={router}
+								location={location}
+								goToDashboard={this.goToDashboard}
+								logout={this.logout}
+								activePath={activePath}
+								onHelp={openHelpfulResourcesForm}
+								rightChildren={
+									<CurrencyList
+										className="horizontal-currency-list justify-content-end"
+										activeLanguage={activeLanguage}
+									/>
 								}
-							)}
-						>
+							/>
+							{info.is_trial
+								? <div className={classnames(
+									'w-100',
+									'p-1',
+									...FLEX_CENTER_CLASSES,
+									'exchange-trial'
+									)}>
+									{STRINGS.formatString(
+											STRINGS.TRIAL_EXCHANGE_MSG,
+											STRINGS.APP_TITLE,
+											expiryDays
+										)
+									}
+									</div>
+								: null
+							}
+							{isBrowser && isMenubar && isLoggedIn()
+								? (
+									<AppMenuBar router={router} location={location} />
+								)
+								: null
+							}
 							<div
 								className={classnames(
-									'app_container-main',
+									'app_container-content',
 									'd-flex',
-									'flex-column',
 									'justify-content-between',
 									{
-										'overflow-y': !isMobile
+										'app_container-secondary-content': isMenubar
 									}
 								)}
 							>
-								{appLoaded && this.isSocketDataReady() ? (
-									children
-								) : (
-									<Loader background={false} />
+								<div
+									className={classnames(
+										'app_container-main',
+										'd-flex',
+										'flex-column',
+										'justify-content-between',
+										{
+											'overflow-y': !isMobile
+										}
+									)}
+								>
+									{appLoaded && this.isSocketDataReady() ? (
+										children
+									) : (
+										<Loader background={false} />
+									)}
+								</div>
+								{isBrowser && (
+									<div className="app_container-sidebar">
+										<Sidebar
+											activePath={activePath}
+											logout={this.logout}
+											// help={openContactForm}
+											theme={activeTheme}
+											isLogged={isLoggedIn()}
+											help={openHelpfulResourcesForm}
+											pair={pair}
+											minimizeChat={this.minimizeChat}
+											chatIsClosed={chatIsClosed}
+											unreadMessages={unreadMessages}
+											sidebarFitHeight={sidebarFitHeight}
+										/>
+									</div>
+								)}
+								<Dialog
+									isOpen={dialogIsOpen}
+									label="hollaex-modal"
+									className={
+										classnames(
+											"app-dialog",
+											{
+												"app-dialog-flex": activeNotification.type === NOTIFICATIONS.DEPOSIT_INFO 
+											}
+										)
+									}
+									onCloseDialog={this.onCloseDialog}
+									shouldCloseOnOverlayClick={shouldCloseOnOverlayClick}
+									theme={activeTheme}
+									showCloseText={
+										!(
+											activeNotification.type === CONTACT_FORM ||
+											activeNotification.type ===
+												HELPFUL_RESOURCES_FORM ||
+											activeNotification.type ===
+												NOTIFICATIONS.NEW_ORDER ||
+											(activeNotification.type ===
+												NOTIFICATIONS.TRADES &&
+												!isMobile) ||
+											(activeNotification.type ===
+												NOTIFICATIONS.ORDERS &&
+												!isMobile) ||
+											activeNotification.type === NOTIFICATIONS.ERROR
+										)
+									}
+									compressed={
+										activeNotification.type === NOTIFICATIONS.ORDERS ||
+										activeNotification.type === NOTIFICATIONS.TRADES
+									}
+									style={{ 'z-index': 100 }}
+								>
+									{dialogIsOpen &&
+										this.renderDialogContent(
+											activeNotification,
+											prices,
+											activeTheme
+										)}
+								</Dialog>
+								{!isMobile && (
+									<ChatComponent
+										minimized={chatIsClosed}
+										onMinimize={this.minimizeChat}
+										chatIsClosed={chatIsClosed}
+									/>
 								)}
 							</div>
-							{isBrowser && (
-								<div className="app_container-sidebar">
-									<Sidebar
-										activePath={activePath}
-										logout={this.logout}
-										// help={openContactForm}
-										theme={activeTheme}
+							{isMobile && (
+								<div className="app_container-bottom_bar">
+									<SidebarBottom
 										isLogged={isLoggedIn()}
-										help={openHelpfulResourcesForm}
+										activePath={activePath}
 										pair={pair}
-										minimizeChat={this.minimizeChat}
-										chatIsClosed={chatIsClosed}
-										unreadMessages={unreadMessages}
 									/>
 								</div>
 							)}
-							<Dialog
-								isOpen={dialogIsOpen}
-								label="hollaex-modal"
-								className="app-dialog"
-								onCloseDialog={this.onCloseDialog}
-								shouldCloseOnOverlayClick={shouldCloseOnOverlayClick}
-								theme={activeTheme}
-								showCloseText={
-									!(
-										activeNotification.type === CONTACT_FORM ||
-										activeNotification.type ===
-											HELPFUL_RESOURCES_FORM ||
-										activeNotification.type ===
-											NOTIFICATIONS.NEW_ORDER ||
-										(activeNotification.type ===
-											NOTIFICATIONS.TRADES &&
-											!isMobile) ||
-										(activeNotification.type ===
-											NOTIFICATIONS.ORDERS &&
-											!isMobile) ||
-										activeNotification.type === NOTIFICATIONS.ERROR
-									)
-								}
-								compressed={
-									activeNotification.type === NOTIFICATIONS.ORDERS ||
-									activeNotification.type === NOTIFICATIONS.TRADES
-								}
-								style={{ 'z-index': 100 }}
-							>
-								{dialogIsOpen &&
-									this.renderDialogContent(
-										activeNotification,
-										prices,
-										activeTheme
-									)}
-							</Dialog>
-							{!isMobile && (
-								<ChatComponent
-									minimized={chatIsClosed}
-									onMinimize={this.minimizeChat}
-									chatIsClosed={chatIsClosed}
-								/>
-							)}
 						</div>
-						{isMobile && (
-							<div className="app_container-bottom_bar">
-								<SidebarBottom
-									isLogged={isLoggedIn()}
-									activePath={activePath}
-									pair={pair}
-								/>
-							</div>
-						)}
 					</div>
+					<SnackNotification />
+					<SnackDialog />
 				</div>
-				<SnackNotification />
-				<SnackDialog />
+				<div className={classnames(
+					getThemeClass(activeTheme),
+					{
+						'layout-mobile': isMobile,
+						'layout-desktop': isBrowser
+					}
+				)}>
+					{!isMobile && (
+						<AppFooter theme={activeTheme} />
+					)}
+				</div>
 			</div>
 		);
 	}

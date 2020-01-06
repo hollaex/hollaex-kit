@@ -19,17 +19,19 @@ class InviteFriends extends Component {
             copied: false
         }
     }
-    
+
     componentDidMount() {
         this.props.getUserReferralCount();
     }
-    
+
     render() {
         const { affiliation_code } = this.props.data;
+        const { affiliation, is_hap } = this.props;
         const referralLink = `${process.env.REACT_APP_PUBLIC_URL}/signup?affiliation_code=${affiliation_code}`;
-        const affiliationCount = this.props.affiliation.count ? this.props.affiliation.count : 0;
+        const affiliationCount = affiliation.count ? affiliation.count : 0;
+        const discount = is_hap ? 30 : 10;
         return (
-            <div className='invite_friends_wrapper'>
+            <div className='invite_friends_wrapper mx-auto'>
                 <IconTitle
                     text={STRINGS.REFERRAL_LINK.TITLE}
                     iconPath={ICONS.REFER_ICON}
@@ -39,8 +41,8 @@ class InviteFriends extends Component {
                 />
                 <div>
                     <div className='my-2'>
-                        <div>{STRINGS.REFERRAL_LINK.INFO_TEXT}</div>
-                        <div>{STRINGS.REFERRAL_LINK.INFO_TEXT_1}</div>
+                        <div>{STRINGS.formatString(STRINGS.REFERRAL_LINK.INFO_TEXT, discount)}</div>
+                        <div>{STRINGS.formatString(STRINGS.REFERRAL_LINK.INFO_TEXT_1, discount)}</div>
                     </div>
                     <div className='my-4'>
                         <RenderDumbField
@@ -49,8 +51,9 @@ class InviteFriends extends Component {
                             fullWidth={true}
                             allowCopy={true}
                             copyOnClick={true}
-                            onCopy={() => {}}
+                            onCopy={this.handleCopy}
                         />
+                        
                     </div>
                     <div className="user_refer_info p-4 d-flex align-items-center">
                         {STRINGS.formatString(
@@ -60,19 +63,18 @@ class InviteFriends extends Component {
                     </div>
                     <div className="d-flex my-5">
                         <Button
-							label={STRINGS.BACK_TEXT}
-							className="mr-5"
-							onClick={this.props.onBack}
-						/>
-                        <CopyToClipboard
-                            text={referralLink}
-                            onCopy={() => this.setState({ copied: true })}
-                        >
-                            <Button
-                                label={this.state.copied ? STRINGS.SUCCESFUL_COPY : STRINGS.REFERRAL_LINK.COPY_LINK_BUTTON}
-                                onClick={() => {}}
-                            />
-                        </CopyToClipboard>
+                            label={STRINGS.BACK_TEXT}
+                            className="mr-5"
+                            onClick={this.props.onBack}
+                        />
+                            <CopyToClipboard
+                                text={referralLink}
+                                onCopy={this.handleCopy}>
+                                <Button
+                                    label={this.state.copied ? STRINGS.SUCCESFUL_COPY : STRINGS.REFERRAL_LINK.COPY_LINK_BUTTON}
+                                    onClick={() => { }}
+                                />
+                            </CopyToClipboard>
                     </div>
                 </div>
             </div>
@@ -81,7 +83,8 @@ class InviteFriends extends Component {
 }
 
 const mapStateToProps = (store) => ({
-    affiliation: store.user.affiliation || {}
+    affiliation: store.user.affiliation || {},
+    is_hap: store.user.is_hap
 });
 
 const mapDispatchToProps = (dispatch) => ({

@@ -89,7 +89,9 @@ export const formatCurrency = (
 			return numbro(roundNumber(amount, 8)).format(BASE_FORMAT);
 		case 'usdt':
 			return numbro(roundNumber(amount, 8)).format(BASE_FORMAT);
-		case 'hex':
+		case 'xht':
+			return numbro(roundNumber(amount, 8)).format(BASE_FORMAT);
+		case 'xmr':
 			return numbro(roundNumber(amount, 8)).format(BASE_FORMAT);
 		default:
 			return numbro(roundNumber(amount, 8)).format(BASE_FORMAT);
@@ -221,8 +223,8 @@ export const getCurrencyFromName = (name = '', coins) => {
 	// 	case 'eur':
 	// 	case 'euro':
 	// 		return 'eur';
-	// 	case 'hex':
-	// 		return 'hex';
+	// 	case 'xht':
+	// 		return 'xht';
 	// 	case 'usdt':
 	// 		return 'usdt';
 	// 	case 'xmr':
@@ -249,12 +251,12 @@ export const getCurrencyFromSymbol = (symbol = '') => {
 		case 'eur':
 		case 'euro':
 			return 'euro';
-		case 'hex':
-			return 'hex';
+		case 'xht':
+			return 'xht';
 		case 'usdt':
 			return 'usdt';
 		default:
-			return '';
+			return symbol.toLowerCase();
 	}
 };
 

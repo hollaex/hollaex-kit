@@ -303,7 +303,7 @@ $notification-size: 1.5rem;
 			}
 
 			&.tab_item-active {
-				border: 1px solid $dark-border-main !important;
+				border: 1px solid $dark-tab-active !important;
 				color: $dark-tab-active !important;
 				svg path, svg rect {
 					fill: $dark-tab-active;
@@ -364,5 +364,12 @@ $notification-size: 1.5rem;
 
 	.mobile_tab_last-active {
 		border-bottom: 2px solid $dark-font-main-text-color !important;
+	}
+}
+.layout-mobile{
+	.mobile_tab-wrapper {
+		.status_txt{
+			font-size:$font-size-mobile-txt;
+		}
 	}
 }

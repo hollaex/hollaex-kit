@@ -170,6 +170,9 @@ $padding-input: 4rem;
 			}
 		}
 	}
+	.otp_form-section-wrapper {
+		border-top: 1px solid $dark-font-main-text-color;
+	}
 	.otp_form-wrapper {
 		.otp_form-section-title {
 			color: $dark-font-main-text-color;

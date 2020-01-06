@@ -1,0 +1,632 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>HEX Token Purchase Agreement</title><style>
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	text-indent: -1.7em;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	opacity: 0.5;
+}
+
+.sans { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, KaiTi, STKaiTi, '华文楷体', KaiTi_GB2312, '楷体_GB2312', serif; }
+.mono { font-family: Nitti, 'Microsoft YaHei', '微软雅黑', monospace; }
+.pdf .sans { font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
+
+.pdf .code { font-family: Source Code Pro, 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, KaiTi, STKaiTi, '华文楷体', KaiTi_GB2312, '楷体_GB2312', serif, 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
+
+.pdf .mono { font-family: PT Mono, Nitti, 'Microsoft YaHei', '微软雅黑', monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+
+.highlight-default {
+}
+.highlight-gray {
+	color: rgb(155,154,151);
+}
+.highlight-brown {
+	color: rgb(100,71,58);
+}
+.highlight-orange {
+	color: rgb(217,115,13);
+}
+.highlight-yellow {
+	color: rgb(223,171,1);
+}
+.highlight-teal {
+	color: rgb(15,123,108);
+}
+.highlight-blue {
+	color: rgb(11,110,153);
+}
+.highlight-purple {
+	color: rgb(105,64,165);
+}
+.highlight-pink {
+	color: rgb(173,26,114);
+}
+.highlight-red {
+	color: rgb(224,62,62);
+}
+.highlight-gray_background {
+	background: rgb(235,236,237);
+}
+.highlight-brown_background {
+	background: rgb(233,229,227);
+}
+.highlight-orange_background {
+	background: rgb(250,235,221);
+}
+.highlight-yellow_background {
+	background: rgb(251,243,219);
+}
+.highlight-teal_background {
+	background: rgb(221,237,234);
+}
+.highlight-blue_background {
+	background: rgb(221,235,241);
+}
+.highlight-purple_background {
+	background: rgb(234,228,242);
+}
+.highlight-pink_background {
+	background: rgb(244,223,235);
+}
+.highlight-red_background {
+	background: rgb(251,228,228);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(55, 53, 47, 0.6);
+	fill: rgba(55, 53, 47, 0.6);
+}
+.block-color-brown {
+	color: rgb(100,71,58);
+	fill: rgb(100,71,58);
+}
+.block-color-orange {
+	color: rgb(217,115,13);
+	fill: rgb(217,115,13);
+}
+.block-color-yellow {
+	color: rgb(223,171,1);
+	fill: rgb(223,171,1);
+}
+.block-color-teal {
+	color: rgb(15,123,108);
+	fill: rgb(15,123,108);
+}
+.block-color-blue {
+	color: rgb(11,110,153);
+	fill: rgb(11,110,153);
+}
+.block-color-purple {
+	color: rgb(105,64,165);
+	fill: rgb(105,64,165);
+}
+.block-color-pink {
+	color: rgb(173,26,114);
+	fill: rgb(173,26,114);
+}
+.block-color-red {
+	color: rgb(224,62,62);
+	fill: rgb(224,62,62);
+}
+.block-color-gray_background {
+	background: rgb(235,236,237);
+}
+.block-color-brown_background {
+	background: rgb(233,229,227);
+}
+.block-color-orange_background {
+	background: rgb(250,235,221);
+}
+.block-color-yellow_background {
+	background: rgb(251,243,219);
+}
+.block-color-teal_background {
+	background: rgb(221,237,234);
+}
+.block-color-blue_background {
+	background: rgb(221,235,241);
+}
+.block-color-purple_background {
+	background: rgb(234,228,242);
+}
+.block-color-pink_background {
+	background: rgb(244,223,235);
+}
+.block-color-red_background {
+	background: rgb(251,228,228);
+}
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="436445a2-ffec-49e3-8c55-ffe7b85b1fab" class="page sans"><header><h1 class="page-title">HEX Token Purchase Agreement</h1></header><div class="page-body"><p id="f5696994-d8cb-480f-8def-fa3c20847c8a" class=""><em>Version 1.0.</em></p><p id="bfda6648-cda9-45e5-822e-ab6efef16bd6" class="">The HEX Token Purchase Agreement (the &quot;Agreement&quot;) is an agreement between (1) you or the entity that you represent (&quot;Buyer&quot;) and HEX Foundation (registry code: 193571) registered under the laws of Republic of Seychelles (&quot;Company&quot;). This Agreement contains the terms and conditions governing the purchase and distribution of tokens (the &quot;HEX tokens&quot;).
+Buyer and Company are herein referred to individually as a &quot;Party&quot; and collectively as the
+&quot;Parties&quot; have entered into the Agreement.</p><p id="e5a448ce-3a47-4b92-bdb7-f30903a5034e" class="">Buyer acknowledges, understands and agrees that:</p><ol id="cbedff18-c8df-42ae-971e-f01ccb0fadcf" class="numbered-list" start="1"><li>Buyer reads the Agreement and the Whitepaper carefully and in their entirety. Buyer
+shall not buy HEX, if any of the risks provided in the Agreement or in the Whitepaper are unacceptable.</li></ol><ol id="67fcbabe-7ed0-4b96-8a7d-90d1038bbbe6" class="numbered-list" start="2"><li>Buyer understands and agrees that Buyer is subject to and bound by this Agreement by virtue of Buyer’s purchase of HEX Tokens.</li></ol><ol id="a167d841-520e-4e8b-b4df-8e7ffb0f8e34" class="numbered-list" start="3"><li>Company does not have any obligation to recover any HEX. Purchases of HEX Tokens are non-refundable.</li></ol><ol id="a81ece7a-26fe-4548-b355-67efbe9d9b46" class="numbered-list" start="4"><li>Buyer does not hold any claims against Company for any losses or any special,
+incidental, or consequential damages arising from, or in any way connected, to the sale of
+HEX, including but not limited to the losses associated with the risks set in the Agreement.</li></ol><ol id="6c63a52c-0038-42ae-83fe-06c314c7f080" class="numbered-list" start="5"><li>Ownership of HEX carries no rights, express or implied, other than the right to use
+such HEX as a means to enable usage of and interaction with the Platform.</li></ol><ol id="b3d8c214-aedb-47cb-9839-5f6d0aeb676b" class="numbered-list" start="6"><li>Tokens do not represent any ownership right, share or security or equivalent rights, or
+any right to receive future revenue, shares, dividends or participate in the management,
+intellectual property rights or any other form of participation in or relating to the Platform
+and/or Company (except participation in HEX Network as described in the clause 2.4 of the Agreement).</li></ol><ol id="ad31b556-ba11-41ce-b640-a59a5c561bb9" class="numbered-list" start="7"><li>Buyer has significant experience with, and understanding of, the usage and intricacies
+of cryptographic tokens and blockchain based software systems.</li></ol><ol id="4da18d67-9685-463e-bdb5-c40244797ce4" class="numbered-list" start="8"><li>Company is not responsible for lost HEX or cryptocurrency resulting
+from actions taken by or omitted by purchasers.</li></ol><ol id="0550d402-2345-4080-8faf-3719ac234691" class="numbered-list" start="9"><li>Buyer bears sole responsibility for loosing Buyer’s login data to the HEX Network account and Buyer’s wallet private key.</li></ol><p id="d19b96a8-6c3e-47ca-8982-283171783f0f" class="">
+</p><p id="33492836-2112-4616-a16b-c092b53a65a1" class=""><strong>DISCLAIMER:</strong> This HEX Technical White Paper is for information purposes only. BitHolla does not guarantee the accuracy of or the conclusions reached in this white paper, and this white paper is provided “as is”. BitHolla does not make and expressly disclaims all representations and warranties, express, implied, statutory or otherwise, whatsoever, including, but not limited to: (i) warranties of merchantability, fitness for a particular purpose, suitability, usage, title or noninfringement; (ii) that the contents of this white paper are free from error; and (iii) that such contents will not infringe third-party rights. BitHolla and its affiliates shall have no liability for damages of any kind arising out of the use, reference to, or reliance on this white paper or any of the content contained herein, even if advised of the possibility of such damages. In no event will BitHolla or its affiliates be liable to any person or entity for any damages, losses, liabilities, costs or expenses of any kind, whether direct or indirect, consequential, compensatory, incidental, actual, exemplary, punitive or special for the use of, reference to, or reliance on this whitepaper or any of the content contained herein, including, without limitation, any loss of business, revenues, profits, data, use, goodwill or other intangible losses. The information in this document does not constitute a recommendation by any person to purchase HEX tokens or any other cryptographic token or currency and BitHolla has not authorized any person to make any such recommendation. HEX tokens are speculative and involve a high degree of risk and uncertainty The sale of HEX tokens is aimed solely at persons who have sufficient knowledge and understanding of blockchain and cryptographic tokens and other digital assets, smart contracts, storage mechanisms (such as digital or token wallets) blockchain-based software systems and blockchain or distributed ledger technology, to be able to evaluate the risks and merits of a purchase of HEX tokens and are able to bear the risks thereof, including loss of all amounts paid and loss of HEX tokens purchased.  Potential purchasers must further make their own independent assessment, after making such investigations as they consider necessary, of the merits of, and their suitability for, purchasing any HEX tokens and should consult their accounting, legal and tax representatives and advisers in order to evaluate the economic, legal and tax consequences of purchasing HEX tokens. Certain statements contained in this document may constitute forward-looking statements or speak to future events or plans. Such forward-looking statements or information involve known and unknown risks and uncertainties, which may cause actual events to differ materially. No reliance should be placed on any such forward-looking statements or information.</p><h1 id="9970df4b-9a88-421f-9827-990cc091170d" class="">1. DEFINITIONS</h1><p id="716e0e4f-2c71-4813-91e3-5b87f004c8c2" class="">The Agreement terms that are written in the upper case first letter, hereinafter be used in the following meanings unless the context indicates a different meaning:<div class="indented"><ul id="163558e5-29d0-4da0-b532-163efac72e28" class="bulleted-list"><li>HEX, HEX Token or Token is a functional utility token of HEX Network, which is used as a fuel in the HEX Network according to the Whitepaper.</li></ul><ul id="5db63a2e-0ce5-424f-ba3a-754c6434033d" class="bulleted-list"><li>HEX Network means the blockchain-based Network on Ethereum that uses smart contracts described in the Whitepaper.</li></ul><ul id="ad74705f-dffb-4bde-86fd-c107b615d8c1" class="bulleted-list"><li>HollaExShell is the product package granted as a software license solution for running an exchange.</li></ul><ul id="9f34fb4a-ce81-450a-a429-07afbf0b24fa" class="bulleted-list"><li>Dispute means any dispute, controversy or claim based on, arising out of, relating to or in connection with the Agreement, including with respect to the formation, applicability, breach, violation, termination, validity or enforceability hereof.</li></ul><ul id="d6ed34b8-4882-402e-8791-097b52f39c0f" class="bulleted-list"><li>Governmental Authority means any applicable federal, state, provincial, territorial,
+municipal, local or foreign government, governmental authority, regulatory or administrative agency, governmental commission, department, board, bureau, ministry, agency or instrumentality, court or tribunal, in each case having jurisdiction with respect to a particular matter.</li></ul><ul id="cf6802a9-7beb-4116-b51e-ede7fb7876a6" class="bulleted-list"><li>Wave Auction is a procedure of distributing HEX Tokens to Buyer in the meaning of Article 3 of the Agreement.</li></ul><ul id="9f2bcf3c-aaed-48b3-884c-f0baa2660194" class="bulleted-list"><li>Whitepaper means a document describing HEX Network, HEX Tokens and their interaction with HollaExShell Platform and Tokens, as well as other issues related thereto and associated therewith. Whitepaper is for information purposes and might change from time to time.</li></ul></div></p><h1 id="0dd59048-ca9a-47dd-8334-1994f86fdf9c" class="">2. ACCEPTANCE OF AGREEMENT</h1><p id="c0868bb6-5d7a-4b53-aeef-1dfce9845d28" class="">2.1. This Agreement shall be effective and binding on the Parties when Buyer: (a) clicks the
+check box on the official https://hex.bitholla.com website (the “Website”) to indicate that Buyer has read, understands and agrees to the terms of this Agreement. Buyer agrees to be bound on this basis, and
+confirms that Buyer has read in full and understands this Agreement and the terms on which Buyer is bound.</p><p id="9e225700-f8fb-4986-8fd8-896268c9dd67" class="">2.2. Company has established Terms of Use, as may be amended from time to time, for the Website which are hereby incorporated by reference. Buyer has read, understands and agrees to those terms.</p><p id="f9a2c85b-9c51-449f-9eb5-57a06ba8f141" class="">2.3. Company has prepared the Whitepaper, which is available on the Website describing matters relating to the HEX and HollaExShell Software. The Whitepaper, as it may be amended from time to time and is for technical reference and information.</p><p id="677e8fb1-a03d-4b4c-933f-c36a7f5db5d1" class="">2.4. The Tokens are not a loan, currency, security, commodity, a swap on a currency or any other kind of financial instrument nor represent neither confer any ownership right or stake, share, or equivalent rights, or any right to receive future revenue, shares, dividends or participate in management, intellectual property rights or any other form of participation in Company and serve no legal purposes and functionalities.</p><p id="fc0ecbb0-7a0d-4240-a5c3-0a3658b8f718" class="">2.5. Buyer acknowledges and understands that the proceeds from the sale of the HEX Tokens will be utilized by Company in its sole discretion.</p><p id="48edd557-f734-45f1-a15e-3b467ba2f9a6" class="">2.6. Purchases of the Tokens are non-refundable and cannot be cancelled or withdrawn. Buyer acknowledges the risk of losing any or all the Tokens.</p><h1 id="ad3ba7e4-c071-4c50-a03a-29779ccca710" class="">3. TOKEN SALE PROCEDURE</h1><p id="1f9967eb-5dd4-46df-9dd0-d2f0160324a6" class="">3.1. Buyer purchases tokens through <a href="http://hex.bitholla.com">hex.bitholla.com</a> according to the announced notices and dates provided on the Website.</p><p id="46708070-07d1-4716-ba4d-6911b15b5642" class="">3.2. Buyer&#x27;s purchase of the Tokens from Company during the Token Sale period is final, and
+there are no refunds or cancellations possible.</p><p id="1ae9942d-6fc7-4670-9cd1-6d4fa0046415" class="">3.3. Once Buyer makes a payment using different methods provided on the Website, Website converts the amount to USDT based on the market price automatically. The converted amount in usdt shall be used to purchase HEX.</p><p id="8ac0caee-7239-4b75-9216-454691da9f8d" class="">3.3. Company reserves the right to reject the offers on acquisition of the Tokens at any time at Company&#x27;s sole discretion, including cases when the information provided by Buyer upon any requests is not sufficient, inaccurate or misleading, or Buyer has not complied with any of the requirements.</p><p id="bc929fd8-8a63-42c3-8d2d-5ba3fdb4f8b5" class="">3.4. Company reserves the right to conduct a KYC (“Know Your Customer) and/or AML (“Anti-Money Laundering”) checks of Buyer if deem necessary or it becomes required by the applicable laws. Upon Company’s request, Buyer shall immediately provide to Company information and documents that Company, in its sole discretion, deems necessary or appropriate to conduct KYC and/or AML checks.</p><p id="0db6b046-ac68-4f65-b896-a14146de42d0" class="">3.5. At any time prior to the end of the Token Sale, Company may, at its own discretion, either temporarily suspend or permanently abort the Token Sale for security or any other reasons. Any suspension or abortion of Token Sale shall be deemed to commence from the Company announcement.</p><p id="faf2b247-c3ab-45fe-aee5-2e5730b8bfa6" class="">3.6. Taxes. Buyer acknowledges, understands and agrees that: (a) the purchase and receipt
+of HEX Tokens may have tax consequences for Buyer; (b) Buyer is solely responsible
+for Buyer’s compliance with Buyer’s tax obligations; and (c) Company bears no
+liability or responsibility with respect to any tax consequences to Buyer.</p><h1 id="7a0cbba8-7400-4fbe-bf17-1d2a1d3a586a" class="">4. REPRESENTATIONS AND WARRANTIES</h1><p id="11c21433-6405-4e28-a329-94df5b190434" class="">4.1. By buying the Tokens, Buyer represents and warrants to Company in addition to the representations provided above in this Agreement that Buyer has all required powers and authorities to execute, deliver, carry out and perform its obligations under the Agreement, making payments and purchase HEX Tokens.</p><p id="4cfb2921-604b-4261-98f4-66998624a2f4" class="">4.2. Buyer must be of sufficient legal age and capacity to purchase the Tokens. In case of a legal person, Buyer is duly organized, validly existing and in good standing under the laws of its domiciliary jurisdiction and each jurisdiction where it conducts business.</p><p id="c4ff6149-8736-4ddd-ac30-865bc5a5a69f" class="">4.3. The Tokens are not being offered or distributed to, as well as cannot be resold or otherwise alienated by their holders to the following persons:</p><p id="62944a1c-d8e4-4f11-b0f2-a0f1a6c912ab" class="">4.3.1 Citizens of, natural and legal persons, having their habitual residence, location or their seat of incorporation in the United States of America (including its states and the district of Columbia), Puerto Rico, the Virgin Islands of the United States, or any other possessions of the United States of America; and
+4.3.2. citizens of, natural and legal persons, having their habitual residence, location or their seat of incorporation in the country or territory where transactions with digital tokens are prohibited or in any manner restricted by applicable laws or regulations, or will become so prohibited or restricted at any time after the Agreement becomes effective.
+4.4. The entering into and performance of the Agreement will not result in any violation of, be in conflict with, or constitute a material default under:
+4.4.1. any provision of Buyer’s corporation documents;
+4.4.2. any provision of any judgment, decree or order to which Buyer is a party, by which it is bound, or to which any of its material assets are subject;
+4.4.3. any material agreement, obligation, duty or commitment to which Buyer is a party or by which it is bound;
+4.4.4. any foreign exchange, anti-money laundering or regulatory restrictions applicable to Token Sale;
+4.4.5. any laws, regulations or rules applicable to Buyer.
+4.5. Buyer will comply with any applicable tax obligations in Buyer&#x27;s jurisdiction arising from Token Sale.
+4.6. Buyer will comply with all applicable anti-money laundering and counter-terrorism financing requirements.
+4.7. The execution and delivery of, and performance under, the Agreement require no approval or other action from any governmental authority or person other than Buyer.
+4.8. There are no actions or investigations, pending or threatened before or by any Governmental Authority against Buyer which, if determined adversely, could reasonably be expected to have a material adverse effect on the ability of Buyer to enter into and perform its obligations under the Agreement. There is no unsatisfied judgment or any open injunction binding upon Buyer which could reasonably be expected to have a material adverse effect on the ability of Buyer to enter into and perform its obligations under the Agreement. If Buyer is a legal entity, Buyer makes the same representations with respect to its directors (or equivalent) and senior executive officers, and its affiliates and their respective directors (or equivalent) and senior executive officers.
+4.9. Buyer has sufficient understanding of the functionality, usage, storage, transmission mechanisms and other material characteristics of cryptographic tokens, token storage mechanisms (such as token wallets), blockchain technology and blockchain-based software systems to understand the Agreement and to appreciate the risks and implications of purchasing the Tokens.
+4.10. Buyer has obtained sufficient information about the Tokens to make an informed decision to purchase the Tokens.
+4.11. Buyer understands that the value of the Tokens over time may experience extreme volatility or depreciate in full.
+4.12. Buyer agrees and certifies that the Buyer is acquiring Tokens for its own use and utility, to participate in the Platform and not for investment or financial purposes.
+4.13. The funds, including any digital assets, fiat currency, virtual currency or cryptocurrency, Buyer uses to purchase the Tokens, are not derived from or related to any unlawful activities, including but not limited to money laundering or terrorist financing, and Buyer will not use the Tokens to finance, engage in, or otherwise support any unlawful activities.
+4.14. Buyer agrees that if Buyer’s country of residence or other circumstances change such that any of the representations and warranties specified in the Agreement are no longer accurate, Buyer will immediately cease using the system.</p><p id="05f44a42-cefd-4ece-aeeb-f674ec11eebe" class="">4.15. Buyer expressly acknowledges, understands and agrees that Buyer is purchasing the Tokens solely at Buyer’s risk and that Tokens are provided, used and acquired on an “as is” and on an “as available” basis without representations, warranties, promises or guarantees whatsoever of any kind by Company. Buyer’s decision to purchase the Tokens and enter into the Agreement shall be made based on Buyer’s own knowledge and information disclosed herein and in Whitepaper. Additionally, Buyer has conducted to its own satisfaction an independent investigation and verification of HEX Tokens and HollaExShell software, and shall therefore rely solely on its own examination.
+4.16. Company expressly disclaims all express and implied warranties and representations as to the Tokens and the HEX Network. Company does not make any representations or warranties, express or implied, including: any warranties or representations of title; any warranties or representations of merchantability or fitness for a particular purpose with respect to the HEX Network, the Tokens or their utility, or the ability of anyone to purchase or use the Tokens;
+4.17. the suitability, reliability, availability, timeliness, and accuracy of the HEX Network, the Tokens, information, software, products, Services and related graphics on the HEX Network for any purpose</p><h1 id="2eadd405-4329-4207-86af-d2ddfd163287" class="">5. RISKS</h1><p id="1633e672-6e22-4850-b80a-b03fb455c6c2" class=""><strong>HEX TOKENS MAY HAVE NO VALUE. BUYER MAY LOSE ALL AMOUNTS PAID.
+</strong>Buyer has carefully reviewed, acknowledges, understands and assumes the following risks, as well as all other risks associated with the HEX Tokens (including those not discussed herein), all of which could render the HEX Tokens worthless or of little value:</p><p id="c7199545-2f23-443b-b67a-374949179ce9" class="">5.1. HEX Tokens have no rights, uses, purpose other than the defined utility in the Whitepaper as an exchange fuel. Attributes, functionalities or features, express or implied. HEX Tokens do not entitle holders to participate on the HEX Network.</p><p id="e3688b63-95f1-452d-b95f-3e19bb169620" class="">5.2. The distribution of HEX tokens are done in different forms and the price might vary depending on different phases. There are no guarantees as to the price of HEX Tokens purchased by Buyer and no guarantees that the price per HEX Token determined each period by the market will be equal to or higher in the subsequent periods of the HEX Distribution Period.</p><p id="8124c728-b61b-45ba-844c-229fd369ed24" class="">5.3. The Ethereum blockchain is prone to periodic congestion and issues during which transactions can be delayed or lost. Individuals may also intentionally spam the Ethereum network in an attempt to gain an advantage in purchasing cryptographic tokens. Buyer acknowledges and understands that Ethereum network might have issues that would result in loss delays of loss of funds.</p><p id="1bae0d82-2f49-4956-95bc-fc155bf03e6b" class="">5.4. The HollaExShell Software and the HEX Network and all of the matters set forth in the Whitepaper are new and untested. It is possible that no exchange utilizing the HollaExShell Software will be ever be launched and there may never be an operational HEX Network participant. Buyer should not rely on the HollaExShell Software and it may not have functionality that is desirable or valuable. Also, technology is changing rapidly, so the HEX Tokens and any tokens transferable on the HEX Network and the HollaExShell software may become outdated.</p><h1 id="da9f6713-fa46-4d77-be6f-919d2f6e4882" class="">6. LIMITATION OF LIABILITY</h1><p id="21f4111d-9998-45ed-b416-9c945887b49e" class="">6.1. Company is not liable for any delay or failure to perform any obligation under the Agreement where the delay or failure results from any cause beyond Company&#x27;s reasonable control.</p><p id="550d07dd-a6db-4c40-8769-deeb6e0215cd" class="">6.2. In no circumstances the aggregate joint liability of Company, whether in contract, warrant, tort or other theory, for damages of any kind under the Agreement will exceed the amount received by Company from Buyer.</p><p id="46bef18f-4cb1-4ca4-ba0b-803db3e6c34f" class="">6.3. Company is not liable for any cryptocurrency exchange fluctuation.</p><p id="9d6946a7-c32e-41f9-94e5-39601389bf9a" class="">6.4. Company automatically converts the initial payment to USDT and Buyer can only use that in order to purchase HEX. Company is not liable for the conversion rate and takes any payments as final. The deposited amount can only be used to purchase HEX. Company is not liable for any issues arising from the delay in the purchase of HEX by Buyer.</p><p id="ea7dcbb2-f765-4226-9e68-aa6294167072" class="">6.5. Buyer understands and agrees that Company shall not be liable in connection with any force majeure event, including labour disputes or other industrial disturbances, hacking or any other cybercrime, or computer oriented crime, electrical, telecommunications, hardware, software or other utility failures, software or smart contract bugs or weaknesses, earthquakes, storms, or other nature-related events, blockages, embargoes, riots, strikes, acts or orders of government, acts of terrorism or war, technological change, changes in interest rates or other monetary conditions, and, for the avoidance of doubt, changes to any blockchain-related protocol.
+6.6. If an event of force majeure occurs, the Party injured hereto by the other’s inability to perform may elect to suspend the Agreement, in whole or part, for the duration of the force majeure circumstances.
+6.7. Except otherwise provided in the Agreement, Buyer will indemnify, defend, hold harmless and reimburse Company from and against any and all actions, proceedings, claims, damages, demands and actions (including without limitation fees and expenses of counsel), incurred by Company arising from or relating to:
+(a) Token Sale;
+(b) use of the Tokens;
+(c) Buyer’s responsibilities or obligations under the Agreement;
+(d) Buyer’s breach of or violation of the Agreement;
+(e) any inaccuracy in any representation or warranty of Buyer;
+(f) Buyer’s violation of any rights of any other person or entity; and/or
+(g) any act or omission of Buyer that is negligent, unlawful or constitutes wilful misconduct.
+Company reserves the right to exercise sole control over the defence, at Buyer’s expense, of any claim subject to indemnification under this Section. This indemnity is in addition to, and not in lieu of, any other indemnities set forth in a written agreement between Buyer and Company, including those provided under the Agreement.</p><h1 id="e571b724-2f3b-4d71-b8b4-1bcf60318569" class="">7. DATA AND PRIVACY</h1><p id="e8cee18d-d73b-477b-812b-4896fe18e288" class="">Buyer will implement reasonable and appropriate measures designed to secure access to: (i) any device associated with Buyer and utilized in connection with Buyer’s purchase of HEX Tokens; (ii) private keys to Buyer’s wallet or account; and (iii) any other username, passwords or other login or identifying credentials. In the event that Buyer is no longer in possession of Buyer’s private keys or any device associated with Buyer’s account or is not able to provide Buyer’s login or identifying credentials, Buyer may lose all of Buyer’s HEX Tokens and/or access to Buyer’s account. Company is under no obligation to recover any
+HEX Tokens.
+7.1. Buyer shall implement reasonable and appropriate measures designed to secure access to:
+(I) any device associated with Buyer and utilized in connection with Buyer’s purchase of
+HEX Token and (II) any other username, passwords or other login or identifying credentials.
+7.2. In the event Buyer is no longer in possession of Buyer’s private keys or any device associated with Buyer’s account or is not able to provide Buyer’s login or identifying credentials, Buyer may lose all purchased HEX Tokens and/or access to Buyer’s account.
+7.3. Buyer shall immediately provide to Company information and documents that Company, in its sole discretion, deems necessary or appropriate to comply with any laws, regulations, rules or agreements, including without limitation judicial process. Such documents include, but are not limited to, passport, driver’s license, utility bills, photographs of associated individuals, government identification cards, or sworn statements.
+7.4. Company may refuse to distribute HEX Tokens to Buyer until requested information is provided.
+7.5. The Buyer confirm that by signing this Agreement he/she provides the Company with the right to store and process Buyer’s personal data provided to the Company in compliance with the appropriate Law on personal data protection.
+7.6. Company will not publish any identifying information of Buyer, except if the disclosure is
+required under laws or in relation to a decision of Governmental Authority.</p><h1 id="73ed9cbc-7d25-48fa-b279-9327b3f688f2" class="">8. APPLICABLE LAW AND DISPUTE RESOLUTION</h1><p id="eefb0ab2-d515-42a3-94c8-4b762d5847c3" class="">8.1. The Agreement has been drawn up in accordance with the laws of the Republic of Seychelles and the application, interpretation, and termination (termination) thereof shall be subject to the laws of the Republic of Seychelles.</p><p id="fc83b43d-1570-4531-9813-a49586eac443" class="">8.2. In case of any incompatibility of the Agreement with the mandatory standards set out in the laws of the Republic of Seychelles that are identified or which become invalid for any other reason, it does not affect the validity of the other provisions of the Agreement and the invalid clause shall be replaced by a valid condition as close as possible to the outcome and the detail of the replaced condition.</p><p id="37df6326-dc71-4a87-aa94-8be94f959eb1" class="">8.3. Any disputes arising from the performance of the Agreement shall be settled through
+negotiations. If the Parties fail to resolve the dispute through negotiation, the disputes shall be settled by the court, pursuant to the procedure provided by the law of the Republic of Seychelles.</p><h1 id="034e2c24-c43b-403a-81df-8f40f04e53ef" class="">9. MISCELLANEOUS</h1><p id="67e341d0-9b7b-4667-a62e-c467f18d12e9" class="">9.1. Assignment. Buyer shall not assign this Agreement without the prior written consent of Company. Any assignment or transfer in violation will be void.</p><p id="5a027cfb-c3be-436a-ad28-17e5019ec8a3" class="">9.2. Company may assign this Agreement to an affiliate. Subject to the foregoing, this Agreement, and the rights and obligations of the Parties hereunder, will be binding upon and inure to the benefit of their respective successors, assigns, heirs, executors, administrators and legal representatives.</p><p id="7d461cf3-eeae-4cf3-ac03-15d3f199b12c" class="">9.3. Entire Agreement. This Agreement, including the exhibits attached hereto and the materials incorporated herein by reference, constitutes the entire agreement between the Parties and supersedes all prior or contemporaneous agreements and understandings, both written and oral, between the Parties with respect to the subject matter hereof, including, without limitation, any public or other statements or
+presentations made by any company and affiliated or Party about the HEX Tokens, the HollaExShell Software, the HEX Network, Blockchain Tokens or any other tokens on the HEX Network.
+9.4. Severability. If any provision of this Agreement is determined by a court of competent jurisdiction to be invalid, inoperative or unenforceable for any reason, the provision shall be modified to make it valid and, to the extent possible, effectuate the original intent of the Parties as closely as possible in an acceptable manner in order that the transactions contemplated hereby be consummated as originally contemplated to the fullest extent possible.</p><p id="0a117acb-525b-414b-88fe-13be04afb497" class="">9.5. Modification of Agreement. Company may modify this Agreement at any time by
+posting a revised version on the Website, available at <a href="https://hex.bitholla.com/docs/agreement.html">https://hex.bitholla.com/docs/agreement.html</a>. The modified terms will become effective upon posting. It is Buyer’s responsibility to check the Website regularly for modifications to this Agreement. This Agreement was last modified on the date listed at the
+beginning of this Agreement.</p><p id="959f4fc1-93b0-4b56-9b08-f463c16c1a0f" class="">9.6. Termination of Agreement; Survival. This Agreement will terminate upon the completion of all sales in the HEX Token Distribution. Company reserves the right to terminate this Agreement, in its sole discretion, in the event that Buyer breaches this Agreement. Upon termination of this Agreement: (a) all of Buyer’s rights under this Agreement immediately terminate; (b) Buyer is not entitled to a refund of any amount
+paid.
+9.7. No Waivers. The failure by Company to exercise or enforce any right or provision of this Agreement will not constitute a present or future waiver of such right or provision nor limit Company’s right to enforce such right or provision at a later time. All waivers by Company must be unequivocal and in writing to be effective.
+9.8. No Partnership; No Agency; No Third Party Beneficiaries. Nothing in this Agreement and no action taken by the Parties shall constitute, or be deemed to constitute, a partnership, association, joint venture or other co-operative entity between the Parties. Nothing in this Agreement and no action taken by the Parties pursuant to this Agreement shall constitute, or be deemed to constitute, either Party the agent of the other Party for any purpose. No Party has, pursuant to this Agreement, any authority or power to bind or to contract in the name of the other Party. This Agreement does not create any third party beneficiary rights in any person.</p><p id="d0f903d1-3103-4cee-a860-2eeac7b8dde6" class="">9.9. Electronic Communications. Buyer agrees and acknowledges that all agreements, notices, disclosures and other communications that Company provides Buyer pursuant to this Agreement or in connection with or related to Buyer’s purchase of HEX Tokens, including this Agreement, may be provided by Company, in its sole discretion, to Buyer, in electronic form.</p></div></article></body></html>
