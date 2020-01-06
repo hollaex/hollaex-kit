@@ -267,18 +267,18 @@ export const ICONS = {
 	XHT_FAQ: '/assets/images/XHT-FAQ.svg',
 	XHT_PDF: '/assets/images/XHT-pdf.svg',
 	REFERRAL_SUCCESS: '/assets/icons/send-request.svg',
-	INCOMING_WAVE:'/assets/images/incoming-wave.svg',
+	INCOMING_WAVE: '/assets/images/incoming-wave.svg',
 	TRADE_ANNOUNCEMENT: '/assets/images/announcement.svg',
 	CHAT_EMOJI: '/assets/icons/emoji-face-icon.svg',
-	TRADE_SETTINGS:'/assets/images/spanner.svg',
-	TRADE_WAVES:'/assets/images/wave-icon.svg',
-	XHT_LOGO_LIGHT:'/assets/icons/XHT-logo-light.svg',
-	XHT_LOGO_DARK:'/assets/icons/XHT-logo-dark.svg',
-	BONUS_OFFERING:'/assets/icons/bonus_offering.svg',
-	UP_ARROW:'/assets/images/buy-trade.svg',
-	DOWN_ARROW:'/assets/images/sell-trade.svg',
-	MOON_THEME:'/assets/icons/moon-theme.svg',
-	SUN_THEME:'/assets/icons/sun-theme.svg'
+	TRADE_SETTINGS: '/assets/images/spanner.svg',
+	TRADE_WAVES: '/assets/images/wave-icon.svg',
+	XHT_LOGO_LIGHT: '/assets/icons/XHT-logo-light.svg',
+	XHT_LOGO_DARK: '/assets/icons/XHT-logo-dark.svg',
+	BONUS_OFFERING: '/assets/icons/bonus_offering.svg',
+	UP_ARROW: '/assets/images/buy-trade.svg',
+	DOWN_ARROW: '/assets/images/sell-trade.svg',
+	MOON_THEME: '/assets/icons/moon-theme.svg',
+	SUN_THEME: '/assets/icons/sun-theme.svg'
 };
 
 export const SOCIAL_ICONS = {
@@ -502,9 +502,12 @@ export const FEES_LIMIT_SITE_URL = 'https://www.hollaex.com';
 export const API_DOCS_URL = 'https://docs.bitholla.com/';
 export const EXCHANGE_URL = 'https://dash.bitholla.com/';
 export const EXCHANGE_EXPIRY_DAYS = 15;
-export const AFFILIATION_APPLY_URL = 'https://docs.google.com/forms/d/1xf1mHxiTW6YUKVEqvfMJZqygiFxm1P6aUDS7uXe5Ouc/viewform?ts=5d9da3d5&edit_requested=true';
-export const SUPPORT_HELP_URL = 'https://info.hollaex.com/hc/en-us/requests/new';
-export const UPGRADE_ACC_URL = 'https://info.hollaex.com/hc/en-us/articles/360040859954-Upgrading-account-level';
+export const AFFILIATION_APPLY_URL =
+	'https://docs.google.com/forms/d/1xf1mHxiTW6YUKVEqvfMJZqygiFxm1P6aUDS7uXe5Ouc/viewform?ts=5d9da3d5&edit_requested=true';
+export const SUPPORT_HELP_URL =
+	'https://info.hollaex.com/hc/en-us/requests/new';
+export const UPGRADE_ACC_URL =
+	'https://info.hollaex.com/hc/en-us/articles/360040859954-Upgrading-account-level';
 
 // export const TRADING_ACCOUNT_TYPE = {
 // 	shrimp: {
@@ -589,3 +592,4 @@ export const SHOW_SUMMARY_ACCOUNT_DETAILS = false;
 export const SHOW_TOTAL_ASSETS = false;
 export const IS_XHT = true;
 export const FIT_SCREEN_HEIGHT = ['trade'];
+export const SIMPLE_FORMAT_MIN = '0.1';

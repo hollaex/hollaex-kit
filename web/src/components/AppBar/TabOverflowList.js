@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import ReactSVG from 'react-svg';
 
-import { ICONS, BASE_CURRENCY, DEFAULT_COIN_DATA } from '../../config/constants';
-import { formatToCurrency, formatPercentage, formatAverage } from '../../utils/currency';
+import { ICONS, BASE_CURRENCY, DEFAULT_COIN_DATA, SIMPLE_FORMAT_MIN } from '../../config/constants';
+import { donutFormatPercentage, formatToSimple } from '../../utils/currency';
 
 let tickClicked = false;
 
@@ -41,12 +41,14 @@ class TabOverflowList extends Component {
                 <div className="app-bar-tab-overflow-content">
                     {Object.keys(selectedTabs).map((pair, index) => {
                         let menu = selectedTabs[pair] || {};
-                        let { min, symbol = '' } = coins[menu.pair_base || BASE_CURRENCY] || DEFAULT_COIN_DATA;
+                        let { symbol = '' } = coins[menu.pair_base || BASE_CURRENCY] || DEFAULT_COIN_DATA;
                         let pairTwo = coins[menu.pair_2 || BASE_CURRENCY] || DEFAULT_COIN_DATA;
                         let ticker = tickers[pair] || {};
                         const priceDifference = ticker.open === 0 ? 0 : ((ticker.close || 0) - (ticker.open || 0));
                         const tickerPercent = priceDifference === 0 || ticker.open === 0 ? 0 : ((priceDifference / ticker.open) * 100);
-                        let priceDifferencePercent = tickerPercent === 'NaN' ? formatPercentage(tickerPercent) : formatPercentage(0);
+                        let priceDifferencePercent = isNaN(tickerPercent)
+                            ? donutFormatPercentage(0)
+                            : donutFormatPercentage(tickerPercent);
                         return (
                             <div
                                 key={index}
@@ -66,14 +68,19 @@ class TabOverflowList extends Component {
                                 <div className="app_bar-pair-font">
                                     {symbol.toUpperCase()}/{pairTwo.symbol.toUpperCase()}:
                                 </div>
-                                <div className="title-font ml-1">{`${pairTwo.symbol.toUpperCase()} ${formatAverage(formatToCurrency(ticker.close, min))}`}</div>
-                                <div className={priceDifference < 0 ? "app-price-diff-down app-bar-price_diff_down" : "app-bar-price_diff_up app-price-diff-up"}>
-                                    {formatAverage(formatToCurrency(priceDifference, min))}
+                                <div className="title-font ml-1">{formatToSimple(ticker.close, SIMPLE_FORMAT_MIN)}</div>
+                                <div
+                                    className={
+                                        priceDifference < 0
+                                            ? "app-price-diff-down app-bar-price_diff_down"
+                                            : "app-bar-price_diff_up app-price-diff-up"
+                                        }>
+                                    {/* {formatAverage(formatToCurrency(priceDifference, min))} */}
                                 </div>
                                 <div
                                     className={priceDifference < 0
-                                        ? "title-font ml-1 app-price-diff-down" : "title-font ml-1 app-price-diff-up"}>
-                                    {`(${priceDifferencePercent})`}
+                                        ? "title-font app-price-diff-down" : "title-font app-price-diff-up"}>
+                                    {priceDifferencePercent}
                                 </div>
                             </div>
                         )
