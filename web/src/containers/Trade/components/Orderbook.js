@@ -3,8 +3,9 @@ import classnames from 'classnames';
 import EventListener from 'react-event-listener';
 import { connect } from 'react-redux';
 
+import UpComingWave from './UpComingWave';
 import { subtract } from '../utils';
-import { formatCurrency, formatBaseAmount, formatBtcFullAmount, checkNonBasePair } from '../../../utils/currency';
+import { formatCurrency, formatBtcFullAmount } from '../../../utils/currency';
 import STRINGS from '../../../config/localizedStrings';
 import { DEFAULT_COIN_DATA } from '../../../config/constants';
 
@@ -12,28 +13,27 @@ const PriceRow = (pairBase, pairTwo, side, onPriceClick, onAmountClick) => (
 	[price, amount],
 	index
 ) => (
-	<div key={`${side}-${price}`} className="d-flex value-row align-items-center">
-		<div
-			className={`f-1 trade_orderbook-cell trade_orderbook-cell-price ${side} pointer`}
-			onClick={onPriceClick(price)}
-		>
-			{formatCurrency(price, pairTwo, true)}
+		<div key={`${side}-${price}`} className="d-flex value-row align-items-center">
+			<div
+				className={`f-1 trade_orderbook-cell trade_orderbook-cell-price ${side} pointer`}
+				onClick={onPriceClick(price)}
+			>
+				{formatCurrency(price, pairTwo, true)}
+			</div>
+			<div
+				className="f-1 trade_orderbook-cell trade_orderbook-cell-amount pointer"
+				onClick={onAmountClick(amount)}
+			>
+				{formatCurrency(amount, pairBase, true)}
+			</div>
 		</div>
-		<div
-			className="f-1 trade_orderbook-cell trade_orderbook-cell-amount pointer"
-			onClick={onAmountClick(amount)}
-		>
-			{formatCurrency(amount, pairBase, true)}
-		</div>
-	</div>
-);
+	);
 
 const calculateSpread = (asks, bids, pair, coins) => {
 	const lowerAsk = asks.length > 0 ? asks[0][0] : 0;
 	const higherBid = bids.length > 0 ? bids[0][0] : 0;
-	const isNonBasePair = checkNonBasePair(pair, coins);
 	if (lowerAsk && higherBid) {
-		return isNonBasePair ? formatBtcFullAmount(subtract(lowerAsk, higherBid)) : formatBaseAmount(subtract(lowerAsk, higherBid));
+		return formatBtcFullAmount(subtract(lowerAsk, higherBid));
 	}
 	return '-';
 };
@@ -94,9 +94,9 @@ class Orderbook extends Component {
 		const blockStyle =
 			dataBlockHeight > 0
 				? {
-						// maxHeight: dataBlockHeight,
-						minHeight: dataBlockHeight
-					}
+					// maxHeight: dataBlockHeight,
+					minHeight: dataBlockHeight
+				}
 				: {};
 
 		const pairBase = pairData.pair_base.toUpperCase();
@@ -104,6 +104,10 @@ class Orderbook extends Component {
 		const { symbol } = coins[pairData.pair_2] || DEFAULT_COIN_DATA;
 		return (
 			<div className="trade_orderbook-wrapper d-flex flex-column f-1 apply_rtl">
+				{pair === 'xht-usdt'
+					? <UpComingWave pairBase={pairBase} />
+					: null
+				}
 				<EventListener target="window" onResize={this.scrollTop} />
 				<div className="trade_orderbook-headers d-flex">
 					<div className="f-1 trade_orderbook-cell">
@@ -173,8 +177,8 @@ Orderbook.defaultProps = {
 	asks: [],
 	bids: [],
 	ready: false,
-	onPriceClick: () => {},
-	onAmountClick: () => {}
+	onPriceClick: () => { },
+	onAmountClick: () => { }
 };
 
 const mapStateToProps = (store) => ({

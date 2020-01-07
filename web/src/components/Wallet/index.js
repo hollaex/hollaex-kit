@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
 import { Accordion } from '../';
-import { BASE_CURRENCY, DEFAULT_COIN_DATA } from '../../config/constants';
+import { BASE_CURRENCY, DEFAULT_COIN_DATA, IS_XHT } from '../../config/constants';
 import {
 	calculateBalancePrice,
 	calculatePrice,
@@ -114,11 +114,11 @@ class Wallet extends Component {
 
 		return (
 			<div className="wallet-wrapper">
-				<div className="donut-container pointer" onClick={this.goToWallet}>
+				<div className="donut-container">
 					<DonutChart id="side-bar-donut" coins={this.props.coins} chartData={chartData} />
 				</div>
 				<Accordion sections={sections} />
-				{BASE_CURRENCY && isValidBase ? (
+				{BASE_CURRENCY && isValidBase && !IS_XHT ? (
 					<div className="wallet_section-wrapper wallet_section-total_asset d-flex flex-column">
 						<div className="wallet_section-title">
 							{STRINGS.WALLET.TOTAL_ASSETS}

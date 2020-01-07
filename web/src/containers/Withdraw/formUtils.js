@@ -7,9 +7,8 @@ import {
 	normalizeBTC,
 	normalizeBTCFee
 } from "../../components/Form/validations";
-import { isMobile } from "react-device-detect";
 import STRINGS from "../../config/localizedStrings";
-import { ICONS, BASE_CURRENCY, DEFAULT_COIN_DATA } from "../../config/constants";
+import { ICONS, DEFAULT_COIN_DATA } from "../../config/constants";
 
 export const generateInitialValues = (symbol, coins = {}) => {
 	const { min, withdrawal_fee } = coins[symbol] || DEFAULT_COIN_DATA;
@@ -32,7 +31,9 @@ export const generateFormValues = (
 	available = 0,
 	calculateMax,
 	coins = {},
-	verification_level
+	verification_level,
+	checkControlCallback,
+	checkControlChecked
 ) => {
 	const { fullname, min, increment_unit, withdrawal_limits = {} } = coins[
 		symbol
@@ -42,20 +43,35 @@ export const generateFormValues = (
 	if (withdrawal_limits[verification_level] === -1) MAX = 0;
 	const fields = {};
 
-	if (symbol !== BASE_CURRENCY) {
-		fields.address = {
+
+	fields.address = {
+		type: "text",
+		label: STRINGS.WITHDRAWALS_FORM_ADDRESS_LABEL,
+		placeholder: STRINGS.WITHDRAWALS_FORM_ADDRESS_PLACEHOLDER,
+		validate: [
+			required,
+			validAddress(
+				symbol,
+				STRINGS[`WITHDRAWALS_${symbol.toUpperCase()}_INVALID_ADDRESS`]
+			)
+		],
+		fullWidth: true
+	};
+	if (symbol === 'xrp') {
+		fields.destination_tag = {
 			type: "text",
-			label: STRINGS.WITHDRAWALS_FORM_ADDRESS_LABEL,
-			placeholder: STRINGS.WITHDRAWALS_FORM_ADDRESS_PLACEHOLDER,
-			validate: [
-				required,
-				validAddress(
-					symbol,
-					STRINGS[`WITHDRAWALS_${symbol.toUpperCase()}_INVALID_ADDRESS`]
-				)
-			],
-			fullWidth: isMobile
+			label: STRINGS.WITHDRAWALS_FORM_DESTINATION_TAG_LABEL,
+			placeholder: STRINGS.WITHDRAWALS_FORM_DESTINATION_TAG_PLACEHOLDER,
+			fullWidth: true,
+			checkControl: true,
+			checkLabel: STRINGS.WITHDRAWALS_FORM_INCLUDE_DESTINATION_TAG,
+			checkControlCallback: checkControlCallback
 		};
+		if (checkControlChecked) {
+			fields.destination_tag.validate = [
+				required
+			];
+		}
 	}
 
 	const amountValidate = [required];
@@ -87,7 +103,7 @@ export const generateFormValues = (
 		step: increment_unit,
 		validate: amountValidate,
 		normalize: normalizeBTC,
-		fullWidth: isMobile,
+		fullWidth: true,
 		notification: {
 			text: STRINGS.CALCULATE_MAX,
 			status: "information",
@@ -111,7 +127,7 @@ export const generateFormValues = (
 				fullname
 			).join(""),
 			disabled: true,
-			fullWidth: isMobile
+			fullWidth: true
 		};
 	} else {
 		fields.fee = {
@@ -127,7 +143,7 @@ export const generateFormValues = (
 			step: min,
 			validate: [required, minValue(min), MAX ? maxValue(MAX) : ""],
 			normalize: normalizeBTCFee,
-			fullWidth: isMobile
+			fullWidth: true
 		};
 	}
 

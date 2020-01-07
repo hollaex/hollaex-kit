@@ -118,7 +118,8 @@ class QuickTradeContainer extends Component {
 			settings: { risk = {} },
 			quoteData: { data = {} },
 			setNotification,
-			pairData
+			pairData,
+			balance
 		} = this.props;
 
 		if (this.props.quoteData.error === BALANCE_ERROR) {
@@ -136,9 +137,15 @@ class QuickTradeContainer extends Component {
 				orderPrice: data.price,
 				orderFees: 0
 			};
-			const riskyPrice =
-				(this.state.totalAssets / 100) * risk.order_portfolio_percentage;
-			if (risk.popup_warning && data.price > riskyPrice) {
+			// const riskyPrice = ((this.state.totalAssets / 100) * risk.order_portfolio_percentage);
+			let avail_balance = 0;
+			if (data.side === 'buy') {
+				avail_balance = balance[`${pair_2.toLowerCase()}_available`];
+			} else {
+				avail_balance = balance[`${pair_base.toLowerCase()}_available`];
+			}
+			const riskySize = ((avail_balance / 100) * risk.order_portfolio_percentage);
+			if (risk.popup_warning && data.size >= riskySize) {
 				order['order_portfolio_percentage'] =
 					risk.order_portfolio_percentage;
 				setNotification(RISKY_ORDER, {
@@ -228,13 +235,17 @@ class QuickTradeContainer extends Component {
 		const baseCoin = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
 		const pairCoin = coins[pairData.pair_base] || DEFAULT_COIN_DATA;
 		return (
-			<div>
+			<div className='h-100'>
 				{isMobile && <MobileBarBack onBackClick={this.onGoBack} />}
 
 				<div
-					className={classnames('d-flex', 'f-1', 'quote-container', {
-						'flex-column': isMobile
-					})}
+					className={classnames(
+						'd-flex',
+						'f-1',
+						'quote-container',
+						'h-100',
+						{ 'flex-column': isMobile }
+					)}
 				>
 					<QuickTrade
 						onReviewQuickTrade={this.onReviewQuickTrade}

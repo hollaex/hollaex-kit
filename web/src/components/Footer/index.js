@@ -11,7 +11,7 @@ const LINKS = [
 		type: 'facebook'
 	},
 	{
-		icon: SOCIAL_ICONS.TWIITER,
+		icon: SOCIAL_ICONS.TWITTER,
 		link: 'https://twitter.com/bitholla',
 		type: 'twitter'
 	}

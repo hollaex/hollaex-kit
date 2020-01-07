@@ -13,9 +13,12 @@ import { IconTitle, Dialog, MobileBarBack } from '../../components';
 import {
 	HOLLAEX_LOGO,
 	FLEX_CENTER_CLASSES,
-	ICONS
+	ICONS,
+	SUPPORT_HELP_URL
 } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
+
+let errorTimeOut = null;
 
 const BottomLinks = () => (
 	<div className={classnames('f-1', 'link_wrapper', 'multi_links')}>
@@ -37,8 +40,23 @@ const BottomLinks = () => (
 class Signup extends Component {
 	state = {
 		success: false,
-		showContactForm: false
+		showContactForm: false,
+		isReferral: false
 	};
+
+
+	componentDidMount() {
+		const affiliation_code = this.getReferralCode();
+		if (affiliation_code) {
+			this.setState({ isReferral: true });
+		}
+	}
+
+	componentWillUnmount() {
+		if (errorTimeOut) {
+			clearTimeout(errorTimeOut);
+		}
+	}
 
 	getReferralCode = () => {
 		let affiliation_code = '';
@@ -65,7 +83,10 @@ class Signup extends Component {
 			})
 			.catch((error) => {
 				const errors = {};
-				this.props.change(FORM_NAME, 'captcha', '');
+				errorTimeOut = setTimeout(() => {
+					this.props.change(FORM_NAME, 'captcha', '');
+				}, 5000);
+
 				if (error.response.status === 409) {
 					errors.email = STRINGS.VALIDATIONS.USER_EXIST;
 				} else if (error.response) {
@@ -84,7 +105,10 @@ class Signup extends Component {
 	};
 
 	onOpenDialog = () => {
-		this.setState({ showContactForm: true });
+		if (window) {
+			window.open(SUPPORT_HELP_URL, '_blank');
+		}
+		// this.setState({ showContactForm: true });
 	};
 
 	onCloseDialog = () => {
@@ -96,20 +120,20 @@ class Signup extends Component {
 	};
 
 	onBackActiveEmail = () => {
-				this.setState({ success: false });
+		this.setState({ success: false });
 	};
 
 	render() {
 		const { languageClasses, activeTheme } = this.props;
-		const { success, showContactForm } = this.state;
+		const { success, showContactForm, isReferral } = this.state;
 
 		if (success) {
 			return <div>
-			{isMobile  && <MobileBarBack onBackClick={this.onBackActiveEmail} />}
-			<SignupSuccess activeTheme={activeTheme} /></div>
+				{isMobile && <MobileBarBack onBackClick={this.onBackActiveEmail} />}
+				<SignupSuccess activeTheme={activeTheme} /></div>
 		}
 
-		const formFields = generateFormFields(STRINGS, activeTheme);
+		const formFields = generateFormFields(STRINGS, activeTheme, isReferral);
 
 		return (
 			<div className={classnames(...FLEX_CENTER_CLASSES, 'flex-column', 'f-1')}>

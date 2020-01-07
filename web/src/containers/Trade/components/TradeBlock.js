@@ -14,7 +14,8 @@ const TradeBlock = ({
 	pairData = {},
 	pair,
 	isLoggedIn,
-	activeTheme
+	activeTheme,
+	tailHead = ''
 }) => {
 	const pairs = pair ? pair.split('-').map(curr => curr.toUpperCase()) : [];
 	const { pair_base } = pairData;
@@ -44,9 +45,14 @@ const TradeBlock = ({
 						}
 						<div className="trade_block-title-items" >{title}</div>
 					</div>
-					<div className={pairs.length ? `trade_block-title-currency-${pairs[0].toLowerCase()}` : 'trade_block-title-currency'}>
-						{pairs.length ? `${pairs[0]}/${pairs[1]}` : ''}
-					</div>
+					{tailHead
+						? <div className={'trade_block-title-currency'}>
+							{tailHead}
+						</div>
+						: <div className={pairs.length ? `trade_block-title-currency-${pairs[0].toLowerCase()}` : 'trade_block-title-currency'}>
+							{pairs.length ? `${pairs[0]}/${pairs[1]}` : ''}
+						</div>
+					}
 				</div>
 				{action}
 			</div>

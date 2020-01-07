@@ -87,7 +87,6 @@ export const renderContent = (
 			address = temp[0] ? temp[0] : address;
 			destinationAddress = temp[1] ? temp[1] : '';
 		}
-		console.log(crypto_wallet, symbol);
 		return renderBTCContent(
 			STRINGS.formatString(STRINGS.DEPOSIT.CRYPTO_LABELS.ADDRESS, fullname),
 			address,

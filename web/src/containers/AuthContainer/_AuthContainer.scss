@@ -77,7 +77,7 @@ $container--padding-sm: 3rem;
 }
 .auth-wrapper {
 	background: url($background-image);
-
+	background-color: #d9dee5;
 	background-repeat: no-repeat;
 	background-size: cover;
 	// background-repeat: repeat;
@@ -102,7 +102,7 @@ $container--padding-sm: 3rem;
 		z-index: 1;
 
 		.auth_wrapper {
-			background-color: $app-background-color;
+			background-color: $auth-container-background;
 			padding: $container--padding $container--padding $container--padding * 1.5;
 
 			.icon_title-svg {
@@ -145,7 +145,7 @@ $container--padding-sm: 3rem;
 	.icon_title-wrapper {
 		margin-top: 0;
 		&.underline:after {
-			height: 0.15rem;
+			height: 0.20rem;
 		}
 
 		.icon_title-text {
@@ -185,22 +185,34 @@ $container--padding-sm: 3rem;
 	}
 }
 
+.footer-wrapper {
+	position: relative;
+}
+
 .dark-theme {
 	&.auth-wrapper {
 		background: $dark-app-light-background;
+		background: url($dark-background-image);
+		background-size: cover;
 		&:before {
 			background-color: transparent;
 		}
 
 		.auth-container {
 			.auth_wrapper {
-				background-color: $dark-app-background-color;
+				background-color: $dark-auth-container-background;
 
 				.icon_title-svg {
 					.hollaEX_logo_gray {
 						fill: $colors-white;
 					}
 				}
+			}
+		}
+		.exir-button {
+			&.disabled {
+				background-color: #535353 !important;
+				color: gray !important;
 			}
 		}
 	}

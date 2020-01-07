@@ -13,11 +13,12 @@ const ActiveOrders = ({
 	pairs,
 	lessHeaders,
 	pageSize,
-	coins
+	coins,
+	discount
 }) => {
 	const headers = lessHeaders
-		? generateLessTradeHeaders(pairData.pair_base, pairs, coins)
-		: generateTradeHeaders(pairData.pair_base, pairs, coins);
+		? generateLessTradeHeaders(pairData.pair_base, pairs, coins, discount)
+		: generateTradeHeaders(pairData.pair_base, pairs, coins, discount);
 	if (!pair) {
 		return <div />;
 	}

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
 import { Scrollbars } from 'react-custom-scrollbars';
-import  { cloneDeep } from 'lodash';
+import { cloneDeep } from 'lodash';
 import { ChatMessage } from './';
 import { Loader } from '../';
 import { isLoggedIn } from '../../utils/token';
@@ -14,19 +14,27 @@ class ChatMessageList extends Component {
 	};
 
 	componentDidUpdate(prevProps) {
-		if(this.shouldScroll(prevProps)) {
+		if (this.shouldScroll(prevProps)) {
 			this.scrollbarsRef.scrollToBottom();
 		}
 	}
 
-	shouldScroll = prevProps => {
+	shouldScroll = (prevProps) => {
 		const lastMsg = cloneDeep(this.props.messages).pop();
-		return ((lastMsg && ((this.scrollbarsRef.getValues().top > 0.95) || (this.props.username === lastMsg.username)))  || 
-		(!isMobile && prevProps.chatIsClosed && (prevProps.chatIsClosed !== this.props.chatIsClosed)) ||
-		(!prevProps.chatInitialized && (prevProps.chatInitialized !== this.props.chatInitialized)) ||
-		(!prevProps.userInitialized && (prevProps.userInitialized !== this.props.userInitialized)) ||
-		(prevProps.showEmojiBox !== this.props.showEmojiBox))
-	}
+		return (
+			(lastMsg &&
+				(this.scrollbarsRef.getValues().top > 0.95 ||
+					this.props.username === lastMsg.username)) ||
+			(!isMobile &&
+				prevProps.chatIsClosed &&
+				prevProps.chatIsClosed !== this.props.chatIsClosed) ||
+			(!prevProps.chatInitialized &&
+				prevProps.chatInitialized !== this.props.chatInitialized) ||
+			(!prevProps.userInitialized &&
+				prevProps.userInitialized !== this.props.userInitialized) ||
+			prevProps.showEmojiBox !== this.props.showEmojiBox
+		);
+	};
 	scrollToBottom = () => {
 		if (
 			this.scrollbarsRef.container.clientHeight < this.state.containerHeight
@@ -52,12 +60,12 @@ class ChatMessageList extends Component {
 		this.setState({
 			containerHeight: this.scrollbarsRef.container.clientHeight
 		});
-		if(isMobile){
+		if (isMobile) {
 			this.scrollbarsRef.scrollToBottom();
 		}
 	}
 
-	constructData = message => {
+	constructData = (message) => {
 		let keyIndex = [];
 		let obj = {};
 		let keyLength = message.split('').filter((char, key) => {
@@ -79,7 +87,7 @@ class ChatMessageList extends Component {
 		keyIndex.forEach((idx, count, arr) => {
 			let start = idx.start + 1;
 			let end = idx.end;
-			let preStart = count === 0 ? 0 : (arr[count - 1].end + 1);
+			let preStart = count === 0 ? 0 : arr[count - 1].end + 1;
 			let prevEnd = idx.start;
 			msgData.push(message.substring(preStart, prevEnd));
 			if (message.substring(start, end).includes('http')) {
@@ -89,19 +97,24 @@ class ChatMessageList extends Component {
 						className="blue-link"
 						target="_blank"
 						rel="noopener noreferrer"
-						href={message.substring(start, end)}>
+						href={message.substring(start, end)}
+					>
 						{message.substring(start, end)}
 					</a>
 				);
 			} else {
-				msgData.push(<span key={start} className="blue-link">{message.substring(start, end)}</span>);
+				msgData.push(
+					<span key={start} className="blue-link">
+						{message.substring(start, end)}
+					</span>
+				);
 			}
 			if (arr.length === count + 1) {
 				msgData.push(message.substring(end + 1, message.length));
 			}
 		});
 		return message.includes('`') ? msgData : message;
-	}
+	};
 
 	render() {
 		const {
@@ -111,6 +124,7 @@ class ChatMessageList extends Component {
 			userInitialized,
 			usernameInitalized,
 			removeMessage,
+			is_hap,
 			onCloseEmoji
 		} = this.props;
 
@@ -139,9 +153,19 @@ class ChatMessageList extends Component {
 				{(chatInitialized && usernameInitalized) ||
 				(!usernameInitalized && userInitialized) ||
 				(chatInitialized && !isLoggedIn()) ? (
-					messages.map(({ id, username, to, messageType, message, timestamp, verification_level }, index) => {
-						let msgContent = this.constructData(message);
-						return (
+					messages.map(
+						(
+							{
+								id,
+								username,
+								to,
+								messageType,
+								message,
+								timestamp,
+								verification_level
+							},
+							index
+						) => (
 							<ChatMessage
 								key={index}
 								id={id}
@@ -151,13 +175,14 @@ class ChatMessageList extends Component {
 								userType={userType}
 								verification_level={verification_level}
 								messageType={messageType}
-								messageContent={msgContent}
+								messageContent={message}
 								removeMessage={removeMessage}
 								timestamp={timestamp}
+								is_hap={is_hap}
 								onCloseEmoji={onCloseEmoji}
 							/>
 						)
-					})
+					)
 				) : (
 					<Loader />
 				)}
@@ -167,7 +192,8 @@ class ChatMessageList extends Component {
 }
 
 const mapStateToProps = (store) => ({
-	activeTheme: store.app.theme
+	activeTheme: store.app.theme,
+	is_hap: store.user.is_hap
 });
 
 export default connect(mapStateToProps)(ChatMessageList);

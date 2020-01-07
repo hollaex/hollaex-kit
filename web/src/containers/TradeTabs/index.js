@@ -5,9 +5,9 @@ import ReactSVG from 'react-svg';
 import classnames from 'classnames';
 
 import { Paginator, SearchBox } from '../../components';
-import { ICONS, BASE_CURRENCY, DEFAULT_COIN_DATA, HOLLAEX_LOGO, HOLLAEX_LOGO_BLACK } from '../../config/constants';
+import { ICONS, BASE_CURRENCY, DEFAULT_COIN_DATA, HOLLAEX_LOGO, HOLLAEX_LOGO_BLACK, SIMPLE_FORMAT_MIN } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
-import { formatPercentage, formatAverage, formatToCurrency } from '../../utils/currency';
+import { formatPercentage, formatAverage, formatToCurrency, formatToSimple } from '../../utils/currency';
 
 class AddTradeTab extends Component {
     state = {
@@ -185,7 +185,7 @@ class AddTradeTab extends Component {
                                         </div>
                                         <div>{STRINGS.PRICE}:
                                             <span className="title-font ml-1">
-                                                {`${pairTwo.symbol.toUpperCase()} ${formatAverage(formatToCurrency(ticker.close, min))}`}
+                                                {formatToSimple(ticker.close, SIMPLE_FORMAT_MIN)}
                                             </span>
                                         </div>
                                         <div className="d-flex">

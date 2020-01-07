@@ -182,6 +182,10 @@ $logout--size-difference: 3rem;
 	.new-order-notification {
 		svg {
 			fill: $dark-icon-color;
+
+			.newWave-icon {
+				fill: $dark-icon-color;
+			}
 		}
 
 	}
@@ -232,7 +236,8 @@ $logout--size-difference: 3rem;
 			.limit-sell-04,
 			.limit-buy-03,
 			.limit-buy-04,
-			.refer-icon {
+			.refer-icon,
+			.stake_icon {
 				fill: $dark-icon-color;
 			}
 			.limit-sell-01,

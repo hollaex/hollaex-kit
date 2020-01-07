@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { widget } from '../../charting_library/charting_library.min';
-import { WHITE_THEME, DARK_THEME } from './ChartConfig';
+import { WHITE_THEME, DARK_THEME, VOLUME_WHITE, VOLUME_DARK } from './ChartConfig';
 import { getLanguage } from '../../utils/string';
 import {
 	getChartConfig,
@@ -14,11 +14,19 @@ function getThemeOverrides(theme = 'white') {
 	} else {
 		return DARK_THEME;
 	}
-}
+};
+
+function getStudiesOverrides(theme = 'white') {
+	if (theme === 'white') {
+		return VOLUME_WHITE;
+	} else {
+		return VOLUME_DARK;
+	}
+};
 
 class TVChartContainer extends React.PureComponent {
 	static defaultProps = {
-		symbol: 'eth-eur', // the trading tab we are in should be passed here
+		symbol: 'xht-usdt', // the trading tab we are in should be passed here
 		interval: 'D',
 		containerId: 'tv_chart_container',
 		libraryPath: '/charting_library/',
@@ -214,7 +222,7 @@ class TVChartContainer extends React.PureComponent {
 			symbol: symbol,
 			// BEWARE: no trailing slash is expected in feed URL
 			theme: activeTheme === 'white' ? 'light' : 'dark',
-			toolbar_bg: activeTheme === 'white' ? '#ffffff' : '#1f212a',
+			toolbar_bg: activeTheme === 'white' ? '#ffffff' : '#202020',
 			datafeed: this.chartConfig,
 			interval: interval,
 			container_id: containerId,
@@ -253,14 +261,14 @@ class TVChartContainer extends React.PureComponent {
 			user_id: this.props.userId,
 			fullscreen: this.props.fullscreen,
 			autosize: this.props.autosize,
-			studies_overrides: this.props.studiesOverrides,
+			studies_overrides: getStudiesOverrides(activeTheme),
 			favorites: {
 				chartTypes: ['Area', 'Candles', 'Bars']
 			},
 			loading_screen:
 				activeTheme === 'white'
 					? { backgroundColor: '#ffffff' }
-					: { backgroundColor: '#1f212a' },
+					: { backgroundColor: '#202020' },
 			custom_css_url: `${process.env.REACT_APP_PUBLIC_URL}/css/chart.css`,
 			overrides: getThemeOverrides(activeTheme)
 		};

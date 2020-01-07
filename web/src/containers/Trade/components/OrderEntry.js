@@ -12,7 +12,6 @@ import {
 	formatNumber,
 	formatBaseAmount,
 	roundNumber,
-	calculatePrice,
 	calculateBalancePrice
 } from '../../../utils/currency';
 import { getDecimals, playBackgroundAudioNotification } from '../../../utils/utils';
@@ -30,6 +29,7 @@ import { takerFee, DEFAULT_COIN_DATA } from '../../../config/constants';
 
 import STRINGS from '../../../config/localizedStrings';
 import { isLoggedIn } from '../../../utils/token';
+import { openFeesStructureandLimits } from '../../../actions/appActions';
 
 class OrderEntry extends Component {
 	state = {
@@ -212,7 +212,8 @@ class OrderEntry extends Component {
 			openCheckOrder,
 			onRiskyTrade,
 			submit,
-			settings: { risk = {}, notification = {} }
+			settings: { risk = {}, notification = {} },
+			balance
 		} = this.props;
 		const orderTotal = mathjs.add(
 			mathjs.fraction(this.state.orderPrice),
@@ -227,8 +228,16 @@ class OrderEntry extends Component {
 			orderPrice: orderTotal,
 			orderFees: this.state.orderFees
 		};
-		const orderPriceInBaseCoin = calculatePrice(orderTotal, this.props.prices[pair_2]);
-		const riskyPrice = ((this.state.totalAssets / 100) * risk.order_portfolio_percentage);
+		// const orderPriceInBaseCoin = calculatePrice(orderTotal, this.props.prices[pair_2]);
+		let avail_balance = 0;
+		if (side === 'buy') {
+			avail_balance = balance[`${pair_2.toLowerCase()}_available`];
+		} else {
+			avail_balance = balance[`${pair_base.toLowerCase()}_available`];
+		}
+		// const riskySize = ((this.state.totalAssets / 100) * risk.order_portfolio_percentage);
+		let riskySize = ((avail_balance / 100) * risk.order_portfolio_percentage);
+		riskySize = formatNumber(riskySize, getDecimals(min_size));
 
 		if (type === 'market') {
 			delete order.price;
@@ -237,7 +246,7 @@ class OrderEntry extends Component {
 		}
 		if (notification.popup_order_confirmation) {
 			openCheckOrder(order, () => {
-				if (risk.popup_warning && riskyPrice < orderPriceInBaseCoin) {
+				if (risk.popup_warning && riskySize <= size) {
 					order['order_portfolio_percentage'] = risk.order_portfolio_percentage
 					onRiskyTrade(order, () => {
 						submit(FORM_NAME);
@@ -246,7 +255,7 @@ class OrderEntry extends Component {
 					submit(FORM_NAME);
 				}
 			});
-		} else if (risk.popup_warning && riskyPrice < orderPriceInBaseCoin) {
+		} else if (risk.popup_warning && riskySize <= size) {
 			order['order_portfolio_percentage'] = risk.order_portfolio_percentage
 			onRiskyTrade(order, () => {
 				submit(FORM_NAME);
@@ -303,7 +312,7 @@ class OrderEntry extends Component {
 				placeholder: '0.00',
 				normalize: normalizeFloat,
 				step: increment_size,
-				min: min_size,
+				min: increment_size,
 				max: max_size,
 				validate: [
 					required,
@@ -322,7 +331,8 @@ class OrderEntry extends Component {
 						result = decValue.toString().substring(0, (decValue.toString().length - (valueDecimal - decimal)));
 					}
 					return result;
-				}
+				},
+				setRef: this.props.setSizeRef
 			},
 			price: {
 				name: 'price',
@@ -340,7 +350,8 @@ class OrderEntry extends Component {
 					step(increment_price)
 				],
 				currency: buyData.symbol.toUpperCase(),
-				initializeEffect: priceInitialized
+				initializeEffect: priceInitialized,
+				setRef: this.props.setPriceRef
 			}
 		};
 
@@ -354,8 +365,15 @@ class OrderEntry extends Component {
 		}
 	};
 
+	onFeeStructureAndLimits = () => {
+		this.props.openFeesStructureandLimits({
+			verification_level: this.props.user.verification_level,
+			discount: this.props.user.discount || 0
+		});
+	};
+
 	render() {
-		const { balance, type, side, pair_base, pair_2, price, coins } = this.props;
+		const { balance, type, side, pair_base, pair_2, price, coins, size } = this.props;
 		const {
 			initialValues,
 			formValues,
@@ -393,11 +411,13 @@ class OrderEntry extends Component {
 				>
 					<Review
 						price={price}
+						size={size}
 						type={type}
 						currency={buyingName}
 						orderPrice={orderPrice}
 						fees={orderFees}
 						formatToCurrency={formatBaseAmount}
+						onFeeStructureAndLimits={this.onFeeStructureAndLimits}
 					/>
 				</Form>
 			</div>
@@ -452,7 +472,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => ({
 	submit: bindActionCreators(submit, dispatch),
-	change: bindActionCreators(change, dispatch)
+	change: bindActionCreators(change, dispatch),
+	openFeesStructureandLimits: bindActionCreators(openFeesStructureandLimits, dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(OrderEntry);

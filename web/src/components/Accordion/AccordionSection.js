@@ -1,5 +1,6 @@
 import React from 'react';
 import classnames from 'classnames';
+import ReactSvg from 'react-svg';
 import { ActionNotification } from '../';
 
 const AccordionSection = ({
@@ -15,7 +16,8 @@ const AccordionSection = ({
 	disabled = false,
 	notification,
 	subtitle = '',
-	showActionText = false
+	showActionText = false,
+	icon = ''
 }) => {
 	const onClick = () => {
 		if (!disabled) {
@@ -24,8 +26,10 @@ const AccordionSection = ({
 	};
 	const headerProps = {
 		className: classnames(
-			'accordion_section_title d-flex justify-content-between',
+			'accordion_section_title d-flex',
 			{
+				'accordion_section--open': isOpen,
+				'justify-content-between': !icon,
 				pointer: !disabled && allowClose
 			}
 		)
@@ -38,24 +42,28 @@ const AccordionSection = ({
 	return (
 		<div
 			className={classnames('accordion_section', accordionClassName, {
-				'accordion_section--open': isOpen,
 				disabled: disabled
 			})}
 		>
 			{<div {...headerProps}>
-				<span
-					className={classnames(
-						'accordion_section_content_text',
-						titleClassName,
-						{ with_arrow: !disabled && allowClose }
-					)}
-				>
-					{title}{' '}
-					{subtitle && (
-						<span className="accordion_section_content_text-subtitle">
-							{subtitle}
-						</span>
-					)}
+				<span className={classnames('sidebar_hub-icon', {
+					'd-flex align-items-center justify-content-center': icon
+				})}>
+					{icon && <span><ReactSvg path={icon} wrapperClassName="sidebar_hub-section-icon" /></span>}
+					<span
+						className={classnames(
+							'accordion_section_content_text',
+							titleClassName,
+							{ with_arrow: !disabled && allowClose }
+						)}
+					>
+						{title}{' '}
+						{subtitle && (
+							<span className="accordion_section_content_text-subtitle">
+								{subtitle}
+							</span>
+						)}
+					</span>
 				</span>
 				{titleInformation}
 				{notification && (

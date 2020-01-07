@@ -66,6 +66,11 @@ export const formatToCurrency = (amount = 0, min = 0, fullFormat = false) => {
 	return numbro(roundNumber(amount, formatObj.digit)).format(formatObj.format);
 };
 
+export const formatToSimple = (amount = 0, min = 0, fullFormat = false) => {
+	let formatObj = getFormat(min, fullFormat);
+	return numbro(math.number(amount)).format(formatObj.format);
+};
+
 export const formatCurrency = (
 	amount = 0,
 	currency = BASE_CURRENCY,
@@ -84,7 +89,9 @@ export const formatCurrency = (
 			return numbro(roundNumber(amount, 8)).format(BASE_FORMAT);
 		case 'usdt':
 			return numbro(roundNumber(amount, 8)).format(BASE_FORMAT);
-		case 'hex':
+		case 'xht':
+			return numbro(roundNumber(amount, 8)).format(BASE_FORMAT);
+		case 'xmr':
 			return numbro(roundNumber(amount, 8)).format(BASE_FORMAT);
 		default:
 			return numbro(roundNumber(amount, 8)).format(BASE_FORMAT);
@@ -187,30 +194,45 @@ export const generateWalletActionsText = (
 	};
 };
 
-export const getCurrencyFromName = (name = '') => {
-	switch (name.toLowerCase()) {
-		case 'btc':
-		case 'bitcoin':
-			return 'btc';
-		case 'eth':
-		case 'ethereum':
-			return 'eth';
-		case 'bch':
-		case 'bitcoincash':
-			return 'bch';
-		case 'xrp':
-		case 'ripple':
-			return 'xrp';
-		case 'eur':
-		case 'euro':
-			return 'eur';
-		case 'hex':
-			return 'hex';
-		case 'usdt':
-			return 'usdt';
-		default:
-			return '';
-	}
+export const getCurrencyFromName = (name = '', coins) => {
+	let currency = '';
+	Object.keys(coins).forEach((key) => {
+		let coinData = coins[key];
+		if((coinData.fullname &&
+			coinData.fullname.toLowerCase() === name.toLowerCase()) ||
+			(coinData.symbol &&
+				coinData.symbol.toLowerCase() === name.toLowerCase())) {
+				currency = coinData.symbol
+			}
+	});
+
+	return currency;
+	// switch (name.toLowerCase()) {
+	// 	case 'btc':
+	// 	case 'bitcoin':
+	// 		return 'btc';
+	// 	case 'eth':
+	// 	case 'ethereum':
+	// 		return 'eth';
+	// 	case 'bch':
+	// 	case 'bitcoincash':
+	// 		return 'bch';
+	// 	case 'xrp':
+	// 	case 'ripple':
+	// 		return 'xrp';
+	// 	case 'eur':
+	// 	case 'euro':
+	// 		return 'eur';
+	// 	case 'xht':
+	// 		return 'xht';
+	// 	case 'usdt':
+	// 		return 'usdt';
+	// 	case 'xmr':
+	// 	case 'monero':
+	// 		return 'xmr';
+	// 	default:
+	// 		return '';
+	// }
 };
 
 export const getCurrencyFromSymbol = (symbol = '') => {
@@ -229,12 +251,12 @@ export const getCurrencyFromSymbol = (symbol = '') => {
 		case 'eur':
 		case 'euro':
 			return 'euro';
-		case 'hex':
-			return 'hex';
+		case 'xht':
+			return 'xht';
 		case 'usdt':
 			return 'usdt';
 		default:
-			return '';
+			return symbol.toLowerCase();
 	}
 };
 
