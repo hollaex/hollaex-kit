@@ -61,12 +61,12 @@ class AppBar extends Component {
 		this.props.getTickers();
 		if (this.props.theme) {
 			this.setState({
-				selected: this.props.theme === this.state.options[0].value
-					? this.state.options[0].value
-					: this.state.options[1].value
+				selected:
+					this.props.theme === this.state.options[0].value
+						? this.state.options[0].value
+						: this.state.options[1].value
 			});
 		}
-
 	}
 
 	componentWillReceiveProps(nextProps) {
@@ -97,12 +97,12 @@ class AppBar extends Component {
 			}
 		}
 		if (prevProps.theme !== this.props.theme) {
-			let selected = this.props.theme === this.state.options[0].value
-				? this.state.options[0].value
-				: this.state.options[1].value;
+			let selected =
+				this.props.theme === this.state.options[0].value
+					? this.state.options[0].value
+					: this.state.options[1].value;
 			this.setState({ selected });
 		}
-
 	}
 
 	checkExchangeExpiry = (info) => {
@@ -166,17 +166,17 @@ class AppBar extends Component {
 	};
 
 	checkWalletStatus = (user, coins) => {
-        let walletPending = false;
-        if (user.balance) {
+		let walletPending = false;
+		if (user.balance) {
 			walletPending = true;
-            Object.keys(coins).forEach(pair => {
-                if (user.balance[`${pair.toLowerCase()}_balance`] > 0) {
-                    walletPending = false;
-                }
-            })
-        }
-        this.setState({ walletPending: walletPending ? 1 : 0 });
-    };
+			Object.keys(coins).forEach((pair) => {
+				if (user.balance[`${pair.toLowerCase()}_balance`] > 0) {
+					walletPending = false;
+				}
+			});
+		}
+		this.setState({ walletPending: walletPending ? 1 : 0 });
+	};
 
 	toogleSymbolSelector = () => {
 		this.setState({ symbolSelectorIsOpen: !this.state.symbolSelectorIsOpen });
@@ -192,21 +192,21 @@ class AppBar extends Component {
 	};
 
 	handleTheme = (selected) => {
-		const settings = {}
+		const settings = {};
 		if (!isLoggedIn()) {
-			this.props.changeTheme(selected)
-			localStorage.setItem('theme', selected)
+			this.props.changeTheme(selected);
+			localStorage.setItem('theme', selected);
 		} else {
 			if (selected === 'white') {
-				settings.interface = { 'theme': 'white' }
+				settings.interface = { theme: 'white' };
 			} else {
-				settings.interface = { 'theme': 'dark' }
+				settings.interface = { theme: 'dark' };
 			}
 			return updateUser({ settings })
 				.then(({ data }) => {
 					this.props.setUserData(data);
-					this.props.changeTheme(data.settings.interface.theme)
-					localStorage.setItem('theme', data.settings.interface.theme)
+					this.props.changeTheme(data.settings.interface.theme);
+					localStorage.setItem('theme', data.settings.interface.theme);
 				})
 				.catch((err) => {
 					const error = { _error: err.message };
@@ -257,15 +257,11 @@ class AppBar extends Component {
 						path={ICONS.SIDEBAR_ACCOUNT_INACTIVE}
 						wrapperClassName="app-bar-currency-icon"
 					/>
-					{!!(totalPending) && (
-						<div className="app-bar-account-notification">
-							{totalPending}
-						</div>
+					{!!totalPending && (
+						<div className="app-bar-account-notification">{totalPending}</div>
 					)}
 				</div>
-				<div className="d-flex align-items-center">
-					{STRINGS.ACCOUNT_TEXT}
-				</div>
+				<div className="d-flex align-items-center">{STRINGS.ACCOUNT_TEXT}</div>
 			</div>
 		) : (
 			<div className={classnames(...WRAPPER_CLASSES)}>
@@ -355,9 +351,10 @@ class AppBar extends Component {
 
 	onToggle = () => {
 		const { options } = this.state;
-		const selected = this.state.selected === options[0].value
-			? options[1].value
-			: options[0].value;
+		const selected =
+			this.state.selected === options[0].value
+				? options[1].value
+				: options[0].value;
 		this.setState({ selected });
 		this.handleTheme(selected);
 	};
@@ -392,7 +389,8 @@ class AppBar extends Component {
 		} else {
 			pair = this.props.pair;
 		}
-		let disableBorder = noBorders || (activePath !== 'trade' && activePath !== 'quick-trade');
+		let disableBorder =
+			noBorders || (activePath !== 'trade' && activePath !== 'quick-trade');
 		const { selected, options } = this.state;
 		return isMobile ? (
 			<MobileBarWrapper
@@ -428,26 +426,28 @@ class AppBar extends Component {
 						/>
 					)}
 				</div>
-				{!isLoggedIn() ?
-					<ThemeSwitcher selected={selected} options={options} toggle={this.onToggle} />
-					: null
-				}
+				{!isLoggedIn() ? (
+					<ThemeSwitcher
+						selected={selected}
+						options={options}
+						toggle={this.onToggle}
+					/>
+				) : null}
 				{!isHome ? (
 					isLoggedIn() ? (
 						<div className="d-flex app-bar-account">
 							<div className="d-flex app_bar-quicktrade-container">
-								<ThemeSwitcher selected={selected} options={options} toggle={this.onToggle} />
+								<ThemeSwitcher
+									selected={selected}
+									options={options}
+									toggle={this.onToggle}
+								/>
 								{isAdmin() ? (
 									<Link to="/admin">
 										<div
-											className={classnames(
-												'app_bar-quicktrade',
-												'd-flex',
-												{
-													'quick_trade-active':
-														location.pathname === '/admin'
-												}
-											)}
+											className={classnames('app_bar-quicktrade', 'd-flex', {
+												'quick_trade-active': location.pathname === '/admin'
+											})}
 										>
 											<ReactSVG
 												path={ICONS.SIDEBAR_ADMIN_DASH_ACTIVE}
@@ -461,14 +461,10 @@ class AppBar extends Component {
 								) : null}
 								<Link to="/trade/add/tabs">
 									<div
-										className={classnames(
-											'app_bar-quicktrade',
-											'd-flex',
-											{
-												'quick_trade-active':
-													location.pathname === '/trade/add/tabs'
-											}
-										)}
+										className={classnames('app_bar-quicktrade', 'd-flex', {
+											'quick_trade-active':
+												location.pathname === '/trade/add/tabs'
+										})}
 									>
 										<ReactSVG
 											path={ICONS.SIDEBAR_TRADING_ACTIVE}
@@ -481,14 +477,9 @@ class AppBar extends Component {
 								</Link>
 								<Link to={`/quick-trade/${pair}`}>
 									<div
-										className={classnames(
-											'app_bar-quicktrade',
-											'd-flex',
-											{
-												'quick_trade-active':
-													activePath === 'quick-trade'
-											}
-										)}
+										className={classnames('app_bar-quicktrade', 'd-flex', {
+											'quick_trade-active': activePath === 'quick-trade'
+										})}
 									>
 										<ReactSVG
 											path={ICONS.QUICK_TRADE_TAB_ACTIVE}
@@ -503,8 +494,7 @@ class AppBar extends Component {
 							<div
 								className={classnames('app-bar-account-content', {
 									'account-inactive':
-										activePath !== 'account' &&
-										activePath !== 'wallet'
+										activePath !== 'account' && activePath !== 'wallet'
 								})}
 								onClick={this.handleAccountMenu}
 							>
