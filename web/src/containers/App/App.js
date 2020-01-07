@@ -1,15 +1,10 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
-import io from 'socket.io-client';
 import EventListener from 'react-event-listener';
-import { debounce } from 'lodash';
 import moment from 'moment';
 import STRINGS from '../../config/localizedStrings';
 import {
-	WS_URL,
 	ICONS,
-	SESSION_TIME,
-	BASE_CURRENCY,
 	FLEX_CENTER_CLASSES,
 	EXCHANGE_EXPIRY_DAYS,
 	FIT_SCREEN_HEIGHT
@@ -31,18 +26,14 @@ import {
 	getChatMinimized,
 	setChatMinimized
 } from '../../utils/theme';
-import {
-	checkUserSessionExpired,
-	playBackgroundAudioNotification
-} from '../../utils/utils';
-import { getToken, getTokenTimestamp, isLoggedIn } from '../../utils/token';
+import { checkUserSessionExpired } from '../../utils/utils';
+import { getTokenTimestamp, isLoggedIn } from '../../utils/token';
 import {
 	AppBar,
 	AppMenuBar,
 	Sidebar,
 	SidebarBottom,
 	Dialog,
-	Loader,
 	Notification,
 	MessageDisplay,
 	CurrencyList,

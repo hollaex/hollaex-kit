@@ -43,11 +43,8 @@ import {
 	setInfo
 } from '../../actions/appActions';
 
-import {
-	checkUserSessionExpired,
-	playBackgroundAudioNotification
-} from '../../utils/utils';
-import { getToken, getTokenTimestamp, isLoggedIn } from '../../utils/token';
+import { playBackgroundAudioNotification } from '../../utils/utils';
+import { getToken, isLoggedIn } from '../../utils/token';
 
 class Container extends Component {
 	state = {
@@ -108,11 +105,6 @@ class Container extends Component {
 		this.setPublicWS();
 		if (isLoggedIn()) {
 			this.setUserSocket(getToken());
-			// const dialog_display = localStorage.getItem('deposit_initial_display');
-			// if (!dialog_display) {
-			// 	this.props.setNotification(NOTIFICATIONS.DEPOSIT_INFO, { gotoWallet: this.onConfirmEmail });
-			// 	localStorage.setItem('deposit_initial_display', true);
-			// }
 		}
 		this.setState({ appLoaded: true }, () => {
 			this._resetTimer();
@@ -120,8 +112,6 @@ class Container extends Component {
 	};
 
 	setPublicWS = () => {
-		// TODO change when added more cryptocurrencies
-
 		const publicSocket = io(`${WS_URL}/realtime`, {
 			query: {
 				// symbol: 'btc'
@@ -212,9 +202,6 @@ class Container extends Component {
 		});
 
 		privateSocket.on('user', ({ action, data }) => {
-			// if (!data.phone_number) {
-			// 	return this.goToVerificationPage();
-			// }
 			this.props.setMe(data);
 			if (
 				data.settings &&

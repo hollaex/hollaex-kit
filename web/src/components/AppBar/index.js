@@ -491,40 +491,21 @@ class AppBar extends Component {
 									</div>
 								</Link>
 							</div>
-							<div
-								className={classnames('app-bar-account-content', {
-									'account-inactive':
-										activePath !== 'account' && activePath !== 'wallet'
-								})}
-								onClick={this.handleAccountMenu}
-							>
-								<ReactSVG
-									path={ICONS.SIDEBAR_ACCOUNT_INACTIVE}
-									wrapperClassName="app-bar-account-icon"
-								/>
-								{!!totalPending && (
-									<div className="app-bar-account-notification">
-										{totalPending}
-									</div>
-								)}
-							</div>
+							<MenuList
+								selectedMenu={selectedMenu}
+								securityPending={securityPending}
+								verificationPending={verificationPending}
+								walletPending={walletPending}
+								handleMenu={this.handleMenu}
+								logout={logout}
+								activePath={activePath}
+								closeAccountMenu={this.closeAccountMenu}
+								onHelp={onHelp}
+							/>
 						</div>
 					) : null
 				) : (
 					this.renderSplashActions(token, verifyingToken)
-				)}
-				{isAccountMenu && (
-					<MenuList
-						selectedMenu={selectedMenu}
-						securityPending={securityPending}
-						verificationPending={verificationPending}
-						walletPending={walletPending}
-						handleMenu={this.handleMenu}
-						logout={logout}
-						activePath={activePath}
-						closeAccountMenu={this.closeAccountMenu}
-						onHelp={onHelp}
-					/>
 				)}
 			</div>
 		);
