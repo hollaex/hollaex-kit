@@ -60,12 +60,6 @@ class Container extends Component {
 
 	limitTimeOut = null;
 
-	componentWillMount() {
-		if (isLoggedIn() && checkUserSessionExpired(getTokenTimestamp())) {
-			this.logout('Token is expired');
-		}
-	}
-
 	componentDidMount() {
 		if (!this.props.fetchingAuth) {
 			this.initSocketConnections();
@@ -80,39 +74,6 @@ class Container extends Component {
 			if (!this.state.publicSocket) {
 				this.initSocketConnections();
 			}
-		}
-		if (
-			nextProps.activeNotification.timestamp !==
-			this.props.activeNotification.timestamp
-		) {
-			if (nextProps.activeNotification.type !== '') {
-				this.onOpenDialog();
-			} else {
-				this.onCloseDialog();
-			}
-		} else if (
-			!nextProps.activeNotification.timestamp &&
-			this.state.dialogIsOpen
-		) {
-			this.onCloseDialog();
-		}
-		if (
-			!this.props.verification_level &&
-			nextProps.verification_level !== this.props.verification_level &&
-			nextProps.verification_level === 1
-		) {
-			// this.goToAccountPage();
-		}
-		if (this.props.activeTheme !== nextProps.activeTheme) {
-			this.updateThemeToBody(nextProps.activeTheme);
-		}
-		if (
-			this.props.location &&
-			nextProps.location &&
-			this.props.location.pathname !== nextProps.location.pathname
-		) {
-			this.checkPath(nextProps.location.pathname);
-			this.handleFitHeight(nextProps.location.pathname);
 		}
 	}
 

@@ -2,10 +2,15 @@ import React, { Component } from 'react';
 import { Loader } from '../../components';
 
 class Container extends Component {
-	shouldComponentUpdate(nextProps, nextState) {
+	shouldComponentUpdate(nextProps) {
 		if (
+			this.props.appLoaded &&
+			this.props.isReady &&
 			nextProps.appLoaded === this.props.appLoaded &&
-			nextProps.isReady === this.props.isReady
+			nextProps.isReady === this.props.isReady &&
+			nextProps.router.location.pathname ===
+				this.props.router.location.pathname &&
+			nextProps.children === this.props.children
 		) {
 			return false;
 		}
