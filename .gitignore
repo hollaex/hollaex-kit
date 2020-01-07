@@ -10,20 +10,6 @@ web/coverage
 build
 
 # misc
-<<<<<<< HEAD
-.DS_Store
-.env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
-
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-
-# src/**/*.css
-=======
 web/.DS_Store
 web/.env
 web/.env.local
@@ -45,4 +31,3 @@ templates/local/*.env.local
 templates/local/letsencrypt/*
 
 templates/kubernetes/config/*
->>>>>>> bfa7b52856eb0d940e74d48730e39b09d1849ee2
