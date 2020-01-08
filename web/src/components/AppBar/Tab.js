@@ -1,12 +1,12 @@
 import React from 'react';
 import ReactSVG from 'react-svg';
 import classnames from 'classnames';
+import { SortableElement } from 'react-sortable-hoc';
 
-import { Sortable } from '../Sortable';
 import { ICONS, BASE_CURRENCY, DEFAULT_COIN_DATA, SIMPLE_FORMAT_MIN } from '../../config/constants';
 import { donutFormatPercentage, formatToSimple } from '../../utils/currency';
 
-const Tab = ({ pair = {}, tab, ticker = {}, coins = {}, activePairTab, onTabClick, onTabChange, items, selectedToOpen, selectedToRemove, ...rest }) => {
+const Tab = SortableElement(({ pair = {}, tab, ticker = {}, coins = {}, activePairTab, onTabClick, onTabChange, items, selectedToOpen, selectedToRemove, ...rest }) => {
     const { symbol } = coins[pair.pair_base || BASE_CURRENCY] || DEFAULT_COIN_DATA;
     const pairTwo = coins[pair.pair_2 || BASE_CURRENCY] || DEFAULT_COIN_DATA;
     const priceDifference = ticker.open === 0 ? 0 : ((ticker.close || 0) - (ticker.open || 0));
@@ -28,8 +28,7 @@ const Tab = ({ pair = {}, tab, ticker = {}, coins = {}, activePairTab, onTabClic
                 })}>
             <div
                 className='d-flex w-100 h-100 pl-2'
-                onClick={() => onTabClick(tab)}
-                {...rest}>
+                onClick={() => onTabClick(tab)}>
                 <div className="app_bar-pair-font d-flex align-items-center justify-content-between">
                     <div className="app_bar-currency-txt">
                         {symbol.toUpperCase()}/{pairTwo.symbol.toUpperCase()}:
@@ -57,6 +56,6 @@ const Tab = ({ pair = {}, tab, ticker = {}, coins = {}, activePairTab, onTabClic
             </div>
         </div>
     );
-};
+});
 
-export default Sortable(Tab);
+export default Tab;
