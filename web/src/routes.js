@@ -184,6 +184,15 @@ export default (
 			/>
 		</Route>
 		<Route component={Container}>
+			{isMobile
+				? <Route
+					path="/home"
+					name="Home"
+					component={MobileHome}
+					onEnter={requireAuth}
+				/>
+				: null
+			}
 			<Route
 				path="account"
 				name="Account"
