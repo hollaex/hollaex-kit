@@ -10,10 +10,10 @@ steps:
   - echo "Current version tag is :" && cat .tags
   
 - name: slack_noti_to_releases
-  image: bitholla/devops-tools:drone_partymaker-0.1.2
+  image: bitholla/devops-tools:drone_partymaker-0.1.4
   environment:
-    slack_webhook:
-      from_secret: slack_webhook
+    webhook_url:
+      from_secret: webhook_url
   when:
     status: [success]
 
