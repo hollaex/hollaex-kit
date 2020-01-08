@@ -37,7 +37,7 @@ class MenuList extends Component {
 			event.target !== element &&
 			!element.contains(event.target)
 		) {
-			this.props.closeAccountMenu();
+			this.setState({ isOpen: false });
 		}
 	};
 
