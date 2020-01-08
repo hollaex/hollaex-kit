@@ -14,6 +14,22 @@ class MenuList extends Component {
 		document.addEventListener('click', this.onOutsideClick);
 	}
 
+	shouldComponentUpdate(nextProps, nextState) {
+		if (nextState.isOpen !== this.state.isOpen) {
+			return true;
+		}
+		if (
+			nextProps.selectedMenu !== this.props.selectedMenu ||
+			nextProps.securityPending !== this.props.securityPending ||
+			nextProps.verificationPending !== this.props.verificationPending ||
+			nextProps.walletPending !== this.props.walletPending ||
+			nextProps.activePath !== this.props.activePath
+		) {
+			return true;
+		}
+		return false;
+	}
+
 	onOutsideClick = (event) => {
 		const element = document.getElementById('tab-account-menu');
 		if (
@@ -49,6 +65,7 @@ class MenuList extends Component {
 	};
 
 	render() {
+		console.log('?');
 		const {
 			selectedMenu,
 			securityPending,
@@ -56,6 +73,7 @@ class MenuList extends Component {
 			walletPending,
 			activePath
 		} = this.props;
+		const { isOpen } = this.state;
 		const totalPending = IS_XHT
 			? securityPending + walletPending
 			: securityPending + verificationPending;
@@ -76,7 +94,7 @@ class MenuList extends Component {
 						<div className="app-bar-account-notification">{totalPending}</div>
 					)}
 				</div>
-				{this.state.isOpen && (
+				{isOpen && (
 					<div id="tab-account-menu" className="app-bar-account-menu">
 						<div
 							className={classnames('app-bar-account-menu-list d-flex', {
