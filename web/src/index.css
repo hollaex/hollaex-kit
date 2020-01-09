@@ -3789,7 +3789,8 @@ table th {
     font-weight: 400;
     margin: 0 6px;
     padding: 0 .4rem;
-    text-transform: capitalize; }
+    text-transform: capitalize;
+    white-space: nowrap; }
     .app_bar .app_bar-quicktrade svg .trade-active-2, .app_bar .app_bar-quicktrade svg .st0 {
       fill: #000000 !important;
       stroke: #808080 !important;

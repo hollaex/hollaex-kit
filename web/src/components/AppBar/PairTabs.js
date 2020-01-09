@@ -13,6 +13,41 @@ import STRINGS from '../../config/localizedStrings';
 
 let timeOut = '';
 
+const TabList = SortableContainer(({
+     items,
+     activeTabs,
+     tickers,
+     coins,
+     selectedToOpen,
+     selectedToRemove,
+     activePairTab,
+     onTabClick,
+     onTabChange
+    }) => (
+    <div className="d-flex">
+        {items.map((tab, index) => {
+            const pair = activeTabs[tab];
+            const ticker = tickers[tab];
+                return (
+                    <Tab
+                        key={`item-${index}`}
+                        index={index}
+                        tab={tab}
+                        pair={pair}
+                        ticker={ticker}
+                        coins={coins}
+                        selectedToOpen={selectedToOpen}
+                        selectedToRemove={selectedToRemove}
+                        activePairTab={activePairTab}
+                        sortId={index}
+                        onTabClick={onTabClick}
+                        onTabChange={onTabChange} />
+                );
+            })
+        }
+    </div>
+));
+
 class PairTabs extends Component {
     state = {
         selectedTabs: {},
@@ -84,12 +119,21 @@ class PairTabs extends Component {
         }
     }
 
+    componentDidUpdate(prevProps, prevState) {
+        if (this.props.tabCount !== prevProps.tabCount) {
+            this.initTabs(this.props.pairs, this.state.activePairTab);
+        }
+        if (JSON.stringify(prevState.selectedTabs) !== JSON.stringify(this.state.selectedTabs)
+            && !Object.keys(prevState.selectedTabs).length) {
+            this.props.calculateTabs();
+        }
+    }
+
     componentWillUnmount() {
         if (timeOut) {
             clearTimeout(timeOut);
         }
     }
-
 
     initTabs = (pairs, activePair) => {
         let tabs = localStorage.getItem('tabs');
@@ -108,7 +152,7 @@ class PairTabs extends Component {
             }
             tabs.map((key, index) => {
                 if (pairs[key]) {
-                    if (index <= 3)
+                    if (index <= this.props.tabCount - 1)
                         tempTabs[key] = pairs[key];
                     selected[key] = pairs[key];
                 }
@@ -117,7 +161,7 @@ class PairTabs extends Component {
             if (activePair && !tempTabs[activePair]) {
                 const temp = pairs[activePair];
                 const pairKeys = Object.keys(tempTabs);
-                if (pairKeys.length < 4) {
+                if (pairKeys.length < this.props.tabCount) {
                     tempTabs[activePair] = temp;
                 } else {
                     delete tempTabs[pairKeys[pairKeys.length - 1]];
@@ -144,7 +188,7 @@ class PairTabs extends Component {
     };
 
     openAddTabMenu = e => {
-        this.setState({ isAddTab: !this.state.isAddTab, isTabOverflow: false, selectedToOpen: '' });
+        this.setState({ isAddTab: !this.state.isAddTab, isTabOverflow: false });
     };
 
     onAddTabClick = pair => {
@@ -188,7 +232,7 @@ class PairTabs extends Component {
         if (activeTabs[pair]) {
             let tempActive = {};
             tabPairs.map((key, index) => {
-                if (index <= 3) {
+                if (index <= this.props.tabCount - 1) {
                     tempActive = { ...tempActive, [key]: localTabs[key] };
                 }
                 return key;
@@ -203,7 +247,7 @@ class PairTabs extends Component {
             let tempActive = activeTabs;
             let activeKeys = Object.keys(activeTabs);
             timeOut = setTimeout(() => {
-                if (tabPairs.length <= 4) {
+                if (tabPairs.length <= this.props.tabCount) {
                     this.setState({
                         activeTabs: { ...localTabs },
                         activeItems: Object.keys(localTabs)
@@ -258,17 +302,6 @@ class PairTabs extends Component {
         this.setState({ isTabOverflow: false });
     };
 
-    onSortItems = sortItems => {
-        const sortedTabs = {};
-        sortItems.map(pair => {
-            let temp = this.state.activeTabs[pair];
-            sortedTabs[pair] = temp;
-            return pair;
-        });
-        this.setTabsLocal({ ...sortedTabs, ...this.state.selectedTabs });
-        this.setState({ activeTabs: { ...sortedTabs }, selectedTabs: { ...sortedTabs, ...this.state.selectedTabs } });
-    };
-
     handleSearch = (_, value) => {
         const { pairs, coins } = this.props;
         if (value) {
@@ -305,7 +338,7 @@ class PairTabs extends Component {
         const pairTemp = this.state.activeItems.filter((data, index) => index !== oldIndex);
         pairTemp.splice(startIndex, 0, this.state.activeItems[oldIndex]);
         const sortedTabs = {};
-        pairTemp.map(data => {
+        pairTemp.forEach(data => {
             sortedTabs[data] = this.state.selectedTabs[data];
         });
         this.setTabsLocal({ ...sortedTabs, ...this.state.selectedTabs });
@@ -329,46 +362,28 @@ class PairTabs extends Component {
             selectedToOpen,
             selectedToRemove
         } = this.state;
-        const { pairs, tickers, location, coins } = this.props;
+        const { pairs, tickers, location, coins, tabCount } = this.props;
         const obj = {};
         Object.entries(pairs).forEach(([key, pair]) => {
             obj[pair.pair_base] = '';
         });
         const symbols = Object.keys(obj).map((key) => key);
-        const TabList = SortableContainer(({ items }) => (
-            <div className="d-flex">
-                {items.map((tab, index) => {
-                    const pair = activeTabs[tab];
-                    const ticker = tickers[tab];
-                        return (
-                            <Tab
-                                key={`item-${index}`}
-                                index={index}
-                                tab={tab}
-                                pair={pair}
-                                ticker={ticker}
-                                coins={coins}
-                                selectedToOpen={selectedToOpen}
-                                selectedToRemove={selectedToRemove}
-                                activePairTab={activePairTab}
-                                onSortItems={this.onSortItems}
-                                sortId={index}
-                                onTabClick={this.onTabClick}
-                                onTabChange={this.onTabChange} />
-                        );
-
-                    })
-                }
-            </div>
-        ));
-        const items = Object.keys(activeTabs).filter((data, index) => index <= 3);
+        
         return (
             <div className="d-flex h-100">
                 <TabList
                     axis={'x'}
                     pressDelay={200}
                     items={this.state.activeItems}
-                    onSortEnd={this.onSortEnd} />
+                    onSortEnd={this.onSortEnd}
+                    activeTabs={activeTabs}
+                    tickers={tickers}
+                    coins={coins}
+                    selectedToOpen={selectedToOpen}
+                    selectedToRemove={selectedToRemove}
+                    activePairTab={activePairTab}
+                    onTabClick={this.onTabClick}
+                    onTabChange={this.onTabChange} />
                 <div className={
                     classnames(
                         'app_bar-pair-content',
@@ -403,7 +418,7 @@ class PairTabs extends Component {
                         />
                     }
                 </div>
-                {Object.keys(selectedTabs).length > 4
+                {Object.keys(selectedTabs).length > tabCount
                     && <div
                         className={classnames('app_bar-pair-overflow', 'd-flex', 'align-items-center', { 'active-tab-overflow': isTabOverflow })}>
                         <div onClick={this.onOverflowClick}>

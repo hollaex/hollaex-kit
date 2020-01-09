@@ -6,6 +6,7 @@ import { Link } from 'react-router';
 import ReactSVG from 'react-svg';
 import { isMobile } from 'react-device-detect';
 import moment from 'moment';
+import math from 'mathjs';
 import {
 	IS_PRO_VERSION,
 	PRO_URL,
@@ -41,7 +42,8 @@ class AppBar extends Component {
 		verificationPending: 0,
 		walletPending: 0,
 		selected: '',
-		options: [{ value: 'white' }, { value: 'dark' }]
+		options: [{ value: 'white' }, { value: 'dark' }],
+		tabCount: 0
 	};
 
 	componentDidMount() {
@@ -359,6 +361,24 @@ class AppBar extends Component {
 		this.handleTheme(selected);
 	};
 
+	calculateTabs = () => {
+		const tradeNav = document.getElementById('trade-nav-container');
+		const homeNav = document.getElementById('home-nav-container');
+		let tabCount = 0;
+		if (tradeNav && homeNav) {
+			const tradeBounds = tradeNav.getBoundingClientRect();
+			const homeBounds = homeNav.getBoundingClientRect();
+			const documentBounds = document.body.getBoundingClientRect();
+			const tabContainer = document.getElementById('trade-tab-0');
+			if (tabContainer) {
+				const tabBounds = tabContainer.getBoundingClientRect();
+				const tabTotal = documentBounds.width - (tradeBounds.width + homeBounds.width + (tabBounds.width / 2));
+				tabCount = math.floor(tabTotal / tabBounds.width);
+			}
+			this.setState({ tabCount });
+		}
+	};
+
 	render() {
 		const {
 			noBorders,
@@ -378,7 +398,8 @@ class AppBar extends Component {
 			selectedMenu,
 			securityPending,
 			verificationPending,
-			walletPending
+			walletPending,
+			tabCount
 		} = this.state;
 		const totalPending = IS_XHT
 			? securityPending + walletPending
@@ -415,7 +436,9 @@ class AppBar extends Component {
 				})}
 			>
 				<div className="d-flex">
-					<div className="d-flex align-items-center justify-content-center h-100">
+					<div
+						id='home-nav-container'
+						className="d-flex align-items-center justify-content-center h-100">
 						{this.renderIcon(isHome, theme)}
 					</div>
 					{!isHome && (
@@ -423,6 +446,8 @@ class AppBar extends Component {
 							activePath={activePath}
 							location={location}
 							router={router}
+							tabCount={tabCount}
+							calculateTabs={this.calculateTabs}
 						/>
 					)}
 				</div>
@@ -435,7 +460,7 @@ class AppBar extends Component {
 				) : null}
 				{!isHome ? (
 					isLoggedIn() ? (
-						<div className="d-flex app-bar-account">
+						<div id='trade-nav-container' className="d-flex app-bar-account">
 							<div className="d-flex app_bar-quicktrade-container">
 								<ThemeSwitcher
 									selected={selected}

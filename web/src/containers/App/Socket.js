@@ -167,7 +167,7 @@ class Container extends Component {
 					this.props.settings.audio &&
 					this.props.settings.audio.public_trade &&
 					this.props.location.pathname.indexOf('/trade/') === 0 &&
-					this.props.params.pair
+					this.props.router.params.pair
 				) {
 					playBackgroundAudioNotification('public_trade');
 				}

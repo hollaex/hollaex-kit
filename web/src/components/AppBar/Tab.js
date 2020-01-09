@@ -6,7 +6,20 @@ import { SortableElement } from 'react-sortable-hoc';
 import { ICONS, BASE_CURRENCY, DEFAULT_COIN_DATA, SIMPLE_FORMAT_MIN } from '../../config/constants';
 import { donutFormatPercentage, formatToSimple } from '../../utils/currency';
 
-const Tab = SortableElement(({ pair = {}, tab, ticker = {}, coins = {}, activePairTab, onTabClick, onTabChange, items, selectedToOpen, selectedToRemove, ...rest }) => {
+const Tab = SortableElement(({
+    pair = {},
+    tab,
+    ticker = {},
+    coins = {},
+    activePairTab,
+    onTabClick,
+    onTabChange,
+    items,
+    selectedToOpen,
+    selectedToRemove,
+    sortId,
+    ...rest
+}) => {
     const { symbol } = coins[pair.pair_base || BASE_CURRENCY] || DEFAULT_COIN_DATA;
     const pairTwo = coins[pair.pair_2 || BASE_CURRENCY] || DEFAULT_COIN_DATA;
     const priceDifference = ticker.open === 0 ? 0 : ((ticker.close || 0) - (ticker.open || 0));
@@ -16,6 +29,7 @@ const Tab = SortableElement(({ pair = {}, tab, ticker = {}, coins = {}, activePa
             : donutFormatPercentage(tickerPercent);
     return (
         <div
+            id={`trade-tab-${sortId}`}
             className={classnames(
                 'app_bar-pair-content',
                 'd-flex',

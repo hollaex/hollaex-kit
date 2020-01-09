@@ -238,6 +238,7 @@ $app-bar-add-tab-red: #ff0000;
 		margin: 0 6px;
 		padding: 0 .4rem;
 		text-transform: capitalize;
+		white-space: nowrap;
 
 		svg {
 			.trade-active-2, .st0 {
