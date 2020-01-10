@@ -973,9 +973,7 @@ table th {
     margin: 0 1rem;
     text-align: center;
     text-transform: uppercase;
-    font-weight: bold;
-    color: #000000;
-    background-color: white; }
+    font-weight: bold; }
     .home_container .buttons-section--button.contrast {
       background-color: #212121; }
 
@@ -984,6 +982,23 @@ table th {
 
 .direction_rtl .home-card-text-container {
   margin-right: 0.75rem; }
+
+.dark-theme.home_container .section_1-content {
+  background: url("/assets/HollaEx-dark-theme.jpg"); }
+
+.dark-theme.home_container .features-container {
+  background-color: #020202; }
+
+.dark-theme.home_container .home-card-container {
+  border-color: #f9f9f9; }
+  .dark-theme.home_container .home-card-container .home-card-icon-wrapper > div .home-card-icon {
+    fill: #f9f9f9; }
+
+.dark-theme.home_container .buttons-section--button {
+  border-color: #f9f9f9; }
+
+.dark-theme .arrow-down {
+  stroke: #f9f9f9; }
 
 @media (max-width: 767px) {
   .home_container .home-card-container {
@@ -2834,7 +2849,7 @@ table th {
         .summary-container .assets-wrapper .coin-price-container .coin-price svg .default-icon {
           fill: #000000 !important; }
   .summary-container .asset_wrapper_width {
-    width: 25rem; }
+    width: 100%; }
   .summary-container .xht_asset_wrapper_width {
     width: 100% !important; }
   .summary-container .trading-volume-wrapper {
@@ -2954,7 +2969,7 @@ table th {
     .summary-container .summary-content-txt {
       font-size: 1rem; }
     .summary-container .asset_wrapper_width {
-      width: 35% !important; }
+      width: 100% !important; }
     .summary-container .xht_asset_wrapper_width {
       width: 100% !important; }
     .summary-container .assets-wrapper {
