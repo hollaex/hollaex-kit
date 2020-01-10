@@ -374,15 +374,12 @@ class AppBar extends Component {
 			onHelp
 		} = this.props;
 		const {
-			isAccountMenu,
 			selectedMenu,
 			securityPending,
 			verificationPending,
 			walletPending
 		} = this.state;
-		const totalPending = IS_XHT
-			? securityPending + walletPending
-			: securityPending + verificationPending;
+		
 		let pair = '';
 		if (Object.keys(pairs).length) {
 			pair = Object.keys(pairs)[0];

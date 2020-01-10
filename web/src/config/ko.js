@@ -1281,17 +1281,8 @@ export default {
 	TRADE_POSTS: {
 		// new
 		ANNOUNCEMENT: '공지사항',
-		ANNOUNCEMNT_TXT_3:
-			'웨이브옥션과 HollaEx 공개오픈은 2020년 1월1일로 재조정되었습니다. 지갑과 입출금은 현재도 이용가능합니다.',
-		ANNOUNCEMNT_TXT_4:
-			'홀러즈 여러분! 새해복 많이받으시기바랍니다. 드디어 2020년부터 런칭하는 가장 개방적인 거래 플랫폼의 시작에 많은 활동부탁드립니다.',
-		ANNOUNCEMNT_TXT_1:
-			'친구들을 hollaex.com에 소개하여 HAP프로그램과 함께 XHT를 얻으세요. {0}.',
 		DEFAULT_ANNOUNCEMENT:
-			'이 페이지는 포스트는 회원님의 거래소의 공지사항입니다! {0}',
-		ANNOUNCEMENT_TXT_2: '{0}의 모든 지갑에 무료 XHT가 배포됩니다.',
-		LEARN_MORE: '더 알아보기',
-		APPLY_TODAY: '지금신청하기' // new
+			'이 페이지는 포스트는 회원님의 거래소의 공지사항입니다!',
 	},
 	OPEN_WALLET: '오픈 지갑', // new
 	AGO: 'ago', // new
