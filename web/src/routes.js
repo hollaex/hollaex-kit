@@ -146,6 +146,14 @@ export default (
 		{!IS_PRO_VERSION ? <Route path="/" name="Home" component={Home} /> : null}
 		<Route path="lang/:locale" component={createLocalizedRoutes} />
 		<Route component={AuthContainer} {...noAuthRoutesCommonProps}>
+			{isMobile ? (
+				<Route
+					path="/"
+					name="Login"
+					component={Login}
+					{...noAuthRoutesCommonProps}
+				/>
+			) : null}
 			<Route path="login" name="Login" component={Login} />
 			<Route path="signup" name="signup" component={Signup} />
 		</Route>
@@ -168,6 +176,14 @@ export default (
 			/>
 		</Route>
 		<Route component={Container}>
+			{isMobile ? (
+				<Route
+					path="/home"
+					name="Home"
+					component={MobileHome}
+					onEnter={requireAuth}
+				/>
+			) : null}
 			<Route
 				path="account"
 				name="Account"
