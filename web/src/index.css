@@ -797,7 +797,7 @@ table th {
 .popup_info-wrapper .popup_info-title {
   font-family: "Raleway";
   font-size: 1.25rem;
-  border-bottom: 1px solid #212121; }
+  border-bottom: 1px solid #777677; }
 
 .popup_info-wrapper .popup_info-text {
   font-size: 0.9rem; }
@@ -854,15 +854,29 @@ table th {
 .dark-theme .tokens-icon-svg path, .dark-theme .tokens-icon-svg rect {
   fill: #808080; }
 
+.layout-mobile .user_security-wrapper .warning_text {
+  font-size: 12px !important; }
+
+.layout-mobile .checkbutton-wrapper .checkbutton-input-wrapper .checkbutton-input-wrapper--label {
+  font-size: 12px;
+  color: #0066B4; }
+
 .layout-mobile .otp_form-wrapper {
   min-width: auto;
   width: auto; }
+  .layout-mobile .otp_form-wrapper .otp_form-section-wrapper .otp_form-section-title {
+    font-size: 14px; }
+  .layout-mobile .otp_form-wrapper .otp_form-section-wrapper .otp_form-section-text {
+    font-size: 12px !important; }
   .layout-mobile .otp_form-wrapper .otp_form-section-content .qr-code-wrapper {
     width: 15rem;
     height: 15rem; }
     .layout-mobile .otp_form-wrapper .otp_form-section-content .qr-code-wrapper canvas {
       width: 14rem !important;
       height: 14rem !important; }
+
+.layout-mobile .accordion_section_content .warning_text {
+  font-size: 12px !important; }
 
 .signup_success-wrapper {
   text-align: center; }
@@ -1003,6 +1017,9 @@ table th {
 .layout-mobile .currency-list-container .balance-small {
   font-size: 1.5rem; }
 
+.layout-mobile .currency-list-container .button-container .exir-button {
+  font-size: 12px !important; }
+
 .layout-mobile .wallet-container .action_notification-wrapper .action_notification-text {
   font-size: 1.2rem !important; }
 
@@ -1031,6 +1048,12 @@ table th {
   width: 2.5rem;
   height: 2.5rem;
   font-size: 0.8rem; }
+
+.layout-mobile .wallet-container .wallet-assets_block .wallet-assets_block-table .table-bottom-border {
+  font-size: 12px !important; }
+
+.layout-mobile .wallet-container .wallet-assets_block .wallet-assets_block-table tfoot {
+  font-size: 10px !important; }
 
 .wallet-container {
   border-top: 1px solid #212121; }
@@ -1251,23 +1274,26 @@ table th {
     width: 24rem !important;
     height: 24rem !important; }
   .layout-mobile .presentation_container .inner_container .qr_code-wrapper .qr-text {
-    font-size: 1.2rem; }
+    font-size: 10px !important; }
 
 .layout-mobile .presentation_container .inner_container .information_block .information_block-text_wrapper .title {
-  font-size: 1.75rem; }
+  font-size: 14px; }
 
 .layout-mobile .presentation_container .inner_container .information_block .information_block-text_wrapper .text {
-  font-size: 1.2rem; }
+  font-size: 12px !important; }
+
+.layout-mobile .presentation_container .inner_container .field-label, .layout-mobile .presentation_container .inner_container .field-children,
+.layout-mobile .presentation_container .inner_container .input_field-input {
+  font-size: 12px !important; }
 
 .layout-mobile .presentation_container .inner_container .field-error-content {
   font-size: 1.2rem; }
 
-.layout-mobile .presentation_container .inner_container .field-label,
-.layout-mobile .presentation_container .inner_container .input_field-input {
-  font-size: 1.2rem; }
-
 .layout-mobile .presentation_container .inner_container .action_notification-wrapper .action_notification-text {
   font-size: 1.2rem; }
+
+.layout-mobile .presentation_container .inner_container .exir-button {
+  font-size: 12px !important; }
 
 .layout-mobile .review_email-wrapper {
   margin: 0px auto !important; }
@@ -2474,6 +2500,13 @@ table th {
 .dark-theme .verification_link {
   color: #0066B4; }
 
+.layout-mobile .verification_container .verification-info-txt {
+  width: 100%;
+  font-size: 12px !important; }
+
+.layout-mobile .verification_container .exir-button {
+  font-size: 12px !important; }
+
 .layout-mobile .mobile-bar-tab .bartab-text-wrapper {
   font-size: 1.5rem;
   line-height: 1.5rem; }
@@ -2481,6 +2514,20 @@ table th {
 .layout-mobile .presentation_container.verification_container {
   padding-top: 0 !important;
   max-height: calc(100vh - 10rem); }
+  .layout-mobile .presentation_container.verification_container .header-content {
+    font-size: 12px !important; }
+
+.layout-mobile .header_title-wrapper .header_title-text {
+  font-size: 14px; }
+
+.layout-mobile .header_title-wrapper .header_title-children {
+  font-size: 12px !important; }
+
+.layout-mobile .field-wrapper .field-content .field-label, .layout-mobile .field-wrapper .field-content .field-children, .layout-mobile .field-wrapper .field-content .inner_container, .layout-mobile .field-wrapper .field-content .input_field-input, .layout-mobile .field-wrapper .field-content .placeholder {
+  font-size: 12px !important; }
+
+.layout-mobile .content-text {
+  font-size: 12px; }
 
 .dark-theme .account-svg-1 {
   fill: #808080; }
@@ -2684,7 +2731,13 @@ table th {
   width: 32rem; }
 
 .layout-mobile .fee-limits-wrapper {
-  margin: 3rem auto; }
+  margin: 1rem auto 3rem; }
+  .layout-mobile .fee-limits-wrapper .icon_title-wrapper .icon_title-svg {
+    height: 12rem;
+    width: 12rem; }
+  .layout-mobile .fee-limits-wrapper .icon_title-wrapper .icon_title-svg svg {
+    height: 12rem;
+    width: 12rem; }
 
 .layout-mobile .logout-wrapper {
   margin: 0 auto; }
@@ -2692,15 +2745,15 @@ table th {
 .layout-mobile .confirm-text {
   font-size: 2rem; }
 
-.layout-mobile .fee-limits-wrapper {
-  margin: 3rem auto; }
-
 .layout-mobile .summary-container .trader-account-wrapper .summary-block_wrapper .trade-account-secondary-txt {
   width: 100%; }
   .layout-mobile .summary-container .trader-account-wrapper .summary-block_wrapper .trade-account-secondary-txt .account-details-content {
     font-size: 12px; }
   .layout-mobile .summary-container .trader-account-wrapper .summary-block_wrapper .trade-account-secondary-txt .trade-account-link {
     font-size: 12px; }
+
+.layout-mobile .summary-container .account-details-wrapper .requirement-content {
+  font-size: 12px; }
 
 .layout-mobile .summary-container .summary-section_1,
 .layout-mobile .summary-container .summary-section_2 {
@@ -2711,6 +2764,9 @@ table th {
 
 .layout-mobile .summary-container .assets-wrapper .price-text {
   font-size: 12px !important; }
+
+.layout-mobile .summary-container .assets-wrapper .donut-container {
+  height: 30rem; }
 
 .layout-mobile .summary-container .account-details-wrapper .account-type-menu {
   height: auto !important; }
@@ -2841,6 +2897,8 @@ table th {
       width: 1.5rem; }
     .summary-container .trading-volume-wrapper .wave-action-phase {
       border-top: 1px solid #000000; }
+      .summary-container .trading-volume-wrapper .wave-action-phase .table-wrapper {
+        margin: 0.5rem 0 2rem; }
     .summary-container .trading-volume-wrapper .wave-phase-completed {
       color: #808000; }
     .summary-container .trading-volume-wrapper .wave-phase-pending {
@@ -2882,7 +2940,7 @@ table th {
     width: 6rem; }
 
 .fee-limits-wrapper {
-  width: 36rem; }
+  width: 38rem; }
   .fee-limits-wrapper .fee-limits-link {
     color: #0000ff;
     cursor: pointer;
@@ -2893,16 +2951,20 @@ table th {
     font-size: 1rem;
     font-weight: bold;
     margin: 1.5rem 0; }
-  .fee-limits-wrapper .icon_title-wrapper .icon_title-svg {
-    height: 8rem;
-    width: 8rem; }
-  .fee-limits-wrapper .icon_title-wrapper .icon_title-svg svg {
-    height: 8rem;
-    width: 8rem; }
-    .fee-limits-wrapper .icon_title-wrapper .icon_title-svg svg .level_icon {
-      fill: #000000; }
-  .fee-limits-wrapper .icon_title-wrapper .icon_title-text.title {
-    font-size: 2rem; }
+  .fee-limits-wrapper .icon_title-wrapper {
+    margin-top: 1rem; }
+    .fee-limits-wrapper .icon_title-wrapper .icon_title-svg {
+      height: 11rem;
+      width: 12rem; }
+    .fee-limits-wrapper .icon_title-wrapper .icon_title-svg svg {
+      height: 12rem;
+      width: 12rem; }
+      .fee-limits-wrapper .icon_title-wrapper .icon_title-svg svg .level_icon {
+        fill: #000000; }
+    .fee-limits-wrapper .icon_title-wrapper .icon_title-text {
+      margin: 0; }
+      .fee-limits-wrapper .icon_title-wrapper .icon_title-text.title {
+        font-size: 2rem; }
   .fee-limits-wrapper table {
     border-collapse: collapse;
     border: 1px solid #777677; }
@@ -6190,7 +6252,7 @@ table th {
   width: 38rem; }
 
 .otp_form-title-wrapper {
-  border-top: 1px solid #212121;
+  border-top: 1px solid #777677;
   margin: 1rem 0;
   position: relative; }
   .otp_form-title-wrapper .otp_form-title-text {
@@ -6211,7 +6273,8 @@ table th {
     fill: white; }
 
 .layout-mobile .otp_form-wrapper {
-  flex: 1; }
+  flex: 1;
+  overflow-y: scroll; }
 
 .loader_wrapper {
   position: absolute;
