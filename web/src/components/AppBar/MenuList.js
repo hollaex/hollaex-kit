@@ -65,7 +65,6 @@ class MenuList extends Component {
 	};
 
 	render() {
-		console.log('?');
 		const {
 			selectedMenu,
 			securityPending,
