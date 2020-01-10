@@ -98,7 +98,7 @@ $no-background--color: white;
 
 		.home-card-text-container {
 			font-size: $font-size-subtext;
-
+			color:$colors-black;
 			.home-card-title {
 				margin: 0.5rem 0 0.25rem;
 				font-weight: bold;
@@ -132,8 +132,7 @@ $no-background--color: white;
 		text-align: center;
 		text-transform: uppercase;
 		font-weight: bold;
-		
-		
+
 		&.contrast {
 			background-color: $colors-main-black;
 		}

@@ -379,6 +379,7 @@ class AppBar extends Component {
 			verificationPending,
 			walletPending
 		} = this.state;
+    
 		let pair = '';
 		if (Object.keys(pairs).length) {
 			pair = Object.keys(pairs)[0];

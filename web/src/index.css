@@ -949,7 +949,8 @@ table th {
       width: 4rem;
       height: 4rem; }
     .home_container .home-card-container .home-card-text-container {
-      font-size: 0.9rem; }
+      font-size: 0.9rem;
+      color: #000000; }
       .home_container .home-card-container .home-card-text-container .home-card-title {
         margin: 0.5rem 0 0.25rem;
         font-weight: bold;
