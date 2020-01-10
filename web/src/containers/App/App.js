@@ -453,7 +453,9 @@ class App extends Component {
 			EXCHANGE_EXPIRY_DAYS - moment().diff(info.created_at, 'days');
 		return (
 			<div>
-				<Socket location={location} />
+				<Socket
+					router={router}
+					location={location} />
 				<div
 					className={classnames(
 						getThemeClass(activeTheme),

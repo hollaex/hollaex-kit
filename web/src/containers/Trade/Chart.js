@@ -289,7 +289,7 @@ class TVChartContainer extends React.PureComponent {
 			favorites: {
 				chartTypes: ['Area', 'Candles', 'Bars']
 			},
-			loading_screen: TOOLBAR_BG[activeTheme],
+			loading_screen: { backgroundColor: TOOLBAR_BG[activeTheme] },
 			custom_css_url: `${process.env.REACT_APP_PUBLIC_URL}/css/chart.css`,
 			overrides: getThemeOverrides(activeTheme)
 		};

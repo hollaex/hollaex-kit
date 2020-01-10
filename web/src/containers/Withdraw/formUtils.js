@@ -31,9 +31,7 @@ export const generateFormValues = (
 	available = 0,
 	calculateMax,
 	coins = {},
-	verification_level,
-	checkControlCallback,
-	checkControlChecked
+	verification_level
 ) => {
 	const { fullname, min, increment_unit, withdrawal_limits = {} } = coins[
 		symbol
@@ -62,16 +60,8 @@ export const generateFormValues = (
 			type: "text",
 			label: STRINGS.WITHDRAWALS_FORM_DESTINATION_TAG_LABEL,
 			placeholder: STRINGS.WITHDRAWALS_FORM_DESTINATION_TAG_PLACEHOLDER,
-			fullWidth: true,
-			checkControl: true,
-			checkLabel: STRINGS.WITHDRAWALS_FORM_INCLUDE_DESTINATION_TAG,
-			checkControlCallback: checkControlCallback
+			fullWidth: true
 		};
-		if (checkControlChecked) {
-			fields.destination_tag.validate = [
-				required
-			];
-		}
 	}
 
 	const amountValidate = [required];
