@@ -17,52 +17,9 @@ export const NotificationItem = (props) => {
 					<div>
 						<div className="post_header">{STRINGS.TRADE_POSTS.ANNOUNCEMENT}</div>
 						<div className="post-content">
-							<div>{moment('2019-12-30').format('MMMM DD, YYYY')}</div>
+							<div>{moment('2020-01-01').format('MMMM DD, YYYY')}</div>
 							<div>
-								{STRINGS.TRADE_POSTS.ANNOUNCEMNT_TXT_4}
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div>
-				<div className="d-flex my-2">
-					<div className="mr-2">
-						<ReactSvg path={ICONS.TRADE_ANNOUNCEMENT} wrapperClassName="trade_post_icon" />
-					</div>
-					<div>
-						<div className="post_header">{STRINGS.TRADE_POSTS.ANNOUNCEMENT}</div>
-						<div className="post-content">
-							<div>{moment('2019-12-16').format('MMMM DD, YYYY')}</div>
-							<div>
-								{STRINGS.TRADE_POSTS.ANNOUNCEMNT_TXT_3}
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div>
-				<div className="d-flex my-2">
-					<div className="mr-2">
-						<ReactSvg path={ICONS.TRADE_ANNOUNCEMENT} wrapperClassName="trade_post_icon" />
-					</div>
-					<div>
-						<div className="post_header">{STRINGS.TRADE_POSTS.ANNOUNCEMENT}</div>
-						<div className="post-content">
-							<div>{moment('2019-11-13').format('MMMM DD, YYYY')}</div>
-							<div>
-								{STRINGS.formatString(
-									STRINGS.TRADE_POSTS.ANNOUNCEMNT_TXT_1,
-									<span>
-										<a
-											href={"https://docs.google.com/forms/u/2/d/1xf1mHxiTW6YUKVEqvfMJZqygiFxm1P6aUDS7uXe5Ouc/edit"}
-											target="_blank"
-											rel="noopener noreferrer"
-											className="blue-link pointer">
-												{STRINGS.TRADE_POSTS.APPLY_TODAY}
-										</a>
-									</span>
-								)}
+								{STRINGS.TRADE_POSTS.DEFAULT_ANNOUNCEMENT}
 							</div>
 						</div>
 					</div>

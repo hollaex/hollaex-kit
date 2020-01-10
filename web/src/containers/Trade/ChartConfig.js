@@ -2,7 +2,10 @@ const UP_COLOR_WHITE = "#d1d4dc";
 const DOWN_COLOR_WHITE = "#000000";
 const UP_COLOR_DARK = "#00A69C";
 const DOWN_COLOR_DARK = "#EE4036";
-
+export const TOOLBAR_BG = {
+	dark: '#202020',
+	white: '#ffffff'
+};
 
 export const WHITE_THEME = {
 	"paneProperties.background": "#ffffff",
@@ -151,13 +154,13 @@ export const DARK_THEME = {
 };
 
 export const VOLUME_WHITE = {
-	"volume.volume.color.0": UP_COLOR_WHITE,
-	"volume.volume.color.1": DOWN_COLOR_WHITE,
+	"volume.volume.color.0": DOWN_COLOR_WHITE,
+	"volume.volume.color.1": UP_COLOR_WHITE,
 	"volume.volume.transparency": 50,
 };
 
 export const VOLUME_DARK = {
-	"volume.volume.color.0": UP_COLOR_DARK,
-	"volume.volume.color.1": DOWN_COLOR_DARK,
+	"volume.volume.color.0": DOWN_COLOR_DARK,
+	"volume.volume.color.1": UP_COLOR_DARK,
 	"volume.volume.transparency": 50,
 };
