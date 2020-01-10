@@ -466,7 +466,7 @@ class AppBar extends Component {
 											path={ICONS.SIDEBAR_TRADING_ACTIVE}
 											wrapperClassName="quicktrade_icon mx-1"
 										/>
-										<div className="d-flex align-items-center">
+										<div className="d-flex align-items-center overflow">
 											{STRINGS.PRO_TRADE}
 										</div>
 									</div>
@@ -481,7 +481,7 @@ class AppBar extends Component {
 											path={ICONS.QUICK_TRADE_TAB_ACTIVE}
 											wrapperClassName="quicktrade_icon"
 										/>
-										<div className="d-flex align-items-center">
+										<div className="d-flex align-items-center overflow">
 											{STRINGS.QUICK_TRADE}
 										</div>
 									</div>

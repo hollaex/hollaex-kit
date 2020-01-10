@@ -3,9 +3,7 @@ import { Router, Route, browserHistory } from 'react-router';
 import ReactGA from 'react-ga';
 import { isMobile } from 'react-device-detect';
 
-import {
-	PRO_VERSION_REDIRECT,
-} from './config/constants';
+import { IS_PRO_VERSION, PRO_VERSION_REDIRECT } from './config/constants';
 
 import {
 	App as Container,
@@ -16,6 +14,7 @@ import {
 	Signup,
 	VerificationEmailRequest,
 	VerificationEmailCode,
+	Home,
 	Deposit,
 	Withdraw,
 	TransactionsHistory,
@@ -57,13 +56,11 @@ import {
 import { getLanguage, getInterfaceLanguage } from './utils/string';
 import { checkUserSessionExpired } from './utils/utils';
 
-
 ReactGA.initialize('UA-154626247-1');
 browserHistory.listen((location) => {
 	ReactGA.set({ page: window.location.pathname });
 	ReactGA.pageview(window.location.pathname);
 });
-
 
 let lang = getLanguage();
 if (!lang) {
@@ -97,19 +94,19 @@ function requireAuth(nextState, replace) {
 }
 
 function loggedIn(nextState, replace) {
-	let service = nextState.location.query
-		&& nextState.location.query.service
-		? nextState.location.query.service
-		: '';
+	let service =
+		nextState.location.query && nextState.location.query.service
+			? nextState.location.query.service
+			: '';
 	if (isLoggedIn() && !service) {
 		// if (isMobile) {
 		// 	replace({
 		// 		pathname: '/home'
 		// 	});
 		// } else {
-			replace({
-				pathname: '/trade/xht-usdt'
-			});
+		replace({
+			pathname: '/trade/xht-usdt'
+		});
 		// }
 	}
 }
@@ -134,9 +131,7 @@ const createLocalizedRoutes = ({ router, routeParams }) => {
 };
 
 const NotFound = ({ router }) => {
-	router.replace(
-		PRO_VERSION_REDIRECT
-	);
+	router.replace(PRO_VERSION_REDIRECT);
 	return <div />;
 };
 
@@ -157,16 +152,16 @@ function withAdminProps(Component, key) {
 		}
 		return 0;
 	});
-	return function (matchProps) {
+	return function(matchProps) {
 		return <Component {...adminProps} {...matchProps} />;
 	};
 }
 
 export default (
 	<Router history={browserHistory}>
+		{!IS_PRO_VERSION ? <Route path="/" name="Home" component={Home} /> : null}
 		<Route path="lang/:locale" component={createLocalizedRoutes} />
 		<Route component={AuthContainer} {...noAuthRoutesCommonProps}>
-	    	{isMobile ? <Route path="/" name="Login" component={Login} {...noAuthRoutesCommonProps} /> : null}
 			<Route path="login" name="Login" component={Login} />
 			<Route path="signup" name="signup" component={Signup} />
 		</Route>
@@ -181,11 +176,7 @@ export default (
 				name="Reset Password"
 				component={ResetPassword}
 			/>
-			<Route
-				path="verify"
-				name="Verify"
-				component={VerificationEmailRequest}
-			/>
+			<Route path="verify" name="Verify" component={VerificationEmailRequest} />
 			<Route
 				path="verify/:code"
 				name="verifyCode"
@@ -217,22 +208,26 @@ export default (
 				path="security"
 				name="Security"
 				component={Account}
-				onEnter={requireAuth} />
+				onEnter={requireAuth}
+			/>
 			<Route
 				path="developers"
 				name="Developers"
 				component={Account}
-				onEnter={requireAuth} />
+				onEnter={requireAuth}
+			/>
 			<Route
 				path="settings"
 				name="Settings"
 				component={Account}
-				onEnter={requireAuth} />
+				onEnter={requireAuth}
+			/>
 			<Route
 				path="summary"
 				name="Summary"
 				component={Account}
-				onEnter={requireAuth} />
+				onEnter={requireAuth}
+			/>
 			<Route
 				path="verification"
 				name="Verification"
@@ -270,22 +265,13 @@ export default (
 				onEnter={requireAuth}
 			/>
 			<Route path="trade/:pair" name="Trade" component={Trade} />
-			<Route
-				path="trade/add/tabs"
-				name="Trade Tabs"
-				component={AddTradeTabs}
-			/>
+			<Route path="trade/add/tabs" name="Trade Tabs" component={AddTradeTabs} />
 			<Route
 				path="quick-trade/:pair"
 				name="Quick Trade"
 				component={QuickTrade}
 			/>
-			<Route
-				path="chat"
-				name="Chat"
-				component={Chat}
-				onEnter={requireAuth}
-			/>
+			<Route path="chat" name="Chat" component={Chat} onEnter={requireAuth} />
 			<Route
 				path="confirm-withdraw/:token"
 				name="ConfirmWithdraw"

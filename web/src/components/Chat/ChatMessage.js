@@ -78,7 +78,7 @@ class ChatMessageWithText extends Component {
 		return (
 			<div className={classnames('nonmobile')}>
 				<div className="d-flex">
-					<div className="mx-2 my-1">
+					<div className="mx-2">
 						{verification_level >= 3
 							? <ReactSVG
 								path={icon}

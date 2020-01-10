@@ -24,7 +24,7 @@ $no-background--color: white;
 	// background-repeat: repeat;
 	// background-size: $background-patter--size;
 
-	.home_container-content {
+	// .home_container-content {
 		// .app_footer-container {
 		// 	background-color: $footer-background-color !important;
 			
@@ -55,7 +55,7 @@ $no-background--color: white;
 		// 		}
 		// 	}
 		// }
-	}
+	// }
 	
 	.exchange-expired {
 		background-color: $colors-notifications-red !important;
@@ -134,7 +134,7 @@ $no-background--color: white;
 
 		.home-card-text-container {
 			font-size: $font-size-subtext;
-
+			color:$colors-black;
 			.home-card-title {
 				margin: 0.5rem 0 0.25rem;
 				font-weight: bold;
@@ -170,6 +170,7 @@ $no-background--color: white;
 		text-align: center;
 		text-transform: uppercase;
 		font-weight: bold;
+		color:$colors-black;
 		background-color: white;
 		&.contrast {
 			background-color: $colors-main-black;
