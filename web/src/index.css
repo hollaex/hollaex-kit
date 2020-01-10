@@ -993,6 +993,8 @@ table th {
   border-color: #f9f9f9; }
   .dark-theme.home_container .home-card-container .home-card-icon-wrapper > div .home-card-icon {
     fill: #f9f9f9; }
+  .dark-theme.home_container .home-card-container .home-card-text-container {
+    color: #f9f9f9; }
 
 .dark-theme.home_container .buttons-section--button {
   border-color: #f9f9f9; }
