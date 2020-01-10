@@ -5,6 +5,7 @@ import { isMobile } from 'react-device-detect';
 import { SOCIAL_ICONS } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 import { HOLLAEX_LOGO } from '../../config/constants';
+import moment from 'moment';
 
 // const LINKS = [
 //     {
@@ -26,7 +27,8 @@ const generateSectionsText = (strings, theme) => {
             TITLE: SECTIONS.SECTION_4_TITLE,
             LINKS: [
                 { text: SECTIONS.SECTION_4_LINK_1, link: 'https://hollaex.com/login' },
-                { text: SECTIONS.SECTION_4_LINK_2, link: 'https://hollaex.com/signup' }
+                { text: SECTIONS.SECTION_4_LINK_2, link: 'https://hollaex.com/signup' },
+                { text: SECTIONS.SECTION_2_TITLE, link: 'http://info.hollaex.com' }
             ]
         },
         {
@@ -40,6 +42,10 @@ const generateSectionsText = (strings, theme) => {
                     text: SECTIONS.SECTION_1_LINK_2,
                     link: 'https://info.hollaex.com/hc/en-us/articles/360038833974-Terms-of-Service'
                 },
+                {
+                    text: SECTIONS.SECTION_1_LINK_3,
+                    link: 'https://info.hollaex.com/hc/en-us/articles/360039160974-Privacy-Policy'
+                }
             ]
         },
         {
@@ -62,6 +68,10 @@ const generateSectionsText = (strings, theme) => {
         {
             TITLE: SECTIONS.SECTION_5_TITLE,
             LINKS: [
+                {
+                    text: SECTIONS.SECTION_5_LINK_4,
+                    link: 'https://info.hollaex.com/hc/en-us/categories/360002706554-FAQ'
+                },
                 {
                     text: SECTIONS.SECTION_5_LINK_1,
                     link: 'https://hollaex.com/docs/whitepaper.html'
@@ -124,7 +134,7 @@ const AppFooter = ({
                         'footer-links-section'
                     )}
                 >
-                    <div className={classnames('d-flex', 'flex-1', {'flex-column': isMobile } )}>
+                    <div className={classnames('d-flex', 'flex-1', { 'flex-column': isMobile })}>
                         {generateSectionsText(STRINGS, theme).map(({ TITLE, LINKS }, index) => (
                             <div
                                 key={index}
@@ -205,7 +215,12 @@ const AppFooter = ({
                 )}
             >
                 <div className="d-flex my-2" />
-                <div>{STRINGS.FOOTER.FOOTER_COPYRIGHT}</div>
+                <div>
+                    {STRINGS.formatString(
+                        STRINGS.FOOTER.FOOTER_COPYRIGHT,
+                        moment(new Date()).format('YYYY')
+                    )}
+                </div>
             </div>
         </div>
     );

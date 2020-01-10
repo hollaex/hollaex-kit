@@ -84,14 +84,14 @@ export default {
 			{ key: 'ko', label: '한국어' }
 		],
 		FOOTER_COPYRIGHT:
-			'	Copyright 2019 ⓒ HollaEx Foundation. All rights reserved',
+			'	Copyright {0} ⓒ HollaEx Foundation. All rights reserved',
 		SECTIONS: {
 			SECTION_1_TITLE: 'ABOUT',
 			SECTION_1_LINK_1: 'About Us',
 			SECTION_1_LINK_2: 'Terms of Use',
 			SECTION_1_LINK_3: 'Privacy Policy',
 			SECTION_1_LINK_4: 'Contact Us',
-			SECTION_2_TITLE: 'INFORMATION',
+			SECTION_2_TITLE: 'Information',
 			SECTION_2_LINK_1: 'Blog',
 			SECTION_2_LINK_2: 'Contact Us',
 			SECTION_2_LINK_3: 'Career',
@@ -113,12 +113,13 @@ export default {
 			SECTION_5_LINK_1: 'HollaEx Whitepaper',
 			SECTION_5_LINK_2: 'HollaEx Token (XHT) ',
 			SECTION_5_LINK_3: 'HollaEx Kit',
+			SECTION_5_LINK_4: 'FAQ', // new
 			SECTION_6_TITLE: 'SOCIAL',
 			SECTION_6_LINK_1: 'Twitter',
 			SECTION_6_LINK_2: 'Telegram'
 		},
 		XHT_DESCRIPTION:
-			'HollaEx is an open cryptocurrency exchange built based on HollaEx Kit technology developed and managed by bitHolla and is a live example of HollaEx exchange software kit that allows anyone to run there own exchange exactly like this one. To start your own exchange like this {1}. The HollaEx Token is the native token of HollaEx and is traded on the HollaEx exchange through a wave auction system. For more information on how the auction works {0}',
+			'HollaEx is an open cryptocurrency exchange built based on HollaEx Kit technology developed and managed by bitHolla and is a live example of HollaEx exchange software kit that allows anyone to run their own exchange exactly like this one. To start your own exchange like this {1}. The HollaEx Token is the native token of HollaEx and is traded on the HollaEx exchange through a wave auction system. For more information on how the auction works {0}',
 		CLICK_HERE: 'click here',
 		VISIT_HERE: 'visit here'
 	},
@@ -630,9 +631,9 @@ export default {
 		},
 		AUDIO_CUE_FORM: {
 			ORDERS_COMPLETED_AUDIO:
-				'Play an audio cue when one of your orders is fully filled',
+				'Play an audio cue when your order has been filled',
 			ORDERS_PARTIAL_AUDIO:
-				'Play an audio cue when one of your orders is partially filled',
+				'Play an audio cue when your order has been partially filled',
 			PUBLIC_TRADE_AUDIO: 'Play an audio cue on every public trade'
 		},
 		RISK_MANAGEMENT: {

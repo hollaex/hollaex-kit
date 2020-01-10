@@ -16,7 +16,7 @@ const ThemeSwitcher = ({ selected, options = [], toggle }) => {
                         'direction_ltr'
                     )}
                 >
-                    <div className={classnames({ selected: options[0].value === 'white' })}>
+                    <div className={classnames('selected', selected)}>
                         <div
                             className={'app-bar-account-content app-bar-account-moon-content'}
                         >
@@ -35,7 +35,7 @@ const ThemeSwitcher = ({ selected, options = [], toggle }) => {
                     >
                         <div className="toggle-action_button-display" />
                     </div>
-                    <div className={classnames({ selected: options[1].value === 'dark' })}>
+                    <div className={classnames('selected', selected)}>
                         <div
                             className={'app-bar-account-content app-bar-account-moon-content'}
                         >

@@ -372,7 +372,9 @@ class AppBar extends Component {
 			const tabContainer = document.getElementById('trade-tab-0');
 			if (tabContainer) {
 				const tabBounds = tabContainer.getBoundingClientRect();
-				const tabTotal = documentBounds.width - (tradeBounds.width + homeBounds.width + (tabBounds.width / 2));
+				const tabTotal =
+					documentBounds.width -
+					(tradeBounds.width + homeBounds.width + tabBounds.width / 2);
 				tabCount = math.floor(tabTotal / tabBounds.width);
 			}
 			this.setState({ tabCount });
@@ -400,7 +402,7 @@ class AppBar extends Component {
 			walletPending,
 			tabCount
 		} = this.state;
-    
+
 		let pair = '';
 		if (Object.keys(pairs).length) {
 			pair = Object.keys(pairs)[0];
@@ -434,8 +436,9 @@ class AppBar extends Component {
 			>
 				<div className="d-flex">
 					<div
-						id='home-nav-container'
-						className="d-flex align-items-center justify-content-center h-100">
+						id="home-nav-container"
+						className="d-flex align-items-center justify-content-center h-100"
+					>
 						{this.renderIcon(isHome, theme)}
 					</div>
 					{!isHome && (
@@ -457,7 +460,7 @@ class AppBar extends Component {
 				) : null}
 				{!isHome ? (
 					isLoggedIn() ? (
-						<div id='trade-nav-container' className="d-flex app-bar-account">
+						<div id="trade-nav-container" className="d-flex app-bar-account">
 							<div className="d-flex app_bar-quicktrade-container">
 								<ThemeSwitcher
 									selected={selected}
@@ -492,7 +495,7 @@ class AppBar extends Component {
 											path={ICONS.SIDEBAR_TRADING_ACTIVE}
 											wrapperClassName="quicktrade_icon mx-1"
 										/>
-										<div className="d-flex align-items-center">
+										<div className="d-flex align-items-center overflow">
 											{STRINGS.PRO_TRADE}
 										</div>
 									</div>
@@ -507,7 +510,7 @@ class AppBar extends Component {
 											path={ICONS.QUICK_TRADE_TAB_ACTIVE}
 											wrapperClassName="quicktrade_icon"
 										/>
-										<div className="d-flex align-items-center">
+										<div className="d-flex align-items-center overflow">
 											{STRINGS.QUICK_TRADE}
 										</div>
 									</div>
