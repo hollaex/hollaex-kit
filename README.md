@@ -17,13 +17,6 @@ git clone https://github.com/bitholla/hollaex-kit.git
 bash install.sh
 ```
 
-OR
-
-```
-curl -L https://raw.githubusercontent.com/bitholla/hollaex-cli/master/install.sh | bash
-
-hollaex init
-```
 Read more on our [Docs](https://docs.bitholla.com/hollaex-kit/get-started)!
 
 ## Community
