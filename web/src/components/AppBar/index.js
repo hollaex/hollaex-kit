@@ -43,7 +43,7 @@ class AppBar extends Component {
 		walletPending: 0,
 		selected: '',
 		options: [{ value: 'white' }, { value: 'dark' }],
-		tabCount: 0
+		tabCount: 1
 	};
 
 	componentDidMount() {
@@ -364,7 +364,7 @@ class AppBar extends Component {
 	calculateTabs = () => {
 		const tradeNav = document.getElementById('trade-nav-container');
 		const homeNav = document.getElementById('home-nav-container');
-		let tabCount = 0;
+		let tabCount = 1;
 		if (tradeNav && homeNav) {
 			const tradeBounds = tradeNav.getBoundingClientRect();
 			const homeBounds = homeNav.getBoundingClientRect();

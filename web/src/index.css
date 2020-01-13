@@ -854,15 +854,29 @@ table th {
 .dark-theme .tokens-icon-svg path, .dark-theme .tokens-icon-svg rect {
   fill: #808080; }
 
+.layout-mobile .user_security-wrapper .warning_text {
+  font-size: 12px !important; }
+
+.layout-mobile .checkbutton-wrapper .checkbutton-input-wrapper .checkbutton-input-wrapper--label {
+  font-size: 12px;
+  color: #0066B4; }
+
 .layout-mobile .otp_form-wrapper {
   min-width: auto;
   width: auto; }
+  .layout-mobile .otp_form-wrapper .otp_form-section-wrapper .otp_form-section-title {
+    font-size: 14px; }
+  .layout-mobile .otp_form-wrapper .otp_form-section-wrapper .otp_form-section-text {
+    font-size: 12px !important; }
   .layout-mobile .otp_form-wrapper .otp_form-section-content .qr-code-wrapper {
     width: 15rem;
     height: 15rem; }
     .layout-mobile .otp_form-wrapper .otp_form-section-content .qr-code-wrapper canvas {
       width: 14rem !important;
       height: 14rem !important; }
+
+.layout-mobile .accordion_section_content .warning_text {
+  font-size: 12px !important; }
 
 .signup_success-wrapper {
   text-align: center; }
@@ -1020,6 +1034,9 @@ table th {
 .layout-mobile .currency-list-container .balance-small {
   font-size: 1.5rem; }
 
+.layout-mobile .currency-list-container .button-container .exir-button {
+  font-size: 12px !important; }
+
 .layout-mobile .wallet-container .action_notification-wrapper .action_notification-text {
   font-size: 1.2rem !important; }
 
@@ -1048,6 +1065,12 @@ table th {
   width: 2.5rem;
   height: 2.5rem;
   font-size: 0.8rem; }
+
+.layout-mobile .wallet-container .wallet-assets_block .wallet-assets_block-table .table-bottom-border {
+  font-size: 12px !important; }
+
+.layout-mobile .wallet-container .wallet-assets_block .wallet-assets_block-table tfoot {
+  font-size: 10px !important; }
 
 .wallet-container {
   border-top: 1px solid #212121; }
@@ -1268,23 +1291,26 @@ table th {
     width: 24rem !important;
     height: 24rem !important; }
   .layout-mobile .presentation_container .inner_container .qr_code-wrapper .qr-text {
-    font-size: 1.2rem; }
+    font-size: 10px !important; }
 
 .layout-mobile .presentation_container .inner_container .information_block .information_block-text_wrapper .title {
-  font-size: 1.75rem; }
+  font-size: 14px; }
 
 .layout-mobile .presentation_container .inner_container .information_block .information_block-text_wrapper .text {
-  font-size: 1.2rem; }
+  font-size: 12px !important; }
+
+.layout-mobile .presentation_container .inner_container .field-label, .layout-mobile .presentation_container .inner_container .field-children,
+.layout-mobile .presentation_container .inner_container .input_field-input {
+  font-size: 12px !important; }
 
 .layout-mobile .presentation_container .inner_container .field-error-content {
   font-size: 1.2rem; }
 
-.layout-mobile .presentation_container .inner_container .field-label,
-.layout-mobile .presentation_container .inner_container .input_field-input {
-  font-size: 1.2rem; }
-
 .layout-mobile .presentation_container .inner_container .action_notification-wrapper .action_notification-text {
   font-size: 1.2rem; }
+
+.layout-mobile .presentation_container .inner_container .exir-button {
+  font-size: 12px !important; }
 
 .layout-mobile .review_email-wrapper {
   margin: 0px auto !important; }
@@ -2244,20 +2270,20 @@ table th {
 .sell {
   color: #6496AA; }
 
-.trade_history-row.sell {
-  color: #000000; }
-
-.trade_history-row.buy {
-  color: #878787; }
-
 .trade_history-row .trade_history-icon {
   width: 1rem;
   margin-right: 3px; }
-  .trade_history-row .trade_history-icon.sell svg .up-icon,
-  .trade_history-row .trade_history-icon.sell svg .down-icon {
+
+.trade_history-row.sell {
+  color: #000000; }
+  .trade_history-row.sell .trade_history-icon svg .up-icon,
+  .trade_history-row.sell .trade_history-icon svg .down-icon {
     fill: #000000; }
-  .trade_history-row .trade_history-icon.buy svg .up-icon,
-  .trade_history-row .trade_history-icon.buy svg .down-icon {
+
+.trade_history-row.buy {
+  color: #878787; }
+  .trade_history-row.buy .trade_history-icon svg .up-icon,
+  .trade_history-row.buy .trade_history-icon svg .down-icon {
     fill: #6496AA; }
 
 .layout-mobile .trade_active_orders-wrapper {
@@ -2324,17 +2350,15 @@ table th {
 
 .dark-theme .trade_history-row.sell {
   color: #EE4036; }
+  .dark-theme .trade_history-row.sell .trade_history-icon svg .up-icon,
+  .dark-theme .trade_history-row.sell .trade_history-icon svg .down-icon {
+    fill: #EE4036; }
 
 .dark-theme .trade_history-row.buy {
   color: #00A69C; }
-
-.dark-theme .trade_history-row .trade_history-icon.sell svg .up-icon,
-.dark-theme .trade_history-row .trade_history-icon.sell svg .down-icon {
-  fill: #EE4036; }
-
-.dark-theme .trade_history-row .trade_history-icon.buy svg .up-icon,
-.dark-theme .trade_history-row .trade_history-icon.buy svg .down-icon {
-  fill: #00A69C; }
+  .dark-theme .trade_history-row.buy .trade_history-icon svg .up-icon,
+  .dark-theme .trade_history-row.buy .trade_history-icon svg .down-icon {
+    fill: #00A69C; }
 
 .dark-theme .cancel-cross-1 {
   fill: #808080; }
@@ -2496,6 +2520,13 @@ table th {
 .dark-theme .verification_link {
   color: #0066B4; }
 
+.layout-mobile .verification_container .verification-info-txt {
+  width: 100%;
+  font-size: 12px !important; }
+
+.layout-mobile .verification_container .exir-button {
+  font-size: 12px !important; }
+
 .layout-mobile .mobile-bar-tab .bartab-text-wrapper {
   font-size: 1.5rem;
   line-height: 1.5rem; }
@@ -2503,6 +2534,20 @@ table th {
 .layout-mobile .presentation_container.verification_container {
   padding-top: 0 !important;
   max-height: calc(100vh - 10rem); }
+  .layout-mobile .presentation_container.verification_container .header-content {
+    font-size: 12px !important; }
+
+.layout-mobile .header_title-wrapper .header_title-text {
+  font-size: 14px; }
+
+.layout-mobile .header_title-wrapper .header_title-children {
+  font-size: 12px !important; }
+
+.layout-mobile .field-wrapper .field-content .field-label, .layout-mobile .field-wrapper .field-content .field-children, .layout-mobile .field-wrapper .field-content .inner_container, .layout-mobile .field-wrapper .field-content .input_field-input, .layout-mobile .field-wrapper .field-content .placeholder {
+  font-size: 12px !important; }
+
+.layout-mobile .content-text {
+  font-size: 12px; }
 
 .dark-theme .account-svg-1 {
   fill: #808080; }
@@ -2726,6 +2771,9 @@ table th {
     font-size: 12px; }
   .layout-mobile .summary-container .trader-account-wrapper .summary-block_wrapper .trade-account-secondary-txt .trade-account-link {
     font-size: 12px; }
+
+.layout-mobile .summary-container .account-details-wrapper .requirement-content {
+  font-size: 12px; }
 
 .layout-mobile .summary-container .summary-section_1,
 .layout-mobile .summary-container .summary-section_2 {
@@ -6237,7 +6285,7 @@ table th {
   width: 38rem; }
 
 .otp_form-title-wrapper {
-  border-top: 1px solid #212121;
+  border-top: 1px solid #777677;
   margin: 1rem 0;
   position: relative; }
   .otp_form-title-wrapper .otp_form-title-text {
@@ -6258,7 +6306,8 @@ table th {
     fill: white; }
 
 .layout-mobile .otp_form-wrapper {
-  flex: 1; }
+  flex: 1;
+  overflow-y: scroll; }
 
 .loader_wrapper {
   position: absolute;

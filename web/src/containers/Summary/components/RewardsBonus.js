@@ -29,7 +29,7 @@ const RewardsBonus = ({
                     wrapperClassName='trader-wrapper-icon'
                 />
                 <div>
-                    {STRINGS.SUMMARY.COMPLETE_TASK_DESC}
+                   <div className="requirement-content"> {STRINGS.SUMMARY.COMPLETE_TASK_DESC}</div>
                     <div className="mt-2">
                         <a
                             target="blank"

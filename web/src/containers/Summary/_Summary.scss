@@ -248,6 +248,11 @@
                 }
             }
         }
+        .account-details-wrapper {
+            .requirement-content {
+                font-size: $font-size-mobile-txt;
+            }
+        }
         .summary-section_1,
         .summary-section_2 {
             height: auto !important;

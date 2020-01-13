@@ -159,14 +159,12 @@ class UserFees extends Component {
 		if (data.id) {
 			feeUpdate(data.name, formProps)
 				.then((res) => {
-					console.log(res);
 					const newData = this.state.fees.map((item) => {
 						if (item.id === res.id) {
 							return res;
 						}
 						return item;
 					});
-					console.log(newData);
 					this.props.setPairs(newData);
 					this.onCancel();
 					// this.requestFees();
