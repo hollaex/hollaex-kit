@@ -8,6 +8,8 @@ export const NETWORK = process.env.REACT_APP_NETWORK || 'mainnet';
 export const APP_TITLE =
 	process.env.REACT_APP_EXCHANGE_NAME || STRINGS.APP_TITLE;
 
+export const PUBLIC_URL = process.env.REACT_APP_PUBLIC_URL || 'http://localhost:8080';
+
 export const TOKEN_TIME = 24 * 60 * 60 * 1000; // 1 day
 export const SESSION_TIME = 6 * 60 * 60 * 1000; // 6 hour
 
@@ -312,9 +314,9 @@ export const SUMMMARY_ICON = {
 };
 
 export const HOLLAEX_LOGO =
-	process.env.REACT_APP_LOGO_PATH || '/assets/hollaEx_logo-grey.svg';
+	process.env.REACT_APP_LOGO_PATH || '/assets/logo_grey.svg';
 export const HOLLAEX_LOGO_BLACK =
-	process.env.REACT_APP_LOGO_BLACK_PATH || '/assets/hollaEx_logo-blk.svg';
+	process.env.REACT_APP_LOGO_BLACK_PATH || '/assets/logo_black.svg';
 
 export const AUDIOS = {
 	ORDERBOOK_FIELD_UPDATE: '/assets/audio/orderbook_field_update.wav',

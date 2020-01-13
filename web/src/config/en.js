@@ -84,7 +84,7 @@ export default {
 			{ key: 'ko', label: '한국어' }
 		],
 		FOOTER_COPYRIGHT:
-			'	Copyright {0} ⓒ HollaEx Foundation. All rights reserved',
+			'	Copyright {0} ⓒ bitHolla Inc. All rights reserved',
 		SECTIONS: {
 			SECTION_1_TITLE: 'ABOUT',
 			SECTION_1_LINK_1: 'About Us',
@@ -101,9 +101,9 @@ export default {
 			SECTION_3_LINK_3: 'GitHub',
 			SECTION_3_LINK_4: 'Library',
 			SECTION_3_LINK_5: 'API doc',
-			SECTION_3_LINK_6: 'API',
+			SECTION_3_LINK_6: 'Trading API',
 			SECTION_3_LINK_7: 'Developer tools',
-			SECTION_3_LINK_8: 'Server Status',
+			SECTION_3_LINK_8: 'Documnetation',
 			SECTION_4_TITLE: 'EXCHANGE',
 			SECTION_4_LINK_1: 'Login',
 			SECTION_4_LINK_2: 'Register',
@@ -112,14 +112,14 @@ export default {
 			SECTION_5_TITLE: 'RESOURCES',
 			SECTION_5_LINK_1: 'HollaEx Whitepaper',
 			SECTION_5_LINK_2: 'HollaEx Token (XHT) ',
-			SECTION_5_LINK_3: 'HollaEx Kit',
+			SECTION_5_LINK_3: 'GitHub',
 			SECTION_5_LINK_4: 'FAQ', // new
 			SECTION_6_TITLE: 'SOCIAL',
 			SECTION_6_LINK_1: 'Twitter',
 			SECTION_6_LINK_2: 'Telegram'
 		},
 		XHT_DESCRIPTION:
-			'HollaEx is an open cryptocurrency exchange built based on HollaEx Kit technology developed and managed by bitHolla and is a live example of HollaEx exchange software kit that allows anyone to run their own exchange exactly like this one. To start your own exchange like this {1}. The HollaEx Token is the native token of HollaEx and is traded on the HollaEx exchange through a wave auction system. For more information on how the auction works {0}',
+			'HollaEx Kit is an open source trading platform built by bitHolla Inc. You can create and list any digital assets and onboard users to trade on your exchange using this exchange Kit. In order to simply run one yourself {1}.',
 		CLICK_HERE: 'click here',
 		VISIT_HERE: 'visit here'
 	},

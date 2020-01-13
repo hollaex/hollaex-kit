@@ -101,7 +101,7 @@ export default {
 			SECTION_3_LINK_5: 'API문서',
 			SECTION_3_LINK_6: 'API',
 			SECTION_3_LINK_7: 'Developer tools',
-			SECTION_3_LINK_8: '서버상태',
+			SECTION_3_LINK_8: 'Docs',
 			SECTION_4_TITLE: 'EXCHANGE',
 			SECTION_4_LINK_1: '로그인',
 			SECTION_4_LINK_2: '회원가입',
@@ -110,7 +110,7 @@ export default {
 			SECTION_5_TITLE: 'RESOURCES',
 			SECTION_5_LINK_1: 'HollaEx Whitepaper',
 			SECTION_5_LINK_2: 'HollaEx Token(XHT) ',
-			SECTION_5_LINK_3: 'HollaEx Kit',
+			SECTION_5_LINK_3: 'GitHub',
 			SECTION_6_TITLE: 'SOCIAL',
 			SECTION_6_LINK_1: '트위터',
 			SECTION_6_LINK_2: '텔레그램'

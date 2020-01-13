@@ -4,21 +4,8 @@ import ReactSvg from 'react-svg'
 import { isMobile } from 'react-device-detect';
 import { SOCIAL_ICONS } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
-import { HOLLAEX_LOGO } from '../../config/constants';
+import { HOLLAEX_LOGO, PUBLIC_URL } from '../../config/constants';
 import moment from 'moment';
-
-// const LINKS = [
-//     {
-//         icon: SOCIAL_ICONS.FACEBOOK,
-//         link: 'https://facebook.com/bitholla',
-//         type: 'facebook'
-//     },
-//     {
-//         icon: SOCIAL_ICONS.TWITTER,
-//         link: 'https://twitter.com/bitholla',
-//         type: 'twitter'
-//     },
-// ];
 
 const generateSectionsText = (strings, theme) => {
     const { SECTIONS } = strings.FOOTER;
@@ -26,9 +13,8 @@ const generateSectionsText = (strings, theme) => {
         {
             TITLE: SECTIONS.SECTION_4_TITLE,
             LINKS: [
-                { text: SECTIONS.SECTION_4_LINK_1, link: 'https://hollaex.com/login' },
-                { text: SECTIONS.SECTION_4_LINK_2, link: 'https://hollaex.com/signup' },
-                { text: SECTIONS.SECTION_2_TITLE, link: 'http://info.hollaex.com' }
+                { text: SECTIONS.SECTION_4_LINK_1, link: `${PUBLIC_URL}/login` },
+                { text: SECTIONS.SECTION_4_LINK_2, link: `${PUBLIC_URL}/signup` }
             ]
         },
         {
@@ -36,21 +22,25 @@ const generateSectionsText = (strings, theme) => {
             LINKS: [
                 {
                     text: SECTIONS.SECTION_1_LINK_4,
-                    link: 'https://info.hollaex.com/hc/en-us/articles/360039155994-Contact-Us'
+                    link: 'https://bitholla.com/contact'
                 },
                 {
                     text: SECTIONS.SECTION_1_LINK_2,
-                    link: 'https://info.hollaex.com/hc/en-us/articles/360038833974-Terms-of-Service'
+                    link: 'https://bitholla.com/terms-of-use'
                 },
                 {
                     text: SECTIONS.SECTION_1_LINK_3,
-                    link: 'https://info.hollaex.com/hc/en-us/articles/360039160974-Privacy-Policy'
+                    link: 'https://bitholla.com/privacy-policy'
                 }
             ]
         },
         {
             TITLE: SECTIONS.SECTION_3_TITLE,
             LINKS: [
+                {
+                    text: SECTIONS.SECTION_5_LINK_3,
+                    link: 'https://github.com/bitholla/hollaex-kit'
+                },
                 {
                     text: SECTIONS.SECTION_3_LINK_6,
                     link: 'https://apidocs.hollaex.com'
@@ -61,17 +51,13 @@ const generateSectionsText = (strings, theme) => {
                 },
                 {
                     text: SECTIONS.SECTION_3_LINK_8,
-                    link: 'https://status.hollaex.com'
+                    link: 'https://docs.bitholla.com'
                 },
             ]
         },
         {
             TITLE: SECTIONS.SECTION_5_TITLE,
             LINKS: [
-                {
-                    text: SECTIONS.SECTION_5_LINK_4,
-                    link: 'https://info.hollaex.com/hc/en-us/categories/360002706554-FAQ'
-                },
                 {
                     text: SECTIONS.SECTION_5_LINK_1,
                     link: 'https://hollaex.com/docs/whitepaper.html'
@@ -81,8 +67,8 @@ const generateSectionsText = (strings, theme) => {
                     link: 'http://bitholla.com/xht'
                 },
                 {
-                    text: SECTIONS.SECTION_5_LINK_3,
-                    link: 'https://github.com/bitholla/hollaex-kit'
+                    text: SECTIONS.SECTION_3_LINK_2,
+                    link: 'https://forum.bitholla'
                 },
             ]
         },
@@ -92,12 +78,7 @@ const generateSectionsText = (strings, theme) => {
                 {
                     text: SECTIONS.SECTION_6_LINK_1,
                     icon: SOCIAL_ICONS.TWITTER_DARK,
-                    link: ' https://twitter.com/hollaex'
-                },
-                {
-                    text: SECTIONS.SECTION_6_LINK_2,
-                    icon: SOCIAL_ICONS.TELEGRAM_BLUE,
-                    link: 'https://t.me/hollaex'
+                    link: ' https://twitter.com/bitholla'
                 },
             ]
         },
