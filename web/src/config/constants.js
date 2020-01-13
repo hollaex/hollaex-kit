@@ -8,6 +8,8 @@ export const NETWORK = process.env.REACT_APP_NETWORK || 'mainnet';
 export const APP_TITLE =
 	process.env.REACT_APP_EXCHANGE_NAME || STRINGS.APP_TITLE;
 
+export const PUBLIC_URL = process.env.REACT_APP_PUBLIC_URL || 'http://localhost:8080';
+
 export const TOKEN_TIME = 24 * 60 * 60 * 1000; // 1 day
 export const SESSION_TIME = 6 * 60 * 60 * 1000; // 6 hour
 
@@ -43,8 +45,10 @@ export const ICONS = {
 	XRP_ICON_DARK: '/assets/icons/xrp-icon-01.svg',
 	XRP_NAV_ICON: '/assets/icons/xrp-icon-01.svg',
 	KRW_ICON: '/assets/icons/krw-icon-01.svg',
-	HEX_ICON: '/assets/icons/hex-icon.svg',
-	HEX_ICON_DARK: '/assets/icons/hex-icon-dark.svg',
+	XHT_ICON: '/assets/icons/xht-icon.svg',
+	XHT_ICON_DARK: '/assets/icons/xht-icon-dark.svg',
+	XMR_ICON: '/assets/icons/xmr-icon.svg',
+	XMR_ICON_DARK: '/assets/icons/xmr-icon-dark.svg',
 	USDT_ICON: '/assets/icons/usdt-icon.svg',
 	CHECK: '/assets/images/Orderbook scrolling-01.svg',
 	DARK_CHECK: '/assets/images/dark-Orderbook-scrolling-01.svg',
@@ -163,6 +167,10 @@ export const ICONS = {
 	SIDEBAR_WALLET_INACTIVE: '/assets/images/wallet.svg',
 	SIDEBAR_ACCOUNT_ACTIVE: '/assets/images/account_2-active.svg',
 	SIDEBAR_ACCOUNT_INACTIVE: '/assets/images/account_2-inactive.svg',
+	SIDEBAR_HOME_ACTIVE: '/assets/images/home-active.svg', // new
+	SIDEBAR_HOME_ACTIVE_INACTIVE: '/assets/images/home-tab-inactive.svg', // new
+	SIDEBAR_POST_ACTIVE: '/assets/images/post-active.svg',
+	SIDEBAR_POST_INACTIVE: '/assets/imagespost-inactive.svg',
 	SIDEBAR_TRADING_ACTIVE: '/assets/images/trade-active.svg',
 	SIDEBAR_TRADING_INACTIVE: '/assets/images/trade-inactive.svg',
 	SIDEBAR_QUICK_TRADING_ACTIVE:
@@ -238,6 +246,7 @@ export const ICONS = {
 		'/assets/images/risk-manage-pop-warning.svg',
 	REFER_ICON: '/assets/images/refer-icon.svg',
 	EDIT_ICON: '/assets/images/edit-icon.svg',
+	STAKETOKEN_ICON: '/assets/images/stake.svg',
 	DEFAULT_ICON: '/assets/icons/missing-coin-light.svg',
 	DEFAULT_ICON_DARK: '/assets/icons/missing-coin-dark.svg',
 	EXPIRED_ICON: '/assets/images/expired.svg',
@@ -245,15 +254,42 @@ export const ICONS = {
 	LEVEL_ACCOUNT_ICON_2: '/assets/images/level-2.svg',
 	LEVEL_ACCOUNT_ICON_3: '/assets/images/level-3.svg',
 	LEVEL_ACCOUNT_ICON_4: '/assets/images/level-4.svg',
-	TRADE_ANNOUNCEMENT: '/assets/images/annoucement.svg',
+	LEVEL_ACCOUNT_ICON_5: '/assets/images/level-5.svg',
+	LEVEL_ACCOUNT_ICON_6: '/assets/images/level-6.svg',
+	LEVEL_ACCOUNT_ICON_7: '/assets/images/level-7.svg',
+	LEVEL_ACCOUNT_ICON_8: '/assets/images/level-8.svg',
+	LEVEL_ACCOUNT_ICON_9: '/assets/images/level-9.svg',
+	LEVEL_ACCOUNT_ICON_10: '/assets/images/level-10.svg',
+	HAP_ACCOUNT_ICON: '/assets/icons/hap-account-icon.svg',
+	ACCOUNT_SUMMARY: '/assets/icons/account-icon-summary.svg',
+	XHT_COIN_STACK: '/assets/images/XHT-coin-stack.svg',
+	XHT_DOCS: '/assets/images/XHT-docs.svg',
+	XHT_WAVES: '/assets/images/wave-icon.svg',
+	XHT_EMAIL: '/assets/images/XHT-email.svg',
+	XHT_FAQ: '/assets/images/XHT-FAQ.svg',
+	XHT_PDF: '/assets/images/XHT-pdf.svg',
+	REFERRAL_SUCCESS: '/assets/icons/send-request.svg',
+	INCOMING_WAVE: '/assets/images/incoming-wave.svg',
+	TRADE_ANNOUNCEMENT: '/assets/images/announcement.svg',
 	CHAT_EMOJI: '/assets/icons/emoji-face-icon.svg',
+	TRADE_SETTINGS: '/assets/images/spanner.svg',
+	TRADE_WAVES: '/assets/images/wave-icon.svg',
+	XHT_LOGO_LIGHT: '/assets/icons/XHT-logo-light.svg',
+	XHT_LOGO_DARK: '/assets/icons/XHT-logo-dark.svg',
+	BONUS_OFFERING: '/assets/icons/bonus_offering.svg',
+	UP_ARROW: '/assets/images/buy-trade.svg',
+	DOWN_ARROW: '/assets/images/sell-trade.svg',
+	MOON_THEME: '/assets/icons/moon-theme.svg',
+	SUN_THEME: '/assets/icons/sun-theme.svg'
 };
 
 export const SOCIAL_ICONS = {
 	FACEBOOK: '/assets/icons/social-grey-icons.svg',
-	TWIITER: '/assets/icons/social-grey-icons02.svg',
+	TWITTER: '/assets/icons/social-grey-icons02.svg',
+	TWITTER_DARK: '/assets/icons/twitter-dark.svg',
 	INSTAGRAM: '/assets/icons/social-grey-icons03.svg',
 	TELEGRAM: '/assets/icons/social-grey-icons04.svg',
+	TELEGRAM_BLUE: '/assets/icons/telegram.svg',
 	GOOGLE: '/assets/icons/google.png'
 };
 
@@ -278,9 +314,9 @@ export const SUMMMARY_ICON = {
 };
 
 export const HOLLAEX_LOGO =
-	process.env.REACT_APP_LOGO_PATH || '/assets/hollaEx_logo-grey.svg';
+	process.env.REACT_APP_LOGO_PATH || '/assets/logo_grey.svg';
 export const HOLLAEX_LOGO_BLACK =
-	process.env.REACT_APP_LOGO_BLACK_PATH || '/assets/hollaEx_logo-blk.svg';
+	process.env.REACT_APP_LOGO_BLACK_PATH || '/assets/logo_black.svg';
 
 export const AUDIOS = {
 	ORDERBOOK_FIELD_UPDATE: '/assets/audio/orderbook_field_update.wav',
@@ -423,7 +459,8 @@ export const BALANCE_ERROR = 'Insufficient balance to perform the order';
 
 export const CAPTCHA_SITEKEY =
 	process.env.REACT_APP_CAPTCHA_SITE_KEY ||
-	'6LeuOKoUAAAAAGVoZcSWXJH60GHt4crvIaNXn1YA'; // default recaptcha v3
+	'6LeuOKoUAAAAAGVoZcSWXJH60GHt4crvIaNXn1YA'; // default recaptcha v3; // default recaptcha v3
+
 export const CAPTCHA_TIMEOUT = process.env.REACT_APP_CAPTCHA_TIMEOUT
 	? parseInt(process.env.REACT_APP_CAPTCHA_TIMEOUT, 10)
 	: 2000;
@@ -441,7 +478,7 @@ export const DEFAULT_VERSION_REDIRECT = '/';
 export const PRO_URL = process.env.REACT_APP_PRO_URL || 'https://hollaex.com';
 
 // minimum level for a user to be able to create api tokens
-export const MIN_LEVEL_FOR_TOKENS = 2;
+export const MIN_LEVEL_FOR_TOKENS = 1;
 
 const THEME_COLOR = localStorage.getItem('theme');
 export const THEMES = ['dark', 'white'];
@@ -467,6 +504,12 @@ export const FEES_LIMIT_SITE_URL = 'https://www.hollaex.com';
 export const API_DOCS_URL = 'https://docs.bitholla.com/';
 export const EXCHANGE_URL = 'https://dash.bitholla.com/';
 export const EXCHANGE_EXPIRY_DAYS = 15;
+export const AFFILIATION_APPLY_URL =
+	'https://docs.google.com/forms/d/1xf1mHxiTW6YUKVEqvfMJZqygiFxm1P6aUDS7uXe5Ouc/viewform?ts=5d9da3d5&edit_requested=true';
+export const SUPPORT_HELP_URL =
+	'https://info.hollaex.com/hc/en-us/requests/new';
+export const UPGRADE_ACC_URL =
+	'https://info.hollaex.com/hc/en-us/articles/360040859954-Upgrading-account-level';
 
 // export const TRADING_ACCOUNT_TYPE = {
 // 	shrimp: {
@@ -546,3 +589,9 @@ export const WHITE_THEME_CHART_COLORS = {
 	BUY_VOLUME: 'lightgreen',
 	SELL_VOLUME: '#ed1c24'
 };
+
+export const SHOW_SUMMARY_ACCOUNT_DETAILS = false;
+export const SHOW_TOTAL_ASSETS = false;
+export const IS_XHT = true;
+export const FIT_SCREEN_HEIGHT = ['trade'];
+export const SIMPLE_FORMAT_MIN = '0.1';

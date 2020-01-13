@@ -8,14 +8,14 @@ const InputField = (props) => {
 		meta: { touched, error, active },
 		currency,
 		initializeEffect = false,
+		setRef = () => {},
 		...rest
 	} = props;
-
 	return (
 		<div className="trade_input-wrapper">
 			<div className="trade_input-label">{label}</div>
 			<div className={classnames("trade_input-input-wrapper", { "initialize-animation": initializeEffect })}>
-				<input {...input} {...rest} />
+				<input ref={setRef} {...input} {...rest} />
 				{currency && (
 					<div className="trade_input-input-currency d-flex justify-content-center align-items-center">
 						{currency}

@@ -8,33 +8,204 @@
 	appearance: none;
 	text-indent: 1px;
 	text-overflow: '';
-	color: $dark-sell;
+	color: $color-sell;
 	font-size: 2rem;
 	font-weight: bold;
 	padding-right: 2rem;
 }
-	.with_arrow_trade:after  {	
-		border-left-color: $colors-main-black !important;
-		border-right-color: $colors-main-black !important;
+.with_arrow_trade{
+	margin-top: -5px;
+}
+.mobile-drop-down,.drop-down,.option {
+	&.default-coin {
+		color: $colors-black !important;
 	}
-	.direction_ltr {
-		.with_arrow_trade:after {
-			@include css-triangle($dark-accordion-arrow-active, 'right', 0.9rem, relative);
-			transform: rotate(90deg);
-			left: -1.5rem;
+	&.btc {
+		color: $coin-btc !important;
+	}
+	&.eur {
+		color: $coin-eur !important;
+	}
+	&.bch {
+		color: $coin-bch !important;
+	}
+	&.eth {
+		color: $coin-eth !important;
+	}
+	&.ltc {
+		color: $coin-ltc !important;
+	}
+	&.xrp {
+		color: $coin-xrp !important;
+	}
+	&.xht {
+		color: $coin-xht !important;
+	}
+	&.eos {
+		color: $coin-eos !important;
+	}
+	&.bnb {
+		color: $coin-bnb !important;
+	}
+	&.link {
+		color: $coin-link !important;
+	}
+	&.trx {
+		color: $coin-trx !important;
+	}
+	&.ada {
+		color: $coin-ada !important;
+	}
+	&.matic {
+		color: $coin-matic !important;
+	}
+	&.neo {
+		color: $coin-neo !important;
+	}
+	&.etc {
+		color: $coin-etc !important;
+	}
+	&.xlm {
+		color: $coin-xlm !important;
+	}
+	&.xmr {
+		color: $coin-xmr !important;
+	}
+	&.zec {
+		color: $coin-zec !important;
+	}
+	&.one {
+		color: $coin-one !important;
+	}
+	&.pax {
+		color: $coin-pax !important;
+	}
+	&.usdc {
+		color: $coin-usdc !important;
+	}
+	&.usdt {
+		color: $coin-usdt !important;
+	}
+	&.vet {
+		color: $coin-vet !important;
+	}
+	&.btt {
+		color: $coin-btt !important;
+	}
+	&.qtum {
+		color: $coin-qtum !important;
+	}
+	&.algo {
+		color: $coin-algo !important;
+	}
+	&.rvn {
+		color: $coin-rvn !important;
+	}
+	&.iota {
+		color: $coin-iota !important;
+	}
+	&.dash {
+		color: $coin-dash !important;
+	}
+	&.bsv {
+		color: $coin-bsv !important;
+	}
+	&.ont {
+		color: $coin-ont !important;
+	}
+	&.atom {
+		color: $coin-atom !important;
+	}
+	&.celr {
+		color: $coin-celr !important;
+	}
+	&.omg {
+		color: $coin-omg !important;
+	}
+	&.hot {
+		color: $coin-hot !important;
+	}
+	&.usd {
+		color: $coin-usd !important;
+	}
+	&.jpy {
+		color: $coin-jpy !important;
+	}
+	&.gbp {
+		color: $coin-gbp !important;
+	}
+	&.chf {
+		color: $coin-chf !important;
+	}
+	&.cad {
+		color: $coin-cad !important;
+	}
+	&.aud {
+		color: $coin-aud !important;
+	}
+	&.nzd {
+		color: $coin-nzd !important;
+	}
+	&.zar {
+		color: $coin-zar !important;
+	}
+	&.hkd {
+		color: $coin-hkd !important;
+	}
+	&.krw {
+		color: $coin-krw !important;
+	}
+	&.cny {
+		color: $coin-cny !important;
+	}
+	&.sgd {
+		color: $coin-sgd !important;
+	}
+}
+.with_arrow_trade:after  {	
+	border-bottom-color: $colors-main-black !important;
+	border-right-color: $colors-main-black !important;
+}
+.direction_ltr {
+	.with_arrow_trade:after {
+	    border: solid grey;
+		border-width: 0px 2px 2px 0;
+		display: inline-block;
+		content: '';
+		padding: 3px;
+		height: 1rem;
+		width: 1rem;
+		transform: rotate(46deg);
+		left: -1.5rem;
+		position: relative;
+		top: 0.1rem;	
+		z-index: 0;
+	}
+	
+}
+.direction_rtl {
+	.with_arrow_trade:after {
+		transform: rotate(90deg);
+		@include css-triangle($dark-accordion-arrow-active, 'left', $accordion_arrow-size, relative);
+		right: -1rem;
+	}
+}
+.dark-theme {
+	.with_arrow_trade:after {
+		border-bottom-color: $dark-font-main-text-color !important;
+		border-right-color: $dark-font-main-text-color !important;
+	}
+	.mobile-drop-down {
+		color: $dark-sell;
+	}
+	.drop-down, .option{
+		&.xht {
+			border : none !important;
+			color: $colors-white !important;
 		}
-		
-	}
-	.direction_rtl {
-		.with_arrow_trade:after {
-			transform: rotate(90deg);
-			@include css-triangle($dark-accordion-arrow-active, 'left', $accordion_arrow-size, relative);
-			right: -1rem;
+		.option{
+			background: $dark-quick-trade-background;
+			border:1px solid red!important
 		}
 	}
-	.dark-theme {
-		.with_arrow_trade:after {
-			border-left-color: $dark-font-main-text-color !important;
-			border-right-color: $dark-font-main-text-color !important;
-		}
-	}
+}

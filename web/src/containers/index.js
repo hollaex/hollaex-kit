@@ -4,6 +4,7 @@ export { default as UserProfile } from './UserProfile';
 export { default as UserSecurity } from './UserSecurity';
 export { default as UserSettings } from './UserSettings';
 export { default as ContactForm } from './ContactForm';
+export { default as RequestForm } from './RequestForm';
 export { default as HelpfulResourcesForm } from './HelpfulResourcesForm';
 export { default as Account } from './Account';
 export * from './Wallet';
@@ -28,6 +29,8 @@ export { default as Chat } from './Chat';
 export { default as Summary } from './Summary';
 export { default as AddTradeTabs } from './TradeTabs';
 export { default as ExpiredExchange } from './ExpiredExchange';
+export { default as TermsOfService } from './TermsOfService';
+export { default as DepositFunds } from './TermsOfService/DepositFunds';
 
 // ADMIN PAGE
 export { default as User } from './Admin/User';
@@ -44,3 +47,4 @@ export { default as Wallets } from './Admin/Wallets';
 export { default as UserFees } from './Admin/UserFees';
 export { PATHS } from './Admin/paths';
 export { default as AdminOrders } from './Admin/ActiveOrders';
+export { default as MobileHome } from './MobileHome';

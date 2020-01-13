@@ -1,13 +1,9 @@
 import React from 'react';
 import { Router, Route, browserHistory } from 'react-router';
 import ReactGA from 'react-ga';
+import { isMobile } from 'react-device-detect';
 
-import {
-	NETWORK,
-	IS_PRO_VERSION,
-	PRO_VERSION_REDIRECT,
-	DEFAULT_VERSION_REDIRECT
-} from './config/constants';
+import { PRO_VERSION_REDIRECT, IS_PRO_VERSION } from './config/constants';
 
 import {
 	App as Container,
@@ -43,7 +39,8 @@ import {
 	UserFees,
 	PATHS,
 	ExpiredExchange,
-	AdminOrders
+	AdminOrders,
+	MobileHome
 } from './containers';
 
 import store from './store';
@@ -59,14 +56,11 @@ import {
 import { getLanguage, getInterfaceLanguage } from './utils/string';
 import { checkUserSessionExpired } from './utils/utils';
 
-// Initialize Google analytics
-if (NETWORK === 'mainnet') {
-	ReactGA.initialize('UA-112052696-1');
-	browserHistory.listen((location) => {
-		ReactGA.set({ page: window.location.pathname });
-		ReactGA.pageview(window.location.pathname);
-	});
-}
+ReactGA.initialize('UA-154626247-1');
+browserHistory.listen((location) => {
+	ReactGA.set({ page: window.location.pathname });
+	ReactGA.pageview(window.location.pathname);
+});
 
 let lang = getLanguage();
 if (!lang) {
@@ -94,11 +88,7 @@ function requireAuth(nextState, replace) {
 }
 
 function loggedIn(nextState, replace) {
-	let service = nextState.location.query
-		&& nextState.location.query.service
-			? nextState.location.query.service
-			: '';
-	if (isLoggedIn() && !service) {
+	if (isLoggedIn()) {
 		replace({
 			pathname: '/account'
 		});
@@ -114,7 +104,7 @@ const logOutUser = () => {
 const setLogout = (nextState, replace) => {
 	removeToken();
 	replace({
-		pathname: '/trade/hex-usdt'
+		pathname: '/trade/xht-usdt'
 	});
 };
 
@@ -125,9 +115,7 @@ const createLocalizedRoutes = ({ router, routeParams }) => {
 };
 
 const NotFound = ({ router }) => {
-	router.replace(
-		IS_PRO_VERSION ? PRO_VERSION_REDIRECT : DEFAULT_VERSION_REDIRECT
-	);
+	router.replace(PRO_VERSION_REDIRECT);
 	return <div />;
 };
 
@@ -158,6 +146,14 @@ export default (
 		{!IS_PRO_VERSION ? <Route path="/" name="Home" component={Home} /> : null}
 		<Route path="lang/:locale" component={createLocalizedRoutes} />
 		<Route component={AuthContainer} {...noAuthRoutesCommonProps}>
+			{isMobile ? (
+				<Route
+					path="/"
+					name="Login"
+					component={Login}
+					{...noAuthRoutesCommonProps}
+				/>
+			) : null}
 			<Route path="login" name="Login" component={Login} />
 			<Route path="signup" name="signup" component={Signup} />
 		</Route>
@@ -172,11 +168,7 @@ export default (
 				name="Reset Password"
 				component={ResetPassword}
 			/>
-			<Route
-				path="verify"
-				name="Verify"
-				component={VerificationEmailRequest}
-			/>
+			<Route path="verify" name="Verify" component={VerificationEmailRequest} />
 			<Route
 				path="verify/:code"
 				name="verifyCode"
@@ -184,6 +176,14 @@ export default (
 			/>
 		</Route>
 		<Route component={Container}>
+			{isMobile ? (
+				<Route
+					path="/home"
+					name="Home"
+					component={MobileHome}
+					onEnter={requireAuth}
+				/>
+			) : null}
 			<Route
 				path="account"
 				name="Account"
@@ -195,10 +195,30 @@ export default (
 				name="username"
 				component={Account}
 			/>
-			<Route path="security" name="Security" component={Account} />
-			<Route path="developers" name="Developers" component={Account} />
-			<Route path="settings" name="Settings" component={Account} />
-			<Route path="summary" name="Summary" component={Account} />
+			<Route
+				path="security"
+				name="Security"
+				component={Account}
+				onEnter={requireAuth}
+			/>
+			<Route
+				path="developers"
+				name="Developers"
+				component={Account}
+				onEnter={requireAuth}
+			/>
+			<Route
+				path="settings"
+				name="Settings"
+				component={Account}
+				onEnter={requireAuth}
+			/>
+			<Route
+				path="summary"
+				name="Summary"
+				component={Account}
+				onEnter={requireAuth}
+			/>
 			<Route
 				path="verification"
 				name="Verification"
@@ -236,22 +256,13 @@ export default (
 				onEnter={requireAuth}
 			/>
 			<Route path="trade/:pair" name="Trade" component={Trade} />
-			<Route
-				path="trade/add/tabs"
-				name="Trade Tabs"
-				component={AddTradeTabs}
-			/>
+			<Route path="trade/add/tabs" name="Trade Tabs" component={AddTradeTabs} />
 			<Route
 				path="quick-trade/:pair"
 				name="Quick Trade"
 				component={QuickTrade}
 			/>
-			<Route
-				path="chat"
-				name="Chat"
-				component={Chat}
-				onEnter={requireAuth}
-			/>
+			<Route path="chat" name="Chat" component={Chat} onEnter={requireAuth} />
 			<Route
 				path="confirm-withdraw/:token"
 				name="ConfirmWithdraw"

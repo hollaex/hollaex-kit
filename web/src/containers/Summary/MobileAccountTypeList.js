@@ -16,7 +16,8 @@ const MobileAccountTypeList = ({
     onAccountTypeChange,
     onFeesAndLimits,
     onUpgradeAccount,
-    verification_level
+    verification_level,
+    balance
 }) => {
     return (
         <div className="mobile-account-type my-4">
@@ -35,27 +36,31 @@ const MobileAccountTypeList = ({
                         }
                         onClick={() => onAccountTypeChange(key)}
                     >
-                        <div className="d-flex">
-                            <div className="mr-4">
-                                <ReactSVG
-                                    path={ICONS[`LEVEL_ACCOUNT_ICON_${key}`]
-                                        ? ICONS[`LEVEL_ACCOUNT_ICON_${key}`]
-                                        : ICONS.LEVEL_ACCOUNT_ICON_4}
-                                    wrapperClassName="trader-account-icon"
-                                />
+                        {selectedAccount !== key
+                            ? <div className="d-flex">
+                                <div className="mr-4">
+                                    <ReactSVG
+                                        path={ICONS[`LEVEL_ACCOUNT_ICON_${key}`]
+                                            ? ICONS[`LEVEL_ACCOUNT_ICON_${key}`]
+                                            : ICONS.LEVEL_ACCOUNT_ICON_4}
+                                        wrapperClassName="trader-account-icon"
+                                    />
+                                </div>
+                                <div className={classnames(FLEX_CENTER_CLASSES)}>
+                                    {STRINGS.formatString(STRINGS.SUMMARY.LEVEL_OF_ACCOUNT, key)}
+                                    {(key === verification_level) &&
+                                        <div className="account-current summary-content-txt ml-2"> {`(${STRINGS.SUMMARY.CURRENT_TXT})`} </div>
+                                    }
+                                </div>
                             </div>
-                            <div className={classnames(FLEX_CENTER_CLASSES)}>
-                                {STRINGS.formatString(STRINGS.SUMMARY.LEVEL_OF_ACCOUNT, key)}
-                                {(key === verification_level) &&
-                                    <div className="account-current summary-content-txt ml-2"> {`(${STRINGS.SUMMARY.CURRENT_TXT})`} </div>
-                                }
-                            </div>
-                        </div>
+                            : null
+                        }
                         {key === selectedAccount
                             && <div className="my-4">
                                 <AccountTypeDetails
                                     user={user}
                                     coins={coins}
+                                    balance={balance}
                                     activeTheme={activeTheme}
                                     selectedAccount={selectedAccount}
                                     lastMonthVolume={lastMonthVolume}

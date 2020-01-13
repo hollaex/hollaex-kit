@@ -59,7 +59,7 @@ const DocumentsVerificationHome = ({ user, setActivePageContent, onTipOpen, onTi
                         ? STRINGS.USER_VERIFICATION.START_DOCUMENTATION_SUBMISSION
                         : STRINGS.USER_VERIFICATION.START_DOCUMENTATION_RESUBMISSION
                     }
-                    onClick={() => setActivePageContent(4)} />
+                    onClick={() => setActivePageContent(3)} />
             </div>}
         </div>
     );

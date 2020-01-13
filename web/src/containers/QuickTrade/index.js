@@ -235,13 +235,17 @@ class QuickTradeContainer extends Component {
 		const baseCoin = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
 		const pairCoin = coins[pairData.pair_base] || DEFAULT_COIN_DATA;
 		return (
-			<div>
+			<div className='h-100'>
 				{isMobile && <MobileBarBack onBackClick={this.onGoBack} />}
 
 				<div
-					className={classnames('d-flex', 'f-1', 'quote-container', {
-						'flex-column': isMobile
-					})}
+					className={classnames(
+						'd-flex',
+						'f-1',
+						'quote-container',
+						'h-100',
+						{ 'flex-column': isMobile }
+					)}
 				>
 					<QuickTrade
 						onReviewQuickTrade={this.onReviewQuickTrade}

@@ -19,7 +19,7 @@ $trade-asks-color-font: $colors-currencies-btc;
 	}
 	.display_table-wrapper{
 		.display_table-cell {
-			min-height: 2rem;
+			min-height: 2rem !important;
 		}
 	} 
 }
@@ -39,12 +39,14 @@ $trade-asks-color-font: $colors-currencies-btc;
 
 	.withdraw,
 	.sell {
-		background-color: $colors-notifications-red;
+		background-color: $color-sell;
+		color: $colors-white;
 	}
 
 	.deposit,
 	.buy {
-		background-color: $colors-notifications-green;
+		background-color: $color-buy;
+		color: $colors-black;
 	}
 }
 
@@ -67,9 +69,31 @@ $trade-asks-color-font: $colors-currencies-btc;
 	}
 }
 
-.withdrawal-cancel {
+.btn-tx, .withdrawal-cancel {
 	cursor: pointer;
 }
+
+
+.transaction-history-wrapper {
+	svg {
+		.trade-history-1,
+		.deposit-history-3,
+		.withdrawals-history-3,
+		.transaction-history-1,
+		.transaction-history-5 {
+			fill: $colors-black;
+		}
+	}
+}
+.display_table-wrapper{
+	.display_table-cell {
+		min-height: 1.2rem !important;
+		padding: 0 0.1rem !important;
+	}
+	&:first-child .display_table-body {
+		padding-top: 0.1rem !important;
+	}
+} 
 
 .dark-theme {
 	.csv-action {

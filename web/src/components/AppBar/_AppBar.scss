@@ -4,7 +4,6 @@ $app-bar--arrow-size: 0.4rem;
 $notification-size: 1.5rem;
 $app-menu-notification-size: 1.2rem;
 $app-bar-add-tab-red: #ff0000;
-$app-bar-pairs-up: $buy;
 
 .dark-theme {
 	.app_bar {
@@ -22,11 +21,19 @@ $app-bar-pairs-up: $buy;
 
 		.active-tab-pair {
 			background-color: $dark-app-background-color !important;
-			border-left: 1px solid $dark-inactive-color !important;
+			border-left: 1px solid $dark-border-main !important;
+			border-right: 1px solid $dark-border-main !important;
 			color: $dark-font-main-text-color !important;
 
 			svg {
-				.btc0, .btc1, .eth0, .eth1, .bch-icon, .xrp-icon, .hex-icon {
+				.btc0,
+				.btc1,
+				.eth0,
+				.eth1,
+				.bch-icon,
+				.xrp-icon,
+				.xht-icon,
+				.xmr-icon {
 					fill: $dark-font-main-text-color;
 				}
 				.tab-close, .plus, .double-arrow {
@@ -53,11 +60,11 @@ $app-bar-pairs-up: $buy;
 		}
 
 		.app-price-diff-down {
-			color: $dark-sell;
+			color: $dark-app-bar-pairs-down;
 		}
 
 		.app-price-diff-up {
-			color: $dark-buy;
+			color: $dark-app-bar-pairs-up;
 		}
 
 		.app-bar-price_diff_up:before {
@@ -81,6 +88,15 @@ $app-bar-pairs-up: $buy;
 	.app-menu-bar {
 		background: $dark-app-light-background !important;
 		border-bottom: 1px solid $dark-app-line-divider;
+
+		.app-menu-bar-content {
+			svg {
+				.tab-summary0, .tab-wallet0, .tab-setting0, .tab-verify0,
+				.tab-security0, .tab-api0 {
+					fill: $app-bar-icon-inactive !important;
+				}
+			}
+		}
 		
 		.active-menu {
 			background: $dark-app-background-color !important;
@@ -115,7 +131,7 @@ $app-bar-pairs-up: $buy;
 				}
 			}
 		}
-		.security_notification, .verification_notification {
+		.security_notification, .verification_notification, .wallet_notification {
 			color: $colors-notification-inactive-red !important;
 		
 			svg {
@@ -159,6 +175,7 @@ $app-bar-pairs-up: $buy;
 	font-size: $navigation_bar-font_size;
 	font-weight: bold;
 	background: $app-bar-background-color;
+	border-bottom: 1px solid $dark-app-line-divider;
 
 	&.no-borders {
 		border-bottom: none;
@@ -174,7 +191,7 @@ $app-bar-pairs-up: $buy;
 	}
 
 	.app_bar-icon-logo {
-		width: 5rem;
+		width: 6rem;
 	}
 
 	.app_bar-icon-logo svg {
@@ -221,6 +238,7 @@ $app-bar-pairs-up: $buy;
 		margin: 0 6px;
 		padding: 0 .4rem;
 		text-transform: capitalize;
+		white-space: nowrap;
 
 		svg {
 			.trade-active-2, .st0 {
@@ -232,6 +250,11 @@ $app-bar-pairs-up: $buy;
 				fill: $app-bar-icon-inactive !important;
 			}
 		}
+	}
+	.overflow{
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		overflow: hidden;
 	}
 
 	.quick_trade-active {
@@ -327,7 +350,14 @@ $app-bar-pairs-up: $buy;
 		top: 1px;
 
 		svg {
-			.btc0, .btc1, .eth0, .eth1, .bch-icon, .xrp-icon, .hex-icon {
+			.btc0,
+			.btc1,
+			.eth0,
+			.eth1,
+			.bch-icon,
+			.xrp-icon,
+			.xht-icon,
+			.xmr-icon {
 				fill: $colors-main-black;
 			}
 			.tab-close, .plus, .double-arrow {
@@ -367,9 +397,71 @@ $app-bar-pairs-up: $buy;
 		margin: .5rem .3rem 0 .3rem;
 		width: 1.5rem;
 	}
+	.app-bar-account-moon-icon {
+		margin: .2rem .3rem 0 .3rem;
+		width: 1rem;
+		svg {
+			.moon-icon {
+              fill: #808080;
+			}
+			.sun-icon{
+				fill: #808080;
+			}
+		}
+	}
+	.app-bar-account-moon-content {
+		border-radius: 5px;
+	}
+	.toggle_button-wrapper {
+		.toggle-content {
+			color: $colors-white;
+			border-radius: .35rem;
+			padding: 0px 0.1rem;
+	
+			.dark {
+				.moon-icon {
+					fill: $colors-white;
+				}
+			}
+			.white {
+				.sun-icon {
+					fill: $colors-white;
+				}
+			}
+
+			.toggle-action_button {
+				border-color: $colors-white;
+				width: 34px;
+				height: 75.5%;
+				margin: 0;
+
+				&.left .toggle-action_button-display {
+					right: calc(100% - 14px);
+				}
+				&.right .toggle-action_button-display {
+					right: -1px;
+				}
+
+				.toggle-action_button-display {
+					background: $colors-white;
+					height: 9px;
+					width: 9px;
+					margin: 1.2px 3px 1px 0!important;
+				  
+				}
+			}
+		}
+	}
 
 	.app_bar-pair-content, .app-bar-tab-close, .app-bar-currency-icon, .app-bar-account-icon svg {
-		.btc0, .btc1, .eth0, .eth1, .bch-icon, .xrp-icon, .hex-icon {
+		.btc0,
+		.btc1,
+		.eth0,
+		.eth1,
+		.bch-icon,
+		.xrp-icon,
+		.xht-icon,
+		.xmr-icon {
 			fill: $app-bar-icon-inactive;
 		}
 		.tab-close, .plus {
@@ -394,7 +486,7 @@ $app-bar-pairs-up: $buy;
 	}
 
 	.app-price-diff-down {
-		color: $sell;
+		color: $app-bar-pairs-down;
 	}
 
 	.app-price-diff-up {
@@ -515,7 +607,7 @@ $app-bar-pairs-up: $buy;
 				}
 			}
 		}
-		.security_notification, .verification_notification {
+		.security_notification, .verification_notification, .wallet_notification {
 			color: $colors-notification-inactive-red;
 			// padding-left: 0;
 		
@@ -543,16 +635,14 @@ $app-bar-pairs-up: $buy;
 			line-height: 1;
 			font-weight: bold;
 		}
-		.security_selected {
+		.security_selected,
+		.verification_selected,
+		.wallet_selected {
 			background-color: $colors-notifications-red !important;
 		}
-		.verification_selected {
-			background-color: $colors-notifications-red !important;
-		}
-		.verification_selected_inactive {
-			background-color: $colors-notification-inactive-red !important;
-		}
-		.security_selected_inactive {
+		.security_selected_inactive,
+		.verification_selected_inactive,
+		.wallet_selected_inactive {
 			background-color: $colors-notification-inactive-red !important;
 		}
 
@@ -693,7 +783,7 @@ $app-bar-pairs-up: $buy;
 			}
 		}
 	}
-	.security_notification, .verification_notification {
+	.security_notification, .verification_notification, .wallet_notification {
 		color: $colors-notification-inactive-red;
 	
 		svg {
@@ -750,7 +840,7 @@ $app-bar-pairs-up: $buy;
 	padding-right: .5rem;
 
 	&::placeholder {
-		color: $dark-inactive-color !important;
+		color: $app-bar-menu-list-color !important;
 	}
 }
 
@@ -759,9 +849,9 @@ $app-bar-pairs-up: $buy;
 }
 
 .app-bar-add-tab-menu {
-	background-color: $dark-app-bar-background-color;
-	border: 1px solid $colors-white;
-	color: $dark-font-sub-text-1-color;
+	background-color: $colors-black;
+	border: 1px solid #535353;
+	color: $app-bar-menu-list-color;
 	display: block;
 	min-width: 22rem;
 	min-height: 8rem;
@@ -774,8 +864,8 @@ $app-bar-pairs-up: $buy;
 	box-shadow: 0px 4px 6px 1px rgba(0, 0, 0, 0.4);
 
 	.app-bar-tab-menu-list {
-		background-color: $dark-app-bar-background-color;
-		color: $dark-font-sub-text-1-color;
+		background-color: $colors-black;
+		color: $app-bar-menu-list-color;
 		font-size: .8rem;
 		height: 2.5rem;
 		padding: .5rem .8rem;
@@ -789,7 +879,7 @@ $app-bar-pairs-up: $buy;
 
 	.app-bar-add-tab-content {
 		background-color: $dark-app-bar-add-tab-menu-background;
-		color: $dark-font-sub-text-1-color;
+		color: $app-bar-menu-list-color;
 		font-size: .8rem;
 		overflow-y: scroll;
 		padding: .3rem 0;
@@ -799,18 +889,18 @@ $app-bar-pairs-up: $buy;
 	
 	.app-bar-tab-overflow-content {
 		background-color: $dark-app-bar-add-tab-menu-background;
-		color: $dark-font-sub-text-1-color;
+		color: $app-bar-menu-list-color;
 		font-size: .8rem;
 		overflow-y: scroll;
 		padding: .3rem 0;
 	}
 
 	.app-bar-add-tab-content-list {
-		color: $dark-font-sub-text-1-color;
+		color: $app-bar-menu-list-color;
 		height: 2.2rem;
 		
 		&:hover {
-			background-color: $dark-app-light-background;
+			background-color: $dark-app-bar-tab-active-menu-list-background;
 			color: $dark-font-main-text-color;
 
 			svg {
@@ -820,7 +910,8 @@ $app-bar-pairs-up: $buy;
 				.eth1,
 				.bch-icon,
 				.xrp-icon,
-				.hex-icon,
+				.xht-icon,
+				.xmr-icon,
 				.default-icon {
 					fill: $dark-font-main-text-color !important;
 				}
@@ -847,11 +938,19 @@ $app-bar-pairs-up: $buy;
 
 	.app-bar-tab-setting, .app-bar-add-tab-icons {
 		svg {
-			.btc0, .btc1, .eth0, .eth1, .bch-icon, .xrp-icon, .hex-icon, .default-icon {
-				fill: $dark-font-sub-text-1-color !important;
+			.btc0,
+			.btc1,
+			.eth0,
+			.eth1,
+			.bch-icon,
+			.xrp-icon,
+			.xht-icon,
+			.xmr-icon,
+			.default-icon {
+				fill: $app-bar-menu-list-color !important;
 			}
 			.plus, .minus {
-				stroke: $dark-font-sub-text-1-color !important;
+				stroke: $app-bar-menu-list-color !important;
 				stroke-width: .2rem;
 			}
 			.st0 {
@@ -861,7 +960,7 @@ $app-bar-pairs-up: $buy;
 			.icon-check-1 {
 				stroke: $colors-white;
 			}
-			.hex-icon-1 {
+			.xht-icon-1 {
 				fill: $dark-app-background-color !important;
 			}
 		}
@@ -887,7 +986,7 @@ $app-bar-pairs-up: $buy;
 		}
 
 		.app_bar-icon-logo {
-			width: 6rem;
+			width: 7rem;
 		}
 		.app-bar-tab-close {
 			width: 1.1rem;

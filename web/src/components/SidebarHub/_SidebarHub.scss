@@ -95,7 +95,7 @@ $deactive-tab-border: $boder--width solid $border--color;
 	}
 
 	.sidebar_hub-content {
-		margin: $content--margin;
+		margin: $section--bottom-margin $content--margin;
 		.sidebar_hub-section {
 			border-top: $deactive-tab-border;
 
@@ -215,7 +215,7 @@ $deactive-tab-border: $boder--width solid $border--color;
 	.sidebar_hub-wrapper {
 		.sidebar_hub-content {
 			.sign_up-btn,  .log_in-btn{
-				background: #20212a !important;
+				background: $dark-button-active !important;
 				color: $dark-font-main-text-color !important;
 				border: 1px solid $border--color
 			}
@@ -254,6 +254,13 @@ $deactive-tab-border: $boder--width solid $border--color;
 						.sidebar_hub-section-title {
 							color: $dark-sidebar-color-active;
 						}
+					}
+				}
+			}
+			.icon_title-wrapper {
+				.icon_title-svg svg {
+					.st0 {
+						fill: $dark-icon-unhover;
 					}
 				}
 			}

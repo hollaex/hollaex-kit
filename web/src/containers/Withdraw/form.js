@@ -8,6 +8,8 @@ import {
 	stopSubmit
 } from 'redux-form';
 import math from 'mathjs';
+import classnames from 'classnames';
+import { isMobile } from 'react-device-detect';
 import { Button, Dialog, OtpForm, Loader } from '../../components';
 import renderFields from '../../components/Form/factoryFields';
 import {
@@ -68,7 +70,7 @@ class Form extends Component {
 		) {
 			const fee = calculateBaseFee(nextProps.data.amount);
 			if (fee !== nextProps.data.fee) {
-				nextProps.change('fee', fee);
+				// nextProps.change('fee', fee);
 			}
 		}
 	}
@@ -177,8 +179,10 @@ class Form extends Component {
 
 		return (
 			<form>
-				{renderFields(formValues)}
-				{error && <div className="warning_text">{error}</div>}
+				<div className={classnames({ "w-50": !isMobile })}>
+					{renderFields(formValues)}
+					{error && <div className="warning_text">{error}</div>}
+				</div>
 				<Button
 					label={STRINGS.WITHDRAWALS_BUTTON_TEXT}
 					disabled={pristine || submitting || !valid}
@@ -227,7 +231,7 @@ const WithdrawForm = reduxForm({
 })(Form);
 
 const mapStateToForm = (state) => ({
-	data: selector(state, 'address', 'amount', 'fee'),
+	data: selector(state, 'address', 'destination_tag', 'amount', 'fee'),
 	activeTheme: state.app.theme,
 	coins: state.app.coins
 });

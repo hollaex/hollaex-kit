@@ -1,1 +1,45 @@
+.layout-mobile{
+	.trade_active_orders-wrapper {
+		max-height: 35vh !important;
+	}
+}
 
+.trade_post_icon {
+	width: 1.5rem;
+
+	svg{
+		.wave-icon{
+			fill: $colors-black
+		}
+	}
+}
+
+.post_header {
+	font-weight: bold;
+}
+.trade_announcement {
+	font-size: 1.5rem;
+}
+
+
+.dark-theme {
+	.trade_post_icon {
+		svg {
+			.announcement {
+				fill: $colors-white
+			}
+			.settings{
+				fill: $colors-white
+			}
+			.wave-icon{
+				fill: $colors-white
+			}
+		}
+	}
+	.post_header {
+		color: $dark-font-main-text-color;
+	}
+	.post-content {
+		color: $dark-font-sub-text-color;
+	}
+}

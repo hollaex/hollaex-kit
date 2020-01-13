@@ -12,15 +12,17 @@ const renderAmount = (value, currency) =>
 const Review = ({
 	orderPrice = 0,
 	fees = 0,
+	size = 0,
 	currency,
 	price,
 	formatToCurrency,
-	type
+	type,
+	onFeeStructureAndLimits
 }) => {
-	const orderAmountReceived = math.add(
-		math.fraction(orderPrice),
-		math.fraction(fees)
-	);
+	// const orderAmountReceived = math.add(
+	// 	math.fraction(orderPrice),
+	// 	math.fraction(fees)
+	// );
 	const upToMarket = !math.smaller(orderPrice, 0);
 	return (
 		<div className="trade_order_entry-review d-flex flex-column">
@@ -30,24 +32,14 @@ const Review = ({
 				</div>
 				<div className="text-price">
 					{upToMarket
-						?price ? renderAmount(formatToCurrency(price), currency) :0
+						?price ? renderAmount(formatToCurrency(price * size), currency) :0
 						: STRINGS.UP_TO_MARKET}
 				</div>
 			</div>
 			<div className={classnames(...ROW_CLASSNAMES)}>
 				<div>{STRINGS.FEES}:</div>
-				<div className="text-price">
-					{upToMarket
-						? renderAmount(formatToCurrency(fees), currency)
-						: STRINGS.UP_TO_MARKET}
-				</div>
-			</div>
-			<div className={classnames(...ROW_CLASSNAMES)}>
-				<div>{STRINGS.TOTAL_ORDER}:</div>
-				<div className="text-price">
-					{upToMarket
-						? renderAmount(formatToCurrency(orderAmountReceived), currency)
-						: STRINGS.UP_TO_MARKET}
+				<div className="text-price blue-link pointer" onClick={onFeeStructureAndLimits}>
+					{STRINGS.VIEW_MY_FEES}
 				</div>
 			</div>
 		</div>

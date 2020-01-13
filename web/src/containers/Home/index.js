@@ -6,9 +6,12 @@ import { bindActionCreators } from 'redux';
 import { isBrowser, isMobile } from 'react-device-detect';
 import moment from 'moment';
 
-import { AppBar, Footer } from '../../components';
+import { AppBar, AppFooter } from '../../components';
 import STRINGS from '../../config/localizedStrings';
-import { FLEX_CENTER_CLASSES, EXCHANGE_EXPIRY_DAYS } from '../../config/constants';
+import {
+	FLEX_CENTER_CLASSES,
+	EXCHANGE_EXPIRY_DAYS
+} from '../../config/constants';
 // import { requestQuickTrade } from '../../actions/orderbookAction';
 import { setLanguage, getExchangeInfo } from '../../actions/appActions';
 import { logout } from '../../actions/authAction';
@@ -43,7 +46,7 @@ class Home extends Component {
 
 	onResize = () => {
 		if (this.container) {
-			const height = this.container.clientHeight;
+			const height = window.innerHeight - 45;
 			this.setState({
 				style: {
 					minHeight: height
@@ -98,10 +101,16 @@ class Home extends Component {
 			activeTheme
 		} = this.props;
 		const { style } = this.state;
-		const isExpired = (info && (!Object.keys(info).length
-			|| moment().diff(info.created_at, 'days') > EXCHANGE_EXPIRY_DAYS))
-			? true : false;
-		const expiryDays = info && info.created_at ? EXCHANGE_EXPIRY_DAYS - moment().diff(info.created_at, 'days') : 0;
+		const isExpired =
+			info &&
+			(!Object.keys(info).length ||
+				moment().diff(info.created_at, 'days') > EXCHANGE_EXPIRY_DAYS)
+				? true
+				: false;
+		const expiryDays =
+			info && info.created_at
+				? EXCHANGE_EXPIRY_DAYS - moment().diff(info.created_at, 'days')
+				: 0;
 		return (
 			<div
 				className={classnames(
@@ -125,27 +134,22 @@ class Home extends Component {
 					router={router}
 					logout={this.onLogout}
 				/>
-				{info.is_trial || !Object.keys(info).length
-					? <div className={classnames(
-						'w-100',
-						'p-1',
-						...FLEX_CENTER_CLASSES,
-						{
+				{info.is_trial || !Object.keys(info).length ? (
+					<div
+						className={classnames('w-100', 'p-1', ...FLEX_CENTER_CLASSES, {
 							'exchange-trial': info.is_trial,
-							'exchange-expired': isExpired,
-						}
-					)}>
+							'exchange-expired': isExpired
+						})}
+					>
 						{isExpired
 							? STRINGS.EXPIRY_EXCHANGE_MSG
 							: STRINGS.formatString(
-								STRINGS.TRIAL_EXCHANGE_MSG,
-								STRINGS.APP_TITLE,
-								expiryDays
-							)
-						}
+									STRINGS.TRIAL_EXCHANGE_MSG,
+									STRINGS.APP_TITLE,
+									expiryDays
+							  )}
 					</div>
-					: null
-				}
+				) : null}
 				<div
 					className={classnames(
 						'app_container-content',
@@ -174,9 +178,12 @@ class Home extends Component {
 					<Section3
 						style={style}
 						token={token}
-						onClickDemo={pair ? this.goTo(`trade/${pair}`) : this.goTo('trade/add/tabs')}
+						onClickDemo={
+							pair ? this.goTo(`trade/${pair}`) : this.goTo('trade/add/tabs')
+						}
 					/>
-					<Footer
+					<AppFooter
+						theme={activeTheme}
 						onChangeLanguage={this.onChangeLanguage}
 						activeLanguage={activeLanguage}
 					/>
@@ -205,4 +212,7 @@ const mapDispatchToProps = (dispatch) => ({
 	getExchangeInfo: bindActionCreators(getExchangeInfo, dispatch)
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Home);
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(Home);

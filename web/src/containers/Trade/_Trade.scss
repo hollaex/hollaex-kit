@@ -1,9 +1,11 @@
 $trade-bids-color-main: $buy;
 $trade-bids-color-font: $buy;
-$trade-bids-color-disabled: rgba(19, 136, 15, 0.356);
+$trade-order-bids-color-font: #878787;
+$trade-bids-color-disabled:#cccccc;
 $trade-asks-color-main: $sell;
 $trade-asks-color-font: $sell;
-$trade-asks-color-disabled: rgba(248, 7, 67, 0.4);
+$trade-order-asks-color-font: $colors-black;
+$trade-asks-color-disabled: #cccccc;
 
 $font-color--disabled: grey;
 $font-color--acitve: black;
@@ -15,6 +17,7 @@ $trade_title-border--color: black;
 $trade_title-border--size: 0.2rem;
 
 $trade-font-size: $font-size-subtext;
+$trade-post-font-size:12px;
 
 $side-column--width: 17.5rem;
 $side-column--width-sm: 16rem;
@@ -39,12 +42,35 @@ $order_entry-column--width-lg: 18rem;
 }
 
 .trade_history-row {
+	.trade_history-icon{
+		width: 1rem;
+		margin-right: 3px;
+	}
+
 	&.sell {
-		color: $trade-asks-color-font;
+		color: $trade-order-asks-color-font;
+
+		.trade_history-icon {
+			svg {
+				.up-icon,
+				.down-icon {
+					fill: $trade-order-asks-color-font;
+				}
+			}
+		}
 	}
 
 	&.buy {
-		color: $trade-bids-color-font;
+		color: $trade-order-bids-color-font;
+
+		.trade_history-icon {
+			svg {
+				.up-icon,
+				.down-icon {
+					fill: $buy;
+				}
+			}
+		}
 	}
 }
 
@@ -57,21 +83,6 @@ $order_entry-column--width-lg: 18rem;
 .trade_active-lg-view {
 	max-height: 17vh;
 }
-
-.trade_post-wrapper {
-
-	.trade_post_icon {
-		width: 4rem;
-	}
-
-	.post_header {
-		font-weight: bold;
-	}
-	.trade_announcement {
-		font-size: 1.5rem;
-	}
-}
-
 
 .trade_active_orders-wrapper {
 	overflow-y: auto;
@@ -102,7 +113,7 @@ $order_entry-column--width-lg: 18rem;
 				padding: 0 0.15rem;
 				position: relative;
 				width: 100%;
-				color: $colors-main-black;
+				color: $trade-fill-indicator-text;
 				z-index: 2;
 
 				.cell_value-bar {
@@ -116,6 +127,13 @@ $order_entry-column--width-lg: 18rem;
 			}
 		}
 	}
+}
+
+.quick-trade-tab {
+	border: 1px solid $colors-black;
+	border-radius: 9px;
+	vertical-align: middle;
+	text-align: center;
 }
 
 .direction_ltr {
@@ -159,12 +177,31 @@ $order_entry-column--width-lg: 18rem;
 	}
 
 	.trade_history-row {
+
 		&.sell {
 			color: $dark-sell;
-		}
 
+			.trade_history-icon {
+				svg {
+					.up-icon,
+					.down-icon {
+						fill: $dark-sell;
+					}
+				}
+			}
+		}
+		
 		&.buy {
 			color: $dark-buy;
+
+			.trade_history-icon {
+				svg {
+					.up-icon,
+					.down-icon {
+						fill: $dark-buy;
+					}
+				}
+			}
 		}
 	}
 
@@ -198,17 +235,7 @@ $order_entry-column--width-lg: 18rem;
 			}
 		}
 	}
-
-	.trade_post-wrapper {
-		.trade_post_icon {
-			svg {
-				.announcement {
-					fill: $colors-white
-				}
-			}
-		}
-		.post_header {
-			color: $colors-white;
-		}
+	.quick-trade-tab {
+		border: 1px solid grey;
 	}
 }
