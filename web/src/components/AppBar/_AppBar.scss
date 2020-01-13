@@ -148,6 +148,12 @@ $app-bar-add-tab-red: #ff0000;
 			.logo-black {
 				fill: $dark-app-logo-color;
 			}
+			path {
+				fill: $dark-app-logo-color;
+			}
+			polygon, circle {
+				stroke: $dark-app-logo-color;
+			}
 		}
 	}
 
@@ -197,6 +203,12 @@ $app-bar-add-tab-red: #ff0000;
 	.app_bar-icon-logo svg {
 		.logo-black {
 			fill: $app-logo-color;
+		}
+		path {
+			fill: $app-logo-color;
+		}
+		polygon, circle {
+			stroke: $app-logo-color;
 		}
 	}
 

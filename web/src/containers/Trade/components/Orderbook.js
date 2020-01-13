@@ -104,7 +104,6 @@ class Orderbook extends Component {
 		const { symbol } = coins[pairData.pair_2] || DEFAULT_COIN_DATA;
 		return (
 			<div className="trade_orderbook-wrapper d-flex flex-column f-1 apply_rtl">
-				{pair === 'xht-usdt' ? <UpComingWave pairBase={pairBase} /> : null}
 				<EventListener target="window" onResize={this.scrollTop} />
 				<div className="trade_orderbook-headers d-flex">
 					<div className="f-1 trade_orderbook-cell">

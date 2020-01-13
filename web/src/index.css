@@ -3819,6 +3819,12 @@ table th {
 .dark-theme .app_bar-icon .app_bar-icon-logo svg .logo-black {
   fill: white; }
 
+.dark-theme .app_bar-icon .app_bar-icon-logo svg path {
+  fill: white; }
+
+.dark-theme .app_bar-icon .app_bar-icon-logo svg polygon, .dark-theme .app_bar-icon .app_bar-icon-logo svg circle {
+  stroke: white; }
+
 .dark-theme .app_bar-mobile {
   background-color: #000000; }
   .dark-theme .app_bar-mobile .homeicon-svg svg .logo-black {
@@ -3849,6 +3855,10 @@ table th {
     width: 6rem; }
   .app_bar .app_bar-icon-logo svg .logo-black {
     fill: white; }
+  .app_bar .app_bar-icon-logo svg path {
+    fill: white; }
+  .app_bar .app_bar-icon-logo svg polygon, .app_bar .app_bar-icon-logo svg circle {
+    stroke: white; }
   .app_bar .app_bar-icon {
     flex: 0;
     margin: .4rem .5rem 0 .5rem;
@@ -5935,24 +5945,47 @@ table th {
 .layout-mobile .accordion_wrapper .accordion_section .accordion_section_title {
   font-size: 1.75rem; }
 
-.layout-mobile .accordion_wrapper .accordion_section .action_notification-svg svg {
+.layout-mobile .accordion_wrapper .accordion_section .accordion_section_content {
+  font-size: 12px !important; }
+
+.layout-mobile .accordion_wrapper .action_notification-svg svg {
   width: 1.75rem !important;
   height: 1.75rem !important; }
 
-.layout-mobile .accordion_wrapper .accordion_section .accordion_section_content {
+.layout-mobile .accordion_wrapper .accordion_section_content {
   overflow-x: auto;
   font-size: 1.2rem; }
-  .layout-mobile .accordion_wrapper .accordion_section .accordion_section_content .information_section {
+  .layout-mobile .accordion_wrapper .accordion_section_content .information_section {
     font-size: 1.2rem; }
-  .layout-mobile .accordion_wrapper .accordion_section .accordion_section_content .field-wrapper {
+  .layout-mobile .accordion_wrapper .accordion_section_content .field-wrapper {
     font-size: 1.2rem; }
-  .layout-mobile .accordion_wrapper .accordion_section .accordion_section_content table tbody .table-row {
+  .layout-mobile .accordion_wrapper .accordion_section_content table tbody .table-row {
     font-size: 1.25rem; }
-    .layout-mobile .accordion_wrapper .accordion_section .accordion_section_content table tbody .table-row .td-levelball .td-levelball-content {
+    .layout-mobile .accordion_wrapper .accordion_section_content table tbody .table-row .td-levelball .td-levelball-content {
       width: 2.5rem;
       height: 2.5rem; }
-  .layout-mobile .accordion_wrapper .accordion_section .accordion_section_content table tbody td:not(:first-child) {
+  .layout-mobile .accordion_wrapper .accordion_section_content table tbody td:not(:first-child) {
     padding: 1.5rem 0.25rem; }
+
+.layout-mobile .direction_ltr .accordion_wrapper .accordion_section .accordion_section_content_text.with_arrow:after {
+  border: solid #808080 !important;
+  border-width: 1px 0 0 1px !important;
+  display: inline-block !important;
+  padding: 3px !important;
+  transform: rotate(131deg) !important;
+  content: '';
+  margin-right: -0.6rem;
+  position: absolute;
+  right: -0.7rem;
+  top: calc(50% - 0.3rem); }
+
+.layout-mobile .direction_ltr .accordion_wrapper .accordion_section .accordion_section_title.accordion_section--open .accordion_section_content_text:after {
+  transform: rotate(-135deg) !important;
+  right: -1.1rem;
+  top: calc(50% - 0.38rem); }
+
+.layout-mobile .direction_ltr .accordion_wrapper .accordion_section.disabled .accordion_section_content_text:after {
+  border-left-color: #777677; }
 
 .accordion_wrapper .accordion_section {
   border-top: 1px solid #212121;

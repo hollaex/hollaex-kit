@@ -65,7 +65,7 @@ class Login extends Component {
 	}
 
 	redirectToHome = () => {
-		this.props.router.replace('/home');
+		this.props.router.replace('/account');
 	};
 
 	redirectToResetPassword = () => {
@@ -96,14 +96,14 @@ class Login extends Component {
 
 	checkExpiryExchange = () => this.props.router.replace('/expired-exchange');
 
-	checkLogin = () => {
-		const termsAccepted = localStorage.getItem('termsAccepted');
-		if (!termsAccepted) {
-			this.setState({ termsDialogIsOpen: true });
-		} else {
-			this.redirectToHome();
-		}
-	};
+	// checkLogin = () => {
+	// 	// const termsAccepted = localStorage.getItem('termsAccepted');
+	// 	// if (!termsAccepted) {
+	// 	// 	this.setState({ termsDialogIsOpen: true });
+	// 	// } else {
+	// 		this.redirectToHome();
+	// 	// }
+	// };
 
 	onSubmitLogin = (values) => {
 		const service = this.getServiceParam();
@@ -120,7 +120,7 @@ class Login extends Component {
 					this.checkExpiryExchange();
 				else if (res.data && res.data.callbackUrl)
 					this.redirectToService(res.data.callbackUrl);
-				else this.checkLogin();
+				else this.redirectToHome();
 			})
 			.catch((err) => {
 				const _error =
@@ -256,7 +256,7 @@ class Login extends Component {
 				</div>
 				{!isMobile && <BottomLink />}
 				<Dialog
-					isOpen={otpDialogIsOpen || logoutDialogIsOpen || termsDialogIsOpen }
+					isOpen={otpDialogIsOpen || logoutDialogIsOpen }
 					label="otp-modal"
 					onCloseDialog={this.onCloseDialog}
 					shouldCloseOnOverlayClick={otpDialogIsOpen ? false : true}
@@ -274,7 +274,7 @@ class Login extends Component {
 							data={{ message: logoutMessage }}
 						/>
 					)}
-					{termsDialogIsOpen && <TermsOfService onAcceptTerms={this.onAcceptTerms} />}
+					{/* {termsDialogIsOpen && <TermsOfService onAcceptTerms={this.onAcceptTerms} />} */}
 					{/* {depositDialogIsOpen && <DepositFunds gotoWallet={this.gotoWallet} />} */}
 				</Dialog>
 			</div>

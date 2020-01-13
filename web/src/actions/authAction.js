@@ -53,10 +53,7 @@ export function verifyVerificationCode(data) {
 
 export const performLogin = (values) =>
 	axios.post('/login', values).then((res) => {
-		const termsAccepted = localStorage.getItem('termsAccepted');
-		if (termsAccepted) {
 			storeLoginResult(res.data.token);
-		}
 		return res;
 	});
 
