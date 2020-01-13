@@ -10,6 +10,8 @@ class MenuList extends Component {
 		isOpen: false
 	};
 
+	element = null;
+
 	componentDidMount() {
 		document.addEventListener('click', this.onOutsideClick);
 	}
@@ -31,23 +33,25 @@ class MenuList extends Component {
 	}
 
 	onOutsideClick = (event) => {
-		const element = document.getElementById('tab-account-menu');
 		if (
-			element &&
-			event.target !== element &&
-			!element.contains(event.target)
+			this.element &&
+			event.target !== this.element &&
+			!this.element.contains(event.target)
 		) {
-			this.props.closeAccountMenu();
+			this.setState({ isOpen: false });
+		}
+		if (
+			this.element &&
+			event.target !== this.element &&
+			this.element.contains(event.target)
+		) {
+			this.setState({ isOpen: !this.state.isOpen });
 		}
 	};
 
 	componentWillUnmount() {
 		document.removeEventListener('click', this.onOutsideClick);
 	}
-
-	handleAccountMenu = () => {
-		this.setState({ isOpen: !this.state.isOpen });
-	};
 
 	handleMenu = (path) => {
 		this.setState({ isOpen: false });
@@ -77,22 +81,20 @@ class MenuList extends Component {
 			? securityPending + walletPending
 			: securityPending + verificationPending;
 		return (
-			<>
-				<div
-					className={classnames('app-bar-account-content', {
-						'account-inactive':
-							activePath !== 'account' && activePath !== 'wallet'
-					})}
-					onClick={this.handleAccountMenu}
-				>
-					<ReactSVG
-						path={ICONS.SIDEBAR_ACCOUNT_INACTIVE}
-						wrapperClassName="app-bar-account-icon"
-					/>
-					{!!totalPending && (
-						<div className="app-bar-account-notification">{totalPending}</div>
-					)}
-				</div>
+			<div
+				className={classnames('app-bar-account-content', {
+					'account-inactive':
+						activePath !== 'account' && activePath !== 'wallet'
+				})}
+				ref={(el) => (this.element = el)}
+			>
+				<ReactSVG
+					path={ICONS.SIDEBAR_ACCOUNT_INACTIVE}
+					wrapperClassName="app-bar-account-icon"
+				/>
+				{!!totalPending && (
+					<div className="app-bar-account-notification">{totalPending}</div>
+				)}
 				{isOpen && (
 					<div id="tab-account-menu" className="app-bar-account-menu">
 						<div
@@ -258,7 +260,7 @@ class MenuList extends Component {
 						</div>
 					</div>
 				)}
-			</>
+			</div>
 		);
 	}
 }

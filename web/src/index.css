@@ -987,9 +987,7 @@ table th {
     margin: 0 1rem;
     text-align: center;
     text-transform: uppercase;
-    font-weight: bold;
-    color: #000000;
-    background-color: white; }
+    font-weight: bold; }
     .home_container .buttons-section--button.contrast {
       background-color: #212121; }
 
@@ -998,6 +996,25 @@ table th {
 
 .direction_rtl .home-card-text-container {
   margin-right: 0.75rem; }
+
+.dark-theme.home_container .section_1-content {
+  background: url("/assets/HollaEx-dark-theme.jpg"); }
+
+.dark-theme.home_container .features-container {
+  background-color: #020202; }
+
+.dark-theme.home_container .home-card-container {
+  border-color: #f9f9f9; }
+  .dark-theme.home_container .home-card-container .home-card-icon-wrapper > div .home-card-icon {
+    fill: #f9f9f9; }
+  .dark-theme.home_container .home-card-container .home-card-text-container {
+    color: #f9f9f9; }
+
+.dark-theme.home_container .buttons-section--button {
+  border-color: #f9f9f9; }
+
+.dark-theme .arrow-down {
+  stroke: #f9f9f9; }
 
 @media (max-width: 767px) {
   .home_container .home-card-container {
@@ -1899,9 +1916,9 @@ table th {
         width: 100%;
         height: 5px; }
   .trade_order_entry-wrapper.order_side-selector-buy .trade_order_entry-action_selector {
-    border: 1px solid #000000; }
+    border: 1px solid #6496AA; }
     .trade_order_entry-wrapper.order_side-selector-buy .trade_order_entry-action_selector .active {
-      background-color: #000000;
+      background-color: #6496AA;
       color: white;
       font-weight: bold; }
   .trade_order_entry-wrapper.order_side-selector-buy .trade_order_entry-review {
@@ -1922,7 +1939,7 @@ table th {
     margin-bottom: 0.5rem; }
   .trade_order_entry-wrapper.order_side-selector-buy .trade_order_entry-form_inputs-wrapper .trade_order_entry-form-action {
     margin-top: 0.5rem;
-    background-color: #000000 !important;
+    background-color: #6496AA !important;
     color: white;
     font-weight: bold; }
     .trade_order_entry-wrapper.order_side-selector-buy .trade_order_entry-form_inputs-wrapper .trade_order_entry-form-action:disabled {
@@ -2152,7 +2169,7 @@ table th {
     .trade_orderbook-wrapper .trade_orderbook-content .trade_orderbook-asks > .value-row:first-child > div {
       color: white; }
   .trade_orderbook-wrapper .trade_orderbook-content .trade_orderbook-bids > .value-row:first-child {
-    background-color: #878787; }
+    background-color: #6496AA; }
     .trade_orderbook-wrapper .trade_orderbook-content .trade_orderbook-bids > .value-row:first-child > div {
       color: #000000; }
   .trade_orderbook-wrapper .trade_asks-limit_bar .orderbook-limit_bar-wrapper {
@@ -2172,9 +2189,9 @@ table th {
       .trade_orderbook-wrapper .trade_orderbook-bids .trade_orderbook-cell-price .orderbook-limit_bar-line {
         background-color: #878787; }
   .trade_orderbook-wrapper .trade_bids-limit_bar .orderbook-limit_bar-wrapper {
-    color: #878787; }
+    color: #6496AA; }
     .trade_orderbook-wrapper .trade_bids-limit_bar .orderbook-limit_bar-wrapper .orderbook-limit_bar-line {
-      background-color: #878787; }
+      background-color: #6496AA; }
   .trade_orderbook-wrapper .orderbook-limit_bar-wrapper .orderbook-limit_bar-line {
     height: 2px; }
   .trade_orderbook-wrapper .orderbook-limit_bar-wrapper .orderbook-limit_bar-text {
@@ -2242,13 +2259,16 @@ table th {
 .dark-theme .trade_orderbook-wrapper .trade_orderbook-cell-amount {
   color: #808080; }
 
+.layout-mobile .trade_orderbook-wrapper .trade_orderbook-content .trade_orderbook-bids .value-row .trade_orderbook-cell {
+  font-size: 1.5rem !important; }
+
 .ask,
 .buy {
   color: #000000; }
 
 .bid,
 .sell {
-  color: #878787; }
+  color: #6496AA; }
 
 .trade_history-row .trade_history-icon {
   width: 1rem;
@@ -2264,7 +2284,7 @@ table th {
   color: #878787; }
   .trade_history-row.buy .trade_history-icon svg .up-icon,
   .trade_history-row.buy .trade_history-icon svg .down-icon {
-    fill: #878787; }
+    fill: #6496AA; }
 
 .layout-mobile .trade_active_orders-wrapper {
   max-height: 35vh !important; }
@@ -2281,7 +2301,7 @@ table th {
       color: white !important;
       margin: 0; }
     .trade_active_orders-wrapper .cell_box-type .buy {
-      background-color: #878787; }
+      background-color: #6496AA; }
     .trade_active_orders-wrapper .cell_box-type .sell {
       background-color: #000000; }
     .trade_active_orders-wrapper .cell_box-type.fullfilled .cell-wrapper {
@@ -2800,6 +2820,11 @@ table th {
     .summary-container .trader-wrapper-icon svg .level_icon,
     .summary-container .trader-wrapper-icon svg .hap-icon {
       fill: #000000; }
+  .summary-container .trader-acc-detail-icon {
+    width: 8rem;
+    margin-right: 1rem; }
+    .summary-container .trader-acc-detail-icon svg .level_icon {
+      fill: #000000; }
   .summary-container .trader-account-icon {
     width: 4.5rem;
     margin-right: 1rem; }
@@ -2888,7 +2913,7 @@ table th {
         .summary-container .assets-wrapper .coin-price-container .coin-price svg .default-icon {
           fill: #000000 !important; }
   .summary-container .asset_wrapper_width {
-    width: 25rem; }
+    width: 100%; }
   .summary-container .xht_asset_wrapper_width {
     width: 100% !important; }
   .summary-container .trading-volume-wrapper {
@@ -3014,7 +3039,7 @@ table th {
     .summary-container .summary-content-txt {
       font-size: 1rem; }
     .summary-container .asset_wrapper_width {
-      width: 35% !important; }
+      width: 100% !important; }
     .summary-container .xht_asset_wrapper_width {
       width: 100% !important; }
     .summary-container .assets-wrapper {
@@ -3195,7 +3220,7 @@ table th {
     height: 0;
     border-left: 0.4rem solid transparent;
     border-right: 0.4rem solid transparent;
-    border-bottom: 0.4rem solid #878787;
+    border-bottom: 0.4rem solid #6496AA;
     margin-bottom: 0rem;
     display: inline-block;
     margin-bottom: 0.2rem;
@@ -3857,6 +3882,10 @@ table th {
       stroke-width: 3 !important; }
     .app_bar .app_bar-quicktrade svg .admin-dash {
       fill: #808080 !important; }
+  .app_bar .overflow {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden; }
   .app_bar .quick_trade-active {
     border: 1px solid white;
     color: white; }
@@ -3960,22 +3989,24 @@ table th {
     margin: .2rem .3rem 0 .3rem;
     width: 1rem; }
     .app_bar .app-bar-account-moon-icon svg .moon-icon {
-      fill: white; }
+      fill: #808080; }
     .app_bar .app-bar-account-moon-icon svg .sun-icon {
-      fill: white; }
+      fill: #808080; }
   .app_bar .app-bar-account-moon-content {
     border-radius: 5px; }
   .app_bar .toggle_button-wrapper .toggle-content {
     color: white;
-    border: 1px solid #808080;
     border-radius: .35rem;
     padding: 0px 0.1rem; }
-    .app_bar .toggle_button-wrapper .toggle-content .selected {
-      color: white; }
+    .app_bar .toggle_button-wrapper .toggle-content .dark .moon-icon {
+      fill: white; }
+    .app_bar .toggle_button-wrapper .toggle-content .white .sun-icon {
+      fill: white; }
     .app_bar .toggle_button-wrapper .toggle-content .toggle-action_button {
       border-color: white;
       width: 34px;
-      height: 75.5%; }
+      height: 75.5%;
+      margin: 0; }
       .app_bar .toggle_button-wrapper .toggle-content .toggle-action_button.left .toggle-action_button-display {
         right: calc(100% - 14px); }
       .app_bar .toggle_button-wrapper .toggle-content .toggle-action_button.right .toggle-action_button-display {
@@ -5098,6 +5129,8 @@ table th {
   fill: white; }
   .dark-theme .new-order-notification svg .newWave-icon {
     fill: white; }
+  .dark-theme .new-order-notification svg .generate_api {
+    fill: #808080; }
 
 .dark-theme .notification-wrapper {
   color: #808080; }
@@ -8247,7 +8280,7 @@ foreignObject {
               background-color: #535353;
               color: white; }
     .chat-wrapper .chat-message-list .user-icon {
-      width: 1.5rem; }
+      width: 2.5rem; }
       .chat-wrapper .chat-message-list .user-icon svg .level_icon {
         fill: #000000; }
   .chat-wrapper .chat-footer {

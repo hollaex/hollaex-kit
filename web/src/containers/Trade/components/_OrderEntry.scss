@@ -112,7 +112,7 @@
 		@include entry_form($color-sell-btc-light, $trade-asks-color-disabled);
 	}
 	&.order_side-selector-buy {
-		@include entry_form($color-buy-btc-light, $trade-bids-color-disabled);
+		@include entry_form($buy, $trade-bids-color-disabled);
 	}
 }
 

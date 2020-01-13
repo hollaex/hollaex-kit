@@ -3,7 +3,7 @@ import { Router, Route, browserHistory } from 'react-router';
 import ReactGA from 'react-ga';
 import { isMobile } from 'react-device-detect';
 
-import { IS_PRO_VERSION, PRO_VERSION_REDIRECT } from './config/constants';
+import { PRO_VERSION_REDIRECT, IS_PRO_VERSION } from './config/constants';
 
 import {
 	App as Container,
@@ -81,33 +81,17 @@ if (token) {
 
 function requireAuth(nextState, replace) {
 	if (!isLoggedIn()) {
-		if (isMobile) {
-			replace({
-				pathname: '/login'
-			});
-		} else {
-			replace({
-				pathname: '/trade/xht-usdt'
-			});
-		}
+		replace({
+			pathname: '/login'
+		});
 	}
 }
 
 function loggedIn(nextState, replace) {
-	let service =
-		nextState.location.query && nextState.location.query.service
-			? nextState.location.query.service
-			: '';
-	if (isLoggedIn() && !service) {
-		// if (isMobile) {
-		// 	replace({
-		// 		pathname: '/home'
-		// 	});
-		// } else {
+	if (isLoggedIn()) {
 		replace({
-			pathname: '/trade/xht-usdt'
+			pathname: '/account'
 		});
-		// }
 	}
 }
 
@@ -162,6 +146,14 @@ export default (
 		{!IS_PRO_VERSION ? <Route path="/" name="Home" component={Home} /> : null}
 		<Route path="lang/:locale" component={createLocalizedRoutes} />
 		<Route component={AuthContainer} {...noAuthRoutesCommonProps}>
+			{isMobile ? (
+				<Route
+					path="/"
+					name="Login"
+					component={Login}
+					{...noAuthRoutesCommonProps}
+				/>
+			) : null}
 			<Route path="login" name="Login" component={Login} />
 			<Route path="signup" name="signup" component={Signup} />
 		</Route>
@@ -184,15 +176,14 @@ export default (
 			/>
 		</Route>
 		<Route component={Container}>
-			{isMobile
-				? <Route
+			{isMobile ? (
+				<Route
 					path="/home"
 					name="Home"
 					component={MobileHome}
 					onEnter={requireAuth}
 				/>
-				: null
-			}
+			) : null}
 			<Route
 				path="account"
 				name="Account"
