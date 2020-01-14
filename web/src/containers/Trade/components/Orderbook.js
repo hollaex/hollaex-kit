@@ -3,7 +3,6 @@ import classnames from 'classnames';
 import EventListener from 'react-event-listener';
 import { connect } from 'react-redux';
 
-import UpComingWave from './UpComingWave';
 import { subtract } from '../utils';
 import { formatCurrency, formatBtcFullAmount } from '../../../utils/currency';
 import STRINGS from '../../../config/localizedStrings';

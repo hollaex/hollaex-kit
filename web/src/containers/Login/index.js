@@ -9,7 +9,6 @@ import moment from 'moment';
 
 import { performLogin, storeLoginResult, setLogoutMessage } from '../../actions/authAction';
 import LoginForm, { FORM_NAME } from './LoginForm';
-import TermsOfService from '../TermsOfService';
 import { Dialog, OtpForm, IconTitle, Notification } from '../../components';
 import { NOTIFICATIONS } from '../../actions/appActions';
 import { errorHandler } from '../../components/OtpForm/utils';
@@ -206,7 +205,7 @@ class Login extends Component {
 
 	render() {
 		const { logoutMessage, activeTheme } = this.props;
-		const { otpDialogIsOpen, logoutDialogIsOpen, termsDialogIsOpen } = this.state;
+		const { otpDialogIsOpen, logoutDialogIsOpen } = this.state;
 
 		return (
 			<div
