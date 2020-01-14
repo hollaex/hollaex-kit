@@ -456,11 +456,13 @@ class AppBar extends Component {
 					)}
 				</div>
 				{!isLoggedIn() ? (
-					<ThemeSwitcher
-						selected={selected}
-						options={options}
-						toggle={this.onToggle}
-					/>
+					<div id="trade-nav-container">
+						<ThemeSwitcher
+							selected={selected}
+							options={options}
+							toggle={this.onToggle}
+						/>
+					</div>
 				) : null}
 				{!isHome ? (
 					isLoggedIn() ? (
