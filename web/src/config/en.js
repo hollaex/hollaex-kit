@@ -1297,9 +1297,18 @@ export default {
 	TRADE_POSTS: {
 		// new
 		ANNOUNCEMENT: 'Announcement',
+		ANNOUNCEMNT_TXT_3:
+			'Public launch and Wave Auction is rescheduled to January 1st 2020. Wallet deposit and withdrawals are now open.',
+		ANNOUNCEMNT_TXT_4:
+			'Happy new year Hollaers. We are making a new mark starting from 2020 with launch of the most open trading platform with the help of you all.',
+		ANNOUNCEMNT_TXT_1:
+			'Earn XHT with HAP program by introducing your friends to hollaex.com. {0}.',
 		DEFAULT_ANNOUNCEMENT:
-			'This page posts public announcements about your exchange!',
-		},
+			'This page posts public announcements about your exchange! {0}',
+		ANNOUNCEMENT_TXT_2: 'Free XHT will be distributed to all wallets that {0}.',
+		LEARN_MORE: 'Learn more',
+		APPLY_TODAY: 'Apply today' // new
+	},
 	OPEN_WALLET: 'Open wallet', // new
 	AGO: 'ago', // new
 };

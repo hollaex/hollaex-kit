@@ -281,15 +281,16 @@ class AppBar extends Component {
 			<div className={classnames('app_bar-icon', 'text-uppercase')}>
 				{isHome ? (
 					<img
-						src={HOLLAEX_LOGO}
+						src={HOLLAEX_LOGO_BLACK}
 						alt={STRINGS.APP_NAME}
 						className="app_bar-icon-logo"
 					/>
 				) : (
 					<Link href={IS_PRO_VERSION ? PRO_URL : DEFAULT_VERSION_REDIRECT}>
-						<ReactSVG
-							path={HOLLAEX_LOGO_BLACK}
-							wrapperClassName="app_bar-icon-logo"
+						<img
+							src={HOLLAEX_LOGO_BLACK}
+							alt={STRINGS.APP_NAME}
+							className="app_bar-icon-logo"
 						/>
 					</Link>
 				)}
@@ -424,7 +425,11 @@ class AppBar extends Component {
 				)}
 			>
 				<Link to="/">
-					<ReactSVG path={HOLLAEX_LOGO} wrapperClassName="homeicon-svg" />
+					<img
+						src={HOLLAEX_LOGO_BLACK}
+						alt={STRINGS.APP_NAME}
+						className="homeicon-svg"
+					/>
 				</Link>
 				{isHome && this.renderSplashActions(token, verifyingToken)}
 			</MobileBarWrapper>
