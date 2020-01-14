@@ -1,10 +1,9 @@
 import React from 'react';
 import classnames from 'classnames';
-import ReactSvg from 'react-svg';
 import { isMobile } from 'react-device-detect';
 import { SOCIAL_ICONS, HOLLAEX_LOGO_BLACK } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
-import { HOLLAEX_LOGO, PUBLIC_URL } from '../../config/constants';
+import { PUBLIC_URL } from '../../config/constants';
 import moment from 'moment';
 
 const generateSectionsText = (strings, theme) => {
