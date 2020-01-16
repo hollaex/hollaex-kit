@@ -71,6 +71,11 @@ export const formatToSimple = (amount = 0, min = 0, fullFormat = false) => {
 	return numbro(math.number(amount)).format(formatObj.format);
 };
 
+export const formatToFixed = (amount = 0, min = 0, fullFormat = false) => {
+	let formatObj = getFormat(min, fullFormat);
+	return numbro(math.number(amount).toFixed(formatObj.digit)).format(formatObj.format);
+};
+
 export const formatCurrency = (
 	amount = 0,
 	currency = BASE_CURRENCY,

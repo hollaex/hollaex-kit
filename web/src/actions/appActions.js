@@ -25,10 +25,9 @@ export const NOTIFICATIONS = {
 	GENERATE_ADDRESS: 'NOTIFICATIONS_GENERATE_ADDRESS',
 	WITHDRAWAL_EMAIL_CONFIRMATION: 'WITHDRAWAL_EMAIL_CONFIRMATION',
 	INVITE_FRIENDS: 'INVITE_FRIENDS',
-	STAKE_TOKEN:'STAKE_TOKEN',
+	STAKE_TOKEN: 'STAKE_TOKEN',
 	DEPOSIT_INFO: 'DEPOSIT_INFO',
-	XHT_SUCCESS_ACCESS :'XHT_SUCCESS_ACCESS',
-	WAVE_NOTIFICATION: 'WAVE_NOTIFICATION'
+	XHT_SUCCESS_ACCESS: 'XHT_SUCCESS_ACCESS'
 };
 export const CONTACT_FORM = 'CONTACT_FORM';
 export const HELPFUL_RESOURCES_FORM = 'HELPFUL_RESOURCES_FORM';
@@ -216,7 +215,7 @@ export const setConfig = (config) => {
 	let config_level = [];
 	if (config) {
 		for (let i = 1; i <= parseInt(config.tiers, 10); i++) {
-			config_level = [...config_level, i]
+			config_level = [...config_level, i];
 		}
 	}
 	return {
@@ -225,7 +224,7 @@ export const setConfig = (config) => {
 			config,
 			config_level
 		}
-	}
+	};
 };
 
 export const setInfo = (info) => ({

@@ -4,7 +4,7 @@ import EventListener from 'react-event-listener';
 import { connect } from 'react-redux';
 
 import { subtract } from '../utils';
-import { formatCurrency, formatBtcFullAmount } from '../../../utils/currency';
+import { formatCurrency, formatToFixed } from '../../../utils/currency';
 import STRINGS from '../../../config/localizedStrings';
 import { DEFAULT_COIN_DATA } from '../../../config/constants';
 
@@ -28,11 +28,11 @@ const PriceRow = (pairBase, pairTwo, side, onPriceClick, onAmountClick) => (
 	</div>
 );
 
-const calculateSpread = (asks, bids, pair, coins) => {
+const calculateSpread = (asks, bids, pair, pairData) => {
 	const lowerAsk = asks.length > 0 ? asks[0][0] : 0;
 	const higherBid = bids.length > 0 ? bids[0][0] : 0;
 	if (lowerAsk && higherBid) {
-		return formatBtcFullAmount(subtract(lowerAsk, higherBid));
+		return formatToFixed(subtract(lowerAsk, higherBid), pairData.increment_price);
 	}
 	return '-';
 };
@@ -147,7 +147,7 @@ class Orderbook extends Component {
 							<div className="trade_orderbook-spread-text">
 								{STRINGS.formatString(
 									STRINGS.ORDERBOOK_SPREAD_PRICE,
-									calculateSpread(asks, bids, pair, coins),
+									calculateSpread(asks, bids, pair, pairData),
 									symbol.toUpperCase()
 								)}
 							</div>

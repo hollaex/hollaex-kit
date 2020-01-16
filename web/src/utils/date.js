@@ -1,6 +1,6 @@
 import moment from 'moment';
 
-export const TIMESTAMP_FORMAT = 'YYYY/MM/DD HH:mm:ss A';
+export const TIMESTAMP_FORMAT = 'YYYY/MM/DD HH:mm:ss';
 export const DATETIME_FORMAT = 'YYYY/MM/DD';
 
 export const formatTimestampGregorian = (date, format = TIMESTAMP_FORMAT) =>
