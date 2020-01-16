@@ -14,8 +14,8 @@ export default {
 		'Do you want to cancel your pending withdrawal of:',
 	CANT_BE_CANCELLED: '-',
 	ALREADY_CANCELLED: '-',
-	TIMESTAMP_FORMAT: 'YYYY/MM/DD HH:mm:ss A',
-	HOUR_FORMAT: 'HH:mm:ss A',
+	TIMESTAMP_FORMAT: 'YYYY/MM/DD HH:mm:ss',
+	HOUR_FORMAT: 'HH:mm:ss',
 	LOGIN_TEXT: 'Login',
 	SIGN_IN: 'Sign In',
 	SIGNUP_TEXT: 'Sign Up',
@@ -45,8 +45,8 @@ export default {
 	NO_OPTIONS: 'No options availables',
 	SECONDS: 'seconds',
 	VIEW_MARKET: 'view market', // new
-	GO_TRADE:'Go Trade', // new
-	VIEW_INFO:'View info page', // new
+	GO_TRADE: 'Go Trade', // new
+	VIEW_INFO: 'View info page', // new
 	APPLY_HERE: 'Apply Here', // new
 	HOME: {
 		SECTION_1_TITLE: 'Welcome to HollaEx Exchange Kit!',
@@ -83,8 +83,7 @@ export default {
 			{ key: 'en', label: 'English' },
 			{ key: 'ko', label: '한국어' }
 		],
-		FOOTER_COPYRIGHT:
-			'	Copyright {0} ⓒ bitHolla Inc. All rights reserved',
+		FOOTER_COPYRIGHT: '	Copyright {0} ⓒ bitHolla Inc. All rights reserved',
 		SECTIONS: {
 			SECTION_1_TITLE: 'ABOUT',
 			SECTION_1_LINK_1: 'About Us',
@@ -1151,22 +1150,34 @@ export default {
 		ACCOUNT_AGE_OF_MONTHS: 'Account Age of {0} Months',
 		TRADING_VOLUME_EQUIVALENT: '{0} {1} Trading Volume Equivalent',
 		LEVEL_OF_ACCOUNT: 'Level {0} Account',
-		LEVEL_TXT_DEFAULT:'Add your level description here',
-		LEVEL_1_TXT: 'Your journey starts here young crypto trader! To obtain bonuses you can verify your identiﬁcation and also get larger deposit and withdraw limits with reduced trading fees.', // new
-		LEVEL_2_TXT: 'Simply trade monthly over $3,000 USDT worth or have balance of over 5,000 XHT and enjoy lower trading fees.', // new
-		LEVEL_3_TXT: 'This is where things get real! Enjoy reduced trading fees and large deposit and withdrawal limits. To get to level 3 you must complete your veriﬁcation', // new
-		LEVEL_4_TXT: 'Simply trade monthly over $10,000 USDT worth or have balance of over 10,000 XHT and enjoy lower trading fees.', // new
-		LEVEL_5_TXT: 'You’ve made it! The level 5 account is a rare account only for exchange operators, Vault users or HollaEx Affiliate Program (HAP). Enjoy large limits and enjoy zero maker fees.', // new
-		LEVEL_6_TXT: 'Simply trade monthly over $300,000 USDT worth or have balance of over 100,000 XHT and enjoy lower trading fees. Increased withdraw amount.', // new
-		LEVEL_7_TXT: 'Simply trade monthly over $500,000 USDT worth or have balance of over 300,000 XHT and enjoy lower trading fees. Increased withdraw amount.', // new
-		LEVEL_8_TXT: 'Simply trade monthly over $600,000 USDT worth or have balance of over 400,000 XHT and enjoy lower trading fees.', // new
-		LEVEL_9_TXT: 'Simply trade monthly over $2,000,000 USDT worth or have balance of over 1,000,000 XHT and enjoy lower trading fees.', // new
-		LEVEL_10_TXT: 'The whale trader account that earns you money back for market making. To obtain this special account please get in touch with us.', // new
+		LEVEL_TXT_DEFAULT: 'Add your level description here',
+		LEVEL_1_TXT:
+			'Your journey starts here young crypto trader! To obtain bonuses you can verify your identiﬁcation and also get larger deposit and withdraw limits with reduced trading fees.', // new
+		LEVEL_2_TXT:
+			'Simply trade monthly over $3,000 USDT worth or have balance of over 5,000 XHT and enjoy lower trading fees.', // new
+		LEVEL_3_TXT:
+			'This is where things get real! Enjoy reduced trading fees and large deposit and withdrawal limits. To get to level 3 you must complete your veriﬁcation', // new
+		LEVEL_4_TXT:
+			'Simply trade monthly over $10,000 USDT worth or have balance of over 10,000 XHT and enjoy lower trading fees.', // new
+		LEVEL_5_TXT:
+			'You’ve made it! The level 5 account is a rare account only for exchange operators, Vault users or HollaEx Affiliate Program (HAP). Enjoy large limits and enjoy zero maker fees.', // new
+		LEVEL_6_TXT:
+			'Simply trade monthly over $300,000 USDT worth or have balance of over 100,000 XHT and enjoy lower trading fees. Increased withdraw amount.', // new
+		LEVEL_7_TXT:
+			'Simply trade monthly over $500,000 USDT worth or have balance of over 300,000 XHT and enjoy lower trading fees. Increased withdraw amount.', // new
+		LEVEL_8_TXT:
+			'Simply trade monthly over $600,000 USDT worth or have balance of over 400,000 XHT and enjoy lower trading fees.', // new
+		LEVEL_9_TXT:
+			'Simply trade monthly over $2,000,000 USDT worth or have balance of over 1,000,000 XHT and enjoy lower trading fees.', // new
+		LEVEL_10_TXT:
+			'The whale trader account that earns you money back for market making. To obtain this special account please get in touch with us.', // new
 		CURRENT_TXT: 'Current',
-		TRADER_ACCOUNT_XHT_TEXT: 'Your account is in the presale period of XHT, this means you can obtain XHT for $0.10 per XHT. All deposit will be converted to XHT once the transaction has cleared.',
+		TRADER_ACCOUNT_XHT_TEXT:
+			'Your account is in the presale period of XHT, this means you can obtain XHT for $0.10 per XHT. All deposit will be converted to XHT once the transaction has cleared.',
 		TRADER_ACCOUNT_TITLE: 'Account - Presale Period', // new
 		HAP_ACCOUNT: 'HAP Account', // new
-		HAP_ACCOUNT_TXT: 'Your account is a verified HollaEx affiliate program account. You can now earn 10% bonus for every person you invite that buys XHT.', // new
+		HAP_ACCOUNT_TXT:
+			'Your account is a verified HollaEx affiliate program account. You can now earn 10% bonus for every person you invite that buys XHT.', // new
 		EMAIL_VERIFICATION: 'Email Verification', // new
 		DOCUMENTS: 'Documents', // new
 		HAP_TEXT: 'HollaEx Affiliate Program (HAP) {0}', // new
@@ -1180,14 +1191,18 @@ export default {
 		TASKS: 'Tasks', // new
 		MAKE_FIRST_DEPOSIT: 'Make your first deposit receive 1 XHT', // new
 		BUY_FIRST_XHT: 'Buy your first XHT and receive a bonus of 5 XHT', // new
-		COMPLETE_ACC_VERIFICATION: 'Complete account verification and get a 20 XHT bonus', // new
+		COMPLETE_ACC_VERIFICATION:
+			'Complete account verification and get a 20 XHT bonus', // new
 		INVITE_USER: 'Invite users and enjoy commissions from their trade', // new
 		JOIN_HAP: 'Join HAP and earn 10% for every HollaEx Kit you sell', // new
 		EARN_RUNNING_EXCHANGE: 'Earn passive income for running your own exchange', // new
 		XHT_WAVE_AUCTION: 'XHT Wave Auction Data', // new
-		XHT_WAVE_DESC_1: 'The distribution of the HollaEx token (XHT) is done through a Wave Auction.', // new
-		XHT_WAVE_DESC_2: 'The Wave Auction sells a random amount of XHT at random times to the highest bidders on the orderbook', // new
-		XHT_WAVE_DESC_3: 'Below displays the historic data on the Wave Auction history', // new
+		XHT_WAVE_DESC_1:
+			'The distribution of the HollaEx token (XHT) is done through a Wave Auction.', // new
+		XHT_WAVE_DESC_2:
+			'The Wave Auction sells a random amount of XHT at random times to the highest bidders on the orderbook', // new
+		XHT_WAVE_DESC_3:
+			'Below displays the historic data on the Wave Auction history', // new
 		WAVE_AUCTION_PHASE: 'Wave Auction Phase {0}', // new
 		LEARN_MORE_WAVE_AUCTION: 'Learn more about the Wave Auction', // new
 		WAVE_NUMBER: 'Wave Number', // new
@@ -1196,8 +1211,10 @@ export default {
 	},
 	REFERRAL_LINK: {
 		TITLE: 'Invite your friend', // new
-		INFO_TEXT: 'Refer your friends by giving out this link. Your friends will receive {0}% discount by signing up through your link.', // new
-		INFO_TEXT_1: '{0}% of trading fees collected from those you refer will be monthly credited to your account.', // new
+		INFO_TEXT:
+			'Refer your friends by giving out this link. Your friends will receive {0}% discount by signing up through your link.', // new
+		INFO_TEXT_1:
+			'{0}% of trading fees collected from those you refer will be monthly credited to your account.', // new
 		COPY_FIELD_LABEL: 'Share the link below with friends and earn commissions:', // new
 		REFERRED_USER_COUT: 'You have referred {0} users', // new
 		COPY_LINK_BUTTON: 'COPY REFERRAL LINK', // new
@@ -1310,5 +1327,5 @@ export default {
 		APPLY_TODAY: 'Apply today' // new
 	},
 	OPEN_WALLET: 'Open wallet', // new
-	AGO: 'ago', // new
+	AGO: 'ago' // new
 };
