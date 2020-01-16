@@ -173,13 +173,6 @@ class Container extends Component {
 				}
 			}
 		});
-
-		publicSocket.on('wave', (data) => {
-			console.log('wave', data);
-			// this.props.setNotification(NOTIFICATIONS.WAVE_NOTIFICATION, {
-			// 	wave: data
-			// });
-		});
 	};
 
 	setUserSocket = (token) => {

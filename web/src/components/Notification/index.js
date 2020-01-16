@@ -46,8 +46,6 @@ const generateNotificationContent = ({ type, data, ...rest }) => {
 			return <InviteFriends data={data} {...rest} />;
 		case NOTIFICATIONS.STAKE_TOKEN:
 			return <StakeToken data={data} {...rest} />;
-		case NOTIFICATIONS.WAVE_NOTIFICATION:
-			return <WaveNotification data={data} {...rest} />;
 		default:
 			break;
 	}
