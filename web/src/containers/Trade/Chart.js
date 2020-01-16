@@ -1,6 +1,12 @@
 import * as React from 'react';
 import { widget } from '../../charting_library/charting_library.min';
-import { WHITE_THEME, DARK_THEME, VOLUME_WHITE, VOLUME_DARK, TOOLBAR_BG } from './ChartConfig';
+import {
+	WHITE_THEME,
+	DARK_THEME,
+	VOLUME_WHITE,
+	VOLUME_DARK,
+	TOOLBAR_BG
+} from './ChartConfig';
 import { getLanguage } from '../../utils/string';
 import {
 	getChartConfig,
@@ -14,7 +20,7 @@ function getThemeOverrides(theme = 'white') {
 	} else {
 		return DARK_THEME;
 	}
-};
+}
 
 function getStudiesOverrides(theme = 'white') {
 	if (theme === 'white') {
@@ -22,7 +28,7 @@ function getStudiesOverrides(theme = 'white') {
 	} else {
 		return VOLUME_DARK;
 	}
-};
+}
 
 class TVChartContainer extends React.PureComponent {
 	static defaultProps = {
@@ -63,7 +69,7 @@ class TVChartContainer extends React.PureComponent {
 				low: 0,
 				open: 0,
 				time: new Date().getTime(),
-				volume: 0,
+				volume: 0
 			}
 		};
 	}
@@ -81,7 +87,7 @@ class TVChartContainer extends React.PureComponent {
 				exchange,
 				symbolType,
 				onResultReadyCallback
-			) => { },
+			) => {},
 			resolveSymbol: (
 				symbolName,
 				onSymbolResolvedCallback,
@@ -116,7 +122,7 @@ class TVChartContainer extends React.PureComponent {
 
 				// onResolveErrorCallback('Not feeling it today')
 			},
-			getBars: function (
+			getBars: function(
 				symbolInfo,
 				resolution,
 				from,
@@ -206,7 +212,7 @@ class TVChartContainer extends React.PureComponent {
 			) => {
 				//optional
 			},
-			getServerTime: (cb) => { }
+			getServerTime: (cb) => {}
 		};
 	}
 
@@ -251,7 +257,7 @@ class TVChartContainer extends React.PureComponent {
 			interval: interval,
 			container_id: containerId,
 			library_path: libraryPath,
-
+			timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
 			locale: getLanguage(),
 			withdateranges: true,
 			range: 'ytd',
@@ -354,7 +360,7 @@ class TVChartContainer extends React.PureComponent {
 				lastBar.high = data.price;
 			}
 
-			lastBar.volume = lastBar.volume ? (lastBar.volume + data.size) : data.size;
+			lastBar.volume = lastBar.volume ? lastBar.volume + data.size : data.size;
 			lastBar.close = data.price;
 			if (!lastBar.low) lastBar.low = 0;
 			if (!lastBar.close) lastBar.close = 0;
