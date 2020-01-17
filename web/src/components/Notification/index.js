@@ -13,7 +13,6 @@ import GenerateAddressNotification from './GenerateAddress';
 import InviteFriends from './InviteFriends';
 import StakeToken from './StakeToken';
 import ReferralSuccess from './ReferralSuccess';
-import WaveNotification from './WaveInfo';
 import { GenerateApiKey, CreatedApiKey } from './GenerateApiKey';
 
 const generateNotificationContent = ({ type, data, ...rest }) => {
