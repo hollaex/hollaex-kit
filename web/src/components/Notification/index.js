@@ -13,7 +13,6 @@ import GenerateAddressNotification from './GenerateAddress';
 import InviteFriends from './InviteFriends';
 import StakeToken from './StakeToken';
 import ReferralSuccess from './ReferralSuccess';
-import WaveNotification from './WaveInfo';
 import { GenerateApiKey, CreatedApiKey } from './GenerateApiKey';
 
 const generateNotificationContent = ({ type, data, ...rest }) => {
@@ -46,8 +45,6 @@ const generateNotificationContent = ({ type, data, ...rest }) => {
 			return <InviteFriends data={data} {...rest} />;
 		case NOTIFICATIONS.STAKE_TOKEN:
 			return <StakeToken data={data} {...rest} />;
-		case NOTIFICATIONS.WAVE_NOTIFICATION:
-			return <WaveNotification data={data} {...rest} />;
 		default:
 			break;
 	}

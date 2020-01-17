@@ -21,42 +21,6 @@ $no-background--color: white;
 	background-repeat: no-repeat;
 	background-size: cover;
 
-	// background-repeat: repeat;
-	// background-size: $background-patter--size;
-
-	// .home_container-content {
-		// .app_footer-container {
-		// 	background-color: $footer-background-color !important;
-			
-		// 	.footer-row-content {
-		// 		.footer-links-section {
-		// 			.footer-links-group {
-		// 				.footer-links-section--title {
-		// 					color: $colors-black;
-		// 				}
-		// 				.footer-links-section--list {
-		// 					.link-section {
-		// 						&:hover {
-		// 							color: $colors-black;
-		// 						}
-		// 					}
-		
-		// 				}
-		// 			}
-		// 		}
-		// 		.footer_separter {
-		// 			.footer-logo {
-		// 				svg {
-		// 					.hollaEX_logo_gray {
-		// 						fill: $colors-black;
-		// 					}
-		// 				}
-		// 			}
-		// 		}
-		// 	}
-		// }
-	// }
-	
 	.exchange-expired {
 		background-color: $colors-notifications-red !important;
 		color: $colors-white !important;
@@ -140,8 +104,6 @@ $no-background--color: white;
 				font-weight: bold;
 				text-transform: uppercase;
 			}
-			.home-card-text {
-			}
 		}
 	}
 
@@ -170,8 +132,7 @@ $no-background--color: white;
 		text-align: center;
 		text-transform: uppercase;
 		font-weight: bold;
-		color:$colors-black;
-		background-color: white;
+
 		&.contrast {
 			background-color: $colors-main-black;
 		}
@@ -187,6 +148,36 @@ $no-background--color: white;
 .direction_rtl {
 	.home-card-text-container {
 		margin-right: $card-text--margin;
+	}
+}
+
+.dark-theme {
+	&.home_container{
+		.section_1-content {
+			background: url($background-image-dark);
+		}
+		.features-container {
+			background-color: #020202;
+		}
+		.home-card-container {
+			border-color:#f9f9f9;
+			.home-card-icon-wrapper {
+				> div {
+					.home-card-icon {
+						fill:#f9f9f9
+					}
+				}
+			}
+			.home-card-text-container {
+				color:#f9f9f9;
+			}
+		}
+		.buttons-section--button {
+			border-color:#f9f9f9;
+		}
+	}
+	.arrow-down {
+		stroke: #f9f9f9;
 	}
 }
 

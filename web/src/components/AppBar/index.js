@@ -6,12 +6,12 @@ import { Link } from 'react-router';
 import ReactSVG from 'react-svg';
 import { isMobile } from 'react-device-detect';
 import moment from 'moment';
+import math from 'mathjs';
 import {
 	IS_PRO_VERSION,
 	PRO_URL,
 	DEFAULT_VERSION_REDIRECT,
 	ICONS,
-	HOLLAEX_LOGO,
 	HOLLAEX_LOGO_BLACK,
 	EXCHANGE_EXPIRY_DAYS,
 	IS_XHT
@@ -41,7 +41,8 @@ class AppBar extends Component {
 		verificationPending: 0,
 		walletPending: 0,
 		selected: '',
-		options: [{ value: 'white' }, { value: 'dark' }]
+		options: [{ value: 'white' }, { value: 'dark' }],
+		tabCount: 1
 	};
 
 	componentDidMount() {
@@ -192,17 +193,18 @@ class AppBar extends Component {
 	};
 
 	handleTheme = (selected) => {
-		const settings = {};
 		if (!isLoggedIn()) {
 			this.props.changeTheme(selected);
 			localStorage.setItem('theme', selected);
 		} else {
+			const { settings = {} } = this.props.user;
+			const settingsObj = { ...settings };
 			if (selected === 'white') {
-				settings.interface = { theme: 'white' };
+				settingsObj.interface.theme = 'white';
 			} else {
-				settings.interface = { theme: 'dark' };
+				settingsObj.interface.theme = 'dark';
 			}
-			return updateUser({ settings })
+			return updateUser({ settings: settingsObj })
 				.then(({ data }) => {
 					this.props.setUserData(data);
 					this.props.changeTheme(data.settings.interface.theme);
@@ -279,15 +281,16 @@ class AppBar extends Component {
 			<div className={classnames('app_bar-icon', 'text-uppercase')}>
 				{isHome ? (
 					<img
-						src={HOLLAEX_LOGO}
+						src={HOLLAEX_LOGO_BLACK}
 						alt={STRINGS.APP_NAME}
 						className="app_bar-icon-logo"
 					/>
 				) : (
 					<Link href={IS_PRO_VERSION ? PRO_URL : DEFAULT_VERSION_REDIRECT}>
-						<ReactSVG
-							path={HOLLAEX_LOGO_BLACK}
-							wrapperClassName="app_bar-icon-logo"
+						<img
+							src={HOLLAEX_LOGO_BLACK}
+							alt={STRINGS.APP_NAME}
+							className="app_bar-icon-logo"
 						/>
 					</Link>
 				)}
@@ -359,6 +362,26 @@ class AppBar extends Component {
 		this.handleTheme(selected);
 	};
 
+	calculateTabs = () => {
+		const tradeNav = document.getElementById('trade-nav-container');
+		const homeNav = document.getElementById('home-nav-container');
+		let tabCount = 1;
+		if (tradeNav && homeNav) {
+			const tradeBounds = tradeNav.getBoundingClientRect();
+			const homeBounds = homeNav.getBoundingClientRect();
+			const documentBounds = document.body.getBoundingClientRect();
+			const tabContainer = document.getElementById('trade-tab-0');
+			if (tabContainer) {
+				const tabBounds = tabContainer.getBoundingClientRect();
+				const tabTotal =
+					documentBounds.width -
+					(tradeBounds.width + homeBounds.width + tabBounds.width / 2);
+				tabCount = math.floor(tabTotal / tabBounds.width);
+			}
+			this.setState({ tabCount });
+		}
+	};
+
 	render() {
 		const {
 			noBorders,
@@ -374,15 +397,13 @@ class AppBar extends Component {
 			onHelp
 		} = this.props;
 		const {
-			isAccountMenu,
 			selectedMenu,
 			securityPending,
 			verificationPending,
-			walletPending
+			walletPending,
+			tabCount
 		} = this.state;
-		const totalPending = IS_XHT
-			? securityPending + walletPending
-			: securityPending + verificationPending;
+
 		let pair = '';
 		if (Object.keys(pairs).length) {
 			pair = Object.keys(pairs)[0];
@@ -404,7 +425,11 @@ class AppBar extends Component {
 				)}
 			>
 				<Link to="/">
-					<ReactSVG path={HOLLAEX_LOGO} wrapperClassName="homeicon-svg" />
+					<img
+						src={HOLLAEX_LOGO_BLACK}
+						alt={STRINGS.APP_NAME}
+						className="homeicon-svg"
+					/>
 				</Link>
 				{isHome && this.renderSplashActions(token, verifyingToken)}
 			</MobileBarWrapper>
@@ -415,7 +440,10 @@ class AppBar extends Component {
 				})}
 			>
 				<div className="d-flex">
-					<div className="d-flex align-items-center justify-content-center h-100">
+					<div
+						id="home-nav-container"
+						className="d-flex align-items-center justify-content-center h-100"
+					>
 						{this.renderIcon(isHome, theme)}
 					</div>
 					{!isHome && (
@@ -423,19 +451,23 @@ class AppBar extends Component {
 							activePath={activePath}
 							location={location}
 							router={router}
+							tabCount={tabCount}
+							calculateTabs={this.calculateTabs}
 						/>
 					)}
 				</div>
 				{!isLoggedIn() ? (
-					<ThemeSwitcher
-						selected={selected}
-						options={options}
-						toggle={this.onToggle}
-					/>
+					<div id="trade-nav-container">
+						<ThemeSwitcher
+							selected={selected}
+							options={options}
+							toggle={this.onToggle}
+						/>
+					</div>
 				) : null}
 				{!isHome ? (
 					isLoggedIn() ? (
-						<div className="d-flex app-bar-account">
+						<div id="trade-nav-container" className="d-flex app-bar-account">
 							<div className="d-flex app_bar-quicktrade-container">
 								<ThemeSwitcher
 									selected={selected}
@@ -470,7 +502,7 @@ class AppBar extends Component {
 											path={ICONS.SIDEBAR_TRADING_ACTIVE}
 											wrapperClassName="quicktrade_icon mx-1"
 										/>
-										<div className="d-flex align-items-center">
+										<div className="d-flex align-items-center overflow">
 											{STRINGS.PRO_TRADE}
 										</div>
 									</div>
@@ -485,7 +517,7 @@ class AppBar extends Component {
 											path={ICONS.QUICK_TRADE_TAB_ACTIVE}
 											wrapperClassName="quicktrade_icon"
 										/>
-										<div className="d-flex align-items-center">
+										<div className="d-flex align-items-center overflow">
 											{STRINGS.QUICK_TRADE}
 										</div>
 									</div>

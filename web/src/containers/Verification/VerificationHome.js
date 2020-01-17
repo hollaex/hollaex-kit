@@ -1,5 +1,6 @@
 import React from 'react';
 import { isMobile } from 'react-device-detect';
+import classnames from 'classnames';
 
 import { IconTitle, HeaderSection, CustomTabBar, MobileTabBar } from '../../components';
 import STRINGS from '../../config/localizedStrings';
@@ -12,7 +13,16 @@ const VerificationHome = ({ activeTab, tabProps, tabs, openContactForm, setActiv
                 <HeaderSection
                     openContactForm={openContactForm}
                 />
-                <div className="w-50 header-content">
+                <div
+                    className={
+                        classnames(
+                            "header-content",
+                            {
+                                "w-50": !isMobile,
+                                "w-100": isMobile
+                            }
+                        )
+                    }>
                     <div className="mb-3">{STRINGS.USER_VERIFICATION.INFO_TXT}</div>
                     <div className="mb-3">{STRINGS.USER_VERIFICATION.INFO_TXT_1}</div>
                 </div>

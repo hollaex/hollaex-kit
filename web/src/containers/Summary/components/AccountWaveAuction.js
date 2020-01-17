@@ -77,7 +77,7 @@ class AccountWaveAuction extends Component {
         const { headers, waveData, currentPhase } = this.state;
         return (
             <div className="summary-section_2">
-                <div className="summary-content-txt mb-1">
+                <div className="summary-content-txt mb-2">
                     <div>{STRINGS.SUMMARY.XHT_WAVE_DESC_1}</div>
                     <div>{STRINGS.SUMMARY.XHT_WAVE_DESC_2}</div>
                     <div>{STRINGS.SUMMARY.XHT_WAVE_DESC_3}</div>

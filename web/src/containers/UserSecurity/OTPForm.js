@@ -23,6 +23,7 @@ const Form = ({ handleSubmit, submitting, pristine, error, valid }) => {
 			</div>
 			<Button
 				label={STRINGS.ACCOUNT_SECURITY.OTP.FORM.BUTTON}
+				className="mb-5"
 				disabled={pristine || submitting || !valid}
 			/>
 		</form>
