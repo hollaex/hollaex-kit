@@ -49,8 +49,6 @@ class Trade extends Component {
 		chartWidth: 0,
 		symbol: '',
 		cancelDelayData: [],
-		priceInitialized: false,
-		sizeInitialized: false,
 		priceRef: '',
 		sizeRef: ''
 	};
@@ -141,24 +139,16 @@ class Trade extends Component {
 	onPriceClick = (price) => {
 		this.props.change(FORM_NAME, 'price', price);
 		playBackgroundAudioNotification('orderbook_field_update');
-		this.setState({ priceInitialized: true });
-		this.priceTimeOut = setTimeout(() => {
-			this.setState({ priceInitialized: false });
-			if (this.state.priceRef) {
-				this.state.priceRef.focus();
-			}
-		}, 800);
+		if (this.state.priceRef) {
+			this.state.priceRef.focus();
+		}
 	};
 
 	onAmountClick = (size) => {
 		this.props.change(FORM_NAME, 'size', size);
 		playBackgroundAudioNotification('orderbook_field_update');
-		this.setState({ sizeInitialized: true });
-		this.sizeTimeOut = setTimeout(() => {
-			this.setState({ sizeInitialized: false });
-			if (this.state.sizeRef)
-				this.state.sizeRef.focus();
-		}, 800);
+		if (this.state.sizeRef)
+			this.state.sizeRef.focus();
 	};
 
 	setPriceRef = (priceRef) => {
@@ -218,9 +208,7 @@ class Trade extends Component {
 			chartHeight,
 			symbol,
 			activeTab,
-			cancelDelayData,
-			priceInitialized,
-			sizeInitialized
+			cancelDelayData
 		} = this.state;
 
 		if (symbol !== pair || !pairData) {
@@ -326,8 +314,6 @@ class Trade extends Component {
 						onSubmitOrder={this.onSubmitOrder}
 						goToPair={this.goToPair}
 						pair={pair}
-						priceInitialized={priceInitialized}
-						sizeInitialized={sizeInitialized}
 						setPriceRef={this.setPriceRef}
 						setSizeRef={this.setSizeRef}
 					/>
@@ -429,8 +415,6 @@ class Trade extends Component {
 												settings.notification
 													.popup_order_confirmation
 											}
-											priceInitialized={priceInitialized}
-											sizeInitialized={sizeInitialized}
 											setPriceRef={this.setPriceRef}
 											setSizeRef={this.setSizeRef}
 										/>
