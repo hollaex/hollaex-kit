@@ -18,6 +18,11 @@
 			> * {
 				flex: 1 !important;
 			}
+			
+			.xht-logo{
+				width: 3rem;
+				height: 3rem;
+			}
 		}
 	}
 
@@ -40,6 +45,14 @@
 	.table-wrapper {
 		margin: 0;
 	}
+}
+.xht-order-heading {
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+.xht-order-content {
+	color: $dark-font-sub-text-color;
 }
 
 .layout-mobile {
@@ -126,6 +139,11 @@
 			font-size: $regular--font-size;
 		}
 	}
+	.xht-logo{
+		width: 3rem;
+		height: 3rem;
+	}
+	
 }
 
 @media (min-width: 1920px) {

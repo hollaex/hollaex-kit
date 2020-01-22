@@ -1,29 +1,42 @@
-# HollaEx Web
-HollaEx Web is a front-end user interface for HollaEx Kit exchanges. It uses React, HTML and SASS and uses REST API and Websocket channels to communicate with HollaEx Core server.
+# hollaex
+Hollaex is a Bitcoin exchange. It's using reactjs framework as the front-end javascript frametwork and uses Hollaex server.
 
-HollaEx Web is open source and you are welcome to fork and create your own customized exchange interface.  
+## Development
+### Requirements
+You need to have nodejs and npm installed
 
-[Demo](https://hollaex.com)
-
-## Requirements
-* NodeJS version 8 and higher
-* npm version 6 and higher
-* For windows users you need node-gyp installed.
-
-## Install
-HollaEx Web uses [create-react-app](https://github.com/facebook/create-react-app) for packaging and SASS for styling. You can either build and run HollaEx Web through HollaEx CLI or build it independandly on your own.
-
-Read more about HollaEx Web, its installation and deployment as well as customization on our [docs](https://docs.bitholla.com).
-
-For independant install and project deployment follow the instructions provided here to launch your web client.
-
+### Installation
 1. clone the repository
-2. `cd web`
+2. cd hollaex
 3. `npm install`
 
-### Development
-Create and copy `.env` file from `.env.example`. It is used for environment variables and certain fileds you should set for your exchange.  
-Run `npm start` and the client builds and opens on your browser on port `3333` by default. It generates css files from SASS and places them in `/src` folder. During development the project listens for any updates on the code and reloads automatically. You can build css separately by running `node run build-css`.
+### Run in your local machine
+2. Hollaex uses sass for styling. You need to generate css files before running the project. `node run build-css` builds all css files from sass styles in `/src` folder.
+3. `npm start` it will also listen to changes in sass files and autogenerates css files in there.
 
 ## Production
-By running `npm run build` the project gets built into `/build` folder and is ready to be deployed without any further configuration. The point of entry is `index.html`.
+You can build the project by running `npm run build` and the projects builds the entire client in `/build` folder
+
+## Properties to set
+- Build variables:
+  - NODE_ENV `['production', 'development']`
+  - PUBLIC_URL `https://hollaex.com`
+  - REACT_APP_NETWORK `['mainnet', 'testnet']`
+  - REACT_APP_SERVER_ENDPOINT `https://api.hollaex.com`
+  - REACT_APP_CAPTCHA_SITE_KEY `6LcSOUIUAAAAAEbu2RXTpm-hdvQnTcTy12qG2y86`
+- ORDER PRICES
+  - REACT_APP_MIN_PRICE `500`
+  - REACT_APP_MAX_PRICE `50000`
+  - REACT_APP_PRICE_STEP `1`
+- BANK DATA (NOT USED)
+  - REACT_APP_BANK_WITHDRAWAL_BASE_FEE `1`
+  - REACT_APP_BANK_WITHDRAWAL_DYNAMIC_FEE_RATE `0.5`
+  - REACT_APP_BANK_WITHDRAWAL_MAX_DYNAMIC_FEE `50`
+- TOP NAV BAR DEFAULT PAIRS
+  - REACT_APP_DEFAULT_TRADING_PAIRS `btc-eur,eth-eur`
+
+### Styles
+### Steps to configure white and dark theme
+1. Modify colors under `colors for white theme` and `colors for dark theme` text in variables.scss file. there is also some common colors that effect in both dark and white theme.
+2. Coin colors also categorized by theme in variables.scss file.
+3. To apply different colors for chart element outline(slice in dount, bar in bar chart) change the `coin-${symbol}-1` and `dark-coin-${symbol}-1`.

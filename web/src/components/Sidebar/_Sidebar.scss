@@ -1,3 +1,7 @@
+.sidebar-fit-to-screen {
+	height: 100vh !important;
+}
+
 .sidebar-container {
 	display: flex;
 	flex-direction: column;
@@ -11,8 +15,12 @@
 
 	.sidebar-notifications {
 		flex: 1;
-		height: auto;
-		overflow-y: auto;
+		overflow-y: scroll;
+		
+		.sidebar-title {
+			font-size: $font-size-subhead3;;
+			font-weight: bold;
+		}
 	}
 }
 
@@ -79,6 +87,10 @@ $row--size: calc(#{$row--height} - #{$sidebar-sections-padding});
 				svg {
 					fill: $bottom-bar--background;
 					stroke: $bottom-bar--background;
+					.post-icon{
+						fill: $bottom-bar--background;
+						stroke: $bottom-bar--background;
+					}
 				}
 			}
 		}
@@ -151,6 +163,17 @@ $row--size: calc(#{$row--height} - #{$sidebar-sections-padding});
 			&.icon--chat {
 				@include hover-icon($dark-icon-hover, $dark-icon-unhover);
 			}
+		}
+	}
+}
+
+@media screen and ( max-height: 600px ) {
+	.sidebar-container {
+		.sidebar_hub-wrapper {
+			max-height: 35rem !important;
+		}
+		.sidebar-notifications {
+			min-height: 20rem;
 		}
 	}
 }

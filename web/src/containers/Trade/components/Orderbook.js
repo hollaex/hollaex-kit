@@ -4,7 +4,7 @@ import EventListener from 'react-event-listener';
 import { connect } from 'react-redux';
 
 import { subtract } from '../utils';
-import { formatCurrency, formatBaseAmount, formatBtcFullAmount, checkNonBasePair } from '../../../utils/currency';
+import { formatCurrency, formatToFixed } from '../../../utils/currency';
 import STRINGS from '../../../config/localizedStrings';
 import { DEFAULT_COIN_DATA } from '../../../config/constants';
 
@@ -28,12 +28,11 @@ const PriceRow = (pairBase, pairTwo, side, onPriceClick, onAmountClick) => (
 	</div>
 );
 
-const calculateSpread = (asks, bids, pair, coins) => {
+const calculateSpread = (asks, bids, pair, pairData) => {
 	const lowerAsk = asks.length > 0 ? asks[0][0] : 0;
 	const higherBid = bids.length > 0 ? bids[0][0] : 0;
-	const isNonBasePair = checkNonBasePair(pair, coins);
 	if (lowerAsk && higherBid) {
-		return isNonBasePair ? formatBtcFullAmount(subtract(lowerAsk, higherBid)) : formatBaseAmount(subtract(lowerAsk, higherBid));
+		return formatToFixed(subtract(lowerAsk, higherBid), pairData.increment_price);
 	}
 	return '-';
 };
@@ -96,7 +95,7 @@ class Orderbook extends Component {
 				? {
 						// maxHeight: dataBlockHeight,
 						minHeight: dataBlockHeight
-					}
+				  }
 				: {};
 
 		const pairBase = pairData.pair_base.toUpperCase();
@@ -107,10 +106,7 @@ class Orderbook extends Component {
 				<EventListener target="window" onResize={this.scrollTop} />
 				<div className="trade_orderbook-headers d-flex">
 					<div className="f-1 trade_orderbook-cell">
-						{STRINGS.formatString(
-							STRINGS.PRICE_CURRENCY,
-							symbol.toUpperCase()
-						)}
+						{STRINGS.formatString(STRINGS.PRICE_CURRENCY, symbol.toUpperCase())}
 					</div>
 					<div className="f-1 trade_orderbook-cell">
 						{STRINGS.formatString(STRINGS.AMOUNT_SYMBOL, pairBase)}
@@ -132,7 +128,15 @@ class Orderbook extends Component {
 						style={blockStyle}
 						ref={this.setRefs('asksWrapper')}
 					>
-						{asks.map(PriceRow(pairBase, pairTwo, 'ask', this.onPriceClick, this.onAmountClick))}
+						{asks.map(
+							PriceRow(
+								pairBase,
+								pairTwo,
+								'ask',
+								this.onPriceClick,
+								this.onAmountClick
+							)
+						)}
 					</div>
 					<div
 						className="trade_orderbook-spread d-flex align-items-center"
@@ -143,7 +147,7 @@ class Orderbook extends Component {
 							<div className="trade_orderbook-spread-text">
 								{STRINGS.formatString(
 									STRINGS.ORDERBOOK_SPREAD_PRICE,
-									calculateSpread(asks, bids, pair, coins),
+									calculateSpread(asks, bids, pair, pairData),
 									symbol.toUpperCase()
 								)}
 							</div>
@@ -158,7 +162,15 @@ class Orderbook extends Component {
 						ref={this.setRefs('bidsWrapper')}
 						style={blockStyle}
 					>
-						{bids.map(PriceRow(pairBase, pairTwo, 'bids', this.onPriceClick, this.onAmountClick))}
+						{bids.map(
+							PriceRow(
+								pairBase,
+								pairTwo,
+								'bids',
+								this.onPriceClick,
+								this.onAmountClick
+							)
+						)}
 					</div>
 				</div>
 				<div className="trade_bids-limit_bar">

@@ -1,7 +1,7 @@
 $accordion-border: 1px solid $app-line-divider;
 $accordion_content-padding: 0;
 $accordion_content-margin-bottom: 1.5rem;
-$accordion_arrow-size: 0.5rem;
+$accordion_arrow-size: 0.7rem;
 $title--padding: 0.5rem;
 $title--font-size: $font-size-subhead3;
 $main-text--color: $colors-deactivate-color2;
@@ -18,6 +18,10 @@ $main-text--color: $colors-deactivate-color2;
 		.accordion_section {
 			.accordion_section_title {
 				font-size: 1.75rem;
+				}
+				.accordion_section_content{
+					font-size: $font-size-mobile-txt !important;
+				}
 			}
 
 			.action_notification-svg {
@@ -55,8 +59,39 @@ $main-text--color: $colors-deactivate-color2;
 				}
 			}
 		}
+		.direction_ltr {
+			.accordion_wrapper .accordion_section {
+				.accordion_section_content_text {
+					&.with_arrow:after {
+						border: solid $trade-tabs-inactive-color !important;
+						border-width: 1px 0 0 1px !important;
+						display: inline-block !important;
+						padding: 3px !important;
+						transform: rotate(131deg)!important;
+						content: '';
+						margin-right: -0.6rem;
+						position: absolute;
+						right: -$accordion_arrow-size;
+						top: calc(50% - 0.3rem);
+					}
+				}
+				.accordion_section_title {
+					&.accordion_section--open .accordion_section_content_text:after {
+						transform: rotate(-135deg)!important;
+						right: -1.1rem;
+						top: calc(50% - 0.38rem);
+					}
+				}
+		
+		
+				&.disabled {
+					.accordion_section_content_text:after {
+						border-left-color: $colors-deactivate-color2;
+					}
+				}
+			}
+		}		
 	}
-}
 .accordion_wrapper .accordion_section {
 	border-top: $accordion-border;
 	font-size: $title--font-size;
@@ -68,6 +103,39 @@ $main-text--color: $colors-deactivate-color2;
 	.accordion_section_title {
 		padding: $title--padding 0;
 		position: relative;
+
+		.sidebar_hub-section-icon {
+			height: 1.5rem;
+			width: 1.5rem;
+			margin-right: 0.5rem;
+			svg path {
+				fill: transparent;
+				stroke: $sidebar-color;
+			}				
+		}
+
+		&.accordion_section--open {
+			.accordion_section_content {
+				margin-bottom: $accordion_content-margin-bottom;
+			}
+	
+			.accordion_section_content_text {
+				color: $colors-main-black;
+				&.with_arrow:after {
+					border-left-color: $colors-main-black !important;
+					border-top-color: $colors-main-black !important;
+				}
+			}
+			.sidebar_hub-section-icon {
+				svg path {
+					fill: $sidebar-color-active;
+					stroke: $sidebar-color-active;
+				}				
+			}
+			.wallet_section-title-amount {
+				color: $colors-main-black !important;
+			}
+		}
 	}
 	.accordion_section_content_text {
 		position: relative;
@@ -75,20 +143,6 @@ $main-text--color: $colors-deactivate-color2;
 
 		.accordion_section_content_text-subtitle {
 			color: $colors-deactivate-color1;
-		}
-	}
-
-	&.accordion_section--open {
-		.accordion_section_content {
-			margin-bottom: $accordion_content-margin-bottom;
-		}
-
-		.accordion_section_content_text {
-			color: $colors-main-black;
-			&.with_arrow:after {
-				border-left-color: $colors-main-black !important;
-				border-right-color: $colors-main-black !important;
-			}
 		}
 	}
 
@@ -115,15 +169,24 @@ $main-text--color: $colors-deactivate-color2;
 	.accordion_wrapper .accordion_section {
 		.accordion_section_content_text {
 			&.with_arrow:after {
-				@include css-triangle($main-text--color, 'right', $accordion_arrow-size);
+				border: solid $trade-tabs-inactive-color !important;
+				border-width: 2px 0 0 2px !important;
+				display: inline-block !important;
+				padding: 3px !important;
+				transform: rotate(131deg)!important;
+				content: '';
+				margin-right: -0.6rem;
+				position: absolute;
 				right: -$accordion_arrow-size;
-				top: calc(50% - 0.5rem);
+				top: calc(50% - 0.3rem);
+			}
+		}
+		.accordion_section_title {
+			&.accordion_section--open .accordion_section_content_text:after {
+				transform: rotate(-135deg)!important;
 			}
 		}
 
-		&.accordion_section--open .accordion_section_content_text:after {
-			transform: rotate(90deg);
-		}
 
 		&.disabled {
 			.accordion_section_content_text:after {
@@ -137,19 +200,25 @@ $main-text--color: $colors-deactivate-color2;
 	.accordion_wrapper .accordion_section {
 		.accordion_section_content_text {
 			&.with_arrow:after {
-				@include css-triangle($main-text--color, 'left', $accordion_arrow-size);
-				left: -$accordion_arrow-size;
-				top: calc(50% - 0.6rem);
+				border: solid $trade-tabs-inactive-color ;
+				border-width: 2px 0 0 2px !important;
+				display: inline-block !important;
+				padding: 3px !important;
+				transform: rotate(131deg)!important;
+				content: '';
+				right: -$accordion_arrow-size;
+				top: calc(50% - 0.3rem);
 			}
 		}
-
-		&.accordion_section--open .accordion_section_content_text:after {
-			transform: rotate(-90deg);
+		.accordion_section_title {
+			&.accordion_section--open .accordion_section_content_text:after {
+				transform: rotate(-135deg)!important;
+			}
 		}
 
 		&.disabled {
 			.accordion_section_content_text:after {
-				border-right-color: $colors-deactivate-color2;
+				border-top-color: $colors-deactivate-color2;
 			}
 		}
 	}
@@ -162,19 +231,39 @@ $main-text--color: $colors-deactivate-color2;
 			color: $dark-font-sub-text-color;
 		}
 		.accordion_section_content_text {
-			color: $dark-font-main-text-color;
+			color: $dark-font-sub-text-color;
 
 			.accordion_section_content_text-subtitle {
 				color: $dark-button-active;
 			}
+			&.with_arrow:after {
+				border-left-color: $dark-font-sub-text-color !important;
+				border-top-color: $dark-font-sub-text-color !important;
+			}
 		}
-
-		&.accordion_section--open {
-			.accordion_section_content_text {
-				color: $dark-font-main-text-color;
-				&.with_arrow:after {
-					border-left-color: $dark-font-main-text-color !important;
-					border-right-color: $dark-font-main-text-color !important;
+		.accordion_section_title {
+			.sidebar_hub-section-icon {
+				svg path {
+					fill: transparent;
+					stroke: $dark-icon-unhover;
+				}				
+			}
+			&.accordion_section--open {
+				.accordion_section_content_text {
+					color: $dark-font-main-text-color !important;
+					&.with_arrow:after {
+						border-left-color:$dark-font-main-text-color !important;
+						border-top-color:$dark-font-main-text-color !important;
+					}
+				}
+				.sidebar_hub-section-icon {
+					svg path {
+						fill: $dark-font-main-text-color;
+						stroke: $dark-font-main-text-color;
+					}				
+				}
+				.wallet_section-title-amount{
+					color: $dark-font-main-text-color !important;
 				}
 			}
 		}
@@ -213,7 +302,7 @@ $main-text--color: $colors-deactivate-color2;
 
 			&.disabled {
 				.accordion_section_content_text:after {
-					border-right-color: $dark-accordion-arrow-inactive;
+					border-top-color: $dark-accordion-arrow-inactive;
 				}
 			}
 		}

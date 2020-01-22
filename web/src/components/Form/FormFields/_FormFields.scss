@@ -13,6 +13,13 @@ $placeholder--font-weight: bold;
 	width: 1.2rem;
 }
 
+.custom-field-width {
+	display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    width: 50%;
+}
+
 .input_field-input {
 	width: 100%;
 	position: relative;
@@ -245,7 +252,7 @@ $placeholder--font-weight: bold;
 
 .dark-theme {
 	.input_field-input {
-		color: $dark-form-text !important;
+		color: $colors-white !important;
 		&::placeholder {
 			color: $dark-form-placeholder !important;
 		}

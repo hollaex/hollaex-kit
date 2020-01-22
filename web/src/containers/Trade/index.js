@@ -5,10 +5,8 @@ import classnames from 'classnames';
 import { bindActionCreators } from 'redux';
 import { SubmissionError, change } from 'redux-form';
 import { isMobile } from 'react-device-detect';
-import { Link } from 'react-router';
 
 import { ICONS, BASE_CURRENCY, DEFAULT_COIN_DATA } from '../../config/constants';
-import { IconTitle } from '../../components';
 import {
 	submitOrder,
 	cancelOrder,
@@ -35,7 +33,8 @@ import TradeHistory from './components/TradeHistory';
 import MobileTrade from './MobileTrade';
 import MobileChart from './MobileChart';
 import MobileOrders from './MobileOrders';
-import MobilePosts from './MobilePosts';
+import LogoutInfoOrder from './components/LogoutInfoOrder';
+import LogoutInfoTrade from './components/LogoutInfoTrade';
 import TVChartContainer from './Chart';
 
 import { ActionNotification, Loader, MobileBarTabs } from '../../components';
@@ -51,7 +50,9 @@ class Trade extends Component {
 		symbol: '',
 		cancelDelayData: [],
 		priceInitialized: false,
-		sizeInitialized: false
+		sizeInitialized: false,
+		priceRef: '',
+		sizeRef: ''
 	};
 	priceTimeOut = '';
 	sizeTimeOut = '';
@@ -143,7 +144,10 @@ class Trade extends Component {
 		this.setState({ priceInitialized: true });
 		this.priceTimeOut = setTimeout(() => {
 			this.setState({ priceInitialized: false });
-		}, 1500);
+			if (this.state.priceRef) {
+				this.state.priceRef.focus();
+			}
+		}, 800);
 	};
 
 	onAmountClick = (size) => {
@@ -152,7 +156,19 @@ class Trade extends Component {
 		this.setState({ sizeInitialized: true });
 		this.sizeTimeOut = setTimeout(() => {
 			this.setState({ sizeInitialized: false });
-		}, 1500);
+			if (this.state.sizeRef)
+				this.state.sizeRef.focus();
+		}, 800);
+	};
+
+	setPriceRef = (priceRef) => {
+		if (priceRef)
+			this.setState({ priceRef });
+	};
+	
+	setSizeRef = (sizeRef) => {
+		if (sizeRef)
+			this.setState({ sizeRef });
 	};
 
 	setActiveTab = (activeTab) => {
@@ -195,7 +211,8 @@ class Trade extends Component {
 			settings,
 			orderLimits,
 			pairs,
-			coins
+			coins,
+			discount
 		} = this.props;
 		const {
 			chartHeight,
@@ -221,33 +238,7 @@ class Trade extends Component {
 						onCancel={this.handleCancelOrders}
 					/>
 				) : (
-					<div className="text-center">
-						<IconTitle
-							iconPath={
-								activeTheme === 'white'
-									? ICONS.ACTIVE_TRADE_LIGHT
-									: ICONS.ACTIVE_TRADE_DARK
-							}
-							textType="title"
-							className="w-100"
-							useSvg={true}
-						/>
-						<div>
-							{STRINGS.formatString(
-								STRINGS.ACTIVE_TRADES,
-								<Link
-									to="/login"
-									className={classnames(
-										'blue-link',
-										'dialog-link',
-										'pointer'
-									)}
-								>
-									{STRINGS.SIGN_IN}
-								</Link>
-							)}
-						</div>
-					</div>
+					<LogoutInfoOrder activeTheme={activeTheme}/>
 				),
 				titleAction: isLoggedIn()
 					? activeOrders.length > 0 && (
@@ -271,35 +262,10 @@ class Trade extends Component {
 						pairData={pairData}
 						pairs={pairs}
 						coins={coins}
+						discount={discount}
 					/>
 				) : (
-					<div className="text-center">
-						<IconTitle
-							iconPath={
-								activeTheme === 'dark'
-									? ICONS.TRADE_HISTORY_DARK
-									: ICONS.TRADE_HISTORY_LIGHT
-							}
-							textType="title"
-							className="w-100"
-							useSvg={true}
-						/>
-						<div>
-							{STRINGS.formatString(
-								STRINGS.ACTIVE_TRADES,
-								<Link
-									to="/login"
-									className={classnames(
-										'blue-link',
-										'dialog-link',
-										'pointer'
-									)}
-								>
-									{STRINGS.SIGN_IN}
-								</Link>
-							)}
-						</div>
-					</div>
+					<LogoutInfoTrade />
 				),
 				titleAction: isLoggedIn() ? (
 					<ActionNotification
@@ -362,6 +328,8 @@ class Trade extends Component {
 						pair={pair}
 						priceInitialized={priceInitialized}
 						sizeInitialized={sizeInitialized}
+						setPriceRef={this.setPriceRef}
+						setSizeRef={this.setSizeRef}
 					/>
 				)
 			},
@@ -373,7 +341,7 @@ class Trade extends Component {
 						activeOrders={activeOrders}
 						cancelOrder={this.handleCancelOrders}
 						cancelDelayData={cancelDelayData}
-						cancelAllOrders={cancelAllOrders}
+						cancelAllOrders={this.cancelAllOrders}
 						goToTransactionsHistory={this.goToTransactionsHistory}
 						pair={pair}
 						pairData={pairData}
@@ -381,15 +349,6 @@ class Trade extends Component {
 						coins={coins}
 						goToPair={this.goToPair}
 						userTrades={userTrades}
-						activeTheme={activeTheme}
-					/>
-				)
-			},
-			{
-				title: STRINGS.TRADE_TAB_POSTS,
-				content: (
-					<MobilePosts
-						isLoggedIn={isLoggedIn()}
 						activeTheme={activeTheme}
 					/>
 				)
@@ -472,6 +431,8 @@ class Trade extends Component {
 											}
 											priceInitialized={priceInitialized}
 											sizeInitialized={sizeInitialized}
+											setPriceRef={this.setPriceRef}
+											setSizeRef={this.setSizeRef}
 										/>
 									</TradeBlock>
 								</div>
@@ -511,7 +472,10 @@ class Trade extends Component {
 								'apply_rtl'
 							)}
 						>
-							<TradeBlock title={STRINGS.PUBLIC_SALES}>
+							<TradeBlock
+								title={STRINGS.PUBLIC_SALES}
+								pairData={pairData}
+								pair={pair}>
 								<TradeHistory
 									data={tradeHistory}
 									language={activeLanguage}
@@ -572,7 +536,8 @@ const mapStateToProps = (store) => {
 		activeTheme: store.app.theme,
 		fees: feesData,
 		settings: store.user.settings,
-		orderLimits: store.app.orderLimits
+		orderLimits: store.app.orderLimits,
+		discount: store.user.discount || 0
 	};
 };
 

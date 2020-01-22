@@ -1,0 +1,567 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>XHT - Private Sale</title><style>
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	text-indent: -1.7em;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	opacity: 0.5;
+}
+
+.sans { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, KaiTi, STKaiTi, '华文楷体', KaiTi_GB2312, '楷体_GB2312', serif; }
+.mono { font-family: Nitti, 'Microsoft YaHei', '微软雅黑', monospace; }
+.pdf .sans { font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
+
+.pdf .code { font-family: Source Code Pro, 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, KaiTi, STKaiTi, '华文楷体', KaiTi_GB2312, '楷体_GB2312', serif, 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
+
+.pdf .mono { font-family: PT Mono, Nitti, 'Microsoft YaHei', '微软雅黑', monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+
+.highlight-default {
+}
+.highlight-gray {
+	color: rgb(155,154,151);
+}
+.highlight-brown {
+	color: rgb(100,71,58);
+}
+.highlight-orange {
+	color: rgb(217,115,13);
+}
+.highlight-yellow {
+	color: rgb(223,171,1);
+}
+.highlight-teal {
+	color: rgb(15,123,108);
+}
+.highlight-blue {
+	color: rgb(11,110,153);
+}
+.highlight-purple {
+	color: rgb(105,64,165);
+}
+.highlight-pink {
+	color: rgb(173,26,114);
+}
+.highlight-red {
+	color: rgb(224,62,62);
+}
+.highlight-gray_background {
+	background: rgb(235,236,237);
+}
+.highlight-brown_background {
+	background: rgb(233,229,227);
+}
+.highlight-orange_background {
+	background: rgb(250,235,221);
+}
+.highlight-yellow_background {
+	background: rgb(251,243,219);
+}
+.highlight-teal_background {
+	background: rgb(221,237,234);
+}
+.highlight-blue_background {
+	background: rgb(221,235,241);
+}
+.highlight-purple_background {
+	background: rgb(234,228,242);
+}
+.highlight-pink_background {
+	background: rgb(244,223,235);
+}
+.highlight-red_background {
+	background: rgb(251,228,228);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(55, 53, 47, 0.6);
+	fill: rgba(55, 53, 47, 0.6);
+}
+.block-color-brown {
+	color: rgb(100,71,58);
+	fill: rgb(100,71,58);
+}
+.block-color-orange {
+	color: rgb(217,115,13);
+	fill: rgb(217,115,13);
+}
+.block-color-yellow {
+	color: rgb(223,171,1);
+	fill: rgb(223,171,1);
+}
+.block-color-teal {
+	color: rgb(15,123,108);
+	fill: rgb(15,123,108);
+}
+.block-color-blue {
+	color: rgb(11,110,153);
+	fill: rgb(11,110,153);
+}
+.block-color-purple {
+	color: rgb(105,64,165);
+	fill: rgb(105,64,165);
+}
+.block-color-pink {
+	color: rgb(173,26,114);
+	fill: rgb(173,26,114);
+}
+.block-color-red {
+	color: rgb(224,62,62);
+	fill: rgb(224,62,62);
+}
+.block-color-gray_background {
+	background: rgb(235,236,237);
+}
+.block-color-brown_background {
+	background: rgb(233,229,227);
+}
+.block-color-orange_background {
+	background: rgb(250,235,221);
+}
+.block-color-yellow_background {
+	background: rgb(251,243,219);
+}
+.block-color-teal_background {
+	background: rgb(221,237,234);
+}
+.block-color-blue_background {
+	background: rgb(221,235,241);
+}
+.block-color-purple_background {
+	background: rgb(234,228,242);
+}
+.block-color-pink_background {
+	background: rgb(244,223,235);
+}
+.block-color-red_background {
+	background: rgb(251,228,228);
+}
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="9302208c-3e6e-455b-be6e-028eab7d2150" class="page sans"><header><h1 class="page-title">XHT - Private Sale</h1></header><div class="page-body"><figure id="59c44239-d033-4772-81a7-088e5ad1383d" class="image"><a href="HEX Private Sale/ezgif.com-optimize.gif"><img style="width:912px" src="HEX Private Sale/ezgif.com-optimize.gif"/></a></figure><h2 id="a5cb5524-8189-4e0e-8b51-23bfa25aa790" class="">What is XHT?</h2><p id="2cadb37f-8b18-43db-b290-630204ba168f" class="">XHT is a distributed exchange network empowering businesses and individuals to launch, run and operate their own exchange trading platform. It leverages the battle tested software HollaExShell built by bitHolla and allows any participants with XHT deposit to activate and run a brand new exchange through an autonomous smart contract developed on Ethereum&#x27;s blockchain.</p><p id="bda91160-142f-4a1a-877d-9ef560550a1d" class="">XHT Token is a unit of the network that is used as a fuel for each exchange to activate and run. Starting from 500,000 XHT is required as a locked deposit to activate an exchange and as more exchanges join the network the deposit amount reduces by 1% per new exchange and ultimately after around 2000 exchanges it reach to 1 XHT per exchange.</p><p id="26ad83e1-1622-4ddd-a74a-549004726a6a" class="">XHT can be used to launch a new exchange, transferred among people and exchanges and used as a collateral for having credit lines and liquidity pool among exchanges in XHT Network. Additionally all bitHolla services accept XHT for payment including bitHolla Vault, market making tools and additional support and SLAs.</p><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="49f37e30-cf95-4847-9f79-adaecda461e1"><div style="font-size:1.5em"><span class="icon">📖</span></div><div style="width:100%">The specification of the system is explained in details in XHT <a href="https://hex.bitholla.com/docs/whitepaper.html">whitepaper</a>.</div></figure><h2 id="4ac3c984-9f65-40bc-91bc-adcde86473fb" class="">What is the value of XHT?</h2><p id="60380d62-af33-4fe7-b305-b27e30fe0839" class="">XHT is used to run and fuel exchanges. With XHT as an exchange operator you can run a full crypto exchange by depositing XHT deposit amount starting from 500,000 XHT which goes down to ultimately 1 XHT per exchange as more exchanges join.</p><p id="0623a91e-0685-46a4-892e-6692e2b57b4b" class="">Investors can also contribute and empower building new exchanges globally by providing the deposit amount and assisting operators to start new exchanges. Investors deposit the amount into the XHT contract which would enable to exchange launch. The aim is to expand exchanges globally and open free markets to trade digital assets all around the world. </p><h2 id="f8dfde91-4e8f-45bd-8616-5ca8e7e795a6" class="">What is the total number of XHT?</h2><p id="6c9202b0-1665-4107-b624-4109fedaab3c" class="">There will be only 200,000,000 XHT. This number is built in XHT smart contract and is capped. Initially 50,000,000 XHT are distributed privately followed by a gradual 1000 days public wave auction sale. </p><h2 id="d71aa860-783a-4395-b771-48b9a391dba9" class="">How can I run a XHT exchange?</h2><p id="70cf0f64-3b79-442c-8a87-f40cb20d6711" class="">You need to purchase the specific amount required for exchange activation first which is 500,000 XHT (currently 500,000 * $0.1 = $50,000).</p><p id="706e827e-9f71-4d92-a812-81da5e003d36" class="">Then you need to lock them and activate your exchange followed by downloading the software binaries and following the procedure and configuration in our <a href="https://docs.bitholla.com">documentation</a>.</p><h2 id="508dc653-92f7-4549-9104-365e58667672" class="">How are XHT distributed?</h2><h3 id="45795457-0cc8-4ff9-be97-fe76453fb738" class="">Private Sale</h3><p id="e76446d5-8005-4743-aa85-4521bafe5ba2" class="">Private Sale is first round opened for investors and exchange operators where tokens are priced as follows:</p><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="e70e5070-47d6-4b8a-a7d7-a439ab3e31b0"><div style="font-size:1.5em"><span class="icon">👥</span></div><div style="width:100%"> 1 XHT = $0.1</div></figure><p id="5c659cc5-1d0e-4a1c-975c-a82edd8c0d72" class="">Private Sale period starts from 15th of August 2019 and is open for investment for 30 days to distribute maximum number of 50,000,000 XHT. It follows FIFO order (First come first serve) and once the goal is reached, the private sales ends. For those who want to run an exchange they require to lock the tokens by letting us know.</p><h3 id="9dacbe4f-0db8-4ca8-86c6-5bff1d729245" class="">Public Sale (Wave Auction)</h3><p id="f71c15c5-638d-4c9f-a249-434ed269440d" class="">Public Sale commences on <a href="http://hex.bitholla.com">hex.bitholla.com</a> with an innovative strategy called Wave Auction.</p><p id="1d9d6a78-a2a5-455e-82f9-4ac13f6b5802" class="">Wave auction is a creative model for token distribution in which XHT tokens are distributed through daily waves to top bidders. Buyers place their bids on the XHT orderbook and the system randomly selects a time to send a XHT wave with a random amount every 24 hours. The random amount follows Gaussian curve in which it guarantees a natural market adoption pattern of distribution.</p><p id="4e11aeef-095b-4250-ac2c-83222f209d15" class="">Wave Auction lasts for 500 days and distributes 100,000,000 tokens starting from $0.2. It starts really slow and reaches the highest number of token distribution daily by the 250th day and slows down until the last day.</p><p id="9ecc5b45-c009-48b9-87c5-d6482bcc399d" class="">The wave is a market sell with one condition that if the whole wave is not purchased by the bidders in the orderbook, once it reaches the floor, the leftover amount is cancelled and redistributed among the exchange operators proportionally to the locked deposit amount they have. The redistribution is added to the deposit and incentives operators to launch exchanges.</p><p id="b168beab-d7fb-4916-8237-1e72ed8715d6" class="">Floor is a price in which the tokens can not be traded below this price during the wave auction. Floor price is initially set to $0.2 in Wave Auction and it only goes up as demand increases.</p><p id="030b563c-3efa-4a03-b1f3-65b785f9d11f" class="">After the wave auction a second wave is designed to distribute 50,000,000 XHT accordingly with a new floor price set upon the market price.</p><h3 id="51efed83-e22b-43e6-a2f6-77b8d33468d7" class="">Foundation</h3><p id="7dd6fd95-ec38-4382-adbd-432fe77d31b5" class="">XHT Foundation holds a reserve of 20,000,000 XHT which is locked initially and is used in the future for community project allocation, R&amp;D and developments and/or liquidity making among the exchange network. Foundation fund is a community fund and is transparently utilized and used.</p><figure id="d08d1659-b025-41dd-b17c-7129e4f1ef41" class="image"><a href="HEX Private Sale/HEX-Pie-023-03.png"><img style="width:554px" src="HEX Private Sale/HEX-Pie-023-03.png"/></a><figcaption>The XHT pie chart assumes the distribution through the private sale and wave auction goes as planned and depending on the demand through the private sale and wave auction it might slightly be different.</figcaption></figure><h2 id="7c6c6af4-f344-4b03-ad57-8e9752c0899a" class="">How can I buy and invest in the private sale of XHT?</h2><ol id="e4af0f7b-d4ce-4851-a186-668f5e4971f5" class="numbered-list" start="1"><li>Signup on <a href="http://hex.bitholla.com">hex.bitholla.com</a> (The site is going to be available by 15th of August 2019)</li></ol><ol id="38c3752b-037a-4555-915a-8d0ab3178595" class="numbered-list" start="2"><li>Create a wallet of your choice for investment (BTC, ETH, BCH, XRP). In case of fiat deposit (USD, EUR etc) you need to contact a bitHolla agent for the process and mechanism by contacting sales@bitholla.com</li></ol><ol id="70590d79-6bbd-4525-9e43-72c1a7f5df7d" class="numbered-list" start="3"><li>Make the investment by transferring the funds to your XHT wallet.</li></ol><ol id="918a742f-04e5-4533-bba2-f62ec2644fe6" class="numbered-list" start="4"><li>Your funds will be automatically credited to your account and converted to USDT with a real-time exchange rate.</li></ol><ol id="2d17407d-9903-4215-922a-d8112242dec1" class="numbered-list" start="5"><li>You can then purchase XHT through quick trade and pro trade tab available on the website at $0.1</li></ol><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="df843e73-9b74-4ca5-aeaf-14b9a45a8fe9"><div style="font-size:1.5em"><span class="icon">👉</span></div><div style="width:100%">Private round is first come first serve. Once either the maximum number of tokens in the private round or the final date is reached, the private round ends.</div></figure><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="4c675364-8a09-463f-8d35-91cc9b3c49ae"><div style="font-size:1.5em"><span class="icon">👉</span></div><div style="width:100%">For fiat investment, please inform the bitHolla agent about the investment commitment and the exact amount. Your position will then be reserved and you are required to make the payment within 2 days. </div></figure><p id="53983d83-6d27-404a-85db-fb1c83053c98" class="">For any general inquiries and additional information check out <a href="http://bitholla.com">bitholla.com</a> or contact us at support@bitholla.com with email title &quot;<strong>XHT Investment&quot; </strong>and our agents will get back to you within 24 hours.</p><p id="6e96026d-2420-4268-aaea-bbf6f3977ea4" class="">
+</p><p id="366407cc-ae14-4b4d-97f8-4bf763d8ea1e" class=""><mark class="highlight-gray"><em>XHT provides the means to participate and contribute to the future of free and open economy in the world without monopolies, tariffs and restriction by distributing affordable open exchange technology globally.</em></mark></p><p id="e35542bb-5c5a-4cef-bd75-86a3a5d45ecc" class="">
+</p><blockquote id="3849572d-4885-4b98-be8b-73192554ed49" class=""><em><strong>Creating opportunity via open marketplaces</strong></em></blockquote><figure id="c55c8537-1396-4be5-b6d1-023310d6d17e" class="image"><a href="HEX Private Sale/bitholla_signature.png"><img style="width:200px" src="HEX Private Sale/bitholla_signature.png"/></a></figure></div></article></body></html>

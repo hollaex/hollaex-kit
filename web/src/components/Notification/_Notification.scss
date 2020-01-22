@@ -3,6 +3,7 @@ $notification--max-width: 40rem;
 $image--margin: 1rem;
 $image--width: 10rem;
 $logout--size-difference: 3rem;
+$dark-api-icon-color: #808080;
 
 .notification-wrapper {
 	min-width: $notification--min-width;
@@ -182,6 +183,13 @@ $logout--size-difference: 3rem;
 	.new-order-notification {
 		svg {
 			fill: $dark-icon-color;
+
+			.newWave-icon {
+				fill: $dark-icon-color;
+			}
+			.generate_api{
+				fill: $dark-api-icon-color;
+			}
 		}
 
 	}
@@ -232,7 +240,8 @@ $logout--size-difference: 3rem;
 			.limit-sell-04,
 			.limit-buy-03,
 			.limit-buy-04,
-			.refer-icon {
+			.refer-icon,
+			.stake_icon {
 				fill: $dark-icon-color;
 			}
 			.limit-sell-01,

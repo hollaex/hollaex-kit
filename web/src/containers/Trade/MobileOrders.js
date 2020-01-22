@@ -4,10 +4,11 @@ import TradeBlock from './components/TradeBlock';
 import ActiveOrders from './components/ActiveOrders';
 import UserTrades from './components/UserTrades';
 import MobileDropdownWrapper from './components/MobileDropdownWrapper';
-import { ActionNotification, IconTitle } from '../../components';
+import { ActionNotification } from '../../components';
 import STRINGS from '../../config/localizedStrings';
 import { ICONS } from '../../config/constants';
-import { Link } from 'react-router';
+import LogoutInfoOrder from './components/LogoutInfoOrder';
+import LogoutInfoTrade from './components/LogoutInfoTrade'
 
 
 
@@ -54,22 +55,7 @@ const MobileOrders = ({
 		{	isLoggedIn ?
 			<ActiveOrders cancelDelayData={cancelDelayData} orders={activeOrders} onCancel={cancelOrder} />
 			:
-			<div className='text-center'>
-					<IconTitle
-						iconPath={activeTheme==='white' ? ICONS.ACTIVE_TRADE_LIGHT : ICONS.ACTIVE_TRADE_DARK}
-						textType="title"
-						className="w-100"
-						useSvg={true}
-					/>
-					<div>
-						{STRINGS.formatString(
-							STRINGS.ACTIVE_TRADES,
-							<Link to="/login" className={classnames('blue-link', 'dialog-link', 'pointer')} >
-								{STRINGS.SIGN_IN}
-							</Link>
-						)}
-					</div>
-				</div>
+			<LogoutInfoOrder activeTheme={activeTheme} />
 			}
 		</TradeBlock>
 		<TradeBlock
@@ -97,22 +83,7 @@ const MobileOrders = ({
 				pairs={pairs}
 				coins={coins}
 			/>:
-			<div className='text-center'>
-				<IconTitle
-					iconPath={activeTheme ==='dark' ? ICONS.TRADE_HISTORY_DARK: ICONS.TRADE_HISTORY_LIGHT }
-					textType="title"
-					className="w-100"
-					useSvg={true}
-				/>
-				<div>
-					{STRINGS.formatString(
-						STRINGS.ACTIVE_TRADES,
-						<Link to="/login" className={classnames('blue-link', 'dialog-link', 'pointer')} >
-							{STRINGS.SIGN_IN}
-						</Link>
-					)}
-				</div>
-			</div>
+			<LogoutInfoTrade />
 			}
 		</TradeBlock>
 	</div>

@@ -33,7 +33,7 @@ $light-emoji-content-top-background: #dbdbdb;
 			height: 100%;
 		}
 		.timestamp { 
-			font-size: 1rem;
+			font-size: $font-size-mobile-innertxt;
 		}
 		.chat-message-list {
 			width: 100% !important;
@@ -45,7 +45,7 @@ $light-emoji-content-top-background: #dbdbdb;
 					}
 
 					.message {
-						font-size: $mobile-regular--font-size;
+						font-size: $font-size-mobile-txt;
 						line-height: unset !important;
 					}
 				}	

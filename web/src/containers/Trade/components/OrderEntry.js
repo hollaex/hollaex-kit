@@ -29,6 +29,7 @@ import { takerFee, DEFAULT_COIN_DATA } from '../../../config/constants';
 
 import STRINGS from '../../../config/localizedStrings';
 import { isLoggedIn } from '../../../utils/token';
+import { openFeesStructureandLimits } from '../../../actions/appActions';
 
 class OrderEntry extends Component {
 	state = {
@@ -311,7 +312,7 @@ class OrderEntry extends Component {
 				placeholder: '0.00',
 				normalize: normalizeFloat,
 				step: increment_size,
-				min: min_size,
+				min: increment_size,
 				max: max_size,
 				validate: [
 					required,
@@ -330,7 +331,8 @@ class OrderEntry extends Component {
 						result = decValue.toString().substring(0, (decValue.toString().length - (valueDecimal - decimal)));
 					}
 					return result;
-				}
+				},
+				setRef: this.props.setSizeRef
 			},
 			price: {
 				name: 'price',
@@ -348,7 +350,8 @@ class OrderEntry extends Component {
 					step(increment_price)
 				],
 				currency: buyData.symbol.toUpperCase(),
-				initializeEffect: priceInitialized
+				initializeEffect: priceInitialized,
+				setRef: this.props.setPriceRef
 			}
 		};
 
@@ -362,8 +365,15 @@ class OrderEntry extends Component {
 		}
 	};
 
+	onFeeStructureAndLimits = () => {
+		this.props.openFeesStructureandLimits({
+			verification_level: this.props.user.verification_level,
+			discount: this.props.user.discount || 0
+		});
+	};
+
 	render() {
-		const { balance, type, side, pair_base, pair_2, price, coins } = this.props;
+		const { balance, type, side, pair_base, pair_2, price, coins, size } = this.props;
 		const {
 			initialValues,
 			formValues,
@@ -401,11 +411,13 @@ class OrderEntry extends Component {
 				>
 					<Review
 						price={price}
+						size={size}
 						type={type}
 						currency={buyingName}
 						orderPrice={orderPrice}
 						fees={orderFees}
 						formatToCurrency={formatBaseAmount}
+						onFeeStructureAndLimits={this.onFeeStructureAndLimits}
 					/>
 				</Form>
 			</div>
@@ -460,7 +472,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => ({
 	submit: bindActionCreators(submit, dispatch),
-	change: bindActionCreators(change, dispatch)
+	change: bindActionCreators(change, dispatch),
+	openFeesStructureandLimits: bindActionCreators(openFeesStructureandLimits, dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(OrderEntry);

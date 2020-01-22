@@ -1,5 +1,5 @@
 import { setLanguage as storeLanguageInBrowser } from '../utils/string';
-import { DEFAULT_LANGUAGE } from '../config/constants';
+import { DEFAULT_LANGUAGE, SUPPORT_HELP_URL } from '../config/constants';
 import axios from 'axios';
 
 export const SET_NOTIFICATION = 'SET_NOTIFICATION';
@@ -24,7 +24,10 @@ export const NOTIFICATIONS = {
 	CREATED_API_KEY: 'NOTIFICATIONS_CREATED_API_KEY',
 	GENERATE_ADDRESS: 'NOTIFICATIONS_GENERATE_ADDRESS',
 	WITHDRAWAL_EMAIL_CONFIRMATION: 'WITHDRAWAL_EMAIL_CONFIRMATION',
-	INVITE_FRIENDS: 'INVITE_FRIENDS'
+	INVITE_FRIENDS: 'INVITE_FRIENDS',
+	STAKE_TOKEN: 'STAKE_TOKEN',
+	DEPOSIT_INFO: 'DEPOSIT_INFO',
+	XHT_SUCCESS_ACCESS: 'XHT_SUCCESS_ACCESS'
 };
 export const CONTACT_FORM = 'CONTACT_FORM';
 export const HELPFUL_RESOURCES_FORM = 'HELPFUL_RESOURCES_FORM';
@@ -43,12 +46,15 @@ export const RISKY_ORDER = 'RISKY_ORDER';
 export const LOGOUT_CONFORMATION = 'LOGOUT_CONFORMATION';
 export const SET_CURRENCIES = 'SET_CURRENCIES';
 export const SET_CONFIG = 'SET_CONFIG';
+export const REQUEST_XHT_ACCESS = 'REQUEST_XHT_ACCESS';
 export const SET_INFO = 'SET_INFO';
 export const SET_VALID_BASE_CURRENCY = 'SET_VALID_BASE_CURRENCY';
+export const SET_WAVE_AUCTION = 'SET_WAVE_AUCTION';
 
 export const USER_TYPES = {
 	USER_TYPE_NORMAL: 'normal',
-	USER_TYPE_ADMIN: 'admin'
+	USER_TYPE_ADMIN: 'admin',
+	USER_TYPE_HAP: 'hap'
 };
 
 export const MESSAGE_TYPES = {
@@ -98,8 +104,12 @@ export const closeSnackDialog = (id) => ({
 	payload: { dialogId: id }
 });
 
-export const openContactForm = (data = {}) =>
-	setNotification(CONTACT_FORM, data, true);
+export const openContactForm = (data = {}) => {
+	if (window) {
+		window.open(SUPPORT_HELP_URL, '_blank');
+	}
+	return setNotification(CONTACT_FORM, data, false);
+};
 
 export const openHelpfulResourcesForm = (data = {}) =>
 	setNotification(HELPFUL_RESOURCES_FORM, data, true);
@@ -205,7 +215,7 @@ export const setConfig = (config) => {
 	let config_level = [];
 	if (config) {
 		for (let i = 1; i <= parseInt(config.tiers, 10); i++) {
-			config_level = [...config_level, i]
+			config_level = [...config_level, i];
 		}
 	}
 	return {
@@ -214,7 +224,7 @@ export const setConfig = (config) => {
 			config,
 			config_level
 		}
-	}
+	};
 };
 
 export const setInfo = (info) => ({
@@ -247,6 +257,19 @@ export const getExchangeInfo = () => {
 				dispatch({
 					type: SET_INFO,
 					payload: { info: res.data.info }
+				});
+			}
+		});
+	};
+};
+
+export const getWaveAuction = () => {
+	return (dispatch) => {
+		axios.get('/wave').then((res) => {
+			if (res && res.data && res.data.data) {
+				dispatch({
+					type: SET_WAVE_AUCTION,
+					payload: { data: res.data.data }
 				});
 			}
 		});

@@ -16,7 +16,8 @@ const AccountTypeDetails = ({
 	lastMonthVolume,
 	onFeesAndLimits,
 	onUpgradeAccount,
-	verification_level
+	verification_level,
+	balance
 }) => {
 	let isAccountDetails = true;
 	const currentAccount = selectedAccount;
@@ -27,6 +28,7 @@ const AccountTypeDetails = ({
 	return (
 		<div className={classnames(className, 'mx-auto')}>
 			<TraderAccounts
+				user={user}
 				coins={coins}
 				pairs={pairs}
 				activeTheme={activeTheme}
@@ -37,16 +39,22 @@ const AccountTypeDetails = ({
 				selectedAccount={currentAccount}
 			/>
 			{
-				currentAccount > 1 && Object.keys(requirement).length ? (
+				Object.keys(requirement).length ? (
 					<div>
 						<div className="requirement-header d-flex justify-content-between">
-							<div>{STRINGS.SUMMARY.REQUIREMENTS}</div>
+							<div>
+								{selectedLevel === 3
+									? STRINGS.SUMMARY.ONE_REQUIREMENT
+									: STRINGS.SUMMARY.REQUIREMENTS
+								}
+							</div>
 							<div className="status-header">{STRINGS.STATUS}</div>
 						</div>
 						<SummaryRequirements
 							user={user}
 							coins={coins}
 							isAccountDetails={true}
+							balance={balance}
 							verificationLevel={currentAccount}
 							lastMonthVolume={lastMonthVolume}
 							onUpgradeAccount={onUpgradeAccount}

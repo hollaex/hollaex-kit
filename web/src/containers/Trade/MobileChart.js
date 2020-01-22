@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
+import { Link } from 'react-router';
 import TradeBlock from './components/TradeBlock';
 // import PriceChart from './components/PriceChart';
 import STRINGS from '../../config/localizedStrings';
@@ -34,6 +35,7 @@ class MobileChart extends Component {
 			symbol
 		} = this.props;
 		const { chartHeight } = this.state;
+		const pairValue = pair || 'xht-usdt';
 		return (
 			<div
 				className={classnames(
@@ -54,6 +56,13 @@ class MobileChart extends Component {
 					setRef={this.setChartRef}
 					className="f-1 overflow-x"
 					alignChildTitle={true}
+					tailHead={
+						<div className="quick-trade-tab p-1 mt-1">
+							<Link to={`/quick-trade/${pairValue}`}>
+								{STRINGS.QUICK_TRADE}
+							</Link>
+						</div>
+					}
 				>
 					{pair &&
 						chartHeight > 0 && (

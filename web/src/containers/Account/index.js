@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 import { isMobile } from 'react-device-detect';
 
 import { CheckTitle, MobileBarTabs, Loader } from '../../components';
-import { ICONS } from '../../config/constants';
+import { ICONS, IS_XHT } from '../../config/constants';
 import { UserSecurity, UserSettings, Summary, Verification } from '../';
 import STRINGS from '../../config/localizedStrings';
 import { openContactForm } from '../../actions/appActions';
@@ -129,7 +129,7 @@ class Account extends Component {
 							icon={ICONS.TAB_SUMMARY}
 						/>
 					),
-				notifications: verificationPending ? '!' : '',
+				notifications: verificationPending && !IS_XHT ? '!' : '',
 				content: <Verification />
 			},
 			{

@@ -12,6 +12,7 @@ const CurrencyBallWithPrice = ({
 	coins = {}
 }) => {
 	const { name, min, ...rest } = coins[symbol] || DEFAULT_COIN_DATA;
+	// const baseCoin = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
 	const currencyShortName = rest.symbol ? rest.symbol.toUpperCase() : name;
 	return (
 		<div className="with_price-block_amount d-flex direction_ltr">

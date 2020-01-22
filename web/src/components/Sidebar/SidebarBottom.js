@@ -26,12 +26,12 @@ export const SidebarBottom = ({ activePath = 'x', pair = '', isLogged }) => {
 					iconPath={ICONS.SIDEBAR_ACCOUNT_ACTIVE}
 					active={ activePath === 'account' }
 				/>
-				<SidebarButtom
+				{/* <SidebarButtom
 					path={`/quick-trade/${pair}`}
 					title={STRINGS.QUICK_TRADE}
 					iconPath={activePath === 'quick-trade' ? ICONS.SIDEBAR_QUICK_TRADING_ACTIVE : ICONS.SIDEBAR_QUICK_TRADING_INACTIVE}
 					active={activePath === 'quick-trade'}
-				/>
+				/> */}
 				<SidebarButtom
 					path={`/trade/${pair}`}
 					title={STRINGS.PRO_TRADE}
@@ -49,6 +49,12 @@ export const SidebarBottom = ({ activePath = 'x', pair = '', isLogged }) => {
 					title={STRINGS.WALLET_TITLE}
 					iconPath={ICONS.SIDEBAR_WALLET_ACTIVE}
 					active={activePath === 'wallet'}
+				/>
+				<SidebarButtom
+					path={"/home"} 
+					title= {STRINGS.TRADE_TAB_POSTS}
+					iconPath={ICONS.SIDEBAR_POST_ACTIVE}
+					active={ activePath === 'home' }
 				/>
 			</div> :
 			<div className="d-flex w-100 p-4">

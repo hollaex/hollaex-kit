@@ -112,6 +112,15 @@
 }
 
 .layout-mobile {
+	.verification_container{	
+		.verification-info-txt {
+			width: 100%;
+			font-size: $font-size-mobile-txt!important;
+		}
+		.exir-button{
+			font-size: $font-size-mobile-txt!important;
+		}
+	}
 	.mobile-bar-tab .bartab-text-wrapper {
 		font-size: 1.5rem;
 		line-height: 1.5rem;
@@ -119,5 +128,26 @@
 	.presentation_container.verification_container {
 		padding-top: 0 !important;
 		max-height: $max-content-height-mobile;
+		.header-content{
+			font-size:$font-size-mobile-txt!important;
+		}
+	}
+	.header_title-wrapper {
+		.header_title-text {
+			font-size: $font-size-mobile-title;
+		}
+		.header_title-children {
+			font-size: $font-size-mobile-txt!important;
+		}
+	}
+	.field-wrapper{
+		.field-content{
+			.field-label,.field-children,.inner_container,.input_field-input,.placeholder{
+				font-size: $font-size-mobile-txt!important;
+			}
+		}
+	}
+	.content-text{
+		font-size: $font-size-mobile-txt;
 	}
 }
