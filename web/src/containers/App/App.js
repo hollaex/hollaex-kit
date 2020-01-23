@@ -379,20 +379,6 @@ class App extends Component {
 				const { gotoWallet, ...rest } = data;
 				return <DepositFunds data={rest} gotoWallet={gotoWallet} />;
 			}
-			case NOTIFICATIONS.WAVE_NOTIFICATION: {
-				const { onConfirm, ...rest } = data;
-				return (
-					<Notification
-						type={type}
-						data={{
-							pair: this.props.pair,
-							...rest
-						}}
-						onConfirm={this.goToXHTTrade}
-						onBack={this.onCloseDialog}
-					/>
-				);
-			}
 			default:
 				return <div />;
 		}
@@ -453,9 +439,7 @@ class App extends Component {
 			EXCHANGE_EXPIRY_DAYS - moment().diff(info.created_at, 'days');
 		return (
 			<div>
-				<Socket
-					router={router}
-					location={location} />
+				<Socket router={router} location={location} />
 				<div
 					className={classnames(
 						getThemeClass(activeTheme),

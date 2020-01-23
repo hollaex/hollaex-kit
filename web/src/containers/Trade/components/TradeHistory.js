@@ -26,9 +26,7 @@ const generateHeaders = (pairs) => {
 									? ICONS.DOWN_ARROW
 									: ICONS.UP_ARROW
 								}
-								wrapperClassName={
-									classnames('trade_history-icon', side)
-								}
+								wrapperClassName={'trade_history-icon'}
 							/>
 							: <div className='trade_history-icon' />
 						}

@@ -24,7 +24,7 @@ import {
 	DEFAULT_COIN_DATA,
 	// SHOW_SUMMARY_ACCOUNT_DETAILS,
 	SHOW_TOTAL_ASSETS,
-	UPGRADE_ACC_URL
+	SUPPORT_HELP_URL
 } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 import {
@@ -117,7 +117,7 @@ class Summary extends Component {
 	onUpgradeAccount = () => {
 		// this.props.openContactForm({ category: 'level' });
 		if (window) {
-			window.open(UPGRADE_ACC_URL, '_blank');
+			window.open(SUPPORT_HELP_URL, '_blank');
 		}
 	};
 

@@ -3,7 +3,7 @@
 }
 
 .otp_form-title-wrapper {
-	border-top: 1px solid $border-main;
+	border-top: 1px solid $border-color;
 	margin: 1rem 0;
 	position: relative;
 
@@ -41,5 +41,6 @@
 .layout-mobile {
 	.otp_form-wrapper {
 		flex: 1;
+		overflow-y: scroll;
 	}
 }

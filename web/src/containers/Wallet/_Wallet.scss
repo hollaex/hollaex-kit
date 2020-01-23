@@ -16,6 +16,11 @@ $header-margin: 2rem;
 		.balance-small {
 			font-size: 1.5rem;
 		}
+		.button-container {
+			.exir-button {
+              font-size: $font-size-mobile-txt !important;
+			}
+		}
 	}
 	.wallet-container {
 		.action_notification-wrapper {
@@ -64,6 +69,12 @@ $header-margin: 2rem;
 					width: 2.5rem;
 					height: 2.5rem;
 					font-size: 0.8rem;
+				}
+				.table-bottom-border{
+					font-size: $font-size-mobile-txt !important;
+				}
+				tfoot{
+					font-size: $font-size-mobile-innertxt !important;
 				}
 			}
 		}

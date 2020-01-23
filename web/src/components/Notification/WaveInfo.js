@@ -11,10 +11,9 @@ import {
 import { Button } from '../';
 
 const generateRows = ({ wave, pair }, pairs, coins) => {
-    const { no, amount, filled, floor } = wave;
-    const pairData = pairs[pair];
+	const { no, amount, filled, floor } = wave;
+	const pairData = pairs[pair];
 	// const secondaryFormat = coins[pairData.pair_2] || DEFAULT_COIN_DATA;
-	const baseFormat = coins[pairData.pair_base] || DEFAULT_COIN_DATA;
 	const rows = [];
 
 	rows.push({
@@ -24,23 +23,23 @@ const generateRows = ({ wave, pair }, pairs, coins) => {
 
 	rows.push({
 		label: STRINGS.WAVES.WAVE_AMOUNT,
-		value: `${amount} ${baseFormat.symbol}`
+		value: `${amount} XHT`
 	});
 
-    rows.push({
-        label: STRINGS.WAVES.FLOOR,
-        value: floor
-    });
+	rows.push({
+		label: STRINGS.WAVES.FLOOR,
+		value: floor
+	});
 
-    rows.push({
-        label: STRINGS.FILLED,
-        value: filled
-    });
+	rows.push({
+		label: STRINGS.FILLED,
+		value: filled
+	});
 
-    // rows.push({
-    //     label: STRINGS.WAVES.LAST_WAVE,
-    //     value: filled
-    // });
+	// rows.push({
+	//     label: STRINGS.WAVES.LAST_WAVE,
+	//     value: filled
+	// });
 
 	return rows;
 };
@@ -48,7 +47,9 @@ const generateRows = ({ wave, pair }, pairs, coins) => {
 const OrderDisplay = ({ rows }) => {
 	return (
 		<NotificationContent>
-			{rows.map((row, index) => <InformationRow {...row} key={index} />)}
+			{rows.map((row, index) => (
+				<InformationRow {...row} key={index} />
+			))}
 		</NotificationContent>
 	);
 };
@@ -85,7 +86,7 @@ const WaveNotification = ({ type, data, coins, pairs, onBack, onConfirm }) => {
 
 const mapStateToProps = (state) => ({
 	coins: state.app.coins,
-    pairs: state.app.pairs
+	pairs: state.app.pairs
 });
 
 export default connect(mapStateToProps)(WaveNotification);

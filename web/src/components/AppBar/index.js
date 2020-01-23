@@ -12,7 +12,6 @@ import {
 	PRO_URL,
 	DEFAULT_VERSION_REDIRECT,
 	ICONS,
-	HOLLAEX_LOGO,
 	HOLLAEX_LOGO_BLACK,
 	EXCHANGE_EXPIRY_DAYS,
 	IS_XHT
@@ -43,7 +42,7 @@ class AppBar extends Component {
 		walletPending: 0,
 		selected: '',
 		options: [{ value: 'white' }, { value: 'dark' }],
-		tabCount: 0
+		tabCount: 1
 	};
 
 	componentDidMount() {
@@ -194,17 +193,18 @@ class AppBar extends Component {
 	};
 
 	handleTheme = (selected) => {
-		const settings = {};
 		if (!isLoggedIn()) {
 			this.props.changeTheme(selected);
 			localStorage.setItem('theme', selected);
 		} else {
+			const { settings = {} } = this.props.user;
+			const settingsObj = { ...settings };
 			if (selected === 'white') {
-				settings.interface = { theme: 'white' };
+				settingsObj.interface.theme = 'white';
 			} else {
-				settings.interface = { theme: 'dark' };
+				settingsObj.interface.theme = 'dark';
 			}
-			return updateUser({ settings })
+			return updateUser({ settings: settingsObj })
 				.then(({ data }) => {
 					this.props.setUserData(data);
 					this.props.changeTheme(data.settings.interface.theme);
@@ -281,15 +281,16 @@ class AppBar extends Component {
 			<div className={classnames('app_bar-icon', 'text-uppercase')}>
 				{isHome ? (
 					<img
-						src={HOLLAEX_LOGO}
+						src={HOLLAEX_LOGO_BLACK}
 						alt={STRINGS.APP_NAME}
 						className="app_bar-icon-logo"
 					/>
 				) : (
 					<Link href={IS_PRO_VERSION ? PRO_URL : DEFAULT_VERSION_REDIRECT}>
-						<ReactSVG
-							path={HOLLAEX_LOGO_BLACK}
-							wrapperClassName="app_bar-icon-logo"
+						<img
+							src={HOLLAEX_LOGO_BLACK}
+							alt={STRINGS.APP_NAME}
+							className="app_bar-icon-logo"
 						/>
 					</Link>
 				)}
@@ -364,7 +365,7 @@ class AppBar extends Component {
 	calculateTabs = () => {
 		const tradeNav = document.getElementById('trade-nav-container');
 		const homeNav = document.getElementById('home-nav-container');
-		let tabCount = 0;
+		let tabCount = 1;
 		if (tradeNav && homeNav) {
 			const tradeBounds = tradeNav.getBoundingClientRect();
 			const homeBounds = homeNav.getBoundingClientRect();
@@ -424,7 +425,11 @@ class AppBar extends Component {
 				)}
 			>
 				<Link to="/">
-					<ReactSVG path={HOLLAEX_LOGO} wrapperClassName="homeicon-svg" />
+					<img
+						src={HOLLAEX_LOGO_BLACK}
+						alt={STRINGS.APP_NAME}
+						className="homeicon-svg"
+					/>
 				</Link>
 				{isHome && this.renderSplashActions(token, verifyingToken)}
 			</MobileBarWrapper>
@@ -452,11 +457,13 @@ class AppBar extends Component {
 					)}
 				</div>
 				{!isLoggedIn() ? (
-					<ThemeSwitcher
-						selected={selected}
-						options={options}
-						toggle={this.onToggle}
-					/>
+					<div id="trade-nav-container">
+						<ThemeSwitcher
+							selected={selected}
+							options={options}
+							toggle={this.onToggle}
+						/>
+					</div>
 				) : null}
 				{!isHome ? (
 					isLoggedIn() ? (
