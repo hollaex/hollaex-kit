@@ -175,7 +175,7 @@ class Login extends Component {
 					this.checkExpiryExchange();
 				else if (res.data && res.data.callbackUrl)
 					this.redirectToService(res.data.callbackUrl);
-				else this.checkLogin();
+				else this.redirectToHome();
 			})
 			.catch(errorHandler);
 	};

@@ -154,9 +154,10 @@ class Withdraw extends Component {
 	};
 
 	onCalculateMax = () => {
-		const { balance, selectedFee = 0, dispatch } = this.props;
+		const { balance, selectedFee = 0, dispatch, verification_level, coins } = this.props;
 		const { currency } = this.state;
 		const balanceAvailable = balance[`${currency}_available`];
+		const { withdrawal_limits = {} } = coins[currency];
 		// if (currency === BASE_CURRENCY) {
 		// 	const fee = calculateBaseFee(balanceAvailable);
 		// 	const amount = math.number(
@@ -164,12 +165,28 @@ class Withdraw extends Component {
 		// 	);
 		// 	dispatch(change(FORM_NAME, 'amount', math.floor(amount)));
 		// } else {
-			const amount = math.number(
+			let amount = math.number(
 				math.subtract(
 					math.fraction(balanceAvailable),
 					math.fraction(selectedFee)
 				)
 			);
+			if (amount < 0) {
+				amount = 0;
+			} else if (
+				math.larger(
+					amount,
+					math.number(withdrawal_limits[verification_level])
+				)
+				&& withdrawal_limits[verification_level] !== 0
+				&& withdrawal_limits[verification_level] !== -1) {
+				amount = math.number(
+					math.subtract(
+						math.fraction(withdrawal_limits[verification_level]),
+						math.fraction(selectedFee)
+					)
+				);
+			}
 			dispatch(change(FORM_NAME, 'amount', roundNumber(amount, 4)));
 		// }
 	};

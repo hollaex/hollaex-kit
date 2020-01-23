@@ -12,7 +12,7 @@ steps:
 - name: slack_noti_to_releases
   image: bitholla/devops-tools:drone_partymaker-0.1.4
   environment:
-    webhook_url:
+    WEBHOOK_URL:
       from_secret: webhook_url
   when:
     status: [success]
