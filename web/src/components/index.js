@@ -13,7 +13,6 @@ export { PanelInformationRow, renderStatusIcon, CustomTabs, CustomMobileTabs } f
 export { default as HeaderSection } from './CheckTitle/HeaderSection';
 export { default as CustomTabBar } from './CheckTitle/CustomTabBar';
 export { default as MobileTabBar } from './CheckTitle/MobileTabBar';
-export { default as Footer } from './Footer';
 export { default as Sidebar } from './Sidebar';
 export { SidebarBottom } from './Sidebar/SidebarBottom';
 export { Logout } from './Sidebar/rows';
