@@ -1,5 +1,5 @@
 {
-	"name": "HollaEx Exchange Kit",
+	"name": "hollaex-kit",
 	"version": "1.20.18",
 	"private": true,
 	"dependencies": {
