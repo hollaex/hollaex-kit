@@ -2,17 +2,12 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { isMobile } from 'react-device-detect';
-import moment from 'moment';
 import classnames from 'classnames';
 
 import SummaryBlock from './components/SummaryBlock';
 import TraderAccounts from './components/TraderAccounts';
 import SummaryRequirements from './components/SummaryRequirements';
 import AccountAssets from './components/AccountAssets';
-import TradingVolume from './components/TradingVolume';
-import AccountDetails from './components/AccountDetails';
-import RewardsBonus from './components/RewardsBonus';
-import AccountWaveAuction from './components/AccountWaveAuction';
 import MobileSummary from './MobileSummary';
 
 import { IconTitle } from '../../components';
@@ -29,7 +24,6 @@ import {
 	DEFAULT_COIN_DATA,
 	// SHOW_SUMMARY_ACCOUNT_DETAILS,
 	SHOW_TOTAL_ASSETS,
-	IS_XHT,
 	UPGRADE_ACC_URL
 } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
