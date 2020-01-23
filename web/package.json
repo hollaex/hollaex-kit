@@ -1,6 +1,6 @@
 {
-	"name": "hollaex",
-	"version": "1.20.17",
+	"name": "HollaEx Exchange Kit",
+	"version": "1.20.18",
 	"private": true,
 	"dependencies": {
 		"@material/button": "^0.7.0",
