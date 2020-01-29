@@ -4,7 +4,9 @@ const app = require('../index');
 const { verifyToken, checkScopes, findUser, getUserValuesByEmail } = require('../common');
 const PhoneNumber = require('awesome-phonenumber');
 const bodyParser = require('body-parser');
-const { createSMSCode, storeSMSCode, checkSMSCode, deleteSMSCode, sendSMS, sendSMSDeposit } = require('./helpers');
+const { createSMSCode, storeSMSCode, checkSMSCode, deleteSMSCode, sendSMS } = require('./helpers');
+const { DEFAULT_LANGUAGE } = require('../../constants');
+const { SMS } = require(`../../mail/strings/${DEFAULT_LANGUAGE}`);
 
 app.get('/plugins/sms/verify', verifyToken, (req, res) => {
 	const endpointScopes = ['user'];

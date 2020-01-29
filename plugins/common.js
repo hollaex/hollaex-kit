@@ -185,9 +185,12 @@ const cleanUserFromDb = (user) => {
 	return userData;
 };
 
+const redis = require('../../db/redis');
+
 module.exports = {
 	verifyToken,
 	checkScopes,
 	findUser,
-	getUserValuesByEmail
+	getUserValuesByEmail,
+	redis
 };

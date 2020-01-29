@@ -1,6 +1,23 @@
 'use strict';
 
 const { generateOtp } = require('./otp');
+const redis = require('../common').redis.duplicate();
+const Promise = require('bluebird');
+const PhoneNumber = require('awesome-phonenumber');
+const sns = require('../../config/aws')('sns');
+const {
+	DEFAULT_LANGUAGE,
+	SMS_CODE_KEY,
+	SMS_CODE_EXPIRATION_TIME
+} = require('../../constants');
+const { getValidLanguage } = require('../../utils/strings');
+const {
+	SMS_ERROR,
+	SMS_PHONE_DONT_MATCH,
+	SMS_CODE_INVALID,
+	SMS_CODE_EXPIRED,
+	INVALID_PHONE_NUMBER
+} = require('../../messages');
 
 const generateUserKey = (user_id) => `${SMS_CODE_KEY}:${user_id}`;
 
