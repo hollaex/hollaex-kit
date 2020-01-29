@@ -10,7 +10,7 @@ const fetchMessage = (email, data, language, domain) => {
 };
 
 const html = (email, data, language, domain) => {
-	const { DEPOSIT } = require(`../strings/${language}`);
+	const { DEPOSIT } = require('../strings').languageFile(language);
 	let result = `
         <div>
             <p>
@@ -66,7 +66,7 @@ const html = (email, data, language, domain) => {
 };
 
 const text = (email, data, language, domain) => {
-	const { DEPOSIT } = require(`../strings/${language}`);
+	const { DEPOSIT } = require('../strings').languageFile(language);
 	let result = `${DEPOSIT.GREETING(email)}`;
 	if (CURRENCIES.includes(data.currency)) {
 		result += `

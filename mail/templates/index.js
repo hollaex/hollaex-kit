@@ -11,7 +11,7 @@ const generateMessageContent = (
 	language = DEFAULT_LANGUAGE,
 	domain = DOMAIN
 ) => {
-	const STRINGS = require(`../strings/${language}`);
+	const STRINGS = require('../strings').languageFile(language);
 	let title;
 	if (
 		type === MAILTYPE.WITHDRAWAL ||
