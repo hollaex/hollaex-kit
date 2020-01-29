@@ -76,8 +76,8 @@ app.post('/plugins/bank/admin/revoke', [verifyToken, bodyParser.json()], (req, r
 	const scopes = req.auth.scopes;
 	checkScopes(endpointScopes, scopes);
 
-	const { user_id, bank_id } = req.swagger.params.data.value;
-	let { message } = req.swagger.params.data.value || DEFAULT_REJECTION_NOTE;
+	const { user_id, bank_id } = req.body;
+	let { message } = req.body || DEFAULT_REJECTION_NOTE;
 
 	findUser({
 		where: {
