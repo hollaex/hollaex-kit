@@ -74,12 +74,6 @@ class OrderEntry extends Component {
 				}
 			});
 		}
-		if (this.props.priceInitialized !== nextProps.priceInitialized) {
-			this.generateFormValues(nextProps.pair, '', nextProps.priceInitialized);
-		}
-		if (this.props.sizeInitialized !== nextProps.sizeInitialized) {
-			this.generateFormValues(nextProps.pair, '', nextProps.priceInitialized, nextProps.sizeInitialized);
-		}
 		if (JSON.stringify(this.props.prices) !== JSON.stringify(nextProps.prices) ||
 			JSON.stringify(this.props.balance) !== JSON.stringify(nextProps.balance) ||
 			JSON.stringify(this.props.coins) !== JSON.stringify(nextProps.coins)) {
@@ -265,7 +259,7 @@ class OrderEntry extends Component {
 		}
 	};
 
-	generateFormValues = (pair = '', buyingPair = '', priceInitialized = false, sizeInitialized = false) => {
+	generateFormValues = (pair = '', buyingPair = '') => {
 		const {
 
 			min_size,
@@ -320,7 +314,6 @@ class OrderEntry extends Component {
 					maxValue(max_size)
 				],
 				currency: symbol.toUpperCase(),
-				initializeEffect: sizeInitialized,
 				parse: (value = '') => {
 					let decimal = getDecimals(min_size);
 					let decValue = toFixed(value);
@@ -350,7 +343,6 @@ class OrderEntry extends Component {
 					step(increment_price)
 				],
 				currency: buyData.symbol.toUpperCase(),
-				initializeEffect: priceInitialized,
 				setRef: this.props.setPriceRef
 			}
 		};

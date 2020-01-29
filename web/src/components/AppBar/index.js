@@ -6,12 +6,12 @@ import { Link } from 'react-router';
 import ReactSVG from 'react-svg';
 import { isMobile } from 'react-device-detect';
 import moment from 'moment';
+import math from 'mathjs';
 import {
 	IS_PRO_VERSION,
 	PRO_URL,
 	DEFAULT_VERSION_REDIRECT,
 	ICONS,
-	HOLLAEX_LOGO,
 	HOLLAEX_LOGO_BLACK,
 	EXCHANGE_EXPIRY_DAYS,
 	IS_XHT
@@ -41,7 +41,8 @@ class AppBar extends Component {
 		verificationPending: 0,
 		walletPending: 0,
 		selected: '',
-		options: [{ value: 'white' }, { value: 'dark' }]
+		options: [{ value: 'white' }, { value: 'dark' }],
+		tabCount: 1
 	};
 
 	componentDidMount() {
@@ -61,12 +62,12 @@ class AppBar extends Component {
 		this.props.getTickers();
 		if (this.props.theme) {
 			this.setState({
-				selected: this.props.theme === this.state.options[0].value
-					? this.state.options[0].value
-					: this.state.options[1].value
+				selected:
+					this.props.theme === this.state.options[0].value
+						? this.state.options[0].value
+						: this.state.options[1].value
 			});
 		}
-
 	}
 
 	componentWillReceiveProps(nextProps) {
@@ -97,12 +98,12 @@ class AppBar extends Component {
 			}
 		}
 		if (prevProps.theme !== this.props.theme) {
-			let selected = this.props.theme === this.state.options[0].value
-				? this.state.options[0].value
-				: this.state.options[1].value;
+			let selected =
+				this.props.theme === this.state.options[0].value
+					? this.state.options[0].value
+					: this.state.options[1].value;
 			this.setState({ selected });
 		}
-
 	}
 
 	checkExchangeExpiry = (info) => {
@@ -166,17 +167,17 @@ class AppBar extends Component {
 	};
 
 	checkWalletStatus = (user, coins) => {
-        let walletPending = false;
-        if (user.balance) {
+		let walletPending = false;
+		if (user.balance) {
 			walletPending = true;
-            Object.keys(coins).forEach(pair => {
-                if (user.balance[`${pair.toLowerCase()}_balance`] > 0) {
-                    walletPending = false;
-                }
-            })
-        }
-        this.setState({ walletPending: walletPending ? 1 : 0 });
-    };
+			Object.keys(coins).forEach((pair) => {
+				if (user.balance[`${pair.toLowerCase()}_balance`] > 0) {
+					walletPending = false;
+				}
+			});
+		}
+		this.setState({ walletPending: walletPending ? 1 : 0 });
+	};
 
 	toogleSymbolSelector = () => {
 		this.setState({ symbolSelectorIsOpen: !this.state.symbolSelectorIsOpen });
@@ -192,21 +193,22 @@ class AppBar extends Component {
 	};
 
 	handleTheme = (selected) => {
-		const settings = {}
 		if (!isLoggedIn()) {
-			this.props.changeTheme(selected)
-			localStorage.setItem('theme', selected)
+			this.props.changeTheme(selected);
+			localStorage.setItem('theme', selected);
 		} else {
+			const { settings = {} } = this.props.user;
+			const settingsObj = { ...settings };
 			if (selected === 'white') {
-				settings.interface = { 'theme': 'white' }
+				settingsObj.interface.theme = 'white';
 			} else {
-				settings.interface = { 'theme': 'dark' }
+				settingsObj.interface.theme = 'dark';
 			}
-			return updateUser({ settings })
+			return updateUser({ settings: settingsObj })
 				.then(({ data }) => {
 					this.props.setUserData(data);
-					this.props.changeTheme(data.settings.interface.theme)
-					localStorage.setItem('theme', data.settings.interface.theme)
+					this.props.changeTheme(data.settings.interface.theme);
+					localStorage.setItem('theme', data.settings.interface.theme);
 				})
 				.catch((err) => {
 					const error = { _error: err.message };
@@ -257,15 +259,11 @@ class AppBar extends Component {
 						path={ICONS.SIDEBAR_ACCOUNT_INACTIVE}
 						wrapperClassName="app-bar-currency-icon"
 					/>
-					{!!(totalPending) && (
-						<div className="app-bar-account-notification">
-							{totalPending}
-						</div>
+					{!!totalPending && (
+						<div className="app-bar-account-notification">{totalPending}</div>
 					)}
 				</div>
-				<div className="d-flex align-items-center">
-					{STRINGS.ACCOUNT_TEXT}
-				</div>
+				<div className="d-flex align-items-center">{STRINGS.ACCOUNT_TEXT}</div>
 			</div>
 		) : (
 			<div className={classnames(...WRAPPER_CLASSES)}>
@@ -283,15 +281,16 @@ class AppBar extends Component {
 			<div className={classnames('app_bar-icon', 'text-uppercase')}>
 				{isHome ? (
 					<img
-						src={HOLLAEX_LOGO}
+						src={HOLLAEX_LOGO_BLACK}
 						alt={STRINGS.APP_NAME}
 						className="app_bar-icon-logo"
 					/>
 				) : (
 					<Link href={IS_PRO_VERSION ? PRO_URL : DEFAULT_VERSION_REDIRECT}>
-						<ReactSVG
-							path={HOLLAEX_LOGO_BLACK}
-							wrapperClassName="app_bar-icon-logo"
+						<img
+							src={HOLLAEX_LOGO_BLACK}
+							alt={STRINGS.APP_NAME}
+							className="app_bar-icon-logo"
 						/>
 					</Link>
 				)}
@@ -355,11 +354,32 @@ class AppBar extends Component {
 
 	onToggle = () => {
 		const { options } = this.state;
-		const selected = this.state.selected === options[0].value
-			? options[1].value
-			: options[0].value;
+		const selected =
+			this.state.selected === options[0].value
+				? options[1].value
+				: options[0].value;
 		this.setState({ selected });
 		this.handleTheme(selected);
+	};
+
+	calculateTabs = () => {
+		const tradeNav = document.getElementById('trade-nav-container');
+		const homeNav = document.getElementById('home-nav-container');
+		let tabCount = 1;
+		if (tradeNav && homeNav) {
+			const tradeBounds = tradeNav.getBoundingClientRect();
+			const homeBounds = homeNav.getBoundingClientRect();
+			const documentBounds = document.body.getBoundingClientRect();
+			const tabContainer = document.getElementById('trade-tab-0');
+			if (tabContainer) {
+				const tabBounds = tabContainer.getBoundingClientRect();
+				const tabTotal =
+					documentBounds.width -
+					(tradeBounds.width + homeBounds.width + tabBounds.width / 2);
+				tabCount = math.floor(tabTotal / tabBounds.width);
+			}
+			this.setState({ tabCount });
+		}
 	};
 
 	render() {
@@ -377,22 +397,21 @@ class AppBar extends Component {
 			onHelp
 		} = this.props;
 		const {
-			isAccountMenu,
 			selectedMenu,
 			securityPending,
 			verificationPending,
-			walletPending
+			walletPending,
+			tabCount
 		} = this.state;
-		const totalPending = IS_XHT
-			? securityPending + walletPending
-			: securityPending + verificationPending;
+
 		let pair = '';
 		if (Object.keys(pairs).length) {
 			pair = Object.keys(pairs)[0];
 		} else {
 			pair = this.props.pair;
 		}
-		let disableBorder = noBorders || (activePath !== 'trade' && activePath !== 'quick-trade');
+		let disableBorder =
+			noBorders || (activePath !== 'trade' && activePath !== 'quick-trade');
 		const { selected, options } = this.state;
 		return isMobile ? (
 			<MobileBarWrapper
@@ -406,7 +425,11 @@ class AppBar extends Component {
 				)}
 			>
 				<Link to="/">
-					<ReactSVG path={HOLLAEX_LOGO} wrapperClassName="homeicon-svg" />
+					<img
+						src={HOLLAEX_LOGO_BLACK}
+						alt={STRINGS.APP_NAME}
+						className="homeicon-svg"
+					/>
 				</Link>
 				{isHome && this.renderSplashActions(token, verifyingToken)}
 			</MobileBarWrapper>
@@ -417,7 +440,10 @@ class AppBar extends Component {
 				})}
 			>
 				<div className="d-flex">
-					<div className="d-flex align-items-center justify-content-center h-100">
+					<div
+						id="home-nav-container"
+						className="d-flex align-items-center justify-content-center h-100"
+					>
 						{this.renderIcon(isHome, theme)}
 					</div>
 					{!isHome && (
@@ -425,29 +451,35 @@ class AppBar extends Component {
 							activePath={activePath}
 							location={location}
 							router={router}
+							tabCount={tabCount}
+							calculateTabs={this.calculateTabs}
 						/>
 					)}
 				</div>
-				{!isLoggedIn() ?
-					<ThemeSwitcher selected={selected} options={options} toggle={this.onToggle} />
-					: null
-				}
+				{!isLoggedIn() ? (
+					<div id="trade-nav-container">
+						<ThemeSwitcher
+							selected={selected}
+							options={options}
+							toggle={this.onToggle}
+						/>
+					</div>
+				) : null}
 				{!isHome ? (
 					isLoggedIn() ? (
-						<div className="d-flex app-bar-account">
+						<div id="trade-nav-container" className="d-flex app-bar-account">
 							<div className="d-flex app_bar-quicktrade-container">
-								<ThemeSwitcher selected={selected} options={options} toggle={this.onToggle} />
+								<ThemeSwitcher
+									selected={selected}
+									options={options}
+									toggle={this.onToggle}
+								/>
 								{isAdmin() ? (
 									<Link to="/admin">
 										<div
-											className={classnames(
-												'app_bar-quicktrade',
-												'd-flex',
-												{
-													'quick_trade-active':
-														location.pathname === '/admin'
-												}
-											)}
+											className={classnames('app_bar-quicktrade', 'd-flex', {
+												'quick_trade-active': location.pathname === '/admin'
+											})}
 										>
 											<ReactSVG
 												path={ICONS.SIDEBAR_ADMIN_DASH_ACTIVE}
@@ -461,80 +493,51 @@ class AppBar extends Component {
 								) : null}
 								<Link to="/trade/add/tabs">
 									<div
-										className={classnames(
-											'app_bar-quicktrade',
-											'd-flex',
-											{
-												'quick_trade-active':
-													location.pathname === '/trade/add/tabs'
-											}
-										)}
+										className={classnames('app_bar-quicktrade', 'd-flex', {
+											'quick_trade-active':
+												location.pathname === '/trade/add/tabs'
+										})}
 									>
 										<ReactSVG
 											path={ICONS.SIDEBAR_TRADING_ACTIVE}
 											wrapperClassName="quicktrade_icon mx-1"
 										/>
-										<div className="d-flex align-items-center">
+										<div className="d-flex align-items-center overflow">
 											{STRINGS.PRO_TRADE}
 										</div>
 									</div>
 								</Link>
 								<Link to={`/quick-trade/${pair}`}>
 									<div
-										className={classnames(
-											'app_bar-quicktrade',
-											'd-flex',
-											{
-												'quick_trade-active':
-													activePath === 'quick-trade'
-											}
-										)}
+										className={classnames('app_bar-quicktrade', 'd-flex', {
+											'quick_trade-active': activePath === 'quick-trade'
+										})}
 									>
 										<ReactSVG
 											path={ICONS.QUICK_TRADE_TAB_ACTIVE}
 											wrapperClassName="quicktrade_icon"
 										/>
-										<div className="d-flex align-items-center">
+										<div className="d-flex align-items-center overflow">
 											{STRINGS.QUICK_TRADE}
 										</div>
 									</div>
 								</Link>
 							</div>
-							<div
-								className={classnames('app-bar-account-content', {
-									'account-inactive':
-										activePath !== 'account' &&
-										activePath !== 'wallet'
-								})}
-								onClick={this.handleAccountMenu}
-							>
-								<ReactSVG
-									path={ICONS.SIDEBAR_ACCOUNT_INACTIVE}
-									wrapperClassName="app-bar-account-icon"
-								/>
-								{!!totalPending && (
-									<div className="app-bar-account-notification">
-										{totalPending}
-									</div>
-								)}
-							</div>
+							<MenuList
+								selectedMenu={selectedMenu}
+								securityPending={securityPending}
+								verificationPending={verificationPending}
+								walletPending={walletPending}
+								handleMenu={this.handleMenu}
+								logout={logout}
+								activePath={activePath}
+								closeAccountMenu={this.closeAccountMenu}
+								onHelp={onHelp}
+							/>
 						</div>
 					) : null
 				) : (
 					this.renderSplashActions(token, verifyingToken)
-				)}
-				{isAccountMenu && (
-					<MenuList
-						selectedMenu={selectedMenu}
-						securityPending={securityPending}
-						verificationPending={verificationPending}
-						walletPending={walletPending}
-						handleMenu={this.handleMenu}
-						logout={logout}
-						activePath={activePath}
-						closeAccountMenu={this.closeAccountMenu}
-						onHelp={onHelp}
-					/>
 				)}
 			</div>
 		);

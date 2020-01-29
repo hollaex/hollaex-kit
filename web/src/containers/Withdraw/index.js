@@ -33,8 +33,7 @@ class Withdraw extends Component {
 	state = {
 		formValues: {},
 		initialValues: {},
-		checked: false,
-		isControlChecked: true
+		checked: false
 	};
 
 	componentWillMount() {
@@ -88,17 +87,6 @@ class Withdraw extends Component {
 		}
 	}
 
-	componentDidUpdate(prevProps, prevState) {
-		if (this.state.isControlChecked !== prevState.isControlChecked) {
-			this.generateFormValues(
-				getCurrencyFromName(this.props.routeParams.currency, this.props.coins),
-				this.props.balance,
-				this.props.coins,
-				this.props.verification_level
-			);
-		}
-	}
-
 	validateRoute = (currency, bank_account, crypto_wallet, coins) => {
 		if (coins[currency] && !crypto_wallet[currency]) {
 			this.props.router.push('/wallet');
@@ -140,9 +128,7 @@ class Withdraw extends Component {
 			balanceAvailable,
 			this.onCalculateMax,
 			coins,
-			verification_level,
-			this.destinationTagCheckCallback,
-			this.state.isControlChecked
+			verification_level
 		);
 		const initialValues = generateInitialValues(currency, coins);
 
@@ -152,7 +138,7 @@ class Withdraw extends Component {
 	onSubmitWithdraw = (currency) => (values) => {
 		const { destination_tag, ...rest } = values;
 		let address = rest.address;
-		if (destination_tag && this.state.isControlChecked)
+		if (destination_tag)
 			address = `${rest.address}:${destination_tag}`;
 		return performWithdraw(currency, {
 			...rest,
@@ -168,9 +154,10 @@ class Withdraw extends Component {
 	};
 
 	onCalculateMax = () => {
-		const { balance, selectedFee = 0, dispatch } = this.props;
+		const { balance, selectedFee = 0, dispatch, verification_level, coins } = this.props;
 		const { currency } = this.state;
 		const balanceAvailable = balance[`${currency}_available`];
+		const { withdrawal_limits = {} } = coins[currency];
 		// if (currency === BASE_CURRENCY) {
 		// 	const fee = calculateBaseFee(balanceAvailable);
 		// 	const amount = math.number(
@@ -178,22 +165,34 @@ class Withdraw extends Component {
 		// 	);
 		// 	dispatch(change(FORM_NAME, 'amount', math.floor(amount)));
 		// } else {
-			const amount = math.number(
+			let amount = math.number(
 				math.subtract(
 					math.fraction(balanceAvailable),
 					math.fraction(selectedFee)
 				)
 			);
+			if (amount < 0) {
+				amount = 0;
+			} else if (
+				math.larger(
+					amount,
+					math.number(withdrawal_limits[verification_level])
+				)
+				&& withdrawal_limits[verification_level] !== 0
+				&& withdrawal_limits[verification_level] !== -1) {
+				amount = math.number(
+					math.subtract(
+						math.fraction(withdrawal_limits[verification_level]),
+						math.fraction(selectedFee)
+					)
+				);
+			}
 			dispatch(change(FORM_NAME, 'amount', roundNumber(amount, 4)));
 		// }
 	};
 
 	onGoBack = () => {
 		this.props.router.push('/wallet');
-	};
-
-	destinationTagCheckCallback = value => {
-		this.setState({ isControlChecked: value });
 	};
 
 	render() {

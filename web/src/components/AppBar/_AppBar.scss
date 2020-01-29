@@ -148,13 +148,19 @@ $app-bar-add-tab-red: #ff0000;
 			.logo-black {
 				fill: $dark-app-logo-color;
 			}
+			path {
+				fill: $dark-app-logo-color;
+			}
+			polygon, circle {
+				stroke: $dark-app-logo-color;
+			}
 		}
 	}
 
 	.app_bar-mobile {
 		
 		background-color: $colors-black;
-		.homeicon-svg svg {
+		.homeicon-svg {
 			.logo-black {
 				fill: $colors-main-black;
 			}
@@ -191,18 +197,24 @@ $app-bar-add-tab-red: #ff0000;
 	}
 
 	.app_bar-icon-logo {
-		width: 5rem;
+		height: 3.5rem;
 	}
 
 	.app_bar-icon-logo svg {
 		.logo-black {
 			fill: $app-logo-color;
 		}
+		path {
+			fill: $app-logo-color;
+		}
+		polygon, circle {
+			stroke: $app-logo-color;
+		}
 	}
 
 	.app_bar-icon {
 		flex: 0;
-		margin: .4rem .5rem 0 .5rem;
+		margin: 0 .5rem;
 		padding-right: 8px;
 		width: 100%;
 	}
@@ -238,6 +250,7 @@ $app-bar-add-tab-red: #ff0000;
 		margin: 0 6px;
 		padding: 0 .4rem;
 		text-transform: capitalize;
+		white-space: nowrap;
 
 		svg {
 			.trade-active-2, .st0 {
@@ -249,6 +262,11 @@ $app-bar-add-tab-red: #ff0000;
 				fill: $app-bar-icon-inactive !important;
 			}
 		}
+	}
+	.overflow{
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		overflow: hidden;
 	}
 
 	.quick_trade-active {
@@ -396,10 +414,10 @@ $app-bar-add-tab-red: #ff0000;
 		width: 1rem;
 		svg {
 			.moon-icon {
-              fill: $colors-white;
+              fill: #808080;
 			}
 			.sun-icon{
-				fill: $colors-white;
+				fill: #808080;
 			}
 		}
 	}
@@ -409,18 +427,25 @@ $app-bar-add-tab-red: #ff0000;
 	.toggle_button-wrapper {
 		.toggle-content {
 			color: $colors-white;
-			border: 1px solid #808080;
 			border-radius: .35rem;
 			padding: 0px 0.1rem;
-
-			.selected {
-				color: $colors-white;
+	
+			.dark {
+				.moon-icon {
+					fill: $colors-white;
+				}
+			}
+			.white {
+				.sun-icon {
+					fill: $colors-white;
+				}
 			}
 
 			.toggle-action_button {
 				border-color: $colors-white;
 				width: 34px;
 				height: 75.5%;
+				margin: 0;
 
 				&.left .toggle-action_button-display {
 					right: calc(100% - 14px);
@@ -654,12 +679,8 @@ $app-bar-add-tab-red: #ff0000;
 
 .app_bar-mobile {
 	padding: 1rem 0;
-	.homeicon-svg svg {
-		@include size(8rem);
-
-		.logo-black {
-			fill: $colors-white;
-		}
+	.homeicon-svg {
+		height: 4rem;
 	}
 	.app_bar-controllers-splash {
 		.action_button {
@@ -973,13 +994,13 @@ $app-bar-add-tab-red: #ff0000;
 		}
 
 		.app_bar-icon-logo {
-			width: 6rem;
+			height: 3.5rem;
 		}
 		.app-bar-tab-close {
 			width: 1.1rem;
 		}
 		.app_bar-icon {
-			margin: 0.4rem 1rem 0 1rem;
+			margin: 1rem 0 1rem;
 		}
 	}
 	.app-menu-bar {

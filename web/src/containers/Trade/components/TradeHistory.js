@@ -13,7 +13,7 @@ const generateHeaders = (pairs) => {
 		{
 			key: 'price',
 			label: STRINGS.PRICE,
-			renderCell: ({ side, price = 0, isSameBefore, upDownRate }, index) => {
+			renderCell: ({ side, price = 0, isSameBefore, upDownRate, timestamp }, index) => {
 				const isArrow = upDownRate < 0;
 				return (
 					<div
@@ -26,9 +26,7 @@ const generateHeaders = (pairs) => {
 									? ICONS.DOWN_ARROW
 									: ICONS.UP_ARROW
 								}
-								wrapperClassName={
-									classnames('trade_history-icon', side)
-								}
+								wrapperClassName={'trade_history-icon'}
 							/>
 							: <div className='trade_history-icon' />
 						}
@@ -103,9 +101,9 @@ class TradeHistory extends Component {
 
 	generateData = (data) => {
 		let constructedData = data.map((value, index) => {
-			let temp = data[index - 1] ? data[index - 1] : {};
+			// let temp = data[index - 1] ? data[index - 1] : {};
 			let tempRate = data[index + 1] ? data[index + 1] : {};
-			let isSameBefore = temp.price === value.price;
+			let isSameBefore = tempRate.price === value.price;
 			let upDownRate = value.price - (tempRate.price || 0);
 			return { ...value, isSameBefore, upDownRate };
 		});

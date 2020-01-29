@@ -214,16 +214,25 @@
 
 .layout-mobile {
     .fee-limits-wrapper {
-        margin: 3rem auto;
+        margin: 1rem auto 3rem;
+
+        .icon_title-wrapper {
+    
+            .icon_title-svg {
+                height: 12rem;
+                width: 12rem;
+            }
+            .icon_title-svg svg {
+                height: 12rem;
+                width: 12rem;
+            }
+        }
     }
 	.logout-wrapper {
 	        margin: 0 auto;
 	 }
     .confirm-text {
         font-size: 2rem;
-    }
-    .fee-limits-wrapper {
-        margin: 3rem auto;
     }
     .summary-container {
         .trader-account-wrapper{
@@ -239,6 +248,11 @@
                 }
             }
         }
+        .account-details-wrapper {
+            .requirement-content {
+                font-size: $font-size-mobile-txt;
+            }
+        }
         .summary-section_1,
         .summary-section_2 {
             height: auto !important;
@@ -250,6 +264,10 @@
         .assets-wrapper {
             .price-text {
                 font-size: $font-size-mobile-txt !important;
+            }
+
+            .donut-container {
+                height: 30rem;
             }
         }
         .account-details-wrapper { 
@@ -298,9 +316,19 @@
     .trader-wrapper-icon{
         width: 5rem;
         margin-right: 1rem;
-        svg{
+        svg {
             .level_icon,
             .hap-icon {
+                fill: $colors-black;
+            }
+        }
+    }
+
+    .trader-acc-detail-icon {
+        width: 8rem;
+        margin-right: 1rem;
+        svg {
+            .level_icon {
                 fill: $colors-black;
             }
         }
@@ -441,7 +469,7 @@
     }
 
     .asset_wrapper_width {
-        width: 25rem;
+        width: 100%;
     }
     .xht_asset_wrapper_width {
         width: 100% !important;
@@ -456,6 +484,10 @@
 
         .wave-action-phase {
             border-top: 1px solid $colors-black;
+
+            .table-wrapper {
+                margin: 0.5rem 0 2rem;
+            }
         }
         .wave-phase-completed {
             color: $colors-wave-phase-completed;
@@ -526,7 +558,7 @@
 }
 
 .fee-limits-wrapper {
-    width: 36rem;
+    width: 38rem;
 
     .fee-limits-link {
         color: $link;
@@ -542,20 +574,26 @@
         margin: 1.5rem 0;
     }
     .icon_title-wrapper {
+        margin-top: 1rem;
+
         .icon_title-svg {
-            height: 8rem;
-            width: 8rem;
+            height: 11rem;
+            width: 12rem;
         }
         .icon_title-svg svg {
-            height: 8rem;
-            width: 8rem;
+            height: 12rem;
+            width: 12rem;
 
             .level_icon {
                 fill: $colors-black;
             }
         }
-        .icon_title-text.title {
-            font-size: 2rem;
+        .icon_title-text {
+            margin: 0;
+
+            &.title {
+                font-size: 2rem;
+            }
         }
     }
 
@@ -632,7 +670,7 @@
         }
 
         .asset_wrapper_width {
-            width: 35% !important;
+            width: 100% !important;
         }
 
         .xht_asset_wrapper_width {

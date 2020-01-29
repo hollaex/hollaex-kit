@@ -42,17 +42,15 @@ $order_entry-column--width-lg: 18rem;
 }
 
 .trade_history-row {
-	&.sell {
-		color: $trade-order-asks-color-font;
-	}
-
-	&.buy {
-		color: $trade-order-bids-color-font;
-	}
 	.trade_history-icon{
 		width: 1rem;
 		margin-right: 3px;
-		&.sell {
+	}
+
+	&.sell {
+		color: $trade-order-asks-color-font;
+
+		.trade_history-icon {
 			svg {
 				.up-icon,
 				.down-icon {
@@ -60,12 +58,16 @@ $order_entry-column--width-lg: 18rem;
 				}
 			}
 		}
+	}
 
-		&.buy {
+	&.buy {
+		color: $trade-order-bids-color-font;
+
+		.trade_history-icon {
 			svg {
 				.up-icon,
 				.down-icon {
-					fill: $trade-order-bids-color-font;
+					fill: $buy;
 				}
 			}
 		}
@@ -175,15 +177,11 @@ $order_entry-column--width-lg: 18rem;
 	}
 
 	.trade_history-row {
+
 		&.sell {
 			color: $dark-sell;
-		}
 
-		&.buy {
-			color: $dark-buy;
-		}
-		.trade_history-icon {
-			&.sell {
+			.trade_history-icon {
 				svg {
 					.up-icon,
 					.down-icon {
@@ -191,8 +189,12 @@ $order_entry-column--width-lg: 18rem;
 					}
 				}
 			}
+		}
+		
+		&.buy {
+			color: $dark-buy;
 
-			&.buy {
+			.trade_history-icon {
 				svg {
 					.up-icon,
 					.down-icon {

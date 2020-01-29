@@ -8,6 +8,9 @@ export const NETWORK = process.env.REACT_APP_NETWORK || 'mainnet';
 export const APP_TITLE =
 	process.env.REACT_APP_EXCHANGE_NAME || STRINGS.APP_TITLE;
 
+export const PUBLIC_URL =
+	process.env.REACT_APP_PUBLIC_URL || 'http://localhost:8080';
+
 export const TOKEN_TIME = 24 * 60 * 60 * 1000; // 1 day
 export const SESSION_TIME = 6 * 60 * 60 * 1000; // 6 hour
 
@@ -312,9 +315,11 @@ export const SUMMMARY_ICON = {
 };
 
 export const HOLLAEX_LOGO =
-	process.env.REACT_APP_LOGO_PATH || '/assets/hollaEx_logo-grey.svg';
+	process.env.REACT_APP_LOGO_PATH ||
+	'https://bitholla.s3.ap-northeast-2.amazonaws.com/kit/LOGO_IMAGE_LIGHT';
 export const HOLLAEX_LOGO_BLACK =
-	process.env.REACT_APP_LOGO_BLACK_PATH || '/assets/hollaEx_logo-blk.svg';
+	process.env.REACT_APP_LOGO_BLACK_PATH ||
+	'https://bitholla.s3.ap-northeast-2.amazonaws.com/kit/LOGO_IMAGE_DARK';
 
 export const AUDIOS = {
 	ORDERBOOK_FIELD_UPDATE: '/assets/audio/orderbook_field_update.wav',
@@ -346,42 +351,6 @@ export const FLEX_CENTER_CLASSES = [
 
 export const TIMESTAMP_FORMAT = STRINGS.TIMESTAMP_FORMAT;
 export const HOUR_FORMAT = STRINGS.HOUR_FORMAT;
-
-export const DEPOSIT_LIMITS = {
-	eur: {
-		DAILY: 50000000,
-		MIN: 100,
-		MAX: 50000000
-	}
-};
-
-export const WITHDRAW_LIMITS = {
-	eur: {
-		MIN: process.env.REACT_APP_WITHDRAWAL_EUR_MIN || 20000,
-		STEP: process.env.REACT_APP_WITHDRAWAL_EUR_STEP || 1
-	},
-	btc: {
-		MIN: process.env.REACT_APP_WITHDRAWAL_BTC_MIN || 0.0001,
-		MAX: process.env.REACT_APP_WITHDRAWAL_BTC_MAX || 10,
-		STEP: process.env.REACT_APP_WITHDRAWAL_BTC_STEP || 0.0001
-	},
-	eth: {
-		MIN: process.env.REACT_APP_WITHDRAWAL_ETH_MIN || 0.001,
-		MAX: process.env.REACT_APP_WITHDRAWAL_ETH_MAX || 10,
-		STEP: process.env.REACT_APP_WITHDRAWAL_ETH_STEP || 0.001,
-		MIN_FEE: parseFloat(process.env.REACT_APP_ETH_MIN_FEE || 0.001)
-	},
-	bch: {
-		MIN: process.env.REACT_APP_WITHDRAWAL_BCH_MIN || 0.001,
-		MAX: process.env.REACT_APP_WITHDRAWAL_BCH_MAX || 10,
-		STEP: process.env.REACT_APP_WITHDRAWAL_BCH_STEP || 0.001
-	},
-	xrp: {
-		MIN: process.env.REACT_APP_WITHDRAWAL_XRP_MIN || 0.1,
-		MAX: process.env.REACT_APP_WITHDRAWAL_XRP_MAX || 100000,
-		STEP: process.env.REACT_APP_WITHDRAWAL_XRP_STEP || 0.1
-	}
-};
 
 // Default trading pairs (it gets set from the server so it is not important to set these properly)
 export const DEFAULT_TRADING_PAIRS = ['xht-usdt'];
@@ -457,7 +426,7 @@ export const BALANCE_ERROR = 'Insufficient balance to perform the order';
 
 export const CAPTCHA_SITEKEY =
 	process.env.REACT_APP_CAPTCHA_SITE_KEY ||
-	'6LfgB6kUAAAAAAJI6CNSHdLrjDn8iFmZGxQDrcER'; // default recaptcha v3; // default recaptcha v3
+	'6LeuOKoUAAAAAGVoZcSWXJH60GHt4crvIaNXn1YA'; // default recaptcha v3; // default recaptcha v3
 
 export const CAPTCHA_TIMEOUT = process.env.REACT_APP_CAPTCHA_TIMEOUT
 	? parseInt(process.env.REACT_APP_CAPTCHA_TIMEOUT, 10)
@@ -502,40 +471,9 @@ export const FEES_LIMIT_SITE_URL = 'https://www.hollaex.com';
 export const API_DOCS_URL = 'https://docs.bitholla.com/';
 export const EXCHANGE_URL = 'https://dash.bitholla.com/';
 export const EXCHANGE_EXPIRY_DAYS = 15;
-export const AFFILIATION_APPLY_URL =
-	'https://docs.google.com/forms/d/1xf1mHxiTW6YUKVEqvfMJZqygiFxm1P6aUDS7uXe5Ouc/viewform?ts=5d9da3d5&edit_requested=true';
 export const SUPPORT_HELP_URL =
 	'https://info.hollaex.com/hc/en-us/requests/new';
-export const UPGRADE_ACC_URL =
-	'https://info.hollaex.com/hc/en-us/articles/360040859954-Upgrading-account-level';
-
-// export const TRADING_ACCOUNT_TYPE = {
-// 	shrimp: {
-// 		symbol: 'shrimp',
-// 		name: STRINGS.SUMMARY.TINY_PINK_SHRIMP_TRADER,
-// 		fullName: STRINGS.SUMMARY.TINY_PINK_SHRIMP_TRADER_ACCOUNT,
-// 		level: 1
-// 	},
-// 	snapper: {
-// 		symbol: 'snapper',
-// 		name: STRINGS.SUMMARY.LITTLE_RED_SNAPPER_TRADER,
-// 		fullName: STRINGS.SUMMARY.LITTLE_RED_SNAPPER_TRADER_ACCOUNT,
-// 		level: 2
-// 	},
-// 	kraken: {
-// 		symbol: 'kraken',
-// 		name: STRINGS.SUMMARY.CUNNING_BLUE_KRAKEN_TRADING,
-// 		fullName: STRINGS.SUMMARY.CUNNING_BLUE_KRAKEN_TRADING_ACCOUNT,
-// 		level: 3
-// 	},
-// 	leviathan: {
-// 		symbol: 'leviathan',
-// 		name: STRINGS.SUMMARY.BLACK_LEVIATHAN_TRADING,
-// 		fullName: STRINGS.SUMMARY.BLACK_LEVIATHAN_TRADING_ACCOUNT,
-// 		level: 4
-// 	}
-// };
-
+	
 export const MAX_NUMBER_BANKS = 3;
 
 export const CHART_MONTHS = [

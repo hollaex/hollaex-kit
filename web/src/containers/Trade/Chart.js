@@ -1,6 +1,12 @@
 import * as React from 'react';
 import { widget } from '../../charting_library/charting_library.min';
-import { WHITE_THEME, DARK_THEME, VOLUME_WHITE, VOLUME_DARK } from './ChartConfig';
+import {
+	WHITE_THEME,
+	DARK_THEME,
+	VOLUME_WHITE,
+	VOLUME_DARK,
+	TOOLBAR_BG
+} from './ChartConfig';
 import { getLanguage } from '../../utils/string';
 import {
 	getChartConfig,
@@ -14,7 +20,7 @@ function getThemeOverrides(theme = 'white') {
 	} else {
 		return DARK_THEME;
 	}
-};
+}
 
 function getStudiesOverrides(theme = 'white') {
 	if (theme === 'white') {
@@ -22,12 +28,12 @@ function getStudiesOverrides(theme = 'white') {
 	} else {
 		return VOLUME_DARK;
 	}
-};
+}
 
 class TVChartContainer extends React.PureComponent {
 	static defaultProps = {
 		symbol: 'xht-usdt', // the trading tab we are in should be passed here
-		interval: 'D',
+		interval: '60',
 		containerId: 'tv_chart_container',
 		libraryPath: '/charting_library/',
 		// chartsStorageUrl: 'https://saveload.tradingview.com',
@@ -63,7 +69,7 @@ class TVChartContainer extends React.PureComponent {
 				low: 0,
 				open: 0,
 				time: new Date().getTime(),
-				volume: 0,
+				volume: 0
 			}
 		};
 	}
@@ -81,7 +87,7 @@ class TVChartContainer extends React.PureComponent {
 				exchange,
 				symbolType,
 				onResultReadyCallback
-			) => { },
+			) => {},
 			resolveSymbol: (
 				symbolName,
 				onSymbolResolvedCallback,
@@ -116,7 +122,7 @@ class TVChartContainer extends React.PureComponent {
 
 				// onResolveErrorCallback('Not feeling it today')
 			},
-			getBars: function (
+			getBars: function(
 				symbolInfo,
 				resolution,
 				from,
@@ -206,28 +212,52 @@ class TVChartContainer extends React.PureComponent {
 			) => {
 				//optional
 			},
-			getServerTime: (cb) => { }
+			getServerTime: (cb) => {}
 		};
 	}
 
 	componentDidMount() {
-		const {
-			activeTheme,
-			symbol,
-			containerId,
-			libraryPath,
-			interval
-		} = this.props;
+		this.updateChart(this.props);
+	}
+
+	componentWillReceiveProps(nextProps) {
+		if (this.props.activeTheme !== nextProps.activeTheme) {
+			this.updateChart(nextProps);
+		} else if (
+			nextProps.tradeHistory &&
+			nextProps.tradeHistory.length &&
+			this.props.tradeHistory &&
+			this.props.tradeHistory.length !== nextProps.tradeHistory.length &&
+			this.state.sub
+		) {
+			this.updateBar(nextProps.tradeHistory[0]);
+		}
+	}
+
+	componentWillUnmount() {
+		if (this.tvWidget !== null && this.tvWidget._ready) {
+			this.tvWidget.remove();
+			this.tvWidget = null;
+		}
+	}
+
+	updateChart = ({
+		activeTheme,
+		symbol,
+		containerId,
+		libraryPath,
+		interval
+	}) => {
 		const widgetOptions = {
 			symbol: symbol,
 			// BEWARE: no trailing slash is expected in feed URL
 			theme: activeTheme === 'white' ? 'light' : 'dark',
-			toolbar_bg: activeTheme === 'white' ? '#ffffff' : '#202020',
+			toolbar_bg: TOOLBAR_BG[activeTheme],
 			datafeed: this.chartConfig,
 			interval: interval,
 			container_id: containerId,
 			library_path: libraryPath,
-
+			timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
 			locale: getLanguage(),
 			withdateranges: true,
 			range: 'ytd',
@@ -265,10 +295,7 @@ class TVChartContainer extends React.PureComponent {
 			favorites: {
 				chartTypes: ['Area', 'Candles', 'Bars']
 			},
-			loading_screen:
-				activeTheme === 'white'
-					? { backgroundColor: '#ffffff' }
-					: { backgroundColor: '#202020' },
+			loading_screen: { backgroundColor: TOOLBAR_BG[activeTheme] },
 			custom_css_url: `${process.env.REACT_APP_PUBLIC_URL}/css/chart.css`,
 			overrides: getThemeOverrides(activeTheme)
 		};
@@ -294,38 +321,7 @@ class TVChartContainer extends React.PureComponent {
 
 			button[0].innerHTML = `<div class='screen-container'><div class='screen-content'>Share Screenshot</div> <div><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 21 17" width="21" height="17"><g fill="none" stroke="currentColor"><path d="M2.5 2.5h3.691a.5.5 0 0 0 .447-.276l.586-1.171A1 1 0 0 1 8.118.5h4.764a1 1 0 0 1 .894.553l.586 1.17a.5.5 0 0 0 .447.277H18.5a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-16a2 2 0 0 1-2-2v-10a2 2 0 0 1 2-2z"></path><circle cx="10.5" cy="9.5" r="4"></circle></g></svg></div></div>`;
 		});
-	}
-
-	componentWillReceiveProps(nextProps) {
-		if (this.props.activeTheme !== nextProps.activeTheme) {
-			if (nextProps.activeTheme === 'white') {
-				this.tvWidget.changeTheme('light');
-				this.tvWidget.applyOverrides(
-					getThemeOverrides(nextProps.activeTheme)
-				);
-			} else {
-				this.tvWidget.changeTheme('dark');
-				this.tvWidget.applyOverrides(
-					getThemeOverrides(nextProps.activeTheme)
-				);
-			}
-		} else if (
-			nextProps.tradeHistory &&
-			nextProps.tradeHistory.length &&
-			this.props.tradeHistory &&
-			this.props.tradeHistory.length !== nextProps.tradeHistory.length &&
-			this.state.sub
-		) {
-			this.updateBar(nextProps.tradeHistory[0]);
-		}
-	}
-
-	componentWillUnmount() {
-		if (this.tvWidget !== null && this.tvWidget._ready) {
-			this.tvWidget.remove();
-			this.tvWidget = null;
-		}
-	}
+	};
 
 	updateBar(data) {
 		const { sub } = this.state;
@@ -364,7 +360,7 @@ class TVChartContainer extends React.PureComponent {
 				lastBar.high = data.price;
 			}
 
-			lastBar.volume = lastBar.volume ? (lastBar.volume + data.size) : data.size;
+			lastBar.volume = lastBar.volume ? lastBar.volume + data.size : data.size;
 			lastBar.close = data.price;
 			if (!lastBar.low) lastBar.low = 0;
 			if (!lastBar.close) lastBar.close = 0;

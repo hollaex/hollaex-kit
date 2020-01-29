@@ -59,7 +59,7 @@ class ConfirmWithdrawal extends Component {
         } else {
             childProps = {
                 titleSection: {
-                    iconPath: ICONS.COIN_WITHDRAW_BTC,
+                    iconPath: ICONS.GREEN_CHECK,
                     text: STRINGS.SUCCESS_TEXT
                 },
                 useSvg: true,
