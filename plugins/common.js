@@ -5,7 +5,7 @@ const SECRET = 'aec18e8ad23994b1d14599bfd1d9c394';
 const ISSUER = 'bitholla.com';
 const TOKEN_TIME = 1000 * 60 * 60 * 24;
 const { intersection } = require('lodash');
-const { User, Pair, Balance, VerificationImage } = require('../db/models');
+const { User, Pair, Balance, VerificationImage } = require('../../db/models');
 
 const verifyToken = (req, res, next) => {
 	const sendError = (msg) => {
