@@ -1,7 +1,7 @@
 'use strict';
 
 const crypto = require('crypto');
-const { pick } = require('lodash');
+const { pick, each } = require('lodash');
 
 const EMPTY_STATUS = 0;
 const PENDING_STATUS = 1;
@@ -18,7 +18,9 @@ const VERIFY_ATTR = [
 ];
 
 const addBankAccount = (bank_account = {}) => (user, options = {}) => {
-	if (user.dataValues.bank_account.length >= 3) {
+	if (!user) {
+		throw new Error('User not found.');
+	} else if (user.dataValues.bank_account.length >= 3) {
 		throw new Error('Too many banks');
 	}
 
@@ -37,6 +39,36 @@ const addBankAccount = (bank_account = {}) => (user, options = {}) => {
 
 	return user.update(
 		{ bank_account: newBank },
+		{
+			fields: ['bank_account'],
+			...options
+		}
+	);
+};
+
+const adminAddUserBanks = (bank_accounts = []) => (user, options = {}) => {
+	if (!user) {
+		throw new Error('User not found.');
+	} else if (bank_accounts.length === 0) {
+		throw new Error ('Must enter at least one bank.');
+	} else if (bank_accounts.length > 3) {
+		throw new Error ('Maximum number of bank accounts is three.');
+	}
+
+	each(bank_accounts, (bank) => {
+		bank = pick(
+			bank,
+			'bank_name',
+			'card_number',
+			'account_number'
+		)
+
+		bank.id = crypto.randomBytes(10).toString('hex');
+		bank.status = true;
+	});
+
+	return user.update(
+		{ bank_account: bank_accounts },
 		{
 			fields: ['bank_account'],
 			...options

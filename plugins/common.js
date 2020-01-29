@@ -94,6 +94,42 @@ const getUserValuesByEmail = (email, include) => {
 		.then(cleanUserFromDb);
 }
 
+const getUserValuesById = (id, include) => {
+	findUser({
+		where: { id },
+		attributes: include || {
+			exclude: ['password', 'is_admin', 'is_support', 'is_supervisor']
+		},
+		include: [
+			{
+				model: Balance,
+				as: 'balance',
+				attributes: {
+					exclude: ['id', 'user_id', 'created_at']
+				}
+			},
+			{
+				model: VerificationImage,
+				as: 'images',
+				attributes: ['id']
+			}
+		]
+	})
+		.then((data) => {
+			return all([
+				data.dataValues,
+				findUserPairFees(data.verification_level)
+			]);
+		})
+		.then(([userData, fees]) => {
+			return {
+				...userData,
+				fees
+			};
+		})
+		.then(cleanUserFromDb);
+}
+
 const findUserPairFees = (verification_level = 0) => {
 	return Pair.findAll({
 		attributes: ['name', 'maker_fees', 'taker_fees']
