@@ -19,7 +19,7 @@ exports.Button = (link, text) => `
 `;
 
 const footerTemplate = (language = DEFAULT_LANGUAGE, domain = DOMAIN) => {
-	const { FOOTER } = require(`../../strings/${language}`);
+	const { FOOTER } = require('../../strings').languageFile(language);
 	return `
 			<div style="${styles.footer}">
 				<div style="float: left">

@@ -10,7 +10,7 @@ const fetchMessage = (email, data, language, domain) => {
 };
 
 const html = (email, data, language, domain) => {
-	const { WITHDRAWALREQUEST } = require(`../strings/${language}`);
+	const { WITHDRAWALREQUEST } = require('../strings').languageFile(language);
 	const link = `${domain}/confirm-withdraw/${data.transaction_id}`;
 	return `
 		<div>
@@ -42,7 +42,7 @@ const html = (email, data, language, domain) => {
 };
 
 const text = (email, data, language, domain) => {
-	const { WITHDRAWALREQUEST } = require(`../strings/${language}`);
+	const { WITHDRAWALREQUEST } = require('../strings').languageFile(language);
 	const link = `${domain}/confirm-withdraw/${data.transaction_id}`;
 	return `
 		${WITHDRAWALREQUEST.GREETING(email)}

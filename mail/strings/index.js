@@ -19,7 +19,20 @@ const MAILTYPE = {
 	USER_VERIFICATION: 'userVerification'
 };
 
+const languageFile = (lang) => {
+	let langFile = undefined;
+	try {
+		langFile = require(`./${lang}`);
+	} catch (err) {
+		if (err.code === 'MODULE_NOT_FOUND') {
+			langFile = require('./en');
+		}
+	}
+	return langFile;
+}
+
 module.exports = {
 	FORMATDATE,
-	MAILTYPE
+	MAILTYPE,
+	languageFile
 };
