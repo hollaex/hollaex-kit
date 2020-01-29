@@ -1,0 +1,7 @@
+{
+	"name": "kyc",
+	"version": "0.1.0",
+	"dependencies": {
+		"awesome-phonenumber": "2.2.5"
+	}
+}
