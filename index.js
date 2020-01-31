@@ -393,6 +393,9 @@ class Socket extends EventEmitter {
 					listeners[listeners.length - 1].on('update', (data) => {
 						this.emit('userUpdate', data);
 					});
+					listeners[listeners.length - 1].on('disconnect', (data) => {
+						this.emit('disconnect', data);
+					});
 					break;
 			}
 		}
