@@ -1,11 +1,10 @@
 'use strict';
 
 const jwt = require('jsonwebtoken');
-const SECRET = 'aec18e8ad23994b1d14599bfd1d9c394';
-const ISSUER = 'bitholla.com';
-const TOKEN_TIME = 1000 * 60 * 60 * 24;
+const { SECRET, ISSUER, TOKEN_TIME, BALANCE_KEYS } = require('../constants');
 const { intersection } = require('lodash');
-const { User, Pair, Balance, VerificationImage } = require('../../db/models');
+const { User, Pair, Balance, VerificationImage } = require('../db/models');
+const { all } = require('bluebird');
 
 const verifyToken = (req, res, next) => {
 	const sendError = (msg) => {
@@ -38,7 +37,7 @@ const verifyToken = (req, res, next) => {
 	}
 }
 
-const checkScopes = (endpointScopes, userScope) => {
+const checkScopes = (endpointScopes, userScopes) => {
 	if (intersection(endpointScopes, userScopes).length === 0) {
 		throw new Error('Not Authorized');
 	}
@@ -59,7 +58,7 @@ const findUser = (params = {}) => {
   If the user is not found, it will throw an error.
  */
 const getUserValuesByEmail = (email, include) => {
-	findUser({
+	return findUser({
 		where: { email: email.toLowerCase() },
 		attributes: include || {
 			exclude: ['password', 'is_admin', 'is_support', 'is_supervisor']
@@ -158,7 +157,7 @@ const cleanUserFromDb = (user) => {
 		...user
 	};
 
-	userData.balance = user.balance.dataValues;
+	// userData.balance = user.balance.dataValues;
 
 	// if (userData.bank_account) {
 	//   delete userData.bank_account.provided;
@@ -181,11 +180,10 @@ const cleanUserFromDb = (user) => {
 	if (!userData.dob) {
 		delete userData.dob;
 	}
-
 	return userData;
 };
 
-const redis = require('../../db/redis');
+const redis = require('../db/redis');
 
 module.exports = {
 	verifyToken,

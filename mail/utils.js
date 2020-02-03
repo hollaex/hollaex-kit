@@ -28,7 +28,7 @@ const sendAwsEmail = (params) =>
 
 const momentTz = require('moment-timezone');
 const moment = require('moment');
-const geoip = require('geo-from-ip');
+const geoip = require('geoip-lite');
 const { FORMATDATE } = require('./strings');
 
 const { DEFAULT_LANGUAGE, DEFAULT_TIMEZONE } = require('../constants');
@@ -59,7 +59,7 @@ const formatDate = (
 };
 
 const getCountryFromIp = (ip) => {
-	const geo = geoip.allData(ip);
+	const geo = geoip.lookup(ip);
 	if (!geo) {
 		return '';
 	}
