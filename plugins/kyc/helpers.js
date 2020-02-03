@@ -1,6 +1,6 @@
 const { findUser } = require('../common');
 const { VerificationImage } = require('../../db/models');
-const { S3_BUCKET_NAME } = require('../../constants');
+const { S3_BUCKET_NAME, DEFAULT_LANGUAGE } = require('../../constants');
 const s3Write = require('./s3').write(S3_BUCKET_NAME);
 const s3Read = require('./s3').read(S3_BUCKET_NAME);
 const AWS_SE = 'amazonaws.com/';
@@ -12,6 +12,8 @@ const COMPLETED_STATUS = 3;
 const ROLES = {
 	USER: 'user'
 };
+
+const ERROR_CHANGE_USER_INFO = 'You are not allowed to change your information';
 
 const validMimeType = (type = '') => {
 	return type.indexOf('image/') === 0;
@@ -93,6 +95,34 @@ const getPublicLink = (privateLink) => {
 	};
 
 	return s3Read.getSignedUrl('getObject', params);
+};
+
+const SETTING_KEYS = [
+	'language',
+	'notification',
+	'interface',
+	'audio',
+	'risk',
+	'chat'
+];
+
+const DEFAULT_SETTINGS = {
+	language: DEFAULT_LANGUAGE,
+	orderConfirmationPopup: true
+};
+
+const joinSettings = (userSettings = {}, newSettings = {}) => {
+	const joinedSettings = {};
+	SETTING_KEYS.forEach((key) => {
+		if (newSettings.hasOwnProperty(key)) {
+			joinedSettings[key] = newSettings[key];
+		} else if (userSettings.hasOwnProperty(key)) {
+			joinedSettings[key] = userSettings[key];
+		} else {
+			joinedSettings[key] = DEFAULT_SETTINGS[key];
+		}
+	});
+	return joinedSettings;
 };
 
 const updateUserData = (
@@ -203,6 +233,7 @@ const storeFilesDataOnDb = (
 module.exports = {
 	validMimeType,
 	uploadFile,
+	updateUserData,
 	getImagesData,
 	findUserImages,
 	storeFilesDataOnDb

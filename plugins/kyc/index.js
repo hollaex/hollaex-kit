@@ -1,11 +1,15 @@
 'use strict';
 
 const app = require('../index');
-const { verifyToken, checkScopes, findUser } = require('../common');
-const { validMimeType, uploadFile, getImagesData, findUserImages, storeFilesDataOnDb, updateUserData, getUserValuesByEmail } = require('./helpers');
+const { verifyToken, checkScopes, findUser, getUserValuesByEmail } = require('../common');
+const { validMimeType, uploadFile, getImagesData, findUserImages, storeFilesDataOnDb, updateUserData } = require('./helpers');
 const bodyParser = require('body-parser');
 
-app.put('plugins/kyc/user', [verifyToken, bodyParser.json()], (req, res) => {
+const ROLES = {
+	USER: 'user'
+};
+
+app.put('/plugins/kyc/user', [verifyToken, bodyParser.json()], (req, res) => {
 	const endpointScopes = ['user'];
 	const scopes = req.auth.scopes;
 	checkScopes(endpointScopes, scopes);
