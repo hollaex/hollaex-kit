@@ -2,11 +2,47 @@
 
 const app = require('../index');
 const { verifyToken, checkScopes, findUser } = require('../common');
-const { validMimeType, uploadFile, getImagesData, findUserImages, storeFilesDataOnDb } = require('./helpers');
+const { validMimeType, uploadFile, getImagesData, findUserImages, storeFilesDataOnDb, updateUserData, getUserValuesByEmail } = require('./helpers');
 const bodyParser = require('body-parser');
 
-app.post('/plugins/kyc', [verifyToken, bodyParser.json()], (req, res) => {
+app.put('plugins/kyc/user', [verifyToken, bodyParser.json()], (req, res) => {
+	const endpointScopes = ['user'];
+	const scopes = req.auth.scopes;
+	checkScopes(endpointScopes, scopes);
 
+	const email = req.auth.sub.email;
+	const editUser = req.body;
+
+	findUser({
+		where: { email },
+		attributes: {
+			exclude: [
+				'password',
+				'created_at',
+				'updated_at',
+				'email',
+				'balance',
+				'crypto_wallet',
+				'verification_level',
+				'otp_enabled',
+				'is_admin',
+				'is_supervisor',
+				'is_support',
+				'is_kyc',
+				'flagged',
+				'affiliation_code'
+			]
+		}
+	})
+		.then(updateUserData(editUser, ROLES.USER))
+		.then(() => getUserValuesByEmail(email))
+		.then((user) => res.json(user))
+		.catch((error) => {
+			res.status(error.status || 400).json({ message: error.message });
+		});
+});
+
+app.post('/plugins/kyc/user/verification', [verifyToken, bodyParser.json()], (req, res) => {
 	const endpointScopes = ['user'];
 	const scopes = req.auth.scopes;
 	checkScopes(endpointScopes, scopes);
@@ -98,8 +134,7 @@ app.post('/plugins/kyc', [verifyToken, bodyParser.json()], (req, res) => {
 		});
 });
 
-app.post('/plugins/admin/kyc', [verifyToken, bodyParser.json()], (req, res) => {
-
+app.post('/plugins/kyc/admin', [verifyToken, bodyParser.json()], (req, res) => {
 	const endpointScopes = ['admin'];
 	const scopes = req.auth.scopes;
 	checkScopes(endpointScopes, scopes);
@@ -185,10 +220,9 @@ app.post('/plugins/admin/kyc', [verifyToken, bodyParser.json()], (req, res) => {
 		.catch((err) => {
 			res.status(400).json({ message: err.message });
 		});
-})
+});
 
-app.get('/plugins/admin/kyc', [verifyToken, bodyParser.json()], (req, res) => {
-
+app.get('/plugins/kyc/verification', [verifyToken, bodyParser.json()], (req, res) => {
 	const endpointScopes = ['admin'];
 	const scopes = req.auth.scopes;
 	checkScopes(endpointScopes, scopes);

@@ -1,5 +1,9 @@
 const { findUser } = require('../common');
 const { VerificationImage } = require('../../db/models');
+const { S3_BUCKET_NAME } = require('../../constants');
+const s3Write = require('./s3').write(S3_BUCKET_NAME);
+const s3Read = require('./s3').read(S3_BUCKET_NAME);
+const AWS_SE = 'amazonaws.com/';
 
 const EMPTY_STATUS = 0;
 const PENDING_STATUS = 1;
@@ -7,7 +11,7 @@ const REJECTED_STATUS = 2;
 const COMPLETED_STATUS = 3;
 const ROLES = {
 	USER: 'user'
-}
+};
 
 const validMimeType = (type = '') => {
 	return type.indexOf('image/') === 0;
@@ -60,6 +64,37 @@ const findUserImages = (where) => {
 		});
 };
 
+const getLinks = ({ front, back, proof_of_residency }) => {
+	const data = {
+		front: front ? getPublicLink(front) : '',
+		back: back ? getPublicLink(back) : '',
+		proof_of_residency: proof_of_residency
+			? getPublicLink(proof_of_residency)
+			: ''
+	};
+	return data;
+};
+
+const getKeyFromLink = (link) => {
+	const indexOfService = link.indexOf(AWS_SE);
+	if (indexOfService > 0) {
+		return link.substring(indexOfService + AWS_SE.length);
+	}
+	// if not amazon.com link, return same link
+	return link;
+};
+
+const getPublicLink = (privateLink) => {
+	const Key = getKeyFromLink(privateLink);
+	const params = {
+		Bucket: S3_BUCKET_NAME,
+		Key: getKeyFromLink(privateLink),
+		Expires: EXPIRES
+	};
+
+	return s3Read.getSignedUrl('getObject', params);
+};
+
 const updateUserData = (
 	{ id_data = {}, settings = {}, bank_account, ...rest },
 	role = ROLES.USER
@@ -78,12 +113,6 @@ const updateUserData = (
 		} else {
 			updateData['id_data'] = id_data;
 		}
-	}
-	if (bank_account && bank_account.length >= 0) {
-		if (role === ROLES.USER) {
-			throw new Error(ERROR_CHANGE_USER_INFO);
-		}
-		updateData.bank_account = bank_account;
 	}
 	if (Object.keys(settings).length > 0) {
 		updateData.settings = joinSettings(user.dataValues.settings, settings);
@@ -177,4 +206,4 @@ module.exports = {
 	getImagesData,
 	findUserImages,
 	storeFilesDataOnDb
-}
+};
