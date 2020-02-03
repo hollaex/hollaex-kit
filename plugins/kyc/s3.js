@@ -45,7 +45,7 @@ const write = (bucketName) => {
 const read = (bucketName) => {
 	aws.config.update(credentials.read);
 	return new aws.s3(credentials.buckets[bucketName]);
-}
+};
 
 module.exports = {
 	write,

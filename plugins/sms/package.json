@@ -2,6 +2,7 @@
 	"name": "sms",
 	"version": "0.1.0",
 	"dependencies": {
-		"awesome-phonenumber": "2.2.5"
+		"awesome-phonenumber": "2.2.5",
+		"aws-sdk": "2.205.0"
 	}
 }

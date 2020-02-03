@@ -4,7 +4,7 @@ const { generateOtp } = require('./otp');
 const redis = require('../common').redis.duplicate();
 const Promise = require('bluebird');
 const PhoneNumber = require('awesome-phonenumber');
-const sns = require('../../config/aws')('sns');
+const sns = require('./sns');
 const {
 	DEFAULT_LANGUAGE,
 	SMS_CODE_KEY,
