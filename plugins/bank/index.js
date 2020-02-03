@@ -2,7 +2,7 @@
 
 const app = require('../index');
 const { verifyToken, checkScopes, findUser, getUserValuesByEmail } = require('../common');
-const { addBankAccount, adminAddUserBanks, approveBankAccount, rejectBankAccount} = require('./helpers');
+const { addBankAccount, adminAddUserBanks, approveBankAccount, rejectBankAccount, VERIFY_ATTR } = require('./helpers');
 const bodyParser = require('body-parser');
 
 app.post('/plugins/bank', [verifyToken, bodyParser.json()], (req, res) => {
