@@ -11,5 +11,5 @@ export const uploadFiles = (id, values) => {
 		body: formData
 	};
 
-	return requestAuthenticated(`/admin/user/${id}/upload`, options, {});
+	return requestAuthenticated(`/plugins/kyc/admin/upload?user_id=${id}`, options, {});
 };

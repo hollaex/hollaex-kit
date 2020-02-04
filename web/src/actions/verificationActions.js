@@ -2,8 +2,8 @@ import axios from 'axios';
 import querystring from 'query-string';
 
 const VERIFICATION_ENDPOINTS = {
-	VERIFY_SMS_CODE: '/user/verify/sms',
-	VERIFY_BANK: '/user/bank',
+	VERIFY_SMS_CODE: '/plugins/sms/verify',
+	VERIFY_BANK: '/plugins/bank/user',
 	GET_USER: '/user'
 };
 
