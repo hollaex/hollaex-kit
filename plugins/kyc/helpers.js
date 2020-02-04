@@ -1,5 +1,5 @@
 const { findUser } = require('../common');
-const { VerificationImage } = require('../../db/models');
+const { VerificationImage, sequelize } = require('../../db/models');
 const { S3_BUCKET_NAME, DEFAULT_LANGUAGE } = require('../../constants');
 const s3Write = require('./s3').write(S3_BUCKET_NAME);
 const s3Read = require('./s3').read(S3_BUCKET_NAME);
@@ -17,6 +17,10 @@ const ERROR_CHANGE_USER_INFO = 'You are not allowed to change your information';
 
 const validMimeType = (type = '') => {
 	return type.indexOf('image/') === 0;
+};
+
+const getType = (type = '') => {
+	return type.replace('image/', '');
 };
 
 const uploadFile = (name, file) => {
@@ -236,5 +240,6 @@ module.exports = {
 	updateUserData,
 	getImagesData,
 	findUserImages,
-	storeFilesDataOnDb
+	storeFilesDataOnDb,
+	getType
 };
