@@ -118,13 +118,13 @@ app.post('/plugins/kyc/user/verification', [verifyToken, multerMiddleware], (req
 					`${id}/${ts}-front.${getType(front.mimetype)}`,
 					front
 				),
-				back.value
+				back
 					? uploadFile(
 						`${id}/${ts}-back.${getType(back.mimetype)}`,
 						back
 					)
 					: undefined,
-				proof_of_residency.value
+				proof_of_residency
 					? uploadFile(
 						`${id}/${ts}-proof_of_residency.${getType(
 							proof_of_residency.mimetype
@@ -151,17 +151,17 @@ app.post('/plugins/kyc/user/verification', [verifyToken, multerMiddleware], (req
 		});
 });
 
-app.post('/plugins/kyc/admin', [verifyToken, multerMiddleware], (req, res) => {
+app.post('/plugins/kyc/admin/verification', [verifyToken, multerMiddleware], (req, res) => {
 	const endpointScopes = ['admin'];
 	const scopes = req.auth.scopes;
 	checkScopes(endpointScopes, scopes);
 
-	const user_id = req.query.user_id;
 	let { front, back, proof_of_residency } = req.files;
 	if (front) front = front[0];
 	if (back) back = back[0];
 	if (proof_of_residency) proof_of_residency = proof_of_residency[0];
 	const { ...otherData } = req.body;
+	const user_id = req.query.user_id;
 
 	if (
 		!front &&
@@ -205,19 +205,19 @@ app.post('/plugins/kyc/admin', [verifyToken, multerMiddleware], (req, res) => {
 			return Promise.all([
 				front
 					? uploadFile(
-						`${id}/${ts}-front.${getType(front.mimetype)}`,
+						`${user_id}/${ts}-front.${getType(front.mimetype)}`,
 						front
 					)
 					: { Location: data.front },
 				back
 					? uploadFile(
-						`${id}/${ts}-back.${getType(back.mimetype)}`,
+						`${user_id}/${ts}-back.${getType(back.mimetype)}`,
 						back
 					)
 					: { Location: data.back },
 				proof_of_residency
 					? uploadFile(
-						`${id}/${ts}-proof_of_residency.${getType(
+						`${user_id}/${ts}-proof_of_residency.${getType(
 							proof_of_residency.mimetype
 						)}`,
 						proof_of_residency
@@ -246,17 +246,17 @@ app.post('/plugins/kyc/admin', [verifyToken, multerMiddleware], (req, res) => {
 		});
 });
 
-app.get('/plugins/kyc/verification', [verifyToken, bodyParser.json()], (req, res) => {
+app.get('/plugins/kyc/verification', verifyToken, (req, res) => {
 	const endpointScopes = ['admin'];
 	const scopes = req.auth.scopes;
 	checkScopes(endpointScopes, scopes);
 
-	const { email, id } = req.body;
+	const { email, id } = req.query;
 	const where = {};
-	if (id.value) {
-		where.id = id.value;
-	} else if (email.value) {
-		where.email = email.value;
+	if (id) {
+		where.id = id;
+	} else if (email) {
+		where.email = email;
 	} else {
 		return res
 			.status(400)

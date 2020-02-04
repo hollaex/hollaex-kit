@@ -4,6 +4,7 @@ const { S3_BUCKET_NAME, DEFAULT_LANGUAGE } = require('../../constants');
 const s3Write = require('./s3').write(S3_BUCKET_NAME);
 const s3Read = require('./s3').read(S3_BUCKET_NAME);
 const AWS_SE = 'amazonaws.com/';
+const EXPIRES = 300; // seconds
 
 const EMPTY_STATUS = 0;
 const PENDING_STATUS = 1;
