@@ -2,24 +2,23 @@
 
 const app = require('../index');
 const { verifyToken, checkScopes, findUser, getUserValuesByEmail } = require('../common');
-const { validMimeType, uploadFile, getImagesData, findUserImages, storeFilesDataOnDb, updateUserData, getType, updateUserPhoneNumber } = require('./helpers');
+const {
+	multerMiddleware,
+	validMimeType,
+	uploadFile,
+	getImagesData,
+	findUserImages,
+	storeFilesDataOnDb,
+	updateUserData,
+	getType,
+	updateUserPhoneNumber
+} = require('./helpers');
+const { SMS_INVALID_PHONE } = require('../../messages');
 const bodyParser = require('body-parser');
 const PhoneNumber = require('awesome-phonenumber');
 const { sequelize } = require('../../db/models');
 const { cloneDeep, omit } = require('lodash');
-
-const ROLES = {
-	USER: 'user',
-	SUPPORT: 'support'
-};
-
-const multer = require('multer');
-const upload = multer();
-const multerMiddleware = upload.fields([
-	{ name: 'front', maxCount: 1 },
-	{ name: 'back', maxCount: 1 },
-	{ name: 'proof_of_residency', maxCount: 1 }
-])
+const { ROLES } = require('../../constants');
 
 app.put('/plugins/kyc/user', [verifyToken, bodyParser.json()], (req, res) => {
 	const endpointScopes = ['user'];
@@ -58,15 +57,6 @@ app.put('/plugins/kyc/user', [verifyToken, bodyParser.json()], (req, res) => {
 		});
 });
 
-const REMOVE_PROPS = [
-	'id_data',
-	'crypto_wallet',
-	'verification_level',
-	'otp_enabled',
-	'activated',
-	'settings'
-];
-
 app.put('/plugins/kyc/admin', [verifyToken, bodyParser.json()], (req, res) => {
 	const endpointScopes = ['admin', 'supervisor', 'support'];
 	const scopes = req.auth.scopes;
@@ -74,6 +64,15 @@ app.put('/plugins/kyc/admin', [verifyToken, bodyParser.json()], (req, res) => {
 
 	const id = req.query.user_id;
 	const data = req.body;
+
+	const REMOVE_PROPS = [
+		'id_data',
+		'crypto_wallet',
+		'verification_level',
+		'otp_enabled',
+		'activated',
+		'settings'
+	];
 
 	REMOVE_PROPS.forEach((key) => {
 		if (data.hasOwnProperty(key)) {
@@ -92,7 +91,7 @@ app.put('/plugins/kyc/admin', [verifyToken, bodyParser.json()], (req, res) => {
 	sequelize
 		.transaction((transaction) => {
 			const options = { transaction, returning: true };
-			let prevUserData = {};
+			let prevUserData = {}; // for audit
 			return findUser({ where: { id } })
 				.then((user) => {
 					prevUserData = cloneDeep(user.dataValues);

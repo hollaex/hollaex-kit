@@ -1,6 +1,6 @@
 const { findUser } = require('../common');
 const { VerificationImage, sequelize } = require('../../db/models');
-const { S3_BUCKET_NAME, DEFAULT_LANGUAGE } = require('../../constants');
+const { S3_BUCKET_NAME, DEFAULT_LANGUAGE, ROLES } = require('../../constants');
 const s3Write = require('./s3').write(S3_BUCKET_NAME);
 const s3Read = require('./s3').read(S3_BUCKET_NAME);
 const AWS_SE = 'amazonaws.com/';
@@ -10,11 +10,16 @@ const EMPTY_STATUS = 0;
 const PENDING_STATUS = 1;
 const REJECTED_STATUS = 2;
 const COMPLETED_STATUS = 3;
-const ROLES = {
-	USER: 'user'
-};
 
 const ERROR_CHANGE_USER_INFO = 'You are not allowed to change your information';
+
+const multer = require('multer');
+const upload = multer();
+const multerMiddleware = upload.fields([
+	{ name: 'front', maxCount: 1 },
+	{ name: 'back', maxCount: 1 },
+	{ name: 'proof_of_residency', maxCount: 1 }
+])
 
 const validMimeType = (type = '') => {
 	return type.indexOf('image/') === 0;
@@ -250,5 +255,6 @@ module.exports = {
 	findUserImages,
 	storeFilesDataOnDb,
 	getType,
-	updateUserPhoneNumber
+	updateUserPhoneNumber,
+	multerMiddleware
 };
