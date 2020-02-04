@@ -2,12 +2,20 @@
 
 const app = require('../index');
 const { verifyToken, checkScopes, findUser, getUserValuesByEmail } = require('../common');
-const { validMimeType, uploadFile, getImagesData, findUserImages, storeFilesDataOnDb, updateUserData } = require('./helpers');
+const { validMimeType, uploadFile, getImagesData, findUserImages, storeFilesDataOnDb, updateUserData, getType } = require('./helpers');
 const bodyParser = require('body-parser');
 
 const ROLES = {
 	USER: 'user'
 };
+
+const multer = require('multer');
+const upload = multer();
+const multerMiddleware = upload.fields([
+	{ name: 'front', maxCount: 1 },
+	{ name: 'back', maxCount: 1 },
+	{ name: 'proof_of_residency', maxCount: 1 }
+])
 
 app.put('/plugins/kyc/user', [verifyToken, bodyParser.json()], (req, res) => {
 	const endpointScopes = ['user'];
@@ -46,22 +54,26 @@ app.put('/plugins/kyc/user', [verifyToken, bodyParser.json()], (req, res) => {
 		});
 });
 
-app.post('/plugins/kyc/user/verification', [verifyToken, bodyParser.json()], (req, res) => {
+app.post('/plugins/kyc/user/verification', [verifyToken, multerMiddleware], (req, res) => {
 	const endpointScopes = ['user'];
 	const scopes = req.auth.scopes;
 	checkScopes(endpointScopes, scopes);
 
 	const { id, email } = req.auth.sub;
-	const { front, back, proof_of_residency, ...otherData } = req.body;
+	let { front, back, proof_of_residency } = req.files;
+	if (front) front = front[0];
+	if (back) back = back[0];
+	if (proof_of_residency) proof_of_residency = proof_of_residency[0];
+	const { ...otherData } = req.body;
 
 	let invalidType = '';
-	if (!validMimeType(front.value.mimetype)) {
+	if (!validMimeType(front.mimetype)) {
 		invalidType = 'front';
-	} else if (back.value && !validMimeType(back.value.mimetype)) {
+	} else if (back && !validMimeType(back.mimetype)) {
 		invalidType = 'back';
 	} else if (
-		proof_of_residency.value &&
-		!validMimeType(proof_of_residency.value.mimetype)
+		proof_of_residency &&
+		!validMimeType(proof_of_residency.mimetype)
 	) {
 		invalidType = 'proof_of_residency';
 	}
@@ -72,14 +84,14 @@ app.post('/plugins/kyc/user/verification', [verifyToken, bodyParser.json()], (re
 	const data = { id_data: {} };
 
 	Object.entries(otherData).forEach(([key, field]) => {
-		if (field.value) {
+		if (field) {
 			if (
 				key === 'type' ||
 				key === 'number' ||
 				key === 'issued_date' ||
 				key === 'expiration_date'
 			) {
-				data.id_data[key] = field.value;
+				data.id_data[key] = field;
 			}
 		}
 	});
@@ -95,6 +107,7 @@ app.post('/plugins/kyc/user/verification', [verifyToken, bodyParser.json()], (re
 		]
 	})
 		.then((user) => {
+			let { status } = user.dataValues.id_data || 0;
 			if (status === 3) {
 				throw new Error(
 					'You are not allowed to upload a document while its pending or approved.'
@@ -102,21 +115,21 @@ app.post('/plugins/kyc/user/verification', [verifyToken, bodyParser.json()], (re
 			}
 			return Promise.all([
 				uploadFile(
-					`${id}/${ts}-front.${getType(front.value.mimetype)}`,
-					front.value
+					`${id}/${ts}-front.${getType(front.mimetype)}`,
+					front
 				),
 				back.value
 					? uploadFile(
-						`${id}/${ts}-back.${getType(back.value.mimetype)}`,
-						back.value
+						`${id}/${ts}-back.${getType(back.mimetype)}`,
+						back
 					)
 					: undefined,
 				proof_of_residency.value
 					? uploadFile(
 						`${id}/${ts}-proof_of_residency.${getType(
-							proof_of_residency.value.mimetype
+							proof_of_residency.mimetype
 						)}`,
-						proof_of_residency.value
+						proof_of_residency
 					)
 					: undefined
 			]);
