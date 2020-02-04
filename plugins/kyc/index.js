@@ -123,7 +123,7 @@ app.put('/plugins/kyc/admin', [verifyToken, bodyParser.json()], (req, res) => {
 		});
 });
 
-app.post('/plugins/kyc/user/verification', [verifyToken, multerMiddleware], (req, res) => {
+app.post('/plugins/kyc/user/upload', [verifyToken, multerMiddleware], (req, res) => {
 	const endpointScopes = ['user'];
 	const scopes = req.auth.scopes;
 	checkScopes(endpointScopes, scopes);
@@ -220,8 +220,8 @@ app.post('/plugins/kyc/user/verification', [verifyToken, multerMiddleware], (req
 		});
 });
 
-app.post('/plugins/kyc/admin/verification', [verifyToken, multerMiddleware], (req, res) => {
-	const endpointScopes = ['admin'];
+app.post('/plugins/kyc/admin/upload', [verifyToken, multerMiddleware], (req, res) => {
+	const endpointScopes = ['admin', 'supervisor'];
 	const scopes = req.auth.scopes;
 	checkScopes(endpointScopes, scopes);
 
@@ -262,7 +262,14 @@ app.post('/plugins/kyc/admin/verification', [verifyToken, multerMiddleware], (re
 
 	Object.entries(otherData).forEach(([key, field]) => {
 		if (field) {
-			data.id_data[key] = field;
+			if (
+				key === 'type' ||
+				key === 'number' ||
+				key === 'issued_date' ||
+				key === 'expiration_date'
+			) {
+				data.id_data[key] = field;
+			}
 		}
 	});
 
@@ -315,8 +322,8 @@ app.post('/plugins/kyc/admin/verification', [verifyToken, multerMiddleware], (re
 		});
 });
 
-app.get('/plugins/kyc/verification', verifyToken, (req, res) => {
-	const endpointScopes = ['admin'];
+app.get('/plugins/kyc/user/verification', verifyToken, (req, res) => {
+	const endpointScopes = ['admin', 'supervisor', 'support', 'kyc'];
 	const scopes = req.auth.scopes;
 	checkScopes(endpointScopes, scopes);
 
