@@ -151,29 +151,35 @@ app.post('/plugins/kyc/user/verification', [verifyToken, multerMiddleware], (req
 		});
 });
 
-app.post('/plugins/kyc/admin', [verifyToken, bodyParser.json()], (req, res) => {
+app.post('/plugins/kyc/admin', [verifyToken, multerMiddleware], (req, res) => {
 	const endpointScopes = ['admin'];
 	const scopes = req.auth.scopes;
 	checkScopes(endpointScopes, scopes);
 
-	const { id, front, back, proof_of_residency, ...otherData } = req.body;
+	const user_id = req.query.user_id;
+	let { front, back, proof_of_residency } = req.files;
+	if (front) front = front[0];
+	if (back) back = back[0];
+	if (proof_of_residency) proof_of_residency = proof_of_residency[0];
+	const { ...otherData } = req.body;
+
 	if (
-		!front.value &&
-		!back.value &&
-		!proof_of_residency.value &&
+		!front &&
+		!back &&
+		!proof_of_residency &&
 		Object.keys(otherData).length === 0
 	) {
 		return res.status(400).json({ message: 'Missing fields' });
 	}
 
 	let invalidType = '';
-	if (front.value && !validMimeType(front.value.mimetype)) {
+	if (front && !validMimeType(front.mimetype)) {
 		invalidType = 'front';
-	} else if (back.value && !validMimeType(back.value.mimetype)) {
+	} else if (back && !validMimeType(back.mimetype)) {
 		invalidType = 'back';
 	} else if (
-		proof_of_residency.value &&
-		!validMimeType(proof_of_residency.value.mimetype)
+		proof_of_residency &&
+		!validMimeType(proof_of_residency.mimetype)
 	) {
 		invalidType = 'proof_of_residency';
 	}
@@ -186,42 +192,42 @@ app.post('/plugins/kyc/admin', [verifyToken, bodyParser.json()], (req, res) => {
 	const data = { id_data: { provided: true }};
 
 	Object.entries(otherData).forEach(([key, field]) => {
-		if (field.value) {
-			data.id_data[key] = field.value;
+		if (field) {
+			data.id_data[key] = field;
 		}
 	});
 
 	const ts = Date.now();
 
-	findUser({ where: { id }, attributes: ['id']})
+	findUser({ where: { id: user_id }, attributes: ['id']})
 		.then((user) => getImagesData(user.id, 'admin'))
 		.then((data) => {
 			return Promise.all([
-				front.value
+				front
 					? uploadFile(
-						`${id}/${ts}-front.${getType(front.value.mimetype)}`,
-						front.value
+						`${id}/${ts}-front.${getType(front.mimetype)}`,
+						front
 					)
 					: { Location: data.front },
-				back.value
+				back
 					? uploadFile(
-						`${id}/${ts}-back.${getType(back.value.mimetype)}`,
-						back.value
+						`${id}/${ts}-back.${getType(back.mimetype)}`,
+						back
 					)
 					: { Location: data.back },
-				proof_of_residency.value
+				proof_of_residency
 					? uploadFile(
 						`${id}/${ts}-proof_of_residency.${getType(
-							proof_of_residency.value.mimetype
+							proof_of_residency.mimetype
 						)}`,
-						proof_of_residency.value
+						proof_of_residency
 					)
 					: { Location: data.proof_of_residency }
 			]);
 		})
 		.then((results) => {
 			return storeFilesDataOnDb(
-				id,
+				user_id,
 				data,
 				results[0] ? results[0].Location : '',
 				results[1] ? results[1].Location : '',
@@ -229,12 +235,13 @@ app.post('/plugins/kyc/admin', [verifyToken, bodyParser.json()], (req, res) => {
 			);
 		})
 		.then((user) => {
-			return findUserImages({ id });
+			return findUserImages({ id: user_id });
 		})
 		.then((data) => {
 			res.json({ message: 'Success', data });
 		})
 		.catch((err) => {
+			console.log(err);
 			res.status(400).json({ message: err.message });
 		});
 });
