@@ -10,15 +10,13 @@ const {
 	SMS_CODE_KEY,
 	SMS_CODE_EXPIRATION_TIME
 } = require('../../constants');
-const { getValidLanguage } = require('../../utils/strings');
 const {
 	SMS_ERROR,
 	SMS_PHONE_DONT_MATCH,
 	SMS_CODE_INVALID,
 	SMS_CODE_EXPIRED,
-	INVALID_PHONE_NUMBER,
-	TYPE_WITHDRAWAL
-} = require('../../messages');
+	INVALID_PHONE_NUMBER
+} = require('./messages');
 const { OTP_NAME } = require('../../constants');
 
 const generateUserKey = (user_id) => `${SMS_CODE_KEY}:${user_id}`;
@@ -117,7 +115,7 @@ const sendSMSDeposit = (
 ) => {
 	const { SMS } = require(`../../mail/strings/${language}`);
 	let message;
-	if (type === TYPE_DEPOSIT || type === TYPE_WITHDRAWAL) {
+	if (type === 'deposit' || type === 'withdrawal') {
 		message = SMS[type](currency, amount);
 	} else {
 		throw new Error(`Invalid type ${type}`);

@@ -1,7 +1,7 @@
 'use strict';
 
 const app = require('../index');
-const { verifyToken, checkScopes, findUser, getUserValuesByEmail } = require('../common');
+const { verifyToken, checkScopes, findUser } = require('../common');
 const PhoneNumber = require('awesome-phonenumber');
 const bodyParser = require('body-parser');
 const { createSMSCode, storeSMSCode, checkSMSCode, deleteSMSCode, sendSMS, updateUserPhoneNumber } = require('./helpers');
@@ -11,7 +11,7 @@ const {
 	SMS_INVALID_PHONE,
 	SMS_SUCCESS,
 	PHONE_VERIFIED
-} = require('../../messages');
+} = require('./messages');
 
 app.get('/plugins/sms/verify', verifyToken, (req, res) => {
 	const endpointScopes = ['user'];
