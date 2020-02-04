@@ -1,10 +1,10 @@
 'use strict';
 
-const { generateOtp } = require('./otp');
 const redis = require('../common').redis.duplicate();
+const otp = require('otp');
 const Promise = require('bluebird');
 const PhoneNumber = require('awesome-phonenumber');
-const sns = require('./sns');
+const sns = require('./sns')();
 const {
 	DEFAULT_LANGUAGE,
 	SMS_CODE_KEY,
@@ -16,14 +16,26 @@ const {
 	SMS_PHONE_DONT_MATCH,
 	SMS_CODE_INVALID,
 	SMS_CODE_EXPIRED,
-	INVALID_PHONE_NUMBER
+	INVALID_PHONE_NUMBER,
+	TYPE_WITHDRAWAL
 } = require('../../messages');
+const { OTP_NAME } = require('../../constants');
 
 const generateUserKey = (user_id) => `${SMS_CODE_KEY}:${user_id}`;
 
 const createSMSCode = () => {
 	return generateOtp();
 }
+
+const generateOtp = (secret) => {
+	const options = {
+		name: OTP_NAME,
+		secret
+	};
+
+	const totp = otp(options).totp();
+	return totp;
+};
 
 const storeSMSCode = (user_id, phone, code) => {
 	const userKey = generateUserKey(user_id);
@@ -32,7 +44,7 @@ const storeSMSCode = (user_id, phone, code) => {
 		code
 	};
 
-	return RadioNodeList.setAsync(
+	return redis.setAsync(
 		userKey,
 		JSON.stringify(data),
 		'EX',
@@ -119,11 +131,19 @@ const sendSMSDeposit = (
 	});
 };
 
+const updateUserPhoneNumber = (user, phone_number, options = {}) => {
+	return user.update(
+		{ phone_number },
+		{ fields: ['phone_number'], ...options }
+	);
+};
+
 module.exports = {
 	createSMSCode,
 	storeSMSCode,
 	checkSMSCode,
 	deleteSMSCode,
 	sendSMS,
-	sendSMSDeposit
+	sendSMSDeposit,
+	updateUserPhoneNumber
 }

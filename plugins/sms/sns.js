@@ -13,7 +13,7 @@ const credentials = {
 	region: SNS_REGION
 };
 
-const sns = (bucketName) => {
+const sns = () => {
 	aws.config.update(credentials);
 	return new aws.SNS();
 };

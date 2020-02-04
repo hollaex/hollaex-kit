@@ -4,16 +4,21 @@ const app = require('../index');
 const { verifyToken, checkScopes, findUser, getUserValuesByEmail } = require('../common');
 const PhoneNumber = require('awesome-phonenumber');
 const bodyParser = require('body-parser');
-const { createSMSCode, storeSMSCode, checkSMSCode, deleteSMSCode, sendSMS } = require('./helpers');
+const { createSMSCode, storeSMSCode, checkSMSCode, deleteSMSCode, sendSMS, updateUserPhoneNumber } = require('./helpers');
 const { DEFAULT_LANGUAGE } = require('../../constants');
-const { SMS } = require(`../../mail/strings/${DEFAULT_LANGUAGE}`);
+const { SMS } = require('../../mail/strings').languageFile(DEFAULT_LANGUAGE);
+const {
+	SMS_INVALID_PHONE,
+	SMS_SUCCESS,
+	PHONE_VERIFIED
+} = require('../../messages');
 
 app.get('/plugins/sms/verify', verifyToken, (req, res) => {
 	const endpointScopes = ['user'];
 	const scopes = req.auth.scopes;
 	checkScopes(endpointScopes, scopes);
 
-	const phoneNumber = new PhoneNumber(req.query.phone);
+	const phoneNumber = new PhoneNumber(req.body.phone);
 	const { id } = req.auth.sub;
 
 	if (!phoneNumber.isValid()) {
@@ -55,7 +60,7 @@ app.post('/plugins/sms/verify', [verifyToken, bodyParser.json()], (req, res) => 
 	checkSMSCode(id, phone, code)
 		.then((data) => {
 			return findUser({
-				where: { id }, attributes: ['id', 'phone_umber']
+				where: { id }, attributes: ['id', 'phone_number']
 			})
 		})
 		.then((user) => {
