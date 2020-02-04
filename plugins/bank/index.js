@@ -5,18 +5,18 @@ const { verifyToken, checkScopes, findUser, getUserValuesByEmail } = require('..
 const { addBankAccount, adminAddUserBanks, approveBankAccount, rejectBankAccount, VERIFY_ATTR } = require('./helpers');
 const bodyParser = require('body-parser');
 
-app.post('/plugins/bank', [verifyToken, bodyParser.json()], (req, res) => {
+app.post('/plugins/bank/user', [verifyToken, bodyParser.json()], (req, res) => {
 	const endpointScopes = ['user'];
 	const scopes = req.auth.scopes;
 	checkScopes(endpointScopes, scopes);
 
 	const email = req.auth.sub.email;
-	const bank = req.body;
+	const { bank_account } = req.body;
 
 	findUser({
 		where: { email }
 	})
-		.then(addBankAccount(bank))
+		.then(addBankAccount(bank_account))
 		.then(() => getUserValuesByEmail(email))
 		.then((user) => res.json(user['bank_account']))
 		.catch((error) => {
@@ -44,7 +44,7 @@ app.post('/plugins/bank/admin', [verifyToken, bodyParser.json()], (req, res) => 
 		});
 });
 
-app.post('/plugins/bank/admin/verify', [verifyToken, bodyParser.json()], (req, res) => {
+app.post('/plugins/bank/verify', [verifyToken, bodyParser.json()], (req, res) => {
 	const endpointScopes = ['admin', 'supervisor', 'support', 'kyc'];
 	const scopes = req.auth.scopes;
 	checkScopes(endpointScopes, scopes);
@@ -71,7 +71,7 @@ app.post('/plugins/bank/admin/verify', [verifyToken, bodyParser.json()], (req, r
 		});
 });
 
-app.post('/plugins/bank/admin/revoke', [verifyToken, bodyParser.json()], (req, res) => {
+app.post('/plugins/bank/revoke', [verifyToken, bodyParser.json()], (req, res) => {
 	const endpointScopes = ['admin', 'supervisor', 'support', 'kyc'];
 	const scopes = req.auth.scopes;
 	checkScopes(endpointScopes, scopes);

@@ -157,7 +157,9 @@ const cleanUserFromDb = (user) => {
 		...user
 	};
 
-	// userData.balance = user.balance.dataValues;
+	if (user.balance) {
+		userData.balance = user.balance.dataValues;
+	}
 
 	// if (userData.bank_account) {
 	//   delete userData.bank_account.provided;

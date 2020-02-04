@@ -322,7 +322,7 @@ app.post('/plugins/kyc/admin/upload', [verifyToken, multerMiddleware], (req, res
 		});
 });
 
-app.get('/plugins/kyc/user/verification', verifyToken, (req, res) => {
+app.get('/plugins/kyc/verification', verifyToken, (req, res) => {
 	const endpointScopes = ['admin', 'supervisor', 'support', 'kyc'];
 	const scopes = req.auth.scopes;
 	checkScopes(endpointScopes, scopes);
