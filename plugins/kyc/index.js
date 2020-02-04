@@ -2,11 +2,15 @@
 
 const app = require('../index');
 const { verifyToken, checkScopes, findUser, getUserValuesByEmail } = require('../common');
-const { validMimeType, uploadFile, getImagesData, findUserImages, storeFilesDataOnDb, updateUserData, getType } = require('./helpers');
+const { validMimeType, uploadFile, getImagesData, findUserImages, storeFilesDataOnDb, updateUserData, getType, updateUserPhoneNumber } = require('./helpers');
 const bodyParser = require('body-parser');
+const PhoneNumber = require('awesome-phonenumber');
+const { sequelize } = require('../../db/models');
+const { cloneDeep, omit } = require('lodash');
 
 const ROLES = {
-	USER: 'user'
+	USER: 'user',
+	SUPPORT: 'support'
 };
 
 const multer = require('multer');
@@ -51,6 +55,72 @@ app.put('/plugins/kyc/user', [verifyToken, bodyParser.json()], (req, res) => {
 		.then((user) => res.json(user))
 		.catch((error) => {
 			res.status(error.status || 400).json({ message: error.message });
+		});
+});
+
+const REMOVE_PROPS = [
+	'id_data',
+	'crypto_wallet',
+	'verification_level',
+	'otp_enabled',
+	'activated',
+	'settings'
+];
+
+app.put('/plugins/kyc/admin', [verifyToken, bodyParser.json()], (req, res) => {
+	const endpointScopes = ['admin', 'supervisor', 'support'];
+	const scopes = req.auth.scopes;
+	checkScopes(endpointScopes, scopes);
+
+	const id = req.query.user_id;
+	const data = req.body;
+
+	REMOVE_PROPS.forEach((key) => {
+		if (data.hasOwnProperty(key)) {
+			delete data[key];
+		}
+	})
+
+	let phoneNumber;
+	if (data.phone_number) {
+		phoneNumber = new PhoneNumber(data.phone_number);
+		if (data.phone_number && !phoneNumber.isValid()) {
+			return res.status(400).json({ message: SMS_INVALID_PHONE });
+		}
+	}
+
+	sequelize
+		.transaction((transaction) => {
+			const options = { transaction, returning: true };
+			let prevUserData = {};
+			return findUser({ where: { id } })
+				.then((user) => {
+					prevUserData = cloneDeep(user.dataValues);
+					return updateUserData(data, ROLES.SUPPORT)(user, options);
+				})
+				.then((user) => {
+					if (data.phone_number) {
+						return updateUserPhoneNumber(
+							user,
+							phoneNumber.getNumber(),
+							options
+						);
+					}
+					return user;
+				});
+		})
+		.then((user) => {
+			user = omit(user.dataValues, [
+				'password',
+				'is_admin',
+				'is_support',
+				'is_kyc',
+				'is_supervisor'
+			]);
+			res.json(user);
+		})
+		.catch((err) => {
+			res.status(err.status || 400).json({ message: err.message });
 		});
 });
 

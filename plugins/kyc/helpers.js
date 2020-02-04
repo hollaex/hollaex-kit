@@ -130,6 +130,13 @@ const joinSettings = (userSettings = {}, newSettings = {}) => {
 	return joinedSettings;
 };
 
+const updateUserPhoneNumber = (user, phone_number, options = {}) => {
+	return user.update(
+		{ phone_number },
+		{ fields: ['phone_number'], ...options }
+	);
+};
+
 const updateUserData = (
 	{ id_data = {}, settings = {}, bank_account, ...rest },
 	role = ROLES.USER
@@ -242,5 +249,6 @@ module.exports = {
 	getImagesData,
 	findUserImages,
 	storeFilesDataOnDb,
-	getType
+	getType,
+	updateUserPhoneNumber
 };
