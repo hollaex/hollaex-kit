@@ -3,8 +3,8 @@ import ReactSVG from 'react-svg';
 import classnames from 'classnames';
 import { SortableElement } from 'react-sortable-hoc';
 
-import { ICONS, BASE_CURRENCY, DEFAULT_COIN_DATA, SIMPLE_FORMAT_MIN } from '../../config/constants';
-import { donutFormatPercentage, formatToSimple } from '../../utils/currency';
+import { ICONS, BASE_CURRENCY, DEFAULT_COIN_DATA } from '../../config/constants';
+import { donutFormatPercentage, formatToCurrency } from '../../utils/currency';
 
 const Tab = SortableElement(({
     pair = {},
@@ -20,7 +20,7 @@ const Tab = SortableElement(({
     sortId,
     ...rest
 }) => {
-    const { symbol } = coins[pair.pair_base || BASE_CURRENCY] || DEFAULT_COIN_DATA;
+    const { min, symbol } = coins[pair.pair_base || BASE_CURRENCY] || DEFAULT_COIN_DATA;
     const pairTwo = coins[pair.pair_2 || BASE_CURRENCY] || DEFAULT_COIN_DATA;
     const priceDifference = ticker.open === 0 ? 0 : ((ticker.close || 0) - (ticker.open || 0));
     const tickerPercent = priceDifference === 0 || ticker.open === 0 ? 0 : ((priceDifference / ticker.open) * 100);
@@ -47,7 +47,9 @@ const Tab = SortableElement(({
                     <div className="app_bar-currency-txt">
                         {symbol.toUpperCase()}/{pairTwo.symbol.toUpperCase()}:
                     </div>
-                    <div className="title-font ml-1">{formatToSimple(ticker.close, SIMPLE_FORMAT_MIN)}</div>
+                    <div className="title-font ml-1">
+                        {formatToCurrency(ticker.close, min)}
+                    </div>
                     <div
                         className={
                             priceDifference < 0
