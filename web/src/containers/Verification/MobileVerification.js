@@ -157,7 +157,7 @@ class MobileVerification extends Component {
 
 	onGoBack = () => {
 		this.props.setActivePageContent(0);
-		this.props.setActiveTab(2);
+		this.props.setActiveTab(3);
 	};
 
 	checkLoadingTime = () => {
