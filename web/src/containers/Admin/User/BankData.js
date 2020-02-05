@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { SubmissionError } from 'redux-form';
-import { updateUserData, approveBank, rejectBank } from './actions';
+import { addBankData, approveBank, rejectBank } from './actions';
 import { Card, Button, Input, Popconfirm, Icon, message, Col, Row } from 'antd';
 import { ModalForm } from '../../../components';
 
@@ -66,7 +66,7 @@ class BankData extends Component {
 			id: userId,
 			bank_account
 		};
-		return updateUserData(submitData)
+		return addBankData(submitData)
 			.then((data) => {
 				this.closeModal();
 				if (onChangeSuccess) {
@@ -79,7 +79,7 @@ class BankData extends Component {
 			})
 			.catch((err) => {
 				message.error('error');
-				throw new SubmissionError({ _error: err.data.message });
+				throw new SubmissionError({ _error: err && err.data ? err.data.message : err.message });
 			});
 	};
 
@@ -104,7 +104,7 @@ class BankData extends Component {
 			id: userId,
 			bank_account: newBanks
 		};
-		updateUserData(submitData)
+		addBankData(submitData)
 			.then((data) => {
 				message.success('Bank deleted');
 			})
@@ -167,9 +167,9 @@ class BankData extends Component {
 					visible={formVisible}
 				/>
 				<Row gutter={16}>
-					{bank.map((bank) => {
+					{bank.map((bank, index) => {
 						return (
-							<Col style={{ margin: '1em' }}>
+							<Col style={{ margin: '1em' }} key={index}>
 								<Card
 									key={bank.id || bank.bank_name}
 									title={bank.bank_name}

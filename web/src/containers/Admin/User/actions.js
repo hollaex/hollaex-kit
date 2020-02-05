@@ -21,7 +21,7 @@ export const requestUserBalance = (values) =>
 		});
 
 export const requestUserImages = (values) =>
-	requestAuthenticated(`/admin/verification?${toQueryString(values)}`)
+	requestAuthenticated(`/plugins/kyc/verification?${toQueryString(values)}`)
 		.catch(handleError)
 		.then((data) => data);
 
@@ -30,7 +30,15 @@ export const updateUserData = (values) => {
 		method: 'PUT',
 		body: JSON.stringify(values)
 	};
-	return requestAuthenticated(`/admin/user/${values.id}`, options);
+	return requestAuthenticated(`/plugins/kyc/admin?user_id=${values.id}`, options);
+};
+
+export const addBankData = (values) => {
+	const options = {
+		method: 'POST',
+		body: JSON.stringify(values)
+	};
+	return requestAuthenticated(`/plugins/bank/admin?user_id=${values.id}`, options);
 };
 
 export const approveBank = (values) => {
@@ -38,7 +46,7 @@ export const approveBank = (values) => {
 		method: 'POST',
 		body: JSON.stringify(values)
 	};
-	return requestAuthenticated('/admin/user/bank/verify', options);
+	return requestAuthenticated('/plugins/bank/verify', options);
 };
 
 export const rejectBank = (values) => {
@@ -46,7 +54,7 @@ export const rejectBank = (values) => {
 		method: 'POST',
 		body: JSON.stringify(values)
 	};
-	return requestAuthenticated('/admin/user/bank/revoke', options);
+	return requestAuthenticated('/plugins/bank/revoke', options);
 };
 
 export const requestUser = (values) => {
