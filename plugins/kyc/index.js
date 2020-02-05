@@ -3,6 +3,7 @@
 const app = require('../index');
 const { verifyToken, checkScopes } = require('../helpers/auth');
 const { findUser, getUserValuesByEmail } = require('../helpers/user');
+const { createAudit } = require('../helpers/audit');
 const {
 	multerMiddleware,
 	validMimeType,

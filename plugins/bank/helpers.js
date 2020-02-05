@@ -108,6 +108,7 @@ const rejectBankAccount = (id = 0) => (user, options = {}) => {
 module.exports = {
 	addBankAccount,
 	approveBankAccount,
+	adminAddUserBanks,
 	rejectBankAccount,
 	VERIFY_ATTR
 };

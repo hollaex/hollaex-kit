@@ -208,16 +208,6 @@ const userUpdateLog = (user_id, prevData = {}, newData = {}) => {
 	return description;
 };
 
-const createAudit = (admin_id, event, description, ip, domain) => {
-	return Audit.create({
-		admin_id,
-		event,
-		description,
-		ip,
-		domain
-	});
-};
-
 const updateUserData = (
 	{ id_data = {}, settings = {}, bank_account, ...rest },
 	role = ROLES.USER
@@ -333,6 +323,5 @@ module.exports = {
 	getType,
 	updateUserPhoneNumber,
 	multerMiddleware,
-	userUpdateLog,
-	createAudit
+	userUpdateLog
 };
