@@ -1,5 +1,5 @@
 const { findUser } = require('../common');
-const { VerificationImage, sequelize, Audit } = require('../../db/models');
+const { VerificationImage, sequelize } = require('../../db/models');
 const { S3_BUCKET_NAME, DEFAULT_LANGUAGE, ROLES, USER_FIELD_ADMIN_LOG, ID_FIELDS, ADDRESS_FIELDS } = require('../../constants');
 const s3Write = require('./s3').write(S3_BUCKET_NAME);
 const s3Read = require('./s3').read(S3_BUCKET_NAME);
@@ -11,6 +11,20 @@ const EMPTY_STATUS = 0;
 const PENDING_STATUS = 1;
 const REJECTED_STATUS = 2;
 const COMPLETED_STATUS = 3;
+
+const SETTING_KEYS = [
+	'language',
+	'notification',
+	'interface',
+	'audio',
+	'risk',
+	'chat'
+];
+
+const DEFAULT_SETTINGS = {
+	language: DEFAULT_LANGUAGE,
+	orderConfirmationPopup: true
+};
 
 const ERROR_CHANGE_USER_INFO = 'You are not allowed to change your information';
 
@@ -106,20 +120,6 @@ const getPublicLink = (privateLink) => {
 	};
 
 	return s3Read.getSignedUrl('getObject', params);
-};
-
-const SETTING_KEYS = [
-	'language',
-	'notification',
-	'interface',
-	'audio',
-	'risk',
-	'chat'
-];
-
-const DEFAULT_SETTINGS = {
-	language: DEFAULT_LANGUAGE,
-	orderConfirmationPopup: true
 };
 
 const joinSettings = (userSettings = {}, newSettings = {}) => {
