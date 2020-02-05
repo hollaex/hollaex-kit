@@ -1,7 +1,8 @@
 'use strict';
 
 const app = require('../index');
-const { verifyToken, checkScopes, findUser, getUserValuesByEmail } = require('../common');
+const { verifyToken, checkScopes } = require('../helpers/auth');
+const { findUser, getUserValuesById, getUserValuesByEmail } = require('../helpers/user');
 const { addBankAccount, adminAddUserBanks, approveBankAccount, rejectBankAccount, VERIFY_ATTR } = require('./helpers');
 const bodyParser = require('body-parser');
 

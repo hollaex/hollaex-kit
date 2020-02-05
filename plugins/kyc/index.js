@@ -1,7 +1,8 @@
 'use strict';
 
 const app = require('../index');
-const { verifyToken, checkScopes, findUser, getUserValuesByEmail } = require('../common');
+const { verifyToken, checkScopes } = require('../helpers/auth');
+const { findUser, getUserValuesByEmail } = require('../helpers/user');
 const {
 	multerMiddleware,
 	validMimeType,

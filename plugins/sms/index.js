@@ -1,7 +1,8 @@
 'use strict';
 
 const app = require('../index');
-const { verifyToken, checkScopes, findUser } = require('../common');
+const { verifyToken, checkScopes } = require('../helpers/auth');
+const { findUser } = require('../helpers/user');
 const PhoneNumber = require('awesome-phonenumber');
 const bodyParser = require('body-parser');
 const { createSMSCode, storeSMSCode, checkSMSCode, deleteSMSCode, sendSMS, updateUserPhoneNumber } = require('./helpers');

@@ -1,6 +1,6 @@
 'use strict';
 
-const redis = require('../common').redis.duplicate();
+const redis = require('../helpers/common').redis.duplicate();
 const otp = require('otp');
 const Promise = require('bluebird');
 const PhoneNumber = require('awesome-phonenumber');
