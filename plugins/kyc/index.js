@@ -11,7 +11,8 @@ const {
 	storeFilesDataOnDb,
 	updateUserData,
 	getType,
-	updateUserPhoneNumber
+	updateUserPhoneNumber,
+	userUpdateLog
 } = require('./helpers');
 const { SMS_INVALID_PHONE } = require('../../messages');
 const bodyParser = require('body-parser');
@@ -62,6 +63,7 @@ app.put('/plugins/kyc/admin', [verifyToken, bodyParser.json()], (req, res) => {
 	const scopes = req.auth.scopes;
 	checkScopes(endpointScopes, scopes);
 
+	const admin_id = req.auth.sub.id;
 	const id = req.query.user_id;
 	const data = req.body;
 
@@ -106,9 +108,20 @@ app.put('/plugins/kyc/admin', [verifyToken, bodyParser.json()], (req, res) => {
 						);
 					}
 					return user;
+				})
+				.then((user) => {
+					const description = userUpdateLog(
+						user.id,
+						prevUserData,
+						user.dataValues
+					);
+					return all([
+						user,
+						createAudit(admin_id, 'userUpdate', description, ip, domain)
+					]);
 				});
 		})
-		.then((user) => {
+		.then(([user, audit]) => {
 			user = omit(user.dataValues, [
 				'password',
 				'is_admin',

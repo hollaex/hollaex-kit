@@ -1,10 +1,11 @@
 const { findUser } = require('../common');
-const { VerificationImage, sequelize } = require('../../db/models');
-const { S3_BUCKET_NAME, DEFAULT_LANGUAGE, ROLES } = require('../../constants');
+const { VerificationImage, sequelize, Audit } = require('../../db/models');
+const { S3_BUCKET_NAME, DEFAULT_LANGUAGE, ROLES, USER_FIELD_ADMIN_LOG, ID_FIELDS, ADDRESS_FIELDS } = require('../../constants');
 const s3Write = require('./s3').write(S3_BUCKET_NAME);
 const s3Read = require('./s3').read(S3_BUCKET_NAME);
 const AWS_SE = 'amazonaws.com/';
 const EXPIRES = 300; // seconds
+const { differenceWith } = require('lodash');
 
 const EMPTY_STATUS = 0;
 const PENDING_STATUS = 1;
@@ -142,6 +143,81 @@ const updateUserPhoneNumber = (user, phone_number, options = {}) => {
 	);
 };
 
+const bankComparison = (bank1, bank2, description) => {
+	let difference = [];
+	let note = '';
+	if (bank1.length === bank2.length) {
+		note = 'bank info updated';
+		difference = differenceWith(bank1, bank2, isEqual);
+	} else if (bank1.length > bank2.length) {
+		note = 'bank removed';
+		difference = differenceWith(bank1, bank2, isEqual);
+	} else if (bank1.length < bank2.length) {
+		note = 'bank added';
+		difference = differenceWith(bank2, bank1, isEqual);
+	}
+
+	// bank data is changed
+	if (difference.length > 0) {
+		description.note = note;
+		description.new.bank_account = bank2;
+		description.old.bank_account = bank1;
+	}
+	return description;
+};
+
+const userUpdateLog = (user_id, prevData = {}, newData = {}) => {
+	let description = {
+		user_id,
+		note: `Change in user ${user_id} information`,
+		old: {},
+		new: {}
+	};
+	for (const key in newData) {
+		if (USER_FIELD_ADMIN_LOG.includes(key)) {
+			let prevRecord = prevData[key] || 'empty';
+			let newRecord = newData[key] || 'empty';
+			if (key === 'bank_account') {
+				description = bankComparison(
+					prevData.bank_account,
+					newData.bank_account,
+					description
+				);
+			} else if (key === 'id_data') {
+				ID_FIELDS.forEach((field) => {
+					if (newRecord[field] != prevRecord[field]) {
+						description.old[field] = prevRecord[field];
+						description.new[field] = newRecord[field];
+					}
+				});
+			} else if (key === 'address') {
+				ADDRESS_FIELDS.forEach((field) => {
+					if (prevRecord[field] != newRecord[field]) {
+						description.old[field] = prevRecord[field];
+						description.new[field] = newRecord[field];
+					}
+				});
+			} else {
+				if (prevRecord.toString() != newRecord.toString()) {
+					description.old[key] = prevRecord;
+					description.new[key] = newRecord;
+				}
+			}
+		}
+	}
+	return description;
+};
+
+const createAudit = (admin_id, event, description, ip, domain) => {
+	return Audit.create({
+		admin_id,
+		event,
+		description,
+		ip,
+		domain
+	});
+};
+
 const updateUserData = (
 	{ id_data = {}, settings = {}, bank_account, ...rest },
 	role = ROLES.USER
@@ -256,5 +332,7 @@ module.exports = {
 	storeFilesDataOnDb,
 	getType,
 	updateUserPhoneNumber,
-	multerMiddleware
+	multerMiddleware,
+	userUpdateLog,
+	createAudit
 };
