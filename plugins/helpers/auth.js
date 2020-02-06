@@ -1,7 +1,7 @@
 'use strict';
 
 const jwt = require('jsonwebtoken');
-const { SECRET, ISSUER, TOKEN_TIME } = require('../constants');
+const { SECRET, ISSUER, TOKEN_TIME } = require('../../constants');
 const { intersection } = require('lodash');
 
 /**

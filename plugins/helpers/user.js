@@ -1,6 +1,6 @@
 'use strict';
 
-const { User, Pair, VerificationImage, Balance } = require('../db/models');
+const { User, Pair, VerificationImage, Balance } = require('../../db/models');
 const { all } = require('bluebird');
 
 /**
