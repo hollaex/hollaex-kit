@@ -1,6 +1,7 @@
 import { all } from 'bluebird';
 import querystring from 'query-string';
 import { requestAuthenticated } from '../../../utils';
+import { WS_URL } from '../../../config/constants';
 
 const toQueryString = (values) => {
 	return querystring.stringify(values);
@@ -21,7 +22,7 @@ export const requestUserBalance = (values) =>
 		});
 
 export const requestUserImages = (values) =>
-	requestAuthenticated(`/plugins/kyc/verification?${toQueryString(values)}`)
+	requestAuthenticated(`/plugins/kyc/verification?${toQueryString(values)}`, {}, null, WS_URL)
 		.catch(handleError)
 		.then((data) => data);
 
@@ -30,7 +31,7 @@ export const updateUserData = (values) => {
 		method: 'PUT',
 		body: JSON.stringify(values)
 	};
-	return requestAuthenticated(`/plugins/kyc/admin?user_id=${values.id}`, options);
+	return requestAuthenticated(`/plugins/kyc/admin?user_id=${values.id}`, options, null, WS_URL);
 };
 
 export const addBankData = (values) => {
@@ -38,7 +39,7 @@ export const addBankData = (values) => {
 		method: 'POST',
 		body: JSON.stringify(values)
 	};
-	return requestAuthenticated(`/plugins/bank/admin?user_id=${values.id}`, options);
+	return requestAuthenticated(`/plugins/bank/admin?user_id=${values.id}`, options, null, WS_URL);
 };
 
 export const approveBank = (values) => {
@@ -46,7 +47,7 @@ export const approveBank = (values) => {
 		method: 'POST',
 		body: JSON.stringify(values)
 	};
-	return requestAuthenticated('/plugins/bank/verify', options);
+	return requestAuthenticated('/plugins/bank/verify', options, null, WS_URL);
 };
 
 export const rejectBank = (values) => {
@@ -54,7 +55,7 @@ export const rejectBank = (values) => {
 		method: 'POST',
 		body: JSON.stringify(values)
 	};
-	return requestAuthenticated('/plugins/bank/revoke', options);
+	return requestAuthenticated('/plugins/bank/revoke', options, null, WS_URL);
 };
 
 export const requestUser = (values) => {

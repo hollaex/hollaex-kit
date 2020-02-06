@@ -1,4 +1,5 @@
 import { requestAuthenticated } from '../../../utils';
+import { WS_URL } from '../../../config/constants';
 
 export const uploadFiles = (id, values) => {
 	const formData = new FormData();
@@ -11,5 +12,5 @@ export const uploadFiles = (id, values) => {
 		body: formData
 	};
 
-	return requestAuthenticated(`/plugins/kyc/admin/upload?user_id=${id}`, options, {});
+	return requestAuthenticated(`/plugins/kyc/admin/upload?user_id=${id}`, options, {}, WS_URL);
 };
