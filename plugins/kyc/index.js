@@ -22,6 +22,7 @@ const PhoneNumber = require('awesome-phonenumber');
 const { sequelize } = require('../../db/models');
 const { cloneDeep, omit } = require('lodash');
 const { ROLES } = require('../../constants');
+const { all } = require('bluebird');
 
 app.put('/plugins/kyc/user', [verifyToken, bodyParser.json()], (req, res) => {
 	const endpointScopes = ['user'];
@@ -65,6 +66,8 @@ app.put('/plugins/kyc/admin', [verifyToken, bodyParser.json()], (req, res) => {
 	const scopes = req.auth.scopes;
 	checkScopes(endpointScopes, scopes);
 
+	const ip = req.headers['x-real-ip'];
+	const domain = req.headers['x-real-origin'];
 	const admin_id = req.auth.sub.id;
 	const id = req.query.user_id;
 	const data = req.body;
@@ -332,7 +335,6 @@ app.post('/plugins/kyc/admin/upload', [verifyToken, multerMiddleware], (req, res
 			res.json({ message: 'Success', data });
 		})
 		.catch((err) => {
-			console.log(err);
 			res.status(400).json({ message: err.message });
 		});
 });

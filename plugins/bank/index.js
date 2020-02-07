@@ -30,15 +30,16 @@ app.post('/plugins/bank/admin', [verifyToken, bodyParser.json()], (req, res) => 
 	const scopes = req.auth.scopes;
 	checkScopes(endpointScopes, scopes);
 
-	const { user_id, bank_accounts } = req.body;
+	const { bank_account } = req.body;
+	const id = req.query.user_id;
 
 	findUser({
 		where: {
-			id: user_id
+			id
 		}
 	})
-		.then(adminAddUserBanks(bank_accounts))
-		.then(() => getUserValuesById(user_id))
+		.then(adminAddUserBanks(bank_account))
+		.then(() => getUserValuesById(id))
 		.then((user) => res.json(user['bank_account']))
 		.catch((error) => {
 			res.status(error.status || 400).json({ message: error.message })

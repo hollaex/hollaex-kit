@@ -81,7 +81,7 @@ const getUserValuesByEmail = (email, include) => {
 	* @return {promise} - Promise with the user. If the dob of the user is not set, function will not return it.
 */
 const getUserValuesById = (id, include) => {
-	findUser({
+	return findUser({
 		where: { id },
 		attributes: include || {
 			exclude: ['password', 'is_admin', 'is_support', 'is_supervisor', 'is_kyc']

@@ -19,7 +19,7 @@ app.get('/plugins/sms/verify', verifyToken, (req, res) => {
 	const scopes = req.auth.scopes;
 	checkScopes(endpointScopes, scopes);
 
-	const phoneNumber = new PhoneNumber(req.body.phone);
+	const phoneNumber = new PhoneNumber(req.query.phone);
 	const { id } = req.auth.sub;
 
 	if (!phoneNumber.isValid()) {
