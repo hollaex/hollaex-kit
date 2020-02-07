@@ -22,7 +22,7 @@ export const requestUserBalance = (values) =>
 		});
 
 export const requestUserImages = (values) =>
-	requestAuthenticated(`/plugins/kyc/verification?${toQueryString(values)}`, {}, null, WS_URL)
+	requestAuthenticated(`/plugins/kyc/id?${toQueryString(values)}`, {}, null, WS_URL)
 		.catch(handleError)
 		.then((data) => data);
 

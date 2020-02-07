@@ -1,4 +1,5 @@
 import { requestAuthenticated } from '../../../utils';
+import { WS_URL } from '../../../config/constants';
 
 export const performVerificationLevelUpdate = (values) => {
 	const options = {
@@ -22,7 +23,7 @@ export const verifyData = (values) => {
 		body: JSON.stringify(values)
 	};
 
-	return requestAuthenticated('/admin/user/id/verify', options);
+	return requestAuthenticated('/plugins/kyc/id/verify', options, null, WS_URL);
 };
 
 export const revokeData = (values) => {
@@ -31,5 +32,5 @@ export const revokeData = (values) => {
 		body: JSON.stringify(values)
 	};
 
-	return requestAuthenticated('/admin/user/id/revoke', options);
+	return requestAuthenticated('/plugins/kyc/id/revoke', options, null, WS_URL);
 };

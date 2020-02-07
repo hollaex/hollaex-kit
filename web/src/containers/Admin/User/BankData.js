@@ -58,10 +58,10 @@ class BankData extends Component {
 	};
 
 	onSubmit = (onChangeSuccess, bank, userId) => (values) => {
-		let bank_account = bank;
+		let bank_account = [ ...bank ];
 		values.id = values.account_number + '-man';
 		values.status = 3;
-		bank_account.push(values);
+		bank_account = [ ...bank_account, values];
 		const submitData = {
 			id: userId,
 			bank_account
@@ -76,6 +76,7 @@ class BankData extends Component {
 						...data
 					});
 				}
+				this.setState({ bank: data });
 			})
 			.catch((err) => {
 				message.error('error');
@@ -99,7 +100,6 @@ class BankData extends Component {
 		const newBanks = bank.filter((b) => {
 			return b.id !== id;
 		});
-		this.setState({ bank: newBanks });
 		const submitData = {
 			id: userId,
 			bank_account: newBanks
@@ -107,6 +107,7 @@ class BankData extends Component {
 		addBankData(submitData)
 			.then((data) => {
 				message.success('Bank deleted');
+				this.setState({ bank: newBanks });
 			})
 			.catch((err) => {
 				message.error('error');
@@ -120,6 +121,7 @@ class BankData extends Component {
 		// });
 		approveBank(values)
 			.then((data) => {
+				this.setState({ bank: data });
 				message.success('Bank approved');
 			})
 			.catch((err) => {
@@ -129,13 +131,13 @@ class BankData extends Component {
 	};
 
 	rejectBank = (values) => {
-		const newBanks = this.state.bank.filter((b) => {
-			return b.id !== values.bank_id;
-		});
-		this.setState({ bank: newBanks });
 		rejectBank(values)
 			.then((data) => {
+				const newBanks = this.state.bank.filter((b) => {
+					return b.id !== values.bank_id;
+				});
 				message.success('Bank rejected');
+				this.setState({ bank: newBanks });
 			})
 			.catch((err) => {
 				message.error('error');
@@ -186,7 +188,7 @@ class BankData extends Component {
 														}
 														type="primary"
 														icon="check"
-														size={10}
+														// size={10}
 													>
 														Accept
 													</Button>
@@ -202,7 +204,7 @@ class BankData extends Component {
 														}
 														type="danger"
 														icon="close"
-														size={10}
+														// size={10}
 													>
 														Reject
 													</Button>
