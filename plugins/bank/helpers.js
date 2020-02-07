@@ -56,15 +56,16 @@ const adminAddUserBanks = (bank_accounts = []) => (user, options = {}) => {
 	}
 
 	each(bank_accounts, (bank) => {
+		bank.id = crypto.randomBytes(10).toString('hex');
+		bank.status = true;
 		bank = pick(
 			bank,
+			'id',
+			'status',
 			'bank_name',
 			'card_number',
 			'account_number'
 		)
-
-		bank.id = crypto.randomBytes(10).toString('hex');
-		bank.status = true;
 	});
 
 	return user.update(
