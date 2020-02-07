@@ -89,6 +89,31 @@ const approveDocuments = (user) => {
 	});
 };
 
+const revokeDocuments = (user, message = '') => {
+	return sequelize
+		.transaction((transaction) => {
+			return all([
+				VerificationImage.destroy({
+					where: { user_id: user.id },
+					transaction
+				}),
+				updateUserData(
+					{
+						id_data: {
+							...user.id_data,
+							status: REJECTED_STATUS,
+							note: message
+						}
+					},
+					ROLES.SUPPORT
+				)(user, { transaction, returning: true })
+			]);
+		})
+		.then(([destroyed, user]) => {
+			return user;
+		});
+};
+
 const findUserImages = (where) => {
 	return findUser({ where, attributes: ['id', 'id_data'] })
 		.then((user) => {

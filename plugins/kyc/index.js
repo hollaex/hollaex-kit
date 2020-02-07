@@ -15,15 +15,24 @@ const {
 	getType,
 	updateUserPhoneNumber,
 	userUpdateLog,
-	approveDocuments
+	approveDocuments,
+	revokeDocuments
 } = require('./helpers');
-const { SMS_INVALID_PHONE } = require('../../messages');
+const { SMS_INVALID_PHONE, DEFAULT_REJECTION_NOTE } = require('../../messages');
 const bodyParser = require('body-parser');
 const PhoneNumber = require('awesome-phonenumber');
 const { sequelize } = require('../../db/models');
 const { cloneDeep, omit } = require('lodash');
 const { ROLES } = require('../../constants');
 const { all } = require('bluebird');
+const VERIFY_ATTR = [
+	'id',
+	'email',
+	'verification_level',
+	'id_data',
+	'bank_account',
+	'settings'
+];
 
 app.put('/plugins/kyc/user', [verifyToken, bodyParser.json()], (req, res) => {
 	const endpointScopes = ['user'];
@@ -340,7 +349,7 @@ app.post('/plugins/kyc/admin/upload', [verifyToken, multerMiddleware], (req, res
 		});
 });
 
-app.get('/plugins/kyc/verification', verifyToken, (req, res) => {
+app.get('/plugins/kyc/id', verifyToken, (req, res) => {
 	const endpointScopes = ['admin', 'supervisor', 'support', 'kyc'];
 	const scopes = req.auth.scopes;
 	checkScopes(endpointScopes, scopes);
@@ -366,21 +375,12 @@ app.get('/plugins/kyc/verification', verifyToken, (req, res) => {
 		});
 });
 
-app.post('/plugins/kyc/verification/verify', [verifyToken, bodyParser.json()], (req, res) => {
+app.post('/plugins/kyc/id/verify', [verifyToken, bodyParser.json()], (req, res) => {
 	const endpointScopes = ['admin', 'supervisor', 'support', 'kyc'];
 	const scopes = req.auth.scopes;
 	checkScopes(endpointScopes, scopes);
 
-	const VERIFY_ATTR = [
-		'id',
-		'email',
-		'verification_level',
-		'id_data',
-		'bank_account',
-		'settings'
-	];
-
-	const { user_id, message } = req.body;
+	const { user_id } = req.body;
 
 	findUser({
 		where: {
@@ -394,6 +394,41 @@ app.post('/plugins/kyc/verification/verify', [verifyToken, bodyParser.json()], (
 		.then((user) => {
 			const data = {};
 			data.id_data = user.id_data;
+			res.json(data);
+		})
+		.catch((err) => {
+			res.status(err.status || 400).json({ message: err.message });
+		});
+});
+
+app.post('/plugins/kyc/id/revoke', [verifyToken, bodyParser.json()], (req, res) => {
+	const endpointScopes = ['admin', 'supervisor', 'support', 'kyc'];
+	const scopes = req.auth.scopes;
+	checkScopes(endpointScopes, scopes);
+
+	const { user_id } = req.body;
+	const { message } = req.body || DEFAULT_REJECTION_NOTE;
+
+	findUser({
+		where: {
+			id: user_id
+		},
+		attributes: VERIFY_ATTR
+	})
+		.then((user) => {
+			return revokeDocuments(user, message);
+		})
+		.then((user) => {
+			const { email } = user.dataValues;
+			const emailData = { type: 'id', message };
+			const data = {};
+			data.id_data = user.id_data;
+			// sendEmail(
+			// 	MAILTYPE.USER_VERIFICATION_REJECT,
+			// 	email,
+			// 	emailData,
+			// 	user.settings
+			// );
 			res.json(data);
 		})
 		.catch((err) => {
