@@ -14,7 +14,8 @@ const {
 	updateUserData,
 	getType,
 	updateUserPhoneNumber,
-	userUpdateLog
+	userUpdateLog,
+	approveDocuments
 } = require('./helpers');
 const { SMS_INVALID_PHONE } = require('../../messages');
 const bodyParser = require('body-parser');
@@ -362,5 +363,40 @@ app.get('/plugins/kyc/verification', verifyToken, (req, res) => {
 		})
 		.catch((err) => {
 			res.status(400).json({ message: err.message });
+		});
+});
+
+app.post('/plugins/kyc/verification/verify', [verifyToken, bodyParser.json()], (req, res) => {
+	const endpointScopes = ['admin', 'supervisor', 'support', 'kyc'];
+	const scopes = req.auth.scopes;
+	checkScopes(endpointScopes, scopes);
+
+	const VERIFY_ATTR = [
+		'id',
+		'email',
+		'verification_level',
+		'id_data',
+		'bank_account',
+		'settings'
+	];
+
+	const { user_id, message } = req.body;
+
+	findUser({
+		where: {
+			id: user_id
+		},
+		attributes: VERIFY_ATTR
+	})
+		.then((user) => {
+			return approveDocuments(user);
+		})
+		.then((user) => {
+			const data = {};
+			data.id_data = user.id_data;
+			res.json(data);
+		})
+		.catch((err) => {
+			res.status(err.status || 400).json({ message: err.message });
 		});
 });

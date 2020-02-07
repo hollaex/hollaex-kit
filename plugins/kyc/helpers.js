@@ -78,6 +78,17 @@ const getImagesData = (user_id, type = undefined) => {
 	});
 };
 
+const approveDocuments = (user) => {
+	return updateUserData(
+		{
+			id_data: { ...user.id_data, status: COMPLETED_STATUS, note: '' }
+		},
+		ROLES.SUPPORT
+	)(user, { returning: true }).then((user) => {
+		return user;
+	});
+};
+
 const findUserImages = (where) => {
 	return findUser({ where, attributes: ['id', 'id_data'] })
 		.then((user) => {
@@ -323,5 +334,6 @@ module.exports = {
 	getType,
 	updateUserPhoneNumber,
 	multerMiddleware,
-	userUpdateLog
+	userUpdateLog,
+	approveDocuments
 };
