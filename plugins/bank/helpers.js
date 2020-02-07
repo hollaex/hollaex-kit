@@ -32,7 +32,7 @@ const addBankAccount = (bank_account = {}) => (user, options = {}) => {
 	);
 
 	bank_account.id = crypto.randomBytes(10).toString('hex');
-	bank_account.status = false;
+	bank_account.status = PENDING_STATUS;
 
 	let newBank = user.dataValues.bank_account;
 	newBank.push(bank_account);
@@ -57,7 +57,7 @@ const adminAddUserBanks = (bank_accounts = []) => (user, options = {}) => {
 
 	each(bank_accounts, (bank) => {
 		bank.id = crypto.randomBytes(10).toString('hex');
-		bank.status = true;
+		bank.status = COMPLETED_STATUS;
 		bank = pick(
 			bank,
 			'id',
