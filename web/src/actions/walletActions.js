@@ -189,6 +189,6 @@ export const getUserWithdrawals = ({ limit = 50, page = 1, ...rest }) => {
 	};
 };
 
-export const performConfirmWithdrawal = (token) => {
-	return axios.post(ENDPOINTS.CONFIRM_WITHDRAWAL, { token });
+export const performConfirmWithdrawal = (token, captcha) => {
+	return axios.post(ENDPOINTS.CONFIRM_WITHDRAWAL, { token, captcha });
 };
