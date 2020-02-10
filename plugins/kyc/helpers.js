@@ -1,3 +1,5 @@
+'use strict';
+
 const { findUser } = require('../helpers/user');
 const { VerificationImage, sequelize } = require('../../db/models');
 const { S3_BUCKET_NAME, DEFAULT_LANGUAGE, ROLES, USER_FIELD_ADMIN_LOG, ID_FIELDS, ADDRESS_FIELDS } = require('../../constants');
