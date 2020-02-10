@@ -16,7 +16,7 @@ const {
 const { getValidLanguage } = require('../utils/strings');
 const { MAILTYPE } = require('./strings');
 const generateMessageContent = require('./templates');
-const { sendSMSDeposit } = require('../api/helpers/sms');
+const { sendSMSDeposit } = require('../plugins/sms/helpers');
 const getStatusText = (status) => {
 	return status ? 'COMPLETED' : 'PENDING';
 };
