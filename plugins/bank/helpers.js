@@ -49,8 +49,6 @@ const addBankAccount = (bank_account = {}) => (user, options = {}) => {
 const adminAddUserBanks = (bank_accounts = []) => (user, options = {}) => {
 	if (!user) {
 		throw new Error('User not found.');
-	} else if (bank_accounts.length === 0) {
-		throw new Error ('Must enter at least one bank.');
 	} else if (bank_accounts.length > 3) {
 		throw new Error ('Maximum number of bank accounts is three.');
 	}

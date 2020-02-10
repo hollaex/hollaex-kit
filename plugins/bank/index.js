@@ -12,7 +12,7 @@ app.post('/plugins/bank/user', [verifyToken, bodyParser.json()], (req, res) => {
 	checkScopes(endpointScopes, scopes);
 
 	const email = req.auth.sub.email;
-	const { bank_account } = req.body;
+	const bank_account = req.body;
 
 	findUser({
 		where: { email }
