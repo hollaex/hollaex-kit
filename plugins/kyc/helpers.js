@@ -6,6 +6,7 @@ const s3Read = require('./s3').read(S3_BUCKET_NAME);
 const AWS_SE = 'amazonaws.com/';
 const EXPIRES = 300; // seconds
 const { differenceWith, isEqual } = require('lodash');
+const { all } = require('bluebird');
 
 const EMPTY_STATUS = 0;
 const PENDING_STATUS = 1;
@@ -360,5 +361,6 @@ module.exports = {
 	updateUserPhoneNumber,
 	multerMiddleware,
 	userUpdateLog,
-	approveDocuments
+	approveDocuments,
+	revokeDocuments
 };
