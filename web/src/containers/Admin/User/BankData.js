@@ -76,7 +76,7 @@ class BankData extends Component {
 						...data
 					});
 				}
-				this.setState({ bank: data });
+				this.setState({ bank: data.bank_account });
 			})
 			.catch((err) => {
 				message.error('error');
@@ -121,7 +121,7 @@ class BankData extends Component {
 		// });
 		approveBank(values)
 			.then((data) => {
-				this.setState({ bank: data });
+				this.setState({ bank: data.bank_account });
 				message.success('Bank approved');
 			})
 			.catch((err) => {
