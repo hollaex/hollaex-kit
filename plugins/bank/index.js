@@ -103,7 +103,7 @@ app.post('/plugins/bank/verify', [verifyToken, bodyParser.json()], (req, res) =>
 		.then((user) => {
 			const data = {};
 			data.bank_account = user.bank_account;
-			loggerAdmin.debug(
+			logger.debug(
 				'POST /bank/verify data',
 				data
 			);
@@ -154,7 +154,7 @@ app.post('/plugins/bank/revoke', [verifyToken, bodyParser.json()], (req, res) =>
 				emailData,
 				user.settings
 			);
-			loggerAdmin.debug(
+			logger.debug(
 				'POST /bank/revoke data',
 				data
 			);
