@@ -43,7 +43,6 @@ app.put('/plugins/kyc/user', [verifyToken, bodyParser.json()], (req, res) => {
 	checkScopes(endpointScopes, scopes);
 
 	logger.verbose(
-		req.uuid,
 		'PUT /kyc/user',
 		req.body
 	);
@@ -76,7 +75,7 @@ app.put('/plugins/kyc/user', [verifyToken, bodyParser.json()], (req, res) => {
 		.then(() => getUserValuesByEmail(email))
 		.then((user) => res.json(user))
 		.catch((error) => {
-			logger.error(req.uuid, 'PUT /kyc/user', error);
+			logger.error('PUT /kyc/user', error);
 			res.status(error.status || 400).json({ message: error.message });
 		});
 });
@@ -87,7 +86,6 @@ app.put('/plugins/kyc/admin', [verifyToken, bodyParser.json()], (req, res) => {
 	checkScopes(endpointScopes, scopes);
 
 	logger.verbose(
-		req.uuid,
 		'PUT /kyc/admin',
 		req.auth
 	);
@@ -118,7 +116,6 @@ app.put('/plugins/kyc/admin', [verifyToken, bodyParser.json()], (req, res) => {
 		phoneNumber = new PhoneNumber(data.phone_number);
 		if (data.phone_number && !phoneNumber.isValid()) {
 			logger.error(
-				req.uuid,
 				'PUT /kyc/admin not a valid phone number',
 				data.phone_number
 			);
@@ -134,7 +131,6 @@ app.put('/plugins/kyc/admin', [verifyToken, bodyParser.json()], (req, res) => {
 				.then((user) => {
 					prevUserData = cloneDeep(user.dataValues);
 					logger.verbose(
-						req.uuid,
 						'PUT /kyc/admin user',
 						prevUserData
 					);
@@ -142,7 +138,6 @@ app.put('/plugins/kyc/admin', [verifyToken, bodyParser.json()], (req, res) => {
 				})
 				.then((user) => {
 					logger.debug(
-						req.uuid,
 						'PUT /kyc/admin user then',
 						user.dataValues,
 						user.previous('bank_account')
@@ -158,7 +153,6 @@ app.put('/plugins/kyc/admin', [verifyToken, bodyParser.json()], (req, res) => {
 				})
 				.then((user) => {
 					logger.verbose(
-						req.uuid,
 						'PUT /kyc/admin user then then',
 						prevUserData.dataValues,
 						user
@@ -176,7 +170,6 @@ app.put('/plugins/kyc/admin', [verifyToken, bodyParser.json()], (req, res) => {
 		})
 		.then(([user, audit]) => {
 			logger.info(
-				req.uuid,
 				'PUT /kyc/admin user_end audit',
 				user.dataValues,
 				audit
@@ -192,7 +185,6 @@ app.put('/plugins/kyc/admin', [verifyToken, bodyParser.json()], (req, res) => {
 		})
 		.catch((err) => {
 			logger.error(
-				req.uuid,
 				'PUT /kyc/admin catch',
 				err.messsage
 			)
@@ -205,7 +197,7 @@ app.post('/plugins/kyc/user/upload', [verifyToken, multerMiddleware], (req, res)
 	const scopes = req.auth.scopes;
 	checkScopes(endpointScopes, scopes);
 
-	logger.verbose(req.uuid, 'POST /kyc/user/upload auth', req.auth.sub);
+	logger.verbose('POST /kyc/user/upload auth', req.auth.sub);
 
 	const { id, email } = req.auth.sub;
 	let { front, back, proof_of_residency } = req.files;
@@ -283,7 +275,7 @@ app.post('/plugins/kyc/user/upload', [verifyToken, multerMiddleware], (req, res)
 			]);
 		})
 		.then((results) => {
-			logger.verbose(req.uuid, 'POST /kyc/user/upload results', results);
+			logger.verbose('POST /kyc/user/upload results', results);
 			return storeFilesDataOnDb(
 				id,
 				data,
@@ -297,7 +289,7 @@ app.post('/plugins/kyc/user/upload', [verifyToken, multerMiddleware], (req, res)
 			res.json({ message: 'Success' });
 		})
 		.catch((err) => {
-			logger.error(req.uuid, 'POST /kyc/user/upload error', err);
+			logger.error('POST /kyc/user/upload error', err);
 			res.status(400).json({ message: err.message });
 		});
 });
@@ -307,7 +299,7 @@ app.post('/plugins/kyc/admin/upload', [verifyToken, multerMiddleware], (req, res
 	const scopes = req.auth.scopes;
 	checkScopes(endpointScopes, scopes);
 
-	logger.verbose(req.uuid, 'POST /kyc/admin/upload auth', req.auth.sub);
+	logger.verbose('POST /kyc/admin/upload auth', req.auth.sub);
 
 	let { front, back, proof_of_residency } = req.files;
 	if (front) front = front[0];
@@ -317,7 +309,6 @@ app.post('/plugins/kyc/admin/upload', [verifyToken, multerMiddleware], (req, res
 	const user_id = req.query.user_id;
 
 	logger.verbose(
-		req.uuid,
 		'POST /kyc/admin/upload user_id',
 		user_id
 	)
@@ -404,11 +395,11 @@ app.post('/plugins/kyc/admin/upload', [verifyToken, multerMiddleware], (req, res
 			return findUserImages({ id: user_id });
 		})
 		.then((data) => {
-			logger.debug(req.uuid, 'POST /kyc/admin/upload data', data);
+			logger.debug('POST /kyc/admin/upload data', data);
 			res.json({ message: 'Success', data });
 		})
 		.catch((err) => {
-			logger.error(req.uuid, 'POST /kyc/admin/upload err', err.message);
+			logger.error('POST /kyc/admin/upload err', err.message);
 			res.status(400).json({ message: err.message });
 		});
 });
@@ -418,7 +409,7 @@ app.get('/plugins/kyc/id', verifyToken, (req, res) => {
 	const scopes = req.auth.scopes;
 	checkScopes(endpointScopes, scopes);
 
-	logger.verbose(req.uuid, 'GET /kyc/id auth', req.auth.sub);
+	logger.verbose('GET /kyc/id auth', req.auth.sub);
 
 	const { email, id } = req.query;
 	const where = {};
@@ -434,11 +425,11 @@ app.get('/plugins/kyc/id', verifyToken, (req, res) => {
 
 	findUserImages(where)
 		.then(({ data }) => {
-			logger.debug(req.uuid, 'GET /kyc/id data', data);
+			logger.debug('GET /kyc/id data', data);
 			res.json(data);
 		})
 		.catch((err) => {
-			logger.error(req.uuid, 'GET /kyc/id auth', err.message);
+			logger.error('GET /kyc/id auth', err.message);
 			res.status(400).json({ message: err.message });
 		});
 });
@@ -449,7 +440,6 @@ app.post('/plugins/kyc/id/verify', [verifyToken, bodyParser.json()], (req, res) 
 	checkScopes(endpointScopes, scopes);
 
 	logger.verbose(
-		req.uuid,
 		'POST /kyc/id/verify auth',
 		req.auth.sub
 	);
@@ -457,7 +447,6 @@ app.post('/plugins/kyc/id/verify', [verifyToken, bodyParser.json()], (req, res) 
 	const { user_id } = req.body;
 
 	logger.verbose(
-		req.uuid,
 		'POST /kyc/id/verify user_id',
 		user_id
 	);
@@ -475,7 +464,6 @@ app.post('/plugins/kyc/id/verify', [verifyToken, bodyParser.json()], (req, res) 
 			const data = {};
 			data.id_data = user.id_data;
 			logger.debug(
-				req.uuid,
 				'POST /kyc/id/verify data',
 				data
 			);
@@ -483,7 +471,6 @@ app.post('/plugins/kyc/id/verify', [verifyToken, bodyParser.json()], (req, res) 
 		})
 		.catch((err) => {
 			logger.error(
-				req.uuid,
 				'POST /kyc/id/verify error',
 				err.message
 			);
@@ -497,7 +484,6 @@ app.post('/plugins/kyc/id/revoke', [verifyToken, bodyParser.json()], (req, res) 
 	checkScopes(endpointScopes, scopes);
 
 	logger.verbose(
-		req.uuid,
 		'POST /kyc/id/revoke auth',
 		req.auth.sub
 	);
@@ -506,7 +492,6 @@ app.post('/plugins/kyc/id/revoke', [verifyToken, bodyParser.json()], (req, res) 
 	const { message } = req.body || DEFAULT_REJECTION_NOTE;
 
 	logger.verbose(
-		req.uuid,
 		'POST /kyc/id/revoke body',
 		user_id,
 		message
@@ -533,7 +518,6 @@ app.post('/plugins/kyc/id/revoke', [verifyToken, bodyParser.json()], (req, res) 
 				user.settings
 			);
 			logger.debug(
-				req.uuid,
 				'POST /kyc/id/revoke data',
 				data
 			);
@@ -541,7 +525,6 @@ app.post('/plugins/kyc/id/revoke', [verifyToken, bodyParser.json()], (req, res) 
 		})
 		.catch((err) => {
 			logger.error(
-				req.uuid,
 				'POST /kyc/id/revple error',
 				err.message
 			);
