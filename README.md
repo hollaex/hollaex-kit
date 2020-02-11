@@ -109,7 +109,7 @@ These are list of `userUpdate` client gets after subscription.
 
 - **userUpdate**: Updates related to the user's private information are as follows:
 
-  - _order_queued_: When a user order is added to the queue.
+  - _order_queued_: When user's order is added to the matching engine queue.
 
   ```json
   {
@@ -128,7 +128,7 @@ These are list of `userUpdate` client gets after subscription.
   }
   ```
 
-  - _order_processed_: When a user order has been processed in the queue.
+  - _order_processed_: When user's order is processed in the matching engine queue.
 
   ```json
   {
@@ -138,7 +138,7 @@ These are list of `userUpdate` client gets after subscription.
   }
   ```
 
-  - _order_canceled_: When a user order has been canceled in the queue, so it has not been added to the orderbook.
+  - _order_canceled_: When user's order is rejected in the queue, so it has not been added to the orderbook.
 
   ```json
   {
@@ -151,7 +151,7 @@ These are list of `userUpdate` client gets after subscription.
   }
   ```
 
-  - _order_added_: When a user order is added to the orderbook.
+  - _order_added_: When user's order is added to the orderbook.
 
   ```json
   {
@@ -170,7 +170,7 @@ These are list of `userUpdate` client gets after subscription.
   }
   ```
 
-  - _order_partialy_filled_: When a user order is update because it was taken some part by another order.
+  - _order_partialy_filled_: When user's order is updated because it was taken some part by another order.
 
   ```json
   {
@@ -189,7 +189,7 @@ These are list of `userUpdate` client gets after subscription.
   }
   ```
 
-  - _order_filled_: When a user order is taken by another other in a trade.
+  - _order_filled_: When user's order is taken by another order in a trade.
 
   ```json
   {
@@ -207,7 +207,7 @@ These are list of `userUpdate` client gets after subscription.
   }
   ```
 
-  - _order_updated_: When a user updates the order.
+  - _order_updated_: When user updates the order.
 
   ```json
   {
@@ -223,7 +223,7 @@ These are list of `userUpdate` client gets after subscription.
   }
   ```
 
-  - _order_removed_: When a user order is taken or the user cancel the orders/orders.
+  - _order_removed_: When user's order is taken or user cancels order/orders.
 
   ```json
   {
@@ -241,7 +241,7 @@ These are list of `userUpdate` client gets after subscription.
   }
   ```
 
-  - _trade_: When a trade happens in the orderbook.
+  - _trade_: When a trade happens.
 
   ```json
   {
@@ -262,7 +262,7 @@ These are list of `userUpdate` client gets after subscription.
   }
   ```
 
-  - _deposit_: When a user get a deposit in his account. Status = pending or completed
+  - _deposit_: When user gets a deposit. Status = pending or completed
 
   ```json
   {
@@ -281,7 +281,7 @@ These are list of `userUpdate` client gets after subscription.
   }
   ```
 
-  - _withdrawal_: When a user performs a withdrawal in his account. Status = pending or completed
+  - _withdrawal_: When user performs a withdrawal in his account. Status = pending or completed
 
   ```json
   {
