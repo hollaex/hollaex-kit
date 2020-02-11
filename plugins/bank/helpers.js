@@ -8,15 +8,6 @@ const PENDING_STATUS = 1;
 const REJECTED_STATUS = 2;
 const COMPLETED_STATUS = 3;
 
-const VERIFY_ATTR = [
-	'id',
-	'email',
-	'verification_level',
-	'id_data',
-	'bank_account',
-	'settings'
-];
-
 const addBankAccount = (bank_account = {}) => (user, options = {}) => {
 	if (!user) {
 		throw new Error('User not found.');
@@ -109,5 +100,4 @@ module.exports = {
 	approveBankAccount,
 	adminAddUserBanks,
 	rejectBankAccount,
-	VERIFY_ATTR
 };

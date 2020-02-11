@@ -3,7 +3,7 @@
 const app = require('../index');
 const { verifyToken, checkScopes } = require('../helpers/auth');
 const { findUser, getUserValuesById, getUserValuesByEmail } = require('../helpers/user');
-const { addBankAccount, adminAddUserBanks, approveBankAccount, rejectBankAccount, VERIFY_ATTR } = require('./helpers');
+const { addBankAccount, adminAddUserBanks, approveBankAccount, rejectBankAccount } = require('./helpers');
 const bodyParser = require('body-parser');
 const { logger } = require('../helpers/common');
 const { sendEmail } = require('../../mail');
@@ -94,7 +94,7 @@ app.post('/plugins/bank/verify', [verifyToken, bodyParser.json()], (req, res) =>
 		where: {
 			id: user_id
 		},
-		attributes: VERIFY_ATTR
+		attributes: ['bank_account']
 	})
 		.then((user) => {
 			if (!user) throw new Error('User not found.');
@@ -137,7 +137,7 @@ app.post('/plugins/bank/revoke', [verifyToken, bodyParser.json()], (req, res) =>
 		where: {
 			id: user_id
 		},
-		attributes: VERIFY_ATTR
+		attributes: ['email', 'bank_account', 'settings']
 	})
 		.then((user) => {
 			if (!user) throw new Error('User not found.');
