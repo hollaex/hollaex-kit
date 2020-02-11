@@ -27,7 +27,7 @@ There is a list of functions you can call which will be added later and they are
 ```node
 var client = new HollaEx({ apiKey: <MY_API_KEY>, apiSecret: <MY_API_SECRET> });
 client
-	.getTicker('hex-usdt')
+	.getTicker('xht-usdt')
 	.then((res) => {
 		let data = JSON.parse(res);
 		console.log('The volume is', data.volume);
@@ -41,9 +41,9 @@ client
 
 | Command             | Parameters                                                                                                                                                                         | Description                                                                                                                                                            |
 | ------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `getTicker`         | **symbol** e.g. `hex-usdt`                                                                                                                                                          | Last, high, low, open and close price and volume within the last 24 hours                                                                                              |
-| `getOrderbook`      | **symbol** (_optional_) e.g. `hex-usdt`                                                                                                                                             | Orderbook containing list of bids and asks                                                                                                                             |
-| `getTrade`          | **symbol** (_optional_) e.g. `hex-usdt`                                                                                                                                             | List of last trades                                                                                                                                                    |
+| `getTicker`         | **symbol** e.g. `xht-usdt`                                                                                                                                                          | Last, high, low, open and close price and volume within the last 24 hours                                                                                              |
+| `getOrderbook`      | **symbol** (_optional_) e.g. `xht-usdt`                                                                                                                                             | Orderbook containing list of bids and asks                                                                                                                             |
+| `getTrade`          | **symbol** (_optional_) e.g. `xht-usdt`                                                                                                                                             | List of last trades                                                                                                                                                    |
 | `getConstant`       |                                                                                                                                                                                    | Tick size, min price, max price, min size and max size of each symbol pair                                                                                             |
 | `getUser`           |                                                                                                                                                                                    | User's personal information                                                                                                                                            |
 | `getBalance`        |                                                                                                                                                                                    | User's wallet balance                                                                                                                                                  |
@@ -52,10 +52,10 @@ client
 | `requestWithdrawal` | **currency**, **amount**, **address** (_receipient's_)                                                                                                                             | Create a new withdrawal request. **Disable Two-Factor Authentication to be able to use this function. Must confirm within 5 minutes via email to complete withdrawal** |
 | `getUserTrade`      | **symbol** (_optional_), **limit** (_default_=`50`, _max_=`100`), **page** (_default_=`1`)                                                                                         | User's list of all trades                                                                                                                                              |
 | `getOrder`          | **orderId**                                                                                                                                                                        | Get specific information about a certain order                                                                                                                         |
-| `getAllOrder`       | **symbol** (_optional_) e.g. `hex-usdt`                                                                                                                                             | Get the list of all user orders. It can be filter by passing the symbol                                                                                                |
+| `getAllOrder`       | **symbol** (_optional_) e.g. `xht-usdt`                                                                                                                                             | Get the list of all user orders. It can be filter by passing the symbol                                                                                                |
 | `createOrder`       | **symbol**, **side** (_buy_ or _sell_), **size** (amount), **type** (_market_ or _limit_), **price**                                                                               | Create a new order                                                                                                                                                     |
 | `cancelOrder`       | **orderId**                                                                                                                                                                        | Cancel a specific order with its ID                                                                                                                                    |
-| `cancelAllOrder`    | **symbol** (_optional_) e.g. `hex-usdt`                                                                                                                                             | Cancel all open order. It can be filter by passing the symbol                                                                                                          |
+| `cancelAllOrder`    | **symbol** (_optional_) e.g. `xht-usdt`                                                                                                                                             | Cancel all open order. It can be filter by passing the symbol                                                                                                          |
 
 ### Websocket
 
@@ -69,7 +69,7 @@ socket.on('orderbook', (data) => {
 ```
 
 You can only subscribe to specific symbols as follows:
-`orderbook:hex-usdt`
+`orderbook:xht-usdt`
 Here is the list of events you can subscribe:
 
 - orderbook
@@ -118,9 +118,9 @@ These are list of `userUpdate` client gets after subscription.
   	"data": {
   		"side": "sell",
   		"type": "limit",
-  		"price": .2,
+  		"price": 0.2,
   		"size": 2,
-  		"symbol": "hex-usdt",
+  		"symbol": "xht-usdt",
   		"id": "ac7717d4-04e9-4430-a21b-08d32b2c34cd",
   		"created_by": 79,
   		"filled": 0
@@ -160,9 +160,9 @@ These are list of `userUpdate` client gets after subscription.
   	"data": {
   		"side": "sell",
   		"type": "limit",
-  		"price": .2,
+  		"price": 0.2,
   		"size": 2,
-  		"symbol": "hex-usdt",
+  		"symbol": "xht-usdt",
   		"id": "ac7717d4-04e9-4430-a21b-08d32b2c34cd",
   		"created_by": 79,
   		"filled": 0
@@ -183,8 +183,8 @@ These are list of `userUpdate` client gets after subscription.
   		"side": "sell",
   		"type": "limit",
   		"size": 2,
-  		"price": .2,
-  		"symbol": "hex-usdt"
+  		"price": 0.2,
+  		"symbol": "xht-usdt"
   	}
   }
   ```
@@ -215,7 +215,7 @@ These are list of `userUpdate` client gets after subscription.
   	"data": {
   		"id": "ac7717d4-04e9-4430-a21b-08d32b2c34cd",
   		"created_by": 79,
-  		"price": .2,
+  		"price": 0.2,
   		"side": "sell",
   		"size": 2,
   		"type": "limit"
@@ -251,9 +251,9 @@ These are list of `userUpdate` client gets after subscription.
       {
         "id": "1efd30b6-fcb5-44da-82c1-82d9def2ddbd",
         "side": "sell",
-        "symbol": "hex-usdt",
+        "symbol": "xht-usdt",
         "size": 2,
-        "price": .2,
+        "price": 0.2,
         "timestamp": "2017-07-26T13:20:40.464Z",
         "fee": 0,
       },
@@ -275,7 +275,7 @@ These are list of `userUpdate` client gets after subscription.
   	},
   	"balance": {
   		"usdt_balance": 0,
-  		"hex_balance": 300000,
+  		"xht_balance": 300000,
   		"updated_at": "2017-07-26T13:20:40.464Z"
   	}
   }
@@ -289,12 +289,12 @@ These are list of `userUpdate` client gets after subscription.
   	"type": "withdrawal",
   	"data": {
   		"amount": 5000,
-  		"currency": "hex",
+  		"currency": "xht",
   		"status": true
   	},
   	"balance": {
   		"usdt_balance": 0,
-  		"hex_balance": 300000,
+  		"xht_balance": 300000,
   		"updated_at": "2017-07-26T13:20:40.464Z"
   	}
   }
