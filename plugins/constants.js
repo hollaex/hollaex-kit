@@ -24,16 +24,7 @@ exports.FRESHDESK_AUTH = process.env.FRESHDESK_AUTH || '';
 exports.SMS_CODE_KEY = 'user:sms';
 exports.SMS_CODE_EXPIRATION_TIME = 6 * 60; // seconds -> 6 min
 
-// BANK_CONSTANTS
-exports.BANK_FIELDS = [
-	'id',
-	'bank_name',
-	'card_number',
-	'account_number',
-	'status'
-];
-
-// KYC_CONSTANTS
+// KYC_BANK_CONSTANTS
 exports.ID_FIELDS = [
 	'type',
 	'number',
@@ -55,3 +46,17 @@ exports.USER_FIELD_ADMIN_LOG = [
 	'username'
 ];
 exports.ADDRESS_FIELDS = ['city', 'address', 'country', 'postal_code'];
+exports.VERIFY_STATUS = {
+	EMPTY: 0,
+	PENDING: 1,
+	REJECTED: 2,
+	COMPLETED: 3
+};
+exports.SETTINGS_KEYS = [
+	'language',
+	'notification',
+	'interface',
+	'audio',
+	'risk',
+	'chat'
+];

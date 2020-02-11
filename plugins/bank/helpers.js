@@ -2,11 +2,7 @@
 
 const crypto = require('crypto');
 const { pick, each } = require('lodash');
-
-const EMPTY_STATUS = 0;
-const PENDING_STATUS = 1;
-const REJECTED_STATUS = 2;
-const COMPLETED_STATUS = 3;
+const { VERIFY_STATUS } = require('../constants');
 
 const addBankAccount = (bank_account = {}) => (user, options = {}) => {
 	if (!user) {
@@ -23,7 +19,7 @@ const addBankAccount = (bank_account = {}) => (user, options = {}) => {
 	);
 
 	bank_account.id = crypto.randomBytes(10).toString('hex');
-	bank_account.status = PENDING_STATUS;
+	bank_account.status = VERIFY_STATUS.PENDING;
 
 	let newBank = user.dataValues.bank_account;
 	newBank.push(bank_account);
@@ -46,7 +42,7 @@ const adminAddUserBanks = (bank_accounts = []) => (user, options = {}) => {
 
 	each(bank_accounts, (bank) => {
 		bank.id = crypto.randomBytes(10).toString('hex');
-		bank.status = COMPLETED_STATUS;
+		bank.status = VERIFY_STATUS.COMPLETED;
 		bank = pick(
 			bank,
 			'id',
@@ -69,7 +65,7 @@ const adminAddUserBanks = (bank_accounts = []) => (user, options = {}) => {
 const approveBankAccount = (id = 0) => (user, options = {}) => {
 	const banks = user.dataValues.bank_account.map((bank) => {
 		if (bank.id === id) {
-			bank.status = COMPLETED_STATUS;
+			bank.status = VERIFY_STATUS.COMPLETED;
 		}
 		return bank;
 	});

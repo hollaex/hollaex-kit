@@ -7,7 +7,9 @@ const {
 	USER_FIELD_ADMIN_LOG,
 	ID_FIELDS,
 	ADDRESS_FIELDS,
-	S3_BUCKET_NAME
+	S3_BUCKET_NAME,
+	VERIFY_STATUS,
+	SETTINGS_KEYS
 } = require('../constants');
 const s3Write = require('./s3').write(S3_BUCKET_NAME);
 const s3Read = require('./s3').read(S3_BUCKET_NAME);
@@ -15,20 +17,6 @@ const AWS_SE = 'amazonaws.com/';
 const EXPIRES = 300; // seconds
 const { differenceWith, isEqual } = require('lodash');
 const { all } = require('bluebird');
-
-const EMPTY_STATUS = 0;
-const PENDING_STATUS = 1;
-const REJECTED_STATUS = 2;
-const COMPLETED_STATUS = 3;
-
-const SETTING_KEYS = [
-	'language',
-	'notification',
-	'interface',
-	'audio',
-	'risk',
-	'chat'
-];
 
 const DEFAULT_SETTINGS = {
 	language: DEFAULT_LANGUAGE,
@@ -90,7 +78,7 @@ const getImagesData = (user_id, type = undefined) => {
 const approveDocuments = (user) => {
 	return updateUserData(
 		{
-			id_data: { ...user.id_data, status: COMPLETED_STATUS, note: '' }
+			id_data: { ...user.id_data, status: VERIFY_STATUS.COMPLETED, note: '' }
 		},
 		ROLES.SUPPORT
 	)(user, { returning: true }).then((user) => {
@@ -110,7 +98,7 @@ const revokeDocuments = (user, message = '') => {
 					{
 						id_data: {
 							...user.id_data,
-							status: REJECTED_STATUS,
+							status: VERIFY_STATUS.REJECTED,
 							note: message
 						}
 					},
@@ -262,11 +250,11 @@ const updateUserData = (
 	};
 	if (Object.keys(id_data).length > 0) {
 		if (role === ROLES.USER) {
-			if (user.dataValues.status === COMPLETED_STATUS) {
+			if (user.dataValues.status === VERIFY_STATUS.COMPLETED) {
 				throw new Error(ERROR_CHANGE_USER_INFO);
 			} else {
 				updateData['id_data'] = id_data;
-				updateData.id_data.status = PENDING_STATUS;
+				updateData.id_data.status = VERIFY_STATUS.PENDING;
 			}
 		} else {
 			updateData['id_data'] = id_data;
@@ -282,7 +270,7 @@ const updateUserData = (
 		updateData.address ||
 		updateData.nationality
 	) {
-		if (user.dataValues.id_data === COMPLETED_STATUS) {
+		if (user.dataValues.id_data === VERIFY_STATUS.COMPLETED) {
 			throw new Error(ERROR_CHANGE_USER_INFO);
 		}
 	}
@@ -303,7 +291,6 @@ const updateUserData = (
 			'address',
 			'phone_number',
 			'id_data',
-			'bank_account',
 			'settings'
 		],
 		...options
