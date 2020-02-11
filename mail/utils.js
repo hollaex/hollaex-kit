@@ -31,7 +31,14 @@ const moment = require('moment');
 const geoip = require('geoip-lite');
 const { FORMATDATE } = require('./strings');
 
-const { DEFAULT_LANGUAGE, DEFAULT_TIMEZONE } = require('../constants');
+const { DEFAULT_LANGUAGE } = require('../constants');
+const {
+	SMTP_SERVER,
+	SMTP_PORT,
+	SMTP_USER,
+	SMTP_PASSWORD,
+	DEFAULT_TIMEZONE
+} = require('./constants');
 
 const formatTimezone = (date, timezone = DEFAULT_TIMEZONE) => {
 	let tzTime;
@@ -69,12 +76,6 @@ const getCountryFromIp = (ip) => {
 };
 
 const nodemailer = require('nodemailer');
-const {
-	SMTP_SERVER,
-	SMTP_PORT,
-	SMTP_USER,
-	SMTP_PASSWORD
-} = require('../constants');
 
 const transport = nodemailer.createTransport({
 	host: SMTP_SERVER,

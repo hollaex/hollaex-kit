@@ -9,9 +9,11 @@ const {
 	SUPPORT_EMAIL,
 	MASTER_EMAIL,
 	INQUIRY_EMAIL,
-	DEFAULT_LANGUAGE,
-	SEND_EMAIL_TO_SUPPORT,
-	DOMAIN
+	SEND_EMAIL_TO_SUPPORT
+} = require('./constants');
+const {
+	DOMAIN,
+	DEFAULT_LANGUAGE
 } = require('../constants');
 const { getValidLanguage } = require('../utils/strings');
 const { MAILTYPE } = require('./strings');

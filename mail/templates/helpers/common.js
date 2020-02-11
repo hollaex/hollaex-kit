@@ -1,12 +1,14 @@
 'use strict';
 
 const {
-	DOMAIN,
 	BITHOLLA_DOMAIN,
-	DEFAULT_LANGUAGE,
-	LOGO_BLACK_PATH,
 	BITHOLLA_LOGO_BLACK,
 	EMAIL_ICONS
+} = require('../../constants');
+const {
+	DOMAIN,
+	LOGO_BLACK_PATH,
+	DEFAULT_LANGUAGE
 } = require('../../../constants');
 const styles = require('./styles');
 

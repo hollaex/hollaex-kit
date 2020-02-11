@@ -2,8 +2,13 @@
 
 const { findUser } = require('../helpers/user');
 const { VerificationImage, sequelize } = require('../../db/models');
-const { DEFAULT_LANGUAGE, ROLES, USER_FIELD_ADMIN_LOG, ID_FIELDS, ADDRESS_FIELDS } = require('../../constants');
-const { S3_BUCKET_NAME } = require('../constants');
+const { DEFAULT_LANGUAGE, ROLES } = require('../../constants');
+const {
+	USER_FIELD_ADMIN_LOG,
+	ID_FIELDS,
+	ADDRESS_FIELDS,
+	S3_BUCKET_NAME
+} = require('../constants');
 const s3Write = require('./s3').write(S3_BUCKET_NAME);
 const s3Read = require('./s3').read(S3_BUCKET_NAME);
 const AWS_SE = 'amazonaws.com/';

@@ -6,9 +6,12 @@ const Promise = require('bluebird');
 const PhoneNumber = require('awesome-phonenumber');
 const sns = require('./sns')();
 const {
-	DEFAULT_LANGUAGE,
 	SMS_CODE_KEY,
 	SMS_CODE_EXPIRATION_TIME
+} = require('../constants');
+const {
+	DEFAULT_LANGUAGE,
+	OTP_NAME
 } = require('../../constants');
 const {
 	SMS_ERROR,
@@ -17,7 +20,6 @@ const {
 	SMS_CODE_EXPIRED,
 	INVALID_PHONE_NUMBER
 } = require('./messages');
-const { OTP_NAME } = require('../../constants');
 
 const generateUserKey = (user_id) => `${SMS_CODE_KEY}:${user_id}`;
 
