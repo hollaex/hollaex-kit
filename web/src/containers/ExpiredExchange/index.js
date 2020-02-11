@@ -6,8 +6,9 @@ import { bindActionCreators } from 'redux';
 import moment from 'moment';
 import { getThemeClass } from '../../utils/theme';
 
-import { ICONS, FLEX_CENTER_CLASSES, EXCHANGE_URL, EXCHANGE_EXPIRY_DAYS } from '../../config/constants';
+import { ICONS, FLEX_CENTER_CLASSES, EXCHANGE_URL, EXCHANGE_EXPIRY_SECONDS } from '../../config/constants';
 import { getExchangeInfo } from '../../actions/appActions';
+import { logout } from '../../actions/authAction';
 import STRINGS from '../../config/localizedStrings';
 import { Button } from '../../components';
 
@@ -19,7 +20,7 @@ class Expired extends Component {
 
     componentDidUpdate(prevProps) {
         if (JSON.stringify(this.props.info) !== JSON.stringify(prevProps.info)) {
-            if ((this.props.info.is_trial && moment().diff(this.props.info.created_at, 'days') < EXCHANGE_EXPIRY_DAYS)
+            if ((this.props.info.is_trial && moment().diff(this.props.info.created_at, 'seconds') < EXCHANGE_EXPIRY_SECONDS)
                 || !this.props.info.is_trial) {
                 this.props.router.replace('/account');
             }
@@ -45,6 +46,9 @@ class Expired extends Component {
                             <Button label={STRINGS.EXPIRED_BUTTON_TXT} />
                         </a>
                     </div>
+                    <div className="blue-link pointer" onClick={() => this.props.logout('Exchange expired')}>
+                        {STRINGS.SIGN_UP.GOTO_LOGIN}
+                    </div>
                 </div>
             </div>
         )
@@ -57,7 +61,8 @@ const mapStateToProps = (store) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-    getExchangeInfo: bindActionCreators(getExchangeInfo, dispatch)
+    getExchangeInfo: bindActionCreators(getExchangeInfo, dispatch),
+    logout: bindActionCreators(logout, dispatch)
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Expired);

@@ -10,7 +10,8 @@ import { AppBar, AppFooter } from '../../components';
 import STRINGS from '../../config/localizedStrings';
 import {
 	FLEX_CENTER_CLASSES,
-	EXCHANGE_EXPIRY_DAYS
+	EXCHANGE_EXPIRY_DAYS,
+	EXCHANGE_EXPIRY_SECONDS
 } from '../../config/constants';
 // import { requestQuickTrade } from '../../actions/orderbookAction';
 import { setLanguage, getExchangeInfo } from '../../actions/appActions';
@@ -104,7 +105,7 @@ class Home extends Component {
 		const isExpired =
 			info &&
 			(!Object.keys(info).length ||
-				moment().diff(info.created_at, 'days') > EXCHANGE_EXPIRY_DAYS)
+				moment().diff(info.created_at, 'seconds') > EXCHANGE_EXPIRY_SECONDS)
 				? true
 				: false;
 		const expiryDays =

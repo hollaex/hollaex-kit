@@ -13,7 +13,7 @@ import {
 	DEFAULT_VERSION_REDIRECT,
 	ICONS,
 	HOLLAEX_LOGO_BLACK,
-	EXCHANGE_EXPIRY_DAYS,
+	EXCHANGE_EXPIRY_SECONDS,
 	IS_XHT
 } from '../../config/constants';
 import { LinkButton } from './LinkButton';
@@ -110,7 +110,7 @@ class AppBar extends Component {
 		if (
 			!Object.keys(info).length ||
 			(info.is_trial &&
-				moment().diff(info.created_at, 'days') > EXCHANGE_EXPIRY_DAYS)
+				moment().diff(info.created_at, 'seconds') > EXCHANGE_EXPIRY_SECONDS)
 		) {
 			this.props.router.push('/expired-exchange');
 		}

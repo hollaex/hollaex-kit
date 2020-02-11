@@ -16,7 +16,7 @@ import {
 	HOLLAEX_LOGO,
 	FLEX_CENTER_CLASSES,
 	ICONS,
-	EXCHANGE_EXPIRY_DAYS
+	EXCHANGE_EXPIRY_SECONDS
 } from '../../config/constants';
 
 import STRINGS from '../../config/localizedStrings';
@@ -115,7 +115,7 @@ class Login extends Component {
 					this.setState({ token: res.data.token });
 				if (!Object.keys(this.props.info).length
 					|| (this.props.info.is_trial
-						&& moment().diff(this.props.info.created_at, 'days') > EXCHANGE_EXPIRY_DAYS))
+						&& moment().diff(this.props.info.created_at, 'seconds') > EXCHANGE_EXPIRY_SECONDS))
 					this.checkExpiryExchange();
 				else if (res.data && res.data.callbackUrl)
 					this.redirectToService(res.data.callbackUrl);
@@ -171,7 +171,7 @@ class Login extends Component {
 					this.setState({ token: res.data.token });
 				if (!Object.keys(this.props.info).length
 					|| (this.props.info.is_trial
-						&& moment().diff(this.props.info.created_at, 'days') > EXCHANGE_EXPIRY_DAYS))
+						&& moment().diff(this.props.info.created_at, 'seconds') > EXCHANGE_EXPIRY_SECONDS))
 					this.checkExpiryExchange();
 				else if (res.data && res.data.callbackUrl)
 					this.redirectToService(res.data.callbackUrl);

@@ -7,7 +7,7 @@ import { bindActionCreators } from 'redux';
 import moment from 'moment';
 
 import { AppFooter } from '../../components';
-import { FLEX_CENTER_CLASSES, CAPTCHA_SITEKEY, EXCHANGE_EXPIRY_DAYS } from '../../config/constants';
+import { FLEX_CENTER_CLASSES, CAPTCHA_SITEKEY, EXCHANGE_EXPIRY_DAYS, EXCHANGE_EXPIRY_SECONDS } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 import { getClasesForLanguage } from '../../utils/string';
 import { getThemeClass } from '../../utils/theme';
@@ -67,7 +67,7 @@ class AuthContainer extends Component {
 				? true : false;
 		};
 		const isExpired = (!Object.keys(info).length
-			|| moment().diff(info.created_at, 'days') > EXCHANGE_EXPIRY_DAYS)
+			|| moment().diff(info.created_at, 'seconds') > EXCHANGE_EXPIRY_SECONDS)
 			? true
 			: false;
 		const expiryDays = EXCHANGE_EXPIRY_DAYS - moment().diff(info.created_at, 'days');
