@@ -2,7 +2,7 @@
 
 const express = require('express');
 const app = express();
-const { PLUGINS, PLUGIN_PORT} = require('./constants');
+const { PLUGINS, PLUGIN_PORT } = require('./constants');
 
 const PORT = PLUGIN_PORT
 
@@ -13,8 +13,6 @@ app.get('/plugins', (req, res) => {
 });
 
 app.listen(PORT);
-
-app.use(cors());
 
 module.exports = app;
 
