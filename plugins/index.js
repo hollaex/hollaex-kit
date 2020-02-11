@@ -2,10 +2,10 @@
 
 const express = require('express');
 const app = express();
+const { PLUGINS, PLUGIN_PORT} = require('./constants');
 
-const PORT = process.env.PLUGIN_PORT || 10011;
+const PORT = PLUGIN_PORT
 
-const PLUGINS = process.env.ENVIRONMENT_PLUGINS || 'bank';
 const plugins = PLUGINS.split(',');
 
 app.get('/plugins', (req, res) => {
@@ -13,6 +13,8 @@ app.get('/plugins', (req, res) => {
 });
 
 app.listen(PORT);
+
+app.use(cors());
 
 module.exports = app;
 
