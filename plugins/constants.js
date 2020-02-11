@@ -3,10 +3,9 @@ exports.PULGIN_PORT = process.env.PLUGIN_PORT || 10011;
 
 // AWS_CONSTANTS -----------------------------
 const ID_DOCS_BUCKET = process.env.ID_DOCS_BUCKET || '';
-const [S3_BUCKET_NAME, S3_BUCKET_REGION] = ID_DOCS_BUCKET.split(':');
+const [S3_BUCKET_NAME] = ID_DOCS_BUCKET.split(':');
 exports.ID_DOCS_BUCKET = ID_DOCS_BUCKET;
 exports.S3_BUCKET_NAME = S3_BUCKET_NAME || '';
-exports.S3_BUCKET_REGION = S3_BUCKET_REGION || '';
 exports.S3_WRITE_ACCESSKEYID = process.env.S3_WRITE_ACCESSKEYID || '';
 exports.S3_WRITE_SECRETACCESSKEY = process.env.S3_WRITE_SECRETACCESSKEY || '';
 exports.S3_READ_ACCESSKEYID = process.env.S3_READ_ACCESSKEYID || '';

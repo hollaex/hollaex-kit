@@ -7,7 +7,7 @@ const {
 	S3_WRITE_SECRETACCESSKEY,
 	S3_READ_ACCESSKEYID,
 	S3_READ_SECRETACCESSKEY
-} = require('../../constants');
+} = require('../constants');
 
 const generateBuckets = (bucketsString = '') => {
 	const bucketsSplit = bucketsString

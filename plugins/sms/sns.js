@@ -5,7 +5,7 @@ const {
 	SNS_ACCESSKEYID,
 	SNS_SECRETACCESSKEY,
 	SNS_REGION
-} = require('../../constants');
+} = require('../constants');
 
 const credentials = {
 	accessKeyId: SNS_ACCESSKEYID,
