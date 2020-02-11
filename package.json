@@ -1,7 +1,7 @@
 {
 	"name": "hollaex-node-lib",
 	"version": "1.0.0",
-	"description": "",
+	"description": "hollaex api and websocket library for nodejs",
 	"main": "index.js",
 	"dependencies": {
 		"moment": "2.24.0",

@@ -315,6 +315,7 @@ class Socket extends EventEmitter {
 	constructor(events = '', url, apiKey, apiSignature, apiExpires) {
 		super();
 		if (!Array.isArray(events)) {
+			let subs = {};
 			let listeners = [];
 			let ioLink;
 			events = events.split(':');
@@ -331,6 +332,15 @@ class Socket extends EventEmitter {
 					listeners.push(ioLink);
 					listeners[listeners.length - 1].on(event, (data) => {
 						this.emit(event, data);
+					});
+					listeners[listeners.length - 1].once('disconnect', (data) => {
+						this.emit('disconnect', `Socket.io disconnected from server due to: ${data}.`);
+						subs = this._events;
+						this.removeAllListeners();
+					});
+					listeners[listeners.length - 1].once('reconnect', (attempts) => {
+						this._events = subs;
+						this.emit('reconnect', `Successfully reconnected after ${attempts} attempts.`);
 					});
 					break;
 				case 'user':
@@ -357,6 +367,15 @@ class Socket extends EventEmitter {
 					});
 					listeners[listeners.length - 1].on('update', (data) => {
 						this.emit('userUpdate', data);
+					});
+					listeners[listeners.length - 1].once('disconnect', (data) => {
+						this.emit('disconnect', `Socket.io disconnected from server due to: ${data}.`);
+						subs = this._events;
+						this.removeAllListeners();
+					});
+					listeners[listeners.length - 1].once('reconnect', (attempts) => {
+						this._events = subs;
+						this.emit('reconnect', `Successfully reconnected after ${attempts} attempts.`);
 					});
 					break;
 				case 'all':
@@ -392,6 +411,15 @@ class Socket extends EventEmitter {
 					});
 					listeners[listeners.length - 1].on('update', (data) => {
 						this.emit('userUpdate', data);
+					});
+					listeners[listeners.length - 1].once('disconnect', (data) => {
+						this.emit('disconnect', `Socket.io disconnected from server due to: ${data}.`);
+						subs = this._events;
+						this.removeAllListeners();
+					});
+					listeners[listeners.length - 1].once('reconnect', (attempts) => {
+						this._events = subs;
+						this.emit('reconnect', `Successfully reconnected after ${attempts} attempts.`);
 					});
 					break;
 			}
