@@ -22,7 +22,7 @@ const updateThemeToBody = (theme = 'white') => {
 const checkPath = (path) => {
 	var sheet = document.createElement('style')
 	if ((path === '/login') || (path === '/signup')
-		|| path.includes('/reset-password') || path.includes('/confirm-withdraw')) {
+		|| (path === '/reset-password') || path.includes('/withdraw')) {
 		sheet.innerHTML = ".grecaptcha-badge { display: unset !important;}";
 		sheet.id = 'addCap'
 		if (document.getElementById('rmvCap') !== null) {

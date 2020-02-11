@@ -3,9 +3,8 @@ import { reduxForm } from 'redux-form';
 import { required, password } from '../../components/Form/validations';
 import { AuthForm } from '../../components';
 import STRINGS from '../../config/localizedStrings';
-import { getLanguage } from '../../utils/string';
 
-export const generateFormFields = (props) => ({
+export const generateFormFields = () => ({
 	password: {
 		type: 'password',
 		validate: [required, password],
@@ -19,12 +18,6 @@ export const generateFormFields = (props) => ({
 		fullWidth: true,
 		label: STRINGS.FORM_FIELDS.PASSWORD_REPEAT_LABEL,
 		placeholder: STRINGS.FORM_FIELDS.PASSWORD_REPEAT_PLACEHOLDER
-	},
-	captcha: {
-		type: 'captcha',
-		language: getLanguage(),
-		theme: props.theme,
-		validate: [required]
 	}
 });
 
@@ -42,7 +35,7 @@ const validate = (values) => {
 const Form = (props) => (
 	<AuthForm
 		{...props}
-		formFields={generateFormFields(props)}
+		formFields={generateFormFields()}
 		buttonLabel={STRINGS.RESET_PASSWORD.BUTTON}
 	/>
 );

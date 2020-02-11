@@ -1,46 +1,30 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
-import { ReCaptcha } from 'react-recaptcha-v3';
-import { connect } from 'react-redux';
 
 import { IconTitle, Button, Loader } from '../../components';
 import { performConfirmWithdrawal } from '../../actions/walletActions';
-import { FLEX_CENTER_CLASSES, ICONS, CAPTCHA_SITEKEY, DEFAULT_LANGUAGE } from '../../config/constants';
+import { FLEX_CENTER_CLASSES, ICONS } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 
 class ConfirmWithdrawal extends Component {
     state = {
         is_success: false,
         error_txt: '',
-        loading: false,
-        captcha: '',
-        is_called: false
+        loading: false
     };
 
     componentDidMount() {
-        if (this.props.routeParams.token && this.state.captcha) {
-            this.confirmWithdrawal(this.props.routeParams.token, this.state.captcha);
-        } else if (!this.props.routeParams.token) {
+        if (this.props.routeParams.token) {
+            this.confirmWithdrawal(this.props.routeParams.token);
+        } else {
             // TODO: this text is dummy will change to en.js after approval.
             this.setState({ error_txt: 'Invalid token Please try again.' });
         }
     }
 
-    componentDidUpdate(prevProps, prevState) {
-        if (prevState.captcha !== this.state.captcha
-            && this.state.captcha
-            && this.props.routeParams.token
-            && !this.state.is_called) {
-                this.confirmWithdrawal(this.props.routeParams.token, this.state.captcha);
-        } else if (!this.props.routeParams.token) {
-            // TODO: this text is dummy will change to en.js after approval.
-            this.setState({ error_txt: 'Invalid token Please try again.' });
-        }
-    }
-
-    confirmWithdrawal = (token, captcha) => {
-        this.setState({ loading: true, is_called: true });
-        return performConfirmWithdrawal(token, captcha)
+    confirmWithdrawal = token => {
+        this.setState({ loading: true });
+        return performConfirmWithdrawal(token)
             .then((response) => {
                 this.setState({ is_success: true, error_txt: '', loading: false });
                 return response;
@@ -54,23 +38,10 @@ class ConfirmWithdrawal extends Component {
         this.props.router.push('/transactions?tab=2');
     };
 
-    setRef = (el) => {
-		this.captcha = el;
-	};
-
-	onVerifyCallback = (data) => {
-		this.setState({ captcha: data });
-	};
-
-	onExpiredCallback = () => {
-		this.setState({ captcha: '' });
-		this.captcha.execute();
-	};
-
     render() {
-        const { is_success, error_txt, loading, is_called } = this.state;
+        const { is_success, error_txt, loading } = this.state;
         let childProps = {};
-        if (!is_called || loading) {
+        if (loading) {
             childProps = {
                 loading,
                 child: <Loader relative={true} background={false} />
@@ -114,28 +85,17 @@ class ConfirmWithdrawal extends Component {
                         {...childProps.titleSection}
                     />
                     {childProps.child}
-                    {!loading && is_called &&
+                    {!loading &&
                         <Button
                             className='w-50'
                             label={STRINGS.WITHDRAW_PAGE.GO_WITHDRAWAL_HISTORY}
                             onClick={this.handleTransaction}
                         />
                     }
-                    <ReCaptcha
-						ref={this.setRef}
-						sitekey={CAPTCHA_SITEKEY}
-						verifyCallback={this.onVerifyCallback}
-						expiredCallback={this.onExpiredCallback}
-						lang={this.props.language || DEFAULT_LANGUAGE}
-					/>
                 </div>
             </div>
         );
     }
 }
 
-const mapStateToProps = (state) => ({
-    language: state.app.language,
-});
-
-export default connect(mapStateToProps)(ConfirmWithdrawal);
+export default ConfirmWithdrawal;

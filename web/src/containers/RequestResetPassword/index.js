@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
-import { SubmissionError } from 'redux-form';
+import { bindActionCreators } from 'redux';
 import { isMobile } from 'react-device-detect';
+
+import { SubmissionError, change } from 'redux-form';
 import { requestResetPassword } from '../../actions/authAction';
 import ResetPasswordForm, { generateFormFields } from './ResetPasswordForm';
 import { IconTitle, Dialog, MobileBarBack } from '../../components';
@@ -11,12 +13,23 @@ import { FLEX_CENTER_CLASSES, ICONS, SUPPORT_HELP_URL } from '../../config/const
 import STRINGS from '../../config/localizedStrings';
 import RequestResetPasswordSuccess from './RequestResetPasswordSuccess';
 
+let errorTimeOut = null;
+
 class RequestResetPassword extends Component {
-	state = {
-		success: false,
-		showContactForm: false,
-		formFields: generateFormFields()
-	};
+	constructor(props) {
+		super(props)
+		this.state = {
+			success: false,
+			showContactForm: false,
+			formFields: generateFormFields(this.props.activeTheme)
+		};
+	}
+
+	componentWillUnmount() {
+		if (errorTimeOut) {
+			clearTimeout(errorTimeOut);
+		}
+	}
 
 	onSubmitRequestResetPassword = (values) => {
 		return requestResetPassword(values)
@@ -34,6 +47,9 @@ class RequestResetPassword extends Component {
 					} else {
 						errors._error = error.message;
 					}
+					errorTimeOut = setTimeout(() => {
+						this.props.change('ResetPasswordForm', 'captcha', '');
+					}, 5000);
 					throw new SubmissionError(errors);
 				}
 			});
@@ -138,4 +154,8 @@ const mapStateToProps = (store) => ({
 	activeTheme: store.app.theme
 });
 
-export default connect(mapStateToProps)(RequestResetPassword);
+const mapDispatchToProps = (dispatch) => ({
+	change: bindActionCreators(change, dispatch)
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(RequestResetPassword);
