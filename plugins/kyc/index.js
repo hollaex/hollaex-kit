@@ -28,14 +28,6 @@ const { cloneDeep, omit } = require('lodash');
 const { ROLES } = require('../../constants');
 const { all } = require('bluebird');
 const { logger } = require('../helpers/common');
-const VERIFY_ATTR = [
-	'id',
-	'email',
-	'verification_level',
-	'id_data',
-	'bank_account',
-	'settings'
-];
 
 app.put('/plugins/kyc/user', [verifyToken, bodyParser.json()], (req, res) => {
 	const endpointScopes = ['user'];
@@ -455,7 +447,7 @@ app.post('/plugins/kyc/id/verify', [verifyToken, bodyParser.json()], (req, res) 
 		where: {
 			id: user_id
 		},
-		attributes: VERIFY_ATTR
+		attributes: 'id_data'
 	})
 		.then((user) => {
 			return approveDocuments(user);
@@ -501,7 +493,7 @@ app.post('/plugins/kyc/id/revoke', [verifyToken, bodyParser.json()], (req, res) 
 		where: {
 			id: user_id
 		},
-		attributes: VERIFY_ATTR
+		attributes: ['email', 'id_data', 'settings']
 	})
 		.then((user) => {
 			return revokeDocuments(user, message);
