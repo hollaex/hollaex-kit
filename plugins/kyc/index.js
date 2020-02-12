@@ -20,7 +20,7 @@ const {
 	approveDocuments,
 	revokeDocuments
 } = require('./helpers');
-const { SMS_INVALID_PHONE, DEFAULT_REJECTION_NOTE } = require('../../messages');
+const { SMS_INVALID_PHONE, DEFAULT_REJECTION_NOTE, ID_EMAIL_REQUIRED, PENDING_APPROVAL_DENY } = require('./messages');
 const bodyParser = require('body-parser');
 const PhoneNumber = require('awesome-phonenumber');
 const { sequelize } = require('../../db/models');
@@ -241,9 +241,7 @@ app.post('/plugins/kyc/user/upload', [verifyToken, multerMiddleware], (req, res)
 		.then((user) => {
 			let { status } = user.dataValues.id_data || 0;
 			if (status === 3) {
-				throw new Error(
-					'You are not allowed to upload a document while its pending or approved.'
-				);
+				throw new Error(PENDING_APPROVAL_DENY);
 			}
 			return Promise.all([
 				uploadFile(
@@ -412,7 +410,7 @@ app.get('/plugins/kyc/id', verifyToken, (req, res) => {
 	} else {
 		return res
 			.status(400)
-			.json({ message: 'Missing parameters id or email' });
+			.json({ message: ID_EMAIL_REQUIRED });
 	}
 
 	findUserImages(where)

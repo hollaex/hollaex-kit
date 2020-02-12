@@ -3,12 +3,13 @@
 const crypto = require('crypto');
 const { pick, each } = require('lodash');
 const { VERIFY_STATUS } = require('../constants');
+const { USER_NOT_FOUND, MAX_BANKS_EXCEEDED } = require('./messages');
 
 const addBankAccount = (bank_account = {}) => (user, options = {}) => {
 	if (!user) {
-		throw new Error('User not found.');
+		throw new Error(USER_NOT_FOUND);
 	} else if (user.dataValues.bank_account.length >= 3) {
-		throw new Error('Too many banks');
+		throw new Error(MAX_BANKS_EXCEEDED);
 	}
 
 	bank_account = pick(
@@ -35,9 +36,9 @@ const addBankAccount = (bank_account = {}) => (user, options = {}) => {
 
 const adminAddUserBanks = (bank_accounts = []) => (user, options = {}) => {
 	if (!user) {
-		throw new Error('User not found.');
+		throw new Error(USER_NOT_FOUND);
 	} else if (bank_accounts.length > 3) {
-		throw new Error ('Maximum number of bank accounts is three.');
+		throw new Error (MAX_BANKS_EXCEEDED);
 	}
 
 	each(bank_accounts, (bank) => {

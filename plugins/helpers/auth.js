@@ -3,13 +3,14 @@
 const jwt = require('jsonwebtoken');
 const { SECRET, ISSUER, TOKEN_TIME } = require('../../constants');
 const { intersection } = require('lodash');
+const { ACCESS_DENIED, NOT_AUTHORIZED, TOKEN_EXPIRED, INVALID_TOKEN, MISSING_HEADER } = require('./messages');
 
 /**
 	* Middleware function used for verifying tokens being passed by client in Authorization header. Format: Bearer <token>
 */
 const verifyToken = (req, res, next) => {
 	const sendError = (msg) => {
-		res.json({ message: `Access Denied: ${msg}`});
+		res.json({ message: ACCESS_DENIED(msg)});
 	};
 
 	const token = req.headers['authorization'];
@@ -27,14 +28,14 @@ const verifyToken = (req, res, next) => {
 					req.auth = decodedToken;
 					next();
 				} else {
-					sendError('Token is expired');
+					sendError(TOKEN_EXPIRED);
 				}
 			} else {
-				sendError('Invalid Token');
+				sendError(INVALID_TOKEN);
 			}
 		});
 	} else {
-		sendError('Missing Header');
+		sendError(MISSING_HEADER);
 	}
 };
 
@@ -45,7 +46,7 @@ const verifyToken = (req, res, next) => {
 */
 const checkScopes = (endpointScopes, userScopes) => {
 	if (intersection(endpointScopes, userScopes).length === 0) {
-		throw new Error('Not Authorized');
+		throw new Error(NOT_AUTHORIZED);
 	}
 };
 

@@ -17,13 +17,12 @@ const AWS_SE = 'amazonaws.com/';
 const EXPIRES = 300; // seconds
 const { differenceWith, isEqual } = require('lodash');
 const { all } = require('bluebird');
+const { ERROR_CHANGE_USER_INFO } = require('./messages');
 
 const DEFAULT_SETTINGS = {
 	language: DEFAULT_LANGUAGE,
 	orderConfirmationPopup: true
 };
-
-const ERROR_CHANGE_USER_INFO = 'You are not allowed to change your information';
 
 const multer = require('multer');
 const upload = multer();
@@ -69,7 +68,7 @@ const getImagesData = (user_id, type = undefined) => {
 			if (type === 'admin') {
 				return { front: undefined, back: undefined, proof_of_residency: undefined };
 			}
-			throw new Error('User data not found');
+			throw new Error(USER_NOT_FOUND);
 		}
 		return verificationImages.dataValues;
 	});
