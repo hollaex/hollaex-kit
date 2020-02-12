@@ -1,30 +1,30 @@
 'use strict';
 
 const Promise = require('bluebird');
-const ses = require('../config/aws')('ses');
+// const ses = require('../config/aws')('ses');
 const { loggerEmail } = require('../config/logger');
 
-const sendAwsRawEmail = (params) =>
-	new Promise((resolve, reject) => {
-		ses.sendRawEmail(params, (err, data) => {
-			if (err) {
-				loggerEmail.error('mail/index/sendRawEmail', err);
-				reject(err);
-			}
-			resolve(data);
-		});
-	});
+// const sendAwsRawEmail = (params) =>
+// 	new Promise((resolve, reject) => {
+// 		ses.sendRawEmail(params, (err, data) => {
+// 			if (err) {
+// 				loggerEmail.error('mail/index/sendRawEmail', err);
+// 				reject(err);
+// 			}
+// 			resolve(data);
+// 		});
+// 	});
 
-const sendAwsEmail = (params) =>
-	new Promise((resolve, reject) => {
-		ses.sendEmail(params, (err, data) => {
-			if (err) {
-				loggerEmail.error('mail/index/sendEmail', err);
-				reject(err);
-			}
-			resolve(data);
-		});
-	});
+// const sendAwsEmail = (params) =>
+// 	new Promise((resolve, reject) => {
+// 		ses.sendEmail(params, (err, data) => {
+// 			if (err) {
+// 				loggerEmail.error('mail/index/sendEmail', err);
+// 				reject(err);
+// 			}
+// 			resolve(data);
+// 		});
+// 	});
 
 const momentTz = require('moment-timezone');
 const moment = require('moment');
@@ -92,8 +92,8 @@ const sendSMTPEmail = (params) => {
 };
 
 module.exports = {
-	sendAwsEmail,
-	sendAwsRawEmail,
+	// sendAwsEmail,
+	// sendAwsRawEmail,
 	formatDate,
 	formatTimezone,
 	getCountryFromIp,
