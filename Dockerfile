@@ -9,3 +9,5 @@ COPY ./plugins /app/plugins
 EXPOSE 10011
 
 RUN cd plugins && for d in ./*/ ; do (cd "$d" && npm install); done
+
+RUN cd mail && npm install
