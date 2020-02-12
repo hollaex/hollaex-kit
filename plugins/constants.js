@@ -1,5 +1,5 @@
 exports.PLUGINS = process.env.PLUGINS || 'kyc,bank,sms';
-exports.PULGIN_PORT = process.env.PLUGIN_PORT || 10011;
+exports.PLUGIN_PORT = process.env.PLUGIN_PORT || 10011;
 
 // AWS_CONSTANTS -----------------------------
 const ID_DOCS_BUCKET = process.env.ID_DOCS_BUCKET || '';
