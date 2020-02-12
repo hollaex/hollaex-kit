@@ -9,7 +9,7 @@ const PORT = PLUGIN_PORT
 const plugins = PLUGINS.split(',');
 
 app.get('/plugins', (req, res) => {
-	res.send('Welcome to HollaEx plugin');
+	res.send(`Plugins enabled: ${plugins}`);
 });
 
 app.listen(PORT);
