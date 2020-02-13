@@ -445,7 +445,7 @@ app.post('/plugins/kyc/id/verify', [verifyToken, bodyParser.json()], (req, res) 
 		where: {
 			id: user_id
 		},
-		attributes: 'id_data'
+		attributes: ['id', 'id_data']
 	})
 		.then((user) => {
 			return approveDocuments(user);
@@ -491,7 +491,7 @@ app.post('/plugins/kyc/id/revoke', [verifyToken, bodyParser.json()], (req, res) 
 		where: {
 			id: user_id
 		},
-		attributes: ['email', 'id_data', 'settings']
+		attributes: ['id', 'email', 'id_data', 'settings']
 	})
 		.then((user) => {
 			return revokeDocuments(user, message);

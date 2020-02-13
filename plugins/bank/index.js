@@ -95,7 +95,7 @@ app.post('/plugins/bank/verify', [verifyToken, bodyParser.json()], (req, res) =>
 		where: {
 			id: user_id
 		},
-		attributes: ['bank_account']
+		attributes: ['id', 'bank_account']
 	})
 		.then((user) => {
 			if (!user) throw new Error(USER_NOT_FOUND);
@@ -138,7 +138,7 @@ app.post('/plugins/bank/revoke', [verifyToken, bodyParser.json()], (req, res) =>
 		where: {
 			id: user_id
 		},
-		attributes: ['email', 'bank_account', 'settings']
+		attributes: ['id', 'email', 'bank_account', 'settings']
 	})
 		.then((user) => {
 			if (!user) throw new Error(USER_NOT_FOUND);
