@@ -1,4 +1,4 @@
-const DOMAIN = require('../constants');
+const { DOMAIN } = require('../constants');
 exports.PLUGINS = process.env.PLUGINS || 'kyc,bank,sms';
 exports.PLUGIN_PORT = process.env.PLUGIN_PORT || 10011;
 exports.CORS_WHITELIST = process.env.NODE_ENV === 'production' ? [DOMAIN] : [DOMAIN, 'http://localhost:3000'];

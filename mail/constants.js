@@ -5,7 +5,7 @@ exports.SMTP_USER = process.env.SMTP_USER;
 exports.SMTP_PASSWORD = process.env.SMTP_PASSWORD;
 
 // EMAIL_CONSTANTS
-const API_NAME = process.env.API_NAME;
+const { API_NAME } = require('../constants');
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL;
 const SUPPORT_EMAIL = process.env.SUPPORT_EMAIL;
 const SENDER_EMAIL = process.env.SENDER_EMAIL || 'support@bitholla.com';
