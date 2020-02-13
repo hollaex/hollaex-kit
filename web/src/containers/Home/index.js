@@ -104,7 +104,7 @@ class Home extends Component {
 		const { style } = this.state;
 		const isExpired =
 			info &&
-			(!Object.keys(info).length ||
+			(!Object.keys(info).length || !info.active||
 				moment().diff(info.created_at, 'seconds') > EXCHANGE_EXPIRY_SECONDS)
 				? true
 				: false;

@@ -113,8 +113,8 @@ class Login extends Component {
 			.then((res) => {
 				if (res.data.token)
 					this.setState({ token: res.data.token });
-				if (!Object.keys(this.props.info).length
-					|| (this.props.info.is_trial
+				if ((!Object.keys(this.props.info).length) || (!this.props.info.active)
+					|| (this.props.info.is_trial && this.props.info.active 
 						&& moment().diff(this.props.info.created_at, 'seconds') > EXCHANGE_EXPIRY_SECONDS))
 					this.checkExpiryExchange();
 				else if (res.data && res.data.callbackUrl)
@@ -169,8 +169,8 @@ class Login extends Component {
 				this.setState({ otpDialogIsOpen: false });
 				if (res.data.token)
 					this.setState({ token: res.data.token });
-				if (!Object.keys(this.props.info).length
-					|| (this.props.info.is_trial
+				if ((!Object.keys(this.props.info).length) || (!this.props.info.active)
+					|| (this.props.info.is_trial && this.props.info.active
 						&& moment().diff(this.props.info.created_at, 'seconds') > EXCHANGE_EXPIRY_SECONDS))
 					this.checkExpiryExchange();
 				else if (res.data && res.data.callbackUrl)
