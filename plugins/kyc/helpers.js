@@ -17,7 +17,7 @@ const AWS_SE = 'amazonaws.com/';
 const EXPIRES = 300; // seconds
 const { differenceWith, isEqual } = require('lodash');
 const { all } = require('bluebird');
-const { ERROR_CHANGE_USER_INFO, USER_NOT_FOUND } = require('./messages');
+const { ERROR_CHANGE_USER_INFO, IMAGE_NOT_FOUND } = require('./messages');
 
 const DEFAULT_SETTINGS = {
 	language: DEFAULT_LANGUAGE,
@@ -68,7 +68,7 @@ const getImagesData = (user_id, type = undefined) => {
 			if (type === 'admin') {
 				return { front: undefined, back: undefined, proof_of_residency: undefined };
 			}
-			throw new Error(USER_NOT_FOUND);
+			throw new Error(IMAGE_NOT_FOUND);
 		}
 		return verificationImages.dataValues;
 	});
