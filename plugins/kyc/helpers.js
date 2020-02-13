@@ -17,7 +17,7 @@ const AWS_SE = 'amazonaws.com/';
 const EXPIRES = 300; // seconds
 const { differenceWith, isEqual } = require('lodash');
 const { all } = require('bluebird');
-const { ERROR_CHANGE_USER_INFO } = require('./messages');
+const { ERROR_CHANGE_USER_INFO, USER_NOT_FOUND } = require('./messages');
 
 const DEFAULT_SETTINGS = {
 	language: DEFAULT_LANGUAGE,
