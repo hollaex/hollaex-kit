@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Table, Spin, Button, Input, Select, Alert } from 'antd';
 import { CSVLink } from 'react-csv';
+import moment from 'moment';
 
 import './index.css';
 
@@ -39,30 +40,35 @@ class Deposits extends Component {
 		searchValue: '',
 		queryParams: {},
 		queryDone: JSON.stringify({}),
-		type: ''
+		type: '',
+		total: 0,
+		page: 1,
+		pageSize: 10,
+		limit: 50,
+		currentTablePage: 1,
+		isRemaining: true
 	};
 
 	componentWillMount() {
-		const { initialData, queryParams } = this.props;
+		const { initialData, queryParams = {} } = this.props;
 		if (Object.keys(queryParams).length) {
-			this.requestDeposits(initialData, queryParams);
+			this.requestDeposits(initialData, queryParams, this.state.page, this.state.limit);
 		} else {
-			this.requestDeposits(initialData);
+			this.requestDeposits(initialData, {}, this.state.page, this.state.limit);
 		}
 	}
 
 	componentWillReceiveProps(nextProps) {
 		if (
-			nextProps.queryParams.currency !== this.props.queryParams.currency ||
-			nextProps.queryParams.type !== this.props.queryParams.type
+			nextProps.queryParams.currency !== this.props.queryParams.currency
 		) {
 			const { initialData, queryParams } = nextProps;
-			this.requestDeposits(initialData, queryParams);
+			this.requestDeposits(initialData, queryParams, this.state.page, this.state.limit);
 			this.onRefresh(false);
 		}
 	}
 
-	requestDeposits = (values = {}, queryParams = { type: 'deposits' }) => {
+	requestDeposits = (values = {}, queryParams = { type: 'deposit' }, page = 1, limit = 50) => {
 		if (Object.keys(queryParams).length === 0) {
 			return this.setState({
 				loading: false,
@@ -77,16 +83,23 @@ class Deposits extends Component {
 			queryDone: JSON.stringify(queryParams),
 			queryType: queryParams.type
 		});
-
 		requestDeposits({
 			...values,
-			...queryParams
+			...queryParams,
+			page,
+			limit
 		})
 			.then((data) => {
 				this.setState({
-					deposits: data.data,
+					deposits: page === 1
+						? data.data
+						: [ ...this.state.deposits, ...data.data],
 					loading: false,
-					fetched: true
+					fetched: true,
+					page: page,
+					currentTablePage: page === 1
+						? 1 : this.state.currentTablePage,
+					isRemaining: data.count > (page * limit)
 				});
 			})
 			.catch((error) => {
@@ -126,11 +139,11 @@ class Deposits extends Component {
 		}
 	};
 
-	dismissDeposit = (deposit_id, dismissed, indexItem) => () => {
+	dismissDeposit = (transaction_id, dismissed, indexItem) => () => {
 		const { loadingItem, loading, dismissingItem } = this.state;
 		if (!(dismissingItem || loadingItem || loading)) {
 			this.setState({ dismissingItem: true, error: '', indexItem });
-			dismissDeposit(deposit_id, dismissed)
+			dismissDeposit(transaction_id, dismissed)
 				.then((data) => {
 					const { deposits } = this.state;
 					this.setState({
@@ -159,21 +172,21 @@ class Deposits extends Component {
 
 	onSearch = (value) => {
 		if (value) {
-			this.setState({ searchValue: value.trim() });
 			const values = {};
 			values[this.state.searchKey] = value.trim();
 			const queryParams = { ...this.props.queryParams };
 			delete queryParams.dismissed;
 			delete queryParams.status;
+			this.setState({ searchValue: value.trim(), queryParams: values });
 			this.requestDeposits(values, queryParams);
 		}
 	};
 
 	onRefresh = (requestData = true) => {
-		const { initialData } = this.props;
+		const { initialData, queryParams } = this.props;
 		this.setState({ searchValue: '', searchKey: 'transaction_id' });
 		if (requestData) {
-			this.requestDeposits(initialData);
+			this.requestDeposits(initialData, queryParams);
 		}
 	};
 
@@ -186,7 +199,11 @@ class Deposits extends Component {
 			...this.state.queryParams
 		};
 		if (value) {
-			queryParams[key] = value;
+			if (key === 'start_date' || key === 'end_date') {
+				queryParams[key] = moment(value).format();
+			} else {
+				queryParams[key] = value;
+			}
 		} else {
 			delete queryParams[key];
 		}
@@ -194,7 +211,29 @@ class Deposits extends Component {
 	};
 
 	onClickFilters = () => {
-		this.requestDeposits({}, this.state.queryParams);
+		this.requestDeposits(
+			this.state.queryParams,
+			this.props.queryParams
+		);
+	};
+
+	pageChange = (count, pageSize) => {
+		const { page, limit, isRemaining } = this.state;
+		const pageCount = count % 5 === 0 ? 5 : count % 5;
+		const apiPageTemp = Math.floor(count / 5);
+		if (
+			limit === pageSize * pageCount &&
+			apiPageTemp >= page &&
+			isRemaining
+		) {
+			this.requestDeposits(
+				this.state.queryParams,
+				this.props.queryParams,
+				page + 1,
+				limit
+			);
+		}
+		this.setState({ currentTablePage: count });
 	};
 
 	render() {
@@ -209,7 +248,8 @@ class Deposits extends Component {
 			loadingItem,
 			queryParams,
 			queryDone,
-			queryType
+			queryType,
+			currentTablePage
 		} = this.state;
 		const { showFilters, coins } = this.props;
 		const columns = COLUMNS(undefined);
@@ -258,6 +298,7 @@ class Deposits extends Component {
 										</Select>
 										<Search
 											style={{ width: '75%' }}
+											defaultValue={searchValue}
 											onSearch={this.onSearch}
 										/>
 									</InputGroup>
@@ -299,12 +340,12 @@ class Deposits extends Component {
 									...deposit,
 									completeDeposit:
 										index !== indexItem
-											? this.completeDeposit(deposit.id, index)
+											? this.completeDeposit(deposit.transaction_id, index)
 											: () => {},
 									dismissDeposit:
 										index !== indexItem
 											? this.dismissDeposit(
-													deposit.id,
+													deposit.transaction_id,
 													!deposit.dismissed,
 													index
 											  )
@@ -318,6 +359,10 @@ class Deposits extends Component {
 							}}
 							expandedRowRender={renderRowContent}
 							expandRowByClick={true}
+							pagination={{
+								current: currentTablePage,
+								onChange: this.pageChange
+							}}
 						/>
 					</div>
 				)}

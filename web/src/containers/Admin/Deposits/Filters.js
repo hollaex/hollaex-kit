@@ -1,19 +1,21 @@
 import React from 'react';
 import { Button, Alert } from 'antd';
 import { SelectValue } from './SelectValues';
-import { FilterInput } from './FilterInput';
+import { FilterInput, FilterDate } from './FilterInput';
 
 const getFilters = (coinOptions) => [
 	{
 		label: 'Currency',
 		placeholder: 'Currency',
 		key: 'currency',
+		className: 'adjacent-fields',
 		options: coinOptions
 	},
 	{
 		label: 'Status',
 		placeholder: 'Status',
 		key: 'status',
+		className: 'adjacent-fields pl-2',
 		options: [
 			{ value: 'true', text: 'Confirmed' },
 			{ value: 'false', text: 'Pending' }
@@ -59,15 +61,27 @@ export const Filters = ({
 				/>
 			)}
 			<div className="filters-wrapper">
+				<div className="d-flex f-1"></div>
 				<div className="filters-wrapper-filters">
-					{fieldProps.map(({ key, ...rest }) => (
-						<SelectValue
-							key={key}
-							value={params[key]}
-							onSelect={onChange(key)}
-							{...rest}
+					<div className="adjacent-container d-flex flex-wrap">
+						{fieldProps.map(({ key, description, ...rest }, index) => (
+							<SelectValue
+								key={key}
+								defaultValue={params[key]}
+								onSelect={onChange(key)}
+								description={description}
+								className={'adjacent-fields'}
+								{...rest}
+							/>
+						))}
+						<FilterInput
+							onChange={onChange('user_id')}
+							label={"User id"}
+							defaultValue={params.user_id}
+							className={'adjacent-fields pl-2'}
+							placeholder="User id"
 						/>
-					))}
+					</div>
 					<FilterInput
 						onChange={onChange('transaction_id')}
 						label=""
@@ -82,13 +96,22 @@ export const Filters = ({
 						placeholder="Address or TrxId"
 						description="Bitcoin/Ethereum address or Bank TrxId"
 					/>
-					<FilterInput
-						onChange={onChange('created_at')}
-						label=""
-						defaultValue={params.created_at}
-						placeholder="Created at"
-						description="Created at"
-					/>
+					<div className="d-flex">
+						<FilterDate
+							onChange={onChange('start_date')}
+							label={"Start date"}
+							defaultValue={params.start_date}
+							className={'adjacent-fields mr-2'}
+							placeholder="Start date"
+						/>
+						<FilterDate
+							onChange={onChange('end_date')}
+							label={"End date"}
+							defaultValue={params.end_date}
+							className={'adjacent-fields'}
+							placeholder="End date"
+						/>
+					</div>
 				</div>
 				<div className="filters-wrapper-buttons">
 					<Button
