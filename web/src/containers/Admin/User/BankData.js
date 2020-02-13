@@ -76,7 +76,7 @@ class BankData extends Component {
 						...data
 					});
 				}
-				this.setState({ bank: data.bank_account });
+				this.setState({ bank: data });
 			})
 			.catch((err) => {
 				message.error('error');
