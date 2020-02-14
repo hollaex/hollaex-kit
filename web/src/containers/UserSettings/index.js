@@ -14,7 +14,7 @@ import {
 } from '../../actions/appActions';
 import { logout } from '../../actions/authAction';
 import {
-	updateUser,
+	updateUserSettings,
 	setUserData,
 	setUsername,
 	setUsernameStore
@@ -305,7 +305,7 @@ class UserSettings extends Component {
 				break;
 			default:
 		}
-		return updateUser({ settings })
+		return updateUserSettings(settings)
 			.then(({ data }) => {
 				this.props.setUserData(data);
 				this.props.changeLanguage(data.settings.language);

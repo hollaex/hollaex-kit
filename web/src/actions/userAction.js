@@ -89,6 +89,14 @@ export const updateUser = (values) => {
 	});
 };
 
+export const updateUserSettings = (values) => {
+	return axios({
+		data: values,
+		url: '/user/settings',
+		method: 'PUT'
+	});
+};
+
 export const updateDocuments = (values) => {
 	const formData = new FormData();
 
