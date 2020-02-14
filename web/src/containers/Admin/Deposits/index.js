@@ -201,10 +201,21 @@ class Deposits extends Component {
 		if (value) {
 			if (key === 'start_date' || key === 'end_date') {
 				queryParams[key] = moment(value).format();
+			} else if (key === 'status') {
+				if (value === 'dismissed') {
+					delete queryParams[key];
+					queryParams.dismissed = true;
+				} else {
+					delete queryParams.dismissed;
+					queryParams[key] = value;
+				}
 			} else {
 				queryParams[key] = value;
 			}
 		} else {
+			if (key === 'status') {
+				delete queryParams.dismissed;
+			}
 			delete queryParams[key];
 		}
 		this.setState({ queryParams });

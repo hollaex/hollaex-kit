@@ -18,16 +18,20 @@ const getFilters = (coinOptions) => [
 		className: 'adjacent-fields pl-2',
 		options: [
 			{ value: 'true', text: 'Confirmed' },
-			{ value: 'false', text: 'Pending' }
+			{ value: 'false', text: 'Pending' },
+			{ value: 'dismissed', text: 'Dismissed' }
 		]
-	},
-	{
-		label: 'Dismissed',
-		placeholder: 'Dismissed',
-		key: 'dismissed',
-		options: [{ value: 'true', text: 'Yes' }, { value: 'false', text: 'No' }]
 	}
 ];
+
+const getStatusValue = (key, params) => {
+	if (key === 'status'
+		&& params.dismissed !== undefined) {
+		return 'dismissed';
+	} else {
+		return params[key];
+	}
+};
 
 export const Filters = ({
 	coins,
@@ -63,32 +67,36 @@ export const Filters = ({
 			<div className="filters-wrapper">
 				<div className="d-flex f-1"></div>
 				<div className="filters-wrapper-filters">
-					<div className="adjacent-container d-flex flex-wrap">
+					<div className="d-flex">
 						{fieldProps.map(({ key, description, ...rest }, index) => (
 							<SelectValue
 								key={key}
-								defaultValue={params[key]}
+								defaultValue={getStatusValue(key, params)}
 								onSelect={onChange(key)}
 								description={description}
 								className={'adjacent-fields'}
 								{...rest}
 							/>
 						))}
+						
+					</div>
+					<div className="d-flex">
 						<FilterInput
 							onChange={onChange('user_id')}
 							label={"User id"}
 							defaultValue={params.user_id}
-							className={'adjacent-fields pl-2'}
+							className={'adjacent-fields'}
 							placeholder="User id"
 						/>
+						<FilterInput
+							onChange={onChange('transaction_id')}
+							label="Transaction id"
+							className={'adjacent-fields pl-2'}
+							defaultValue={params.transaction_id}
+							placeholder="Transaction Id or Payment Id(Bank Id)"
+							description="Transaction Id or Payment Id(Bank Id)"
+						/>
 					</div>
-					<FilterInput
-						onChange={onChange('transaction_id')}
-						label=""
-						defaultValue={params.transaction_id}
-						placeholder="Transaction Id or Payment Id(Bank Id)"
-						description="Transaction Id or Payment Id(Bank Id)"
-					/>
 					<FilterInput
 						onChange={onChange('address')}
 						label=""
