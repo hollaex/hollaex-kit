@@ -1,9 +1,19 @@
 import querystring from 'query-string';
 import { requestAuthenticated } from '../../../utils';
 
-export const requestDeposits = (query) => {
-	const queryValues = querystring.stringify(query);
-	const path = `/admin/deposits${queryValues ? `?${queryValues}` : ''}`;
+export const requestDeposits = (query = { type: 'deposit' }) => {
+	const { type, currency, ...rest } = query;
+	let formProps = { ...rest };
+	if (currency) {
+		formProps.currency = currency;
+	}
+	const queryValues = Object.keys(formProps).length
+		? querystring.stringify(formProps)
+		: '';
+	let path = `/admin/deposits?${queryValues}`;
+	if (type === 'withdrawal') {
+		path = `/admin/withdrawals?${queryValues}`;
+	}
 	return requestAuthenticated(path);
 };
 export const requestdate = () => {
@@ -16,13 +26,13 @@ export const completeDeposits = (id, status) => {
 		method: 'PUT',
 		body: JSON.stringify({ status })
 	};
-	return requestAuthenticated(`/admin/deposit/${id}/verify`, options);
+	return requestAuthenticated(`/admin/deposit/verify?transaction_id=${id}`, options);
 };
 
-export const dismissDeposit = (deposit_id, dismissed) => {
+export const dismissDeposit = (id, dismissed) => {
 	const options = {
 		method: 'PUT',
 		body: JSON.stringify({ dismissed })
 	};
-	return requestAuthenticated(`/admin/deposits/${deposit_id}/dismiss`, options);
+	return requestAuthenticated(`/admin/deposits/dismiss?transaction_id=${id}`, options);
 };

@@ -10,8 +10,8 @@ export const renderBoolean = (value) => (
 );
 
 const ButtonNotAvailable = () => <Icon type="close-square" />;
-export const renderValidation = ({ status, completeDeposit, updatingItem }) =>
-	!status ? (
+export const renderValidation = ({ status, dismissed, completeDeposit, updatingItem }) =>
+	(!status && !dismissed) ? (
 		<Tooltip placement="bottom" title="VALIDATE">
 			<Button
 				type="primary"
@@ -32,7 +32,7 @@ export const renderDismiss = ({
 	dismissDeposit,
 	dismissingItem
 }) =>
-	!status ? (
+	(!status && !dismissed) ? (
 		<Tooltip
 			placement="bottom"
 			title={dismissed ? 'UNDO DISMISS' : 'DISMISS'}
