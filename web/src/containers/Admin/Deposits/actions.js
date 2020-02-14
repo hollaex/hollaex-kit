@@ -34,5 +34,5 @@ export const dismissDeposit = (id, dismissed) => {
 		method: 'PUT',
 		body: JSON.stringify({ dismissed })
 	};
-	return requestAuthenticated(`/admin/deposits/dismiss?transaction_id=${id}`, options);
+	return requestAuthenticated(`/admin/deposit/dismiss?transaction_id=${id}`, options);
 };
