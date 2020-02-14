@@ -1,3 +1,5 @@
+'use strict';
+
 const fetchMessage = (email, data, language, domain) => {
 	return {
 		html: html(email, data, language, domain),

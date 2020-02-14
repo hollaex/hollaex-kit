@@ -1,3 +1,5 @@
+'use strict';
+
 const { DOMAIN } = require('../constants');
 exports.PLUGINS = process.env.PLUGINS || 'kyc,bank,sms';
 exports.PLUGIN_PORT = process.env.PLUGIN_PORT || 10011;

@@ -1,3 +1,5 @@
+'use strict';
+
 // SMTP CONSTANTS --------------------------------
 exports.SMTP_SERVER = process.env.SMTP_SERVER || 'smtp.gmail.com';
 exports.SMTP_PORT = process.env.SMTP_PORT || 587;
