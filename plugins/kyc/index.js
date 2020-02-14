@@ -90,10 +90,12 @@ app.put('/plugins/kyc/admin', [verifyToken, bodyParser.json()], (req, res) => {
 
 	const REMOVE_PROPS = [
 		'id_data',
+		'bank_account',
 		'crypto_wallet',
 		'verification_level',
 		'otp_enabled',
 		'activated',
+		'username',
 		'settings'
 	];
 

@@ -8,8 +8,7 @@ const {
 	ID_FIELDS,
 	ADDRESS_FIELDS,
 	S3_BUCKET_NAME,
-	VERIFY_STATUS,
-	SETTINGS_KEYS
+	VERIFY_STATUS
 } = require('../constants');
 const s3Write = require('./s3').write(S3_BUCKET_NAME);
 const s3Read = require('./s3').read(S3_BUCKET_NAME);
@@ -18,11 +17,6 @@ const EXPIRES = 300; // seconds
 const { differenceWith, isEqual } = require('lodash');
 const { all } = require('bluebird');
 const { ERROR_CHANGE_USER_INFO, IMAGE_NOT_FOUND } = require('./messages');
-
-const DEFAULT_SETTINGS = {
-	language: DEFAULT_LANGUAGE,
-	orderConfirmationPopup: true
-};
 
 const multer = require('multer');
 const upload = multer();
@@ -154,20 +148,6 @@ const getPublicLink = (privateLink) => {
 	return s3Read.getSignedUrl('getObject', params);
 };
 
-const joinSettings = (userSettings = {}, newSettings = {}) => {
-	const joinedSettings = {};
-	SETTING_KEYS.forEach((key) => {
-		if (newSettings.hasOwnProperty(key)) {
-			joinedSettings[key] = newSettings[key];
-		} else if (userSettings.hasOwnProperty(key)) {
-			joinedSettings[key] = userSettings[key];
-		} else {
-			joinedSettings[key] = DEFAULT_SETTINGS[key];
-		}
-	});
-	return joinedSettings;
-};
-
 const updateUserPhoneNumber = (user, phone_number, options = {}) => {
 	return user.update(
 		{ phone_number },
@@ -241,7 +221,7 @@ const userUpdateLog = (user_id, prevData = {}, newData = {}) => {
 };
 
 const updateUserData = (
-	{ id_data = {}, settings = {}, bank_account, ...rest },
+	{ id_data = {}, bank_account, ...rest },
 	role = ROLES.USER
 ) => (user, options = {}) => {
 	const updateData = {
@@ -259,9 +239,6 @@ const updateUserData = (
 			updateData['id_data'] = id_data;
 		}
 	}
-	if (Object.keys(settings).length > 0) {
-		updateData.settings = joinSettings(user.dataValues.settings, settings);
-	}
 	if (
 		updateData.full_name ||
 		updateData.gender ||
@@ -273,9 +250,6 @@ const updateUserData = (
 			throw new Error(ERROR_CHANGE_USER_INFO);
 		}
 	}
-	if (updateData.username && user.dataValues.settings.usernameIsSet) {
-		throw new Error(ERROR_CHANGE_USER_INFO);
-	}
 	// User is not allowed to update his phone number through this. User has to verify phone number through a whole different process
 	if (updateData.phone_number && role === ROLES.USER) {
 		throw new Error(ERROR_CHANGE_USER_INFO);
@@ -283,14 +257,12 @@ const updateUserData = (
 	return user.update(updateData, {
 		fields: [
 			'full_name',
-			'username',
 			'gender',
 			'nationality',
 			'dob',
 			'address',
 			'phone_number',
-			'id_data',
-			'settings'
+			'id_data'
 		],
 		...options
 	});

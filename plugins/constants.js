@@ -56,11 +56,3 @@ exports.VERIFY_STATUS = {
 	REJECTED: 2,
 	COMPLETED: 3
 };
-exports.SETTINGS_KEYS = [
-	'language',
-	'notification',
-	'interface',
-	'audio',
-	'risk',
-	'chat'
-];
