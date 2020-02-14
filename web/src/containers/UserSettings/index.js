@@ -283,13 +283,16 @@ class UserSettings extends Component {
 
 	onSubmitSettings = (formProps, formKey) => {
 		let settings = {};
+		let formValues = { ...formProps };
 		switch (formKey) {
 			case 'notification':
 				settings.notification = formProps;
 				break;
 			case 'interface':
-				settings = { ...formProps }; // ToDo: need to be removed after end point update
-				settings.interface = formProps;
+				if (formProps.order_book_levels) {
+					formValues.order_book_levels = parseInt(formProps.order_book_levels, 10);
+				}
+				settings.interface = formValues;
 				break;
 			case 'language':
 				settings = { ...formProps };
@@ -301,7 +304,10 @@ class UserSettings extends Component {
 				settings.audio = formProps;
 				break;
 			case 'risk':
-				settings.risk = formProps;
+				if (formProps.order_portfolio_percentage) {
+					formValues.order_portfolio_percentage = parseInt(formProps.order_portfolio_percentage, 10);
+				}
+				settings.risk = formValues;
 				break;
 			default:
 		}
