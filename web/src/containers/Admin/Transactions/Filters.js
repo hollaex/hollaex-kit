@@ -100,7 +100,7 @@ export const Filters = ({
 						className="filter-button"
 						disabled={!allowQuery}
 					>
-						Query
+						Search
 					</Button>
 				</div>
 			</div>

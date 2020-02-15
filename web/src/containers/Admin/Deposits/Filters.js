@@ -83,26 +83,24 @@ export const Filters = ({
 					<div className="d-flex">
 						<FilterInput
 							onChange={onChange('user_id')}
-							label={"User id"}
+							label={"User Id"}
 							defaultValue={params.user_id}
 							className={'adjacent-fields'}
 							placeholder="User id"
 						/>
 						<FilterInput
 							onChange={onChange('transaction_id')}
-							label="Transaction id"
+							label="Transaction Id"
 							className={'adjacent-fields pl-2'}
 							defaultValue={params.transaction_id}
-							placeholder="Transaction Id or Payment Id(Bank Id)"
-							description="Transaction Id or Payment Id(Bank Id)"
+							placeholder="Transaction Id or Payment Id"
 						/>
 					</div>
 					<FilterInput
 						onChange={onChange('address')}
-						label=""
+						label="Address"
 						defaultValue={params.address}
-						placeholder="Address or TrxId"
-						description="Bitcoin/Ethereum address or Bank TrxId"
+						placeholder="Address"
 					/>
 					<div className="d-flex">
 						<FilterDate
@@ -129,7 +127,7 @@ export const Filters = ({
 						className="filter-button"
 						disabled={!allowQuery}
 					>
-						Query
+						Search
 					</Button>
 				</div>
 			</div>
