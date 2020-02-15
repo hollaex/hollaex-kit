@@ -12,16 +12,16 @@ export const completeDeposits = (values) => {
 		method: 'PUT',
 		body: JSON.stringify(values)
 	};
-	return requestAuthenticated('/admin/deposit/verify', options);
+	return requestAuthenticated(`/admin/deposit/verify?transaction_id=${values.transaction_id}`, options);
 };
 
-export const dismissDeposit = (deposit_id, dismissed) => {
+export const dismissDeposit = (transaction_id, dismissed) => {
 	const options = {
 		method: 'PUT',
 		body: JSON.stringify({ dismissed })
 	};
 	return requestAuthenticated(
-		`/admin/deposits/${deposit_id}/dismiss`,
+		`/admin/deposit/dismiss?transaction_id=${transaction_id}`,
 		options
 	);
 };
