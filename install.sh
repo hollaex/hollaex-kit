@@ -1,7 +1,7 @@
-#!/bin/bash
+!/bin/bash
 
-# echo "Pulling HollaEx CLI from Github..."
-# curl -L https://raw.githubusercontent.com/bitholla/hollaex-cli/master/install.sh | bash
+echo "Pulling HollaEx CLI from Github..."
+curl -L https://raw.githubusercontent.com/bitholla/hollaex-cli/master/install.sh | bash
 
 # Dependencies installer for Debian (Ubuntu) based Linux.
 if command apt-get -v > /dev/null 2>&1; then
