@@ -49,7 +49,7 @@ class UploadIds extends Component {
 				AntdMessage.success('Files upload successfully', 5);
 			})
 			.catch((err) => {
-				const message = err.data.message || err.message;
+				const message = err && err.data ? err.data.message : err.message;
 				AntdMessage.error(message, 5);
 				throw new SubmissionError({ _error: message });
 			});

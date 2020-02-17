@@ -1,6 +1,7 @@
 'use strict';
 
-const { API_NAME, SUPPORT_EMAIL } = require('../../constants');
+const { API_NAME } = require('../../constants');
+const { SUPPORT_EMAIL } = require('../constants');
 
 const COMMON = {
 	GREETING: (name) => `${name}님`,

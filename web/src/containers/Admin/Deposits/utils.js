@@ -10,8 +10,13 @@ export const renderBoolean = (value) => (
 );
 
 const ButtonNotAvailable = () => <Icon type="close-square" />;
-export const renderValidation = ({ status, dismissed, completeDeposit, updatingItem }) =>
-	(!status && !dismissed) ? (
+export const renderValidation = ({
+	status,
+	dismissed,
+	completeDeposit,
+	updatingItem
+}) =>
+	!status && !dismissed ? (
 		<Tooltip placement="bottom" title="VALIDATE">
 			<Button
 				type="primary"
@@ -32,11 +37,8 @@ export const renderDismiss = ({
 	dismissDeposit,
 	dismissingItem
 }) =>
-	(!status && !dismissed) ? (
-		<Tooltip
-			placement="bottom"
-			title={dismissed ? 'UNDO DISMISS' : 'DISMISS'}
-		>
+	!status && !dismissed ? (
+		<Tooltip placement="bottom" title={dismissed ? 'UNDO DISMISS' : 'DISMISS'}>
 			<Button
 				type={dismissed ? 'dashed' : 'primary'}
 				onClick={dismissDeposit}
@@ -83,7 +85,7 @@ export const COLUMNS = (currency, type) => {
 		},
 		{
 			title: 'Rejected',
-			dataIndex: 'rejected',
+			dataIndex: 'dismissed',
 			key: 'rejected',
 			render: renderBoolean
 		}

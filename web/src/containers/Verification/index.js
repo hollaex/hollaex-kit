@@ -23,7 +23,7 @@ import {
 } from '../../actions/verificationActions';
 import { logout } from '../../actions/authAction';
 
-// import BankVerification from './BankVerification';
+import BankVerification from './BankVerification';
 import { isBrowser, isMobile } from 'react-device-detect';
 import VerificationHome from './VerificationHome';
 import IdentityVerification from './IdentityVerification';
@@ -42,7 +42,7 @@ import { ContactForm } from '../';
 import { NOTIFICATIONS } from '../../actions/appActions';
 import { setMe } from '../../actions/userAction';
 import { getThemeClass } from '../../utils/theme';
-// import BankVerificationHome from './BankVerificationHome';
+import BankVerificationHome from './BankVerificationHome';
 import IdentityVerificationHome from './IdentityVerificationHome';
 import MobileVerificationHome from './MobileVerificationHome';
 import DocumentsVerificationHome from './DocumentsVerificationHome';
@@ -103,19 +103,22 @@ class Verification extends Component {
 
 	calculateActiveTab = ({
 		email,
+		bank_account,
 		address,
 		phone_number,
 		id_data,
 		full_name
 	}) => {
 		if (!email) {
-			return 0;
-		} else if (!address.country) {
+			return 0
+		} else if (!bank_account.length) {
 			return 1;
-		} else if (!phone_number) {
+		} else if (!address.country) {
 			return 2;
-		} else if (!id_data.provided) {
+		} else if (!phone_number) {
 			return 3;
+		} else if (!id_data.provided) {
+			return 4;
 		}
 		return 0;
 	};
@@ -128,8 +131,24 @@ class Verification extends Component {
 		if (activeTab === -1) {
 			return;
 		}
-		const { email, address, id_data, phone_number } = user;
-		const identity_status = address.country
+		const { email, bank_account, address, id_data, phone_number } = user;
+		let bank_status = 0;
+		if (bank_account.length) {
+			if (bank_account.filter(data => data.status === 3).length) {
+				bank_status = 3;
+			} else if (bank_account.filter(data => data.status === 1).length) {
+				bank_status = 1;
+			} else if (bank_account.filter(data => data.status === 2).length) {
+				bank_status = 2;
+			}
+			if (id_data.status !== 3) {
+				bank_status = 1;
+			}
+			if (bank_account.length === bank_account.filter(data => data.status === 0).length) {
+				bank_status = 0;
+			}
+		}
+		const identity_status = address.country 
 			? id_data.status && id_data.status === 3
 				? 3
 				: 1
@@ -158,6 +177,27 @@ class Verification extends Component {
 							disable
 						/>
 					</div>
+				)
+			},
+			{
+				title: isMobile ? (
+					<CustomMobileTabs
+						title={STRINGS.USER_VERIFICATION.TITLE_BANK}
+						icon={ICONS.VERIFICATION_BANK_NEW}
+						statusCode={bank_status}
+					/>
+				) : (
+					<CustomTabs
+						title={STRINGS.USER_VERIFICATION.TITLE_BANK}
+						icon={ICONS.VERIFICATION_BANK_NEW}
+						statusCode={bank_status}
+					/>
+				),
+				content: (<BankVerificationHome
+							user={user}
+							setActiveTab={this.setActiveTab}
+							setActivePageContent={this.setActivePageContent}
+						/>
 				)
 			},
 			{
@@ -294,6 +334,16 @@ class Verification extends Component {
 				);
 			case 1:
 				return (
+					<BankVerification
+						icon={ICONS.VERIFICATION_BANK_NEW}
+						openContactForm={this.openContactForm}
+						setActivePageContent={this.setActivePageContent}
+						setActiveTab={this.setActiveTab}
+						moveToNextStep={this.goNextTab}
+					/>
+				);
+			case 2:
+				return (
 					<IdentityVerification
 						icon={ICONS.VERIFICATION_BANK_NEW}
 						fullName={user.full_name}
@@ -305,7 +355,7 @@ class Verification extends Component {
 						setActiveTab={this.setActiveTab}
 					/>
 				);
-			case 2:
+			case 3:
 				return (
 					<MobileVerification
 						initialValues={mobileInitialValues(user.address)}
@@ -316,7 +366,7 @@ class Verification extends Component {
 						setActivePageContent={this.setActivePageContent}
 					/>
 				);
-			case 3:
+			case 4:
 				return (
 					<DocumentsVerification
 						nationality={user.nationality}

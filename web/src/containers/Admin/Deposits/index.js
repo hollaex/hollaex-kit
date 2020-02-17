@@ -52,23 +52,36 @@ class Deposits extends Component {
 	componentWillMount() {
 		const { initialData, queryParams = {} } = this.props;
 		if (Object.keys(queryParams).length) {
-			this.requestDeposits(initialData, queryParams, this.state.page, this.state.limit);
+			this.requestDeposits(
+				initialData,
+				queryParams,
+				this.state.page,
+				this.state.limit
+			);
 		} else {
 			this.requestDeposits(initialData, {}, this.state.page, this.state.limit);
 		}
 	}
 
 	componentWillReceiveProps(nextProps) {
-		if (
-			nextProps.queryParams.currency !== this.props.queryParams.currency
-		) {
+		if (nextProps.queryParams.currency !== this.props.queryParams.currency) {
 			const { initialData, queryParams } = nextProps;
-			this.requestDeposits(initialData, queryParams, this.state.page, this.state.limit);
+			this.requestDeposits(
+				initialData,
+				queryParams,
+				this.state.page,
+				this.state.limit
+			);
 			this.onRefresh(false);
 		}
 	}
 
-	requestDeposits = (values = {}, queryParams = { type: 'deposit' }, page = 1, limit = 50) => {
+	requestDeposits = (
+		values = {},
+		queryParams = { type: 'deposit' },
+		page = 1,
+		limit = 50
+	) => {
 		if (Object.keys(queryParams).length === 0) {
 			return this.setState({
 				loading: false,
@@ -91,15 +104,13 @@ class Deposits extends Component {
 		})
 			.then((data) => {
 				this.setState({
-					deposits: page === 1
-						? data.data
-						: [ ...this.state.deposits, ...data.data],
+					deposits:
+						page === 1 ? data.data : [...this.state.deposits, ...data.data],
 					loading: false,
 					fetched: true,
 					page: page,
-					currentTablePage: page === 1
-						? 1 : this.state.currentTablePage,
-					isRemaining: data.count > (page * limit)
+					currentTablePage: page === 1 ? 1 : this.state.currentTablePage,
+					isRemaining: data.count > page * limit
 				});
 			})
 			.catch((error) => {
@@ -202,12 +213,23 @@ class Deposits extends Component {
 			if (key === 'start_date' || key === 'end_date') {
 				queryParams[key] = moment(value).format();
 			} else if (key === 'status') {
-				if (value === 'dismissed') {
-					delete queryParams[key];
-					queryParams.dismissed = true;
-				} else {
-					delete queryParams.dismissed;
-					queryParams[key] = value;
+				switch (value) {
+					case 'dismissed':
+						delete queryParams[key];
+						queryParams.dismissed = true;
+						break;
+					case 'false':
+						queryParams.dismissed = false;
+						queryParams[key] = value;
+						break;
+					case 'true':
+						delete queryParams.dismissed;
+						queryParams[key] = value;
+						break;
+					default:
+						delete queryParams.dismissed;
+						delete queryParams[key];
+						break;
 				}
 			} else {
 				queryParams[key] = value;
@@ -222,21 +244,14 @@ class Deposits extends Component {
 	};
 
 	onClickFilters = () => {
-		this.requestDeposits(
-			this.state.queryParams,
-			this.props.queryParams
-		);
+		this.requestDeposits(this.state.queryParams, this.props.queryParams);
 	};
 
 	pageChange = (count, pageSize) => {
 		const { page, limit, isRemaining } = this.state;
 		const pageCount = count % 5 === 0 ? 5 : count % 5;
 		const apiPageTemp = Math.floor(count / 5);
-		if (
-			limit === pageSize * pageCount &&
-			apiPageTemp >= page &&
-			isRemaining
-		) {
+		if (limit === pageSize * pageCount && apiPageTemp >= page && isRemaining) {
 			this.requestDeposits(
 				this.state.queryParams,
 				this.props.queryParams,
@@ -277,9 +292,7 @@ class Deposits extends Component {
 									coins={coins}
 									onChange={this.onChangeQuery}
 									onClick={this.onClickFilters}
-									hasChanges={
-										queryDone !== JSON.stringify(queryParams)
-									}
+									hasChanges={queryDone !== JSON.stringify(queryParams)}
 									params={queryParams}
 									loading={loading}
 									fetched={fetched}
@@ -290,8 +303,7 @@ class Deposits extends Component {
 							<div className="controls-wrapper">
 								<div className="controls-search">
 									<div>
-										Press enter or click on the search icon to perform
-										a search
+										Press enter or click on the search icon to perform a search
 									</div>
 									<InputGroup compact>
 										<Select
@@ -299,13 +311,11 @@ class Deposits extends Component {
 											style={{ width: '25%' }}
 											onSelect={this.onSelect}
 										>
-											{SELECT_KEYS(undefined).map(
-												({ value, label }, index) => (
-													<Option value={value} key={index}>
-														{label}
-													</Option>
-												)
-											)}
+											{SELECT_KEYS(undefined).map(({ value, label }, index) => (
+												<Option value={value} key={index}>
+													{label}
+												</Option>
+											))}
 										</Select>
 										<Search
 											style={{ width: '75%' }}
