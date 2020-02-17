@@ -1,8 +1,8 @@
 'use strict';
 
-const DOMAIN = require('../../init').getConfiguration().constants.domain;
-const DEFAULT_LANGUAGE = require('../../init').getConfiguration().constants.defaults.language;
-const API_NAME = require('../../init').getConfiguration().constants.api_name;
+const DOMAIN = process.env.DOMAIN || (process.env.NODE_ENV === 'production' ? 'https://hollaex.com' : 'http://localhost:3000');
+const DEFAULT_LANGUAGE = process.env.NEW_USER_DEFAULT_LANGUAGE || 'en';
+const API_NAME = process.env.API_NAME || 'HollaEx';
 const { TemplateEmail } = require('./helpers/common');
 const { MAILTYPE } = require('../strings');
 

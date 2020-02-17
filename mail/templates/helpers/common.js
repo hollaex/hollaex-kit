@@ -5,9 +5,9 @@ const {
 	BITHOLLA_LOGO_BLACK,
 	EMAIL_ICONS
 } = require('../../constants');
-const DOMAIN = require('../../../init').getConfiguration().constants.domain;
-const LOGO_BLACK_PATH = require('../../../init').getConfiguration().constants.logo_black_path;
-const DEFAULT_LANGUAGE = require('../../../init').getConfiguration().constants.defaults.language;
+const DOMAIN = process.env.DOMAIN || (process.env.NODE_ENV === 'production' ? 'https://hollaex.com' : 'http://localhost:3000');;
+const LOGO_BLACK_PATH = process.env.LOGO_BLACK_PATH;
+const DEFAULT_LANGUAGE = process.env.NEW_USER_DEFAULT_LANGUAGE || 'en';
 const styles = require('./styles');
 
 exports.Button = (link, text) => `
