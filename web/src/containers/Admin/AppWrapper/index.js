@@ -160,7 +160,7 @@ class AppWrapper extends React.Component {
 			this.props.setPairs(data.pairs);
 			this.props.setPairsData(data.pairs);
 			this.props.setCurrencies(data.coins);
-			this.props.setConfig(data.config);
+			this.props.setConfig(data.constants);
 			const pairWithBase = Object.keys(data.pairs).filter((key) => {
 				let temp = data.pairs[key];
 				return temp.pair_2 === BASE_CURRENCY;
