@@ -5,11 +5,9 @@ const {
 	BITHOLLA_LOGO_BLACK,
 	EMAIL_ICONS
 } = require('../../constants');
-const {
-	DOMAIN,
-	LOGO_BLACK_PATH,
-	DEFAULT_LANGUAGE
-} = require('../../../constants');
+const DOMAIN = require('../../../init').getConfiguration().constants.domain;
+const LOGO_BLACK_PATH = require('../../../init').getConfiguration().constants.logo_black_path;
+const DEFAULT_LANGUAGE = require('../../../init').getConfiguration().constants.defaults.language;
 const styles = require('./styles');
 
 exports.Button = (link, text) => `

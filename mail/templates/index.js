@@ -1,6 +1,8 @@
 'use strict';
 
-const { DOMAIN, DEFAULT_LANGUAGE, API_NAME } = require('../../constants');
+const DOMAIN = require('../../init').getConfiguration().constants.domain;
+const DEFAULT_LANGUAGE = require('../../init').getConfiguration().constants.defaults.language;
+const API_NAME = require('../../init').getConfiguration().constants.api_name;
 const { TemplateEmail } = require('./helpers/common');
 const { MAILTYPE } = require('../strings');
 

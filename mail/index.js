@@ -3,18 +3,18 @@
 const { sendAwsEmail, formatDate, getCountryFromIp, sendSMTPEmail } = require('./utils');
 const payloadTemplate = require('./templates/helpers/payloadTemplate');
 const { loggerEmail } = require('../config/logger');
-const {
-	SUPPORT_SOURCE,
-	BCC_ADDRESSES,
-	SUPPORT_EMAIL,
-	MASTER_EMAIL,
-	INQUIRY_EMAIL,
-	SEND_EMAIL_TO_SUPPORT
-} = require('./constants');
-const {
-	DOMAIN,
-	DEFAULT_LANGUAGE
-} = require('../constants');
+const SUPPORT_EMAIL = require('../init').getConfiguration().constants.accounts.support;
+const INQUIRY_EMAIL = require('../init').getConfiguration().constants.accounts.support;
+const MASTER_EMAIL = require('../init').getConfiguration().constants.accounts.admin;
+
+const SEND_EMAIL_TO_SUPPORT = (require('../init').getConfiguration().constants.emails.send_email_to_support &&
+	require('../init').getConfiguration().constants.emails.send_email_to_support === 'true') ||
+	process.env.NODE_ENV === 'production';
+const API_NAME = require('../init').getConfiguration().constants.api_name;
+const SUPPORT_SOURCE = `'${API_NAME} Support <${SENDER_EMAIL}>'`;
+const BCC_ADDRESSES = SEND_EMAIL_TO_SUPPORT ? [exports.MASTER_EMAIL] : [];
+const DOMAIN = require('../init').getConfiguration().constants.domain;
+const DEFAULT_LANGUAGE = require('../init').getConfiguration().constants.defaults.language;
 const { getValidLanguage } = require('../utils/strings');
 const { MAILTYPE } = require('./strings');
 const generateMessageContent = require('./templates');

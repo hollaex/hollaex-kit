@@ -31,14 +31,12 @@ const moment = require('moment');
 const geoip = require('geoip-lite');
 const { FORMATDATE } = require('./strings');
 
-const { DEFAULT_LANGUAGE } = require('../constants');
-const {
-	SMTP_SERVER,
-	SMTP_PORT,
-	SMTP_USER,
-	SMTP_PASSWORD,
-	DEFAULT_TIMEZONE
-} = require('./constants');
+const DEFAULT_LANGUAGE = require('../init').getConfiguration().constants.defaults.language;
+const SMTP_SERVER = require('../init').getConfiguration().constants.smtp.server;
+const SMTP_PORT = require('../init').getConfiguration().constants.smtp.port;
+const SMTP_USER = require('../init').getConfiguration().constants.smtp.user;
+const SMTP_PASSWORD = require('../init').getSecrets().smtp.password;
+const DEFAULT_TIMEZONE = require('../init').getConfiguration().constants.emails.timezone;
 
 const formatTimezone = (date, timezone = DEFAULT_TIMEZONE) => {
 	let tzTime;
