@@ -118,11 +118,11 @@ class Transactions extends Component {
 		}
 	};
 
-	dismissDeposit = (deposit_id, dismissed, indexItem) => () => {
+	dismissDeposit = (transaction_id, dismissed, indexItem) => () => {
 		const { loadingItem, loading, dismissingItem } = this.state;
 		if (!(dismissingItem || loadingItem || loading)) {
 			this.setState({ dismissingItem: true, error: '', indexItem });
-			dismissDeposit(deposit_id, dismissed)
+			dismissDeposit(transaction_id, dismissed)
 				.then((data) => {
 					const { deposits } = this.state;
 					this.setState({
@@ -257,7 +257,7 @@ class Transactions extends Component {
 									dismissDeposit:
 										index !== indexItem
 											? this.dismissDeposit(
-													deposit.id,
+													deposit.transaction_id,
 													!deposit.dismissed,
 													index
 											  )

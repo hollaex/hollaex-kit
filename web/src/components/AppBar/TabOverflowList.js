@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import ReactSVG from 'react-svg';
 
-import { ICONS, BASE_CURRENCY, DEFAULT_COIN_DATA, SIMPLE_FORMAT_MIN } from '../../config/constants';
-import { donutFormatPercentage, formatToSimple } from '../../utils/currency';
+import { ICONS, BASE_CURRENCY, DEFAULT_COIN_DATA } from '../../config/constants';
+import { donutFormatPercentage, formatToCurrency } from '../../utils/currency';
 
 let tickClicked = false;
 
@@ -41,7 +41,7 @@ class TabOverflowList extends Component {
                 <div className="app-bar-tab-overflow-content">
                     {Object.keys(selectedTabs).map((pair, index) => {
                         let menu = selectedTabs[pair] || {};
-                        let { symbol = '' } = coins[menu.pair_base || BASE_CURRENCY] || DEFAULT_COIN_DATA;
+                        let { min, symbol = '' } = coins[menu.pair_base || BASE_CURRENCY] || DEFAULT_COIN_DATA;
                         let pairTwo = coins[menu.pair_2 || BASE_CURRENCY] || DEFAULT_COIN_DATA;
                         let ticker = tickers[pair] || {};
                         const priceDifference = ticker.open === 0 ? 0 : ((ticker.close || 0) - (ticker.open || 0));
@@ -68,7 +68,9 @@ class TabOverflowList extends Component {
                                 <div className="app_bar-pair-font">
                                     {symbol.toUpperCase()}/{pairTwo.symbol.toUpperCase()}:
                                 </div>
-                                <div className="title-font ml-1">{formatToSimple(ticker.close, SIMPLE_FORMAT_MIN)}</div>
+                                <div className="title-font ml-1">
+                                    {formatToCurrency(ticker.close, min)}
+                                </div>
                                 <div
                                     className={
                                         priceDifference < 0
