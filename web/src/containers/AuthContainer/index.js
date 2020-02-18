@@ -21,14 +21,14 @@ const updateThemeToBody = (theme = 'white') => {
 };
 const checkPath = (path) => {
 	var sheet = document.createElement('style')
-	if ((path === '/login') || (path === '/signup')) {
+	if ((path === '/login') || (path === '/signup')
+		|| (path === '/reset-password') || path.includes('/withdraw')) {
 		sheet.innerHTML = ".grecaptcha-badge { display: unset !important;}";
 		sheet.id = 'addCap'
 		if (document.getElementById('rmvCap') !== null) {
 			document.body.removeChild(document.getElementById('rmvCap'));
 		}
-	}
-	else {
+	} else {
 		sheet.innerHTML = ".grecaptcha-badge { display: none !important;}";
 		sheet.id = 'rmvCap'
 		if (document.getElementById('addCap') !== null) {

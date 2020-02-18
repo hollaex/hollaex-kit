@@ -128,7 +128,8 @@ class Withdraw extends Component {
 			balanceAvailable,
 			this.onCalculateMax,
 			coins,
-			verification_level
+			verification_level,
+			this.props.activeTheme
 		);
 		const initialValues = generateInitialValues(currency, coins);
 
@@ -279,7 +280,8 @@ const mapStateToProps = (store) => ({
 	// btcFee: store.wallet.btcFee,
 	selectedFee: formValueSelector(FORM_NAME)(store, 'fee'),
 	coins: store.app.coins,
-	pairs: store.app.pairs
+	pairs: store.app.pairs,
+	activeTheme: store.app.theme
 });
 
 const mapDispatchToProps = (dispatch) => ({

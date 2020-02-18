@@ -9,6 +9,8 @@ import {
 } from "../../components/Form/validations";
 import STRINGS from "../../config/localizedStrings";
 import { ICONS, DEFAULT_COIN_DATA } from "../../config/constants";
+import { getLanguage } from '../../utils/string';
+import { getTheme } from "../../utils/theme";
 
 export const generateInitialValues = (symbol, coins = {}) => {
 	const { min, withdrawal_fee } = coins[symbol] || DEFAULT_COIN_DATA;
@@ -31,7 +33,8 @@ export const generateFormValues = (
 	available = 0,
 	calculateMax,
 	coins = {},
-	verification_level
+	verification_level,
+	theme = getTheme()
 ) => {
 	const { fullname, min, increment_unit, withdrawal_limits = {} } = coins[
 		symbol
@@ -136,6 +139,12 @@ export const generateFormValues = (
 			fullWidth: true
 		};
 	}
+	fields.captcha = {
+		type: 'captcha',
+		language: getLanguage(),
+		theme: theme,
+		validate: [required]
+	};
 
 	return fields;
 };
