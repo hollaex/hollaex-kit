@@ -11,7 +11,7 @@ import {
 	USER_TYPES,
 	MESSAGE_TYPES
 } from '../../actions/appActions';
-import { getToken, isLoggedIn } from '../../utils/token';
+import { getToken } from '../../utils/token';
 
 const ENTER_KEY = 'Enter';
 
@@ -21,11 +21,14 @@ class Chat extends Component {
 		chatSocketInitialized: false,
 		chatSocketInitializing: false,
 		to: '',
-		messages: []
+		messages: [],
+		showEmojiBox: false,
+		unreadMessages: 0
 	};
 
 	componentWillMount() {
-		if (!this.props.fetchingAuth && isLoggedIn()) {
+		// if (!this.props.fetchingAuth && isLoggedIn()) {
+		if (!this.props.fetchingAuth) {
 			this.initializeChatWs(getToken());
 		}
 	}
@@ -35,7 +38,8 @@ class Chat extends Component {
 			!nextProps.fetchingAuth &&
 			nextProps.fetchingAuth !== this.props.fetchingAuth
 		) {
-			if (!this.state.chatWs && isLoggedIn()) {
+			// if (!this.state.chatWs && isLoggedIn()) {
+			if (!this.state.chatWs) {
 				this.initializeChatWs(getToken());
 			}
 		}
@@ -50,11 +54,16 @@ class Chat extends Component {
 
 	initializeChatWs = (token = '') => {
 		this.isInitializing(true);
-		const chatWs = io.connect(`${WS_URL}/chat`, {
-			query: {
-				token: token ? `Bearer ${token}` : ''
-			}
-		});
+		let chatWs = '';
+		if (token) {
+			chatWs = io.connect(`${WS_URL}/chat`, {
+				query: {
+					token: token ? `Bearer ${token}` : ''
+				}
+			});
+		} else {
+			chatWs = io.connect(`${WS_URL}/chat`);
+		}
 
 		this.setState({ chatWs });
 
@@ -86,7 +95,7 @@ class Chat extends Component {
 				  (messages.length - this.state.messages.length)
 				: 0;
 			this.props.setChatUnreadMessages(unreadMessages);
-			this.setState({ messages });
+			this.setState({ messages, unreadMessages });
 		});
 
 		chatWs.on('announcement', (announcement) => {
@@ -126,7 +135,9 @@ class Chat extends Component {
 				const { to } = this.state;
 				const chatMessage = {
 					username,
-					userType: USER_TYPES.USER_TYPE_NORMAL,
+					userType: this.props.is_hap
+						? USER_TYPES.USER_TYPE_HAP
+						: USER_TYPES.USER_TYPE_NORMAL,
 					to,
 					message,
 					type: MESSAGE_TYPES.MESSAGE_TYPE_NORMAL
@@ -152,6 +163,23 @@ class Chat extends Component {
 		this.state.chatWs.emit('deleteMessage', id);
 	};
 
+	handleEmojiBox = () => {
+		this.setState({ showEmojiBox: !this.state.showEmojiBox });
+		this.chatMessageBox.focus();
+	};
+
+	onCloseEmoji = () => {
+		this.setState({ showEmojiBox: false });
+	};
+
+	onEmojiSelect = (emoji) => {
+		let value = this.chatMessageBox.value;
+		if (emoji.native) {
+			this.chatMessageBox.value = value + emoji.native;
+		}
+		this.chatMessageBox.focus();
+	};
+
 	render() {
 		const {
 			username,
@@ -166,7 +194,8 @@ class Chat extends Component {
 			messages,
 			chatSocketInitialized,
 			chatSocketInitializing,
-			unreadMessages
+			unreadMessages,
+			showEmojiBox
 		} = this.state;
 
 		return (
@@ -181,11 +210,16 @@ class Chat extends Component {
 				setChatBoxRef={this.setChatBoxRef}
 				sendMessage={this.sendMessage}
 				userInitialized={userInitialized}
-				minimized={minimized || !userInitialized || !chatSocketInitialized}
+				// minimized={minimized || !userInitialized || !chatSocketInitialized}
+				minimized={minimized}
 				minimizeChat={onMinimize}
 				chatIsClosed={chatIsClosed}
 				set_username={set_username}
+				showEmojiBox={showEmojiBox}
+				handleEmojiBox={this.handleEmojiBox}
 				removeMessage={this.removeMessage}
+				onEmojiSelect={this.onEmojiSelect}
+				onCloseEmoji={this.onCloseEmoji}
 			/>
 		);
 	}
@@ -198,7 +232,8 @@ const mapStateToProps = (store) => ({
 	userType: store.auth.userType,
 	userInitialized: store.user.fetched,
 	unreadMessages: store.app.chatUnreadMessages,
-	set_username: store.user.settings.chat.set_username
+	set_username: store.user.settings.chat.set_username,
+	is_hap: store.user.is_hap
 });
 
 const mapDispatchToProps = (dispatch) => ({

@@ -1,6 +1,7 @@
 'use strict';
 
-const { API_NAME, SUPPORT_EMAIL } = require('../../constants');
+const API_NAME = process.env.API_NAME || 'HollaEx';
+const SUPPORT_EMAIL = process.env.SUPPORT_EMAIL || 'support@bitholla.com';
 
 const COMMON = {
 	GREETING: (name) => `${name}님`,
@@ -13,6 +14,7 @@ const COMMON = {
 	TXID: (txid) => `거래 ID 확인: ${txid}`,
 	FEE: (fee) => `수수료: ${fee}`,
 	AMOUNT: (amount) => `금액: ${amount}`,
+	ADDRESS: (address) => `주소: ${address}`,
 	TIME: (time) => `시간: ${time}`,
 	COUNTRY: (country) => `국가: ${country}`,
 	DEVICE: (device) => `브라우저: ${device}`,
@@ -92,18 +94,17 @@ const DEPOSIT = {
 	TITLE: (currency) => `${currency.toUpperCase()} ${COMMON.DEPOSIT}`,
 	GREETING: (name) => COMMON.GREETING(name),
 	BODY: {
-		PENDING: {
-			1: (amount, confirmation = 1, currency) =>
-				`회원님의 ${API_NAME} 지갑으로 ${amount} ${currency.toUpperCase()} 입금이 진행 중입니다. 거래가 승인되고 지갑에 자금이 입금될 때까지 기다려주십시오. 회원님의 거래에는 비트코인 블록체인 상 ${confirmation} 개의 승인이 요구됩니다.`,
-			2: (amount, currency) => `수량: ${amount} ${currency.toUpperCase()}`,
-			3: '입금 상태: 비트코인 거래 승인 대기중입니다.',
-			4: (txid) => COMMON.TXID(txid),
-			5: COMMON.EXPLORER
-		},
-		COMPLETED: (amount, currency) =>
+		PENDING: (amount, confirmation = 1, currency) =>
+			`회원님의 ${API_NAME} 지갑으로 ${amount} ${currency.toUpperCase()} 입금이 진행 중입니다. 거래가 승인되고 지갑에 자금이 입금될 때까지 기다려주십시오. 회원님의 거래에는 비트코인 블록체인 상 ${confirmation} 개의 승인이 요구됩니다.`,
+		COMPLETED: (amount, confirmation, currency) =>
 			`회원님의 ${amount} ${currency.toUpperCase()} 입금이 완료되었습니다. 회원님의 ${
 				currency.toUpperCase()
-			} 지갑에서 확인 및 이용하실 수 있습니다.`
+			} 지갑에서 확인 및 이용하실 수 있습니다.`,
+		1: (amount, currency) => `${COMMON.AMOUNT(amount)} ${currency.toUpperCase()}`,
+		2: (status) => `입금 상태: ${status}`,
+		3: (address) => COMMON.ADDRESS(address),
+		4: (txid) => COMMON.TXID(txid),
+		5: COMMON.EXPLORER
 	},
 	CLOSING: COMMON.CLOSING
 };
@@ -153,15 +154,16 @@ const WITHDRAWAL = {
 		`${currency.toUpperCase()} ${COMMON.WITHDRAWAL}`,
 	GREETING: (name) => COMMON.GREETING(name),
 	BODY: {
-		COIN: {
-			PENDING: (amount, address, currency) =>
-				`회원님의 ${amount} ${currency.toUpperCase()} 출금이 해당 주소 ${address}로 요청되었습니다. 출금 대기 중이며, 곧 완료될 예정입니다.`,
-			COMPLETED: (amount, address, currency) =>
-				`회원님의 ${amount} ${currency.toUpperCase()}를 해당 주소 ${address}로  출금이 완료되어 회원님의 계좌로 이체되었습니다.`,
-			1: (txid) => COMMON.TXID(txid),
-			2: COMMON.EXPLORER
-		},
-		FEE: (fee) => COMMON.FEE(fee)
+		PENDING: (amount, address, currency) =>
+			`회원님의 ${amount} ${currency.toUpperCase()} 출금이 해당 주소 ${address}로 요청되었습니다. 출금 대기 중이며, 곧 완료될 예정입니다.`,
+		COMPLETED: (amount, address, currency) =>
+			`회원님의 ${amount} ${currency.toUpperCase()}를 해당 주소 ${address}로  출금이 완료되어 회원님의 계좌로 이체되었습니다.`,
+		1: (amount, currency) => `${COMMON.AMOUNT(amount)} ${currency.toUpperCase()}`,
+		2: (fee) => COMMON.FEE(fee),
+		3: (status) => `입금 상태: ${status}`,
+		4: (address) => COMMON.ADDRESS(address),
+		5: (txid) => COMMON.TXID(txid),
+		6: COMMON.EXPLORER
 	},
 	CLOSING: COMMON.CLOSING
 };

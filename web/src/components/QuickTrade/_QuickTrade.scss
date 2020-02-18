@@ -45,7 +45,7 @@ $title-icon--height: 10rem;
 	min-width: $wrapper--min-width;
 	max-width: $wrapper--max-width;
 	padding: $wrapper--padding;
-	background-color: white;
+	background-color: $quick-trade-container;
 	margin: 3rem auto;
 	height: fit-content;
 
@@ -233,7 +233,8 @@ $title-icon--height: 10rem;
 	}
 	.mobile_dropdown-section {
 		.mobile-drop-down {
-			color:$colors-main-black;
+			color: $colors-main-black;
+			z-index: 1;
 			.option {
 				color:$dark-disabled-main;
 			}
@@ -262,7 +263,7 @@ $title-icon--height: 10rem;
 
 .dark-theme {
 	.quick_trade-wrapper {
-		background-color: $dark-quick-trade-background;
+		background-color: $dark-quick-trade-container;
 
 		.title,
 		.input_block-title {
@@ -282,7 +283,7 @@ $title-icon--height: 10rem;
 				}
 			}
 			.input_block-inputbox {
-				background-color: $dark-quick-trade-background;
+				background-color: $dark-quick-trade-container;
 			}
 		}
 
@@ -325,14 +326,15 @@ $title-icon--height: 10rem;
 			}
 		}
 		.input_block-inputbox {
-			background-color: $dark-app-background-color;
+			background-color: $dark-quick-trade-container;
 			color: $dark-font-main-text-color;
 		}
 		.mobile_dropdown-section {
 			.mobile-drop-down {
 				color:$dark-font-main-text-color;	
+				z-index: 1;
 				.option {
-					background: $dark-app-background-color;
+					background: $dark-quick-trade-background;
 					color:$colors-deactivate-color2;	
 				}
 			}
@@ -357,7 +359,31 @@ $title-icon--height: 10rem;
 
 .layout-mobile {
 	.quick_trade-wrapper {
-		margin-top: -24px;
+		margin-top: 0;
+		margin-bottom: 0;
+	}
+	.quick_trade-section_wrapper {
+		.toogle_button-wrapper {
+			.toogle-content {
+				font-size:$font-size-mobile-txt!important;
+			}
+		}
+		.input_block-wrapper {
+			.input_block-content {
+				.input_block-title{
+					font-size:$font-size-mobile-txt!important;
+				}
+			}
+			.field-error-content{
+				width:auto;
+				font-size:$font-size-mobile-innertxt;
+			}
+		}
+		.review-block-wrapper{
+			.input_block-title {
+				font-size:$font-size-mobile-txt;
+			}
+		}
 	}
 }
 .mobile_dropdown-section {

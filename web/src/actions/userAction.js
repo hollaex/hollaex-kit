@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { maskToken } from '../utils/string';
+import { WS_URL } from '../config/constants';
 
 export function getMe() {
 	return {
@@ -82,7 +82,19 @@ export const updateUser = (values) => {
 		userValues.settings = values.settings;
 	}
 
-	return axios.put('/user', userValues);
+	return axios({
+		data: userValues,
+		url: `${WS_URL}/plugins/kyc/user`,
+		method: 'PUT'
+	});
+};
+
+export const updateUserSettings = (values) => {
+	return axios({
+		data: values,
+		url: '/user/settings',
+		method: 'PUT'
+	});
 };
 
 export const updateDocuments = (values) => {
@@ -97,7 +109,7 @@ export const updateDocuments = (values) => {
 			'Content-Type': 'multipart/form-data'
 		},
 		data: formData,
-		url: '/user/verification',
+		url: `${WS_URL}/plugins/kyc/user/upload`,
 		method: 'POST'
 	});
 };
@@ -110,10 +122,10 @@ export const otpSetActivated = (active = true) =>
 	active
 		? {
 				type: 'ACTIVATE_OTP'
-			}
+		  }
 		: {
 				type: 'REVOKE_OTP'
-			};
+		  };
 
 export function userIdentity(data) {
 	return (dispatch) => {
@@ -214,18 +226,17 @@ export const requestTokens = () => {
 };
 
 export const generateToken = (values) => axios.post(`/user/tokens`, values);
-export const tokenGenerated = ({ token, ...rest }) => ({
+export const tokenGenerated = (token) => ({
 	type: 'TOKEN_GENERATED',
 	payload: {
-		token: {
-			...rest,
-			token: maskToken(token)
-		}
+		token
 	}
 });
 
-export const revokeToken = (id, otp_code) =>
-	axios.delete(`/user/tokens/${id}?otp_code=${otp_code}`);
+export const revokeToken = (id, otp_code = '') =>
+	axios.delete(`/user/tokens`, {
+		data: { token_id: id, otp_code: otp_code }
+	});
 export const tokenRevoked = (token) => ({
 	type: 'TOKEN_REVOKED',
 	payload: {

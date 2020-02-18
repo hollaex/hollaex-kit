@@ -10,7 +10,7 @@ const fetchMessage = (email, data, language, domain) => {
 };
 
 const html = (email, data, language, domain) => {
-	const { WITHDRAWAL } = require(`../strings/${language}`);
+	const { WITHDRAWAL } = require('../strings').languageFile(language);
 	let result = `<div>
         <p>
         ${WITHDRAWAL.GREETING(email)}
@@ -24,19 +24,33 @@ const html = (email, data, language, domain) => {
 					data.transaction_id
 				}>${explorer.name}</a></li>`;
 			});
+		} else {
+			EXPLORERS['eth'].forEach((explorer) => {
+				explorers += `<li><a href=${explorer.baseUrl}${explorer.txPath}/${
+					data.transaction_id
+				}>${explorer.name}</a></li>`;
+			});
 		}
 		result += `
 			<p>
-				${WITHDRAWAL.BODY.COIN[data.status](
+				${WITHDRAWAL.BODY[data.status](
 					data.amount,
 					data.address,
 					data.currency.toUpperCase()
 				)}
-				<br />
-				${WITHDRAWAL.BODY.FEE(data.fee)}${data.transaction_id ? '<br />' : ''}
-				${data.transaction_id ? WITHDRAWAL.BODY.COIN[1](data.transaction_id) : ''}
 			</p>
-			${data.transaction_id ? WITHDRAWAL.BODY.COIN[2] : ''}
+			<p>
+				${WITHDRAWAL.BODY[1](data.amount, data.currency)}
+				<br />
+				${WITHDRAWAL.BODY[2](data.fee)}
+				<br />
+				${WITHDRAWAL.BODY[3](data.status)}
+				${data.transaction_id ? '<br />' : ''}
+				${data.transaction_id ? WITHDRAWAL.BODY[4](data.address) : ''}
+				${data.transaction_id ? '<br />' : ''}
+				${data.transaction_id ? WITHDRAWAL.BODY[5](data.transaction_id) : ''}
+			</p>
+			${data.transaction_id ? WITHDRAWAL.BODY[6] : ''}
 			<ul>${data.transaction_id ? explorers : ''}</ul>
 		`;
 	} else {
@@ -51,17 +65,20 @@ const html = (email, data, language, domain) => {
 };
 
 const text = (email, data, language, domain) => {
-	const { WITHDRAWAL } = require(`../strings/${language}`);
+	const { WITHDRAWAL } = require('../strings').languageFile(language);
 	let result = `${WITHDRAWAL.GREETING(email)}`;
 	if (CURRENCIES.includes(data.currency)) {
 		result += `
-			${WITHDRAWAL.BODY.COIN[data.status](
+			${WITHDRAWAL.BODY[data.status](
 				data.amount,
 				data.address,
 				data.currency.toUpperCase()
 			)}
-			${WITHDRAWAL.BODY.FEE(data.fee)}
-			${data.transaction_id ? WITHDRAWAL.BODY.COIN[1](data.transaction_id) : ''}
+			${WITHDRAWAL.BODY[1](data.amount, data.currency)}
+			${WITHDRAWAL.BODY[2](data.fee)}
+			${WITHDRAWAL.BODY[3](data.status)}
+			${data.transaction_id ? WITHDRAWAL.BODY[4](data.address) : ''}
+			${data.transaction_id ? WITHDRAWAL.BODY[5](data.transaction_id) : ''}
 		`;
 	} else {
 		result += '';

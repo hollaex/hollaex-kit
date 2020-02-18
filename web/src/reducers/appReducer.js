@@ -17,7 +17,8 @@ import {
 	SET_CURRENCIES,
 	SET_VALID_BASE_CURRENCY,
 	SET_CONFIG,
-	SET_INFO
+	SET_INFO,
+	SET_WAVE_AUCTION
 } from '../actions/appActions';
 import { THEME_DEFAULT } from '../config/constants';
 import { getLanguage } from '../utils/string';
@@ -128,7 +129,8 @@ const INITIAL_STATE = {
 	isValidBase: false,
 	config: {},
 	config_level: [],
-	info: { is_trial: false }
+	info: { is_trial: false, active:true },
+	wave: []
 };
 
 const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
@@ -327,6 +329,11 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 			return {
 				...state,
 				info: payload.info
+			};
+		case SET_WAVE_AUCTION: 
+			return {
+				...state,
+				wave: payload.data
 			};
 		default:
 			return state;

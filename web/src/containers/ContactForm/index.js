@@ -38,7 +38,7 @@ class ContactForm extends Component {
 				// }
 			})
 			.catch((err) => {
-				const _error = err.response.data
+				const _error = err.response && err.response.data
 					? err.response.data.message
 					: err.message;
 				throw new SubmissionError({ _error });
@@ -78,6 +78,10 @@ class ContactForm extends Component {
 				{
 					value: 'personal',
 					label: STRINGS.CONTACT_FORM.CATEGORY_OPTIONS.OPTION_PERSONAL_INFO
+				},
+				{
+					value: 'bank_transfer',
+					label: STRINGS.CONTACT_FORM.CATEGORY_OPTIONS.OPTION_BANK_TRANSFER
 				}
 			],
 			validate: [required],

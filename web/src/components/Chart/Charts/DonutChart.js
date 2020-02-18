@@ -33,8 +33,11 @@ class DonutChart extends Component {
 	};
 
 	componentDidMount() {
-		const donutContainer = document.getElementById('donut-container');
-		const rect = donutContainer.getBoundingClientRect();
+		const donutContainer = document.getElementById(this.props.id);
+		let rect = {};
+		if (donutContainer) {
+			rect = donutContainer.getBoundingClientRect();
+		}
 		const checkFilter = this.checkData(this.props.chartData);
 		this.setState({
 			width: rect.width,
@@ -78,7 +81,7 @@ class DonutChart extends Component {
 	render() {
 		const { width, height, isData } = this.state;
 		const data = isData ? this.props.chartData : [{ balance: 100 }];
-		let pieJ = pie().value(function(d) {
+		let pieJ = pie().value(function (d) {
 			return d.balance;
 		});
 		const pieData = [];
@@ -135,10 +138,10 @@ class DonutChart extends Component {
 			return '';
 		});
 		let x = width / 2;
-		let y = height / 2 - 15;
+		let y = height / 2 - 11;
 
 		return (
-			<div id="donut-container" className="w-100 h-100">
+			<div id={this.props.id} className="w-100 h-100">
 				<svg width="100%" height="100%">
 					<g transform={translate(x, y)}>
 						{sortedData.map((value, i) => {
@@ -165,7 +168,7 @@ class DonutChart extends Component {
 			innerRadius += 5;
 			outerRadius += 5;
 			labelRadious += 5;
-		 }
+		}
 		let arcj = arc()
 			.innerRadius(innerRadius)
 			.outerRadius(outerRadius)
@@ -195,7 +198,7 @@ class DonutChart extends Component {
 						className="donut-label-no-price"
 						textAnchor="middle"
 					>
-						<Link to="/wallet" className="deposite-asset">
+						<Link to="/wallet" className="deposit-asset">
 							{STRINGS.DEPOSIT_ASSETS.toUpperCase()}
 						</Link>
 					</text>
@@ -231,6 +234,11 @@ class DonutChart extends Component {
 							>
 								{symbol.toUpperCase()}
 							</text>
+							<text dy="5px" textAnchor="middle" className="donut-label-link">
+								<Link to="/wallet" className="deposit-asset">
+									{STRINGS.OPEN_WALLET.toUpperCase()}
+								</Link>
+							</text>
 						</Fragment>
 					) : null}
 				</g>
@@ -240,5 +248,9 @@ class DonutChart extends Component {
 		}
 	};
 }
+
+DonutChart.defaultProps = {
+	id: "donut-container"
+};
 
 export default DonutChart;

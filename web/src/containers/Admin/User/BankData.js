@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { SubmissionError } from 'redux-form';
-import { updateUserData, approveBank, rejectBank } from './actions';
+import { addBankData, approveBank, rejectBank } from './actions';
 import { Card, Button, Input, Popconfirm, Icon, message, Col, Row } from 'antd';
 import { ModalForm } from '../../../components';
 
@@ -14,10 +14,6 @@ const BankFields = {
 	account_number: {
 		type: 'text',
 		label: 'Account Number'
-	},
-	card_number: {
-		type: 'text',
-		label: 'Card Number'
 	}
 };
 
@@ -62,15 +58,15 @@ class BankData extends Component {
 	};
 
 	onSubmit = (onChangeSuccess, bank, userId) => (values) => {
-		let bank_account = bank;
+		let bank_account = [ ...bank ];
 		values.id = values.account_number + '-man';
 		values.status = 3;
-		bank_account.push(values);
+		bank_account = [ ...bank_account, values];
 		const submitData = {
 			id: userId,
 			bank_account
 		};
-		return updateUserData(submitData)
+		return addBankData(submitData)
 			.then((data) => {
 				this.closeModal();
 				if (onChangeSuccess) {
@@ -80,10 +76,11 @@ class BankData extends Component {
 						...data
 					});
 				}
+				this.setState({ bank: data });
 			})
 			.catch((err) => {
 				message.error('error');
-				throw new SubmissionError({ _error: err.data.message });
+				throw new SubmissionError({ _error: err && err.data ? err.data.message : err.message });
 			});
 	};
 
@@ -103,14 +100,14 @@ class BankData extends Component {
 		const newBanks = bank.filter((b) => {
 			return b.id !== id;
 		});
-		this.setState({ bank: newBanks });
 		const submitData = {
 			id: userId,
 			bank_account: newBanks
 		};
-		updateUserData(submitData)
+		addBankData(submitData)
 			.then((data) => {
 				message.success('Bank deleted');
+				this.setState({ bank: newBanks });
 			})
 			.catch((err) => {
 				message.error('error');
@@ -124,6 +121,7 @@ class BankData extends Component {
 		// });
 		approveBank(values)
 			.then((data) => {
+				this.setState({ bank: data.bank_account });
 				message.success('Bank approved');
 			})
 			.catch((err) => {
@@ -133,13 +131,13 @@ class BankData extends Component {
 	};
 
 	rejectBank = (values) => {
-		const newBanks = this.state.bank.filter((b) => {
-			return b.id !== values.bank_id;
-		});
-		this.setState({ bank: newBanks });
 		rejectBank(values)
 			.then((data) => {
+				const newBanks = this.state.bank.filter((b) => {
+					return b.id !== values.bank_id;
+				});
 				message.success('Bank rejected');
+				this.setState({ bank: newBanks });
 			})
 			.catch((err) => {
 				message.error('error');
@@ -171,9 +169,9 @@ class BankData extends Component {
 					visible={formVisible}
 				/>
 				<Row gutter={16}>
-					{bank.map((bank) => {
+					{bank.map((bank, index) => {
 						return (
-							<Col style={{ margin: '1em' }}>
+							<Col style={{ margin: '1em' }} key={index}>
 								<Card
 									key={bank.id || bank.bank_name}
 									title={bank.bank_name}
@@ -190,7 +188,7 @@ class BankData extends Component {
 														}
 														type="primary"
 														icon="check"
-														size={10}
+														// size={10}
 													>
 														Accept
 													</Button>
@@ -206,7 +204,7 @@ class BankData extends Component {
 														}
 														type="danger"
 														icon="close"
-														size={10}
+														// size={10}
 													>
 														Reject
 													</Button>
@@ -239,7 +237,6 @@ class BankData extends Component {
 								>
 									<p>{bank.bank_name}</p>
 									<p>{bank.account_number}</p>
-									<p>{bank.card_number}</p>
 								</Card>
 							</Col>
 						);

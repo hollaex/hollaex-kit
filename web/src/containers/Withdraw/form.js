@@ -8,6 +8,8 @@ import {
 	stopSubmit
 } from 'redux-form';
 import math from 'mathjs';
+import classnames from 'classnames';
+import { isMobile } from 'react-device-detect';
 import { Button, Dialog, OtpForm, Loader } from '../../components';
 import renderFields from '../../components/Form/factoryFields';
 import {
@@ -68,7 +70,7 @@ class Form extends Component {
 		) {
 			const fee = calculateBaseFee(nextProps.data.amount);
 			if (fee !== nextProps.data.fee) {
-				nextProps.change('fee', fee);
+				// nextProps.change('fee', fee);
 			}
 		}
 	}
@@ -95,7 +97,7 @@ class Form extends Component {
 			// this.props.submit();
 			const values = this.props.data;
 			return this.props
-				.onSubmit({
+				.onSubmitWithdrawReq({
 					...values,
 					amount: math.eval(values.amount),
 					fee: values.fee ? math.eval(values.fee) : 0,
@@ -124,7 +126,7 @@ class Form extends Component {
 	onSubmitOtp = ({ otp_code = '' }) => {
 		const values = this.props.data;
 		return this.props
-			.onSubmit({
+			.onSubmitWithdrawReq({
 				...values,
 				amount: math.eval(values.amount),
 				fee: values.fee ? math.eval(values.fee) : 0,
@@ -159,7 +161,6 @@ class Form extends Component {
 
 	render() {
 		const {
-			handleSubmit,
 			submitting,
 			pristine,
 			error,
@@ -177,9 +178,11 @@ class Form extends Component {
 		const { dialogIsOpen, dialogOtpOpen } = this.state;
 
 		return (
-			<form onSubmit={handleSubmit}>
-				{renderFields(formValues)}
-				{error && <div className="warning_text">{error}</div>}
+			<form>
+				<div className={classnames({ "w-50": !isMobile })}>
+					{renderFields(formValues)}
+					{error && <div className="warning_text">{error}</div>}
+				</div>
 				<Button
 					label={STRINGS.WITHDRAWALS_BUTTON_TEXT}
 					disabled={pristine || submitting || !valid}
@@ -228,7 +231,7 @@ const WithdrawForm = reduxForm({
 })(Form);
 
 const mapStateToForm = (state) => ({
-	data: selector(state, 'address', 'amount', 'fee'),
+	data: selector(state, 'address', 'destination_tag', 'amount', 'fee'),
 	activeTheme: state.app.theme,
 	coins: state.app.coins
 });

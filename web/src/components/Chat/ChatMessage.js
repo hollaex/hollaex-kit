@@ -7,6 +7,23 @@ import { ICONS } from '../../config/constants';
 import { USER_TYPES } from '../../actions/appActions';
 import ReactSVG from 'react-svg';
 
+moment.updateLocale('en', {
+    relativeTime : {
+        s: '1 S',
+        ss: '%d S',
+        m:  "1 M",
+        mm: "%d M",
+        h:  "1 H",
+        hh: "%d H",
+        d:  "1 D",
+        dd: "%d D",
+        M:  "1 MO",
+        MM: "%d MO",
+        y:  "1 Y",
+        yy: "%d Y"
+    }
+});
+
 const MAX_LINES = 5;
 
 const MESSAGE_OPTIONS = {
@@ -28,7 +45,7 @@ const Timestamp = ({ timestamp }) => (
 	<div className="timestamp">
 		{Math.abs(moment().diff(timestamp)) < TIME_LIMIT
 			? STRINGS.JUST_NOW
-			: moment(timestamp).fromNow()}
+			: moment(timestamp).fromNow(true)}
 	</div>
 );
 
@@ -42,38 +59,53 @@ class ChatMessageWithText extends Component {
 	};
 
 	render() {
-		const { username, to, messageContent, ownMessage, timestamp, verification_level } = this.props;
+		const {
+			username,
+			to,
+			messageContent,
+			ownMessage,
+			// timestamp,
+			verification_level,
+		} = this.props;
 		const { maxLines } = this.state;
+		let icon = ICONS[`LEVEL_ACCOUNT_ICON_${verification_level}`]
+			? ICONS[`LEVEL_ACCOUNT_ICON_${verification_level}`]
+			: ICONS.LEVEL_ACCOUNT_ICON_4;
 		return (
 			<div className={classnames('nonmobile')}>
-				<Timestamp timestamp={timestamp} />
 				<div className="d-flex">
 					<div className="mx-2">
-						{verification_level === 3 || verification_level >= 4
+						{verification_level >= 3
 							? <ReactSVG
-								path={verification_level >= 4
-									? ICONS.LEVEL_ACCOUNT_ICON_4
-									: ICONS[`LEVEL_ACCOUNT_ICON_${verification_level}`]
-								}
+								path={icon}
 								wrapperClassName="user-icon mr-1" />
 							: <div className="user-icon mr-1"></div>}
 					</div>
-					<div>
-						<div className="d-flex mr-1 own-message username">
-							{`${username}:`}
-						</div>
-						{to && <div className="mr-1">{`${to}:`}</div>}
+					<div className='d-flex flex-1'>
 						{ownMessage ? (
-							<div className="d-inline message">{messageContent}</div>
+							<div className="mr-1 my-1 own-message username">
+								<span className="mr-1">
+									{`${username}:`}
+								</span>
+								{to && <span className="mr-1">{`${to}:`}</span>}
+								<span className="d-inline message">{messageContent}</span>
+							</div>
+
 						) : (
-							<TruncateMarkup
-								className="d-inline message"
-								lines={maxLines}
-								ellipsis={<ReadMore onClick={() => this.showMore()} />}
-							>
-								<div className="d-inline message">{messageContent}</div>
-							</TruncateMarkup>
-						)}
+								<div className="mr-1 my-1 username">
+									<span className="mr-1">
+										{`${username}:`}
+									</span>
+									{to && <span className="mr-1">{`${to}:`}</span>}
+									<TruncateMarkup
+										className="d-inline message"
+										lines={maxLines}
+										ellipsis={<ReadMore onClick={() => this.showMore()} />}
+									>
+										<span className="d-inline message">{messageContent}</span>
+									</TruncateMarkup>
+								</div>
+							)}
 					</div>
 				</div>
 			</div>
@@ -91,8 +123,18 @@ class ChatMessageWithImage extends Component {
 	};
 
 	render() {
-		const { username, to, messageType, messageContent, timestamp, verification_level } = this.props;
+		const {
+			username,
+			to,
+			messageType,
+			messageContent,
+			timestamp,
+			verification_level,
+		} = this.props;
 		const { hideImage } = this.state;
+		let icon = verification_level >= 4
+			? ICONS.LEVEL_ACCOUNT_ICON_4
+			: ICONS[`LEVEL_ACCOUNT_ICON_${verification_level}`];
 
 		return (
 			<div>
@@ -113,10 +155,7 @@ class ChatMessageWithImage extends Component {
 					<div className="mx-2">
 						{verification_level === 3 || verification_level === 4
 							? <ReactSVG 
-								path={ verification_level >= 4
-									? ICONS.LEVEL_ACCOUNT_ICON_4
-									: ICONS[`LEVEL_ACCOUNT_ICON_${verification_level}`]
-								}
+								path={icon}
 								wrapperClassName="user-icon mr-1" />
 							: <div className="user-icon mr-1"></div>}
 					</div>
@@ -162,7 +201,8 @@ export class ChatMessage extends Component {
 			messageContent,
 			ownMessage,
 			timestamp,
-			verification_level
+			verification_level,
+			onCloseEmoji
 		} = this.props;
 		const { showOptions } = this.state;
 		const imageType = messageType === 'image';
@@ -177,6 +217,7 @@ export class ChatMessage extends Component {
 					'justify-content-between',
 					ownMessage && 'user'
 				)}
+				onClick={onCloseEmoji}
 			>
 				<div className={classnames('message-content', messageType)}>
 					{imageType ? (
@@ -184,6 +225,7 @@ export class ChatMessage extends Component {
 							username={username}
 							to={to}
 							messageContent={messageContent}
+							ownMessage={ownMessage}
 							messageType={messageType}
 							timestamp={timestamp}
 							verification_level={verification_level}

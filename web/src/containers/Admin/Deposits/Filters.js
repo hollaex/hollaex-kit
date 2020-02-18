@@ -1,31 +1,40 @@
 import React from 'react';
 import { Button, Alert } from 'antd';
 import { SelectValue } from './SelectValues';
-import { FilterInput } from './FilterInput';
+import { FilterInput, FilterDate } from './FilterInput';
 
 const getFilters = (coinOptions) => [
 	{
 		label: 'Currency',
 		placeholder: 'Currency',
 		key: 'currency',
+		className: 'adjacent-fields',
 		options: coinOptions
 	},
 	{
 		label: 'Status',
 		placeholder: 'Status',
 		key: 'status',
+		className: 'adjacent-fields pl-2',
 		options: [
 			{ value: 'true', text: 'Confirmed' },
-			{ value: 'false', text: 'Pending' }
+			{ value: 'false', text: 'Pending' },
+			{ value: 'dismissed', text: 'Dismissed' }
 		]
-	},
-	{
-		label: 'Dismissed',
-		placeholder: 'Dismissed',
-		key: 'dismissed',
-		options: [{ value: 'true', text: 'Yes' }, { value: 'false', text: 'No' }]
 	}
 ];
+
+const getStatusValue = (key, params) => {
+	if (
+		key === 'status' &&
+		params.dismissed !== undefined &&
+		params[key] === undefined
+	) {
+		return 'dismissed';
+	} else {
+		return params[key];
+	}
+};
 
 export const Filters = ({
 	coins,
@@ -59,36 +68,58 @@ export const Filters = ({
 				/>
 			)}
 			<div className="filters-wrapper">
+				<div className="d-flex f-1" />
 				<div className="filters-wrapper-filters">
-					{fieldProps.map(({ key, ...rest }) => (
-						<SelectValue
-							key={key}
-							value={params[key]}
-							onSelect={onChange(key)}
-							{...rest}
+					<div className="d-flex">
+						{fieldProps.map(({ key, description, ...rest }, index) => (
+							<SelectValue
+								key={key}
+								defaultValue={getStatusValue(key, params)}
+								onSelect={onChange(key)}
+								description={description}
+								className={'adjacent-fields'}
+								{...rest}
+							/>
+						))}
+					</div>
+					<div className="d-flex">
+						<FilterInput
+							onChange={onChange('user_id')}
+							label={'User Id'}
+							defaultValue={params.user_id}
+							className={'adjacent-fields'}
+							placeholder="User id"
 						/>
-					))}
-					<FilterInput
-						onChange={onChange('transaction_id')}
-						label=""
-						defaultValue={params.transaction_id}
-						placeholder="Transaction Id or Payment Id(Bank Id)"
-						description="Transaction Id or Payment Id(Bank Id)"
-					/>
+						<FilterInput
+							onChange={onChange('transaction_id')}
+							label="Transaction Id"
+							className={'adjacent-fields pl-2'}
+							defaultValue={params.transaction_id}
+							placeholder="Transaction Id or Payment Id"
+						/>
+					</div>
 					<FilterInput
 						onChange={onChange('address')}
-						label=""
+						label="Address"
 						defaultValue={params.address}
-						placeholder="Address or TrxId"
-						description="Bitcoin/Ethereum address or Bank TrxId"
+						placeholder="Address"
 					/>
-					<FilterInput
-						onChange={onChange('created_at')}
-						label=""
-						defaultValue={params.created_at}
-						placeholder="Created at"
-						description="Created at"
-					/>
+					<div className="d-flex">
+						<FilterDate
+							onChange={onChange('start_date')}
+							label={'Start date'}
+							defaultValue={params.start_date}
+							className={'adjacent-fields mr-2'}
+							placeholder="Start date"
+						/>
+						<FilterDate
+							onChange={onChange('end_date')}
+							label={'End date'}
+							defaultValue={params.end_date}
+							className={'adjacent-fields'}
+							placeholder="End date"
+						/>
+					</div>
 				</div>
 				<div className="filters-wrapper-buttons">
 					<Button
@@ -98,7 +129,7 @@ export const Filters = ({
 						className="filter-button"
 						disabled={!allowQuery}
 					>
-						Query
+						Search
 					</Button>
 				</div>
 			</div>

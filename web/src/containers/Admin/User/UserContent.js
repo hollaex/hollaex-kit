@@ -11,7 +11,8 @@ import {
 	Activate,
 	TradeHistory,
 	UploadIds,
-	Transactions
+	Transactions,
+	ActiveOrders
 } from '../';
 import UserData from './UserData';
 import BankData from './BankData';
@@ -33,10 +34,35 @@ class UserContent extends Component {
 			refreshAllData,
 			onChangeUserDataSuccess
 		} = this.props;
-		const { id, activated, otp_enabled, flagged } = userInformation;
+		const {
+			id,
+			activated,
+			otp_enabled,
+			flagged,
+			verification_level,
+			is_admin,
+			is_support,
+			is_supervisor,
+			is_kyc
+		} = userInformation;
 		const isSupportUser = isSupport();
 		const pairs = Object.keys(coins) || [];
-
+		const verificationInitialValues = {};
+		const roleInitialValues = {};
+		if (verification_level) {
+			verificationInitialValues.verification_level = verification_level;
+		}
+		if (is_admin) {
+			roleInitialValues.role = 'admin';
+		} else if (is_support) {
+			roleInitialValues.role = 'support';
+		} else if (is_supervisor) {
+			roleInitialValues.role = 'supervisor';
+		} else if (is_kyc) {
+			roleInitialValues.role = 'kyc';
+		} else {
+			roleInitialValues.role = 'user';
+		}
 		return (
 			<div className="app_container-content">
 				<div className="d-flex justify-content-between">
@@ -67,7 +93,7 @@ class UserContent extends Component {
 					</div>
 				</div>
 				<Tabs
-					tabBarExtraContent={<Button onClick={clearData}>Back</Button>}
+					tabBarExtraContent={<Button className="mr-3" onClick={clearData}>Back</Button>}
 				>
 					<TabPane tab="Data" key="data">
 						<div>
@@ -92,6 +118,11 @@ class UserContent extends Component {
 						</TabPane>
 					)}
 					{!isSupportUser && !isKYC() && (
+						<TabPane tab="Orders" key="orders">
+							<ActiveOrders userId={userInformation.id} />
+						</TabPane>
+					)}
+					{!isSupportUser && !isKYC() && (
 						<TabPane tab="Trade history" key="trade">
 							<TradeHistory userId={userInformation.id} />
 						</TabPane>
@@ -102,7 +133,7 @@ class UserContent extends Component {
 						</TabPane>
 					)}
 					{!isSupportUser && !isKYC() && (
-						<TabPane tab="Deposits & Withdrawal" key="deposits">
+						<TabPane tab="Deposits" key="deposits">
 							{/*<Deposits*/}
 							{/*initialData={{*/}
 							{/*user_id: id*/}
@@ -117,7 +148,22 @@ class UserContent extends Component {
 									user_id: id
 								}}
 								queryParams={{
-									status: true
+									status: true,
+									type: 'deposit'
+								}}
+								hideUserColumn={true}
+							/>
+						</TabPane>
+					)}
+					{!isSupportUser && !isKYC() && (
+						<TabPane tab="Withdrawal" key="withdrawals">
+							<Transactions
+								initialData={{
+									user_id: id
+								}}
+								queryParams={{
+									status: true,
+									type: "withdrawal"
 								}}
 								hideUserColumn={true}
 							/>
@@ -129,6 +175,8 @@ class UserContent extends Component {
 							user_id={userInformation.id}
 							userImages={userImages}
 							userInformation={userInformation}
+							verificationInitialValues={verificationInitialValues}
+							roleInitialValues={roleInitialValues}
 							refreshData={refreshData}
 						/>
 					</TabPane>

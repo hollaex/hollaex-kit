@@ -54,19 +54,19 @@
 	margin-bottom: 8px;
 }
 
-.select-wrapper,
-.input-wrapper {
-	display: flex;
+.filter-select-wrapper,
+.filter-input-wrapper {
+	/* display: flex; */
 	margin-bottom: 8px;
 }
 
-.select-label,
-.input-label {
+.filter-select-label,
+.filter-input-label {
 	flex: 1;
 	display: flex;
 	align-items: center;
-	justify-content: flex-end;
-	padding-right: 16px;
+	/* justify-content: flex-end; */
+	padding-bottom: 5px;
 }
 
 .select-container,
@@ -78,4 +78,17 @@
 	padding-top: 4px;
 	color: grey;
 	font-size: 0.75em;
+}
+
+.filter-date-field {
+	width: 100%;
+}
+
+.adjacent-fields {
+	width: 50%;
+}
+
+.flx-3 {
+	flex: 3;
+	margin-left: 16px;
 }

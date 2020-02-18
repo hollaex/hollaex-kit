@@ -1,10 +1,10 @@
 # HollaEx Kit [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-green.svg)](https://github.com/facebook/create-react-app/pulls)
-HollaEx Kit is a full exchange launcher kit for building and running an exchange platfrom where you can list and trade any digital assetsfor your users.
+HollaEx Kit is a full exchange launcher kit for building and running an exchange platfrom where you can list and trade any digital assets for your users.
 
 HollaEx Kit has 3 main components:
-HollaEx Core: HollaEx Core includes the exchange image including trading matching engine, real-time data stream, user management and general RESTful API management.You can run and configure your own exchange through HollaEx Kit.
-HollaEx Web: Front-end Web application for user interface
-HollaEx CLI: Command Line Interface for interacting and deploying your exchange.
+- HollaEx Core: HollaEx Core is a [docker image](https://cloud.docker.com/u/bitholla/repository/docker/bitholla/hollaex-core) which includes trading matching engine, real-time data stream, user management and general RESTful API management.
+- HollaEx Web: Front-end Web application for user interface
+- HollaEx CLI: Command Line Interface for interacting and deploying your exchange.
 
 ## Get Started
 
@@ -17,13 +17,6 @@ git clone https://github.com/bitholla/hollaex-kit.git
 bash install.sh
 ```
 
-OR
-
-```
-curl -L https://raw.githubusercontent.com/bitholla/hollaex-cli/master/install.sh | bash
-
-hollaex init
-```
 Read more on our [Docs](https://docs.bitholla.com/hollaex-kit/get-started)!
 
 ## Community

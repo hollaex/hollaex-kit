@@ -8,7 +8,7 @@ const fetchMessage = (email, data, language, domain) => {
 };
 
 const html = (email, data, language, domain) => {
-	const { SUSPICIOUSDEPOSIT } = require(`../strings/${language}`);
+	const { SUSPICIOUSDEPOSIT } = require('../strings').languageFile(language);
 	return `
     <div>
       <h3>${SUSPICIOUSDEPOSIT.BODY[1]}</h3>
@@ -23,7 +23,7 @@ const html = (email, data, language, domain) => {
 };
 
 const text = (email, data, language, domain) => {
-	const { SUSPICIOUSDEPOSIT } = require(`../strings/${language}`);
+	const { SUSPICIOUSDEPOSIT } = require('../strings').languageFile(language);
 	return `
     ${SUSPICIOUSDEPOSIT.BODY[1]}
     ${SUSPICIOUSDEPOSIT.BODY[2](email, data.currency)}

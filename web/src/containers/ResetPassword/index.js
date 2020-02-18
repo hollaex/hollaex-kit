@@ -7,7 +7,7 @@ import ResetPasswordForm from './ResetPasswordForm';
 import ResetPasswordSuccess from './ResetPasswordSuccess';
 import { IconTitle, Dialog } from '../../components';
 import { ContactForm } from '../';
-import { FLEX_CENTER_CLASSES, ICONS } from '../../config/constants';
+import { FLEX_CENTER_CLASSES, ICONS, SUPPORT_HELP_URL } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 
 class ResetPassword extends Component {
@@ -44,7 +44,10 @@ class ResetPassword extends Component {
 	};
 
 	onOpenDialog = () => {
-		this.setState({ showContactForm: true });
+		if (window) {
+			window.open(SUPPORT_HELP_URL, '_blank');
+		}
+		// this.setState({ showContactForm: true });
 	};
 
 	onCloseDialog = () => {

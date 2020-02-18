@@ -34,9 +34,10 @@ class Table extends Component {
 				nextProps.headers,
 				nextProps.count
 			);
-		} else {
+		} else if (JSON.stringify(nextProps.data) !== JSON.stringify(this.props.data)) {
 			this.goToPage(0, nextProps.data, nextProps.headers, nextProps.count);
 		}
+
 	}
 
 	// setPageSize = (pageSize = 10) => {
@@ -44,6 +45,7 @@ class Table extends Component {
 	// }
 
 	goToPreviousPage = () => {
+		this.props.handlePrevious(this.props.pageSize, this.state.page - 1);
 		this.goToPage(
 			this.state.page - 1,
 			this.props.data,
@@ -117,6 +119,7 @@ Table.defaultProps = {
 	title: '',
 	cancelDelayData: [],
 	handleNext: () => {},
+	handlePrevious: () => {},
 	jumpToPage: 0
 };
 

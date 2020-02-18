@@ -1,6 +1,7 @@
 'use strict';
 
-const { API_NAME, SUPPORT_EMAIL } = require('../../constants');
+const API_NAME = process.env.API_NAME || 'HollaEx';
+const SUPPORT_EMAIL = process.env.SUPPORT_EMAIL || 'support@bitholla.com';
 
 const COMMON = {
 	GREETING: (name) => `Dear ${name}`,
@@ -13,6 +14,7 @@ const COMMON = {
 	TXID: (txid) => `Transaction ID: ${txid}`,
 	FEE: (fee) => `Fee: ${fee}`,
 	AMOUNT: (amount) => `Amount: ${amount}`,
+	ADDRESS: (address) => `Address: ${address}`,
 	TIME: (time) => `Time: ${time}`,
 	COUNTRY: (country) => `Country: ${country}`,
 	DEVICE: (device) => `Device: ${device}`,
@@ -93,20 +95,19 @@ const DEPOSIT = {
 	TITLE: (currency) => `${currency.toUpperCase()} ${COMMON.DEPOSIT}`,
 	GREETING: (name) => COMMON.GREETING(name),
 	BODY: {
-		PENDING: {
-			1: (amount, confirmation = 1, currency) =>
-				`You have a new deposit for ${amount} ${currency.toUpperCase()} pending in your ${API_NAME} wallet. Please wait until the transaction is confirmed and your funds will be available in your wallet. Your transaction require ${confirmation} confirmation(s) on blockchain.`,
-			2: (amount, currency) => `Amount: ${amount} ${currency.toUpperCase()}`,
-			3: 'Status of deposit: Pending for confirmation.',
-			4: (txid) => COMMON.TXID(txid),
-			5: COMMON.EXPLORER
-		},
-		COMPLETED: (amount, currency) =>
+		PENDING: (amount, confirmation = 1, currency) =>
+			`You have a new deposit for ${amount} ${currency.toUpperCase()} pending in your ${API_NAME} wallet. Please wait until the transaction is confirmed and your funds will be available in your wallet. Your transaction require ${confirmation} confirmation(s) on blockchain.`,
+		COMPLETED: (amount, confirmation, currency) =>
 			`Your ${
 				currency.toUpperCase()
 			} deposit for ${amount} ${currency.toUpperCase()} is confirmed and completed and it is available in your ${
 				currency.toUpperCase()
-			} wallet.`
+			} wallet.`,
+		1: (amount, currency) => `${COMMON.AMOUNT(amount)} ${currency.toUpperCase()}`,
+		2: (status) => `Status: ${status}`,
+		3: (address) => COMMON.ADDRESS(address),
+		4: (txid) => COMMON.TXID(txid),
+		5: COMMON.EXPLORER
 	},
 	CLOSING: COMMON.CLOSING
 };
@@ -156,15 +157,16 @@ const WITHDRAWAL = {
 		`${currency.toUpperCase()} ${COMMON.WITHDRAWAL}`,
 	GREETING: (name) => COMMON.GREETING(name),
 	BODY: {
-		COIN: {
-			PENDING: (amount, address, currency) =>
-				`You made a withdrawal request for ${amount} ${currency.toUpperCase()} to the address ${address}. Your withdrawal status is pending and will be processed shortly.`,
-			COMPLETED: (amount, address, currency) =>
-				`Your withdrawal request for ${amount} ${currency.toUpperCase()} is processed and transferred to the address ${address}.`,
-			1: (txid) => COMMON.TXID(txid),
-			2: COMMON.EXPLORER
-		},
-		FEE: (fee) => COMMON.FEE(fee)
+		PENDING: (amount, address, currency) =>
+			`You made a withdrawal request for ${amount} ${currency.toUpperCase()} to the address ${address}. Your withdrawal status is pending and will be processed shortly.`,
+		COMPLETED: (amount, address, currency) =>
+			`Your withdrawal request for ${amount} ${currency.toUpperCase()} is processed and transferred to the address ${address}.`,
+		1: (amount, currency) => `${COMMON.AMOUNT(amount)} ${currency.toUpperCase()}`,
+		2: (fee) => COMMON.FEE(fee),
+		3: (status) => `Status: ${status}`,
+		4: (address) => COMMON.ADDRESS(address),
+		5: (txid) => COMMON.TXID(txid),
+		6: COMMON.EXPLORER
 	},
 	CLOSING: COMMON.CLOSING
 };

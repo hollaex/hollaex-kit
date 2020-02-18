@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
+import moment from 'moment';
 import { connect } from 'react-redux';
 import { isMobile } from 'react-device-detect';
 
@@ -37,7 +38,7 @@ class TransactionsHistory extends Component {
 
 	componentDidMount() {
 		this.requestData(this.props.symbol);
-		this.generateHeaders(this.props.symbol, this.props.coins);
+		this.generateHeaders(this.props.symbol, this.props.coins, this.props.discount);
 		if (this.props.location
 			&& this.props.location.query
 			&& this.props.location.query.tab) {
@@ -51,7 +52,7 @@ class TransactionsHistory extends Component {
 		// this.generateHeaders(nextProps.symbol, nextProps.activeLanguage);
 		// } else if (nextProps.activeLanguage !== this.props.activeLanguage) {
 		if (nextProps.activeLanguage !== this.props.activeLanguage) {
-			this.generateHeaders(nextProps.symbol, nextProps.coins);
+			this.generateHeaders(nextProps.symbol, nextProps.coins, nextProps.discount);
 		}
 		if ((this.props.cancelData.dismissed !== nextProps.cancelData.dismissed) && nextProps.cancelData.dismissed === true) {
 			this.onCloseDialog()
@@ -85,14 +86,14 @@ class TransactionsHistory extends Component {
 		}
 	};
 
-	generateHeaders(symbol, coins) {
+	generateHeaders(symbol, coins, discount) {
 		const { withdrawalPopup } = this
 		const { pairs } = this.props;
 		this.setState({
 			headers: {
 				trades: isMobile
-					? generateTradeHeadersMobile(symbol, pairs, coins)
-					: generateTradeHeaders(symbol, pairs, coins),
+					? generateTradeHeadersMobile(symbol, pairs, coins, discount)
+					: generateTradeHeaders(symbol, pairs, coins, discount),
 				deposits: generateDepositsHeaders(symbol, coins, withdrawalPopup),
 				withdrawals: generateWithdrawalsHeaders(symbol, coins, withdrawalPopup)
 			}
@@ -178,7 +179,7 @@ class TransactionsHistory extends Component {
 				props.title = `${STRINGS.TRANSACTION_HISTORY.TITLE_TRADES}`;
 				props.headers = headers.trades;
 				props.data = trades;
-				props.filename = `${symbol}-transfers_history`;
+				props.filename = `trade-history-${moment().unix()}`;
 				props.withIcon = false;
 				props.handleNext = this.handleNext;
 				props.jumpToPage = this.state.jumpToPage;
@@ -187,7 +188,7 @@ class TransactionsHistory extends Component {
 				props.title = STRINGS.TRANSACTION_HISTORY.TITLE_DEPOSITS;
 				props.headers = headers.deposits;
 				props.data = deposits;
-				props.filename = `${symbol}-deposits_history`;
+				props.filename = `deposit-history-${moment().unix()}`;
 				props.handleNext = this.handleNext;
 				props.jumpToPage = this.state.jumpToPage;
 				break;
@@ -195,7 +196,7 @@ class TransactionsHistory extends Component {
 				props.title = STRINGS.TRANSACTION_HISTORY.TITLE_WITHDRAWALS;
 				props.headers = headers.withdrawals;
 				props.data = withdrawals;
-				props.filename = `${symbol}-withdrawals_history`;
+				props.filename = `withdrawal-history-${moment().unix()}`;
 				props.handleNext = this.handleNext;
 				props.jumpToPage = this.state.jumpToPage;
 				break;
@@ -322,12 +323,13 @@ const mapStateToProps = (store) => ({
 	activeLanguage: store.app.language,
 	activeTheme: store.app.theme,
 	cancelData: store.wallet.withdrawalCancelData,
+	discount: store.user.discount || 0
 });
 
 const mapDispatchToProps = (dispatch) => ({
 	getUserTrades: (symbol, limit, page = 1) => dispatch(getUserTrades({ symbol, limit, page })),
-	getUserDeposits: (symbol, limit, page = 1) => dispatch(getUserDeposits({ symbol, limit, page })),
-	getUserWithdrawals: (symbol, limit, page = 1) => dispatch(getUserWithdrawals({ symbol, limit, page })),
+	getUserDeposits: (coin, limit, page = 1) => dispatch(getUserDeposits({ coin, limit, page })),
+	getUserWithdrawals: (coin, limit, page = 1) => dispatch(getUserWithdrawals({ coin, limit, page })),
 	withdrawalCancel: (transactionId) => dispatch(withdrawalCancel({ transactionId }))
 });
 

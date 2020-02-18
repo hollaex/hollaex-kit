@@ -1,13 +1,13 @@
 'use strict';
 
 const {
-	DOMAIN,
 	BITHOLLA_DOMAIN,
-	DEFAULT_LANGUAGE,
-	LOGO_BLACK_PATH,
 	BITHOLLA_LOGO_BLACK,
 	EMAIL_ICONS
-} = require('../../../constants');
+} = require('../../constants');
+const DOMAIN = process.env.DOMAIN || (process.env.NODE_ENV === 'production' ? 'https://hollaex.com' : 'http://localhost:3000');;
+const LOGO_BLACK_PATH = process.env.LOGO_BLACK_PATH;
+const DEFAULT_LANGUAGE = process.env.NEW_USER_DEFAULT_LANGUAGE || 'en';
 const styles = require('./styles');
 
 exports.Button = (link, text) => `
@@ -19,7 +19,7 @@ exports.Button = (link, text) => `
 `;
 
 const footerTemplate = (language = DEFAULT_LANGUAGE, domain = DOMAIN) => {
-	const { FOOTER } = require(`../../strings/${language}`);
+	const { FOOTER } = require('../../strings').languageFile(language);
 	return `
 			<div style="${styles.footer}">
 				<div style="float: left">

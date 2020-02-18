@@ -6,7 +6,8 @@ import { loadReCaptcha } from 'react-recaptcha-v3';
 import { bindActionCreators } from 'redux';
 import moment from 'moment';
 
-import { FLEX_CENTER_CLASSES, CAPTCHA_SITEKEY, EXCHANGE_EXPIRY_DAYS } from '../../config/constants';
+import { AppFooter } from '../../components';
+import { FLEX_CENTER_CLASSES, CAPTCHA_SITEKEY, EXCHANGE_EXPIRY_DAYS, EXCHANGE_EXPIRY_SECONDS } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 import { getClasesForLanguage } from '../../utils/string';
 import { getThemeClass } from '../../utils/theme';
@@ -62,13 +63,14 @@ class AuthContainer extends Component {
 		if (rest.location && rest.location.pathname) {
 			checkPath(rest.location.pathname);
 			isWarning = ((rest.location.pathname === '/login' || rest.location.pathname === '/signup')
-				&& (!Object.keys(info).length || info.is_trial))
-					? true : false;
+				&& (!Object.keys(info).length || info.is_trial || !info.active))
+				? true : false;
 		};
-		const isExpired = (!Object.keys(info).length
-			|| moment().diff(info.created_at, 'days') > EXCHANGE_EXPIRY_DAYS)
-			? true
-			: false;
+		const isExpired =
+			!Object.keys(info).length || !info.active ||
+			(info.active && info.is_trial && moment().diff(info.created_at, 'seconds') > EXCHANGE_EXPIRY_SECONDS)
+				? true
+				: false;
 		const expiryDays = EXCHANGE_EXPIRY_DAYS - moment().diff(info.created_at, 'days');
 		return (
 			<div className="w-100 h-100">
@@ -110,6 +112,14 @@ class AuthContainer extends Component {
 						{childWithLanguageClasses}
 					</div>
 				</div>
+				{!isMobile
+					? (
+						<div className={classnames('footer-wrapper', getThemeClass(activeTheme))}>
+							<AppFooter theme={activeTheme} />
+						</div>
+					)
+					: null
+				}
 			</div>
 		);
 	}

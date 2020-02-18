@@ -2,7 +2,7 @@ import React from 'react';
 import { Tabs } from 'antd';
 import { connect } from 'react-redux';
 
-import { BASE_CURRENCY } from '../../../config/constants';
+// import { BASE_CURRENCY } from '../../../config/constants';
 import { Deposits } from '../';
 import './index.css';
 
@@ -18,13 +18,14 @@ const DepositsPage = ({
 	...rest
 }) => {
 	const queryParams = {};
-	const currencies = Object.keys(coins);
+	// const currencies = Object.keys(coins);
 	if (!noQueryParams) {
 		if (currency) {
 			queryParams.currency = currency;
-		} else if(currencies[0]){
-			queryParams.currency = currencies[0];
-		}
+		} 
+		// else if(currencies[0]){
+		// 	queryParams.currency = currencies[0];
+		// }
 		if (type) {
 			queryParams.type = type;
 		}
@@ -39,6 +40,7 @@ const DepositsPage = ({
 				<TabPane tab="Transactions" key="transactions">
 					<Deposits
 						coins={coins}
+						type={type}
 						queryParams={queryParams}
 						showFilters={showFilters}
 						noQueryParams={noQueryParams}
@@ -50,8 +52,9 @@ const DepositsPage = ({
 						showFilters={false}
 						noQueryParams={noQueryParams}
 						coins={coins}
+						type={type}
 						initialData={{
-							currency: currencies[0] ? currencies[0] : BASE_CURRENCY,
+							// currency: currencies[0] ? currencies[0] : BASE_CURRENCY,
 							status: 'false',
 							dismissed: 'false',
 							rejected: 'false'

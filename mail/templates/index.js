@@ -1,6 +1,8 @@
 'use strict';
 
-const { DOMAIN, DEFAULT_LANGUAGE, API_NAME } = require('../../constants');
+const DOMAIN = process.env.DOMAIN || (process.env.NODE_ENV === 'production' ? 'https://hollaex.com' : 'http://localhost:3000');
+const DEFAULT_LANGUAGE = process.env.NEW_USER_DEFAULT_LANGUAGE || 'en';
+const API_NAME = process.env.API_NAME || 'HollaEx';
 const { TemplateEmail } = require('./helpers/common');
 const { MAILTYPE } = require('../strings');
 
@@ -11,7 +13,7 @@ const generateMessageContent = (
 	language = DEFAULT_LANGUAGE,
 	domain = DOMAIN
 ) => {
-	const STRINGS = require(`../strings/${language}`);
+	const STRINGS = require('../strings').languageFile(language);
 	let title;
 	if (
 		type === MAILTYPE.WITHDRAWAL ||

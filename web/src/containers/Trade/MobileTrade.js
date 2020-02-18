@@ -20,9 +20,9 @@ const MobileTrade = ({
 	orderbookProps,
 	symbol,
 	goToPair,
-	priceInitialized,
-	sizeInitialized,
-	pair
+	pair,
+	setPriceRef,
+	setSizeRef
 }) => (
 	<div
 		className={classnames(
@@ -52,8 +52,8 @@ const MobileTrade = ({
 				bids={bids}
 				marketPrice={marketPrice}
 				showPopup={settings.orderConfirmationPopup}
-				priceInitialized={priceInitialized}
-				sizeInitialized={sizeInitialized}
+				setPriceRef={setPriceRef}
+				setSizeRef={setSizeRef}
 			/>
 		</TradeBlock>
 		<TradeBlock title={STRINGS.ORDERBOOK} className="order-entry">

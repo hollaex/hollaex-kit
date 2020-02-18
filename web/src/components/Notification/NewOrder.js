@@ -12,7 +12,7 @@ import { Button } from '../';
 import { formatToCurrency } from '../../utils/currency';
 
 const generateRows = ({ order, pairData }, coins) => {
-	const { type, side, price, size, orderFees, orderPrice } = order;
+	const { type, side, price, size } = order;
 	const secondaryFormat = coins[pairData.pair_2] || DEFAULT_COIN_DATA;
 	const baseFormat = coins[pairData.pair_base] || DEFAULT_COIN_DATA;
 	const rows = [];
@@ -49,24 +49,6 @@ const generateRows = ({ order, pairData }, coins) => {
 			)
 		});
 	}
-
-	rows.push({
-		label: STRINGS.FEE,
-		value: STRINGS.formatString(
-			CURRENCY_PRICE_FORMAT,
-			formatToCurrency(orderFees, secondaryFormat.min),
-			secondaryFormat.symbol.toUpperCase()
-		)
-	});
-
-	rows.push({
-		label: STRINGS.TOTAL_ORDER,
-		value: STRINGS.formatString(
-			CURRENCY_PRICE_FORMAT,
-			formatToCurrency(orderPrice, secondaryFormat.min),
-			secondaryFormat.symbol.toUpperCase()
-		)
-	});
 
 	return rows;
 };

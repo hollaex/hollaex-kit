@@ -72,7 +72,7 @@ export const getCurrencyColumns = (handleClick) => [
 		dataIndex: 'allow_deposit',
 		key: 'allow_deposit',
 		render: (v, data) => (<div className="d-flex">
-			<div>{v ? 'allow' : 'inallow'}</div>
+			<div>{v ? 'enabled' : 'disabled'}</div>
 			<div className="pointer" onClick={() => handleClick(v, data, 'allow_deposit')}>
 				<ReactSVG path={ICONS.EDIT_ICON} wrapperClassName="edit_icon mx-2" />
 			</div>
@@ -83,7 +83,7 @@ export const getCurrencyColumns = (handleClick) => [
 		dataIndex: 'allow_withdrawal',
 		key: 'allow_withdrawal',
 		render: (v, data) => (<div className="d-flex">
-			<div>{v ? 'allow' : 'inallow'}</div>
+			<div>{v ? 'enabled' : 'disabled'}</div>
 			<div className="pointer" onClick={() => handleClick(v, data, 'allow_withdrawal')}>
 				<ReactSVG path={ICONS.EDIT_ICON} wrapperClassName="edit_icon mx-2" />
 			</div>
@@ -168,8 +168,8 @@ const getDepositWithdrawFields = (userTier, key, onchange) => {
 
 export const getCoinsFormFields = (config = {}, onchange) => {
 	const userLevels = [];
-	const tiers = config.tiers ? parseInt(config.tiers) : 4;
-	for (var i = 1; i <= tiers; i++) {
+	const user_level_number = config.user_level_number ? parseInt(config.user_level_number) : 4;
+	for (var i = 1; i <= user_level_number; i++) {
 		userLevels.push(i)
 	};
 	return ({
@@ -200,8 +200,8 @@ export const getCoinsFormFields = (config = {}, onchange) => {
 				type: 'select',
 				label: 'allow deposit',
 				options: [
-					{ label: 'allow', value: 'true' },
-					{ label: 'disallow', value: 'false' }
+					{ label: 'enabled', value: 'true' },
+					{ label: 'disabled', value: 'false' }
 				]
 			}
 		},
@@ -210,8 +210,8 @@ export const getCoinsFormFields = (config = {}, onchange) => {
 				type: 'select',
 				label: 'allow withdrawal',
 				options: [
-					{ label: 'allow', value: 'true' },
-					{ label: 'disallow', value: 'false' }
+					{ label: 'enabled', value: 'true' },
+					{ label: 'disabled', value: 'false' }
 				]
 			}
 		},

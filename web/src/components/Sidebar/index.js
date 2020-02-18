@@ -1,7 +1,8 @@
 import React from 'react';
+import classnames from 'classnames';
 
 import { NotificationsList, SidebarHub } from '../';
-import { Help, Chat } from './rows';
+import STRINGS from '../../config/localizedStrings';
 
 const Sidebar = ({
 	isLogged,
@@ -13,7 +14,8 @@ const Sidebar = ({
 	pair,
 	chatIsClosed,
 	theme,
-	unreadMessages = 0
+	unreadMessages = 0,
+	sidebarFitHeight = false
 }) => {
 	const sidebarHubProps = {
 		activePath,
@@ -22,13 +24,21 @@ const Sidebar = ({
 		theme
 	};
 	return (
-		<div className="sidebar-container apply_rtl">
+		<div className={
+			classnames(
+				"sidebar-container apply_rtl",
+				{
+					'sidebar-fit-to-screen': sidebarFitHeight
+				}
+			)}>
 			<SidebarHub {...sidebarHubProps} />
-			{isLogged ?
-			<div className="sidebar-notifications">
+			<div className="sidebar-notifications m-3">
+				<div className="ml-3 my-3 sidebar-title">
+					{STRINGS.TRADE_TAB_POSTS.toUpperCase()}
+				</div>
 				<NotificationsList />
-			</div>: '' }
-			{isLogged ?
+			</div>
+			{/* {isLogged ?
 			<div className="sidebar-row d-flex">
 				<Chat
 					className="f-1 title-font text-capitalize justify-content-center"
@@ -37,8 +47,8 @@ const Sidebar = ({
 					chatIsClosed={chatIsClosed}
 				/>
 				<Help className="f-8" onHelp={help} />
-				{/* <Logout className="f-0" onLogout={logout} /> */}
-			</div> : ''}
+				<Logout className="f-0" onLogout={logout} />
+			</div> : ''} */}
 		</div>
 	);
 };

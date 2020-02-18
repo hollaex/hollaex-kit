@@ -7,7 +7,7 @@ import { Link } from 'react-router';
 import { isMobile } from 'react-device-detect';
 import moment from 'moment';
 
-import { performLogin, setLogoutMessage } from '../../actions/authAction';
+import { performLogin, storeLoginResult, setLogoutMessage } from '../../actions/authAction';
 import LoginForm, { FORM_NAME } from './LoginForm';
 import { Dialog, OtpForm, IconTitle, Notification } from '../../components';
 import { NOTIFICATIONS } from '../../actions/appActions';
@@ -16,10 +16,12 @@ import {
 	HOLLAEX_LOGO,
 	FLEX_CENTER_CLASSES,
 	ICONS,
-	EXCHANGE_EXPIRY_DAYS
+	EXCHANGE_EXPIRY_SECONDS
 } from '../../config/constants';
 
 import STRINGS from '../../config/localizedStrings';
+
+let errorTimeOut = null;
 
 const BottomLink = () => (
 	<div className={classnames('f-1', 'link_wrapper')}>
@@ -34,7 +36,10 @@ class Login extends Component {
 	state = {
 		values: {},
 		otpDialogIsOpen: false,
-		logoutDialogIsOpen: false
+		logoutDialogIsOpen: false,
+		termsDialogIsOpen: false,
+		depositDialogIsOpen: false,
+		token: ''
 	};
 
 	componentDidMount() {
@@ -53,6 +58,9 @@ class Login extends Component {
 
 	componentWillUnmount() {
 		this.props.setLogoutMessage();
+		if (errorTimeOut) {
+			clearTimeout(errorTimeOut);
+		}
 	}
 
 	redirectToHome = () => {
@@ -87,6 +95,15 @@ class Login extends Component {
 
 	checkExpiryExchange = () => this.props.router.replace('/expired-exchange');
 
+	// checkLogin = () => {
+	// 	// const termsAccepted = localStorage.getItem('termsAccepted');
+	// 	// if (!termsAccepted) {
+	// 	// 	this.setState({ termsDialogIsOpen: true });
+	// 	// } else {
+	// 		this.redirectToHome();
+	// 	// }
+	// };
+
 	onSubmitLogin = (values) => {
 		const service = this.getServiceParam();
 		if (service) {
@@ -94,9 +111,11 @@ class Login extends Component {
 		}
 		return performLogin(values)
 			.then((res) => {
-				if (!Object.keys(this.props.info).length
-					|| (this.props.info.is_trial
-						&& moment().diff(this.props.info.created_at, 'days') > EXCHANGE_EXPIRY_DAYS))
+				if (res.data.token)
+					this.setState({ token: res.data.token });
+				if ((!Object.keys(this.props.info).length) || (!this.props.info.active)
+					|| (this.props.info.is_trial && this.props.info.active 
+						&& moment().diff(this.props.info.created_at, 'seconds') > EXCHANGE_EXPIRY_SECONDS))
 					this.checkExpiryExchange();
 				else if (res.data && res.data.callbackUrl)
 					this.redirectToService(res.data.callbackUrl);
@@ -109,7 +128,9 @@ class Login extends Component {
 						: err.message;
 
 				let error = {};
-				this.props.change(FORM_NAME, 'captcha', '');
+				errorTimeOut = setTimeout(() => {
+					this.props.change(FORM_NAME, 'captcha', '');
+				}, 5000);
 
 				if (_error.toLowerCase().indexOf('otp') > -1) {
 					this.setState({ values, otpDialogIsOpen: true });
@@ -124,10 +145,10 @@ class Login extends Component {
 								Please contact us at{' '}
 								<a
 									style={{ color: 'blue' }}
-									href="mailto:support@bitholla.com?Subject=Approval%20request"
+									href="mailto:support@hollaex.com?Subject=Approval%20request"
 									target="_top"
 								>
-									support@bitholla.com
+									support@hollaex.com
 								</a>{' '}
 								with your use case for approval access
 							</div>
@@ -146,15 +167,25 @@ class Login extends Component {
 		)
 			.then((res) => {
 				this.setState({ otpDialogIsOpen: false });
-				if (!Object.keys(this.props.info).length
-					|| (this.props.info.is_trial
-						&& moment().diff(this.props.info.created_at, 'days') > EXCHANGE_EXPIRY_DAYS))
+				if (res.data.token)
+					this.setState({ token: res.data.token });
+				if ((!Object.keys(this.props.info).length) || (!this.props.info.active)
+					|| (this.props.info.is_trial && this.props.info.active
+						&& moment().diff(this.props.info.created_at, 'seconds') > EXCHANGE_EXPIRY_SECONDS))
 					this.checkExpiryExchange();
 				else if (res.data && res.data.callbackUrl)
 					this.redirectToService(res.data.callbackUrl);
 				else this.redirectToHome();
 			})
 			.catch(errorHandler);
+	};
+
+	onAcceptTerms = () => {
+		localStorage.setItem('termsAccepted', true);
+		if (this.state.token)
+			storeLoginResult(this.state.token);
+		this.setState({ termsDialogIsOpen: false})
+		this.redirectToHome();
 	};
 
 	onCloseDialog = () => {
@@ -164,6 +195,12 @@ class Login extends Component {
 	onCloseLogoutDialog = () => {
 		this.props.setLogoutMessage();
 		this.setState({ logoutDialogIsOpen: false });
+	};
+
+	gotoWallet = () => {
+		this.props.router.replace('/wallet');
+		this.setState({ depositDialogIsOpen: false });
+		localStorage.setItem('deposit_initial_display', true);
 	};
 
 	render() {
@@ -218,7 +255,7 @@ class Login extends Component {
 				</div>
 				{!isMobile && <BottomLink />}
 				<Dialog
-					isOpen={otpDialogIsOpen || logoutDialogIsOpen}
+					isOpen={otpDialogIsOpen || logoutDialogIsOpen }
 					label="otp-modal"
 					onCloseDialog={this.onCloseDialog}
 					shouldCloseOnOverlayClick={otpDialogIsOpen ? false : true}
@@ -236,6 +273,8 @@ class Login extends Component {
 							data={{ message: logoutMessage }}
 						/>
 					)}
+					{/* {termsDialogIsOpen && <TermsOfService onAcceptTerms={this.onAcceptTerms} />} */}
+					{/* {depositDialogIsOpen && <DepositFunds gotoWallet={this.gotoWallet} />} */}
 				</Dialog>
 			</div>
 		);

@@ -43,10 +43,11 @@ function checkStatus(response) {
  *
  * @param  {string} url       The URL we want to request
  * @param  {object} [options] The options we want to pass to "fetch"
+ * @param  {string} apiUrl    The API URL we want to request, default to API_URL
  *
  * @return {object}           The response data
  */
-export const requestAuthenticated = (url, paramOptions, headers) => {
+export const requestAuthenticated = (url, paramOptions, headers, apiUrl) => {
 	const TOKEN = getToken();
 	const options = {
 		method: 'GET',
@@ -61,7 +62,7 @@ export const requestAuthenticated = (url, paramOptions, headers) => {
 			  },
 		...paramOptions
 	};
-	return request(url, options);
+	return request(url, options, apiUrl);
 };
 
 /**
@@ -69,11 +70,12 @@ export const requestAuthenticated = (url, paramOptions, headers) => {
  *
  * @param  {string} url       The URL we want to request
  * @param  {object} [options] The options we want to pass to "fetch"
+ * @param  {string} apiUrl    The API URL we want to request, default to API_URL
  *
  * @return {object}           The response data
  */
-const request = (url, options) => {
-	return fetch(`${API_URL}${url}`, options)
+const request = (url, options, apiUrl = API_URL) => {
+	return fetch(`${apiUrl}${url}`, options)
 		.then(checkStatus)
 		.then(parseJSON);
 };

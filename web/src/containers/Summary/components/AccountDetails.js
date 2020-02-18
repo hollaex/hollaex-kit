@@ -19,6 +19,7 @@ const AccountDetails = ({
 	onUpgradeAccount,
 	config,
 	verification_level,
+	balance
 }) => {
 	return (
 		<div className="account-details-wrapper summary-content-txt">
@@ -33,6 +34,7 @@ const AccountDetails = ({
 					user={user}
 					coins={coins}
 					config={config}
+					balance={balance}
 					activeTheme={activeTheme}
 					selectedAccount={selectedAccount}
 					lastMonthVolume={lastMonthVolume}
@@ -42,7 +44,7 @@ const AccountDetails = ({
 					verification_level={verification_level}
 				/>
 			) : (
-				<div className="d-flex align-items-center mt-5">
+				<div className="d-flex align-items-center mt-3">
 					<AccountTypesList
 						activeTheme={activeTheme}
 						selectedAccount={selectedAccount}
@@ -55,6 +57,7 @@ const AccountDetails = ({
 						user={user}
 						coins={coins}
 						pairs={pairs}
+						balance={balance}
 						activeTheme={activeTheme}
 						selectedAccount={selectedAccount}
 						lastMonthVolume={lastMonthVolume}

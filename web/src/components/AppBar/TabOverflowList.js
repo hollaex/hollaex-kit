@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import ReactSVG from 'react-svg';
 
 import { ICONS, BASE_CURRENCY, DEFAULT_COIN_DATA } from '../../config/constants';
-import { formatToCurrency, formatPercentage, formatAverage } from '../../utils/currency';
+import { donutFormatPercentage, formatToCurrency } from '../../utils/currency';
 
 let tickClicked = false;
 
@@ -46,7 +46,9 @@ class TabOverflowList extends Component {
                         let ticker = tickers[pair] || {};
                         const priceDifference = ticker.open === 0 ? 0 : ((ticker.close || 0) - (ticker.open || 0));
                         const tickerPercent = priceDifference === 0 || ticker.open === 0 ? 0 : ((priceDifference / ticker.open) * 100);
-                        let priceDifferencePercent = tickerPercent === 'NaN' ? formatPercentage(tickerPercent) : formatPercentage(0);
+                        let priceDifferencePercent = isNaN(tickerPercent)
+                            ? donutFormatPercentage(0)
+                            : donutFormatPercentage(tickerPercent);
                         return (
                             <div
                                 key={index}
@@ -56,18 +58,31 @@ class TabOverflowList extends Component {
                                     ? <ReactSVG path={ICONS.BLACK_CHECK} wrapperClassName="app-bar-tab-setting" />
                                     : <div className="app-bar-tab-setting"> </div>
                                 }
-                                <ReactSVG path={ICONS[`${menu.pair_base.toUpperCase()}_ICON`]} wrapperClassName="app-bar-add-tab-icons" />
+                                <ReactSVG
+                                    path={
+                                        ICONS[`${menu.pair_base.toUpperCase()}_ICON`]
+                                            ? ICONS[`${menu.pair_base.toUpperCase()}_ICON`]
+                                            : ICONS.DEFAULT_ICON
+                                    }
+                                    wrapperClassName="app-bar-add-tab-icons" />
                                 <div className="app_bar-pair-font">
                                     {symbol.toUpperCase()}/{pairTwo.symbol.toUpperCase()}:
                                 </div>
-                                <div className="title-font ml-1">{`${pairTwo.symbol.toUpperCase()} ${formatAverage(formatToCurrency(ticker.close, min))}`}</div>
-                                <div className={priceDifference < 0 ? "app-price-diff-down app-bar-price_diff_down" : "app-bar-price_diff_up app-price-diff-up"}>
-                                    {formatAverage(formatToCurrency(priceDifference, min))}
+                                <div className="title-font ml-1">
+                                    {formatToCurrency(ticker.close, min)}
+                                </div>
+                                <div
+                                    className={
+                                        priceDifference < 0
+                                            ? "app-price-diff-down app-bar-price_diff_down"
+                                            : "app-bar-price_diff_up app-price-diff-up"
+                                        }>
+                                    {/* {formatAverage(formatToCurrency(priceDifference, min))} */}
                                 </div>
                                 <div
                                     className={priceDifference < 0
-                                        ? "title-font ml-1 app-price-diff-down" : "title-font ml-1 app-price-diff-up"}>
-                                    {`(${priceDifferencePercent})`}
+                                        ? "title-font app-price-diff-down" : "title-font app-price-diff-up"}>
+                                    {priceDifferencePercent}
                                 </div>
                             </div>
                         )

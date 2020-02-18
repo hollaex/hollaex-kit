@@ -1,6 +1,8 @@
+import AGREEMENT from './agreement';
+
 export default {
 	APP_TITLE: 'HollaEx',
-	APP_SUB_TITLE: 'White Label Cryptocurrency Exchange',
+	APP_SUB_TITLE: 'Open Crypto Exchange', // new
 	APP_NAME: 'HollaEx',
 
 	LOGOUT_CONFIRM_TEXT: 'Are you sure?. Do you want to logout',
@@ -12,13 +14,14 @@ export default {
 		'Do you want to cancel your pending withdrawal of:',
 	CANT_BE_CANCELLED: '-',
 	ALREADY_CANCELLED: '-',
-	TIMESTAMP_FORMAT: 'YYYY/MM/DD HH:mm:ss A',
-	HOUR_FORMAT: 'HH:mm:ss A',
+	TIMESTAMP_FORMAT: 'YYYY/MM/DD HH:mm:ss',
+	HOUR_FORMAT: 'HH:mm:ss',
 	LOGIN_TEXT: 'Login',
 	SIGN_IN: 'Sign In',
 	SIGNUP_TEXT: 'Sign Up',
 	REGISTER_TEXT: 'Register',
 	ACCOUNT_TEXT: 'Account',
+	HOME_TEXT: 'Home',
 	CLOSE_TEXT: 'Close',
 	COPY_TEXT: 'Copy',
 	COPY_SUCCESS_TEXT: 'Successfully Copied',
@@ -29,10 +32,10 @@ export default {
 	CONTACT_US_TEXT: 'Contact us',
 	HELPFUL_RESOURCES_TEXT: 'Helpful resources',
 	HELP_RESOURCE_GUIDE_TEXT:
-		'Feel free to contact us for more information and any issues by sending us an email to support@bitholla.com',
+		'Feel free to contact us for more information and any issues by sending us an email to support@hollaex.com',
 	HELP_TELEGRAM_TEXT: 'Check out HollaEx open API documentation:',
 	HELP_TELEGRAM_LINK: 'https://apidocs.hollaex.com',
-	NEED_HELP_TEXT: 'Need help',
+	NEED_HELP_TEXT: 'Need help?', // new
 	HELP_TEXT: 'help',
 	SUCCESS_TEXT: 'Success',
 	ERROR_TEXT: 'Error',
@@ -41,12 +44,16 @@ export default {
 	BACK_TEXT: 'Back',
 	NO_OPTIONS: 'No options availables',
 	SECONDS: 'seconds',
+	VIEW_MARKET: 'view market', // new
+	GO_TRADE: 'Go Trade', // new
+	VIEW_INFO: 'View info page', // new
+	APPLY_HERE: 'Apply Here', // new
 	HOME: {
 		SECTION_1_TITLE: 'Welcome to HollaEx Exchange Kit!',
 		SECTION_1_TEXT_1:
 			'Build your own scalable digital asset exchange with HollaEx Kit and be part of the future of finance.',
 		SECTION_1_TEXT_2:
-			'We strive to bring the financial technology forward through afforable and simple access to trading technology.',
+			'We strive to bring the financial technology forward through affordable and simple access to trading technology.',
 		SECTION_1_BUTTON_1: 'Learn more',
 		SECTION_3_TITLE: 'Features',
 		SECTION_3_CARD_1_TITLE: 'SCALABLE MATCHING ENGINE',
@@ -54,7 +61,7 @@ export default {
 			'High performance and scalable order matching engine using the most efficient algorithms',
 		SECTION_3_CARD_2_TITLE: 'BANK INTEGRATION',
 		SECTION_3_CARD_2_TEXT:
-			'Plugins with customizable modules available for bank integration. We know the traditional finace and can help you to make your exchange local',
+			'Plugins with customizable modules available for bank integration. We know the traditional finance and can help you to make your exchange local',
 		SECTION_3_CARD_3_TITLE: 'STRONG SECURITY',
 		SECTION_3_CARD_3_TEXT:
 			'HollaEx uses the best security practices and the most secure and reliable algorithms for keeping the funds secure. It is our top priority and we took a very special extra care of it.',
@@ -66,7 +73,7 @@ export default {
 			'We can take an extra care for your needs and have an online professional to help with your issues and inquiries.',
 		SECTION_3_CARD_6_TITLE: 'KYC INTEGRATION',
 		SECTION_3_CARD_6_TEXT:
-			'Flexible and integratable modules to apply KYC and user verification methods in diffrente jurisdiction.',
+			'Flexible and integrable modules to apply KYC and user verification methods in different jurisdiction.',
 		SECTION_3_BUTTON_1: 'View Demo'
 	},
 	FOOTER: {
@@ -76,13 +83,14 @@ export default {
 			{ key: 'en', label: 'English' },
 			{ key: 'ko', label: '한국어' }
 		],
-		FOOTER_COPYRIGHT: 'COPYRIGHT 2019',
+		FOOTER_COPYRIGHT: '	Copyright {0} ⓒ bitHolla Inc. All rights reserved',
 		SECTIONS: {
 			SECTION_1_TITLE: 'ABOUT',
 			SECTION_1_LINK_1: 'About Us',
 			SECTION_1_LINK_2: 'Terms of Use',
 			SECTION_1_LINK_3: 'Privacy Policy',
-			SECTION_2_TITLE: 'INFORMATION',
+			SECTION_1_LINK_4: 'Contact Us',
+			SECTION_2_TITLE: 'Information',
 			SECTION_2_LINK_1: 'Blog',
 			SECTION_2_LINK_2: 'Contact Us',
 			SECTION_2_LINK_3: 'Career',
@@ -91,8 +99,28 @@ export default {
 			SECTION_3_LINK_2: 'Forum',
 			SECTION_3_LINK_3: 'GitHub',
 			SECTION_3_LINK_4: 'Library',
-			SECTION_3_LINK_5: 'API doc'
-		}
+			SECTION_3_LINK_5: 'API doc',
+			SECTION_3_LINK_6: 'Trading API',
+			SECTION_3_LINK_7: 'Developer tools',
+			SECTION_3_LINK_8: 'Documnetation',
+			SECTION_4_TITLE: 'EXCHANGE',
+			SECTION_4_LINK_1: 'Login',
+			SECTION_4_LINK_2: 'Register',
+			SECTION_4_LINK_3: 'Contact Us',
+			SECTION_4_LINK_4: 'Terms of Use',
+			SECTION_5_TITLE: 'RESOURCES',
+			SECTION_5_LINK_1: 'HollaEx Whitepaper',
+			SECTION_5_LINK_2: 'HollaEx Token (XHT) ',
+			SECTION_5_LINK_3: 'GitHub',
+			SECTION_5_LINK_4: 'FAQ', // new
+			SECTION_6_TITLE: 'SOCIAL',
+			SECTION_6_LINK_1: 'Twitter',
+			SECTION_6_LINK_2: 'Telegram'
+		},
+		XHT_DESCRIPTION:
+			'HollaEx Kit is an open source trading platform built by bitHolla Inc. You can create and list any digital assets and onboard users to trade on your exchange using this exchange Kit. In order to simply run one yourself {1}.',
+		CLICK_HERE: 'click here',
+		VISIT_HERE: 'visit here'
 	},
 	ACCOUNTS: {
 		TITLE: 'Account',
@@ -106,6 +134,17 @@ export default {
 		TAB_API: 'API',
 		TAB_SIGNOUT: 'Signout'
 	},
+	REQUEST_XHT_ACCESS: {
+		// new
+		REQUEST_TITLE: 'Request Access',
+		REQUEST_INVITE: 'Request Invite',
+		REFERRAL_INVITE_WARNING:
+			'To access the HollaEx official Exchange you need to get a referral link from a friend or {0}',
+		CATEGORY_PLACEHOLDER: 'Select the category that best suits your issue',
+		INTRODUCTION_LABEL: 'Introduce yourself',
+		INTRODUCTION_PLACEHOLDER:
+			'Where are you based, are you interested in running an exchange?'
+	},
 	CONTACT_FORM: {
 		CATEGORY_LABEL: 'Category',
 		CATEGORY_PLACEHOLDER: 'Select the category that best suits your issue',
@@ -114,7 +153,9 @@ export default {
 			OPTION_LEVEL: 'Increase user level',
 			OPTION_DEPOSIT: 'Deposit & Withdrawal',
 			OPTION_BUG: 'Report bug', // ToDo:
-			OPTION_PERSONAL_INFO: 'Change personal information' // ToDo:
+			OPTION_PERSONAL_INFO: 'Change personal information', // ToDo:
+			OPTION_BANK_TRANSFER: 'Bank wire transfer', // new
+			OPTION_REQUEST: 'Request Invite for the HollaEx Exchange' // new
 		},
 		SUBJECT_LABEL: 'Subject',
 		SUBJECT_PLACEHOLDER: 'Type the subject of your issue',
@@ -230,6 +271,10 @@ export default {
 				'This may take 10-30 minutes. We will send an email once your {0} is confirmed on the blockchain.'
 		}
 	},
+	REFERRAL_SUCCESS: {
+		TITLE: 'Request Sent',
+		BUTTON_TEXT: 'Okay'
+	},
 	OTP_FORM: {
 		OTP_FORM_TITLE: 'Enter your authentication code to continue',
 		OTP_LABEL: 'OTP Code',
@@ -290,17 +335,17 @@ export default {
 		}
 	},
 	VERIFICATION_TEXTS: {
-		TITLE: 'verification sent',
-		TEXT_1: 'Check your email and click the link to verifiy yourself.',
+		TITLE: 'Email sent',
+		TEXT_1: 'Check your email and click the link to verifiy your email.',
 		TEXT_2:
 			'If you have not received any email verification and you have checked your junk mail then you can try clicking resend below.'
 	},
 	VERIFICATION_EMAIL_REQUEST: {
-		TITLE: 'Activation Email Request',
+		TITLE: 'Resend Email Request',
 		BUTTON: 'Request Email'
 	},
 	VERIFICATION_EMAIL_REQUEST_SUCCESS: {
-		TITLE: 'Verification reset send',
+		TITLE: 'Resent Email',
 		TEXT_1:
 			'If after a few minutes you still have not received an email verification then please contact us below.'
 	},
@@ -315,14 +360,16 @@ export default {
 		INFO_TXT_1:
 			'Please submit the relevant information needed for each section below.Only when all sections have submissions completed will your information be reviewed and approved for an account upgrade.',
 		INFO_TXT_2:
-			'* Bank and Identity section require {0} in order to be fully verified.',
-		DOCUMENTATIONS: 'documentations',
+			'* Verification for the identity section require you to {0} certain documents.',
+		DOCUMENTATIONS: 'upload',
 		COMPLETED: 'Completed',
 		PENDING_VERIFICATION: 'Pending verification',
 		TITLE_EMAIL: 'Email',
 		MY_EMAIL: 'My Email',
+		MAKE_FIRST_DEPOSIT: 'Make first deposit', // new
+		OBTAIN_XHT: 'Obtain XHT', // new
 		TITLE_USER_DOCUMENTATION: 'Identification',
-		TITLE_ID_DOCUMENTS: 'Documents',
+		TITLE_ID_DOCUMENTS: 'Upload',
 		TITLE_BANK_ACCOUNT: 'Bank Account',
 		TITLE_MOBILE_PHONE: 'Mobile Phone',
 		TITLE_PERSONAL_INFORMATION: 'Personal Information',
@@ -343,6 +390,7 @@ export default {
 		PENDING_VERIFICATION_BANK: 'Your bank details are being verified',
 		PENDING_VERIFICATION_DOCUMENTS: 'Your documents are being verified',
 		GOTO_VERIFICATION: 'Go to verification',
+		GOTO_WALLET: 'Go to wallet', // new
 		CONNECT_BANK_ACCOUNT: 'Connect Bank Account',
 		ACTIVATE_2FA: 'Activate 2FA',
 		INCOMPLETED: 'Incompleted',
@@ -441,10 +489,10 @@ export default {
 				ISSUED_DATE: 'Please select the date in which your document was issued',
 				EXPIRATION_DATE:
 					'Please select the date when your document will expire',
-				FRONT: 'Please upload a scan of your photo identity document',
+				FRONT: 'Please upload a scan of your passport',
 				PROOF_OF_RESIDENCY:
 					'Please upload a scan of document proving the address you current reside',
-				SELFIE_PHOTO_ID: 'Please upload a selfie with photo id and note'
+				SELFIE_PHOTO_ID: 'Please upload a selfie with passport and note'
 			},
 			FORM_FIELDS: {
 				TYPE_LABEL: 'ID Document Type',
@@ -453,23 +501,24 @@ export default {
 					ID: 'ID',
 					PASSPORT: 'Passport'
 				},
-				ID_NUMBER_LABEL: 'ID Document Number',
-				ID_NUMBER_PLACEHOLDER: 'Type the documents number',
+				ID_NUMBER_LABEL: 'Passport Number',
+				ID_NUMBER_PLACEHOLDER: 'Type your passport number',
 				ID_PASSPORT_NUMBER_LABEL: 'Passport Number',
 				ID_PASSPORT_NUMBER_PLACEHOLDER: 'Type your passport number',
-				ISSUED_DATE_LABEL: 'ID Document Issue Date',
-				EXPIRATION_DATE_LABEL: 'ID Document Expiration Date',
-				FRONT_LABEL: 'Photo ID Document',
-				FRONT_PLACEHOLDER: 'Add a copy of your photo ID document',
-				BACK_LABEL: 'Back Side of Photo ID Document',
-				BACK_PLACEHOLDER: 'Add a copy of the backside of your ID document',
+				ISSUED_DATE_LABEL: 'Passport Issue Date',
+				EXPIRATION_DATE_LABEL: 'Passport Expiration Date',
+				FRONT_LABEL: 'Passport',
+				FRONT_PLACEHOLDER: 'Add a copy of your passport',
+				BACK_LABEL: 'Back Side of passport',
+				BACK_PLACEHOLDER:
+					'Add a copy of the backside of your ID (if applicable)',
 				PASSPORT_LABEL: 'Passport Document',
 				PASSPORT_PLACEHOLDER: 'Add a copy of your Passport document',
 				POR_LABEL: 'Document proving your address',
 				POR_PLACEHOLDER: 'Add a copy of a document that proves your address',
-				SELFIE_PHOTO_ID_LABEL: 'Your Selfie with Photo ID and Note',
+				SELFIE_PHOTO_ID_LABEL: 'Your Selfie with passport and Note',
 				SELFIE_PHOTO_ID_PLACEHOLDER:
-					'Add a copy of your Selfie with Photo ID and Note'
+					'Add a copy of your Selfie with passport and Note'
 			},
 			INFORMATION: {
 				IDENTITY_DOCUMENT: 'Identity Document',
@@ -481,11 +530,11 @@ export default {
 					LIST_ITEM_2: 'VISIBLE IN THEIR ENTIRETY (watermarks are permitted).',
 					LIST_ITEM_3: 'VALID, with the expiry date clearly visible.',
 					WARNING_1:
-						'Only a valid government-issued identification document is acceptedt; high quality photos or scanned images of these documents are acceptable:',
+						'Only a valid passport is acceptedt; high quality photos or scanned images of these documents are acceptable:',
 					WARNING_2:
 						'Make sure you are uploading your own documents. Any usage of wrong or fake documents will have legal consequences and result in freezing your account immediately.',
 					WARNING_3:
-						'Please do not submit the identity document as your proof of residence.'
+						'Please do not submit the passport as your proof of residence.'
 				},
 				POR: {
 					SECTION_1_TEXT_1:
@@ -506,17 +555,17 @@ export default {
 						'We cannot accept the address on your submitted identity document as a valid proof of residence.'
 				},
 				SELFIE: {
-					TITLE: 'Selfie with Photo ID and Note',
+					TITLE: 'Selfie with passport and Note',
 					INFO_TEXT:
-						"Please provide a photo of you holding your passport or photo ID. In the same picture and have a reference to bitholla.com’, today's date and your signature displayed.Make sure your face is clearly visible and that your ID details are clearly readable.",
+						"Please provide a photo of you holding your passport. In the same picture and have a reference to hollaex.com’, today's date and your signature displayed.Make sure your face is clearly visible and that your ID details are clearly readable.",
 					REQUIRED: 'Required:',
 					INSTRUCTION_1: 'Your face clearly visable',
-					INSTRUCTION_2: 'Photo ID clearly readable',
-					INSTRUCTION_3: 'Write the word bitholla.com',
+					INSTRUCTION_2: 'Passport clearly readable',
+					INSTRUCTION_3: 'Write the word hollaex.com',
 					INSTRUCTION_4: "Write today's date",
 					INSTRUCTION_5: 'Write your signature',
 					WARNING:
-						'Selfie with a different inconsistent ID with uploaded content will be rejected'
+						'Selfie with a different passport with uploaded content will be rejected'
 				}
 			}
 		},
@@ -581,9 +630,9 @@ export default {
 		},
 		AUDIO_CUE_FORM: {
 			ORDERS_COMPLETED_AUDIO:
-				'Play an audio cue when one of your orders is fully filled',
+				'Play an audio cue when your order has been filled',
 			ORDERS_PARTIAL_AUDIO:
-				'Play an audio cue when one of your orders is partially filled',
+				'Play an audio cue when your order has been partially filled',
 			PUBLIC_TRADE_AUDIO: 'Play an audio cue on every public trade'
 		},
 		RISK_MANAGEMENT: {
@@ -598,7 +647,7 @@ export default {
 		}
 	},
 	TRANSACTION_HISTORY: {
-		TITLE: 'Transactions  History',
+		TITLE: 'History',
 		TITLE_TRADES: 'Trades  History',
 		TITLE_DEPOSITS: 'Deposits  History',
 		TITLE_WITHDRAWALS: 'Withdrawals  History',
@@ -701,16 +750,20 @@ export default {
 	ORDERBOOK: 'Order book',
 	CANCEL: 'Cancel',
 	CANCEL_ALL: 'Cancel All',
-	GO_TRADE_HISTORY: 'Go to Trade History',
+	GO_TRADE_HISTORY: 'Go to Transaction History',
 	ORDER_ENTRY: 'order entry',
-	TRADE_HISTORY: 'trade history',
+	TRADE_HISTORY: 'history',
 	CHART: 'price chart',
 	ORDERS: 'my active orders',
-	TRADES: 'my trade history',
+	TRADES: 'my transaction history',
 	RECENT_TRADES: 'my recent trades', // ToDo
 	PUBLIC_SALES: 'public sales', // ToDo
 	REMAINING: 'Remaining',
 	FULLFILLED: '{0} % Fullfilled',
+	FILLED: 'Filled', // new
+	LOWEST_PRICE: 'Lowest Price ({0})', // new
+	PHASE: 'Phase', // new
+	INCOMING: 'Incoming', // new
 	PRICE_CURRENCY: 'PRICE ({0})',
 	AMOUNT_SYMBOL: 'AMOUNT ({0})',
 	MARKET_PRICE: 'Market Price',
@@ -749,15 +802,13 @@ export default {
 	WITHDRAWALS_BUTTON_TEXT: 'review withdrawal',
 	WITHDRAWALS_FORM_ADDRESS_LABEL: 'Destination address',
 	WITHDRAWALS_FORM_ADDRESS_PLACEHOLDER: 'Type the address',
+	WITHDRAWALS_FORM_DESTINATION_TAG_LABEL: 'Destination tag (optional)', // new
+	WITHDRAWALS_FORM_DESTINATION_TAG_PLACEHOLDER: 'Type the destination address', // new
 	WITHDRAWALS_FORM_AMOUNT_LABEL: '{0} amount to withdraw',
 	WITHDRAWALS_FORM_AMOUNT_PLACEHOLDER:
 		'Type the amount of {0} you wish to withdraw',
-	WITHDRAWALS_FORM_FEE_BTC_LABEL:
-		'Bitcoin transaction fee (This is Bitcoin mining fee. If you lower that amount there is chance your transaction takes significant time to get confirmed.)',
-	WITHDRAWALS_FORM_FEE_ETH_LABEL:
-		'Ethereum transaction fee (This is Ethereum mining fee. If you lower that amount there is chance your transaction takes significant time to get confirmed.)', // TODO CHECK
 	WITHDRAWALS_FORM_FEE_COMMON_LABEL:
-		'{0} transaction fee (This is {0} mining fee. If you lower that amount there is chance your transaction takes significant time to get confirmed.)', // new
+		'{0} transaction fee (This is {0} mining fee)', // new
 	WITHDRAWALS_FORM_FEE_FIAT_LABEL: 'Bank withdrawal fee',
 	WITHDRAWALS_FORM_FEE_PLACEHOLDER:
 		'Type the amount of {0} you wish to use in the fee of the transaction',
@@ -830,6 +881,8 @@ export default {
 	WALLET_TABLE_AMOUNT_IN: `Amount in {0}`,
 	WALLET_TABLE_TOTAL: 'Grand Total',
 	WALLET_ALL_ASSETS: 'All Assets',
+	WALLET_DEPOSIT_USD:
+		'For fiat currency D/W in different countries and other wallet inquiries {0}.', // new
 	HIDE_TEXT: 'Hide',
 	PAGINATOR_FORMAT: '{0} / {1}',
 	ORDERBOOK_SELLERS: 'Sellers',
@@ -837,7 +890,6 @@ export default {
 	ORDERBOOK_SPREAD: '{0} spread', // 0 -> 660,000 T
 	ORDERBOOK_SPREAD_PRICE: '{0} {1}', //// 0-> amount  1 -> symbol  600,000 T
 	CALCULATE_MAX: 'Max',
-	DATEFIELD_TOOGLE_DATE_PE: 'تاریخ شمسی‌',
 	DATEFIELD_TOOGLE_DATE_GR: 'Gregorian calendar',
 	VERIFICATION_WARNING_TITLE: 'Verification you bank details',
 	VERIFICATION_WARNING_MESSAGE:
@@ -893,6 +945,7 @@ export default {
 	CHECK_ORDER: 'Check and confirm your order',
 	CHECK_ORDER_TYPE: '{0} {1}', // 0 -> maker/limit  1 -> sell/buy
 	CONFIRM_TEXT: 'Confirm',
+	GOTO_XHT_MARKET: 'Go to XHT market', // new
 	INVALID_CAPTCHA: 'Invalid captcha',
 	NO_FEE: 'N/A',
 	SETTINGS_LANGUAGE_LABEL: 'Language preferences (Includes Emails)',
@@ -900,12 +953,12 @@ export default {
 		{
 			value: 'en',
 			label: 'English',
-			icon: `${process.env.REACT_APP_PUBLIC_URL}/assets/flags/selected-en.png`
+			icon: '/assets/flags/selected-en.png'
 		},
 		{
 			value: 'ko',
 			label: '한국어',
-			icon: `${process.env.REACT_APP_PUBLIC_URL}/assets/flags/selected-kr.png`
+			icon: '/assets/flags/selected-kr.png'
 		}
 	],
 	SETTINGS_ORDERPOPUP_LABEL: 'Display order confirmation popup',
@@ -923,6 +976,7 @@ export default {
 	VERIFICATION_NO_WITHDRAW_TITLE: 'Withdrawals disabled',
 	VERIFICATION_NO_WITHDRAW_MESSAGE: 'Your account is disabled for withdrawals',
 	UP_TO_MARKET: 'Up to market',
+	VIEW_MY_FEES: 'View my fees', // new
 	DEVELOPER_SECTION: {
 		TITLE: 'API Key',
 		INFORMATION_TEXT:
@@ -949,6 +1003,7 @@ export default {
 		FORM_NAME_LABEL: 'Name',
 		FORM_LABLE_PLACEHOLDER: 'Name for the Api Key',
 		API_KEY_LABEL: 'API Key',
+		SECRET_KEY_LABEL: 'SECRET Key',
 		CREATED_TITLE: 'Copy your API Key',
 		CREATED_TEXT_1:
 			'Please copy your API key as it will be unattainable in the future.',
@@ -957,6 +1012,7 @@ export default {
 	DEVELOPERS_TOKENS_TABLE: {
 		NAME: 'Name',
 		API_KEY: 'API Key',
+		SECRET: 'Secret',
 		CREATED: 'Date Generated',
 		REVOKE: 'Revoke',
 		REVOKED: 'Revoked',
@@ -971,7 +1027,8 @@ export default {
 		HIDE_IMAGE: 'Hide Image',
 		CHAT_MESSAGE_BOX_PLACEHOLDER: 'Message',
 		SIGN_UP_CHAT: 'Sign Up To Chat',
-		JOIN_CHAT: 'Set Username To Chat'
+		JOIN_CHAT: 'Set Username To Chat',
+		TROLLBOX: 'Trollbox ({0})' // new
 	},
 	INVALID_USERNAME:
 		'Username must be between 3 and 15 characters long. Only contains lowercase, numbers and underscore',
@@ -1012,6 +1069,7 @@ export default {
 	TRADE_TAB_CHART: 'Chart',
 	TRADE_TAB_TRADE: 'Trade',
 	TRADE_TAB_ORDERS: 'Orders',
+	TRADE_TAB_POSTS: 'Posts', // new
 	WALLET_TAB_WALLET: 'Wallet',
 	WALLET_TAB_TRANSACTIONS: 'Transactions',
 	RECEIVE_CURRENCY: 'Receive {0}',
@@ -1070,12 +1128,13 @@ export default {
 		ACCOUNT_DETAILS_TXT_4:
 			'Periodic downgrading of accounts will occur if activity and assets are not maintained.',
 		REQUIREMENTS: 'Requirements',
+		ONE_REQUIREMENT: 'One Requirement only:', // new
 		REQUEST_ACCOUNT_UPGRADE: 'Request an Account Upgrade',
-		FEES_AND_LIMIT: 'Fee and Limit Structure for {0}',
+		FEES_AND_LIMIT: '{0} Fee & Limit Structure', // new
 		FEES_AND_LIMIT_TXT_1:
-			'Becoming a crypto trader marks new beginning. Armed with wits,will and speed only by taking risks and trading will you be allowed to update your account.',
+			'Becoming a crypto trader marks new beginning. Armed with wits, will and speed only by taking risks and trading will you be allowed to update your account.',
 		FEES_AND_LIMIT_TXT_2:
-			'Each account has its own fees and deposit and withdrawal limits.Please visit the {0} to get more information.',
+			'Each account has its own fees and deposit and withdrawal limits. Please visit the {0} to get more information.',
 		DEPOSIT_WITHDRAWAL_ALLOWENCE: 'Deposit & withdrawal allowance',
 		TRADING_FEE_STRUCTURE: 'Trading fee structure',
 		WITHDRAWAL: 'Withdrawal',
@@ -1091,32 +1150,182 @@ export default {
 		ACCOUNT_AGE_OF_MONTHS: 'Account Age of {0} Months',
 		TRADING_VOLUME_EQUIVALENT: '{0} {1} Trading Volume Equivalent',
 		LEVEL_OF_ACCOUNT: 'Level {0} Account',
-		LEVEL_TXT_DEFAULT:'Add your level description here',
-		LEVEL_1_TXT: 'Your trading journey begins here! Profits await.Upgrades your account to unlock withdrawals and favorable fees by verifying your account.',
-		LEVEL_2_TXT: 'Congrats on getting your account verified. Keep trading and apply for an account upgrade to get lower trading fees and larger withdrawal and deposit limits.',
-		LEVEL_3_TXT: 'You’ve come far comrade and have traded well.Keep trading and reach the highest rank and enjoy even lower fees and higher limits.',
-		LEVEL_4_TXT: 'You are a masters trader and have reached the peek. To maintain your rank keep your trading volume high and healthy.',
-		CURRENT_TXT:'Current'
+		LEVEL_TXT_DEFAULT: 'Add your level description here',
+		LEVEL_1_TXT:
+			'Your journey starts here young crypto trader! To obtain bonuses you can verify your identiﬁcation and also get larger deposit and withdraw limits with reduced trading fees.', // new
+		LEVEL_2_TXT:
+			'Simply trade monthly over $3,000 USDT worth or have balance of over 5,000 XHT and enjoy lower trading fees.', // new
+		LEVEL_3_TXT:
+			'This is where things get real! Enjoy reduced trading fees and large deposit and withdrawal limits. To get to level 3 you must complete your veriﬁcation', // new
+		LEVEL_4_TXT:
+			'Simply trade monthly over $10,000 USDT worth or have balance of over 10,000 XHT and enjoy lower trading fees.', // new
+		LEVEL_5_TXT:
+			'You’ve made it! The level 5 account is a rare account only for exchange operators, Vault users or HollaEx Affiliate Program (HAP). Enjoy large limits and enjoy zero maker fees.', // new
+		LEVEL_6_TXT:
+			'Simply trade monthly over $300,000 USDT worth or have balance of over 100,000 XHT and enjoy lower trading fees. Increased withdraw amount.', // new
+		LEVEL_7_TXT:
+			'Simply trade monthly over $500,000 USDT worth or have balance of over 300,000 XHT and enjoy lower trading fees. Increased withdraw amount.', // new
+		LEVEL_8_TXT:
+			'Simply trade monthly over $600,000 USDT worth or have balance of over 400,000 XHT and enjoy lower trading fees.', // new
+		LEVEL_9_TXT:
+			'Simply trade monthly over $2,000,000 USDT worth or have balance of over 1,000,000 XHT and enjoy lower trading fees.', // new
+		LEVEL_10_TXT:
+			'The whale trader account that earns you money back for market making. To obtain this special account please get in touch with us.', // new
+		CURRENT_TXT: 'Current',
+		TRADER_ACCOUNT_XHT_TEXT:
+			'Your account is in the presale period of XHT, this means you can obtain XHT for $0.10 per XHT. All deposit will be converted to XHT once the transaction has cleared.',
+		TRADER_ACCOUNT_TITLE: 'Account - Presale Period', // new
+		HAP_ACCOUNT: 'HAP Account', // new
+		HAP_ACCOUNT_TXT:
+			'Your account is a verified HollaEx affiliate program account. You can now earn 10% bonus for every person you invite that buys XHT.', // new
+		EMAIL_VERIFICATION: 'Email Verification', // new
+		DOCUMENTS: 'Documents', // new
+		HAP_TEXT: 'HollaEx Affiliate Program (HAP) {0}', // new
+		LOCK_AN_EXCHANGE: 'Lock an Exchange {0}', // new
+		WALLET_SUBSCRIPTION_USERS: 'Vault Subscription users {0}', // new
+		TRADE_OVER_XHT: 'Trade over {0} USDT worth', // new
+		TRADE_OVER_BTC: 'Trade over {0} BTC worth', // new
+		XHT_IN_WALLET: '{0} XHT in wallet', // new
+		REWARDS_BONUS: 'Rewards and Bonuses', // new
+		COMPLETE_TASK_DESC: 'Complete tasks and earn bonuses worth over $10,000.', // new
+		TASKS: 'Tasks', // new
+		MAKE_FIRST_DEPOSIT: 'Make your first deposit receive 1 XHT', // new
+		BUY_FIRST_XHT: 'Buy your first XHT and receive a bonus of 5 XHT', // new
+		COMPLETE_ACC_VERIFICATION:
+			'Complete account verification and get a 20 XHT bonus', // new
+		INVITE_USER: 'Invite users and enjoy commissions from their trade', // new
+		JOIN_HAP: 'Join HAP and earn 10% for every HollaEx Kit you sell', // new
+		EARN_RUNNING_EXCHANGE: 'Earn passive income for running your own exchange', // new
+		XHT_WAVE_AUCTION: 'XHT Wave Auction Data', // new
+		XHT_WAVE_DESC_1:
+			'The distribution of the HollaEx token (XHT) is done through a Wave Auction.', // new
+		XHT_WAVE_DESC_2:
+			'The Wave Auction sells a random amount of XHT at random times to the highest bidders on the orderbook', // new
+		XHT_WAVE_DESC_3:
+			'Below displays the historic data on the Wave Auction history', // new
+		WAVE_AUCTION_PHASE: 'Wave Auction Phase {0}', // new
+		LEARN_MORE_WAVE_AUCTION: 'Learn more about the Wave Auction', // new
+		WAVE_NUMBER: 'Wave Number', // new
+		DISCOUNT: '( {0}% discount )', // new
+		MY_FEES_LIMITS: ' My Fees and Limits' // new
 	},
 	REFERRAL_LINK: {
 		TITLE: 'Invite your friend', // new
-		INFO_TEXT: 'Refer your friends by giving out this link.', // new
-		INFO_TEXT_1: 'Send thm this affiliation link and get them onboard', // new
+		INFO_TEXT:
+			'Refer your friends by giving out this link. Your friends will receive {0}% discount by signing up through your link.', // new
+		INFO_TEXT_1:
+			'{0}% of trading fees collected from those you refer will be monthly credited to your account.', // new
 		COPY_FIELD_LABEL: 'Share the link below with friends and earn commissions:', // new
 		REFERRED_USER_COUT: 'You have referred {0} users', // new
-		COPY_LINK_BUTTON: 'COPY REFERRAL LINK' // new
+		COPY_LINK_BUTTON: 'COPY REFERRAL LINK', // new
+		XHT_TITLE: 'MY REFERRALS', // new
+		XHT_INFO_TEXT: 'Earn commissions by inviting your friends.', // new
+		XHT_INFO_TEXT_1: 'Commissions are paid periodically to your wallet', // new
+		APPLICATION_TXT:
+			'To become a HollaEx Kit distributor please fill out an application.', // new
+		TOTAL_REFERRAL: 'Total bought from referrals:', // new
+		PENDING_REFERRAL: 'Commissions Pending:', // new
+		EARN_REFERRAL: 'Commissions Earn:', // new
+		XHT_COUNT: '{0} XHT', // new
+		APPLY_BUTTON: 'APPLY' // new
+	},
+	STAKE_TOKEN: {
+		TITLE: 'Stake HollaEx Token', // new
+		INFO_TXT1:
+			'HollaEx tokens (XHT) are required to be collateralized (staked) to run the HollaEx Kit exchange software.', // new
+		INFO_TXT2:
+			'You can collateralize your HollaEx token in a similar fashion and earn XHT not sold during the Wave Auction.', // new
+		INFO_TXT3:
+			'Simply go to dash.bitholla.com and collateralize your own exchange today and earn free XHT', // new
+		BUTTON_TXT: 'FIND OUT MORE' // new
+	},
+	TERMS_OF_SERVICES: {
+		// new
+		TITLE: 'HollaEx Token Purchase Agreement',
+		SERVICE_AGREEMENT: AGREEMENT,
+		PROCEED: 'PROCEED',
+		AGREE_TERMS_LABEL:
+			'I have read and agree to the HollaEx Token Purchase Agreement',
+		RISK_INVOLVED_LABEL: 'I understand the risks involved',
+		DOWNLOAD_PDF: 'Download the PDF',
+		DEPOSIT_FUNDS:
+			'Deposit funds into your wallet to obtain HollaEx Token (XHT)',
+		READ_FAG: 'Read HollaEx FAQ here: {0}',
+		READ_DOCUMENTATION: 'Read HollaEx whitepaper here: {0}',
+		READ_WAVES: 'Rules for the coming December Public Wave Auction{0}', // new
+		DOWNLOAD_BUY_XHT:
+			'Download the PDF to see a visual step-by-step processes on {0}',
+		HOW_TO_BUY: 'how to buy HollaEx Token (XHT)',
+		PUBLIC_SALES: ' Public Wave Auction', // new
+		CONTACT_US:
+			'Feel free to contact us for more information and any issues by sending us an email to {0}',
+		VISUAL_STEP: 'See a visual step-by-step processes on {0}', // new
+		WARNING_TXT:
+			'We will review your request and send further instructions to your email on how to access the HollaEx exchange.', // new
+		WARNING_TXT1:
+			'In the mean time you can familiarize yourself with the HollaEx network with the resources below', // new
+		XHT_ORDER_TXT_1: 'To start trading the HollaEx token (XHT) you must login', // new
+		XHT_ORDER_TXT_2:
+			'The HollaEx token is distributed through a Wave Auction where at random times daily there will be random amount of HollaEx token sold to the highest bidders on the orderbook.', // new
+		XHT_ORDER_TXT_3: '{0} to join the Wave Auction or {1}', // new
+		XHT_TITLE: 'XHT', //new
+		XHT_TRADE_TXT_1: 'Login to see your recent trades', //new
+		XHT_TRADE_TXT_2: 'You can {0} to see your recent trade history', //new
+		LOGIN_HERE: 'login here'
+	},
+	WAVES: {
+		// new
+		TITLE: 'Wave Info',
+		NEXT_WAVE: 'Next Wave',
+		WAVE_AMOUNT: 'Amount in Wave',
+		FLOOR: 'Floor',
+		LAST_WAVE: 'Last wave'
+	},
+	TYPES_OF_POSTS: {
+		// new
+		TITLE: 'POSTS',
+		ANNOUNCEMEN: 'Announcement',
+		SYSTEM_UPDATE: 'System Update',
+		LAST_WAVE: 'Last Wave',
+		ANNOUNCEMENT_TXT: 'Free XHT will be distributed to all wallets that apply',
+		SYSTEM_UPDATE_TIME: 'Time: 12:31 PM, December 19th, 2019	',
+		SYSTEM_UPDATE_DURATION: '1 hour',
+		LAST_WAVE_AMOUNT: '100, 213 XHT',
+		LAST_WAVE_REDISTRIBUTED: ' 11, 211',
+		LAST_WAVE_TIME: ' 12: 31 PM, December 19th, 2019'
 	},
 	USER_LEVEL: 'User level', // new
 	LIMIT_AMOUNT: 'Limit amount', // new
 	FEE_AMOUNT: 'Fee amount', // new
 	COINS: 'Coins', // new
 	PAIRS: 'Pairs', // new
-	NOTE_FOR_EDIT_COIN: 'Note: For adding and removing {0} please refer to the{1}.', // new
+	NOTE_FOR_EDIT_COIN:
+		'Note: For adding and removing {0} please refer to the{1}.', // new
 	REFER_DOCS_LINK: 'docs', // new
-	RESTART_TO_APPLY: 'You need to restart your exchange for apply these changes.', // new
-	TRIAL_EXCHANGE_MSG: 'You are using a trial version of {0} and it will expire in {1} days.', // new
-	EXPIRY_EXCHANGE_MSG: 'Your exchange has expired. Go to dash.bitholla.com to activate it again.', // new
+	RESTART_TO_APPLY:
+		'You need to restart your exchange for apply these changes.', // new
+	TRIAL_EXCHANGE_MSG:
+		'You are using a trial version of {0} and it will expire in {1} days.', // new
+	EXPIRY_EXCHANGE_MSG:
+		'Your exchange has expired. Go to dash.bitholla.com to activate it again.', // new
 	EXPIRED_INFO_1: 'Your HollaEx trial has ended.', // new
 	EXPIRED_INFO_2: 'Collateralize your exchange to activate it again.', // new
-	EXPIRED_BUTTON_TXT: 'ACTIVATE EXCHANGE' // new
+	EXPIRED_BUTTON_TXT: 'ACTIVATE EXCHANGE', // new
+	TRADE_POSTS: {
+		// new
+		ANNOUNCEMENT: 'Announcement',
+		ANNOUNCEMNT_TXT_3:
+			'Public launch and Wave Auction is rescheduled to January 1st 2020. Wallet deposit and withdrawals are now open.',
+		ANNOUNCEMNT_TXT_4:
+			'Happy new year Hollaers. We are making a new mark starting from 2020 with launch of the most open trading platform with the help of you all.',
+		ANNOUNCEMNT_TXT_1:
+			'Earn XHT with HAP program by introducing your friends to hollaex.com. {0}.',
+		DEFAULT_ANNOUNCEMENT:
+			'This page posts public announcements about your exchange! {0}',
+		ANNOUNCEMENT_TXT_2: 'Free XHT will be distributed to all wallets that {0}.',
+		LEARN_MORE: 'Learn more',
+		APPLY_TODAY: 'Apply today' // new
+	},
+	OPEN_WALLET: 'Open wallet', // new
+	AGO: 'ago' // new
 };

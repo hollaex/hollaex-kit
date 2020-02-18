@@ -124,30 +124,34 @@ $content--margin: 2rem;
 					height: 24rem !important;
 				}
 				.qr-text {
-					font-size: $regular--font-size;
+					font-size: $font-size-mobile-innertxt !important;
 				}
 			}
 			.information_block {
 				.information_block-text_wrapper {
 					.title {
-						font-size: $title--font-size;
+						font-size: $font-size-mobile-title;
 					}
 					.text {
-						font-size: $regular--font-size;
+						font-size: $font-size-mobile-txt !important;
 					}
 				}
+			}
+			.field-label,.field-children,
+			.input_field-input {
+				font-size: $font-size-mobile-txt !important;
 			}
 			.field-error-content {
 				font-size: $regular--font-size;
 			}
-			.field-label,
-			.input_field-input {
-				font-size: $regular--font-size;
-			}
+			
 			.action_notification-wrapper {
 				.action_notification-text {
 					font-size: $regular--font-size;
 				}
+			}
+			.exir-button{
+				font-size: $font-size-mobile-txt !important;
 			}
 		}
 	}

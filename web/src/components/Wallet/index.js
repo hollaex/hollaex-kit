@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
 import { Accordion } from '../';
-import { BASE_CURRENCY, DEFAULT_COIN_DATA } from '../../config/constants';
+import { BASE_CURRENCY, DEFAULT_COIN_DATA, IS_XHT } from '../../config/constants';
 import {
 	calculateBalancePrice,
 	calculatePrice,
@@ -22,8 +22,8 @@ class Wallet extends Component {
 	};
 
 	componentDidMount() {
-		const { user_id, symbol, price } = this.props;
-		if (user_id && symbol && price) {
+		const { user_id, symbol, prices } = this.props;
+		if (user_id && symbol && prices) {
 			this.calculateSections(this.props);
 		}
 	}
@@ -34,7 +34,8 @@ class Wallet extends Component {
 			nextProps.price !== this.props.price ||
 			nextProps.orders.length !== this.props.orders.length ||
 			nextProps.balance.timestamp !== this.props.balance.timestamp ||
-			JSON.stringify(this.props.prices) !== JSON.stringify(nextProps.prices) ||
+			JSON.stringify(this.props.prices) !==
+				JSON.stringify(nextProps.prices) ||
 			nextProps.activeLanguage !== this.props.activeLanguage
 		) {
 			this.calculateSections(nextProps);
@@ -71,21 +72,33 @@ class Wallet extends Component {
 		const baseCoin = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
 
 		// TODO calculate right price
-		const totalAssets = calculateBalancePrice(balance, prices);
+		const totalAssets = calculateBalancePrice(balance, prices, coins);
 		Object.keys(coins).forEach((currency) => {
 			const { symbol, min } = coins[currency] || DEFAULT_COIN_DATA;
-			const currencyBalance = calculatePrice(balance[`${symbol}_balance`], prices[currency]);
-			const balancePercent = calculatePricePercentage(currencyBalance, totalAssets);
+			const currencyBalance = calculatePrice(
+				balance[`${symbol}_balance`],
+				prices[currency]
+			);
+			const balancePercent = calculatePricePercentage(
+				currencyBalance,
+				totalAssets
+			);
 			data.push({
 				...coins[currency],
 				balance: balancePercent,
 				balanceFormat: formatToCurrency(currencyBalance, min),
 				balancePercentage: donutFormatPercentage(balancePercent)
 			});
-			sections.push(this.generateSection(symbol, price, balance, orders, coins));
+			sections.push(
+				this.generateSection(symbol, price, balance, orders, coins)
+			);
 		});
 
-		this.setState({ sections, chartData: data, totalAssets: formatToCurrency(totalAssets, baseCoin.min) });
+		this.setState({
+			sections,
+			chartData: data,
+			totalAssets: formatToCurrency(totalAssets, baseCoin.min)
+		});
 	};
 
 	goToWallet = () => browserHistory.push('/wallet');
@@ -101,13 +114,11 @@ class Wallet extends Component {
 
 		return (
 			<div className="wallet-wrapper">
-				<div className="donut-container pointer" onClick={this.goToWallet}>
-					<DonutChart
-						coins={this.props.coins}
-						chartData={chartData} />
+				<div className="donut-container">
+					<DonutChart id="side-bar-donut" coins={this.props.coins} chartData={chartData} />
 				</div>
 				<Accordion sections={sections} />
-				{BASE_CURRENCY && isValidBase ? (
+				{BASE_CURRENCY && isValidBase && !IS_XHT ? (
 					<div className="wallet_section-wrapper wallet_section-total_asset d-flex flex-column">
 						<div className="wallet_section-title">
 							{STRINGS.WALLET.TOTAL_ASSETS}

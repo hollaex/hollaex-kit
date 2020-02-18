@@ -104,7 +104,14 @@ class FieldWrapper extends Component {
 						typeof notification === 'object' && (
 							<ActionNotification
 								{...notification}
-								className="pr-0 pl-0 no_bottom"
+								className={
+									classnames(
+										"pr-0 pl-0 no_bottom",
+										{
+											"with-tick-icon": fullWidth && !invalid && !hideCheck
+										}
+									)
+								}
 								showActionText={true}
 							/>
 						)}

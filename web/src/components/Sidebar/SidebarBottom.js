@@ -4,6 +4,7 @@ import ReactSVG from 'react-svg';
 import classnames from 'classnames';
 import STRINGS from '../../config/localizedStrings';
 import { ICONS } from '../../config/constants';
+import { ButtonLink } from '../../components';
 
 
 const SidebarButtom = ({ title= '', path = '', iconPath = '', active = false }) => {
@@ -25,12 +26,12 @@ export const SidebarBottom = ({ activePath = 'x', pair = '', isLogged }) => {
 					iconPath={ICONS.SIDEBAR_ACCOUNT_ACTIVE}
 					active={ activePath === 'account' }
 				/>
-				<SidebarButtom
+				{/* <SidebarButtom
 					path={`/quick-trade/${pair}`}
 					title={STRINGS.QUICK_TRADE}
 					iconPath={activePath === 'quick-trade' ? ICONS.SIDEBAR_QUICK_TRADING_ACTIVE : ICONS.SIDEBAR_QUICK_TRADING_INACTIVE}
 					active={activePath === 'quick-trade'}
-				/>
+				/> */}
 				<SidebarButtom
 					path={`/trade/${pair}`}
 					title={STRINGS.PRO_TRADE}
@@ -49,7 +50,29 @@ export const SidebarBottom = ({ activePath = 'x', pair = '', isLogged }) => {
 					iconPath={ICONS.SIDEBAR_WALLET_ACTIVE}
 					active={activePath === 'wallet'}
 				/>
-			</div>: 
-			<div></div>
+				<SidebarButtom
+					path={"/home"} 
+					title= {STRINGS.TRADE_TAB_POSTS}
+					iconPath={ICONS.SIDEBAR_POST_ACTIVE}
+					active={ activePath === 'home' }
+				/>
+			</div> :
+			<div className="d-flex w-100 p-4">
+				<div className="w-50">
+					<ButtonLink
+						link={'/signup'}
+						type="button"
+						label={STRINGS.SIGNUP_TEXT}
+					/>
+				</div>
+				<div className="separator" />
+				<div className="w-50">
+					<ButtonLink
+						link={'/login'}
+						type="button"
+						label={STRINGS.LOGIN_TEXT}
+					/>
+				</div>
+			</div>
 	);
 };

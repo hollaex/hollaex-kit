@@ -14,7 +14,7 @@ import {
 } from '../../actions/appActions';
 import { logout } from '../../actions/authAction';
 import {
-	updateUser,
+	updateUserSettings,
 	setUserData,
 	setUsername,
 	setUsernameStore
@@ -100,7 +100,8 @@ class UserSettings extends Component {
 			nextProps.price !== this.props.price ||
 			nextProps.orders.length !== this.props.orders.length ||
 			nextProps.balance.timestamp !== this.props.balance.timestamp ||
-			nextProps.activeLanguage !== this.props.activeLanguage
+			nextProps.activeLanguage !== this.props.activeLanguage ||
+			JSON.stringify(this.props.coins) !== JSON.stringify(nextProps.coins)
 		) {
 			this.calculateSections(nextProps);
 		}
@@ -119,8 +120,8 @@ class UserSettings extends Component {
 		});
 	};
 
-	calculateSections = ({ balance, prices }) => {
-		const totalAssets = calculateBalancePrice(balance, prices);
+	calculateSections = ({ balance, prices, coins }) => {
+		const totalAssets = calculateBalancePrice(balance, prices, coins);
 		this.setState({ totalAssets: totalAssets });
 	};
 
@@ -282,13 +283,16 @@ class UserSettings extends Component {
 
 	onSubmitSettings = (formProps, formKey) => {
 		let settings = {};
+		let formValues = { ...formProps };
 		switch (formKey) {
 			case 'notification':
 				settings.notification = formProps;
 				break;
 			case 'interface':
-				settings = { ...formProps }; // ToDo: need to be removed after end point update
-				settings.interface = formProps;
+				if (formProps.order_book_levels) {
+					formValues.order_book_levels = parseInt(formProps.order_book_levels, 10);
+				}
+				settings.interface = formValues;
 				break;
 			case 'language':
 				settings = { ...formProps };
@@ -300,17 +304,25 @@ class UserSettings extends Component {
 				settings.audio = formProps;
 				break;
 			case 'risk':
-				settings.risk = formProps;
+				if (formProps.order_portfolio_percentage) {
+					formValues.order_portfolio_percentage = parseInt(formProps.order_portfolio_percentage, 10);
+				}
+				settings.risk = formValues;
 				break;
 			default:
 		}
-		return updateUser({ settings })
+		return updateUserSettings(settings)
 			.then(({ data }) => {
 				this.props.setUserData(data);
-				this.props.changeLanguage(data.settings.language);
-				this.props.changeTheme(data.settings.interface.theme);
+				if (data.settings) {
+					if (data.settings.language) this.props.changeLanguage(data.settings.language);
+					if (data.settings.interface &&
+						data.settings.interface.theme) {
+						this.props.changeTheme(data.settings.interface.theme);
+						localStorage.setItem('theme', data.settings.interface.theme);
+					}
+				}
 				this.props.closeNotification();
-				localStorage.setItem('theme', data.settings.interface.theme);
 			})
 			.catch((err) => {
 				const _error =
