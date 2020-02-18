@@ -2,8 +2,15 @@ import querystring from 'query-string';
 import { requestAuthenticated } from '../../../utils';
 
 export const requestDeposits = (query) => {
-	const queryValues = querystring.stringify(query);
-	const path = `/admin/deposits${queryValues ? `?${queryValues}` : ''}`;
+	const { type, ...rest } = query;
+	let formProps = { ...rest };
+	const queryValues = Object.keys(formProps).length
+		? querystring.stringify(formProps)
+		: '';
+	let path = `/admin/deposits?${queryValues}`;
+	if (type === 'withdrawal') {
+		path = `/admin/withdrawals?${queryValues}`;
+	}
 	return requestAuthenticated(path);
 };
 

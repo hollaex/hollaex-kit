@@ -314,10 +314,15 @@ class UserSettings extends Component {
 		return updateUserSettings(settings)
 			.then(({ data }) => {
 				this.props.setUserData(data);
-				this.props.changeLanguage(data.settings.language);
-				this.props.changeTheme(data.settings.interface.theme);
+				if (data.settings) {
+					if (data.settings.language) this.props.changeLanguage(data.settings.language);
+					if (data.settings.interface &&
+						data.settings.interface.theme) {
+						this.props.changeTheme(data.settings.interface.theme);
+						localStorage.setItem('theme', data.settings.interface.theme);
+					}
+				}
 				this.props.closeNotification();
-				localStorage.setItem('theme', data.settings.interface.theme);
 			})
 			.catch((err) => {
 				const _error =

@@ -25,8 +25,11 @@ const getFilters = (coinOptions) => [
 ];
 
 const getStatusValue = (key, params) => {
-	if (key === 'status'
-		&& params.dismissed !== undefined) {
+	if (
+		key === 'status' &&
+		params.dismissed !== undefined &&
+		params[key] === undefined
+	) {
 		return 'dismissed';
 	} else {
 		return params[key];
@@ -65,7 +68,7 @@ export const Filters = ({
 				/>
 			)}
 			<div className="filters-wrapper">
-				<div className="d-flex f-1"></div>
+				<div className="d-flex f-1" />
 				<div className="filters-wrapper-filters">
 					<div className="d-flex">
 						{fieldProps.map(({ key, description, ...rest }, index) => (
@@ -78,12 +81,11 @@ export const Filters = ({
 								{...rest}
 							/>
 						))}
-						
 					</div>
 					<div className="d-flex">
 						<FilterInput
 							onChange={onChange('user_id')}
-							label={"User Id"}
+							label={'User Id'}
 							defaultValue={params.user_id}
 							className={'adjacent-fields'}
 							placeholder="User id"
@@ -105,14 +107,14 @@ export const Filters = ({
 					<div className="d-flex">
 						<FilterDate
 							onChange={onChange('start_date')}
-							label={"Start date"}
+							label={'Start date'}
 							defaultValue={params.start_date}
 							className={'adjacent-fields mr-2'}
 							placeholder="Start date"
 						/>
 						<FilterDate
 							onChange={onChange('end_date')}
-							label={"End date"}
+							label={'End date'}
 							defaultValue={params.end_date}
 							className={'adjacent-fields'}
 							placeholder="End date"

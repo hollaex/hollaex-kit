@@ -1,7 +1,7 @@
 'use strict';
 
-const { API_NAME } = require('../../constants');
-const { SUPPORT_EMAIL } = require('../constants');
+const API_NAME = process.env.API_NAME || 'HollaEx';
+const SUPPORT_EMAIL = process.env.SUPPORT_EMAIL || 'support@bitholla.com';
 
 const COMMON = {
 	GREETING: (name) => `${name}님`,

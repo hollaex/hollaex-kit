@@ -9,10 +9,8 @@ const {
 	SMS_CODE_KEY,
 	SMS_CODE_EXPIRATION_TIME
 } = require('../constants');
-const {
-	DEFAULT_LANGUAGE,
-	OTP_NAME
-} = require('../../constants');
+const DEFAULT_LANGUAGE = process.env.NEW_USER_DEFAULT_LANGUAGE || 'en';
+const OTP_NAME = process.env.API_NAME || 'HollaEx';
 const {
 	SMS_ERROR,
 	SMS_PHONE_DONT_MATCH,

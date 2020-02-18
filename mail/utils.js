@@ -31,14 +31,14 @@ const moment = require('moment');
 const geoip = require('geoip-lite');
 const { FORMATDATE } = require('./strings');
 
-const { DEFAULT_LANGUAGE } = require('../constants');
-const {
-	SMTP_SERVER,
-	SMTP_PORT,
-	SMTP_USER,
-	SMTP_PASSWORD,
-	DEFAULT_TIMEZONE
-} = require('./constants');
+const DEFAULT_LANGUAGE = process.env.NEW_USER_DEFAULT_LANGUAGE || 'en';
+const VALID_LANGUAGES = process.env.VALID_LANGUAGES || (DEFAULT_LANGUAGE ? DEFAULT_LANGUAGE.split(',') : 'en');
+
+const SMTP_SERVER = process.env.SMTP_SERVER || 'smtp.gmail.com';
+const SMTP_PORT = process.env.SMTP_PORT || 587;
+const SMTP_USER = process.env.SMTP_USER;
+const SMTP_PASSWORD = process.env.SMTP_PASSWORD;
+const DEFAULT_TIMEZONE = process.env.EMAILS_TIMEZONE || '';
 
 const formatTimezone = (date, timezone = DEFAULT_TIMEZONE) => {
 	let tzTime;
@@ -91,11 +91,19 @@ const sendSMTPEmail = (params) => {
 	return transport.sendMail(params);
 };
 
+const getValidLanguage = (language = DEFAULT_LANGUAGE) => {
+	if (VALID_LANGUAGES.indexOf(language) > -1) {
+		return language;
+	}
+	return DEFAULT_LANGUAGE;
+};
+
 module.exports = {
 	// sendAwsEmail,
 	// sendAwsRawEmail,
 	formatDate,
 	formatTimezone,
 	getCountryFromIp,
-	sendSMTPEmail
+	sendSMTPEmail,
+	getValidLanguage
 };

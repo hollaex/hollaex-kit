@@ -1,13 +1,12 @@
 'use strict';
 
 const aws = require('aws-sdk');
-const {
-	ID_DOCS_BUCKET,
-	S3_WRITE_ACCESSKEYID,
-	S3_WRITE_SECRETACCESSKEY,
-	S3_READ_ACCESSKEYID,
-	S3_READ_SECRETACCESSKEY
-} = require('../constants');
+const ID_DOCS_BUCKET = process.env.ID_DOCS_BUCKET || '';
+const S3_WRITE_ACCESSKEYID = process.env.S3_WRITE_ACCESSKEYID || '';
+const S3_WRITE_SECRETACCESSKEY = process.env.S3_WRITE_SECRETACCESSKEY || '';
+const S3_READ_ACCESSKEYID = process.env.S3_READ_ACCESSKEYID || '';
+const S3_READ_SECRETACCESSKEY = process.env.S3_READ_SECRETACCESSKEY || '';
+
 
 const generateBuckets = (bucketsString = '') => {
 	const bucketsSplit = bucketsString
