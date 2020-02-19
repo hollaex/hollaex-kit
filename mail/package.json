@@ -1,0 +1,9 @@
+{
+	"name": "mail",
+	"version": "0.1.0",
+	"dependencies": {
+		"geoip-lite": "1.4.0",
+		"moment-timezone": "0.5.14",
+		"nodemailer": "6.3.1"
+	}
+}

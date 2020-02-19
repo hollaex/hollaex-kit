@@ -2,12 +2,14 @@ import React, { Component } from 'react';
 import classnames from 'classnames';
 import EventListener from 'react-event-listener';
 import moment from 'moment';
+import { loadReCaptcha } from 'react-recaptcha-v3';
 import STRINGS from '../../config/localizedStrings';
 import {
 	ICONS,
 	FLEX_CENTER_CLASSES,
 	EXCHANGE_EXPIRY_DAYS,
-	FIT_SCREEN_HEIGHT
+	FIT_SCREEN_HEIGHT,
+	CAPTCHA_SITEKEY
 } from '../../config/constants';
 import { isBrowser, isMobile } from 'react-device-detect';
 
@@ -147,7 +149,8 @@ class App extends Component {
 
 	checkPath = (path) => {
 		var sheet = document.createElement('style');
-		if (path === 'login' || path === 'signup') {
+		if (path === 'login' || path === 'signup'
+			|| (path === '/reset-password') || path.includes('/withdraw')) {
 			sheet.innerHTML = '.grecaptcha-badge { display: unset !important;}';
 			sheet.id = 'addCap';
 			if (document.getElementById('rmvCap') !== null) {
@@ -427,6 +430,7 @@ class App extends Component {
 			chatIsClosed,
 			sidebarFitHeight
 		} = this.state;
+		loadReCaptcha(CAPTCHA_SITEKEY);
 		const languageClasses = getClasesForLanguage(activeLanguage, 'array');
 		const fontClass = getFontClassForLanguage(activeLanguage);
 
@@ -439,7 +443,7 @@ class App extends Component {
 			EXCHANGE_EXPIRY_DAYS - moment().diff(info.created_at, 'days');
 		return (
 			<div>
-				<Socket router={router} location={location} />
+				<Socket router={router} location={location} logout={this.logout} />
 				<div
 					className={classnames(
 						getThemeClass(activeTheme),

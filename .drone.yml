@@ -3,11 +3,21 @@ type: docker
 name: slack_notify
 
 steps:
-- name: partymaker_version_tag
+- name: partymaker_version_tag_testnet
   image: alpine
   commands:
   - cat version > .tags
   - echo "Current version tag is :" && cat .tags
+  when:
+    branch: master
+
+- name: partymaker_version_tag
+  image: alpine
+  commands:
+  - echo "$(cat version)-testnet" > .tags
+  - echo "Current version tag is :" && cat .tags
+  when:
+    branch: testnet
   
 - name: slack_noti_to_releases
   image: bitholla/devops-tools:drone_partymaker-0.1.4
@@ -20,5 +30,6 @@ steps:
 trigger:
   branch:
   - master
+  - testnet
   event:
   - push

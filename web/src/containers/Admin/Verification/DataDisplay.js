@@ -64,7 +64,7 @@ export const renderJSONKey = (key, value) => {
 		</div>
 	);
 };
-export default ({ renderRow, title, data }) => (
+export default ({ renderRow, title, data = {} }) => (
 	<div className="verification_data_container-data">
 		<h2>{title}</h2>
 		{data.message ? (

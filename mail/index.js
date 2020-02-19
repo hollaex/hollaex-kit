@@ -3,20 +3,22 @@
 const { sendAwsEmail, formatDate, getCountryFromIp, sendSMTPEmail } = require('./utils');
 const payloadTemplate = require('./templates/helpers/payloadTemplate');
 const { loggerEmail } = require('../config/logger');
-const {
-	SUPPORT_SOURCE,
-	BCC_ADDRESSES,
-	SUPPORT_EMAIL,
-	MASTER_EMAIL,
-	INQUIRY_EMAIL,
-	DEFAULT_LANGUAGE,
-	SEND_EMAIL_TO_SUPPORT,
-	DOMAIN
-} = require('../constants');
-const { getValidLanguage } = require('../utils/strings');
+const SUPPORT_EMAIL = process.env.SUPPORT_EMAIL || 'support@bitholla.com';
+const INQUIRY_EMAIL = SUPPORT_EMAIL;
+const MASTER_EMAIL = process.env.ADMIN_EMAIL || 'admin@bitholla.com';
+const SENDER_EMAIL = process.env.SENDER_EMAIL || 'support@bitholla.com';
+const SEND_EMAIL_TO_SUPPORT = (process.env.SEND_EMAIL_TO_SUPPORT &&
+	process.env.SEND_EMAIL_TO_SUPPORT === 'true') ||
+	process.env.NODE_ENV === 'production';
+const API_NAME = process.env.API_NAME || 'HollaEx';
+const SUPPORT_SOURCE = `'${API_NAME} Support <${SENDER_EMAIL}>'`;
+const BCC_ADDRESSES = SEND_EMAIL_TO_SUPPORT ? [exports.MASTER_EMAIL] : [];
+const DOMAIN = process.env.DOMAIN || (process.env.NODE_ENV === 'production' ? 'https://hollaex.com' : 'http://localhost:3000');
+const DEFAULT_LANGUAGE = process.env.NEW_USER_DEFAULT_LANGUAGE || 'en';
+const { getValidLanguage } = require('./utils');
 const { MAILTYPE } = require('./strings');
 const generateMessageContent = require('./templates');
-const { sendSMSDeposit } = require('../api/helpers/sms');
+const { sendSMSDeposit } = require('../plugins/sms/helpers');
 const getStatusText = (status) => {
 	return status ? 'COMPLETED' : 'PENDING';
 };

@@ -10,15 +10,13 @@ import {
 	BASE_CURRENCY,
 	DEFAULT_COIN_DATA,
 	HOLLAEX_LOGO,
-	HOLLAEX_LOGO_BLACK,
-	SIMPLE_FORMAT_MIN
+	HOLLAEX_LOGO_BLACK
 } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 import {
 	formatPercentage,
 	formatAverage,
-	formatToCurrency,
-	formatToSimple
+	formatToCurrency
 } from '../../utils/currency';
 
 class AddTradeTab extends Component {
@@ -222,7 +220,7 @@ class AddTradeTab extends Component {
 										<div>
 											{STRINGS.PRICE}:
 											<span className="title-font ml-1">
-												{formatToSimple(ticker.close, SIMPLE_FORMAT_MIN)}
+												{formatToCurrency(ticker.close, min)}
 											</span>
 										</div>
 										<div className="d-flex">

@@ -3,12 +3,14 @@ import { reduxForm } from 'redux-form';
 import {
 	requiredWithCustomMessage,
 	email,
-	normalizeEmail
+	normalizeEmail,
+	required
 } from '../../components/Form/validations';
 import { AuthForm } from '../../components';
 import STRINGS from '../../config/localizedStrings';
+import { getLanguage } from '../../utils/string';
 
-export const generateFormFields = () => ({
+export const generateFormFields = (theme) => ({
 	email: {
 		type: 'email',
 		validate: [
@@ -19,6 +21,12 @@ export const generateFormFields = () => ({
 		fullWidth: true,
 		label: STRINGS.FORM_FIELDS.EMAIL_LABEL,
 		placeholder: STRINGS.FORM_FIELDS.EMAIL_PLACEHOLDER
+	},
+	captcha: {
+		type: 'captcha',
+		language: getLanguage(),
+		theme: theme,
+		validate: [required]
 	}
 });
 

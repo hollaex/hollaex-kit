@@ -67,7 +67,7 @@ const generateSectionsText = (strings, theme) => {
 				},
 				{
 					text: SECTIONS.SECTION_3_LINK_2,
-					link: 'https://forum.bitholla'
+					link: 'https://forum.bitholla.com'
 				}
 			]
 		},

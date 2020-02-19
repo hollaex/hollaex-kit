@@ -20,7 +20,7 @@ class ChangeFees extends Component {
 
 	render() {
 		const levels = [];
-		for (let i = 1; i <= this.props.config.tiers; i++) {
+		for (let i = 1; i <= this.props.config.user_level_number; i++) {
 			levels.push({ value: `${i}`, label: `${i}` });
 		}
 

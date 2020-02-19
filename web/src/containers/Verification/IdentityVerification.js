@@ -168,7 +168,7 @@ class IdentityVerification extends Component {
 
 	onGoBack = () => {
 		this.props.setActivePageContent(0);
-		this.props.setActiveTab(1);
+		this.props.setActiveTab(2);
 	};
 
 	render() {

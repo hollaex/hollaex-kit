@@ -471,6 +471,7 @@ export const FEES_LIMIT_SITE_URL = 'https://www.hollaex.com';
 export const API_DOCS_URL = 'https://docs.bitholla.com/';
 export const EXCHANGE_URL = 'https://dash.bitholla.com/';
 export const EXCHANGE_EXPIRY_DAYS = 15;
+export const EXCHANGE_EXPIRY_SECONDS = EXCHANGE_EXPIRY_DAYS * 86400;
 export const SUPPORT_HELP_URL =
 	'https://info.hollaex.com/hc/en-us/requests/new';
 	

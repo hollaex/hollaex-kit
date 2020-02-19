@@ -6,7 +6,6 @@ import { debounce } from 'lodash';
 import { WS_URL, SESSION_TIME, BASE_CURRENCY } from '../../config/constants';
 import { isMobile } from 'react-device-detect';
 
-import { logout } from '../../actions/authAction';
 import { setMe, setBalance, updateUser } from '../../actions/userAction';
 import { addUserTrades } from '../../actions/walletActions';
 import {
@@ -94,7 +93,7 @@ class Container extends Component {
 			clearTimeout(this.idleTimer);
 		}
 		if (this.state.appLoaded) {
-			const idleTimer = setTimeout(() => this.logout('Inactive'), SESSION_TIME); // no activity will log the user out automatically
+			const idleTimer = setTimeout(() => this.props.logout('Inactive'), SESSION_TIME); // no activity will log the user out automatically
 			this.setState({ idleTimer });
 		}
 	};
@@ -128,7 +127,7 @@ class Container extends Component {
 			this.props.setPairs(data.pairs);
 			this.props.setPairsData(data.pairs);
 			this.props.setCurrencies(data.coins);
-			if (data.config) this.props.setConfig(data.config);
+			if (data.constants) this.props.setConfig(data.constants);
 			if (data.info) this.props.setInfo(data.info);
 			const pairWithBase = Object.keys(data.pairs).filter((key) => {
 				let temp = data.pairs[key];
@@ -190,7 +189,7 @@ class Container extends Component {
 				typeof error === 'string' &&
 				error.indexOf('Access Denied') > -1
 			) {
-				this.logout('Token is expired');
+				this.props.logout('Token is expired');
 			}
 		});
 
@@ -457,7 +456,6 @@ const mapStateToProps = (store) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-	logout: bindActionCreators(logout, dispatch),
 	addTrades: bindActionCreators(addTrades, dispatch),
 	setOrderbook: bindActionCreators(setOrderbook, dispatch),
 	setMe: bindActionCreators(setMe, dispatch),

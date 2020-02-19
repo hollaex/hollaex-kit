@@ -36,12 +36,26 @@ class Transactions extends Component {
 		indexItem: -1,
 		searchKey: 'transaction_id',
 		queryParams: {},
-		queryDone: JSON.stringify({})
+		queryDone: JSON.stringify({}),
+		page: 1,
+		pageSize: 10,
+		limit: 50,
+		currentTablePage: 1,
+		isRemaining: true
 	};
 
 	componentWillMount() {
-		const { initialData } = this.props;
-		this.requestDeposits(initialData);
+		const { initialData, queryParams = {} } = this.props;
+		if (Object.keys(queryParams).length) {
+			this.requestDeposits(
+				initialData,
+				queryParams,
+				this.state.page,
+				this.state.limit
+			);
+		} else {
+			this.requestDeposits(initialData, {}, this.state.page, this.state.limit);
+		}
 	}
 
 	componentWillReceiveProps(nextProps) {
@@ -50,12 +64,22 @@ class Transactions extends Component {
 			nextProps.queryParams.type !== this.props.queryParams.type
 		) {
 			const { initialData, queryParams } = nextProps;
-			this.requestDeposits(initialData, queryParams);
+			this.requestDeposits(
+				initialData,
+				queryParams,
+				this.state.page,
+				this.state.limit
+			);
 			this.onRefresh(false);
 		}
 	}
 
-	requestDeposits = (values = {}, queryParams = this.props.queryParams) => {
+	requestDeposits = (
+		values = {},
+		queryParams = this.props.queryParams,
+		page = 1,
+		limit = 50
+	) => {
 		if (Object.keys(queryParams).length === 0) {
 			return this.setState({
 				loading: false,
@@ -72,13 +96,19 @@ class Transactions extends Component {
 
 		requestDeposits({
 			...values,
-			...queryParams
+			...queryParams,
+			page,
+			limit
 		})
 			.then((data) => {
 				this.setState({
-					deposits: data.data ? data.data : data,
+					deposits:
+						page === 1 ? data.data : [...this.state.deposits, ...data.data],
 					loading: false,
-					fetched: true
+					fetched: true,
+					page: page,
+					currentTablePage: page === 1 ? 1 : this.state.currentTablePage,
+					isRemaining: data.count > page * limit
 				});
 			})
 			.catch((error) => {
@@ -118,11 +148,11 @@ class Transactions extends Component {
 		}
 	};
 
-	dismissDeposit = (deposit_id, dismissed, indexItem) => () => {
+	dismissDeposit = (transaction_id, dismissed, indexItem) => () => {
 		const { loadingItem, loading, dismissingItem } = this.state;
 		if (!(dismissingItem || loadingItem || loading)) {
 			this.setState({ dismissingItem: true, error: '', indexItem });
-			dismissDeposit(deposit_id, dismissed)
+			dismissDeposit(transaction_id, dismissed)
 				.then((data) => {
 					const { deposits } = this.state;
 					this.setState({
@@ -189,6 +219,21 @@ class Transactions extends Component {
 		this.requestDeposits({}, this.state.queryParams);
 	};
 
+	pageChange = (count, pageSize) => {
+		const { page, limit, isRemaining } = this.state;
+		const pageCount = count % 5 === 0 ? 5 : count % 5;
+		const apiPageTemp = Math.floor(count / 5);
+		if (limit === pageSize * pageCount && apiPageTemp >= page && isRemaining) {
+			this.requestDeposits(
+				this.props.initialData,
+				this.props.queryParams,
+				page + 1,
+				limit
+			);
+		}
+		this.setState({ currentTablePage: count });
+	};
+
 	render() {
 		const {
 			deposits,
@@ -200,7 +245,9 @@ class Transactions extends Component {
 			dismissingItem,
 			loadingItem,
 			queryParams,
-			queryDone
+			queryDone,
+			currentTablePage,
+			pageSize
 		} = this.state;
 		const { showFilters, coins } = this.props;
 
@@ -257,7 +304,7 @@ class Transactions extends Component {
 									dismissDeposit:
 										index !== indexItem
 											? this.dismissDeposit(
-													deposit.id,
+													deposit.transaction_id,
 													!deposit.dismissed,
 													index
 											  )
@@ -270,6 +317,11 @@ class Transactions extends Component {
 							expandRowByClick={true}
 							rowKey={(data) => {
 								return data.id;
+							}}
+							pagination={{
+								pageSize: pageSize,
+								current: currentTablePage,
+								onChange: this.pageChange
 							}}
 						/>
 					</div>

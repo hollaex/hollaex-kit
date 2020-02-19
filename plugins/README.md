@@ -1,3 +1,1 @@
-# Custom plugins for the exchange.
-
-TBA
+# Plugins for HollaEx Kit

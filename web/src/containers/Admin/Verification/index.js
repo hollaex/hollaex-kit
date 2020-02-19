@@ -63,7 +63,10 @@ class Verification extends Component {
 				refreshData(postValues);
 			})
 			.catch((err) => {
-				throw new SubmissionError({ _error: err.data.message });
+				let error = err && err.data
+					? err.data.message
+					: err.message;
+				throw new SubmissionError({ _error: error });
 			});
 	};
 
@@ -80,7 +83,10 @@ class Verification extends Component {
 				refreshData(postData);
 			})
 			.catch((err) => {
-				throw new SubmissionError({ _error: err.data.message });
+				let error = err && err.data
+					? err.data.message
+					: err.message;
+				throw new SubmissionError({ _error: error });
 			});
 	};
 
@@ -97,7 +103,10 @@ class Verification extends Component {
 				refreshData(postData);
 			})
 			.catch((err) => {
-				throw new SubmissionError({ _error: err.data.message });
+				let error = err && err.data
+					? err.data.message
+					: err.message;
+				throw new SubmissionError({ _error: error });
 			});
 	};
 
@@ -116,7 +125,10 @@ class Verification extends Component {
 				refreshData({ ...res, user_id: this.props.user_id });
 			})
 			.catch((err) => {
-				throw new SubmissionError({ _error: err.data.message });
+				let error = err && err.data
+					? err.data.message
+					: err.message;
+				throw new SubmissionError({ _error: error });
 			});
 	};
 
@@ -134,9 +146,9 @@ class Verification extends Component {
 			isSupport() || isSupervisor()
 				? VERIFICATION_LEVELS_SUPPORT
 				: VERIFICATION_LEVELS_ADMIN;
-		if (config.tiers) {
+		if (config.user_level_number) {
 			const temp = [];
-			for (let level = 1; level <= config.tiers; level++) {
+			for (let level = 1; level <= config.user_level_number; level++) {
 				temp.push(level.toString());
 			}
 			VERIFICATION_LEVELS = temp;
