@@ -26,7 +26,7 @@ steps:
       from_secret: github_oauth2_token_for_releases
   commands:
     - apt-get update && apt-get install -y hub git
-    - hub release create -m "HollaEx Core v$(cat .tags) Release" -t ${DRONE_BRANCH} $(cat .tags)
+    - hub release create -m "HollaEx Kit v$(cat .tags) Release" -t ${DRONE_BRANCH} $(cat .tags)
   when:
     branch: master
   
