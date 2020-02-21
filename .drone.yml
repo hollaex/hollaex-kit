@@ -18,6 +18,17 @@ steps:
   - echo "Current version tag is :" && cat .tags
   when:
     branch: testnet
+    
+- name: create_github_release_test
+  image: ubuntu:19.04
+  environment:
+    GITHUB_TOKEN:
+      from_secret: github_oauth2_token_for_releases
+  commands:
+    - apt-get update && apt-get install -y hub git
+    - hub release create -m "HollaEx Kit v$(cat .tags) Release" -t ${DRONE_BRANCH} $(cat .tags)
+  when:
+    branch: master
   
 - name: slack_noti_to_releases
   image: bitholla/devops-tools:drone_partymaker-0.1.4
