@@ -29,7 +29,7 @@ import {
 	changeTheme,
 	NOTIFICATIONS
 } from '../../actions/appActions';
-import { updateUser, setUserData } from '../../actions/userAction';
+import { updateUserSettings, setUserData } from '../../actions/userAction';
 import ThemeSwitcher from './ThemeSwitcher';
 
 class AppBar extends Component {
@@ -205,11 +205,13 @@ class AppBar extends Component {
 			} else {
 				settingsObj.interface.theme = 'dark';
 			}
-			return updateUser({ settings: settingsObj })
+			return updateUserSettings(settingsObj)
 				.then(({ data }) => {
 					this.props.setUserData(data);
-					this.props.changeTheme(data.settings.interface.theme);
-					localStorage.setItem('theme', data.settings.interface.theme);
+					if (data.settings && data.settings.interface) {
+						this.props.changeTheme(data.settings.interface.theme);
+						localStorage.setItem('theme', data.settings.interface.theme);
+					}
 				})
 				.catch((err) => {
 					const error = { _error: err.message };
