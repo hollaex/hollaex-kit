@@ -1,6 +1,6 @@
 'use strict';
 
-const DOMAIN = process.env.DOMAIN || (process.env.NODE_ENV === 'production' ? 'https://hollaex.com' : 'http://localhost:3000');
+const { DOMAIN } = require('../../constants');
 const DEFAULT_LANGUAGE = process.env.NEW_USER_DEFAULT_LANGUAGE || 'en';
 const API_NAME = process.env.API_NAME || 'HollaEx';
 const { TemplateEmail } = require('./helpers/common');

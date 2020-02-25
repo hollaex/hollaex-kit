@@ -1,11 +1,11 @@
 'use strict';
 
 const {
+	DOMAIN,
 	BITHOLLA_DOMAIN,
 	BITHOLLA_LOGO_BLACK,
 	EMAIL_ICONS
 } = require('../../constants');
-const DOMAIN = process.env.DOMAIN || (process.env.NODE_ENV === 'production' ? 'https://hollaex.com' : 'http://localhost:3000');;
 const LOGO_BLACK_PATH = process.env.LOGO_BLACK_PATH;
 const DEFAULT_LANGUAGE = process.env.NEW_USER_DEFAULT_LANGUAGE || 'en';
 const styles = require('./styles');

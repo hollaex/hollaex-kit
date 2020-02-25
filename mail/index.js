@@ -13,7 +13,7 @@ const SEND_EMAIL_TO_SUPPORT = (process.env.SEND_EMAIL_TO_SUPPORT &&
 const API_NAME = process.env.API_NAME || 'HollaEx';
 const SUPPORT_SOURCE = `'${API_NAME} Support <${SENDER_EMAIL}>'`;
 const BCC_ADDRESSES = SEND_EMAIL_TO_SUPPORT ? [exports.MASTER_EMAIL] : [];
-const DOMAIN = process.env.DOMAIN || (process.env.NODE_ENV === 'production' ? 'https://hollaex.com' : 'http://localhost:3000');
+const { DOMAIN } = require('../constants');
 const DEFAULT_LANGUAGE = process.env.NEW_USER_DEFAULT_LANGUAGE || 'en';
 const { getValidLanguage } = require('./utils');
 const { MAILTYPE } = require('./strings');
