@@ -40,7 +40,9 @@ import {
 	PATHS,
 	ExpiredExchange,
 	AdminOrders,
-	MobileHome
+	MobileHome,
+	Plugins,
+	Settings
 } from './containers';
 
 import store from './store';
@@ -316,6 +318,16 @@ export default (
 				path="/admin/activeorders"
 				name="Admin Orders"
 				component={withAdminProps(AdminOrders, 'orders')}
+			/>
+			<Route
+				path="/admin/plugins"
+				name="Admin plugins"
+				component={withAdminProps(Plugins, 'plugins')}
+			/>
+			<Route
+				path="/admin/settings"
+				name="Admin settings"
+				component={withAdminProps(Settings, 'settings')}
 			/>
 		</Route>
 		<Route

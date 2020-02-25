@@ -90,4 +90,16 @@ export const PATHS = [
 		label: 'Vault',
 		routeKey: 'blockChain'
 	},
+	{
+		path: '/admin/plugins',
+		// component: BlockchainTransaction,
+		label: 'Plugins',
+		routeKey: 'plugins'
+	},
+	{
+		path: '/admin/settings',
+		// component: BlockchainTransaction,
+		label: 'Settings',
+		routeKey: 'settings'
+	},
 ];
