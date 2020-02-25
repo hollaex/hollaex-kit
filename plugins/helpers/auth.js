@@ -1,7 +1,7 @@
 'use strict';
 
 const jwt = require('jsonwebtoken');
-const { SECRET, ISSUER, TOKEN_TIME } = require('../../constants');
+const { SECRET, ISSUER } = require('../../constants');
 const { intersection } = require('lodash');
 const { ACCESS_DENIED, NOT_AUTHORIZED, TOKEN_EXPIRED, INVALID_TOKEN, MISSING_HEADER } = require('./messages');
 
@@ -10,7 +10,7 @@ const { ACCESS_DENIED, NOT_AUTHORIZED, TOKEN_EXPIRED, INVALID_TOKEN, MISSING_HEA
 */
 const verifyToken = (req, res, next) => {
 	const sendError = (msg) => {
-		res.json({ message: ACCESS_DENIED(msg)});
+		return req.res.status(403).json({ message: ACCESS_DENIED(msg)});
 	};
 
 	const token = req.headers['authorization'];
@@ -22,9 +22,8 @@ const verifyToken = (req, res, next) => {
 			if (!verificationError && decodedToken) {
 
 				const issuerMatch = decodedToken.iss == ISSUER;
-				const dateMatch = Date.now() - decodedToken.expiry < TOKEN_TIME;
 
-				if (dateMatch && issuerMatch) {
+				if (issuerMatch) {
 					req.auth = decodedToken;
 					next();
 				} else {

@@ -5,11 +5,13 @@ import {
 	formValueSelector,
 	reset,
 	SubmissionError,
-	stopSubmit
+	stopSubmit,
+	change
 } from 'redux-form';
 import math from 'mathjs';
 import classnames from 'classnames';
 import { isMobile } from 'react-device-detect';
+import { bindActionCreators } from 'redux';
 import { Button, Dialog, OtpForm, Loader } from '../../components';
 import renderFields from '../../components/Form/factoryFields';
 import {
@@ -26,6 +28,7 @@ import ReviewModalContent from './ReviewModalContent';
 export const FORM_NAME = 'WithdrawCryptocurrencyForm';
 
 const selector = formValueSelector(FORM_NAME);
+let errorTimeOut = null;
 
 const validate = (values, props) => {
 	const errors = {};
@@ -75,6 +78,12 @@ class Form extends Component {
 		}
 	}
 
+	componentWillUnmount() {
+		if (errorTimeOut) {
+			clearTimeout(errorTimeOut);
+		}
+	}
+
 	onOpenDialog = (ev) => {
 		if (ev && ev.preventDefault) {
 			ev.preventDefault();
@@ -113,6 +122,9 @@ class Form extends Component {
 					this.props.onSubmitFail(err.errors || err, this.props.dispatch);
 					this.onCloseDialog();
 					this.props.dispatch(stopSubmit(FORM_NAME, error));
+					errorTimeOut = setTimeout(() => {
+						this.props.change(FORM_NAME, 'captcha', '');
+					}, 5000);
 					// throw new SubmissionError(error);
 				})
 		}
@@ -147,6 +159,9 @@ class Form extends Component {
 						this.props.onSubmitFail(err.errors, this.props.dispatch);
 						this.onCloseDialog();
 						this.props.dispatch(stopSubmit(FORM_NAME, error));
+						errorTimeOut = setTimeout(() => {
+							this.props.change(FORM_NAME, 'captcha', '');
+						}, 5000);
 					}
 					throw err;
 				} else {
@@ -154,6 +169,9 @@ class Form extends Component {
 					this.props.onSubmitFail(error, this.props.dispatch);
 					this.onCloseDialog();
 					this.props.dispatch(stopSubmit(FORM_NAME, error));
+					errorTimeOut = setTimeout(() => {
+						this.props.change(FORM_NAME, 'captcha', '');
+					}, 5000);
 					throw new SubmissionError(error);
 				}
 			});
@@ -231,11 +249,15 @@ const WithdrawForm = reduxForm({
 })(Form);
 
 const mapStateToForm = (state) => ({
-	data: selector(state, 'address', 'destination_tag', 'amount', 'fee'),
+	data: selector(state, 'address', 'destination_tag', 'amount', 'fee', 'captcha'),
 	activeTheme: state.app.theme,
 	coins: state.app.coins
 });
 
-const WithdrawFormWithValues = connect(mapStateToForm)(WithdrawForm);
+const mapDispatchToProps = (dispatch) => ({
+	change: bindActionCreators(change, dispatch)
+});
+
+const WithdrawFormWithValues = connect(mapStateToForm, mapDispatchToProps)(WithdrawForm);
 
 export default WithdrawFormWithValues;

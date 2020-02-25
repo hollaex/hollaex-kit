@@ -93,7 +93,7 @@ class UserContent extends Component {
 					</div>
 				</div>
 				<Tabs
-					tabBarExtraContent={<Button onClick={clearData}>Back</Button>}
+					tabBarExtraContent={<Button className="mr-3" onClick={clearData}>Back</Button>}
 				>
 					<TabPane tab="Data" key="data">
 						<div>
@@ -133,7 +133,7 @@ class UserContent extends Component {
 						</TabPane>
 					)}
 					{!isSupportUser && !isKYC() && (
-						<TabPane tab="Deposits & Withdrawal" key="deposits">
+						<TabPane tab="Deposits" key="deposits">
 							{/*<Deposits*/}
 							{/*initialData={{*/}
 							{/*user_id: id*/}
@@ -148,7 +148,22 @@ class UserContent extends Component {
 									user_id: id
 								}}
 								queryParams={{
-									status: true
+									status: true,
+									type: 'deposit'
+								}}
+								hideUserColumn={true}
+							/>
+						</TabPane>
+					)}
+					{!isSupportUser && !isKYC() && (
+						<TabPane tab="Withdrawal" key="withdrawals">
+							<Transactions
+								initialData={{
+									user_id: id
+								}}
+								queryParams={{
+									status: true,
+									type: "withdrawal"
 								}}
 								hideUserColumn={true}
 							/>

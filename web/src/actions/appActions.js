@@ -211,10 +211,10 @@ export const setCurrencies = (coins) => ({
 	}
 });
 
-export const setConfig = (config) => {
+export const setConfig = (config = {}) => {
 	let config_level = [];
 	if (config) {
-		for (let i = 1; i <= parseInt(config.tiers, 10); i++) {
+		for (let i = 1; i <= parseInt(config.user_level_number, 10); i++) {
 			config_level = [...config_level, i];
 		}
 	}

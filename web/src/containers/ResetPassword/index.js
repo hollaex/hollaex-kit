@@ -55,7 +55,7 @@ class ResetPassword extends Component {
 	};
 
 	onClickLogin = () => {
-		this.props.router.replace('login');
+		this.props.router.replace('/login');
 	};
 
 	render() {

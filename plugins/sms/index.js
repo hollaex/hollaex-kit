@@ -6,7 +6,7 @@ const { findUser } = require('../helpers/user');
 const PhoneNumber = require('awesome-phonenumber');
 const bodyParser = require('body-parser');
 const { createSMSCode, storeSMSCode, checkSMSCode, deleteSMSCode, sendSMS, updateUserPhoneNumber } = require('./helpers');
-const { DEFAULT_LANGUAGE } = require('../../constants');
+const DEFAULT_LANGUAGE = process.env.NEW_USER_DEFAULT_LANGUAGE || 'en';
 const { SMS } = require('../../mail/strings').languageFile(DEFAULT_LANGUAGE);
 const { logger } = require('../helpers/common');
 const {

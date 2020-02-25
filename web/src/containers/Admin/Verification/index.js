@@ -146,9 +146,9 @@ class Verification extends Component {
 			isSupport() || isSupervisor()
 				? VERIFICATION_LEVELS_SUPPORT
 				: VERIFICATION_LEVELS_ADMIN;
-		if (config.tiers) {
+		if (config.user_level_number) {
 			const temp = [];
-			for (let level = 1; level <= config.tiers; level++) {
+			for (let level = 1; level <= config.user_level_number; level++) {
 				temp.push(level.toString());
 			}
 			VERIFICATION_LEVELS = temp;
