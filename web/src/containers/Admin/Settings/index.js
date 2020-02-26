@@ -17,7 +17,11 @@ export default class Settings extends Component {
     };
 
     submitSettings = (formProps) => {
-        console.log('formProps', formProps);
+        let formValues = { ...formProps };
+        if (formProps.default_country === 'global') {
+            formValues.default_country = '';
+        }
+        console.log('formProps', formValues);
     };
 
     render() {

@@ -1,4 +1,4 @@
-import { required } from '../../../components/Form/validations';
+import { validateRequired, checkS3bucketUrl } from '../../../components/AdminForm/validations';
 
 export const getPluginsForm = (key) => {
     if (key === 'sns') {
@@ -7,19 +7,19 @@ export const getPluginsForm = (key) => {
                 type: 'input',
                 label: 'Access key',
                 placeholder: 'AWS SNS Access key',
-                validate: [required]
+                validate: [validateRequired]
             },
             secret_Key: {
                 type: 'input',
                 label: 'Secret key',
                 placeholder: 'AWS SNS Secret key',
-                validate: [required]
+                validate: [validateRequired]
             },
             region: {
                 type: 'input',
                 label: 'Region',
                 placeholder: 'AWS SNS Region',
-                validate: [required]
+                validate: [validateRequired]
             }
         };
     } else if (key === 'freshdesk') {
@@ -28,19 +28,19 @@ export const getPluginsForm = (key) => {
               type: 'input',
               label: 'Freshdesk Host URL',
               placeholder: 'Freshdesk Host URL',
-              validate: [required]
+              validate: [validateRequired]
             },
             secret_key: {
               type: 'input',
               label: 'Freshdesk Access key',
               placeholder: 'Freshdesk Access key',
-              validate: [required]
+              validate: [validateRequired]
             },
             region: {
               type: 'input',
               label: 'Freshdesk Auth key',
               placeholder: 'Freshdesk Auth key',
-              validate: [required]
+              validate: [validateRequired]
             }
           }
     } else {
@@ -49,19 +49,19 @@ export const getPluginsForm = (key) => {
                 type: 'input',
                 label: 'ID DOCS BUCKET',
                 placeholder: 'ID DOCS BUCKET',
-                validate: [required]
+                validate: [validateRequired, checkS3bucketUrl]
             },
             access_key: {
                 type: 'input',
                 label: 'Access key',
                 placeholder: 'AWS S3 Access key',
-                validate: [required]
+                validate: [validateRequired]
             },
             secret_key: {
                 type: 'input',
                 label: 'Secret key',
                 placeholder: 'AWS S3 Secret Key',
-                validate: [required]
+                validate: [validateRequired]
             }
         };
     }
