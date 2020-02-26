@@ -211,8 +211,8 @@ if ! command docker -v > /dev/null 2>&1 || ! command docker-compose -v > /dev/nu
 
 else
 
-   printf "\n\nYou are good to go!"
-   printf "\n\nStart configuring your exchange with the command: 'hollaex setup'."
+   printf "\n\nYou are good to go!\n"
+   echo "Start configuring your exchange with the command: 'hollaex setup'."
    echo "To see the full list of commands, use 'hollaex help'."
 
    if [[ "$DOCKER_USERGROUP_ADDED" ]]; then
