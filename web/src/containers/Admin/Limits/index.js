@@ -112,15 +112,15 @@ class Limits extends Component {
 	};
 
 	handleEdit = (value, data, keyIndex) => {
-		const { config = {} } = this.props;
-		const formFields = getCoinsFormFields(config, this.onchange);
+		const { constants = {} } = this.props;
+		const formFields = getCoinsFormFields(constants, this.onchange);
 		const Fields = formFields[keyIndex];
 		let initialValues = {};
 		let customLevels = [];
 		if (typeof data[keyIndex] === 'object') {
 			const temp = data[keyIndex];
 			Object.keys(temp).forEach((key) => {
-				if (key <= parseInt(config.user_level_number || 0, 10))
+				if (key <= parseInt(constants.user_level_number || 0, 10))
 					if (temp[key] === 0 || temp[key] === -1) {
 						initialValues[`${keyIndex}_${key}`] = `${temp[key]}`;
 					} else {
@@ -167,7 +167,7 @@ class Limits extends Component {
 			const tempData = {};
 			if (Object.keys(loopData).length) {
 				Object.keys(loopData).forEach((key) => {
-					if (key <= parseInt(this.props.config.user_level_number || 0, 10)) {
+					if (key <= parseInt(this.props.constants.user_level_number || 0, 10)) {
 						let levelValue = parseFloat(values[`${keyIndex}_${key}`]);
 						if (levelValue >= 1 && values[`${keyIndex}_${key}_custom`]) {
 							levelValue = values[`${keyIndex}_${key}_custom`];
@@ -310,7 +310,7 @@ class Limits extends Component {
 }
 
 const mapStateToProps = (state) => ({
-	config: state.app.config,
+	constants: state.app.constants,
 	coins: state.app.coins
 });
 

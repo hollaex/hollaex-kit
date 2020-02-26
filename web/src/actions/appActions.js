@@ -211,17 +211,17 @@ export const setCurrencies = (coins) => ({
 	}
 });
 
-export const setConfig = (config = {}) => {
+export const setConfig = (constants = {}) => {
 	let config_level = [];
-	if (config) {
-		for (let i = 1; i <= parseInt(config.user_level_number, 10); i++) {
+	if (constants) {
+		for (let i = 1; i <= parseInt(constants.user_level_number, 10); i++) {
 			config_level = [...config_level, i];
 		}
 	}
 	return {
 		type: SET_CONFIG,
 		payload: {
-			config,
+			constants,
 			config_level
 		}
 	};

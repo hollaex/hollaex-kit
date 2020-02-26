@@ -127,7 +127,7 @@ const INITIAL_STATE = {
 		}
 	},
 	isValidBase: false,
-	config: {},
+	constants: {},
 	config_level: [],
 	info: { is_trial: false, active:true },
 	wave: []
@@ -322,7 +322,7 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 		case SET_CONFIG:
 			return {
 				...state,
-				config: payload.config,
+				constants: payload.constants,
 				config_level: payload.config_level
 			};
 		case SET_INFO:

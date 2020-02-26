@@ -451,7 +451,7 @@ const mapStateToProps = (store) => ({
 	orderbooks: store.orderbook.pairsOrderbooks,
 	pairsTrades: store.orderbook.pairsTrades,
 	settings: store.user.settings,
-	config: store.app.config,
+	constants: store.app.constants,
 	info: store.app.info
 });
 
