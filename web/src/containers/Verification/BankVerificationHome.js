@@ -5,7 +5,7 @@ import { Button, PanelInformationRow } from '../../components';
 import STRINGS from '../../config/localizedStrings';
 import { ICONS, MAX_NUMBER_BANKS } from '../../config/constants';
 
-const BankVerificationHome = ({ user, setActivePageContent, setActiveTab }) => {
+const BankVerificationHome = ({ user, setActivePageContent, handleBack }) => {
 	const { bank_account } = user;
 	if (
 		!bank_account.length ||
@@ -16,7 +16,7 @@ const BankVerificationHome = ({ user, setActivePageContent, setActiveTab }) => {
 			<div>
 				<Button
 					label={STRINGS.USER_VERIFICATION.START_BANK_VERIFICATION}
-					onClick={() => setActivePageContent(1)}
+					onClick={() => setActivePageContent('bank')}
 				/>
 			</div>
 		);
@@ -62,7 +62,7 @@ const BankVerificationHome = ({ user, setActivePageContent, setActiveTab }) => {
 						STRINGS.USER_VERIFICATION.BANK_VERIFICATION_HELP_TEXT,
 						<span
 							className="verification_link pointer"
-							onClick={(e) => setActiveTab(4, e)}
+							onClick={(e) => handleBack('document', e)}
 						>
 							{STRINGS.USER_VERIFICATION.DOCUMENT_SUBMISSION}
 						</span>
@@ -73,7 +73,7 @@ const BankVerificationHome = ({ user, setActivePageContent, setActiveTab }) => {
 				MAX_NUMBER_BANKS > bank_account.length ? (
 					<Button
 						label={STRINGS.USER_VERIFICATION.ADD_ANOTHER_BANK_ACCOUNT}
-						onClick={() => setActivePageContent(1)}
+						onClick={() => setActivePageContent('bank')}
 					/>
 				) : null}
 			</div>

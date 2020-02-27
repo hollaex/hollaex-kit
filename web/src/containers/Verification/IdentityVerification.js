@@ -155,7 +155,7 @@ class IdentityVerification extends Component {
 		return updateUser(values)
 			.then(({ data }) => {
 				this.props.moveToNextStep('identity', data);
-				this.props.setActivePageContent(0);
+				this.props.setActivePageContent('email');
 			})
 			.catch((err) => {
 				const error = { _error: err.message };
@@ -167,8 +167,8 @@ class IdentityVerification extends Component {
 	};
 
 	onGoBack = () => {
-		this.props.setActivePageContent(0);
-		this.props.setActiveTab(2);
+		this.props.setActivePageContent('email');
+		this.props.handleBack('kyc');
 	};
 
 	render() {

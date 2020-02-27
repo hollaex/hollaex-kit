@@ -130,7 +130,8 @@ const INITIAL_STATE = {
 	constants: {},
 	config_level: [],
 	info: { is_trial: false, active:true },
-	wave: []
+	wave: [],
+	enabledPlugins: []
 };
 
 const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
@@ -323,7 +324,8 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 			return {
 				...state,
 				constants: payload.constants,
-				config_level: payload.config_level
+				config_level: payload.config_level,
+				enabledPlugins: payload.enabledPlugins
 			};
 		case SET_INFO:
 			return {

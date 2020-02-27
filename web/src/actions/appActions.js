@@ -213,16 +213,21 @@ export const setCurrencies = (coins) => ({
 
 export const setConfig = (constants = {}) => {
 	let config_level = [];
+	let enabledPlugins = [];
 	if (constants) {
 		for (let i = 1; i <= parseInt(constants.user_level_number, 10); i++) {
 			config_level = [...config_level, i];
+		}
+		if (constants.plugins && constants.plugins.enabled) {
+			enabledPlugins = constants.plugins.enabled.split(',');
 		}
 	}
 	return {
 		type: SET_CONFIG,
 		payload: {
 			constants,
-			config_level
+			config_level,
+			enabledPlugins
 		}
 	};
 };
