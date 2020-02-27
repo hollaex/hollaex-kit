@@ -10,6 +10,7 @@ const WEBHOOK_URL = `https://${API_HOST}/v1/deposit/${firstCoin}`;
 const WALLET_NAME = (coin) => `${API_NAME}-${coin}`;
 const { all, delay, each } = require('bluebird');
 const { isValidCurrency } = require('../../api/helpers/currency');
+const { updateConstants } = require('../../api/helpers/status');
 
 const getVaultCoins = (coins) => {
 	each(coins, (coin) => {
@@ -92,7 +93,14 @@ const createVaultWallets = (coins) => {
 };
 
 const checkVaultConnection = (coin) => {
+	if (!isValidCurrency(coin)) {
+		throw new Error(`${coin} does not exist in your exchange`);
+	}
 	const { getSecrets } = require('../../init');
+	const vaultConstants = getSecrets().vault;
+	if (!vaultConstants.connected_coins.includes(coin)) {
+		throw new Error(`${coin} is already connected to vault`);
+	}
 	const options = {
 		method: 'GET',
 		headers: {
@@ -114,8 +122,22 @@ const checkVaultConnection = (coin) => {
 				throw new Error(`Wallet with name ${WALLET_NAME(coin)} does not exist`)
 			} else if (wallet.webhook !== WEBHOOK_URL) {
 				throw new Error(`Wallet exists but has the wrong webhook: '${wallet.webhook}'. Expected webhook: '${WEBHOOK_URL}'`)
+			} else {
+				return updateConstants({
+					secrets: {
+						vault: {
+							name: vaultConstants.name,
+							key: vaultConstants.key,
+							secret: vaultConstants.secret,
+							connected_coins: [...vaultConstants.connected_coins, coin]
+						}
+					}
+				})
 			}
 		})
+		.then(() => {
+			return getSecrets().vault.connected_coins;
+		});
 };
 
 module.exports = {
