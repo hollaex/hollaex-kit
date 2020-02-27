@@ -128,9 +128,7 @@ const addVaultCoinConnection = (coin) => {
 	return updateConstants({
 		secrets: {
 			vault: {
-				name: vaultConstants.name,
-				key: vaultConstants.key,
-				secret: vaultConstants.secret,
+				...vaultConstants,
 				connected_coins: union(vaultConstants.connected_coins, coin)
 			}
 		}
