@@ -47,7 +47,7 @@ const checkVaultNames = (coins) => {
 	);
 };
 
-const createVaultWallets = (coins) => {
+const createVaultWallets = (coins, seed) => {
 	const firstCoin = coins.shift();
 	const firstOptions = {
 		method: 'POST',
@@ -64,6 +64,9 @@ const createVaultWallets = (coins) => {
 		uri: `${VAULT_ENDPOINT}/wallet`,
 		json: true
 	};
+	if (seed) {
+		firstOptions.body.seed = seed;
+	}
 	return rp(firstOptions)
 		.then((data) => {
 			return all([

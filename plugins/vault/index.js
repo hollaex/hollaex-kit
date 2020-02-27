@@ -21,7 +21,7 @@ app.post('/plugins/vault/connect', [verifyToken, bodyParser.json()], (req, res) 
 
 	getVaultCoins(coins)
 		.then(() => checkVaultNames(coins))
-		.then(() => createVaultWallets(coins))
+		.then(() => createVaultWallets(coins, seed))
 		.then(([ seed ]) => {
 			res.json({ seed });
 		})
