@@ -2,23 +2,16 @@
 
 const { VAULT_ENDPOINT, API_HOST } = require('../../constants');
 const rp = require('request-promise');
-const { difference } = require('lodash');
+const { difference, union } = require('lodash');
 const API_NAME = process.env.API_NAME;
 const VAULT_KEY = process.env.VAULT_KEY;
 const VAULT_SECRET = process.env.VAULT_SECRET;
-const WEBHOOK_URL = `https://${API_HOST}/v1/deposit/${firstCoin}`;
+const WEBHOOK_URL = (coin) => `https://${API_HOST}/v1/deposit/${coin}`;
 const WALLET_NAME = (coin) => `${API_NAME}-${coin}`;
-const { all, delay, each } = require('bluebird');
-const { isValidCurrency } = require('../../api/helpers/currency');
+const { all, delay } = require('bluebird');
 const { updateConstants } = require('../../api/helpers/status');
 
 const getVaultCoins = (coins) => {
-	each(coins, (coin) => {
-		if (!isValidCurrency(coin)) {
-			throw new Error(`${coin} does not exist in your exchange`);
-		}
-	});
-
 	const options = {
 		method: 'GET',
 		uri: `${VAULT_ENDPOINT}/coins`
@@ -58,7 +51,7 @@ const createVaultWallets = (coins, seed) => {
 		body: {
 			name: WALLET_NAME(firstCoin),
 			currency: firstCoin,
-			webhook: WEBHOOK_URL,
+			webhook: WEBHOOK_URL(firstCoin),
 			type: 'multi'
 		},
 		uri: `${VAULT_ENDPOINT}/wallet`,
@@ -81,7 +74,7 @@ const createVaultWallets = (coins, seed) => {
 						body: {
 							name: WALLET_NAME(coin),
 							currency: coin,
-							webhook: WEBHOOK_URL,
+							webhook: WEBHOOK_URL(coin),
 							type: 'multi',
 							seed: data.seed
 						},
@@ -92,18 +85,13 @@ const createVaultWallets = (coins, seed) => {
 						.then(() => rp(options));
 				})
 			]);
+		})
+		.then(([ seed ]) => {
+			return all([seed, addVaultCoinConnection([firstCoin, ...coins])]);
 		});
 };
 
 const checkVaultConnection = (coin) => {
-	if (!isValidCurrency(coin)) {
-		throw new Error(`${coin} does not exist in your exchange`);
-	}
-	const { getSecrets } = require('../../init');
-	const vaultConstants = getSecrets().vault;
-	if (!vaultConstants.connected_coins.includes(coin)) {
-		throw new Error(`${coin} is already connected to vault`);
-	}
 	const options = {
 		method: 'GET',
 		headers: {
@@ -121,26 +109,32 @@ const checkVaultConnection = (coin) => {
 	return rp(options)
 		.then((data) => {
 			const wallet = data.data[0];
-			if (!WALLET_NAME) {
+			if (!wallet) {
 				throw new Error(`Wallet with name ${WALLET_NAME(coin)} does not exist`)
-			} else if (wallet.webhook !== WEBHOOK_URL) {
-				throw new Error(`Wallet exists but has the wrong webhook: '${wallet.webhook}'. Expected webhook: '${WEBHOOK_URL}'`)
+			} else if (wallet.webhook !== WEBHOOK_URL(coin)) {
+				throw new Error(`Wallet exists but has the wrong webhook: ${wallet.webhook}. Expected webhook: ${WEBHOOK_URL(coin)}`)
 			} else {
-				return updateConstants({
-					secrets: {
-						vault: {
-							name: vaultConstants.name,
-							key: vaultConstants.key,
-							secret: vaultConstants.secret,
-							connected_coins: [...vaultConstants.connected_coins, coin]
-						}
-					}
-				})
+				return addVaultCoinConnection([coin])
 			}
 		})
 		.then(() => {
+			const { getSecrets } = require('../../init');
 			return getSecrets().vault.connected_coins;
 		});
+};
+
+const addVaultCoinConnection = (coin) => {
+	const vaultConstants = require('../../init').getSecrets().vault;
+	return updateConstants({
+		secrets: {
+			vault: {
+				name: vaultConstants.name,
+				key: vaultConstants.key,
+				secret: vaultConstants.secret,
+				connected_coins: union(vaultConstants.connected_coins, coin)
+			}
+		}
+	});
 };
 
 module.exports = {

@@ -1,10 +1,12 @@
 'use strict';
 
 const app = require('../index');
+const { each } = require('lodash');
 const { verifyToken, checkScopes } = require('../helpers/auth');
 const bodyParser = require('body-parser');
 const { logger } = require('../helpers/common');
 const { getVaultCoins, checkVaultNames, createVaultWallets, checkVaultConnection } = require('./helpers');
+const { isValidCurrency } = require('../../api/helpers/currency');
 
 app.post('/plugins/vault/connect', [verifyToken, bodyParser.json()], (req, res) => {
 	const endpointScopes = ['admin'];
@@ -18,6 +20,16 @@ app.post('/plugins/vault/connect', [verifyToken, bodyParser.json()], (req, res) 
 
 	const coins = req.body.coins.split(',');
 	const seed = req.body.seed;
+
+	each(coins, (coin) => {
+		if (!isValidCurrency(coin)) {
+			return res.status(400).json({ messasge: `${coin} does not exist in your exchange` });
+		}
+
+		if (require('../../init').getSecrets().vault.connected_coins.includes(coin)) {
+			return res.status(400).json({ message: `${coin} is already connected to vault` });
+		}
+	});
 
 	getVaultCoins(coins)
 		.then(() => checkVaultNames(coins))
@@ -45,6 +57,14 @@ app.get('/plugins/vault/connect/check', verifyToken, (req, res) => {
 	);
 
 	const coin = req.query.coin;
+
+	if (!isValidCurrency(coin)) {
+		return res.status(400).json({ message: `${coin} does not exist in your exchange` });
+	}
+
+	if (require('../../init').getSecrets().vault.connected_coins.includes(coin)) {
+		return res.status(400).json({ message: `${coin} is already connected to vault` });
+	}
 
 	checkVaultConnection(coin)
 		.then((data) => {
