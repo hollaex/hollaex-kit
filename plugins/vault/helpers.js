@@ -36,27 +36,48 @@ const checkVaultNames = (coins) => {
 };
 
 const createVaultWallets = (coins) => {
-	return all(
-		coins.map((coin, i) => {
-			const options = {
-				method: 'POST',
-				headers: {
-					key: VAULT_KEY,
-					secret: VAULT_SECRET
-				},
-				body: {
-					name: `${API_NAME}-${coin}`,
-					currency: coin,
-					webhook: `https://${API_HOST}/v1/deposit/${coin}`,
-					type: 'multi'
-				},
-				uri: `${VAULT_ENDPOINT}/wallet`,
-				json: true
-			};
-			return delay((i + 1) * 1500)
-				.then(() => rp(options));
-		})
-	);
+	const firstCoin = coins.shift();
+	const firstOptions = {
+		method: 'POST',
+		headers: {
+			key: VAULT_KEY,
+			secret: VAULT_SECRET
+		},
+		body: {
+			name: `${API_NAME}-${firstCoin}`,
+			currency: firstCoin,
+			webhook: `https://${API_HOST}/v1/deposit/${firstCoin}`,
+			type: 'multi'
+		},
+		uri: `${VAULT_ENDPOINT}/wallet`,
+		json: true
+	};
+	return rp(firstOptions)
+		.then((data) => {
+			return all([
+				data.seed,
+				...coins.map((coin, i) => {
+					const options = {
+						method: 'POST',
+						headers: {
+							key: VAULT_KEY,
+							secret: VAULT_SECRET
+						},
+						body: {
+							name: `${API_NAME}-${coin}`,
+							currency: coin,
+							webhook: `https://${API_HOST}/v1/deposit/${coin}`,
+							type: 'multi',
+							seed: data.seed
+						},
+						uri: `${VAULT_ENDPOINT}/wallet`,
+						json: true
+					};
+					return delay((i + 1) * 1500)
+						.then(() => rp(options));
+				})
+			]);
+		});
 };
 
 module.exports = {
