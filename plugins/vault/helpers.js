@@ -6,9 +6,18 @@ const { difference } = require('lodash');
 const API_NAME = process.env.API_NAME;
 const VAULT_KEY = process.env.VAULT_KEY;
 const VAULT_SECRET = process.env.VAULT_SECRET;
-const { all, delay } = require('bluebird');
+const WEBHOOK_URL = `https://${API_HOST}/v1/deposit/${firstCoin}`;
+const WALLET_NAME = (coin) => `${API_NAME}-${coin}`;
+const { all, delay, each } = require('bluebird');
+const { isValidCurrency } = require('../../api/helpers/currency');
 
 const getVaultCoins = (coins) => {
+	each(coins, (coin) => {
+		if (!isValidCurrency(coin)) {
+			throw new Error(`${coin} does not exist in your exchange`);
+		}
+	});
+
 	const options = {
 		method: 'GET',
 		uri: `${VAULT_ENDPOINT}/coins`
@@ -46,9 +55,9 @@ const createVaultWallets = (coins) => {
 			secret: VAULT_SECRET
 		},
 		body: {
-			name: `${API_NAME}-${firstCoin}`,
+			name: WALLET_NAME(firstCoin),
 			currency: firstCoin,
-			webhook: `https://${API_HOST}/v1/deposit/${firstCoin}`,
+			webhook: WEBHOOK_URL,
 			type: 'multi'
 		},
 		uri: `${VAULT_ENDPOINT}/wallet`,
@@ -66,9 +75,9 @@ const createVaultWallets = (coins) => {
 							secret: VAULT_SECRET
 						},
 						body: {
-							name: `${API_NAME}-${coin}`,
+							name: WALLET_NAME(coin),
 							currency: coin,
-							webhook: `https://${API_HOST}/v1/deposit/${coin}`,
+							webhook: WEBHOOK_URL,
 							type: 'multi',
 							seed: data.seed
 						},
@@ -82,8 +91,36 @@ const createVaultWallets = (coins) => {
 		});
 };
 
+const checkVaultConnection = (coin) => {
+	const { getSecrets } = require('../../init');
+	const options = {
+		method: 'GET',
+		headers: {
+			key: VAULT_KEY,
+			secret: VAULT_SECRET
+		},
+		qs: {
+			name: WALLET_NAME(coin),
+			currency: coin
+		},
+		uri: `${VAULT_ENDPOINT}/user/wallets`,
+		json: true
+	};
+
+	return rp(options)
+		.then((data) => {
+			const wallet = data.data[0];
+			if (!WALLET_NAME) {
+				throw new Error(`Wallet with name ${WALLET_NAME(coin)} does not exist`)
+			} else if (wallet.webhook !== WEBHOOK_URL) {
+				throw new Error(`Wallet exists but has the wrong webhook: '${wallet.webhook}'. Expected webhook: '${WEBHOOK_URL}'`)
+			}
+		})
+};
+
 module.exports = {
 	getVaultCoins,
 	checkVaultNames,
-	createVaultWallets
+	createVaultWallets,
+	checkVaultConnection
 };
