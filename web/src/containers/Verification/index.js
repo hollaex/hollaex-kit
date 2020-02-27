@@ -334,7 +334,11 @@ class Verification extends Component {
 		this.setState({ activeTab });
 	};
 
-	handleBack = (tabKey) => {
+	handleBack = (tabKey, event) => {
+		if (event) {
+			event.preventDefault();
+			event.stopPropagation();
+		}
 		if (tabKey) {
 			let activeTab = this.state.currentTabs.indexOf(tabKey);
 			activeTab = activeTab >= 0 ? activeTab : 0;
