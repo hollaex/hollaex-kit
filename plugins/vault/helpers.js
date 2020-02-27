@@ -1,3 +1,5 @@
+'use strict';
+
 const { VAULT_ENDPOINT, API_HOST } = require('../../constants');
 const rp = require('request-promise');
 const { difference } = require('lodash');
