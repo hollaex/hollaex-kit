@@ -35,7 +35,7 @@ app.post('/plugins/vault/connect', [verifyToken, bodyParser.json()], (req, res) 
 		.then(() => checkVaultNames(coins))
 		.then(() => createVaultWallets(coins, seed))
 		.then(([ seed ]) => {
-			res.json({ seed });
+			res.json({ success: true, seed });
 		})
 		.catch((err) => {
 			logger.error(
@@ -72,7 +72,7 @@ app.get('/plugins/vault/connect/check', verifyToken, (req, res) => {
 				'POST /plugins/vault/connect/check connected_coins',
 				data
 			);
-			res.json({ connected_coins: data });
+			res.json({ success: true, connected_coins: data });
 		})
 		.catch((err) => {
 			logger.error(
