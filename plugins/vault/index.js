@@ -23,7 +23,7 @@ app.post('/plugins/vault/connect', [verifyToken, bodyParser.json()], (req, res) 
 
 	each(coins, (coin) => {
 		if (!isValidCurrency(coin)) {
-			return res.status(400).json({ messasge: `${coin} does not exist in your exchange` });
+			return res.status(400).json({ message: `${coin} does not exist in your exchange` });
 		}
 
 		if (require('../../init').getSecrets().vault.connected_coins.includes(coin)) {
@@ -42,7 +42,7 @@ app.post('/plugins/vault/connect', [verifyToken, bodyParser.json()], (req, res) 
 				'POST /plugins/vault/connect catch',
 				err.messsage
 			)
-			res.status(err.status || 400).json({ messasge: err.message });
+			res.status(err.status || 400).json({ message: err.message });
 		});
 });
 
