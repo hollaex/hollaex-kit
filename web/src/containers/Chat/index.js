@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import io from 'socket.io-client';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -30,6 +30,15 @@ class Chat extends Component {
 		// if (!this.props.fetchingAuth && isLoggedIn()) {
 		if (!this.props.fetchingAuth) {
 			this.initializeChatWs(getToken());
+		}
+	}
+
+	componentDidMount() {
+		if (this.props.enabledPlugins &&
+			this.props.enabledPlugins.length &&
+			!this.props.fetchingAuth &&
+			!this.props.enabledPlugins.includes('chat')) {
+				this.props.router.push('/account');
 		}
 	}
 
@@ -188,7 +197,8 @@ class Chat extends Component {
 			onMinimize,
 			minimized,
 			chatIsClosed,
-			set_username
+			set_username,
+			enabledPlugins
 		} = this.props;
 		const {
 			messages,
@@ -197,7 +207,9 @@ class Chat extends Component {
 			unreadMessages,
 			showEmojiBox
 		} = this.state;
-
+		if (!enabledPlugins.includes('chat')) {
+			return <Fragment />
+		}
 		return (
 			<ChatWrapper
 				chatSocketInitializing={chatSocketInitializing}
@@ -233,7 +245,8 @@ const mapStateToProps = (store) => ({
 	userInitialized: store.user.fetched,
 	unreadMessages: store.app.chatUnreadMessages,
 	set_username: store.user.settings.chat.set_username,
-	is_hap: store.user.is_hap
+	is_hap: store.user.is_hap,
+	enabledPlugins: store.app.enabledPlugins
 });
 
 const mapDispatchToProps = (dispatch) => ({

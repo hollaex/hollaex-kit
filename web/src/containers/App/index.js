@@ -57,7 +57,8 @@ const mapStateToProps = (store) => ({
 	unreadMessages: store.app.chatUnreadMessages,
 	settings: store.user.settings,
 	constants: store.app.constants,
-	info: store.app.info
+	info: store.app.info,
+	enabledPlugins: store.app.enabledPlugins
 });
 
 const mapDispatchToProps = (dispatch) => ({
