@@ -3,7 +3,10 @@ import classnames from 'classnames';
 
 const CustomTabBar = ({ tabs, activeTab, setActiveTab }) => {
     return (
-        <div className="custom-tab-wrapper d-flex justify-content-between flex-nowrap flex-row">
+        <div className={classnames("custom-tab-wrapper d-flex flex-nowrap flex-row", {
+            'justify-content-between': tabs.length > 2,
+            'justify-content-around': tabs.length <= 2
+        })}>
             {tabs.map((tab, index) => {
                 const tabProps = {
                     key: `tab_item-${index}`,

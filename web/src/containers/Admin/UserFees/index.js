@@ -46,15 +46,15 @@ class UserFees extends Component {
 
 	componentDidMount() {
 		if (Object.keys(this.props.pairs).length)
-			this.constructData(this.props.pairs, this.props.config);
+			this.constructData(this.props.pairs, this.props.constants);
 	}
 
 	componentDidUpdate(prevProps) {
 		if (
 			JSON.stringify(prevProps.pairs) !== JSON.stringify(this.props.pairs) ||
-			JSON.stringify(prevProps.config) !== JSON.stringify(this.props.config)
+			JSON.stringify(prevProps.constants) !== JSON.stringify(this.props.constants)
 		) {
-			this.constructData(this.props.pairs, this.props.config);
+			this.constructData(this.props.pairs, this.props.constants);
 		}
 	}
 
@@ -91,21 +91,21 @@ class UserFees extends Component {
 			[fee_type]: { ...levels }
 		})
 			.then((res) => {
-				this.renderData(res, this.props.config);
+				this.renderData(res, this.props.constants);
 			})
 			.then(openNotification())
 			.catch((err) => {});
 	};
 
 	handleClick = (value, data, keyIndex) => {
-		const { config = {} } = this.props;
-		const formFields = getPairsFormFields(config);
+		const { constants = {} } = this.props;
+		const formFields = getPairsFormFields(constants);
 		const Fields = formFields[keyIndex];
 		let initialValues = {};
 		if (typeof data[keyIndex] === 'object') {
 			const temp = data[keyIndex];
 			Object.keys(temp).forEach((key) => {
-				if (key <= parseInt(config.user_level_number || 0, 10))
+				if (key <= parseInt(constants.user_level_number || 0, 10))
 					initialValues[`${keyIndex}_${key}`] = temp[key];
 			});
 		} else {
@@ -137,7 +137,7 @@ class UserFees extends Component {
 			const tempData = {};
 			if (Object.keys(loopData).length) {
 				Object.keys(loopData).forEach((key) => {
-					if (key <= parseInt(this.props.config.user_level_number || 0, 10)) {
+					if (key <= parseInt(this.props.constants.user_level_number || 0, 10)) {
 						let levelValue = parseFloat(values[`${keyIndex}_${key}`]);
 						tempData[key] = levelValue;
 					}
@@ -221,7 +221,7 @@ class UserFees extends Component {
 						</div>
 						{/* <h2>CHANGE USER FEES</h2>
 							<ChangeFees
-								config={config}
+								constants={constants}
 								onLvlSelect={this.onLvlSelect}
 								onFeeSelect={this.onFeeSelect}
 								onSearch={this.onSearch}
@@ -244,7 +244,7 @@ class UserFees extends Component {
 }
 
 const mapStateToProps = (state) => ({
-	config: state.app.config,
+	constants: state.app.constants,
 	pairs: state.app.pairs
 });
 

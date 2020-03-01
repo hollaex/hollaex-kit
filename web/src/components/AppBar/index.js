@@ -50,7 +50,7 @@ class AppBar extends Component {
 			this.setActiveMenu(this.props.location.pathname);
 		}
 		if (this.props.user) {
-			this.checkVerificationStatus(this.props.user);
+			this.checkVerificationStatus(this.props.user, this.props.enabledPlugins);
 			this.checkWalletStatus(this.props.user, this.props.coins);
 		}
 		if (this.props.isHome && this.props.token) {
@@ -79,7 +79,7 @@ class AppBar extends Component {
 			this.setActiveMenu(nextProps.location.pathname);
 		}
 		if (JSON.stringify(this.props.user) !== JSON.stringify(nextProps.user)) {
-			this.checkVerificationStatus(nextProps.user);
+			this.checkVerificationStatus(nextProps.user, nextProps.enabledPlugins);
 			this.checkWalletStatus(nextProps.user, nextProps.coins);
 		}
 		if (
@@ -131,7 +131,7 @@ class AppBar extends Component {
 			});
 	};
 
-	checkVerificationStatus = (user) => {
+	checkVerificationStatus = (user, enabledPlugins) => {
 		let userData = user.userData || {};
 		if (!Object.keys(userData).length && user.id) {
 			userData = user;
@@ -148,18 +148,21 @@ class AppBar extends Component {
 			if (!user.otp_enabled) {
 				securityPending += 1;
 			}
-			if (user.verification_level < 1 && !full_name) {
+			if (user.verification_level < 1 && !full_name &&
+				enabledPlugins.includes('kyc')) {
 				verificationPending += 1;
 			}
-			if (id_data.status === 0 || id_data.status === 2) {
+			if ((id_data.status === 0 || id_data.status === 2) &&
+				enabledPlugins.includes('kyc')) {
 				verificationPending += 1;
 			}
-			if (!phone_number) {
+			if (!phone_number && enabledPlugins.includes('sms')) {
 				verificationPending += 1;
 			}
 			if (
 				bank_account.filter((acc) => acc.status === 0 || acc.status === 2)
-					.length === bank_account.length
+					.length === bank_account.length &&
+					enabledPlugins.includes('bank')
 			) {
 				verificationPending += 1;
 			}
@@ -558,7 +561,8 @@ const mapStateToProps = (state, ownProps) => {
 		pair: state.app.pair,
 		pairs: state.app.pairs,
 		coins: state.app.coins,
-		info: state.app.info
+		info: state.app.info,
+		enabledPlugins: state.app.enabledPlugins
 	};
 };
 

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { Link } from 'react-router';
 import ReactSVG from 'react-svg';
 import classnames from 'classnames';
@@ -7,54 +7,57 @@ import { ICONS } from '../../config/constants';
 import { ButtonLink } from '../../components';
 
 
-const SidebarButtom = ({ title= '', path = '', iconPath = '', active = false }) => {
+const SidebarButton = ({ title = '', path = '', iconPath = '', active = false }) => {
 	return (
 		<Link to={path} className={classnames('sidebar-bottom-button', { active })}>
 			<ReactSVG path={iconPath} wrapperClassName="sidebar-bottom-icon" />
-			<div className={ active ? 'bottom-text-acttive bottom-bar-text' : 'bottom-bar-text'} >{title}</div>
+			<div className={active ? 'bottom-text-acttive bottom-bar-text' : 'bottom-bar-text'} >{title}</div>
 		</Link>
 	);
 };
 
-export const SidebarBottom = ({ activePath = 'x', pair = '', isLogged }) => {
+export const SidebarBottom = ({ activePath = 'x', pair = '', isLogged, enabledPlugins = [] }) => {
 	return (
 		isLogged ?
 			<div className="sidebar-bottom-wrapper d-flex justify-content-between">
-				<SidebarButtom
-					path={"/account"} 
-					title= {STRINGS.ACCOUNT_TEXT}
+				<SidebarButton
+					path={"/account"}
+					title={STRINGS.ACCOUNT_TEXT}
 					iconPath={ICONS.SIDEBAR_ACCOUNT_ACTIVE}
-					active={ activePath === 'account' }
+					active={activePath === 'account'}
 				/>
-				{/* <SidebarButtom
+				{/* <SidebarButton
 					path={`/quick-trade/${pair}`}
 					title={STRINGS.QUICK_TRADE}
 					iconPath={activePath === 'quick-trade' ? ICONS.SIDEBAR_QUICK_TRADING_ACTIVE : ICONS.SIDEBAR_QUICK_TRADING_INACTIVE}
 					active={activePath === 'quick-trade'}
 				/> */}
-				<SidebarButtom
+				<SidebarButton
 					path={`/trade/${pair}`}
 					title={STRINGS.PRO_TRADE}
 					iconPath={ICONS.SIDEBAR_TRADING_ACTIVE}
 					active={activePath === 'trade'}
 				/>
-				<SidebarButtom
-					path={`/chat`}
-					title={STRINGS.USER_SETTINGS.TITLE_CHAT}
-					iconPath={ICONS.CHAT}
-					active={activePath === 'chat'}
-				/>
-				<SidebarButtom
+				{enabledPlugins.includes('chat')
+					? <SidebarButton
+						path={`/chat`}
+						title={STRINGS.USER_SETTINGS.TITLE_CHAT}
+						iconPath={ICONS.CHAT}
+						active={activePath === 'chat'}
+					/>
+					: <Fragment />
+				}
+				<SidebarButton
 					path="/wallet"
 					title={STRINGS.WALLET_TITLE}
 					iconPath={ICONS.SIDEBAR_WALLET_ACTIVE}
 					active={activePath === 'wallet'}
 				/>
-				<SidebarButtom
-					path={"/home"} 
-					title= {STRINGS.TRADE_TAB_POSTS}
+				<SidebarButton
+					path={"/home"}
+					title={STRINGS.TRADE_TAB_POSTS}
 					iconPath={ICONS.SIDEBAR_POST_ACTIVE}
-					active={ activePath === 'home' }
+					active={activePath === 'home'}
 				/>
 			</div> :
 			<div className="d-flex w-100 p-4">
