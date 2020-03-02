@@ -281,7 +281,14 @@ export const ICONS = {
 	UP_ARROW: '/assets/images/buy-trade.svg',
 	DOWN_ARROW: '/assets/images/sell-trade.svg',
 	MOON_THEME: '/assets/icons/moon-theme.svg',
-	SUN_THEME: '/assets/icons/sun-theme.svg'
+	SUN_THEME: '/assets/icons/sun-theme.svg',
+	PLUGINS_CHAT: '/assets/plugins/plugin-chat.png',
+	PLUGINS_FRESHDESK: '/assets/plugins/plugin-freshdesk.png',
+	PLUGINS_LIQUIDITY: '/assets/plugins/plugin-liquidity.png',
+	PLUGINS_SHUFTI: '/assets/plugins/plugin-shufti.png',
+	PLUGINS_SMS: '/assets/plugins/plugin-sms.png',
+	PLUGINS_VERIFICATION: '/assets/plugins/plugin-verification.png',
+	PLUGINS_ZENDESK: '/assets/plugins/plugin-zendesk.png'
 };
 
 export const SOCIAL_ICONS = {

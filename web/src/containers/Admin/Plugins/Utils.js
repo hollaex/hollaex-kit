@@ -24,19 +24,19 @@ export const getPluginsForm = (key) => {
         };
     } else if (key === 'freshdesk') {
         return {
-            access_key: {
+            host: {
               type: 'input',
               label: 'Freshdesk Host URL',
               placeholder: 'Freshdesk Host URL',
               validate: [validateRequired]
             },
-            secret_key: {
+            access_key: {
               type: 'input',
               label: 'Freshdesk Access key',
               placeholder: 'Freshdesk Access key',
               validate: [validateRequired]
             },
-            region: {
+            auth_key: {
               type: 'input',
               label: 'Freshdesk Auth key',
               placeholder: 'Freshdesk Auth key',
@@ -45,7 +45,7 @@ export const getPluginsForm = (key) => {
           }
     } else {
         return {
-            name: {
+            id_docs_bucket: {
                 type: 'input',
                 label: 'ID DOCS BUCKET',
                 placeholder: 'ID DOCS BUCKET',

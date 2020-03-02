@@ -10,10 +10,10 @@ export const generateAdminSettings = (key) => {
                 placeholder: 'Admin whitelist',
                 validate: [validateRequired]
             },
-            allowed_domain: {
+            allowed_domains: {
                 type: 'input',
-                label: 'Allowed domain',
-                placeholder: 'Allowed domain',
+                label: 'Allowed domains',
+                placeholder: 'Allowed domains',
                 validate: [validateRequired]
             },
             web_captcha_site_key: {
@@ -88,7 +88,7 @@ export const generateAdminSettings = (key) => {
                 // placeholder: 'New user is activated',
                 // validate: [validateRequired]
             },
-            new_user_default_language: {
+            default_language: {
                 type: 'select',
                 label: 'Default language',
                 placeholder: 'Select default language',

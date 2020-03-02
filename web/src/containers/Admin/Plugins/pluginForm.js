@@ -10,7 +10,7 @@ export const S3Form = ({ handleSubmitVault }) => {
 	return (
 		<div className="mb-4">
 			<Form
-				onSubmit={handleSubmitVault}
+				onSubmit={(formProps) => handleSubmitVault(formProps, 's3')}
 				buttonText="Save"
 				fields={getPluginsForm('s3')}
 			/>
@@ -22,7 +22,7 @@ export const SNSForm = ({ handleSubmitVault }) => {
 	return (
 		<div className="mb-4">
 			<PluginSNSForm
-				onSubmit={handleSubmitVault}
+				onSubmit={(formProps) => handleSubmitVault(formProps, 'sns')}
 				buttonText="Save"
 				fields={getPluginsForm('sns')}
 			/>
@@ -34,7 +34,7 @@ export const Freshdesk = ({ handleSubmitVault }) => {
 	return (
 		<div className="mb-4">
 			<FreshdeskForm
-				onSubmit={handleSubmitVault}
+				onSubmit={(formProps) => handleSubmitVault(formProps, 'freshdesk')}
 				buttonText="Save"
 				fields={getPluginsForm('freshdesk')}
 			/>
