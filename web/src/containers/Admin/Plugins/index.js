@@ -1,18 +1,52 @@
 import React, { Component } from 'react';
-import { Tabs, Row } from 'antd';
+import { Card } from 'antd';
 import { connect } from 'react-redux';
-import { S3Form, SNSForm, Freshdesk } from './pluginForm';
-import { updatePlugins } from './action';
 
-const TabPane = Tabs.TabPane;
+import { updatePlugins } from './action';
+import { allPluginsData } from './Utils';
 
 class Plugins extends Component {
 	constructor(props) {
 		super(props)
 		this.state = {
-			activeTab: ''
+			activeTab: '',
+			myPlugins: [],
+			otherPlugins: []
 		};
 	}
+
+	componentDidMount() {
+		this.generateCards();
+	}
+
+	componentDidUpdate(prevProps) {
+		if (JSON.stringify(this.props.enabledPlugins) !== JSON.stringify(prevProps.enabledPlugins)) {
+			this.generateCards();
+		}
+	}
+
+	generateCards = () => {
+		const { enabledPlugins } = this.props;
+		let myPlugins = [ ...enabledPlugins ];
+		// enabledPlugins.forEach((data) => {
+		// 	if (allPluginsData[data]) myPlugins = [ ...myPlugins, allPluginsData[data] ];
+		// });
+		const otherPlugins = Object.keys(allPluginsData).filter((data) => !enabledPlugins.includes(data));
+		// let otherPlugins = [];
+		// otherPluginKeys.forEach((data) => {
+		// 	if (allPluginsData[data]) otherPlugins = [ ...otherPlugins, allPluginsData[data] ];
+		// });
+		// let myPlugins = [];
+		// enabledPlugins.forEach((data) => {
+		// 	if (allPluginsData[data]) myPlugins = [ ...myPlugins, allPluginsData[data] ];
+		// });
+		// const otherPluginKeys = Object.keys(allPluginsData).filter((data) => !enabledPlugins.includes(data));
+		// let otherPlugins = [];
+		// otherPluginKeys.forEach((data) => {
+		// 	if (allPluginsData[data]) otherPlugins = [ ...otherPlugins, allPluginsData[data] ];
+		// });
+		this.setState({ myPlugins, otherPlugins });
+	};
 
 	tabChange = (activeTab) => {
 		this.setState({ activeTab });
@@ -40,28 +74,45 @@ class Plugins extends Component {
 			});
 	};
 
+	onHandleCard = (key) => {
+		console.log('onHandleCard', key);
+	};
+
 	render() {
+		const { myPlugins, otherPlugins } = this.state;
 		console.log('this.props.', this.props.constants);
 		return (
 			<div className="app_container-content">
-				<h1>Plugins</h1>
-				<Tabs onChange={this.tabChange}>
-					<TabPane tab={'S3'} key={'s3'}>
-						<Row>
-							<S3Form handleSubmitVault={this.handleSubmitVault} />
-						</Row>
-					</TabPane>
-					<TabPane tab={'SNS'} key={'sns'}>
-						<Row>
-							<SNSForm handleSubmitVault={this.handleSubmitVault} />
-						</Row>
-					</TabPane>
-					<TabPane tab={'Freshdesk'} key={'freshdesk'}>
-						<Row>
-							<Freshdesk handleSubmitVault={this.handleSubmitVault} />
-						</Row>
-					</TabPane>
-				</Tabs>
+				<h1>My Plugins</h1>
+				<div className="d-flex flex-wrap">
+					{myPlugins.map((key) => {
+						let plugin = allPluginsData[key] || {};
+						return <Card className="cardStyle w-25 mb-4 mx-3"
+							key={plugin.title}
+							hoverable
+							cover={<img src={plugin.icon} alt={plugin.title} />}
+							onClick={() => this.onHandleCard(key)}>
+							<h3>{plugin.title}</h3>
+							<h5>{plugin.sub_title}</h5>
+							<div>{plugin.description}</div>
+						</Card>
+					})}
+				</div>
+				<h1>Other Plugins</h1>
+				<div className="d-flex flex-wrap">
+					{otherPlugins.map((key) => {
+						let plugin = allPluginsData[key] || {};
+						return <Card className="cardStyle w-25 mb-4 mx-3"
+							key={plugin.title}
+							hoverable
+							cover={<img src={plugin.icon} alt={plugin.title} />}
+							onClick={() => this.onHandleCard(key)}>
+							<h3>{plugin.title}</h3>
+							<h5>{plugin.sub_title}</h5>
+							<div>{plugin.description}</div>
+						</Card>
+					})}
+				</div>
 			</div>
 		)
 	}
@@ -69,7 +120,7 @@ class Plugins extends Component {
 
 const mapStateToProps = (state) => ({
 	enabledPlugins: state.app.enabledPlugins,
-	constants: state.app.constants	
+	constants: state.app.constants
 });
 
 export default connect(mapStateToProps)(Plugins);

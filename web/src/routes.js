@@ -42,6 +42,7 @@ import {
 	AdminOrders,
 	MobileHome,
 	Plugins,
+	PluginServices,
 	Settings
 } from './containers';
 
@@ -323,6 +324,11 @@ export default (
 				path="/admin/plugins"
 				name="Admin plugins"
 				component={withAdminProps(Plugins, 'plugins')}
+			/>
+			<Route
+				path="/admin/plugins/:services"
+				name="Admin plugins"
+				component={withAdminProps(PluginServices, 'plugins')}
 			/>
 			<Route
 				path="/admin/settings"
