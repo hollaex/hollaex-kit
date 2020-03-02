@@ -1,13 +1,21 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
-import { S3Form, SNSForm, Freshdesk } from './pluginForm';
+import ServiceDisplay from './ServiceDisplay';
+import { updatePlugins } from './action';
+import { allPluginsData, getPluginsForm } from './Utils';
+import { ModalForm } from '../../../components';
 
-export default class PluginServices extends Component {
+const Form = ModalForm('PLUGINS_UPDATE_FORM');
+
+class PluginServices extends Component {
     constructor(props) {
 		super(props)
 		this.state = {
             services: '',
-            ServiceDisplay: null
+            formService: '',
+            isFormOpen: false,
+            title: ''
 		};
 	}
     
@@ -16,37 +24,81 @@ export default class PluginServices extends Component {
             this.getServices(this.props.params.services);
     }
 
-    componentDidUpdate(prevProps, prevState) {
-        if (JSON.stringify(this.props.params) !== JSON.stringify(prevProps.params)
-            && prevProps.params.services) {
-            this.getServices(prevProps.params.services);
+    componentDidUpdate(prevProps) {
+        if ((JSON.stringify(this.props.params) !== JSON.stringify(prevProps.params)
+                || JSON.stringify(this.props.constants) !== JSON.stringify(prevProps.constants))
+            && this.props.params.services) {
+            this.getServices(this.props.params.services);
         }
     }
 
     getServices = (services = '') => {
-        let ServiceDisplay = null;
-        switch(services) {
-            case 's3':
-                ServiceDisplay = <S3Form handleSubmitVault={this.handleSubmitVault} />;
-                break;
-            case 'sns':
-                ServiceDisplay = <SNSForm handleSubmitVault={this.handleSubmitVault} />;
-                break;
-            case 'freshdesk':
-                ServiceDisplay = <Freshdesk handleSubmitVault={this.handleSubmitVault} />;
-                break;
-            default:
-                ServiceDisplay = <div>{services}</div>;
+        const pluginData = allPluginsData[services] || {}
+        const title = pluginData.title ? pluginData.title : '';
+        const formData = getPluginsForm('', true);
+        if (!Object.keys(formData).includes(services)) {
+            this.props.router.push('/admin/plugins');
         }
-        this.setState({ services, ServiceDisplay });
+        this.setState({ services, title });
+    };
+
+    handleSubmitPlugins = (key) => (formProps) => {
+        const plugins = this.props.constants && this.props.constants.plugins
+            ? this.props.constants.plugins
+            : { configuration: {} };
+		let formValues = {
+			plugins: {
+                ...plugins,
+				configuration: {
+                    ...plugins.configuration,
+					[key]: formProps
+				}
+			}
+		};
+		updatePlugins(formValues)
+			.then((data) => {
+				console.log('data', data);
+			})
+			.catch((error) => {
+				console.log('error', error);
+			});
+    };
+    
+    handleForm = (service) => {
+        this.setState({ isFormOpen: !this.state.isFormOpen });
+    };
+
+    disconnectService = () => {
+        console.log('disconnect');
     };
     
     render() {
-        const { ServiceDisplay } = this.state;
+        const { isFormOpen, title, services } = this.state;
+
         return (
-            <div>
-                {ServiceDisplay}
+            <div className="app_container-content">
+				<h1>Plugins</h1>
+                <ServiceDisplay
+                    title={title}
+                    constants={this.props.constants}
+                    services={services}
+                    handleForm={this.handleForm}
+                    disconnectService={this.disconnectService} />
+                <Form
+					visible={isFormOpen}
+					title={title}
+					okText="Save"
+					fields={getPluginsForm(services)}
+					onSubmit={this.handleSubmitPlugins(services)}
+					onCancel={this.handleForm}
+				/>
             </div>
         )
     }
 };
+
+const mapStateToProps = (state) => ({
+	constants: state.app.constants
+});
+
+export default connect(mapStateToProps)(PluginServices);

@@ -71,51 +71,9 @@ export const allPluginsData = {
     }
 };
 
-export const getPluginsForm = (key) => {
-    if (key === 'sns') {
-        return {
-            access_Key: {
-                type: 'input',
-                label: 'Access key',
-                placeholder: 'AWS SNS Access key',
-                validate: [validateRequired]
-            },
-            secret_Key: {
-                type: 'input',
-                label: 'Secret key',
-                placeholder: 'AWS SNS Secret key',
-                validate: [validateRequired]
-            },
-            region: {
-                type: 'input',
-                label: 'Region',
-                placeholder: 'AWS SNS Region',
-                validate: [validateRequired]
-            }
-        };
-    } else if (key === 'freshdesk') {
-        return {
-            host: {
-                type: 'input',
-                label: 'Freshdesk Host URL',
-                placeholder: 'Freshdesk Host URL',
-                validate: [validateRequired]
-            },
-            access_key: {
-                type: 'input',
-                label: 'Freshdesk Access key',
-                placeholder: 'Freshdesk Access key',
-                validate: [validateRequired]
-            },
-            auth_key: {
-                type: 'input',
-                label: 'Freshdesk Auth key',
-                placeholder: 'Freshdesk Auth key',
-                validate: [validateRequired]
-            }
-        }
-    } else {
-        return {
+export const getPluginsForm = (key, all = false) => {
+    const formData = {
+        's3': {
             id_docs_bucket: {
                 type: 'input',
                 label: 'ID DOCS BUCKET',
@@ -134,6 +92,68 @@ export const getPluginsForm = (key) => {
                 placeholder: 'AWS S3 Secret Key',
                 validate: [validateRequired]
             }
-        };
-    }
+        },
+        'sns': {
+            access_Key: {
+                type: 'input',
+                label: 'Access key',
+                placeholder: 'AWS SNS Access key',
+                validate: [validateRequired]
+            },
+            secret_Key: {
+                type: 'input',
+                label: 'Secret key',
+                placeholder: 'AWS SNS Secret key',
+                validate: [validateRequired]
+            },
+            region: {
+                type: 'input',
+                label: 'Region',
+                placeholder: 'AWS SNS Region',
+                validate: [validateRequired]
+            }
+        },
+        'freshdesk': {
+            host: {
+                type: 'input',
+                label: 'Freshdesk Host URL',
+                placeholder: 'Freshdesk Host URL',
+                validate: [validateRequired]
+            },
+            access_key: {
+                type: 'input',
+                label: 'Freshdesk Access key',
+                placeholder: 'Freshdesk Access key',
+                validate: [validateRequired]
+            },
+            auth_key: {
+                type: 'input',
+                label: 'Freshdesk Auth key',
+                placeholder: 'Freshdesk Auth key',
+                validate: [validateRequired]
+            }
+        },
+        'vault': {
+            vault_name: {
+                type: 'input',
+                label: 'Name',
+                placeholder: 'Vault name',
+                validate: [validateRequired]
+            },
+            vault_key: {
+                type: 'input',
+                label: 'Access key',
+                placeholder: 'Vault access key',
+                validate: [validateRequired]
+            },
+            vault_secret: {
+                type: 'input',
+                label: 'Secret key',
+                placeholder: 'Vault secret key',
+                validate: [validateRequired]
+            }
+        }
+    };
+    if (all) return formData;
+    return formData[key] || {};
 }

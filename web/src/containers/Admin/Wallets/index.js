@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Spin } from 'antd';
+import { Spin, Button } from 'antd';
+import { connect } from 'react-redux';
 import { requestTotalBalance } from './actions';
 import { Card, Alert } from 'antd';
 import { formatCurrency } from '../../../utils';
@@ -43,9 +44,13 @@ class Wallets extends Component {
 			});
 	};
 
+	goToVault = () => {
+		this.props.router.push('/admin/plugins/vault');
+	};
+
 	render() {
 		const { balance, loading, error } = this.state;
-
+		const { secrets = {} } = this.props.constants;
 		return (
 			<div className="app_container-content">
 				{error && (
@@ -63,6 +68,12 @@ class Wallets extends Component {
 					<div>
 						{error && <p>-{error}-</p>}
 						<h1>USER WALLETS</h1>
+						<div className="my-3">
+							{!secrets.vault
+								? <Button type="primary" onClick={this.goToVault}>Connect Wallet</Button>
+								: null
+							}
+						</div>
 						<Card
 							className="card-title"
 							title="TOTAL BALANCE OF USERS WALLETS"
@@ -93,4 +104,8 @@ class Wallets extends Component {
 	}
 }
 
-export default Wallets;
+const mapStateToProps = (state) => ({
+	constants: state.app.constants
+});
+
+export default connect(mapStateToProps)(Wallets);

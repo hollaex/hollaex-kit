@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Icon, Spin, Alert } from 'antd';
 import { connect } from 'react-redux';
 
-import Vault from './Vault';
 import { AdminHocForm } from '../../../components';
 import { validateRequired } from '../../../components/AdminForm/validations';
 import { checkTransaction } from './actions';
@@ -37,10 +36,6 @@ class BlockchainTransaction extends Component {
 			});
 	};
 
-	handleSubmitVault = (formProps) => {
-		console.log('formProps', formProps);
-	};
-
 	render() {
 		const { error, data, loading } = this.state;
 		const coinOptions = [];
@@ -54,9 +49,6 @@ class BlockchainTransaction extends Component {
 		});
 		return (
 			<div className="app_container-content">
-				<h1>Vault</h1>
-				<Vault
-					handleSubmitVault={this.handleSubmitVault} />
 				<h1> Check Vault transaction status </h1>
 				<Form
 					onSubmit={this.onSubmit}

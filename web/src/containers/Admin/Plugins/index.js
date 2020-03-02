@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import { Card } from 'antd';
 import { connect } from 'react-redux';
 
-import { updatePlugins } from './action';
 import { allPluginsData } from './Utils';
+
+import './index.css';
 
 class Plugins extends Component {
 	constructor(props) {
@@ -28,23 +29,7 @@ class Plugins extends Component {
 	generateCards = () => {
 		const { enabledPlugins } = this.props;
 		let myPlugins = [ ...enabledPlugins ];
-		// enabledPlugins.forEach((data) => {
-		// 	if (allPluginsData[data]) myPlugins = [ ...myPlugins, allPluginsData[data] ];
-		// });
 		const otherPlugins = Object.keys(allPluginsData).filter((data) => !enabledPlugins.includes(data));
-		// let otherPlugins = [];
-		// otherPluginKeys.forEach((data) => {
-		// 	if (allPluginsData[data]) otherPlugins = [ ...otherPlugins, allPluginsData[data] ];
-		// });
-		// let myPlugins = [];
-		// enabledPlugins.forEach((data) => {
-		// 	if (allPluginsData[data]) myPlugins = [ ...myPlugins, allPluginsData[data] ];
-		// });
-		// const otherPluginKeys = Object.keys(allPluginsData).filter((data) => !enabledPlugins.includes(data));
-		// let otherPlugins = [];
-		// otherPluginKeys.forEach((data) => {
-		// 	if (allPluginsData[data]) otherPlugins = [ ...otherPlugins, allPluginsData[data] ];
-		// });
 		this.setState({ myPlugins, otherPlugins });
 	};
 
@@ -52,35 +37,14 @@ class Plugins extends Component {
 		this.setState({ activeTab });
 	};
 
-	handleSubmitPlugins = () => {
-		console.log('formProps');
-	}
-
-	handleSubmitVault = (formProps, key) => {
-		let formValues = {
-			plugins: {
-				configuration: {
-					[key]: formProps
-				}
-			}
-		};
-		console.log('formProps', formProps, key, formValues);
-		updatePlugins(formValues)
-			.then((data) => {
-				console.log('data', data);
-			})
-			.catch((error) => {
-				console.log('error', error);
-			});
-	};
-
 	onHandleCard = (key) => {
-		console.log('onHandleCard', key);
+		if (key) {
+			this.props.router.push(`/admin/plugins/${key}`);
+		}
 	};
 
 	render() {
 		const { myPlugins, otherPlugins } = this.state;
-		console.log('this.props.', this.props.constants);
 		return (
 			<div className="app_container-content">
 				<h1>My Plugins</h1>
@@ -119,8 +83,7 @@ class Plugins extends Component {
 }
 
 const mapStateToProps = (state) => ({
-	enabledPlugins: state.app.enabledPlugins,
-	constants: state.app.constants
+	enabledPlugins: state.app.enabledPlugins
 });
 
 export default connect(mapStateToProps)(Plugins);
