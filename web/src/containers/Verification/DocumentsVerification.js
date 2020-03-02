@@ -161,7 +161,7 @@ class DocumentsVerification extends Component {
 				};
 
 				this.props.moveToNextStep('documents', values);
-				this.props.setActivePageContent(0);
+				this.props.setActivePageContent('email');
 			})
 			.catch((err) => {
 				const error = { _error: err.message };
@@ -173,8 +173,8 @@ class DocumentsVerification extends Component {
 	};
 
 	onGoBack = () => {
-		this.props.setActivePageContent(0);
-		this.props.setActiveTab(4);
+		this.props.setActivePageContent('email');
+		this.props.handleBack('document');
 	};
 
 	render() {

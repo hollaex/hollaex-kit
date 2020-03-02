@@ -3,7 +3,7 @@ FROM node:10.15.3-alpine as build
 ENV NODE_OPTIONS=--max_old_space_size=3072
 WORKDIR /app
 COPY package.json /app/package.json
-RUN npm install
+RUN npm install --loglevel=error
 COPY . /app
 RUN npm run build
 

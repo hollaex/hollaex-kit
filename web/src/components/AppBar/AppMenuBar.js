@@ -19,7 +19,7 @@ class AppMenuBar extends Component {
             this.setActiveMenu(this.props.location.pathname);
         }
         if (this.props.user && this.props.user.id) {
-            this.checkVerificationStatus(this.props.user);
+            this.checkVerificationStatus(this.props.user, this.props.enabledPlugins);
             this.checkWalletStatus(this.props.user, this.props.coins);
         }
     }
@@ -31,7 +31,7 @@ class AppMenuBar extends Component {
         }
         if (JSON.stringify(this.props.user) !== JSON.stringify(nextProps.user)
             || JSON.stringify(this.props.coins) !== JSON.stringify(nextProps.coins)) {
-            this.checkVerificationStatus(nextProps.user);
+            this.checkVerificationStatus(nextProps.user, nextProps.enabledPlugins);
             this.checkWalletStatus(nextProps.user, nextProps.coins);
         }
         if (this.props.activeLanguage !== nextProps.activeLanguage) {
@@ -39,7 +39,7 @@ class AppMenuBar extends Component {
         }
     }
 
-    checkVerificationStatus = user => {
+    checkVerificationStatus = (user, enabledPlugins) => {
         const userData = user.userData || {};
         const { phone_number, full_name, id_data = {}, bank_account = [] } = userData;
         let securityPending = 0;
@@ -47,16 +47,18 @@ class AppMenuBar extends Component {
         if (!user.otp_enabled) {
             securityPending += 1;
         }
-        if (user.verification_level < 1 && !full_name) {
+        if (user.verification_level < 1 && !full_name && enabledPlugins.includes('kyc')) {
             verificationPending += 1;
         }
-        if (id_data.status === 0 || id_data.status === 2) {
+        if ((id_data.status === 0 || id_data.status === 2) &&
+            enabledPlugins.includes('kyc')) {
             verificationPending += 1;
         }
-        if (!phone_number) {
+        if (!phone_number && enabledPlugins.includes('sms')) {
             verificationPending += 1;
         }
-        if (bank_account.filter(acc => acc.status === 0 || acc.status === 2).length === bank_account.length) {
+        if (bank_account.filter(acc => acc.status === 0 || acc.status === 2).length === bank_account.length &&
+            enabledPlugins.includes('bank')) {
             verificationPending += 1;
         }
         this.setState({ securityPending, verificationPending });
@@ -225,7 +227,8 @@ class AppMenuBar extends Component {
 const mapStateToProps = (state) => ({
     user: state.user,
     coins: state.app.coins,
-    activeLanguage: state.app.language
+    activeLanguage: state.app.language,
+    enabledPlugins: state.app.enabledPlugins
 });
 
 export default connect(mapStateToProps)(AppMenuBar);

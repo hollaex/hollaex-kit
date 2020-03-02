@@ -110,7 +110,7 @@ class MobileVerification extends Component {
 		return verifySmsCode(values)
 			.then(({ data }) => {
 				this.props.moveToNextStep('mobile', values);
-				this.props.setActivePageContent(0);
+				this.props.setActivePageContent('email');
 			})
 			.catch((err) => {
 				const error = { _error: err.message };
@@ -156,8 +156,8 @@ class MobileVerification extends Component {
 	};
 
 	onGoBack = () => {
-		this.props.setActivePageContent(0);
-		this.props.setActiveTab(3);
+		this.props.setActivePageContent('email');
+		this.props.handleBack('sms');
 	};
 
 	checkLoadingTime = () => {
