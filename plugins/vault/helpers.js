@@ -3,20 +3,21 @@
 const { VAULT_ENDPOINT, API_HOST } = require('../../constants');
 const rp = require('request-promise');
 const { intersection, union } = require('lodash');
-const API_NAME = process.env.API_NAME;
 const WEBHOOK_URL = (coin) => `https://${API_HOST}/v1/deposit/${coin}`;
-const WALLET_NAME = (coin) => `${API_NAME}-${coin}`;
+const WALLET_NAME = (name, coin) => `${name}-${coin}`;
 const { all, delay } = require('bluebird');
 const { updateConstants } = require('../../api/helpers/status');
 
 const updateVaultValues = (key, secret) => {
+	const API_NAME = require('../../init').getConfiguration().constants.api_name;
+	const connected_coins = require('../../init').getSecrets().vault.connected_coins;
 	return updateConstants({
 		secrets: {
 			vault: {
 				name: API_NAME,
 				key,
 				secret,
-				connected_coins: []
+				connected_coins
 			}
 		}
 	});
@@ -62,6 +63,7 @@ const crossCheckCoins = (coins) => {
 };
 
 const createOrUpdateWallets = (coins, key, secret) => {
+	const VAULT_NAME = require('../../init').getSecrets().vault.name;
 	return all(
 		coins.map((coin, i) => {
 			const options = {
@@ -71,7 +73,7 @@ const createOrUpdateWallets = (coins, key, secret) => {
 					secret
 				},
 				qs: {
-					name: WALLET_NAME(coin),
+					name: WALLET_NAME(VAULT_NAME, coin),
 					currency: coin
 				},
 				uri: `${VAULT_ENDPOINT}/user/wallets`,
@@ -98,6 +100,7 @@ const createOrUpdateWallets = (coins, key, secret) => {
 };
 
 const createVaultWallet = (coin, key, secret) => {
+	const VAULT_NAME = require('../../init').getSecrets().vault.name;
 	const options = {
 		method: 'POST',
 		headers: {
@@ -105,7 +108,7 @@ const createVaultWallet = (coin, key, secret) => {
 			secret
 		},
 		body: {
-			name: WALLET_NAME(coin),
+			name: WALLET_NAME(VAULT_NAME, coin),
 			currency: coin,
 			webhook: WEBHOOK_URL(coin),
 			type: 'multi'
