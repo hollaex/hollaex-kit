@@ -2,7 +2,7 @@
 
 const { VAULT_ENDPOINT, API_HOST } = require('../../constants');
 const rp = require('request-promise');
-const { difference, union } = require('lodash');
+const { intersection, union } = require('lodash');
 const API_NAME = process.env.API_NAME;
 const VAULT_KEY = process.env.VAULT_KEY;
 const VAULT_SECRET = process.env.VAULT_SECRET;
@@ -148,10 +148,30 @@ const updateVaultValues = (key, secret) => {
 	});
 };
 
+const crossCheckCoins = () => {
+	const exchangeCoins = Object.keys(require('../../api/helpers/status').getCoinsPairs().coins);
+	const options = {
+		method: 'GET',
+		uri: `${VAULT_ENDPOINT}/coins`
+	};
+
+	return rp(options)
+		.then((vaultCoins) => {
+			vaultCoins = JSON.parse(vaultCoins);
+			const validCoins = intersection(exchangeCoins, vaultCoins);
+			if (validCoins.length === 0) {
+				throw new Error('Your exchange coins are not available in vault');
+			} else {
+				return validCoins;
+			}
+		});
+}
+
 module.exports = {
 	getVaultCoins,
 	checkVaultNames,
 	createVaultWallets,
 	checkVaultConnection,
-	updateVaultValues
+	updateVaultValues,
+	crossCheckCoins
 };
