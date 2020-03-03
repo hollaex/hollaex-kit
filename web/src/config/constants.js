@@ -288,7 +288,9 @@ export const ICONS = {
 	PLUGINS_SHUFTI: '/assets/plugins/plugin-shufti.png',
 	PLUGINS_SMS: '/assets/plugins/plugin-sms.png',
 	PLUGINS_VERIFICATION: '/assets/plugins/plugin-verification.png',
-	PLUGINS_ZENDESK: '/assets/plugins/plugin-zendesk.png'
+	PLUGINS_ZENDESK: '/assets/plugins/plugin-zendesk.png',
+	PLUGINS_BANK: '/assets/plugins/plugin-bank.png',
+	PLUGINS_VAULT: '/assets/plugins/plugin-vault.png'
 };
 
 export const SOCIAL_ICONS = {

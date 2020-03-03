@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Card } from 'antd';
+import { Card, Divider } from 'antd';
 import { connect } from 'react-redux';
 
 import { allPluginsData } from './Utils';
@@ -47,35 +47,41 @@ class Plugins extends Component {
 		const { myPlugins, otherPlugins } = this.state;
 		return (
 			<div className="app_container-content">
-				<h1>My Plugins</h1>
-				<div className="d-flex flex-wrap">
-					{myPlugins.map((key) => {
-						let plugin = allPluginsData[key] || {};
-						return <Card className="cardStyle w-25 mb-4 mx-3"
-							key={plugin.title}
-							hoverable
-							cover={<img src={plugin.icon} alt={plugin.title} />}
-							onClick={() => this.onHandleCard(key)}>
-							<h3>{plugin.title}</h3>
-							<h5>{plugin.sub_title}</h5>
-							<div>{plugin.description}</div>
-						</Card>
-					})}
+				<div className="mb-4">
+					<h1>My Plugins</h1>
+					<Divider />
+					<div className="d-flex flex-wrap">
+						{myPlugins.map((key) => {
+							let plugin = allPluginsData[key] || {};
+							return <Card className="card-width mb-4 mx-3"
+								key={plugin.title}
+								hoverable
+								cover={<img src={plugin.icon} alt={plugin.title} />}
+								onClick={() => this.onHandleCard(key)}>
+								<h4>{plugin.title}</h4>
+								<h6>{plugin.sub_title}</h6>
+								<h6>{plugin.description}</h6>
+							</Card>
+						})}
+					</div>
 				</div>
-				<h1>Other Plugins</h1>
-				<div className="d-flex flex-wrap">
-					{otherPlugins.map((key) => {
-						let plugin = allPluginsData[key] || {};
-						return <Card className="cardStyle w-25 mb-4 mx-3"
-							key={plugin.title}
-							hoverable
-							cover={<img src={plugin.icon} alt={plugin.title} />}
-							onClick={() => this.onHandleCard(key)}>
-							<h3>{plugin.title}</h3>
-							<h5>{plugin.sub_title}</h5>
-							<div>{plugin.description}</div>
-						</Card>
-					})}
+				<div className="my-2">
+					<h1>Other Plugins</h1>
+					<Divider />
+					<div className="d-flex flex-wrap">
+						{otherPlugins.map((key) => {
+							let plugin = allPluginsData[key] || {};
+							return <Card className="card-width mb-4 mx-3"
+								key={plugin.title}
+								hoverable
+								cover={<img src={plugin.icon} alt={plugin.title} />}
+								onClick={() => this.onHandleCard(key)}>
+								<h4>{plugin.title}</h4>
+								<h6>{plugin.sub_title}</h6>
+								<h6>{plugin.description}</h6>
+							</Card>
+						})}
+					</div>
 				</div>
 			</div>
 		)

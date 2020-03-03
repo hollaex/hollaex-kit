@@ -5,34 +5,28 @@ import { ICONS } from '../../../config/constants';
 export const allPlugins = ['kyc', 'sns', 'bank', 'sms', 's3', 'freshdesk', 'zendesk', 'chat', 'vault'];
 
 export const allPluginsData = {
+    'vault': {
+        key: 'vault',
+        title: 'Vault',
+        sub_title: <div>
+            <div>Add your Vault crypto business wallet to manage your exchange, payments, user balances and more in a secure manner</div>
+            <div>
+                <a className="blue-link" href="https://bitholla.com/vault/" target="blank">
+                    https://bitholla.com/vault/
+                </a>
+            </div>
+        </div>,
+        icon: ICONS.PLUGINS_VAULT
+    },
     'kyc': {
+        key: 's3',
         title: 'Verification System',
         sub_title: 'Add a KYC verification module',
         description: 'Upload documents, input identity info, send SMS verification (requires SMS plugin).',
         icon: ICONS.PLUGINS_VERIFICATION
     },
-    'sns': {
-        title: 'SNS',
-        sub_title: 'Add a Simple Notification Service module',
-        icon: ICONS.PLUGINS_SMS
-    },
-    'bank': {
-        title: 'Bank',
-        sub_title: 'Add a Bank Service module',
-        icon: ICONS.PLUGINS_LIQUIDITY
-    },
-    'sms': {
-        title: 'Automatic SMS',
-        sub_title: 'Verify your users by SMS without making them deal with verification codes.',
-        description: 'Requires outside setup',
-        icon: ICONS.PLUGINS_SMS
-    },
-    's3': {
-        title: 'S3',
-        sub_title: 'Add a S3 module',
-        icon: ICONS.PLUGINS_SHUFTI
-    },
     'freshdesk': {
+        key: 'freshdesk',
         title: 'Customer Support',
         sub_title: 'Dedicated customer support system.',
         description: <div>
@@ -46,6 +40,7 @@ export const allPluginsData = {
         icon: ICONS.PLUGINS_FRESHDESK
     },
     'zendesk': {
+        key: 'zendesk',
         title: 'Zendesk',
         sub_title: 'Dedicated customer support system.',
         description: <div>
@@ -59,48 +54,57 @@ export const allPluginsData = {
         icon: ICONS.PLUGINS_ZENDESK
     },
     'chat': {
+        key: 'chat',
         title: 'Chat Troll Box',
         sub_title: 'Add a troll box (chat system) for your traders to troll the crypto markets all day long.',
         description: 'Chat can be popped out. Admin can delete message.',
         icon: ICONS.PLUGINS_CHAT
     },
-    'vault': {
-        title: 'Vault',
-        sub_title: 'Add a Vault service',
-        icon: ICONS.PLUGINS_CHAT
+    'sms': {
+        key: 'sns',
+        title: 'Automatic SMS',
+        sub_title: 'Verify your users by SMS without making them deal with verification codes.',
+        description: 'Requires outside setup',
+        icon: ICONS.PLUGINS_SMS
+    },
+    'bank': {
+        key: 'bank',
+        title: 'Bank',
+        sub_title: 'Add a bank service module to allow for fiat currency deposit and withdrawal into your exchange',
+        icon: ICONS.PLUGINS_BANK
     }
 };
 
-export const getPluginsForm = (key, all = false) => {
+export const getPluginsForm = (key) => {
     const formData = {
-        's3': {
+        'kyc': {
             id_docs_bucket: {
                 type: 'input',
                 label: 'ID DOCS BUCKET',
                 placeholder: 'ID DOCS BUCKET',
                 validate: [validateRequired, checkS3bucketUrl]
             },
-            access_key: {
+            key: {
                 type: 'input',
                 label: 'Access key',
                 placeholder: 'AWS S3 Access key',
                 validate: [validateRequired]
             },
-            secret_key: {
+            secret: {
                 type: 'input',
                 label: 'Secret key',
                 placeholder: 'AWS S3 Secret Key',
                 validate: [validateRequired]
             }
         },
-        'sns': {
-            access_Key: {
+        'sms': {
+            key: {
                 type: 'input',
                 label: 'Access key',
                 placeholder: 'AWS SNS Access key',
                 validate: [validateRequired]
             },
-            secret_Key: {
+            secret: {
                 type: 'input',
                 label: 'Secret key',
                 placeholder: 'AWS SNS Secret key',
@@ -120,13 +124,13 @@ export const getPluginsForm = (key, all = false) => {
                 placeholder: 'Freshdesk Host URL',
                 validate: [validateRequired]
             },
-            access_key: {
+            key: {
                 type: 'input',
                 label: 'Freshdesk Access key',
                 placeholder: 'Freshdesk Access key',
                 validate: [validateRequired]
             },
-            auth_key: {
+            auth: {
                 type: 'input',
                 label: 'Freshdesk Auth key',
                 placeholder: 'Freshdesk Auth key',
@@ -134,19 +138,19 @@ export const getPluginsForm = (key, all = false) => {
             }
         },
         'vault': {
-            vault_name: {
+            name: {
                 type: 'input',
                 label: 'Name',
                 placeholder: 'Vault name',
                 validate: [validateRequired]
             },
-            vault_key: {
+            key: {
                 type: 'input',
                 label: 'Access key',
                 placeholder: 'Vault access key',
                 validate: [validateRequired]
             },
-            vault_secret: {
+            secret: {
                 type: 'input',
                 label: 'Secret key',
                 placeholder: 'Vault secret key',
@@ -154,6 +158,5 @@ export const getPluginsForm = (key, all = false) => {
             }
         }
     };
-    if (all) return formData;
     return formData[key] || {};
 }
