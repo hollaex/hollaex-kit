@@ -21,7 +21,7 @@ web/npm-debug.log*
 web/yarn-debug.log*
 web/yarn-error.log*
 
-web/src/**/*.css
+#web/src/**/*.css
 
 #HollaEx CLI related
 templates/local/nginx/conf.d/*

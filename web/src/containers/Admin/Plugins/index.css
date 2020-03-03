@@ -1,0 +1,29 @@
+.plugin-service {
+    height: 5rem;
+    border: 1px solid black;
+    width: 50%;
+}
+
+.service-heading {
+    min-width: 25rem;
+    border-right: 1px solid black;
+    padding-right: 1rem
+}
+
+.service-button-warning {
+    background-color: orange;
+}
+
+.service-connected {
+    background-color: green;
+    padding: 0.3rem 0.5rem;
+    border-radius: 5rem;
+    color: white;
+    width: 8rem;
+    text-align: center;
+}
+
+.link {
+    text-align: center;
+    color: blue;
+}
