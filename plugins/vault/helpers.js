@@ -135,9 +135,23 @@ const addVaultCoinConnection = (coin) => {
 	});
 };
 
+const updateVaultValues = (key, secret) => {
+	return updateConstants({
+		secrets: {
+			vault: {
+				name: API_NAME,
+				key,
+				secret,
+				connected_coins: []
+			}
+		}
+	});
+};
+
 module.exports = {
 	getVaultCoins,
 	checkVaultNames,
 	createVaultWallets,
-	checkVaultConnection
+	checkVaultConnection,
+	updateVaultValues
 };
