@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
-import { Card, Divider } from 'antd';
-import { connect } from 'react-redux';
+import React, { Component, Fragment } from 'react';
+import { Card, Divider, Spin } from 'antd';
 
+import { getConstants } from './action';
 import { allPluginsData } from './Utils';
 
 import './index.css';
@@ -12,25 +12,38 @@ class Plugins extends Component {
 		this.state = {
 			activeTab: '',
 			myPlugins: [],
-			otherPlugins: []
+			otherPlugins: [],
+			loading: false,
+			constants: {}
 		};
 	}
 
 	componentDidMount() {
 		this.generateCards();
+		this.setState({ loading: true });
+		getConstants()
+			.then(res => {
+				this.setState({ loading: false, constants: res.constants });
+			})
+			.catch(err => {
+				this.setState({ loading: false });
+			});
 	}
 
-	componentDidUpdate(prevProps) {
-		if (JSON.stringify(this.props.enabledPlugins) !== JSON.stringify(prevProps.enabledPlugins)) {
+	componentDidUpdate(prevProps, prevState) {
+		if (JSON.stringify(this.state.constants) !== JSON.stringify(prevState.constants)) {
 			this.generateCards();
 		}
 	}
 
 	generateCards = () => {
-		const { enabledPlugins } = this.props;
-		let myPlugins = [ ...enabledPlugins ];
-		const otherPlugins = Object.keys(allPluginsData).filter((data) => !enabledPlugins.includes(data));
-		this.setState({ myPlugins, otherPlugins });
+		const { plugins = { enabled: '' } } = this.state.constants;
+		if (plugins) {
+			let enabledPlugins = plugins.enabled.split(',');
+			let myPlugins = Object.keys(allPluginsData).filter((data) => enabledPlugins.includes(data));
+			const otherPlugins = Object.keys(allPluginsData).filter((data) => !enabledPlugins.includes(data));
+			this.setState({ myPlugins, otherPlugins });
+		}
 	};
 
 	tabChange = (activeTab) => {
@@ -44,52 +57,60 @@ class Plugins extends Component {
 	};
 
 	render() {
-		const { myPlugins, otherPlugins } = this.state;
+		const { myPlugins, otherPlugins, loading } = this.state;
 		return (
 			<div className="app_container-content">
-				<div className="mb-4">
-					<h1>My Plugins</h1>
-					<Divider />
-					<div className="d-flex flex-wrap">
-						{myPlugins.map((key) => {
-							let plugin = allPluginsData[key] || {};
-							return <Card className="card-width mb-4 mx-3"
-								key={plugin.title}
-								hoverable
-								cover={<img src={plugin.icon} alt={plugin.title} />}
-								onClick={() => this.onHandleCard(key)}>
-								<h4>{plugin.title}</h4>
-								<h6>{plugin.sub_title}</h6>
-								<h6>{plugin.description}</h6>
-							</Card>
-						})}
-					</div>
-				</div>
-				<div className="my-2">
-					<h1>Other Plugins</h1>
-					<Divider />
-					<div className="d-flex flex-wrap">
-						{otherPlugins.map((key) => {
-							let plugin = allPluginsData[key] || {};
-							return <Card className="card-width mb-4 mx-3"
-								key={plugin.title}
-								hoverable
-								cover={<img src={plugin.icon} alt={plugin.title} />}
-								onClick={() => this.onHandleCard(key)}>
-								<h4>{plugin.title}</h4>
-								<h6>{plugin.sub_title}</h6>
-								<h6>{plugin.description}</h6>
-							</Card>
-						})}
-					</div>
-				</div>
+				{loading ? (
+					<Spin size="large" />
+				) : (
+					<Fragment>
+						{myPlugins.length
+							? <div className="mb-4">
+								<h1>My Plugins</h1>
+								<Divider />
+								<div className="d-flex flex-wrap">
+									{myPlugins.map((key) => {
+										let plugin = allPluginsData[key] || {};
+										return <Card className="card-width mb-4 mx-3"
+											key={plugin.title}
+											hoverable
+											cover={<img src={plugin.icon} alt={plugin.title} />}
+											onClick={() => this.onHandleCard(key)}>
+											<h4>{plugin.title}</h4>
+											<h6>{plugin.sub_title}</h6>
+											<h6>{plugin.description}</h6>
+										</Card>
+									})}
+								</div>
+							</div>
+							: null
+						}
+						{otherPlugins.length
+							? <div className="my-2">
+								<h1>{myPlugins.length ? 'Other Plugins' : 'Plugins'}</h1>
+								<Divider />
+								<div className="d-flex flex-wrap">
+									{otherPlugins.map((key) => {
+										let plugin = allPluginsData[key] || {};
+										return <Card className="card-width mb-4 mx-3"
+											key={plugin.title}
+											hoverable
+											cover={<img src={plugin.icon} alt={plugin.title} />}
+											onClick={() => this.onHandleCard(key)}>
+											<h4>{plugin.title}</h4>
+											<h6>{plugin.sub_title}</h6>
+											<h6>{plugin.description}</h6>
+										</Card>
+									})}
+								</div>
+							</div>
+							: null
+						}
+					</Fragment>
+				)}
 			</div>
 		)
 	}
 }
 
-const mapStateToProps = (state) => ({
-	enabledPlugins: state.app.enabledPlugins
-});
-
-export default connect(mapStateToProps)(Plugins);
+export default Plugins;

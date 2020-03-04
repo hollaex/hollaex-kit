@@ -4,7 +4,7 @@ import { Button } from 'antd';
 import { AdminHocForm } from '../../../components';
 import { getPluginsForm } from './Utils';
 
-const Form = AdminHocForm('PLUGINS_FORM', 'plugins-form');
+const Form = AdminHocForm('PLUGINS_FORM', 'plugins-form', true);
 
 const PluginServiceForm = ({ initialValues, connectStatus, services, handleSubmitPlugins, handleDeactivate }) => {
 	const Fields = getPluginsForm(services);
@@ -14,22 +14,15 @@ const PluginServiceForm = ({ initialValues, connectStatus, services, handleSubmi
 				? <div>
 					<Form
 						initialValues={initialValues}
-						onSubmit={(formProps) => handleSubmitPlugins(formProps, services)}
-						buttonText={connectStatus ? 'Update' : 'Activate'}
+						onSubmit={(formProps) => {
+							if (!connectStatus)
+								handleSubmitPlugins(formProps, services);
+							else
+								handleDeactivate(services);
+						}}
+						buttonText={connectStatus ? 'Deactivate' : 'Activate'}
 						fields={Fields}
 					/>
-					{connectStatus && (
-						<div className="my-3">
-							<Button
-								type="primary"
-								className="w-100"
-								size="large"
-								onClick={() => handleDeactivate(services)}
-							>
-								Deactivate
-							</Button>
-						</div>
-					)}
 				</div>
 				: <Button
 					type="primary"

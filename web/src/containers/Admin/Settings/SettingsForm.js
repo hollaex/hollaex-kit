@@ -12,7 +12,7 @@ export const GeneralSettingsForm = ({ initialValues, handleSubmitSettings }) => 
         <div className="mb-4">
             <Form
                 initialValues={initialValues}
-                onSubmit={handleSubmitSettings}
+                onSubmit={(formProps) => handleSubmitSettings(formProps, 'general')}
                 buttonText="Save"
                 fields={generateAdminSettings('general')}
             />
@@ -22,11 +22,9 @@ export const GeneralSettingsForm = ({ initialValues, handleSubmitSettings }) => 
 
 GeneralSettingsForm.defaultProps = {
     initialValues: {
-        new_user_default_language: 'en',
-        email_timezone: 'UTC',
-        default_theme: 'white',
+        theme: 'white',
         valid_languages: 'en',
-        default_country: 'global',
+        country: 'global',
         new_user_is_activated: false
     }
 }
@@ -36,7 +34,7 @@ export const EmailSettingsForm = ({ initialValues, handleSubmitSettings }) => {
         <div className="mb-4">
             <EmailForm
                 initialValues={initialValues}
-                onSubmit={handleSubmitSettings}
+                onSubmit={(formProps) => handleSubmitSettings(formProps, 'email')}
                 buttonText="Save"
                 fields={generateAdminSettings('email')}
             />
@@ -46,15 +44,17 @@ export const EmailSettingsForm = ({ initialValues, handleSubmitSettings }) => {
 
 EmailSettingsForm.defaultProps = {
     initialValues: {
-        smtp_port: 587
+        timezone: 'utc',
+        port: 587
     }
 }
 
-export const SecuritySettingsForm = ({ handleSubmitSettings }) => {
+export const SecuritySettingsForm = ({ initialValues, handleSubmitSettings }) => {
     return (
         <div className="mb-4">
             <SecurityForm
-                onSubmit={handleSubmitSettings}
+                initialValues={initialValues}
+                onSubmit={(formProps) => handleSubmitSettings(formProps, 'security')}
                 buttonText="Save"
                 fields={generateAdminSettings('security')}
             />

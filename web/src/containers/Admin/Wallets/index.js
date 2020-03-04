@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { Spin, Button } from 'antd';
+import { Spin, Button, Tag } from 'antd';
 import { connect } from 'react-redux';
-import { requestTotalBalance } from './actions';
+import { requestTotalBalance, requestConstants } from './actions';
 import { Card, Alert } from 'antd';
 import { formatCurrency } from '../../../utils';
 
@@ -13,13 +13,33 @@ class Wallets extends Component {
 		loading: false,
 		error: '',
 		showSweep: null,
-		walletNum: null
+		walletNum: null,
+		constants: {}
 	};
 
 	componentWillMount() {
 		this.requestTotalBalance();
+		this.requestConstants();
 		this.setState({ showSweep: false });
 	}
+
+	requestConstants = () => {
+		this.setState({
+			loading: true,
+			error: ''
+		});
+		requestConstants()
+			.then(res => {
+				this.setState({ loading: false, constants: res.constants });
+			})
+			.catch(error => {
+				const message = error.data ? error.data.message : error.message;
+				this.setState({
+					loading: false,
+					error: message
+				});
+			})
+	};
 
 	requestTotalBalance = () => {
 		this.setState({
@@ -50,7 +70,7 @@ class Wallets extends Component {
 
 	render() {
 		const { balance, loading, error } = this.state;
-		const { secrets = {} } = this.props.constants;
+		const { secrets = {} } = this.state.constants;
 		return (
 			<div className="app_container-content">
 				{error && (
@@ -65,19 +85,20 @@ class Wallets extends Component {
 				{loading ? (
 					<Spin size="large" />
 				) : (
-					<div>
+					<div style={{ width: '60%' }}>
 						{error && <p>-{error}-</p>}
-						<h1>USER WALLETS</h1>
-						<div className="my-3">
-							{!secrets.vault
-								? <Button type="primary" onClick={this.goToVault}>Connect Wallet</Button>
-								: null
-							}
+						<div className="d-flex align-items-center justify-content-between">
+							<h1>USER WALLETS</h1>
+							<div className="my-3">
+								{!secrets.vault
+									? <Button type="primary" onClick={this.goToVault}>Activate Vault</Button>
+									: <Tag color="green">Vault Activated</Tag>
+								}
+							</div>
 						</div>
 						<Card
 							className="card-title"
 							title="TOTAL BALANCE OF USERS WALLETS"
-							style={{ width: '60%' }}
 						>
 							{!balance ? (
 								<Alert

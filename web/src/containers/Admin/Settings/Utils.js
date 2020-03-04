@@ -4,7 +4,7 @@ import { COUNTRIES_OPTIONS } from '../../../utils/countries';
 export const generateAdminSettings = (key) => {
     if (key === 'security') {
         return {
-            admin_whitelist: {
+            whitelist: {
                 type: 'input',
                 label: 'Admin whitelist',
                 placeholder: 'Admin whitelist',
@@ -16,13 +16,13 @@ export const generateAdminSettings = (key) => {
                 placeholder: 'Allowed domains',
                 validate: [validateRequired]
             },
-            web_captcha_site_key: {
+            site_key: {
                 type: 'input',
                 label: 'Captcha site key',
                 placeholder: 'Captcha site key',
                 validate: [validateRequired]
             },
-            web_captcha_secret_key: {
+            secret_key: {
                 type: 'input',
                 label: 'Captcha secret key',
                 placeholder: 'Captcha secret key',
@@ -31,43 +31,50 @@ export const generateAdminSettings = (key) => {
         };
     } else if (key === 'email') {
         return {
-            sender_email: {
+            sender: {
                 type: 'input',
                 label: 'Sender email',
                 placeholder: 'Sender email',
                 validate: [validateRequired, email]
             },
-            support_email: {
+            timezone: {
+                type: 'select',
+                label: 'Email timezone',
+                placeholder: 'Select email timezone',
+                validate: [validateRequired],
+                options: minimalTimezoneSet
+            },
+            support: {
                 type: 'input',
                 label: 'Support email',
                 placeholder: 'Support email',
                 validate: [validateRequired, email]
             },
-            admin_email: {
+            admin: {
                 type: 'input',
                 label: 'Admin email',
                 placeholder: 'admin email',
                 validate: [validateRequired, email]
             },
-            smtp_server: {
+            server: {
                 type: 'input',
                 label: 'SMTP server',
                 placeholder: 'SMTP sever',
                 validate: [validateRequired]
             },
-            smtp_port: {
+            port: {
                 type: 'input',
                 label: 'SMTP port',
                 placeholder: 'SMTP port',
                 validate: [validateRequired]
             },
-            smtp_username: {
+            user: {
                 type: 'input',
                 label: 'SMTP username',
                 placeholder: 'SMTP username',
                 validate: [validateRequired]
             },
-            smtp_password: {
+            password: {
                 type: 'password',
                 label: 'SMTP password',
                 placeholder: 'SMTP password',
@@ -88,7 +95,7 @@ export const generateAdminSettings = (key) => {
                 // placeholder: 'New user is activated',
                 // validate: [validateRequired]
             },
-            default_language: {
+            language: {
                 type: 'select',
                 label: 'Default language',
                 placeholder: 'Select default language',
@@ -98,14 +105,7 @@ export const generateAdminSettings = (key) => {
                     { label: 'Korean', value: 'ko' }
                 ]
             },
-            email_timezone: {
-                type: 'select',
-                label: 'Email timezone',
-                placeholder: 'Select email timezone',
-                validate: [validateRequired],
-                options: minimalTimezoneSet
-            },
-            default_theme: {
+            theme: {
                 type: 'select',
                 label: 'Default theme',
                 placeholder: 'Select default theme',
@@ -121,7 +121,7 @@ export const generateAdminSettings = (key) => {
                 placeholder: 'Logo path',
                 validate: [validateRequired, urlCheck]
             },
-            logo_dark_path: {
+            logo_black_path: {
                 type: 'input',
                 label: 'Logo path in Dark theme',
                 placeholder: 'Logo path in Dark theme',
@@ -138,7 +138,7 @@ export const generateAdminSettings = (key) => {
                     { label: 'Korean', value: 'ko' }
                 ]
             },
-            default_country: {
+            country: {
                 type: 'select',
                 label: 'Default country',
                 placeholder: 'Select default country',
