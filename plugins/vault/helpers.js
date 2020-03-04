@@ -2,12 +2,28 @@
 
 const { VAULT_ENDPOINT, API_HOST } = require('../../constants');
 const rp = require('request-promise');
-const { intersection, union } = require('lodash');
+const { intersection, union, each } = require('lodash');
 const WEBHOOK_URL = (coin) => `${API_HOST}/v1/deposit/${coin}`;
-const WALLET_NAME = (name, coin) => `${name || process.env.API_NAME}-${coin}`;
+const WALLET_NAME = (name, coin) => `${name}-${coin}`;
 const { all, delay } = require('bluebird');
-const { updateConstants } = require('../../api/helpers/status');
+const { updateConstants, getConfiguration } = require('../helpers/common');
 
+const updateVaultValues = (key, secret) => {
+	return getConfiguration()
+		.then((configuration) => {
+			const constants = configuration.constants;
+			return updateConstants({
+				secrets: {
+					vault: {
+						name: constants.api_name,
+						key,
+						secret,
+						connected_coins: constants.secrets.vault.connected_coins
+					}
+				}
+			});
+		});
+};
 
 const crossCheckCoins = (coins) => {
 	const options = {
@@ -15,85 +31,73 @@ const crossCheckCoins = (coins) => {
 		uri: `${VAULT_ENDPOINT}/coins`
 	};
 
-	if (coins) {
-		return rp(options)
-			.then((vaultCoins) => {
-				vaultCoins = JSON.parse(vaultCoins);
-				const validCoins = intersection(coins, vaultCoins);
-				if (validCoins.length === 0) {
-					throw new Error(`The coins ${coins} are not available in vault`);
-				} else {
-					return validCoins;
-				}
-			});
-	} else {
-		const { getCoinsPairs } = require('../../api/helpers/status');
-		return getCoinsPairs()
-			.then(({ coins }) => {
-				const options = {
-					method: 'GET',
-					uri: `${VAULT_ENDPOINT}/coins`
-				};
-				return all([Object.keys(coins), rp(options)])
-			})
-			.then(([ exchangeCoins, vaultCoins ]) => {
-				vaultCoins = JSON.parse(vaultCoins);
-				const validCoins = intersection(exchangeCoins, vaultCoins);
-				if (validCoins.length === 0) {
-					throw new Error('Your exchange coins are not available in vault');
-				} else {
-					return validCoins;
-				}
-			});
-	}
+	return all([getConfiguration(), rp(options)])
+		.then(([configuration, vaultCoins]) => {
+			vaultCoins = JSON.parse(vaultCoins);
+			const exchangeCoins = coins || Object.keys(configuration.coins);
+			const validCoins = intersection(exchangeCoins, vaultCoins);
+
+			if (validCoins.length === 0) {
+				throw new Error(`None of these coins are available in vault: ${exchangeCoins}`);
+			} else {
+				return validCoins;
+			}
+		});
 };
 
-const createOrUpdateWallets = (coins, key, secret) => {
-	const { getConfiguration, getSecrets } = require('../../init');
-	return all(
-		coins.map((coin, i) => {
-			const options = {
-				method: 'GET',
-				headers: {
-					key,
-					secret
-				},
-				qs: {
-					name: WALLET_NAME(getSecrets().vault.name || getConfiguration().constants.api_name, coin),
-					currency: coin
-				},
-				uri: `${VAULT_ENDPOINT}/user/wallets`,
-				json: true
-			};
-			return delay((i + 1) * 2500)
-				.then(() => rp(options))
-				.then(({ data }) => all([ data, delay(1000)]))
-				.then(([ data ]) => {
-					const wallet = data[0];
-					if (!wallet) {
-						return createVaultWallet(coin, key, secret);
-					} else {
-						return checkWebhook(wallet, key, secret);
-					}
+const createOrUpdateWallets = (coins) => {
+	return getConfiguration()
+		.then((configuration) => {
+			const vaultConfig = configuration.constants.secrets.vault;
+			return all([
+				vaultConfig,
+				...coins.map((coin, i) => {
+					const options = {
+						method: 'GET',
+						headers: {
+							key: vaultConfig.key,
+							secret: vaultConfig.secret
+						},
+						qs: {
+							name: WALLET_NAME(vaultConfig.name, coin),
+							currency: coin
+						},
+						uri: `${VAULT_ENDPOINT}/user/wallets`,
+						json: true
+					};
+					return delay((i + 1) * 2500)
+						.then(() => rp(options))
+						.then(({ data }) => all([ data, delay(1000)]))
+						.then(([ data ]) => {
+							const wallet = data[0];
+							if (!wallet) {
+								return createVaultWallet(coin, vaultConfig);
+							} else {
+								return checkWebhook(wallet, vaultConfig);
+							}
+						})
 				})
-				.then((wallet) => {
-					return all([ wallet, addVaultCoinConnection(coin) ]);
-				})
-				.then(([ wallet ]) => wallet);
+			]);
 		})
-	);
+		.then(async ([ vaultConfig, ...wallets ]) => {
+			await addVaultCoinConnection(coins, vaultConfig);
+			const result = {};
+			await each(wallets, (wallet) => {
+				result[wallet.currency] = wallet;
+			});
+			return result;
+		});
 };
 
-const createVaultWallet = (coin, key, secret) => {
-	const { getConfiguration, getSecrets } = require('../../init');
+const createVaultWallet = (coin, vaultConfig) => {
 	const options = {
 		method: 'POST',
 		headers: {
-			key,
-			secret
+			key: vaultConfig.key,
+			secret: vaultConfig.secret
 		},
 		body: {
-			name: WALLET_NAME(getSecrets().vault.name || getConfiguration().constants.api_name, coin),
+			name: WALLET_NAME(vaultConfig.name, coin),
 			currency: coin,
 			webhook: WEBHOOK_URL(coin),
 			type: 'multi'
@@ -101,20 +105,16 @@ const createVaultWallet = (coin, key, secret) => {
 		uri: `${VAULT_ENDPOINT}/wallet`,
 		json: true
 	};
-	return rp(options)
-		.then((wallet) => {
-			return all([ wallet, addVaultCoinConnection(wallet.currency) ]);
-		})
-		.then(([ wallet ]) => wallet);
+	return rp(options);
 };
 
-const checkWebhook = (wallet, key, secret) => {
+const checkWebhook = (wallet, vaultConfig) => {
 	if (wallet.webhook !== WEBHOOK_URL(wallet.currency)) {
 		const options = {
 			method: 'PUT',
 			headers: {
-				key,
-				secret
+				key: vaultConfig.key,
+				secret: vaultConfig.secret
 			},
 			body: {
 				url: WEBHOOK_URL(wallet.currency)
@@ -128,41 +128,20 @@ const checkWebhook = (wallet, key, secret) => {
 	}
 };
 
-const addVaultCoinConnection = (coin) => {
-	const vaultConstants = require('../../init').getSecrets().vault;
+const addVaultCoinConnection = (coins, vaultConfig) => {
 	return updateConstants({
 		secrets: {
 			vault: {
-				...vaultConstants,
-				connected_coins: union(vaultConstants.connected_coins, [ coin ])
+				...vaultConfig,
+				connected_coins: union(vaultConfig.connected_coins, coins)
 			}
 		}
 	});
-};
-
-const updateVaultValues = (key, secret) => {
-	const { getConfiguration, getSecrets } = require('../../init');
-	return updateConstants({
-		secrets: {
-			vault: {
-				name: getSecrets().vault.name || getConfiguration().constants.api_name,
-				key,
-				secret,
-				connected_coins: getSecrets().vault.connected_coins
-			}
-		}
-	});
-};
-
-const isUrl = (url) => {
-	const pattern = /^(^|\s)((https?:\/\/)?[\w-]+(\.[\w-]+)+\.?(:\d+)?(\/\S*)?)$/;
-	return pattern.test(url);
 };
 
 module.exports = {
 	updateVaultValues,
 	crossCheckCoins,
 	createOrUpdateWallets,
-	updateVaultValues,
-	isUrl
+	updateVaultValues
 };

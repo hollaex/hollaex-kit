@@ -3,10 +3,8 @@
 const app = require('../index');
 const { verifyToken, checkScopes } = require('../helpers/auth');
 const bodyParser = require('body-parser');
-const { logger } = require('../helpers/common');
-const { updateVaultValues, crossCheckCoins, createOrUpdateWallets, isUrl } = require('./helpers');
-const { all } = require('bluebird');
-const { each } = require('lodash');
+const { logger, isUrl } = require('../helpers/common');
+const { updateVaultValues, crossCheckCoins, createOrUpdateWallets } = require('./helpers');
 const { API_HOST } = require('../../constants');
 
 app.post('/plugins/vault/connect', [verifyToken, bodyParser.json()], (req, res) => {
@@ -25,19 +23,15 @@ app.post('/plugins/vault/connect', [verifyToken, bodyParser.json()], (req, res) 
 
 	const { key, secret, coins } = req.body;
 
-	crossCheckCoins(coins)
-		.then((validCoins) => all([validCoins, createOrUpdateWallets(validCoins, key, secret)]))
-		.then((data) => all([ ...data, updateVaultValues(key, secret)]))
-		.then(([validCoins, wallets]) => {
-			const connectedWallets = {};
-			each(wallets, (wallet) => {
-				connectedWallets[wallet.currency] = wallet;
-			});
+	updateVaultValues(key, secret)
+		.then(() => crossCheckCoins(coins))
+		.then((validCoins) => createOrUpdateWallets(validCoins))
+		.then((wallets) => {
 			logger.debug(
 				'POST /plugins/vault/connect new_connected_coins',
-				validCoins
+				Object.keys(wallets)
 			);
-			res.json(connectedWallets);
+			res.json(wallets);
 		})
 		.catch((err) => {
 			logger.error(
