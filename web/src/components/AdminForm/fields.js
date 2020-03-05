@@ -50,15 +50,18 @@ export const renderNumberField = ({
 
 export const renderSelectField = ({
 	input,
-	options,
+	options = [],
 	label,
 	meta: { touched, error, warning },
 	disabled = false,
-	multiSelect = false
+	multiSelect = false,
+	...rest
 }) => {
-	let value = input.value;
-	if (multiSelect && typeof input.value === 'string') {
-		value = [input.value]
+	let value = input.value || '';
+	if ((multiSelect || rest.mode === 'tags') && typeof input.value === 'string') {
+		value = input.value
+			? input.value.split(',')
+			: [];
 	}
 	return (
 	<div className="input_field">
@@ -70,6 +73,7 @@ export const renderSelectField = ({
 				value={value}
 				placeholder={label}
 				disabled={disabled}
+				{...rest}
 			>
 				{options.map((option, index) => {
 					let value = (!option.value && option.value !== '') ? option : option.value;

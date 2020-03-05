@@ -56,6 +56,7 @@ export default class Settings extends Component {
             secrets = { smtp: {}, captcha: {} },
             accounts = {},
             allowed_domains,
+            admin_whitelist,
             captcha = {}
         } = this.state.constants;
         const initialEmailValues = { ...emails, ...secrets.smtp, ...accounts };
@@ -76,7 +77,14 @@ export default class Settings extends Component {
             ...secrets.captcha
         }
         if (allowed_domains) {
-            initialSecurityValues.allowed_domains = allowed_domains.join(',');
+            initialSecurityValues.allowed_domains = typeof allowed_domains === 'string'
+                ? allowed_domains.split(',')
+                : allowed_domains;
+        }
+        if (admin_whitelist) {
+            initialSecurityValues.admin_whitelist = typeof admin_whitelist === 'string'
+                ? admin_whitelist.split(',')
+                : admin_whitelist;
         }
         this.setState({ initialGeneralValues, initialEmailValues, initialSecurityValues })
     };
@@ -102,9 +110,9 @@ export default class Settings extends Component {
         } else if (formKey === 'email') {
             formValues = { emails: {}, accounts: {}, secrets: { smtp: {} }};
             Object.keys(formProps).forEach((val) => {
-                if (val === 'sender' || val === 'timezone') {
+                if (val === 'sender' || val === 'timezone' || val === 'send_email_to_support') {
                     formValues.emails[val] = formProps[val];
-                } else if (val === 'admin' || val === 'support') {
+                } else if (val === 'admin' || val === 'support' || val === 'kyc' || val === 'supervisor') {
                     formValues.accounts[val] = formProps[val];
                 } else if (val === 'port') {
                     formValues.secrets.smtp[val] = parseInt(formProps[val], 10);
@@ -119,6 +127,9 @@ export default class Settings extends Component {
                     formValues.captcha[val] = formProps[val];
                 } else if (val === 'secret_key') {
                     formValues.secrets.captcha[val] = formProps[val];
+                } else if ((val === 'allowed_domains' || val === 'admin_whitelist')
+                    && typeof formProps[val] === 'string') {
+                    formValues.allowed_domains = formProps.allowed_domains.split(','); 
                 } else {
                     formValues[val] = formProps[val];
                 }
@@ -152,7 +163,10 @@ export default class Settings extends Component {
                 {loading ? (
                     <Spin size="large" />
                 ) : (
-                    <Tabs onChange={this.tabChange}>
+                    <Tabs
+                        defaultActiveKey={this.state.activeTab}
+                        onChange={this.tabChange}
+                    >
                         <TabPane tab={'General'} key={'general'}>
                             <Row>
                                 <GeneralSettingsForm

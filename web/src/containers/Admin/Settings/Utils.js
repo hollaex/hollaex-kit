@@ -4,16 +4,20 @@ import { COUNTRIES_OPTIONS } from '../../../utils/countries';
 export const generateAdminSettings = (key) => {
     if (key === 'security') {
         return {
-            whitelist: {
-                type: 'input',
+            admin_whitelist: {
+                type: 'select',
+                mode: 'tags',
                 label: 'Admin whitelist',
                 placeholder: 'Admin whitelist',
+                tokenSeparators: [',', ' ', '   '],
                 validate: [validateRequired]
             },
             allowed_domains: {
-                type: 'input',
+                type: 'select',
+                mode: 'tags',
                 label: 'Allowed domains',
                 placeholder: 'Allowed domains',
+                tokenSeparators: [',', ' ', '   '],
                 validate: [validateRequired]
             },
             site_key: {
@@ -36,6 +40,12 @@ export const generateAdminSettings = (key) => {
                 label: 'Sender email',
                 placeholder: 'Sender email',
                 validate: [validateRequired, email]
+            },
+            send_email_to_support: {
+                type: 'checkbox',
+                label: 'send email to support',
+                // placeholder: 'send email to support',
+                // validate: [validateRequired]
             },
             timezone: {
                 type: 'select',

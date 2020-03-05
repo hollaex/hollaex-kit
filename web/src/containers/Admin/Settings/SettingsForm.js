@@ -45,7 +45,8 @@ export const EmailSettingsForm = ({ initialValues, handleSubmitSettings }) => {
 EmailSettingsForm.defaultProps = {
     initialValues: {
         timezone: 'utc',
-        port: 587
+        port: 587,
+        send_email_to_support: false
     }
 }
 
