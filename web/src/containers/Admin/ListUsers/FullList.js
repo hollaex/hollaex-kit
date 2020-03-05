@@ -7,41 +7,58 @@ import moment from 'moment';
 
 import './index.css';
 
-import { requestFullUsers } from './actions';
+import { requestUsers } from './actions';
 
 import { generateHeaders } from './constants';
 
 // const renderBoolean = (value) => <Icon type={value ? 'check-circle-o' : 'close-circle'}/>;
 
 class FullListUsers extends Component {
-	state = {
-		users: [],
-		fetched: false,
-		loading: false,
-		error: ''
+	constructor(props) {
+		super(props);
+		this.state = {
+			users: [],
+			fetched: false,
+			loading: false,
+			error: '',
+			total: 0,
+			page: 1,
+			pageSize: 10,
+			limit: 50,
+			currentTablePage: 1,
+			isRemaining: true
+		}
 	};
 
 	componentWillMount() {
-		this.requestFullUsers();
+		this.requestFullUsers(
+			this.state.page,
+			this.state.limit
+		);
 	}
 
-	requestFullUsers = () => {
+	requestFullUsers = (page = 1, limit = 50) => {
 		this.setState({
 			loading: true,
 			error: ''
 		});
 
-		requestFullUsers()
-			.then((data) => {
-				data.data.sort((a, b) => {
+		requestUsers({ page, limit })
+			.then((res) => {
+				let temp = page === 1
+					? res.data
+					: [ ...this.state.users, ...res.data ];
+				let users = temp.sort((a, b) => {
 					return new Date(b.created_at) - new Date(a.created_at);
 				});
 				this.setState({
-					users: data.data.map((user) => {
-						return { ...user };
-					}),
+					users,
 					loading: false,
-					fetched: true
+					fetched: true,
+					total: res.count,
+					page,
+					currentTablePage: page === 1 ? 1 : this.state.currentTablePage,
+					isRemaining: res.count > page * limit
 				});
 			})
 			.catch((error) => {
@@ -55,6 +72,19 @@ class FullListUsers extends Component {
 
 	requestUser = (value) => {
 		this.props.requestUser({ id: JSON.stringify(value) });
+	};
+
+	pageChange = (count, pageSize) => {
+		const { page, limit, isRemaining } = this.state;
+		const pageCount = count % 5 === 0 ? 5 : count % 5;
+		const apiPageTemp = Math.floor(count / 5);
+		if (limit === pageSize * pageCount && apiPageTemp >= page && isRemaining) {
+			this.requestUsers(
+				page + 1,
+				limit
+			);
+		}
+		this.setState({ currentTablePage: count });
 	};
 
 	render() {
@@ -124,7 +154,7 @@ class FullListUsers extends Component {
 			);
 		};
 
-		const { users, loading, error } = this.state;
+		const { users, loading, error, currentTablePage } = this.state;
 		const { coins } = this.props;
 		const HEADERS = generateHeaders(coins);
 		return (
@@ -148,6 +178,10 @@ class FullListUsers extends Component {
 							expandRowByClick={true}
 							rowKey={(data) => {
 								return data.id;
+							}}
+							pagination={{
+								current: currentTablePage,
+								onChange: this.pageChange
 							}}
 						/>
 					</div>

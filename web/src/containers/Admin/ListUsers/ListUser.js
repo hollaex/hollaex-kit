@@ -7,29 +7,44 @@ import './index.css';
 import { requestUsers } from './actions';
 
 class ListUsers extends Component {
-	state = {
-		users: [],
-		fetched: false,
-		loading: false,
-		error: ''
-	};
-
-	componentWillMount() {
-		this.requestUsers();
+	constructor(props) {
+		super(props);
+		this.state = {
+			users: [],
+			fetched: false,
+			loading: false,
+			error: '',
+			total: 0,
+			page: 1,
+			pageSize: 10,
+			limit: 50,
+			currentTablePage: 1,
+			isRemaining: true
+		};
 	}
 
-	requestUsers = () => {
+	componentWillMount() {
+		this.requestUsers(this.state.page, this.state.limit);
+	}
+
+	requestUsers = (page = 1, limit = 50) => {
 		this.setState({
 			loading: true,
 			error: ''
 		});
 
-		requestUsers()
-			.then((data) => {
+		requestUsers({ pending: true, page, limit })
+			.then((response) => {
 				this.setState({
-					users: data,
+					users: page === 1
+						? response.data
+						: [ ...this.state.users, ...response.data ],
+					total: response.count,
 					loading: false,
-					fetched: true
+					fetched: true,
+					page,
+					currentTablePage: page === 1 ? 1 : this.state.currentTablePage,
+					isRemaining: response.count > page * limit
 				});
 			})
 			.catch((error) => {
@@ -45,8 +60,21 @@ class ListUsers extends Component {
 		this.props.requestUser({ id: JSON.stringify(value) });
 	};
 
+	pageChange = (count, pageSize) => {
+		const { page, limit, isRemaining } = this.state;
+		const pageCount = count % 5 === 0 ? 5 : count % 5;
+		const apiPageTemp = Math.floor(count / 5);
+		if (limit === pageSize * pageCount && apiPageTemp >= page && isRemaining) {
+			this.requestUsers(
+				page + 1,
+				limit
+			);
+		}
+		this.setState({ currentTablePage: count });
+	};
+
 	render() {
-		const { users, loading, error } = this.state;
+		const { users, loading, error, currentTablePage } = this.state;
 
 		const renderBoolean = (value) => (
 			<Icon type={value ? 'check-circle-o' : 'close-circle'} />
@@ -89,6 +117,10 @@ class ListUsers extends Component {
 							dataSource={users}
 							rowKey={(data) => {
 								return data.id;
+							}}
+							pagination={{
+								current: currentTablePage,
+								onChange: this.pageChange
 							}}
 						/>
 					</div>

@@ -10,7 +10,7 @@ const toQueryString = (values) => {
 const handleError = (err) => err.data;
 
 export const requestUserData = (values) =>
-	requestAuthenticated(`/admin/user?${toQueryString(values)}`)
+	requestAuthenticated(`/admin/users?${toQueryString(values)}`)
 		.catch(handleError)
 		.then((data) => data);
 
