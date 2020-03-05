@@ -76,15 +76,23 @@ const createOrUpdateWallets = (coins) => {
 								return checkWebhook(wallet, vaultConfig);
 							}
 						})
+						.catch((err) => {
+							return {
+								error: err.message,
+								currency: coin
+							};
+						});
 				})
 			]);
 		})
 		.then(async ([ vaultConfig, ...wallets ]) => {
-			await addVaultCoinConnection(coins, vaultConfig);
 			const result = {};
+			const connectedCoins = [];
 			await each(wallets, (wallet) => {
 				result[wallet.currency] = wallet;
+				if (!wallet.error) connectedCoins.push(wallet.currency);
 			});
+			await addVaultCoinConnection(connectedCoins, vaultConfig);
 			return result;
 		});
 };
