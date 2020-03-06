@@ -17,7 +17,7 @@ client.on('connect', () => {
 	loggerRedis.verbose('Connect to redis');
 	if (config.client.password) {
 		client.auth(config.client.password, () => {
-			loggerRedis.verbose('Authenticated to redis');
+			if (loggerRedis) loggerRedis.verbose('Authenticated to redis');
 		});
 	}
 });
