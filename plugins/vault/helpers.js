@@ -1,40 +1,38 @@
 'use strict';
 
-const { VAULT_ENDPOINT, API_HOST } = require('../../constants');
+const { VAULT_ENDPOINT, API_HOST, GET_CONFIGURATION, GET_SECRETS } = require('../../constants');
 const rp = require('request-promise');
 const { intersection, union, each } = require('lodash');
 const WEBHOOK_URL = (coin) => `${API_HOST}/v1/deposit/${coin}`;
 const WALLET_NAME = (name, coin) => `${name}-${coin}`;
 const { all, delay } = require('bluebird');
-const { updateConstants, getConfiguration } = require('../helpers/common');
+const { updateConstants, logger } = require('../helpers/common');
 
 const updateVaultValues = (key, secret) => {
-	return getConfiguration()
-		.then((configuration) => {
-			const constants = configuration.constants;
-			return updateConstants({
-				secrets: {
-					vault: {
-						name: constants.api_name,
-						key,
-						secret,
-						connected_coins: constants.secrets.vault.connected_coins
-					}
-				}
-			});
-		});
+	logger.debug('/plugins/vault/helpers updateVaultValues');
+	return updateConstants({
+		secrets: {
+			vault: {
+				name: GET_CONFIGURATION().constants.api_name,
+				key,
+				secret,
+				connected_coins: GET_SECRETS().vault.connected_coins
+			}
+		}
+	});
 };
 
 const crossCheckCoins = (coins) => {
+	logger.debug('/plugins/vault/helpers crossCheckCoins', coins);
 	const options = {
 		method: 'GET',
 		uri: `${VAULT_ENDPOINT}/coins`
 	};
 
-	return all([getConfiguration(), rp(options)])
-		.then(([configuration, vaultCoins]) => {
+	return rp(options)
+		.then((vaultCoins) => {
 			vaultCoins = JSON.parse(vaultCoins);
-			const exchangeCoins = coins || Object.keys(configuration.coins);
+			const exchangeCoins = coins || Object.keys(GET_CONFIGURATION().coins);
 			const validCoins = intersection(exchangeCoins, vaultCoins);
 
 			if (validCoins.length === 0) {
@@ -46,46 +44,44 @@ const crossCheckCoins = (coins) => {
 };
 
 const createOrUpdateWallets = (coins) => {
-	return getConfiguration()
-		.then((configuration) => {
-			const vaultConfig = configuration.constants.secrets.vault;
-			return all([
-				vaultConfig,
-				...coins.map((coin, i) => {
-					const options = {
-						method: 'GET',
-						headers: {
-							key: vaultConfig.key,
-							secret: vaultConfig.secret
-						},
-						qs: {
-							name: WALLET_NAME(vaultConfig.name, coin),
-							currency: coin
-						},
-						uri: `${VAULT_ENDPOINT}/user/wallets`,
-						json: true
-					};
-					return delay((i + 1) * 2500)
-						.then(() => rp(options))
-						.then(({ data }) => all([ data, delay(1000)]))
-						.then(([ data ]) => {
-							const wallet = data[0];
-							if (!wallet) {
-								return createVaultWallet(coin, vaultConfig);
-							} else {
-								return checkWebhook(wallet, vaultConfig);
-							}
-						})
-						.catch((err) => {
-							return {
-								error: err.message,
-								currency: coin
-							};
-						});
+	logger.debug('/plugins/vault/helpers createOrUpdateWallets', coins);
+	const vaultConfig = GET_SECRETS().vault;
+	return all(
+		coins.map((coin, i) => {
+			const options = {
+				method: 'GET',
+				headers: {
+					key: vaultConfig.key,
+					secret: vaultConfig.secret
+				},
+				qs: {
+					name: WALLET_NAME(vaultConfig.name, coin),
+					currency: coin
+				},
+				uri: `${VAULT_ENDPOINT}/user/wallets`,
+				json: true
+			};
+			return delay((i + 1) * 2500)
+				.then(() => rp(options))
+				.then(({ data }) => all([ data, delay(1000)]))
+				.then(([ data ]) => {
+					const wallet = data[0];
+					if (!wallet) {
+						return createVaultWallet(coin, vaultConfig);
+					} else {
+						return checkWebhook(wallet, vaultConfig);
+					}
 				})
-			]);
+				.catch((err) => {
+					logger.error('/plugins/vault/helpers createOrUpdateWallets', err.message);
+					return {
+						error: err.message,
+						currency: coin
+					};
+				});
 		})
-		.then(async ([ vaultConfig, ...wallets ]) => {
+	)
+		.then(async (wallets) => {
 			const result = {};
 			const connectedCoins = [];
 			await each(wallets, (wallet) => {
@@ -98,6 +94,7 @@ const createOrUpdateWallets = (coins) => {
 };
 
 const createVaultWallet = (coin, vaultConfig) => {
+	logger.debug('/plugins/vault/helpers createVaultWallet', coin);
 	const options = {
 		method: 'POST',
 		headers: {
@@ -117,7 +114,9 @@ const createVaultWallet = (coin, vaultConfig) => {
 };
 
 const checkWebhook = (wallet, vaultConfig) => {
+	logger.debug('/plugins/vault/helpers checkWebhook', wallet.name);
 	if (wallet.webhook !== WEBHOOK_URL(wallet.currency)) {
+		logger.debug('/plugins/vault/helpers checkWebhook update webhook', wallet.name);
 		const options = {
 			method: 'PUT',
 			headers: {
@@ -137,6 +136,7 @@ const checkWebhook = (wallet, vaultConfig) => {
 };
 
 const addVaultCoinConnection = (coins, vaultConfig) => {
+	logger.debug('/plugins/vault/helpers addVaultCoinConnection', coins);
 	return updateConstants({
 		secrets: {
 			vault: {
@@ -150,6 +150,5 @@ const addVaultCoinConnection = (coins, vaultConfig) => {
 module.exports = {
 	updateVaultValues,
 	crossCheckCoins,
-	createOrUpdateWallets,
-	updateVaultValues
+	createOrUpdateWallets
 };

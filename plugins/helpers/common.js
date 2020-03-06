@@ -25,7 +25,7 @@ const joinConstants = (statusConstants = {}, newConstants = {}) => {
 };
 
 const updateConstants = (constants) => {
-	Status.findOne({
+	return Status.findOne({
 		attributes: ['id', 'constants']
 	})
 		.then((status) => {
