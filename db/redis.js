@@ -10,11 +10,11 @@ promisifyAll(redis.Multi.prototype);
 const client = redis.createClient(config.client);
 
 client.on('ready', () => {
-	if (loggerRedis) loggerRedis.info('Redis is ready');
+	loggerRedis.info('Redis is ready');
 });
 
 client.on('connect', () => {
-	if (loggerRedis) loggerRedis.verbose('Connect to redis');
+	loggerRedis.verbose('Connect to redis');
 	if (config.client.password) {
 		client.auth(config.client.password, () => {
 			if (loggerRedis) loggerRedis.verbose('Authenticated to redis');
@@ -23,8 +23,8 @@ client.on('connect', () => {
 });
 
 client.on('error', (err) => {
-	if (loggerRedis) loggerRedis.error('REDIS', err.message);
-	if (loggerRedis) loggerRedis.error(err);
+	loggerRedis.error('REDIS', err.message);
+	loggerRedis.error(err);
 	process.exit(0);
 });
 
