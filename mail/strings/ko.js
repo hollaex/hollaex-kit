@@ -8,7 +8,7 @@ const COMMON = {
 	GREETING: (name) => `${name}님`,
 	CLOSING: {
 		1: '이용해 주셔서 감사합니다.',
-		2: `${API_NAME()} 팀`
+		2: () => `${API_NAME()} 팀`
 	},
 	IP_ADDRESS: (ip) => `IP 주소: ${ip}`,
 	IP_REQUEST_FROM: (ip) => `요청하신곳: ${ip}`,

@@ -30,7 +30,7 @@ const html = (email, data, language, domain) => {
       </p>
       <p>
         ${WELCOME.CLOSING[1]}<br />
-        ${WELCOME.CLOSING[2]}
+        ${WELCOME.CLOSING[2]()}
       </p>
     </div>
   `;
@@ -48,7 +48,7 @@ const text = (email, data, language, domain) => {
 			`${WELCOME.BODY[4]}(${linkDeposit})`
 		)}
     ${WELCOME.BODY[5]}
-    ${WELCOME.CLOSING[1]} ${WELCOME.CLOSING[2]}
+    ${WELCOME.CLOSING[1]} ${WELCOME.CLOSING[2]()}
   `;
 };
 

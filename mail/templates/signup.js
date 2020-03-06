@@ -26,7 +26,7 @@ const html = (email, data, language, domain) => {
       ${Button(link, SIGNUP.BODY[3])}
       <p>
         ${SIGNUP.CLOSING[1]}<br />
-        ${SIGNUP.CLOSING[2]}
+        ${SIGNUP.CLOSING[2]()}
       </p>
     </div>
   `;
@@ -40,7 +40,7 @@ const text = (email, data, language, domain) => {
     ${SIGNUP.BODY[1]}
     ${SIGNUP.BODY[2]}
     ${SIGNUP.BODY[3]}(${link})
-    ${SIGNUP.CLOSING[1]} ${SIGNUP.CLOSING[2]}
+    ${SIGNUP.CLOSING[1]} ${SIGNUP.CLOSING[2]()}
   `;
 };
 

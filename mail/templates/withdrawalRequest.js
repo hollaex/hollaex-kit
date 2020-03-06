@@ -35,7 +35,7 @@ const html = (email, data, language, domain) => {
 			</p>
 			<p>
 				${WITHDRAWALREQUEST.CLOSING[1]}<br />
-				${WITHDRAWALREQUEST.CLOSING[2]}
+				${WITHDRAWALREQUEST.CLOSING[2]()}
 			</p>
 		</div>
 	`;
@@ -52,7 +52,7 @@ const text = (email, data, language, domain) => {
 		${WITHDRAWALREQUEST.BODY[4](data.address)}
 		${WITHDRAWALREQUEST.BODY[5]}
 		${Button(link, WITHDRAWALREQUEST.BODY[6])}
-		${WITHDRAWALREQUEST.CLOSING[1]} ${WITHDRAWALREQUEST.CLOSING[2]}
+		${WITHDRAWALREQUEST.CLOSING[1]} ${WITHDRAWALREQUEST.CLOSING[2]()}
 	`;
 };
 

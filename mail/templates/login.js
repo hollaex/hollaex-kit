@@ -32,7 +32,7 @@ const html = (email, data, language, domain) => {
       </p>
       <p>
         ${LOGIN.CLOSING[1]}<br />
-        ${LOGIN.CLOSING[2]}
+        ${LOGIN.CLOSING[2]()}
       </p>
     </div>
   `;
@@ -48,7 +48,7 @@ const text = (email, data, language, domain) => {
     ${false && data.device ? `<div>${LOGIN.BODY[4](data.device)}</div>` : ''}
     ${data.ip ? `<div>${LOGIN.BODY[5](data.ip)}</div>` : ''}
     ${LOGIN.BODY[6]}
-    ${LOGIN.CLOSING[1]} ${LOGIN.CLOSING[2]}
+    ${LOGIN.CLOSING[1]} ${LOGIN.CLOSING[2]()}
   `;
 };
 
