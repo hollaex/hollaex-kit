@@ -6,8 +6,9 @@ const {
 	BITHOLLA_LOGO_BLACK,
 	EMAIL_ICONS
 } = require('../../constants');
-const LOGO_BLACK_PATH = process.env.LOGO_BLACK_PATH;
-const DEFAULT_LANGUAGE = process.env.NEW_USER_DEFAULT_LANGUAGE || 'en';
+const { DOMAIN, GET_CONFIGURATION } = require('../../../constants');
+const LOGO_BLACK_PATH = () => GET_CONFIGURATION().constants.logo_black_path;
+const DEFAULT_LANGUAGE = () => GET_CONFIGURATION().constants.defaults.language;
 const styles = require('./styles');
 
 exports.Button = (link, text) => `
@@ -18,7 +19,7 @@ exports.Button = (link, text) => `
   </div>
 `;
 
-const footerTemplate = (language = DEFAULT_LANGUAGE, domain = DOMAIN) => {
+const footerTemplate = (language = DEFAULT_LANGUAGE(), domain = DOMAIN) => {
 	const { FOOTER } = require('../../strings').languageFile(language);
 	return `
 			<div style="${styles.footer}">
@@ -55,7 +56,7 @@ const close = `<div style="color: #E3E5E7"><br /><br />This is the end of the me
 
 const RTL = 'direction: rtl;';
 
-const LOGO_TEMPLATE = ({ domain = DOMAIN, logoPath = LOGO_BLACK_PATH }) => `
+const LOGO_TEMPLATE = ({ domain = DOMAIN, logoPath = LOGO_BLACK_PATH() }) => `
   <div style="${styles.logo}">
     <a href="${domain}"><img src="${logoPath}" height="25"/></a>
   </div>
@@ -76,7 +77,7 @@ const HEADER_TEMPLATE = ({ title, imagePath = '' }) => `
 exports.TemplateEmail = (
 	headerProps = {},
 	content = '',
-	language = DEFAULT_LANGUAGE,
+	language = DEFAULT_LANGUAGE(),
 	domain = DOMAIN
 ) => {
 	const bodyStyle = styles.body.concat('');

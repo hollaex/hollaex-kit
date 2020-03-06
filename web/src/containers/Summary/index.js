@@ -301,7 +301,7 @@ const mapStateToProps = (state) => ({
 	activeLanguage: state.app.language,
 	tradeVolumes: state.user.tradeVolumes,
 	isValidBase: state.app.isValidBase,
-	config: state.app.config,
+	constants: state.app.constants,
 	config_level: state.app.config_level,
 	affiliation: state.user.affiliation
 });
