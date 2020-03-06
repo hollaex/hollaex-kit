@@ -167,9 +167,9 @@ const getMakerTakerFields = (userTier, key) => {
 	return userFields;
 };
 
-export const getPairsFormFields = (config = {}) => {
+export const getPairsFormFields = (constants = {}) => {
 	const userLevels = [];
-	const user_level_number = config.user_level_number ? parseInt(config.user_level_number) : 4;
+	const user_level_number = constants.user_level_number ? parseInt(constants.user_level_number) : 4;
 	for (var i = 1; i <= user_level_number; i++) {
 		userLevels.push(i)
 	};

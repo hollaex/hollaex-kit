@@ -56,8 +56,9 @@ const mapStateToProps = (store) => ({
 	pairsTrades: store.orderbook.pairsTrades,
 	unreadMessages: store.app.chatUnreadMessages,
 	settings: store.user.settings,
-	config: store.app.config,
-	info: store.app.info
+	constants: store.app.constants,
+	info: store.app.info,
+	enabledPlugins: store.app.enabledPlugins
 });
 
 const mapDispatchToProps = (dispatch) => ({

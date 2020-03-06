@@ -29,7 +29,7 @@ const html = (email, data, language, domain) => {
       </p>
       <p>
         ${RESETPASSWORD.CLOSING[1]}<br />
-        ${RESETPASSWORD.CLOSING[2]}
+        ${RESETPASSWORD.CLOSING[2]()}
       </p>
     </div>
   `;
@@ -46,7 +46,7 @@ const text = (email, data, language, domain) => {
     ${RESETPASSWORD.BODY[4]}
     ${RESETPASSWORD.BODY[5](data.ip)}
     ${RESETPASSWORD.CLOSING[1]}
-    ${RESETPASSWORD.CLOSING[2]}
+    ${RESETPASSWORD.CLOSING[2]()}
   `;
 };
 

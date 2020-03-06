@@ -421,7 +421,8 @@ class App extends Component {
 			unreadMessages,
 			router,
 			location,
-			info
+			info,
+			enabledPlugins
 			// user
 		} = this.props;
 		const {
@@ -594,7 +595,8 @@ class App extends Component {
 											activeTheme
 										)}
 								</Dialog>
-								{!isMobile && (
+								{!isMobile &&
+									enabledPlugins.includes('chat') && (
 									<ChatComponent
 										minimized={chatIsClosed}
 										onMinimize={this.minimizeChat}
@@ -608,6 +610,7 @@ class App extends Component {
 										isLogged={isLoggedIn()}
 										activePath={activePath}
 										pair={pair}
+										enabledPlugins={enabledPlugins}
 									/>
 								</div>
 							)}
