@@ -4,7 +4,7 @@ import { Tag, Modal, Spin, Alert, Divider } from 'antd';
 import { bindActionCreators } from 'redux';
 
 import PluginForm from './pluginForm';
-import { updatePlugins, getConstants } from './action';
+import { updatePlugins, getConstants, connectVault } from './action';
 import { allPluginsData } from './Utils';
 import { setConfig } from '../../../actions/appActions';
 
@@ -52,7 +52,7 @@ class PluginServices extends Component {
     };
 
     getServices = (services = '') => {
-        const { secrets = {}, plugins = {} } = this.state.constants;
+        const { secrets = {}, plugins = { enabled: '' } } = this.state.constants;
         const pluginData = allPluginsData[services] || {}
         const title = pluginData.title ? pluginData.title : '';
         if (!allPluginsData[services]) {
@@ -97,6 +97,8 @@ class PluginServices extends Component {
                         })
                     }
                 }
+            } else if(plugins.enabled.includes(services)) {
+                connectStatus = true;
             }
         }
         this.setState({ services, title, connectStatus, initialValues });
@@ -122,11 +124,16 @@ class PluginServices extends Component {
             }
         };
         if (service === 'vault') {
-            let vaultData = formProps;
-            if (!formValues.secrets[service] || !formValues.secrets[service].connected_coins) {
-                vaultData.connected_coins = [];
-            }
-            formValues.secrets[service] = vaultData;
+            // let vaultData = formProps;
+            // if (!formValues.secrets[service] || !formValues.secrets[service].connected_coins) {
+            //     vaultData.connected_coins = [];
+            // }
+            // formValues.secrets[service] = vaultData;
+            // formValues = {
+            //     key: formProps.key,
+            //     secret: formProps.secret
+            // };
+            // return this.connectVault(formValues);
         } else if (service !== 'bank' && service !== 'chat' && service !== 'zendesk') {
             const { key, secret, auth, ...rest } = formProps;
             const pluginData = allPluginsData[service] || {};
@@ -187,6 +194,18 @@ class PluginServices extends Component {
         // }
         this.updateConstants(formValues, true);
         this.handleDeactivate();
+    };
+
+    connectVault = (formProps) => {
+        this.setState({ loading: true, error: '' });
+        return connectVault(formProps)
+            .then((data) => {
+                this.setState({ loading: false });
+            })
+            .catch((error) => {
+                const message = error.data ? error.data.message : error.message;
+                this.setState({ loading: false, error: message });
+            });
     };
 
     updateConstants = (formProps) => {

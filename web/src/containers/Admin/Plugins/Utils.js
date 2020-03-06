@@ -138,12 +138,12 @@ export const getPluginsForm = (key) => {
             }
         },
         'vault': {
-            name: {
-                type: 'input',
-                label: 'Name',
-                placeholder: 'Vault name',
-                validate: [validateRequired]
-            },
+            // name: {
+            //     type: 'input',
+            //     label: 'Name',
+            //     placeholder: 'Vault name',
+            //     validate: [validateRequired]
+            // },
             key: {
                 type: 'input',
                 label: 'Access key',

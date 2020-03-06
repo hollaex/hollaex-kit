@@ -99,10 +99,10 @@ export default class Settings extends Component {
                 } else if (val === 'valid_languages' && typeof formProps[val] !== 'string') {
                     formValues[val] = formProps[val].join(',');
                 } else if (val === 'new_user_is_activated') {
-                    if (formProps[val] === 'true')
-                        formValues[val] = true;
+                    if (typeof formProps[val] === 'string')
+                        formValues[val] = formProps[val] === 'true' ? true : false;
                     else
-                        formValues[val] = false;
+                        formValues[val] = formProps[val];
                 } else {
                     formValues[val] = formProps[val];
                 }

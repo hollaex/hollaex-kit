@@ -1,4 +1,4 @@
-import { validateRequired, email, exchangeName, urlCheck } from '../../../components/AdminForm/validations';
+import { validateRequired, email, urlCheck } from '../../../components/AdminForm/validations';
 import { COUNTRIES_OPTIONS } from '../../../utils/countries';
 
 export const generateAdminSettings = (key) => {
@@ -97,7 +97,7 @@ export const generateAdminSettings = (key) => {
                 type: 'input',
                 label: 'API name',
                 placeholder: 'API name',
-                validate: [validateRequired, exchangeName]
+                validate: [validateRequired]
             },
             new_user_is_activated: {
                 type: 'checkbox',
@@ -152,7 +152,7 @@ export const generateAdminSettings = (key) => {
                 type: 'select',
                 label: 'Default country',
                 placeholder: 'Select default country',
-                validate: [validateRequired],
+                // validate: [validateRequired],
                 options: [
                     { label: 'Global', value: 'global' },
                     ...COUNTRIES_OPTIONS

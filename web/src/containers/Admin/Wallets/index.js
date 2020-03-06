@@ -70,7 +70,7 @@ class Wallets extends Component {
 
 	render() {
 		const { balance, loading, error } = this.state;
-		const { secrets = {} } = this.state.constants;
+		const { plugins = { enabled: '' } } = this.state.constants;
 		return (
 			<div className="app_container-content">
 				{error && (
@@ -90,7 +90,7 @@ class Wallets extends Component {
 						<div className="d-flex align-items-center justify-content-between">
 							<h1>USER WALLETS</h1>
 							<div className="my-3">
-								{!secrets.vault
+								{!plugins.enabled.includes('vault')
 									? <Button type="primary" onClick={this.goToVault}>Activate Vault</Button>
 									: <Tag color="green">Vault Activated</Tag>
 								}
