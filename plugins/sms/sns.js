@@ -1,18 +1,18 @@
 'use strict';
 
 const aws = require('aws-sdk');
-const SNS_ACCESSKEYID = process.env.SNS_ACCESSKEYID || '';
-const SNS_SECRETACCESSKEY = process.env.SNS_SECRETACCESSKEY || '';
-const SNS_REGION = process.env.SNS_REGION || '';
+const { GET_CONFIGURATION, GET_SECRETS } = require('../../constants');
 
-const credentials = {
-	accessKeyId: SNS_ACCESSKEYID,
-	secretAccessKey: SNS_SECRETACCESSKEY,
-	region: SNS_REGION
+const credentials = () => {
+	return {
+		accessKeyId: GET_SECRETS().plugins.sns.key,
+		secretAccessKey: GET_SECRETS().plugins.sns.secret,
+		region: GET_CONFIGURATION().constants.plugins.configuration.sns.region
+	};
 };
 
 const sns = () => {
-	aws.config.update(credentials);
+	aws.config.update(credentials());
 	return new aws.SNS();
 };
 
