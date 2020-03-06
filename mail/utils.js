@@ -41,7 +41,6 @@ const SMTP_PORT = () => parseInt(GET_SECRETS().smtp.port);
 const SMTP_USER = () => GET_SECRETS().smtp.user;
 const SMTP_PASSWORD = () => GET_SECRETS().smtp.password;
 
-
 const formatTimezone = (date, timezone = DEFAULT_TIMEZONE()) => {
 	let tzTime;
 	if (timezone) {
@@ -79,18 +78,20 @@ const getCountryFromIp = (ip) => {
 
 const nodemailer = require('nodemailer');
 
-const transport = nodemailer.createTransport({
-	host: SMTP_SERVER(),
-	port: SMTP_PORT(),
-	auth: {
-		user: SMTP_USER(),
-		pass: SMTP_PASSWORD()
-	},
-	logger: true,
-});
+const transport = () => {
+	return nodemailer.createTransport({
+		host: SMTP_SERVER(),
+		port: SMTP_PORT(),
+		auth: {
+			user: SMTP_USER(),
+			pass: SMTP_PASSWORD()
+		},
+		logger: true,
+	});
+};
 
 const sendSMTPEmail = (params) => {
-	return transport.sendMail(params);
+	return transport().sendMail(params);
 };
 
 const getValidLanguage = (language = DEFAULT_LANGUAGE()) => {
