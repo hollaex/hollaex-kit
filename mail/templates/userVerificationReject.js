@@ -18,7 +18,7 @@ const html = (email, data, language, domain) => {
       <p>${USERVERIFICATIONREJECT.BODY[2](data.message)}</p>
       <p>
         ${USERVERIFICATIONREJECT.CLOSING[1]}<br />
-        ${USERVERIFICATIONREJECT.CLOSING[2]}
+        ${USERVERIFICATIONREJECT.CLOSING[2]()}
       </p>
     </div>
   `;
@@ -30,7 +30,7 @@ const text = (email, data, language, domain) => {
     ${USERVERIFICATIONREJECT.GREETING(email)}
     ${USERVERIFICATIONREJECT.BODY[1](data.type)}
     ${USERVERIFICATIONREJECT.BODY[2](data.message)}
-    ${USERVERIFICATIONREJECT.CLOSING[1]} ${USERVERIFICATIONREJECT.CLOSING[2]}
+    ${USERVERIFICATIONREJECT.CLOSING[1]} ${USERVERIFICATIONREJECT.CLOSING[2]()}
   `;
 };
 

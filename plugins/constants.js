@@ -2,11 +2,6 @@
 
 exports.PLUGIN_PORT = process.env.PLUGIN_PORT || 10011;
 
-// FRESHDESK_CONSTANTS
-// exports.FRESHDESK_HOST = require('../init').getConfiguration().constants.plugins.configuration.freshdesk.host || process.env.FRESHDESK_HOST || '';
-// exports.FRESHDESK_KEY = require('../init').getConfiguration().constants.plugins.configuration.freshdesk.key || process.env.FRESHDESK_KEY || '';
-// exports.FRESHDESK_AUTH = require('../init').getSecrets().plugins.configuration.freshdesk.auth || process.env.FRESHDESK_AUTH || '';
-
 // SMS_CONSTANTS
 exports.SMS_CODE_KEY = 'user:sms';
 exports.SMS_CODE_EXPIRATION_TIME = 6 * 60; // seconds -> 6 min

@@ -4,17 +4,25 @@ const express = require('express');
 const cors = require('cors');
 const app = express();
 const { PLUGIN_PORT } = require('./constants');
+const { DOMAIN, GET_CONFIGURATION } = require('../constants');
+const { readdirSync } = require('fs')
 
-const PLUGINS = process.env.PLUGINS || 'kyc,bank,sms';
-const DOMAIN = process.env.DOMAIN || (process.env.NODE_ENV === 'production' ? 'https://hollaex.com' : 'http://localhost:3000');
+const PLUGINS = GET_CONFIGURATION().constants.plugins.enabled || process.env.PLUGINS || 'bank,kyc,sms,vault';
 const CORS_WHITELIST = [DOMAIN, 'http://localhost:8080', 'http://localhost:3000'];
 
 const PORT = PLUGIN_PORT
 
-const plugins = PLUGINS.split(',');
+const enabledPlugins = PLUGINS.split(',');
+
+const availablePlugins = readdirSync(__dirname, { withFileTypes: true })
+	.filter(dirent => dirent.isDirectory() && dirent.name !== 'helpers')
+	.map(dirent => dirent.name);
 
 app.get('/plugins', (req, res) => {
-	res.send(`Plugins enabled: ${plugins}`);
+	res.json({
+		enabled: enabledPlugins,
+		available: availablePlugins
+	});
 });
 
 app.listen(PORT);
@@ -33,7 +41,7 @@ app.use(cors(corsOptions));
 
 module.exports = app;
 
-plugins.forEach((plugin) => {
+enabledPlugins.forEach((plugin) => {
 	if (plugin) {
 		require('./' + plugin);
 	}

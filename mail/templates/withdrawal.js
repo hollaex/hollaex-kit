@@ -58,7 +58,7 @@ const html = (email, data, language, domain) => {
 	}
 	result += `<p>
 			${WITHDRAWAL.CLOSING[1]}<br />
-			${WITHDRAWAL.CLOSING[2]}
+			${WITHDRAWAL.CLOSING[2]()}
 			</p>
 		</div>`;
 	return result;
@@ -83,7 +83,7 @@ const text = (email, data, language, domain) => {
 	} else {
 		result += '';
 	}
-	result += `${WITHDRAWAL.CLOSING[1]} ${WITHDRAWAL.CLOSING[2]}`;
+	result += `${WITHDRAWAL.CLOSING[1]} ${WITHDRAWAL.CLOSING[2]()}`;
 	return result;
 };
 

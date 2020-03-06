@@ -1,13 +1,14 @@
 'use strict';
 
-const API_NAME = process.env.API_NAME || 'HollaEx';
-const SUPPORT_EMAIL = process.env.SUPPORT_EMAIL || 'support@bitholla.com';
+const { GET_CONFIGURATION } = require('../../constants');
+const API_NAME = () => GET_CONFIGURATION().constants.api_name;
+const SUPPORT_EMAIL = () => GET_CONFIGURATION().constants.accounts.support;
 
 const COMMON = {
 	GREETING: (name) => `Dear ${name}`,
 	CLOSING: {
 		1: 'Regards',
-		2: `${API_NAME} team`
+		2: () => `${API_NAME()} team`
 	},
 	IP_ADDRESS: (ip) => `IP Address: ${ip}`,
 	IP_REQUEST_FROM: (ip) => `Request initiated from: ${ip}`,
@@ -40,9 +41,9 @@ const SIGNUP = {
 	TITLE: 'Sign Up',
 	GREETING: (name) => COMMON.GREETING(name),
 	BODY: {
-		1: `Thank you for registering on ${API_NAME}.
+		1: () => `Thank you for registering on ${API_NAME()}.
 		Our sales team will review your application and will get back to you as soon as possible.
-		If you have any questions, feel free to contact us at <a href="mailto:${SUPPORT_EMAIL}">${SUPPORT_EMAIL}</a>`,
+		If you have any questions, feel free to contact us at <a href="mailto:${SUPPORT_EMAIL()}">${SUPPORT_EMAIL()}</a>`,
 		2: 'Please click on the button below to proceed with your registration.',
 		3: 'Activate My Account'
 	},
@@ -53,13 +54,13 @@ const WELCOME = {
 	TITLE: 'Welcome',
 	GREETING: (name) => COMMON.GREETING(name),
 	BODY: {
-		1: `Thank you for signing up to ${API_NAME}.`,
+		1: () => `Thank you for signing up to ${API_NAME()}.`,
 		2: (account, deposit) => `
 		To being trading, you must first deposit cryptocurrency or fund money to your account.
 		Please go to your ${account} and visit the ${deposit} page.`,
 		3: 'account',
 		4: 'deposit',
-		5: `If you have any questions or concerns, please contact us at ${SUPPORT_EMAIL}.`
+		5: () => `If you have any questions or concerns, please contact us at ${SUPPORT_EMAIL()}.`
 	},
 	CLOSING: COMMON.CLOSING
 };
@@ -96,7 +97,7 @@ const DEPOSIT = {
 	GREETING: (name) => COMMON.GREETING(name),
 	BODY: {
 		PENDING: (amount, confirmation = 1, currency) =>
-			`You have a new deposit for ${amount} ${currency.toUpperCase()} pending in your ${API_NAME} wallet. Please wait until the transaction is confirmed and your funds will be available in your wallet. Your transaction require ${confirmation} confirmation(s) on blockchain.`,
+			`You have a new deposit for ${amount} ${currency.toUpperCase()} pending in your ${API_NAME()} wallet. Please wait until the transaction is confirmed and your funds will be available in your wallet. Your transaction require ${confirmation} confirmation(s) on blockchain.`,
 		COMPLETED: (amount, confirmation, currency) =>
 			`Your ${
 				currency.toUpperCase()
@@ -143,7 +144,7 @@ const DEPOSITCANCEL = {
 		DEPOSIT: (currency, date, amount) =>
 			`We were not able to find or process your ${currency.toUpperCase()} deposit made on ${date} for ${amount}. Thus, the transaction is rejected by our system.`,
 		WITHDRAWAL: (currency, date, amount) =>
-			`We were not able to find or process your ${currency.toUpperCase()} withdrawal made on ${date} for ${amount}. Thus the transaction is rejected by our system and your pending withdrawal amount is credited back to your ${API_NAME} wallet.`,
+			`We were not able to find or process your ${currency.toUpperCase()} withdrawal made on ${date} for ${amount}. Thus the transaction is rejected by our system and your pending withdrawal amount is credited back to your ${API_NAME()} wallet.`,
 		1: 'If you have any further inquiries, you can reply to this email',
 		2: (txid) => COMMON.TXID(txid),
 		3: (amount) => COMMON.AMOUNT(amount),
