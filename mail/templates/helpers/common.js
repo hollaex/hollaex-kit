@@ -1,7 +1,6 @@
 'use strict';
 
 const {
-	DOMAIN,
 	BITHOLLA_DOMAIN,
 	BITHOLLA_LOGO_BLACK,
 	EMAIL_ICONS
