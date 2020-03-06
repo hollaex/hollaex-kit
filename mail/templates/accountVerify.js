@@ -23,7 +23,7 @@ const html = (email, data, language, domain) => {
             ${Button(link, ACCOUNTVERIFY.BODY[2])}
             <p>
                 ${ACCOUNTVERIFY.CLOSING[1]}<br />
-                ${ACCOUNTVERIFY.CLOSING[2]}
+                ${ACCOUNTVERIFY.CLOSING[2]()}
             </p>
         </div>
     `;
@@ -36,7 +36,7 @@ const text = (email, data, language, domain) => {
         ${ACCOUNTVERIFY.GREETING(email)}
         ${ACCOUNTVERIFY.BODY[1]}
         ${ACCOUNTVERIFY.BODY[2]}(${link})
-        ${ACCOUNTVERIFY.CLOSING[1]} ${ACCOUNTVERIFY.CLOSING[2]}
+        ${ACCOUNTVERIFY.CLOSING[1]} ${ACCOUNTVERIFY.CLOSING[2]()}
     `;
 };
 
