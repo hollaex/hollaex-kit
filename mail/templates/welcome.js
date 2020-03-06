@@ -42,12 +42,12 @@ const text = (email, data, language, domain) => {
 	const { WELCOME } = require('../strings').languageFile(language);
 	return `
     ${WELCOME.GREETING(email)}
-    ${WELCOME.BODY[1]}
+    ${WELCOME.BODY[1]()}
     ${WELCOME.BODY[2](
 			`${WELCOME.BODY[3]}(${linkAccount})`,
 			`${WELCOME.BODY[4]}(${linkDeposit})`
 		)}
-    ${WELCOME.BODY[5]}
+    ${WELCOME.BODY[5]()}
     ${WELCOME.CLOSING[1]} ${WELCOME.CLOSING[2]()}
   `;
 };

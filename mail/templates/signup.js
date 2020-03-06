@@ -37,7 +37,7 @@ const text = (email, data, language, domain) => {
 	const { SIGNUP } = require('../strings').languageFile(language);
 	return `
     ${SIGNUP.GREETING(email)}
-    ${SIGNUP.BODY[1]}
+    ${SIGNUP.BODY[1]()}
     ${SIGNUP.BODY[2]}
     ${SIGNUP.BODY[3]}(${link})
     ${SIGNUP.CLOSING[1]} ${SIGNUP.CLOSING[2]()}
