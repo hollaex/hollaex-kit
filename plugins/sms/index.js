@@ -6,14 +6,15 @@ const { findUser } = require('../helpers/user');
 const PhoneNumber = require('awesome-phonenumber');
 const bodyParser = require('body-parser');
 const { createSMSCode, storeSMSCode, checkSMSCode, deleteSMSCode, sendSMS, updateUserPhoneNumber } = require('./helpers');
-const DEFAULT_LANGUAGE = process.env.NEW_USER_DEFAULT_LANGUAGE || 'en';
-const { SMS } = require('../../mail/strings').languageFile(DEFAULT_LANGUAGE);
 const { logger } = require('../helpers/common');
 const {
 	SMS_INVALID_PHONE,
 	SMS_SUCCESS,
 	PHONE_VERIFIED
 } = require('./messages');
+const { GET_CONFIGURATION } = require('../../constants');
+const DEFAULT_LANGUAGE = () => GET_CONFIGURATION().constants.defaults.language;
+const SMS = () => require('../../mail/strings').languageFile(DEFAULT_LANGUAGE()).SMS;
 
 app.get('/plugins/sms/verify', verifyToken, (req, res) => {
 	const endpointScopes = ['user'];
@@ -47,7 +48,7 @@ app.get('/plugins/sms/verify', verifyToken, (req, res) => {
 	);
 
 	sendSMS(phone, {
-		message: SMS.verificationCode(code)
+		message: SMS().verificationCode(code)
 	})
 		.then((data) => {
 			return storeSMSCode(id, phone, code);

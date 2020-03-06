@@ -4,13 +4,11 @@ const redis = require('../../db/redis').duplicate();
 const otp = require('otp');
 const Promise = require('bluebird');
 const PhoneNumber = require('awesome-phonenumber');
-const sns = require('./sns')();
 const {
 	SMS_CODE_KEY,
 	SMS_CODE_EXPIRATION_TIME
 } = require('../constants');
-const DEFAULT_LANGUAGE = process.env.NEW_USER_DEFAULT_LANGUAGE || 'en';
-const OTP_NAME = process.env.API_NAME || 'HollaEx';
+const { GET_CONFIGURATION } = require('../../constants');
 const {
 	SMS_ERROR,
 	SMS_PHONE_DONT_MATCH,
@@ -18,6 +16,10 @@ const {
 	SMS_CODE_EXPIRED,
 	INVALID_PHONE_NUMBER
 } = require('./messages');
+
+const DEFAULT_LANGUAGE = () => GET_CONFIGURATION().constants.defaults.language;
+const OTP_NAME = () => GET_CONFIGURATION().constants.api_name;
+const sns = () => require('./sns')();
 
 const generateUserKey = (user_id) => `${SMS_CODE_KEY}:${user_id}`;
 
@@ -27,7 +29,7 @@ const createSMSCode = () => {
 
 const generateOtp = (secret) => {
 	const options = {
-		name: OTP_NAME,
+		name: OTP_NAME(),
 		secret
 	};
 
@@ -83,7 +85,7 @@ const sendAwsSMS = (phoneNumber, message) => {
 	};
 
 	return new Promise((resolve, reject) => {
-		sns.publish(params, (err, data) => {
+		sns().publish(params, (err, data) => {
 			if (err) {
 				const error = new Error(SMS_ERROR);
 				error.statusCode = 400;
@@ -111,7 +113,7 @@ const sendSMSDeposit = (
 	phoneNumber,
 	amount,
 	timestamp,
-	language = DEFAULT_LANGUAGE
+	language = DEFAULT_LANGUAGE()
 ) => {
 	const { SMS } = require(`../../mail/strings/${language}`);
 	let message;
