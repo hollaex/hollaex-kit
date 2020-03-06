@@ -18,7 +18,7 @@ const html = (email, data, language, domain) => {
         ${SIGNUP.GREETING(email)}
       </p>
       <p>
-        ${SIGNUP.BODY[1]}
+        ${SIGNUP.BODY[1]()}
       </p>
       <p>
         ${SIGNUP.BODY[2]}

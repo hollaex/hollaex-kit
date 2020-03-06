@@ -40,7 +40,7 @@ const SIGNUP = {
 	TITLE: '회원가입',
 	GREETING: (name) => COMMON.GREETING(name),
 	BODY: {
-		1: `안녕하세요. ${API_NAME()}에 가입해주셔서 감사합니다.
+		1: () => `안녕하세요. ${API_NAME()}에 가입해주셔서 감사합니다.
 		해당 부서에서 최대한 빠르게 회원님의 신청서를 검토 한 후 연락드리겠습니다.
 		문의사항은 <a href="mailto:${SUPPORT_EMAIL()}">${SUPPORT_EMAIL()}</a> 로 연락주시기 바랍니다.`,
 		2: '아래 버튼을 클릭하여 등록 절차를 진행하시기 바랍니다.',

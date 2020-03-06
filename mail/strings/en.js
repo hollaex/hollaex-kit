@@ -41,7 +41,7 @@ const SIGNUP = {
 	TITLE: 'Sign Up',
 	GREETING: (name) => COMMON.GREETING(name),
 	BODY: {
-		1: `Thank you for registering on ${API_NAME()}.
+		1: () => `Thank you for registering on ${API_NAME()}.
 		Our sales team will review your application and will get back to you as soon as possible.
 		If you have any questions, feel free to contact us at <a href="mailto:${SUPPORT_EMAIL()}">${SUPPORT_EMAIL()}</a>`,
 		2: 'Please click on the button below to proceed with your registration.',
