@@ -53,13 +53,13 @@ const WELCOME = {
 	TITLE: '환영합니다',
 	GREETING: (name) => COMMON.GREETING(name),
 	BODY: {
-		1: `누구나 빠르고 쉬운 거래가 가능한 가상화폐거래소 ${API_NAME()}를 이용해주셔서 감사합니다.`,
+		1: () => `누구나 빠르고 쉬운 거래가 가능한 가상화폐거래소 ${API_NAME()}를 이용해주셔서 감사합니다.`,
 		2: (account, deposit) => `
 			거래를 시작하기 위해선 먼저, 비트코인 또는 현금을 계좌에 입금하여야 합니다.
 			${account} 페이지로 이동하여 ${deposit} 페이지를 방문해주시기 바랍니다.`,
 		3: '계정',
 		4: '입금',
-		5: `문의사항은 ${SUPPORT_EMAIL()} 로 문의해주시기 바랍니다.`
+		5: () => `문의사항은 ${SUPPORT_EMAIL()} 로 문의해주시기 바랍니다.`
 	},
 	CLOSING: COMMON.CLOSING
 };

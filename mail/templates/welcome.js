@@ -17,7 +17,7 @@ const html = (email, data, language, domain) => {
         ${WELCOME.GREETING(email)}
       </p>
       <p>
-        ${WELCOME.BODY[1]}
+        ${WELCOME.BODY[1]()}
       </p>
       <p>
         ${WELCOME.BODY[2](
@@ -26,7 +26,7 @@ const html = (email, data, language, domain) => {
         )}
       </p>
       <p>
-        ${WELCOME.BODY[5]}
+        ${WELCOME.BODY[5]()}
       </p>
       <p>
         ${WELCOME.CLOSING[1]}<br />

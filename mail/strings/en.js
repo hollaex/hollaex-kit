@@ -54,13 +54,13 @@ const WELCOME = {
 	TITLE: 'Welcome',
 	GREETING: (name) => COMMON.GREETING(name),
 	BODY: {
-		1: `Thank you for signing up to ${API_NAME()}.`,
+		1: () => `Thank you for signing up to ${API_NAME()}.`,
 		2: (account, deposit) => `
 		To being trading, you must first deposit cryptocurrency or fund money to your account.
 		Please go to your ${account} and visit the ${deposit} page.`,
 		3: 'account',
 		4: 'deposit',
-		5: `If you have any questions or concerns, please contact us at ${SUPPORT_EMAIL()}.`
+		5: () => `If you have any questions or concerns, please contact us at ${SUPPORT_EMAIL()}.`
 	},
 	CLOSING: COMMON.CLOSING
 };
