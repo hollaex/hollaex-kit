@@ -1,9 +1,8 @@
 'use strict';
 
 const { Status } = require('../../db/models');
-const { CONSTANTS_KEYS, INIT_CHANNEL, SECRETS_KEYS, SYSTEM_CONFIGURATION } = require('../../constants');
+const { CONSTANTS_KEYS, INIT_CHANNEL, SECRETS_KEYS } = require('../../constants');
 const { publisher } = require('../../db/pubsub');
-const redis = require('../../db/redis').duplicate();
 
 // Winston logger
 const logger = require('../../config/logger').loggerPlugin;
@@ -19,7 +18,7 @@ const joinConstants = (statusConstants = {}, newConstants = {}) => {
 			});
 		}
 		else {
-			joinedConstants[key] = newConstants[key] || statusConstants[key];
+			joinedConstants[key] = newConstants[key] === undefined ? statusConstants[key] : newConstants[key];
 		}
 	});
 	return joinedConstants;
@@ -42,7 +41,7 @@ const updateConstants = (constants) => {
 		})
 		.then(async (data) => {
 			const secrets = data.constants.secrets;
-			await delete data.constants.secrets;
+			delete data.constants.secrets;
 			await publisher.publish(
 				INIT_CHANNEL,
 				JSON.stringify({
@@ -58,16 +57,8 @@ const isUrl = (url) => {
 	return pattern.test(url);
 };
 
-const getConfiguration = () => {
-	return redis.getAsync(SYSTEM_CONFIGURATION)
-		.then((data) => {
-			return JSON.parse(data);
-		});
-};
-
 module.exports = {
 	logger,
 	updateConstants,
-	getConfiguration,
 	isUrl
 };
