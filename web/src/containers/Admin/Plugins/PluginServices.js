@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Tag, Modal, Spin, Alert, Divider } from 'antd';
+import { Modal, Spin, Alert, Divider, Switch } from 'antd';
 import { bindActionCreators } from 'redux';
+import { change } from 'redux-form';
 
 import PluginForm from './pluginForm';
 import { updatePlugins, getConstants, connectVault } from './action';
@@ -19,6 +20,7 @@ class PluginServices extends Component {
             connectStatus: false,
             initialValues: {},
             loading: false,
+            serviceLoading: false,
             error: '',
             constants: {}
         };
@@ -52,7 +54,7 @@ class PluginServices extends Component {
     };
 
     getServices = (services = '') => {
-        const { secrets = {}, plugins = { enabled: '' } } = this.state.constants;
+        const { api_name = '', secrets = { vault: {} }, plugins = { enabled: '' } } = this.state.constants;
         const pluginData = allPluginsData[services] || {}
         const title = pluginData.title ? pluginData.title : '';
         if (!allPluginsData[services]) {
@@ -64,7 +66,16 @@ class PluginServices extends Component {
             if (plugins.enabled.includes(services)) {
                 connectStatus = true;
             }
-            initialValues = secrets[services];
+            initialValues = {
+                ...secrets[services],
+                name: api_name
+            };
+            const apiName = this.normalizeAPIName(api_name);
+            if (apiName !== api_name) {
+                setTimeout(() => {
+                    this.props.change('PLUGINS_FORM', 'name', apiName);
+                }, 200);
+            }
         } else if ((services === 'bank' || services === 'chat') && plugins.enabled) {
             if (plugins.enabled.includes(services)) {
                 connectStatus = true;
@@ -97,18 +108,66 @@ class PluginServices extends Component {
                         })
                     }
                 }
-            } else if(plugins.enabled.includes(services)) {
+            } else if (plugins.enabled.includes(services)) {
                 connectStatus = true;
             }
         }
         this.setState({ services, title, connectStatus, initialValues });
     };
 
+    normalizeAPIName = (name = '') => {
+        const exchangeNameRegex = /[^a-zA-Z0-9_-]/g;
+        let apiName = name.replace(/\s+/g, ' ');
+        apiName = apiName.replace(/ /g, '_');
+        return apiName.replace(exchangeNameRegex, '');
+    };
+
     handleDeactivate = () => {
         this.setState({ isOpenConfirm: !this.state.isOpenConfirm });
     };
 
-    handleSubmitPlugins = (formProps, service, status) => {
+    handleSwitch = (checked) => {
+        if (checked) {
+            this.enablePlugins(this.state.services);
+        } else {
+            this.handleDeactivate();
+        }
+        this.setState({ serviceLoading: true });
+    };
+
+    enablePlugins = (service) => {
+        const { plugins = { enabled: '', configuration: {} } } = this.state.constants;
+        let formValues = {
+            plugins: {
+                ...plugins
+            }
+        };
+        if (!plugins.enabled.includes(service)) {
+            formValues.plugins.enabled = plugins.enabled ? `${plugins.enabled},${service}` : service;
+        }
+        return this.updateConstants(formValues);
+    };
+
+    disablePlugins = (service) => {
+        const {
+            plugins = { configuration: {} }
+        } = this.state.constants;
+        let enabled = plugins.enabled;
+        if (plugins.enabled.includes(service)) {
+            let temp = plugins.enabled.split(',');
+            enabled = temp.filter(val => val !== service).join(',');
+        }
+        let formValues = {
+            plugins: {
+                ...plugins,
+                enabled
+            }
+        }
+        this.updateConstants(formValues, true);
+        this.handleDeactivate();
+    };
+
+    handleSubmitPlugins = (formProps, service) => {
         const { plugins = { enabled: '', configuration: {} }, secrets = { plugins: {} } } = this.state.constants;
         let enabled = plugins.enabled;
         if (!plugins.enabled.includes(service)) {
@@ -119,21 +178,15 @@ class PluginServices extends Component {
                 ...plugins,
                 enabled
             },
-            secrets: {
-                // ...secrets,
-            }
+            secrets: {}
         };
         if (service === 'vault') {
-            // let vaultData = formProps;
-            // if (!formValues.secrets[service] || !formValues.secrets[service].connected_coins) {
-            //     vaultData.connected_coins = [];
-            // }
-            // formValues.secrets[service] = vaultData;
-            // formValues = {
-            //     key: formProps.key,
-            //     secret: formProps.secret
-            // };
-            // return this.connectVault(formValues);
+            formValues = {
+                key: formProps.key,
+                secret: formProps.secret,
+                name: formProps.name
+            };
+            return this.connectVault(formValues);
         } else if (service !== 'bank' && service !== 'chat' && service !== 'zendesk') {
             const { key, secret, auth, ...rest } = formProps;
             const pluginData = allPluginsData[service] || {};
@@ -152,55 +205,23 @@ class PluginServices extends Component {
                 formValues.secrets.plugins[pluginData.key] = { key, secret };
             }
         }
+        this.setState({ loading: true });
         return this.updateConstants(formValues);
-    };
-
-    disconnectService = (service) => {
-        const {
-            plugins = { configuration: {} },
-            // secrets = { plugins: {} }
-        } = this.state.constants;
-        let enabled = plugins.enabled;
-        if (plugins.enabled.includes(service)) {
-            let temp = plugins.enabled.split(',');
-            enabled = temp.filter(val => val !== service).join(',');
-        }
-        let formValues = {
-            plugins: {
-                ...plugins,
-                enabled,
-                // configuration: {}
-            },
-            // secrets: {
-            //     ...secrets,
-            //     plugins: {}
-            // }
-        }
-        // if (service === 'vault') {
-        //     const { vault, ...rest } = secrets;
-        //     formValues.secrets = rest;
-        // } else {
-        //     const pluginData = allPluginsData[service] || {};
-        //     Object.keys(plugins.configuration).forEach(config => {
-        //         if (config !== pluginData.key) {
-        //             formValues.plugins.configuration[config] = plugins.configuration[config];
-        //         }
-        //     });
-        //     Object.keys(secrets.plugins).forEach(config => {
-        //         if (config !== pluginData.key) {
-        //             formValues.secrets.plugins[config] = secrets.plugins[config];
-        //         }
-        //     });
-        // }
-        this.updateConstants(formValues, true);
-        this.handleDeactivate();
     };
 
     connectVault = (formProps) => {
         this.setState({ loading: true, error: '' });
         return connectVault(formProps)
             .then((data) => {
-                this.setState({ loading: false });
+                this.setState({
+                    loading: false,
+                    constants: {
+                        ...this.state.constants,
+                        api_name: formProps.name
+                            ? formProps.name
+                            : this.state.constants.api_name
+                    }
+                });
             })
             .catch((error) => {
                 const message = error.data ? error.data.message : error.message;
@@ -209,60 +230,59 @@ class PluginServices extends Component {
     };
 
     updateConstants = (formProps) => {
-        this.setState({ loading: true, error: '' });
+        this.setState({ error: '' });
         return updatePlugins(formProps)
             .then((data) => {
-                this.setState({ constants: data, loading: false });
+                this.setState({ constants: data, loading: false, serviceLoading: false });
             })
             .catch((error) => {
                 const message = error.data ? error.data.message : error.message;
-                this.setState({ loading: false, error: message });
+                this.setState({ loading: false, error: message, serviceLoading: false });
             });
     };
 
     render() {
-        const { title, services, connectStatus, initialValues, loading, error } = this.state;
+        const { title, services, connectStatus, initialValues, loading, error, serviceLoading } = this.state;
         return (
             <div className="app_container-content">
                 {error && (
-					<Alert
-						message="Error"
-						className="m-top"
-						description={error}
-						type="error"
-						showIcon
-					/>
-				)}
+                    <Alert
+                        message="Error"
+                        className="m-top"
+                        description={error}
+                        type="error"
+                        showIcon
+                    />
+                )}
                 {loading ? (
                     <Spin size="large" />
                 ) : (
-                    <div>
-                        <div className="d-flex align-items-center">
-                            <h1>{title}</h1>
-                            <div className="mx-4">
-                                <Tag color={connectStatus ? 'green' : 'red'}>
-                                    {connectStatus ? 'Activated' : 'Deactivated'}
-                                </Tag>
+                        <div>
+                            <div className="d-flex align-items-center">
+                                <h1>{title}</h1>
+                                <div className="mx-4">
+                                    <Switch loading={serviceLoading} checked={connectStatus} onChange={this.handleSwitch} />
+                                </div>
                             </div>
+                            <Divider />
+                            {connectStatus
+                                ? <PluginForm
+                                    initialValues={initialValues}
+                                    services={services}
+                                    handleSubmitPlugins={this.handleSubmitPlugins}
+                                />
+                                : null
+                            }
+                            <Modal
+                                title={`Deactivate ${title}`}
+                                visible={this.state.isOpenConfirm}
+                                onOk={() => this.disablePlugins(services)}
+                                onCancel={this.handleDeactivate}
+                            >
+                                <div>Do you really want to Deactivate?</div>
+                            </Modal>
                         </div>
-                        <Divider />
-                        <PluginForm
-                            connectStatus={connectStatus}
-                            initialValues={initialValues}
-                            services={services}
-                            handleSubmitPlugins={this.handleSubmitPlugins}
-                            handleDeactivate={this.handleDeactivate}
-                        />
-                        <Modal
-                            title={`Deactivate ${title}`}
-                            visible={this.state.isOpenConfirm}
-                            onOk={() => this.disconnectService(services)}
-                            onCancel={this.handleDeactivate}
-                        >
-                            <div>Do you really want to Deactivate?</div>
-                        </Modal>
-                    </div>
-                )}
+                    )}
             </div>
         )
     }
@@ -273,7 +293,8 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-    setConfig: bindActionCreators(setConfig, dispatch)
+    setConfig: bindActionCreators(setConfig, dispatch),
+    change: bindActionCreators(change, dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(PluginServices);

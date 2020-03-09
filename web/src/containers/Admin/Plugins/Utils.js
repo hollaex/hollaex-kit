@@ -1,5 +1,5 @@
 import React from 'react';
-import { validateRequired, checkS3bucketUrl } from '../../../components/AdminForm/validations';
+import { validateRequired, checkS3bucketUrl, exchangeName } from '../../../components/AdminForm/validations';
 import { ICONS } from '../../../config/constants';
 
 export const allPlugins = ['kyc', 'sns', 'bank', 'sms', 's3', 'freshdesk', 'zendesk', 'chat', 'vault'];
@@ -138,12 +138,6 @@ export const getPluginsForm = (key) => {
             }
         },
         'vault': {
-            // name: {
-            //     type: 'input',
-            //     label: 'Name',
-            //     placeholder: 'Vault name',
-            //     validate: [validateRequired]
-            // },
             key: {
                 type: 'input',
                 label: 'Access key',
@@ -155,7 +149,13 @@ export const getPluginsForm = (key) => {
                 label: 'Secret key',
                 placeholder: 'Vault secret key',
                 validate: [validateRequired]
-            }
+            },
+            name: {
+                type: 'input',
+                label: 'Name',
+                placeholder: 'Vault name',
+                validate: [validateRequired, exchangeName]
+            },
         }
     };
     return formData[key] || {};
