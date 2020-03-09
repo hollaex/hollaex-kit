@@ -1,8 +1,8 @@
 'use strict';
 
-const DOMAIN = process.env.DOMAIN || (process.env.NODE_ENV === 'production' ? 'https://hollaex.com' : 'http://localhost:3000');
-const DEFAULT_LANGUAGE = process.env.NEW_USER_DEFAULT_LANGUAGE || 'en';
-const API_NAME = process.env.API_NAME || 'HollaEx';
+const { DOMAIN, GET_CONFIGURATION } = require('../../constants');
+const DEFAULT_LANGUAGE = () => GET_CONFIGURATION().constants.defaults.language;
+const API_NAME = () => GET_CONFIGURATION().constants.api_name;
 const { TemplateEmail } = require('./helpers/common');
 const { MAILTYPE } = require('../strings');
 
@@ -10,7 +10,7 @@ const generateMessageContent = (
 	type,
 	email,
 	data = {},
-	language = DEFAULT_LANGUAGE,
+	language = DEFAULT_LANGUAGE(),
 	domain = DOMAIN
 ) => {
 	const STRINGS = require('../strings').languageFile(language);
@@ -28,7 +28,7 @@ const generateMessageContent = (
 	} else {
 		title = STRINGS[type.toUpperCase()].TITLE;
 	}
-	const subject = `${API_NAME} ${title}`;
+	const subject = `${API_NAME()} ${title}`;
 	const message = require(`./${type}`)(email, data, language, domain);
 	const result = {
 		subject: subject,
