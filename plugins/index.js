@@ -43,7 +43,6 @@ module.exports = app;
 
 // Require every plugin for now
 availablePlugins.forEach((plugin) => {
-	console.log(plugin)
 	if (plugin) {
 		require('./' + plugin);
 	}
