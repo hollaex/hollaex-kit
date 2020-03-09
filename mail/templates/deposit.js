@@ -58,7 +58,7 @@ const html = (email, data, language, domain) => {
 	result += `
 			<p>
 				${DEPOSIT.CLOSING[1]}<br />
-				${DEPOSIT.CLOSING[2]}
+				${DEPOSIT.CLOSING[2]()}
 			</p>
 		</div>
 		`;
@@ -83,7 +83,7 @@ const text = (email, data, language, domain) => {
 	} else {
 		result += '';
 	}
-	result += `${DEPOSIT.CLOSING[1]} ${DEPOSIT.CLOSING[2]}`;
+	result += `${DEPOSIT.CLOSING[1]} ${DEPOSIT.CLOSING[2]()}`;
 	return result;
 };
 
