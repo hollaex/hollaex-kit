@@ -3,6 +3,7 @@
 const { Status } = require('../../db/models');
 const { CONSTANTS_KEYS, INIT_CHANNEL, SECRETS_KEYS } = require('../../constants');
 const { publisher } = require('../../db/pubsub');
+const { omit } = require('lodash');
 
 // Winston logger
 const logger = require('../../config/logger').loggerPlugin;
@@ -39,10 +40,10 @@ const updateConstants = (constants) => {
 				returning: true
 			});
 		})
-		.then(async (data) => {
+		.then((data) => {
 			const secrets = data.constants.secrets;
-			delete data.constants.secrets;
-			await publisher.publish(
+			data.constants = omit(data.constants, 'secrets');
+			publisher.publish(
 				INIT_CHANNEL,
 				JSON.stringify({
 					type: 'constants', data: { constants: data.constants, secrets }

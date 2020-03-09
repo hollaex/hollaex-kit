@@ -21,9 +21,9 @@ app.post('/plugins/vault/connect', [verifyToken, bodyParser.json()], (req, res) 
 		return res.status(400).json({ message: `Server URL ${API_HOST} is not a valid URL`});
 	}
 
-	const { key, secret, coins } = req.body;
+	const { name, key, secret, coins } = req.body;
 
-	updateVaultValues(key, secret)
+	updateVaultValues(name, key, secret)
 		.then(() => crossCheckCoins(coins))
 		.then((validCoins) => createOrUpdateWallets(validCoins))
 		.then((wallets) => {
