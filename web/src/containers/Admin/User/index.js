@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import './index.css';
 import { AdminHocForm } from '../../../components';
 
-import { requestUser } from './actions';
+import { requestUser, requestUsersDownload } from './actions';
 
 import UserContent from './UserContent';
 import { ListUsers, FullListUsers } from '../ListUsers';
@@ -65,9 +65,12 @@ class App extends Component {
 		}
 		return requestUser(values)
 			.then(([userInformation, userImages, userBalance]) => {
-				if (userInformation.id) {
+				if (userInformation &&
+					userInformation.data &&
+					userInformation.data[0] &&
+					userInformation.data[0].id) {
 					this.setState({
-						userInformation,
+						userInformation: userInformation.data[0],
 						userImages,
 						userBalance,
 						loading: false
@@ -85,6 +88,10 @@ class App extends Component {
 				this.setState({ loading: false });
 				// throw new SubmissionError({ _error: err.data.message });
 			});
+	};
+
+	requestUsersDownload = (params) => {
+		return requestUsersDownload({ ...params, format: 'csv' });
 	};
 
 	refreshData = (data, type) => {
@@ -182,7 +189,10 @@ class App extends Component {
 
 					<TabPane tab="User Verification" key="userVerification">
 						<div className="list_users">
-							<ListUsers requestUser={this.requestUserData} />
+							<ListUsers
+								requestUser={this.requestUserData}
+								handleDownload={this.requestUsersDownload}
+							/>
 						</div>
 					</TabPane>
 
@@ -191,6 +201,7 @@ class App extends Component {
 						<FullListUsers
 							coins={coins}
 							requestUser={this.requestUserData}
+							handleDownload={this.requestUsersDownload}
 						/>
 					</TabPane>
 				</Tabs>

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Table, Icon, Spin, Button } from 'antd';
 import { Link } from 'react-router';
-import { CSVLink } from 'react-csv';
 import { formatCurrency } from '../../../utils/index';
 import moment from 'moment';
 
@@ -9,7 +8,7 @@ import './index.css';
 
 import { requestUsers } from './actions';
 
-import { generateHeaders } from './constants';
+// import { generateHeaders } from './constants';
 
 // const renderBoolean = (value) => <Icon type={value ? 'check-circle-o' : 'close-circle'}/>;
 
@@ -155,8 +154,8 @@ class FullListUsers extends Component {
 		};
 
 		const { users, loading, error, currentTablePage } = this.state;
-		const { coins } = this.props;
-		const HEADERS = generateHeaders(coins);
+		// const { coins } = this.props;
+		// const HEADERS = generateHeaders(coins);
 		return (
 			<div className="app_container-content">
 				{loading ? (
@@ -164,13 +163,14 @@ class FullListUsers extends Component {
 				) : (
 					<div>
 						{error && <p>-{error}-</p>}
-						<CSVLink
-							filename={'users.csv'}
-							data={users}
-							headers={HEADERS}
-						>
-							Download table
-						</CSVLink>
+						<div>
+							<span
+								className="pointer"
+								onClick={() => this.props.handleDownload({})}
+							>
+								Download table
+							</span>
+						</div>
 						<Table
 							columns={COLUMNS}
 							dataSource={users}

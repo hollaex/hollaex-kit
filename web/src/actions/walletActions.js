@@ -125,6 +125,35 @@ export const getUserTrades = ({
 	};
 };
 
+export const downloadUserTrades = (key) => {
+	const query = querystring.stringify({
+		format: 'csv'
+	});
+	let path = ENDPOINTS.TRADES;
+	if (key === 'deposit') {
+		path = ENDPOINTS.DEPOSITS;
+	} else if (key === 'withdrawal') {
+		path = ENDPOINTS.WITHDRAWALS
+	}
+
+	return (dispatch) => {
+		axios
+			.get(`${path}?${query}`)
+			.then((res) => {
+				const url = window.URL.createObjectURL(new Blob([res.data]));
+				const link = document.createElement('a'); link.href = url;
+				link.setAttribute('download', `user_${key}.csv`);
+				document.body.appendChild(link); link.click();
+			})
+			.catch((err) => {
+				// dispatch({
+				// 	type: ACTION_KEYS.USER_TRADES_REJECTED,
+				// 	payload: err.response
+				// });
+			});
+	};
+};
+
 export const getUserDeposits = ({ limit = 50, page = 1, ...rest }) => {
 	const query = querystring.stringify({
 		page,

@@ -112,6 +112,14 @@ class ListUsers extends Component {
 				) : (
 					<div>
 						{error && <p>-{error}-</p>}
+						<div>
+							<span
+								className="pointer"
+								onClick={() => this.props.handleDownload({ pending: true })}
+							>
+								Download table
+							</span>
+						</div>
 						<Table
 							columns={COLUMNS}
 							dataSource={users}

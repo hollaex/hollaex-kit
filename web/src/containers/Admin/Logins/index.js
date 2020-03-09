@@ -88,8 +88,8 @@ class Logins extends Component {
 					<Table
 						columns={LOGIN_COLUMNS}
 						dataSource={logins ? logins : 'No Data'}
-						rowKey={(data) => {
-							return data.id;
+						rowKey={(data, index) => {
+							return `${data.id}_${index}`;
 						}}
 					/>
 				</Col>
