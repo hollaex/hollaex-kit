@@ -8,12 +8,12 @@ const WALLET_NAME = (name, coin) => `${name}-${coin}`;
 const { all, delay } = require('bluebird');
 const { updateConstants, logger } = require('../helpers/common');
 
-const updateVaultValues = (key, secret) => {
+const updateVaultValues = (name, key, secret) => {
 	logger.debug('/plugins/vault/helpers updateVaultValues');
 	return updateConstants({
 		secrets: {
 			vault: {
-				name: GET_CONFIGURATION().constants.api_name,
+				name,
 				key,
 				secret,
 				connected_coins: GET_SECRETS().vault.connected_coins
