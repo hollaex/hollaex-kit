@@ -7,12 +7,12 @@ const { PLUGIN_PORT } = require('./constants');
 const { DOMAIN, GET_CONFIGURATION } = require('../constants');
 const { readdirSync } = require('fs')
 
-const PLUGINS = GET_CONFIGURATION().constants.plugins.enabled || process.env.PLUGINS || 'bank,kyc,sms,vault';
+const PLUGINS = () => GET_CONFIGURATION().constants.plugins.enabled || process.env.PLUGINS || 'bank,kyc,sms,vault';
 const CORS_WHITELIST = [DOMAIN, 'http://localhost:8080', 'http://localhost:3000'];
 
 const PORT = PLUGIN_PORT
 
-const enabledPlugins = PLUGINS.split(',');
+const enabledPlugins = () => PLUGINS().split(',');
 
 const availablePlugins = readdirSync(__dirname, { withFileTypes: true })
 	.filter(dirent => dirent.isDirectory() && dirent.name !== 'helpers' && dirent.name !== 'node_modules')
@@ -20,7 +20,7 @@ const availablePlugins = readdirSync(__dirname, { withFileTypes: true })
 
 app.get('/plugins', (req, res) => {
 	res.json({
-		enabled: enabledPlugins,
+		enabled: enabledPlugins(),
 		available: availablePlugins
 	});
 });
@@ -41,7 +41,9 @@ app.use(cors(corsOptions));
 
 module.exports = app;
 
-enabledPlugins.forEach((plugin) => {
+// Require every plugin for now
+availablePlugins.forEach((plugin) => {
+	console.log(plugin)
 	if (plugin) {
 		require('./' + plugin);
 	}
