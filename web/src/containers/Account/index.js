@@ -142,7 +142,7 @@ class Account extends Component {
 						/>
 					),
 				notifications: verificationPending && !IS_XHT ? '!' : '',
-				content: <Verification />
+				content: <Verification router={this.props.router} />
 			},
 			{
 				title: isMobile ? (
