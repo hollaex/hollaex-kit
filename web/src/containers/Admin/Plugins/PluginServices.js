@@ -5,8 +5,8 @@ import { bindActionCreators } from 'redux';
 import { change } from 'redux-form';
 
 import PluginForm from './pluginForm';
-import { updatePlugins, getConstants, connectVault } from './action';
-import { allPluginsData } from './Utils';
+import { updatePlugins, getConstants, connectVault, requestVaultSupportCoins } from './action';
+import { allPluginsData, getPluginsForm } from './Utils';
 import { setConfig } from '../../../actions/appActions';
 
 class PluginServices extends Component {
@@ -22,7 +22,8 @@ class PluginServices extends Component {
             loading: false,
             serviceLoading: false,
             error: '',
-            constants: {}
+            constants: {},
+            vaultSupportCoins: []
         };
     }
 
@@ -30,6 +31,10 @@ class PluginServices extends Component {
         this.getConstantData();
         if (this.props.params) {
             this.getServices(this.props.params.services);
+            if (this.props.params.services &&
+                this.props.params.services === 'vault') {
+                this.requestVaultSupportCoins();
+            }
         }
     }
 
@@ -38,6 +43,11 @@ class PluginServices extends Component {
             || JSON.stringify(this.state.constants) !== JSON.stringify(prevState.constants))
             && this.props.params.services) {
             this.getServices(this.props.params.services);
+        }
+        if (JSON.stringify(this.props.params) !== JSON.stringify(prevProps.params) &&
+            this.props.params.services &&
+            this.props.params.services === 'vault') {
+            this.requestVaultSupportCoins();
         }
     }
 
@@ -50,6 +60,25 @@ class PluginServices extends Component {
             .catch((error) => {
                 const message = error.data ? error.data.message : error.message;
                 this.setState({ loading: false, error: message });
+            });
+    };
+
+    requestVaultSupportCoins = () => {
+        this.setState({ loading: true, error: '' });
+        requestVaultSupportCoins()
+            .then((res) => {
+                this.setState({
+                    vaultSupportCoins: res.data,
+                    loading: false,
+                    fetched: true
+                });
+            })
+            .catch((error) => {
+                const message = error.data ? error.data.message : error.message;
+                this.setState({
+                    loading: false,
+                    error: message
+                });
             });
     };
 
@@ -123,7 +152,10 @@ class PluginServices extends Component {
     };
 
     handleDeactivate = () => {
-        this.setState({ isOpenConfirm: !this.state.isOpenConfirm });
+        this.setState({
+            isOpenConfirm: !this.state.isOpenConfirm,
+            serviceLoading: false
+        });
     };
 
     handleSwitch = (checked) => {
@@ -214,19 +246,25 @@ class PluginServices extends Component {
         return connectVault(formProps)
             .then((data) => {
                 this.setState({
-                    loading: false,
-                    constants: {
-                        ...this.state.constants,
-                        api_name: formProps.name
-                            ? formProps.name
-                            : this.state.constants.api_name
-                    }
+                    loading: false
                 });
+                this.getConstantData();
             })
             .catch((error) => {
                 const message = error.data ? error.data.message : error.message;
                 this.setState({ loading: false, error: message });
             });
+    };
+
+    connectCoinToVault = (formProps = { connected_coins: [] }, coin) => {
+        let formValues = { ...formProps };
+        if (!formValues.connected_coins.includes(coin)) {
+            formValues.connected_coins = [
+                ...formProps.connected_coins,
+                coin
+            ];
+        }
+        this.connectVault(formValues);
     };
 
     updateConstants = (formProps) => {
@@ -243,6 +281,7 @@ class PluginServices extends Component {
 
     render() {
         const { title, services, connectStatus, initialValues, loading, error, serviceLoading } = this.state;
+        const fields = getPluginsForm(services);
         return (
             <div className="app_container-content">
                 {error && (
@@ -265,11 +304,15 @@ class PluginServices extends Component {
                                 </div>
                             </div>
                             <Divider />
-                            {connectStatus
+                            {connectStatus && fields && Object.keys(fields).length
                                 ? <PluginForm
+                                    coins={this.props.coins}
                                     initialValues={initialValues}
                                     services={services}
+                                    fields={fields}
+                                    supportedCoins={this.state.vaultSupportCoins}
                                     handleSubmitPlugins={this.handleSubmitPlugins}
+                                    connectCoinToVault={this.connectCoinToVault}
                                 />
                                 : null
                             }
@@ -289,7 +332,8 @@ class PluginServices extends Component {
 };
 
 const mapStateToProps = (state) => ({
-    constants: state.app.constants
+    constants: state.app.constants,
+    coins: state.app.coins,
 });
 
 const mapDispatchToProps = (dispatch) => ({

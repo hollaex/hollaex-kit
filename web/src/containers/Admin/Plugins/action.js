@@ -1,4 +1,5 @@
-import { WS_URL } from '../../../config/constants';
+import axios from 'axios';
+import { WS_URL, REQUEST_VAULT_SUPPORTED_COINS } from '../../../config/constants';
 import { requestAuthenticated } from '../../../utils';
 
 export const updatePlugins = (values) => {
@@ -20,3 +21,6 @@ export const connectVault = (values) => {
 	
 	return requestAuthenticated('/plugins/vault/connect', options, null, WS_URL);
 };
+
+export const requestVaultSupportCoins = () =>
+	axios.get(REQUEST_VAULT_SUPPORTED_COINS);
