@@ -5,7 +5,7 @@ import moment from 'moment';
 
 import './index.css';
 
-import { requestDeposits, completeDeposits, dismissDeposit } from './actions';
+import { requestDeposits, completeDeposits, dismissDeposit, requestDepositDownload } from './actions';
 import { renderRowContent, COLUMNS, SELECT_KEYS } from './utils';
 import { Filters } from './Filters';
 
@@ -262,6 +262,10 @@ class Deposits extends Component {
 		this.setState({ currentTablePage: count });
 	};
 
+	requestDepositDownload = () => {
+		return requestDepositDownload({ ...this.state.queryParams, ...this.props.queryParams, format: 'csv' })
+	};
+
 	render() {
 		const {
 			deposits,
@@ -347,13 +351,11 @@ class Deposits extends Component {
 								closeText="Close"
 							/>
 						)}
-						<CSVLink
-							filename={'deposit/withdrawal.csv'}
-							data={deposits}
-							headers={HEADERS}
-						>
-							Download table
-						</CSVLink>
+						<div>
+							<span className="pointer" onClick={() => this.requestDepositDownload()}>
+								Download table
+							</span>
+						</div>
 						<Table
 							columns={columns}
 							dataSource={deposits.map((deposit, index) => {

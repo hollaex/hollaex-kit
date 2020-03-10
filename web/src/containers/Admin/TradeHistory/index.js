@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Row, Col, Table, Spin } from 'antd';
 import { CSVLink } from 'react-csv';
-import { requestTrades } from './actions';
+import { requestTrades, requestTradesDownload } from './actions';
 
 import { SubmissionError } from 'redux-form';
 
@@ -95,6 +95,10 @@ class TradeHistory extends Component {
 		this.setState({ currentTablePage: count });
 	};
 
+	requestTradesDownload = (userId) => {
+		return requestTradesDownload({format: 'csv', userId: userId});
+	}
+
 	render() {
 		const { tradeHistory, currentTablePage, loading } = this.state;
 		if (loading) {
@@ -109,13 +113,11 @@ class TradeHistory extends Component {
 			<Row>
 				<Row gutter={16} style={{ marginTop: 16 }}>
 					<Col>
-						<CSVLink
-							filename={'trade-history.csv'}
-							data={tradeHistory ? tradeHistory : 'NO Data'}
-							headers={SCV_COLUMNS}
-						>
-							Download table
-						</CSVLink>
+						<div>
+							<span className="pointer" onClick={() => this.requestTradesDownload(this.props.userId)}>
+								Download table
+							</span>
+						</div>
 						<Table
 							columns={COLUMNS}
 							rowKey={(data, index) => {

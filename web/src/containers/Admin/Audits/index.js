@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Row, Col, Table, Spin } from 'antd';
 import { CSVLink } from 'react-csv';
-import { requestUserAudits } from './actions';
+import { requestUserAudits, requestUserAuditsDownload } from './actions';
 
 import { SubmissionError } from 'redux-form';
 
@@ -92,6 +92,10 @@ class Audits extends Component {
 			});
 	};
 
+	requestUserAuditsDownload = (userId) => {
+		return requestUserAuditsDownload({format: 'csv', userId: userId})
+	}
+
 	render() {
 		const { audits, loading } = this.state;
 
@@ -106,13 +110,11 @@ class Audits extends Component {
 		return (
 			<Row gutter={16} style={{ marginTop: 16 }}>
 				<Col>
-					<CSVLink
-						filename={'audits-history.csv'}
-						data={audits ? audits : 'No Data'}
-						headers={CSV_AUDIT_COLUMNS}
-					>
-						Download table
-					</CSVLink>
+					<div className="pointer" onClick={() => this.requestUserAuditsDownload(this.props.userId)}>
+						<span>
+							Download table
+						</span>
+					</div>
 					<Table
 						rowKey={(data) => {
 							return data.id;
