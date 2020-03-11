@@ -201,8 +201,8 @@ class AppBar extends Component {
 			this.props.changeTheme(selected);
 			localStorage.setItem('theme', selected);
 		} else {
-			const { settings = {} } = this.props.user;
-			const settingsObj = { ...settings };
+			const { settings = { interface: {} } } = this.props.user;
+			const settingsObj = { interface: { ...settings.interface } };
 			if (selected === 'white') {
 				settingsObj.interface.theme = 'white';
 			} else {
