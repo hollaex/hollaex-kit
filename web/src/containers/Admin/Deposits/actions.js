@@ -33,9 +33,7 @@ export const requestDepositDownload = (query = { type: 'deposit'} ) => {
 	}
   return axios({
     method: 'GET',
-    url: type === 'deposit' 
-    ? `/admin/deposits?${queryValues}`
-    : `/admin/withdrawals?${queryValues}`
+    url: path
   })
   .then(res => {
     const url = window.URL.createObjectURL(new Blob([res.data]));

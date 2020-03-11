@@ -1,5 +1,4 @@
 import querystring from 'query-string';
-import axios from 'axios';
 
 import { requestAuthenticated } from '../../../utils';
 

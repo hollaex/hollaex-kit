@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Row, Col, Table, Spin } from 'antd';
-import { CSVLink } from 'react-csv';
 import { requestUserLogins, requestUserLoginsDownload } from './actions';
 
 import { SubmissionError } from 'redux-form';
@@ -27,12 +26,12 @@ const LOGIN_COLUMNS = [
 		render: formatDate
 	}
 ];
-const SCV_LOGIN_COLUMNS = [
-	{ label: 'IP', dataIndex: 'ip', key: 'ip' },
-	{ label: 'Device', dataIndex: 'device', key: 'device' },
-	{ label: 'Domain', dataIndex: 'domain', key: 'domain' },
-	{ label: 'Time', dataIndex: 'timestamp', key: 'timestamp' }
-];
+// const SCV_LOGIN_COLUMNS = [
+// 	{ label: 'IP', dataIndex: 'ip', key: 'ip' },
+// 	{ label: 'Device', dataIndex: 'device', key: 'device' },
+// 	{ label: 'Domain', dataIndex: 'domain', key: 'domain' },
+// 	{ label: 'Time', dataIndex: 'timestamp', key: 'timestamp' }
+// ];
 
 class Logins extends Component {
 	state = INITIAL_STATE;

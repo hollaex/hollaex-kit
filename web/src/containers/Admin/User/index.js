@@ -90,7 +90,7 @@ class App extends Component {
 			});
 	};
 
-	requestUsersDownload = (params) => {
+	requestUsersDownload = (params = {}) => {
 		return requestUsersDownload({ ...params, format: 'csv' });
 	};
 

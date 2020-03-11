@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Row, Col, Table, Spin } from 'antd';
-import { CSVLink } from 'react-csv';
 import { requestTrades, requestTradesDownload } from './actions';
 
 import { SubmissionError } from 'redux-form';
@@ -40,14 +39,14 @@ const COLUMNS = [
 	}
 ];
 
-const SCV_COLUMNS = [
-	{ label: 'Side', dataIndex: 'side', key: 'side' },
-	{ label: 'Symbol', dataIndex: 'symbol', key: 'symbol' },
-	{ label: 'Size', dataIndex: 'size', key: 'size' },
-	{ label: 'Price', dataIndex: 'price', key: 'price' },
-	{ label: 'Fee', dataIndex: 'fee', key: 'fee' },
-	{ label: 'Time', dataIndex: 'timestamp', key: 'timestamp' }
-];
+// const SCV_COLUMNS = [
+// 	{ label: 'Side', dataIndex: 'side', key: 'side' },
+// 	{ label: 'Symbol', dataIndex: 'symbol', key: 'symbol' },
+// 	{ label: 'Size', dataIndex: 'size', key: 'size' },
+// 	{ label: 'Price', dataIndex: 'price', key: 'price' },
+// 	{ label: 'Fee', dataIndex: 'fee', key: 'fee' },
+// 	{ label: 'Time', dataIndex: 'timestamp', key: 'timestamp' }
+// ];
 
 class TradeHistory extends Component {
 	state = INITIAL_STATE;

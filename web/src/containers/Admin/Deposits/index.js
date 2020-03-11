@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Table, Spin, Button, Input, Select, Alert } from 'antd';
-import { CSVLink } from 'react-csv';
 import moment from 'moment';
 
 import './index.css';
@@ -12,20 +11,20 @@ import { Filters } from './Filters';
 const InputGroup = Input.Group;
 const Option = Select.Option;
 const Search = Input.Search;
-const HEADERS = [
-	{ label: 'Type', dataIndex: 'type', key: 'type' },
-	{ label: 'User ID', dataIndex: 'user_id', key: 'user_id' },
-	{ label: 'Currency', dataIndex: 'currency', key: 'currency' },
-	{ label: 'Amount', dataIndex: 'amount', key: 'amount' },
-	{ label: 'Fee', dataIndex: 'fee', key: 'fee' },
-	{ label: 'Address', dataIndex: 'address', key: 'address' },
-	{
-		label: 'Transaction ID',
-		dataIndex: 'transaction_id',
-		key: 'transaction_id'
-	},
-	{ label: 'Time', dataIndex: 'created_at', key: 'created_at' }
-];
+// const HEADERS = [
+// 	{ label: 'Type', dataIndex: 'type', key: 'type' },
+// 	{ label: 'User ID', dataIndex: 'user_id', key: 'user_id' },
+// 	{ label: 'Currency', dataIndex: 'currency', key: 'currency' },
+// 	{ label: 'Amount', dataIndex: 'amount', key: 'amount' },
+// 	{ label: 'Fee', dataIndex: 'fee', key: 'fee' },
+// 	{ label: 'Address', dataIndex: 'address', key: 'address' },
+// 	{
+// 		label: 'Transaction ID',
+// 		dataIndex: 'transaction_id',
+// 		key: 'transaction_id'
+// 	},
+// 	{ label: 'Time', dataIndex: 'created_at', key: 'created_at' }
+// ];
 
 class Deposits extends Component {
 	state = {
@@ -263,7 +262,8 @@ class Deposits extends Component {
 	};
 
 	requestDepositDownload = () => {
-		return requestDepositDownload({ ...this.state.queryParams, ...this.props.queryParams, format: 'csv' })
+		const { initialData = {}, queryParams = {} } = this.props;
+		return requestDepositDownload({ ...initialData, ...this.state.queryParams, ...queryParams, format: 'csv' })
 	};
 
 	render() {
