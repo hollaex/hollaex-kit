@@ -238,8 +238,6 @@ class Wallet extends Component {
 
 const mapStateToProps = (store) => ({
 	coins: store.app.coins,
-	symbol: store.orderbook.symbol,
-	price: store.orderbook.price,
 	prices: store.orderbook.prices,
 	balance: store.user.balance,
 	addressRequest: store.user.addressRequest,

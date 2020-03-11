@@ -17,8 +17,6 @@ import {
 import {
 	setOrderbooks,
 	setTrades,
-	setOrderbook,
-	addTrades,
 	setPairsData
 } from '../../actions/orderbookAction';
 import {
@@ -27,13 +25,8 @@ import {
 	changePair,
 	setCurrencies,
 	setNotification,
-	closeNotification,
-	openContactForm,
-	openHelpfulResourcesForm,
 	setLanguage,
 	changeTheme,
-	closeAllNotification,
-	setChatUnreadMessages,
 	setOrderLimits,
 	NOTIFICATIONS,
 	setSnackDialog,
@@ -62,10 +55,10 @@ class Container extends Component {
 		}
 	}
 
-	componentWillReceiveProps(nextProps) {
+	componentDidUpdate(prevProps) {
 		if (
-			!nextProps.fetchingAuth &&
-			nextProps.fetchingAuth !== this.props.fetchingAuth
+			!this.props.fetchingAuth &&
+			this.props.fetchingAuth !== prevProps.fetchingAuth
 		) {
 			if (!this.state.publicSocket) {
 				this.initSocketConnections();
@@ -438,26 +431,14 @@ class Container extends Component {
 const mapStateToProps = (store) => ({
 	pair: store.app.pair,
 	coins: store.app.coins,
-	symbol: store.orderbook.symbol,
-	prices: store.orderbook.prices,
 	fetchingAuth: store.auth.fetching,
-	activeNotification: store.app.activeNotification,
-	verification_level: store.user.verification_level,
 	activeLanguage: store.app.language,
 	activeTheme: store.app.theme,
 	orders: store.order.activeOrders,
-	user: store.user,
-	unreadMessages: store.app.chatUnreadMessages,
-	orderbooks: store.orderbook.pairsOrderbooks,
-	pairsTrades: store.orderbook.pairsTrades,
-	settings: store.user.settings,
-	constants: store.app.constants,
-	info: store.app.info
+	settings: store.user.settings
 });
 
 const mapDispatchToProps = (dispatch) => ({
-	addTrades: bindActionCreators(addTrades, dispatch),
-	setOrderbook: bindActionCreators(setOrderbook, dispatch),
 	setMe: bindActionCreators(setMe, dispatch),
 	setBalance: bindActionCreators(setBalance, dispatch),
 	setUserOrders: bindActionCreators(setUserOrders, dispatch),
@@ -466,13 +447,6 @@ const mapDispatchToProps = (dispatch) => ({
 	removeOrder: bindActionCreators(removeOrder, dispatch),
 	addUserTrades: bindActionCreators(addUserTrades, dispatch),
 	updateUser: bindActionCreators(updateUser, dispatch),
-	closeNotification: bindActionCreators(closeNotification, dispatch),
-	closeAllNotification: bindActionCreators(closeAllNotification, dispatch),
-	openContactForm: bindActionCreators(openContactForm, dispatch),
-	openHelpfulResourcesForm: bindActionCreators(
-		openHelpfulResourcesForm,
-		dispatch
-	),
 	setNotification: bindActionCreators(setNotification, dispatch),
 	changeLanguage: bindActionCreators(setLanguage, dispatch),
 	changePair: bindActionCreators(changePair, dispatch),
@@ -482,7 +456,6 @@ const mapDispatchToProps = (dispatch) => ({
 	setTrades: bindActionCreators(setTrades, dispatch),
 	setTickers: bindActionCreators(setTickers, dispatch),
 	changeTheme: bindActionCreators(changeTheme, dispatch),
-	setChatUnreadMessages: bindActionCreators(setChatUnreadMessages, dispatch),
 	setOrderLimits: bindActionCreators(setOrderLimits, dispatch),
 	setSnackDialog: bindActionCreators(setSnackDialog, dispatch),
 	setCurrencies: bindActionCreators(setCurrencies, dispatch),

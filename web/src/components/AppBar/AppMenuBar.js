@@ -24,18 +24,18 @@ class AppMenuBar extends Component {
         }
     }
 
-    componentWillReceiveProps(nextProps) {
-        if (this.props.location && nextProps.location
-            && this.props.location.pathname !== nextProps.location.pathname) {
-            this.setActiveMenu(nextProps.location.pathname);
+    componentDidUpdate(prevProps) {
+        if (prevProps.location && this.props.location
+            && prevProps.location.pathname !== this.props.location.pathname) {
+            this.setActiveMenu(this.props.location.pathname);
         }
-        if (JSON.stringify(this.props.user) !== JSON.stringify(nextProps.user)
-            || JSON.stringify(this.props.coins) !== JSON.stringify(nextProps.coins)) {
-            this.checkVerificationStatus(nextProps.user, nextProps.enabledPlugins);
-            this.checkWalletStatus(nextProps.user, nextProps.coins);
+        if (JSON.stringify(prevProps.user) !== JSON.stringify(this.props.user)
+            || JSON.stringify(prevProps.coins) !== JSON.stringify(this.props.coins)) {
+            this.checkVerificationStatus(this.props.user, this.props.enabledPlugins);
+            this.checkWalletStatus(this.props.user, this.props.coins);
         }
-        if (this.props.activeLanguage !== nextProps.activeLanguage) {
-            this.setActiveMenu(nextProps.location.pathname);
+        if (prevProps.activeLanguage !== this.props.activeLanguage) {
+            this.setActiveMenu(this.props.location.pathname);
         }
     }
 

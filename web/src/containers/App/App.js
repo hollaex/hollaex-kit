@@ -96,39 +96,39 @@ class App extends Component {
 		}
 	}
 
-	componentWillReceiveProps(nextProps) {
+	componentDidUpdate(prevProps) {
 		if (
-			nextProps.activeNotification.timestamp !==
-			this.props.activeNotification.timestamp
+			this.props.activeNotification.timestamp !==
+			prevProps.activeNotification.timestamp
 		) {
-			if (nextProps.activeNotification.type !== '') {
+			if (this.props.activeNotification.type !== '') {
 				this.onOpenDialog();
 			} else {
 				this.onCloseDialog();
 			}
 		} else if (
-			!nextProps.activeNotification.timestamp &&
+			!this.props.activeNotification.timestamp &&
 			this.state.dialogIsOpen
 		) {
 			this.onCloseDialog();
 		}
 		if (
-			!this.props.verification_level &&
-			nextProps.verification_level !== this.props.verification_level &&
-			nextProps.verification_level === 1
+			!prevProps.verification_level &&
+			this.props.verification_level !== prevProps.verification_level &&
+			this.props.verification_level === 1
 		) {
 			// this.goToAccountPage();
 		}
-		if (this.props.activeTheme !== nextProps.activeTheme) {
-			this.updateThemeToBody(nextProps.activeTheme);
+		if (prevProps.activeTheme !== this.props.activeTheme) {
+			this.updateThemeToBody(this.props.activeTheme);
 		}
 		if (
+			prevProps.location &&
 			this.props.location &&
-			nextProps.location &&
-			this.props.location.pathname !== nextProps.location.pathname
+			prevProps.location.pathname !== this.props.location.pathname
 		) {
-			this.checkPath(nextProps.location.pathname);
-			this.handleFitHeight(nextProps.location.pathname);
+			this.checkPath(this.props.location.pathname);
+			this.handleFitHeight(this.props.location.pathname);
 		}
 	}
 

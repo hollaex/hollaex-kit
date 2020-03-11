@@ -59,9 +59,9 @@ class Trade extends Component {
 		this.setSymbol(this.props.routeParams.pair);
 	}
 
-	componentWillReceiveProps(nextProps) {
-		if (nextProps.routeParams.pair !== this.props.routeParams.pair) {
-			this.setSymbol(nextProps.routeParams.pair);
+	componentDidUpdate(prevProps) {
+		if (this.props.routeParams.pair !== prevProps.routeParams.pair) {
+			this.setSymbol(this.props.routeParams.pair);
 		}
 	}
 

@@ -70,28 +70,25 @@ class AppBar extends Component {
 		}
 	}
 
-	componentWillReceiveProps(nextProps) {
+	componentDidUpdate(prevProps) {
 		if (
+			prevProps.location &&
 			this.props.location &&
-			nextProps.location &&
-			this.props.location.pathname !== nextProps.location.pathname
+			prevProps.location.pathname !== this.props.location.pathname
 		) {
-			this.setActiveMenu(nextProps.location.pathname);
+			this.setActiveMenu(this.props.location.pathname);
 		}
-		if (JSON.stringify(this.props.user) !== JSON.stringify(nextProps.user)) {
-			this.checkVerificationStatus(nextProps.user, nextProps.enabledPlugins);
-			this.checkWalletStatus(nextProps.user, nextProps.coins);
+		if (JSON.stringify(prevProps.user) !== JSON.stringify(this.props.user)) {
+			this.checkVerificationStatus(this.props.user, this.props.enabledPlugins);
+			this.checkWalletStatus(this.props.user, this.props.coins);
 		}
 		if (
-			this.props.token !== nextProps.token &&
-			nextProps.token &&
-			nextProps.isHome
+			prevProps.token !== this.props.token &&
+			this.props.token &&
+			this.props.isHome
 		) {
 			this.getUserDetails();
 		}
-	}
-
-	componentDidUpdate(prevProps) {
 		if (JSON.stringify(this.props.info) !== JSON.stringify(prevProps.info)) {
 			if ((this.props.isHome && this.props.token) || !this.props.isHome) {
 				this.checkExchangeExpiry(this.props.info);
@@ -201,8 +198,8 @@ class AppBar extends Component {
 			this.props.changeTheme(selected);
 			localStorage.setItem('theme', selected);
 		} else {
-			const { settings = {} } = this.props.user;
-			const settingsObj = { ...settings };
+			const { settings = { interface: {} } } = this.props.user;
+			const settingsObj = { interface: { ...settings.interface } };
 			if (selected === 'white') {
 				settingsObj.interface.theme = 'white';
 			} else {
