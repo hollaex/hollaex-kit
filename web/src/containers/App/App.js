@@ -423,7 +423,7 @@ class App extends Component {
 			location,
 			info,
 			enabledPlugins,
-			constants
+			constants = { captcha: {} }
 			// user
 		} = this.props;
 		const {
@@ -432,7 +432,11 @@ class App extends Component {
 			chatIsClosed,
 			sidebarFitHeight
 		} = this.state;
-		loadReCaptcha(CAPTCHA_SITEKEY);
+		let siteKey = CAPTCHA_SITEKEY;
+		if (constants.captcha && constants.captcha.site_key) {
+			siteKey = constants.captcha.site_key;
+		}
+		loadReCaptcha(siteKey);
 		const languageClasses = getClasesForLanguage(activeLanguage, 'array');
 		const fontClass = getFontClassForLanguage(activeLanguage);
 

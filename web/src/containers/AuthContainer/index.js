@@ -52,12 +52,16 @@ class AuthContainer extends Component {
 	}
 
 	render() {
-		const { activeLanguage, activeTheme, children, info, constants, ...rest } = this.props;
+		const { activeLanguage, activeTheme, children, info, constants = { captcha: {} }, ...rest } = this.props;
 		const languageClasses = getClasesForLanguage(activeLanguage);
 		const childWithLanguageClasses = React.Children.map(children, (child) =>
 			React.cloneElement(child, { activeLanguage, languageClasses })
 		);
-		loadReCaptcha(CAPTCHA_SITEKEY);
+		let siteKey = CAPTCHA_SITEKEY;
+		if (constants.captcha && constants.captcha.site_key) {
+			siteKey = constants.captcha.site_key;
+		}
+		loadReCaptcha(siteKey);
 		updateThemeToBody(activeTheme);
 		let isWarning = false;
 		if (rest.location && rest.location.pathname) {
