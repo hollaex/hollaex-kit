@@ -422,7 +422,8 @@ class App extends Component {
 			router,
 			location,
 			info,
-			enabledPlugins
+			enabledPlugins,
+			constants
 			// user
 		} = this.props;
 		const {
@@ -625,7 +626,7 @@ class App extends Component {
 						'layout-desktop': isBrowser
 					})}
 				>
-					{!isMobile && <AppFooter theme={activeTheme} />}
+					{!isMobile && <AppFooter theme={activeTheme} constants={constants} />}
 				</div>
 			</div>
 		);

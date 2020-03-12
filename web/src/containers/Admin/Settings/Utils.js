@@ -1,5 +1,4 @@
 import { validateRequired, email, urlCheck } from '../../../components/AdminForm/validations';
-import { COUNTRIES_OPTIONS } from '../../../utils/countries';
 
 export const generateAdminSettings = (key) => {
     if (key === 'security') {
@@ -146,16 +145,6 @@ export const generateAdminSettings = (key) => {
                 options: [
                     { label: 'English', value: 'en' },
                     { label: 'Korean', value: 'ko' }
-                ]
-            },
-            country: {
-                type: 'select',
-                label: 'Default country',
-                placeholder: 'Select default country',
-                // validate: [validateRequired],
-                options: [
-                    { label: 'Global', value: 'global' },
-                    ...COUNTRIES_OPTIONS
                 ]
             }
         };

@@ -258,11 +258,16 @@ export const logoutconfirm = (data = {}) =>
 export const getExchangeInfo = () => {
 	return (dispatch) => {
 		axios.get('/constant').then((res) => {
-			if (res && res.data && res.data.info) {
-				dispatch({
-					type: SET_INFO,
-					payload: { info: res.data.info }
-				});
+			if (res && res.data) {
+				if (res.data.constants) {
+					dispatch(setConfig(res.data.constants));
+				}
+				if (res.data.info) {
+					dispatch({
+						type: SET_INFO,
+						payload: { info: res.data.info }
+					});
+				}
 			}
 		});
 	};

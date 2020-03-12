@@ -52,7 +52,7 @@ class AuthContainer extends Component {
 	}
 
 	render() {
-		const { activeLanguage, activeTheme, children, info, ...rest } = this.props;
+		const { activeLanguage, activeTheme, children, info, constants, ...rest } = this.props;
 		const languageClasses = getClasesForLanguage(activeLanguage);
 		const childWithLanguageClasses = React.Children.map(children, (child) =>
 			React.cloneElement(child, { activeLanguage, languageClasses })
@@ -115,7 +115,7 @@ class AuthContainer extends Component {
 				{!isMobile
 					? (
 						<div className={classnames('footer-wrapper', getThemeClass(activeTheme))}>
-							<AppFooter theme={activeTheme} />
+							<AppFooter theme={activeTheme} constants={constants} />
 						</div>
 					)
 					: null
@@ -128,7 +128,8 @@ class AuthContainer extends Component {
 const mapStateToProps = (store) => ({
 	activeLanguage: store.app.language,
 	activeTheme: store.app.theme,
-	info: store.app.info
+	info: store.app.info,
+	constants: store.app.constants
 });
 
 const mapDispatchToProps = dispatch => ({

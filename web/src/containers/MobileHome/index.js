@@ -10,7 +10,7 @@ import { getThemeClass } from '../../utils/theme';
 
 class Home extends Component {
 	render() {
-		const { activeTheme, activeLanguage } = this.props;
+		const { activeTheme, activeLanguage, constants } = this.props;
 		return (
 			<div className={classnames(
 				'app_container',
@@ -89,7 +89,7 @@ class Home extends Component {
 					</div>
 				</div>
 				<div>
-					<AppFooter theme={activeTheme} />
+					<AppFooter theme={activeTheme} constants={constants} />
 				</div>
 			</div>
 		)
@@ -98,7 +98,8 @@ class Home extends Component {
 
 const mapStateToProps = (state) => ({
 	activeTheme: state.app.theme,
-	activeLanguage: state.app.language
+	activeLanguage: state.app.language,
+	constants: state.app.constants
 });
 
 export default connect(mapStateToProps)(Home);
