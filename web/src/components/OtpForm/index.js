@@ -16,15 +16,16 @@ class Form extends Component {
 		this.setFormValues();
 	}
 
-	componentWillReceiveProps = (nextProps)=> {
-		if (this.props.dirty !== nextProps.dirty
-			|| this.props.submitFailed !== nextProps.submitFailed
-			|| this.props.valid !== nextProps.valid) {
-				if (nextProps.dirty && nextProps.submitFailed && !nextProps.valid) {
+	componentDidUpdate(prevProps) {
+		if (prevProps.dirty !== this.props.dirty
+			|| prevProps.submitFailed !== this.props.submitFailed
+			|| prevProps.valid !== this.props.valid) {
+				if (this.props.dirty && this.props.submitFailed && !this.props.valid) {
 					this.setFormRef(this.otpFormRef);
 				}
 		}
 	}
+
 	setFormValues = () => {
 		const formValues = {
 			otp_code: {

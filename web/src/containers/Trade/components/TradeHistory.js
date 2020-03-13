@@ -82,15 +82,12 @@ class TradeHistory extends Component {
 		}
 	}
 
-	componentWillReceiveProps(nextProps) {
-		if (nextProps.language !== this.props.language) {
-			this.calculateHeaders();
-		}
-	}
-
 	componentDidUpdate(prevProps) {
 		if (JSON.stringify(this.props.data) !== JSON.stringify(prevProps.data)) {
 			this.generateData(this.props.data);
+		}
+		if (this.props.language !== prevProps.language) {
+			this.calculateHeaders();
 		}
 	}
 

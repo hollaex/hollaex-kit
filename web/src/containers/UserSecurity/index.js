@@ -40,26 +40,26 @@ class UserVerification extends Component {
 		}
 	}
 
-	componentWillReceiveProps(nextProps) {
+	componentDidUpdate(prevProps) {
 		if (
-			nextProps.user.otp.requested !== this.props.user.otp.requested ||
-			nextProps.user.otp.requesting !== this.props.user.otp.requesting ||
-			nextProps.user.otp.activated !== this.props.user.otp.activated ||
-			nextProps.user.otp_enabled !== this.props.user.otp_enabled ||
-			nextProps.activeLanguage !== this.props.activeLanguage
+			this.props.user.otp.requested !== prevProps.user.otp.requested ||
+			this.props.user.otp.requesting !== prevProps.user.otp.requesting ||
+			this.props.user.otp.activated !== prevProps.user.otp.activated ||
+			this.props.user.otp_enabled !== prevProps.user.otp_enabled ||
+			this.props.activeLanguage !== prevProps.activeLanguage
 		) {
-			this.calculateSections(nextProps.user);
+			this.calculateSections(this.props.user);
 		}
 
 		if (
-			nextProps.user.otp.requested &&
-			nextProps.user.otp.requested !== this.props.user.otp.requested
+			this.props.user.otp.requested &&
+			this.props.user.otp.requested !== prevProps.user.otp.requested
 		) {
 			this.setState({ dialogIsOpen: true, modalText: '' });
-		} else if (nextProps.user.otp.error !== this.props.user.otp.error) {
+		} else if (this.props.user.otp.error !== prevProps.user.otp.error) {
 			this.setState({
 				dialogIsOpen: true,
-				modalText: nextProps.user.otp.error
+				modalText: this.props.user.otp.error
 			});
 		}
 	}

@@ -9,8 +9,8 @@ const INITIAL_STATE = {
 export class FileField extends Component {
 	state = INITIAL_STATE;
 
-	componentWillReceiveProps(nextProps) {
-		if (!nextProps.input.value && this.props.input.value) {
+	componentDidUpdate(prevProps) {
+		if (!this.props.input.value && prevProps.input.value) {
 			this.clearList();
 		}
 	}

@@ -42,17 +42,17 @@ class Chat extends Component {
 		}
 	}
 
-	componentWillReceiveProps(nextProps) {
+	componentDidUpdate(prevProps) {
 		if (
-			!nextProps.fetchingAuth &&
-			nextProps.fetchingAuth !== this.props.fetchingAuth
+			!this.props.fetchingAuth &&
+			this.props.fetchingAuth !== prevProps.fetchingAuth
 		) {
 			// if (!this.state.chatWs && isLoggedIn()) {
 			if (!this.state.chatWs) {
 				this.initializeChatWs(getToken());
 			}
 		}
-		if (nextProps.username_set) {
+		if (this.props.username_set) {
 			this.state.chatWs.emit('changeUsername');
 		}
 	}

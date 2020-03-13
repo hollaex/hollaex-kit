@@ -42,15 +42,15 @@ class Deposit extends Component {
 		this.setCurrency(this.props.routeParams.currency);
 	}
 
-	componentWillReceiveProps(nextProps) {
-		if (nextProps.routeParams.currency !== this.props.routeParams.currency) {
-			this.setCurrency(nextProps.routeParams.currency);
+	componentDidUpdate(prevProps) {
+		if (this.props.routeParams.currency !== prevProps.routeParams.currency) {
+			this.setCurrency(this.props.routeParams.currency);
 		} else if (!this.state.checked) {
-			if (nextProps.verification_level) {
+			if (this.props.verification_level) {
 				this.validateRoute(
-					nextProps.routeParams.currency,
-					nextProps.crypto_wallet,
-					this.props.coins
+					this.props.routeParams.currency,
+					this.props.crypto_wallet,
+					prevProps.coins
 				);
 			}
 		}

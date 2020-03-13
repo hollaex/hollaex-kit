@@ -27,9 +27,9 @@ class IdentityVerification extends Component {
 		this.generateFormFields(this.props.activeLanguage, this.props.fullName);
 	}
 
-	componentWillReceiveProps(nextProps) {
-		if (nextProps.activeLanguage !== this.props.activeLanguage) {
-			this.generateFormFields(nextProps.activeLanguage, nextProps.fullName);
+	componentDidUpdate(prevProps) {
+		if (this.props.activeLanguage !== prevProps.activeLanguage) {
+			this.generateFormFields(this.props.activeLanguage, this.props.fullName);
 		}
 	}
 

@@ -6,7 +6,7 @@ import classnames from 'classnames';
 
 import { ICONS } from '../../config/constants';
 import SnackDialogContent from './SnackDialogContent';
-import { closeSnackNotification, closeSnackDialog } from '../../actions/appActions';
+import { closeSnackDialog } from '../../actions/appActions';
 
 let timeout = '';
 let closeTimeOut = '';
@@ -39,20 +39,20 @@ class SnackDialog extends Component {
         }
     };
     
-    componentWillReceiveProps(nextProps) {
-        if (this.props.snackProps.isDialog !== nextProps.snackProps.isDialog
-            && nextProps.snackProps.isDialog) {
+    componentDidUpdate(prevProps) {
+        if (prevProps.snackProps.isDialog !== this.props.snackProps.isDialog
+            && this.props.snackProps.isDialog) {
                 this.setState({ closeSnack: false });
                 closeTimeOut = setTimeout(() => {
                     this.setState({ closeSnack: true });
                 }, 1200);
             }
-        if (this.props.snackProps.dialogData.length !== nextProps.snackProps.dialogData.length) {
+        if (prevProps.snackProps.dialogData.length !== this.props.snackProps.dialogData.length) {
             if (closeIconClicked) {
                 this.setState({ updateCloseControl: true });
                 closeIconClicked = false;
             }
-            const currentPopup = nextProps.snackProps.dialogData[nextProps.snackProps.dialogData.length - 1];
+            const currentPopup = this.props.snackProps.dialogData[this.props.snackProps.dialogData.length - 1];
             if (currentPopup) {
                 timeout = setTimeout(() => {
                     this.props.closeSnackDialog(currentPopup.id);
@@ -107,7 +107,6 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-    closeSnackNotification: bindActionCreators(closeSnackNotification, dispatch),
     closeSnackDialog: bindActionCreators(closeSnackDialog, dispatch)
 });
 

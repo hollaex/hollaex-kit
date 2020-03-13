@@ -28,17 +28,17 @@ class Wallet extends Component {
 		}
 	}
 
-	componentWillReceiveProps(nextProps) {
+	componentDidUpdate(prevProps) {
 		if (
-			nextProps.user_id !== this.props.user_id ||
-			nextProps.price !== this.props.price ||
-			nextProps.orders.length !== this.props.orders.length ||
-			nextProps.balance.timestamp !== this.props.balance.timestamp ||
-			JSON.stringify(this.props.prices) !==
-				JSON.stringify(nextProps.prices) ||
-			nextProps.activeLanguage !== this.props.activeLanguage
+			this.props.user_id !== prevProps.user_id ||
+			this.props.price !== prevProps.price ||
+			this.props.orders.length !== prevProps.orders.length ||
+			this.props.balance.timestamp !== prevProps.balance.timestamp ||
+			JSON.stringify(prevProps.prices) !==
+				JSON.stringify(this.props.prices) ||
+			this.props.activeLanguage !== prevProps.activeLanguage
 		) {
-			this.calculateSections(nextProps);
+			this.calculateSections(this.props);
 		}
 	}
 

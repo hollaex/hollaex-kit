@@ -58,12 +58,12 @@ class Transactions extends Component {
 		}
 	}
 
-	componentWillReceiveProps(nextProps) {
+	componentDidUpdate(prevProps) {
 		if (
-			nextProps.queryParams.currency !== this.props.queryParams.currency ||
-			nextProps.queryParams.type !== this.props.queryParams.type
+			this.props.queryParams.currency !== prevProps.queryParams.currency ||
+			this.props.queryParams.type !== prevProps.queryParams.type
 		) {
-			const { initialData, queryParams } = nextProps;
+			const { initialData, queryParams } = this.props;
 			this.requestDeposits(
 				initialData,
 				queryParams,

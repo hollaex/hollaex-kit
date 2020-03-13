@@ -53,31 +53,31 @@ class OrderEntry extends Component {
 		}
 	}
 
-	componentWillReceiveProps(nextProps) {
+	componentDidUpdate(prevProps) {
 		if (
-			nextProps.size !== this.props.size ||
-			nextProps.side !== this.props.side ||
-			nextProps.price !== this.props.price ||
-			nextProps.type !== this.props.type ||
-			nextProps.activeLanguage !== this.props.activeLanguage
+			this.props.size !== prevProps.size ||
+			this.props.side !== prevProps.side ||
+			this.props.price !== prevProps.price ||
+			this.props.type !== prevProps.type ||
+			this.props.activeLanguage !== prevProps.activeLanguage
 		) {
-			this.calculateOrderPrice(nextProps);
+			this.calculateOrderPrice(this.props);
 		}
-		if (nextProps.activeLanguage !== this.props.activeLanguage) {
-			this.generateFormValues(nextProps.pair);
+		if (this.props.activeLanguage !== prevProps.activeLanguage) {
+			this.generateFormValues(this.props.pair);
 		}
-		if (nextProps.marketPrice && !this.state.initialValues.price) {
+		if (this.props.marketPrice && !this.state.initialValues.price) {
 			this.setState({
 				initialValues: {
 					...this.state.initialValues,
-					price: this.props.marketPrice
+					price: prevProps.marketPrice
 				}
 			});
 		}
-		if (JSON.stringify(this.props.prices) !== JSON.stringify(nextProps.prices) ||
-			JSON.stringify(this.props.balance) !== JSON.stringify(nextProps.balance) ||
-			JSON.stringify(this.props.coins) !== JSON.stringify(nextProps.coins)) {
-			this.calculateSections(nextProps);
+		if (JSON.stringify(prevProps.prices) !== JSON.stringify(this.props.prices) ||
+			JSON.stringify(prevProps.balance) !== JSON.stringify(this.props.balance) ||
+			JSON.stringify(prevProps.coins) !== JSON.stringify(this.props.coins)) {
+			this.calculateSections(this.props);
 		}
 	}
 

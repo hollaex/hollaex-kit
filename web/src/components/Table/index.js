@@ -23,21 +23,20 @@ class Table extends Component {
 		}
 	}
 
-	componentWillReceiveProps(nextProps) {
+	componentDidUpdate(prevProps) {
 		if (
-			nextProps.title === this.props.title &&
-			nextProps.data.length !== this.props.data.length
+			this.props.title === prevProps.title &&
+			this.props.data.length !== prevProps.data.length
 		) {
 			this.goToPage(
 				this.state.page,
-				nextProps.data,
-				nextProps.headers,
-				nextProps.count
+				this.props.data,
+				this.props.headers,
+				this.props.count
 			);
-		} else if (JSON.stringify(nextProps.data) !== JSON.stringify(this.props.data)) {
-			this.goToPage(0, nextProps.data, nextProps.headers, nextProps.count);
+		} else if (JSON.stringify(this.props.data) !== JSON.stringify(prevProps.data)) {
+			this.goToPage(0, this.props.data, this.props.headers, this.props.count);
 		}
-
 	}
 
 	// setPageSize = (pageSize = 10) => {

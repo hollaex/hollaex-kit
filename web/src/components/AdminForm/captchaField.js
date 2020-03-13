@@ -13,10 +13,11 @@ class CaptchaField extends Component {
 			this.setState({ active: true });
 		}, CAPTCHA_TIMEOUT);
 	}
-	componentWillReceiveProps(nextProps) {
+
+	componentDidUpdate(prevProps) {
 		if (
-			nextProps.input.value === '' &&
-			nextProps.input.value !== this.props.input.value
+			this.props.input.value === '' &&
+			this.props.input.value !== prevProps.input.value
 		) {
 			this.captcha.execute();
 		}

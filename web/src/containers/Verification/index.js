@@ -16,11 +16,6 @@ import {
 } from '../../components';
 import { ICONS, SUPPORT_HELP_URL } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
-import {
-	requestSmsCode,
-	verifySmsCode,
-	verifyBankData
-} from '../../actions/verificationActions';
 import { logout } from '../../actions/authAction';
 
 import BankVerification from './BankVerification';
@@ -67,15 +62,15 @@ class Verification extends Component {
 		}
 	}
 
-	componentWillReceiveProps(nextProps) {
-		if (nextProps.user.email !== this.props.user.email ||
-			nextProps.user.phone_number !== this.props.user.phone_number ||
-			JSON.stringify(nextProps.user.address) !== JSON.stringify(this.props.user.address) ||
-			JSON.stringify(nextProps.user.id_data) !== JSON.stringify(this.props.user.id_data)) {
-				this.setUserData(nextProps.user);
+	componentDidUpdate(prevProps) {
+		if (this.props.user.email !== prevProps.user.email ||
+			this.props.user.phone_number !== prevProps.user.phone_number ||
+			JSON.stringify(this.props.user.address) !== JSON.stringify(prevProps.user.address) ||
+			JSON.stringify(this.props.user.id_data) !== JSON.stringify(prevProps.user.id_data)) {
+				this.setUserData(this.props.user);
 		}
-		if (nextProps.activeLanguage !== this.props.activeLanguage) {
-			this.updateTabs(this.state.user, nextProps.activeLanguage);
+		if (this.props.activeLanguage !== prevProps.activeLanguage) {
+			this.updateTabs(this.state.user, this.props.activeLanguage);
 		}
 	}
 
@@ -522,17 +517,13 @@ class Verification extends Component {
 
 const mapStateToProps = (state) => ({
 	activeLanguage: state.app.language,
-	token: state.auth.token,
+	// token: state.auth.token,
 	activeTheme: state.app.theme,
-	fetchingAuth: state.auth.fetching,
 	user: state.user,
 	enabledPlugins: state.app.enabledPlugins
 });
 
 const mapDispatchToProps = (dispatch) => ({
-	requestSmsCode: bindActionCreators(requestSmsCode, dispatch),
-	verifySmsCode: bindActionCreators(verifySmsCode, dispatch),
-	verifyBankData: bindActionCreators(verifyBankData, dispatch),
 	setMe: bindActionCreators(setMe, dispatch),
 	logout: bindActionCreators(logout, dispatch)
 });

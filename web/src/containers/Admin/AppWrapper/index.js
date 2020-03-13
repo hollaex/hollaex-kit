@@ -86,20 +86,20 @@ class AppWrapper extends React.Component {
 		});
 	}
 
-	componentWillReceiveProps(nextProps) {
+	componentDidUpdate(prevProps) {
 		// if (
-		// 	!nextProps.fetchingAuth &&
-		// 	nextProps.fetchingAuth !== this.props.fetchingAuth &&
-		// 	!Object.keys(this.props.pairs).length
+		// 	!this.props.fetchingAuth &&
+		// 	this.props.fetchingAuth !== prevProps.fetchingAuth &&
+		// 	!Object.keys(prevProps.pairs).length
 		// ) {
-		if (
-			!nextProps.fetchingAuth &&
-			nextProps.fetchingAuth !== this.props.fetchingAuth
-		) {
-			if (!this.state.publicSocket) {
-				this.initSocketConnections();
+			if (
+				!this.props.fetchingAuth &&
+				this.props.fetchingAuth !== prevProps.fetchingAuth
+			) {
+				if (!this.state.publicSocket) {
+					this.initSocketConnections();
+				}
 			}
-		}
 	}
 
 	componentWillUnmount() {

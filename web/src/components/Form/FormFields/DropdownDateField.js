@@ -60,13 +60,13 @@ class DropdownDateField extends Component {
 		this.setLimits(limits);
 		this.setDisplay(limits, this.props.input.value, this.props.language);
 	}
-
-	componentWillReceiveProps(nextProps) {
-		if (nextProps.language !== this.props.language) {
+	
+	componentDidUpdate(prevProps) {
+		if (this.props.language !== prevProps.language) {
 			this.setDisplay(
 				this.state.limits,
-				nextProps.input.value,
-				nextProps.language
+				this.props.input.value,
+				this.props.language
 			);
 		}
 	}

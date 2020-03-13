@@ -21,12 +21,12 @@ class ApiKeyModal extends Component {
 		secret: ''
 	};
 
-	componentWillReceiveProps(nextProps) {
+	componentDidUpdate(prevProps) {
 		if (
 			!this.state.dialogOtpOpen &&
-			nextProps.tokenName !== this.props.tokenName
+			this.props.tokenName !== prevProps.tokenName
 		) {
-			this.setTokenName(nextProps.tokenName);
+			this.setTokenName(this.props.tokenName);
 		}
 	}
 

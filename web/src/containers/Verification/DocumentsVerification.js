@@ -29,9 +29,9 @@ class DocumentsVerification extends Component {
 		this.generateFormFields(this.props.activeLanguage);
 	}
 
-	componentWillReceiveProps(nextProps) {
-		if (nextProps.activeLanguage !== this.props.activeLanguage) {
-			this.generateFormFields(nextProps.activeLanguage);
+	componentDidUpdate(prevProps) {
+		if (this.props.activeLanguage !== prevProps.activeLanguage) {
+			this.generateFormFields(this.props.activeLanguage);
 		}
 	}
 

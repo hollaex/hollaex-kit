@@ -11,10 +11,8 @@ import AccountAssets from './components/AccountAssets';
 import MobileSummary from './MobileSummary';
 
 import { IconTitle } from '../../components';
-import { logout } from '../../actions/authAction';
 import {
 	openFeesStructureandLimits,
-	openContactForm,
 	logoutconfirm,
 	setNotification,
 	NOTIFICATIONS
@@ -66,35 +64,35 @@ class Summary extends Component {
 		}
 	}
 
-	componentWillReceiveProps(nextProps) {
+	componentDidUpdate(prevProps) {
 		if (
-			nextProps.user.id !== this.props.user.id ||
-			nextProps.price !== this.props.price ||
-			nextProps.orders.length !== this.props.orders.length ||
-			nextProps.balance.timestamp !== this.props.balance.timestamp ||
-			JSON.stringify(this.props.prices) !== JSON.stringify(nextProps.prices) ||
-			JSON.stringify(this.props.coins) !== JSON.stringify(nextProps.coins) ||
-			nextProps.activeLanguage !== this.props.activeLanguage
+			this.props.user.id !== prevProps.user.id ||
+			this.props.price !== prevProps.price ||
+			this.props.orders.length !== prevProps.orders.length ||
+			this.props.balance.timestamp !== prevProps.balance.timestamp ||
+			JSON.stringify(prevProps.prices) !== JSON.stringify(this.props.prices) ||
+			JSON.stringify(prevProps.coins) !== JSON.stringify(this.props.coins) ||
+			this.props.activeLanguage !== prevProps.activeLanguage
 		) {
-			this.calculateSections(nextProps);
+			this.calculateSections(this.props);
 		}
 		if (
-			this.props.user.verification_level !== nextProps.user.verification_level
+			prevProps.user.verification_level !== this.props.user.verification_level
 		) {
-			this.setCurrentTradeAccount(nextProps.user);
+			this.setCurrentTradeAccount(this.props.user);
 		}
 		if (
-			JSON.stringify(this.props.tradeVolumes) !==
-			JSON.stringify(nextProps.tradeVolumes)
+			JSON.stringify(prevProps.tradeVolumes) !==
+			JSON.stringify(this.props.tradeVolumes)
 		) {
 			let lastMonthVolume = getLastMonthVolume(
-				nextProps.tradeVolumes.data,
-				nextProps.prices,
-				nextProps.pairs
+				this.props.tradeVolumes.data,
+				this.props.prices,
+				this.props.pairs
 			);
 			this.setState({ lastMonthVolume });
 		}
-		if (nextProps.user.id !== this.props.user.id && nextProps.user.id) {
+		if (this.props.user.id !== prevProps.user.id && this.props.user.id) {
 			this.props.getUserReferralCount();
 		}
 	}
@@ -295,25 +293,21 @@ const mapStateToProps = (state) => ({
 	balance: state.user.balance,
 	activeTheme: state.app.theme,
 	prices: state.orderbook.prices,
-	symbol: state.orderbook.symbol,
 	price: state.orderbook.price,
 	orders: state.order.activeOrders,
 	activeLanguage: state.app.language,
 	tradeVolumes: state.user.tradeVolumes,
 	isValidBase: state.app.isValidBase,
-	constants: state.app.constants,
 	config_level: state.app.config_level,
 	affiliation: state.user.affiliation
 });
 
 const mapDispatchToProps = (dispatch) => ({
 	logoutconfirm: bindActionCreators(logoutconfirm, dispatch),
-	logout: bindActionCreators(logout, dispatch),
 	openFeesStructureandLimits: bindActionCreators(
 		openFeesStructureandLimits,
 		dispatch
 	),
-	openContactForm: bindActionCreators(openContactForm, dispatch),
 	setNotification: bindActionCreators(setNotification, dispatch),
 	getUserReferralCount: bindActionCreators(getUserReferralCount, dispatch)
 });

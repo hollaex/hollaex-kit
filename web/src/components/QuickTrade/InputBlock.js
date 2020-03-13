@@ -37,9 +37,9 @@ class InputBlock extends Component {
 		}
 	}
 
-	componentWillReceiveProps(nextProps) {
-		if (nextProps.symbol !== this.props.symbol) {
-			this.setState({ symbol: nextProps.symbol });
+	componentDidUpdate(prevProps) {
+		if (this.props.symbol !== prevProps.symbol) {
+			this.setState({ symbol: this.props.symbol });
 		}
 	}
 

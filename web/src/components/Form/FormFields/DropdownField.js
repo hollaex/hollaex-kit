@@ -22,9 +22,9 @@ class DropdownField extends Component {
 		}
 	}
 
-	componentWillReceiveProps(nextProps) {
-		if (nextProps.input.value !== this.props.input.value) {
-			this.setValue(nextProps.input.value);
+	componentDidUpdate(prevProps) {
+		if (this.props.input.value !== prevProps.input.value) {
+			this.setValue(this.props.input.value);
 		}
 	}
 

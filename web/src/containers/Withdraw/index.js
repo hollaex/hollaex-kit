@@ -15,7 +15,7 @@ import {
 import { getCurrencyFromName, roundNumber } from '../../utils/currency';
 import {
 	performWithdraw,
-	requestWithdrawFee
+	// requestWithdrawFee
 } from '../../actions/walletActions';
 import { errorHandler } from '../../components/OtpForm/utils';
 
@@ -59,31 +59,31 @@ class Withdraw extends Component {
 		this.setCurrency(this.props.routeParams.currency);
 	}
 
-	componentWillReceiveProps(nextProps) {
+	componentDidUpdate(prevProps) {
 		if (!this.state.checked) {
-			if (nextProps.verification_level) {
+			if (this.props.verification_level) {
 				this.validateRoute(
-					nextProps.routeParams.currency,
-					nextProps.bank_account,
-					nextProps.crypto_wallet,
-					nextProps.coins
+					this.props.routeParams.currency,
+					this.props.bank_account,
+					this.props.crypto_wallet,
+					this.props.coins
 				);
 			}
 		} else if (
-			nextProps.verification_level >= MIN_VERIFICATION_LEVEL_TO_WITHDRAW &&
-			nextProps.verification_level <= MAX_VERIFICATION_LEVEL_TO_WITHDRAW &&
-			(nextProps.activeLanguage !== this.props.activeLanguage ||
-				nextProps.routeParams.currency !== this.props.routeParams.currency)
+			this.props.verification_level >= MIN_VERIFICATION_LEVEL_TO_WITHDRAW &&
+			this.props.verification_level <= MAX_VERIFICATION_LEVEL_TO_WITHDRAW &&
+			(this.props.activeLanguage !== prevProps.activeLanguage ||
+				this.props.routeParams.currency !== prevProps.routeParams.currency)
 		) {
 			this.generateFormValues(
-				getCurrencyFromName(nextProps.routeParams.currency, nextProps.coins),
-				nextProps.balance,
-				nextProps.coins,
-				nextProps.verification_level
+				getCurrencyFromName(this.props.routeParams.currency, this.props.coins),
+				this.props.balance,
+				this.props.coins,
+				this.props.verification_level
 			);
 		}
-		if (nextProps.routeParams.currency !== this.props.routeParams.currency) {
-			this.setCurrency(nextProps.routeParams.currency);
+		if (this.props.routeParams.currency !== prevProps.routeParams.currency) {
+			this.setCurrency(this.props.routeParams.currency);
 		}
 	}
 
@@ -271,7 +271,6 @@ class Withdraw extends Component {
 const mapStateToProps = (store) => ({
 	prices: store.orderbook.prices,
 	balance: store.user.balance,
-	fee: store.user.fee,
 	verification_level: store.user.verification_level,
 	otp_enabled: store.user.otp_enabled,
 	bank_account: store.user.userData.bank_account,
@@ -280,13 +279,12 @@ const mapStateToProps = (store) => ({
 	// btcFee: store.wallet.btcFee,
 	selectedFee: formValueSelector(FORM_NAME)(store, 'fee'),
 	coins: store.app.coins,
-	pairs: store.app.pairs,
 	activeTheme: store.app.theme
 });
 
 const mapDispatchToProps = (dispatch) => ({
 	openContactForm: bindActionCreators(openContactForm, dispatch),
-	requestWithdrawFee: bindActionCreators(requestWithdrawFee, dispatch),
+	// requestWithdrawFee: bindActionCreators(requestWithdrawFee, dispatch),
 	dispatch
 });
 

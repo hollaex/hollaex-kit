@@ -56,11 +56,42 @@ class QuickTradeContainer extends Component {
 	}
 
 	componentWillReceiveProps(nextProps) {
-		const nextExp = nextProps.quoteData.data.exp;
-		const thisExp = this.props.quoteData.data.exp;
+		// const nextExp = nextProps.quoteData.data.exp;
+		// const thisExp = this.props.quoteData.data.exp;
+		// if (
+		// 	nextProps.quoteData.error &&
+		// 	nextProps.quoteData.error !== this.props.quoteData.error
+		// ) {
+		// 	this.onClearQuoteInterval();
+		// }
+		// if (nextExp !== thisExp) {
+		// 	const interval = setInterval(() => {
+		// 		this.onRequestQuote();
+		// 	}, 60 * 1000);
+		// 	this.onClearQuoteInterval();
+		// 	this.setState({ interval });
+		// }
+		if (nextProps.routeParams.pair !== this.props.routeParams.pair) {
+			this.changePair(nextProps.routeParams.pair);
+		}
+		// if (
+		// 	JSON.stringify(this.props.prices) !==
+		// 		JSON.stringify(nextProps.prices) ||
+		// 	JSON.stringify(this.props.balance) !==
+		// 		JSON.stringify(nextProps.balance) ||
+		// 	JSON.stringify(this.props.coins) !==
+		// 		JSON.stringify(nextProps.coins)
+		// ) {
+		// 	this.calculateSections(nextProps);
+		// }
+	}
+
+	componentDidUpdate(prevProps) {
+		const nextExp = this.props.quoteData.data.exp;
+		const thisExp = prevProps.quoteData.data.exp;
 		if (
-			nextProps.quoteData.error &&
-			nextProps.quoteData.error !== this.props.quoteData.error
+			this.props.quoteData.error &&
+			this.props.quoteData.error !== prevProps.quoteData.error
 		) {
 			this.onClearQuoteInterval();
 		}
@@ -71,18 +102,18 @@ class QuickTradeContainer extends Component {
 			this.onClearQuoteInterval();
 			this.setState({ interval });
 		}
-		if (nextProps.routeParams.pair !== this.props.routeParams.pair) {
-			this.changePair(nextProps.routeParams.pair);
+		if (this.props.routeParams.pair !== prevProps.routeParams.pair) {
+			this.changePair(this.props.routeParams.pair);
 		}
 		if (
-			JSON.stringify(this.props.prices) !==
-				JSON.stringify(nextProps.prices) ||
-			JSON.stringify(this.props.balance) !==
-				JSON.stringify(nextProps.balance) ||
-			JSON.stringify(this.props.coins) !==
-				JSON.stringify(nextProps.coins)
+			JSON.stringify(prevProps.prices) !==
+				JSON.stringify(this.props.prices) ||
+			JSON.stringify(prevProps.balance) !==
+				JSON.stringify(this.props.balance) ||
+			JSON.stringify(prevProps.coins) !==
+				JSON.stringify(this.props.coins)
 		) {
-			this.calculateSections(nextProps);
+			this.calculateSections(this.props);
 		}
 	}
 

@@ -19,7 +19,7 @@ const CustomTabBar = ({ tabs, activeTab, setActiveTab }) => {
                     tabProps.onClick = () => setActiveTab(index);
                 }
 
-                return <div {...tabProps}>{tab.title}</div>;
+                return tab && <div {...tabProps}>{tab.title}</div>;
             })}
         </div>
     );

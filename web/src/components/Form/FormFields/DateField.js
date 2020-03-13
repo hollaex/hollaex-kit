@@ -32,12 +32,12 @@ class DateField extends Component {
 		}
 	}
 
-	componentWillReceiveProps(nextProps) {
-		if (nextProps.input.value !== this.props.input.value) {
-			this.onChangeInput(nextProps.input.value);
+	componentDidUpdate(prevProps) {
+		if (this.props.input.value !== prevProps.input.value) {
+			this.onChangeInput(this.props.input.value);
 		}
-		if (nextProps.language !== this.props.language) {
-			this.setDisplay(nextProps.input.value, nextProps.language);
+		if (this.props.language !== prevProps.language) {
+			this.setDisplay(this.props.input.value, this.props.language);
 		}
 	}
 

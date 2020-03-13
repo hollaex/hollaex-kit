@@ -46,19 +46,19 @@ class TransactionsHistory extends Component {
 		}
 	}
 
-	componentWillReceiveProps(nextProps) {
-		// if (nextProps.symbol !== this.props.symbol) {
-		// this.requestData(nextProps.symbol);
-		// this.generateHeaders(nextProps.symbol, nextProps.activeLanguage);
-		// } else if (nextProps.activeLanguage !== this.props.activeLanguage) {
-		if (nextProps.activeLanguage !== this.props.activeLanguage) {
-			this.generateHeaders(nextProps.symbol, nextProps.coins, nextProps.discount);
-		}
-		if ((this.props.cancelData.dismissed !== nextProps.cancelData.dismissed) && nextProps.cancelData.dismissed === true) {
-			this.onCloseDialog()
-			this.requestData(nextProps.symbol);
-
-		}
+	componentDidUpdate(prevProps) {
+		// if (this.props.symbol !== prevProps.symbol) {
+		// this.requestData(this.props.symbol);
+		// this.generateHeaders(this.props.symbol, this.props.activeLanguage);
+		// } else if (this.props.activeLanguage !== prevProps.activeLanguage) {
+			if (this.props.activeLanguage !== prevProps.activeLanguage) {
+				this.generateHeaders(this.props.symbol, this.props.coins, this.props.discount);
+			}
+			if ((prevProps.cancelData.dismissed !== this.props.cancelData.dismissed) && this.props.cancelData.dismissed === true) {
+				this.onCloseDialog()
+				this.requestData(this.props.symbol);
+	
+			}
 	}
 
 	onCloseDialog = () => {

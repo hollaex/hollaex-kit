@@ -17,18 +17,15 @@ class ElapsedTimer extends Component {
         }
     }
 
-    componentWillReceiveProps(nextProps) {
-        if (this.props.isLoading !== nextProps.isLoading) {
-            if (nextProps.isLoading) {
+    componentDidUpdate(prevProps) {
+        if (prevProps.isLoading !== this.props.isLoading) {
+            if (this.props.isLoading) {
                 this.startTimer();
             } else {
                 this.endTimer();
             }
         }
-    }
-
-    componentWillUpdate(nextProps, nextState) {
-        if (nextState.seconds === 0) {
+        if (this.state.seconds === 0) {
             this.props.timeoutCallback();
             this.endTimer();
         }

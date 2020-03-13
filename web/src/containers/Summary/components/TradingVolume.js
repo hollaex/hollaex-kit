@@ -29,14 +29,14 @@ class TradingVolume extends Component {
 		this.props.getTradeVolume();
 	}
 
-	componentWillReceiveProps(nextProps) {
+	componentDidUpdate(prevProps) {
 		if (
-			JSON.stringify(this.props.tradeVolumes) !==
-			JSON.stringify(nextProps.tradeVolumes)
+			JSON.stringify(prevProps.tradeVolumes) !==
+			JSON.stringify(this.props.tradeVolumes)
 		) {
-			this.constructData(nextProps.tradeVolumes.data, nextProps.coins);
+			this.constructData(this.props.tradeVolumes.data, this.props.coins);
 		}
-	}
+	}	
 
 	constructData = (tradeValues, coins) => {
 		const { pairs, prices, activeTheme } = this.props;

@@ -48,17 +48,17 @@ class Account extends Component {
 		}
 	}
 
-	componentWillReceiveProps(nextProps) {
+	componentDidUpdate(prevProps) {
 		if (
-			nextProps.id !== this.props.id ||
-			nextProps.verification_level !== this.props.verification_level ||
-			nextProps.otp_enabled !== this.props.otp_enabled ||
-			nextProps.activeLanguage !== this.props.activeLanguage
+			this.props.id !== prevProps.id ||
+			this.props.verification_level !== prevProps.verification_level ||
+			this.props.otp_enabled !== prevProps.otp_enabled ||
+			this.props.activeLanguage !== prevProps.activeLanguage
 		) {
-			this.updateTabs(nextProps, false);
-		} else if (nextProps.route.path !== this.props.route.path) {
-			this.updateTabs(nextProps, true);
-		} 
+			this.updateTabs(this.props, false);
+		} else if (this.props.route.path !== prevProps.route.path) {
+			this.updateTabs(this.props, true);
+		}
 	}
 
 	hasUserVerificationNotifications = (

@@ -46,12 +46,12 @@ class DonutChart extends Component {
 		});
 	}
 
-	componentWillReceiveProps(nextProps) {
+	componentDidUpdate(prevProps) {
 		if (
-			JSON.stringify(this.props.chartData) !==
-			JSON.stringify(nextProps.chartData)
+			JSON.stringify(prevProps.chartData) !==
+			JSON.stringify(this.props.chartData)
 		) {
-			this.setState({ isData: this.checkData(nextProps.chartData) });
+			this.setState({ isData: this.checkData(this.props.chartData) });
 		}
 	}
 

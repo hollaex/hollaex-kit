@@ -30,10 +30,10 @@ class BarChart extends Component {
         });
     }
 
-    componentWillReceiveProps(nextProps) {
-        if (JSON.stringify(this.props.chartData) !== JSON.stringify(nextProps.chartData)
-            && !nextProps.loading) {
-            this.generateChart(nextProps.chartData, nextProps.limitContent, nextProps.peakVolume);
+    componentDidUpdate(prevProps) {
+        if (JSON.stringify(prevProps.chartData) !== JSON.stringify(this.props.chartData)
+            && !this.props.loading) {
+            this.generateChart(this.props.chartData, this.props.limitContent, this.props.peakVolume);
         }
     }
 

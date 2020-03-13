@@ -47,10 +47,11 @@ class Login extends Component {
 			this.setState({ logoutDialogIsOpen: true });
 		}
 	}
-	componentWillReceiveProps(nextProps) {
+
+	componentDidUpdate(prevProps) {
 		if (
-			nextProps.logoutMessage &&
-			nextProps.logoutMessage !== this.props.logoutMessage
+			this.props.logoutMessage &&
+			this.props.logoutMessage !== prevProps.logoutMessage
 		) {
 			this.setState({ logoutDialogIsOpen: true });
 		}

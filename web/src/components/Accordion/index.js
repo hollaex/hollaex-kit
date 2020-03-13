@@ -18,14 +18,14 @@ class Accordion extends Component {
 		}
 	}
 
-	componentWillReceiveProps(nextProps) {
-		if (!this.state.ready && nextProps.sections.length > 0) {
-			this.initialize(nextProps.sections);
+	componentDidUpdate(prevProps) {
+		if (!this.state.ready && this.props.sections.length > 0) {
+			this.initialize(this.props.sections);
 		}
 		if(window.location.pathname ==='/account/settings/username') {
 			this.openSection(0, true)
 		}
-	}
+	}	
 
 	initialize = (sections) => {
 		const openSections = sections

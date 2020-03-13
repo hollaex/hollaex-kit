@@ -23,9 +23,9 @@ class ChartComponent extends Component {
 		}
 	}
 
-	componentWillReceiveProps(nextProps) {
-		if (nextProps.pair !== this.props.pair) {
-			this.connectToWs(nextProps.pair);
+	componentDidUpdate(prevProps) {
+		if (this.props.pair !== prevProps.pair) {
+			this.connectToWs(this.props.pair);
 		}
 	}
 

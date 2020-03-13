@@ -31,8 +31,8 @@ class MobileVerification extends Component {
 		this.generateFormFields();
 	}
 
-	componentWillReceiveProps(nextProps) {
-		if (nextProps.activeLanguage !== this.props.activeLanguage) {
+	componentDidUpdate(prevProps) {
+		if (this.props.activeLanguage !== prevProps.activeLanguage) {
 			this.generateFormFields();
 		}
 	}

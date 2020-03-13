@@ -63,9 +63,9 @@ class Deposits extends Component {
 		}
 	}
 
-	componentWillReceiveProps(nextProps) {
-		if (nextProps.queryParams.currency !== this.props.queryParams.currency) {
-			const { initialData, queryParams } = nextProps;
+	componentDidUpdate(prevProps) {
+		if (this.props.queryParams.currency !== prevProps.queryParams.currency) {
+			const { initialData, queryParams } = this.props;
 			this.requestDeposits(
 				initialData,
 				queryParams,

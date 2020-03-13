@@ -54,26 +54,26 @@ class Form extends Component {
 		otp_code: ''
 	};
 
-	componentWillReceiveProps(nextProps) {
-		if (nextProps.currency !== this.props.currency) {
-			nextProps.dispatch(reset(FORM_NAME));
+	componentDidUpdate(prevProps) {
+		if (this.props.currency !== prevProps.currency) {
+			this.props.dispatch(reset(FORM_NAME));
 		}
 		if (
-			!nextProps.submitting &&
-			nextProps.submitting !== this.props.submitting
+			!this.props.submitting &&
+			this.props.submitting !== prevProps.submitting
 		) {
 			this.onCloseDialog();
 		}
 
 		if (
-			nextProps.currency === BASE_CURRENCY &&
-			(nextProps.data.amount !== this.props.data.amount ||
-				(nextProps.currency === BASE_CURRENCY &&
-					nextProps.amount !== this.props.currency))
+			this.props.currency === BASE_CURRENCY &&
+			(this.props.data.amount !== prevProps.data.amount ||
+				(this.props.currency === BASE_CURRENCY &&
+					this.props.amount !== prevProps.currency))
 		) {
-			const fee = calculateBaseFee(nextProps.data.amount);
-			if (fee !== nextProps.data.fee) {
-				// nextProps.change('fee', fee);
+			const fee = calculateBaseFee(this.props.data.amount);
+			if (fee !== this.props.data.fee) {
+				// this.props.change('fee', fee);
 			}
 		}
 	}

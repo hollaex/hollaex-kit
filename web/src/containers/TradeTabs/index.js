@@ -37,14 +37,14 @@ class AddTradeTab extends Component {
 		);
 	}
 
-	componentWillReceiveProps(nextProps) {
+	componentDidUpdate(prevProps) {
 		if (
-			JSON.stringify(this.props.pairs) !== JSON.stringify(nextProps.pairs) ||
-			JSON.stringify(this.props.tickers) !== JSON.stringify(nextProps.tickers)
+			JSON.stringify(prevProps.pairs) !== JSON.stringify(this.props.pairs) ||
+			JSON.stringify(prevProps.tickers) !== JSON.stringify(this.props.tickers)
 		) {
 			this.goToPage(
-				nextProps.pairs,
-				nextProps.tickers,
+				this.props.pairs,
+				this.props.tickers,
 				this.state.page,
 				this.state.searchValue
 			);

@@ -43,13 +43,14 @@ class QuickTrade extends Component {
 		}
 	}
 
-	componentWillReceiveProps(nextProps) {
+	componentDidUpdate(prevProps) {
 		if (
-			nextProps.symbol !== this.props.symbol
+			this.props.symbol !== prevProps.symbol
 		) {
-			this.onChangeSymbol(nextProps.symbol);
+			this.onChangeSymbol(this.props.symbol);
 		}
 	}
+	
 	onChangeSymbol = (symbol) => {
 		this.setState({ symbol });
 		this.requestValue({

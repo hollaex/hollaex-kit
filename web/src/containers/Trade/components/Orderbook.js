@@ -53,9 +53,9 @@ class Orderbook extends Component {
 		this.scrollTop();
 	}
 
-	componentWillReceiveProps(nextProps) {
+	// componentWillReceiveProps(nextProps) {
 		// this.scrollTop();
-	}
+	// }
 
 	setRefs = (key) => (el) => {
 		this[key] = el;

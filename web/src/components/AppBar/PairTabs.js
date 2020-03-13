@@ -81,21 +81,29 @@ class PairTabs extends Component {
         this.initTabs(pairs, active);
     }
 
-    componentWillReceiveProps(nextProps) {
-        const { activePath, pairs, router, location } = nextProps;
+    componentDidUpdate(prevProps, prevState) {
+        const { activePath, pairs, router, location, tabCount, activeLanguage } = this.props;
         let active = this.state.activePairTab;
         let selectedToOpen = '';
-        if (this.props.activePath !== activePath) {
+        if (tabCount !== prevProps.tabCount) {
+            this.initTabs(pairs, this.state.activePairTab);
+        }
+        if (JSON.stringify(prevState.selectedTabs) !== JSON.stringify(this.state.selectedTabs)
+            && !Object.keys(prevState.selectedTabs).length) {
+            this.props.calculateTabs();
+        }
+
+        if (prevProps.activePath !== activePath) {
             if (activePath !== 'trade') {
                 active = "";
                 this.setState({ activePairTab: '', selectedToOpen: '' });
             }
         }
-        if (JSON.stringify(this.props.pairs) !== JSON.stringify(pairs)) {
+        if (JSON.stringify(prevProps.pairs) !== JSON.stringify(pairs)) {
             this.initTabs(pairs, active);
         }
-        if (this.props.location && location
-            && this.props.location.pathname !== location.pathname) {
+        if (prevProps.location && location
+            && prevProps.location.pathname !== location.pathname) {
             if (router && router.params.pair && location.pathname.indexOf('/trade/') === 0) {
                 active = router.params.pair;
                 if (!this.state.activeTabs[active]) {
@@ -114,18 +122,8 @@ class PairTabs extends Component {
             }
             this.initTabs(pairs, active);
         }
-        if (this.props.activeLanguage !== nextProps.activeLanguage) {
+        if (prevProps.activeLanguage !== activeLanguage) {
             this.initTabs(pairs, active);
-        }
-    }
-
-    componentDidUpdate(prevProps, prevState) {
-        if (this.props.tabCount !== prevProps.tabCount) {
-            this.initTabs(this.props.pairs, this.state.activePairTab);
-        }
-        if (JSON.stringify(prevState.selectedTabs) !== JSON.stringify(this.state.selectedTabs)
-            && !Object.keys(prevState.selectedTabs).length) {
-            this.props.calculateTabs();
         }
     }
 
@@ -368,7 +366,6 @@ class PairTabs extends Component {
             obj[pair.pair_base] = '';
         });
         const symbols = Object.keys(obj).map((key) => key);
-        
         return (
             <div className="d-flex h-100">
                 <TabList

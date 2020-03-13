@@ -36,35 +36,35 @@ class UserProfile extends Component {
 		);
 	}
 
-	componentWillReceiveProps(nextProps) {
-		if (nextProps.activeLanguage !== this.props.activeLanguage) {
+	componentDidUpdate(prevProps) {
+		if (this.props.activeLanguage !== prevProps.activeLanguage) {
 			this.calculateFormValues(
-				nextProps.activeLanguage,
-				nextProps.verification_level,
-				nextProps.email,
-				nextProps.userData,
-				nextProps.limits,
-				nextProps.fees
+				this.props.activeLanguage,
+				this.props.verification_level,
+				this.props.email,
+				this.props.userData,
+				this.props.limits,
+				this.props.fees
 			);
 			this.calculateSections(
-				nextProps.verification_level,
-				nextProps.email,
-				nextProps.userData,
-				nextProps.limits,
-				nextProps.fees
+				this.props.verification_level,
+				this.props.email,
+				this.props.userData,
+				this.props.limits,
+				this.props.fees
 			);
 		} else if (
-			nextProps.verification_level !== this.props.verification_level ||
-			nextProps.userData.timestamp !== this.props.userData.timestamp ||
-			nextProps.limits.fetched !== this.props.limits.fetched ||
-			nextProps.fees.fetched !== this.props.fees.fetched
+			this.props.verification_level !== prevProps.verification_level ||
+			this.props.userData.timestamp !== prevProps.userData.timestamp ||
+			this.props.limits.fetched !== prevProps.limits.fetched ||
+			this.props.fees.fetched !== prevProps.fees.fetched
 		) {
 			this.calculateSections(
-				nextProps.verification_level,
-				nextProps.email,
-				nextProps.userData,
-				nextProps.limits,
-				nextProps.fees
+				this.props.verification_level,
+				this.props.email,
+				this.props.userData,
+				this.props.limits,
+				this.props.fees
 			);
 		}
 	}

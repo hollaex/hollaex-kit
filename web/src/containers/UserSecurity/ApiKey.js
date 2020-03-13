@@ -27,10 +27,10 @@ class ApiKey extends Component {
 		this.requestTokens();
 	}
 
-	componentWillReceiveProps(nextProps) {
+	componentDidUpdate(prevProps) {
 		if (
-			!nextProps.submitting &&
-			nextProps.submitting !== this.props.submitting
+			!this.props.submitting &&
+			this.props.submitting !== prevProps.submitting
 		) {
 			this.onCloseDialog();
 		}

@@ -220,17 +220,17 @@ class TVChartContainer extends React.PureComponent {
 		this.updateChart(this.props);
 	}
 
-	componentWillReceiveProps(nextProps) {
-		if (this.props.activeTheme !== nextProps.activeTheme) {
-			this.updateChart(nextProps);
+	componentDidUpdate(prevProps) {
+		if (prevProps.activeTheme !== this.props.activeTheme) {
+			this.updateChart(this.props);
 		} else if (
-			nextProps.tradeHistory &&
-			nextProps.tradeHistory.length &&
 			this.props.tradeHistory &&
-			this.props.tradeHistory.length !== nextProps.tradeHistory.length &&
+			this.props.tradeHistory.length &&
+			prevProps.tradeHistory &&
+			prevProps.tradeHistory.length !== this.props.tradeHistory.length &&
 			this.state.sub
 		) {
-			this.updateBar(nextProps.tradeHistory[0]);
+			this.updateBar(this.props.tradeHistory[0]);
 		}
 	}
 

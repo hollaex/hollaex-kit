@@ -48,19 +48,19 @@ class Wallet extends Component {
 		);
 	}
 
-	componentWillReceiveProps(nextProps) {
+	componentDidUpdate(prevProps) {
 		this.generateSections(
-			nextProps.changeSymbol,
-			nextProps.balance,
-			nextProps.prices,
+			this.props.changeSymbol,
+			this.props.balance,
+			this.props.prices,
 			this.state.isOpen,
-			nextProps.wallets,
-			nextProps.bankaccount,
-			nextProps.coins
+			this.props.wallets,
+			this.props.bankaccount,
+			this.props.coins
 		);
 		if (
-			nextProps.addressRequest.success === true &&
-			nextProps.addressRequest.success !== this.props.addressRequest.success
+			this.props.addressRequest.success === true &&
+			this.props.addressRequest.success !== prevProps.addressRequest.success
 		) {
 			this.onCloseDialog();
 		}

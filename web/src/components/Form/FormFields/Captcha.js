@@ -9,10 +9,10 @@ class CaptchaField extends Component {
 		ready: false
 	};
 
-	componentWillReceiveProps(nextProps) {
+	componentDidUpdate(prevProps) {
 		if (
-			nextProps.input.value === '' &&
-			nextProps.input.value !== this.props.input.value
+			this.props.input.value === '' &&
+			this.props.input.value !== prevProps.input.value
 		) {
 			this.captcha.execute();
 		}

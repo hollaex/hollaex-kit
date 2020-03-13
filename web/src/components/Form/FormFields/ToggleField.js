@@ -16,11 +16,11 @@ class ToggleField extends Component {
             this.setState({ selected: input.value });
         }
     }
-
-    componentWillReceiveProps(nextProps) {
-        if (this.props.input.value !== nextProps.input.value
-            && (nextProps.input.value || nextProps.input.value === false)) {
-            this.setState({ selected: nextProps.input.value });
+    
+    componentDidUpdate(prevProps) {
+        if (prevProps.input.value !== this.props.input.value
+            && (this.props.input.value || this.props.input.value === false)) {
+            this.setState({ selected: this.props.input.value });
         }
     }
 

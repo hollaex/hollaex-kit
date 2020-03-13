@@ -69,26 +69,26 @@ class UserSettings extends Component {
 		}
 	}
 
-	componentWillReceiveProps(nextProps) {
-		if (nextProps.activeLanguage !== this.props.activeLanguage) {
+	componentDidUpdate(prevProps) {
+		if (this.props.activeLanguage !== prevProps.activeLanguage) {
 			this.updateTabs(this.props, this.state.activeTab);
 		}
 		if (
-			JSON.stringify(this.props.settings) !==
-			JSON.stringify(nextProps.settings)
+			JSON.stringify(prevProps.settings) !==
+			JSON.stringify(this.props.settings)
 		) {
-			this.updateTabs(nextProps, this.state.activeTab);
+			this.updateTabs(this.props, this.state.activeTab);
 		}
 		if (
-			JSON.stringify(this.props.location.query) !==
-				JSON.stringify(nextProps.location.query) &&
-			nextProps.location.query &&
-			nextProps.location.query.tab
+			JSON.stringify(prevProps.location.query) !==
+				JSON.stringify(this.props.location.query) &&
+			this.props.location.query &&
+			this.props.location.query.tab
 		) {
 			this.setState(
-				{ activeTab: parseInt(nextProps.location.query.tab, 10) },
+				{ activeTab: parseInt(this.props.location.query.tab, 10) },
 				() => {
-					this.updateTabs(nextProps, this.state.activeTab);
+					this.updateTabs(this.props, this.state.activeTab);
 				}
 			);
 		}
