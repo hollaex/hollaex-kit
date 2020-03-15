@@ -20,15 +20,15 @@ export const allPluginsData = {
     },
     'kyc': {
         key: 's3',
-        title: 'Verification System',
+        title: 'Manual KYC',
         sub_title: 'Add a KYC verification module',
         description: 'Upload documents, input identity info, send SMS verification (requires SMS plugin).',
         icon: ICONS.PLUGINS_VERIFICATION
     },
     'freshdesk': {
         key: 'freshdesk',
-        title: 'Customer Support',
-        sub_title: 'Dedicated customer support system.',
+        title: 'Freshdesk',
+        sub_title: 'Dedicated customer support system using freshdesk. By activating this you users will be able to login to your freshdesk with their exchange credentials and create tickets.',
         description: <div>
             <div>Requires an account with Freshdesk.</div>
             <div>
@@ -42,7 +42,7 @@ export const allPluginsData = {
     'zendesk': {
         key: 'zendesk',
         title: 'Zendesk',
-        sub_title: 'Dedicated customer support system.',
+        sub_title: 'Dedicated customer support system using popular Zendesk. By using this your users will be able to login to your Zendesk customer support page and login with their exchange account to view and create tickets.',
         description: <div>
             <div>Requires an account with Zendesk.</div>
             <div>
@@ -57,7 +57,7 @@ export const allPluginsData = {
         key: 'chat',
         title: 'Chat Troll Box',
         sub_title: 'Add a troll box (chat system) for your traders to troll the crypto markets all day long.',
-        description: 'Chat can be popped out. Admin can delete message.',
+        description: 'Admin can moderate all the chat messages and users.',
         icon: ICONS.PLUGINS_CHAT
     },
     'sms': {
@@ -70,7 +70,7 @@ export const allPluginsData = {
     'bank': {
         key: 'bank',
         title: 'Bank',
-        sub_title: 'Add a bank service module to allow for fiat currency deposit and withdrawal into your exchange',
+        sub_title: 'Add a bank service module to allow for fiat currency deposit and withdrawal into your exchange. This module is manual and requires your policy flow.',
         icon: ICONS.PLUGINS_BANK
     }
 };
