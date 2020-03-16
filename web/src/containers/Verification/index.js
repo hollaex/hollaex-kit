@@ -16,11 +16,6 @@ import {
 } from '../../components';
 import { ICONS, SUPPORT_HELP_URL } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
-import {
-	requestSmsCode,
-	verifySmsCode,
-	verifyBankData
-} from '../../actions/verificationActions';
 import { logout } from '../../actions/authAction';
 
 import BankVerification from './BankVerification';
@@ -522,17 +517,13 @@ class Verification extends Component {
 
 const mapStateToProps = (state) => ({
 	activeLanguage: state.app.language,
-	token: state.auth.token,
+	// token: state.auth.token,
 	activeTheme: state.app.theme,
-	fetchingAuth: state.auth.fetching,
 	user: state.user,
 	enabledPlugins: state.app.enabledPlugins
 });
 
 const mapDispatchToProps = (dispatch) => ({
-	requestSmsCode: bindActionCreators(requestSmsCode, dispatch),
-	verifySmsCode: bindActionCreators(verifySmsCode, dispatch),
-	verifyBankData: bindActionCreators(verifyBankData, dispatch),
 	setMe: bindActionCreators(setMe, dispatch),
 	logout: bindActionCreators(logout, dispatch)
 });

@@ -198,7 +198,7 @@ const mapStateToProps = (store) => ({
 	pair: store.app.pair,
 	token: store.auth.token,
 	verifyToken: store.auth.verifyToken,
-	estimatedValue: 100,
+	// estimatedValue: 100,
 	// symbol: store.orderbook.symbol,
 	// quickTradeData: store.orderbook.quickTrade,
 	activeLanguage: store.app.language,

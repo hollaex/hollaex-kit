@@ -1,8 +1,5 @@
 import React, { Component } from 'react';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
 import { Link } from 'react-router';
-import { changePair } from '../../actions/appActions';
 
 class MarketList extends Component {
 	render() {
@@ -26,8 +23,4 @@ class MarketList extends Component {
 	}
 }
 
-const mapDispatchToProps = (dispatch) => ({
-	changePair: bindActionCreators(changePair, dispatch)
-});
-
-export default connect(mapDispatchToProps)(MarketList);
+export default MarketList;

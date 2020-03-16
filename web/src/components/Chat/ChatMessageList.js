@@ -192,7 +192,7 @@ class ChatMessageList extends Component {
 }
 
 const mapStateToProps = (store) => ({
-	activeTheme: store.app.theme,
+	// activeTheme: store.app.theme,
 	is_hap: store.user.is_hap
 });
 
