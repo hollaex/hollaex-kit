@@ -38,3 +38,8 @@ socket2.on('orderbook', (data) => {
 socket2.on('userInfo', (data) => {
 	console.log(data);
 });
+
+
+setTimeout(() => {
+	socket2.disconnect();
+}, 5000);
