@@ -357,7 +357,7 @@ describe('Private functions', () => {
 		describe('#createOrder(symbolPair, side, size, type, price)', () => {
 			it('Create an order and return output', (done) => {
 				client
-					.createOrder('btc-eur', 'buy', 0.0001, 'limit', 1000)
+					.createOrder('btc-usdt', 'buy', 0.0001, 'limit', 1000)
 					.then((result) => {
 						const data = JSON.parse(result);
 						btcOrder = data;
@@ -369,7 +369,7 @@ describe('Private functions', () => {
 			});
 			it('Get an error message when price is too low', (done) => {
 				client
-					.createOrder('btc-eur', 'buy', 0.0001, 'limit', -9999)
+					.createOrder('btc-usdt', 'buy', 0.0001, 'limit', -9999)
 					.catch((err) => {
 						expect(err.response.body).to.include(
 							'Order price is out of the limits'
@@ -379,7 +379,7 @@ describe('Private functions', () => {
 			});
 			it('Get an error message when amount is too low', (done) => {
 				client
-					.createOrder('btc-eur', 'buy', -9999, 'limit', 1000)
+					.createOrder('btc-usdt', 'buy', -9999, 'limit', 1000)
 					.catch((err) => {
 						expect(err.response.body).to.include(
 							'Order size is out of the limits'
@@ -409,7 +409,7 @@ describe('Private functions', () => {
 
 		describe('#getAllOrder(symbolPair)', () => {
 			it('Get all orders', (done) => {
-				client.getAllOrder('btc-eur').then((result) => {
+				client.getAllOrder('btc-usdt').then((result) => {
 					const data = JSON.parse(result);
 					expect(data).to.be.an('array');
 					expect(data).not.be.empty;
