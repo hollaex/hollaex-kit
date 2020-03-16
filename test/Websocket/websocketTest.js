@@ -32,7 +32,7 @@ describe('Socket testing', () => {
 				this.firstAsk = this.orderbook.asks[0];
 				this.firstBid = this.orderbook.bids[0];
 				this.usdt = this.balance['usdt_available'];
-				this.hex = this.balance['hex_available'];
+				this.xht = this.balance['xht_available'];
 
 				await sleep(1000);
 			});
@@ -46,7 +46,7 @@ describe('Socket testing', () => {
 		});
 
 		it('Market maker places a valid order', async () => {
-			if (0.0001 <= this.hex) {
+			if (0.0001 <= this.xht) {
 				await client
 					.createOrder(
 						symbolPair,
@@ -83,7 +83,7 @@ describe('Socket testing', () => {
 		});
 
 		it('Market maker creates sell order significantly larger than largest sell order', async () => {
-			if (0.0001 <= this.hex) {
+			if (0.0001 <= this.xht) {
 				this.logs = [];
 				await client
 					.createOrder(symbolPair, 'sell', 0.0001, 'limit', 50000)
@@ -115,7 +115,7 @@ describe('Socket testing', () => {
 		});
 
 		it('Market taker creates an order that is immediately filled', async () => {
-			if (0.0001 * (this.firstBid[0] + 1) <= this.usdt && 0.0001 <= this.hex) {
+			if (0.0001 * (this.firstBid[0] + 1) <= this.usdt && 0.0001 <= this.xht) {
 				this.logs = [];
 				await client
 					.createOrder(symbolPair, 'buy', 0.0001, 'limit', this.firstBid[0] + 1)
@@ -156,7 +156,7 @@ describe('Socket testing', () => {
 		});
 
 		it('Market taker creates an order that is immediately partially filled', async () => {
-			if (0.0001 * (this.firstBid[0] + 1) <= this.usdt && 0.0001 <= this.hex) {
+			if (0.0001 * (this.firstBid[0] + 1) <= this.usdt && 0.0001 <= this.xht) {
 				this.logs = [];
 				await client
 					.createOrder(symbolPair, 'buy', 0.0001, 'limit', this.firstBid[0] + 1)
@@ -221,7 +221,7 @@ describe('Socket testing', () => {
 		});
 
 		it('Market taker creates a market order', async () => {
-			if (0.0001 * (this.firstBid[0] + 1) <= this.usdt && 0.0001 <= this.hex) {
+			if (0.0001 * (this.firstBid[0] + 1) <= this.usdt && 0.0001 <= this.xht) {
 				this.logs = [];
 				await client
 					.createOrder(symbolPair, 'buy', 0.0001, 'limit', this.firstBid[0] + 1)
