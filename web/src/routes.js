@@ -33,8 +33,8 @@ import {
 	Main,
 	DepositsPage,
 	Limits,
-	BlockchainTransaction,
-	AdminChat,
+	// BlockchainTransaction,
+	// AdminChat,
 	Wallets,
 	UserFees,
 	PATHS,
@@ -295,11 +295,11 @@ export default (
 				name="Admin Deposits"
 				component={withAdminProps(DepositsPage, 'deposit')}
 			/>
-			<Route
+			{/* <Route
 				path="/admin/blockchain"
 				name="Admin BlockchainTransaction"
 				component={BlockchainTransaction}
-			/>
+			/> */}
 			<Route
 				path="/admin/pair"
 				name="Admin Pairs"
@@ -310,11 +310,11 @@ export default (
 				name="Admin Coins"
 				component={withAdminProps(Limits, 'coin')}
 			/>
-			<Route
+			{/* <Route
 				path="/admin/chat"
 				name="Admin Chats"
 				component={withAdminProps(AdminChat, 'chat')}
-			/>
+			/> */}
 			<Route
 				path="/admin/activeorders"
 				name="Admin Orders"

@@ -133,7 +133,6 @@ class Chat extends Component {
 					<Spin size="large" />
 				) : (
 					<div>
-						<h1>USER CHAT</h1>
 						<Tabs className="chat-tabs">
 							<TabPane tab="Messages" key="messages">
 								<Messages

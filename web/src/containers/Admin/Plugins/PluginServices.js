@@ -8,6 +8,8 @@ import PluginForm from './pluginForm';
 import { updatePlugins, getConstants, connectVault, requestVaultSupportCoins } from './action';
 import { allPluginsData, getPluginsForm } from './Utils';
 import { setConfig } from '../../../actions/appActions';
+import Chat from '../Chat';
+import Vault from './Vault';
 
 class PluginServices extends Component {
     constructor(props) {
@@ -219,7 +221,7 @@ class PluginServices extends Component {
                 name: formProps.name
             };
             return this.connectVault(formValues);
-        } else if (service !== 'bank' && service !== 'chat' && service !== 'zendesk') {
+        } else if (service !== 'bank' && service !== 'chat') {
             const { key, secret, auth, ...rest } = formProps;
             const pluginData = allPluginsData[service] || {};
             formValues.secrets.plugins = secrets.plugins;
@@ -232,6 +234,9 @@ class PluginServices extends Component {
             } else if (pluginData.key === 'freshdesk') {
                 formValues.plugins.configuration[pluginData.key] = rest;
                 formValues.secrets.plugins[pluginData.key] = { key, auth };
+            } else if (pluginData.key === 'zendesk') {
+                formValues.plugins.configuration[pluginData.key] = rest;
+                formValues.secrets.plugins[pluginData.key] = { key };
             } else {
                 formValues.plugins.configuration[pluginData.key] = rest;
                 formValues.secrets.plugins[pluginData.key] = { key, secret };
@@ -279,8 +284,54 @@ class PluginServices extends Component {
             });
     };
 
+    pluginsDisplay = ({ services, connectStatus, initialValues }, fields) => {
+        switch (services) {
+            case 'vault':
+                return (
+                    connectStatus
+                        ? initialValues.secret && initialValues.key
+                            ? <Vault
+                                coins={this.props.coins}
+                                initialValues={initialValues}
+                                supportedCoins={this.state.vaultSupportCoins}
+                                connectCoinToVault={this.connectCoinToVault}
+                            />
+                            : <PluginForm
+                                initialValues={initialValues}
+                                services={services}
+                                fields={fields}
+                                handleSubmitPlugins={this.handleSubmitPlugins}
+                            />
+                        : null
+                )
+            case 'chat': {
+                return (
+                    connectStatus
+                        ? <Chat />
+                        : null
+                )
+            }
+            case 'kyc':
+            case 'freshdesk':
+            case 'zendesk':
+            case 'sms':
+                return (
+                    connectStatus && fields && Object.keys(fields).length
+                        ? <PluginForm
+                            initialValues={initialValues}
+                            services={services}
+                            fields={fields}
+                            handleSubmitPlugins={this.handleSubmitPlugins}
+                        />
+                        : null
+                )
+            default:
+                return <div />
+        }
+    }
+
     render() {
-        const { title, services, connectStatus, initialValues, loading, error, serviceLoading } = this.state;
+        const { title, services, connectStatus, loading, error, serviceLoading } = this.state;
         const fields = getPluginsForm(services);
         return (
             <div className="app_container-content">
@@ -304,18 +355,7 @@ class PluginServices extends Component {
                                 </div>
                             </div>
                             <Divider />
-                            {connectStatus && fields && Object.keys(fields).length
-                                ? <PluginForm
-                                    coins={this.props.coins}
-                                    initialValues={initialValues}
-                                    services={services}
-                                    fields={fields}
-                                    supportedCoins={this.state.vaultSupportCoins}
-                                    handleSubmitPlugins={this.handleSubmitPlugins}
-                                    connectCoinToVault={this.connectCoinToVault}
-                                />
-                                : null
-                            }
+                            {this.pluginsDisplay(this.state, fields)}
                             <Modal
                                 title={`Deactivate ${title}`}
                                 visible={this.state.isOpenConfirm}

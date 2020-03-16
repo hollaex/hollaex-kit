@@ -156,7 +156,21 @@ export const getPluginsForm = (key) => {
                 placeholder: 'Vault name',
                 validate: [validateRequired, exchangeName]
             },
+        },
+      'zendesk': {
+        host: {
+          type: 'input',
+          label: 'Zendesk Host URL',
+          placeholder: 'Zendesk Host URL',
+          validate: [validateRequired]
+        },
+        key: {
+          type: 'input',
+          label: 'Zendesk Access key',
+          placeholder: 'Zendesk Access key',
+          validate: [validateRequired]
         }
+      }
     };
     return formData[key] || {};
 }
