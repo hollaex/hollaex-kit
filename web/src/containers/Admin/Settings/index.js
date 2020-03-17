@@ -92,10 +92,10 @@ export default class Settings extends Component {
     submitSettings = (formProps, formKey) => {
         let formValues = {};
         if (formKey === 'general') {
-            formValues = {default: {}};
+            formValues = {defaults: {}};
             Object.keys(formProps).forEach((val) => {
                 if (val === 'theme' || val === 'language' || val === 'country') {
-                    formValues.default[val] = formProps[val];
+                    formValues.defaults[val] = formProps[val];
                 } else if (val === 'valid_languages' && typeof formProps[val] !== 'string') {
                     formValues[val] = formProps[val].join(',');
                 } else if (val === 'new_user_is_activated') {
