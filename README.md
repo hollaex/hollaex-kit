@@ -97,9 +97,13 @@ socket.on({EVENT}, (data) => {
 });
 ```
 
-Public channels (`orderbook`, `trades`) emit events named after the respective channel. For example, the `orderbook` channel emits the event `orderbook`. The private channel `user` emits the events `userInfo`, `userOrder`, `userTrade`, `userWallet`, and `userUpdate`.
+Public channels (`orderbook`, `trades`) emit events named after the respective channel. For example, the `orderbook` channel emits the event `orderbook`.
+
+The private channel `user` emits the events `userInfo`, `userOrder`, `userTrade`, `userWallet`, and `userUpdate`.
 
 Each channel also emits a `disconnect`, `reconnect`, and `error` event. The `disconnect` is emitted once when the websocket connection is disconnected from the server. The `reconnect` is emitted once when the server connection is reconnected. The `error` event is emitted when there is an error thrown by the socket connection.
+
+##### Private Events
 
 When you subscribe to private updates on user you should listen for the events as follows:
 
