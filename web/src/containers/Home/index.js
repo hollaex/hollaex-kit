@@ -99,7 +99,8 @@ class Home extends Component {
 			activeLanguage,
 			router,
 			info,
-			activeTheme
+			activeTheme,
+			constants
 		} = this.props;
 		const { style } = this.state;
 		const isExpired =
@@ -187,6 +188,7 @@ class Home extends Component {
 						theme={activeTheme}
 						onChangeLanguage={this.onChangeLanguage}
 						activeLanguage={activeLanguage}
+						constants={constants}
 					/>
 				</div>
 			</div>
@@ -203,7 +205,8 @@ const mapStateToProps = (store) => ({
 	// quickTradeData: store.orderbook.quickTrade,
 	activeLanguage: store.app.language,
 	info: store.app.info,
-	activeTheme: store.app.theme
+	activeTheme: store.app.theme,
+	constants: store.app.constants
 });
 
 const mapDispatchToProps = (dispatch) => ({

@@ -198,7 +198,7 @@ class UserSettings extends Component {
 							this.onSubmitSettings(formProps, 'language')
 						}
 						formFields={languageFormValue}
-						initialValues={settings}
+						initialValues={{ language: settings.language }}
 					/>
 				)
 			},

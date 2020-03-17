@@ -132,17 +132,27 @@ class AddTradeTab extends Component {
 	};
 
 	render() {
-		const { activeTheme, pairs, tickers, coins } = this.props;
+		const {
+			activeTheme,
+			pairs,
+			tickers,
+			coins,
+			constants = {}
+		} = this.props;
 		const { page, pageSize, count, data } = this.state;
 		let quickPair = this.props.pair || '';
 		if (!this.props.pair && Object.keys(pairs).length) {
 			quickPair = Object.keys(pairs)[0];
 		}
+		let path = constants.logo_path || HOLLAEX_LOGO;
+		if (activeTheme === 'dark') {
+			path = constants.logo_black_path || HOLLAEX_LOGO_BLACK;
+		}
 		return (
 			<div className="trade_tabs-container">
 				<div className="mb-5">
 					<img
-						src={activeTheme === 'dark' ? HOLLAEX_LOGO_BLACK : HOLLAEX_LOGO}
+						src={path}
 						alt="app logo"
 						className="app-icon d-flex"
 					/>
@@ -269,7 +279,8 @@ const mapStateToProps = (store) => ({
 	pairs: store.app.pairs,
 	tickers: store.app.tickers,
 	pair: store.app.pair,
-	coins: store.app.coins
+	coins: store.app.coins,
+	constants: store.app.constants
 });
 
 export default connect(mapStateToProps)(AddTradeTab);

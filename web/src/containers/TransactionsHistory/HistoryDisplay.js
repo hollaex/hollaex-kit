@@ -5,7 +5,7 @@ import { ICONS } from '../../config/constants';
 import {
 	ActionNotification,
 	Table,
-	CsvDownload,
+	// CsvDownload,
 	Loader
 } from '../../components';
 
@@ -16,10 +16,11 @@ const HistoryDisplay = (props) => {
 		title,
 		headers,
 		data: { data, count, loading },
-		filename,
+		// filename,
 		withIcon,
 		handleNext,
-		jumpToPage
+		jumpToPage,
+		handleDownload
 	} = props;
 
 	return (
@@ -28,18 +29,13 @@ const HistoryDisplay = (props) => {
 				<div className="title text-capitalize">
 					{title}
 					{count > 0 && (
-						<CsvDownload
-							data={data}
-							headers={headers}
-							filename={filename}
-						>
-							<ActionNotification
-								text={STRINGS.TRANSACTION_HISTORY.TEXT_DOWNLOAD}
-								iconPath={ICONS.DATA}
-								useSvg={true}
-								className="csv-action"
-							/>
-						</CsvDownload>
+						<ActionNotification
+							text={STRINGS.TRANSACTION_HISTORY.TEXT_DOWNLOAD}
+							iconPath={ICONS.DATA}
+							useSvg={true}
+							className="csv-action"
+							onClick={handleDownload}
+						/>
 					)}
 				</div>
 			)}

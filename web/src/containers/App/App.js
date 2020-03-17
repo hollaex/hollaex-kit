@@ -422,7 +422,8 @@ class App extends Component {
 			router,
 			location,
 			info,
-			enabledPlugins
+			enabledPlugins,
+			constants = { captcha: {} }
 			// user
 		} = this.props;
 		const {
@@ -431,7 +432,11 @@ class App extends Component {
 			chatIsClosed,
 			sidebarFitHeight
 		} = this.state;
-		loadReCaptcha(CAPTCHA_SITEKEY);
+		let siteKey = CAPTCHA_SITEKEY;
+		if (constants.captcha && constants.captcha.site_key) {
+			siteKey = constants.captcha.site_key;
+		}
+		loadReCaptcha(siteKey);
 		const languageClasses = getClasesForLanguage(activeLanguage, 'array');
 		const fontClass = getFontClassForLanguage(activeLanguage);
 
@@ -625,7 +630,7 @@ class App extends Component {
 						'layout-desktop': isBrowser
 					})}
 				>
-					{!isMobile && <AppFooter theme={activeTheme} />}
+					{!isMobile && <AppFooter theme={activeTheme} constants={constants} />}
 				</div>
 			</div>
 		);
