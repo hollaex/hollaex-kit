@@ -281,7 +281,16 @@ export const ICONS = {
 	UP_ARROW: '/assets/images/buy-trade.svg',
 	DOWN_ARROW: '/assets/images/sell-trade.svg',
 	MOON_THEME: '/assets/icons/moon-theme.svg',
-	SUN_THEME: '/assets/icons/sun-theme.svg'
+	SUN_THEME: '/assets/icons/sun-theme.svg',
+	PLUGINS_CHAT: '/assets/plugins/plugin-chat.png',
+	PLUGINS_FRESHDESK: '/assets/plugins/plugin-freshdesk.png',
+	PLUGINS_LIQUIDITY: '/assets/plugins/plugin-liquidity.png',
+	PLUGINS_SHUFTI: '/assets/plugins/plugin-shufti.png',
+	PLUGINS_SMS: '/assets/plugins/plugin-sms.png',
+	PLUGINS_VERIFICATION: '/assets/plugins/plugin-verification.png',
+	PLUGINS_ZENDESK: '/assets/plugins/plugin-zendesk.png',
+	PLUGINS_BANK: '/assets/plugins/plugin-bank.png',
+	PLUGINS_VAULT: '/assets/plugins/plugin-vault.png'
 };
 
 export const SOCIAL_ICONS = {
@@ -474,6 +483,7 @@ export const EXCHANGE_EXPIRY_DAYS = 15;
 export const EXCHANGE_EXPIRY_SECONDS = EXCHANGE_EXPIRY_DAYS * 86400;
 export const SUPPORT_HELP_URL =
 	'https://info.hollaex.com/hc/en-us/requests/new';
+export const REQUEST_VAULT_SUPPORTED_COINS = 'https://api.bitholla.com/v1/vault/coins';
 	
 export const MAX_NUMBER_BANKS = 3;
 

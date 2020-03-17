@@ -12,6 +12,7 @@ import { ContactForm } from '../';
 import { IconTitle, Dialog, MobileBarBack } from '../../components';
 import {
 	HOLLAEX_LOGO,
+	HOLLAEX_LOGO_BLACK,
 	FLEX_CENTER_CLASSES,
 	ICONS,
 	SUPPORT_HELP_URL
@@ -124,7 +125,7 @@ class Signup extends Component {
 	};
 
 	render() {
-		const { languageClasses, activeTheme } = this.props;
+		const { languageClasses, activeTheme, constants } = this.props;
 		const { success, showContactForm, isReferral } = this.state;
 
 		if (success) {
@@ -134,6 +135,10 @@ class Signup extends Component {
 		}
 
 		const formFields = generateFormFields(STRINGS, activeTheme, isReferral);
+		let path = constants.logo_path || HOLLAEX_LOGO;
+		if (activeTheme === 'dark') {
+			path = constants.logo_black_path || HOLLAEX_LOGO_BLACK;
+		}
 
 		return (
 			<div className={classnames(...FLEX_CENTER_CLASSES, 'flex-column', 'f-1')}>
@@ -147,11 +152,11 @@ class Signup extends Component {
 					)}
 				>
 					<IconTitle
-						iconPath={HOLLAEX_LOGO}
+						iconPath={path}
 						text={STRINGS.SIGNUP_TEXT}
 						textType="title"
 						underline={true}
-						useSvg={true}
+						useSvg={false}
 						className="w-100 exir-logo"
 						imageWrapperClassName="auth_logo-wrapper"
 						subtitle={STRINGS.formatString(
@@ -202,7 +207,8 @@ class Signup extends Component {
 }
 
 const mapStateToProps = (store) => ({
-	activeTheme: store.app.theme
+	activeTheme: store.app.theme,
+	constants: store.app.constants
 });
 
 const mapDispatchToProps = (dispatch) => ({

@@ -283,18 +283,19 @@ class AppBar extends Component {
 	};
 
 	renderIcon = (isHome) => {
+		let path = this.props.constants.logo_black_path || HOLLAEX_LOGO_BLACK;
 		return (
 			<div className={classnames('app_bar-icon', 'text-uppercase')}>
 				{isHome ? (
 					<img
-						src={HOLLAEX_LOGO_BLACK}
+						src={path}
 						alt={STRINGS.APP_NAME}
 						className="app_bar-icon-logo"
 					/>
 				) : (
 					<Link href={IS_PRO_VERSION ? PRO_URL : DEFAULT_VERSION_REDIRECT}>
 						<img
-							src={HOLLAEX_LOGO_BLACK}
+							src={path}
 							alt={STRINGS.APP_NAME}
 							className="app_bar-icon-logo"
 						/>
@@ -400,7 +401,8 @@ class AppBar extends Component {
 			activePath,
 			location,
 			pairs,
-			onHelp
+			onHelp,
+			constants = {}
 		} = this.props;
 		const {
 			selectedMenu,
@@ -432,7 +434,7 @@ class AppBar extends Component {
 			>
 				<Link to="/">
 					<img
-						src={HOLLAEX_LOGO_BLACK}
+						src={constants.logo_black_path || HOLLAEX_LOGO_BLACK}
 						alt={STRINGS.APP_NAME}
 						className="homeicon-svg"
 					/>
@@ -562,7 +564,8 @@ const mapStateToProps = (state, ownProps) => {
 		pairs: state.app.pairs,
 		coins: state.app.coins,
 		info: state.app.info,
-		enabledPlugins: state.app.enabledPlugins
+		enabledPlugins: state.app.enabledPlugins,
+		constants: state.app.constants
 	};
 };
 
