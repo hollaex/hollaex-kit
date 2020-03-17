@@ -6,7 +6,7 @@ const API_SECRET = process.env.API_SECRET || '';
 const client = new HollaEx({ apiKey: API_KEY, apiSecret: API_SECRET });
 
 client
-	.getTicker('hex-usdt')
+	.getTicker('xht-usdt')
 	.then((res) => {
 		let data = JSON.parse(res);
 		console.log('The volume is', data.volume);
@@ -19,10 +19,10 @@ client
 /*
 	events (emitted) : trades (trades), orderbook (orderbook), user (userInfo, userWallet, userOrder, userTrades, userUpdate), all
 
-	symbols : hex-usdt
+	symbols : xht-usdt
 */
 
-const socket1 = client.connect('trades:hex-usdt');
+const socket1 = client.connect('trades:xht-usdt');
 
 socket1.on('trades', (data) => {
 	console.log(data);
@@ -38,3 +38,8 @@ socket2.on('orderbook', (data) => {
 socket2.on('userInfo', (data) => {
 	console.log(data);
 });
+
+
+setTimeout(() => {
+	socket2.disconnect();
+}, 5000);
