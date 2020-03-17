@@ -421,6 +421,7 @@ const selector = formValueSelector(FORM_NAME);
 
 const mapStateToProps = (state) => {
 	const formValues = selector(state, 'price', 'size', 'side', 'type');
+	const pair = state.app.pair;
 	const {
 		pair_base,
 		pair_2,
@@ -432,19 +433,23 @@ const mapStateToProps = (state) => {
 		increment_price,
 		maker_fees = {},
 		taker_fees = {}
-	} = state.app.pairs[state.app.pair];
+	} = state.app.pairs[pair];
 
 	const feesData = {
 		maker_fee: maker_fees[state.user.verification_level],
 		taker_fee: taker_fees[state.user.verification_level]
 	};
+	const { asks = [], bids = [] } = state.orderbook.pairsOrderbooks[pair];
+	const orderBookLevels = state.user.settings.interface.order_book_levels;
+	const asksFilter = asks.filter((ask, index) => index < orderBookLevels);
+	const bidsFilter = bids.filter((bid, index) => index < orderBookLevels);
 
 	return {
 		...formValues,
 		activeLanguage: state.app.language,
 		fees: feesData,
 		feesData,
-		pair: state.app.pair,
+		pair,
 		pair_base,
 		pair_2,
 		max_price,
@@ -458,7 +463,9 @@ const mapStateToProps = (state) => {
 		balance: state.user.balance,
 		user: state.user,
 		settings: state.user.settings,
-		coins: state.app.coins
+		coins: state.app.coins,
+		asks: asksFilter,
+		bids: bidsFilter
 	};
 };
 

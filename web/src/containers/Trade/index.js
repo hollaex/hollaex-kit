@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import EventListener from 'react-event-listener';
 import classnames from 'classnames';
@@ -42,18 +42,19 @@ import { ActionNotification, Loader, MobileBarTabs } from '../../components';
 import STRINGS from '../../config/localizedStrings';
 import { playBackgroundAudioNotification } from '../../utils/utils';
 
-class Trade extends Component {
-	state = {
-		activeTab: 0,
-		chartHeight: 0,
-		chartWidth: 0,
-		symbol: '',
-		cancelDelayData: [],
-		priceRef: '',
-		sizeRef: ''
-	};
-	priceTimeOut = '';
-	sizeTimeOut = '';
+class Trade extends PureComponent {
+	constructor(props) {
+		super(props);
+		this.state = {
+			activeTab: 0,
+			chartHeight: 0,
+			chartWidth: 0,
+			symbol: '',
+			cancelDelayData: []
+		};
+		this.priceTimeOut = '';
+		this.sizeTimeOut = '';
+	}
 
 	componentWillMount() {
 		this.setSymbol(this.props.routeParams.pair);
@@ -139,26 +140,28 @@ class Trade extends Component {
 	onPriceClick = (price) => {
 		this.props.change(FORM_NAME, 'price', price);
 		playBackgroundAudioNotification('orderbook_field_update');
-		if (this.state.priceRef) {
-			this.state.priceRef.focus();
+		if (this.priceRef) {
+			this.priceRef.focus();
 		}
 	};
 
 	onAmountClick = (size) => {
 		this.props.change(FORM_NAME, 'size', size);
 		playBackgroundAudioNotification('orderbook_field_update');
-		if (this.state.sizeRef)
-			this.state.sizeRef.focus();
+		if (this.sizeRef)
+			this.sizeRef.focus();
 	};
 
 	setPriceRef = (priceRef) => {
-		if (priceRef)
-			this.setState({ priceRef });
+		if (priceRef) {
+			this.priceRef = priceRef;
+		}
 	};
 	
 	setSizeRef = (sizeRef) => {
-		if (sizeRef)
-			this.setState({ sizeRef });
+		if (sizeRef) {
+			this.sizeRef = sizeRef;
+		}
 	};
 
 	setActiveTab = (activeTab) => {
@@ -190,8 +193,8 @@ class Trade extends Component {
 			pairData,
 			tradeHistory,
 			orderbookReady,
-			asks,
-			bids,
+			// asks,
+			// bids,
 			activeOrders,
 			userTrades,
 			balance,
@@ -274,8 +277,8 @@ class Trade extends Component {
 			symbol,
 			pairData,
 			baseSymbol: baseValue.symbol.toUpperCase(),
-			asks,
-			bids,
+			// asks,
+			// bids,
 			coins,
 			onPriceClick: this.onPriceClick,
 			onAmountClick: this.onAmountClick
@@ -303,8 +306,8 @@ class Trade extends Component {
 					<MobileTrade
 						orderbookProps={orderbookProps}
 						symbol={symbol}
-						asks={asks}
-						bids={bids}
+						// asks={asks}
+						// bids={bids}
 						balance={balance}
 						marketPrice={marketPrice}
 						settings={settings}
@@ -408,8 +411,8 @@ class Trade extends Component {
 											onRiskyTrade={this.onRiskyTrade}
 											symbol={symbol}
 											balance={balance}
-											asks={asks}
-											bids={bids}
+											// asks={asks}
+											// bids={bids}
 											marketPrice={marketPrice}
 											showPopup={
 												settings.notification
@@ -473,55 +476,57 @@ class Trade extends Component {
 	}
 }
 
-Trade.defaultProps = {};
+Trade.defaultProps = {
+	activeOrders: [],
+	userTrades: []
+};
 
-const mapStateToProps = (store) => {
-	const pair = store.app.pair;
-	const pairData = store.app.pairs[pair] || {};
-	const { asks = [], bids = [] } = store.orderbook.pairsOrderbooks[pair];
-	const tradeHistory = store.orderbook.pairsTrades[pair];
+const mapStateToProps = (state) => {
+	const pair = state.app.pair;
+	const pairData = state.app.pairs[state.app.pair] || { pair_base: '', pair_2: '' };
+	// const { asks = [], bids = [] } = state.orderbook.pairsOrderbooks[pair];
+	const tradeHistory = state.orderbook.pairsTrades[pair];
 	const marketPrice =
 		tradeHistory && tradeHistory.length > 0 ? tradeHistory[0].price : 1;
 	let count = 0;
-	const userTrades = store.wallet.trades.data.filter(
+	const userTrades = state.wallet.trades.data.filter(
 		({ symbol }) => symbol === pair && count++ < 10
 	);
 	count = 0;
-	// const activeOrders = store.order.activeOrders.filter(
+	// const activeOrders = state.order.activeOrders.filter(
 	// 	({ symbol }) => symbol === pair && count++ < 10
 	// );
-	const activeOrders = store.order.activeOrders.filter(
+	const activeOrders = state.order.activeOrders.filter(
 		({ symbol }) => symbol === pair
 	);
 	const makerFee = pairData.maker_fees || {};
 	const takerFee = pairData.taker_fees || {};
 	const feesData = {
-		maker_fee: makerFee[store.user.verification_level],
-		taker_fee: takerFee[store.user.verification_level]
+		maker_fee: makerFee[state.user.verification_level],
+		taker_fee: takerFee[state.user.verification_level]
 	};
-	const orderBookLevels = store.user.settings.interface.order_book_levels;
-	const asksFilter = asks.filter((ask, index) => index < orderBookLevels);
-	const bidsFilter = bids.filter((bid, index) => index < orderBookLevels);
-
+	// const orderBookLevels = state.user.settings.interface.order_book_levels;
+	// const asksFilter = asks.filter((ask, index) => index < orderBookLevels);
+	// const bidsFilter = bids.filter((bid, index) => index < orderBookLevels);
 	return {
 		pair,
 		pairData,
-		pairs: store.app.pairs,
-		coins: store.app.coins,
-		balance: store.user.balance,
+		pairs: state.app.pairs,
+		coins: state.app.coins,
+		balance: state.user.balance,
 		orderbookReady: true,
 		tradeHistory,
-		asks: asksFilter,
-		bids: bidsFilter,
+		// asks: asksFilter,
+		// bids: bidsFilter,
 		marketPrice,
 		activeOrders,
 		userTrades,
-		activeLanguage: store.app.language,
-		activeTheme: store.app.theme,
+		activeLanguage: state.app.language,
+		activeTheme: state.app.theme,
 		fees: feesData,
-		settings: store.user.settings,
-		orderLimits: store.app.orderLimits,
-		discount: store.user.discount || 0
+		settings: state.user.settings,
+		orderLimits: state.app.orderLimits,
+		discount: state.user.discount || 0
 	};
 };
 

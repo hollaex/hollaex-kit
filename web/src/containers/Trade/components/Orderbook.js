@@ -189,8 +189,17 @@ Orderbook.defaultProps = {
 	onAmountClick: () => {}
 };
 
-const mapStateToProps = (store) => ({
-	pair: store.app.pair
-});
+const mapStateToProps = (store) => {
+	const pair = store.app.pair;
+	const { asks = [], bids = [] } = store.orderbook.pairsOrderbooks[pair];
+	const orderBookLevels = store.user.settings.interface.order_book_levels;
+	const asksFilter = asks.filter((ask, index) => index < orderBookLevels);
+	const bidsFilter = bids.filter((bid, index) => index < orderBookLevels);
+	return {
+		pair,
+		asks: asksFilter,
+		bids: bidsFilter
+	}
+};
 
 export default connect(mapStateToProps)(Orderbook);

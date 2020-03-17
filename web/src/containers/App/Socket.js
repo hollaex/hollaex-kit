@@ -106,6 +106,7 @@ class Container extends Component {
 			this.setUserSocket(getToken());
 		}
 		this.setState({ appLoaded: true }, () => {
+			this.props.connectionCallBack(true);
 			this._resetTimer();
 		});
 	};
