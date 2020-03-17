@@ -8,7 +8,8 @@ import {
 	getUserTrades,
 	getUserDeposits,
 	getUserWithdrawals,
-	withdrawalCancel
+	withdrawalCancel,
+	downloadUserTrades,
 } from '../../actions/walletActions';
 
 import { IconTitle, TabController, Loader, CheckTitle, Dialog, Button, CurrencyBallWithPrice } from '../../components';
@@ -165,7 +166,15 @@ class TransactionsHistory extends Component {
 	};
 
 	renderActiveTab = () => {
-		const { trades, deposits, withdrawals, symbol } = this.props;
+		const {
+			trades,
+			deposits,
+			withdrawals,
+			symbol,
+			downloadUserTrades,
+			downloadUserWithdrawal,
+			downloadUserDeposit
+		} = this.props;
 		const { headers, activeTab } = this.state;
 		// const name = STRINGS[`${symbol.toUpperCase()}_NAME`];
 
@@ -183,6 +192,7 @@ class TransactionsHistory extends Component {
 				props.withIcon = false;
 				props.handleNext = this.handleNext;
 				props.jumpToPage = this.state.jumpToPage;
+				props.handleDownload = downloadUserTrades;
 				break;
 			case 1:
 				props.title = STRINGS.TRANSACTION_HISTORY.TITLE_DEPOSITS;
@@ -191,6 +201,7 @@ class TransactionsHistory extends Component {
 				props.filename = `deposit-history-${moment().unix()}`;
 				props.handleNext = this.handleNext;
 				props.jumpToPage = this.state.jumpToPage;
+				props.handleDownload = downloadUserDeposit;
 				break;
 			case 2:
 				props.title = STRINGS.TRANSACTION_HISTORY.TITLE_WITHDRAWALS;
@@ -199,6 +210,7 @@ class TransactionsHistory extends Component {
 				props.filename = `withdrawal-history-${moment().unix()}`;
 				props.handleNext = this.handleNext;
 				props.jumpToPage = this.state.jumpToPage;
+				props.handleDownload = downloadUserWithdrawal;
 				break;
 			default:
 				return <div />;
@@ -330,7 +342,10 @@ const mapDispatchToProps = (dispatch) => ({
 	getUserTrades: (symbol, limit, page = 1) => dispatch(getUserTrades({ symbol, limit, page })),
 	getUserDeposits: (coin, limit, page = 1) => dispatch(getUserDeposits({ coin, limit, page })),
 	getUserWithdrawals: (coin, limit, page = 1) => dispatch(getUserWithdrawals({ coin, limit, page })),
-	withdrawalCancel: (transactionId) => dispatch(withdrawalCancel({ transactionId }))
+	withdrawalCancel: (transactionId) => dispatch(withdrawalCancel({ transactionId })),
+	downloadUserTrades: () => dispatch(downloadUserTrades('trade')),
+	downloadUserDeposit: () => dispatch(downloadUserTrades('deposit')),
+	downloadUserWithdrawal: () => dispatch(downloadUserTrades('withdrawal')),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(

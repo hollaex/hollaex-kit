@@ -120,9 +120,11 @@ class Verification extends Component {
 		full_name
 	}) => {
 		const { enabledPlugins } = this.props;
+		const availablePlugins = ['kyc', 'bank', 'sms']
 		let currentTabs = ['email'];
 		if (enabledPlugins.length) {
-			currentTabs = [ ...currentTabs, ...enabledPlugins ];
+			const temp = enabledPlugins.filter(val => availablePlugins.includes(val));
+			currentTabs = [ ...currentTabs, ...temp ];
 		}
 		if (enabledPlugins.includes('kyc')) {
 			currentTabs = [ ...currentTabs, 'document' ];
@@ -291,8 +293,10 @@ class Verification extends Component {
 				)
 			}
 		};
-		let tabs = currentTabs.map((key) => {
-			return tabUtils[key];
+		let tabs = [];
+		currentTabs.forEach((key) => {
+			if (tabUtils[key])
+				tabs = [...tabs, tabUtils[key]];
 		});
 
 		this.setState({ tabs, activeTab });

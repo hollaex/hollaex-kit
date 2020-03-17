@@ -5,7 +5,8 @@ import {
 	renderNumberField,
 	renderDateField,
 	renderRangeField,
-	renderInputField
+	renderInputField,
+	renderCheckField
 } from './fields';
 import { FileField } from './FileField';
 import CaptchaField from './captchaField';
@@ -41,6 +42,9 @@ const renderFields = (fields) => {
 						break;
 					case 'file':
 						component = FileField;
+						break;
+					case 'checkbox':
+						component = renderCheckField;
 						break;
 					case 'password':
 					case 'input':

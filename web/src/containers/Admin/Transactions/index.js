@@ -4,10 +4,9 @@ import { connect } from 'react-redux';
 
 import './index.css';
 
-import { requestDeposits, completeDeposits, dismissDeposit } from './actions';
+import { requestDeposits, completeDeposits, dismissDeposit, requestDepositsDownload } from './actions';
 import { renderRowContent, COLUMNS } from './utils';
 import { Filters } from './Filters';
-import { CSVLink } from 'react-csv';
 
 // import { Table, Button, Input, Select, Alert } from 'antd';
 // import { renderRowContent, COLUMNS, SELECT_KEYS } from './utils';
@@ -16,13 +15,13 @@ import { CSVLink } from 'react-csv';
 // const Option = Select.Option;
 // const Search = Input.Search;
 
-const HEADERS = [
-	{ label: 'Transaction id', key: 'transaction_id' },
-	{ label: 'Type', key: 'type' },
-	{ label: 'Amount', key: 'amount' },
-	{ label: 'Currency', key: 'currency' },
-	{ label: 'Time', key: 'created_at' }
-];
+// const HEADERS = [
+// 	{ label: 'Transaction id', key: 'transaction_id' },
+// 	{ label: 'Type', key: 'type' },
+// 	{ label: 'Amount', key: 'amount' },
+// 	{ label: 'Currency', key: 'currency' },
+// 	{ label: 'Time', key: 'created_at' }
+// ];
 
 class Transactions extends Component {
 	state = {
@@ -118,6 +117,17 @@ class Transactions extends Component {
 					error: message
 				});
 			});
+	};
+
+	handleDownload = (
+		values = this.props.initialData,
+		queryParams = this.props.queryParams
+	) => {
+		return requestDepositsDownload({
+			...values,
+			...queryParams,
+			format: 'csv'
+		});
 	};
 
 	completeDeposit = (transaction_id, indexItem) => () => {
@@ -286,9 +296,14 @@ class Transactions extends Component {
 							/>
 						)}
 
-						<CSVLink data={deposits} headers={HEADERS}>
-							Download transactions
-						</CSVLink>
+						<div>
+							<span
+								className="pointer"
+								onClick={() => this.handleDownload()}
+							>
+								Download transactions
+							</span>
+						</div>
 						<Table
 							columns={hideUserColumn ? columns.slice(1) : columns}
 							dataSource={deposits.map((deposit, index) => {

@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import { ReCaptcha } from 'react-recaptcha-v3';
+import { connect } from 'react-redux';
+
 import { CAPTCHA_SITEKEY, DEFAULT_LANGUAGE } from '../../../config/constants';
 
 class CaptchaField extends Component {
@@ -32,7 +34,7 @@ class CaptchaField extends Component {
 	};
 
 	render() {
-		const { language } = this.props;
+		const { language, constants: { captcha = {} } } = this.props;
 		const { ready, active } = this.state;
 		return (
 			active && (
@@ -43,7 +45,7 @@ class CaptchaField extends Component {
 				>
 					<ReCaptcha
 						ref={this.setRef}
-						sitekey={CAPTCHA_SITEKEY}
+						sitekey={captcha.site_key || CAPTCHA_SITEKEY}
 						verifyCallback={this.onVerifyCallback}
 						expiredCallback={this.onExpiredCallback}
 						lang={language || DEFAULT_LANGUAGE}
@@ -54,4 +56,8 @@ class CaptchaField extends Component {
 	}
 }
 
-export default CaptchaField;
+const mapStateToProps = (state) => ({
+	constants: state.app.constants
+});
+
+export default connect(mapStateToProps)(CaptchaField);

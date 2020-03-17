@@ -9,7 +9,7 @@ import EmailRequestForm, { generateFormFields } from './EmailRequestForm';
 import EmailRequestSuccess from './EmailRequestSuccess';
 import { IconTitle, Dialog, MobileBarBack } from '../../components';
 import { ContactForm } from '../';
-import { HOLLAEX_LOGO, FLEX_CENTER_CLASSES, SUPPORT_HELP_URL } from '../../config/constants';
+import { HOLLAEX_LOGO, FLEX_CENTER_CLASSES, SUPPORT_HELP_URL, HOLLAEX_LOGO_BLACK } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 
 const BottomLink = () => (
@@ -68,7 +68,7 @@ class VerifyEmailRequest extends Component {
 	}
 	
 	render() {
-		const { languageClasses, activeTheme } = this.props;
+		const { languageClasses, activeTheme, constants } = this.props;
 		const { success, showContactForm, formFields } = this.state;
 
 		if (success) {
@@ -95,6 +95,10 @@ class VerifyEmailRequest extends Component {
 				</div>
 			);
 		}
+		let path = constants.logo_path || HOLLAEX_LOGO;
+		if (activeTheme === 'dark') {
+			path = constants.logo_black_path || HOLLAEX_LOGO_BLACK;
+		}
 
 		return (
 			<div
@@ -117,11 +121,11 @@ class VerifyEmailRequest extends Component {
 					)}
 				>
 					<IconTitle
-						iconPath={HOLLAEX_LOGO}
+						iconPath={path}
 						text={STRINGS.VERIFICATION_EMAIL_REQUEST.TITLE}
 						textType="title"
 						underline={true}
-						useSvg={true}
+						useSvg={false}
 						imageWrapperClassName="auth_logo-wrapper"
 						className="w-100 exir-logo"
 					/>
@@ -148,7 +152,8 @@ class VerifyEmailRequest extends Component {
 }
 
 const mapStateToProps = (store) => ({
-	activeTheme: store.app.theme
+	activeTheme: store.app.theme,
+	constants: store.app.constants
 });
 
 export default connect(mapStateToProps)(VerifyEmailRequest);

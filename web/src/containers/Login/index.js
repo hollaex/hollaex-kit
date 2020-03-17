@@ -14,6 +14,7 @@ import { NOTIFICATIONS } from '../../actions/appActions';
 import { errorHandler } from '../../components/OtpForm/utils';
 import {
 	HOLLAEX_LOGO,
+	HOLLAEX_LOGO_BLACK,
 	FLEX_CENTER_CLASSES,
 	ICONS,
 	EXCHANGE_EXPIRY_SECONDS
@@ -204,8 +205,12 @@ class Login extends Component {
 	};
 
 	render() {
-		const { logoutMessage, activeTheme } = this.props;
+		const { logoutMessage, activeTheme, constants } = this.props;
 		const { otpDialogIsOpen, logoutDialogIsOpen } = this.state;
+		let path = constants.logo_path || HOLLAEX_LOGO;
+		if (activeTheme === 'dark') {
+			path = constants.logo_black_path || HOLLAEX_LOGO_BLACK;
+		}
 
 		return (
 			<div
@@ -220,11 +225,11 @@ class Login extends Component {
 					)}
 				>
 					<IconTitle
-						iconPath={HOLLAEX_LOGO}
+						iconPath={path}
 						text={STRINGS.LOGIN_TEXT}
 						textType="title"
 						underline={true}
-						useSvg={true}
+						useSvg={false}
 						className="w-100 exir-logo"
 						imageWrapperClassName="auth_logo-wrapper"
 						subtitle={STRINGS.formatString(
@@ -284,7 +289,8 @@ class Login extends Component {
 const mapStateToProps = (store) => ({
 	activeTheme: store.app.theme,
 	logoutMessage: store.auth.logoutMessage,
-	info: store.app.info
+	info: store.app.info,
+	constants: store.app.constants
 });
 
 const mapDispatchToProps = (dispatch) => ({

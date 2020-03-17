@@ -75,19 +75,31 @@ export const PATHS = [
 		hideIfSupervisor: true,
 		routeKey: 'coin'
 	},
+	// {
+	// 	path: '/admin/chat',
+	// 	// component: Chat,
+	// 	label: 'Chat',
+	// 	hideIfSupport: false,
+	// 	hideIfKYC: true,
+	// 	hideIfSupervisor: false,
+	// 	routeKey: 'Chat'
+	// },
+	// {
+	// 	path: '/admin/blockchain',
+	// 	// component: BlockchainTransaction,
+	// 	label: 'Vault',
+	// 	routeKey: 'blockChain'
+	// },
 	{
-		path: '/admin/chat',
-		// component: Chat,
-		label: 'Chat',
-		hideIfSupport: false,
-		hideIfKYC: true,
-		hideIfSupervisor: false,
-		routeKey: 'Chat'
+		path: '/admin/plugins',
+		// component: BlockchainTransaction,
+		label: 'Plugins',
+		routeKey: 'plugins'
 	},
 	{
-		path: '/admin/blockchain',
+		path: '/admin/settings',
 		// component: BlockchainTransaction,
-		label: 'Vault',
-		routeKey: 'blockChain'
+		label: 'Settings',
+		routeKey: 'settings'
 	},
 ];
