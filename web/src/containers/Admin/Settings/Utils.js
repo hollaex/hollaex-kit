@@ -6,7 +6,7 @@ export const generateAdminSettings = (key) => {
             admin_whitelist: {
                 type: 'select',
                 mode: 'tags',
-                label: 'Admin whitelist',
+                label: 'Admin Whitelist IPs',
                 placeholder: 'Admin whitelist',
                 tokenSeparators: [',', ' ', '   '],
                 validate: [validateRequired]
@@ -94,7 +94,7 @@ export const generateAdminSettings = (key) => {
         return {
             api_name: {
                 type: 'input',
-                label: 'API name',
+                label: 'Exchange Name',
                 placeholder: 'API name',
                 validate: [validateRequired]
             },
