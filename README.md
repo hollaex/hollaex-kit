@@ -59,23 +59,47 @@ client
 
 ### Websocket
 
+#### Connecting
+
 You can connect and subscribe to different websocket channels for realtime updates.
+
+To connect, use the `connect` function with the channel you want to subscribe to as the parameter.
 
 ```node
 const socket = client.connect('orderbook');
-socket.on('orderbook', (data) => {
+```
+
+To disconnect the websocket, call `disconnect` on the socket connection.
+
+```node
+socket.disconnect();
+```
+
+#### Channels
+
+Here is the list of channels you can subscribe to:
+
+- `orderbook`
+- `trades`
+- `user` (Private updates for the user such as balance, user orders etc as explained below)
+- `all` (Subscribes to all events)
+
+For public channels (`orderbook`, `trades`), you can subscribe to specific symbols as follows:
+`orderbook:xht-usdt`, `trades:xht-usdt`.
+
+#### Events
+
+After connecting to the websocket, you can listen for events coming from the server by using the `on` function.
+
+```node
+socket.on({EVENT}, (data) => {
 	console.log(data);
 });
 ```
 
-You can only subscribe to specific symbols as follows:
-`orderbook:xht-usdt`
-Here is the list of events you can subscribe:
+Public channels (`orderbook`, `trades`) emit events named after the respective channel. For example, the `orderbook` channel emits the event `orderbook`. The private channel `user` emits the events `userInfo`, `userOrder`, `userTrade`, `userWallet`, and `userUpdate`.
 
-- orderbook
-- trades
-- user (Private updates for the user such as balance, user orders etc as explained below)
-- all (It subscribes to all events)
+Each channel also emits a `disconnect`, `reconnect`, and `error` event. The `disconnect` is emitted once when the websocket connection is disconnected from the server. The `reconnect` is emitted once when the server connection is reconnected. The `error` event is emitted when there is an error thrown by the socket connection.
 
 When you subscribe to private updates on user you should listen for the events as follows:
 
