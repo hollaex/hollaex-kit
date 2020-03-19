@@ -30,6 +30,7 @@ import { takerFee, DEFAULT_COIN_DATA } from '../../../config/constants';
 import STRINGS from '../../../config/localizedStrings';
 import { isLoggedIn } from '../../../utils/token';
 import { openFeesStructureandLimits } from '../../../actions/appActions';
+import { asksSelector, bidsSelector, tradeHistorySelector } from '../utils';
 
 class OrderEntry extends Component {
 	state = {
@@ -431,24 +432,14 @@ const mapStateToProps = (state) => {
 		min_price,
 		increment_size,
 		increment_price,
-		maker_fees = {},
-		taker_fees = {}
 	} = state.app.pairs[pair];
-
-	const feesData = {
-		maker_fee: maker_fees[state.user.verification_level],
-		taker_fee: taker_fees[state.user.verification_level]
-	};
-	const { asks = [], bids = [] } = state.orderbook.pairsOrderbooks[pair];
-	const orderBookLevels = state.user.settings.interface.order_book_levels;
-	const asksFilter = asks.filter((ask, index) => index < orderBookLevels);
-	const bidsFilter = bids.filter((bid, index) => index < orderBookLevels);
+	const tradeHistory = tradeHistorySelector(state);
+	const marketPrice =
+		tradeHistory && tradeHistory.length > 0 ? tradeHistory[0].price : 1;
 
 	return {
 		...formValues,
 		activeLanguage: state.app.language,
-		fees: feesData,
-		feesData,
 		pair,
 		pair_base,
 		pair_2,
@@ -464,8 +455,9 @@ const mapStateToProps = (state) => {
 		user: state.user,
 		settings: state.user.settings,
 		coins: state.app.coins,
-		asks: asksFilter,
-		bids: bidsFilter
+		asks: asksSelector(state),
+		bids: bidsSelector(state),
+		marketPrice
 	};
 };
 

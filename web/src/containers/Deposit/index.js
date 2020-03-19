@@ -149,7 +149,7 @@ const mapStateToProps = (store) => ({
 	id: store.user.id,
 	crypto_wallet: store.user.crypto_wallet,
 	balance: store.user.balance,
-	// activeLanguage: store.app.language,
+	activeLanguage: store.app.language,
 	quoteData: store.orderbook.quoteData,
 	coins: store.app.coins
 });
