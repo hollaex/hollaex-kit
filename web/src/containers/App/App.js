@@ -62,10 +62,12 @@ import {
 
 import Socket from './Socket';
 import Container from './Container';
+import GetSocketState from './GetSocketState';
 
 class App extends Component {
 	state = {
-		appLoaded: true,
+		appLoaded: false,
+		isSocketDataReady: false,
 		dialogIsOpen: false,
 		chatIsClosed: false,
 		publicSocket: undefined,
@@ -112,13 +114,13 @@ class App extends Component {
 		) {
 			this.onCloseDialog();
 		}
-		if (
-			!this.props.verification_level &&
-			nextProps.verification_level !== this.props.verification_level &&
-			nextProps.verification_level === 1
-		) {
+		// if (
+		// 	!this.props.verification_level &&
+		// 	nextProps.verification_level !== this.props.verification_level &&
+		// 	nextProps.verification_level === 1
+		// ) {
 			// this.goToAccountPage();
-		}
+		// }
 		if (this.props.activeTheme !== nextProps.activeTheme) {
 			this.updateThemeToBody(nextProps.activeTheme);
 		}
@@ -252,7 +254,7 @@ class App extends Component {
 		return '';
 	};
 
-	renderDialogContent = ({ type, data }, prices) => {
+	renderDialogContent = ({ type, data }, prices = {}) => {
 		switch (type) {
 			case NOTIFICATIONS.ORDERS:
 			case NOTIFICATIONS.TRADES:
@@ -392,19 +394,27 @@ class App extends Component {
 	};
 
 	isSocketDataReady() {
-		const { orderbooks, pairsTrades, pair, router } = this.props;
-		let pairTemp = pair;
+		// const { orderbooks, pairsTrades, pair, router } = this.props;
+		// let pairTemp = pair;
 		// return (Object.keys(orderbooks).length && orderbooks[pair] && Object.keys(orderbooks[pair]).length &&
 		// 	Object.keys(pairsTrades).length);
-		if (router && router.params && router.params.pair) {
-			pairTemp = router.params.pair;
-		}
-		return (
-			Object.keys(orderbooks).length &&
-			orderbooks[pairTemp] &&
-			Object.keys(pairsTrades).length
-		);
-	}
+		// if (router && router.params && router.params.pair) {
+		// 	pairTemp = router.params.pair;
+		// }
+		// return (
+		// 	Object.keys(orderbooks).length &&
+		// 	orderbooks[pairTemp] &&
+		// 	Object.keys(pairsTrades).length
+		// );
+	};
+
+	connectionCallBack = (value) => {
+		this.setState({ appLoaded: value });
+	};
+
+	socketDataCallback = (value = false) => {
+		this.setState({ isSocketDataReady: value });
+	};
 
 	render() {
 		const {
@@ -412,7 +422,7 @@ class App extends Component {
 			pair,
 			children,
 			activeNotification,
-			prices,
+			// prices,
 			// verification_level,
 			activeLanguage,
 			// openContactForm,
@@ -430,7 +440,8 @@ class App extends Component {
 			dialogIsOpen,
 			appLoaded,
 			chatIsClosed,
-			sidebarFitHeight
+			sidebarFitHeight,
+			isSocketDataReady
 		} = this.state;
 		let siteKey = CAPTCHA_SITEKEY;
 		if (constants.captcha && constants.captcha.site_key) {
@@ -449,7 +460,16 @@ class App extends Component {
 			EXCHANGE_EXPIRY_DAYS - moment().diff(info.created_at, 'days');
 		return (
 			<div>
-				<Socket router={router} location={location} logout={this.logout} />
+				<Socket
+					router={router}
+					location={location}
+					logout={this.logout}
+					connectionCallBack={this.connectionCallBack}
+				/>
+				<GetSocketState
+					router={router}
+					isDataReady={isSocketDataReady}
+					socketDataCallback={this.socketDataCallback} />
 				<div
 					className={classnames(
 						getThemeClass(activeTheme),
@@ -545,7 +565,7 @@ class App extends Component {
 										router={router}
 										children={children}
 										appLoaded={appLoaded}
-										isReady={this.isSocketDataReady()}
+										isReady={isSocketDataReady}
 									/>
 								</div>
 								{isBrowser && (
@@ -596,8 +616,8 @@ class App extends Component {
 									{dialogIsOpen &&
 										this.renderDialogContent(
 											activeNotification,
-											prices,
-											activeTheme
+											// prices,
+											// activeTheme
 										)}
 								</Dialog>
 								{!isMobile &&

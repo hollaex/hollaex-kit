@@ -6,7 +6,10 @@ import classnames from 'classnames';
 
 import { ICONS } from '../../config/constants';
 import SnackDialogContent from './SnackDialogContent';
-import { closeSnackNotification, closeSnackDialog } from '../../actions/appActions';
+import { 
+  // closeSnackNotification, 
+  closeSnackDialog 
+} from '../../actions/appActions';
 
 let timeout = '';
 let closeTimeOut = '';
@@ -107,7 +110,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-    closeSnackNotification: bindActionCreators(closeSnackNotification, dispatch),
+    // closeSnackNotification: bindActionCreators(closeSnackNotification, dispatch),
     closeSnackDialog: bindActionCreators(closeSnackDialog, dispatch)
 });
 

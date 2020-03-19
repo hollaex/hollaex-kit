@@ -30,6 +30,7 @@ import { takerFee, DEFAULT_COIN_DATA } from '../../../config/constants';
 import STRINGS from '../../../config/localizedStrings';
 import { isLoggedIn } from '../../../utils/token';
 import { openFeesStructureandLimits } from '../../../actions/appActions';
+import { asksSelector, bidsSelector, tradeHistorySelector } from '../utils';
 
 class OrderEntry extends Component {
 	state = {
@@ -421,6 +422,7 @@ const selector = formValueSelector(FORM_NAME);
 
 const mapStateToProps = (state) => {
 	const formValues = selector(state, 'price', 'size', 'side', 'type');
+	const pair = state.app.pair;
 	const {
 		pair_base,
 		pair_2,
@@ -430,21 +432,15 @@ const mapStateToProps = (state) => {
 		min_price,
 		increment_size,
 		increment_price,
-		maker_fees = {},
-		taker_fees = {}
-	} = state.app.pairs[state.app.pair];
-
-	const feesData = {
-		maker_fee: maker_fees[state.user.verification_level],
-		taker_fee: taker_fees[state.user.verification_level]
-	};
+	} = state.app.pairs[pair];
+	const tradeHistory = tradeHistorySelector(state);
+	const marketPrice =
+		tradeHistory && tradeHistory.length > 0 ? tradeHistory[0].price : 1;
 
 	return {
 		...formValues,
 		activeLanguage: state.app.language,
-		fees: feesData,
-		feesData,
-		pair: state.app.pair,
+		pair,
 		pair_base,
 		pair_2,
 		max_price,
@@ -458,7 +454,10 @@ const mapStateToProps = (state) => {
 		balance: state.user.balance,
 		user: state.user,
 		settings: state.user.settings,
-		coins: state.app.coins
+		coins: state.app.coins,
+		asks: asksSelector(state),
+		bids: bidsSelector(state),
+		marketPrice
 	};
 };
 
