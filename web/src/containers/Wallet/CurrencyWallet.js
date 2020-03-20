@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 import { isMobile } from 'react-device-detect';
 import {
 	IconTitle,
@@ -10,7 +9,6 @@ import {
 	ActionNotification,
 	MobileBarBack
 } from '../../components';
-import { changeSymbol } from '../../actions/orderbookAction';
 import { ICONS, FLEX_CENTER_CLASSES, DEFAULT_COIN_DATA } from '../../config/constants';
 import {
 	generateWalletActionsText,
@@ -114,13 +112,8 @@ class Wallet extends Component {
 const mapStateToProps = (store) => ({
 	coins: store.app.coins,
 	price: store.orderbook.price,
-	prices: store.orderbook.prices,
 	balance: store.user.balance,
 	activeLanguage: store.app.language
 });
 
-const mapDispatchToProps = (dispatch) => ({
-	changeSymbol: bindActionCreators(changeSymbol, dispatch)
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(Wallet);
+export default connect(mapStateToProps)(Wallet);

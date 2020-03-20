@@ -1,16 +1,15 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import EventListener from 'react-event-listener';
 import classnames from 'classnames';
 import { bindActionCreators } from 'redux';
 import { SubmissionError, change } from 'redux-form';
 import { isMobile } from 'react-device-detect';
+import { createSelector } from 'reselect';
 
-import { ICONS, BASE_CURRENCY, DEFAULT_COIN_DATA } from '../../config/constants';
+import { BASE_CURRENCY, DEFAULT_COIN_DATA } from '../../config/constants';
 import {
-	submitOrder,
-	cancelOrder,
-	cancelAllOrders
+	submitOrder
 } from '../../actions/orderAction';
 import { getUserTrades } from '../../actions/walletActions';
 import {
@@ -22,38 +21,32 @@ import {
 
 import { isLoggedIn } from '../../utils/token';
 import TradeBlock from './components/TradeBlock';
-import TradeBlockTabs from './components/TradeBlockTabs';
 import Orderbook from './components/Orderbook';
 import OrderEntry from './components/OrderEntry';
 import { FORM_NAME } from './components/OrderEntryForm';
-import ActiveOrders from './components/ActiveOrders';
-import UserTrades from './components/UserTrades';
 import TradeHistory from './components/TradeHistory';
-// import PriceChart from './components/PriceChart';
 import MobileTrade from './MobileTrade';
 import MobileChart from './MobileChart';
-import MobileOrders from './MobileOrders';
-import LogoutInfoOrder from './components/LogoutInfoOrder';
-import LogoutInfoTrade from './components/LogoutInfoTrade';
-import TVChartContainer from './Chart';
+import TVChartContainer from './ChartContainer';
+import OrdersWrapper from './components/OrdersWrapper';
 
-import { ActionNotification, Loader, MobileBarTabs } from '../../components';
+import { Loader, MobileBarTabs } from '../../components';
 
 import STRINGS from '../../config/localizedStrings';
 import { playBackgroundAudioNotification } from '../../utils/utils';
 
-class Trade extends Component {
-	state = {
-		activeTab: 0,
-		chartHeight: 0,
-		chartWidth: 0,
-		symbol: '',
-		cancelDelayData: [],
-		priceRef: '',
-		sizeRef: ''
-	};
-	priceTimeOut = '';
-	sizeTimeOut = '';
+class Trade extends PureComponent {
+	constructor(props) {
+		super(props);
+		this.state = {
+			activeTab: 0,
+			chartHeight: 0,
+			chartWidth: 0,
+			symbol: ''
+		};
+		this.priceTimeOut = '';
+		this.sizeTimeOut = '';
+	}
 
 	componentWillMount() {
 		this.setSymbol(this.props.routeParams.pair);
@@ -82,7 +75,7 @@ class Trade extends Component {
 
 	onSubmitOrder = (values) => {
 		return submitOrder(values)
-			.then((body) => {})
+			.then((body) => { })
 			.catch((err) => {
 				const _error =
 					err.response && err.response.data
@@ -139,76 +132,53 @@ class Trade extends Component {
 	onPriceClick = (price) => {
 		this.props.change(FORM_NAME, 'price', price);
 		playBackgroundAudioNotification('orderbook_field_update');
-		if (this.state.priceRef) {
-			this.state.priceRef.focus();
+		if (this.priceRef) {
+			this.priceRef.focus();
 		}
 	};
 
 	onAmountClick = (size) => {
 		this.props.change(FORM_NAME, 'size', size);
 		playBackgroundAudioNotification('orderbook_field_update');
-		if (this.state.sizeRef)
-			this.state.sizeRef.focus();
+		if (this.sizeRef)
+			this.sizeRef.focus();
 	};
 
 	setPriceRef = (priceRef) => {
-		if (priceRef)
-			this.setState({ priceRef });
+		if (priceRef) {
+			this.priceRef = priceRef;
+		}
 	};
-	
+
 	setSizeRef = (sizeRef) => {
-		if (sizeRef)
-			this.setState({ sizeRef });
+		if (sizeRef) {
+			this.sizeRef = sizeRef;
+		}
 	};
 
 	setActiveTab = (activeTab) => {
 		this.setState({ activeTab });
 	};
 
-	cancelAllOrders = () => {
-		let cancelDelayData = [];
-		this.props.activeOrders.map((order) => {
-			cancelDelayData = [...cancelDelayData, order.id];
-			return '';
-		});
-		this.setState({ cancelDelayData });
-		setTimeout(() => {
-			this.props.cancelAllOrders(this.state.symbol);
-		}, 700);
-	};
-
-	handleCancelOrders = (id) => {
-		this.setState({ cancelDelayData: this.state.cancelDelayData.concat(id) });
-		setTimeout(() => {
-			this.props.cancelOrder(id);
-		}, 700);
-	};
-
 	render() {
 		const {
 			pair,
 			pairData,
-			tradeHistory,
 			orderbookReady,
-			asks,
-			bids,
-			activeOrders,
-			userTrades,
 			balance,
-			marketPrice,
 			activeLanguage,
 			activeTheme,
 			settings,
 			orderLimits,
 			pairs,
 			coins,
-			discount
+			discount,
+			fees
 		} = this.props;
 		const {
 			chartHeight,
 			symbol,
-			activeTab,
-			cancelDelayData
+			activeTab
 		} = this.state;
 
 		if (symbol !== pair || !pairData) {
@@ -216,66 +186,11 @@ class Trade extends Component {
 		}
 		const baseValue = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
 
-		const USER_TABS = [
-			{
-				title: STRINGS.ORDERS,
-				children: isLoggedIn() ? (
-					<ActiveOrders
-						cancelDelayData={cancelDelayData}
-						orders={activeOrders}
-						onCancel={this.handleCancelOrders}
-					/>
-				) : (
-					<LogoutInfoOrder activeTheme={activeTheme}/>
-				),
-				titleAction: isLoggedIn()
-					? activeOrders.length > 0 && (
-							<ActionNotification
-								text={STRINGS.CANCEL_ALL}
-								iconPath={ICONS.CANCEL_CROSS_ACTIVE}
-								onClick={this.cancelAllOrders}
-								status="information"
-								useSvg={true}
-							/>
-					  )
-					: ''
-			},
-			{
-				title: STRINGS.RECENT_TRADES,
-				children: isLoggedIn() ? (
-					<UserTrades
-						pageSize={10}
-						trades={userTrades}
-						pair={pair}
-						pairData={pairData}
-						pairs={pairs}
-						coins={coins}
-						discount={discount}
-					/>
-				) : (
-					<LogoutInfoTrade />
-				),
-				titleAction: isLoggedIn() ? (
-					<ActionNotification
-						text={STRINGS.TRANSACTION_HISTORY.TITLE}
-						iconPath={ICONS.ARROW_TRANSFER_HISTORY_ACTIVE}
-						onClick={this.goToTransactionsHistory}
-						status="information"
-						useSvg={true}
-					/>
-				) : (
-					''
-				)
-			}
-		];
-
 		// TODO get right base pair
 		const orderbookProps = {
 			symbol,
 			pairData,
 			baseSymbol: baseValue.symbol.toUpperCase(),
-			asks,
-			bids,
 			coins,
 			onPriceClick: this.onPriceClick,
 			onAmountClick: this.onAmountClick
@@ -288,7 +203,6 @@ class Trade extends Component {
 					<MobileChart
 						pair={pair}
 						pairData={pairData}
-						tradeHistory={tradeHistory}
 						activeLanguage={activeLanguage}
 						activeTheme={activeTheme}
 						symbol={symbol}
@@ -303,10 +217,8 @@ class Trade extends Component {
 					<MobileTrade
 						orderbookProps={orderbookProps}
 						symbol={symbol}
-						asks={asks}
-						bids={bids}
+						fees={fees}
 						balance={balance}
-						marketPrice={marketPrice}
 						settings={settings}
 						orderbookReady={orderbookReady}
 						openCheckOrder={this.openCheckOrder}
@@ -322,19 +234,14 @@ class Trade extends Component {
 			{
 				title: STRINGS.TRADE_TAB_ORDERS,
 				content: (
-					<MobileOrders
+					<OrdersWrapper
 						isLoggedIn={isLoggedIn()}
-						activeOrders={activeOrders}
-						cancelOrder={this.handleCancelOrders}
-						cancelDelayData={cancelDelayData}
-						cancelAllOrders={this.cancelAllOrders}
 						goToTransactionsHistory={this.goToTransactionsHistory}
 						pair={pair}
 						pairData={pairData}
 						pairs={pairs}
 						coins={coins}
 						goToPair={this.goToPair}
-						userTrades={userTrades}
 						activeTheme={activeTheme}
 					/>
 				)
@@ -354,181 +261,174 @@ class Trade extends Component {
 						</div>
 					</div>
 				) : (
-					<div className={classnames('trade-container', 'd-flex')}>
-						<EventListener target="window" onResize={this.onResize} />
-						<div
-							className={classnames(
-								'trade-col_side_wrapper',
-								'flex-column',
-								'd-flex',
-								'apply_rtl'
-							)}
-						>
-							<TradeBlock
-								isLoggedIn={isLoggedIn()}
-								title={STRINGS.ORDERBOOK}
-								pairData={pairData}
-								pair={pair}
-							>
-								{orderbookReady && <Orderbook {...orderbookProps} />}
-							</TradeBlock>
-						</div>
-						<div
-							className={classnames(
-								'trade-col_main_wrapper',
-								'flex-column',
-								'd-flex',
-								'f-1',
-								'overflow-x'
-							)}
-						>
+						<div className={classnames('trade-container', 'd-flex')}>
+							<EventListener target="window" onResize={this.onResize} />
 							<div
 								className={classnames(
-									'trade-main_content',
-									'flex-auto',
-									'd-flex'
+									'trade-col_side_wrapper',
+									'flex-column',
+									'd-flex',
+									'apply_rtl'
 								)}
 							>
-								<div
-									className={classnames(
-										'trade-col_action_wrapper',
-										'flex-column',
-										'd-flex',
-										'apply_rtl'
-									)}
-								>
-									<TradeBlock
-										title={STRINGS.ORDER_ENTRY}
-										pairData={pairData}
-										pair={pair}
-									>
-										<OrderEntry
-											submitOrder={this.onSubmitOrder}
-											openCheckOrder={this.openCheckOrder}
-											onRiskyTrade={this.onRiskyTrade}
-											symbol={symbol}
-											balance={balance}
-											asks={asks}
-											bids={bids}
-											marketPrice={marketPrice}
-											showPopup={
-												settings.notification
-													.popup_order_confirmation
-											}
-											setPriceRef={this.setPriceRef}
-											setSizeRef={this.setSizeRef}
-										/>
-									</TradeBlock>
-								</div>
 								<TradeBlock
-									title={STRINGS.CHART}
-									setRef={this.setChartRef}
-									className="f-1 overflow-x"
+									isLoggedIn={isLoggedIn()}
+									title={STRINGS.ORDERBOOK}
 									pairData={pairData}
 									pair={pair}
 								>
-									{pair && chartHeight > 0 && (
-										<TVChartContainer
-											activeTheme={activeTheme}
-											symbol={symbol}
-											tradeHistory={tradeHistory}
-											pairData={pairData}
-										/>
-									)}
+									{orderbookReady && <Orderbook {...orderbookProps} />}
 								</TradeBlock>
 							</div>
 							<div
 								className={classnames(
-									'trade-tabs_content',
-									'd-flex',
+									'trade-col_main_wrapper',
 									'flex-column',
+									'd-flex',
+									'f-1',
+									'overflow-x'
+								)}
+							>
+								<div
+									className={classnames(
+										'trade-main_content',
+										'flex-auto',
+										'd-flex'
+									)}
+								>
+									<div
+										className={classnames(
+											'trade-col_action_wrapper',
+											'flex-column',
+											'd-flex',
+											'apply_rtl'
+										)}
+									>
+										<TradeBlock
+											title={STRINGS.ORDER_ENTRY}
+											pairData={pairData}
+											pair={pair}
+										>
+											<OrderEntry
+												submitOrder={this.onSubmitOrder}
+												openCheckOrder={this.openCheckOrder}
+												onRiskyTrade={this.onRiskyTrade}
+												symbol={symbol}
+												balance={balance}
+												fees={fees}
+												showPopup={
+													settings.notification
+														.popup_order_confirmation
+												}
+												setPriceRef={this.setPriceRef}
+												setSizeRef={this.setSizeRef}
+											/>
+										</TradeBlock>
+									</div>
+									<TradeBlock
+										title={STRINGS.CHART}
+										setRef={this.setChartRef}
+										className="f-1 overflow-x"
+										pairData={pairData}
+										pair={pair}
+									>
+										{pair && chartHeight > 0 && (
+											<TVChartContainer
+												activeTheme={activeTheme}
+												symbol={symbol}
+												// tradeHistory={tradeHistory}
+												pairData={pairData}
+											/>
+										)}
+									</TradeBlock>
+								</div>
+								<div
+									className={classnames(
+										'trade-tabs_content',
+										'd-flex',
+										'flex-column',
+										'apply_rtl'
+									)}
+								>
+									<OrdersWrapper
+										pair={pair}
+										pairData={pairData}
+										discount={discount}
+										pairs={pairs}
+										coins={coins}
+										activeTheme={activeTheme}
+										isLoggedIn={isLoggedIn()}
+										goToTransactionsHistory={this.goToTransactionsHistory}
+										goToPair={this.goToPair}
+									/>
+								</div>
+							</div>
+							<div
+								className={classnames(
+									'trade-col_side_wrapper',
+									'flex-column',
+									'd-flex',
 									'apply_rtl'
 								)}
 							>
-								<TradeBlockTabs content={USER_TABS} />
+								<TradeBlock
+									title={STRINGS.PUBLIC_SALES}
+									pairData={pairData}
+									pair={pair}>
+									<TradeHistory
+										language={activeLanguage}
+									/>
+								</TradeBlock>
 							</div>
 						</div>
-						<div
-							className={classnames(
-								'trade-col_side_wrapper',
-								'flex-column',
-								'd-flex',
-								'apply_rtl'
-							)}
-						>
-							<TradeBlock
-								title={STRINGS.PUBLIC_SALES}
-								pairData={pairData}
-								pair={pair}>
-								<TradeHistory
-									data={tradeHistory}
-									language={activeLanguage}
-								/>
-							</TradeBlock>
-						</div>
-					</div>
-				)}
+					)}
 			</div>
 		);
 	}
 }
 
-Trade.defaultProps = {};
+Trade.defaultProps = {
+	settings: {
+		notification: {}
+	}
+};
 
-const mapStateToProps = (store) => {
-	const pair = store.app.pair;
-	const pairData = store.app.pairs[pair] || {};
-	const { asks = [], bids = [] } = store.orderbook.pairsOrderbooks[pair];
-	const tradeHistory = store.orderbook.pairsTrades[pair];
-	const marketPrice =
-		tradeHistory && tradeHistory.length > 0 ? tradeHistory[0].price : 1;
-	let count = 0;
-	const userTrades = store.wallet.trades.data.filter(
-		({ symbol }) => symbol === pair && count++ < 10
-	);
-	count = 0;
-	// const activeOrders = store.order.activeOrders.filter(
-	// 	({ symbol }) => symbol === pair && count++ < 10
-	// );
-	const activeOrders = store.order.activeOrders.filter(
-		({ symbol }) => symbol === pair
-	);
-	const makerFee = pairData.maker_fees || {};
-	const takerFee = pairData.taker_fees || {};
+const getPair = state => state.app.pair
+const getPairs = state => state.app.pairs
+const getVerificationLevel = state => state.user.verification_level
+
+const feesDataSelector = createSelector(getPairs, getPair, getVerificationLevel, (pairsData, pair, verification_level) => {
+	const selectedPair = pairsData[pair] || { pair_base: '', pair_2: '' };
+	const makerFee = selectedPair.maker_fees || {};
+	const takerFee = selectedPair.taker_fees || {};
 	const feesData = {
-		maker_fee: makerFee[store.user.verification_level],
-		taker_fee: takerFee[store.user.verification_level]
+		maker_fee: makerFee[verification_level],
+		taker_fee: takerFee[verification_level]
 	};
-	const orderBookLevels = store.user.settings.interface.order_book_levels;
-	const asksFilter = asks.filter((ask, index) => index < orderBookLevels);
-	const bidsFilter = bids.filter((bid, index) => index < orderBookLevels);
+	return feesData;
+});
 
+const mapStateToProps = (state) => {
+	const pair = state.app.pair;
+	const pairData = state.app.pairs[pair] || { pair_base: '', pair_2: '' };
 	return {
 		pair,
 		pairData,
-		pairs: store.app.pairs,
-		coins: store.app.coins,
-		balance: store.user.balance,
+		pairs: state.app.pairs,
+		coins: state.app.coins,
+		balance: state.user.balance,
 		orderbookReady: true,
-		tradeHistory,
-		asks: asksFilter,
-		bids: bidsFilter,
-		marketPrice,
-		activeOrders,
-		userTrades,
-		activeLanguage: store.app.language,
-		activeTheme: store.app.theme,
-		fees: feesData,
-		settings: store.user.settings,
-		orderLimits: store.app.orderLimits,
-		discount: store.user.discount || 0
-	};
+		activeLanguage: state.app.language,
+		activeTheme: state.app.theme,
+		fees: feesDataSelector(state),
+		settings: state.user.settings,
+		orderLimits: state.app.orderLimits,
+		discount: state.user.discount || 0
+	}
 };
 
 const mapDispatchToProps = (dispatch) => ({
 	getUserTrades: (symbol) => dispatch(getUserTrades({ symbol })),
-	cancelOrder: bindActionCreators(cancelOrder, dispatch),
-	cancelAllOrders: bindActionCreators(cancelAllOrders, dispatch),
 	setNotification: bindActionCreators(setNotification, dispatch),
 	changePair: bindActionCreators(changePair, dispatch),
 	change: bindActionCreators(change, dispatch)

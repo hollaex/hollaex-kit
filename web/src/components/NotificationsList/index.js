@@ -51,7 +51,7 @@ const NotificationsList = ({ announcements }) => {
 }
 
 const mapStateToProps = (store) => ({
-	announcements: store.app.announcements
+	// announcements: store.app.announcements
 });
 
 export default connect(mapStateToProps)(NotificationsList);

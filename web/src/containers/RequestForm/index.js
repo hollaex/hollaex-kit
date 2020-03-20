@@ -129,7 +129,7 @@ class RequestForm extends Component {
 
 const mapStateToProps = (store) => ({
     email: store.user.email,
-    contactFormData: store.app.contactFormData
+    // contactFormData: store.app.contactFormData
 });
 
 export default connect(mapStateToProps)(RequestForm);

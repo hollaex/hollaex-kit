@@ -8,6 +8,8 @@ import STRINGS from '../../../config/localizedStrings';
 import { IS_XHT, ICONS } from '../../../config/constants';
 import { roundNumber } from '../../../utils/currency';
 import { getDecimals } from '../../../utils/utils';
+import { tradeHistorySelector } from '../utils';
+
 const generateHeaders = (pairs) => {
 	return [
 		{
@@ -126,7 +128,8 @@ TradeHistory.defaultProps = {
 
 const mapStateToProps = (store) => ({
 	pair: store.app.pair,
-	pairs: store.app.pairs
+	pairs: store.app.pairs,
+	data: tradeHistorySelector(store)
 });
 
 export default connect(mapStateToProps)(TradeHistory);

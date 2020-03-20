@@ -3,7 +3,7 @@ import classnames from 'classnames';
 import EventListener from 'react-event-listener';
 import { connect } from 'react-redux';
 
-import { subtract } from '../utils';
+import { subtract, asksSelector, bidsSelector } from '../utils';
 import { formatCurrency, formatToFixed } from '../../../utils/currency';
 import STRINGS from '../../../config/localizedStrings';
 import { DEFAULT_COIN_DATA } from '../../../config/constants';
@@ -190,7 +190,9 @@ Orderbook.defaultProps = {
 };
 
 const mapStateToProps = (store) => ({
-	pair: store.app.pair
+	pair: store.app.pair,
+	asks: asksSelector(store),
+	bids: bidsSelector(store)
 });
 
 export default connect(mapStateToProps)(Orderbook);
