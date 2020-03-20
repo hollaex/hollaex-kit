@@ -56,13 +56,15 @@ class App extends Component {
 		// const isSupportUser = isSupport();
 		const { router } = this.props;
 		this.setState({ ...INITIAL_STATE, loading: true });
-		if (values.id) {
-			router.replace(`/admin/user?id=${values.id}`);
-		} else if (values.email) {
-			router.replace(`/admin/user?email=${values.email}`);
-		} else {
-			router.replace(`/admin/user?username=${values.username}`);
+		if (values.search) {
+			router.replace(`/admin/user?search=${values.search}`);
 		}
+		// if (values.id) {
+		// } else if (values.email) {
+		// 	router.replace(`/admin/user?email=${values.email}`);
+		// } else {
+		// 	router.replace(`/admin/user?username=${values.username}`);
+		// }
 		return requestUser(values)
 			.then(([userInformation, userImages, userBalance]) => {
 				if (userInformation &&
@@ -133,14 +135,14 @@ class App extends Component {
 
 	searchUser = ({ type, input }) => {
 		const searchUserdata = input.trim();
-		const REGEX = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
-		if (REGEX.test(searchUserdata)) {
-			this.requestUserData({ email: searchUserdata });
-		} else if (isNaN(input)) {
-			this.requestUserData({ username: searchUserdata });
-		} else if (!isNaN(parseInt(input, 10))) {
-			this.requestUserData({ id: searchUserdata });
-		}
+		// const REGEX = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
+		// if (REGEX.test(searchUserdata)) {
+		// 	this.requestUserData({ email: searchUserdata });
+		// } else if (isNaN(input)) {
+		// 	this.requestUserData({ username: searchUserdata });
+		// } else if (!isNaN(parseInt(input, 10))) {
+		// }
+		this.requestUserData({ search: searchUserdata });
 	};
 
 	render() {
@@ -168,45 +170,45 @@ class App extends Component {
 				onChangeUserDataSuccess={this.onChangeUserDataSuccess}
 			/>
 		) : (
-			<div className="app_container-content">
-				<Tabs>
-					<TabPane tab="Search" key="search">
-						<h2>SEARCH FOR USER</h2>
-						<Form
-							onSubmit={this.searchUser}
-							buttonText="Search"
-							fields={{
-								input: {
-									type: 'string',
-									label: 'input',
-									placeholder: 'email or id or username',
-									validate: []
-								}
-							}}
-							initialValues={{ type: 'id' }}
-						/>
-					</TabPane>
+				<div className="app_container-content">
+					<Tabs>
+						<TabPane tab="Search" key="search">
+							<h2>SEARCH FOR USER</h2>
+							<Form
+								onSubmit={this.searchUser}
+								buttonText="Search"
+								fields={{
+									input: {
+										type: 'string',
+										label: 'input',
+										placeholder: 'email or id or username',
+										validate: []
+									}
+								}}
+								initialValues={{ type: 'id' }}
+							/>
+						</TabPane>
 
-					<TabPane tab="User Verification" key="userVerification">
-						<div className="list_users">
-							<ListUsers
+						<TabPane tab="User Verification" key="userVerification">
+							<div className="list_users">
+								<ListUsers
+									requestUser={this.requestUserData}
+									handleDownload={this.requestUsersDownload}
+								/>
+							</div>
+						</TabPane>
+
+						<TabPane tab="All Users" key="users">
+							<h2 className="m-top">LIST OF ALL USERS</h2>
+							<FullListUsers
+								coins={coins}
 								requestUser={this.requestUserData}
 								handleDownload={this.requestUsersDownload}
 							/>
-						</div>
-					</TabPane>
-
-					<TabPane tab="All Users" key="users">
-						<h2 className="m-top">LIST OF ALL USERS</h2>
-						<FullListUsers
-							coins={coins}
-							requestUser={this.requestUserData}
-							handleDownload={this.requestUsersDownload}
-						/>
-					</TabPane>
-				</Tabs>
-			</div>
-		);
+						</TabPane>
+					</Tabs>
+				</div>
+			);
 	}
 }
 
