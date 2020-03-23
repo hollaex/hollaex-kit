@@ -317,15 +317,14 @@ class QuickTradeContainer extends Component {
 
 const mapStateToProps = (store) => {
 	const pair = store.app.pair;
-	const pairData = store.app.pairs[pair];
-	const activeTheme = store.app.theme;
+	const pairData = store.app.pairs[pair] || {};
 	return {
 		pair,
 		pairData,
 		pairs: store.app.pairs,
 		coins: store.app.coins,
 		quoteData: store.orderbook.quoteData,
-		activeTheme,
+		activeTheme: store.app.theme,
 		activeLanguage: store.app.language,
 		quickTrade: store.orderbook.quickTrade,
 		orderLimits: store.app.orderLimits,

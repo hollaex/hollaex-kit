@@ -9,13 +9,11 @@ import STRINGS from '../../config/localizedStrings';
 
 const MobileTrade = ({
 	orderbookReady,
-	asks,
-	bids,
+	fees,
 	balance,
 	onSubmitOrder,
 	openCheckOrder,
 	onRiskyTrade,
-	marketPrice,
 	settings,
 	orderbookProps,
 	symbol,
@@ -48,9 +46,7 @@ const MobileTrade = ({
 				onRiskyTrade={onRiskyTrade}
 				symbol={symbol}
 				balance={balance}
-				asks={asks}
-				bids={bids}
-				marketPrice={marketPrice}
+				fees={fees}
 				showPopup={settings.orderConfirmationPopup}
 				setPriceRef={setPriceRef}
 				setSizeRef={setSizeRef}

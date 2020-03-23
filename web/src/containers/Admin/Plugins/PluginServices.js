@@ -113,12 +113,12 @@ class PluginServices extends Component {
                 initialValues = {};
             }
         } else {
-            if (pluginData.key &&
-                plugins.configuration &&
-                plugins.configuration[pluginData.key]
-            ) {
-                initialValues = {
-                    ...plugins.configuration[pluginData.key]
+            if (pluginData.key) {
+                if (plugins.configuration &&
+                    plugins.configuration[pluginData.key]) {
+                  	initialValues = {
+                      	...plugins.configuration[pluginData.key]
+                  	}
                 }
                 if (plugins.enabled.includes(services)) {
                     connectStatus = true;
