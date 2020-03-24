@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 // import { SubmissionError } from 'redux-form';
 import querystring from 'query-string';
-import { Spin, notification, Tabs } from 'antd';
+import { Link } from 'react-router';
+import { Table, Icon, Spin, Button, notification, Tabs } from 'antd';
+
+import './index.css';
 import { connect } from 'react-redux';
 
 import './index.css';
@@ -16,7 +19,8 @@ import { ListUsers, FullListUsers } from '../ListUsers';
 const INITIAL_STATE = {
 	userInformation: {},
 	userImages: {},
-	loading: false
+	loading: false,
+	userInformationList: []
 };
 
 const Form = AdminHocForm('USER_REQUEST_FORM');
@@ -56,27 +60,34 @@ class App extends Component {
 		// const isSupportUser = isSupport();
 		const { router } = this.props;
 		this.setState({ ...INITIAL_STATE, loading: true });
+		if (values.id) {
+			router.replace(`/admin/user?id=${values.id}`);
+		}
 		if (values.search) {
 			router.replace(`/admin/user?search=${values.search}`);
 		}
-		// if (values.id) {
-		// } else if (values.email) {
-		// 	router.replace(`/admin/user?email=${values.email}`);
-		// } else {
-		// 	router.replace(`/admin/user?username=${values.username}`);
-		// }
 		return requestUser(values)
 			.then(([userInformation, userImages, userBalance]) => {
 				if (userInformation &&
 					userInformation.data &&
-					userInformation.data[0] &&
-					userInformation.data[0].id) {
-					this.setState({
-						userInformation: userInformation.data[0],
-						userImages,
-						userBalance,
-						loading: false
-					});
+					userInformation.data.length) {
+					if (userInformation.data.length === 1) {
+						this.setState({
+							userInformationList: [],
+							userInformation: userInformation.data[0],
+							userImages,
+							userBalance,
+							loading: false
+						});
+					} else {
+						this.setState({
+							userInformationList: userInformation.data,
+							userInformation: {},
+							userImages,
+							userBalance,
+							loading: false
+						});
+					}
 				} else {
 					const error = new Error('Not found');
 					error.data = userInformation;
@@ -133,21 +144,56 @@ class App extends Component {
 		this.setState({ userInformation });
 	};
 
-	searchUser = ({ type, input }) => {
-		const searchUserdata = input.trim();
+	searchUser = (values) => {
+		console.log("values", values)
+		if (values.id) {
+			this.requestUserData({ id: values.id });
+		}
+		else {
+			const searchUserdata = values.input.trim();
+			this.requestUserData({ search: searchUserdata });
+		}
 		// const REGEX = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
 		// if (REGEX.test(searchUserdata)) {
 		// 	this.requestUserData({ email: searchUserdata });
 		// } else if (isNaN(input)) {
-		// 	this.requestUserData({ username: searchUserdata });
+
 		// } else if (!isNaN(parseInt(input, 10))) {
 		// }
-		this.requestUserData({ search: searchUserdata });
-	};
+	}
 
 	render() {
-		const { userInformation, userImages, userBalance, loading } = this.state;
+		const { userInformation, userImages, userBalance, loading, userInformationList } = this.state;
 		const { coins, constants } = this.props;
+		const renderBoolean = (value) => (
+			<Icon type={value ? 'check-circle-o' : 'close-circle'} />
+		);
+
+		const renderLink = (value) => (
+			<Button type="primary" onClick={() => this.requestUserData({ id: value })}>
+				<Link to={`/admin/user?id=${value}`}>
+					GO
+							<Icon type="right" />
+				</Link>
+			</Button>
+		);
+
+		const COLUMNS = [
+			{ title: 'ID', dataIndex: 'id', key: 'id' },
+			{ title: 'Email', dataIndex: 'email', key: 'email' },
+			{
+				title: 'Verification Level',
+				dataIndex: 'verification_level',
+				key: 'verification_level'
+			},
+			{
+				title: 'Activated',
+				dataIndex: 'activated',
+				key: 'activated',
+				render: renderBoolean
+			},
+			{ title: 'See Data', dataIndex: 'id', key: 'data', render: renderLink }
+		];
 
 		if (loading) {
 			return (
@@ -178,15 +224,31 @@ class App extends Component {
 								onSubmit={this.searchUser}
 								buttonText="Search"
 								fields={{
+									id: {
+										type: 'number',
+										label: 'Id',
+										placeholder: ' id ',
+										validate: []
+									},
 									input: {
 										type: 'string',
-										label: 'input',
-										placeholder: 'email or id or username',
+										label: 'Email or User Name',
+										placeholder: 'email or username',
 										validate: []
 									}
 								}}
 								initialValues={{ type: 'id' }}
 							/>
+							{userInformationList.length
+								? <Table
+									columns={COLUMNS}
+									dataSource={userInformationList}
+									rowKey={(data) => {
+										return data.id;
+									}}
+								/>
+								: null
+							}
 						</TabPane>
 
 						<TabPane tab="User Verification" key="userVerification">
@@ -194,6 +256,7 @@ class App extends Component {
 								<ListUsers
 									requestUser={this.requestUserData}
 									handleDownload={this.requestUsersDownload}
+									columns={COLUMNS}
 								/>
 							</div>
 						</TabPane>
@@ -204,6 +267,7 @@ class App extends Component {
 								coins={coins}
 								requestUser={this.requestUserData}
 								handleDownload={this.requestUsersDownload}
+								columns={COLUMNS}
 							/>
 						</TabPane>
 					</Tabs>
