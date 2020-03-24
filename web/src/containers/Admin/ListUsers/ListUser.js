@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { Table, Icon, Spin, Button } from 'antd';
-import { Link } from 'react-router';
+import { Table, Spin } from 'antd';
 
 import './index.css';
 

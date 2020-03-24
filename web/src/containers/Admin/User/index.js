@@ -145,7 +145,6 @@ class App extends Component {
 	};
 
 	searchUser = (values) => {
-		console.log("values", values)
 		if (values.id) {
 			this.requestUserData({ id: values.id });
 		}
@@ -267,7 +266,6 @@ class App extends Component {
 								coins={coins}
 								requestUser={this.requestUserData}
 								handleDownload={this.requestUsersDownload}
-								columns={COLUMNS}
 							/>
 						</TabPane>
 					</Tabs>
