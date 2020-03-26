@@ -91,7 +91,15 @@ if command apt-get -v > /dev/null 2>&1; then
 # Dependencies installer for macOS with Homebrew.
 elif command brew -v > /dev/null 2>&1; then
 
+
     if ! command docker -v > /dev/null 2>&1; then
+
+        echo "Updating Homebrew list"
+        if command brew update; then
+
+            IS_BREW_UPDATED=true
+
+        fi
 
         echo "Automated installation for Docker on macOS is not supported."
         echo "Please download 'Docker for Mac' on Official Docker website and proceed to install."
@@ -103,7 +111,7 @@ elif command brew -v > /dev/null 2>&1; then
 
         printf "\n\033[93mHollaEx CLI requires Docker-Compose to operate. Installing it now...\033[39m\n"
 
-        if [[ ! $IS_APT_UPDATED ]]; then
+        if [[ ! $IS_BREW_UPDATED ]]; then
 
             echo "Updating Homebrew list"
             brew update
@@ -129,7 +137,7 @@ elif command brew -v > /dev/null 2>&1; then
 
         printf "\n\033[93mHollaEx CLI requires jq to operate. Installing it now...\033[39m\n"
 
-        if [[ ! $IS_APT_UPDATED ]]; then
+        if [[ ! $IS_BREW_UPDATED ]]; then
 
             echo "Updating Homebrew list"
             brew update
@@ -211,9 +219,14 @@ if ! command docker -v > /dev/null 2>&1 || ! command docker-compose -v > /dev/nu
 
 else
 
-   printf "\n\nYou are good to go!\n"
-   echo "Start configuring your exchange with the command: 'hollaex setup'."
-   echo "To see the full list of commands, use 'hollaex help'."
+   printf "\nYou are good to go!\n\n"
+
+   if [[ "$IS_APT_UPDATED" ]] || [[ "$IS_BREW_UPDATED" ]]; then
+
+        echo "Start configuring your exchange with the command: 'hollaex setup'."
+        printf "\nTo see the full list of commands, use 'hollaex help'.\n\n"
+
+   fi 
 
    if [[ "$DOCKER_USERGROUP_ADDED" ]]; then
 

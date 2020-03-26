@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { Table, Icon, Spin, Button } from 'antd';
-import { Link } from 'react-router';
+import { Table, Spin } from 'antd';
 
 import './index.css';
 
@@ -75,64 +74,35 @@ class ListUsers extends Component {
 
 	render() {
 		const { users, loading, error, currentTablePage } = this.state;
-
-		const renderBoolean = (value) => (
-			<Icon type={value ? 'check-circle-o' : 'close-circle'} />
-		);
-
-		const renderLink = (value) => (
-			<Button type="primary" onClick={() => this.requestUser(value)}>
-				<Link to={`/admin/user?id=${value}`}>
-					GO
-					<Icon type="right" />
-				</Link>
-			</Button>
-		);
-		const COLUMNS = [
-			{ title: 'ID', dataIndex: 'id', key: 'id' },
-			{ title: 'Email', dataIndex: 'email', key: 'email' },
-			{
-				title: 'Verification Level',
-				dataIndex: 'verification_level',
-				key: 'verification_level'
-			},
-			{
-				title: 'Activated',
-				dataIndex: 'activated',
-				key: 'activated',
-				render: renderBoolean
-			},
-			{ title: 'See Data', dataIndex: 'id', key: 'data', render: renderLink }
-		];
-
+		const { columns } = this.props;
 		return (
 			<div className="app_container-content">
 				{loading ? (
 					<Spin size="large" />
 				) : (
-					<div>
-						{error && <p>-{error}-</p>}
 						<div>
-							<span
-								className="pointer"
-								onClick={() => this.props.handleDownload({ pending: true })}
-							>
-								Download table
+							{error && <p>-{error}-</p>}
+							<div>
+								<span
+									className="pointer"
+									onClick={() => this.props.handleDownload({ pending: true })}
+								>
+									Download table
 							</span>
+							</div>
+							<Table
+								columns={columns}
+								dataSource={users}
+								rowKey={(data) => {
+									return data.id;
+								}}
+								pagination={{
+									current: currentTablePage,
+									onChange: this.pageChange
+								}}
+							/>
 						</div>
-						<Table
-							columns={COLUMNS}
-							dataSource={users}
-							rowKey={(data) => {
-								return data.id;
-							}}
-							pagination={{
-								current: currentTablePage,
-								onChange: this.pageChange
-							}}
-						/>
-					</div>
-				)}
+					)}
 			</div>
 		);
 	}
