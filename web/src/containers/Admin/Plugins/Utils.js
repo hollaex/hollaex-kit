@@ -80,8 +80,8 @@ export const getPluginsForm = (key) => {
         'kyc': {
             id_docs_bucket: {
                 type: 'input',
-                label: 'ID DOCS BUCKET',
-                placeholder: 'ID DOCS BUCKET',
+                label: 'S3 Bucket',
+                placeholder: '<BUCKET_NAME>:<REGION>',
                 validate: [validateRequired, checkS3bucketUrl]
             },
             key: {
