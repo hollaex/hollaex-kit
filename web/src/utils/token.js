@@ -41,6 +41,8 @@ export const checkRole = () => {
 		role = 'support';
 	} else if (roles.includes('kyc')) {
 		role = 'kyc';
+	} else if (roles.includes('tech')) {
+		role = 'tech';
 	}
 	return role;
 };
@@ -57,12 +59,16 @@ export const isSupport = () => {
 export const isSupervisor = () => {
 	return checkRole() === 'supervisor';
 };
+export const isTech = () => {
+	return checkRole() === 'tech';
+};
 export const isAdmin = () => {
 	const role = checkRole();
 	return (
 		role === 'admin' ||
 		role === 'kyc' ||
 		role === 'support' ||
-		role === 'supervisor'
+		role === 'supervisor' ||
+		role === 'tech'
 	);
 };
