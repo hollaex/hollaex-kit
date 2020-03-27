@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Table, Icon, Spin, Button, Card } from 'antd';
 import { Link } from 'react-router';
 
-import { requestFullUsers } from '../ListUsers/actions';
+import { requestUsers } from '../ListUsers/actions';
 import { requestTrades } from './actions';
 
 const renderLink = (value) => (
@@ -52,7 +52,7 @@ class UserListTrades extends Component {
 			error: ''
 		});
 
-		requestFullUsers().then((data) => {
+		requestUsers().then((data) => {
 			this.setState({
 				users: data.data,
 				loading: false,

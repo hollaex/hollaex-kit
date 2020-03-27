@@ -1,5 +1,6 @@
 import querystring from 'query-string';
 import { requestAuthenticated } from '../../../utils';
+import axios from 'axios';
 
 export const requestDeposits = (query = { type: 'deposit' }) => {
 	const { type, currency, ...rest } = query;
@@ -16,6 +17,38 @@ export const requestDeposits = (query = { type: 'deposit' }) => {
 	}
 	return requestAuthenticated(path);
 };
+ 
+export const requestDepositDownload = (query = { type: 'deposit'} ) => {
+  const { type, currency, ...rest } = query;
+	let formProps = { ...rest };
+	if (currency) {
+		formProps.currency = currency;
+	}
+	const queryValues = Object.keys(formProps).length
+		? querystring.stringify(formProps)
+		: '';
+	let path = `/admin/deposits?${queryValues}`;
+	if (type === 'withdrawal') {
+		path = `/admin/withdrawals?${queryValues}`;
+	}
+  return axios({
+    method: 'GET',
+    url: path
+  })
+  .then(res => {
+    const url = window.URL.createObjectURL(new Blob([res.data]));
+    const link = document.createElement('a'); link.href = url;
+    ( type === 'deposit'
+      ? link.setAttribute('download', 'deposit.csv')
+      : link.setAttribute('download', 'withdrawal.csv')
+    )
+    document.body.appendChild(link); link.click();
+  })
+  .catch(error => {
+    console.log("errorss", error);
+  })
+};
+
 export const requestdate = () => {
 	const path = `/admin/deposits?start_date=[2018-06-01T01:42:43.233Z]&end_date=[2018-07-01T01:42:43.233Z]`;
 	return requestAuthenticated(path);

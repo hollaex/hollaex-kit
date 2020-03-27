@@ -13,14 +13,14 @@ const getContent = (strings, type) => {
 	}
 };
 
-const Legal = ({ type }) => {
+const Legal = ({ type, constants = {} }) => {
 	const { TITLE, SUBTITLE, TEXTS } = getContent(STRINGS, type);
 	return (
 		<div className="d-flex legal-wrapper justify-content-center">
 			<div className="d-flex flex-column legal-content-wrapper">
 				<div className="legal-logo-wrapper">
 					<img
-						src={HOLLAEX_LOGO}
+						src={constants.logo_path || HOLLAEX_LOGO}
 						alt={STRINGS.APP_NAME}
 						className="legal-logo"
 					/>

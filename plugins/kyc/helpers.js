@@ -2,22 +2,24 @@
 
 const { findUser } = require('../helpers/user');
 const { VerificationImage, sequelize } = require('../../db/models');
-const { ROLES } = require('../../constants');
+const { ROLES, GET_CONFIGURATION } = require('../../constants');
 const {
 	USER_FIELD_ADMIN_LOG,
 	ID_FIELDS,
 	ADDRESS_FIELDS,
 	VERIFY_STATUS
 } = require('../constants');
-const ID_DOCS_BUCKET = process.env.ID_DOCS_BUCKET || '';
-const S3_BUCKET_NAME = ID_DOCS_BUCKET.split(':')[0];
-const s3Write = require('./s3').write(S3_BUCKET_NAME);
-const s3Read = require('./s3').read(S3_BUCKET_NAME);
 const AWS_SE = 'amazonaws.com/';
 const EXPIRES = 300; // seconds
 const { differenceWith, isEqual } = require('lodash');
 const { all } = require('bluebird');
 const { ERROR_CHANGE_USER_INFO, IMAGE_NOT_FOUND } = require('./messages');
+
+const S3_BUCKET_NAME = () => {
+	return (GET_CONFIGURATION().constants.plugins.configuration.s3.id_docs_bucket).split(':')[0];
+};
+const s3Write = () => require('./s3').write(S3_BUCKET_NAME());
+const s3Read = () => require('./s3').read(S3_BUCKET_NAME());
 
 const multer = require('multer');
 const upload = multer();
@@ -38,13 +40,13 @@ const getType = (type = '') => {
 const uploadFile = (name, file) => {
 	return new Promise((resolve, reject) => {
 		const params = {
-			Bucket: S3_BUCKET_NAME,
+			Bucket: S3_BUCKET_NAME(),
 			Key: name,
 			Body: file.buffer,
 			ContentType: file.mimetype,
 			ACL: 'authenticated-read'
 		};
-		s3Write.upload(params, (err, data) => {
+		s3Write().upload(params, (err, data) => {
 			if (err) {
 				reject(err);
 			}
@@ -141,12 +143,12 @@ const getKeyFromLink = (link) => {
 const getPublicLink = (privateLink) => {
 	const Key = getKeyFromLink(privateLink);
 	const params = {
-		Bucket: S3_BUCKET_NAME,
+		Bucket: S3_BUCKET_NAME(),
 		Key: getKeyFromLink(privateLink),
 		Expires: EXPIRES
 	};
 
-	return s3Read.getSignedUrl('getObject', params);
+	return s3Read().getSignedUrl('getObject', params);
 };
 
 const updateUserPhoneNumber = (user, phone_number, options = {}) => {

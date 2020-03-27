@@ -25,7 +25,7 @@ const onSubmit = (values) => {
 
 	return performBalanceUpdate(postValues)
 		.then(() => {
-			message.success('Deposit created');
+			message.success('Funding processed');
 		})
 		.catch((err) => {
 			throw new SubmissionError({ _error: err.data.message });
@@ -39,13 +39,13 @@ const Balance = ({ user_id, pairs = [] }) =>
 		<div>
 			<Form
 				onSubmit={onSubmit}
-				buttonText="Deposit"
+				buttonText="Process"
 				fields={{
 					amount: {
 						type: 'number',
 						label: 'Amount',
-						min: 0.00001,
-						max: 100000000,
+						min: 0.00000001,
+						max: 100000000000,
 						validate: [validateRequired, validatePositiveNumber(0)]
 					},
 					currency: {

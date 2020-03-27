@@ -8,15 +8,20 @@ import { required } from '../../components/Form/validations';
 import { getErrorLocalized } from '../../utils/errors';
 import STRINGS from '../../config/localizedStrings';
 
-export const generateLanguageFormValues = () => ({
-	language: {
-		type: 'select',
-		validate: [required],
-		label: STRINGS.SETTINGS_LANGUAGE_LABEL,
-		options: STRINGS.SETTINGS_LANGUAGE_OPTIONS,
-		fullWidth: isMobile
-	}
-});
+export const generateLanguageFormValues = (values) => {
+	const langValues = STRINGS.SETTINGS_LANGUAGE_OPTIONS.filter(filterValue => {
+		return values.includes(filterValue.value)
+	})
+	return ({
+		language: {
+			type: 'select',
+			validate: [required],
+			label: STRINGS.SETTINGS_LANGUAGE_LABEL,
+			options: langValues,
+			fullWidth: isMobile
+		}
+	});
+}
 
 class Form extends Component {
 	componentDidUpdate(prevProps) {

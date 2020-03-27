@@ -43,21 +43,17 @@ import {
 const mapStateToProps = (store) => ({
 	coins: store.app.coins,
 	symbol: store.orderbook.symbol,
-	prices: store.orderbook.prices,
-	fetchingAuth: store.auth.fetching,
+	// prices: store.orderbook.prices,
 	activeNotification: store.app.activeNotification,
-	verification_level: store.user.verification_level,
+	// verification_level: store.user.verification_level,
 	activeLanguage: store.app.language,
 	activeTheme: store.app.theme,
-	orders: store.order.activeOrders,
-	user: store.user,
+	// user: store.user,
 	pair: store.app.pair,
-	orderbooks: store.orderbook.pairsOrderbooks,
-	pairsTrades: store.orderbook.pairsTrades,
 	unreadMessages: store.app.chatUnreadMessages,
-	settings: store.user.settings,
-	config: store.app.config,
-	info: store.app.info
+	constants: store.app.constants,
+	info: store.app.info,
+	enabledPlugins: store.app.enabledPlugins
 });
 
 const mapDispatchToProps = (dispatch) => ({

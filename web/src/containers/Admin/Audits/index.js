@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Row, Col, Table, Spin } from 'antd';
-import { CSVLink } from 'react-csv';
-import { requestUserAudits } from './actions';
+import { requestUserAudits, requestUserAuditsDownload } from './actions';
 
 import { SubmissionError } from 'redux-form';
 
@@ -58,12 +57,12 @@ const AUDIT_COLUMNS = [
 		render: formatDate
 	}
 ];
-const CSV_AUDIT_COLUMNS = [
-	{ label: 'Event', dataIndex: 'event', key: 'event' },
-	{ label: 'IP', dataIndex: 'ip', key: 'ip' },
-	{ label: 'Domain', dataIndex: 'domain', key: 'domain' },
-	{ label: 'Time', dataIndex: 'timestamp', key: 'timestamp' }
-];
+// const CSV_AUDIT_COLUMNS = [
+// 	{ label: 'Event', dataIndex: 'event', key: 'event' },
+// 	{ label: 'IP', dataIndex: 'ip', key: 'ip' },
+// 	{ label: 'Domain', dataIndex: 'domain', key: 'domain' },
+// 	{ label: 'Time', dataIndex: 'timestamp', key: 'timestamp' }
+// ];
 
 class Audits extends Component {
 	state = INITIAL_STATE;
@@ -92,6 +91,10 @@ class Audits extends Component {
 			});
 	};
 
+	requestUserAuditsDownload = (userId) => {
+		return requestUserAuditsDownload({format: 'csv', userId: userId})
+	}
+
 	render() {
 		const { audits, loading } = this.state;
 
@@ -106,13 +109,11 @@ class Audits extends Component {
 		return (
 			<Row gutter={16} style={{ marginTop: 16 }}>
 				<Col>
-					<CSVLink
-						filename={'audits-history.csv'}
-						data={audits ? audits : 'No Data'}
-						headers={CSV_AUDIT_COLUMNS}
-					>
-						Download table
-					</CSVLink>
+					<div>
+						<span className="pointer" onClick={() => this.requestUserAuditsDownload(this.props.userId)}>
+							Download table
+						</span>
+					</div>
 					<Table
 						rowKey={(data) => {
 							return data.id;

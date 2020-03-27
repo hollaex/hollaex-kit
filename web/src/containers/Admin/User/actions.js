@@ -1,5 +1,7 @@
 import { all } from 'bluebird';
 import querystring from 'query-string';
+import axios from 'axios';
+
 import { requestAuthenticated } from '../../../utils';
 import { WS_URL } from '../../../config/constants';
 
@@ -10,7 +12,7 @@ const toQueryString = (values) => {
 const handleError = (err) => err.data;
 
 export const requestUserData = (values) =>
-	requestAuthenticated(`/admin/user?${toQueryString(values)}`)
+	requestAuthenticated(`/admin/users?${toQueryString(values)}`)
 		.catch(handleError)
 		.then((data) => data);
 
@@ -62,3 +64,21 @@ export const requestUser = (values) => {
 	const promises = [requestUserData(values), requestUserImages(values)];
 	return all(promises);
 };
+
+export const requestUsersDownload = (values) => {
+	let path = '/admin/users';
+	if (values) {
+		path = `/admin/users?${toQueryString(values)}`;
+	}
+	return axios({
+		method: 'GET',
+		url: path
+	})
+	.then((res) => {
+	    const url = window.URL.createObjectURL(new Blob([res.data]));
+		const link = document.createElement('a'); link.href = url;
+		link.setAttribute('download', 'users.csv');
+		document.body.appendChild(link); link.click();
+	})
+	.catch((err) => {});
+}

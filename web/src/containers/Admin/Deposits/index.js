@@ -1,31 +1,30 @@
 import React, { Component } from 'react';
 import { Table, Spin, Button, Input, Select, Alert } from 'antd';
-import { CSVLink } from 'react-csv';
 import moment from 'moment';
 
 import './index.css';
 
-import { requestDeposits, completeDeposits, dismissDeposit } from './actions';
+import { requestDeposits, completeDeposits, dismissDeposit, requestDepositDownload } from './actions';
 import { renderRowContent, COLUMNS, SELECT_KEYS } from './utils';
 import { Filters } from './Filters';
 
 const InputGroup = Input.Group;
 const Option = Select.Option;
 const Search = Input.Search;
-const HEADERS = [
-	{ label: 'Type', dataIndex: 'type', key: 'type' },
-	{ label: 'User ID', dataIndex: 'user_id', key: 'user_id' },
-	{ label: 'Currency', dataIndex: 'currency', key: 'currency' },
-	{ label: 'Amount', dataIndex: 'amount', key: 'amount' },
-	{ label: 'Fee', dataIndex: 'fee', key: 'fee' },
-	{ label: 'Address', dataIndex: 'address', key: 'address' },
-	{
-		label: 'Transaction ID',
-		dataIndex: 'transaction_id',
-		key: 'transaction_id'
-	},
-	{ label: 'Time', dataIndex: 'created_at', key: 'created_at' }
-];
+// const HEADERS = [
+// 	{ label: 'Type', dataIndex: 'type', key: 'type' },
+// 	{ label: 'User ID', dataIndex: 'user_id', key: 'user_id' },
+// 	{ label: 'Currency', dataIndex: 'currency', key: 'currency' },
+// 	{ label: 'Amount', dataIndex: 'amount', key: 'amount' },
+// 	{ label: 'Fee', dataIndex: 'fee', key: 'fee' },
+// 	{ label: 'Address', dataIndex: 'address', key: 'address' },
+// 	{
+// 		label: 'Transaction ID',
+// 		dataIndex: 'transaction_id',
+// 		key: 'transaction_id'
+// 	},
+// 	{ label: 'Time', dataIndex: 'created_at', key: 'created_at' }
+// ];
 
 class Deposits extends Component {
 	state = {
@@ -262,6 +261,11 @@ class Deposits extends Component {
 		this.setState({ currentTablePage: count });
 	};
 
+	requestDepositDownload = () => {
+		const { initialData = {}, queryParams = {} } = this.props;
+		return requestDepositDownload({ ...initialData, ...this.state.queryParams, ...queryParams, format: 'csv' })
+	};
+
 	render() {
 		const {
 			deposits,
@@ -347,13 +351,11 @@ class Deposits extends Component {
 								closeText="Close"
 							/>
 						)}
-						<CSVLink
-							filename={'deposit/withdrawal.csv'}
-							data={deposits}
-							headers={HEADERS}
-						>
-							Download table
-						</CSVLink>
+						<div>
+							<span className="pointer" onClick={() => this.requestDepositDownload()}>
+								Download table
+							</span>
+						</div>
 						<Table
 							columns={columns}
 							dataSource={deposits.map((deposit, index) => {

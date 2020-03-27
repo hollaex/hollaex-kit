@@ -33,14 +33,17 @@ import {
 	Main,
 	DepositsPage,
 	Limits,
-	BlockchainTransaction,
-	AdminChat,
+	// BlockchainTransaction,
+	// AdminChat,
 	Wallets,
 	UserFees,
 	PATHS,
 	ExpiredExchange,
 	AdminOrders,
-	MobileHome
+	MobileHome,
+	Plugins,
+	PluginServices,
+	Settings
 } from './containers';
 
 import store from './store';
@@ -292,11 +295,11 @@ export default (
 				name="Admin Deposits"
 				component={withAdminProps(DepositsPage, 'deposit')}
 			/>
-			<Route
+			{/* <Route
 				path="/admin/blockchain"
 				name="Admin BlockchainTransaction"
 				component={BlockchainTransaction}
-			/>
+			/> */}
 			<Route
 				path="/admin/pair"
 				name="Admin Pairs"
@@ -307,15 +310,30 @@ export default (
 				name="Admin Coins"
 				component={withAdminProps(Limits, 'coin')}
 			/>
-			<Route
+			{/* <Route
 				path="/admin/chat"
 				name="Admin Chats"
 				component={withAdminProps(AdminChat, 'chat')}
-			/>
+			/> */}
 			<Route
 				path="/admin/activeorders"
 				name="Admin Orders"
 				component={withAdminProps(AdminOrders, 'orders')}
+			/>
+			<Route
+				path="/admin/plugins"
+				name="Admin plugins"
+				component={withAdminProps(Plugins, 'plugins')}
+			/>
+			<Route
+				path="/admin/plugins/:services"
+				name="Admin plugins"
+				component={withAdminProps(PluginServices, 'plugins')}
+			/>
+			<Route
+				path="/admin/settings"
+				name="Admin settings"
+				component={withAdminProps(Settings, 'settings')}
 			/>
 		</Route>
 		<Route

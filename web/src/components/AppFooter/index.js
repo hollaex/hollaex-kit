@@ -84,7 +84,7 @@ const generateSectionsText = (strings, theme) => {
 	];
 };
 
-const AppFooter = ({ className, theme }) => {
+const AppFooter = ({ className, theme, constants = {} }) => {
 	return (
 		<div
 			className={classnames(
@@ -164,7 +164,7 @@ const AppFooter = ({ className, theme }) => {
 							<div className="footer-content">
 								<div>
 									<img
-										src={HOLLAEX_LOGO_BLACK}
+										src={constants.logo_black_path || HOLLAEX_LOGO_BLACK}
 										alt="logo"
 										className="footer-logo"
 									/>

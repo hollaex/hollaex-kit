@@ -15,7 +15,7 @@ import {
 import { getCurrencyFromName, roundNumber } from '../../utils/currency';
 import {
 	performWithdraw,
-	requestWithdrawFee
+	// requestWithdrawFee
 } from '../../actions/walletActions';
 import { errorHandler } from '../../components/OtpForm/utils';
 
@@ -271,7 +271,7 @@ class Withdraw extends Component {
 const mapStateToProps = (store) => ({
 	prices: store.orderbook.prices,
 	balance: store.user.balance,
-	fee: store.user.fee,
+	// fee: store.user.fee,
 	verification_level: store.user.verification_level,
 	otp_enabled: store.user.otp_enabled,
 	bank_account: store.user.userData.bank_account,
@@ -280,13 +280,12 @@ const mapStateToProps = (store) => ({
 	// btcFee: store.wallet.btcFee,
 	selectedFee: formValueSelector(FORM_NAME)(store, 'fee'),
 	coins: store.app.coins,
-	pairs: store.app.pairs,
 	activeTheme: store.app.theme
 });
 
 const mapDispatchToProps = (dispatch) => ({
 	openContactForm: bindActionCreators(openContactForm, dispatch),
-	requestWithdrawFee: bindActionCreators(requestWithdrawFee, dispatch),
+	// requestWithdrawFee: bindActionCreators(requestWithdrawFee, dispatch),
 	dispatch
 });
 

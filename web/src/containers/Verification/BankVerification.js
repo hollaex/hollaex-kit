@@ -67,7 +67,7 @@ class BankVerification extends Component {
 				this.props.moveToNextStep('bank', {
 					bank_data: data,
 				});
-				this.props.setActivePageContent(0);
+				this.props.setActivePageContent('email');
 			})
 			.catch((err) => {
 				const error = { _error: err.message };
@@ -80,8 +80,8 @@ class BankVerification extends Component {
 	};
 
 	onGoBack = () => {
-		this.props.setActivePageContent(0);
-		this.props.setActiveTab(1);
+		this.props.setActivePageContent('email');
+		this.props.handleBack('bank');
 	};
 
 	render() {

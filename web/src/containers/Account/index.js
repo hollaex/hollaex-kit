@@ -73,7 +73,17 @@ class Account extends Component {
 	};
 
 	updateTabs = (
-		{ verification_level, otp_enabled, bank_account, id_data, full_name, phone_number, route, location },
+		{
+			verification_level,
+			otp_enabled,
+			bank_account,
+			id_data,
+			full_name,
+			phone_number,
+			route,
+			location,
+			enabledPlugins
+		},
 		updateActiveTab = false
 	) => {
 		let activeTab = this.state.activeTab > -1 ? this.state.activeTab : 0;
@@ -85,13 +95,15 @@ class Account extends Component {
 			activeDevelopers = initialValues.activeDevelopers;
 		}
 		let verificationPending = false;
-		if (verification_level < 1 && !full_name) {
+		if (verification_level < 1 && !full_name && enabledPlugins.includes('kyc')) {
 			verificationPending = true;
-		} else if (id_data.status === 0 || id_data.status === 2) {
+		} else if ((id_data.status === 0 || id_data.status === 2)
+			&& enabledPlugins.includes('kyc')) {
 			verificationPending = true;
-		} else if (!phone_number) {
+		} else if (!phone_number && enabledPlugins.includes('sms')) {
 			verificationPending = true;
-		} else if (!bank_account.filter(acc => acc.status === 0 || acc.status === 2).length) {
+		} else if (!bank_account.filter(acc => acc.status === 0 || acc.status === 2).length
+			&& enabledPlugins.includes('bank')) {
 			verificationPending = true;
 		}
 
@@ -130,7 +142,7 @@ class Account extends Component {
 						/>
 					),
 				notifications: verificationPending && !IS_XHT ? '!' : '',
-				content: <Verification />
+				content: <Verification router={this.props.router} />
 			},
 			{
 				title: isMobile ? (
@@ -206,7 +218,8 @@ const mapStateToProps = (state) => ({
 	id_data: state.user.userData.id_data,
 	phone_number: state.user.userData.phone_number,
 	full_name: state.user.userData.full_name,
-	activeLanguage: state.app.language
+	activeLanguage: state.app.language,
+	enabledPlugins: state.app.enabledPlugins
 });
 
 const mapDispatchToProps = (dispatch) => ({

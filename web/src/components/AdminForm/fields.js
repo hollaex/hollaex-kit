@@ -1,5 +1,5 @@
 import React from 'react';
-import { InputNumber, Input, DatePicker, Select } from 'antd';
+import { InputNumber, Input, DatePicker, Select, Checkbox } from 'antd';
 import moment from 'moment';
 import './index.css';
 
@@ -50,20 +50,40 @@ export const renderNumberField = ({
 
 export const renderSelectField = ({
 	input,
-	options,
+	options = [],
 	label,
 	meta: { touched, error, warning },
-	disabled = false
-}) => (
+	disabled = false,
+	multiSelect = false,
+	...rest
+}) => {
+	let value = input.value || '';
+	if ((multiSelect || rest.mode === 'tags') && typeof input.value === 'string') {
+		value = input.value
+			? input.value.split(',')
+			: [];
+	}
+	return (
 	<div className="input_field">
 		{label && <label>{label}</label>}
 		<div>
-			<Select {...input} placeholder={label} disabled={disabled}>
-				{options.map((option, index) => (
-					<Select.Option value={option.value || option} key={index}>
-						{option.label || option}
-					</Select.Option>
-				))}
+			<Select
+				mode={multiSelect ? 'multiple' : 'default'}
+				{...input}
+				value={value}
+				placeholder={label}
+				disabled={disabled}
+				{...rest}
+			>
+				{options.map((option, index) => {
+					let value = (!option.value && option.value !== '') ? option : option.value;
+					return (
+						<Select.Option value={value} key={index}>
+							{option.label || option}
+						</Select.Option>
+					)
+				}
+				)}
 			</Select>
 			{touched &&
 				((error && <span className="red-text">{error}</span>) ||
@@ -71,6 +91,7 @@ export const renderSelectField = ({
 		</div>
 	</div>
 );
+			}
 
 export const renderDateField = ({
 	input,
@@ -114,6 +135,26 @@ export const renderRangeField = ({
 				]}
 				format={dateFormat}
 			/>
+			{touched &&
+				((error && <span className="red-text">{error}</span>) ||
+					(warning && <span className="red-text">{warning}</span>))}
+		</div>
+	</div>
+);
+
+export const renderCheckField = ({
+	input,
+	label,
+	meta: { touched, error, warning },
+	disabled = false
+}) => (
+	<div className="input_field">
+		<div className="check_field">
+			<Checkbox
+				{...input}
+				disabled={disabled}
+			>{label}
+			</Checkbox>
 			{touched &&
 				((error && <span className="red-text">{error}</span>) ||
 					(warning && <span className="red-text">{warning}</span>))}

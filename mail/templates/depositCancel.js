@@ -29,7 +29,7 @@ const html = (email, data, language, domain) => {
           </p>
           <p>
             ${DEPOSITCANCEL.CLOSING[1]}<br />
-            ${DEPOSITCANCEL.CLOSING[2]}
+            ${DEPOSITCANCEL.CLOSING[2]()}
           </p>
         </div>
       `;
@@ -48,7 +48,7 @@ const text = (email, data, language, domain) => {
     ${DEPOSITCANCEL.BODY[2](data.transaction_id)}
     ${DEPOSITCANCEL.BODY[3](data.amount)}
     ${DEPOSITCANCEL.BODY[4]}
-    ${DEPOSITCANCEL.CLOSING[1]} ${DEPOSITCANCEL.CLOSING[2]}
+    ${DEPOSITCANCEL.CLOSING[1]} ${DEPOSITCANCEL.CLOSING[2]()}
   `;
 };
 

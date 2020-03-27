@@ -6,7 +6,7 @@ import TradeBlock from './components/TradeBlock';
 import STRINGS from '../../config/localizedStrings';
 import TradeHistory from './components/TradeHistory';
 import MobileDropdownWrapper from './components/MobileDropdownWrapper';
-import TVChartContainer from './Chart'
+import TVChartContainer from './ChartContainer';
 
 class MobileChart extends Component {
 	state = {
@@ -28,10 +28,8 @@ class MobileChart extends Component {
 			pair,
 			pairData,
 			activeTheme,
-			tradeHistory,
 			activeLanguage,
 			goToPair,
-			// orderLimits,
 			symbol
 		} = this.props;
 		const { chartHeight } = this.state;
@@ -66,11 +64,11 @@ class MobileChart extends Component {
 				>
 					{pair &&
 						chartHeight > 0 && (
-							<TVChartContainer activeTheme={activeTheme} symbol={symbol} tradeHistory={tradeHistory} pairData={pairData}/>
+							<TVChartContainer activeTheme={activeTheme} symbol={symbol} pairData={pairData}/>
 						)}
 				</TradeBlock>
 				<TradeBlock title={STRINGS.PUBLIC_SALES} className="f-1">
-					<TradeHistory data={tradeHistory} language={activeLanguage} />
+					<TradeHistory language={activeLanguage} />
 				</TradeBlock>
 			</div>
 		);

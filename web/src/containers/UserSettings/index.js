@@ -98,7 +98,7 @@ class UserSettings extends Component {
 		if (
 			nextProps.user.id !== this.props.user.id ||
 			nextProps.price !== this.props.price ||
-			nextProps.orders.length !== this.props.orders.length ||
+			//nextProps.orders.length !== this.props.orders.length ||
 			nextProps.balance.timestamp !== this.props.balance.timestamp ||
 			nextProps.activeLanguage !== this.props.activeLanguage ||
 			JSON.stringify(this.props.coins) !== JSON.stringify(nextProps.coins)
@@ -126,11 +126,12 @@ class UserSettings extends Component {
 	};
 
 	updateTabs = ({ username = '', settings = {}, coins = {} }, activeTab) => {
+		const { constants = {} } = this.props;
 		const formValues = generateFormValues({});
 		const usernameFormValues = generateUsernameFormValues(
 			settings.chat.set_username
 		);
-		const languageFormValue = generateLanguageFormValues();
+		const languageFormValue = generateLanguageFormValues(constants.valid_languages);
 		const notificationFormValues = generateNotificationFormValues();
 		const audioFormValues = generateAudioCueFormValues();
 		const warningFormValues = generateWarningFormValues();
@@ -198,7 +199,7 @@ class UserSettings extends Component {
 							this.onSubmitSettings(formProps, 'language')
 						}
 						formFields={languageFormValue}
-						initialValues={settings}
+						initialValues={{ language: settings.language }}
 					/>
 				)
 			},
@@ -370,7 +371,6 @@ class UserSettings extends Component {
 		if (this.props.verification_level === 0) {
 			return <Loader />;
 		}
-
 		const { activeTab, tabs } = this.state;
 		return (
 			<div className="presentation_container apply_rtl verification_container">
@@ -426,7 +426,8 @@ const mapStateToProps = (state) => ({
 	prices: state.orderbook.prices,
 	user: state.user,
 	price: state.orderbook.price,
-	orders: state.order.activeOrders
+	//orders: state.order.activeOrders,
+	constants: state.app.constants
 });
 
 const mapDispatchToProps = (dispatch) => ({

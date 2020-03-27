@@ -11,10 +11,10 @@ import AccountAssets from './components/AccountAssets';
 import MobileSummary from './MobileSummary';
 
 import { IconTitle } from '../../components';
-import { logout } from '../../actions/authAction';
+// import { logout } from '../../actions/authAction';
 import {
 	openFeesStructureandLimits,
-	openContactForm,
+	// openContactForm,
 	logoutconfirm,
 	setNotification,
 	NOTIFICATIONS
@@ -295,25 +295,21 @@ const mapStateToProps = (state) => ({
 	balance: state.user.balance,
 	activeTheme: state.app.theme,
 	prices: state.orderbook.prices,
-	symbol: state.orderbook.symbol,
 	price: state.orderbook.price,
 	orders: state.order.activeOrders,
 	activeLanguage: state.app.language,
 	tradeVolumes: state.user.tradeVolumes,
 	isValidBase: state.app.isValidBase,
-	config: state.app.config,
 	config_level: state.app.config_level,
 	affiliation: state.user.affiliation
 });
 
 const mapDispatchToProps = (dispatch) => ({
 	logoutconfirm: bindActionCreators(logoutconfirm, dispatch),
-	logout: bindActionCreators(logout, dispatch),
 	openFeesStructureandLimits: bindActionCreators(
 		openFeesStructureandLimits,
 		dispatch
 	),
-	openContactForm: bindActionCreators(openContactForm, dispatch),
 	setNotification: bindActionCreators(setNotification, dispatch),
 	getUserReferralCount: bindActionCreators(getUserReferralCount, dispatch)
 });

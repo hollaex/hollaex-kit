@@ -147,6 +147,10 @@ body {
 	flex-direction: column;
 }
 
+.check_field {
+	width: fit-content !important;
+}
+
 .input_field span.red-text {
 	padding-top: 2px;
 	font-size: 14px;

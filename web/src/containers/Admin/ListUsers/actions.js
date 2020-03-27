@@ -1,8 +1,18 @@
+import querystring from 'query-string';
+
 import { requestAuthenticated } from '../../../utils';
 
-export const requestUsers = () => requestAuthenticated('/admin/users');
+const toQueryString = (values) => {
+	return querystring.stringify(values);
+};
 
-export const requestFullUsers = () => requestAuthenticated('/admin/users/all');
+export const requestUsers = (values) => {
+	let url = '/admin/users';
+	if (values) {
+		url = `/admin/users?${toQueryString(values)}`;
+	}
+	return requestAuthenticated(url);
+}
 
 export const flagUser = (values) => {
 	const options = {

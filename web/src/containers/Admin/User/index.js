@@ -1,13 +1,16 @@
 import React, { Component } from 'react';
 // import { SubmissionError } from 'redux-form';
 import querystring from 'query-string';
-import { Spin, notification, Tabs } from 'antd';
+import { Link } from 'react-router';
+import { Table, Icon, Spin, Button, notification, Tabs } from 'antd';
+
+import './index.css';
 import { connect } from 'react-redux';
 
 import './index.css';
 import { AdminHocForm } from '../../../components';
 
-import { requestUser } from './actions';
+import { requestUser, requestUsersDownload } from './actions';
 
 import UserContent from './UserContent';
 import { ListUsers, FullListUsers } from '../ListUsers';
@@ -16,7 +19,8 @@ import { ListUsers, FullListUsers } from '../ListUsers';
 const INITIAL_STATE = {
 	userInformation: {},
 	userImages: {},
-	loading: false
+	loading: false,
+	userInformationList: []
 };
 
 const Form = AdminHocForm('USER_REQUEST_FORM');
@@ -58,20 +62,32 @@ class App extends Component {
 		this.setState({ ...INITIAL_STATE, loading: true });
 		if (values.id) {
 			router.replace(`/admin/user?id=${values.id}`);
-		} else if (values.email) {
-			router.replace(`/admin/user?email=${values.email}`);
-		} else {
-			router.replace(`/admin/user?username=${values.username}`);
+		}
+		if (values.search) {
+			router.replace(`/admin/user?search=${values.search}`);
 		}
 		return requestUser(values)
 			.then(([userInformation, userImages, userBalance]) => {
-				if (userInformation.id) {
-					this.setState({
-						userInformation,
-						userImages,
-						userBalance,
-						loading: false
-					});
+				if (userInformation &&
+					userInformation.data &&
+					userInformation.data.length) {
+					if (userInformation.data.length === 1) {
+						this.setState({
+							userInformationList: [],
+							userInformation: userInformation.data[0],
+							userImages,
+							userBalance,
+							loading: false
+						});
+					} else {
+						this.setState({
+							userInformationList: userInformation.data,
+							userInformation: {},
+							userImages,
+							userBalance,
+							loading: false
+						});
+					}
 				} else {
 					const error = new Error('Not found');
 					error.data = userInformation;
@@ -85,6 +101,10 @@ class App extends Component {
 				this.setState({ loading: false });
 				// throw new SubmissionError({ _error: err.data.message });
 			});
+	};
+
+	requestUsersDownload = (params = {}) => {
+		return requestUsersDownload({ ...params, format: 'csv' });
 	};
 
 	refreshData = (data, type) => {
@@ -124,21 +144,55 @@ class App extends Component {
 		this.setState({ userInformation });
 	};
 
-	searchUser = ({ type, input }) => {
-		const searchUserdata = input.trim();
-		const REGEX = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
-		if (REGEX.test(searchUserdata)) {
-			this.requestUserData({ email: searchUserdata });
-		} else if (isNaN(input)) {
-			this.requestUserData({ username: searchUserdata });
-		} else if (!isNaN(parseInt(input, 10))) {
-			this.requestUserData({ id: searchUserdata });
+	searchUser = (values) => {
+		if (values.id) {
+			this.requestUserData({ id: values.id });
 		}
-	};
+		else {
+			const searchUserdata = values.input.trim();
+			this.requestUserData({ search: searchUserdata });
+		}
+		// const REGEX = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
+		// if (REGEX.test(searchUserdata)) {
+		// 	this.requestUserData({ email: searchUserdata });
+		// } else if (isNaN(input)) {
+
+		// } else if (!isNaN(parseInt(input, 10))) {
+		// }
+	}
 
 	render() {
-		const { userInformation, userImages, userBalance, loading } = this.state;
-		const { coins, config } = this.props;
+		const { userInformation, userImages, userBalance, loading, userInformationList } = this.state;
+		const { coins, constants } = this.props;
+		const renderBoolean = (value) => (
+			<Icon type={value ? 'check-circle-o' : 'close-circle'} />
+		);
+
+		const renderLink = (value) => (
+			<Button type="primary" onClick={() => this.requestUserData({ id: value })}>
+				<Link to={`/admin/user?id=${value}`}>
+					GO
+							<Icon type="right" />
+				</Link>
+			</Button>
+		);
+
+		const COLUMNS = [
+			{ title: 'ID', dataIndex: 'id', key: 'id' },
+			{ title: 'Email', dataIndex: 'email', key: 'email' },
+			{
+				title: 'Verification Level',
+				dataIndex: 'verification_level',
+				key: 'verification_level'
+			},
+			{
+				title: 'Activated',
+				dataIndex: 'activated',
+				key: 'activated',
+				render: renderBoolean
+			},
+			{ title: 'See Data', dataIndex: 'id', key: 'data', render: renderLink }
+		];
 
 		if (loading) {
 			return (
@@ -151,7 +205,7 @@ class App extends Component {
 		return userInformation && userInformation.id ? (
 			<UserContent
 				coins={coins}
-				config={config}
+				constants={constants}
 				userBalance={userBalance}
 				userInformation={userInformation}
 				userImages={userImages}
@@ -161,47 +215,68 @@ class App extends Component {
 				onChangeUserDataSuccess={this.onChangeUserDataSuccess}
 			/>
 		) : (
-			<div className="app_container-content">
-				<Tabs>
-					<TabPane tab="Search" key="search">
-						<h2>SEARCH FOR USER</h2>
-						<Form
-							onSubmit={this.searchUser}
-							buttonText="Search"
-							fields={{
-								input: {
-									type: 'string',
-									label: 'input',
-									placeholder: 'email or id or username',
-									validate: []
-								}
-							}}
-							initialValues={{ type: 'id' }}
-						/>
-					</TabPane>
+				<div className="app_container-content">
+					<Tabs>
+						<TabPane tab="Search" key="search">
+							<h2>SEARCH FOR USER</h2>
+							<Form
+								onSubmit={this.searchUser}
+								buttonText="Search"
+								fields={{
+									id: {
+										type: 'number',
+										label: 'Id',
+										placeholder: ' id ',
+										validate: []
+									},
+									input: {
+										type: 'string',
+										label: 'Email or User Name',
+										placeholder: 'email or username',
+										validate: []
+									}
+								}}
+								initialValues={{ type: 'id' }}
+							/>
+							{userInformationList.length
+								? <Table
+									columns={COLUMNS}
+									dataSource={userInformationList}
+									rowKey={(data) => {
+										return data.id;
+									}}
+								/>
+								: null
+							}
+						</TabPane>
 
-					<TabPane tab="User Verification" key="userVerification">
-						<div className="list_users">
-							<ListUsers requestUser={this.requestUserData} />
-						</div>
-					</TabPane>
+						<TabPane tab="User Verification" key="userVerification">
+							<div className="list_users">
+								<ListUsers
+									requestUser={this.requestUserData}
+									handleDownload={this.requestUsersDownload}
+									columns={COLUMNS}
+								/>
+							</div>
+						</TabPane>
 
-					<TabPane tab="All Users" key="users">
-						<h2 className="m-top">LIST OF ALL USERS</h2>
-						<FullListUsers
-							coins={coins}
-							requestUser={this.requestUserData}
-						/>
-					</TabPane>
-				</Tabs>
-			</div>
-		);
+						<TabPane tab="All Users" key="users">
+							<h2 className="m-top">LIST OF ALL USERS</h2>
+							<FullListUsers
+								coins={coins}
+								requestUser={this.requestUserData}
+								handleDownload={this.requestUsersDownload}
+							/>
+						</TabPane>
+					</Tabs>
+				</div>
+			);
 	}
 }
 
 const mapStateToProps = (state) => ({
 	coins: state.app.coins,
-	config: state.app.config
+	constants: state.app.constants
 });
 
 export default connect(mapStateToProps)(App);

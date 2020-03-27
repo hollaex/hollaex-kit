@@ -17,7 +17,7 @@ const html = (email, data, language, domain) => {
         ${WELCOME.GREETING(email)}
       </p>
       <p>
-        ${WELCOME.BODY[1]}
+        ${WELCOME.BODY[1]()}
       </p>
       <p>
         ${WELCOME.BODY[2](
@@ -26,11 +26,11 @@ const html = (email, data, language, domain) => {
         )}
       </p>
       <p>
-        ${WELCOME.BODY[5]}
+        ${WELCOME.BODY[5]()}
       </p>
       <p>
         ${WELCOME.CLOSING[1]}<br />
-        ${WELCOME.CLOSING[2]}
+        ${WELCOME.CLOSING[2]()}
       </p>
     </div>
   `;
@@ -42,13 +42,13 @@ const text = (email, data, language, domain) => {
 	const { WELCOME } = require('../strings').languageFile(language);
 	return `
     ${WELCOME.GREETING(email)}
-    ${WELCOME.BODY[1]}
+    ${WELCOME.BODY[1]()}
     ${WELCOME.BODY[2](
 			`${WELCOME.BODY[3]}(${linkAccount})`,
 			`${WELCOME.BODY[4]}(${linkDeposit})`
 		)}
-    ${WELCOME.BODY[5]}
-    ${WELCOME.CLOSING[1]} ${WELCOME.CLOSING[2]}
+    ${WELCOME.BODY[5]()}
+    ${WELCOME.CLOSING[1]} ${WELCOME.CLOSING[2]()}
   `;
 };
 

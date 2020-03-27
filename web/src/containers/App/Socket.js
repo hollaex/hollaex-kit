@@ -106,6 +106,7 @@ class Container extends Component {
 			this.setUserSocket(getToken());
 		}
 		this.setState({ appLoaded: true }, () => {
+			this.props.connectionCallBack(true);
 			this._resetTimer();
 		});
 	};
@@ -451,7 +452,7 @@ const mapStateToProps = (store) => ({
 	orderbooks: store.orderbook.pairsOrderbooks,
 	pairsTrades: store.orderbook.pairsTrades,
 	settings: store.user.settings,
-	config: store.app.config,
+	constants: store.app.constants,
 	info: store.app.info
 });
 
