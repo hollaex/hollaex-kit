@@ -10,9 +10,11 @@ import { Loader, MobileBarBack } from '../../components';
 import {
 	ICONS,
 	MIN_VERIFICATION_LEVEL_TO_WITHDRAW,
-	MAX_VERIFICATION_LEVEL_TO_WITHDRAW
+	MAX_VERIFICATION_LEVEL_TO_WITHDRAW,
+	DEFAULT_COIN_DATA
 } from '../../config/constants';
 import { getCurrencyFromName, roundNumber } from '../../utils/currency';
+import { getDecimals } from '../../utils/utils';
 import {
 	performWithdraw,
 	// requestWithdrawFee
@@ -158,7 +160,7 @@ class Withdraw extends Component {
 		const { balance, selectedFee = 0, dispatch, verification_level, coins } = this.props;
 		const { currency } = this.state;
 		const balanceAvailable = balance[`${currency}_available`];
-		const { withdrawal_limits = {} } = coins[currency];
+		const { increment_unit, withdrawal_limits = {} } = coins[currency] || DEFAULT_COIN_DATA;
 		// if (currency === BASE_CURRENCY) {
 		// 	const fee = calculateBaseFee(balanceAvailable);
 		// 	const amount = math.number(
@@ -188,7 +190,7 @@ class Withdraw extends Component {
 					)
 				);
 			}
-			dispatch(change(FORM_NAME, 'amount', roundNumber(amount, 4)));
+			dispatch(change(FORM_NAME, 'amount', roundNumber(amount, getDecimals(increment_unit))));
 		// }
 	};
 

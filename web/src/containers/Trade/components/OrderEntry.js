@@ -88,7 +88,7 @@ class OrderEntry extends Component {
 	};
 
 	setMax = () => {
-		const { side, balance, pair_base, min_size , pair_2} = this.props;
+		const { side, balance, pair_base, increment_size, pair_2} = this.props;
 		const size = parseFloat(this.props.size || 0);
 		const price = parseFloat(this.props.price || 0);
 		let maxSize = balance[`${pair_base}_available`];
@@ -96,7 +96,7 @@ class OrderEntry extends Component {
 			maxSize = mathjs.divide(balance[`${pair_2}_available`], price);
 		}
 		if (maxSize !== size) {
-			this.props.change(FORM_NAME, 'size', roundNumber(maxSize, getDecimals(min_size)));
+			this.props.change(FORM_NAME, 'size', roundNumber(maxSize, getDecimals(increment_size)));
 		}
 	};
 
@@ -307,7 +307,7 @@ class OrderEntry extends Component {
 				placeholder: '0.00',
 				normalize: normalizeFloat,
 				step: increment_size,
-				min: increment_size,
+				min: min_size,
 				max: max_size,
 				validate: [
 					required,
@@ -316,7 +316,7 @@ class OrderEntry extends Component {
 				],
 				currency: symbol.toUpperCase(),
 				parse: (value = '') => {
-					let decimal = getDecimals(min_size);
+					let decimal = getDecimals(increment_size);
 					let decValue = toFixed(value);
 					let valueDecimal = getDecimals(decValue);
 
