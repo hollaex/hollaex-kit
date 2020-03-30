@@ -78,7 +78,7 @@ class FullListUsers extends Component {
 		const pageCount = count % 5 === 0 ? 5 : count % 5;
 		const apiPageTemp = Math.floor(count / 5);
 		if (limit === pageSize * pageCount && apiPageTemp >= page && isRemaining) {
-			this.requestUsers(
+			this.requestFullUsers(
 				page + 1,
 				limit
 			);
