@@ -88,12 +88,12 @@ class OrderEntry extends Component {
 	};
 
 	setMax = () => {
-		const { side, balance, pair_base, increment_size, pair_2} = this.props;
+		const { side, balance = {}, pair_base, increment_size, pair_2} = this.props;
 		const size = parseFloat(this.props.size || 0);
 		const price = parseFloat(this.props.price || 0);
-		let maxSize = balance[`${pair_base}_available`];
+		let maxSize = balance[`${pair_base}_available`] || 0;
 		if (side === 'buy') {
-			maxSize = mathjs.divide(balance[`${pair_2}_available`], price);
+			maxSize = mathjs.divide(balance[`${pair_2}_available`] || 0, price);
 		}
 		if (maxSize !== size) {
 			this.props.change(FORM_NAME, 'size', roundNumber(maxSize, getDecimals(increment_size)));
