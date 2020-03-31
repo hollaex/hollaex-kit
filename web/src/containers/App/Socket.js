@@ -46,13 +46,17 @@ import { playBackgroundAudioNotification } from '../../utils/utils';
 import { getToken, isLoggedIn } from '../../utils/token';
 
 class Container extends Component {
-	state = {
-		publicSocket: undefined,
-		privateSocket: undefined,
-		idleTimer: undefined,
-		ordersQueued: [],
-		limitFilledOnOrder: ''
-	};
+	constructor(props) {
+		super(props);
+		this.state = {
+			publicSocket: undefined,
+			privateSocket: undefined,
+			idleTimer: undefined,
+			ordersQueued: [],
+			limitFilledOnOrder: ''
+		}
+		this.orderCache = {};
+	}
 
 	limitTimeOut = null;
 
@@ -111,6 +115,13 @@ class Container extends Component {
 		});
 	};
 
+	storeData = (data) => {
+		this.props.setOrderbooks(data);
+		this.orderCache = {};
+	};
+
+	storeOrderData = debounce(this.storeData, 250);
+
 	setPublicWS = () => {
 		const publicSocket = io(`${WS_URL}/realtime`, {
 			query: {
@@ -156,7 +167,9 @@ class Container extends Component {
 		});
 
 		publicSocket.on('orderbook', (data) => {
-			this.props.setOrderbooks(data);
+			this.orderCache = { ...this.orderCache, ...data };
+			this.storeOrderData(this.orderCache);
+			// this.props.setOrderbooks(data);
 		});
 
 		publicSocket.on('trades', (data) => {
