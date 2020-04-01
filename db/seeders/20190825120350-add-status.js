@@ -96,7 +96,8 @@ const status = [{
 			broker: {
 				quick_trade_rate: 0.03,
 				quick_trade_expiration_time: 20,
-				trade_master_account_id: 2
+				trade_master_account_id: 2,
+				enabled: true
 			},
 			security: {
 				token_time: '24h',
