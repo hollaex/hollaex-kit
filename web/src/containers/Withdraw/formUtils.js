@@ -11,6 +11,8 @@ import STRINGS from "../../config/localizedStrings";
 import { ICONS, DEFAULT_COIN_DATA } from "../../config/constants";
 import { getLanguage } from '../../utils/string';
 import { getTheme } from "../../utils/theme";
+import { toFixed } from '../../utils/currency';
+import { getDecimals } from '../../utils/utils';
 
 export const generateInitialValues = (symbol, coins = {}) => {
 	const { min, withdrawal_fee } = coins[symbol] || DEFAULT_COIN_DATA;
@@ -104,6 +106,17 @@ export const generateFormValues = (
 			className: "file_upload_icon",
 			useSvg: true,
 			onClick: calculateMax
+		},
+		parse: (value = '') => {
+			let decimal = getDecimals(increment_unit);
+			let decValue = toFixed(value);
+			let valueDecimal = getDecimals(decValue);
+
+			let result = value;
+			if (decimal < valueDecimal) {
+				result = decValue.toString().substring(0, (decValue.toString().length - (valueDecimal - decimal)));
+			}
+			return result;
 		}
 	};
 
