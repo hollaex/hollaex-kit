@@ -515,21 +515,24 @@ class AppBar extends Component {
 										</div>
 									</div>
 								</Link>
-								<Link to={`/quick-trade/${pair}`}>
-									<div
-										className={classnames('app_bar-quicktrade', 'd-flex', {
-											'quick_trade-active': activePath === 'quick-trade'
-										})}
-									>
-										<ReactSVG
-											path={ICONS.QUICK_TRADE_TAB_ACTIVE}
-											wrapperClassName="quicktrade_icon"
-										/>
-										<div className="d-flex align-items-center overflow">
-											{STRINGS.QUICK_TRADE}
+								{constants.broker_enabled
+									? <Link to={`/quick-trade/${pair}`}>
+										<div
+											className={classnames('app_bar-quicktrade', 'd-flex', {
+												'quick_trade-active': activePath === 'quick-trade'
+											})}
+										>
+											<ReactSVG
+												path={ICONS.QUICK_TRADE_TAB_ACTIVE}
+												wrapperClassName="quicktrade_icon"
+											/>
+											<div className="d-flex align-items-center overflow">
+												{STRINGS.QUICK_TRADE}
+											</div>
 										</div>
-									</div>
-								</Link>
+									</Link>
+									: null
+								}
 							</div>
 							<MenuList
 								selectedMenu={selectedMenu}
