@@ -8,13 +8,13 @@ module.exports = {
 	up: (queryInterface, Sequelize) => {
 		return queryInterface
 			.addColumn(TABLE, COLUMN1, {
-				type: Sequelize.DOUBLE,
-				allowNull: true
+				type: Sequelize.BOOLEAN,
+				defaultValue: false
 			})
 			.then(() => {
 				return queryInterface.addColumn(TABLE, COLUMN2, {
-					type: Sequelize.DOUBLE,
-					allowNull: true
+					type: Sequelize.BOOLEAN,
+					defaultValue: false
 				});
 			});
 	},
