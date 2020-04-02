@@ -22,7 +22,7 @@ export const getChartConfig = () => {
 };
 
 export const getChartSymbol = (symbol, tickSize) => {
-	let pricescale = Math.round(1 / tickSize);
+	let pricescale = math.round(1 / tickSize);
 	if (/[^0-1]/g.test(pricescale)) {
 		let count = getDecimals(tickSize);
 		pricescale = math.pow(10, count);
