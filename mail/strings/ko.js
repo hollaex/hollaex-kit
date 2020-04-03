@@ -192,13 +192,11 @@ const VAULTWITHDRAWALFAIL = {
 	BODY: {
 		1: 'A withdrawal made to Vault was unsuccessful.',
 		2: (userId) => `User ID: ${userId}`,
-		3: (userEmail) => `User Email: ${userEmail}`,
-		4: (withdrawalId) => `Withdrawal ID: ${withdrawalId}`,
-		5: (currency) => `Currency: ${currency}`,
-		6: (amount) => `Amount: ${amount}`,
-		7: (side) => `Side: ${side}`,
-		8: (address) => `Address: ${address}`,
-		9: 'The withdrawal\'s state reamins processed.'
+		3: (withdrawalId) => `Withdrawal ID: ${withdrawalId}`,
+		4: (currency) => `Currency: ${currency}`,
+		5: (amount) => `Amount: ${amount}`,
+		6: (address) => `Address: ${address}`,
+		7: 'The withdrawal\'s state reamins processed.'
 	}
 };
 
