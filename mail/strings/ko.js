@@ -187,6 +187,22 @@ const WITHDRAWALREQUEST = {
 	CLOSING: COMMON.CLOSING
 };
 
+const WITHDRAWALVAULTFAIL = {
+	TITLE: 'Vault Withdrawal Unsuccessful',
+	BODY: {
+		1: 'A withdrawal made to Vault was unsuccessful.',
+		2: (userId) => `User ID: ${userId}`,
+		3: (userEmail) => `User Email: ${userEmail}`,
+		4: (withdrawalId) => `Withdrawal ID: ${withdrawalId}`,
+		5: (currency) => `Currency: ${currency}`,
+		6: (amount) => `Amount: ${amount}`,
+		7: (side) => `Side: ${side}`,
+		8: (address) => `Address: ${address}`,
+		9: 'The withdrawal\'s state reamins processed.'
+	},
+	CLOSING: COMMON.CLOSING
+};
+
 const USERVERIFICATIONREJECT = {
 	TITLE: (type) =>
 		type === 'id' ? 'ID 인증 거절' : '새로운 은행정보 등록 거절',
@@ -257,6 +273,7 @@ module.exports = {
 	DEPOSITCANCEL,
 	WITHDRAWAL,
 	WITHDRAWALREQUEST,
+	WITHDRAWALVAULTFAIL,
 	USERVERIFICATION,
 	SUSPICIOUSDEPOSIT,
 	CONTACTFORM,
