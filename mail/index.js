@@ -71,6 +71,7 @@ const sendEmail = (
 			to.BccAddresses = BCC_ADDRESSES();
 			break;
 		}
+		case MATILTYPE.VAULT_WITHDRAWAL_FAIL:
 		case MAILTYPE.SUSPICIOUS_DEPOSIT: {
 			if (!SEND_EMAIL_TO_SUPPORT()) return;
 			to.ToAddresses = [MASTER_EMAIL()];

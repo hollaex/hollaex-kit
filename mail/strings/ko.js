@@ -187,7 +187,7 @@ const WITHDRAWALREQUEST = {
 	CLOSING: COMMON.CLOSING
 };
 
-const WITHDRAWALVAULTFAIL = {
+const VAULTWITHDRAWALFAIL = {
 	TITLE: 'Vault Withdrawal Unsuccessful',
 	BODY: {
 		1: 'A withdrawal made to Vault was unsuccessful.',
@@ -199,8 +199,7 @@ const WITHDRAWALVAULTFAIL = {
 		7: (side) => `Side: ${side}`,
 		8: (address) => `Address: ${address}`,
 		9: 'The withdrawal\'s state reamins processed.'
-	},
-	CLOSING: COMMON.CLOSING
+	}
 };
 
 const USERVERIFICATIONREJECT = {
@@ -273,7 +272,7 @@ module.exports = {
 	DEPOSITCANCEL,
 	WITHDRAWAL,
 	WITHDRAWALREQUEST,
-	WITHDRAWALVAULTFAIL,
+	VAULTWITHDRAWALFAIL,
 	USERVERIFICATION,
 	SUSPICIOUSDEPOSIT,
 	CONTACTFORM,
