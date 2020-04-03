@@ -33,3 +33,5 @@ templates/local/letsencrypt/*
 templates/kubernetes/config/*
 
 .DS_Store
+
+.token
