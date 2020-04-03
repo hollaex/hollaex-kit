@@ -196,7 +196,7 @@ const VAULTWITHDRAWALFAIL = {
 		4: (currency) => `Currency: ${currency}`,
 		5: (amount) => `Amount: ${amount}`,
 		6: (address) => `Address: ${address}`,
-		7: 'The withdrawal\'s state reamins processed.'
+		7: 'The withdrawal\'s state remains processed.'
 	}
 };
 
