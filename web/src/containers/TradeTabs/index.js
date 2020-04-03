@@ -162,11 +162,14 @@ class AddTradeTab extends Component {
 				</div>
 				<div className="trade_tabs-content">
 					<div className="d-flex justify-content-end">
-						<span className="trade_tabs-link link-separator">
-							<Link to={`/quick-trade/${quickPair}`}>
-								{STRINGS.QUICK_TRADE}
-							</Link>
-						</span>
+						{constants.broker_enabled
+							? <span className="trade_tabs-link link-separator">
+								<Link to={`/quick-trade/${quickPair}`}>
+									{STRINGS.QUICK_TRADE}
+								</Link>
+							</span>
+							: null
+						}
 						<span className="trade_tabs-link link-separator">
 							<Link to="/account">{STRINGS.ACCOUNTS.TITLE}</Link>
 						</span>
@@ -255,7 +258,7 @@ class AddTradeTab extends Component {
 										</div>
 										<div>{`${STRINGS.CHART_TEXTS.v}: ${
 											ticker.volume
-										} ${symbol.toUpperCase()}`}</div>
+											} ${symbol.toUpperCase()}`}</div>
 									</div>
 								</div>
 							);

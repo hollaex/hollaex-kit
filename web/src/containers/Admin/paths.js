@@ -91,6 +91,11 @@ export const PATHS = [
 	// 	routeKey: 'blockChain'
 	// },
 	{
+		path: '/admin/broker',
+		label: 'Broker',
+		routeKey: 'broker'
+	},
+	{
 		path: '/admin/plugins',
 		// component: BlockchainTransaction,
 		label: 'Plugins',

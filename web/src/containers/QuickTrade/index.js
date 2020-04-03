@@ -53,6 +53,11 @@ class QuickTradeContainer extends Component {
 		if (this.props.user.id) {
 			this.calculateSections(this.props);
 		}
+		if (this.props.constants &&
+			!this.props.constants.broker_enabled &&
+			!this.props.fetchingAuth) {
+				this.props.router.push('/account');
+		}
 	}
 
 	componentWillReceiveProps(nextProps) {
@@ -331,7 +336,9 @@ const mapStateToProps = (store) => {
 		prices: store.orderbook.prices,
 		balance: store.user.balance,
 		user: store.user,
-		settings: store.user.settings
+		settings: store.user.settings,
+		constants: store.app.constants,
+		fetchingAuth: store.auth.fetching
 	};
 };
 
