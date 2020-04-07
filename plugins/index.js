@@ -15,7 +15,7 @@ const PORT = PLUGIN_PORT
 const enabledPlugins = () => PLUGINS().split(',');
 
 const availablePlugins = readdirSync(__dirname, { withFileTypes: true })
-	.filter(dirent => dirent.isDirectory() && dirent.name !== 'helpers' && dirent.name !== 'node_modules')
+	.filter(dirent => dirent.isDirectory() && dirent.name !== 'helpers' && dirent.name !== 'node_modules' & dirent.name !== 'crons' && dirent.name !== 'jobs')
 	.map(dirent => dirent.name);
 
 app.get('/plugins', (req, res) => {
