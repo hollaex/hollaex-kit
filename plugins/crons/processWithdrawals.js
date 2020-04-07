@@ -55,7 +55,7 @@ Deposit.findAll({
 							amount: withdrawal.amount,
 						}
 					},
-					uri: `${VAULT_ENDPOINT}/${VAULT_WALLET(withdrawal.currency)}/withdraw/simple`,
+					uri: `${VAULT_ENDPOINT}/${VAULT_WALLET(withdrawal.dataValues.currency)}/withdraw/simple`,
 					json: true
 				};
 				if (withdrawal.currency === 'xrp') {
