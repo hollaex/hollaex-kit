@@ -47,19 +47,24 @@ Deposit.findAll({
 		options.push(
 			...withdrawals.map((withdrawal) => {
 				const option = {
-					method: 'POST',
-					headers: {
-						key: VAULT_KEY(),
-						secret: VAULT_SECRET()
+					data: {
+						method: 'POST',
+						headers: {
+							key: VAULT_KEY(),
+							secret: VAULT_SECRET()
+						},
+						body: {
+							data: {
+								address: withdrawal.dataValues.address,
+								amount: withdrawal.dataValues.amount,
+							}
+						},
+						uri: `${VAULT_ENDPOINT}/${VAULT_WALLET(withdrawal.dataValues.currency)}/withdraw/simple`,
+						json: true
 					},
-					body: {
-						data: {
-							address: withdrawal.dataValues.address,
-							amount: withdrawal.dataValues.amount,
-						}
-					},
-					uri: `${VAULT_ENDPOINT}/${VAULT_WALLET(withdrawal.dataValues.currency)}/withdraw/simple`,
-					json: true
+					info: [withdrawal],
+					type: 'SINGLE',
+					currency: withdrawal.dataValues.currency
 				};
 				if (withdrawal.dataValues.currency === 'xrp') {
 					const [xrpAddress, xrpTag] = withdrawal.dataValues.address.split(':');
@@ -86,7 +91,8 @@ Deposit.findAll({
 						})
 					},
 					uri: `${VAULT_ENDPOINT}/${VAULT_WALLET('btc')}/withdraw/batch`,
-					json: true
+					json: true,
+					currency: 'btc'
 				},
 				info: btcWithdrawals,
 				type: 'BATCH'
@@ -112,7 +118,8 @@ Deposit.findAll({
 					json: true
 				},
 				info: bchWithdrawals,
-				type: 'BATCH'
+				type: 'BATCH',
+				currency: 'bch'
 			});
 		}
 		return all(options.map((option) => {
@@ -133,6 +140,7 @@ Deposit.findAll({
 					.then((dbWithdrawals) => {
 						return rp(option.data)
 							.then((data) => {
+								loggerDeposits.info(`${option.type} ${option.currency} withdrawal successful`);
 								return {
 									success: true,
 									data: data,
@@ -140,27 +148,16 @@ Deposit.findAll({
 								}
 							})
 							.catch((err) => {
-								sendEmail(
-									MAILTYPE.VAULT_WITHDRAWAL_FAIL,
-									getConfiguration().constants.accounts.admin,
-									{
-										userId: result.info.user_id,
-										withdrawalId: result.info.id,
-										currency: result.info.currency,
-										amount: result.info.amount,
-										address: result.info.address
-									}
-								);
-								throw {
+								loggerDeposits.error(`${option.type} ${option.currency} withdrawal failed: ${err.message}`);
+								return {
 									success: false,
 									data: err,
 									dbWithdrawals
 								};
 							});
 					});
-			})
-				.catch((err) => err);
-		}))
+			});
+		}));
 	})
 	.then((results) => {
 		return all(results.map((result) => {
@@ -179,15 +176,35 @@ Deposit.findAll({
 					}))
 				})
 					.catch((err) => {
-						return err;
-					})
+						return sendEmail(
+							MAILTYPE.VAULT_WITHDRAWAL_FAIL,
+							getConfiguration().constants.accounts.admin,
+							{
+								userId: result.info.user_id,
+								withdrawalId: result.info.id,
+								currency: result.info.currency,
+								amount: result.info.amount,
+								address: result.info.address
+							}
+						);
+					});
 			} else {
-				return console.log('sendEmail')
+				return sendEmail(
+					MAILTYPE.VAULT_WITHDRAWAL_FAIL,
+					getConfiguration().constants.accounts.admin,
+					{
+						userId: result.info.user_id,
+						withdrawalId: result.info.id,
+						currency: result.info.currency,
+						amount: result.info.amount,
+						address: result.info.address
+					}
+				);
 			}
-		}))
+		}));
 	})
 	.then(() => {
-		loggerDeposits.info('No withdrawals need locking');
+		loggerDeposits.info('Withdrawals processed');
 		process.exit(0);
 	})
 	.catch((err) => {
