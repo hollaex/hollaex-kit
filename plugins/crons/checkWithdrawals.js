@@ -28,6 +28,7 @@ Deposit.findAll({
 })
 	.then((withdrawals) => {
 		if (withdrawals.length === 0) {
+			loggerDeposits.info('No withdrawals need checking');
 			process.exit(0);
 		}
 		let txids = {};
@@ -40,8 +41,8 @@ Deposit.findAll({
 			const option = {
 				method: 'GET',
 				headers: {
-					'key': VAULT_KEY(),
-					'secret': VAULT_SECRET()
+					key: VAULT_KEY(),
+					secret: VAULT_SECRET()
 				},
 				qs: {
 					txid
@@ -65,6 +66,19 @@ Deposit.findAll({
 											transaction
 										}
 									)
+										.then((wd) => {
+											return sendEmail(
+												MAILTYPE.VAULT_WITHDRAWAL_FAIL,
+												getConfiguration().constants.accounts.admin,
+												{
+													userId: result.info.user_id,
+													withdrawalId: result.info.id,
+													currency: result.info.currency,
+													amount: result.info.amount,
+													address: result.info.address
+												}
+											);
+										})
 								}))
 							} else if (tx.data[0].is_rejected) {
 								return all(txids[txid].map((withdrawal) => {
@@ -78,19 +92,41 @@ Deposit.findAll({
 											transaction
 										}
 									)
+										.then((wd) => {
+											return sendEmail(
+												MAILTYPE.VAULT_WITHDRAWAL_FAIL,
+												getConfiguration().constants.accounts.admin,
+												{
+													userId: result.info.user_id,
+													withdrawalId: result.info.id,
+													currency: result.info.currency,
+													amount: result.info.amount,
+													address: result.info.address
+												}
+											);
+										})
 								}))
 							}
 						} else {
-							throw new Error('Transaction not found');
+							return sendEmail(
+								MAILTYPE.VAULT_WITHDRAWAL_FAIL,
+								getConfiguration().constants.accounts.admin,
+								{
+									userId: result.info.user_id,
+									withdrawalId: result.info.id,
+									currency: result.info.currency,
+									amount: result.info.amount,
+									address: result.info.address
+								}
+							);
 						}
 					})
 			})
-				.catch((err) => {
-					return err;
-				});
-		}))
+				.catch((err) => err);
+		}));
 	})
 	.then(() => {
+		loggerDeposits.info('Withdrawals checked');
 		process.exit(0);
 	})
 	.catch((err) => {
