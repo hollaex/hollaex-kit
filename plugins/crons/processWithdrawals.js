@@ -41,11 +41,6 @@ Deposit.findAll({
 			} else if (withdrawal.dataValues.currency === 'bch') {
 				bchWithdrawals.push(withdrawal);
 			} else {
-				simpleWithdrawals.push(withdrawal);
-			}
-		});
-		options.push(
-			...withdrawals.map((withdrawal) => {
 				const option = {
 					data: {
 						method: 'POST',
@@ -68,12 +63,12 @@ Deposit.findAll({
 				};
 				if (withdrawal.dataValues.currency === 'xrp') {
 					const [xrpAddress, xrpTag] = withdrawal.dataValues.address.split(':');
-					option.body.data.address = xrpAddress;
-					option.body.meta = { tag: xrpTag };
+					option.data.body.data.address = xrpAddress;
+					option.data.body.meta = { tag: xrpTag };
 				}
-				return { data: option, info: [withdrawal] };
-			})
-		);
+				options.push(option);
+			}
+		});
 		if (btcWithdrawals.length !== 0) {
 			options.push({
 				data: {
