@@ -27,15 +27,18 @@ Deposit.findAll({
 	}
 })
 	.then((withdrawals) => {
-		loggerDeposits.info('No withdrawals need locking');
+		if (withdrawals.length === 0) {
+			loggerDeposits.info('No withdrawals need processing');
+			process.exit(0);
+		}
 		const btcWithdrawals = [];
 		const bchWithdrawals = [];
 		const simpleWithdrawals = [];
 		const options = [];
 		each(withdrawals, (withdrawal) => {
-			if (withdrawal.currency === 'btc') {
+			if (withdrawal.dataValues.currency === 'btc') {
 				btcWithdrawals.push(withdrawal);
-			} else if (withdrawal.currency === 'bch') {
+			} else if (withdrawal.dataValues.currency === 'bch') {
 				bchWithdrawals.push(withdrawal);
 			} else {
 				simpleWithdrawals.push(withdrawal);
@@ -46,20 +49,20 @@ Deposit.findAll({
 				const option = {
 					method: 'POST',
 					headers: {
-						'key': VAULT_KEY(),
-						'secret': VAULT_SECRET()
+						key: VAULT_KEY(),
+						secret: VAULT_SECRET()
 					},
 					body: {
 						data: {
-							address: withdrawal.address,
-							amount: withdrawal.amount,
+							address: withdrawal.dataValues.address,
+							amount: withdrawal.dataValues.amount,
 						}
 					},
 					uri: `${VAULT_ENDPOINT}/${VAULT_WALLET(withdrawal.dataValues.currency)}/withdraw/simple`,
 					json: true
 				};
-				if (withdrawal.currency === 'xrp') {
-					const [xrpAddress, xrpTag] = withdrawal.address.split(':');
+				if (withdrawal.dataValues.currency === 'xrp') {
+					const [xrpAddress, xrpTag] = withdrawal.dataValues.address.split(':');
 					option.body.data.address = xrpAddress;
 					option.body.meta = { tag: xrpTag };
 				}
@@ -71,14 +74,14 @@ Deposit.findAll({
 				data: {
 					method: 'POST',
 					headers: {
-						'key': VAULT_KEY(),
-						'secret': VAULT_SECRET()
+						key: VAULT_KEY(),
+						secret: VAULT_SECRET()
 					},
 					body: {
 						data: btcWithdrawals.map((withdrawal) => {
 							return {
-								address: withdrawal.address,
-								amount: withdrawal.amount
+								address: withdrawal.dataValues.address,
+								amount: withdrawal.dataValues.amount
 							};
 						})
 					},
@@ -94,14 +97,14 @@ Deposit.findAll({
 				data: {
 					method: 'POST',
 					headers: {
-						'key': VAULT_KEY(),
-						'secret': VAULT_SECRET()
+						key: VAULT_KEY(),
+						secret: VAULT_SECRET()
 					},
 					body: {
 						data: bchWithdrawals.map((withdrawal) => {
 							return {
-								address: withdrawal.address,
-								amount: withdrawal.amount
+								address: withdrawal.dataValues.address,
+								amount: withdrawal.dataValues.amount
 							};
 						})
 					},
