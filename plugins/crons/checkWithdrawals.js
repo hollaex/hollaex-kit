@@ -55,6 +55,7 @@ Deposit.findAll({
 					.then((tx) => {
 						if (tx.data[0]) {
 							if (tx.data[0].is_confirmed) {
+								loggerDeposits.info(`Transaction ${txid} is confirmed`);
 								return all(txids[txid].map((withdrawal) => {
 									return withdrawal.update(
 										{
@@ -81,6 +82,7 @@ Deposit.findAll({
 										})
 								}))
 							} else if (tx.data[0].is_rejected) {
+								loggerDeposits.info(`Transaction ${txid} is rejected`);
 								return all(txids[txid].map((withdrawal) => {
 									return withdrawal.update(
 										{
@@ -108,6 +110,7 @@ Deposit.findAll({
 								}))
 							}
 						} else {
+							loggerDeposits.warning(`Transaction ${txid} was not found`);
 							return sendEmail(
 								MAILTYPE.VAULT_WITHDRAWAL_FAIL,
 								getConfiguration().constants.accounts.admin,
@@ -120,9 +123,8 @@ Deposit.findAll({
 								}
 							);
 						}
-					})
-			})
-				.catch((err) => err);
+					});
+			});
 		}));
 	})
 	.then(() => {
@@ -132,4 +134,4 @@ Deposit.findAll({
 	.catch((err) => {
 		loggerDeposits.error(err.message);
 		process.exit(1);
-	})
+	});
