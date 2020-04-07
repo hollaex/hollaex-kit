@@ -32,6 +32,10 @@ Deposit.findAll({
 				});
 		}));
 	})
+	.then(() => {
+		loggerDeposits.info(`Locked withdrawals`);
+		process.exit(0);
+	})
 	.catch((err) => {
 		loggerDeposits.error(err.message);
 		process.exit(1);
