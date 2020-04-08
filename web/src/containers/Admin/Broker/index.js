@@ -1,10 +1,13 @@
-import React, { useEffect, useState } from 'react';
-import { Spin, Alert, Switch, Divider, Modal } from 'antd';
+import React, { useEffect, useState, Fragment } from 'react';
+import { Spin, Alert, Switch, Divider, Modal, Card } from 'antd';
 import math from 'mathjs';
 
-import { validateRequired } from '../../../components/AdminForm/validations';
-import { getConstants, updatePlugins } from '../Plugins/action';
 import BrokerForm from './BrokerForm';
+import { getConstants, updatePlugins } from '../Plugins/action';
+import { getFees } from '../Fees/actions';
+import { validateRequired } from '../../../components/AdminForm/validations';
+import { formatCurrency } from '../../../utils/currency';
+
 
 const generateForm = () => ({
     'quick_trade_rate': {
@@ -30,6 +33,7 @@ const Broker = () => {
     const [error, setError] = useState('');
     const [constants, setConstants] = useState({ secrets: {} });
     const [initialValues, setInitialValues] = useState({ quick_trade_rate: 3 });
+    const [feesData, setFees] = useState({});
     useEffect(() => {
         setLoading(true);
         getConstants()
@@ -37,8 +41,19 @@ const Broker = () => {
                 setConstants(res.constants);
                 setLoading(false);
             })
-            .catch(err => {
+            .catch(error => {
                 setLoading(false);
+                const message = error.data ? error.data.message : error.message;
+                setError(message);
+            });
+        getFees()
+            .then(res => {
+                if (res.trades)
+                    setFees(res);
+            })
+            .catch(error => {
+                const message = error.data ? error.data.message : error.message;
+                setError(message);
             });
     }, []);
 
@@ -129,11 +144,30 @@ const Broker = () => {
                         </div>
                         <Divider />
                         {broker_enabled
-                            ? <BrokerForm
-                                initialValues={initialValues}
-                                fields={generateForm()}
-                                handleSubmitBroker={handleSubmitBroker}
-                            />
+                            ? <Fragment>
+                                <BrokerForm
+                                    initialValues={initialValues}
+                                    fields={generateForm()}
+                                    handleSubmitBroker={handleSubmitBroker}
+                                />
+                                {feesData.trades
+                                    ? <Card
+                                        className="card-title m-top"
+                                        title="Quick Trades  Fees"
+                                        style={{ textAlign: 'center' }}
+                                    >
+                                        {Object.entries(feesData.trades).map(([currency, amount], index) => (
+                                            <div
+                                                key={index}
+                                                className="list-group-item list-group-item-action"
+                                            >
+                                                {currency.toUpperCase()} : {formatCurrency(amount)}
+                                            </div>
+                                        ))}
+                                    </Card>
+                                    : null
+                                }
+                            </Fragment>
                             : null
                         }
                         <Modal

@@ -68,21 +68,6 @@ class BlockchainTransaction extends Component {
 								</div>
 							))}
 						</Card>
-
-						<Card
-							className="card-title m-top"
-							title="Quick Trades  Fees"
-							style={{ textAlign: 'center' }}
-						>
-							{Object.entries(data.trades).map(([currency, amount], index) => (
-								<div
-									key={index}
-									className="list-group-item list-group-item-action"
-								>
-									{currency.toUpperCase()} : {formatCurrency(amount)}
-								</div>
-							))}
-						</Card>
 					</div>
 				)}
 			</div>
