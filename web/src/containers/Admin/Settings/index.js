@@ -108,15 +108,19 @@ export default class Settings extends Component {
                 }
             });
         } else if (formKey === 'email') {
-            formValues = { emails: {}, accounts: {}, secrets: { smtp: {} }};
+            formValues = {};
             Object.keys(formProps).forEach((val) => {
                 if (val === 'sender' || val === 'timezone' || val === 'send_email_to_support') {
+                    if (!formValues.emails) formValues.emails = {};
                     formValues.emails[val] = formProps[val];
                 } else if (val === 'admin' || val === 'support' || val === 'kyc' || val === 'supervisor') {
+                    if (!formValues.accounts) formValues.accounts = {};
                     formValues.accounts[val] = formProps[val];
                 } else if (val === 'port') {
+                    if (!formValues.secrets || !formValues.secrets.smtp) formValues.secrets = { smtp: {}};
                     formValues.secrets.smtp[val] = parseInt(formProps[val], 10);
                 } else {
+                    if (!formValues.secrets || !formValues.secrets.smtp) formValues.secrets = { smtp: {}};
                     formValues.secrets.smtp[val] = formProps[val];
                 }
             });

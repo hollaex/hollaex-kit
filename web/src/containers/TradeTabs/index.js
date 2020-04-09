@@ -188,10 +188,11 @@ class AddTradeTab extends Component {
 					</div>
 					<div className="d-flex flex-wrap p-3 my-5">
 						{data.map((key, index) => {
-							let pair = pairs[key];
-							let { min, fullname, symbol = '' } =
+							let pair = pairs[key] || {};
+							let { fullname, symbol = '' } =
 								coins[pair.pair_base || BASE_CURRENCY] || DEFAULT_COIN_DATA;
 							const pairTwo = coins[pair.pair_2] || DEFAULT_COIN_DATA;
+							const { increment_price } = pair;
 							let ticker = tickers[key] || {};
 							const priceDifference =
 								ticker.open === 0
@@ -233,7 +234,7 @@ class AddTradeTab extends Component {
 										<div>
 											{STRINGS.PRICE}:
 											<span className="title-font ml-1">
-												{formatToCurrency(ticker.close, min)}
+												{formatToCurrency(ticker.close, increment_price)}
 											</span>
 										</div>
 										<div className="d-flex">
@@ -244,7 +245,7 @@ class AddTradeTab extends Component {
 														: 'trade-tab-price_diff_up price-diff-up'
 												}
 											>
-												{formatAverage(formatToCurrency(priceDifference, min))}
+												{formatAverage(formatToCurrency(priceDifference, increment_price))}
 											</div>
 											<div
 												className={
