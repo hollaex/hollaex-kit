@@ -150,7 +150,13 @@ Deposit.findAll({
 								};
 							});
 					});
-			});
+			})
+				.catch((err) => {
+					return {
+						success: false,
+						data: err
+					};
+				});
 		}));
 	})
 	.then((results) => {
