@@ -33,7 +33,6 @@ Deposit.findAll({
 		}
 		const btcWithdrawals = [];
 		const bchWithdrawals = [];
-		const simpleWithdrawals = [];
 		const options = [];
 		each(withdrawals, (withdrawal) => {
 			if (withdrawal.dataValues.currency === 'btc') {
