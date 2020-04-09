@@ -11,7 +11,7 @@ const html = (email, data, language, domain) => {
 	const { USERDEACTIVATED } = require('../strings').languageFile(language);
 	return `
 		<div>
-			${USERDEACTIVATED.BODY[data.type.toUpperCase()](data.email)}
+			${USERDEACTIVATED.BODY[data.type.toUpperCase()](email)}
 		</div>
 	`;
 };
@@ -19,7 +19,7 @@ const html = (email, data, language, domain) => {
 const text = (email, data, language, domain) => {
 	const { USERDEACTIVATED } = require('../strings').languageFile(language);
 	return `
-		${USERDEACTIVATED.BODY[data.type.toUpperCase()](data.email)}
+		${USERDEACTIVATED.BODY[data.type.toUpperCase()](email)}
 	`;
 };
 
