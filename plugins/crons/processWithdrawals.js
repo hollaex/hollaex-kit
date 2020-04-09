@@ -149,14 +149,14 @@ Deposit.findAll({
 									dbWithdrawals
 								};
 							});
+					})
+					.catch((err) => {
+						return {
+							success: false,
+							data: err
+						};
 					});
-			})
-				.catch((err) => {
-					return {
-						success: false,
-						data: err
-					};
-				});
+			});
 		}));
 	})
 	.then((results) => {
