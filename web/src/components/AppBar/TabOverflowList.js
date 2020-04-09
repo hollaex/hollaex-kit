@@ -41,8 +41,9 @@ class TabOverflowList extends Component {
                 <div className="app-bar-tab-overflow-content">
                     {Object.keys(selectedTabs).map((pair, index) => {
                         let menu = selectedTabs[pair] || {};
-                        let { min, symbol = '' } = coins[menu.pair_base || BASE_CURRENCY] || DEFAULT_COIN_DATA;
+                        let { symbol = '' } = coins[menu.pair_base || BASE_CURRENCY] || DEFAULT_COIN_DATA;
                         let pairTwo = coins[menu.pair_2 || BASE_CURRENCY] || DEFAULT_COIN_DATA;
+                        const { increment_price } = menu;
                         let ticker = tickers[pair] || {};
                         const priceDifference = ticker.open === 0 ? 0 : ((ticker.close || 0) - (ticker.open || 0));
                         const tickerPercent = priceDifference === 0 || ticker.open === 0 ? 0 : ((priceDifference / ticker.open) * 100);
@@ -69,7 +70,7 @@ class TabOverflowList extends Component {
                                     {symbol.toUpperCase()}/{pairTwo.symbol.toUpperCase()}:
                                 </div>
                                 <div className="title-font ml-1">
-                                    {formatToCurrency(ticker.close, min)}
+                                    {formatToCurrency(ticker.close, increment_price)}
                                 </div>
                                 <div
                                     className={
@@ -77,7 +78,7 @@ class TabOverflowList extends Component {
                                             ? "app-price-diff-down app-bar-price_diff_down"
                                             : "app-bar-price_diff_up app-price-diff-up"
                                         }>
-                                    {/* {formatAverage(formatToCurrency(priceDifference, min))} */}
+                                    {/* {formatAverage(formatToCurrency(priceDifference, increment_price))} */}
                                 </div>
                                 <div
                                     className={priceDifference < 0

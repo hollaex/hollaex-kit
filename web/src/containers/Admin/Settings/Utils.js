@@ -34,60 +34,64 @@ export const generateAdminSettings = (key) => {
         };
     } else if (key === 'email') {
         return {
-            sender: {
-                type: 'input',
-                label: 'Sender email',
-                placeholder: 'Sender email',
-                validate: [validateRequired, email]
+            email_distribution_list: {
+                admin: {
+                    type: 'input',
+                    label: 'Admin email',
+                    placeholder: 'admin email',
+                    validate: [validateRequired, email]
+                },
+                support: {
+                    type: 'input',
+                    label: 'Support email',
+                    placeholder: 'Support email',
+                    validate: [validateRequired, email]
+                }
             },
-            send_email_to_support: {
-                type: 'checkbox',
-                label: 'send email to support',
-                // placeholder: 'send email to support',
-                // validate: [validateRequired]
-            },
-            timezone: {
-                type: 'select',
-                label: 'Email timezone',
-                placeholder: 'Select email timezone',
-                validate: [validateRequired],
-                options: minimalTimezoneSet
-            },
-            support: {
-                type: 'input',
-                label: 'Support email',
-                placeholder: 'Support email',
-                validate: [validateRequired, email]
-            },
-            admin: {
-                type: 'input',
-                label: 'Admin email',
-                placeholder: 'admin email',
-                validate: [validateRequired, email]
-            },
-            server: {
-                type: 'input',
-                label: 'SMTP server',
-                placeholder: 'SMTP sever',
-                validate: [validateRequired]
-            },
-            port: {
-                type: 'input',
-                label: 'SMTP port',
-                placeholder: 'SMTP port',
-                validate: [validateRequired]
-            },
-            user: {
-                type: 'input',
-                label: 'SMTP username',
-                placeholder: 'SMTP username',
-                validate: [validateRequired]
-            },
-            password: {
-                type: 'password',
-                label: 'SMTP password',
-                placeholder: 'SMTP password',
-                validate: [validateRequired]
+            email_configuration: {
+                sender: {
+                    type: 'input',
+                    label: 'Sender email',
+                    placeholder: 'Sender email',
+                    validate: [validateRequired, email]
+                },
+                send_email_to_support: {
+                    type: 'checkbox',
+                    label: 'send email to support',
+                    // placeholder: 'send email to support',
+                    // validate: [validateRequired]
+                },
+                timezone: {
+                    type: 'select',
+                    label: 'Email timezone',
+                    placeholder: 'Select email timezone',
+                    validate: [validateRequired],
+                    options: minimalTimezoneSet
+                },
+                server: {
+                    type: 'input',
+                    label: 'SMTP server',
+                    placeholder: 'SMTP sever',
+                    validate: [validateRequired]
+                },
+                port: {
+                    type: 'input',
+                    label: 'SMTP port',
+                    placeholder: 'SMTP port',
+                    validate: [validateRequired]
+                },
+                user: {
+                    type: 'input',
+                    label: 'SMTP username',
+                    placeholder: 'SMTP username',
+                    validate: [validateRequired]
+                },
+                password: {
+                    type: 'password',
+                    label: 'SMTP password',
+                    placeholder: 'SMTP password',
+                    validate: [validateRequired]
+                }
             }
         };
     } else {
