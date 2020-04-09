@@ -59,7 +59,7 @@ const WELCOME = {
 		Please go to your ${account} and visit the ${deposit} page.`,
 		3: 'account',
 		4: 'deposit',
-		5: () => `If you have any questions or concerns, please contact us at ${SUPPORT_EMAIL()}.`
+		5: () => `If you have any questions or concerns, please contact us simply by replying to this email.`
 	},
 	CLOSING: COMMON.CLOSING
 };
@@ -79,7 +79,7 @@ const LOGIN = {
 };
 
 const RESETPASSWORD = {
-	TITLE: 'Reset password Request',
+	TITLE: 'Reset Password Request',
 	GREETING: (name) => COMMON.GREETING(name),
 	BODY: {
 		1: 'You have made a request to reset the password for your account.',
@@ -116,7 +116,7 @@ const ACCOUNTVERIFY = {
 	TITLE: 'Account Verified',
 	GREETING: (name) => COMMON.GREETING(name),
 	BODY: {
-		1: 'Congratulations. Your identity is verified and your account is leveled up. Your account is fully ready for some actions.',
+		1: 'Congratulations. Your account is verified successfully.',
 		2: 'Trade Now'
 	},
 	CLOSING: COMMON.CLOSING
