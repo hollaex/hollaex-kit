@@ -16,7 +16,8 @@ const MAILTYPE = {
 	WITHDRAWAL: 'withdrawal',
 	CONTACT_FORM: 'contactForm',
 	SUSPICIOUS_DEPOSIT: 'suspiciousDeposit',
-	USER_VERIFICATION: 'userVerification'
+	USER_VERIFICATION: 'userVerification',
+	USER_DEACTIVATED: 'userDeactivated'
 };
 
 const languageFile = (lang) => {
