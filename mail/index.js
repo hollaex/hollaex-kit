@@ -77,6 +77,7 @@ const sendEmail = (
 			break;
 		}
 		case MAILTYPE.USER_VERIFICATION:
+		case MAILTYPE.USER_DEACTIVATED:
 		case MAILTYPE.CONTACT_FORM: {
 			if (!SEND_EMAIL_TO_SUPPORT()) return;
 			to.ToAddresses = [INQUIRY_EMAIL(), SUPPORT_EMAIL(), MASTER_EMAIL()];

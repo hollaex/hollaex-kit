@@ -205,6 +205,16 @@ const USERVERIFICATIONREJECT = {
 	CLOSING: COMMON.CLOSING
 };
 
+const USERDEACTIVATED = {
+	TITLE: (type) => `Account ${type}`,
+	GREETING: (name) => COMMON.GREETING(name),
+	BODY: {
+		ACTIVATED: (email) => `Your account ${email} has been activated. You are now able to use your account.`,
+		DEACTIVATED: (email) => `Your account ${email} has been deactivated. You will not be able to use your account until it is activated by the exchange admin.`
+	},
+	CLOSING: COMMON.CLOSING
+};
+
 const CONTACTFORM = {
 	TITLE: 'Contact Form',
 	BODY: {
@@ -264,5 +274,6 @@ module.exports = {
 	USERVERIFICATION,
 	SUSPICIOUSDEPOSIT,
 	CONTACTFORM,
+	USERDEACTIVATED,
 	SMS
 };
