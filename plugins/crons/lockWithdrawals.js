@@ -1,6 +1,6 @@
 'use strict';
 
-const { Deposit } = require('../../db/models');
+const { Deposit, User } = require('../../db/models');
 const { all } = require('bluebird');
 const { checkAddress } = require('../vault/helpers');
 const { loggerDeposits } = require('../../config/logger');
@@ -24,7 +24,14 @@ Deposit.findAll({
 		processing: false,
 		waiting: false,
 		$or: vaultCoins
-	}
+	},
+	include: [
+		{
+			model: User,
+			as: 'user',
+			attributes: ['email']
+		}
+	]
 })
 	.then((withdrawals) => {
 		if (withdrawals.length === 0) {
@@ -47,7 +54,15 @@ Deposit.findAll({
 				return withdrawal.update({ rejected: true }, { fields: ['rejected'], returning: true })
 					.then((result) => {
 						loggerDeposits.info(`Withdrawal with ID ${withdrawal.dataValues.id} rejected because of invalid address`);
-						return sendEmail()
+						return sendEmail(
+							MAILTYPE.INVALID_ADDRESS,
+							withdrawal.dataValues.user.email,
+							{
+								currency: withdrawal.dataValues.currency,
+								amount: withdrawal.dataValues.amount,
+								address: withdrawal.dataValues.address
+							}
+						);
 					})
 					.catch((err) => {
 						loggerDeposits.error(`Error occured while locking ${withdrawal.dataValues.id}: ${err.message}`);
