@@ -1,4 +1,5 @@
 import * as React from 'react';
+import _isEqual from 'lodash/isEqual';
 import { widget } from '../../charting_library/charting_library.min';
 import {
 	WHITE_THEME,
@@ -227,7 +228,7 @@ class TVChartContainer extends React.PureComponent {
 			nextProps.tradeHistory &&
 			nextProps.tradeHistory.length &&
 			this.props.tradeHistory &&
-			this.props.tradeHistory.length !== nextProps.tradeHistory.length &&
+			!_isEqual(this.props.tradeHistory, nextProps.tradeHistory) &&
 			this.state.sub
 		) {
 			this.updateBar(nextProps.tradeHistory[0]);

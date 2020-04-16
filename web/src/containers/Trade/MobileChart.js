@@ -1,6 +1,7 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import classnames from 'classnames';
 import { Link } from 'react-router';
+import { connect } from 'react-redux';
 import TradeBlock from './components/TradeBlock';
 // import PriceChart from './components/PriceChart';
 import STRINGS from '../../config/localizedStrings';
@@ -30,7 +31,8 @@ class MobileChart extends Component {
 			activeTheme,
 			activeLanguage,
 			goToPair,
-			symbol
+			symbol,
+			constants
 		} = this.props;
 		const { chartHeight } = this.state;
 		const pairValue = pair || 'xht-usdt';
@@ -55,16 +57,18 @@ class MobileChart extends Component {
 					className="f-1 overflow-x"
 					alignChildTitle={true}
 					tailHead={
-						<div className="quick-trade-tab p-1 mt-1">
-							<Link to={`/quick-trade/${pairValue}`}>
-								{STRINGS.QUICK_TRADE}
-							</Link>
-						</div>
+						constants.broker_enabled
+							? <div className="quick-trade-tab p-1 mt-1">
+								<Link to={`/quick-trade/${pairValue}`}>
+									{STRINGS.QUICK_TRADE}
+								</Link>
+							</div>
+							: <Fragment />
 					}
 				>
 					{pair &&
 						chartHeight > 0 && (
-							<TVChartContainer activeTheme={activeTheme} symbol={symbol} pairData={pairData}/>
+							<TVChartContainer activeTheme={activeTheme} symbol={symbol} pairData={pairData} />
 						)}
 				</TradeBlock>
 				<TradeBlock title={STRINGS.PUBLIC_SALES} className="f-1">
@@ -75,4 +79,8 @@ class MobileChart extends Component {
 	}
 }
 
-export default MobileChart;
+const mapStateToProps = (state) => ({
+	constants: state.app.constants
+});
+
+export default connect(mapStateToProps)(MobileChart);

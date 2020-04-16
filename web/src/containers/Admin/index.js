@@ -23,6 +23,7 @@ export { default as UserFees } from './UserFees';
 export { default as Trades } from './Trades';
 export { PATHS } from './paths';
 export { default as ActiveOrders } from './ActiveOrders';
+export { default as Broker } from './Broker';
 export { default as Plugins } from './Plugins';
 export { default as PluginServices } from './Plugins/PluginServices';
 export { default as Settings } from './Settings';

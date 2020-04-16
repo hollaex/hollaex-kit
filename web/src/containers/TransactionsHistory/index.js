@@ -75,7 +75,7 @@ class TransactionsHistory extends Component {
 	requestData = (symbol) => {
 		switch (this.state.activeTab) {
 			case 0:
-				this.props.getUserTrades(symbol, RECORD_LIMIT);
+				this.props.getUserTrades(RECORD_LIMIT);
 				break;
 			case 1:
 				this.props.getUserDeposits(symbol, RECORD_LIMIT);
@@ -141,7 +141,7 @@ class TransactionsHistory extends Component {
 				if (RECORD_LIMIT === (pageCount * pageTemp)
 					&& apiPageTemp >= trades.page
 					&& trades.isRemaining) {
-					this.props.getUserTrades(symbol, RECORD_LIMIT, trades.page + 1);
+					this.props.getUserTrades(RECORD_LIMIT, trades.page + 1);
 					this.setState({ jumpToPage: pageNumber });
 				}
 				break;
@@ -339,7 +339,7 @@ const mapStateToProps = (store) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-	getUserTrades: (symbol, limit, page = 1) => dispatch(getUserTrades({ symbol, limit, page })),
+	getUserTrades: (limit, page = 1) => dispatch(getUserTrades({ limit, page })),
 	getUserDeposits: (coin, limit, page = 1) => dispatch(getUserDeposits({ coin, limit, page })),
 	getUserWithdrawals: (coin, limit, page = 1) => dispatch(getUserWithdrawals({ coin, limit, page })),
 	withdrawalCancel: (transactionId) => dispatch(withdrawalCancel({ transactionId })),

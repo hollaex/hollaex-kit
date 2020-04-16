@@ -1,5 +1,8 @@
 import axios from 'axios';
+import math from 'mathjs';
+
 import { APP_TITLE } from '../config/constants';
+import { getDecimals } from '../utils/utils'
 
 export const getChartConfig = () => {
 	// return axios({
@@ -19,7 +22,11 @@ export const getChartConfig = () => {
 };
 
 export const getChartSymbol = (symbol, tickSize) => {
-	const pricescale = Math.round(1/tickSize)
+	let pricescale = math.round(1 / tickSize);
+	if (/[^0-1]/g.test(pricescale)) {
+		let count = getDecimals(tickSize);
+		pricescale = math.pow(10, count);
+	}
 	// return axios({
 	// 	url: `/udf/symbols?symbol=${symbol}`,
 	// 	method: 'GET'
