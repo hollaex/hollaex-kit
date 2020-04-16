@@ -31,7 +31,7 @@ module.exports = {
 				currency: {
 					type: Sequelize.STRING,
 					allowNull: false
-				}
+				},
 				timestamp: {
 					type: Sequelize.DATE,
 					allowNull: false,
