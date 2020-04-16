@@ -10,7 +10,11 @@ const { updateConstants, logger } = require('../helpers/common');
 const WAValidator = require('multicoin-address-validator');
 
 const checkAddress = (address, symbol, network = 'prod') => {
-	return WAValidator.validate(address, symbol, network);
+	if (symbol === 'btc' || symbol === 'bch' || symbol === 'xrp' || symbol === 'xmr') {
+		return WAValidator.validate(address, symbol, network);
+	} else {
+		return WAValidator.validate(address, 'eth', network);
+	}
 };
 
 const updateVaultValues = (name, key, secret) => {
