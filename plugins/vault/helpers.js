@@ -7,6 +7,11 @@ const WEBHOOK_URL = (coin) => `${API_HOST}/v1/deposit/${coin}`;
 const WALLET_NAME = (name, coin) => `${name}-${coin}`;
 const { all, delay } = require('bluebird');
 const { updateConstants, logger } = require('../helpers/common');
+const WAValidator = require('multicoin-address-validator');
+
+const checkAddress = (address, symbol, network = 'prod') => {
+	return WAValidator.validate(address, symbol, network);
+};
 
 const updateVaultValues = (name, key, secret) => {
 	logger.debug('/plugins/vault/helpers updateVaultValues');
@@ -148,6 +153,7 @@ const addVaultCoinConnection = (coins, vaultConfig) => {
 };
 
 module.exports = {
+	checkAddress,
 	updateVaultValues,
 	crossCheckCoins,
 	createOrUpdateWallets
