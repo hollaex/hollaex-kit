@@ -1,6 +1,6 @@
 'use strict';
 
-const { Deposit, sequelize } = require('../../db/models');
+const { Deposit, sequelize, User } = require('../../db/models');
 const rp = require('request-promise');
 const { each } = require('lodash');
 const { all } = require('bluebird');
@@ -24,7 +24,14 @@ Deposit.findAll({
 		rejected: false,
 		processing: true,
 		waiting: false
-	}
+	},
+	include: [
+		{
+			model: User,
+			as: 'user',
+			attributes: ['email']
+		}
+	]
 })
 	.then((withdrawals) => {
 		if (withdrawals.length === 0) {
@@ -119,7 +126,7 @@ Deposit.findAll({
 		return all(options.map((option) => {
 			return sequelize.transaction((transaction) => {
 				return all(option.info.map((withdrawal) => {
-					withdrawal.update(
+					return withdrawal.update(
 						{
 							processing: false,
 							waiting: true
