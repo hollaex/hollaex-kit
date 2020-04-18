@@ -17,9 +17,14 @@ module.exports = function(sequelize, DataTypes) {
 			currency: {
 				type: DataTypes.ENUM(...CURRENCIES),
 				allowNull: false
+			},
+			timestamp: {
+				type: DataTypes.DATE,
+				defaultValue: DataTypes.NOW
 			}
 		},
 		{
+			timestamps: false,
 			underscored: true
 		}
 	);
