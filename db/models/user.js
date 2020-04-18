@@ -153,6 +153,10 @@ module.exports = function(sequelize, DataTypes) {
 			is_tech: {
 				type: DataTypes.BOOLEAN,
 				defaultValue: false
+			},
+			custom_fee: {
+				type: DataTypes.BOOLEAN,
+				defaultValue: false	
 			}
 		},
 		{
