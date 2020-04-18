@@ -1,28 +1,28 @@
-"use strict";
+'use strict';
 
 module.exports = {
 	up: (queryInterface, Sequelize) => {
 		return queryInterface.createTable(
-			"Fees",
+			'Fees',
 			{
 				id: {
 					allowNull: false,
 					autoIncrement: true,
 					primaryKey: true,
-					type: Sequelize.INTEGER,
+					type: Sequelize.INTEGER
 				},
 				user_id: {
 					type: Sequelize.INTEGER,
-					onDelete: "CASCADE",
+					onDelete: 'CASCADE',
 					allowNull: false,
 					references: {
-						model: "Users",
-						key: "id",
-					},
+						model: 'Users',
+						key: 'id'
+					}
 				},
 				transaction_id: {
 					type: Sequelize.STRING,
-					allowNull: false,
+					allowNull: false
 				},
 				amount: {
 					type: Sequelize.DOUBLE,
@@ -35,14 +35,14 @@ module.exports = {
 				timestamp: {
 					type: Sequelize.DATE,
 					allowNull: false,
-					defaultValue: Sequelize.literal("NOW()"),
-				},
+					defaultValue: Sequelize.literal('NOW()')
+				}
 			},
 			{
 				timestamps: true,
-				underscored: true,
+				underscored: true
 			}
 		);
 	},
-	down: (queryInterface) => queryInterface.dropTable("Fees"),
+	down: (queryInterface) => queryInterface.dropTable('Fees')
 };
