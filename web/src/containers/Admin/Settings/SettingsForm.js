@@ -40,8 +40,8 @@ export const EmailSettingsForm = ({ initialValues, handleSubmitSettings }) => {
                 <Divider />
                 <p>Admin email here is used for sending a copy of certain emails sent to users as notifications and support email is used for notifications related to specific actions that needs to be done for users. This is used to notify back-end office about certain user actions and operations.</p>
                 <EmailDistributionForm
-                    initialValues={initialValues}
-                    onSubmit={(formProps) => handleSubmitSettings(formProps, 'email')}
+                    initialValues={initialValues.distribution}
+                    onSubmit={(formProps) => handleSubmitSettings(formProps, 'email_distribution')}
                     buttonText="Save"
                     fields={fields.email_distribution_list}
                 />
@@ -49,8 +49,8 @@ export const EmailSettingsForm = ({ initialValues, handleSubmitSettings }) => {
             <h2>Email Configuration</h2>
             <Divider />
             <EmailForm
-                initialValues={initialValues}
-                onSubmit={(formProps) => handleSubmitSettings(formProps, 'email')}
+                initialValues={initialValues.configuration}
+                onSubmit={(formProps) => handleSubmitSettings(formProps, 'email_configuration')}
                 buttonText="Save"
                 fields={fields.email_configuration}
             />
@@ -60,11 +60,14 @@ export const EmailSettingsForm = ({ initialValues, handleSubmitSettings }) => {
 
 EmailSettingsForm.defaultProps = {
     initialValues: {
-        timezone: 'utc',
-        port: 587,
-        send_email_to_support: false
+        distribution: {},
+        configuration: {
+            timezone: 'utc',
+            port: 587,
+            send_email_to_support: false
+        }
     }
-}
+};
 
 export const SecuritySettingsForm = ({ initialValues, handleSubmitSettings }) => {
     return (
