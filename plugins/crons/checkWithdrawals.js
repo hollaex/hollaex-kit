@@ -32,11 +32,11 @@ Deposit.findAll({
 			process.exit(0);
 		}
 		let txids = {};
-		each((withdrawals, (withdrawal) => {
-			txids[withdrawal.dataValues.transaction_id]
-				? txids[withdrawal.dataValues.transaction_id].push(withdrawal)
-				: txids[withdrawal.dataValues.transaction_id] = [withdrawal.dataValues.transaction_id];
-		}));
+		each(withdrawals, (withdrawal) => {
+			txids[withdrawal.transaction_id]
+				? txids[withdrawal.transaction_id].push(withdrawal)
+				: txids[withdrawal.transaction_id] = [withdrawal];
+		});
 		return all(Object.keys(txids).map((txid) => {
 			const option = {
 				method: 'GET',
@@ -47,7 +47,7 @@ Deposit.findAll({
 				qs: {
 					txid
 				},
-				uri: `${VAULT_ENDPOINT}/${VAULT_WALLET(txids[txid][0].dataValues.currency)}/transactions`,
+				uri: `${VAULT_ENDPOINT}/${VAULT_WALLET(txids[txid][0].currency)}/transactions`,
 				json: true
 			};
 			return sequelize.transaction((transaction) => {
@@ -68,17 +68,17 @@ Deposit.findAll({
 										}
 									)
 										.then((wd) => {
-											return sendEmail(
-												MAILTYPE.VAULT_WITHDRAWAL_FAIL,
-												getConfiguration().constants.accounts.admin,
-												{
-													userId: result.info.user_id,
-													withdrawalId: result.info.id,
-													currency: result.info.currency,
-													amount: result.info.amount,
-													address: result.info.address
-												}
-											);
+											// return sendEmail(
+											// 	MAILTYPE.VAULT_WITHDRAWAL_FAIL,
+											// 	getConfiguration().constants.accounts.admin,
+											// 	{
+											// 		userId: result.info.user_id,
+											// 		withdrawalId: result.info.id,
+											// 		currency: result.info.currency,
+											// 		amount: result.info.amount,
+											// 		address: result.info.address
+											// 	}
+											// );
 										})
 								}))
 							} else if (tx.data[0].is_rejected) {
@@ -95,33 +95,33 @@ Deposit.findAll({
 										}
 									)
 										.then((wd) => {
-											return sendEmail(
-												MAILTYPE.VAULT_WITHDRAWAL_FAIL,
-												getConfiguration().constants.accounts.admin,
-												{
-													userId: result.info.user_id,
-													withdrawalId: result.info.id,
-													currency: result.info.currency,
-													amount: result.info.amount,
-													address: result.info.address
-												}
-											);
+											// return sendEmail(
+											// 	MAILTYPE.VAULT_WITHDRAWAL_FAIL,
+											// 	getConfiguration().constants.accounts.admin,
+											// 	{
+											// 		userId: result.info.user_id,
+											// 		withdrawalId: result.info.id,
+											// 		currency: result.info.currency,
+											// 		amount: result.info.amount,
+											// 		address: result.info.address
+											// 	}
+											// );
 										})
 								}))
 							}
 						} else {
 							loggerDeposits.warning(`Transaction ${txid} was not found`);
-							return sendEmail(
-								MAILTYPE.VAULT_WITHDRAWAL_FAIL,
-								getConfiguration().constants.accounts.admin,
-								{
-									userId: result.info.user_id,
-									withdrawalId: result.info.id,
-									currency: result.info.currency,
-									amount: result.info.amount,
-									address: result.info.address
-								}
-							);
+							// return sendEmail(
+							// 	MAILTYPE.VAULT_WITHDRAWAL_FAIL,
+							// 	getConfiguration().constants.accounts.admin,
+							// 	{
+							// 		userId: result.info.user_id,
+							// 		withdrawalId: result.info.id,
+							// 		currency: result.info.currency,
+							// 		amount: result.info.amount,
+							// 		address: result.info.address
+							// 	}
+							// );
 						}
 					});
 			});
