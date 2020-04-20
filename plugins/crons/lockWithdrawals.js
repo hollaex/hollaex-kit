@@ -28,7 +28,6 @@ Deposit.findAll({
 	include: [
 		{
 			model: User,
-			as: 'user',
 			attributes: ['email']
 		}
 	]
@@ -40,39 +39,39 @@ Deposit.findAll({
 		}
 		loggerDeposits.debug(`Locking ${withdrawals.length} withdrawals`);
 		return all(withdrawals.map((withdrawal) => {
-			if (checkAddress(withdrawal.dataValues.currency)) {
+			if (checkAddress(withdrawal.address, withdrawal.currency)) {
 				return withdrawal.update({ processing: true }, { fields: ['processing'], returning: true })
 					.then((result) => {
-						loggerDeposits.info(`Withdrawal with ID ${withdrawal.dataValues.id} locked`);
+						loggerDeposits.info(`Withdrawal with ID ${withdrawal.id} locked`);
 						return;
 					})
 					.catch((err) => {
-						loggerDeposits.error(`Error occured while locking ${withdrawal.dataValues.id}: ${err.message}`);
+						loggerDeposits.error(`Error occured while locking ${withdrawal.id}: ${err.message}`);
 						return;
 					});
 			} else {
 				return withdrawal.update({ rejected: true }, { fields: ['rejected'], returning: true })
 					.then((result) => {
-						loggerDeposits.info(`Withdrawal with ID ${withdrawal.dataValues.id} rejected because of invalid address`);
+						loggerDeposits.info(`Withdrawal with ID ${withdrawal.id} rejected because of invalid address`);
 						return sendEmail(
 							MAILTYPE.INVALID_ADDRESS,
-							withdrawal.dataValues.user.email,
+							withdrawal.User.email,
 							{
-								currency: withdrawal.dataValues.currency,
-								amount: withdrawal.dataValues.amount,
-								address: withdrawal.dataValues.address
+								currency: withdrawal.currency,
+								amount: withdrawal.amount,
+								address: withdrawal.address
 							}
 						);
 					})
 					.catch((err) => {
-						loggerDeposits.error(`Error occured while locking ${withdrawal.dataValues.id}: ${err.message}`);
+						loggerDeposits.error(`Error occured while locking ${withdrawal.id}: ${err.message}`);
 						return;
 					});
 			}
 		}));
 	})
 	.then(() => {
-		loggerDeposits.info(`Locked withdrawals`);
+		loggerDeposits.info('Locked withdrawals');
 		process.exit(0);
 	})
 	.catch((err) => {
