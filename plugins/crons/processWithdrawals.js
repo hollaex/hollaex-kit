@@ -28,7 +28,6 @@ Deposit.findAll({
 	include: [
 		{
 			model: User,
-			as: 'user',
 			attributes: ['email']
 		}
 	]
@@ -42,9 +41,9 @@ Deposit.findAll({
 		const bchWithdrawals = [];
 		const options = [];
 		each(withdrawals, (withdrawal) => {
-			if (withdrawal.dataValues.currency === 'btc') {
+			if (withdrawal.currency === 'btc') {
 				btcWithdrawals.push(withdrawal);
-			} else if (withdrawal.dataValues.currency === 'bch') {
+			} else if (withdrawal.currency === 'bch') {
 				bchWithdrawals.push(withdrawal);
 			} else {
 				const option = {
@@ -56,19 +55,19 @@ Deposit.findAll({
 						},
 						body: {
 							data: {
-								address: withdrawal.dataValues.address,
-								amount: withdrawal.dataValues.amount,
+								address: withdrawal.address,
+								amount: withdrawal.amount,
 							}
 						},
-						uri: `${VAULT_ENDPOINT}/${VAULT_WALLET(withdrawal.dataValues.currency)}/withdraw/simple`,
+						uri: `${VAULT_ENDPOINT}/${VAULT_WALLET(withdrawal.currency)}/withdraw/simple`,
 						json: true
 					},
 					info: [withdrawal],
 					type: 'SINGLE',
-					currency: withdrawal.dataValues.currency
+					currency: withdrawal.currency
 				};
-				if (withdrawal.dataValues.currency === 'xrp') {
-					const [xrpAddress, xrpTag] = withdrawal.dataValues.address.split(':');
+				if (withdrawal.currency === 'xrp') {
+					const [xrpAddress, xrpTag] = withdrawal.address.split(':');
 					option.data.body.data.address = xrpAddress;
 					option.data.body.meta = { tag: xrpTag };
 				}
@@ -86,8 +85,8 @@ Deposit.findAll({
 					body: {
 						data: btcWithdrawals.map((withdrawal) => {
 							return {
-								address: withdrawal.dataValues.address,
-								amount: withdrawal.dataValues.amount
+								address: withdrawal.address,
+								amount: withdrawal.amount
 							};
 						})
 					},
@@ -110,8 +109,8 @@ Deposit.findAll({
 					body: {
 						data: bchWithdrawals.map((withdrawal) => {
 							return {
-								address: withdrawal.dataValues.address,
-								amount: withdrawal.dataValues.amount
+								address: withdrawal.address,
+								amount: withdrawal.amount
 							};
 						})
 					},
@@ -173,10 +172,10 @@ Deposit.findAll({
 					return all(result.dbWithdrawals.map((withdrawal) => {
 						return withdrawal.update(
 							{
-								txid: result.data.dataValues.transaction_id
+								transaction_id: result.data.txid
 							},
 							{
-								fields: ['txid'],
+								fields: ['transaction_id'],
 								transaction
 							}
 						)
