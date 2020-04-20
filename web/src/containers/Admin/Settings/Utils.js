@@ -99,7 +99,7 @@ export const generateAdminSettings = (key) => {
             api_name: {
                 type: 'input',
                 label: 'Exchange Name',
-                placeholder: 'API name',
+                placeholder: 'Exchange Name',
                 validate: [validateRequired]
             },
             new_user_is_activated: {
@@ -110,7 +110,7 @@ export const generateAdminSettings = (key) => {
             },
             language: {
                 type: 'select',
-                label: 'Default language',
+                label: 'Default Language',
                 placeholder: 'Select default language',
                 validate: [validateRequired],
                 options: [
@@ -120,7 +120,7 @@ export const generateAdminSettings = (key) => {
             },
             theme: {
                 type: 'select',
-                label: 'Default theme',
+                label: 'Default Theme',
                 placeholder: 'Select default theme',
                 validate: [validateRequired],
                 options: [
@@ -130,14 +130,14 @@ export const generateAdminSettings = (key) => {
             },
             logo_path: {
                 type: 'input',
-                label: 'Logo path',
-                placeholder: 'Logo path',
+                label: 'Logo (Dark Color)',
+                placeholder: 'Insert the logo path',
                 validate: [validateRequired, urlCheck]
             },
             logo_black_path: {
                 type: 'input',
-                label: 'Logo path in Dark theme',
-                placeholder: 'Logo path in Dark theme',
+                label: 'Logo (Light Color)',
+                placeholder: 'Insert the logo path',
                 validate: [validateRequired, urlCheck]
             },
             valid_languages: {
