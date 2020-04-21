@@ -38,7 +38,7 @@ export const EmailSettingsForm = ({ initialValues, handleSubmitSettings }) => {
             <div className="mb-4">
                 <h2>Email Distribution List</h2>
                 <Divider />
-                <p>Admin email here is used for sending a copy of certain emails sent to users as notifications and support email is used for notifications related to specific actions that needs to be done for users. This is used to notify back-end office about certain user actions and operations.</p>
+                <p>Emails here are used for sending a copy of all emails sent to the user. Admin email receives all emails but support email only receives specific emails such a user verification notification.</p>
                 <EmailDistributionForm
                     initialValues={initialValues.distribution}
                     onSubmit={(formProps) => handleSubmitSettings(formProps, 'email_distribution')}
