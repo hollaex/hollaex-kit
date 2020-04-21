@@ -79,8 +79,8 @@ Deposit.findAll({
 											// 		address: result.info.address
 											// 	}
 											// );
-										})
-								}))
+										});
+								}));
 							} else if (tx.data[0].is_rejected) {
 								loggerDeposits.info(`Transaction ${txid} is rejected`);
 								return all(txids[txid].map((withdrawal) => {
@@ -106,11 +106,13 @@ Deposit.findAll({
 											// 		address: result.info.address
 											// 	}
 											// );
-										})
-								}))
+										});
+								}));
+							} else {
+								loggerDeposits.info(`Transaction ${txid} not yet processed by vault`);
 							}
 						} else {
-							loggerDeposits.warning(`Transaction ${txid} was not found`);
+							loggerDeposits.warn(`Transaction ${txid} was not found`);
 							// return sendEmail(
 							// 	MAILTYPE.VAULT_WITHDRAWAL_FAIL,
 							// 	getConfiguration().constants.accounts.admin,
