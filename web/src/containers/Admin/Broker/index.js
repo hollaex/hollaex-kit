@@ -12,16 +12,16 @@ import { formatCurrency } from '../../../utils/currency';
 const generateForm = () => ({
     'quick_trade_rate': {
         type: 'number',
-        label: 'Quick trade rate',
-        placeholder: 'Quick trade rate',
+        label: 'Broker Rate (in percentage)',
+        placeholder: 'Set your broker rate in percentage',
         min: 0,
         max: 100,
         validate: [validateRequired]
     },
     'trade_master_account_id': {
         type: 'number',
-        label: 'Trade master account id',
-        placeholder: 'Trade master account id',
+        label: 'Broker User Id',
+        placeholder: 'Set the user id for broker account',
         validate: [validateRequired]
     }
 });
