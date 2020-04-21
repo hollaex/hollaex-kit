@@ -3,7 +3,7 @@
 const { Deposit, sequelize } = require('../../db/models');
 const rp = require('request-promise');
 const { each } = require('lodash');
-const { all } = require('bluebird');
+const { all, delay } = require('bluebird');
 const { VAULT_ENDPOINT } = require('../../constants');
 const { getSecrets, getConfiguration } = require('../../init');
 const { loggerDeposits } = require('../../config/logger');
@@ -37,7 +37,7 @@ Deposit.findAll({
 				? txids[withdrawal.transaction_id].push(withdrawal)
 				: txids[withdrawal.transaction_id] = [withdrawal];
 		});
-		return all(Object.keys(txids).map((txid) => {
+		return all(Object.keys(txids).map((txid, i) => {
 			const option = {
 				method: 'GET',
 				headers: {
@@ -50,83 +50,86 @@ Deposit.findAll({
 				uri: `${VAULT_ENDPOINT}/${VAULT_WALLET(txids[txid][0].currency)}/transactions`,
 				json: true
 			};
-			return sequelize.transaction((transaction) => {
-				return rp(option)
-					.then((tx) => {
-						if (tx.data[0]) {
-							if (tx.data[0].is_confirmed) {
-								loggerDeposits.info(`Transaction ${txid} is confirmed`);
-								return all(txids[txid].map((withdrawal) => {
-									return withdrawal.update(
-										{
-											waiting: false,
-											status: true
-										},
-										{
-											attributes: ['waiting', 'status'],
-											transaction
-										}
-									)
-										.then((wd) => {
-											// return sendEmail(
-											// 	MAILTYPE.VAULT_WITHDRAWAL_FAIL,
-											// 	getConfiguration().constants.accounts.admin,
-											// 	{
-											// 		userId: result.info.user_id,
-											// 		withdrawalId: result.info.id,
-											// 		currency: result.info.currency,
-											// 		amount: result.info.amount,
-											// 		address: result.info.address
-											// 	}
-											// );
-										});
-								}));
-							} else if (tx.data[0].is_rejected) {
-								loggerDeposits.info(`Transaction ${txid} is rejected`);
-								return all(txids[txid].map((withdrawal) => {
-									return withdrawal.update(
-										{
-											waiting: false,
-											rejected: true
-										},
-										{
-											attributes: ['waiting', 'rejected'],
-											transaction
-										}
-									)
-										.then((wd) => {
-											// return sendEmail(
-											// 	MAILTYPE.VAULT_WITHDRAWAL_FAIL,
-											// 	getConfiguration().constants.accounts.admin,
-											// 	{
-											// 		userId: result.info.user_id,
-											// 		withdrawalId: result.info.id,
-											// 		currency: result.info.currency,
-											// 		amount: result.info.amount,
-											// 		address: result.info.address
-											// 	}
-											// );
-										});
-								}));
-							} else {
-								loggerDeposits.info(`Transaction ${txid} not yet processed by vault`);
-							}
-						} else {
-							loggerDeposits.warn(`Transaction ${txid} was not found`);
-							// return sendEmail(
-							// 	MAILTYPE.VAULT_WITHDRAWAL_FAIL,
-							// 	getConfiguration().constants.accounts.admin,
-							// 	{
-							// 		userId: result.info.user_id,
-							// 		withdrawalId: result.info.id,
-							// 		currency: result.info.currency,
-							// 		amount: result.info.amount,
-							// 		address: result.info.address
-							// 	}
-							// );
-						}
+			return delay(500 * i)
+				.then(() => {
+					return sequelize.transaction((transaction) => {
+						return rp(option)
+							.then((tx) => {
+								if (tx.data[0]) {
+									if (tx.data[0].is_confirmed) {
+										loggerDeposits.info(`Transaction ${txid} is confirmed`);
+										return all(txids[txid].map((withdrawal) => {
+											return withdrawal.update(
+												{
+													waiting: false,
+													status: true
+												},
+												{
+													attributes: ['waiting', 'status'],
+													transaction
+												}
+											)
+												.then((wd) => {
+													// return sendEmail(
+													// 	MAILTYPE.VAULT_WITHDRAWAL_FAIL,
+													// 	getConfiguration().constants.accounts.admin,
+													// 	{
+													// 		userId: result.info.user_id,
+													// 		withdrawalId: result.info.id,
+													// 		currency: result.info.currency,
+													// 		amount: result.info.amount,
+													// 		address: result.info.address
+													// 	}
+													// );
+												});
+										}));
+									} else if (tx.data[0].is_rejected) {
+										loggerDeposits.info(`Transaction ${txid} is rejected`);
+										return all(txids[txid].map((withdrawal) => {
+											return withdrawal.update(
+												{
+													waiting: false,
+													rejected: true
+												},
+												{
+													attributes: ['waiting', 'rejected'],
+													transaction
+												}
+											)
+												.then((wd) => {
+													// return sendEmail(
+													// 	MAILTYPE.VAULT_WITHDRAWAL_FAIL,
+													// 	getConfiguration().constants.accounts.admin,
+													// 	{
+													// 		userId: result.info.user_id,
+													// 		withdrawalId: result.info.id,
+													// 		currency: result.info.currency,
+													// 		amount: result.info.amount,
+													// 		address: result.info.address
+													// 	}
+													// );
+												});
+										}));
+									} else {
+										loggerDeposits.info(`Transaction ${txid} not yet processed by vault`);
+									}
+								} else {
+									loggerDeposits.warn(`Transaction ${txid} was not found`);
+									// return sendEmail(
+									// 	MAILTYPE.VAULT_WITHDRAWAL_FAIL,
+									// 	getConfiguration().constants.accounts.admin,
+									// 	{
+									// 		userId: result.info.user_id,
+									// 		withdrawalId: result.info.id,
+									// 		currency: result.info.currency,
+									// 		amount: result.info.amount,
+									// 		address: result.info.address
+									// 	}
+									// );
+								}
+							});
 					});
-			});
+				});
 		}));
 	})
 	.then(() => {
