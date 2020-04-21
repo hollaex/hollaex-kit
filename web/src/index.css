@@ -3160,6 +3160,10 @@ table th {
   margin: 3rem auto;
   width: 75rem; }
   .trade_tabs-container .app-icon {
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 5rem;
     margin: 1rem auto;
     width: 8rem; }
   .trade_tabs-container .trade-tab-app-title {
@@ -3793,7 +3797,11 @@ table th {
     align-items: center;
     padding: 0 8px; }
   .app_bar .app_bar-icon-logo {
-    height: 3.5rem; }
+    height: 3rem;
+    width: 5rem;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat; }
   .app_bar .app_bar-icon-logo svg .logo-black {
     fill: white; }
   .app_bar .app_bar-icon-logo svg path {
@@ -4151,7 +4159,11 @@ table th {
 .app_bar-mobile {
   padding: 1rem 0; }
   .app_bar-mobile .homeicon-svg {
-    height: 4rem; }
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 4rem;
+    width: 7rem; }
   .app_bar-mobile .app_bar-controllers-splash .action_button {
     min-width: 4rem;
     margin: 0 0.75rem; }
@@ -4383,7 +4395,8 @@ table th {
     .app_bar .app_bar-pair-font {
       font-size: 1rem; }
     .app_bar .app_bar-icon-logo {
-      height: 3.5rem; }
+      height: 3rem;
+      width: 5rem; }
     .app_bar .app-bar-tab-close {
       width: 1.1rem; }
     .app_bar .app_bar-icon {
@@ -6220,6 +6233,12 @@ table th {
     .icon_title-wrapper .icon_title-text.title {
       font-size: 3.5rem;
       text-transform: capitalize; }
+  .icon_title-wrapper .auth_logo-wrapper {
+    height: 5rem !important;
+    width: 8rem !important;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat; }
 
 .direction_ltr .icon_title-wrapper {
   font-family: "Raleway"; }
@@ -6243,10 +6262,6 @@ table th {
     stroke: white; }
   .dark-theme .icon_title-wrapper.underline:after {
     background: #535353; }
-
-.layout-mobile .icon_title-wrapper .auth_logo-wrapper {
-  height: 7rem !important;
-  width: 7rem !important; }
 
 .layout-mobile .icon_title-wrapper .auth_logo-wrapper svg {
   height: 8rem !important;
@@ -8634,8 +8649,12 @@ foreignObject {
         width: 25rem;
         margin-left: 1rem; }
       .app_footer-container .footer-row-content .footer_separter .footer-logo {
+        background-size: contain;
+        background-position: center;
+        background-repeat: no-repeat;
         height: 4rem;
-        margin-left: 1rem; }
+        margin-left: 1rem;
+        width: 7rem; }
       .app_footer-container .footer-row-content .footer_separter svg .hollaEX_logo_gray {
         fill: white; }
       .app_footer-container .footer-row-content .footer_separter .blue-link {
@@ -8736,7 +8755,8 @@ foreignObject {
     .layout-mobile .app_footer-container .footer-row-content .footer-links-section .footer_separter .footer-logo {
       height: 3.5rem;
       margin-top: 11px;
-      margin-bottom: 1rem; }
+      margin-bottom: 1rem;
+      width: 6.5rem; }
     .layout-mobile .app_footer-container .footer-row-content .footer-links-section .footer_separter svg .hollaEX_logo_gray {
       fill: white; }
     .layout-mobile .app_footer-container .footer-row-content .footer-links-section .footer_separter .blue-link {

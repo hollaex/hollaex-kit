@@ -20,16 +20,16 @@ const updateThemeToBody = (theme = 'white') => {
 	}
 };
 const checkPath = (path) => {
-	var sheet = document.createElement('style')
+	var sheet = document.createElement('style');
 	if ((path === '/login') || (path === '/signup')
 		|| (path === '/reset-password') || path.includes('/withdraw')) {
-		sheet.innerHTML = ".grecaptcha-badge { display: unset !important;}";
+		sheet.innerHTML = ".grecaptcha-badge { visibility: visible !important;}";
 		sheet.id = 'addCap'
 		if (document.getElementById('rmvCap') !== null) {
 			document.body.removeChild(document.getElementById('rmvCap'));
 		}
 	} else {
-		sheet.innerHTML = ".grecaptcha-badge { display: none !important;}";
+		sheet.innerHTML = ".grecaptcha-badge { visibility: hidden !important;}";
 		sheet.id = 'rmvCap'
 		if (document.getElementById('addCap') !== null) {
 			document.body.removeChild(document.getElementById('addCap'));
