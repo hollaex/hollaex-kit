@@ -3,7 +3,7 @@
 const { Deposit, sequelize, User } = require('../../db/models');
 const rp = require('request-promise');
 const { each } = require('lodash');
-const { all } = require('bluebird');
+const { all, delay } = require('bluebird');
 const { VAULT_ENDPOINT } = require('../../constants');
 const { getSecrets, getConfiguration } = require('../../init');
 const { loggerDeposits } = require('../../config/logger');
@@ -122,47 +122,44 @@ Deposit.findAll({
 				currency: 'bch'
 			});
 		}
-		return all(options.map((option) => {
-			return sequelize.transaction((transaction) => {
-				return all(option.info.map((withdrawal) => {
-					return withdrawal.update(
-						{
-							processing: false,
-							waiting: true
-						},
-						{
-							fields: ['processing', 'waiting'],
-							transaction,
-							returning: true
-						}
-					)
-				}))
-					.then((dbWithdrawals) => {
-						return rp(option.data)
-							.then((data) => {
-								loggerDeposits.info(`${option.type} ${option.currency} withdrawal successful`);
-								return {
-									success: true,
-									data: data,
-									dbWithdrawals
+		return all(options.map((option, i) => {
+			return delay(2000 * i)
+				.then(() => {
+					return sequelize.transaction((transaction) => {
+						return all(option.info.map((withdrawal) => {
+							return withdrawal.update(
+								{
+									processing: false,
+									waiting: true
+								},
+								{
+									fields: ['processing', 'waiting'],
+									transaction,
+									returning: true
 								}
-							})
-							.catch((err) => {
-								loggerDeposits.error(`${option.type} ${option.currency} withdrawal failed: ${err.message}`);
-								return {
-									success: false,
-									data: err,
-									dbWithdrawals
-								};
+							);
+						}))
+							.then((dbWithdrawals) => {
+								return rp(option.data)
+									.then((data) => {
+										loggerDeposits.info(`${option.type} ${option.currency} withdrawal successful`);
+										return {
+											success: true,
+											data: data,
+											dbWithdrawals
+										};
+									});
 							});
 					})
-					.catch((err) => {
-						return {
-							success: false,
-							data: err
-						};
-					});
-			});
+						.catch((err) => {
+							loggerDeposits.error(`${option.type} ${option.currency} withdrawal failed: ${err.message}`);
+							return {
+								success: false,
+								data: err,
+								dbWithdrawals: option.info
+							};
+						});
+				});
 		}));
 	})
 	.then((results) => {
@@ -178,34 +175,34 @@ Deposit.findAll({
 								fields: ['transaction_id'],
 								transaction
 							}
-						)
-					}))
+						);
+					}));
 				})
 					.catch((err) => {
-						return sendEmail(
-							MAILTYPE.VAULT_WITHDRAWAL_FAIL,
-							getConfiguration().constants.accounts.admin,
-							{
-								userId: result.info.user_id,
-								withdrawalId: result.info.id,
-								currency: result.info.currency,
-								amount: result.info.amount,
-								address: result.info.address
-							}
-						);
+						// return sendEmail(
+						// 	MAILTYPE.VAULT_WITHDRAWAL_FAIL,
+						// 	getConfiguration().constants.accounts.admin || 'brandon@bitholla.com',
+						// 	{
+						// 		userId: result.info.user_id,
+						// 		withdrawalId: result.info.id,
+						// 		currency: result.info.currency,
+						// 		amount: result.info.amount,
+						// 		address: result.info.address
+						// 	}
+						// );
 					});
 			} else {
-				return sendEmail(
-					MAILTYPE.VAULT_WITHDRAWAL_FAIL,
-					getConfiguration().constants.accounts.admin,
-					{
-						userId: result.info.user_id,
-						withdrawalId: result.info.id,
-						currency: result.info.currency,
-						amount: result.info.amount,
-						address: result.info.address
-					}
-				);
+				// return sendEmail(
+				// 	MAILTYPE.VAULT_WITHDRAWAL_FAIL,
+				// 	getConfiguration().constants.accounts.admin || 'brandon@bitholla.com',
+				// 	{
+				// 		userId: result.info.user_id,
+				// 		withdrawalId: result.info.id,
+				// 		currency: result.info.currency,
+				// 		amount: result.info.amount,
+				// 		address: result.info.address
+				// 	}
+				// );
 			}
 		}));
 	})
