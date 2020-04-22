@@ -8,9 +8,7 @@ import { Paginator, SearchBox } from '../../components';
 import {
 	ICONS,
 	BASE_CURRENCY,
-	DEFAULT_COIN_DATA,
-	HOLLAEX_LOGO,
-	HOLLAEX_LOGO_BLACK
+	DEFAULT_COIN_DATA
 } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 import {
@@ -144,18 +142,18 @@ class AddTradeTab extends Component {
 		if (!this.props.pair && Object.keys(pairs).length) {
 			quickPair = Object.keys(pairs)[0];
 		}
-		let path = constants.logo_path || HOLLAEX_LOGO;
+		let path = constants.logo_path;
 		if (activeTheme === 'dark') {
-			path = constants.logo_black_path || HOLLAEX_LOGO_BLACK;
+			path = constants.logo_black_path;
 		}
 		return (
 			<div className="trade_tabs-container">
 				<div className="mb-5">
-					<img
-						src={path}
-						alt="app logo"
+					<div
+						style={{ backgroundImage: `url(${path})` }}
 						className="app-icon d-flex"
-					/>
+					>
+					</div>
 					<div className="text-center trade-tab-app-title">
 						{STRINGS.APP_SUB_TITLE.toUpperCase()}
 					</div>

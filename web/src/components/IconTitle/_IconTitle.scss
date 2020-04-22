@@ -38,6 +38,14 @@ $title--margin: 1rem;
 			text-transform: capitalize;
 		}
 	}
+
+	.auth_logo-wrapper {
+		height: 5rem !important;
+		width: 8rem !important;
+		background-size: contain;
+		background-position: center;
+		background-repeat: no-repeat;
+	}
 }
 
 .direction_ltr {
@@ -78,10 +86,10 @@ $title--margin: 1rem;
 
 .layout-mobile {
 	.icon_title-wrapper {
-		.auth_logo-wrapper {
-			height: 7rem !important;
-			width: 7rem !important;
-		}
+		// .auth_logo-wrapper {
+		// 	height: 7rem !important;
+		// 	width: 7rem !important;
+		// }
 		
 		.auth_logo-wrapper svg {
 			height: 8rem !important;
