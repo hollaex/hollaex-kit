@@ -91,10 +91,12 @@ class Table extends Component {
 
 		return (
 			<div className="table_container">
-				<table className={classnames('table-wrapper')}>
-					<TableHeader headers={headers} />
-					<TableBody cancelDelayData={cancelDelayData} headers={headers} data={data} withIcon={withIcon} />
-				</table>
+				<div className="table-content">
+					<table className={classnames('table-wrapper')}>
+						<TableHeader headers={headers} />
+						<TableBody cancelDelayData={cancelDelayData} headers={headers} data={data} withIcon={withIcon} />
+					</table>
+				</div>
 				{displayPaginator && (
 					<Paginator
 						currentPage={page + 1}

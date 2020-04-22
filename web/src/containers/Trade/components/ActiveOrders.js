@@ -16,6 +16,18 @@ import STRINGS from '../../../config/localizedStrings';
 
 const generateHeaders = (onCancel) => [
 	{
+		label: STRINGS.PAIR,
+		key: 'pair',
+		exportToCsv: ({ symbol }) => symbol.toUpperCase(),
+		renderCell: ({ symbol }, key, index) => {
+			return (
+				<td key={index} className="text-uppercase">
+					{symbol}
+				</td>
+			);
+		}
+	},
+	{
 		label: STRINGS.SIDE,
 		key: 'side',
 		renderCell: ({ side = '' }, key, index) => {

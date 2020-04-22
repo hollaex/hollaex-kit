@@ -1430,8 +1430,14 @@ table th {
   height: calc(100% - 4.5rem); }
   .layout-mobile .inner_container .history_block-wrapper {
     max-height: calc(100% - 1rem); }
+    .layout-mobile .inner_container .history_block-wrapper .table-content {
+      overflow-x: scroll;
+      white-space: nowrap;
+      width: 100%; }
+    .layout-mobile .inner_container .history_block-wrapper .table-wrapper .table_header-wrapper,
     .layout-mobile .inner_container .history_block-wrapper .table-wrapper .table_body-wrapper {
-      font-size: 1.2rem;
+      font-size: 1rem !important; }
+    .layout-mobile .inner_container .history_block-wrapper .table-wrapper .table_body-wrapper {
       height: 4.5rem; }
 
 .layout-mobile .display_table-wrapper .display_table-cell {
@@ -2287,7 +2293,11 @@ table th {
     fill: #6496AA; }
 
 .layout-mobile .trade_active_orders-wrapper {
-  max-height: 35vh !important; }
+  max-height: 35vh !important;
+  white-space: nowrap; }
+  .layout-mobile .trade_active_orders-wrapper .table_header-wrapper,
+  .layout-mobile .trade_active_orders-wrapper .table_body-wrapper {
+    font-size: 1rem !important; }
 
 .trade_active-lg-view {
   max-height: 17vh; }
