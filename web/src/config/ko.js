@@ -1285,7 +1285,7 @@ export default {
 		ANNOUNCEMNT_TXT_1:
 			'친구들을 hollaex.com에 소개하여 HAP프로그램과 함께 XHT를 얻으세요. {0}.',
 		DEFAULT_ANNOUNCEMENT:
-			'이 페이지는 포스트는 회원님의 거래소의 공지사항입니다! {0}',
+			'이 페이지는 포스트는 회원님의 거래소의 공지사항입니다!',
 		ANNOUNCEMENT_TXT_2: '{0}의 모든 지갑에 무료 XHT가 배포됩니다.',
 		LEARN_MORE: '더 알아보기',
 		APPLY_TODAY: '지금신청하기' // new

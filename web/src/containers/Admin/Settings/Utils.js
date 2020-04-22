@@ -21,14 +21,14 @@ export const generateAdminSettings = (key) => {
             },
             site_key: {
                 type: 'input',
-                label: 'Captcha site key',
-                placeholder: 'Captcha site key',
+                label: 'Captcha site key (Google ReCaptcha V3)',
+                placeholder: 'Captcha site key (Google ReCaptcha V3)',
                 validate: [validateRequired]
             },
             secret_key: {
                 type: 'input',
-                label: 'Captcha secret key',
-                placeholder: 'Captcha secret key',
+                label: 'Captcha secret key (Google ReCaptcha V3)',
+                placeholder: 'Captcha secret key (Google ReCaptcha V3)',
                 validate: [validateRequired]
             }
         };
@@ -51,7 +51,7 @@ export const generateAdminSettings = (key) => {
             email_configuration: {
                 sender: {
                     type: 'input',
-                    label: 'Sender email',
+                    label: 'Sender email (appears in the emails sent to the user as sender)',
                     placeholder: 'Sender email',
                     validate: [validateRequired, email]
                 },
@@ -99,46 +99,24 @@ export const generateAdminSettings = (key) => {
             api_name: {
                 type: 'input',
                 label: 'Exchange Name',
-                placeholder: 'API name',
+                placeholder: 'Exchange Name',
                 validate: [validateRequired]
             },
             new_user_is_activated: {
                 type: 'checkbox',
-                label: 'New user is activated',
+                label: 'Allow new signups (If disabled new users can\'t signup on the platform)',
                 // placeholder: 'New user is activated',
                 // validate: [validateRequired]
             },
             language: {
                 type: 'select',
-                label: 'Default language',
+                label: 'Default Language',
                 placeholder: 'Select default language',
                 validate: [validateRequired],
                 options: [
                     { label: 'English', value: 'en' },
                     { label: 'Korean', value: 'ko' }
                 ]
-            },
-            theme: {
-                type: 'select',
-                label: 'Default theme',
-                placeholder: 'Select default theme',
-                validate: [validateRequired],
-                options: [
-                    { label: 'White', value: 'white' },
-                    { label: 'Dark', value: 'dark' }
-                ]
-            },
-            logo_path: {
-                type: 'input',
-                label: 'Logo path',
-                placeholder: 'Logo path',
-                validate: [validateRequired, urlCheck]
-            },
-            logo_black_path: {
-                type: 'input',
-                label: 'Logo path in Dark theme',
-                placeholder: 'Logo path in Dark theme',
-                validate: [validateRequired, urlCheck]
             },
             valid_languages: {
                 type: 'select',
@@ -150,6 +128,28 @@ export const generateAdminSettings = (key) => {
                     { label: 'English', value: 'en' },
                     { label: 'Korean', value: 'ko' }
                 ]
+            },
+            theme: {
+                type: 'select',
+                label: 'Default Theme',
+                placeholder: 'Select default theme',
+                validate: [validateRequired],
+                options: [
+                    { label: 'White', value: 'white' },
+                    { label: 'Dark', value: 'dark' }
+                ]
+            },
+            logo_path: {
+                type: 'input',
+                label: 'Logo (Dark Color)',
+                placeholder: 'Insert the logo path',
+                validate: [validateRequired, urlCheck]
+            },
+            logo_black_path: {
+                type: 'input',
+                label: 'Logo (Light Color)',
+                placeholder: 'Insert the logo path',
+                validate: [validateRequired, urlCheck]
             }
         };
     }
@@ -171,8 +171,12 @@ export const minimalTimezoneSet = [
     { offset: '-01:00', label: '(GMT-01:00) Azores', value: 'Atlantic/Azores' },
     { offset: '+00:00', label: '(GMT+00:00) London', value: 'Europe/London' },
     { offset: '+01:00', label: '(GMT+01:00) Berlin', value: 'Europe/Berlin' },
+    { offset: '+01:00', label: '(GMT+01:00) Paris', value: 'Europe/Paris' },
+    { offset: '+01:00', label: '(GMT+01:00) Rome', value: 'Europe/Rome' },
     { offset: '+02:00', label: '(GMT+02:00) Helsinki', value: 'Europe/Helsinki' },
+    { offset: '+03:00', label: '(GMT+03:00) Moscow', value: 'Europe/Moscow' },
     { offset: '+03:00', label: '(GMT+03:00) Istanbul', value: 'Europe/Istanbul' },
+    { offset: '+04:00', label: '(GMT+03:30) Tehran', value: 'Asia/Tehran' },
     { offset: '+04:00', label: '(GMT+04:00) Dubai', value: 'Asia/Dubai' },
     { offset: '+04:30', label: '(GMT+04:30) Kabul', value: 'Asia/Kabul' },
     { offset: '+05:00', label: '(GMT+05:00) Maldives', value: 'Indian/Maldives' },
@@ -182,8 +186,12 @@ export const minimalTimezoneSet = [
     { offset: '+06:30', label: '(GMT+06:30) Cocos', value: 'Indian/Cocos' },
     { offset: '+07:00', label: '(GMT+07:00) Bangkok', value: 'Asia/Bangkok' },
     { offset: '+08:00', label: '(GMT+08:00) Hong Kong', value: 'Asia/Hong_Kong' },
+    { offset: '+08:00', label: '(GMT+08:00) Kuala Lumpur', value: 'Asia/Kuala_Lumpur' },
+    { offset: '+08:00', label: '(GMT+08:00) Singapore', value: 'Asia/Singapore' },
+    { offset: '+08:00', label: '(GMT+08:00) Manila', value: 'Asia/Manila' },
     { offset: '+08:30', label: '(GMT+08:30) Pyongyang', value: 'Asia/Pyongyang' },
-    { offset: '+09:00', label: '(GMT+09:00) Seoul', value: 'Asia/Tokyo' },
+    { offset: '+09:00', label: '(GMT+09:00) Seoul', value: 'Asia/Seoul' },
+    { offset: '+09:00', label: '(GMT+09:00) Tokyo', value: 'Asia/Tokyo' },
     { offset: '+09:30', label: '(GMT+09:30) Central Time - Darwin', value: 'Australia/Darwin' },
     { offset: '+10:00', label: '(GMT+10:00) Eastern Time - Brisbane', value: 'Australia/Brisbane' },
     { offset: '+10:30', label: '(GMT+10:30) Central Time - Adelaide', value: 'Australia/Adelaide' },

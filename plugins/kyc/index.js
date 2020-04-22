@@ -58,6 +58,7 @@ app.put('/plugins/kyc/user', [verifyToken, bodyParser.json()], (req, res) => {
 				'is_supervisor',
 				'is_support',
 				'is_kyc',
+				'is_tech',
 				'flagged',
 				'affiliation_code'
 			]

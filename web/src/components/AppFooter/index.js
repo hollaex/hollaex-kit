@@ -1,7 +1,7 @@
 import React from 'react';
 import classnames from 'classnames';
 import { isMobile } from 'react-device-detect';
-import { SOCIAL_ICONS, HOLLAEX_LOGO_BLACK } from '../../config/constants';
+import { SOCIAL_ICONS } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 import { PUBLIC_URL } from '../../config/constants';
 import moment from 'moment';
@@ -162,12 +162,10 @@ const AppFooter = ({ className, theme, constants = {} }) => {
 						)}
 						<div className="footer_separter">
 							<div className="footer-content">
-								<div>
-									<img
-										src={constants.logo_black_path || HOLLAEX_LOGO_BLACK}
-										alt="logo"
-										className="footer-logo"
-									/>
+								<div
+									style={{ backgroundImage: `url(${constants.logo_black_path})` }}
+									className="footer-logo"
+								>
 								</div>
 								<div className="footer-txt">
 									{STRINGS.formatString(

@@ -1,5 +1,4 @@
 import React from 'react';
-import { HOLLAEX_LOGO } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 
 const getContent = (strings, type) => {
@@ -20,7 +19,7 @@ const Legal = ({ type, constants = {} }) => {
 			<div className="d-flex flex-column legal-content-wrapper">
 				<div className="legal-logo-wrapper">
 					<img
-						src={constants.logo_path || HOLLAEX_LOGO}
+						src={constants.logo_path}
 						alt={STRINGS.APP_NAME}
 						className="legal-logo"
 					/>

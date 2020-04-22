@@ -1321,7 +1321,7 @@ export default {
 		ANNOUNCEMNT_TXT_1:
 			'Earn XHT with HAP program by introducing your friends to hollaex.com. {0}.',
 		DEFAULT_ANNOUNCEMENT:
-			'This page posts public announcements about your exchange! {0}',
+			'This section displays your exchange public announcements!',
 		ANNOUNCEMENT_TXT_2: 'Free XHT will be distributed to all wallets that {0}.',
 		LEARN_MORE: 'Learn more',
 		APPLY_TODAY: 'Apply today' // new

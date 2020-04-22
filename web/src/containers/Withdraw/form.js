@@ -11,7 +11,6 @@ import {
 import math from 'mathjs';
 import classnames from 'classnames';
 import { isMobile } from 'react-device-detect';
-import { bindActionCreators } from 'redux';
 import { Button, Dialog, OtpForm, Loader } from '../../components';
 import renderFields from '../../components/Form/factoryFields';
 import {
@@ -119,12 +118,12 @@ class Form extends Component {
 					return response;
 				}).catch(err => {
 					const error = { _error: err.message, ...err.errors };
+					errorTimeOut = setTimeout(() => {
+						this.props.dispatch(change(FORM_NAME, 'captcha', ''));
+					}, 5000);
 					this.props.onSubmitFail(err.errors || err, this.props.dispatch);
 					this.onCloseDialog();
 					this.props.dispatch(stopSubmit(FORM_NAME, error));
-					errorTimeOut = setTimeout(() => {
-						this.props.change(FORM_NAME, 'captcha', '');
-					}, 5000);
 					// throw new SubmissionError(error);
 				})
 		}
@@ -156,22 +155,22 @@ class Form extends Component {
 				if (err instanceof SubmissionError) {
 					if (err.errors && !err.errors.otp_code) {
 						const error = { _error: err.message, ...err.errors };
+						errorTimeOut = setTimeout(() => {
+							this.props.dispatch(change(FORM_NAME, 'captcha', ''));
+						}, 5000);
 						this.props.onSubmitFail(err.errors, this.props.dispatch);
 						this.onCloseDialog();
 						this.props.dispatch(stopSubmit(FORM_NAME, error));
-						errorTimeOut = setTimeout(() => {
-							this.props.change(FORM_NAME, 'captcha', '');
-						}, 5000);
 					}
 					throw err;
 				} else {
 					const error = { _error: err.message };
+					errorTimeOut = setTimeout(() => {
+						this.props.dispatch(change(FORM_NAME, 'captcha', ''));
+					}, 5000);
 					this.props.onSubmitFail(error, this.props.dispatch);
 					this.onCloseDialog();
 					this.props.dispatch(stopSubmit(FORM_NAME, error));
-					errorTimeOut = setTimeout(() => {
-						this.props.change(FORM_NAME, 'captcha', '');
-					}, 5000);
 					throw new SubmissionError(error);
 				}
 			});
@@ -244,7 +243,7 @@ const WithdrawForm = reduxForm({
 		dispatch(reset(FORM_NAME));
 		setWithdrawEmailConfirmation(data, dispatch);
 	},
-	enableReinitialize: true,
+	// enableReinitialize: true,
 	validate
 })(Form);
 
@@ -254,10 +253,6 @@ const mapStateToForm = (state) => ({
 	coins: state.app.coins
 });
 
-const mapDispatchToProps = (dispatch) => ({
-	change: bindActionCreators(change, dispatch)
-});
-
-const WithdrawFormWithValues = connect(mapStateToForm, mapDispatchToProps)(WithdrawForm);
+const WithdrawFormWithValues = connect(mapStateToForm)(WithdrawForm);
 
 export default WithdrawFormWithValues;

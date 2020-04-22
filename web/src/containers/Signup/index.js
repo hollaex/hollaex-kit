@@ -11,8 +11,6 @@ import SignupSuccess from './SignupSuccess';
 import { ContactForm } from '../';
 import { IconTitle, Dialog, MobileBarBack } from '../../components';
 import {
-	HOLLAEX_LOGO,
-	HOLLAEX_LOGO_BLACK,
 	FLEX_CENTER_CLASSES,
 	ICONS,
 	SUPPORT_HELP_URL
@@ -135,9 +133,9 @@ class Signup extends Component {
 		}
 
 		const formFields = generateFormFields(STRINGS, activeTheme, isReferral);
-		let path = constants.logo_path || HOLLAEX_LOGO;
+		let path = constants.logo_path;
 		if (activeTheme === 'dark') {
-			path = constants.logo_black_path || HOLLAEX_LOGO_BLACK;
+			path = constants.logo_black_path;
 		}
 
 		return (
@@ -157,6 +155,7 @@ class Signup extends Component {
 						textType="title"
 						underline={true}
 						useSvg={false}
+						isLogo={true}
 						className="w-100 exir-logo"
 						imageWrapperClassName="auth_logo-wrapper"
 						subtitle={STRINGS.formatString(
