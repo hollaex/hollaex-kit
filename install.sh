@@ -88,6 +88,32 @@ if command apt-get -v > /dev/null 2>&1; then
 
     fi
 
+    if ! command nslookup -version > /dev/null 2>&1; then
+
+        printf "\n\033[93mHollaEx CLI requires nslookup to operate. Installing it now...\033[39m\n"
+
+        if [[ ! $IS_APT_UPDATED ]]; then
+
+            echo "Updating APT list"
+            sudo apt-get update
+        fi
+
+        if command sudo apt-get install -y dnsutils; then
+
+            printf "\n\033[92mnslookup(dnsutils) has been successfully installed!\033[39m\n"
+
+            echo "Info: "
+            nslookup -version
+
+        else
+
+            printf "\n\033[91mFailed to install nslookup.\033[39m\n"
+            echo "Please review the logs and try to manually install it. - 'sudo apt-get install -y dnsutils'."
+
+        fi
+
+    fi
+
 # Dependencies installer for macOS with Homebrew.
 elif command brew -v > /dev/null 2>&1; then
 
@@ -158,9 +184,106 @@ elif command brew -v > /dev/null 2>&1; then
 
     fi
 
+# Dependencies installer for CentOS (RHEL) with Yum.
+elif command yum --version > /dev/null 2>&1; then
+
+    if ! command docker -v > /dev/null 2>&1; then
+
+        printf "\n\033[93mHollaEx CLI requires Docker to operate. Installing it now...\033[39m\n"
+
+        echo "Adding Docker-CE repository on Yum..."
+        sudo yum install -y yum-utils
+        sudo yum-config-manager \
+            --add-repo \
+            https://download.docker.com/linux/centos/docker-ce.repo
+
+        echo "Installing Docker"
+        if command sudo yum install docker-ce docker-ce-cli containerd.io -y --nobest; then
+
+            printf "\n\033[92mDocker has been successfully installed!\033[39m\n"
+            echo "Info: $(docker -v)"
+
+            echo -e "\nAdding current user to Docker usergroup"
+            if command sudo gpasswd -a $USER docker; then
+
+                    DOCKER_USERGROUP_ADDED=true
+
+            fi
+
+        else
+
+            printf "\n\033[91mFailed to install Docker.\033[39m\n"
+            echo "Please review the logs and try to manually install it. - 'sudo yum install -y docker-ce docker-ce-cli containerd.io'."
+            exit 1;
+
+        fi
+
+    fi
+
+    if ! command docker-compose -v > /dev/null 2>&1; then
+
+        printf "\n\033[93mHollaEx CLI requires Docker-Compose to operate. Installing it now...\033[39m\n"
+
+        if command curl -L "https://github.com/docker/compose/releases/download/1.23.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose; then
+
+            sudo chmod +x /usr/local/bin/docker-compose
+
+            printf "\n\033[92mDocker-Compose has been successfully installed!\033[39m\n"
+
+            echo "Info: $(docker-compose -v)"
+
+        else
+
+            printf "\n\033[91mFailed to install Docker-Compose.\033[39m\n"
+            echo "Please review the logs and try to manually install it. - 'https://github.com/docker/compose/releases'."
+            exit 1;
+
+        fi
+
+    fi
+
+    if ! command jq --version > /dev/null 2>&1; then
+
+        printf "\n\033[93mHollaEx CLI requires jq to operate. Installing it now...\033[39m\n"
+
+        if command sudo yum install -y jq; then
+
+            printf "\n\033[92mjq has been successfully installed!\033[39m\n"
+
+            echo "Info: $(jq --version)"
+
+        else
+
+            printf "\n\033[91mFailed to install jq.\033[39m\n"
+            echo "Please review the logs and try to manually install it. - 'sudo yum install -y jq'."
+
+        fi
+
+    fi
+
+    if ! command nslookup -version > /dev/null 2>&1; then
+
+        printf "\n\033[93mHollaEx CLI requires nslookup to operate. Installing it now...\033[39m\n"
+
+        if command sudo yum install -y bind-utils; then
+
+            printf "\n\033[92mnslookup(bind-utils) has been successfully installed!\033[39m\n"
+
+            echo "Info: "
+            nslookup -version
+
+        else
+
+            printf "\n\033[91mFailed to install nslookup.\033[39m\n"
+            echo "Please review the logs and try to manually install it. - 'sudo yum install -y bind-utils'."
+
+        fi
+
+    fi
+
 fi
 
-if ! command docker -v > /dev/null 2>&1 || ! command docker-compose -v > /dev/null 2>&1 || ! command jq --version > /dev/null 2>&1; then
+if ! command docker -v > /dev/null 2>&1 || ! command docker-compose -v > /dev/null 2>&1  || ! command jq --version > /dev/null 2>&1 || ! command nslookup -version > /dev/null 2>&1; then
 
     if command docker -v > /dev/null 2>&1; then
 
@@ -177,6 +300,12 @@ if ! command docker -v > /dev/null 2>&1 || ! command docker-compose -v > /dev/nu
     if command jq --version > /dev/null 2>&1; then
 
         IS_JQ_INSTALLED=true
+    
+    fi
+
+    if command nslookup -version > /dev/null 2>&1; then
+
+        IS_NSLOOKUP_INSTALLED=true
     
     fi
     
@@ -212,6 +341,17 @@ if ! command docker -v > /dev/null 2>&1 || ! command docker-compose -v > /dev/nu
     else 
 
         printf "\033[91mjq: Not Installed\033[39m\n"
+
+    fi
+
+    # nslookup installation status check
+    if [[ "$IS_NSLOOKUP_INSTALLED" ]]; then
+
+        printf "\033[92mnslookup: Installed\033[39m\n"
+
+    else 
+
+        printf "\033[91mnslookup: Not Installed\033[39m\n"
 
     fi
 

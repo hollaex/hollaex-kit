@@ -41,11 +41,10 @@ const SIGNUP = {
 	TITLE: 'Sign Up',
 	GREETING: (name) => COMMON.GREETING(name),
 	BODY: {
-		1: () => `Thank you for registering on ${API_NAME()}.
-		Our sales team will review your application and will get back to you as soon as possible.
-		If you have any questions, feel free to contact us at <a href="mailto:${SUPPORT_EMAIL()}">${SUPPORT_EMAIL()}</a>`,
+		1: () => `You need to confirm your email account by clicking the button below.
+		If you have any questions feel free to contact us simply by replying to this email.`,
 		2: 'Please click on the button below to proceed with your registration.',
-		3: 'Activate My Account'
+		3: 'Confirm'
 	},
 	CLOSING: COMMON.CLOSING
 };
@@ -60,7 +59,7 @@ const WELCOME = {
 		Please go to your ${account} and visit the ${deposit} page.`,
 		3: 'account',
 		4: 'deposit',
-		5: () => `If you have any questions or concerns, please contact us at ${SUPPORT_EMAIL()}.`
+		5: () => `If you have any questions or concerns, please contact us simply by replying to this email.`
 	},
 	CLOSING: COMMON.CLOSING
 };
@@ -80,7 +79,7 @@ const LOGIN = {
 };
 
 const RESETPASSWORD = {
-	TITLE: 'Reset password Request',
+	TITLE: 'Reset Password Request',
 	GREETING: (name) => COMMON.GREETING(name),
 	BODY: {
 		1: 'You have made a request to reset the password for your account.',
@@ -117,7 +116,7 @@ const ACCOUNTVERIFY = {
 	TITLE: 'Account Verified',
 	GREETING: (name) => COMMON.GREETING(name),
 	BODY: {
-		1: 'Congratulations. Your identity is verified and your account is leveled up. Your account is fully ready for some actions.',
+		1: 'Congratulations. Your account is verified successfully.',
 		2: 'Trade Now'
 	},
 	CLOSING: COMMON.CLOSING
@@ -206,6 +205,16 @@ const USERVERIFICATIONREJECT = {
 	CLOSING: COMMON.CLOSING
 };
 
+const USERDEACTIVATED = {
+	TITLE: (type) => `Account ${type}`,
+	GREETING: (name) => COMMON.GREETING(name),
+	BODY: {
+		ACTIVATED: (email) => `Your account ${email} has been activated. You are now able to use your account.`,
+		DEACTIVATED: (email) => `Your account ${email} has been deactivated. You will not be able to use your account until it is activated by the exchange admin.`
+	},
+	CLOSING: COMMON.CLOSING
+};
+
 const CONTACTFORM = {
 	TITLE: 'Contact Form',
 	BODY: {
@@ -265,5 +274,6 @@ module.exports = {
 	USERVERIFICATION,
 	SUSPICIOUSDEPOSIT,
 	CONTACTFORM,
+	USERDEACTIVATED,
 	SMS
 };

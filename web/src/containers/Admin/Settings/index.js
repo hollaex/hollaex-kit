@@ -15,8 +15,20 @@ export default class Settings extends Component {
             loading: false,
             error: '',
             constants: {},
-            initialGeneralValues: {},
-            initialEmailValues: {},
+            initialGeneralValues: {
+                theme: 'white',
+                valid_languages: 'en',
+                country: 'global',
+                new_user_is_activated: false
+            },
+            initialEmailValues: {
+                configuration: {
+                    timezone: 'utc',
+                    port: 587,
+                    send_email_to_support: false
+                },
+                distribution: {}
+            },
             initialSecurityValues: {}
         };
     }
@@ -29,8 +41,8 @@ export default class Settings extends Component {
         if (JSON.stringify(prevState.constants) !== JSON.stringify(this.state.constants)) {
             this.getSettingsValues();
         }
-    }    
-    
+    }
+
     tabChange = (activeTab) => {
         this.setState({ activeTab });
     };
@@ -49,7 +61,7 @@ export default class Settings extends Component {
 
     getSettingsValues = () => {
         const result = generateAdminSettings();
-        let initialGeneralValues = {};
+        let initialGeneralValues = { ...this.state.initialGeneralValues };
         const {
             defaults = {},
             emails = {},
@@ -59,7 +71,12 @@ export default class Settings extends Component {
             admin_whitelist,
             captcha = {}
         } = this.state.constants;
-        const initialEmailValues = { ...emails, ...secrets.smtp, ...accounts };
+        const { configuration = {}, distribution = {} } = this.state.initialEmailValues || {};
+        const { admin = '', support = '', ...rest } = accounts;
+        const initialEmailValues = {
+            configuration: { ...configuration, ...emails, ...secrets.smtp, ...rest },
+            distribution: { ...distribution, admin, support }
+        };
         Object.keys(result).forEach(utilsValue => {
             if (this.state.constants[utilsValue]) {
                 if (utilsValue === 'valid_languages'
@@ -92,7 +109,7 @@ export default class Settings extends Component {
     submitSettings = (formProps, formKey) => {
         let formValues = {};
         if (formKey === 'general') {
-            formValues = {defaults: {}};
+            formValues = { defaults: {} };
             Object.keys(formProps).forEach((val) => {
                 if (val === 'theme' || val === 'language' || val === 'country') {
                     formValues.defaults[val] = formProps[val];
@@ -107,21 +124,28 @@ export default class Settings extends Component {
                     formValues[val] = formProps[val];
                 }
             });
-        } else if (formKey === 'email') {
-            formValues = { emails: {}, accounts: {}, secrets: { smtp: {} }};
+        } else if (formKey === 'email_distribution') {
+            formValues = {};
+            formValues.accounts = { admin: formProps.admin, support: formProps.support };
+        } else if (formKey === 'email_configuration') {
+            formValues = {};
             Object.keys(formProps).forEach((val) => {
                 if (val === 'sender' || val === 'timezone' || val === 'send_email_to_support') {
+                    if (!formValues.emails) formValues.emails = {};
                     formValues.emails[val] = formProps[val];
-                } else if (val === 'admin' || val === 'support' || val === 'kyc' || val === 'supervisor') {
+                } else if (val === 'kyc' || val === 'supervisor') {
+                    if (!formValues.accounts) formValues.accounts = {};
                     formValues.accounts[val] = formProps[val];
                 } else if (val === 'port') {
+                    if (!formValues.secrets || !formValues.secrets.smtp) formValues.secrets = { smtp: {} };
                     formValues.secrets.smtp[val] = parseInt(formProps[val], 10);
                 } else {
+                    if (!formValues.secrets || !formValues.secrets.smtp) formValues.secrets = { smtp: {} };
                     formValues.secrets.smtp[val] = formProps[val];
                 }
             });
         } else if (formKey === 'security') {
-            formValues = { captcha: {}, secrets: { captcha: {} }};
+            formValues = { captcha: {}, secrets: { captcha: {} } };
             Object.keys(formProps).forEach((val) => {
                 if (val === 'site_key') {
                     formValues.captcha[val] = formProps[val];
@@ -129,7 +153,7 @@ export default class Settings extends Component {
                     formValues.secrets.captcha[val] = formProps[val];
                 } else if ((val === 'allowed_domains' || val === 'admin_whitelist')
                     && typeof formProps[val] === 'string') {
-                    formValues.allowed_domains = formProps.allowed_domains.split(','); 
+                    formValues.allowed_domains = formProps.allowed_domains.split(',');
                 } else {
                     formValues[val] = formProps[val];
                 }
@@ -152,44 +176,44 @@ export default class Settings extends Component {
             <div className="app_container-content">
                 <h1>Settings</h1>
                 {error && (
-					<Alert
-						message="Error"
-						className="m-top"
-						description={error}
-						type="error"
-						showIcon
-					/>
-				)}
+                    <Alert
+                        message="Error"
+                        className="m-top"
+                        description={error}
+                        type="error"
+                        showIcon
+                    />
+                )}
                 {loading ? (
                     <Spin size="large" />
                 ) : (
-                    <Tabs
-                        defaultActiveKey={this.state.activeTab}
-                        onChange={this.tabChange}
-                    >
-                        <TabPane tab={'General'} key={'general'}>
-                            <Row>
-                                <GeneralSettingsForm
-                                    initialValues={initialGeneralValues}
-                                    handleSubmitSettings={this.submitSettings} />
-                            </Row>
-                        </TabPane>
-                        <TabPane tab={'Email'} key={'email'}>
-                            <Row>
-                                <EmailSettingsForm
-                                    initialValues={initialEmailValues}
-                                    handleSubmitSettings={this.submitSettings} />
-                            </Row>
-                        </TabPane>
-                        <TabPane tab={'Security'} key={'security'}>
-                            <Row>
-                                <SecuritySettingsForm
-                                    initialValues={initialSecurityValues}
-                                    handleSubmitSettings={this.submitSettings} />
-                            </Row>
-                        </TabPane>
-                    </Tabs>
-                )}
+                        <Tabs
+                            defaultActiveKey={this.state.activeTab}
+                            onChange={this.tabChange}
+                        >
+                            <TabPane tab={'General'} key={'general'}>
+                                <Row>
+                                    <GeneralSettingsForm
+                                        initialValues={initialGeneralValues}
+                                        handleSubmitSettings={this.submitSettings} />
+                                </Row>
+                            </TabPane>
+                            <TabPane tab={'Email'} key={'email'}>
+                                <Row>
+                                    <EmailSettingsForm
+                                        initialValues={initialEmailValues}
+                                        handleSubmitSettings={this.submitSettings} />
+                                </Row>
+                            </TabPane>
+                            <TabPane tab={'Security'} key={'security'}>
+                                <Row>
+                                    <SecuritySettingsForm
+                                        initialValues={initialSecurityValues}
+                                        handleSubmitSettings={this.submitSettings} />
+                                </Row>
+                            </TabPane>
+                        </Tabs>
+                    )}
             </div>
         )
     }

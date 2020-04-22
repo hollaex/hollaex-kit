@@ -35,7 +35,7 @@ class OrdersWrapper extends Component {
         });
         this.setState({ cancelDelayData });
         setTimeout(() => {
-            this.props.cancelAllOrders(this.state.symbol);
+            this.props.cancelAllOrders(this.props.pair);
         }, 700);
     };
 

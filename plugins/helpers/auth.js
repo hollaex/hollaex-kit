@@ -1,9 +1,9 @@
 'use strict';
 
 const jwt = require('jsonwebtoken');
-const { SECRET, ISSUER } = require('../../constants');
+const { SECRET, ISSUER, GET_FROZEN_USERS } = require('../../constants');
 const { intersection } = require('lodash');
-const { ACCESS_DENIED, NOT_AUTHORIZED, TOKEN_EXPIRED, INVALID_TOKEN, MISSING_HEADER } = require('./messages');
+const { ACCESS_DENIED, NOT_AUTHORIZED, TOKEN_EXPIRED, INVALID_TOKEN, MISSING_HEADER, DEACTIVATED_USER } = require('./messages');
 
 /**
 	* Middleware function used for verifying tokens being passed by client in Authorization header. Format: Bearer <token>
@@ -23,18 +23,22 @@ const verifyToken = (req, res, next) => {
 
 				const issuerMatch = decodedToken.iss == ISSUER;
 
-				if (issuerMatch) {
-					req.auth = decodedToken;
-					next();
+				if (!issuerMatch) {
+					return sendError(TOKEN_EXPIRED);
+				}
+
+				if (GET_FROZEN_USERS()[decodedToken.sub.id]) {
+					return sendError(DEACTIVATED_USER);
 				} else {
-					sendError(TOKEN_EXPIRED);
+					req.auth = decodedToken;
+					return next();
 				}
 			} else {
-				sendError(INVALID_TOKEN);
+				return sendError(INVALID_TOKEN);
 			}
 		});
 	} else {
-		sendError(MISSING_HEADER);
+		return sendError(MISSING_HEADER);
 	}
 };
 

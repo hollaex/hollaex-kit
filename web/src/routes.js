@@ -41,6 +41,7 @@ import {
 	ExpiredExchange,
 	AdminOrders,
 	MobileHome,
+	Broker,
 	Plugins,
 	PluginServices,
 	Settings
@@ -319,6 +320,11 @@ export default (
 				path="/admin/activeorders"
 				name="Admin Orders"
 				component={withAdminProps(AdminOrders, 'orders')}
+			/>
+			<Route
+				path="/admin/broker"
+				name="Admin broker"
+				component={withAdminProps(Broker, 'broker')}
 			/>
 			<Route
 				path="/admin/plugins"

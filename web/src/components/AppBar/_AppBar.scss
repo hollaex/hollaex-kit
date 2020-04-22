@@ -197,7 +197,11 @@ $app-bar-add-tab-red: #ff0000;
 	}
 
 	.app_bar-icon-logo {
-		height: 3.5rem;
+		height: 3rem;
+		width: 5rem;
+		background-size: contain;
+		background-position: center;
+		background-repeat: no-repeat;
 	}
 
 	.app_bar-icon-logo svg {
@@ -680,7 +684,11 @@ $app-bar-add-tab-red: #ff0000;
 .app_bar-mobile {
 	padding: 1rem 0;
 	.homeicon-svg {
+		background-size: contain;
+		background-position: center;
+		background-repeat: no-repeat;
 		height: 4rem;
+		width: 7rem;
 	}
 	.app_bar-controllers-splash {
 		.action_button {
@@ -994,7 +1002,8 @@ $app-bar-add-tab-red: #ff0000;
 		}
 
 		.app_bar-icon-logo {
-			height: 3.5rem;
+			height: 3rem;
+			width: 5rem;
 		}
 		.app-bar-tab-close {
 			width: 1.1rem;

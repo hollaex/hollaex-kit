@@ -12,7 +12,6 @@ import {
 	PRO_URL,
 	DEFAULT_VERSION_REDIRECT,
 	ICONS,
-	HOLLAEX_LOGO_BLACK,
 	EXCHANGE_EXPIRY_SECONDS,
 	IS_XHT
 } from '../../config/constants';
@@ -283,22 +282,14 @@ class AppBar extends Component {
 	};
 
 	renderIcon = (isHome) => {
-		let path = this.props.constants.logo_black_path || HOLLAEX_LOGO_BLACK;
+		let path = this.props.constants.logo_black_path;
 		return (
 			<div className={classnames('app_bar-icon', 'text-uppercase')}>
 				{isHome ? (
-					<img
-						src={path}
-						alt={STRINGS.APP_NAME}
-						className="app_bar-icon-logo"
-					/>
+					<div style={{ backgroundImage: `url(${path})` }} className="app_bar-icon-logo"></div>
 				) : (
 					<Link href={IS_PRO_VERSION ? PRO_URL : DEFAULT_VERSION_REDIRECT}>
-						<img
-							src={path}
-							alt={STRINGS.APP_NAME}
-							className="app_bar-icon-logo"
-						/>
+						<div style={{ backgroundImage: `url(${path})` }} className="app_bar-icon-logo"></div>
 					</Link>
 				)}
 			</div>
@@ -433,11 +424,13 @@ class AppBar extends Component {
 				)}
 			>
 				<Link to="/">
-					<img
-						src={constants.logo_black_path || HOLLAEX_LOGO_BLACK}
-						alt={STRINGS.APP_NAME}
+					<div
+						style={{
+							backgroundImage: `url(${constants.logo_black_path})`
+						}}
 						className="homeicon-svg"
-					/>
+					>
+					</div>
 				</Link>
 				{isHome && this.renderSplashActions(token, verifyingToken)}
 			</MobileBarWrapper>
@@ -515,21 +508,24 @@ class AppBar extends Component {
 										</div>
 									</div>
 								</Link>
-								<Link to={`/quick-trade/${pair}`}>
-									<div
-										className={classnames('app_bar-quicktrade', 'd-flex', {
-											'quick_trade-active': activePath === 'quick-trade'
-										})}
-									>
-										<ReactSVG
-											path={ICONS.QUICK_TRADE_TAB_ACTIVE}
-											wrapperClassName="quicktrade_icon"
-										/>
-										<div className="d-flex align-items-center overflow">
-											{STRINGS.QUICK_TRADE}
+								{constants.broker_enabled
+									? <Link to={`/quick-trade/${pair}`}>
+										<div
+											className={classnames('app_bar-quicktrade', 'd-flex', {
+												'quick_trade-active': activePath === 'quick-trade'
+											})}
+										>
+											<ReactSVG
+												path={ICONS.QUICK_TRADE_TAB_ACTIVE}
+												wrapperClassName="quicktrade_icon"
+											/>
+											<div className="d-flex align-items-center overflow">
+												{STRINGS.QUICK_TRADE}
+											</div>
 										</div>
-									</div>
-								</Link>
+									</Link>
+									: null
+								}
 							</div>
 							<MenuList
 								selectedMenu={selectedMenu}

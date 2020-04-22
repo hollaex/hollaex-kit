@@ -1,5 +1,5 @@
 'use strict';
-const { DEFAULT_ORDER_RISK_PERCENTAGE, GET_CONFIGURATION } = require('../../constants');
+const { DEFAULT_ORDER_RISK_PERCENTAGE } = require('../../constants');
 const {
 	generateHash,
 	generateAffiliationCode
@@ -14,30 +14,28 @@ const ID_DATA_DEFAULT = {
 	note: ''
 };
 
-const SETTINGS_DATA_DEFAULT = () => {
-	return {
-		notification: {
-			popup_order_confirmation: true,
-			popup_order_completed: true,
-			popup_order_partially_filled: true
-		},
-		interface: {
-			order_book_levels: 10,
-			theme: GET_CONFIGURATION().constants.defaults.theme || process.env.DEFAULT_THEME || 'white'
-		},
-		language: GET_CONFIGURATION().constants.defaults.language || process.env.DEFAULT_LANGUAGE || 'en',
-		audio: {
-			order_completed: true,
-			order_partially_completed: true,
-			public_trade: false
-		},
-		risk: {
-			order_portfolio_percentage: DEFAULT_ORDER_RISK_PERCENTAGE
-		},
-		chat: {
-			set_username: false
-		}
-	};
+const SETTINGS_DATA_DEFAULT = {
+	notification: {
+		popup_order_confirmation: true,
+		popup_order_completed: true,
+		popup_order_partially_filled: true
+	},
+	interface: {
+		order_book_levels: 10,
+		theme: process.env.DEFAULT_THEME || 'white'
+	},
+	language: process.env.DEFAULT_LANGUAGE || 'en',
+	audio: {
+		order_completed: true,
+		order_partially_completed: true,
+		public_trade: false
+	},
+	risk: {
+		order_portfolio_percentage: DEFAULT_ORDER_RISK_PERCENTAGE
+	},
+	chat: {
+		set_username: false
+	}
 };
 
 const BANK_DATA_DEFAULT = [];
@@ -112,9 +110,7 @@ module.exports = function(sequelize, DataTypes) {
 			},
 			activated: {
 				type: DataTypes.BOOLEAN,
-				defaultValue: GET_CONFIGURATION().constants.new_user_is_activated === undefined
-					? (process.env.NEW_USER_IS_ACTIVATED && process.env.SEND_EMAIL_TO_SUPPORT === 'true') || false
-					: GET_CONFIGURATION().constants.new_user_is_activated
+				defaultValue: true
 			},
 			note: {
 				type: DataTypes.STRING,
@@ -131,7 +127,7 @@ module.exports = function(sequelize, DataTypes) {
 			},
 			settings: {
 				type: DataTypes.JSONB,
-				defaultValue: SETTINGS_DATA_DEFAULT()
+				defaultValue: SETTINGS_DATA_DEFAULT
 			},
 			flagged: {
 				type: DataTypes.BOOLEAN,
@@ -157,6 +153,10 @@ module.exports = function(sequelize, DataTypes) {
 			is_tech: {
 				type: DataTypes.BOOLEAN,
 				defaultValue: false
+			},
+			custom_fee: {
+				type: DataTypes.BOOLEAN,
+				defaultValue: false	
 			}
 		},
 		{
