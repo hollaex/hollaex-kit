@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
-import { Table, Button, Spin } from 'antd';
+import { Table, Button, Spin, message, Tooltip } from 'antd';
+import { Link } from 'react-router';
 
 import { getFees, settleFees } from './action';
 import { ModalForm } from '../../../components';
 import renderFields from '../../../components/AdminForm/utils';
 import { validateRequired } from '../../../components/AdminForm/validations';
 import { formatTimestampGregorian } from '../../../utils/date';
+import { formatDate } from '../../../utils';
 
 const Form = ModalForm('SETTLE_FORM', '');
 
@@ -56,11 +58,10 @@ class SettledList extends Component {
         });
         return getFees(page, limit)
             .then((response) => {
-                console.log('response', response);
                 this.setState({
-                    // list: page === 1
-                    //     ? response.data
-                    //     : [...this.state.list, ...response.data],
+                    list: page === 1
+                        ? response.data
+                        : [...this.state.list, ...response.data],
                     loading: false,
                     page,
                     currentTablePage: page === 1 ? 1 : this.state.currentTablePage,
@@ -94,14 +95,14 @@ class SettledList extends Component {
     };
 
     onSubmit = (formProps) => {
-        console.log('formProps', formProps);
         let values = {
             ...formProps,
             user_id: parseInt(formProps.user_id)
         }
         return settleFees(values)
             .then((response) => {
-                console.log('response', response);
+                message.success('Settled Fee Successfully');
+                this.requestFees();
                 this.handleSettleNow();
             })
             .catch((error) => {
@@ -115,6 +116,24 @@ class SettledList extends Component {
 
     render() {
         const { currentTablePage, list, loading, isFormOpen } = this.state;
+        const COLUMNS = [
+            {
+                title: 'User Id',
+                dataIndex: 'user_id',
+                key: 'user_id',
+                render: (id) => (
+                    <Tooltip placement="bottom" title={`SEE USER ${id} DETAILS`}>
+                        <Button type="primary">
+                            <Link to={`/admin/user?id=${id}`}>{id}</Link>
+                        </Button>
+                    </Tooltip>
+                )
+            },
+            { title: 'Transaction Id', dataIndex: 'transaction_id', key: 'transaction_id' },
+            { title: 'Amount', dataIndex: 'amount', key: 'amount' },
+            { title: 'Currency', dataIndex: 'currency', key: 'currency' },
+            { title: 'Date', dataIndex: 'timestamp', key: 'timestamp', render: formatDate },
+        ];
         return (
             <div>
                 <Button
@@ -128,7 +147,7 @@ class SettledList extends Component {
                     <Spin size="large" />
                 ) : (
                         <Table
-                            columns={[]}
+                            columns={COLUMNS}
                             dataSource={list}
                             rowKey={(data) => {
                                 return data.id;
@@ -140,15 +159,15 @@ class SettledList extends Component {
                         />)
                 }
                 <Form
-					visible={isFormOpen}
-					title={'Settle Now'}
+                    visible={isFormOpen}
+                    title={'Settle Now'}
                     okText="Save"
                     fields={Fields}
                     CustomRenderContent={SettleForm}
                     lastUpdated={list[0] ? list[0] : {}}
-					onSubmit={this.onSubmit}
-					onCancel={this.handleSettleNow}
-				/>
+                    onSubmit={this.onSubmit}
+                    onCancel={this.handleSettleNow}
+                />
             </div>
         )
     }

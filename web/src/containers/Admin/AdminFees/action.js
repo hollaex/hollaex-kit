@@ -24,10 +24,8 @@ export const settleFees = (values) => {
 };
 
 export const calculateFees = (values) => {
-    const options = {
-		method: 'POST',
-		body: JSON.stringify(values)
-	};
+	const qryParams = querystring.stringify(values)
+	let url = `/admin/fees/calculate?${qryParams}`
 
-	return requestAuthenticated('/admin/fees/calculate', options);
+	return requestAuthenticated(url);
 };
