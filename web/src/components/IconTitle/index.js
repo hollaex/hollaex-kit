@@ -10,14 +10,17 @@ const BasicIconTitle = ({
 	underline,
 	className,
 	imageWrapperClassName = '',
-	useSvg = false
+	useSvg = false,
+	isLogo = false,
 }) => (
 	<div className={classnames('icon_title-wrapper', { underline }, className)}>
 		{iconPath &&
 			(useSvg ? (
 				<ReactSVG path={iconPath} wrapperClassName={classnames('icon_title-svg', imageWrapperClassName)} />
 			) : (
-				<img src={iconPath} alt={text} className="icon_title-image" />
+				isLogo
+					? (<div style={{ backgroundImage: `url(${iconPath})` }} className={classnames(imageWrapperClassName)}></div>)
+					: (<img src={iconPath} alt={text} className={classnames("icon_title-image", imageWrapperClassName)} />)
 			))}
 		<div className={classnames('icon_title-text', 'text-center', textType)}>
 			{text}
