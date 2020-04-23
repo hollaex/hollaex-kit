@@ -4,18 +4,23 @@ const { Deposit, User, sequelize } = require('../../db/models');
 const rp = require('request-promise');
 const { each } = require('lodash');
 const { all, delay } = require('bluebird');
-const { VAULT_ENDPOINT } = require('../../constants');
-const { getSecrets, getConfiguration } = require('../../init');
+const { VAULT_ENDPOINT, GET_CONFIGURATION, GET_SECRETS } = require('../../constants');
 const { loggerDeposits } = require('../../config/logger');
-const VAULT_NAME = () => getSecrets().vault.name;
-const VAULT_KEY = () => getSecrets().vault.key;
-const VAULT_SECRET = () => getSecrets().vault.secret;
+const VAULT_NAME = () => GET_SECRETS().vault.name;
+const VAULT_KEY = () => GET_SECRETS().vault.key;
+const VAULT_SECRET = () => GET_SECRETS().vault.secret;
 const VAULT_WALLET = (coin) => {
 	return `${VAULT_NAME()}-${coin}`;
 };
 const { sendEmail } = require('../../mail');
 const { MAILTYPE } = require('../../mail/strings');
 
+const vaultCoins = [];
+each(GET_SECRETS().vault.connected_coins, (coin) => {
+	vaultCoins.push({
+		currency: coin
+	});
+});
 Deposit.findAll({
 	where: {
 		type: 'withdrawal',
@@ -23,7 +28,8 @@ Deposit.findAll({
 		dismissed: false,
 		rejected: false,
 		processing: false,
-		waiting: true
+		waiting: true,
+		$or: vaultCoins
 	},
 	include: [
 		{
@@ -154,7 +160,7 @@ Deposit.findAll({
 			} else if (result.success === false) {
 				return sendEmail(
 					MAILTYPE.ALERT,
-					getConfiguration().constants.accounts.admin,
+					GET_CONFIGURATION().constants.accounts.admin,
 					result,
 					{}
 				);
