@@ -57,7 +57,7 @@ const status = [{
 			site_key: CAPTCHA_SITE_KEY
 		},
 		accounts: {
-			admin: ADMIN_EMAIL || 'admin@bitholla.com'
+			admin: ADMIN_EMAIL || ''
 		},
 		defaults: {
 			language: NEW_USER_DEFAULT_LANGUAGE || 'en',
@@ -66,10 +66,10 @@ const status = [{
 		emails: {
 			timezone: EMAILS_TIMEZONE || '',
 			send_email_to_support: (SEND_EMAIL_TO_SUPPORT && SEND_EMAIL_TO_SUPPORT === 'true') || process.env.NODE_ENV === 'production',
-			sender: SENDER_EMAIL || 'support@bitholla.com'
+			sender: SENDER_EMAIL || ''
 		},
 		plugins: {
-			enabled: PLUGINS || 'bank,kyc,sms',
+			enabled: PLUGINS || '',
 			configuration: {
 				s3: {
 					id_docs_bucket: ID_DOCS_BUCKET || ''
@@ -101,13 +101,13 @@ const status = [{
 				secret_key: CAPTCHA_SECRET_KEY
 			},
 			smtp: {
-				server: SMTP_SERVER || 'smtp.gmail.com',
+				server: SMTP_SERVER || '',
 				port: SMTP_PORT || 587,
 				user: SMTP_USER,
 				password: SMTP_PASSWORD
 			},
 			vault: {
-				name: VAULT_NAME || 'vault',
+				name: VAULT_NAME || '',
 				key: VAULT_KEY,
 				secret: VAULT_SECRET,
 				connected_coins: []
