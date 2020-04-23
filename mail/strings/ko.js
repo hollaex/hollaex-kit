@@ -219,6 +219,13 @@ const VAULTWITHDRAWALFAIL = {
 	}
 };
 
+const ALERT = {
+	TITLE: (title) => `ALERT: ${title}`,
+	BODY: {
+		1: (type) => `Alert: ${type}`
+	}
+};
+
 const USERVERIFICATIONREJECT = {
 	TITLE: (type) =>
 		type === 'id' ? 'ID 인증 거절' : '새로운 은행정보 등록 거절',
@@ -305,5 +312,6 @@ module.exports = {
 	INVALIDADDRESS,
 	CONTACTFORM,
 	USERDEACTIVATED,
+	ALERT,
 	SMS
 };

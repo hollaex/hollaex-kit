@@ -71,6 +71,7 @@ const sendEmail = (
 			to.BccAddresses = BCC_ADDRESSES();
 			break;
 		}
+		case MAILTYPE.ALERT:
 		case MAILTYPE.SUSPICIOUS_DEPOSIT:
 		case MAILTYPE.USER_VERIFICATION:
 		case MAILTYPE.CONTACT_FORM: {

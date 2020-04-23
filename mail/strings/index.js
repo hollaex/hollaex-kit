@@ -19,7 +19,8 @@ const MAILTYPE = {
 	USER_VERIFICATION: 'userVerification',
 	VAULT_WITHDRAWAL_FAIL: 'vaultWithdrawalFail',
 	USER_DEACTIVATED: 'userDeactivated',
-	INVALID_ADDRESS: 'invalidAddress'
+	INVALID_ADDRESS: 'invalidAddress',
+	ALERT: 'alert'
 };
 
 const languageFile = (lang) => {

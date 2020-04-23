@@ -222,6 +222,13 @@ const VAULTWITHDRAWALFAIL = {
 	}
 };
 
+const ALERT = {
+	TITLE: (title) => `ALERT: ${title}`,
+	BODY: {
+		1: (type) => `Alert: ${type}`
+	}
+};
+
 const USERVERIFICATIONREJECT = {
 	TITLE: (type) =>
 		type === 'id'
@@ -310,5 +317,6 @@ module.exports = {
 	INVALIDADDRESS,
 	CONTACTFORM,
 	USERDEACTIVATED,
+	ALERT,
 	SMS
 };
