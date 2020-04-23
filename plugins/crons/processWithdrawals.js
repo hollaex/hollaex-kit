@@ -193,10 +193,10 @@ Deposit.findAll({
 	})
 	.then((results) => {
 		return all(results.map((result) => {
-			if (!result.success) {
+			if (result.success === false) {
 				return sendEmail(
 					MAILTYPE.ALERT,
-					getConfiguration().constants.accounts.admin || 'brandon@bitholla.com',
+					getConfiguration().constants.accounts.admin,
 					result,
 					{}
 				);
