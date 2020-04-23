@@ -1,6 +1,6 @@
 'use strict';
 
-const { sendAwsEmail, formatDate, getCountryFromIp, sendSMTPEmail } = require('./utils');
+const { formatDate, getCountryFromIp, sendSMTPEmail } = require('./utils');
 const payloadTemplate = require('./templates/helpers/payloadTemplate');
 const { loggerEmail } = require('../config/logger');
 const { getValidLanguage } = require('./utils');
