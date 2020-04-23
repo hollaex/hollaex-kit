@@ -127,7 +127,7 @@ Deposit.findAll({
 							info: {
 								type: 'Vault Transaction Not Found',
 								data: {
-									txid,
+									transaction_id: txids,
 									withdrawals: txids[txid].map((wd) => wd.dataValues)
 								}
 							}
