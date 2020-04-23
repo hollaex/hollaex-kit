@@ -13,7 +13,7 @@ const html = (email, data, language, domain) => {
     <div>
       <h3>${ALERT.BODY[1](data.type)}</h3>
       <div>
-        ${data.data}
+		<pre>${JSON.stringify(data.data, undefined, 2)}</pre>
       </div>
     </div>
   `;
