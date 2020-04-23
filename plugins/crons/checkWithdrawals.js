@@ -86,12 +86,8 @@ Deposit.findAll({
 										.then((data) => {
 											return {
 												success: true,
-												type: 'confirmed',
-												user: data.User,
-												txid: data.transaction_id,
-												currency: data.currency,
-												amount: data.amount,
-												address: data.address
+												status: true,
+												data
 											};
 										});
 								}));
@@ -114,12 +110,8 @@ Deposit.findAll({
 										.then((data) => {
 											return {
 												success: true,
-												type: 'rejected',
-												user: data.User,
-												txid: data.transaction_id,
-												currency: data.currency,
-												amount: data.amount,
-												address: data.address
+												status: false,
+												data
 											};
 										});
 								}));
@@ -148,18 +140,34 @@ Deposit.findAll({
 		return all(results.map((result) => {
 			if (Array.isArray(result)) {
 				return all(result.map((data) => {
-					return sendEmail(
-						MAILTYPE.WITHDRAWAL,
-						data.user.email,
-						{
-							type: data.type,
-							txid: data.txid,
-							currency: data.currency,
-							amount: data.amount,
-							address: data.address
-						},
-						data.user
-					);
+					if (result.success === true && result.status === true) {
+						return sendEmail(
+							MAILTYPE.WITHDRAWAL,
+							data.User.email,
+							{
+								amount: data.amount,
+								transaction_id: data.transaction_id,
+								status: true,
+								currency: data.currency,
+								address: data.address,
+								phoneNumber: data.User.phone_number
+							},
+							data.User.settings
+						);
+					} else if (result.success === true && result.status === false) {
+						sendEmail(
+							MAILTYPE.DEPOSIT_CANCEL,
+							data.User.email,
+							{
+								type: data.type,
+								amount: data.amount,
+								currency: data.currency,
+								transaction_id: data.transaction_id,
+								date: data.created_at
+							},
+							data.User.settings
+						);
+					}
 				}));
 			} else if (result.success === false) {
 				return sendEmail(
