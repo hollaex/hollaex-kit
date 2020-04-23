@@ -65,7 +65,7 @@ const status = [{
 		},
 		emails: {
 			timezone: EMAILS_TIMEZONE || '',
-			send_email_to_support: (SEND_EMAIL_TO_SUPPORT && SEND_EMAIL_TO_SUPPORT === 'true') || process.env.NODE_ENV === 'production',
+			send_email_to_support: (SEND_EMAIL_TO_SUPPORT && SEND_EMAIL_TO_SUPPORT === 'true') || false,
 			sender: SENDER_EMAIL || ''
 		},
 		plugins: {
