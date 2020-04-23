@@ -61,7 +61,7 @@ Deposit.findAll({
 								amount: withdrawal.amount,
 								address: withdrawal.address
 							},
-							withdrawal.User
+							withdrawal.User.settings
 						);
 					})
 					.catch((err) => {
