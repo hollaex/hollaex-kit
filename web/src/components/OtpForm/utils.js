@@ -6,7 +6,8 @@ export const errorHandler = (err) => {
 			: err.message;
 	const error = {};
 	if (_error.toLowerCase().indexOf('otp') > -1) {
-		error.otp_code = _error;
+		// error.otp_code = _error;
+		error._error = _error;
 	} else {
 		error._error = _error;
 	}

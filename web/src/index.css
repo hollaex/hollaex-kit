@@ -1469,6 +1469,9 @@ table th {
 
 .history_block-wrapper {
   position: relative; }
+  .history_block-wrapper .action_notification-svg svg {
+    width: 1.2rem !important;
+    height: 1.2rem !important; }
 
 .action_notification-svg svg {
   width: 2rem;
@@ -5509,10 +5512,13 @@ table th {
   .checkfield-wrapper .checkfield-label {
     padding: 0 0.25rem;
     margin-bottom: 0;
+    margin-left: 0.25rem;
     vertical-align: middle;
     display: flex;
-    justify-content: center;
-    align-items: center; }
+    align-items: center;
+    flex-wrap: wrap; }
+  .checkfield-wrapper .checkfield-input {
+    margin-top: 2px; }
 
 .toggle_button-wrapper .toggle-content {
   padding: 0 1rem;
@@ -6276,6 +6282,10 @@ table th {
 .layout-mobile .icon_title-wrapper .auth_logo-wrapper svg {
   height: 8rem !important;
   width: 15rem !important; }
+
+.layout-mobile .auth-container .action_notification-text,
+.layout-mobile .auth-container .font-small {
+  font-size: 1rem !important; }
 
 .otp_form-wrapper {
   width: 38rem; }

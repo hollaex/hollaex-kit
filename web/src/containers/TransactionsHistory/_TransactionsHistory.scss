@@ -70,12 +70,17 @@ $trade-asks-color-font: $colors-currencies-btc;
 
 .history_block-wrapper {
 	position: relative;
+
+	.action_notification-svg svg {
+		width: 1.2rem !important;
+		height: 1.2rem !important;
+	}
 }
 
 .action_notification-svg svg {
 	@include size(2rem);
-	.data-1 {
-	}
+	// .data-1 {
+	// }
 }
 
 .btn-tx, .withdrawal-cancel {

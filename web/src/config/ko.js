@@ -328,7 +328,7 @@ export default {
 		TERMS: {
 			terms: '이용약관',
 			policy: '개인정보 처리방침',
-			text: '{0}과 {1}을 확인하였으며 이에 동의합니다.'
+			text: '{0}과 {1}을 확인하였으며 이에 동의합니다'
 		}
 	},
 	VERIFICATION_TEXTS: {

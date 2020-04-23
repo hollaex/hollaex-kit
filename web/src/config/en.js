@@ -331,7 +331,7 @@ export default {
 		TERMS: {
 			terms: 'General Terms',
 			policy: 'Privacy Policy',
-			text: 'I have read and agree to the {0} and {1}.'
+			text: 'I have read and agree to the {0} and {1}'
 		}
 	},
 	VERIFICATION_TEXTS: {
