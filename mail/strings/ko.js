@@ -189,7 +189,7 @@ const INVALIDADDRESS = {
 	TITLE: 'Invalid Withdrawal Address',
 	GREETING: (name) => COMMON.GREETING(name),
 	BODY: {
-		1: (currency, amount) => `Your ${currency} withdrawal for ${amount} was given an invalid address`,
+		1: (currency, amount) => `Your ${currency} withdrawal for ${amount} was being sent to an invalid address and is rejected.`,
 		2: (address) => `Address: ${address}`
 	},
 	CLOSING: COMMON.CLOSING
