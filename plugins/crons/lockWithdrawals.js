@@ -52,7 +52,7 @@ Deposit.findAll({
 			} else {
 				return withdrawal.update({ rejected: true }, { fields: ['rejected'], returning: true })
 					.then((result) => {
-						loggerDeposits.info(`Withdrawal with ID ${withdrawal.id} rejected because of invalid address`);
+						loggerDeposits.warn(`Withdrawal with ID ${withdrawal.id} rejected because of an invalid address`);
 						return sendEmail(
 							MAILTYPE.INVALID_ADDRESS,
 							withdrawal.User.email,
@@ -60,7 +60,8 @@ Deposit.findAll({
 								currency: withdrawal.currency,
 								amount: withdrawal.amount,
 								address: withdrawal.address
-							}
+							},
+							withdrawal.User
 						);
 					})
 					.catch((err) => {
