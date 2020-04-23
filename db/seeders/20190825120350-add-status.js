@@ -24,9 +24,6 @@ const {
 	S3_WRITE_SECRETACCESSKEY,
 	S3_READ_ACCESSKEYID,
 	S3_READ_SECRETACCESSKEY,
-	SES_ACCESSKEYID,
-	SES_REGION,
-	SES_SECRETACCESSKEY,
 	SNS_ACCESSKEYID,
 	SNS_REGION,
 	SNS_SECRETACCESSKEY,
@@ -74,9 +71,6 @@ const status = [{
 				s3: {
 					id_docs_bucket: ID_DOCS_BUCKET || ''
 				},
-				ses: {
-					region: SES_REGION || ''
-				},
 				sns: {
 					region: SNS_REGION || ''
 				},
@@ -122,10 +116,6 @@ const status = [{
 						write: S3_WRITE_SECRETACCESSKEY,
 						read: S3_READ_SECRETACCESSKEY
 					}
-				},
-				ses: {
-					key: SES_ACCESSKEYID || '',
-					secret: SES_SECRETACCESSKEY || ''
 				},
 				sns: {
 					key: SNS_ACCESSKEYID || '',
