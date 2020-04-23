@@ -118,7 +118,7 @@ Deposit.findAll({
 							});
 						} else {
 							loggerDeposits.info(`Transaction ${txid} is not processed yet`);
-							return;
+							return {};
 						}
 					} else {
 						loggerDeposits.warn(`Transaction ${txid} is not found`);
@@ -127,7 +127,7 @@ Deposit.findAll({
 							info: {
 								type: 'Vault Transaction Not Found',
 								data: {
-									transaction_id: txids,
+									transaction_id: txid,
 									withdrawals: txids[txid].map((wd) => wd.dataValues)
 								}
 							}
@@ -140,32 +140,32 @@ Deposit.findAll({
 		return all(results.map((result) => {
 			if (Array.isArray(result)) {
 				return all(result.map((data) => {
-					if (result.success === true && result.status === true) {
+					if (data.success === true && data.status === true) {
 						return sendEmail(
 							MAILTYPE.WITHDRAWAL,
-							data.User.email,
+							data.data.User.email,
 							{
-								amount: data.amount,
-								transaction_id: data.transaction_id,
+								amount: data.data.amount,
+								transaction_id: data.data.transaction_id,
 								status: true,
-								currency: data.currency,
-								address: data.address,
-								phoneNumber: data.User.phone_number
+								currency: data.data.currency,
+								address: data.data.address,
+								phoneNumber: data.data.User.phone_number
 							},
-							data.User.settings
+							data.data.User.settings
 						);
-					} else if (result.success === true && result.status === false) {
+					} else if (data.success === true && data.status === false) {
 						sendEmail(
 							MAILTYPE.DEPOSIT_CANCEL,
-							data.User.email,
+							data.data.User.email,
 							{
-								type: data.type,
-								amount: data.amount,
-								currency: data.currency,
-								transaction_id: data.transaction_id,
-								date: data.created_at
+								type: data.data.type,
+								amount: data.data.amount,
+								currency: data.data.currency,
+								transaction_id: data.data.transaction_id,
+								date: data.data.created_at
 							},
-							data.User.settings
+							data.data.User.settings
 						);
 					}
 				}));
