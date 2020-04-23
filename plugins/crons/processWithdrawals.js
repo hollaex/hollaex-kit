@@ -211,7 +211,7 @@ Deposit.findAll({
 				return sendEmail(
 					MAILTYPE.ALERT,
 					GET_CONFIGURATION().constants.accounts.admin,
-					result,
+					result.info,
 					{}
 				);
 			} else {
