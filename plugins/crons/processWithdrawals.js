@@ -145,8 +145,8 @@ Deposit.findAll({
 										loggerDeposits.info(`${option.dbWithdrawals[0].currency} withdrawal successful`);
 										return {
 											success: true,
-											info: data,
-											data: dbWithdrawals
+											data,
+											dbWithdrawals
 										};
 									});
 							});
@@ -168,13 +168,13 @@ Deposit.findAll({
 		}));
 	})
 	.then((results) => {
-		return all(results.map((result, i) => {
+		return all(results.map((result) => {
 			if (result.success) {
 				return sequelize.transaction((transaction) => {
-					return all(result.data.map((withdrawal) => {
+					return all(result.dbWithdrawals.map((withdrawal) => {
 						return withdrawal.update(
 							{
-								transaction_id: i === 2 ? null : result.info.txid
+								transaction_id: result.data.txid
 							},
 							{
 								fields: ['transaction_id'],
@@ -187,15 +187,15 @@ Deposit.findAll({
 					}));
 				})
 					.catch((err) => {
-						loggerDeposits.error(`Failed to update successful ${result.data[0].currency} withdrawal's TXID. ID:${result.data.map((wd) => wd.id)}, TXID:${result.info.txid}, Error: ${err.message}`);
+						loggerDeposits.error(`Failed to update successful ${result.dbWithdrawals[0].currency} withdrawal's TXID. ID:${result.dbWithdrawals.map((wd) => wd.id)}, TXID:${result.data.txid}, Error: ${err.message}`);
 						return {
 							success: false,
 							info: {
 								type: 'Successful Withdrawal Database TXID Update Failed',
 								data: {
 									error: err.message,
-									txid: result.info.txid,
-									withdrawals: result.data.map((wd) => wd.dataValues)
+									transaction_id: result.data.txid,
+									withdrawals: result.dbWithdrawals.map((wd) => wd.dataValues)
 								}
 							}
 						};
