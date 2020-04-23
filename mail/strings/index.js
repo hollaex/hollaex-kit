@@ -17,7 +17,6 @@ const MAILTYPE = {
 	CONTACT_FORM: 'contactForm',
 	SUSPICIOUS_DEPOSIT: 'suspiciousDeposit',
 	USER_VERIFICATION: 'userVerification',
-	VAULT_WITHDRAWAL_FAIL: 'vaultWithdrawalFail',
 	USER_DEACTIVATED: 'userDeactivated',
 	INVALID_ADDRESS: 'invalidAddress',
 	ALERT: 'alert'

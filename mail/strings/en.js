@@ -198,30 +198,6 @@ const INVALIDADDRESS = {
 	CLOSING: COMMON.CLOSING
 };
 
-const VAULTWITHDRAWALFAIL = {
-	TITLE: 'Vault Withdrawal Unsuccessful',
-	BODY: {
-		SINGLE: {
-			1: 'A single withdrawal made to Vault was unsuccessful.',
-			2: (userId) => `User ID: ${userId}`,
-			3: (withdrawalId) => `Withdrawal ID: ${withdrawalId}`,
-			4: (currency) => `Currency: ${currency}`,
-			5: (amount) => `Amount: ${amount}`,
-			6: (address) => `Address: ${address}`,
-			7: 'The single withdrawal\'s state remains processed.'
-		},
-		BATCH: {
-			1: 'A batch withdrawal made to Vault was unsuccessful.',
-			2: (userId) => `User ID: ${userId}`,
-			3: (withdrawalId) => `Withdrawal IDs: ${withdrawalId}`,
-			4: (currency) => `Currency: ${currency}`,
-			5: (totalAmount) => `Total Amount: ${amount}`,
-			6: (addresses) => `Addresses: ${address}`,
-			7: 'The batch withdrawal\'s state remains processed.'
-		}
-	}
-};
-
 const ALERT = {
 	TITLE: (title) => `ALERT: ${title}`,
 	BODY: {
@@ -311,7 +287,6 @@ module.exports = {
 	DEPOSITCANCEL,
 	WITHDRAWAL,
 	WITHDRAWALREQUEST,
-	VAULTWITHDRAWALFAIL,
 	USERVERIFICATION,
 	SUSPICIOUSDEPOSIT,
 	INVALIDADDRESS,
