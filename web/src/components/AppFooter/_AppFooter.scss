@@ -55,8 +55,12 @@ $footer-logo-color: $trade-tabs-inactive-color;
 				margin-left: 1rem;
 			}
 			.footer-logo {
+				background-size: contain;
+				background-position: center;
+				background-repeat: no-repeat;
 				height: 4rem;
 				margin-left: 1rem;
+				width: 7rem;
 			}
 			svg {
 				.hollaEX_logo_gray {
@@ -256,6 +260,7 @@ $footer-logo-color: $trade-tabs-inactive-color;
 						height: 3.5rem;
 						margin-top: 11px;
 						margin-bottom: $footer-wrapper--margin;
+						width: 6.5rem;
 					}
 					svg {
 						.hollaEX_logo_gray {
