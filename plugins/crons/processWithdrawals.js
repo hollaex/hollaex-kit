@@ -155,9 +155,13 @@ Deposit.findAll({
 							loggerDeposits.error(`${option.dbWithdrawals[0].currency} withdrawal failed: ${err.message}`);
 							return {
 								success: false,
-								type: 'Vault Withdrawal Failed',
-								info: err.message,
-								data: option.dbWithdrawals.map((wd) => wd.dataValues)
+								info: {
+									type: 'Vault Withdrawal Failed',
+									data: {
+										error: err.message,
+										withdrawals: option.dbWithdrawals.map((wd) => wd.dataValues)
+									}
+								}
 							};
 						});
 				});
@@ -186,10 +190,14 @@ Deposit.findAll({
 						loggerDeposits.error(`Failed to update successful ${result.data[0].currency} withdrawal's TXID. ID:${result.data.map((wd) => wd.id)}, TXID:${result.info.txid}, Error: ${err.message}`);
 						return {
 							success: false,
-							type: 'Successful Withdrawal Database TXID Update Failed',
-							info: err.message,
-							txid: result.info.txid,
-							data: result.data.map((wd) => wd.dataValues)
+							info: {
+								type: 'Successful Withdrawal Database TXID Update Failed',
+								data: {
+									error: err.message,
+									txid: result.info.txid,
+									withdrawals: result.data.map((wd) => wd.dataValues)
+								}
+							}
 						};
 					});
 			} else {
