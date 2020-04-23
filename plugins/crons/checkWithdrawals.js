@@ -132,9 +132,13 @@ Deposit.findAll({
 						loggerDeposits.warn(`Transaction ${txid} is not found`);
 						return {
 							success: false,
-							type: 'Vault Transaction Not Found',
-							txid,
-							data: txids[txid].map((wd) => wd.dataValues)
+							info: {
+								type: 'Vault Transaction Not Found',
+								data: {
+									txid,
+									withdrawals: txids[txid].map((wd) => wd.dataValues)
+								}
+							}
 						};
 					}
 				});
@@ -161,7 +165,7 @@ Deposit.findAll({
 				return sendEmail(
 					MAILTYPE.ALERT,
 					GET_CONFIGURATION().constants.accounts.admin,
-					result,
+					result.info,
 					{}
 				);
 			} else {
