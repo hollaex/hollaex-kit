@@ -62,9 +62,7 @@ Deposit.findAll({
 						uri: `${VAULT_ENDPOINT}/${VAULT_WALLET(withdrawal.currency)}/withdraw/simple`,
 						json: true
 					},
-					info: [withdrawal],
-					type: 'SINGLE',
-					currency: withdrawal.currency
+					dbWithdrawals: [withdrawal]
 				};
 				if (withdrawal.currency === 'xrp') {
 					const [xrpAddress, xrpTag] = withdrawal.address.split(':');
@@ -92,10 +90,8 @@ Deposit.findAll({
 					},
 					uri: `${VAULT_ENDPOINT}/${VAULT_WALLET('btc')}/withdraw/batch`,
 					json: true,
-					currency: 'btc'
 				},
-				info: btcWithdrawals,
-				type: 'BATCH'
+				dbWithdrawals: btcWithdrawals
 			});
 		}
 		if (bchWithdrawals.length !== 0) {
@@ -117,16 +113,14 @@ Deposit.findAll({
 					uri: `${VAULT_ENDPOINT}/${VAULT_WALLET('bch')}/withdraw/batch`,
 					json: true
 				},
-				info: bchWithdrawals,
-				type: 'BATCH',
-				currency: 'bch'
+				dbWithdrawals: bchWithdrawals
 			});
 		}
 		return all(options.map((option, i) => {
 			return delay(2000 * i)
 				.then(() => {
 					return sequelize.transaction((transaction) => {
-						return all(option.info.map((withdrawal) => {
+						return all(option.dbWithdrawals.map((withdrawal) => {
 							return withdrawal.update(
 								{
 									processing: false,
@@ -142,67 +136,72 @@ Deposit.findAll({
 							.then((dbWithdrawals) => {
 								return rp(option.data)
 									.then((data) => {
-										loggerDeposits.info(`${option.type} ${option.currency} withdrawal successful`);
+										loggerDeposits.info(`${option.dbWithdrawals[0].currency} withdrawal successful`);
 										return {
 											success: true,
-											data: data,
-											dbWithdrawals
+											info: data,
+											data: dbWithdrawals
 										};
 									});
 							});
 					})
 						.catch((err) => {
-							loggerDeposits.error(`${option.type} ${option.currency} withdrawal failed: ${err.message}`);
+							loggerDeposits.error(`${option.dbWithdrawals[0].currency} withdrawal failed: ${err.message}`);
 							return {
 								success: false,
-								data: err,
-								dbWithdrawals: option.info
+								type: 'Vault Withdrawal Failed',
+								info: err.message,
+								data: option.dbWithdrawals.map((wd) => wd.dataValues)
 							};
 						});
 				});
 		}));
 	})
 	.then((results) => {
-		return all(results.map((result) => {
+		return all(results.map((result, i) => {
 			if (result.success) {
 				return sequelize.transaction((transaction) => {
-					return all(result.dbWithdrawals.map((withdrawal) => {
+					return all(result.data.map((withdrawal) => {
 						return withdrawal.update(
 							{
-								transaction_id: result.data.txid
+								transaction_id: i === 2 ? null : result.info.txid
 							},
 							{
 								fields: ['transaction_id'],
 								transaction
 							}
-						);
+						)
+							.then(() => {
+								return { success: true };
+							});
 					}));
 				})
 					.catch((err) => {
-						// return sendEmail(
-						// 	MAILTYPE.VAULT_WITHDRAWAL_FAIL,
-						// 	getConfiguration().constants.accounts.admin || 'brandon@bitholla.com',
-						// 	{
-						// 		userId: result.info.user_id,
-						// 		withdrawalId: result.info.id,
-						// 		currency: result.info.currency,
-						// 		amount: result.info.amount,
-						// 		address: result.info.address
-						// 	}
-						// );
+						loggerDeposits.error(`Failed to update successful ${result.data[0].currency} withdrawal's TXID. ID:${result.data.map((wd) => wd.id)}, TXID:${result.info.txid}, Error: ${err.message}`);
+						return {
+							success: false,
+							type: 'Successful Withdrawal Database TXID Update Failed',
+							info: err.message,
+							txid: result.info.txid,
+							data: result.data.map((wd) => wd.dataValues)
+						};
 					});
 			} else {
-				// return sendEmail(
-				// 	MAILTYPE.VAULT_WITHDRAWAL_FAIL,
-				// 	getConfiguration().constants.accounts.admin || 'brandon@bitholla.com',
-				// 	{
-				// 		userId: result.info.user_id,
-				// 		withdrawalId: result.info.id,
-				// 		currency: result.info.currency,
-				// 		amount: result.info.amount,
-				// 		address: result.info.address
-				// 	}
-				// );
+				return result;
+			}
+		}));
+	})
+	.then((results) => {
+		return all(results.map((result) => {
+			if (!result.success) {
+				return sendEmail(
+					MAILTYPE.ALERT,
+					getConfiguration().constants.accounts.admin || 'brandon@bitholla.com',
+					result,
+					{}
+				);
+			} else {
+				return;
 			}
 		}));
 	})
