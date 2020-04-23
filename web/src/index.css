@@ -542,7 +542,7 @@ table th {
 .dark-theme .password-reset-1,
 .dark-theme .password-reset-2,
 .dark-theme .success-black-1 {
-  fill: #0066B4; }
+  fill: white; }
 
 @media screen and (max-width: 1096px) {
   .auth-wrapper .auth-container {

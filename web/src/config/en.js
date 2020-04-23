@@ -294,6 +294,7 @@ export default {
 	PREVIOUS_PAGE: 'previous page',
 	NEXT_PAGE: 'next page',
 	WALLET: {
+		LOADING_ASSETS: 'Loading assets...', // new
 		TOTAL_ASSETS: 'Total Assets',
 		AVAILABLE_WITHDRAWAL: 'Available for trading',
 		AVAILABLE_TRADING: 'Available for withdrawal',

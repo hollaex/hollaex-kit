@@ -43,14 +43,6 @@ const md = new MobileDetect(window.navigator.userAgent);
 
 const { Content, Sider } = Layout;
 
-const renderMenuItem = ({ path, label, ...rest }, index) => (
-	<Menu.Item key={index}>
-		<Link to={path} className="no-link">
-			{label}
-		</Link>
-	</Menu.Item>
-);
-
 class AppWrapper extends React.Component {
 	constructor(prop) {
 		super(prop);
@@ -235,6 +227,20 @@ class AppWrapper extends React.Component {
 		});
 	};
 
+	renderMenuItem = ({ path, label, routeKey, ...rest }, index) => {
+		let showLabel = label;
+		if(routeKey === 'main') {
+			showLabel = this.props.constants.api_name
+		}
+		return (
+			<Menu.Item key={index}>
+				<Link to={path} className="no-link">
+					{showLabel}
+				</Link>
+			</Menu.Item>
+		);
+	}
+
 	render() {
 		const { children, router } = this.props;
 		const logout = () => {
@@ -255,7 +261,7 @@ class AppWrapper extends React.Component {
 				<Layout>
 					<Row>
 						<Col span={8}>
-							<MobileSider menuItem={renderMenuItem} logout={logout} />
+							<MobileSider menuItem={this.renderMenuItem} logout={logout} />
 						</Col>
 
 						{/*<Sider style={{width: 100}}>*/}
@@ -299,7 +305,7 @@ class AppWrapper extends React.Component {
 							{PATHS.filter(
 								({ hideIfSupport, hideIfSupervisor, hideIfKYC }) =>
 									true
-							).map(renderMenuItem)}
+							).map(this.renderMenuItem)}
 							<Menu.Item>
 								<Link to="/summary">
 									<Icon type="home" />
@@ -332,7 +338,8 @@ class AppWrapper extends React.Component {
 
 const mapStateToProps = (state) => ({
 	fetchingAuth: state.auth.fetching,
-	pairs: state.app.pairs
+	pairs: state.app.pairs,
+	constants: state.app.constants
 });
 
 const mapDispatchToProps = (dispatch) => ({
