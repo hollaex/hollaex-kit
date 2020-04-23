@@ -2,7 +2,6 @@
 
 const { GET_CONFIGURATION } = require('../../constants');
 const API_NAME = () => GET_CONFIGURATION().constants.api_name;
-const SUPPORT_EMAIL = () => GET_CONFIGURATION().constants.accounts.support;
 
 const COMMON = {
 	GREETING: (name) => `Dear ${name}`,
@@ -59,7 +58,7 @@ const WELCOME = {
 		Please go to your ${account} and visit the ${deposit} page.`,
 		3: 'account',
 		4: 'deposit',
-		5: () => `If you have any questions or concerns, please contact us simply by replying to this email.`
+		5: 'If you have any questions or concerns, please contact us simply by replying to this email.'
 	},
 	CLOSING: COMMON.CLOSING
 };
