@@ -8,7 +8,6 @@ const {
 	VALID_LANGUAGES,
 	NEW_USER_DEFAULT_LANGUAGE,
 	SENDER_EMAIL,
-	SUPPORT_EMAIL,
 	DEFAULT_THEME,
 	NEW_USER_IS_ACTIVATED,
 	SMTP_SERVER,
@@ -37,8 +36,6 @@ const {
 	FRESHDESK_KEY,
 	FRESHDESK_AUTH,
 	ADMIN_EMAIL,
-	KYC_EMAIL,
-	SUPERVISOR_EMAIL,
 	USER_LEVEL_NUMBER,
 	CAPTCHA_SITE_KEY,
 	ADMIN_WHITELIST_IP
@@ -60,10 +57,7 @@ const status = [{
 			site_key: CAPTCHA_SITE_KEY
 		},
 		accounts: {
-			admin: ADMIN_EMAIL || 'admin@bitholla.com',
-			supervisor: SUPERVISOR_EMAIL,
-			support: SUPPORT_EMAIL || 'support@bitholla.com',
-			kyc: KYC_EMAIL
+			admin: ADMIN_EMAIL || 'admin@bitholla.com'
 		},
 		defaults: {
 			language: NEW_USER_DEFAULT_LANGUAGE || 'en',
