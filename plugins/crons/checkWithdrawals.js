@@ -34,7 +34,7 @@ Deposit.findAll({
 	include: [
 		{
 			model: User,
-			attributes: ['email']
+			attributes: ['email', 'settings']
 		}
 	]
 })
