@@ -186,11 +186,11 @@ const WITHDRAWALREQUEST = {
 	CLOSING: COMMON.CLOSING
 };
 
-const INVALID_ADDRESS = {
+const INVALIDADDRESS = {
 	TITLE: 'Invalid Withdrawal Address',
 	GREETING: (name) => COMMON.GREETING(name),
 	BODY: {
-		1: (currency, amount) => `You\'re ${currency} withdrawal for ${amount} was given an invalid address`,
+		1: (currency, amount) => `Your ${currency} withdrawal for ${amount} was given an invalid address`,
 		2: (address) => `Address: ${address}`
 	},
 	CLOSING: COMMON.CLOSING
@@ -303,7 +303,7 @@ module.exports = {
 	VAULTWITHDRAWALFAIL,
 	USERVERIFICATION,
 	SUSPICIOUSDEPOSIT,
-	INVALID_ADDRESS,
+	INVALIDADDRESS,
 	CONTACTFORM,
 	USERDEACTIVATED,
 	SMS
