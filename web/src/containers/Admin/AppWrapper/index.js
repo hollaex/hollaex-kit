@@ -32,7 +32,7 @@ import {
 	setLanguage,
 	changeTheme
 } from '../../../actions/appActions';
-import { WS_URL, SESSION_TIME, BASE_CURRENCY } from '../../../config/constants';
+import { WS_URL, SESSION_TIME, BASE_CURRENCY, ADMIN_GUIDE_DOWNLOAD_LINK } from '../../../config/constants';
 
 import MobileDetect from 'mobile-detect';
 import MobileSider from './mobileSider';
@@ -229,7 +229,7 @@ class AppWrapper extends React.Component {
 
 	renderMenuItem = ({ path, label, routeKey, ...rest }, index) => {
 		let showLabel = label;
-		if(routeKey === 'main') {
+		if (routeKey === 'main') {
 			showLabel = this.props.constants.api_name
 		}
 		return (
@@ -296,29 +296,47 @@ class AppWrapper extends React.Component {
 			return (
 				<Layout>
 					<Sider>
-						<Menu
-							theme="dark"
-							mode="vertical"
-							style={{ lineHeight: '64px' }}
-							className="m-top"
-						>
-							{PATHS.filter(
-								({ hideIfSupport, hideIfSupervisor, hideIfKYC }) =>
-									true
-							).map(this.renderMenuItem)}
-							<Menu.Item>
-								<Link to="/summary">
-									<Icon type="home" />
-									Go To HollaEx-WEB
-								</Link>
-							</Menu.Item>
-							<Menu.Item key="logout">
-								<div onClick={logout}>
-									<Icon type="logout" />
-									LOGOUT
-								</div>
-							</Menu.Item>
-						</Menu>
+						<div className="d-flex flex-column justify-content-between">
+							<Menu
+								theme="dark"
+								mode="vertical"
+								style={{ lineHeight: '64px' }}
+								className="m-top"
+							>
+								{PATHS.filter(
+									({ hideIfSupport, hideIfSupervisor, hideIfKYC }) =>
+										true
+								).map(this.renderMenuItem)}
+								<Menu.Item>
+									<Link to="/summary">
+										<Icon type="home" />
+										Go To HollaEx-WEB
+									</Link>
+								</Menu.Item>
+								<Menu.Item key="logout">
+									<div onClick={logout}>
+										<Icon type="logout" />
+										LOGOUT
+									</div>
+								</Menu.Item>
+							</Menu>
+							<Menu
+								theme="dark"
+								mode="vertical"
+								style={{ lineHeight: '64px' }}
+								className="m-top"
+							>
+								<Menu.Item style={{ fontSize: '14px', fontWeight: 'normal' }}>
+									<Link
+										href={ADMIN_GUIDE_DOWNLOAD_LINK}
+										target="blank"
+									>
+										<Icon type="download" />
+										Admin Panel Guide
+									</Link>
+								</Menu.Item>
+							</Menu>
+						</div>
 					</Sider>
 					<Layout>
 						<Content>
