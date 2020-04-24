@@ -147,6 +147,7 @@ Deposit.findAll({
 							{
 								amount: data.data.amount,
 								transaction_id: data.data.transaction_id,
+								fee: data.data.fee,
 								status: true,
 								currency: data.data.currency,
 								address: data.data.address,
