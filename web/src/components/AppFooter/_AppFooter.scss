@@ -91,14 +91,9 @@ $footer-logo-color: $trade-tabs-inactive-color;
 
 	.footer-row-bottom {
 		border-top: 1px solid $footer-wrapper--border-color;
-		text-align: center;
+		text-align: left;
+		padding-left: 1rem;
 		padding-bottom: $footer-wrapper--margin;
-		.footer-row-language {
-			padding-left: 0.25rem;
-			&.active {
-				font-weight: bold;
-			}
-		}
 	}
 }
 

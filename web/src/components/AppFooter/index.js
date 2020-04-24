@@ -4,7 +4,6 @@ import { isMobile } from 'react-device-detect';
 import { SOCIAL_ICONS } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 import { PUBLIC_URL } from '../../config/constants';
-import moment from 'moment';
 
 const generateSectionsText = (strings, theme) => {
 	const { SECTIONS } = strings.FOOTER;
@@ -199,10 +198,7 @@ const AppFooter = ({ className, theme, constants = {} }) => {
 			<div className={classnames('footer-row-bottom')}>
 				<div className="d-flex my-2" />
 				<div>
-					{STRINGS.formatString(
-						STRINGS.FOOTER.FOOTER_COPYRIGHT,
-						moment(new Date()).format('YYYY')
-					)}
+					{STRINGS.FOOTER.FOOTER_COPYRIGHT}
 				</div>
 			</div>
 		</div>
