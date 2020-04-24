@@ -8672,12 +8672,9 @@ foreignObject {
         margin: 0 1.5rem; }
   .app_footer-container .footer-row-bottom {
     border-top: 1px solid #535353;
-    text-align: center;
+    text-align: left;
+    padding-left: 1rem;
     padding-bottom: 1rem; }
-    .app_footer-container .footer-row-bottom .footer-row-language {
-      padding-left: 0.25rem; }
-      .app_footer-container .footer-row-bottom .footer-row-language.active {
-        font-weight: bold; }
 
 .direction_ltr .app_footer-container .footer-row-content .footer-public-texts {
   text-align: right; }

@@ -445,13 +445,8 @@ export const TIME_ZONE = process.env.REACT_APP_TIMEZONE || 'GMT';
 export const TOKEN_EMAIL = 'token::email';
 export const TOKEN_MAX_AGE = 23 * 60 * 60;
 
-export const IS_PRO_VERSION =
-	process.env.REACT_APP_IS_PRO_VERSION &&
-	process.env.REACT_APP_IS_PRO_VERSION === 'true';
-export const PRO_VERSION_REDIRECT =
-	process.env.REACT_APP_PRO_VERSION_REDIRECT || '/account';
-export const DEFAULT_VERSION_REDIRECT = '/';
-export const PRO_URL = process.env.REACT_APP_PRO_URL || 'https://hollaex.com';
+export const DISPLAY_LANDING = false;
+export const DEFAULT_URL = '/';
 
 // minimum level for a user to be able to create api tokens
 export const MIN_LEVEL_FOR_TOKENS = 1;

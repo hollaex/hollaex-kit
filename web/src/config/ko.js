@@ -82,7 +82,7 @@ export default {
 			{ key: 'ko', label: '한국어' }
 		],
 		FOOTER_COPYRIGHT:
-			'	Copyright 2019 ⓒ HollaEx Foundation. All rights reserved',
+			'Powered by bitHolla',
 		SECTIONS: {
 			SECTION_1_TITLE: 'ABOUT',
 			SECTION_1_LINK_1: 'About Us',
@@ -616,7 +616,6 @@ export default {
 		RISK_MANAGEMENT: {
 			INFO_TEXT:
 				'거래 주문 값이 포트폴리오에 설정된 백분율 값을 초과할 경우 경고 알림창을 만들 수 있습니다.',
-			INFO_TEXT_1: '총 자산 가치 {0}: {1}',
 			PORTFOLIO: '포트폴리오 백분율',
 			TOMAN_ASSET: '근사값',
 			ADJUST: '(백분율 설정하기)',

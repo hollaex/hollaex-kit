@@ -83,7 +83,7 @@ export default {
 			{ key: 'en', label: 'English' },
 			{ key: 'ko', label: '한국어' }
 		],
-		FOOTER_COPYRIGHT: '	Copyright {0} ⓒ bitHolla Inc. All rights reserved',
+		FOOTER_COPYRIGHT: 'Powered by bitHolla',
 		SECTIONS: {
 			SECTION_1_TITLE: 'ABOUT',
 			SECTION_1_LINK_1: 'About Us',
@@ -1212,9 +1212,7 @@ export default {
 	REFERRAL_LINK: {
 		TITLE: 'Invite your friend', // new
 		INFO_TEXT:
-			'Refer your friends by giving out this link. Your friends will receive {0}% discount by signing up through your link.', // new
-		INFO_TEXT_1:
-			'{0}% of trading fees collected from those you refer will be monthly credited to your account.', // new
+			'Refer your friends by giving out this link and receive benefits by onboarding other people.',
 		COPY_FIELD_LABEL: 'Share the link below with friends and earn commissions:', // new
 		REFERRED_USER_COUT: 'You have referred {0} users', // new
 		COPY_LINK_BUTTON: 'COPY REFERRAL LINK', // new
