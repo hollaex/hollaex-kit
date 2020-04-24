@@ -22,7 +22,6 @@ import {
 	requestQuickTrade
 } from '../../actions/orderbookAction';
 import {
-	formatBtcAmount,
 	calculateBalancePrice,
 	formatToCurrency
 } from '../../utils/currency';
@@ -221,7 +220,7 @@ class QuickTradeContainer extends Component {
 	render() {
 		const {
 			quoteData,
-			pairData,
+			pairData = {},
 			activeTheme,
 			quickTrade,
 			orderLimits,
@@ -295,15 +294,16 @@ class QuickTradeContainer extends Component {
 										{STRINGS.formatString(
 											STRINGS.QUOTE_MESSAGE,
 											STRINGS.SIDES_VALUES[side],
-											formatBtcAmount(data.size),
+											formatToCurrency(data.size, pairData.increment_size),
 											pairCoin.fullname,
-											formatToCurrency(data.price, baseCoin.min),
+											formatToCurrency(data.price, pairData.increment_price),
 											baseCoin.fullname
 										)}
 									</div>
 								</Countdown>
 							) : (
 								<QuoteResult
+									pairData={pairData}
 									data={order}
 									name={pairCoin.fullname}
 									coins={coins}

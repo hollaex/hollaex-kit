@@ -65,6 +65,7 @@ class OrdersWrapper extends Component {
                 title: STRINGS.ORDERS,
                 children: isLoggedIn() ? (
                     <ActiveOrders
+                        pairData={pairData}
                         cancelDelayData={cancelDelayData}
                         orders={activeOrders}
                         onCancel={this.handleCancelOrders}
