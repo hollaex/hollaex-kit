@@ -350,7 +350,7 @@ export const DEFAULT_COIN_DATA = {
 	min: 0.001
 };
 
-export const DEFAULT_PAIR = 'btc-eur';
+export const DEFAULT_PAIR = 'btc-usdt';
 
 export const FLEX_CENTER_CLASSES = [
 	'd-flex',
@@ -361,7 +361,7 @@ export const FLEX_CENTER_CLASSES = [
 export const TIMESTAMP_FORMAT = STRINGS.TIMESTAMP_FORMAT;
 export const HOUR_FORMAT = STRINGS.HOUR_FORMAT;
 
-// Default trading pairs (it gets set from the server so it is not important to set these properly)
+// Default trading pairs (it is set from the server so it is not important to set these properly)
 export const DEFAULT_TRADING_PAIRS = ['xht-usdt'];
 
 export const TOKEN_KEY = `${ENV}_${NETWORK}_TOKEN`;

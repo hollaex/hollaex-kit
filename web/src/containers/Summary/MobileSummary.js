@@ -1,22 +1,21 @@
 import React from 'react';
 import classnames from 'classnames';
-import moment from 'moment';
+// import moment from 'moment';
 
 import SummaryBlock from './components/SummaryBlock';
-import TraderAccounts from './components/TraderAccounts';
-import RewardsBonus from './components/RewardsBonus';
+// import TraderAccounts from './components/TraderAccounts';
+// import RewardsBonus from './components/RewardsBonus';
 import AccountAssets from './components/AccountAssets';
-import TradingVolume from './components/TradingVolume';
-import AccountDetails from './components/AccountDetails';
-import AccountWaveAuction from './components/AccountWaveAuction';
+// import TradingVolume from './components/TradingVolume';
+// import AccountDetails from './components/AccountDetails';
+// import AccountWaveAuction from './components/AccountWaveAuction';
 
 import {
 	BASE_CURRENCY,
 	DEFAULT_COIN_DATA,
-	IS_XHT,
 	SHOW_TOTAL_ASSETS
 } from '../../config/constants';
-import { formatAverage, formatBaseAmount } from '../../utils/currency';
+// import { formatAverage, formatBaseAmount } from '../../utils/currency';
 import STRINGS from '../../config/localizedStrings';
 
 const MobileSummary = ({
@@ -53,7 +52,7 @@ const MobileSummary = ({
 				'apply_rtl'
 			)}
 		>
-			<div className="summary-section_1 trader-account-wrapper d-flex w-100">
+			{/*<div className="summary-section_1 trader-account-wrapper d-flex w-100">
 				<SummaryBlock title={traderAccTitle} wrapperClassname="w-100">
 					<TraderAccounts
 						user={user}
@@ -67,8 +66,8 @@ const MobileSummary = ({
 						verification_level={verification_level}
 					/>
 				</SummaryBlock>
-			</div>
-			<div className="summary-section_1 requirement-wrapper d-flex w-100">
+			</div>*/}
+			{/*<div className="summary-section_1 requirement-wrapper d-flex w-100">
 				<SummaryBlock
 					title={STRINGS.SUMMARY.URGENT_REQUIREMENTS}
 					wrapperClassname="w-100"
@@ -83,7 +82,7 @@ const MobileSummary = ({
 						contentClassName="requirements-content"
 					/>
 				</SummaryBlock>
-			</div>
+			</div> */}
 			<div className="assets-wrapper w-100">
 				<SummaryBlock
 					title={STRINGS.SUMMARY.ACCOUNT_ASSETS}
@@ -106,7 +105,7 @@ const MobileSummary = ({
 					/>
 				</SummaryBlock>
 			</div>
-			<div className="trading-volume-wrapper w-100">
+			{/*<div className="trading-volume-wrapper w-100">
 				<SummaryBlock
 					title={
 						IS_XHT
@@ -138,8 +137,8 @@ const MobileSummary = ({
 						<TradingVolume user={user} />
 					)}
 				</SummaryBlock>
-			</div>
-			<SummaryBlock
+			</div>*/}
+			{/*<SummaryBlock
 				title={STRINGS.SUMMARY.ACCOUNT_DETAILS}
 				secondaryTitle={traderAccTitle}
 				wrapperClassname="w-100"
@@ -157,7 +156,7 @@ const MobileSummary = ({
 					onUpgradeAccount={onUpgradeAccount}
 					verification_level={verification_level}
 				/>
-			</SummaryBlock>
+			</SummaryBlock>*/}
 		</div>
 	);
 };
