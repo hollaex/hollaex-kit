@@ -1,4 +1,5 @@
-import AGREEMENT from './agreement';
+import AGREEMENT from '../agreement';
+import LANGUAGES from '../languages';
 
 export default {
 	APP_TITLE: 'HollaEx',
@@ -77,10 +78,6 @@ export default {
 	FOOTER: {
 		FOOTER_LEGAL: ['Proudly made in Seoul, South Korea', 'bitHolla Inc.'],
 		FOOTER_LANGUAGE_TEXT: 'LANGUAGE',
-		FOOTER_LANGUAGE_LANGUAGES: [
-			{ key: 'en', label: 'English' },
-			{ key: 'ko', label: '한국어' }
-		],
 		FOOTER_COPYRIGHT:
 			'Powered by bitHolla',
 		SECTIONS: {
@@ -753,7 +750,6 @@ export default {
 		c: 'Close',
 		v: 'Volume'
 	},
-	LANGUAGES: [{ key: 'en', label: 'English' }],
 	QUICK_TRADE: '퀵트레이딩',
 	PRO_TRADE: '프로트레이딩',
 	ADMIN_DASH: '어드민페이지',
@@ -919,18 +915,7 @@ export default {
 	INVALID_CAPTCHA: 'Invalid captcha',
 	NO_FEE: 'N/A',
 	SETTINGS_LANGUAGE_LABEL: '언어설정 (이메일수신포함)',
-	SETTINGS_LANGUAGE_OPTIONS: [
-		{
-			value: 'en',
-			label: 'English',
-			icon: `${process.env.REACT_APP_PUBLIC_URL}/assets/flags/selected-en.png`
-		},
-		{
-			value: 'ko',
-			label: '한국어',
-			icon: `${process.env.REACT_APP_PUBLIC_URL}/assets/flags/selected-kr.png`
-		}
-	],
+	SETTINGS_LANGUAGE_OPTIONS: LANGUAGES,
 	SETTINGS_ORDERPOPUP_LABEL: 'Display order confirmation popup',
 	SETTINGS_ORDERPOPUP_OPTIONS: [
 		{ value: false, label: 'NO' },

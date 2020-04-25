@@ -1,4 +1,5 @@
-import AGREEMENT from './agreement';
+import AGREEMENT from '../agreement';
+import LANGUAGES from '../languages';
 
 export default {
 	APP_TITLE: 'HollaEx',
@@ -79,11 +80,6 @@ ACTIVE_TRADES: 'شما باید {0} برای دسترسی به سفارشات ف
 	FOOTER: {
 		FOOTER_LEGAL: ['با افتخار توسعه داده شده در سئول ، کره جنوبی'],
 		FOOTER_LANGUAGE_TEXT: 'زبان',
-		FOOTER_LANGUAGE_LANGUAGES: [
-			{ key: 'en', label: 'English' },
-			{ key: 'ko', label: '한국어' },
-			{ key: 'fa', label: 'فارسی' }
-		],
 		FOOTER_COPYRIGHT: '	Copyright {0} ⓒ bitHolla Inc. All rights reserved',
 		SECTIONS: {
 			SECTION_1_TITLE: 'درباره',
@@ -778,7 +774,6 @@ ACTIVE_TRADES: 'شما باید {0} برای دسترسی به سفارشات ف
 		c: 'پایان',
 		v: 'حجم'
 	},
-	LANGUAGES: [{ key: 'fa', label: 'فارسی' }],
 	QUICK_TRADE: ' خرید و فروش آسان',
 	PRO_TRADE: 'خرید و فروش حرفه ای',
 	ADMIN_DASH: 'صفحه مدیر',
@@ -948,18 +943,7 @@ ACTIVE_TRADES: 'شما باید {0} برای دسترسی به سفارشات ف
 	INVALID_CAPTCHA: 'کپچا نادرست است',
 	NO_FEE: 'کاربردی ندارد',
 	SETTINGS_LANGUAGE_LABEL: 'انتخاب زبان (این گزینه شامل ایمیل های ارسالی از طرف HollaEx نیز می شود)',
-	SETTINGS_LANGUAGE_OPTIONS: [
-		{
-			value: 'en',
-			label: 'English',
-			icon: '/assets/flags/selected-en.png'
-		},
-		{
-			value: 'fa',
-			label: 'فارسی',
-			icon: '/assets/flags/selected-ir.png'
-		}
-	],
+	SETTINGS_LANGUAGE_OPTIONS: LANGUAGES,
 	SETTINGS_ORDERPOPUP_LABEL: 'مشاهده منوی تایید سفارش',
 	SETTINGS_ORDERPOPUP_OPTIONS: [
 		{ value: false, label: 'خیر' },
