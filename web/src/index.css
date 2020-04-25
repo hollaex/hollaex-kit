@@ -542,7 +542,7 @@ table th {
 .dark-theme .password-reset-1,
 .dark-theme .password-reset-2,
 .dark-theme .success-black-1 {
-  fill: #0066B4; }
+  fill: white; }
 
 @media screen and (max-width: 1096px) {
   .auth-wrapper .auth-container {
@@ -1430,8 +1430,14 @@ table th {
   height: calc(100% - 4.5rem); }
   .layout-mobile .inner_container .history_block-wrapper {
     max-height: calc(100% - 1rem); }
+    .layout-mobile .inner_container .history_block-wrapper .table-content {
+      overflow-x: scroll;
+      white-space: nowrap;
+      width: 100%; }
+    .layout-mobile .inner_container .history_block-wrapper .table-wrapper .table_header-wrapper,
     .layout-mobile .inner_container .history_block-wrapper .table-wrapper .table_body-wrapper {
-      font-size: 1.2rem;
+      font-size: 1rem !important; }
+    .layout-mobile .inner_container .history_block-wrapper .table-wrapper .table_body-wrapper {
       height: 4.5rem; }
 
 .layout-mobile .display_table-wrapper .display_table-cell {
@@ -1463,6 +1469,9 @@ table th {
 
 .history_block-wrapper {
   position: relative; }
+  .history_block-wrapper .action_notification-svg svg {
+    width: 1.2rem !important;
+    height: 1.2rem !important; }
 
 .action_notification-svg svg {
   width: 2rem;
@@ -2287,7 +2296,11 @@ table th {
     fill: #6496AA; }
 
 .layout-mobile .trade_active_orders-wrapper {
-  max-height: 35vh !important; }
+  max-height: 35vh !important;
+  white-space: nowrap; }
+  .layout-mobile .trade_active_orders-wrapper .table_header-wrapper,
+  .layout-mobile .trade_active_orders-wrapper .table_body-wrapper {
+    font-size: 1rem !important; }
 
 .trade_active-lg-view {
   max-height: 17vh; }
@@ -5499,10 +5512,13 @@ table th {
   .checkfield-wrapper .checkfield-label {
     padding: 0 0.25rem;
     margin-bottom: 0;
+    margin-left: 0.25rem;
     vertical-align: middle;
     display: flex;
-    justify-content: center;
-    align-items: center; }
+    align-items: center;
+    flex-wrap: wrap; }
+  .checkfield-wrapper .checkfield-input {
+    margin-top: 2px; }
 
 .toggle_button-wrapper .toggle-content {
   padding: 0 1rem;
@@ -6266,6 +6282,10 @@ table th {
 .layout-mobile .icon_title-wrapper .auth_logo-wrapper svg {
   height: 8rem !important;
   width: 15rem !important; }
+
+.layout-mobile .auth-container .action_notification-text,
+.layout-mobile .auth-container .font-small {
+  font-size: 1rem !important; }
 
 .otp_form-wrapper {
   width: 38rem; }

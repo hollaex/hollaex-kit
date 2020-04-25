@@ -87,15 +87,18 @@ export const AssetsBlock = ({
 											/>
 										</div>
 									) : (
-										<ActionNotification
-											text={STRINGS.GENERATE_WALLET}
-											status="information"
-											iconPath={ICONS.BLUE_PLUS}
-											onClick={() => onOpenDialog(key)}
-											className="need-help"
-											useSvg={true}
-											disable={!allow_deposit}
-										/>
+										<div className="d-flex justify-content-center">
+											<ActionNotification
+												text={STRINGS.GENERATE_WALLET}
+												status="information"
+												iconPath={ICONS.BLUE_PLUS}
+												onClick={() => onOpenDialog(key)}
+												className="need-help"
+												useSvg={true}
+												showActionText={isMobile}
+												disable={!allow_deposit}
+											/>
+										</div>
 									)}
 								</td>
 								<td className="td-amount" />

@@ -239,7 +239,8 @@ class Login extends Component {
 							text: STRINGS.LOGIN.CANT_LOGIN,
 							iconPath: ICONS.BLUE_ARROW_RIGHT,
 							onClick: this.redirectToResetPassword,
-							useSvg: true
+							useSvg: true,
+							showActionText: true
 						}}
 					/>
 					<div

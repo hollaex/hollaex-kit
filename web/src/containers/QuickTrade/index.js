@@ -22,7 +22,6 @@ import {
 	requestQuickTrade
 } from '../../actions/orderbookAction';
 import {
-	formatBtcAmount,
 	calculateBalancePrice,
 	formatToCurrency
 } from '../../utils/currency';
@@ -143,13 +142,13 @@ class QuickTradeContainer extends Component {
 				orderFees: 0
 			};
 			// const riskyPrice = ((this.state.totalAssets / 100) * risk.order_portfolio_percentage);
-			let avail_balance = 0;
+			let coin_balance = 0;
 			if (data.side === 'buy') {
-				avail_balance = balance[`${pair_2.toLowerCase()}_available`];
+				coin_balance = balance[`${pair_2.toLowerCase()}_balance`];
 			} else {
-				avail_balance = balance[`${pair_base.toLowerCase()}_available`];
+				coin_balance = balance[`${pair_base.toLowerCase()}_balance`];
 			}
-			const riskySize = ((avail_balance / 100) * risk.order_portfolio_percentage);
+			const riskySize = ((coin_balance / 100) * risk.order_portfolio_percentage);
 			if (risk.popup_warning && data.size >= riskySize) {
 				order['order_portfolio_percentage'] =
 					risk.order_portfolio_percentage;
@@ -221,7 +220,7 @@ class QuickTradeContainer extends Component {
 	render() {
 		const {
 			quoteData,
-			pairData,
+			pairData = {},
 			activeTheme,
 			quickTrade,
 			orderLimits,
@@ -295,15 +294,16 @@ class QuickTradeContainer extends Component {
 										{STRINGS.formatString(
 											STRINGS.QUOTE_MESSAGE,
 											STRINGS.SIDES_VALUES[side],
-											formatBtcAmount(data.size),
+											formatToCurrency(data.size, pairData.increment_size),
 											pairCoin.fullname,
-											formatToCurrency(data.price, baseCoin.min),
+											formatToCurrency(data.price, pairData.increment_price),
 											baseCoin.fullname
 										)}
 									</div>
 								</Countdown>
 							) : (
 								<QuoteResult
+									pairData={pairData}
 									data={order}
 									name={pairCoin.fullname}
 									coins={coins}
