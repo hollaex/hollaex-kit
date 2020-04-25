@@ -8,7 +8,6 @@ const {
 	VALID_LANGUAGES,
 	NEW_USER_DEFAULT_LANGUAGE,
 	SENDER_EMAIL,
-	SUPPORT_EMAIL,
 	DEFAULT_THEME,
 	NEW_USER_IS_ACTIVATED,
 	SMTP_SERVER,
@@ -25,9 +24,6 @@ const {
 	S3_WRITE_SECRETACCESSKEY,
 	S3_READ_ACCESSKEYID,
 	S3_READ_SECRETACCESSKEY,
-	SES_ACCESSKEYID,
-	SES_REGION,
-	SES_SECRETACCESSKEY,
 	SNS_ACCESSKEYID,
 	SNS_REGION,
 	SNS_SECRETACCESSKEY,
@@ -37,8 +33,6 @@ const {
 	FRESHDESK_KEY,
 	FRESHDESK_AUTH,
 	ADMIN_EMAIL,
-	KYC_EMAIL,
-	SUPERVISOR_EMAIL,
 	USER_LEVEL_NUMBER,
 	CAPTCHA_SITE_KEY,
 	ADMIN_WHITELIST_IP
@@ -60,10 +54,7 @@ const status = [{
 			site_key: CAPTCHA_SITE_KEY
 		},
 		accounts: {
-			admin: ADMIN_EMAIL || 'admin@bitholla.com',
-			supervisor: SUPERVISOR_EMAIL,
-			support: SUPPORT_EMAIL || 'support@bitholla.com',
-			kyc: KYC_EMAIL
+			admin: ADMIN_EMAIL || ''
 		},
 		defaults: {
 			language: NEW_USER_DEFAULT_LANGUAGE || 'en',
@@ -71,17 +62,14 @@ const status = [{
 		},
 		emails: {
 			timezone: EMAILS_TIMEZONE || '',
-			send_email_to_support: (SEND_EMAIL_TO_SUPPORT && SEND_EMAIL_TO_SUPPORT === 'true') || process.env.NODE_ENV === 'production',
-			sender: SENDER_EMAIL || 'support@bitholla.com'
+			send_email_to_support: (SEND_EMAIL_TO_SUPPORT && SEND_EMAIL_TO_SUPPORT === 'true') || false,
+			sender: SENDER_EMAIL || ''
 		},
 		plugins: {
-			enabled: PLUGINS || 'bank,kyc,sms',
+			enabled: PLUGINS || '',
 			configuration: {
 				s3: {
 					id_docs_bucket: ID_DOCS_BUCKET || ''
-				},
-				ses: {
-					region: SES_REGION || ''
 				},
 				sns: {
 					region: SNS_REGION || ''
@@ -107,13 +95,13 @@ const status = [{
 				secret_key: CAPTCHA_SECRET_KEY
 			},
 			smtp: {
-				server: SMTP_SERVER || 'smtp.gmail.com',
+				server: SMTP_SERVER || '',
 				port: SMTP_PORT || 587,
 				user: SMTP_USER,
 				password: SMTP_PASSWORD
 			},
 			vault: {
-				name: VAULT_NAME || 'vault',
+				name: VAULT_NAME || '',
 				key: VAULT_KEY,
 				secret: VAULT_SECRET,
 				connected_coins: []
@@ -128,10 +116,6 @@ const status = [{
 						write: S3_WRITE_SECRETACCESSKEY,
 						read: S3_READ_SECRETACCESSKEY
 					}
-				},
-				ses: {
-					key: SES_ACCESSKEYID || '',
-					secret: SES_SECRETACCESSKEY || ''
 				},
 				sns: {
 					key: SNS_ACCESSKEYID || '',
