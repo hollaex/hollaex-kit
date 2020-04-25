@@ -1,4 +1,5 @@
 import { validateRequired, email, urlCheck } from '../../../components/AdminForm/validations';
+import LANGUAGES from '../../../config/languages';
 
 export const generateAdminSettings = (key) => {
     if (key === 'security') {
@@ -113,10 +114,7 @@ export const generateAdminSettings = (key) => {
                 label: 'Default Language',
                 placeholder: 'Select default language',
                 validate: [validateRequired],
-                options: [
-                    { label: 'English', value: 'en' },
-                    { label: 'Korean', value: 'ko' }
-                ]
+                options: LANGUAGES
             },
             valid_languages: {
                 type: 'select',
@@ -124,10 +122,7 @@ export const generateAdminSettings = (key) => {
                 placeholder: 'Valid languages',
                 validate: [validateRequired],
                 multiSelect: true,
-                options: [
-                    { label: 'English', value: 'en' },
-                    { label: 'Korean', value: 'ko' }
-                ]
+                options: LANGUAGES
             },
             theme: {
                 type: 'select',
