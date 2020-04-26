@@ -3,18 +3,12 @@ import { SubmissionError } from 'redux-form';
 
 import { calculateFees } from './action';
 import { AdminHocForm } from '../../../components';
-import { Card } from 'antd';
+import { Card, Divider } from 'antd';
 import { formatCurrency } from '../../../utils/currency';
 
 const Form = AdminHocForm('TRANSFER_FORM');
 
 const Fields = {
-    user_id: {
-        type: 'number',
-        label: 'User ID',
-        placeholder: 'User ID',
-        fullWidth: true
-    },
     start_date: {
         type: 'date',
         label: 'Start date'
@@ -22,6 +16,12 @@ const Fields = {
     end_date: {
         type: 'date',
         label: 'End date'
+    },
+    user_id: {
+        type: 'number',
+        label: 'User ID (optional)',
+        placeholder: 'User ID',
+        fullWidth: true
     }
 };
 
@@ -59,6 +59,9 @@ const CalculateFee = () => {
     };
     return (
         <div>
+            <div>Calculate fees made on the exchange between the start and end date.</div>
+            <div>Note: If User ID is specified, system only calculates fees made by the specific user.</div>
+            <Divider />
             <CalculateFeeForm
                 fields={Fields}
                 handleCalculate={handleSubmit} />

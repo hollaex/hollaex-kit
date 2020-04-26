@@ -25,7 +25,7 @@ const SettleForm = ({ fields = {}, lastUpdated = {} }) => {
     return (
         <div>
             <div className='mb-2'>
-                <div>You are about to settle all the fees made on the exchange to the user Id specified in the box below.</div>
+                <div>You are about to settle all the fees made on the exchange between the last settlement and now to the user Id specified in the box below.</div>
                 <div>Your last settlement was done on {formatTimestampGregorian(lastUpdated.timestamp)}</div>
             </div>
             {renderFields(fields)}
@@ -143,6 +143,7 @@ class SettledList extends Component {
                 >
                     Settle Now
                 </Button>
+                <div>List of settled fees:</div>
                 {loading ? (
                     <Spin size="large" />
                 ) : (
@@ -161,7 +162,7 @@ class SettledList extends Component {
                 <Form
                     visible={isFormOpen}
                     title={'Settle Now'}
-                    okText="Save"
+                    okText="Settle"
                     fields={Fields}
                     CustomRenderContent={SettleForm}
                     lastUpdated={list[0] ? list[0] : {}}
