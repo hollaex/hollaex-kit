@@ -42,7 +42,9 @@ import {
 	Broker,
 	Plugins,
 	PluginServices,
-	Settings
+	Settings,
+	Transfer,
+	AdminFees
 } from './containers';
 
 import store from './store';
@@ -291,6 +293,16 @@ export default (
 				path="/admin/wallets"
 				name="Admin Wallets"
 				component={withAdminProps(Wallets, 'wallets')}
+			/>
+			<Route
+				path="/admin/transfer"
+				name="Admin Transfer"
+				component={withAdminProps(Transfer, 'transfer')}
+			/>
+			<Route
+				path="/admin/fees"
+				name="Admin Fees"
+				component={withAdminProps(AdminFees, 'fees')}
 			/>
 			<Route
 				path="/admin/withdrawals"
