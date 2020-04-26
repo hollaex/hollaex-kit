@@ -201,6 +201,7 @@ export default {
 	},
 	VALIDATIONS: {
 		OTP_LOGIN: 'Provide OTP code to login',
+		FROZEN_ACCOUNT: 'This account is frozen',
 		INVALID_EMAIL: 'Invalid email address',
 		TYPE_EMAIL: 'Type your E-mail',
 		REQUIRED: 'Required field',

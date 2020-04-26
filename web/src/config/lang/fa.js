@@ -201,6 +201,7 @@ ACTIVE_TRADES: 'شما باید {0} برای دسترسی به سفارشات ف
 	},
 	VALIDATIONS: {
 		OTP_LOGIN: 'رمزیکبارمصرف خود را وارد نمایید',
+		FROZEN_ACCOUNT: 'این حساب بسته شده است',
 		INVALID_EMAIL: 'آدرس ایمیل نامعتبر است',
 		TYPE_EMAIL: 'ایمیل خود را وارد کنید',
 		REQUIRED: 'فیلد ضروری',

@@ -136,22 +136,7 @@ class Login extends Component {
 					error._error = STRINGS.VALIDATIONS.OTP_LOGIN;
 				} else {
 					if (_error === 'User is not activated') {
-						error._error = (
-							<div style={{ color: 'black' }}>
-								Account approval is required to access the demo
-								exchange.
-								<br />
-								Please contact us at{' '}
-								<a
-									style={{ color: 'blue' }}
-									href="mailto:support@hollaex.com?Subject=Approval%20request"
-									target="_top"
-								>
-									support@hollaex.com
-								</a>{' '}
-								with your use case for approval access
-							</div>
-						);
+						error._error = (STRINGS.VALIDATIONS.FROZEN_ACCOUNT);
 					} else {
 						error._error = _error;
 					}

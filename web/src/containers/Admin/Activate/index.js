@@ -16,10 +16,13 @@ const onSubmit = (refreshData) => (values) => {
 };
 
 const OTP = ({ user_id, activated, refreshData }) => (
-	<Form
-		onSubmit={() => onSubmit(refreshData)({ user_id, activated: !activated })}
-		buttonText={activated ? 'Deactivate' : 'Activate'}
-	/>
+	<div>
+		<span>{activated ? 'This account is active' : 'This account is deactivated (frozen)'}</span>
+		<Form
+			onSubmit={() => onSubmit(refreshData)({ user_id, activated: !activated })}
+			buttonText={activated ? 'Deactivate' : 'Activate'}
+		/>
+	</div>
 );
 
 export default OTP;

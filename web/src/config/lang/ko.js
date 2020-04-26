@@ -199,6 +199,7 @@ export default {
 	},
 	VALIDATIONS: {
 		OTP_LOGIN: '로그인을 위해 OTP코드를 입력해주시기 바랍니다.',
+		FROZEN_ACCOUNT: 'This account is frozen.',
 		INVALID_EMAIL: '사용할 수 없는 이메일 주소입니다.',
 		TYPE_EMAIL: '이메일주소를 입력하세요.',
 		REQUIRED: '필수입력란',
