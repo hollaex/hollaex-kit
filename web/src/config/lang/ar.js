@@ -1,6 +1,7 @@
 import AGREEMENT from '../agreement';
 import LANGUAGES from '../languages';
 
+// OPEN PR for translations on language branch
 export default {
 	APP_TITLE: 'HollaEx',
 	APP_SUB_TITLE: 'اکسچنج دارایی های دیجیتال متن باز', // slogan
