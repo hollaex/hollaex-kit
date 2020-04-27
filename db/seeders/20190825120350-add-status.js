@@ -67,17 +67,7 @@ const status = [{
 		},
 		plugins: {
 			enabled: PLUGINS || '',
-			configuration: {
-				s3: {
-					id_docs_bucket: ID_DOCS_BUCKET || ''
-				},
-				sns: {
-					region: SNS_REGION || ''
-				},
-				freshdesk: {
-					host: FRESHDESK_HOST || ''
-				}
-			}
+			configuration: {}
 		},
 		secrets: {
 			allowed_domains: ALLOWED_DOMAINS ? ALLOWED_DOMAINS.split(',') : [],
@@ -108,6 +98,7 @@ const status = [{
 			},
 			plugins: {
 				s3: {
+					id_docs_bucket: ID_DOCS_BUCKET || '',
 					key: {
 						write: S3_WRITE_ACCESSKEYID || '',
 						read: S3_READ_ACCESSKEYID || ''
@@ -118,10 +109,12 @@ const status = [{
 					}
 				},
 				sns: {
+					region: SNS_REGION || '',
 					key: SNS_ACCESSKEYID || '',
 					secret: SNS_SECRETACCESSKEY || ''
 				},
 				freshdesk: {
+					host: FRESHDESK_HOST || '',
 					key: FRESHDESK_KEY || '',
 					auth: FRESHDESK_AUTH || ''
 				}
