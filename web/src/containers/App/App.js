@@ -3,6 +3,7 @@ import classnames from 'classnames';
 import EventListener from 'react-event-listener';
 import moment from 'moment';
 import { loadReCaptcha } from 'react-recaptcha-v3';
+import {Helmet} from "react-helmet";
 import STRINGS from '../../config/localizedStrings';
 import {
 	ICONS,
@@ -254,6 +255,11 @@ class App extends Component {
 		return '';
 	};
 
+	openContactForm = (data = {}) => {
+		const { links = {} } = this.props.constants;
+		this.props.openContactForm({ ...data, helpdesk: links.helpdesk })
+	}
+
 	renderDialogContent = ({ type, data }, prices = {}) => {
 		switch (type) {
 			case NOTIFICATIONS.ORDERS:
@@ -263,7 +269,7 @@ class App extends Component {
 					<Notification
 						type={type}
 						data={data}
-						openContactForm={this.props.openContactForm}
+						openContactForm={this.openContactForm}
 						onClose={this.onCloseDialog}
 					/>
 				);
@@ -278,7 +284,7 @@ class App extends Component {
 						}}
 						onClose={this.onCloseDialog}
 						goToPage={this.goToPage}
-						openContactForm={this.props.openContactForm}
+						openContactForm={this.openContactForm}
 					/>
 				);
 			case NOTIFICATIONS.ERROR:
@@ -460,6 +466,10 @@ class App extends Component {
 			EXCHANGE_EXPIRY_DAYS - moment().diff(info.created_at, 'days');
 		return (
 			<div>
+				<Helmet>
+					<title>{constants.title}</title>
+					<meta name="description" content={constants.description} />
+				</Helmet>
 				<Socket
 					router={router}
 					location={location}
@@ -573,7 +583,7 @@ class App extends Component {
 										<Sidebar
 											activePath={activePath}
 											logout={this.logout}
-											// help={openContactForm}
+											// help={this.openContactForm}
 											theme={activeTheme}
 											isLogged={isLoggedIn()}
 											help={openHelpfulResourcesForm}

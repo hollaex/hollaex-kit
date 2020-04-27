@@ -14,7 +14,7 @@ import {
 	// MobileBarTabs,
 	PanelInformationRow
 } from '../../components';
-import { ICONS, SUPPORT_HELP_URL } from '../../config/constants';
+import { ICONS } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 import { logout } from '../../actions/authAction';
 
@@ -426,8 +426,9 @@ class Verification extends Component {
 	};
 
 	openContactForm = () => {
-		if (window) {
-			window.open(SUPPORT_HELP_URL, '_blank');
+		const { links = {} } = this.props.constants;
+		if (window && links && links.helpdesk) {
+			window.open(links.helpdesk, '_blank');
 		}
 		// this.setState({ dialogIsOpen: true, dialogType: 'contact' });
 	};
@@ -524,7 +525,8 @@ const mapStateToProps = (state) => ({
 	// token: state.auth.token,
 	activeTheme: state.app.theme,
 	user: state.user,
-	enabledPlugins: state.app.enabledPlugins
+	enabledPlugins: state.app.enabledPlugins,
+	constants: state.app.constants
 });
 
 const mapDispatchToProps = (dispatch) => ({

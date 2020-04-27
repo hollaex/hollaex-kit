@@ -169,7 +169,8 @@ class Wallet extends Component {
 	};
 
 	openContactUs = () => {
-		this.props.openContactForm({ category: 'bank_transfer' });
+		const { links = {} } = this.props.constants;
+		this.props.openContactForm({ category: 'bank_transfer', helpdesk: links.helpdesk });
 	};
 
 	render() {
@@ -238,6 +239,7 @@ class Wallet extends Component {
 
 const mapStateToProps = (store) => ({
 	coins: store.app.coins,
+	constants: store.app.constants,
 	prices: store.orderbook.prices,
 	balance: store.user.balance,
 	addressRequest: store.user.addressRequest,

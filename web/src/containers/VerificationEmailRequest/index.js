@@ -9,7 +9,7 @@ import EmailRequestForm, { generateFormFields } from './EmailRequestForm';
 import EmailRequestSuccess from './EmailRequestSuccess';
 import { IconTitle, Dialog, MobileBarBack } from '../../components';
 import { ContactForm } from '../';
-import { FLEX_CENTER_CLASSES, SUPPORT_HELP_URL } from '../../config/constants';
+import { FLEX_CENTER_CLASSES } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 
 const BottomLink = () => (
@@ -49,8 +49,9 @@ class VerifyEmailRequest extends Component {
 	};
 
 	onOpenDialog = () => {
-		if (window) {
-			window.open(SUPPORT_HELP_URL, '_blank');
+		const { links = {} } = this.props.constants;
+		if (window && links && links.helpdesk) {
+			window.open(links.helpdesk, '_blank');
 		}
 		// this.setState({ showContactForm: true });
 	};
