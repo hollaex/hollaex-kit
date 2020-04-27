@@ -1,4 +1,5 @@
-import AGREEMENT from './agreement';
+import AGREEMENT from '../agreement';
+import LANGUAGES from '../languages';
 
 export default {
 	APP_TITLE: 'HollaEx',
@@ -79,11 +80,7 @@ export default {
 	FOOTER: {
 		FOOTER_LEGAL: ['Proudly made in Seoul, South Korea', 'bitHolla Inc.'],
 		FOOTER_LANGUAGE_TEXT: 'LANGUAGE',
-		FOOTER_LANGUAGE_LANGUAGES: [
-			{ key: 'en', label: 'English' },
-			{ key: 'ko', label: '한국어' }
-		],
-		FOOTER_COPYRIGHT: '	Copyright {0} ⓒ bitHolla Inc. All rights reserved',
+		FOOTER_COPYRIGHT: 'Powered by bitHolla',
 		SECTIONS: {
 			SECTION_1_TITLE: 'ABOUT',
 			SECTION_1_LINK_1: 'About Us',
@@ -204,6 +201,7 @@ export default {
 	},
 	VALIDATIONS: {
 		OTP_LOGIN: 'Provide OTP code to login',
+		FROZEN_ACCOUNT: 'This account is frozen',
 		INVALID_EMAIL: 'Invalid email address',
 		TYPE_EMAIL: 'Type your E-mail',
 		REQUIRED: 'Required field',
@@ -294,6 +292,7 @@ export default {
 	PREVIOUS_PAGE: 'previous page',
 	NEXT_PAGE: 'next page',
 	WALLET: {
+		LOADING_ASSETS: 'Loading assets...', // new
 		TOTAL_ASSETS: 'Total Assets',
 		AVAILABLE_WITHDRAWAL: 'Available for trading',
 		AVAILABLE_TRADING: 'Available for withdrawal',
@@ -331,7 +330,7 @@ export default {
 		TERMS: {
 			terms: 'General Terms',
 			policy: 'Privacy Policy',
-			text: 'I have read and agree to the {0} and {1}.'
+			text: 'I have read and agree to the {0} and {1}'
 		}
 	},
 	VERIFICATION_TEXTS: {
@@ -779,7 +778,6 @@ export default {
 		c: 'Close',
 		v: 'Volume'
 	},
-	LANGUAGES: [{ key: 'en', label: 'English' }],
 	QUICK_TRADE: 'Quick trade',
 	PRO_TRADE: 'Pro trade',
 	ADMIN_DASH: 'Admin Page',
@@ -949,18 +947,7 @@ export default {
 	INVALID_CAPTCHA: 'Invalid captcha',
 	NO_FEE: 'N/A',
 	SETTINGS_LANGUAGE_LABEL: 'Language preferences (Includes Emails)',
-	SETTINGS_LANGUAGE_OPTIONS: [
-		{
-			value: 'en',
-			label: 'English',
-			icon: '/assets/flags/selected-en.png'
-		},
-		{
-			value: 'ko',
-			label: '한국어',
-			icon: '/assets/flags/selected-kr.png'
-		}
-	],
+	SETTINGS_LANGUAGE_OPTIONS: LANGUAGES,
 	SETTINGS_ORDERPOPUP_LABEL: 'Display order confirmation popup',
 	SETTINGS_ORDERPOPUP_OPTIONS: [
 		{ value: false, label: 'NO' },
@@ -1212,9 +1199,7 @@ export default {
 	REFERRAL_LINK: {
 		TITLE: 'Invite your friend', // new
 		INFO_TEXT:
-			'Refer your friends by giving out this link. Your friends will receive {0}% discount by signing up through your link.', // new
-		INFO_TEXT_1:
-			'{0}% of trading fees collected from those you refer will be monthly credited to your account.', // new
+			'Refer your friends by giving out this link and receive benefits by onboarding other people.',
 		COPY_FIELD_LABEL: 'Share the link below with friends and earn commissions:', // new
 		REFERRED_USER_COUT: 'You have referred {0} users', // new
 		COPY_LINK_BUTTON: 'COPY REFERRAL LINK', // new

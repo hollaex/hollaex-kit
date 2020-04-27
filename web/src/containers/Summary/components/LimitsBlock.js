@@ -1,14 +1,11 @@
 import React from 'react';
 
 import { CurrencyBall } from '../../../components';
-import { BASE_CURRENCY, DEFAULT_COIN_DATA } from '../../../config/constants';
+import { DEFAULT_COIN_DATA } from '../../../config/constants';
 import STRINGS from '../../../config/localizedStrings';
-import {
-    formatBaseAmount,
-    formatBtcAmount
-} from '../../../utils/currency';
+import { formatToCurrency } from '../../../utils/currency';
 
-const getLimitValue = (limit, format) => {
+const getLimitValue = (limit, increment_unit) => {
     if (limit === undefined || limit === null || limit === '') {
         return 'N/A';
     } else if (limit === 0) {
@@ -16,13 +13,13 @@ const getLimitValue = (limit, format) => {
     } else if (limit === -1) {
         return STRINGS.LEVELS.BLOCKED;
     } else {
-        return format ? format(limit) : limit;
+        return increment_unit ? formatToCurrency(limit, increment_unit) : limit;
     }
 };
 
 const getDepositRow = (currency, index, coins, level) => {
-    const { symbol = '', fullname, deposit_limits = {}, withdrawal_limits = {} } = coins[currency] || DEFAULT_COIN_DATA;
-    const format = currency === BASE_CURRENCY ? formatBaseAmount : formatBtcAmount;
+    const { symbol = '', fullname, deposit_limits = {}, withdrawal_limits = {}, increment_unit } = coins[currency] || DEFAULT_COIN_DATA;
+    // const format = currency === BASE_CURRENCY ? formatBaseAmount : formatBtcAmount;
     return (
         <tr key={index}>
             <td className="account-limits-coin">
@@ -31,8 +28,8 @@ const getDepositRow = (currency, index, coins, level) => {
                     <div className="ml-2">{fullname}</div>
                 </div>
             </td>
-            <td className="account-limits-maker account-limits-value">{getLimitValue(deposit_limits[level], format)}</td>
-            <td className="account-limits-maker account-limits-value">{getLimitValue(withdrawal_limits[level], format)}</td>
+            <td className="account-limits-maker account-limits-value">{getLimitValue(deposit_limits[level], increment_unit)}</td>
+            <td className="account-limits-maker account-limits-value">{getLimitValue(withdrawal_limits[level], increment_unit)}</td>
         </tr>
     );
 };

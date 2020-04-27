@@ -350,7 +350,7 @@ export const DEFAULT_COIN_DATA = {
 	min: 0.001
 };
 
-export const DEFAULT_PAIR = 'btc-eur';
+export const DEFAULT_PAIR = 'btc-usdt';
 
 export const FLEX_CENTER_CLASSES = [
 	'd-flex',
@@ -361,7 +361,7 @@ export const FLEX_CENTER_CLASSES = [
 export const TIMESTAMP_FORMAT = STRINGS.TIMESTAMP_FORMAT;
 export const HOUR_FORMAT = STRINGS.HOUR_FORMAT;
 
-// Default trading pairs (it gets set from the server so it is not important to set these properly)
+// Default trading pairs (it is set from the server so it is not important to set these properly)
 export const DEFAULT_TRADING_PAIRS = ['xht-usdt'];
 
 export const TOKEN_KEY = `${ENV}_${NETWORK}_TOKEN`;
@@ -445,13 +445,8 @@ export const TIME_ZONE = process.env.REACT_APP_TIMEZONE || 'GMT';
 export const TOKEN_EMAIL = 'token::email';
 export const TOKEN_MAX_AGE = 23 * 60 * 60;
 
-export const IS_PRO_VERSION =
-	process.env.REACT_APP_IS_PRO_VERSION &&
-	process.env.REACT_APP_IS_PRO_VERSION === 'true';
-export const PRO_VERSION_REDIRECT =
-	process.env.REACT_APP_PRO_VERSION_REDIRECT || '/account';
-export const DEFAULT_VERSION_REDIRECT = '/';
-export const PRO_URL = process.env.REACT_APP_PRO_URL || 'https://hollaex.com';
+export const DISPLAY_LANDING = false;
+export const DEFAULT_URL = '/';
 
 // minimum level for a user to be able to create api tokens
 export const MIN_LEVEL_FOR_TOKENS = 1;
@@ -484,6 +479,7 @@ export const EXCHANGE_EXPIRY_SECONDS = EXCHANGE_EXPIRY_DAYS * 86400;
 export const SUPPORT_HELP_URL =
 	'https://info.hollaex.com/hc/en-us/requests/new';
 export const REQUEST_VAULT_SUPPORTED_COINS = 'https://api.bitholla.com/v1/vault/coins';
+export const ADMIN_GUIDE_DOWNLOAD_LINK = 'https://bitholla.s3.ap-northeast-2.amazonaws.com/kit/Admin+panel+manual.pdf';
 	
 export const MAX_NUMBER_BANKS = 3;
 

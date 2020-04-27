@@ -1,11 +1,13 @@
 import LocalizedStrings from 'react-localization';
 
-import en from './en';
-import ko from './ko';
+import en from './lang/en';
+import ko from './lang/ko';
+import fa from './lang/fa';
 
 const strings = new LocalizedStrings({
 	en,
-	ko
+	ko,
+	fa
 });
 
 export default strings;

@@ -35,7 +35,7 @@ class Wallet extends Component {
 			nextProps.orders.length !== this.props.orders.length ||
 			nextProps.balance.timestamp !== this.props.balance.timestamp ||
 			JSON.stringify(this.props.prices) !==
-				JSON.stringify(nextProps.prices) ||
+			JSON.stringify(nextProps.prices) ||
 			nextProps.activeLanguage !== this.props.activeLanguage
 		) {
 			this.calculateSections(nextProps);
@@ -105,17 +105,24 @@ class Wallet extends Component {
 
 	render() {
 		const { sections, totalAssets, chartData } = this.state;
-		const { isValidBase } = this.props;
+		const { isValidBase, fetching, balance, coins, prices } = this.props;
 
-		if (Object.keys(this.props.balance).length === 0) {
+		if (Object.keys(balance).length === 0) {
 			return <div />;
 		}
-		const { symbol = '' } = this.props.coins[BASE_CURRENCY] || {};
+		const { symbol = '' } = coins[BASE_CURRENCY] || {};
 
 		return (
 			<div className="wallet-wrapper">
 				<div className="donut-container">
-					<DonutChart id="side-bar-donut" coins={this.props.coins} chartData={chartData} />
+					{(!(Object.keys(balance).length)
+						|| !(Object.keys(coins).length)
+						|| !(Object.keys(prices).length)
+						|| !chartData.length
+						|| fetching)
+						? <div className="text-center mt-3">{STRINGS.WALLET.LOADING_ASSETS}</div>
+						: <DonutChart id="side-bar-donut" coins={coins} chartData={chartData} />
+					}
 				</div>
 				<Accordion sections={sections} />
 				{BASE_CURRENCY && isValidBase && !IS_XHT ? (
@@ -143,7 +150,8 @@ const mapStateToProps = (state, ownProps) => ({
 	user_id: state.user.id,
 	activeLanguage: state.app.language,
 	coins: state.app.coins,
-	isValidBase: state.app.isValidBase
+	isValidBase: state.app.isValidBase,
+	fetching: state.auth.fetching,
 });
 
 export default connect(mapStateToProps)(Wallet);

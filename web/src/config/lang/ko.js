@@ -1,4 +1,5 @@
-import AGREEMENT from './agreement';
+import AGREEMENT from '../agreement';
+import LANGUAGES from '../languages';
 
 export default {
 	APP_TITLE: 'HollaEx',
@@ -77,12 +78,8 @@ export default {
 	FOOTER: {
 		FOOTER_LEGAL: ['Proudly made in Seoul, South Korea', 'bitHolla Inc.'],
 		FOOTER_LANGUAGE_TEXT: 'LANGUAGE',
-		FOOTER_LANGUAGE_LANGUAGES: [
-			{ key: 'en', label: 'English' },
-			{ key: 'ko', label: '한국어' }
-		],
 		FOOTER_COPYRIGHT:
-			'	Copyright 2019 ⓒ HollaEx Foundation. All rights reserved',
+			'Powered by bitHolla',
 		SECTIONS: {
 			SECTION_1_TITLE: 'ABOUT',
 			SECTION_1_LINK_1: 'About Us',
@@ -202,6 +199,7 @@ export default {
 	},
 	VALIDATIONS: {
 		OTP_LOGIN: '로그인을 위해 OTP코드를 입력해주시기 바랍니다.',
+		FROZEN_ACCOUNT: 'This account is frozen.',
 		INVALID_EMAIL: '사용할 수 없는 이메일 주소입니다.',
 		TYPE_EMAIL: '이메일주소를 입력하세요.',
 		REQUIRED: '필수입력란',
@@ -328,7 +326,7 @@ export default {
 		TERMS: {
 			terms: '이용약관',
 			policy: '개인정보 처리방침',
-			text: '{0}과 {1}을 확인하였으며 이에 동의합니다.'
+			text: '{0}과 {1}을 확인하였으며 이에 동의합니다'
 		}
 	},
 	VERIFICATION_TEXTS: {
@@ -616,7 +614,6 @@ export default {
 		RISK_MANAGEMENT: {
 			INFO_TEXT:
 				'거래 주문 값이 포트폴리오에 설정된 백분율 값을 초과할 경우 경고 알림창을 만들 수 있습니다.',
-			INFO_TEXT_1: '총 자산 가치 {0}: {1}',
 			PORTFOLIO: '포트폴리오 백분율',
 			TOMAN_ASSET: '근사값',
 			ADJUST: '(백분율 설정하기)',
@@ -754,7 +751,6 @@ export default {
 		c: 'Close',
 		v: 'Volume'
 	},
-	LANGUAGES: [{ key: 'en', label: 'English' }],
 	QUICK_TRADE: '퀵트레이딩',
 	PRO_TRADE: '프로트레이딩',
 	ADMIN_DASH: '어드민페이지',
@@ -920,18 +916,7 @@ export default {
 	INVALID_CAPTCHA: 'Invalid captcha',
 	NO_FEE: 'N/A',
 	SETTINGS_LANGUAGE_LABEL: '언어설정 (이메일수신포함)',
-	SETTINGS_LANGUAGE_OPTIONS: [
-		{
-			value: 'en',
-			label: 'English',
-			icon: `${process.env.REACT_APP_PUBLIC_URL}/assets/flags/selected-en.png`
-		},
-		{
-			value: 'ko',
-			label: '한국어',
-			icon: `${process.env.REACT_APP_PUBLIC_URL}/assets/flags/selected-kr.png`
-		}
-	],
+	SETTINGS_LANGUAGE_OPTIONS: LANGUAGES,
 	SETTINGS_ORDERPOPUP_LABEL: 'Display order confirmation popup',
 	SETTINGS_ORDERPOPUP_OPTIONS: [
 		{ value: false, label: 'NO' },

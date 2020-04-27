@@ -166,7 +166,8 @@ class Signup extends Component {
 							text: STRINGS.HELP_TEXT,
 							iconPath: ICONS.BLUE_QUESTION,
 							onClick: this.onOpenDialog,
-							useSvg: true
+							useSvg: true,
+							showActionText: true
 						}}
 					/>
 					<div

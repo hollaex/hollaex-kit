@@ -93,7 +93,7 @@ class Trade extends PureComponent {
 	};
 
 	goToTransactionsHistory = () => {
-		this.props.router.push('transactions');
+		this.props.router.push('/transactions');
 	};
 
 	goToPair = (pair) => {

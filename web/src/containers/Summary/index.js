@@ -5,8 +5,8 @@ import { isMobile } from 'react-device-detect';
 import classnames from 'classnames';
 
 import SummaryBlock from './components/SummaryBlock';
-import TraderAccounts from './components/TraderAccounts';
-import SummaryRequirements from './components/SummaryRequirements';
+// import TraderAccounts from './components/TraderAccounts';
+// import SummaryRequirements from './components/SummaryRequirements';
 import AccountAssets from './components/AccountAssets';
 import MobileSummary from './MobileSummary';
 
@@ -192,9 +192,6 @@ class Summary extends Component {
 			STRINGS.SUMMARY.LEVEL_OF_ACCOUNT,
 			verification_level
 		);
-		// if (IS_XHT) {
-		//     traderAccTitle = user.is_hap ? STRINGS.SUMMARY.HAP_ACCOUNT : STRINGS.SUMMARY.TRADER_ACCOUNT_TITLE
-		// }
 		return (
 			<div className="summary-container">
 				{!isMobile && (
@@ -224,7 +221,7 @@ class Summary extends Component {
 					/>
 				) : (
 					<div>
-						<div className="d-flex align-items-center">
+						{/*<div className="d-flex align-items-center">
 							<div className="summary-section_1 trader-account-wrapper d-flex">
 								<SummaryBlock title={traderAccTitle}>
 									<TraderAccounts
@@ -241,7 +238,7 @@ class Summary extends Component {
 							</div>
 							<div className="summary-section_1 requirement-wrapper d-flex">
 								<SummaryBlock
-									title={STRINGS.SUMMARY.REWARDS_BONUS}
+									title={STRINGS.SUMMARY.TASKS}
 									wrapperClassname="w-100"
 								>
 									<SummaryRequirements
@@ -252,7 +249,7 @@ class Summary extends Component {
 									/>
 								</SummaryBlock>
 							</div>
-						</div>
+						</div>*/}
 						<div className="d-flex align-items-center">
 							<div
 								className={classnames('assets-wrapper', 'asset_wrapper_width')}

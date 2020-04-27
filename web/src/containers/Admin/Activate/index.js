@@ -2,6 +2,7 @@ import React from 'react';
 import { SubmissionError } from 'redux-form';
 import { activateUser } from './actions';
 import { AdminHocForm } from '../../../components';
+import { Divider } from 'antd';
 
 const Form = AdminHocForm('ACTIVATION_FORM');
 
@@ -16,10 +17,14 @@ const onSubmit = (refreshData) => (values) => {
 };
 
 const OTP = ({ user_id, activated, refreshData }) => (
-	<Form
-		onSubmit={() => onSubmit(refreshData)({ user_id, activated: !activated })}
-		buttonText={activated ? 'Deactivate' : 'Activate'}
-	/>
+	<div>
+		<span>{activated ? 'This account is active' : 'This account is deactivated (frozen)'}</span>
+		<Divider />
+		<Form
+			onSubmit={() => onSubmit(refreshData)({ user_id, activated: !activated })}
+			buttonText={activated ? 'Deactivate' : 'Activate'}
+		/>
+	</div>
 );
 
 export default OTP;

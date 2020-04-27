@@ -1,4 +1,4 @@
-const UP_COLOR_WHITE = "#d1d4dc";
+const UP_COLOR_WHITE = "#6496AA";
 const DOWN_COLOR_WHITE = "#000000";
 const UP_COLOR_DARK = "#00A69C";
 const DOWN_COLOR_DARK = "#EE4036";
