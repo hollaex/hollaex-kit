@@ -119,7 +119,7 @@ class App extends Component {
 		// 	nextProps.verification_level !== this.props.verification_level &&
 		// 	nextProps.verification_level === 1
 		// ) {
-			// this.goToAccountPage();
+		// this.goToAccountPage();
 		// }
 		if (this.props.activeTheme !== nextProps.activeTheme) {
 			this.updateThemeToBody(nextProps.activeTheme);
@@ -622,12 +622,12 @@ class App extends Component {
 								</Dialog>
 								{!isMobile &&
 									enabledPlugins.includes('chat') && (
-									<ChatComponent
-										minimized={chatIsClosed}
-										onMinimize={this.minimizeChat}
-										chatIsClosed={chatIsClosed}
-									/>
-								)}
+										<ChatComponent
+											minimized={chatIsClosed}
+											onMinimize={this.minimizeChat}
+											chatIsClosed={chatIsClosed}
+										/>
+									)}
 							</div>
 							{isMobile && (
 								<div className="app_container-bottom_bar">
@@ -645,10 +645,14 @@ class App extends Component {
 					<SnackDialog />
 				</div>
 				<div
-					className={classnames(getThemeClass(activeTheme), {
-						'layout-mobile': isMobile,
-						'layout-desktop': isBrowser
-					})}
+					className={classnames(
+						getThemeClass(activeTheme),
+						languageClasses[0],
+						{
+							'layout-mobile': isMobile,
+							'layout-desktop': isBrowser
+						}
+					)}
 				>
 					{!isMobile && <AppFooter theme={activeTheme} constants={constants} />}
 				</div>

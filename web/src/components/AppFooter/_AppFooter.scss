@@ -120,6 +120,30 @@ $footer-logo-color: $trade-tabs-inactive-color;
 .direction_rtl {
 	.app_footer-container {
 		.footer-row-content {
+			.footer-links-section {
+				.footer-links-group {
+					.footer-links-section--list {
+						
+						.social_icon {
+							margin-right: 0;
+							margin-left: 0.25rem;
+						}	
+					}
+					
+				}
+			}
+			.footer_separter {
+				border-left: 0;
+				border-right: 1px solid $footer-wrapper--border-color;
+				.footer-txt {
+					margin-left: 0;
+					margin-right: 1rem;
+				}
+				.footer-logo {
+					margin-left: 0;
+					margin-right: 1rem;
+				}
+			}
 			.footer-public-texts {
 				text-align: left;
 			}

@@ -90,6 +90,7 @@ const AppFooter = ({ className, theme, constants = {} }) => {
 				'app_footer-container',
 				'd-flex',
 				'flex-column',
+				'apply_rtl',
 				className
 			)}
 		>
