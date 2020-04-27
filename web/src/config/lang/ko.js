@@ -3,8 +3,7 @@ import LANGUAGES from '../languages';
 
 export default {
 	APP_TITLE: 'HollaEx',
-	APP_SUB_TITLE: 'Open Crypto Exchange', // new
-	APP_NAME: 'HollaEx',
+	APP_SUB_TITLE: 'Open Crypto Exchange', // slogan
 
 	LOGOUT_CONFIRM_TEXT: '로그아웃 하시겠습니까?',
 	ADD_TRADING_PAIR: '거래통화페어 추가',
@@ -133,8 +132,6 @@ export default {
 		// new
 		REQUEST_TITLE: '접근링크요청',
 		REQUEST_INVITE: '초대요청',
-		REFERRAL_INVITE_WARNING:
-			'HollaEx 공식 거래소에 접근하기 위해서 친구 또는 {0}에서 링크를 받아야합니다.',
 		CATEGORY_PLACEHOLDER: '회원님에게 해당하는 카테고리를 선택하시기바랍니다.',
 		INTRODUCTION_LABEL: '자기소개',
 		INTRODUCTION_PLACEHOLDER:
@@ -172,10 +169,6 @@ export default {
 			ETH: '이더리움 입금 주소',
 			BCH: '비트코인캐시 입금 주소'
 		},
-		INFORMATION_MESSAGES: [
-			'아래의 은행 정보를 확인하시어 USD를 입금을 진행하시기 바랍니다. 이체완료까지 대략 1~2 영업일이 소요되는 점 양해부탁드립니다.',
-			'반드시 입금자명과 HollaEx계정의 이름이 같아야 입금이 수락이되므로 유의해주시기 바랍니다.'
-		],
 		INCREASE_LIMIT: '한도 증액이 필요하십니까?',
 		QR_CODE:
 			'회원님에게 할당된 입금 전용주소로 입금을 위해 이 QR 코드를 스캔하실 수 있습니다.',

@@ -9,9 +9,6 @@ import { renderDumbField } from '../Wallet/components'; // eslint-disable-line
 
 export const generateBaseInformation = (id = '') => (
 	<div className="text">
-		{STRINGS.DEPOSIT.INFORMATION_MESSAGES.map((message, index) => (
-			<p key={index}>{message}</p>
-		))}
 		{id && (
 			<p>
 				{STRINGS.formatString(STRINGS.DEPOSIT_BANK_REFERENCE, id).join(' ')}

@@ -3,8 +3,7 @@ import LANGUAGES from '../languages';
 
 export default {
 	APP_TITLE: 'HollaEx',
-	APP_SUB_TITLE: 'Open Crypto Exchange', // new
-	APP_NAME: 'HollaEx',
+	APP_SUB_TITLE: 'Open Crypto Exchange', // slogan
 
 	LOGOUT_CONFIRM_TEXT: 'Are you sure?. Do you want to logout',
 	ADD_TRADING_PAIR: 'Add Trading Pair',
@@ -33,8 +32,8 @@ export default {
 	CONTACT_US_TEXT: 'Contact us',
 	HELPFUL_RESOURCES_TEXT: 'Helpful resources',
 	HELP_RESOURCE_GUIDE_TEXT:
-		'Feel free to contact us for more information and any issues by sending us an email to support@hollaex.com',
-	HELP_TELEGRAM_TEXT: 'Check out HollaEx open API documentation:',
+		'Feel free to contact us for more information and any issues by sending us an email',
+	HELP_TELEGRAM_TEXT: 'Check out open API documentation:',
 	HELP_TELEGRAM_LINK: 'https://apidocs.hollaex.com',
 	NEED_HELP_TEXT: 'Need help?', // new
 	HELP_TEXT: 'help',
@@ -135,8 +134,6 @@ export default {
 		// new
 		REQUEST_TITLE: 'Request Access',
 		REQUEST_INVITE: 'Request Invite',
-		REFERRAL_INVITE_WARNING:
-			'To access the HollaEx official Exchange you need to get a referral link from a friend or {0}',
 		CATEGORY_PLACEHOLDER: 'Select the category that best suits your issue',
 		INTRODUCTION_LABEL: 'Introduce yourself',
 		INTRODUCTION_PLACEHOLDER:
@@ -174,10 +171,6 @@ export default {
 			ETH: 'Your Ethereum receiving address',
 			BCH: 'Your Bitcoin Cash receiving address'
 		},
-		INFORMATION_MESSAGES: [
-			'Use the bank details below to deposit USD in to your account. Transfers usally take up to 1-2 business day.',
-			'Deposits will only be accepeted from a bank account in a name that matches the name registered with your HollaEx account.'
-		],
 		INCREASE_LIMIT: 'Want to increase your daily limit?',
 		QR_CODE:
 			'This QR Code can be scanned by the person who wants to send you funds',
@@ -474,7 +467,7 @@ export default {
 				TITLE_PERSONAL_INFORMATION: 'Personal Information',
 				TITLE_PHONE: 'Phone',
 				PHONE_VERIFICATION_TXT:
-					'Providing valid contact details will assist HollaEx greatly in conflict resolution while preventing unwanted transactions on your account.',
+					'Providing valid contact details will assist us greatly in conflict resolution while preventing unwanted transactions on your account.',
 				PHONE_VERIFICATION_TXT_1:
 					'Receive real-time updates for deposits and withdrawals by sharing your mobile phone number.',
 				PHONE_VERIFICATION_TXT_2:
@@ -556,11 +549,11 @@ export default {
 				SELFIE: {
 					TITLE: 'Selfie with passport and Note',
 					INFO_TEXT:
-						"Please provide a photo of you holding your passport. In the same picture and have a reference to hollaex.com’, today's date and your signature displayed.Make sure your face is clearly visible and that your ID details are clearly readable.",
+						"Please provide a photo of you holding your passport. In the same picture and have a reference to the exchange url’, today's date and your signature displayed.Make sure your face is clearly visible and that your ID details are clearly readable.",
 					REQUIRED: 'Required:',
 					INSTRUCTION_1: 'Your face clearly visable',
 					INSTRUCTION_2: 'Passport clearly readable',
-					INSTRUCTION_3: 'Write the word hollaex.com',
+					INSTRUCTION_3: 'Write the exchange name',
 					INSTRUCTION_4: "Write today's date",
 					INSTRUCTION_5: 'Write your signature',
 					WARNING:
@@ -854,7 +847,7 @@ export default {
 		MESSAGE_FEE: 'Transactions fee of {0} ({1}) included',
 		MESSAGE_FEE_BASE: 'Transactions fee of {0} included',
 		BASE_MESSAGE_1:
-			'You can only withdraw to a bank account in a name that matches the name registered with your HollaEx account.',
+			'You can only withdraw to a bank account in a name that matches the name registered with your account.',
 		BASE_MESSAGE_2: 'Withdrawal min amount',
 		BASE_MESSAGE_3: 'Daily withdrawal max amount',
 		BASE_INCREASE_LIMIT: 'Increase your daily limit',
@@ -925,11 +918,11 @@ export default {
 	RESUBMIT: 'Resubmit',
 	VERIFICATION_NOTIFICATION_SKIP_TITLE: 'Missing Documents!',
 	VERIFICATION_NOTIFICATION_SKIP_TEXT:
-		'To get full access to withdrawal and deposit functions on HollaEx you must submit your identity documents in your account page.',
+		'To get full access to withdrawal and deposit functions you must submit your identity documents in your account page.',
 	VERIFICATION_NOTIFICATION_SUCCESS_TITLE: 'Success!',
 	VERIFICATION_NOTIFICATION_SUCCESS_TEXT:
 		'You will receive an email notification when your information has been processed. Processing can typically take 1-3 days.',
-	VERIFICATION_NOTIFICATION_BUTTON: 'PROCEED TO HollaEx',
+	VERIFICATION_NOTIFICATION_BUTTON: 'PROCEED TO EXCHANGE',
 	ERROR_USER_ALREADY_VERIFIED: 'User already verified',
 	ERROR_INVALID_CARD_USER: 'Bank or card information provided is incorrect',
 	ERROR_INVALID_CARD_NUMBER: 'Invalid Card number',
@@ -1293,7 +1286,7 @@ export default {
 		'You are using a trial version of {0} and it will expire in {1} days.', // new
 	EXPIRY_EXCHANGE_MSG:
 		'Your exchange has expired. Go to dash.bitholla.com to activate it again.', // new
-	EXPIRED_INFO_1: 'Your HollaEx trial has ended.', // new
+	EXPIRED_INFO_1: 'Your trial has ended.', // new
 	EXPIRED_INFO_2: 'Collateralize your exchange to activate it again.', // new
 	EXPIRED_BUTTON_TXT: 'ACTIVATE EXCHANGE', // new
 	TRADE_POSTS: {
@@ -1304,7 +1297,7 @@ export default {
 		ANNOUNCEMNT_TXT_4:
 			'Happy new year Hollaers. We are making a new mark starting from 2020 with launch of the most open trading platform with the help of you all.',
 		ANNOUNCEMNT_TXT_1:
-			'Earn XHT with HAP program by introducing your friends to hollaex.com. {0}.',
+			'Earn XHT with HAP program by introducing your friends to the exchange. {0}.',
 		DEFAULT_ANNOUNCEMENT:
 			'This section displays your exchange public announcements!',
 		ANNOUNCEMENT_TXT_2: 'Free XHT will be distributed to all wallets that {0}.',
