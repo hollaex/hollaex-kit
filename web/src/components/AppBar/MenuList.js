@@ -96,7 +96,7 @@ class MenuList extends Component {
 					<div className="app-bar-account-notification">{totalPending}</div>
 				)}
 				{isOpen && (
-					<div id="tab-account-menu" className="app-bar-account-menu">
+					<div id="tab-account-menu" className="app-bar-account-menu apply_rtl">
 						<div
 							className={classnames('app-bar-account-menu-list d-flex', {
 								'menu-active':

@@ -117,17 +117,21 @@ class BankVerification extends Component {
 						<div className="warning_text">{getErrorLocalized(error)}</div>
 					)}
 					<div className="d-flex">
-						<Button 
-							label={STRINGS.USER_VERIFICATION.GO_BACK}
-							className="mr-5"
-							onClick={this.onGoBack}
-						/>
-						<Button
-							label={STRINGS.SUBMIT}
-							type="button"
-							onClick={handleSubmit(this.handleSubmit)}
-							disabled={pristine || submitting || !valid || !!error}
-						/>
+						<div className="w-50">
+							<Button 
+								label={STRINGS.USER_VERIFICATION.GO_BACK}
+								onClick={this.onGoBack}
+							/>
+						</div>
+						<div className="separator" />
+						<div className="w-50">
+							<Button
+								label={STRINGS.SUBMIT}
+								type="button"
+								onClick={handleSubmit(this.handleSubmit)}
+								disabled={pristine || submitting || !valid || !!error}
+							/>
+						</div>
 					</div>
 				</form>
 			</div>
