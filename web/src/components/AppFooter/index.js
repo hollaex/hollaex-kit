@@ -4,7 +4,6 @@ import { isMobile } from 'react-device-detect';
 import { SOCIAL_ICONS } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 import { PUBLIC_URL } from '../../config/constants';
-import moment from 'moment';
 
 const generateSectionsText = (strings, theme) => {
 	const { SECTIONS } = strings.FOOTER;
@@ -84,13 +83,14 @@ const generateSectionsText = (strings, theme) => {
 	];
 };
 
-const AppFooter = ({ className, theme, constants = {} }) => {
+const AppFooter = ({ className, theme, constants = { description: '' } }) => {
 	return (
 		<div
 			className={classnames(
 				'app_footer-container',
 				'd-flex',
 				'flex-column',
+				'apply_rtl',
 				className
 			)}
 		>
@@ -168,7 +168,8 @@ const AppFooter = ({ className, theme, constants = {} }) => {
 								>
 								</div>
 								<div className="footer-txt">
-									{STRINGS.formatString(
+									{constants.description || ''}
+									{/* {STRINGS.formatString(
 										STRINGS.FOOTER.XHT_DESCRIPTION,
 										<a
 											href={
@@ -189,7 +190,7 @@ const AppFooter = ({ className, theme, constants = {} }) => {
 										>
 											{STRINGS.FOOTER.VISIT_HERE}
 										</a>
-									)}
+									)} */}
 								</div>
 							</div>
 						</div>
@@ -199,10 +200,7 @@ const AppFooter = ({ className, theme, constants = {} }) => {
 			<div className={classnames('footer-row-bottom')}>
 				<div className="d-flex my-2" />
 				<div>
-					{STRINGS.formatString(
-						STRINGS.FOOTER.FOOTER_COPYRIGHT,
-						moment(new Date()).format('YYYY')
-					)}
+					{STRINGS.FOOTER.FOOTER_COPYRIGHT}
 				</div>
 			</div>
 		</div>

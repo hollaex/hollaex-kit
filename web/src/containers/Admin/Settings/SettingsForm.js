@@ -1,8 +1,10 @@
 import React from 'react';
-import { Divider } from 'antd';
+import { Divider, Button } from 'antd';
+import { reduxForm } from 'redux-form';
 
 import { AdminHocForm } from '../../../components';
 import { generateAdminSettings } from './Utils';
+import renderFields from '../../../components/AdminForm/utils';
 
 const Form = AdminHocForm('ADMIN_SETTINGS_FORM', 'transaction-form');
 const EmailDistributionForm = AdminHocForm('ADMIN_EMAIL_DISTRIBUTION_FORM', 'transaction-form');
@@ -82,3 +84,58 @@ export const SecuritySettingsForm = ({ initialValues, handleSubmitSettings }) =>
     );
 };
 
+const LinksForm = ({
+    initialValues,
+    handleSubmit,
+    handleSubmitSettings,
+    error,
+    pristine,
+    submitting,
+    valid,
+    ...rest
+}) => {
+    const fields = generateAdminSettings('links');
+    const onSubmit = (formProps) => handleSubmitSettings(formProps, 'links');
+    return (
+        <div className="mb-4">
+            <form>
+				{fields && (
+                    Object.keys(fields).map((key, index) => {
+                        let field = fields[key] ? fields[key].fields : {};
+                        return (
+                            <div key={index} className="d-flex">
+                                {renderFields(field)}
+                            </div>
+                        )
+                    })
+                )}
+				{error && (
+					<div>
+						<strong>{error}</strong>
+					</div>
+				)}
+				<Button
+					type={'primary'}
+					onClick={handleSubmit(onSubmit)}
+					disabled={
+						(fields && pristine) ||
+						submitting ||
+						!valid ||
+						error
+                    }
+                    size='large'
+					className={'w-100'}
+				>
+					Save
+				</Button>
+			</form>
+        </div>
+    );
+};
+
+export const LinksSettingsForm = reduxForm({
+    form: 'ADMIN_LINKS_SETTINGS_FORM',
+    // onSubmitFail: (result, dispatch) => dispatch(reset(FORM_NAME)),
+    // onSubmitSuccess: (result, dispatch) => dispatch(reset(name)),
+    enableReinitialize: true
+})(LinksForm);

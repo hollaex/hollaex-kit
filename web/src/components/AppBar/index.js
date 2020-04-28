@@ -8,9 +8,7 @@ import { isMobile } from 'react-device-detect';
 import moment from 'moment';
 import math from 'mathjs';
 import {
-	IS_PRO_VERSION,
-	PRO_URL,
-	DEFAULT_VERSION_REDIRECT,
+	DEFAULT_URL,
 	ICONS,
 	EXCHANGE_EXPIRY_SECONDS,
 	IS_XHT
@@ -288,7 +286,7 @@ class AppBar extends Component {
 				{isHome ? (
 					<div style={{ backgroundImage: `url(${path})` }} className="app_bar-icon-logo"></div>
 				) : (
-					<Link href={IS_PRO_VERSION ? PRO_URL : DEFAULT_VERSION_REDIRECT}>
+					<Link href={DEFAULT_URL}>
 						<div style={{ backgroundImage: `url(${path})` }} className="app_bar-icon-logo"></div>
 					</Link>
 				)}

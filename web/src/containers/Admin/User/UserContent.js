@@ -43,7 +43,8 @@ class UserContent extends Component {
 			is_admin,
 			is_support,
 			is_supervisor,
-			is_kyc
+			is_kyc,
+			is_tech
 		} = userInformation;
 		const isSupportUser = isSupport();
 		const pairs = Object.keys(coins) || [];
@@ -60,6 +61,8 @@ class UserContent extends Component {
 			roleInitialValues.role = 'supervisor';
 		} else if (is_kyc) {
 			roleInitialValues.role = 'kyc';
+		} else if (is_tech) {
+			roleInitialValues.role = 'tech';
 		} else {
 			roleInitialValues.role = 'user';
 		}
@@ -192,7 +195,7 @@ class UserContent extends Component {
 							/>
 						</TabPane>
 					)}
-					<TabPane tab="Activate" key="activate">
+					<TabPane tab="Status" key="activate">
 						<Activate
 							user_id={id}
 							activated={activated}

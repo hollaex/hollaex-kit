@@ -2,7 +2,6 @@
 
 const { GET_CONFIGURATION } = require('../../constants');
 const API_NAME = () => GET_CONFIGURATION().constants.api_name;
-const SUPPORT_EMAIL = () => GET_CONFIGURATION().constants.accounts.support;
 
 const COMMON = {
 	GREETING: (name) => `${name}님`,
@@ -58,7 +57,7 @@ const WELCOME = {
 			${account} 페이지로 이동하여 ${deposit} 페이지를 방문해주시기 바랍니다.`,
 		3: '계정',
 		4: '입금',
-		5: () => `문의사항은 ${SUPPORT_EMAIL()} 로 문의해주시기 바랍니다.`
+		5: '문의사항은 이메일로 문의해주시기 바랍니다.'
 	},
 	CLOSING: COMMON.CLOSING
 };

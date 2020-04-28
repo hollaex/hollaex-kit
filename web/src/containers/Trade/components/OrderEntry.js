@@ -163,13 +163,13 @@ class OrderEntry extends Component {
 	};
 
 	onSubmit = (values) => {
-		const { min_size, increment_price, settings } = this.props;
+		const { increment_size, increment_price, settings } = this.props;
 
 		const order = {
 			...values,
 			size: formatNumber(
 				values.size,
-				getDecimals(min_size)
+				getDecimals(increment_size)
 			),
 			symbol: this.props.pair
 		};
@@ -202,7 +202,7 @@ class OrderEntry extends Component {
 			// pair,
 			pair_base,
 			pair_2,
-			min_size,
+			increment_size,
 			increment_price,
 			openCheckOrder,
 			onRiskyTrade,
@@ -218,21 +218,21 @@ class OrderEntry extends Component {
 			type,
 			side,
 			price,
-			size: formatNumber(size, getDecimals(min_size)),
+			size: formatNumber(size, getDecimals(increment_size)),
 			symbol: pair_base,
 			orderPrice: orderTotal,
 			orderFees: this.state.orderFees
 		};
 		// const orderPriceInBaseCoin = calculatePrice(orderTotal, this.props.prices[pair_2]);
-		let avail_balance = 0;
+		let coin_balance = 0;
 		if (side === 'buy') {
-			avail_balance = balance[`${pair_2.toLowerCase()}_available`];
+			coin_balance = balance[`${pair_2.toLowerCase()}_balance`];
 		} else {
-			avail_balance = balance[`${pair_base.toLowerCase()}_available`];
+			coin_balance = balance[`${pair_base.toLowerCase()}_balance`];
 		}
 		// const riskySize = ((this.state.totalAssets / 100) * risk.order_portfolio_percentage);
-		let riskySize = ((avail_balance / 100) * risk.order_portfolio_percentage);
-		riskySize = formatNumber(riskySize, getDecimals(min_size));
+		let riskySize = ((coin_balance / 100) * risk.order_portfolio_percentage);
+		riskySize = formatNumber(riskySize, getDecimals(increment_size));
 
 		if (type === 'market') {
 			delete order.price;

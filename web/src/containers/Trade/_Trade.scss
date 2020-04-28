@@ -77,6 +77,12 @@ $order_entry-column--width-lg: 18rem;
 .layout-mobile{
 	.trade_active_orders-wrapper {
 		max-height: 35vh !important;
+		white-space: nowrap;
+
+		.table_header-wrapper,
+		.table_body-wrapper {
+			font-size: 1rem !important;
+		}
 	}
 }
 

@@ -209,6 +209,7 @@ class Withdraw extends Component {
 			router,
 			coins
 		} = this.props;
+		const { links = {} } = this.props.constants;
 		const { formValues, initialValues, currency, checked } = this.state;
 		if (!currency || !checked) {
 			return <div />;
@@ -229,7 +230,7 @@ class Withdraw extends Component {
 			onSubmitWithdrawReq: this.onSubmitWithdraw(currency),
 			onOpenDialog: this.onOpenDialog,
 			otp_enabled,
-			openContactForm,
+			openContactForm: () => openContactForm({ helpdesk: links.helpdesk }),
 			formValues,
 			initialValues,
 			activeLanguage,
@@ -253,7 +254,9 @@ class Withdraw extends Component {
 								balance,
 								openContactForm,
 								generateBaseInformation,
-								coins
+								coins,
+								'withdraw',
+								links
 							)}
 							<WithdrawCryptocurrency {...formProps} />
 							{/* {renderExtraInformation(currency, bank_account)} */}
@@ -282,7 +285,8 @@ const mapStateToProps = (store) => ({
 	// btcFee: store.wallet.btcFee,
 	selectedFee: formValueSelector(FORM_NAME)(store, 'fee'),
 	coins: store.app.coins,
-	activeTheme: store.app.theme
+	activeTheme: store.app.theme,
+	constants: store.app.constants
 });
 
 const mapDispatchToProps = (dispatch) => ({

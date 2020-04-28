@@ -4,6 +4,8 @@ const app = require('../index');
 const { verifyToken, checkScopes } = require('../helpers/auth');
 const { findUser } = require('../helpers/user');
 const { logger } = require('../helpers/common');
+const bodyParser = require('body-parser');
+const { Balance } = require('../../db/models');
 
 const REQUIRED_XHT = 100;
 

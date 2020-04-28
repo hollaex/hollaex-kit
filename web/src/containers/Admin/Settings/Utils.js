@@ -1,7 +1,137 @@
 import { validateRequired, email, urlCheck } from '../../../components/AdminForm/validations';
+import LANGUAGES from '../../../config/languages';
 
 export const generateAdminSettings = (key) => {
-    if (key === 'security') {
+    if (key === 'links') {
+        return {
+            twitter_instagram: {
+                fields: {
+                    twitter: {
+                        type: 'input',
+                        label: 'Twitter',
+                        placeholder: 'twitter URL',
+                        // validate: [validateRequired],
+                        className: 'w-50 mx-2'
+                    },
+                    instagram: {
+                        type: 'input',
+                        label: 'Instagram',
+                        placeholder: 'instagram URL',
+                        // validate: [validateRequired],
+                        className: 'w-50 mx-2'
+                    }
+                },
+            },
+            telegram_facebook: {
+                fields: {
+                    telegram: {
+                        type: 'input',
+                        label: 'Telegram',
+                        placeholder: 'telegram URL',
+                        // validate: [validateRequired],
+                        className: 'w-50 mx-2'
+                    },
+                    facebook: {
+                        type: 'input',
+                        label: 'Facebook',
+                        placeholder: 'facebook URL',
+                        // validate: [validateRequired],
+                        className: 'w-50 mx-2'
+                    }
+                },
+            },
+            linkedin_github: {
+                fields: {
+                    linkedin: {
+                        type: 'input',
+                        label: 'Linkedin',
+                        placeholder: 'linkedin URL',
+                        // validate: [validateRequired],
+                        className: 'w-50 mx-2'
+                    },
+                    github: {
+                        type: 'input',
+                        label: 'Github',
+                        placeholder: 'github URL',
+                        // validate: [validateRequired],
+                        className: 'w-50 mx-2'
+                    }
+                },
+            },
+            contact_helpdesk: {
+                fields: {
+                    contact: {
+                        type: 'input',
+                        label: 'Contact',
+                        placeholder: 'contact URL',
+                        // validate: [validateRequired],
+                        className: 'w-50 mx-2'
+                    },
+                    helpdesk: {
+                        type: 'input',
+                        label: 'Helpdesk',
+                        placeholder: 'helpdesk URL',
+                        // validate: [validateRequired],
+                        className: 'w-50 mx-2'
+                    }
+                },
+            },
+            terms_privacy: {
+                fields: {
+                    terms: {
+                        type: 'input',
+                        label: 'Terms',
+                        placeholder: 'terms URL',
+                        // validate: [validateRequired],
+                        className: 'w-50 mx-2'
+                    },
+                    privacy: {
+                        type: 'input',
+                        label: 'Privacy',
+                        placeholder: 'privacy URL',
+                        // validate: [validateRequired],
+                        className: 'w-50 mx-2'
+                    }
+                },
+            },
+            api_whitepaper: {
+                fields: {
+                    api: {
+                        type: 'input',
+                        label: 'API',
+                        placeholder: 'api URL',
+                        // validate: [validateRequired],
+                        className: 'w-50 mx-2'
+                    },
+                    whitepaper: {
+                        type: 'input',
+                        label: 'Whitepaper',
+                        placeholder: 'whitepaper URL',
+                        // validate: [validateRequired],
+                        className: 'w-50 mx-2'
+                    }
+                },
+            },
+            website_information: {
+                fields: {
+                    website: {
+                        type: 'input',
+                        label: 'Website',
+                        placeholder: 'website URL',
+                        // validate: [validateRequired],
+                        className: 'w-50 mx-2'
+                    },
+                    information: {
+                        type: 'input',
+                        label: 'Information',
+                        placeholder: 'information URL',
+                        // validate: [validateRequired],
+                        className: 'w-50 mx-2'
+                    }
+                },
+            }
+        }
+    } else if (key === 'security') {
         return {
             admin_whitelist: {
                 type: 'select',
@@ -102,6 +232,18 @@ export const generateAdminSettings = (key) => {
                 placeholder: 'Exchange Name',
                 validate: [validateRequired]
             },
+            title: {
+                type: 'input',
+                label: 'Title',
+                placeholder: 'Title',
+                validate: [validateRequired]
+            },
+            description: {
+                type: 'textarea',
+                label: 'Description',
+                placeholder: 'Description',
+                validate: [validateRequired]
+            },
             new_user_is_activated: {
                 type: 'checkbox',
                 label: 'Allow new signups (If disabled new users can\'t signup on the platform)',
@@ -113,10 +255,7 @@ export const generateAdminSettings = (key) => {
                 label: 'Default Language',
                 placeholder: 'Select default language',
                 validate: [validateRequired],
-                options: [
-                    { label: 'English', value: 'en' },
-                    { label: 'Korean', value: 'ko' }
-                ]
+                options: LANGUAGES
             },
             valid_languages: {
                 type: 'select',
@@ -124,10 +263,7 @@ export const generateAdminSettings = (key) => {
                 placeholder: 'Valid languages',
                 validate: [validateRequired],
                 multiSelect: true,
-                options: [
-                    { label: 'English', value: 'en' },
-                    { label: 'Korean', value: 'ko' }
-                ]
+                options: LANGUAGES
             },
             theme: {
                 type: 'select',

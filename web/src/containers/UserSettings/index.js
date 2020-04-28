@@ -354,7 +354,8 @@ class UserSettings extends Component {
 	};
 
 	openContactForm = () => {
-		this.props.openContactForm();
+		const { links = {} } = this.props.constants;
+		this.props.openContactForm({ helpdesk: links.helpdesk });
 	};
 
 	setActiveTab = (activeTab) => {

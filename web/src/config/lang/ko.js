@@ -1,9 +1,9 @@
-import AGREEMENT from './agreement';
+import AGREEMENT from '../agreement';
+import LANGUAGES from '../languages';
 
 export default {
 	APP_TITLE: 'HollaEx',
-	APP_SUB_TITLE: 'Open Crypto Exchange', // new
-	APP_NAME: 'HollaEx',
+	APP_SUB_TITLE: 'Open Crypto Exchange', // slogan
 
 	LOGOUT_CONFIRM_TEXT: '로그아웃 하시겠습니까?',
 	ADD_TRADING_PAIR: '거래통화페어 추가',
@@ -77,12 +77,8 @@ export default {
 	FOOTER: {
 		FOOTER_LEGAL: ['Proudly made in Seoul, South Korea', 'bitHolla Inc.'],
 		FOOTER_LANGUAGE_TEXT: 'LANGUAGE',
-		FOOTER_LANGUAGE_LANGUAGES: [
-			{ key: 'en', label: 'English' },
-			{ key: 'ko', label: '한국어' }
-		],
 		FOOTER_COPYRIGHT:
-			'	Copyright 2019 ⓒ HollaEx Foundation. All rights reserved',
+			'Powered by bitHolla',
 		SECTIONS: {
 			SECTION_1_TITLE: 'ABOUT',
 			SECTION_1_LINK_1: 'About Us',
@@ -136,8 +132,6 @@ export default {
 		// new
 		REQUEST_TITLE: '접근링크요청',
 		REQUEST_INVITE: '초대요청',
-		REFERRAL_INVITE_WARNING:
-			'HollaEx 공식 거래소에 접근하기 위해서 친구 또는 {0}에서 링크를 받아야합니다.',
 		CATEGORY_PLACEHOLDER: '회원님에게 해당하는 카테고리를 선택하시기바랍니다.',
 		INTRODUCTION_LABEL: '자기소개',
 		INTRODUCTION_PLACEHOLDER:
@@ -175,10 +169,6 @@ export default {
 			ETH: '이더리움 입금 주소',
 			BCH: '비트코인캐시 입금 주소'
 		},
-		INFORMATION_MESSAGES: [
-			'아래의 은행 정보를 확인하시어 USD를 입금을 진행하시기 바랍니다. 이체완료까지 대략 1~2 영업일이 소요되는 점 양해부탁드립니다.',
-			'반드시 입금자명과 HollaEx계정의 이름이 같아야 입금이 수락이되므로 유의해주시기 바랍니다.'
-		],
 		INCREASE_LIMIT: '한도 증액이 필요하십니까?',
 		QR_CODE:
 			'회원님에게 할당된 입금 전용주소로 입금을 위해 이 QR 코드를 스캔하실 수 있습니다.',
@@ -202,6 +192,7 @@ export default {
 	},
 	VALIDATIONS: {
 		OTP_LOGIN: '로그인을 위해 OTP코드를 입력해주시기 바랍니다.',
+		FROZEN_ACCOUNT: 'This account is frozen.',
 		INVALID_EMAIL: '사용할 수 없는 이메일 주소입니다.',
 		TYPE_EMAIL: '이메일주소를 입력하세요.',
 		REQUIRED: '필수입력란',
@@ -328,7 +319,7 @@ export default {
 		TERMS: {
 			terms: '이용약관',
 			policy: '개인정보 처리방침',
-			text: '{0}과 {1}을 확인하였으며 이에 동의합니다.'
+			text: '{0}과 {1}을 확인하였으며 이에 동의합니다'
 		}
 	},
 	VERIFICATION_TEXTS: {
@@ -616,7 +607,6 @@ export default {
 		RISK_MANAGEMENT: {
 			INFO_TEXT:
 				'거래 주문 값이 포트폴리오에 설정된 백분율 값을 초과할 경우 경고 알림창을 만들 수 있습니다.',
-			INFO_TEXT_1: '총 자산 가치 {0}: {1}',
 			PORTFOLIO: '포트폴리오 백분율',
 			TOMAN_ASSET: '근사값',
 			ADJUST: '(백분율 설정하기)',
@@ -754,7 +744,6 @@ export default {
 		c: 'Close',
 		v: 'Volume'
 	},
-	LANGUAGES: [{ key: 'en', label: 'English' }],
 	QUICK_TRADE: '퀵트레이딩',
 	PRO_TRADE: '프로트레이딩',
 	ADMIN_DASH: '어드민페이지',
@@ -920,18 +909,7 @@ export default {
 	INVALID_CAPTCHA: 'Invalid captcha',
 	NO_FEE: 'N/A',
 	SETTINGS_LANGUAGE_LABEL: '언어설정 (이메일수신포함)',
-	SETTINGS_LANGUAGE_OPTIONS: [
-		{
-			value: 'en',
-			label: 'English',
-			icon: `${process.env.REACT_APP_PUBLIC_URL}/assets/flags/selected-en.png`
-		},
-		{
-			value: 'ko',
-			label: '한국어',
-			icon: `${process.env.REACT_APP_PUBLIC_URL}/assets/flags/selected-kr.png`
-		}
-	],
+	SETTINGS_LANGUAGE_OPTIONS: LANGUAGES,
 	SETTINGS_ORDERPOPUP_LABEL: 'Display order confirmation popup',
 	SETTINGS_ORDERPOPUP_OPTIONS: [
 		{ value: false, label: 'NO' },

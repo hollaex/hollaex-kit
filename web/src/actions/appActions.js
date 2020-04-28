@@ -1,5 +1,5 @@
 import { setLanguage as storeLanguageInBrowser } from '../utils/string';
-import { DEFAULT_LANGUAGE, SUPPORT_HELP_URL } from '../config/constants';
+import { DEFAULT_LANGUAGE } from '../config/constants';
 import axios from 'axios';
 
 export const SET_NOTIFICATION = 'SET_NOTIFICATION';
@@ -104,9 +104,9 @@ export const closeSnackDialog = (id) => ({
 	payload: { dialogId: id }
 });
 
-export const openContactForm = (data = {}) => {
-	if (window) {
-		window.open(SUPPORT_HELP_URL, '_blank');
+export const openContactForm = (data = { helpdesk: '' }) => {
+	if (window && data.helpdesk) {
+		window.open(data.helpdesk, '_blank');
 	}
 	return setNotification(CONTACT_FORM, data, false);
 };
