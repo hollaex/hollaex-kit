@@ -5,7 +5,7 @@ const cors = require('cors');
 const app = express();
 const { PLUGIN_PORT } = require('./constants');
 const { DOMAIN, GET_CONFIGURATION } = require('../constants');
-const { readdirSync } = require('fs')
+const { readdirSync } = require('fs');
 
 const PLUGINS = () => GET_CONFIGURATION().constants.plugins.enabled || process.env.PLUGINS || '';
 const CORS_WHITELIST = [DOMAIN, 'http://localhost:8080', 'http://localhost:3000'];
