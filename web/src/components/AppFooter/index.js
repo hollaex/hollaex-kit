@@ -83,7 +83,7 @@ const generateSectionsText = (strings, theme) => {
 	];
 };
 
-const AppFooter = ({ className, theme, constants = {} }) => {
+const AppFooter = ({ className, theme, constants = { description: '' } }) => {
 	return (
 		<div
 			className={classnames(
@@ -168,7 +168,8 @@ const AppFooter = ({ className, theme, constants = {} }) => {
 								>
 								</div>
 								<div className="footer-txt">
-									{STRINGS.formatString(
+									{constants.description || ''}
+									{/* {STRINGS.formatString(
 										STRINGS.FOOTER.XHT_DESCRIPTION,
 										<a
 											href={
@@ -189,7 +190,7 @@ const AppFooter = ({ className, theme, constants = {} }) => {
 										>
 											{STRINGS.FOOTER.VISIT_HERE}
 										</a>
-									)}
+									)} */}
 								</div>
 							</div>
 						</div>

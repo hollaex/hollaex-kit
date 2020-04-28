@@ -48,6 +48,7 @@
 		"react-event-listener": "^0.6.6",
 		"react-expanding-textarea": "^0.2.0",
 		"react-ga": "^2.5.7",
+		"react-helmet": "^6.0.0",
 		"react-ionicons": "^2.1.6",
 		"react-localization": "^0.1.10",
 		"react-modal": "^3.8.1",

@@ -78,8 +78,9 @@ class ApiKey extends Component {
 			fetching,
 			otp_enabled,
 			openOtp,
-			activeTheme
+			activeTheme,
 		} = this.props;
+		const { links = {} } = this.props.constants;
 		const { dialogIsOpen, dialogType } = this.state;
 		return (
 			<div>
@@ -121,7 +122,7 @@ class ApiKey extends Component {
 						notificationType={dialogType}
 						onGenerate={this.onGenerateToken}
 						onRevoke={this.onRevokeToken}
-						openContactForm={openContactForm}
+						openContactForm={() => openContactForm({ helpdesk: links.helpdesk })}
 					/>
 				</Dialog>
 			</div>
@@ -139,7 +140,8 @@ const mapStateToProps = (state) => ({
 	tokens: state.user.tokens,
 	fetching: state.user.fetching,
 	error: state.user.error,
-	activeTheme: state.app.theme
+	activeTheme: state.app.theme,
+	constants: state.app.constants
 });
 
 const mapDispatchToProps = (dispatch) => ({

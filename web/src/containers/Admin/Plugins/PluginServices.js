@@ -114,6 +114,7 @@ class PluginServices extends Component {
             }
         } else {
             if (pluginData.key) {
+                // need to remove when configurations removed from plugins
                 if (plugins.configuration &&
                     plugins.configuration[pluginData.key]) {
                   	initialValues = {
@@ -209,7 +210,7 @@ class PluginServices extends Component {
         }
         let formValues = {
             plugins: {
-                ...plugins,
+                // ...plugins,
                 enabled
             },
             secrets: {}
@@ -222,24 +223,25 @@ class PluginServices extends Component {
             };
             return this.connectVault(formValues);
         } else if (service !== 'bank' && service !== 'chat') {
-            const { key, secret, auth, ...rest } = formProps;
+            const { key, secret, ...rest } = formProps;
             const pluginData = allPluginsData[service] || {};
             formValues.secrets.plugins = secrets.plugins;
             if (pluginData.key === 's3') {
-                formValues.plugins.configuration[pluginData.key] = rest;
+                // formValues.plugins.configuration[pluginData.key] = rest;
                 formValues.secrets.plugins[pluginData.key] = {
+                    ...rest,
                     key: { read: key, write: key },
                     secret: { read: secret, write: secret }
                 };
             } else if (pluginData.key === 'freshdesk') {
-                formValues.plugins.configuration[pluginData.key] = rest;
-                formValues.secrets.plugins[pluginData.key] = { key, auth };
+                // formValues.plugins.configuration[pluginData.key] = rest;
+                formValues.secrets.plugins[pluginData.key] = { key, ...rest };
             } else if (pluginData.key === 'zendesk') {
-                formValues.plugins.configuration[pluginData.key] = rest;
-                formValues.secrets.plugins[pluginData.key] = { key };
+                // formValues.plugins.configuration[pluginData.key] = rest;
+                formValues.secrets.plugins[pluginData.key] = { key, ...rest };
             } else {
-                formValues.plugins.configuration[pluginData.key] = rest;
-                formValues.secrets.plugins[pluginData.key] = { key, secret };
+                // formValues.plugins.configuration[pluginData.key] = rest;
+                formValues.secrets.plugins[pluginData.key] = { key, secret, ...rest };
             }
         }
         this.setState({ loading: true });
