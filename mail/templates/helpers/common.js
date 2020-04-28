@@ -89,7 +89,7 @@ exports.TemplateEmail = (
 			${LOGO_TEMPLATE(domain)}
 				<div style="${styles.box_shadow}">
 				  ${HEADER_TEMPLATE(headerProps)}
-	        <div style="${styles.container}${rtlLanguage(lang)}">
+	        <div style="${styles.container}${rtlLanguage(language)}">
 	  				${content}
 	        </div>
 	        ${footerTemplate(language, domain)}
