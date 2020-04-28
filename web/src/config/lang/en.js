@@ -111,7 +111,13 @@ export default {
 			SECTION_5_LINK_4: 'FAQ', // new
 			SECTION_6_TITLE: 'SOCIAL',
 			SECTION_6_LINK_1: 'Twitter',
-			SECTION_6_LINK_2: 'Telegram'
+			SECTION_6_LINK_2: 'Telegram',
+			SECTION_6_LINK_3: 'Facebook', // new
+			SECTION_6_LINK_4: 'Instagram', // new
+			SECTION_6_LINK_5: 'Linkedin', // new
+			SECTION_6_LINK_6: 'Website', // new
+			SECTION_6_LINK_7: 'Helpdesk', // new
+			SECTION_6_LINK_8: 'Information' // new
 		},
 		XHT_DESCRIPTION:
 			'HollaEx Kit is an open source trading platform built by bitHolla Inc. You can create and list any digital assets and onboard users to trade on your exchange using this exchange Kit. In order to simply run one yourself {1}.',
@@ -598,7 +604,7 @@ export default {
 		TITLE_INTERFACE: 'Interface',
 		TITLE_LANGUAGE: 'Language',
 		TITLE_CHAT: 'Chat',
-		TITLE_AUDIO_CUE: 'Audio Cue',
+		TITLE_AUDIO_CUE: 'Play Audio Cue', // new
 		TITLE_MANAGE_RISK: 'Manage Risk',
 		ORDERBOOK_LEVEL: 'Orderbook Levels (Max 20)',
 		SET_TXT: 'SET',
@@ -620,12 +626,23 @@ export default {
 			POPUP_ORDER_PARTIALLY_FILLED:
 				'Show pop up when order has partially filled'
 		},
-		AUDIO_CUE_FORM: {
-			ORDERS_COMPLETED_AUDIO:
-				'Play an audio cue when your order has been filled',
+		AUDIO_CUE_FORM: { // new
+			ALL_AUDIO: 'All Audio cues',
+			PUBLIC_TRADE_AUDIO: 'When a public trade has been made',
 			ORDERS_PARTIAL_AUDIO:
-				'Play an audio cue when your order has been partially filled',
-			PUBLIC_TRADE_AUDIO: 'Play an audio cue on every public trade'
+				'When one of your orders is partially filled',
+			ORDERS_PLACED_AUDIO:
+				'When an order is placed',
+			ORDERS_CANCELED_AUDIO:
+				'When an order is canceled',
+			ORDERS_COMPLETED_AUDIO:
+				'When one of your orders is fully filled',
+			CLICK_AMOUNTS_AUDIO:
+				'When clicking amounts and prices on the orderbook',
+			GET_QUICK_TRADE_AUDIO:
+				'When getting a quote for quick trading',
+			SUCCESS_QUICK_TRADE_AUDIO:
+				'When a successful quick trade occurs'
 		},
 		RISK_MANAGEMENT: {
 			INFO_TEXT:

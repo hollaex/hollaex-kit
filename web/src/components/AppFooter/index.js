@@ -5,9 +5,11 @@ import { SOCIAL_ICONS } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 import { PUBLIC_URL } from '../../config/constants';
 
-const generateSectionsText = (strings, theme) => {
+const generateSectionsText = (strings, theme, links = {}) => {
+	const { api, contact, facebook, github, helpdesk, information, instagram, linkedin, privacy, telegram, terms, twitter, website, whitepaper } = links
 	const { SECTIONS } = strings.FOOTER;
-	return [
+
+	let sectionsText = [
 		{
 			TITLE: SECTIONS.SECTION_4_TITLE,
 			LINKS: [
@@ -15,72 +17,118 @@ const generateSectionsText = (strings, theme) => {
 				{ text: SECTIONS.SECTION_4_LINK_2, link: `${PUBLIC_URL}/signup` }
 			]
 		},
-		{
+		(contact || terms || privacy) && {
 			TITLE: SECTIONS.SECTION_1_TITLE,
 			LINKS: [
-				{
+				contact && {
 					text: SECTIONS.SECTION_1_LINK_4,
-					link: 'https://bitholla.com/contact'
+					link: contact
 				},
-				{
+				terms && {
 					text: SECTIONS.SECTION_1_LINK_2,
-					link: 'https://bitholla.com/terms-of-use'
+					link: terms
 				},
-				{
+				privacy && {
 					text: SECTIONS.SECTION_1_LINK_3,
-					link: 'https://bitholla.com/privacy-policy'
-				}
+					link: privacy
+				},
+				website && {
+					text: SECTIONS.SECTION_6_LINK_6,
+					icon: SOCIAL_ICONS.GOOGLE,
+					link: website
+				},
 			]
 		},
-		{
+		(github || api) && {
 			TITLE: SECTIONS.SECTION_3_TITLE,
 			LINKS: [
-				{
+				github && {
 					text: SECTIONS.SECTION_5_LINK_3,
-					link: 'https://github.com/bitholla/hollaex-kit'
+					link: github
 				},
-				{
+				api && {
 					text: SECTIONS.SECTION_3_LINK_6,
-					link: 'https://apidocs.hollaex.com'
+					link: api
 				},
-				{
-					text: SECTIONS.SECTION_3_LINK_7,
-					link: 'https://www.npmjs.com/package/hollaex-node-lib'
+				information && {
+					text: SECTIONS.SECTION_6_LINK_8,
+					icon: SOCIAL_ICONS.GOOGLE,
+					link: information
 				},
-				{
-					text: SECTIONS.SECTION_3_LINK_8,
-					link: 'https://docs.bitholla.com'
-				}
+				// {
+				// 	text: SECTIONS.SECTION_3_LINK_7,
+				// 	link: 'https://www.npmjs.com/package/hollaex-node-lib'
+				// },
+				// {
+				// 	text: SECTIONS.SECTION_3_LINK_8,
+				// 	link: 'https://docs.bitholla.com'
+				// }
 			]
 		},
-		{
+		(whitepaper) && {
 			TITLE: SECTIONS.SECTION_5_TITLE,
 			LINKS: [
-				{
+				whitepaper && {
 					text: SECTIONS.SECTION_5_LINK_1,
-					link: 'https://hollaex.com/docs/whitepaper.html'
+					link: whitepaper
 				},
-				{
-					text: SECTIONS.SECTION_5_LINK_2,
-					link: 'http://bitholla.com/xht'
-				},
-				{
-					text: SECTIONS.SECTION_3_LINK_2,
-					link: 'https://forum.bitholla.com'
-				}
+				// {
+				// 	text: SECTIONS.SECTION_5_LINK_2,
+				// 	link: 'http://bitholla.com/xht'
+				// },
+				// {
+				// 	text: SECTIONS.SECTION_3_LINK_2,
+				// 	link: 'https://forum.bitholla.com'
+				// }
 			]
 		},
-		{
+		(twitter || telegram || facebook || instagram || linkedin || website || helpdesk || information) && {
 			TITLE: SECTIONS.SECTION_6_TITLE,
 			LINKS: [
-				{
+				twitter && {
 					text: SECTIONS.SECTION_6_LINK_1,
 					icon: SOCIAL_ICONS.TWITTER_DARK,
-					link: ' https://twitter.com/bitholla'
-				}
+					link: twitter
+				},
+				telegram && {
+					text: SECTIONS.SECTION_6_LINK_2,
+					icon: SOCIAL_ICONS.TELEGRAM,
+					link: telegram
+				},
+				facebook && {
+					text: SECTIONS.SECTION_6_LINK_3,
+					icon: SOCIAL_ICONS.FACEBOOK,
+					link: facebook
+				},
+				instagram && {
+					text: SECTIONS.SECTION_6_LINK_4,
+					icon: SOCIAL_ICONS.INSTAGRAM,
+					link: instagram
+				},
+				linkedin && {
+					text: SECTIONS.SECTION_6_LINK_5,
+					icon: SOCIAL_ICONS.TWITTER_DARK,
+					link: linkedin
+				},
+				helpdesk && {
+					text: SECTIONS.SECTION_6_LINK_7,
+					icon: SOCIAL_ICONS.GOOGLE,
+					link: helpdesk
+				},
 			]
 		}
 	];
+
+	sectionsText = sectionsText.filter(item => (item !== undefined && item !== ""))
+	return sectionsText.map(({ TITLE, LINKS }) => {
+		let obj = {
+			TITLE,
+			LINKS: LINKS.filter(link => {
+				return link !== undefined
+			})
+		}
+		return obj
+	})
 };
 
 const AppFooter = ({ className, theme, constants = { description: '' } }) => {
@@ -98,7 +146,8 @@ const AppFooter = ({ className, theme, constants = { description: '' } }) => {
 				className={classnames(
 					'd-flex',
 					'justify-content-around',
-					'footer-row-content'
+					'footer-row-content',
+					'mx-auto'
 				)}
 			>
 				<div
@@ -106,7 +155,7 @@ const AppFooter = ({ className, theme, constants = { description: '' } }) => {
 						'd-flex',
 						'justify-content-center',
 						'align-items-start',
-						'footer-links-section'
+						'footer-links-section',
 					)}
 				>
 					<div
@@ -114,7 +163,7 @@ const AppFooter = ({ className, theme, constants = { description: '' } }) => {
 							'flex-column': isMobile
 						})}
 					>
-						{generateSectionsText(STRINGS, theme).map(
+						{generateSectionsText(STRINGS, theme, constants.links).map(
 							({ TITLE, LINKS }, index) => (
 								<div
 									key={index}
@@ -209,7 +258,7 @@ const AppFooter = ({ className, theme, constants = { description: '' } }) => {
 
 AppFooter.defaultProps = {
 	className: '',
-	onChangeLanguage: () => () => {},
+	onChangeLanguage: () => () => { },
 	activeLanguage: ''
 };
 
