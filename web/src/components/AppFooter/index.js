@@ -109,22 +109,17 @@ const generateSectionsText = (strings, theme, links = {}) => {
 					text: SECTIONS.SECTION_6_LINK_5,
 					icon: SOCIAL_ICONS.TWITTER_DARK,
 					link: linkedin
-				},
-				helpdesk && {
-					text: SECTIONS.SECTION_6_LINK_7,
-					icon: SOCIAL_ICONS.GOOGLE,
-					link: helpdesk
-				},
+				}
 			]
 		}
 	];
 
-	sectionsText = sectionsText.filter(item => (item !== undefined && item !== ""))
+	sectionsText = sectionsText.filter(item => (!!item));
 	return sectionsText.map(({ TITLE, LINKS }) => {
 		let obj = {
 			TITLE,
 			LINKS: LINKS.filter(link => {
-				return link !== undefined
+				return !!link;
 			})
 		}
 		return obj

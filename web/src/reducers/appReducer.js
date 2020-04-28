@@ -129,7 +129,7 @@ const INITIAL_STATE = {
 	isValidBase: false,
 	constants: {},
 	config_level: [],
-	info: { is_trial: false, active:true },
+	info: { is_trial: false, active: true, status: true },
 	wave: [],
 	enabledPlugins: []
 };

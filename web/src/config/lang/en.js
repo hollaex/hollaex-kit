@@ -642,7 +642,9 @@ export default {
 			GET_QUICK_TRADE_AUDIO:
 				'When getting a quote for quick trading',
 			SUCCESS_QUICK_TRADE_AUDIO:
-				'When a successful quick trade occurs'
+				'When a successful quick trade occurs',
+			QUICK_TRADE_TIMEOUT_AUDIO:
+				'When quick trade timeout',
 		},
 		RISK_MANAGEMENT: {
 			INFO_TEXT:

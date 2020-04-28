@@ -8,7 +8,6 @@ import STRINGS from '../../config/localizedStrings';
 import {
 	ICONS,
 	FLEX_CENTER_CLASSES,
-	EXCHANGE_EXPIRY_DAYS,
 	FIT_SCREEN_HEIGHT,
 	CAPTCHA_SITEKEY
 } from '../../config/constants';
@@ -422,6 +421,37 @@ class App extends Component {
 		this.setState({ isSocketDataReady: value });
 	};
 
+	checkExchangeExpiry = () => {
+		const { info = {} } = this.props;
+		let is_expired = false;
+		let is_warning = false;
+		let daysLeft = 0;
+		if (info.status) {
+			if (info.is_trial) {
+				if (info.active) {
+					if (info.expiry && moment().isBefore(info.expiry, 'second')) {
+						is_warning = true;
+						daysLeft = moment(info.expiry).diff(moment(), 'days');
+					} else if (info.expiry && moment().isAfter(info.expiry, 'second')) {
+						is_expired = true;
+					}
+				} else {
+					is_expired = true;
+				}
+			} else {
+				is_expired = false;
+				is_warning = false;
+			}	
+		} else {
+			is_expired = true;
+		}
+		return {
+			is_expired,
+			is_warning,
+			daysLeft
+		}
+	};
+
 	render() {
 		const {
 			symbol,
@@ -462,8 +492,7 @@ class App extends Component {
 			? ''
 			: this.getClassForActivePath(this.props.location.pathname);
 		const isMenubar = activePath === 'account' || activePath === 'wallet';
-		const expiryDays =
-			EXCHANGE_EXPIRY_DAYS - moment().diff(info.created_at, 'days');
+		const expiryData = this.checkExchangeExpiry();
 		return (
 			<div>
 				<Helmet>
@@ -543,7 +572,7 @@ class App extends Component {
 									{STRINGS.formatString(
 										STRINGS.TRIAL_EXCHANGE_MSG,
 										STRINGS.APP_TITLE,
-										expiryDays
+										expiryData.daysLeft
 									)}
 								</div>
 							) : null}

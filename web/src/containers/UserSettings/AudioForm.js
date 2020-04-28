@@ -48,15 +48,21 @@ export const generateAudioCueFormValues = () => ({
         className: 'toggle-wrapper',
         disabled: false
     },
-    get_quick_trade: {
+    get_quote_quick_trade: {
         type: 'toggle',
         label: STRINGS.USER_SETTINGS.AUDIO_CUE_FORM.GET_QUICK_TRADE_AUDIO,
         className: 'toggle-wrapper',
         disabled: false
     },
-    succecc_quick_trade: {
+    quick_trade_success: {
         type: 'toggle',
         label: STRINGS.USER_SETTINGS.AUDIO_CUE_FORM.SUCCESS_QUICK_TRADE_AUDIO,
+        className: 'toggle-wrapper',
+        disabled: false
+    },
+    quick_trade_timeout: {
+        type: 'toggle',
+        label: STRINGS.USER_SETTINGS.AUDIO_CUE_FORM.QUICK_TRADE_TIMEOUT_AUDIO,
         className: 'toggle-wrapper',
         disabled: false
     },
@@ -90,6 +96,15 @@ class AudioCueForm extends Component {
             formFields: this.props.formFields
         }
     }
+    
+    componentDidMount() {
+        if (this.props.initialValues.all === undefined) {
+            this.callback(true);
+        } else if (!this.props.initialValues.all) {
+            this.callback(false);
+        }
+    }
+
     componentDidUpdate(prevProps) {
         if (JSON.stringify(this.props.initialValues) !== JSON.stringify(prevProps.initialValues)) {
             this.props.initialize(this.props.initialValues)
@@ -97,13 +112,13 @@ class AudioCueForm extends Component {
     }
 
     callback = selected => {
-        let formFields = this.state.formFields
+        let formFields = { ...this.state.formFields };
         Object.keys(formFields).map(key => {
             formFields[key].disabled = !selected
             return null
-        })
-        this.setState({ formFields })
-    }
+        });
+        this.setState({ formFields });
+    };
 
     render() {
         const section = [{
