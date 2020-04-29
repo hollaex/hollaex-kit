@@ -49,7 +49,7 @@ const Broker = () => {
             });
         getFees()
             .then(res => {
-                if (res.trades)
+                if (res)
                     setFees(res);
             })
             .catch(error => {
@@ -151,13 +151,13 @@ const Broker = () => {
                                     fields={generateForm()}
                                     handleSubmitBroker={handleSubmitBroker}
                                 />
-                                {feesData.trades
+                                {Object.keys(feesData).length
                                     ? <Card
                                         className="card-title m-top"
                                         title="Quick Trades  Fees"
                                         style={{ textAlign: 'center' }}
                                     >
-                                        {Object.entries(feesData.trades).map(([currency, amount], index) => (
+                                        {Object.entries(feesData).map(([currency, amount], index) => (
                                             <div
                                                 key={index}
                                                 className="list-group-item list-group-item-action"

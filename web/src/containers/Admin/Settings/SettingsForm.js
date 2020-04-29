@@ -1,6 +1,6 @@
 import React from 'react';
 import { Divider, Button } from 'antd';
-import { reduxForm } from 'redux-form';
+import { reduxForm, reset } from 'redux-form';
 
 import { AdminHocForm } from '../../../components';
 import { generateAdminSettings } from './Utils';
@@ -138,6 +138,6 @@ const LinksForm = ({
 export const LinksSettingsForm = reduxForm({
     form: 'ADMIN_LINKS_SETTINGS_FORM',
     // onSubmitFail: (result, dispatch) => dispatch(reset(FORM_NAME)),
-    // onSubmitSuccess: (result, dispatch) => dispatch(reset(name)),
+    onSubmitSuccess: (result, dispatch) => dispatch(reset('ADMIN_LINKS_SETTINGS_FORM')),
     enableReinitialize: true
 })(LinksForm);

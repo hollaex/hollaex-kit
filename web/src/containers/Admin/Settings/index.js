@@ -164,6 +164,8 @@ export default class Settings extends Component {
                     formValues[val] = formProps[val];
                 }
             });
+        } else if (formKey === 'links') {
+            formValues.links = { ...formProps }
         }
         this.setState({ loading: true, error: '' });
         updatePlugins(formValues)
