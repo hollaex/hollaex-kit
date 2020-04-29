@@ -73,6 +73,8 @@ const HEADER_TEMPLATE = ({ title, imagePath = '' }) => `
   </div>
 `;
 
+const rtlLanguage = (lang) => (lang === 'fa' || lang === 'ar') ? RTL : '';
+
 exports.TemplateEmail = (
 	headerProps = {},
 	content = '',
@@ -80,13 +82,14 @@ exports.TemplateEmail = (
 	domain = DOMAIN
 ) => {
 	const bodyStyle = styles.body.concat('');
+
 	return `
     <div style="${bodyStyle}">
       <div style="${styles.wrapper}">
 			${LOGO_TEMPLATE(domain)}
 				<div style="${styles.box_shadow}">
 				  ${HEADER_TEMPLATE(headerProps)}
-	        <div style="${styles.container}">
+	        <div style="${styles.container}${rtlLanguage(language)}">
 	  				${content}
 	        </div>
 	        ${footerTemplate(language, domain)}
