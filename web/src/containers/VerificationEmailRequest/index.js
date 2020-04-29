@@ -9,7 +9,7 @@ import EmailRequestForm, { generateFormFields } from './EmailRequestForm';
 import EmailRequestSuccess from './EmailRequestSuccess';
 import { IconTitle, Dialog, MobileBarBack } from '../../components';
 import { ContactForm } from '../';
-import { HOLLAEX_LOGO, FLEX_CENTER_CLASSES, SUPPORT_HELP_URL, HOLLAEX_LOGO_BLACK } from '../../config/constants';
+import { FLEX_CENTER_CLASSES } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 
 const BottomLink = () => (
@@ -49,8 +49,9 @@ class VerifyEmailRequest extends Component {
 	};
 
 	onOpenDialog = () => {
-		if (window) {
-			window.open(SUPPORT_HELP_URL, '_blank');
+		const { links = {} } = this.props.constants;
+		if (window && links && links.helpdesk) {
+			window.open(links.helpdesk, '_blank');
 		}
 		// this.setState({ showContactForm: true });
 	};
@@ -95,9 +96,9 @@ class VerifyEmailRequest extends Component {
 				</div>
 			);
 		}
-		let path = constants.logo_path || HOLLAEX_LOGO;
+		let path = constants.logo_path;
 		if (activeTheme === 'dark') {
-			path = constants.logo_black_path || HOLLAEX_LOGO_BLACK;
+			path = constants.logo_black_path;
 		}
 
 		return (
@@ -126,6 +127,7 @@ class VerifyEmailRequest extends Component {
 						textType="title"
 						underline={true}
 						useSvg={false}
+						isLogo={true}
 						imageWrapperClassName="auth_logo-wrapper"
 						className="w-100 exir-logo"
 					/>

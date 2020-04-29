@@ -76,12 +76,12 @@ export const renderAvailableBalanceText = (currency, balance, coins) => {
 	);
 };
 
-export const renderNeedHelpAction = (openContactForm) => (
+export const renderNeedHelpAction = (openContactForm, links = {}) => (
 	<ActionNotification
 		text={STRINGS.NEED_HELP_TEXT}
 		status="information"
 		iconPath={ICONS.BLUE_QUESTION}
-		onClick={openContactForm}
+		onClick={() => openContactForm({ helpdesk: links.helpdesk })}
 		className="need-help"
 		useSvg={true}
 	/>
@@ -93,7 +93,8 @@ export const renderInformation = (
 	openContactForm,
 	generateBaseInformation,
 	coins,
-	type = 'withdraw'
+	type = 'withdraw',
+	links = {}
 ) => {
 	return (
 		<div className="information_block">
@@ -101,7 +102,7 @@ export const renderInformation = (
 				{renderTitle(symbol, type, coins)}
 				{renderAvailableBalanceText(symbol, balance, coins)}
 			</div>
-			{openContactForm && renderNeedHelpAction(openContactForm)}
+			{openContactForm && renderNeedHelpAction(openContactForm, links)}
 		</div>
 	);
 };

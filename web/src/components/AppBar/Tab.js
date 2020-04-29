@@ -20,8 +20,9 @@ const Tab = SortableElement(({
     sortId,
     ...rest
 }) => {
-    const { min, symbol } = coins[pair.pair_base || BASE_CURRENCY] || DEFAULT_COIN_DATA;
+    const { symbol } = coins[pair.pair_base || BASE_CURRENCY] || DEFAULT_COIN_DATA;
     const pairTwo = coins[pair.pair_2 || BASE_CURRENCY] || DEFAULT_COIN_DATA;
+    const { increment_price } = pair;
     const priceDifference = ticker.open === 0 ? 0 : ((ticker.close || 0) - (ticker.open || 0));
     const tickerPercent = priceDifference === 0 || ticker.open === 0 ? 0 : ((priceDifference / ticker.open) * 100);
     const priceDifferencePercent = isNaN(tickerPercent)
@@ -48,7 +49,7 @@ const Tab = SortableElement(({
                         {symbol.toUpperCase()}/{pairTwo.symbol.toUpperCase()}:
                     </div>
                     <div className="title-font ml-1">
-                        {formatToCurrency(ticker.close, min)}
+                        {formatToCurrency(ticker.close, increment_price)}
                     </div>
                     <div
                         className={
@@ -56,7 +57,7 @@ const Tab = SortableElement(({
                                 ? "app-price-diff-down app-bar-price_diff_down"
                                 : "app-bar-price_diff_up app-price-diff-up"
                         }>
-                        {/* {formatAverage(formatToCurrency(priceDifference, min))} */}
+                        {/* {formatAverage(formatToCurrency(priceDifference, increment_price))} */}
                     </div>
                     <div
                         className={priceDifference < 0

@@ -10,9 +10,11 @@ import { Loader, MobileBarBack } from '../../components';
 import {
 	ICONS,
 	MIN_VERIFICATION_LEVEL_TO_WITHDRAW,
-	MAX_VERIFICATION_LEVEL_TO_WITHDRAW
+	MAX_VERIFICATION_LEVEL_TO_WITHDRAW,
+	DEFAULT_COIN_DATA
 } from '../../config/constants';
 import { getCurrencyFromName, roundNumber } from '../../utils/currency';
+import { getDecimals } from '../../utils/utils';
 import {
 	performWithdraw,
 	// requestWithdrawFee
@@ -158,7 +160,7 @@ class Withdraw extends Component {
 		const { balance, selectedFee = 0, dispatch, verification_level, coins } = this.props;
 		const { currency } = this.state;
 		const balanceAvailable = balance[`${currency}_available`];
-		const { withdrawal_limits = {} } = coins[currency];
+		const { increment_unit, withdrawal_limits = {} } = coins[currency] || DEFAULT_COIN_DATA;
 		// if (currency === BASE_CURRENCY) {
 		// 	const fee = calculateBaseFee(balanceAvailable);
 		// 	const amount = math.number(
@@ -188,7 +190,7 @@ class Withdraw extends Component {
 					)
 				);
 			}
-			dispatch(change(FORM_NAME, 'amount', roundNumber(amount, 4)));
+			dispatch(change(FORM_NAME, 'amount', roundNumber(amount, getDecimals(increment_unit))));
 		// }
 	};
 
@@ -207,6 +209,7 @@ class Withdraw extends Component {
 			router,
 			coins
 		} = this.props;
+		const { links = {} } = this.props.constants;
 		const { formValues, initialValues, currency, checked } = this.state;
 		if (!currency || !checked) {
 			return <div />;
@@ -227,7 +230,7 @@ class Withdraw extends Component {
 			onSubmitWithdrawReq: this.onSubmitWithdraw(currency),
 			onOpenDialog: this.onOpenDialog,
 			otp_enabled,
-			openContactForm,
+			openContactForm: () => openContactForm({ helpdesk: links.helpdesk }),
 			formValues,
 			initialValues,
 			activeLanguage,
@@ -251,7 +254,9 @@ class Withdraw extends Component {
 								balance,
 								openContactForm,
 								generateBaseInformation,
-								coins
+								coins,
+								'withdraw',
+								links
 							)}
 							<WithdrawCryptocurrency {...formProps} />
 							{/* {renderExtraInformation(currency, bank_account)} */}
@@ -280,7 +285,8 @@ const mapStateToProps = (store) => ({
 	// btcFee: store.wallet.btcFee,
 	selectedFee: formValueSelector(FORM_NAME)(store, 'fee'),
 	coins: store.app.coins,
-	activeTheme: store.app.theme
+	activeTheme: store.app.theme,
+	constants: store.app.constants
 });
 
 const mapDispatchToProps = (dispatch) => ({

@@ -3,7 +3,7 @@ import { Router, Route, browserHistory } from 'react-router';
 import ReactGA from 'react-ga';
 import { isMobile } from 'react-device-detect';
 
-import { PRO_VERSION_REDIRECT, IS_PRO_VERSION } from './config/constants';
+import { DISPLAY_LANDING } from './config/constants';
 
 import {
 	App as Container,
@@ -33,17 +33,18 @@ import {
 	Main,
 	DepositsPage,
 	Limits,
-	// BlockchainTransaction,
-	// AdminChat,
 	Wallets,
 	UserFees,
 	PATHS,
 	ExpiredExchange,
 	AdminOrders,
 	MobileHome,
+	Broker,
 	Plugins,
 	PluginServices,
-	Settings
+	Settings,
+	Transfer,
+	AdminFees
 } from './containers';
 
 import store from './store';
@@ -59,7 +60,7 @@ import {
 import { getLanguage, getInterfaceLanguage } from './utils/string';
 import { checkUserSessionExpired } from './utils/utils';
 
-ReactGA.initialize('UA-154626247-1');
+ReactGA.initialize('UA-154626247-1'); // Google analytics. Set your own Google Analytics values
 browserHistory.listen((location) => {
 	ReactGA.set({ page: window.location.pathname });
 	ReactGA.pageview(window.location.pathname);
@@ -69,7 +70,8 @@ let lang = getLanguage();
 if (!lang) {
 	lang = getInterfaceLanguage();
 }
-store.dispatch(setLanguage(lang));
+// Disabled it for apply default language value from constants.
+// store.dispatch(setLanguage(lang));
 
 let token = getToken();
 
@@ -98,6 +100,14 @@ function loggedIn(nextState, replace) {
 	}
 }
 
+const checkLanding = (nextState, replace) => {
+	if (!DISPLAY_LANDING) {
+		replace({
+			pathname: '/login'
+		});
+	}
+}
+
 const logOutUser = () => {
 	if (getToken()) {
 		removeToken();
@@ -107,7 +117,7 @@ const logOutUser = () => {
 const setLogout = (nextState, replace) => {
 	removeToken();
 	replace({
-		pathname: '/trade/xht-usdt'
+		pathname: '/login'
 	});
 };
 
@@ -118,7 +128,7 @@ const createLocalizedRoutes = ({ router, routeParams }) => {
 };
 
 const NotFound = ({ router }) => {
-	router.replace(PRO_VERSION_REDIRECT);
+	router.replace('/account');
 	return <div />;
 };
 
@@ -146,7 +156,7 @@ function withAdminProps(Component, key) {
 
 export default (
 	<Router history={browserHistory}>
-		{!IS_PRO_VERSION ? <Route path="/" name="Home" component={Home} /> : null}
+		<Route path="/" name="Home" component={Home} onEnter={checkLanding}/>
 		<Route path="lang/:locale" component={createLocalizedRoutes} />
 		<Route component={AuthContainer} {...noAuthRoutesCommonProps}>
 			{isMobile ? (
@@ -286,6 +296,16 @@ export default (
 				component={withAdminProps(Wallets, 'wallets')}
 			/>
 			<Route
+				path="/admin/transfer"
+				name="Admin Transfer"
+				component={withAdminProps(Transfer, 'transfer')}
+			/>
+			<Route
+				path="/admin/fees"
+				name="Admin Fees"
+				component={withAdminProps(AdminFees, 'fees')}
+			/>
+			<Route
 				path="/admin/withdrawals"
 				name="Admin Withdrawals"
 				component={withAdminProps(DepositsPage, 'withdrawal')}
@@ -295,11 +315,6 @@ export default (
 				name="Admin Deposits"
 				component={withAdminProps(DepositsPage, 'deposit')}
 			/>
-			{/* <Route
-				path="/admin/blockchain"
-				name="Admin BlockchainTransaction"
-				component={BlockchainTransaction}
-			/> */}
 			<Route
 				path="/admin/pair"
 				name="Admin Pairs"
@@ -310,15 +325,15 @@ export default (
 				name="Admin Coins"
 				component={withAdminProps(Limits, 'coin')}
 			/>
-			{/* <Route
-				path="/admin/chat"
-				name="Admin Chats"
-				component={withAdminProps(AdminChat, 'chat')}
-			/> */}
 			<Route
 				path="/admin/activeorders"
 				name="Admin Orders"
 				component={withAdminProps(AdminOrders, 'orders')}
+			/>
+			<Route
+				path="/admin/broker"
+				name="Admin broker"
+				component={withAdminProps(Broker, 'broker')}
 			/>
 			<Route
 				path="/admin/plugins"

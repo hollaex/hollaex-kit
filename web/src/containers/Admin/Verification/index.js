@@ -36,6 +36,7 @@ const ROLE = [
 	{ label: 'support', value: 'support' },
 	{ label: 'supervisor', value: 'supervisor' },
 	{ label: 'kyc', value: 'kyc' },
+	{ label: 'tech', value: 'tech' },
 	{ label: 'user', value: 'user' }
 ];
 

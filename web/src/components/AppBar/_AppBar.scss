@@ -197,7 +197,11 @@ $app-bar-add-tab-red: #ff0000;
 	}
 
 	.app_bar-icon-logo {
-		height: 3.5rem;
+		height: 3rem;
+		width: 5rem;
+		background-size: contain;
+		background-position: center;
+		background-repeat: no-repeat;
 	}
 
 	.app_bar-icon-logo svg {
@@ -680,7 +684,11 @@ $app-bar-add-tab-red: #ff0000;
 .app_bar-mobile {
 	padding: 1rem 0;
 	.homeicon-svg {
+		background-size: contain;
+		background-position: center;
+		background-repeat: no-repeat;
 		height: 4rem;
+		width: 7rem;
 	}
 	.app_bar-controllers-splash {
 		.action_button {
@@ -994,7 +1002,8 @@ $app-bar-add-tab-red: #ff0000;
 		}
 
 		.app_bar-icon-logo {
-			height: 3.5rem;
+			height: 3rem;
+			width: 5rem;
 		}
 		.app-bar-tab-close {
 			width: 1.1rem;
@@ -1050,5 +1059,27 @@ $app-bar-add-tab-red: #ff0000;
 	.st0 {
 		fill: #ffffff;
 		stroke-miterlimit: 10;
+	}
+}
+
+.direction_rtl {
+	.app-menu-bar {
+		.app-menu-bar-icon {
+			margin-left: .4rem;
+			margin-right: 0;
+		}
+		.app-menu-bar-icon-notification {
+			right: -14px;
+			top: -5px;
+			left: unset;
+		}
+	}
+	.app_bar {
+		.app-bar-account-menu {
+			.app-bar-account-list-icon {
+				margin-right: 0;
+				margin-left: .4rem;
+			}
+		}
 	}
 }

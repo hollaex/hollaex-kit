@@ -18,9 +18,11 @@ export const connectVault = (values) => {
 		method: 'POST',
 		body: JSON.stringify(values)
 	};
-	
+
 	return requestAuthenticated('/plugins/vault/connect', options, null, WS_URL);
 };
+
+export const disconnectVault = () => requestAuthenticated(`/plugins/vault/disconnect`);
 
 export const requestVaultSupportCoins = () =>
 	axios.get(REQUEST_VAULT_SUPPORTED_COINS);

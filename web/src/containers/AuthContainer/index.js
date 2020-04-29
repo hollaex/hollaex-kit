@@ -7,7 +7,7 @@ import { bindActionCreators } from 'redux';
 import moment from 'moment';
 
 import { AppFooter } from '../../components';
-import { FLEX_CENTER_CLASSES, CAPTCHA_SITEKEY, EXCHANGE_EXPIRY_DAYS, EXCHANGE_EXPIRY_SECONDS } from '../../config/constants';
+import { FLEX_CENTER_CLASSES, CAPTCHA_SITEKEY } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 import { getClasesForLanguage } from '../../utils/string';
 import { getThemeClass } from '../../utils/theme';
@@ -20,16 +20,16 @@ const updateThemeToBody = (theme = 'white') => {
 	}
 };
 const checkPath = (path) => {
-	var sheet = document.createElement('style')
+	var sheet = document.createElement('style');
 	if ((path === '/login') || (path === '/signup')
 		|| (path === '/reset-password') || path.includes('/withdraw')) {
-		sheet.innerHTML = ".grecaptcha-badge { display: unset !important;}";
+		sheet.innerHTML = ".grecaptcha-badge { visibility: visible !important;}";
 		sheet.id = 'addCap'
 		if (document.getElementById('rmvCap') !== null) {
 			document.body.removeChild(document.getElementById('rmvCap'));
 		}
 	} else {
-		sheet.innerHTML = ".grecaptcha-badge { display: none !important;}";
+		sheet.innerHTML = ".grecaptcha-badge { visibility: hidden !important;}";
 		sheet.id = 'rmvCap'
 		if (document.getElementById('addCap') !== null) {
 			document.body.removeChild(document.getElementById('addCap'));
@@ -51,6 +51,40 @@ class AuthContainer extends Component {
 		this.props.getExchangeInfo();
 	}
 
+	checkExchangeExpiry = () => {
+		const { info = {} } = this.props;
+		let is_expired = false;
+		let is_warning = false;
+		let daysLeft = 0;
+		if (info.status) {
+			if (info.is_trial) {
+				if (info.active) {
+					if (info.expiry && moment().isBefore(info.expiry, 'second')) {
+						is_warning = true;
+						daysLeft = moment(info.expiry).diff(moment(), 'days');
+					} else if (info.expiry && moment().isAfter(info.expiry, 'second')) {
+						is_warning = true;
+						is_expired = true;
+					}
+				} else {
+					is_warning = true;
+					is_expired = true;
+				}
+			} else {
+				is_expired = false;
+				is_warning = false;
+			}	
+		} else {
+			is_warning = true;
+			is_expired = true;
+		}
+		return {
+			is_expired,
+			is_warning,
+			daysLeft
+		}
+	};
+
 	render() {
 		const { activeLanguage, activeTheme, children, info, constants = { captcha: {} }, ...rest } = this.props;
 		const languageClasses = getClasesForLanguage(activeLanguage);
@@ -63,19 +97,13 @@ class AuthContainer extends Component {
 		}
 		loadReCaptcha(siteKey);
 		updateThemeToBody(activeTheme);
+		const expiryData = this.checkExchangeExpiry();
 		let isWarning = false;
 		if (rest.location && rest.location.pathname) {
 			checkPath(rest.location.pathname);
 			isWarning = ((rest.location.pathname === '/login' || rest.location.pathname === '/signup')
-				&& (!Object.keys(info).length || info.is_trial || !info.active))
-				? true : false;
+				&& expiryData.is_warning);
 		};
-		const isExpired =
-			!Object.keys(info).length || !info.active ||
-			(info.active && info.is_trial && moment().diff(info.created_at, 'seconds') > EXCHANGE_EXPIRY_SECONDS)
-				? true
-				: false;
-		const expiryDays = EXCHANGE_EXPIRY_DAYS - moment().diff(info.created_at, 'days');
 		return (
 			<div className="w-100 h-100">
 				{isWarning
@@ -85,15 +113,15 @@ class AuthContainer extends Component {
 						...FLEX_CENTER_CLASSES,
 						{
 							'exchange-trial': isWarning,
-							'exchange-expired': isExpired,
+							'exchange-expired': expiryData.is_expired,
 						}
 					)}>
-						{isExpired
+						{expiryData.is_expired
 							? STRINGS.EXPIRY_EXCHANGE_MSG
 							: STRINGS.formatString(
 								STRINGS.TRIAL_EXCHANGE_MSG,
 								STRINGS.APP_TITLE,
-								expiryDays
+								expiryData.daysLeft
 							)
 						}
 					</div>

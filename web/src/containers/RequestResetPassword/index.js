@@ -9,7 +9,7 @@ import { requestResetPassword } from '../../actions/authAction';
 import ResetPasswordForm, { generateFormFields } from './ResetPasswordForm';
 import { IconTitle, Dialog, MobileBarBack } from '../../components';
 import { ContactForm } from '../';
-import { FLEX_CENTER_CLASSES, ICONS, SUPPORT_HELP_URL } from '../../config/constants';
+import { FLEX_CENTER_CLASSES, ICONS } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 import RequestResetPasswordSuccess from './RequestResetPasswordSuccess';
 
@@ -56,8 +56,9 @@ class RequestResetPassword extends Component {
 	};
 
 	onOpenDialog = () => {
-		if (window) {
-			window.open(SUPPORT_HELP_URL, '_blank');
+		const { links = {} } = this.props.constants;
+		if (window && links && links.helpdesk) {
+			window.open(links.helpdesk, '_blank');
 		}
 		// this.setState({ showContactForm: true });
 	};
@@ -151,7 +152,8 @@ class RequestResetPassword extends Component {
 }
 
 const mapStateToProps = (store) => ({
-	activeTheme: store.app.theme
+	activeTheme: store.app.theme,
+	constants: store.app.constants
 });
 
 const mapDispatchToProps = (dispatch) => ({

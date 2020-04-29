@@ -1,6 +1,6 @@
 'use strict';
 
-const { sendAwsEmail, formatDate, getCountryFromIp, sendSMTPEmail } = require('./utils');
+const { formatDate, getCountryFromIp, sendSMTPEmail } = require('./utils');
 const payloadTemplate = require('./templates/helpers/payloadTemplate');
 const { loggerEmail } = require('../config/logger');
 const { getValidLanguage } = require('./utils');
@@ -11,14 +11,12 @@ const getStatusText = (status) => {
 	return status ? 'COMPLETED' : 'PENDING';
 };
 const { GET_CONFIGURATION, DOMAIN } = require('../constants');
-const SUPPORT_EMAIL = () => GET_CONFIGURATION().constants.accounts.support;
-const INQUIRY_EMAIL = () => SUPPORT_EMAIL();
-const MASTER_EMAIL = () => GET_CONFIGURATION().constants.accounts.admin;
+const AUDIT_EMAIL = () => GET_CONFIGURATION().constants.accounts.admin;
 const SENDER_EMAIL = () => GET_CONFIGURATION().constants.emails.sender;
-const SEND_EMAIL_TO_SUPPORT = () => GET_CONFIGURATION().constants.emails.send_email_to_support;
+const SEND_EMAIL_COPY = () => GET_CONFIGURATION().constants.emails.send_email_to_support;
 const API_NAME = () => GET_CONFIGURATION().constants.api_name;
 const SUPPORT_SOURCE = () => `'${API_NAME()} Support <${SENDER_EMAIL()}>'`;
-const BCC_ADDRESSES = () => SEND_EMAIL_TO_SUPPORT() ? [MASTER_EMAIL()] : [];
+const BCC_ADDRESSES = () => SEND_EMAIL_COPY() ? [AUDIT_EMAIL()] : [];
 const DEFAULT_LANGUAGE = () => GET_CONFIGURATION().constants.defaults.language;
 
 const sendEmail = (
@@ -47,6 +45,7 @@ const sendEmail = (
 		case MAILTYPE.USER_VERIFICATION_REJECT:
 		case MAILTYPE.ACCOUNT_UPGRADE:
 		case MAILTYPE.ACCOUNT_VERIFY:
+		case MAILTYPE.USER_DEACTIVATED:
 		case MAILTYPE.WITHDRAWAL_REQUEST: {
 			to.BccAddresses = BCC_ADDRESSES();
 			break;
@@ -71,15 +70,10 @@ const sendEmail = (
 			to.BccAddresses = BCC_ADDRESSES();
 			break;
 		}
-		case MAILTYPE.SUSPICIOUS_DEPOSIT: {
-			if (!SEND_EMAIL_TO_SUPPORT()) return;
-			to.ToAddresses = [MASTER_EMAIL()];
-			break;
-		}
+		case MAILTYPE.SUSPICIOUS_DEPOSIT:
 		case MAILTYPE.USER_VERIFICATION:
 		case MAILTYPE.CONTACT_FORM: {
-			if (!SEND_EMAIL_TO_SUPPORT()) return;
-			to.ToAddresses = [INQUIRY_EMAIL(), SUPPORT_EMAIL(), MASTER_EMAIL()];
+			to.ToAddresses = [AUDIT_EMAIL()];
 			break;
 		}
 		default:

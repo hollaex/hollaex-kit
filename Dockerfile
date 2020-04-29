@@ -1,5 +1,7 @@
 FROM bitholla/hollaex-core:1.22.0
 
+RUN apt-get update && apt-get install -y git
+
 COPY ./mail /app/mail
 
 COPY ./plugins /app/plugins
@@ -12,6 +14,7 @@ COPY ./db/models /app/db/models
 
 EXPOSE 10011
 
-RUN cd plugins && npm install --loglevel=error && \
+RUN npm install -g nodemon --loglevel=error && \ 
+    cd plugins && npm install --loglevel=error && \
     for d in ./*/ ; do (cd "$d" && npm install --loglevel=error); done && \
     cd /app/mail && npm install --loglevel=error

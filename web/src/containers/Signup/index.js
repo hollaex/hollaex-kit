@@ -11,11 +11,8 @@ import SignupSuccess from './SignupSuccess';
 import { ContactForm } from '../';
 import { IconTitle, Dialog, MobileBarBack } from '../../components';
 import {
-	HOLLAEX_LOGO,
-	HOLLAEX_LOGO_BLACK,
 	FLEX_CENTER_CLASSES,
-	ICONS,
-	SUPPORT_HELP_URL
+	ICONS
 } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 
@@ -106,8 +103,9 @@ class Signup extends Component {
 	};
 
 	onOpenDialog = () => {
-		if (window) {
-			window.open(SUPPORT_HELP_URL, '_blank');
+		const { links = {} } = this.props.constants;
+		if (window && links && links.helpdesk) {
+			window.open(links.helpdesk, '_blank');
 		}
 		// this.setState({ showContactForm: true });
 	};
@@ -125,7 +123,7 @@ class Signup extends Component {
 	};
 
 	render() {
-		const { languageClasses, activeTheme, constants } = this.props;
+		const { languageClasses, activeTheme, constants = {} } = this.props;
 		const { success, showContactForm, isReferral } = this.state;
 
 		if (success) {
@@ -134,10 +132,10 @@ class Signup extends Component {
 				<SignupSuccess activeTheme={activeTheme} /></div>
 		}
 
-		const formFields = generateFormFields(STRINGS, activeTheme, isReferral);
-		let path = constants.logo_path || HOLLAEX_LOGO;
+		const formFields = generateFormFields(STRINGS, activeTheme, constants.links, isReferral);
+		let path = constants.logo_path;
 		if (activeTheme === 'dark') {
-			path = constants.logo_black_path || HOLLAEX_LOGO_BLACK;
+			path = constants.logo_black_path;
 		}
 
 		return (
@@ -157,6 +155,7 @@ class Signup extends Component {
 						textType="title"
 						underline={true}
 						useSvg={false}
+						isLogo={true}
 						className="w-100 exir-logo"
 						imageWrapperClassName="auth_logo-wrapper"
 						subtitle={STRINGS.formatString(
@@ -167,7 +166,8 @@ class Signup extends Component {
 							text: STRINGS.HELP_TEXT,
 							iconPath: ICONS.BLUE_QUESTION,
 							onClick: this.onOpenDialog,
-							useSvg: true
+							useSvg: true,
+							showActionText: true
 						}}
 					/>
 					<div

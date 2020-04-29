@@ -26,10 +26,9 @@ class InviteFriends extends Component {
 
     render() {
         const { affiliation_code } = this.props.data;
-        const { affiliation, is_hap } = this.props;
+        const { affiliation } = this.props;
         const referralLink = `${process.env.REACT_APP_PUBLIC_URL}/signup?affiliation_code=${affiliation_code}`;
         const affiliationCount = affiliation.count ? affiliation.count : 0;
-        const discount = is_hap ? 30 : 10;
         return (
             <div className='invite_friends_wrapper mx-auto'>
                 <IconTitle
@@ -41,8 +40,7 @@ class InviteFriends extends Component {
                 />
                 <div>
                     <div className='my-2'>
-                        <div>{STRINGS.formatString(STRINGS.REFERRAL_LINK.INFO_TEXT, discount)}</div>
-                        <div>{STRINGS.formatString(STRINGS.REFERRAL_LINK.INFO_TEXT_1, discount)}</div>
+                        <div>{STRINGS.REFERRAL_LINK.INFO_TEXT}</div>
                     </div>
                     <div className='my-4'>
                         <RenderDumbField

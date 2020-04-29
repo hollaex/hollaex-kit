@@ -5,17 +5,17 @@ const cors = require('cors');
 const app = express();
 const { PLUGIN_PORT } = require('./constants');
 const { DOMAIN, GET_CONFIGURATION } = require('../constants');
-const { readdirSync } = require('fs')
+const { readdirSync } = require('fs');
 
-const PLUGINS = () => GET_CONFIGURATION().constants.plugins.enabled || process.env.PLUGINS || 'bank,kyc,sms,vault';
+const PLUGINS = () => GET_CONFIGURATION().constants.plugins.enabled || process.env.PLUGINS || '';
 const CORS_WHITELIST = [DOMAIN, 'http://localhost:8080', 'http://localhost:3000'];
 
-const PORT = PLUGIN_PORT
+const PORT = PLUGIN_PORT;
 
 const enabledPlugins = () => PLUGINS().split(',');
 
 const availablePlugins = readdirSync(__dirname, { withFileTypes: true })
-	.filter(dirent => dirent.isDirectory() && dirent.name !== 'helpers' && dirent.name !== 'node_modules')
+	.filter(dirent => dirent.isDirectory() && dirent.name !== 'helpers' && dirent.name !== 'node_modules' & dirent.name !== 'crons' && dirent.name !== 'jobs')
 	.map(dirent => dirent.name);
 
 app.get('/plugins', (req, res) => {

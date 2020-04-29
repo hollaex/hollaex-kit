@@ -41,8 +41,8 @@ const generateHeaders = (pairs) => {
 			key: 'size',
 			label: STRINGS.SIZE,
 			renderCell: ({ size = 0, side }, index) => { 
-				const { min_size } = pairs;
-				const minSize = roundNumber(size, getDecimals(min_size));
+				const { increment_size } = pairs;
+				const minSize = roundNumber(size, getDecimals(increment_size));
 				return (
 					IS_XHT
 						? <div

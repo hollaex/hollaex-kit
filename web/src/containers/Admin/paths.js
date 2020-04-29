@@ -24,6 +24,16 @@ export const PATHS = [
 		routeKey: 'wallets'
 	},
 	{
+		path: '/admin/fees',
+		label: 'Fees',
+		routeKey: 'fees'
+	},
+	{
+		path: '/admin/transfer',
+		label: 'Transfer',
+		routeKey: 'transfer'
+	},
+	{
 		path: '/admin/deposits',
 		// component: Deposits,
 		label: 'Deposits',
@@ -90,6 +100,11 @@ export const PATHS = [
 	// 	label: 'Vault',
 	// 	routeKey: 'blockChain'
 	// },
+	{
+		path: '/admin/broker',
+		label: 'Broker',
+		routeKey: 'broker'
+	},
 	{
 		path: '/admin/plugins',
 		// component: BlockchainTransaction,

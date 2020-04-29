@@ -5,8 +5,8 @@ import { isMobile } from 'react-device-detect';
 import classnames from 'classnames';
 
 import SummaryBlock from './components/SummaryBlock';
-import TraderAccounts from './components/TraderAccounts';
-import SummaryRequirements from './components/SummaryRequirements';
+// import TraderAccounts from './components/TraderAccounts';
+// import SummaryRequirements from './components/SummaryRequirements';
 import AccountAssets from './components/AccountAssets';
 import MobileSummary from './MobileSummary';
 
@@ -23,8 +23,7 @@ import {
 	BASE_CURRENCY,
 	DEFAULT_COIN_DATA,
 	// SHOW_SUMMARY_ACCOUNT_DETAILS,
-	SHOW_TOTAL_ASSETS,
-	SUPPORT_HELP_URL
+	SHOW_TOTAL_ASSETS
 } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 import {
@@ -116,8 +115,9 @@ class Summary extends Component {
 
 	onUpgradeAccount = () => {
 		// this.props.openContactForm({ category: 'level' });
-		if (window) {
-			window.open(SUPPORT_HELP_URL, '_blank');
+		const { links = {} } = this.props.constants;
+		if (window && links && links.helpdesk) {
+			window.open(links.helpdesk, '_blank');
 		}
 	};
 
@@ -192,9 +192,6 @@ class Summary extends Component {
 			STRINGS.SUMMARY.LEVEL_OF_ACCOUNT,
 			verification_level
 		);
-		// if (IS_XHT) {
-		//     traderAccTitle = user.is_hap ? STRINGS.SUMMARY.HAP_ACCOUNT : STRINGS.SUMMARY.TRADER_ACCOUNT_TITLE
-		// }
 		return (
 			<div className="summary-container">
 				{!isMobile && (
@@ -224,7 +221,7 @@ class Summary extends Component {
 					/>
 				) : (
 					<div>
-						<div className="d-flex align-items-center">
+						{/*<div className="d-flex align-items-center">
 							<div className="summary-section_1 trader-account-wrapper d-flex">
 								<SummaryBlock title={traderAccTitle}>
 									<TraderAccounts
@@ -241,7 +238,7 @@ class Summary extends Component {
 							</div>
 							<div className="summary-section_1 requirement-wrapper d-flex">
 								<SummaryBlock
-									title={STRINGS.SUMMARY.REWARDS_BONUS}
+									title={STRINGS.SUMMARY.TASKS}
 									wrapperClassname="w-100"
 								>
 									<SummaryRequirements
@@ -252,7 +249,7 @@ class Summary extends Component {
 									/>
 								</SummaryBlock>
 							</div>
-						</div>
+						</div>*/}
 						<div className="d-flex align-items-center">
 							<div
 								className={classnames('assets-wrapper', 'asset_wrapper_width')}
@@ -301,7 +298,8 @@ const mapStateToProps = (state) => ({
 	tradeVolumes: state.user.tradeVolumes,
 	isValidBase: state.app.isValidBase,
 	config_level: state.app.config_level,
-	affiliation: state.user.affiliation
+	affiliation: state.user.affiliation,
+	constants: state.app.constants
 });
 
 const mapDispatchToProps = (dispatch) => ({

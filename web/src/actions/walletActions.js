@@ -90,14 +90,16 @@ export const addUserTrades = (trades) => ({
 });
 
 export const getUserTrades = ({
+	symbol,
 	limit = 50,
 	page = 1,
 	...rest
 }) => {
-	const query = querystring.stringify({
-		page,
-		limit
-	});
+	let dataParams = { page, limit };
+	if (symbol) {
+		dataParams.symbol = symbol;
+	}
+	const query = querystring.stringify(dataParams);
 
 	return (dispatch) => {
 		dispatch({ type: ACTION_KEYS.USER_TRADES_PENDING, payload: { page } });

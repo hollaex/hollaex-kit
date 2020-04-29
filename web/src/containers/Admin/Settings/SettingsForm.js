@@ -1,9 +1,13 @@
 import React from 'react';
+import { Divider, Button } from 'antd';
+import { reduxForm, reset } from 'redux-form';
 
 import { AdminHocForm } from '../../../components';
 import { generateAdminSettings } from './Utils';
+import renderFields from '../../../components/AdminForm/utils';
 
 const Form = AdminHocForm('ADMIN_SETTINGS_FORM', 'transaction-form');
+const EmailDistributionForm = AdminHocForm('ADMIN_EMAIL_DISTRIBUTION_FORM', 'transaction-form');
 const EmailForm = AdminHocForm('ADMIN_EMAIL_SETTINGS_FORM', 'transaction-form');
 const SecurityForm = AdminHocForm('ADMIN_SECURITY_SETTINGS_FORM', 'transaction-form');
 
@@ -30,25 +34,42 @@ GeneralSettingsForm.defaultProps = {
 }
 
 export const EmailSettingsForm = ({ initialValues, handleSubmitSettings }) => {
+    const fields = generateAdminSettings('email');
     return (
         <div className="mb-4">
+            <h2>Email Configuration</h2>
             <EmailForm
-                initialValues={initialValues}
-                onSubmit={(formProps) => handleSubmitSettings(formProps, 'email')}
+                initialValues={initialValues.configuration}
+                onSubmit={(formProps) => handleSubmitSettings(formProps, 'email_configuration')}
                 buttonText="Save"
-                fields={generateAdminSettings('email')}
+                fields={fields.email_configuration}
             />
+            <Divider />
+            <div className="mb-4">
+                <h2>Email Audit</h2>
+                <Divider />
+                <p>This feature allows specific email to receive a copy of all important emails sent to the user for audit purposes. By filling the auditor email, the email will be in BCC of emails sent to the user.</p>
+                <EmailDistributionForm
+                    initialValues={initialValues.distribution}
+                    onSubmit={(formProps) => handleSubmitSettings(formProps, 'email_distribution')}
+                    buttonText="Save"
+                    fields={fields.email_distribution_list}
+                />
+            </div>
         </div>
     );
 };
 
 EmailSettingsForm.defaultProps = {
     initialValues: {
-        timezone: 'utc',
-        port: 587,
-        send_email_to_support: false
+        distribution: {},
+        configuration: {
+            timezone: 'utc',
+            port: 587,
+            send_email_to_support: false
+        }
     }
-}
+};
 
 export const SecuritySettingsForm = ({ initialValues, handleSubmitSettings }) => {
     return (
@@ -63,3 +84,60 @@ export const SecuritySettingsForm = ({ initialValues, handleSubmitSettings }) =>
     );
 };
 
+const LinksForm = ({
+    initialValues,
+    handleSubmit,
+    handleSubmitSettings,
+    error,
+    pristine,
+    submitting,
+    valid,
+    ...rest
+}) => {
+    const fields = generateAdminSettings('links');
+    const onSubmit = (formProps) => handleSubmitSettings(formProps, 'links');
+    return (
+        <div className="mb-4">
+            <h5>Fill out all the links to your exchange. These links will be added automatically into the exchange website once updated. If you leave them blank they won't appear.</h5>
+            <Divider />
+            <form>
+				{fields && (
+                    Object.keys(fields).map((key, index) => {
+                        let field = fields[key] ? fields[key].fields : {};
+                        return (
+                            <div key={index} className="d-flex">
+                                {renderFields(field)}
+                            </div>
+                        )
+                    })
+                )}
+				{error && (
+					<div>
+						<strong>{error}</strong>
+					</div>
+				)}
+				<Button
+					type={'primary'}
+					onClick={handleSubmit(onSubmit)}
+					disabled={
+						(fields && pristine) ||
+						submitting ||
+						!valid ||
+						error
+                    }
+                    size='large'
+					className={'w-100'}
+				>
+					Save
+				</Button>
+			</form>
+        </div>
+    );
+};
+
+export const LinksSettingsForm = reduxForm({
+    form: 'ADMIN_LINKS_SETTINGS_FORM',
+    // onSubmitFail: (result, dispatch) => dispatch(reset(FORM_NAME)),
+    onSubmitSuccess: (result, dispatch) => dispatch(reset('ADMIN_LINKS_SETTINGS_FORM')),
+    enableReinitialize: true
+})(LinksForm);

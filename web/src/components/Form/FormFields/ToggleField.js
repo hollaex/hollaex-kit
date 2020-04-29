@@ -26,6 +26,9 @@ class ToggleField extends Component {
 
     onToogle = () => {
         const { options, input } = this.props;
+        if(input.name === 'all') {
+            this.props.callback(!this.state.selected)
+        }
         const selected =
             this.state.selected === options[0].value ? options[1].value : options[0].value;
         input.onChange(selected);
@@ -35,17 +38,19 @@ class ToggleField extends Component {
     render() {
         const {
             options,
+            input,
             label,
             className,
             meta = { active: false, error: '', touched: false, invalid: false },
             toggleOnly,
+            disabled,
             ...rest
         } = this.props;
         const { selected } = this.state;
         return (
             <div className={classnames("py-2", className)}>
                 {toggleOnly 
-                    ? <Toggle selected={selected} options={options} onToogle={this.onToogle}  />
+                    ? <Toggle selected={selected} options={options} disabled={disabled} name={input.name} onToogle={this.onToogle}  />
                     : <FieldContent
                         hideUnderline={true}
                         meta={meta}
@@ -55,7 +60,7 @@ class ToggleField extends Component {
                             <div>
                                 {label}
                             </div>
-                            <Toggle selected={selected} options={options} onToogle={this.onToogle}  />
+                            <Toggle selected={selected} options={options} disabled={disabled} name={input.name} onToogle={this.onToogle}  />
                         </div>
                     </FieldContent>
                 }
@@ -64,7 +69,7 @@ class ToggleField extends Component {
     }
 }
 
-const Toggle = ({ options, selected, onToogle }) => (
+const Toggle = ({ options, selected, onToogle, disabled, name }) => (
     <div className={classnames('toggle_button-wrapper', 'd-flex')}>
         <div
             className={classnames(
@@ -74,20 +79,20 @@ const Toggle = ({ options, selected, onToogle }) => (
                 'direction_ltr'
             )}
         >
-
-            <div className={classnames({ selected: options[1].value === selected })}>
+            <div className={classnames({ selected: (options[1].value === selected && !disabled) })}>
                 {options[1].label}
             </div>
             <div
-                onClick={onToogle}
+                onClick={(name === 'all' || !disabled) ? onToogle : () => {} }
                 className={classnames('toggle-action_button', {
+                    'toggle-disabled': (name !== 'all' && disabled),
                     left: options[1].value === selected,
                     right: options[0].value === selected
                 })}
             >
                 <div className="toggle-action_button-display" />
             </div>
-            <div className={classnames({ selected: options[0].value === selected })}>
+            <div className={classnames({ selected: (options[0].value === selected && !disabled) })}>
                 {options[0].label}
             </div>
         </div>

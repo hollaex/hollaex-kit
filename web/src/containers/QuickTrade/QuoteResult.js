@@ -1,13 +1,13 @@
 import React from 'react';
 import { Loader, IconTitle, Button } from '../../components';
-import { formatBtcAmount, formatToCurrency } from '../../utils/currency';
+import { formatToCurrency } from '../../utils/currency';
 
 import STRINGS from '../../config/localizedStrings';
 import { ICONS, BASE_CURRENCY, DEFAULT_COIN_DATA } from '../../config/constants';
 
-const QuoteResult = ({ name, onClose, coins, ...props }) => {
+const QuoteResult = ({ name, onClose, coins, pairData, ...props }) => {
 	const { fetching, error, data } = props.data;
-	const { min, fullname } = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
+	const { fullname } = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
 	if (fetching) {
 		return <Loader relative={true} background={false} />;
 	} else if (error) {
@@ -31,9 +31,9 @@ const QuoteResult = ({ name, onClose, coins, ...props }) => {
 					{STRINGS.formatString(
 						STRINGS.QUOTE_SUCCESS_REVIEW_MESSAGE,
 						STRINGS.SIDES_VALUES[data.side],
-						formatBtcAmount(data.size),
+						formatToCurrency(data.size, pairData.increment_size),
 						name,
-						formatToCurrency(data.price, min),
+						formatToCurrency(data.price, pairData.increment_price),
 						fullname
 					)}
 				</div>

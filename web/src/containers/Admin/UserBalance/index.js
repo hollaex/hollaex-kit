@@ -99,7 +99,7 @@ class UserBalance extends Component {
 												{typeof value !== 'number' ? (
 													<span>no data</span>
 												) : (
-													formatCurrency(value)
+													formatCurrency(value, 0, 8)
 												)}{' '}
 											</div>
 										);

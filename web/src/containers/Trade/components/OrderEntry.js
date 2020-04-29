@@ -88,15 +88,15 @@ class OrderEntry extends Component {
 	};
 
 	setMax = () => {
-		const { side, balance, pair_base, min_size , pair_2} = this.props;
+		const { side, balance = {}, pair_base, increment_size, pair_2} = this.props;
 		const size = parseFloat(this.props.size || 0);
 		const price = parseFloat(this.props.price || 0);
-		let maxSize = balance[`${pair_base}_available`];
+		let maxSize = balance[`${pair_base}_available`] || 0;
 		if (side === 'buy') {
-			maxSize = mathjs.divide(balance[`${pair_2}_available`], price);
+			maxSize = mathjs.divide(balance[`${pair_2}_available`] || 0, price);
 		}
 		if (maxSize !== size) {
-			this.props.change(FORM_NAME, 'size', roundNumber(maxSize, getDecimals(min_size)));
+			this.props.change(FORM_NAME, 'size', roundNumber(maxSize, getDecimals(increment_size)));
 		}
 	};
 
@@ -163,13 +163,13 @@ class OrderEntry extends Component {
 	};
 
 	onSubmit = (values) => {
-		const { min_size, increment_price, settings } = this.props;
+		const { increment_size, increment_price, settings } = this.props;
 
 		const order = {
 			...values,
 			size: formatNumber(
 				values.size,
-				getDecimals(min_size)
+				getDecimals(increment_size)
 			),
 			symbol: this.props.pair
 		};
@@ -186,7 +186,7 @@ class OrderEntry extends Component {
 		return this.props.submitOrder(order).then(() => {
 			if (values.type === 'market'
 				&& settings.audio && settings.audio.order_completed) {
-				playBackgroundAudioNotification('orderbook_market_order');
+				playBackgroundAudioNotification('orderbook_market_order', this.props.settings);
 			}
 			// this.setState({ initialValues: values });
 		});
@@ -202,7 +202,7 @@ class OrderEntry extends Component {
 			// pair,
 			pair_base,
 			pair_2,
-			min_size,
+			increment_size,
 			increment_price,
 			openCheckOrder,
 			onRiskyTrade,
@@ -218,21 +218,21 @@ class OrderEntry extends Component {
 			type,
 			side,
 			price,
-			size: formatNumber(size, getDecimals(min_size)),
+			size: formatNumber(size, getDecimals(increment_size)),
 			symbol: pair_base,
 			orderPrice: orderTotal,
 			orderFees: this.state.orderFees
 		};
 		// const orderPriceInBaseCoin = calculatePrice(orderTotal, this.props.prices[pair_2]);
-		let avail_balance = 0;
+		let coin_balance = 0;
 		if (side === 'buy') {
-			avail_balance = balance[`${pair_2.toLowerCase()}_available`];
+			coin_balance = balance[`${pair_2.toLowerCase()}_balance`];
 		} else {
-			avail_balance = balance[`${pair_base.toLowerCase()}_available`];
+			coin_balance = balance[`${pair_base.toLowerCase()}_balance`];
 		}
 		// const riskySize = ((this.state.totalAssets / 100) * risk.order_portfolio_percentage);
-		let riskySize = ((avail_balance / 100) * risk.order_portfolio_percentage);
-		riskySize = formatNumber(riskySize, getDecimals(min_size));
+		let riskySize = ((coin_balance / 100) * risk.order_portfolio_percentage);
+		riskySize = formatNumber(riskySize, getDecimals(increment_size));
 
 		if (type === 'market') {
 			delete order.price;
@@ -307,7 +307,7 @@ class OrderEntry extends Component {
 				placeholder: '0.00',
 				normalize: normalizeFloat,
 				step: increment_size,
-				min: increment_size,
+				min: min_size,
 				max: max_size,
 				validate: [
 					required,
@@ -316,7 +316,7 @@ class OrderEntry extends Component {
 				],
 				currency: symbol.toUpperCase(),
 				parse: (value = '') => {
-					let decimal = getDecimals(min_size);
+					let decimal = getDecimals(increment_size);
 					let decValue = toFixed(value);
 					let valueDecimal = getDecimals(decValue);
 

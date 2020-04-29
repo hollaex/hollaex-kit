@@ -8,9 +8,7 @@ import { Paginator, SearchBox } from '../../components';
 import {
 	ICONS,
 	BASE_CURRENCY,
-	DEFAULT_COIN_DATA,
-	HOLLAEX_LOGO,
-	HOLLAEX_LOGO_BLACK
+	DEFAULT_COIN_DATA
 } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 import {
@@ -144,29 +142,32 @@ class AddTradeTab extends Component {
 		if (!this.props.pair && Object.keys(pairs).length) {
 			quickPair = Object.keys(pairs)[0];
 		}
-		let path = constants.logo_path || HOLLAEX_LOGO;
+		let path = constants.logo_path;
 		if (activeTheme === 'dark') {
-			path = constants.logo_black_path || HOLLAEX_LOGO_BLACK;
+			path = constants.logo_black_path;
 		}
 		return (
 			<div className="trade_tabs-container">
 				<div className="mb-5">
-					<img
-						src={path}
-						alt="app logo"
+					<div
+						style={{ backgroundImage: `url(${path})` }}
 						className="app-icon d-flex"
-					/>
+					>
+					</div>
 					<div className="text-center trade-tab-app-title">
 						{STRINGS.APP_SUB_TITLE.toUpperCase()}
 					</div>
 				</div>
 				<div className="trade_tabs-content">
 					<div className="d-flex justify-content-end">
-						<span className="trade_tabs-link link-separator">
-							<Link to={`/quick-trade/${quickPair}`}>
-								{STRINGS.QUICK_TRADE}
-							</Link>
-						</span>
+						{constants.broker_enabled
+							? <span className="trade_tabs-link link-separator">
+								<Link to={`/quick-trade/${quickPair}`}>
+									{STRINGS.QUICK_TRADE}
+								</Link>
+							</span>
+							: null
+						}
 						<span className="trade_tabs-link link-separator">
 							<Link to="/account">{STRINGS.ACCOUNTS.TITLE}</Link>
 						</span>
@@ -185,10 +186,11 @@ class AddTradeTab extends Component {
 					</div>
 					<div className="d-flex flex-wrap p-3 my-5">
 						{data.map((key, index) => {
-							let pair = pairs[key];
-							let { min, fullname, symbol = '' } =
+							let pair = pairs[key] || {};
+							let { fullname, symbol = '' } =
 								coins[pair.pair_base || BASE_CURRENCY] || DEFAULT_COIN_DATA;
 							const pairTwo = coins[pair.pair_2] || DEFAULT_COIN_DATA;
+							const { increment_price } = pair;
 							let ticker = tickers[key] || {};
 							const priceDifference =
 								ticker.open === 0
@@ -230,7 +232,7 @@ class AddTradeTab extends Component {
 										<div>
 											{STRINGS.PRICE}:
 											<span className="title-font ml-1">
-												{formatToCurrency(ticker.close, min)}
+												{formatToCurrency(ticker.close, increment_price)}
 											</span>
 										</div>
 										<div className="d-flex">
@@ -241,7 +243,7 @@ class AddTradeTab extends Component {
 														: 'trade-tab-price_diff_up price-diff-up'
 												}
 											>
-												{formatAverage(formatToCurrency(priceDifference, min))}
+												{formatAverage(formatToCurrency(priceDifference, increment_price))}
 											</div>
 											<div
 												className={
@@ -255,7 +257,7 @@ class AddTradeTab extends Component {
 										</div>
 										<div>{`${STRINGS.CHART_TEXTS.v}: ${
 											ticker.volume
-										} ${symbol.toUpperCase()}`}</div>
+											} ${symbol.toUpperCase()}`}</div>
 									</div>
 								</div>
 							);

@@ -51,6 +51,7 @@ const NotificationsList = ({ announcements }) => {
 }
 
 const mapStateToProps = (store) => ({
+	activeLanguage: store.app.language
 	// announcements: store.app.announcements
 });
 

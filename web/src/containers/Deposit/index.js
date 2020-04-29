@@ -91,7 +91,7 @@ class Deposit extends Component {
 	};
 
 	render() {
-		const { id, crypto_wallet, openContactForm, balance, coins } = this.props;
+		const { id, crypto_wallet, openContactForm, balance, coins, constants = { links: {} } } = this.props;
 		const { currency, checked, copied } = this.state;
 		if (!id || !currency || !checked) {
 			return <div />;
@@ -120,7 +120,8 @@ class Deposit extends Component {
 							openContactForm,
 							generateBaseInformation,
 							coins,
-							'deposit'
+							'deposit',
+							constants.links
 						)}
 						{renderContent(currency, crypto_wallet, coins, this.onCopy)}
 						{isMobile && (
@@ -151,7 +152,8 @@ const mapStateToProps = (store) => ({
 	balance: store.user.balance,
 	activeLanguage: store.app.language,
 	quoteData: store.orderbook.quoteData,
-	coins: store.app.coins
+	coins: store.app.coins,
+	constants: store.app.constants
 });
 
 const mapDispatchToProps = (dispatch) => ({

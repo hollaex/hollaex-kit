@@ -8,12 +8,8 @@ import { isMobile } from 'react-device-detect';
 import moment from 'moment';
 import math from 'mathjs';
 import {
-	IS_PRO_VERSION,
-	PRO_URL,
-	DEFAULT_VERSION_REDIRECT,
+	DEFAULT_URL,
 	ICONS,
-	HOLLAEX_LOGO_BLACK,
-	EXCHANGE_EXPIRY_SECONDS,
 	IS_XHT
 } from '../../config/constants';
 import { LinkButton } from './LinkButton';
@@ -106,16 +102,23 @@ class AppBar extends Component {
 		}
 	}
 
-	checkExchangeExpiry = (info) => {
-		if (
-			!Object.keys(info).length || !info.active ||
-			(info.active &&
-				info.is_trial &&
-				moment().diff(info.created_at, 'seconds') > EXCHANGE_EXPIRY_SECONDS)
-		) {
-			this.props.router.push('/expired-exchange');
+	checkExchangeExpiry = (info = {}) => {
+		if (info.status) {
+			if (info.is_trial) {
+				if (info.active) {
+					if (info.expiry && moment().isAfter(info.expiry, 'second')) {
+						this.navigateToExpiry();
+					}
+				} else {
+					this.navigateToExpiry();
+				}
+			}
+		} else {
+			this.navigateToExpiry();
 		}
 	};
+
+	navigateToExpiry = () => this.props.router.push('/expired-exchange');
 
 	getUserDetails = () => {
 		return this.props
@@ -283,22 +286,14 @@ class AppBar extends Component {
 	};
 
 	renderIcon = (isHome) => {
-		let path = this.props.constants.logo_black_path || HOLLAEX_LOGO_BLACK;
+		let path = this.props.constants.logo_black_path;
 		return (
 			<div className={classnames('app_bar-icon', 'text-uppercase')}>
 				{isHome ? (
-					<img
-						src={path}
-						alt={STRINGS.APP_NAME}
-						className="app_bar-icon-logo"
-					/>
+					<div style={{ backgroundImage: `url(${path})` }} className="app_bar-icon-logo"></div>
 				) : (
-					<Link href={IS_PRO_VERSION ? PRO_URL : DEFAULT_VERSION_REDIRECT}>
-						<img
-							src={path}
-							alt={STRINGS.APP_NAME}
-							className="app_bar-icon-logo"
-						/>
+					<Link href={DEFAULT_URL}>
+						<div style={{ backgroundImage: `url(${path})` }} className="app_bar-icon-logo"></div>
 					</Link>
 				)}
 			</div>
@@ -433,11 +428,13 @@ class AppBar extends Component {
 				)}
 			>
 				<Link to="/">
-					<img
-						src={constants.logo_black_path || HOLLAEX_LOGO_BLACK}
-						alt={STRINGS.APP_NAME}
+					<div
+						style={{
+							backgroundImage: `url(${constants.logo_black_path})`
+						}}
 						className="homeicon-svg"
-					/>
+					>
+					</div>
 				</Link>
 				{isHome && this.renderSplashActions(token, verifyingToken)}
 			</MobileBarWrapper>
@@ -515,21 +512,24 @@ class AppBar extends Component {
 										</div>
 									</div>
 								</Link>
-								<Link to={`/quick-trade/${pair}`}>
-									<div
-										className={classnames('app_bar-quicktrade', 'd-flex', {
-											'quick_trade-active': activePath === 'quick-trade'
-										})}
-									>
-										<ReactSVG
-											path={ICONS.QUICK_TRADE_TAB_ACTIVE}
-											wrapperClassName="quicktrade_icon"
-										/>
-										<div className="d-flex align-items-center overflow">
-											{STRINGS.QUICK_TRADE}
+								{constants.broker_enabled
+									? <Link to={`/quick-trade/${pair}`}>
+										<div
+											className={classnames('app_bar-quicktrade', 'd-flex', {
+												'quick_trade-active': activePath === 'quick-trade'
+											})}
+										>
+											<ReactSVG
+												path={ICONS.QUICK_TRADE_TAB_ACTIVE}
+												wrapperClassName="quicktrade_icon"
+											/>
+											<div className="d-flex align-items-center overflow">
+												{STRINGS.QUICK_TRADE}
+											</div>
 										</div>
-									</div>
-								</Link>
+									</Link>
+									: null
+								}
 							</div>
 							<MenuList
 								selectedMenu={selectedMenu}

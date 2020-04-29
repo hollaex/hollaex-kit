@@ -117,38 +117,77 @@ export const constructSettings = (state = {}, settings) => {
 	return settingsData;
 };
 
-export const playBackgroundAudioNotification = (type = '') => {
+export const playBackgroundAudioNotification = (type = '', audioSettings = { audio: {} }) => {
 	let audioFile = '';
 	switch (type) {
 		case 'orderbook_market_order':
 		case 'order_filled':
-			audioFile = AUDIOS.ORDER_COMPLETED;
+			if (audioSettings.audio.order_completed) {
+				audioFile = AUDIOS.ORDER_COMPLETED;
+			} else {
+				audioFile = '';
+			}
 			break;
 		case 'order_partialy_filled':
-			audioFile = AUDIOS.ORDER_PARTIALLY_COMPLETED;
+			if (audioSettings.audio.order_partially_completed) {
+				audioFile = AUDIOS.ORDER_PARTIALLY_COMPLETED;
+			} else {
+				audioFile = '';
+			}
 			break;
 		case 'orderbook_field_update':
-			audioFile = AUDIOS.ORDERBOOK_FIELD_UPDATE;
+			if (audioSettings.audio.click_amounts) {
+				audioFile = AUDIOS.ORDERBOOK_FIELD_UPDATE;
+			} else {
+				audioFile = '';
+			}
 			break;
 		case 'orderbook_limit_order':
-			audioFile = AUDIOS.ORDERBOOK_LIMIT_ORDER;
+			if (audioSettings.audio.order_placed) {
+				audioFile = AUDIOS.ORDERBOOK_LIMIT_ORDER;
+			} else {
+				audioFile = '';
+			}
 			break;
 		case 'public_trade':
-			audioFile = AUDIOS.PUBLIC_TRADE_NOTIFICATION;
+			if (audioSettings.audio.public_trade) {
+				audioFile = AUDIOS.PUBLIC_TRADE_NOTIFICATION;
+			} else {
+				audioFile = '';
+			}
 			break;
 		case 'cancel_order':
-			audioFile = AUDIOS.CANCEL_ORDER;
+			if (audioSettings.audio.order_canceled) {
+				audioFile = AUDIOS.CANCEL_ORDER;
+			} else {
+				audioFile = '';
+			}
 			break;
 		case 'quick_trade_complete':
-			audioFile= AUDIOS.QUICK_TRADE_COMPLETE;
+			if (audioSettings.audio.quick_trade_success) {
+				audioFile= AUDIOS.QUICK_TRADE_COMPLETE;
+			} else {
+				audioFile = '';
+			}
 			break;
 		case 'review_quick_trade_order':
-			audioFile=AUDIOS.REVIEW_QUICK_TRADE_ORDER;
+			if (audioSettings.audio.get_quote_quick_trade) {
+				audioFile=AUDIOS.REVIEW_QUICK_TRADE_ORDER;
+			} else {
+				audioFile = '';
+			}
 			break;
 		case 'time_out_quick_trade':
-			audioFile=AUDIOS.TIME_OUT_QUICK_TRADE;
+			if (audioSettings.audio.quick_trade_timeout) {
+				audioFile=AUDIOS.TIME_OUT_QUICK_TRADE;
+			} else {
+				audioFile = '';
+			}
 			break;
 		default:
+	}
+	if (audioSettings.audio.all === false) {
+		audioFile = ''
 	}
 	const audio = new Audio(audioFile);
 	if (audioFile) audio.play();
