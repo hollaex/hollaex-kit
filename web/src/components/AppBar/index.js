@@ -10,7 +10,6 @@ import math from 'mathjs';
 import {
 	DEFAULT_URL,
 	ICONS,
-	EXCHANGE_EXPIRY_SECONDS,
 	IS_XHT
 } from '../../config/constants';
 import { LinkButton } from './LinkButton';
@@ -103,16 +102,23 @@ class AppBar extends Component {
 		}
 	}
 
-	checkExchangeExpiry = (info) => {
-		if (
-			!Object.keys(info).length || !info.active ||
-			(info.active &&
-				info.is_trial &&
-				moment().diff(info.created_at, 'seconds') > EXCHANGE_EXPIRY_SECONDS)
-		) {
-			this.props.router.push('/expired-exchange');
+	checkExchangeExpiry = (info = {}) => {
+		if (info.status) {
+			if (info.is_trial) {
+				if (info.active) {
+					if (info.expiry && moment().isAfter(info.expiry, 'second')) {
+						this.navigateToExpiry();
+					}
+				} else {
+					this.navigateToExpiry();
+				}
+			}
+		} else {
+			this.navigateToExpiry();
 		}
 	};
+
+	navigateToExpiry = () => this.props.router.push('/expired-exchange');
 
 	getUserDetails = () => {
 		return this.props

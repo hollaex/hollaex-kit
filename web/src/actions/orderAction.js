@@ -33,14 +33,14 @@ export function removeOrder(ids) {
 }
 
 export const submitOrder = (order) => axios.post('/order', order);
-export const cancelOrder = (orderId) => (dispatch) => {
+export const cancelOrder = (orderId, settings) => (dispatch) => {
 	axios.delete(`/user/orders/${orderId}`)
 		.then((data) => {
 			dispatch({
 				type: 'CANCEL_ORDER',
 				payload: data
 			});
-			playBackgroundAudioNotification('cancel_order');
+			playBackgroundAudioNotification('cancel_order', settings);
 			dispatch({
 				type: 'SET_SNACK_NOTIFICATION',
 				payload: {
@@ -53,14 +53,14 @@ export const cancelOrder = (orderId) => (dispatch) => {
 		})
 };
 
-export const cancelAllOrders = (symbol = '') => dispatch => {
+export const cancelAllOrders = (symbol = '', settings) => dispatch => {
 	axios.delete(`/user/orders?symbol=${symbol}`)
 		.then((data) => {
 			dispatch({
 				type: 'CANCEL_ALL_ORDERS',
 				payload: data
 			});
-			playBackgroundAudioNotification('cancel_order');
+			playBackgroundAudioNotification('cancel_order', settings);
 			dispatch({
 				type: 'SET_SNACK_NOTIFICATION',
 				payload: {
