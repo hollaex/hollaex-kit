@@ -167,14 +167,8 @@ export const generateAdminSettings = (key) => {
             email_distribution_list: {
                 admin: {
                     type: 'input',
-                    label: 'Admin email',
-                    placeholder: 'admin email',
-                    validate: [validateRequired, email]
-                },
-                support: {
-                    type: 'input',
-                    label: 'Support email',
-                    placeholder: 'Support email',
+                    label: 'Auditor email',
+                    placeholder: 'auditor email address',
                     validate: [validateRequired, email]
                 }
             },
