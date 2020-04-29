@@ -57,7 +57,7 @@ const RTL = 'direction: rtl;';
 
 const LOGO_TEMPLATE = ({ domain = DOMAIN, logoPath = LOGO_PATH() }) => `
   <div style="${styles.logo}">
-    <a href="${domain}"><img src="${logoPath}" height="25"/></a>
+    <a href="${domain}"><img src="${logoPath}" height="40"/></a>
   </div>
 `;
 
