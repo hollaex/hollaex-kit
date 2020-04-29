@@ -52,3 +52,5 @@ export { default as Plugins } from './Admin/Plugins';
 export { default as PluginServices } from './Admin/Plugins/PluginServices';
 export { default as Settings } from './Admin/Settings';
 export { default as MobileHome } from './MobileHome';
+export { default as Transfer } from './Admin/Transfers';
+export { default as AdminFees } from './Admin/AdminFees';

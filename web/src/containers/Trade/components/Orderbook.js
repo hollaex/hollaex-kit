@@ -4,11 +4,11 @@ import EventListener from 'react-event-listener';
 import { connect } from 'react-redux';
 
 import { subtract, asksSelector, bidsSelector } from '../utils';
-import { formatCurrency, formatToFixed } from '../../../utils/currency';
+import { formatToCurrency, formatToFixed } from '../../../utils/currency';
 import STRINGS from '../../../config/localizedStrings';
 import { DEFAULT_COIN_DATA } from '../../../config/constants';
 
-const PriceRow = (pairBase, pairTwo, side, onPriceClick, onAmountClick) => (
+const PriceRow = (side, increment_price, increment_size, onPriceClick, onAmountClick) => (
 	[price, amount],
 	index
 ) => (
@@ -17,13 +17,13 @@ const PriceRow = (pairBase, pairTwo, side, onPriceClick, onAmountClick) => (
 			className={`f-1 trade_orderbook-cell trade_orderbook-cell-price ${side} pointer`}
 			onClick={onPriceClick(price)}
 		>
-			{formatCurrency(price, pairTwo, true)}
+			{formatToCurrency(price, increment_price)}
 		</div>
 		<div
 			className="f-1 trade_orderbook-cell trade_orderbook-cell-amount pointer"
 			onClick={onAmountClick(amount)}
 		>
-			{formatCurrency(amount, pairBase, true)}
+			{formatToCurrency(amount, increment_size)}
 		</div>
 	</div>
 );
@@ -87,7 +87,7 @@ class Orderbook extends Component {
 	};
 
 	render() {
-		const { asks, bids, pairData, pair, coins } = this.props;
+		const { asks, bids, pairData = {}, pair, coins } = this.props;
 		// const blockStyle = {};
 		const { dataBlockHeight } = this.state;
 		const blockStyle =
@@ -99,7 +99,6 @@ class Orderbook extends Component {
 				: {};
 
 		const pairBase = pairData.pair_base.toUpperCase();
-		const pairTwo = pairData.pair_2.toUpperCase();
 		const { symbol } = coins[pairData.pair_2] || DEFAULT_COIN_DATA;
 		return (
 			<div className="trade_orderbook-wrapper d-flex flex-column f-1 apply_rtl">
@@ -130,9 +129,9 @@ class Orderbook extends Component {
 					>
 						{asks.map(
 							PriceRow(
-								pairBase,
-								pairTwo,
 								'ask',
+								pairData.increment_price,
+								pairData.increment_size,
 								this.onPriceClick,
 								this.onAmountClick
 							)
@@ -164,9 +163,9 @@ class Orderbook extends Component {
 					>
 						{bids.map(
 							PriceRow(
-								pairBase,
-								pairTwo,
 								'bids',
+								pairData.increment_price,
+								pairData.increment_size,
 								this.onPriceClick,
 								this.onAmountClick
 							)

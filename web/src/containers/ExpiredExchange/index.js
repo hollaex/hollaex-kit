@@ -9,8 +9,7 @@ import { getThemeClass } from '../../utils/theme';
 import {
 	ICONS,
 	FLEX_CENTER_CLASSES,
-	EXCHANGE_URL,
-	EXCHANGE_EXPIRY_SECONDS
+	EXCHANGE_URL
 } from '../../config/constants';
 import { getExchangeInfo } from '../../actions/appActions';
 import { logout } from '../../actions/authAction';
@@ -24,17 +23,25 @@ class Expired extends Component {
 
 	componentDidUpdate(prevProps) {
 		if (JSON.stringify(this.props.info) !== JSON.stringify(prevProps.info)) {
-			if (
-				(this.props.info.active &&
-					this.props.info.is_trial &&
-					moment().diff(this.props.info.created_at, 'seconds') <
-						EXCHANGE_EXPIRY_SECONDS) ||
-				(!this.props.info.is_trial)
-			) {
-				this.props.router.replace('/account');
-			}
+			this.checkExchangeExpiry(this.props.info);
 		}
 	}
+
+	checkExchangeExpiry = (info = {}) => {
+		if (info.status) {
+			if (info.is_trial) {
+				if (info.active) {
+					if (info.expiry && moment().isBefore(info.expiry, 'second')) {
+						this.goToAccount();
+					}
+				}
+			} else {
+				this.goToAccount();
+			}	
+		}
+	}
+
+	goToAccount = () => this.props.router.replace('/account');
 
 	render() {
 		const { activeTheme } = this.props;

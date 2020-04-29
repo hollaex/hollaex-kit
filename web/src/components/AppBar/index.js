@@ -8,11 +8,8 @@ import { isMobile } from 'react-device-detect';
 import moment from 'moment';
 import math from 'mathjs';
 import {
-	IS_PRO_VERSION,
-	PRO_URL,
-	DEFAULT_VERSION_REDIRECT,
+	DEFAULT_URL,
 	ICONS,
-	EXCHANGE_EXPIRY_SECONDS,
 	IS_XHT
 } from '../../config/constants';
 import { LinkButton } from './LinkButton';
@@ -105,16 +102,23 @@ class AppBar extends Component {
 		}
 	}
 
-	checkExchangeExpiry = (info) => {
-		if (
-			!Object.keys(info).length || !info.active ||
-			(info.active &&
-				info.is_trial &&
-				moment().diff(info.created_at, 'seconds') > EXCHANGE_EXPIRY_SECONDS)
-		) {
-			this.props.router.push('/expired-exchange');
+	checkExchangeExpiry = (info = {}) => {
+		if (info.status) {
+			if (info.is_trial) {
+				if (info.active) {
+					if (info.expiry && moment().isAfter(info.expiry, 'second')) {
+						this.navigateToExpiry();
+					}
+				} else {
+					this.navigateToExpiry();
+				}
+			}
+		} else {
+			this.navigateToExpiry();
 		}
 	};
+
+	navigateToExpiry = () => this.props.router.push('/expired-exchange');
 
 	getUserDetails = () => {
 		return this.props
@@ -288,7 +292,7 @@ class AppBar extends Component {
 				{isHome ? (
 					<div style={{ backgroundImage: `url(${path})` }} className="app_bar-icon-logo"></div>
 				) : (
-					<Link href={IS_PRO_VERSION ? PRO_URL : DEFAULT_VERSION_REDIRECT}>
+					<Link href={DEFAULT_URL}>
 						<div style={{ backgroundImage: `url(${path})` }} className="app_bar-icon-logo"></div>
 					</Link>
 				)}

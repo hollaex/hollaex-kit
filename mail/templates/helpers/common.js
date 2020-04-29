@@ -6,7 +6,7 @@ const {
 	EMAIL_ICONS
 } = require('../../constants');
 const { DOMAIN, GET_CONFIGURATION } = require('../../../constants');
-const LOGO_BLACK_PATH = () => GET_CONFIGURATION().constants.logo_black_path;
+const LOGO_PATH = () => GET_CONFIGURATION().constants.logo_path;
 const DEFAULT_LANGUAGE = () => GET_CONFIGURATION().constants.defaults.language;
 const styles = require('./styles');
 
@@ -55,9 +55,9 @@ const close = `<div style="color: #E3E5E7"><br /><br />This is the end of the me
 
 const RTL = 'direction: rtl;';
 
-const LOGO_TEMPLATE = ({ domain = DOMAIN, logoPath = LOGO_BLACK_PATH() }) => `
+const LOGO_TEMPLATE = ({ domain = DOMAIN, logoPath = LOGO_PATH() }) => `
   <div style="${styles.logo}">
-    <a href="${domain}"><img src="${logoPath}" height="25"/></a>
+    <a href="${domain}"><img src="${logoPath}" height="40"/></a>
   </div>
 `;
 
@@ -73,6 +73,8 @@ const HEADER_TEMPLATE = ({ title, imagePath = '' }) => `
   </div>
 `;
 
+const rtlLanguage = (lang) => (lang === 'fa' || lang === 'ar') ? RTL : '';
+
 exports.TemplateEmail = (
 	headerProps = {},
 	content = '',
@@ -80,13 +82,14 @@ exports.TemplateEmail = (
 	domain = DOMAIN
 ) => {
 	const bodyStyle = styles.body.concat('');
+
 	return `
     <div style="${bodyStyle}">
       <div style="${styles.wrapper}">
 			${LOGO_TEMPLATE(domain)}
 				<div style="${styles.box_shadow}">
 				  ${HEADER_TEMPLATE(headerProps)}
-	        <div style="${styles.container}">
+	        <div style="${styles.container}${rtlLanguage(language)}">
 	  				${content}
 	        </div>
 	        ${footerTemplate(language, domain)}

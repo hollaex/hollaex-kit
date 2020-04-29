@@ -1,9 +1,9 @@
-import AGREEMENT from './agreement';
+import AGREEMENT from '../agreement';
+import LANGUAGES from '../languages';
 
 export default {
 	APP_TITLE: 'HollaEx',
-	APP_SUB_TITLE: 'Open Crypto Exchange', // new
-	APP_NAME: 'HollaEx',
+	APP_SUB_TITLE: 'Open Crypto Exchange', // slogan
 
 	LOGOUT_CONFIRM_TEXT: 'Are you sure?. Do you want to logout',
 	ADD_TRADING_PAIR: 'Add Trading Pair',
@@ -32,8 +32,8 @@ export default {
 	CONTACT_US_TEXT: 'Contact us',
 	HELPFUL_RESOURCES_TEXT: 'Helpful resources',
 	HELP_RESOURCE_GUIDE_TEXT:
-		'Feel free to contact us for more information and any issues by sending us an email to support@hollaex.com',
-	HELP_TELEGRAM_TEXT: 'Check out HollaEx open API documentation:',
+		'Feel free to contact us for more information and any issues by sending us an email',
+	HELP_TELEGRAM_TEXT: 'Check out open API documentation:',
 	HELP_TELEGRAM_LINK: 'https://apidocs.hollaex.com',
 	NEED_HELP_TEXT: 'Need help?', // new
 	HELP_TEXT: 'help',
@@ -79,11 +79,7 @@ export default {
 	FOOTER: {
 		FOOTER_LEGAL: ['Proudly made in Seoul, South Korea', 'bitHolla Inc.'],
 		FOOTER_LANGUAGE_TEXT: 'LANGUAGE',
-		FOOTER_LANGUAGE_LANGUAGES: [
-			{ key: 'en', label: 'English' },
-			{ key: 'ko', label: '한국어' }
-		],
-		FOOTER_COPYRIGHT: '	Copyright {0} ⓒ bitHolla Inc. All rights reserved',
+		FOOTER_COPYRIGHT: 'Powered by bitHolla',
 		SECTIONS: {
 			SECTION_1_TITLE: 'ABOUT',
 			SECTION_1_LINK_1: 'About Us',
@@ -115,7 +111,13 @@ export default {
 			SECTION_5_LINK_4: 'FAQ', // new
 			SECTION_6_TITLE: 'SOCIAL',
 			SECTION_6_LINK_1: 'Twitter',
-			SECTION_6_LINK_2: 'Telegram'
+			SECTION_6_LINK_2: 'Telegram',
+			SECTION_6_LINK_3: 'Facebook', // new
+			SECTION_6_LINK_4: 'Instagram', // new
+			SECTION_6_LINK_5: 'Linkedin', // new
+			SECTION_6_LINK_6: 'Website', // new
+			SECTION_6_LINK_7: 'Helpdesk', // new
+			SECTION_6_LINK_8: 'Information' // new
 		},
 		XHT_DESCRIPTION:
 			'HollaEx Kit is an open source trading platform built by bitHolla Inc. You can create and list any digital assets and onboard users to trade on your exchange using this exchange Kit. In order to simply run one yourself {1}.',
@@ -138,8 +140,6 @@ export default {
 		// new
 		REQUEST_TITLE: 'Request Access',
 		REQUEST_INVITE: 'Request Invite',
-		REFERRAL_INVITE_WARNING:
-			'To access the HollaEx official Exchange you need to get a referral link from a friend or {0}',
 		CATEGORY_PLACEHOLDER: 'Select the category that best suits your issue',
 		INTRODUCTION_LABEL: 'Introduce yourself',
 		INTRODUCTION_PLACEHOLDER:
@@ -177,10 +177,6 @@ export default {
 			ETH: 'Your Ethereum receiving address',
 			BCH: 'Your Bitcoin Cash receiving address'
 		},
-		INFORMATION_MESSAGES: [
-			'Use the bank details below to deposit USD in to your account. Transfers usally take up to 1-2 business day.',
-			'Deposits will only be accepeted from a bank account in a name that matches the name registered with your HollaEx account.'
-		],
 		INCREASE_LIMIT: 'Want to increase your daily limit?',
 		QR_CODE:
 			'This QR Code can be scanned by the person who wants to send you funds',
@@ -204,6 +200,7 @@ export default {
 	},
 	VALIDATIONS: {
 		OTP_LOGIN: 'Provide OTP code to login',
+		FROZEN_ACCOUNT: 'This account is frozen',
 		INVALID_EMAIL: 'Invalid email address',
 		TYPE_EMAIL: 'Type your E-mail',
 		REQUIRED: 'Required field',
@@ -294,6 +291,7 @@ export default {
 	PREVIOUS_PAGE: 'previous page',
 	NEXT_PAGE: 'next page',
 	WALLET: {
+		LOADING_ASSETS: 'Loading assets...', // new
 		TOTAL_ASSETS: 'Total Assets',
 		AVAILABLE_WITHDRAWAL: 'Available for trading',
 		AVAILABLE_TRADING: 'Available for withdrawal',
@@ -331,7 +329,7 @@ export default {
 		TERMS: {
 			terms: 'General Terms',
 			policy: 'Privacy Policy',
-			text: 'I have read and agree to the {0} and {1}.'
+			text: 'I have read and agree to the {0} and {1}'
 		}
 	},
 	VERIFICATION_TEXTS: {
@@ -475,7 +473,7 @@ export default {
 				TITLE_PERSONAL_INFORMATION: 'Personal Information',
 				TITLE_PHONE: 'Phone',
 				PHONE_VERIFICATION_TXT:
-					'Providing valid contact details will assist HollaEx greatly in conflict resolution while preventing unwanted transactions on your account.',
+					'Providing valid contact details will assist us greatly in conflict resolution while preventing unwanted transactions on your account.',
 				PHONE_VERIFICATION_TXT_1:
 					'Receive real-time updates for deposits and withdrawals by sharing your mobile phone number.',
 				PHONE_VERIFICATION_TXT_2:
@@ -557,11 +555,11 @@ export default {
 				SELFIE: {
 					TITLE: 'Selfie with passport and Note',
 					INFO_TEXT:
-						"Please provide a photo of you holding your passport. In the same picture and have a reference to hollaex.com’, today's date and your signature displayed.Make sure your face is clearly visible and that your ID details are clearly readable.",
+						"Please provide a photo of you holding your passport. In the same picture and have a reference to the exchange url’, today's date and your signature displayed.Make sure your face is clearly visible and that your ID details are clearly readable.",
 					REQUIRED: 'Required:',
 					INSTRUCTION_1: 'Your face clearly visable',
 					INSTRUCTION_2: 'Passport clearly readable',
-					INSTRUCTION_3: 'Write the word hollaex.com',
+					INSTRUCTION_3: 'Write the exchange name',
 					INSTRUCTION_4: "Write today's date",
 					INSTRUCTION_5: 'Write your signature',
 					WARNING:
@@ -606,7 +604,7 @@ export default {
 		TITLE_INTERFACE: 'Interface',
 		TITLE_LANGUAGE: 'Language',
 		TITLE_CHAT: 'Chat',
-		TITLE_AUDIO_CUE: 'Audio Cue',
+		TITLE_AUDIO_CUE: 'Play Audio Cue', // new
 		TITLE_MANAGE_RISK: 'Manage Risk',
 		ORDERBOOK_LEVEL: 'Orderbook Levels (Max 20)',
 		SET_TXT: 'SET',
@@ -628,12 +626,25 @@ export default {
 			POPUP_ORDER_PARTIALLY_FILLED:
 				'Show pop up when order has partially filled'
 		},
-		AUDIO_CUE_FORM: {
-			ORDERS_COMPLETED_AUDIO:
-				'Play an audio cue when your order has been filled',
+		AUDIO_CUE_FORM: { // new
+			ALL_AUDIO: 'All Audio cues',
+			PUBLIC_TRADE_AUDIO: 'When a public trade has been made',
 			ORDERS_PARTIAL_AUDIO:
-				'Play an audio cue when your order has been partially filled',
-			PUBLIC_TRADE_AUDIO: 'Play an audio cue on every public trade'
+				'When one of your orders is partially filled',
+			ORDERS_PLACED_AUDIO:
+				'When an order is placed',
+			ORDERS_CANCELED_AUDIO:
+				'When an order is canceled',
+			ORDERS_COMPLETED_AUDIO:
+				'When one of your orders is fully filled',
+			CLICK_AMOUNTS_AUDIO:
+				'When clicking amounts and prices on the orderbook',
+			GET_QUICK_TRADE_AUDIO:
+				'When getting a quote for quick trading',
+			SUCCESS_QUICK_TRADE_AUDIO:
+				'When a successful quick trade occurs',
+			QUICK_TRADE_TIMEOUT_AUDIO:
+				'When quick trade timeout',
 		},
 		RISK_MANAGEMENT: {
 			INFO_TEXT:
@@ -779,7 +790,6 @@ export default {
 		c: 'Close',
 		v: 'Volume'
 	},
-	LANGUAGES: [{ key: 'en', label: 'English' }],
 	QUICK_TRADE: 'Quick trade',
 	PRO_TRADE: 'Pro trade',
 	ADMIN_DASH: 'Admin Page',
@@ -856,7 +866,7 @@ export default {
 		MESSAGE_FEE: 'Transactions fee of {0} ({1}) included',
 		MESSAGE_FEE_BASE: 'Transactions fee of {0} included',
 		BASE_MESSAGE_1:
-			'You can only withdraw to a bank account in a name that matches the name registered with your HollaEx account.',
+			'You can only withdraw to a bank account in a name that matches the name registered with your account.',
 		BASE_MESSAGE_2: 'Withdrawal min amount',
 		BASE_MESSAGE_3: 'Daily withdrawal max amount',
 		BASE_INCREASE_LIMIT: 'Increase your daily limit',
@@ -927,11 +937,11 @@ export default {
 	RESUBMIT: 'Resubmit',
 	VERIFICATION_NOTIFICATION_SKIP_TITLE: 'Missing Documents!',
 	VERIFICATION_NOTIFICATION_SKIP_TEXT:
-		'To get full access to withdrawal and deposit functions on HollaEx you must submit your identity documents in your account page.',
+		'To get full access to withdrawal and deposit functions you must submit your identity documents in your account page.',
 	VERIFICATION_NOTIFICATION_SUCCESS_TITLE: 'Success!',
 	VERIFICATION_NOTIFICATION_SUCCESS_TEXT:
 		'You will receive an email notification when your information has been processed. Processing can typically take 1-3 days.',
-	VERIFICATION_NOTIFICATION_BUTTON: 'PROCEED TO HollaEx',
+	VERIFICATION_NOTIFICATION_BUTTON: 'PROCEED TO EXCHANGE',
 	ERROR_USER_ALREADY_VERIFIED: 'User already verified',
 	ERROR_INVALID_CARD_USER: 'Bank or card information provided is incorrect',
 	ERROR_INVALID_CARD_NUMBER: 'Invalid Card number',
@@ -949,18 +959,7 @@ export default {
 	INVALID_CAPTCHA: 'Invalid captcha',
 	NO_FEE: 'N/A',
 	SETTINGS_LANGUAGE_LABEL: 'Language preferences (Includes Emails)',
-	SETTINGS_LANGUAGE_OPTIONS: [
-		{
-			value: 'en',
-			label: 'English',
-			icon: '/assets/flags/selected-en.png'
-		},
-		{
-			value: 'ko',
-			label: '한국어',
-			icon: '/assets/flags/selected-kr.png'
-		}
-	],
+	SETTINGS_LANGUAGE_OPTIONS: LANGUAGES,
 	SETTINGS_ORDERPOPUP_LABEL: 'Display order confirmation popup',
 	SETTINGS_ORDERPOPUP_OPTIONS: [
 		{ value: false, label: 'NO' },
@@ -1212,9 +1211,7 @@ export default {
 	REFERRAL_LINK: {
 		TITLE: 'Invite your friend', // new
 		INFO_TEXT:
-			'Refer your friends by giving out this link. Your friends will receive {0}% discount by signing up through your link.', // new
-		INFO_TEXT_1:
-			'{0}% of trading fees collected from those you refer will be monthly credited to your account.', // new
+			'Refer your friends by giving out this link and receive benefits by onboarding other people.',
 		COPY_FIELD_LABEL: 'Share the link below with friends and earn commissions:', // new
 		REFERRED_USER_COUT: 'You have referred {0} users', // new
 		COPY_LINK_BUTTON: 'COPY REFERRAL LINK', // new
@@ -1308,7 +1305,7 @@ export default {
 		'You are using a trial version of {0} and it will expire in {1} days.', // new
 	EXPIRY_EXCHANGE_MSG:
 		'Your exchange has expired. Go to dash.bitholla.com to activate it again.', // new
-	EXPIRED_INFO_1: 'Your HollaEx trial has ended.', // new
+	EXPIRED_INFO_1: 'Your trial has ended.', // new
 	EXPIRED_INFO_2: 'Collateralize your exchange to activate it again.', // new
 	EXPIRED_BUTTON_TXT: 'ACTIVATE EXCHANGE', // new
 	TRADE_POSTS: {
@@ -1319,7 +1316,7 @@ export default {
 		ANNOUNCEMNT_TXT_4:
 			'Happy new year Hollaers. We are making a new mark starting from 2020 with launch of the most open trading platform with the help of you all.',
 		ANNOUNCEMNT_TXT_1:
-			'Earn XHT with HAP program by introducing your friends to hollaex.com. {0}.',
+			'Earn XHT with HAP program by introducing your friends to the exchange. {0}.',
 		DEFAULT_ANNOUNCEMENT:
 			'This section displays your exchange public announcements!',
 		ANNOUNCEMENT_TXT_2: 'Free XHT will be distributed to all wallets that {0}.',

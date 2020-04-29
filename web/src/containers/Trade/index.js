@@ -93,7 +93,7 @@ class Trade extends PureComponent {
 	};
 
 	goToTransactionsHistory = () => {
-		this.props.router.push('transactions');
+		this.props.router.push('/transactions');
 	};
 
 	goToPair = (pair) => {
@@ -131,7 +131,7 @@ class Trade extends PureComponent {
 
 	onPriceClick = (price) => {
 		this.props.change(FORM_NAME, 'price', price);
-		playBackgroundAudioNotification('orderbook_field_update');
+		playBackgroundAudioNotification('orderbook_field_update', this.props.settings);
 		if (this.priceRef) {
 			this.priceRef.focus();
 		}
@@ -139,7 +139,7 @@ class Trade extends PureComponent {
 
 	onAmountClick = (size) => {
 		this.props.change(FORM_NAME, 'size', size);
-		playBackgroundAudioNotification('orderbook_field_update');
+		playBackgroundAudioNotification('orderbook_field_update', this.props.settings);
 		if (this.sizeRef)
 			this.sizeRef.focus();
 	};

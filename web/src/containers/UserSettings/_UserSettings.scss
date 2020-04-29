@@ -2,6 +2,10 @@
 	border-top: 1px solid $colors-deactivate-color1;
 	border-bottom: 1px solid $colors-deactivate-color1;
 }
+.toggle-wrapper-all {
+    border-bottom: 2px solid $dark-app-line-divider;
+    margin-bottom: 3rem !important;
+}
 .portfolio-wrapper {
     width: 32rem;
     .icon_title-wrapper {
@@ -37,5 +41,9 @@
     .toggle-wrapper {
         border-top: 1px solid $dark-inactive-color;
         border-bottom: 1px solid $dark-inactive-color;
+    }
+    .toggle-wrapper-all {
+        border-bottom: 2px solid $dark-app-line-divider;
+        margin-bottom: 3rem !important;
     }
 }

@@ -1,6 +1,8 @@
 import React from 'react';
 import { InputNumber, Input, DatePicker, Select, Checkbox } from 'antd';
 import moment from 'moment';
+import TextArea from 'antd/lib/input/TextArea';
+import classname from 'classnames';
 import './index.css';
 
 const dateFormat = 'YYYY/MM/DD';
@@ -11,10 +13,11 @@ export const renderInputField = ({
 	type,
 	meta: { touched, error, warning },
 	prefix,
-	placeholder,
+    placeholder,
+    className,
 	disabled = false
 }) => (
-	<div className="input_field">
+	<div className={classname("input_field", className)}>
 		{label && <label>{label}</label>}
 		<div>
 			<Input
@@ -30,6 +33,33 @@ export const renderInputField = ({
 		</div>
 	</div>
 );
+
+export const renderTextAreaField = ({
+	input,
+	label,
+	type,
+	meta: { touched, error, warning },
+	prefix,
+	placeholder,
+	disabled = false
+}) => (
+		<div className="input_field">
+			{label && <label>{label}</label>}
+			<div>
+				<TextArea
+					rows={3}
+					placeholder={placeholder}
+					prefix={prefix}
+					{...input}
+					type={type}
+					disabled={disabled}
+				/>
+				{touched &&
+					((error && <span className="red-text">{error}</span>) ||
+						(warning && <span className="red-text">{warning}</span>))}
+			</div>
+		</div>
+    );
 
 export const renderNumberField = ({
 	input,

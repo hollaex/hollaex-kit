@@ -204,15 +204,19 @@ $main-text--color: $colors-deactivate-color2;
 				border-width: 2px 0 0 2px !important;
 				display: inline-block !important;
 				padding: 3px !important;
-				transform: rotate(131deg)!important;
+				transform: rotate(-50deg)!important;
 				content: '';
-				right: -$accordion_arrow-size;
+				left: -$accordion_arrow-size;
 				top: calc(50% - 0.3rem);
 			}
 		}
 		.accordion_section_title {
 			&.accordion_section--open .accordion_section_content_text:after {
 				transform: rotate(-135deg)!important;
+				top: calc(50% - 0.4rem);
+			}
+			.sidebar_hub-section-icon {
+				margin-left: 0.5rem;
 			}
 		}
 

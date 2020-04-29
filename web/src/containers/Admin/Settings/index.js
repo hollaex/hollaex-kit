@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Tabs, Row, Spin, Alert } from 'antd';
 
-import { GeneralSettingsForm, EmailSettingsForm, SecuritySettingsForm } from './SettingsForm';
+import { GeneralSettingsForm, EmailSettingsForm, SecuritySettingsForm, LinksSettingsForm } from './SettingsForm';
 import { getConstants, updatePlugins } from './action';
 import { generateAdminSettings } from './Utils';
 
@@ -29,7 +29,8 @@ export default class Settings extends Component {
                 },
                 distribution: {}
             },
-            initialSecurityValues: {}
+            initialSecurityValues: {},
+            initialLinkValues: {}
         };
     }
 
@@ -63,19 +64,21 @@ export default class Settings extends Component {
         const result = generateAdminSettings();
         let initialGeneralValues = { ...this.state.initialGeneralValues };
         const {
+            title,
+            description,
             defaults = {},
             emails = {},
             secrets = { smtp: {}, captcha: {} },
             accounts = {},
             allowed_domains,
             admin_whitelist,
-            captcha = {}
+            captcha = {},
+            links = {}
         } = this.state.constants;
         const { configuration = {}, distribution = {} } = this.state.initialEmailValues || {};
-        const { admin = '', support = '', ...rest } = accounts;
         const initialEmailValues = {
-            configuration: { ...configuration, ...emails, ...secrets.smtp, ...rest },
-            distribution: { ...distribution, admin, support }
+            configuration: { ...configuration, ...emails, ...secrets.smtp },
+            distribution: { ...distribution, ...accounts }
         };
         Object.keys(result).forEach(utilsValue => {
             if (this.state.constants[utilsValue]) {
@@ -87,7 +90,7 @@ export default class Settings extends Component {
                 }
             }
         });
-        initialGeneralValues = { ...initialGeneralValues, ...defaults };
+        initialGeneralValues = { ...initialGeneralValues, ...defaults, title, description };
 
         let initialSecurityValues = {
             ...captcha,
@@ -103,7 +106,8 @@ export default class Settings extends Component {
                 ? admin_whitelist.split(',')
                 : admin_whitelist;
         }
-        this.setState({ initialGeneralValues, initialEmailValues, initialSecurityValues })
+        const initialLinkValues = { ...links };
+        this.setState({ initialGeneralValues, initialEmailValues, initialSecurityValues, initialLinkValues });
     };
 
     submitSettings = (formProps, formKey) => {
@@ -127,15 +131,17 @@ export default class Settings extends Component {
         } else if (formKey === 'email_distribution') {
             formValues = {};
             formValues.accounts = { admin: formProps.admin, support: formProps.support };
+            if (formProps.kyc) formValues.accounts.kyc = formProps.kyc;
+            if (formProps.supervisor) formValues.accounts.supervisor = formProps.supervisor;
         } else if (formKey === 'email_configuration') {
             formValues = {};
             Object.keys(formProps).forEach((val) => {
                 if (val === 'sender' || val === 'timezone' || val === 'send_email_to_support') {
                     if (!formValues.emails) formValues.emails = {};
                     formValues.emails[val] = formProps[val];
-                } else if (val === 'kyc' || val === 'supervisor') {
-                    if (!formValues.accounts) formValues.accounts = {};
-                    formValues.accounts[val] = formProps[val];
+                // } else if (val === 'kyc' || val === 'supervisor') {
+                //     if (!formValues.accounts) formValues.accounts = {};
+                //     formValues.accounts[val] = formProps[val];
                 } else if (val === 'port') {
                     if (!formValues.secrets || !formValues.secrets.smtp) formValues.secrets = { smtp: {} };
                     formValues.secrets.smtp[val] = parseInt(formProps[val], 10);
@@ -171,7 +177,7 @@ export default class Settings extends Component {
     };
 
     render() {
-        const { loading, error, initialGeneralValues, initialEmailValues, initialSecurityValues } = this.state;
+        const { loading, error, initialGeneralValues, initialEmailValues, initialSecurityValues, initialLinkValues } = this.state;
         return (
             <div className="app_container-content">
                 <h1>Settings</h1>
@@ -209,6 +215,13 @@ export default class Settings extends Component {
                                 <Row>
                                     <SecuritySettingsForm
                                         initialValues={initialSecurityValues}
+                                        handleSubmitSettings={this.submitSettings} />
+                                </Row>
+                            </TabPane>
+                            <TabPane tab={'Links'} key={'links'}>
+                                <Row>
+                                    <LinksSettingsForm
+                                        initialValues={initialLinkValues}
                                         handleSubmitSettings={this.submitSettings} />
                                 </Row>
                             </TabPane>

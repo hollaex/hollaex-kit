@@ -14,8 +14,7 @@ import { NOTIFICATIONS } from '../../actions/appActions';
 import { errorHandler } from '../../components/OtpForm/utils';
 import {
 	FLEX_CENTER_CLASSES,
-	ICONS,
-	EXCHANGE_EXPIRY_SECONDS
+	ICONS
 } from '../../config/constants';
 
 import STRINGS from '../../config/localizedStrings';
@@ -92,7 +91,23 @@ class Login extends Component {
 		return service;
 	};
 
-	checkExpiryExchange = () => this.props.router.replace('/expired-exchange');
+	checkExchangeExpiry = (info = {}) => {
+		if (info.status) {
+			if (info.is_trial) {
+				if (info.active) {
+					if (info.expiry && moment().isAfter(info.expiry, 'second')) {
+						this.navigateToExpiry();
+					}
+				} else {
+					this.navigateToExpiry();
+				}
+			}
+		} else {
+			this.navigateToExpiry();
+		}
+	};
+
+	navigateToExpiry = () => this.props.router.replace('/expired-exchange');
 
 	// checkLogin = () => {
 	// 	// const termsAccepted = localStorage.getItem('termsAccepted');
@@ -112,11 +127,13 @@ class Login extends Component {
 			.then((res) => {
 				if (res.data.token)
 					this.setState({ token: res.data.token });
-				if ((!Object.keys(this.props.info).length) || (!this.props.info.active)
-					|| (this.props.info.is_trial && this.props.info.active 
-						&& moment().diff(this.props.info.created_at, 'seconds') > EXCHANGE_EXPIRY_SECONDS))
-					this.checkExpiryExchange();
-				else if (res.data && res.data.callbackUrl)
+				this.checkExchangeExpiry(this.props.info);
+				// if ((!Object.keys(this.props.info).length) || (!this.props.info.active)
+				// 	|| (this.props.info.is_trial && this.props.info.active 
+				// 		&& moment().diff(this.props.info.created_at, 'seconds') > EXCHANGE_EXPIRY_SECONDS))
+				// 	this.checkExpiryExchange();
+				// else 
+				if (res.data && res.data.callbackUrl)
 					this.redirectToService(res.data.callbackUrl);
 				else this.redirectToHome();
 			})
@@ -136,22 +153,7 @@ class Login extends Component {
 					error._error = STRINGS.VALIDATIONS.OTP_LOGIN;
 				} else {
 					if (_error === 'User is not activated') {
-						error._error = (
-							<div style={{ color: 'black' }}>
-								Account approval is required to access the demo
-								exchange.
-								<br />
-								Please contact us at{' '}
-								<a
-									style={{ color: 'blue' }}
-									href="mailto:support@hollaex.com?Subject=Approval%20request"
-									target="_top"
-								>
-									support@hollaex.com
-								</a>{' '}
-								with your use case for approval access
-							</div>
-						);
+						error._error = (STRINGS.VALIDATIONS.FROZEN_ACCOUNT);
 					} else {
 						error._error = _error;
 					}
@@ -168,11 +170,13 @@ class Login extends Component {
 				this.setState({ otpDialogIsOpen: false });
 				if (res.data.token)
 					this.setState({ token: res.data.token });
-				if ((!Object.keys(this.props.info).length) || (!this.props.info.active)
-					|| (this.props.info.is_trial && this.props.info.active
-						&& moment().diff(this.props.info.created_at, 'seconds') > EXCHANGE_EXPIRY_SECONDS))
-					this.checkExpiryExchange();
-				else if (res.data && res.data.callbackUrl)
+				this.checkExchangeExpiry(this.props.info);
+				// if ((!Object.keys(this.props.info).length) || (!this.props.info.active)
+				// 	|| (this.props.info.is_trial && this.props.info.active
+				// 		&& moment().diff(this.props.info.created_at, 'seconds') > EXCHANGE_EXPIRY_SECONDS))
+				// 	this.checkExpiryExchange();
+				// else 
+				if (res.data && res.data.callbackUrl)
 					this.redirectToService(res.data.callbackUrl);
 				else this.redirectToHome();
 			})
@@ -239,7 +243,8 @@ class Login extends Component {
 							text: STRINGS.LOGIN.CANT_LOGIN,
 							iconPath: ICONS.BLUE_ARROW_RIGHT,
 							onClick: this.redirectToResetPassword,
-							useSvg: true
+							useSvg: true,
+							showActionText: true
 						}}
 					/>
 					<div

@@ -148,10 +148,15 @@ $placeholder--font-weight: bold;
 	.checkfield-label {
 		padding: 0 0.25rem;
 		margin-bottom: 0;
+		margin-left: 0.25rem;
 		vertical-align: middle;
 		display: flex;
-		justify-content: center;
+		// justify-content: center;
 		align-items: center;
+		flex-wrap: wrap;
+	}
+	.checkfield-input {
+		margin-top: 2px;
 	}
 }
 
@@ -307,4 +312,9 @@ $placeholder--font-weight: bold;
 			}
 		}
 	}
+}
+
+.toggle-disabled {
+	cursor: not-allowed;
+	opacity: 0.35;
 }

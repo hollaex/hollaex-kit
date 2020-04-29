@@ -35,14 +35,14 @@ class OrdersWrapper extends Component {
         });
         this.setState({ cancelDelayData });
         setTimeout(() => {
-            this.props.cancelAllOrders(this.props.pair);
+            this.props.cancelAllOrders(this.props.pair, this.props.settings);
         }, 700);
     };
 
     handleCancelOrders = (id) => {
         this.setState({ cancelDelayData: this.state.cancelDelayData.concat(id) });
         setTimeout(() => {
-            this.props.cancelOrder(id);
+            this.props.cancelOrder(id, this.props.settings);
         }, 700);
     };
 
@@ -65,6 +65,7 @@ class OrdersWrapper extends Component {
                 title: STRINGS.ORDERS,
                 children: isLoggedIn() ? (
                     <ActiveOrders
+                        pairData={pairData}
                         cancelDelayData={cancelDelayData}
                         orders={activeOrders}
                         onCancel={this.handleCancelOrders}
@@ -142,7 +143,8 @@ OrdersWrapper.defaultProps = {
 
 const mapStateToProps = (state) => ({
     activeOrders: activeOrdersSelector(state),
-    userTrades: userTradesSelector(state)
+    userTrades: userTradesSelector(state),
+    settings: state.user.settings
 });
 
 const mapDispatchToProps = (dispatch) => ({

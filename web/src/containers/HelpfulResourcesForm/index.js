@@ -43,8 +43,9 @@ class HelpfulResourcesForm extends Component {
 			});
 	};
 	openNewForm=()=>{
+		const { links = {} } = this.props.constants;
 		this.props.onClose();
-		this.props.openContactForm({ category: 'bug' });
+		this.props.openContactForm({ category: 'bug', helpdesk: links.helpdesk });
 	};
 
 
@@ -105,6 +106,7 @@ const mapStateToProps = (store) => ({
 	email: store.user.email,
 	contactFormData: store.app.contactFormData,
 	activeTheme: store.app.theme,
+	constants: store.app.constants
 });
 
 const mapDispatchToProps = (dispatch) => ({

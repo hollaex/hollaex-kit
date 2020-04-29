@@ -40,8 +40,8 @@ $title--margin: 1rem;
 	}
 
 	.auth_logo-wrapper {
-		height: 5rem !important;
-		width: 8rem !important;
+		height: 6rem !important;
+		width: 10rem !important;
 		background-size: contain;
 		background-position: center;
 		background-repeat: no-repeat;
@@ -94,6 +94,12 @@ $title--margin: 1rem;
 		.auth_logo-wrapper svg {
 			height: 8rem !important;
 			width: 15rem !important;
+		}
+	}
+	.auth-container {
+		.action_notification-text,
+		.font-small {
+			font-size: 1rem !important;
 		}
 	}
 }

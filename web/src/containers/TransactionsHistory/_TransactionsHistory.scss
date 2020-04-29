@@ -9,9 +9,18 @@ $trade-asks-color-font: $colors-currencies-btc;
 		height: calc(100% - 4.5rem);
 		.history_block-wrapper {
 			max-height: calc(100% - 1rem);
+
+			.table-content {
+				overflow-x: scroll;
+				white-space: nowrap;
+				width: 100%;
+			}
 			.table-wrapper {
+				.table_header-wrapper,
 				.table_body-wrapper {
-					font-size: $regular--font-size;
+					font-size: $table-header-column--font-size !important;
+				}
+				.table_body-wrapper {
 					height: 4.5rem;
 				}
 			}
@@ -61,12 +70,17 @@ $trade-asks-color-font: $colors-currencies-btc;
 
 .history_block-wrapper {
 	position: relative;
+
+	.action_notification-svg svg {
+		width: 1.2rem !important;
+		height: 1.2rem !important;
+	}
 }
 
 .action_notification-svg svg {
 	@include size(2rem);
-	.data-1 {
-	}
+	// .data-1 {
+	// }
 }
 
 .btn-tx, .withdrawal-cancel {

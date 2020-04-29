@@ -11,12 +11,13 @@ import EditableInputField from './FormFields/EditableInputField';
 import CaptchaField from './FormFields/Captcha';
 import ToggleField from './FormFields/ToggleField';
 
-const renderFields = (fields = {}) => {
+const renderFields = (fields = {}, callback) => {
 	return (
 		<div>
 			{Object.keys(fields).map((key, index) => {
 				const { type, validate = [], ...rest } = fields[key];
 				const commonProps = {
+					callback,
 					key,
 					name: key,
 					type,

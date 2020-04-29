@@ -9,54 +9,54 @@ import {
 	IS_XHT
 } from '../../../config/constants';
 import STRINGS from '../../../config/localizedStrings';
-import { getBonusRequirements } from './utils';
+// import { getBonusRequirements } from './utils';
 
-const SucessStatus = ({ isAccountDetails }) => (
-	<div className="d-flex">
-		{isAccountDetails && (
-			<div className="requirement-verified mr-2">
-				{STRINGS.USER_VERIFICATION.COMPLETED.toUpperCase()}
-			</div>
-		)}
-		<ReactSvg
-			path={ICONS.GREEN_CHECK}
-			wrapperClassName="requirement-stauts"
-		/>
-	</div>
-);
+// const SucessStatus = ({ isAccountDetails }) => (
+// 	<div className="d-flex">
+// 		{isAccountDetails && (
+// 			<div className="requirement-verified mr-2">
+// 				{STRINGS.USER_VERIFICATION.COMPLETED.toUpperCase()}
+// 			</div>
+// 		)}
+// 		<ReactSvg
+// 			path={ICONS.GREEN_CHECK}
+// 			wrapperClassName="requirement-stauts"
+// 		/>
+// 	</div>
+// );
 
-const IncompleteStatus = ({ isAccountDetails }) => (
-	<div className="d-flex">
-		{isAccountDetails ? (
-			<div className="requirement-incomplete mr-2">
-				{STRINGS.USER_VERIFICATION.INCOMPLETED.toUpperCase()}
-			</div>
-		) : (
-				<ReactSvg
-					path={ICONS.VERIFICATION_INCOMPLETE}
-					wrapperClassName="requirement-stauts"
-				/>
-			)}
-	</div>
-);
+// const IncompleteStatus = ({ isAccountDetails }) => (
+// 	<div className="d-flex">
+// 		{isAccountDetails ? (
+// 			<div className="requirement-incomplete mr-2">
+// 				{STRINGS.USER_VERIFICATION.INCOMPLETED.toUpperCase()}
+// 			</div>
+// 		) : (
+// 				<ReactSvg
+// 					path={ICONS.VERIFICATION_INCOMPLETE}
+// 					wrapperClassName="requirement-stauts"
+// 				/>
+// 			)}
+// 	</div>
+// );
 
-const PendingStatus = ({ isAccountDetails }) => (
-	<div className="d-flex">
-		<ReactSvg
-			path={ICONS.VERIFICATION_PENDING}
-			wrapperClassName="requirement-stauts"
-		/>
-	</div>
-);
+// const PendingStatus = ({ isAccountDetails }) => (
+// 	<div className="d-flex">
+// 		<ReactSvg
+// 			path={ICONS.VERIFICATION_PENDING}
+// 			wrapperClassName="requirement-stauts"
+// 		/>
+// 	</div>
+// );
 
-const RejectedStatus = ({ isAccountDetails }) => (
-	<div className="d-flex">
-		<ReactSvg
-			path={ICONS.VERIFICATION_REJECTED}
-			wrapperClassName="requirement-stauts"
-		/>
-	</div>
-);
+// const RejectedStatus = ({ isAccountDetails }) => (
+// 	<div className="d-flex">
+// 		<ReactSvg
+// 			path={ICONS.VERIFICATION_REJECTED}
+// 			wrapperClassName="requirement-stauts"
+// 		/>
+// 	</div>
+// );
 
 // const checkMonth = (currentDate, month) => {
 // 	const diffMonth = moment().diff(moment(currentDate), 'months');
@@ -242,23 +242,23 @@ export const getRequirements = (user, level, balance = {}, coins) => {
 	return verificationObj[`level_${level}`] || {};
 };
 
-const getStatusClass = (status_code, completed) => {
-	switch (status_code) {
-		case 0:
-			return 'requirement-not-verified';
-		case 1:
-			return 'requirement-pending';
-		case 2:
-			return 'requirement-rejected';
-		case 3:
-			return 'requirement-verified';
-		default:
-			if (status_code === undefined && completed === false) {
-				return 'requirement-not-verified';
-			}
-			return '';
-	}
-};
+// const getStatusClass = (status_code, completed) => {
+// 	switch (status_code) {
+// 		case 0:
+// 			return 'requirement-not-verified';
+// 		case 1:
+// 			return 'requirement-pending';
+// 		case 2:
+// 			return 'requirement-rejected';
+// 		case 3:
+// 			return 'requirement-verified';
+// 		default:
+// 			if (status_code === undefined && completed === false) {
+// 				return 'requirement-not-verified';
+// 			}
+// 			return '';
+// 	}
+// };
 
 // const getAllCompleted = (requirement) => {
 // 	return (
@@ -268,31 +268,31 @@ const getStatusClass = (status_code, completed) => {
 // 	);
 // };
 
-const getStatusIcon = (reqObj, isAccountDetails) => {
-	if (isAccountDetails) {
-		return reqObj.completed ? (
-			<SucessStatus isAccountDetails={isAccountDetails} />
-		) : (
-				<IncompleteStatus isAccountDetails={isAccountDetails} />
-			);
-	} else {
-		switch (reqObj.status) {
-			case 0:
-				return <IncompleteStatus isAccountDetails={isAccountDetails} />;
-			case 1:
-				return <PendingStatus isAccountDetails={isAccountDetails} />;
-			case 2:
-				return <RejectedStatus isAccountDetails={isAccountDetails} />;
-			case 3:
-				return <SucessStatus isAccountDetails={isAccountDetails} />;
-			default:
-				if (reqObj.status === undefined && reqObj.completed === false) {
-					return <IncompleteStatus isAccountDetails={isAccountDetails} />;
-				}
-				return '';
-		}
-	}
-};
+// const getStatusIcon = (reqObj, isAccountDetails) => {
+// 	if (isAccountDetails) {
+// 		return reqObj.completed ? (
+// 			<SucessStatus isAccountDetails={isAccountDetails} />
+// 		) : (
+// 				<IncompleteStatus isAccountDetails={isAccountDetails} />
+// 			);
+// 	} else {
+// 		switch (reqObj.status) {
+// 			case 0:
+// 				return <IncompleteStatus isAccountDetails={isAccountDetails} />;
+// 			case 1:
+// 				return <PendingStatus isAccountDetails={isAccountDetails} />;
+// 			case 2:
+// 				return <RejectedStatus isAccountDetails={isAccountDetails} />;
+// 			case 3:
+// 				return <SucessStatus isAccountDetails={isAccountDetails} />;
+// 			default:
+// 				if (reqObj.status === undefined && reqObj.completed === false) {
+// 					return <IncompleteStatus isAccountDetails={isAccountDetails} />;
+// 				}
+// 				return '';
+// 		}
+// 	}
+// };
 
 const SummaryRequirements = ({
 	coins,
@@ -315,9 +315,9 @@ const SummaryRequirements = ({
 	const selectedLevel = isAccountDetails
 		? verificationLevel || user.verification_level
 		: 2;
-	const requirement = isBonusSection
-		? getBonusRequirements(user, coins, affiliation)
-		: getRequirements(user, selectedLevel, balance, coins);
+	// const requirement = isBonusSection
+	// 	? getBonusRequirements(user, coins, affiliation)
+	// 	: getRequirements(user, selectedLevel, balance, coins);
 	// let requirementResolved = getAllCompleted(requirement);
 	return (
 		<div className="d-flex">
@@ -336,7 +336,7 @@ const SummaryRequirements = ({
 					'summary-content-txt'
 				)}
 			>
-				<div className="my-2">
+				{/* <div className="my-2">
 					{Object.keys(requirement).map((step, index) => {
 						let reqObj = requirement[step];
 						return (
@@ -358,7 +358,7 @@ const SummaryRequirements = ({
 							</div>
 						);
 					})}
-				</div>
+				</div>*/}
 				{!isAccountDetails && !isBonusSection && !user.otp_enabled && (
 					<div className="trade-account-link mb-2">
 						<Link to="/security">

@@ -1061,3 +1061,25 @@ $app-bar-add-tab-red: #ff0000;
 		stroke-miterlimit: 10;
 	}
 }
+
+.direction_rtl {
+	.app-menu-bar {
+		.app-menu-bar-icon {
+			margin-left: .4rem;
+			margin-right: 0;
+		}
+		.app-menu-bar-icon-notification {
+			right: -14px;
+			top: -5px;
+			left: unset;
+		}
+	}
+	.app_bar {
+		.app-bar-account-menu {
+			.app-bar-account-list-icon {
+				margin-right: 0;
+				margin-left: .4rem;
+			}
+		}
+	}
+}

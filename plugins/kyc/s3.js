@@ -1,7 +1,7 @@
 'use strict';
 
 const aws = require('aws-sdk');
-const { GET_CONFIGURATION, GET_SECRETS } = require('../../constants');
+const { GET_SECRETS } = require('../../constants');
 
 const generateBuckets = (bucketsString = '') => {
 	const bucketsSplit = bucketsString
@@ -29,7 +29,7 @@ const credentials = () => {
 			accessKeyId: GET_SECRETS().plugins.s3.key.read,
 			secretAccessKey: GET_SECRETS().plugins.s3.secret.read
 		},
-		buckets: generateBuckets(GET_CONFIGURATION().constants.plugins.configuration.s3.id_docs_bucket)
+		buckets: generateBuckets(GET_SECRETS().plugins.s3.id_docs_bucket)
 	}
 };
 

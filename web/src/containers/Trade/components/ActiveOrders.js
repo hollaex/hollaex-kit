@@ -7,14 +7,25 @@ import { Table, ActionNotification } from '../../../components';
 import { formatTimestamp } from '../../../utils/utils';
 import {
 	formatBaseAmount,
-	formatBtcFullAmount,
-	formatBtcAmount
+	formatToCurrency
 } from '../../../utils/currency';
 import { isMobile } from 'react-device-detect';
 import { subtract } from '../utils';
 import STRINGS from '../../../config/localizedStrings';
 
-const generateHeaders = (onCancel) => [
+const generateHeaders = (pairData = {}, onCancel) => [
+	{
+		label: STRINGS.PAIR,
+		key: 'pair',
+		exportToCsv: ({ symbol }) => symbol.toUpperCase(),
+		renderCell: ({ symbol }, key, index) => {
+			return (
+				<td key={index} className="text-uppercase">
+					{symbol}
+				</td>
+			);
+		}
+	},
 	{
 		label: STRINGS.SIDE,
 		key: 'side',
@@ -48,22 +59,22 @@ const generateHeaders = (onCancel) => [
 		label: STRINGS.PRICE,
 		key: 'price',
 		renderCell: ({ price = 0 }, key, index) => {
-			return <td key={index}>{formatBtcFullAmount(price)}</td>;
+			return <td key={index}>{formatToCurrency(price, pairData.increment_price)}</td>;
 		}
 	},
 	{
 		label: STRINGS.AMOUNT,
 		key: 'size',
 		exportToCsv: ({ size = 0 }) => size,
-		renderCell: ({ size = 0 }, key, index) => {
-			return <td key={index}>{formatBtcAmount(size)}</td>;
+		renderCell: ({ size = 0, ...rest }, key, index) => {
+			return <td key={index}>{formatToCurrency(size, pairData.increment_size)}</td>;
 		}
 	},
 	{
 		label: STRINGS.REMAINING,
 		key: 'remaining',
 		renderCell: ({ size = 0, filled = 0 }, key, index) => {
-			return <td key={index}>{formatBtcAmount(subtract(size, filled))}</td>;
+			return <td key={index}>{formatToCurrency(subtract(size, filled), pairData.increment_price)}</td>;
 		}
 	},
 	!isMobile && {
@@ -118,6 +129,7 @@ const generateHeaders = (onCancel) => [
 ];
 
 const ActiveOrders = ({
+	pairData,
 	orders,
 	onCancel,
 	maxHeight,
@@ -133,7 +145,7 @@ const ActiveOrders = ({
 			}
 		>
 			<Table
-				headers={generateHeaders(onCancel)}
+				headers={generateHeaders(pairData, onCancel)}
 				cancelDelayData={cancelDelayData}
 				data={orders}
 				count={orders.length}
