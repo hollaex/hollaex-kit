@@ -45,10 +45,12 @@ export const generateFormFields = (strings, theme, links = {}) => ({
 		label: strings.formatString(
 			strings.SIGN_UP.TERMS.text,
 			<BlueLink
+				disabled={!links.terms}
 				href={links.terms}
 				text={strings.SIGN_UP.TERMS.terms}
 			/>,
 			<BlueLink
+				disabled={!links.privacy}
 				href={links.privacy}
 				text={strings.SIGN_UP.TERMS.policy}
 			/>
