@@ -14,7 +14,7 @@ COPY ./db/models /app/db/models
 
 EXPOSE 10011
 
-RUN npm install -g nodemon && \ 
+RUN npm install -g nodemon --loglevel=error && \ 
     cd plugins && npm install --loglevel=error && \
     for d in ./*/ ; do (cd "$d" && npm install --loglevel=error); done && \
     cd /app/mail && npm install --loglevel=error

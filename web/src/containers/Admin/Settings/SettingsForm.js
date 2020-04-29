@@ -1,6 +1,6 @@
 import React from 'react';
 import { Divider, Button } from 'antd';
-import { reduxForm } from 'redux-form';
+import { reduxForm, reset } from 'redux-form';
 
 import { AdminHocForm } from '../../../components';
 import { generateAdminSettings } from './Utils';
@@ -37,10 +37,18 @@ export const EmailSettingsForm = ({ initialValues, handleSubmitSettings }) => {
     const fields = generateAdminSettings('email');
     return (
         <div className="mb-4">
+            <h2>Email Configuration</h2>
+            <EmailForm
+                initialValues={initialValues.configuration}
+                onSubmit={(formProps) => handleSubmitSettings(formProps, 'email_configuration')}
+                buttonText="Save"
+                fields={fields.email_configuration}
+            />
+            <Divider />
             <div className="mb-4">
-                <h2>Email Distribution List</h2>
+                <h2>Email Audit</h2>
                 <Divider />
-                <p>Emails here are used for sending a copy of all emails sent to the user. Admin email receives all emails but support email only receives specific emails such a user verification notification.</p>
+                <p>This feature allows specific email to receive a copy of all important emails sent to the user for audit purposes. By filling the auditor email, the email will be in BCC of emails sent to the user.</p>
                 <EmailDistributionForm
                     initialValues={initialValues.distribution}
                     onSubmit={(formProps) => handleSubmitSettings(formProps, 'email_distribution')}
@@ -48,14 +56,6 @@ export const EmailSettingsForm = ({ initialValues, handleSubmitSettings }) => {
                     fields={fields.email_distribution_list}
                 />
             </div>
-            <h2>Email Configuration</h2>
-            <Divider />
-            <EmailForm
-                initialValues={initialValues.configuration}
-                onSubmit={(formProps) => handleSubmitSettings(formProps, 'email_configuration')}
-                buttonText="Save"
-                fields={fields.email_configuration}
-            />
         </div>
     );
 };
@@ -98,6 +98,8 @@ const LinksForm = ({
     const onSubmit = (formProps) => handleSubmitSettings(formProps, 'links');
     return (
         <div className="mb-4">
+            <h5>Fill out all the links to your exchange. These links will be added automatically into the exchange website once updated. If you leave them blank they won't appear.</h5>
+            <Divider />
             <form>
 				{fields && (
                     Object.keys(fields).map((key, index) => {
@@ -136,6 +138,6 @@ const LinksForm = ({
 export const LinksSettingsForm = reduxForm({
     form: 'ADMIN_LINKS_SETTINGS_FORM',
     // onSubmitFail: (result, dispatch) => dispatch(reset(FORM_NAME)),
-    // onSubmitSuccess: (result, dispatch) => dispatch(reset(name)),
+    onSubmitSuccess: (result, dispatch) => dispatch(reset('ADMIN_LINKS_SETTINGS_FORM')),
     enableReinitialize: true
 })(LinksForm);

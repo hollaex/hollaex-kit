@@ -70,7 +70,8 @@ let lang = getLanguage();
 if (!lang) {
 	lang = getInterfaceLanguage();
 }
-store.dispatch(setLanguage(lang));
+// Disabled it for apply default language value from constants.
+// store.dispatch(setLanguage(lang));
 
 let token = getToken();
 

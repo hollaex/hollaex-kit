@@ -3306,6 +3306,10 @@ table th {
   border-top: 1px solid #cccbcb;
   border-bottom: 1px solid #cccbcb; }
 
+.toggle-wrapper-all {
+  border-bottom: 2px solid #535353;
+  margin-bottom: 3rem !important; }
+
 .portfolio-wrapper {
   width: 32rem; }
   .portfolio-wrapper .icon_title-wrapper .icon_title-svg {
@@ -3330,6 +3334,10 @@ table th {
 .dark-theme .toggle-wrapper {
   border-top: 1px solid #2e2f37;
   border-bottom: 1px solid #2e2f37; }
+
+.dark-theme .toggle-wrapper-all {
+  border-bottom: 2px solid #535353;
+  margin-bottom: 3rem !important; }
 
 .expired_exchange_wrapper {
   padding: 2rem; }
@@ -5636,6 +5644,10 @@ table th {
 .dark-theme .toggle_button-wrapper .toggle-side_line::after {
   background-color: #535353; }
 
+.toggle-disabled {
+  cursor: not-allowed;
+  opacity: 0.35; }
+
 .trade_input-wrapper {
   display: flex;
   flex-direction: column; }
@@ -6267,8 +6279,8 @@ table th {
       font-size: 3.5rem;
       text-transform: capitalize; }
   .icon_title-wrapper .auth_logo-wrapper {
-    height: 5rem !important;
-    width: 8rem !important;
+    height: 6rem !important;
+    width: 10rem !important;
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat; }
