@@ -57,7 +57,7 @@ class PluginServices extends Component {
 		this.setState({ loading: true, error: '' });
 		getConstants()
 			.then((res) => {
-				this.setState({ loading: false, constants: res.constants });
+				this.setState({ loading: false, constants: { ...res.constants } });
 			})
 			.catch((error) => {
 				const message = error.data ? error.data.message : error.message;
@@ -211,7 +211,8 @@ class PluginServices extends Component {
 		let formValues = {
 			plugins: {
 				// ...plugins,
-				enabled
+				enabled,
+				configuration: {}
 			},
 			secrets: {}
 		};
@@ -225,7 +226,7 @@ class PluginServices extends Component {
 		} else if (service !== 'bank' && service !== 'chat') {
 			const { key, secret, ...rest } = formProps;
 			const pluginData = allPluginsData[service] || {};
-			formValues.secrets.plugins = secrets.plugins;
+			formValues.secrets.plugins = { ...secrets.plugins };
 			if (pluginData.key === 's3') {
 				// formValues.plugins.configuration[pluginData.key] = rest;
 				formValues.secrets.plugins[pluginData.key] = {
@@ -293,7 +294,7 @@ class PluginServices extends Component {
 		this.setState({ error: '' });
 		return updatePlugins(formProps)
 			.then((data) => {
-				this.setState({ constants: data, loading: false, serviceLoading: false });
+				this.setState({ constants: { ...data }, loading: false, serviceLoading: false });
 			})
 			.catch((error) => {
 				const message = error.data ? error.data.message : error.message;
@@ -373,15 +374,19 @@ class PluginServices extends Component {
 									</div>
 								</div>
 								{
-									(initialValues.secret && initialValues.key) ?
-									<Button
-										type="primary"
-										className='ml-auto'
-										onClick={() => this.disconnectVault()}
-									>
-										Disconnect
-							      </Button>
-									: null
+									(services === 'vault' &&
+										connectStatus &&
+										initialValues.secret &&
+										initialValues.key
+									) ?
+										<Button
+											type="primary"
+											className='ml-auto'
+											onClick={this.disconnectVault}
+										>
+											Disconnect
+										</Button>
+										: null
 								}
 							</div>
 							<Divider />

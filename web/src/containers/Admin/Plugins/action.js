@@ -22,7 +22,7 @@ export const connectVault = (values) => {
 	return requestAuthenticated('/plugins/vault/connect', options, null, WS_URL);
 };
 
-export const disconnectVault = () => requestAuthenticated(`/plugins/vault/disconnect`);
+export const disconnectVault = () => requestAuthenticated('/plugins/vault/disconnect', {}, null, WS_URL);
 
 export const requestVaultSupportCoins = () =>
 	axios.get(REQUEST_VAULT_SUPPORTED_COINS);
