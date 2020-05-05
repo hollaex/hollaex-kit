@@ -17,7 +17,7 @@ const ChatFooter = ({
 }) => {
 	return (
 		<div
-			className={set_username ? classnames('d-flex', 'justify-content-center', 'flex-column', 'chat-footer') :
+			className={set_username ? classnames('d-flex', 'apply_rtl', 'justify-content-center', 'flex-column', 'chat-footer') :
 				classnames('d-flex', 'justify-content-center', 'flex-column', 'chat-footer', 'chat-username-footer')
 			}
 		>
