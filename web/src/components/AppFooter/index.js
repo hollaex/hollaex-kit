@@ -34,7 +34,6 @@ const generateSectionsText = (strings, theme, links = {}) => {
 				},
 				website && {
 					text: SECTIONS.SECTION_6_LINK_6,
-					icon: SOCIAL_ICONS.GOOGLE,
 					link: website
 				},
 			]
@@ -52,7 +51,6 @@ const generateSectionsText = (strings, theme, links = {}) => {
 				},
 				information && {
 					text: SECTIONS.SECTION_6_LINK_8,
-					icon: SOCIAL_ICONS.GOOGLE,
 					link: information
 				},
 				// {
@@ -87,7 +85,7 @@ const generateSectionsText = (strings, theme, links = {}) => {
 			LINKS: [
 				twitter && {
 					text: SECTIONS.SECTION_6_LINK_1,
-					icon: SOCIAL_ICONS.TWITTER_DARK,
+					icon: SOCIAL_ICONS.TWITTER,
 					link: twitter
 				},
 				telegram && {
@@ -107,7 +105,7 @@ const generateSectionsText = (strings, theme, links = {}) => {
 				},
 				linkedin && {
 					text: SECTIONS.SECTION_6_LINK_5,
-					icon: SOCIAL_ICONS.TWITTER_DARK,
+					icon: SOCIAL_ICONS.LINKEDIN,
 					link: linkedin
 				}
 			]
