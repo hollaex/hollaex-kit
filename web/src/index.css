@@ -3818,7 +3818,7 @@ table th {
     align-items: center;
     padding: 0 8px; }
   .app_bar .app_bar-icon-logo {
-    height: 3rem;
+    height: 4rem;
     width: 5rem;
     background-size: contain;
     background-position: center;
@@ -8701,7 +8701,7 @@ foreignObject {
         background-size: contain;
         background-position: center;
         background-repeat: no-repeat;
-        height: 4rem;
+        height: 6rem;
         margin-left: 1rem;
         width: 7rem; }
       .app_footer-container .footer-row-content .footer_separter svg .hollaEX_logo_gray {

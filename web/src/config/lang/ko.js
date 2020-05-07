@@ -104,7 +104,7 @@ export default {
 			SECTION_4_LINK_3: 'Contact Us',
 			SECTION_4_LINK_4: 'Terms of Use',
 			SECTION_5_TITLE: 'RESOURCES',
-			SECTION_5_LINK_1: 'HollaEx Whitepaper',
+			SECTION_5_LINK_1: 'Whitepaper',
 			SECTION_5_LINK_2: 'HollaEx Token(XHT) ',
 			SECTION_5_LINK_3: 'GitHub',
 			SECTION_6_TITLE: 'SOCIAL',

@@ -19,8 +19,8 @@ steps:
   when:
     branch: testnet
     
-- name: create_github_release_test
-  image: ubuntu:19.04
+- name: create_github_release
+  image: bitholla/devops-tools:drone_github_hub-2004241546
   environment:
     GITHUB_TOKEN:
       from_secret: github_oauth2_token_for_releases

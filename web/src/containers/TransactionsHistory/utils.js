@@ -441,9 +441,10 @@ export const generateWithdrawalsHeaders = (
 				index
 			) => {
 				if (
-					status === false &&
-					dismissed === false &&
-					type === 'withdrawal'
+					// status === false &&
+					// dismissed === false &&
+					// type === 'withdrawal'
+					false
 				) {
 					// Pending Status
 					return (

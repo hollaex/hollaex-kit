@@ -106,7 +106,7 @@ ACTIVE_TRADES: 'شما باید {0} برای دسترسی به سفارشات ف
 			SECTION_4_LINK_3: 'تماس با ما',
 			SECTION_4_LINK_4: 'شرایط استفاده',
 			SECTION_5_TITLE: 'منابع',
-			SECTION_5_LINK_1: 'HollaEx Whitepaper',
+			SECTION_5_LINK_1: 'Whitepaper',
 			SECTION_5_LINK_2: 'HollaEx Token (XHT) ',
 			SECTION_5_LINK_3: 'GitHub',
 			SECTION_5_LINK_4: 'سوالات متداول', // new
@@ -1297,7 +1297,7 @@ ACTIVE_TRADES: 'شما باید {0} برای دسترسی به سفارشات ف
 		ANNOUNCEMNT_TXT_4:
 			'سال نو مبارک؛ ما از سال 2020 با همراهی شما در تلاشیم با ارائه یک بازار باز، مارکت جدیدی را تولید می کنیم.',
 		ANNOUNCEMNT_TXT_1:
-			'با معرفی دوستان خود به hollaex.com ، با برنامه واسط hollaEX (HAP) درآمدزایی کنید. {0}',
+			'با معرفی دوستان خود به hollaex.com ، با برنامه واسط hollaEX (HAP) درآمدزایی کنید.',
 		DEFAULT_ANNOUNCEMENT:
 			'در این صفحه اطلاعیه های عمومی در مورد اکسچنج شما نمایش داده می شود! {0}',
 		ANNOUNCEMENT_TXT_2: 'XHT رایگان در کلیه کیف پولهایی که {0} دارند توزیع می شود.',

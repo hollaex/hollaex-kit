@@ -57,7 +57,7 @@ import {
 	removeToken,
 	getTokenTimestamp
 } from './utils/token';
-import { getLanguage, getInterfaceLanguage } from './utils/string';
+import { getLanguage, getInterfaceLanguage, getLanguageFromLocal } from './utils/string';
 import { checkUserSessionExpired } from './utils/utils';
 
 ReactGA.initialize('UA-154626247-1'); // Google analytics. Set your own Google Analytics values
@@ -70,8 +70,10 @@ let lang = getLanguage();
 if (!lang) {
 	lang = getInterfaceLanguage();
 }
-// Disabled it for apply default language value from constants.
-// store.dispatch(setLanguage(lang));
+
+if (getLanguageFromLocal()) {
+	store.dispatch(setLanguage(lang));
+}
 
 let token = getToken();
 

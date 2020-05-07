@@ -19,6 +19,7 @@ export const ChatHeader = ({
 		<div
 			className={classnames(
 				'd-flex',
+				'apply_rtl',
 				'justify-content-between',
 				'align-items-center',
 				'chat-header'
