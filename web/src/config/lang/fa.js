@@ -105,13 +105,19 @@ ACTIVE_TRADES: 'شما باید {0} برای دسترسی به سفارش های
 			SECTION_4_LINK_3: 'تماس با ما',
 			SECTION_4_LINK_4: 'شرایط استفاده',
 			SECTION_5_TITLE: 'منابع',
-			SECTION_5_LINK_1: 'HollaEx Whitepaper',
+			SECTION_5_LINK_1: 'سپید نامه',
 			SECTION_5_LINK_2: 'HollaEx Token (XHT) ',
 			SECTION_5_LINK_3: 'GitHub',
 			SECTION_5_LINK_4: 'سوالات متداول', // new
 			SECTION_6_TITLE: 'شبکه های اجتماعی',
 			SECTION_6_LINK_1: 'توییتر',
-			SECTION_6_LINK_2: 'تلگرام'
+			SECTION_6_LINK_2: 'تلگرام',
+			SECTION_6_LINK_3: 'فیسبوک', // new
+			SECTION_6_LINK_4: 'اینستاگرام', // new
+			SECTION_6_LINK_5: 'لینکدین', // new
+			SECTION_6_LINK_6: 'سایت', // new
+			SECTION_6_LINK_7: 'پشتیبانی', // new
+			SECTION_6_LINK_8: 'اطلاعات' // new
 		},
 		XHT_DESCRIPTION:
 			'HollaEx kit یک پلتفورم متن باز به منظور مبادله دارایی های دیجیتال بین کاربران می باشد که توسط شرکت bitHolla توسعه و ارایه می شود.',
@@ -320,7 +326,7 @@ ACTIVE_TRADES: 'شما باید {0} برای دسترسی به سفارش های
 		TERMS: {
 			terms: 'شرایط عمومی',
 			policy: 'حریم خصوصی',
-			text: 'من با مطالعه و آگاهی با {0 و {1 موافقت می نمایم}}'
+			text: 'من با مطالعه و آگاهی با {0} و {1} موافقت می نمایم.'
 		}
 	},
 	VERIFICATION_TEXTS: {

@@ -106,7 +106,7 @@ ACTIVE_TRADES: 'شما باید {0} برای دسترسی به سفارشات ف
 			SECTION_4_LINK_3: 'تماس با ما',
 			SECTION_4_LINK_4: 'شرایط استفاده',
 			SECTION_5_TITLE: 'منابع',
-			SECTION_5_LINK_1: 'HollaEx Whitepaper',
+			SECTION_5_LINK_1: 'Whitepaper',
 			SECTION_5_LINK_2: 'HollaEx Token (XHT) ',
 			SECTION_5_LINK_3: 'GitHub',
 			SECTION_5_LINK_4: 'سوالات متداول', // new
