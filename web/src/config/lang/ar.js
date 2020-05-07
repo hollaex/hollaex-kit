@@ -710,8 +710,8 @@ ACTIVE_TRADES: 'شما باید {0} برای دسترسی به سفارشات ف
 		limit: 'محدود'
 	},
 	TYPES: [
-		{ value: 'بازار', label: 'بازار' },
-		{ value: 'محدود', label: 'محدود' }
+		{ value: 'market', label: 'بازار' },
+		{ value: 'limit', label: 'محدود' }
 	],
 	SIDE: 'طرف',
 	SIDES_VALUES: {
