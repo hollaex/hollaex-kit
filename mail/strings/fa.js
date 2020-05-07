@@ -2,7 +2,6 @@
 
 const { GET_CONFIGURATION } = require('../../constants');
 const API_NAME = () => GET_CONFIGURATION().constants.api_name;
-const SUPPORT_EMAIL = () => GET_CONFIGURATION().constants.accounts.support;
 
 const COMMON = {
 	GREETING: (name) => `کاربر عزیز ${name}`,
@@ -57,10 +56,10 @@ const WELCOME = {
 		1: () => `با تشکر از ثبت نام شما در ${API_NAME()}.`,
 		2: (account, deposit) => `
 		برای شروع معاملات شما ابتدا باید به حساب کاربری خود رمزارز و یا پول فیات واریز نمایید.
-		لطفا ابتدا به حساب کاربری خود رفته ${account} وصفحه واریز ها را مشاهده فرمایید ${deposit}.`,
+		لطفا ابتدا به حساب کاربری خود رفته وصفحه واریز ها را مشاهده فرمایید.`,
 		3: 'حساب کاربری',
 		4: 'واریز',
-		5: () => `در صورت داشتن سوال و یا ابهامی با ما تماس حاصل فرمایید${SUPPORT_EMAIL()}.`
+		5: 'در صورت داشتن سوال و یا ابهامی با ما تماس حاصل فرمایید.'
 	},
 	CLOSING: COMMON.CLOSING
 };
