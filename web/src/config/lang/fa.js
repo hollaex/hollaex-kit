@@ -43,7 +43,7 @@ ACTIVE_TRADES: 'شما باید {0} برای دسترسی به سفارش های
 	EDIT_TEXT: 'ویرایش',
 	BACK_TEXT: 'بازگشت',
 	NO_OPTIONS: 'گزینه ای وجود ندارد',
-	SECONDS: 'ثانیه ها',
+	SECONDS: 'ثانیه',
 	VIEW_MARKET: 'مشاهده بازار', // new
 	GO_TRADE: 'معامله رو شروع کن', // new
 	VIEW_INFO: 'مشاهده صفحه اطلاعات', // new
@@ -1011,7 +1011,7 @@ ACTIVE_TRADES: 'شما باید {0} برای دسترسی به سفارش های
 		CHAT_MESSAGE_BOX_PLACEHOLDER: 'پیام خود را وارد کنید',
 		SIGN_UP_CHAT: 'ثبت نام چت',
 		JOIN_CHAT: 'نام کاربری چت',
-		TROLLBOX: 'چت ({0})' // new
+		TROLLBOX: 'چت عمومی ({0})' // new
 	},
 	INVALID_USERNAME:
 		'طول نام کاربری باید بین 3 تا 15 حرف باید باشد. فقط از حروف انگلیسی کوچک، اعداد و کاراکتر underscore استفاده نمایید.',
