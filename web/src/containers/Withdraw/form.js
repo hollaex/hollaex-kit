@@ -195,7 +195,7 @@ class Form extends Component {
 		const { dialogIsOpen, dialogOtpOpen } = this.state;
 
 		return (
-			<form>
+			<form autoComplete="off">
 				<div className={classnames({ "w-50": !isMobile })}>
 					{renderFields(formValues)}
 					{error && <div className="warning_text">{error}</div>}
