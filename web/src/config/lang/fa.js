@@ -181,7 +181,7 @@ ACTIVE_TRADES: 'شما باید {0} برای دسترسی به سفارش های
 		QR_CODE:
 			'کافیست برای ارسال پول توسط دیگران،این کد توسط شخص پرداخت کننده اسکن شود',
 		NO_DATA: 'اطلاعاتی موجود نمی باشد',
-		FULL_MESSAGE_LIMIT: '{0}: {1} {2} {3}' //  0 -> {Daily deposit max amount}:  1 -> {50,000,000} 2 -> {T} 3 -> {(Want to increase your daily limit?)}
+		FULL_MESSAGE_LIMIT: '{0}: {1} {2} {3}'  //  0 -> {Daily deposit max amount}:  1 -> {1,000} 2 -> {Currency} 3 -> {(Want to increase your daily limit?)}
 	},
 	LOGIN: {
 		LOGIN_TO: 'ورود به {0}',
@@ -200,6 +200,7 @@ ACTIVE_TRADES: 'شما باید {0} برای دسترسی به سفارش های
 	},
 	VALIDATIONS: {
 		OTP_LOGIN: 'رمزیکبارمصرف خود را وارد نمایید',
+		CAPTCHA: 'خطا. صفحه را رفرش کنید',
 		FROZEN_ACCOUNT: 'این حساب بسته شده است',
 		INVALID_EMAIL: 'آدرس ایمیل نامعتبر است',
 		TYPE_EMAIL: 'ایمیل خود را وارد کنید',

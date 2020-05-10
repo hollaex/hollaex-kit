@@ -200,6 +200,7 @@ export default {
 	},
 	VALIDATIONS: {
 		OTP_LOGIN: 'Provide OTP code to login',
+		CAPTCHA: 'Expired Session. Please refresh the page',
 		FROZEN_ACCOUNT: 'This account is frozen',
 		INVALID_EMAIL: 'Invalid email address',
 		TYPE_EMAIL: 'Type your E-mail',
