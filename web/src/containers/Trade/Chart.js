@@ -77,6 +77,7 @@ class TVChartContainer extends React.PureComponent {
 
 	componentWillMount() {
 		var that = this;
+		const { api_name } = this.props.constants;
 		this.chartConfig = {
 			onReady: (cb) => {
 				getChartConfig().then((data) => {
@@ -117,7 +118,7 @@ class TVChartContainer extends React.PureComponent {
 				// 	symbol_stub.pricescale = 100
 				// }
 				const { increment_price } = this.props.pairData;
-				getChartSymbol(symbolName, increment_price).then((data) => {
+				getChartSymbol(symbolName, increment_price, api_name).then((data) => {
 					onSymbolResolvedCallback(data);
 				});
 

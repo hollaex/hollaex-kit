@@ -8,7 +8,7 @@ import { IconTitle, Button } from "../../../components";
 import { ICONS, FEES_LIMIT_SITE_URL } from "../../../config/constants";
 import STRINGS from "../../../config/localizedStrings";
 
-const FeesAndLimits = ({ data, onClose, coins, pairs }) => {
+const FeesAndLimits = ({ data, onClose, coins, pairs, constants = {} }) => {
 	const { verification_level, discount = 0 } = data;
 	const LEVEL_OF_ACCOUNT = STRINGS.formatString(STRINGS.SUMMARY.LEVEL_OF_ACCOUNT, verification_level);
 	const Discount_percentage = discount > 0 ? STRINGS.formatString(STRINGS.SUMMARY.DISCOUNT, discount) : null
@@ -40,7 +40,7 @@ const FeesAndLimits = ({ data, onClose, coins, pairs }) => {
 								target="blank"
 								className="fee-limits-link"
 							>
-								{`${STRINGS.APP_TITLE} ${STRINGS.SUMMARY.WEBSITE}`}
+								{`${constants.api_name || ''} ${STRINGS.SUMMARY.WEBSITE}`}
 							</Link>
 						)}
 					</div>
@@ -65,7 +65,8 @@ const FeesAndLimits = ({ data, onClose, coins, pairs }) => {
 const mapStateToProps = state => ({
 	activeTheme: state.app.theme,
 	pairs: state.app.pairs,
-	coins: state.app.coins
+	coins: state.app.coins,
+	constants: state.app.constants
 });
 
 export default connect(mapStateToProps)(FeesAndLimits);

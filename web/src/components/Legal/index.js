@@ -20,7 +20,7 @@ const Legal = ({ type, constants = {} }) => {
 				<div className="legal-logo-wrapper">
 					<img
 						src={constants.logo_path}
-						alt={STRINGS.APP_TITLE}
+						alt={constants.api_name || ''}
 						className="legal-logo"
 					/>
 				</div>
