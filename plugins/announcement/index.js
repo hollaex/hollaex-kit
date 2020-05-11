@@ -2,9 +2,9 @@
 
 const app = require('../index');
 const { verifyToken, checkScopes } = require('../helpers/auth');
-const { postAnnouncement, deleteAnnouncement } = require('./helpers');
+const { postAnnouncement, deleteAnnouncement, getAnnouncements } = require('./helpers');
 const bodyParser = require('body-parser');
-const { logger } = require('../helpers/common');
+const { logger, getPagination, getTimeframe, getOrdering } = require('../helpers/common');
 // const { sendEmail } = require('../../mail');
 // const { MAILTYPE } = require('../../mail/strings');
 
@@ -37,7 +37,7 @@ app.post('/plugins/announcement', [verifyToken, bodyParser.json()], (req, res) =
 		});
 });
 
-app.delete('/plugins/announcement/:id', [verifyToken, bodyParser.json()], (req, res) => {
+app.delete('/plugins/announcement/:id', verifyToken, (req, res) => {
 	const endpointScopes = ['admin'];
 	const scopes = req.auth.scopes;
 	checkScopes(endpointScopes, scopes);
@@ -56,6 +56,30 @@ app.delete('/plugins/announcement/:id', [verifyToken, bodyParser.json()], (req, 
 		})
 		.catch((error) => {
 			logger.error('DELETE /plugins/announcement error', error.message);
+			res.status(error.status || 400).json({ message: error.message });
+		});
+});
+
+app.get('/plugins/annoucements', (req, res) => {
+	const { limit, page, order_by, order, start_date, end_date } = req.query;
+
+	logger.info(
+		'GET /plugins/announcements',
+		limit,
+		page,
+		order_by,
+		order,
+		start_date,
+		end_date
+	);
+
+	getAnnouncements(getPagination(limit, page), getTimeframe(start_date, end_date), getOrdering(order_by, order))
+		.then((announcements) => {
+			logger.debug('GET /plugins/annoucements');
+			return res.json(announcements);
+		})
+		.catch((error) => {
+			logger.error('GET /plugins/announcements error', error.message);
 			res.status(error.status || 400).json({ message: error.message });
 		});
 });
