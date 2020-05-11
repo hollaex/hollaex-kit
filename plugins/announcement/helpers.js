@@ -29,6 +29,9 @@ const getAnnouncements = (pagination = {}, timeframe, ordering) => {
 	}
 	let query = {
 		order,
+		attributes: {
+			exclude: ['created_by']
+		},
 		...pagination
 	};
 	if (timeframe) query.where.created_at = timeframe;
