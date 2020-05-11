@@ -11,6 +11,11 @@ const postAnnouncement = (created_by, title, message, type) => {
 	});
 };
 
+const deleteAnnouncement = (id) => {
+	return Announcement.destroy({ id });
+};
+
 module.exports = {
-	postAnnouncement
+	postAnnouncement,
+	deleteAnnouncement
 };
