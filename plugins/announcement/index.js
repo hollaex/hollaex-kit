@@ -2,7 +2,7 @@
 
 const app = require('../index');
 const { verifyToken, checkScopes } = require('../helpers/auth');
-const { postAnnouncement, deleteAnnouncement, getAnnouncements } = require('./helpers');
+const { postAnnouncement, deleteAnnouncement, getAnnouncements, findAnnouncement } = require('./helpers');
 const bodyParser = require('body-parser');
 const { logger, getPagination, getTimeframe, getOrdering } = require('../helpers/common');
 // const { sendEmail } = require('../../mail');
@@ -21,10 +21,13 @@ app.post('/plugins/announcement', [verifyToken, bodyParser.json()], (req, res) =
 	let { title, message, type } = req.body;
 
 	if (!title || typeof title !== 'string') {
+		logger.error('POST /plugins/announcement error', 'Value \'title\' is required and must be a string');
 		return res.status(400).json({ message: 'Value \'title\' is required and must be a string' });
 	} else if (!message || typeof message !== 'string') {
+		logger.error('POST /plugins/announcement error', 'Value \'message\' is required and must be a string');
 		return res.status(400).json({ message: 'Value \'message\' is required and must be a string' });
 	} else if (type && typeof type !== 'string') {
+		logger.error('POST /plugins/announcement error', 'Value \'type\' must be a string');
 		return res.status(400).json({ message: 'Value \'type\' must be a string' });
 	}
 
@@ -47,7 +50,7 @@ app.post('/plugins/announcement', [verifyToken, bodyParser.json()], (req, res) =
 		});
 });
 
-app.delete('/plugins/announcement/:id', verifyToken, (req, res) => {
+app.delete('/plugins/announcement', verifyToken, (req, res) => {
 	const endpointScopes = ['admin'];
 	const scopes = req.auth.scopes;
 	checkScopes(endpointScopes, scopes);
@@ -57,12 +60,24 @@ app.delete('/plugins/announcement/:id', verifyToken, (req, res) => {
 		req.auth.sub
 	);
 
-	const id = req.params.id;
+	const id = parseInt(req.query.id);
 
-	deleteAnnouncement(id)
+	if (!id) {
+		logger.error('DELETE /plugins/announcement error', 'Value \'id\' is required and must be an integer');
+		return res.status(400).json({ message: 'Value \'id\' is required and must be an integer' });
+	}
+
+	findAnnouncement(id)
+		.then((announcement) => {
+			if (!announcement) {
+				throw new Error(`Announcement with id ${id} not found`);
+			} else {
+				return deleteAnnouncement(id);
+			}
+		})
 		.then(() => {
 			logger.debug('DELETE /plugins/announcement success ID: ', id);
-			res.json(`Announcement ${id} successfully deleted`);
+			res.json({ message: `Announcement ${id} successfully deleted` });
 		})
 		.catch((error) => {
 			logger.error('DELETE /plugins/announcement error', error.message);

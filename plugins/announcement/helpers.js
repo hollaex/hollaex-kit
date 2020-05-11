@@ -13,7 +13,11 @@ const postAnnouncement = (created_by, title, message, type) => {
 };
 
 const deleteAnnouncement = (id) => {
-	return Announcement.destroy({ id });
+	return Announcement.destroy({ where: { id } });
+};
+
+const findAnnouncement = (id) => {
+	return Announcement.findOne({ where: { id }});
 };
 
 const getAnnouncements = (pagination = {}, timeframe, ordering) => {
@@ -35,5 +39,6 @@ const getAnnouncements = (pagination = {}, timeframe, ordering) => {
 module.exports = {
 	postAnnouncement,
 	deleteAnnouncement,
+	findAnnouncement,
 	getAnnouncements
 };
