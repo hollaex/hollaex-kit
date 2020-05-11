@@ -200,6 +200,7 @@ export default {
 	},
 	VALIDATIONS: {
 		OTP_LOGIN: 'Provide OTP code to login',
+		CAPTCHA: 'Expired Session. Please refresh the page',
 		FROZEN_ACCOUNT: 'This account is frozen',
 		INVALID_EMAIL: 'Invalid email address',
 		TYPE_EMAIL: 'Type your E-mail',
@@ -731,18 +732,18 @@ export default {
 		limit: 'limit'
 	},
 	TYPES: [
-		{ value: 'market', label: 'market' },
-		{ value: 'limit', label: 'limit' }
+		{ value: 'market', label: 'market' }, // DO NOT CHANGE value, ONLY TRANSLATE label
+		{ value: 'limit', label: 'limit' } // DO NOT CHANGE value, ONLY TRANSLATE label
 	],
 	SIDE: 'Side',
 	SIDES_VALUES: {
 		buy: 'buy',
 		sell: 'sell'
 	},
-	SIDES: [{ value: 'buy', label: 'buy' }, { value: 'sell', label: 'sell' }],
+	SIDES: [{ value: 'buy', label: 'buy' }, { value: 'sell', label: 'sell' }], // DO NOT CHANGE value, ONLY TRANSLATE label
 	DEFAULT_TOGGLE_OPTIONS: [
-		{ value: true, label: 'on' },
-		{ value: false, label: 'off' }
+		{ value: true, label: 'on' }, // DO NOT CHANGE value, ONLY TRANSLATE label
+		{ value: false, label: 'off' } // DO NOT CHANGE value, ONLY TRANSLATE label
 	],
 	SIZE: 'Size',
 	PRICE: 'Price',
@@ -962,13 +963,13 @@ export default {
 	SETTINGS_LANGUAGE_OPTIONS: LANGUAGES,
 	SETTINGS_ORDERPOPUP_LABEL: 'Display order confirmation popup',
 	SETTINGS_ORDERPOPUP_OPTIONS: [
-		{ value: false, label: 'NO' },
-		{ value: true, label: 'YES' }
+		{ value: false, label: 'NO' }, // DO NOT CHANGE value, ONLY TRANSLATE label
+		{ value: true, label: 'YES' } // DO NOT CHANGE value, ONLY TRANSLATE label
 	],
 	SETTINGS_THEME_LABEL: 'User Interface Theme', // TODO set right labels // ToDo
 	SETTINGS_THEME_OPTIONS: [
-		{ value: 'white', label: 'White' },
-		{ value: 'dark', label: 'Dark' }
+		{ value: 'white', label: 'White' }, // DO NOT CHANGE value, ONLY TRANSLATE label
+		{ value: 'dark', label: 'Dark' } // DO NOT CHANGE value, ONLY TRANSLATE label
 	],
 	SETTING_BUTTON: 'save',
 	STRING_WITH_PARENTHESIS: '{0} ({1})',

@@ -154,6 +154,8 @@ class Login extends Component {
 				} else {
 					if (_error === 'User is not activated') {
 						error._error = (STRINGS.VALIDATIONS.FROZEN_ACCOUNT);
+					} else if (_error.indexOf('captcha') > -1) {
+						error._error = (STRINGS.VALIDATIONS.CAPTCHA);
 					} else {
 						error._error = _error;
 					}

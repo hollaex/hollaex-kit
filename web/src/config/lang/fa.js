@@ -43,7 +43,7 @@ ACTIVE_TRADES: 'شما باید {0} برای دسترسی به سفارش های
 	EDIT_TEXT: 'ویرایش',
 	BACK_TEXT: 'بازگشت',
 	NO_OPTIONS: 'گزینه ای وجود ندارد',
-	SECONDS: 'ثانیه ها',
+	SECONDS: 'ثانیه',
 	VIEW_MARKET: 'مشاهده بازار', // new
 	GO_TRADE: 'معامله رو شروع کن', // new
 	VIEW_INFO: 'مشاهده صفحه اطلاعات', // new
@@ -181,7 +181,7 @@ ACTIVE_TRADES: 'شما باید {0} برای دسترسی به سفارش های
 		QR_CODE:
 			'کافیست برای ارسال پول توسط دیگران،این کد توسط شخص پرداخت کننده اسکن شود',
 		NO_DATA: 'اطلاعاتی موجود نمی باشد',
-		FULL_MESSAGE_LIMIT: '{0}: {1} {2} {3}' //  0 -> {Daily deposit max amount}:  1 -> {50,000,000} 2 -> {T} 3 -> {(Want to increase your daily limit?)}
+		FULL_MESSAGE_LIMIT: '{0}: {1} {2} {3}'  //  0 -> {Daily deposit max amount}:  1 -> {1,000} 2 -> {Currency} 3 -> {(Want to increase your daily limit?)}
 	},
 	LOGIN: {
 		LOGIN_TO: 'ورود به {0}',
@@ -200,6 +200,7 @@ ACTIVE_TRADES: 'شما باید {0} برای دسترسی به سفارش های
 	},
 	VALIDATIONS: {
 		OTP_LOGIN: 'رمزیکبارمصرف خود را وارد نمایید',
+		CAPTCHA: 'خطا. صفحه را رفرش کنید',
 		FROZEN_ACCOUNT: 'این حساب بسته شده است',
 		INVALID_EMAIL: 'آدرس ایمیل نامعتبر است',
 		TYPE_EMAIL: 'ایمیل خود را وارد کنید',
@@ -715,8 +716,8 @@ ACTIVE_TRADES: 'شما باید {0} برای دسترسی به سفارش های
 		limit: 'محدود'
 	},
 	TYPES: [
-		{ value: 'بازار', label: 'بازار' },
-		{ value: 'محدود', label: 'محدود' }
+		{ value: 'market', label: 'بازار' },
+		{ value: 'limit', label: 'محدود' }
 	],
 	SIDE: 'معامله',
 	SIDES_VALUES: {
@@ -1011,7 +1012,7 @@ ACTIVE_TRADES: 'شما باید {0} برای دسترسی به سفارش های
 		CHAT_MESSAGE_BOX_PLACEHOLDER: 'پیام خود را وارد کنید',
 		SIGN_UP_CHAT: 'ثبت نام چت',
 		JOIN_CHAT: 'نام کاربری چت',
-		TROLLBOX: 'چت ({0})' // new
+		TROLLBOX: 'چت عمومی ({0})' // new
 	},
 	INVALID_USERNAME:
 		'طول نام کاربری باید بین 3 تا 15 حرف باید باشد. فقط از حروف انگلیسی کوچک، اعداد و کاراکتر underscore استفاده نمایید.',

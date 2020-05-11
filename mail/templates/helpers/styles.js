@@ -19,6 +19,6 @@ module.exports = {
 	button:
 		'cursor: pinter; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;',
 	footer:
-		'padding-top: 1rem; padding-bottom: 3rem; background-color: transparent; color: #000 !important; font-size: 12px',
+		'padding: 1rem; padding-top: 1rem; padding-bottom: 3rem; background-color: transparent; color: #000 !important; font-size: 12px',
 	poweredby: 'margin-top: 0.5rem'
 };
