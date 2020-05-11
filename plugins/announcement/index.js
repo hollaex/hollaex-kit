@@ -18,7 +18,17 @@ app.post('/plugins/announcement', [verifyToken, bodyParser.json()], (req, res) =
 		req.auth.sub
 	);
 
-	const { title, message, type } = req.body;
+	let { title, message, type } = req.body;
+
+	if (!title || typeof title !== 'string') {
+		return res.status(400).json({ message: 'Value \'title\' is required and must be a string' });
+	} else if (!message || typeof message !== 'string') {
+		return res.status(400).json({ message: 'Value \'message\' is required and must be a string' });
+	} else if (type && typeof type !== 'string') {
+		return res.status(400).json({ message: 'Value \'type\' must be a string' });
+	}
+
+	if (!type) type = 'info';
 
 	logger.info(
 		'POST /plugins/announcement announcement',
