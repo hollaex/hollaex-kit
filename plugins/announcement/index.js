@@ -6,6 +6,7 @@ const { postAnnouncement, deleteAnnouncement, getAnnouncements, findAnnouncement
 const bodyParser = require('body-parser');
 const { logger, getPagination, getTimeframe, getOrdering } = require('../helpers/common');
 const { WRONG_TITLE, WRONG_MESSAGE, WRONG_TYPE, WRONG_ID } = require('./messages');
+const { WRONG_LIMIT, WRONG_PAGE, WRONG_ORDER_BY, WRONG_ORDER } = require('../helpers/messages');
 // const { sendEmail } = require('../../mail');
 // const { MAILTYPE } = require('../../mail/strings');
 
@@ -90,17 +91,17 @@ app.get('/plugins/announcements', (req, res) => {
 	const { limit, page, order_by, order, start_date, end_date } = req.query;
 
 	if (limit && !parseInt(limit)) {
-		logger.error('GET /plugins/announcements error', 'Value \'limit\' must be an integer');
-		return res.status(400).json({ message: 'Value \'limit\' must be an integer' });
+		logger.error('GET /plugins/announcements error', WRONG_LIMIT);
+		return res.status(400).json({ message: WRONG_LIMIT });
 	} else if (page && !parseInt(page)) {
-		logger.error('GET /plugins/announcements error', 'Value \'page\' must be an integer');
-		return res.status(400).json({ message: 'Value \'page\' must be an integer' });
+		logger.error('GET /plugins/announcements error', WRONG_PAGE);
+		return res.status(400).json({ message: WRONG_PAGE });
 	} else if (order_by && order_by.includes(' ')) {
-		logger.error('GET /plugins/announcements error', 'Value \'order_by\' cannot include whitespaces');
-		return res.status(400).json({ message: 'Value \'order_by\' cannot include whitespaces' });
+		logger.error('GET /plugins/announcements error', WRONG_ORDER_BY);
+		return res.status(400).json({ message: WRONG_ORDER_BY });
 	} else if (order && (order !== 'asc' || order!== 'desc')) {
-		logger.error('GET /plugins/announcements error', 'Value \'order\' must be one of: [\'asc\', \'desc\']');
-		return res.status(400).json({ message: 'Value \'order\' must be one of: [\'asc\', \'desc\']' });
+		logger.error('GET /plugins/announcements error', WRONG_ORDER);
+		return res.status(400).json({ message: WRONG_ORDER });
 	}
 
 	logger.info(
