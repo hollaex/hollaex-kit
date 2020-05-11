@@ -58,7 +58,7 @@ const AccountAssets = ({ chartData = [], totalAssets, balance, coins, activeThem
 									}
 								)}>
 							{chartData.map((value, index) => {
-								const { min, fullname, symbol = '' } =
+								const { min, symbol = '' } =
 									coins[value.symbol || BASE_CURRENCY] || {};
 								let currencyBalance = formatToCurrency(
 									balance[`${value.symbol}_balance`],
@@ -80,7 +80,6 @@ const AccountAssets = ({ chartData = [], totalAssets, balance, coins, activeThem
 												wrapperClassName="coin-price"
 											/>
 										</div>
-										<div className="price-text">{fullname}:</div>
 										<div className="price-text">
 											{`${symbol.toUpperCase()} ${formatAverage(currencyBalance)}`}
 										</div>

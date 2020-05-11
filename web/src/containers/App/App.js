@@ -662,6 +662,7 @@ class App extends Component {
 								{!isMobile &&
 									enabledPlugins.includes('chat') && (
 										<ChatComponent
+											activeLanguage={activeLanguage}
 											minimized={chatIsClosed}
 											onMinimize={this.minimizeChat}
 											chatIsClosed={chatIsClosed}

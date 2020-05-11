@@ -106,7 +106,7 @@ ACTIVE_TRADES: 'شما باید {0} برای دسترسی به سفارشات ف
 			SECTION_4_LINK_3: 'تماس با ما',
 			SECTION_4_LINK_4: 'شرایط استفاده',
 			SECTION_5_TITLE: 'منابع',
-			SECTION_5_LINK_1: 'HollaEx Whitepaper',
+			SECTION_5_LINK_1: 'Whitepaper',
 			SECTION_5_LINK_2: 'HollaEx Token (XHT) ',
 			SECTION_5_LINK_3: 'GitHub',
 			SECTION_5_LINK_4: 'سوالات متداول', // new
@@ -176,7 +176,7 @@ ACTIVE_TRADES: 'شما باید {0} برای دسترسی به سفارشات ف
 		QR_CODE:
 			'کافیست برای ارسال پول توسط دیگران،این کد توسط شخص پرداخت کننده اسکن شود',
 		NO_DATA: 'اطلاعاتی موجود نمی باشد',
-		FULL_MESSAGE_LIMIT: '{0}: {1} {2} {3}' //  0 -> {Daily deposit max amount}:  1 -> {50,000,000} 2 -> {T} 3 -> {(Want to increase your daily limit?)}
+		FULL_MESSAGE_LIMIT: '{0}: {1} {2} {3}' //  0 -> {Daily deposit max amount}:  1 -> {1,000} 2 -> {Currency} 3 -> {(Want to increase your daily limit?)}
 	},
 	LOGIN: {
 		LOGIN_TO: 'ورود به {0}',
@@ -195,6 +195,7 @@ ACTIVE_TRADES: 'شما باید {0} برای دسترسی به سفارشات ف
 	},
 	VALIDATIONS: {
 		OTP_LOGIN: 'رمزیکبارمصرف خود را وارد نمایید',
+		CAPTCHA: 'Expired Session. Please refresh the page',
 		FROZEN_ACCOUNT: 'این حساب بسته شده است',
 		INVALID_EMAIL: 'آدرس ایمیل نامعتبر است',
 		TYPE_EMAIL: 'ایمیل خود را وارد کنید',
@@ -710,8 +711,8 @@ ACTIVE_TRADES: 'شما باید {0} برای دسترسی به سفارشات ف
 		limit: 'محدود'
 	},
 	TYPES: [
-		{ value: 'بازار', label: 'بازار' },
-		{ value: 'محدود', label: 'محدود' }
+		{ value: 'market', label: 'بازار' },
+		{ value: 'limit', label: 'محدود' }
 	],
 	SIDE: 'طرف',
 	SIDES_VALUES: {
@@ -1297,7 +1298,7 @@ ACTIVE_TRADES: 'شما باید {0} برای دسترسی به سفارشات ف
 		ANNOUNCEMNT_TXT_4:
 			'سال نو مبارک؛ ما از سال 2020 با همراهی شما در تلاشیم با ارائه یک بازار باز، مارکت جدیدی را تولید می کنیم.',
 		ANNOUNCEMNT_TXT_1:
-			'با معرفی دوستان خود به hollaex.com ، با برنامه واسط hollaEX (HAP) درآمدزایی کنید. {0}',
+			'با معرفی دوستان خود به hollaex.com ، با برنامه واسط hollaEX (HAP) درآمدزایی کنید.',
 		DEFAULT_ANNOUNCEMENT:
 			'در این صفحه اطلاعیه های عمومی در مورد اکسچنج شما نمایش داده می شود! {0}',
 		ANNOUNCEMENT_TXT_2: 'XHT رایگان در کلیه کیف پولهایی که {0} دارند توزیع می شود.',

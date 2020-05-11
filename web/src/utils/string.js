@@ -18,6 +18,8 @@ export const getLanguageFromString = (value = '') => {
 	return value;
 };
 
+export const getLanguageFromLocal = () => localStorage.getItem(LANGUAGE_KEY);
+
 export const getLanguage = () => {
 	let language = localStorage.getItem(LANGUAGE_KEY);
 
