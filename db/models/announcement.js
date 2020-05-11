@@ -30,11 +30,6 @@ module.exports = function(sequelize, DataTypes) {
 				allowNull: false,
 				defaultValue: 'info'
 			},
-			displayed: {
-				type: DataTypes.BOOLEAN,
-				allowNull: false,
-				defaultValue: true
-			},
 			created_at: {
 				allowNull: false,
 				type: DataTypes.DATE,
