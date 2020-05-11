@@ -58,22 +58,22 @@ const isUrl = (url) => {
 	return pattern.test(url);
 };
 
-const getPagination = (limit = { value: 50 }, page = { value: 1 }) => {
+const getPagination = (limit = 50, page = 1) => {
 	let _limit = 50;
 	let _page = 1;
 	logger.debug('helpers/common/getPagination', _limit, _page);
-	if (limit.value) {
-		if (limit.value > 50) {
+	if (limit) {
+		if (limit > 50) {
 			_limit = 50;
-		} else if (limit.value <= 0) {
+		} else if (limit <= 0) {
 			_limit = 1;
 		} else {
-			_limit = limit.value;
+			_limit = limit;
 		}
 	}
 
-	if (page.value && page.value >= 0) {
-		_page = page.value;
+	if (page && page >= 0) {
+		_page = page;
 	}
 	logger.debug('helpers/common/getPagination', _limit, _page);
 	return {
@@ -93,33 +93,33 @@ const convertSequelizeCountAndRows = (data) => {
 	};
 };
 
-const getTimeframe = (start_date = { value: undefined }, end_date = { value: undefined }) => {
+const getTimeframe = (start_date = undefined, end_date = undefined) => {
 	logger.debug(
 		'helpers/common/getTimeframe',
 		'stat_date: ',
-		start_date.value,
+		start_date,
 		'end_date: ',
-		end_date.value
+		end_date
 	);
 	let timestamp = {};
-	if (start_date.value) timestamp['$gte'] = start_date.value;
-	if (end_date.value) timestamp['$lte'] = end_date.value;
+	if (start_date) timestamp['$gte'] = start_date;
+	if (end_date) timestamp['$lte'] = end_date;
 	if (Object.entries(timestamp).length === 0) return undefined;
 	return timestamp;
 };
 
-const getOrdering = (order_by = { value: undefined }, order = { value: undefined }, attr = []) => {
+const getOrdering = (order_by = undefined, order = undefined) => {
 	logger.debug(
 		'helpers/common/getOrdering',
 		'order_by: ',
-		order_by.value,
+		order_by,
 		'order: ',
-		order.value
+		order
 	);
-	if (!order_by.value || !attr.includes(order_by.value)) {
+	if (!order_by) {
 		return undefined;
 	} else {
-		return [order_by.value, order.value || 'desc'];
+		return [order_by, order || 'desc'];
 	}
 };
 
