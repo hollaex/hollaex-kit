@@ -234,7 +234,8 @@ class UserVerification extends Component {
 		{ requested, activated, secret, error },
 		otp_enabled,
 		email,
-		modalText
+		modalText,
+		constants
 	) => {
 		if (error) {
 			return (
@@ -247,7 +248,7 @@ class UserVerification extends Component {
 		} else if (otp_enabled && !modalText) {
 			return <OtpForm onSubmit={this.onSubmitCancelOTP} />;
 		} else if (requested && !activated) {
-			return renderOTPForm(secret, email, this.onSubmitActivateOtp);
+			return renderOTPForm(secret, email, this.onSubmitActivateOtp, constants);
 		} else {
 			return (
 				<SuccessDisplay
@@ -282,7 +283,13 @@ class UserVerification extends Component {
 					theme={this.props.activeTheme}
 				>
 					{dialogIsOpen && !otp.requesting ? (
-						this.renderModalContent(otp, otp_enabled, email, modalText)
+						this.renderModalContent(
+							otp,
+							otp_enabled,
+							email,
+							modalText,
+							this.props.constants
+						)
 					) : (
 						<div />
 					)}
@@ -295,7 +302,8 @@ class UserVerification extends Component {
 const mapStateToProps = (state) => ({
 	user: state.user,
 	activeLanguage: state.app.language,
-	activeTheme: state.app.theme
+	activeTheme: state.app.theme,
+	constants: state.app.constants
 });
 
 const mapDispatchToProps = (dispatch) => ({

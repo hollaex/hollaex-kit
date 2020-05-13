@@ -9,7 +9,8 @@ const ChartContainer = (props) => (
 );
 
 const mapStateToProps = (state) => ({
-    tradeHistory: tradeHistorySelector(state)
+    tradeHistory: tradeHistorySelector(state),
+    constants: state.app.constants
 });
 
 export default connect(mapStateToProps)(ChartContainer);
