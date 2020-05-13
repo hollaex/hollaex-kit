@@ -209,7 +209,7 @@ class Login extends Component {
 	};
 
 	render() {
-		const { logoutMessage, activeTheme, constants } = this.props;
+		const { logoutMessage, activeTheme, constants = {} } = this.props;
 		const { otpDialogIsOpen, logoutDialogIsOpen } = this.state;
 		let path = constants.logo_path;
 		if (activeTheme === 'dark') {
@@ -239,7 +239,7 @@ class Login extends Component {
 						imageWrapperClassName="auth_logo-wrapper"
 						subtitle={STRINGS.formatString(
 							STRINGS.LOGIN.LOGIN_TO,
-							STRINGS.APP_TITLE
+							constants.api_name || ''
 						)}
 						actionProps={{
 							text: STRINGS.LOGIN.CANT_LOGIN,
