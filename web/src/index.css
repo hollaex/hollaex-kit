@@ -5215,6 +5215,9 @@ table th {
 .trade_announcement {
   font-size: 1.5rem; }
 
+.post-content .notifications_list-item-text a {
+  color: #0000ff; }
+
 .dark-theme .trade_post_icon svg .announcement {
   fill: white; }
 
@@ -5229,6 +5232,8 @@ table th {
 
 .dark-theme .post-content {
   color: #808080; }
+  .dark-theme .post-content .notifications_list-item-text a {
+    color: #0066B4; }
 
 .dropdown-content .dropdown-option {
   padding: 0; }
@@ -8650,6 +8655,9 @@ foreignObject {
 .trade_announcement {
   font-size: 1.5rem; }
 
+.post-content .notifications_list-item-text a {
+  color: #0000ff; }
+
 .dark-theme .trade_post_icon svg .announcement {
   fill: white; }
 
@@ -8664,6 +8672,8 @@ foreignObject {
 
 .dark-theme .post-content {
   color: #808080; }
+  .dark-theme .post-content .notifications_list-item-text a {
+    color: #0066B4; }
 
 .app_footer-container {
   border-top: 1px solid #535353;

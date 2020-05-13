@@ -290,7 +290,8 @@ export const ICONS = {
 	PLUGINS_VERIFICATION: '/assets/plugins/plugin-verification.png',
 	PLUGINS_ZENDESK: '/assets/plugins/plugin-zendesk.png',
 	PLUGINS_BANK: '/assets/plugins/plugin-bank.png',
-	PLUGINS_VAULT: '/assets/plugins/plugin-vault.png'
+	PLUGINS_VAULT: '/assets/plugins/plugin-vault.png',
+	DEFAULT_PLUGINS: '/assets/plugins/default-plugin.png'
 };
 
 export const SOCIAL_ICONS = {
