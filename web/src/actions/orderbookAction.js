@@ -133,7 +133,7 @@ export const requestQuote = (data = {}) => {
 	};
 };
 
-export const executeQuote = (token) => {
+export const executeQuote = (token, settings) => {
 	return (dispatch) => {
 		dispatch({
 			type: ORDERBOOK_CONSTANTS.TRADE_QUOTE_PERFORM_PENDING
@@ -145,7 +145,7 @@ export const executeQuote = (token) => {
 					type: ORDERBOOK_CONSTANTS.TRADE_QUOTE_PERFORM_FULFILLED,
 					payload: body.data
 				});
-				playBackgroundAudioNotification('quick_trade_complete');
+				playBackgroundAudioNotification('quick_trade_complete', settings);
 			})
 			.catch((err) => {
 				dispatch({

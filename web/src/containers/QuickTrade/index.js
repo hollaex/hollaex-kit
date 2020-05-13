@@ -174,7 +174,7 @@ class QuickTradeContainer extends Component {
 
 	onExecuteTrade = () => {
 		const { token } = this.props.quoteData;
-		this.props.executeQuote(token);
+		this.props.executeQuote(token, this.props.settings);
 	};
 
 	onRequestQuote = (quoteData) => {
@@ -278,6 +278,7 @@ class QuickTradeContainer extends Component {
 							!order.fetching && !order.completed ? (
 								<Countdown
 									buttonLabel={STRINGS.QUOTE_BUTTON}
+									settings={this.props.settings}
 									onClickButton={this.onExecuteTrade}
 									end={end}
 									renderTimeout={this.renderTimeout}

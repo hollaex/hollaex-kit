@@ -223,14 +223,16 @@ class UserProfile extends Component {
 	};
 
 	onOpenContactForm = () => {
+		const { links = {} } = this.props.constants;
 		if (this.props.openContactForm) {
-			this.props.openContactForm();
+			this.props.openContactForm({ helpdesk: links.helpdesk });
 		}
 	};
 
 	onOpenContactFormSelected = (key = '', value = '') => () => {
+		const { links = {} } = this.props.constants;
 		if (this.props.openContactForm) {
-			this.props.openContactForm({ [key]: value });
+			this.props.openContactForm({ [key]: value, helpdesk: links.helpdesk });
 		}
 	};
 
@@ -270,7 +272,8 @@ const mapStateToProps = (state) => ({
 	email: state.user.email,
 	limits: state.user.limits,
 	fees: state.user.feeValues,
-	activeLanguage: state.app.language
+	activeLanguage: state.app.language,
+	constants: state.app.constants
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(UserProfile);

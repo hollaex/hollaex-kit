@@ -129,7 +129,7 @@ class AppMenuBar extends Component {
         const { activeMenu, securityPending, verificationPending, walletPending } = this.state;
         return (
             <div className="d-flex justify-content-between">
-                <div className="app-menu-bar d-flex align-items-end justify-content-center title-font">
+                <div className="app-menu-bar d-flex align-items-end justify-content-center title-font apply_rtl">
                     <div
                         className={classnames("app-menu-bar-content d-flex", { 'active-menu': activeMenu === 'summary' })}
                         onClick={() => this.handleMenuChange('summary')}>

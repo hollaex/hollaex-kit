@@ -50,8 +50,8 @@ const html = (email, data, language, domain) => {
 				${data.transaction_id ? '<br />' : ''}
 				${data.transaction_id ? WITHDRAWAL.BODY[5](data.transaction_id) : ''}
 			</p>
-			${data.transaction_id ? WITHDRAWAL.BODY[6] : ''}
-			<ul>${data.transaction_id ? explorers : ''}</ul>
+			${data.transaction_id && !data.transaction_id.includes('-') ? WITHDRAWAL.BODY[6] : ''}
+			<ul>${data.transaction_id && !data.transaction_id.includes('-') ? explorers : ''}</ul>
 		`;
 	} else {
 		result += '';

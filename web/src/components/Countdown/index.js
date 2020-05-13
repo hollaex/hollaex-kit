@@ -25,7 +25,7 @@ class Countdown extends Component {
 	}
 
 	onInit = (expirationTime) => {
-		playBackgroundAudioNotification('review_quick_trade_order')
+		playBackgroundAudioNotification('review_quick_trade_order', this.props.settings);
 		const end = moment.unix(expirationTime).subtract(5, 'seconds');
 		this.onTick(end);
 		const interval = setInterval(() => {
@@ -37,7 +37,7 @@ class Countdown extends Component {
 	onTick = (end) => {
 		const countdown = end.diff(moment(), 'seconds');
 		if (countdown <= 0) {
-			playBackgroundAudioNotification('time_out_quick_trade')
+			playBackgroundAudioNotification('time_out_quick_trade', this.props.settings);
 			this.onStop();
 		} else {
 			this.setState({

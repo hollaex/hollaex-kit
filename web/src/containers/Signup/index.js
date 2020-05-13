@@ -12,8 +12,7 @@ import { ContactForm } from '../';
 import { IconTitle, Dialog, MobileBarBack } from '../../components';
 import {
 	FLEX_CENTER_CLASSES,
-	ICONS,
-	SUPPORT_HELP_URL
+	ICONS
 } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 
@@ -104,8 +103,9 @@ class Signup extends Component {
 	};
 
 	onOpenDialog = () => {
-		if (window) {
-			window.open(SUPPORT_HELP_URL, '_blank');
+		const { links = {} } = this.props.constants;
+		if (window && links && links.helpdesk) {
+			window.open(links.helpdesk, '_blank');
 		}
 		// this.setState({ showContactForm: true });
 	};
@@ -123,7 +123,7 @@ class Signup extends Component {
 	};
 
 	render() {
-		const { languageClasses, activeTheme, constants } = this.props;
+		const { languageClasses, activeTheme, constants = {} } = this.props;
 		const { success, showContactForm, isReferral } = this.state;
 
 		if (success) {
@@ -132,7 +132,7 @@ class Signup extends Component {
 				<SignupSuccess activeTheme={activeTheme} /></div>
 		}
 
-		const formFields = generateFormFields(STRINGS, activeTheme, isReferral);
+		const formFields = generateFormFields(STRINGS, activeTheme, constants.links, isReferral);
 		let path = constants.logo_path;
 		if (activeTheme === 'dark') {
 			path = constants.logo_black_path;
@@ -160,7 +160,7 @@ class Signup extends Component {
 						imageWrapperClassName="auth_logo-wrapper"
 						subtitle={STRINGS.formatString(
 							STRINGS.SIGN_UP.SIGNUP_TO,
-							STRINGS.APP_TITLE
+							constants.api_name || ''
 						)}
 						actionProps={{
 							text: STRINGS.HELP_TEXT,

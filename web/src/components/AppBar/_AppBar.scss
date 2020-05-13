@@ -197,7 +197,7 @@ $app-bar-add-tab-red: #ff0000;
 	}
 
 	.app_bar-icon-logo {
-		height: 3rem;
+		height: 4rem;
 		width: 5rem;
 		background-size: contain;
 		background-position: center;
@@ -1059,5 +1059,27 @@ $app-bar-add-tab-red: #ff0000;
 	.st0 {
 		fill: #ffffff;
 		stroke-miterlimit: 10;
+	}
+}
+
+.direction_rtl {
+	.app-menu-bar {
+		.app-menu-bar-icon {
+			margin-left: .4rem;
+			margin-right: 0;
+		}
+		.app-menu-bar-icon-notification {
+			right: -14px;
+			top: -5px;
+			left: unset;
+		}
+	}
+	.app_bar {
+		.app-bar-account-menu {
+			.app-bar-account-list-icon {
+				margin-right: 0;
+				margin-left: .4rem;
+			}
+		}
 	}
 }

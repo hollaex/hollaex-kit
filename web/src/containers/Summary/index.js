@@ -23,8 +23,7 @@ import {
 	BASE_CURRENCY,
 	DEFAULT_COIN_DATA,
 	// SHOW_SUMMARY_ACCOUNT_DETAILS,
-	SHOW_TOTAL_ASSETS,
-	SUPPORT_HELP_URL
+	SHOW_TOTAL_ASSETS
 } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 import {
@@ -116,8 +115,9 @@ class Summary extends Component {
 
 	onUpgradeAccount = () => {
 		// this.props.openContactForm({ category: 'level' });
-		if (window) {
-			window.open(SUPPORT_HELP_URL, '_blank');
+		const { links = {} } = this.props.constants;
+		if (window && links && links.helpdesk) {
+			window.open(links.helpdesk, '_blank');
 		}
 	};
 
@@ -298,7 +298,8 @@ const mapStateToProps = (state) => ({
 	tradeVolumes: state.user.tradeVolumes,
 	isValidBase: state.app.isValidBase,
 	config_level: state.app.config_level,
-	affiliation: state.user.affiliation
+	affiliation: state.user.affiliation,
+	constants: state.app.constants
 });
 
 const mapDispatchToProps = (dispatch) => ({

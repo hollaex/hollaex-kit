@@ -9,9 +9,7 @@ import moment from 'moment';
 import { AppBar, AppFooter } from '../../components';
 import STRINGS from '../../config/localizedStrings';
 import {
-	FLEX_CENTER_CLASSES,
-	EXCHANGE_EXPIRY_DAYS,
-	EXCHANGE_EXPIRY_SECONDS
+	FLEX_CENTER_CLASSES
 } from '../../config/constants';
 // import { requestQuickTrade } from '../../actions/orderbookAction';
 import { setLanguage, getExchangeInfo } from '../../actions/appActions';
@@ -42,6 +40,37 @@ class Home extends Component {
 		if (el) {
 			this.container = el;
 			this.onResize();
+		}
+	};
+
+	checkExchangeExpiry = () => {
+		const { info = {} } = this.props;
+		let is_expired = false;
+		let is_warning = false;
+		let daysLeft = 0;
+		if (info.status) {
+			if (info.is_trial) {
+				if (info.active) {
+					if (info.expiry && moment().isBefore(info.expiry, 'second')) {
+						is_warning = true;
+						daysLeft = moment(info.expiry).diff(moment(), 'days');
+					} else if (info.expiry && moment().isAfter(info.expiry, 'second')) {
+						is_expired = true;
+					}
+				} else {
+					is_expired = true;
+				}
+			} else {
+				is_expired = false;
+				is_warning = false;
+			}	
+		} else {
+			is_expired = true;
+		}
+		return {
+			is_expired,
+			is_warning,
+			daysLeft
 		}
 	};
 
@@ -100,19 +129,10 @@ class Home extends Component {
 			router,
 			info,
 			activeTheme,
-			constants
+			constants = {}
 		} = this.props;
 		const { style } = this.state;
-		const isExpired =
-			info &&
-			(!Object.keys(info).length || !info.active||
-				moment().diff(info.created_at, 'seconds') > EXCHANGE_EXPIRY_SECONDS)
-				? true
-				: false;
-		const expiryDays =
-			info && info.created_at
-				? EXCHANGE_EXPIRY_DAYS - moment().diff(info.created_at, 'days')
-				: 0;
+		const expiryData = this.checkExchangeExpiry();
 		return (
 			<div
 				className={classnames(
@@ -140,15 +160,15 @@ class Home extends Component {
 					<div
 						className={classnames('w-100', 'p-1', ...FLEX_CENTER_CLASSES, {
 							'exchange-trial': info.is_trial,
-							'exchange-expired': isExpired
+							'exchange-expired': expiryData.is_expired
 						})}
 					>
-						{isExpired
+						{expiryData.is_expired
 							? STRINGS.EXPIRY_EXCHANGE_MSG
 							: STRINGS.formatString(
 									STRINGS.TRIAL_EXCHANGE_MSG,
-									STRINGS.APP_TITLE,
-									expiryDays
+									constants.api_name || '',
+									expiryData.daysLeft
 							  )}
 					</div>
 				) : null}

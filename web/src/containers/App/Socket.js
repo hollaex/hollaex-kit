@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import io from 'socket.io-client';
 import { debounce } from 'lodash';
-import { WS_URL, SESSION_TIME, BASE_CURRENCY } from '../../config/constants';
+import { WS_URL, SESSION_TIME, BASE_CURRENCY, LANGUAGE_KEY } from '../../config/constants';
 import { isMobile } from 'react-device-detect';
 
 import { setMe, setBalance, updateUser } from '../../actions/userAction';
@@ -139,8 +139,21 @@ class Container extends Component {
 			this.props.setPairs(data.pairs);
 			this.props.setPairsData(data.pairs);
 			this.props.setCurrencies(data.coins);
-			if (data.constants) this.props.setConfig(data.constants);
-			if (data.info) this.props.setInfo(data.info);
+			if (data.constants) {
+				this.props.setConfig(data.constants);
+				if (data.constants.defaults) {
+					const themeColor = localStorage.getItem('theme');
+					const language = localStorage.getItem(LANGUAGE_KEY);
+					if (!themeColor && data.constants.defaults.theme) {
+						this.props.changeTheme(data.constants.defaults.theme);
+						localStorage.setItem('theme', data.constants.defaults.theme);
+					}
+					if (!language && data.constants.defaults.language) {
+						this.props.changeLanguage(data.constants.defaults.language);
+					}
+				}
+			};
+			if (data.info) this.props.setInfo({ ...data.info, status: data.status });
 			const pairWithBase = Object.keys(data.pairs).filter((key) => {
 				let temp = data.pairs[key];
 				return temp.pair_2 === BASE_CURRENCY;
@@ -182,7 +195,7 @@ class Container extends Component {
 					this.props.location.pathname.indexOf('/trade/') === 0 &&
 					this.props.router.params.pair
 				) {
-					playBackgroundAudioNotification('public_trade');
+					playBackgroundAudioNotification('public_trade', this.props.settings);
 				}
 			}
 		});
@@ -208,20 +221,50 @@ class Container extends Component {
 		});
 
 		privateSocket.on('user', ({ action, data }) => {
-			this.props.setMe(data);
-			if (
-				data.settings &&
-				data.settings.language !== this.props.activeLanguage
-			) {
-				this.props.changeLanguage(data.settings.language);
+			const { defaults = {} } = this.props.constants;
+			let userData = { ...data };
+			if (data.settings) {
+				if (
+					!data.settings.language &&
+					!this.props.activeLanguage &&
+					defaults.language
+				) {
+					this.props.changeLanguage(defaults.language);
+					userData = {
+						...data,
+						settings: {
+							...data.settings,
+							language: defaults.language
+						}
+					};
+				} else if (data.settings.language !== this.props.activeLanguage) {
+					this.props.changeLanguage(data.settings.language);
+				}
+				if (data.settings.interface) {
+					if (
+						!data.settings.interface.theme &&
+						!this.props.activeTheme &&
+						defaults.theme
+					) {
+						this.props.changeTheme(defaults.theme);
+						localStorage.setItem('theme', defaults.theme);
+						userData = {
+							...data,
+							settings: {
+								...data.settings,
+								interface: {
+									...data.settings.interface,
+									theme: defaults.theme
+								}
+							}
+						};
+					} else if (data.settings.interface.theme !== this.props.activeTheme) {
+						this.props.changeTheme(data.settings.interface.theme);
+						localStorage.setItem('theme', data.settings.interface.theme);
+					}
+				}
 			}
-			if (
-				data.settings.interface &&
-				data.settings.interface.theme !== this.props.activeTheme
-			) {
-				this.props.changeTheme(data.settings.interface.theme);
-				localStorage.setItem('theme', data.settings.interface.theme);
-			}
+			this.props.setMe(userData);
 		});
 
 		privateSocket.on('orders', ({ action, data }) => {
@@ -245,7 +288,7 @@ class Container extends Component {
 						ordersQueued: this.state.ordersQueued.concat(data)
 					});
 					if (data.type === 'limit') {
-						playBackgroundAudioNotification('orderbook_limit_order');
+						playBackgroundAudioNotification('orderbook_limit_order', this.props.settings);
 						this.setState({ limitFilledOnOrder: data.id });
 						this.limitTimeOut = setTimeout(() => {
 							if (this.state.limitFilledOnOrder)
@@ -312,7 +355,7 @@ class Container extends Component {
 						this.props.settings.audio &&
 						this.props.settings.audio.order_partially_completed
 					) {
-						playBackgroundAudioNotification('order_partialy_filled');
+						playBackgroundAudioNotification('order_partialy_filled', this.props.settings);
 					}
 					break;
 				}
@@ -364,7 +407,7 @@ class Container extends Component {
 						this.props.settings.audio &&
 						this.props.settings.audio.order_completed
 					) {
-						playBackgroundAudioNotification('order_filled');
+						playBackgroundAudioNotification('order_filled', this.props.settings);
 					}
 					break;
 				}
@@ -420,7 +463,7 @@ class Container extends Component {
 						this.props.settings.audio.order_completed
 					) {
 						setTimeout(() => {
-							playBackgroundAudioNotification('order_filled');
+							playBackgroundAudioNotification('order_filled', this.props.settings);
 						}, 1000);
 					}
 					break;

@@ -18,6 +18,8 @@ export const getLanguageFromString = (value = '') => {
 	return value;
 };
 
+export const getLanguageFromLocal = () => localStorage.getItem(LANGUAGE_KEY);
+
 export const getLanguage = () => {
 	let language = localStorage.getItem(LANGUAGE_KEY);
 
@@ -61,7 +63,8 @@ export const LTR_CLASSES_OBJECT = {
 
 export const getClasesForLanguage = (language = '', type = 'object') => {
 	switch (language) {
-		case 'rtl':
+		case 'fa':
+		case 'ar':
 			return type === 'object' ? RTL_CLASSES_OBJECT : RTL_CLASSES_ARRAY;
 		default:
 			return type === 'object' ? LTR_CLASSES_OBJECT : LTR_CLASSES_ARRAY;
@@ -70,7 +73,8 @@ export const getClasesForLanguage = (language = '', type = 'object') => {
 
 export const getFontClassForLanguage = (language = '') => {
 	switch (language) {
-		case 'rtl':
+		case 'fa':
+		case 'ar':
 			return LANGUAGE_RTL;
 		default:
 			return '';

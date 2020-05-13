@@ -3,12 +3,11 @@ import LANGUAGES from '../languages';
 
 export default {
 	APP_TITLE: 'HollaEx',
-	APP_SUB_TITLE: 'اکسچنج دارایی های دیجیتال متن باز', // new
-	APP_NAME: 'HollaEx',
+	APP_SUB_TITLE: 'اکسچنج دارایی های دیجیتال متن باز', // slogan
 
 	LOGOUT_CONFIRM_TEXT: 'آیا برای خارج شدن مطمئن هستید؟',
 	ADD_TRADING_PAIR: 'اضافه کردن دارایی جدید',
-ACTIVE_TRADES: 'شما باید {0} برای دسترسی به سفارشات فعال خود داشته باشید',
+ACTIVE_TRADES: 'شما باید {0} برای دسترسی به سفارش های فعال خود داشته باشید',
 	CANCEL_BASE_WITHDRAWAL: 'برداشت {0}لغو کنید',
 	CANCEL_WITHDRAWAL: 'لغو برداشت',
 	CANCEL_WITHDRAWAL_POPUP_CONFIRM:
@@ -27,7 +26,7 @@ ACTIVE_TRADES: 'شما باید {0} برای دسترسی به سفارشات ف
 	COPY_TEXT: 'کپی',
 	COPY_SUCCESS_TEXT: 'با موفقیت کپی شد',
 	CANCEL_SUCCESS_TEXT: 'با موفقیت لغو شد',
-	UPLOAD_TEXT: 'بارگزاری',
+	UPLOAD_TEXT: 'بارگذاری',
 	ADD_FILES: 'اضافه کردن فایل', // ToDo
 	OR_TEXT: 'یا',
 	CONTACT_US_TEXT: 'تماس با ما',
@@ -36,7 +35,7 @@ ACTIVE_TRADES: 'شما باید {0} برای دسترسی به سفارشات ف
 		'درصورت وجود هر گونه سوال و ابهامی آن را با ارسال ایمیل به support@hollaex.com با ما درمیان بگذارید.',
 	HELP_TELEGRAM_TEXT: 'مستندات API های HollaEx را مطالعه نمایید.',
 	HELP_TELEGRAM_LINK: 'https://apidocs.hollaex.com',
-	NEED_HELP_TEXT: 'پرسشی دارید؟', // new
+	NEED_HELP_TEXT: 'سوالی دارید؟', // new
 	HELP_TEXT: 'راهنما',
 	SUCCESS_TEXT: 'موفق',
 	ERROR_TEXT: 'خطا',
@@ -44,7 +43,7 @@ ACTIVE_TRADES: 'شما باید {0} برای دسترسی به سفارشات ف
 	EDIT_TEXT: 'ویرایش',
 	BACK_TEXT: 'بازگشت',
 	NO_OPTIONS: 'گزینه ای وجود ندارد',
-	SECONDS: 'ثانیه ها',
+	SECONDS: 'ثانیه',
 	VIEW_MARKET: 'مشاهده بازار', // new
 	GO_TRADE: 'معامله رو شروع کن', // new
 	VIEW_INFO: 'مشاهده صفحه اطلاعات', // new
@@ -59,7 +58,7 @@ ACTIVE_TRADES: 'شما باید {0} برای دسترسی به سفارشات ف
 		SECTION_3_TITLE: 'امکانات',
 		SECTION_3_CARD_1_TITLE: 'موتور تطبیق مقایس پذیر',
 		SECTION_3_CARD_1_TEXT:
-			'موتور تطبیق سفارشات قوی و هوشمند با بهره گیری از بهینه ترین الگوریتم های روز دنیا',
+			'موتور تطبیق سفارش های قوی و هوشمند با بهره گیری از بهینه ترین الگوریتم های روز دنیا',
 		SECTION_3_CARD_2_TITLE: 'اتصال به بانک',
 		SECTION_3_CARD_2_TEXT:
 			'برای اتصال به بانک ، پلاگین های ویژه با قابلیت سفارشی سازی بالا به شما کمک مینماید تا اکسچنج بومی خود را بسازید',
@@ -80,7 +79,7 @@ ACTIVE_TRADES: 'شما باید {0} برای دسترسی به سفارشات ف
 	FOOTER: {
 		FOOTER_LEGAL: ['با افتخار توسعه داده شده در سئول ، کره جنوبی'],
 		FOOTER_LANGUAGE_TEXT: 'زبان',
-		FOOTER_COPYRIGHT: '	Copyright {0} ⓒ bitHolla Inc. All rights reserved',
+		FOOTER_COPYRIGHT: 'Powered by bitHolla',
 		SECTIONS: {
 			SECTION_1_TITLE: 'درباره',
 			SECTION_1_LINK_1: 'درباره ما',
@@ -106,13 +105,19 @@ ACTIVE_TRADES: 'شما باید {0} برای دسترسی به سفارشات ف
 			SECTION_4_LINK_3: 'تماس با ما',
 			SECTION_4_LINK_4: 'شرایط استفاده',
 			SECTION_5_TITLE: 'منابع',
-			SECTION_5_LINK_1: 'HollaEx Whitepaper',
+			SECTION_5_LINK_1: 'سپید نامه',
 			SECTION_5_LINK_2: 'HollaEx Token (XHT) ',
 			SECTION_5_LINK_3: 'GitHub',
 			SECTION_5_LINK_4: 'سوالات متداول', // new
 			SECTION_6_TITLE: 'شبکه های اجتماعی',
 			SECTION_6_LINK_1: 'توییتر',
-			SECTION_6_LINK_2: 'تلگرام'
+			SECTION_6_LINK_2: 'تلگرام',
+			SECTION_6_LINK_3: 'فیسبوک', // new
+			SECTION_6_LINK_4: 'اینستاگرام', // new
+			SECTION_6_LINK_5: 'لینکدین', // new
+			SECTION_6_LINK_6: 'سایت', // new
+			SECTION_6_LINK_7: 'پشتیبانی', // new
+			SECTION_6_LINK_8: 'اطلاعات' // new
 		},
 		XHT_DESCRIPTION:
 			'HollaEx kit یک پلتفورم متن باز به منظور مبادله دارایی های دیجیتال بین کاربران می باشد که توسط شرکت bitHolla توسعه و ارایه می شود.',
@@ -135,8 +140,6 @@ ACTIVE_TRADES: 'شما باید {0} برای دسترسی به سفارشات ف
 		// new
 		REQUEST_TITLE: 'درخواست دسترسی',
 		REQUEST_INVITE: 'درخواست دعوت',
-		REFERRAL_INVITE_WARNING:
-			'شما برای ثبت نام در Hollaex نیاز به داشتن لینک دعوت از یکی از دوستان خود هستید و یا اینکه }{0}',
 		CATEGORY_PLACEHOLDER: 'به هریک از بخش های زیر پاسخ های متناسب بدهید',
 		INTRODUCTION_LABEL: 'خودتان رو معرفی کنید',
 		INTRODUCTION_PLACEHOLDER:
@@ -174,21 +177,17 @@ ACTIVE_TRADES: 'شما باید {0} برای دسترسی به سفارشات ف
 			ETH: 'آدرس شما برای دریافت اتریوم',
 			BCH: 'آدرس شما برای دریافت بیتکوین کش'
 		},
-		INFORMATION_MESSAGES: [
-			'برای واریز ریالی به حساب خود از حساب ارایه شده در زیر استفاده نمایید. بسته به شرایط، واریز به حساب کاربری شما بین 1 تا 2 روز ممکن است بطول بیانجامد',
-			'تنها واریز هایی که ازحساب بانکی به نام کاربر انجام می پذیرد مورد قبول قرار خواهند گرفت'
-		],
 		INCREASE_LIMIT: 'میخواهید سقف برداشت روزانه خود را افزایش دهید',
 		QR_CODE:
 			'کافیست برای ارسال پول توسط دیگران،این کد توسط شخص پرداخت کننده اسکن شود',
 		NO_DATA: 'اطلاعاتی موجود نمی باشد',
-		FULL_MESSAGE_LIMIT: '{0}: {1} {2} {3}' //  0 -> {Daily deposit max amount}:  1 -> {50,000,000} 2 -> {T} 3 -> {(Want to increase your daily limit?)}
+		FULL_MESSAGE_LIMIT: '{0}: {1} {2} {3}'  //  0 -> {Daily deposit max amount}:  1 -> {1,000} 2 -> {Currency} 3 -> {(Want to increase your daily limit?)}
 	},
 	LOGIN: {
 		LOGIN_TO: 'ورود به {0}',
 		CANT_LOGIN: "نمی توانید وارد شوید؟",
-		NO_ACCOUNT: "هنوز حساب کاربری ایجاد نکرده اید؟",
-		CREATE_ACCOUNT: 'همین الان یک حساب کاربری بسازید',
+		NO_ACCOUNT: "حساب کاربری ندارید؟",
+		CREATE_ACCOUNT: 'ایجاد حساب کاربری جدید',
 		HELP: 'راهنما'
 	},
 	FORM_FIELDS: {
@@ -201,6 +200,7 @@ ACTIVE_TRADES: 'شما باید {0} برای دسترسی به سفارشات ف
 	},
 	VALIDATIONS: {
 		OTP_LOGIN: 'رمزیکبارمصرف خود را وارد نمایید',
+		CAPTCHA: 'خطا. صفحه را رفرش کنید',
 		FROZEN_ACCOUNT: 'این حساب بسته شده است',
 		INVALID_EMAIL: 'آدرس ایمیل نامعتبر است',
 		TYPE_EMAIL: 'ایمیل خود را وارد کنید',
@@ -281,7 +281,7 @@ ACTIVE_TRADES: 'شما باید {0} برای دسترسی به سفارشات ف
 		ERROR_INVALID: 'رمز یکبار مصرف اشتباه است'
 	},
 	QUICK_TRADE_COMPONENT: {
-		TITLE: 'سریع و آسان',
+		TITLE: 'آسان',
 		TOTAL_COST: 'مجموع هزینه',
 		BUTTON: 'بازنگری {0 سفارش}',
 		INPUT: '{0}به {1}',
@@ -293,7 +293,7 @@ ACTIVE_TRADES: 'شما باید {0} برای دسترسی به سفارشات ف
 		TOTAL_ASSETS: 'مجموع دارایی ها',
 		AVAILABLE_WITHDRAWAL: 'دارایی موثر قابل معامله',
 		AVAILABLE_TRADING: 'دارایی موثر قابل برداشت',
-		ORDERS_PLURAL: 'سفارشات',
+		ORDERS_PLURAL: 'سفارش ها',
 		ORDERS_SINGULAR: 'سفارش',
 		HOLD_ORDERS:
 			'شما {0} سفارش تکمیل نشده دارید, که منجر به کسر {2} {3} از دارایی {4} شما شده است'
@@ -327,7 +327,7 @@ ACTIVE_TRADES: 'شما باید {0} برای دسترسی به سفارشات ف
 		TERMS: {
 			terms: 'شرایط عمومی',
 			policy: 'حریم خصوصی',
-			text: 'من با مطالعه و آگاهی با {0 و {1 موافقت می نمایم}}'
+			text: 'من با مطالعه و آگاهی با {0} و {1} موافقت می نمایم.'
 		}
 	},
 	VERIFICATION_TEXTS: {
@@ -357,7 +357,7 @@ ACTIVE_TRADES: 'شما باید {0} برای دسترسی به سفارشات ف
 			'لطفا اطلاعات خواسته شده در هر بخش را با دقت وارد نمایید .مستحضر باشید پس از تکمیل همه اطلاعات خواسته شده ، درخواست ارتقای حساب کاربری شما مورد ارزیابی قرار خواهد گرفت',
 		INFO_TXT_2:
 			'* روند احراز هویت شما نیازمند بررسی مدارک هویتی شما می باشد',
-		DOCUMENTATIONS: 'بارگزاری',
+		DOCUMENTATIONS: 'بارگذاری',
 		COMPLETED: 'تکمیل شد',
 		PENDING_VERIFICATION: 'تایید حساب کاربری در حال انتظار است ',
 		TITLE_EMAIL: 'ایمیل',
@@ -365,7 +365,7 @@ ACTIVE_TRADES: 'شما باید {0} برای دسترسی به سفارشات ف
 		MAKE_FIRST_DEPOSIT: 'اولین واریز خود را انجام دهید', // new
 		OBTAIN_XHT: 'کسب XHT', // new
 		TITLE_USER_DOCUMENTATION: 'مدرک شناسایی',
-		TITLE_ID_DOCUMENTS: 'بارگزاری',
+		TITLE_ID_DOCUMENTS: 'بارگذاری',
 		TITLE_BANK_ACCOUNT: 'حساب بانکی',
 		TITLE_MOBILE_PHONE: 'شماره تلفن همراه',
 		TITLE_PERSONAL_INFORMATION: 'اطلاعات شخصی',
@@ -388,7 +388,7 @@ ACTIVE_TRADES: 'شما باید {0} برای دسترسی به سفارشات ف
 		GOTO_VERIFICATION: 'رفتن به بخش تایید حساب کاربری',
 		GOTO_WALLET: 'به بخش کیف پول برو', // new
 		CONNECT_BANK_ACCOUNT: 'اتصال حساب بانکی',
-		ACTIVATE_2FA: 'فعال سازی رمز دوعاملی',
+		ACTIVATE_2FA: 'فعال سازی رمز یکبار مصرف',
 		INCOMPLETED: 'تکمیل نشده است',
 		BANK_VERIFICATION: 'تایید بانک',
 		IDENTITY_VERIFICATION: 'تایید مدارک شناسایی',
@@ -522,7 +522,7 @@ ACTIVE_TRADES: 'شما باید {0} برای دسترسی به سفارشات ف
 				ID_SECTION: {
 					TITLE: 'لطفا هنگام بارگذاری تصویر کارت ملی خود به نکات زیر دقت نمایید:',
 					LIST_ITEM_1:
-						'مدارک باید بصورت رنگی و با کیفیت بالا و حجم حداکثر 300 کیلو بایت بارگزاری شوند.',
+						'مدارک باید بصورت رنگی و با کیفیت بالا و حجم حداکثر 300 کیلو بایت بارگذاری شوند.',
 					LIST_ITEM_2: 'اطلاعات درج شده باید کاملا خوانا باشد.',
 					LIST_ITEM_3: 'تنها کارت ملی که تاریخ اعتبار آن منقضی نشده است ، معتبر می باشد.',
 					WARNING_1:
@@ -530,7 +530,7 @@ ACTIVE_TRADES: 'شما باید {0} برای دسترسی به سفارشات ف
 					WARNING_2:
 						'مطمئن شوید که اسناد شخصی خود را بارگذاری می کنید. هرگونه استفاده از اسناد شخص دیگر یا جعلی عواقب قانونی به همراه خواهد داشت و باعث می شود  حساب شما فوراً مسدود شود.',
 					WARNING_3:
-						'برای احراز محل اقامت خود از بارگزاری کارت ملی ، شناسنامه و پاسپورت خودداری نمایید'
+						'برای احراز محل اقامت خود از بارگذاری کارت ملی ، شناسنامه و پاسپورت خودداری نمایید'
 				},
 				POR: {
 					SECTION_1_TEXT_1:
@@ -604,32 +604,32 @@ ACTIVE_TRADES: 'شما باید {0} برای دسترسی به سفارشات ف
 		TITLE_CHAT: 'چت',
 		TITLE_AUDIO_CUE: 'اعلان صوتی',
 		TITLE_MANAGE_RISK: 'مدیریت ریسک',
-		ORDERBOOK_LEVEL: 'سطح سفارش (حداکثر 20)',
+		ORDERBOOK_LEVEL: 'تعداد سفارشهای قابل نمایش در بازار (حداکثر 20)',
 		SET_TXT: 'تنظیم',
 		CREATE_ORDER_WARING: 'ایجاد اخطار سفارش ',
 		RISKY_TRADE_DETECTED: 'شناسایی معاملات پرخطر',
 		RISKY_WARNING_TEXT_1:
-			'این مقدار سفارشات بیشتر از مبلغ تعیین شده شمامی باشد {0} .',
+			'این مقدار سفارش ها بیشتر از مبلغ تعیین شده شمامی باشد {0} .',
 		RISKY_WARNING_TEXT_2: '({0} سبد معامله)',
 		RISKY_WARNING_TEXT_3:
 			' لطفاً بررسی و سپس تأیید کنید که می خواهید این معامله را انجام دهید.',
 		GO_TO_RISK_MANAGMENT: 'به بخش مدیریت ریسک برو',
 		CREATE_ORDER_WARING_TEXT:
-			'ایجاد هشدار درهنگامی که سفارشات شما از سقف تعیین شده توسط شما فراتر میرود.',
+			'ایجاد هشدار درهنگامی که سفارش های شما از سقف تعیین شده توسط شما فراتر میرود.',
 		ORDER_PORTFOLIO_LABEL: 'درصد سبد معامله:',
 		NOTIFICATION_FORM: {
 			TRADE_POPUPS: 'اعلان های مربوط به معاملات',
-			POPUP_ORDER_CONFIRMATION: 'تاییدیه، قبل از ارسال سفارش ',
-			POPUP_ORDER_COMPLETED: 'پس از تکمیل سفارش ، به من اطلاع بده',
+			POPUP_ORDER_CONFIRMATION: 'تاییدیه ثبت سفارش ',
+			POPUP_ORDER_COMPLETED: 'اعلان تکمیل سفارش',
 			POPUP_ORDER_PARTIALLY_FILLED:
-				'پس از تکمیل بخشی از سفارش ، به من اطلاع بده'
+				'اعلان تکمیل بخشی از سفارش'
 		},
 		AUDIO_CUE_FORM: {
 			ORDERS_COMPLETED_AUDIO:
 				'وقتی سفارش تکمیل شد یک اعلان صوتی پخش شود',
 			ORDERS_PARTIAL_AUDIO:
 				'وقتی بخشی از سفارش تکمیل شد ، یک اعلان صوتی  پخش شود',
-			PUBLIC_TRADE_AUDIO: 'در هر خرید و فروش یک اعلان صوتی پخش شود'
+			PUBLIC_TRADE_AUDIO: 'در هر خرید و فروش عمومی، یک اعلان صوتی پخش شود'
 		},
 		RISK_MANAGEMENT: {
 			INFO_TEXT:
@@ -643,7 +643,7 @@ ACTIVE_TRADES: 'شما باید {0} برای دسترسی به سفارشات ف
 		}
 	},
 	TRANSACTION_HISTORY: {
-		TITLE: 'ناریخچه',
+		TITLE: 'تاریحچه',
 		TITLE_TRADES: 'تاریخچه خرید و فروش',
 		TITLE_DEPOSITS: 'تاریخچه واریزی ها',
 		TITLE_WITHDRAWALS: 'تاریخچه برداشت ها',
@@ -654,9 +654,9 @@ ACTIVE_TRADES: 'شما باید {0} برای دسترسی به سفارشات ف
 	},
 	ACCOUNT_SECURITY: {
 		OTP: {
-			TITLE: 'رمز دو عاملی',
+			TITLE: 'رمز یکبار مصرف',
 			OTP_ENABLED: 'رمز یکبار مصرف را فعال کنید',
-			OTP_DISABLED: 'لطفا رمز دو عاملی را  فعال کنید',
+			OTP_DISABLED: 'لطفا رمز یکبار مصرف را  فعال کنید',
 			ENABLED_TEXTS: {
 				TEXT_1: 'هنگام ورود به سیستم ، به OTP نیاز دارید',
 				TEXT_2: 'هنگام برداشت وجوه به OTP نیاز دارید'
@@ -666,24 +666,24 @@ ACTIVE_TRADES: 'شما باید {0} برای دسترسی به سفارشات ف
 				REVOKE: 'شما OTP خود را با موفقیت غیرفعال کردید'
 			},
 			CONTENT: {
-				TITLE: 'تأیید هویت دو عاملی را فعال کنید',
+				TITLE: 'رمز  یکبار مصرف را فعال کنید',
 				MESSAGE_1: 'اسکن Qrcode',
 				MESSAGE_2:
-					' کد Qrcode را در زیر با نرم افزار Google Authenticator اسکن کنید تا به طور خودکار احراز هویت دو عاملی را در دستگاه خود تنظیم شود..',
+					'لطفا کیوآر کد زیر را توسط برنامه Google Authenticator یا Authy اسکن کنید.',
 				MESSAGE_3:
 					'اگر در اسکن مشکلی دارید ، می توانید کد زیر را به صورت دستی وارد کنید',
 				MESSAGE_4:
-					' این کد را در جایی مطمئن ذخیره کنید تا در صورت تغییر یا از بین رفتن تلفن همراهتان احراز هویت دوعاملی را به راحتی بازیابی کنید.',
+					' شما می توانید این کد را در جایی امن ذخیره نموده و در صورت گم کردن گوشی همراه خود در گوشی جدید وارد کنید',
 				MESSAGE_5: 'دستی',
 				INPUT: 'رمز یک بار ورود را وارد کنید',
 				WARNING:
-					'اکیدا توصیه می کنیم رمز دو عاملی حساب خود را فعال کنید. این کار امنیت حساب شما را به طور قابل توجهی افزایش می دهد.',
-				ENABLE: 'رمز دو عاملی را فعال کنید',
-				DISABLE: 'غیر فعال کردن رمز دو عاملی'
+					'اکیدا توصیه می کنیم رمز یکبار مصرف حساب خود را فعال کنید. این کار امنیت حساب شما را به طور قابل توجهی افزایش می دهد.',
+				ENABLE: 'رمز یکبار مصرف را فعال کنید',
+				DISABLE: 'غیر فعال کردن رمز یکبار مصرف'
 			},
 			FORM: {
 				PLACEHOLDER: ' ارائه شده توسط Google Authenticator را وارد کنید',
-				BUTTON: 'فعال کردن رمز دو عاملی'
+				BUTTON: 'فعال کردن رمز یکبار مصرف'
 			}
 		},
 		CHANGE_PASSWORD: {
@@ -696,7 +696,7 @@ ACTIVE_TRADES: 'شما باید {0} برای دسترسی به سفارشات ف
 				BUTTON: 'تغییر رمز عبور',
 				CURRENT_PASSWORD: {
 					label: ' رمز عبور فعلی',
-					placeholder: 'رمز عبور کنونی خود را وارد کنید'
+					placeholder: 'رمز عبور فعلی'
 				},
 				NEW_PASSWORD: {
 					label: 'رمز عبور جدید',
@@ -709,27 +709,27 @@ ACTIVE_TRADES: 'شما باید {0} برای دسترسی به سفارشات ف
 			}
 		}
 	},
-	CURRENCY: 'واحد پول',
+	CURRENCY: 'نوع دارایی',
 	TYPE: 'نوع',
 	TYPES_VALUES: {
 		market: 'بازار',
 		limit: 'محدود'
 	},
 	TYPES: [
-		{ value: 'بازار', label: 'بازار' },
-		{ value: 'محدود', label: 'محدود' }
+		{ value: 'market', label: 'بازار' },
+		{ value: 'limit', label: 'محدود' }
 	],
-	SIDE: 'طرف',
+	SIDE: 'معامله',
 	SIDES_VALUES: {
-		buy: 'حرید',
+		buy: 'خرید',
 		sell: 'فروش'
 	},
-	SIDES: [{ value: 'حرید', label: 'حرید' }, { value: 'فروش', label: 'فروش' }],
+	SIDES: [{ value: 'buy', label: 'خرید' }, { value: 'sell', label: 'فروش' }],
 	DEFAULT_TOGGLE_OPTIONS: [
 		{ value: true, label: 'روشن' },
 		{ value: false, label: 'خاموش' }
 	],
-	SIZE: 'مفدار',
+	SIZE: 'مقدار',
 	PRICE: 'قیمت',
 	FEE: 'کارمزد',
 	FEES: 'کارمزد',
@@ -743,7 +743,7 @@ ACTIVE_TRADES: 'شما باید {0} برای دسترسی به سفارشات ف
 	COMPLETE: 'تکمیل',
 	PENDING: 'درحال انتظار',
 	REJECTED: 'مردود',
-	ORDERBOOK: 'کتاب سفارشات',
+	ORDERBOOK: 'بازار',
 	CANCEL: 'لغو',
 	CANCEL_ALL: 'لغو همه',
 	GO_TRADE_HISTORY: 'به تاریخچه معاملات بروید',
@@ -752,8 +752,8 @@ ACTIVE_TRADES: 'شما باید {0} برای دسترسی به سفارشات ف
 	CHART: 'نمودار قیمت',
 	ORDERS: 'سفارش های فعال من',
 	TRADES: 'مبادلات گذشته من',
-	RECENT_TRADES: 'سفارشات اخیر من', // ToDo
-	PUBLIC_SALES: 'فروش عمومی', // ToDo
+	RECENT_TRADES: 'سفارش های اخیر من', // ToDo
+	PUBLIC_SALES: 'تاریخچه معاملات', // ToDo
 	REMAINING: 'باقی مانده',
 	FULLFILLED: '{0} % تکمیل شده',
 	FILLED: 'تکمیل', // new
@@ -881,8 +881,8 @@ ACTIVE_TRADES: 'شما باید {0} برای دسترسی به سفارشات ف
 	HIDE_TEXT: 'مخفی',
 	PAGINATOR_FORMAT: '{0} / {1}',
 	ORDERBOOK_SELLERS: 'فروشندگان',
-	ORDERBOOK_BUYERS: 'خریدارن',
-	ORDERBOOK_SPREAD: '{0} بازه', // 0 -> 660,000 T
+	ORDERBOOK_BUYERS: 'خریداران',
+	ORDERBOOK_SPREAD: '{0} شکاف قیمت', // 0 -> 660,000 T
 	ORDERBOOK_SPREAD_PRICE: '{0} {1}', //// 0-> amount  1 -> symbol  600,000 T
 	CALCULATE_MAX: 'بیشترین',
 	DATEFIELD_TOOGLE_DATE_GR: 'تقویم جهانی',
@@ -964,10 +964,10 @@ ACTIVE_TRADES: 'شما باید {0} برای دسترسی به سفارشات ف
 	DEVELOPER_SECTION: {
 		TITLE: 'برنامه نویسان',
 		INFORMATION_TEXT:
-			'API امکاناتی از قبیل دسترسی به کیف پول و موجودی، مدیریت سفارشات و خرید و فروش ها، درخواست برداشت و همچنین اطلاعات بازار از جمله آخرین مبدلات، بازار و قیمت لحظه ای را فراهم می کند',
+			'API امکاناتی از قبیل دسترسی به کیف پول و موجودی، مدیریت سفارش ها و خرید و فروش ها، درخواست برداشت و همچنین اطلاعات بازار از جمله آخرین مبدلات، بازار و قیمت لحظه ای را فراهم می کند',
 		ERROR_INACTIVE_OTP:
-			'برای ساختن کلید API شما باید رمز دو عاملی را فعال کنید.',
-		ENABLE_2FA: 'فعال سازی احراز رمز دو عاملی',
+			'برای ساختن کلید API شما باید رمز یکبار مصرف را فعال کنید.',
+		ENABLE_2FA: 'فعال سازی رمز یکبار مصرف',
 		WARNING_TEXT: 'کلید خود را با دیگران به اشتراک نگذارید',
 		GENERATE_KEY: 'کلید API خود را بسازید',
 		ACTIVE: 'فعال',
@@ -1000,7 +1000,7 @@ ACTIVE_TRADES: 'شما باید {0} برای دسترسی به سفارشات ف
 		CREATED: 'تاریخ ساخت',
 		REVOKE: 'لغو کردن',
 		REVOKED: 'لغو شده',
-		REVOKE_TOOLTIP: 'شما باید رمز دو عاملی خود را برای لغو کلید فعال کنید.' // TODO
+		REVOKE_TOOLTIP: 'شما باید رمز یکبار مصرف خود را برای لغو کلید فعال کنید.' // TODO
 	},
 	CHAT: {
 		CHAT_TEXT: 'چت',
@@ -1009,10 +1009,10 @@ ACTIVE_TRADES: 'شما باید {0} برای دسترسی به سفارشات ف
 		READ_MORE: 'بیشتر بخوانید',
 		SHOW_IMAGE: 'Show Image',
 		HIDE_IMAGE: 'Hide Image',
-		CHAT_MESSAGE_BOX_PLACEHOLDER: 'متن',
+		CHAT_MESSAGE_BOX_PLACEHOLDER: 'پیام خود را وارد کنید',
 		SIGN_UP_CHAT: 'ثبت نام چت',
 		JOIN_CHAT: 'نام کاربری چت',
-		TROLLBOX: 'ایموجی ({0})' // new
+		TROLLBOX: 'چت عمومی ({0})' // new
 	},
 	INVALID_USERNAME:
 		'طول نام کاربری باید بین 3 تا 15 حرف باید باشد. فقط از حروف انگلیسی کوچک، اعداد و کاراکتر underscore استفاده نمایید.',
@@ -1053,7 +1053,7 @@ ACTIVE_TRADES: 'شما باید {0} برای دسترسی به سفارشات ف
 	TRADE_TAB_CHART: 'نمودار',
 	TRADE_TAB_TRADE: 'خرید و فروش',
 	TRADE_TAB_ORDERS: 'سفارش ها',
-	TRADE_TAB_POSTS: 'Posts', // new
+	TRADE_TAB_POSTS: 'اطلاعیه ها', // new
 	WALLET_TAB_WALLET: 'کیف پول',
 	WALLET_TAB_TRANSACTIONS: 'تراکنش ها',
 	RECEIVE_CURRENCY: 'دریافت {0}',
@@ -1095,7 +1095,7 @@ ACTIVE_TRADES: 'شما باید {0} برای دسترسی به سفارشات ف
 			'اساتید واقعی ترید، فرصت های بازار را غنیمت شمرده و از آنها استفاده می نمایند.',
 		VIEW_FEE_STRUCTURE: 'جدول کارمزدها و سقف برداشت',
 		UPGRADE_ACCOUNT: ' ارتقا حساب کاربری',
-		ACTIVE_2FA_SECURITY: 'فعال سازی رمز دوعاملی',
+		ACTIVE_2FA_SECURITY: 'فعال سازی رمز یکبار مصرف',
 		ACCOUNT_ASSETS_TXT_1: 'خلاصه وضعیت دارایی های شما',
 		ACCOUNT_ASSETS_TXT_2:
 			'نگهداری دارایی ها و مبادله بیشتر، به شما در ارتقا سطح کاربری و بهره مندی از مزایای آن کمک می نماید.',
@@ -1250,7 +1250,7 @@ ACTIVE_TRADES: 'شما باید {0} برای دسترسی به سفارشات ف
 			'در این مدت می توانید خود را با شبکه HollaEx از طریق منابع زیر آشنا کنید', // new
 		XHT_ORDER_TXT_1: 'برای شروع خرید و فروش توکن HollaEx (XHT) باید وارد شوید', // new
 		XHT_ORDER_TXT_2:
-			'توکن HollaEx از طریق موج حراجی توزیع می شود که در یک زمان تصادفی، روزانه  مقداری  توکن HollaEx را به بالاترین پیشنهاد دهنده سفارشات فروخته می شود .', // new
+			'توکن HollaEx از طریق موج حراجی توزیع می شود که در یک زمان تصادفی، روزانه  مقداری  توکن HollaEx را به بالاترین پیشنهاد دهنده سفارش ها فروخته می شود .', // new
 		XHT_ORDER_TXT_3: '{0}برای پیوستن به موج ها یا{1}', // new
 		XHT_TITLE: 'XHT', //new
 		XHT_TRADE_TXT_1: 'برای دیدن معاملات اخیر خود وارد شوید', //new
@@ -1297,7 +1297,7 @@ ACTIVE_TRADES: 'شما باید {0} برای دسترسی به سفارشات ف
 	EXPIRED_BUTTON_TXT: 'مبادله فعال', // new
 	TRADE_POSTS: {
 		// new
-		ANNOUNCEMENT: 'اعلان ها',
+		ANNOUNCEMENT: 'اطلاعیه ها',
 		ANNOUNCEMNT_TXT_3:
 			'راه اندازی عمومی و موج حراجی در اول ژانویه سال 2020 تنظیم شده است. سپرده کیف پول و برداشت ها اکنون باز است.',
 		ANNOUNCEMNT_TXT_4:
@@ -1305,11 +1305,11 @@ ACTIVE_TRADES: 'شما باید {0} برای دسترسی به سفارشات ف
 		ANNOUNCEMNT_TXT_1:
 			'با معرفی دوستان خود به hollaex.com ، با برنامه واسط hollaEX (HAP) درآمدزایی کنید. {0}',
 		DEFAULT_ANNOUNCEMENT:
-			'در این صفحه اطلاعیه های عمومی در مورد اکسچنج شما نمایش داده می شود! {0}',
+			'در این صفحه اطلاعیه های عمومی در مورد اکسچنج شما نمایش داده می شود!',
 		ANNOUNCEMENT_TXT_2: 'XHT رایگان در کلیه کیف پولهایی که {0} دارند توزیع می شود.',
 		LEARN_MORE: 'بیشتر بدانید',
 		APPLY_TODAY: 'امروز اقدام کنید' // new
 	},
-	OPEN_WALLET: 'کیف پول را باز کنید', // new
+	OPEN_WALLET: 'کیف پول', // new
 	AGO: 'پیش' // new
 };

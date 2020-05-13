@@ -3,11 +3,11 @@ import classnames from 'classnames';
 import EventListener from 'react-event-listener';
 import moment from 'moment';
 import { loadReCaptcha } from 'react-recaptcha-v3';
+import {Helmet} from "react-helmet";
 import STRINGS from '../../config/localizedStrings';
 import {
 	ICONS,
 	FLEX_CENTER_CLASSES,
-	EXCHANGE_EXPIRY_DAYS,
 	FIT_SCREEN_HEIGHT,
 	CAPTCHA_SITEKEY
 } from '../../config/constants';
@@ -119,7 +119,7 @@ class App extends Component {
 		// 	nextProps.verification_level !== this.props.verification_level &&
 		// 	nextProps.verification_level === 1
 		// ) {
-			// this.goToAccountPage();
+		// this.goToAccountPage();
 		// }
 		if (this.props.activeTheme !== nextProps.activeTheme) {
 			this.updateThemeToBody(nextProps.activeTheme);
@@ -254,6 +254,11 @@ class App extends Component {
 		return '';
 	};
 
+	openContactForm = (data = {}) => {
+		const { links = {} } = this.props.constants;
+		this.props.openContactForm({ ...data, helpdesk: links.helpdesk })
+	}
+
 	renderDialogContent = ({ type, data }, prices = {}) => {
 		switch (type) {
 			case NOTIFICATIONS.ORDERS:
@@ -263,7 +268,7 @@ class App extends Component {
 					<Notification
 						type={type}
 						data={data}
-						openContactForm={this.props.openContactForm}
+						openContactForm={this.openContactForm}
 						onClose={this.onCloseDialog}
 					/>
 				);
@@ -278,7 +283,7 @@ class App extends Component {
 						}}
 						onClose={this.onCloseDialog}
 						goToPage={this.goToPage}
-						openContactForm={this.props.openContactForm}
+						openContactForm={this.openContactForm}
 					/>
 				);
 			case NOTIFICATIONS.ERROR:
@@ -416,6 +421,37 @@ class App extends Component {
 		this.setState({ isSocketDataReady: value });
 	};
 
+	checkExchangeExpiry = () => {
+		const { info = {} } = this.props;
+		let is_expired = false;
+		let is_warning = false;
+		let daysLeft = 0;
+		if (info.status) {
+			if (info.is_trial) {
+				if (info.active) {
+					if (info.expiry && moment().isBefore(info.expiry, 'second')) {
+						is_warning = true;
+						daysLeft = moment(info.expiry).diff(moment(), 'days');
+					} else if (info.expiry && moment().isAfter(info.expiry, 'second')) {
+						is_expired = true;
+					}
+				} else {
+					is_expired = true;
+				}
+			} else {
+				is_expired = false;
+				is_warning = false;
+			}	
+		} else {
+			is_expired = true;
+		}
+		return {
+			is_expired,
+			is_warning,
+			daysLeft
+		}
+	};
+
 	render() {
 		const {
 			symbol,
@@ -456,10 +492,13 @@ class App extends Component {
 			? ''
 			: this.getClassForActivePath(this.props.location.pathname);
 		const isMenubar = activePath === 'account' || activePath === 'wallet';
-		const expiryDays =
-			EXCHANGE_EXPIRY_DAYS - moment().diff(info.created_at, 'days');
+		const expiryData = this.checkExchangeExpiry();
 		return (
 			<div>
+				<Helmet>
+					<title>{constants.title}</title>
+					<meta name="description" content={constants.description} />
+				</Helmet>
 				<Socket
 					router={router}
 					location={location}
@@ -532,8 +571,8 @@ class App extends Component {
 								>
 									{STRINGS.formatString(
 										STRINGS.TRIAL_EXCHANGE_MSG,
-										STRINGS.APP_TITLE,
-										expiryDays
+										constants.api_name || '',
+										expiryData.daysLeft
 									)}
 								</div>
 							) : null}
@@ -573,7 +612,7 @@ class App extends Component {
 										<Sidebar
 											activePath={activePath}
 											logout={this.logout}
-											// help={openContactForm}
+											// help={this.openContactForm}
 											theme={activeTheme}
 											isLogged={isLoggedIn()}
 											help={openHelpfulResourcesForm}
@@ -622,12 +661,13 @@ class App extends Component {
 								</Dialog>
 								{!isMobile &&
 									enabledPlugins.includes('chat') && (
-									<ChatComponent
-										minimized={chatIsClosed}
-										onMinimize={this.minimizeChat}
-										chatIsClosed={chatIsClosed}
-									/>
-								)}
+										<ChatComponent
+											activeLanguage={activeLanguage}
+											minimized={chatIsClosed}
+											onMinimize={this.minimizeChat}
+											chatIsClosed={chatIsClosed}
+										/>
+									)}
 							</div>
 							{isMobile && (
 								<div className="app_container-bottom_bar">
@@ -645,10 +685,14 @@ class App extends Component {
 					<SnackDialog />
 				</div>
 				<div
-					className={classnames(getThemeClass(activeTheme), {
-						'layout-mobile': isMobile,
-						'layout-desktop': isBrowser
-					})}
+					className={classnames(
+						getThemeClass(activeTheme),
+						languageClasses[0],
+						{
+							'layout-mobile': isMobile,
+							'layout-desktop': isBrowser
+						}
+					)}
 				>
 					{!isMobile && <AppFooter theme={activeTheme} constants={constants} />}
 				</div>

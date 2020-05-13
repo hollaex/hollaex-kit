@@ -294,12 +294,11 @@ export const ICONS = {
 };
 
 export const SOCIAL_ICONS = {
-	FACEBOOK: '/assets/icons/social-grey-icons.svg',
-	TWITTER: '/assets/icons/social-grey-icons02.svg',
-	TWITTER_DARK: '/assets/icons/twitter-dark.svg',
-	INSTAGRAM: '/assets/icons/social-grey-icons03.svg',
-	TELEGRAM: '/assets/icons/social-grey-icons04.svg',
-	TELEGRAM_BLUE: '/assets/icons/telegram.svg',
+	FACEBOOK: '/assets/icons/facebook.svg',
+	LINKEDIN: '/assets/icons/linkedin.svg',
+	TWITTER: '/assets/icons/twitter.png',
+	INSTAGRAM: '/assets/icons/instagram.svg',
+	TELEGRAM: '/assets/icons/telegram.png',
 	GOOGLE: '/assets/icons/google.png'
 };
 

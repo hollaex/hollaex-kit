@@ -93,7 +93,7 @@ class ChatMessageWithText extends Component {
 
 						) : (
 								<div className="mr-1 my-1 username">
-									<span className="mr-1">
+									<span className="mr-1 apply_rtl">
 										{`${username}:`}
 									</span>
 									{to && <span className="mr-1">{`${to}:`}</span>}

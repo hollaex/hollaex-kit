@@ -12,7 +12,7 @@ import STRINGS from '../../config/localizedStrings';
 
 export const FORM_NAME = 'SignForm';
 
-export const generateFormFields = (strings, theme) => ({
+export const generateFormFields = (strings, theme, links = {}) => ({
 	email: {
 		type: 'email',
 		validate: [
@@ -45,11 +45,13 @@ export const generateFormFields = (strings, theme) => ({
 		label: strings.formatString(
 			strings.SIGN_UP.TERMS.text,
 			<BlueLink
-				href="https://info.hollaex.com/hc/en-us/articles/360038833974-Terms-of-Service"
+				disabled={!links.terms}
+				href={links.terms}
 				text={strings.SIGN_UP.TERMS.terms}
 			/>,
 			<BlueLink
-				href="https://info.hollaex.com/hc/en-us/articles/360039160974-Privacy-Policy"
+				disabled={!links.privacy}
+				href={links.privacy}
 				text={strings.SIGN_UP.TERMS.policy}
 			/>
 		)

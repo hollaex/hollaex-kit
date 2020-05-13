@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { Field } from 'redux-form';
 import {
 	renderSelectField,
@@ -6,6 +6,7 @@ import {
 	renderDateField,
 	renderRangeField,
 	renderInputField,
+	renderTextAreaField,
 	renderCheckField
 } from './fields';
 import { FileField } from './FileField';
@@ -13,7 +14,7 @@ import CaptchaField from './captchaField';
 
 const renderFields = (fields) => {
 	return (
-		<div>
+		<Fragment>
 			{Object.keys(fields).map((key) => {
 				const field = fields[key];
 				const options = {
@@ -46,6 +47,9 @@ const renderFields = (fields) => {
 					case 'checkbox':
 						component = renderCheckField;
 						break;
+					case 'textarea':
+						component = renderTextAreaField;
+						break;
 					case 'password':
 					case 'input':
 					case 'email':
@@ -55,7 +59,7 @@ const renderFields = (fields) => {
 				}
 				return <Field component={component} {...options} />;
 			})}
-		</div>
+		</Fragment>
 	);
 };
 

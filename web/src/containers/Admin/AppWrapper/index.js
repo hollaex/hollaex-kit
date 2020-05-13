@@ -230,7 +230,7 @@ class AppWrapper extends React.Component {
 	renderMenuItem = ({ path, label, routeKey, ...rest }, index) => {
 		let showLabel = label;
 		if (routeKey === 'main') {
-			showLabel = this.props.constants.api_name
+			showLabel = this.props.constants.api_name || ''
 		}
 		return (
 			<Menu.Item key={index}>

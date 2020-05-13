@@ -1,7 +1,6 @@
 import axios from 'axios';
 import math from 'mathjs';
 
-import { APP_TITLE } from '../config/constants';
 import { getDecimals } from '../utils/utils'
 
 export const getChartConfig = () => {
@@ -21,7 +20,7 @@ export const getChartConfig = () => {
 	})
 };
 
-export const getChartSymbol = (symbol, tickSize) => {
+export const getChartSymbol = (symbol, tickSize, api_name = '') => {
 	let pricescale = math.round(1 / tickSize);
 	if (/[^0-1]/g.test(pricescale)) {
 		let count = getDecimals(tickSize);
@@ -35,7 +34,7 @@ export const getChartSymbol = (symbol, tickSize) => {
 		resolve({
 			name: `${symbol.toUpperCase()}`,
 			ticker: symbol,
-			exchange: APP_TITLE.toUpperCase(),
+			exchange: api_name.toUpperCase(),
 			has_intraday: true,
 			has_daily: true,
 			has_weekly_and_monthly: true,

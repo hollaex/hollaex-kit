@@ -41,6 +41,7 @@ export const ChatWrapper = ({
 					'd-flex',
 					'flex-column',
 					'chat-wrapper',
+					'apply_rtl',
 					minimized && 'minimized',
 					unreadMessages > 0 && 'unread-messages'
 				)}

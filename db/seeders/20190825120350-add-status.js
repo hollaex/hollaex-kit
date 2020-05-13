@@ -2,6 +2,7 @@
 
 const {
 	API_NAME,
+	API_HOST,
 	LOGO_PATH,
 	LOGO_BLACK_PATH,
 	EMAILS_TIMEZONE,
@@ -40,10 +41,28 @@ const {
 
 const TABLE = 'Statuses';
 const status = [{
-	name: API_NAME || 'HollaEx',
+	name: API_NAME || '',
 	initialized: true,
 	constants: JSON.stringify({
-		api_name: API_NAME || 'HollaEx',
+		api_name: API_NAME || '',
+		description: '',
+		title: '',
+		links: {
+			twitter: '',
+			instagram: '',
+			telegram: '',
+			facebook: '',
+			linkedin: '',
+			github: '',
+			contact: '',
+			helpdesk: '',
+			terms: '',
+			privacy: '',
+			api: API_HOST || '',
+			whitepaper: '',
+			website: '',
+			information: '',
+		},
 		logo_path: LOGO_PATH,
 		logo_black_path: LOGO_BLACK_PATH,
 		valid_languages: VALID_LANGUAGES || (NEW_USER_DEFAULT_LANGUAGE ? NEW_USER_DEFAULT_LANGUAGE.split(',') : 'en'),
@@ -67,17 +86,7 @@ const status = [{
 		},
 		plugins: {
 			enabled: PLUGINS || '',
-			configuration: {
-				s3: {
-					id_docs_bucket: ID_DOCS_BUCKET || ''
-				},
-				sns: {
-					region: SNS_REGION || ''
-				},
-				freshdesk: {
-					host: FRESHDESK_HOST || ''
-				}
-			}
+			configuration: {}
 		},
 		secrets: {
 			allowed_domains: ALLOWED_DOMAINS ? ALLOWED_DOMAINS.split(',') : [],
@@ -108,6 +117,7 @@ const status = [{
 			},
 			plugins: {
 				s3: {
+					id_docs_bucket: ID_DOCS_BUCKET || '',
 					key: {
 						write: S3_WRITE_ACCESSKEYID || '',
 						read: S3_READ_ACCESSKEYID || ''
@@ -118,10 +128,12 @@ const status = [{
 					}
 				},
 				sns: {
+					region: SNS_REGION || '',
 					key: SNS_ACCESSKEYID || '',
 					secret: SNS_SECRETACCESSKEY || ''
 				},
 				freshdesk: {
+					host: FRESHDESK_HOST || '',
 					key: FRESHDESK_KEY || '',
 					auth: FRESHDESK_AUTH || ''
 				}

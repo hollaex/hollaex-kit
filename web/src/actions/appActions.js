@@ -1,5 +1,5 @@
 import { setLanguage as storeLanguageInBrowser } from '../utils/string';
-import { DEFAULT_LANGUAGE, SUPPORT_HELP_URL } from '../config/constants';
+import { DEFAULT_LANGUAGE, LANGUAGE_KEY } from '../config/constants';
 import axios from 'axios';
 
 export const SET_NOTIFICATION = 'SET_NOTIFICATION';
@@ -104,9 +104,9 @@ export const closeSnackDialog = (id) => ({
 	payload: { dialogId: id }
 });
 
-export const openContactForm = (data = {}) => {
-	if (window) {
-		window.open(SUPPORT_HELP_URL, '_blank');
+export const openContactForm = (data = { helpdesk: '' }) => {
+	if (window && data.helpdesk) {
+		window.open(data.helpdesk, '_blank');
 	}
 	return setNotification(CONTACT_FORM, data, false);
 };
@@ -261,11 +261,22 @@ export const getExchangeInfo = () => {
 			if (res && res.data) {
 				if (res.data.constants) {
 					dispatch(setConfig(res.data.constants));
+					if (res.data.constants.defaults) {
+						const themeColor = localStorage.getItem('theme');
+						const language = localStorage.getItem(LANGUAGE_KEY);
+						if (!themeColor && res.data.constants.defaults.theme) {
+							dispatch(changeTheme(res.data.constants.defaults.theme));
+							localStorage.setItem('theme', res.data.constants.defaults.theme);
+						}
+						if (!language && res.data.constants.defaults.language) {
+							dispatch(setLanguage(res.data.constants.defaults.language));
+						}
+					}
 				}
 				if (res.data.info) {
 					dispatch({
 						type: SET_INFO,
-						payload: { info: res.data.info }
+						payload: { info: { ...res.data.info, status: res.data.status } }
 					});
 				}
 			}
