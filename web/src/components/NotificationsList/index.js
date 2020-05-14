@@ -1,12 +1,22 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import ReactSvg from 'react-svg';
 import moment from 'moment';
+import { bindActionCreators } from 'redux';
 
-import STRINGS from '../../config/localizedStrings';
 import { ICONS } from '../../config/constants';
+import { getAnnouncement } from '../../actions/appActions';
 
-export const NotificationItem = (props) => {
+const createMarkup = (msg) => {
+	return {__html: msg};
+};
+
+export const NotificationItem = ({
+	title = '',
+	message = '',
+	type,
+	created_at
+}) => {
 	return (
 		<div>
 			<div>
@@ -15,12 +25,16 @@ export const NotificationItem = (props) => {
 						<ReactSvg path={ICONS.TRADE_ANNOUNCEMENT} wrapperClassName="trade_post_icon" />
 					</div>
 					<div>
-						<div className="post_header">{STRINGS.TRADE_POSTS.ANNOUNCEMENT}</div>
+						<div className="post_header">{title}</div>
+						{type && <div className="notifications_list-item-title">{type}</div>}
 						<div className="post-content">
-							<div>{moment('2020-01-01').format('MMMM DD, YYYY')}</div>
-							<div>
-								{STRINGS.TRADE_POSTS.DEFAULT_ANNOUNCEMENT}
+							<div className="notifications_list-item-timestamp">
+								{moment(created_at).format('MMMM DD, YYYY')}
 							</div>
+							<div
+								className="notifications_list-item-text"
+								dangerouslySetInnerHTML={createMarkup(message)}
+							/>
 						</div>
 					</div>
 				</div>
@@ -40,19 +54,29 @@ export const NotificationItem = (props) => {
 };
 
 // TODO create announcement item style
-const NotificationsList = ({ announcements }) => {
+const NotificationsList = ({ announcements, getAnnouncement }) => {
+	useEffect(() => {
+		getAnnouncement();
+	}, []);
+	if (!announcements.length) {
+		return <div className="notifications_list-wrapper" >No data</div>
+	}
 	return (
-		< div className="notifications_list-wrapper" >
-			{/* announcements.map(({ id , ...rest }, index) => ( */}
-			< NotificationItem />
-			{/* )) */}
+		<div className="notifications_list-wrapper" >
+			{announcements.map(({ id, ...rest }, index) => (
+				<NotificationItem key={id} {...rest} />
+			))}
 		</div >
 	);
 }
 
 const mapStateToProps = (store) => ({
-	activeLanguage: store.app.language
-	// announcements: store.app.announcements
+	activeLanguage: store.app.language,
+	announcements: store.app.announcements
 });
 
-export default connect(mapStateToProps)(NotificationsList);
+const mapDispatchToProps = dispatch => ({
+	getAnnouncement: bindActionCreators(getAnnouncement, dispatch)
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(NotificationsList);

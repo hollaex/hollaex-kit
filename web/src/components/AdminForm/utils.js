@@ -11,6 +11,7 @@ import {
 } from './fields';
 import { FileField } from './FileField';
 import CaptchaField from './captchaField';
+import Editor from './Editor';
 
 const renderFields = (fields) => {
 	return (
@@ -49,6 +50,9 @@ const renderFields = (fields) => {
 						break;
 					case 'textarea':
 						component = renderTextAreaField;
+						break;
+					case 'editor':
+						component = Editor;
 						break;
 					case 'password':
 					case 'input':

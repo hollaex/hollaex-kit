@@ -21,6 +21,13 @@
 	font-size: 1.5rem;
 }
 
+.post-content {
+	.notifications_list-item-text {
+		a {
+			color: $link;
+		}
+	}
+}
 
 .dark-theme {
 	.trade_post_icon {
@@ -41,5 +48,11 @@
 	}
 	.post-content {
 		color: $dark-font-sub-text-color;
+
+		.notifications_list-item-text {
+			a {
+				color: $dark-link;
+			}
+		}
 	}
 }
