@@ -617,6 +617,7 @@ class App extends Component {
 											isLogged={isLoggedIn()}
 											help={openHelpfulResourcesForm}
 											pair={pair}
+											enabledPlugins={enabledPlugins}
 											minimizeChat={this.minimizeChat}
 											chatIsClosed={chatIsClosed}
 											unreadMessages={unreadMessages}
