@@ -94,28 +94,18 @@ Deposit.findAll({
 							});
 						} else if (tx.data[0].is_rejected) {
 							loggerDeposits.info(`Transaction ${txid} was rejected`);
-							return sequelize.transaction((transaction) => {
-								return all(txids[txid].map((withdrawal) => {
-									return withdrawal.update(
-										{
-											waiting: false,
-											rejected: true
-										},
-										{
-											attributes: ['waiting', 'rejected'],
-											transaction,
-											returning: true
-										}
-									)
-										.then((data) => {
-											return {
-												success: true,
-												status: false,
-												data
-											};
-										});
-								}));
-							});
+							return {
+								success: true,
+								status: false,
+								info: {
+									type: 'Vault Withdrawal Rejected',
+									data: {
+										description: 'This Vault withdrawal was rejected on the blockchain. You can double-check this transaction and proceed to confirm or dismiss the withdrawal through your admin panel.',
+										transaction_id: txid,
+										withdrawals: txids[txid].map((wd) => wd.dataValues)
+									}
+								}
+							};
 						} else {
 							loggerDeposits.info(`Transaction ${txid} is not processed yet`);
 							return {};
@@ -127,6 +117,7 @@ Deposit.findAll({
 							info: {
 								type: 'Vault Transaction Not Found',
 								data: {
+									description: 'This withdrawal was not found in Vault.',
 									transaction_id: txid,
 									withdrawals: txids[txid].map((wd) => wd.dataValues)
 								}
@@ -156,17 +147,11 @@ Deposit.findAll({
 							data.data.User.settings
 						);
 					} else if (data.success === true && data.status === false) {
-						sendEmail(
-							MAILTYPE.DEPOSIT_CANCEL,
-							data.data.User.email,
-							{
-								type: data.data.type,
-								amount: data.data.amount,
-								currency: data.data.currency,
-								transaction_id: data.data.transaction_id,
-								date: data.data.created_at
-							},
-							data.data.User.settings
+						return sendEmail(
+							MAILTYPE.ALERT,
+							GET_CONFIGURATION().constants.accounts.admin,
+							data.info,
+							{}
 						);
 					}
 				}));
