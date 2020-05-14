@@ -4,7 +4,9 @@
 	"description": "HollaEx tools library for developers",
 	"main": "index.js",
 	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1"
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"prettier": "prettier --config .prettierrc.json --ignore-path .prettierignore.json --write \"./**/*.{js,json,css,scss,md}\"",
+		"eslint": "eslint --config .eslintrc.json ./"
 	},
 	"author": "bitHolla Inc",
 	"license": "ISC",
@@ -15,5 +17,9 @@
 	"dependencies": {
 		"jsonwebtoken": "8.5.1",
 		"lodash": "4.17.15"
+	},
+	"devDependencies": {
+		"eslint": "7.0.0",
+		"prettier": "2.0.5"
 	}
 }
