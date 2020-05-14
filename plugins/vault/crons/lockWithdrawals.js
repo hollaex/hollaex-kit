@@ -1,13 +1,13 @@
 'use strict';
 
-const { Deposit, User } = require('../../db/models');
+const { Deposit, User } = require('../../../db/models');
 const { all } = require('bluebird');
-const { checkAddress } = require('../vault/helpers');
+const { checkAddress } = require('../helpers');
 const { loggerDeposits } = require('../../config/logger');
 const { each } = require('lodash');
 const { GET_SECRETS } = require('../../constants');
-const { sendEmail } = require('../../mail');
-const { MAILTYPE } = require('../../mail/strings');
+const { sendEmail } = require('../../../mail');
+const { MAILTYPE } = require('../../../mail/strings');
 
 const vaultCoins = [];
 each(GET_SECRETS().vault.connected_coins, (coin) => {
