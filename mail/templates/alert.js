@@ -10,13 +10,13 @@ const fetchMessage = (email, data, language, domain) => {
 const html = (email, data, language, domain) => {
 	const { ALERT } = require('../strings').languageFile(language);
 	return `
-    <div>
-      <h3>${ALERT.BODY[1](data.type)}</h3>
-      <div>
-		<pre>${JSON.stringify(data.data, undefined, 2)}</pre>
-      </div>
-    </div>
-  `;
+		<div>
+			<h3>${ALERT.BODY[1](data.type)}</h3>
+			<div>
+				<pre>${JSON.stringify(data.data, undefined, 2)}</pre>
+			</div>
+		</div>
+	`;
 };
 
 const text = (email, data, language, domain) => {
