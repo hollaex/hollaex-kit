@@ -1,1 +1,1 @@
-module.exports = require('./hollaex-tools');
+module.exports = require('./helpers');

@@ -9,7 +9,7 @@ const {
 	INVALID_TOKEN,
 	MISSING_HEADER,
 	DEACTIVATED_USER
-} = require('./messages');
+} = require('../messages');
 
 /**
  * Express middleware function that checks validity of bearer token.
