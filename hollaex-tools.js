@@ -1,5 +1,8 @@
+'use strict';
+
 module.exports = {
-	// middleware
+	// auth
+	auth: require('./auth')
 
 	// pagination
 
