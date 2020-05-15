@@ -2,13 +2,16 @@
 
 module.exports = {
 	// auth
-	auth: require('./auth')
+	auth: require('./auth'),
 
-	// pagination
+	// common
+	common: require('./common'),
 
 	// database
+	database: require('./database'),
 
 	// Constants/Secrets
 
 	// logger
+	logger: require('./logger')
 };

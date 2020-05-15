@@ -66,7 +66,7 @@ const verifyBearerToken = (secret, issuer, frozenUsers, endpointScopes) => (
  * Function that checks to see if user's scope is valid for the endpoint.
  * @param {array} endpointScopes - Authorized scopes for the endpoint.
  * @param {array} userScopes - Scopes of the user.
- * @returns {boolean} True if user scope is authorized for endpoint.
+ * @returns {boolean} True if user scope is authorized for endpoint. False if not.
  */
 const userScopeIsValid = (endpointScopes, userScopes) => {
 	if (intersection(endpointScopes, userScopes).length === 0) {
@@ -80,7 +80,7 @@ const userScopeIsValid = (endpointScopes, userScopes) => {
  * Function that checks to see if user's account is deactivated.
  * @param {array} deactivatedUsers - Ids of deactivated users.
  * @param {array} userId - Id of user.
- * @returns {boolean} True if user account is deactivated.
+ * @returns {boolean} True if user account is deactivated. False if not.
  */
 const userIsDeactivated = (deactivatedUsers, userId) => {
 	if (deactivatedUsers[userId]) {
