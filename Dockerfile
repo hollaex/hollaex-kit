@@ -1,6 +1,4 @@
-FROM bitholla/hollaex-core:1.22.0
-
-RUN apt-get update && apt-get install -y git
+FROM bitholla/hollaex-core:1.23.1
 
 COPY ./mail /app/mail
 
@@ -11,8 +9,6 @@ COPY ./db/migrations /app/db/migrations
 COPY ./db/seeders /app/db/seeders
 
 COPY ./db/models /app/db/models
-
-EXPOSE 10011
 
 RUN npm install -g nodemon --loglevel=error && \ 
     cd plugins && npm install --loglevel=error && \

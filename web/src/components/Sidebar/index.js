@@ -15,7 +15,8 @@ const Sidebar = ({
 	chatIsClosed,
 	theme,
 	unreadMessages = 0,
-	sidebarFitHeight = false
+	sidebarFitHeight = false,
+	enabledPlugins
 }) => {
 	const sidebarHubProps = {
 		activePath,
@@ -32,12 +33,16 @@ const Sidebar = ({
 				}
 			)}>
 			<SidebarHub {...sidebarHubProps} />
-			<div className="sidebar-notifications m-3">
-				<div className="ml-3 my-3 sidebar-title">
-					{STRINGS.TRADE_TAB_POSTS.toUpperCase()}
-				</div>
-				<NotificationsList />
-			</div>
+			{
+				enabledPlugins.includes('announcement')
+					? <div className="sidebar-notifications m-3">
+						<div className="ml-3 my-3 sidebar-title">
+							{STRINGS.TRADE_TAB_POSTS.toUpperCase()}
+						</div>
+						<NotificationsList />
+					</div>
+					: null
+			}
 			{/* {isLogged ?
 			<div className="sidebar-row d-flex">
 				<Chat

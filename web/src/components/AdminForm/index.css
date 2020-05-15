@@ -147,6 +147,16 @@ body {
 	flex-direction: column;
 }
 
+.input_field .text-editor-wrapper {
+	border: 1px solid #d9d9d9;
+	border-radius: 4px;
+	min-height: 200px;
+}
+
+.text-editor-wrapper .text-editor {
+	padding: 4px 11px;
+}
+
 .check_field {
 	width: fit-content !important;
 }

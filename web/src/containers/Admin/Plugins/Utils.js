@@ -72,7 +72,13 @@ export const allPluginsData = {
         title: 'Bank',
         sub_title: 'Add a bank service module to allow for fiat currency deposit and withdrawal into your exchange. This module is manual and requires your policy flow.',
         icon: ICONS.PLUGINS_BANK
-    }
+    },
+    'announcement': {
+        key: 'announcement',
+        title: 'Announcement',
+        sub_title: 'Add a announcement for display news and post to the users',
+        icon: ICONS.DEFAULT_PLUGINS
+    },
 };
 
 export const getPluginsForm = (key) => {
