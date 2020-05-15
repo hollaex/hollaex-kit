@@ -56,6 +56,11 @@ const orderingQuery = (orderBy = undefined, order = undefined) => {
 	}
 };
 
+/**
+ * Format sequelize findAndCountAll query data to count/data format.
+ * @param {object} data - Original data from sequelize findAndCountAll query.
+ * @returns {object} Formatted query result with count and data.
+ */
 const convertSequelizeCountAndRows = (data) => {
 	return {
 		count: data.count,
