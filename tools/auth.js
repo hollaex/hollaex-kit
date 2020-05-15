@@ -63,29 +63,35 @@ const verifyBearerToken = (secret, issuer, frozenUsers, endpointScopes) => (
 };
 
 /**
- * Function that checks to see if user's scope is valid for the endpoint. Will throw Error if user doesn't have valid scope.
+ * Function that checks to see if user's scope is valid for the endpoint.
  * @param {array} endpointScopes - Authorized scopes for the endpoint.
  * @param {array} userScopes - Scopes of the user.
+ * @returns {boolean} True if user scope is authorized for endpoint.
  */
-const checkScopes = (endpointScopes, userScopes) => {
+const userScopeIsValid = (endpointScopes, userScopes) => {
 	if (intersection(endpointScopes, userScopes).length === 0) {
-		throw new Error(NOT_AUTHORIZED);
+		return false;
+	} else {
+		return true;
 	}
 };
 
 /**
- * Function that checks to see if user's account is frozen. Will throw Error if user account is frozen.
- * @param {array} frozenUsers - Ids of frozen users.
+ * Function that checks to see if user's account is deactivated.
+ * @param {array} deactivatedUsers - Ids of deactivated users.
  * @param {array} userId - Id of user.
+ * @returns {boolean} True if user account is deactivated.
  */
-const checkFrozenUser = (frozenUsers, userId) => {
-	if (frozenUsers[userId]) {
-		throw new Error(DEACTIVATED_USER);
+const userIsDeactivated = (deactivatedUsers, userId) => {
+	if (deactivatedUsers[userId]) {
+		return true;
+	} else {
+		return false;
 	}
 };
 
 module.exports = {
 	verifyBearerToken,
-	checkScopes,
-	checkFrozenUser
+	userScopeIsValid,
+	userIsDeactivated
 };
