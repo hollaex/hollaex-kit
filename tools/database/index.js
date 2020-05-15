@@ -1,3 +1,5 @@
 module.exports = {
-	helpers: require('./helpers')
+	helpers: require('./helpers'),
+	model: require('./model'),
+	query: require('./query')
 };

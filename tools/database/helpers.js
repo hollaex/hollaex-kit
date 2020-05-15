@@ -52,12 +52,24 @@ const orderingQuery = (orderBy = undefined, order = undefined) => {
 	if (!orderBy) {
 		return ['id', 'desc'];
 	} else {
-		return [orderBy, (order === 'asc' || order === 'desc') ? order : 'desc'];
+		return [orderBy, order === 'asc' || order === 'desc' ? order : 'desc'];
 	}
+};
+
+const convertSequelizeCountAndRows = (data) => {
+	return {
+		count: data.count,
+		data: data.rows.map((row) => {
+			const item = Object.assign({}, row.dataValues);
+			// delete item.id;
+			return item;
+		})
+	};
 };
 
 module.exports = {
 	paginationQuery,
 	timeframeQuery,
-	orderingQuery
+	orderingQuery,
+	convertSequelizeCountAndRows
 };
