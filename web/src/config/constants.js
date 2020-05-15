@@ -295,8 +295,8 @@ export const ICONS = {
 };
 
 export const SOCIAL_ICONS = {
-	FACEBOOK: '/assets/icons/facebook.svg',
-	LINKEDIN: '/assets/icons/linkedin.svg',
+	FACEBOOK: '/assets/icons/facebook.png',
+	LINKEDIN: '/assets/icons/linkedin.png',
 	TWITTER: '/assets/icons/twitter.png',
 	INSTAGRAM: '/assets/icons/instagram.svg',
 	TELEGRAM: '/assets/icons/telegram.png',
