@@ -65,3 +65,6 @@ typings/
 
 # MacOS
 .DS_Store
+
+# Testing file
+test.js
