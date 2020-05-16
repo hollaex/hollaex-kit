@@ -83,19 +83,19 @@ class ChatMessageWithText extends Component {
 					</div>
 					<div className='d-flex flex-1'>
 						{ownMessage ? (
-							<div className="mr-1 my-1 own-message username">
-								<span className="mr-1">
+							<div className="mr-1 my-1 own-message username d-flex">
+								<div className="mr-1 f-none">
 									{`${username}:`}
-								</span>
+								</div>
 								{to && <span className="mr-1">{`${to}:`}</span>}
 								<span className="d-inline message">{messageContent}</span>
 							</div>
 
 						) : (
-								<div className="mr-1 my-1 username">
-									<span className="mr-1 apply_rtl">
+								<div className="mr-1 my-1 username d-flex">
+									<div className="mr-1 apply_rtl f-none" >
 										{`${username}:`}
-									</span>
+									</div>
 									{to && <span className="mr-1">{`${to}:`}</span>}
 									<TruncateMarkup
 										className="d-inline message"

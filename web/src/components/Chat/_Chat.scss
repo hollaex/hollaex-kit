@@ -1,13 +1,13 @@
 $chat-message-box-light--background-color: $box-fields;
 $chat-wrapper-light--background-color: white;
-$chat-message-box-dark--background-color: #0f1114;
+$chat-message-box-dark--background-color: $dark-box-fields;
 $chat-wrapper-dark--background-color: $dark-app-light-background;
 $chat-message-light--font-color: #999999;
-$chat-message-dark--font-color: #808080;
+$chat-message-dark--font-color: $dark-font-sub-text-1-color;
 $chat-wrapper--border-color: #282829;
-$chat-own-message--color: #d19f00;
+$chat-own-message--color: #ef3ba5;
 $chat-other-message--color: white;
-$chat-element-action--color: $link;
+$chat-element-action--color: #2798c7;
 $unread-messages-border--color: #b9b500;
 $chat-emoji-face-icon--color: #b6b4cc;
 $chat-message--font-size: 1rem;
@@ -195,7 +195,7 @@ $light-emoji-content-top-background: #dbdbdb;
 		height: 100%;
 		.loader_background {
 			height: 100%;
-			background: $chat-wrapper-light--background-color;
+			background: transparent !important;
 		}
 		.loader {
 			width: 5rem;
@@ -208,7 +208,7 @@ $light-emoji-content-top-background: #dbdbdb;
 		padding-bottom: 0.75rem;
 		font-weight: bold;
 		padding: 0.5rem 1rem;
-		background-color: $colors-white;
+		// background-color: $colors-white;
 		.chat-header-icon {
 			flex: 1;
 			background-image: url('/assets/images/dotted-grip-chat-repeat-pattern.svg');
@@ -250,7 +250,7 @@ $light-emoji-content-top-background: #dbdbdb;
 				.message {
 					color: $chat-message-color;
 					word-break: break-word;
-					line-height: 1.1rem;
+					line-height: 1.5rem;
 					font-size: $chat-message--font-size;
 					font-weight: normal;
 					line > span {
