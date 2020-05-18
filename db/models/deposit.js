@@ -33,6 +33,14 @@ module.exports = function(sequelize, DataTypes) {
 				type: DataTypes.BOOLEAN,
 				defaultValue: false
 			},
+			processing: {
+				type: DataTypes.BOOLEAN,
+				defaultValue: false
+			},
+			waiting: {
+				type: DataTypes.BOOLEAN,
+				defaultValue: false
+			},
 			description: {
 				type: DataTypes.STRING,
 				defaultValue: ''
