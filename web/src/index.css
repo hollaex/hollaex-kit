@@ -8253,7 +8253,7 @@ foreignObject {
         .chat-wrapper .chat-message-list .chat-message .message-content .message {
           color: #4f4f4f;
           word-break: break-word;
-          line-height: 1.1rem;
+          line-height: 1.5rem;
           font-size: 1rem;
           font-weight: normal; }
           .chat-wrapper .chat-message-list .chat-message .message-content .message line > span > span {

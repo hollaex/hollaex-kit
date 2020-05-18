@@ -798,7 +798,7 @@ ACTIVE_TRADES: 'شما باید {0} برای دسترسی به سفارشات ف
 	WITHDRAWALS_FORM_AMOUNT_PLACEHOLDER:
 		'مقدار {0} را که می خواهید برداشت کنید تایپ کنید',
 	WITHDRAWALS_FORM_FEE_COMMON_LABEL:
-		' کارمزد معاملات{0}  (این کارمزد{0} مربوط به ماینر ها می باشد)', // new
+		' کارمزد معاملات',
 	WITHDRAWALS_FORM_FEE_FIAT_LABEL: 'کارمزد برداشت بانک',
 	WITHDRAWALS_FORM_FEE_PLACEHOLDER:
 		'مقدار {0} که میخواهید در این تراکنش استفاده کنید را وارد کنید',

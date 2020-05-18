@@ -819,7 +819,7 @@ export default {
 	WITHDRAWALS_FORM_AMOUNT_PLACEHOLDER:
 		'Type the amount of {0} you wish to withdraw',
 	WITHDRAWALS_FORM_FEE_COMMON_LABEL:
-		'{0} transaction fee (This is {0} mining fee)', // new
+		'Transaction fee',
 	WITHDRAWALS_FORM_FEE_FIAT_LABEL: 'Bank withdrawal fee',
 	WITHDRAWALS_FORM_FEE_PLACEHOLDER:
 		'Type the amount of {0} you wish to use in the fee of the transaction',
@@ -1134,7 +1134,7 @@ export default {
 		FEES_AND_LIMIT_TXT_1:
 			'Becoming a crypto trader marks new beginning. Armed with wits, will and speed only by taking risks and trading will you be allowed to update your account.',
 		FEES_AND_LIMIT_TXT_2:
-			'Each account has its own fees and deposit and withdrawal limits. Please visit the {0} to get more information.',
+			'Each account has its own fees and deposit and withdrawal limits.',
 		DEPOSIT_WITHDRAWAL_ALLOWENCE: 'Deposit & withdrawal allowance',
 		TRADING_FEE_STRUCTURE: 'Trading fee structure',
 		WITHDRAWAL: 'Withdrawal',

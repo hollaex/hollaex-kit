@@ -1,11 +1,10 @@
 import React from "react";
-import { Link } from "react-router";
 import { connect } from "react-redux";
 
 import LimitsBlock from "./LimitsBlock";
 import FeesBlock from "./FeesBlock";
 import { IconTitle, Button } from "../../../components";
-import { ICONS, FEES_LIMIT_SITE_URL } from "../../../config/constants";
+import { ICONS } from "../../../config/constants";
 import STRINGS from "../../../config/localizedStrings";
 
 const FeesAndLimits = ({ data, onClose, coins, pairs, constants = {} }) => {
@@ -33,16 +32,7 @@ const FeesAndLimits = ({ data, onClose, coins, pairs, constants = {} }) => {
 				<div className="my-3">
 					<div>{STRINGS.SUMMARY.FEES_AND_LIMIT_TXT_1}</div>
 					<div className="mt-3">
-						{STRINGS.formatString(
-							STRINGS.SUMMARY.FEES_AND_LIMIT_TXT_2,
-							<Link
-								href={FEES_LIMIT_SITE_URL}
-								target="blank"
-								className="fee-limits-link"
-							>
-								{`${constants.api_name || ''} ${STRINGS.SUMMARY.WEBSITE}`}
-							</Link>
-						)}
+						{STRINGS.SUMMARY.FEES_AND_LIMIT_TXT_2}				
 					</div>
 				</div>
 				<div>
