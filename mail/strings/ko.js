@@ -185,6 +185,23 @@ const WITHDRAWALREQUEST = {
 	CLOSING: COMMON.CLOSING
 };
 
+const INVALIDADDRESS = {
+	TITLE: 'Invalid Withdrawal Address',
+	GREETING: (name) => COMMON.GREETING(name),
+	BODY: {
+		1: (currency, amount) => `Your ${currency} withdrawal for ${amount} was being sent to an invalid address and is rejected.`,
+		2: (address) => `Address: ${address}`
+	},
+	CLOSING: COMMON.CLOSING
+};
+
+const ALERT = {
+	TITLE: (title) => `ALERT: ${title}`,
+	BODY: {
+		1: (type) => `Alert: ${type}`
+	}
+};
+
 const USERVERIFICATIONREJECT = {
 	TITLE: (type) =>
 		type === 'id' ? 'ID 인증 거절' : '새로운 은행정보 등록 거절',
@@ -267,7 +284,9 @@ module.exports = {
 	WITHDRAWALREQUEST,
 	USERVERIFICATION,
 	SUSPICIOUSDEPOSIT,
+	INVALIDADDRESS,
 	CONTACTFORM,
 	USERDEACTIVATED,
+	ALERT,
 	SMS
 };
