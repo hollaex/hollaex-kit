@@ -48,6 +48,7 @@ const status = [{
 	constants: JSON.stringify({
 		api_name: API_NAME || '',
 		description: '',
+		color: {},
 		title: '',
 		links: {
 			twitter: '',
