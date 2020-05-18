@@ -30,6 +30,8 @@ const {
 	SNS_SECRETACCESSKEY,
 	VAULT_KEY,
 	VAULT_SECRET,
+	ZENDESK_HOST,
+	ZENDESK_KEY,
 	FRESHDESK_HOST,
 	FRESHDESK_KEY,
 	FRESHDESK_AUTH,
@@ -136,6 +138,10 @@ const status = [{
 					host: FRESHDESK_HOST || '',
 					key: FRESHDESK_KEY || '',
 					auth: FRESHDESK_AUTH || ''
+				},
+				zendesk: {
+					host: ZENDESK_HOST || '',
+					key: ZENDESK_KEY || ''
 				}
 			}
 		}
