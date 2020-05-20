@@ -4,8 +4,10 @@ const app = require('../index');
 const { verifyToken, checkScopes } = require('../helpers/auth');
 const bodyParser = require('body-parser');
 const { logger, isUrl } = require('../helpers/common');
-const { updateVaultValues, crossCheckCoins, createOrUpdateWallets } = require('./helpers');
+const { updateVaultValues, crossCheckCoins, createOrUpdateWallets, cronTask } = require('./helpers');
 const { API_HOST } = require('../../constants');
+
+cronTask.start();
 
 app.post('/plugins/vault/connect', [verifyToken, bodyParser.json()], (req, res) => {
 	const endpointScopes = ['admin'];
