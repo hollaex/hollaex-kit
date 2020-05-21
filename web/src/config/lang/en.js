@@ -876,9 +876,9 @@ export default {
 		CONFIRM_VIA_EMAIL_2:
 			'In order to complete the withdrawal process please confirm',
 		CONFIRM_VIA_EMAIL_3: 'the withdrawal via your email within 5 minutes.',
-		WITHDRAW_CONFIRM_SUCCESS_1: 'Your withdrawal is confirmed and sent.',
+		WITHDRAW_CONFIRM_SUCCESS_1: 'Your withdrawal request is confirmed. It will be processed shortly.',
 		WITHDRAW_CONFIRM_SUCCESS_2:
-			'If you’d like to view your withdrawal please visit your withdrawal history page.',
+			'In order to view your withdrawal status please visit your withdrawal history page.',
 		GO_WITHDRAWAL_HISTORY: 'Go To Withdrawal History'
 	},
 	WALLET_BUTTON_BASE_DEPOSIT: 'deposit',
