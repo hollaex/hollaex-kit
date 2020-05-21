@@ -19,6 +19,7 @@ import BankData from './BankData';
 import { isSupport, isAdmin, isKYC } from '../../../utils/token';
 
 import Flagger from '../Flaguser';
+import Notes from './Notes';
 
 const TabPane = Tabs.TabPane;
 
@@ -211,7 +212,13 @@ class UserContent extends Component {
 						<TabPane tab="Audits" key="audits">
 							<Audits userId={userInformation.id} />
 						</TabPane>
-					)}
+					)}				
+					<TabPane tab="Notes" key="notes">
+						<Notes 
+							initialValues={userInformation}
+							onChangeSuccess={onChangeUserDataSuccess}
+						/>
+					</TabPane>
 				</Tabs>
 			</div>
 		);
