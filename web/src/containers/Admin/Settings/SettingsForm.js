@@ -1,15 +1,21 @@
-import React from 'react';
-import { Divider, Button } from 'antd';
+import React, { useState } from 'react';
+import { Divider, Button, Tabs, Row } from 'antd';
 import { reduxForm, reset } from 'redux-form';
 
 import { AdminHocForm } from '../../../components';
-import { generateAdminSettings } from './Utils';
+import { generateAdminSettings, initialCommonColors, initialLightColors, initialDarkColors } from './Utils';
 import renderFields from '../../../components/AdminForm/utils';
+import ThemeHocForm from './ThemeSettingsForm';
+
+const TabPane = Tabs.TabPane;
 
 const Form = AdminHocForm('ADMIN_SETTINGS_FORM', 'transaction-form');
 const EmailDistributionForm = AdminHocForm('ADMIN_EMAIL_DISTRIBUTION_FORM', 'transaction-form');
 const EmailForm = AdminHocForm('ADMIN_EMAIL_SETTINGS_FORM', 'transaction-form');
 const SecurityForm = AdminHocForm('ADMIN_SECURITY_SETTINGS_FORM', 'transaction-form');
+const ThemeLightForm = ThemeHocForm('THEME_LIGHT_FORM');
+const ThemeDarkForm = ThemeHocForm('THEME_DARK_FORM');
+const ThemeCommonForm = ThemeHocForm('THEME_COMMON_FORM');
 
 export const GeneralSettingsForm = ({ initialValues, handleSubmitSettings }) => {
     return (
@@ -101,7 +107,7 @@ const LinksForm = ({
             <h5>Fill out all the links to your exchange. These links will be added automatically into the exchange website once updated. If you leave them blank they won't appear.</h5>
             <Divider />
             <form>
-				{fields && (
+                {fields && (
                     Object.keys(fields).map((key, index) => {
                         let field = fields[key] ? fields[key].fields : {};
                         return (
@@ -111,26 +117,26 @@ const LinksForm = ({
                         )
                     })
                 )}
-				{error && (
-					<div>
-						<strong>{error}</strong>
-					</div>
-				)}
-				<Button
-					type={'primary'}
-					onClick={handleSubmit(onSubmit)}
-					disabled={
-						(fields && pristine) ||
-						submitting ||
-						!valid ||
-						error
+                {error && (
+                    <div>
+                        <strong>{error}</strong>
+                    </div>
+                )}
+                <Button
+                    type={'primary'}
+                    onClick={handleSubmit(onSubmit)}
+                    disabled={
+                        (fields && pristine) ||
+                        submitting ||
+                        !valid ||
+                        error
                     }
                     size='large'
-					className={'w-100'}
-				>
-					Save
+                    className={'w-100'}
+                >
+                    Save
 				</Button>
-			</form>
+            </form>
         </div>
     );
 };
@@ -141,3 +147,63 @@ export const LinksSettingsForm = reduxForm({
     onSubmitSuccess: (result, dispatch) => dispatch(reset('ADMIN_LINKS_SETTINGS_FORM')),
     enableReinitialize: true
 })(LinksForm);
+
+export const ThemeSettings = ({ initialValues, handleSubmitSettings }) => {
+    const [activeTab, tabChange] = useState('light');
+    const lightValues = initialValues['light'] || {};
+    const darkValues = initialValues['dark'] || {};
+    const commonValues = initialValues['miscellaneous'] || {};
+    return (
+        <Tabs
+            defaultActiveKey={activeTab}
+            onChange={tabChange}
+        >
+            <TabPane tab={'Light'} key={'light'}>
+                <Row>
+                    {activeTab === 'light'
+                        ? <ThemeLightForm
+                            themeKey="light"
+                            initialValues={{
+                                ...initialLightColors,
+                                ...lightValues
+                            }}
+                            handleSubmitSettings={handleSubmitSettings}
+                        />
+                        : null
+                    }
+                </Row>
+            </TabPane>
+            <TabPane tab={'Dark'} key={'dark'}>
+                <Row>
+                    {activeTab === 'dark'
+                        ? <ThemeDarkForm
+                            themeKey="dark"
+                            initialValues={{
+                                ...initialDarkColors,
+                                ...darkValues
+                            }}
+                            handleSubmitSettings={handleSubmitSettings}
+                        />
+                        : null
+                    }
+                </Row>
+            </TabPane>
+            <TabPane tab={'Miscellaneous'} key={'miscellaneous'}>
+                <Row>
+                    {activeTab === 'miscellaneous'
+                        ? <ThemeCommonForm
+                            themeKey="miscellaneous"
+                            initialValues={{
+                                ...initialCommonColors,
+                                ...commonValues
+                            }}
+                            handleSubmitSettings={handleSubmitSettings}
+                        />
+                        : null
+                    }
+                </Row>
+            </TabPane>
+        </Tabs>
+    )
+};
+

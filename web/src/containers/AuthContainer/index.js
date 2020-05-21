@@ -12,6 +12,7 @@ import STRINGS from '../../config/localizedStrings';
 import { getClasesForLanguage } from '../../utils/string';
 import { getThemeClass } from '../../utils/theme';
 import { getExchangeInfo } from '../../actions/appActions';
+import ThemeProvider from '../ThemeProvider';
 
 const updateThemeToBody = (theme = 'white') => {
 	// const themeName = theme === 'dark' ? 'dark-auth-body' : 'light-auth-body';
@@ -73,7 +74,7 @@ class AuthContainer extends Component {
 			} else {
 				is_expired = false;
 				is_warning = false;
-			}	
+			}
 		} else {
 			is_warning = true;
 			is_expired = true;
@@ -105,54 +106,56 @@ class AuthContainer extends Component {
 				&& expiryData.is_warning);
 		};
 		return (
-			<div className="w-100 h-100">
-				{isWarning
-					? <div className={classnames(
-						'exchange-warning',
-						'p-1',
-						...FLEX_CENTER_CLASSES,
-						{
-							'exchange-trial': isWarning,
-							'exchange-expired': expiryData.is_expired,
-						}
-					)}>
-						{expiryData.is_expired
-							? STRINGS.EXPIRY_EXCHANGE_MSG
-							: STRINGS.formatString(
-								STRINGS.TRIAL_EXCHANGE_MSG,
-								constants.api_name || '',
-								expiryData.daysLeft
-							)
-						}
-					</div>
-					: null
-				}
-				<div
-					className={classnames(
-						'auth-wrapper',
-						'w-100',
-						'h-100',
-						getThemeClass(activeTheme),
-						{
-							'layout-mobile': isMobile,
-							'layout-desktop': isBrowser
-						},
-						...FLEX_CENTER_CLASSES
-					)}
-				>
-					<div className={classnames('auth-container', 'f-1', languageClasses)}>
-						{childWithLanguageClasses}
-					</div>
-				</div>
-				{!isMobile
-					? (
-						<div className={classnames('footer-wrapper', getThemeClass(activeTheme))}>
-							<AppFooter theme={activeTheme} constants={constants} />
+			<ThemeProvider>
+				<div className="w-100 h-100">
+					{isWarning
+						? <div className={classnames(
+							'exchange-warning',
+							'p-1',
+							...FLEX_CENTER_CLASSES,
+							{
+								'exchange-trial': isWarning,
+								'exchange-expired': expiryData.is_expired,
+							}
+						)}>
+							{expiryData.is_expired
+								? STRINGS.EXPIRY_EXCHANGE_MSG
+								: STRINGS.formatString(
+									STRINGS.TRIAL_EXCHANGE_MSG,
+									constants.api_name || '',
+									expiryData.daysLeft
+								)
+							}
 						</div>
-					)
-					: null
-				}
-			</div>
+						: null
+					}
+					<div
+						className={classnames(
+							'auth-wrapper',
+							'w-100',
+							'h-100',
+							getThemeClass(activeTheme),
+							{
+								'layout-mobile': isMobile,
+								'layout-desktop': isBrowser
+							},
+							...FLEX_CENTER_CLASSES
+						)}
+					>
+						<div className={classnames('auth-container', 'f-1', languageClasses)}>
+							{childWithLanguageClasses}
+						</div>
+					</div>
+					{!isMobile
+						? (
+							<div className={classnames('footer-wrapper', getThemeClass(activeTheme))}>
+								<AppFooter theme={activeTheme} constants={constants} />
+							</div>
+						)
+						: null
+					}
+				</div>
+			</ThemeProvider>
 		);
 	}
 }

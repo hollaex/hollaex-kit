@@ -48,13 +48,13 @@ $trade-asks-color-font: $colors-currencies-btc;
 
 	.withdraw,
 	.sell {
-		background-color: $color-sell;
+		background-color: $history-color-sell;
 		color: $colors-white;
 	}
 
 	.deposit,
 	.buy {
-		background-color: $color-buy;
+		background-color: $history-color-buy;
 		color: $colors-black;
 	}
 }

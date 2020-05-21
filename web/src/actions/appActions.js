@@ -33,6 +33,7 @@ export const CONTACT_FORM = 'CONTACT_FORM';
 export const HELPFUL_RESOURCES_FORM = 'HELPFUL_RESOURCES_FORM';
 export const CHANGE_LANGUAGE = 'CHANGE_LANGUAGE';
 export const SET_ANNOUNCEMENT = 'SET_ANNOUNCEMENT';
+export const SET_APP_ANNOUNCEMENT = 'SET_APP_ANNOUNCEMENT';
 export const SET_UNREAD = 'SET_UNREAD';
 export const SET_PAIRS = 'SET_PAIRS';
 export const CHANGE_PAIR = 'CHANGE_PAIR';
@@ -303,7 +304,7 @@ export const getAnnouncement = () => dispatch => {
 		method: 'GET'
 	}).then((res) => {
 		if (res.data && res.data.data) {
-			dispatch(setAnnouncements(res.data.data));
+			dispatch({ type: SET_APP_ANNOUNCEMENT, payload: { announcements: res.data.data } });
 		}
 	})
 	.catch((err) => {});
