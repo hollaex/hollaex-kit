@@ -215,7 +215,11 @@ class UserContent extends Component {
 					)}				
 					<TabPane tab="Notes" key="notes">
 						<Notes 
-							initialValues={userInformation}
+							initialValues={{
+								id: userInformation.id,
+								note: userInformation.note
+							}}
+							userInfo={userInformation}
 							onChangeSuccess={onChangeUserDataSuccess}
 						/>
 					</TabPane>

@@ -3,7 +3,7 @@ import { SubmissionError } from 'redux-form';
 import { updateNotes } from './actions';
 import { AdminHocForm } from '../../../components';
 
-const Form = AdminHocForm('USER_DATA', 'user_data');
+const Form = AdminHocForm('USER_NOTES', 'user_data');
 
 const Fields = {
 	note: {
@@ -12,13 +12,13 @@ const Fields = {
 	}
 };
 
-const onSubmit = (onChangeSuccess, initialValues) => (values) => {
-    values.id = initialValues.id
+const onSubmit = (onChangeSuccess, userInfo) => (values) => {
+    values.id = userInfo.id
 	return updateNotes(values)
 		.then((data) => {
 			if (onChangeSuccess) {
                 onChangeSuccess({
-                    ...initialValues,
+                    ...userInfo,
 					...values,
 				});
 			}
@@ -30,17 +30,15 @@ const onSubmit = (onChangeSuccess, initialValues) => (values) => {
 
 const generateInitialValues = (initialValues) => {
 	const values = {
-		...initialValues,
-		...initialValues.address,
-		gender: initialValues.gender ? 'Woman' : 'Man'
+		...initialValues
 	};
 	return values;
 };
 
-const Notes = ({ initialValues, onChangeSuccess }) => {
+const Notes = ({ initialValues, userInfo, onChangeSuccess }) => {
     return (
         <Form
-            onSubmit={onSubmit(onChangeSuccess, initialValues)}
+            onSubmit={onSubmit(onChangeSuccess, userInfo)}
             buttonText="SAVE"
             fields={Fields}
             initialValues={generateInitialValues(initialValues)}
