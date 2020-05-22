@@ -2,6 +2,20 @@
 
 exports.PLUGIN_PORT = process.env.PLUGIN_PORT || 10011;
 
+// List of available plugins
+exports.AVAILABLE_PLUGINS = [
+	'announcement',
+	'bank',
+	'chat',
+	'freshdesk',
+	'kyc',
+	'land_line',
+	'sms',
+	'vault',
+	'xht_fee',
+	'zendesk',
+];
+
 // SMS_CONSTANTS
 exports.SMS_CODE_KEY = 'user:sms';
 exports.SMS_CODE_EXPIRATION_TIME = 6 * 60; // seconds -> 6 min
