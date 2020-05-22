@@ -12,9 +12,9 @@ const cron = require('node-cron');
 
 const withdrawalCron = async () => {
 	if (GET_CONFIGURATION().constants.plugins.enabled.indexOf('vault') !== -1) {
-		const processWithdrawals = require('./crons/processWithdrawals');
-		const lockWithdrawals = require('./crons/lockWithdrawals');
-		const checkWithdrawals = require('./crons/checkWithdrawals');
+		const { processWithdrawals } = require('./crons/processWithdrawals');
+		const { lockWithdrawals } = require('./crons/lockWithdrawals');
+		const { checkWithdrawals } = require('./crons/checkWithdrawals');
 		const sleep = (ms) => setTimeout(() => {}, ms);
 
 		checkWithdrawals();

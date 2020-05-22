@@ -17,7 +17,7 @@ const { MAILTYPE } = require('../../../mail/strings');
 
 const vaultCoins = [];
 
-module.exports = () => {
+const checkWithdrawals = () => {
 	each(GET_SECRETS().vault.connected_coins, (coin) => {
 		vaultCoins.push({
 			currency: coin
@@ -179,4 +179,8 @@ module.exports = () => {
 		.catch((err) => {
 			loggerDeposits.error(err.message);
 		});
+};
+
+module.exports = {
+	checkWithdrawals
 };
