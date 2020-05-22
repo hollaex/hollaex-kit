@@ -6,7 +6,7 @@ import {
 	getDarkTheme,
 	getVolumeWhite,
 	getVolumeDark,
-	TOOLBAR_BG
+	getToolbarBG
 } from './ChartConfig';
 import { getLanguage } from '../../utils/string';
 import {
@@ -19,7 +19,7 @@ function getThemeOverrides(theme = 'white', color = {}) {
 	if (theme === 'white') {
 		return getWhiteTheme(color['light']);
 	} else {
-		let themeC = {}
+		let themeC = color['dark'];
 		if (color['dark']) {
 			themeC.buy = color.dark['dark-buy'];
 			themeC.sell = color.dark['dark-sell'];
@@ -265,7 +265,7 @@ class TVChartContainer extends React.PureComponent {
 			symbol: symbol,
 			// BEWARE: no trailing slash is expected in feed URL
 			theme: activeTheme === 'white' ? 'light' : 'dark',
-			toolbar_bg: TOOLBAR_BG[activeTheme],
+			toolbar_bg: getToolbarBG(activeTheme, constants.color),
 			datafeed: this.chartConfig,
 			interval: interval,
 			container_id: containerId,
@@ -307,7 +307,7 @@ class TVChartContainer extends React.PureComponent {
 			favorites: {
 				chartTypes: ['Area', 'Candles', 'Bars']
 			},
-			loading_screen: { backgroundColor: TOOLBAR_BG[activeTheme] },
+			loading_screen: { backgroundColor: getToolbarBG(activeTheme, constants.color) },
 			custom_css_url: `${process.env.REACT_APP_PUBLIC_URL}/css/chart.css`,
 			overrides: getThemeOverrides(activeTheme, constants.color)
 		};

@@ -891,6 +891,31 @@ export const getThemeFields = (formValues = {}, renderPrefix, formKey = 'miscell
                     className: 'w-25 mx-2',
                     prefix: renderPrefix(formValues['colors-username-set-dark'])
                 },
+            },
+            25: {
+                tradingViewWaterMark: {
+                    type: 'input',
+                    label: 'trading-view-water-mark',
+                    validate: [validateRequired],
+                    className: 'w-25 mx-2',
+                    prefix: renderPrefix(formValues['tradingViewWaterMark'])
+                },
+                tradingViewAxis: {
+                    type: 'input',
+                    label: 'trading-view-axis',
+                    validate: [validateRequired],
+                    className: 'w-25 mx-2',
+                    prefix: renderPrefix(formValues['tradingViewAxis'])
+                },
+            },
+            26: {
+                tradingViewText: {
+                    type: 'input',
+                    label: 'trading-view-text',
+                    validate: [validateRequired],
+                    className: 'w-25 mx-2',
+                    prefix: renderPrefix(formValues['tradingViewText'])
+                }
             }
         },
         dark: {
@@ -1349,8 +1374,31 @@ export const getThemeFields = (formValues = {}, renderPrefix, formKey = 'miscell
                     validate: [validateRequired],
                     className: 'w-25 mx-2',
                     prefix: renderPrefix(formValues['dark-chat-box-border'])
-                }
+                },
+                tradingViewWaterMark: {
+                    type: 'input',
+                    label: 'trading-view-water-mark',
+                    validate: [validateRequired],
+                    className: 'w-25 mx-2',
+                    prefix: renderPrefix(formValues['tradingViewWaterMark'])
+                },
             },
+            30: {
+                tradingViewAxis: {
+                    type: 'input',
+                    label: 'trading-view-axis',
+                    validate: [validateRequired],
+                    className: 'w-25 mx-2',
+                    prefix: renderPrefix(formValues['tradingViewAxis'])
+                },
+                tradingViewText: {
+                    type: 'input',
+                    label: 'trading-view-text',
+                    validate: [validateRequired],
+                    className: 'w-25 mx-2',
+                    prefix: renderPrefix(formValues['tradingViewText'])
+                }
+            }
         }
     };
     let fields = data[formKey];
@@ -1472,6 +1520,9 @@ export const initialLightColors = {
     'history-color-buy': '#d1d4dc',
     'history-color-sell': '#000000',
     'colors-username-set-dark': '#ff4bb6',
+    'tradingViewWaterMark': '#202020',
+    'tradingViewAxis': '#E6ECEF',
+    'tradingViewText': '#292b2c'
 };
 
 export const initialLightCoins = {
@@ -1628,7 +1679,10 @@ export const initialDarkColors = {
     'dark-chat-message-background-even': '#202020',
     'dark-chat-message-background-odd': '#333333',
     'dark-chat-message-color': '#98CCB2',
-    'dark-chat-box-border': '#2B2B2B'
+    'dark-chat-box-border': '#2B2B2B',
+    'tradingViewWaterMark': '#808080',
+    'tradingViewAxis': '#535353',
+    'tradingViewText': '#808080'
 };
 
 export const initialDarkCoins = {

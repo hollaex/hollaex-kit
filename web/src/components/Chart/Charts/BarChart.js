@@ -5,7 +5,7 @@ import * as d3 from 'd3-selection';
 import moment from 'moment';
 import { connect } from 'react-redux';
 
-import { ICONS, BAR_CHART_LIMIT_CAPACITY, BASE_CURRENCY } from '../../../config/constants';
+import { BAR_CHART_LIMIT_CAPACITY, BASE_CURRENCY } from '../../../config/constants';
 import { formatToCurrency, formatAverage, formatBtcAmount } from '../../../utils/currency';
 
 function translate(x, y) {
@@ -42,7 +42,7 @@ class BarChart extends Component {
         const { margin, height, width } = this.state;
         const SvgElement = d3.select(this.BarSVG);
         const upperLimit = peakVolume || yAxisLimits[yAxisLimits.length - 1];
-        const currentMonth = moment().month();
+        // const currentMonth = moment().month();
         if (SvgElement) {
             const tooltip = d3.select('body')
                 .append("div")
@@ -82,11 +82,17 @@ class BarChart extends Component {
                 .call((t) => {
                     t.each((d, key, node) => {
                         const data = chartData[key];
-                        const totalTxt = data.key - 1 === currentMonth
-                            ? 'Pending'
-                            : data.total !== 0
-                                ? formatAverage(data.total).toUpperCase()
-                                : '';
+                        // const totalTxt = data.key - 1 === currentMonth
+                        //     ? 'Pending'
+                        //     : data.total !== 0
+                        //         ? formatAverage(data.total).toUpperCase()
+                        //         : '';
+                        // const totalTxt = data.total !== 0
+                        //         ? formatAverage(data.total).toUpperCase()
+                        //         : '';
+                        let dateTxt = (key + 1) % 3 === 0
+                            ? moment().date()
+                            : '';
                         const self = d3.select(node[key]);
                         self.text('');
                         self.append("tspan")
@@ -96,15 +102,17 @@ class BarChart extends Component {
                                     : 'axis_month')
                             .attr("x", 0)
                             .attr("dy", ".8em")
-                            .text(d);
-                        self.append("tspan")
-                            .attr("class",
-                                data.total >= yAxisLimits[0]
-                                    ? 'axis_month-total axis_month-total-active'
-                                    : 'axis_month-total')
-                            .attr("x", 2)
-                            .attr("dy", "1.3em")
-                            .text(totalTxt);
+                            .text(dateTxt);
+                        if ((key + 1)%3 === 0) {
+                            self.append("tspan")
+                                .attr("class",
+                                    data.total >= yAxisLimits[0]
+                                        ? 'axis_month-total axis_month-total-active'
+                                        : 'axis_month-total')
+                                .attr("x", 2)
+                                .attr("dy", "1.3em")
+                                .text(d);
+                        }
                     })
                 });
             chart.selectAll('.bar_yAxis .tick text')
@@ -158,17 +166,17 @@ class BarChart extends Component {
                 let barEnter = d3.select(node[key]);
                 let barKeys = Object.keys(d.pairWisePrice);
                 let count = 0;
-                if (d.key - 1 === currentMonth) {
-                    barEnter.append("svg:image")
-                        .attr("xlink:href", activeTheme === 'dark'
-                            ? ICONS.VOLUME_PENDING_DARK : ICONS.VOLUME_PENDING)
-                        .attr('class', 'bar_pending-icon')
-                        .attr('x', (xScale(d.month) + 5))
-                        .attr('y', (yScale(0) - 20))
-                        .attr('viewBox', '0 0 1024 1024')
-                        .attr('height', 18)
-                        .attr('width', xScale.bandwidth());
-                } else {
+                // if (d.key - 1 === currentMonth) {
+                //     barEnter.append("svg:image")
+                //         .attr("xlink:href", activeTheme === 'dark'
+                //             ? ICONS.VOLUME_PENDING_DARK : ICONS.VOLUME_PENDING)
+                //         .attr('class', 'bar_pending-icon')
+                //         .attr('x', (xScale(d.month) + 5))
+                //         .attr('y', (yScale(0) - 20))
+                //         .attr('viewBox', '0 0 1024 1024')
+                //         .attr('height', 18)
+                //         .attr('width', xScale.bandwidth());
+                // } else {
                     barKeys.map((pair) => {
                         barEnter.append('rect')
                             .attr('class', `chart_${pair}`)
@@ -183,6 +191,13 @@ class BarChart extends Component {
                             })
                             .attr('width', xScale.bandwidth())
                             .on("mouseover", (d) => {
+                                let checkKey = d.key === 1 ? 12 : (d.key - 1);
+                                let filterData = chartData.filter(cData => cData.key === checkKey);
+                                let mBetweenTxt = `${moment().date()} ${d.month}`;
+                                let beforeVolume = filterData[0];
+                                if (beforeVolume && beforeVolume.month) {
+                                    mBetweenTxt = `${moment().date()} ${beforeVolume.month} - ${moment().date()} ${d.month}`;
+                                }
                                 let currencyFormat = this.props.coins[pair] || {};
                                 let baseFormat = this.props.coins[BASE_CURRENCY] || { symbol: '' };
                                 let volume = currencyFormat
@@ -193,6 +208,9 @@ class BarChart extends Component {
                                     .style("top", (d3.event.pageY - 10) + "px")
                                     .style("left", (d3.event.pageX + 10) + "px")
                                     .append('div')
+                                    .attr('class', 'tool_tip-pair-volume')
+                                    .text(mBetweenTxt);
+                                tooltip.append('div')
                                     .attr('class', 'tool_tip-pair-volume')
                                     .text(`${pair.toUpperCase()}: ${formatAverage(volume)}`);
                                 tooltip.append('div')
@@ -208,7 +226,7 @@ class BarChart extends Component {
                             });
                         return 0;
                     });
-                }
+                // }
             });
         }
     };
