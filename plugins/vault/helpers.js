@@ -15,15 +15,12 @@ const { checkWithdrawals } = require('./crons/checkWithdrawals');
 
 const withdrawalCron = async () => {
 	if (GET_CONFIGURATION().constants.plugins.enabled.indexOf('vault') !== -1) {
-		logger.debug('Running Vault batch withdrawal cronjob');
-
 		checkWithdrawals();
 		await sleep(1000);
 		lockWithdrawals();
 		await sleep(5000);
 		processWithdrawals();
 	}
-	logger.debug('Vault batch withdrawal cronjob finished');
 };
 
 const cronTask = cron.schedule(`*/${GET_SECRETS().vault.cron_task_interval} * * * *`, () => {
