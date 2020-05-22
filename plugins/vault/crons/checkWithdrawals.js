@@ -1,23 +1,23 @@
 'use strict';
 
-const { Deposit, User, sequelize } = require('../../db/models');
+const { Deposit, User, sequelize } = require('../../../db/models');
 const rp = require('request-promise');
 const { each } = require('lodash');
 const { all, delay } = require('bluebird');
-const { VAULT_ENDPOINT, GET_CONFIGURATION, GET_SECRETS } = require('../../constants');
-const { loggerDeposits } = require('../../config/logger');
+const { VAULT_ENDPOINT, GET_CONFIGURATION, GET_SECRETS } = require('../../../constants');
+const { loggerDeposits } = require('../../../config/logger');
 const VAULT_NAME = () => GET_SECRETS().vault.name;
 const VAULT_KEY = () => GET_SECRETS().vault.key;
 const VAULT_SECRET = () => GET_SECRETS().vault.secret;
 const VAULT_WALLET = (coin) => {
 	return `${VAULT_NAME()}-${coin}`;
 };
-const { sendEmail } = require('../../mail');
-const { MAILTYPE } = require('../../mail/strings');
+const { sendEmail } = require('../../../mail');
+const { MAILTYPE } = require('../../../mail/strings');
 
 const vaultCoins = [];
 
-module.exports = () => {
+const checkWithdrawals = () => {
 	each(GET_SECRETS().vault.connected_coins, (coin) => {
 		vaultCoins.push({
 			currency: coin
@@ -43,7 +43,7 @@ module.exports = () => {
 		.then((withdrawals) => {
 			if (withdrawals.length === 0) {
 				loggerDeposits.info('No withdrawals need checking');
-				process.exit(0);
+				return;
 			}
 			let txids = {};
 			each(withdrawals, (withdrawal) => {
@@ -130,51 +130,57 @@ module.exports = () => {
 			}));
 		})
 		.then((results) => {
-			return all(results.map((result) => {
-				if (Array.isArray(result)) {
-					return all(result.map((data) => {
-						if (data.success === true && data.status === true) {
-							return sendEmail(
-								MAILTYPE.WITHDRAWAL,
-								data.data.User.email,
-								{
-									amount: data.data.amount,
-									transaction_id: data.data.transaction_id,
-									fee: data.data.fee,
-									status: true,
-									currency: data.data.currency,
-									address: data.data.address,
-									phoneNumber: data.data.User.phone_number
-								},
-								data.data.User.settings
-							);
-						} else if (data.success === true && data.status === false) {
-							return sendEmail(
-								MAILTYPE.ALERT,
-								GET_CONFIGURATION().constants.accounts.admin,
-								data.info,
-								{}
-							);
-						}
-					}));
-				} else if (result.success === false) {
-					return sendEmail(
-						MAILTYPE.ALERT,
-						GET_CONFIGURATION().constants.accounts.admin,
-						result.info,
-						{}
-					);
-				} else {
-					return;
-				}
-			}));
+			if (Array.isArray(results)) {
+				return all(results.map((result) => {
+					if (Array.isArray(result)) {
+						return all(result.map((data) => {
+							if (data.success === true && data.status === true) {
+								return sendEmail(
+									MAILTYPE.WITHDRAWAL,
+									data.data.User.email,
+									{
+										amount: data.data.amount,
+										transaction_id: data.data.transaction_id,
+										fee: data.data.fee,
+										status: true,
+										currency: data.data.currency,
+										address: data.data.address,
+										phoneNumber: data.data.User.phone_number
+									},
+									data.data.User.settings
+								);
+							} else if (data.success === true && data.status === false) {
+								return sendEmail(
+									MAILTYPE.ALERT,
+									GET_CONFIGURATION().constants.accounts.admin,
+									data.info,
+									{}
+								);
+							}
+						}));
+					} else if (result.success === false) {
+						return sendEmail(
+							MAILTYPE.ALERT,
+							GET_CONFIGURATION().constants.accounts.admin,
+							result.info,
+							{}
+						);
+					} else {
+						return;
+					}
+				}));
+			} else {
+				return;
+			}
 		})
 		.then(() => {
-			loggerDeposits.info('Withdrawals checked');
-			process.exit(0);
+			loggerDeposits.info('checkWithdrawals finished');
 		})
 		.catch((err) => {
 			loggerDeposits.error(err.message);
-			process.exit(1);
 		});
+};
+
+module.exports = {
+	checkWithdrawals
 };
