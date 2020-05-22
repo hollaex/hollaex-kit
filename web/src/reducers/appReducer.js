@@ -8,6 +8,7 @@ import {
 	CLOSE_SNACK_DIALOG,
 	CHANGE_LANGUAGE,
 	SET_ANNOUNCEMENT,
+	SET_APP_ANNOUNCEMENT,
 	CHANGE_THEME,
 	SET_PAIRS,
 	SET_TICKERS,
@@ -256,6 +257,11 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 			return {
 				...state,
 				announcements
+			};
+		case SET_APP_ANNOUNCEMENT:
+			return {
+				...state,
+				announcements: payload.announcements
 			};
 
 		case CLOSE_ALL_NOTIFICATION:

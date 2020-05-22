@@ -23,6 +23,13 @@ export const requestUserBalance = (values) =>
 			return data;
 		});
 
+export const updateNotes = (values) => {
+	const options = {
+		method: 'PUT',
+		body: JSON.stringify(values)
+	};
+	return requestAuthenticated(`/admin/user/note?user_id=${values.id}`, options);
+};
 export const requestUserImages = (values) =>
 	requestAuthenticated(`/plugins/kyc/id?${toQueryString(values)}`, {}, null, WS_URL)
 		.catch(handleError)

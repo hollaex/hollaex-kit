@@ -136,6 +136,20 @@ class UserSettings extends Component {
 		const audioFormValues = generateAudioCueFormValues();
 		const warningFormValues = generateWarningFormValues();
 
+		let audioFormInitialValues = {
+			all: true,
+			public_trade: false,
+			order_partially_completed: true,
+			order_placed: true,
+			order_canceled: true,
+			order_completed: true,
+			click_amounts: true,
+			get_quote_quick_trade: true,
+			quick_trade_success: true,
+			quick_trade_timeout: true,
+			...settings.audio
+		}
+
 		const tabs = [
 			{
 				title: isMobile ? (
@@ -241,7 +255,7 @@ class UserSettings extends Component {
 							this.onSubmitSettings(formProps, 'audio')
 						}
 						formFields={audioFormValues}
-						initialValues={settings.audio}
+						initialValues={audioFormInitialValues}
 					/>
 				)
 			},
