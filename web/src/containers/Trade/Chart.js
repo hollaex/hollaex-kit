@@ -270,6 +270,7 @@ class TVChartContainer extends React.PureComponent {
 			interval: interval,
 			container_id: containerId,
 			library_path: libraryPath,
+			timeframe: '1m',
 			timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
 			locale: getLanguage(),
 			withdateranges: true,
@@ -287,11 +288,9 @@ class TVChartContainer extends React.PureComponent {
 			],
 			enabled_features: ['items_favoriting', 'support_multicharts'],
 			time_frames: [
-				{ text: '1m', resolution: '1m' },
-				{ text: '1h', resolution: '1h' },
-				{ text: '1D', resolution: '1D' },
-				{ text: '1W', resolution: '1W' },
-				{ text: '1M', resolution: '1M' }
+				{ text: '3m', resolution: '60' },
+				{ text: '1m', resolution: '60' },
+				{ text: '1d', resolution: '60' },
 				// // { text: "YTD", resolution: "YTD" },
 				// { text: "1Y", resolution: "D" },
 				// { text: "3Y", resolution: "D" },
