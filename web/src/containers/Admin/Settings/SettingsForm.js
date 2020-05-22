@@ -149,7 +149,7 @@ export const LinksSettingsForm = reduxForm({
 })(LinksForm);
 
 export const ThemeSettings = ({ initialValues, handleSubmitSettings }) => {
-    const [activeTab, tabChange] = useState('light');
+    const [activeTab, tabChange] = useState('miscellaneous');
     const lightValues = initialValues['light'] || {};
     const darkValues = initialValues['dark'] || {};
     const commonValues = initialValues['miscellaneous'] || {};
@@ -158,7 +158,22 @@ export const ThemeSettings = ({ initialValues, handleSubmitSettings }) => {
             defaultActiveKey={activeTab}
             onChange={tabChange}
         >
-            <TabPane tab={'Light'} key={'light'}>
+             <TabPane tab={'Common'} key={'miscellaneous'}>
+                <Row>
+                    {activeTab === 'miscellaneous'
+                        ? <ThemeCommonForm
+                            themeKey="miscellaneous"
+                            initialValues={{
+                                ...initialCommonColors,
+                                ...commonValues
+                            }}
+                            handleSubmitSettings={handleSubmitSettings}
+                        />
+                        : null
+                    }
+                </Row>
+            </TabPane>
+            <TabPane tab={'Light Theme'} key={'light'}>
                 <Row>
                     {activeTab === 'light'
                         ? <ThemeLightForm
@@ -173,7 +188,7 @@ export const ThemeSettings = ({ initialValues, handleSubmitSettings }) => {
                     }
                 </Row>
             </TabPane>
-            <TabPane tab={'Dark'} key={'dark'}>
+            <TabPane tab={'Dark Theme'} key={'dark'}>
                 <Row>
                     {activeTab === 'dark'
                         ? <ThemeDarkForm
@@ -181,21 +196,6 @@ export const ThemeSettings = ({ initialValues, handleSubmitSettings }) => {
                             initialValues={{
                                 ...initialDarkColors,
                                 ...darkValues
-                            }}
-                            handleSubmitSettings={handleSubmitSettings}
-                        />
-                        : null
-                    }
-                </Row>
-            </TabPane>
-            <TabPane tab={'Miscellaneous'} key={'miscellaneous'}>
-                <Row>
-                    {activeTab === 'miscellaneous'
-                        ? <ThemeCommonForm
-                            themeKey="miscellaneous"
-                            initialValues={{
-                                ...initialCommonColors,
-                                ...commonValues
                             }}
                             handleSubmitSettings={handleSubmitSettings}
                         />

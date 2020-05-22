@@ -304,22 +304,7 @@ export const getThemeFields = (formValues = {}, renderPrefix, formKey = 'miscell
                     prefix: renderPrefix(formValues['colors-white'])
                 },
             },
-            1: {
-                'colors-black': {
-                    type: 'input',
-                    label: 'colors-black',
-                    validate: [validateRequired],
-                    className: 'w-25 mx-2',
-                    prefix: renderPrefix(formValues['colors-black'])
-                },
-                'colors-wave-phase-completed': {
-                    type: 'input',
-                    label: 'colors-wave-phase-completed',
-                    validate: [validateRequired],
-                    className: 'w-25 mx-2',
-                    prefix: renderPrefix(formValues['colors-wave-phase-completed'])
-                },
-            },
+           
             2: {
                 'colors-deactivate': {
                     type: 'input',
