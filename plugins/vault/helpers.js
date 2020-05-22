@@ -6,16 +6,16 @@ const { intersection, union, each } = require('lodash');
 const WEBHOOK_URL = (coin) => `${API_HOST}/v1/deposit/${coin}`;
 const WALLET_NAME = (name, coin) => `${name}-${coin}`;
 const { all, delay } = require('bluebird');
-const { updateConstants, logger } = require('../helpers/common');
+const { updateConstants, logger, sleep } = require('../helpers/common');
 const WAValidator = require('multicoin-address-validator');
 const cron = require('node-cron');
+const { processWithdrawals } = require('./crons/processWithdrawals');
+const { lockWithdrawals } = require('./crons/lockWithdrawals');
+const { checkWithdrawals } = require('./crons/checkWithdrawals');
 
 const withdrawalCron = async () => {
 	if (GET_CONFIGURATION().constants.plugins.enabled.indexOf('vault') !== -1) {
-		const { processWithdrawals } = require('./crons/processWithdrawals');
-		const { lockWithdrawals } = require('./crons/lockWithdrawals');
-		const { checkWithdrawals } = require('./crons/checkWithdrawals');
-		const sleep = (ms) => setTimeout(() => {}, ms);
+		logger.debug('Running Vault batch withdrawal cronjob');
 
 		checkWithdrawals();
 		await sleep(1000);
@@ -23,6 +23,7 @@ const withdrawalCron = async () => {
 		await sleep(5000);
 		processWithdrawals();
 	}
+	logger.debug('Vault batch withdrawal cronjob finished');
 };
 
 const cronTask = cron.schedule(`*/${GET_SECRETS().vault.cron_task_interval} * * * *`, () => {
