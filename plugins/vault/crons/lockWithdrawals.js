@@ -3,9 +3,9 @@
 const { Deposit, User } = require('../../../db/models');
 const { all } = require('bluebird');
 const { checkAddress } = require('../helpers');
-const { loggerDeposits } = require('../../config/logger');
+const { loggerDeposits } = require('../../../config/logger');
 const { each } = require('lodash');
-const { GET_SECRETS } = require('../../constants');
+const { GET_SECRETS } = require('../../../constants');
 const { sendEmail } = require('../../../mail');
 const { MAILTYPE } = require('../../../mail/strings');
 
@@ -37,7 +37,7 @@ module.exports = () => {
 		.then((withdrawals) => {
 			if (withdrawals.length === 0) {
 				loggerDeposits.info('No withdrawals need locking');
-				process.exit(0);
+				return;
 			}
 			loggerDeposits.debug(`Locking ${withdrawals.length} withdrawals`);
 			return all(withdrawals.map((withdrawal) => {
@@ -74,11 +74,9 @@ module.exports = () => {
 			}));
 		})
 		.then(() => {
-			loggerDeposits.info('Locked withdrawals');
-			process.exit(0);
+			loggerDeposits.info('lockWithdrawals finished');
 		})
 		.catch((err) => {
 			loggerDeposits.error(err.message);
-			process.exit(1);
 		});
 };

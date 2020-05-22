@@ -1,19 +1,19 @@
 'use strict';
 
-const { Deposit, sequelize, User } = require('../../db/models');
+const { Deposit, sequelize, User } = require('../../../db/models');
 const rp = require('request-promise');
 const { each } = require('lodash');
 const { all, delay } = require('bluebird');
-const { VAULT_ENDPOINT, GET_CONFIGURATION, GET_SECRETS } = require('../../constants');
-const { loggerDeposits } = require('../../config/logger');
+const { VAULT_ENDPOINT, GET_CONFIGURATION, GET_SECRETS } = require('../../../constants');
+const { loggerDeposits } = require('../../../config/logger');
 const VAULT_NAME = () => GET_SECRETS().vault.name;
 const VAULT_KEY = () => GET_SECRETS().vault.key;
 const VAULT_SECRET = () => GET_SECRETS().vault.secret;
 const VAULT_WALLET = (coin) => {
 	return `${VAULT_NAME()}-${coin}`;
 };
-const { sendEmail } = require('../../mail');
-const { MAILTYPE } = require('../../mail/strings');
+const { sendEmail } = require('../../../mail');
+const { MAILTYPE } = require('../../../mail/strings');
 
 const vaultCoins = [];
 
@@ -43,7 +43,7 @@ module.exports = () => {
 		.then((withdrawals) => {
 			if (withdrawals.length === 0) {
 				loggerDeposits.info('No withdrawals need processing');
-				process.exit(0);
+				return;
 			}
 			const btcWithdrawals = [];
 			const bchWithdrawals = [];
@@ -170,63 +170,69 @@ module.exports = () => {
 			}));
 		})
 		.then((results) => {
-			return all(results.map((result) => {
-				if (result.success) {
-					return sequelize.transaction((transaction) => {
-						return all(result.dbWithdrawals.map((withdrawal) => {
-							return withdrawal.update(
-								{
-									transaction_id: result.data.txid
-								},
-								{
-									fields: ['transaction_id'],
-									transaction
-								}
-							)
-								.then(() => {
-									return { success: true };
-								});
-						}));
-					})
-						.catch((err) => {
-							loggerDeposits.error(`Failed to update successful ${result.dbWithdrawals[0].currency} withdrawal's TXID. ID:${result.dbWithdrawals.map((wd) => wd.id)}, TXID:${result.data.txid}, Error: ${err.message}`);
-							return {
-								success: false,
-								info: {
-									type: 'Successful Withdrawal Database TXID Update Failed',
-									data: {
-										error: err.message,
-										transaction_id: result.data.txid,
-										withdrawals: result.dbWithdrawals.map((wd) => wd.dataValues)
+			if (Array.isArray(results)) {
+				return all(results.map((result) => {
+					if (result.success) {
+						return sequelize.transaction((transaction) => {
+							return all(result.dbWithdrawals.map((withdrawal) => {
+								return withdrawal.update(
+									{
+										transaction_id: result.data.txid
+									},
+									{
+										fields: ['transaction_id'],
+										transaction
 									}
-								}
-							};
-						});
-				} else {
-					return result;
-				}
-			}));
+								)
+									.then(() => {
+										return { success: true };
+									});
+							}));
+						})
+							.catch((err) => {
+								loggerDeposits.error(`Failed to update successful ${result.dbWithdrawals[0].currency} withdrawal's TXID. ID:${result.dbWithdrawals.map((wd) => wd.id)}, TXID:${result.data.txid}, Error: ${err.message}`);
+								return {
+									success: false,
+									info: {
+										type: 'Successful Withdrawal Database TXID Update Failed',
+										data: {
+											error: err.message,
+											transaction_id: result.data.txid,
+											withdrawals: result.dbWithdrawals.map((wd) => wd.dataValues)
+										}
+									}
+								};
+							});
+					} else {
+						return result;
+					}
+				}));
+			} else {
+				return;
+			}
 		})
 		.then((results) => {
-			return all(results.map((result) => {
-				if (result.success === false) {
-					return sendEmail(
-						MAILTYPE.ALERT,
-						GET_CONFIGURATION().constants.accounts.admin,
-						result.info,
-						{}
-					);
-				} else {
-					return;
-				}
-			}));
+			if (Array.isArray(results)) {
+				return all(results.map((result) => {
+					if (result.success === false) {
+						return sendEmail(
+							MAILTYPE.ALERT,
+							GET_CONFIGURATION().constants.accounts.admin,
+							result.info,
+							{}
+						);
+					} else {
+						return;
+					}
+				}));
+			} else {
+				return;
+			}
 		})
 		.then(() => {
-			loggerDeposits.info('Withdrawals processed');
-			process.exit(0);
+			loggerDeposits.info('processWithdrawals finished');
 		})
 		.catch((err) => {
 			loggerDeposits.error(err.message);
-			process.exit(1);
 		});
 };
