@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import { Tabs, Row, Spin, Alert } from 'antd';
+import { connect } from 'react-redux';
 
-import { GeneralSettingsForm, EmailSettingsForm, SecuritySettingsForm, LinksSettingsForm } from './SettingsForm';
+import { GeneralSettingsForm, EmailSettingsForm, SecuritySettingsForm, LinksSettingsForm, ThemeSettings } from './SettingsForm';
 import { getConstants, updatePlugins } from './action';
-import { generateAdminSettings } from './Utils';
+import { generateAdminSettings, initialLightCoins, initialDarkCoins } from './Utils';
 
 const TabPane = Tabs.TabPane;
 
-export default class Settings extends Component {
+class Settings extends Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -30,7 +31,8 @@ export default class Settings extends Component {
                 distribution: {}
             },
             initialSecurityValues: {},
-            initialLinkValues: {}
+            initialLinkValues: {},
+            initialColors: {}
         };
     }
 
@@ -73,7 +75,8 @@ export default class Settings extends Component {
             allowed_domains,
             admin_whitelist,
             captcha = {},
-            links = {}
+            links = {},
+            color = {}
         } = this.state.constants;
         const { configuration = {}, distribution = {} } = this.state.initialEmailValues || {};
         const initialEmailValues = {
@@ -107,7 +110,26 @@ export default class Settings extends Component {
                 : admin_whitelist;
         }
         const initialLinkValues = { ...links };
-        this.setState({ initialGeneralValues, initialEmailValues, initialSecurityValues, initialLinkValues });
+        let initialColors = { ...color };
+        let light = initialColors.light || {};
+        let dark = initialColors.dark || {};
+        Object.keys(this.props.coins).forEach((key) => {
+            if (!light[`coin-${key}`]) {
+                light[`coin-${key}`] = initialLightCoins[`coin-${key}`];
+            }
+            if (!dark[`dark-coin-${key}`]) {
+                dark[`dark-coin-${key}`] = initialDarkCoins[`dark-coin-${key}`];
+            }
+        });
+        initialColors.light = light;
+        initialColors.dark = dark;
+        this.setState({
+            initialGeneralValues,
+            initialEmailValues,
+            initialSecurityValues,
+            initialLinkValues,
+            initialColors
+        });
     };
 
     submitSettings = (formProps, formKey) => {
@@ -166,6 +188,11 @@ export default class Settings extends Component {
             });
         } else if (formKey === 'links') {
             formValues.links = { ...formProps }
+        } else if(formKey === 'miscellaneous'
+            || formKey === 'dark'
+            || formKey === 'light') {
+            formValues.color = this.state.constants.color || {};
+            formValues.color[formKey] = { ...formProps };
         }
         this.setState({ loading: true, error: '' });
         updatePlugins(formValues)
@@ -179,7 +206,15 @@ export default class Settings extends Component {
     };
 
     render() {
-        const { loading, error, initialGeneralValues, initialEmailValues, initialSecurityValues, initialLinkValues } = this.state;
+        const {
+            loading,
+            error,
+            initialGeneralValues,
+            initialEmailValues,
+            initialSecurityValues,
+            initialLinkValues,
+            initialColors
+        } = this.state;
         return (
             <div className="app_container-content">
                 <h1>Settings</h1>
@@ -227,9 +262,22 @@ export default class Settings extends Component {
                                         handleSubmitSettings={this.submitSettings} />
                                 </Row>
                             </TabPane>
+                            <TabPane tab={'Theme'} key={'theme'}>
+                                <Row>
+                                    <ThemeSettings
+                                        initialValues={initialColors}
+                                        handleSubmitSettings={this.submitSettings} />
+                                </Row>
+                            </TabPane>
                         </Tabs>
                     )}
             </div>
         )
     }
 }
+
+const mapStateToProps = (state) => ({
+    coins: state.app.coins
+});
+
+export default connect(mapStateToProps)(Settings);

@@ -3,7 +3,7 @@ import classnames from 'classnames';
 import EventListener from 'react-event-listener';
 import moment from 'moment';
 import { loadReCaptcha } from 'react-recaptcha-v3';
-import {Helmet} from "react-helmet";
+import { Helmet } from "react-helmet";
 import STRINGS from '../../config/localizedStrings';
 import {
 	ICONS,
@@ -46,7 +46,8 @@ import {
 	ContactForm,
 	HelpfulResourcesForm,
 	Chat as ChatComponent,
-	DepositFunds
+	DepositFunds,
+	ThemeProvider
 } from '../';
 import ReviewEmailContent from '../Withdraw/ReviewEmailContent';
 import FeesAndLimits from '../Summary/components/FeesAndLimits';
@@ -441,7 +442,7 @@ class App extends Component {
 			} else {
 				is_expired = false;
 				is_warning = false;
-			}	
+			}
 		} else {
 			is_expired = true;
 		}
@@ -494,38 +495,24 @@ class App extends Component {
 		const isMenubar = activePath === 'account' || activePath === 'wallet';
 		const expiryData = this.checkExchangeExpiry();
 		return (
-			<div>
-				<Helmet>
-					<title>{constants.title}</title>
-					<meta name="description" content={constants.description} />
-				</Helmet>
-				<Socket
-					router={router}
-					location={location}
-					logout={this.logout}
-					connectionCallBack={this.connectionCallBack}
-				/>
-				<GetSocketState
-					router={router}
-					isDataReady={isSocketDataReady}
-					socketDataCallback={this.socketDataCallback} />
-				<div
-					className={classnames(
-						getThemeClass(activeTheme),
-						activePath,
-						symbol,
-						fontClass,
-						languageClasses[0],
-						{
-							'layout-mobile': isMobile,
-							'layout-desktop': isBrowser
-						}
-					)}
-				>
+			<ThemeProvider>
+				<div>
+					<Helmet>
+						<title>{constants.title}</title>
+						<meta name="description" content={constants.description} />
+					</Helmet>
+					<Socket
+						router={router}
+						location={location}
+						logout={this.logout}
+						connectionCallBack={this.connectionCallBack}
+					/>
+					<GetSocketState
+						router={router}
+						isDataReady={isSocketDataReady}
+						socketDataCallback={this.socketDataCallback} />
 					<div
 						className={classnames(
-							'app_container',
-							'd-flex',
 							getThemeClass(activeTheme),
 							activePath,
 							symbol,
@@ -537,167 +524,183 @@ class App extends Component {
 							}
 						)}
 					>
-						<EventListener
-							target="window"
-							onResize={this.resetTimer}
-							onScroll={this.resetTimer}
-							onMouseMove={this.resetTimer}
-							onClick={this.resetTimer}
-							onKeyPress={this.resetTimer}
-						/>
-						<div className="d-flex flex-column f-1">
-							<AppBar
-								router={router}
-								location={location}
-								goToDashboard={this.goToDashboard}
-								logout={this.logout}
-								activePath={activePath}
-								onHelp={openHelpfulResourcesForm}
-								rightChildren={
-									<CurrencyList
-										className="horizontal-currency-list justify-content-end"
-										activeLanguage={activeLanguage}
-									/>
+						<div
+							className={classnames(
+								'app_container',
+								'd-flex',
+								getThemeClass(activeTheme),
+								activePath,
+								symbol,
+								fontClass,
+								languageClasses[0],
+								{
+									'layout-mobile': isMobile,
+									'layout-desktop': isBrowser
 								}
+							)}
+						>
+							<EventListener
+								target="window"
+								onResize={this.resetTimer}
+								onScroll={this.resetTimer}
+								onMouseMove={this.resetTimer}
+								onClick={this.resetTimer}
+								onKeyPress={this.resetTimer}
 							/>
-							{info.is_trial ? (
-								<div
-									className={classnames(
-										'w-100',
-										'p-1',
-										...FLEX_CENTER_CLASSES,
-										'exchange-trial'
-									)}
-								>
-									{STRINGS.formatString(
-										STRINGS.TRIAL_EXCHANGE_MSG,
-										constants.api_name || '',
-										expiryData.daysLeft
-									)}
-								</div>
-							) : null}
-							{isBrowser && isMenubar && isLoggedIn() ? (
-								<AppMenuBar router={router} location={location} />
-							) : null}
-							<div
-								className={classnames(
-									'app_container-content',
-									'd-flex',
-									'justify-content-between',
-									{
-										'app_container-secondary-content': isMenubar
+							<div className="d-flex flex-column f-1">
+								<AppBar
+									router={router}
+									location={location}
+									goToDashboard={this.goToDashboard}
+									logout={this.logout}
+									activePath={activePath}
+									onHelp={openHelpfulResourcesForm}
+									rightChildren={
+										<CurrencyList
+											className="horizontal-currency-list justify-content-end"
+											activeLanguage={activeLanguage}
+										/>
 									}
-								)}
-							>
+								/>
+								{info.is_trial ? (
+									<div
+										className={classnames(
+											'w-100',
+											'p-1',
+											...FLEX_CENTER_CLASSES,
+											'exchange-trial'
+										)}
+									>
+										{STRINGS.formatString(
+											STRINGS.TRIAL_EXCHANGE_MSG,
+											constants.api_name || '',
+											expiryData.daysLeft
+										)}
+									</div>
+								) : null}
+								{isBrowser && isMenubar && isLoggedIn() ? (
+									<AppMenuBar router={router} location={location} />
+								) : null}
 								<div
 									className={classnames(
-										'app_container-main',
+										'app_container-content',
 										'd-flex',
-										'flex-column',
 										'justify-content-between',
 										{
-											'overflow-y': !isMobile
+											'app_container-secondary-content': isMenubar
 										}
 									)}
 								>
-									<Container
-										router={router}
-										children={children}
-										appLoaded={appLoaded}
-										isReady={isSocketDataReady}
-									/>
+									<div
+										className={classnames(
+											'app_container-main',
+											'd-flex',
+											'flex-column',
+											'justify-content-between',
+											{
+												'overflow-y': !isMobile
+											}
+										)}
+									>
+										<Container
+											router={router}
+											children={children}
+											appLoaded={appLoaded}
+											isReady={isSocketDataReady}
+										/>
+									</div>
+									{isBrowser && (
+										<div className="app_container-sidebar">
+											<Sidebar
+												activePath={activePath}
+												logout={this.logout}
+												// help={this.openContactForm}
+												theme={activeTheme}
+												isLogged={isLoggedIn()}
+												help={openHelpfulResourcesForm}
+												pair={pair}
+												enabledPlugins={enabledPlugins}
+												minimizeChat={this.minimizeChat}
+												chatIsClosed={chatIsClosed}
+												unreadMessages={unreadMessages}
+												sidebarFitHeight={sidebarFitHeight}
+											/>
+										</div>
+									)}
+									<Dialog
+										isOpen={dialogIsOpen}
+										label="hollaex-modal"
+										className={classnames('app-dialog', {
+											'app-dialog-flex':
+												activeNotification.type === NOTIFICATIONS.DEPOSIT_INFO
+										})}
+										onCloseDialog={this.onCloseDialog}
+										shouldCloseOnOverlayClick={shouldCloseOnOverlayClick}
+										theme={activeTheme}
+										showCloseText={
+											!(
+												activeNotification.type === CONTACT_FORM ||
+												activeNotification.type === HELPFUL_RESOURCES_FORM ||
+												activeNotification.type === NOTIFICATIONS.NEW_ORDER ||
+												(activeNotification.type === NOTIFICATIONS.TRADES &&
+													!isMobile) ||
+												(activeNotification.type === NOTIFICATIONS.ORDERS &&
+													!isMobile) ||
+												activeNotification.type === NOTIFICATIONS.ERROR
+											)
+										}
+										compressed={
+											activeNotification.type === NOTIFICATIONS.ORDERS ||
+											activeNotification.type === NOTIFICATIONS.TRADES
+										}
+										style={{ 'z-index': 100 }}
+									>
+										{dialogIsOpen &&
+											this.renderDialogContent(
+												activeNotification,
+												// prices,
+												// activeTheme
+											)}
+									</Dialog>
+									{!isMobile &&
+										enabledPlugins.includes('chat') && (
+											<ChatComponent
+												activeLanguage={activeLanguage}
+												minimized={chatIsClosed}
+												onMinimize={this.minimizeChat}
+												chatIsClosed={chatIsClosed}
+											/>
+										)}
 								</div>
-								{isBrowser && (
-									<div className="app_container-sidebar">
-										<Sidebar
-											activePath={activePath}
-											logout={this.logout}
-											// help={this.openContactForm}
-											theme={activeTheme}
+								{isMobile && (
+									<div className="app_container-bottom_bar">
+										<SidebarBottom
 											isLogged={isLoggedIn()}
-											help={openHelpfulResourcesForm}
+											activePath={activePath}
 											pair={pair}
 											enabledPlugins={enabledPlugins}
-											minimizeChat={this.minimizeChat}
-											chatIsClosed={chatIsClosed}
-											unreadMessages={unreadMessages}
-											sidebarFitHeight={sidebarFitHeight}
 										/>
 									</div>
 								)}
-								<Dialog
-									isOpen={dialogIsOpen}
-									label="hollaex-modal"
-									className={classnames('app-dialog', {
-										'app-dialog-flex':
-											activeNotification.type === NOTIFICATIONS.DEPOSIT_INFO
-									})}
-									onCloseDialog={this.onCloseDialog}
-									shouldCloseOnOverlayClick={shouldCloseOnOverlayClick}
-									theme={activeTheme}
-									showCloseText={
-										!(
-											activeNotification.type === CONTACT_FORM ||
-											activeNotification.type === HELPFUL_RESOURCES_FORM ||
-											activeNotification.type === NOTIFICATIONS.NEW_ORDER ||
-											(activeNotification.type === NOTIFICATIONS.TRADES &&
-												!isMobile) ||
-											(activeNotification.type === NOTIFICATIONS.ORDERS &&
-												!isMobile) ||
-											activeNotification.type === NOTIFICATIONS.ERROR
-										)
-									}
-									compressed={
-										activeNotification.type === NOTIFICATIONS.ORDERS ||
-										activeNotification.type === NOTIFICATIONS.TRADES
-									}
-									style={{ 'z-index': 100 }}
-								>
-									{dialogIsOpen &&
-										this.renderDialogContent(
-											activeNotification,
-											// prices,
-											// activeTheme
-										)}
-								</Dialog>
-								{!isMobile &&
-									enabledPlugins.includes('chat') && (
-										<ChatComponent
-											activeLanguage={activeLanguage}
-											minimized={chatIsClosed}
-											onMinimize={this.minimizeChat}
-											chatIsClosed={chatIsClosed}
-										/>
-									)}
 							</div>
-							{isMobile && (
-								<div className="app_container-bottom_bar">
-									<SidebarBottom
-										isLogged={isLoggedIn()}
-										activePath={activePath}
-										pair={pair}
-										enabledPlugins={enabledPlugins}
-									/>
-								</div>
-							)}
 						</div>
+						<SnackNotification />
+						<SnackDialog />
 					</div>
-					<SnackNotification />
-					<SnackDialog />
+					<div
+						className={classnames(
+							getThemeClass(activeTheme),
+							languageClasses[0],
+							{
+								'layout-mobile': isMobile,
+								'layout-desktop': isBrowser
+							}
+						)}
+					>
+						{!isMobile && <AppFooter theme={activeTheme} constants={constants} />}
+					</div>
 				</div>
-				<div
-					className={classnames(
-						getThemeClass(activeTheme),
-						languageClasses[0],
-						{
-							'layout-mobile': isMobile,
-							'layout-desktop': isBrowser
-						}
-					)}
-				>
-					{!isMobile && <AppFooter theme={activeTheme} constants={constants} />}
-				</div>
-			</div>
+			</ThemeProvider>
 		);
 	}
 }

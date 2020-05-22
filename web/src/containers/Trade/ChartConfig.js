@@ -7,7 +7,7 @@ export const TOOLBAR_BG = {
 	white: '#ffffff'
 };
 
-export const WHITE_THEME = {
+export const getWhiteTheme = ({ buy = UP_COLOR_WHITE, sell = DOWN_COLOR_WHITE }) => ({
 	"paneProperties.background": "#ffffff",
 	"paneProperties.vertGridProperties.color": "#E6ECEF",
 	"paneProperties.horzGridProperties.color": "#E6ECEF",
@@ -17,69 +17,69 @@ export const WHITE_THEME = {
 	"scalesProperties.textColor": "#292b2c",
 	"scalesProperties.backgroundColor": "#ffffff",
 	// Candles-property
-	"mainSeriesProperties.candleStyle.upColor": UP_COLOR_WHITE,
-	"mainSeriesProperties.candleStyle.downColor": DOWN_COLOR_WHITE,
+	"mainSeriesProperties.candleStyle.upColor": buy,
+	"mainSeriesProperties.candleStyle.downColor": sell,
 	"mainSeriesProperties.candleStyle.drawWick": true,
 	"mainSeriesProperties.candleStyle.drawBorder": true,
-	"mainSeriesProperties.candleStyle.borderUpColor": UP_COLOR_WHITE,
-	"mainSeriesProperties.candleStyle.borderDownColor": DOWN_COLOR_WHITE,
-	"mainSeriesProperties.candleStyle.wickUpColor": UP_COLOR_WHITE,
-	"mainSeriesProperties.candleStyle.wickDownColor": DOWN_COLOR_WHITE,
+	"mainSeriesProperties.candleStyle.borderUpColor": buy,
+	"mainSeriesProperties.candleStyle.borderDownColor": sell,
+	"mainSeriesProperties.candleStyle.wickUpColor": buy,
+	"mainSeriesProperties.candleStyle.wickDownColor": sell,
 	"mainSeriesProperties.candleStyle.barColorsOnPrevClose": true,
 
 	//  Hollow Candles styles
-	"mainSeriesProperties.hollowCandleStyle.upColor": UP_COLOR_WHITE,
-	"mainSeriesProperties.hollowCandleStyle.downColor": DOWN_COLOR_WHITE,
+	"mainSeriesProperties.hollowCandleStyle.upColor": buy,
+	"mainSeriesProperties.hollowCandleStyle.downColor": sell,
 	"mainSeriesProperties.hollowCandleStyle.drawWick": true,
 	"mainSeriesProperties.hollowCandleStyle.drawBorder": true,
-	"mainSeriesProperties.hollowCandleStyle.borderColor": DOWN_COLOR_WHITE,
-	"mainSeriesProperties.hollowCandleStyle.borderUpColor": UP_COLOR_WHITE,
-	"mainSeriesProperties.hollowCandleStyle.borderDownColor": DOWN_COLOR_WHITE,
-	"mainSeriesProperties.hollowCandleStyle.wickUpColor": UP_COLOR_WHITE,
-	"mainSeriesProperties.hollowCandleStyle.wickDownColor": DOWN_COLOR_WHITE,
+	"mainSeriesProperties.hollowCandleStyle.borderColor": sell,
+	"mainSeriesProperties.hollowCandleStyle.borderUpColor": buy,
+	"mainSeriesProperties.hollowCandleStyle.borderDownColor": sell,
+	"mainSeriesProperties.hollowCandleStyle.wickUpColor": buy,
+	"mainSeriesProperties.hollowCandleStyle.wickDownColor": sell,
 
 	//  Heiken Ashi styles
-	"mainSeriesProperties.haStyle.upColor": UP_COLOR_WHITE,
-	"mainSeriesProperties.haStyle.downColor": DOWN_COLOR_WHITE,
+	"mainSeriesProperties.haStyle.upColor": buy,
+	"mainSeriesProperties.haStyle.downColor": sell,
 	"mainSeriesProperties.haStyle.drawWick": true,
 	"mainSeriesProperties.haStyle.drawBorder": true,
-	"mainSeriesProperties.haStyle.borderColor": DOWN_COLOR_WHITE,
-	"mainSeriesProperties.haStyle.borderUpColor": UP_COLOR_WHITE,
-	"mainSeriesProperties.haStyle.borderDownColor": DOWN_COLOR_WHITE,
-	"mainSeriesProperties.haStyle.wickColor": DOWN_COLOR_WHITE,
+	"mainSeriesProperties.haStyle.borderColor": sell,
+	"mainSeriesProperties.haStyle.borderUpColor": buy,
+	"mainSeriesProperties.haStyle.borderDownColor": sell,
+	"mainSeriesProperties.haStyle.wickColor": sell,
 	"mainSeriesProperties.haStyle.barColorsOnPrevClose": false,
 
 	//	Bars styles
-	"mainSeriesProperties.barStyle.upColor": UP_COLOR_WHITE,
-	"mainSeriesProperties.barStyle.downColor": DOWN_COLOR_WHITE,
+	"mainSeriesProperties.barStyle.upColor": buy,
+	"mainSeriesProperties.barStyle.downColor": sell,
 	"mainSeriesProperties.barStyle.barColorsOnPrevClose": false,
 	"mainSeriesProperties.barStyle.dontDrawOpen": false,
 
 
 	//	Area styles
-	"mainSeriesProperties.areaStyle.color1": UP_COLOR_WHITE,
-	"mainSeriesProperties.areaStyle.color2": DOWN_COLOR_WHITE,
-	"mainSeriesProperties.areaStyle.linecolor": DOWN_COLOR_WHITE,
+	"mainSeriesProperties.areaStyle.color1": buy,
+	"mainSeriesProperties.areaStyle.color2": sell,
+	"mainSeriesProperties.areaStyle.linecolor": sell,
 	// "mainSeriesProperties.areaStyle.linestyle": CanvasEx.LINESTYLE_SOLID,
 	"mainSeriesProperties.areaStyle.linewidth": 1,
 	"mainSeriesProperties.areaStyle.priceSource": "close",
 
 	//  Baseline styles
-	"mainSeriesProperties.baselineStyle.baselineColor": UP_COLOR_WHITE,
-	"mainSeriesProperties.baselineStyle.topFillColor1": UP_COLOR_WHITE,
-	"mainSeriesProperties.baselineStyle.topFillColor2": UP_COLOR_WHITE,
-	"mainSeriesProperties.baselineStyle.bottomFillColor1": DOWN_COLOR_WHITE,
-	"mainSeriesProperties.baselineStyle.bottomFillColor2": DOWN_COLOR_WHITE,
-	"mainSeriesProperties.baselineStyle.topLineColor": UP_COLOR_WHITE,
-	"mainSeriesProperties.baselineStyle.bottomLineColor": DOWN_COLOR_WHITE,
+	"mainSeriesProperties.baselineStyle.baselineColor": buy,
+	"mainSeriesProperties.baselineStyle.topFillColor1": buy,
+	"mainSeriesProperties.baselineStyle.topFillColor2": buy,
+	"mainSeriesProperties.baselineStyle.bottomFillColor1": sell,
+	"mainSeriesProperties.baselineStyle.bottomFillColor2": sell,
+	"mainSeriesProperties.baselineStyle.topLineColor": buy,
+	"mainSeriesProperties.baselineStyle.bottomLineColor": sell,
 	"mainSeriesProperties.baselineStyle.topLineWidth": 1,
 	"mainSeriesProperties.baselineStyle.bottomLineWidth": 1,
 	"mainSeriesProperties.baselineStyle.priceSource": "close",
 	"mainSeriesProperties.baselineStyle.transparency": 50,
 	"mainSeriesProperties.baselineStyle.baseLevelPercentage": 50
-};
+});
 
-export const DARK_THEME = {
+export const getDarkTheme = ({ buy = UP_COLOR_DARK, sell = DOWN_COLOR_DARK }) => ({
 	"paneProperties.background": "#202020",
 	"paneProperties.vertGridProperties.color": "#535353",
 	"paneProperties.horzGridProperties.color": "#535353",
@@ -90,77 +90,77 @@ export const DARK_THEME = {
 	"scalesProperties.backgroundColor": "#202020",
 
 	// Candles-property
-	"mainSeriesProperties.candleStyle.upColor": UP_COLOR_DARK,
-	"mainSeriesProperties.candleStyle.downColor": DOWN_COLOR_DARK,
+	"mainSeriesProperties.candleStyle.upColor": buy,
+	"mainSeriesProperties.candleStyle.downColor": sell,
 	"mainSeriesProperties.candleStyle.drawWick": true,
 	"mainSeriesProperties.candleStyle.drawBorder": true,
-	"mainSeriesProperties.candleStyle.borderUpColor": UP_COLOR_DARK,
-	"mainSeriesProperties.candleStyle.borderDownColor": DOWN_COLOR_DARK,
-	"mainSeriesProperties.candleStyle.wickUpColor": UP_COLOR_DARK,
-	"mainSeriesProperties.candleStyle.wickDownColor": DOWN_COLOR_DARK,
+	"mainSeriesProperties.candleStyle.borderUpColor": buy,
+	"mainSeriesProperties.candleStyle.borderDownColor": sell,
+	"mainSeriesProperties.candleStyle.wickUpColor": buy,
+	"mainSeriesProperties.candleStyle.wickDownColor": sell,
 	"mainSeriesProperties.candleStyle.barColorsOnPrevClose": true,
 
 	//  Hollow Candles styles
-	"mainSeriesProperties.hollowCandleStyle.upColor": UP_COLOR_DARK,
-	"mainSeriesProperties.hollowCandleStyle.downColor": DOWN_COLOR_DARK,
+	"mainSeriesProperties.hollowCandleStyle.upColor": buy,
+	"mainSeriesProperties.hollowCandleStyle.downColor": sell,
 	"mainSeriesProperties.hollowCandleStyle.drawWick": true,
 	"mainSeriesProperties.hollowCandleStyle.drawBorder": true,
-	"mainSeriesProperties.hollowCandleStyle.borderColor": DOWN_COLOR_DARK,
-	"mainSeriesProperties.hollowCandleStyle.borderUpColor": UP_COLOR_DARK,
-	"mainSeriesProperties.hollowCandleStyle.borderDownColor": DOWN_COLOR_DARK,
-	"mainSeriesProperties.hollowCandleStyle.wickUpColor": UP_COLOR_DARK,
-	"mainSeriesProperties.hollowCandleStyle.wickDownColor": DOWN_COLOR_DARK,
+	"mainSeriesProperties.hollowCandleStyle.borderColor": sell,
+	"mainSeriesProperties.hollowCandleStyle.borderUpColor": buy,
+	"mainSeriesProperties.hollowCandleStyle.borderDownColor": sell,
+	"mainSeriesProperties.hollowCandleStyle.wickUpColor": buy,
+	"mainSeriesProperties.hollowCandleStyle.wickDownColor": sell,
 
 	//  Heiken Ashi styles
-	"mainSeriesProperties.haStyle.upColor": UP_COLOR_DARK,
-	"mainSeriesProperties.haStyle.downColor": DOWN_COLOR_DARK,
+	"mainSeriesProperties.haStyle.upColor": buy,
+	"mainSeriesProperties.haStyle.downColor": sell,
 	"mainSeriesProperties.haStyle.drawWick": true,
 	"mainSeriesProperties.haStyle.drawBorder": true,
-	"mainSeriesProperties.haStyle.borderColor": DOWN_COLOR_DARK,
-	"mainSeriesProperties.haStyle.borderUpColor": UP_COLOR_DARK,
-	"mainSeriesProperties.haStyle.borderDownColor": DOWN_COLOR_DARK,
-	"mainSeriesProperties.haStyle.wickColor": DOWN_COLOR_DARK,
+	"mainSeriesProperties.haStyle.borderColor": sell,
+	"mainSeriesProperties.haStyle.borderUpColor": buy,
+	"mainSeriesProperties.haStyle.borderDownColor": sell,
+	"mainSeriesProperties.haStyle.wickColor": sell,
 	"mainSeriesProperties.haStyle.barColorsOnPrevClose": false,
-	"mainSeriesProperties.haStyle.wickUpColor": UP_COLOR_DARK,
-	"mainSeriesProperties.haStyle.wickDownColor": DOWN_COLOR_DARK,
+	"mainSeriesProperties.haStyle.wickUpColor": buy,
+	"mainSeriesProperties.haStyle.wickDownColor": sell,
 	
 	//	Bars styles
-	"mainSeriesProperties.barStyle.upColor": UP_COLOR_DARK,
-	"mainSeriesProperties.barStyle.downColor": DOWN_COLOR_DARK,
+	"mainSeriesProperties.barStyle.upColor": buy,
+	"mainSeriesProperties.barStyle.downColor": sell,
 	"mainSeriesProperties.barStyle.barColorsOnPrevClose": false,
 	"mainSeriesProperties.barStyle.dontDrawOpen": false,
 
 	//	Area styles
-	"mainSeriesProperties.areaStyle.color1": UP_COLOR_DARK,
-	"mainSeriesProperties.areaStyle.color2": DOWN_COLOR_DARK,
-	"mainSeriesProperties.areaStyle.linecolor": UP_COLOR_DARK,
+	"mainSeriesProperties.areaStyle.color1": buy,
+	"mainSeriesProperties.areaStyle.color2": sell,
+	"mainSeriesProperties.areaStyle.linecolor": buy,
 	// "mainSeriesProperties.areaStyle.linestyle": CanvasEx.LINESTYLE_SOLID,
 	"mainSeriesProperties.areaStyle.linewidth": 1,
 	"mainSeriesProperties.areaStyle.priceSource": "close",
 
 	//  Baseline styles
-	"mainSeriesProperties.baselineStyle.baselineColor": UP_COLOR_DARK,
-	"mainSeriesProperties.baselineStyle.topFillColor1": UP_COLOR_DARK,
-	"mainSeriesProperties.baselineStyle.topFillColor2": UP_COLOR_DARK,
-	"mainSeriesProperties.baselineStyle.bottomFillColor1": DOWN_COLOR_DARK,
-	"mainSeriesProperties.baselineStyle.bottomFillColor2": DOWN_COLOR_DARK,
-	"mainSeriesProperties.baselineStyle.topLineColor": UP_COLOR_DARK,
-	"mainSeriesProperties.baselineStyle.bottomLineColor": DOWN_COLOR_DARK,
+	"mainSeriesProperties.baselineStyle.baselineColor": buy,
+	"mainSeriesProperties.baselineStyle.topFillColor1": buy,
+	"mainSeriesProperties.baselineStyle.topFillColor2": buy,
+	"mainSeriesProperties.baselineStyle.bottomFillColor1": sell,
+	"mainSeriesProperties.baselineStyle.bottomFillColor2": sell,
+	"mainSeriesProperties.baselineStyle.topLineColor": buy,
+	"mainSeriesProperties.baselineStyle.bottomLineColor": sell,
 	"mainSeriesProperties.baselineStyle.topLineWidth": 1,
 	"mainSeriesProperties.baselineStyle.bottomLineWidth": 1,
 	"mainSeriesProperties.baselineStyle.priceSource": "close",
 	"mainSeriesProperties.baselineStyle.transparency": 50,
 	"mainSeriesProperties.baselineStyle.baseLevelPercentage": 50
-};
+});
 
-export const VOLUME_WHITE = {
-	"volume.volume.color.0": DOWN_COLOR_WHITE,
-	"volume.volume.color.1": UP_COLOR_WHITE,
+export const getVolumeWhite = ({ buy = UP_COLOR_WHITE, sell = DOWN_COLOR_WHITE }) => ({
+	"volume.volume.color.0": sell,
+	"volume.volume.color.1": buy,
 	"volume.volume.transparency": 50,
-};
+});
 
-export const VOLUME_DARK = {
-	"volume.volume.color.0": DOWN_COLOR_DARK,
-	"volume.volume.color.1": UP_COLOR_DARK,
+export const getVolumeDark = ({ buy = UP_COLOR_DARK, sell = DOWN_COLOR_DARK }) => ({
+	"volume.volume.color.0": sell,
+	"volume.volume.color.1": buy,
 	"volume.volume.transparency": 50,
-};
+});

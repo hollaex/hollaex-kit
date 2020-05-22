@@ -225,7 +225,7 @@
 			}
 		}
 		&.order_side-selector-sell {
-			@include entry_form($dark-sell, $dark-button-disabled);
+			@include entry_form($dark-color-sell-btc-light, $dark-button-disabled);
 
 			.trade_order_entry-action_selector {
 				.active {

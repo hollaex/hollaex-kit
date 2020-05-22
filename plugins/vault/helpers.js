@@ -8,6 +8,28 @@ const WALLET_NAME = (name, coin) => `${name}-${coin}`;
 const { all, delay } = require('bluebird');
 const { updateConstants, logger } = require('../helpers/common');
 const WAValidator = require('multicoin-address-validator');
+const cron = require('node-cron');
+
+const withdrawalCron = async () => {
+	if (GET_CONFIGURATION().constants.plugins.enabled.indexOf('vault') !== -1) {
+		const processWithdrawals = require('./crons/processWithdrawals');
+		const lockWithdrawals = require('./crons/lockWithdrawals');
+		const checkWithdrawals = require('./crons/checkWithdrawals');
+		const sleep = (ms) => setTimeout(() => {}, ms);
+
+		checkWithdrawals();
+		await sleep(1000);
+		lockWithdrawals();
+		await sleep(5000);
+		processWithdrawals();
+	}
+};
+
+const cronTask = cron.schedule(`*/${GET_SECRETS().vault.cron_task_interval} * * * *`, () => {
+	withdrawalCron();
+}, {
+	timezone: 'Asia/Seoul'
+});
 
 const checkAddress = (address, symbol, network = 'prod') => {
 	if (symbol === 'btc' || symbol === 'bch' || symbol === 'xrp' || symbol === 'xmr') {
@@ -160,5 +182,6 @@ module.exports = {
 	checkAddress,
 	updateVaultValues,
 	crossCheckCoins,
-	createOrUpdateWallets
+	createOrUpdateWallets,
+	cronTask
 };
