@@ -1,6 +1,6 @@
 
 .theme-dark .layout__area--top div {
-    background-color: #202020 !important;
+    background-color: var(--dark-app-background-color) !important;
 }
 
 .screen-container {

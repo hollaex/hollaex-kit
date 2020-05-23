@@ -2,20 +2,38 @@ const UP_COLOR_WHITE = "#6496AA";
 const DOWN_COLOR_WHITE = "#000000";
 const UP_COLOR_DARK = "#00A69C";
 const DOWN_COLOR_DARK = "#EE4036";
-export const TOOLBAR_BG = {
-	dark: '#202020',
-	white: '#ffffff'
+const BACKGROUND_COLOR = "#ffffff";
+const DARK_BACKGROUND_COLOR = "#202020";
+const TRADING_VIEW_AXIS = "#E6ECEF";
+const TRADING_VIEW_WATERMARK = "#202020";
+const TRADING_VIEW_TEXT = "#292b2c";
+const DARK_TRADING_VIEW_AXIS = "#535353";
+const DARK_TRADING_VIEW_WATERMARK = "#808080";
+const DARK_TRADING_VIEW_TEXT = "#808080";
+
+export const getToolbarBG = (theme, colors = {}) => {
+	if (theme === 'dark') {
+		let colorDark = colors.dark || {};
+		return colorDark['dark-app-background-color'] || DARK_BACKGROUND_COLOR;
+	} else {
+		let colorLight = colors.light || {};
+		return colorLight['app-background-color'] || BACKGROUND_COLOR;
+	}
 };
 
-export const getWhiteTheme = ({ buy = UP_COLOR_WHITE, sell = DOWN_COLOR_WHITE }) => ({
-	"paneProperties.background": "#ffffff",
-	"paneProperties.vertGridProperties.color": "#E6ECEF",
-	"paneProperties.horzGridProperties.color": "#E6ECEF",
+export const getWhiteTheme = ({
+	buy = UP_COLOR_WHITE,
+	sell = DOWN_COLOR_WHITE,
+	...rest
+}) => ({
+	"paneProperties.background": rest['app-background-color'] || BACKGROUND_COLOR,
+	"paneProperties.vertGridProperties.color": rest.tradingViewAxis || TRADING_VIEW_AXIS,
+	"paneProperties.horzGridProperties.color": rest.tradingViewAxis || TRADING_VIEW_AXIS,
 	// "paneProperties.crossHairProperties.color": "#1f212a",
 	"symbolWatermarkProperties.transparency": 90,
-	"symbolWatermarkProperties.color": '#202020',
-	"scalesProperties.textColor": "#292b2c",
-	"scalesProperties.backgroundColor": "#ffffff",
+	"symbolWatermarkProperties.color": rest.tradingViewWaterMark || TRADING_VIEW_WATERMARK,
+	"scalesProperties.textColor": rest.tradingViewText || TRADING_VIEW_TEXT,
+	"scalesProperties.backgroundColor": rest['app-background-color'] || BACKGROUND_COLOR,
 	// Candles-property
 	"mainSeriesProperties.candleStyle.upColor": buy,
 	"mainSeriesProperties.candleStyle.downColor": sell,
@@ -79,15 +97,19 @@ export const getWhiteTheme = ({ buy = UP_COLOR_WHITE, sell = DOWN_COLOR_WHITE })
 	"mainSeriesProperties.baselineStyle.baseLevelPercentage": 50
 });
 
-export const getDarkTheme = ({ buy = UP_COLOR_DARK, sell = DOWN_COLOR_DARK }) => ({
-	"paneProperties.background": "#202020",
-	"paneProperties.vertGridProperties.color": "#535353",
-	"paneProperties.horzGridProperties.color": "#535353",
+export const getDarkTheme = ({
+	buy = UP_COLOR_DARK,
+	sell = DOWN_COLOR_DARK,
+	...rest
+}) => ({
+	"paneProperties.background": rest['dark-app-background-color'] || DARK_BACKGROUND_COLOR,
+	"paneProperties.vertGridProperties.color": rest.tradingViewAxis || DARK_TRADING_VIEW_AXIS,
+	"paneProperties.horzGridProperties.color": rest.tradingViewAxis || DARK_TRADING_VIEW_AXIS,
 	// "paneProperties.crossHairProperties.color": "#aaaaaa",
 	"symbolWatermarkProperties.transparency": 90,
-	"symbolWatermarkProperties.color": '#808080',
-	"scalesProperties.textColor": "#808080",
-	"scalesProperties.backgroundColor": "#202020",
+	"symbolWatermarkProperties.color": rest.tradingViewWaterMark || DARK_TRADING_VIEW_WATERMARK,
+	"scalesProperties.textColor": rest.tradingViewText || DARK_TRADING_VIEW_TEXT,
+	"scalesProperties.backgroundColor": rest['dark-app-background-color'] || DARK_BACKGROUND_COLOR,
 
 	// Candles-property
 	"mainSeriesProperties.candleStyle.upColor": buy,
