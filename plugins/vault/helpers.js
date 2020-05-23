@@ -14,16 +14,21 @@ const { lockWithdrawals } = require('./crons/lockWithdrawals');
 const { checkWithdrawals } = require('./crons/checkWithdrawals');
 
 const withdrawalCron = async () => {
-	if (GET_CONFIGURATION().constants.plugins.enabled.indexOf('vault') !== -1) {
-		checkWithdrawals();
-		await sleep(1000);
-		lockWithdrawals();
-		await sleep(5000);
-		processWithdrawals();
+	const enabledPlugins = GET_CONFIGURATION().constants.plugins.enabled;
+	try {
+		if (enabledPlugins !== undefined && enabledPlugins.indexOf('vault') !== -1) {
+			checkWithdrawals();
+			await sleep(1000);
+			lockWithdrawals();
+			await sleep(5000);
+			processWithdrawals();
+		}
+	} catch (err) {
+		logger.error(err);
 	}
 };
 
-const cronTask = cron.schedule(`*/${GET_SECRETS().vault.cron_task_interval} * * * *`, () => {
+const cronTask = cron.schedule(`*/${GET_SECRETS().vault.cron_task_interval || 15} * * * *`, () => {
 	withdrawalCron();
 }, {
 	timezone: 'Asia/Seoul'
