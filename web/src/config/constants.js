@@ -300,7 +300,8 @@ export const SOCIAL_ICONS = {
 	TWITTER: '/assets/icons/twitter.png',
 	INSTAGRAM: '/assets/icons/instagram.svg',
 	TELEGRAM: '/assets/icons/telegram.png',
-	GOOGLE: '/assets/icons/google.png'
+	GOOGLE: '/assets/icons/google.png',
+	YOUTUBE: '/assets/icons/youtube.png'
 };
 
 export const FEATURES_ICONS = {
