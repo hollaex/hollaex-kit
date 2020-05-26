@@ -11,6 +11,12 @@ class CaptchaField extends Component {
 		ready: false
 	};
 
+	componentDidMount() {
+		this.expiryTime = setInterval(() => {
+			this.captcha.execute();
+		}, 120000);
+	}
+
 	componentWillReceiveProps(nextProps) {
 		if (
 			nextProps.input.value === '' &&
@@ -32,6 +38,12 @@ class CaptchaField extends Component {
 		this.props.input.onChange('');
 		this.captcha.execute();
 	};
+
+	componentWillUnmount() {
+		if (this.expiryTime) {
+			clearInterval(this.expiryTime);
+		}
+	}
 
 	render() {
 		const { language, constants: { captcha = {} } } = this.props;

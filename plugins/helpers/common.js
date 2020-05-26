@@ -58,8 +58,82 @@ const isUrl = (url) => {
 	return pattern.test(url);
 };
 
+const sleep = (ms) => {
+	return new Promise((resolve) => setTimeout(resolve, ms));
+};
+
+const getPagination = (limit = 50, page = 1) => {
+	let _limit = 50;
+	let _page = 1;
+	logger.debug('helpers/common/getPagination', _limit, _page);
+	if (limit) {
+		if (limit > 50) {
+			_limit = 50;
+		} else if (limit <= 0) {
+			_limit = 1;
+		} else {
+			_limit = limit;
+		}
+	}
+
+	if (page && page >= 0) {
+		_page = page;
+	}
+	logger.debug('helpers/common/getPagination', _limit, _page);
+	return {
+		limit: _limit,
+		offset: _limit * (_page - 1)
+	};
+};
+
+const convertSequelizeCountAndRows = (data) => {
+	return {
+		count: data.count,
+		data: data.rows.map((row) => {
+			const item = Object.assign({}, row.dataValues);
+			// delete item.id;
+			return item;
+		})
+	};
+};
+
+const getTimeframe = (start_date = undefined, end_date = undefined) => {
+	logger.debug(
+		'helpers/common/getTimeframe',
+		'stat_date: ',
+		start_date,
+		'end_date: ',
+		end_date
+	);
+	let timestamp = {};
+	if (start_date) timestamp['$gte'] = start_date;
+	if (end_date) timestamp['$lte'] = end_date;
+	if (Object.entries(timestamp).length === 0) return undefined;
+	return timestamp;
+};
+
+const getOrdering = (order_by = undefined, order = undefined) => {
+	logger.debug(
+		'helpers/common/getOrdering',
+		'order_by: ',
+		order_by,
+		'order: ',
+		order
+	);
+	if (!order_by) {
+		return undefined;
+	} else {
+		return [order_by, order || 'desc'];
+	}
+};
+
 module.exports = {
 	logger,
 	updateConstants,
-	isUrl
+	isUrl,
+	sleep,
+	getPagination,
+	getOrdering,
+	getTimeframe,
+	convertSequelizeCountAndRows
 };

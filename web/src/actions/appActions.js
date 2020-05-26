@@ -1,5 +1,5 @@
 import { setLanguage as storeLanguageInBrowser } from '../utils/string';
-import { DEFAULT_LANGUAGE, LANGUAGE_KEY } from '../config/constants';
+import { DEFAULT_LANGUAGE, LANGUAGE_KEY , WS_URL} from '../config/constants';
 import axios from 'axios';
 
 export const SET_NOTIFICATION = 'SET_NOTIFICATION';
@@ -33,6 +33,7 @@ export const CONTACT_FORM = 'CONTACT_FORM';
 export const HELPFUL_RESOURCES_FORM = 'HELPFUL_RESOURCES_FORM';
 export const CHANGE_LANGUAGE = 'CHANGE_LANGUAGE';
 export const SET_ANNOUNCEMENT = 'SET_ANNOUNCEMENT';
+export const SET_APP_ANNOUNCEMENT = 'SET_APP_ANNOUNCEMENT';
 export const SET_UNREAD = 'SET_UNREAD';
 export const SET_PAIRS = 'SET_PAIRS';
 export const CHANGE_PAIR = 'CHANGE_PAIR';
@@ -295,4 +296,16 @@ export const getWaveAuction = () => {
 			}
 		});
 	};
+};
+
+export const getAnnouncement = () => dispatch => {
+	return axios({
+		url: `${WS_URL}/plugins/announcements`,
+		method: 'GET'
+	}).then((res) => {
+		if (res.data && res.data.data) {
+			dispatch({ type: SET_APP_ANNOUNCEMENT, payload: { announcements: res.data.data } });
+		}
+	})
+	.catch((err) => {});
 };

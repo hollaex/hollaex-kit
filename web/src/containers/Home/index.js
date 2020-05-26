@@ -129,7 +129,7 @@ class Home extends Component {
 			router,
 			info,
 			activeTheme,
-			constants
+			constants = {}
 		} = this.props;
 		const { style } = this.state;
 		const expiryData = this.checkExchangeExpiry();
@@ -167,7 +167,7 @@ class Home extends Component {
 							? STRINGS.EXPIRY_EXCHANGE_MSG
 							: STRINGS.formatString(
 									STRINGS.TRIAL_EXCHANGE_MSG,
-									STRINGS.APP_TITLE,
+									constants.api_name || '',
 									expiryData.daysLeft
 							  )}
 					</div>

@@ -10,6 +10,7 @@ import { allPluginsData, getPluginsForm } from './Utils';
 import { setConfig } from '../../../actions/appActions';
 import Chat from '../Chat';
 import Vault from './Vault';
+import Announcement from './Announcement';
 
 class PluginServices extends Component {
 	constructor(props) {
@@ -342,7 +343,13 @@ class PluginServices extends Component {
 							handleSubmitPlugins={this.handleSubmitPlugins}
 						/>
 						: null
-				)
+				);
+			case 'announcement':
+					return (
+						connectStatus
+						? <Announcement />
+						: null
+					)
 			default:
 				return <div />
 		}

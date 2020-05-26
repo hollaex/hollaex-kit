@@ -117,7 +117,8 @@ export default {
 			SECTION_6_LINK_5: 'Linkedin', // new
 			SECTION_6_LINK_6: 'Website', // new
 			SECTION_6_LINK_7: 'Helpdesk', // new
-			SECTION_6_LINK_8: 'Information' // new
+			SECTION_6_LINK_8: 'Information', // new
+			SECTION_6_LINK_9: 'YouTube', // new
 		},
 		XHT_DESCRIPTION:
 			'HollaEx Kit is an open source trading platform built by bitHolla Inc. You can create and list any digital assets and onboard users to trade on your exchange using this exchange Kit. In order to simply run one yourself {1}.',
@@ -819,7 +820,7 @@ export default {
 	WITHDRAWALS_FORM_AMOUNT_PLACEHOLDER:
 		'Type the amount of {0} you wish to withdraw',
 	WITHDRAWALS_FORM_FEE_COMMON_LABEL:
-		'{0} transaction fee (This is {0} mining fee)', // new
+		'Transaction fee',
 	WITHDRAWALS_FORM_FEE_FIAT_LABEL: 'Bank withdrawal fee',
 	WITHDRAWALS_FORM_FEE_PLACEHOLDER:
 		'Type the amount of {0} you wish to use in the fee of the transaction',
@@ -876,9 +877,9 @@ export default {
 		CONFIRM_VIA_EMAIL_2:
 			'In order to complete the withdrawal process please confirm',
 		CONFIRM_VIA_EMAIL_3: 'the withdrawal via your email within 5 minutes.',
-		WITHDRAW_CONFIRM_SUCCESS_1: 'Your withdrawal is confirmed and sent.',
+		WITHDRAW_CONFIRM_SUCCESS_1: 'Your withdrawal request is confirmed. It will be processed shortly.',
 		WITHDRAW_CONFIRM_SUCCESS_2:
-			'If you’d like to view your withdrawal please visit your withdrawal history page.',
+			'In order to view your withdrawal status please visit your withdrawal history page.',
 		GO_WITHDRAWAL_HISTORY: 'Go To Withdrawal History'
 	},
 	WALLET_BUTTON_BASE_DEPOSIT: 'deposit',
@@ -1134,7 +1135,7 @@ export default {
 		FEES_AND_LIMIT_TXT_1:
 			'Becoming a crypto trader marks new beginning. Armed with wits, will and speed only by taking risks and trading will you be allowed to update your account.',
 		FEES_AND_LIMIT_TXT_2:
-			'Each account has its own fees and deposit and withdrawal limits. Please visit the {0} to get more information.',
+			'Each account has its own fees and deposit and withdrawal limits.',
 		DEPOSIT_WITHDRAWAL_ALLOWENCE: 'Deposit & withdrawal allowance',
 		TRADING_FEE_STRUCTURE: 'Trading fee structure',
 		WITHDRAWAL: 'Withdrawal',

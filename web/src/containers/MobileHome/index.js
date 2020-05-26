@@ -10,7 +10,7 @@ import { getThemeClass } from '../../utils/theme';
 
 class Home extends Component {
 	render() {
-		const { activeTheme, activeLanguage, constants } = this.props;
+		const { activeTheme, activeLanguage, constants, enabledPlugins } = this.props;
 		return (
 			<div className={classnames(
 				'app_container',
@@ -85,7 +85,11 @@ class Home extends Component {
 					} */}
 					<div className="post-wrapper mt-4 mx-3">
 						<div className="post-title mb-3">{STRINGS.TRADE_TAB_POSTS}</div>
-						<NotificationsList />
+						{
+							enabledPlugins.includes('announcement')
+								? <NotificationsList />
+								: null
+						}
 					</div>
 				</div>
 				<div>
@@ -99,7 +103,8 @@ class Home extends Component {
 const mapStateToProps = (state) => ({
 	activeTheme: state.app.theme,
 	activeLanguage: state.app.language,
-	constants: state.app.constants
+	constants: state.app.constants,
+	enabledPlugins: state.app.enabledPlugins
 });
 
 export default connect(mapStateToProps)(Home);

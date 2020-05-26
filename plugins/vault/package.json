@@ -1,5 +1,9 @@
 {
 	"name": "vault",
 	"version": "0.1.0",
-	"dependencies": {}
+	"dependencies": {
+		"multicoin-address-validator": "0.4.1",
+		"node-cron": "2.0.3",
+		"mathjs": "3.20.2"
+	}
 }

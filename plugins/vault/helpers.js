@@ -6,7 +6,32 @@ const { intersection, union, each } = require('lodash');
 const WEBHOOK_URL = (coin) => `${API_HOST}/v1/deposit/${coin}`;
 const WALLET_NAME = (name, coin) => `${name}-${coin}`;
 const { all, delay } = require('bluebird');
-const { updateConstants, logger } = require('../helpers/common');
+const { updateConstants, logger, sleep } = require('../helpers/common');
+const cron = require('node-cron');
+const { processWithdrawals } = require('./crons/processWithdrawals');
+const { lockWithdrawals } = require('./crons/lockWithdrawals');
+const { checkWithdrawals } = require('./crons/checkWithdrawals');
+
+const withdrawalCron = async () => {
+	const enabledPlugins = GET_CONFIGURATION().constants.plugins.enabled;
+	try {
+		if (enabledPlugins !== undefined && enabledPlugins.indexOf('vault') !== -1) {
+			await checkWithdrawals();
+			await sleep(1000);
+			await lockWithdrawals();
+			await sleep(5000);
+			await processWithdrawals();
+		}
+	} catch (err) {
+		logger.error('plguins/vault/helpers/withdrawalCron catch', err);
+	}
+};
+
+const cronTask = cron.schedule(`*/${GET_SECRETS().vault.cron_task_interval || 15} * * * *`, () => {
+	withdrawalCron();
+}, {
+	timezone: 'Asia/Seoul'
+});
 
 const updateVaultValues = (name, key, secret, connect = true) => {
 	logger.debug('/plugins/vault/helpers updateVaultValues');
@@ -150,5 +175,6 @@ const addVaultCoinConnection = (coins, vaultConfig) => {
 module.exports = {
 	updateVaultValues,
 	crossCheckCoins,
-	createOrUpdateWallets
+	createOrUpdateWallets,
+	cronTask
 };

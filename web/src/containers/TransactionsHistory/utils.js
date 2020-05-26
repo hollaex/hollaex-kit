@@ -433,6 +433,9 @@ export const generateWithdrawalsHeaders = (
 					currency,
 					status,
 					dismissed,
+					processing,
+					rejected,
+					waiting,
 					id,
 					amount,
 					type
@@ -441,10 +444,11 @@ export const generateWithdrawalsHeaders = (
 				index
 			) => {
 				if (
-					// status === false &&
-					// dismissed === false &&
-					// type === 'withdrawal'
-					false
+					status === false &&
+					dismissed === false &&
+					processing === false &&
+					waiting === false &&
+					type === 'withdrawal'
 				) {
 					// Pending Status
 					return (
@@ -460,7 +464,7 @@ export const generateWithdrawalsHeaders = (
 					);
 				} else if (
 					status === false &&
-					dismissed === true &&
+					((dismissed === true) || (rejected === true)) &&
 					type === 'withdrawal'
 				) {
 					// Canceled Status

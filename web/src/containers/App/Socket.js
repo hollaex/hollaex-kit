@@ -423,8 +423,8 @@ class Container extends Component {
 					this.props.addUserTrades(data.reverse());
 					const tradeOrdersIds = new Set();
 					data.forEach((trade) => {
-						if (trade.order) {
-							tradeOrdersIds.add(trade.order.id);
+						if (trade.id) {
+							tradeOrdersIds.add(trade.id);
 						}
 					});
 					if (tradeOrdersIds.size === 1) {

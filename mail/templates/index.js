@@ -23,7 +23,7 @@ const generateMessageContent = (
 		title = STRINGS[type.toUpperCase()].TITLE(data.currency);
 	} else if (type === MAILTYPE.DEPOSIT_CANCEL) {
 		title = STRINGS[type.toUpperCase()].TITLE(data.currency, data.type);
-	} else if (type === MAILTYPE.USER_VERIFICATION_REJECT || type === MAILTYPE.USER_DEACTIVATED) {
+	} else if (type === MAILTYPE.USER_VERIFICATION_REJECT || type === MAILTYPE.USER_DEACTIVATED || type === MAILTYPE.ALERT) {
 		title = STRINGS[type.toUpperCase()].TITLE(data.type);
 	} else {
 		title = STRINGS[type.toUpperCase()].TITLE;

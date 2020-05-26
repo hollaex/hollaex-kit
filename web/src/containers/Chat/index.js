@@ -86,7 +86,7 @@ class Chat extends Component {
 					chatSocketInitialized: true
 				});
 			}, 1000);
-			this.props.setAnnouncements(announcements);
+			// this.props.setAnnouncements(announcements);
 		});
 
 		chatWs.on('error', (error) => {
@@ -108,7 +108,7 @@ class Chat extends Component {
 		});
 
 		chatWs.on('announcement', (announcement) => {
-			this.props.setAnnouncements(announcement);
+			// this.props.setAnnouncements(announcement);
 		});
 
 		chatWs.on('deleteMessage', (idToDelete) => {

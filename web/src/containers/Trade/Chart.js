@@ -2,11 +2,11 @@ import * as React from 'react';
 import _isEqual from 'lodash/isEqual';
 import { widget } from '../../charting_library/charting_library.min';
 import {
-	WHITE_THEME,
-	DARK_THEME,
-	VOLUME_WHITE,
-	VOLUME_DARK,
-	TOOLBAR_BG
+	getWhiteTheme,
+	getDarkTheme,
+	getVolumeWhite,
+	getVolumeDark,
+	getToolbarBG
 } from './ChartConfig';
 import { getLanguage } from '../../utils/string';
 import {
@@ -15,19 +15,29 @@ import {
 	getChartHistory
 } from '../../actions/chartAction';
 
-function getThemeOverrides(theme = 'white') {
+function getThemeOverrides(theme = 'white', color = {}) {
 	if (theme === 'white') {
-		return WHITE_THEME;
+		return getWhiteTheme(color['light']);
 	} else {
-		return DARK_THEME;
+		let themeC = color['dark'];
+		if (color['dark']) {
+			themeC.buy = color.dark['dark-buy'];
+			themeC.sell = color.dark['dark-sell'];
+		}
+		return getDarkTheme(themeC);
 	}
 }
 
-function getStudiesOverrides(theme = 'white') {
+function getStudiesOverrides(theme = 'white', color = {}) {
 	if (theme === 'white') {
-		return VOLUME_WHITE;
+		return getVolumeWhite(color['light']);
 	} else {
-		return VOLUME_DARK;
+		let themeC = {}
+		if (color['dark']) {
+			themeC.buy = color.dark['dark-buy'];
+			themeC.sell = color.dark['dark-sell'];
+		}
+		return getVolumeDark(themeC);
 	}
 }
 
@@ -77,6 +87,7 @@ class TVChartContainer extends React.PureComponent {
 
 	componentWillMount() {
 		var that = this;
+		const { api_name } = this.props.constants;
 		this.chartConfig = {
 			onReady: (cb) => {
 				getChartConfig().then((data) => {
@@ -117,7 +128,7 @@ class TVChartContainer extends React.PureComponent {
 				// 	symbol_stub.pricescale = 100
 				// }
 				const { increment_price } = this.props.pairData;
-				getChartSymbol(symbolName, increment_price).then((data) => {
+				getChartSymbol(symbolName, increment_price, api_name).then((data) => {
 					onSymbolResolvedCallback(data);
 				});
 
@@ -247,17 +258,19 @@ class TVChartContainer extends React.PureComponent {
 		symbol,
 		containerId,
 		libraryPath,
-		interval
+		interval,
+		constants = {}
 	}) => {
 		const widgetOptions = {
 			symbol: symbol,
 			// BEWARE: no trailing slash is expected in feed URL
 			theme: activeTheme === 'white' ? 'light' : 'dark',
-			toolbar_bg: TOOLBAR_BG[activeTheme],
+			toolbar_bg: getToolbarBG(activeTheme, constants.color),
 			datafeed: this.chartConfig,
 			interval: interval,
 			container_id: containerId,
 			library_path: libraryPath,
+			timeframe: '1m',
 			timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
 			locale: getLanguage(),
 			withdateranges: true,
@@ -275,11 +288,9 @@ class TVChartContainer extends React.PureComponent {
 			],
 			enabled_features: ['items_favoriting', 'support_multicharts'],
 			time_frames: [
-				{ text: '1m', resolution: '1m' },
-				{ text: '1h', resolution: '1h' },
-				{ text: '1D', resolution: '1D' },
-				{ text: '1W', resolution: '1W' },
-				{ text: '1M', resolution: '1M' }
+				{ text: '3m', resolution: '60' },
+				{ text: '1m', resolution: '60' },
+				{ text: '1d', resolution: '60' },
 				// // { text: "YTD", resolution: "YTD" },
 				// { text: "1Y", resolution: "D" },
 				// { text: "3Y", resolution: "D" },
@@ -292,13 +303,13 @@ class TVChartContainer extends React.PureComponent {
 			user_id: this.props.userId,
 			fullscreen: this.props.fullscreen,
 			autosize: this.props.autosize,
-			studies_overrides: getStudiesOverrides(activeTheme),
+			studies_overrides: getStudiesOverrides(activeTheme, constants.color),
 			favorites: {
 				chartTypes: ['Area', 'Candles', 'Bars']
 			},
-			loading_screen: { backgroundColor: TOOLBAR_BG[activeTheme] },
+			loading_screen: { backgroundColor: getToolbarBG(activeTheme, constants.color) },
 			custom_css_url: `${process.env.REACT_APP_PUBLIC_URL}/css/chart.css`,
-			overrides: getThemeOverrides(activeTheme)
+			overrides: getThemeOverrides(activeTheme, constants.color)
 		};
 
 		const tvWidget = new widget(widgetOptions);
@@ -313,7 +324,7 @@ class TVChartContainer extends React.PureComponent {
 				)
 				.addClass('apply-common-tooltip screen-button')
 				.on('click', () => tvWidget.takeScreenshot());
-			tvWidget.applyOverrides(getThemeOverrides(activeTheme));
+			tvWidget.applyOverrides(getThemeOverrides(activeTheme, constants.color));
 			if (activeTheme === 'white') {
 				tvWidget.changeTheme('light');
 			} else {
