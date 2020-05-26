@@ -34,7 +34,6 @@ const calculateSpread = (asks, bids, pair, pairData) => {
 	const lowerAsk = asks.length > 0 ? asks[0][0] : 0;
 	const higherBid = bids.length > 0 ? bids[0][0] : 0;
 	if (lowerAsk && higherBid) {
-		// return subtract(lowerAsk, higherBid);
 		return formatToFixed(subtract(lowerAsk, higherBid), pairData.increment_price);
 	}
 	return '-';

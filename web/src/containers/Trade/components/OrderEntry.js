@@ -98,7 +98,6 @@ class OrderEntry extends Component {
 			}
 			maxSize = mathjs.divide(balance[`${pair_2}_available`] || 0, price);
 		}
-		console.log(maxSize, price)
 		if (maxSize !== size) {
 			this.props.change(FORM_NAME, 'size', roundNumber(maxSize, getDecimals(increment_size)));
 		}
