@@ -6,6 +6,7 @@ const { each } = require('lodash');
 const { all, delay } = require('bluebird');
 const { VAULT_ENDPOINT, GET_CONFIGURATION, GET_SECRETS } = require('../../../constants');
 const { loggerDeposits } = require('../../../config/logger');
+const mathjs = require('mathjs');
 const VAULT_NAME = () => GET_SECRETS().vault.name;
 const VAULT_KEY = () => GET_SECRETS().vault.key;
 const VAULT_SECRET = () => GET_SECRETS().vault.secret;
@@ -17,8 +18,13 @@ const { MAILTYPE } = require('../../../mail/strings');
 
 const vaultCoins = [];
 
+const getAmount = (amount, fee) => {
+	return mathjs.number(mathjs.subtract(mathjs.fraction(amount), mathjs.fraction(fee)));
+};
+
 const processWithdrawals = () => {
 	return new Promise((resolve, reject) => {
+		loggerDeposits.info('/plugins/vault/crons/processWithdrawals starting');
 		each(GET_SECRETS().vault.connected_coins, (coin) => {
 			vaultCoins.push({
 				currency: coin
@@ -43,7 +49,7 @@ const processWithdrawals = () => {
 		})
 			.then((withdrawals) => {
 				if (withdrawals.length === 0) {
-					loggerDeposits.info('No withdrawals need processing');
+					loggerDeposits.info('/plugins/vault/crons/processWithdrawals', 'No withdrawals need processing');
 					resolve();
 				}
 				const btcWithdrawals = [];
@@ -63,7 +69,7 @@ const processWithdrawals = () => {
 									body: {
 										data: {
 											address: withdrawal.address,
-											amount: withdrawal.amount,
+											amount: getAmount(withdrawal.amount, withdrawal.fee)
 										}
 									},
 									uri: `${VAULT_ENDPOINT}/${VAULT_WALLET('btc')}/withdraw/simple`,
@@ -88,7 +94,7 @@ const processWithdrawals = () => {
 									body: {
 										data: {
 											address: withdrawal.address,
-											amount: withdrawal.amount,
+											amount: getAmount(withdrawal.amount, withdrawal.fee)
 										}
 									},
 									uri: `${VAULT_ENDPOINT}/${VAULT_WALLET('bch')}/withdraw/simple`,
@@ -111,7 +117,7 @@ const processWithdrawals = () => {
 								body: {
 									data: {
 										address: withdrawal.address,
-										amount: withdrawal.amount,
+										amount: getAmount(withdrawal.amount, withdrawal.fee)
 									}
 								},
 								uri: `${VAULT_ENDPOINT}/${VAULT_WALLET(withdrawal.currency)}/withdraw/simple`,
@@ -139,7 +145,7 @@ const processWithdrawals = () => {
 								data: btcWithdrawals.map((withdrawal) => {
 									return {
 										address: withdrawal.address,
-										amount: withdrawal.amount
+										amount: getAmount(withdrawal.amount, withdrawal.fee)
 									};
 								})
 							},
@@ -161,7 +167,7 @@ const processWithdrawals = () => {
 								data: bchWithdrawals.map((withdrawal) => {
 									return {
 										address: withdrawal.address,
-										amount: withdrawal.amount
+										amount: getAmount(withdrawal.amount, withdrawal.fee)
 									};
 								})
 							},
@@ -191,7 +197,7 @@ const processWithdrawals = () => {
 									.then((dbWithdrawals) => {
 										return rp(option.data)
 											.then((data) => {
-												loggerDeposits.info(`${option.dbWithdrawals[0].currency} withdrawal successful`);
+												loggerDeposits.info('/plugins/vault/crons/processWithdrawals perfromWithdrawal', `${option.dbWithdrawals[0].currency} withdrawal successful`);
 												return {
 													success: true,
 													data,
@@ -201,7 +207,7 @@ const processWithdrawals = () => {
 									});
 							})
 								.catch((err) => {
-									loggerDeposits.error(`${option.dbWithdrawals[0].currency} withdrawal failed: ${err.message}`);
+									loggerDeposits.error('/plugins/vault/crons/processWithdrawals perfromWithdrawal', `${option.dbWithdrawals[0].currency} withdrawal failed: ${err.message}`);
 									return {
 										success: false,
 										info: {
@@ -236,7 +242,7 @@ const processWithdrawals = () => {
 							}));
 						})
 							.catch((err) => {
-								loggerDeposits.error(`Failed to update successful ${result.dbWithdrawals[0].currency} withdrawal's TXID. ID:${result.dbWithdrawals.map((wd) => wd.id)}, TXID:${result.data.txid}, Error: ${err.message}`);
+								loggerDeposits.error('/plugins/vault/crons/processWithdrawals txid update', `Failed to update successful ${result.dbWithdrawals[0].currency} withdrawal's TXID. ID:${result.dbWithdrawals.map((wd) => wd.id)}, TXID:${result.data.txid}, Error: ${err.message}`);
 								return {
 									success: false,
 									info: {
@@ -269,7 +275,7 @@ const processWithdrawals = () => {
 				}));
 			})
 			.then(() => {
-				loggerDeposits.info('processWithdrawals finished');
+				loggerDeposits.info('/plugins/vault/crons/processWithdrawals finished');
 				resolve();
 			})
 			.catch((err) => {
