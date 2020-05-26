@@ -423,10 +423,7 @@ export const EXPLORERS_ENDPOINT = (currency) => {
 					: 'https://moneroblocks.info/tx/';
 			break;
 		default:
-			endpoint =
-				NETWORK === 'testnet'
-					? 'https://ropsten.etherscan.io/tx/'
-					: 'https://etherscan.io/tx/';
+			endpoint = ''
 			break;
 	}
 	return endpoint;

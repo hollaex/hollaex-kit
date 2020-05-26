@@ -65,7 +65,7 @@ export const withdrawalCancel = (transactionId) => {
 	return (dispatch) => {
 		dispatch({ type: ACTION_KEYS.WITHDRAWAL_CANCEL_PENDING });
 		axios
-			.delete(ENDPOINTS.CANCEL_WITHDRAWAL, {data: { transactionId: parseInt(transactionId.transactionId, 10)}} )
+			.delete(ENDPOINTS.CANCEL_WITHDRAWAL, {data: { transaction_id: parseInt(transactionId.transactionId, 10)}} )
 			.then((body) => {
 				dispatch({
 					type: ACTION_KEYS.WITHDRAWAL_CANCEL_FULFILLED,

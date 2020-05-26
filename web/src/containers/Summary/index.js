@@ -253,7 +253,7 @@ class Summary extends Component {
 						</div>*/}
 						<div className="d-flex align-items-center">
 							<div
-								className={classnames('assets-wrapper')}
+								className={classnames('assets-wrapper', 'asset_wrapper_width')}
 							>
 								<SummaryBlock
 									title={STRINGS.SUMMARY.ACCOUNT_ASSETS}
@@ -277,7 +277,7 @@ class Summary extends Component {
 									/>
 								</SummaryBlock>
 							</div>
-							<div className="trading-volume-wrapper">
+							{/*<div className="trading-volume-wrapper">
                                 <SummaryBlock
                                     title={STRINGS.SUMMARY.TRADING_VOLUME}
                                     // secondaryTitle={<span>
@@ -290,7 +290,7 @@ class Summary extends Component {
                                 >
                                     <TradingVolume user={user} />
                                 </SummaryBlock>
-                            </div>
+                            </div>*/}
 						</div>
 					</div>
 				)}
