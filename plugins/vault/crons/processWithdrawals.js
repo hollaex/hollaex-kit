@@ -6,6 +6,7 @@ const { each } = require('lodash');
 const { all, delay } = require('bluebird');
 const { VAULT_ENDPOINT, GET_CONFIGURATION, GET_SECRETS } = require('../../../constants');
 const { loggerDeposits } = require('../../../config/logger');
+const mathjs = require('mathjs');
 const VAULT_NAME = () => GET_SECRETS().vault.name;
 const VAULT_KEY = () => GET_SECRETS().vault.key;
 const VAULT_SECRET = () => GET_SECRETS().vault.secret;
@@ -16,6 +17,10 @@ const { sendEmail } = require('../../../mail');
 const { MAILTYPE } = require('../../../mail/strings');
 
 const vaultCoins = [];
+
+const getAmount = (amount, fee) => {
+	return mathjs.number(mathjs.subtract(mathjs.fraction(amount), mathjs.fraction(fee)));
+};
 
 const processWithdrawals = () => {
 	return new Promise((resolve, reject) => {
@@ -63,7 +68,7 @@ const processWithdrawals = () => {
 									body: {
 										data: {
 											address: withdrawal.address,
-											amount: withdrawal.amount,
+											amount: getAmount(withdrawal.amount, withdrawal.fee)
 										}
 									},
 									uri: `${VAULT_ENDPOINT}/${VAULT_WALLET('btc')}/withdraw/simple`,
@@ -88,7 +93,7 @@ const processWithdrawals = () => {
 									body: {
 										data: {
 											address: withdrawal.address,
-											amount: withdrawal.amount,
+											amount: getAmount(withdrawal.amount, withdrawal.fee)
 										}
 									},
 									uri: `${VAULT_ENDPOINT}/${VAULT_WALLET('bch')}/withdraw/simple`,
@@ -111,7 +116,7 @@ const processWithdrawals = () => {
 								body: {
 									data: {
 										address: withdrawal.address,
-										amount: withdrawal.amount,
+										amount: getAmount(withdrawal.amount, withdrawal.fee)
 									}
 								},
 								uri: `${VAULT_ENDPOINT}/${VAULT_WALLET(withdrawal.currency)}/withdraw/simple`,
@@ -139,7 +144,7 @@ const processWithdrawals = () => {
 								data: btcWithdrawals.map((withdrawal) => {
 									return {
 										address: withdrawal.address,
-										amount: withdrawal.amount
+										amount: getAmount(withdrawal.amount, withdrawal.fee)
 									};
 								})
 							},
@@ -161,7 +166,7 @@ const processWithdrawals = () => {
 								data: bchWithdrawals.map((withdrawal) => {
 									return {
 										address: withdrawal.address,
-										amount: withdrawal.amount
+										amount: getAmount(withdrawal.amount, withdrawal.fee)
 									};
 								})
 							},
