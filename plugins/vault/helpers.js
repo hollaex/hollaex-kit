@@ -7,7 +7,6 @@ const WEBHOOK_URL = (coin) => `${API_HOST}/v1/deposit/${coin}`;
 const WALLET_NAME = (name, coin) => `${name}-${coin}`;
 const { all, delay } = require('bluebird');
 const { updateConstants, logger, sleep } = require('../helpers/common');
-const WAValidator = require('multicoin-address-validator');
 const cron = require('node-cron');
 const { processWithdrawals } = require('./crons/processWithdrawals');
 const { lockWithdrawals } = require('./crons/lockWithdrawals');
@@ -17,14 +16,14 @@ const withdrawalCron = async () => {
 	const enabledPlugins = GET_CONFIGURATION().constants.plugins.enabled;
 	try {
 		if (enabledPlugins !== undefined && enabledPlugins.indexOf('vault') !== -1) {
-			checkWithdrawals();
+			await checkWithdrawals();
 			await sleep(1000);
-			lockWithdrawals();
+			await lockWithdrawals();
 			await sleep(5000);
-			processWithdrawals();
+			await processWithdrawals();
 		}
 	} catch (err) {
-		logger.error(err);
+		logger.error('plguins/vault/helpers/withdrawalCron catch', err);
 	}
 };
 
@@ -33,14 +32,6 @@ const cronTask = cron.schedule(`*/${GET_SECRETS().vault.cron_task_interval || 15
 }, {
 	timezone: 'Asia/Seoul'
 });
-
-const checkAddress = (address, symbol, network = 'prod') => {
-	if (symbol === 'btc' || symbol === 'bch' || symbol === 'xrp' || symbol === 'xmr') {
-		return WAValidator.validate(address, symbol, network);
-	} else {
-		return WAValidator.validate(address, 'eth', network);
-	}
-};
 
 const updateVaultValues = (name, key, secret, connect = true) => {
 	logger.debug('/plugins/vault/helpers updateVaultValues');
@@ -182,7 +173,6 @@ const addVaultCoinConnection = (coins, vaultConfig) => {
 };
 
 module.exports = {
-	checkAddress,
 	updateVaultValues,
 	crossCheckCoins,
 	createOrUpdateWallets,

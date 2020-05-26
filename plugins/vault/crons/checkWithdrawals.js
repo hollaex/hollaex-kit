@@ -18,119 +18,119 @@ const { MAILTYPE } = require('../../../mail/strings');
 const vaultCoins = [];
 
 const checkWithdrawals = () => {
-	each(GET_SECRETS().vault.connected_coins, (coin) => {
-		vaultCoins.push({
-			currency: coin
-		});
-	});
-	Deposit.findAll({
-		where: {
-			type: 'withdrawal',
-			status: false,
-			dismissed: false,
-			rejected: false,
-			processing: false,
-			waiting: true,
-			$or: vaultCoins
-		},
-		include: [
-			{
-				model: User,
-				attributes: ['email', 'settings']
-			}
-		]
-	})
-		.then((withdrawals) => {
-			if (withdrawals.length === 0) {
-				loggerDeposits.info('No withdrawals need checking');
-				return;
-			}
-			let txids = {};
-			each(withdrawals, (withdrawal) => {
-				txids[withdrawal.transaction_id]
-					? txids[withdrawal.transaction_id].push(withdrawal)
-					: txids[withdrawal.transaction_id] = [withdrawal];
+	return new Promise((resolve, reject) => {
+		each(GET_SECRETS().vault.connected_coins, (coin) => {
+			vaultCoins.push({
+				currency: coin
 			});
-			return all(Object.keys(txids).map((txid, i) => {
-				const option = {
-					method: 'GET',
-					headers: {
-						key: VAULT_KEY(),
-						secret: VAULT_SECRET()
-					},
-					qs: {
-						txid
-					},
-					uri: `${VAULT_ENDPOINT}/${VAULT_WALLET(txids[txid][0].currency)}/transactions`,
-					json: true
-				};
-				return delay(500 * i)
-					.then(() => {
-						return rp(option);
-					})
-					.then((tx) => {
-						if (tx.data[0]) {
-							if (tx.data[0].is_confirmed) {
-								loggerDeposits.info(`Transaction ${txid} was confirmed`);
-								return sequelize.transaction((transaction) => {
-									return all(txids[txid].map((withdrawal) => {
-										return withdrawal.update(
-											{
-												waiting: false,
-												status: true
-											},
-											{
-												attributes: ['waiting', 'status'],
-												transaction,
-												returning: true
+		});
+		Deposit.findAll({
+			where: {
+				type: 'withdrawal',
+				status: false,
+				dismissed: false,
+				rejected: false,
+				processing: false,
+				waiting: true,
+				$or: vaultCoins
+			},
+			include: [
+				{
+					model: User,
+					attributes: ['email', 'settings']
+				}
+			]
+		})
+			.then((withdrawals) => {
+				if (withdrawals.length === 0) {
+					loggerDeposits.info('No withdrawals need checking');
+					resolve();
+				}
+				let txids = {};
+				each(withdrawals, (withdrawal) => {
+					txids[withdrawal.transaction_id]
+						? txids[withdrawal.transaction_id].push(withdrawal)
+						: txids[withdrawal.transaction_id] = [withdrawal];
+				});
+				return all(Object.keys(txids).map((txid, i) => {
+					const option = {
+						method: 'GET',
+						headers: {
+							key: VAULT_KEY(),
+							secret: VAULT_SECRET()
+						},
+						qs: {
+							txid
+						},
+						uri: `${VAULT_ENDPOINT}/${VAULT_WALLET(txids[txid][0].currency)}/transactions`,
+						json: true
+					};
+					return delay(500 * i)
+						.then(() => {
+							return rp(option);
+						})
+						.then((tx) => {
+							if (tx.data[0]) {
+								if (tx.data[0].is_confirmed) {
+									loggerDeposits.info(`Transaction ${txid} was confirmed`);
+									return sequelize.transaction((transaction) => {
+										return all(txids[txid].map((withdrawal) => {
+											return withdrawal.update(
+												{
+													waiting: false,
+													status: true
+												},
+												{
+													attributes: ['waiting', 'status'],
+													transaction,
+													returning: true
+												}
+											)
+												.then((data) => {
+													return {
+														success: true,
+														status: true,
+														data
+													};
+												});
+										}));
+									});
+								} else if (tx.data[0].is_rejected) {
+									loggerDeposits.info(`Transaction ${txid} was rejected`);
+									return {
+										success: true,
+										status: false,
+										info: {
+											type: 'Vault Withdrawal Rejected',
+											data: {
+												description: 'This Vault withdrawal was rejected on the blockchain. You can double-check this transaction and proceed to confirm or dismiss the withdrawal through your admin panel.',
+												transaction_id: txid,
+												withdrawals: txids[txid].map((wd) => wd.dataValues)
 											}
-										)
-											.then((data) => {
-												return {
-													success: true,
-													status: true,
-													data
-												};
-											});
-									}));
-								});
-							} else if (tx.data[0].is_rejected) {
-								loggerDeposits.info(`Transaction ${txid} was rejected`);
+										}
+									};
+								} else {
+									loggerDeposits.info(`Transaction ${txid} is not processed yet`);
+									return {};
+								}
+							} else {
+								loggerDeposits.warn(`Transaction ${txid} is not found`);
 								return {
-									success: true,
-									status: false,
+									success: false,
 									info: {
-										type: 'Vault Withdrawal Rejected',
+										type: 'Vault Transaction Not Found',
 										data: {
-											description: 'This Vault withdrawal was rejected on the blockchain. You can double-check this transaction and proceed to confirm or dismiss the withdrawal through your admin panel.',
+											description: 'This withdrawal was not found in Vault.',
 											transaction_id: txid,
 											withdrawals: txids[txid].map((wd) => wd.dataValues)
 										}
 									}
 								};
-							} else {
-								loggerDeposits.info(`Transaction ${txid} is not processed yet`);
-								return {};
 							}
-						} else {
-							loggerDeposits.warn(`Transaction ${txid} is not found`);
-							return {
-								success: false,
-								info: {
-									type: 'Vault Transaction Not Found',
-									data: {
-										description: 'This withdrawal was not found in Vault.',
-										transaction_id: txid,
-										withdrawals: txids[txid].map((wd) => wd.dataValues)
-									}
-								}
-							};
-						}
-					});
-			}));
-		})
-		.then((results) => {
-			if (Array.isArray(results)) {
+						});
+				}));
+			})
+			.then((results) => {
 				return all(results.map((result) => {
 					if (Array.isArray(result)) {
 						return all(result.map((data) => {
@@ -169,16 +169,16 @@ const checkWithdrawals = () => {
 						return;
 					}
 				}));
-			} else {
-				return;
-			}
-		})
-		.then(() => {
-			loggerDeposits.info('checkWithdrawals finished');
-		})
-		.catch((err) => {
-			loggerDeposits.error(err.message);
-		});
+			})
+			.then(() => {
+				loggerDeposits.info('checkWithdrawals finished');
+				resolve();
+			})
+			.catch((err) => {
+				loggerDeposits.error('plugins/vault/cron/checkWithdrawals catch', err.message);
+				reject(err);
+			});
+	});
 };
 
 module.exports = {

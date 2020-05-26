@@ -4,7 +4,7 @@ import EventListener from 'react-event-listener';
 import { connect } from 'react-redux';
 
 import { subtract, asksSelector, bidsSelector } from '../utils';
-// import { formatToCurrency, formatToFixed } from '../../../utils/currency';
+import { formatToFixed } from '../../../utils/currency';
 import STRINGS from '../../../config/localizedStrings';
 import { DEFAULT_COIN_DATA } from '../../../config/constants';
 
@@ -34,8 +34,7 @@ const calculateSpread = (asks, bids, pair, pairData) => {
 	const lowerAsk = asks.length > 0 ? asks[0][0] : 0;
 	const higherBid = bids.length > 0 ? bids[0][0] : 0;
 	if (lowerAsk && higherBid) {
-		return subtract(lowerAsk, higherBid);
-		// return formatToFixed(subtract(lowerAsk, higherBid), pairData.increment_price);
+		return formatToFixed(subtract(lowerAsk, higherBid), pairData.increment_price);
 	}
 	return '-';
 };
