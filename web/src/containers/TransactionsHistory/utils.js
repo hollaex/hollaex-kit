@@ -434,6 +434,7 @@ export const generateWithdrawalsHeaders = (
 					status,
 					dismissed,
 					processing,
+					rejected,
 					waiting,
 					id,
 					amount,
@@ -463,7 +464,7 @@ export const generateWithdrawalsHeaders = (
 					);
 				} else if (
 					status === false &&
-					dismissed === true &&
+					((dismissed === true) || (rejected === true)) &&
 					type === 'withdrawal'
 				) {
 					// Canceled Status
