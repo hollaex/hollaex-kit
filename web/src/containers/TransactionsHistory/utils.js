@@ -433,6 +433,8 @@ export const generateWithdrawalsHeaders = (
 					currency,
 					status,
 					dismissed,
+					processing,
+					waiting,
 					id,
 					amount,
 					type
@@ -441,10 +443,11 @@ export const generateWithdrawalsHeaders = (
 				index
 			) => {
 				if (
-					// status === false &&
-					// dismissed === false &&
-					// type === 'withdrawal'
-					false
+					status === false &&
+					dismissed === false &&
+					processing === false &&
+					waiting === false &&
+					type === 'withdrawal'
 				) {
 					// Pending Status
 					return (
