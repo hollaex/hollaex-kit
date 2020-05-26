@@ -58,6 +58,17 @@ export const generateAdminSettings = (key) => {
                     }
                 },
             },
+            youtube: {
+                fields: {
+                    youtube: {
+                        type: 'input',
+                        label: 'Youtube',
+                        placeholder: 'YouTube URL',
+                        // validate: [validateRequired],
+                        className: 'w-50 mx-2'
+                    },
+                },
+            },
             contact_helpdesk: {
                 fields: {
                     contact: {
