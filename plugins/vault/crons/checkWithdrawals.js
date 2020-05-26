@@ -19,6 +19,7 @@ const vaultCoins = [];
 
 const checkWithdrawals = () => {
 	return new Promise((resolve, reject) => {
+		loggerDeposits.info('/plugins/vault/crons/checkWithdrawals starting');
 		each(GET_SECRETS().vault.connected_coins, (coin) => {
 			vaultCoins.push({
 				currency: coin
@@ -43,7 +44,7 @@ const checkWithdrawals = () => {
 		})
 			.then((withdrawals) => {
 				if (withdrawals.length === 0) {
-					loggerDeposits.info('No withdrawals need checking');
+					loggerDeposits.info('/plugins/vault/crons/checkWithdrawals No withdrawals need checking');
 					resolve();
 				}
 				let txids = {};
@@ -72,7 +73,7 @@ const checkWithdrawals = () => {
 						.then((tx) => {
 							if (tx.data[0]) {
 								if (tx.data[0].is_confirmed) {
-									loggerDeposits.info(`Transaction ${txid} was confirmed`);
+									loggerDeposits.info('/plugins/vault/crons/checkWithdrawals checkTransaction', `Transaction ${txid} was confirmed`);
 									return sequelize.transaction((transaction) => {
 										return all(txids[txid].map((withdrawal) => {
 											return withdrawal.update(
@@ -96,7 +97,7 @@ const checkWithdrawals = () => {
 										}));
 									});
 								} else if (tx.data[0].is_rejected) {
-									loggerDeposits.info(`Transaction ${txid} was rejected`);
+									loggerDeposits.info('/plugins/vault/crons/checkWithdrawals checkTransaction', `Transaction ${txid} was rejected`);
 									return {
 										success: true,
 										status: false,
@@ -110,11 +111,11 @@ const checkWithdrawals = () => {
 										}
 									};
 								} else {
-									loggerDeposits.info(`Transaction ${txid} is not processed yet`);
+									loggerDeposits.info('/plugins/vault/crons/checkWithdrawals checkTransaction', `Transaction ${txid} is not processed yet`);
 									return {};
 								}
 							} else {
-								loggerDeposits.warn(`Transaction ${txid} is not found`);
+								loggerDeposits.warn('/plugins/vault/crons/checkWithdrawals checkTransaction', `Transaction ${txid} is not found`);
 								return {
 									success: false,
 									info: {
@@ -171,7 +172,7 @@ const checkWithdrawals = () => {
 				}));
 			})
 			.then(() => {
-				loggerDeposits.info('checkWithdrawals finished');
+				loggerDeposits.info('/plugins/vault/crons/checkWithdrawals finished');
 				resolve();
 			})
 			.catch((err) => {

@@ -21,6 +21,7 @@ const vaultCoins = [];
 
 const lockWithdrawals = () => {
 	return new Promise((resolve, reject) => {
+		loggerDeposits.info('/plugins/vault/crons/lockWithdrawals starting');
 		each(GET_SECRETS().vault.connected_coins, (coin) => {
 			vaultCoins.push({
 				currency: coin
@@ -45,25 +46,25 @@ const lockWithdrawals = () => {
 		})
 			.then((withdrawals) => {
 				if (withdrawals.length === 0) {
-					loggerDeposits.info('No withdrawals need locking');
+					loggerDeposits.info('/plugins/vault/crons/lockWithdrawals', 'No withdrawals need locking');
 					resolve();
 				}
-				loggerDeposits.debug(`Locking ${withdrawals.length} withdrawals`);
+				loggerDeposits.debug('/plugins/vault/crons/lockWithdrawals', `Locking ${withdrawals.length} withdrawals`);
 				return all(withdrawals.map((withdrawal) => {
 					if (checkAddress(withdrawal.address, withdrawal.currency)) {
 						return withdrawal.update({ processing: true }, { fields: ['processing'], returning: true })
 							.then((result) => {
-								loggerDeposits.info(`Withdrawal with ID ${withdrawal.id} locked`);
+								loggerDeposits.info('/plugins/vault/crons/lockWithdrawals', `Withdrawal with ID ${withdrawal.id} locked`);
 								return;
 							})
 							.catch((err) => {
-								loggerDeposits.error(`Error occured while locking ${withdrawal.id}: ${err.message}`);
+								loggerDeposits.error('/plugins/vault/crons/lockWithdrawals', `Error occured while locking ${withdrawal.id}: ${err.message}`);
 								return;
 							});
 					} else {
 						return withdrawal.update({ rejected: true }, { fields: ['rejected'], returning: true })
 							.then((result) => {
-								loggerDeposits.warn(`Withdrawal with ID ${withdrawal.id} rejected because of an invalid address`);
+								loggerDeposits.warn('/plugins/vault/crons/lockWithdrawals', `Withdrawal with ID ${withdrawal.id} rejected because of an invalid address`);
 								return sendEmail(
 									MAILTYPE.INVALID_ADDRESS,
 									withdrawal.User.email,
@@ -76,14 +77,14 @@ const lockWithdrawals = () => {
 								);
 							})
 							.catch((err) => {
-								loggerDeposits.error(`Error occured while locking ${withdrawal.id}: ${err.message}`);
+								loggerDeposits.error('/plugins/vault/crons/lockWithdrawals', `Error occured while locking ${withdrawal.id}: ${err.message}`);
 								return;
 							});
 					}
 				}));
 			})
 			.then(() => {
-				loggerDeposits.info('lockWithdrawals finished');
+				loggerDeposits.info('/plugins/vault/crons/lockWithdrawals finished');
 				resolve();
 			})
 			.catch((err) => {
