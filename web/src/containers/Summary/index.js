@@ -8,7 +8,7 @@ import SummaryBlock from './components/SummaryBlock';
 // import TraderAccounts from './components/TraderAccounts';
 // import SummaryRequirements from './components/SummaryRequirements';
 import AccountAssets from './components/AccountAssets';
-import TradingVolume from './components/TradingVolume';
+// import TradingVolume from './components/TradingVolume';
 import MobileSummary from './MobileSummary';
 
 import { IconTitle } from '../../components';
