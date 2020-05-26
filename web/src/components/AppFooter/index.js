@@ -6,7 +6,7 @@ import STRINGS from '../../config/localizedStrings';
 import { PUBLIC_URL } from '../../config/constants';
 
 const generateSectionsText = (strings, theme, links = {}) => {
-	const { api, contact, facebook, github, helpdesk, information, instagram, linkedin, privacy, telegram, terms, twitter, website, whitepaper } = links
+	const { api, contact, facebook, github, helpdesk, information, instagram, linkedin, youtube, privacy, telegram, terms, twitter, website, whitepaper } = links
 	const { SECTIONS } = strings.FOOTER;
 
 	let sectionsText = [
@@ -80,7 +80,7 @@ const generateSectionsText = (strings, theme, links = {}) => {
 				// }
 			]
 		},
-		(twitter || telegram || facebook || instagram || linkedin || website || helpdesk || information) && {
+		(twitter || telegram || facebook || instagram || linkedin || website || helpdesk || information || youtube) && {
 			TITLE: SECTIONS.SECTION_6_TITLE,
 			LINKS: [
 				twitter && {
@@ -107,6 +107,11 @@ const generateSectionsText = (strings, theme, links = {}) => {
 					text: SECTIONS.SECTION_6_LINK_5,
 					icon: SOCIAL_ICONS.LINKEDIN,
 					link: linkedin
+				},
+				youtube && {
+					text: SECTIONS.SECTION_6_LINK_9,
+					icon: SOCIAL_ICONS.YOUTUBE,
+					link: youtube
 				}
 			]
 		}

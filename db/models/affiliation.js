@@ -42,5 +42,21 @@ module.exports = function(sequelize, DataTypes) {
 			underscored: true
 		}
 	);
+
+	Affiliation.associate = (models) => {
+		Affiliation.belongsTo(models.User, {
+			as: 'user',
+			foreignKey: 'user_id',
+			targetKey: 'id',
+			onDelete: 'CASCADE',
+		});
+		Affiliation.belongsTo(models.User, {
+			as: 'referer',
+			foreignKey: 'referer_id',
+			targetKey: 'id',
+			onDelete: 'CASCADE',
+		});
+	};
+
 	return Affiliation;
 };

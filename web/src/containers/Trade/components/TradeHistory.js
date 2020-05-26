@@ -6,8 +6,8 @@ import { DisplayTable } from '../../../components';
 import { formatTimestamp } from '../../../utils/utils';
 import STRINGS from '../../../config/localizedStrings';
 import { IS_XHT, ICONS } from '../../../config/constants';
-import { roundNumber } from '../../../utils/currency';
-import { getDecimals } from '../../../utils/utils';
+// import { roundNumber } from '../../../utils/currency';
+// import { getDecimals } from '../../../utils/utils';
 import { tradeHistorySelector } from '../utils';
 
 const generateHeaders = (pairs) => {
@@ -41,17 +41,17 @@ const generateHeaders = (pairs) => {
 			key: 'size',
 			label: STRINGS.SIZE,
 			renderCell: ({ size = 0, side }, index) => { 
-				const { increment_size } = pairs;
-				const minSize = roundNumber(size, getDecimals(increment_size));
+				// const { increment_size } = pairs;
+				// const minSize = roundNumber(size, getDecimals(increment_size));
 				return (
 					IS_XHT
 						? <div
 							className={classnames('trade_history-row', side)}
 							key={`size-${index}`}
 						>
-							{minSize}
+							{size}
 						</div>
-						: minSize
+						: size
 				)
 			}
 		},

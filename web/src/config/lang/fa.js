@@ -117,7 +117,8 @@ ACTIVE_TRADES: 'شما باید {0} برای دسترسی به سفارش های
 			SECTION_6_LINK_5: 'لینکدین', // new
 			SECTION_6_LINK_6: 'سایت', // new
 			SECTION_6_LINK_7: 'پشتیبانی', // new
-			SECTION_6_LINK_8: 'اطلاعات' // new
+			SECTION_6_LINK_8: 'اطلاعات', // new
+			SECTION_6_LINK_9: 'یوتیوب'
 		},
 		XHT_DESCRIPTION:
 			'HollaEx kit یک پلتفورم متن باز به منظور مبادله دارایی های دیجیتال بین کاربران می باشد که توسط شرکت bitHolla توسعه و ارایه می شود.',

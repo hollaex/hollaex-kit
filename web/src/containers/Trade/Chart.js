@@ -6,7 +6,7 @@ import {
 	getDarkTheme,
 	getVolumeWhite,
 	getVolumeDark,
-	TOOLBAR_BG
+	getToolbarBG
 } from './ChartConfig';
 import { getLanguage } from '../../utils/string';
 import {
@@ -19,7 +19,7 @@ function getThemeOverrides(theme = 'white', color = {}) {
 	if (theme === 'white') {
 		return getWhiteTheme(color['light']);
 	} else {
-		let themeC = {}
+		let themeC = color['dark'];
 		if (color['dark']) {
 			themeC.buy = color.dark['dark-buy'];
 			themeC.sell = color.dark['dark-sell'];
@@ -265,11 +265,12 @@ class TVChartContainer extends React.PureComponent {
 			symbol: symbol,
 			// BEWARE: no trailing slash is expected in feed URL
 			theme: activeTheme === 'white' ? 'light' : 'dark',
-			toolbar_bg: TOOLBAR_BG[activeTheme],
+			toolbar_bg: getToolbarBG(activeTheme, constants.color),
 			datafeed: this.chartConfig,
 			interval: interval,
 			container_id: containerId,
 			library_path: libraryPath,
+			timeframe: '1m',
 			timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
 			locale: getLanguage(),
 			withdateranges: true,
@@ -287,11 +288,9 @@ class TVChartContainer extends React.PureComponent {
 			],
 			enabled_features: ['items_favoriting', 'support_multicharts'],
 			time_frames: [
-				{ text: '1m', resolution: '1m' },
-				{ text: '1h', resolution: '1h' },
-				{ text: '1D', resolution: '1D' },
-				{ text: '1W', resolution: '1W' },
-				{ text: '1M', resolution: '1M' }
+				{ text: '3m', resolution: '60' },
+				{ text: '1m', resolution: '60' },
+				{ text: '1d', resolution: '60' },
 				// // { text: "YTD", resolution: "YTD" },
 				// { text: "1Y", resolution: "D" },
 				// { text: "3Y", resolution: "D" },
@@ -308,7 +307,7 @@ class TVChartContainer extends React.PureComponent {
 			favorites: {
 				chartTypes: ['Area', 'Candles', 'Bars']
 			},
-			loading_screen: { backgroundColor: TOOLBAR_BG[activeTheme] },
+			loading_screen: { backgroundColor: getToolbarBG(activeTheme, constants.color) },
 			custom_css_url: `${process.env.REACT_APP_PUBLIC_URL}/css/chart.css`,
 			overrides: getThemeOverrides(activeTheme, constants.color)
 		};

@@ -8,6 +8,7 @@ import SummaryBlock from './components/SummaryBlock';
 // import TraderAccounts from './components/TraderAccounts';
 // import SummaryRequirements from './components/SummaryRequirements';
 import AccountAssets from './components/AccountAssets';
+import TradingVolume from './components/TradingVolume';
 import MobileSummary from './MobileSummary';
 
 import { IconTitle } from '../../components';
@@ -276,6 +277,20 @@ class Summary extends Component {
 									/>
 								</SummaryBlock>
 							</div>
+							{/*<div className="trading-volume-wrapper">
+                                <SummaryBlock
+                                    title={STRINGS.SUMMARY.TRADING_VOLUME}
+                                    // secondaryTitle={<span>
+                                    //     <span className="title-font">
+                                    //         {` ${formatAverage(formatBaseAmount(lastMonthVolume))}`}
+                                    //     </span>
+                                    //     {` ${fullname} ${STRINGS.formatString(STRINGS.SUMMARY.NOMINAL_TRADING_WITH_MONTH, moment().subtract(1, "month").startOf("month").format('MMMM')).join('')}`}
+                                    // </span>
+                                    // }
+                                >
+                                    <TradingVolume user={user} />
+                                </SummaryBlock>
+                            </div>*/}
 						</div>
 					</div>
 				)}

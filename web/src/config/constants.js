@@ -300,7 +300,8 @@ export const SOCIAL_ICONS = {
 	TWITTER: '/assets/icons/twitter.png',
 	INSTAGRAM: '/assets/icons/instagram.svg',
 	TELEGRAM: '/assets/icons/telegram.png',
-	GOOGLE: '/assets/icons/google.png'
+	GOOGLE: '/assets/icons/google.png',
+	YOUTUBE: '/assets/icons/youtube.png'
 };
 
 export const FEATURES_ICONS = {
@@ -422,10 +423,7 @@ export const EXPLORERS_ENDPOINT = (currency) => {
 					: 'https://moneroblocks.info/tx/';
 			break;
 		default:
-			endpoint =
-				NETWORK === 'testnet'
-					? 'https://ropsten.etherscan.io/tx/'
-					: 'https://etherscan.io/tx/';
+			endpoint = ''
 			break;
 	}
 	return endpoint;

@@ -117,7 +117,8 @@ export default {
 			SECTION_6_LINK_5: 'Linkedin', // new
 			SECTION_6_LINK_6: 'Website', // new
 			SECTION_6_LINK_7: 'Helpdesk', // new
-			SECTION_6_LINK_8: 'Information' // new
+			SECTION_6_LINK_8: 'Information', // new
+			SECTION_6_LINK_9: 'YouTube', // new
 		},
 		XHT_DESCRIPTION:
 			'HollaEx Kit is an open source trading platform built by bitHolla Inc. You can create and list any digital assets and onboard users to trade on your exchange using this exchange Kit. In order to simply run one yourself {1}.',

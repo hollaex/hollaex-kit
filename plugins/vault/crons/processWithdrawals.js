@@ -50,9 +50,55 @@ const processWithdrawals = () => {
 			const options = [];
 			each(withdrawals, (withdrawal) => {
 				if (withdrawal.currency === 'btc') {
-					btcWithdrawals.push(withdrawal);
+					const addressCheck = btcWithdrawals.filter((wd) => wd.address === withdrawal.address);
+					if (addressCheck.length > 0) {
+						const option = {
+							data: {
+								method: 'POST',
+								headers: {
+									key: VAULT_KEY(),
+									secret: VAULT_SECRET()
+								},
+								body: {
+									data: {
+										address: withdrawal.address,
+										amount: withdrawal.amount,
+									}
+								},
+								uri: `${VAULT_ENDPOINT}/${VAULT_WALLET('btc')}/withdraw/simple`,
+								json: true
+							},
+							dbWithdrawals: [withdrawal]
+						};
+						options.push(option);
+					} else {
+						btcWithdrawals.push(withdrawal);
+					}
 				} else if (withdrawal.currency === 'bch') {
-					bchWithdrawals.push(withdrawal);
+					const addressCheck = bchWithdrawals.filter((wd) => wd.address === withdrawal.address);
+					if (addressCheck.length > 0) {
+						const option = {
+							data: {
+								method: 'POST',
+								headers: {
+									key: VAULT_KEY(),
+									secret: VAULT_SECRET()
+								},
+								body: {
+									data: {
+										address: withdrawal.address,
+										amount: withdrawal.amount,
+									}
+								},
+								uri: `${VAULT_ENDPOINT}/${VAULT_WALLET('bch')}/withdraw/simple`,
+								json: true
+							},
+							dbWithdrawals: [withdrawal]
+						};
+						options.push(option);
+					} else {
+						bchWithdrawals.push(withdrawal);
+					}
 				} else {
 					const option = {
 						data: {
