@@ -51,6 +51,9 @@ export const REQUEST_XHT_ACCESS = 'REQUEST_XHT_ACCESS';
 export const SET_INFO = 'SET_INFO';
 export const SET_VALID_BASE_CURRENCY = 'SET_VALID_BASE_CURRENCY';
 export const SET_WAVE_AUCTION = 'SET_WAVE_AUCTION';
+export const SET_PLUGINS_REQUEST = 'SET_PLUGINS_REQUEST';
+export const SET_PLUGINS_SUCCESS = 'SET_PLUGINS_SUCCESS';
+export const SET_PLUGINS_FAILURE = 'SET_PLUGINS_FAILURE';
 
 export const USER_TYPES = {
 	USER_TYPE_NORMAL: 'normal',
@@ -308,4 +311,18 @@ export const getAnnouncement = () => dispatch => {
 		}
 	})
 	.catch((err) => {});
+};
+
+export const requestAvailPlugins = () => dispatch => {
+	dispatch({ type: SET_PLUGINS_REQUEST });
+	return axios({
+		url: `${WS_URL}/plugins`,
+		method: 'GET'
+	}).then((res) => {
+		if (res.data) {
+			dispatch({ type: SET_PLUGINS_SUCCESS, payload: res.data.available });
+		}
+	}).catch(err => {
+		dispatch({ type: SET_PLUGINS_FAILURE });
+	});
 };

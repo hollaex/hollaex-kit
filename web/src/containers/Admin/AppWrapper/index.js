@@ -30,7 +30,8 @@ import {
 	setValidBaseCurrency,
 	setConfig,
 	setLanguage,
-	changeTheme
+	changeTheme,
+	requestAvailPlugins
 } from '../../../actions/appActions';
 import { WS_URL, SESSION_TIME, BASE_CURRENCY, ADMIN_GUIDE_DOWNLOAD_LINK } from '../../../config/constants';
 
@@ -70,6 +71,7 @@ class AppWrapper extends React.Component {
 			this.initSocketConnections();
 		}
 		this._resetTimer();
+		this.props.requestAvailPlugins();
 		this.setState({
 			isSupportUser: isSupport(),
 			isSupervisorUser: isSupervisor(),
@@ -371,6 +373,7 @@ const mapDispatchToProps = (dispatch) => ({
 	setMe: bindActionCreators(setMe, dispatch),
 	changeLanguage: bindActionCreators(setLanguage, dispatch),
 	changeTheme: bindActionCreators(changeTheme, dispatch),
+	requestAvailPlugins: bindActionCreators(requestAvailPlugins, dispatch),
 	logout: bindActionCreators(logout, dispatch)
 });
 

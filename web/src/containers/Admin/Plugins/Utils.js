@@ -4,82 +4,98 @@ import { ICONS } from '../../../config/constants';
 
 export const allPlugins = ['kyc', 'sns', 'bank', 'sms', 's3', 'freshdesk', 'zendesk', 'chat', 'vault'];
 
-export const allPluginsData = {
-    'vault': {
-        key: 'vault',
-        title: 'Vault',
-        sub_title: <div>
-            <div>Add your Vault crypto business wallet to manage your exchange, payments, user balances and more in a secure manner</div>
-            <div>
-                <a className="blue-link" href="https://bitholla.com/vault/" target="blank">
-                    https://bitholla.com/vault/
-                </a>
-            </div>
-        </div>,
-        icon: ICONS.PLUGINS_VAULT
-    },
-    'kyc': {
-        key: 's3',
-        title: 'Manual KYC',
-        sub_title: 'Add a KYC verification module',
-        description: 'Upload documents, input identity info, send SMS verification (requires SMS plugin).',
-        icon: ICONS.PLUGINS_VERIFICATION
-    },
-    'freshdesk': {
-        key: 'freshdesk',
-        title: 'Freshdesk',
-        sub_title: 'Dedicated customer support system using freshdesk. By activating this you users will be able to login to your freshdesk with their exchange credentials and create tickets.',
-        description: <div>
-            <div>Requires an account with Freshdesk.</div>
-            <div>
-                <a className="blue-link" href="https://freshdesk.com/signup" target="blank">
-                    https://freshdesk.com/signup
-                </a>
-            </div>
-        </div>,
-        icon: ICONS.PLUGINS_FRESHDESK
-    },
-    'zendesk': {
-        key: 'zendesk',
-        title: 'Zendesk',
-        sub_title: 'Dedicated customer support system using popular Zendesk. By using this your users will be able to login to your Zendesk customer support page and login with their exchange account to view and create tickets.',
-        description: <div>
-            <div>Requires an account with Zendesk.</div>
-            <div>
-                <a className="blue-link" href="https://zendesk.com/signup" target="blank">
-                    https://zendesk.com/signup
-                </a>
-            </div>
-        </div>,
-        icon: ICONS.PLUGINS_ZENDESK
-    },
-    'chat': {
-        key: 'chat',
-        title: 'Chat Troll Box',
-        sub_title: 'Add a troll box (chat system) for your traders to troll the crypto markets all day long.',
-        description: 'Admin can moderate all the chat messages and users.',
-        icon: ICONS.PLUGINS_CHAT
-    },
-    'sms': {
-        key: 'sns',
-        title: 'Automatic SMS',
-        sub_title: 'Verify your users by SMS without making them deal with verification codes.',
-        description: 'Requires outside setup',
-        icon: ICONS.PLUGINS_SMS
-    },
-    'bank': {
-        key: 'bank',
-        title: 'Bank',
-        sub_title: 'Add a bank service module to allow for fiat currency deposit and withdrawal into your exchange. This module is manual and requires your policy flow.',
-        icon: ICONS.PLUGINS_BANK
-    },
-    'announcement': {
-        key: 'announcement',
-        title: 'Announcement',
-        sub_title: 'Add a announcement for display news and post to the users',
-        icon: ICONS.DEFAULT_PLUGINS
-    },
-};
+export const getAllPluginsData = (availablePlugins = []) => {
+    const allPluginsData = {
+        'vault': {
+            key: 'vault',
+            title: 'Vault',
+            sub_title: <div>
+                <div>Add your Vault crypto business wallet to manage your exchange, payments, user balances and more in a secure manner</div>
+                <div>
+                    <a className="blue-link" href="https://bitholla.com/vault/" target="blank">
+                        https://bitholla.com/vault/
+                    </a>
+                </div>
+            </div>,
+            icon: ICONS.PLUGINS_VAULT
+        },
+        'kyc': {
+            key: 's3',
+            title: 'Manual KYC',
+            sub_title: 'Add a KYC verification module',
+            description: 'Upload documents, input identity info, send SMS verification (requires SMS plugin).',
+            icon: ICONS.PLUGINS_VERIFICATION
+        },
+        'freshdesk': {
+            key: 'freshdesk',
+            title: 'Freshdesk',
+            sub_title: 'Dedicated customer support system using freshdesk. By activating this you users will be able to login to your freshdesk with their exchange credentials and create tickets.',
+            description: <div>
+                <div>Requires an account with Freshdesk.</div>
+                <div>
+                    <a className="blue-link" href="https://freshdesk.com/signup" target="blank">
+                        https://freshdesk.com/signup
+                    </a>
+                </div>
+            </div>,
+            icon: ICONS.PLUGINS_FRESHDESK
+        },
+        'zendesk': {
+            key: 'zendesk',
+            title: 'Zendesk',
+            sub_title: 'Dedicated customer support system using popular Zendesk. By using this your users will be able to login to your Zendesk customer support page and login with their exchange account to view and create tickets.',
+            description: <div>
+                <div>Requires an account with Zendesk.</div>
+                <div>
+                    <a className="blue-link" href="https://zendesk.com/signup" target="blank">
+                        https://zendesk.com/signup
+                    </a>
+                </div>
+            </div>,
+            icon: ICONS.PLUGINS_ZENDESK
+        },
+        'chat': {
+            key: 'chat',
+            title: 'Chat Troll Box',
+            sub_title: 'Add a troll box (chat system) for your traders to troll the crypto markets all day long.',
+            description: 'Admin can moderate all the chat messages and users.',
+            icon: ICONS.PLUGINS_CHAT
+        },
+        'sms': {
+            key: 'sns',
+            title: 'Automatic SMS',
+            sub_title: 'Verify your users by SMS without making them deal with verification codes.',
+            description: 'Requires outside setup',
+            icon: ICONS.PLUGINS_SMS
+        },
+        'bank': {
+            key: 'bank',
+            title: 'Bank',
+            sub_title: 'Add a bank service module to allow for fiat currency deposit and withdrawal into your exchange. This module is manual and requires your policy flow.',
+            icon: ICONS.PLUGINS_BANK
+        },
+        'announcement': {
+            key: 'announcement',
+            title: 'Announcement',
+            sub_title: 'Add a announcement for display news and post to the users',
+            icon: ICONS.DEFAULT_PLUGINS
+        },
+    };
+    let result = {};
+    availablePlugins.forEach((plugin) => {
+        if (allPluginsData[plugin]) {
+            result[plugin] = allPluginsData[plugin];
+        } else {
+            result[plugin] = {
+                key: plugin.toLowerCase(),
+                title: plugin,
+                sub_title: '',
+                icon: ICONS.DEFAULT_PLUGINS
+            }
+        }
+    });
+    return result;
+}
 
 export const getPluginsForm = (key) => {
     const formData = {

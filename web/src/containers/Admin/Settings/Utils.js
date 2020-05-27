@@ -149,16 +149,14 @@ export const generateAdminSettings = (key) => {
                 mode: 'tags',
                 label: 'Admin Whitelist IPs',
                 placeholder: 'Admin whitelist',
-                tokenSeparators: [',', ' ', '   '],
-                validate: [validateRequired]
+                tokenSeparators: [',', ' ', '   ']
             },
             allowed_domains: {
                 type: 'select',
                 mode: 'tags',
                 label: 'Allowed domains',
                 placeholder: 'Allowed domains',
-                tokenSeparators: [',', ' ', '   '],
-                validate: [validateRequired]
+                tokenSeparators: [',', ' ', '   ']
             },
             site_key: {
                 type: 'input',

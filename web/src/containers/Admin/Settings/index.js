@@ -72,8 +72,6 @@ class Settings extends Component {
             emails = {},
             secrets = { smtp: {}, captcha: {} },
             accounts = {},
-            allowed_domains,
-            admin_whitelist,
             captcha = {},
             links = {},
             color = {}
@@ -84,7 +82,7 @@ class Settings extends Component {
             distribution: { ...distribution, ...accounts }
         };
         Object.keys(result).forEach(utilsValue => {
-            if (this.state.constants[utilsValue]) {
+            if (this.state.constants[utilsValue] !== undefined) {
                 if (utilsValue === 'valid_languages'
                     && typeof this.state.constants.valid_languages === 'string') {
                     initialGeneralValues[utilsValue] = this.state.constants[utilsValue].split(',');
@@ -99,15 +97,15 @@ class Settings extends Component {
             ...captcha,
             ...secrets.captcha
         }
-        if (allowed_domains) {
-            initialSecurityValues.allowed_domains = typeof allowed_domains === 'string'
-                ? allowed_domains.split(',')
-                : allowed_domains;
+        if (secrets.allowed_domains) {
+            initialSecurityValues.allowed_domains = typeof secrets.allowed_domains === 'string'
+                ? secrets.allowed_domains.split(',')
+                : secrets.allowed_domains;
         }
-        if (admin_whitelist) {
-            initialSecurityValues.admin_whitelist = typeof admin_whitelist === 'string'
-                ? admin_whitelist.split(',')
-                : admin_whitelist;
+        if (secrets.admin_whitelist) {
+            initialSecurityValues.admin_whitelist = typeof secrets.admin_whitelist === 'string'
+                ? secrets.admin_whitelist.split(',')
+                : secrets.admin_whitelist;
         }
         const initialLinkValues = { ...links };
         let initialColors = { ...color };
@@ -179,9 +177,11 @@ class Settings extends Component {
                     formValues.captcha[val] = formProps[val];
                 } else if (val === 'secret_key') {
                     formValues.secrets.captcha[val] = formProps[val];
-                } else if ((val === 'allowed_domains' || val === 'admin_whitelist')
-                    && typeof formProps[val] === 'string') {
-                    formValues.allowed_domains = formProps.allowed_domains.split(',');
+                } else if (val === 'allowed_domains' || val === 'admin_whitelist') {
+                    let domainData = formProps[val];
+                    formValues.secrets[val] = typeof domainData === 'string'
+                        ? domainData.split(',')
+                        : domainData;
                 } else {
                     formValues[val] = formProps[val];
                 }
