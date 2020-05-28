@@ -17,9 +17,9 @@ import {
 
 function getThemeOverrides(theme = 'white', color = {}) {
 	if (theme === 'white') {
-		return getWhiteTheme(color['light']);
+		return getWhiteTheme(color['light'] || {});
 	} else {
-		let themeC = color['dark'];
+		let themeC = color['dark'] || {};
 		if (color['dark']) {
 			themeC.buy = color.dark['dark-buy'];
 			themeC.sell = color.dark['dark-sell'];
@@ -30,7 +30,7 @@ function getThemeOverrides(theme = 'white', color = {}) {
 
 function getStudiesOverrides(theme = 'white', color = {}) {
 	if (theme === 'white') {
-		return getVolumeWhite(color['light']);
+		return getVolumeWhite(color['light'] || {});
 	} else {
 		let themeC = {}
 		if (color['dark']) {

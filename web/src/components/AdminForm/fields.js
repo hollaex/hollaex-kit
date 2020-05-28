@@ -139,6 +139,7 @@ export const renderDateField = ({
 				format={dateFormat}
 				disabled={disabled}
 				placeholder={placeholder}
+				value={moment(input.value || new Date(), dateFormat)}
 			/>
 			{touched &&
 				((error && <span className="red-text">{error}</span>) ||

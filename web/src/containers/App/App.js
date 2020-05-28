@@ -9,7 +9,8 @@ import {
 	ICONS,
 	FLEX_CENTER_CLASSES,
 	FIT_SCREEN_HEIGHT,
-	CAPTCHA_SITEKEY
+	CAPTCHA_SITEKEY,
+	DEFAULT_CAPTCHA_SITEKEY
 } from '../../config/constants';
 import { isBrowser, isMobile } from 'react-device-detect';
 
@@ -480,8 +481,10 @@ class App extends Component {
 			sidebarFitHeight,
 			isSocketDataReady
 		} = this.state;
-		let siteKey = CAPTCHA_SITEKEY;
-		if (constants.captcha && constants.captcha.site_key) {
+		let siteKey = DEFAULT_CAPTCHA_SITEKEY;
+		if (CAPTCHA_SITEKEY) {
+			siteKey = CAPTCHA_SITEKEY;
+		} else if (constants.captcha && constants.captcha.site_key) {
 			siteKey = constants.captcha.site_key;
 		}
 		loadReCaptcha(siteKey);

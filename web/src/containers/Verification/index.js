@@ -233,6 +233,7 @@ class Verification extends Component {
 				),
 				content: (
 					<IdentityVerificationHome
+						activeLanguage={activeLanguage}
 						user={user}
 						handleBack={this.handleBack}
 						setActivePageContent={this.setActivePageContent}
