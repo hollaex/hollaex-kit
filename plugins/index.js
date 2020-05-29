@@ -12,16 +12,16 @@ const PORT = PLUGIN_PORT;
 
 const enabledPlugins = () => PLUGINS().split(',');
 
+app.listen(PORT);
+
+app.use(cors());
+
 app.get('/plugins', (req, res) => {
 	res.json({
 		enabled: enabledPlugins(),
 		available: AVAILABLE_PLUGINS
 	});
 });
-
-app.listen(PORT);
-
-app.use(cors());
 
 module.exports = app;
 
