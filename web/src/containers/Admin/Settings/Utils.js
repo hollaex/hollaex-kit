@@ -161,14 +161,12 @@ export const generateAdminSettings = (key) => {
             site_key: {
                 type: 'input',
                 label: 'Captcha site key (Google ReCaptcha V3)',
-                placeholder: 'Captcha site key (Google ReCaptcha V3)',
-                validate: [validateRequired]
+                placeholder: 'Captcha site key (Google ReCaptcha V3)'
             },
             secret_key: {
                 type: 'input',
                 label: 'Captcha secret key (Google ReCaptcha V3)',
-                placeholder: 'Captcha secret key (Google ReCaptcha V3)',
-                validate: [validateRequired]
+                placeholder: 'Captcha secret key (Google ReCaptcha V3)'
             }
         };
     } else if (key === 'email') {

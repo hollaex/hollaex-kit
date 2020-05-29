@@ -320,7 +320,9 @@ export const requestAvailPlugins = () => dispatch => {
 		method: 'GET'
 	}).then((res) => {
 		if (res.data) {
-			dispatch({ type: SET_PLUGINS_SUCCESS, payload: res.data.available });
+			let available = res.data.available ? [...res.data.available] : [];
+			let enabled = res.data.enabled.filter((val) => !available.includes(val));
+			dispatch({ type: SET_PLUGINS_SUCCESS, payload: [...available, ...enabled] });
 		}
 	}).catch(err => {
 		dispatch({ type: SET_PLUGINS_FAILURE });
