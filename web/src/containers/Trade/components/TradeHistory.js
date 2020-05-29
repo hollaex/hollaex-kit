@@ -3,7 +3,7 @@ import classnames from 'classnames';
 import { connect } from 'react-redux';
 import ReactSVG from 'react-svg';
 import { DisplayTable } from '../../../components';
-import { formatTimestamp } from '../../../utils/utils';
+import { getFormatTimestamp } from '../../../utils/utils';
 import STRINGS from '../../../config/localizedStrings';
 import { IS_XHT, ICONS } from '../../../config/constants';
 // import { roundNumber } from '../../../utils/currency';
@@ -63,9 +63,9 @@ const generateHeaders = (pairs) => {
 					className={classnames('trade_history-row', side)}
 					key={`timestamp-${index}`}
 				>
-					{formatTimestamp(timestamp, STRINGS.HOUR_FORMAT)}
+					{getFormatTimestamp(timestamp, STRINGS.HOUR_FORMAT)}
 				</div>
-				: formatTimestamp(timestamp, STRINGS.HOUR_FORMAT)
+				: getFormatTimestamp(timestamp, STRINGS.HOUR_FORMAT)
 		}
 	];
 }

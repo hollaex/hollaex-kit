@@ -1701,7 +1701,8 @@ table th {
         position: absolute; }
 
 .trade_block-column-wrapper > div {
-  flex: 1 !important; }
+  flex: 1 !important;
+  overflow-y: scroll; }
 
 .direction_ltr .trade_block-title {
   font-family: "Raleway Extrabold"; }
@@ -2564,6 +2565,12 @@ table th {
 
 .layout-mobile .content-text {
   font-size: 12px; }
+
+.direction_ltr .divider {
+  margin-right: 0.5rem; }
+
+.direction_rtl .divider {
+  margin-left: 0.5rem; }
 
 .dark-theme .account-svg-1 {
   fill: var(--dark-tab-inactive); }
