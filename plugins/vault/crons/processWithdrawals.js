@@ -5,6 +5,8 @@ const rp = require('request-promise');
 const { each } = require('lodash');
 const { all, delay } = require('bluebird');
 const { VAULT_ENDPOINT, GET_CONFIGURATION, GET_SECRETS } = require('../../../constants');
+const { ERC_TOKENS } = require('../../constants');
+const moment = require('moment');
 const { loggerDeposits } = require('../../../config/logger');
 const mathjs = require('mathjs');
 const VAULT_NAME = () => GET_SECRETS().vault.name;
@@ -16,19 +18,33 @@ const VAULT_WALLET = (coin) => {
 const { sendEmail } = require('../../../mail');
 const { MAILTYPE } = require('../../../mail/strings');
 
-const vaultCoins = [];
-
 const getAmount = (amount, fee) => {
 	return mathjs.number(mathjs.subtract(mathjs.fraction(amount), mathjs.fraction(fee)));
 };
 
+const isErc = (token) => {
+	return ERC_TOKENS.includes(token);
+};
+
 const processWithdrawals = () => {
 	return new Promise((resolve, reject) => {
+		const vaultCoins = [];
 		loggerDeposits.info('/plugins/vault/crons/processWithdrawals starting');
+		const currentMinute = parseInt(moment().format('mm'));
 		each(GET_SECRETS().vault.connected_coins, (coin) => {
-			vaultCoins.push({
-				currency: coin
-			});
+			if (coin === 'xrp' || isErc(coin)) {
+				// XRP/ERC20 tokens are processed every minute
+				vaultCoins.push({
+					currency: coin
+				});
+			} else {
+				// Every other coin is processed every 5 minutes
+				if (currentMinute % 5 === 0) {
+					vaultCoins.push({
+						currency: coin
+					});
+				}
+			}
 		});
 		Deposit.findAll({
 			where: {

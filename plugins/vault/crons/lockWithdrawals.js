@@ -17,10 +17,9 @@ const checkAddress = (address, symbol, network = 'prod') => {
 	}
 };
 
-const vaultCoins = [];
-
 const lockWithdrawals = () => {
 	return new Promise((resolve, reject) => {
+		const vaultCoins = [];
 		loggerDeposits.info('/plugins/vault/crons/lockWithdrawals starting');
 		each(GET_SECRETS().vault.connected_coins, (coin) => {
 			vaultCoins.push({
