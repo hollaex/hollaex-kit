@@ -7,7 +7,7 @@ import { ICONS } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 
 export const renderOTPForm = (secret, email, activateOTP, constants = {}) => {
-	const app_name = constants.api_name || '';
+	const app_name = constants.api_name.replace(' ', '').trim() || '';
 	return (
 		<div className="otp_form-wrapper">
 			<IconTitle
