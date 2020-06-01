@@ -40,7 +40,7 @@ class App extends Component {
 		}
 	}
 
-	componentDidUpdate(prevProps) {
+	componentDidUpdate(prevProps, prevState) {
 		if (this.props.location.search !== prevProps.location.search) {
 			if (this.props.location.search) {
 				const qs = querystring.parse(this.props.location.search);
@@ -52,6 +52,11 @@ class App extends Component {
 					userInformation: {},
 					userImages: {}
 				});
+			}
+		}
+		if(JSON.stringify(prevState.userInformation) !== JSON.stringify(this.state.userInformation)) {
+			if(this.state.userInformation.id) {
+				this.props.router.replace(`/admin/user?id=${this.state.userInformation.id}`);
 			}
 		}
 	}
