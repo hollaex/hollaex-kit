@@ -3,7 +3,7 @@ import classnames from 'classnames';
 import { ReCaptcha } from 'react-recaptcha-v3';
 import { connect } from 'react-redux';
 
-import { CAPTCHA_SITEKEY, DEFAULT_LANGUAGE } from '../../../config/constants';
+import { CAPTCHA_SITEKEY, DEFAULT_CAPTCHA_SITEKEY, DEFAULT_LANGUAGE } from '../../../config/constants';
 
 class CaptchaField extends Component {
 	state = {
@@ -57,7 +57,8 @@ class CaptchaField extends Component {
 				>
 					<ReCaptcha
 						ref={this.setRef}
-						sitekey={captcha.site_key || CAPTCHA_SITEKEY}
+						// sitekey={captcha.site_key || CAPTCHA_SITEKEY}
+						sitekey={CAPTCHA_SITEKEY || captcha.sitekey || DEFAULT_CAPTCHA_SITEKEY}
 						verifyCallback={this.onVerifyCallback}
 						expiredCallback={this.onExpiredCallback}
 						lang={language || DEFAULT_LANGUAGE}

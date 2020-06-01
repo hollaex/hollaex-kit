@@ -151,3 +151,15 @@
 		font-size: $font-size-mobile-txt;
 	}
 }
+
+.direction_ltr {
+	.divider {
+		margin-right: 0.5rem;
+	}
+}
+
+.direction_rtl {
+	.divider {
+		margin-left: 0.5rem;
+	}
+}

@@ -206,7 +206,12 @@ module.exports = function(sequelize, DataTypes) {
 		});
 		User.hasMany(models.OtpCode);
 		User.hasMany(models.Login);
-		User.hasMany(models.Affiliation);
+		User.hasMany(models.Affiliation, {
+			foreignKey: 'user_id'
+		});
+		User.hasMany(models.Affiliation, {
+			foreignKey: 'referer_id'
+		});
 		User.hasMany(models.Order);
 		User.hasMany(models.Trade, {
 			foreignKey: 'maker_id'

@@ -88,11 +88,16 @@ class OrderEntry extends Component {
 	};
 
 	setMax = () => {
-		const { side, balance = {}, pair_base, increment_size, pair_2} = this.props;
+		const { side, balance = {}, pair_base, increment_size, pair_2, asks, type} = this.props;
 		const size = parseFloat(this.props.size || 0);
-		const price = parseFloat(this.props.price || 0);
+		let price = parseFloat(this.props.price || 0);
 		let maxSize = balance[`${pair_base}_available`] || 0;
 		if (side === 'buy') {
+			if (type === 'market') {
+				if (asks && asks.length) {
+					price = asks[asks.length-1][0];
+				}
+			}
 			maxSize = mathjs.divide(balance[`${pair_2}_available`] || 0, price);
 		}
 		if (maxSize !== size) {

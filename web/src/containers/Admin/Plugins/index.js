@@ -1,8 +1,9 @@
 import React, { Component, Fragment } from 'react';
 import { Card, Divider, Spin } from 'antd';
+import { connect } from 'react-redux';
 
 import { getConstants } from './action';
-import { allPluginsData } from './Utils';
+import { getAllPluginsData } from './Utils';
 
 import './index.css';
 
@@ -31,7 +32,8 @@ class Plugins extends Component {
 	}
 
 	componentDidUpdate(prevProps, prevState) {
-		if (JSON.stringify(this.state.constants) !== JSON.stringify(prevState.constants)) {
+		if ((JSON.stringify(this.state.constants) !== JSON.stringify(prevState.constants))
+			|| (JSON.stringify(this.props.availablePlugins) !== JSON.stringify(prevProps.availablePlugins))) {
 			this.generateCards();
 		}
 	}
@@ -40,9 +42,10 @@ class Plugins extends Component {
 		const { plugins = { enabled: '' } } = this.state.constants;
 		if (plugins) {
 			let enabledPlugins = plugins.enabled.split(',');
+			let allPluginsData = getAllPluginsData(this.props.availablePlugins);
 			let myPlugins = Object.keys(allPluginsData).filter((data) => enabledPlugins.includes(data));
 			const otherPlugins = Object.keys(allPluginsData).filter((data) => !enabledPlugins.includes(data));
-			this.setState({ myPlugins, otherPlugins });
+			this.setState({ myPlugins, otherPlugins, allPluginsData });
 		}
 	};
 
@@ -57,11 +60,21 @@ class Plugins extends Component {
 	};
 
 	render() {
-		const { myPlugins, otherPlugins, loading } = this.state;
+		const { myPlugins, otherPlugins, loading, allPluginsData } = this.state;
+		if (loading || this.props.pluginsLoading) {
+			return (
+				<div className="app_container-content">
+					<Spin size="large" />
+				</div>
+			);
+		}
 		return (
 			<div className="app_container-content">
-				{loading ? (
-					<Spin size="large" />
+				{(!this.props.availablePlugins.length) ? (
+					<div>
+						<h1>Plugins</h1>
+						<div>No Available plugins</div>
+					</div>
 				) : (
 					<Fragment>
 						{myPlugins.length
@@ -113,4 +126,9 @@ class Plugins extends Component {
 	}
 }
 
-export default Plugins;
+const mapStateToProps = (state) => ({
+	availablePlugins: state.app.availablePlugins,
+	pluginsLoading: state.app.getPluginLoading
+});
+
+export default connect(mapStateToProps)(Plugins);

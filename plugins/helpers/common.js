@@ -58,6 +58,10 @@ const isUrl = (url) => {
 	return pattern.test(url);
 };
 
+const sleep = (ms) => {
+	return new Promise((resolve) => setTimeout(resolve, ms));
+};
+
 const getPagination = (limit = 50, page = 1) => {
 	let _limit = 50;
 	let _page = 1;
@@ -127,6 +131,7 @@ module.exports = {
 	logger,
 	updateConstants,
 	isUrl,
+	sleep,
 	getPagination,
 	getOrdering,
 	getTimeframe,
