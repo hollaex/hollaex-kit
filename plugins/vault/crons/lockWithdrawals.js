@@ -5,7 +5,7 @@ const { all } = require('bluebird');
 const WAValidator = require('multicoin-address-validator');
 const { loggerDeposits } = require('../../../config/logger');
 const { each } = require('lodash');
-const { GET_SECRETS } = require('../../../constants');
+const { GET_CONFIGURATION, GET_SECRETS } = require('../../../constants');
 const { sendEmail } = require('../../../mail');
 const { MAILTYPE } = require('../../../mail/strings');
 
@@ -24,9 +24,11 @@ const lockWithdrawals = () => {
 		const vaultCoins = [];
 		loggerDeposits.info('/plugins/vault/crons/lockWithdrawals starting');
 		each(GET_SECRETS().vault.connected_coins, (coin) => {
-			vaultCoins.push({
-				currency: coin
-			});
+			if (GET_CONFIGURATION().coins[coin] && GET_CONFIGURATION().coins[coin].allow_withdrawal) {
+				vaultCoins.push({
+					currency: coin
+				});
+			}
 		});
 		Deposit.findAll({
 			where: {
