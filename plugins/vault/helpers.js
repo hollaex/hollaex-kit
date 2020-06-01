@@ -27,7 +27,7 @@ const withdrawalCron = async () => {
 	}
 };
 
-const cronTask = cron.schedule(`*/${GET_SECRETS().vault.cron_task_interval || 15} * * * *`, () => {
+const cronTask = cron.schedule('* * * * *', () => {
 	withdrawalCron();
 }, {
 	timezone: 'Asia/Seoul'

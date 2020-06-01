@@ -4,7 +4,7 @@ import math from 'mathjs';
 
 import { ICONS } from '../../../config/constants';
 import { Table, ActionNotification } from '../../../components';
-import { formatTimestamp } from '../../../utils/utils';
+import { getFormatTimestamp } from '../../../utils/utils';
 import {
 	formatBaseAmount,
 	formatToCurrency
@@ -52,7 +52,7 @@ const generateHeaders = (pairData = {}, onCancel) => [
 		label: STRINGS.TIME,
 		key: 'created_At',
 		renderCell: ({ created_at = '' }, key, index) => {
-			return <td key={index}>{formatTimestamp(created_at)}</td>;
+			return <td key={index}>{getFormatTimestamp(created_at)}</td>;
 		}
 	},
 	{

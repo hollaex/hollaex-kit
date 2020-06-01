@@ -15,10 +15,9 @@ const VAULT_WALLET = (coin) => {
 const { sendEmail } = require('../../../mail');
 const { MAILTYPE } = require('../../../mail/strings');
 
-const vaultCoins = [];
-
 const checkWithdrawals = () => {
 	return new Promise((resolve, reject) => {
+		const vaultCoins = [];
 		loggerDeposits.info('/plugins/vault/crons/checkWithdrawals starting');
 		each(GET_SECRETS().vault.connected_coins, (coin) => {
 			vaultCoins.push({
@@ -72,7 +71,7 @@ const checkWithdrawals = () => {
 						})
 						.then((tx) => {
 							if (tx.data[0]) {
-								if (tx.data[0].is_confirmed) {
+								if (!tx.data[0].is_rejected) {
 									loggerDeposits.info('/plugins/vault/crons/checkWithdrawals checkTransaction', `Transaction ${txid} was confirmed`);
 									return sequelize.transaction((transaction) => {
 										return all(txids[txid].map((withdrawal) => {
@@ -96,7 +95,7 @@ const checkWithdrawals = () => {
 												});
 										}));
 									});
-								} else if (tx.data[0].is_rejected) {
+								} else {
 									loggerDeposits.info('/plugins/vault/crons/checkWithdrawals checkTransaction', `Transaction ${txid} was rejected`);
 									return {
 										success: true,
@@ -110,9 +109,6 @@ const checkWithdrawals = () => {
 											}
 										}
 									};
-								} else {
-									loggerDeposits.info('/plugins/vault/crons/checkWithdrawals checkTransaction', `Transaction ${txid} is not processed yet`);
-									return {};
 								}
 							} else {
 								loggerDeposits.warn('/plugins/vault/crons/checkWithdrawals checkTransaction', `Transaction ${txid} is not found`);

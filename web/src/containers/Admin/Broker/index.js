@@ -113,9 +113,16 @@ const Broker = () => {
     };
 
     const handleSubmitBroker = (formProps) => {
+        const { secrets = { broker: {} } } = constants;
         let formValues = { broker: { ...formProps } };
         if (formProps.quick_trade_rate) {
             formValues.broker.quick_trade_rate = math.divide(formProps.quick_trade_rate, 100);
+        }
+        if (secrets.broker && secrets.broker.quick_trade_expiration_time) {
+            formValues.broker.quick_trade_expiration_time = secrets.broker.quick_trade_expiration_time;
+        }
+        if (formProps.trade_master_account_id) {
+            formValues.broker.trade_master_account_id = parseInt(formProps.trade_master_account_id, 10);
         }
         setLoading(true);
         updateConstants({ secrets: formValues });

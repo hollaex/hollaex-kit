@@ -96,6 +96,7 @@ $tabs-title--margin: 2rem;
 
 .trade_block-column-wrapper > div {
 	flex: 1 !important;
+	overflow-y: scroll;
 }
 
 .direction_ltr {

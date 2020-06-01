@@ -361,6 +361,9 @@ export const FLEX_CENTER_CLASSES = [
 
 export const TIMESTAMP_FORMAT = STRINGS.TIMESTAMP_FORMAT;
 export const HOUR_FORMAT = STRINGS.HOUR_FORMAT;
+export const TIMESTAMP_FORMAT_FA = STRINGS.TIMESTAMP_FORMAT.split('/')
+	.map((s) => `j${s}`)
+	.join('/');
 
 // Default trading pairs (it is set from the server so it is not important to set these properly)
 export const DEFAULT_TRADING_PAIRS = ['xht-usdt'];
@@ -432,8 +435,9 @@ export const EXPLORERS_ENDPOINT = (currency) => {
 export const BALANCE_ERROR = 'Insufficient balance to perform the order';
 
 export const CAPTCHA_SITEKEY =
-	process.env.REACT_APP_CAPTCHA_SITE_KEY ||
-	'6LeuOKoUAAAAAGVoZcSWXJH60GHt4crvIaNXn1YA'; // default recaptcha v3; // default recaptcha v3
+	process.env.REACT_APP_CAPTCHA_SITE_KEY;
+
+export const DEFAULT_CAPTCHA_SITEKEY = '6LeuOKoUAAAAAGVoZcSWXJH60GHt4crvIaNXn1YA'; // default recaptcha v3; // default recaptcha v3
 
 export const CAPTCHA_TIMEOUT = process.env.REACT_APP_CAPTCHA_TIMEOUT
 	? parseInt(process.env.REACT_APP_CAPTCHA_TIMEOUT, 10)

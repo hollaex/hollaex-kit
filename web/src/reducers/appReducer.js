@@ -19,7 +19,10 @@ import {
 	SET_VALID_BASE_CURRENCY,
 	SET_CONFIG,
 	SET_INFO,
-	SET_WAVE_AUCTION
+	SET_WAVE_AUCTION,
+	SET_PLUGINS_REQUEST,
+	SET_PLUGINS_SUCCESS,
+	SET_PLUGINS_FAILURE
 } from '../actions/appActions';
 import { THEME_DEFAULT } from '../config/constants';
 import { getLanguage } from '../utils/string';
@@ -132,7 +135,9 @@ const INITIAL_STATE = {
 	config_level: [],
 	info: { is_trial: false, active: true, status: true },
 	wave: [],
-	enabledPlugins: []
+	enabledPlugins: [],
+	availablePlugins: [],
+	getPluginLoading: false
 };
 
 const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
@@ -342,6 +347,23 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 			return {
 				...state,
 				wave: payload.data
+			};
+		case SET_PLUGINS_REQUEST:
+			return {
+				...state,
+				availablePlugins: [],
+				getPluginLoading: true
+			};
+		case SET_PLUGINS_SUCCESS:
+			return {
+				...state,
+				availablePlugins: payload,
+				getPluginLoading: false
+			};
+		case SET_PLUGINS_FAILURE:
+			return {
+				...state,
+				getPluginLoading: false
 			};
 		default:
 			return state;

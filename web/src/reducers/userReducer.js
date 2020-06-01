@@ -142,7 +142,10 @@ export default function reducer(state = INITIAL_STATE, action) {
 				affiliation_code,
 				phone_number,
 				is_hap,
-				discount
+				discount,
+				full_name,
+				gender,
+				dob,
 			} = action.payload;
 			const userData = extractuserData(action.payload);
 			const fees = action.payload.fees || state.fees;
@@ -175,7 +178,10 @@ export default function reducer(state = INITIAL_STATE, action) {
 				affiliation_code,
 				phone_number,
 				is_hap,
-				discount
+				discount,
+				full_name,
+				dob,
+				gender
 			};
 		}
 		case 'SET_USER_DATA': {
