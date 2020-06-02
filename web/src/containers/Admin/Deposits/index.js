@@ -215,17 +215,26 @@ class Deposits extends Component {
 				switch (value) {
 					case 'dismissed':
 						delete queryParams[key];
+						delete queryParams.rejected;
 						queryParams.dismissed = true;
+						break;
+					case 'rejected':
+						delete queryParams[key];
+						delete queryParams.dismissed;
+						queryParams.rejected = true;
 						break;
 					case 'false':
 						queryParams.dismissed = false;
+						queryParams.rejected = false;
 						queryParams[key] = value;
 						break;
 					case 'true':
 						delete queryParams.dismissed;
+						delete queryParams.rejected;
 						queryParams[key] = value;
 						break;
 					default:
+						delete queryParams.rejected;
 						delete queryParams.dismissed;
 						delete queryParams[key];
 						break;
