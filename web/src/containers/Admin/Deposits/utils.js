@@ -13,10 +13,11 @@ const ButtonNotAvailable = () => <Icon type="close-square" />;
 export const renderValidation = ({
 	status,
 	dismissed,
+	rejected,
 	completeDeposit,
 	updatingItem
 }) =>
-	!status && !dismissed ? (
+	!status && !dismissed && !rejected ? (
 		<Tooltip placement="bottom" title="VALIDATE">
 			<Button
 				type="primary"
