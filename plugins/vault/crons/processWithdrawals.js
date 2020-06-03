@@ -144,7 +144,7 @@ const processWithdrawals = () => {
 						if (withdrawal.currency === 'xrp') {
 							const [xrpAddress, xrpTag] = withdrawal.address.split(':');
 							option.data.body.data.address = xrpAddress;
-							option.data.body.meta = { tag: xrpTag };
+							option.data.body.data.meta = { tag: xrpTag };
 						}
 						options.push(option);
 					}

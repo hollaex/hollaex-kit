@@ -59,7 +59,7 @@ const sendEmail = (
 		case MAILTYPE.DEPOSIT:
 		case MAILTYPE.WITHDRAWAL: {
 			data.status = getStatusText(data.status);
-			if (data.phoneNumber && data.status)
+			if (data.phoneNumber && data.status === 'COMPLETED')
 				sendSMSDeposit(
 					type,
 					data.currency,
