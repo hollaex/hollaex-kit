@@ -27,7 +27,7 @@ const checkWithdrawals = () => {
 		Deposit.findAll({
 			where: {
 				type: 'withdrawal',
-				status: false,
+				status: true,
 				dismissed: false,
 				rejected: false,
 				processing: false,
@@ -77,11 +77,10 @@ const checkWithdrawals = () => {
 										return all(txids[txid].map((withdrawal) => {
 											return withdrawal.update(
 												{
-													waiting: false,
-													status: true
+													waiting: false
 												},
 												{
-													attributes: ['waiting', 'status'],
+													attributes: ['waiting'],
 													transaction,
 													returning: true
 												}
