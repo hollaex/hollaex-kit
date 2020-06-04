@@ -446,6 +446,7 @@ export const generateWithdrawalsHeaders = (
 				if (
 					status === false &&
 					dismissed === false &&
+					rejected === false &&
 					processing === false &&
 					waiting === false &&
 					type === 'withdrawal'
@@ -455,7 +456,7 @@ export const generateWithdrawalsHeaders = (
 						<td key={index}>
 							<div
 								className="withdrawal-cancel"
-								onClick={() => withdrawalPopup(id, amount)}
+								onClick={() => withdrawalPopup(id, amount, currency)}
 								key={id}
 							>
 								{STRINGS.CANCEL}
