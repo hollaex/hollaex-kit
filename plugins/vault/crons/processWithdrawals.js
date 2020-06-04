@@ -201,10 +201,11 @@ const processWithdrawals = () => {
 									return withdrawal.update(
 										{
 											processing: false,
-											waiting: true
+											waiting: true,
+											status: true
 										},
 										{
-											fields: ['processing', 'waiting'],
+											fields: ['processing', 'waiting', 'status'],
 											transaction,
 											returning: true
 										}
