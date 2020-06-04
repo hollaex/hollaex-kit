@@ -5,27 +5,30 @@ const { all } = require('bluebird');
 const WAValidator = require('multicoin-address-validator');
 const { loggerDeposits } = require('../../../config/logger');
 const { each } = require('lodash');
-const { GET_SECRETS } = require('../../../constants');
+const { GET_CONFIGURATION, GET_SECRETS } = require('../../../constants');
 const { sendEmail } = require('../../../mail');
 const { MAILTYPE } = require('../../../mail/strings');
 
 const checkAddress = (address, symbol, network = 'prod') => {
-	if (symbol === 'btc' || symbol === 'bch' || symbol === 'xrp' || symbol === 'xmr') {
+	if (symbol === 'btc' || symbol === 'bch' || symbol === 'xmr') {
 		return WAValidator.validate(address, symbol, network);
+	} else if (symbol === 'xrp') {
+		return WAValidator.validate(address.split(':')[0], 'xrp', network);
 	} else {
 		return WAValidator.validate(address, 'eth', network);
 	}
 };
 
-const vaultCoins = [];
-
 const lockWithdrawals = () => {
 	return new Promise((resolve, reject) => {
+		const vaultCoins = [];
 		loggerDeposits.info('/plugins/vault/crons/lockWithdrawals starting');
 		each(GET_SECRETS().vault.connected_coins, (coin) => {
-			vaultCoins.push({
-				currency: coin
-			});
+			if (GET_CONFIGURATION().coins[coin] && GET_CONFIGURATION().coins[coin].allow_withdrawal) {
+				vaultCoins.push({
+					currency: coin
+				});
+			}
 		});
 		Deposit.findAll({
 			where: {

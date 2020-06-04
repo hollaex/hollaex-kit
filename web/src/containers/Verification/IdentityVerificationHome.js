@@ -1,11 +1,16 @@
 import React from 'react';
-import moment from 'moment';
 
 import { Button, PanelInformationRow } from '../../components';
 import { getCountry } from './utils';
 import STRINGS from '../../config/localizedStrings';
+import { getFormatTimestamp } from '../../utils/utils';
 
-const IdentityVerificationHome = ({ user, setActivePageContent, handleBack }) => {
+const formatBirthday = {
+    en: 'DD, MMMM, YYYY',
+    fa: 'jDD, jMMMM, jYYYY'
+};
+
+const IdentityVerificationHome = ({ user, activeLanguage, setActivePageContent, handleBack }) => {
     const { address, id_data } = user;
     if (!address.country) {
         return (
@@ -38,11 +43,11 @@ const IdentityVerificationHome = ({ user, setActivePageContent, handleBack }) =>
                                     ? STRINGS.USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.GENDER_OPTIONS.MAN
                                     : STRINGS.USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.GENDER_OPTIONS.WOMAN
                             }
-                            className="title-font mr-2"
+                            className="title-font divider"
                             disable />
                         <PanelInformationRow
                             label={STRINGS.USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.DOB_LABEL}
-                            information={moment(user.dob).format('DD, MMMM, YYYY')}
+                            information={getFormatTimestamp(user.dob, formatBirthday[activeLanguage])}
                             className="title-font"
                             disable />
                     </div>
@@ -55,7 +60,7 @@ const IdentityVerificationHome = ({ user, setActivePageContent, handleBack }) =>
                         <PanelInformationRow
                             label={STRINGS.USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.COUNTRY_LABEL}
                             information={getCountry(address.country).name}
-                            className="title-font mr-2"
+                            className="title-font divider"
                             disable />
                         <PanelInformationRow
                             label={STRINGS.USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.CITY_LABEL}
@@ -68,13 +73,13 @@ const IdentityVerificationHome = ({ user, setActivePageContent, handleBack }) =>
                             <PanelInformationRow
                                 label={STRINGS.USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.ADDRESS_LABEL}
                                 information={address.address}
-                                className="title-font"
+                                className="title-font divider"
                                 disable />
                         </div>
                         <PanelInformationRow
                             label={STRINGS.USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.POSTAL_CODE_LABEL}
                             information={address.postal_code}
-                            className="title-font ml-2"
+                            className="title-font"
                             disable />
                     </div>
                 </div>

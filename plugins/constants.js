@@ -48,3 +48,16 @@ exports.VERIFY_STATUS = {
 	REJECTED: 2,
 	COMPLETED: 3
 };
+
+exports.ERC_TOKENS = [
+	'eth',
+	'xht',
+	'usdt',
+	'dai',
+	'mkr',
+	'tusd',
+	'usdc',
+	'leo',
+	'xaut',
+	'busd'
+];

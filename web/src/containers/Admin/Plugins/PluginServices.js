@@ -6,7 +6,7 @@ import { change } from 'redux-form';
 
 import PluginForm from './pluginForm';
 import { updatePlugins, getConstants, connectVault, requestVaultSupportCoins, disconnectVault } from './action';
-import { allPluginsData, getPluginsForm } from './Utils';
+import { getAllPluginsData, getPluginsForm } from './Utils';
 import { setConfig } from '../../../actions/appActions';
 import Chat from '../Chat';
 import Vault from './Vault';
@@ -43,7 +43,8 @@ class PluginServices extends Component {
 
 	componentDidUpdate(prevProps, prevState) {
 		if ((JSON.stringify(this.props.params) !== JSON.stringify(prevProps.params)
-			|| JSON.stringify(this.state.constants) !== JSON.stringify(prevState.constants))
+			|| JSON.stringify(this.state.constants) !== JSON.stringify(prevState.constants)
+			|| JSON.stringify(this.props.availablePlugins) !== JSON.stringify(prevProps.availablePlugins))
 			&& this.props.params.services) {
 			this.getServices(this.props.params.services);
 		}
@@ -87,6 +88,7 @@ class PluginServices extends Component {
 
 	getServices = (services = '') => {
 		const { api_name = '', secrets = { vault: {} }, plugins = { enabled: '' } } = this.state.constants;
+		const allPluginsData = getAllPluginsData(this.props.availablePlugins);
 		const pluginData = allPluginsData[services] || {}
 		const title = pluginData.title ? pluginData.title : '';
 		if (!allPluginsData[services]) {
@@ -134,11 +136,13 @@ class PluginServices extends Component {
 					}
 					if (pluginData.key === 's3' && Object.keys(temp).length) {
 						Object.keys(temp).forEach(data => {
-							initialValues = {
-								...initialValues,
-								[data]: temp[data].write ? temp[data].write : temp[data].read
+							if (data !== 'id_docs_bucket') {
+								initialValues = {
+									...initialValues,
+									[data]: temp[data].write ? temp[data].write : temp[data].read
+								}
 							}
-						})
+						});
 					}
 				}
 			} else if (plugins.enabled.includes(services)) {
@@ -226,6 +230,7 @@ class PluginServices extends Component {
 			return this.connectVault(formValues);
 		} else if (service !== 'bank' && service !== 'chat') {
 			const { key, secret, ...rest } = formProps;
+			const allPluginsData = getAllPluginsData(this.props.availablePlugins);
 			const pluginData = allPluginsData[service] || {};
 			formValues.secrets.plugins = { ...secrets.plugins };
 			if (pluginData.key === 's3') {
@@ -369,7 +374,7 @@ class PluginServices extends Component {
 						showIcon
 					/>
 				)}
-				{loading ? (
+				{(loading || this.props.pluginsLoading) ? (
 					<Spin size="large" />
 				) : (
 						<div>
@@ -416,6 +421,8 @@ class PluginServices extends Component {
 const mapStateToProps = (state) => ({
 	constants: state.app.constants,
 	coins: state.app.coins,
+	availablePlugins: state.app.availablePlugins,
+	pluginsLoading: state.app.getPluginLoading
 });
 
 const mapDispatchToProps = (dispatch) => ({

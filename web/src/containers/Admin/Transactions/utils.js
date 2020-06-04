@@ -29,10 +29,11 @@ export const renderValidation = ({ status, completeDeposit, updatingItem }) =>
 export const renderDismiss = ({
 	status,
 	dismissed,
+	rejected,
 	dismissDeposit,
 	dismissingItem
 }) =>
-	!status ? (
+	!status && !rejected ? (
 		<Tooltip placement="bottom" title={dismissed ? 'UNDO DISMISS' : 'DISMISS'}>
 			<Button
 				type={dismissed ? 'dashed' : 'primary'}

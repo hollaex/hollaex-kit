@@ -149,7 +149,7 @@ export const LinksSettingsForm = reduxForm({
 })(LinksForm);
 
 export const ThemeSettings = ({ initialValues, handleSubmitSettings }) => {
-    const [activeTab, tabChange] = useState('miscellaneous');
+    const [activeTab, tabChange] = useState('light');
     const lightValues = initialValues['light'] || {};
     const darkValues = initialValues['dark'] || {};
     const commonValues = initialValues['miscellaneous'] || {};
@@ -158,21 +158,6 @@ export const ThemeSettings = ({ initialValues, handleSubmitSettings }) => {
             defaultActiveKey={activeTab}
             onChange={tabChange}
         >
-             <TabPane tab={'Common'} key={'miscellaneous'}>
-                <Row>
-                    {activeTab === 'miscellaneous'
-                        ? <ThemeCommonForm
-                            themeKey="miscellaneous"
-                            initialValues={{
-                                ...initialCommonColors,
-                                ...commonValues
-                            }}
-                            handleSubmitSettings={handleSubmitSettings}
-                        />
-                        : null
-                    }
-                </Row>
-            </TabPane>
             <TabPane tab={'Light Theme'} key={'light'}>
                 <Row>
                     {activeTab === 'light'
@@ -196,6 +181,21 @@ export const ThemeSettings = ({ initialValues, handleSubmitSettings }) => {
                             initialValues={{
                                 ...initialDarkColors,
                                 ...darkValues
+                            }}
+                            handleSubmitSettings={handleSubmitSettings}
+                        />
+                        : null
+                    }
+                </Row>
+            </TabPane>
+            <TabPane tab={'Common'} key={'miscellaneous'}>
+                <Row>
+                    {activeTab === 'miscellaneous'
+                        ? <ThemeCommonForm
+                            themeKey="miscellaneous"
+                            initialValues={{
+                                ...initialCommonColors,
+                                ...commonValues
                             }}
                             handleSubmitSettings={handleSubmitSettings}
                         />

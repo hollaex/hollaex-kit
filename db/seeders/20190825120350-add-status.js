@@ -116,8 +116,7 @@ const status = [{
 				name: VAULT_NAME || '',
 				key: VAULT_KEY,
 				secret: VAULT_SECRET,
-				connected_coins: [],
-				cron_task_interval: 15
+				connected_coins: []
 			},
 			plugins: {
 				s3: {

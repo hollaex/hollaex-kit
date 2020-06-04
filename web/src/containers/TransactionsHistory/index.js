@@ -13,7 +13,7 @@ import {
 } from '../../actions/walletActions';
 
 import { IconTitle, TabController, Loader, CheckTitle, Dialog, Button, CurrencyBallWithPrice } from '../../components';
-import { ICONS, FLEX_CENTER_CLASSES, BASE_CURRENCY, DEFAULT_COIN_DATA } from '../../config/constants';
+import { ICONS, FLEX_CENTER_CLASSES, BASE_CURRENCY } from '../../config/constants';
 import {
 	generateTradeHeaders,
 	generateTradeHeadersMobile,
@@ -34,7 +34,8 @@ class TransactionsHistory extends Component {
 		dialogIsOpen: false,
 		amount: 0,
 		transactionId: 0,
-		jumpToPage: 0
+		jumpToPage: 0,
+		currency: BASE_CURRENCY
 	};
 
 	componentDidMount() {
@@ -117,9 +118,9 @@ class TransactionsHistory extends Component {
 			}
 		});
 	};
-	withdrawalPopup = (id, amount) => {
+	withdrawalPopup = (id, amount, currency) => {
 		if (id) {
-			this.setState({ amount: amount, transactionId: id });
+			this.setState({ amount: amount, transactionId: id, currency: currency });
 			this.openDialog()
 		}
 	};
@@ -221,9 +222,8 @@ class TransactionsHistory extends Component {
 
 	render() {
 		const { id, activeTheme, coins } = this.props;
-		const { activeTab, dialogIsOpen, amount } = this.state;
+		let { activeTab, dialogIsOpen, amount, currency } = this.state;
 		const { onCloseDialog } = this;
-		const { fullname } = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
 
 		if (!id) {
 			return <Loader />;
@@ -295,7 +295,7 @@ class TransactionsHistory extends Component {
 							iconPath={activeTheme === 'dark' ? ICONS.CANCEL_WITHDRAW_DARK : ICONS.CANCEL_WITHDRAW_LIGHT}
 							text={STRINGS.formatString(
 								STRINGS.CANCEL_BASE_WITHDRAWAL,
-								fullname
+								coins[currency].fullname
 							)}
 							textType="title"
 							underline={true}
@@ -305,7 +305,7 @@ class TransactionsHistory extends Component {
 							<div className='text-center mt-5 mb-5'>
 								<div>{STRINGS.CANCEL_WITHDRAWAL_POPUP_CONFIRM}</div>
 								<div className={classnames(...GROUP_CLASSES)}>
-									<CurrencyBallWithPrice symbol={BASE_CURRENCY} amount={amount} price={1} />
+									<CurrencyBallWithPrice symbol={coins[currency].symbol} amount={amount} price={1} />
 								</div>
 							</div>
 							<div className='w-100 buttons-wrapper d-flex' >

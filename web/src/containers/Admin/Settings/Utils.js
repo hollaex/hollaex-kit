@@ -149,28 +149,24 @@ export const generateAdminSettings = (key) => {
                 mode: 'tags',
                 label: 'Admin Whitelist IPs',
                 placeholder: 'Admin whitelist',
-                tokenSeparators: [',', ' ', '   '],
-                validate: [validateRequired]
+                tokenSeparators: [',', ' ', '   ']
             },
             allowed_domains: {
                 type: 'select',
                 mode: 'tags',
                 label: 'Allowed domains',
                 placeholder: 'Allowed domains',
-                tokenSeparators: [',', ' ', '   '],
-                validate: [validateRequired]
+                tokenSeparators: [',', ' ', '   ']
             },
             site_key: {
                 type: 'input',
                 label: 'Captcha site key (Google ReCaptcha V3)',
-                placeholder: 'Captcha site key (Google ReCaptcha V3)',
-                validate: [validateRequired]
+                placeholder: 'Captcha site key (Google ReCaptcha V3)'
             },
             secret_key: {
                 type: 'input',
                 label: 'Captcha secret key (Google ReCaptcha V3)',
-                placeholder: 'Captcha secret key (Google ReCaptcha V3)',
-                validate: [validateRequired]
+                placeholder: 'Captcha secret key (Google ReCaptcha V3)'
             }
         };
     } else if (key === 'email') {

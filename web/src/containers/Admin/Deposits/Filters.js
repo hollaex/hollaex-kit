@@ -19,7 +19,8 @@ const getFilters = (coinOptions) => [
 		options: [
 			{ value: 'true', text: 'Confirmed' },
 			{ value: 'false', text: 'Pending' },
-			{ value: 'dismissed', text: 'Dismissed' }
+			{ value: 'dismissed', text: 'Dismissed' },
+			{ value: 'rejected', text: 'Rejected' }
 		]
 	}
 ];
@@ -31,6 +32,12 @@ const getStatusValue = (key, params) => {
 		params[key] === undefined
 	) {
 		return 'dismissed';
+	} else if (
+		key === 'status' &&
+		params.rejected !== undefined &&
+		params[key] === undefined
+	) {
+		return 'rejected';
 	} else {
 		return params[key];
 	}

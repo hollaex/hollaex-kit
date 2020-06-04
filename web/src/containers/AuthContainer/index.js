@@ -7,7 +7,7 @@ import { bindActionCreators } from 'redux';
 import moment from 'moment';
 
 import { AppFooter } from '../../components';
-import { FLEX_CENTER_CLASSES, CAPTCHA_SITEKEY } from '../../config/constants';
+import { FLEX_CENTER_CLASSES, CAPTCHA_SITEKEY, DEFAULT_CAPTCHA_SITEKEY } from '../../config/constants';
 import STRINGS from '../../config/localizedStrings';
 import { getClasesForLanguage } from '../../utils/string';
 import { getThemeClass } from '../../utils/theme';
@@ -92,8 +92,10 @@ class AuthContainer extends Component {
 		const childWithLanguageClasses = React.Children.map(children, (child) =>
 			React.cloneElement(child, { activeLanguage, languageClasses })
 		);
-		let siteKey = CAPTCHA_SITEKEY;
-		if (constants.captcha && constants.captcha.site_key) {
+		let siteKey = DEFAULT_CAPTCHA_SITEKEY;
+		if (CAPTCHA_SITEKEY) {
+			siteKey = CAPTCHA_SITEKEY;
+		} else if (constants.captcha && constants.captcha.site_key) {
 			siteKey = constants.captcha.site_key;
 		}
 		loadReCaptcha(siteKey);

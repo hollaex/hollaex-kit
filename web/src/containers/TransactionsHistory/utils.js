@@ -13,7 +13,7 @@ import {
 	CURRENCY_PRICE_FORMAT,
 	DEFAULT_COIN_DATA
 } from '../../config/constants';
-import { formatTimestamp, isBlockchainTx } from '../../utils/utils';
+import { getFormatTimestamp, isBlockchainTx } from '../../utils/utils';
 import { formatToCurrency } from '../../utils/currency';
 
 notification.config({
@@ -298,7 +298,7 @@ export const generateTradeHeaders = (symbol, pairs, coins, discount) => {
 			renderCell: ({ timestamp = '' }, key, index) => {
 				return (
 					<td key={index} className={isMobile ? 'text-center' : ''}>
-						{formatTimestamp(timestamp)}
+						{getFormatTimestamp(timestamp)}
 					</td>
 				);
 			}
@@ -420,7 +420,7 @@ export const generateWithdrawalsHeaders = (
 			key: 'created_at',
 			exportToCsv: ({ created_at = '' }) => created_at,
 			renderCell: ({ created_at = '' }, key, index) => {
-				return <td key={index}>{formatTimestamp(created_at)}</td>;
+				return <td key={index}>{getFormatTimestamp(created_at)}</td>;
 			}
 		},
 		{
@@ -446,6 +446,7 @@ export const generateWithdrawalsHeaders = (
 				if (
 					status === false &&
 					dismissed === false &&
+					rejected === false &&
 					processing === false &&
 					waiting === false &&
 					type === 'withdrawal'
@@ -455,7 +456,7 @@ export const generateWithdrawalsHeaders = (
 						<td key={index}>
 							<div
 								className="withdrawal-cancel"
-								onClick={() => withdrawalPopup(id, amount)}
+								onClick={() => withdrawalPopup(id, amount, currency)}
 								key={id}
 							>
 								{STRINGS.CANCEL}

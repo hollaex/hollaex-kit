@@ -33,7 +33,7 @@ export const tradeHistorySelector = createSelector(getPairsTrades, getPair, (pai
 export const activeOrdersSelector = createSelector(getActiveOrders, getPair, (orders, pair) => {
 	let count = 0;
 	return orders.filter(
-		({ symbol }) => symbol === pair && count++ < 10
+		({ symbol }) => symbol === pair && count++ < 50
 	);
 });
 

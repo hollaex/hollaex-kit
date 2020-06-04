@@ -104,7 +104,7 @@ class DocumentsVerification extends Component {
 					fullWidth: isMobile
 				}
 			},
-			proofOfResidence: {
+			proof_of_residency: {
 				type: {
 					type: 'hidden'
 				},
@@ -208,7 +208,7 @@ class DocumentsVerification extends Component {
 					{renderFields(formFields.id)}
 					<div className="my-4"></div>
 
-					{formFields.proofOfResidence && (
+					{formFields.proof_of_residency && (
 						<div>
 							<HeaderSection
 								title={
@@ -218,7 +218,7 @@ class DocumentsVerification extends Component {
 							>
 								<PORSection />
 							</HeaderSection>
-							{renderFields(formFields.proofOfResidence)}
+							{renderFields(formFields.proof_of_residency)}
 						</div>
 					)}
 					<div className="my-4"></div>
