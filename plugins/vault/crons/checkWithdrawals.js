@@ -5,6 +5,7 @@ const rp = require('request-promise');
 const { each } = require('lodash');
 const { all, delay } = require('bluebird');
 const { VAULT_ENDPOINT, GET_CONFIGURATION, GET_SECRETS } = require('../../../constants');
+const mathjs = require('mathjs');
 const { loggerDeposits } = require('../../../config/logger');
 const VAULT_NAME = () => GET_SECRETS().vault.name;
 const VAULT_KEY = () => GET_SECRETS().vault.key;
@@ -14,6 +15,10 @@ const VAULT_WALLET = (coin) => {
 };
 const { sendEmail } = require('../../../mail');
 const { MAILTYPE } = require('../../../mail/strings');
+
+const getAmount = (amount, fee) => {
+	return mathjs.number(mathjs.subtract(mathjs.fraction(amount), mathjs.fraction(fee)));
+};
 
 const checkWithdrawals = () => {
 	return new Promise((resolve, reject) => {
@@ -135,7 +140,7 @@ const checkWithdrawals = () => {
 									MAILTYPE.WITHDRAWAL,
 									data.data.User.email,
 									{
-										amount: data.data.amount,
+										amount: getAmount(data.data.amount, data.data.fee),
 										transaction_id: data.data.transaction_id,
 										fee: data.data.fee,
 										status: true,

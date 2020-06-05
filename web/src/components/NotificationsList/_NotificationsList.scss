@@ -26,6 +26,9 @@
 		a {
 			color: $link;
 		}
+		span, p {
+			background-color: $app-sidebar-background !important;
+		}
 	}
 }
 
@@ -52,6 +55,10 @@
 		.notifications_list-item-text {
 			a {
 				color: $dark-link;
+			}
+			span, p {
+				background-color: $dark-app-sidebar-background !important;
+				color: $dark-font-sub-text-color !important;
 			}
 		}
 	}

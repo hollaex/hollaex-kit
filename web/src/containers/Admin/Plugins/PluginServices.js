@@ -5,7 +5,15 @@ import { bindActionCreators } from 'redux';
 import { change } from 'redux-form';
 
 import PluginForm from './pluginForm';
-import { updatePlugins, getConstants, connectVault, requestVaultSupportCoins, disconnectVault } from './action';
+import {
+	updatePlugins,
+	getConstants,
+	getPlugins,
+	updatePluginsService,
+	connectVault,
+	requestVaultSupportCoins,
+	disconnectVault
+} from './action';
 import { getAllPluginsData, getPluginsForm } from './Utils';
 import { setConfig } from '../../../actions/appActions';
 import Chat from '../Chat';
@@ -26,13 +34,15 @@ class PluginServices extends Component {
 			serviceLoading: false,
 			error: '',
 			constants: {},
-			vaultSupportCoins: []
+			vaultSupportCoins: [],
+			pluginsData: {}
 		};
 	}
 
 	componentDidMount() {
 		this.getConstantData();
 		if (this.props.params) {
+			this.getPluginsData(this.props.params.services);
 			this.getServices(this.props.params.services);
 			if (this.props.params.services &&
 				this.props.params.services === 'vault') {
@@ -44,14 +54,17 @@ class PluginServices extends Component {
 	componentDidUpdate(prevProps, prevState) {
 		if ((JSON.stringify(this.props.params) !== JSON.stringify(prevProps.params)
 			|| JSON.stringify(this.state.constants) !== JSON.stringify(prevState.constants)
-			|| JSON.stringify(this.props.availablePlugins) !== JSON.stringify(prevProps.availablePlugins))
+			|| JSON.stringify(this.props.availablePlugins) !== JSON.stringify(prevProps.availablePlugins)
+			|| JSON.stringify(this.state.pluginsData) !== JSON.stringify(prevState.pluginsData))
 			&& this.props.params.services) {
 			this.getServices(this.props.params.services);
 		}
 		if (JSON.stringify(this.props.params) !== JSON.stringify(prevProps.params) &&
-			this.props.params.services &&
-			this.props.params.services === 'vault') {
-			this.requestVaultSupportCoins();
+			this.props.params.services) {
+			this.getPluginsData(this.props.params.services);
+			if (this.props.params.services === 'vault') {
+				this.requestVaultSupportCoins();
+			}
 		}
 	}
 
@@ -60,6 +73,24 @@ class PluginServices extends Component {
 		getConstants()
 			.then((res) => {
 				this.setState({ loading: false, constants: { ...res.constants } });
+			})
+			.catch((error) => {
+				const message = error.data ? error.data.message : error.message;
+				this.setState({ loading: false, error: message });
+			});
+	};
+
+	getPluginsData = (service) => {
+		this.setState({ loading: true, error: '' });
+		getPlugins(service)
+			.then((res) => {
+				this.setState({
+					loading: false,
+					pluginsData: {
+						...this.state.pluginsData,
+						[service]: res
+					}
+				});
 			})
 			.catch((error) => {
 				const message = error.data ? error.data.message : error.message;
@@ -87,7 +118,8 @@ class PluginServices extends Component {
 	};
 
 	getServices = (services = '') => {
-		const { api_name = '', secrets = { vault: {} }, plugins = { enabled: '' } } = this.state.constants;
+		const { plugins = { enabled: '' } } = this.state.constants;
+		const initialData = this.state.pluginsData[services] || {};
 		const allPluginsData = getAllPluginsData(this.props.availablePlugins);
 		const pluginData = allPluginsData[services] || {}
 		const title = pluginData.title ? pluginData.title : '';
@@ -96,19 +128,20 @@ class PluginServices extends Component {
 		}
 		let connectStatus = false;
 		let initialValues = {}
-		if (services === 'vault' && secrets[services]) {
+		if (services === 'vault') {
 			if (plugins.enabled.includes(services)) {
 				connectStatus = true;
 			}
 			initialValues = {
-				...secrets[services],
-				name: api_name
+				...initialData
 			};
-			const apiName = this.normalizeAPIName(api_name);
-			if (apiName !== api_name) {
-				setTimeout(() => {
-					this.props.change('PLUGINS_FORM', 'name', apiName);
-				}, 200);
+			if (initialData.name) {
+				const apiName = this.normalizeAPIName(initialData.name);
+				if (apiName !== initialData.name) {
+					setTimeout(() => {
+						this.props.change('PLUGINS_FORM', 'name', apiName);
+					}, 200);
+				}
 			}
 		} else if ((services === 'bank' || services === 'chat') && plugins.enabled) {
 			if (plugins.enabled.includes(services)) {
@@ -117,33 +150,21 @@ class PluginServices extends Component {
 			}
 		} else {
 			if (pluginData.key) {
-				// need to remove when configurations removed from plugins
-				if (plugins.configuration &&
-					plugins.configuration[pluginData.key]) {
-					initialValues = {
-						...plugins.configuration[pluginData.key]
-					}
-				}
 				if (plugins.enabled.includes(services)) {
 					connectStatus = true;
 				}
-				if (secrets.plugins &&
-					secrets.plugins[pluginData.key]) {
-					let temp = secrets.plugins[pluginData.key];
-					initialValues = {
-						...initialValues,
-						...secrets.plugins[pluginData.key]
-					}
-					if (pluginData.key === 's3' && Object.keys(temp).length) {
-						Object.keys(temp).forEach(data => {
-							if (data !== 'id_docs_bucket') {
-								initialValues = {
-									...initialValues,
-									[data]: temp[data].write ? temp[data].write : temp[data].read
-								}
+				initialValues = { ...initialData };
+				if (pluginData.key === 's3' && Object.keys(initialData).length) {
+					Object.keys(initialData).forEach(data => {
+						if (data !== 'id_docs_bucket') {
+							initialValues = {
+								...initialValues,
+								[data]: initialData[data].write
+									? initialData[data].write
+									: initialData[data].read
 							}
-						});
-					}
+						}
+					});
 				}
 			} else if (plugins.enabled.includes(services)) {
 				connectStatus = true;
@@ -208,51 +229,59 @@ class PluginServices extends Component {
 	};
 
 	handleSubmitPlugins = (formProps, service) => {
-		const { plugins = { enabled: '', configuration: {} }, secrets = { plugins: {} } } = this.state.constants;
-		let enabled = plugins.enabled;
-		if (!plugins.enabled.includes(service)) {
-			enabled = plugins.enabled ? `${plugins.enabled},${service}` : service;
-		}
-		let formValues = {
-			plugins: {
-				// ...plugins,
-				enabled,
-				configuration: {}
-			},
-			secrets: {}
-		};
+		// const { plugins = { enabled: '', configuration: {} } } = this.state.constants;
+		// let enabled = plugins.enabled;
+		// if (!plugins.enabled.includes(service)) {
+		// 	enabled = plugins.enabled ? `${plugins.enabled},${service}` : service;
+		// }
+		let formValues = {};
 		if (service === 'vault') {
 			formValues = {
 				key: formProps.key,
-				secret: formProps.secret,
 				name: formProps.name
 			};
+			if (formProps.secret && !formProps.secret.includes('*')) {
+				formValues.secret = formProps.secret;
+			}
 			return this.connectVault(formValues);
 		} else if (service !== 'bank' && service !== 'chat') {
-			const { key, secret, ...rest } = formProps;
+			const { key, secret, auth, ...rest } = formProps;
 			const allPluginsData = getAllPluginsData(this.props.availablePlugins);
 			const pluginData = allPluginsData[service] || {};
-			formValues.secrets.plugins = { ...secrets.plugins };
+			formValues = { ...rest };
+			if (key && !key.includes('*')) {
+				formValues.key = key;
+			}
+			if (secret && !secret.includes('*')) {
+				formValues.secret = secret;
+			}
+			if (auth && !auth.includes('*')) {
+				formValues.auth = auth;
+			}
 			if (pluginData.key === 's3') {
 				// formValues.plugins.configuration[pluginData.key] = rest;
-				formValues.secrets.plugins[pluginData.key] = {
-					...rest,
-					key: { read: key, write: key },
-					secret: { read: secret, write: secret }
+				formValues = {
+					...rest
 				};
-			} else if (pluginData.key === 'freshdesk') {
-				// formValues.plugins.configuration[pluginData.key] = rest;
-				formValues.secrets.plugins[pluginData.key] = { key, ...rest };
-			} else if (pluginData.key === 'zendesk') {
-				// formValues.plugins.configuration[pluginData.key] = rest;
-				formValues.secrets.plugins[pluginData.key] = { key, ...rest };
-			} else {
-				// formValues.plugins.configuration[pluginData.key] = rest;
-				formValues.secrets.plugins[pluginData.key] = { key, secret, ...rest };
+				if (key && !key.includes('*')) {
+					formValues.key = { read: key, write: key };
+				}
+				if (secret && !secret.includes('*')) {
+					formValues.secret = { read: secret, write: secret };
+				}
+			// } else if (pluginData.key === 'freshdesk') {
+			// 	// formValues.plugins.configuration[pluginData.key] = rest;
+			// 	formValues.secrets.plugins[pluginData.key] = { key, ...rest };
+			// } else if (pluginData.key === 'zendesk') {
+			// 	// formValues.plugins.configuration[pluginData.key] = rest;
+			// 	formValues.secrets.plugins[pluginData.key] = { key, ...rest };
+			// } else {
+			// 	// formValues.plugins.configuration[pluginData.key] = rest;
+			// 	formValues.secrets.plugins[pluginData.key] = { key, secret, ...rest };
 			}
 		}
 		this.setState({ loading: true });
-		return this.updateConstants(formValues);
+		return this.updatePlugins(formValues);
 	};
 
 	connectVault = (formProps) => {
@@ -308,6 +337,24 @@ class PluginServices extends Component {
 			});
 	};
 
+	updatePlugins = (formProps) => {
+		return updatePluginsService(this.state.services, formProps)
+			.then((data) => {
+				this.setState({
+					pluginsData: {
+						...this.state.pluginsData,
+						[this.state.services]: data
+					},
+					loading: false,
+					serviceLoading: false
+				});
+			})
+			.catch((error) => {
+				const message = error.data ? error.data.message : error.message;
+				this.setState({ loading: false, error: message, serviceLoading: false });
+			});
+	};
+
 	pluginsDisplay = ({ services, connectStatus, initialValues }, fields) => {
 		switch (services) {
 			case 'vault':
@@ -350,11 +397,11 @@ class PluginServices extends Component {
 						: null
 				);
 			case 'announcement':
-					return (
-						connectStatus
+				return (
+					connectStatus
 						? <Announcement />
 						: null
-					)
+				)
 			default:
 				return <div />
 		}

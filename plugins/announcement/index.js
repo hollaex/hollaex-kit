@@ -4,11 +4,56 @@ const app = require('../index');
 const { verifyToken, checkScopes } = require('../helpers/auth');
 const { postAnnouncement, deleteAnnouncement, getAnnouncements, findAnnouncement } = require('./helpers');
 const bodyParser = require('body-parser');
-const { logger, getPagination, getTimeframe, getOrdering } = require('../helpers/common');
+const { logger, getPagination, getTimeframe, getOrdering, updatePluginConstant, maskSecrets } = require('../helpers/common');
 const { WRONG_TITLE, WRONG_MESSAGE, WRONG_TYPE, WRONG_ID } = require('./messages');
 const { WRONG_LIMIT, WRONG_PAGE, WRONG_ORDER_BY, WRONG_ORDER } = require('../helpers/messages');
-// const { sendEmail } = require('../../mail');
-// const { MAILTYPE } = require('../../mail/strings');
+const { GET_SECRETS } = require('../../constants');
+
+app.get('/plugins/announcement/constant', verifyToken, (req, res) => {
+	const endpointScopes = ['admin', 'tech'];
+	const scopes = req.auth.scopes;
+	checkScopes(endpointScopes, scopes);
+
+	logger.verbose(
+		'GET /plugins/announcement/constant auth',
+		req.auth.sub
+	);
+
+	try {
+		res.json(maskSecrets('announcement', GET_SECRETS().plugins.announcement) || {});
+	} catch (err) {
+		res.status(400).json({ message: err.message });
+	}
+});
+
+app.put('/plugins/announcement/constant', [verifyToken, bodyParser.json()], (req, res) => {
+	const endpointScopes = ['admin', 'tech'];
+	const scopes = req.auth.scopes;
+	checkScopes(endpointScopes, scopes);
+
+	logger.verbose(
+		'PUT /plugins/announcement/constant auth',
+		req.auth.sub
+	);
+
+	if (req.body.length === 0) {
+		logger.error('PUT /plugins/announcement/constant error', 'Must provide key to update');
+		return res.status(400).json({ message: 'Must provide key to update' });
+	}
+
+	logger.info(
+		'PUT /plugins/announcement/constant body',
+		req.body
+	);
+
+	updatePluginConstant('announcement', req.body)
+		.then((data) => {
+			res.json(data);
+		})
+		.catch((err) => {
+			res.status(400).json({ message: err.message });
+		});
+});
 
 app.post('/plugins/announcement', [verifyToken, bodyParser.json()], (req, res) => {
 	const endpointScopes = ['admin'];
