@@ -9,11 +9,10 @@ exports.AVAILABLE_PLUGINS = [
 	'chat',
 	'freshdesk',
 	'kyc',
-	'land_line',
 	'sms',
 	'vault',
 	'xht_fee',
-	'zendesk',
+	'zendesk'
 ];
 
 // SMS_CONSTANTS

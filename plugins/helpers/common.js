@@ -3,7 +3,8 @@
 const { Status } = require('../../db/models');
 const { CONSTANTS_KEYS, INIT_CHANNEL, SECRETS_KEYS } = require('../../constants');
 const { publisher } = require('../../db/pubsub');
-const { omit } = require('lodash');
+const { omit, each } = require('lodash');
+const SECRET_MASK = '************************';
 
 // Winston logger
 const logger = require('../../config/logger').loggerPlugin;
@@ -127,6 +128,59 @@ const getOrdering = (order_by = undefined, order = undefined) => {
 	}
 };
 
+const updatePluginConstant = (plugin, newValues) => {
+	return Status.findOne({
+		attributes: ['id', 'constants']
+	})
+		.then((status) => {
+			const constants = status.dataValues.constants;
+			if (plugin === 'vault') {
+				constants.secrets.vault = { ...constants.secrets.vault, ...newValues };
+				return status.update({ constants }, {
+					fields: [
+						'constants'
+					],
+					returning: true
+				});
+			} else {
+				constants.secrets.plugins[plugin] = { ...constants.secrets.plugins[plugin], ...newValues };
+				return status.update({ constants }, {
+					fields: [
+						'constants'
+					],
+					returning: true
+				});
+			}
+		})
+		.then((data) => {
+			const secrets = data.constants.secrets;
+			data.constants = omit(data.constants, 'secrets');
+			publisher.publish(
+				INIT_CHANNEL,
+				JSON.stringify({
+					type: 'constants', data: { constants: data.constants, secrets }
+				})
+			);
+			return maskSecrets(plugin, plugin === 'vault' ? secrets.vault : secrets.plugins[plugin]);
+		});
+};
+
+const maskSecrets = (plugin, secrets) => {
+	each(secrets, (secret, secretKey) => {
+		if (plugin === 's3' && secretKey === 'secret') {
+			secrets[secretKey] = {
+				write: SECRET_MASK,
+				read: SECRET_MASK
+			};
+		} else if ((plugin === 'zendesk' || plugin === 'freshdesk') && secretKey === 'key') {
+			secrets[secretKey] = SECRET_MASK;
+		} else if (secretKey === 'secret' || secretKey === 'auth') {
+			secrets[secretKey] = SECRET_MASK;
+		}
+	});
+	return secrets;
+};
+
 module.exports = {
 	logger,
 	updateConstants,
@@ -135,5 +189,7 @@ module.exports = {
 	getPagination,
 	getOrdering,
 	getTimeframe,
-	convertSequelizeCountAndRows
+	convertSequelizeCountAndRows,
+	updatePluginConstant,
+	maskSecrets
 };

@@ -5228,6 +5228,9 @@ table th {
 .post-content .notifications_list-item-text a {
   color: var(--link); }
 
+.post-content .notifications_list-item-text span, .post-content .notifications_list-item-text p {
+  background-color: var(--app-sidebar-background) !important; }
+
 .dark-theme .trade_post_icon svg .announcement {
   fill: var(--colors-white); }
 
@@ -5244,6 +5247,9 @@ table th {
   color: var(--dark-font-sub-text-color); }
   .dark-theme .post-content .notifications_list-item-text a {
     color: var(--dark-link); }
+  .dark-theme .post-content .notifications_list-item-text span, .dark-theme .post-content .notifications_list-item-text p {
+    background-color: var(--dark-app-sidebar-background) !important;
+    color: var(--dark-font-sub-text-color) !important; }
 
 .dropdown-content .dropdown-option {
   padding: 0; }
@@ -8668,6 +8674,9 @@ foreignObject {
 .post-content .notifications_list-item-text a {
   color: var(--link); }
 
+.post-content .notifications_list-item-text span, .post-content .notifications_list-item-text p {
+  background-color: var(--app-sidebar-background) !important; }
+
 .dark-theme .trade_post_icon svg .announcement {
   fill: var(--colors-white); }
 
@@ -8684,6 +8693,9 @@ foreignObject {
   color: var(--dark-font-sub-text-color); }
   .dark-theme .post-content .notifications_list-item-text a {
     color: var(--dark-link); }
+  .dark-theme .post-content .notifications_list-item-text span, .dark-theme .post-content .notifications_list-item-text p {
+    background-color: var(--dark-app-sidebar-background) !important;
+    color: var(--dark-font-sub-text-color) !important; }
 
 .app_footer-container {
   border-top: 1px solid var(--dark-border-main);

@@ -6,9 +6,49 @@ const { findUser, getUserValuesById, getUserValuesByEmail } = require('../helper
 const { addBankAccount, adminAddUserBanks, approveBankAccount, rejectBankAccount } = require('./helpers');
 const { USER_NOT_FOUND, DEFAULT_REJECTION_NOTE } = require('./messages');
 const bodyParser = require('body-parser');
-const { logger } = require('../helpers/common');
+const { logger, updatePluginConstant, maskSecrets } = require('../helpers/common');
 const { sendEmail } = require('../../mail');
 const { MAILTYPE } = require('../../mail/strings');
+const { GET_SECRETS } = require('../../constants');
+
+app.get('/plugins/bank/constant', verifyToken, (req, res) => {
+	const endpointScopes = ['admin', 'tech'];
+	const scopes = req.auth.scopes;
+	checkScopes(endpointScopes, scopes);
+
+	logger.verbose(
+		'GET /plugins/bank/constant auth',
+		req.auth.sub
+	);
+
+	res.json(maskSecrets('bank', GET_SECRETS().plugins.bank) || {});
+});
+
+app.put('/plugins/bank/constant', [verifyToken, bodyParser.json()], (req, res) => {
+	const endpointScopes = ['admin', 'tech'];
+	const scopes = req.auth.scopes;
+	checkScopes(endpointScopes, scopes);
+
+	logger.verbose(
+		'PUT /plugins/bank/constant auth',
+		req.auth.sub
+	);
+
+	if (req.body.length === 0) {
+		logger.error('PUT /plugins/bank/constant error', 'Must provide key to update');
+		return res.status(400).json({ message: 'Must provide key to update' });
+	}
+
+	logger.info(
+		'PUT /plugins/bank/constant body',
+		req.body
+	);
+
+	updatePluginConstant('bank', req.body)
+		.then((data) => {
+			res.json(data);
+		});
+});
 
 app.post('/plugins/bank/user', [verifyToken, bodyParser.json()], (req, res) => {
 	const endpointScopes = ['user'];
