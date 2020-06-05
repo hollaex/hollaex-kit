@@ -12,7 +12,7 @@ exports.AVAILABLE_PLUGINS = [
 	'sms',
 	'vault',
 	'xht_fee',
-	'zendesk',
+	'zendesk'
 ];
 
 // SMS_CONSTANTS
