@@ -14,6 +14,17 @@ export const updatePlugins = (values) => {
 export const getConstants = () =>
 	requestAuthenticated('/admin/constant');
 
+export const getPlugins = (service) =>
+	requestAuthenticated(`/plugins/${service}/constant`, {}, null, WS_URL);
+
+export const updatePluginsService = (service, values) => {
+	const options = {
+		method: 'PUT',
+		body: JSON.stringify(values)
+	};
+	return requestAuthenticated(`/plugins/${service}/constant`, options, null, WS_URL);
+};
+
 export const connectVault = (values) => {
 	const options = {
 		method: 'POST',
