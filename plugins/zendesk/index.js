@@ -16,7 +16,11 @@ app.get('/plugins/zendesk/constant', verifyToken, (req, res) => {
 		req.auth.sub
 	);
 
-	res.json(maskSecrets('zendesk', GET_SECRETS().plugins.zendesk) || {});
+	try {
+		res.json(maskSecrets('zendesk', GET_SECRETS().plugins.zendesk) || {});
+	} catch (err) {
+		res.status(400).json({ message: err.message });
+	}
 });
 
 app.put('/plugins/zendesk/constant', [verifyToken, bodyParser.json()], (req, res) => {
@@ -42,5 +46,8 @@ app.put('/plugins/zendesk/constant', [verifyToken, bodyParser.json()], (req, res
 	updatePluginConstant('zendesk', req.body)
 		.then((data) => {
 			res.json(data);
+		})
+		.catch((err) => {
+			res.status(400).json({ message: err.message });
 		});
 });
