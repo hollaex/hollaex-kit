@@ -6,7 +6,7 @@ const { findUser } = require('../helpers/user');
 const PhoneNumber = require('awesome-phonenumber');
 const bodyParser = require('body-parser');
 const { createSMSCode, storeSMSCode, checkSMSCode, deleteSMSCode, sendSMS, updateUserPhoneNumber } = require('./helpers');
-const { logger } = require('../helpers/common');
+const { logger, updatePluginConstant, maskSecrets } = require('../helpers/common');
 const {
 	SMS_INVALID_PHONE,
 	SMS_SUCCESS,
@@ -15,6 +15,46 @@ const {
 const { GET_CONFIGURATION } = require('../../constants');
 const DEFAULT_LANGUAGE = () => GET_CONFIGURATION().constants.defaults.language;
 const SMS = () => require('../../mail/strings').languageFile(DEFAULT_LANGUAGE()).SMS;
+const { GET_SECRETS } = require('../../constants');
+
+app.get('/plugins/sms/constant', verifyToken, (req, res) => {
+	const endpointScopes = ['admin', 'tech'];
+	const scopes = req.auth.scopes;
+	checkScopes(endpointScopes, scopes);
+
+	logger.verbose(
+		'GET /plugins/sms/constant auth',
+		req.auth.sub
+	);
+
+	res.json(maskSecrets('sns', GET_SECRETS().plugins.sns) || {});
+});
+
+app.put('/plugins/sms/constant', [verifyToken, bodyParser.json()], (req, res) => {
+	const endpointScopes = ['admin', 'tech'];
+	const scopes = req.auth.scopes;
+	checkScopes(endpointScopes, scopes);
+
+	logger.verbose(
+		'PUT /plugins/sms/constant auth',
+		req.auth.sub
+	);
+
+	if (req.body.length === 0) {
+		logger.error('PUT /plugins/sms/constant error', 'Must provide key to update');
+		return res.status(400).json({ message: 'Must provide key to update' });
+	}
+
+	logger.info(
+		'PUT /plugins/sms/constant body',
+		req.body
+	);
+
+	updatePluginConstant('sns', req.body)
+		.then((data) => {
+			res.json(data);
+		});
+});
 
 app.get('/plugins/sms/verify', verifyToken, (req, res) => {
 	const endpointScopes = ['user'];

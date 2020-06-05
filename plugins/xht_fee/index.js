@@ -3,11 +3,52 @@
 const app = require('../index');
 const { verifyToken, checkScopes } = require('../helpers/auth');
 const { findUser } = require('../helpers/user');
-const { logger } = require('../helpers/common');
+const { logger, updatePluginConstant, maskSecrets } = require('../helpers/common');
 const bodyParser = require('body-parser');
 const { Balance } = require('../../db/models');
 
 const REQUIRED_XHT = 100;
+
+const { GET_SECRETS } = require('../../constants');
+
+app.get('/plugins/xht_fee/constant', verifyToken, (req, res) => {
+	const endpointScopes = ['admin', 'tech'];
+	const scopes = req.auth.scopes;
+	checkScopes(endpointScopes, scopes);
+
+	logger.verbose(
+		'GET /plugins/xht_fee/constant auth',
+		req.auth.sub
+	);
+
+	res.json(maskSecrets('xht_fee', GET_SECRETS().plugins.xht_fee) || {});
+});
+
+app.put('/plugins/xht_fee/constant', [verifyToken, bodyParser.json()], (req, res) => {
+	const endpointScopes = ['admin', 'tech'];
+	const scopes = req.auth.scopes;
+	checkScopes(endpointScopes, scopes);
+
+	logger.verbose(
+		'PUT /plugins/xht_fee/constant auth',
+		req.auth.sub
+	);
+
+	if (req.body.length === 0) {
+		logger.error('PUT /plugins/xht_fee/constant error', 'Must provide key to update');
+		return res.status(400).json({ message: 'Must provide key to update' });
+	}
+
+	logger.info(
+		'PUT /plugins/xht_fee/constant body',
+		req.body
+	);
+
+	updatePluginConstant('xht_fee', req.body)
+		.then((data) => {
+			res.json(data);
+		});
+});
 
 app.get('/plugins/activate-xht-fee', [verifyToken, bodyParser.json()], (req, res) => {
 	const endpointScopes = ['user'];
