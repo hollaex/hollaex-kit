@@ -21,7 +21,11 @@ app.get('/plugins/xht_fee/constant', verifyToken, (req, res) => {
 		req.auth.sub
 	);
 
-	res.json(maskSecrets('xht_fee', GET_SECRETS().plugins.xht_fee) || {});
+	try {
+		res.json(maskSecrets('xht_fee', GET_SECRETS().plugins.xht_fee) || {});
+	} catch (err) {
+		res.status(400).json({ message: err.message });
+	}
 });
 
 app.put('/plugins/xht_fee/constant', [verifyToken, bodyParser.json()], (req, res) => {
@@ -47,6 +51,9 @@ app.put('/plugins/xht_fee/constant', [verifyToken, bodyParser.json()], (req, res
 	updatePluginConstant('xht_fee', req.body)
 		.then((data) => {
 			res.json(data);
+		})
+		.catch((err) => {
+			res.status(400).json({ message: err.message });
 		});
 });
 

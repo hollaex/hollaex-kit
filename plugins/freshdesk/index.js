@@ -16,7 +16,11 @@ app.get('/plugins/freshdesk/constant', verifyToken, (req, res) => {
 		req.auth.sub
 	);
 
-	res.json(maskSecrets('freshdesk', GET_SECRETS().plugins.freshdesk) || {});
+	try {
+		res.json(maskSecrets('freshdesk', GET_SECRETS().plugins.freshdesk) || {});
+	} catch (err) {
+		res.status(400).json({ message: err.message });
+	}
 });
 
 app.put('/plugins/freshdesk/constant', [verifyToken, bodyParser.json()], (req, res) => {
@@ -42,5 +46,8 @@ app.put('/plugins/freshdesk/constant', [verifyToken, bodyParser.json()], (req, r
 	updatePluginConstant('freshdesk', req.body)
 		.then((data) => {
 			res.json(data);
+		})
+		.catch((err) => {
+			res.status(400).json({ message: err.message });
 		});
 });
