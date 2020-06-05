@@ -21,7 +21,11 @@ app.get('/plugins/bank/constant', verifyToken, (req, res) => {
 		req.auth.sub
 	);
 
-	res.json(maskSecrets('bank', GET_SECRETS().plugins.bank) || {});
+	try {
+		res.json(maskSecrets('bank', GET_SECRETS().plugins.bank) || {});
+	} catch (err) {
+		res.status(400).json({ message: err.message });
+	}
 });
 
 app.put('/plugins/bank/constant', [verifyToken, bodyParser.json()], (req, res) => {
@@ -47,6 +51,9 @@ app.put('/plugins/bank/constant', [verifyToken, bodyParser.json()], (req, res) =
 	updatePluginConstant('bank', req.body)
 		.then((data) => {
 			res.json(data);
+		})
+		.catch((err) => {
+			res.status(400).json({ message: err.message });
 		});
 });
 

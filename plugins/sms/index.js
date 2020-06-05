@@ -27,7 +27,11 @@ app.get('/plugins/sms/constant', verifyToken, (req, res) => {
 		req.auth.sub
 	);
 
-	res.json(maskSecrets('sns', GET_SECRETS().plugins.sns) || {});
+	try {
+		res.json(maskSecrets('sns', GET_SECRETS().plugins.sns) || {});
+	} catch (err) {
+		res.status(400).json({ message: err.message });
+	}
 });
 
 app.put('/plugins/sms/constant', [verifyToken, bodyParser.json()], (req, res) => {
@@ -53,6 +57,9 @@ app.put('/plugins/sms/constant', [verifyToken, bodyParser.json()], (req, res) =>
 	updatePluginConstant('sns', req.body)
 		.then((data) => {
 			res.json(data);
+		})
+		.catch((err) => {
+			res.status(400).json({ message: err.message });
 		});
 });
 

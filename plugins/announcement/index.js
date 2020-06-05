@@ -19,7 +19,11 @@ app.get('/plugins/announcement/constant', verifyToken, (req, res) => {
 		req.auth.sub
 	);
 
-	res.json(maskSecrets('announcement', GET_SECRETS().plugins.announcement) || {});
+	try {
+		res.json(maskSecrets('announcement', GET_SECRETS().plugins.announcement) || {});
+	} catch (err) {
+		res.status(400).json({ message: err.message });
+	}
 });
 
 app.put('/plugins/announcement/constant', [verifyToken, bodyParser.json()], (req, res) => {
@@ -45,6 +49,9 @@ app.put('/plugins/announcement/constant', [verifyToken, bodyParser.json()], (req
 	updatePluginConstant('announcement', req.body)
 		.then((data) => {
 			res.json(data);
+		})
+		.catch((err) => {
+			res.status(400).json({ message: err.message });
 		});
 });
 

@@ -16,7 +16,11 @@ app.get('/plugins/chat/constant', verifyToken, (req, res) => {
 		req.auth.sub
 	);
 
-	res.json(maskSecrets('chat', GET_SECRETS().plugins.chat) || {});
+	try {
+		res.json(maskSecrets('chat', GET_SECRETS().plugins.chat) || {});
+	} catch (err) {
+		res.status(400).json({ message: err.message });
+	}
 });
 
 app.put('/plugins/chat/constant', [verifyToken, bodyParser.json()], (req, res) => {
@@ -42,5 +46,8 @@ app.put('/plugins/chat/constant', [verifyToken, bodyParser.json()], (req, res) =
 	updatePluginConstant('chat', req.body)
 		.then((data) => {
 			res.json(data);
+		})
+		.catch((err) => {
+			res.status(400).json({ message: err.message });
 		});
 });

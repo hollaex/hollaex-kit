@@ -20,7 +20,11 @@ app.get('/plugins/vault/constant', verifyToken, (req, res) => {
 		req.auth.sub
 	);
 
-	res.json(maskSecrets('vault', GET_SECRETS().vault) || {});
+	try {
+		res.json(maskSecrets('vault', GET_SECRETS().vault) || {});
+	} catch (err) {
+		res.status(400).json({ message: err.message });
+	}
 });
 
 app.put('/plugins/vault/constant', [verifyToken, bodyParser.json()], (req, res) => {
@@ -49,6 +53,9 @@ app.put('/plugins/vault/constant', [verifyToken, bodyParser.json()], (req, res) 
 	updatePluginConstant('vault', req.body)
 		.then((data) => {
 			res.json(data);
+		})
+		.catch((err) => {
+			res.status(400).json({ message: err.message });
 		});
 });
 
