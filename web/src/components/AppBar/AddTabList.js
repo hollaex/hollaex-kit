@@ -49,7 +49,7 @@ class AddTabList extends Component {
         return (
             <div id="add-tab-list-menu" className={classnames("app-bar-add-tab-menu", { "tab-menu-left": !selectedtabPairs.length })}>
                 <div className="app-bar-tab-menu d-flex justify-content-between">
-                    <div className="d-flex">
+                    <div className="d-flex overflow-x">
                         {symbols.map((symbol, index) =>
                             <div
                                 key={index}
