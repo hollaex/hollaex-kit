@@ -32,8 +32,8 @@ const processWithdrawals = () => {
 		loggerDeposits.info('/plugins/vault/crons/processWithdrawals starting');
 		const currentMinute = parseInt(moment().format('mm'));
 		each(GET_SECRETS().vault.connected_coins, (coin) => {
-			if (coin === 'xrp' || isErc(coin)) {
-				// XRP/ERC20 tokens are processed every minute
+			if (coin === 'xrp' || coin === 'xlm' || isErc(coin)) {
+				// XRP style/ERC20 tokens are processed every minute
 				vaultCoins.push({
 					currency: coin
 				});
@@ -145,6 +145,10 @@ const processWithdrawals = () => {
 							const [xrpAddress, xrpTag] = withdrawal.address.split(':');
 							option.data.body.data.address = xrpAddress;
 							option.data.body.data.meta = { tag: xrpTag };
+						} else if (withdrawal.currency === 'xlm') {
+							const [xlmAddress, xlmTag] = withdrawal.address.split(':');
+							option.data.body.data.address = xlmAddress;
+							option.data.body.data.meta = { memo: xlmTag };
 						}
 						options.push(option);
 					}
