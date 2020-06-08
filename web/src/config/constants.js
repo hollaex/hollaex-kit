@@ -414,6 +414,11 @@ export const EXPLORERS_ENDPOINT = (currency) => {
 					: 'https://explorer.bitcoin.com/bch/tx/';
 			break;
 		case 'xht':
+		case 'usdt':
+		case 'busd':
+		case 'tusd':
+		case 'dai':
+		case 'mkr':
 			endpoint =
 				NETWORK === 'testnet'
 					? 'https://ropsten.etherscan.io/tx/'
@@ -424,6 +429,30 @@ export const EXPLORERS_ENDPOINT = (currency) => {
 				NETWORK === 'testnet'
 					? 'https://moneroblocks.info/tx/'
 					: 'https://moneroblocks.info/tx/';
+			break;
+		case 'xlm':
+			endpoint =
+				NETWORK === 'testnet'
+					? 'https://testnet.steexp.com/tx/'
+					: 'https://steexp.com/tx/';
+			break;
+		case 'eos':
+			endpoint =
+				NETWORK === 'testnet'
+					? 'https://testnet.steexp.com/tx/'
+					: 'https://steexp.com/tx/';
+			break;
+		case 'eos':
+			endpoint =
+				NETWORK === 'testnet'
+					? 'https://testnet.eos.io/transaction/'
+					: 'https://bloks.io/transaction/';
+			break;
+		case 'trx':
+			endpoint =
+				NETWORK === 'testnet'
+					? 'https://shasta.tronscan.org/#/transaction/'
+					: 'https://tronscan.org/#/transaction/';
 			break;
 		default:
 			endpoint = ''
