@@ -171,6 +171,10 @@
     --coin-omg-text: #ffffff;
     --coin-hot: #8b5e3c;
     --coin-hot-text: #ffffff;
+    --coin-tusd: #002868;
+    --coin-tusd-text: #ffffff;
+    --coin-dai: #f3c27a;
+    --coin-dai-text: #000000;
 
     --dark-app-background-color: #202020;
     --dark-app-light-background: #2b2b2b;
@@ -323,4 +327,8 @@
     --dark-coin-omg-text: #ffffff;
     --dark-coin-hot: #8b5e3c;
     --dark-coin-hot-text: #ffffff;
+    --dark-coin-tusd: #002868;
+    --dark-coin-tusd-text: #ffffff;
+    --dark-coin-dai: #f3c27a;
+    --dark-coin-dai-text: #000000;
 }

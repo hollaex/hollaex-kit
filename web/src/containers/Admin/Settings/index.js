@@ -47,7 +47,7 @@ class Settings extends Component {
     }
 
     tabChange = (activeTab) => {
-        this.setState({ activeTab });
+        this.setState({ activeTab, error: '' });
     };
 
     getConstantData = () => {
@@ -131,6 +131,7 @@ class Settings extends Component {
     };
 
     submitSettings = (formProps, formKey) => {
+        const { initialEmailValues, initialSecurityValues } = this.state;
         let formValues = {};
         if (formKey === 'general') {
             formValues = { defaults: {} };
@@ -155,44 +156,69 @@ class Settings extends Component {
             if (formProps.supervisor) formValues.accounts.supervisor = formProps.supervisor;
         } else if (formKey === 'email_configuration') {
             formValues = {};
+            let compareValues = initialEmailValues.configuration || {};
             Object.keys(formProps).forEach((val) => {
                 if (val === 'sender' || val === 'timezone' || val === 'send_email_to_support') {
-                    if (!formValues.emails) formValues.emails = {};
-                    formValues.emails[val] = formProps[val];
-                // } else if (val === 'kyc' || val === 'supervisor') {
-                //     if (!formValues.accounts) formValues.accounts = {};
-                //     formValues.accounts[val] = formProps[val];
+                    if (compareValues[val] !== formProps[val]) {
+                        if (!formValues.emails) formValues.emails = {};
+                        formValues.emails[val] = formProps[val];
+                    }
+                    // } else if (val === 'kyc' || val === 'supervisor') {
+                    //     if (!formValues.accounts) formValues.accounts = {};
+                    //     formValues.accounts[val] = formProps[val];
                 } else if (val === 'port') {
-                    if (!formValues.secrets || !formValues.secrets.smtp) formValues.secrets = { smtp: {} };
-                    formValues.secrets.smtp[val] = parseInt(formProps[val], 10);
+                    if (compareValues[val] !== parseInt(formProps[val], 10)) {
+                        if (!formValues.secrets || !formValues.secrets.smtp) formValues.secrets = { smtp: {} };
+                        formValues.secrets.smtp[val] = parseInt(formProps[val], 10);
+                    }
                 } else {
-                    if (!formValues.secrets || !formValues.secrets.smtp) formValues.secrets = { smtp: {} };
-                    formValues.secrets.smtp[val] = formProps[val];
+                    if (compareValues[val] !== formProps[val]) {
+                        if (val === 'password') {
+                            if (!formProps[val].includes('*')) {
+                                if (!formValues.secrets || !formValues.secrets.smtp) formValues.secrets = { smtp: {} };
+                                formValues.secrets.smtp[val] = formProps[val];
+                            }
+                        } else {
+                            if (!formValues.secrets || !formValues.secrets.smtp) formValues.secrets = { smtp: {} };
+                            formValues.secrets.smtp[val] = formProps[val];
+                        }
+                    }
                 }
             });
         } else if (formKey === 'security') {
-            formValues = { captcha: {}, secrets: { captcha: {} } };
+            formValues = {};
             Object.keys(formProps).forEach((val) => {
-                if (val === 'site_key') {
+                if (val === 'site_key' && initialSecurityValues[val] !== formProps[val]) {
+                    if (!formValues.captcha) formValues.captcha = {};
                     formValues.captcha[val] = formProps[val];
                 } else if (val === 'secret_key') {
-                    formValues.secrets.captcha[val] = formProps[val];
-                } else if (val === 'allowed_domains' || val === 'admin_whitelist') {
+                    if (initialSecurityValues[val] !== formProps[val]
+                        && !formProps[val].includes('*')) {
+                            if (!formValues.secrets || !formValues.secrets.captcha) formValues.secrets = { captcha: {} };
+                            formValues.secrets.captcha[val] = formProps[val];
+                        }
+                } else if ((val === 'allowed_domains' || val === 'admin_whitelist')
+                    && initialSecurityValues[val] !== formProps[val]) {
                     let domainData = formProps[val];
+                    if (!formValues.secrets) formValues.secrets = {};
                     formValues.secrets[val] = typeof domainData === 'string'
                         ? domainData.split(',')
                         : domainData;
-                } else {
+                } else if (initialSecurityValues[val] !== formProps[val]) {
                     formValues[val] = formProps[val];
                 }
             });
         } else if (formKey === 'links') {
             formValues.links = { ...formProps }
-        } else if(formKey === 'miscellaneous'
+        } else if (formKey === 'miscellaneous'
             || formKey === 'dark'
             || formKey === 'light') {
             formValues.color = this.state.constants.color || {};
             formValues.color[formKey] = { ...formProps };
+        }
+        if (!Object.keys(formValues).length) {
+            this.setState({ error: 'Remove masked values from the secrets fields' });
+            return false;
         }
         this.setState({ loading: true, error: '' });
         updatePlugins(formValues)
