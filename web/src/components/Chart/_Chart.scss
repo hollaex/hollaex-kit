@@ -40,7 +40,55 @@
 	font-weight: bold;
 }
 
-.chart_btc, .chart_bch, .chart_eth, .chart_eur, .chart_ltc, .chart_xrp {
+.chart_btc,
+.chart_bch,
+.chart_eth,
+.chart_eur,
+.chart_ltc,
+.chart_xrp,
+.chart_xht,
+.chart_eos,
+.chart_bnb,
+.chart_link,
+.chart_trx,
+.chart_ada,
+.chart_matic,
+.chart_neo,
+.chart_etc,
+.chart_xlm,
+.chart_xmr,
+.chart_zec,
+.chart_one,
+.chart_pax,
+.chart_usdc,
+.chart_usdt,
+.chart_vet,
+.chart_btt,
+.chart_qtum,
+.chart_algo,
+.chart_rvn,
+.chart_iota,
+.chart_dash,
+.chart_bsv,
+.chart_ont,
+.chart_atom,
+.chart_celr,
+.chart_omg,
+.chart_hot,
+.chart_usd,
+.chart_jpy,
+.chart_gbp,
+.chart_chf,
+.chart_cad,
+.chart_aud,
+.chart_nzd,
+.chart_zar,
+.chart_hkd,
+.chart_krw,
+.chart_cny,
+.chart_sgd,
+.chart_dai,
+.chart_tusd {
 	fill-opacity: 0.7;
 }
 
@@ -236,6 +284,14 @@
     fill: $coin-sgd;
     stroke: $coin-sgd-1;
 }
+.chart_tusd {
+    fill: $coin-tusd;
+    stroke: $coin-tusd-1;
+}
+.chart_dai {
+    fill: $coin-dai;
+    stroke: $coin-dai-1;
+}
 
 .bar_wrapper {
 	height: 38rem;
@@ -408,7 +464,9 @@
 	.chart_hkd,
 	.chart_krw,
 	.chart_cny,
-	.chart_sgd {
+	.chart_sgd,
+	.chart_dai,
+	.chart_tusd {
 		fill-opacity: 0.1;
 		stroke-width: 1.5;
 	}
@@ -602,6 +660,14 @@
 	.chart_sgd {
 		fill: $dark-coin-sgd;
 		stroke: $dark-coin-sgd-1;
+	}
+	.chart_tusd {
+		fill: $dark-coin-tusd;
+		stroke: $dark-coin-tusd-1;
+	}
+	.chart_dai {
+		fill: $dark-coin-dai;
+		stroke: $dark-coin-dai-1;
 	}
 	.bar_wrapper {
 		.bar_xAxis {
