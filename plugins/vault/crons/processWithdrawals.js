@@ -205,11 +205,10 @@ const processWithdrawals = () => {
 									return withdrawal.update(
 										{
 											processing: false,
-											waiting: true,
 											status: true
 										},
 										{
-											fields: ['processing', 'waiting', 'status'],
+											fields: ['processing', 'status'],
 											transaction,
 											returning: true
 										}
@@ -229,16 +228,45 @@ const processWithdrawals = () => {
 							})
 								.catch((err) => {
 									loggerDeposits.error('/plugins/vault/crons/processWithdrawals perfromWithdrawal', `${option.dbWithdrawals[0].currency} withdrawal failed: ${err.message}`);
-									return {
-										success: false,
-										info: {
-											type: 'Vault Withdrawal Failed',
-											data: {
-												error: err.message,
-												withdrawals: option.dbWithdrawals.map((wd) => wd.dataValues)
-											}
-										}
-									};
+									return sequelize.transaction((transaction) => {
+										return all(option.dbWithdrawals.map((withdrawal) => {
+											return withdrawal.update(
+												{
+													processing: false,
+													waiting: true
+												},
+												{
+													fields: ['processing', 'waiting'],
+													transaction,
+													returning: true
+												}
+											);
+										}))
+											.then((dbWithdrawals) => {
+												return {
+													success: false,
+													info: {
+														type: 'Vault Withdrawal Failed',
+														data: {
+															error: err.message,
+															withdrawals: dbWithdrawals.map((wd) => wd.dataValues)
+														}
+													}
+												};
+											});
+									})
+										.catch((err) => {
+											return {
+												success: false,
+												info: {
+													type: 'Failed Withdrawal Waiting State Update Failed ',
+													data: {
+														error: err.message,
+														withdrawals: options.dbWithdrawals.map((wd) => wd.dataValues)
+													}
+												}
+											};
+										});
 								});
 						});
 				}));
