@@ -352,12 +352,13 @@ const processWithdrawals = () => {
 			.then((results) => {
 				return all(results.map((result) => {
 					if (result.success === false && result.send === true) {
-						return sendEmail(
+						sendEmail(
 							MAILTYPE.ALERT,
 							GET_CONFIGURATION().constants.accounts.admin,
 							result.info,
 							{}
 						);
+						return;
 					} else {
 						return;
 					}
