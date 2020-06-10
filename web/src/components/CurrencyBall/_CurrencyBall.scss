@@ -254,6 +254,16 @@ $large-modifier: 2.25;
 		border : none !important;
 		color: $coin-sgd-text !important;
 	}
+	&.tusd {
+		background-color: $coin-tusd;
+		border : none !important;
+		color: $coin-tusd-text !important;
+	}
+	&.dai {
+		background-color: $coin-dai;
+		border : none !important;
+		color: $coin-dai-text !important;
+	}
 
 	&.s {
 		font-size: $small-font;

@@ -4404,7 +4404,8 @@ table th {
 
 .tab-menu-left {
   left: -1px !important;
-  right: 0 !important; }
+  right: 0 !important;
+  width: fit-content; }
 
 .app-bar-add-tab-search {
   color: var(--trade-tabs-inactive-color);
@@ -4432,7 +4433,6 @@ table th {
   color: var(--app-bar-menu-list-color);
   display: block;
   min-width: 22rem;
-  max-width: 25rem;
   min-height: 8rem;
   position: absolute;
   top: 34px;
@@ -6743,6 +6743,14 @@ table th {
     background-color: var(--coin-sgd);
     border: none !important;
     color: var(--coin-sgd-text) !important; }
+  .currency_ball-wrapper.tusd {
+    background-color: var(--coin-tusd);
+    border: none !important;
+    color: var(--coin-tusd-text) !important; }
+  .currency_ball-wrapper.dai {
+    background-color: var(--coin-dai);
+    border: none !important;
+    color: var(--coin-dai-text) !important; }
   .currency_ball-wrapper.s {
     font-size: 0.6rem;
     width: 1.8rem;
@@ -6973,7 +6981,55 @@ table th {
   fill: var(--link);
   font-weight: bold; }
 
-.chart_btc, .chart_bch, .chart_eth, .chart_eur, .chart_ltc, .chart_xrp {
+.chart_btc,
+.chart_bch,
+.chart_eth,
+.chart_eur,
+.chart_ltc,
+.chart_xrp,
+.chart_xht,
+.chart_eos,
+.chart_bnb,
+.chart_link,
+.chart_trx,
+.chart_ada,
+.chart_matic,
+.chart_neo,
+.chart_etc,
+.chart_xlm,
+.chart_xmr,
+.chart_zec,
+.chart_one,
+.chart_pax,
+.chart_usdc,
+.chart_usdt,
+.chart_vet,
+.chart_btt,
+.chart_qtum,
+.chart_algo,
+.chart_rvn,
+.chart_iota,
+.chart_dash,
+.chart_bsv,
+.chart_ont,
+.chart_atom,
+.chart_celr,
+.chart_omg,
+.chart_hot,
+.chart_usd,
+.chart_jpy,
+.chart_gbp,
+.chart_chf,
+.chart_cad,
+.chart_aud,
+.chart_nzd,
+.chart_zar,
+.chart_hkd,
+.chart_krw,
+.chart_cny,
+.chart_sgd,
+.chart_dai,
+.chart_tusd {
   fill-opacity: 0.7; }
 
 .slice_active {
@@ -7167,6 +7223,14 @@ table th {
   fill: var(--coin-sgd);
   stroke: var(--coin-sgd); }
 
+.chart_tusd {
+  fill: var(--coin-tusd);
+  stroke: var(--coin-tusd); }
+
+.chart_dai {
+  fill: var(--coin-dai);
+  stroke: var(--coin-dai); }
+
 .bar_wrapper {
   height: 38rem; }
   .bar_wrapper .bar_yAxis line {
@@ -7309,7 +7373,9 @@ table th {
 .dark-theme .chart_hkd,
 .dark-theme .chart_krw,
 .dark-theme .chart_cny,
-.dark-theme .chart_sgd {
+.dark-theme .chart_sgd,
+.dark-theme .chart_dai,
+.dark-theme .chart_tusd {
   fill-opacity: 0.1;
   stroke-width: 1.5; }
 
@@ -7503,6 +7569,14 @@ table th {
 .dark-theme .chart_sgd {
   fill: var(--dark-coin-sgd);
   stroke: var(--dark-coin-sgd); }
+
+.dark-theme .chart_tusd {
+  fill: var(--dark-coin-tusd);
+  stroke: var(--dark-coin-tusd); }
+
+.dark-theme .chart_dai {
+  fill: var(--dark-coin-dai);
+  stroke: var(--dark-coin-dai); }
 
 .dark-theme .bar_wrapper .bar_xAxis .axis_month {
   color: var(--dark-font-sub-text-color); }
@@ -8201,6 +8275,12 @@ foreignObject {
 
 .mobile-drop-down.sgd, .drop-down.sgd, .option.sgd {
   color: var(--coin-sgd) !important; }
+
+.mobile-drop-down.tusd, .drop-down.tusd, .option.tusd {
+  color: var(--coin-tusd) !important; }
+
+.mobile-drop-down.dai, .drop-down.dai, .option.dai {
+  color: var(--coin-dai) !important; }
 
 .with_arrow_trade:after {
   border-bottom-color: var(--colors-main-black) !important;

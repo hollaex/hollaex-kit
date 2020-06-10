@@ -161,6 +161,12 @@
 	&.sgd {
 		color: $coin-sgd !important;
 	}
+	&.tusd {
+		color: $coin-tusd !important;
+	}
+	&.dai {
+		color: $coin-dai !important;
+	}
 }
 .with_arrow_trade:after  {	
 	border-bottom-color: $colors-main-black !important;

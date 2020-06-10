@@ -860,6 +860,7 @@ $app-bar-add-tab-red: #ff0000;
 .tab-menu-left {
 	left: -1px !important;
 	right: 0 !important;
+	width: fit-content;
 }
 
 .app-bar-add-tab-search {
@@ -894,7 +895,6 @@ $app-bar-add-tab-red: #ff0000;
 	color: $app-bar-menu-list-color;
 	display: block;
 	min-width: 22rem;
-	max-width: 25rem;
 	min-height: 8rem;
 	position: absolute;
 	top: 34px;
