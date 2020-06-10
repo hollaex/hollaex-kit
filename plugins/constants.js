@@ -11,7 +11,7 @@ exports.AVAILABLE_PLUGINS = [
 	'kyc',
 	'sms',
 	'vault',
-	'xht_fee',
+	// 'xht_fee',
 	'zendesk'
 ];
 
