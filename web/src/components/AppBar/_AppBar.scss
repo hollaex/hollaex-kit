@@ -33,7 +33,15 @@ $app-bar-add-tab-red: #ff0000;
 				.bch-icon,
 				.xrp-icon,
 				.xht-icon,
-				.xmr-icon {
+				.xmr-icon,
+				.xlm-icon,
+				.eos-icon,
+				.trx-icon,
+				.ada-icon,
+				.bnb-icon,
+				.tusd-icon,
+				.dai-icon,
+				.ltc-icon {
 					fill: $dark-font-main-text-color;
 				}
 				.tab-close, .plus, .double-arrow {
@@ -373,7 +381,15 @@ $app-bar-add-tab-red: #ff0000;
 			.bch-icon,
 			.xrp-icon,
 			.xht-icon,
-			.xmr-icon {
+			.xmr-icon,
+			.xlm-icon,
+			.eos-icon,
+			.trx-icon,
+			.ada-icon,
+			.bnb-icon,
+			.tusd-icon,
+			.dai-icon,
+			.ltc-icon {
 				fill: $colors-main-black;
 			}
 			.tab-close, .plus, .double-arrow {
@@ -477,7 +493,15 @@ $app-bar-add-tab-red: #ff0000;
 		.bch-icon,
 		.xrp-icon,
 		.xht-icon,
-		.xmr-icon {
+		.xmr-icon,
+		.xlm-icon,
+		.eos-icon,
+		.trx-icon,
+		.ada-icon,
+		.bnb-icon,
+		.tusd-icon,
+		.dai-icon,
+		.ltc-icon {
 			fill: $app-bar-icon-inactive;
 		}
 		.tab-close, .plus {
@@ -836,6 +860,7 @@ $app-bar-add-tab-red: #ff0000;
 .tab-menu-left {
 	left: -1px !important;
 	right: 0 !important;
+	width: fit-content;
 }
 
 .app-bar-add-tab-search {
@@ -928,6 +953,14 @@ $app-bar-add-tab-red: #ff0000;
 				.xrp-icon,
 				.xht-icon,
 				.xmr-icon,
+				.xlm-icon,
+				.eos-icon,
+				.trx-icon,
+				.ada-icon,
+				.bnb-icon,
+				.tusd-icon,
+				.dai-icon,
+				.ltc-icon,
 				.default-icon {
 					fill: $dark-font-main-text-color !important;
 				}
@@ -962,6 +995,14 @@ $app-bar-add-tab-red: #ff0000;
 			.xrp-icon,
 			.xht-icon,
 			.xmr-icon,
+			.xlm-icon,
+			.eos-icon,
+			.trx-icon,
+			.ada-icon,
+			.bnb-icon,
+			.tusd-icon,
+			.dai-icon,
+			.ltc-icon,
 			.default-icon {
 				fill: $app-bar-menu-list-color !important;
 			}

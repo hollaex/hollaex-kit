@@ -17,17 +17,17 @@ const getActiveOrders = state => state.order.activeOrders;
 const getUserTradesData = state => state.wallet.trades.data;
 
 export const asksSelector = createSelector(getPairsOrderBook, getPair, getOrderBookLevels, (pairsOrders, pair, level) => {
-	const { asks = [] } = pairsOrders[pair];
+	const { asks = [] } = pairsOrders[pair] || {};
 	return asks.filter((ask, index) => index < level);
 });
 
 export const bidsSelector = createSelector(getPairsOrderBook, getPair, getOrderBookLevels, (pairsOrders, pair, level) => {
-	const { bids = [] } = pairsOrders[pair];
+	const { bids = [] } = pairsOrders[pair] || {};
 	return bids.filter((bid, index) => index < level);
 });
 
 export const tradeHistorySelector = createSelector(getPairsTrades, getPair, (pairsTrades, pair) => {
-	return pairsTrades[pair];
+	return pairsTrades[pair] || {};
 });
 
 export const activeOrdersSelector = createSelector(getActiveOrders, getPair, (orders, pair) => {

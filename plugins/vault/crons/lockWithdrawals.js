@@ -12,8 +12,8 @@ const { MAILTYPE } = require('../../../mail/strings');
 const checkAddress = (address, symbol, network = 'prod') => {
 	if (symbol === 'btc' || symbol === 'bch' || symbol === 'xmr') {
 		return WAValidator.validate(address, symbol, network);
-	} else if (symbol === 'xrp') {
-		return WAValidator.validate(address.split(':')[0], 'xrp', network);
+	} else if (symbol === 'xrp' || symbol === 'xlm') {
+		return WAValidator.validate(address.split(':')[0], symbol, network);
 	} else {
 		return WAValidator.validate(address, 'eth', network);
 	}

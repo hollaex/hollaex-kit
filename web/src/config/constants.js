@@ -31,6 +31,22 @@ export const ICONS = {
 	ETH_ICON: '/assets/icons/eth-icon-01.svg',
 	ETH_ICON_DARK: '/assets/icons/eth-icon-dark-01.svg',
 	EUR_ICON: '/assets/icons/eur-icon.svg',
+	LTC_ICON: '/assets/icons/ltc-icon.svg',
+	LTC_ICON_DARK: '/assets/icons/ltc-icon.svg',
+	TRX_ICON: '/assets/icons/trx-icon.svg',
+	TRX_ICON_DARK: '/assets/icons/trx-icon.svg',
+	TUSD_ICON: '/assets/icons/tusd-icon.svg',
+	TUSD_ICON_DARK: '/assets/icons/tusd-icon.svg',
+	XLM_ICON: '/assets/icons/xlm-icon.svg',
+	XLM_ICON_DARK: '/assets/icons/xlm-icon.svg',
+	EOS_ICON: '/assets/icons/eos-icon.svg',
+	EOS_ICON_DARK: '/assets/icons/eos-icon.svg',
+	DAI_ICON: '/assets/icons/dai-icon.svg',
+	DAI_ICON_DARK: '/assets/icons/dai-icon.svg',
+	BNB_ICON: '/assets/icons/bnb-icon.svg',
+	BNB_ICON_DARK: '/assets/icons/bnb-icon.svg',
+	ADA_ICON: '/assets/icons/ada-icon.svg',
+	ADA_ICON_DARK: '/assets/icons/ada-icon.svg',
 	LIFESAVER: '/assets/acounts/account-icons-05.svg',
 	CONTACT_US_ICON: '/assets/acounts/help-contact-us-01.svg',
 	QUESTION_MARK: '/assets/icons/question-mark-black.svg',
@@ -414,6 +430,11 @@ export const EXPLORERS_ENDPOINT = (currency) => {
 					: 'https://explorer.bitcoin.com/bch/tx/';
 			break;
 		case 'xht':
+		case 'usdt':
+		case 'busd':
+		case 'tusd':
+		case 'dai':
+		case 'mkr':
 			endpoint =
 				NETWORK === 'testnet'
 					? 'https://ropsten.etherscan.io/tx/'
@@ -424,6 +445,30 @@ export const EXPLORERS_ENDPOINT = (currency) => {
 				NETWORK === 'testnet'
 					? 'https://moneroblocks.info/tx/'
 					: 'https://moneroblocks.info/tx/';
+			break;
+		case 'xlm':
+			endpoint =
+				NETWORK === 'testnet'
+					? 'https://testnet.steexp.com/tx/'
+					: 'https://steexp.com/tx/';
+			break;
+		case 'eos':
+			endpoint =
+				NETWORK === 'testnet'
+					? 'https://testnet.steexp.com/tx/'
+					: 'https://steexp.com/tx/';
+			break;
+		case 'eos':
+			endpoint =
+				NETWORK === 'testnet'
+					? 'https://testnet.eos.io/transaction/'
+					: 'https://bloks.io/transaction/';
+			break;
+		case 'trx':
+			endpoint =
+				NETWORK === 'testnet'
+					? 'https://shasta.tronscan.org/#/transaction/'
+					: 'https://tronscan.org/#/transaction/';
 			break;
 		default:
 			endpoint = ''

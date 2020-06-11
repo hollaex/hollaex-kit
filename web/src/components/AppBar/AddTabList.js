@@ -47,7 +47,7 @@ class AddTabList extends Component {
         const selectedtabPairs = Object.keys(selectedTabs);
 
         return (
-            <div id="add-tab-list-menu" className={classnames("app-bar-add-tab-menu", { "tab-menu-left": !selectedtabPairs.length })}>
+            <div id="add-tab-list-menu" className={classnames("app-bar-add-tab-menu", { "tab-menu-left": selectedtabPairs.length <= 1 })}>
                 <div className="app-bar-tab-menu d-flex justify-content-between">
                     <div className="d-flex">
                         {symbols.map((symbol, index) =>

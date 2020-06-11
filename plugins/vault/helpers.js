@@ -10,14 +10,14 @@ const { updateConstants, logger, sleep } = require('../helpers/common');
 const cron = require('node-cron');
 const { processWithdrawals } = require('./crons/processWithdrawals');
 const { lockWithdrawals } = require('./crons/lockWithdrawals');
-const { checkWithdrawals } = require('./crons/checkWithdrawals');
+// const { checkWithdrawals } = require('./crons/checkWithdrawals');
 
 const withdrawalCron = async () => {
 	const enabledPlugins = GET_CONFIGURATION().constants.plugins.enabled;
 	try {
 		if (enabledPlugins !== undefined && enabledPlugins.indexOf('vault') !== -1) {
-			await checkWithdrawals();
-			await sleep(1000);
+			// await checkWithdrawals();
+			// await sleep(1000);
 			await lockWithdrawals();
 			await sleep(5000);
 			await processWithdrawals();
