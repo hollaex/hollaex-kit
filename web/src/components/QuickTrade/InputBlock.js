@@ -92,6 +92,7 @@ class InputBlock extends Component {
 		const baseCoin = coins[pair.pair_base] || DEFAULT_COIN_DATA;
 		const shortName = baseCoin.symbol.toUpperCase();
 		const errorMessage = this.renderErrorMessage(errorValue) || error;
+		let limitData = orderLimits[this.state.symbol] || { SIZE: {} };
 		return (
 			<div
 				className={classnames(
@@ -132,10 +133,10 @@ class InputBlock extends Component {
 							className="input_block-inputbox"
 							onChange={this.onChangeEvent}
 							placeholder={PLACEHOLDER}
-							step={orderLimits[this.state.symbol].SIZE.MIN}
+							step={limitData.SIZE.MIN}
 							value={value}
-							min={orderLimits[this.state.symbol].SIZE.MIN}
-							max={orderLimits[this.state.symbol].SIZE.MAX}
+							min={limitData.SIZE.MIN}
+							max={limitData.SIZE.MAX}
 							style={generateStyle(value || PLACEHOLDER)}
 							onBlur={this.onLostFocus}
 						/>
