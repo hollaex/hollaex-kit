@@ -325,8 +325,20 @@ const processWithdrawals = () => {
 									fields: ['transaction_id']
 								}
 							)
-								.then(() => {
-									return { success: true };
+								.then((data) => {
+									return {
+										success: true,
+										send: true,
+										data: {
+											amount: getAmount(data.amount, data.fee),
+											transaction_id: data.transaction_id,
+											fee: data.fee,
+											status: true,
+											currency: data.currency,
+											address: data.address,
+											phoneNumber: data.User.phone_number
+										}
+									};
 								});
 						}))
 							.catch((err) => {
@@ -359,7 +371,21 @@ const processWithdrawals = () => {
 							{}
 						);
 						return;
-					} else {
+					} else if (result.success === true && result.send === true) {
+						sendEmail(
+							MAILTYPE.WITHDRAWAL,
+							result.data.User.email,
+							{
+								amount: result.data.amount,
+								transaction_id: result.data.transaction_id,
+								fee: result.data.fee,
+								status: true,
+								currency: result.data.currency,
+								address: result.data.address,
+								phoneNumber: result.data.User.phone_number
+							},
+							result.data.User.settings
+						);
 						return;
 					}
 				}));
