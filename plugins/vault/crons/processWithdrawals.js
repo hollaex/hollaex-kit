@@ -59,7 +59,7 @@ const processWithdrawals = () => {
 			include: [
 				{
 					model: User,
-					attributes: ['email']
+					attributes: ['email', 'settings', 'phone_number']
 				}
 			]
 		})
@@ -234,6 +234,7 @@ const processWithdrawals = () => {
 								await transaction.rollback();
 								throw new Error(err);
 							}
+							loggerDeposits.info(`/plugins/vault/crons/processWithdrawals ${dbWithdrawals[0].currency} withdrawal successful for withdrawals with id: ${dbWithdrawals.map((wd) => `${wd.id},`)}`);
 							await transaction.commit();
 							return {
 								success: true,
@@ -330,13 +331,15 @@ const processWithdrawals = () => {
 										success: true,
 										send: true,
 										data: {
+											email: withdrawal.User.email,
 											amount: getAmount(data.amount, data.fee),
 											transaction_id: data.transaction_id,
 											fee: data.fee,
 											status: true,
 											currency: data.currency,
 											address: data.address,
-											phoneNumber: data.User.phone_number
+											phoneNumber: withdrawal.User.phone_number,
+											settings: withdrawal.User.settings
 										}
 									};
 								});
@@ -371,21 +374,23 @@ const processWithdrawals = () => {
 							{}
 						);
 						return;
-					} else if (result.success === true && result.send === true) {
-						sendEmail(
-							MAILTYPE.WITHDRAWAL,
-							result.data.User.email,
-							{
-								amount: result.data.amount,
-								transaction_id: result.data.transaction_id,
-								fee: result.data.fee,
-								status: true,
-								currency: result.data.currency,
-								address: result.data.address,
-								phoneNumber: result.data.User.phone_number
-							},
-							result.data.User.settings
-						);
+					} else if (Array.isArray(result) && result[0].success === true && result[0].send === true) {
+						each(result, (wd) => {
+							sendEmail(
+								MAILTYPE.WITHDRAWAL,
+								wd.data.email,
+								{
+									amount: wd.data.amount,
+									transaction_id: wd.data.transaction_id,
+									fee: wd.data.fee,
+									status: true,
+									currency: wd.data.currency,
+									address: wd.data.address,
+									phoneNumber: wd.data.phone_number
+								},
+								wd.data.settings
+							);
+						});
 						return;
 					}
 				}));
