@@ -59,7 +59,7 @@ const processWithdrawals = () => {
 			include: [
 				{
 					model: User,
-					attributes: ['email']
+					attributes: ['email', 'settings', 'phone_number']
 				}
 			]
 		})
@@ -234,6 +234,7 @@ const processWithdrawals = () => {
 								await transaction.rollback();
 								throw new Error(err);
 							}
+							loggerDeposits.info(`/plugins/vault/crons/processWithdrawals ${dbWithdrawals[0].currency} withdrawal successful for withdrawals with id: ${dbWithdrawals.map((wd) => `${wd.id},`)}`);
 							await transaction.commit();
 							return {
 								success: true,
@@ -325,8 +326,22 @@ const processWithdrawals = () => {
 									fields: ['transaction_id']
 								}
 							)
-								.then(() => {
-									return { success: true };
+								.then((data) => {
+									return {
+										success: true,
+										send: true,
+										data: {
+											email: withdrawal.User.email,
+											amount: getAmount(data.amount, data.fee),
+											transaction_id: data.transaction_id,
+											fee: data.fee,
+											status: true,
+											currency: data.currency,
+											address: data.address,
+											phoneNumber: withdrawal.User.phone_number,
+											settings: withdrawal.User.settings
+										}
+									};
 								});
 						}))
 							.catch((err) => {
@@ -359,7 +374,25 @@ const processWithdrawals = () => {
 							{}
 						);
 						return;
-					} else {
+					} else if (Array.isArray(result)) {
+						each(result, (wd) => {
+							if (wd.success === true && wd.send === true) {
+								sendEmail(
+									MAILTYPE.WITHDRAWAL,
+									wd.data.email,
+									{
+										amount: wd.data.amount,
+										transaction_id: wd.data.transaction_id,
+										fee: wd.data.fee,
+										status: true,
+										currency: wd.data.currency,
+										address: wd.data.address,
+										phoneNumber: wd.data.phone_number
+									},
+									wd.data.settings
+								);
+							}
+						});
 						return;
 					}
 				}));
