@@ -374,22 +374,24 @@ const processWithdrawals = () => {
 							{}
 						);
 						return;
-					} else if (Array.isArray(result) && result[0].success === true && result[0].send === true) {
+					} else if (Array.isArray(result)) {
 						each(result, (wd) => {
-							sendEmail(
-								MAILTYPE.WITHDRAWAL,
-								wd.data.email,
-								{
-									amount: wd.data.amount,
-									transaction_id: wd.data.transaction_id,
-									fee: wd.data.fee,
-									status: true,
-									currency: wd.data.currency,
-									address: wd.data.address,
-									phoneNumber: wd.data.phone_number
-								},
-								wd.data.settings
-							);
+							if (wd.success === true && wd.send === true) {
+								sendEmail(
+									MAILTYPE.WITHDRAWAL,
+									wd.data.email,
+									{
+										amount: wd.data.amount,
+										transaction_id: wd.data.transaction_id,
+										fee: wd.data.fee,
+										status: true,
+										currency: wd.data.currency,
+										address: wd.data.address,
+										phoneNumber: wd.data.phone_number
+									},
+									wd.data.settings
+								);
+							}
 						});
 						return;
 					}
