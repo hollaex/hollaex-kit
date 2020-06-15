@@ -84,17 +84,24 @@ class ChatMessageWithText extends Component {
 					</div>
 					<div className='d-flex flex-1'>
 						{ownMessage ? (
-							<div className="mr-1 my-1 own-message username d-flex">
-								<div className="mr-1 f-none">
+							<div className="mr-1 my-1 own-message username">
+								<div className="mr-1 d-inline-block">
 									{`${username}:`}
 								</div>
 								{to && <span className="mr-1">{`${to}:`}</span>}
 								<span className="d-inline message">{messageContent}</span>
 							</div>
+							// <div className="mr-1 my-1 own-message username d-flex">
+							// 	<div className="mr-1 f-none">
+							// 		{`${username}:`}
+							// 	</div>
+							// 	{to && <span className="mr-1">{`${to}:`}</span>}
+							// 	<span className="d-inline message">{messageContent}</span>
+							// </div>
 
 						) : (
-								<div className="mr-1 my-1 username d-flex">
-									<div className="mr-1 apply_rtl f-none" >
+								<div className="mr-1 my-1 username ">
+									<div className="mr-1 apply_rtl d-inline-block " >
 										{`${username}:`}
 									</div>
 									{to && <span className="mr-1">{`${to}:`}</span>}
@@ -106,6 +113,19 @@ class ChatMessageWithText extends Component {
 										<span className="d-inline message">{messageContent}</span>
 									</TruncateMarkup>
 								</div>
+								// <div className="mr-1 my-1 username d-flex">
+								// 	<div className="mr-1 apply_rtl f-none" >
+								// 		{`${username}:`}
+								// 	</div>
+								// 	{to && <span className="mr-1">{`${to}:`}</span>}
+								// 	<TruncateMarkup
+								// 		className="d-inline message"
+								// 		lines={maxLines}
+								// 		ellipsis={<ReadMore onClick={() => this.showMore()} />}
+								// 	>
+								// 		<span className="d-inline message">{messageContent}</span>
+								// 	</TruncateMarkup>
+								// </div>
 							)}
 					</div>
 				</div>
