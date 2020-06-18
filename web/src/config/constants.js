@@ -458,12 +458,6 @@ export const EXPLORERS_ENDPOINT = (currency) => {
 					? 'https://testnet.steexp.com/tx/'
 					: 'https://steexp.com/tx/';
 			break;
-		case 'eos':
-			endpoint =
-				NETWORK === 'testnet'
-					? 'https://testnet.eos.io/transaction/'
-					: 'https://bloks.io/transaction/';
-			break;
 		case 'trx':
 			endpoint =
 				NETWORK === 'testnet'
