@@ -134,6 +134,7 @@ export default {
 		TAB_PROFILE: 'Profile',
 		TAB_WALLET: 'Wallet',
 		TAB_SUMMARY: 'Summary',
+		TAB_HISTORY: 'History',
 		TAB_API: 'API',
 		TAB_SIGNOUT: 'Signout'
 	},

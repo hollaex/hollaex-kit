@@ -216,6 +216,7 @@ export const ICONS = {
 	TAB_PLUS: '/assets/images/tab-plus.svg',
 	TAB_MINUS: '/assets/images/tab-minus.svg',
 	TAB_SUMMARY: '/assets/images/tab-summary.svg',
+	TAB_HISTORY: '/assets/images/tab-history.svg',
 	TAB_WALLET: '/assets/images/tab-wallet.svg',
 	TAB_SECURITY: '/assets/images/tab-security.svg',
 	TAB_VERIFY: '/assets/images/tab-verify.svg',
