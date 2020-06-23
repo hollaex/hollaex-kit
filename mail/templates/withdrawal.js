@@ -17,20 +17,6 @@ const html = (email, data, language, domain) => {
 		</p>`;
 
 	if (CURRENCIES.includes(data.currency)) {
-		let explorers = '';
-		if (EXPLORERS[data.currency]){
-			EXPLORERS[data.currency].forEach((explorer) => {
-				explorers += `<li><a href=${explorer.baseUrl}${explorer.txPath}/${
-					data.transaction_id
-				}>${explorer.name}</a></li>`;
-			});
-		} else {
-			EXPLORERS['eth'].forEach((explorer) => {
-				explorers += `<li><a href=${explorer.baseUrl}${explorer.txPath}/${
-					data.transaction_id
-				}>${explorer.name}</a></li>`;
-			});
-		}
 		result += `
 			<p>
 				${WITHDRAWAL.BODY[data.status](
@@ -50,9 +36,20 @@ const html = (email, data, language, domain) => {
 				${data.transaction_id ? '<br />' : ''}
 				${data.transaction_id ? WITHDRAWAL.BODY[5](data.transaction_id) : ''}
 			</p>
-			${data.transaction_id && !data.transaction_id.includes('-') ? WITHDRAWAL.BODY[6] : ''}
-			<ul>${data.transaction_id && !data.transaction_id.includes('-') ? explorers : ''}</ul>
 		`;
+
+		let explorers = '';
+		if (EXPLORERS[data.currency]){
+			EXPLORERS[data.currency].forEach((explorer) => {
+				explorers += `<li><a href=${explorer.baseUrl}${explorer.txPath}/${
+					data.transaction_id
+				}>${explorer.name}</a></li>`;
+			});
+			result += `
+				${data.transaction_id && !data.transaction_id.includes('-') ? WITHDRAWAL.BODY[6] : ''}
+				<ul>${data.transaction_id && !data.transaction_id.includes('-') ? explorers : ''}</ul>
+			`;
+		}
 	} else {
 		result += '';
 	}
