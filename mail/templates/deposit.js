@@ -19,15 +19,6 @@ const html = (email, data, language, domain) => {
 		`;
 
 	if (CURRENCIES.includes(data.currency)) {
-		let explorers = '';
-		if (EXPLORERS[data.currency]) {
-			EXPLORERS[data.currency].forEach((explorer) => {
-				explorers += `<li><a href=${explorer.baseUrl}${explorer.txPath}/${
-					data.transaction_id
-				}>${explorer.name}</a></li>`;
-			});
-		}
-
 		result += `
 			<p>
 				${DEPOSIT.BODY[data.status](
@@ -48,9 +39,20 @@ const html = (email, data, language, domain) => {
 				${data.transaction_id ? '<br />' : ''}
 				${data.transaction_id ? DEPOSIT.BODY[4](data.transaction_id) : ''}
 			</p>
-			${data.transaction_id ? DEPOSIT.BODY[5] : ''}
-			<ul>${data.transaction_id ? explorers : ''}</ul>
 		`;
+
+		let explorers = '';
+		if (EXPLORERS[data.currency]) {
+			EXPLORERS[data.currency].forEach((explorer) => {
+				explorers += `<li><a href=${explorer.baseUrl}${explorer.txPath}/${
+					data.transaction_id
+				}>${explorer.name}</a></li>`;
+			});
+			result += `
+				${data.transaction_id ? DEPOSIT.BODY[5] : ''}
+				<ul>${data.transaction_id ? explorers : ''}</ul>
+			`;
+		}
 	} else {
 		result += '';
 	}
