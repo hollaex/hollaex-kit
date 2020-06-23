@@ -24,12 +24,6 @@ const html = (email, data, language, domain) => {
 					data.transaction_id
 				}>${explorer.name}</a></li>`;
 			});
-		} else {
-			EXPLORERS['eth'].forEach((explorer) => {
-				explorers += `<li><a href=${explorer.baseUrl}${explorer.txPath}/${
-					data.transaction_id
-				}>${explorer.name}</a></li>`;
-			});
 		}
 		result += `
 			<p>
@@ -50,7 +44,7 @@ const html = (email, data, language, domain) => {
 				${data.transaction_id ? '<br />' : ''}
 				${data.transaction_id ? WITHDRAWAL.BODY[5](data.transaction_id) : ''}
 			</p>
-			${data.transaction_id && !data.transaction_id.includes('-') ? WITHDRAWAL.BODY[6] : ''}
+			${data.transaction_id && !data.transaction_id.includes('-') && explorers.length > 0 ? WITHDRAWAL.BODY[6] : ''}
 			<ul>${data.transaction_id && !data.transaction_id.includes('-') ? explorers : ''}</ul>
 		`;
 	} else {
