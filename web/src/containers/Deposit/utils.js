@@ -84,6 +84,8 @@ export const renderContent = (
 			address = temp[0] ? temp[0] : address;
 			destinationAddress = temp[1] ? temp[1] : '';
 		}
+		const additionalText = (symbol === 'xlm') ? STRINGS.DEPOSIT.CRYPTO_LABELS.MEMO : STRINGS.DEPOSIT.CRYPTO_LABELS.DESTINATION_TAG;
+
 		return renderBTCContent(
 			STRINGS.formatString(STRINGS.DEPOSIT.CRYPTO_LABELS.ADDRESS, fullname),
 			address,
@@ -91,7 +93,7 @@ export const renderContent = (
 			true,
 			destinationAddress,
 			STRINGS.formatString(
-				STRINGS.DEPOSIT.CRYPTO_LABELS.DESTINATION_TAG,
+				additionalText,
 				fullname
 			)
 		);

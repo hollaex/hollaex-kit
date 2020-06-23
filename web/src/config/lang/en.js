@@ -175,6 +175,7 @@ export default {
 		CRYPTO_LABELS: {
 			ADDRESS: 'Your {0} receiving address', // new
 			DESTINATION_TAG: 'Your {0} destination tag', // new
+			MEMO: 'Your {0} memo', // new
 			BTC: 'Your Bitcoin receiving address',
 			ETH: 'Your Ethereum receiving address',
 			BCH: 'Your Bitcoin Cash receiving address'
