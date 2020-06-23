@@ -79,7 +79,7 @@ export const renderContent = (
 		const { fullname } = coins[symbol] || DEFAULT_COIN_DATA;
 		let address = crypto_wallet[symbol];
 		let destinationAddress = '';
-		if (symbol === 'xrp') {
+		if (symbol === 'xrp' || symbol === 'xlm') {
 			const temp = address.split(':');
 			address = temp[0] ? temp[0] : address;
 			destinationAddress = temp[1] ? temp[1] : '';

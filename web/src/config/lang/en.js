@@ -816,7 +816,9 @@ export default {
 	WITHDRAWALS_FORM_ADDRESS_LABEL: 'Destination address',
 	WITHDRAWALS_FORM_ADDRESS_PLACEHOLDER: 'Type the address',
 	WITHDRAWALS_FORM_DESTINATION_TAG_LABEL: 'Destination tag (optional)', // new
-	WITHDRAWALS_FORM_DESTINATION_TAG_PLACEHOLDER: 'Type the destination address', // new
+	WITHDRAWALS_FORM_MEMO_LABEL: 'Memo (optional)', // new
+	WITHDRAWALS_FORM_DESTINATION_TAG_PLACEHOLDER: 'Type the destination tag', // new
+	WITHDRAWALS_FORM_MEMO_PLACEHOLDER: 'Type the transaction memo', // new
 	WITHDRAWALS_FORM_AMOUNT_LABEL: '{0} amount to withdraw',
 	WITHDRAWALS_FORM_AMOUNT_PLACEHOLDER:
 		'Type the amount of {0} you wish to withdraw',
