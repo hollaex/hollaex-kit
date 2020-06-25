@@ -34,7 +34,7 @@ const generateRows = ({ order, pairData }, coins) => {
 		label: STRINGS.SIZE,
 		value: STRINGS.formatString(
 			CURRENCY_PRICE_FORMAT,
-			formatToCurrency(size, baseFormat.min),
+			formatToCurrency(size, pairData.increment_size),
 			baseFormat.symbol.toUpperCase()
 		)
 	});
@@ -44,7 +44,7 @@ const generateRows = ({ order, pairData }, coins) => {
 			label: STRINGS.PRICE,
 			value: STRINGS.formatString(
 				CURRENCY_PRICE_FORMAT,
-				formatToCurrency(price, secondaryFormat.min),
+				formatToCurrency(price, pairData.increment_price),
 				secondaryFormat.symbol.toUpperCase()
 			)
 		});
