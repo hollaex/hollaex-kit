@@ -15,6 +15,7 @@ const Review = ({
 	size = 0,
 	currency,
 	price,
+	increment_price,
 	formatToCurrency,
 	type,
 	onFeeStructureAndLimits
@@ -32,7 +33,7 @@ const Review = ({
 				</div>
 				<div className="text-price">
 					{upToMarket
-						?price ? renderAmount(formatToCurrency(price * size), currency) :0
+						?price ? renderAmount(formatToCurrency(price * size, increment_price), currency) :0
 						: STRINGS.UP_TO_MARKET}
 				</div>
 			</div>

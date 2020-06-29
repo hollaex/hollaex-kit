@@ -67,6 +67,13 @@ export const generateFormValues = (
 			placeholder: STRINGS.WITHDRAWALS_FORM_DESTINATION_TAG_PLACEHOLDER,
 			fullWidth: true
 		};
+	} else if (symbol === 'xlm') {
+		fields.destination_tag = {
+			type: "text",
+			label: STRINGS.WITHDRAWALS_FORM_MEMO_LABEL,
+			placeholder: STRINGS.WITHDRAWALS_FORM_DESTINATION_TAG_PLACEHOLDER,
+			fullWidth: true
+		};
 	}
 
 	const amountValidate = [required];

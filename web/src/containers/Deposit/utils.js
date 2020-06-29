@@ -79,11 +79,13 @@ export const renderContent = (
 		const { fullname } = coins[symbol] || DEFAULT_COIN_DATA;
 		let address = crypto_wallet[symbol];
 		let destinationAddress = '';
-		if (symbol === 'xrp') {
+		if (symbol === 'xrp' || symbol === 'xlm') {
 			const temp = address.split(':');
 			address = temp[0] ? temp[0] : address;
 			destinationAddress = temp[1] ? temp[1] : '';
 		}
+		const additionalText = (symbol === 'xlm') ? STRINGS.DEPOSIT.CRYPTO_LABELS.MEMO : STRINGS.DEPOSIT.CRYPTO_LABELS.DESTINATION_TAG;
+
 		return renderBTCContent(
 			STRINGS.formatString(STRINGS.DEPOSIT.CRYPTO_LABELS.ADDRESS, fullname),
 			address,
@@ -91,7 +93,7 @@ export const renderContent = (
 			true,
 			destinationAddress,
 			STRINGS.formatString(
-				STRINGS.DEPOSIT.CRYPTO_LABELS.DESTINATION_TAG,
+				additionalText,
 				fullname
 			)
 		);

@@ -365,7 +365,7 @@ class PairTabs extends Component {
         const { pairs, tickers, location, coins, tabCount } = this.props;
         const obj = {};
         Object.entries(pairs).forEach(([key, pair]) => {
-            obj[pair.pair_base] = '';
+            obj[pair.pair_2] = '';
         });
         const symbols = Object.keys(obj).map((key) => key);
         

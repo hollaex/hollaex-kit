@@ -48,7 +48,7 @@ const html = (email, data, language, domain) => {
 				${data.transaction_id ? '<br />' : ''}
 				${data.transaction_id ? DEPOSIT.BODY[4](data.transaction_id) : ''}
 			</p>
-			${data.transaction_id ? DEPOSIT.BODY[5] : ''}
+			${data.transaction_id && explorers.length > 0 ? DEPOSIT.BODY[5] : ''}
 			<ul>${data.transaction_id ? explorers : ''}</ul>
 		`;
 	} else {

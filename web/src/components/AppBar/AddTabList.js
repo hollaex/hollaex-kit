@@ -38,7 +38,7 @@ class AddTabList extends Component {
         } else {
             Object.keys(pairs).map(key => {
                 let temp = pairs[key];
-                if (temp && temp.pair_base === selectedTabMenu) {
+                if (temp && temp.pair_2 === selectedTabMenu) {
                     tabMenu[key] = temp;
                 }
                 return key;
