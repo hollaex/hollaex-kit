@@ -35,9 +35,9 @@ const RiskyOrder = ({ data, onConfirm, onClose }) => {
             <div className="mb-2 mt-2">
                 {STRINGS.TYPE}: {data.order.type} {data.order.side}
             </div>
-            {data.order.price
+            {data.order.price && data.order.size
                 ? <div className="mb-2" >
-                    {STRINGS.AMOUNT}: {data.order.price} {symbol.toUpperCase()}
+                    {STRINGS.AMOUNT}: {(data.order.price * data.order.size)} {symbol.toUpperCase()}
                 </div>
                 : null
             }

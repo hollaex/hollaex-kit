@@ -47,10 +47,13 @@ export const roundNumber = (number = 0, decimals = 4) => {
 };
 
 export const getFormat = (min = 0, fullFormat) => {
+	let value = math.format(min, {notation: 'fixed'});
 	if (fullFormat) {
 		return { digit: 8, format: '0,0.[00000000]' };
 	} else if (min % 1) {
-		let point = min.toString().split('.')[1];
+		let point = value.toString().split('.')[1]
+			? value.toString().split('.')[1]
+			: '';
 		let res = point
 			.split('')
 			.map((val) => 0)

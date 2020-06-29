@@ -10,9 +10,10 @@ import Form, { FORM_NAME } from './OrderEntryForm';
 import {
 	toFixed,
 	formatNumber,
-	formatBaseAmount,
+	// formatBaseAmount,
 	roundNumber,
-	calculateBalancePrice
+	calculateBalancePrice,
+	formatToCurrency
 } from '../../../utils/currency';
 import { getDecimals, playBackgroundAudioNotification } from '../../../utils/utils';
 import {
@@ -371,7 +372,7 @@ class OrderEntry extends Component {
 	};
 
 	render() {
-		const { balance, type, side, pair_base, pair_2, price, coins, size } = this.props;
+		const { balance, type, side, pair_base, pair_2, price, coins, size, increment_price } = this.props;
 		const {
 			initialValues,
 			formValues,
@@ -414,7 +415,8 @@ class OrderEntry extends Component {
 						currency={buyingName}
 						orderPrice={orderPrice}
 						fees={orderFees}
-						formatToCurrency={formatBaseAmount}
+						increment_price={increment_price}
+						formatToCurrency={formatToCurrency}
 						onFeeStructureAndLimits={this.onFeeStructureAndLimits}
 					/>
 				</Form>
