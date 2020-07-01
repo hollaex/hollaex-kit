@@ -308,6 +308,8 @@ class AppBar extends Component {
 			this.props.router.push('/account');
 		} else if (menu === 'security') {
 			this.props.router.push('/security');
+		} else if (menu === 'history') {
+			this.props.router.push('/transactions');
 		} else if (menu === 'verification') {
 			this.props.router.push('/verification');
 		} else if (menu === 'wallet') {
@@ -335,6 +337,9 @@ class AppBar extends Component {
 				break;
 			case '/wallet':
 				selectedMenu = 'wallet';
+				break;
+			case '/transactions':
+				selectedMenu = 'history';
 				break;
 			case '/security':
 				selectedMenu = 'security';

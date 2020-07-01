@@ -6,6 +6,7 @@ import { DisplayTable } from '../../../components';
 import { getFormatTimestamp } from '../../../utils/utils';
 import STRINGS from '../../../config/localizedStrings';
 import { IS_XHT, ICONS } from '../../../config/constants';
+import { formatToCurrency } from '../../../utils/currency';
 // import { roundNumber } from '../../../utils/currency';
 // import { getDecimals } from '../../../utils/utils';
 import { tradeHistorySelector } from '../utils';
@@ -102,12 +103,14 @@ class TradeHistory extends Component {
 	};
 
 	generateData = (data) => {
+		let pairData = this.props.pairs[this.props.pair] || {};
 		let constructedData = data.map((value, index) => {
 			// let temp = data[index - 1] ? data[index - 1] : {};
 			let tempRate = data[index + 1] ? data[index + 1] : {};
 			let isSameBefore = tempRate.price === value.price;
 			let upDownRate = value.price - (tempRate.price || 0);
-			return { ...value, isSameBefore, upDownRate };
+			let price = formatToCurrency(value.price, pairData.increment_price);
+			return { ...value, isSameBefore, upDownRate, price };
 		});
 		this.setState({ data: constructedData });
 	};

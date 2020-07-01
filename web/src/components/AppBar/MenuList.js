@@ -147,6 +147,20 @@ class MenuList extends Component {
 							{STRINGS.ACCOUNTS.TAB_WALLET}
 						</div>
 						<div
+							className={classnames('app-bar-account-menu-list d-flex', {
+								'menu-active':
+									selectedMenu === 'history'
+							})}
+							onClick={() => this.handleMenu('history')}
+						>
+							<div className="notification-content" />
+							<ReactSVG
+								path={ICONS.TAB_HISTORY}
+								wrapperClassName="app-bar-account-list-icon"
+							/>
+							{STRINGS.ACCOUNTS.TAB_HISTORY}
+						</div>
+						<div
 							className={classnames(
 								'app-bar-account-menu-list d-flex',
 								!!securityPending

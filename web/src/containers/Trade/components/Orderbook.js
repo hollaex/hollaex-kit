@@ -4,7 +4,7 @@ import EventListener from 'react-event-listener';
 import { connect } from 'react-redux';
 
 import { subtract, asksSelector, bidsSelector } from '../utils';
-import { formatToFixed } from '../../../utils/currency';
+import { formatToFixed, formatToCurrency } from '../../../utils/currency';
 import STRINGS from '../../../config/localizedStrings';
 import { DEFAULT_COIN_DATA } from '../../../config/constants';
 
@@ -17,15 +17,13 @@ const PriceRow = (side, increment_price, increment_size, onPriceClick, onAmountC
 			className={`f-1 trade_orderbook-cell trade_orderbook-cell-price ${side} pointer`}
 			onClick={onPriceClick(price)}
 		>
-			{price}
-			{/* {formatToCurrency(price, increment_price)} */}
+			{formatToCurrency(price, increment_price)}
 		</div>
 		<div
 			className="f-1 trade_orderbook-cell trade_orderbook-cell-amount pointer"
 			onClick={onAmountClick(amount)}
 		>
-			{amount}
-			{/* {formatToCurrency(amount, increment_size)} */}
+			{formatToCurrency(amount, increment_size)}
 		</div>
 	</div>
 );
