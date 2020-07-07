@@ -112,7 +112,12 @@ Public channels (`orderbook`, `trades`) emit events named after the respective c
 
 The private channel `user` emits the events `userInfo`, `userOrder`, `userTrade`, `userWallet`, and `userUpdate`.
 
-Each channel also emits a `disconnect`, `reconnect`, and `error` event. The `disconnect` is emitted once when the websocket connection is disconnected from the server. The `reconnect` is emitted once when the server connection is reconnected. The `error` event is emitted when there is an error thrown by the socket connection.
+Each channel also emits a `disconnect`, `reconnect`, `error`, `connect_error`, and `connect_timeout` event.
+- `disconnect` is emitted once when the websocket connection is disconnected from the server.
+- `reconnect` is emitted once when the server connection is reconnected.
+- `error` is emitted when there is an error thrown by the socket connection.
+- `connect_error` is emitted when there is an error while the socket connects.
+- `connect_timeout` is emitted when the socket connection times out.
 
 ##### Private Events
 
