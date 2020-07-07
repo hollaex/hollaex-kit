@@ -351,8 +351,14 @@ class Socket extends EventEmitter {
 					this.ioLink[this.ioLink.length - 1].on('error', (error) => {
 						this.emit('error', error);
 					});
+					this.ioLink[this.ioLink.length - 1].on('connect_error', (data) => {
+						this.emit('connect_error', `Socket Connection Error: ${data}.`);
+					});
+					this.ioLink[this.ioLink.length - 1].on('connect_timeout', (data) => {
+						this.emit('connect_timeout', `Socket Connection Timeout : ${data}.`);
+					});
 					this.ioLink[this.ioLink.length - 1].once('disconnect', (data) => {
-						this.emit('disconnect', `Soscket.io disconnected from server due to: ${data}.`);
+						this.emit('disconnect', `Socket Disconnect: ${data}.`);
 						this.subs = this._events;
 						this.removeAllListeners();
 					});
@@ -380,7 +386,7 @@ class Socket extends EventEmitter {
 						this.emit('userOrder', data);
 					});
 					this.ioLink[this.ioLink.length - 1].on('trades', (data) => {
-						this.emit('userTrades', data);
+						this.emit('userTrade', data);
 					});
 					this.ioLink[this.ioLink.length - 1].on('update', (data) => {
 						this.emit('userUpdate', data);
@@ -388,8 +394,14 @@ class Socket extends EventEmitter {
 					this.ioLink[this.ioLink.length - 1].on('error', (error) => {
 						this.emit('error', error);
 					});
+					this.ioLink[this.ioLink.length - 1].on('connect_error', (data) => {
+						this.emit('connect_error', `Socket Connection Error: ${data}.`);
+					});
+					this.ioLink[this.ioLink.length - 1].on('connect_timeout', (data) => {
+						this.emit('connect_timeout', `Socket Connection Timeout : ${data}.`);
+					});
 					this.ioLink[this.ioLink.length - 1].once('disconnect', (data) => {
-						this.emit('disconnect', `Socket.io disconnected from server due to: ${data}.`);
+						this.emit('disconnect', `Socket Disconnect: ${data}.`);
 						this.subs = this._events;
 						this.removeAllListeners();
 					});
@@ -433,8 +445,14 @@ class Socket extends EventEmitter {
 					this.ioLink[this.ioLink.length - 1].on('error', (error) => {
 						this.emit('error', error);
 					});
+					this.ioLink[this.ioLink.length - 1].on('connect_error', (data) => {
+						this.emit('connect_error', `Socket Connection Error: ${data}.`);
+					});
+					this.ioLink[this.ioLink.length - 1].on('connect_timeout', (data) => {
+						this.emit('connect_timeout', `Socket Connection Timeout : ${data}.`);
+					});
 					this.ioLink[this.ioLink.length - 1].once('disconnect', (data) => {
-						this.emit('disconnect', `Socket.io disconnected from server due to: ${data}.`);
+						this.emit('disconnect', `Socket Disconnect: ${data}.`);
 						this.subs = this._events;
 						this.removeAllListeners();
 					});
