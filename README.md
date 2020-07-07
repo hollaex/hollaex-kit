@@ -10,10 +10,15 @@ const HollaEx = require('hollaex-node-lib');
 var client = new HollaEx();
 ```
 
-You can pass your `apiKey` and `apiSecret` generated from the site as follows:
+You can pass the `apiURL` and `baseURL` of the HollaEx-Enabled exchange to connect to. You can also pass your `apiKey` and `apiSecret` generated from the HollaEx-Enabled exchange.
 
 ```node
-var client = new HollaEx({ apiKey: <MY_API_KEY>, apiSecret: <MY_API_SECRET> });
+var client = new HollaEx({
+	apiURL: <EXCHANGE_API_URL>,
+	baseURL: <EXCHANGE_BASE_URL>,
+	apiKey: <MY_API_KEY>,
+	apiSecret: <MY_API_SECRET>
+});
 ```
 
 You can also pass the field `apiExpiresAfter` which is the length of time in seconds each request is valid for. The default value is `60`.
@@ -25,7 +30,13 @@ There is a list of functions you can call which will be added later and they are
 ### Example:
 
 ```node
-var client = new HollaEx({ apiKey: <MY_API_KEY>, apiSecret: <MY_API_SECRET> });
+var client = new HollaEx({
+	apiURL: <EXCHANGE_API_URL>,
+	baseURL: <EXCHANGE_BASE_URL>,
+	apiKey: <MY_API_KEY>,
+	apiSecret: <MY_API_SECRET>
+});
+
 client
 	.getTicker('xht-usdt')
 	.then((res) => {
@@ -59,23 +70,56 @@ client
 
 ### Websocket
 
+#### Connecting
+
 You can connect and subscribe to different websocket channels for realtime updates.
+
+To connect, use the `connect` function with the channel you want to subscribe to as the parameter.
 
 ```node
 const socket = client.connect('orderbook');
-socket.on('orderbook', (data) => {
+```
+
+To disconnect the websocket, call `disconnect` on the socket connection.
+
+```node
+socket.disconnect();
+```
+
+#### Channels
+
+Here is the list of channels you can subscribe to:
+
+- `orderbook`
+- `trades`
+- `user` (Private updates for the user such as balance, user orders etc as explained below)
+- `all` (Subscribes to all events)
+
+For public channels (`orderbook`, `trades`), you can subscribe to specific symbols as follows:
+`orderbook:xht-usdt`, `trades:xht-usdt`.
+
+#### Events
+
+After connecting to the websocket, you can listen for events coming from the server by using the `on` function.
+
+```node
+socket.on(<EVENT>, (data) => {
 	console.log(data);
 });
 ```
 
-You can only subscribe to specific symbols as follows:
-`orderbook:xht-usdt`
-Here is the list of events you can subscribe:
+Public channels (`orderbook`, `trades`) emit events named after the respective channel. For example, the `orderbook` channel emits the event `orderbook`.
 
-- orderbook
-- trades
-- user (Private updates for the user such as balance, user orders etc as explained below)
-- all (It subscribes to all events)
+The private channel `user` emits the events `userInfo`, `userOrder`, `userTrade`, `userWallet`, and `userUpdate`.
+
+Each channel also emits a `disconnect`, `reconnect`, `error`, `connect_error`, and `connect_timeout` event.
+- `disconnect` is emitted once when the websocket connection is disconnected from the server.
+- `reconnect` is emitted once when the server connection is reconnected.
+- `error` is emitted when there is an error thrown by the socket connection.
+- `connect_error` is emitted when there is an error while the socket connects.
+- `connect_timeout` is emitted when the socket connection times out.
+
+##### Private Events
 
 When you subscribe to private updates on user you should listen for the events as follows:
 
