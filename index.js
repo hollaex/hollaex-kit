@@ -386,7 +386,7 @@ class Socket extends EventEmitter {
 						this.emit('userOrder', data);
 					});
 					this.ioLink[this.ioLink.length - 1].on('trades', (data) => {
-						this.emit('userTrades', data);
+						this.emit('userTrade', data);
 					});
 					this.ioLink[this.ioLink.length - 1].on('update', (data) => {
 						this.emit('userUpdate', data);
@@ -437,7 +437,7 @@ class Socket extends EventEmitter {
 						this.emit('userOrder', data);
 					});
 					this.ioLink[this.ioLink.length - 1].on('trades', (data) => {
-						this.emit('userTrades', data);
+						this.emit('userTrade', data);
 					});
 					this.ioLink[this.ioLink.length - 1].on('update', (data) => {
 						this.emit('userUpdate', data);
