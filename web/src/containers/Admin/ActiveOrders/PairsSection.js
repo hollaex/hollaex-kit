@@ -222,7 +222,7 @@ class PairsSection extends Component {
 
     onCancelOrder = (order) => {
         if (order && order.id) {
-            requestCancelOrders(order.id)
+            requestCancelOrders(order.id, order.created_by)
                 .then((res) => {
                     if (res && res.side === 'buy') {
                         const temp = this.state.buyOrders.data.filter((val) => val.id !== res.id)

@@ -47,10 +47,10 @@ function checkStatus(response) {
  *
  * @return {object}           The response data
  */
-export const requestAuthenticated = (url, paramOptions, headers, apiUrl) => {
+export const requestAuthenticated = (url, paramOptions, headers, apiUrl, method = 'GET') => {
 	const TOKEN = getToken();
 	const options = {
-		method: 'GET',
+		method,
 		headers: headers
 			? {
 					...headers,
