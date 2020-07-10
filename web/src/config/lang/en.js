@@ -330,6 +330,8 @@ export default {
 		REQUEST_EMAIL: 'Request another one here',
 		HAVE_ACCOUNT: 'Already have an account?',
 		GOTO_LOGIN: 'Go to the login page',
+		AFFILIATION_CODE: 'Affliation_code (optional)',
+		AFFILIATION_CODE_PLACEHOLDER:'Type your referral code',
 		TERMS: {
 			terms: 'General Terms',
 			policy: 'Privacy Policy',
