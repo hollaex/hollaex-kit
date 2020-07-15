@@ -71,8 +71,8 @@ class Signup extends Component {
 	}
 
 	onSubmitSignup = (values) => {
-		const affiliation_code = this.getReferralCode();
-		if (affiliation_code) {
+		const affiliation_code = this.getReferralCode();		
+		if (affiliation_code && !values.referral) {
 			values.referral = affiliation_code;
 		}
 		return performSignup(values)

@@ -1,6 +1,6 @@
 {
 	"name": "hollaex-kit",
-	"version": "1.5.4",
+	"version": "1.5.6",
 	"private": true,
 	"dependencies": {
 		"@material/button": "0.7.0",

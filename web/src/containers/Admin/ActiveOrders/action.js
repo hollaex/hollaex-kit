@@ -19,8 +19,8 @@ export const requestActiveOrders = (values = {}) => {
 		});
 };
 
-export const requestCancelOrders = (orderId) => {
-	return requestAuthenticated(`/user/orders/${orderId}`)
+export const requestCancelOrders = (orderId, userId) => {
+	return requestAuthenticated(`/admin/order?user_id=${userId}&order_id=${orderId}`, undefined, undefined, undefined, 'DELETE')
 		.catch(handleError)
 		.then((data) => {
 			return data;
