@@ -15,7 +15,6 @@ import {
 import { LinkButton } from './LinkButton';
 import PairTabs from './PairTabs';
 import MenuList from './MenuList';
-import HamburgerMenu from './HamburgerMenu';
 import { MobileBarWrapper } from '../';
 import STRINGS from '../../config/localizedStrings';
 import { isLoggedIn, isAdmin } from '../../utils/token';
@@ -403,7 +402,7 @@ class AppBar extends Component {
 			location,
 			pairs,
 			onHelp,
-			user,
+			// user,
 			constants = {}
 		} = this.props;
 		const {
@@ -433,8 +432,7 @@ class AppBar extends Component {
 						? 'justify-content-between pl-4 pr-4'
 						: 'justify-content-center'
 				)}
-			>
-			 	<HamburgerMenu logout={logout} user={user} router={router}/>
+			>			 	
 				<Link to="/">
 					<div
 						style={{
