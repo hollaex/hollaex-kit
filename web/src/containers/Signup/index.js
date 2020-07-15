@@ -41,8 +41,7 @@ class Signup extends Component {
 		showContactForm: false,
 		isReferral: false
 	};
-
-
+	
 	componentDidMount() {
 		const affiliation_code = this.getReferralCode();
 		if (affiliation_code) {
