@@ -402,6 +402,7 @@ class AppBar extends Component {
 			location,
 			pairs,
 			onHelp,
+			// user,
 			constants = {}
 		} = this.props;
 		const {
@@ -431,7 +432,7 @@ class AppBar extends Component {
 						? 'justify-content-between pl-4 pr-4'
 						: 'justify-content-center'
 				)}
-			>
+			>			 	
 				<Link to="/">
 					<div
 						style={{
@@ -535,7 +536,7 @@ class AppBar extends Component {
 									</Link>
 									: null
 								}
-							</div>
+							</div>							
 							<MenuList
 								selectedMenu={selectedMenu}
 								securityPending={securityPending}
@@ -547,6 +548,7 @@ class AppBar extends Component {
 								closeAccountMenu={this.closeAccountMenu}
 								onHelp={onHelp}
 							/>
+							
 						</div>
 					) : null
 				) : (

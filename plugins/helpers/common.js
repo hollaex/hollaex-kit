@@ -1,6 +1,6 @@
 'use strict';
 
-const { Status } = require('../../db/models');
+const { Status, Deposit } = require('../../db/models');
 const { CONSTANTS_KEYS, INIT_CHANNEL, SECRETS_KEYS } = require('../../constants');
 const { publisher } = require('../../db/pubsub');
 const { omit, each } = require('lodash');
@@ -181,6 +181,20 @@ const maskSecrets = (plugin, secrets) => {
 	return secrets;
 };
 
+const createDeposit = (user_id, transaction_id, address, status, currency, type, amount, fee = 0, description = '', options = {}) => {
+	return Deposit.create({
+		user_id,
+		transaction_id,
+		address,
+		status,
+		currency,
+		type,
+		amount,
+		fee,
+		description
+	}, options);
+};
+
 module.exports = {
 	logger,
 	updateConstants,
@@ -191,5 +205,6 @@ module.exports = {
 	getTimeframe,
 	convertSequelizeCountAndRows,
 	updatePluginConstant,
-	maskSecrets
+	maskSecrets,
+	createDeposit
 };
