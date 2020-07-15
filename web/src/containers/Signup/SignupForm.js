@@ -38,6 +38,11 @@ export const generateFormFields = (strings, theme, links = {}) => ({
 		label: strings.FORM_FIELDS.PASSWORD_REPEAT_LABEL,
 		placeholder: strings.FORM_FIELDS.PASSWORD_REPEAT_PLACEHOLDER
 	},
+	referral: {
+		fullWidth: true,
+		label: strings.SIGN_UP.AFFILIATION_CODE,
+		placeholder: strings.SIGN_UP.AFFILIATION_CODE_PLACEHOLDER
+	},
 	terms: {
 		type: 'checkbox',
 		fullWidth: true,
