@@ -10,6 +10,7 @@ import {
 import { AuthForm, BlueLink } from '../../components';
 import STRINGS from '../../config/localizedStrings';
 
+
 export const FORM_NAME = 'SignForm';
 
 export const generateFormFields = (strings, theme, links = {}) => ({
@@ -37,6 +38,11 @@ export const generateFormFields = (strings, theme, links = {}) => ({
 		fullWidth: true,
 		label: strings.FORM_FIELDS.PASSWORD_REPEAT_LABEL,
 		placeholder: strings.FORM_FIELDS.PASSWORD_REPEAT_PLACEHOLDER
+	},
+	referral: {
+		fullWidth: true,
+		label: strings.SIGN_UP.AFFILIATION_CODE,
+		placeholder: strings.SIGN_UP.AFFILIATION_CODE_PLACEHOLDER
 	},
 	terms: {
 		type: 'checkbox',
@@ -78,7 +84,7 @@ const Form = (props) => (
 	<AuthForm {...props} buttonLabel={STRINGS.SIGNUP_TEXT} />
 );
 
-export default reduxForm({
-	form: FORM_NAME,
-	validate
+export default  reduxForm({
+	form: FORM_NAME, 
+	validate,
 })(Form);

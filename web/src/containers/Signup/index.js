@@ -41,11 +41,11 @@ class Signup extends Component {
 		showContactForm: false,
 		isReferral: false
 	};
-
-
+	
 	componentDidMount() {
 		const affiliation_code = this.getReferralCode();
 		if (affiliation_code) {
+			this.props.change(FORM_NAME, 'referral', affiliation_code)
 			this.setState({ isReferral: true });
 		}
 	}
@@ -71,10 +71,10 @@ class Signup extends Component {
 	}
 
 	onSubmitSignup = (values) => {
-		const affiliation_code = this.getReferralCode();
-		if (affiliation_code) {
-			values.referral = affiliation_code;
-		}
+		// const affiliation_code = this.getReferralCode();		
+		// if (affiliation_code && !values.referral) {
+		// 	values.referral = affiliation_code;
+		// }
 		return performSignup(values)
 			.then((res) => {
 				this.setState({ success: true });
