@@ -1,0 +1,756 @@
+swagger: "2.0"
+info:
+  version: "2.0.0"
+  title: HollaEx Kit
+host: api.hollaex.com
+basePath: /v1
+schemes:
+  - http
+  - https
+consumes:
+  - application/json
+produces:
+  - application/json
+  - text/csv
+
+securityDefinitions:
+  Bearer:
+    description: JWT authentication
+    type: apiKey
+    name: Authorization
+    in: header
+  HmacKey:
+    description: HMAC API key
+    type: apiKey
+    name: api-key
+    in: header
+
+paths:
+  /health:
+    x-swagger-router-controller: general
+    get:
+      operationId: getHealth
+      description: Get health of server
+      tags:
+        - Public
+      responses:
+        200:
+          description: Success
+          schema:
+            type: object
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+  /constant:
+    x-swagger-router-controller: general
+    get:
+      operationId: getConstants
+      description: Get the system constants such as pairs and currencies
+      tags:
+        - Public
+      responses:
+        200:
+          description: Success
+          schema:
+            type: object
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+  /signup:
+    x-swagger-router-controller: user
+    post:
+      operationId: signUpUser
+      description: User sign up
+      tags:
+        - Public
+      parameters:
+        - name: signup
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/UserAuthentication"
+      responses:
+        201:
+          description: Created
+          schema:
+            $ref: "#/definitions/MessageResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+  /verify:
+    x-swagger-router-controller: user
+    get:
+      operationId: getVerifyUser
+      description: Get information of verification user, must provide email or verification_code. If you want to resend the email, provide email and resend query parameters
+      tags:
+        - Public
+      parameters:
+        - name: email
+          in: query
+          description: User's email
+          required: false
+          type: string
+        - name: resend
+          in: query
+          description: Resend email to user
+          required: false
+          type: boolean
+        - name: verification_code
+          in: query
+          description: Verification code
+          required: false
+          type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            type: object
+            properties:
+              verification_code:
+                type: string
+              email:
+                type: string
+              message:
+                type: string
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+    post:
+      operationId: verifyUser
+      description: User Verification
+      tags:
+        - Public
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            required:
+              - email
+              - verification_code
+            properties:
+              email:
+                type: string
+              verification_code:
+                type: string
+      responses:
+        200:
+          description: 200
+          schema:
+            $ref: "#/definitions/MessageResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+  /login:
+    x-swagger-router-controller: user
+    post:
+      operationId: loginPost
+      description: Login with a particular role. If OTP is enabled, the user must provide an OTP code
+      tags:
+        - Public
+      parameters:
+        - name: authentication
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/UserAuthentication"
+      responses:
+        200:
+          description: Success
+          schema:
+            type: object
+            properties:
+              token:
+                type: string
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+  /verify-token:
+    x-swagger-router-controller: user
+    get:
+      operationId: verifyToken
+      description: Verify token
+      tags:
+        - Public
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/MessageResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+    security:
+      - Bearer: []
+    x-security-scopes:
+      - user
+  /reset-password:
+    x-swagger-router-controller: user
+    get:
+      operationId: requestResetPassword
+      description: Request a code to reset password of a user
+      tags:
+        - Public
+      parameters:
+        - name: email
+          in: query
+          required: true
+          type: string
+        - name: captcha
+          in: query
+          required: false
+          type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/MessageResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+    post:
+      operationId: resetPassword
+      description: "Reset password of a user"
+      tags:
+        - Public
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/ResetPassword"
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/MessageResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+  /user:
+    x-swagger-router-controller: user
+    get:
+      operationId: getUser
+      description: List information of authenticated user
+      tags:
+        - User
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/UserResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - user
+  /user/settings:
+    x-swagger-router-controller: user
+    put:
+      operationId: updateSettings
+      description: Edit settings of authenticated user
+      tags:
+        - User
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/SettingsPut"
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/UserResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - user
+  /user/change-password:
+    x-swagger-router-controller: user
+    post:
+      operationId: changePassword
+      description: Change password of authenticated user
+      tags:
+        - User
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/ChangePassword"
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/MessageResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - user
+  /user/username:
+    x-swagger-router-controller: user
+    post:
+      operationId: setUsername
+      description: Change user's username
+      tags:
+        - User
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            required:
+              - username
+            properties:
+              username:
+                type: string
+                minLength: 3
+                maxLength: 15
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/MessageResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - user
+  /user/logins:
+    x-swagger-router-controller: user
+    get:
+      operationId: getUserLogins
+      description: List logins of authenticated user
+      tags:
+        - User
+      parameters:
+        - in: query
+          name: limit
+          description: "Number of elements to return. Default: 50. Maximun: 100"
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: page
+          description: Page of data to  retrieve
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: start_date
+          description: Starting date of queried data
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: end_date
+          description: Ending date of queried data
+          required: false
+          type: string
+          format: date-time
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/LoginsResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - user
+  /user/affiliation:
+    x-swagger-router-controller: user
+    get:
+      operationId: affiliationCount
+      description: Get the number of affiliated account a user has made
+      tags:
+        - User
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/CountResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - user
+  /user/request-withdrawal:
+    x-swagger-router-controller: withdrawals
+    post:
+      operationId: requestWithdrawal
+      description: This will send a confirmation email to the email address on record, if activate OTP, it will require OTP as well.
+      tags:
+        - User
+        - Withdraw
+      parameters:
+        - name: data
+          description: withdrawal information
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/WithdrawalRequest"
+      responses:
+        200:
+          description: Success
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+              transaction_id:
+                type: string
+              fee:
+                type: string
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - user
+  /user/request-otp:
+    x-swagger-router-controller: otp
+    get:
+      operationId: requestOtp
+      description: Generate OTP code for OTP verification
+      tags:
+        - User
+        - OTP
+      responses:
+        200:
+          description: Created
+          schema:
+            type: object
+            required:
+              - secret
+            properties:
+              secret:
+                type: string
+        403:
+          description: Access Denied
+          schema:
+            $ref: "#/definitions/MessageResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - user
+  /user/activate-otp:
+    x-swagger-router-controller: otp
+    post:
+      operationId: activateOtp
+      description: Enable OTP
+      parameters:
+        - name: data
+          description: Activation code
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/OtpRequest"
+      tags:
+        - User
+        - OTP
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/MessageResponse"
+        403:
+          description: Access Denied
+          schema:
+            $ref: "#/definitions/MessageResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - user
+  /user/deactivate-otp:
+    x-swagger-router-controller: otp
+    post:
+      operationId: deactivateOtp
+      description: Disable OTP
+      tags:
+        - User
+        - OTP
+      parameters:
+        - name: data
+          description: Activation code
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/OtpRequest"
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/MessageResponse"
+        403:
+          description: Access Denied
+          schema:
+            $ref: "#/definitions/MessageResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - user
+
+definitions:
+  MessageResponse:
+    required:
+      - message
+    properties:
+      message:
+        type: string
+  UserAuthentication:
+    type: object
+    required:
+      - email
+      - password
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+        format: password
+      otp_code:
+        type: string
+      captcha:
+        type: string
+      referral:
+        type: string
+      service:
+        type: string
+  ResetPassword:
+    type: object
+    required:
+      - code
+      - new_password
+    properties:
+      new_password:
+        type: string
+      code:
+        type: string
+  UserResponse:
+    type: object
+    properties:
+      id:
+        type: number
+      email:
+        type: string
+      full_name:
+        type: string
+      gender:
+        type: boolean
+      nationality:
+        type: string
+      address:
+        type: object
+        properties:
+          country:
+            type: string
+          address:
+            type: string
+          postal_code:
+            type: string
+          city:
+            type: string
+          verified:
+            type: boolean
+      phone_number:
+        type: string
+      id_data:
+        type: object
+        properties:
+          type:
+            type: string
+          number:
+            type: string
+          issued_date:
+            type: string
+          expiration_date:
+            type: string
+          verified:
+            type: boolean
+      bank_account:
+        type: array
+        items:
+          type: object
+          properties:
+            bank_name:
+              type: string
+            account_number:
+              type: string
+              maxLength: 50
+            card_number:
+              type: string
+      crypto_wallet:
+        type: object
+      verification_level:
+        type: number
+      balance:
+        $ref: "#/definitions/BalanceResponse"
+      settings:
+        type: object
+        properties:
+          language:
+            type: string
+            default: 'en'
+            maxLength: 3
+            minLength: 2
+  SettingsPut:
+    type: object
+    properties:
+      language:
+        type: string
+        default: 'en'
+        maxLength: 3
+        minLength: 2
+      risk:
+        type: object
+        properties:
+          popup_warning:
+            type: boolean
+          order_portfolio_percentage:
+            type: number
+            format: int32
+            minimum: 1
+            maximum: 99
+      audio:
+        type: object
+        properties:
+          putblic_trade:
+            type: boolean
+          order_completed:
+            type: boolean
+          order_partially_completed:
+            type: boolean
+      interface:
+        type: object
+        properties:
+          theme:
+            type: string
+          order_book_levels:
+            type: number
+            format: int32
+            minimum: 1
+            maximum: 20
+      notification:
+        type: object
+        properties:
+          popup_order_completed:
+            type: boolean
+          popup_order_confirmation:
+            type: boolean
+          popup_order_partially_filled:
+            type: boolean
+  ChangePassword:
+    type: object
+    required:
+      - old_password
+      - new_password
+    properties:
+      old_password:
+        type: string
+      new_password:
+        type: string
+  LoginsResponse:
+    type: object
+    properties:
+      count:
+        type: number
+        format: int32
+      data:
+        type: array
+        items:
+          type: object
+          properties:
+            ip:
+              type: string
+            device:
+              type: string
+            domain:
+              type: string
+            timestamp:
+              type: string
+              format: date-time
+  CountResponse:
+    required:
+      - count
+    properties:
+      count:
+        type: number
+  WithdrawalRequest:
+    type: object
+    required:
+      - address
+      - amount
+      - currency
+    properties:
+      address:
+        type: string
+        description: Destination address
+      currency:
+        type: string
+        description: currency to be withdrawn (btc, eth, etc)
+      amount:
+        type: number
+        format: double
+        description: Amount to transfer (in btc, eth, bch)
+      captcha:
+        type: string
+        description: captcha token
+      otp_code:
+        type: string
+        description: OTP code when otp is enabled
+        minLength: 6
+        maxLength: 6
+  OtpRequest:
+    type: object
+    required:
+      - code
+    properties:
+      code:
+        type: string
