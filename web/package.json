@@ -82,17 +82,19 @@
 	},
 	"devDependencies": {
 		"prettier": "1.16.4",
-		"react-scripts": "2.1.8"
+		"react-app-rewired": "2.1.6",
+		"react-scripts": "2.1.8",
+		"speed-measure-webpack-plugin": "1.3.3"
 	},
 	"scripts": {
 		"prettier-commit": "lint-staged",
 		"prettier": "./node_modules/prettier/bin-prettier.js --write \"src/**/*.{js,json,css,scss,md}\"",
 		"build-css": "node-sass-chokidar src/ -o src/",
 		"watch-css": "npm run build-css && node-sass-chokidar src/ -o src/ --watch --recursive",
-		"start-js": "react-scripts --max_old_space_size=3072 start",
+		"start-js": "react-app-rewired --max_old_space_size=3072 start",
 		"start": "npm-run-all -p watch-css start-js",
-		"build": "npm run build-css && react-scripts --max_old_space_size=3072 build",
-		"test": "react-scripts test --env=jsdom",
+		"build": "npm run build-css && react-app-rewired --max_old_space_size=3072 build",
+		"test": "react-app-rewired test --env=jsdom",
 		"eject": "react-scripts eject"
 	},
 	"description": "Cryptocurrency exchange platfrom",
