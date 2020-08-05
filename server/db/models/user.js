@@ -192,11 +192,6 @@ module.exports = function(sequelize, DataTypes) {
 	});
 
 	User.associate = (models) => {
-		User.hasOne(models.Balance, {
-			foreignKey: 'user_id',
-			as: 'balance'
-		});
-		User.hasMany(models.Deposit);
 		User.hasMany(models.Token);
 		User.hasMany(models.VerificationCode);
 		// User.hasMany(models.VerificationImage);
@@ -211,13 +206,6 @@ module.exports = function(sequelize, DataTypes) {
 		});
 		User.hasMany(models.Affiliation, {
 			foreignKey: 'referer_id'
-		});
-		User.hasMany(models.Order);
-		User.hasMany(models.Trade, {
-			foreignKey: 'maker_id'
-		});
-		User.hasMany(models.Trade, {
-			foreignKey: 'taker_id'
 		});
 	};
 
