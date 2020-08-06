@@ -82,7 +82,7 @@
 	},
 	"devDependencies": {
 		"prettier": "1.16.4",
-		"react-scripts": "2.1.8"
+		"react-scripts": "3.4.1"
 	},
 	"scripts": {
 		"prettier-commit": "lint-staged",
