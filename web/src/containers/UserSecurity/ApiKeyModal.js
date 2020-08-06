@@ -21,7 +21,7 @@ class ApiKeyModal extends Component {
 		secret: ''
 	};
 
-	componentWillReceiveProps(nextProps) {
+	UNSAFE_componentWillReceiveProps(nextProps) {
 		if (
 			!this.state.dialogOtpOpen &&
 			nextProps.tokenName !== this.props.tokenName

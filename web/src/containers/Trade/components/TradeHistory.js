@@ -85,7 +85,7 @@ class TradeHistory extends Component {
 		}
 	}
 
-	componentWillReceiveProps(nextProps) {
+	UNSAFE_componentWillReceiveProps(nextProps) {
 		if (nextProps.language !== this.props.language) {
 			this.calculateHeaders();
 		}

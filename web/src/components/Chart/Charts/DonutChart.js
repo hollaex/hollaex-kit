@@ -46,7 +46,7 @@ class DonutChart extends Component {
 		});
 	}
 
-	componentWillReceiveProps(nextProps) {
+	UNSAFE_componentWillReceiveProps(nextProps) {
 		if (
 			JSON.stringify(this.props.chartData) !==
 			JSON.stringify(nextProps.chartData)

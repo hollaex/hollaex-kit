@@ -43,7 +43,7 @@ class QuickTrade extends Component {
 		}
 	}
 
-	componentWillReceiveProps(nextProps) {
+	UNSAFE_componentWillReceiveProps(nextProps) {
 		if (
 			nextProps.symbol !== this.props.symbol
 		) {

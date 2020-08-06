@@ -17,7 +17,7 @@ class CaptchaField extends Component {
 		}, 120000);
 	}
 
-	componentWillReceiveProps(nextProps) {
+	UNSAFE_componentWillReceiveProps(nextProps) {
 		if (
 			nextProps.input.value === '' &&
 			nextProps.input.value !== this.props.input.value

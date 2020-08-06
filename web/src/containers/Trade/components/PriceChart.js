@@ -23,7 +23,7 @@ class ChartComponent extends Component {
 		}
 	}
 
-	componentWillReceiveProps(nextProps) {
+	UNSAFE_componentWillReceiveProps(nextProps) {
 		if (nextProps.pair !== this.props.pair) {
 			this.connectToWs(nextProps.pair);
 		}

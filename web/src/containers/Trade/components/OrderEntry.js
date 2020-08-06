@@ -55,7 +55,7 @@ class OrderEntry extends Component {
 		}
 	}
 
-	componentWillReceiveProps(nextProps) {
+	UNSAFE_componentWillReceiveProps(nextProps) {
 		if (
 			nextProps.size !== this.props.size ||
 			nextProps.side !== this.props.side ||

@@ -53,7 +53,7 @@ class Form extends Component {
 		otp_code: ''
 	};
 
-	componentWillReceiveProps(nextProps) {
+	UNSAFE_componentWillReceiveProps(nextProps) {
 		if (nextProps.currency !== this.props.currency) {
 			nextProps.dispatch(reset(FORM_NAME));
 		}

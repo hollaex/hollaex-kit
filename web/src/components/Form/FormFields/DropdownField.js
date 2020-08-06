@@ -22,7 +22,7 @@ class DropdownField extends Component {
 		}
 	}
 
-	componentWillReceiveProps(nextProps) {
+	UNSAFE_componentWillReceiveProps(nextProps) {
 		if (nextProps.input.value !== this.props.input.value) {
 			this.setValue(nextProps.input.value);
 		}

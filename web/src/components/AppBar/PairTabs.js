@@ -81,7 +81,7 @@ class PairTabs extends Component {
         this.initTabs(pairs, active);
     }
 
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         const { activePath, pairs, router, location } = nextProps;
         let active = this.state.activePairTab;
         let selectedToOpen = '';

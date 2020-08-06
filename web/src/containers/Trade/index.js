@@ -52,7 +52,7 @@ class Trade extends PureComponent {
 		this.setSymbol(this.props.routeParams.pair);
 	}
 
-	componentWillReceiveProps(nextProps) {
+	UNSAFE_componentWillReceiveProps(nextProps) {
 		if (nextProps.routeParams.pair !== this.props.routeParams.pair) {
 			this.setSymbol(nextProps.routeParams.pair);
 		}

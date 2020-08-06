@@ -62,7 +62,7 @@ class Verification extends Component {
 		}
 	}
 
-	componentWillReceiveProps(nextProps) {
+	UNSAFE_componentWillReceiveProps(nextProps) {
 		if (nextProps.user.email !== this.props.user.email ||
 			nextProps.user.phone_number !== this.props.user.phone_number ||
 			JSON.stringify(nextProps.user.address) !== JSON.stringify(this.props.user.address) ||
@@ -74,7 +74,7 @@ class Verification extends Component {
 		}
 	}
 
-	componentWillUpdate(nextProps, nextState) {
+	UNSAFE_componentWillUpdate(nextProps, nextState) {
 		if (
 			this.state.activeTab !== nextState.activeTab &&
 			this.state.activeTab !== -1

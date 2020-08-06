@@ -29,7 +29,7 @@ class TradingVolume extends Component {
 		this.props.getTradeVolume();
 	}
 
-	componentWillReceiveProps(nextProps) {
+	UNSAFE_componentWillReceiveProps(nextProps) {
 		if (
 			JSON.stringify(this.props.tradeVolumes) !==
 			JSON.stringify(nextProps.tradeVolumes)

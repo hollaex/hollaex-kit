@@ -17,7 +17,7 @@ class ElapsedTimer extends Component {
         }
     }
 
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         if (this.props.isLoading !== nextProps.isLoading) {
             if (nextProps.isLoading) {
                 this.startTimer();
@@ -27,7 +27,7 @@ class ElapsedTimer extends Component {
         }
     }
 
-    componentWillUpdate(nextProps, nextState) {
+    UNSAFE_componentWillUpdate(nextProps, nextState) {
         if (nextState.seconds === 0) {
             this.props.timeoutCallback();
             this.endTimer();

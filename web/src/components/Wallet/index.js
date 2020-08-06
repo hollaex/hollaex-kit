@@ -28,7 +28,7 @@ class Wallet extends Component {
 		}
 	}
 
-	componentWillReceiveProps(nextProps) {
+	UNSAFE_componentWillReceiveProps(nextProps) {
 		if (
 			nextProps.user_id !== this.props.user_id ||
 			nextProps.price !== this.props.price ||

@@ -53,7 +53,7 @@ class Orderbook extends Component {
 		this.scrollTop();
 	}
 
-	componentWillReceiveProps(nextProps) {
+	UNSAFE_componentWillReceiveProps(nextProps) {
 		// this.scrollTop();
 	}
 

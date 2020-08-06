@@ -100,7 +100,7 @@ class App extends Component {
 		}
 	}
 
-	componentWillReceiveProps(nextProps) {
+	UNSAFE_componentWillReceiveProps(nextProps) {
 		if (
 			nextProps.activeNotification.timestamp !==
 			this.props.activeNotification.timestamp

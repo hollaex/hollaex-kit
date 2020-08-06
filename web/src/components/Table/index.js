@@ -23,7 +23,7 @@ class Table extends Component {
 		}
 	}
 
-	componentWillReceiveProps(nextProps) {
+	UNSAFE_componentWillReceiveProps(nextProps) {
 		if (
 			nextProps.title === this.props.title &&
 			nextProps.data.length !== this.props.data.length

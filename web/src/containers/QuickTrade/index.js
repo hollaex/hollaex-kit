@@ -59,7 +59,7 @@ class QuickTradeContainer extends Component {
 		}
 	}
 
-	componentWillReceiveProps(nextProps) {
+	UNSAFE_componentWillReceiveProps(nextProps) {
 		const nextExp = nextProps.quoteData.data.exp;
 		const thisExp = this.props.quoteData.data.exp;
 		if (

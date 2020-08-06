@@ -16,7 +16,7 @@ class Form extends Component {
 		this.setFormValues();
 	}
 
-	componentWillReceiveProps = (nextProps)=> {
+	UNSAFE_componentWillReceiveProps = (nextProps)=> {
 		if (this.props.dirty !== nextProps.dirty
 			|| this.props.submitFailed !== nextProps.submitFailed
 			|| this.props.valid !== nextProps.valid) {

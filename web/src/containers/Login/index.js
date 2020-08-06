@@ -45,7 +45,7 @@ class Login extends Component {
 			this.setState({ logoutDialogIsOpen: true });
 		}
 	}
-	componentWillReceiveProps(nextProps) {
+	UNSAFE_componentWillReceiveProps(nextProps) {
 		if (
 			nextProps.logoutMessage &&
 			nextProps.logoutMessage !== this.props.logoutMessage

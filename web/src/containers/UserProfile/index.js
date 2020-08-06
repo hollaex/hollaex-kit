@@ -36,7 +36,7 @@ class UserProfile extends Component {
 		);
 	}
 
-	componentWillReceiveProps(nextProps) {
+	UNSAFE_componentWillReceiveProps(nextProps) {
 		if (nextProps.activeLanguage !== this.props.activeLanguage) {
 			this.calculateFormValues(
 				nextProps.activeLanguage,

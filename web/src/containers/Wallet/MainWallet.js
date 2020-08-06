@@ -48,7 +48,7 @@ class Wallet extends Component {
 		);
 	}
 
-	componentWillReceiveProps(nextProps) {
+	UNSAFE_componentWillReceiveProps(nextProps) {
 		this.generateSections(
 			nextProps.changeSymbol,
 			nextProps.balance,

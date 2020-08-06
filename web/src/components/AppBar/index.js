@@ -66,7 +66,7 @@ class AppBar extends Component {
 		}
 	}
 
-	componentWillReceiveProps(nextProps) {
+	UNSAFE_componentWillReceiveProps(nextProps) {
 		if (
 			this.props.location &&
 			nextProps.location &&

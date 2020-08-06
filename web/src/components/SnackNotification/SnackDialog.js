@@ -42,7 +42,7 @@ class SnackDialog extends Component {
         }
     };
     
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         if (this.props.snackProps.isDialog !== nextProps.snackProps.isDialog
             && nextProps.snackProps.isDialog) {
                 this.setState({ closeSnack: false });

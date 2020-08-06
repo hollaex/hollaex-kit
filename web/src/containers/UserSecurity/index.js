@@ -40,7 +40,7 @@ class UserVerification extends Component {
 		}
 	}
 
-	componentWillReceiveProps(nextProps) {
+	UNSAFE_componentWillReceiveProps(nextProps) {
 		if (
 			nextProps.user.otp.requested !== this.props.user.otp.requested ||
 			nextProps.user.otp.requesting !== this.props.user.otp.requesting ||

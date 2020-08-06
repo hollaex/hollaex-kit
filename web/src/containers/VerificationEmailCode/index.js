@@ -27,7 +27,7 @@ class VerifyEmailCode extends Component {
 		}
 	}
 
-	componentWillReceiveProps(nextProps) {
+	UNSAFE_componentWillReceiveProps(nextProps) {
 		if (nextProps.data.hasValidData && !this.props.data.hasValidData) {
 			this.props.verifyCode(nextProps.data.data);
 		}

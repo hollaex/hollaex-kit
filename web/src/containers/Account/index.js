@@ -48,7 +48,7 @@ class Account extends Component {
 		}
 	}
 
-	componentWillReceiveProps(nextProps) {
+	UNSAFE_componentWillReceiveProps(nextProps) {
 		if (
 			nextProps.id !== this.props.id ||
 			nextProps.verification_level !== this.props.verification_level ||

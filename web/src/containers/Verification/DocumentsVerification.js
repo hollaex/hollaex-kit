@@ -29,7 +29,7 @@ class DocumentsVerification extends Component {
 		this.generateFormFields(this.props.activeLanguage);
 	}
 
-	componentWillReceiveProps(nextProps) {
+	UNSAFE_componentWillReceiveProps(nextProps) {
 		if (nextProps.activeLanguage !== this.props.activeLanguage) {
 			this.generateFormFields(nextProps.activeLanguage);
 		}

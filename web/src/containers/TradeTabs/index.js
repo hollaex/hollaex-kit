@@ -35,7 +35,7 @@ class AddTradeTab extends Component {
 		);
 	}
 
-	componentWillReceiveProps(nextProps) {
+	UNSAFE_componentWillReceiveProps(nextProps) {
 		if (
 			JSON.stringify(this.props.pairs) !== JSON.stringify(nextProps.pairs) ||
 			JSON.stringify(this.props.tickers) !== JSON.stringify(nextProps.tickers)

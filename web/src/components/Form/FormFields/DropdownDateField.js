@@ -61,7 +61,7 @@ class DropdownDateField extends Component {
 		this.setDisplay(limits, this.props.input.value, this.props.language);
 	}
 
-	componentWillReceiveProps(nextProps) {
+	UNSAFE_componentWillReceiveProps(nextProps) {
 		if (nextProps.language !== this.props.language) {
 			this.setDisplay(
 				this.state.limits,

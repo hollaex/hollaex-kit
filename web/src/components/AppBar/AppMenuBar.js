@@ -24,7 +24,7 @@ class AppMenuBar extends Component {
         }
     }
 
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         if (this.props.location && nextProps.location
             && this.props.location.pathname !== nextProps.location.pathname) {
             this.setActiveMenu(nextProps.location.pathname);

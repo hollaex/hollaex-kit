@@ -17,7 +17,7 @@ class ToggleField extends Component {
         }
     }
 
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         if (this.props.input.value !== nextProps.input.value
             && (nextProps.input.value || nextProps.input.value === false)) {
             this.setState({ selected: nextProps.input.value });
