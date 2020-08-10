@@ -1,17 +1,17 @@
 import React from 'react';
-import { CurrencyBall } from '../../components';
-import {
-	ICONS,
-	BASE_CURRENCY,
-	CURRENCY_PRICE_FORMAT,
-	DEFAULT_COIN_DATA,
-	IS_XHT
-} from '../../config/constants';
 import { Link } from 'react-router';
 import { isMobile } from 'react-device-detect';
-import { calculatePrice, formatToCurrency } from '../../utils/currency';
-import { ActionNotification } from '../../components';
-import STRINGS from '../../config/localizedStrings';
+
+import { CurrencyBall, ActionNotification } from 'components';
+import { calculatePrice, formatToCurrency } from 'utils/currency';
+import STRINGS from 'config/localizedStrings';
+import {
+  ICONS,
+  BASE_CURRENCY,
+  CURRENCY_PRICE_FORMAT,
+  DEFAULT_COIN_DATA,
+  IS_XHT
+} from 'config/constants';
 
 const AssetsBlock = ({
 	balance,
