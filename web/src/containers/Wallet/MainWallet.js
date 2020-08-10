@@ -22,7 +22,7 @@ import {
 import { calculateBalancePrice, formatToCurrency } from '../../utils/currency';
 import STRINGS from '../../config/localizedStrings';
 
-import { AssetsBlock } from './AssetsBlock';
+import AssetsBlock from './AssetsBlock';
 import MobileWallet from './MobileWallet';
 
 class Wallet extends Component {
@@ -44,7 +44,8 @@ class Wallet extends Component {
 			this.state.isOpen,
 			this.props.wallets,
 			this.props.bankaccount,
-			this.props.coins
+			this.props.coins,
+			this.props.pairs
 		);
 	}
 
@@ -56,7 +57,8 @@ class Wallet extends Component {
 			this.state.isOpen,
 			nextProps.wallets,
 			nextProps.bankaccount,
-			nextProps.coins
+			nextProps.coins,
+			nextProps.pairs
 		);
 		if (
 			nextProps.addressRequest.success === true &&
@@ -83,7 +85,8 @@ class Wallet extends Component {
 		isOpen = false,
 		wallets,
 		bankaccount,
-		coins
+		coins,
+		pairs
 	) => {
 		const totalAssets = this.calculateTotalAssets(balance, prices, coins);
 
@@ -95,6 +98,7 @@ class Wallet extends Component {
 						balance={balance}
 						prices={prices}
 						coins={coins}
+						pairs={pairs}
 						totalAssets={totalAssets}
 						isValidBase={this.props.isValidBase}
 						changeSymbol={changeSymbol}
@@ -240,6 +244,7 @@ class Wallet extends Component {
 const mapStateToProps = (store) => ({
 	coins: store.app.coins,
 	constants: store.app.constants,
+  pairs: store.app.pairs,
 	prices: store.orderbook.prices,
 	balance: store.user.balance,
 	addressRequest: store.user.addressRequest,

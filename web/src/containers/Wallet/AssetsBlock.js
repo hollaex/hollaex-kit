@@ -13,10 +13,11 @@ import { calculatePrice, formatToCurrency } from '../../utils/currency';
 import { ActionNotification } from '../../components';
 import STRINGS from '../../config/localizedStrings';
 
-export const AssetsBlock = ({
+const AssetsBlock = ({
 	balance,
 	prices,
 	coins,
+	pairs,
 	totalAssets,
 	wallets,
 	onOpenDialog,
@@ -31,9 +32,10 @@ export const AssetsBlock = ({
 				<tr className="table-bottom-border">
 					<th />
 					<th>{STRINGS.CURRENCY}</th>
-					<th>{STRINGS.DEPOSIT_WITHDRAW}</th>
-					<th className="td-amount" />
 					<th>{STRINGS.AMOUNT}</th>
+					<th className="td-amount" />
+					<th>{STRINGS.DEPOSIT_WITHDRAW}</th>
+					<th>{STRINGS.TRADE_TAB_TRADE}</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -41,6 +43,7 @@ export const AssetsBlock = ({
 					.filter(([key]) => balance.hasOwnProperty(`${key}_balance`))
 					.map(([key, { min, allow_deposit, allow_withdrawal }]) => {
 						const balanceValue = balance[`${key}_balance`];
+						const pair = `${key.toLowerCase()}-${BASE_CURRENCY.toLowerCase()}`
 						const { fullname, symbol = '' } = coins[key] || DEFAULT_COIN_DATA;
 						const baseCoin = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
 						const balanceText =
@@ -64,6 +67,25 @@ export const AssetsBlock = ({
 								<td className="td-name td-fit">
 									<Link to={`/wallet/${key.toLowerCase()}`}>{fullname}</Link>
 								</td>
+								<td className="td-amount">
+									<div className="d-flex">
+										<div className="mr-4">
+                      {STRINGS.formatString(
+                        CURRENCY_PRICE_FORMAT,
+                        formatToCurrency(balanceValue, min, true),
+                        symbol.toUpperCase()
+                      )}
+										</div>
+                    {!isMobile &&
+                    key !== BASE_CURRENCY &&
+                    parseFloat(balanceText || 0) > 0 && (
+											<div>
+                        {`(≈ ${baseCoin.symbol.toUpperCase()} ${balanceText})`}
+											</div>
+                    )}
+									</div>
+								</td>
+								<th className="td-amount" />
 								<td className="td-wallet">
 									{wallets[key] ? (
 										<div className="d-flex justify-content-between deposit-withdrawal-wrapper">
@@ -101,24 +123,16 @@ export const AssetsBlock = ({
 										</div>
 									)}
 								</td>
-								<td className="td-amount" />
-								<td className="td-amount">
-									<div className="d-flex">
-										<div className="mr-4">
-											{STRINGS.formatString(
-												CURRENCY_PRICE_FORMAT,
-												formatToCurrency(balanceValue, min, true),
-												symbol.toUpperCase()
-											)}
-										</div>
-										{!isMobile &&
-											key !== BASE_CURRENCY &&
-											parseFloat(balanceText || 0) > 0 && (
-												<div>
-													{`(≈ ${baseCoin.symbol.toUpperCase()} ${balanceText})`}
-												</div>
-											)}
-									</div>
+								<td>
+									<ActionNotification
+										text={STRINGS.TRADE_TAB_TRADE}
+										iconPath={ICONS.BLUE_PLUS}
+										onClick={() => navigate(`/trade/${pair}`)}
+										useSvg={true}
+										className="csv-action"
+										showActionText={isMobile}
+										disable={!pairs[pair] || !pairs[pair].active}
+									/>
 								</td>
 							</tr>
 						);
@@ -155,3 +169,5 @@ export const AssetsBlock = ({
 		</table>
 	</div>
 );
+
+export default AssetsBlock;
