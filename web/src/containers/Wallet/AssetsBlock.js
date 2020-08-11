@@ -25,10 +25,11 @@ const AssetsBlock = ({
 	navigate,
 	isValidBase,
 	openContactUs
-}) => (
-	<div className="wallet-assets_block">
-		<table className="wallet-assets_block-table">
-			<thead>
+}) => {
+	return (
+		<div className="wallet-assets_block">
+			<table className="wallet-assets_block-table">
+				<thead>
 				<tr className="table-bottom-border">
 					<th />
 					<th>{STRINGS.CURRENCY}</th>
@@ -37,23 +38,23 @@ const AssetsBlock = ({
 					<th>{STRINGS.DEPOSIT_WITHDRAW}</th>
 					<th>{STRINGS.TRADE_TAB_TRADE}</th>
 				</tr>
-			</thead>
-			<tbody>
-				{Object.entries(coins)
-					.filter(([key]) => balance.hasOwnProperty(`${key}_balance`))
-					.map(([key, { min, allow_deposit, allow_withdrawal }]) => {
-						const balanceValue = balance[`${key}_balance`];
-						const pair = `${key.toLowerCase()}-${BASE_CURRENCY.toLowerCase()}`
-						const { fullname, symbol = '' } = coins[key] || DEFAULT_COIN_DATA;
-						const baseCoin = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
-						const balanceText =
-							key === BASE_CURRENCY
-								? formatToCurrency(balanceValue, min)
-								: formatToCurrency(
-										calculatePrice(balanceValue, prices[key]),
-										baseCoin.min
-								  );
-						return (
+				</thead>
+				<tbody>
+        {Object.entries(coins)
+          .filter(([key]) => balance.hasOwnProperty(`${key}_balance`))
+          .map(([key, { min, allow_deposit, allow_withdrawal }]) => {
+            const balanceValue = balance[`${key}_balance`];
+            const pair = `${key.toLowerCase()}-${BASE_CURRENCY.toLowerCase()}`
+            const { fullname, symbol = '' } = coins[key] || DEFAULT_COIN_DATA;
+            const baseCoin = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
+            const balanceText =
+              key === BASE_CURRENCY
+                ? formatToCurrency(balanceValue, min)
+                : formatToCurrency(
+                calculatePrice(balanceValue, prices[key]),
+                baseCoin.min
+                );
+            return (
 							<tr className="table-row table-bottom-border" key={key}>
 								<td className="table-icon td-fit">
 									<Link to={`/wallet/${key.toLowerCase()}`}>
@@ -87,7 +88,7 @@ const AssetsBlock = ({
 								</td>
 								<th className="td-amount" />
 								<td className="td-wallet">
-									{wallets[key] ? (
+                  {wallets[key] ? (
 										<div className="d-flex justify-content-between deposit-withdrawal-wrapper">
 											<ActionNotification
 												text={STRINGS.WALLET_BUTTON_BASE_DEPOSIT}
@@ -108,7 +109,7 @@ const AssetsBlock = ({
 												disable={!allow_withdrawal}
 											/>
 										</div>
-									) : (
+                  ) : (
 										<div className="d-flex justify-content-center">
 											<ActionNotification
 												text={STRINGS.GENERATE_WALLET}
@@ -121,7 +122,7 @@ const AssetsBlock = ({
 												disable={!allow_deposit}
 											/>
 										</div>
-									)}
+                  )}
 								</td>
 								<td>
 									<ActionNotification
@@ -135,39 +136,40 @@ const AssetsBlock = ({
 									/>
 								</td>
 							</tr>
-						);
-					})}
-			</tbody>
-			{BASE_CURRENCY && IS_XHT
-				? <tfoot>
+            );
+          })}
+				</tbody>
+        {BASE_CURRENCY && IS_XHT
+          ? <tfoot>
 					<tr>
 						<td colSpan={5}>
-							{STRINGS.formatString(
-								STRINGS.WALLET_DEPOSIT_USD,
+              {STRINGS.formatString(
+                STRINGS.WALLET_DEPOSIT_USD,
 								<span className="blue-link pointer" onClick={openContactUs}>{STRINGS.CONTACT_US_TEXT}</span>
-							)}
+              )}
 						</td>
 					</tr>
-				</tfoot>
-				: !isMobile && BASE_CURRENCY && isValidBase
-					? (<tfoot>
-						<tr>
-							<td />
-							<td />
-							<td />
-							<td />
-							<td>
-								<div className="d-flex">
-									<div className="mr-4">{STRINGS.WALLET_TABLE_TOTAL}</div>
-									<div style={{ direction: 'rtl' }}>{totalAssets}</div>
-								</div>
-							</td>
-						</tr>
 					</tfoot>
-					) : null
-			}
-		</table>
-	</div>
-);
+          : !isMobile && BASE_CURRENCY && isValidBase
+            ? (<tfoot>
+							<tr>
+								<td />
+								<td />
+								<td />
+								<td />
+								<td>
+									<div className="d-flex">
+										<div className="mr-4">{STRINGS.WALLET_TABLE_TOTAL}</div>
+										<div style={{ direction: 'rtl' }}>{totalAssets}</div>
+									</div>
+								</td>
+							</tr>
+							</tfoot>
+            ) : null
+        }
+			</table>
+		</div>
+  );
+}
 
 export default AssetsBlock;
