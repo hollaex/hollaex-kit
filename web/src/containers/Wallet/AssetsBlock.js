@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router';
 import { isMobile } from 'react-device-detect';
 
-import { CurrencyBall, ActionNotification } from 'components';
+import { CurrencyBall, ActionNotification, SearchBox } from 'components';
 import { calculatePrice, formatToCurrency } from 'utils/currency';
 import STRINGS from 'config/localizedStrings';
 import {
@@ -24,10 +24,28 @@ const AssetsBlock = ({
 	bankaccount,
 	navigate,
 	isValidBase,
-	openContactUs
+	openContactUs,
+	handleSearch,
+	searchResult,
+	searchValue
 }) => {
+
+	const AssetsTableCoins = searchValue ? searchResult : coins;
+
 	return (
 		<div className="wallet-assets_block">
+			<section>
+				<div>{STRINGS.WALLET_TABLE_TOTAL}</div>
+				<div>{totalAssets}</div>
+				<div className="d-flex justify-content-between">
+					<SearchBox
+						name={`${STRINGS.WALLET_ALL_ASSETS}_${STRINGS.SEARCH_TXT}`}
+						placeHolder={`${STRINGS.SEARCH_TXT}...`}
+						handleSearch={handleSearch}
+					/>
+					<div>Hide zero balance</div>
+				</div>
+			</section>
 			<table className="wallet-assets_block-table">
 				<thead>
 				<tr className="table-bottom-border">
@@ -40,7 +58,7 @@ const AssetsBlock = ({
 				</tr>
 				</thead>
 				<tbody>
-        {Object.entries(coins)
+        {Object.entries(AssetsTableCoins)
           .filter(([key]) => balance.hasOwnProperty(`${key}_balance`))
           .map(([key, { min, allow_deposit, allow_withdrawal }]) => {
             const balanceValue = balance[`${key}_balance`];

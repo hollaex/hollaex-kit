@@ -33,7 +33,8 @@ class Wallet extends Component {
 		isOpen: true,
 		totalAssets: '',
 		dialogIsOpen: false,
-		selectedCurrency: ''
+		selectedCurrency: '',
+		searchResult: {}
 	};
 
 	componentDidMount() {
@@ -68,6 +69,21 @@ class Wallet extends Component {
 		}
 	}
 
+	componentDidUpdate(_, prevState,) {
+		if (this.state.searchValue !== prevState.searchValue) {
+      this.generateSections(
+        this.props.changeSymbol,
+        this.props.balance,
+        this.props.prices,
+        this.state.isOpen,
+        this.props.wallets,
+        this.props.bankaccount,
+        this.props.coins,
+        this.props.pairs
+      );
+		}
+	}
+
 	calculateTotalAssets = (balance, prices, coins) => {
 		const total = calculateBalancePrice(balance, prices, coins);
 		const { min, symbol = '' } = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
@@ -77,6 +93,28 @@ class Wallet extends Component {
 			symbol.toUpperCase()
 		);
 	};
+
+  handleSearch = (_, value) => {
+    const { coins } = this.props;
+    console.log('search', value);
+    if (value) {
+      let result = {};
+      let searchValue = value.toLowerCase().trim();
+      Object.keys(coins).map(key => {
+        let temp = coins[key];
+        const { fullname } = coins[key] || DEFAULT_COIN_DATA;
+        const coinName = fullname ? fullname.toLowerCase() : '';
+        if (key.indexOf(searchValue) !== -1 ||
+          coinName.indexOf(searchValue) !== -1) {
+          result[key] = temp;
+        }
+        return key;
+      });
+      this.setState({ searchResult: { ...result }, searchValue: value });
+    } else {
+      this.setState({ searchResult: {}, searchValue: '' });
+    }
+	}
 
 	generateSections = (
 		changeSymbol,
@@ -107,6 +145,9 @@ class Wallet extends Component {
 						bankaccount={bankaccount}
 						navigate={this.goToPage}
 						openContactUs={this.openContactUs}
+						searchValue={this.state.searchValue}
+						searchResult={this.state.searchResult}
+						handleSearch={this.handleSearch}
 					/>
 				),
 				isOpen: true,
