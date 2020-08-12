@@ -89,8 +89,8 @@ class Wallet extends Component {
 		const { min, symbol = '' } = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
 		return STRINGS.formatString(
 			CURRENCY_PRICE_FORMAT,
+      symbol.toUpperCase(),
 			formatToCurrency(total, min),
-			symbol.toUpperCase()
 		);
 	};
 
