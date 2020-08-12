@@ -42,8 +42,21 @@ const AssetsBlock = ({
 		<div className="wallet-assets_block">
 			<section className="ml-4 pt-4">
 				<div className="wallet-search-improvement">
-					<div>Estimated Total Balance</div>
-					<div className="font-title">{totalAssets}</div>
+					{
+						BASE_CURRENCY && IS_XHT
+						? <div>
+                {STRINGS.formatString(
+                  STRINGS.WALLET_DEPOSIT_USD,
+									<span className="blue-link pointer" onClick={openContactUs}>{STRINGS.CONTACT_US_TEXT}</span>
+                )}
+							</div>
+							: BASE_CURRENCY && isValidBase ?
+							<div>
+								<div>Estimated Total Balance</div>
+								<div className="font-title">{totalAssets}</div>
+							</div>
+							: null
+					}
 				</div>
 				<div className="d-flex justify-content-between">
 					<SearchBox
@@ -165,34 +178,6 @@ const AssetsBlock = ({
             );
           })}
 				</tbody>
-        {BASE_CURRENCY && IS_XHT
-          ? <tfoot>
-					<tr>
-						<td colSpan={5}>
-              {STRINGS.formatString(
-                STRINGS.WALLET_DEPOSIT_USD,
-								<span className="blue-link pointer" onClick={openContactUs}>{STRINGS.CONTACT_US_TEXT}</span>
-              )}
-						</td>
-					</tr>
-					</tfoot>
-          : !isMobile && BASE_CURRENCY && isValidBase
-            ? (<tfoot>
-							<tr>
-								<td />
-								<td />
-								<td />
-								<td />
-								<td>
-									<div className="d-flex">
-										<div className="mr-4">{STRINGS.WALLET_TABLE_TOTAL}</div>
-										<div style={{ direction: 'rtl' }}>{totalAssets}</div>
-									</div>
-								</td>
-							</tr>
-							</tfoot>
-            ) : null
-        }
 			</table>
 		</div>
   );

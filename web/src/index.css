@@ -1109,7 +1109,8 @@ table th {
       width: 14rem; }
   .wallet-container .wallet-assets_block .wallet-assets_block-table {
     width: 100%;
-    font-size: 0.9rem; }
+    font-size: 0.9rem;
+    margin-bottom: 3rem; }
     .wallet-container .wallet-assets_block .wallet-assets_block-table thead tr,
     .wallet-container .wallet-assets_block .wallet-assets_block-table tfoot tr {
       height: 3.5rem;
