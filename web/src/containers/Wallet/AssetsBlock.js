@@ -40,9 +40,11 @@ const AssetsBlock = ({
 
 	return (
 		<div className="wallet-assets_block">
-			<section>
-				<div>{STRINGS.WALLET_TABLE_TOTAL}</div>
-				<div>{totalAssets}</div>
+			<section className="ml-4 pt-4">
+				<div className="wallet-search-improvement">
+					<div>Estimated Total Balance</div>
+					<div className="font-title">{totalAssets}</div>
+				</div>
 				<div className="d-flex justify-content-between">
 					<SearchBox
 						name={`${STRINGS.WALLET_ALL_ASSETS}_${STRINGS.SEARCH_TXT}`}

@@ -1207,6 +1207,10 @@ table th {
   width: 1rem !important;
   height: 1rem !important; }
 
+.wallet-search-improvement {
+  border-bottom: 1px solid var(--dark-app-line-divider);
+  color: var(--dark-font-sub-text-color) !important; }
+
 .review-wrapper .review-icon {
   width: 8rem;
   height: 8rem;

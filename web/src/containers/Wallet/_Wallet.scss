@@ -300,3 +300,8 @@ $header-margin: 2rem;
 		@include size-important(1rem);
 	}
 }
+
+.wallet-search-improvement {
+	border-bottom: 1px solid $dark-app-line-divider;
+	color: $dark-font-sub-text-color !important;
+}
