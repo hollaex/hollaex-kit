@@ -77,7 +77,7 @@ const AssetsBlock = ({
 					<th>{STRINGS.AMOUNT}</th>
 					<th className="td-amount" />
 					<th>{STRINGS.DEPOSIT_WITHDRAW}</th>
-					<th>{STRINGS.TRADE_TAB_TRADE}</th>
+					{!isMobile && <th>{STRINGS.TRADE_TAB_TRADE}</th>}
 				</tr>
 				</thead>
 				<tbody>
@@ -163,7 +163,8 @@ const AssetsBlock = ({
 										</div>
                   )}
 								</td>
-								<td>
+								{
+									!isMobile && <td>
 									<ActionNotification
 										text={STRINGS.TRADE_TAB_TRADE}
 										iconPath={ICONS.BLUE_PLUS}
@@ -174,6 +175,7 @@ const AssetsBlock = ({
 										disable={!pairs[pair] || !pairs[pair].active}
 									/>
 								</td>
+								}
 							</tr>
             );
           })}
