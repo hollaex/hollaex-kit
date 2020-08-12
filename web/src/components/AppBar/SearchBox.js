@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { reduxForm } from 'redux-form';
 import classnames from 'classnames';
 
 import { ICONS } from 'config/constants';
 import renderFields from 'components/Form/factoryFields';
 
-class SearchBox extends Component {
+class SearchBox extends React.Component {
 	render() {
 		const {
 			handleSearch,
