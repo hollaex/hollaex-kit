@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router';
 import { isMobile } from 'react-device-detect';
 
-import { CurrencyBall, ActionNotification, SearchBox } from 'components';
+import { CurrencyBall, ActionNotification, SearchBox, AssetsBlockForm } from 'components';
 import { calculatePrice, formatToCurrency } from 'utils/currency';
 import STRINGS from 'config/localizedStrings';
 import {
@@ -27,10 +27,16 @@ const AssetsBlock = ({
 	openContactUs,
 	handleSearch,
 	searchResult,
-	searchValue
+ 	handleCheck
 }) => {
 
-	const AssetsTableCoins = searchValue ? searchResult : coins;
+	const sortedSearchResults = Object.entries(searchResult)
+    .filter(([key]) => balance.hasOwnProperty(`${key}_balance`))
+    .sort(([key_a], [key_b]) => {
+      const price_a = calculatePrice(balance[`${key_a}_balance`], prices[key_a]);
+      const price_b = calculatePrice(balance[`${key_b}_balance`], prices[key_b]);
+      return price_a < price_b ? 1 : -1 // descending order
+    })
 
 	return (
 		<div className="wallet-assets_block">
@@ -43,7 +49,9 @@ const AssetsBlock = ({
 						placeHolder={`${STRINGS.SEARCH_TXT}...`}
 						handleSearch={handleSearch}
 					/>
-					<div>Hide zero balance</div>
+					<AssetsBlockForm
+						handleCheck={handleCheck}
+					/>
 				</div>
 			</section>
 			<table className="wallet-assets_block-table">
@@ -58,9 +66,7 @@ const AssetsBlock = ({
 				</tr>
 				</thead>
 				<tbody>
-        {Object.entries(AssetsTableCoins)
-          .filter(([key]) => balance.hasOwnProperty(`${key}_balance`))
-          .map(([key, { min, allow_deposit, allow_withdrawal }]) => {
+        {sortedSearchResults.map(([key, { min, allow_deposit, allow_withdrawal }]) => {
             const balanceValue = balance[`${key}_balance`];
             const pair = `${key.toLowerCase()}-${BASE_CURRENCY.toLowerCase()}`
             const { fullname, symbol = '' } = coins[key] || DEFAULT_COIN_DATA;

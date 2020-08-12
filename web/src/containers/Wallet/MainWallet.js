@@ -34,7 +34,6 @@ class Wallet extends Component {
 		totalAssets: '',
 		dialogIsOpen: false,
 		selectedCurrency: '',
-		searchResult: {}
 	};
 
 	componentDidMount() {
@@ -70,7 +69,8 @@ class Wallet extends Component {
 	}
 
 	componentDidUpdate(_, prevState,) {
-		if (this.state.searchValue !== prevState.searchValue) {
+		const { searchValue, isZeroBalanceHidden } = this.state;
+		if (searchValue !== prevState.searchValue || isZeroBalanceHidden !== prevState.isZeroBalanceHidden) {
       this.generateSections(
         this.props.changeSymbol,
         this.props.balance,
@@ -94,27 +94,36 @@ class Wallet extends Component {
 		);
 	};
 
-  handleSearch = (_, value) => {
-    const { coins } = this.props;
-    console.log('search', value);
-    if (value) {
-      let result = {};
-      let searchValue = value.toLowerCase().trim();
-      Object.keys(coins).map(key => {
-        let temp = coins[key];
-        const { fullname } = coins[key] || DEFAULT_COIN_DATA;
-        const coinName = fullname ? fullname.toLowerCase() : '';
-        if (key.indexOf(searchValue) !== -1 ||
-          coinName.indexOf(searchValue) !== -1) {
-          result[key] = temp;
-        }
-        return key;
-      });
-      this.setState({ searchResult: { ...result }, searchValue: value });
-    } else {
-      this.setState({ searchResult: {}, searchValue: '' });
-    }
+	getSearchResult = (coins, balance) => {
+		const { searchValue = '', isZeroBalanceHidden = true } = this.state;
+
+    const result = {};
+    const searchTerm = searchValue.toLowerCase().trim();
+    Object.keys(coins).map(key => {
+      const temp = coins[key];
+      const { fullname } = coins[key] || DEFAULT_COIN_DATA;
+      const coinName = fullname ? fullname.toLowerCase() : '';
+      const hasCoinBalance = !!balance[`${key}_balance`];
+      const isCoinHidden = isZeroBalanceHidden && !hasCoinBalance
+      if (
+      	!isCoinHidden && (
+          key.indexOf(searchTerm) !== -1 ||
+          coinName.indexOf(searchTerm) !== -1
+				)) {
+        result[key] = temp;
+      }
+      return key;
+    });
+    return { ...result }
 	}
+
+  handleSearch = (_, value) => {
+    this.setState({ searchValue: value })
+	}
+
+  handleCheck = (_, value) => {
+    this.setState({ isZeroBalanceHidden: value })
+  }
 
 	generateSections = (
 		changeSymbol,
@@ -127,6 +136,7 @@ class Wallet extends Component {
 		pairs
 	) => {
 		const totalAssets = this.calculateTotalAssets(balance, prices, coins);
+		const searchResult = this.getSearchResult(coins, balance);
 
 		const sections = [
 			{
@@ -145,9 +155,9 @@ class Wallet extends Component {
 						bankaccount={bankaccount}
 						navigate={this.goToPage}
 						openContactUs={this.openContactUs}
-						searchValue={this.state.searchValue}
-						searchResult={this.state.searchResult}
+						searchResult={searchResult}
 						handleSearch={this.handleSearch}
+						handleCheck={this.handleCheck}
 					/>
 				),
 				isOpen: true,

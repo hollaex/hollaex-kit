@@ -17,6 +17,7 @@ export { default as Sidebar } from './Sidebar';
 export { SidebarBottom } from './Sidebar/SidebarBottom';
 export { Logout } from './Sidebar/rows';
 export { default as Wallet } from './Wallet';
+export { default as AssetsBlockForm } from './Wallet/AssetsBlockForm';
 export { default as SidebarHub } from './SidebarHub';
 export { default as Notification } from './Notification';
 export { default as NotificationsList } from './NotificationsList';
