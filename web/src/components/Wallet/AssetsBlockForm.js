@@ -14,7 +14,8 @@ class AssetsBlockForm extends React.Component {
         type: 'checkbox',
         label: 'Hide zero balance',
         onChange: handleCheck,
-        name: 'ZeroBalance'
+        name: 'ZeroBalance',
+        reverse: true
       }
     };
 
