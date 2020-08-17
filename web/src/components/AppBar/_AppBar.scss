@@ -178,6 +178,14 @@ $app-bar-add-tab-red: #ff0000;
 	.search-field {
 		background-color: $dark-app-background-color;
 	}
+
+	.app_bar-link {
+		color: $dark-link
+	}
+
+	.app-bar_add-tab-price {
+		color: $dark-font-main-text-color;
+	}
 }
 
 .app_bar {
@@ -1030,6 +1038,13 @@ $app-bar-add-tab-red: #ff0000;
 			color: $app-bar-pairs-up
 		}
 	}
+}
+
+.app_bar-link {
+	color: $dark-link;
+	margin: .5rem 0;
+	padding: 0 .5rem;
+	text-transform: uppercase;
 }
 
 @media (min-width: 1920px) {

@@ -192,6 +192,54 @@ class PairTabs extends Component {
         this.setState({ selectedAddTab: pair });
     };
 
+
+
+  addTradePairTab = pair => {
+    const { selectedTabs, activeTabs, activePairTab, selectedToOpen } = this.state;
+    const { pairs, tabCount } = this.props;
+    let localTabs = {};
+    let tabPairs = [];
+
+    // if the pair is not in active tabs, add it to state and local storage
+    if (!selectedTabs[pair]) {
+      const temp = pairs[pair];
+      if (temp && temp.pair_base) {
+        localTabs = { ...selectedTabs, [pair]: temp };
+        tabPairs = Object.keys(localTabs);
+        this.setState({ selectedTabs: { ...localTabs }, selectedToOpen: pair, selectedToRemove: '' });
+      }
+      this.setTabsLocal(localTabs);
+      this.onTabClick(pair);
+    }
+    if (!activeTabs[pair]) {
+      let tempActive = activeTabs;
+      let activeKeys = Object.keys(activeTabs);
+      timeOut = setTimeout(() => {
+        if (tabPairs.length <= tabCount) {
+          this.setState({
+            activeTabs: { ...localTabs },
+            activeItems: Object.keys(localTabs)
+          });
+        } else {
+          delete tempActive[activeKeys[activeKeys.length - 1]];
+          tempActive[pair] = localTabs[pair];
+          this.setState({
+            activeTabs: { ...tempActive },
+            activeItems: Object.keys(tempActive)
+          });
+        }
+      }, 300);
+    }
+
+    if (activeTabs[pair]
+      && pair !== activePairTab
+      && selectedToOpen === activePairTab) {
+      this.setState({ selectedToOpen: '' });
+    }
+    // this.setTabsLocal(localTabs);
+    this.closeAddTabMenu();
+  };
+
     onTabChange = pair => {
         const { selectedTabs, activeTabs, activePairTab, selectedToOpen } = this.state;
         const { pairs } = this.props;
@@ -401,6 +449,7 @@ class PairTabs extends Component {
                             onTabChange={this.onTabChange}
                             closeAddTabMenu={this.closeAddTabMenu}
                             handleSearch={this.handleSearch}
+                            addTradePairTab={this.addTradePairTab}
                         />
                     }
                 </div>

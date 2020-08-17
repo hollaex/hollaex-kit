@@ -3884,6 +3884,12 @@ table th {
 .dark-theme .search-field {
   background-color: var(--dark-app-background-color); }
 
+.dark-theme .app_bar-link {
+  color: var(--dark-link); }
+
+.dark-theme .app-bar_add-tab-price {
+  color: var(--dark-font-main-text-color); }
+
 .app_bar {
   position: relative;
   width: 100%;
@@ -4557,6 +4563,12 @@ table th {
     color: #ff0000; }
   .app-bar-add-tab-menu .app-bar-tab-setting .app-price-diff-up, .app-bar-add-tab-menu .app-bar-add-tab-icons .app-price-diff-up {
     color: var(--app-bar-pairs-up); }
+
+.app_bar-link {
+  color: var(--dark-link);
+  margin: .5rem 0;
+  padding: 0 .5rem;
+  text-transform: uppercase; }
 
 @media (min-width: 1920px) {
   .app_bar {

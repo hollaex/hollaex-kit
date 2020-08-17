@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import ReactSVG from 'react-svg';
 import classnames from 'classnames';
+import { Link } from 'react-router';
 
-import { ICONS, BASE_CURRENCY, DEFAULT_COIN_DATA } from '../../config/constants';
-import STRINGS from '../../config/localizedStrings';
-import { donutFormatPercentage, formatToCurrency } from '../../utils/currency';
+import { ICONS, BASE_CURRENCY, DEFAULT_COIN_DATA } from 'config/constants';
+import STRINGS from 'config/localizedStrings';
+import { donutFormatPercentage, formatToCurrency } from 'utils/currency';
 import SearchBox from './SearchBox';
 
 class AddTabList extends Component {
@@ -22,16 +23,26 @@ class AddTabList extends Component {
         }
     };
 
-    handleChange = pair => {
-        this.props.onTabChange(pair);
-    };
-
     componentWillUnmount() {
         document.removeEventListener('click', this.onOutsideClick);
     }
 
     render() {
-        const { symbols, pairs, coins = {}, selectedTabs, selectedTabMenu, searchValue, searchResult, tickers = {}, onAddTabClick, handleSearch } = this.props;
+        const {
+            symbols,
+            pairs,
+            coins = {},
+            selectedTabs,
+            selectedTabMenu,
+            searchValue,
+            searchResult,
+            tickers = {},
+            onAddTabClick,
+            handleSearch,
+            addTradePairTab,
+            closeAddTabMenu
+        } = this.props;
+
         let tabMenu = {};
         if (searchValue) {
             tabMenu = { ...searchResult };
@@ -44,6 +55,41 @@ class AddTabList extends Component {
                 return key;
             });
         }
+
+        const hasTabMenu = Object.keys(tabMenu).length !== 0;
+
+        let processedTabMenu = [];
+        if (hasTabMenu) {
+          processedTabMenu = Object.keys(tabMenu)
+            .map((pair) => {
+              let menu = tabMenu[pair] || {};
+              let ticker = tickers[pair] || {};
+              let { symbol = '' } = coins[menu.pair_base || BASE_CURRENCY] || DEFAULT_COIN_DATA;
+              let pairTwo = coins[menu.pair_2 || BASE_CURRENCY] || DEFAULT_COIN_DATA;
+              const { increment_price } = menu;
+              const priceDifference = ticker.open === 0 ? 0 : ((ticker.close || 0) - (ticker.open || 0));
+              const tickerPercent = priceDifference === 0 || ticker.open === 0 ? 0 : ((priceDifference / ticker.open) * 100);
+              const priceDifferencePercent = isNaN(tickerPercent)
+                ? donutFormatPercentage(0)
+                : donutFormatPercentage(tickerPercent);
+              return ({
+                pair,
+                symbol,
+                menu,
+                pairTwo,
+                ticker,
+                increment_price,
+                priceDifference,
+                priceDifferencePercent
+              })
+            })
+            .sort((a, b) => {
+              const { volume: volumeA = 0 } = tickers[a.pair] || {};
+              const { volume: volumeB = 0 } = tickers[b.pair] || {};
+              return volumeB - volumeA;
+            })
+        }
+
         const selectedtabPairs = Object.keys(selectedTabs);
 
         return (
@@ -77,54 +123,43 @@ class AddTabList extends Component {
                             className='app-bar-search-field'
                             handleSearch={handleSearch} />
                     </div>
-                    {Object.keys(tabMenu).length
-                        ? Object.keys(tabMenu).map((pair, index) => {
-                            let menu = tabMenu[pair] || {};
-                            let ticker = tickers[pair] || {};
-                            let { symbol = '' } = coins[menu.pair_base || BASE_CURRENCY] || DEFAULT_COIN_DATA;
-                            let pairTwo = coins[menu.pair_2 || BASE_CURRENCY] || DEFAULT_COIN_DATA;
-                            const { increment_price } = menu;
-                            const priceDifference = ticker.open === 0 ? 0 : ((ticker.close || 0) - (ticker.open || 0));
-                            const tickerPercent = priceDifference === 0 || ticker.open === 0 ? 0 : ((priceDifference / ticker.open) * 100);
-                            const priceDifferencePercent = isNaN(tickerPercent)
-                                ? donutFormatPercentage(0)
-                                : donutFormatPercentage(tickerPercent);
+                    {hasTabMenu
+                        ? processedTabMenu.map(({ pair, symbol, menu, pairTwo, ticker, increment_price, priceDifference, priceDifferencePercent }, index) => {
                             return (
                                 <div
                                     key={index}
-                                    className="app-bar-add-tab-content-list d-flex align-items-center"
-                                    onClick={() => this.handleChange(pair)}>
-                                    <div>
-                                        {selectedTabs[pair]
-                                            ? <ReactSVG path={ICONS.TAB_MINUS} wrapperClassName="app-bar-tab-setting" />
-                                            : <ReactSVG path={ICONS.TAB_PLUS} wrapperClassName="app-bar-tab-setting" />
-                                        }
-                                    </div>
-                                    <ReactSVG
-                                        path={
+                                    className="app-bar-add-tab-content-list d-flex align-items-center justify-content-between"
+                                    onClick={() => addTradePairTab(pair)}
+                                >
+                                    <div className="d-flex align-items-center">
+                                        <ReactSVG
+                                          path={
                                             ICONS[`${menu.pair_base.toUpperCase()}_ICON`]
-                                                ? ICONS[`${menu.pair_base.toUpperCase()}_ICON`]
-                                                : ICONS.DEFAULT_ICON
-                                        }
-                                        wrapperClassName="app-bar-add-tab-icons" />
-                                    <div className="app_bar-pair-font">
-                                        {symbol.toUpperCase()}/{pairTwo.symbol.toUpperCase()}:
+                                              ? ICONS[`${menu.pair_base.toUpperCase()}_ICON`]
+                                              : ICONS.DEFAULT_ICON
+                                          }
+                                          wrapperClassName="app-bar-add-tab-icons" />
+                                        <div className="app_bar-pair-font">
+                                          {symbol.toUpperCase()}/{pairTwo.symbol.toUpperCase()}:
+                                        </div>
+                                        <div className="title-font ml-1 app-bar_add-tab-price">
+                                          {formatToCurrency(ticker.close, increment_price)}
+                                        </div>
                                     </div>
-                                    <div className="title-font ml-1">
-                                        {formatToCurrency(ticker.close, increment_price)}
-                                    </div>
-                                    <div
-                                        className={
+                                    <div className="d-flex align-items-center mr-4">
+                                        <div
+                                          className={
                                             priceDifference < 0
-                                                ? "app-price-diff-down app-bar-price_diff_down"
-                                                : "app-bar-price_diff_up app-price-diff-up"
-                                        }>
-                                        {/* {formatAverage(formatToCurrency(priceDifference, increment_price))} */}
-                                    </div>
-                                    <div
-                                        className={priceDifference < 0
+                                              ? "app-price-diff-down app-bar-price_diff_down"
+                                              : "app-bar-price_diff_up app-price-diff-up"
+                                          }>
+                                          {/* {formatAverage(formatToCurrency(priceDifference, increment_price))} */}
+                                        </div>
+                                        <div
+                                          className={priceDifference < 0
                                             ? "title-font app-price-diff-down" : "title-font app-price-diff-up"}>
-                                        {priceDifferencePercent}
+                                          {priceDifferencePercent}
+                                        </div>
                                     </div>
                                 </div>
                             )
@@ -134,6 +169,11 @@ class AddTabList extends Component {
                             No data...
                         </div>
                     }
+                    <div className="d-flex justify-content-center app_bar-link">
+                        <Link to="/trade/add/tabs" onClick={() => closeAddTabMenu()}>
+                          {`view markets`}
+                        </Link>
+                    </div>
                 </div>
             </div>
         );
