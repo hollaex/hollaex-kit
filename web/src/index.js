@@ -9,6 +9,7 @@ import './config/initialize';
 import 'flag-icon-css/css/flag-icon.min.css';
 import 'react-dates/initialize';
 import 'react-dates/lib/css/_datepicker.css';
+import 'react-alice-carousel/lib/alice-carousel.css';
 
 import store from './store';
 import routes from './routes';
