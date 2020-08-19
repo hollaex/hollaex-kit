@@ -1,16 +1,27 @@
-FROM bitholla/hollaex-core:1.23.1
+FROM node:10.15.3-stretch-slim
 
-COPY ./mail /app/mail
+RUN apt-get update && apt-get install -y --no-install-recommends git python build-essential && rm -rf /var/lib/apt/lists/* && \
+    npm install pm2@3.2.7 sequelize-cli@5.4.0 mocha -g
+
+ENV NODE_ENV=production
+
+COPY ./server /app
 
 COPY ./plugins /app/plugins
 
-COPY ./db/migrations /app/db/migrations
+WORKDIR /app
 
-COPY ./db/seeders /app/db/seeders
-
-COPY ./db/models /app/db/models
-
-RUN npm install -g nodemon --loglevel=error && \ 
+RUN npm install --loglevel=error && \
+    pm2 update && \
+    npm install -g nodemon --loglevel=error && \ 
     cd plugins && npm install --loglevel=error && \
     for d in ./*/ ; do (cd "$d" && npm install --loglevel=error); done && \
     cd /app/mail && npm install --loglevel=error
+
+EXPOSE 10010
+
+EXPOSE 10080
+
+EXPOSE 10011
+
+ENTRYPOINT ["/entrypoint.sh"]
