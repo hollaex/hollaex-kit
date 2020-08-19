@@ -40,6 +40,7 @@
 		"rc-tooltip": "3.7.3",
 		"react": "16.13.1",
 		"react-addons-shallow-compare": "15.6.2",
+		"react-alice-carousel": "1.19.3",
 		"react-copy-to-clipboard": "5.0.1",
 		"react-csv": "1.1.1",
 		"react-custom-scrollbars": "4.2.1",
