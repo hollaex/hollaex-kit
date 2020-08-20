@@ -342,6 +342,25 @@ class HollaEx {
 			data
 		);
 	}
+
+	// TODO (comments)
+	getKitTrades(user_id, symbol, limit = 50, page = 1) {
+		checkKit(this.kit);
+		const verb = 'GET';
+
+		let queryString = `?user_id=${user_id}&limit=${limit}&page=${page}`;
+		if (symbol) {
+			queryString += `&symbol=${symbol}`;
+		}
+		const path = HOLLAEX_NETWORK_VERSION + `/kit/${this.kit}/trades${queryString}`;
+		const headers = generateHeaders(this._headers, this.apiSecret, verb, path, this.apiExpiresAfter);
+		
+		return createRequest(
+			verb,
+			`${HOLLAEX_NETWORK_URL}${HOLLAEX_NETWORK_VERSION}/kit/${this.kit}/trades${queryString}`,
+			headers,
+		);
+	}
 }
 
 /**************************************
