@@ -2,7 +2,9 @@ const io = require('socket.io-client');
 const EventEmitter = require('events');
 const moment = require('moment');
 const { each } = require('lodash');
-const { createRequest, createSignature, generateHeaders } = require('./utils');
+const { createRequest, createSignature, generateHeaders, checkKit } = require('./utils');
+const HOLLAEX_NETWORK_URL = 'http://localhost';
+const HOLLAEX_NETWORK_VERSION = '/v2';
 
 class HollaEx {
 	constructor(
@@ -11,7 +13,8 @@ class HollaEx {
 			baseURL: '/v1',
 			apiKey: '',
 			apiSecret: '',
-			apiExpiresAfter: 60
+			apiExpiresAfter: 60,
+			kit: undefined // kit exchange id used only for exchange operators
 		}
 	) {
 		this._url = opts.apiURL + opts.baseURL || 'https://api.hollaex.com/v1';
@@ -25,6 +28,7 @@ class HollaEx {
 			Accept: 'application/json',
 			'api-key': opts.apiKey,
 		};
+		this.kit = opts.kit;
 	}
 
 	/* Public */
@@ -307,11 +311,42 @@ class HollaEx {
 		const signature = createSignature(this.apiSecret, 'CONNECT', '/socket', apiExpires);
 		return new Socket(events, this._wsUrl, this.apiKey, signature, apiExpires);
 	}
+
+	/****** Kit operator endpoints ******/
+	// TODO (comments)
+	init() {
+		checkKit(this.kit);
+		const verb = 'GET';
+		const path = HOLLAEX_NETWORK_VERSION + `/kit/${this.kit}/init`;
+		const headers = generateHeaders(this._headers, this.apiSecret, verb, path, this.apiExpiresAfter);
+		
+		return createRequest(
+			verb,
+			`${HOLLAEX_NETWORK_URL}${HOLLAEX_NETWORK_VERSION}/kit/${this.kit}/init`,
+			headers
+		);
+	}
+
+	// TODO (comments)
+	createUser(email) {
+		checkKit(this.kit);
+		const verb = 'POST';
+		const path = HOLLAEX_NETWORK_VERSION + `/kit/${this.kit}/signup`;
+		const data = { email };
+		const headers = generateHeaders(this._headers, this.apiSecret, verb, path, this.apiExpiresAfter, data);
+		
+		return createRequest(
+			verb,
+			`${HOLLAEX_NETWORK_URL}${HOLLAEX_NETWORK_VERSION}/kit/${this.kit}/signup`,
+			headers,
+			data
+		);
+	}
 }
 
-/*******************
+/**************************************
 Websocket
-*******************/
+**************************************/
 class Socket extends EventEmitter {
 	constructor(events = '', url, apiKey, apiSignature, apiExpires) {
 		super();
