@@ -1,0 +1,17 @@
+.carousel__container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.carousel__button {
+  color: blue;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+
+  &.disabled {
+    color: grey;
+    cursor: default;
+  }
+}
