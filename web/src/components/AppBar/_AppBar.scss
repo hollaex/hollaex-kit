@@ -902,7 +902,7 @@ $app-bar-add-tab-red: #ff0000;
 	border: 1px solid #535353;
 	color: $app-bar-menu-list-color;
 	display: block;
-	min-width: 22rem;
+	width: 22rem;
 	min-height: 8rem;
 	position: absolute;
 	top: 34px;
@@ -1082,7 +1082,7 @@ $app-bar-add-tab-red: #ff0000;
 		}
 	}
 	.app-bar-add-tab-menu {
-		min-width: 24rem;
+		width: 24rem;
 		
 		.app-bar-add-tab-content,
 		.app-bar-tab-menu-list,
