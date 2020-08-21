@@ -400,7 +400,7 @@ class PairTabs extends Component {
 
         const { pairs, tickers, location, coins } = this.props;
 
-        const symbols = this.getSymbols(pairs);
+        const symbols = ['all', ...this.getSymbols(pairs)];
         
         return (
             <div className="d-flex h-100">

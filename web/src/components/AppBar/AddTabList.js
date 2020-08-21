@@ -46,6 +46,14 @@ class AddTabList extends Component {
         let tabMenu = {};
         if (searchValue) {
             tabMenu = { ...searchResult };
+        } else if ( selectedTabMenu === 'all') {
+          Object.keys(pairs).map(key => {
+            let temp = pairs[key];
+            if (temp) {
+              tabMenu[key] = temp;
+            }
+            return key;
+          });
         } else {
             Object.keys(pairs).map(key => {
                 let temp = pairs[key];
@@ -56,7 +64,8 @@ class AddTabList extends Component {
             });
         }
 
-        const hasTabMenu = Object.keys(tabMenu).length !== 0;
+        const tabMenuLength = Object.keys(tabMenu).length;
+        const hasTabMenu = tabMenuLength !== 0;
 
         let processedTabMenu = [];
         if (hasTabMenu) {
@@ -88,6 +97,7 @@ class AddTabList extends Component {
               const { volume: volumeB = 0 } = tickers[b.pair] || {};
               return volumeB - volumeA;
             })
+            .slice(0, Math.min(tabMenuLength, 10))
         }
 
         const selectedtabPairs = Object.keys(selectedTabs);
