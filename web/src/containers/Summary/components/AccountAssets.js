@@ -2,8 +2,8 @@ import React from "react";
 import ReactSVG from "react-svg";
 import classnames from "classnames";
 
-import { DonutChart } from "../../../components";
-import STRINGS from "../../../config/localizedStrings";
+import { DonutChart } from "components";
+import STRINGS from "config/localizedStrings";
 import {
 	BASE_CURRENCY,
 	ICONS,
@@ -11,13 +11,13 @@ import {
 	DEFAULT_COIN_DATA,
 	SHOW_TOTAL_ASSETS,
 	SHOW_SUMMARY_ACCOUNT_DETAILS,
-} from "../../../config/constants";
-import { formatAverage, formatToCurrency } from "../../../utils/currency";
+} from "config/constants";
+import { formatAverage, formatToCurrency } from "utils/currency";
 import { isMobile } from "react-device-detect";
 
 const AccountAssets = ({ chartData = [], totalAssets, balance, coins, activeTheme }) => {
 	const baseValue = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
-	// const Default_Icon = activeTheme === 'white' ? ICONS.DEFAULT_ICON : ICONS.DEFAULT_ICON_DARK;
+
 	return (
 		<div className="summary-section_2">
 			<div className="summary-content-txt assets-description">
