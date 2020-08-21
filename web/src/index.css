@@ -4510,7 +4510,7 @@ table th {
   border: 1px solid #535353;
   color: var(--app-bar-menu-list-color);
   display: block;
-  min-width: 22rem;
+  width: 22rem;
   min-height: 8rem;
   position: absolute;
   top: 34px;
@@ -4654,7 +4654,7 @@ table th {
     .app-menu-bar .app-menu-bar-content {
       width: 12rem; }
   .app-bar-add-tab-menu {
-    min-width: 24rem; }
+    width: 24rem; }
     .app-bar-add-tab-menu .app-bar-add-tab-content,
     .app-bar-add-tab-menu .app-bar-tab-menu-list,
     .app-bar-add-tab-menu .app-bar-tab-overflow-content {
@@ -9158,11 +9158,18 @@ foreignObject {
   align-items: center;
   justify-content: space-between; }
 
+.carousel__alice-wrapper {
+  width: calc(100% - 6rem); }
+
 .carousel__button {
   color: blue;
   cursor: pointer;
   display: flex;
-  align-items: center; }
+  align-items: center;
+  width: 3rem;
+  padding-right: 0.5rem;
+  padding-left: 0.5rem;
+  overflow: hidden; }
   .carousel__button.disabled {
     color: grey;
     cursor: default; }
