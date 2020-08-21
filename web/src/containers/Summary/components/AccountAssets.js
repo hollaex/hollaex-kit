@@ -15,6 +15,24 @@ import AssetCard from './AssetCard';
 
 const AccountAssets = ({ chartData = [], totalAssets, balance, coins, activeTheme }) => {
 	const baseValue = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
+	const assetCards = () => {
+		return chartData.map((value, index) => {
+      const { min, symbol = '' } =
+      coins[value.symbol || BASE_CURRENCY] || {};
+      let currencyBalance = formatToCurrency(
+        balance[`${value.symbol}_balance`],
+        min
+      );
+      return (
+				<AssetCard
+					key={index}
+					value={value}
+					symbol={symbol}
+					currencyBalance={currencyBalance}
+				/>
+      );
+    })
+	}
 
 	return (
 		<div className="summary-section_2">
@@ -55,22 +73,7 @@ const AccountAssets = ({ chartData = [], totalAssets, balance, coins, activeThem
 										"flex-wrap": isMobile
 									}
 								)}>
-							{chartData.map((value, index) => {
-								const { min, symbol = '' } =
-									coins[value.symbol || BASE_CURRENCY] || {};
-								let currencyBalance = formatToCurrency(
-									balance[`${value.symbol}_balance`],
-									min
-								);
-								return (
-									<AssetCard
-										key={index}
-										value={value}
-										symbol={symbol}
-										currencyBalance={currencyBalance}
-									/>
-								);
-							})}
+							{assetCards()}
 						</div>
 					</div>
 				</div>
