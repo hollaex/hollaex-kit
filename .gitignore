@@ -12,6 +12,9 @@ web/coverage
 # production
 build
 
+# surge
+web/CNAME
+
 # misc
 web/.DS_Store
 web/.env
