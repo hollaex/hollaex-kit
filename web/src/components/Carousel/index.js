@@ -55,25 +55,29 @@ class Carousel extends React.Component {
     return (
       <div style={containerStyle} className={classnames("carousel__container", { containerClass: !!containerClass  })} >
         <div
-          className={classnames("carousel__button mr-2", { disabled: isPrevSlideDisabled })}
+          className={classnames("carousel__button", { disabled: isPrevSlideDisabled })}
           onClick={slidePrev}
         >
           Prev
         </div>
 
-        <AliceCarousel
-          infinite={false}
-          dotsDisabled={true}
-          buttonsDisabled={true}
-          items={items}
-          responsive={responsive}
-          slideToIndex={currentIndex}
-          onSlideChanged={onSlideChanged}
-          onInitialized={onInitialized}
-        />
+        <div
+          className="carousel__alice-wrapper"
+        >
+          <AliceCarousel
+            infinite={false}
+            dotsDisabled={true}
+            buttonsDisabled={true}
+            items={items}
+            responsive={responsive}
+            slideToIndex={currentIndex}
+            onSlideChanged={onSlideChanged}
+            onInitialized={onInitialized}
+          />
+        </div>
 
         <div
-          className={classnames("carousel__button ml-2", { disabled: isNextSlideDisabled })}
+          className={classnames("carousel__button", { disabled: isNextSlideDisabled })}
           onClick={slideNext}
         >
           Next
