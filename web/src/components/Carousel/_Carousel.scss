@@ -4,11 +4,19 @@
   justify-content: space-between;
 }
 
+.carousel__alice-wrapper {
+  width: calc(100% - 6rem)
+}
+
 .carousel__button {
   color: blue;
   cursor: pointer;
   display: flex;
   align-items: center;
+  width: 3rem;
+  padding-right: 0.5rem;
+  padding-left: 0.5rem;
+  overflow: hidden;
 
   &.disabled {
     color: grey;
