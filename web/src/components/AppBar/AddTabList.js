@@ -3,6 +3,7 @@ import ReactSVG from 'react-svg';
 import classnames from 'classnames';
 import { Link } from 'react-router';
 
+import { Carousel } from 'components';
 import { ICONS, BASE_CURRENCY, DEFAULT_COIN_DATA } from 'config/constants';
 import STRINGS from 'config/localizedStrings';
 import { donutFormatPercentage, formatToCurrency } from 'utils/currency';
@@ -27,9 +28,24 @@ class AddTabList extends Component {
         document.removeEventListener('click', this.onOutsideClick);
     }
 
+    tabListMenuItems = () => {
+      const { symbols, selectedTabMenu, onAddTabClick } = this.props;
+      return symbols.map((symbol, index) =>
+      <div
+        key={index}
+        className={classnames(
+          "app-bar-tab-menu-list",
+          "d-flex",
+          "align-items-center",
+          { 'active-tab': symbol === selectedTabMenu })}
+        onClick={() => onAddTabClick(symbol)}
+      >
+        {symbol.toUpperCase()}
+      </div>
+    )}
+
     render() {
         const {
-            symbols,
             pairs,
             coins = {},
             selectedTabs,
@@ -37,7 +53,6 @@ class AddTabList extends Component {
             searchValue,
             searchResult,
             tickers = {},
-            onAddTabClick,
             handleSearch,
             addTradePairTab,
             closeAddTabMenu
@@ -104,26 +119,14 @@ class AddTabList extends Component {
 
         return (
             <div id="add-tab-list-menu" className={classnames("app-bar-add-tab-menu", { "tab-menu-left": selectedtabPairs.length <= 1 })}>
-                <div className="app-bar-tab-menu d-flex justify-content-between">
-                    <div className="d-flex">
-                        {symbols.map((symbol, index) =>
-                            <div
-                                key={index}
-                                className={classnames(
-                                    "app-bar-tab-menu-list",
-                                    "d-flex",
-                                    "align-items-center",
-                                    { 'active-tab': symbol === selectedTabMenu })}
-                                onClick={() => onAddTabClick(symbol)}>
-                                {symbol.toUpperCase()}
-                            </div>
-                        )}
-                    </div>
-                    <div className="d-flex align-items-center mr-2">
-                        {/* <ReactSVG
-                            path={ICONS.TAB_SETTING}
-                            wrapperClassName="app-bar-tab-setting" /> */}
-                    </div>
+                <div className="app-bar-tab-menu">
+                    <Carousel items={this.tabListMenuItems()}/>
+                    {/*<div className="d-flex align-items-center mr-2">*/}
+                      {/*<ReactSVG*/}
+                        {/*path={ICONS.TAB_SETTING}*/}
+                        {/*wrapperClassName="app-bar-tab-setting"*/}
+                      {/*/>*/}
+                    {/*</div>*/}
                 </div>
                 <div className="app-bar-add-tab-content">
                     <div className="app-bar-add-tab-search">
