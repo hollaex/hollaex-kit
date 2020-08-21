@@ -1,19 +1,17 @@
 import React from "react";
-import ReactSVG from "react-svg";
 import classnames from "classnames";
+import { isMobile } from "react-device-detect";
 
 import { DonutChart } from "components";
 import STRINGS from "config/localizedStrings";
 import {
 	BASE_CURRENCY,
-	ICONS,
-	FLEX_CENTER_CLASSES,
 	DEFAULT_COIN_DATA,
 	SHOW_TOTAL_ASSETS,
 	SHOW_SUMMARY_ACCOUNT_DETAILS,
 } from "config/constants";
-import { formatAverage, formatToCurrency } from "utils/currency";
-import { isMobile } from "react-device-detect";
+import { formatToCurrency } from "utils/currency";
+import AssetCard from './AssetCard';
 
 const AccountAssets = ({ chartData = [], totalAssets, balance, coins, activeTheme }) => {
 	const baseValue = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
@@ -65,28 +63,12 @@ const AccountAssets = ({ chartData = [], totalAssets, balance, coins, activeThem
 									min
 								);
 								return (
-									<div key={index} className="price-content text-center">
-										<div
-											className={classnames(
-												"coin-price-container",
-												FLEX_CENTER_CLASSES
-											)}
-										>
-											<ReactSVG
-												path={
-													ICONS[`${value.symbol.toUpperCase()}_ICON`]
-														? ICONS[`${value.symbol.toUpperCase()}_ICON`]
-														: ICONS.DEFAULT_ICON}
-												wrapperClassName="coin-price"
-											/>
-										</div>
-										<div className="price-text">
-											{`${symbol.toUpperCase()} ${formatAverage(currencyBalance)}`}
-										</div>
-										{value.symbol !== BASE_CURRENCY && (
-											<div className="price-text">{`~${formatAverage(value.balanceFormat)}`}</div>
-										)}
-									</div>
+									<AssetCard
+										key={index}
+										value={value}
+										symbol={symbol}
+										currencyBalance={currencyBalance}
+									/>
 								);
 							})}
 						</div>
