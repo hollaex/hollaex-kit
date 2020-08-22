@@ -3865,9 +3865,9 @@ table th {
     .dark-theme .app_bar .active-tab-overflow svg .double-arrow {
       stroke: var(--dark-font-main-text-color); }
   .dark-theme .app_bar .app-price-diff-down {
-    color: var(--dark-app-bar-pairs-down); }
+    color: var(--dark-sell); }
   .dark-theme .app_bar .app-price-diff-up {
-    color: var(--dark-app-bar-pairs-up); }
+    color: var(--dark-buy); }
   .dark-theme .app_bar .app-bar-price_diff_up:before {
     content: "";
     display: block;
@@ -3943,13 +3943,109 @@ table th {
     fill: var(--colors-main-black); }
 
 .dark-theme .search-field {
-  background-color: var(--dark-app-background-color); }
+  background-color: var(--dark-app-background-color);
+  color: var(--dark-font-main-text-color); }
 
 .dark-theme .app_bar-link {
   color: var(--dark-link); }
 
 .dark-theme .app-bar_add-tab-price {
   color: var(--dark-font-main-text-color); }
+
+.dark-theme .app-bar-add-tab-content {
+  background-color: var(--dark-app-bar-add-tab-menu-background);
+  color: var(--app-bar-menu-list-color); }
+
+.dark-theme .app-bar-search-field {
+  background-color: var(--dark-app-bar-add-tab-menu-background) !important; }
+  .dark-theme .app-bar-search-field::placeholder {
+    color: var(--app-bar-menu-list-color) !important; }
+
+.dark-theme .app-bar-add-tab-menu {
+  background-color: var(--colors-black);
+  color: var(--app-bar-menu-list-color); }
+  .dark-theme .app-bar-add-tab-menu .app-bar-tab-menu-list {
+    background-color: var(--colors-black);
+    color: var(--app-bar-menu-list-color); }
+  .dark-theme .app-bar-add-tab-menu .active-tab {
+    background-color: var(--dark-app-bar-add-tab-menu-background);
+    color: var(--dark-font-main-text-color); }
+  .dark-theme .app-bar-add-tab-menu .app-bar-tab-overflow-content {
+    background-color: var(--dark-app-bar-add-tab-menu-background);
+    color: var(--app-bar-menu-list-color); }
+  .dark-theme .app-bar-add-tab-menu .app-bar-add-tab-content-list {
+    color: var(--app-bar-menu-list-color); }
+    .dark-theme .app-bar-add-tab-menu .app-bar-add-tab-content-list:hover {
+      background-color: var(--dark-app-bar-tab-active-menu-list-background);
+      color: var(--dark-font-main-text-color); }
+      .dark-theme .app-bar-add-tab-menu .app-bar-add-tab-content-list:hover svg .btc0,
+      .dark-theme .app-bar-add-tab-menu .app-bar-add-tab-content-list:hover svg .btc1,
+      .dark-theme .app-bar-add-tab-menu .app-bar-add-tab-content-list:hover svg .eth0,
+      .dark-theme .app-bar-add-tab-menu .app-bar-add-tab-content-list:hover svg .eth1,
+      .dark-theme .app-bar-add-tab-menu .app-bar-add-tab-content-list:hover svg .bch-icon,
+      .dark-theme .app-bar-add-tab-menu .app-bar-add-tab-content-list:hover svg .xrp-icon,
+      .dark-theme .app-bar-add-tab-menu .app-bar-add-tab-content-list:hover svg .xht-icon,
+      .dark-theme .app-bar-add-tab-menu .app-bar-add-tab-content-list:hover svg .xmr-icon,
+      .dark-theme .app-bar-add-tab-menu .app-bar-add-tab-content-list:hover svg .xlm-icon,
+      .dark-theme .app-bar-add-tab-menu .app-bar-add-tab-content-list:hover svg .eos-icon,
+      .dark-theme .app-bar-add-tab-menu .app-bar-add-tab-content-list:hover svg .trx-icon,
+      .dark-theme .app-bar-add-tab-menu .app-bar-add-tab-content-list:hover svg .ada-icon,
+      .dark-theme .app-bar-add-tab-menu .app-bar-add-tab-content-list:hover svg .bnb-icon,
+      .dark-theme .app-bar-add-tab-menu .app-bar-add-tab-content-list:hover svg .tusd-icon,
+      .dark-theme .app-bar-add-tab-menu .app-bar-add-tab-content-list:hover svg .dai-icon,
+      .dark-theme .app-bar-add-tab-menu .app-bar-add-tab-content-list:hover svg .ltc-icon,
+      .dark-theme .app-bar-add-tab-menu .app-bar-add-tab-content-list:hover svg .default-icon {
+        fill: var(--dark-font-main-text-color) !important; }
+      .dark-theme .app-bar-add-tab-menu .app-bar-add-tab-content-list:hover svg .st0 {
+        fill: var(--dark-font-main-text-color) !important; }
+  .dark-theme .app-bar-add-tab-menu .app-bar-tab-setting svg .btc0,
+  .dark-theme .app-bar-add-tab-menu .app-bar-tab-setting svg .btc1,
+  .dark-theme .app-bar-add-tab-menu .app-bar-tab-setting svg .eth0,
+  .dark-theme .app-bar-add-tab-menu .app-bar-tab-setting svg .eth1,
+  .dark-theme .app-bar-add-tab-menu .app-bar-tab-setting svg .bch-icon,
+  .dark-theme .app-bar-add-tab-menu .app-bar-tab-setting svg .xrp-icon,
+  .dark-theme .app-bar-add-tab-menu .app-bar-tab-setting svg .xht-icon,
+  .dark-theme .app-bar-add-tab-menu .app-bar-tab-setting svg .xmr-icon,
+  .dark-theme .app-bar-add-tab-menu .app-bar-tab-setting svg .xlm-icon,
+  .dark-theme .app-bar-add-tab-menu .app-bar-tab-setting svg .eos-icon,
+  .dark-theme .app-bar-add-tab-menu .app-bar-tab-setting svg .trx-icon,
+  .dark-theme .app-bar-add-tab-menu .app-bar-tab-setting svg .ada-icon,
+  .dark-theme .app-bar-add-tab-menu .app-bar-tab-setting svg .bnb-icon,
+  .dark-theme .app-bar-add-tab-menu .app-bar-tab-setting svg .tusd-icon,
+  .dark-theme .app-bar-add-tab-menu .app-bar-tab-setting svg .dai-icon,
+  .dark-theme .app-bar-add-tab-menu .app-bar-tab-setting svg .ltc-icon,
+  .dark-theme .app-bar-add-tab-menu .app-bar-tab-setting svg .default-icon, .dark-theme .app-bar-add-tab-menu .app-bar-add-tab-icons svg .btc0,
+  .dark-theme .app-bar-add-tab-menu .app-bar-add-tab-icons svg .btc1,
+  .dark-theme .app-bar-add-tab-menu .app-bar-add-tab-icons svg .eth0,
+  .dark-theme .app-bar-add-tab-menu .app-bar-add-tab-icons svg .eth1,
+  .dark-theme .app-bar-add-tab-menu .app-bar-add-tab-icons svg .bch-icon,
+  .dark-theme .app-bar-add-tab-menu .app-bar-add-tab-icons svg .xrp-icon,
+  .dark-theme .app-bar-add-tab-menu .app-bar-add-tab-icons svg .xht-icon,
+  .dark-theme .app-bar-add-tab-menu .app-bar-add-tab-icons svg .xmr-icon,
+  .dark-theme .app-bar-add-tab-menu .app-bar-add-tab-icons svg .xlm-icon,
+  .dark-theme .app-bar-add-tab-menu .app-bar-add-tab-icons svg .eos-icon,
+  .dark-theme .app-bar-add-tab-menu .app-bar-add-tab-icons svg .trx-icon,
+  .dark-theme .app-bar-add-tab-menu .app-bar-add-tab-icons svg .ada-icon,
+  .dark-theme .app-bar-add-tab-menu .app-bar-add-tab-icons svg .bnb-icon,
+  .dark-theme .app-bar-add-tab-menu .app-bar-add-tab-icons svg .tusd-icon,
+  .dark-theme .app-bar-add-tab-menu .app-bar-add-tab-icons svg .dai-icon,
+  .dark-theme .app-bar-add-tab-menu .app-bar-add-tab-icons svg .ltc-icon,
+  .dark-theme .app-bar-add-tab-menu .app-bar-add-tab-icons svg .default-icon {
+    fill: var(--app-bar-menu-list-color) !important; }
+  .dark-theme .app-bar-add-tab-menu .app-bar-tab-setting svg .plus, .dark-theme .app-bar-add-tab-menu .app-bar-tab-setting svg .minus, .dark-theme .app-bar-add-tab-menu .app-bar-add-tab-icons svg .plus, .dark-theme .app-bar-add-tab-menu .app-bar-add-tab-icons svg .minus {
+    stroke: var(--app-bar-menu-list-color) !important;
+    stroke-width: .2rem; }
+  .dark-theme .app-bar-add-tab-menu .app-bar-tab-setting svg .st0, .dark-theme .app-bar-add-tab-menu .app-bar-add-tab-icons svg .st0 {
+    fill: var(--colors-white);
+    stroke-width: 0rem; }
+  .dark-theme .app-bar-add-tab-menu .app-bar-tab-setting svg .icon-check-1, .dark-theme .app-bar-add-tab-menu .app-bar-add-tab-icons svg .icon-check-1 {
+    stroke: var(--colors-white); }
+  .dark-theme .app-bar-add-tab-menu .app-bar-tab-setting svg .xht-icon-1, .dark-theme .app-bar-add-tab-menu .app-bar-add-tab-icons svg .xht-icon-1 {
+    fill: var(--dark-app-background-color) !important; }
+  .dark-theme .app-bar-add-tab-menu .app-bar-tab-setting .app-price-diff-down, .dark-theme .app-bar-add-tab-menu .app-bar-add-tab-icons .app-price-diff-down {
+    color: var(--dark-sell); }
+  .dark-theme .app-bar-add-tab-menu .app-bar-tab-setting .app-price-diff-up, .dark-theme .app-bar-add-tab-menu .app-bar-add-tab-icons .app-price-diff-up {
+    color: var(--dark-buy); }
 
 .app_bar {
   position: relative;
@@ -4228,9 +4324,9 @@ table th {
   .app_bar .app_bar-currency-txt {
     font-weight: 600; }
   .app_bar .app-price-diff-down {
-    color: var(--app-bar-pairs-down); }
+    color: var(--sell); }
   .app_bar .app-price-diff-up {
-    color: var(--app-bar-pairs-up); }
+    color: var(--buy); }
   .app_bar .app-bar-price_diff_up {
     margin-left: 0.5rem; }
   .app_bar .app-bar-price_diff_up:before {
@@ -4241,7 +4337,7 @@ table th {
     height: 0;
     border-left: 0.4rem solid transparent;
     border-right: 0.4rem solid transparent;
-    border-bottom: 0.4rem solid var(--app-bar-pairs-up);
+    border-bottom: 0.4rem solid var(--buy);
     margin-bottom: 0rem;
     display: inline-block;
     margin-bottom: 0.2rem;
@@ -4258,7 +4354,7 @@ table th {
     height: 0;
     border-left: 0.4rem solid transparent;
     border-right: 0.4rem solid transparent;
-    border-top: 0.4rem solid var(--colors-notifications-red);
+    border-top: 0.4rem solid var(--sell);
     margin-top: 0rem;
     display: inline-block;
     margin-right: 0.5rem;
@@ -4368,6 +4464,9 @@ table th {
       font-size: .8rem;
       line-height: 1;
       font-weight: bold; }
+
+.app-bar-tab-menu {
+  background-color: var(--dark-app-bar-background-color) !important; }
 
 .app_bar-mobile {
   padding: 1rem 0; }
@@ -4491,22 +4590,18 @@ table th {
   margin-bottom: .5rem; }
 
 .search-field {
-  color: var(--dark-font-main-text-color);
   width: 100%; }
 
 .app-bar-search-field {
-  background-color: var(--dark-app-bar-add-tab-menu-background) !important;
   flex-direction: row-reverse;
   margin: 0;
   padding-right: .5rem; }
-  .app-bar-search-field::placeholder {
-    color: var(--app-bar-menu-list-color) !important; }
 
 .app-bar-search-field-outline {
   height: .5px; }
 
 .app-bar-add-tab-menu {
-  background-color: var(--colors-black);
+  background-color: var(--app-background-color);
   border: 1px solid #535353;
   color: var(--app-bar-menu-list-color);
   display: block;
@@ -4526,12 +4621,10 @@ table th {
     height: 2.5rem;
     padding: .5rem .8rem; }
   .app-bar-add-tab-menu .active-tab {
-    background-color: var(--dark-app-bar-add-tab-menu-background);
-    color: var(--dark-font-main-text-color);
+    background-color: var(--app-background-color);
+    color: var(--app-bar-menu-list-color);
     font-weight: bold; }
   .app-bar-add-tab-menu .app-bar-add-tab-content {
-    background-color: var(--dark-app-bar-add-tab-menu-background);
-    color: var(--app-bar-menu-list-color);
     font-size: .8rem;
     overflow-y: scroll;
     padding: .3rem 0; }
@@ -4545,8 +4638,8 @@ table th {
     color: var(--app-bar-menu-list-color);
     height: 2.2rem; }
     .app-bar-add-tab-menu .app-bar-add-tab-content-list:hover {
-      background-color: var(--dark-app-bar-tab-active-menu-list-background);
-      color: var(--dark-font-main-text-color); }
+      background-color: var(--app-light-background);
+      color: var(--colors-black); }
       .app-bar-add-tab-menu .app-bar-add-tab-content-list:hover svg .btc0,
       .app-bar-add-tab-menu .app-bar-add-tab-content-list:hover svg .btc1,
       .app-bar-add-tab-menu .app-bar-add-tab-content-list:hover svg .eth0,
@@ -4564,12 +4657,10 @@ table th {
       .app-bar-add-tab-menu .app-bar-add-tab-content-list:hover svg .dai-icon,
       .app-bar-add-tab-menu .app-bar-add-tab-content-list:hover svg .ltc-icon,
       .app-bar-add-tab-menu .app-bar-add-tab-content-list:hover svg .default-icon {
-        fill: var(--dark-font-main-text-color) !important; }
+        fill: var(--colors-black) !important; }
       .app-bar-add-tab-menu .app-bar-add-tab-content-list:hover svg .st0 {
-        fill: var(--dark-font-main-text-color) !important;
+        fill: var(--colors-black) !important;
         stroke-width: 0rem; }
-      .app-bar-add-tab-menu .app-bar-add-tab-content-list:hover svg .plus, .app-bar-add-tab-menu .app-bar-add-tab-content-list:hover svg .minus {
-        stroke: var(--dark-font-main-text-color) !important; }
   .app-bar-add-tab-menu .app-bar-tab-setting {
     margin: .3rem .4rem 0 .4rem;
     width: 1rem; }
@@ -4621,15 +4712,18 @@ table th {
   .app-bar-add-tab-menu .app-bar-tab-setting svg .xht-icon-1, .app-bar-add-tab-menu .app-bar-add-tab-icons svg .xht-icon-1 {
     fill: var(--dark-app-background-color) !important; }
   .app-bar-add-tab-menu .app-bar-tab-setting .app-price-diff-down, .app-bar-add-tab-menu .app-bar-add-tab-icons .app-price-diff-down {
-    color: #ff0000; }
+    color: var(--sell); }
   .app-bar-add-tab-menu .app-bar-tab-setting .app-price-diff-up, .app-bar-add-tab-menu .app-bar-add-tab-icons .app-price-diff-up {
-    color: var(--app-bar-pairs-up); }
+    color: var(--buy); }
 
 .app_bar-link {
-  color: var(--dark-link);
+  color: var(--link);
   margin: .5rem 0;
   padding: 0 .5rem;
   text-transform: uppercase; }
+
+.app-bar_add-tab-price {
+  color: var(--colors-black); }
 
 @media (min-width: 1920px) {
   .app_bar {

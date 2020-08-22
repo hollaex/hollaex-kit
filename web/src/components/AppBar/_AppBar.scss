@@ -68,11 +68,11 @@ $app-bar-add-tab-red: #ff0000;
 		}
 
 		.app-price-diff-down {
-			color: $dark-app-bar-pairs-down;
+			color: $dark-sell;
 		}
 
 		.app-price-diff-up {
-			color: $dark-app-bar-pairs-up;
+			color: $dark-buy;
 		}
 
 		.app-bar-price_diff_up:before {
@@ -177,6 +177,7 @@ $app-bar-add-tab-red: #ff0000;
 
 	.search-field {
 		background-color: $dark-app-background-color;
+		color: $dark-font-main-text-color;
 	}
 
 	.app_bar-link {
@@ -185,6 +186,119 @@ $app-bar-add-tab-red: #ff0000;
 
 	.app-bar_add-tab-price {
 		color: $dark-font-main-text-color;
+	}
+
+	.app-bar-add-tab-content {
+		background-color: $dark-app-bar-add-tab-menu-background;
+		color: $app-bar-menu-list-color;
+	}
+
+	.app-bar-search-field {
+		background-color: $dark-app-bar-add-tab-menu-background !important;
+
+		&::placeholder {
+			color: $app-bar-menu-list-color !important;
+		}
+	}
+
+	.app-bar-add-tab-menu {
+		background-color: $colors-black;
+		color: $app-bar-menu-list-color;
+
+		.app-bar-tab-menu-list {
+			background-color: $colors-black;
+			color: $app-bar-menu-list-color;
+		}
+
+		.active-tab {
+			background-color: $dark-app-bar-add-tab-menu-background;
+			color: $dark-font-main-text-color;
+		}
+
+		.app-bar-tab-overflow-content {
+			background-color: $dark-app-bar-add-tab-menu-background;
+			color: $app-bar-menu-list-color;
+		}
+
+		.app-bar-add-tab-content-list {
+			color: $app-bar-menu-list-color;
+
+			&:hover {
+				background-color: $dark-app-bar-tab-active-menu-list-background;
+				color: $dark-font-main-text-color;
+
+				svg {
+					.btc0,
+					.btc1,
+					.eth0,
+					.eth1,
+					.bch-icon,
+					.xrp-icon,
+					.xht-icon,
+					.xmr-icon,
+					.xlm-icon,
+					.eos-icon,
+					.trx-icon,
+					.ada-icon,
+					.bnb-icon,
+					.tusd-icon,
+					.dai-icon,
+					.ltc-icon,
+					.default-icon {
+						fill: $dark-font-main-text-color !important;
+					}
+					.st0 {
+						fill: $dark-font-main-text-color !important;
+					}
+				}
+			}
+		}
+
+		.app-bar-tab-setting, .app-bar-add-tab-icons {
+			svg {
+				.btc0,
+				.btc1,
+				.eth0,
+				.eth1,
+				.bch-icon,
+				.xrp-icon,
+				.xht-icon,
+				.xmr-icon,
+				.xlm-icon,
+				.eos-icon,
+				.trx-icon,
+				.ada-icon,
+				.bnb-icon,
+				.tusd-icon,
+				.dai-icon,
+				.ltc-icon,
+				.default-icon {
+					fill: $app-bar-menu-list-color !important;
+				}
+				.plus, .minus {
+					stroke: $app-bar-menu-list-color !important;
+					stroke-width: .2rem;
+				}
+				.st0 {
+					fill: $colors-white;
+					stroke-width: 0rem;
+				}
+				.icon-check-1 {
+					stroke: $colors-white;
+				}
+				.xht-icon-1 {
+					fill: $dark-app-background-color !important;
+				}
+			}
+
+			.app-price-diff-down {
+				color: $dark-sell;
+			}
+
+			.app-price-diff-up {
+				color: $dark-buy;
+			}
+		}
 	}
 }
 
@@ -534,11 +648,11 @@ $app-bar-add-tab-red: #ff0000;
 	}
 
 	.app-price-diff-down {
-		color: $app-bar-pairs-down;
+		color: $sell;
 	}
 
 	.app-price-diff-up {
-		color: $app-bar-pairs-up;
+		color: $buy;
 	}
 
 	.app-bar-price_diff_up {
@@ -546,7 +660,7 @@ $app-bar-add-tab-red: #ff0000;
 	}
 
 	.app-bar-price_diff_up:before {
-		@include css-triangle($app-bar-pairs-up, 'up', $app-bar--arrow-size);
+		@include css-triangle($buy, 'up', $app-bar--arrow-size);
 		display: inline-block;
 		margin-bottom: 0.2rem;
 		margin-right: 0.5rem;
@@ -559,7 +673,7 @@ $app-bar-add-tab-red: #ff0000;
 	}
 
 	.app-bar-price_diff_down:before {
-		@include css-triangle($colors-notifications-red, 'down', $app-bar--arrow-size);
+		@include css-triangle($sell, 'down', $app-bar--arrow-size);
 		display: inline-block;
 		margin-right: 0.5rem;
 		position: relative;
@@ -711,6 +825,10 @@ $app-bar-add-tab-red: #ff0000;
 			font-weight: bold;
 		}
 	}
+}
+
+.app-bar-tab-menu {
+	background-color: $dark-app-bar-background-color !important;
 }
 
 .app_bar-mobile {
@@ -878,19 +996,13 @@ $app-bar-add-tab-red: #ff0000;
 }
 
 .search-field {
-	color: $dark-font-main-text-color;
 	width: 100%;
 }
 
 .app-bar-search-field {
-	background-color: $dark-app-bar-add-tab-menu-background !important;
 	flex-direction: row-reverse;
 	margin: 0;
 	padding-right: .5rem;
-
-	&::placeholder {
-		color: $app-bar-menu-list-color !important;
-	}
 }
 
 .app-bar-search-field-outline {
@@ -898,7 +1010,7 @@ $app-bar-add-tab-red: #ff0000;
 }
 
 .app-bar-add-tab-menu {
-	background-color: $colors-black;
+	background-color: $app-background-color;
 	border: 1px solid #535353;
 	color: $app-bar-menu-list-color;
 	display: block;
@@ -921,14 +1033,12 @@ $app-bar-add-tab-red: #ff0000;
 	}
 
 	.active-tab {
-		background-color: $dark-app-bar-add-tab-menu-background;
-		color: $dark-font-main-text-color;
+		background-color: $app-background-color;
+		color: $app-bar-menu-list-color;
 		font-weight: bold;
 	}
 
 	.app-bar-add-tab-content {
-		background-color: $dark-app-bar-add-tab-menu-background;
-		color: $app-bar-menu-list-color;
 		font-size: .8rem;
 		overflow-y: scroll;
 		padding: .3rem 0;
@@ -949,8 +1059,8 @@ $app-bar-add-tab-red: #ff0000;
 		height: 2.2rem;
 		
 		&:hover {
-			background-color: $dark-app-bar-tab-active-menu-list-background;
-			color: $dark-font-main-text-color;
+			background-color: $app-light-background;
+			color: $colors-black;
 
 			svg {
 				.btc0,
@@ -970,14 +1080,11 @@ $app-bar-add-tab-red: #ff0000;
 				.dai-icon,
 				.ltc-icon,
 				.default-icon {
-					fill: $dark-font-main-text-color !important;
+					fill: $colors-black !important;
 				}
 				.st0 {
-					fill: $dark-font-main-text-color !important;
+					fill: $colors-black !important;
 					stroke-width: 0rem;
-				}
-				.plus, .minus {
-					stroke: $dark-font-main-text-color !important;
 				}
 			}
 		}
@@ -1031,20 +1138,24 @@ $app-bar-add-tab-red: #ff0000;
 		}
 
 		.app-price-diff-down {
-			color: $app-bar-add-tab-red;
+			color: $sell;
 		}
 		
 		.app-price-diff-up {
-			color: $app-bar-pairs-up
+			color: $buy;
 		}
 	}
 }
 
 .app_bar-link {
-	color: $dark-link;
+	color: $link;
 	margin: .5rem 0;
 	padding: 0 .5rem;
 	text-transform: uppercase;
+}
+
+.app-bar_add-tab-price {
+	color: $colors-black;
 }
 
 @media (min-width: 1920px) {
