@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { browserHistory } from 'react-router';
+import { browserHistory, Link } from 'react-router';
+import ControlledScrollbar from './ControlledScrollbar';
+
 import { Accordion } from '../';
 import { BASE_CURRENCY, DEFAULT_COIN_DATA, IS_XHT } from '../../config/constants';
 import {
@@ -111,6 +113,7 @@ class Wallet extends Component {
 			return <div />;
 		}
 		const { symbol = '' } = coins[BASE_CURRENCY] || {};
+		const hasScrollbar = sections.length > 5;
 
 		return (
 			<div className="wallet-wrapper">
@@ -124,7 +127,18 @@ class Wallet extends Component {
 						: <DonutChart id="side-bar-donut" coins={coins} chartData={chartData} />
 					}
 				</div>
-				<Accordion sections={sections} />
+				<ControlledScrollbar
+					showButtons={hasScrollbar}
+					autoHeight={true}
+					autoHeightMax={hasScrollbar ? 175 : 350}
+				>
+					<Accordion sections={sections} />
+					<div className="d-flex justify-content-center app_bar-link">
+						<Link to="/wallet">
+              {`view all`}
+						</Link>
+					</div>
+				</ControlledScrollbar>
 				{BASE_CURRENCY && isValidBase && !IS_XHT ? (
 					<div className="wallet_section-wrapper wallet_section-total_asset d-flex flex-column">
 						<div className="wallet_section-title">
