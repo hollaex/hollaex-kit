@@ -1,0 +1,14 @@
+.controlled-scrollbar__button {
+  color: blue;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+
+  &.disabled {
+    color: grey;
+    cursor: default;
+  }
+}
