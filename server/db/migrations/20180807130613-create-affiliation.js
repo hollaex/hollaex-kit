@@ -29,11 +29,6 @@ module.exports = {
 						key: 'id'
 					}
 				},
-				percentage: {
-					allowNull: false,
-					type: Sequelize.INTEGER,
-					defaultValue: 10
-				},
 				updated_at: {
 					allowNull: false,
 					type: Sequelize.DATE,

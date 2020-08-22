@@ -154,18 +154,10 @@ module.exports = function(sequelize, DataTypes) {
 				type: DataTypes.BOOLEAN,
 				defaultValue: false
 			},
-			custom_fee: {
-				type: DataTypes.BOOLEAN,
-				defaultValue: false	
-			},
 			affiliation_rate: {
 				type: DataTypes.DOUBLE,
 				defaultValue: 0	
 			},
-			discount: {
-				type: DataTypes.DOUBLE,
-				defaultValue: 0	
-			}
 		},
 		{
 			underscored: true
