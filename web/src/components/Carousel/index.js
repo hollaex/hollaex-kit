@@ -3,7 +3,7 @@ import { oneOfType, array, number, string, object, bool } from 'prop-types';
 import AliceCarousel from 'react-alice-carousel'
 import classnames from "classnames";
 
-class Carousel extends React.Component {
+class Carousel extends React.PureComponent {
 
   constructor(props){
     super(props);
@@ -14,6 +14,10 @@ class Carousel extends React.Component {
       isPrevSlideDisabled: true,
       isNextSlideDisabled: true,
     }
+  }
+
+  componentDidMount() {
+    this.setState({ currentIndex: 0 })
   }
 
   onInitialized = ({ item: currentIndex, isPrevSlideDisabled, isNextSlideDisabled }) =>
