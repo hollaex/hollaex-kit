@@ -9174,6 +9174,18 @@ foreignObject {
     color: grey;
     cursor: default; }
 
+.controlled-scrollbar__button {
+  color: blue;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 1rem;
+  padding-bottom: 1rem; }
+  .controlled-scrollbar__button.disabled {
+    color: grey;
+    cursor: default; }
+
 html {
   font-size: 12px !important;
   height: 100%; }
