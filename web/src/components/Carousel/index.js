@@ -1,5 +1,5 @@
 import React from 'react'
-import { oneOf, array, number, string, object, bool } from 'prop-types';
+import { oneOfType, array, number, string, object, bool } from 'prop-types';
 import AliceCarousel from 'react-alice-carousel'
 import classnames from "classnames";
 
@@ -91,7 +91,7 @@ Carousel.propTypes = {
   items: array,
   groupItems: number,
   containerStyle: object,
-  containerClass: oneOf([bool, string]),
+  containerClass: oneOfType([bool, string]),
 }
 
 Carousel.defaultProps = {
