@@ -2,7 +2,7 @@ import React from "react";
 import classnames from "classnames";
 import { isMobile } from "react-device-detect";
 
-import { DonutChart } from "components";
+import { DonutChart, Carousel } from "components";
 import STRINGS from "config/localizedStrings";
 import {
 	BASE_CURRENCY,
@@ -48,7 +48,8 @@ const AccountAssets = ({ chartData = [], totalAssets, balance, coins, activeThem
 					classnames({
 						'w-75': !SHOW_SUMMARY_ACCOUNT_DETAILS && !isMobile,
 						'w-100': isMobile
-					})}>
+					})}
+				>
 					<div
 						className={
 							classnames(
@@ -62,20 +63,10 @@ const AccountAssets = ({ chartData = [], totalAssets, balance, coins, activeThem
 							/>
 						)}
 					</div>
-					<div>
-						<div
-							className={
-								classnames(
-									"d-flex",
-									{
-										"justify-content-between": SHOW_SUMMARY_ACCOUNT_DETAILS,
-										"justify-content-center": !SHOW_SUMMARY_ACCOUNT_DETAILS,
-										"flex-wrap": isMobile
-									}
-								)}>
-							{assetCards()}
-						</div>
-					</div>
+					<Carousel
+						items={assetCards()}
+						groupItems={7}
+					/>
 				</div>
 			</div>
 			{SHOW_TOTAL_ASSETS
