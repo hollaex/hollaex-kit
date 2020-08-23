@@ -39,33 +39,16 @@ const ws = {
 	}
 };
 
-const init = {
-	// init application
-	name      : 'init',
-	script    : 'init.js',
-	error_file: '/dev/null',
-	out_file: '/dev/null',
-	watch,
-	ignore_watch: ignore_watch.concat(['tools', 'queue']),
-	max_memory_restart,
-	node_args,
-	env: {
-		COMMON_VARIABLE: 'true'
-	}
-};
-
 var apps = [];
 const modes = initializeMode(mode);
 for (let m of modes) {
 	if (m === 'all') {
-		apps = [api, ws, init];
+		apps = [api, ws];
 		break;
 	} else if (m === 'api') {
 		apps.push(api);
 	} else if (m === 'ws') {
 		apps.push(ws);
-	} else if (m === 'init') {
-		apps.push(init);
 	}
 }
 
