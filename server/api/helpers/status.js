@@ -1,7 +1,6 @@
 'use strict';
 
-const { all } = require('bluebird');
-const { Status, Coin, Pair } = require('../../db/models');
+const { Status } = require('../../db/models');
 const { INIT_CHANNEL, CONSTANTS_KEYS, SECRETS_KEYS, SECRET_MASK} = require('../../constants');
 const { publisher } = require('../../db/pubsub');
 const { omit, each } = require('lodash');
