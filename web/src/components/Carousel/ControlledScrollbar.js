@@ -69,9 +69,8 @@ class ControlledScrollbar extends React.PureComponent {
             <div
               className={classnames("controlled-scrollbar__button", { disabled: isUpButtonDisabled })}
               onClick={scrollUp}
-
             >
-              Up
+              <i className="controlled-scrollbar__arrow up"/>
             </div>
           )
         }
@@ -88,7 +87,7 @@ class ControlledScrollbar extends React.PureComponent {
               className={classnames("controlled-scrollbar__button", { disabled: isDownButtonDisabled })}
               onClick={scrollDown}
             >
-              Down
+              <i className="controlled-scrollbar__arrow down"/>
             </div>
           )
         }
