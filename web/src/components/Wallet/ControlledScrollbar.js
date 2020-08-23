@@ -33,7 +33,10 @@ class ControlledScrollbar extends React.PureComponent {
 
   relativeScrollTo = (relativeValue) => {
     const value = this.scrollbar.current.getScrollTop() + relativeValue
-    this.scrollbar.current.scrollTop(value);
+    this.scrollbar.current.view.scroll({
+      top: value,
+      behavior: 'smooth',
+    });
   }
 
   scrollUp = () => {
