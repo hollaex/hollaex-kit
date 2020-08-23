@@ -70,7 +70,7 @@ const MarketList = ({ markets, handleClick }) => {
                         className={
                           priceDifference < 0
                             ? 'title-font price-diff-down trade-tab-price_diff_down'
-                            : 'title-font trade-tab-price_diff_up price-diff-up'
+                            : 'title-font price-diff-up trade-tab-price_diff_up'
                         }
                       >
                         {priceDifferencePercent}

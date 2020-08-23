@@ -224,7 +224,7 @@ $trade-tab-active-dark-title: #b7b5cd;
 	}
 
 	.price-diff-up {
-		color: $app-bar-pairs-up;
+		color: $buy;
 	}
 
 	.trade-tab-price_diff_up {
@@ -245,7 +245,7 @@ $trade-tab-active-dark-title: #b7b5cd;
 	}
 
 	.trade-tab-price_diff_down:before {
-		@include css-triangle($colors-notifications-red, 'down', $trade-tab--arrow-size);
+		@include css-triangle($sell, 'down', $trade-tab--arrow-size);
 		display: inline-block;
 		margin-right: 0.5rem;
 		position: relative;

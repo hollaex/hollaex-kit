@@ -3384,7 +3384,7 @@ table th {
   .trade_tabs-container .price-diff-down {
     color: var(--sell); }
   .trade_tabs-container .price-diff-up {
-    color: var(--app-bar-pairs-up); }
+    color: var(--buy); }
   .trade_tabs-container .trade-tab-price_diff_up {
     margin: auto 0; }
   .trade_tabs-container .trade-tab-price_diff_up:before {
@@ -3412,7 +3412,7 @@ table th {
     height: 0;
     border-left: 0.4rem solid transparent;
     border-right: 0.4rem solid transparent;
-    border-top: 0.4rem solid var(--colors-notifications-red);
+    border-top: 0.4rem solid var(--sell);
     margin-top: 0rem;
     display: inline-block;
     margin-right: 0.5rem;
