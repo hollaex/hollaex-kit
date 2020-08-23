@@ -38,12 +38,14 @@ const {
 	ADMIN_EMAIL,
 	USER_LEVEL_NUMBER,
 	CAPTCHA_SITE_KEY,
-	ADMIN_WHITELIST_IP
+	ADMIN_WHITELIST_IP,
+	ACTIVATION_CODE,
+	API_KEY,
+	API_SECRET
 } = process.env;
 
 const TABLE = 'Statuses';
 const status = [{
-	name: API_NAME || '',
 	initialized: true,
 	constants: JSON.stringify({
 		api_name: API_NAME || '',
@@ -91,62 +93,65 @@ const status = [{
 			enabled: PLUGINS || '',
 			configuration: {}
 		},
-		secrets: {
-			allowed_domains: ALLOWED_DOMAINS ? ALLOWED_DOMAINS.split(',') : [],
-			admin_whitelist: ADMIN_WHITELIST_IP ? ADMIN_WHITELIST_IP.split(',') : [],
-			broker: {
-				quick_trade_rate: 0.03,
-				quick_trade_expiration_time: 20,
-				trade_master_account_id: 2
-			},
-			security: {
-				token_time: '24h',
-				withdrawal_token_expiry: 300000
-			},
-			captcha: {
-				secret_key: CAPTCHA_SECRET_KEY
-			},
-			smtp: {
-				server: SMTP_SERVER || '',
-				port: SMTP_PORT || 587,
-				user: SMTP_USER,
-				password: SMTP_PASSWORD
-			},
-			vault: {
-				name: VAULT_NAME || '',
-				key: VAULT_KEY,
-				secret: VAULT_SECRET,
-				connected_coins: []
-			},
-			plugins: {
-				s3: {
-					id_docs_bucket: ID_DOCS_BUCKET || '',
-					key: {
-						write: S3_WRITE_ACCESSKEYID || '',
-						read: S3_READ_ACCESSKEYID || ''
-					},
-					secret: {
-						write: S3_WRITE_SECRETACCESSKEY,
-						read: S3_READ_SECRETACCESSKEY
-					}
+	}),
+	secrets: JSON.stringify({
+		allowed_domains: ALLOWED_DOMAINS ? ALLOWED_DOMAINS.split(',') : [],
+		admin_whitelist: ADMIN_WHITELIST_IP ? ADMIN_WHITELIST_IP.split(',') : [],
+		broker: {
+			quick_trade_rate: 0.03,
+			quick_trade_expiration_time: 20,
+			trade_master_account_id: 2
+		},
+		security: {
+			token_time: '24h',
+			withdrawal_token_expiry: 300000
+		},
+		captcha: {
+			secret_key: CAPTCHA_SECRET_KEY
+		},
+		smtp: {
+			server: SMTP_SERVER || '',
+			port: SMTP_PORT || 587,
+			user: SMTP_USER,
+			password: SMTP_PASSWORD
+		},
+		vault: {
+			name: VAULT_NAME || '',
+			key: VAULT_KEY,
+			secret: VAULT_SECRET,
+			connected_coins: []
+		},
+		plugins: {
+			s3: {
+				id_docs_bucket: ID_DOCS_BUCKET || '',
+				key: {
+					write: S3_WRITE_ACCESSKEYID || '',
+					read: S3_READ_ACCESSKEYID || ''
 				},
-				sns: {
-					region: SNS_REGION || '',
-					key: SNS_ACCESSKEYID || '',
-					secret: SNS_SECRETACCESSKEY || ''
-				},
-				freshdesk: {
-					host: FRESHDESK_HOST || '',
-					key: FRESHDESK_KEY || '',
-					auth: FRESHDESK_AUTH || ''
-				},
-				zendesk: {
-					host: ZENDESK_HOST || '',
-					key: ZENDESK_KEY || ''
+				secret: {
+					write: S3_WRITE_SECRETACCESSKEY,
+					read: S3_READ_SECRETACCESSKEY
 				}
+			},
+			sns: {
+				region: SNS_REGION || '',
+				key: SNS_ACCESSKEYID || '',
+				secret: SNS_SECRETACCESSKEY || ''
+			},
+			freshdesk: {
+				host: FRESHDESK_HOST || '',
+				key: FRESHDESK_KEY || '',
+				auth: FRESHDESK_AUTH || ''
+			},
+			zendesk: {
+				host: ZENDESK_HOST || '',
+				key: ZENDESK_KEY || ''
 			}
 		}
-	})
+	}),
+	activation_code: ACTIVATION_CODE,
+	api_key: API_KEY,
+	api_secret: API_SECRET
 }];
 
 module.exports = {

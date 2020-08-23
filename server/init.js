@@ -96,9 +96,6 @@ const checkStatus = () => {
 			} else if (status.blocked) {
 				stop();
 				throw new Error('Exchange is locked');
-			} else if (!status.name) {
-				stop();
-				throw new Error('Exchange name is not set');
 			} else if (!status.activation_code) {
 				stop();
 				throw new Error('Exchange activation code is not set');
