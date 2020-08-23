@@ -10,11 +10,7 @@ class ControlledScrollbar extends React.PureComponent {
     isDownButtonDisabled: true,
   }
 
-  setScrollbarsRef = (el) => {
-    if (el) {
-      this.scrollbarsRef = el;
-    }
-  }
+  scrollbar = React.createRef()
 
   onUpdate = ({ top }) => {
     if(top === 0) {
@@ -41,8 +37,8 @@ class ControlledScrollbar extends React.PureComponent {
 
     if (isUpButtonDisabled) return;
 
-    const val = this.scrollbarsRef.getScrollTop() - scrollingStep;
-    this.scrollbarsRef.scrollTop(val);
+    const val = this.scrollbar.current.getScrollTop() - scrollingStep;
+    this.scrollbar.current.scrollTop(val);
   }
 
   scrollDown = () => {
@@ -51,14 +47,14 @@ class ControlledScrollbar extends React.PureComponent {
 
     if (isDownButtonDisabled) return;
 
-    const val = this.scrollbarsRef.getScrollTop() + scrollingStep;
-    this.scrollbarsRef.scrollTop(val);
+    const val = this.scrollbar.current.getScrollTop() + scrollingStep;
+    this.scrollbar.current.scrollTop(val);
   }
 
   render() {
     const { isDownButtonDisabled, isUpButtonDisabled } = this.state;
     const { showButtons, scrollingStep, ...restProps } = this.props;
-    const { onUpdate, scrollUp, scrollDown, setScrollbarsRef } = this;
+    const { onUpdate, scrollUp, scrollDown, scrollbar } = this;
 
     return (
       <Fragment>
@@ -77,7 +73,7 @@ class ControlledScrollbar extends React.PureComponent {
         <Scrollbars
           {...restProps}
           onUpdate={onUpdate}
-          ref={setScrollbarsRef}
+          ref={scrollbar}
         />
 
         {
