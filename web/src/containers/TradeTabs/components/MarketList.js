@@ -51,7 +51,7 @@ const MarketList = ({ markets, handleClick }) => {
                             ? ICONS[`${pair.pair_base.toUpperCase()}_ICON`]
                             : ICONS.DEFAULT_ICON
                         }
-                        wrapperClassName="market-list__icons"
+                        wrapperClassName="market-list__coin-icons"
                       />
                       <div>
                         {symbol.toUpperCase()}/
