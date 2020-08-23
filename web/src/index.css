@@ -3164,9 +3164,11 @@ table th {
   width: 100%;
   font-size: 0.9rem;
   margin-bottom: 3rem; }
-  .market-list__container .market-list__block .market-list__block-table thead tr {
-    height: 3.5rem;
-    vertical-align: bottom; }
+  .market-list__container .market-list__block .market-list__block-table thead {
+    color: var(--colors-black); }
+    .market-list__container .market-list__block .market-list__block-table thead tr {
+      height: 3.5rem;
+      vertical-align: bottom; }
   .market-list__container .market-list__block .market-list__block-table .table-row {
     color: var(--colors-deactivate-color2);
     height: 2.5rem;
@@ -3216,6 +3218,8 @@ table th {
 
 .dark-theme .market-list__container .market-list__block {
   color: var(--dark-font-main-text-color) !important; }
+  .dark-theme .market-list__container .market-list__block .market-list__block-table thead {
+    color: var(--dark-font-main-text-color); }
   .dark-theme .market-list__container .market-list__block .market-list__block-table tbody, .dark-theme .market-list__container .market-list__block .market-list__block-table tfoot {
     color: var(--dark-font-sub-text-color); }
   .dark-theme .market-list__container .market-list__block .market-list__block-table .table-bottom-border td,
