@@ -140,7 +140,7 @@ paths:
                 type: string
       responses:
         200:
-          description: 200
+          description: Success
           schema:
             $ref: "#/definitions/MessageResponse"
         default:
@@ -188,10 +188,10 @@ paths:
           description: Error
           schema:
             $ref: "#/definitions/MessageResponse"
-    security:
-      - Bearer: []
-    x-security-scopes:
-      - user
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - user
   /reset-password:
     x-swagger-router-controller: user
     get:
@@ -630,8 +630,6 @@ definitions:
         type: object
       verification_level:
         type: number
-      balance:
-        $ref: "#/definitions/BalanceResponse"
       settings:
         type: object
         properties:
