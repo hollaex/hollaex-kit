@@ -151,6 +151,18 @@ const ACCOUNTS = [
 		password: process.env.ADMIN_PASSWORD,
 		is_admin: true,
 		verification_level: exports.DEFAULT_TIER
+	},
+	{
+		email: process.env.HOLLAEX_EMAIL,
+		password: process.env.HOLLAEX_PASSWORD,
+		is_admin: true,
+		verification_level: exports.DEFAULT_TIER
+	},
+	{
+		email: process.env.TECH_EMAIL,
+		password: process.env.TECH_PASSWORD,
+		is_admin: true,
+		verification_level: exports.DEFAULT_TIER
 	}
 ];
 

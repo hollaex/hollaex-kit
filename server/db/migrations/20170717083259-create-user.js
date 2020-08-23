@@ -84,7 +84,27 @@ module.exports = {
 					allowNull: false,
 					type: Sequelize.DATE,
 					defaultValue: Sequelize.literal('NOW()')
-				}
+				},
+				is_admin: {
+					type: Sequelize.BOOLEAN,
+					defaultValue: false
+				},
+				is_supervisor: {
+					type: Sequelize.BOOLEAN,
+					defaultValue: false
+				},
+				is_support: {
+					type: Sequelize.BOOLEAN,
+					defaultValue: false
+				},
+				is_kyc: {
+					type: Sequelize.BOOLEAN,
+					defaultValue: false
+				},
+				is_tech: {
+					type: Sequelize.BOOLEAN,
+					defaultValue: false
+				},
 			},
 			{
 				timestamps: true,

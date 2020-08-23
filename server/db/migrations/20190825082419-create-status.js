@@ -34,6 +34,14 @@ module.exports = {
 					type: Sequelize.JSONB,
 					defaultValue: {}
 				},
+				secrets: {
+					type: Sequelize.JSONB,
+					defaultValue: {}
+				},
+				kit: {
+					type: Sequelize.JSONB,
+					defaultValue: {}
+				},
 				api_key: {
 					type: Sequelize.STRING,
 					allowNull: true
