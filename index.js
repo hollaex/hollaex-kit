@@ -14,7 +14,7 @@ class HollaEx {
 			apiKey: '',
 			apiSecret: '',
 			apiExpiresAfter: 60,
-			kit: undefined // kit exchange id used only for exchange operators
+			activation_code: undefined // kit activation code used only for exchange operators to initialize the exchange
 		}
 	) {
 		this._url = opts.apiURL + opts.baseURL || 'https://api.hollaex.com/v1';
@@ -28,7 +28,8 @@ class HollaEx {
 			Accept: 'application/json',
 			'api-key': opts.apiKey,
 		};
-		this.kit = opts.kit;
+		this.activation_code = opts.activation_code;
+		this.exchange_id = opts.exchange_id;
 	}
 
 	/* Public */
@@ -314,30 +315,32 @@ class HollaEx {
 
 	/****** Kit operator endpoints ******/
 	// TODO (comments)
-	init() {
-		checkKit(this.kit);
+	async init() {
+		checkKit(this.activation_code);
 		const verb = 'GET';
-		const path = HOLLAEX_NETWORK_VERSION + `/kit/${this.kit}/init`;
+		const path = HOLLAEX_NETWORK_VERSION + `/kit/init/${this.activation_code}`;
 		const headers = generateHeaders(this._headers, this.apiSecret, verb, path, this.apiExpiresAfter);
 		
-		return createRequest(
+		let exchange = await createRequest(
 			verb,
-			`${HOLLAEX_NETWORK_URL}${HOLLAEX_NETWORK_VERSION}/kit/${this.kit}/init`,
+			`${HOLLAEX_NETWORK_URL}${HOLLAEX_NETWORK_VERSION}/kit/init/${this.activation_code}`,
 			headers
 		);
+		this.exchange_id = exchange.id;
+		return exchange;
 	}
 
 	// TODO (comments)
 	createUser(email) {
-		checkKit(this.kit);
+		checkKit(this.exchange_id);
 		const verb = 'POST';
-		const path = HOLLAEX_NETWORK_VERSION + `/kit/${this.kit}/signup`;
+		const path = HOLLAEX_NETWORK_VERSION + `/kit/${this.exchange_id}/signup`;
 		const data = { email };
 		const headers = generateHeaders(this._headers, this.apiSecret, verb, path, this.apiExpiresAfter, data);
 		
 		return createRequest(
 			verb,
-			`${HOLLAEX_NETWORK_URL}${HOLLAEX_NETWORK_VERSION}/kit/${this.kit}/signup`,
+			`${HOLLAEX_NETWORK_URL}${HOLLAEX_NETWORK_VERSION}/kit/${this.exchange_id}/signup`,
 			headers,
 			data
 		);
@@ -345,19 +348,19 @@ class HollaEx {
 
 	// TODO (comments)
 	getKitTrades(user_id, symbol, limit = 50, page = 1) {
-		checkKit(this.kit);
+		checkKit(this.exchange_id);
 		const verb = 'GET';
 
 		let queryString = `?user_id=${user_id}&limit=${limit}&page=${page}`;
 		if (symbol) {
 			queryString += `&symbol=${symbol}`;
 		}
-		const path = HOLLAEX_NETWORK_VERSION + `/kit/${this.kit}/trades${queryString}`;
+		const path = HOLLAEX_NETWORK_VERSION + `/kit/${this.exchange_id}/trades${queryString}`;
 		const headers = generateHeaders(this._headers, this.apiSecret, verb, path, this.apiExpiresAfter);
 		
 		return createRequest(
 			verb,
-			`${HOLLAEX_NETWORK_URL}${HOLLAEX_NETWORK_VERSION}/kit/${this.kit}/trades${queryString}`,
+			`${HOLLAEX_NETWORK_URL}${HOLLAEX_NETWORK_VERSION}/kit/${this.exchange_id}/trades${queryString}`,
 			headers,
 		);
 	}

@@ -7,7 +7,8 @@ const createRequest = (verb, url, headers, data) => {
 	const requestObj = {
 		headers,
 		url,
-		body
+		body,
+		json: true
 	};
 	return rp[verb.toLowerCase()](requestObj);
 };
