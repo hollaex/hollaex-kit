@@ -70,7 +70,7 @@ class Slider extends React.PureComponent {
 
   render() {
     const { isRightButtonDisabled, isLeftButtonDisabled, isArrowVisible } = this.state;
-    const { autoHideArrows, scrollingStep, ...restProps } = this.props;
+    const { autoHideArrows, scrollingStep, small, ...restProps } = this.props;
     const { onUpdate, scrollLeft, scrollRight, slider } = this;
 
     return (
@@ -81,7 +81,7 @@ class Slider extends React.PureComponent {
               className={classnames("slider__button", { disabled: isLeftButtonDisabled })}
               onClick={scrollLeft}
             >
-              <i className="slider__arrow left"/>
+              <i className={classnames("slider__arrow left", { small: small })}/>
             </div>
           )
         }
@@ -101,7 +101,7 @@ class Slider extends React.PureComponent {
               className={classnames("slider__button", { disabled: isRightButtonDisabled })}
               onClick={scrollRight}
             >
-              <i className="slider__arrow right"/>
+              <i className={classnames("slider__arrow right", { small: small })}/>
             </div>
           )
         }
@@ -113,11 +113,13 @@ class Slider extends React.PureComponent {
 Slider.propTypes = {
   autoHideArrows: bool,
   scrollingStep: number,
+  small: bool,
 }
 
 Slider.defaultProps = {
   autoHideArrows: false,
   scrollingStep: 35,
+  small: false,
 }
 
 export default Slider;

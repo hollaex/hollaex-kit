@@ -46,6 +46,11 @@
     transform: rotate(135deg);
     -webkit-transform: rotate(135deg);
   }
+
+  &.small {
+    height: 1rem;
+    width: 1rem;
+  }
 }
 
 .dark-theme {
