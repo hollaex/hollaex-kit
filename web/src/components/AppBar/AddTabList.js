@@ -3,7 +3,7 @@ import ReactSVG from 'react-svg';
 import classnames from 'classnames';
 import { Link } from 'react-router';
 
-import { Carousel } from 'components';
+import { Slider } from 'components';
 import { ICONS, BASE_CURRENCY, DEFAULT_COIN_DATA } from 'config/constants';
 import STRINGS from 'config/localizedStrings';
 import { donutFormatPercentage, formatToCurrency } from 'utils/currency';
@@ -120,7 +120,9 @@ class AddTabList extends Component {
         return (
             <div id="add-tab-list-menu" className={classnames("app-bar-add-tab-menu", { "tab-menu-left": selectedtabPairs.length <= 1 })}>
                 <div className="app-bar-tab-menu">
-                    <Carousel items={this.tabListMenuItems()}/>
+                    <Slider small>
+                      {this.tabListMenuItems()}
+                    </Slider>
                     {/*<div className="d-flex align-items-center mr-2">*/}
                       {/*<ReactSVG*/}
                         {/*path={ICONS.TAB_SETTING}*/}
